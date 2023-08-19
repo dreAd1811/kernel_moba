@@ -1,19 +1,6 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2012-2013, 2015-2017, 2019-2020 The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2012-2013, 2015-2019 The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/kernel.h>
@@ -79,14 +66,10 @@ do {									\
 #define BLKSIZE_1024		2
 #define BLKSIZE_2048		3
 
-<<<<<<< HEAD
 #define FLUSHPERIOD_1	    0x1
 #define FLUSHPERIOD_2048	0x800
 
 #define PERFLSHEOT_BIT	    BIT(18)
-=======
-#define FLUSHPERIOD_2048       0x800
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct csr_drvdata {
 	void __iomem		*base;
@@ -99,18 +82,12 @@ struct csr_drvdata {
 	struct clk		*clk;
 	spinlock_t		spin_lock;
 	bool			usb_bam_support;
-<<<<<<< HEAD
 	bool			perflsheot_set_support;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool			hwctrl_set_support;
 	bool			set_byte_cntr_support;
 	bool			timestamp_support;
 	bool			enable_flush;
-<<<<<<< HEAD
 	bool			aodbg_csr_support;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static LIST_HEAD(csr_list);
@@ -180,11 +157,8 @@ void msm_qdss_csr_enable_flush(struct coresight_csr *csr)
 
 	usbflshctrl = csr_readl(drvdata, CSR_USBFLSHCTRL);
 	usbflshctrl |= 0x2;
-<<<<<<< HEAD
 	if (drvdata->perflsheot_set_support)
 		usbflshctrl |= PERFLSHEOT_BIT;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	csr_writel(drvdata, usbflshctrl, CSR_USBFLSHCTRL);
 
 	CSR_LOCK(drvdata);
@@ -193,10 +167,7 @@ void msm_qdss_csr_enable_flush(struct coresight_csr *csr)
 }
 EXPORT_SYMBOL(msm_qdss_csr_enable_flush);
 
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void msm_qdss_csr_disable_bam_to_usb(struct coresight_csr *csr)
 {
 	struct csr_drvdata *drvdata;
@@ -240,11 +211,8 @@ void msm_qdss_csr_disable_flush(struct coresight_csr *csr)
 
 	usbflshctrl = csr_readl(drvdata, CSR_USBFLSHCTRL);
 	usbflshctrl &= ~0x2;
-<<<<<<< HEAD
 	if (drvdata->perflsheot_set_support)
 		usbflshctrl &= ~PERFLSHEOT_BIT;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	csr_writel(drvdata, usbflshctrl, CSR_USBFLSHCTRL);
 
 	CSR_LOCK(drvdata);
@@ -315,10 +283,7 @@ EXPORT_SYMBOL(coresight_csr_set_byte_cntr);
 struct coresight_csr *coresight_csr_get(const char *name)
 {
 	struct coresight_csr *csr;
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&csr_lock);
 	list_for_each_entry(csr, &csr_list, link) {
 		if (!strcmp(csr->name, name)) {
@@ -332,11 +297,7 @@ struct coresight_csr *coresight_csr_get(const char *name)
 }
 EXPORT_SYMBOL(coresight_csr_get);
 
-<<<<<<< HEAD
 static ssize_t timestamp_show(struct device *dev,
-=======
-static ssize_t csr_show_timestamp(struct device *dev,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				struct device_attribute *attr,
 				char *buf)
 {
@@ -345,10 +306,7 @@ static ssize_t csr_show_timestamp(struct device *dev,
 	uint32_t val, time_val0, time_val1;
 	int ret;
 	unsigned long flags;
-<<<<<<< HEAD
 	unsigned long csr_ts_offset = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct csr_drvdata *drvdata = dev_get_drvdata(dev->parent);
 
@@ -357,12 +315,9 @@ static ssize_t csr_show_timestamp(struct device *dev,
 		return 0;
 	}
 
-<<<<<<< HEAD
 	if (drvdata->aodbg_csr_support)
 		csr_ts_offset = 0x14;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = clk_prepare_enable(drvdata->clk);
 	if (ret)
 		return ret;
@@ -370,7 +325,6 @@ static ssize_t csr_show_timestamp(struct device *dev,
 	spin_lock_irqsave(&drvdata->spin_lock, flags);
 	CSR_UNLOCK(drvdata);
 
-<<<<<<< HEAD
 	val = csr_readl(drvdata, CSR_TIMESTAMPCTRL - csr_ts_offset);
 
 	val  = val & ~BIT(0);
@@ -381,18 +335,6 @@ static ssize_t csr_show_timestamp(struct device *dev,
 
 	time_val0 = csr_readl(drvdata, CSR_QDSSTIMEVAL0 - csr_ts_offset);
 	time_val1 = csr_readl(drvdata, CSR_QDSSTIMEVAL1 - csr_ts_offset);
-=======
-	val = csr_readl(drvdata, CSR_TIMESTAMPCTRL);
-
-	val  = val & ~BIT(0);
-	csr_writel(drvdata, val, CSR_TIMESTAMPCTRL);
-
-	val  = val | BIT(0);
-	csr_writel(drvdata, val, CSR_TIMESTAMPCTRL);
-
-	time_val0 = csr_readl(drvdata, CSR_QDSSTIMEVAL0);
-	time_val1 = csr_readl(drvdata, CSR_QDSSTIMEVAL1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	CSR_LOCK(drvdata);
 	spin_unlock_irqrestore(&drvdata->spin_lock, flags);
@@ -406,11 +348,7 @@ static ssize_t csr_show_timestamp(struct device *dev,
 	return size;
 }
 
-<<<<<<< HEAD
 static DEVICE_ATTR_RO(timestamp);
-=======
-static DEVICE_ATTR(timestamp, 0444, csr_show_timestamp, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static ssize_t flushperiod_show(struct device *dev,
 				struct device_attribute *attr,
@@ -471,10 +409,7 @@ static struct attribute *csr_attrs[] = {
 static struct attribute_group csr_attr_grp = {
 	.attrs = csr_attrs,
 };
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct attribute_group *csr_attr_grps[] = {
 	&csr_attr_grp,
 	NULL,
@@ -546,7 +481,6 @@ static int csr_probe(struct platform_device *pdev)
 	else
 		dev_dbg(dev, "timestamp_support operation supported\n");
 
-<<<<<<< HEAD
 	drvdata->aodbg_csr_support = of_property_read_bool(pdev->dev.of_node,
 						"qcom,aodbg-csr-support");
 	if (!drvdata->aodbg_csr_support)
@@ -563,9 +497,6 @@ static int csr_probe(struct platform_device *pdev)
 	if (drvdata->perflsheot_set_support)
 		drvdata->flushperiod = FLUSHPERIOD_1;
 	else if (drvdata->usb_bam_support)
-=======
-	if (drvdata->usb_bam_support)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		drvdata->flushperiod = FLUSHPERIOD_2048;
 
 	desc = devm_kzalloc(dev, sizeof(*desc), GFP_KERNEL);
@@ -615,10 +546,6 @@ static struct platform_driver csr_driver = {
 	.remove         = csr_remove,
 	.driver         = {
 		.name   = "coresight-csr",
-<<<<<<< HEAD
-=======
-		.owner	= THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.of_match_table = csr_match,
 		.suppress_bind_attrs = true,
 	},

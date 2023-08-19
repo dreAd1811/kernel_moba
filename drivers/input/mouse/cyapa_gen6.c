@@ -680,10 +680,7 @@ static int cyapa_gen6_operational_check(struct cyapa *cyapa)
 		}
 
 		cyapa->state = CYAPA_STATE_GEN6_APP;
-<<<<<<< HEAD
 		/* fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	case CYAPA_STATE_GEN6_APP:
 		/*

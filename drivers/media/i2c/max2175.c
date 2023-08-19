@@ -643,11 +643,7 @@ static int max2175_set_nco_freq(struct max2175 *ctx, s32 nco_freq)
 	if (abs_nco_freq < clock_rate / 2) {
 		nco_val_desired = 2 * nco_freq;
 	} else {
-<<<<<<< HEAD
 		nco_val_desired = 2LL * (clock_rate - abs_nco_freq);
-=======
-		nco_val_desired = 2 * (clock_rate - abs_nco_freq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (nco_freq < 0)
 			nco_val_desired = -nco_val_desired;
 	}
@@ -1206,11 +1202,7 @@ static const struct v4l2_ctrl_ops max2175_ctrl_ops = {
 
 /*
  * I2S output enable/disable configuration. This is a private control.
-<<<<<<< HEAD
  * Refer to Documentation/media/v4l-drivers/max2175.rst for more details.
-=======
- * Refer to Documentation/media/v4l-drivers/max2175 for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static const struct v4l2_ctrl_config max2175_i2s_en = {
 	.ops = &max2175_ctrl_ops,
@@ -1226,11 +1218,7 @@ static const struct v4l2_ctrl_config max2175_i2s_en = {
 
 /*
  * HSLS value control LO freq adjacent location configuration.
-<<<<<<< HEAD
  * Refer to Documentation/media/v4l-drivers/max2175.rst for more details.
-=======
- * Refer to Documentation/media/v4l-drivers/max2175 for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static const struct v4l2_ctrl_config max2175_hsls = {
 	.ops = &max2175_ctrl_ops,
@@ -1246,11 +1234,7 @@ static const struct v4l2_ctrl_config max2175_hsls = {
 /*
  * Rx modes below are a set of preset configurations that decides the tuner's
  * sck and sample rate of transmission. They are separate for EU & NA regions.
-<<<<<<< HEAD
  * Refer to Documentation/media/v4l-drivers/max2175.rst for more details.
-=======
- * Refer to Documentation/media/v4l-drivers/max2175 for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static const char * const max2175_ctrl_eu_rx_modes[] = {
 	[MAX2175_EU_FM_1_2]	= "EU FM 1.2",
@@ -1361,11 +1345,7 @@ static int max2175_probe(struct i2c_client *client,
 	v4l2_i2c_subdev_init(sd, client, &max2175_ops);
 	ctx->client = client;
 
-<<<<<<< HEAD
 	sd->flags |= V4L2_SUBDEV_FL_HAS_DEVNODE;
-=======
-	sd->flags = V4L2_SUBDEV_FL_HAS_DEVNODE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Controls */
 	hdl = &ctx->ctrl_hdl;

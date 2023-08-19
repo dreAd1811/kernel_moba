@@ -78,10 +78,7 @@ struct i40iw_pbl {
 	};
 
 	bool pbl_allocated;
-<<<<<<< HEAD
 	bool on_list;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 user_base;
 	struct i40iw_pble_alloc pble_alloc;
 	struct i40iw_mr *iwmr;

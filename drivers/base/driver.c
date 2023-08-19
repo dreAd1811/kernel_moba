@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * driver.c - centralized device driver management
  *
@@ -9,12 +6,6 @@
  * Copyright (c) 2002-3 Open Source Development Labs
  * Copyright (c) 2007 Greg Kroah-Hartman <gregkh@suse.de>
  * Copyright (c) 2007 Novell Inc.
-<<<<<<< HEAD
-=======
- *
- * This file is released under the GPLv2
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/device.h>
@@ -59,11 +50,7 @@ int driver_for_each_device(struct device_driver *drv, struct device *start,
 
 	klist_iter_init_node(&drv->p->klist_devices, &i,
 			     start ? &start->p->knode_driver : NULL);
-<<<<<<< HEAD
 	while (!error && (dev = next_device(&i)))
-=======
-	while ((dev = next_device(&i)) && !error)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		error = fn(dev, data);
 	klist_iter_exit(&i);
 	return error;
@@ -161,15 +148,11 @@ int driver_register(struct device_driver *drv)
 	int ret;
 	struct device_driver *other;
 
-<<<<<<< HEAD
 	if (!drv->bus->p) {
 		pr_err("Driver '%s' was unable to register with bus_type '%s' because the bus was not initialized.\n",
 			   drv->name, drv->bus->name);
 		return -EINVAL;
 	}
-=======
-	BUG_ON(!drv->bus->p);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if ((drv->bus->probe && drv->probe) ||
 	    (drv->bus->remove && drv->remove) ||

@@ -23,10 +23,6 @@
 #include <asm/div64.h>
 #include <asm/time.h>
 #include <asm/param.h>
-<<<<<<< HEAD
-=======
-#include <asm/cpu_has_feature.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 typedef u64 __nocast cputime_t;
 typedef u64 __nocast cputime64_t;
@@ -50,7 +46,6 @@ static inline unsigned long cputime_to_usecs(const cputime_t ct)
  * has to be populated in the new task
  */
 #ifdef CONFIG_PPC64
-<<<<<<< HEAD
 #define get_accounting(tsk)	(&get_paca()->accounting)
 static inline void arch_vtime_task_switch(struct task_struct *tsk) { }
 #else
@@ -68,11 +63,6 @@ static inline void arch_vtime_task_switch(struct task_struct *prev)
 	acct->starttime = acct0->starttime;
 	acct->startspurr = acct0->startspurr;
 }
-=======
-static inline void arch_vtime_task_switch(struct task_struct *tsk) { }
-#else
-void arch_vtime_task_switch(struct task_struct *tsk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 #endif /* __KERNEL__ */

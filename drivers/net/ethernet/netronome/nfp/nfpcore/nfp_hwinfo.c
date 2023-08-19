@@ -302,7 +302,6 @@ const char *nfp_hwinfo_lookup(struct nfp_hwinfo *hwinfo, const char *lookup)
 
 	return NULL;
 }
-<<<<<<< HEAD
 
 char *nfp_hwinfo_get_packed_strings(struct nfp_hwinfo *hwinfo)
 {
@@ -313,5 +312,3 @@ u32 nfp_hwinfo_get_packed_str_size(struct nfp_hwinfo *hwinfo)
 {
 	return le32_to_cpu(hwinfo->size) - sizeof(u32);
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

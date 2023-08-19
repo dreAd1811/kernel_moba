@@ -1,20 +1,6 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2016-2019, The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2011-2020, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #include <linux/debugfs.h>
 #include <linux/errno.h>
@@ -31,17 +17,10 @@
 #include <linux/of.h>
 #include <linux/dma-buf.h>
 #include <linux/ion_kernel.h>
-<<<<<<< HEAD
 
 #include <soc/qcom/scm.h>
 #include <soc/qcom/qseecomi.h>
 #include <soc/qcom/qtee_shmbridge.h>
-=======
-#include <linux/pm.h>
-
-#include <soc/qcom/scm.h>
-#include <soc/qcom/qseecomi.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* QSEE_LOG_BUF_SIZE = 32K */
 #define QSEE_LOG_BUF_SIZE 0x8000
@@ -341,11 +320,7 @@ static struct tzdbg tzdbg = {
 static struct tzdbg_log_t *g_qsee_log;
 static dma_addr_t coh_pmem;
 static uint32_t debug_rw_buf_size;
-<<<<<<< HEAD
 static uint64_t qseelog_shmbridge_handle;
-=======
-static bool restore_from_hibernation;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Debugfs data structure and functions
@@ -355,11 +330,7 @@ static int _disp_tz_general_stats(void)
 {
 	int len = 0;
 
-<<<<<<< HEAD
 	len += snprintf(tzdbg.disp_buf + len, debug_rw_buf_size - 1,
-=======
-	len += scnprintf(tzdbg.disp_buf + len, debug_rw_buf_size - 1,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			"   Version        : 0x%x\n"
 			"   Magic Number   : 0x%x\n"
 			"   Number of CPU  : %d\n",
@@ -384,11 +355,7 @@ static int _disp_tz_vmid_stats(void)
 
 	for (i = 0; i < num_vmid; i++) {
 		if (ptr->vmid < 0xFF) {
-<<<<<<< HEAD
 			len += snprintf(tzdbg.disp_buf + len,
-=======
-			len += scnprintf(tzdbg.disp_buf + len,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				(debug_rw_buf_size - 1) - len,
 				"   0x%x        %s\n",
 				(uint32_t)ptr->vmid, (uint8_t *)ptr->desc);
@@ -423,11 +390,7 @@ static int _disp_tz_boot_stats(void)
 
 	for (i = 0; i < tzdbg.diag_buf->cpu_count; i++) {
 		if (tzdbg.tz_version >= QSEE_VERSION_TZ_3_X) {
-<<<<<<< HEAD
 			len += snprintf(tzdbg.disp_buf + len,
-=======
-			len += scnprintf(tzdbg.disp_buf + len,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					(debug_rw_buf_size - 1) - len,
 					"  CPU #: %d\n"
 					"     Warmboot jump address : 0x%llx\n"
@@ -454,11 +417,7 @@ static int _disp_tz_boot_stats(void)
 			}
 			ptr_64++;
 		} else {
-<<<<<<< HEAD
 			len += snprintf(tzdbg.disp_buf + len,
-=======
-			len += scnprintf(tzdbg.disp_buf + len,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					(debug_rw_buf_size - 1) - len,
 					"  CPU #: %d\n"
 					"     Warmboot jump address     : 0x%x\n"
@@ -494,11 +453,7 @@ static int _disp_tz_reset_stats(void)
 					tzdbg.diag_buf->reset_info_off);
 
 	for (i = 0; i < tzdbg.diag_buf->cpu_count; i++) {
-<<<<<<< HEAD
 		len += snprintf(tzdbg.disp_buf + len,
-=======
-		len += scnprintf(tzdbg.disp_buf + len,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				(debug_rw_buf_size - 1) - len,
 				"  CPU #: %d\n"
 				"     Reset Type (reason)       : 0x%x\n"
@@ -536,11 +491,7 @@ static int _disp_tz_interrupt_stats(void)
 	if (tzdbg.tz_version < QSEE_VERSION_TZ_4_X) {
 		tzdbg_ptr = ptr;
 		for (i = 0; i < (*num_int); i++) {
-<<<<<<< HEAD
 			len += snprintf(tzdbg.disp_buf + len,
-=======
-			len += scnprintf(tzdbg.disp_buf + len,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				(debug_rw_buf_size - 1) - len,
 				"     Interrupt Number          : 0x%x\n"
 				"     Type of Interrupt         : 0x%x\n"
@@ -549,21 +500,13 @@ static int _disp_tz_interrupt_stats(void)
 				(uint32_t)tzdbg_ptr->int_info,
 				(uint8_t *)tzdbg_ptr->int_desc);
 			for (j = 0; j < tzdbg.diag_buf->cpu_count; j++) {
-<<<<<<< HEAD
 				len += snprintf(tzdbg.disp_buf + len,
-=======
-				len += scnprintf(tzdbg.disp_buf + len,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				(debug_rw_buf_size - 1) - len,
 				"     int_count on CPU # %d      : %u\n",
 				(uint32_t)j,
 				(uint32_t)tzdbg_ptr->int_count[j]);
 			}
-<<<<<<< HEAD
 			len += snprintf(tzdbg.disp_buf + len,
-=======
-			len += scnprintf(tzdbg.disp_buf + len,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					debug_rw_buf_size - 1, "\n");
 
 			if (len > (debug_rw_buf_size - 1)) {
@@ -576,11 +519,7 @@ static int _disp_tz_interrupt_stats(void)
 	} else {
 		tzdbg_ptr_tz40 = ptr;
 		for (i = 0; i < (*num_int); i++) {
-<<<<<<< HEAD
 			len += snprintf(tzdbg.disp_buf + len,
-=======
-			len += scnprintf(tzdbg.disp_buf + len,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				(debug_rw_buf_size - 1) - len,
 				"     Interrupt Number          : 0x%x\n"
 				"     Type of Interrupt         : 0x%x\n"
@@ -589,21 +528,13 @@ static int _disp_tz_interrupt_stats(void)
 				(uint32_t)tzdbg_ptr_tz40->int_info,
 				(uint8_t *)tzdbg_ptr_tz40->int_desc);
 			for (j = 0; j < tzdbg.diag_buf->cpu_count; j++) {
-<<<<<<< HEAD
 				len += snprintf(tzdbg.disp_buf + len,
-=======
-				len += scnprintf(tzdbg.disp_buf + len,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				(debug_rw_buf_size - 1) - len,
 				"     int_count on CPU # %d      : %u\n",
 				(uint32_t)j,
 				(uint32_t)tzdbg_ptr_tz40->int_count[j]);
 			}
-<<<<<<< HEAD
 			len += snprintf(tzdbg.disp_buf + len,
-=======
-			len += scnprintf(tzdbg.disp_buf + len,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					debug_rw_buf_size - 1, "\n");
 
 			if (len > (debug_rw_buf_size - 1)) {
@@ -626,11 +557,7 @@ static int _disp_tz_log_stats_legacy(void)
 
 	ptr = (unsigned char *)tzdbg.diag_buf +
 					tzdbg.diag_buf->ring_off;
-<<<<<<< HEAD
 	len += snprintf(tzdbg.disp_buf, (debug_rw_buf_size - 1) - len,
-=======
-	len += scnprintf(tzdbg.disp_buf, (debug_rw_buf_size - 1) - len,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							"%s\n", ptr);
 
 	tzdbg.stat[TZDBG_LOG].data = tzdbg.disp_buf;
@@ -784,18 +711,6 @@ static int _disp_tz_log_stats(size_t count)
 {
 	static struct tzdbg_log_pos_t log_start = {0};
 	struct tzdbg_log_t *log_ptr;
-<<<<<<< HEAD
-=======
-	/* wrap and offset are initialized to zero since tz is coldboot
-	 * during restoration from hibernation.the reason to initialise
-	 * the wrap and offset to zero since it contains previous boot
-	 * values and which are invalid now.
-	 */
-	if (restore_from_hibernation) {
-		log_start.wrap = log_start.offset = 0;
-		return 0;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	log_ptr = (struct tzdbg_log_t *)((unsigned char *)tzdbg.diag_buf +
 				tzdbg.diag_buf->ring_off -
@@ -821,19 +736,6 @@ static int _disp_qsee_log_stats(size_t count)
 {
 	static struct tzdbg_log_pos_t log_start = {0};
 
-<<<<<<< HEAD
-=======
-	/* wrap and offset are initialized to zero since tz is coldboot
-	 * during restoration from hibernation. The reason to initialise
-	 * the wrap and offset to zero since it contains previous values
-	 * and which are invalid now.
-	 */
-	if (restore_from_hibernation) {
-		log_start.wrap = log_start.offset = 0;
-		return 0;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return _disp_log_stats(g_qsee_log, &log_start,
 			QSEE_LOG_BUF_SIZE - sizeof(struct tzdbg_log_pos_t),
 			count, TZDBG_QSEE_LOG);
@@ -845,11 +747,7 @@ static int _disp_hyp_general_stats(size_t count)
 	int i;
 	struct hypdbg_boot_info_t *ptr = NULL;
 
-<<<<<<< HEAD
 	len += snprintf((unsigned char *)tzdbg.disp_buf + len,
-=======
-	len += scnprintf((unsigned char *)tzdbg.disp_buf + len,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			tzdbg.hyp_debug_rw_buf_size - 1,
 			"   Magic Number    : 0x%x\n"
 			"   CPU Count       : 0x%x\n"
@@ -860,11 +758,7 @@ static int _disp_hyp_general_stats(size_t count)
 
 	ptr = tzdbg.hyp_diag_buf->boot_info;
 	for (i = 0; i < tzdbg.hyp_diag_buf->cpu_count; i++) {
-<<<<<<< HEAD
 		len += snprintf((unsigned char *)tzdbg.disp_buf + len,
-=======
-		len += scnprintf((unsigned char *)tzdbg.disp_buf + len,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				(tzdbg.hyp_debug_rw_buf_size - 1) - len,
 				"  CPU #: %d\n"
 				"     Warmboot entry CPU counter: 0x%x\n"
@@ -946,23 +840,10 @@ static ssize_t tzdbgfs_read(struct file *file, char __user *buf,
 				tzdbg.stat[(*tz_id)].data, len);
 }
 
-<<<<<<< HEAD
 static const struct file_operations tzdbg_fops = {
 	.owner   = THIS_MODULE,
 	.read    = tzdbgfs_read,
 	.open    = simple_open,
-=======
-static int tzdbgfs_open(struct inode *inode, struct file *pfile)
-{
-	pfile->private_data = inode->i_private;
-	return 0;
-}
-
-const struct file_operations tzdbg_fops = {
-	.owner   = THIS_MODULE,
-	.read    = tzdbgfs_read,
-	.open    = tzdbgfs_open,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 
@@ -971,7 +852,6 @@ const struct file_operations tzdbg_fops = {
  */
 static void tzdbg_register_qsee_log_buf(struct platform_device *pdev)
 {
-<<<<<<< HEAD
 	size_t len = QSEE_LOG_BUF_SIZE;
 	int ret = 0;
 	struct scm_desc desc = {0};
@@ -980,25 +860,11 @@ static void tzdbg_register_qsee_log_buf(struct platform_device *pdev)
 	uint32_t ns_vm_perms[] = {PERM_READ | PERM_WRITE};
 	uint32_t ns_vm_nums = 1;
 
-=======
-	/* register log buffer scm request */
-	struct qseecom_reg_log_buf_ireq req = {};
-
-	/* scm response */
-	struct qseecom_command_scm_resp resp = {};
-	size_t len;
-	int ret = 0;
-	struct scm_desc desc = {0};
-	void *buf = NULL;
-
-	len = QSEE_LOG_BUF_SIZE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	buf = dma_alloc_coherent(&pdev->dev, len, &coh_pmem, GFP_KERNEL);
 	if (buf == NULL) {
 		pr_err("Failed to alloc memory for size %zu\n", len);
 		return;
 	}
-<<<<<<< HEAD
 	ret = qtee_shmbridge_register(coh_pmem,
 			len, ns_vmids, ns_vm_perms, ns_vm_nums,
 			PERM_READ | PERM_WRITE, &qseelog_shmbridge_handle);
@@ -1018,35 +884,6 @@ static void tzdbg_register_qsee_log_buf(struct platform_device *pdev)
 		pr_err(
 		"%s: scm_call to register log buf failed, ret = %d, resp result =%lld\n",
 		__func__, ret, desc.ret[0]);
-=======
-
-	g_qsee_log = (struct tzdbg_log_t *)buf;
-
-	if (!is_scm_armv8()) {
-		req.qsee_cmd_id = QSEOS_REGISTER_LOG_BUF_COMMAND;
-		req.phy_addr = (uint32_t)coh_pmem;
-		req.len = len;
-		/*  SCM_CALL  to register the log buffer */
-		ret = scm_call(SCM_SVC_TZSCHEDULER, 1,  &req, sizeof(req),
-			&resp, sizeof(resp));
-	} else {
-		desc.args[0] = coh_pmem;
-		desc.args[1] = len;
-		desc.arginfo = 0x22;
-		ret = scm_call2(SCM_QSEEOS_FNID(1, 6), &desc);
-		resp.result = desc.ret[0];
-	}
-	if (ret) {
-		pr_err("%s: scm_call to register log buffer failed\n",
-			__func__);
-		goto err;
-	}
-
-	if (resp.result != QSEOS_RESULT_SUCCESS) {
-		pr_err(
-		"%s: scm_call to register log buf failed, resp result =%llu\n",
-		__func__, resp.result);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err;
 	}
 
@@ -1054,13 +891,8 @@ static void tzdbg_register_qsee_log_buf(struct platform_device *pdev)
 	return;
 
 err:
-<<<<<<< HEAD
 	qtee_shmbridge_deregister(qseelog_shmbridge_handle);
 	dma_free_coherent(&pdev->dev, len, (void *)g_qsee_log, coh_pmem);
-=======
-	dma_free_coherent(&pdev->dev, len, (void *)g_qsee_log, coh_pmem);
-	return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int  tzdbgfs_init(struct platform_device *pdev)
@@ -1103,7 +935,6 @@ static void tzdbgfs_exit(struct platform_device *pdev)
 {
 	struct dentry           *dent_dir;
 
-<<<<<<< HEAD
 	if (g_qsee_log) {
 		qtee_shmbridge_deregister(qseelog_shmbridge_handle);
 		dma_free_coherent(&pdev->dev, QSEE_LOG_BUF_SIZE,
@@ -1112,14 +943,6 @@ static void tzdbgfs_exit(struct platform_device *pdev)
 	kzfree(tzdbg.disp_buf);
 	dent_dir = platform_get_drvdata(pdev);
 	debugfs_remove_recursive(dent_dir);
-=======
-	kzfree(tzdbg.disp_buf);
-	dent_dir = platform_get_drvdata(pdev);
-	debugfs_remove_recursive(dent_dir);
-	if (g_qsee_log)
-		dma_free_coherent(&pdev->dev, QSEE_LOG_BUF_SIZE,
-					 (void *)g_qsee_log, coh_pmem);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int __update_hypdbg_base(struct platform_device *pdev,
@@ -1169,7 +992,6 @@ static void tzdbg_get_tz_version(void)
 {
 	uint32_t smc_id = 0;
 	uint32_t feature = 10;
-<<<<<<< HEAD
 	struct scm_desc desc = {0};
 	int ret = 0;
 
@@ -1177,32 +999,12 @@ static void tzdbg_get_tz_version(void)
 	desc.arginfo = TZ_INFO_GET_FEATURE_VERSION_ID_PARAM_ID;
 	desc.args[0] = feature;
 	ret = scm_call2(smc_id, &desc);
-=======
-	struct qseecom_command_scm_resp resp = {0};
-	struct scm_desc desc = {0};
-	int ret = 0;
-
-	if (!is_scm_armv8()) {
-		ret = scm_call(SCM_SVC_INFO, SCM_SVC_UTIL,  &feature,
-					sizeof(feature), &resp, sizeof(resp));
-	} else {
-		smc_id = TZ_INFO_GET_FEATURE_VERSION_ID;
-		desc.arginfo = TZ_INFO_GET_FEATURE_VERSION_ID_PARAM_ID;
-		desc.args[0] = feature;
-		ret = scm_call2(smc_id, &desc);
-		resp.result = desc.ret[0];
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ret)
 		pr_err("%s: scm_call to get tz version failed\n",
 				__func__);
 	else
-<<<<<<< HEAD
 		tzdbg.tz_version = desc.ret[0];
-=======
-		tzdbg.tz_version = resp.result;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 }
 
@@ -1225,20 +1027,12 @@ static int tz_log_probe(struct platform_device *pdev)
 		dev_err(&pdev->dev,
 				"%s: ERROR Missing MEM resource\n", __func__);
 		return -ENXIO;
-<<<<<<< HEAD
 	}
-=======
-	};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Get the debug buffer size
 	 */
-<<<<<<< HEAD
 	debug_rw_buf_size = resource_size(resource);
-=======
-	debug_rw_buf_size = resource->end - resource->start + 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Map address that stores the physical location diagnostic data
@@ -1308,73 +1102,16 @@ err:
 	return -ENXIO;
 }
 
-<<<<<<< HEAD
 
 static int tz_log_remove(struct platform_device *pdev)
 {
 	kzfree(tzdbg.diag_buf);
 	kzfree(tzdbg.hyp_diag_buf);
-=======
-static int tz_log_remove(struct platform_device *pdev)
-{
-	kzfree(tzdbg.diag_buf);
-	if (tzdbg.hyp_diag_buf)
-		kzfree(tzdbg.hyp_diag_buf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tzdbgfs_exit(pdev);
 
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_PM
-static int tz_log_freeze(struct device *dev)
-{
-	/* This Boolean variable is maintained to initialise the ring buffer
-	 * log pointer to zero during restoration from hibernation
-	 */
-	restore_from_hibernation = 1;
-	if (g_qsee_log)
-		dma_free_coherent(dev, QSEE_LOG_BUF_SIZE, (void *)g_qsee_log,
-					coh_pmem);
-	return 0;
-}
-
-static int tz_log_restore(struct device *dev)
-{
-	/* ring buffer log pointer needs to be re initialized
-	 * during restoration from hibernation.
-	 */
-	if (restore_from_hibernation) {
-		_disp_tz_log_stats(0);
-		_disp_qsee_log_stats(0);
-	}
-	/* Register the log bugger at TZ during hibernation resume.
-	 * After hibernation the log buffer is with HLOS as TZ encountered
-	 * a coldboot sequence.
-	 */
-	tzdbg_register_qsee_log_buf(to_platform_device(dev));
-	/* This is set back to zero after successful restoration
-	 * from hibernation.
-	 */
-	restore_from_hibernation = 0;
-	return 0;
-}
-
-static const struct dev_pm_ops tz_log_pmops = {
-	.freeze = tz_log_freeze,
-	.restore = tz_log_restore,
-	.thaw = tz_log_restore,
-};
-
-#define TZ_LOG_PMOPS (&tz_log_pmops)
-
-#else
-#define TZ_LOG_PMOPS NULL
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct of_device_id tzlog_match[] = {
 	{	.compatible = "qcom,tz-log",
 	},
@@ -1386,15 +1123,8 @@ static struct platform_driver tz_log_driver = {
 	.remove		= tz_log_remove,
 	.driver		= {
 		.name = "tz_log",
-<<<<<<< HEAD
 		.of_match_table = tzlog_match,
 		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
-=======
-		.owner = THIS_MODULE,
-		.of_match_table = tzlog_match,
-		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
-		.pm = TZ_LOG_PMOPS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 };
 

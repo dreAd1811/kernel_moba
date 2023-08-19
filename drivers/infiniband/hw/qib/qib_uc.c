@@ -60,12 +60,7 @@ int qib_make_uc_req(struct rvt_qp *qp, unsigned long *flags)
 		if (!(ib_rvt_state_ops[qp->state] & RVT_FLUSH_SEND))
 			goto bail;
 		/* We are in the error state, flush the work request. */
-<<<<<<< HEAD
 		if (qp->s_last == READ_ONCE(qp->s_head))
-=======
-		smp_read_barrier_depends(); /* see post_one_send() */
-		if (qp->s_last == ACCESS_ONCE(qp->s_head))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto bail;
 		/* If DMAs are in progress, we can't flush immediately. */
 		if (atomic_read(&priv->s_dma_busy)) {
@@ -94,12 +89,7 @@ int qib_make_uc_req(struct rvt_qp *qp, unsigned long *flags)
 		    RVT_PROCESS_NEXT_SEND_OK))
 			goto bail;
 		/* Check if send work queue is empty. */
-<<<<<<< HEAD
 		if (qp->s_cur == READ_ONCE(qp->s_head))
-=======
-		smp_read_barrier_depends(); /* see post_one_send() */
-		if (qp->s_cur == ACCESS_ONCE(qp->s_head))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto bail;
 		/*
 		 * Start a new request.
@@ -345,11 +335,7 @@ send_first:
 		if (test_and_clear_bit(RVT_R_REWIND_SGE, &qp->r_aflags))
 			qp->r_sge = qp->s_rdma_read_sge;
 		else {
-<<<<<<< HEAD
 			ret = rvt_get_rwqe(qp, false);
-=======
-			ret = qib_get_rwqe(qp, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (ret < 0)
 				goto op_err;
 			if (!ret)
@@ -415,12 +401,7 @@ last_imm:
 		wc.port_num = 0;
 		/* Signal completion event if the solicited bit is set. */
 		rvt_cq_enter(ibcq_to_rvtcq(qp->ibqp.recv_cq), &wc,
-<<<<<<< HEAD
 			     ib_bth_is_solicited(ohdr));
-=======
-			     (ohdr->bth[0] &
-				cpu_to_be32(IB_BTH_SOLICITED)) != 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case OP(RDMA_WRITE_FIRST):
@@ -490,11 +471,7 @@ rdma_last_imm:
 		if (test_and_clear_bit(RVT_R_REWIND_SGE, &qp->r_aflags))
 			rvt_put_ss(&qp->s_rdma_read_sge);
 		else {
-<<<<<<< HEAD
 			ret = rvt_get_rwqe(qp, true);
-=======
-			ret = qib_get_rwqe(qp, 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (ret < 0)
 				goto op_err;
 			if (!ret)

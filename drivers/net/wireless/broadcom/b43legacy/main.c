@@ -1304,14 +1304,8 @@ static void handle_irq_ucode_debug(struct b43legacy_wldev *dev)
 }
 
 /* Interrupt handler bottom-half */
-<<<<<<< HEAD
 static void b43legacy_interrupt_tasklet(struct b43legacy_wldev *dev)
 {
-=======
-static void b43legacy_interrupt_tasklet(unsigned long data)
-{
-	struct b43legacy_wldev *dev = (struct b43legacy_wldev *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 reason;
 	u32 dma_reason[ARRAY_SIZE(dev->dma_reason)];
 	u32 merged_dma_reason = 0;
@@ -3306,13 +3300,8 @@ static int b43legacy_wireless_core_init(struct b43legacy_wldev *dev)
 
 	if ((phy->type == B43legacy_PHYTYPE_B) ||
 	    (phy->type == B43legacy_PHYTYPE_G)) {
-<<<<<<< HEAD
 		phy->_lo_pairs = kcalloc(B43legacy_LO_COUNT,
 					 sizeof(struct b43legacy_lopair),
-=======
-		phy->_lo_pairs = kzalloc(sizeof(struct b43legacy_lopair)
-					 * B43legacy_LO_COUNT,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 GFP_KERNEL);
 		if (!phy->_lo_pairs)
 			return -ENOMEM;
@@ -3786,11 +3775,7 @@ static int b43legacy_one_core_attach(struct ssb_device *dev,
 	b43legacy_set_status(wldev, B43legacy_STAT_UNINIT);
 	wldev->bad_frames_preempt = modparam_bad_frames_preempt;
 	tasklet_init(&wldev->isr_tasklet,
-<<<<<<< HEAD
 		     (void (*)(unsigned long))b43legacy_interrupt_tasklet,
-=======
-		     b43legacy_interrupt_tasklet,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		     (unsigned long)wldev);
 	if (modparam_pio)
 		wldev->__using_pio = true;
@@ -3849,10 +3834,6 @@ static int b43legacy_wireless_init(struct ssb_device *dev)
 	/* fill hw info */
 	ieee80211_hw_set(hw, RX_INCLUDES_FCS);
 	ieee80211_hw_set(hw, SIGNAL_DBM);
-<<<<<<< HEAD
-=======
-	ieee80211_hw_set(hw, MFP_CAPABLE); /* Allow WPA3 in software */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	hw->wiphy->interface_modes =
 		BIT(NL80211_IFTYPE_AP) |

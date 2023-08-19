@@ -77,12 +77,8 @@ static void	ether3_setmulticastlist(struct net_device *dev);
 static int	ether3_rx(struct net_device *dev, unsigned int maxcnt);
 static void	ether3_tx(struct net_device *dev);
 static int	ether3_open (struct net_device *dev);
-<<<<<<< HEAD
 static netdev_tx_t	ether3_sendpacket(struct sk_buff *skb,
 					  struct net_device *dev);
-=======
-static int	ether3_sendpacket (struct sk_buff *skb, struct net_device *dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static irqreturn_t ether3_interrupt (int irq, void *dev_id);
 static int	ether3_close (struct net_device *dev);
 static void	ether3_setmulticastlist (struct net_device *dev);
@@ -175,17 +171,11 @@ ether3_setbuffer(struct net_device *dev, buffer_rw_t read, int start)
 /*
  * Switch LED off...
  */
-<<<<<<< HEAD
 static void ether3_ledoff(struct timer_list *t)
 {
 	struct dev_priv *private = from_timer(private, t, timer);
 	struct net_device *dev = private->dev;
 
-=======
-static void ether3_ledoff(unsigned long data)
-{
-	struct net_device *dev = (struct net_device *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ether3_outw(priv(dev)->regs.config2 |= CFG2_CTRLO, REG_CONFIG2);
 }
 
@@ -196,11 +186,6 @@ static inline void ether3_ledon(struct net_device *dev)
 {
 	del_timer(&priv(dev)->timer);
 	priv(dev)->timer.expires = jiffies + HZ / 50; /* leave on for 1/50th second */
-<<<<<<< HEAD
-=======
-	priv(dev)->timer.data = (unsigned long)dev;
-	priv(dev)->timer.function = ether3_ledoff;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	add_timer(&priv(dev)->timer);
 	if (priv(dev)->regs.config2 & CFG2_CTRLO)
 		ether3_outw(priv(dev)->regs.config2 &= ~CFG2_CTRLO, REG_CONFIG2);
@@ -497,11 +482,7 @@ static void ether3_timeout(struct net_device *dev)
 /*
  * Transmit a packet
  */
-<<<<<<< HEAD
 static netdev_tx_t
-=======
-static int
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 ether3_sendpacket(struct sk_buff *skb, struct net_device *dev)
 {
 	unsigned long flags;
@@ -803,12 +784,8 @@ ether3_probe(struct expansion_card *ec, const struct ecard_id *id)
 
 	ether3_addr(dev->dev_addr, ec);
 
-<<<<<<< HEAD
 	priv(dev)->dev = dev;
 	timer_setup(&priv(dev)->timer, ether3_ledoff, 0);
-=======
-	init_timer(&priv(dev)->timer);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Reset card...
 	 */

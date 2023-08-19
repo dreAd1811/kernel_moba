@@ -44,15 +44,9 @@ nv50_fifo_dma_new(struct nvkm_fifo *base, const struct nvkm_oclass *oclass,
 
 	nvif_ioctl(parent, "create channel dma size %d\n", size);
 	if (!(ret = nvif_unpack(ret, &data, &size, args->v0, 0, 0, false))) {
-<<<<<<< HEAD
 		nvif_ioctl(parent, "create channel dma vers %d vmm %llx "
 				   "pushbuf %llx offset %016llx\n",
 			   args->v0.version, args->v0.vmm, args->v0.pushbuf,
-=======
-		nvif_ioctl(parent, "create channel dma vers %d vm %llx "
-				   "pushbuf %llx offset %016llx\n",
-			   args->v0.version, args->v0.vm, args->v0.pushbuf,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   args->v0.offset);
 		if (!args->v0.pushbuf)
 			return -EINVAL;
@@ -63,11 +57,7 @@ nv50_fifo_dma_new(struct nvkm_fifo *base, const struct nvkm_oclass *oclass,
 		return -ENOMEM;
 	*pobject = &chan->base.object;
 
-<<<<<<< HEAD
 	ret = nv50_fifo_chan_ctor(fifo, args->v0.vmm, args->v0.pushbuf,
-=======
-	ret = nv50_fifo_chan_ctor(fifo, args->v0.vm, args->v0.pushbuf,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  oclass, chan);
 	if (ret)
 		return ret;

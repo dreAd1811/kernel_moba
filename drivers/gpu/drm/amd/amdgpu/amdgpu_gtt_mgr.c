@@ -31,14 +31,11 @@ struct amdgpu_gtt_mgr {
 	atomic64_t available;
 };
 
-<<<<<<< HEAD
 struct amdgpu_gtt_node {
 	struct drm_mm_node node;
 	struct ttm_buffer_object *tbo;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * amdgpu_gtt_mgr_init - init GTT manager and DRM MM
  *
@@ -59,11 +56,7 @@ static int amdgpu_gtt_mgr_init(struct ttm_mem_type_manager *man,
 		return -ENOMEM;
 
 	start = AMDGPU_GTT_MAX_TRANSFER_SIZE * AMDGPU_GTT_NUM_TRANSFER_WINDOWS;
-<<<<<<< HEAD
 	size = (adev->gmc.gart_size >> PAGE_SHIFT) - start;
-=======
-	size = (adev->mc.gart_size >> PAGE_SHIFT) - start;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drm_mm_init(&mgr->mm, start, size);
 	spin_lock_init(&mgr->lock);
 	atomic64_set(&mgr->available, p_size);
@@ -82,17 +75,7 @@ static int amdgpu_gtt_mgr_init(struct ttm_mem_type_manager *man,
 static int amdgpu_gtt_mgr_fini(struct ttm_mem_type_manager *man)
 {
 	struct amdgpu_gtt_mgr *mgr = man->priv;
-<<<<<<< HEAD
 	spin_lock(&mgr->lock);
-=======
-
-	spin_lock(&mgr->lock);
-	if (!drm_mm_clean(&mgr->mm)) {
-		spin_unlock(&mgr->lock);
-		return -EBUSY;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drm_mm_takedown(&mgr->mm);
 	spin_unlock(&mgr->lock);
 	kfree(mgr);
@@ -101,29 +84,17 @@ static int amdgpu_gtt_mgr_fini(struct ttm_mem_type_manager *man)
 }
 
 /**
-<<<<<<< HEAD
  * amdgpu_gtt_mgr_has_gart_addr - Check if mem has address space
-=======
- * amdgpu_gtt_mgr_is_allocated - Check if mem has address space
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * @mem: the mem object to check
  *
  * Check if a mem object has already address space allocated.
  */
-<<<<<<< HEAD
 bool amdgpu_gtt_mgr_has_gart_addr(struct ttm_mem_reg *mem)
 {
 	struct amdgpu_gtt_node *node = mem->mm_node;
 
 	return (node->node.start != AMDGPU_BO_INVALID_OFFSET);
-=======
-bool amdgpu_gtt_mgr_is_allocated(struct ttm_mem_reg *mem)
-{
-	struct drm_mm_node *node = mem->mm_node;
-
-	return (node->start != AMDGPU_BO_INVALID_OFFSET);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -143,20 +114,12 @@ static int amdgpu_gtt_mgr_alloc(struct ttm_mem_type_manager *man,
 {
 	struct amdgpu_device *adev = amdgpu_ttm_adev(man->bdev);
 	struct amdgpu_gtt_mgr *mgr = man->priv;
-<<<<<<< HEAD
 	struct amdgpu_gtt_node *node = mem->mm_node;
-=======
-	struct drm_mm_node *node = mem->mm_node;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	enum drm_mm_insert_mode mode;
 	unsigned long fpfn, lpfn;
 	int r;
 
-<<<<<<< HEAD
 	if (amdgpu_gtt_mgr_has_gart_addr(mem))
-=======
-	if (amdgpu_gtt_mgr_is_allocated(mem))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	if (place)
@@ -174,7 +137,6 @@ static int amdgpu_gtt_mgr_alloc(struct ttm_mem_type_manager *man,
 		mode = DRM_MM_INSERT_HIGH;
 
 	spin_lock(&mgr->lock);
-<<<<<<< HEAD
 	r = drm_mm_insert_node_in_range(&mgr->mm, &node->node, mem->num_pages,
 					mem->page_alignment, 0, fpfn, lpfn,
 					mode);
@@ -182,15 +144,6 @@ static int amdgpu_gtt_mgr_alloc(struct ttm_mem_type_manager *man,
 
 	if (!r)
 		mem->start = node->node.start;
-=======
-	r = drm_mm_insert_node_in_range(&mgr->mm, node,
-					mem->num_pages, mem->page_alignment, 0,
-					fpfn, lpfn, mode);
-	spin_unlock(&mgr->lock);
-
-	if (!r)
-		mem->start = node->start;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return r;
 }
@@ -211,20 +164,12 @@ static int amdgpu_gtt_mgr_new(struct ttm_mem_type_manager *man,
 			      struct ttm_mem_reg *mem)
 {
 	struct amdgpu_gtt_mgr *mgr = man->priv;
-<<<<<<< HEAD
 	struct amdgpu_gtt_node *node;
 	int r;
 
 	spin_lock(&mgr->lock);
 	if ((&tbo->mem == mem || tbo->mem.mem_type != TTM_PL_TT) &&
 	    atomic64_read(&mgr->available) < mem->num_pages) {
-=======
-	struct drm_mm_node *node;
-	int r;
-
-	spin_lock(&mgr->lock);
-	if (atomic64_read(&mgr->available) < mem->num_pages) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_unlock(&mgr->lock);
 		return 0;
 	}
@@ -237,14 +182,9 @@ static int amdgpu_gtt_mgr_new(struct ttm_mem_type_manager *man,
 		goto err_out;
 	}
 
-<<<<<<< HEAD
 	node->node.start = AMDGPU_BO_INVALID_OFFSET;
 	node->node.size = mem->num_pages;
 	node->tbo = tbo;
-=======
-	node->start = AMDGPU_BO_INVALID_OFFSET;
-	node->size = mem->num_pages;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mem->mm_node = node;
 
 	if (place->fpfn || place->lpfn || place->flags & TTM_PL_FLAG_TOPDOWN) {
@@ -256,11 +196,7 @@ static int amdgpu_gtt_mgr_new(struct ttm_mem_type_manager *man,
 			goto err_out;
 		}
 	} else {
-<<<<<<< HEAD
 		mem->start = node->node.start;
-=======
-		mem->start = node->start;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -284,23 +220,14 @@ static void amdgpu_gtt_mgr_del(struct ttm_mem_type_manager *man,
 			       struct ttm_mem_reg *mem)
 {
 	struct amdgpu_gtt_mgr *mgr = man->priv;
-<<<<<<< HEAD
 	struct amdgpu_gtt_node *node = mem->mm_node;
-=======
-	struct drm_mm_node *node = mem->mm_node;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!node)
 		return;
 
 	spin_lock(&mgr->lock);
-<<<<<<< HEAD
 	if (node->node.start != AMDGPU_BO_INVALID_OFFSET)
 		drm_mm_remove_node(&node->node);
-=======
-	if (node->start != AMDGPU_BO_INVALID_OFFSET)
-		drm_mm_remove_node(node);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock(&mgr->lock);
 	atomic64_add(mem->num_pages, &mgr->available);
 
@@ -318,7 +245,6 @@ static void amdgpu_gtt_mgr_del(struct ttm_mem_type_manager *man,
 uint64_t amdgpu_gtt_mgr_usage(struct ttm_mem_type_manager *man)
 {
 	struct amdgpu_gtt_mgr *mgr = man->priv;
-<<<<<<< HEAD
 	s64 result = man->size - atomic64_read(&mgr->available);
 
 	return (result > 0 ? result : 0) * PAGE_SIZE;
@@ -341,10 +267,6 @@ int amdgpu_gtt_mgr_recover(struct ttm_mem_type_manager *man)
 	spin_unlock(&mgr->lock);
 
 	return r;
-=======
-
-	return (u64)(man->size - atomic64_read(&mgr->available)) * PAGE_SIZE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -364,11 +286,7 @@ static void amdgpu_gtt_mgr_debug(struct ttm_mem_type_manager *man,
 	drm_mm_print(&mgr->mm, printer);
 	spin_unlock(&mgr->lock);
 
-<<<<<<< HEAD
 	drm_printf(printer, "man size:%llu pages, gtt available:%lld pages, usage:%lluMB\n",
-=======
-	drm_printf(printer, "man size:%llu pages, gtt available:%llu pages, usage:%lluMB\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		   man->size, (u64)atomic64_read(&mgr->available),
 		   amdgpu_gtt_mgr_usage(man) >> 20);
 }

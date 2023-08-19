@@ -28,10 +28,6 @@
 #include <linux/jiffies.h>
 #include <linux/cpufreq.h>
 #include <linux/percpu.h>
-<<<<<<< HEAD
-=======
-#include <linux/miscdevice.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/rtc/m48t59.h>
 #include <linux/kernel_stat.h>
 #include <linux/clockchips.h>
@@ -57,11 +53,8 @@
 
 DEFINE_SPINLOCK(rtc_lock);
 
-<<<<<<< HEAD
 unsigned int __read_mostly vdso_fix_stick;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_SMP
 unsigned long profile_pc(struct pt_regs *regs)
 {
@@ -839,7 +832,6 @@ static void __init init_tick_ops(struct sparc64_tick_ops *ops)
 void __init time_init_early(void)
 {
 	if (tlb_type == spitfire) {
-<<<<<<< HEAD
 		if (is_hummingbird()) {
 			init_tick_ops(&hbtick_operations);
 			clocksource_tick.archdata.vclock_mode = VCLOCK_NONE;
@@ -851,14 +843,6 @@ void __init time_init_early(void)
 	} else {
 		init_tick_ops(&stick_operations);
 		clocksource_tick.archdata.vclock_mode = VCLOCK_STICK;
-=======
-		if (is_hummingbird())
-			init_tick_ops(&hbtick_operations);
-		else
-			init_tick_ops(&tick_operations);
-	} else {
-		init_tick_ops(&stick_operations);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 

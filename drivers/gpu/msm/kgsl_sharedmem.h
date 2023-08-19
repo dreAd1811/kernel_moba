@@ -1,33 +1,15 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0-only */
 /*
  * Copyright (c) 2002,2007-2019, The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2002,2007-2019, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #ifndef __KGSL_SHAREDMEM_H
 #define __KGSL_SHAREDMEM_H
 
 #include <linux/dma-mapping.h>
-<<<<<<< HEAD
 #include <linux/scatterlist.h>
 #include <linux/slab.h>
 
 #include "kgsl.h"
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "kgsl_mmu.h"
 
 struct kgsl_device;
@@ -91,12 +73,6 @@ int kgsl_sharedmem_page_alloc_user(struct kgsl_memdesc *memdesc,
 
 void kgsl_free_secure_page(struct page *page);
 
-<<<<<<< HEAD
-=======
-int kgsl_lock_sgt(struct sg_table *sgt, uint64_t size);
-int kgsl_unlock_sgt(struct sg_table *sgt);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct page *kgsl_alloc_secure_page(void);
 
 #define MEMFLAGS(_flags, _mask, _shift) \
@@ -179,7 +155,6 @@ kgsl_memdesc_usermem_type(const struct kgsl_memdesc *memdesc)
 }
 
 /**
-<<<<<<< HEAD
  * kgsl_memdesc_sg_dma - Turn a dma_addr (from CMA) into a sg table
  * @memdesc: Pointer to a memory descriptor
  * @addr: Physical address from the dma_alloc function
@@ -191,36 +166,6 @@ kgsl_memdesc_usermem_type(const struct kgsl_memdesc *memdesc)
  */
 int kgsl_memdesc_sg_dma(struct kgsl_memdesc *memdesc,
 		phys_addr_t addr, u64 size);
-=======
- * memdesg_sg_dma() - Turn a dma_addr (from CMA) into a sg table
- * @memdesc: Pointer to the memdesc structure
- * @addr: Physical address from the dma_alloc function
- * @size: Size of the chunk
- *
- * Create a sg table for the contigious chunk specified by addr and size.
- */
-static inline int
-memdesc_sg_dma(struct kgsl_memdesc *memdesc,
-		phys_addr_t addr, uint64_t size)
-{
-	int ret;
-	struct page *page = phys_to_page(addr);
-
-	memdesc->sgt = kmalloc(sizeof(struct sg_table), GFP_KERNEL);
-	if (memdesc->sgt == NULL)
-		return -ENOMEM;
-
-	ret = sg_alloc_table(memdesc->sgt, 1, GFP_KERNEL);
-	if (ret) {
-		kfree(memdesc->sgt);
-		memdesc->sgt = NULL;
-		return ret;
-	}
-
-	sg_set_page(memdesc->sgt->sgl, page, (size_t) size, 0);
-	return 0;
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * kgsl_memdesc_is_global - is this a globally mapped buffer?
@@ -300,11 +245,7 @@ static inline uint64_t
 kgsl_memdesc_footprint(const struct kgsl_memdesc *memdesc)
 {
 	return ALIGN(memdesc->size + kgsl_memdesc_guard_page_size(memdesc),
-<<<<<<< HEAD
 		PAGE_SIZE);
-=======
-		memdesc->pad_to);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -321,40 +262,9 @@ kgsl_memdesc_footprint(const struct kgsl_memdesc *memdesc)
  * all pagetables.  This is for use for device wide GPU allocations such as
  * ringbuffers.
  */
-<<<<<<< HEAD
 int kgsl_allocate_global(struct kgsl_device *device,
 	struct kgsl_memdesc *memdesc, uint64_t size, uint64_t flags,
 	unsigned int priv, const char *name);
-=======
-static inline int kgsl_allocate_global(struct kgsl_device *device,
-	struct kgsl_memdesc *memdesc, uint64_t size, uint64_t flags,
-	unsigned int priv, const char *name)
-{
-	int ret;
-
-	kgsl_memdesc_init(device, memdesc, flags);
-	memdesc->priv |= priv;
-
-	if (((memdesc->priv & KGSL_MEMDESC_CONTIG) != 0) ||
-		(kgsl_mmu_get_mmutype(device) == KGSL_MMU_TYPE_NONE))
-		ret = kgsl_sharedmem_alloc_contig(device, memdesc,
-						(size_t) size);
-	else {
-		ret = kgsl_sharedmem_page_alloc_user(memdesc, (size_t) size);
-		if (ret == 0) {
-			if (kgsl_memdesc_map(memdesc) == NULL) {
-				kgsl_sharedmem_free(memdesc);
-				ret = -ENOMEM;
-			}
-		}
-	}
-
-	if (ret == 0)
-		kgsl_mmu_add_global(device, memdesc, name);
-
-	return ret;
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * kgsl_free_global() - Free a device wide GPU allocation and remove it from the
@@ -366,16 +276,7 @@ static inline int kgsl_allocate_global(struct kgsl_device *device,
  * Remove the specific memory descriptor from the global pagetable entry list
  * and free it
  */
-<<<<<<< HEAD
 void kgsl_free_global(struct kgsl_device *device, struct kgsl_memdesc *memdesc);
-=======
-static inline void kgsl_free_global(struct kgsl_device *device,
-		struct kgsl_memdesc *memdesc)
-{
-	kgsl_mmu_remove_global(device, memdesc);
-	kgsl_sharedmem_free(memdesc);
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void kgsl_sharedmem_set_noretry(bool val);
 bool kgsl_sharedmem_get_noretry(void);

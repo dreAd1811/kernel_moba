@@ -16,10 +16,7 @@
 #include <linux/platform_device.h>
 
 #include <asm/mach/arch.h>
-<<<<<<< HEAD
 #include <asm/secure_cntvoff.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static const char * const sunxi_board_dt_compat[] = {
 	"allwinner,sun4i-a10",
@@ -66,15 +63,9 @@ MACHINE_END
 static const char * const sun8i_board_dt_compat[] = {
 	"allwinner,sun8i-a23",
 	"allwinner,sun8i-a33",
-<<<<<<< HEAD
 	"allwinner,sun8i-h2-plus",
 	"allwinner,sun8i-h3",
 	"allwinner,sun8i-r40",
-=======
-	"allwinner,sun8i-a83t",
-	"allwinner,sun8i-h2-plus",
-	"allwinner,sun8i-h3",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	"allwinner,sun8i-v3s",
 	NULL,
 };
@@ -84,7 +75,6 @@ DT_MACHINE_START(SUN8I_DT, "Allwinner sun8i Family")
 	.dt_compat	= sun8i_board_dt_compat,
 MACHINE_END
 
-<<<<<<< HEAD
 static void __init sun8i_a83t_cntvoff_init(void)
 {
 #ifdef CONFIG_SMP
@@ -103,8 +93,6 @@ DT_MACHINE_START(SUN8I_A83T_CNTVOFF_DT, "Allwinner A83t board")
 	.dt_compat	= sun8i_a83t_cntvoff_board_dt_compat,
 MACHINE_END
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const char * const sun9i_board_dt_compat[] = {
 	"allwinner,sun9i-a80",
 	NULL,

@@ -475,10 +475,7 @@ qcaspi_qca7k_sync(struct qcaspi *qca, int event)
 	u16 signature = 0;
 	u16 spi_config;
 	u16 wrbuf_space = 0;
-<<<<<<< HEAD
 	static u16 reset_count;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (event == QCASPI_EVENT_CPUON) {
 		/* Read signature twice, if not valid
@@ -531,7 +528,6 @@ qcaspi_qca7k_sync(struct qcaspi *qca, int event)
 
 		qca->sync = QCASPI_SYNC_RESET;
 		qca->stats.trig_reset++;
-<<<<<<< HEAD
 		reset_count = 0;
 		break;
 	case QCASPI_SYNC_RESET:
@@ -539,15 +535,6 @@ qcaspi_qca7k_sync(struct qcaspi *qca, int event)
 		netdev_dbg(qca->net_dev, "sync: waiting for CPU on, count %u.\n",
 			   reset_count);
 		if (reset_count >= QCASPI_RESET_TIMEOUT) {
-=======
-		qca->reset_count = 0;
-		break;
-	case QCASPI_SYNC_RESET:
-		qca->reset_count++;
-		netdev_dbg(qca->net_dev, "sync: waiting for CPU on, count %u.\n",
-			   qca->reset_count);
-		if (qca->reset_count >= QCASPI_RESET_TIMEOUT) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* reset did not seem to take place, try again */
 			qca->sync = QCASPI_SYNC_UNKNOWN;
 			qca->stats.reset_timeout++;
@@ -732,10 +719,6 @@ qcaspi_netdev_xmit(struct sk_buff *skb, struct net_device *dev)
 		tskb = skb_copy_expand(skb, QCAFRM_HEADER_LEN,
 				       QCAFRM_FOOTER_LEN + pad_len, GFP_ATOMIC);
 		if (!tskb) {
-<<<<<<< HEAD
-=======
-			netdev_dbg(qca->net_dev, "could not allocate tx_buff\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			qca->stats.out_of_mem++;
 			return NETDEV_TX_BUSY;
 		}

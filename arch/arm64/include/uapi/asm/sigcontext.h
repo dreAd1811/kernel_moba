@@ -18,11 +18,8 @@
 #define _UAPI__ASM_SIGCONTEXT_H
 
 #ifdef CONFIG_64BIT
-<<<<<<< HEAD
 #ifndef __ASSEMBLY__
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/types.h>
 
 /*
@@ -48,18 +45,11 @@ struct sigcontext {
  *
  *	0x210		fpsimd_context
  *	 0x10		esr_context
-<<<<<<< HEAD
  *	0x8a0		sve_context (vl <= 64) (optional)
  *	 0x20		extra_context (optional)
  *	 0x10		terminator (null _aarch64_ctx)
  *
  *	0x510		(reserved for future allocation)
-=======
- *	 0x20		extra_context (optional)
- *	 0x10		terminator (null _aarch64_ctx)
- *
- *	0xdb0		(reserved for future allocation)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * New records that can exceed this space need to be opt-in for userspace, so
  * that an expanded signal frame is not generated unexpectedly.  The mechanism
@@ -131,7 +121,6 @@ struct extra_context {
 	__u32 __reserved[3];
 };
 
-<<<<<<< HEAD
 #define SVE_MAGIC	0x53564501
 
 struct sve_context {
@@ -245,8 +234,6 @@ struct sve_context {
 	(SVE_SIG_FFR_OFFSET(vq) + SVE_SIG_FFR_SIZE(vq) - SVE_SIG_REGS_OFFSET)
 
 #define SVE_SIG_CONTEXT_SIZE(vq) (SVE_SIG_REGS_OFFSET + SVE_SIG_REGS_SIZE(vq))
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else /* CONFIG_64BIT */
 
 /*
@@ -278,8 +265,5 @@ struct sigcontext {
 	unsigned long fault_address;
 };
 #endif /* CONFIG_64BIT */
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* _UAPI__ASM_SIGCONTEXT_H */

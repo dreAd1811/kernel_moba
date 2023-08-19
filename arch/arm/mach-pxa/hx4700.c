@@ -38,11 +38,7 @@
 #include <linux/spi/spi.h>
 #include <linux/spi/pxa2xx_spi.h>
 #include <linux/usb/gpio_vbus.h>
-<<<<<<< HEAD
 #include <linux/platform_data/i2c-pxa.h>
-=======
-#include <linux/i2c/pxa-i2c.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <mach/hardware.h>
 #include <asm/mach-types.h>
@@ -58,10 +54,7 @@
 
 #include "devices.h"
 #include "generic.h"
-<<<<<<< HEAD
 #include "udc.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Physical address space information */
 
@@ -602,11 +595,8 @@ static struct platform_device gpio_vbus = {
 	},
 };
 
-<<<<<<< HEAD
 static struct pxa2xx_udc_mach_info hx4700_udc_info;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Touchscreen - TSC2046 connected to SSP2
  */
@@ -904,10 +894,7 @@ static void __init hx4700_init(void)
 	gpio_set_value(GPIO71_HX4700_ASIC3_nRESET, 1);
 	mdelay(10);
 
-<<<<<<< HEAD
 	pxa_set_udc_info(&hx4700_udc_info);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	regulator_has_full_constraints();
 }
 

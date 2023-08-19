@@ -38,14 +38,8 @@
 #include "nfp_net.h"
 #include "nfp_port.h"
 
-<<<<<<< HEAD
 int nfp_app_nic_vnic_init_phy_port(struct nfp_pf *pf, struct nfp_app *app,
 				   struct nfp_net *nn, unsigned int id)
-=======
-static int
-nfp_app_nic_vnic_init_phy_port(struct nfp_pf *pf, struct nfp_app *app,
-			       struct nfp_net *nn, unsigned int id)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int err;
 
@@ -74,11 +68,7 @@ int nfp_app_nic_vnic_alloc(struct nfp_app *app, struct nfp_net *nn,
 	if (err)
 		return err < 0 ? err : 0;
 
-<<<<<<< HEAD
 	nfp_net_get_mac_addr(app->pf, nn->dp.netdev, nn->port);
-=======
-	nfp_net_get_mac_addr(app->pf, nn->port);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

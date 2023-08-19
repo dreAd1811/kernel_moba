@@ -60,7 +60,6 @@ struct pmc_clk_init_data {
 
 static DEFINE_SPINLOCK(clk_out_lock);
 
-<<<<<<< HEAD
 static const char *clk_out1_parents[] = { "clk_m", "clk_m_div2",
 	"clk_m_div4", "extern1",
 };
@@ -71,18 +70,6 @@ static const char *clk_out2_parents[] = { "clk_m", "clk_m_div2",
 
 static const char *clk_out3_parents[] = { "clk_m", "clk_m_div2",
 	"clk_m_div4", "extern3",
-=======
-static const char *clk_out1_parents[] = { "osc", "osc_div2",
-	"osc_div4", "extern1",
-};
-
-static const char *clk_out2_parents[] = { "osc", "osc_div2",
-	"osc_div4", "extern2",
-};
-
-static const char *clk_out3_parents[] = { "osc", "osc_div2",
-	"osc_div4", "extern3",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct pmc_clk_init_data pmc_clks[] = {

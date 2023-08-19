@@ -29,12 +29,9 @@
 #include <linux/list.h>
 #include <linux/radix-tree.h>
 
-<<<<<<< HEAD
 #include "i915_gem.h"
 #include "i915_scheduler.h"
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct pid;
 
 struct drm_device;
@@ -43,16 +40,12 @@ struct drm_file;
 struct drm_i915_private;
 struct drm_i915_file_private;
 struct i915_hw_ppgtt;
-<<<<<<< HEAD
 struct i915_request;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct i915_vma;
 struct intel_ring;
 
 #define DEFAULT_CONTEXT_HANDLE 0
 
-<<<<<<< HEAD
 struct intel_context;
 
 struct intel_context_ops {
@@ -60,8 +53,6 @@ struct intel_context_ops {
 	void (*destroy)(struct intel_context *ce);
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * struct i915_gem_context - client state
  *
@@ -154,45 +145,22 @@ struct i915_gem_context {
 	 */
 	u32 user_handle;
 
-<<<<<<< HEAD
 	struct i915_sched_attr sched;
-=======
-	/**
-	 * @priority: execution and service priority
-	 *
-	 * All clients are equal, but some are more equal than others!
-	 *
-	 * Requests from a context with a greater (more positive) value of
-	 * @priority will be executed before those with a lower @priority
-	 * value, forming a simple QoS.
-	 *
-	 * The &drm_i915_private.kernel_context is assigned the lowest priority.
-	 */
-	int priority;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/** ggtt_offset_bias: placement restriction for context objects */
 	u32 ggtt_offset_bias;
 
 	/** engine: per-engine logical HW state */
 	struct intel_context {
-<<<<<<< HEAD
 		struct i915_gem_context *gem_context;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct i915_vma *state;
 		struct intel_ring *ring;
 		u32 *lrc_reg_state;
 		u64 lrc_desc;
 		int pin_count;
-<<<<<<< HEAD
 
 		const struct intel_context_ops *ops;
 	} __engine[I915_NUM_ENGINES];
-=======
-		bool initialised;
-	} engine[I915_NUM_ENGINES];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/** ring_size: size for allocating the per-engine ring buffer */
 	u32 ring_size;
@@ -215,15 +183,6 @@ struct i915_gem_context {
 	/** remap_slice: Bitmask of cache lines that need remapping */
 	u8 remap_slice;
 
-<<<<<<< HEAD
-=======
-	/** jump_whitelist: Bit array for tracking cmds during cmdparsing */
-	unsigned long *jump_whitelist;
-
-	/** jump_whitelist_cmds: No of cmd slots available */
-	u32 jump_whitelist_cmds;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/** handles_vma: rbtree to look up our context specific obj/vma for
 	 * the user handle. (user handles are per fd, but the binding is
 	 * per vm, which may be one per context or shared with the global GTT)
@@ -308,7 +267,6 @@ static inline bool i915_gem_context_is_kernel(struct i915_gem_context *ctx)
 	return !ctx->file_priv;
 }
 
-<<<<<<< HEAD
 static inline struct intel_context *
 to_intel_context(struct i915_gem_context *ctx,
 		 const struct intel_engine_cs *engine)
@@ -338,8 +296,6 @@ static inline void intel_context_unpin(struct intel_context *ce)
 	ce->ops->unpin(ce);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* i915_gem_context.c */
 int __must_check i915_gem_contexts_init(struct drm_i915_private *dev_priv);
 void i915_gem_contexts_lost(struct drm_i915_private *dev_priv);
@@ -349,11 +305,7 @@ int i915_gem_context_open(struct drm_i915_private *i915,
 			  struct drm_file *file);
 void i915_gem_context_close(struct drm_file *file);
 
-<<<<<<< HEAD
 int i915_switch_context(struct i915_request *rq);
-=======
-int i915_switch_context(struct drm_i915_gem_request *req);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int i915_gem_switch_to_kernel_context(struct drm_i915_private *dev_priv);
 
 void i915_gem_context_release(struct kref *ctx_ref);
@@ -371,12 +323,9 @@ int i915_gem_context_setparam_ioctl(struct drm_device *dev, void *data,
 int i915_gem_context_reset_stats_ioctl(struct drm_device *dev, void *data,
 				       struct drm_file *file);
 
-<<<<<<< HEAD
 struct i915_gem_context *
 i915_gem_context_create_kernel(struct drm_i915_private *i915, int prio);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline struct i915_gem_context *
 i915_gem_context_get(struct i915_gem_context *ctx)
 {

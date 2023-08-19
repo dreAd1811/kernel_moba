@@ -14,10 +14,6 @@
 #include "aq_vec.h"
 #include "aq_hw.h"
 #include "aq_pci_func.h"
-<<<<<<< HEAD
-=======
-#include "aq_nic_internal.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/moduleparam.h>
 #include <linux/netdevice.h>
@@ -40,22 +36,15 @@ static unsigned int aq_itr_rx;
 module_param_named(aq_itr_rx, aq_itr_rx, uint, 0644);
 MODULE_PARM_DESC(aq_itr_rx, "RX interrupt throttle rate");
 
-<<<<<<< HEAD
 static void aq_nic_update_ndev_stats(struct aq_nic_s *self);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void aq_nic_rss_init(struct aq_nic_s *self, unsigned int num_rss_queues)
 {
 	struct aq_nic_cfg_s *cfg = &self->aq_nic_cfg;
 	struct aq_rss_parameters *rss_params = &cfg->aq_rss;
 	int i = 0;
 
-<<<<<<< HEAD
 	static u8 rss_key[40] = {
-=======
-	static u8 rss_key[AQ_CFG_RSS_HASHKEY_SIZE] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		0x1e, 0xad, 0x71, 0x87, 0x65, 0xfc, 0x26, 0x7d,
 		0x0d, 0x45, 0x67, 0x74, 0xcd, 0x06, 0x1a, 0x18,
 		0xb6, 0xc1, 0xf0, 0xc7, 0xbb, 0x18, 0xbe, 0xf8,
@@ -71,7 +60,6 @@ static void aq_nic_rss_init(struct aq_nic_s *self, unsigned int num_rss_queues)
 		rss_params->indirection_table[i] = i & (num_rss_queues - 1);
 }
 
-<<<<<<< HEAD
 /* Checks hw_caps and 'corrects' aq_nic_cfg in runtime */
 void aq_nic_cfg_start(struct aq_nic_s *self)
 {
@@ -79,21 +67,6 @@ void aq_nic_cfg_start(struct aq_nic_s *self)
 
 	cfg->tcs = AQ_CFG_TCS_DEF;
 
-=======
-/* Fills aq_nic_cfg with valid defaults */
-static void aq_nic_cfg_init_defaults(struct aq_nic_s *self)
-{
-	struct aq_nic_cfg_s *cfg = &self->aq_nic_cfg;
-
-	cfg->aq_hw_caps = &self->aq_hw_caps;
-
-	cfg->vecs = AQ_CFG_VECS_DEF;
-	cfg->tcs = AQ_CFG_TCS_DEF;
-
-	cfg->rxds = AQ_CFG_RXDS_DEF;
-	cfg->txds = AQ_CFG_TXDS_DEF;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cfg->is_polling = AQ_CFG_IS_POLLING_DEF;
 
 	cfg->itr = aq_itr;
@@ -114,7 +87,6 @@ static void aq_nic_cfg_init_defaults(struct aq_nic_s *self)
 	cfg->vlan_id = 0U;
 
 	aq_nic_rss_init(self, cfg->num_rss_queues);
-<<<<<<< HEAD
 
 	/*descriptors */
 	cfg->rxds = min(cfg->aq_hw_caps->rxds_max, AQ_CFG_RXDS_DEF);
@@ -124,22 +96,6 @@ static void aq_nic_cfg_init_defaults(struct aq_nic_s *self)
 	cfg->vecs = min(cfg->aq_hw_caps->vecs, AQ_CFG_VECS_DEF);
 	cfg->vecs = min(cfg->vecs, num_online_cpus());
 	cfg->vecs = min(cfg->vecs, self->irqvecs);
-=======
-}
-
-/* Checks hw_caps and 'corrects' aq_nic_cfg in runtime */
-int aq_nic_cfg_start(struct aq_nic_s *self)
-{
-	struct aq_nic_cfg_s *cfg = &self->aq_nic_cfg;
-
-	/*descriptors */
-	cfg->rxds = min(cfg->rxds, cfg->aq_hw_caps->rxds);
-	cfg->txds = min(cfg->txds, cfg->aq_hw_caps->txds);
-
-	/*rss rings */
-	cfg->vecs = min(cfg->vecs, cfg->aq_hw_caps->vecs);
-	cfg->vecs = min(cfg->vecs, num_online_cpus());
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* cfg->vecs should be power of 2 for RSS */
 	if (cfg->vecs >= 8U)
 		cfg->vecs = 8U;
@@ -152,39 +108,22 @@ int aq_nic_cfg_start(struct aq_nic_s *self)
 
 	cfg->num_rss_queues = min(cfg->vecs, AQ_CFG_NUM_RSS_QUEUES_DEF);
 
-<<<<<<< HEAD
 	cfg->irq_type = aq_pci_func_get_irq_type(self);
 
 	if ((cfg->irq_type == AQ_HW_IRQ_LEGACY) ||
 	    (cfg->aq_hw_caps->vecs == 1U) ||
-=======
-	cfg->irq_type = aq_pci_func_get_irq_type(self->aq_pci_func);
-
-	if ((cfg->irq_type == AQ_HW_IRQ_LEGACY) ||
-	    (self->aq_hw_caps.vecs == 1U) ||
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    (cfg->vecs == 1U)) {
 		cfg->is_rss = 0U;
 		cfg->vecs = 1U;
 	}
 
-<<<<<<< HEAD
 	cfg->link_speed_msk &= cfg->aq_hw_caps->link_speed_msk;
 	cfg->hw_features = cfg->aq_hw_caps->hw_features;
-=======
-	cfg->link_speed_msk &= self->aq_hw_caps.link_speed_msk;
-	cfg->hw_features = self->aq_hw_caps.hw_features;
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int aq_nic_update_link_status(struct aq_nic_s *self)
 {
-<<<<<<< HEAD
 	int err = self->aq_fw_ops->update_link_status(self->aq_hw);
-=======
-	int err = self->aq_hw_ops.hw_get_link_status(self->aq_hw);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (err)
 		return err;
@@ -198,15 +137,9 @@ static int aq_nic_update_link_status(struct aq_nic_s *self)
 
 	self->link_status = self->aq_hw->aq_link_status;
 	if (!netif_carrier_ok(self->ndev) && self->link_status.mbps) {
-<<<<<<< HEAD
 		aq_utils_obj_set(&self->flags,
 				 AQ_NIC_FLAG_STARTED);
 		aq_utils_obj_clear(&self->flags,
-=======
-		aq_utils_obj_set(&self->header.flags,
-				 AQ_NIC_FLAG_STARTED);
-		aq_utils_obj_clear(&self->header.flags,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   AQ_NIC_LINK_DOWN);
 		netif_carrier_on(self->ndev);
 		netif_tx_wake_all_queues(self->ndev);
@@ -214,16 +147,11 @@ static int aq_nic_update_link_status(struct aq_nic_s *self)
 	if (netif_carrier_ok(self->ndev) && !self->link_status.mbps) {
 		netif_carrier_off(self->ndev);
 		netif_tx_disable(self->ndev);
-<<<<<<< HEAD
 		aq_utils_obj_set(&self->flags, AQ_NIC_LINK_DOWN);
-=======
-		aq_utils_obj_set(&self->header.flags, AQ_NIC_LINK_DOWN);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return 0;
 }
 
-<<<<<<< HEAD
 static void aq_nic_service_timer_cb(struct timer_list *t)
 {
 	struct aq_nic_s *self = from_timer(self, t, service_timer);
@@ -231,25 +159,12 @@ static void aq_nic_service_timer_cb(struct timer_list *t)
 	int err = 0;
 
 	if (aq_utils_obj_test(&self->flags, AQ_NIC_FLAGS_IS_NOT_READY))
-=======
-static void aq_nic_service_timer_cb(unsigned long param)
-{
-	struct aq_nic_s *self = (struct aq_nic_s *)param;
-	struct net_device *ndev = aq_nic_get_ndev(self);
-	int err = 0;
-	unsigned int i = 0U;
-	struct aq_ring_stats_rx_s stats_rx;
-	struct aq_ring_stats_tx_s stats_tx;
-
-	if (aq_utils_obj_test(&self->header.flags, AQ_NIC_FLAGS_IS_NOT_READY))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_exit;
 
 	err = aq_nic_update_link_status(self);
 	if (err)
 		goto err_exit;
 
-<<<<<<< HEAD
 	if (self->aq_fw_ops->update_stats)
 		self->aq_fw_ops->update_stats(self->aq_hw);
 
@@ -266,33 +181,6 @@ err_exit:
 static void aq_nic_polling_timer_cb(struct timer_list *t)
 {
 	struct aq_nic_s *self = from_timer(self, t, polling_timer);
-=======
-	if (self->aq_hw_ops.hw_update_stats)
-		self->aq_hw_ops.hw_update_stats(self->aq_hw);
-
-	memset(&stats_rx, 0U, sizeof(struct aq_ring_stats_rx_s));
-	memset(&stats_tx, 0U, sizeof(struct aq_ring_stats_tx_s));
-	for (i = AQ_DIMOF(self->aq_vec); i--;) {
-		if (self->aq_vec[i])
-			aq_vec_add_stats(self->aq_vec[i], &stats_rx, &stats_tx);
-	}
-
-	ndev->stats.rx_packets = stats_rx.packets;
-	ndev->stats.rx_bytes = stats_rx.bytes;
-	ndev->stats.rx_errors = stats_rx.errors;
-	ndev->stats.tx_packets = stats_tx.packets;
-	ndev->stats.tx_bytes = stats_tx.bytes;
-	ndev->stats.tx_errors = stats_tx.errors;
-
-err_exit:
-	mod_timer(&self->service_timer,
-		  jiffies + AQ_CFG_SERVICE_TIMER_INTERVAL);
-}
-
-static void aq_nic_polling_timer_cb(unsigned long param)
-{
-	struct aq_nic_s *self = (struct aq_nic_s *)param;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct aq_vec_s *aq_vec = NULL;
 	unsigned int i = 0U;
 
@@ -304,63 +192,6 @@ static void aq_nic_polling_timer_cb(unsigned long param)
 		AQ_CFG_POLLING_TIMER_INTERVAL);
 }
 
-<<<<<<< HEAD
-=======
-static struct net_device *aq_nic_ndev_alloc(void)
-{
-	return alloc_etherdev_mq(sizeof(struct aq_nic_s), AQ_CFG_VECS_MAX);
-}
-
-struct aq_nic_s *aq_nic_alloc_cold(const struct net_device_ops *ndev_ops,
-				   const struct ethtool_ops *et_ops,
-				   struct pci_dev *pdev,
-				   struct aq_pci_func_s *aq_pci_func,
-				   unsigned int port,
-				   const struct aq_hw_ops *aq_hw_ops)
-{
-	struct net_device *ndev = NULL;
-	struct aq_nic_s *self = NULL;
-	int err = 0;
-
-	ndev = aq_nic_ndev_alloc();
-	if (!ndev) {
-		err = -ENOMEM;
-		goto err_exit;
-	}
-
-	self = netdev_priv(ndev);
-
-	ndev->netdev_ops = ndev_ops;
-	ndev->ethtool_ops = et_ops;
-
-	SET_NETDEV_DEV(ndev, &pdev->dev);
-
-	ndev->if_port = port;
-	self->ndev = ndev;
-
-	self->aq_pci_func = aq_pci_func;
-
-	self->aq_hw_ops = *aq_hw_ops;
-	self->port = (u8)port;
-
-	self->aq_hw = self->aq_hw_ops.create(aq_pci_func, self->port,
-						&self->aq_hw_ops);
-	err = self->aq_hw_ops.get_hw_caps(self->aq_hw, &self->aq_hw_caps,
-					  pdev->device, pdev->subsystem_device);
-	if (err < 0)
-		goto err_exit;
-
-	aq_nic_cfg_init_defaults(self);
-
-err_exit:
-	if (err < 0) {
-		aq_nic_free_hot_resources(self);
-		self = NULL;
-	}
-	return self;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int aq_nic_ndev_register(struct aq_nic_s *self)
 {
 	int err = 0;
@@ -369,7 +200,6 @@ int aq_nic_ndev_register(struct aq_nic_s *self)
 		err = -EINVAL;
 		goto err_exit;
 	}
-<<<<<<< HEAD
 
 	err = hw_atl_utils_initfw(self->aq_hw, &self->aq_fw_ops);
 	if (err)
@@ -378,12 +208,6 @@ int aq_nic_ndev_register(struct aq_nic_s *self)
 	err = self->aq_fw_ops->get_mac_permanent(self->aq_hw,
 			    self->ndev->dev_addr);
 	if (err)
-=======
-	err = self->aq_hw_ops.hw_get_mac_permanent(self->aq_hw,
-			    self->aq_nic_cfg.aq_hw_caps,
-			    self->ndev->dev_addr);
-	if (err < 0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_exit;
 
 #if defined(AQ_CFG_MAC_ADDR_PERMANENT)
@@ -394,7 +218,6 @@ int aq_nic_ndev_register(struct aq_nic_s *self)
 	}
 #endif
 
-<<<<<<< HEAD
 	for (self->aq_vecs = 0; self->aq_vecs < aq_nic_get_cfg(self)->vecs;
 	     self->aq_vecs++) {
 		self->aq_vec[self->aq_vecs] =
@@ -405,33 +228,21 @@ int aq_nic_ndev_register(struct aq_nic_s *self)
 		}
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	netif_carrier_off(self->ndev);
 
 	netif_tx_disable(self->ndev);
 
 	err = register_netdev(self->ndev);
-<<<<<<< HEAD
 	if (err)
-=======
-	if (err < 0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_exit;
 
 err_exit:
 	return err;
 }
 
-<<<<<<< HEAD
 void aq_nic_ndev_init(struct aq_nic_s *self)
 {
 	const struct aq_hw_caps_s *aq_hw_caps = self->aq_nic_cfg.aq_hw_caps;
-=======
-int aq_nic_ndev_init(struct aq_nic_s *self)
-{
-	struct aq_hw_caps_s *aq_hw_caps = self->aq_nic_cfg.aq_hw_caps;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct aq_nic_cfg_s *aq_nic_cfg = &self->aq_nic_cfg;
 
 	self->ndev->hw_features |= aq_hw_caps->hw_features;
@@ -439,71 +250,11 @@ int aq_nic_ndev_init(struct aq_nic_s *self)
 	self->ndev->vlan_features |= NETIF_F_HW_CSUM | NETIF_F_RXCSUM |
 				     NETIF_F_RXHASH | NETIF_F_SG | NETIF_F_LRO;
 	self->ndev->priv_flags = aq_hw_caps->hw_priv_flags;
-<<<<<<< HEAD
 	self->ndev->priv_flags |= IFF_LIVE_ADDR_CHANGE;
 
 	self->ndev->mtu = aq_nic_cfg->mtu - ETH_HLEN;
 	self->ndev->max_mtu = aq_hw_caps->mtu - ETH_FCS_LEN - ETH_HLEN;
 
-=======
-	self->ndev->mtu = aq_nic_cfg->mtu - ETH_HLEN;
-	self->ndev->max_mtu = self->aq_hw_caps.mtu - ETH_FCS_LEN - ETH_HLEN;
-
-	return 0;
-}
-
-void aq_nic_ndev_free(struct aq_nic_s *self)
-{
-	if (!self->ndev)
-		goto err_exit;
-
-	if (self->ndev->reg_state == NETREG_REGISTERED)
-		unregister_netdev(self->ndev);
-
-	if (self->aq_hw)
-		self->aq_hw_ops.destroy(self->aq_hw);
-
-	free_netdev(self->ndev);
-
-err_exit:;
-}
-
-struct aq_nic_s *aq_nic_alloc_hot(struct net_device *ndev)
-{
-	struct aq_nic_s *self = NULL;
-	int err = 0;
-
-	if (!ndev) {
-		err = -EINVAL;
-		goto err_exit;
-	}
-	self = netdev_priv(ndev);
-
-	if (!self) {
-		err = -EINVAL;
-		goto err_exit;
-	}
-	if (netif_running(ndev))
-		netif_tx_disable(ndev);
-	netif_carrier_off(self->ndev);
-
-	for (self->aq_vecs = 0; self->aq_vecs < self->aq_nic_cfg.vecs;
-		self->aq_vecs++) {
-		self->aq_vec[self->aq_vecs] =
-		    aq_vec_alloc(self, self->aq_vecs, &self->aq_nic_cfg);
-		if (!self->aq_vec[self->aq_vecs]) {
-			err = -ENOMEM;
-			goto err_exit;
-		}
-	}
-
-err_exit:
-	if (err < 0) {
-		aq_nic_free_hot_resources(self);
-		self = NULL;
-	}
-	return self;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void aq_nic_set_tx_ring(struct aq_nic_s *self, unsigned int idx,
@@ -512,14 +263,6 @@ void aq_nic_set_tx_ring(struct aq_nic_s *self, unsigned int idx,
 	self->aq_ring_tx[idx] = ring;
 }
 
-<<<<<<< HEAD
-=======
-struct device *aq_nic_get_dev(struct aq_nic_s *self)
-{
-	return self->ndev->dev.parent;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct net_device *aq_nic_get_ndev(struct aq_nic_s *self)
 {
 	return self->ndev;
@@ -532,33 +275,20 @@ int aq_nic_init(struct aq_nic_s *self)
 	unsigned int i = 0U;
 
 	self->power_state = AQ_HW_POWER_STATE_D0;
-<<<<<<< HEAD
 	err = self->aq_hw_ops->hw_reset(self->aq_hw);
 	if (err < 0)
 		goto err_exit;
 
 	err = self->aq_hw_ops->hw_init(self->aq_hw,
 				       aq_nic_get_ndev(self)->dev_addr);
-=======
-	err = self->aq_hw_ops.hw_reset(self->aq_hw);
-	if (err < 0)
-		goto err_exit;
-
-	err = self->aq_hw_ops.hw_init(self->aq_hw, &self->aq_nic_cfg,
-			    aq_nic_get_ndev(self)->dev_addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err < 0)
 		goto err_exit;
 
 	for (i = 0U, aq_vec = self->aq_vec[0];
 		self->aq_vecs > i; ++i, aq_vec = self->aq_vec[i])
-<<<<<<< HEAD
 		aq_vec_init(aq_vec, self->aq_hw_ops, self->aq_hw);
 
 	netif_carrier_off(self->ndev);
-=======
-		aq_vec_init(aq_vec, &self->aq_hw_ops, self->aq_hw);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 err_exit:
 	return err;
@@ -570,21 +300,13 @@ int aq_nic_start(struct aq_nic_s *self)
 	int err = 0;
 	unsigned int i = 0U;
 
-<<<<<<< HEAD
 	err = self->aq_hw_ops->hw_multicast_list_set(self->aq_hw,
-=======
-	err = self->aq_hw_ops.hw_multicast_list_set(self->aq_hw,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						    self->mc_list.ar,
 						    self->mc_list.count);
 	if (err < 0)
 		goto err_exit;
 
-<<<<<<< HEAD
 	err = self->aq_hw_ops->hw_packet_filter_set(self->aq_hw,
-=======
-	err = self->aq_hw_ops.hw_packet_filter_set(self->aq_hw,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						   self->packet_filter);
 	if (err < 0)
 		goto err_exit;
@@ -596,56 +318,32 @@ int aq_nic_start(struct aq_nic_s *self)
 			goto err_exit;
 	}
 
-<<<<<<< HEAD
 	err = self->aq_hw_ops->hw_start(self->aq_hw);
-=======
-	err = self->aq_hw_ops.hw_start(self->aq_hw);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err < 0)
 		goto err_exit;
 
 	err = aq_nic_update_interrupt_moderation_settings(self);
 	if (err)
 		goto err_exit;
-<<<<<<< HEAD
 	timer_setup(&self->service_timer, aq_nic_service_timer_cb, 0);
-=======
-	setup_timer(&self->service_timer, &aq_nic_service_timer_cb,
-		    (unsigned long)self);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mod_timer(&self->service_timer, jiffies +
 			AQ_CFG_SERVICE_TIMER_INTERVAL);
 
 	if (self->aq_nic_cfg.is_polling) {
-<<<<<<< HEAD
 		timer_setup(&self->polling_timer, aq_nic_polling_timer_cb, 0);
-=======
-		setup_timer(&self->polling_timer, &aq_nic_polling_timer_cb,
-			    (unsigned long)self);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mod_timer(&self->polling_timer, jiffies +
 			  AQ_CFG_POLLING_TIMER_INTERVAL);
 	} else {
 		for (i = 0U, aq_vec = self->aq_vec[0];
 			self->aq_vecs > i; ++i, aq_vec = self->aq_vec[i]) {
-<<<<<<< HEAD
 			err = aq_pci_func_alloc_irq(self, i,
 						    self->ndev->name, aq_vec,
 						    aq_vec_get_affinity_mask(aq_vec));
-=======
-			err = aq_pci_func_alloc_irq(self->aq_pci_func, i,
-						    self->ndev->name, aq_vec,
-					aq_vec_get_affinity_mask(aq_vec));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (err < 0)
 				goto err_exit;
 		}
 
-<<<<<<< HEAD
 		err = self->aq_hw_ops->hw_irq_enable(self->aq_hw,
-=======
-		err = self->aq_hw_ops.hw_irq_enable(self->aq_hw,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    AQ_CFG_IRQ_MASK);
 		if (err < 0)
 			goto err_exit;
@@ -701,15 +399,8 @@ static unsigned int aq_nic_map_skb(struct aq_nic_s *self,
 				     dx_buff->len,
 				     DMA_TO_DEVICE);
 
-<<<<<<< HEAD
 	if (unlikely(dma_mapping_error(aq_nic_get_dev(self), dx_buff->pa)))
 		goto exit;
-=======
-	if (unlikely(dma_mapping_error(aq_nic_get_dev(self), dx_buff->pa))) {
-		ret = 0;
-		goto exit;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	first = dx_buff;
 	dx_buff->len_pkt = skb->len;
@@ -837,14 +528,8 @@ int aq_nic_xmit(struct aq_nic_s *self, struct sk_buff *skb)
 	frags = aq_nic_map_skb(self, skb, ring);
 
 	if (likely(frags)) {
-<<<<<<< HEAD
 		err = self->aq_hw_ops->hw_ring_tx_xmit(self->aq_hw,
 						       ring, frags);
-=======
-		err = self->aq_hw_ops.hw_ring_tx_xmit(self->aq_hw,
-						      ring,
-						      frags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (err >= 0) {
 			++ring->stats.tx.packets;
 			ring->stats.tx.bytes += skb->len;
@@ -859,22 +544,14 @@ err_exit:
 
 int aq_nic_update_interrupt_moderation_settings(struct aq_nic_s *self)
 {
-<<<<<<< HEAD
 	return self->aq_hw_ops->hw_interrupt_moderation_set(self->aq_hw);
-=======
-	return self->aq_hw_ops.hw_interrupt_moderation_set(self->aq_hw);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int aq_nic_set_packet_filter(struct aq_nic_s *self, unsigned int flags)
 {
 	int err = 0;
 
-<<<<<<< HEAD
 	err = self->aq_hw_ops->hw_packet_filter_set(self->aq_hw, flags);
-=======
-	err = self->aq_hw_ops.hw_packet_filter_set(self->aq_hw, flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err < 0)
 		goto err_exit;
 
@@ -886,7 +563,6 @@ err_exit:
 
 int aq_nic_set_multicast_list(struct aq_nic_s *self, struct net_device *ndev)
 {
-<<<<<<< HEAD
 	unsigned int packet_filter = self->packet_filter;
 	struct netdev_hw_addr *ha = NULL;
 	unsigned int i = 0U;
@@ -922,36 +598,6 @@ int aq_nic_set_multicast_list(struct aq_nic_s *self, struct net_device *ndev)
 						       self->mc_list.count);
 	}
 	return aq_nic_set_packet_filter(self, packet_filter);
-=======
-	struct netdev_hw_addr *ha = NULL;
-	unsigned int i = 0U;
-
-	self->mc_list.count = 0U;
-
-	netdev_for_each_mc_addr(ha, ndev) {
-		ether_addr_copy(self->mc_list.ar[i++], ha->addr);
-		++self->mc_list.count;
-
-		if (i >= AQ_CFG_MULTICAST_ADDRESS_MAX)
-			break;
-	}
-
-	if (i >= AQ_CFG_MULTICAST_ADDRESS_MAX) {
-		/* Number of filters is too big: atlantic does not support this.
-		 * Force all multi filter to support this.
-		 * With this we disable all UC filters and setup "all pass"
-		 * multicast mask
-		 */
-		self->packet_filter |= IFF_ALLMULTI;
-		self->aq_hw->aq_nic_cfg->mc_list_count = 0;
-		return self->aq_hw_ops.hw_packet_filter_set(self->aq_hw,
-							self->packet_filter);
-	} else {
-		return self->aq_hw_ops.hw_multicast_list_set(self->aq_hw,
-						    self->mc_list.ar,
-						    self->mc_list.count);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int aq_nic_set_mtu(struct aq_nic_s *self, int new_mtu)
@@ -963,11 +609,7 @@ int aq_nic_set_mtu(struct aq_nic_s *self, int new_mtu)
 
 int aq_nic_set_mac(struct aq_nic_s *self, struct net_device *ndev)
 {
-<<<<<<< HEAD
 	return self->aq_hw_ops->hw_set_mac_address(self->aq_hw, ndev->dev_addr);
-=======
-	return self->aq_hw_ops.hw_set_mac_address(self->aq_hw, ndev->dev_addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 unsigned int aq_nic_get_link_speed(struct aq_nic_s *self)
@@ -982,14 +624,9 @@ int aq_nic_get_regs(struct aq_nic_s *self, struct ethtool_regs *regs, void *p)
 
 	regs->version = 1;
 
-<<<<<<< HEAD
 	err = self->aq_hw_ops->hw_get_regs(self->aq_hw,
 					   self->aq_nic_cfg.aq_hw_caps,
 					   regs_buff);
-=======
-	err = self->aq_hw_ops.hw_get_regs(self->aq_hw,
-					  &self->aq_hw_caps, regs_buff);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err < 0)
 		goto err_exit;
 
@@ -999,16 +636,11 @@ err_exit:
 
 int aq_nic_get_regs_count(struct aq_nic_s *self)
 {
-<<<<<<< HEAD
 	return self->aq_nic_cfg.aq_hw_caps->mac_regs_count;
-=======
-	return self->aq_hw_caps.mac_regs_count;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void aq_nic_get_stats(struct aq_nic_s *self, u64 *data)
 {
-<<<<<<< HEAD
 	unsigned int i = 0U;
 	unsigned int count = 0U;
 	struct aq_vec_s *aq_vec = NULL;
@@ -1043,19 +675,6 @@ void aq_nic_get_stats(struct aq_nic_s *self, u64 *data)
 	i++;
 
 	data += i;
-=======
-	struct aq_vec_s *aq_vec = NULL;
-	unsigned int i = 0U;
-	unsigned int count = 0U;
-	int err = 0;
-
-	err = self->aq_hw_ops.hw_get_hw_stats(self->aq_hw, data, &count);
-	if (err < 0)
-		goto err_exit;
-
-	data += count;
-	count = 0U;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0U, aq_vec = self->aq_vec[0];
 		aq_vec && self->aq_vecs > i; ++i, aq_vec = self->aq_vec[i]) {
@@ -1064,7 +683,6 @@ void aq_nic_get_stats(struct aq_nic_s *self, u64 *data)
 	}
 
 err_exit:;
-<<<<<<< HEAD
 }
 
 static void aq_nic_update_ndev_stats(struct aq_nic_s *self)
@@ -1079,29 +697,21 @@ static void aq_nic_update_ndev_stats(struct aq_nic_s *self)
 	ndev->stats.tx_bytes = stats->ubtc + stats->mbtc + stats->bbtc;
 	ndev->stats.tx_errors = stats->erpt;
 	ndev->stats.multicast = stats->mprc;
-=======
-	(void)err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void aq_nic_get_link_ksettings(struct aq_nic_s *self,
 			       struct ethtool_link_ksettings *cmd)
 {
-<<<<<<< HEAD
 	if (self->aq_nic_cfg.aq_hw_caps->media_type == AQ_HW_MEDIA_TYPE_FIBRE)
 		cmd->base.port = PORT_FIBRE;
 	else
 		cmd->base.port = PORT_TP;
-=======
-	cmd->base.port = PORT_TP;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* This driver supports only 10G capable adapters, so DUPLEX_FULL */
 	cmd->base.duplex = DUPLEX_FULL;
 	cmd->base.autoneg = self->aq_nic_cfg.is_autoneg;
 
 	ethtool_link_ksettings_zero_link_mode(cmd, supported);
 
-<<<<<<< HEAD
 	if (self->aq_nic_cfg.aq_hw_caps->link_speed_msk & AQ_NIC_RATE_10G)
 		ethtool_link_ksettings_add_link_mode(cmd, supported,
 						     10000baseT_Full);
@@ -1123,42 +733,15 @@ void aq_nic_get_link_ksettings(struct aq_nic_s *self,
 						     100baseT_Full);
 
 	if (self->aq_nic_cfg.aq_hw_caps->flow_control)
-=======
-	if (self->aq_hw_caps.link_speed_msk & AQ_NIC_RATE_10G)
-		ethtool_link_ksettings_add_link_mode(cmd, supported,
-						     10000baseT_Full);
-
-	if (self->aq_hw_caps.link_speed_msk & AQ_NIC_RATE_5G)
-		ethtool_link_ksettings_add_link_mode(cmd, supported,
-						     5000baseT_Full);
-
-	if (self->aq_hw_caps.link_speed_msk & AQ_NIC_RATE_2GS)
-		ethtool_link_ksettings_add_link_mode(cmd, supported,
-						     2500baseT_Full);
-
-	if (self->aq_hw_caps.link_speed_msk & AQ_NIC_RATE_1G)
-		ethtool_link_ksettings_add_link_mode(cmd, supported,
-						     1000baseT_Full);
-
-	if (self->aq_hw_caps.link_speed_msk & AQ_NIC_RATE_100M)
-		ethtool_link_ksettings_add_link_mode(cmd, supported,
-						     100baseT_Full);
-
-	if (self->aq_hw_caps.flow_control)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ethtool_link_ksettings_add_link_mode(cmd, supported,
 						     Pause);
 
 	ethtool_link_ksettings_add_link_mode(cmd, supported, Autoneg);
-<<<<<<< HEAD
 
 	if (self->aq_nic_cfg.aq_hw_caps->media_type == AQ_HW_MEDIA_TYPE_FIBRE)
 		ethtool_link_ksettings_add_link_mode(cmd, supported, FIBRE);
 	else
 		ethtool_link_ksettings_add_link_mode(cmd, supported, TP);
-=======
-	ethtool_link_ksettings_add_link_mode(cmd, supported, TP);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ethtool_link_ksettings_zero_link_mode(cmd, advertising);
 
@@ -1185,7 +768,6 @@ void aq_nic_get_link_ksettings(struct aq_nic_s *self,
 		ethtool_link_ksettings_add_link_mode(cmd, advertising,
 						     100baseT_Full);
 
-<<<<<<< HEAD
 	if (self->aq_nic_cfg.flow_control & AQ_NIC_FC_RX)
 		ethtool_link_ksettings_add_link_mode(cmd, advertising,
 						     Pause);
@@ -1198,13 +780,6 @@ void aq_nic_get_link_ksettings(struct aq_nic_s *self,
 		ethtool_link_ksettings_add_link_mode(cmd, advertising, FIBRE);
 	else
 		ethtool_link_ksettings_add_link_mode(cmd, advertising, TP);
-=======
-	if (self->aq_nic_cfg.flow_control)
-		ethtool_link_ksettings_add_link_mode(cmd, advertising,
-						     Pause);
-
-	ethtool_link_ksettings_add_link_mode(cmd, advertising, TP);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int aq_nic_set_link_ksettings(struct aq_nic_s *self,
@@ -1215,11 +790,7 @@ int aq_nic_set_link_ksettings(struct aq_nic_s *self,
 	int err = 0;
 
 	if (cmd->base.autoneg == AUTONEG_ENABLE) {
-<<<<<<< HEAD
 		rate = self->aq_nic_cfg.aq_hw_caps->link_speed_msk;
-=======
-		rate = self->aq_hw_caps.link_speed_msk;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		self->aq_nic_cfg.is_autoneg = true;
 	} else {
 		speed = cmd->base.speed;
@@ -1250,11 +821,7 @@ int aq_nic_set_link_ksettings(struct aq_nic_s *self,
 			goto err_exit;
 		break;
 		}
-<<<<<<< HEAD
 		if (!(self->aq_nic_cfg.aq_hw_caps->link_speed_msk & rate)) {
-=======
-		if (!(self->aq_hw_caps.link_speed_msk & rate)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			err = -1;
 			goto err_exit;
 		}
@@ -1262,11 +829,7 @@ int aq_nic_set_link_ksettings(struct aq_nic_s *self,
 		self->aq_nic_cfg.is_autoneg = false;
 	}
 
-<<<<<<< HEAD
 	err = self->aq_fw_ops->set_link_speed(self->aq_hw, rate);
-=======
-	err = self->aq_hw_ops.hw_set_link_speed(self->aq_hw, rate);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err < 0)
 		goto err_exit;
 
@@ -1285,11 +848,7 @@ u32 aq_nic_get_fw_version(struct aq_nic_s *self)
 {
 	u32 fw_version = 0U;
 
-<<<<<<< HEAD
 	self->aq_hw_ops->hw_get_fw_version(self->aq_hw, &fw_version);
-=======
-	self->aq_hw_ops.hw_get_fw_version(self->aq_hw, &fw_version);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return fw_version;
 }
@@ -1304,30 +863,18 @@ int aq_nic_stop(struct aq_nic_s *self)
 
 	del_timer_sync(&self->service_timer);
 
-<<<<<<< HEAD
 	self->aq_hw_ops->hw_irq_disable(self->aq_hw, AQ_CFG_IRQ_MASK);
-=======
-	self->aq_hw_ops.hw_irq_disable(self->aq_hw, AQ_CFG_IRQ_MASK);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (self->aq_nic_cfg.is_polling)
 		del_timer_sync(&self->polling_timer);
 	else
-<<<<<<< HEAD
 		aq_pci_func_free_irqs(self);
-=======
-		aq_pci_func_free_irqs(self->aq_pci_func);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0U, aq_vec = self->aq_vec[0];
 		self->aq_vecs > i; ++i, aq_vec = self->aq_vec[i])
 		aq_vec_stop(aq_vec);
 
-<<<<<<< HEAD
 	return self->aq_hw_ops->hw_stop(self->aq_hw);
-=======
-	return self->aq_hw_ops.hw_stop(self->aq_hw);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void aq_nic_deinit(struct aq_nic_s *self)
@@ -1343,37 +890,23 @@ void aq_nic_deinit(struct aq_nic_s *self)
 		aq_vec_deinit(aq_vec);
 
 	if (self->power_state == AQ_HW_POWER_STATE_D0) {
-<<<<<<< HEAD
 		(void)self->aq_fw_ops->deinit(self->aq_hw);
 	} else {
 		(void)self->aq_hw_ops->hw_set_power(self->aq_hw,
-=======
-		(void)self->aq_hw_ops.hw_deinit(self->aq_hw);
-	} else {
-		(void)self->aq_hw_ops.hw_set_power(self->aq_hw,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						   self->power_state);
 	}
 
 err_exit:;
 }
 
-<<<<<<< HEAD
 void aq_nic_free_vectors(struct aq_nic_s *self)
-=======
-void aq_nic_free_hot_resources(struct aq_nic_s *self)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned int i = 0U;
 
 	if (!self)
 		goto err_exit;
 
-<<<<<<< HEAD
 	for (i = ARRAY_SIZE(self->aq_vec); i--;) {
-=======
-	for (i = AQ_DIMOF(self->aq_vec); i--;) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (self->aq_vec[i]) {
 			aq_vec_free(self->aq_vec[i]);
 			self->aq_vec[i] = NULL;
@@ -1420,7 +953,6 @@ err_exit:
 out:
 	return err;
 }
-<<<<<<< HEAD
 
 void aq_nic_shutdown(struct aq_nic_s *self)
 {
@@ -1443,5 +975,3 @@ void aq_nic_shutdown(struct aq_nic_s *self)
 err_exit:
 	rtnl_unlock();
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

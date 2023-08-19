@@ -75,13 +75,8 @@ static void reg_r(struct gspca_dev *gspca_dev,
 			index,
 			gspca_dev->usb_buf, len,
 			500);
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_USBI, "GET %02x 0000 %04x %02x\n", req, index,
 		  gspca_dev->usb_buf[0]);
-=======
-	PDEBUG(D_USBI, "GET %02x 0000 %04x %02x", req, index,
-			 gspca_dev->usb_buf[0]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0) {
 		pr_err("reg_r err %d\n", ret);
 		gspca_dev->usb_err = ret;
@@ -103,11 +98,7 @@ static void reg_w(struct gspca_dev *gspca_dev,
 
 	if (gspca_dev->usb_err < 0)
 		return;
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_USBO, "SET %02x %04x %04x\n", req, value, index);
-=======
-	PDEBUG(D_USBO, "SET %02x %04x %04x", req, value, index);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = usb_control_msg(dev, usb_sndctrlpipe(dev, 0),
 			req,
 			USB_DIR_OUT | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
@@ -130,12 +121,8 @@ static void reg_wb(struct gspca_dev *gspca_dev,
 
 	if (gspca_dev->usb_err < 0)
 		return;
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_USBO, "SET %02x %04x %04x %02x\n",
 		  req, value, index, byte);
-=======
-	PDEBUG(D_USBO, "SET %02x %04x %04x %02x", req, value, index, byte);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gspca_dev->usb_buf[0] = byte;
 	ret = usb_control_msg(dev, usb_sndctrlpipe(dev, 0),
 			req,
@@ -161,11 +148,7 @@ static void wait_status_0(struct gspca_dev *gspca_dev)
 		w += 15;
 		msleep(w);
 	} while (--i > 0);
-<<<<<<< HEAD
 	gspca_err(gspca_dev, "wait_status_0 timeout\n");
-=======
-	PERR("wait_status_0 timeout");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gspca_dev->usb_err = -ETIME;
 }
 
@@ -183,11 +166,7 @@ static void wait_status_1(struct gspca_dev *gspca_dev)
 			return;
 		}
 	} while (--i > 0);
-<<<<<<< HEAD
 	gspca_err(gspca_dev, "wait_status_1 timeout\n");
-=======
-	PERR("wait_status_1 timeout");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gspca_dev->usb_err = -ETIME;
 }
 
@@ -243,13 +222,8 @@ static int sd_init(struct gspca_dev *gspca_dev)
 	reg_r(gspca_dev, 0x20, 0x0000, 1);
 	reg_r(gspca_dev, 0x20, 0x0000, 5);
 	reg_r(gspca_dev, 0x23, 0x0000, 64);
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_PROBE, "%s%s\n", &gspca_dev->usb_buf[0x1c],
 		  &gspca_dev->usb_buf[0x30]);
-=======
-	PDEBUG(D_PROBE, "%s%s", &gspca_dev->usb_buf[0x1c],
-				&gspca_dev->usb_buf[0x30]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	reg_r(gspca_dev, 0x23, 0x0001, 64);
 	return gspca_dev->usb_err;
 }

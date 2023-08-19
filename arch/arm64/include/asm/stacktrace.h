@@ -22,10 +22,7 @@
 
 #include <asm/memory.h>
 #include <asm/ptrace.h>
-<<<<<<< HEAD
 #include <asm/sdei.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct stackframe {
 	unsigned long fp;
@@ -35,7 +32,6 @@ struct stackframe {
 #endif
 };
 
-<<<<<<< HEAD
 enum stack_type {
 	STACK_TYPE_UNKNOWN,
 	STACK_TYPE_TASK,
@@ -51,8 +47,6 @@ struct stack_info {
 	enum stack_type type;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern int unwind_frame(struct task_struct *tsk, struct stackframe *frame);
 extern void walk_stackframe(struct task_struct *tsk, struct stackframe *frame,
 			    int (*fn)(struct stackframe *, void *), void *data);
@@ -60,16 +54,8 @@ extern void dump_backtrace(struct pt_regs *regs, struct task_struct *tsk);
 
 DECLARE_PER_CPU(unsigned long *, irq_stack_ptr);
 
-<<<<<<< HEAD
 static inline bool on_irq_stack(unsigned long sp,
 				struct stack_info *info)
-=======
-#ifdef CONFIG_SHADOW_CALL_STACK
-DECLARE_PER_CPU(unsigned long *, irq_shadow_call_stack_ptr);
-#endif
-
-static inline bool on_irq_stack(unsigned long sp)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long low = (unsigned long)raw_cpu_read(irq_stack_ptr);
 	unsigned long high = low + IRQ_STACK_SIZE;
@@ -77,7 +63,6 @@ static inline bool on_irq_stack(unsigned long sp)
 	if (!low)
 		return false;
 
-<<<<<<< HEAD
 	if (sp < low || sp >= high)
 		return false;
 
@@ -92,17 +77,10 @@ static inline bool on_irq_stack(unsigned long sp)
 
 static inline bool on_task_stack(struct task_struct *tsk, unsigned long sp,
 				struct stack_info *info)
-=======
-	return (low <= sp && sp < high);
-}
-
-static inline bool on_task_stack(struct task_struct *tsk, unsigned long sp)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long low = (unsigned long)task_stack_page(tsk);
 	unsigned long high = low + THREAD_SIZE;
 
-<<<<<<< HEAD
 	if (sp < low || sp >= high)
 		return false;
 
@@ -113,25 +91,17 @@ static inline bool on_task_stack(struct task_struct *tsk, unsigned long sp)
 	}
 
 	return true;
-=======
-	return (low <= sp && sp < high);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #ifdef CONFIG_VMAP_STACK
 DECLARE_PER_CPU(unsigned long [OVERFLOW_STACK_SIZE/sizeof(long)], overflow_stack);
 
-<<<<<<< HEAD
 static inline bool on_overflow_stack(unsigned long sp,
 				struct stack_info *info)
-=======
-static inline bool on_overflow_stack(unsigned long sp)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long low = (unsigned long)raw_cpu_ptr(overflow_stack);
 	unsigned long high = low + OVERFLOW_STACK_SIZE;
 
-<<<<<<< HEAD
 	if (sp < low || sp >= high)
 		return false;
 
@@ -149,19 +119,10 @@ static inline bool on_overflow_stack(unsigned long sp,
 #endif
 
 
-=======
-	return (low <= sp && sp < high);
-}
-#else
-static inline bool on_overflow_stack(unsigned long sp) { return false; }
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * We can only safely access per-cpu stacks from current in a non-preemptible
  * context.
  */
-<<<<<<< HEAD
 static inline bool on_accessible_stack(struct task_struct *tsk,
 					unsigned long sp,
 					struct stack_info *info)
@@ -175,17 +136,6 @@ static inline bool on_accessible_stack(struct task_struct *tsk,
 	if (on_overflow_stack(sp, info))
 		return true;
 	if (on_sdei_stack(sp, info))
-=======
-static inline bool on_accessible_stack(struct task_struct *tsk, unsigned long sp)
-{
-	if (on_task_stack(tsk, sp))
-		return true;
-	if (tsk != current || preemptible())
-		return false;
-	if (on_irq_stack(sp))
-		return true;
-	if (on_overflow_stack(sp))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return true;
 
 	return false;

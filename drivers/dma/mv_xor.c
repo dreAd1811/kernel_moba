@@ -777,19 +777,11 @@ static int mv_chan_memcpy_self_test(struct mv_xor_chan *mv_chan)
 	struct dmaengine_unmap_data *unmap;
 	int err = 0;
 
-<<<<<<< HEAD
 	src = kmalloc(PAGE_SIZE, GFP_KERNEL);
 	if (!src)
 		return -ENOMEM;
 
 	dest = kzalloc(PAGE_SIZE, GFP_KERNEL);
-=======
-	src = kmalloc(sizeof(u8) * PAGE_SIZE, GFP_KERNEL);
-	if (!src)
-		return -ENOMEM;
-
-	dest = kzalloc(sizeof(u8) * PAGE_SIZE, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!dest) {
 		kfree(src);
 		return -ENOMEM;
@@ -1067,10 +1059,6 @@ mv_xor_channel_add(struct mv_xor_device *xordev,
 		mv_chan->op_in_desc = XOR_MODE_IN_DESC;
 
 	dma_dev = &mv_chan->dmadev;
-<<<<<<< HEAD
-=======
-	dma_dev->dev = &pdev->dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mv_chan->xordev = xordev;
 
 	/*
@@ -1103,10 +1091,7 @@ mv_xor_channel_add(struct mv_xor_device *xordev,
 	dma_dev->device_free_chan_resources = mv_xor_free_chan_resources;
 	dma_dev->device_tx_status = mv_xor_status;
 	dma_dev->device_issue_pending = mv_xor_issue_pending;
-<<<<<<< HEAD
 	dma_dev->dev = &pdev->dev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* set prep routines based on capability */
 	if (dma_has_cap(DMA_INTERRUPT, dma_dev->cap_mask))

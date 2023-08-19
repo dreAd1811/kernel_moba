@@ -13,12 +13,7 @@ __visible struct task_struct *__switch_to(struct task_struct *prev,
 					  struct task_struct *next);
 
 /* This runs runs on the previous thread's stack. */
-<<<<<<< HEAD
 static inline void prepare_switch_to(struct task_struct *next)
-=======
-static inline void prepare_switch_to(struct task_struct *prev,
-				     struct task_struct *next)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 #ifdef CONFIG_VMAP_STACK
 	/*
@@ -72,11 +67,7 @@ struct fork_frame {
 
 #define switch_to(prev, next, last)					\
 do {									\
-<<<<<<< HEAD
 	prepare_switch_to(next);					\
-=======
-	prepare_switch_to(prev, next);					\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 									\
 	((last) = __switch_to_asm((prev), (next)));			\
 } while (0)
@@ -94,7 +85,6 @@ static inline void refresh_sysenter_cs(struct thread_struct *thread)
 #endif
 
 /* This is used when switching tasks or entering/exiting vm86 mode. */
-<<<<<<< HEAD
 static inline void update_task_stack(struct task_struct *task)
 {
 	/* sp0 always points to the entry trampoline stack, which is constant: */
@@ -114,17 +104,6 @@ static inline void update_task_stack(struct task_struct *task)
 		load_sp0(task_top_of_stack(task));
 #endif
 
-=======
-static inline void update_sp0(struct task_struct *task)
-{
-	/* On x86_64, sp0 always points to the entry trampoline stack, which is constant: */
-#ifdef CONFIG_X86_32
-	load_sp0(task->thread.sp0);
-#else
-	if (static_cpu_has(X86_FEATURE_XENPV))
-		load_sp0(task_top_of_stack(task));
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #endif /* _ASM_X86_SWITCH_TO_H */

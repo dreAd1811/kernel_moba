@@ -14,11 +14,6 @@
 
 #include <asm/setup.h>
 
-<<<<<<< HEAD
-=======
-extern void prom_putchar(char);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void early_console_write(struct console *con, const char *s, unsigned n)
 {
 	while (n-- && *s) {

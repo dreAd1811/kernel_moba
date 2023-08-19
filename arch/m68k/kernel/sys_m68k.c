@@ -46,11 +46,7 @@ asmlinkage long sys_mmap2(unsigned long addr, unsigned long len,
 	 * so we need to shift the argument down by 1; m68k mmap64(3)
 	 * (in libc) expects the last argument of mmap2 in 4Kb units.
 	 */
-<<<<<<< HEAD
 	return ksys_mmap_pgoff(addr, len, prot, flags, fd, pgoff);
-=======
-	return sys_mmap_pgoff(addr, len, prot, flags, fd, pgoff);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Convert virtual (user) address VADDR to physical address PADDR */

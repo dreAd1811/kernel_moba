@@ -57,11 +57,7 @@
 
 &emac {
 	pinctrl-names = "default";
-<<<<<<< HEAD
 	pinctrl-0 = <&emac_pins>;
-=======
-	pinctrl-0 = <&emac_pins_a>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	phy = <&phy1>;
 	status = "okay";
 };
@@ -71,12 +67,9 @@
 };
 
 &i2c0 {
-<<<<<<< HEAD
 	pinctrl-names = "default";
 	pinctrl-0 = <&i2c0_pins>;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	axp209: pmic@34 {
 		interrupts = <0>;
 	};
@@ -84,31 +77,19 @@
 
 &i2c1 {
 	pinctrl-names = "default";
-<<<<<<< HEAD
 	pinctrl-0 = <&i2c1_pins>;
-=======
-	pinctrl-0 = <&i2c1_pins_a>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
 &i2c2 {
 	pinctrl-names = "default";
-<<<<<<< HEAD
 	pinctrl-0 = <&i2c2_pins>;
-=======
-	pinctrl-0 = <&i2c2_pins_a>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
 &ir0 {
 	pinctrl-names = "default";
-<<<<<<< HEAD
 	pinctrl-0 = <&ir0_rx_pins>;
-=======
-	pinctrl-0 = <&ir0_rx_pins_a>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
@@ -122,18 +103,10 @@
 
 &mmc0 {
 	pinctrl-names = "default";
-<<<<<<< HEAD
 	pinctrl-0 = <&mmc0_pins>;
 	vmmc-supply = <&reg_vcc3v3>;
 	bus-width = <4>;
 	cd-gpios = <&pio 7 1 GPIO_ACTIVE_LOW>; /* PH1 */
-=======
-	pinctrl-0 = <&mmc0_pins_a>;
-	vmmc-supply = <&reg_vcc3v3>;
-	bus-width = <4>;
-	cd-gpios = <&pio 7 1 GPIO_ACTIVE_HIGH>; /* PH1 */
-	cd-inverted;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
@@ -143,7 +116,6 @@
 
 &spi0 {
 	pinctrl-names = "default";
-<<<<<<< HEAD
 	pinctrl-0 = <&spi0_pi_pins>,
 		    <&spi0_cs0_pi_pin>;
 	status = "okay";
@@ -152,9 +124,3 @@
 &uart0 {
 	pinctrl-0 = <&uart0_pb_pins>;
 };
-=======
-	pinctrl-0 = <&spi0_pins_a>,
-		    <&spi0_cs0_pins_a>;
-	status = "okay";
-};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

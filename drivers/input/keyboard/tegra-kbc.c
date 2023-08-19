@@ -251,15 +251,9 @@ static void tegra_kbc_set_fifo_interrupt(struct tegra_kbc *kbc, bool enable)
 	writel(val, kbc->mmio + KBC_CONTROL_0);
 }
 
-<<<<<<< HEAD
 static void tegra_kbc_keypress_timer(struct timer_list *t)
 {
 	struct tegra_kbc *kbc = from_timer(kbc, t, timer);
-=======
-static void tegra_kbc_keypress_timer(unsigned long data)
-{
-	struct tegra_kbc *kbc = (struct tegra_kbc *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 	u32 val;
 	unsigned int i;
@@ -661,11 +655,7 @@ static int tegra_kbc_probe(struct platform_device *pdev)
 		return -ENOMEM;
 	}
 
-<<<<<<< HEAD
 	timer_setup(&kbc->timer, tegra_kbc_keypress_timer, 0);
-=======
-	setup_timer(&kbc->timer, tegra_kbc_keypress_timer, (unsigned long)kbc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 	kbc->mmio = devm_ioremap_resource(&pdev->dev, res);

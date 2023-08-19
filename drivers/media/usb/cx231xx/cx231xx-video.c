@@ -39,11 +39,7 @@
 #include <media/drv-intf/msp3400.h>
 #include <media/tuner.h>
 
-<<<<<<< HEAD
 #include <media/dvb_frontend.h>
-=======
-#include "dvb_frontend.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "cx231xx-vbi.h"
 
@@ -203,17 +199,10 @@ static inline void print_err_status(struct cx231xx *dev, int packet, int status)
 
 	switch (status) {
 	case -ENOENT:
-<<<<<<< HEAD
 		errmsg = "unlinked synchronously";
 		break;
 	case -ECONNRESET:
 		errmsg = "unlinked asynchronously";
-=======
-		errmsg = "unlinked synchronuously";
-		break;
-	case -ECONNRESET:
-		errmsg = "unlinked asynchronuously";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case -ENOSR:
 		errmsg = "Buffer error (overrun)";
@@ -1400,11 +1389,7 @@ int cx231xx_g_register(struct file *file, void *priv,
 		ret = cx231xx_read_ctrl_reg(dev, VRT_GET_REGISTER,
 				(u16)reg->reg, value, 4);
 		reg->val = value[0] | value[1] << 8 |
-<<<<<<< HEAD
 			value[2] << 16 | value[3] << 24;
-=======
-			value[2] << 16 | (u32)value[3] << 24;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg->size = 4;
 		break;
 	case 1:	/* AFE - read byte */
@@ -1771,11 +1756,8 @@ static int cx231xx_v4l2_open(struct file *filp)
 	case VFL_TYPE_RADIO:
 		radio = 1;
 		break;
-<<<<<<< HEAD
 	default:
 		return -EINVAL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	cx231xx_videodbg("open dev=%s type=%s users=%d\n",
@@ -1959,11 +1941,7 @@ static int cx231xx_close(struct file *filp)
 		}
 
 		/* Save some power by putting tuner to sleep */
-<<<<<<< HEAD
 		call_all(dev, tuner, standby);
-=======
-		call_all(dev, core, s_power, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* do this before setting alternate! */
 		if (dev->USE_ISO)
@@ -2030,35 +2008,21 @@ cx231xx_v4l2_read(struct file *filp, char __user *buf, size_t count,
  * cx231xx_v4l2_poll()
  * will allocate buffers when called for the first time
  */
-<<<<<<< HEAD
 static __poll_t cx231xx_v4l2_poll(struct file *filp, poll_table *wait)
 {
 	__poll_t req_events = poll_requested_events(wait);
 	struct cx231xx_fh *fh = filp->private_data;
 	struct cx231xx *dev = fh->dev;
 	__poll_t res = 0;
-=======
-static unsigned int cx231xx_v4l2_poll(struct file *filp, poll_table *wait)
-{
-	unsigned long req_events = poll_requested_events(wait);
-	struct cx231xx_fh *fh = filp->private_data;
-	struct cx231xx *dev = fh->dev;
-	unsigned res = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc;
 
 	rc = check_dev(dev);
 	if (rc < 0)
-<<<<<<< HEAD
 		return EPOLLERR;
-=======
-		return POLLERR;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rc = res_get(fh);
 
 	if (unlikely(rc < 0))
-<<<<<<< HEAD
 		return EPOLLERR;
 
 	if (v4l2_event_pending(&fh->fh))
@@ -2067,16 +2031,6 @@ static unsigned int cx231xx_v4l2_poll(struct file *filp, poll_table *wait)
 		poll_wait(filp, &fh->fh.wait, wait);
 
 	if (!(req_events & (EPOLLIN | EPOLLRDNORM)))
-=======
-		return POLLERR;
-
-	if (v4l2_event_pending(&fh->fh))
-		res |= POLLPRI;
-	else
-		poll_wait(filp, &fh->fh.wait, wait);
-
-	if (!(req_events & (POLLIN | POLLRDNORM)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return res;
 
 	if ((V4L2_BUF_TYPE_VIDEO_CAPTURE == fh->type) ||
@@ -2086,11 +2040,7 @@ static unsigned int cx231xx_v4l2_poll(struct file *filp, poll_table *wait)
 		mutex_unlock(&dev->lock);
 		return res;
 	}
-<<<<<<< HEAD
 	return res | EPOLLERR;
-=======
-	return res | POLLERR;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*

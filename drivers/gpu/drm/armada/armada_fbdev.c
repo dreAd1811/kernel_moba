@@ -10,10 +10,6 @@
 #include <linux/kernel.h>
 #include <linux/module.h>
 
-<<<<<<< HEAD
-=======
-#include <drm/drmP.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <drm/drm_fb_helper.h>
 #include "armada_crtc.h"
 #include "armada_drm.h"
@@ -28,11 +24,7 @@ static /*const*/ struct fb_ops armada_fb_ops = {
 	.fb_imageblit	= drm_fb_helper_cfb_imageblit,
 };
 
-<<<<<<< HEAD
 static int armada_fbdev_create(struct drm_fb_helper *fbh,
-=======
-static int armada_fb_create(struct drm_fb_helper *fbh,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_fb_helper_surface_size *sizes)
 {
 	struct drm_device *dev = fbh->dev;
@@ -59,21 +51,13 @@ static int armada_fb_create(struct drm_fb_helper *fbh,
 
 	ret = armada_gem_linear_back(dev, obj);
 	if (ret) {
-<<<<<<< HEAD
 		drm_gem_object_put_unlocked(&obj->obj);
-=======
-		drm_gem_object_unreference_unlocked(&obj->obj);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
 	ptr = armada_gem_map_object(dev, obj);
 	if (!ptr) {
-<<<<<<< HEAD
 		drm_gem_object_put_unlocked(&obj->obj);
-=======
-		drm_gem_object_unreference_unlocked(&obj->obj);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOMEM;
 	}
 
@@ -83,11 +67,7 @@ static int armada_fb_create(struct drm_fb_helper *fbh,
 	 * A reference is now held by the framebuffer object if
 	 * successful, otherwise this drops the ref for the error path.
 	 */
-<<<<<<< HEAD
 	drm_gem_object_put_unlocked(&obj->obj);
-=======
-	drm_gem_object_unreference_unlocked(&obj->obj);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (IS_ERR(dfb))
 		return PTR_ERR(dfb);
@@ -128,11 +108,7 @@ static int armada_fb_probe(struct drm_fb_helper *fbh,
 	int ret = 0;
 
 	if (!fbh->fb) {
-<<<<<<< HEAD
 		ret = armada_fbdev_create(fbh, sizes);
-=======
-		ret = armada_fb_create(fbh, sizes);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret == 0)
 			ret = 1;
 	}
@@ -183,17 +159,6 @@ int armada_fbdev_init(struct drm_device *dev)
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
-void armada_fbdev_lastclose(struct drm_device *dev)
-{
-	struct armada_private *priv = dev->dev_private;
-
-	if (priv->fbdev)
-		drm_fb_helper_restore_fbdev_mode_unlocked(priv->fbdev);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void armada_fbdev_fini(struct drm_device *dev)
 {
 	struct armada_private *priv = dev->dev_private;

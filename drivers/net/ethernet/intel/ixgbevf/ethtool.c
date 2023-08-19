@@ -1,33 +1,5 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /* Copyright(c) 1999 - 2018 Intel Corporation. */
-=======
-/*******************************************************************************
-
-  Intel 82599 Virtual Function driver
-  Copyright(c) 1999 - 2015 Intel Corporation.
-
-  This program is free software; you can redistribute it and/or modify it
-  under the terms and conditions of the GNU General Public License,
-  version 2, as published by the Free Software Foundation.
-
-  This program is distributed in the hope it will be useful, but WITHOUT
-  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-  more details.
-
-  You should have received a copy of the GNU General Public License along with
-  this program; if not, see <http://www.gnu.org/licenses/>.
-
-  The full GNU General Public License is included in this distribution in
-  the file called "COPYING".
-
-  Contact Information:
-  e1000-devel Mailing List <e1000-devel@lists.sourceforge.net>
-  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497
-
-*******************************************************************************/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* ethtool support for ixgbevf */
 
@@ -80,20 +52,14 @@ static struct ixgbe_stats ixgbevf_gstrings_stats[] = {
 	IXGBEVF_STAT("tx_timeout_count", tx_timeout_count),
 	IXGBEVF_NETDEV_STAT(multicast),
 	IXGBEVF_STAT("rx_csum_offload_errors", hw_csum_rx_error),
-<<<<<<< HEAD
 	IXGBEVF_STAT("alloc_rx_page", alloc_rx_page),
 	IXGBEVF_STAT("alloc_rx_page_failed", alloc_rx_page_failed),
 	IXGBEVF_STAT("alloc_rx_buff_failed", alloc_rx_buff_failed),
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define IXGBEVF_QUEUE_STATS_LEN ( \
 	(((struct ixgbevf_adapter *)netdev_priv(netdev))->num_tx_queues + \
-<<<<<<< HEAD
 	 ((struct ixgbevf_adapter *)netdev_priv(netdev))->num_xdp_queues + \
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 ((struct ixgbevf_adapter *)netdev_priv(netdev))->num_rx_queues) * \
 	 (sizeof(struct ixgbevf_stats) / sizeof(u64)))
 #define IXGBEVF_GLOBAL_STATS_LEN ARRAY_SIZE(ixgbevf_gstrings_stats)
@@ -106,7 +72,6 @@ static const char ixgbe_gstrings_test[][ETH_GSTRING_LEN] = {
 
 #define IXGBEVF_TEST_LEN (sizeof(ixgbe_gstrings_test) / ETH_GSTRING_LEN)
 
-<<<<<<< HEAD
 static const char ixgbevf_priv_flags_strings[][ETH_GSTRING_LEN] = {
 #define IXGBEVF_PRIV_FLAGS_LEGACY_RX	BIT(0)
 	"legacy-rx",
@@ -114,8 +79,6 @@ static const char ixgbevf_priv_flags_strings[][ETH_GSTRING_LEN] = {
 
 #define IXGBEVF_PRIV_FLAGS_STR_LEN ARRAY_SIZE(ixgbevf_priv_flags_strings)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ixgbevf_get_link_ksettings(struct net_device *netdev,
 				      struct ethtool_link_ksettings *cmd)
 {
@@ -263,11 +226,8 @@ static void ixgbevf_get_drvinfo(struct net_device *netdev,
 		sizeof(drvinfo->version));
 	strlcpy(drvinfo->bus_info, pci_name(adapter->pdev),
 		sizeof(drvinfo->bus_info));
-<<<<<<< HEAD
 
 	drvinfo->n_priv_flags = IXGBEVF_PRIV_FLAGS_STR_LEN;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void ixgbevf_get_ringparam(struct net_device *netdev,
@@ -287,11 +247,7 @@ static int ixgbevf_set_ringparam(struct net_device *netdev,
 	struct ixgbevf_adapter *adapter = netdev_priv(netdev);
 	struct ixgbevf_ring *tx_ring = NULL, *rx_ring = NULL;
 	u32 new_rx_count, new_tx_count;
-<<<<<<< HEAD
 	int i, j, err = 0;
-=======
-	int i, err = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if ((ring->rx_mini_pending) || (ring->rx_jumbo_pending))
 		return -EINVAL;
@@ -315,30 +271,20 @@ static int ixgbevf_set_ringparam(struct net_device *netdev,
 	if (!netif_running(adapter->netdev)) {
 		for (i = 0; i < adapter->num_tx_queues; i++)
 			adapter->tx_ring[i]->count = new_tx_count;
-<<<<<<< HEAD
 		for (i = 0; i < adapter->num_xdp_queues; i++)
 			adapter->xdp_ring[i]->count = new_tx_count;
 		for (i = 0; i < adapter->num_rx_queues; i++)
 			adapter->rx_ring[i]->count = new_rx_count;
 		adapter->tx_ring_count = new_tx_count;
 		adapter->xdp_ring_count = new_tx_count;
-=======
-		for (i = 0; i < adapter->num_rx_queues; i++)
-			adapter->rx_ring[i]->count = new_rx_count;
-		adapter->tx_ring_count = new_tx_count;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		adapter->rx_ring_count = new_rx_count;
 		goto clear_reset;
 	}
 
 	if (new_tx_count != adapter->tx_ring_count) {
-<<<<<<< HEAD
 		tx_ring = vmalloc(array_size(sizeof(*tx_ring),
 					     adapter->num_tx_queues +
 						adapter->num_xdp_queues));
-=======
-		tx_ring = vmalloc(adapter->num_tx_queues * sizeof(*tx_ring));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!tx_ring) {
 			err = -ENOMEM;
 			goto clear_reset;
@@ -361,7 +307,6 @@ static int ixgbevf_set_ringparam(struct net_device *netdev,
 				goto clear_reset;
 			}
 		}
-<<<<<<< HEAD
 
 		for (j = 0; j < adapter->num_xdp_queues; i++, j++) {
 			/* clone ring and setup updated count */
@@ -385,12 +330,6 @@ static int ixgbevf_set_ringparam(struct net_device *netdev,
 	if (new_rx_count != adapter->rx_ring_count) {
 		rx_ring = vmalloc(array_size(sizeof(*rx_ring),
 					     adapter->num_rx_queues));
-=======
-	}
-
-	if (new_rx_count != adapter->rx_ring_count) {
-		rx_ring = vmalloc(adapter->num_rx_queues * sizeof(*rx_ring));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!rx_ring) {
 			err = -ENOMEM;
 			goto clear_reset;
@@ -399,7 +338,6 @@ static int ixgbevf_set_ringparam(struct net_device *netdev,
 		for (i = 0; i < adapter->num_rx_queues; i++) {
 			/* clone ring and setup updated count */
 			rx_ring[i] = *adapter->rx_ring[i];
-<<<<<<< HEAD
 
 			/* Clear copied XDP RX-queue info */
 			memset(&rx_ring[i].xdp_rxq, 0,
@@ -407,10 +345,6 @@ static int ixgbevf_set_ringparam(struct net_device *netdev,
 
 			rx_ring[i].count = new_rx_count;
 			err = ixgbevf_setup_rx_resources(adapter, &rx_ring[i]);
-=======
-			rx_ring[i].count = new_rx_count;
-			err = ixgbevf_setup_rx_resources(&rx_ring[i]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (err) {
 				while (i) {
 					i--;
@@ -436,15 +370,12 @@ static int ixgbevf_set_ringparam(struct net_device *netdev,
 		}
 		adapter->tx_ring_count = new_tx_count;
 
-<<<<<<< HEAD
 		for (j = 0; j < adapter->num_xdp_queues; i++, j++) {
 			ixgbevf_free_tx_resources(adapter->xdp_ring[j]);
 			*adapter->xdp_ring[j] = tx_ring[i];
 		}
 		adapter->xdp_ring_count = new_tx_count;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		vfree(tx_ring);
 		tx_ring = NULL;
 	}
@@ -467,12 +398,8 @@ static int ixgbevf_set_ringparam(struct net_device *netdev,
 clear_reset:
 	/* free Tx resources if Rx error is encountered */
 	if (tx_ring) {
-<<<<<<< HEAD
 		for (i = 0;
 		     i < adapter->num_tx_queues + adapter->num_xdp_queues; i++)
-=======
-		for (i = 0; i < adapter->num_tx_queues; i++)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ixgbevf_free_tx_resources(&tx_ring[i]);
 		vfree(tx_ring);
 	}
@@ -488,11 +415,8 @@ static int ixgbevf_get_sset_count(struct net_device *netdev, int stringset)
 		return IXGBEVF_TEST_LEN;
 	case ETH_SS_STATS:
 		return IXGBEVF_STATS_LEN;
-<<<<<<< HEAD
 	case ETH_SS_PRIV_FLAGS:
 		return IXGBEVF_PRIV_FLAGS_STR_LEN;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		return -EINVAL;
 	}
@@ -547,7 +471,6 @@ static void ixgbevf_get_ethtool_stats(struct net_device *netdev,
 		i += 2;
 	}
 
-<<<<<<< HEAD
 	/* populate XDP queue data */
 	for (j = 0; j < adapter->num_xdp_queues; j++) {
 		ring = adapter->xdp_ring[j];
@@ -565,8 +488,6 @@ static void ixgbevf_get_ethtool_stats(struct net_device *netdev,
 		i += 2;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* populate Rx queue data */
 	for (j = 0; j < adapter->num_rx_queues; j++) {
 		ring = adapter->rx_ring[j];
@@ -610,15 +531,12 @@ static void ixgbevf_get_strings(struct net_device *netdev, u32 stringset,
 			sprintf(p, "tx_queue_%u_bytes", i);
 			p += ETH_GSTRING_LEN;
 		}
-<<<<<<< HEAD
 		for (i = 0; i < adapter->num_xdp_queues; i++) {
 			sprintf(p, "xdp_queue_%u_packets", i);
 			p += ETH_GSTRING_LEN;
 			sprintf(p, "xdp_queue_%u_bytes", i);
 			p += ETH_GSTRING_LEN;
 		}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		for (i = 0; i < adapter->num_rx_queues; i++) {
 			sprintf(p, "rx_queue_%u_packets", i);
 			p += ETH_GSTRING_LEN;
@@ -626,13 +544,10 @@ static void ixgbevf_get_strings(struct net_device *netdev, u32 stringset,
 			p += ETH_GSTRING_LEN;
 		}
 		break;
-<<<<<<< HEAD
 	case ETH_SS_PRIV_FLAGS:
 		memcpy(data, ixgbevf_priv_flags_strings,
 		       IXGBEVF_PRIV_FLAGS_STR_LEN * ETH_GSTRING_LEN);
 		break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -1025,7 +940,6 @@ static int ixgbevf_get_rxfh(struct net_device *netdev, u32 *indir, u8 *key,
 	return err;
 }
 
-<<<<<<< HEAD
 static u32 ixgbevf_get_priv_flags(struct net_device *netdev)
 {
 	struct ixgbevf_adapter *adapter = netdev_priv(netdev);
@@ -1057,8 +971,6 @@ static int ixgbevf_set_priv_flags(struct net_device *netdev, u32 priv_flags)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct ethtool_ops ixgbevf_ethtool_ops = {
 	.get_drvinfo		= ixgbevf_get_drvinfo,
 	.get_regs_len		= ixgbevf_get_regs_len,
@@ -1080,11 +992,8 @@ static const struct ethtool_ops ixgbevf_ethtool_ops = {
 	.get_rxfh_key_size	= ixgbevf_get_rxfh_key_size,
 	.get_rxfh		= ixgbevf_get_rxfh,
 	.get_link_ksettings	= ixgbevf_get_link_ksettings,
-<<<<<<< HEAD
 	.get_priv_flags		= ixgbevf_get_priv_flags,
 	.set_priv_flags		= ixgbevf_set_priv_flags,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 void ixgbevf_set_ethtool_ops(struct net_device *netdev)

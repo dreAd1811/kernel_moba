@@ -5,12 +5,9 @@
  *
  * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
  */
-<<<<<<< HEAD
 
 #define pr_fmt(fmt) "mips-gic-timer: " fmt
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/clk.h>
 #include <linux/clockchips.h>
 #include <linux/cpu.h>
@@ -45,29 +42,18 @@ static u64 notrace gic_read_count(void)
 
 static int gic_next_event(unsigned long delta, struct clock_event_device *evt)
 {
-<<<<<<< HEAD
 	int cpu = cpumask_first(evt->cpumask);
-=======
-	unsigned long flags;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 cnt;
 	int res;
 
 	cnt = gic_read_count();
 	cnt += (u64)delta;
-<<<<<<< HEAD
 	if (cpu == raw_smp_processor_id()) {
 		write_gic_vl_compare(cnt);
 	} else {
 		write_gic_vl_other(mips_cm_vp_id(cpu));
 		write_gic_vo_compare(cnt);
 	}
-=======
-	local_irq_save(flags);
-	write_gic_vl_other(mips_cm_vp_id(cpumask_first(evt->cpumask)));
-	write_gic_vo_compare(cnt);
-	local_irq_restore(flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	res = ((int)(gic_read_count() - cnt) >= 0) ? -ETIME : 0;
 	return res;
 }
@@ -153,12 +139,7 @@ static int gic_clockevent_init(void)
 
 	ret = setup_percpu_irq(gic_timer_irq, &gic_compare_irqaction);
 	if (ret < 0) {
-<<<<<<< HEAD
 		pr_err("IRQ %d setup failed (%d)\n", gic_timer_irq, ret);
-=======
-		pr_err("GIC timer IRQ %d setup failed: %d\n",
-		       gic_timer_irq, ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
@@ -197,11 +178,7 @@ static int __init __gic_clocksource_init(void)
 
 	ret = clocksource_register_hz(&gic_clocksource, gic_frequency);
 	if (ret < 0)
-<<<<<<< HEAD
 		pr_warn("Unable to register clocksource\n");
-=======
-		pr_warn("GIC: Unable to register clocksource\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -213,11 +190,7 @@ static int __init gic_clocksource_of_init(struct device_node *node)
 
 	if (!mips_gic_present() || !node->parent ||
 	    !of_device_is_compatible(node->parent, "mti,gic")) {
-<<<<<<< HEAD
 		pr_warn("No DT definition\n");
-=======
-		pr_warn("No DT definition for the mips gic driver\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENXIO;
 	}
 
@@ -225,11 +198,7 @@ static int __init gic_clocksource_of_init(struct device_node *node)
 	if (!IS_ERR(clk)) {
 		ret = clk_prepare_enable(clk);
 		if (ret < 0) {
-<<<<<<< HEAD
 			pr_err("Failed to enable clock\n");
-=======
-			pr_err("GIC failed to enable clock\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clk_put(clk);
 			return ret;
 		}
@@ -237,7 +206,6 @@ static int __init gic_clocksource_of_init(struct device_node *node)
 		gic_frequency = clk_get_rate(clk);
 	} else if (of_property_read_u32(node, "clock-frequency",
 					&gic_frequency)) {
-<<<<<<< HEAD
 		pr_err("Frequency not specified\n");
 		return -EINVAL;
 	}
@@ -245,15 +213,6 @@ static int __init gic_clocksource_of_init(struct device_node *node)
 	if (!gic_timer_irq) {
 		pr_err("IRQ not specified\n");
 		return -EINVAL;
-=======
-		pr_err("GIC frequency not specified.\n");
-		return -EINVAL;;
-	}
-	gic_timer_irq = irq_of_parse_and_map(node, 0);
-	if (!gic_timer_irq) {
-		pr_err("GIC timer IRQ not specified.\n");
-		return -EINVAL;;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ret = __gic_clocksource_init();
@@ -263,11 +222,7 @@ static int __init gic_clocksource_of_init(struct device_node *node)
 	ret = gic_clockevent_init();
 	if (!ret && !IS_ERR(clk)) {
 		if (clk_notifier_register(clk, &gic_clk_nb) < 0)
-<<<<<<< HEAD
 			pr_warn("Unable to register clock notifier\n");
-=======
-			pr_warn("GIC: Unable to register clock notifier\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* And finally start the counter */

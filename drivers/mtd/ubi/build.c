@@ -127,12 +127,6 @@ struct class ubi_class = {
 
 static ssize_t dev_attribute_show(struct device *dev,
 				  struct device_attribute *attr, char *buf);
-<<<<<<< HEAD
-=======
-static ssize_t dev_attribute_store(struct device *dev,
-				   struct device_attribute *attr,
-				   const char *buf, size_t count);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* UBI device attributes (correspond to files in '/<sysfs>/class/ubi/ubiX') */
 static struct device_attribute dev_eraseblock_size =
@@ -159,16 +153,6 @@ static struct device_attribute dev_mtd_num =
 	__ATTR(mtd_num, S_IRUGO, dev_attribute_show, NULL);
 static struct device_attribute dev_ro_mode =
 	__ATTR(ro_mode, S_IRUGO, dev_attribute_show, NULL);
-<<<<<<< HEAD
-=======
-static struct device_attribute dev_mtd_trigger_scrub =
-	__ATTR(scrub_all, 0644,
-		dev_attribute_show, dev_attribute_store);
-static struct device_attribute dev_mtd_max_scrub_sqnum =
-	__ATTR(scrub_max_sqnum, 0444, dev_attribute_show, NULL);
-static struct device_attribute dev_mtd_min_scrub_sqnum =
-	__ATTR(scrub_min_sqnum, 0444, dev_attribute_show, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * ubi_volume_notify - send a volume change notification.
@@ -361,20 +345,6 @@ int ubi_major2num(int major)
 	return ubi_num;
 }
 
-<<<<<<< HEAD
-=======
-static unsigned long long get_max_sqnum(struct ubi_device *ubi)
-{
-	unsigned long long max_sqnum;
-
-	spin_lock(&ubi->ltree_lock);
-	max_sqnum = ubi->global_sqnum - 1;
-	spin_unlock(&ubi->ltree_lock);
-
-	return max_sqnum;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* "Show" method for files in '/<sysfs>/class/ubi/ubiX/' */
 static ssize_t dev_attribute_show(struct device *dev,
 				  struct device_attribute *attr, char *buf)
@@ -421,18 +391,6 @@ static ssize_t dev_attribute_show(struct device *dev,
 		ret = sprintf(buf, "%d\n", ubi->mtd->index);
 	else if (attr == &dev_ro_mode)
 		ret = sprintf(buf, "%d\n", ubi->ro_mode);
-<<<<<<< HEAD
-=======
-	else if (attr == &dev_mtd_trigger_scrub)
-		ret = snprintf(buf, PAGE_SIZE, "%d\n",
-					atomic_read(&ubi->scrub_work_count));
-	else if (attr == &dev_mtd_max_scrub_sqnum)
-		ret = snprintf(buf, PAGE_SIZE, "%llu\n",
-					get_max_sqnum(ubi));
-	else if (attr == &dev_mtd_min_scrub_sqnum)
-		ret = snprintf(buf, PAGE_SIZE, "%llu\n",
-					ubi_wl_scrub_get_min_sqnum(ubi));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		ret = -EINVAL;
 
@@ -453,51 +411,10 @@ static struct attribute *ubi_dev_attrs[] = {
 	&dev_bgt_enabled.attr,
 	&dev_mtd_num.attr,
 	&dev_ro_mode.attr,
-<<<<<<< HEAD
-=======
-	&dev_mtd_trigger_scrub.attr,
-	&dev_mtd_max_scrub_sqnum.attr,
-	&dev_mtd_min_scrub_sqnum.attr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	NULL
 };
 ATTRIBUTE_GROUPS(ubi_dev);
 
-<<<<<<< HEAD
-=======
-static ssize_t dev_attribute_store(struct device *dev,
-			   struct device_attribute *attr,
-			   const char *buf, size_t count)
-{
-	int ret = count;
-	struct ubi_device *ubi;
-	unsigned long long scrub_sqnum;
-
-	ubi = container_of(dev, struct ubi_device, dev);
-	ubi = ubi_get_device(ubi->ubi_num);
-	if (!ubi)
-		return -ENODEV;
-
-	if (attr == &dev_mtd_trigger_scrub) {
-		if (kstrtoull(buf, 10, &scrub_sqnum)) {
-			ret = -EINVAL;
-			goto out;
-		}
-		if (!ubi->lookuptbl) {
-			pr_err("lookuptbl is null");
-			goto out;
-		}
-		ret = ubi_wl_scrub_all(ubi, scrub_sqnum);
-		if (ret == 0)
-			ret = count;
-	}
-
-out:
-	ubi_put_device(ubi);
-	return ret;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void dev_release(struct device *dev)
 {
 	struct ubi_device *ubi = container_of(dev, struct ubi_device, dev);
@@ -619,7 +536,6 @@ static int get_bad_peb_limit(const struct ubi_device *ubi, int max_beb_per1024)
 	int limit, device_pebs;
 	uint64_t device_size;
 
-<<<<<<< HEAD
 	if (!max_beb_per1024) {
 		/*
 		 * Since max_beb_per1024 has not been set by the user in either
@@ -631,10 +547,6 @@ static int get_bad_peb_limit(const struct ubi_device *ubi, int max_beb_per1024)
 			return 0;
 		return limit;
 	}
-=======
-	if (!max_beb_per1024)
-		return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Here we are using size of the entire flash chip and
@@ -1189,17 +1101,10 @@ int ubi_detach_mtd_dev(int ubi_num, int anyway)
 	ubi_wl_close(ubi);
 	ubi_free_internal_volumes(ubi);
 	vfree(ubi->vtbl);
-<<<<<<< HEAD
 	put_mtd_device(ubi->mtd);
 	vfree(ubi->peb_buf);
 	vfree(ubi->fm_buf);
 	ubi_msg(ubi, "mtd%d is detached", ubi->mtd->index);
-=======
-	vfree(ubi->peb_buf);
-	vfree(ubi->fm_buf);
-	ubi_msg(ubi, "mtd%d is detached", ubi->mtd->index);
-	put_mtd_device(ubi->mtd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	put_device(&ubi->dev);
 	return 0;
 }

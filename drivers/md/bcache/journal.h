@@ -110,11 +110,7 @@ struct journal {
 	struct delayed_work	work;
 
 	/* Number of blocks free in the bucket(s) we're currently writing to */
-<<<<<<< HEAD
 	unsigned int		blocks_free;
-=======
-	unsigned		blocks_free;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint64_t		seq;
 	DECLARE_FIFO(atomic_t, pin);
 
@@ -135,7 +131,6 @@ struct journal_device {
 	uint64_t		seq[SB_JOURNAL_BUCKETS];
 
 	/* Journal bucket we're currently writing to */
-<<<<<<< HEAD
 	unsigned int		cur_idx;
 
 	/* Last journal bucket that still contains an open journal entry */
@@ -143,15 +138,6 @@ struct journal_device {
 
 	/* Next journal bucket to be discarded */
 	unsigned int		discard_idx;
-=======
-	unsigned		cur_idx;
-
-	/* Last journal bucket that still contains an open journal entry */
-	unsigned		last_idx;
-
-	/* Next journal bucket to be discarded */
-	unsigned		discard_idx;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DISCARD_READY		0
 #define DISCARD_IN_FLIGHT	1
@@ -181,7 +167,6 @@ struct cache_set;
 struct btree_op;
 struct keylist;
 
-<<<<<<< HEAD
 atomic_t *bch_journal(struct cache_set *c,
 		      struct keylist *keys,
 		      struct closure *parent);
@@ -193,16 +178,5 @@ int bch_journal_replay(struct cache_set *c, struct list_head *list);
 
 void bch_journal_free(struct cache_set *c);
 int bch_journal_alloc(struct cache_set *c);
-=======
-atomic_t *bch_journal(struct cache_set *, struct keylist *, struct closure *);
-void bch_journal_next(struct journal *);
-void bch_journal_mark(struct cache_set *, struct list_head *);
-void bch_journal_meta(struct cache_set *, struct closure *);
-int bch_journal_read(struct cache_set *, struct list_head *);
-int bch_journal_replay(struct cache_set *, struct list_head *);
-
-void bch_journal_free(struct cache_set *);
-int bch_journal_alloc(struct cache_set *);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* _BCACHE_JOURNAL_H */

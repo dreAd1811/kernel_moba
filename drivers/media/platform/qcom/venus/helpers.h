@@ -33,7 +33,6 @@ void venus_helper_m2m_device_run(void *priv);
 void venus_helper_m2m_job_abort(void *priv);
 int venus_helper_get_bufreq(struct venus_inst *inst, u32 type,
 			    struct hfi_buffer_requirements *req);
-<<<<<<< HEAD
 u32 venus_helper_get_framesz_raw(u32 hfi_fmt, u32 width, u32 height);
 u32 venus_helper_get_framesz(u32 v4l2_fmt, u32 width, u32 height);
 int venus_helper_set_input_resolution(struct venus_inst *inst,
@@ -63,16 +62,4 @@ int venus_helper_alloc_dpb_bufs(struct venus_inst *inst);
 int venus_helper_free_dpb_bufs(struct venus_inst *inst);
 int venus_helper_power_enable(struct venus_core *core, u32 session_type,
 			      bool enable);
-=======
-int venus_helper_set_input_resolution(struct venus_inst *inst,
-				      unsigned int width, unsigned int height);
-int venus_helper_set_output_resolution(struct venus_inst *inst,
-				       unsigned int width, unsigned int height);
-int venus_helper_set_num_bufs(struct venus_inst *inst, unsigned int input_bufs,
-			      unsigned int output_bufs);
-int venus_helper_set_color_format(struct venus_inst *inst, u32 fmt);
-void venus_helper_acquire_buf_ref(struct vb2_v4l2_buffer *vbuf);
-void venus_helper_release_buf_ref(struct venus_inst *inst, unsigned int idx);
-void venus_helper_init_instance(struct venus_inst *inst);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

@@ -16,15 +16,10 @@
  */
 
 #include <linux/component.h>
-<<<<<<< HEAD
 #include <linux/gpio/consumer.h>
 #include <linux/hdmi.h>
 #include <linux/module.h>
 #include <linux/platform_data/tda9950.h>
-=======
-#include <linux/hdmi.h>
-#include <linux/module.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/irq.h>
 #include <sound/asoundef.h>
 #include <sound/hdmi-codec.h>
@@ -36,11 +31,8 @@
 #include <drm/drm_of.h>
 #include <drm/i2c/tda998x.h>
 
-<<<<<<< HEAD
 #include <media/cec-notifier.h>
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DBG(fmt, ...) DRM_DEBUG(fmt"\n", ##__VA_ARGS__)
 
 struct tda998x_audio_port {
@@ -67,10 +59,7 @@ struct tda998x_priv {
 	struct platform_device *audio_pdev;
 	struct mutex audio_mutex;
 
-<<<<<<< HEAD
 	struct mutex edid_mutex;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wait_queue_head_t wq_edid;
 	volatile int wq_edid_wait;
 
@@ -80,7 +69,6 @@ struct tda998x_priv {
 	bool edid_delay_active;
 
 	struct drm_encoder encoder;
-<<<<<<< HEAD
 	struct drm_bridge bridge;
 	struct drm_connector connector;
 
@@ -88,25 +76,14 @@ struct tda998x_priv {
 	struct tda9950_glue cec_glue;
 	struct gpio_desc *calib;
 	struct cec_notifier *cec_notify;
-=======
-	struct drm_connector connector;
-
-	struct tda998x_audio_port audio_port[2];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define conn_to_tda998x_priv(x) \
 	container_of(x, struct tda998x_priv, connector)
-<<<<<<< HEAD
 #define enc_to_tda998x_priv(x) \
 	container_of(x, struct tda998x_priv, encoder)
 #define bridge_to_tda998x_priv(x) \
 	container_of(x, struct tda998x_priv, bridge)
-=======
-
-#define enc_to_tda998x_priv(x) \
-	container_of(x, struct tda998x_priv, encoder)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* The TDA9988 series of devices use a paged register scheme.. to simplify
  * things we encode the page # in upper bits of the register #.  To read/
@@ -378,15 +355,12 @@ struct tda998x_priv {
 #define REG_CEC_INTSTATUS	  0xee		      /* read */
 # define CEC_INTSTATUS_CEC	  (1 << 0)
 # define CEC_INTSTATUS_HDMI	  (1 << 1)
-<<<<<<< HEAD
 #define REG_CEC_CAL_XOSC_CTRL1    0xf2
 # define CEC_CAL_XOSC_CTRL1_ENA_CAL	BIT(0)
 #define REG_CEC_DES_FREQ2         0xf5
 # define CEC_DES_FREQ2_DIS_AUTOCAL BIT(7)
 #define REG_CEC_CLK               0xf6
 # define CEC_CLK_FRO              0x11
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define REG_CEC_FRO_IM_CLK_CTRL   0xfb                /* read/write */
 # define CEC_FRO_IM_CLK_CTRL_GHOST_DIS (1 << 7)
 # define CEC_FRO_IM_CLK_CTRL_ENA_OTP   (1 << 6)
@@ -401,10 +375,7 @@ struct tda998x_priv {
 # define CEC_RXSHPDLEV_HPD        (1 << 1)
 
 #define REG_CEC_ENAMODS           0xff                /* read/write */
-<<<<<<< HEAD
 # define CEC_ENAMODS_EN_CEC_CLK   (1 << 7)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 # define CEC_ENAMODS_DIS_FRO      (1 << 6)
 # define CEC_ENAMODS_DIS_CCLK     (1 << 5)
 # define CEC_ENAMODS_EN_RXSENS    (1 << 2)
@@ -463,7 +434,6 @@ cec_read(struct tda998x_priv *priv, u8 addr)
 	return val;
 }
 
-<<<<<<< HEAD
 static void cec_enamods(struct tda998x_priv *priv, u8 mods, bool enable)
 {
 	int val = cec_read(priv, REG_CEC_ENAMODS);
@@ -572,8 +542,6 @@ static void tda998x_cec_hook_release(void *data)
 	cec_enamods(priv, CEC_ENAMODS_EN_CEC_CLK | CEC_ENAMODS_EN_CEC, false);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int
 set_page(struct tda998x_priv *priv, u16 reg)
 {
@@ -623,16 +591,12 @@ out:
 	return ret;
 }
 
-<<<<<<< HEAD
 #define MAX_WRITE_RANGE_BUF 32
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void
 reg_write_range(struct tda998x_priv *priv, u16 reg, u8 *p, int cnt)
 {
 	struct i2c_client *client = priv->hdmi;
-<<<<<<< HEAD
 	/* This is the maximum size of the buffer passed in */
 	u8 buf[MAX_WRITE_RANGE_BUF + 1];
 	int ret;
@@ -643,11 +607,6 @@ reg_write_range(struct tda998x_priv *priv, u16 reg, u8 *p, int cnt)
 		return;
 	}
 
-=======
-	u8 buf[cnt+1];
-	int ret;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	buf[0] = REG2ADDR(reg);
 	memcpy(&buf[1], p, cnt);
 
@@ -776,15 +735,9 @@ tda998x_reset(struct tda998x_priv *priv)
  * we have seen a HPD inactive->active transition.  This code implements
  * that delay.
  */
-<<<<<<< HEAD
 static void tda998x_edid_delay_done(struct timer_list *t)
 {
 	struct tda998x_priv *priv = from_timer(priv, t, edid_delay_timer);
-=======
-static void tda998x_edid_delay_done(unsigned long data)
-{
-	struct tda998x_priv *priv = (struct tda998x_priv *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	priv->edid_delay_active = false;
 	wake_up(&priv->edid_delay_waitq);
@@ -811,11 +764,7 @@ static void tda998x_detect_work(struct work_struct *work)
 {
 	struct tda998x_priv *priv =
 		container_of(work, struct tda998x_priv, detect_work);
-<<<<<<< HEAD
 	struct drm_device *dev = priv->connector.dev;
-=======
-	struct drm_device *dev = priv->encoder.dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (dev)
 		drm_kms_helper_hotplug_event(dev);
@@ -842,7 +791,6 @@ static irqreturn_t tda998x_irq_thread(int irq, void *data)
 			sta, cec, lvl, flag0, flag1, flag2);
 
 		if (cec & CEC_RXSHPDINT_HPD) {
-<<<<<<< HEAD
 			if (lvl & CEC_RXSHPDLEV_HPD) {
 				tda998x_edid_delay_start(priv);
 			} else {
@@ -850,12 +798,6 @@ static irqreturn_t tda998x_irq_thread(int irq, void *data)
 				cec_notifier_set_phys_addr(priv->cec_notify,
 						   CEC_PHYS_ADDR_INVALID);
 			}
-=======
-			if (lvl & CEC_RXSHPDLEV_HPD)
-				tda998x_edid_delay_start(priv);
-			else
-				schedule_work(&priv->detect_work);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			handled = true;
 		}
@@ -874,11 +816,7 @@ static void
 tda998x_write_if(struct tda998x_priv *priv, u8 bit, u16 addr,
 		 union hdmi_infoframe *frame)
 {
-<<<<<<< HEAD
 	u8 buf[MAX_WRITE_RANGE_BUF];
-=======
-	u8 buf[32];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ssize_t len;
 
 	len = hdmi_infoframe_pack(frame, buf, sizeof(buf));
@@ -1168,30 +1106,6 @@ static int tda998x_audio_codec_init(struct tda998x_priv *priv,
 
 /* DRM connector functions */
 
-<<<<<<< HEAD
-=======
-static int tda998x_connector_fill_modes(struct drm_connector *connector,
-					uint32_t maxX, uint32_t maxY)
-{
-	struct tda998x_priv *priv = conn_to_tda998x_priv(connector);
-	int ret;
-
-	mutex_lock(&priv->audio_mutex);
-	ret = drm_helper_probe_single_connector_modes(connector, maxX, maxY);
-
-	if (connector->edid_blob_ptr) {
-		struct edid *edid = (void *)connector->edid_blob_ptr->data;
-
-		priv->sink_has_audio = drm_detect_monitor_audio(edid);
-	} else {
-		priv->sink_has_audio = false;
-	}
-	mutex_unlock(&priv->audio_mutex);
-
-	return ret;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static enum drm_connector_status
 tda998x_connector_detect(struct drm_connector *connector, bool force)
 {
@@ -1210,11 +1124,7 @@ static void tda998x_connector_destroy(struct drm_connector *connector)
 static const struct drm_connector_funcs tda998x_connector_funcs = {
 	.dpms = drm_helper_connector_dpms,
 	.reset = drm_atomic_helper_connector_reset,
-<<<<<<< HEAD
 	.fill_modes = drm_helper_probe_single_connector_modes,
-=======
-	.fill_modes = tda998x_connector_fill_modes,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.detect = tda998x_connector_detect,
 	.destroy = tda998x_connector_destroy,
 	.atomic_duplicate_state = drm_atomic_helper_connector_duplicate_state,
@@ -1230,11 +1140,8 @@ static int read_edid_block(void *data, u8 *buf, unsigned int blk, size_t length)
 	offset = (blk & 1) ? 128 : 0;
 	segptr = blk / 2;
 
-<<<<<<< HEAD
 	mutex_lock(&priv->edid_mutex);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	reg_write(priv, REG_DDC_ADDR, 0xa0);
 	reg_write(priv, REG_DDC_OFFS, offset);
 	reg_write(priv, REG_DDC_SEGM_ADDR, 0x60);
@@ -1254,23 +1161,15 @@ static int read_edid_block(void *data, u8 *buf, unsigned int blk, size_t length)
 					msecs_to_jiffies(100));
 		if (i < 0) {
 			dev_err(&priv->hdmi->dev, "read edid wait err %d\n", i);
-<<<<<<< HEAD
 			ret = i;
 			goto failed;
-=======
-			return i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	} else {
 		for (i = 100; i > 0; i--) {
 			msleep(1);
 			ret = reg_read(priv, REG_INT_FLAGS_2);
 			if (ret < 0)
-<<<<<<< HEAD
 				goto failed;
-=======
-				return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (ret & INT_FLAGS_2_EDID_BLK_RD)
 				break;
 		}
@@ -1278,19 +1177,14 @@ static int read_edid_block(void *data, u8 *buf, unsigned int blk, size_t length)
 
 	if (i == 0) {
 		dev_err(&priv->hdmi->dev, "read edid timeout\n");
-<<<<<<< HEAD
 		ret = -ETIMEDOUT;
 		goto failed;
-=======
-		return -ETIMEDOUT;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ret = reg_read_range(priv, REG_EDID_DATA_0, buf, length);
 	if (ret != length) {
 		dev_err(&priv->hdmi->dev, "failed to read edid block %d: %d\n",
 			blk, ret);
-<<<<<<< HEAD
 		goto failed;
 	}
 
@@ -1299,12 +1193,6 @@ static int read_edid_block(void *data, u8 *buf, unsigned int blk, size_t length)
  failed:
 	mutex_unlock(&priv->edid_mutex);
 	return ret;
-=======
-		return ret;
-	}
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int tda998x_connector_get_modes(struct drm_connector *connector)
@@ -1334,7 +1222,6 @@ static int tda998x_connector_get_modes(struct drm_connector *connector)
 		return 0;
 	}
 
-<<<<<<< HEAD
 	drm_connector_update_edid_property(connector, edid);
 	cec_notifier_set_phys_addr_from_edid(priv->cec_notify, edid);
 
@@ -1342,54 +1229,23 @@ static int tda998x_connector_get_modes(struct drm_connector *connector)
 	n = drm_add_edid_modes(connector, edid);
 	priv->sink_has_audio = drm_detect_monitor_audio(edid);
 	mutex_unlock(&priv->audio_mutex);
-=======
-	drm_mode_connector_update_edid_property(connector, edid);
-	n = drm_add_edid_modes(connector, edid);
-	drm_edid_to_eld(connector, edid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kfree(edid);
 
 	return n;
 }
 
-<<<<<<< HEAD
-=======
-static int tda998x_connector_mode_valid(struct drm_connector *connector,
-					struct drm_display_mode *mode)
-{
-	/* TDA19988 dotclock can go up to 165MHz */
-	struct tda998x_priv *priv = conn_to_tda998x_priv(connector);
-
-	if (mode->clock > ((priv->rev == TDA19988) ? 165000 : 150000))
-		return MODE_CLOCK_HIGH;
-	if (mode->htotal >= BIT(13))
-		return MODE_BAD_HVALUE;
-	if (mode->vtotal >= BIT(11))
-		return MODE_BAD_VVALUE;
-	return MODE_OK;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct drm_encoder *
 tda998x_connector_best_encoder(struct drm_connector *connector)
 {
 	struct tda998x_priv *priv = conn_to_tda998x_priv(connector);
 
-<<<<<<< HEAD
 	return priv->bridge.encoder;
-=======
-	return &priv->encoder;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static
 const struct drm_connector_helper_funcs tda998x_connector_helper_funcs = {
 	.get_modes = tda998x_connector_get_modes,
-<<<<<<< HEAD
-=======
-	.mode_valid = tda998x_connector_mode_valid,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.best_encoder = tda998x_connector_best_encoder,
 };
 
@@ -1413,17 +1269,12 @@ static int tda998x_connector_init(struct tda998x_priv *priv,
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	drm_connector_attach_encoder(&priv->connector,
 				     priv->bridge.encoder);
-=======
-	drm_mode_connector_attach_encoder(&priv->connector, &priv->encoder);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
 /* DRM bridge functions */
 
 static int tda998x_bridge_attach(struct drm_bridge *bridge)
@@ -1460,22 +1311,6 @@ static void tda998x_bridge_enable(struct drm_bridge *bridge)
 	struct tda998x_priv *priv = bridge_to_tda998x_priv(bridge);
 
 	if (!priv->is_on) {
-=======
-/* DRM encoder functions */
-
-static void tda998x_encoder_dpms(struct drm_encoder *encoder, int mode)
-{
-	struct tda998x_priv *priv = enc_to_tda998x_priv(encoder);
-	bool on;
-
-	/* we only care about on or off: */
-	on = mode == DRM_MODE_DPMS_ON;
-
-	if (on == priv->is_on)
-		return;
-
-	if (on) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* enable video ports, audio will be enabled later */
 		reg_write(priv, REG_ENA_VP_0, 0xff);
 		reg_write(priv, REG_ENA_VP_1, 0xff);
@@ -1486,7 +1321,6 @@ static void tda998x_encoder_dpms(struct drm_encoder *encoder, int mode)
 		reg_write(priv, REG_VIP_CNTRL_2, priv->vip_cntrl_2);
 
 		priv->is_on = true;
-<<<<<<< HEAD
 	}
 }
 
@@ -1495,9 +1329,6 @@ static void tda998x_bridge_disable(struct drm_bridge *bridge)
 	struct tda998x_priv *priv = bridge_to_tda998x_priv(bridge);
 
 	if (priv->is_on) {
-=======
-	} else {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* disable video ports */
 		reg_write(priv, REG_ENA_VP_0, 0x00);
 		reg_write(priv, REG_ENA_VP_1, 0x00);
@@ -1507,21 +1338,12 @@ static void tda998x_bridge_disable(struct drm_bridge *bridge)
 	}
 }
 
-<<<<<<< HEAD
 static void tda998x_bridge_mode_set(struct drm_bridge *bridge,
 				    struct drm_display_mode *mode,
 				    struct drm_display_mode *adjusted_mode)
 {
 	struct tda998x_priv *priv = bridge_to_tda998x_priv(bridge);
 	unsigned long tmds_clock;
-=======
-static void
-tda998x_encoder_mode_set(struct drm_encoder *encoder,
-			 struct drm_display_mode *mode,
-			 struct drm_display_mode *adjusted_mode)
-{
-	struct tda998x_priv *priv = enc_to_tda998x_priv(encoder);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 ref_pix, ref_line, n_pix, n_line;
 	u16 hs_pix_s, hs_pix_e;
 	u16 vs1_pix_s, vs1_pix_e, vs1_line_s, vs1_line_e;
@@ -1592,7 +1414,6 @@ tda998x_encoder_mode_set(struct drm_encoder *encoder,
 			       (mode->vsync_end - mode->vsync_start)/2;
 	}
 
-<<<<<<< HEAD
 	tmds_clock = mode->clock;
 
 	/*
@@ -1606,14 +1427,6 @@ tda998x_encoder_mode_set(struct drm_encoder *encoder,
 	for (div = 0; div < 3; div++)
 		if (80000 >> div <= tmds_clock)
 			break;
-=======
-	div = 148500 / mode->clock;
-	if (div != 0) {
-		div--;
-		if (div > 3)
-			div = 3;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&priv->audio_mutex);
 
@@ -1744,7 +1557,6 @@ tda998x_encoder_mode_set(struct drm_encoder *encoder,
 	mutex_unlock(&priv->audio_mutex);
 }
 
-<<<<<<< HEAD
 static const struct drm_bridge_funcs tda998x_bridge_funcs = {
 	.attach = tda998x_bridge_attach,
 	.detach = tda998x_bridge_detach,
@@ -1753,25 +1565,6 @@ static const struct drm_bridge_funcs tda998x_bridge_funcs = {
 	.mode_set = tda998x_bridge_mode_set,
 	.enable = tda998x_bridge_enable,
 };
-=======
-static void tda998x_destroy(struct tda998x_priv *priv)
-{
-	/* disable all IRQs and free the IRQ handler */
-	cec_write(priv, REG_CEC_RXSHPDINTENA, 0);
-	reg_clear(priv, REG_INT_FLAGS_2, INT_FLAGS_2_EDID_BLK_RD);
-
-	if (priv->audio_pdev)
-		platform_device_unregister(priv->audio_pdev);
-
-	if (priv->hdmi->irq)
-		free_irq(priv->hdmi->irq, priv);
-
-	del_timer_sync(&priv->edid_delay_timer);
-	cancel_work_sync(&priv->detect_work);
-
-	i2c_unregister_device(priv->cec);
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* I2C driver functions */
 
@@ -1817,175 +1610,6 @@ static int tda998x_get_audio_ports(struct tda998x_priv *priv,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-static int tda998x_create(struct i2c_client *client, struct tda998x_priv *priv)
-{
-	struct device_node *np = client->dev.of_node;
-	u32 video;
-	int rev_lo, rev_hi, ret;
-
-	mutex_init(&priv->audio_mutex); /* Protect access from audio thread */
-
-	priv->vip_cntrl_0 = VIP_CNTRL_0_SWAP_A(2) | VIP_CNTRL_0_SWAP_B(3);
-	priv->vip_cntrl_1 = VIP_CNTRL_1_SWAP_C(0) | VIP_CNTRL_1_SWAP_D(1);
-	priv->vip_cntrl_2 = VIP_CNTRL_2_SWAP_E(4) | VIP_CNTRL_2_SWAP_F(5);
-
-	/* CEC I2C address bound to TDA998x I2C addr by configuration pins */
-	priv->cec_addr = 0x34 + (client->addr & 0x03);
-	priv->current_page = 0xff;
-	priv->hdmi = client;
-	priv->cec = i2c_new_dummy(client->adapter, priv->cec_addr);
-	if (!priv->cec)
-		return -ENODEV;
-
-	mutex_init(&priv->mutex);	/* protect the page access */
-	init_waitqueue_head(&priv->edid_delay_waitq);
-	setup_timer(&priv->edid_delay_timer, tda998x_edid_delay_done,
-		    (unsigned long)priv);
-	INIT_WORK(&priv->detect_work, tda998x_detect_work);
-
-	/* wake up the device: */
-	cec_write(priv, REG_CEC_ENAMODS,
-			CEC_ENAMODS_EN_RXSENS | CEC_ENAMODS_EN_HDMI);
-
-	tda998x_reset(priv);
-
-	/* read version: */
-	rev_lo = reg_read(priv, REG_VERSION_LSB);
-	rev_hi = reg_read(priv, REG_VERSION_MSB);
-	if (rev_lo < 0 || rev_hi < 0) {
-		ret = rev_lo < 0 ? rev_lo : rev_hi;
-		goto fail;
-	}
-
-	priv->rev = rev_lo | rev_hi << 8;
-
-	/* mask off feature bits: */
-	priv->rev &= ~0x30; /* not-hdcp and not-scalar bit */
-
-	switch (priv->rev) {
-	case TDA9989N2:
-		dev_info(&client->dev, "found TDA9989 n2");
-		break;
-	case TDA19989:
-		dev_info(&client->dev, "found TDA19989");
-		break;
-	case TDA19989N2:
-		dev_info(&client->dev, "found TDA19989 n2");
-		break;
-	case TDA19988:
-		dev_info(&client->dev, "found TDA19988");
-		break;
-	default:
-		dev_err(&client->dev, "found unsupported device: %04x\n",
-			priv->rev);
-		goto fail;
-	}
-
-	/* after reset, enable DDC: */
-	reg_write(priv, REG_DDC_DISABLE, 0x00);
-
-	/* set clock on DDC channel: */
-	reg_write(priv, REG_TX3, 39);
-
-	/* if necessary, disable multi-master: */
-	if (priv->rev == TDA19989)
-		reg_set(priv, REG_I2C_MASTER, I2C_MASTER_DIS_MM);
-
-	cec_write(priv, REG_CEC_FRO_IM_CLK_CTRL,
-			CEC_FRO_IM_CLK_CTRL_GHOST_DIS | CEC_FRO_IM_CLK_CTRL_IMCLK_SEL);
-
-	/* initialize the optional IRQ */
-	if (client->irq) {
-		unsigned long irq_flags;
-
-		/* init read EDID waitqueue and HDP work */
-		init_waitqueue_head(&priv->wq_edid);
-
-		/* clear pending interrupts */
-		reg_read(priv, REG_INT_FLAGS_0);
-		reg_read(priv, REG_INT_FLAGS_1);
-		reg_read(priv, REG_INT_FLAGS_2);
-
-		irq_flags =
-			irqd_get_trigger_type(irq_get_irq_data(client->irq));
-		irq_flags |= IRQF_SHARED | IRQF_ONESHOT;
-		ret = request_threaded_irq(client->irq, NULL,
-					   tda998x_irq_thread, irq_flags,
-					   "tda998x", priv);
-		if (ret) {
-			dev_err(&client->dev,
-				"failed to request IRQ#%u: %d\n",
-				client->irq, ret);
-			goto fail;
-		}
-
-		/* enable HPD irq */
-		cec_write(priv, REG_CEC_RXSHPDINTENA, CEC_RXSHPDLEV_HPD);
-	}
-
-	/* enable EDID read irq: */
-	reg_set(priv, REG_INT_FLAGS_2, INT_FLAGS_2_EDID_BLK_RD);
-
-	if (!np)
-		return 0;		/* non-DT */
-
-	/* get the device tree parameters */
-	ret = of_property_read_u32(np, "video-ports", &video);
-	if (ret == 0) {
-		priv->vip_cntrl_0 = video >> 16;
-		priv->vip_cntrl_1 = video >> 8;
-		priv->vip_cntrl_2 = video;
-	}
-
-	ret = tda998x_get_audio_ports(priv, np);
-	if (ret)
-		goto fail;
-
-	if (priv->audio_port[0].format != AFMT_UNUSED)
-		tda998x_audio_codec_init(priv, &client->dev);
-
-	return 0;
-fail:
-	/* if encoder_init fails, the encoder slave is never registered,
-	 * so cleanup here:
-	 */
-	if (priv->cec)
-		i2c_unregister_device(priv->cec);
-	return -ENXIO;
-}
-
-static void tda998x_encoder_prepare(struct drm_encoder *encoder)
-{
-	tda998x_encoder_dpms(encoder, DRM_MODE_DPMS_OFF);
-}
-
-static void tda998x_encoder_commit(struct drm_encoder *encoder)
-{
-	tda998x_encoder_dpms(encoder, DRM_MODE_DPMS_ON);
-}
-
-static const struct drm_encoder_helper_funcs tda998x_encoder_helper_funcs = {
-	.dpms = tda998x_encoder_dpms,
-	.prepare = tda998x_encoder_prepare,
-	.commit = tda998x_encoder_commit,
-	.mode_set = tda998x_encoder_mode_set,
-};
-
-static void tda998x_encoder_destroy(struct drm_encoder *encoder)
-{
-	struct tda998x_priv *priv = enc_to_tda998x_priv(encoder);
-
-	tda998x_destroy(priv);
-	drm_encoder_cleanup(encoder);
-}
-
-static const struct drm_encoder_funcs tda998x_encoder_funcs = {
-	.destroy = tda998x_encoder_destroy,
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void tda998x_set_config(struct tda998x_priv *priv,
 			       const struct tda998x_encoder_params *p)
 {
@@ -2005,7 +1629,6 @@ static void tda998x_set_config(struct tda998x_priv *priv,
 	priv->audio_params = p->audio_params;
 }
 
-<<<<<<< HEAD
 static void tda998x_destroy(struct device *dev)
 {
 	struct tda998x_priv *priv = dev_get_drvdata(dev);
@@ -2039,16 +1662,6 @@ static int tda998x_create(struct device *dev)
 	struct tda998x_priv *priv;
 	u32 video;
 	int rev_lo, rev_hi, ret;
-=======
-static int tda998x_bind(struct device *dev, struct device *master, void *data)
-{
-	struct tda998x_encoder_params *params = dev->platform_data;
-	struct i2c_client *client = to_i2c_client(dev);
-	struct drm_device *drm = data;
-	struct tda998x_priv *priv;
-	u32 crtcs = 0;
-	int ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
 	if (!priv)
@@ -2056,7 +1669,6 @@ static int tda998x_bind(struct device *dev, struct device *master, void *data)
 
 	dev_set_drvdata(dev, priv);
 
-<<<<<<< HEAD
 	mutex_init(&priv->mutex);	/* protect the page access */
 	mutex_init(&priv->audio_mutex); /* protect access from audio thread */
 	mutex_init(&priv->edid_mutex);
@@ -2251,8 +1863,6 @@ static int tda998x_encoder_init(struct device *dev, struct drm_device *drm)
 	u32 crtcs = 0;
 	int ret;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dev->of_node)
 		crtcs = drm_of_find_possible_crtcs(drm, dev->of_node);
 
@@ -2264,23 +1874,11 @@ static int tda998x_encoder_init(struct device *dev, struct drm_device *drm)
 
 	priv->encoder.possible_crtcs = crtcs;
 
-<<<<<<< HEAD
-=======
-	ret = tda998x_create(client, priv);
-	if (ret)
-		return ret;
-
-	if (!dev->of_node && params)
-		tda998x_set_config(priv, params);
-
-	drm_encoder_helper_add(&priv->encoder, &tda998x_encoder_helper_funcs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = drm_encoder_init(drm, &priv->encoder, &tda998x_encoder_funcs,
 			       DRM_MODE_ENCODER_TMDS, NULL);
 	if (ret)
 		goto err_encoder;
 
-<<<<<<< HEAD
 	ret = drm_bridge_attach(&priv->encoder, &priv->bridge, NULL);
 	if (ret)
 		goto err_bridge;
@@ -2300,33 +1898,12 @@ static int tda998x_bind(struct device *dev, struct device *master, void *data)
 	return tda998x_encoder_init(dev, drm);
 }
 
-=======
-	ret = tda998x_connector_init(priv, drm);
-	if (ret)
-		goto err_connector;
-
-	return 0;
-
-err_connector:
-	drm_encoder_cleanup(&priv->encoder);
-err_encoder:
-	tda998x_destroy(priv);
-	return ret;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void tda998x_unbind(struct device *dev, struct device *master,
 			   void *data)
 {
 	struct tda998x_priv *priv = dev_get_drvdata(dev);
 
-<<<<<<< HEAD
 	drm_encoder_cleanup(&priv->encoder);
-=======
-	drm_connector_cleanup(&priv->connector);
-	drm_encoder_cleanup(&priv->encoder);
-	tda998x_destroy(priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct component_ops tda998x_ops = {
@@ -2337,16 +1914,12 @@ static const struct component_ops tda998x_ops = {
 static int
 tda998x_probe(struct i2c_client *client, const struct i2c_device_id *id)
 {
-<<<<<<< HEAD
 	int ret;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C)) {
 		dev_warn(&client->dev, "adapter does not support I2C\n");
 		return -EIO;
 	}
-<<<<<<< HEAD
 
 	ret = tda998x_create(&client->dev);
 	if (ret)
@@ -2356,18 +1929,12 @@ tda998x_probe(struct i2c_client *client, const struct i2c_device_id *id)
 	if (ret)
 		tda998x_destroy(&client->dev);
 	return ret;
-=======
-	return component_add(&client->dev, &tda998x_ops);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int tda998x_remove(struct i2c_client *client)
 {
 	component_del(&client->dev, &tda998x_ops);
-<<<<<<< HEAD
 	tda998x_destroy(&client->dev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -2379,11 +1946,7 @@ static const struct of_device_id tda998x_dt_ids[] = {
 MODULE_DEVICE_TABLE(of, tda998x_dt_ids);
 #endif
 
-<<<<<<< HEAD
 static const struct i2c_device_id tda998x_ids[] = {
-=======
-static struct i2c_device_id tda998x_ids[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ "tda998x", 0 },
 	{ }
 };

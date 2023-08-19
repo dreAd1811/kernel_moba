@@ -1,19 +1,6 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0-only */
 /*
  * Copyright (c) 2017-2019, The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #ifndef NPU_HOST_IPC_H
@@ -44,19 +31,12 @@
 #define NPU_IPC_CMD_LOAD_V2             0x00000009
 /* ipc_cmd_execute_packet_v2 */
 #define NPU_IPC_CMD_EXECUTE_V2          0x0000000A
-<<<<<<< HEAD
 /* npu_ipc_cmd_notify_pwr_packet_t */
 #define NPU_IPC_CMD_NOTIFY_PWR          0x0000000B
 /* ipc_cmd_set_property_packet */
 #define NPU_IPC_CMD_SET_PROPERTY        0x0000000C
 /* ipc_cmd_get_property_packet */
 #define NPU_IPC_CMD_GET_PROPERTY        0x0000000D
-=======
-/* ipc_cmd_set_property_packet */
-#define NPU_IPC_CMD_SET_PROPERTY        0x0000000B
-/* ipc_cmd_get_property_packet */
-#define NPU_IPC_CMD_GET_PROPERTY        0x0000000C
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Messages sent **from** NPU */
 /* IPC Message Response -- uint32_t */
@@ -74,19 +54,12 @@
 #define NPU_IPC_MSG_LOOPBACK_DONE       0x00010005
 /* ipc_msg_execute_pkt_v2 */
 #define NPU_IPC_MSG_EXECUTE_V2_DONE     0x00010006
-<<<<<<< HEAD
 /* struct ipc_msg_notify_pwr_pkt */
 #define NPU_IPC_MSG_NOTIFY_PWR_DONE     0x00010007
 /* ipc_msg_set_property_packet */
 #define NPU_IPC_MSG_SET_PROPERTY_DONE   0x00010008
 /* ipc_msg_get_property_packet */
 #define NPU_IPC_MSG_GET_PROPERTY_DONE   0x00010009
-=======
-/* ipc_msg_set_property_packet */
-#define NPU_IPC_MSG_SET_PROPERTY_DONE   0x00010007
-/* ipc_msg_get_property_packet */
-#define NPU_IPC_MSG_GET_PROPERTY_DONE   0x00010008
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* ipc_msg_general_notify_pkt */
 #define NPU_IPC_MSG_GENERAL_NOTIFY      0x00010010
 
@@ -491,7 +464,6 @@ struct ipc_cmd_shutdown_pkt {
 	uint32_t shutdown_flags;
 };
 
-<<<<<<< HEAD
 /*
  * Power state notification packet definition
  */
@@ -515,6 +487,4 @@ struct ipc_msg_notify_pwr_pkt {
 	struct ipc_msg_header_pkt header;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* NPU_HOST_IPC_H */

@@ -8,15 +8,10 @@
  * This code is licenced under the GPL.
  */
 
-<<<<<<< HEAD
 #include <linux/cpu.h>
 #include <linux/cpuidle.h>
 #include <linux/mutex.h>
 #include <linux/pm_qos.h>
-=======
-#include <linux/mutex.h>
-#include <linux/cpuidle.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "cpuidle.h"
 
@@ -43,23 +38,15 @@ static struct cpuidle_governor * __cpuidle_find_governor(const char *str)
 /**
  * cpuidle_switch_governor - changes the governor
  * @gov: the new target governor
-<<<<<<< HEAD
-=======
- *
- * NOTE: "gov" can be NULL to specify disabled
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Must be called with cpuidle_lock acquired.
  */
 int cpuidle_switch_governor(struct cpuidle_governor *gov)
 {
 	struct cpuidle_device *dev;
 
-<<<<<<< HEAD
 	if (!gov)
 		return -EINVAL;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (gov == cpuidle_curr_governor)
 		return 0;
 
@@ -108,7 +95,6 @@ int cpuidle_register_governor(struct cpuidle_governor *gov)
 
 	return ret;
 }
-<<<<<<< HEAD
 
 /**
  * cpuidle_governor_latency_req - Compute a latency constraint for CPU
@@ -122,5 +108,3 @@ int cpuidle_governor_latency_req(unsigned int cpu)
 
 	return device_req < global_req ? device_req : global_req;
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

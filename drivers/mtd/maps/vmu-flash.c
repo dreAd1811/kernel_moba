@@ -629,25 +629,15 @@ static int vmu_connect(struct maple_device *mdev)
 	* Not sure there are actually any multi-partition devices in the
 	* real world, but the hardware supports them, so, so will we
 	*/
-<<<<<<< HEAD
 	card->parts = kmalloc_array(card->partitions, sizeof(struct vmupart),
 				    GFP_KERNEL);
-=======
-	card->parts = kmalloc(sizeof(struct vmupart) * card->partitions,
-		GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!card->parts) {
 		error = -ENOMEM;
 		goto fail_partitions;
 	}
 
-<<<<<<< HEAD
 	card->mtd = kmalloc_array(card->partitions, sizeof(struct mtd_info),
 				  GFP_KERNEL);
-=======
-	card->mtd = kmalloc(sizeof(struct mtd_info) * card->partitions,
-		GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!card->mtd) {
 		error = -ENOMEM;
 		goto fail_mtd_info;

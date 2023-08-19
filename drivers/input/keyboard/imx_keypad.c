@@ -1,18 +1,7 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 //
 // Driver for the IMX keypad port.
 // Copyright (C) 2009 Alberto Panizzo <maramaopercheseimorto@gmail.com>
-=======
-/*
- * Driver for the IMX keypad port.
- * Copyright (C) 2009 Alberto Panizzo <maramaopercheseimorto@gmail.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/clk.h>
 #include <linux/delay.h>
@@ -191,15 +180,9 @@ static void imx_keypad_fire_events(struct imx_keypad *keypad,
 /*
  * imx_keypad_check_for_events is the timer handler.
  */
-<<<<<<< HEAD
 static void imx_keypad_check_for_events(struct timer_list *t)
 {
 	struct imx_keypad *keypad = from_timer(keypad, t, check_matrix_timer);
-=======
-static void imx_keypad_check_for_events(unsigned long data)
-{
-	struct imx_keypad *keypad = (struct imx_keypad *) data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned short matrix_volatile_state[MAX_MATRIX_KEY_COLS];
 	unsigned short reg_val;
 	bool state_changed, is_zero_matrix;
@@ -469,13 +452,8 @@ static int imx_keypad_probe(struct platform_device *pdev)
 	keypad->irq = irq;
 	keypad->stable_count = 0;
 
-<<<<<<< HEAD
 	timer_setup(&keypad->check_matrix_timer,
 		    imx_keypad_check_for_events, 0);
-=======
-	setup_timer(&keypad->check_matrix_timer,
-		    imx_keypad_check_for_events, (unsigned long) keypad);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 	keypad->mmio_base = devm_ioremap_resource(&pdev->dev, res);

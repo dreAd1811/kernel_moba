@@ -27,7 +27,6 @@
 #include <linux/hashtable.h>
 #include <linux/types.h>
 #include <linux/list.h>
-<<<<<<< HEAD
 #include <linux/wait.h>
 #include "kfd_priv.h"
 #include <uapi/linux/kfd_ioctl.h>
@@ -39,14 +38,6 @@
  */
 #define KFD_FIRST_NONSIGNAL_EVENT_ID ((INT_MAX >> 1) + 1)
 #define KFD_LAST_NONSIGNAL_EVENT_ID INT_MAX
-=======
-#include "kfd_priv.h"
-#include <uapi/linux/kfd_ioctl.h>
-
-#define KFD_EVENT_ID_NONSIGNAL_MASK 0x80000000U
-#define KFD_FIRST_NONSIGNAL_EVENT_ID KFD_EVENT_ID_NONSIGNAL_MASK
-#define KFD_LAST_NONSIGNAL_EVENT_ID UINT_MAX
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Written into kfd_signal_slot_t to indicate that the event is not signaled.
@@ -60,12 +51,6 @@ struct kfd_event_waiter;
 struct signal_page;
 
 struct kfd_event {
-<<<<<<< HEAD
-=======
-	/* All events in process, rooted at kfd_process.events. */
-	struct hlist_node events;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 event_id;
 
 	bool signaled;
@@ -73,26 +58,15 @@ struct kfd_event {
 
 	int type;
 
-<<<<<<< HEAD
 	wait_queue_head_t wq; /* List of event waiters. */
 
 	/* Only for signal events. */
-=======
-	struct list_head waiters; /* List of kfd_event_waiter by waiters. */
-
-	/* Only for signal events. */
-	struct signal_page *signal_page;
-	unsigned int signal_slot_index;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint64_t __user *user_signal_address;
 
 	/* type specific data */
 	union {
 		struct kfd_hsa_memory_exception_data memory_exception_data;
-<<<<<<< HEAD
 		struct kfd_hsa_hw_exception_data hw_exception_data;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };
 

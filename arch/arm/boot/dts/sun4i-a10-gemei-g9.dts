@@ -72,11 +72,6 @@
  */
 &codec {
 	/* PH15 controls power to external amplifier (ft2012q) */
-<<<<<<< HEAD
-=======
-	pinctrl-names = "default";
-	pinctrl-0 = <&codec_pa_pin>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	allwinner,pa-gpios = <&pio 7 15 GPIO_ACTIVE_HIGH>;
 	status = "okay";
 };
@@ -94,11 +89,6 @@
 };
 
 &i2c0 {
-<<<<<<< HEAD
-=======
-	pinctrl-names = "default";
-	pinctrl-0 = <&i2c0_pins_a>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 
 	axp209: pmic@34 {
@@ -110,11 +100,6 @@
 #include "axp209.dtsi"
 
 &i2c1 {
-<<<<<<< HEAD
-=======
-	pinctrl-names = "default";
-	pinctrl-0 = <&i2c1_pins_a>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 
 	/* Accelerometer */
@@ -131,33 +116,21 @@
 
 	status = "okay";
 
-<<<<<<< HEAD
 	button-158 {
-=======
-	button@158 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		label = "Volume Down";
 		linux,code = <KEY_VOLUMEDOWN>;
 		channel = <0>;
 		voltage = <158730>;
 	};
 
-<<<<<<< HEAD
 	button-349 {
-=======
-	button@349 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		label = "Volume Up";
 		linux,code = <KEY_VOLUMEUP>;
 		channel = <0>;
 		voltage = <349206>;
 	};
 
-<<<<<<< HEAD
 	button-1142 {
-=======
-	button@1142 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		label = "Esc";
 		linux,code = <KEY_ESC>;
 		channel = <0>;
@@ -166,31 +139,12 @@
 };
 
 &mmc0 {
-<<<<<<< HEAD
 	vmmc-supply = <&reg_vcc3v3>;
 	bus-width = <4>;
 	cd-gpios = <&pio 7 1 GPIO_ACTIVE_LOW>; /* PH01 */
 	status = "okay";
 };
 
-=======
-	pinctrl-names = "default";
-	pinctrl-0 = <&mmc0_pins_a>;
-	vmmc-supply = <&reg_vcc3v3>;
-	bus-width = <4>;
-	cd-gpios = <&pio 7 1 GPIO_ACTIVE_HIGH>; /* PH01 */
-	cd-inverted;
-	status = "okay";
-};
-
-&pio {
-	codec_pa_pin: codec_pa_pin@0 {
-		pins = "PH15";
-		function = "gpio_out";
-	};
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &reg_dcdc2 {
 	regulator-always-on;
 	regulator-min-microvolt = <1000000>;
@@ -227,11 +181,7 @@
 
 &uart0  {
 	pinctrl-names = "default";
-<<<<<<< HEAD
 	pinctrl-0 = <&uart0_pb_pins>;
-=======
-	pinctrl-0 = <&uart0_pins_a>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 

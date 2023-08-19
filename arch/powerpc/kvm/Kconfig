@@ -20,13 +20,9 @@ if VIRTUALIZATION
 config KVM
 	bool
 	select PREEMPT_NOTIFIERS
-<<<<<<< HEAD
 	select ANON_INODES
 	select HAVE_KVM_EVENTFD
 	select HAVE_KVM_VCPU_ASYNC_IOCTL
-=======
-	select HAVE_KVM_EVENTFD
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select SRCU
 	select KVM_VFIO
 	select IRQ_BYPASS_MANAGER

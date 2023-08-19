@@ -94,11 +94,7 @@ step-by-step instructions for how a user can trigger the bug.
 
 If the failure includes an "OOPS:", take a picture of the screen, capture
 a netconsole trace, or type the message from your screen into the bug
-<<<<<<< HEAD
 report.  Please read "Documentation/admin-guide/bug-hunting.rst" before posting your
-=======
-report.  Please read "Documentation/admin-guide/oops-tracing.rst" before posting your
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 bug report. This explains what you should do with the "Oops" information
 to make it useful to the recipient.
 
@@ -124,11 +120,7 @@ summary from [1.]>" for easy identification by the developers::
   [4.2.] Kernel .config file:
   [5.] Most recent kernel version which did not have the bug:
   [6.] Output of Oops.. message (if applicable) with symbolic information
-<<<<<<< HEAD
        resolved (see Documentation/admin-guide/bug-hunting.rst)
-=======
-       resolved (see Documentation/admin-guide/oops-tracing.rst)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
   [7.] A small shell script or example program which triggers the
        problem (if possible)
   [8.] Environment

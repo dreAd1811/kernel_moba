@@ -14,15 +14,12 @@
 
 struct rmi_device;
 
-<<<<<<< HEAD
 /*
  * The interrupt source count in the function descriptor can represent up to
  * 6 interrupt sources in the normal manner.
  */
 #define RMI_FN_MAX_IRQS	6
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * struct rmi_function - represents the implementation of an RMI4
  * function for a particular device (basically, a driver for that RMI4 function)
@@ -35,10 +32,7 @@ struct rmi_device;
  * @irq_pos: The position in the irq bitfield this function holds
  * @irq_mask: For convenience, can be used to mask IRQ bits off during ATTN
  * interrupt handling.
-<<<<<<< HEAD
  * @irqs: assigned virq numbers (up to num_of_irqs)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * @node: entry in device's list of functions
  */
@@ -49,10 +43,7 @@ struct rmi_function {
 	struct list_head node;
 
 	unsigned int num_of_irqs;
-<<<<<<< HEAD
 	int irq[RMI_FN_MAX_IRQS];
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int irq_pos;
 	unsigned long irq_mask[];
 };
@@ -93,11 +84,7 @@ struct rmi_function_handler {
 	void (*remove)(struct rmi_function *fn);
 	int (*config)(struct rmi_function *fn);
 	int (*reset)(struct rmi_function *fn);
-<<<<<<< HEAD
 	irqreturn_t (*attention)(int irq, void *ctx);
-=======
-	int (*attention)(struct rmi_function *fn, unsigned long *irq_bits);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int (*suspend)(struct rmi_function *fn);
 	int (*resume)(struct rmi_function *fn);
 };

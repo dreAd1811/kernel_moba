@@ -15,13 +15,10 @@ typedef struct {
 #ifdef CONFIG_VDSO
 	unsigned long	vdso;
 #endif
-<<<<<<< HEAD
 #ifdef CONFIG_BINFMT_ELF_FDPIC
 	unsigned long	exec_fdpic_loadmap;
 	unsigned long	interp_fdpic_loadmap;
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } mm_context_t;
 
 #ifdef CONFIG_CPU_HAS_ASID
@@ -41,13 +38,10 @@ typedef struct {
  */
 typedef struct {
 	unsigned long	end_brk;
-<<<<<<< HEAD
 #ifdef CONFIG_BINFMT_ELF_FDPIC
 	unsigned long	exec_fdpic_loadmap;
 	unsigned long	interp_fdpic_loadmap;
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } mm_context_t;
 
 #endif

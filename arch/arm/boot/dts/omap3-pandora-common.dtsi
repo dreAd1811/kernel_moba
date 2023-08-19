@@ -27,7 +27,6 @@
 		display0 = &lcd;
 	};
 
-<<<<<<< HEAD
 	/* fixed 26MHz oscillator */
 	hfclk_26m: oscillator {
 		#clock-cells = <0>;
@@ -35,8 +34,6 @@
 		clock-frequency = <26000000>;
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tv: connector {
 		compatible = "connector-analog-tv";
 		label = "tv";
@@ -215,10 +212,7 @@
 		compatible = "usb-nop-xceiv";
 		reset-gpios = <&gpio1 16 GPIO_ACTIVE_LOW>; /* GPIO_16 */
 		vcc-supply = <&vaux2>;
-<<<<<<< HEAD
 		#phy-cells = <0>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	/* HS USB Host VBUS supply
@@ -235,20 +229,6 @@
 		gpio = <&gpio6 4 GPIO_ACTIVE_HIGH>;	/* GPIO_164 */
 	};
 
-<<<<<<< HEAD
-=======
-	/* wl1251 wifi+bt module */
-	wlan_en: fixed-regulator-wg7210_en {
-		compatible = "regulator-fixed";
-		regulator-name = "vwlan";
-		regulator-min-microvolt = <1800000>;
-		regulator-max-microvolt = <1800000>;
-		startup-delay-us = <50000>;
-		enable-active-high;
-		gpio = <&gpio1 23 GPIO_ACTIVE_HIGH>;
-	};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* wg7210 (wifi+bt module) 32k clock buffer */
 	wg7210_32k: fixed-regulator-wg7210_32k {
 		compatible = "regulator-fixed";
@@ -384,12 +364,9 @@
 		interrupts = <7>; /* SYS_NIRQ cascaded to intc */
 		interrupt-parent = <&intc>;
 
-<<<<<<< HEAD
 		clocks = <&hfclk_26m>;
 		clock-names = "fck";
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		twl_power: power {
 			compatible = "ti,twl4030-power-reset";
 			ti,use_poweroff;
@@ -548,36 +525,9 @@
 	/*wp-gpios = <&gpio4 31 GPIO_ACTIVE_HIGH>;*/	/* GPIO_127 */
 };
 
-<<<<<<< HEAD
 /* mmc3 is probed using pdata-quirks to pass wl1251 card data */
 &mmc3 {
 	status = "disabled";
-=======
-&mmc3 {
-	vmmc-supply = <&wlan_en>;
-
-	bus-width = <4>;
-	non-removable;
-	ti,non-removable;
-	cap-power-off-card;
-
-	pinctrl-names = "default";
-	pinctrl-0 = <&mmc3_pins>;
-
-	#address-cells = <1>;
-	#size-cells = <0>;
-
-	wlan: wifi@1 {
-		compatible = "ti,wl1251";
-
-		reg = <1>;
-
-		interrupt-parent = <&gpio1>;
-		interrupts = <21 IRQ_TYPE_LEVEL_HIGH>;	/* GPIO_21 */
-
-		ti,wl1251-has-eeprom;
-	};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* bluetooth*/
@@ -671,11 +621,7 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&penirq_pins>;
 		interrupt-parent = <&gpio3>;
-<<<<<<< HEAD
 		interrupts = <30 IRQ_TYPE_NONE>;	/* GPIO_94 */
-=======
-		interrupts = <30 0>;	/* GPIO_94 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pendown-gpio = <&gpio3 30 GPIO_ACTIVE_HIGH>;
 		vcc-supply = <&vaux4>;
 
@@ -691,11 +637,7 @@
 
 	lcd: lcd@1 {
 		reg = <1>;	/* CS1 */
-<<<<<<< HEAD
 		compatible =	"tpo,td043mtea1";
-=======
-		compatible =	"omapdss,tpo,td043mtea1";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spi-max-frequency = <100000>;
 		spi-cpol;
 		spi-cpha;

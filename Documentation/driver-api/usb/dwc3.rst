@@ -674,14 +674,8 @@ operations, both of which can be traced. Format is::
   	__entry->flags & DWC3_EP_ENABLED ? 'E' : 'e',
   	__entry->flags & DWC3_EP_STALL ? 'S' : 's',
   	__entry->flags & DWC3_EP_WEDGE ? 'W' : 'w',
-<<<<<<< HEAD
   	__entry->flags & DWC3_EP_TRANSFER_STARTED ? 'B' : 'b',
   	__entry->flags & DWC3_EP_PENDING_REQUEST ? 'P' : 'p',
-=======
-  	__entry->flags & DWC3_EP_BUSY ? 'B' : 'b',
-  	__entry->flags & DWC3_EP_PENDING_REQUEST ? 'P' : 'p',
-  	__entry->flags & DWC3_EP_MISSED_ISOC ? 'M' : 'm',
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
   	__entry->flags & DWC3_EP_END_TRANSFER_PENDING ? 'E' : 'e',
   	__entry->direction ? '<' : '>'
   )

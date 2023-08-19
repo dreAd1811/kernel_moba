@@ -1,19 +1,6 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2015-2019, The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2015-2019, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #define pr_fmt(fmt)	"[hdcp-qseecom] %s: " fmt, __func__
@@ -1129,11 +1116,7 @@ error:
 	return rc;
 }
 
-<<<<<<< HEAD
 static int hdcp2_app_enable_encryption(struct hdcp2_handle *handle)
-=======
-static int hdcp2_app_set_hw_key(struct hdcp2_handle *handle)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int rc = 0;
 
@@ -1258,13 +1241,8 @@ int hdcp2_app_comm(void *ctx, enum hdcp2_app_cmd cmd,
 	case HDCP2_CMD_TIMEOUT:
 		rc = hdcp2_app_timeout(handle);
 		break;
-<<<<<<< HEAD
 	case HDCP2_CMD_EN_ENCRYPTION:
 		rc = hdcp2_app_enable_encryption(handle);
-=======
-	case HDCP2_CMD_SET_HW_KEY:
-		rc = hdcp2_app_set_hw_key(handle);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case HDCP2_CMD_QUERY_STREAM:
 		rc = hdcp2_app_query_stream(handle);
@@ -1410,12 +1388,7 @@ EXPORT_SYMBOL(hdcp2_init);
 
 void hdcp2_deinit(void *ctx)
 {
-<<<<<<< HEAD
 	kzfree(ctx);
-=======
-	if (ctx)
-		kzfree(ctx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(hdcp2_deinit);
 

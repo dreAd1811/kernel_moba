@@ -30,11 +30,7 @@ gm20b_fb = {
 	.init = gm200_fb_init,
 	.init_page = gm200_fb_init_page,
 	.intr = gf100_fb_intr,
-<<<<<<< HEAD
 	.default_bigpage = 0 /* per-instance. */,
-=======
-	.memtype_valid = gf100_fb_memtype_valid,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int

@@ -17,10 +17,6 @@
 #include <asm/pgtable.h>
 #endif
 #include <asm/pgalloc.h>
-<<<<<<< HEAD
-=======
-#include <asm/tlbflush.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifndef __powerpc64__
 #include <asm/page.h>
 #include <asm/mmu.h>
@@ -56,12 +52,8 @@ static inline void tlb_remove_check_page_size_change(struct mmu_gather *tlb,
 	if (!tlb->page_size)
 		tlb->page_size = page_size;
 	else if (tlb->page_size != page_size) {
-<<<<<<< HEAD
 		if (!tlb->fullmm)
 			tlb_flush_mmu(tlb);
-=======
-		tlb_flush_mmu(tlb);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * update the page size after flush for the new
 		 * mmu_gather.
@@ -84,7 +76,6 @@ static inline int mm_is_thread_local(struct mm_struct *mm)
 		return false;
 	return cpumask_test_cpu(smp_processor_id(), mm_cpumask(mm));
 }
-<<<<<<< HEAD
 static inline void mm_reset_thread_local(struct mm_struct *mm)
 {
 	WARN_ON(atomic_read(&mm->context.copros) > 0);
@@ -98,8 +89,6 @@ static inline void mm_reset_thread_local(struct mm_struct *mm)
 	cpumask_clear(mm_cpumask(mm));
 	cpumask_set_cpu(smp_processor_id(), mm_cpumask(mm));
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else /* CONFIG_PPC_BOOK3S_64 */
 static inline int mm_is_thread_local(struct mm_struct *mm)
 {

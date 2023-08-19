@@ -84,7 +84,6 @@ MODULE_PARM_DESC(max_persistent_grants,
                  "Maximum number of grants to map persistently");
 
 /*
-<<<<<<< HEAD
  * How long a persistent grant is allowed to remain allocated without being in
  * use. The time is in seconds, 0 means indefinitely long.
  */
@@ -97,8 +96,6 @@ MODULE_PARM_DESC(persistent_grant_unused_seconds,
 		 "remain allocated. Default is 60, 0 means unlimited.");
 
 /*
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Maximum number of rings/queues blkback supports, allow as many queues as there
  * are CPUs if user has not specified a value.
  */
@@ -113,11 +110,7 @@ MODULE_PARM_DESC(max_queues,
  * backend, 4KB page granularity is used.
  */
 unsigned int xen_blkif_max_ring_order = XENBUS_MAX_RING_GRANT_ORDER;
-<<<<<<< HEAD
 module_param_named(max_ring_page_order, xen_blkif_max_ring_order, int, 0444);
-=======
-module_param_named(max_ring_page_order, xen_blkif_max_ring_order, int, S_IRUGO);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_PARM_DESC(max_ring_page_order, "Maximum order of pages to be used for the shared ring");
 /*
  * The LRU mechanism to clean the lists of persistent grants needs to
@@ -142,7 +135,6 @@ module_param(log_stats, int, 0644);
 /* Number of free pages to remove on each call to gnttab_free_pages */
 #define NUM_BATCH_FREE_PAGES 10
 
-<<<<<<< HEAD
 static inline bool persistent_gnt_timeout(struct persistent_gnt *persistent_gnt)
 {
 	return xen_blkif_pgrant_timeout &&
@@ -150,8 +142,6 @@ static inline bool persistent_gnt_timeout(struct persistent_gnt *persistent_gnt)
 		HZ * xen_blkif_pgrant_timeout);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int get_free_page(struct xen_blkif_ring *ring, struct page **page)
 {
 	unsigned long flags;
@@ -265,12 +255,7 @@ static int add_persistent_gnt(struct xen_blkif_ring *ring,
 		}
 	}
 
-<<<<<<< HEAD
 	persistent_gnt->active = true;
-=======
-	bitmap_zero(persistent_gnt->flags, PERSISTENT_GNT_FLAGS_SIZE);
-	set_bit(PERSISTENT_GNT_ACTIVE, persistent_gnt->flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Add new node and rebalance tree. */
 	rb_link_node(&(persistent_gnt->node), parent, new);
 	rb_insert_color(&(persistent_gnt->node), &ring->persistent_gnts);
@@ -294,19 +279,11 @@ static struct persistent_gnt *get_persistent_gnt(struct xen_blkif_ring *ring,
 		else if (gref > data->gnt)
 			node = node->rb_right;
 		else {
-<<<<<<< HEAD
 			if (data->active) {
 				pr_alert_ratelimited("requesting a grant already in use\n");
 				return NULL;
 			}
 			data->active = true;
-=======
-			if(test_bit(PERSISTENT_GNT_ACTIVE, data->flags)) {
-				pr_alert_ratelimited("requesting a grant already in use\n");
-				return NULL;
-			}
-			set_bit(PERSISTENT_GNT_ACTIVE, data->flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			atomic_inc(&ring->persistent_gnt_in_use);
 			return data;
 		}
@@ -317,17 +294,10 @@ static struct persistent_gnt *get_persistent_gnt(struct xen_blkif_ring *ring,
 static void put_persistent_gnt(struct xen_blkif_ring *ring,
                                struct persistent_gnt *persistent_gnt)
 {
-<<<<<<< HEAD
 	if (!persistent_gnt->active)
 		pr_alert_ratelimited("freeing a grant already unused\n");
 	persistent_gnt->last_used = jiffies;
 	persistent_gnt->active = false;
-=======
-	if(!test_bit(PERSISTENT_GNT_ACTIVE, persistent_gnt->flags))
-		pr_alert_ratelimited("freeing a grant already unused\n");
-	set_bit(PERSISTENT_GNT_WAS_ACTIVE, persistent_gnt->flags);
-	clear_bit(PERSISTENT_GNT_ACTIVE, persistent_gnt->flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	atomic_dec(&ring->persistent_gnt_in_use);
 }
 
@@ -419,27 +389,14 @@ static void purge_persistent_gnt(struct xen_blkif_ring *ring)
 	struct persistent_gnt *persistent_gnt;
 	struct rb_node *n;
 	unsigned int num_clean, total;
-<<<<<<< HEAD
 	bool scan_used = false;
 	struct rb_root *root;
 
-=======
-	bool scan_used = false, clean_used = false;
-	struct rb_root *root;
-
-	if (ring->persistent_gnt_c < xen_blkif_max_pgrants ||
-	    (ring->persistent_gnt_c == xen_blkif_max_pgrants &&
-	    !ring->blkif->vbd.overflow_max_grants)) {
-		goto out;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (work_busy(&ring->persistent_purge_work)) {
 		pr_alert_ratelimited("Scheduled work from previous purge is still busy, cannot purge list\n");
 		goto out;
 	}
 
-<<<<<<< HEAD
 	if (ring->persistent_gnt_c < xen_blkif_max_pgrants ||
 	    (ring->persistent_gnt_c == xen_blkif_max_pgrants &&
 	    !ring->blkif->vbd.overflow_max_grants)) {
@@ -452,14 +409,6 @@ static void purge_persistent_gnt(struct xen_blkif_ring *ring)
 		pr_debug("Going to purge at least %u persistent grants\n",
 			 num_clean);
 	}
-=======
-	num_clean = (xen_blkif_max_pgrants / 100) * LRU_PERCENT_CLEAN;
-	num_clean = ring->persistent_gnt_c - xen_blkif_max_pgrants + num_clean;
-	num_clean = min(ring->persistent_gnt_c, num_clean);
-	if ((num_clean == 0) ||
-	    (num_clean > (ring->persistent_gnt_c - atomic_read(&ring->persistent_gnt_in_use))))
-		goto out;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * At this point, we can assure that there will be no calls
@@ -470,13 +419,7 @@ static void purge_persistent_gnt(struct xen_blkif_ring *ring)
          * number of grants.
 	 */
 
-<<<<<<< HEAD
 	total = 0;
-=======
-	total = num_clean;
-
-	pr_debug("Going to purge %u persistent grants\n", num_clean);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	BUG_ON(!list_empty(&ring->persistent_purge_list));
 	root = &ring->persistent_gnts;
@@ -485,29 +428,16 @@ purge_list:
 		BUG_ON(persistent_gnt->handle ==
 			BLKBACK_INVALID_HANDLE);
 
-<<<<<<< HEAD
 		if (persistent_gnt->active)
 			continue;
 		if (!scan_used && !persistent_gnt_timeout(persistent_gnt))
 			continue;
 		if (scan_used && total >= num_clean)
-=======
-		if (clean_used) {
-			clear_bit(PERSISTENT_GNT_WAS_ACTIVE, persistent_gnt->flags);
-			continue;
-		}
-
-		if (test_bit(PERSISTENT_GNT_ACTIVE, persistent_gnt->flags))
-			continue;
-		if (!scan_used &&
-		    (test_bit(PERSISTENT_GNT_WAS_ACTIVE, persistent_gnt->flags)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 
 		rb_erase(&persistent_gnt->node, root);
 		list_add(&persistent_gnt->remove_node,
 			 &ring->persistent_purge_list);
-<<<<<<< HEAD
 		total++;
 	}
 	/*
@@ -530,35 +460,6 @@ purge_list:
 		pr_debug("Purged %u/%u\n", num_clean, total);
 	}
 
-=======
-		if (--num_clean == 0)
-			goto finished;
-	}
-	/*
-	 * If we get here it means we also need to start cleaning
-	 * grants that were used since last purge in order to cope
-	 * with the requested num
-	 */
-	if (!scan_used && !clean_used) {
-		pr_debug("Still missing %u purged frames\n", num_clean);
-		scan_used = true;
-		goto purge_list;
-	}
-finished:
-	if (!clean_used) {
-		pr_debug("Finished scanning for grants to clean, removing used flag\n");
-		clean_used = true;
-		goto purge_list;
-	}
-
-	ring->persistent_gnt_c -= (total - num_clean);
-	ring->blkif->vbd.overflow_max_grants = 0;
-
-	/* We can defer this work */
-	schedule_work(&ring->persistent_purge_work);
-	pr_debug("Purged %u/%u\n", (total - num_clean), total);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	return;
 }
@@ -1035,11 +936,6 @@ next:
 out_of_memory:
 	pr_alert("%s: out of memory\n", __func__);
 	put_free_pages(ring, pages_to_gnt, segs_to_map);
-<<<<<<< HEAD
-=======
-	for (i = last_map; i < num; i++)
-		pages[i]->handle = BLKBACK_INVALID_HANDLE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return -ENOMEM;
 }
 

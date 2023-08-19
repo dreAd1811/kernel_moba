@@ -10,7 +10,6 @@ struct gk104_fifo_chan {
 	struct gk104_fifo *fifo;
 	int runl;
 
-<<<<<<< HEAD
 	struct nvkm_fifo_cgrp *cgrp;
 	struct list_head head;
 	bool killed;
@@ -37,25 +36,4 @@ int gk104_fifo_gpfifo_kick_locked(struct gk104_fifo_chan *);
 
 int gv100_fifo_gpfifo_new(struct gk104_fifo *, const struct nvkm_oclass *,
 			  void *data, u32 size, struct nvkm_object **);
-=======
-	struct list_head head;
-	bool killed;
-
-	struct nvkm_gpuobj *pgd;
-	struct nvkm_vm *vm;
-
-	struct {
-		struct nvkm_gpuobj *inst;
-		struct nvkm_vma vma;
-	} engn[NVKM_SUBDEV_NR];
-};
-
-int gk104_fifo_gpfifo_new(struct nvkm_fifo *, const struct nvkm_oclass *,
-			  void *data, u32 size, struct nvkm_object **);
-
-extern const struct nvkm_fifo_chan_oclass gk104_fifo_gpfifo_oclass;
-extern const struct nvkm_fifo_chan_oclass gk110_fifo_gpfifo_oclass;
-extern const struct nvkm_fifo_chan_oclass gm200_fifo_gpfifo_oclass;
-extern const struct nvkm_fifo_chan_oclass gp100_fifo_gpfifo_oclass;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

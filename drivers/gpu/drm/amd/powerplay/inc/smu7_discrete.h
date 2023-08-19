@@ -316,12 +316,8 @@ struct SMU7_Discrete_DpmTable
     uint8_t                             AcpLevelCount;
     uint8_t                             SamuLevelCount;
     uint8_t                             MasterDeepSleepControl;
-<<<<<<< HEAD
     uint32_t                            VRConfig;
     uint32_t                            Reserved[4];
-=======
-    uint32_t                            Reserved[5];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 //    uint32_t                            SamuDefaultLevel;
 
     SMU7_Discrete_GraphicsLevel         GraphicsLevel           [SMU7_MAX_LEVELS_GRAPHICS];

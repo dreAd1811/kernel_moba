@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 # SPDX-License-Identifier: GPL-2.0-only
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #
 # MSM Broadcast subsystem drivers
 #
@@ -10,11 +7,7 @@
 config TSPP
 	depends on ARCH_QCOM
 	tristate "TSPP (Transport Stream Packet Processor) Support"
-<<<<<<< HEAD
 	help
-=======
-	---help---
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	Transport Stream Packet Processor v1 is used to offload the
 	processing of MPEG transport streams from the main processor.
 	It is used to process incoming transport streams from TSIF

@@ -17,7 +17,6 @@
 #ifndef __RSI_HAL_H__
 #define __RSI_HAL_H__
 
-<<<<<<< HEAD
 /* Device Operating modes */
 #define DEV_OPMODE_WIFI_ALONE		1
 #define DEV_OPMODE_BT_ALONE		4
@@ -29,8 +28,6 @@
 #define DEV_OPMODE_AP_BT		6
 #define DEV_OPMODE_AP_BT_DUAL		14
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define FLASH_WRITE_CHUNK_SIZE		(4 * 1024)
 #define FLASH_SECTOR_SIZE		(4 * 1024)
 
@@ -115,14 +112,11 @@
 
 #define BBP_INFO_40MHZ 0x6
 
-<<<<<<< HEAD
 #define FW_FLASH_OFFSET			0x820
 #define LMAC_VER_OFFSET			(FW_FLASH_OFFSET + 0x200)
 #define MAX_DWORD_ALIGN_BYTES		64
 #define RSI_COMMON_REG_SIZE		2
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct bl_header {
 	__le32 flags;
 	__le32 image_no;
@@ -143,12 +137,7 @@ struct rsi_mgmt_desc {
 	u8 xtend_desc_size;
 	u8 header_len;
 	__le16 frame_info;
-<<<<<<< HEAD
 	__le16 rate_info;
-=======
-	u8 rate_info;
-	u8 reserved1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le16 bbp_info;
 	__le16 seq_ctrl;
 	u8 reserved2;
@@ -169,7 +158,6 @@ struct rsi_data_desc {
 	u8 sta_id;
 } __packed;
 
-<<<<<<< HEAD
 struct rsi_bt_desc {
 	__le16 len_qno;
 	__le16 reserved1;
@@ -185,10 +173,5 @@ int rsi_prepare_data_desc(struct rsi_common *common, struct sk_buff *skb);
 int rsi_prepare_beacon(struct rsi_common *common, struct sk_buff *skb);
 int rsi_send_pkt_to_bus(struct rsi_common *common, struct sk_buff *skb);
 int rsi_send_bt_pkt(struct rsi_common *common, struct sk_buff *skb);
-=======
-int rsi_hal_device_init(struct rsi_hw *adapter);
-int rsi_prepare_beacon(struct rsi_common *common, struct sk_buff *skb);
-int rsi_send_pkt_to_bus(struct rsi_common *common, struct sk_buff *skb);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif

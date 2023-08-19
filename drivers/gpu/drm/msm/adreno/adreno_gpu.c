@@ -17,23 +17,14 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-<<<<<<< HEAD
 #include <linux/ascii85.h>
 #include <linux/kernel.h>
 #include <linux/pm_opp.h>
 #include <linux/slab.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "adreno_gpu.h"
 #include "msm_gem.h"
 #include "msm_mmu.h"
 
-<<<<<<< HEAD
-=======
-#define RB_SIZE    SZ_32K
-#define RB_BLKSIZE 32
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int adreno_get_param(struct msm_gpu *gpu, uint32_t param, uint64_t *value)
 {
 	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
@@ -68,19 +59,15 @@ int adreno_get_param(struct msm_gpu *gpu, uint32_t param, uint64_t *value)
 			return ret;
 		}
 		return -EINVAL;
-<<<<<<< HEAD
 	case MSM_PARAM_NR_RINGS:
 		*value = gpu->nr_rings;
 		return 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		DBG("%s: invalid param: %u", gpu->name, param);
 		return -EINVAL;
 	}
 }
 
-<<<<<<< HEAD
 const struct firmware *
 adreno_request_fw(struct adreno_gpu *adreno_gpu, const char *fwname)
 {
@@ -251,54 +238,16 @@ int adreno_hw_init(struct msm_gpu *gpu)
 	/* Setup ringbuffer address - use ringbuffer[0] for GPU init */
 	adreno_gpu_write64(adreno_gpu, REG_ADRENO_CP_RB_BASE,
 		REG_ADRENO_CP_RB_BASE_HI, gpu->rb[0]->iova);
-=======
-int adreno_hw_init(struct msm_gpu *gpu)
-{
-	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
-	int ret;
-
-	DBG("%s", gpu->name);
-
-	ret = msm_gem_get_iova(gpu->rb->bo, gpu->aspace, &gpu->rb_iova);
-	if (ret) {
-		gpu->rb_iova = 0;
-		dev_err(gpu->dev->dev, "could not map ringbuffer: %d\n", ret);
-		return ret;
-	}
-
-	/* reset ringbuffer: */
-	gpu->rb->cur = gpu->rb->start;
-
-	/* reset completed fence seqno: */
-	adreno_gpu->memptrs->fence = gpu->fctx->completed_fence;
-	adreno_gpu->memptrs->rptr  = 0;
-
-	/* Setup REG_CP_RB_CNTL: */
-	adreno_gpu_write(adreno_gpu, REG_ADRENO_CP_RB_CNTL,
-			/* size is log2(quad-words): */
-			AXXX_CP_RB_CNTL_BUFSZ(ilog2(gpu->rb->size / 8)) |
-			AXXX_CP_RB_CNTL_BLKSZ(ilog2(RB_BLKSIZE / 8)) |
-			(adreno_is_a430(adreno_gpu) ? AXXX_CP_RB_CNTL_NO_UPDATE : 0));
-
-	/* Setup ringbuffer address: */
-	adreno_gpu_write64(adreno_gpu, REG_ADRENO_CP_RB_BASE,
-		REG_ADRENO_CP_RB_BASE_HI, gpu->rb_iova);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!adreno_is_a430(adreno_gpu)) {
 		adreno_gpu_write64(adreno_gpu, REG_ADRENO_CP_RB_RPTR_ADDR,
 			REG_ADRENO_CP_RB_RPTR_ADDR_HI,
-<<<<<<< HEAD
 			rbmemptr(gpu->rb[0], rptr));
-=======
-			rbmemptr(adreno_gpu, rptr));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
 }
 
-<<<<<<< HEAD
 /* Use this helper to read rptr, since a430 doesn't update rptr in memory */
 static uint32_t get_rptr(struct adreno_gpu *adreno_gpu,
 		struct msm_ringbuffer *ring)
@@ -313,27 +262,6 @@ static uint32_t get_rptr(struct adreno_gpu *adreno_gpu,
 struct msm_ringbuffer *adreno_active_ring(struct msm_gpu *gpu)
 {
 	return gpu->rb[0];
-=======
-static uint32_t get_wptr(struct msm_ringbuffer *ring)
-{
-	return ring->cur - ring->start;
-}
-
-/* Use this helper to read rptr, since a430 doesn't update rptr in memory */
-static uint32_t get_rptr(struct adreno_gpu *adreno_gpu)
-{
-	if (adreno_is_a430(adreno_gpu))
-		return adreno_gpu->memptrs->rptr = adreno_gpu_read(
-			adreno_gpu, REG_ADRENO_CP_RB_RPTR);
-	else
-		return adreno_gpu->memptrs->rptr;
-}
-
-uint32_t adreno_last_fence(struct msm_gpu *gpu)
-{
-	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
-	return adreno_gpu->memptrs->fence;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void adreno_recover(struct msm_gpu *gpu)
@@ -359,11 +287,7 @@ void adreno_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit,
 {
 	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
 	struct msm_drm_private *priv = gpu->dev->dev_private;
-<<<<<<< HEAD
 	struct msm_ringbuffer *ring = submit->ring;
-=======
-	struct msm_ringbuffer *ring = gpu->rb;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned i;
 
 	for (i = 0; i < submit->nr_cmds; i++) {
@@ -378,11 +302,7 @@ void adreno_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit,
 		case MSM_SUBMIT_CMD_BUF:
 			OUT_PKT3(ring, adreno_is_a430(adreno_gpu) ?
 				CP_INDIRECT_BUFFER_PFE : CP_INDIRECT_BUFFER_PFD, 2);
-<<<<<<< HEAD
 			OUT_RING(ring, lower_32_bits(submit->cmd[i].iova));
-=======
-			OUT_RING(ring, submit->cmd[i].iova);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			OUT_RING(ring, submit->cmd[i].size);
 			OUT_PKT2(ring);
 			break;
@@ -390,11 +310,7 @@ void adreno_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit,
 	}
 
 	OUT_PKT0(ring, REG_AXXX_CP_SCRATCH_REG2, 1);
-<<<<<<< HEAD
 	OUT_RING(ring, submit->seqno);
-=======
-	OUT_RING(ring, submit->fence->seqno);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (adreno_is_a3xx(adreno_gpu) || adreno_is_a4xx(adreno_gpu)) {
 		/* Flush HLSQ lazy updates to make sure there is nothing
@@ -408,33 +324,11 @@ void adreno_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit,
 		OUT_RING(ring, 0x00000000);
 	}
 
-<<<<<<< HEAD
 	/* BIT(31) of CACHE_FLUSH_TS triggers CACHE_FLUSH_TS IRQ from GPU */
 	OUT_PKT3(ring, CP_EVENT_WRITE, 3);
 	OUT_RING(ring, CACHE_FLUSH_TS | BIT(31));
 	OUT_RING(ring, rbmemptr(ring, fence));
 	OUT_RING(ring, submit->seqno);
-=======
-	OUT_PKT3(ring, CP_EVENT_WRITE, 3);
-	OUT_RING(ring, CACHE_FLUSH_TS);
-	OUT_RING(ring, rbmemptr(adreno_gpu, fence));
-	OUT_RING(ring, submit->fence->seqno);
-
-	/* we could maybe be clever and only CP_COND_EXEC the interrupt: */
-	OUT_PKT3(ring, CP_INTERRUPT, 1);
-	OUT_RING(ring, 0x80000000);
-
-	/* Workaround for missing irq issue on 8x16/a306.  Unsure if the
-	 * root cause is a platform issue or some a306 quirk, but this
-	 * keeps things humming along:
-	 */
-	if (adreno_is_a306(adreno_gpu)) {
-		OUT_PKT3(ring, CP_WAIT_FOR_IDLE, 1);
-		OUT_RING(ring, 0x00000000);
-		OUT_PKT3(ring, CP_INTERRUPT, 1);
-		OUT_RING(ring, 0x80000000);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #if 0
 	if (adreno_is_a3xx(adreno_gpu)) {
@@ -445,37 +339,23 @@ void adreno_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit,
 	}
 #endif
 
-<<<<<<< HEAD
 	gpu->funcs->flush(gpu, ring);
 }
 
 void adreno_flush(struct msm_gpu *gpu, struct msm_ringbuffer *ring)
-=======
-	gpu->funcs->flush(gpu);
-}
-
-void adreno_flush(struct msm_gpu *gpu)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
 	uint32_t wptr;
 
-<<<<<<< HEAD
 	/* Copy the shadow to the actual register */
 	ring->cur = ring->next;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Mask wptr value that we calculate to fit in the HW range. This is
 	 * to account for the possibility that the last command fit exactly into
 	 * the ringbuffer and rb->next hasn't wrapped to zero yet
 	 */
-<<<<<<< HEAD
 	wptr = get_wptr(ring);
-=======
-	wptr = get_wptr(gpu->rb) & ((gpu->rb->size / 4) - 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* ensure writes to ringbuffer have hit system memory: */
 	mb();
@@ -483,7 +363,6 @@ void adreno_flush(struct msm_gpu *gpu)
 	adreno_gpu_write(adreno_gpu, REG_ADRENO_CP_RB_WPTR, wptr);
 }
 
-<<<<<<< HEAD
 bool adreno_idle(struct msm_gpu *gpu, struct msm_ringbuffer *ring)
 {
 	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
@@ -630,41 +509,18 @@ static void adreno_show_object(struct drm_printer *p, u32 *ptr, int len)
 
 void adreno_show(struct msm_gpu *gpu, struct msm_gpu_state *state,
 		struct drm_printer *p)
-=======
-bool adreno_idle(struct msm_gpu *gpu)
-{
-	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
-	uint32_t wptr = get_wptr(gpu->rb);
-
-	/* wait for CP to drain ringbuffer: */
-	if (!spin_until(get_rptr(adreno_gpu) == wptr))
-		return true;
-
-	/* TODO maybe we need to reset GPU here to recover from hang? */
-	DRM_ERROR("%s: timeout waiting to drain ringbuffer!\n", gpu->name);
-	return false;
-}
-
-#ifdef CONFIG_DEBUG_FS
-void adreno_show(struct msm_gpu *gpu, struct seq_file *m)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
 	int i;
 
-<<<<<<< HEAD
 	if (IS_ERR_OR_NULL(state))
 		return;
 
 	drm_printf(p, "revision: %d (%d.%d.%d.%d)\n",
-=======
-	seq_printf(m, "revision: %d (%d.%d.%d.%d)\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			adreno_gpu->info->revn, adreno_gpu->rev.core,
 			adreno_gpu->rev.major, adreno_gpu->rev.minor,
 			adreno_gpu->rev.patchid);
 
-<<<<<<< HEAD
 	drm_printf(p, "rbbm-status: 0x%08x\n", state->rbbm_status);
 
 	drm_puts(p, "ringbuffer:\n");
@@ -702,25 +558,6 @@ void adreno_show(struct msm_gpu *gpu, struct seq_file *m)
 			state->registers[i * 2] << 2,
 			state->registers[(i * 2) + 1]);
 	}
-=======
-	seq_printf(m, "fence:    %d/%d\n", adreno_gpu->memptrs->fence,
-			gpu->fctx->last_fence);
-	seq_printf(m, "rptr:     %d\n", get_rptr(adreno_gpu));
-	seq_printf(m, "rb wptr:  %d\n", get_wptr(gpu->rb));
-
-	/* dump these out in a form that can be parsed by demsm: */
-	seq_printf(m, "IO:region %s 00000000 00020000\n", gpu->name);
-	for (i = 0; adreno_gpu->registers[i] != ~0; i += 2) {
-		uint32_t start = adreno_gpu->registers[i];
-		uint32_t end   = adreno_gpu->registers[i+1];
-		uint32_t addr;
-
-		for (addr = start; addr <= end; addr++) {
-			uint32_t val = gpu_read(gpu, addr);
-			seq_printf(m, "IO:R %08x %08x\n", addr<<2, val);
-		}
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #endif
 
@@ -733,17 +570,13 @@ void adreno_show(struct msm_gpu *gpu, struct seq_file *m)
 void adreno_dump_info(struct msm_gpu *gpu)
 {
 	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
-<<<<<<< HEAD
 	int i;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	printk("revision: %d (%d.%d.%d.%d)\n",
 			adreno_gpu->info->revn, adreno_gpu->rev.core,
 			adreno_gpu->rev.major, adreno_gpu->rev.minor,
 			adreno_gpu->rev.patchid);
 
-<<<<<<< HEAD
 	for (i = 0; i < gpu->nr_rings; i++) {
 		struct msm_ringbuffer *ring = gpu->rb[i];
 
@@ -754,12 +587,6 @@ void adreno_dump_info(struct msm_gpu *gpu)
 		printk("rptr:     %d\n", get_rptr(adreno_gpu, ring));
 		printk("rb wptr:  %d\n", get_wptr(ring));
 	}
-=======
-	printk("fence:    %d/%d\n", adreno_gpu->memptrs->fence,
-			gpu->fctx->last_fence);
-	printk("rptr:     %d\n", get_rptr(adreno_gpu));
-	printk("rb wptr:  %d\n", get_wptr(gpu->rb));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* would be nice to not have to duplicate the _show() stuff with printk(): */
@@ -782,7 +609,6 @@ void adreno_dump(struct msm_gpu *gpu)
 	}
 }
 
-<<<<<<< HEAD
 static uint32_t ring_freewords(struct msm_ringbuffer *ring)
 {
 	struct adreno_gpu *adreno_gpu = to_adreno_gpu(ring->gpu);
@@ -875,33 +701,10 @@ static int adreno_get_pwrlevels(struct device *dev,
 int adreno_gpu_init(struct drm_device *drm, struct platform_device *pdev,
 		struct adreno_gpu *adreno_gpu,
 		const struct adreno_gpu_funcs *funcs, int nr_rings)
-=======
-static uint32_t ring_freewords(struct msm_gpu *gpu)
-{
-	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
-	uint32_t size = gpu->rb->size / 4;
-	uint32_t wptr = get_wptr(gpu->rb);
-	uint32_t rptr = get_rptr(adreno_gpu);
-	return (rptr + (size - 1) - wptr) % size;
-}
-
-void adreno_wait_ring(struct msm_gpu *gpu, uint32_t ndwords)
-{
-	if (spin_until(ring_freewords(gpu) >= ndwords))
-		DRM_ERROR("%s: timeout waiting for ringbuffer space\n", gpu->name);
-}
-
-int adreno_gpu_init(struct drm_device *drm, struct platform_device *pdev,
-		struct adreno_gpu *adreno_gpu, const struct adreno_gpu_funcs *funcs)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct adreno_platform_config *config = pdev->dev.platform_data;
 	struct msm_gpu_config adreno_gpu_config  = { 0 };
 	struct msm_gpu *gpu = &adreno_gpu->base;
-<<<<<<< HEAD
-=======
-	int ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	adreno_gpu->funcs = funcs;
 	adreno_gpu->info = adreno_info(config->rev);
@@ -909,25 +712,12 @@ int adreno_gpu_init(struct drm_device *drm, struct platform_device *pdev,
 	adreno_gpu->revn = adreno_gpu->info->revn;
 	adreno_gpu->rev = config->rev;
 
-<<<<<<< HEAD
-=======
-	gpu->fast_rate = config->fast_rate;
-	gpu->bus_freq  = config->bus_freq;
-#ifdef DOWNSTREAM_CONFIG_MSM_BUS_SCALING
-	gpu->bus_scale_table = config->bus_scale_table;
-#endif
-
-	DBG("fast_rate=%u, slow_rate=27000000, bus_freq=%u",
-			gpu->fast_rate, gpu->bus_freq);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adreno_gpu_config.ioname = "kgsl_3d0_reg_memory";
 	adreno_gpu_config.irqname = "kgsl_3d0_irq";
 
 	adreno_gpu_config.va_start = SZ_16M;
 	adreno_gpu_config.va_end = 0xffffffff;
 
-<<<<<<< HEAD
 	adreno_gpu_config.nr_rings = nr_rings;
 
 	adreno_get_pwrlevels(&pdev->dev, gpu);
@@ -939,70 +729,14 @@ int adreno_gpu_init(struct drm_device *drm, struct platform_device *pdev,
 
 	return msm_gpu_init(drm, pdev, &adreno_gpu->base, &funcs->base,
 			adreno_gpu->info->name, &adreno_gpu_config);
-=======
-	adreno_gpu_config.ringsz = RB_SIZE;
-
-	pm_runtime_set_autosuspend_delay(&pdev->dev, DRM_MSM_INACTIVE_PERIOD);
-	pm_runtime_use_autosuspend(&pdev->dev);
-	pm_runtime_enable(&pdev->dev);
-
-	ret = msm_gpu_init(drm, pdev, &adreno_gpu->base, &funcs->base,
-			adreno_gpu->info->name, &adreno_gpu_config);
-	if (ret)
-		return ret;
-
-	ret = request_firmware(&adreno_gpu->pm4, adreno_gpu->info->pm4fw, drm->dev);
-	if (ret) {
-		dev_err(drm->dev, "failed to load %s PM4 firmware: %d\n",
-				adreno_gpu->info->pm4fw, ret);
-		return ret;
-	}
-
-	ret = request_firmware(&adreno_gpu->pfp, adreno_gpu->info->pfpfw, drm->dev);
-	if (ret) {
-		dev_err(drm->dev, "failed to load %s PFP firmware: %d\n",
-				adreno_gpu->info->pfpfw, ret);
-		return ret;
-	}
-
-	adreno_gpu->memptrs = msm_gem_kernel_new(drm,
-		sizeof(*adreno_gpu->memptrs), MSM_BO_UNCACHED, gpu->aspace,
-		&adreno_gpu->memptrs_bo, &adreno_gpu->memptrs_iova);
-
-	if (IS_ERR(adreno_gpu->memptrs)) {
-		ret = PTR_ERR(adreno_gpu->memptrs);
-		adreno_gpu->memptrs = NULL;
-		dev_err(drm->dev, "could not allocate memptrs: %d\n", ret);
-	}
-
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void adreno_gpu_cleanup(struct adreno_gpu *adreno_gpu)
 {
-<<<<<<< HEAD
 	unsigned int i;
 
 	for (i = 0; i < ARRAY_SIZE(adreno_gpu->info->fw); i++)
 		release_firmware(adreno_gpu->fw[i]);
 
 	msm_gpu_cleanup(&adreno_gpu->base);
-=======
-	struct msm_gpu *gpu = &adreno_gpu->base;
-
-	if (adreno_gpu->memptrs_bo) {
-		if (adreno_gpu->memptrs)
-			msm_gem_put_vaddr(adreno_gpu->memptrs_bo);
-
-		if (adreno_gpu->memptrs_iova)
-			msm_gem_put_iova(adreno_gpu->memptrs_bo, gpu->aspace);
-
-		drm_gem_object_unreference_unlocked(adreno_gpu->memptrs_bo);
-	}
-	release_firmware(adreno_gpu->pm4);
-	release_firmware(adreno_gpu->pfp);
-
-	msm_gpu_cleanup(gpu);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

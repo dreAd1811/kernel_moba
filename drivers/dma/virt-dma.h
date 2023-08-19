@@ -35,10 +35,7 @@ struct virt_dma_chan {
 	struct list_head desc_completed;
 
 	struct virt_dma_desc *cyclic;
-<<<<<<< HEAD
 	struct virt_dma_desc *vd_terminated;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static inline struct virt_dma_chan *to_virt_chan(struct dma_chan *chan)
@@ -108,7 +105,6 @@ static inline void vchan_cookie_complete(struct virt_dma_desc *vd)
 }
 
 /**
-<<<<<<< HEAD
  * vchan_vdesc_fini - Free or reuse a descriptor
  * @vd: virtual descriptor to free/reuse
  */
@@ -123,8 +119,6 @@ static inline void vchan_vdesc_fini(struct virt_dma_desc *vd)
 }
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * vchan_cyclic_callback - report the completion of a period
  * @vd: virtual descriptor
  */
@@ -137,7 +131,6 @@ static inline void vchan_cyclic_callback(struct virt_dma_desc *vd)
 }
 
 /**
-<<<<<<< HEAD
  * vchan_terminate_vdesc - Disable pending cyclic callback
  * @vd: virtual descriptor to be terminated
  *
@@ -157,8 +150,6 @@ static inline void vchan_terminate_vdesc(struct virt_dma_desc *vd)
 }
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * vchan_next_desc - peek at the next descriptor to be processed
  * @vc: virtual channel to obtain descriptor from
  *
@@ -211,7 +202,6 @@ static inline void vchan_free_chan_resources(struct virt_dma_chan *vc)
  * Makes sure that all scheduled or active callbacks have finished running. For
  * proper operation the caller has to ensure that no new callbacks are scheduled
  * after the invocation of this function started.
-<<<<<<< HEAD
  * Free up the terminated cyclic descriptor to prevent memory leakage.
  */
 static inline void vchan_synchronize(struct virt_dma_chan *vc)
@@ -226,12 +216,6 @@ static inline void vchan_synchronize(struct virt_dma_chan *vc)
 		vc->vd_terminated = NULL;
 	}
 	spin_unlock_irqrestore(&vc->lock, flags);
-=======
- */
-static inline void vchan_synchronize(struct virt_dma_chan *vc)
-{
-	tasklet_kill(&vc->task);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #endif

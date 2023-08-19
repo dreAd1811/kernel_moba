@@ -92,10 +92,6 @@ static inline void activate_mm(struct mm_struct *active_mm,
 
 #define deactivate_mm(tsk, mm) do { } while (0)
 
-<<<<<<< HEAD
-=======
-extern void mmu_context_init(void);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define prepare_arch_switch(next) load_ksp_mmu(next)
 
 static inline void load_ksp_mmu(struct task_struct *task)

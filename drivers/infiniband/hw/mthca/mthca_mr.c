@@ -144,11 +144,7 @@ static int mthca_buddy_init(struct mthca_buddy *buddy, int max_order)
 	buddy->max_order = max_order;
 	spin_lock_init(&buddy->lock);
 
-<<<<<<< HEAD
 	buddy->bits = kcalloc(buddy->max_order + 1, sizeof(long *),
-=======
-	buddy->bits = kzalloc((buddy->max_order + 1) * sizeof (long *),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      GFP_KERNEL);
 	buddy->num_free = kcalloc((buddy->max_order + 1), sizeof *buddy->num_free,
 				  GFP_KERNEL);
@@ -157,11 +153,7 @@ static int mthca_buddy_init(struct mthca_buddy *buddy, int max_order)
 
 	for (i = 0; i <= buddy->max_order; ++i) {
 		s = BITS_TO_LONGS(1 << (buddy->max_order - i));
-<<<<<<< HEAD
 		buddy->bits[i] = kmalloc_array(s, sizeof(long), GFP_KERNEL);
-=======
-		buddy->bits[i] = kmalloc(s * sizeof (long), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!buddy->bits[i])
 			goto err_out_free;
 		bitmap_zero(buddy->bits[i],

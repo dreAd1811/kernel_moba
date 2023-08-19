@@ -40,11 +40,7 @@
  *     OTHER DEALINGS IN THE SOFTWARE.
  */
 
-<<<<<<< HEAD
 #include <dt-bindings/pinctrl/stm32-pinfunc.h>
-=======
-#include <dt-bindings/pinctrl/stm32h7-pinfunc.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 / {
 	soc {
@@ -53,168 +49,114 @@
 			#size-cells = <1>;
 			compatible = "st,stm32h743-pinctrl";
 			ranges = <0 0x58020000 0x3000>;
-<<<<<<< HEAD
 			interrupt-parent = <&exti>;
 			st,syscfg = <&syscfg 0x8>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pins-are-numbered;
 
 			gpioa: gpio@58020000 {
 				gpio-controller;
 				#gpio-cells = <2>;
 				reg = <0x0 0x400>;
-<<<<<<< HEAD
 				clocks = <&rcc GPIOA_CK>;
 				st,bank-name = "GPIOA";
 				interrupt-controller;
 				#interrupt-cells = <2>;
-=======
-				clocks = <&timer_clk>;
-				st,bank-name = "GPIOA";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 
 			gpiob: gpio@58020400 {
 				gpio-controller;
 				#gpio-cells = <2>;
 				reg = <0x400 0x400>;
-<<<<<<< HEAD
 				clocks = <&rcc GPIOB_CK>;
 				st,bank-name = "GPIOB";
 				interrupt-controller;
 				#interrupt-cells = <2>;
-=======
-				clocks = <&timer_clk>;
-				st,bank-name = "GPIOB";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 
 			gpioc: gpio@58020800 {
 				gpio-controller;
 				#gpio-cells = <2>;
 				reg = <0x800 0x400>;
-<<<<<<< HEAD
 				clocks = <&rcc GPIOC_CK>;
 				st,bank-name = "GPIOC";
 				interrupt-controller;
 				#interrupt-cells = <2>;
-=======
-				clocks = <&timer_clk>;
-				st,bank-name = "GPIOC";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 
 			gpiod: gpio@58020c00 {
 				gpio-controller;
 				#gpio-cells = <2>;
 				reg = <0xc00 0x400>;
-<<<<<<< HEAD
 				clocks = <&rcc GPIOD_CK>;
 				st,bank-name = "GPIOD";
 				interrupt-controller;
 				#interrupt-cells = <2>;
-=======
-				clocks = <&timer_clk>;
-				st,bank-name = "GPIOD";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 
 			gpioe: gpio@58021000 {
 				gpio-controller;
 				#gpio-cells = <2>;
 				reg = <0x1000 0x400>;
-<<<<<<< HEAD
 				clocks = <&rcc GPIOE_CK>;
 				st,bank-name = "GPIOE";
 				interrupt-controller;
 				#interrupt-cells = <2>;
-=======
-				clocks = <&timer_clk>;
-				st,bank-name = "GPIOE";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 
 			gpiof: gpio@58021400 {
 				gpio-controller;
 				#gpio-cells = <2>;
 				reg = <0x1400 0x400>;
-<<<<<<< HEAD
 				clocks = <&rcc GPIOF_CK>;
 				st,bank-name = "GPIOF";
 				interrupt-controller;
 				#interrupt-cells = <2>;
-=======
-				clocks = <&timer_clk>;
-				st,bank-name = "GPIOF";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 
 			gpiog: gpio@58021800 {
 				gpio-controller;
 				#gpio-cells = <2>;
 				reg = <0x1800 0x400>;
-<<<<<<< HEAD
 				clocks = <&rcc GPIOG_CK>;
 				st,bank-name = "GPIOG";
 				interrupt-controller;
 				#interrupt-cells = <2>;
-=======
-				clocks = <&timer_clk>;
-				st,bank-name = "GPIOG";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 
 			gpioh: gpio@58021c00 {
 				gpio-controller;
 				#gpio-cells = <2>;
 				reg = <0x1c00 0x400>;
-<<<<<<< HEAD
 				clocks = <&rcc GPIOH_CK>;
 				st,bank-name = "GPIOH";
 				interrupt-controller;
 				#interrupt-cells = <2>;
-=======
-				clocks = <&timer_clk>;
-				st,bank-name = "GPIOH";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 
 			gpioi: gpio@58022000 {
 				gpio-controller;
 				#gpio-cells = <2>;
 				reg = <0x2000 0x400>;
-<<<<<<< HEAD
 				clocks = <&rcc GPIOI_CK>;
 				st,bank-name = "GPIOI";
 				interrupt-controller;
 				#interrupt-cells = <2>;
-=======
-				clocks = <&timer_clk>;
-				st,bank-name = "GPIOI";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 
 			gpioj: gpio@58022400 {
 				gpio-controller;
 				#gpio-cells = <2>;
 				reg = <0x2400 0x400>;
-<<<<<<< HEAD
 				clocks = <&rcc GPIOJ_CK>;
 				st,bank-name = "GPIOJ";
 				interrupt-controller;
 				#interrupt-cells = <2>;
-=======
-				clocks = <&timer_clk>;
-				st,bank-name = "GPIOJ";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 
 			gpiok: gpio@58022800 {
 				gpio-controller;
 				#gpio-cells = <2>;
 				reg = <0x2800 0x400>;
-<<<<<<< HEAD
 				clocks = <&rcc GPIOK_CK>;
 				st,bank-name = "GPIOK";
 				interrupt-controller;
@@ -229,46 +171,29 @@
 					drive-open-drain;
 					slew-rate = <0>;
 				};
-=======
-				clocks = <&timer_clk>;
-				st,bank-name = "GPIOK";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 
 			usart1_pins: usart1@0 {
 				pins1 {
-<<<<<<< HEAD
 					pinmux = <STM32_PINMUX('B', 14, AF4)>; /* USART1_TX */
-=======
-					pinmux = <STM32H7_PB14_FUNC_USART1_TX>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					bias-disable;
 					drive-push-pull;
 					slew-rate = <0>;
 				};
 				pins2 {
-<<<<<<< HEAD
 					pinmux = <STM32_PINMUX('B', 15, AF4)>; /* USART1_RX */
-=======
-					pinmux = <STM32H7_PB15_FUNC_USART1_RX>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					bias-disable;
 				};
 			};
 
 			usart2_pins: usart2@0 {
 				pins1 {
-<<<<<<< HEAD
 					pinmux = <STM32_PINMUX('D', 5, AF7)>; /* USART2_TX */
-=======
-					pinmux = <STM32H7_PD5_FUNC_USART2_TX>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					bias-disable;
 					drive-push-pull;
 					slew-rate = <0>;
 				};
 				pins2 {
-<<<<<<< HEAD
 					pinmux = <STM32_PINMUX('D', 6, AF7)>; /* USART2_RX */
 					bias-disable;
 				};
@@ -293,12 +218,6 @@
 					slew-rate = <2>;
 				};
 			};
-=======
-					pinmux = <STM32H7_PD6_FUNC_USART2_RX>;
-					bias-disable;
-				};
-			};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 	};
 };

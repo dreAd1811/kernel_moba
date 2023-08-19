@@ -135,10 +135,7 @@ static int mtk_rng_probe(struct platform_device *pdev)
 #endif
 	priv->rng.read = mtk_rng_read;
 	priv->rng.priv = (unsigned long)&pdev->dev;
-<<<<<<< HEAD
 	priv->rng.quality = 900;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	priv->clk = devm_clk_get(&pdev->dev, "rng");
 	if (IS_ERR(priv->clk)) {

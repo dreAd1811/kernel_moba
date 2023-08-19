@@ -1,8 +1,5 @@
 #include <linux/debugfs.h>
-<<<<<<< HEAD
 #include <linux/efi.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/module.h>
 #include <linux/seq_file.h>
 #include <asm/pgtable.h>
@@ -76,7 +73,6 @@ static const struct file_operations ptdump_curusr_fops = {
 };
 #endif
 
-<<<<<<< HEAD
 #if defined(CONFIG_EFI) && defined(CONFIG_X86_64)
 static struct dentry *pe_efi;
 
@@ -101,8 +97,6 @@ static const struct file_operations ptdump_efi_fops = {
 };
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct dentry *dir, *pe_knl, *pe_curknl;
 
 static int __init pt_dump_debug_init(void)
@@ -127,7 +121,6 @@ static int __init pt_dump_debug_init(void)
 	if (!pe_curusr)
 		goto err;
 #endif
-<<<<<<< HEAD
 
 #if defined(CONFIG_EFI) && defined(CONFIG_X86_64)
 	pe_efi = debugfs_create_file("efi", 0400, dir, NULL, &ptdump_efi_fops);
@@ -135,8 +128,6 @@ static int __init pt_dump_debug_init(void)
 		goto err;
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 err:
 	debugfs_remove_recursive(dir);

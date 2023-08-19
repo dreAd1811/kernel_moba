@@ -263,10 +263,7 @@ static int cx23885_video_mux(struct cx23885_dev *dev, unsigned int input)
 		(dev->board == CX23885_BOARD_HAUPPAUGE_IMPACTVCBE) ||
 		(dev->board == CX23885_BOARD_HAUPPAUGE_HVR1255) ||
 		(dev->board == CX23885_BOARD_HAUPPAUGE_HVR1255_22111) ||
-<<<<<<< HEAD
 		(dev->board == CX23885_BOARD_HAUPPAUGE_HVR1265_K4) ||
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		(dev->board == CX23885_BOARD_HAUPPAUGE_HVR1850) ||
 		(dev->board == CX23885_BOARD_MYGICA_X8507) ||
 		(dev->board == CX23885_BOARD_AVERMEDIA_HC81R) ||
@@ -997,12 +994,8 @@ static int cx23885_set_freq_via_ops(struct cx23885_dev *dev,
 
 	if ((dev->board == CX23885_BOARD_HAUPPAUGE_HVR1850) ||
 	    (dev->board == CX23885_BOARD_HAUPPAUGE_HVR1255) ||
-<<<<<<< HEAD
 	    (dev->board == CX23885_BOARD_HAUPPAUGE_HVR1255_22111) ||
 	    (dev->board == CX23885_BOARD_HAUPPAUGE_HVR1265_K4))
-=======
-	    (dev->board == CX23885_BOARD_HAUPPAUGE_HVR1255_22111))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		fe = &dev->ts1.analog_fe;
 
 	if (fe && fe->ops.tuner_ops.set_analog_params) {
@@ -1031,10 +1024,7 @@ int cx23885_set_frequency(struct file *file, void *priv,
 	switch (dev->board) {
 	case CX23885_BOARD_HAUPPAUGE_HVR1255:
 	case CX23885_BOARD_HAUPPAUGE_HVR1255_22111:
-<<<<<<< HEAD
 	case CX23885_BOARD_HAUPPAUGE_HVR1265_K4:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case CX23885_BOARD_HAUPPAUGE_HVR1850:
 		ret = cx23885_set_freq_via_ops(dev, f);
 		break;
@@ -1159,11 +1149,7 @@ static struct video_device cx23885_vbi_template;
 static struct video_device cx23885_video_template = {
 	.name                 = "cx23885-video",
 	.fops                 = &video_fops,
-<<<<<<< HEAD
 	.ioctl_ops	      = &video_ioctl_ops,
-=======
-	.ioctl_ops 	      = &video_ioctl_ops,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.tvnorms              = CX23885_NORMS,
 };
 

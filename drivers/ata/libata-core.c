@@ -57,10 +57,7 @@
 #include <linux/workqueue.h>
 #include <linux/scatterlist.h>
 #include <linux/io.h>
-<<<<<<< HEAD
 #include <linux/async.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/log2.h>
 #include <linux/slab.h>
 #include <linux/glob.h>
@@ -762,11 +759,7 @@ int ata_build_rw_tf(struct ata_taskfile *tf, struct ata_device *dev,
 	tf->flags |= ATA_TFLAG_ISADDR | ATA_TFLAG_DEVICE;
 	tf->flags |= tf_flags;
 
-<<<<<<< HEAD
 	if (ata_ncq_enabled(dev) && !ata_tag_internal(tag)) {
-=======
-	if (ata_ncq_enabled(dev) && likely(tag != ATA_TAG_INTERNAL)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* yay, NCQ */
 		if (!lba_48_ok(block, n_block))
 			return -ERANGE;
@@ -1577,14 +1570,9 @@ unsigned ata_exec_internal_sg(struct ata_device *dev,
 	u8 command = tf->command;
 	int auto_timeout = 0;
 	struct ata_queued_cmd *qc;
-<<<<<<< HEAD
 	unsigned int preempted_tag;
 	u32 preempted_sactive;
 	u64 preempted_qc_active;
-=======
-	unsigned int tag, preempted_tag;
-	u32 preempted_sactive, preempted_qc_active;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int preempted_nr_active_links;
 	DECLARE_COMPLETION_ONSTACK(wait);
 	unsigned long flags;
@@ -1600,27 +1588,10 @@ unsigned ata_exec_internal_sg(struct ata_device *dev,
 	}
 
 	/* initialize internal qc */
-<<<<<<< HEAD
 	qc = __ata_qc_from_tag(ap, ATA_TAG_INTERNAL);
 
 	qc->tag = ATA_TAG_INTERNAL;
 	qc->hw_tag = 0;
-=======
-
-	/* XXX: Tag 0 is used for drivers with legacy EH as some
-	 * drivers choke if any other tag is given.  This breaks
-	 * ata_tag_internal() test for those drivers.  Don't use new
-	 * EH stuff without converting to it.
-	 */
-	if (ap->ops->error_handler)
-		tag = ATA_TAG_INTERNAL;
-	else
-		tag = 0;
-
-	qc = __ata_qc_from_tag(ap, tag);
-
-	qc->tag = tag;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	qc->scsicmd = NULL;
 	qc->ap = ap;
 	qc->dev = dev;
@@ -1899,10 +1870,7 @@ retry:
 	switch (class) {
 	case ATA_DEV_SEMB:
 		class = ATA_DEV_ATA;	/* some hard drives report SEMB sig */
-<<<<<<< HEAD
 		/* fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case ATA_DEV_ATA:
 	case ATA_DEV_ZAC:
 		tf.command = ATA_CMD_ID_ATA;
@@ -2318,11 +2286,7 @@ static int ata_dev_config_ncq(struct ata_device *dev,
 		return 0;
 	}
 	if (ap->flags & ATA_FLAG_NCQ) {
-<<<<<<< HEAD
 		hdepth = min(ap->scsi_host->can_queue, ATA_MAX_QUEUE);
-=======
-		hdepth = min(ap->scsi_host->can_queue, ATA_MAX_QUEUE - 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev->flags |= ATA_DFLAG_NCQ;
 	}
 
@@ -3006,10 +2970,7 @@ int ata_bus_probe(struct ata_port *ap)
 	case -ENODEV:
 		/* give it just one more chance */
 		tries[dev->devno] = min(tries[dev->devno], 1);
-<<<<<<< HEAD
 		/* fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case -EIO:
 		if (tries[dev->devno] == 1) {
 			/* This is the last chance, better to slow
@@ -3115,7 +3076,6 @@ int sata_down_spd_limit(struct ata_link *link, u32 spd_limit)
 	bit = fls(mask) - 1;
 	mask &= ~(1 << bit);
 
-<<<<<<< HEAD
 	/*
 	 * Mask off all speeds higher than or equal to the current one.  At
 	 * this point, if current SPD is not available and we previously
@@ -3124,19 +3084,11 @@ int sata_down_spd_limit(struct ata_link *link, u32 spd_limit)
 	 * Otherwise, we should not force 1.5Gbps on a link where we have
 	 * not previously recorded speed from SStatus.  Just return in this
 	 * case.
-=======
-	/* Mask off all speeds higher than or equal to the current
-	 * one.  Force 1.5Gbps if current SPD is not available.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	if (spd > 1)
 		mask &= (1 << (spd - 1)) - 1;
 	else
-<<<<<<< HEAD
 		return -EINVAL;
-=======
-		mask &= 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* were we already at the bottom? */
 	if (!mask)
@@ -3512,10 +3464,7 @@ int ata_down_xfermask_limit(struct ata_device *dev, unsigned int sel)
 
 	case ATA_DNXFER_FORCE_PIO0:
 		pio_mask &= 1;
-<<<<<<< HEAD
 		/* fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case ATA_DNXFER_FORCE_PIO:
 		mwdma_mask = 0;
 		udma_mask = 0;
@@ -3618,17 +3567,11 @@ static int ata_dev_set_mode(struct ata_device *dev)
 	DPRINTK("xfer_shift=%u, xfer_mode=0x%x\n",
 		dev->xfer_shift, (int)dev->xfer_mode);
 
-<<<<<<< HEAD
 	if (!(ehc->i.flags & ATA_EHI_QUIET) ||
 	    ehc->i.flags & ATA_EHI_DID_HARDRESET)
 		ata_dev_info(dev, "configured for %s%s\n",
 			     ata_mode_string(ata_xfer_mode2mask(dev->xfer_mode)),
 			     dev_err_whine);
-=======
-	ata_dev_info(dev, "configured for %s%s\n",
-		     ata_mode_string(ata_xfer_mode2mask(dev->xfer_mode)),
-		     dev_err_whine);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 
@@ -4026,11 +3969,8 @@ int sata_link_scr_lpm(struct ata_link *link, enum ata_lpm_policy policy,
 		scontrol &= ~(0x1 << 8);
 		scontrol |= (0x6 << 8);
 		break;
-<<<<<<< HEAD
 	case ATA_LPM_MED_POWER_WITH_DIPM:
 	case ATA_LPM_MIN_POWER_WITH_PARTIAL:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case ATA_LPM_MIN_POWER:
 		if (ata_link_nr_enabled(link) > 0)
 			/* no restrictions on LPM transitions */
@@ -4613,15 +4553,12 @@ static const struct ata_blacklist_entry ata_device_blacklist [] = {
 						ATA_HORKAGE_ZERO_AFTER_TRIM |
 						ATA_HORKAGE_NOLPM, },
 
-<<<<<<< HEAD
 	/* These specific Samsung models/firmware-revs do not handle LPM well */
 	{ "SAMSUNG MZMPC128HBFU-000MV", "CXM14M1Q", ATA_HORKAGE_NOLPM, },
 	{ "SAMSUNG SSD PM830 mSATA *",  "CXM13D1Q", ATA_HORKAGE_NOLPM, },
 	{ "SAMSUNG MZ7TD256HAFV-000L9", NULL,       ATA_HORKAGE_NOLPM, },
 	{ "SAMSUNG MZ7TE512HMHP-000L1", "EXT06L0Q", ATA_HORKAGE_NOLPM, },
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* devices that don't properly handle queued TRIM commands */
 	{ "Micron_M500IT_*",		"MU01",	ATA_HORKAGE_NO_NCQ_TRIM |
 						ATA_HORKAGE_ZERO_AFTER_TRIM, },
@@ -5136,11 +5073,7 @@ static int ata_sg_setup(struct ata_queued_cmd *qc)
 	if (n_elem < 1)
 		return -1;
 
-<<<<<<< HEAD
 	VPRINTK("%d sg elements mapped\n", n_elem);
-=======
-	DPRINTK("%d sg elements mapped\n", n_elem);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	qc->orig_n_elem = qc->n_elem;
 	qc->n_elem = n_elem;
 	qc->flags |= ATA_QCFLAG_DMAMAP;
@@ -5203,11 +5136,7 @@ struct ata_queued_cmd *ata_qc_new_init(struct ata_device *dev, int tag)
 	}
 
 	qc = __ata_qc_from_tag(ap, tag);
-<<<<<<< HEAD
 	qc->tag = qc->hw_tag = tag;
-=======
-	qc->tag = tag;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	qc->scsicmd = NULL;
 	qc->ap = ap;
 	qc->dev = dev;
@@ -5237,11 +5166,7 @@ void ata_qc_free(struct ata_queued_cmd *qc)
 
 	qc->flags = 0;
 	tag = qc->tag;
-<<<<<<< HEAD
 	if (ata_tag_valid(tag)) {
-=======
-	if (likely(ata_tag_valid(tag))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		qc->tag = ATA_TAG_POISON;
 		if (ap->flags & ATA_FLAG_SAS_HOST)
 			ata_sas_free_tag(tag, ap);
@@ -5263,11 +5188,7 @@ void __ata_qc_complete(struct ata_queued_cmd *qc)
 
 	/* command should be marked inactive atomically with qc completion */
 	if (ata_is_ncq(qc->tf.protocol)) {
-<<<<<<< HEAD
 		link->sactive &= ~(1 << qc->hw_tag);
-=======
-		link->sactive &= ~(1 << qc->tag);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!link->sactive)
 			ap->nr_active_links--;
 	} else {
@@ -5285,11 +5206,7 @@ void __ata_qc_complete(struct ata_queued_cmd *qc)
 	 * is called. (when rc != 0 and atapi request sense is needed)
 	 */
 	qc->flags &= ~ATA_QCFLAG_ACTIVE;
-<<<<<<< HEAD
 	ap->qc_active &= ~(1ULL << qc->tag);
-=======
-	ap->qc_active &= ~(1 << qc->tag);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* call completion callback */
 	qc->complete_fn(qc);
@@ -5336,11 +5253,7 @@ void ata_qc_complete(struct ata_queued_cmd *qc)
 	struct ata_port *ap = qc->ap;
 
 	/* Trigger the LED (if available) */
-<<<<<<< HEAD
 	ledtrig_disk_activity(!!(qc->tf.flags & ATA_TFLAG_WRITE));
-=======
-	ledtrig_disk_activity();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* XXX: New EH and old EH use different mechanisms to
 	 * synchronize EH with regular execution path.
@@ -5450,7 +5363,6 @@ void ata_qc_complete(struct ata_queued_cmd *qc)
  *	RETURNS:
  *	Number of completed commands on success, -errno otherwise.
  */
-<<<<<<< HEAD
 int ata_qc_complete_multiple(struct ata_port *ap, u64 qc_active)
 {
 	u64 done_mask, ap_qc_active = ap->qc_active;
@@ -5470,39 +5382,20 @@ int ata_qc_complete_multiple(struct ata_port *ap, u64 qc_active)
 
 	if (unlikely(done_mask & qc_active)) {
 		ata_port_err(ap, "illegal qc_active transition (%08llx->%08llx)\n",
-=======
-int ata_qc_complete_multiple(struct ata_port *ap, u32 qc_active)
-{
-	int nr_done = 0;
-	u32 done_mask;
-
-	done_mask = ap->qc_active ^ qc_active;
-
-	if (unlikely(done_mask & qc_active)) {
-		ata_port_err(ap, "illegal qc_active transition (%08x->%08x)\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     ap->qc_active, qc_active);
 		return -EINVAL;
 	}
 
 	while (done_mask) {
 		struct ata_queued_cmd *qc;
-<<<<<<< HEAD
 		unsigned int tag = __ffs64(done_mask);
-=======
-		unsigned int tag = __ffs(done_mask);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		qc = ata_qc_from_tag(ap, tag);
 		if (qc) {
 			ata_qc_complete(qc);
 			nr_done++;
 		}
-<<<<<<< HEAD
 		done_mask &= ~(1ULL << tag);
-=======
-		done_mask &= ~(1 << tag);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return nr_done;
@@ -5533,19 +5426,11 @@ void ata_qc_issue(struct ata_queued_cmd *qc)
 	WARN_ON_ONCE(ap->ops->error_handler && ata_tag_valid(link->active_tag));
 
 	if (ata_is_ncq(prot)) {
-<<<<<<< HEAD
 		WARN_ON_ONCE(link->sactive & (1 << qc->hw_tag));
 
 		if (!link->sactive)
 			ap->nr_active_links++;
 		link->sactive |= 1 << qc->hw_tag;
-=======
-		WARN_ON_ONCE(link->sactive & (1 << qc->tag));
-
-		if (!link->sactive)
-			ap->nr_active_links++;
-		link->sactive |= 1 << qc->tag;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		WARN_ON_ONCE(link->sactive);
 
@@ -5554,11 +5439,7 @@ void ata_qc_issue(struct ata_queued_cmd *qc)
 	}
 
 	qc->flags |= ATA_QCFLAG_ACTIVE;
-<<<<<<< HEAD
 	ap->qc_active |= 1ULL << qc->tag;
-=======
-	ap->qc_active |= 1 << qc->tag;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * We guarantee to LLDs that they will have at least one
@@ -5996,11 +5877,7 @@ void ata_host_resume(struct ata_host *host)
 }
 #endif
 
-<<<<<<< HEAD
 const struct device_type ata_port_type = {
-=======
-struct device_type ata_port_type = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.name = "ata_port",
 #ifdef CONFIG_PM
 	.pm = &ata_port_pm_ops,
@@ -6156,14 +6033,8 @@ struct ata_port *ata_port_alloc(struct ata_host *host)
 	INIT_LIST_HEAD(&ap->eh_done_q);
 	init_waitqueue_head(&ap->eh_wait_q);
 	init_completion(&ap->park_req_pending);
-<<<<<<< HEAD
 	timer_setup(&ap->fastdrain_timer, ata_eh_fastdrain_timerfn,
 		    TIMER_DEFERRABLE);
-=======
-	setup_deferrable_timer(&ap->fastdrain_timer,
-			       ata_eh_fastdrain_timerfn,
-			       (unsigned long)ap);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ap->cbl = ATA_CBL_NONE;
 
@@ -6178,11 +6049,7 @@ struct ata_port *ata_port_alloc(struct ata_host *host)
 	return ap;
 }
 
-<<<<<<< HEAD
 static void ata_devres_release(struct device *gendev, void *res)
-=======
-static void ata_host_release(struct device *gendev, void *res)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ata_host *host = dev_get_drvdata(gendev);
 	int i;
@@ -6196,7 +6063,6 @@ static void ata_host_release(struct device *gendev, void *res)
 		if (ap->scsi_host)
 			scsi_host_put(ap->scsi_host);
 
-<<<<<<< HEAD
 	}
 
 	dev_set_drvdata(gendev, NULL);
@@ -6211,14 +6077,11 @@ static void ata_host_release(struct kref *kref)
 	for (i = 0; i < host->n_ports; i++) {
 		struct ata_port *ap = host->ports[i];
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(ap->pmp_link);
 		kfree(ap->slave_link);
 		kfree(ap);
 		host->ports[i] = NULL;
 	}
-<<<<<<< HEAD
 	kfree(host);
 }
 
@@ -6230,10 +6093,6 @@ void ata_host_get(struct ata_host *host)
 void ata_host_put(struct ata_host *host)
 {
 	kref_put(&host->kref, ata_host_release);
-=======
-
-	dev_set_drvdata(gendev, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -6261,7 +6120,6 @@ struct ata_host *ata_host_alloc(struct device *dev, int max_ports)
 	struct ata_host *host;
 	size_t sz;
 	int i;
-<<<<<<< HEAD
 	void *dr;
 
 	DPRINTK("ENTER\n");
@@ -6280,32 +6138,13 @@ struct ata_host *ata_host_alloc(struct device *dev, int max_ports)
 		goto err_out;
 
 	devres_add(dev, dr);
-=======
-
-	DPRINTK("ENTER\n");
-
-	if (!devres_open_group(dev, NULL, GFP_KERNEL))
-		return NULL;
-
-	/* alloc a container for our list of ATA ports (buses) */
-	sz = sizeof(struct ata_host) + (max_ports + 1) * sizeof(void *);
-	/* alloc a container for our list of ATA ports (buses) */
-	host = devres_alloc(ata_host_release, sz, GFP_KERNEL);
-	if (!host)
-		goto err_out;
-
-	devres_add(dev, host);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_set_drvdata(dev, host);
 
 	spin_lock_init(&host->lock);
 	mutex_init(&host->eh_mutex);
 	host->dev = dev;
 	host->n_ports = max_ports;
-<<<<<<< HEAD
 	kref_init(&host->kref);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* allocate ports bound to this host */
 	for (i = 0; i < max_ports; i++) {
@@ -6324,11 +6163,8 @@ struct ata_host *ata_host_alloc(struct device *dev, int max_ports)
 
  err_out:
 	devres_release_group(dev, NULL);
-<<<<<<< HEAD
  err_free:
 	kfree(host);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return NULL;
 }
 
@@ -6602,16 +6438,10 @@ void ata_host_init(struct ata_host *host, struct device *dev,
 {
 	spin_lock_init(&host->lock);
 	mutex_init(&host->eh_mutex);
-<<<<<<< HEAD
 	host->n_tags = ATA_MAX_QUEUE;
 	host->dev = dev;
 	host->ops = ops;
 	kref_init(&host->kref);
-=======
-	host->n_tags = ATA_MAX_QUEUE - 1;
-	host->dev = dev;
-	host->ops = ops;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void __ata_port_probe(struct ata_port *ap)
@@ -6691,11 +6521,7 @@ int ata_host_register(struct ata_host *host, struct scsi_host_template *sht)
 {
 	int i, rc;
 
-<<<<<<< HEAD
 	host->n_tags = clamp(sht->can_queue, 1, ATA_MAX_QUEUE);
-=======
-	host->n_tags = clamp(sht->can_queue, 1, ATA_MAX_QUEUE - 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* host must have been started */
 	if (!(host->flags & ATA_HOST_STARTED)) {
@@ -6760,11 +6586,7 @@ int ata_host_register(struct ata_host *host, struct scsi_host_template *sht)
 	/* perform each probe asynchronously */
 	for (i = 0; i < host->n_ports; i++) {
 		struct ata_port *ap = host->ports[i];
-<<<<<<< HEAD
 		async_schedule(async_port_probe, ap);
-=======
-		ap->cookie = async_schedule(async_port_probe, ap);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -6904,16 +6726,8 @@ void ata_host_detach(struct ata_host *host)
 {
 	int i;
 
-<<<<<<< HEAD
 	for (i = 0; i < host->n_ports; i++)
 		ata_port_detach(host->ports[i]);
-=======
-	for (i = 0; i < host->n_ports; i++) {
-		/* Ensure ata_port probe has completed */
-		async_synchronize_cookie(host->ports[i]->cookie + 1);
-		ata_port_detach(host->ports[i]);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* the host is dead now, dissociate ACPI */
 	ata_acpi_dissociate(host);
@@ -6939,29 +6753,6 @@ void ata_pci_remove_one(struct pci_dev *pdev)
 	ata_host_detach(host);
 }
 
-<<<<<<< HEAD
-=======
-void ata_pci_shutdown_one(struct pci_dev *pdev)
-{
-	struct ata_host *host = pci_get_drvdata(pdev);
-	int i;
-
-	for (i = 0; i < host->n_ports; i++) {
-		struct ata_port *ap = host->ports[i];
-
-		ap->pflags |= ATA_PFLAG_FROZEN;
-
-		/* Disable port interrupts */
-		if (ap->ops->freeze)
-			ap->ops->freeze(ap);
-
-		/* Stop the port DMA engines */
-		if (ap->ops->port_stop)
-			ap->ops->port_stop(ap);
-	}
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* move to PCI subsystem */
 int pci_test_config_bits(struct pci_dev *pdev, const struct pci_bits *bits)
 {
@@ -7197,11 +6988,7 @@ static int __init ata_parse_force_one(char **cur,
 		return -EINVAL;
 	}
 	if (nr_matches > 1) {
-<<<<<<< HEAD
 		*reason = "ambiguous value";
-=======
-		*reason = "ambigious value";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -7221,11 +7008,7 @@ static void __init ata_parse_force_param(void)
 		if (*p == ',')
 			size++;
 
-<<<<<<< HEAD
 	ata_force_tbl = kcalloc(size, sizeof(ata_force_tbl[0]), GFP_KERNEL);
-=======
-	ata_force_tbl = kzalloc(sizeof(ata_force_tbl[0]) * size, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ata_force_tbl) {
 		printk(KERN_WARNING "ata: failed to extend force table, "
 		       "libata.force ignored\n");
@@ -7590,10 +7373,6 @@ EXPORT_SYMBOL_GPL(ata_timing_cycle2mode);
 
 #ifdef CONFIG_PCI
 EXPORT_SYMBOL_GPL(pci_test_config_bits);
-<<<<<<< HEAD
-=======
-EXPORT_SYMBOL_GPL(ata_pci_shutdown_one);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 EXPORT_SYMBOL_GPL(ata_pci_remove_one);
 #ifdef CONFIG_PM
 EXPORT_SYMBOL_GPL(ata_pci_device_do_suspend);
@@ -7630,8 +7409,5 @@ EXPORT_SYMBOL_GPL(ata_cable_80wire);
 EXPORT_SYMBOL_GPL(ata_cable_unknown);
 EXPORT_SYMBOL_GPL(ata_cable_ignore);
 EXPORT_SYMBOL_GPL(ata_cable_sata);
-<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(ata_host_get);
 EXPORT_SYMBOL_GPL(ata_host_put);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

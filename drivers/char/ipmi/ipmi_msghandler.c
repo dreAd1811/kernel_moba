@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * ipmi_msghandler.c
  *
@@ -12,30 +9,6 @@
  *         source@mvista.com
  *
  * Copyright 2002 MontaVista Software Inc.
-<<<<<<< HEAD
-=======
- *
- *  This program is free software; you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation; either version 2 of the License, or (at your
- *  option) any later version.
- *
- *
- *  THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED
- *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
- *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- *  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
- *  OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- *  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
- *  TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
- *  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- *  You should have received a copy of the GNU General Public License along
- *  with this program; if not, write to the Free Software Foundation, Inc.,
- *  675 Mass Ave, Cambridge, MA 02139, USA.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/module.h>
@@ -53,13 +26,10 @@
 #include <linux/proc_fs.h>
 #include <linux/rcupdate.h>
 #include <linux/interrupt.h>
-<<<<<<< HEAD
 #include <linux/moduleparam.h>
 #include <linux/workqueue.h>
 #include <linux/uuid.h>
 #include <linux/nospec.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define PFX "IPMI message handler: "
 
@@ -68,7 +38,6 @@
 static struct ipmi_recv_msg *ipmi_alloc_recv_msg(void);
 static int ipmi_init_msghandler(void);
 static void smi_recv_tasklet(unsigned long);
-<<<<<<< HEAD
 static void handle_new_recv_msgs(struct ipmi_smi *intf);
 static void need_waiter(struct ipmi_smi *intf);
 static int handle_one_recv_msg(struct ipmi_smi *intf,
@@ -171,23 +140,6 @@ static unsigned long maintenance_mode_timeout_ms = 30000;
 module_param(maintenance_mode_timeout_ms, ulong, 0644);
 MODULE_PARM_DESC(maintenance_mode_timeout_ms,
 		 "The time (milliseconds) after the last maintenance message that the connection stays in maintenance mode.");
-=======
-static void handle_new_recv_msgs(ipmi_smi_t intf);
-static void need_waiter(ipmi_smi_t intf);
-static int handle_one_recv_msg(ipmi_smi_t          intf,
-			       struct ipmi_smi_msg *msg);
-
-static int initialized;
-
-#ifdef CONFIG_PROC_FS
-static struct proc_dir_entry *proc_ipmi_root;
-#endif /* CONFIG_PROC_FS */
-
-/* Remain in auto-maintenance mode for this amount of time (in ms). */
-#define IPMI_MAINTENANCE_MODE_TIMEOUT 30000
-
-#define MAX_EVENTS_IN_QUEUE	25
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Don't let a message sit in a queue forever, always time it with at lest
@@ -195,7 +147,6 @@ static struct proc_dir_entry *proc_ipmi_root;
  */
 #define MAX_MSG_TIMEOUT		60000
 
-<<<<<<< HEAD
 /*
  * Timeout times below are in milliseconds, and are done off a 1
  * second timer.  So setting the value to 1000 would mean anything
@@ -221,8 +172,6 @@ module_param(default_max_retries, uint, 0644);
 MODULE_PARM_DESC(default_max_retries,
 		 "The time (milliseconds) between retry sends in maintenance mode");
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Call every ~1000 ms. */
 #define IPMI_TIMEOUT_TIME	1000
 
@@ -237,29 +186,21 @@ MODULE_PARM_DESC(default_max_retries,
  */
 #define IPMI_REQUEST_EV_TIME	(1000 / (IPMI_TIMEOUT_TIME))
 
-<<<<<<< HEAD
 /* How long should we cache dynamic device IDs? */
 #define IPMI_DYN_DEV_ID_EXPIRY	(10 * HZ)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * The main "user" data structure.
  */
 struct ipmi_user {
 	struct list_head link;
 
-<<<<<<< HEAD
 	/*
 	 * Set to NULL when the user is destroyed, a pointer to myself
 	 * so srcu_dereference can be used on it.
 	 */
 	struct ipmi_user *self;
 	struct srcu_struct release_barrier;
-=======
-	/* Set to false when the user is destroyed. */
-	bool valid;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct kref refcount;
 
@@ -268,7 +209,6 @@ struct ipmi_user {
 	void             *handler_data;
 
 	/* The interface this user is bound to. */
-<<<<<<< HEAD
 	struct ipmi_smi *intf;
 
 	/* Does this interface receive IPMI events? */
@@ -299,18 +239,6 @@ struct cmd_rcvr {
 	struct list_head link;
 
 	struct ipmi_user *user;
-=======
-	ipmi_smi_t intf;
-
-	/* Does this interface receive IPMI events? */
-	bool gets_events;
-};
-
-struct cmd_rcvr {
-	struct list_head link;
-
-	ipmi_user_t   user;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned char netfn;
 	unsigned char cmd;
 	unsigned int  chans;
@@ -364,7 +292,6 @@ struct seq_table {
 
 #define NEXT_SEQID(seqid) (((seqid) + 1) & 0x3ffffff)
 
-<<<<<<< HEAD
 #define IPMI_MAX_CHANNELS       16
 struct ipmi_channel {
 	unsigned char medium;
@@ -376,12 +303,6 @@ struct ipmi_channel_set {
 };
 
 struct ipmi_my_addrinfo {
-=======
-struct ipmi_channel {
-	unsigned char medium;
-	unsigned char protocol;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * My slave address.  This is initialized to IPMI_BMC_SLAVE_ADDR,
 	 * but may be changed by the user.
@@ -395,7 +316,6 @@ struct ipmi_channel {
 	unsigned char lun;
 };
 
-<<<<<<< HEAD
 /*
  * Note that the product id, manufacturer id, guid, and device id are
  * immutable in this structure, so dyn_mutex is not required for
@@ -421,25 +341,6 @@ static int bmc_get_device_id(struct ipmi_smi *intf, struct bmc_device *bmc,
 			     struct ipmi_device_id *id,
 			     bool *guid_set, guid_t *guid);
 
-=======
-#ifdef CONFIG_PROC_FS
-struct ipmi_proc_entry {
-	char                   *name;
-	struct ipmi_proc_entry *next;
-};
-#endif
-
-struct bmc_device {
-	struct platform_device pdev;
-	struct ipmi_device_id  id;
-	unsigned char          guid[16];
-	int                    guid_set;
-	char                   name[16];
-	struct kref	       usecount;
-};
-#define to_bmc_device(x) container_of((x), struct bmc_device, pdev.dev)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Various statistics for IPMI, these index stats[] in the ipmi_smi
  * structure.
@@ -545,10 +446,6 @@ enum ipmi_stat_indexes {
 
 
 #define IPMI_IPMB_NUM_SEQ	64
-<<<<<<< HEAD
-=======
-#define IPMI_MAX_CHANNELS       16
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct ipmi_smi {
 	/* What interface number are we? */
 	int intf_num;
@@ -562,27 +459,15 @@ struct ipmi_smi {
 	struct list_head link;
 
 	/*
-<<<<<<< HEAD
 	 * The list of upper layers that are using me.  seq_lock write
 	 * protects this.  Read protection is with srcu.
 	 */
 	struct list_head users;
 	struct srcu_struct users_srcu;
-=======
-	 * The list of upper layers that are using me.  seq_lock
-	 * protects this.
-	 */
-	struct list_head users;
-
-	/* Information to supply to users. */
-	unsigned char ipmi_version_major;
-	unsigned char ipmi_version_minor;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Used for wake ups at startup. */
 	wait_queue_head_t waitq;
 
-<<<<<<< HEAD
 	/*
 	 * Prevents the interface from being unregistered when the
 	 * interface is used by being looked up through the BMC
@@ -601,26 +486,6 @@ struct ipmi_smi {
 	const struct ipmi_smi_handlers *handlers;
 	void                     *send_info;
 
-=======
-	struct bmc_device *bmc;
-	char *my_dev_name;
-
-	/*
-	 * This is the lower-layer's sender routine.  Note that you
-	 * must either be holding the ipmi_interfaces_mutex or be in
-	 * an umpreemptible region to use this.  You must fetch the
-	 * value into a local variable and make sure it is not NULL.
-	 */
-	const struct ipmi_smi_handlers *handlers;
-	void                     *send_info;
-
-#ifdef CONFIG_PROC_FS
-	/* A list of proc entries for this interface. */
-	struct mutex           proc_entry_lock;
-	struct ipmi_proc_entry *proc_entries;
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Driver-model device for the system interface. */
 	struct device          *si_dev;
 
@@ -686,7 +551,6 @@ struct ipmi_smi {
 	spinlock_t maintenance_mode_lock; /* Used in a timer... */
 
 	/*
-<<<<<<< HEAD
 	 * If we are doing maintenance on something on IPMB, extend
 	 * the timeout time to avoid timeouts writing firmware and
 	 * such.
@@ -694,22 +558,15 @@ struct ipmi_smi {
 	int ipmb_maintenance_mode_timeout;
 
 	/*
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * A cheap hack, if this is non-null and a message to an
 	 * interface comes in with a NULL user, call this routine with
 	 * it.  Note that the message will still be freed by the
 	 * caller.  This only works on the system interface.
-<<<<<<< HEAD
 	 *
 	 * Protected by bmc_reg_mutex.
 	 */
 	void (*null_user_handler)(struct ipmi_smi *intf,
 				  struct ipmi_recv_msg *msg);
-=======
-	 */
-	void (*null_user_handler)(ipmi_smi_t intf, struct ipmi_recv_msg *msg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * When we are scanning the channels for an SMI, this will
@@ -718,19 +575,11 @@ struct ipmi_smi {
 	int curr_channel;
 
 	/* Channel information */
-<<<<<<< HEAD
 	struct ipmi_channel_set *channel_list;
 	unsigned int curr_working_cset; /* First index into the following. */
 	struct ipmi_channel_set wchannels[2];
 	struct ipmi_my_addrinfo addrinfo[IPMI_MAX_CHANNELS];
 	bool channels_ready;
-=======
-	struct ipmi_channel channels[IPMI_MAX_CHANNELS];
-
-	/* Proc FS stuff. */
-	struct proc_dir_entry *proc_dir;
-	char                  proc_dir_name[10];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	atomic_t stats[IPMI_NUM_STATS];
 
@@ -743,7 +592,6 @@ struct ipmi_smi {
 };
 #define to_si_intf_from_dev(device) container_of(device, struct ipmi_smi, dev)
 
-<<<<<<< HEAD
 static void __get_guid(struct ipmi_smi *intf);
 static void __ipmi_bmc_unregister(struct ipmi_smi *intf);
 static int __ipmi_bmc_register(struct ipmi_smi *intf,
@@ -752,8 +600,6 @@ static int __ipmi_bmc_register(struct ipmi_smi *intf,
 static int __scan_channels(struct ipmi_smi *intf, struct ipmi_device_id *id);
 
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * The driver model view of the IPMI messaging driver.
  */
@@ -763,20 +609,14 @@ static struct platform_driver ipmidriver = {
 		.bus = &platform_bus_type
 	}
 };
-<<<<<<< HEAD
 /*
  * This mutex keeps us from adding the same BMC twice.
  */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static DEFINE_MUTEX(ipmidriver_mutex);
 
 static LIST_HEAD(ipmi_interfaces);
 static DEFINE_MUTEX(ipmi_interfaces_mutex);
-<<<<<<< HEAD
 struct srcu_struct ipmi_interfaces_srcu;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * List of watchers that want to know when smi's are added and deleted.
@@ -791,11 +631,7 @@ static DEFINE_MUTEX(smi_watchers_mutex);
 
 static const char * const addr_src_to_str[] = {
 	"invalid", "hotmod", "hardcoded", "SPMI", "ACPI", "SMBIOS", "PCI",
-<<<<<<< HEAD
 	"device-tree", "platform"
-=======
-	"device-tree"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 const char *ipmi_addr_src_to_str(enum ipmi_addr_src src)
@@ -841,11 +677,7 @@ static void free_smi_msg_list(struct list_head *q)
 	}
 }
 
-<<<<<<< HEAD
 static void clean_up_interface_data(struct ipmi_smi *intf)
-=======
-static void clean_up_interface_data(ipmi_smi_t intf)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int              i;
 	struct cmd_rcvr  *rcvr, *rcvr2;
@@ -877,11 +709,7 @@ static void clean_up_interface_data(ipmi_smi_t intf)
 
 static void intf_free(struct kref *ref)
 {
-<<<<<<< HEAD
 	struct ipmi_smi *intf = container_of(ref, struct ipmi_smi, refcount);
-=======
-	ipmi_smi_t intf = container_of(ref, struct ipmi_smi, refcount);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	clean_up_interface_data(intf);
 	kfree(intf);
@@ -889,17 +717,12 @@ static void intf_free(struct kref *ref)
 
 struct watcher_entry {
 	int              intf_num;
-<<<<<<< HEAD
 	struct ipmi_smi  *intf;
-=======
-	ipmi_smi_t       intf;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct list_head link;
 };
 
 int ipmi_smi_watcher_register(struct ipmi_smi_watcher *watcher)
 {
-<<<<<<< HEAD
 	struct ipmi_smi *intf;
 	int index, rv;
 
@@ -924,68 +747,17 @@ int ipmi_smi_watcher_register(struct ipmi_smi_watcher *watcher)
 		watcher->new_smi(intf_num, intf->si_dev);
 	}
 	srcu_read_unlock(&ipmi_interfaces_srcu, index);
-=======
-	ipmi_smi_t intf;
-	LIST_HEAD(to_deliver);
-	struct watcher_entry *e, *e2;
-
-	mutex_lock(&smi_watchers_mutex);
-
-	mutex_lock(&ipmi_interfaces_mutex);
-
-	/* Build a list of things to deliver. */
-	list_for_each_entry(intf, &ipmi_interfaces, link) {
-		if (intf->intf_num == -1)
-			continue;
-		e = kmalloc(sizeof(*e), GFP_KERNEL);
-		if (!e)
-			goto out_err;
-		kref_get(&intf->refcount);
-		e->intf = intf;
-		e->intf_num = intf->intf_num;
-		list_add_tail(&e->link, &to_deliver);
-	}
-
-	/* We will succeed, so add it to the list. */
-	list_add(&watcher->link, &smi_watchers);
-
-	mutex_unlock(&ipmi_interfaces_mutex);
-
-	list_for_each_entry_safe(e, e2, &to_deliver, link) {
-		list_del(&e->link);
-		watcher->new_smi(e->intf_num, e->intf->si_dev);
-		kref_put(&e->intf->refcount, intf_free);
-		kfree(e);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_unlock(&smi_watchers_mutex);
 
 	return 0;
-<<<<<<< HEAD
-=======
-
- out_err:
-	mutex_unlock(&ipmi_interfaces_mutex);
-	mutex_unlock(&smi_watchers_mutex);
-	list_for_each_entry_safe(e, e2, &to_deliver, link) {
-		list_del(&e->link);
-		kref_put(&e->intf->refcount, intf_free);
-		kfree(e);
-	}
-	return -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(ipmi_smi_watcher_register);
 
 int ipmi_smi_watcher_unregister(struct ipmi_smi_watcher *watcher)
 {
 	mutex_lock(&smi_watchers_mutex);
-<<<<<<< HEAD
 	list_del(&watcher->link);
-=======
-	list_del(&(watcher->link));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&smi_watchers_mutex);
 	return 0;
 }
@@ -999,20 +771,14 @@ call_smi_watchers(int i, struct device *dev)
 {
 	struct ipmi_smi_watcher *w;
 
-<<<<<<< HEAD
 	mutex_lock(&smi_watchers_mutex);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_for_each_entry(w, &smi_watchers, link) {
 		if (try_module_get(w->owner)) {
 			w->new_smi(i, dev);
 			module_put(w->owner);
 		}
 	}
-<<<<<<< HEAD
 	mutex_unlock(&smi_watchers_mutex);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int
@@ -1106,7 +872,6 @@ unsigned int ipmi_addr_length(int addr_type)
 }
 EXPORT_SYMBOL(ipmi_addr_length);
 
-<<<<<<< HEAD
 static int deliver_response(struct ipmi_smi *intf, struct ipmi_recv_msg *msg)
 {
 	int rv = 0;
@@ -1118,20 +883,6 @@ static int deliver_response(struct ipmi_smi *intf, struct ipmi_recv_msg *msg)
 		} else {
 			/* No handler, so give up. */
 			rv = -EINVAL;
-=======
-static void deliver_response(struct ipmi_recv_msg *msg)
-{
-	if (!msg->user) {
-		ipmi_smi_t    intf = msg->user_msg_data;
-
-		/* Special handling for NULL users. */
-		if (intf->null_user_handler) {
-			intf->null_user_handler(intf, msg);
-			ipmi_inc_stat(intf, handled_local_responses);
-		} else {
-			/* No handler, so give up. */
-			ipmi_inc_stat(intf, unhandled_local_responses);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		ipmi_free_recv_msg(msg);
 	} else if (!oops_in_progress) {
@@ -1140,7 +891,6 @@ static void deliver_response(struct ipmi_recv_msg *msg)
 		 * receive handler doesn't much meaning and has a deadlock
 		 * risk.  At this moment, simply skip it in that case.
 		 */
-<<<<<<< HEAD
 		int index;
 		struct ipmi_user *user = acquire_ipmi_user(msg->user, &index);
 
@@ -1168,27 +918,13 @@ static void deliver_local_response(struct ipmi_smi *intf,
 
 static void deliver_err_response(struct ipmi_smi *intf,
 				 struct ipmi_recv_msg *msg, int err)
-=======
-
-		ipmi_user_t user = msg->user;
-		user->handler->ipmi_recv_hndl(msg, user->handler_data);
-	}
-}
-
-static void
-deliver_err_response(struct ipmi_recv_msg *msg, int err)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	msg->recv_type = IPMI_RESPONSE_RECV_TYPE;
 	msg->msg_data[0] = err;
 	msg->msg.netfn |= 1; /* Convert to a response. */
 	msg->msg.data_len = 1;
 	msg->msg.data = msg->msg_data;
-<<<<<<< HEAD
 	deliver_local_response(intf, msg);
-=======
-	deliver_response(msg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -1196,11 +932,7 @@ deliver_err_response(struct ipmi_recv_msg *msg, int err)
  * message with the given timeout to the sequence table.  This must be
  * called with the interface's seq_lock held.
  */
-<<<<<<< HEAD
 static int intf_next_seq(struct ipmi_smi      *intf,
-=======
-static int intf_next_seq(ipmi_smi_t           intf,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 struct ipmi_recv_msg *recv_msg,
 			 unsigned long        timeout,
 			 int                  retries,
@@ -1211,14 +943,11 @@ static int intf_next_seq(ipmi_smi_t           intf,
 	int          rv = 0;
 	unsigned int i;
 
-<<<<<<< HEAD
 	if (timeout == 0)
 		timeout = default_retry_ms;
 	if (retries < 0)
 		retries = default_max_retries;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = intf->curr_seq; (i+1)%IPMI_IPMB_NUM_SEQ != intf->curr_seq;
 					i = (i+1)%IPMI_IPMB_NUM_SEQ) {
 		if (!intf->seq_table[i].inuse)
@@ -1256,11 +985,7 @@ static int intf_next_seq(ipmi_smi_t           intf,
  * guard against message coming in after their timeout and the
  * sequence number being reused).
  */
-<<<<<<< HEAD
 static int intf_find_seq(struct ipmi_smi      *intf,
-=======
-static int intf_find_seq(ipmi_smi_t           intf,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 unsigned char        seq,
 			 short                channel,
 			 unsigned char        cmd,
@@ -1274,42 +999,26 @@ static int intf_find_seq(ipmi_smi_t           intf,
 	if (seq >= IPMI_IPMB_NUM_SEQ)
 		return -EINVAL;
 
-<<<<<<< HEAD
 	spin_lock_irqsave(&intf->seq_lock, flags);
-=======
-	spin_lock_irqsave(&(intf->seq_lock), flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (intf->seq_table[seq].inuse) {
 		struct ipmi_recv_msg *msg = intf->seq_table[seq].recv_msg;
 
 		if ((msg->addr.channel == channel) && (msg->msg.cmd == cmd)
 				&& (msg->msg.netfn == netfn)
-<<<<<<< HEAD
 				&& (ipmi_addr_equal(addr, &msg->addr))) {
-=======
-				&& (ipmi_addr_equal(addr, &(msg->addr)))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			*recv_msg = msg;
 			intf->seq_table[seq].inuse = 0;
 			rv = 0;
 		}
 	}
-<<<<<<< HEAD
 	spin_unlock_irqrestore(&intf->seq_lock, flags);
-=======
-	spin_unlock_irqrestore(&(intf->seq_lock), flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return rv;
 }
 
 
 /* Start the timer for a specific sequence table entry. */
-<<<<<<< HEAD
 static int intf_start_seq_timer(struct ipmi_smi *intf,
-=======
-static int intf_start_seq_timer(ipmi_smi_t intf,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				long       msgid)
 {
 	int           rv = -ENODEV;
@@ -1320,40 +1029,24 @@ static int intf_start_seq_timer(ipmi_smi_t intf,
 
 	GET_SEQ_FROM_MSGID(msgid, seq, seqid);
 
-<<<<<<< HEAD
 	spin_lock_irqsave(&intf->seq_lock, flags);
-=======
-	spin_lock_irqsave(&(intf->seq_lock), flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * We do this verification because the user can be deleted
 	 * while a message is outstanding.
 	 */
 	if ((intf->seq_table[seq].inuse)
 				&& (intf->seq_table[seq].seqid == seqid)) {
-<<<<<<< HEAD
 		struct seq_table *ent = &intf->seq_table[seq];
 		ent->timeout = ent->orig_timeout;
 		rv = 0;
 	}
 	spin_unlock_irqrestore(&intf->seq_lock, flags);
-=======
-		struct seq_table *ent = &(intf->seq_table[seq]);
-		ent->timeout = ent->orig_timeout;
-		rv = 0;
-	}
-	spin_unlock_irqrestore(&(intf->seq_lock), flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return rv;
 }
 
 /* Got an error for the send message for a specific sequence number. */
-<<<<<<< HEAD
 static int intf_err_seq(struct ipmi_smi *intf,
-=======
-static int intf_err_seq(ipmi_smi_t   intf,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			long         msgid,
 			unsigned int err)
 {
@@ -1366,44 +1059,28 @@ static int intf_err_seq(ipmi_smi_t   intf,
 
 	GET_SEQ_FROM_MSGID(msgid, seq, seqid);
 
-<<<<<<< HEAD
 	spin_lock_irqsave(&intf->seq_lock, flags);
-=======
-	spin_lock_irqsave(&(intf->seq_lock), flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * We do this verification because the user can be deleted
 	 * while a message is outstanding.
 	 */
 	if ((intf->seq_table[seq].inuse)
 				&& (intf->seq_table[seq].seqid == seqid)) {
-<<<<<<< HEAD
 		struct seq_table *ent = &intf->seq_table[seq];
-=======
-		struct seq_table *ent = &(intf->seq_table[seq]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		ent->inuse = 0;
 		msg = ent->recv_msg;
 		rv = 0;
 	}
-<<<<<<< HEAD
 	spin_unlock_irqrestore(&intf->seq_lock, flags);
 
 	if (msg)
 		deliver_err_response(intf, msg, err);
-=======
-	spin_unlock_irqrestore(&(intf->seq_lock), flags);
-
-	if (msg)
-		deliver_err_response(msg, err);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return rv;
 }
 
 
-<<<<<<< HEAD
 static void free_user_work(struct work_struct *work)
 {
 	struct ipmi_user *user = container_of(work, struct ipmi_user,
@@ -1422,17 +1099,6 @@ int ipmi_create_user(unsigned int          if_num,
 	struct ipmi_user *new_user;
 	int           rv, index;
 	struct ipmi_smi *intf;
-=======
-int ipmi_create_user(unsigned int          if_num,
-		     const struct ipmi_user_hndl *handler,
-		     void                  *handler_data,
-		     ipmi_user_t           *user)
-{
-	unsigned long flags;
-	ipmi_user_t   new_user;
-	int           rv = 0;
-	ipmi_smi_t    intf;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * There is no module usecount here, because it's not
@@ -1449,34 +1115,15 @@ int ipmi_create_user(unsigned int          if_num,
 	 * Make sure the driver is actually initialized, this handles
 	 * problems with initialization order.
 	 */
-<<<<<<< HEAD
 	rv = ipmi_init_msghandler();
 	if (rv)
 		return rv;
-=======
-	if (!initialized) {
-		rv = ipmi_init_msghandler();
-		if (rv)
-			return rv;
-
-		/*
-		 * The init code doesn't return an error if it was turned
-		 * off, but it won't initialize.  Check that.
-		 */
-		if (!initialized)
-			return -ENODEV;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	new_user = kmalloc(sizeof(*new_user), GFP_KERNEL);
 	if (!new_user)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	index = srcu_read_lock(&ipmi_interfaces_srcu);
-=======
-	mutex_lock(&ipmi_interfaces_mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_for_each_entry_rcu(intf, &ipmi_interfaces, link) {
 		if (intf->intf_num == if_num)
 			goto found;
@@ -1486,15 +1133,12 @@ int ipmi_create_user(unsigned int          if_num,
 	goto out_kfree;
 
  found:
-<<<<<<< HEAD
 	INIT_WORK(&new_user->remove_work, free_user_work);
 
 	rv = init_srcu_struct(&new_user->release_barrier);
 	if (rv)
 		goto out_kfree;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Note that each existing user holds a refcount to the interface. */
 	kref_get(&intf->refcount);
 
@@ -1504,30 +1148,7 @@ int ipmi_create_user(unsigned int          if_num,
 	new_user->intf = intf;
 	new_user->gets_events = false;
 
-<<<<<<< HEAD
 	rcu_assign_pointer(new_user->self, new_user);
-=======
-	if (!try_module_get(intf->handlers->owner)) {
-		rv = -ENODEV;
-		goto out_kref;
-	}
-
-	if (intf->handlers->inc_usecount) {
-		rv = intf->handlers->inc_usecount(intf->send_info);
-		if (rv) {
-			module_put(intf->handlers->owner);
-			goto out_kref;
-		}
-	}
-
-	/*
-	 * Hold the lock so intf->handlers is guaranteed to be good
-	 * until now
-	 */
-	mutex_unlock(&ipmi_interfaces_mutex);
-
-	new_user->valid = true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_irqsave(&intf->seq_lock, flags);
 	list_add_rcu(&new_user->link, &intf->users);
 	spin_unlock_irqrestore(&intf->seq_lock, flags);
@@ -1536,22 +1157,12 @@ int ipmi_create_user(unsigned int          if_num,
 		if (atomic_inc_return(&intf->event_waiters) == 1)
 			need_waiter(intf);
 	}
-<<<<<<< HEAD
 	srcu_read_unlock(&ipmi_interfaces_srcu, index);
 	*user = new_user;
 	return 0;
 
 out_kfree:
 	srcu_read_unlock(&ipmi_interfaces_srcu, index);
-=======
-	*user = new_user;
-	return 0;
-
-out_kref:
-	kref_put(&intf->refcount, intf_free);
-out_kfree:
-	mutex_unlock(&ipmi_interfaces_mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(new_user);
 	return rv;
 }
@@ -1559,23 +1170,14 @@ EXPORT_SYMBOL(ipmi_create_user);
 
 int ipmi_get_smi_info(int if_num, struct ipmi_smi_info *data)
 {
-<<<<<<< HEAD
 	int rv, index;
 	struct ipmi_smi *intf;
 
 	index = srcu_read_lock(&ipmi_interfaces_srcu);
-=======
-	int           rv = 0;
-	ipmi_smi_t    intf;
-	const struct ipmi_smi_handlers *handlers;
-
-	mutex_lock(&ipmi_interfaces_mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_for_each_entry_rcu(intf, &ipmi_interfaces, link) {
 		if (intf->intf_num == if_num)
 			goto found;
 	}
-<<<<<<< HEAD
 	srcu_read_unlock(&ipmi_interfaces_srcu, index);
 
 	/* Not found, return an error */
@@ -1587,19 +1189,6 @@ found:
 	else
 		rv = intf->handlers->get_smi_info(intf->send_info, data);
 	srcu_read_unlock(&ipmi_interfaces_srcu, index);
-=======
-	/* Not found, return an error */
-	rv = -EINVAL;
-	mutex_unlock(&ipmi_interfaces_mutex);
-	return rv;
-
-found:
-	handlers = intf->handlers;
-	rv = -ENOSYS;
-	if (handlers->get_smi_info)
-		rv = handlers->get_smi_info(intf->send_info, data);
-	mutex_unlock(&ipmi_interfaces_mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return rv;
 }
@@ -1607,7 +1196,6 @@ EXPORT_SYMBOL(ipmi_get_smi_info);
 
 static void free_user(struct kref *ref)
 {
-<<<<<<< HEAD
 	struct ipmi_user *user = container_of(ref, struct ipmi_user, refcount);
 
 	/* SRCU cleanup must happen in task context. */
@@ -1617,21 +1205,11 @@ static void free_user(struct kref *ref)
 static void _ipmi_destroy_user(struct ipmi_user *user)
 {
 	struct ipmi_smi  *intf = user->intf;
-=======
-	ipmi_user_t user = container_of(ref, struct ipmi_user, refcount);
-	kfree(user);
-}
-
-int ipmi_destroy_user(ipmi_user_t user)
-{
-	ipmi_smi_t       intf = user->intf;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int              i;
 	unsigned long    flags;
 	struct cmd_rcvr  *rcvr;
 	struct cmd_rcvr  *rcvrs = NULL;
 
-<<<<<<< HEAD
 	if (!acquire_ipmi_user(user, &i)) {
 		/*
 		 * The user has already been cleaned up, just make sure
@@ -1648,9 +1226,6 @@ int ipmi_destroy_user(ipmi_user_t user)
 
 	if (user->handler->shutdown)
 		user->handler->shutdown(user->handler_data);
-=======
-	user->valid = false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (user->handler->ipmi_watchdog_pretimeout)
 		atomic_dec(&intf->event_waiters);
@@ -1675,11 +1250,7 @@ int ipmi_destroy_user(ipmi_user_t user)
 	 * Remove the user from the command receiver's table.  First
 	 * we build a list of everything (not using the standard link,
 	 * since other things may be using it till we do
-<<<<<<< HEAD
 	 * synchronize_srcu()) then free everything in that list.
-=======
-	 * synchronize_rcu()) then free everything in that list.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	mutex_lock(&intf->cmd_rcvrs_mutex);
 	list_for_each_entry_rcu(rcvr, &intf->cmd_rcvrs, link) {
@@ -1697,24 +1268,12 @@ int ipmi_destroy_user(ipmi_user_t user)
 		kfree(rcvr);
 	}
 
-<<<<<<< HEAD
 	kref_put(&intf->refcount, intf_free);
 }
 
 int ipmi_destroy_user(struct ipmi_user *user)
 {
 	_ipmi_destroy_user(user);
-=======
-	mutex_lock(&ipmi_interfaces_mutex);
-	if (intf->handlers) {
-		module_put(intf->handlers->owner);
-		if (intf->handlers->dec_usecount)
-			intf->handlers->dec_usecount(intf->send_info);
-	}
-	mutex_unlock(&ipmi_interfaces_mutex);
-
-	kref_put(&intf->refcount, intf_free);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kref_put(&user->refcount, free_user);
 
@@ -1722,7 +1281,6 @@ int ipmi_destroy_user(struct ipmi_user *user)
 }
 EXPORT_SYMBOL(ipmi_destroy_user);
 
-<<<<<<< HEAD
 int ipmi_get_version(struct ipmi_user *user,
 		     unsigned char *major,
 		     unsigned char *minor)
@@ -1807,51 +1365,10 @@ int ipmi_set_my_LUN(struct ipmi_user *user,
 	}
 	release_ipmi_user(user, index);
 
-=======
-void ipmi_get_version(ipmi_user_t   user,
-		      unsigned char *major,
-		      unsigned char *minor)
-{
-	*major = user->intf->ipmi_version_major;
-	*minor = user->intf->ipmi_version_minor;
-}
-EXPORT_SYMBOL(ipmi_get_version);
-
-int ipmi_set_my_address(ipmi_user_t   user,
-			unsigned int  channel,
-			unsigned char address)
-{
-	if (channel >= IPMI_MAX_CHANNELS)
-		return -EINVAL;
-	user->intf->channels[channel].address = address;
-	return 0;
-}
-EXPORT_SYMBOL(ipmi_set_my_address);
-
-int ipmi_get_my_address(ipmi_user_t   user,
-			unsigned int  channel,
-			unsigned char *address)
-{
-	if (channel >= IPMI_MAX_CHANNELS)
-		return -EINVAL;
-	*address = user->intf->channels[channel].address;
-	return 0;
-}
-EXPORT_SYMBOL(ipmi_get_my_address);
-
-int ipmi_set_my_LUN(ipmi_user_t   user,
-		    unsigned int  channel,
-		    unsigned char LUN)
-{
-	if (channel >= IPMI_MAX_CHANNELS)
-		return -EINVAL;
-	user->intf->channels[channel].lun = LUN & 0x3;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 EXPORT_SYMBOL(ipmi_set_my_LUN);
 
-<<<<<<< HEAD
 int ipmi_get_my_LUN(struct ipmi_user *user,
 		    unsigned int  channel,
 		    unsigned char *address)
@@ -1887,44 +1404,18 @@ int ipmi_get_maintenance_mode(struct ipmi_user *user)
 	mode = user->intf->maintenance_mode;
 	spin_unlock_irqrestore(&user->intf->maintenance_mode_lock, flags);
 	release_ipmi_user(user, index);
-=======
-int ipmi_get_my_LUN(ipmi_user_t   user,
-		    unsigned int  channel,
-		    unsigned char *address)
-{
-	if (channel >= IPMI_MAX_CHANNELS)
-		return -EINVAL;
-	*address = user->intf->channels[channel].lun;
-	return 0;
-}
-EXPORT_SYMBOL(ipmi_get_my_LUN);
-
-int ipmi_get_maintenance_mode(ipmi_user_t user)
-{
-	int           mode;
-	unsigned long flags;
-
-	spin_lock_irqsave(&user->intf->maintenance_mode_lock, flags);
-	mode = user->intf->maintenance_mode;
-	spin_unlock_irqrestore(&user->intf->maintenance_mode_lock, flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return mode;
 }
 EXPORT_SYMBOL(ipmi_get_maintenance_mode);
 
-<<<<<<< HEAD
 static void maintenance_mode_update(struct ipmi_smi *intf)
-=======
-static void maintenance_mode_update(ipmi_smi_t intf)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (intf->handlers->set_maintenance_mode)
 		intf->handlers->set_maintenance_mode(
 			intf->send_info, intf->maintenance_mode_enable);
 }
 
-<<<<<<< HEAD
 int ipmi_set_maintenance_mode(struct ipmi_user *user, int mode)
 {
 	int rv = 0, index;
@@ -1934,13 +1425,6 @@ int ipmi_set_maintenance_mode(struct ipmi_user *user, int mode)
 	user = acquire_ipmi_user(user, &index);
 	if (!user)
 		return -ENODEV;
-=======
-int ipmi_set_maintenance_mode(ipmi_user_t user, int mode)
-{
-	int           rv = 0;
-	unsigned long flags;
-	ipmi_smi_t    intf = user->intf;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irqsave(&intf->maintenance_mode_lock, flags);
 	if (intf->maintenance_mode != mode) {
@@ -1968,16 +1452,12 @@ int ipmi_set_maintenance_mode(ipmi_user_t user, int mode)
 	}
  out_unlock:
 	spin_unlock_irqrestore(&intf->maintenance_mode_lock, flags);
-<<<<<<< HEAD
 	release_ipmi_user(user, index);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return rv;
 }
 EXPORT_SYMBOL(ipmi_set_maintenance_mode);
 
-<<<<<<< HEAD
 int ipmi_set_gets_events(struct ipmi_user *user, bool val)
 {
 	unsigned long        flags;
@@ -1989,14 +1469,6 @@ int ipmi_set_gets_events(struct ipmi_user *user, bool val)
 	user = acquire_ipmi_user(user, &index);
 	if (!user)
 		return -ENODEV;
-=======
-int ipmi_set_gets_events(ipmi_user_t user, bool val)
-{
-	unsigned long        flags;
-	ipmi_smi_t           intf = user->intf;
-	struct ipmi_recv_msg *msg, *msg2;
-	struct list_head     msgs;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	INIT_LIST_HEAD(&msgs);
 
@@ -2026,13 +1498,8 @@ int ipmi_set_gets_events(ipmi_user_t user, bool val)
 			list_move_tail(&msg->link, &msgs);
 		intf->waiting_events_count = 0;
 		if (intf->event_msg_printed) {
-<<<<<<< HEAD
 			dev_warn(intf->si_dev,
 				 PFX "Event queue no longer full\n");
-=======
-			printk(KERN_WARNING PFX "Event queue no longer"
-			       " full\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			intf->event_msg_printed = 0;
 		}
 
@@ -2042,11 +1509,7 @@ int ipmi_set_gets_events(ipmi_user_t user, bool val)
 		list_for_each_entry_safe(msg, msg2, &msgs, link) {
 			msg->user = user;
 			kref_get(&user->refcount);
-<<<<<<< HEAD
 			deliver_local_response(intf, msg);
-=======
-			deliver_response(msg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		spin_lock_irqsave(&intf->events_lock, flags);
@@ -2055,20 +1518,13 @@ int ipmi_set_gets_events(ipmi_user_t user, bool val)
 
  out:
 	spin_unlock_irqrestore(&intf->events_lock, flags);
-<<<<<<< HEAD
 	release_ipmi_user(user, index);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 EXPORT_SYMBOL(ipmi_set_gets_events);
 
-<<<<<<< HEAD
 static struct cmd_rcvr *find_cmd_rcvr(struct ipmi_smi *intf,
-=======
-static struct cmd_rcvr *find_cmd_rcvr(ipmi_smi_t    intf,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      unsigned char netfn,
 				      unsigned char cmd,
 				      unsigned char chan)
@@ -2083,11 +1539,7 @@ static struct cmd_rcvr *find_cmd_rcvr(ipmi_smi_t    intf,
 	return NULL;
 }
 
-<<<<<<< HEAD
 static int is_cmd_rcvr_exclusive(struct ipmi_smi *intf,
-=======
-static int is_cmd_rcvr_exclusive(ipmi_smi_t    intf,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 unsigned char netfn,
 				 unsigned char cmd,
 				 unsigned int  chans)
@@ -2102,16 +1554,11 @@ static int is_cmd_rcvr_exclusive(ipmi_smi_t    intf,
 	return 1;
 }
 
-<<<<<<< HEAD
 int ipmi_register_for_cmd(struct ipmi_user *user,
-=======
-int ipmi_register_for_cmd(ipmi_user_t   user,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  unsigned char netfn,
 			  unsigned char cmd,
 			  unsigned int  chans)
 {
-<<<<<<< HEAD
 	struct ipmi_smi *intf = user->intf;
 	struct cmd_rcvr *rcvr;
 	int rv = 0, index;
@@ -2125,16 +1572,6 @@ int ipmi_register_for_cmd(ipmi_user_t   user,
 		rv = -ENOMEM;
 		goto out_release;
 	}
-=======
-	ipmi_smi_t      intf = user->intf;
-	struct cmd_rcvr *rcvr;
-	int             rv = 0;
-
-
-	rcvr = kmalloc(sizeof(*rcvr), GFP_KERNEL);
-	if (!rcvr)
-		return -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rcvr->cmd = cmd;
 	rcvr->netfn = netfn;
 	rcvr->chans = chans;
@@ -2152,34 +1589,22 @@ int ipmi_register_for_cmd(ipmi_user_t   user,
 
 	list_add_rcu(&rcvr->link, &intf->cmd_rcvrs);
 
-<<<<<<< HEAD
 out_unlock:
 	mutex_unlock(&intf->cmd_rcvrs_mutex);
 	if (rv)
 		kfree(rcvr);
 out_release:
 	release_ipmi_user(user, index);
-=======
- out_unlock:
-	mutex_unlock(&intf->cmd_rcvrs_mutex);
-	if (rv)
-		kfree(rcvr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return rv;
 }
 EXPORT_SYMBOL(ipmi_register_for_cmd);
 
-<<<<<<< HEAD
 int ipmi_unregister_for_cmd(struct ipmi_user *user,
-=======
-int ipmi_unregister_for_cmd(ipmi_user_t   user,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    unsigned char netfn,
 			    unsigned char cmd,
 			    unsigned int  chans)
 {
-<<<<<<< HEAD
 	struct ipmi_smi *intf = user->intf;
 	struct cmd_rcvr *rcvr;
 	struct cmd_rcvr *rcvrs = NULL;
@@ -2188,12 +1613,6 @@ int ipmi_unregister_for_cmd(ipmi_user_t   user,
 	user = acquire_ipmi_user(user, &index);
 	if (!user)
 		return -ENODEV;
-=======
-	ipmi_smi_t      intf = user->intf;
-	struct cmd_rcvr *rcvr;
-	struct cmd_rcvr *rcvrs = NULL;
-	int i, rv = -ENOENT;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&intf->cmd_rcvrs_mutex);
 	for (i = 0; i < IPMI_NUM_CHANNELS; i++) {
@@ -2214,20 +1633,14 @@ int ipmi_unregister_for_cmd(ipmi_user_t   user,
 	}
 	mutex_unlock(&intf->cmd_rcvrs_mutex);
 	synchronize_rcu();
-<<<<<<< HEAD
 	release_ipmi_user(user, index);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	while (rcvrs) {
 		atomic_dec(&intf->event_waiters);
 		rcvr = rcvrs;
 		rcvrs = rcvr->next;
 		kfree(rcvr);
 	}
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rv;
 }
 EXPORT_SYMBOL(ipmi_unregister_for_cmd);
@@ -2262,33 +1675,19 @@ static inline void format_ipmb_msg(struct ipmi_smi_msg   *smi_msg,
 		smi_msg->data[3] = 0;
 	smi_msg->data[i+3] = ipmb_addr->slave_addr;
 	smi_msg->data[i+4] = (msg->netfn << 2) | (ipmb_addr->lun & 0x3);
-<<<<<<< HEAD
 	smi_msg->data[i+5] = ipmb_checksum(&smi_msg->data[i + 3], 2);
-=======
-	smi_msg->data[i+5] = ipmb_checksum(&(smi_msg->data[i+3]), 2);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	smi_msg->data[i+6] = source_address;
 	smi_msg->data[i+7] = (ipmb_seq << 2) | source_lun;
 	smi_msg->data[i+8] = msg->cmd;
 
 	/* Now tack on the data to the message. */
 	if (msg->data_len > 0)
-<<<<<<< HEAD
 		memcpy(&smi_msg->data[i + 9], msg->data, msg->data_len);
-=======
-		memcpy(&(smi_msg->data[i+9]), msg->data,
-		       msg->data_len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	smi_msg->data_size = msg->data_len + 9;
 
 	/* Now calculate the checksum and tack it on. */
 	smi_msg->data[i+smi_msg->data_size]
-<<<<<<< HEAD
 		= ipmb_checksum(&smi_msg->data[i + 6], smi_msg->data_size - 6);
-=======
-		= ipmb_checksum(&(smi_msg->data[i+6]),
-				smi_msg->data_size-6);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Add on the checksum size and the offset from the
@@ -2313,33 +1712,19 @@ static inline void format_lan_msg(struct ipmi_smi_msg   *smi_msg,
 	smi_msg->data[3] = lan_addr->session_handle;
 	smi_msg->data[4] = lan_addr->remote_SWID;
 	smi_msg->data[5] = (msg->netfn << 2) | (lan_addr->lun & 0x3);
-<<<<<<< HEAD
 	smi_msg->data[6] = ipmb_checksum(&smi_msg->data[4], 2);
-=======
-	smi_msg->data[6] = ipmb_checksum(&(smi_msg->data[4]), 2);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	smi_msg->data[7] = lan_addr->local_SWID;
 	smi_msg->data[8] = (ipmb_seq << 2) | source_lun;
 	smi_msg->data[9] = msg->cmd;
 
 	/* Now tack on the data to the message. */
 	if (msg->data_len > 0)
-<<<<<<< HEAD
 		memcpy(&smi_msg->data[10], msg->data, msg->data_len);
-=======
-		memcpy(&(smi_msg->data[10]), msg->data,
-		       msg->data_len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	smi_msg->data_size = msg->data_len + 10;
 
 	/* Now calculate the checksum and tack it on. */
 	smi_msg->data[smi_msg->data_size]
-<<<<<<< HEAD
 		= ipmb_checksum(&smi_msg->data[7], smi_msg->data_size - 7);
-=======
-		= ipmb_checksum(&(smi_msg->data[7]),
-				smi_msg->data_size-7);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Add on the checksum size and the offset from the
@@ -2350,11 +1735,7 @@ static inline void format_lan_msg(struct ipmi_smi_msg   *smi_msg,
 	smi_msg->msgid = msgid;
 }
 
-<<<<<<< HEAD
 static struct ipmi_smi_msg *smi_add_send_msg(struct ipmi_smi *intf,
-=======
-static struct ipmi_smi_msg *smi_add_send_msg(ipmi_smi_t intf,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					     struct ipmi_smi_msg *smi_msg,
 					     int priority)
 {
@@ -2372,12 +1753,8 @@ static struct ipmi_smi_msg *smi_add_send_msg(ipmi_smi_t intf,
 }
 
 
-<<<<<<< HEAD
 static void smi_send(struct ipmi_smi *intf,
 		     const struct ipmi_smi_handlers *handlers,
-=======
-static void smi_send(ipmi_smi_t intf, const struct ipmi_smi_handlers *handlers,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		     struct ipmi_smi_msg *smi_msg, int priority)
 {
 	int run_to_completion = intf->run_to_completion;
@@ -2396,7 +1773,6 @@ static void smi_send(ipmi_smi_t intf, const struct ipmi_smi_handlers *handlers,
 		handlers->sender(intf->send_info, smi_msg);
 }
 
-<<<<<<< HEAD
 static bool is_maintenance_mode_cmd(struct kernel_ipmi_msg *msg)
 {
 	return (((msg->netfn == IPMI_NETFN_APP_REQUEST)
@@ -2731,21 +2107,14 @@ out_err:
 	return rv;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Separate from ipmi_request so that the user does not have to be
  * supplied in certain circumstances (mainly at panic time).  If
  * messages are supplied, they will be freed, even if an error
  * occurs.
  */
-<<<<<<< HEAD
 static int i_ipmi_request(struct ipmi_user     *user,
 			  struct ipmi_smi      *intf,
-=======
-static int i_ipmi_request(ipmi_user_t          user,
-			  ipmi_smi_t           intf,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  struct ipmi_addr     *addr,
 			  long                 msgid,
 			  struct kernel_ipmi_msg *msg,
@@ -2758,31 +2127,18 @@ static int i_ipmi_request(ipmi_user_t          user,
 			  int                  retries,
 			  unsigned int         retry_time_ms)
 {
-<<<<<<< HEAD
 	struct ipmi_smi_msg *smi_msg;
 	struct ipmi_recv_msg *recv_msg;
 	int rv = 0;
-=======
-	int                      rv = 0;
-	struct ipmi_smi_msg      *smi_msg;
-	struct ipmi_recv_msg     *recv_msg;
-	unsigned long            flags;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (supplied_recv)
 		recv_msg = supplied_recv;
 	else {
 		recv_msg = ipmi_alloc_recv_msg();
-<<<<<<< HEAD
 		if (recv_msg == NULL) {
 			rv = -ENOMEM;
 			goto out;
 		}
-=======
-		if (recv_msg == NULL)
-			return -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	recv_msg->user_msg_data = user_msg_data;
 
@@ -2792,12 +2148,8 @@ static int i_ipmi_request(ipmi_user_t          user,
 		smi_msg = ipmi_alloc_smi_msg();
 		if (smi_msg == NULL) {
 			ipmi_free_recv_msg(recv_msg);
-<<<<<<< HEAD
 			rv = -ENOMEM;
 			goto out;
-=======
-			return -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -2809,10 +2161,7 @@ static int i_ipmi_request(ipmi_user_t          user,
 
 	recv_msg->user = user;
 	if (user)
-<<<<<<< HEAD
 		/* The put happens when the message is freed. */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kref_get(&user->refcount);
 	recv_msg->msgid = msgid;
 	/*
@@ -2822,7 +2171,6 @@ static int i_ipmi_request(ipmi_user_t          user,
 	recv_msg->msg = *msg;
 
 	if (addr->addr_type == IPMI_SYSTEM_INTERFACE_ADDR_TYPE) {
-<<<<<<< HEAD
 		rv = i_ipmi_req_sysintf(intf, addr, msgid, msg, smi_msg,
 					recv_msg, retries, retry_time_ms);
 	} else if (is_ipmb_addr(addr) || is_ipmb_bcast_addr(addr)) {
@@ -2832,316 +2180,10 @@ static int i_ipmi_request(ipmi_user_t          user,
 	} else if (is_lan_addr(addr)) {
 		rv = i_ipmi_req_lan(intf, addr, msgid, msg, smi_msg, recv_msg,
 				    source_lun, retries, retry_time_ms);
-=======
-		struct ipmi_system_interface_addr *smi_addr;
-
-		if (msg->netfn & 1) {
-			/* Responses are not allowed to the SMI. */
-			rv = -EINVAL;
-			goto out_err;
-		}
-
-		smi_addr = (struct ipmi_system_interface_addr *) addr;
-		if (smi_addr->lun > 3) {
-			ipmi_inc_stat(intf, sent_invalid_commands);
-			rv = -EINVAL;
-			goto out_err;
-		}
-
-		memcpy(&recv_msg->addr, smi_addr, sizeof(*smi_addr));
-
-		if ((msg->netfn == IPMI_NETFN_APP_REQUEST)
-		    && ((msg->cmd == IPMI_SEND_MSG_CMD)
-			|| (msg->cmd == IPMI_GET_MSG_CMD)
-			|| (msg->cmd == IPMI_READ_EVENT_MSG_BUFFER_CMD))) {
-			/*
-			 * We don't let the user do these, since we manage
-			 * the sequence numbers.
-			 */
-			ipmi_inc_stat(intf, sent_invalid_commands);
-			rv = -EINVAL;
-			goto out_err;
-		}
-
-		if (((msg->netfn == IPMI_NETFN_APP_REQUEST)
-		      && ((msg->cmd == IPMI_COLD_RESET_CMD)
-			  || (msg->cmd == IPMI_WARM_RESET_CMD)))
-		     || (msg->netfn == IPMI_NETFN_FIRMWARE_REQUEST)) {
-			spin_lock_irqsave(&intf->maintenance_mode_lock, flags);
-			intf->auto_maintenance_timeout
-				= IPMI_MAINTENANCE_MODE_TIMEOUT;
-			if (!intf->maintenance_mode
-			    && !intf->maintenance_mode_enable) {
-				intf->maintenance_mode_enable = true;
-				maintenance_mode_update(intf);
-			}
-			spin_unlock_irqrestore(&intf->maintenance_mode_lock,
-					       flags);
-		}
-
-		if ((msg->data_len + 2) > IPMI_MAX_MSG_LENGTH) {
-			ipmi_inc_stat(intf, sent_invalid_commands);
-			rv = -EMSGSIZE;
-			goto out_err;
-		}
-
-		smi_msg->data[0] = (msg->netfn << 2) | (smi_addr->lun & 0x3);
-		smi_msg->data[1] = msg->cmd;
-		smi_msg->msgid = msgid;
-		smi_msg->user_data = recv_msg;
-		if (msg->data_len > 0)
-			memcpy(&(smi_msg->data[2]), msg->data, msg->data_len);
-		smi_msg->data_size = msg->data_len + 2;
-		ipmi_inc_stat(intf, sent_local_commands);
-	} else if (is_ipmb_addr(addr) || is_ipmb_bcast_addr(addr)) {
-		struct ipmi_ipmb_addr *ipmb_addr;
-		unsigned char         ipmb_seq;
-		long                  seqid;
-		int                   broadcast = 0;
-
-		if (addr->channel >= IPMI_MAX_CHANNELS) {
-			ipmi_inc_stat(intf, sent_invalid_commands);
-			rv = -EINVAL;
-			goto out_err;
-		}
-
-		if (intf->channels[addr->channel].medium
-					!= IPMI_CHANNEL_MEDIUM_IPMB) {
-			ipmi_inc_stat(intf, sent_invalid_commands);
-			rv = -EINVAL;
-			goto out_err;
-		}
-
-		if (retries < 0) {
-		    if (addr->addr_type == IPMI_IPMB_BROADCAST_ADDR_TYPE)
-			retries = 0; /* Don't retry broadcasts. */
-		    else
-			retries = 4;
-		}
-		if (addr->addr_type == IPMI_IPMB_BROADCAST_ADDR_TYPE) {
-		    /*
-		     * Broadcasts add a zero at the beginning of the
-		     * message, but otherwise is the same as an IPMB
-		     * address.
-		     */
-		    addr->addr_type = IPMI_IPMB_ADDR_TYPE;
-		    broadcast = 1;
-		}
-
-
-		/* Default to 1 second retries. */
-		if (retry_time_ms == 0)
-		    retry_time_ms = 1000;
-
-		/*
-		 * 9 for the header and 1 for the checksum, plus
-		 * possibly one for the broadcast.
-		 */
-		if ((msg->data_len + 10 + broadcast) > IPMI_MAX_MSG_LENGTH) {
-			ipmi_inc_stat(intf, sent_invalid_commands);
-			rv = -EMSGSIZE;
-			goto out_err;
-		}
-
-		ipmb_addr = (struct ipmi_ipmb_addr *) addr;
-		if (ipmb_addr->lun > 3) {
-			ipmi_inc_stat(intf, sent_invalid_commands);
-			rv = -EINVAL;
-			goto out_err;
-		}
-
-		memcpy(&recv_msg->addr, ipmb_addr, sizeof(*ipmb_addr));
-
-		if (recv_msg->msg.netfn & 0x1) {
-			/*
-			 * It's a response, so use the user's sequence
-			 * from msgid.
-			 */
-			ipmi_inc_stat(intf, sent_ipmb_responses);
-			format_ipmb_msg(smi_msg, msg, ipmb_addr, msgid,
-					msgid, broadcast,
-					source_address, source_lun);
-
-			/*
-			 * Save the receive message so we can use it
-			 * to deliver the response.
-			 */
-			smi_msg->user_data = recv_msg;
-		} else {
-			/* It's a command, so get a sequence for it. */
-
-			spin_lock_irqsave(&(intf->seq_lock), flags);
-
-			/*
-			 * Create a sequence number with a 1 second
-			 * timeout and 4 retries.
-			 */
-			rv = intf_next_seq(intf,
-					   recv_msg,
-					   retry_time_ms,
-					   retries,
-					   broadcast,
-					   &ipmb_seq,
-					   &seqid);
-			if (rv) {
-				/*
-				 * We have used up all the sequence numbers,
-				 * probably, so abort.
-				 */
-				spin_unlock_irqrestore(&(intf->seq_lock),
-						       flags);
-				goto out_err;
-			}
-
-			ipmi_inc_stat(intf, sent_ipmb_commands);
-
-			/*
-			 * Store the sequence number in the message,
-			 * so that when the send message response
-			 * comes back we can start the timer.
-			 */
-			format_ipmb_msg(smi_msg, msg, ipmb_addr,
-					STORE_SEQ_IN_MSGID(ipmb_seq, seqid),
-					ipmb_seq, broadcast,
-					source_address, source_lun);
-
-			/*
-			 * Copy the message into the recv message data, so we
-			 * can retransmit it later if necessary.
-			 */
-			memcpy(recv_msg->msg_data, smi_msg->data,
-			       smi_msg->data_size);
-			recv_msg->msg.data = recv_msg->msg_data;
-			recv_msg->msg.data_len = smi_msg->data_size;
-
-			/*
-			 * We don't unlock until here, because we need
-			 * to copy the completed message into the
-			 * recv_msg before we release the lock.
-			 * Otherwise, race conditions may bite us.  I
-			 * know that's pretty paranoid, but I prefer
-			 * to be correct.
-			 */
-			spin_unlock_irqrestore(&(intf->seq_lock), flags);
-		}
-	} else if (is_lan_addr(addr)) {
-		struct ipmi_lan_addr  *lan_addr;
-		unsigned char         ipmb_seq;
-		long                  seqid;
-
-		if (addr->channel >= IPMI_MAX_CHANNELS) {
-			ipmi_inc_stat(intf, sent_invalid_commands);
-			rv = -EINVAL;
-			goto out_err;
-		}
-
-		if ((intf->channels[addr->channel].medium
-				!= IPMI_CHANNEL_MEDIUM_8023LAN)
-		    && (intf->channels[addr->channel].medium
-				!= IPMI_CHANNEL_MEDIUM_ASYNC)) {
-			ipmi_inc_stat(intf, sent_invalid_commands);
-			rv = -EINVAL;
-			goto out_err;
-		}
-
-		retries = 4;
-
-		/* Default to 1 second retries. */
-		if (retry_time_ms == 0)
-		    retry_time_ms = 1000;
-
-		/* 11 for the header and 1 for the checksum. */
-		if ((msg->data_len + 12) > IPMI_MAX_MSG_LENGTH) {
-			ipmi_inc_stat(intf, sent_invalid_commands);
-			rv = -EMSGSIZE;
-			goto out_err;
-		}
-
-		lan_addr = (struct ipmi_lan_addr *) addr;
-		if (lan_addr->lun > 3) {
-			ipmi_inc_stat(intf, sent_invalid_commands);
-			rv = -EINVAL;
-			goto out_err;
-		}
-
-		memcpy(&recv_msg->addr, lan_addr, sizeof(*lan_addr));
-
-		if (recv_msg->msg.netfn & 0x1) {
-			/*
-			 * It's a response, so use the user's sequence
-			 * from msgid.
-			 */
-			ipmi_inc_stat(intf, sent_lan_responses);
-			format_lan_msg(smi_msg, msg, lan_addr, msgid,
-				       msgid, source_lun);
-
-			/*
-			 * Save the receive message so we can use it
-			 * to deliver the response.
-			 */
-			smi_msg->user_data = recv_msg;
-		} else {
-			/* It's a command, so get a sequence for it. */
-
-			spin_lock_irqsave(&(intf->seq_lock), flags);
-
-			/*
-			 * Create a sequence number with a 1 second
-			 * timeout and 4 retries.
-			 */
-			rv = intf_next_seq(intf,
-					   recv_msg,
-					   retry_time_ms,
-					   retries,
-					   0,
-					   &ipmb_seq,
-					   &seqid);
-			if (rv) {
-				/*
-				 * We have used up all the sequence numbers,
-				 * probably, so abort.
-				 */
-				spin_unlock_irqrestore(&(intf->seq_lock),
-						       flags);
-				goto out_err;
-			}
-
-			ipmi_inc_stat(intf, sent_lan_commands);
-
-			/*
-			 * Store the sequence number in the message,
-			 * so that when the send message response
-			 * comes back we can start the timer.
-			 */
-			format_lan_msg(smi_msg, msg, lan_addr,
-				       STORE_SEQ_IN_MSGID(ipmb_seq, seqid),
-				       ipmb_seq, source_lun);
-
-			/*
-			 * Copy the message into the recv message data, so we
-			 * can retransmit it later if necessary.
-			 */
-			memcpy(recv_msg->msg_data, smi_msg->data,
-			       smi_msg->data_size);
-			recv_msg->msg.data = recv_msg->msg_data;
-			recv_msg->msg.data_len = smi_msg->data_size;
-
-			/*
-			 * We don't unlock until here, because we need
-			 * to copy the completed message into the
-			 * recv_msg before we release the lock.
-			 * Otherwise, race conditions may bite us.  I
-			 * know that's pretty paranoid, but I prefer
-			 * to be correct.
-			 */
-			spin_unlock_irqrestore(&(intf->seq_lock), flags);
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 	    /* Unknown address type. */
 		ipmi_inc_stat(intf, sent_invalid_commands);
 		rv = -EINVAL;
-<<<<<<< HEAD
 	}
 
 	if (rv) {
@@ -3160,40 +2202,12 @@ out:
 }
 
 static int check_addr(struct ipmi_smi  *intf,
-=======
-		goto out_err;
-	}
-
-#ifdef DEBUG_MSGING
-	{
-		int m;
-		for (m = 0; m < smi_msg->data_size; m++)
-			printk(" %2.2x", smi_msg->data[m]);
-		printk("\n");
-	}
-#endif
-
-	smi_send(intf, intf->handlers, smi_msg, priority);
-	rcu_read_unlock();
-
-	return 0;
-
- out_err:
-	rcu_read_unlock();
-	ipmi_free_smi_msg(smi_msg);
-	ipmi_free_recv_msg(recv_msg);
-	return rv;
-}
-
-static int check_addr(ipmi_smi_t       intf,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		      struct ipmi_addr *addr,
 		      unsigned char    *saddr,
 		      unsigned char    *lun)
 {
 	if (addr->channel >= IPMI_MAX_CHANNELS)
 		return -EINVAL;
-<<<<<<< HEAD
 	addr->channel = array_index_nospec(addr->channel, IPMI_MAX_CHANNELS);
 	*lun = intf->addrinfo[addr->channel].lun;
 	*saddr = intf->addrinfo[addr->channel].address;
@@ -3201,14 +2215,6 @@ static int check_addr(ipmi_smi_t       intf,
 }
 
 int ipmi_request_settime(struct ipmi_user *user,
-=======
-	*lun = intf->channels[addr->channel].lun;
-	*saddr = intf->channels[addr->channel].address;
-	return 0;
-}
-
-int ipmi_request_settime(ipmi_user_t      user,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 struct ipmi_addr *addr,
 			 long             msgid,
 			 struct kernel_ipmi_msg  *msg,
@@ -3218,7 +2224,6 @@ int ipmi_request_settime(ipmi_user_t      user,
 			 unsigned int     retry_time_ms)
 {
 	unsigned char saddr = 0, lun = 0;
-<<<<<<< HEAD
 	int rv, index;
 
 	if (!user)
@@ -3249,31 +2254,6 @@ int ipmi_request_settime(ipmi_user_t      user,
 EXPORT_SYMBOL(ipmi_request_settime);
 
 int ipmi_request_supply_msgs(struct ipmi_user     *user,
-=======
-	int           rv;
-
-	if (!user)
-		return -EINVAL;
-	rv = check_addr(user->intf, addr, &saddr, &lun);
-	if (rv)
-		return rv;
-	return i_ipmi_request(user,
-			      user->intf,
-			      addr,
-			      msgid,
-			      msg,
-			      user_msg_data,
-			      NULL, NULL,
-			      priority,
-			      saddr,
-			      lun,
-			      retries,
-			      retry_time_ms);
-}
-EXPORT_SYMBOL(ipmi_request_settime);
-
-int ipmi_request_supply_msgs(ipmi_user_t          user,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     struct ipmi_addr     *addr,
 			     long                 msgid,
 			     struct kernel_ipmi_msg *msg,
@@ -3283,7 +2263,6 @@ int ipmi_request_supply_msgs(ipmi_user_t          user,
 			     int                  priority)
 {
 	unsigned char saddr = 0, lun = 0;
-<<<<<<< HEAD
 	int rv, index;
 
 	if (!user)
@@ -3546,288 +2525,6 @@ static int bmc_get_device_id(struct ipmi_smi *intf, struct bmc_device *bmc,
 			     bool *guid_set, guid_t *guid)
 {
 	return __bmc_get_device_id(intf, bmc, id, guid_set, guid, -1);
-=======
-	int           rv;
-
-	if (!user)
-		return -EINVAL;
-	rv = check_addr(user->intf, addr, &saddr, &lun);
-	if (rv)
-		return rv;
-	return i_ipmi_request(user,
-			      user->intf,
-			      addr,
-			      msgid,
-			      msg,
-			      user_msg_data,
-			      supplied_smi,
-			      supplied_recv,
-			      priority,
-			      saddr,
-			      lun,
-			      -1, 0);
-}
-EXPORT_SYMBOL(ipmi_request_supply_msgs);
-
-#ifdef CONFIG_PROC_FS
-static int smi_ipmb_proc_show(struct seq_file *m, void *v)
-{
-	ipmi_smi_t intf = m->private;
-	int        i;
-
-	seq_printf(m, "%x", intf->channels[0].address);
-	for (i = 1; i < IPMI_MAX_CHANNELS; i++)
-		seq_printf(m, " %x", intf->channels[i].address);
-	seq_putc(m, '\n');
-
-	return 0;
-}
-
-static int smi_ipmb_proc_open(struct inode *inode, struct file *file)
-{
-	return single_open(file, smi_ipmb_proc_show, PDE_DATA(inode));
-}
-
-static const struct file_operations smi_ipmb_proc_ops = {
-	.open		= smi_ipmb_proc_open,
-	.read		= seq_read,
-	.llseek		= seq_lseek,
-	.release	= single_release,
-};
-
-static int smi_version_proc_show(struct seq_file *m, void *v)
-{
-	ipmi_smi_t intf = m->private;
-
-	seq_printf(m, "%u.%u\n",
-		   ipmi_version_major(&intf->bmc->id),
-		   ipmi_version_minor(&intf->bmc->id));
-
-	return 0;
-}
-
-static int smi_version_proc_open(struct inode *inode, struct file *file)
-{
-	return single_open(file, smi_version_proc_show, PDE_DATA(inode));
-}
-
-static const struct file_operations smi_version_proc_ops = {
-	.open		= smi_version_proc_open,
-	.read		= seq_read,
-	.llseek		= seq_lseek,
-	.release	= single_release,
-};
-
-static int smi_stats_proc_show(struct seq_file *m, void *v)
-{
-	ipmi_smi_t intf = m->private;
-
-	seq_printf(m, "sent_invalid_commands:       %u\n",
-		       ipmi_get_stat(intf, sent_invalid_commands));
-	seq_printf(m, "sent_local_commands:         %u\n",
-		       ipmi_get_stat(intf, sent_local_commands));
-	seq_printf(m, "handled_local_responses:     %u\n",
-		       ipmi_get_stat(intf, handled_local_responses));
-	seq_printf(m, "unhandled_local_responses:   %u\n",
-		       ipmi_get_stat(intf, unhandled_local_responses));
-	seq_printf(m, "sent_ipmb_commands:          %u\n",
-		       ipmi_get_stat(intf, sent_ipmb_commands));
-	seq_printf(m, "sent_ipmb_command_errs:      %u\n",
-		       ipmi_get_stat(intf, sent_ipmb_command_errs));
-	seq_printf(m, "retransmitted_ipmb_commands: %u\n",
-		       ipmi_get_stat(intf, retransmitted_ipmb_commands));
-	seq_printf(m, "timed_out_ipmb_commands:     %u\n",
-		       ipmi_get_stat(intf, timed_out_ipmb_commands));
-	seq_printf(m, "timed_out_ipmb_broadcasts:   %u\n",
-		       ipmi_get_stat(intf, timed_out_ipmb_broadcasts));
-	seq_printf(m, "sent_ipmb_responses:         %u\n",
-		       ipmi_get_stat(intf, sent_ipmb_responses));
-	seq_printf(m, "handled_ipmb_responses:      %u\n",
-		       ipmi_get_stat(intf, handled_ipmb_responses));
-	seq_printf(m, "invalid_ipmb_responses:      %u\n",
-		       ipmi_get_stat(intf, invalid_ipmb_responses));
-	seq_printf(m, "unhandled_ipmb_responses:    %u\n",
-		       ipmi_get_stat(intf, unhandled_ipmb_responses));
-	seq_printf(m, "sent_lan_commands:           %u\n",
-		       ipmi_get_stat(intf, sent_lan_commands));
-	seq_printf(m, "sent_lan_command_errs:       %u\n",
-		       ipmi_get_stat(intf, sent_lan_command_errs));
-	seq_printf(m, "retransmitted_lan_commands:  %u\n",
-		       ipmi_get_stat(intf, retransmitted_lan_commands));
-	seq_printf(m, "timed_out_lan_commands:      %u\n",
-		       ipmi_get_stat(intf, timed_out_lan_commands));
-	seq_printf(m, "sent_lan_responses:          %u\n",
-		       ipmi_get_stat(intf, sent_lan_responses));
-	seq_printf(m, "handled_lan_responses:       %u\n",
-		       ipmi_get_stat(intf, handled_lan_responses));
-	seq_printf(m, "invalid_lan_responses:       %u\n",
-		       ipmi_get_stat(intf, invalid_lan_responses));
-	seq_printf(m, "unhandled_lan_responses:     %u\n",
-		       ipmi_get_stat(intf, unhandled_lan_responses));
-	seq_printf(m, "handled_commands:            %u\n",
-		       ipmi_get_stat(intf, handled_commands));
-	seq_printf(m, "invalid_commands:            %u\n",
-		       ipmi_get_stat(intf, invalid_commands));
-	seq_printf(m, "unhandled_commands:          %u\n",
-		       ipmi_get_stat(intf, unhandled_commands));
-	seq_printf(m, "invalid_events:              %u\n",
-		       ipmi_get_stat(intf, invalid_events));
-	seq_printf(m, "events:                      %u\n",
-		       ipmi_get_stat(intf, events));
-	seq_printf(m, "failed rexmit LAN msgs:      %u\n",
-		       ipmi_get_stat(intf, dropped_rexmit_lan_commands));
-	seq_printf(m, "failed rexmit IPMB msgs:     %u\n",
-		       ipmi_get_stat(intf, dropped_rexmit_ipmb_commands));
-	return 0;
-}
-
-static int smi_stats_proc_open(struct inode *inode, struct file *file)
-{
-	return single_open(file, smi_stats_proc_show, PDE_DATA(inode));
-}
-
-static const struct file_operations smi_stats_proc_ops = {
-	.open		= smi_stats_proc_open,
-	.read		= seq_read,
-	.llseek		= seq_lseek,
-	.release	= single_release,
-};
-#endif /* CONFIG_PROC_FS */
-
-int ipmi_smi_add_proc_entry(ipmi_smi_t smi, char *name,
-			    const struct file_operations *proc_ops,
-			    void *data)
-{
-	int                    rv = 0;
-#ifdef CONFIG_PROC_FS
-	struct proc_dir_entry  *file;
-	struct ipmi_proc_entry *entry;
-
-	/* Create a list element. */
-	entry = kmalloc(sizeof(*entry), GFP_KERNEL);
-	if (!entry)
-		return -ENOMEM;
-	entry->name = kstrdup(name, GFP_KERNEL);
-	if (!entry->name) {
-		kfree(entry);
-		return -ENOMEM;
-	}
-
-	file = proc_create_data(name, 0, smi->proc_dir, proc_ops, data);
-	if (!file) {
-		kfree(entry->name);
-		kfree(entry);
-		rv = -ENOMEM;
-	} else {
-		mutex_lock(&smi->proc_entry_lock);
-		/* Stick it on the list. */
-		entry->next = smi->proc_entries;
-		smi->proc_entries = entry;
-		mutex_unlock(&smi->proc_entry_lock);
-	}
-#endif /* CONFIG_PROC_FS */
-
-	return rv;
-}
-EXPORT_SYMBOL(ipmi_smi_add_proc_entry);
-
-static int add_proc_entries(ipmi_smi_t smi, int num)
-{
-	int rv = 0;
-
-#ifdef CONFIG_PROC_FS
-	sprintf(smi->proc_dir_name, "%d", num);
-	smi->proc_dir = proc_mkdir(smi->proc_dir_name, proc_ipmi_root);
-	if (!smi->proc_dir)
-		rv = -ENOMEM;
-
-	if (rv == 0)
-		rv = ipmi_smi_add_proc_entry(smi, "stats",
-					     &smi_stats_proc_ops,
-					     smi);
-
-	if (rv == 0)
-		rv = ipmi_smi_add_proc_entry(smi, "ipmb",
-					     &smi_ipmb_proc_ops,
-					     smi);
-
-	if (rv == 0)
-		rv = ipmi_smi_add_proc_entry(smi, "version",
-					     &smi_version_proc_ops,
-					     smi);
-#endif /* CONFIG_PROC_FS */
-
-	return rv;
-}
-
-static void remove_proc_entries(ipmi_smi_t smi)
-{
-#ifdef CONFIG_PROC_FS
-	struct ipmi_proc_entry *entry;
-
-	mutex_lock(&smi->proc_entry_lock);
-	while (smi->proc_entries) {
-		entry = smi->proc_entries;
-		smi->proc_entries = entry->next;
-
-		remove_proc_entry(entry->name, smi->proc_dir);
-		kfree(entry->name);
-		kfree(entry);
-	}
-	mutex_unlock(&smi->proc_entry_lock);
-	remove_proc_entry(smi->proc_dir_name, proc_ipmi_root);
-#endif /* CONFIG_PROC_FS */
-}
-
-static int __find_bmc_guid(struct device *dev, void *data)
-{
-	unsigned char *id = data;
-	struct bmc_device *bmc = to_bmc_device(dev);
-	return memcmp(bmc->guid, id, 16) == 0;
-}
-
-static struct bmc_device *ipmi_find_bmc_guid(struct device_driver *drv,
-					     unsigned char *guid)
-{
-	struct device *dev;
-
-	dev = driver_find_device(drv, NULL, guid, __find_bmc_guid);
-	if (dev)
-		return to_bmc_device(dev);
-	else
-		return NULL;
-}
-
-struct prod_dev_id {
-	unsigned int  product_id;
-	unsigned char device_id;
-};
-
-static int __find_bmc_prod_dev_id(struct device *dev, void *data)
-{
-	struct prod_dev_id *id = data;
-	struct bmc_device *bmc = to_bmc_device(dev);
-
-	return (bmc->id.product_id == id->product_id
-		&& bmc->id.device_id == id->device_id);
-}
-
-static struct bmc_device *ipmi_find_bmc_prod_dev_id(
-	struct device_driver *drv,
-	unsigned int product_id, unsigned char device_id)
-{
-	struct prod_dev_id id = {
-		.product_id = product_id,
-		.device_id = device_id,
-	};
-	struct device *dev;
-
-	dev = driver_find_device(drv, NULL, &id, __find_bmc_prod_dev_id);
-	if (dev)
-		return to_bmc_device(dev);
-	else
-		return NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static ssize_t device_id_show(struct device *dev,
@@ -3835,7 +2532,6 @@ static ssize_t device_id_show(struct device *dev,
 			      char *buf)
 {
 	struct bmc_device *bmc = to_bmc_device(dev);
-<<<<<<< HEAD
 	struct ipmi_device_id id;
 	int rv;
 
@@ -3846,19 +2542,12 @@ static ssize_t device_id_show(struct device *dev,
 	return snprintf(buf, 10, "%u\n", id.device_id);
 }
 static DEVICE_ATTR_RO(device_id);
-=======
-
-	return snprintf(buf, 10, "%u\n", bmc->id.device_id);
-}
-static DEVICE_ATTR(device_id, S_IRUGO, device_id_show, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static ssize_t provides_device_sdrs_show(struct device *dev,
 					 struct device_attribute *attr,
 					 char *buf)
 {
 	struct bmc_device *bmc = to_bmc_device(dev);
-<<<<<<< HEAD
 	struct ipmi_device_id id;
 	int rv;
 
@@ -3869,20 +2558,11 @@ static ssize_t provides_device_sdrs_show(struct device *dev,
 	return snprintf(buf, 10, "%u\n", (id.device_revision & 0x80) >> 7);
 }
 static DEVICE_ATTR_RO(provides_device_sdrs);
-=======
-
-	return snprintf(buf, 10, "%u\n",
-			(bmc->id.device_revision & 0x80) >> 7);
-}
-static DEVICE_ATTR(provides_device_sdrs, S_IRUGO, provides_device_sdrs_show,
-		   NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static ssize_t revision_show(struct device *dev, struct device_attribute *attr,
 			     char *buf)
 {
 	struct bmc_device *bmc = to_bmc_device(dev);
-<<<<<<< HEAD
 	struct ipmi_device_id id;
 	int rv;
 
@@ -3893,20 +2573,12 @@ static ssize_t revision_show(struct device *dev, struct device_attribute *attr,
 	return snprintf(buf, 20, "%u\n", id.device_revision & 0x0F);
 }
 static DEVICE_ATTR_RO(revision);
-=======
-
-	return snprintf(buf, 20, "%u\n",
-			bmc->id.device_revision & 0x0F);
-}
-static DEVICE_ATTR(revision, S_IRUGO, revision_show, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static ssize_t firmware_revision_show(struct device *dev,
 				      struct device_attribute *attr,
 				      char *buf)
 {
 	struct bmc_device *bmc = to_bmc_device(dev);
-<<<<<<< HEAD
 	struct ipmi_device_id id;
 	int rv;
 
@@ -3918,20 +2590,12 @@ static ssize_t firmware_revision_show(struct device *dev,
 			id.firmware_revision_2);
 }
 static DEVICE_ATTR_RO(firmware_revision);
-=======
-
-	return snprintf(buf, 20, "%u.%x\n", bmc->id.firmware_revision_1,
-			bmc->id.firmware_revision_2);
-}
-static DEVICE_ATTR(firmware_revision, S_IRUGO, firmware_revision_show, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static ssize_t ipmi_version_show(struct device *dev,
 				 struct device_attribute *attr,
 				 char *buf)
 {
 	struct bmc_device *bmc = to_bmc_device(dev);
-<<<<<<< HEAD
 	struct ipmi_device_id id;
 	int rv;
 
@@ -3944,21 +2608,12 @@ static ssize_t ipmi_version_show(struct device *dev,
 			ipmi_version_minor(&id));
 }
 static DEVICE_ATTR_RO(ipmi_version);
-=======
-
-	return snprintf(buf, 20, "%u.%u\n",
-			ipmi_version_major(&bmc->id),
-			ipmi_version_minor(&bmc->id));
-}
-static DEVICE_ATTR(ipmi_version, S_IRUGO, ipmi_version_show, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static ssize_t add_dev_support_show(struct device *dev,
 				    struct device_attribute *attr,
 				    char *buf)
 {
 	struct bmc_device *bmc = to_bmc_device(dev);
-<<<<<<< HEAD
 	struct ipmi_device_id id;
 	int rv;
 
@@ -3967,11 +2622,6 @@ static ssize_t add_dev_support_show(struct device *dev,
 		return rv;
 
 	return snprintf(buf, 10, "0x%02x\n", id.additional_device_support);
-=======
-
-	return snprintf(buf, 10, "0x%02x\n",
-			bmc->id.additional_device_support);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 static DEVICE_ATTR(additional_device_support, S_IRUGO, add_dev_support_show,
 		   NULL);
@@ -3981,7 +2631,6 @@ static ssize_t manufacturer_id_show(struct device *dev,
 				    char *buf)
 {
 	struct bmc_device *bmc = to_bmc_device(dev);
-<<<<<<< HEAD
 	struct ipmi_device_id id;
 	int rv;
 
@@ -3992,19 +2641,12 @@ static ssize_t manufacturer_id_show(struct device *dev,
 	return snprintf(buf, 20, "0x%6.6x\n", id.manufacturer_id);
 }
 static DEVICE_ATTR_RO(manufacturer_id);
-=======
-
-	return snprintf(buf, 20, "0x%6.6x\n", bmc->id.manufacturer_id);
-}
-static DEVICE_ATTR(manufacturer_id, S_IRUGO, manufacturer_id_show, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static ssize_t product_id_show(struct device *dev,
 			       struct device_attribute *attr,
 			       char *buf)
 {
 	struct bmc_device *bmc = to_bmc_device(dev);
-<<<<<<< HEAD
 	struct ipmi_device_id id;
 	int rv;
 
@@ -4015,19 +2657,12 @@ static ssize_t product_id_show(struct device *dev,
 	return snprintf(buf, 10, "0x%4.4x\n", id.product_id);
 }
 static DEVICE_ATTR_RO(product_id);
-=======
-
-	return snprintf(buf, 10, "0x%4.4x\n", bmc->id.product_id);
-}
-static DEVICE_ATTR(product_id, S_IRUGO, product_id_show, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static ssize_t aux_firmware_rev_show(struct device *dev,
 				     struct device_attribute *attr,
 				     char *buf)
 {
 	struct bmc_device *bmc = to_bmc_device(dev);
-<<<<<<< HEAD
 	struct ipmi_device_id id;
 	int rv;
 
@@ -4040,14 +2675,6 @@ static ssize_t aux_firmware_rev_show(struct device *dev,
 			id.aux_firmware_revision[2],
 			id.aux_firmware_revision[1],
 			id.aux_firmware_revision[0]);
-=======
-
-	return snprintf(buf, 21, "0x%02x 0x%02x 0x%02x 0x%02x\n",
-			bmc->id.aux_firmware_revision[3],
-			bmc->id.aux_firmware_revision[2],
-			bmc->id.aux_firmware_revision[1],
-			bmc->id.aux_firmware_revision[0]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 static DEVICE_ATTR(aux_firmware_revision, S_IRUGO, aux_firmware_rev_show, NULL);
 
@@ -4055,7 +2682,6 @@ static ssize_t guid_show(struct device *dev, struct device_attribute *attr,
 			 char *buf)
 {
 	struct bmc_device *bmc = to_bmc_device(dev);
-<<<<<<< HEAD
 	bool guid_set;
 	guid_t guid;
 	int rv;
@@ -4069,14 +2695,6 @@ static ssize_t guid_show(struct device *dev, struct device_attribute *attr,
 	return snprintf(buf, 38, "%pUl\n", guid.b);
 }
 static DEVICE_ATTR_RO(guid);
-=======
-
-	return snprintf(buf, 100, "%Lx%Lx\n",
-			(long long) bmc->guid[0],
-			(long long) bmc->guid[8]);
-}
-static DEVICE_ATTR(guid, S_IRUGO, guid_show, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct attribute *bmc_dev_attrs[] = {
 	&dev_attr_device_id.attr,
@@ -4098,7 +2716,6 @@ static umode_t bmc_dev_attr_is_visible(struct kobject *kobj,
 	struct device *dev = kobj_to_dev(kobj);
 	struct bmc_device *bmc = to_bmc_device(dev);
 	umode_t mode = attr->mode;
-<<<<<<< HEAD
 	int rv;
 
 	if (attr == &dev_attr_aux_firmware_revision.attr) {
@@ -4113,13 +2730,6 @@ static umode_t bmc_dev_attr_is_visible(struct kobject *kobj,
 		rv = bmc_get_device_id(NULL, bmc, NULL, &guid_set, NULL);
 		return (!rv && guid_set) ? mode : 0;
 	}
-=======
-
-	if (attr == &dev_attr_aux_firmware_revision.attr)
-		return bmc->id.aux_firmware_revision_set ? mode : 0;
-	if (attr == &dev_attr_guid.attr)
-		return bmc->guid_set ? mode : 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return mode;
 }
 
@@ -4137,7 +2747,6 @@ static const struct device_type bmc_device_type = {
 	.groups		= bmc_dev_attr_groups,
 };
 
-<<<<<<< HEAD
 static int __find_bmc_guid(struct device *dev, void *data)
 {
 	guid_t *guid = data;
@@ -4217,15 +2826,12 @@ static struct bmc_device *ipmi_find_bmc_prod_dev_id(
 
 static DEFINE_IDA(ipmi_bmc_ida);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void
 release_bmc_device(struct device *dev)
 {
 	kfree(to_bmc_device(dev));
 }
 
-<<<<<<< HEAD
 static void cleanup_bmc_work(struct work_struct *work)
 {
 	struct bmc_device *bmc = container_of(work, struct bmc_device,
@@ -4236,14 +2842,11 @@ static void cleanup_bmc_work(struct work_struct *work)
 	ida_simple_remove(&ipmi_bmc_ida, id);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void
 cleanup_bmc_device(struct kref *ref)
 {
 	struct bmc_device *bmc = container_of(ref, struct bmc_device, usecount);
 
-<<<<<<< HEAD
 	/*
 	 * Remove the platform device in a work queue to avoid issues
 	 * with removing the device attributes while reading a device
@@ -4301,41 +2904,11 @@ static int __ipmi_bmc_register(struct ipmi_smi *intf,
 	 */
 	intf->in_bmc_register = true;
 	mutex_unlock(&intf->bmc_reg_mutex);
-=======
-	platform_device_unregister(&bmc->pdev);
-}
-
-static void ipmi_bmc_unregister(ipmi_smi_t intf)
-{
-	struct bmc_device *bmc = intf->bmc;
-
-	sysfs_remove_link(&intf->si_dev->kobj, "bmc");
-	if (intf->my_dev_name) {
-		sysfs_remove_link(&bmc->pdev.dev.kobj, intf->my_dev_name);
-		kfree(intf->my_dev_name);
-		intf->my_dev_name = NULL;
-	}
-
-	mutex_lock(&ipmidriver_mutex);
-	kref_put(&bmc->usecount, cleanup_bmc_device);
-	intf->bmc = NULL;
-	mutex_unlock(&ipmidriver_mutex);
-}
-
-static int ipmi_bmc_register(ipmi_smi_t intf, int ifnum)
-{
-	int               rv;
-	struct bmc_device *bmc = intf->bmc;
-	struct bmc_device *old_bmc;
-
-	mutex_lock(&ipmidriver_mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Try to find if there is an bmc_device struct
 	 * representing the interfaced BMC already
 	 */
-<<<<<<< HEAD
 	mutex_lock(&ipmidriver_mutex);
 	if (guid_set)
 		old_bmc = ipmi_find_bmc_guid(&ipmidriver.driver, guid);
@@ -4343,21 +2916,12 @@ static int ipmi_bmc_register(ipmi_smi_t intf, int ifnum)
 		old_bmc = ipmi_find_bmc_prod_dev_id(&ipmidriver.driver,
 						    id->product_id,
 						    id->device_id);
-=======
-	if (bmc->guid_set)
-		old_bmc = ipmi_find_bmc_guid(&ipmidriver.driver, bmc->guid);
-	else
-		old_bmc = ipmi_find_bmc_prod_dev_id(&ipmidriver.driver,
-						    bmc->id.product_id,
-						    bmc->id.device_id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * If there is already an bmc_device, free the new one,
 	 * otherwise register the new BMC device
 	 */
 	if (old_bmc) {
-<<<<<<< HEAD
 		bmc = old_bmc;
 		/*
 		 * Note: old_bmc already has usecount incremented by
@@ -4397,58 +2961,10 @@ static int ipmi_bmc_register(ipmi_smi_t intf, int ifnum)
 			goto out;
 		bmc->pdev.dev.driver = &ipmidriver.driver;
 		bmc->pdev.id = rv;
-=======
-		kfree(bmc);
-		intf->bmc = old_bmc;
-		bmc = old_bmc;
-
-		kref_get(&bmc->usecount);
-		mutex_unlock(&ipmidriver_mutex);
-
-		printk(KERN_INFO
-		       "ipmi: interfacing existing BMC (man_id: 0x%6.6x,"
-		       " prod_id: 0x%4.4x, dev_id: 0x%2.2x)\n",
-		       bmc->id.manufacturer_id,
-		       bmc->id.product_id,
-		       bmc->id.device_id);
-	} else {
-		unsigned char orig_dev_id = bmc->id.device_id;
-		int warn_printed = 0;
-
-		snprintf(bmc->name, sizeof(bmc->name),
-			 "ipmi_bmc.%4.4x", bmc->id.product_id);
-		bmc->pdev.name = bmc->name;
-
-		while (ipmi_find_bmc_prod_dev_id(&ipmidriver.driver,
-						 bmc->id.product_id,
-						 bmc->id.device_id)) {
-			if (!warn_printed) {
-				printk(KERN_WARNING PFX
-				       "This machine has two different BMCs"
-				       " with the same product id and device"
-				       " id.  This is an error in the"
-				       " firmware, but incrementing the"
-				       " device id to work around the problem."
-				       " Prod ID = 0x%x, Dev ID = 0x%x\n",
-				       bmc->id.product_id, bmc->id.device_id);
-				warn_printed = 1;
-			}
-			bmc->id.device_id++; /* Wraps at 255 */
-			if (bmc->id.device_id == orig_dev_id) {
-				printk(KERN_ERR PFX
-				       "Out of device ids!\n");
-				break;
-			}
-		}
-
-		bmc->pdev.dev.driver = &ipmidriver.driver;
-		bmc->pdev.id = bmc->id.device_id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bmc->pdev.dev.release = release_bmc_device;
 		bmc->pdev.dev.type = &bmc_device_type;
 		kref_init(&bmc->usecount);
 
-<<<<<<< HEAD
 		intf->bmc = bmc;
 		mutex_lock(&bmc->dyn_mutex);
 		list_add_tail(&intf->bmc_link, &bmc->intfs);
@@ -4464,25 +2980,6 @@ static int ipmi_bmc_register(ipmi_smi_t intf, int ifnum)
 
 		dev_info(intf->si_dev,
 			 "Found new BMC (man_id: 0x%6.6x, prod_id: 0x%4.4x, dev_id: 0x%2.2x)\n",
-=======
-		rv = platform_device_register(&bmc->pdev);
-		mutex_unlock(&ipmidriver_mutex);
-		if (rv) {
-			put_device(&bmc->pdev.dev);
-			printk(KERN_ERR
-			       "ipmi_msghandler:"
-			       " Unable to register bmc device: %d\n",
-			       rv);
-			/*
-			 * Don't go to out_err, you can only do that if
-			 * the device is registered already.
-			 */
-			return rv;
-		}
-
-		dev_info(intf->si_dev, "Found new BMC (man_id: 0x%6.6x, "
-			 "prod_id: 0x%4.4x, dev_id: 0x%2.2x)\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 bmc->id.manufacturer_id,
 			 bmc->id.product_id,
 			 bmc->id.device_id);
@@ -4494,7 +2991,6 @@ static int ipmi_bmc_register(ipmi_smi_t intf, int ifnum)
 	 */
 	rv = sysfs_create_link(&intf->si_dev->kobj, &bmc->pdev.dev.kobj, "bmc");
 	if (rv) {
-<<<<<<< HEAD
 		dev_err(intf->si_dev,
 			PFX "Unable to create bmc symlink: %d\n", rv);
 		goto out_put_bmc;
@@ -4508,21 +3004,6 @@ static int ipmi_bmc_register(ipmi_smi_t intf, int ifnum)
 		dev_err(intf->si_dev,
 			PFX "Unable to allocate link from BMC: %d\n", rv);
 		goto out_unlink1;
-=======
-		printk(KERN_ERR
-		       "ipmi_msghandler: Unable to create bmc symlink: %d\n",
-		       rv);
-		goto out_err;
-	}
-
-	intf->my_dev_name = kasprintf(GFP_KERNEL, "ipmi%d", ifnum);
-	if (!intf->my_dev_name) {
-		rv = -ENOMEM;
-		printk(KERN_ERR
-		       "ipmi_msghandler: allocate link from BMC: %d\n",
-		       rv);
-		goto out_err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	rv = sysfs_create_link(&bmc->pdev.dev.kobj, &intf->si_dev->kobj,
@@ -4530,7 +3011,6 @@ static int ipmi_bmc_register(ipmi_smi_t intf, int ifnum)
 	if (rv) {
 		kfree(intf->my_dev_name);
 		intf->my_dev_name = NULL;
-<<<<<<< HEAD
 		dev_err(intf->si_dev,
 			PFX "Unable to create symlink to bmc: %d\n", rv);
 		goto out_free_my_dev_name;
@@ -4571,24 +3051,6 @@ out_list_del:
 
 static int
 send_guid_cmd(struct ipmi_smi *intf, int chan)
-=======
-		printk(KERN_ERR
-		       "ipmi_msghandler:"
-		       " Unable to create symlink to bmc: %d\n",
-		       rv);
-		goto out_err;
-	}
-
-	return 0;
-
-out_err:
-	ipmi_bmc_unregister(intf);
-	return rv;
-}
-
-static int
-send_guid_cmd(ipmi_smi_t intf, int chan)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct kernel_ipmi_msg            msg;
 	struct ipmi_system_interface_addr si;
@@ -4610,7 +3072,6 @@ send_guid_cmd(ipmi_smi_t intf, int chan)
 			      NULL,
 			      NULL,
 			      0,
-<<<<<<< HEAD
 			      intf->addrinfo[0].address,
 			      intf->addrinfo[0].lun,
 			      -1, 0);
@@ -4620,16 +3081,6 @@ static void guid_handler(struct ipmi_smi *intf, struct ipmi_recv_msg *msg)
 {
 	struct bmc_device *bmc = intf->bmc;
 
-=======
-			      intf->channels[0].address,
-			      intf->channels[0].lun,
-			      -1, 0);
-}
-
-static void
-guid_handler(ipmi_smi_t intf, struct ipmi_recv_msg *msg)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if ((msg->addr.addr_type != IPMI_SYSTEM_INTERFACE_ADDR_TYPE)
 	    || (msg->msg.netfn != IPMI_NETFN_APP_RESPONSE)
 	    || (msg->msg.cmd != IPMI_GET_DEVICE_GUID_CMD))
@@ -4638,16 +3089,11 @@ guid_handler(ipmi_smi_t intf, struct ipmi_recv_msg *msg)
 
 	if (msg->msg.data[0] != 0) {
 		/* Error from getting the GUID, the BMC doesn't have one. */
-<<<<<<< HEAD
 		bmc->dyn_guid_set = 0;
-=======
-		intf->bmc->guid_set = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out;
 	}
 
 	if (msg->msg.data_len < 17) {
-<<<<<<< HEAD
 		bmc->dyn_guid_set = 0;
 		dev_warn(intf->si_dev,
 			 PFX "The GUID response from the BMC was too short, it was %d but should have been 17.  Assuming GUID is not available.\n",
@@ -4662,64 +3108,32 @@ guid_handler(ipmi_smi_t intf, struct ipmi_recv_msg *msg)
 	 */
 	smp_wmb();
 	bmc->dyn_guid_set = 1;
-=======
-		intf->bmc->guid_set = 0;
-		printk(KERN_WARNING PFX
-		       "guid_handler: The GUID response from the BMC was too"
-		       " short, it was %d but should have been 17.  Assuming"
-		       " GUID is not available.\n",
-		       msg->msg.data_len);
-		goto out;
-	}
-
-	memcpy(intf->bmc->guid, msg->msg.data, 16);
-	intf->bmc->guid_set = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  out:
 	wake_up(&intf->waitq);
 }
 
-<<<<<<< HEAD
 static void __get_guid(struct ipmi_smi *intf)
 {
 	int rv;
 	struct bmc_device *bmc = intf->bmc;
 
 	bmc->dyn_guid_set = 2;
-=======
-static void
-get_guid(ipmi_smi_t intf)
-{
-	int rv;
-
-	intf->bmc->guid_set = 0x2;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	intf->null_user_handler = guid_handler;
 	rv = send_guid_cmd(intf, 0);
 	if (rv)
 		/* Send failed, no GUID available. */
-<<<<<<< HEAD
 		bmc->dyn_guid_set = 0;
 
 	wait_event(intf->waitq, bmc->dyn_guid_set != 2);
 
 	/* dyn_guid_set makes the guid data available. */
 	smp_rmb();
-=======
-		intf->bmc->guid_set = 0;
-	else
-		wait_event(intf->waitq, intf->bmc->guid_set != 2);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	intf->null_user_handler = NULL;
 }
 
 static int
-<<<<<<< HEAD
 send_channel_info_cmd(struct ipmi_smi *intf, int chan)
-=======
-send_channel_info_cmd(ipmi_smi_t intf, int chan)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct kernel_ipmi_msg            msg;
 	unsigned char                     data[1];
@@ -4743,30 +3157,18 @@ send_channel_info_cmd(ipmi_smi_t intf, int chan)
 			      NULL,
 			      NULL,
 			      0,
-<<<<<<< HEAD
 			      intf->addrinfo[0].address,
 			      intf->addrinfo[0].lun,
-=======
-			      intf->channels[0].address,
-			      intf->channels[0].lun,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      -1, 0);
 }
 
 static void
-<<<<<<< HEAD
 channel_handler(struct ipmi_smi *intf, struct ipmi_recv_msg *msg)
 {
 	int rv = 0;
 	int ch;
 	unsigned int set = intf->curr_working_cset;
 	struct ipmi_channel *chans;
-=======
-channel_handler(ipmi_smi_t intf, struct ipmi_recv_msg *msg)
-{
-	int rv = 0;
-	int chan;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if ((msg->addr.addr_type == IPMI_SYSTEM_INTERFACE_ADDR_TYPE)
 	    && (msg->msg.netfn == IPMI_NETFN_APP_RESPONSE)
@@ -4782,7 +3184,6 @@ channel_handler(ipmi_smi_t intf, struct ipmi_recv_msg *msg)
 				 * assume it has one IPMB at channel
 				 * zero.
 				 */
-<<<<<<< HEAD
 				intf->wchannels[set].c[0].medium
 					= IPMI_CHANNEL_MEDIUM_IPMB;
 				intf->wchannels[set].c[0].protocol
@@ -4790,14 +3191,6 @@ channel_handler(ipmi_smi_t intf, struct ipmi_recv_msg *msg)
 
 				intf->channel_list = intf->wchannels + set;
 				intf->channels_ready = true;
-=======
-				intf->channels[0].medium
-					= IPMI_CHANNEL_MEDIUM_IPMB;
-				intf->channels[0].protocol
-					= IPMI_CHANNEL_PROTOCOL_IPMB;
-
-				intf->curr_channel = IPMI_MAX_CHANNELS;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				wake_up(&intf->waitq);
 				goto out;
 			}
@@ -4807,7 +3200,6 @@ channel_handler(ipmi_smi_t intf, struct ipmi_recv_msg *msg)
 			/* Message not big enough, just go on. */
 			goto next_channel;
 		}
-<<<<<<< HEAD
 		ch = intf->curr_channel;
 		chans = intf->wchannels[set].c;
 		chans[ch].medium = msg->msg.data[2] & 0x7f;
@@ -4833,26 +3225,6 @@ channel_handler(ipmi_smi_t intf, struct ipmi_recv_msg *msg)
 
 			intf->channel_list = intf->wchannels + set;
 			intf->channels_ready = true;
-=======
-		chan = intf->curr_channel;
-		intf->channels[chan].medium = msg->msg.data[2] & 0x7f;
-		intf->channels[chan].protocol = msg->msg.data[3] & 0x1f;
-
- next_channel:
-		intf->curr_channel++;
-		if (intf->curr_channel >= IPMI_MAX_CHANNELS)
-			wake_up(&intf->waitq);
-		else
-			rv = send_channel_info_cmd(intf, intf->curr_channel);
-
-		if (rv) {
-			/* Got an error somehow, just give up. */
-			printk(KERN_WARNING PFX
-			       "Error sending channel information for channel"
-			       " %d: %d\n", intf->curr_channel, rv);
-
-			intf->curr_channel = IPMI_MAX_CHANNELS;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			wake_up(&intf->waitq);
 		}
 	}
@@ -4860,7 +3232,6 @@ channel_handler(ipmi_smi_t intf, struct ipmi_recv_msg *msg)
 	return;
 }
 
-<<<<<<< HEAD
 /*
  * Must be holding intf->bmc_reg_mutex to call this.
  */
@@ -4909,9 +3280,6 @@ static int __scan_channels(struct ipmi_smi *intf, struct ipmi_device_id *id)
 }
 
 static void ipmi_poll(struct ipmi_smi *intf)
-=======
-static void ipmi_poll(ipmi_smi_t intf)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (intf->handlers->poll)
 		intf->handlers->poll(intf->send_info);
@@ -4919,17 +3287,12 @@ static void ipmi_poll(ipmi_smi_t intf)
 	handle_new_recv_msgs(intf);
 }
 
-<<<<<<< HEAD
 void ipmi_poll_interface(struct ipmi_user *user)
-=======
-void ipmi_poll_interface(ipmi_user_t user)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	ipmi_poll(user->intf);
 }
 EXPORT_SYMBOL(ipmi_poll_interface);
 
-<<<<<<< HEAD
 static void redo_bmc_reg(struct work_struct *work)
 {
 	struct ipmi_smi *intf = container_of(work, struct ipmi_smi,
@@ -4943,53 +3306,27 @@ static void redo_bmc_reg(struct work_struct *work)
 
 int ipmi_register_smi(const struct ipmi_smi_handlers *handlers,
 		      void		       *send_info,
-=======
-int ipmi_register_smi(const struct ipmi_smi_handlers *handlers,
-		      void		       *send_info,
-		      struct ipmi_device_id    *device_id,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		      struct device            *si_dev,
 		      unsigned char            slave_addr)
 {
 	int              i, j;
 	int              rv;
-<<<<<<< HEAD
 	struct ipmi_smi *intf, *tintf;
 	struct list_head *link;
 	struct ipmi_device_id id;
-=======
-	ipmi_smi_t       intf;
-	ipmi_smi_t       tintf;
-	struct list_head *link;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Make sure the driver is actually initialized, this handles
 	 * problems with initialization order.
 	 */
-<<<<<<< HEAD
 	rv = ipmi_init_msghandler();
 	if (rv)
 		return rv;
-=======
-	if (!initialized) {
-		rv = ipmi_init_msghandler();
-		if (rv)
-			return rv;
-		/*
-		 * The init code doesn't return an error if it was turned
-		 * off, but it won't initialize.  Check that.
-		 */
-		if (!initialized)
-			return -ENODEV;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	intf = kzalloc(sizeof(*intf), GFP_KERNEL);
 	if (!intf)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	rv = init_srcu_struct(&intf->users_srcu);
 	if (rv) {
 		kfree(intf);
@@ -5012,26 +3349,6 @@ int ipmi_register_smi(const struct ipmi_smi_handlers *handlers,
 	}
 	if (slave_addr != 0)
 		intf->addrinfo[0].address = slave_addr;
-=======
-	intf->ipmi_version_major = ipmi_version_major(device_id);
-	intf->ipmi_version_minor = ipmi_version_minor(device_id);
-
-	intf->bmc = kzalloc(sizeof(*intf->bmc), GFP_KERNEL);
-	if (!intf->bmc) {
-		kfree(intf);
-		return -ENOMEM;
-	}
-	intf->intf_num = -1; /* Mark it invalid for now. */
-	kref_init(&intf->refcount);
-	intf->bmc->id = *device_id;
-	intf->si_dev = si_dev;
-	for (j = 0; j < IPMI_MAX_CHANNELS; j++) {
-		intf->channels[j].address = IPMI_BMC_SLAVE_ADDR;
-		intf->channels[j].lun = 2;
-	}
-	if (slave_addr != 0)
-		intf->channels[0].address = slave_addr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INIT_LIST_HEAD(&intf->users);
 	intf->handlers = handlers;
 	intf->send_info = send_info;
@@ -5041,12 +3358,6 @@ int ipmi_register_smi(const struct ipmi_smi_handlers *handlers,
 		intf->seq_table[j].seqid = 0;
 	}
 	intf->curr_seq = 0;
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_PROC_FS
-	mutex_init(&intf->proc_entry_lock);
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_init(&intf->waiting_rcv_msgs_lock);
 	INIT_LIST_HEAD(&intf->waiting_rcv_msgs);
 	tasklet_init(&intf->recv_tasklet,
@@ -5068,12 +3379,6 @@ int ipmi_register_smi(const struct ipmi_smi_handlers *handlers,
 	for (i = 0; i < IPMI_NUM_STATS; i++)
 		atomic_set(&intf->stats[i], 0);
 
-<<<<<<< HEAD
-=======
-	intf->proc_dir = NULL;
-
-	mutex_lock(&smi_watchers_mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&ipmi_interfaces_mutex);
 	/* Look for a hole in the numbers. */
 	i = 0;
@@ -5093,7 +3398,6 @@ int ipmi_register_smi(const struct ipmi_smi_handlers *handlers,
 
 	rv = handlers->start_processing(send_info, intf);
 	if (rv)
-<<<<<<< HEAD
 		goto out_err;
 
 	rv = __bmc_get_device_id(intf, NULL, &id, NULL, NULL, i);
@@ -5133,78 +3437,12 @@ int ipmi_register_smi(const struct ipmi_smi_handlers *handlers,
 	synchronize_srcu(&ipmi_interfaces_srcu);
 	cleanup_srcu_struct(&intf->users_srcu);
 	kref_put(&intf->refcount, intf_free);
-=======
-		goto out;
-
-	get_guid(intf);
-
-	if ((intf->ipmi_version_major > 1)
-			|| ((intf->ipmi_version_major == 1)
-			    && (intf->ipmi_version_minor >= 5))) {
-		/*
-		 * Start scanning the channels to see what is
-		 * available.
-		 */
-		intf->null_user_handler = channel_handler;
-		intf->curr_channel = 0;
-		rv = send_channel_info_cmd(intf, 0);
-		if (rv) {
-			printk(KERN_WARNING PFX
-			       "Error sending channel information for channel"
-			       " 0, %d\n", rv);
-			goto out;
-		}
-
-		/* Wait for the channel info to be read. */
-		wait_event(intf->waitq,
-			   intf->curr_channel >= IPMI_MAX_CHANNELS);
-		intf->null_user_handler = NULL;
-	} else {
-		/* Assume a single IPMB channel at zero. */
-		intf->channels[0].medium = IPMI_CHANNEL_MEDIUM_IPMB;
-		intf->channels[0].protocol = IPMI_CHANNEL_PROTOCOL_IPMB;
-		intf->curr_channel = IPMI_MAX_CHANNELS;
-	}
-
-	rv = ipmi_bmc_register(intf, i);
-
-	if (rv == 0)
-		rv = add_proc_entries(intf, i);
-
- out:
-	if (rv) {
-		if (intf->proc_dir)
-			remove_proc_entries(intf);
-		intf->handlers = NULL;
-		list_del_rcu(&intf->link);
-		mutex_unlock(&ipmi_interfaces_mutex);
-		mutex_unlock(&smi_watchers_mutex);
-		synchronize_rcu();
-		kref_put(&intf->refcount, intf_free);
-	} else {
-		/*
-		 * Keep memory order straight for RCU readers.  Make
-		 * sure everything else is committed to memory before
-		 * setting intf_num to mark the interface valid.
-		 */
-		smp_wmb();
-		intf->intf_num = i;
-		mutex_unlock(&ipmi_interfaces_mutex);
-		/* After this point the interface is legal to use. */
-		call_smi_watchers(i, intf->si_dev);
-		mutex_unlock(&smi_watchers_mutex);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return rv;
 }
 EXPORT_SYMBOL(ipmi_register_smi);
 
-<<<<<<< HEAD
 static void deliver_smi_err_response(struct ipmi_smi *intf,
-=======
-static void deliver_smi_err_response(ipmi_smi_t intf,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     struct ipmi_smi_msg *msg,
 				     unsigned char err)
 {
@@ -5216,11 +3454,7 @@ static void deliver_smi_err_response(ipmi_smi_t intf,
 	handle_one_recv_msg(intf, msg);
 }
 
-<<<<<<< HEAD
 static void cleanup_smi_msgs(struct ipmi_smi *intf)
-=======
-static void cleanup_smi_msgs(ipmi_smi_t intf)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int              i;
 	struct seq_table *ent;
@@ -5253,7 +3487,6 @@ static void cleanup_smi_msgs(ipmi_smi_t intf)
 	}
 
 	for (i = 0; i < IPMI_IPMB_NUM_SEQ; i++) {
-<<<<<<< HEAD
 		ent = &intf->seq_table[i];
 		if (!ent->inuse)
 			continue;
@@ -5266,28 +3499,11 @@ void ipmi_unregister_smi(struct ipmi_smi *intf)
 	struct ipmi_smi_watcher *w;
 	int intf_num = intf->intf_num, index;
 
-=======
-		ent = &(intf->seq_table[i]);
-		if (!ent->inuse)
-			continue;
-		deliver_err_response(ent->recv_msg, IPMI_ERR_UNSPECIFIED);
-	}
-}
-
-int ipmi_unregister_smi(ipmi_smi_t intf)
-{
-	struct ipmi_smi_watcher *w;
-	int intf_num = intf->intf_num;
-	ipmi_user_t user;
-
-	mutex_lock(&smi_watchers_mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&ipmi_interfaces_mutex);
 	intf->intf_num = -1;
 	intf->in_shutdown = true;
 	list_del_rcu(&intf->link);
 	mutex_unlock(&ipmi_interfaces_mutex);
-<<<<<<< HEAD
 	synchronize_srcu(&ipmi_interfaces_srcu);
 
 	/* At this point no users can be added to the interface. */
@@ -5297,36 +3513,10 @@ int ipmi_unregister_smi(ipmi_smi_t intf)
 	 * an interface is going away.
 	 */
 	mutex_lock(&smi_watchers_mutex);
-=======
-	synchronize_rcu();
-
-	cleanup_smi_msgs(intf);
-
-	/* Clean up the effects of users on the lower-level software. */
-	mutex_lock(&ipmi_interfaces_mutex);
-	rcu_read_lock();
-	list_for_each_entry_rcu(user, &intf->users, link) {
-		module_put(intf->handlers->owner);
-		if (intf->handlers->dec_usecount)
-			intf->handlers->dec_usecount(intf->send_info);
-	}
-	rcu_read_unlock();
-	intf->handlers = NULL;
-	mutex_unlock(&ipmi_interfaces_mutex);
-
-	remove_proc_entries(intf);
-	ipmi_bmc_unregister(intf);
-
-	/*
-	 * Call all the watcher interfaces to tell them that
-	 * an interface is gone.
-	 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_for_each_entry(w, &smi_watchers, link)
 		w->smi_gone(intf_num);
 	mutex_unlock(&smi_watchers_mutex);
 
-<<<<<<< HEAD
 	index = srcu_read_lock(&intf->users_srcu);
 	while (!list_empty(&intf->users)) {
 		struct ipmi_user *user =
@@ -5350,14 +3540,6 @@ int ipmi_unregister_smi(ipmi_smi_t intf)
 EXPORT_SYMBOL(ipmi_unregister_smi);
 
 static int handle_ipmb_get_msg_rsp(struct ipmi_smi *intf,
-=======
-	kref_put(&intf->refcount, intf_free);
-	return 0;
-}
-EXPORT_SYMBOL(ipmi_unregister_smi);
-
-static int handle_ipmb_get_msg_rsp(ipmi_smi_t          intf,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   struct ipmi_smi_msg *msg)
 {
 	struct ipmi_ipmb_addr ipmb_addr;
@@ -5392,11 +3574,7 @@ static int handle_ipmb_get_msg_rsp(ipmi_smi_t          intf,
 			  msg->rsp[3] & 0x0f,
 			  msg->rsp[8],
 			  (msg->rsp[4] >> 2) & (~1),
-<<<<<<< HEAD
 			  (struct ipmi_addr *) &ipmb_addr,
-=======
-			  (struct ipmi_addr *) &(ipmb_addr),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  &recv_msg)) {
 		/*
 		 * We were unable to find the sequence number,
@@ -5406,13 +3584,7 @@ static int handle_ipmb_get_msg_rsp(ipmi_smi_t          intf,
 		return 0;
 	}
 
-<<<<<<< HEAD
 	memcpy(recv_msg->msg_data, &msg->rsp[9], msg->rsp_size - 9);
-=======
-	memcpy(recv_msg->msg_data,
-	       &(msg->rsp[9]),
-	       msg->rsp_size - 9);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * The other fields matched, so no need to set them, except
 	 * for netfn, which needs to be the response that was
@@ -5422,24 +3594,15 @@ static int handle_ipmb_get_msg_rsp(ipmi_smi_t          intf,
 	recv_msg->msg.data = recv_msg->msg_data;
 	recv_msg->msg.data_len = msg->rsp_size - 10;
 	recv_msg->recv_type = IPMI_RESPONSE_RECV_TYPE;
-<<<<<<< HEAD
 	if (deliver_response(intf, recv_msg))
 		ipmi_inc_stat(intf, unhandled_ipmb_responses);
 	else
 		ipmi_inc_stat(intf, handled_ipmb_responses);
-=======
-	ipmi_inc_stat(intf, handled_ipmb_responses);
-	deliver_response(recv_msg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
 static int handle_ipmb_get_msg_cmd(struct ipmi_smi *intf,
-=======
-static int handle_ipmb_get_msg_cmd(ipmi_smi_t          intf,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   struct ipmi_smi_msg *msg)
 {
 	struct cmd_rcvr          *rcvr;
@@ -5447,11 +3610,7 @@ static int handle_ipmb_get_msg_cmd(ipmi_smi_t          intf,
 	unsigned char            netfn;
 	unsigned char            cmd;
 	unsigned char            chan;
-<<<<<<< HEAD
 	struct ipmi_user         *user = NULL;
-=======
-	ipmi_user_t              user = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ipmi_ipmb_addr    *ipmb_addr;
 	struct ipmi_recv_msg     *recv_msg;
 
@@ -5488,37 +3647,17 @@ static int handle_ipmb_get_msg_cmd(ipmi_smi_t          intf,
 		msg->data[2] = msg->rsp[3];
 		msg->data[3] = msg->rsp[6];
 		msg->data[4] = ((netfn + 1) << 2) | (msg->rsp[7] & 0x3);
-<<<<<<< HEAD
 		msg->data[5] = ipmb_checksum(&msg->data[3], 2);
 		msg->data[6] = intf->addrinfo[msg->rsp[3] & 0xf].address;
-=======
-		msg->data[5] = ipmb_checksum(&(msg->data[3]), 2);
-		msg->data[6] = intf->channels[msg->rsp[3] & 0xf].address;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* rqseq/lun */
 		msg->data[7] = (msg->rsp[7] & 0xfc) | (msg->rsp[4] & 0x3);
 		msg->data[8] = msg->rsp[8]; /* cmd */
 		msg->data[9] = IPMI_INVALID_CMD_COMPLETION_CODE;
-<<<<<<< HEAD
 		msg->data[10] = ipmb_checksum(&msg->data[6], 4);
 		msg->data_size = 11;
 
 		ipmi_debug_msg("Invalid command:", msg->data, msg->data_size);
 
-=======
-		msg->data[10] = ipmb_checksum(&(msg->data[6]), 4);
-		msg->data_size = 11;
-
-#ifdef DEBUG_MSGING
-	{
-		int m;
-		printk("Invalid command:");
-		for (m = 0; m < msg->data_size; m++)
-			printk(" %2.2x", msg->data[m]);
-		printk("\n");
-	}
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rcu_read_lock();
 		if (!intf->in_shutdown) {
 			smi_send(intf, intf->handlers, msg, 0);
@@ -5531,12 +3670,6 @@ static int handle_ipmb_get_msg_cmd(ipmi_smi_t          intf,
 		}
 		rcu_read_unlock();
 	} else {
-<<<<<<< HEAD
-=======
-		/* Deliver the message to the user. */
-		ipmi_inc_stat(intf, handled_commands);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		recv_msg = ipmi_alloc_recv_msg();
 		if (!recv_msg) {
 			/*
@@ -5570,30 +3703,19 @@ static int handle_ipmb_get_msg_cmd(ipmi_smi_t          intf,
 			 * at the end also needs to be removed.
 			 */
 			recv_msg->msg.data_len = msg->rsp_size - 10;
-<<<<<<< HEAD
 			memcpy(recv_msg->msg_data, &msg->rsp[9],
 			       msg->rsp_size - 10);
 			if (deliver_response(intf, recv_msg))
 				ipmi_inc_stat(intf, unhandled_commands);
 			else
 				ipmi_inc_stat(intf, handled_commands);
-=======
-			memcpy(recv_msg->msg_data,
-			       &(msg->rsp[9]),
-			       msg->rsp_size - 10);
-			deliver_response(recv_msg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
 	return rv;
 }
 
-<<<<<<< HEAD
 static int handle_lan_get_msg_rsp(struct ipmi_smi *intf,
-=======
-static int handle_lan_get_msg_rsp(ipmi_smi_t          intf,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  struct ipmi_smi_msg *msg)
 {
 	struct ipmi_lan_addr  lan_addr;
@@ -5632,11 +3754,7 @@ static int handle_lan_get_msg_rsp(ipmi_smi_t          intf,
 			  msg->rsp[3] & 0x0f,
 			  msg->rsp[10],
 			  (msg->rsp[6] >> 2) & (~1),
-<<<<<<< HEAD
 			  (struct ipmi_addr *) &lan_addr,
-=======
-			  (struct ipmi_addr *) &(lan_addr),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  &recv_msg)) {
 		/*
 		 * We were unable to find the sequence number,
@@ -5646,13 +3764,7 @@ static int handle_lan_get_msg_rsp(ipmi_smi_t          intf,
 		return 0;
 	}
 
-<<<<<<< HEAD
 	memcpy(recv_msg->msg_data, &msg->rsp[11], msg->rsp_size - 11);
-=======
-	memcpy(recv_msg->msg_data,
-	       &(msg->rsp[11]),
-	       msg->rsp_size - 11);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * The other fields matched, so no need to set them, except
 	 * for netfn, which needs to be the response that was
@@ -5662,24 +3774,15 @@ static int handle_lan_get_msg_rsp(ipmi_smi_t          intf,
 	recv_msg->msg.data = recv_msg->msg_data;
 	recv_msg->msg.data_len = msg->rsp_size - 12;
 	recv_msg->recv_type = IPMI_RESPONSE_RECV_TYPE;
-<<<<<<< HEAD
 	if (deliver_response(intf, recv_msg))
 		ipmi_inc_stat(intf, unhandled_lan_responses);
 	else
 		ipmi_inc_stat(intf, handled_lan_responses);
-=======
-	ipmi_inc_stat(intf, handled_lan_responses);
-	deliver_response(recv_msg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
 static int handle_lan_get_msg_cmd(struct ipmi_smi *intf,
-=======
-static int handle_lan_get_msg_cmd(ipmi_smi_t          intf,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  struct ipmi_smi_msg *msg)
 {
 	struct cmd_rcvr          *rcvr;
@@ -5687,11 +3790,7 @@ static int handle_lan_get_msg_cmd(ipmi_smi_t          intf,
 	unsigned char            netfn;
 	unsigned char            cmd;
 	unsigned char            chan;
-<<<<<<< HEAD
 	struct ipmi_user         *user = NULL;
-=======
-	ipmi_user_t              user = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ipmi_lan_addr     *lan_addr;
 	struct ipmi_recv_msg     *recv_msg;
 
@@ -5729,12 +3828,6 @@ static int handle_lan_get_msg_cmd(ipmi_smi_t          intf,
 		 */
 		rv = 0;
 	} else {
-<<<<<<< HEAD
-=======
-		/* Deliver the message to the user. */
-		ipmi_inc_stat(intf, handled_commands);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		recv_msg = ipmi_alloc_recv_msg();
 		if (!recv_msg) {
 			/*
@@ -5770,19 +3863,12 @@ static int handle_lan_get_msg_cmd(ipmi_smi_t          intf,
 			 * at the end also needs to be removed.
 			 */
 			recv_msg->msg.data_len = msg->rsp_size - 12;
-<<<<<<< HEAD
 			memcpy(recv_msg->msg_data, &msg->rsp[11],
 			       msg->rsp_size - 12);
 			if (deliver_response(intf, recv_msg))
 				ipmi_inc_stat(intf, unhandled_commands);
 			else
 				ipmi_inc_stat(intf, handled_commands);
-=======
-			memcpy(recv_msg->msg_data,
-			       &(msg->rsp[11]),
-			       msg->rsp_size - 12);
-			deliver_response(recv_msg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -5795,11 +3881,7 @@ static int handle_lan_get_msg_cmd(ipmi_smi_t          intf,
  * the OEM.  See IPMI 2.0 specification, Chapter 6 and
  * Chapter 22, sections 22.6 and 22.24 for more details.
  */
-<<<<<<< HEAD
 static int handle_oem_get_msg_cmd(struct ipmi_smi *intf,
-=======
-static int handle_oem_get_msg_cmd(ipmi_smi_t          intf,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  struct ipmi_smi_msg *msg)
 {
 	struct cmd_rcvr       *rcvr;
@@ -5807,11 +3889,7 @@ static int handle_oem_get_msg_cmd(ipmi_smi_t          intf,
 	unsigned char         netfn;
 	unsigned char         cmd;
 	unsigned char         chan;
-<<<<<<< HEAD
 	struct ipmi_user *user = NULL;
-=======
-	ipmi_user_t           user = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ipmi_system_interface_addr *smi_addr;
 	struct ipmi_recv_msg  *recv_msg;
 
@@ -5858,12 +3936,6 @@ static int handle_oem_get_msg_cmd(ipmi_smi_t          intf,
 
 		rv = 0;
 	} else {
-<<<<<<< HEAD
-=======
-		/* Deliver the message to the user. */
-		ipmi_inc_stat(intf, handled_commands);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		recv_msg = ipmi_alloc_recv_msg();
 		if (!recv_msg) {
 			/*
@@ -5881,11 +3953,7 @@ static int handle_oem_get_msg_cmd(ipmi_smi_t          intf,
 			 * requirements
 			 */
 			smi_addr = ((struct ipmi_system_interface_addr *)
-<<<<<<< HEAD
 				    &recv_msg->addr);
-=======
-				    &(recv_msg->addr));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			smi_addr->addr_type = IPMI_SYSTEM_INTERFACE_ADDR_TYPE;
 			smi_addr->channel = IPMI_BMC_CHANNEL;
 			smi_addr->lun = msg->rsp[0] & 3;
@@ -5902,19 +3970,12 @@ static int handle_oem_get_msg_cmd(ipmi_smi_t          intf,
 			 * the Channel Byte in the "GET MESSAGE" command
 			 */
 			recv_msg->msg.data_len = msg->rsp_size - 4;
-<<<<<<< HEAD
 			memcpy(recv_msg->msg_data, &msg->rsp[4],
 			       msg->rsp_size - 4);
 			if (deliver_response(intf, recv_msg))
 				ipmi_inc_stat(intf, unhandled_commands);
 			else
 				ipmi_inc_stat(intf, handled_commands);
-=======
-			memcpy(recv_msg->msg_data,
-			       &(msg->rsp[4]),
-			       msg->rsp_size - 4);
-			deliver_response(recv_msg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -5927,43 +3988,25 @@ static void copy_event_into_recv_msg(struct ipmi_recv_msg *recv_msg,
 	struct ipmi_system_interface_addr *smi_addr;
 
 	recv_msg->msgid = 0;
-<<<<<<< HEAD
 	smi_addr = (struct ipmi_system_interface_addr *) &recv_msg->addr;
-=======
-	smi_addr = (struct ipmi_system_interface_addr *) &(recv_msg->addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	smi_addr->addr_type = IPMI_SYSTEM_INTERFACE_ADDR_TYPE;
 	smi_addr->channel = IPMI_BMC_CHANNEL;
 	smi_addr->lun = msg->rsp[0] & 3;
 	recv_msg->recv_type = IPMI_ASYNC_EVENT_RECV_TYPE;
 	recv_msg->msg.netfn = msg->rsp[0] >> 2;
 	recv_msg->msg.cmd = msg->rsp[1];
-<<<<<<< HEAD
 	memcpy(recv_msg->msg_data, &msg->rsp[3], msg->rsp_size - 3);
-=======
-	memcpy(recv_msg->msg_data, &(msg->rsp[3]), msg->rsp_size - 3);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	recv_msg->msg.data = recv_msg->msg_data;
 	recv_msg->msg.data_len = msg->rsp_size - 3;
 }
 
-<<<<<<< HEAD
 static int handle_read_event_rsp(struct ipmi_smi *intf,
-=======
-static int handle_read_event_rsp(ipmi_smi_t          intf,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 struct ipmi_smi_msg *msg)
 {
 	struct ipmi_recv_msg *recv_msg, *recv_msg2;
 	struct list_head     msgs;
-<<<<<<< HEAD
 	struct ipmi_user     *user;
 	int rv = 0, deliver_count = 0, index;
-=======
-	ipmi_user_t          user;
-	int                  rv = 0;
-	int                  deliver_count = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long        flags;
 
 	if (msg->rsp_size < 19) {
@@ -5987,11 +4030,7 @@ static int handle_read_event_rsp(ipmi_smi_t          intf,
 	 * Allocate and fill in one message for every user that is
 	 * getting events.
 	 */
-<<<<<<< HEAD
 	index = srcu_read_lock(&intf->users_srcu);
-=======
-	rcu_read_lock();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_for_each_entry_rcu(user, &intf->users, link) {
 		if (!user->gets_events)
 			continue;
@@ -6018,25 +4057,15 @@ static int handle_read_event_rsp(ipmi_smi_t          intf,
 		copy_event_into_recv_msg(recv_msg, msg);
 		recv_msg->user = user;
 		kref_get(&user->refcount);
-<<<<<<< HEAD
 		list_add_tail(&recv_msg->link, &msgs);
 	}
 	srcu_read_unlock(&intf->users_srcu, index);
-=======
-		list_add_tail(&(recv_msg->link), &msgs);
-	}
-	rcu_read_unlock();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (deliver_count) {
 		/* Now deliver all the messages. */
 		list_for_each_entry_safe(recv_msg, recv_msg2, &msgs, link) {
 			list_del(&recv_msg->link);
-<<<<<<< HEAD
 			deliver_local_response(intf, recv_msg);
-=======
-			deliver_response(recv_msg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	} else if (intf->waiting_events_count < MAX_EVENTS_IN_QUEUE) {
 		/*
@@ -6055,38 +4084,24 @@ static int handle_read_event_rsp(ipmi_smi_t          intf,
 		}
 
 		copy_event_into_recv_msg(recv_msg, msg);
-<<<<<<< HEAD
 		list_add_tail(&recv_msg->link, &intf->waiting_events);
-=======
-		list_add_tail(&(recv_msg->link), &(intf->waiting_events));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		intf->waiting_events_count++;
 	} else if (!intf->event_msg_printed) {
 		/*
 		 * There's too many things in the queue, discard this
 		 * message.
 		 */
-<<<<<<< HEAD
 		dev_warn(intf->si_dev,
 			 PFX "Event queue full, discarding incoming events\n");
-=======
-		printk(KERN_WARNING PFX "Event queue full, discarding"
-		       " incoming events\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		intf->event_msg_printed = 1;
 	}
 
  out:
-<<<<<<< HEAD
 	spin_unlock_irqrestore(&intf->events_lock, flags);
-=======
-	spin_unlock_irqrestore(&(intf->events_lock), flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return rv;
 }
 
-<<<<<<< HEAD
 static int handle_bmc_rsp(struct ipmi_smi *intf,
 			  struct ipmi_smi_msg *msg)
 {
@@ -6113,50 +4128,6 @@ static int handle_bmc_rsp(struct ipmi_smi *intf,
 	recv_msg->msg.data = recv_msg->msg_data;
 	recv_msg->msg.data_len = msg->rsp_size - 2;
 	deliver_local_response(intf, recv_msg);
-=======
-static int handle_bmc_rsp(ipmi_smi_t          intf,
-			  struct ipmi_smi_msg *msg)
-{
-	struct ipmi_recv_msg *recv_msg;
-	struct ipmi_user     *user;
-
-	recv_msg = (struct ipmi_recv_msg *) msg->user_data;
-	if (recv_msg == NULL) {
-		printk(KERN_WARNING
-		       "IPMI message received with no owner. This\n"
-		       "could be because of a malformed message, or\n"
-		       "because of a hardware error.  Contact your\n"
-		       "hardware vender for assistance\n");
-		return 0;
-	}
-
-	user = recv_msg->user;
-	/* Make sure the user still exists. */
-	if (user && !user->valid) {
-		/* The user for the message went away, so give up. */
-		ipmi_inc_stat(intf, unhandled_local_responses);
-		ipmi_free_recv_msg(recv_msg);
-	} else {
-		struct ipmi_system_interface_addr *smi_addr;
-
-		ipmi_inc_stat(intf, handled_local_responses);
-		recv_msg->recv_type = IPMI_RESPONSE_RECV_TYPE;
-		recv_msg->msgid = msg->msgid;
-		smi_addr = ((struct ipmi_system_interface_addr *)
-			    &(recv_msg->addr));
-		smi_addr->addr_type = IPMI_SYSTEM_INTERFACE_ADDR_TYPE;
-		smi_addr->channel = IPMI_BMC_CHANNEL;
-		smi_addr->lun = msg->rsp[0] & 3;
-		recv_msg->msg.netfn = msg->rsp[0] >> 2;
-		recv_msg->msg.cmd = msg->rsp[1];
-		memcpy(recv_msg->msg_data,
-		       &(msg->rsp[2]),
-		       msg->rsp_size - 2);
-		recv_msg->msg.data = recv_msg->msg_data;
-		recv_msg->msg.data_len = msg->rsp_size - 2;
-		deliver_response(recv_msg);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -6166,37 +4137,18 @@ static int handle_bmc_rsp(ipmi_smi_t          intf,
  * 0 if the message should be freed, or -1 if the message should not
  * be freed or requeued.
  */
-<<<<<<< HEAD
 static int handle_one_recv_msg(struct ipmi_smi *intf,
-=======
-static int handle_one_recv_msg(ipmi_smi_t          intf,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       struct ipmi_smi_msg *msg)
 {
 	int requeue;
 	int chan;
 
-<<<<<<< HEAD
 	ipmi_debug_msg("Recv:", msg->rsp, msg->rsp_size);
 	if (msg->rsp_size < 2) {
 		/* Message is too small to be correct. */
 		dev_warn(intf->si_dev,
 			 PFX "BMC returned to small a message for netfn %x cmd %x, got %d bytes\n",
 			 (msg->data[0] >> 2) | 1, msg->data[1], msg->rsp_size);
-=======
-#ifdef DEBUG_MSGING
-	int m;
-	printk("Recv:");
-	for (m = 0; m < msg->rsp_size; m++)
-		printk(" %2.2x", msg->rsp[m]);
-	printk("\n");
-#endif
-	if (msg->rsp_size < 2) {
-		/* Message is too small to be correct. */
-		printk(KERN_WARNING PFX "BMC returned to small a message"
-		       " for netfn %x cmd %x, got %d bytes\n",
-		       (msg->data[0] >> 2) | 1, msg->data[1], msg->rsp_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Generate an error response for the message. */
 		msg->rsp[0] = msg->data[0] | (1 << 2);
@@ -6209,17 +4161,10 @@ static int handle_one_recv_msg(ipmi_smi_t          intf,
 		 * The NetFN and Command in the response is not even
 		 * marginally correct.
 		 */
-<<<<<<< HEAD
 		dev_warn(intf->si_dev,
 			 PFX "BMC returned incorrect response, expected netfn %x cmd %x, got netfn %x cmd %x\n",
 			 (msg->data[0] >> 2) | 1, msg->data[1],
 			 msg->rsp[0] >> 2, msg->rsp[1]);
-=======
-		printk(KERN_WARNING PFX "BMC returned incorrect response,"
-		       " expected netfn %x cmd %x, got netfn %x cmd %x\n",
-		       (msg->data[0] >> 2) | 1, msg->data[1],
-		       msg->rsp[0] >> 2, msg->rsp[1]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Generate an error response for the message. */
 		msg->rsp[0] = msg->data[0] | (1 << 2);
@@ -6235,11 +4180,7 @@ static int handle_one_recv_msg(ipmi_smi_t          intf,
 		 * It's a response to a response we sent.  For this we
 		 * deliver a send message response to the user.
 		 */
-<<<<<<< HEAD
 		struct ipmi_recv_msg *recv_msg = msg->user_data;
-=======
-		struct ipmi_recv_msg     *recv_msg = msg->user_data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		requeue = 0;
 		if (msg->rsp_size < 2)
@@ -6254,28 +4195,15 @@ static int handle_one_recv_msg(ipmi_smi_t          intf,
 		if (!recv_msg)
 			goto out;
 
-<<<<<<< HEAD
-=======
-		/* Make sure the user still exists. */
-		if (!recv_msg->user || !recv_msg->user->valid)
-			goto out;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		recv_msg->recv_type = IPMI_RESPONSE_RESPONSE_TYPE;
 		recv_msg->msg.data = recv_msg->msg_data;
 		recv_msg->msg.data_len = 1;
 		recv_msg->msg_data[0] = msg->rsp[2];
-<<<<<<< HEAD
 		deliver_local_response(intf, recv_msg);
 	} else if ((msg->rsp[0] == ((IPMI_NETFN_APP_REQUEST|1) << 2))
 		   && (msg->rsp[1] == IPMI_GET_MSG_CMD)) {
 		struct ipmi_channel   *chans;
 
-=======
-		deliver_response(recv_msg);
-	} else if ((msg->rsp[0] == ((IPMI_NETFN_APP_REQUEST|1) << 2))
-		   && (msg->rsp[1] == IPMI_GET_MSG_CMD)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* It's from the receive queue. */
 		chan = msg->rsp[3] & 0xf;
 		if (chan >= IPMI_MAX_CHANNELS) {
@@ -6290,22 +4218,14 @@ static int handle_one_recv_msg(ipmi_smi_t          intf,
 		 * equal to or greater than IPMI_MAX_CHANNELS when all the
 		 * channels for this interface have been initialized.
 		 */
-<<<<<<< HEAD
 		if (!intf->channels_ready) {
-=======
-		if (intf->curr_channel < IPMI_MAX_CHANNELS) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			requeue = 0; /* Throw the message away */
 			goto out;
 		}
 
-<<<<<<< HEAD
 		chans = READ_ONCE(intf->channel_list)->c;
 
 		switch (chans[chan].medium) {
-=======
-		switch (intf->channels[chan].medium) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case IPMI_CHANNEL_MEDIUM_IPMB:
 			if (msg->rsp[4] & 0x04) {
 				/*
@@ -6342,14 +4262,8 @@ static int handle_one_recv_msg(ipmi_smi_t          intf,
 		default:
 			/* Check for OEM Channels.  Clients had better
 			   register for these commands. */
-<<<<<<< HEAD
 			if ((chans[chan].medium >= IPMI_CHANNEL_MEDIUM_OEM_MIN)
 			    && (chans[chan].medium
-=======
-			if ((intf->channels[chan].medium
-			     >= IPMI_CHANNEL_MEDIUM_OEM_MIN)
-			    && (intf->channels[chan].medium
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				<= IPMI_CHANNEL_MEDIUM_OEM_MAX)) {
 				requeue = handle_oem_get_msg_cmd(intf, msg);
 			} else {
@@ -6377,11 +4291,7 @@ static int handle_one_recv_msg(ipmi_smi_t          intf,
 /*
  * If there are messages in the queue or pretimeouts, handle them.
  */
-<<<<<<< HEAD
 static void handle_new_recv_msgs(struct ipmi_smi *intf)
-=======
-static void handle_new_recv_msgs(ipmi_smi_t intf)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ipmi_smi_msg  *smi_msg;
 	unsigned long        flags = 0;
@@ -6426,37 +4336,23 @@ static void handle_new_recv_msgs(ipmi_smi_t intf)
 	 * deliver pretimeouts to all the users.
 	 */
 	if (atomic_add_unless(&intf->watchdog_pretimeouts_to_deliver, -1, 0)) {
-<<<<<<< HEAD
 		struct ipmi_user *user;
 		int index;
 
 		index = srcu_read_lock(&intf->users_srcu);
-=======
-		ipmi_user_t user;
-
-		rcu_read_lock();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		list_for_each_entry_rcu(user, &intf->users, link) {
 			if (user->handler->ipmi_watchdog_pretimeout)
 				user->handler->ipmi_watchdog_pretimeout(
 					user->handler_data);
 		}
-<<<<<<< HEAD
 		srcu_read_unlock(&intf->users_srcu, index);
-=======
-		rcu_read_unlock();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
 static void smi_recv_tasklet(unsigned long val)
 {
 	unsigned long flags = 0; /* keep us warning-free. */
-<<<<<<< HEAD
 	struct ipmi_smi *intf = (struct ipmi_smi *) val;
-=======
-	ipmi_smi_t intf = (ipmi_smi_t) val;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int run_to_completion = intf->run_to_completion;
 	struct ipmi_smi_msg *newmsg = NULL;
 
@@ -6498,11 +4394,7 @@ static void smi_recv_tasklet(unsigned long val)
 }
 
 /* Handle a new message from the lower layer. */
-<<<<<<< HEAD
 void ipmi_smi_msg_received(struct ipmi_smi *intf,
-=======
-void ipmi_smi_msg_received(ipmi_smi_t          intf,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   struct ipmi_smi_msg *msg)
 {
 	unsigned long flags = 0; /* keep us warning-free. */
@@ -6534,7 +4426,6 @@ void ipmi_smi_msg_received(ipmi_smi_t          intf,
 		    && (msg->rsp[2] != IPMI_LOST_ARBITRATION_ERR)
 		    && (msg->rsp[2] != IPMI_BUS_ERR)
 		    && (msg->rsp[2] != IPMI_NAK_ON_WRITE_ERR)) {
-<<<<<<< HEAD
 			int ch = msg->rsp[3] & 0xf;
 			struct ipmi_channel *chans;
 
@@ -6543,17 +4434,6 @@ void ipmi_smi_msg_received(ipmi_smi_t          intf,
 			chans = READ_ONCE(intf->channel_list)->c;
 			if ((chans[ch].medium == IPMI_CHANNEL_MEDIUM_8023LAN)
 			    || (chans[ch].medium == IPMI_CHANNEL_MEDIUM_ASYNC))
-=======
-			int chan = msg->rsp[3] & 0xf;
-
-			/* Got an error sending the message, handle it. */
-			if (chan >= IPMI_MAX_CHANNELS)
-				; /* This shouldn't happen */
-			else if ((intf->channels[chan].medium
-				  == IPMI_CHANNEL_MEDIUM_8023LAN)
-				 || (intf->channels[chan].medium
-				     == IPMI_CHANNEL_MEDIUM_ASYNC))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				ipmi_inc_stat(intf, sent_lan_command_errs);
 			else
 				ipmi_inc_stat(intf, sent_ipmb_command_errs);
@@ -6595,11 +4475,7 @@ free_msg:
 }
 EXPORT_SYMBOL(ipmi_smi_msg_received);
 
-<<<<<<< HEAD
 void ipmi_smi_watchdog_pretimeout(struct ipmi_smi *intf)
-=======
-void ipmi_smi_watchdog_pretimeout(ipmi_smi_t intf)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (intf->in_shutdown)
 		return;
@@ -6610,11 +4486,7 @@ void ipmi_smi_watchdog_pretimeout(ipmi_smi_t intf)
 EXPORT_SYMBOL(ipmi_smi_watchdog_pretimeout);
 
 static struct ipmi_smi_msg *
-<<<<<<< HEAD
 smi_from_recv_msg(struct ipmi_smi *intf, struct ipmi_recv_msg *recv_msg,
-=======
-smi_from_recv_msg(ipmi_smi_t intf, struct ipmi_recv_msg *recv_msg,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		  unsigned char seq, long seqid)
 {
 	struct ipmi_smi_msg *smi_msg = ipmi_alloc_smi_msg();
@@ -6629,39 +4501,18 @@ smi_from_recv_msg(ipmi_smi_t intf, struct ipmi_recv_msg *recv_msg,
 	smi_msg->data_size = recv_msg->msg.data_len;
 	smi_msg->msgid = STORE_SEQ_IN_MSGID(seq, seqid);
 
-<<<<<<< HEAD
 	ipmi_debug_msg("Resend: ", smi_msg->data, smi_msg->data_size);
 
 	return smi_msg;
 }
 
 static void check_msg_timeout(struct ipmi_smi *intf, struct seq_table *ent,
-=======
-#ifdef DEBUG_MSGING
-	{
-		int m;
-		printk("Resend: ");
-		for (m = 0; m < smi_msg->data_size; m++)
-			printk(" %2.2x", smi_msg->data[m]);
-		printk("\n");
-	}
-#endif
-	return smi_msg;
-}
-
-static void check_msg_timeout(ipmi_smi_t intf, struct seq_table *ent,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      struct list_head *timeouts,
 			      unsigned long timeout_period,
 			      int slot, unsigned long *flags,
 			      unsigned int *waiting_msgs)
 {
-<<<<<<< HEAD
 	struct ipmi_recv_msg *msg;
-=======
-	struct ipmi_recv_msg     *msg;
-	const struct ipmi_smi_handlers *handlers;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (intf->in_shutdown)
 		return;
@@ -6719,12 +4570,7 @@ static void check_msg_timeout(ipmi_smi_t intf, struct seq_table *ent,
 		 * only for messages to the local MC, which don't get
 		 * resent.
 		 */
-<<<<<<< HEAD
 		if (intf->handlers) {
-=======
-		handlers = intf->handlers;
-		if (handlers) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (is_lan_addr(&ent->recv_msg->addr))
 				ipmi_inc_stat(intf,
 					      retransmitted_lan_commands);
@@ -6732,11 +4578,7 @@ static void check_msg_timeout(ipmi_smi_t intf, struct seq_table *ent,
 				ipmi_inc_stat(intf,
 					      retransmitted_ipmb_commands);
 
-<<<<<<< HEAD
 			smi_send(intf, intf->handlers, smi_msg, 0);
-=======
-			smi_send(intf, handlers, smi_msg, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else
 			ipmi_free_smi_msg(smi_msg);
 
@@ -6744,11 +4586,7 @@ static void check_msg_timeout(ipmi_smi_t intf, struct seq_table *ent,
 	}
 }
 
-<<<<<<< HEAD
 static unsigned int ipmi_timeout_handler(struct ipmi_smi *intf,
-=======
-static unsigned int ipmi_timeout_handler(ipmi_smi_t intf,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 unsigned long timeout_period)
 {
 	struct list_head     timeouts;
@@ -6757,7 +4595,6 @@ static unsigned int ipmi_timeout_handler(ipmi_smi_t intf,
 	int                  i;
 	unsigned int         waiting_msgs = 0;
 
-<<<<<<< HEAD
 	if (!intf->bmc_registered) {
 		kref_get(&intf->refcount);
 		if (!schedule_work(&intf->bmc_reg_work)) {
@@ -6766,8 +4603,6 @@ static unsigned int ipmi_timeout_handler(ipmi_smi_t intf,
 		}
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Go through the seq table and find any messages that
 	 * have timed out, putting them in the timeouts
@@ -6775,7 +4610,6 @@ static unsigned int ipmi_timeout_handler(ipmi_smi_t intf,
 	 */
 	INIT_LIST_HEAD(&timeouts);
 	spin_lock_irqsave(&intf->seq_lock, flags);
-<<<<<<< HEAD
 	if (intf->ipmb_maintenance_mode_timeout) {
 		if (intf->ipmb_maintenance_mode_timeout <= timeout_period)
 			intf->ipmb_maintenance_mode_timeout = 0;
@@ -6784,20 +4618,12 @@ static unsigned int ipmi_timeout_handler(ipmi_smi_t intf,
 	}
 	for (i = 0; i < IPMI_IPMB_NUM_SEQ; i++)
 		check_msg_timeout(intf, &intf->seq_table[i],
-=======
-	for (i = 0; i < IPMI_IPMB_NUM_SEQ; i++)
-		check_msg_timeout(intf, &(intf->seq_table[i]),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  &timeouts, timeout_period, i,
 				  &flags, &waiting_msgs);
 	spin_unlock_irqrestore(&intf->seq_lock, flags);
 
 	list_for_each_entry_safe(msg, msg2, &timeouts, link)
-<<<<<<< HEAD
 		deliver_err_response(intf, msg, IPMI_TIMEOUT_COMPLETION_CODE);
-=======
-		deliver_err_response(msg, IPMI_TIMEOUT_COMPLETION_CODE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Maintenance mode handling.  Check the timeout
@@ -6827,11 +4653,7 @@ static unsigned int ipmi_timeout_handler(ipmi_smi_t intf,
 	return waiting_msgs;
 }
 
-<<<<<<< HEAD
 static void ipmi_request_event(struct ipmi_smi *intf)
-=======
-static void ipmi_request_event(ipmi_smi_t intf)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* No event requests when in maintenance mode. */
 	if (intf->maintenance_mode_enable)
@@ -6845,26 +4667,15 @@ static struct timer_list ipmi_timer;
 
 static atomic_t stop_operation;
 
-<<<<<<< HEAD
 static void ipmi_timeout(struct timer_list *unused)
 {
 	struct ipmi_smi *intf;
 	int nt = 0, index;
-=======
-static void ipmi_timeout(unsigned long data)
-{
-	ipmi_smi_t intf;
-	int nt = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (atomic_read(&stop_operation))
 		return;
 
-<<<<<<< HEAD
 	index = srcu_read_lock(&ipmi_interfaces_srcu);
-=======
-	rcu_read_lock();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_for_each_entry_rcu(intf, &ipmi_interfaces, link) {
 		int lnt = 0;
 
@@ -6887,21 +4698,13 @@ static void ipmi_timeout(unsigned long data)
 
 		nt += lnt;
 	}
-<<<<<<< HEAD
 	srcu_read_unlock(&ipmi_interfaces_srcu, index);
-=======
-	rcu_read_unlock();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (nt)
 		mod_timer(&ipmi_timer, jiffies + IPMI_TIMEOUT_JIFFIES);
 }
 
-<<<<<<< HEAD
 static void need_waiter(struct ipmi_smi *intf)
-=======
-static void need_waiter(ipmi_smi_t intf)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* Racy, but worst case we start the timer twice. */
 	if (!timer_pending(&ipmi_timer))
@@ -6957,11 +4760,6 @@ void ipmi_free_recv_msg(struct ipmi_recv_msg *msg)
 }
 EXPORT_SYMBOL(ipmi_free_recv_msg);
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_IPMI_PANIC_EVENT
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static atomic_t panic_done_count = ATOMIC_INIT(0);
 
 static void dummy_smi_done_handler(struct ipmi_smi_msg *msg)
@@ -6977,13 +4775,8 @@ static void dummy_recv_done_handler(struct ipmi_recv_msg *msg)
 /*
  * Inside a panic, send a message and wait for a response.
  */
-<<<<<<< HEAD
 static void ipmi_panic_request_and_wait(struct ipmi_smi *intf,
 					struct ipmi_addr *addr,
-=======
-static void ipmi_panic_request_and_wait(ipmi_smi_t           intf,
-					struct ipmi_addr     *addr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					struct kernel_ipmi_msg *msg)
 {
 	struct ipmi_smi_msg  smi_msg;
@@ -7002,13 +4795,8 @@ static void ipmi_panic_request_and_wait(ipmi_smi_t           intf,
 			    &smi_msg,
 			    &recv_msg,
 			    0,
-<<<<<<< HEAD
 			    intf->addrinfo[0].address,
 			    intf->addrinfo[0].lun,
-=======
-			    intf->channels[0].address,
-			    intf->channels[0].lun,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    0, 1); /* Don't retry, and don't wait. */
 	if (rv)
 		atomic_sub(2, &panic_done_count);
@@ -7019,13 +4807,8 @@ static void ipmi_panic_request_and_wait(ipmi_smi_t           intf,
 		ipmi_poll(intf);
 }
 
-<<<<<<< HEAD
 static void event_receiver_fetcher(struct ipmi_smi *intf,
 				   struct ipmi_recv_msg *msg)
-=======
-#ifdef CONFIG_IPMI_PANIC_STRING
-static void event_receiver_fetcher(ipmi_smi_t intf, struct ipmi_recv_msg *msg)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if ((msg->addr.addr_type == IPMI_SYSTEM_INTERFACE_ADDR_TYPE)
 	    && (msg->msg.netfn == IPMI_NETFN_SENSOR_EVENT_RESPONSE)
@@ -7037,11 +4820,7 @@ static void event_receiver_fetcher(ipmi_smi_t intf, struct ipmi_recv_msg *msg)
 	}
 }
 
-<<<<<<< HEAD
 static void device_id_fetcher(struct ipmi_smi *intf, struct ipmi_recv_msg *msg)
-=======
-static void device_id_fetcher(ipmi_smi_t intf, struct ipmi_recv_msg *msg)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if ((msg->addr.addr_type == IPMI_SYSTEM_INTERFACE_ADDR_TYPE)
 	    && (msg->msg.netfn == IPMI_NETFN_APP_RESPONSE)
@@ -7055,7 +4834,6 @@ static void device_id_fetcher(ipmi_smi_t intf, struct ipmi_recv_msg *msg)
 		intf->local_event_generator = (msg->msg.data[6] >> 5) & 1;
 	}
 }
-<<<<<<< HEAD
 
 static void send_panic_events(struct ipmi_smi *intf, char *str)
 {
@@ -7069,17 +4847,6 @@ static void send_panic_events(struct ipmi_smi *intf, char *str)
 
 	if (ipmi_send_panic_event == IPMI_SEND_PANIC_EVENT_NONE)
 		return;
-=======
-#endif
-
-static void send_panic_events(char *str)
-{
-	struct kernel_ipmi_msg            msg;
-	ipmi_smi_t                        intf;
-	unsigned char                     data[16];
-	struct ipmi_system_interface_addr *si;
-	struct ipmi_addr                  addr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	si = (struct ipmi_system_interface_addr *) &addr;
 	si->addr_type = IPMI_SYSTEM_INTERFACE_ADDR_TYPE;
@@ -7107,28 +4874,13 @@ static void send_panic_events(char *str)
 		data[7] = str[2];
 	}
 
-<<<<<<< HEAD
 	/* Send the event announcing the panic. */
 	ipmi_panic_request_and_wait(intf, &addr, &msg);
 
-=======
-	/* For every registered interface, send the event. */
-	list_for_each_entry_rcu(intf, &ipmi_interfaces, link) {
-		if (!intf->handlers)
-			/* Interface is not ready. */
-			continue;
-
-		/* Send the event announcing the panic. */
-		ipmi_panic_request_and_wait(intf, &addr, &msg);
-	}
-
-#ifdef CONFIG_IPMI_PANIC_STRING
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * On every interface, dump a bunch of OEM event holding the
 	 * string.
 	 */
-<<<<<<< HEAD
 	if (ipmi_send_panic_event != IPMI_SEND_PANIC_EVENT_STRING || !str)
 		return;
 
@@ -7228,120 +4980,6 @@ static void send_panic_events(char *str)
 		ipmi_panic_request_and_wait(intf, &addr, &msg);
 	}
 }
-=======
-	if (!str)
-		return;
-
-	/* For every registered interface, send the event. */
-	list_for_each_entry_rcu(intf, &ipmi_interfaces, link) {
-		char                  *p = str;
-		struct ipmi_ipmb_addr *ipmb;
-		int                   j;
-
-		if (intf->intf_num == -1)
-			/* Interface was not ready yet. */
-			continue;
-
-		/*
-		 * intf_num is used as an marker to tell if the
-		 * interface is valid.  Thus we need a read barrier to
-		 * make sure data fetched before checking intf_num
-		 * won't be used.
-		 */
-		smp_rmb();
-
-		/*
-		 * First job here is to figure out where to send the
-		 * OEM events.  There's no way in IPMI to send OEM
-		 * events using an event send command, so we have to
-		 * find the SEL to put them in and stick them in
-		 * there.
-		 */
-
-		/* Get capabilities from the get device id. */
-		intf->local_sel_device = 0;
-		intf->local_event_generator = 0;
-		intf->event_receiver = 0;
-
-		/* Request the device info from the local MC. */
-		msg.netfn = IPMI_NETFN_APP_REQUEST;
-		msg.cmd = IPMI_GET_DEVICE_ID_CMD;
-		msg.data = NULL;
-		msg.data_len = 0;
-		intf->null_user_handler = device_id_fetcher;
-		ipmi_panic_request_and_wait(intf, &addr, &msg);
-
-		if (intf->local_event_generator) {
-			/* Request the event receiver from the local MC. */
-			msg.netfn = IPMI_NETFN_SENSOR_EVENT_REQUEST;
-			msg.cmd = IPMI_GET_EVENT_RECEIVER_CMD;
-			msg.data = NULL;
-			msg.data_len = 0;
-			intf->null_user_handler = event_receiver_fetcher;
-			ipmi_panic_request_and_wait(intf, &addr, &msg);
-		}
-		intf->null_user_handler = NULL;
-
-		/*
-		 * Validate the event receiver.  The low bit must not
-		 * be 1 (it must be a valid IPMB address), it cannot
-		 * be zero, and it must not be my address.
-		 */
-		if (((intf->event_receiver & 1) == 0)
-		    && (intf->event_receiver != 0)
-		    && (intf->event_receiver != intf->channels[0].address)) {
-			/*
-			 * The event receiver is valid, send an IPMB
-			 * message.
-			 */
-			ipmb = (struct ipmi_ipmb_addr *) &addr;
-			ipmb->addr_type = IPMI_IPMB_ADDR_TYPE;
-			ipmb->channel = 0; /* FIXME - is this right? */
-			ipmb->lun = intf->event_receiver_lun;
-			ipmb->slave_addr = intf->event_receiver;
-		} else if (intf->local_sel_device) {
-			/*
-			 * The event receiver was not valid (or was
-			 * me), but I am an SEL device, just dump it
-			 * in my SEL.
-			 */
-			si = (struct ipmi_system_interface_addr *) &addr;
-			si->addr_type = IPMI_SYSTEM_INTERFACE_ADDR_TYPE;
-			si->channel = IPMI_BMC_CHANNEL;
-			si->lun = 0;
-		} else
-			continue; /* No where to send the event. */
-
-		msg.netfn = IPMI_NETFN_STORAGE_REQUEST; /* Storage. */
-		msg.cmd = IPMI_ADD_SEL_ENTRY_CMD;
-		msg.data = data;
-		msg.data_len = 16;
-
-		j = 0;
-		while (*p) {
-			int size = strlen(p);
-
-			if (size > 11)
-				size = 11;
-			data[0] = 0;
-			data[1] = 0;
-			data[2] = 0xf0; /* OEM event without timestamp. */
-			data[3] = intf->channels[0].address;
-			data[4] = j++; /* sequence # */
-			/*
-			 * Always give 11 bytes, so strncpy will fill
-			 * it with zeroes for me.
-			 */
-			strncpy(data+5, p, 11);
-			p += size;
-
-			ipmi_panic_request_and_wait(intf, &addr, &msg);
-		}
-	}
-#endif /* CONFIG_IPMI_PANIC_STRING */
-}
-#endif /* CONFIG_IPMI_PANIC_EVENT */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int has_panicked;
 
@@ -7349,12 +4987,8 @@ static int panic_event(struct notifier_block *this,
 		       unsigned long         event,
 		       void                  *ptr)
 {
-<<<<<<< HEAD
 	struct ipmi_smi *intf;
 	struct ipmi_user *user;
-=======
-	ipmi_smi_t intf;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (has_panicked)
 		return NOTIFY_DONE;
@@ -7362,7 +4996,6 @@ static int panic_event(struct notifier_block *this,
 
 	/* For every registered interface, set it to run to completion. */
 	list_for_each_entry_rcu(intf, &ipmi_interfaces, link) {
-<<<<<<< HEAD
 		if (!intf->handlers || intf->intf_num == -1)
 			/* Interface is not ready. */
 			continue;
@@ -7370,12 +5003,6 @@ static int panic_event(struct notifier_block *this,
 		if (!intf->handlers->poll)
 			continue;
 
-=======
-		if (!intf->handlers)
-			/* Interface is not ready. */
-			continue;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * If we were interrupted while locking xmit_msgs_lock or
 		 * waiting_rcv_msgs_lock, the corresponding list may be
@@ -7394,7 +5021,6 @@ static int panic_event(struct notifier_block *this,
 			spin_unlock(&intf->waiting_rcv_msgs_lock);
 
 		intf->run_to_completion = 1;
-<<<<<<< HEAD
 		if (intf->handlers->set_run_to_completion)
 			intf->handlers->set_run_to_completion(intf->send_info,
 							      1);
@@ -7427,18 +5053,6 @@ static int ipmi_register_driver(void)
 	return rv;
 }
 
-=======
-		intf->handlers->set_run_to_completion(intf->send_info, 1);
-	}
-
-#ifdef CONFIG_IPMI_PANIC_EVENT
-	send_panic_events(ptr);
-#endif
-
-	return NOTIFY_DONE;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct notifier_block panic_block = {
 	.notifier_call	= panic_event,
 	.next		= NULL,
@@ -7449,7 +5063,6 @@ static int ipmi_init_msghandler(void)
 {
 	int rv;
 
-<<<<<<< HEAD
 	mutex_lock(&ipmi_interfaces_mutex);
 	rv = ipmi_register_driver();
 	if (rv)
@@ -7460,51 +5073,19 @@ static int ipmi_init_msghandler(void)
 	init_srcu_struct(&ipmi_interfaces_srcu);
 
 	timer_setup(&ipmi_timer, ipmi_timeout, 0);
-=======
-	if (initialized)
-		return 0;
-
-	rv = driver_register(&ipmidriver.driver);
-	if (rv) {
-		printk(KERN_ERR PFX "Could not register IPMI driver\n");
-		return rv;
-	}
-
-	printk(KERN_INFO "ipmi message handler version "
-	       IPMI_DRIVER_VERSION "\n");
-
-#ifdef CONFIG_PROC_FS
-	proc_ipmi_root = proc_mkdir("ipmi", NULL);
-	if (!proc_ipmi_root) {
-	    printk(KERN_ERR PFX "Unable to create IPMI proc dir");
-	    driver_unregister(&ipmidriver.driver);
-	    return -ENOMEM;
-	}
-
-#endif /* CONFIG_PROC_FS */
-
-	setup_timer(&ipmi_timer, ipmi_timeout, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mod_timer(&ipmi_timer, jiffies + IPMI_TIMEOUT_JIFFIES);
 
 	atomic_notifier_chain_register(&panic_notifier_list, &panic_block);
 
-<<<<<<< HEAD
 	initialized = true;
 
 out:
 	mutex_unlock(&ipmi_interfaces_mutex);
 	return rv;
-=======
-	initialized = 1;
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int __init ipmi_init_msghandler_mod(void)
 {
-<<<<<<< HEAD
 	int rv;
 
 	pr_info("version " IPMI_DRIVER_VERSION "\n");
@@ -7514,17 +5095,12 @@ static int __init ipmi_init_msghandler_mod(void)
 	mutex_unlock(&ipmi_interfaces_mutex);
 
 	return rv;
-=======
-	ipmi_init_msghandler();
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __exit cleanup_ipmi(void)
 {
 	int count;
 
-<<<<<<< HEAD
 	if (initialized) {
 		atomic_notifier_chain_unregister(&panic_notifier_list,
 						 &panic_block);
@@ -7555,43 +5131,6 @@ static void __exit cleanup_ipmi(void)
 	}
 	if (drvregistered)
 		driver_unregister(&ipmidriver.driver);
-=======
-	if (!initialized)
-		return;
-
-	atomic_notifier_chain_unregister(&panic_notifier_list, &panic_block);
-
-	/*
-	 * This can't be called if any interfaces exist, so no worry
-	 * about shutting down the interfaces.
-	 */
-
-	/*
-	 * Tell the timer to stop, then wait for it to stop.  This
-	 * avoids problems with race conditions removing the timer
-	 * here.
-	 */
-	atomic_inc(&stop_operation);
-	del_timer_sync(&ipmi_timer);
-
-#ifdef CONFIG_PROC_FS
-	proc_remove(proc_ipmi_root);
-#endif /* CONFIG_PROC_FS */
-
-	driver_unregister(&ipmidriver.driver);
-
-	initialized = 0;
-
-	/* Check for buffer leaks. */
-	count = atomic_read(&smi_msg_inuse_count);
-	if (count != 0)
-		printk(KERN_WARNING PFX "SMI message count %d at exit\n",
-		       count);
-	count = atomic_read(&recv_msg_inuse_count);
-	if (count != 0)
-		printk(KERN_WARNING PFX "recv message count %d at exit\n",
-		       count);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 module_exit(cleanup_ipmi);
 

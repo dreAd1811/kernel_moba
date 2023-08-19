@@ -31,11 +31,7 @@ static void __init imx53_init_early(void)
 static void __init imx53_dt_init(void)
 {
 	imx_src_init();
-<<<<<<< HEAD
 	imx5_pmu_init();
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	imx_aips_allow_unprivileged_access("fsl,imx53-aipstz");
 }
 

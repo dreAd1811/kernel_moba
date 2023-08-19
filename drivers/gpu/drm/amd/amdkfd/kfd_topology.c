@@ -28,16 +28,12 @@
 #include <linux/hash.h>
 #include <linux/cpufreq.h>
 #include <linux/log2.h>
-<<<<<<< HEAD
 #include <linux/dmi.h>
 #include <linux/atomic.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "kfd_priv.h"
 #include "kfd_crat.h"
 #include "kfd_topology.h"
-<<<<<<< HEAD
 #include "kfd_device_queue_manager.h"
 #include "kfd_iommu.h"
 
@@ -53,30 +49,12 @@ struct kfd_topology_device *kfd_topology_device_by_proximity_domain(
 {
 	struct kfd_topology_device *top_dev;
 	struct kfd_topology_device *device = NULL;
-=======
-
-static struct list_head topology_device_list;
-static int topology_crat_parsed;
-static struct kfd_system_properties sys_props;
-
-static DECLARE_RWSEM(topology_lock);
-
-struct kfd_dev *kfd_device_by_id(uint32_t gpu_id)
-{
-	struct kfd_topology_device *top_dev;
-	struct kfd_dev *device = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	down_read(&topology_lock);
 
 	list_for_each_entry(top_dev, &topology_device_list, list)
-<<<<<<< HEAD
 		if (top_dev->proximity_domain == proximity_domain) {
 			device = top_dev;
-=======
-		if (top_dev->gpu_id == gpu_id) {
-			device = top_dev->gpu;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 
@@ -85,7 +63,6 @@ struct kfd_dev *kfd_device_by_id(uint32_t gpu_id)
 	return device;
 }
 
-<<<<<<< HEAD
 struct kfd_topology_device *kfd_topology_device_by_id(uint32_t gpu_id)
 {
 	struct kfd_topology_device *top_dev = NULL;
@@ -115,8 +92,6 @@ struct kfd_dev *kfd_device_by_id(uint32_t gpu_id)
 	return top_dev->gpu;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct kfd_dev *kfd_device_by_pci_dev(const struct pci_dev *pdev)
 {
 	struct kfd_topology_device *top_dev;
@@ -135,290 +110,13 @@ struct kfd_dev *kfd_device_by_pci_dev(const struct pci_dev *pdev)
 	return device;
 }
 
-<<<<<<< HEAD
 /* Called with write topology_lock acquired */
-=======
-static int kfd_topology_get_crat_acpi(void *crat_image, size_t *size)
-{
-	struct acpi_table_header *crat_table;
-	acpi_status status;
-
-	if (!size)
-		return -EINVAL;
-
-	/*
-	 * Fetch the CRAT table from ACPI
-	 */
-	status = acpi_get_table(CRAT_SIGNATURE, 0, &crat_table);
-	if (status == AE_NOT_FOUND) {
-		pr_warn("CRAT table not found\n");
-		return -ENODATA;
-	} else if (ACPI_FAILURE(status)) {
-		const char *err = acpi_format_exception(status);
-
-		pr_err("CRAT table error: %s\n", err);
-		return -EINVAL;
-	}
-
-	if (*size >= crat_table->length && crat_image != NULL)
-		memcpy(crat_image, crat_table, crat_table->length);
-
-	*size = crat_table->length;
-
-	return 0;
-}
-
-static void kfd_populated_cu_info_cpu(struct kfd_topology_device *dev,
-		struct crat_subtype_computeunit *cu)
-{
-	dev->node_props.cpu_cores_count = cu->num_cpu_cores;
-	dev->node_props.cpu_core_id_base = cu->processor_id_low;
-	if (cu->hsa_capability & CRAT_CU_FLAGS_IOMMU_PRESENT)
-		dev->node_props.capability |= HSA_CAP_ATS_PRESENT;
-
-	pr_info("CU CPU: cores=%d id_base=%d\n", cu->num_cpu_cores,
-			cu->processor_id_low);
-}
-
-static void kfd_populated_cu_info_gpu(struct kfd_topology_device *dev,
-		struct crat_subtype_computeunit *cu)
-{
-	dev->node_props.simd_id_base = cu->processor_id_low;
-	dev->node_props.simd_count = cu->num_simd_cores;
-	dev->node_props.lds_size_in_kb = cu->lds_size_in_kb;
-	dev->node_props.max_waves_per_simd = cu->max_waves_simd;
-	dev->node_props.wave_front_size = cu->wave_front_size;
-	dev->node_props.mem_banks_count = cu->num_banks;
-	dev->node_props.array_count = cu->num_arrays;
-	dev->node_props.cu_per_simd_array = cu->num_cu_per_array;
-	dev->node_props.simd_per_cu = cu->num_simd_per_cu;
-	dev->node_props.max_slots_scratch_cu = cu->max_slots_scatch_cu;
-	if (cu->hsa_capability & CRAT_CU_FLAGS_HOT_PLUGGABLE)
-		dev->node_props.capability |= HSA_CAP_HOT_PLUGGABLE;
-	pr_info("CU GPU: simds=%d id_base=%d\n", cu->num_simd_cores,
-				cu->processor_id_low);
-}
-
-/* kfd_parse_subtype_cu is called when the topology mutex is already acquired */
-static int kfd_parse_subtype_cu(struct crat_subtype_computeunit *cu)
-{
-	struct kfd_topology_device *dev;
-	int i = 0;
-
-	pr_info("Found CU entry in CRAT table with proximity_domain=%d caps=%x\n",
-			cu->proximity_domain, cu->hsa_capability);
-	list_for_each_entry(dev, &topology_device_list, list) {
-		if (cu->proximity_domain == i) {
-			if (cu->flags & CRAT_CU_FLAGS_CPU_PRESENT)
-				kfd_populated_cu_info_cpu(dev, cu);
-
-			if (cu->flags & CRAT_CU_FLAGS_GPU_PRESENT)
-				kfd_populated_cu_info_gpu(dev, cu);
-			break;
-		}
-		i++;
-	}
-
-	return 0;
-}
-
-/*
- * kfd_parse_subtype_mem is called when the topology mutex is
- * already acquired
- */
-static int kfd_parse_subtype_mem(struct crat_subtype_memory *mem)
-{
-	struct kfd_mem_properties *props;
-	struct kfd_topology_device *dev;
-	int i = 0;
-
-	pr_info("Found memory entry in CRAT table with proximity_domain=%d\n",
-			mem->promixity_domain);
-	list_for_each_entry(dev, &topology_device_list, list) {
-		if (mem->promixity_domain == i) {
-			props = kfd_alloc_struct(props);
-			if (props == NULL)
-				return -ENOMEM;
-
-			if (dev->node_props.cpu_cores_count == 0)
-				props->heap_type = HSA_MEM_HEAP_TYPE_FB_PRIVATE;
-			else
-				props->heap_type = HSA_MEM_HEAP_TYPE_SYSTEM;
-
-			if (mem->flags & CRAT_MEM_FLAGS_HOT_PLUGGABLE)
-				props->flags |= HSA_MEM_FLAGS_HOT_PLUGGABLE;
-			if (mem->flags & CRAT_MEM_FLAGS_NON_VOLATILE)
-				props->flags |= HSA_MEM_FLAGS_NON_VOLATILE;
-
-			props->size_in_bytes =
-				((uint64_t)mem->length_high << 32) +
-							mem->length_low;
-			props->width = mem->width;
-
-			dev->mem_bank_count++;
-			list_add_tail(&props->list, &dev->mem_props);
-
-			break;
-		}
-		i++;
-	}
-
-	return 0;
-}
-
-/*
- * kfd_parse_subtype_cache is called when the topology mutex
- * is already acquired
- */
-static int kfd_parse_subtype_cache(struct crat_subtype_cache *cache)
-{
-	struct kfd_cache_properties *props;
-	struct kfd_topology_device *dev;
-	uint32_t id;
-
-	id = cache->processor_id_low;
-
-	pr_info("Found cache entry in CRAT table with processor_id=%d\n", id);
-	list_for_each_entry(dev, &topology_device_list, list)
-		if (id == dev->node_props.cpu_core_id_base ||
-		    id == dev->node_props.simd_id_base) {
-			props = kfd_alloc_struct(props);
-			if (props == NULL)
-				return -ENOMEM;
-
-			props->processor_id_low = id;
-			props->cache_level = cache->cache_level;
-			props->cache_size = cache->cache_size;
-			props->cacheline_size = cache->cache_line_size;
-			props->cachelines_per_tag = cache->lines_per_tag;
-			props->cache_assoc = cache->associativity;
-			props->cache_latency = cache->cache_latency;
-
-			if (cache->flags & CRAT_CACHE_FLAGS_DATA_CACHE)
-				props->cache_type |= HSA_CACHE_TYPE_DATA;
-			if (cache->flags & CRAT_CACHE_FLAGS_INST_CACHE)
-				props->cache_type |= HSA_CACHE_TYPE_INSTRUCTION;
-			if (cache->flags & CRAT_CACHE_FLAGS_CPU_CACHE)
-				props->cache_type |= HSA_CACHE_TYPE_CPU;
-			if (cache->flags & CRAT_CACHE_FLAGS_SIMD_CACHE)
-				props->cache_type |= HSA_CACHE_TYPE_HSACU;
-
-			dev->cache_count++;
-			dev->node_props.caches_count++;
-			list_add_tail(&props->list, &dev->cache_props);
-
-			break;
-		}
-
-	return 0;
-}
-
-/*
- * kfd_parse_subtype_iolink is called when the topology mutex
- * is already acquired
- */
-static int kfd_parse_subtype_iolink(struct crat_subtype_iolink *iolink)
-{
-	struct kfd_iolink_properties *props;
-	struct kfd_topology_device *dev;
-	uint32_t i = 0;
-	uint32_t id_from;
-	uint32_t id_to;
-
-	id_from = iolink->proximity_domain_from;
-	id_to = iolink->proximity_domain_to;
-
-	pr_info("Found IO link entry in CRAT table with id_from=%d\n", id_from);
-	list_for_each_entry(dev, &topology_device_list, list) {
-		if (id_from == i) {
-			props = kfd_alloc_struct(props);
-			if (props == NULL)
-				return -ENOMEM;
-
-			props->node_from = id_from;
-			props->node_to = id_to;
-			props->ver_maj = iolink->version_major;
-			props->ver_min = iolink->version_minor;
-
-			/*
-			 * weight factor (derived from CDIR), currently always 1
-			 */
-			props->weight = 1;
-
-			props->min_latency = iolink->minimum_latency;
-			props->max_latency = iolink->maximum_latency;
-			props->min_bandwidth = iolink->minimum_bandwidth_mbs;
-			props->max_bandwidth = iolink->maximum_bandwidth_mbs;
-			props->rec_transfer_size =
-					iolink->recommended_transfer_size;
-
-			dev->io_link_count++;
-			dev->node_props.io_links_count++;
-			list_add_tail(&props->list, &dev->io_link_props);
-
-			break;
-		}
-		i++;
-	}
-
-	return 0;
-}
-
-static int kfd_parse_subtype(struct crat_subtype_generic *sub_type_hdr)
-{
-	struct crat_subtype_computeunit *cu;
-	struct crat_subtype_memory *mem;
-	struct crat_subtype_cache *cache;
-	struct crat_subtype_iolink *iolink;
-	int ret = 0;
-
-	switch (sub_type_hdr->type) {
-	case CRAT_SUBTYPE_COMPUTEUNIT_AFFINITY:
-		cu = (struct crat_subtype_computeunit *)sub_type_hdr;
-		ret = kfd_parse_subtype_cu(cu);
-		break;
-	case CRAT_SUBTYPE_MEMORY_AFFINITY:
-		mem = (struct crat_subtype_memory *)sub_type_hdr;
-		ret = kfd_parse_subtype_mem(mem);
-		break;
-	case CRAT_SUBTYPE_CACHE_AFFINITY:
-		cache = (struct crat_subtype_cache *)sub_type_hdr;
-		ret = kfd_parse_subtype_cache(cache);
-		break;
-	case CRAT_SUBTYPE_TLB_AFFINITY:
-		/*
-		 * For now, nothing to do here
-		 */
-		pr_info("Found TLB entry in CRAT table (not processing)\n");
-		break;
-	case CRAT_SUBTYPE_CCOMPUTE_AFFINITY:
-		/*
-		 * For now, nothing to do here
-		 */
-		pr_info("Found CCOMPUTE entry in CRAT table (not processing)\n");
-		break;
-	case CRAT_SUBTYPE_IOLINK_AFFINITY:
-		iolink = (struct crat_subtype_iolink *)sub_type_hdr;
-		ret = kfd_parse_subtype_iolink(iolink);
-		break;
-	default:
-		pr_warn("Unknown subtype (%d) in CRAT\n",
-				sub_type_hdr->type);
-	}
-
-	return ret;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void kfd_release_topology_device(struct kfd_topology_device *dev)
 {
 	struct kfd_mem_properties *mem;
 	struct kfd_cache_properties *cache;
 	struct kfd_iolink_properties *iolink;
-<<<<<<< HEAD
 	struct kfd_perf_properties *perf;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	list_del(&dev->list);
 
@@ -443,7 +141,6 @@ static void kfd_release_topology_device(struct kfd_topology_device *dev)
 		kfree(iolink);
 	}
 
-<<<<<<< HEAD
 	while (dev->perf_props.next != &dev->perf_props) {
 		perf = container_of(dev->perf_props.next,
 				struct kfd_perf_properties, list);
@@ -463,36 +160,16 @@ void kfd_release_topology_device_list(struct list_head *device_list)
 				       struct kfd_topology_device, list);
 		kfd_release_topology_device(dev);
 	}
-=======
-	kfree(dev);
-
-	sys_props.num_devices--;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void kfd_release_live_view(void)
 {
-<<<<<<< HEAD
 	kfd_release_topology_device_list(&topology_device_list);
 	memset(&sys_props, 0, sizeof(sys_props));
 }
 
 struct kfd_topology_device *kfd_create_topology_device(
 				struct list_head *device_list)
-=======
-	struct kfd_topology_device *dev;
-
-	while (topology_device_list.next != &topology_device_list) {
-		dev = container_of(topology_device_list.next,
-				 struct kfd_topology_device, list);
-		kfd_release_topology_device(dev);
-}
-
-	memset(&sys_props, 0, sizeof(sys_props));
-}
-
-static struct kfd_topology_device *kfd_create_topology_device(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct kfd_topology_device *dev;
 
@@ -505,74 +182,13 @@ static struct kfd_topology_device *kfd_create_topology_device(void)
 	INIT_LIST_HEAD(&dev->mem_props);
 	INIT_LIST_HEAD(&dev->cache_props);
 	INIT_LIST_HEAD(&dev->io_link_props);
-<<<<<<< HEAD
 	INIT_LIST_HEAD(&dev->perf_props);
 
 	list_add_tail(&dev->list, device_list);
-=======
-
-	list_add_tail(&dev->list, &topology_device_list);
-	sys_props.num_devices++;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return dev;
 }
 
-<<<<<<< HEAD
-=======
-static int kfd_parse_crat_table(void *crat_image)
-{
-	struct kfd_topology_device *top_dev;
-	struct crat_subtype_generic *sub_type_hdr;
-	uint16_t node_id;
-	int ret;
-	struct crat_header *crat_table = (struct crat_header *)crat_image;
-	uint16_t num_nodes;
-	uint32_t image_len;
-
-	if (!crat_image)
-		return -EINVAL;
-
-	num_nodes = crat_table->num_domains;
-	image_len = crat_table->length;
-
-	pr_info("Parsing CRAT table with %d nodes\n", num_nodes);
-
-	for (node_id = 0; node_id < num_nodes; node_id++) {
-		top_dev = kfd_create_topology_device();
-		if (!top_dev) {
-			kfd_release_live_view();
-			return -ENOMEM;
-		}
-	}
-
-	sys_props.platform_id =
-		(*((uint64_t *)crat_table->oem_id)) & CRAT_OEMID_64BIT_MASK;
-	sys_props.platform_oem = *((uint64_t *)crat_table->oem_table_id);
-	sys_props.platform_rev = crat_table->revision;
-
-	sub_type_hdr = (struct crat_subtype_generic *)(crat_table+1);
-	while ((char *)sub_type_hdr + sizeof(struct crat_subtype_generic) <
-			((char *)crat_image) + image_len) {
-		if (sub_type_hdr->flags & CRAT_SUBTYPE_FLAGS_ENABLED) {
-			ret = kfd_parse_subtype(sub_type_hdr);
-			if (ret != 0) {
-				kfd_release_live_view();
-				return ret;
-			}
-		}
-
-		sub_type_hdr = (typeof(sub_type_hdr))((char *)sub_type_hdr +
-				sub_type_hdr->length);
-	}
-
-	sys_props.generation_count++;
-	topology_crat_parsed = 1;
-
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define sysfs_show_gen_prop(buffer, fmt, ...) \
 		snprintf(buffer, PAGE_SIZE, "%s"fmt, buffer, __VA_ARGS__)
@@ -691,11 +307,7 @@ static ssize_t kfd_cache_show(struct kobject *kobj, struct attribute *attr,
 		char *buffer)
 {
 	ssize_t ret;
-<<<<<<< HEAD
 	uint32_t i, j;
-=======
-	uint32_t i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct kfd_cache_properties *cache;
 
 	/* Making sure that the buffer is an empty string */
@@ -713,7 +325,6 @@ static ssize_t kfd_cache_show(struct kobject *kobj, struct attribute *attr,
 	sysfs_show_32bit_prop(buffer, "latency", cache->cache_latency);
 	sysfs_show_32bit_prop(buffer, "type", cache->cache_type);
 	snprintf(buffer, PAGE_SIZE, "%ssibling_map ", buffer);
-<<<<<<< HEAD
 	for (i = 0; i < CRAT_SIBLINGMAP_SIZE; i++)
 		for (j = 0; j < sizeof(cache->sibling_map[0])*8; j++) {
 			/* Check each bit */
@@ -726,14 +337,6 @@ static ssize_t kfd_cache_show(struct kobject *kobj, struct attribute *attr,
 		}
 	/* Replace the last "," with end of line */
 	*(buffer + strlen(buffer) - 1) = 0xA;
-=======
-	for (i = 0; i < KFD_TOPOLOGY_CPU_SIBLINGS; i++)
-		ret = snprintf(buffer, PAGE_SIZE, "%s%d%s",
-				buffer, cache->sibling_map[i],
-				(i == KFD_TOPOLOGY_CPU_SIBLINGS-1) ?
-						"\n" : ",");
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -746,7 +349,6 @@ static struct kobj_type cache_type = {
 	.sysfs_ops = &cache_ops,
 };
 
-<<<<<<< HEAD
 /****** Sysfs of Performance Counters ******/
 
 struct kfd_perf_attr {
@@ -780,8 +382,6 @@ static struct kfd_perf_attr perf_attr_iommu[] = {
 };
 /****************************************/
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static ssize_t node_show(struct kobject *kobj, struct attribute *attr,
 		char *buffer)
 {
@@ -818,23 +418,8 @@ static ssize_t node_show(struct kobject *kobj, struct attribute *attr,
 			dev->node_props.cpu_cores_count);
 	sysfs_show_32bit_prop(buffer, "simd_count",
 			dev->node_props.simd_count);
-<<<<<<< HEAD
 	sysfs_show_32bit_prop(buffer, "mem_banks_count",
 			dev->node_props.mem_banks_count);
-=======
-
-	if (dev->mem_bank_count < dev->node_props.mem_banks_count) {
-		pr_info_once("mem_banks_count truncated from %d to %d\n",
-				dev->node_props.mem_banks_count,
-				dev->mem_bank_count);
-		sysfs_show_32bit_prop(buffer, "mem_banks_count",
-				dev->mem_bank_count);
-	} else {
-		sysfs_show_32bit_prop(buffer, "mem_banks_count",
-				dev->node_props.mem_banks_count);
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sysfs_show_32bit_prop(buffer, "caches_count",
 			dev->node_props.caches_count);
 	sysfs_show_32bit_prop(buffer, "io_links_count",
@@ -867,11 +452,8 @@ static ssize_t node_show(struct kobject *kobj, struct attribute *attr,
 			dev->node_props.device_id);
 	sysfs_show_32bit_prop(buffer, "location_id",
 			dev->node_props.location_id);
-<<<<<<< HEAD
 	sysfs_show_32bit_prop(buffer, "drm_render_minor",
 			dev->node_props.drm_render_minor);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (dev->gpu) {
 		log_max_watch_addr =
@@ -887,18 +469,12 @@ static ssize_t node_show(struct kobject *kobj, struct attribute *attr,
 				HSA_CAP_WATCH_POINTS_TOTALBITS_MASK);
 		}
 
-<<<<<<< HEAD
 		if (dev->gpu->device_info->asic_family == CHIP_TONGA)
 			dev->node_props.capability |=
 					HSA_CAP_AQL_QUEUE_DOUBLE_MAP;
 
 		sysfs_show_32bit_prop(buffer, "max_engine_clk_fcompute",
 			dev->node_props.max_engine_clk_fcompute);
-=======
-		sysfs_show_32bit_prop(buffer, "max_engine_clk_fcompute",
-			dev->gpu->kfd2kgd->get_max_engine_clock_in_mhz(
-					dev->gpu->kgd));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		sysfs_show_64bit_prop(buffer, "local_mem_size",
 				(unsigned long long int) 0);
@@ -936,10 +512,7 @@ static void kfd_remove_sysfs_node_entry(struct kfd_topology_device *dev)
 	struct kfd_iolink_properties *iolink;
 	struct kfd_cache_properties *cache;
 	struct kfd_mem_properties *mem;
-<<<<<<< HEAD
 	struct kfd_perf_properties *perf;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (dev->kobj_iolink) {
 		list_for_each_entry(iolink, &dev->io_link_props, list)
@@ -976,7 +549,6 @@ static void kfd_remove_sysfs_node_entry(struct kfd_topology_device *dev)
 		dev->kobj_mem = NULL;
 	}
 
-<<<<<<< HEAD
 	if (dev->kobj_perf) {
 		list_for_each_entry(perf, &dev->perf_props, list) {
 			kfree(perf->attr_group);
@@ -987,8 +559,6 @@ static void kfd_remove_sysfs_node_entry(struct kfd_topology_device *dev)
 		dev->kobj_perf = NULL;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dev->kobj_node) {
 		sysfs_remove_file(dev->kobj_node, &dev->attr_gpuid);
 		sysfs_remove_file(dev->kobj_node, &dev->attr_name);
@@ -1005,15 +575,10 @@ static int kfd_build_sysfs_node_entry(struct kfd_topology_device *dev,
 	struct kfd_iolink_properties *iolink;
 	struct kfd_cache_properties *cache;
 	struct kfd_mem_properties *mem;
-<<<<<<< HEAD
 	struct kfd_perf_properties *perf;
 	int ret;
 	uint32_t i, num_attrs;
 	struct attribute **attrs;
-=======
-	int ret;
-	uint32_t i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (WARN_ON(dev->kobj_node))
 		return -EEXIST;
@@ -1042,13 +607,10 @@ static int kfd_build_sysfs_node_entry(struct kfd_topology_device *dev,
 	if (!dev->kobj_iolink)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	dev->kobj_perf = kobject_create_and_add("perf", dev->kobj_node);
 	if (!dev->kobj_perf)
 		return -ENOMEM;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Creating sysfs files for node properties
 	 */
@@ -1126,7 +688,6 @@ static int kfd_build_sysfs_node_entry(struct kfd_topology_device *dev,
 		if (ret < 0)
 			return ret;
 		i++;
-<<<<<<< HEAD
 	}
 
 	/* All hardware blocks have the same number of attributes. */
@@ -1154,17 +715,11 @@ static int kfd_build_sysfs_node_entry(struct kfd_topology_device *dev,
 		if (ret < 0)
 			return ret;
 	}
-=======
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
 /* Called with write topology lock acquired */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int kfd_build_sysfs_node_tree(void)
 {
 	struct kfd_topology_device *dev;
@@ -1181,10 +736,7 @@ static int kfd_build_sysfs_node_tree(void)
 	return 0;
 }
 
-<<<<<<< HEAD
 /* Called with write topology lock acquired */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void kfd_remove_sysfs_node_tree(void)
 {
 	struct kfd_topology_device *dev;
@@ -1256,7 +808,6 @@ static void kfd_topology_release_sysfs(void)
 	}
 }
 
-<<<<<<< HEAD
 /* Called with write topology_lock acquired */
 static void kfd_topology_update_device_list(struct list_head *temp_list,
 					struct list_head *master_list)
@@ -1375,14 +926,11 @@ static bool kfd_is_acpi_crat_invalid(struct list_head *device_list)
 	return true;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int kfd_topology_init(void)
 {
 	void *crat_image = NULL;
 	size_t image_size = 0;
 	int ret;
-<<<<<<< HEAD
 	struct list_head temp_topology_device_list;
 	int cpu_only_node = 0;
 	struct kfd_topology_device *kdev;
@@ -1480,79 +1028,15 @@ int kfd_topology_init(void)
 
 err:
 	kfd_destroy_crat_image(crat_image);
-=======
-
-	/*
-	 * Initialize the head for the topology device list
-	 */
-	INIT_LIST_HEAD(&topology_device_list);
-	init_rwsem(&topology_lock);
-	topology_crat_parsed = 0;
-
-	memset(&sys_props, 0, sizeof(sys_props));
-
-	/*
-	 * Get the CRAT image from the ACPI
-	 */
-	ret = kfd_topology_get_crat_acpi(crat_image, &image_size);
-	if (ret == 0 && image_size > 0) {
-		pr_info("Found CRAT image with size=%zd\n", image_size);
-		crat_image = kmalloc(image_size, GFP_KERNEL);
-		if (!crat_image) {
-			ret = -ENOMEM;
-			pr_err("No memory for allocating CRAT image\n");
-			goto err;
-		}
-		ret = kfd_topology_get_crat_acpi(crat_image, &image_size);
-
-		if (ret == 0) {
-			down_write(&topology_lock);
-			ret = kfd_parse_crat_table(crat_image);
-			if (ret == 0)
-				ret = kfd_topology_update_sysfs();
-			up_write(&topology_lock);
-		} else {
-			pr_err("Couldn't get CRAT table size from ACPI\n");
-		}
-		kfree(crat_image);
-	} else if (ret == -ENODATA) {
-		ret = 0;
-	} else {
-		pr_err("Couldn't get CRAT table size from ACPI\n");
-	}
-
-err:
-	pr_info("Finished initializing topology ret=%d\n", ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
 void kfd_topology_shutdown(void)
 {
-<<<<<<< HEAD
 	down_write(&topology_lock);
 	kfd_topology_release_sysfs();
 	kfd_release_live_view();
 	up_write(&topology_lock);
-=======
-	kfd_topology_release_sysfs();
-	kfd_release_live_view();
-}
-
-static void kfd_debug_print_topology(void)
-{
-	struct kfd_topology_device *dev;
-	uint32_t i = 0;
-
-	pr_info("DEBUG PRINT OF TOPOLOGY:");
-	list_for_each_entry(dev, &topology_device_list, list) {
-		pr_info("Node: %d\n", i);
-		pr_info("\tGPU assigned: %s\n", (dev->gpu ? "yes" : "no"));
-		pr_info("\tCPU count: %d\n", dev->node_props.cpu_cores_count);
-		pr_info("\tSIMD count: %d", dev->node_props.simd_count);
-		i++;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static uint32_t kfd_generate_gpu_id(struct kfd_dev *gpu)
@@ -1561,22 +1045,15 @@ static uint32_t kfd_generate_gpu_id(struct kfd_dev *gpu)
 	uint32_t buf[7];
 	uint64_t local_mem_size;
 	int i;
-<<<<<<< HEAD
 	struct kfd_local_mem_info local_mem_info;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!gpu)
 		return 0;
 
-<<<<<<< HEAD
 	gpu->kfd2kgd->get_local_mem_info(gpu->kgd, &local_mem_info);
 
 	local_mem_size = local_mem_info.local_mem_size_private +
 			local_mem_info.local_mem_size_public;
-=======
-	local_mem_size = gpu->kfd2kgd->get_vmem_size(gpu->kgd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	buf[0] = gpu->pdev->devfn;
 	buf[1] = gpu->pdev->subsystem_vendor;
@@ -1591,21 +1068,16 @@ static uint32_t kfd_generate_gpu_id(struct kfd_dev *gpu)
 
 	return hashout;
 }
-<<<<<<< HEAD
 /* kfd_assign_gpu - Attach @gpu to the correct kfd topology device. If
  *		the GPU device is not already present in the topology device
  *		list then return NULL. This means a new topology device has to
  *		be created for this GPU.
  */
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct kfd_topology_device *kfd_assign_gpu(struct kfd_dev *gpu)
 {
 	struct kfd_topology_device *dev;
 	struct kfd_topology_device *out_dev = NULL;
 
-<<<<<<< HEAD
 	down_write(&topology_lock);
 	list_for_each_entry(dev, &topology_device_list, list) {
 		/* Discrete GPUs need their own topology device list
@@ -1615,20 +1087,13 @@ static struct kfd_topology_device *kfd_assign_gpu(struct kfd_dev *gpu)
 		    dev->node_props.cpu_cores_count)
 			continue;
 
-=======
-	list_for_each_entry(dev, &topology_device_list, list)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!dev->gpu && (dev->node_props.simd_count > 0)) {
 			dev->gpu = gpu;
 			out_dev = dev;
 			break;
 		}
-<<<<<<< HEAD
 	}
 	up_write(&topology_lock);
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return out_dev;
 }
 
@@ -1640,7 +1105,6 @@ static void kfd_notify_gpu_change(uint32_t gpu_id, int arrival)
 	 */
 }
 
-<<<<<<< HEAD
 /* kfd_fill_mem_clk_max_info - Since CRAT doesn't have memory clock info,
  *		patch this after CRAT parsing.
  */
@@ -1680,13 +1144,10 @@ static void kfd_fill_iolink_non_crat_info(struct kfd_topology_device *dev)
 				CRAT_IOLINK_FLAGS_NO_ATOMICS_64_BIT;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int kfd_topology_add_device(struct kfd_dev *gpu)
 {
 	uint32_t gpu_id;
 	struct kfd_topology_device *dev;
-<<<<<<< HEAD
 	struct kfd_cu_info cu_info;
 	int res = 0;
 	struct list_head temp_topology_device_list;
@@ -1695,15 +1156,11 @@ int kfd_topology_add_device(struct kfd_dev *gpu)
 	int proximity_domain;
 
 	INIT_LIST_HEAD(&temp_topology_device_list);
-=======
-	int res;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	gpu_id = kfd_generate_gpu_id(gpu);
 
 	pr_debug("Adding new GPU (ID: 0x%x) to topology\n", gpu_id);
 
-<<<<<<< HEAD
 	proximity_domain = atomic_inc_return(&topology_crat_proximity_domain);
 
 	/* Check to see if this gpu device exists in the topology_device_list.
@@ -1734,33 +1191,10 @@ int kfd_topology_add_device(struct kfd_dev *gpu)
 		down_write(&topology_lock);
 		kfd_topology_update_device_list(&temp_topology_device_list,
 			&topology_device_list);
-=======
-	down_write(&topology_lock);
-	/*
-	 * Try to assign the GPU to existing topology device (generated from
-	 * CRAT table
-	 */
-	dev = kfd_assign_gpu(gpu);
-	if (!dev) {
-		pr_info("GPU was not found in the current topology. Extending.\n");
-		kfd_debug_print_topology();
-		dev = kfd_create_topology_device();
-		if (!dev) {
-			res = -ENOMEM;
-			goto err;
-		}
-		dev->gpu = gpu;
-
-		/*
-		 * TODO: Make a call to retrieve topology information from the
-		 * GPU vBIOS
-		 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Update the SYSFS tree, since we added another topology
 		 * device
 		 */
-<<<<<<< HEAD
 		res = kfd_topology_update_sysfs();
 		up_write(&topology_lock);
 
@@ -1774,16 +1208,10 @@ int kfd_topology_add_device(struct kfd_dev *gpu)
 			res = -ENODEV;
 			goto err;
 		}
-=======
-		if (kfd_topology_update_sysfs() < 0)
-			kfd_topology_release_sysfs();
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	dev->gpu_id = gpu_id;
 	gpu->id = gpu_id;
-<<<<<<< HEAD
 
 	/* TODO: Move the following lines to function
 	 *	kfd_add_non_crat_information
@@ -1858,57 +1286,23 @@ int kfd_topology_add_device(struct kfd_dev *gpu)
 		kfd_notify_gpu_change(gpu_id, 1);
 err:
 	kfd_destroy_crat_image(crat_image);
-=======
-	dev->node_props.vendor_id = gpu->pdev->vendor;
-	dev->node_props.device_id = gpu->pdev->device;
-	dev->node_props.location_id = (gpu->pdev->bus->number << 24) +
-			(gpu->pdev->devfn & 0xffffff);
-	/*
-	 * TODO: Retrieve max engine clock values from KGD
-	 */
-
-	if (dev->gpu->device_info->asic_family == CHIP_CARRIZO) {
-		dev->node_props.capability |= HSA_CAP_DOORBELL_PACKET_TYPE;
-		pr_info("Adding doorbell packet type capability\n");
-	}
-
-	res = 0;
-
-err:
-	up_write(&topology_lock);
-
-	if (res == 0)
-		kfd_notify_gpu_change(gpu_id, 1);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return res;
 }
 
 int kfd_topology_remove_device(struct kfd_dev *gpu)
 {
-<<<<<<< HEAD
 	struct kfd_topology_device *dev, *tmp;
-=======
-	struct kfd_topology_device *dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t gpu_id;
 	int res = -ENODEV;
 
 	down_write(&topology_lock);
 
-<<<<<<< HEAD
 	list_for_each_entry_safe(dev, tmp, &topology_device_list, list)
-=======
-	list_for_each_entry(dev, &topology_device_list, list)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (dev->gpu == gpu) {
 			gpu_id = dev->gpu_id;
 			kfd_remove_sysfs_node_entry(dev);
 			kfd_release_topology_device(dev);
-<<<<<<< HEAD
 			sys_props.num_devices--;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			res = 0;
 			if (kfd_topology_update_sysfs() < 0)
 				kfd_topology_release_sysfs();
@@ -1917,17 +1311,12 @@ int kfd_topology_remove_device(struct kfd_dev *gpu)
 
 	up_write(&topology_lock);
 
-<<<<<<< HEAD
 	if (!res)
-=======
-	if (res == 0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfd_notify_gpu_change(gpu_id, 0);
 
 	return res;
 }
 
-<<<<<<< HEAD
 /* kfd_topology_enum_kfd_devices - Enumerate through all devices in KFD
  *	topology. If GPU device is found @idx, then valid kfd_dev pointer is
  *	returned through @kdev
@@ -1941,30 +1330,13 @@ int kfd_topology_enum_kfd_devices(uint8_t idx, struct kfd_dev **kdev)
 	uint8_t device_idx = 0;
 
 	*kdev = NULL;
-=======
-/*
- * When idx is out of bounds, the function will return NULL
- */
-struct kfd_dev *kfd_topology_enum_kfd_devices(uint8_t idx)
-{
-
-	struct kfd_topology_device *top_dev;
-	struct kfd_dev *device = NULL;
-	uint8_t device_idx = 0;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	down_read(&topology_lock);
 
 	list_for_each_entry(top_dev, &topology_device_list, list) {
 		if (device_idx == idx) {
-<<<<<<< HEAD
 			*kdev = top_dev->gpu;
 			up_read(&topology_lock);
 			return 0;
-=======
-			device = top_dev->gpu;
-			break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		device_idx++;
@@ -1972,7 +1344,6 @@ struct kfd_dev *kfd_topology_enum_kfd_devices(uint8_t idx)
 
 	up_read(&topology_lock);
 
-<<<<<<< HEAD
 	return -1;
 
 }
@@ -2058,8 +1429,3 @@ int kfd_debugfs_rls_by_device(struct seq_file *m, void *data)
 }
 
 #endif
-=======
-	return device;
-
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

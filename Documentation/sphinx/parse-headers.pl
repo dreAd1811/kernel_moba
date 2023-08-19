@@ -344,11 +344,7 @@ enums and defines and create cross-references to a Sphinx book.
 
 B<parse_headers.pl> [<options>] <C_FILE> <OUT_FILE> [<EXCEPTIONS_FILE>]
 
-<<<<<<< HEAD
 Where <options> can be: --debug, --help or --usage.
-=======
-Where <options> can be: --debug, --help or --man.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 =head1 OPTIONS
 
@@ -391,19 +387,11 @@ tree for more details.
 
 =head1 BUGS
 
-<<<<<<< HEAD
 Report bugs to Mauro Carvalho Chehab <mchehab@kernel.org>
 
 =head1 COPYRIGHT
 
 Copyright (c) 2016 by Mauro Carvalho Chehab <mchehab+samsung@kernel.org>.
-=======
-Report bugs to Mauro Carvalho Chehab <mchehab@s-opensource.com>
-
-=head1 COPYRIGHT
-
-Copyright (c) 2016 by Mauro Carvalho Chehab <mchehab@s-opensource.com>.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 License GPLv2: GNU GPL version 2 <http://gnu.org/licenses/gpl.html>.
 

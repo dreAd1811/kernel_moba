@@ -220,10 +220,6 @@ void ex_btc8723b1ant_halt_notify(struct btc_coexist *btcoexist);
 void ex_btc8723b1ant_pnp_notify(struct btc_coexist *btcoexist, u8 pnpstate);
 void ex_btc8723b1ant_coex_dm_reset(struct btc_coexist *btcoexist);
 void ex_btc8723b1ant_periodical(struct btc_coexist *btcoexist);
-<<<<<<< HEAD
 void ex_btc8723b1ant_display_coex_info(struct btc_coexist *btcoexist,
 				       struct seq_file *m);
-=======
-void ex_btc8723b1ant_display_coex_info(struct btc_coexist *btcoexist);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void ex_btc8723b1ant_pnp_notify(struct btc_coexist *btcoexist, u8 pnp_state);

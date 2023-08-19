@@ -28,11 +28,7 @@ export LIBGCC
 
 ifdef CONFIG_64BIT
 UTS_MACHINE	:= parisc64
-<<<<<<< HEAD
 CHECKFLAGS	+= -D__LP64__=1
-=======
-CHECKFLAGS	+= -D__LP64__=1 -m64
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 CC_ARCHES	= hppa64
 LD_BFD		:= elf64-hppa-linux
 else # 32-bit
@@ -69,20 +65,12 @@ endif
 # kernel.
 cflags-y	+= -mdisable-fpregs
 
-<<<<<<< HEAD
-=======
-# Without this, "ld -r" results in .text sections that are too big
-# (> 0x40000) for branches to reach stubs.
-cflags-y	+= -ffunction-sections
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 # Use long jumps instead of long branches (needed if your linker fails to
 # link a too big vmlinux executable). Not enabled for building modules.
 ifdef CONFIG_MLONGCALLS
 KBUILD_CFLAGS_KERNEL += -mlong-calls
 endif
 
-<<<<<<< HEAD
 # Without this, "ld -r" results in .text sections that are too big (> 0x40000)
 # for branches to reach stubs. And multiple .text sections trigger a warning
 # when creating the sysfs module information section.
@@ -90,8 +78,6 @@ ifndef CONFIG_64BIT
 KBUILD_CFLAGS_MODULE += -ffunction-sections
 endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 # select which processor to optimise for
 cflags-$(CONFIG_PA7000)		+= -march=1.1 -mschedule=7100
 cflags-$(CONFIG_PA7200)		+= -march=1.1 -mschedule=7200
@@ -140,12 +126,9 @@ INSTALL_TARGETS = zinstall install
 
 PHONY += bzImage $(BOOT_TARGETS) $(INSTALL_TARGETS)
 
-<<<<<<< HEAD
 # Default kernel to build
 all: bzImage
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 zImage: vmlinuz
 Image: vmlinux
 

@@ -12,11 +12,7 @@
 #include "ctrl.h"
 #include "regs.h"
 #include "sg_sw_qm2.h"
-<<<<<<< HEAD
 #include <soc/fsl/dpaa2-fd.h>
-=======
-#include "../../../drivers/staging/fsl-mc/include/dpaa2-fd.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct sec4_sg_entry {
 	u64 ptr;

@@ -928,12 +928,7 @@ static int wmt_mci_remove(struct platform_device *pdev)
 static int wmt_mci_suspend(struct device *dev)
 {
 	u32 reg_tmp;
-<<<<<<< HEAD
 	struct mmc_host *mmc = dev_get_drvdata(dev);
-=======
-	struct platform_device *pdev = to_platform_device(dev);
-	struct mmc_host *mmc = platform_get_drvdata(pdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct wmt_mci_priv *priv;
 
 	if (!mmc)
@@ -957,12 +952,7 @@ static int wmt_mci_suspend(struct device *dev)
 static int wmt_mci_resume(struct device *dev)
 {
 	u32 reg_tmp;
-<<<<<<< HEAD
 	struct mmc_host *mmc = dev_get_drvdata(dev);
-=======
-	struct platform_device *pdev = to_platform_device(dev);
-	struct mmc_host *mmc = platform_get_drvdata(pdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct wmt_mci_priv *priv;
 
 	if (mmc) {

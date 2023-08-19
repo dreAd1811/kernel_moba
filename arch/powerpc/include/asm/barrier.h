@@ -5,11 +5,8 @@
 #ifndef _ASM_POWERPC_BARRIER_H
 #define _ASM_POWERPC_BARRIER_H
 
-<<<<<<< HEAD
 #include <asm/asm-const.h>
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Memory barrier.
  * The sync instruction guarantees that all memory accesses initiated

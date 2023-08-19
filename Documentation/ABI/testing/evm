@@ -7,7 +7,6 @@ Description:
 		HMAC-sha1 value across the extended attributes, storing the
 		value as the extended attribute 'security.evm'.
 
-<<<<<<< HEAD
 		EVM supports two classes of security.evm. The first is
 		an HMAC-sha1 generated locally with a
 		trusted/encrypted key stored in the Kernel Key
@@ -71,19 +70,3 @@ Description:
 		additional attributes are configured on system boot. Writing
 		a single period (.) will lock the xattr list from any further
 		modification.
-=======
-		EVM depends on the Kernel Key Retention System to provide it
-		with a trusted/encrypted key for the HMAC-sha1 operation.
-		The key is loaded onto the root's keyring using keyctl.  Until
-		EVM receives notification that the key has been successfully
-		loaded onto the keyring (echo 1 > <securityfs>/evm), EVM
-		can not create or validate the 'security.evm' xattr, but
-		returns INTEGRITY_UNKNOWN.  Loading the key and signaling EVM
-		should be done as early as possible.  Normally this is done
-		in the initramfs, which has already been measured as part
-		of the trusted boot.  For more information on creating and
-		loading existing trusted/encrypted keys, refer to:
-		Documentation/keys-trusted-encrypted.txt.  (A sample dracut
-		patch, which loads the trusted/encrypted key and enables
-		EVM, is available from http://linux-ima.sourceforge.net/#EVM.)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

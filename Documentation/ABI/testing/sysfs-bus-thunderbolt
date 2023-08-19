@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 What: /sys/bus/thunderbolt/devices/.../domainX/boot_acl
 Date:		Jun 2018
 KernelVersion:	4.17
@@ -22,8 +21,6 @@ Description:	Holds a comma separated list of device unique_ids that
 		If a device is authorized automatically during boot its
 		boot attribute is set to 1.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 What: /sys/bus/thunderbolt/devices/.../domainX/security
 Date:		Sep 2017
 KernelVersion:	4.13
@@ -38,12 +35,9 @@ Description:	This attribute holds current Thunderbolt security level
 			minimum. User needs to authorize each device.
 		dponly: Automatically tunnel Display port (and USB). No
 			PCIe tunnels are created.
-<<<<<<< HEAD
 		usbonly: Automatically tunnel USB controller of the
 			 connected Thunderbolt dock (and Display Port). All
 			 PCIe links downstream of the dock are removed.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 What: /sys/bus/thunderbolt/devices/.../authorized
 Date:		Sep 2017
@@ -70,7 +64,6 @@ Description:	This attribute is used to authorize Thunderbolt devices
 		   the device did not contain a key at all, and
 		   EKEYREJECTED if the challenge response did not match.
 
-<<<<<<< HEAD
 What: /sys/bus/thunderbolt/devices/.../boot
 Date:		Jun 2018
 KernelVersion:	4.17
@@ -78,8 +71,6 @@ Contact:	thunderbolt-software@lists.01.org
 Description:	This attribute contains 1 if Thunderbolt device was already
 		authorized on boot and 0 otherwise.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 What: /sys/bus/thunderbolt/devices/.../key
 Date:		Sep 2017
 KernelVersion:	4.13
@@ -152,7 +143,6 @@ Description:	When new NVM image is written to the non-active NVM
 		is directly the status value from the DMA configuration
 		based mailbox before the device is power cycled. Writing
 		0 here clears the status.
-<<<<<<< HEAD
 
 What:		/sys/bus/thunderbolt/devices/<xdomain>.<service>/key
 Date:		Jan 2018
@@ -201,5 +191,3 @@ KernelVersion:	4.15
 Contact:	thunderbolt-software@lists.01.org
 Description:	This contains XDomain service specific settings as
 		bitmask. Format: %x
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

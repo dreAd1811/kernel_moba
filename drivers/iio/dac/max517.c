@@ -137,10 +137,6 @@ static SIMPLE_DEV_PM_OPS(max517_pm_ops, max517_suspend, max517_resume);
 static const struct iio_info max517_info = {
 	.read_raw = max517_read_raw,
 	.write_raw = max517_write_raw,
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define MAX517_CHANNEL(chan) {				\

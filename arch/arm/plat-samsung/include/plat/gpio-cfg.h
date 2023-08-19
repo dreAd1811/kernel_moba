@@ -1,25 +1,12 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
 /*
-=======
-/* linux/arch/arm/plat-s3c/include/plat/gpio-cfg.h
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Copyright 2008 Openmoko, Inc.
  * Copyright 2008 Simtec Electronics
  *	http://armlinux.simtec.co.uk/
  *	Ben Dooks <ben@simtec.co.uk>
  *
  * S3C Platform - GPIO pin configuration
-<<<<<<< HEAD
  */
-=======
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
-*/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* This file contains the necessary definitions to get the basic gpio
  * pin configuration done such as setting a pin to input or output or

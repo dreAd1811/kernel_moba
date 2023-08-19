@@ -137,7 +137,6 @@ static struct team_port *lb_htpm_select_tx_port(struct team *team,
 						struct sk_buff *skb,
 						unsigned char hash)
 {
-<<<<<<< HEAD
 	struct team_port *port;
 
 	port = rcu_dereference_bh(LB_HTPM_PORT_BY_HASH(lb_priv, hash));
@@ -145,9 +144,6 @@ static struct team_port *lb_htpm_select_tx_port(struct team *team,
 		return port;
 	/* If no valid port in the table, fall back to simple hash */
 	return lb_hash_select_tx_port(team, lb_priv, skb, hash);
-=======
-	return rcu_dereference_bh(LB_HTPM_PORT_BY_HASH(lb_priv, hash));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 struct lb_select_tx_port {

@@ -196,10 +196,6 @@ int acpi_smbus_unregister_callback(struct acpi_smb_hc *hc)
 	hc->callback = NULL;
 	hc->context = NULL;
 	mutex_unlock(&hc->lock);
-<<<<<<< HEAD
-=======
-	acpi_os_wait_events_complete();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -296,10 +292,6 @@ static int acpi_smbus_hc_remove(struct acpi_device *device)
 
 	hc = acpi_driver_data(device);
 	acpi_ec_remove_query_handler(hc->ec, hc->query_bit);
-<<<<<<< HEAD
-=======
-	acpi_os_wait_events_complete();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(hc);
 	device->driver_data = NULL;
 	return 0;

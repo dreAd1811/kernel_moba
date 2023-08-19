@@ -173,11 +173,7 @@
 				};
 			};
 
-<<<<<<< HEAD
 			gpio0: gpio@0 {
-=======
-			gpio0: gpio@000000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				compatible = "oxsemi,ox820-gpio";
 				reg = <0x000000 0x100000>;
 				interrupts = <GIC_SPI 21 IRQ_TYPE_LEVEL_HIGH>;
@@ -243,13 +239,8 @@
 					reg = <0 0x200>;
 					interrupts = <GIC_SPI 5 IRQ_TYPE_LEVEL_HIGH>;
 					#interrupt-cells = <1>;
-<<<<<<< HEAD
 					valid-mask = <0xFFFFFFFF>;
 					clear-mask = <0>;
-=======
-					valid-mask = <0xffffffff>;
-					clear-mask = <0xffffffff>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				};
 
 				timer0: timer@200 {

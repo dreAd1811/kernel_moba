@@ -24,26 +24,17 @@
 struct host1x;
 
 struct output {
-<<<<<<< HEAD
 	void (*fn)(void *ctx, const char *str, size_t len, bool cont);
-=======
-	void (*fn)(void *ctx, const char *str, size_t len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void *ctx;
 	char buf[256];
 };
 
-<<<<<<< HEAD
 static inline void write_to_seqfile(void *ctx, const char *str, size_t len,
 				    bool cont)
-=======
-static inline void write_to_seqfile(void *ctx, const char *str, size_t len)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	seq_write((struct seq_file *)ctx, str, len);
 }
 
-<<<<<<< HEAD
 static inline void write_to_printk(void *ctx, const char *str, size_t len,
 				   bool cont)
 {
@@ -55,14 +46,6 @@ static inline void write_to_printk(void *ctx, const char *str, size_t len,
 
 void __printf(2, 3) host1x_debug_output(struct output *o, const char *fmt, ...);
 void __printf(2, 3) host1x_debug_cont(struct output *o, const char *fmt, ...);
-=======
-static inline void write_to_printk(void *ctx, const char *str, size_t len)
-{
-	pr_info("%s", str);
-}
-
-void __printf(2, 3) host1x_debug_output(struct output *o, const char *fmt, ...);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 extern unsigned int host1x_debug_trace_cmdbuf;
 

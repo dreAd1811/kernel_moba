@@ -132,11 +132,7 @@ static int h4_recv(struct hci_uart *hu, const void *data, int count)
 				 h4_recv_pkts, ARRAY_SIZE(h4_recv_pkts));
 	if (IS_ERR(h4->rx_skb)) {
 		int err = PTR_ERR(h4->rx_skb);
-<<<<<<< HEAD
 		bt_dev_err(hu->hdev, "Frame reassembly failed (%d)", err);
-=======
-		BT_ERR("%s: Frame reassembly failed (%d)", hu->hdev->name, err);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		h4->rx_skb = NULL;
 		return err;
 	}

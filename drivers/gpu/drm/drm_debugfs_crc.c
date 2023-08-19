@@ -101,13 +101,8 @@ static ssize_t crc_control_write(struct file *file, const char __user *ubuf,
 	if (IS_ERR(source))
 		return PTR_ERR(source);
 
-<<<<<<< HEAD
 	if (source[len] == '\n')
 		source[len] = '\0';
-=======
-	if (source[len - 1] == '\n')
-		source[len - 1] = '\0';
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irq(&crc->lock);
 
@@ -161,11 +156,7 @@ static int crtc_crc_open(struct inode *inode, struct file *filep)
 	int ret = 0;
 
 	if (drm_drv_uses_atomic_modeset(crtc->dev)) {
-<<<<<<< HEAD
 		ret = drm_modeset_lock_single_interruptible(&crtc->mutex);
-=======
-		ret = drm_modeset_lock_interruptible(&crtc->mutex, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			return ret;
 
@@ -317,7 +308,6 @@ static ssize_t crtc_crc_read(struct file *filep, char __user *user_buf,
 	return LINE_LEN(crc->values_cnt);
 }
 
-<<<<<<< HEAD
 static unsigned int crtc_crc_poll(struct file *file, poll_table *wait)
 {
 	struct drm_crtc *crtc = file->f_inode->i_private;
@@ -336,16 +326,11 @@ static unsigned int crtc_crc_poll(struct file *file, poll_table *wait)
 	return ret;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct file_operations drm_crtc_crc_data_fops = {
 	.owner = THIS_MODULE,
 	.open = crtc_crc_open,
 	.read = crtc_crc_read,
-<<<<<<< HEAD
 	.poll = crtc_crc_poll,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.release = crtc_crc_release,
 };
 

@@ -24,10 +24,7 @@
 #include <asm/code-patching.h>
 #include <asm/smp.h>
 #include <asm/runlatch.h>
-<<<<<<< HEAD
 #include <asm/dbell.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "powernv.h"
 #include "subcore.h"
@@ -39,11 +36,8 @@
 #define P9_STOP_SPR_PSSCR      855
 
 static u32 supported_cpuidle_states;
-<<<<<<< HEAD
 struct pnv_idle_states_t *pnv_idle_states;
 int nr_pnv_idle_states;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * The default stop state that will be used by ppc_md.power_save
@@ -89,11 +83,7 @@ static int pnv_save_sprs_for_deep_states(void)
 
 	for_each_present_cpu(cpu) {
 		uint64_t pir = get_hard_smp_processor_id(cpu);
-<<<<<<< HEAD
 		uint64_t hsprg0_val = (uint64_t)paca_ptrs[cpu];
-=======
-		uint64_t hsprg0_val = (uint64_t)&paca[cpu];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		rc = opal_slw_set_reg(pir, SPRN_HSPRG0, hsprg0_val);
 		if (rc != 0)
@@ -186,20 +176,9 @@ static void pnv_alloc_idle_core_states(void)
 		for (j = 0; j < threads_per_core; j++) {
 			int cpu = first_cpu + j;
 
-<<<<<<< HEAD
 			paca_ptrs[cpu]->core_idle_state_ptr = core_idle_state;
 			paca_ptrs[cpu]->thread_idle_state = PNV_THREAD_RUNNING;
 			paca_ptrs[cpu]->thread_mask = 1 << j;
-=======
-			paca[cpu].core_idle_state_ptr = core_idle_state;
-			paca[cpu].thread_idle_state = PNV_THREAD_RUNNING;
-			paca[cpu].thread_mask = 1 << j;
-			if (!cpu_has_feature(CPU_FTR_POWER9_DD1))
-				continue;
-			paca[cpu].thread_sibling_pacas =
-				kmalloc_node(paca_ptr_array_size,
-					     GFP_KERNEL, node);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -406,7 +385,6 @@ void power9_idle(void)
 	power9_idle_type(pnv_default_stop_val, pnv_default_stop_mask);
 }
 
-<<<<<<< HEAD
 #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
 /*
  * This is used in working around bugs in thread reconfiguration
@@ -482,10 +460,6 @@ EXPORT_SYMBOL_GPL(pnv_power9_force_smt4_release);
 #ifdef CONFIG_HOTPLUG_CPU
 
 void pnv_program_cpu_hotplug_lpcr(unsigned int cpu, u64 lpcr_val)
-=======
-#ifdef CONFIG_HOTPLUG_CPU
-static void pnv_program_cpu_hotplug_lpcr(unsigned int cpu, u64 lpcr_val)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u64 pir = get_hard_smp_processor_id(cpu);
 
@@ -508,23 +482,6 @@ unsigned long pnv_cpu_offline(unsigned int cpu)
 {
 	unsigned long srr1;
 	u32 idle_states = pnv_get_supported_cpuidle_states();
-<<<<<<< HEAD
-=======
-	u64 lpcr_val;
-
-	/*
-	 * We don't want to take decrementer interrupts while we are
-	 * offline, so clear LPCR:PECE1. We keep PECE2 (and
-	 * LPCR_PECE_HVEE on P9) enabled as to let IPIs in.
-	 *
-	 * If the CPU gets woken up by a special wakeup, ensure that
-	 * the SLW engine sets LPCR with decrementer bit cleared, else
-	 * the CPU will come back to the kernel due to a spurious
-	 * wakeup.
-	 */
-	lpcr_val = mfspr(SPRN_LPCR) & ~(u64)LPCR_PECE1;
-	pnv_program_cpu_hotplug_lpcr(cpu, lpcr_val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	__ppc64_runlatch_off();
 
@@ -534,11 +491,7 @@ unsigned long pnv_cpu_offline(unsigned int cpu)
 		psscr = mfspr(SPRN_PSSCR);
 		psscr = (psscr & ~pnv_deepest_stop_psscr_mask) |
 						pnv_deepest_stop_psscr_val;
-<<<<<<< HEAD
 		srr1 = power9_offline_stop(psscr);
-=======
-		srr1 = power9_idle_stop(psscr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	} else if ((idle_states & OPAL_PM_WINKLE_ENABLED) &&
 		   (idle_states & OPAL_PM_LOSE_FULL_CONTEXT)) {
@@ -560,19 +513,6 @@ unsigned long pnv_cpu_offline(unsigned int cpu)
 
 	__ppc64_runlatch_on();
 
-<<<<<<< HEAD
-=======
-	/*
-	 * Re-enable decrementer interrupts in LPCR.
-	 *
-	 * Further, we want stop states to be woken up by decrementer
-	 * for non-hotplug cases. So program the LPCR via stop api as
-	 * well.
-	 */
-	lpcr_val = mfspr(SPRN_LPCR) | (u64)LPCR_PECE1;
-	pnv_program_cpu_hotplug_lpcr(cpu, lpcr_val);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return srr1;
 }
 #endif
@@ -656,55 +596,10 @@ int validate_psscr_val_mask(u64 *psscr_val, u64 *psscr_mask, u32 flags)
  * @dt_idle_states: Number of idle state entries
  * Returns 0 on success
  */
-<<<<<<< HEAD
 static int __init pnv_power9_idle_init(void)
 {
 	u64 max_residency_ns = 0;
 	int i;
-=======
-static int __init pnv_power9_idle_init(struct device_node *np, u32 *flags,
-					int dt_idle_states)
-{
-	u64 *psscr_val = NULL;
-	u64 *psscr_mask = NULL;
-	u32 *residency_ns = NULL;
-	u64 max_residency_ns = 0;
-	int rc = 0, i;
-
-	psscr_val = kcalloc(dt_idle_states, sizeof(*psscr_val), GFP_KERNEL);
-	psscr_mask = kcalloc(dt_idle_states, sizeof(*psscr_mask), GFP_KERNEL);
-	residency_ns = kcalloc(dt_idle_states, sizeof(*residency_ns),
-			       GFP_KERNEL);
-
-	if (!psscr_val || !psscr_mask || !residency_ns) {
-		rc = -1;
-		goto out;
-	}
-
-	if (of_property_read_u64_array(np,
-		"ibm,cpu-idle-state-psscr",
-		psscr_val, dt_idle_states)) {
-		pr_warn("cpuidle-powernv: missing ibm,cpu-idle-state-psscr in DT\n");
-		rc = -1;
-		goto out;
-	}
-
-	if (of_property_read_u64_array(np,
-				       "ibm,cpu-idle-state-psscr-mask",
-				       psscr_mask, dt_idle_states)) {
-		pr_warn("cpuidle-powernv: missing ibm,cpu-idle-state-psscr-mask in DT\n");
-		rc = -1;
-		goto out;
-	}
-
-	if (of_property_read_u32_array(np,
-				       "ibm,cpu-idle-state-residency-ns",
-					residency_ns, dt_idle_states)) {
-		pr_warn("cpuidle-powernv: missing ibm,cpu-idle-state-residency-ns in DT\n");
-		rc = -1;
-		goto out;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Set pnv_first_deep_stop_state, pnv_deepest_stop_psscr_{val,mask},
@@ -720,7 +615,6 @@ static int __init pnv_power9_idle_init(struct device_node *np, u32 *flags,
 	 * the shallowest (OPAL_PM_STOP_INST_FAST) loss-less stop state.
 	 */
 	pnv_first_deep_stop_state = MAX_STOP_STATE;
-<<<<<<< HEAD
 	for (i = 0; i < nr_pnv_idle_states; i++) {
 		int err;
 		struct pnv_idle_states_t *state = &pnv_idle_states[i];
@@ -745,41 +639,13 @@ static int __init pnv_power9_idle_init(struct device_node *np, u32 *flags,
 			pnv_deepest_stop_psscr_val = state->psscr_val;
 			pnv_deepest_stop_psscr_mask = state->psscr_mask;
 			pnv_deepest_stop_flag = state->flags;
-=======
-	for (i = 0; i < dt_idle_states; i++) {
-		int err;
-		u64 psscr_rl = psscr_val[i] & PSSCR_RL_MASK;
-
-		if ((flags[i] & OPAL_PM_LOSE_FULL_CONTEXT) &&
-		     (pnv_first_deep_stop_state > psscr_rl))
-			pnv_first_deep_stop_state = psscr_rl;
-
-		err = validate_psscr_val_mask(&psscr_val[i], &psscr_mask[i],
-					      flags[i]);
-		if (err) {
-			report_invalid_psscr_val(psscr_val[i], err);
-			continue;
-		}
-
-		if (max_residency_ns < residency_ns[i]) {
-			max_residency_ns = residency_ns[i];
-			pnv_deepest_stop_psscr_val = psscr_val[i];
-			pnv_deepest_stop_psscr_mask = psscr_mask[i];
-			pnv_deepest_stop_flag = flags[i];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			deepest_stop_found = true;
 		}
 
 		if (!default_stop_found &&
-<<<<<<< HEAD
 		    (state->flags & OPAL_PM_STOP_INST_FAST)) {
 			pnv_default_stop_val = state->psscr_val;
 			pnv_default_stop_mask = state->psscr_mask;
-=======
-		    (flags[i] & OPAL_PM_STOP_INST_FAST)) {
-			pnv_default_stop_val = psscr_val[i];
-			pnv_default_stop_mask = psscr_mask[i];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			default_stop_found = true;
 		}
 	}
@@ -802,16 +668,8 @@ static int __init pnv_power9_idle_init(struct device_node *np, u32 *flags,
 
 	pr_info("cpuidle-powernv: Requested Level (RL) value of first deep stop = 0x%llx\n",
 		pnv_first_deep_stop_state);
-<<<<<<< HEAD
 
 	return 0;
-=======
-out:
-	kfree(psscr_val);
-	kfree(psscr_mask);
-	kfree(residency_ns);
-	return rc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -819,7 +677,6 @@ out:
  */
 static void __init pnv_probe_idle_states(void)
 {
-<<<<<<< HEAD
 	int i;
 
 	if (nr_pnv_idle_states < 0) {
@@ -850,17 +707,10 @@ static int pnv_parse_cpuidle_dt(void)
 	u32 *temp_u32;
 	u64 *temp_u64;
 	const char **temp_string;
-=======
-	struct device_node *np;
-	int dt_idle_states;
-	u32 *flags = NULL;
-	int i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	np = of_find_node_by_path("/ibm,opal/power-mgt");
 	if (!np) {
 		pr_warn("opal: PowerMgmt Node not found\n");
-<<<<<<< HEAD
 		return -ENODEV;
 	}
 	nr_idle_states = of_property_count_u32_elems(np,
@@ -967,44 +817,6 @@ static int __init pnv_init_idle_states(void)
 	rc = pnv_parse_cpuidle_dt();
 	if (rc)
 		return rc;
-=======
-		goto out;
-	}
-	dt_idle_states = of_property_count_u32_elems(np,
-			"ibm,cpu-idle-state-flags");
-	if (dt_idle_states < 0) {
-		pr_warn("cpuidle-powernv: no idle states found in the DT\n");
-		goto out;
-	}
-
-	flags = kcalloc(dt_idle_states, sizeof(*flags),  GFP_KERNEL);
-
-	if (of_property_read_u32_array(np,
-			"ibm,cpu-idle-state-flags", flags, dt_idle_states)) {
-		pr_warn("cpuidle-powernv: missing ibm,cpu-idle-state-flags in DT\n");
-		goto out;
-	}
-
-	if (cpu_has_feature(CPU_FTR_ARCH_300)) {
-		if (pnv_power9_idle_init(np, flags, dt_idle_states))
-			goto out;
-	}
-
-	for (i = 0; i < dt_idle_states; i++)
-		supported_cpuidle_states |= flags[i];
-
-out:
-	kfree(flags);
-}
-static int __init pnv_init_idle_states(void)
-{
-
-	supported_cpuidle_states = 0;
-
-	if (cpuidle_disable != IDLE_NO_OVERRIDE)
-		goto out;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pnv_probe_idle_states();
 
 	if (!(supported_cpuidle_states & OPAL_PM_SLEEP_ENABLED_ER1)) {
@@ -1026,31 +838,6 @@ static int __init pnv_init_idle_states(void)
 
 	pnv_alloc_idle_core_states();
 
-<<<<<<< HEAD
-=======
-	/*
-	 * For each CPU, record its PACA address in each of it's
-	 * sibling thread's PACA at the slot corresponding to this
-	 * CPU's index in the core.
-	 */
-	if (cpu_has_feature(CPU_FTR_POWER9_DD1)) {
-		int cpu;
-
-		pr_info("powernv: idle: Saving PACA pointers of all CPUs in their thread sibling PACA\n");
-		for_each_present_cpu(cpu) {
-			int base_cpu = cpu_first_thread_sibling(cpu);
-			int idx = cpu_thread_in_core(cpu);
-			int i;
-
-			for (i = 0; i < threads_per_core; i++) {
-				int j = base_cpu + i;
-
-				paca[j].thread_sibling_pacas[idx] = &paca[cpu];
-			}
-		}
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (supported_cpuidle_states & OPAL_PM_NAP_ENABLED)
 		ppc_md.power_save = power7_idle;
 

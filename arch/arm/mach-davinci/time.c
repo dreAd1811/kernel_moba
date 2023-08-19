@@ -17,10 +17,7 @@
 #include <linux/io.h>
 #include <linux/clk.h>
 #include <linux/err.h>
-<<<<<<< HEAD
 #include <linux/of.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/platform_device.h>
 #include <linux/sched_clock.h>
 
@@ -31,11 +28,6 @@
 #include <mach/hardware.h>
 #include <mach/time.h>
 
-<<<<<<< HEAD
-=======
-#include "clock.h"
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct clock_event_device clockevent_davinci;
 static unsigned int davinci_clock_tick_rate;
 
@@ -87,16 +79,6 @@ enum {
 #define TGCR_UNRESET                 0x1
 #define TGCR_RESET_MASK              0x3
 
-<<<<<<< HEAD
-=======
-#define WDTCR_WDEN_SHIFT             14
-#define WDTCR_WDEN_DISABLE           0x0
-#define WDTCR_WDEN_ENABLE            0x1
-#define WDTCR_WDKEY_SHIFT            16
-#define WDTCR_WDKEY_SEQ0             0xa5c6
-#define WDTCR_WDKEY_SEQ1             0xda7e
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct timer_s {
 	char *name;
 	unsigned int id;
@@ -351,15 +333,8 @@ static struct clock_event_device clockevent_davinci = {
 	.set_state_oneshot	= davinci_set_oneshot,
 };
 
-<<<<<<< HEAD
 void __init davinci_timer_init(struct clk *timer_clk)
 {
-=======
-
-void __init davinci_timer_init(void)
-{
-	struct clk *timer_clk;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct davinci_soc_info *soc_info = &davinci_soc_info;
 	unsigned int clockevent_id;
 	unsigned int clocksource_id;
@@ -395,10 +370,6 @@ void __init davinci_timer_init(void)
 		}
 	}
 
-<<<<<<< HEAD
-=======
-	timer_clk = clk_get(NULL, "timer0");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	BUG_ON(IS_ERR(timer_clk));
 	clk_prepare_enable(timer_clk);
 
@@ -428,7 +399,6 @@ void __init davinci_timer_init(void)
 		timer32_config(&timers[i]);
 }
 
-<<<<<<< HEAD
 static int __init of_davinci_timer_init(struct device_node *np)
 {
 	struct clk *clk;
@@ -442,54 +412,3 @@ static int __init of_davinci_timer_init(struct device_node *np)
 	return 0;
 }
 TIMER_OF_DECLARE(davinci_timer, "ti,da830-timer", of_davinci_timer_init);
-=======
-/* reset board using watchdog timer */
-void davinci_watchdog_reset(struct platform_device *pdev)
-{
-	u32 tgcr, wdtcr;
-	void __iomem *base;
-	struct clk *wd_clk;
-
-	base = ioremap(pdev->resource[0].start, SZ_4K);
-	if (WARN_ON(!base))
-		return;
-
-	wd_clk = clk_get(&pdev->dev, NULL);
-	if (WARN_ON(IS_ERR(wd_clk)))
-		return;
-	clk_prepare_enable(wd_clk);
-
-	/* disable, internal clock source */
-	__raw_writel(0, base + TCR);
-
-	/* reset timer, set mode to 64-bit watchdog, and unreset */
-	tgcr = 0;
-	__raw_writel(tgcr, base + TGCR);
-	tgcr = TGCR_TIMMODE_64BIT_WDOG << TGCR_TIMMODE_SHIFT;
-	tgcr |= (TGCR_UNRESET << TGCR_TIM12RS_SHIFT) |
-		(TGCR_UNRESET << TGCR_TIM34RS_SHIFT);
-	__raw_writel(tgcr, base + TGCR);
-
-	/* clear counter and period regs */
-	__raw_writel(0, base + TIM12);
-	__raw_writel(0, base + TIM34);
-	__raw_writel(0, base + PRD12);
-	__raw_writel(0, base + PRD34);
-
-	/* put watchdog in pre-active state */
-	wdtcr = __raw_readl(base + WDTCR);
-	wdtcr = (WDTCR_WDKEY_SEQ0 << WDTCR_WDKEY_SHIFT) |
-		(WDTCR_WDEN_ENABLE << WDTCR_WDEN_SHIFT);
-	__raw_writel(wdtcr, base + WDTCR);
-
-	/* put watchdog in active state */
-	wdtcr = (WDTCR_WDKEY_SEQ1 << WDTCR_WDKEY_SHIFT) |
-		(WDTCR_WDEN_ENABLE << WDTCR_WDEN_SHIFT);
-	__raw_writel(wdtcr, base + WDTCR);
-
-	/* write an invalid value to the WDKEY field to trigger
-	 * a watchdog reset */
-	wdtcr = 0x00004000;
-	__raw_writel(wdtcr, base + WDTCR);
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

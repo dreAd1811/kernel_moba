@@ -15,13 +15,6 @@
  */
 
 #include <asm/bootparam.h>
-<<<<<<< HEAD
-=======
-#include <asm/processor.h>
-#include <asm/pgtable.h>
-#include <asm/page.h>
-#include <asm/cacheasm.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/initialize_mmu.h>
 #include <asm/vectors.h>
 #include <linux/linkage.h>
@@ -36,7 +29,6 @@ _ResetVector:
 	.begin  no-absolute-literals
 	.literal_position
 
-<<<<<<< HEAD
 #if defined(CONFIG_INITIALIZE_XTENSA_MMU_INSIDE_VMLINUX) && \
 	XCHAL_HAVE_PTP_MMU && XCHAL_HAVE_SPANNING_WAY
 	.literal RomInitAddr, CONFIG_KERNEL_LOAD_ADDRESS
@@ -49,18 +41,6 @@ _ResetVector:
 	.literal RomBootParam, _bootparam
 
 	.align 4
-=======
-	.align 4
-RomInitAddr:
-#if defined(CONFIG_INITIALIZE_XTENSA_MMU_INSIDE_VMLINUX) && \
-	XCHAL_HAVE_PTP_MMU && XCHAL_HAVE_SPANNING_WAY
-	.word	CONFIG_KERNEL_LOAD_ADDRESS
-#else
-	.word	KERNELOFFSET
-#endif
-RomBootParam:
-	.word _bootparam
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 _bootparam:
 	.short	BP_TAG_FIRST
 	.short	4
@@ -68,10 +48,7 @@ _bootparam:
 	.short	BP_TAG_LAST
 	.short	0
 	.long	0
-<<<<<<< HEAD
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	.align  4
 _SetupMMU:

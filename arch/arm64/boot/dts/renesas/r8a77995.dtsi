@@ -1,45 +1,25 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Device Tree Source for the r8a77995 SoC
  *
  * Copyright (C) 2016 Renesas Electronics Corp.
  * Copyright (C) 2017 Glider bvba
-<<<<<<< HEAD
  */
 
 #include <dt-bindings/clock/r8a77995-cpg-mssr.h>
 #include <dt-bindings/interrupt-controller/arm-gic.h>
 #include <dt-bindings/power/r8a77995-sysc.h>
-=======
- *
- * This file is licensed under the terms of the GNU General Public License
- * version 2.  This program is licensed "as is" without any warranty of any
- * kind, whether express or implied.
- */
-
-#include <dt-bindings/clock/renesas-cpg-mssr.h>
-#include <dt-bindings/interrupt-controller/arm-gic.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 / {
 	compatible = "renesas,r8a77995";
 	#address-cells = <2>;
 	#size-cells = <2>;
 
-<<<<<<< HEAD
 	/* External CAN clock - to be overridden by boards that provide it */
 	can_clk: can {
 		compatible = "fixed-clock";
 		#clock-cells = <0>;
 		clock-frequency = <0>;
-=======
-	psci {
-		compatible = "arm,psci-1.0", "arm,psci-0.2";
-		method = "smc";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	cpus {
@@ -50,22 +30,14 @@
 			compatible = "arm,cortex-a53", "arm,armv8";
 			reg = <0x0>;
 			device_type = "cpu";
-<<<<<<< HEAD
 			power-domains = <&sysc R8A77995_PD_CA53_CPU0>;
-=======
-			power-domains = <&sysc 5>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			next-level-cache = <&L2_CA53>;
 			enable-method = "psci";
 		};
 
 		L2_CA53: cache-controller-1 {
 			compatible = "cache";
-<<<<<<< HEAD
 			power-domains = <&sysc R8A77995_PD_CA53_SCU>;
-=======
-			power-domains = <&sysc 21>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			cache-unified;
 			cache-level = <2>;
 		};
@@ -78,7 +50,6 @@
 		clock-frequency = <0>;
 	};
 
-<<<<<<< HEAD
 	pmu_a53 {
 		compatible = "arm,cortex-a53-pmu";
 		interrupts-extended = <&gic GIC_SPI 84 IRQ_TYPE_LEVEL_HIGH>;
@@ -89,8 +60,6 @@
 		method = "smc";
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	scif_clk: scif {
 		compatible = "fixed-clock";
 		#clock-cells = <0>;
@@ -104,53 +73,16 @@
 		#size-cells = <2>;
 		ranges;
 
-<<<<<<< HEAD
-=======
-		gic: interrupt-controller@f1010000 {
-			compatible = "arm,gic-400";
-			#interrupt-cells = <3>;
-			#address-cells = <0>;
-			interrupt-controller;
-			reg = <0x0 0xf1010000 0 0x1000>,
-			      <0x0 0xf1020000 0 0x20000>,
-			      <0x0 0xf1040000 0 0x20000>,
-			      <0x0 0xf1060000 0 0x20000>;
-			interrupts = <GIC_PPI 9
-					(GIC_CPU_MASK_SIMPLE(1) | IRQ_TYPE_LEVEL_HIGH)>;
-			clocks = <&cpg CPG_MOD 408>;
-			clock-names = "clk";
-			power-domains = <&sysc 32>;
-			resets = <&cpg 408>;
-		};
-
-		timer {
-			compatible = "arm,armv8-timer";
-			interrupts = <GIC_PPI 13
-					(GIC_CPU_MASK_SIMPLE(1) | IRQ_TYPE_LEVEL_LOW)>,
-				     <GIC_PPI 14
-					(GIC_CPU_MASK_SIMPLE(1) | IRQ_TYPE_LEVEL_LOW)>,
-				     <GIC_PPI 11
-					(GIC_CPU_MASK_SIMPLE(1) | IRQ_TYPE_LEVEL_LOW)>,
-				     <GIC_PPI 10
-					(GIC_CPU_MASK_SIMPLE(1) | IRQ_TYPE_LEVEL_LOW)>;
-		};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rwdt: watchdog@e6020000 {
 			compatible = "renesas,r8a77995-wdt",
 				     "renesas,rcar-gen3-wdt";
 			reg = <0 0xe6020000 0 0x0c>;
 			clocks = <&cpg CPG_MOD 402>;
-<<<<<<< HEAD
 			power-domains = <&sysc R8A77995_PD_ALWAYS_ON>;
-=======
-			power-domains = <&sysc 32>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			resets = <&cpg 402>;
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
 		gpio0: gpio@e6050000 {
 			compatible = "renesas,gpio-r8a77995",
 				     "renesas,rcar-gen3-gpio";
@@ -259,11 +191,6 @@
 		pfc: pin-controller@e6060000 {
 			compatible = "renesas,pfc-r8a77995";
 			reg = <0 0xe6060000 0 0x508>;
-=======
-		pmu_a53 {
-			compatible = "arm,cortex-a53-pmu";
-			interrupts = <GIC_SPI 84 IRQ_TYPE_LEVEL_HIGH>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		cpg: clock-controller@e6150000 {
@@ -281,26 +208,12 @@
 			reg = <0 0xe6160000 0 0x0200>;
 		};
 
-<<<<<<< HEAD
-=======
-		pfc: pfc@e6060000 {
-			compatible = "renesas,pfc-r8a77995";
-			reg = <0 0xe6060000 0 0x508>;
-		};
-
-		prr: chipid@fff00044 {
-			compatible = "renesas,prr";
-			reg = <0 0xfff00044 0 4>;
-		};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sysc: system-controller@e6180000 {
 			compatible = "renesas,r8a77995-sysc";
 			reg = <0 0xe6180000 0 0x0400>;
 			#power-domain-cells = <1>;
 		};
 
-<<<<<<< HEAD
 		thermal: thermal@e6190000 {
 			compatible = "renesas,thermal-r8a77995";
 			reg = <0 0xe6190000 0 0x10>, <0 0xe6190100 0 0x38>;
@@ -761,15 +674,12 @@
 			status = "disabled";
 		};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		scif2: serial@e6e88000 {
 			compatible = "renesas,scif-r8a77995",
 				     "renesas,rcar-gen3-scif", "renesas,scif";
 			reg = <0 0xe6e88000 0 64>;
 			interrupts = <GIC_SPI 164 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 310>,
-<<<<<<< HEAD
 				 <&cpg CPG_CORE R8A77995_CLK_S3D1C>,
 				 <&scif_clk>;
 			clock-names = "fck", "brg_int", "scif_clk";
@@ -1092,14 +1002,5 @@
 				      <&gic GIC_PPI 14 (GIC_CPU_MASK_SIMPLE(1) | IRQ_TYPE_LEVEL_LOW)>,
 				      <&gic GIC_PPI 11 (GIC_CPU_MASK_SIMPLE(1) | IRQ_TYPE_LEVEL_LOW)>,
 				      <&gic GIC_PPI 10 (GIC_CPU_MASK_SIMPLE(1) | IRQ_TYPE_LEVEL_LOW)>;
-=======
-				 <&cpg CPG_CORE 16>,
-				 <&scif_clk>;
-			clock-names = "fck", "brg_int", "scif_clk";
-			power-domains = <&sysc 32>;
-			resets = <&cpg 310>;
-			status = "disabled";
-		};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };

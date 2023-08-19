@@ -52,7 +52,6 @@ const struct bnxt_qplib_gid bnxt_qplib_gid_zero = {{ 0, 0, 0, 0, 0, 0, 0, 0,
 
 /* Device */
 
-<<<<<<< HEAD
 static void bnxt_qplib_query_version(struct bnxt_qplib_rcfw *rcfw,
 				     char *fw_ver)
 {
@@ -75,22 +74,6 @@ static void bnxt_qplib_query_version(struct bnxt_qplib_rcfw *rcfw,
 
 int bnxt_qplib_get_dev_attr(struct bnxt_qplib_rcfw *rcfw,
 			    struct bnxt_qplib_dev_attr *attr, bool vf)
-=======
-static bool bnxt_qplib_is_atomic_cap(struct bnxt_qplib_rcfw *rcfw)
-{
-	int rc;
-	u16 pcie_ctl2;
-
-	rc = pcie_capability_read_word(rcfw->pdev, PCI_EXP_DEVCTL2,
-				       &pcie_ctl2);
-	if (rc)
-		return false;
-	return !!(pcie_ctl2 & PCI_EXP_DEVCTL2_ATOMIC_REQ);
-}
-
-int bnxt_qplib_get_dev_attr(struct bnxt_qplib_rcfw *rcfw,
-			    struct bnxt_qplib_dev_attr *attr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct cmdq_query_func req;
 	struct creq_query_func_resp resp;
@@ -120,12 +103,8 @@ int bnxt_qplib_get_dev_attr(struct bnxt_qplib_rcfw *rcfw,
 	/* Extract the context from the side buffer */
 	attr->max_qp = le32_to_cpu(sb->max_qp);
 	/* max_qp value reported by FW for PF doesn't include the QP1 for PF */
-<<<<<<< HEAD
 	if (!vf)
 		attr->max_qp += 1;
-=======
-	attr->max_qp += 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	attr->max_qp_rd_atom =
 		sb->max_qp_rd_atom > BNXT_QPLIB_MAX_OUT_RD_ATOM ?
 		BNXT_QPLIB_MAX_OUT_RD_ATOM : sb->max_qp_rd_atom;
@@ -164,11 +143,7 @@ int bnxt_qplib_get_dev_attr(struct bnxt_qplib_rcfw *rcfw,
 			    (0x01 << RCFW_DBR_BASE_PAGE_SHIFT);
 	attr->max_sgid = le32_to_cpu(sb->max_gid);
 
-<<<<<<< HEAD
 	bnxt_qplib_query_version(rcfw, attr->fw_ver);
-=======
-	strlcpy(attr->fw_ver, "20.6.28.0", sizeof(attr->fw_ver));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < MAX_TQM_ALLOC_REQ / 4; i++) {
 		temp = le32_to_cpu(sb->tqm_alloc_reqs[i]);
@@ -179,17 +154,12 @@ int bnxt_qplib_get_dev_attr(struct bnxt_qplib_rcfw *rcfw,
 		attr->tqm_alloc_reqs[i * 4 + 3] = *(++tqm_alloc);
 	}
 
-<<<<<<< HEAD
 	attr->is_atomic = false;
-=======
-	attr->is_atomic = bnxt_qplib_is_atomic_cap(rcfw);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 bail:
 	bnxt_qplib_rcfw_free_sbuf(rcfw, sbuf);
 	return rc;
 }
 
-<<<<<<< HEAD
 int bnxt_qplib_set_func_resources(struct bnxt_qplib_res *res,
 				  struct bnxt_qplib_rcfw *rcfw,
 				  struct bnxt_qplib_ctx *ctx)
@@ -222,8 +192,6 @@ int bnxt_qplib_set_func_resources(struct bnxt_qplib_res *res,
 	return rc;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* SGID */
 int bnxt_qplib_get_sgid(struct bnxt_qplib_res *res,
 			struct bnxt_qplib_sgid_tbl *sgid_tbl, int index,
@@ -678,11 +646,7 @@ int bnxt_qplib_dereg_mrw(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mrw,
 }
 
 int bnxt_qplib_reg_mr(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mr,
-<<<<<<< HEAD
 		      u64 *pbl_tbl, int num_pbls, bool block, u32 buf_pg_size)
-=======
-		      u64 *pbl_tbl, int num_pbls, bool block)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct bnxt_qplib_rcfw *rcfw = res->rcfw;
 	struct cmdq_register_mr req;
@@ -693,12 +657,9 @@ int bnxt_qplib_reg_mr(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mr,
 	u32 pg_size;
 
 	if (num_pbls) {
-<<<<<<< HEAD
 		/* Allocate memory for the non-leaf pages to store buf ptrs.
 		 * Non-leaf pages always uses system PAGE_SIZE
 		 */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pg_ptrs = roundup_pow_of_two(num_pbls);
 		pages = pg_ptrs >> MAX_PBL_LVL_1_PGS_SHIFT;
 		if (!pages)
@@ -716,10 +677,7 @@ int bnxt_qplib_reg_mr(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mr,
 			bnxt_qplib_free_hwq(res->pdev, &mr->hwq);
 
 		mr->hwq.max_elements = pages;
-<<<<<<< HEAD
 		/* Use system PAGE_SIZE */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rc = bnxt_qplib_alloc_init_hwq(res->pdev, &mr->hwq, NULL, 0,
 					       &mr->hwq.max_elements,
 					       PAGE_SIZE, 0, PAGE_SIZE,
@@ -740,33 +698,22 @@ int bnxt_qplib_reg_mr(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mr,
 
 	/* Configure the request */
 	if (mr->hwq.level == PBL_LVL_MAX) {
-<<<<<<< HEAD
 		/* No PBL provided, just use system PAGE_SIZE */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		level = 0;
 		req.pbl = 0;
 		pg_size = PAGE_SIZE;
 	} else {
 		level = mr->hwq.level + 1;
 		req.pbl = cpu_to_le64(mr->hwq.pbl[PBL_LVL_0].pg_map_arr[0]);
-<<<<<<< HEAD
 	}
 	pg_size = buf_pg_size ? buf_pg_size : PAGE_SIZE;
-=======
-		pg_size = mr->hwq.pbl[PBL_LVL_0].pg_size;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	req.log2_pg_size_lvl = (level << CMDQ_REGISTER_MR_LVL_SFT) |
 			       ((ilog2(pg_size) <<
 				 CMDQ_REGISTER_MR_LOG2_PG_SIZE_SFT) &
 				CMDQ_REGISTER_MR_LOG2_PG_SIZE_MASK);
-<<<<<<< HEAD
 	req.log2_pbl_pg_size = cpu_to_le16(((ilog2(PAGE_SIZE) <<
 				 CMDQ_REGISTER_MR_LOG2_PBL_PG_SIZE_SFT) &
 				CMDQ_REGISTER_MR_LOG2_PBL_PG_SIZE_MASK));
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	req.access = (mr->flags & 0xFFFF);
 	req.va = cpu_to_le64(mr->va);
 	req.key = cpu_to_le32(mr->lkey);
@@ -823,16 +770,11 @@ int bnxt_qplib_map_tc2cos(struct bnxt_qplib_res *res, u16 *cids)
 	struct cmdq_map_tc_to_cos req;
 	struct creq_map_tc_to_cos_resp resp;
 	u16 cmd_flags = 0;
-<<<<<<< HEAD
-=======
-	int rc = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	RCFW_CMD_PREP(req, MAP_TC_TO_COS, cmd_flags);
 	req.cos0 = cpu_to_le16(cids[0]);
 	req.cos1 = cpu_to_le16(cids[1]);
 
-<<<<<<< HEAD
 	bnxt_qplib_rcfw_send_message(rcfw, (void *)&req, (void *)&resp, NULL,
 				     0);
 	return 0;
@@ -907,9 +849,3 @@ bail:
 	bnxt_qplib_rcfw_free_sbuf(rcfw, sbuf);
 	return rc;
 }
-=======
-	rc = bnxt_qplib_rcfw_send_message(rcfw, (void *)&req,
-					  (void *)&resp, NULL, 0);
-	return 0;
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -342,11 +342,7 @@ static int axon_msi_probe(struct platform_device *device)
 
 	pr_devel("axon_msi: setting up dn %pOF\n", dn);
 
-<<<<<<< HEAD
 	msic = kzalloc(sizeof(*msic), GFP_KERNEL);
-=======
-	msic = kzalloc(sizeof(struct axon_msic), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!msic) {
 		printk(KERN_ERR "axon_msi: couldn't allocate msic for %pOF\n",
 		       dn);

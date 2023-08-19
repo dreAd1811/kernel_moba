@@ -149,7 +149,6 @@
 #define AR2315_PCI_HOST_SLOT	3
 #define AR2315_PCI_HOST_DEVID	((0xff18 << 16) | PCI_VENDOR_ID_ATHEROS)
 
-<<<<<<< HEAD
 /*
  * We need some arbitrary non-zero value to be programmed to the BAR1 register
  * of PCI host controller to enable DMA. The same value should be used as the
@@ -157,8 +156,6 @@
  */
 #define AR2315_PCI_HOST_SDRAM_BASEADDR	0x20000000
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* ??? access BAR */
 #define AR2315_PCI_HOST_MBAR0		0x10000000
 /* RAM access BAR */
@@ -177,7 +174,6 @@ struct ar2315_pci_ctrl {
 	struct resource io_res;
 };
 
-<<<<<<< HEAD
 static inline dma_addr_t ar2315_dev_offset(struct device *dev)
 {
 	if (dev && dev_is_pci(dev))
@@ -195,8 +191,6 @@ phys_addr_t __dma_to_phys(struct device *dev, dma_addr_t dma_addr)
 	return dma_addr - ar2315_dev_offset(dev);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline struct ar2315_pci_ctrl *ar2315_pci_bus_to_apc(struct pci_bus *bus)
 {
 	struct pci_controller *hose = bus->sysdata;

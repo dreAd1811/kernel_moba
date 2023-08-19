@@ -514,11 +514,7 @@ static void rm31_tick(void)
 	int i, last_failure;
 
 	if (!started) {
-<<<<<<< HEAD
 		started = true;
-=======
-		started = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		printk(KERN_INFO "windfarm: CPUs control loops started.\n");
 		for (i = 0; i < nr_chips; ++i) {
 			if (cpu_setup_pid(i) < 0) {

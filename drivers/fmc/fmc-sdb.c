@@ -48,13 +48,8 @@ static struct sdb_array *__fmc_scan_sdb_tree(struct fmc_device *fmc,
 	arr = kzalloc(sizeof(*arr), GFP_KERNEL);
 	if (!arr)
 		return ERR_PTR(-ENOMEM);
-<<<<<<< HEAD
 	arr->record = kcalloc(n, sizeof(arr->record[0]), GFP_KERNEL);
 	arr->subtree = kcalloc(n, sizeof(arr->subtree[0]), GFP_KERNEL);
-=======
-	arr->record = kzalloc(sizeof(arr->record[0]) * n, GFP_KERNEL);
-	arr->subtree = kzalloc(sizeof(arr->subtree[0]) * n, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!arr->record || !arr->subtree) {
 		kfree(arr->record);
 		kfree(arr->subtree);

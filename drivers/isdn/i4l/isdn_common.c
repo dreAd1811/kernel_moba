@@ -231,11 +231,7 @@ static int isdn_timer_cnt2 = 0;
 static int isdn_timer_cnt3 = 0;
 
 static void
-<<<<<<< HEAD
 isdn_timer_funct(struct timer_list *unused)
-=======
-isdn_timer_funct(ulong dummy)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int tf = dev->tflags;
 	if (tf & ISDN_TIMER_FAST) {
@@ -1231,39 +1227,25 @@ out:
 	return retval;
 }
 
-<<<<<<< HEAD
 static __poll_t
 isdn_poll(struct file *file, poll_table *wait)
 {
 	__poll_t mask = 0;
-=======
-static unsigned int
-isdn_poll(struct file *file, poll_table *wait)
-{
-	unsigned int mask = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int minor = iminor(file_inode(file));
 	int drvidx = isdn_minor2drv(minor - ISDN_MINOR_CTRL);
 
 	mutex_lock(&isdn_mutex);
 	if (minor == ISDN_MINOR_STATUS) {
 		poll_wait(file, &(dev->info_waitq), wait);
-<<<<<<< HEAD
 		/* mask = EPOLLOUT | EPOLLWRNORM; */
 		if (file->private_data) {
 			mask |= EPOLLIN | EPOLLRDNORM;
-=======
-		/* mask = POLLOUT | POLLWRNORM; */
-		if (file->private_data) {
-			mask |= POLLIN | POLLRDNORM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		goto out;
 	}
 	if (minor >= ISDN_MINOR_CTRL && minor <= ISDN_MINOR_CTRLMAX) {
 		if (drvidx < 0) {
 			/* driver deregistered while file open */
-<<<<<<< HEAD
 			mask = EPOLLHUP;
 			goto out;
 		}
@@ -1271,15 +1253,6 @@ isdn_poll(struct file *file, poll_table *wait)
 		mask = EPOLLOUT | EPOLLWRNORM;
 		if (dev->drv[drvidx]->stavail) {
 			mask |= EPOLLIN | EPOLLRDNORM;
-=======
-			mask = POLLHUP;
-			goto out;
-		}
-		poll_wait(file, &(dev->drv[drvidx]->st_waitq), wait);
-		mask = POLLOUT | POLLWRNORM;
-		if (dev->drv[drvidx]->stavail) {
-			mask |= POLLIN | POLLRDNORM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		goto out;
 	}
@@ -1289,11 +1262,7 @@ isdn_poll(struct file *file, poll_table *wait)
 		goto out;
 	}
 #endif
-<<<<<<< HEAD
 	mask = EPOLLERR;
-=======
-	mask = POLLERR;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	mutex_unlock(&isdn_mutex);
 	return mask;
@@ -2095,22 +2064,14 @@ isdn_add_channels(isdn_driver_t *d, int drvidx, int n, int adding)
 
 	if ((adding) && (d->rcverr))
 		kfree(d->rcverr);
-<<<<<<< HEAD
 	if (!(d->rcverr = kcalloc(m, sizeof(int), GFP_ATOMIC))) {
-=======
-	if (!(d->rcverr = kzalloc(sizeof(int) * m, GFP_ATOMIC))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		printk(KERN_WARNING "register_isdn: Could not alloc rcverr\n");
 		return -1;
 	}
 
 	if ((adding) && (d->rcvcount))
 		kfree(d->rcvcount);
-<<<<<<< HEAD
 	if (!(d->rcvcount = kcalloc(m, sizeof(int), GFP_ATOMIC))) {
-=======
-	if (!(d->rcvcount = kzalloc(sizeof(int) * m, GFP_ATOMIC))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		printk(KERN_WARNING "register_isdn: Could not alloc rcvcount\n");
 		if (!adding)
 			kfree(d->rcverr);
@@ -2122,12 +2083,8 @@ isdn_add_channels(isdn_driver_t *d, int drvidx, int n, int adding)
 			skb_queue_purge(&d->rpqueue[j]);
 		kfree(d->rpqueue);
 	}
-<<<<<<< HEAD
 	d->rpqueue = kmalloc_array(m, sizeof(struct sk_buff_head), GFP_ATOMIC);
 	if (!d->rpqueue) {
-=======
-	if (!(d->rpqueue = kmalloc(sizeof(struct sk_buff_head) * m, GFP_ATOMIC))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		printk(KERN_WARNING "register_isdn: Could not alloc rpqueue\n");
 		if (!adding) {
 			kfree(d->rcvcount);
@@ -2141,12 +2098,8 @@ isdn_add_channels(isdn_driver_t *d, int drvidx, int n, int adding)
 
 	if ((adding) && (d->rcv_waitq))
 		kfree(d->rcv_waitq);
-<<<<<<< HEAD
 	d->rcv_waitq = kmalloc(array3_size(sizeof(wait_queue_head_t), 2, m),
 			       GFP_ATOMIC);
-=======
-	d->rcv_waitq = kmalloc(sizeof(wait_queue_head_t) * 2 * m, GFP_ATOMIC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!d->rcv_waitq) {
 		printk(KERN_WARNING "register_isdn: Could not alloc rcv_waitq\n");
 		if (!adding) {
@@ -2337,12 +2290,7 @@ static int __init isdn_init(void)
 		printk(KERN_WARNING "isdn: Could not allocate device-struct.\n");
 		return -EIO;
 	}
-<<<<<<< HEAD
 	timer_setup(&dev->timer, isdn_timer_funct, 0);
-=======
-	init_timer(&dev->timer);
-	dev->timer.function = isdn_timer_funct;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_init(&dev->lock);
 	spin_lock_init(&dev->timerlock);
 #ifdef MODULE

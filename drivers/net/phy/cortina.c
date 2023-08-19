@@ -30,17 +30,6 @@ static int cortina_read_reg(struct phy_device *phydev, u16 regnum)
 			    MII_ADDR_C45 | regnum);
 }
 
-<<<<<<< HEAD
-=======
-static int cortina_config_aneg(struct phy_device *phydev)
-{
-	phydev->supported = SUPPORTED_10000baseT_Full;
-	phydev->advertising = SUPPORTED_10000baseT_Full;
-
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int cortina_read_status(struct phy_device *phydev)
 {
 	int gpio_int_status, ret = 0;
@@ -64,14 +53,6 @@ err:
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
-static int cortina_soft_reset(struct phy_device *phydev)
-{
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int cortina_probe(struct phy_device *phydev)
 {
 	u32 phy_id = 0;
@@ -107,16 +88,10 @@ static struct phy_driver cortina_driver[] = {
 	.phy_id		= PHY_ID_CS4340,
 	.phy_id_mask	= 0xffffffff,
 	.name		= "Cortina CS4340",
-<<<<<<< HEAD
 	.config_init	= gen10g_config_init,
 	.config_aneg	= gen10g_config_aneg,
 	.read_status	= cortina_read_status,
 	.soft_reset	= gen10g_no_soft_reset,
-=======
-	.config_aneg	= cortina_config_aneg,
-	.read_status	= cortina_read_status,
-	.soft_reset	= cortina_soft_reset,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.probe		= cortina_probe,
 },
 };
@@ -129,10 +104,7 @@ static struct mdio_device_id __maybe_unused cortina_tbl[] = {
 };
 
 MODULE_DEVICE_TABLE(mdio, cortina_tbl);
-<<<<<<< HEAD
 
 MODULE_DESCRIPTION("Cortina EDC CDR 10G Ethernet PHY driver");
 MODULE_AUTHOR("NXP");
 MODULE_LICENSE("GPL");
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -783,15 +783,9 @@ static void tifm_sd_end_cmd(unsigned long data)
 	mmc_request_done(mmc, mrq);
 }
 
-<<<<<<< HEAD
 static void tifm_sd_abort(struct timer_list *t)
 {
 	struct tifm_sd *host = from_timer(host, t, timer);
-=======
-static void tifm_sd_abort(unsigned long data)
-{
-	struct tifm_sd *host = (struct tifm_sd*)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pr_err("%s : card failed to respond for a long period of time "
 	       "(%x, %x)\n",
@@ -974,11 +968,7 @@ static int tifm_sd_probe(struct tifm_dev *sock)
 
 	tasklet_init(&host->finish_tasklet, tifm_sd_end_cmd,
 		     (unsigned long)host);
-<<<<<<< HEAD
 	timer_setup(&host->timer, tifm_sd_abort, 0);
-=======
-	setup_timer(&host->timer, tifm_sd_abort, (unsigned long)host);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mmc->ops = &tifm_sd_ops;
 	mmc->ocr_avail = MMC_VDD_32_33 | MMC_VDD_33_34;

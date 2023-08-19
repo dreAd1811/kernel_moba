@@ -51,23 +51,16 @@ bool rtl_ps_enable_nic(struct ieee80211_hw *hw)
 			&rtlmac->retry_long);
 	RT_CLEAR_PS_LEVEL(ppsc, RT_RF_OFF_LEVL_HALT_NIC);
 
-<<<<<<< HEAD
 	rtlpriv->cfg->ops->switch_channel(hw);
 	rtlpriv->cfg->ops->set_channel_access(hw);
 	rtlpriv->cfg->ops->set_bw_mode(hw,
 			cfg80211_get_chandef_type(&hw->conf.chandef));
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*<3> Enable Interrupt */
 	rtlpriv->cfg->ops->enable_interrupt(hw);
 
 	/*<enable timer> */
-<<<<<<< HEAD
 	rtl_watch_dog_timer_callback(&rtlpriv->works.watchdog_timer);
-=======
-	rtl_watch_dog_timer_callback((unsigned long)hw);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return true;
 }
@@ -301,11 +294,7 @@ void rtl_ips_nic_on(struct ieee80211_hw *hw)
 
 	cancel_delayed_work_sync(&rtlpriv->works.ips_nic_off_wq);
 
-<<<<<<< HEAD
 	mutex_lock(&rtlpriv->locks.ips_mutex);
-=======
-	spin_lock(&rtlpriv->locks.ips_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ppsc->inactiveps) {
 		rtstate = ppsc->rfpwr_state;
 
@@ -322,11 +311,7 @@ void rtl_ips_nic_on(struct ieee80211_hw *hw)
 									ppsc->inactive_pwrstate);
 		}
 	}
-<<<<<<< HEAD
 	mutex_unlock(&rtlpriv->locks.ips_mutex);
-=======
-	spin_unlock(&rtlpriv->locks.ips_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(rtl_ips_nic_on);
 
@@ -435,10 +420,6 @@ static void rtl_lps_enter_core(struct ieee80211_hw *hw)
 	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
 	struct rtl_ps_ctl *ppsc = rtl_psc(rtl_priv(hw));
 	struct rtl_priv *rtlpriv = rtl_priv(hw);
-<<<<<<< HEAD
-=======
-	unsigned long flag;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!ppsc->fwctrl_lps)
 		return;
@@ -459,11 +440,7 @@ static void rtl_lps_enter_core(struct ieee80211_hw *hw)
 	if (mac->link_state != MAC80211_LINKED)
 		return;
 
-<<<<<<< HEAD
 	mutex_lock(&rtlpriv->locks.lps_mutex);
-=======
-	spin_lock_irqsave(&rtlpriv->locks.lps_lock, flag);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Don't need to check (ppsc->dot11_psmode == EACTIVE), because
 	 * bt_ccoexist may ask to enter lps.
@@ -473,11 +450,7 @@ static void rtl_lps_enter_core(struct ieee80211_hw *hw)
 		 "Enter 802.11 power save mode...\n");
 	rtl_lps_set_psmode(hw, EAUTOPS);
 
-<<<<<<< HEAD
 	mutex_unlock(&rtlpriv->locks.lps_mutex);
-=======
-	spin_unlock_irqrestore(&rtlpriv->locks.lps_lock, flag);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Interrupt safe routine to leave the leisure power save mode.*/
@@ -486,14 +459,8 @@ static void rtl_lps_leave_core(struct ieee80211_hw *hw)
 	struct rtl_priv *rtlpriv = rtl_priv(hw);
 	struct rtl_ps_ctl *ppsc = rtl_psc(rtl_priv(hw));
 	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
-<<<<<<< HEAD
 
 	mutex_lock(&rtlpriv->locks.lps_mutex);
-=======
-	unsigned long flag;
-
-	spin_lock_irqsave(&rtlpriv->locks.lps_lock, flag);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ppsc->fwctrl_lps) {
 		if (ppsc->dot11_psmode != EACTIVE) {
@@ -514,11 +481,7 @@ static void rtl_lps_leave_core(struct ieee80211_hw *hw)
 			rtl_lps_set_psmode(hw, EACTIVE);
 		}
 	}
-<<<<<<< HEAD
 	mutex_unlock(&rtlpriv->locks.lps_mutex);
-=======
-	spin_unlock_irqrestore(&rtlpriv->locks.lps_lock, flag);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* For sw LPS*/
@@ -608,10 +571,6 @@ void rtl_swlps_rf_awake(struct ieee80211_hw *hw)
 	struct rtl_priv *rtlpriv = rtl_priv(hw);
 	struct rtl_ps_ctl *ppsc = rtl_psc(rtl_priv(hw));
 	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
-<<<<<<< HEAD
-=======
-	unsigned long flag;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!rtlpriv->psc.swctrl_lps)
 		return;
@@ -624,15 +583,9 @@ void rtl_swlps_rf_awake(struct ieee80211_hw *hw)
 		RT_CLEAR_PS_LEVEL(ppsc, RT_PS_LEVEL_ASPM);
 	}
 
-<<<<<<< HEAD
 	mutex_lock(&rtlpriv->locks.lps_mutex);
 	rtl_ps_set_rf_state(hw, ERFON, RF_CHANGE_BY_PS);
 	mutex_unlock(&rtlpriv->locks.lps_mutex);
-=======
-	spin_lock_irqsave(&rtlpriv->locks.lps_lock, flag);
-	rtl_ps_set_rf_state(hw, ERFON, RF_CHANGE_BY_PS);
-	spin_unlock_irqrestore(&rtlpriv->locks.lps_lock, flag);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void rtl_swlps_rfon_wq_callback(void *data)
@@ -649,10 +602,6 @@ void rtl_swlps_rf_sleep(struct ieee80211_hw *hw)
 	struct rtl_priv *rtlpriv = rtl_priv(hw);
 	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
 	struct rtl_ps_ctl *ppsc = rtl_psc(rtl_priv(hw));
-<<<<<<< HEAD
-=======
-	unsigned long flag;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 sleep_intv;
 
 	if (!rtlpriv->psc.sw_ps_enabled)
@@ -676,15 +625,9 @@ void rtl_swlps_rf_sleep(struct ieee80211_hw *hw)
 	}
 	spin_unlock(&rtlpriv->locks.rf_ps_lock);
 
-<<<<<<< HEAD
 	mutex_lock(&rtlpriv->locks.lps_mutex);
 	rtl_ps_set_rf_state(hw, ERFSLEEP, RF_CHANGE_BY_PS);
 	mutex_unlock(&rtlpriv->locks.lps_mutex);
-=======
-	spin_lock_irqsave(&rtlpriv->locks.lps_lock, flag);
-	rtl_ps_set_rf_state(hw, ERFSLEEP, RF_CHANGE_BY_PS);
-	spin_unlock_irqrestore(&rtlpriv->locks.lps_lock, flag);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ppsc->reg_rfps_level & RT_RF_OFF_LEVL_ASPM &&
 	    !RT_IN_PS_LEVEL(ppsc, RT_PS_LEVEL_ASPM)) {

@@ -138,11 +138,8 @@ static int __init acpi_sleep_setup(char *str)
 			acpi_nvs_nosave_s3();
 		if (strncmp(str, "old_ordering", 12) == 0)
 			acpi_old_suspend_ordering();
-<<<<<<< HEAD
 		if (strncmp(str, "nobl", 4) == 0)
 			acpi_sleep_no_blacklist();
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		str = strchr(str, ',');
 		if (str != NULL)
 			str += strspn(str, ", \t");

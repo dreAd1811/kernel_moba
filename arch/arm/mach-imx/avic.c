@@ -22,10 +22,7 @@
 #include <linux/irqdomain.h>
 #include <linux/io.h>
 #include <linux/of.h>
-<<<<<<< HEAD
 #include <linux/of_address.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/mach/irq.h>
 #include <asm/exception.h>
 
@@ -55,16 +52,12 @@
 
 #define AVIC_NUM_IRQS 64
 
-<<<<<<< HEAD
 /* low power interrupt mask registers */
 #define MX25_CCM_LPIMR0	0x68
 #define MX25_CCM_LPIMR1	0x6C
 
 static void __iomem *avic_base;
 static void __iomem *mx25_ccm_base;
-=======
-static void __iomem *avic_base;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct irq_domain *domain;
 
 #ifdef CONFIG_FIQ
@@ -106,7 +99,6 @@ static void avic_irq_suspend(struct irq_data *d)
 
 	avic_saved_mask_reg[idx] = imx_readl(avic_base + ct->regs.mask);
 	imx_writel(gc->wake_active, avic_base + ct->regs.mask);
-<<<<<<< HEAD
 
 	if (mx25_ccm_base) {
 		u8 offs = d->hwirq < AVIC_NUM_IRQS / 2 ?
@@ -119,8 +111,6 @@ static void avic_irq_suspend(struct irq_data *d)
 		 */
 		imx_writel(~gc->wake_active, mx25_ccm_base + offs);
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void avic_irq_resume(struct irq_data *d)
@@ -130,7 +120,6 @@ static void avic_irq_resume(struct irq_data *d)
 	int idx = d->hwirq >> 5;
 
 	imx_writel(avic_saved_mask_reg[idx], avic_base + ct->regs.mask);
-<<<<<<< HEAD
 
 	if (mx25_ccm_base) {
 		u8 offs = d->hwirq < AVIC_NUM_IRQS / 2 ?
@@ -138,8 +127,6 @@ static void avic_irq_resume(struct irq_data *d)
 
 		imx_writel(0xffffffff, mx25_ccm_base + offs);
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #else
@@ -196,7 +183,6 @@ void __init mxc_init_irq(void __iomem *irqbase)
 
 	avic_base = irqbase;
 
-<<<<<<< HEAD
 	np = of_find_compatible_node(NULL, NULL, "fsl,imx25-ccm");
 	mx25_ccm_base = of_iomap(np, 0);
 
@@ -209,8 +195,6 @@ void __init mxc_init_irq(void __iomem *irqbase)
 		imx_writel(0xffffffff, mx25_ccm_base + MX25_CCM_LPIMR1);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* put the AVIC into the reset value with
 	 * all interrupts disabled
 	 */

@@ -38,11 +38,7 @@ $(obj)/rom.bin: $(obj)/rom
 
 # Rule to make the bootloader
 $(obj)/rom: $(addprefix $(obj)/,$(OBJECTS))
-<<<<<<< HEAD
 	$(LD) $(KBUILD_LDFLAGS) $(LDSCRIPT) -o $@ $^
-=======
-	$(LD) $(LDFLAGS) $(LDSCRIPT) -o $@ $^
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 $(obj)/%.o: $(obj)/%.gz
 	$(LD) -r -o $@ -b binary $<

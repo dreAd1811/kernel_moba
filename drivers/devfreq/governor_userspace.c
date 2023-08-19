@@ -87,11 +87,7 @@ static struct attribute *dev_entries[] = {
 	NULL,
 };
 static const struct attribute_group dev_attr_group = {
-<<<<<<< HEAD
 	.name	= DEVFREQ_GOV_USERSPACE,
-=======
-	.name	= "userspace",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.attrs	= dev_entries,
 };
 

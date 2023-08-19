@@ -293,11 +293,7 @@ static inline void __init show_version (void) {
   
 */
 
-<<<<<<< HEAD
 static void do_housekeeping (struct timer_list *t);
-=======
-static void do_housekeeping (unsigned long arg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /********** globals **********/
 
 static unsigned short debug = 0;
@@ -1497,13 +1493,8 @@ static const struct atmdev_ops amb_ops = {
 };
 
 /********** housekeeping **********/
-<<<<<<< HEAD
 static void do_housekeeping (struct timer_list *t) {
   amb_dev * dev = from_timer(dev, t, housekeeping);
-=======
-static void do_housekeeping (unsigned long arg) {
-  amb_dev * dev = (amb_dev *) arg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
   
   // could collect device-specific (not driver/atm-linux) stats here
       
@@ -2267,11 +2258,7 @@ static int amb_probe(struct pci_dev *pci_dev,
 
 	PRINTD (DBG_INFO, "registered Madge ATM adapter (no. %d) (%p) at %p",
 		dev->atm_dev->number, dev, dev->atm_dev);
-<<<<<<< HEAD
 	dev->atm_dev->dev_data = (void *) dev;
-=======
-		dev->atm_dev->dev_data = (void *) dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	// register our address
 	amb_esi (dev, dev->atm_dev->esi);
@@ -2280,12 +2267,7 @@ static int amb_probe(struct pci_dev *pci_dev,
 	dev->atm_dev->ci_range.vpi_bits = NUM_VPI_BITS;
 	dev->atm_dev->ci_range.vci_bits = NUM_VCI_BITS;
 
-<<<<<<< HEAD
 	timer_setup(&dev->housekeeping, do_housekeeping, 0);
-=======
-	setup_timer(&dev->housekeeping, do_housekeeping,
-		    (unsigned long)dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mod_timer(&dev->housekeeping, jiffies);
 
 	// enable host interrupts

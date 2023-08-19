@@ -27,7 +27,6 @@ Groups:
       VCPU and all of the redistributor pages are contiguous.
       Only valid for KVM_DEV_TYPE_ARM_VGIC_V3.
       This address needs to be 64K aligned.
-<<<<<<< HEAD
 
     KVM_VGIC_V3_ADDR_TYPE_REDIST_REGION (rw, 64-bit)
       The attribute data pointed to by kvm_device_attr.addr is a __u64 value:
@@ -59,21 +58,11 @@ Groups:
     -EEXIST: Address already configured
     -ENOENT: Attempt to read the characteristics of a non existing
              redistributor region
-=======
-  Errors:
-    -E2BIG:  Address outside of addressable IPA range
-    -EINVAL: Incorrectly aligned address
-    -EEXIST: Address already configured
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     -ENXIO:  The group or attribute is unknown/unsupported for this device
              or hardware support is missing.
     -EFAULT: Invalid user pointer for attr->addr.
 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
   KVM_DEV_ARM_VGIC_GRP_DIST_REGS
   KVM_DEV_ARM_VGIC_GRP_REDIST_REGS
   Attributes:
@@ -111,7 +100,6 @@ Groups:
     Note that distributor fields are not banked, but return the same value
     regardless of the mpidr used to access the register.
 
-<<<<<<< HEAD
     GICD_IIDR.Revision is updated when the KVM implementation is changed in a
     way directly observable by the guest or userspace.  Userspace should read
     GICD_IIDR from KVM and write back the read value to confirm its expected
@@ -120,8 +108,6 @@ Groups:
     behavior.
 
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     The GICD_STATUSR and GICR_STATUSR registers are architecturally defined such
     that a write of a clear bit has no effect, whereas a write with a set bit
     clears that value.  To allow userspace to freely set the values of these two

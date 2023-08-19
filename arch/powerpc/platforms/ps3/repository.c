@@ -101,15 +101,9 @@ static u64 make_first_field(const char *text, u64 index)
 
 static u64 make_field(const char *text, u64 index)
 {
-<<<<<<< HEAD
 	u64 n = 0;
 
 	memcpy((char *)&n, text, strnlen(text, sizeof(n)));
-=======
-	u64 n;
-
-	strncpy((char *)&n, text, 8);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return n + index;
 }
 

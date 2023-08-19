@@ -371,7 +371,6 @@ struct cache_stats {
 
 struct cache {
 	struct dm_target *ti;
-<<<<<<< HEAD
 	spinlock_t lock;
 
 	/*
@@ -379,9 +378,6 @@ struct cache {
 	 */
 	int sectors_per_block_shift;
 	sector_t sectors_per_block;
-=======
-	struct dm_target_callbacks callbacks;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct dm_cache_metadata *cmd;
 
@@ -412,23 +408,11 @@ struct cache {
 	dm_cblock_t cache_size;
 
 	/*
-<<<<<<< HEAD
 	 * Invalidation fields.
 	 */
 	spinlock_t invalidation_lock;
 	struct list_head invalidation_requests;
 
-=======
-	 * Fields for converting from sectors to blocks.
-	 */
-	sector_t sectors_per_block;
-	int sectors_per_block_shift;
-
-	spinlock_t lock;
-	struct list_head deferred_cells;
-	struct bio_list deferred_bios;
-	struct bio_list deferred_writethrough_bios;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sector_t migration_threshold;
 	wait_queue_head_t migration_wait;
 	atomic_t nr_allocated_migrations;
@@ -439,21 +423,11 @@ struct cache {
 	 */
 	atomic_t nr_io_migrations;
 
-<<<<<<< HEAD
 	struct bio_list deferred_bios;
 
 	struct rw_semaphore quiesce_lock;
 
 	struct dm_target_callbacks callbacks;
-=======
-	struct rw_semaphore quiesce_lock;
-
-	/*
-	 * cache_size entries, dirty if set
-	 */
-	atomic_t nr_dirty;
-	unsigned long *dirty_bitset;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * origin_blocks entries, discarded if set.
@@ -470,7 +444,6 @@ struct cache {
 	const char **ctr_args;
 
 	struct dm_kcopyd_client *copier;
-<<<<<<< HEAD
 	struct work_struct deferred_bio_worker;
 	struct work_struct migration_worker;
 	struct workqueue_struct *wq;
@@ -492,19 +465,6 @@ struct cache {
 	struct cache_features features;
 
 	struct cache_stats stats;
-=======
-	struct workqueue_struct *wq;
-	struct work_struct deferred_bio_worker;
-	struct work_struct deferred_writethrough_worker;
-	struct work_struct migration_worker;
-	struct delayed_work waker;
-	struct dm_bio_prison_v2 *prison;
-
-	mempool_t *migration_pool;
-
-	struct dm_cache_policy *policy;
-	unsigned policy_nr_args;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	bool need_tick_bio:1;
 	bool sized:1;
@@ -513,7 +473,6 @@ struct cache {
 	bool loaded_mappings:1;
 	bool loaded_discards:1;
 
-<<<<<<< HEAD
 	struct rw_semaphore background_work_lock;
 
 	struct batcher committer;
@@ -524,27 +483,6 @@ struct cache {
 	mempool_t migration_pool;
 
 	struct bio_set bs;
-=======
-	/*
-	 * Cache features such as write-through.
-	 */
-	struct cache_features features;
-
-	struct cache_stats stats;
-
-	/*
-	 * Invalidation fields.
-	 */
-	spinlock_t invalidation_lock;
-	struct list_head invalidation_requests;
-
-	struct io_tracker tracker;
-
-	struct work_struct commit_ws;
-	struct batcher committer;
-
-	struct rw_semaphore background_work_lock;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct per_bio_data {
@@ -553,18 +491,6 @@ struct per_bio_data {
 	struct dm_bio_prison_cell_v2 *cell;
 	struct dm_hook_info hook_info;
 	sector_t len;
-<<<<<<< HEAD
-=======
-
-	/*
-	 * writethrough fields.  These MUST remain at the end of this
-	 * structure and the 'cache' member must be the first as it
-	 * is used to determine the offset of the writethrough fields.
-	 */
-	struct cache *cache;
-	dm_cblock_t cblock;
-	struct dm_bio_details bio_details;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct dm_cache_migration {
@@ -581,7 +507,6 @@ struct dm_cache_migration {
 
 /*----------------------------------------------------------------*/
 
-<<<<<<< HEAD
 static bool writethrough_mode(struct cache *cache)
 {
 	return cache->features.io_mode == CM_IO_WRITETHROUGH;
@@ -595,21 +520,6 @@ static bool writeback_mode(struct cache *cache)
 static inline bool passthrough_mode(struct cache *cache)
 {
 	return unlikely(cache->features.io_mode == CM_IO_PASSTHROUGH);
-=======
-static bool writethrough_mode(struct cache_features *f)
-{
-	return f->io_mode == CM_IO_WRITETHROUGH;
-}
-
-static bool writeback_mode(struct cache_features *f)
-{
-	return f->io_mode == CM_IO_WRITEBACK;
-}
-
-static inline bool passthrough_mode(struct cache_features *f)
-{
-	return unlikely(f->io_mode == CM_IO_PASSTHROUGH);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*----------------------------------------------------------------*/
@@ -619,20 +529,9 @@ static void wake_deferred_bio_worker(struct cache *cache)
 	queue_work(cache->wq, &cache->deferred_bio_worker);
 }
 
-<<<<<<< HEAD
 static void wake_migration_worker(struct cache *cache)
 {
 	if (passthrough_mode(cache))
-=======
-static void wake_deferred_writethrough_worker(struct cache *cache)
-{
-	queue_work(cache->wq, &cache->deferred_writethrough_worker);
-}
-
-static void wake_migration_worker(struct cache *cache)
-{
-	if (passthrough_mode(&cache->features))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	queue_work(cache->wq, &cache->migration_worker);
@@ -642,11 +541,7 @@ static void wake_migration_worker(struct cache *cache)
 
 static struct dm_bio_prison_cell_v2 *alloc_prison_cell(struct cache *cache)
 {
-<<<<<<< HEAD
 	return dm_bio_prison_alloc_cell_v2(cache->prison, GFP_NOIO);
-=======
-	return dm_bio_prison_alloc_cell_v2(cache->prison, GFP_NOWAIT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void free_prison_cell(struct cache *cache, struct dm_bio_prison_cell_v2 *cell)
@@ -658,20 +553,12 @@ static struct dm_cache_migration *alloc_migration(struct cache *cache)
 {
 	struct dm_cache_migration *mg;
 
-<<<<<<< HEAD
 	mg = mempool_alloc(&cache->migration_pool, GFP_NOIO);
 
 	memset(mg, 0, sizeof(*mg));
 
 	mg->cache = cache;
 	atomic_inc(&cache->nr_allocated_migrations);
-=======
-	mg = mempool_alloc(cache->migration_pool, GFP_NOWAIT);
-	if (mg) {
-		mg->cache = cache;
-		atomic_inc(&mg->cache->nr_allocated_migrations);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return mg;
 }
@@ -683,11 +570,7 @@ static void free_migration(struct dm_cache_migration *mg)
 	if (atomic_dec_and_test(&cache->nr_allocated_migrations))
 		wake_up(&cache->migration_wait);
 
-<<<<<<< HEAD
 	mempool_free(mg, &cache->migration_pool);
-=======
-	mempool_free(mg, cache->migration_pool);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*----------------------------------------------------------------*/
@@ -723,39 +606,16 @@ static unsigned lock_level(struct bio *bio)
  * Per bio data
  *--------------------------------------------------------------*/
 
-<<<<<<< HEAD
 static struct per_bio_data *get_per_bio_data(struct bio *bio)
 {
 	struct per_bio_data *pb = dm_per_bio_data(bio, sizeof(struct per_bio_data));
-=======
-/*
- * If using writeback, leave out struct per_bio_data's writethrough fields.
- */
-#define PB_DATA_SIZE_WB (offsetof(struct per_bio_data, cache))
-#define PB_DATA_SIZE_WT (sizeof(struct per_bio_data))
-
-static size_t get_per_bio_data_size(struct cache *cache)
-{
-	return writethrough_mode(&cache->features) ? PB_DATA_SIZE_WT : PB_DATA_SIZE_WB;
-}
-
-static struct per_bio_data *get_per_bio_data(struct bio *bio, size_t data_size)
-{
-	struct per_bio_data *pb = dm_per_bio_data(bio, data_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	BUG_ON(!pb);
 	return pb;
 }
 
-<<<<<<< HEAD
 static struct per_bio_data *init_per_bio_data(struct bio *bio)
 {
 	struct per_bio_data *pb = get_per_bio_data(bio);
-=======
-static struct per_bio_data *init_per_bio_data(struct bio *bio, size_t data_size)
-{
-	struct per_bio_data *pb = get_per_bio_data(bio, data_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pb->tick = false;
 	pb->req_nr = dm_bio_get_target_bio_nr(bio);
@@ -795,23 +655,12 @@ static void defer_bios(struct cache *cache, struct bio_list *bios)
 static bool bio_detain_shared(struct cache *cache, dm_oblock_t oblock, struct bio *bio)
 {
 	bool r;
-<<<<<<< HEAD
-=======
-	size_t pb_size;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct per_bio_data *pb;
 	struct dm_cell_key_v2 key;
 	dm_oblock_t end = to_oblock(from_oblock(oblock) + 1ULL);
 	struct dm_bio_prison_cell_v2 *cell_prealloc, *cell;
 
 	cell_prealloc = alloc_prison_cell(cache); /* FIXME: allow wait if calling from worker */
-<<<<<<< HEAD
-=======
-	if (!cell_prealloc) {
-		defer_bio(cache, bio);
-		return false;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	build_key(oblock, end, &key);
 	r = dm_cell_get_v2(cache->prison, &key, lock_level(bio), bio, cell_prealloc, &cell);
@@ -826,12 +675,7 @@ static bool bio_detain_shared(struct cache *cache, dm_oblock_t oblock, struct bi
 	if (cell != cell_prealloc)
 		free_prison_cell(cache, cell_prealloc);
 
-<<<<<<< HEAD
 	pb = get_per_bio_data(bio);
-=======
-	pb_size = get_per_bio_data_size(cache);
-	pb = get_per_bio_data(bio, pb_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pb->cell = cell;
 
 	return r;
@@ -983,27 +827,18 @@ static void remap_to_cache(struct cache *cache, struct bio *bio,
 static void check_if_tick_bio_needed(struct cache *cache, struct bio *bio)
 {
 	unsigned long flags;
-<<<<<<< HEAD
 	struct per_bio_data *pb;
-=======
-	size_t pb_data_size = get_per_bio_data_size(cache);
-	struct per_bio_data *pb = get_per_bio_data(bio, pb_data_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irqsave(&cache->lock, flags);
 	if (cache->need_tick_bio && !op_is_flush(bio->bi_opf) &&
 	    bio_op(bio) != REQ_OP_DISCARD) {
-<<<<<<< HEAD
 		pb = get_per_bio_data(bio);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pb->tick = true;
 		cache->need_tick_bio = false;
 	}
 	spin_unlock_irqrestore(&cache->lock, flags);
 }
 
-<<<<<<< HEAD
 static void __remap_to_origin_clear_discard(struct cache *cache, struct bio *bio,
 					    dm_oblock_t oblock, bool bio_has_pbd)
 {
@@ -1019,16 +854,6 @@ static void remap_to_origin_clear_discard(struct cache *cache, struct bio *bio,
 {
 	// FIXME: check_if_tick_bio_needed() is called way too much through this interface
 	__remap_to_origin_clear_discard(cache, bio, oblock, true);
-=======
-static void remap_to_origin_clear_discard(struct cache *cache, struct bio *bio,
-					  dm_oblock_t oblock)
-{
-	// FIXME: this is called way too much.
-	check_if_tick_bio_needed(cache, bio);
-	remap_to_origin(cache, bio);
-	if (bio_data_dir(bio) == WRITE)
-		clear_discard(cache, oblock_to_dblock(cache, oblock));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void remap_to_cache_dirty(struct cache *cache, struct bio *bio,
@@ -1061,17 +886,10 @@ static bool accountable_bio(struct cache *cache, struct bio *bio)
 
 static void accounted_begin(struct cache *cache, struct bio *bio)
 {
-<<<<<<< HEAD
 	struct per_bio_data *pb;
 
 	if (accountable_bio(cache, bio)) {
 		pb = get_per_bio_data(bio);
-=======
-	size_t pb_data_size = get_per_bio_data_size(cache);
-	struct per_bio_data *pb = get_per_bio_data(bio, pb_data_size);
-
-	if (accountable_bio(cache, bio)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pb->len = bio_sectors(bio);
 		iot_io_begin(&cache->tracker, pb->len);
 	}
@@ -1079,12 +897,7 @@ static void accounted_begin(struct cache *cache, struct bio *bio)
 
 static void accounted_complete(struct cache *cache, struct bio *bio)
 {
-<<<<<<< HEAD
 	struct per_bio_data *pb = get_per_bio_data(bio);
-=======
-	size_t pb_data_size = get_per_bio_data_size(cache);
-	struct per_bio_data *pb = get_per_bio_data(bio, pb_data_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	iot_io_end(&cache->tracker, pb->len);
 }
@@ -1101,7 +914,6 @@ static void issue_op(struct bio *bio, void *context)
 	accounted_request(cache, bio);
 }
 
-<<<<<<< HEAD
 /*
  * When running in writethrough mode we need to send writes to clean blocks
  * to both the cache and origin devices.  Clone the bio and send them in parallel.
@@ -1122,59 +934,6 @@ static void remap_to_origin_and_cache(struct cache *cache, struct bio *bio,
 	submit_bio(origin_bio);
 
 	remap_to_cache(cache, bio, cblock);
-=======
-static void defer_writethrough_bio(struct cache *cache, struct bio *bio)
-{
-	unsigned long flags;
-
-	spin_lock_irqsave(&cache->lock, flags);
-	bio_list_add(&cache->deferred_writethrough_bios, bio);
-	spin_unlock_irqrestore(&cache->lock, flags);
-
-	wake_deferred_writethrough_worker(cache);
-}
-
-static void writethrough_endio(struct bio *bio)
-{
-	struct per_bio_data *pb = get_per_bio_data(bio, PB_DATA_SIZE_WT);
-
-	dm_unhook_bio(&pb->hook_info, bio);
-
-	if (bio->bi_status) {
-		bio_endio(bio);
-		return;
-	}
-
-	dm_bio_restore(&pb->bio_details, bio);
-	remap_to_cache(pb->cache, bio, pb->cblock);
-
-	/*
-	 * We can't issue this bio directly, since we're in interrupt
-	 * context.  So it gets put on a bio list for processing by the
-	 * worker thread.
-	 */
-	defer_writethrough_bio(pb->cache, bio);
-}
-
-/*
- * FIXME: send in parallel, huge latency as is.
- * When running in writethrough mode we need to send writes to clean blocks
- * to both the cache and origin devices.  In future we'd like to clone the
- * bio and send them in parallel, but for now we're doing them in
- * series as this is easier.
- */
-static void remap_to_origin_then_cache(struct cache *cache, struct bio *bio,
-				       dm_oblock_t oblock, dm_cblock_t cblock)
-{
-	struct per_bio_data *pb = get_per_bio_data(bio, PB_DATA_SIZE_WT);
-
-	pb->cache = cache;
-	pb->cblock = cblock;
-	dm_hook_bio(&pb->hook_info, bio, writethrough_endio, NULL);
-	dm_bio_record(&pb->bio_details, bio);
-
-	remap_to_origin_clear_discard(pb->cache, bio, oblock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*----------------------------------------------------------------
@@ -1396,11 +1155,7 @@ static bool bio_writes_complete_block(struct cache *cache, struct bio *bio)
 
 static bool optimisable_bio(struct cache *cache, struct bio *bio, dm_oblock_t block)
 {
-<<<<<<< HEAD
 	return writeback_mode(cache) &&
-=======
-	return writeback_mode(&cache->features) &&
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		(is_discarded_oblock(cache, block) || bio_writes_complete_block(cache, bio));
 }
 
@@ -1427,14 +1182,8 @@ static void copy_complete(int read_err, unsigned long write_err, void *context)
 	queue_continuation(mg->cache->wq, &mg->k);
 }
 
-<<<<<<< HEAD
 static void copy(struct dm_cache_migration *mg, bool promote)
 {
-=======
-static int copy(struct dm_cache_migration *mg, bool promote)
-{
-	int r;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct dm_io_region o_region, c_region;
 	struct cache *cache = mg->cache;
 
@@ -1447,27 +1196,14 @@ static int copy(struct dm_cache_migration *mg, bool promote)
 	c_region.count = cache->sectors_per_block;
 
 	if (promote)
-<<<<<<< HEAD
 		dm_kcopyd_copy(cache->copier, &o_region, 1, &c_region, 0, copy_complete, &mg->k);
 	else
 		dm_kcopyd_copy(cache->copier, &c_region, 1, &o_region, 0, copy_complete, &mg->k);
-=======
-		r = dm_kcopyd_copy(cache->copier, &o_region, 1, &c_region, 0, copy_complete, &mg->k);
-	else
-		r = dm_kcopyd_copy(cache->copier, &c_region, 1, &o_region, 0, copy_complete, &mg->k);
-
-	return r;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void bio_drop_shared_lock(struct cache *cache, struct bio *bio)
 {
-<<<<<<< HEAD
 	struct per_bio_data *pb = get_per_bio_data(bio);
-=======
-	size_t pb_data_size = get_per_bio_data_size(cache);
-	struct per_bio_data *pb = get_per_bio_data(bio, pb_data_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (pb->cell && dm_cell_put_v2(cache->prison, pb->cell))
 		free_prison_cell(cache, pb->cell);
@@ -1478,35 +1214,21 @@ static void overwrite_endio(struct bio *bio)
 {
 	struct dm_cache_migration *mg = bio->bi_private;
 	struct cache *cache = mg->cache;
-<<<<<<< HEAD
 	struct per_bio_data *pb = get_per_bio_data(bio);
-=======
-	size_t pb_data_size = get_per_bio_data_size(cache);
-	struct per_bio_data *pb = get_per_bio_data(bio, pb_data_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dm_unhook_bio(&pb->hook_info, bio);
 
 	if (bio->bi_status)
 		mg->k.input = bio->bi_status;
 
-<<<<<<< HEAD
 	queue_continuation(cache->wq, &mg->k);
-=======
-	queue_continuation(mg->cache->wq, &mg->k);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void overwrite(struct dm_cache_migration *mg,
 		      void (*continuation)(struct work_struct *))
 {
 	struct bio *bio = mg->overwrite_bio;
-<<<<<<< HEAD
 	struct per_bio_data *pb = get_per_bio_data(bio);
-=======
-	size_t pb_data_size = get_per_bio_data_size(mg->cache);
-	struct per_bio_data *pb = get_per_bio_data(bio, pb_data_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dm_hook_bio(&pb->hook_info, bio, overwrite_endio, mg);
 
@@ -1718,16 +1440,7 @@ static void mg_full_copy(struct work_struct *ws)
 	}
 
 	init_continuation(&mg->k, mg_upgrade_lock);
-<<<<<<< HEAD
 	copy(mg, is_policy_promote);
-=======
-
-	if (copy(mg, is_policy_promote)) {
-		DMERR_LIMIT("%s: migration copy failed", cache_device_name(cache));
-		mg->k.input = BLK_STS_IOERR;
-		mg_complete(mg, false);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void mg_copy(struct work_struct *ws)
@@ -1773,14 +1486,6 @@ static int mg_lock_writes(struct dm_cache_migration *mg)
 	struct dm_bio_prison_cell_v2 *prealloc;
 
 	prealloc = alloc_prison_cell(cache);
-<<<<<<< HEAD
-=======
-	if (!prealloc) {
-		DMERR_LIMIT("%s: alloc_prison_cell failed", cache_device_name(cache));
-		mg_complete(mg, false);
-		return -ENOMEM;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Prevent writes to the block, but allow reads to continue.
@@ -1818,19 +1523,7 @@ static int mg_start(struct cache *cache, struct policy_work *op, struct bio *bio
 	}
 
 	mg = alloc_migration(cache);
-<<<<<<< HEAD
 
-=======
-	if (!mg) {
-		policy_complete_background_work(cache->policy, op, false);
-		background_work_end(cache);
-		return -ENOMEM;
-	}
-
-	memset(mg, 0, sizeof(*mg));
-
-	mg->cache = cache;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mg->op = op;
 	mg->overwrite_bio = bio;
 
@@ -1918,13 +1611,6 @@ static int invalidate_lock(struct dm_cache_migration *mg)
 	struct dm_bio_prison_cell_v2 *prealloc;
 
 	prealloc = alloc_prison_cell(cache);
-<<<<<<< HEAD
-=======
-	if (!prealloc) {
-		invalidate_complete(mg, false);
-		return -ENOMEM;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	build_key(mg->invalidate_oblock, oblock_succ(mg->invalidate_oblock), &key);
 	r = dm_cell_lock_v2(cache->prison, &key,
@@ -1962,18 +1648,7 @@ static int invalidate_start(struct cache *cache, dm_cblock_t cblock,
 		return -EPERM;
 
 	mg = alloc_migration(cache);
-<<<<<<< HEAD
 
-=======
-	if (!mg) {
-		background_work_end(cache);
-		return -ENOMEM;
-	}
-
-	memset(mg, 0, sizeof(*mg));
-
-	mg->cache = cache;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mg->overwrite_bio = bio;
 	mg->invalidate_cblock = cblock;
 	mg->invalidate_oblock = oblock;
@@ -2022,11 +1697,6 @@ static int map_bio(struct cache *cache, struct bio *bio, dm_oblock_t block,
 	int r, data_dir;
 	bool rb, background_queued;
 	dm_cblock_t cblock;
-<<<<<<< HEAD
-=======
-	size_t pb_data_size = get_per_bio_data_size(cache);
-	struct per_bio_data *pb = get_per_bio_data(bio, pb_data_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	*commit_needed = false;
 
@@ -2075,11 +1745,8 @@ static int map_bio(struct cache *cache, struct bio *bio, dm_oblock_t block,
 	}
 
 	if (r == -ENOENT) {
-<<<<<<< HEAD
 		struct per_bio_data *pb = get_per_bio_data(bio);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * Miss.
 		 */
@@ -2087,10 +1754,6 @@ static int map_bio(struct cache *cache, struct bio *bio, dm_oblock_t block,
 		if (pb->req_nr == 0) {
 			accounted_begin(cache, bio);
 			remap_to_origin_clear_discard(cache, bio, block);
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else {
 			/*
 			 * This is a duplicate writethrough io that is no
@@ -2109,29 +1772,17 @@ static int map_bio(struct cache *cache, struct bio *bio, dm_oblock_t block,
 		 * Passthrough always maps to the origin, invalidating any
 		 * cache blocks that are written to.
 		 */
-<<<<<<< HEAD
 		if (passthrough_mode(cache)) {
-=======
-		if (passthrough_mode(&cache->features)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (bio_data_dir(bio) == WRITE) {
 				bio_drop_shared_lock(cache, bio);
 				atomic_inc(&cache->stats.demotion);
 				invalidate_start(cache, cblock, block, bio);
 			} else
 				remap_to_origin_clear_discard(cache, bio, block);
-<<<<<<< HEAD
 		} else {
 			if (bio_data_dir(bio) == WRITE && writethrough_mode(cache) &&
 			    !is_dirty(cache, cblock)) {
 				remap_to_origin_and_cache(cache, bio, block, cblock);
-=======
-
-		} else {
-			if (bio_data_dir(bio) == WRITE && writethrough_mode(&cache->features) &&
-			    !is_dirty(cache, cblock)) {
-				remap_to_origin_then_cache(cache, bio, block, cblock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				accounted_begin(cache, bio);
 			} else
 				remap_to_cache_dirty(cache, bio, block, cblock);
@@ -2200,12 +1851,7 @@ static blk_status_t commit_op(void *context)
 
 static bool process_flush_bio(struct cache *cache, struct bio *bio)
 {
-<<<<<<< HEAD
 	struct per_bio_data *pb = get_per_bio_data(bio);
-=======
-	size_t pb_data_size = get_per_bio_data_size(cache);
-	struct per_bio_data *pb = get_per_bio_data(bio, pb_data_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!pb->req_nr)
 		remap_to_origin(cache, bio);
@@ -2265,31 +1911,6 @@ static void process_deferred_bios(struct work_struct *ws)
 		schedule_commit(&cache->committer);
 }
 
-<<<<<<< HEAD
-=======
-static void process_deferred_writethrough_bios(struct work_struct *ws)
-{
-	struct cache *cache = container_of(ws, struct cache, deferred_writethrough_worker);
-
-	unsigned long flags;
-	struct bio_list bios;
-	struct bio *bio;
-
-	bio_list_init(&bios);
-
-	spin_lock_irqsave(&cache->lock, flags);
-	bio_list_merge(&bios, &cache->deferred_writethrough_bios);
-	bio_list_init(&cache->deferred_writethrough_bios);
-	spin_unlock_irqrestore(&cache->lock, flags);
-
-	/*
-	 * These bios have already been through accounted_begin()
-	 */
-	while ((bio = bio_list_pop(&bios)))
-		generic_make_request(bio);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*----------------------------------------------------------------
  * Main worker loop
  *--------------------------------------------------------------*/
@@ -2361,11 +1982,7 @@ static void destroy(struct cache *cache)
 {
 	unsigned i;
 
-<<<<<<< HEAD
 	mempool_exit(&cache->migration_pool);
-=======
-	mempool_destroy(cache->migration_pool);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (cache->prison)
 		dm_bio_prison_destroy_v2(cache->prison);
@@ -2401,11 +2018,8 @@ static void destroy(struct cache *cache)
 		kfree(cache->ctr_args[i]);
 	kfree(cache->ctr_args);
 
-<<<<<<< HEAD
 	bioset_exit(&cache->bs);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(cache);
 }
 
@@ -2860,7 +2474,6 @@ static int cache_create(struct cache_args *ca, struct cache **result)
 	ti->discards_supported = true;
 	ti->split_discard_bios = false;
 
-<<<<<<< HEAD
 	ti->per_io_data_size = sizeof(struct per_bio_data);
 
 	cache->features = ca->features;
@@ -2870,10 +2483,6 @@ static int cache_create(struct cache_args *ca, struct cache **result)
 		if (r)
 			goto bad;
 	}
-=======
-	cache->features = ca->features;
-	ti->per_io_data_size = get_per_bio_data_size(cache);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cache->callbacks.congested_fn = cache_is_congested;
 	dm_table_add_target_callbacks(ti->table, &cache->callbacks);
@@ -2935,11 +2544,7 @@ static int cache_create(struct cache_args *ca, struct cache **result)
 		goto bad;
 	}
 
-<<<<<<< HEAD
 	if (passthrough_mode(cache)) {
-=======
-	if (passthrough_mode(&cache->features)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bool all_clean;
 
 		r = dm_cache_metadata_all_clean(cache->cmd, &all_clean);
@@ -2958,13 +2563,7 @@ static int cache_create(struct cache_args *ca, struct cache **result)
 	}
 
 	spin_lock_init(&cache->lock);
-<<<<<<< HEAD
 	bio_list_init(&cache->deferred_bios);
-=======
-	INIT_LIST_HEAD(&cache->deferred_cells);
-	bio_list_init(&cache->deferred_bios);
-	bio_list_init(&cache->deferred_writethrough_bios);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	atomic_set(&cache->nr_allocated_migrations, 0);
 	atomic_set(&cache->nr_io_migrations, 0);
 	init_waitqueue_head(&cache->migration_wait);
@@ -3003,11 +2602,6 @@ static int cache_create(struct cache_args *ca, struct cache **result)
 		goto bad;
 	}
 	INIT_WORK(&cache->deferred_bio_worker, process_deferred_bios);
-<<<<<<< HEAD
-=======
-	INIT_WORK(&cache->deferred_writethrough_worker,
-		  process_deferred_writethrough_bios);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INIT_WORK(&cache->migration_worker, check_migrations);
 	INIT_DELAYED_WORK(&cache->waker, do_waker);
 
@@ -3017,15 +2611,9 @@ static int cache_create(struct cache_args *ca, struct cache **result)
 		goto bad;
 	}
 
-<<<<<<< HEAD
 	r = mempool_init_slab_pool(&cache->migration_pool, MIGRATION_POOL_SIZE,
 				   migration_cache);
 	if (r) {
-=======
-	cache->migration_pool = mempool_create_slab_pool(MIGRATION_POOL_SIZE,
-							 migration_cache);
-	if (!cache->migration_pool) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*error = "Error creating cache's migration mempool";
 		goto bad;
 	}
@@ -3129,14 +2717,8 @@ static int cache_map(struct dm_target *ti, struct bio *bio)
 	int r;
 	bool commit_needed;
 	dm_oblock_t block = get_bio_block(cache, bio);
-<<<<<<< HEAD
 
 	init_per_bio_data(bio);
-=======
-	size_t pb_data_size = get_per_bio_data_size(cache);
-
-	init_per_bio_data(bio, pb_data_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(from_oblock(block) >= from_oblock(cache->origin_blocks))) {
 		/*
 		 * This can only occur if the io goes to a partial block at
@@ -3160,21 +2742,11 @@ static int cache_map(struct dm_target *ti, struct bio *bio)
 	return r;
 }
 
-<<<<<<< HEAD
 static int cache_end_io(struct dm_target *ti, struct bio *bio, blk_status_t *error)
 {
 	struct cache *cache = ti->private;
 	unsigned long flags;
 	struct per_bio_data *pb = get_per_bio_data(bio);
-=======
-static int cache_end_io(struct dm_target *ti, struct bio *bio,
-		blk_status_t *error)
-{
-	struct cache *cache = ti->private;
-	unsigned long flags;
-	size_t pb_data_size = get_per_bio_data_size(cache);
-	struct per_bio_data *pb = get_per_bio_data(bio, pb_data_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (pb->tick) {
 		policy_tick(cache->policy, false);
@@ -3287,13 +2859,8 @@ static void cache_postsuspend(struct dm_target *ti)
 	prevent_background_work(cache);
 	BUG_ON(atomic_read(&cache->nr_io_migrations));
 
-<<<<<<< HEAD
 	cancel_delayed_work(&cache->waker);
 	flush_workqueue(cache->wq);
-=======
-	cancel_delayed_work_sync(&cache->waker);
-	drain_workqueue(cache->wq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	WARN_ON(cache->tracker.in_flight);
 
 	/*
@@ -3600,7 +3167,6 @@ static void cache_status(struct dm_target *ti, status_type_t type,
 		else
 			DMEMIT("1 ");
 
-<<<<<<< HEAD
 		if (writethrough_mode(cache))
 			DMEMIT("writethrough ");
 
@@ -3608,15 +3174,6 @@ static void cache_status(struct dm_target *ti, status_type_t type,
 			DMEMIT("passthrough ");
 
 		else if (writeback_mode(cache))
-=======
-		if (writethrough_mode(&cache->features))
-			DMEMIT("writethrough ");
-
-		else if (passthrough_mode(&cache->features))
-			DMEMIT("passthrough ");
-
-		else if (writeback_mode(&cache->features))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			DMEMIT("writeback ");
 
 		else {
@@ -3782,11 +3339,7 @@ static int process_invalidate_cblocks_message(struct cache *cache, unsigned coun
 	unsigned i;
 	struct cblock_range range;
 
-<<<<<<< HEAD
 	if (!passthrough_mode(cache)) {
-=======
-	if (!passthrough_mode(&cache->features)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		DMERR("%s: cache has to be in passthrough mode for invalidation",
 		      cache_device_name(cache));
 		return -EPERM;
@@ -3820,12 +3373,8 @@ static int process_invalidate_cblocks_message(struct cache *cache, unsigned coun
  *
  * The key migration_threshold is supported by the cache target core.
  */
-<<<<<<< HEAD
 static int cache_message(struct dm_target *ti, unsigned argc, char **argv,
 			 char *result, unsigned maxlen)
-=======
-static int cache_message(struct dm_target *ti, unsigned argc, char **argv)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct cache *cache = ti->private;
 

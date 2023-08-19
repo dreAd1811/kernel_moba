@@ -411,11 +411,7 @@ ath_cmn_process_ht20_40_fft(struct ath_rx_status *rs,
 
 		ath_dbg(common, SPECTRAL_SCAN,
 			"Calculated new upper max 0x%X at %i\n",
-<<<<<<< HEAD
 			tmp_mag, i);
-=======
-			tmp_mag, fft_sample_40.upper_max_index);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else
 	for (i = dc_pos; i < SPECTRAL_HT20_40_NUM_BINS; i++) {
 		if (fft_sample_40.data[i] == (upper_mag >> max_exp))
@@ -1102,7 +1098,6 @@ void ath9k_cmn_spectral_init_debug(struct ath_spec_scan_priv *spec_priv,
 		return;
 
 	debugfs_create_file("spectral_scan_ctl",
-<<<<<<< HEAD
 			    0600,
 			    debugfs_phy, spec_priv,
 			    &fops_spec_scan_ctl);
@@ -1120,25 +1115,6 @@ void ath9k_cmn_spectral_init_debug(struct ath_spec_scan_priv *spec_priv,
 			    &fops_spectral_period);
 	debugfs_create_file("spectral_fft_period",
 			    0600,
-=======
-			    S_IRUSR | S_IWUSR,
-			    debugfs_phy, spec_priv,
-			    &fops_spec_scan_ctl);
-	debugfs_create_file("spectral_short_repeat",
-			    S_IRUSR | S_IWUSR,
-			    debugfs_phy, spec_priv,
-			    &fops_spectral_short_repeat);
-	debugfs_create_file("spectral_count",
-			    S_IRUSR | S_IWUSR,
-			    debugfs_phy, spec_priv,
-			    &fops_spectral_count);
-	debugfs_create_file("spectral_period",
-			    S_IRUSR | S_IWUSR,
-			    debugfs_phy, spec_priv,
-			    &fops_spectral_period);
-	debugfs_create_file("spectral_fft_period",
-			    S_IRUSR | S_IWUSR,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    debugfs_phy, spec_priv,
 			    &fops_spectral_fft_period);
 }

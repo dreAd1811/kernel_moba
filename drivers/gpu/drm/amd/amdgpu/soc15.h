@@ -27,7 +27,6 @@
 #include "nbio_v6_1.h"
 #include "nbio_v7_0.h"
 
-<<<<<<< HEAD
 #define SOC15_FLUSH_GPU_TLB_NUM_WREG		4
 #define SOC15_FLUSH_GPU_TLB_NUM_REG_WAIT	1
 
@@ -47,15 +46,10 @@ struct soc15_reg_golden {
 #define SOC15_REG_GOLDEN_VALUE(ip, inst, reg, and_mask, or_mask) \
 	{ ip##_HWIP, inst, reg##_BASE_IDX, reg, and_mask, or_mask }
 
-=======
-extern const struct amd_ip_funcs soc15_common_ip_funcs;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void soc15_grbm_select(struct amdgpu_device *adev,
 		    u32 me, u32 pipe, u32 queue, u32 vmid);
 int soc15_set_ip_blocks(struct amdgpu_device *adev);
 
-<<<<<<< HEAD
 void soc15_program_register_sequence(struct amdgpu_device *adev,
 					     const struct soc15_reg_golden *registers,
 					     const u32 array_size);
@@ -63,6 +57,4 @@ void soc15_program_register_sequence(struct amdgpu_device *adev,
 int vega10_reg_base_init(struct amdgpu_device *adev);
 int vega20_reg_base_init(struct amdgpu_device *adev);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

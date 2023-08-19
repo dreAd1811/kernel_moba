@@ -121,12 +121,8 @@ static int     sun3_82586_probe1(struct net_device *dev,int ioaddr);
 static irqreturn_t sun3_82586_interrupt(int irq,void *dev_id);
 static int     sun3_82586_open(struct net_device *dev);
 static int     sun3_82586_close(struct net_device *dev);
-<<<<<<< HEAD
 static netdev_tx_t     sun3_82586_send_packet(struct sk_buff *,
 					      struct net_device *);
-=======
-static int     sun3_82586_send_packet(struct sk_buff *,struct net_device *);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct  net_device_stats *sun3_82586_get_stats(struct net_device *dev);
 static void    set_multicast_list(struct net_device *dev);
 static void    sun3_82586_timeout(struct net_device *dev);
@@ -1007,12 +1003,8 @@ static void sun3_82586_timeout(struct net_device *dev)
  * send frame
  */
 
-<<<<<<< HEAD
 static netdev_tx_t
 sun3_82586_send_packet(struct sk_buff *skb, struct net_device *dev)
-=======
-static int sun3_82586_send_packet(struct sk_buff *skb, struct net_device *dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int len,i;
 #ifndef NO_NOPCOMMANDS

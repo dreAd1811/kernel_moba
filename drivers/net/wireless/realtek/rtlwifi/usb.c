@@ -910,15 +910,10 @@ static struct urb *_rtl_usb_tx_urb_setup(struct ieee80211_hw *hw,
 
 	WARN_ON(NULL == skb);
 	_urb = usb_alloc_urb(0, GFP_ATOMIC);
-<<<<<<< HEAD
 	if (!_urb) {
 		kfree_skb(skb);
 		return NULL;
 	}
-=======
-	if (!_urb)
-		return NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	_rtl_install_trx_info(rtlusb, skb, ep_num);
 	usb_fill_bulk_urb(_urb, rtlusb->udev, usb_sndbulkpipe(rtlusb->udev,
 			  ep_num), skb->data, skb->len, _rtl_tx_complete, skb);
@@ -932,10 +927,7 @@ static void _rtl_usb_transmit(struct ieee80211_hw *hw, struct sk_buff *skb,
 	struct rtl_usb *rtlusb = rtl_usbdev(rtl_usbpriv(hw));
 	u32 ep_num;
 	struct urb *_urb = NULL;
-<<<<<<< HEAD
 	struct sk_buff *_skb = NULL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	WARN_ON(NULL == rtlusb->usb_tx_aggregate_hdl);
 	if (unlikely(IS_USB_STOP(rtlusb))) {
@@ -944,12 +936,8 @@ static void _rtl_usb_transmit(struct ieee80211_hw *hw, struct sk_buff *skb,
 		return;
 	}
 	ep_num = rtlusb->ep_map.ep_mapping[qnum];
-<<<<<<< HEAD
 	_skb = skb;
 	_urb = _rtl_usb_tx_urb_setup(hw, _skb, ep_num);
-=======
-	_urb = _rtl_usb_tx_urb_setup(hw, skb, ep_num);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(!_urb)) {
 		pr_err("Can't allocate urb. Drop skb!\n");
 		kfree_skb(skb);
@@ -964,31 +952,16 @@ static void _rtl_usb_tx_preprocess(struct ieee80211_hw *hw,
 				   u16 hw_queue)
 {
 	struct rtl_priv *rtlpriv = rtl_priv(hw);
-<<<<<<< HEAD
-=======
-	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
 	struct rtl_tx_desc *pdesc = NULL;
 	struct rtl_tcb_desc tcb_desc;
 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)(skb->data);
 	__le16 fc = hdr->frame_control;
 	u8 *pda_addr = hdr->addr1;
-<<<<<<< HEAD
-=======
-	/* ssn */
-	u8 *qc = NULL;
-	u8 tid = 0;
-	u16 seq_number = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memset(&tcb_desc, 0, sizeof(struct rtl_tcb_desc));
 	if (ieee80211_is_auth(fc)) {
 		RT_TRACE(rtlpriv, COMP_SEND, DBG_DMESG, "MAC80211_LINKING\n");
-<<<<<<< HEAD
-=======
-		rtl_ips_nic_on(hw);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (rtlpriv->psc.sw_ps_enabled) {
@@ -1004,25 +977,8 @@ static void _rtl_usb_tx_preprocess(struct ieee80211_hw *hw,
 		rtlpriv->stats.txbytesbroadcast += skb->len;
 	else
 		rtlpriv->stats.txbytesunicast += skb->len;
-<<<<<<< HEAD
 	rtlpriv->cfg->ops->fill_tx_desc(hw, hdr, (u8 *)pdesc, NULL, info, sta, skb,
 					hw_queue, &tcb_desc);
-=======
-	if (ieee80211_is_data_qos(fc)) {
-		qc = ieee80211_get_qos_ctl(hdr);
-		tid = qc[0] & IEEE80211_QOS_CTL_TID_MASK;
-		seq_number = (le16_to_cpu(hdr->seq_ctrl) &
-			     IEEE80211_SCTL_SEQ) >> 4;
-		seq_number += 1;
-		seq_number <<= 4;
-	}
-	rtlpriv->cfg->ops->fill_tx_desc(hw, hdr, (u8 *)pdesc, NULL, info, sta, skb,
-					hw_queue, &tcb_desc);
-	if (!ieee80211_has_morefrags(hdr->frame_control)) {
-		if (qc)
-			mac->tids[tid].seq_number = seq_number;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ieee80211_is_data(fc))
 		rtlpriv->cfg->ops->led_control(hw, LED_CTL_TX);
 }
@@ -1092,19 +1048,10 @@ int rtl_usb_probe(struct usb_interface *intf,
 	}
 	rtlpriv = hw->priv;
 	rtlpriv->hw = hw;
-<<<<<<< HEAD
 	rtlpriv->usb_data = kcalloc(RTL_USB_MAX_RX_COUNT, sizeof(u32),
 				    GFP_KERNEL);
 	if (!rtlpriv->usb_data)
 		return -ENOMEM;
-=======
-	rtlpriv->usb_data = kzalloc(RTL_USB_MAX_RX_COUNT * sizeof(u32),
-				    GFP_KERNEL);
-	if (!rtlpriv->usb_data) {
-		ieee80211_free_hw(hw);
-		return -ENOMEM;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* this spin lock must be initialized early */
 	spin_lock_init(&rtlpriv->locks.usb_lock);
@@ -1165,10 +1112,6 @@ error_out2:
 	_rtl_usb_io_handler_release(hw);
 	usb_put_dev(udev);
 	complete(&rtlpriv->firmware_loading_complete);
-<<<<<<< HEAD
-=======
-	kfree(rtlpriv->usb_data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return -ENODEV;
 }
 EXPORT_SYMBOL(rtl_usb_probe);

@@ -45,10 +45,7 @@
 #include <linux/pci.h>
 #include <linux/firmware.h>
 #include <linux/vermagic.h>
-<<<<<<< HEAD
 #include <linux/vmalloc.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <net/devlink.h>
 
 #include "nfpcore/nfp.h"
@@ -58,10 +55,7 @@
 
 #include "nfpcore/nfp6000_pcie.h"
 
-<<<<<<< HEAD
 #include "nfp_abi.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "nfp_app.h"
 #include "nfp_main.h"
 #include "nfp_net.h"
@@ -82,7 +76,6 @@ static const struct pci_device_id nfp_pci_device_ids[] = {
 };
 MODULE_DEVICE_TABLE(pci, nfp_pci_device_ids);
 
-<<<<<<< HEAD
 int nfp_pf_rtsym_read_optional(struct nfp_pf *pf, const char *format,
 			       unsigned int default_val)
 {
@@ -199,8 +192,6 @@ int nfp_mbox_cmd(struct nfp_pf *pf, u32 cmd, void *in_data, u64 in_length,
 	return out_length;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool nfp_board_ready(struct nfp_pf *pf)
 {
 	const char *cp;
@@ -245,7 +236,6 @@ static int nfp_pcie_sriov_read_nfd_limit(struct nfp_pf *pf)
 	int err;
 
 	pf->limit_vfs = nfp_rtsym_read_le(pf->rtbl, "nfd_vf_cfg_max_vfs", &err);
-<<<<<<< HEAD
 	if (err) {
 		/* For backwards compatibility if symbol not found allow all */
 		pf->limit_vfs = ~0;
@@ -260,19 +250,6 @@ static int nfp_pcie_sriov_read_nfd_limit(struct nfp_pf *pf)
 	if (err)
 		nfp_warn(pf->cpp, "Failed to set VF count in sysfs: %d\n", err);
 	return 0;
-=======
-	if (!err)
-		return pci_sriov_set_totalvfs(pf->pdev, pf->limit_vfs);
-
-	pf->limit_vfs = ~0;
-	pci_sriov_set_totalvfs(pf->pdev, 0); /* 0 is unset */
-	/* Allow any setting for backwards compatibility if symbol not found */
-	if (err == -ENOENT)
-		return 0;
-
-	nfp_warn(pf->cpp, "Warning: VF limit read failed: %d\n", err);
-	return err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int nfp_pcie_sriov_enable(struct pci_dev *pdev, int num_vfs)
@@ -490,7 +467,6 @@ exit_release_fw:
 	return err < 0 ? err : 1;
 }
 
-<<<<<<< HEAD
 static void
 nfp_nsp_init_ports(struct pci_dev *pdev, struct nfp_pf *pf,
 		   struct nfp_nsp *nsp)
@@ -517,8 +493,6 @@ nfp_nsp_init_ports(struct pci_dev *pdev, struct nfp_pf *pf,
 	pf->eth_tbl = __nfp_eth_read_ports(pf->cpp, nsp);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int nfp_nsp_init(struct pci_dev *pdev, struct nfp_pf *pf)
 {
 	struct nfp_nsp *nsp;
@@ -539,11 +513,7 @@ static int nfp_nsp_init(struct pci_dev *pdev, struct nfp_pf *pf)
 	if (err < 0)
 		goto exit_close_nsp;
 
-<<<<<<< HEAD
 	nfp_nsp_init_ports(pdev, pf, nsp);
-=======
-	pf->eth_tbl = __nfp_eth_read_ports(pf->cpp, nsp);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pf->nspi = __nfp_nsp_identify(nsp);
 	if (pf->nspi)
@@ -586,7 +556,6 @@ static void nfp_fw_unload(struct nfp_pf *pf)
 	nfp_nsp_close(nsp);
 }
 
-<<<<<<< HEAD
 static int nfp_pf_find_rtsyms(struct nfp_pf *pf)
 {
 	char pf_symbol[256];
@@ -606,8 +575,6 @@ static int nfp_pf_find_rtsyms(struct nfp_pf *pf)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int nfp_pci_probe(struct pci_dev *pdev,
 			 const struct pci_device_id *pci_id)
 {
@@ -658,13 +625,10 @@ static int nfp_pci_probe(struct pci_dev *pdev,
 		goto err_disable_msix;
 	}
 
-<<<<<<< HEAD
 	err = nfp_resource_table_init(pf->cpp);
 	if (err)
 		goto err_cpp_free;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pf->hwinfo = nfp_hwinfo_read(pf->cpp);
 
 	dev_info(&pdev->dev, "Assembly: %s%s%s-%s CPLD: %s\n",
@@ -678,7 +642,6 @@ static int nfp_pci_probe(struct pci_dev *pdev,
 	if (err)
 		goto err_hwinfo_free;
 
-<<<<<<< HEAD
 	err = nfp_nsp_init(pdev, pf);
 	if (err)
 		goto err_hwinfo_free;
@@ -693,19 +656,6 @@ static int nfp_pci_probe(struct pci_dev *pdev,
 	pf->dump_flag = NFP_DUMP_NSP_DIAG;
 	pf->dumpspec = nfp_net_dump_load_dumpspec(pf->cpp, pf->rtbl);
 
-=======
-	err = devlink_register(devlink, &pdev->dev);
-	if (err)
-		goto err_hwinfo_free;
-
-	err = nfp_nsp_init(pdev, pf);
-	if (err)
-		goto err_devlink_unreg;
-
-	pf->mip = nfp_mip_open(pf->cpp);
-	pf->rtbl = __nfp_rtsym_table_read(pf->cpp, pf->mip);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = nfp_pcie_sriov_read_nfd_limit(pf);
 	if (err)
 		goto err_fw_unload;
@@ -721,11 +671,7 @@ static int nfp_pci_probe(struct pci_dev *pdev,
 
 	err = nfp_net_pci_probe(pf);
 	if (err)
-<<<<<<< HEAD
 		goto err_fw_unload;
-=======
-		goto err_sriov_unlimit;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = nfp_hwmon_register(pf);
 	if (err) {
@@ -737,11 +683,6 @@ static int nfp_pci_probe(struct pci_dev *pdev,
 
 err_net_remove:
 	nfp_net_pci_remove(pf);
-<<<<<<< HEAD
-=======
-err_sriov_unlimit:
-	pci_sriov_set_totalvfs(pf->pdev, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_fw_unload:
 	kfree(pf->rtbl);
 	nfp_mip_close(pf->mip);
@@ -749,17 +690,10 @@ err_fw_unload:
 		nfp_fw_unload(pf);
 	kfree(pf->eth_tbl);
 	kfree(pf->nspi);
-<<<<<<< HEAD
 	vfree(pf->dumpspec);
 err_hwinfo_free:
 	kfree(pf->hwinfo);
 err_cpp_free:
-=======
-err_devlink_unreg:
-	devlink_unregister(devlink);
-err_hwinfo_free:
-	kfree(pf->hwinfo);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	nfp_cpp_free(pf->cpp);
 err_disable_msix:
 	destroy_workqueue(pf->wq);
@@ -778,7 +712,6 @@ err_pci_disable:
 static void nfp_pci_remove(struct pci_dev *pdev)
 {
 	struct nfp_pf *pf = pci_get_drvdata(pdev);
-<<<<<<< HEAD
 
 	nfp_hwmon_unregister(pf);
 
@@ -787,21 +720,6 @@ static void nfp_pci_remove(struct pci_dev *pdev)
 	nfp_net_pci_remove(pf);
 
 	vfree(pf->dumpspec);
-=======
-	struct devlink *devlink;
-
-	nfp_hwmon_unregister(pf);
-
-	devlink = priv_to_devlink(pf);
-
-	nfp_net_pci_remove(pf);
-
-	nfp_pcie_sriov_disable(pdev);
-	pci_sriov_set_totalvfs(pf->pdev, 0);
-
-	devlink_unregister(devlink);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(pf->rtbl);
 	nfp_mip_close(pf->mip);
 	if (pf->fw_loaded)
@@ -815,11 +733,7 @@ static void nfp_pci_remove(struct pci_dev *pdev)
 	kfree(pf->eth_tbl);
 	kfree(pf->nspi);
 	mutex_destroy(&pf->lock);
-<<<<<<< HEAD
 	devlink_free(priv_to_devlink(pf));
-=======
-	devlink_free(devlink);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pci_release_regions(pdev);
 	pci_disable_device(pdev);
 }
@@ -876,15 +790,9 @@ MODULE_FIRMWARE("netronome/nic_AMDA0097-0001_4x10_1x40.nffw");
 MODULE_FIRMWARE("netronome/nic_AMDA0097-0001_8x10.nffw");
 MODULE_FIRMWARE("netronome/nic_AMDA0099-0001_2x10.nffw");
 MODULE_FIRMWARE("netronome/nic_AMDA0099-0001_2x25.nffw");
-<<<<<<< HEAD
 MODULE_FIRMWARE("netronome/nic_AMDA0099-0001_1x10_1x25.nffw");
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 MODULE_AUTHOR("Netronome Systems <oss-drivers@netronome.com>");
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("The Netronome Flow Processor (NFP) driver.");
-<<<<<<< HEAD
 MODULE_VERSION(UTS_RELEASE);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -15,12 +15,8 @@
  */
 
 #include <drm/drm_crtc.h>
-<<<<<<< HEAD
 #include <drm/drm_encoder.h>
 #include <drm/drm_device.h>
-=======
-#include <drm/drm_encoder_slave.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "arcpgu.h"
 

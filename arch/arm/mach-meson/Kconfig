@@ -9,10 +9,7 @@ menuconfig ARCH_MESON
 	select PINCTRL_MESON
 	select COMMON_CLK
 	select COMMON_CLK_AMLOGIC
-<<<<<<< HEAD
 	select HAVE_ARM_SCU if SMP
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 if ARCH_MESON
 
@@ -22,23 +19,10 @@ config MACH_MESON6
 	select MESON6_TIMER
 
 config MACH_MESON8
-<<<<<<< HEAD
 	bool "Amlogic Meson8, Meson8b and Meson8m2 SoCs support"
 	default ARCH_MESON
 	select MESON6_TIMER
 	select COMMON_CLK_MESON8B
 	select MESON_IRQ_GPIO
-=======
-	bool "Amlogic Meson8 SoCs support"
-	default ARCH_MESON
-	select MESON6_TIMER
-	select COMMON_CLK_MESON8B
-
-config MACH_MESON8B
-	bool "Amlogic Meson8b SoCs support"
-	default ARCH_MESON
-	select MESON6_TIMER
-	select COMMON_CLK_MESON8B
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 endif

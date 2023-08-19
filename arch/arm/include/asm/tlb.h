@@ -292,7 +292,6 @@ static inline void tlb_remove_check_page_size_change(struct mmu_gather *tlb,
 {
 }
 
-<<<<<<< HEAD
 static inline void tlb_flush_remove_tables(struct mm_struct *mm)
 {
 }
@@ -301,7 +300,5 @@ static inline void tlb_flush_remove_tables_local(void *arg)
 {
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_MMU */
 #endif

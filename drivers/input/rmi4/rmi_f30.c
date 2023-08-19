@@ -122,14 +122,9 @@ static void rmi_f30_report_button(struct rmi_function *fn,
 	}
 }
 
-<<<<<<< HEAD
 static irqreturn_t rmi_f30_attention(int irq, void *ctx)
 {
 	struct rmi_function *fn = ctx;
-=======
-static int rmi_f30_attention(struct rmi_function *fn, unsigned long *irq_bits)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct f30_data *f30 = dev_get_drvdata(&fn->dev);
 	struct rmi_driver_data *drvdata = dev_get_drvdata(&fn->rmi_dev->dev);
 	int error;
@@ -140,11 +135,7 @@ static int rmi_f30_attention(struct rmi_function *fn, unsigned long *irq_bits)
 		if (drvdata->attn_data.size < f30->register_count) {
 			dev_warn(&fn->dev,
 				 "F30 interrupted, but data is missing\n");
-<<<<<<< HEAD
 			return IRQ_HANDLED;
-=======
-			return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		memcpy(f30->data_regs, drvdata->attn_data.data,
 			f30->register_count);
@@ -157,11 +148,7 @@ static int rmi_f30_attention(struct rmi_function *fn, unsigned long *irq_bits)
 			dev_err(&fn->dev,
 				"%s: Failed to read F30 data registers: %d\n",
 				__func__, error);
-<<<<<<< HEAD
 			return IRQ_RETVAL(error);
-=======
-			return error;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -173,11 +160,7 @@ static int rmi_f30_attention(struct rmi_function *fn, unsigned long *irq_bits)
 			rmi_f03_commit_buttons(f30->f03);
 	}
 
-<<<<<<< HEAD
 	return IRQ_HANDLED;
-=======
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int rmi_f30_config(struct rmi_function *fn)

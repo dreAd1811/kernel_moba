@@ -137,7 +137,6 @@ int mlx5_cmd_destroy_vport_lag(struct mlx5_core_dev *dev)
 }
 EXPORT_SYMBOL(mlx5_cmd_destroy_vport_lag);
 
-<<<<<<< HEAD
 static int mlx5_cmd_query_cong_counter(struct mlx5_core_dev *dev,
 				       bool reset, void *out, int out_size)
 {
@@ -149,8 +148,6 @@ static int mlx5_cmd_query_cong_counter(struct mlx5_core_dev *dev,
 	return mlx5_cmd_exec(dev, in, sizeof(in), out, out_size);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct mlx5_lag *mlx5_lag_dev_get(struct mlx5_core_dev *dev)
 {
 	return dev->priv.lag;
@@ -647,7 +644,6 @@ bool mlx5_lag_intf_add(struct mlx5_interface *intf, struct mlx5_priv *priv)
 	/* If bonded, we do not add an IB device for PF1. */
 	return false;
 }
-<<<<<<< HEAD
 
 int mlx5_lag_query_cong_counters(struct mlx5_core_dev *dev,
 				 u64 *values,
@@ -693,5 +689,3 @@ unlock:
 	return ret;
 }
 EXPORT_SYMBOL(mlx5_lag_query_cong_counters);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

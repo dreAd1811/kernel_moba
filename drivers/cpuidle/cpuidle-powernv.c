@@ -98,11 +98,8 @@ static int snooze_loop(struct cpuidle_device *dev,
 	ppc64_runlatch_on();
 	clear_thread_flag(TIF_POLLING_NRFLAG);
 
-<<<<<<< HEAD
 	local_irq_disable();
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return index;
 }
 
@@ -245,10 +242,7 @@ static inline void add_powernv_state(int index, const char *name,
 	powernv_states[index].target_residency = target_residency;
 	powernv_states[index].exit_latency = exit_latency;
 	powernv_states[index].enter = idle_fn;
-<<<<<<< HEAD
 	/* For power8 and below psscr_* will be 0 */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	stop_psscr_table[index].val = psscr_val;
 	stop_psscr_table[index].mask = psscr_mask;
 }
@@ -270,29 +264,14 @@ static inline int validate_dt_prop_sizes(const char *prop1, int prop1_len,
 extern u32 pnv_get_supported_cpuidle_states(void);
 static int powernv_add_idle_states(void)
 {
-<<<<<<< HEAD
 	int nr_idle_states = 1; /* Snooze */
 	int dt_idle_states;
 	u32 has_stop_states = 0;
 	int i;
-=======
-	struct device_node *power_mgt;
-	int nr_idle_states = 1; /* Snooze */
-	int dt_idle_states, count;
-	u32 latency_ns[CPUIDLE_STATE_MAX];
-	u32 residency_ns[CPUIDLE_STATE_MAX];
-	u32 flags[CPUIDLE_STATE_MAX];
-	u64 psscr_val[CPUIDLE_STATE_MAX];
-	u64 psscr_mask[CPUIDLE_STATE_MAX];
-	const char *names[CPUIDLE_STATE_MAX];
-	u32 has_stop_states = 0;
-	int i, rc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 supported_flags = pnv_get_supported_cpuidle_states();
 
 
 	/* Currently we have snooze statically defined */
-<<<<<<< HEAD
 	if (nr_pnv_idle_states <= 0) {
 		pr_warn("cpuidle-powernv : Only Snooze is available\n");
 		goto out;
@@ -300,163 +279,45 @@ static int powernv_add_idle_states(void)
 
 	/* TODO: Count only states which are eligible for cpuidle */
 	dt_idle_states = nr_pnv_idle_states;
-=======
-
-	power_mgt = of_find_node_by_path("/ibm,opal/power-mgt");
-	if (!power_mgt) {
-		pr_warn("opal: PowerMgmt Node not found\n");
-		goto out;
-	}
-
-	/* Read values of any property to determine the num of idle states */
-	dt_idle_states = of_property_count_u32_elems(power_mgt, "ibm,cpu-idle-state-flags");
-	if (dt_idle_states < 0) {
-		pr_warn("cpuidle-powernv: no idle states found in the DT\n");
-		goto out;
-	}
-
-	count = of_property_count_u32_elems(power_mgt,
-					    "ibm,cpu-idle-state-latencies-ns");
-
-	if (validate_dt_prop_sizes("ibm,cpu-idle-state-flags", dt_idle_states,
-				   "ibm,cpu-idle-state-latencies-ns",
-				   count) != 0)
-		goto out;
-
-	count = of_property_count_strings(power_mgt,
-					  "ibm,cpu-idle-state-names");
-	if (validate_dt_prop_sizes("ibm,cpu-idle-state-flags", dt_idle_states,
-				   "ibm,cpu-idle-state-names",
-				   count) != 0)
-		goto out;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Since snooze is used as first idle state, max idle states allowed is
 	 * CPUIDLE_STATE_MAX -1
 	 */
-<<<<<<< HEAD
 	if (nr_pnv_idle_states > CPUIDLE_STATE_MAX - 1) {
-=======
-	if (dt_idle_states > CPUIDLE_STATE_MAX - 1) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_warn("cpuidle-powernv: discovered idle states more than allowed");
 		dt_idle_states = CPUIDLE_STATE_MAX - 1;
 	}
 
-<<<<<<< HEAD
-=======
-	if (of_property_read_u32_array(power_mgt,
-			"ibm,cpu-idle-state-flags", flags, dt_idle_states)) {
-		pr_warn("cpuidle-powernv : missing ibm,cpu-idle-state-flags in DT\n");
-		goto out;
-	}
-
-	if (of_property_read_u32_array(power_mgt,
-		"ibm,cpu-idle-state-latencies-ns", latency_ns,
-		dt_idle_states)) {
-		pr_warn("cpuidle-powernv: missing ibm,cpu-idle-state-latencies-ns in DT\n");
-		goto out;
-	}
-	if (of_property_read_string_array(power_mgt,
-		"ibm,cpu-idle-state-names", names, dt_idle_states) < 0) {
-		pr_warn("cpuidle-powernv: missing ibm,cpu-idle-state-names in DT\n");
-		goto out;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * If the idle states use stop instruction, probe for psscr values
 	 * and psscr mask which are necessary to specify required stop level.
 	 */
-<<<<<<< HEAD
 	has_stop_states = (pnv_idle_states[0].flags &
 			   (OPAL_PM_STOP_INST_FAST | OPAL_PM_STOP_INST_DEEP));
-=======
-	has_stop_states = (flags[0] &
-			   (OPAL_PM_STOP_INST_FAST | OPAL_PM_STOP_INST_DEEP));
-	if (has_stop_states) {
-		count = of_property_count_u64_elems(power_mgt,
-						    "ibm,cpu-idle-state-psscr");
-		if (validate_dt_prop_sizes("ibm,cpu-idle-state-flags",
-					   dt_idle_states,
-					   "ibm,cpu-idle-state-psscr",
-					   count) != 0)
-			goto out;
-
-		count = of_property_count_u64_elems(power_mgt,
-						    "ibm,cpu-idle-state-psscr-mask");
-		if (validate_dt_prop_sizes("ibm,cpu-idle-state-flags",
-					   dt_idle_states,
-					   "ibm,cpu-idle-state-psscr-mask",
-					   count) != 0)
-			goto out;
-
-		if (of_property_read_u64_array(power_mgt,
-		    "ibm,cpu-idle-state-psscr", psscr_val, dt_idle_states)) {
-			pr_warn("cpuidle-powernv: missing ibm,cpu-idle-state-psscr in DT\n");
-			goto out;
-		}
-
-		if (of_property_read_u64_array(power_mgt,
-					       "ibm,cpu-idle-state-psscr-mask",
-						psscr_mask, dt_idle_states)) {
-			pr_warn("cpuidle-powernv:Missing ibm,cpu-idle-state-psscr-mask in DT\n");
-			goto out;
-		}
-	}
-
-	count = of_property_count_u32_elems(power_mgt,
-					    "ibm,cpu-idle-state-residency-ns");
-
-	if (count < 0) {
-		rc = count;
-	} else if (validate_dt_prop_sizes("ibm,cpu-idle-state-flags",
-					  dt_idle_states,
-					  "ibm,cpu-idle-state-residency-ns",
-					  count) != 0) {
-		goto out;
-	} else {
-		rc = of_property_read_u32_array(power_mgt,
-						"ibm,cpu-idle-state-residency-ns",
-						residency_ns, dt_idle_states);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < dt_idle_states; i++) {
 		unsigned int exit_latency, target_residency;
 		bool stops_timebase = false;
-<<<<<<< HEAD
 		struct pnv_idle_states_t *state = &pnv_idle_states[i];
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/*
 		 * Skip the platform idle state whose flag isn't in
 		 * the supported_cpuidle_states flag mask.
 		 */
-<<<<<<< HEAD
 		if ((state->flags & supported_flags) != state->flags)
-=======
-		if ((flags[i] & supported_flags) != flags[i])
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 		/*
 		 * If an idle state has exit latency beyond
 		 * POWERNV_THRESHOLD_LATENCY_NS then don't use it
 		 * in cpu-idle.
 		 */
-<<<<<<< HEAD
 		if (state->latency_ns > POWERNV_THRESHOLD_LATENCY_NS)
-=======
-		if (latency_ns[i] > POWERNV_THRESHOLD_LATENCY_NS)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 		/*
 		 * Firmware passes residency and latency values in ns.
 		 * cpuidle expects it in us.
 		 */
-<<<<<<< HEAD
 		exit_latency = DIV_ROUND_UP(state->latency_ns, 1000);
 		target_residency = DIV_ROUND_UP(state->residency_ns, 1000);
 
@@ -467,51 +328,16 @@ static int powernv_add_idle_states(void)
 			stops_timebase = true;
 
 		if (state->flags & OPAL_PM_NAP_ENABLED) {
-=======
-		exit_latency = DIV_ROUND_UP(latency_ns[i], 1000);
-		if (!rc)
-			target_residency = DIV_ROUND_UP(residency_ns[i], 1000);
-		else
-			target_residency = 0;
-
-		if (has_stop_states) {
-			int err = validate_psscr_val_mask(&psscr_val[i],
-							  &psscr_mask[i],
-							  flags[i]);
-			if (err) {
-				report_invalid_psscr_val(psscr_val[i], err);
-				continue;
-			}
-		}
-
-		if (flags[i] & OPAL_PM_TIMEBASE_STOP)
-			stops_timebase = true;
-
-		/*
-		 * For nap and fastsleep, use default target_residency
-		 * values if f/w does not expose it.
-		 */
-		if (flags[i] & OPAL_PM_NAP_ENABLED) {
-			if (!rc)
-				target_residency = 100;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* Add NAP state */
 			add_powernv_state(nr_idle_states, "Nap",
 					  CPUIDLE_FLAG_NONE, nap_loop,
 					  target_residency, exit_latency, 0, 0);
 		} else if (has_stop_states && !stops_timebase) {
-<<<<<<< HEAD
 			add_powernv_state(nr_idle_states, state->name,
 					  CPUIDLE_FLAG_NONE, stop_loop,
 					  target_residency, exit_latency,
 					  state->psscr_val,
 					  state->psscr_mask);
-=======
-			add_powernv_state(nr_idle_states, names[i],
-					  CPUIDLE_FLAG_NONE, stop_loop,
-					  target_residency, exit_latency,
-					  psscr_val[i], psscr_mask[i]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		/*
@@ -519,33 +345,19 @@ static int powernv_add_idle_states(void)
 		 * within this config dependency check.
 		 */
 #ifdef CONFIG_TICK_ONESHOT
-<<<<<<< HEAD
 		else if (state->flags & OPAL_PM_SLEEP_ENABLED ||
 			 state->flags & OPAL_PM_SLEEP_ENABLED_ER1) {
-=======
-		else if (flags[i] & OPAL_PM_SLEEP_ENABLED ||
-			 flags[i] & OPAL_PM_SLEEP_ENABLED_ER1) {
-			if (!rc)
-				target_residency = 300000;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* Add FASTSLEEP state */
 			add_powernv_state(nr_idle_states, "FastSleep",
 					  CPUIDLE_FLAG_TIMER_STOP,
 					  fastsleep_loop,
 					  target_residency, exit_latency, 0, 0);
 		} else if (has_stop_states && stops_timebase) {
-<<<<<<< HEAD
 			add_powernv_state(nr_idle_states, state->name,
 					  CPUIDLE_FLAG_TIMER_STOP, stop_loop,
 					  target_residency, exit_latency,
 					  state->psscr_val,
 					  state->psscr_mask);
-=======
-			add_powernv_state(nr_idle_states, names[i],
-					  CPUIDLE_FLAG_TIMER_STOP, stop_loop,
-					  target_residency, exit_latency,
-					  psscr_val[i], psscr_mask[i]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 #endif
 		else

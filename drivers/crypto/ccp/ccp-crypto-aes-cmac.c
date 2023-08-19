@@ -46,11 +46,7 @@ static int ccp_aes_cmac_complete(struct crypto_async_request *async_req,
 	}
 
 	/* Update result area if supplied */
-<<<<<<< HEAD
 	if (req->result && rctx->final)
-=======
-	if (req->result)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		memcpy(req->result, rctx->iv, digest_size);
 
 e_free:
@@ -403,20 +399,12 @@ int ccp_register_aes_cmac_algs(struct list_head *head)
 	base = &halg->base;
 	snprintf(base->cra_name, CRYPTO_MAX_ALG_NAME, "cmac(aes)");
 	snprintf(base->cra_driver_name, CRYPTO_MAX_ALG_NAME, "cmac-aes-ccp");
-<<<<<<< HEAD
 	base->cra_flags = CRYPTO_ALG_ASYNC |
-=======
-	base->cra_flags = CRYPTO_ALG_TYPE_AHASH | CRYPTO_ALG_ASYNC |
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  CRYPTO_ALG_KERN_DRIVER_ONLY |
 			  CRYPTO_ALG_NEED_FALLBACK;
 	base->cra_blocksize = AES_BLOCK_SIZE;
 	base->cra_ctxsize = sizeof(struct ccp_ctx);
 	base->cra_priority = CCP_CRA_PRIORITY;
-<<<<<<< HEAD
-=======
-	base->cra_type = &crypto_ahash_type;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	base->cra_init = ccp_aes_cmac_cra_init;
 	base->cra_exit = ccp_aes_cmac_cra_exit;
 	base->cra_module = THIS_MODULE;

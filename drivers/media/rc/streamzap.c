@@ -43,11 +43,7 @@
 #define USB_STREAMZAP_PRODUCT_ID	0x0000
 
 /* table of devices that work with this driver */
-<<<<<<< HEAD
 static const struct usb_device_id streamzap_table[] = {
-=======
-static struct usb_device_id streamzap_table[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Streamzap Remote Control */
 	{ USB_DEVICE(USB_STREAMZAP_VENDOR_ID, USB_STREAMZAP_PRODUCT_ID) },
 	/* Terminating entry */
@@ -195,11 +191,7 @@ static void sz_push_half_space(struct streamzap_ir *sz,
 	sz_push_full_space(sz, value & SZ_SPACE_MASK);
 }
 
-<<<<<<< HEAD
 /*
-=======
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * streamzap_callback - usb IRQ handler callback
  *
  * This procedure is invoked on reception of data from
@@ -329,11 +321,7 @@ out:
 	return NULL;
 }
 
-<<<<<<< HEAD
 /*
-=======
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *	streamzap_probe
  *
  *	Called by usb-core to associated with a candidate device
@@ -462,11 +450,7 @@ free_sz:
 	return retval;
 }
 
-<<<<<<< HEAD
 /*
-=======
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * streamzap_disconnect
  *
  * Called by the usb core when the device is removed from the system.

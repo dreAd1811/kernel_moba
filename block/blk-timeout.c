@@ -57,19 +57,10 @@ ssize_t part_timeout_store(struct device *dev, struct device_attribute *attr,
 		char *p = (char *) buf;
 
 		val = simple_strtoul(p, &p, 10);
-<<<<<<< HEAD
 		if (val)
 			blk_queue_flag_set(QUEUE_FLAG_FAIL_IO, q);
 		else
 			blk_queue_flag_clear(QUEUE_FLAG_FAIL_IO, q);
-=======
-		spin_lock_irq(q->queue_lock);
-		if (val)
-			queue_flag_set(QUEUE_FLAG_FAIL_IO, q);
-		else
-			queue_flag_clear(QUEUE_FLAG_FAIL_IO, q);
-		spin_unlock_irq(q->queue_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return count;
@@ -95,21 +86,11 @@ static void blk_rq_timed_out(struct request *req)
 	if (q->rq_timed_out_fn)
 		ret = q->rq_timed_out_fn(req);
 	switch (ret) {
-<<<<<<< HEAD
-=======
-	case BLK_EH_HANDLED:
-		__blk_complete_request(req);
-		break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case BLK_EH_RESET_TIMER:
 		blk_add_timer(req);
 		blk_clear_rq_complete(req);
 		break;
-<<<<<<< HEAD
 	case BLK_EH_DONE:
-=======
-	case BLK_EH_NOT_HANDLED:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * LLD handles this for now but in the future
 		 * we can send a request msg to abort the command
@@ -126,13 +107,9 @@ static void blk_rq_timed_out(struct request *req)
 static void blk_rq_check_expired(struct request *rq, unsigned long *next_timeout,
 			  unsigned int *next_set)
 {
-<<<<<<< HEAD
 	const unsigned long deadline = blk_rq_deadline(rq);
 
 	if (time_after_eq(jiffies, deadline)) {
-=======
-	if (time_after_eq(jiffies, rq->deadline)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		list_del_init(&rq->timeout_list);
 
 		/*
@@ -140,13 +117,8 @@ static void blk_rq_check_expired(struct request *rq, unsigned long *next_timeout
 		 */
 		if (!blk_mark_rq_complete(rq))
 			blk_rq_timed_out(rq);
-<<<<<<< HEAD
 	} else if (!*next_set || time_after(*next_timeout, deadline)) {
 		*next_timeout = deadline;
-=======
-	} else if (!*next_set || time_after(*next_timeout, rq->deadline)) {
-		*next_timeout = rq->deadline;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*next_set = 1;
 	}
 }
@@ -181,7 +153,6 @@ void blk_timeout_work(struct work_struct *work)
  */
 void blk_abort_request(struct request *req)
 {
-<<<<<<< HEAD
 	if (req->q->mq_ops) {
 		/*
 		 * All we need to ensure is that timeout scan takes place
@@ -193,14 +164,6 @@ void blk_abort_request(struct request *req)
 	} else {
 		if (blk_mark_rq_complete(req))
 			return;
-=======
-	if (blk_mark_rq_complete(req))
-		return;
-
-	if (req->q->mq_ops) {
-		blk_mq_rq_timed_out(req, false);
-	} else {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		blk_delete_timer(req);
 		blk_rq_timed_out(req);
 	}
@@ -247,12 +210,8 @@ void blk_add_timer(struct request *req)
 	if (!req->timeout)
 		req->timeout = q->rq_timeout;
 
-<<<<<<< HEAD
 	req->rq_flags &= ~RQF_TIMED_OUT;
 	blk_rq_set_deadline(req, jiffies + req->timeout);
-=======
-	req->deadline = jiffies + req->timeout;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Only the non-mq case needs to add the request to a protected list.
@@ -266,11 +225,7 @@ void blk_add_timer(struct request *req)
 	 * than an existing one, modify the timer. Round up to next nearest
 	 * second.
 	 */
-<<<<<<< HEAD
 	expiry = blk_rq_timeout(round_jiffies_up(blk_rq_deadline(req)));
-=======
-	expiry = blk_rq_timeout(round_jiffies_up(req->deadline));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!timer_pending(&q->timeout) ||
 	    time_before(expiry, q->timeout.expires)) {

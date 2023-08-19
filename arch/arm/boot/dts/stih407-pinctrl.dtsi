@@ -45,11 +45,7 @@
 	};
 
 	soc {
-<<<<<<< HEAD
 		pin-controller-sbc@961f080 {
-=======
-		pin-controller-sbc {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			#address-cells = <1>;
 			#size-cells = <1>;
 			compatible = "st,stih407-sbc-pinctrl";
@@ -60,11 +56,7 @@
 			interrupt-names = "irqmux";
 			ranges = <0 0x09610000 0x6000>;
 
-<<<<<<< HEAD
 			pio0: gpio@9610000 {
-=======
-			pio0: gpio@09610000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				gpio-controller;
 				#gpio-cells = <2>;
 				interrupt-controller;
@@ -72,11 +64,7 @@
 				reg = <0x0 0x100>;
 				st,bank-name = "PIO0";
 			};
-<<<<<<< HEAD
 			pio1: gpio@9611000 {
-=======
-			pio1: gpio@09611000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				gpio-controller;
 				#gpio-cells = <2>;
 				interrupt-controller;
@@ -84,11 +72,7 @@
 				reg = <0x1000 0x100>;
 				st,bank-name = "PIO1";
 			};
-<<<<<<< HEAD
 			pio2: gpio@9612000 {
-=======
-			pio2: gpio@09612000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				gpio-controller;
 				#gpio-cells = <2>;
 				interrupt-controller;
@@ -96,11 +80,7 @@
 				reg = <0x2000 0x100>;
 				st,bank-name = "PIO2";
 			};
-<<<<<<< HEAD
 			pio3: gpio@9613000 {
-=======
-			pio3: gpio@09613000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				gpio-controller;
 				#gpio-cells = <2>;
 				interrupt-controller;
@@ -108,11 +88,7 @@
 				reg = <0x3000 0x100>;
 				st,bank-name = "PIO3";
 			};
-<<<<<<< HEAD
 			pio4: gpio@9614000 {
-=======
-			pio4: gpio@09614000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				gpio-controller;
 				#gpio-cells = <2>;
 				interrupt-controller;
@@ -121,11 +97,7 @@
 				st,bank-name = "PIO4";
 			};
 
-<<<<<<< HEAD
 			pio5: gpio@9615000 {
-=======
-			pio5: gpio@09615000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				gpio-controller;
 				#gpio-cells = <2>;
 				interrupt-controller;
@@ -397,11 +369,7 @@
 			};
 		};
 
-<<<<<<< HEAD
 		pin-controller-front0@920f080 {
-=======
-		pin-controller-front0 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			#address-cells = <1>;
 			#size-cells = <1>;
 			compatible = "st,stih407-front-pinctrl";
@@ -412,11 +380,7 @@
 			interrupt-names = "irqmux";
 			ranges = <0 0x09200000 0x10000>;
 
-<<<<<<< HEAD
 			pio10: pio@9200000 {
-=======
-			pio10: pio@09200000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				gpio-controller;
 				#gpio-cells = <2>;
 				interrupt-controller;
@@ -424,11 +388,7 @@
 				reg = <0x0 0x100>;
 				st,bank-name = "PIO10";
 			};
-<<<<<<< HEAD
 			pio11: pio@9201000 {
-=======
-			pio11: pio@09201000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				gpio-controller;
 				#gpio-cells = <2>;
 				interrupt-controller;
@@ -436,11 +396,7 @@
 				reg = <0x1000 0x100>;
 				st,bank-name = "PIO11";
 			};
-<<<<<<< HEAD
 			pio12: pio@9202000 {
-=======
-			pio12: pio@09202000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				gpio-controller;
 				#gpio-cells = <2>;
 				interrupt-controller;
@@ -448,11 +404,7 @@
 				reg = <0x2000 0x100>;
 				st,bank-name = "PIO12";
 			};
-<<<<<<< HEAD
 			pio13: pio@9203000 {
-=======
-			pio13: pio@09203000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				gpio-controller;
 				#gpio-cells = <2>;
 				interrupt-controller;
@@ -460,11 +412,7 @@
 				reg = <0x3000 0x100>;
 				st,bank-name = "PIO13";
 			};
-<<<<<<< HEAD
 			pio14: pio@9204000 {
-=======
-			pio14: pio@09204000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				gpio-controller;
 				#gpio-cells = <2>;
 				interrupt-controller;
@@ -472,11 +420,7 @@
 				reg = <0x4000 0x100>;
 				st,bank-name = "PIO14";
 			};
-<<<<<<< HEAD
 			pio15: pio@9205000 {
-=======
-			pio15: pio@09205000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				gpio-controller;
 				#gpio-cells = <2>;
 				interrupt-controller;
@@ -484,11 +428,7 @@
 				reg = <0x5000 0x100>;
 				st,bank-name = "PIO15";
 			};
-<<<<<<< HEAD
 			pio16: pio@9206000 {
-=======
-			pio16: pio@09206000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				gpio-controller;
 				#gpio-cells = <2>;
 				interrupt-controller;
@@ -496,11 +436,7 @@
 				reg = <0x6000 0x100>;
 				st,bank-name = "PIO16";
 			};
-<<<<<<< HEAD
 			pio17: pio@9207000 {
-=======
-			pio17: pio@09207000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				gpio-controller;
 				#gpio-cells = <2>;
 				interrupt-controller;
@@ -508,11 +444,7 @@
 				reg = <0x7000 0x100>;
 				st,bank-name = "PIO17";
 			};
-<<<<<<< HEAD
 			pio18: pio@9208000 {
-=======
-			pio18: pio@09208000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				gpio-controller;
 				#gpio-cells = <2>;
 				interrupt-controller;
@@ -520,11 +452,7 @@
 				reg = <0x8000 0x100>;
 				st,bank-name = "PIO18";
 			};
-<<<<<<< HEAD
 			pio19: pio@9209000 {
-=======
-			pio19: pio@09209000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				gpio-controller;
 				#gpio-cells = <2>;
 				interrupt-controller;
@@ -1001,11 +929,7 @@
 			};
 		};
 
-<<<<<<< HEAD
 		pin-controller-front1@921f080 {
-=======
-		pin-controller-front1 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			#address-cells = <1>;
 			#size-cells = <1>;
 			compatible = "st,stih407-front-pinctrl";
@@ -1016,11 +940,7 @@
 			interrupt-names = "irqmux";
 			ranges = <0 0x09210000 0x10000>;
 
-<<<<<<< HEAD
 			pio20: pio@9210000 {
-=======
-			pio20: pio@09210000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				gpio-controller;
 				#gpio-cells = <2>;
 				interrupt-controller;
@@ -1042,11 +962,7 @@
 			};
 		};
 
-<<<<<<< HEAD
 		pin-controller-rear@922f080 {
-=======
-		pin-controller-rear {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			#address-cells = <1>;
 			#size-cells = <1>;
 			compatible = "st,stih407-rear-pinctrl";
@@ -1057,11 +973,7 @@
 			interrupt-names = "irqmux";
 			ranges = <0 0x09220000 0x6000>;
 
-<<<<<<< HEAD
 			pio30: gpio@9220000 {
-=======
-			pio30: gpio@09220000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				gpio-controller;
 				#gpio-cells = <2>;
 				interrupt-controller;
@@ -1069,11 +981,7 @@
 				reg = <0x0 0x100>;
 				st,bank-name = "PIO30";
 			};
-<<<<<<< HEAD
 			pio31: gpio@9221000 {
-=======
-			pio31: gpio@09221000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				gpio-controller;
 				#gpio-cells = <2>;
 				interrupt-controller;
@@ -1081,11 +989,7 @@
 				reg = <0x1000 0x100>;
 				st,bank-name = "PIO31";
 			};
-<<<<<<< HEAD
 			pio32: gpio@9222000 {
-=======
-			pio32: gpio@09222000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				gpio-controller;
 				#gpio-cells = <2>;
 				interrupt-controller;
@@ -1093,11 +997,7 @@
 				reg = <0x2000 0x100>;
 				st,bank-name = "PIO32";
 			};
-<<<<<<< HEAD
 			pio33: gpio@9223000 {
-=======
-			pio33: gpio@09223000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				gpio-controller;
 				#gpio-cells = <2>;
 				interrupt-controller;
@@ -1105,11 +1005,7 @@
 				reg = <0x3000 0x100>;
 				st,bank-name = "PIO33";
 			};
-<<<<<<< HEAD
 			pio34: gpio@9224000 {
-=======
-			pio34: gpio@09224000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				gpio-controller;
 				#gpio-cells = <2>;
 				interrupt-controller;
@@ -1117,11 +1013,7 @@
 				reg = <0x4000 0x100>;
 				st,bank-name = "PIO34";
 			};
-<<<<<<< HEAD
 			pio35: gpio@9225000 {
-=======
-			pio35: gpio@09225000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				gpio-controller;
 				#gpio-cells = <2>;
 				interrupt-controller;
@@ -1265,11 +1157,7 @@
 			};
 		};
 
-<<<<<<< HEAD
 		pin-controller-flash@923f080 {
-=======
-		pin-controller-flash {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			#address-cells = <1>;
 			#size-cells = <1>;
 			compatible = "st,stih407-flash-pinctrl";
@@ -1280,11 +1168,7 @@
 			interrupt-names = "irqmux";
 			ranges = <0 0x09230000 0x3000>;
 
-<<<<<<< HEAD
 			pio40: gpio@9230000 {
-=======
-			pio40: gpio@09230000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				gpio-controller;
 				#gpio-cells = <2>;
 				interrupt-controller;
@@ -1292,11 +1176,7 @@
 				reg = <0 0x100>;
 				st,bank-name = "PIO40";
 			};
-<<<<<<< HEAD
 			pio41: gpio@9231000 {
-=======
-			pio41: gpio@09231000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				gpio-controller;
 				#gpio-cells = <2>;
 				interrupt-controller;
@@ -1304,11 +1184,7 @@
 				reg = <0x1000 0x100>;
 				st,bank-name = "PIO41";
 			};
-<<<<<<< HEAD
 			pio42: gpio@9232000 {
-=======
-			pio42: gpio@09232000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				gpio-controller;
 				#gpio-cells = <2>;
 				interrupt-controller;

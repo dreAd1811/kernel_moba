@@ -18,11 +18,7 @@
 		stdout-path = "serial0:115200n8";
 	};
 
-<<<<<<< HEAD
 	memory@80000000 {
-=======
-	memory {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x0 0x80000000 0x0 0x80000000>;
 	};
 
@@ -617,11 +613,7 @@
 			compatible = "maxim,max98090";
 			reg = <0x10>;
 			interrupt-parent = <&gpio>;
-<<<<<<< HEAD
 			interrupts = <TEGRA_GPIO(H, 4) IRQ_TYPE_EDGE_FALLING>;
-=======
-			interrupts = <TEGRA_GPIO(H, 4) GPIO_ACTIVE_HIGH>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 	};
 
@@ -867,11 +859,7 @@
 					reg = <0x9>;
 					interrupt-parent = <&gpio>;
 					interrupts = <TEGRA_GPIO(J, 0)
-<<<<<<< HEAD
 							IRQ_TYPE_EDGE_BOTH>;
-=======
-							GPIO_ACTIVE_HIGH>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					ti,ac-detect-gpios = <&gpio
 							TEGRA_GPIO(J, 0)
 							GPIO_ACTIVE_HIGH>;
@@ -968,14 +956,6 @@
 						nvidia,function = "usb3-ss";
 						status = "okay";
 					};
-<<<<<<< HEAD
-=======
-
-					pcie-1 {
-						nvidia,function = "usb3-ss";
-						status = "okay";
-					};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				};
 			};
 		};

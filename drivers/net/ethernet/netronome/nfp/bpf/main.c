@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
  * Copyright (C) 2017-2018 Netronome Systems, Inc.
-=======
- * Copyright (C) 2017 Netronome Systems, Inc.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This software is dual licensed under the GNU General License Version 2,
  * June 1991 as shown in the file COPYING in the top-level directory of this
@@ -38,16 +34,12 @@
 #include <net/pkt_cls.h>
 
 #include "../nfpcore/nfp_cpp.h"
-<<<<<<< HEAD
 #include "../nfpcore/nfp_nffw.h"
 #include "../nfpcore/nfp_nsp.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "../nfp_app.h"
 #include "../nfp_main.h"
 #include "../nfp_net.h"
 #include "../nfp_port.h"
-<<<<<<< HEAD
 #include "fw.h"
 #include "main.h"
 
@@ -66,37 +58,18 @@ static bool nfp_net_ebpf_capable(struct nfp_net *nn)
 	    nn_readb(nn, NFP_NET_CFG_BPF_ABI) == NFP_NET_BPF_ABI)
 		return true;
 #endif
-=======
-#include "main.h"
-
-static bool nfp_net_ebpf_capable(struct nfp_net *nn)
-{
-	if (nn->cap & NFP_NET_CFG_CTRL_BPF &&
-	    nn_readb(nn, NFP_NET_CFG_BPF_ABI) == NFP_NET_BPF_ABI)
-		return true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return false;
 }
 
 static int
 nfp_bpf_xdp_offload(struct nfp_app *app, struct nfp_net *nn,
-<<<<<<< HEAD
 		    struct bpf_prog *prog, struct netlink_ext_ack *extack)
 {
 	bool running, xdp_running;
-=======
-		    struct bpf_prog *prog)
-{
-	struct tc_cls_bpf_offload cmd = {
-		.prog = prog,
-	};
-	int ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!nfp_net_ebpf_capable(nn))
 		return -EINVAL;
 
-<<<<<<< HEAD
 	running = nn->dp.ctrl & NFP_NET_CFG_CTRL_BPF;
 	xdp_running = running && nn->xdp_hw.prog;
 
@@ -106,24 +79,6 @@ nfp_bpf_xdp_offload(struct nfp_app *app, struct nfp_net *nn,
 		return -EBUSY;
 
 	return nfp_net_bpf_offload(nn, prog, running, extack);
-=======
-	if (nn->dp.ctrl & NFP_NET_CFG_CTRL_BPF) {
-		if (!nn->dp.bpf_offload_xdp)
-			return prog ? -EBUSY : 0;
-		cmd.command = prog ? TC_CLSBPF_REPLACE : TC_CLSBPF_DESTROY;
-	} else {
-		if (!prog)
-			return 0;
-		cmd.command = TC_CLSBPF_ADD;
-	}
-
-	ret = nfp_net_bpf_offload(nn, &cmd);
-	/* Stop offload if replace not possible */
-	if (ret && cmd.command == TC_CLSBPF_REPLACE)
-		nfp_bpf_xdp_offload(app, nn, NULL);
-	nn->dp.bpf_offload_xdp = prog && !ret;
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const char *nfp_bpf_extra_cap(struct nfp_app *app, struct nfp_net *nn)
@@ -134,7 +89,6 @@ static const char *nfp_bpf_extra_cap(struct nfp_app *app, struct nfp_net *nn)
 static int
 nfp_bpf_vnic_alloc(struct nfp_app *app, struct nfp_net *nn, unsigned int id)
 {
-<<<<<<< HEAD
 	struct nfp_pf *pf = app->pf;
 	struct nfp_bpf_vnic *bv;
 	int err;
@@ -165,38 +119,10 @@ nfp_bpf_vnic_alloc(struct nfp_app *app, struct nfp_net *nn, unsigned int id)
 err_free_priv:
 	kfree(nn->app_priv);
 	return err;
-=======
-	struct nfp_net_bpf_priv *priv;
-	int ret;
-
-	/* Limit to single port, otherwise it's just a NIC */
-	if (id > 0) {
-		nfp_warn(app->cpp,
-			 "BPF NIC doesn't support more than one port right now\n");
-		nn->port = nfp_port_alloc(app, NFP_PORT_INVALID, nn->dp.netdev);
-		return PTR_ERR_OR_ZERO(nn->port);
-	}
-
-	priv = kmalloc(sizeof(*priv), GFP_KERNEL);
-	if (!priv)
-		return -ENOMEM;
-
-	nn->app_priv = priv;
-	spin_lock_init(&priv->rx_filter_lock);
-	setup_timer(&priv->rx_filter_stats_timer,
-		    nfp_net_filter_stats_timer, (unsigned long)nn);
-
-	ret = nfp_app_nic_vnic_alloc(app, nn, id);
-	if (ret)
-		kfree(priv);
-
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void nfp_bpf_vnic_free(struct nfp_app *app, struct nfp_net *nn)
 {
-<<<<<<< HEAD
 	struct nfp_bpf_vnic *bv = nn->app_priv;
 
 	WARN_ON(bv->tc_prog);
@@ -282,17 +208,11 @@ static int nfp_bpf_setup_tc_block(struct net_device *netdev,
 	default:
 		return -EOPNOTSUPP;
 	}
-=======
-	if (nn->dp.bpf_offload_xdp)
-		nfp_bpf_xdp_offload(app, nn, NULL);
-	kfree(nn->app_priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int nfp_bpf_setup_tc(struct nfp_app *app, struct net_device *netdev,
 			    enum tc_setup_type type, void *type_data)
 {
-<<<<<<< HEAD
 	switch (type) {
 	case TC_SETUP_BLOCK:
 		return nfp_bpf_setup_tc_block(netdev, type_data);
@@ -561,33 +481,12 @@ static void nfp_bpf_clean(struct nfp_app *app)
 	rhashtable_free_and_destroy(&bpf->maps_neutral,
 				    nfp_check_rhashtable_empty, NULL);
 	kfree(bpf);
-=======
-	struct tc_cls_bpf_offload *cls_bpf = type_data;
-	struct nfp_net *nn = netdev_priv(netdev);
-
-	if (type != TC_SETUP_CLSBPF || !nfp_net_ebpf_capable(nn) ||
-	    !is_classid_clsact_ingress(cls_bpf->common.classid) ||
-	    cls_bpf->common.protocol != htons(ETH_P_ALL) ||
-	    cls_bpf->common.chain_index)
-		return -EOPNOTSUPP;
-
-	if (nn->dp.bpf_offload_xdp)
-		return -EBUSY;
-
-	return nfp_net_bpf_offload(nn, cls_bpf);
-}
-
-static bool nfp_bpf_tc_busy(struct nfp_app *app, struct nfp_net *nn)
-{
-	return nn->dp.ctrl & NFP_NET_CFG_CTRL_BPF;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 const struct nfp_app_type app_bpf = {
 	.id		= NFP_APP_BPF_NIC,
 	.name		= "ebpf",
 
-<<<<<<< HEAD
 	.ctrl_cap_mask	= 0,
 
 	.init		= nfp_bpf_init,
@@ -608,14 +507,5 @@ const struct nfp_app_type app_bpf = {
 
 	.setup_tc	= nfp_bpf_setup_tc,
 	.bpf		= nfp_ndo_bpf,
-=======
-	.extra_cap	= nfp_bpf_extra_cap,
-
-	.vnic_alloc	= nfp_bpf_vnic_alloc,
-	.vnic_free	= nfp_bpf_vnic_free,
-
-	.setup_tc	= nfp_bpf_setup_tc,
-	.tc_busy	= nfp_bpf_tc_busy,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.xdp_offload	= nfp_bpf_xdp_offload,
 };

@@ -33,11 +33,7 @@
 #include <linux/i2c.h>
 #include <linux/interrupt.h>
 #include <linux/wait.h>
-<<<<<<< HEAD
 #include <linux/platform_data/i2c-xiic.h>
-=======
-#include <linux/i2c-xiic.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/io.h>
 #include <linux/slab.h>
 #include <linux/of.h>
@@ -147,15 +143,6 @@ struct xiic_i2c {
 
 #define XIIC_TX_RX_INTERRUPTS (XIIC_INTR_RX_FULL_MASK | XIIC_TX_INTERRUPTS)
 
-<<<<<<< HEAD
-=======
-/* The following constants are used with the following macros to specify the
- * operation, a read or write operation.
- */
-#define XIIC_READ_OPERATION  1
-#define XIIC_WRITE_OPERATION 0
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Tx Fifo upper bit masks.
  */
@@ -422,11 +409,7 @@ static irqreturn_t xiic_process(int irq, void *dev_id)
 		clr |= XIIC_INTR_RX_FULL_MASK;
 		if (!i2c->rx_msg) {
 			dev_dbg(i2c->adap.dev.parent,
-<<<<<<< HEAD
 				"%s unexpected RX IRQ\n", __func__);
-=======
-				"%s unexpexted RX IRQ\n", __func__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			xiic_clear_rx_fifo(i2c);
 			goto out;
 		}
@@ -481,11 +464,7 @@ static irqreturn_t xiic_process(int irq, void *dev_id)
 
 		if (!i2c->tx_msg) {
 			dev_dbg(i2c->adap.dev.parent,
-<<<<<<< HEAD
 				"%s unexpected TX IRQ\n", __func__);
-=======
-				"%s unexpexted TX IRQ\n", __func__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto out;
 		}
 
@@ -573,12 +552,7 @@ static void xiic_start_recv(struct xiic_i2c *i2c)
 	if (!(msg->flags & I2C_M_NOSTART))
 		/* write the address */
 		xiic_setreg16(i2c, XIIC_DTR_REG_OFFSET,
-<<<<<<< HEAD
 			i2c_8bit_addr_from_msg(msg) | XIIC_TX_DYN_START_MASK);
-=======
-			(msg->addr << 1) | XIIC_READ_OPERATION |
-			XIIC_TX_DYN_START_MASK);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	xiic_irq_clr_en(i2c, XIIC_INTR_BNB_MASK);
 
@@ -608,11 +582,7 @@ static void xiic_start_send(struct xiic_i2c *i2c)
 
 	if (!(msg->flags & I2C_M_NOSTART)) {
 		/* write the address */
-<<<<<<< HEAD
 		u16 data = i2c_8bit_addr_from_msg(msg) |
-=======
-		u16 data = ((msg->addr << 1) & 0xfe) | XIIC_WRITE_OPERATION |
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			XIIC_TX_DYN_START_MASK;
 		if ((i2c->nmsgs == 1) && msg->len == 0)
 			/* no data and last message -> add STOP */
@@ -883,11 +853,7 @@ static const struct of_device_id xiic_of_match[] = {
 MODULE_DEVICE_TABLE(of, xiic_of_match);
 #endif
 
-<<<<<<< HEAD
 static int __maybe_unused xiic_i2c_runtime_suspend(struct device *dev)
-=======
-static int __maybe_unused cdns_i2c_runtime_suspend(struct device *dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct xiic_i2c *i2c = dev_get_drvdata(dev);
 
@@ -896,11 +862,7 @@ static int __maybe_unused cdns_i2c_runtime_suspend(struct device *dev)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int __maybe_unused xiic_i2c_runtime_resume(struct device *dev)
-=======
-static int __maybe_unused cdns_i2c_runtime_resume(struct device *dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct xiic_i2c *i2c = dev_get_drvdata(dev);
 	int ret;
@@ -915,13 +877,8 @@ static int __maybe_unused cdns_i2c_runtime_resume(struct device *dev)
 }
 
 static const struct dev_pm_ops xiic_dev_pm_ops = {
-<<<<<<< HEAD
 	SET_RUNTIME_PM_OPS(xiic_i2c_runtime_suspend,
 			   xiic_i2c_runtime_resume, NULL)
-=======
-	SET_RUNTIME_PM_OPS(cdns_i2c_runtime_suspend,
-			   cdns_i2c_runtime_resume, NULL)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 static struct platform_driver xiic_i2c_driver = {
 	.probe   = xiic_i2c_probe,

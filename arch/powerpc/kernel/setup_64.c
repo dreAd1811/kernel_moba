@@ -10,11 +10,6 @@
  *      2 of the License, or (at your option) any later version.
  */
 
-<<<<<<< HEAD
-=======
-#define DEBUG
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/export.h>
 #include <linux/string.h>
 #include <linux/sched.h>
@@ -72,13 +67,10 @@
 #include <asm/livepatch.h>
 #include <asm/opal.h>
 #include <asm/cputhreads.h>
-<<<<<<< HEAD
 #include <asm/hw_irq.h>
 #include <asm/feature-fixups.h>
 
 #include "setup.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef DEBUG
 #define DBG(fmt...) udbg_printf(fmt)
@@ -119,11 +111,7 @@ void __init setup_tlb_core_data(void)
 		if (cpu_first_thread_sibling(boot_cpuid) == first)
 			first = boot_cpuid;
 
-<<<<<<< HEAD
 		paca_ptrs[cpu]->tcd_ptr = &paca_ptrs[first]->tcd;
-=======
-		paca[cpu].tcd_ptr = &paca[first].tcd;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/*
 		 * If we have threads, we need either tlbsrx.
@@ -202,11 +190,8 @@ static void __init fixup_boot_paca(void)
 	get_paca()->cpu_start = 1;
 	/* Allow percpu accesses to work until we setup percpu data */
 	get_paca()->data_offset = 0;
-<<<<<<< HEAD
 	/* Mark interrupts disabled in PACA */
 	irq_soft_mask_set(IRQS_DISABLED);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __init configure_exceptions(void)
@@ -258,7 +243,6 @@ static void cpu_ready_for_interrupts(void)
 	}
 
 	/*
-<<<<<<< HEAD
 	 * Set HFSCR:TM based on CPU features:
 	 * In the special case of TM no suspend (P9N DD2.1), Linux is
 	 * told TM is off via the dt-ftrs but told to (partially) use
@@ -272,21 +256,11 @@ static void cpu_ready_for_interrupts(void)
 		else
 			mtspr(SPRN_HFSCR, mfspr(SPRN_HFSCR) & ~HFSCR_TM);
 	}
-=======
-	 * Fixup HFSCR:TM based on CPU features. The bit is set by our
-	 * early asm init because at that point we haven't updated our
-	 * CPU features from firmware and device-tree. Here we have,
-	 * so let's do it.
-	 */
-	if (cpu_has_feature(CPU_FTR_HVMODE) && !cpu_has_feature(CPU_FTR_TM_COMP))
-		mtspr(SPRN_HFSCR, mfspr(SPRN_HFSCR) & ~HFSCR_TM);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Set IR and DR in PACA MSR */
 	get_paca()->kernel_msr = MSR_KERNEL;
 }
 
-<<<<<<< HEAD
 unsigned long spr_default_dscr = 0;
 
 void __init record_spr_defaults(void)
@@ -295,8 +269,6 @@ void __init record_spr_defaults(void)
 		spr_default_dscr = mfspr(SPRN_DSCR);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Early initialization entry point. This is called by head.S
  * with MMU translation disabled. We rely on the "feature" of
@@ -347,15 +319,11 @@ void __init early_setup(unsigned long dt_ptr)
 	early_init_devtree(__va(dt_ptr));
 
 	/* Now we know the logical id of our boot cpu, setup the paca. */
-<<<<<<< HEAD
 	if (boot_cpuid != 0) {
 		/* Poison paca_ptrs[0] again if it's not the boot cpu */
 		memset(&paca_ptrs[0], 0x88, sizeof(paca_ptrs[0]));
 	}
 	setup_paca(paca_ptrs[boot_cpuid]);
-=======
-	setup_paca(&paca[boot_cpuid]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	fixup_boot_paca();
 
 	/*
@@ -372,7 +340,6 @@ void __init early_setup(unsigned long dt_ptr)
 	early_init_mmu();
 
 	/*
-<<<<<<< HEAD
 	 * After firmware and early platform setup code has set things up,
 	 * we note the SPR values for configurable control/performance
 	 * registers, and use those as initial defaults.
@@ -380,15 +347,12 @@ void __init early_setup(unsigned long dt_ptr)
 	record_spr_defaults();
 
 	/*
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * At this point, we can let interrupts switch to virtual mode
 	 * (the MMU has been setup), so adjust the MSR in the PACA to
 	 * have IR and DR set and enable AIL if it exists
 	 */
 	cpu_ready_for_interrupts();
 
-<<<<<<< HEAD
 	/*
 	 * We enable ftrace here, but since we only support DYNAMIC_FTRACE, it
 	 * will only actually get enabled on the boot cpu much later once
@@ -396,8 +360,6 @@ void __init early_setup(unsigned long dt_ptr)
 	 */
 	this_cpu_enable_ftrace();
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DBG(" <- early_setup()\n");
 
 #ifdef CONFIG_PPC_EARLY_DEBUG_BOOTX
@@ -417,11 +379,7 @@ void __init early_setup(unsigned long dt_ptr)
 void early_setup_secondary(void)
 {
 	/* Mark interrupts disabled in PACA */
-<<<<<<< HEAD
 	irq_soft_mask_set(IRQS_DISABLED);
-=======
-	get_paca()->soft_enabled = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Initialize the hash table or TLB handling */
 	early_init_mmu_secondary();
@@ -436,7 +394,6 @@ void early_setup_secondary(void)
 
 #endif /* CONFIG_SMP */
 
-<<<<<<< HEAD
 void panic_smp_self_stop(void)
 {
 	hard_irq_disable();
@@ -458,13 +415,6 @@ static bool use_spinloop(void)
 			return false;
 		return true;
 	}
-=======
-#if defined(CONFIG_SMP) || defined(CONFIG_KEXEC_CORE)
-static bool use_spinloop(void)
-{
-	if (!IS_ENABLED(CONFIG_PPC_BOOK3E))
-		return true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * When book3e boots from kexec, the ePAPR spin table does
@@ -568,11 +518,6 @@ static bool __init parse_cache_info(struct device_node *np,
 	lsizep = of_get_property(np, propnames[3], NULL);
 	if (bsizep == NULL)
 		bsizep = lsizep;
-<<<<<<< HEAD
-=======
-	if (lsizep == NULL)
-		lsizep = bsizep;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (lsizep != NULL)
 		lsize = be32_to_cpu(*lsizep);
 	if (bsizep != NULL)
@@ -658,7 +603,6 @@ void __init initialize_cache_info(void)
 	DBG(" <- initialize_cache_info()\n");
 }
 
-<<<<<<< HEAD
 /*
  * This returns the limit below which memory accesses to the linear
  * mapping are guarnateed not to cause an architectural exception (e.g.,
@@ -674,42 +618,21 @@ __init u64 ppc64_bolted_size(void)
 	/* Freescale BookE bolts the entire linear mapping */
 	/* XXX: BookE ppc64_rma_limit setup seems to disagree? */
 	if (early_mmu_has_feature(MMU_FTR_TYPE_FSL_E))
-=======
-/* This returns the limit below which memory accesses to the linear
- * mapping are guarnateed not to cause a TLB or SLB miss. This is
- * used to allocate interrupt or emergency stacks for which our
- * exception entry path doesn't deal with being interrupted.
- */
-static __init u64 safe_stack_limit(void)
-{
-#ifdef CONFIG_PPC_BOOK3E
-	/* Freescale BookE bolts the entire linear mapping */
-	if (mmu_has_feature(MMU_FTR_TYPE_FSL_E))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return linear_map_top;
 	/* Other BookE, we assume the first GB is bolted */
 	return 1ul << 30;
 #else
-<<<<<<< HEAD
 	/* BookS radix, does not take faults on linear mapping */
 	if (early_radix_enabled())
 		return ULONG_MAX;
 
 	/* BookS hash, the first segment is bolted */
 	if (early_mmu_has_feature(MMU_FTR_1T_SEGMENT))
-=======
-	if (early_radix_enabled())
-		return ULONG_MAX;
-
-	/* BookS, the first segment is bolted */
-	if (mmu_has_feature(MMU_FTR_1T_SEGMENT))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 1UL << SID_SHIFT_1T;
 	return 1UL << SID_SHIFT;
 #endif
 }
 
-<<<<<<< HEAD
 static void *__init alloc_stack(unsigned long limit, int cpu)
 {
 	unsigned long pa;
@@ -728,11 +651,6 @@ static void *__init alloc_stack(unsigned long limit, int cpu)
 void __init irqstack_early_init(void)
 {
 	u64 limit = ppc64_bolted_size();
-=======
-void __init irqstack_early_init(void)
-{
-	u64 limit = safe_stack_limit();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int i;
 
 	/*
@@ -741,17 +659,8 @@ void __init irqstack_early_init(void)
 	 * accessed in realmode.
 	 */
 	for_each_possible_cpu(i) {
-<<<<<<< HEAD
 		softirq_ctx[i] = alloc_stack(limit, i);
 		hardirq_ctx[i] = alloc_stack(limit, i);
-=======
-		softirq_ctx[i] = (struct thread_info *)
-			__va(memblock_alloc_base(THREAD_SIZE,
-					    THREAD_SIZE, limit));
-		hardirq_ctx[i] = (struct thread_info *)
-			__va(memblock_alloc_base(THREAD_SIZE,
-					    THREAD_SIZE, limit));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -759,7 +668,6 @@ void __init irqstack_early_init(void)
 void __init exc_lvl_early_init(void)
 {
 	unsigned int i;
-<<<<<<< HEAD
 
 	for_each_possible_cpu(i) {
 		void *sp;
@@ -775,22 +683,6 @@ void __init exc_lvl_early_init(void)
 		sp = alloc_stack(ULONG_MAX, i);
 		mcheckirq_ctx[i] = sp;
 		paca_ptrs[i]->mc_kstack = sp + THREAD_SIZE;
-=======
-	unsigned long sp;
-
-	for_each_possible_cpu(i) {
-		sp = memblock_alloc(THREAD_SIZE, THREAD_SIZE);
-		critirq_ctx[i] = (struct thread_info *)__va(sp);
-		paca[i].crit_kstack = __va(sp + THREAD_SIZE);
-
-		sp = memblock_alloc(THREAD_SIZE, THREAD_SIZE);
-		dbgirq_ctx[i] = (struct thread_info *)__va(sp);
-		paca[i].dbg_kstack = __va(sp + THREAD_SIZE);
-
-		sp = memblock_alloc(THREAD_SIZE, THREAD_SIZE);
-		mcheckirq_ctx[i] = (struct thread_info *)__va(sp);
-		paca[i].mc_kstack = __va(sp + THREAD_SIZE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (cpu_has_feature(CPU_FTR_DEBUG_LVL_EXC))
@@ -840,7 +732,6 @@ void __init emergency_stack_init(void)
 	 * initialized in kernel/irq.c. These are initialized here in order
 	 * to have emergency stacks available as early as possible.
 	 */
-<<<<<<< HEAD
 	limit = min(ppc64_bolted_size(), ppc64_rma_size);
 
 	for_each_possible_cpu(i) {
@@ -863,29 +754,6 @@ void __init emergency_stack_init(void)
 		memset(ti, 0, THREAD_SIZE);
 		emerg_stack_init_thread_info(ti, i);
 		paca_ptrs[i]->mc_emergency_sp = (void *)ti + THREAD_SIZE;
-=======
-	limit = min(safe_stack_limit(), ppc64_rma_size);
-
-	for_each_possible_cpu(i) {
-		struct thread_info *ti;
-		ti = __va(memblock_alloc_base(THREAD_SIZE, THREAD_SIZE, limit));
-		memset(ti, 0, THREAD_SIZE);
-		emerg_stack_init_thread_info(ti, i);
-		paca[i].emergency_sp = (void *)ti + THREAD_SIZE;
-
-#ifdef CONFIG_PPC_BOOK3S_64
-		/* emergency stack for NMI exception handling. */
-		ti = __va(memblock_alloc_base(THREAD_SIZE, THREAD_SIZE, limit));
-		memset(ti, 0, THREAD_SIZE);
-		emerg_stack_init_thread_info(ti, i);
-		paca[i].nmi_emergency_sp = (void *)ti + THREAD_SIZE;
-
-		/* emergency stack for machine check exception handling. */
-		ti = __va(memblock_alloc_base(THREAD_SIZE, THREAD_SIZE, limit));
-		memset(ti, 0, THREAD_SIZE);
-		emerg_stack_init_thread_info(ti, i);
-		paca[i].mc_emergency_sp = (void *)ti + THREAD_SIZE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 	}
 }
@@ -941,11 +809,7 @@ void __init setup_per_cpu_areas(void)
 	delta = (unsigned long)pcpu_base_addr - (unsigned long)__per_cpu_start;
 	for_each_possible_cpu(cpu) {
                 __per_cpu_offset[cpu] = delta + pcpu_unit_offsets[cpu];
-<<<<<<< HEAD
 		paca_ptrs[cpu]->data_offset = __per_cpu_offset[cpu];
-=======
-		paca[cpu].data_offset = __per_cpu_offset[cpu];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 #endif
@@ -1048,7 +912,6 @@ static void __ref init_fallback_flush(void)
 		return;
 
 	l1d_size = ppc64_caches.l1d.size;
-<<<<<<< HEAD
 
 	/*
 	 * If there is no d-cache-size property in the device tree, l1d_size
@@ -1061,9 +924,6 @@ static void __ref init_fallback_flush(void)
 		l1d_size = (64 * 1024);
 
 	limit = min(ppc64_bolted_size(), ppc64_rma_size);
-=======
-	limit = min(safe_stack_limit(), ppc64_rma_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Align to L1d size, and size it at 2x L1d size, to catch possible
@@ -1074,14 +934,9 @@ static void __ref init_fallback_flush(void)
 	memset(l1d_flush_fallback_area, 0, l1d_size * 2);
 
 	for_each_possible_cpu(cpu) {
-<<<<<<< HEAD
 		struct paca_struct *paca = paca_ptrs[cpu];
 		paca->rfi_flush_fallback_area = l1d_flush_fallback_area;
 		paca->l1d_flush_size = l1d_size;
-=======
-		paca[cpu].rfi_flush_fallback_area = l1d_flush_fallback_area;
-		paca[cpu].l1d_flush_size = l1d_size;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 

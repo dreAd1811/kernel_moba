@@ -172,11 +172,7 @@ int acpi_device_set_power(struct acpi_device *device, int state)
 		 * possibly drop references to the power resources in use.
 		 */
 		state = ACPI_STATE_D3_HOT;
-<<<<<<< HEAD
 		/* If _PR3 is not available, use D3hot as the target state. */
-=======
-		/* If D3cold is not supported, use D3hot as the target state. */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!device->power.states[ACPI_STATE_D3_COLD].flags.valid)
 			target_state = state;
 	} else if (!device->power.states[state].flags.valid) {
@@ -231,21 +227,13 @@ int acpi_device_set_power(struct acpi_device *device, int state)
  end:
 	if (result) {
 		dev_warn(&device->dev, "Failed to change power state to %s\n",
-<<<<<<< HEAD
 			 acpi_power_state_string(state));
-=======
-			 acpi_power_state_string(target_state));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		device->power.state = target_state;
 		ACPI_DEBUG_PRINT((ACPI_DB_INFO,
 				  "Device [%s] transitioned to %s\n",
 				  device->pnp.bus_id,
-<<<<<<< HEAD
 				  acpi_power_state_string(state)));
-=======
-				  acpi_power_state_string(target_state)));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return result;
@@ -467,12 +455,7 @@ acpi_status acpi_add_pm_notifier(struct acpi_device *adev, struct device *dev,
 		goto out;
 
 	mutex_lock(&acpi_pm_notifier_lock);
-<<<<<<< HEAD
 	adev->wakeup.ws = wakeup_source_register(dev_name(&adev->dev));
-=======
-	adev->wakeup.ws = wakeup_source_register(&adev->dev,
-						 dev_name(&adev->dev));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adev->wakeup.context.dev = dev;
 	adev->wakeup.context.func = func;
 	adev->wakeup.flags.notifier_present = true;
@@ -560,10 +543,7 @@ static int acpi_dev_pm_get_state(struct device *dev, struct acpi_device *adev,
 	unsigned long long ret;
 	int d_min, d_max;
 	bool wakeup = false;
-<<<<<<< HEAD
 	bool has_sxd = false;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	acpi_status status;
 
 	/*
@@ -602,7 +582,6 @@ static int acpi_dev_pm_get_state(struct device *dev, struct acpi_device *adev,
 			else
 				return -ENODATA;
 		}
-<<<<<<< HEAD
 
 		if (status == AE_OK)
 			has_sxd = true;
@@ -611,13 +590,6 @@ static int acpi_dev_pm_get_state(struct device *dev, struct acpi_device *adev,
 		wakeup = device_may_wakeup(dev) && adev->wakeup.flags.valid
 			&& adev->wakeup.sleep_state >= target_state;
 	} else {
-=======
-		d_min = ret;
-		wakeup = device_may_wakeup(dev) && adev->wakeup.flags.valid
-			&& adev->wakeup.sleep_state >= target_state;
-	} else if (dev_pm_qos_flags(dev, PM_QOS_FLAG_REMOTE_WAKEUP) !=
-			PM_QOS_FLAGS_NONE) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		wakeup = adev->wakeup.flags.valid;
 	}
 
@@ -632,15 +604,11 @@ static int acpi_dev_pm_get_state(struct device *dev, struct acpi_device *adev,
 		method[3] = 'W';
 		status = acpi_evaluate_integer(handle, method, NULL, &ret);
 		if (status == AE_NOT_FOUND) {
-<<<<<<< HEAD
 			/* No _SxW. In this case, the ACPI spec says that we
 			 * must not go into any power state deeper than the
 			 * value returned from _SxD.
 			 */
 			if (has_sxd && target_state > ACPI_STATE_S0)
-=======
-			if (target_state > ACPI_STATE_S0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				d_max = d_min;
 		} else if (ACPI_SUCCESS(status) && ret <= ACPI_STATE_D3_COLD) {
 			/* Fall back to D3cold if ret is not a valid state. */
@@ -891,39 +859,24 @@ static int acpi_dev_pm_full_power(struct acpi_device *adev)
 }
 
 /**
-<<<<<<< HEAD
  * acpi_dev_suspend - Put device into a low-power state using ACPI.
  * @dev: Device to put into a low-power state.
  * @wakeup: Whether or not to enable wakeup for the device.
  *
  * Put the given device into a low-power state using the standard ACPI
-=======
- * acpi_dev_runtime_suspend - Put device into a low-power state using ACPI.
- * @dev: Device to put into a low-power state.
- *
- * Put the given device into a runtime low-power state using the standard ACPI
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * mechanism.  Set up remote wakeup if desired, choose the state to put the
  * device into (this checks if remote wakeup is expected to work too), and set
  * the power state of the device.
  */
-<<<<<<< HEAD
 int acpi_dev_suspend(struct device *dev, bool wakeup)
 {
 	struct acpi_device *adev = ACPI_COMPANION(dev);
 	u32 target_state = acpi_target_system_state();
-=======
-int acpi_dev_runtime_suspend(struct device *dev)
-{
-	struct acpi_device *adev = ACPI_COMPANION(dev);
-	bool remote_wakeup;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int error;
 
 	if (!adev)
 		return 0;
 
-<<<<<<< HEAD
 	if (wakeup && acpi_device_can_wakeup(adev)) {
 		error = acpi_device_wakeup_enable(adev, target_state);
 		if (error)
@@ -934,23 +887,10 @@ int acpi_dev_runtime_suspend(struct device *dev)
 
 	error = acpi_dev_pm_low_power(dev, adev, target_state);
 	if (error && wakeup)
-=======
-	remote_wakeup = dev_pm_qos_flags(dev, PM_QOS_FLAG_REMOTE_WAKEUP) >
-				PM_QOS_FLAGS_NONE;
-	if (remote_wakeup) {
-		error = acpi_device_wakeup_enable(adev, ACPI_STATE_S0);
-		if (error)
-			return -EAGAIN;
-	}
-
-	error = acpi_dev_pm_low_power(dev, adev, ACPI_STATE_S0);
-	if (error && remote_wakeup)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		acpi_device_wakeup_disable(adev);
 
 	return error;
 }
-<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(acpi_dev_suspend);
 
 /**
@@ -961,19 +901,6 @@ EXPORT_SYMBOL_GPL(acpi_dev_suspend);
  * mechanism.  Set the power state of the device to ACPI D0 and disable wakeup.
  */
 int acpi_dev_resume(struct device *dev)
-=======
-EXPORT_SYMBOL_GPL(acpi_dev_runtime_suspend);
-
-/**
- * acpi_dev_runtime_resume - Put device into the full-power state using ACPI.
- * @dev: Device to put into the full-power state.
- *
- * Put the given device into the full-power state using the standard ACPI
- * mechanism at run time.  Set the power state of the device to ACPI D0 and
- * disable remote wakeup.
- */
-int acpi_dev_runtime_resume(struct device *dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct acpi_device *adev = ACPI_COMPANION(dev);
 	int error;
@@ -985,11 +912,7 @@ int acpi_dev_runtime_resume(struct device *dev)
 	acpi_device_wakeup_disable(adev);
 	return error;
 }
-<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(acpi_dev_resume);
-=======
-EXPORT_SYMBOL_GPL(acpi_dev_runtime_resume);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * acpi_subsys_runtime_suspend - Suspend device using ACPI.
@@ -1001,11 +924,7 @@ EXPORT_SYMBOL_GPL(acpi_dev_runtime_resume);
 int acpi_subsys_runtime_suspend(struct device *dev)
 {
 	int ret = pm_generic_runtime_suspend(dev);
-<<<<<<< HEAD
 	return ret ? ret : acpi_dev_suspend(dev, true);
-=======
-	return ret ? ret : acpi_dev_runtime_suspend(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(acpi_subsys_runtime_suspend);
 
@@ -1018,17 +937,12 @@ EXPORT_SYMBOL_GPL(acpi_subsys_runtime_suspend);
  */
 int acpi_subsys_runtime_resume(struct device *dev)
 {
-<<<<<<< HEAD
 	int ret = acpi_dev_resume(dev);
-=======
-	int ret = acpi_dev_runtime_resume(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret ? ret : pm_generic_runtime_resume(dev);
 }
 EXPORT_SYMBOL_GPL(acpi_subsys_runtime_resume);
 
 #ifdef CONFIG_PM_SLEEP
-<<<<<<< HEAD
 static bool acpi_dev_needs_resume(struct device *dev, struct acpi_device *adev)
 {
 	u32 sys_target = acpi_target_system_state();
@@ -1050,64 +964,6 @@ static bool acpi_dev_needs_resume(struct device *dev, struct acpi_device *adev)
 
 	return state != adev->power.state;
 }
-=======
-/**
- * acpi_dev_suspend_late - Put device into a low-power state using ACPI.
- * @dev: Device to put into a low-power state.
- *
- * Put the given device into a low-power state during system transition to a
- * sleep state using the standard ACPI mechanism.  Set up system wakeup if
- * desired, choose the state to put the device into (this checks if system
- * wakeup is expected to work too), and set the power state of the device.
- */
-int acpi_dev_suspend_late(struct device *dev)
-{
-	struct acpi_device *adev = ACPI_COMPANION(dev);
-	u32 target_state;
-	bool wakeup;
-	int error;
-
-	if (!adev)
-		return 0;
-
-	target_state = acpi_target_system_state();
-	wakeup = device_may_wakeup(dev) && acpi_device_can_wakeup(adev);
-	if (wakeup) {
-		error = acpi_device_wakeup_enable(adev, target_state);
-		if (error)
-			return error;
-	}
-
-	error = acpi_dev_pm_low_power(dev, adev, target_state);
-	if (error && wakeup)
-		acpi_device_wakeup_disable(adev);
-
-	return error;
-}
-EXPORT_SYMBOL_GPL(acpi_dev_suspend_late);
-
-/**
- * acpi_dev_resume_early - Put device into the full-power state using ACPI.
- * @dev: Device to put into the full-power state.
- *
- * Put the given device into the full-power state using the standard ACPI
- * mechanism during system transition to the working state.  Set the power
- * state of the device to ACPI D0 and disable remote wakeup.
- */
-int acpi_dev_resume_early(struct device *dev)
-{
-	struct acpi_device *adev = ACPI_COMPANION(dev);
-	int error;
-
-	if (!adev)
-		return 0;
-
-	error = acpi_dev_pm_full_power(adev);
-	acpi_device_wakeup_disable(adev);
-	return error;
-}
-EXPORT_SYMBOL_GPL(acpi_dev_resume_early);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * acpi_subsys_prepare - Prepare device for system transition to a sleep state.
@@ -1116,7 +972,6 @@ EXPORT_SYMBOL_GPL(acpi_dev_resume_early);
 int acpi_subsys_prepare(struct device *dev)
 {
 	struct acpi_device *adev = ACPI_COMPANION(dev);
-<<<<<<< HEAD
 
 	if (dev->driver && dev->driver->pm && dev->driver->pm->prepare) {
 		int ret = dev->driver->pm->prepare(dev);
@@ -1129,33 +984,10 @@ int acpi_subsys_prepare(struct device *dev)
 	}
 
 	return !acpi_dev_needs_resume(dev, adev);
-=======
-	u32 sys_target;
-	int ret, state;
-
-	ret = pm_generic_prepare(dev);
-	if (ret < 0)
-		return ret;
-
-	if (!adev || !pm_runtime_suspended(dev)
-	    || device_may_wakeup(dev) != !!adev->wakeup.prepare_count)
-		return 0;
-
-	sys_target = acpi_target_system_state();
-	if (sys_target == ACPI_STATE_S0)
-		return 1;
-
-	if (adev->power.flags.dsw_present)
-		return 0;
-
-	ret = acpi_dev_pm_get_state(dev, adev, sys_target, NULL, &state);
-	return !ret && state == adev->power.state;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(acpi_subsys_prepare);
 
 /**
-<<<<<<< HEAD
  * acpi_subsys_complete - Finalize device's resume during system resume.
  * @dev: Device to handle.
  */
@@ -1187,17 +1019,6 @@ int acpi_subsys_suspend(struct device *dev)
 	    acpi_dev_needs_resume(dev, ACPI_COMPANION(dev)))
 		pm_runtime_resume(dev);
 
-=======
- * acpi_subsys_suspend - Run the device driver's suspend callback.
- * @dev: Device to handle.
- *
- * Follow PCI and resume devices suspended at run time before running their
- * system suspend callbacks.
- */
-int acpi_subsys_suspend(struct device *dev)
-{
-	pm_runtime_resume(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return pm_generic_suspend(dev);
 }
 EXPORT_SYMBOL_GPL(acpi_subsys_suspend);
@@ -1211,7 +1032,6 @@ EXPORT_SYMBOL_GPL(acpi_subsys_suspend);
  */
 int acpi_subsys_suspend_late(struct device *dev)
 {
-<<<<<<< HEAD
 	int ret;
 
 	if (dev_pm_smart_suspend_and_suspended(dev))
@@ -1219,15 +1039,10 @@ int acpi_subsys_suspend_late(struct device *dev)
 
 	ret = pm_generic_suspend_late(dev);
 	return ret ? ret : acpi_dev_suspend(dev, device_may_wakeup(dev));
-=======
-	int ret = pm_generic_suspend_late(dev);
-	return ret ? ret : acpi_dev_suspend_late(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(acpi_subsys_suspend_late);
 
 /**
-<<<<<<< HEAD
  * acpi_subsys_suspend_noirq - Run the device driver's "noirq" suspend callback.
  * @dev: Device to suspend.
  */
@@ -1280,8 +1095,6 @@ int acpi_subsys_resume_noirq(struct device *dev)
 EXPORT_SYMBOL_GPL(acpi_subsys_resume_noirq);
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * acpi_subsys_resume_early - Resume device using ACPI.
  * @dev: Device to Resume.
  *
@@ -1291,11 +1104,7 @@ EXPORT_SYMBOL_GPL(acpi_subsys_resume_noirq);
  */
 int acpi_subsys_resume_early(struct device *dev)
 {
-<<<<<<< HEAD
 	int ret = acpi_dev_resume(dev);
-=======
-	int ret = acpi_dev_resume_early(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret ? ret : pm_generic_resume_early(dev);
 }
 EXPORT_SYMBOL_GPL(acpi_subsys_resume_early);
@@ -1312,18 +1121,13 @@ int acpi_subsys_freeze(struct device *dev)
 	 * runtime-suspended devices should not be touched during freeze/thaw
 	 * transitions.
 	 */
-<<<<<<< HEAD
 	if (!dev_pm_test_driver_flags(dev, DPM_FLAG_SMART_SUSPEND))
 		pm_runtime_resume(dev);
 
-=======
-	pm_runtime_resume(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return pm_generic_freeze(dev);
 }
 EXPORT_SYMBOL_GPL(acpi_subsys_freeze);
 
-<<<<<<< HEAD
 /**
  * acpi_subsys_freeze_late - Run the device driver's "late" freeze callback.
  * @dev: Device to handle.
@@ -1371,8 +1175,6 @@ int acpi_subsys_thaw_noirq(struct device *dev)
 	return pm_generic_thaw_noirq(dev);
 }
 EXPORT_SYMBOL_GPL(acpi_subsys_thaw_noirq);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_PM_SLEEP */
 
 static struct dev_pm_domain acpi_general_pm_domain = {
@@ -1381,7 +1183,6 @@ static struct dev_pm_domain acpi_general_pm_domain = {
 		.runtime_resume = acpi_subsys_runtime_resume,
 #ifdef CONFIG_PM_SLEEP
 		.prepare = acpi_subsys_prepare,
-<<<<<<< HEAD
 		.complete = acpi_subsys_complete,
 		.suspend = acpi_subsys_suspend,
 		.suspend_late = acpi_subsys_suspend_late,
@@ -1396,15 +1197,6 @@ static struct dev_pm_domain acpi_general_pm_domain = {
 		.poweroff_late = acpi_subsys_suspend_late,
 		.poweroff_noirq = acpi_subsys_suspend_noirq,
 		.restore_noirq = acpi_subsys_resume_noirq,
-=======
-		.complete = pm_complete_with_resume_check,
-		.suspend = acpi_subsys_suspend,
-		.suspend_late = acpi_subsys_suspend_late,
-		.resume_early = acpi_subsys_resume_early,
-		.freeze = acpi_subsys_freeze,
-		.poweroff = acpi_subsys_suspend,
-		.poweroff_late = acpi_subsys_suspend_late,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.restore_early = acpi_subsys_resume_early,
 #endif
 	},
@@ -1462,30 +1254,10 @@ static void acpi_dev_pm_detach(struct device *dev, bool power_off)
  */
 int acpi_dev_pm_attach(struct device *dev, bool power_on)
 {
-<<<<<<< HEAD
 	struct acpi_device *adev = ACPI_COMPANION(dev);
 
 	if (!adev)
 		return 0;
-=======
-	/*
-	 * Skip devices whose ACPI companions match the device IDs below,
-	 * because they require special power management handling incompatible
-	 * with the generic ACPI PM domain.
-	 */
-	static const struct acpi_device_id special_pm_ids[] = {
-		{"PNP0C0B", }, /* Generic ACPI fan */
-		{"INT3404", }, /* Fan */
-		{}
-	};
-	struct acpi_device *adev = ACPI_COMPANION(dev);
-
-	if (!adev || !acpi_match_device_ids(adev, special_pm_ids))
-		return -ENODEV;
-
-	if (dev->pm_domain)
-		return -EEXIST;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Only attach the power domain to the first device if the
@@ -1493,11 +1265,7 @@ int acpi_dev_pm_attach(struct device *dev, bool power_on)
 	 * management twice.
 	 */
 	if (!acpi_device_is_first_physical_node(adev, dev))
-<<<<<<< HEAD
 		return 0;
-=======
-		return -EBUSY;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	acpi_add_pm_notifier(adev, dev, acpi_pm_notify_work_func);
 	dev_pm_domain_set(dev, &acpi_general_pm_domain);
@@ -1507,11 +1275,7 @@ int acpi_dev_pm_attach(struct device *dev, bool power_on)
 	}
 
 	dev->pm_domain->detach = acpi_dev_pm_detach;
-<<<<<<< HEAD
 	return 1;
-=======
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(acpi_dev_pm_attach);
 #endif /* CONFIG_PM */

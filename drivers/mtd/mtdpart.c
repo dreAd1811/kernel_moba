@@ -30,10 +30,7 @@
 #include <linux/mtd/mtd.h>
 #include <linux/mtd/partitions.h>
 #include <linux/err.h>
-<<<<<<< HEAD
 #include <linux/of.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "mtdcore.h"
 
@@ -57,15 +54,6 @@ struct mtd_part {
 
 /*
  * Given a pointer to the MTD object in the mtd_part structure, we can retrieve
-<<<<<<< HEAD
-=======
- * the pointer to that structure with this macro.
- */
-#define PART(x)  ((struct mtd_part *)(x))
-
-/*
- * Given a pointer to the MTD object in the mtd_part structure, we can retrieve
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * the pointer to that structure.
  */
 static inline struct mtd_part *mtd_to_part(const struct mtd_info *mtd)
@@ -114,26 +102,10 @@ static int part_unpoint(struct mtd_info *mtd, loff_t from, size_t len)
 	return part->parent->_unpoint(part->parent, from + part->offset, len);
 }
 
-<<<<<<< HEAD
-=======
-static unsigned long part_get_unmapped_area(struct mtd_info *mtd,
-					    unsigned long len,
-					    unsigned long offset,
-					    unsigned long flags)
-{
-	struct mtd_part *part = mtd_to_part(mtd);
-
-	offset += part->offset;
-	return part->parent->_get_unmapped_area(part->parent, len, offset,
-						flags);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int part_read_oob(struct mtd_info *mtd, loff_t from,
 		struct mtd_oob_ops *ops)
 {
 	struct mtd_part *part = mtd_to_part(mtd);
-<<<<<<< HEAD
 	struct mtd_ecc_stats stats;
 	int res;
 
@@ -145,36 +117,6 @@ static int part_read_oob(struct mtd_info *mtd, loff_t from,
 	else
 		mtd->ecc_stats.corrected +=
 			part->parent->ecc_stats.corrected - stats.corrected;
-=======
-	int res;
-
-	if (from >= mtd->size)
-		return -EINVAL;
-	if (ops->datbuf && from + ops->len > mtd->size)
-		return -EINVAL;
-
-	/*
-	 * If OOB is also requested, make sure that we do not read past the end
-	 * of this partition.
-	 */
-	if (ops->oobbuf) {
-		size_t len, pages;
-
-		len = mtd_oobavail(mtd, ops);
-		pages = mtd_div_by_ws(mtd->size, mtd);
-		pages -= mtd_div_by_ws(from, mtd);
-		if (ops->ooboffs + ops->ooblen > pages * len)
-			return -EINVAL;
-	}
-
-	res = part->parent->_read_oob(part->parent, from + part->offset, ops);
-	if (unlikely(res)) {
-		if (mtd_is_bitflip(res))
-			mtd->ecc_stats.corrected++;
-		if (mtd_is_eccerr(res))
-			mtd->ecc_stats.failed++;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return res;
 }
 
@@ -231,13 +173,6 @@ static int part_write_oob(struct mtd_info *mtd, loff_t to,
 {
 	struct mtd_part *part = mtd_to_part(mtd);
 
-<<<<<<< HEAD
-=======
-	if (to >= mtd->size)
-		return -EINVAL;
-	if (ops->datbuf && to + ops->len > mtd->size)
-		return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return part->parent->_write_oob(part->parent, to + part->offset, ops);
 }
 
@@ -271,7 +206,6 @@ static int part_erase(struct mtd_info *mtd, struct erase_info *instr)
 
 	instr->addr += part->offset;
 	ret = part->parent->_erase(part->parent, instr);
-<<<<<<< HEAD
 	if (instr->fail_addr != MTD_FAIL_ADDR_UNKNOWN)
 		instr->fail_addr -= part->offset;
 	instr->addr -= part->offset;
@@ -279,30 +213,6 @@ static int part_erase(struct mtd_info *mtd, struct erase_info *instr)
 	return ret;
 }
 
-=======
-	if (ret) {
-		if (instr->fail_addr != MTD_FAIL_ADDR_UNKNOWN)
-			instr->fail_addr -= part->offset;
-		instr->addr -= part->offset;
-	}
-	return ret;
-}
-
-void mtd_erase_callback(struct erase_info *instr)
-{
-	if (instr->mtd->_erase == part_erase) {
-		struct mtd_part *part = mtd_to_part(instr->mtd);
-
-		if (instr->fail_addr != MTD_FAIL_ADDR_UNKNOWN)
-			instr->fail_addr -= part->offset;
-		instr->addr -= part->offset;
-	}
-	if (instr->callback)
-		instr->callback(instr);
-}
-EXPORT_SYMBOL_GPL(mtd_erase_callback);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int part_lock(struct mtd_info *mtd, loff_t ofs, uint64_t len)
 {
 	struct mtd_part *part = mtd_to_part(mtd);
@@ -412,61 +322,6 @@ static inline void free_partition(struct mtd_part *p)
 	kfree(p);
 }
 
-<<<<<<< HEAD
-=======
-void part_fill_badblockstats(struct mtd_info *mtd)
-{
-	uint64_t offs = 0;
-	struct mtd_info *parent;
-	struct mtd_part *part;
-
-	part = PART(mtd);
-	parent = part->parent;
-
-	if (parent->_block_isbad) {
-		mtd->ecc_stats.badblocks = 0;
-		mtd->ecc_stats.bbtblocks = 0;
-
-		while (offs < mtd->size) {
-			if (mtd_block_isreserved(parent, offs + part->offset))
-				mtd->ecc_stats.bbtblocks++;
-			else if (mtd_block_isbad(parent, offs + part->offset))
-				mtd->ecc_stats.badblocks++;
-			offs += mtd->erasesize;
-		}
-	}
-}
-
-/**
- * mtd_parse_part - parse MTD partition looking for subpartitions
- *
- * @slave: part that is supposed to be a container and should be parsed
- * @types: NULL-terminated array with names of partition parsers to try
- *
- * Some partitions are kind of containers with extra subpartitions (volumes).
- * There can be various formats of such containers. This function tries to use
- * specified parsers to analyze given partition and registers found
- * subpartitions on success.
- */
-static int mtd_parse_part(struct mtd_part *slave, const char *const *types)
-{
-	struct mtd_partitions parsed;
-	int err;
-
-	err = parse_mtd_partitions(&slave->mtd, types, &parsed, NULL);
-	if (err)
-		return err;
-	else if (!parsed.nr_parts)
-		return -ENOENT;
-
-	err = add_mtd_partitions(&slave->mtd, parsed.parts, parsed.nr_parts);
-
-	mtd_part_parser_cleanup(&parsed);
-
-	return err;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct mtd_part *allocate_partition(struct mtd_info *parent,
 			const struct mtd_partition *part, int partno,
 			uint64_t cur_offset)
@@ -516,15 +371,10 @@ static struct mtd_part *allocate_partition(struct mtd_info *parent,
 				parent->dev.parent;
 	slave->mtd.dev.of_node = part->of_node;
 
-<<<<<<< HEAD
 	if (parent->_read)
 		slave->mtd._read = part_read;
 	if (parent->_write)
 		slave->mtd._write = part_write;
-=======
-	slave->mtd._read = part_read;
-	slave->mtd._write = part_write;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (parent->_panic_write)
 		slave->mtd._panic_write = part_panic_write;
@@ -534,11 +384,6 @@ static struct mtd_part *allocate_partition(struct mtd_info *parent,
 		slave->mtd._unpoint = part_unpoint;
 	}
 
-<<<<<<< HEAD
-=======
-	if (parent->_get_unmapped_area)
-		slave->mtd._get_unmapped_area = part_get_unmapped_area;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (parent->_read_oob)
 		slave->mtd._read_oob = part_read_oob;
 	if (parent->_write_oob)
@@ -625,13 +470,10 @@ static struct mtd_part *allocate_partition(struct mtd_info *parent,
 		/* let's register it anyway to preserve ordering */
 		slave->offset = 0;
 		slave->mtd.size = 0;
-<<<<<<< HEAD
 
 		/* Initialize ->erasesize to make add_mtd_device() happy. */
 		slave->mtd.erasesize = parent->erasesize;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		printk(KERN_ERR"mtd: partition \"%s\" is out of reach -- disabled\n",
 			part->name);
 		goto out_register;
@@ -699,7 +541,6 @@ static struct mtd_part *allocate_partition(struct mtd_info *parent,
 	slave->mtd.ecc_strength = parent->ecc_strength;
 	slave->mtd.bitflip_threshold = parent->bitflip_threshold;
 
-<<<<<<< HEAD
 	if (parent->_block_isbad) {
 		uint64_t offs = 0;
 
@@ -711,11 +552,6 @@ static struct mtd_part *allocate_partition(struct mtd_info *parent,
 			offs += slave->mtd.erasesize;
 		}
 	}
-=======
-#ifndef CONFIG_MTD_LAZYECCSTATS
-	part_fill_badblockstats(&(slave->mtd));
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 out_register:
 	return slave;
@@ -776,28 +612,10 @@ int mtd_add_partition(struct mtd_info *parent, const char *name,
 	list_add(&new->list, &mtd_partitions);
 	mutex_unlock(&mtd_partitions_mutex);
 
-<<<<<<< HEAD
 	add_mtd_device(&new->mtd);
 
 	mtd_add_partition_attrs(new);
 
-=======
-	ret = add_mtd_device(&new->mtd);
-	if (ret)
-		goto err_remove_part;
-
-	mtd_add_partition_attrs(new);
-
-	return 0;
-
-err_remove_part:
-	mutex_lock(&mtd_partitions_mutex);
-	list_del(&new->list);
-	mutex_unlock(&mtd_partitions_mutex);
-
-	free_partition(new);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 EXPORT_SYMBOL_GPL(mtd_add_partition);
@@ -888,63 +706,30 @@ int add_mtd_partitions(struct mtd_info *master,
 {
 	struct mtd_part *slave;
 	uint64_t cur_offset = 0;
-<<<<<<< HEAD
 	int i;
-=======
-	int i, ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	printk(KERN_NOTICE "Creating %d MTD partitions on \"%s\":\n", nbparts, master->name);
 
 	for (i = 0; i < nbparts; i++) {
 		slave = allocate_partition(master, parts + i, i, cur_offset);
 		if (IS_ERR(slave)) {
-<<<<<<< HEAD
 			del_mtd_partitions(master);
 			return PTR_ERR(slave);
-=======
-			ret = PTR_ERR(slave);
-			goto err_del_partitions;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		mutex_lock(&mtd_partitions_mutex);
 		list_add(&slave->list, &mtd_partitions);
 		mutex_unlock(&mtd_partitions_mutex);
 
-<<<<<<< HEAD
 		add_mtd_device(&slave->mtd);
 		mtd_add_partition_attrs(slave);
 		/* Look for subpartitions */
 		parse_mtd_partitions(&slave->mtd, parts[i].types, NULL);
-=======
-		ret = add_mtd_device(&slave->mtd);
-		if (ret) {
-			mutex_lock(&mtd_partitions_mutex);
-			list_del(&slave->list);
-			mutex_unlock(&mtd_partitions_mutex);
-
-			free_partition(slave);
-			goto err_del_partitions;
-		}
-
-		mtd_add_partition_attrs(slave);
-		if (parts[i].types)
-			mtd_parse_part(slave, parts[i].types);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		cur_offset = slave->offset + slave->mtd.size;
 	}
 
 	return 0;
-<<<<<<< HEAD
-=======
-
-err_del_partitions:
-	del_mtd_partitions(master);
-
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static DEFINE_SPINLOCK(part_parser_lock);
@@ -1015,15 +800,12 @@ static const char * const default_mtd_part_types[] = {
 	NULL
 };
 
-<<<<<<< HEAD
 /* Check DT only when looking for subpartitions. */
 static const char * const default_subpartition_types[] = {
 	"ofpart",
 	NULL
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mtd_part_do_parse(struct mtd_part_parser *parser,
 			     struct mtd_info *master,
 			     struct mtd_partitions *pparts,
@@ -1046,7 +828,6 @@ static int mtd_part_do_parse(struct mtd_part_parser *parser,
 }
 
 /**
-<<<<<<< HEAD
  * mtd_part_get_compatible_parser - find MTD parser by a compatible string
  *
  * @compat: compatible string describing partitions in a device tree
@@ -1147,46 +928,22 @@ static int mtd_part_of_parse(struct mtd_info *master,
  * This function tries to find & register partitions on MTD device @master. It
  * uses MTD partition parsers, specified in @types. However, if @types is %NULL,
  * then the default list of parsers is used. The default list contains only the
-=======
- * parse_mtd_partitions - parse MTD partitions
- * @master: the master partition (describes whole MTD device)
- * @types: names of partition parsers to try or %NULL
- * @pparts: info about partitions found is returned here
- * @data: MTD partition parser-specific data
- *
- * This function tries to find partition on MTD device @master. It uses MTD
- * partition parsers, specified in @types. However, if @types is %NULL, then
- * the default list of parsers is used. The default list contains only the
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * "cmdlinepart" and "ofpart" parsers ATM.
  * Note: If there are more then one parser in @types, the kernel only takes the
  * partitions parsed out by the first parser.
  *
  * This function may return:
  * o a negative error code in case of failure
-<<<<<<< HEAD
  * o number of found partitions otherwise
  */
 int parse_mtd_partitions(struct mtd_info *master, const char *const *types,
 			 struct mtd_part_parser_data *data)
 {
 	struct mtd_partitions pparts = { };
-=======
- * o zero otherwise, and @pparts will describe the partitions, number of
- *   partitions, and the parser which parsed them. Caller must release
- *   resources with mtd_part_parser_cleanup() when finished with the returned
- *   data.
- */
-int parse_mtd_partitions(struct mtd_info *master, const char *const *types,
-			 struct mtd_partitions *pparts,
-			 struct mtd_part_parser_data *data)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mtd_part_parser *parser;
 	int ret, err = 0;
 
 	if (!types)
-<<<<<<< HEAD
 		types = mtd_is_partition(master) ? default_subpartition_types :
 			default_mtd_part_types;
 
@@ -1219,24 +976,6 @@ int parse_mtd_partitions(struct mtd_info *master, const char *const *types,
 			mtd_part_parser_cleanup(&pparts);
 			return err ? err : pparts.nr_parts;
 		}
-=======
-		types = default_mtd_part_types;
-
-	for ( ; *types; types++) {
-		pr_debug("%s: parsing partitions %s\n", master->name, *types);
-		parser = mtd_part_parser_get(*types);
-		if (!parser && !request_module("%s", *types))
-			parser = mtd_part_parser_get(*types);
-		pr_debug("%s: got parser %s\n", master->name,
-			 parser ? parser->name : NULL);
-		if (!parser)
-			continue;
-		ret = mtd_part_do_parse(parser, master, pparts, data);
-		/* Found partitions! */
-		if (ret > 0)
-			return 0;
-		mtd_part_parser_put(parser);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * Stash the first error we see; only report it if no parser
 		 * succeeds

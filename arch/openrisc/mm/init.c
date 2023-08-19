@@ -147,11 +147,7 @@ void __init paging_init(void)
 	 * (even if it is most probably not used until the next
 	 *  switch_mm)
 	 */
-<<<<<<< HEAD
 	current_pgd[smp_processor_id()] = init_mm.pgd;
-=======
-	current_pgd = init_mm.pgd;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	end = (unsigned long)__va(max_low_pfn * PAGE_SIZE);
 

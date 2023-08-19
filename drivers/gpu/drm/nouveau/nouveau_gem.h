@@ -7,12 +7,6 @@
 #include "nouveau_drv.h"
 #include "nouveau_bo.h"
 
-<<<<<<< HEAD
-=======
-#define nouveau_bo_tile_layout(nvbo)				\
-	((nvbo)->tile_flags & NOUVEAU_GEM_TILE_LAYOUT_MASK)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline struct nouveau_bo *
 nouveau_gem_object(struct drm_gem_object *gem)
 {

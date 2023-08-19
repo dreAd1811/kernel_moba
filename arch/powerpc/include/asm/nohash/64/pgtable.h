@@ -3,7 +3,6 @@
 #define _ASM_POWERPC_NOHASH_64_PGTABLE_H
 /*
  * This file contains the functions and defines necessary to modify and use
-<<<<<<< HEAD
  * the ppc64 non-hashed page table.
  */
 
@@ -14,17 +13,6 @@
 #ifdef CONFIG_PPC_64K_PAGES
 #error "Page size not supported"
 #endif
-=======
- * the ppc64 hashed page table.
- */
-
-#ifdef CONFIG_PPC_64K_PAGES
-#include <asm/nohash/64/pgtable-64k.h>
-#else
-#include <asm/nohash/64/pgtable-4k.h>
-#endif
-#include <asm/barrier.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define FIRST_USER_ADDRESS	0UL
 
@@ -40,10 +28,7 @@
 #else
 #define PMD_CACHE_INDEX	PMD_INDEX_SIZE
 #endif
-<<<<<<< HEAD
 #define PUD_CACHE_INDEX PUD_INDEX_SIZE
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Define the address range of the kernel non-linear virtual area
@@ -53,11 +38,7 @@
 
 /*
  * The vmalloc space starts at the beginning of that region, and
-<<<<<<< HEAD
  * occupies a quarter of it on Book3E
-=======
- * occupies half of it on hash CPUs and a quarter of it on Book3E
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * (we keep a quarter for the virtual memmap)
  */
 #define VMALLOC_START	KERN_VIRT_START
@@ -97,11 +78,7 @@
 
 /*
  * Defines the address of the vmemap area, in its own region on
-<<<<<<< HEAD
  * after the vmalloc space on Book3E
-=======
- * hash table CPUs and after the vmalloc space on Book3E
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #define VMEMMAP_BASE		VMALLOC_END
 #define VMEMMAP_END		KERN_IO_START
@@ -197,11 +174,6 @@ static inline void pgd_set(pgd_t *pgdp, unsigned long val)
 /* to find an entry in a kernel page-table-directory */
 /* This now only contains the vmalloc pages */
 #define pgd_offset_k(address) pgd_offset(&init_mm, address)
-<<<<<<< HEAD
-=======
-extern void hpte_need_flush(struct mm_struct *mm, unsigned long addr,
-			    pte_t *ptep, unsigned long pte, int huge);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Atomic PTE updates */
 static inline unsigned long pte_update(struct mm_struct *mm,
@@ -215,23 +187,12 @@ static inline unsigned long pte_update(struct mm_struct *mm,
 
 	__asm__ __volatile__(
 	"1:	ldarx	%0,0,%3		# pte_update\n\
-<<<<<<< HEAD
 	andc	%1,%0,%4 \n\
 	or	%1,%1,%6\n\
 	stdcx.	%1,0,%3 \n\
 	bne-	1b"
 	: "=&r" (old), "=&r" (tmp), "=m" (*ptep)
 	: "r" (ptep), "r" (clr), "m" (*ptep), "r" (set)
-=======
-	andi.	%1,%0,%6\n\
-	bne-	1b \n\
-	andc	%1,%0,%4 \n\
-	or	%1,%1,%7\n\
-	stdcx.	%1,0,%3 \n\
-	bne-	1b"
-	: "=&r" (old), "=&r" (tmp), "=m" (*ptep)
-	: "r" (ptep), "r" (clr), "m" (*ptep), "i" (_PAGE_BUSY), "r" (set)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	: "cc" );
 #else
 	unsigned long old = pte_val(*ptep);
@@ -241,21 +202,12 @@ static inline unsigned long pte_update(struct mm_struct *mm,
 	if (!huge)
 		assert_pte_locked(mm, addr);
 
-<<<<<<< HEAD
 	return old;
 }
 
 static inline int pte_young(pte_t pte)
 {
 	return pte_val(pte) & _PAGE_ACCESSED;
-=======
-#ifdef CONFIG_PPC_STD_MMU_64
-	if (old & _PAGE_HASHPTE)
-		hpte_need_flush(mm, addr, ptep, old, huge);
-#endif
-
-	return old;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline int __ptep_test_and_clear_young(struct mm_struct *mm,
@@ -263,11 +215,7 @@ static inline int __ptep_test_and_clear_young(struct mm_struct *mm,
 {
 	unsigned long old;
 
-<<<<<<< HEAD
 	if (pte_young(*ptep))
-=======
-	if ((pte_val(*ptep) & (_PAGE_ACCESSED | _PAGE_HASHPTE)) == 0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	old = pte_update(mm, addr, ptep, _PAGE_ACCESSED, 0, 0);
 	return (old & _PAGE_ACCESSED) != 0;
@@ -300,17 +248,6 @@ static inline void huge_ptep_set_wrprotect(struct mm_struct *mm,
 	pte_update(mm, addr, ptep, _PAGE_RW, 0, 1);
 }
 
-<<<<<<< HEAD
-=======
-/*
- * We currently remove entries from the hashtable regardless of whether
- * the entry was young or dirty. The generic routines only flush if the
- * entry was young or dirty which is not good enough.
- *
- * We should be more intelligent about this but for the moment we override
- * these functions and force a tlb flush unconditionally
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
 #define ptep_clear_flush_young(__vma, __address, __ptep)		\
 ({									\
@@ -334,20 +271,11 @@ static inline void pte_clear(struct mm_struct *mm, unsigned long addr,
 }
 
 
-<<<<<<< HEAD
 /* Set the dirty and/or accessed bits atomically in a linux PTE */
 static inline void __ptep_set_access_flags(struct vm_area_struct *vma,
 					   pte_t *ptep, pte_t entry,
 					   unsigned long address,
 					   int psize)
-=======
-/* Set the dirty and/or accessed bits atomically in a linux PTE, this
- * function doesn't need to flush the hash entry
- */
-static inline void __ptep_set_access_flags(struct mm_struct *mm,
-					   pte_t *ptep, pte_t entry,
-					   unsigned long address)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long bits = pte_val(entry) &
 		(_PAGE_DIRTY | _PAGE_ACCESSED | _PAGE_RW | _PAGE_EXEC);
@@ -357,38 +285,22 @@ static inline void __ptep_set_access_flags(struct mm_struct *mm,
 
 	__asm__ __volatile__(
 	"1:	ldarx	%0,0,%4\n\
-<<<<<<< HEAD
-=======
-		andi.	%1,%0,%6\n\
-		bne-	1b \n\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		or	%0,%3,%0\n\
 		stdcx.	%0,0,%4\n\
 		bne-	1b"
 	:"=&r" (old), "=&r" (tmp), "=m" (*ptep)
-<<<<<<< HEAD
 	:"r" (bits), "r" (ptep), "m" (*ptep)
-=======
-	:"r" (bits), "r" (ptep), "m" (*ptep), "i" (_PAGE_BUSY)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	:"cc");
 #else
 	unsigned long old = pte_val(*ptep);
 	*ptep = __pte(old | bits);
 #endif
-<<<<<<< HEAD
 
 	flush_tlb_page(vma, address);
 }
 
 #define __HAVE_ARCH_PTE_SAME
 #define pte_same(A,B)	((pte_val(A) ^ pte_val(B)) == 0)
-=======
-}
-
-#define __HAVE_ARCH_PTE_SAME
-#define pte_same(A,B)	(((pte_val(A) ^ pte_val(B)) & ~_PAGE_HPTEFLAGS) == 0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define pte_ERROR(e) \
 	pr_err("%s:%d: bad pte %08lx.\n", __FILE__, __LINE__, pte_val(e))
@@ -400,14 +312,6 @@ static inline void __ptep_set_access_flags(struct mm_struct *mm,
 /* Encode and de-code a swap entry */
 #define MAX_SWAPFILES_CHECK() do { \
 	BUILD_BUG_ON(MAX_SWAPFILES_SHIFT > SWP_TYPE_BITS); \
-<<<<<<< HEAD
-=======
-	/*							\
-	 * Don't have overlapping bits with _PAGE_HPTEFLAGS	\
-	 * We filter HPTEFLAGS on set_pte.			\
-	 */							\
-	BUILD_BUG_ON(_PAGE_HPTEFLAGS & (0x1f << _PAGE_BIT_SWAP_TYPE)); \
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} while (0)
 /*
  * on pte we don't need handle RADIX_TREE_EXCEPTIONAL_SHIFT;

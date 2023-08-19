@@ -313,11 +313,7 @@ static void mousevsc_on_receive(struct hv_device *device,
 
 		break;
 	default:
-<<<<<<< HEAD
 		pr_err("unsupported hid msg type - type %d len %d\n",
-=======
-		pr_err("unsupported hid msg type - type %d len %d",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		       hid_msg->header.type, hid_msg->header.size);
 		break;
 	}
@@ -326,7 +322,6 @@ static void mousevsc_on_receive(struct hv_device *device,
 
 static void mousevsc_on_channel_callback(void *context)
 {
-<<<<<<< HEAD
 	const int packet_size = 0x100;
 	int ret;
 	struct hv_device *device = context;
@@ -381,26 +376,6 @@ static void mousevsc_on_channel_callback(void *context)
 		}
 	} while (1);
 
-=======
-	struct hv_device *device = context;
-	struct vmpacket_descriptor *desc;
-
-	foreach_vmbus_pkt(desc, device->channel) {
-		switch (desc->type) {
-		case VM_PKT_COMP:
-			break;
-
-		case VM_PKT_DATA_INBAND:
-			mousevsc_on_receive(device, desc);
-			break;
-
-		default:
-			pr_err("Unhandled packet type %d, tid %llx len %d\n",
-			       desc->type, desc->trans_id, desc->len8 * 8);
-			break;
-		}
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int mousevsc_connect_to_vsp(struct hv_device *device)
@@ -623,12 +598,9 @@ static struct  hv_driver mousevsc_drv = {
 	.id_table = id_table,
 	.probe = mousevsc_probe,
 	.remove = mousevsc_remove,
-<<<<<<< HEAD
 	.driver = {
 		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
 	},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int __init mousevsc_init(void)

@@ -3,10 +3,7 @@
  * Copyright(c) 2003 - 2014 Intel Corporation. All rights reserved.
  * Copyright(c) 2015 Intel Mobile Communications GmbH
  * Copyright(c) 2017 Intel Deutschland GmbH
-<<<<<<< HEAD
  * Copyright(c) 2018 Intel Corporation
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
@@ -17,13 +14,6 @@
  * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
  * more details.
  *
-<<<<<<< HEAD
-=======
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * The full GNU General Public License is included in this distribution in the
  * file called LICENSE.
  *
@@ -43,11 +33,8 @@
 #include "fw-api.h"
 #include "iwl-trans.h"
 
-<<<<<<< HEAD
 #define RS_NAME "iwl-mvm-rs"
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct iwl_rs_rate_info {
 	u8 plcp;	  /* uCode API:  IWL_RATE_6M_PLCP, etc. */
 	u8 plcp_ht_siso;  /* uCode API:  IWL_RATE_SISO_6M_PLCP, etc. */
@@ -157,7 +144,6 @@ enum {
 
 #define LINK_QUAL_AGG_FRAME_LIMIT_DEF	(63)
 #define LINK_QUAL_AGG_FRAME_LIMIT_MAX	(63)
-<<<<<<< HEAD
 /*
  * FIXME - various places in firmware API still use u8,
  * e.g. LQ command and SCD config command.
@@ -165,10 +151,6 @@ enum {
  */
 #define LINK_QUAL_AGG_FRAME_LIMIT_GEN2_DEF	(255)
 #define LINK_QUAL_AGG_FRAME_LIMIT_GEN2_MAX	(255)
-=======
-#define LINK_QUAL_AGG_FRAME_LIMIT_GEN2_DEF	(64)
-#define LINK_QUAL_AGG_FRAME_LIMIT_GEN2_MAX	(64)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define LINK_QUAL_AGG_FRAME_LIMIT_MIN	(0)
 
 #define LQ_SIZE		2	/* 2 mode tables:  "Active" and "Search" */
@@ -185,11 +167,8 @@ enum iwl_table_type {
 	LQ_HT_MIMO2,
 	LQ_VHT_SISO,    /* VHT types */
 	LQ_VHT_MIMO2,
-<<<<<<< HEAD
 	LQ_HE_SISO,     /* HE types */
 	LQ_HE_MIMO2,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	LQ_MAX,
 };
 
@@ -211,7 +190,6 @@ struct rs_rate {
 #define is_type_ht_mimo2(type) ((type) == LQ_HT_MIMO2)
 #define is_type_vht_siso(type) ((type) == LQ_VHT_SISO)
 #define is_type_vht_mimo2(type) ((type) == LQ_VHT_MIMO2)
-<<<<<<< HEAD
 #define is_type_he_siso(type) ((type) == LQ_HE_SISO)
 #define is_type_he_mimo2(type) ((type) == LQ_HE_MIMO2)
 #define is_type_siso(type) (is_type_ht_siso(type) || is_type_vht_siso(type) || \
@@ -222,13 +200,6 @@ struct rs_rate {
 #define is_type_ht(type) (is_type_ht_siso(type) || is_type_ht_mimo2(type))
 #define is_type_vht(type) (is_type_vht_siso(type) || is_type_vht_mimo2(type))
 #define is_type_he(type) (is_type_he_siso(type) || is_type_he_mimo2(type))
-=======
-#define is_type_siso(type) (is_type_ht_siso(type) || is_type_vht_siso(type))
-#define is_type_mimo2(type) (is_type_ht_mimo2(type) || is_type_vht_mimo2(type))
-#define is_type_mimo(type) (is_type_mimo2(type))
-#define is_type_ht(type) (is_type_ht_siso(type) || is_type_ht_mimo2(type))
-#define is_type_vht(type) (is_type_vht_siso(type) || is_type_vht_mimo2(type))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define is_type_a_band(type) ((type) == LQ_LEGACY_A)
 #define is_type_g_band(type) ((type) == LQ_LEGACY_G)
 
@@ -242,10 +213,7 @@ struct rs_rate {
 #define is_mimo(rate)         is_type_mimo((rate)->type)
 #define is_ht(rate)           is_type_ht((rate)->type)
 #define is_vht(rate)          is_type_vht((rate)->type)
-<<<<<<< HEAD
 #define is_he(rate)           is_type_he((rate)->type)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define is_a_band(rate)       is_type_a_band((rate)->type)
 #define is_g_band(rate)       is_type_g_band((rate)->type)
 
@@ -262,7 +230,6 @@ struct iwl_rate_mcs_info {
 };
 
 /**
-<<<<<<< HEAD
  * struct iwl_lq_sta_rs_fw - rate and related statistics for RS in FW
  * @last_rate_n_flags: last rate reported by FW
  * @sta_id: the id of the station
@@ -295,8 +262,6 @@ struct iwl_lq_sta_rs_fw {
 };
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * struct iwl_rate_scale_data -- tx success history for one rate
  */
 struct iwl_rate_scale_data {
@@ -486,7 +451,6 @@ struct iwl_mvm_sta;
 int iwl_mvm_tx_protection(struct iwl_mvm *mvm, struct iwl_mvm_sta *mvmsta,
 			  bool enable);
 
-<<<<<<< HEAD
 #ifdef CONFIG_IWLWIFI_DEBUGFS
 void iwl_mvm_reset_frame_stats(struct iwl_mvm *mvm);
 #endif
@@ -502,6 +466,4 @@ int rs_fw_tx_protection(struct iwl_mvm *mvm, struct iwl_mvm_sta *mvmsta,
 			bool enable);
 void iwl_mvm_tlc_update_notif(struct iwl_mvm *mvm,
 			      struct iwl_rx_cmd_buffer *rxb);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __rs__ */

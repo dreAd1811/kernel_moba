@@ -1,26 +1,9 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
 /*
  * apds9960.c - Support for Avago APDS9960 gesture/RGB/ALS/proximity sensor
  *
  * Copyright (C) 2015, 2018
  * Author: Matt Ranostay <matt.ranostay@konsulko.com>
-=======
-/*
- * apds9960.c - Support for Avago APDS9960 gesture/RGB/ALS/proximity sensor
- *
- * Copyright (C) 2015 Matt Ranostay <mranostay@gmail.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * TODO: gesture + proximity calib offsets
  */
@@ -753,10 +736,6 @@ static int apds9960_write_event_config(struct iio_dev *indio_dev,
 }
 
 static const struct iio_info apds9960_info = {
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.attrs = &apds9960_attribute_group,
 	.read_raw = apds9960_read_raw,
 	.write_raw = apds9960_write_raw,
@@ -1154,10 +1133,6 @@ static struct i2c_driver apds9960_driver = {
 };
 module_i2c_driver(apds9960_driver);
 
-<<<<<<< HEAD
 MODULE_AUTHOR("Matt Ranostay <matt.ranostay@konsulko.com>");
-=======
-MODULE_AUTHOR("Matt Ranostay <mranostay@gmail.com>");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_DESCRIPTION("ADPS9960 Gesture/RGB/ALS/Proximity sensor");
 MODULE_LICENSE("GPL");

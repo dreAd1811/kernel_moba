@@ -192,12 +192,7 @@ static int jdi_panel_disable(struct drm_panel *panel)
 	if (!jdi->enabled)
 		return 0;
 
-<<<<<<< HEAD
 	backlight_disable(jdi->backlight);
-=======
-	jdi->backlight->props.power = FB_BLANK_POWERDOWN;
-	backlight_update_status(jdi->backlight);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	jdi->enabled = false;
 
@@ -293,12 +288,7 @@ static int jdi_panel_enable(struct drm_panel *panel)
 	if (jdi->enabled)
 		return 0;
 
-<<<<<<< HEAD
 	backlight_enable(jdi->backlight);
-=======
-	jdi->backlight->props.power = FB_BLANK_UNBLANK;
-	backlight_update_status(jdi->backlight);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	jdi->enabled = true;
 
@@ -510,10 +500,6 @@ static int jdi_panel_remove(struct mipi_dsi_device *dsi)
 		dev_err(&dsi->dev, "failed to detach from DSI host: %d\n",
 			ret);
 
-<<<<<<< HEAD
-=======
-	drm_panel_detach(&jdi->base);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	jdi_panel_del(jdi);
 
 	return 0;

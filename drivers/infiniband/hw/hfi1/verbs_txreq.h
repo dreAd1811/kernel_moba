@@ -93,11 +93,8 @@ static inline struct verbs_txreq *get_txreq(struct hfi1_ibdev *dev,
 	tx->psc = priv->s_sendcontext;
 	/* so that we can test if the sdma decriptors are there */
 	tx->txreq.num_desc = 0;
-<<<<<<< HEAD
 	/* Set the header type */
 	tx->phdr.hdr.hdr_type = priv->hdr_type;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return tx;
 }
 
@@ -117,7 +114,6 @@ static inline struct verbs_txreq *get_waiting_verbs_txreq(struct rvt_qp *qp)
 	return NULL;
 }
 
-<<<<<<< HEAD
 static inline bool verbs_txreq_queued(struct rvt_qp *qp)
 {
 	struct hfi1_qp_priv *priv = qp->priv;
@@ -125,8 +121,6 @@ static inline bool verbs_txreq_queued(struct rvt_qp *qp)
 	return iowait_packet_queued(&priv->s_iowait);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void hfi1_put_txreq(struct verbs_txreq *tx);
 int verbs_txreq_init(struct hfi1_ibdev *dev);
 void verbs_txreq_exit(struct hfi1_ibdev *dev);

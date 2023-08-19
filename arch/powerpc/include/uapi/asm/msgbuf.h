@@ -10,7 +10,6 @@
 
 struct msqid64_ds {
 	struct ipc64_perm msg_perm;
-<<<<<<< HEAD
 #ifdef __powerpc64__
 	__kernel_time_t msg_stime;	/* last msgsnd time */
 	__kernel_time_t msg_rtime;	/* last msgrcv time */
@@ -23,20 +22,6 @@ struct msqid64_ds {
 	unsigned long  msg_ctime_high;
 	unsigned long  msg_ctime;	/* last change time */
 #endif
-=======
-#ifndef __powerpc64__
-	unsigned int	__unused1;
-#endif
-	__kernel_time_t msg_stime;	/* last msgsnd time */
-#ifndef __powerpc64__
-	unsigned int	__unused2;
-#endif
-	__kernel_time_t msg_rtime;	/* last msgrcv time */
-#ifndef __powerpc64__
-	unsigned int	__unused3;
-#endif
-	__kernel_time_t msg_ctime;	/* last change time */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long  msg_cbytes;	/* current number of bytes on queue */
 	unsigned long  msg_qnum;	/* number of messages in queue */
 	unsigned long  msg_qbytes;	/* max number of bytes on queue */

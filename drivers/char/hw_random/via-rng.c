@@ -135,11 +135,7 @@ static int via_rng_init(struct hwrng *rng)
 	 * is always enabled if CPUID rng_en is set.  There is no
 	 * RNG configuration like it used to be the case in this
 	 * register */
-<<<<<<< HEAD
 	if (((c->x86 == 6) && (c->x86_model >= 0x0f))  || (c->x86 > 6)){
-=======
-	if ((c->x86 == 6) && (c->x86_model >= 0x0f)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!boot_cpu_has(X86_FEATURE_XSTORE_EN)) {
 			pr_err(PFX "can't enable hardware RNG "
 				"if XSTORE is not enabled\n");

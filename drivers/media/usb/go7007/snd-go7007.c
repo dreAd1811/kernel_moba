@@ -75,23 +75,14 @@ static void parse_audio_stream_data(struct go7007 *go, u8 *buf, int length)
 	struct go7007_snd *gosnd = go->snd_context;
 	struct snd_pcm_runtime *runtime = gosnd->substream->runtime;
 	int frames = bytes_to_frames(runtime, length);
-<<<<<<< HEAD
 	unsigned long flags;
 
 	spin_lock_irqsave(&gosnd->lock, flags);
-=======
-
-	spin_lock(&gosnd->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gosnd->hw_ptr += frames;
 	if (gosnd->hw_ptr >= runtime->buffer_size)
 		gosnd->hw_ptr -= runtime->buffer_size;
 	gosnd->avail += frames;
-<<<<<<< HEAD
 	spin_unlock_irqrestore(&gosnd->lock, flags);
-=======
-	spin_unlock(&gosnd->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (gosnd->w_idx + length > runtime->dma_bytes) {
 		int cpy = runtime->dma_bytes - gosnd->w_idx;
 
@@ -102,7 +93,6 @@ static void parse_audio_stream_data(struct go7007 *go, u8 *buf, int length)
 	}
 	memcpy(runtime->dma_area + gosnd->w_idx, buf, length);
 	gosnd->w_idx += length;
-<<<<<<< HEAD
 	spin_lock_irqsave(&gosnd->lock, flags);
 	if (gosnd->avail < runtime->period_size) {
 		spin_unlock_irqrestore(&gosnd->lock, flags);
@@ -110,15 +100,6 @@ static void parse_audio_stream_data(struct go7007 *go, u8 *buf, int length)
 	}
 	gosnd->avail -= runtime->period_size;
 	spin_unlock_irqrestore(&gosnd->lock, flags);
-=======
-	spin_lock(&gosnd->lock);
-	if (gosnd->avail < runtime->period_size) {
-		spin_unlock(&gosnd->lock);
-		return;
-	}
-	gosnd->avail -= runtime->period_size;
-	spin_unlock(&gosnd->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (gosnd->capturing)
 		snd_pcm_period_elapsed(gosnd->substream);
 }
@@ -247,11 +228,7 @@ int go7007_snd_init(struct go7007 *go)
 {
 	static int dev;
 	struct go7007_snd *gosnd;
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (dev >= SNDRV_CARDS)
 		return -ENODEV;
@@ -267,7 +244,6 @@ int go7007_snd_init(struct go7007 *go)
 	gosnd->capturing = 0;
 	ret = snd_card_new(go->dev, index[dev], id[dev], THIS_MODULE, 0,
 			   &gosnd->card);
-<<<<<<< HEAD
 	if (ret < 0) {
 		kfree(gosnd);
 		return ret;
@@ -284,20 +260,6 @@ int go7007_snd_init(struct go7007 *go)
 		kfree(gosnd);
 		return ret;
 	}
-=======
-	if (ret < 0)
-		goto free_snd;
-
-	ret = snd_device_new(gosnd->card, SNDRV_DEV_LOWLEVEL, go,
-			&go7007_snd_device_ops);
-	if (ret < 0)
-		goto free_card;
-
-	ret = snd_pcm_new(gosnd->card, "go7007", 0, 0, 1, &gosnd->pcm);
-	if (ret < 0)
-		goto free_card;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	strlcpy(gosnd->card->driver, "go7007", sizeof(gosnd->card->driver));
 	strlcpy(gosnd->card->shortname, go->name, sizeof(gosnd->card->driver));
 	strlcpy(gosnd->card->longname, gosnd->card->shortname,
@@ -308,16 +270,11 @@ int go7007_snd_init(struct go7007 *go)
 			&go7007_snd_capture_ops);
 
 	ret = snd_card_register(gosnd->card);
-<<<<<<< HEAD
 	if (ret < 0) {
 		snd_card_free(gosnd->card);
 		kfree(gosnd);
 		return ret;
 	}
-=======
-	if (ret < 0)
-		goto free_card;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	gosnd->substream = NULL;
 	go->snd_context = gosnd;
@@ -325,15 +282,6 @@ int go7007_snd_init(struct go7007 *go)
 	++dev;
 
 	return 0;
-<<<<<<< HEAD
-=======
-
-free_card:
-	snd_card_free(gosnd->card);
-free_snd:
-	kfree(gosnd);
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(go7007_snd_init);
 

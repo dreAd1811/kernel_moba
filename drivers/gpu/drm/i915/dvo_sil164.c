@@ -65,11 +65,7 @@ struct sil164_priv {
 
 #define SILPTR(d) ((SIL164Ptr)(d->DriverPrivate.ptr))
 
-<<<<<<< HEAD
 static bool sil164_readb(struct intel_dvo_device *dvo, int addr, u8 *ch)
-=======
-static bool sil164_readb(struct intel_dvo_device *dvo, int addr, uint8_t *ch)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct sil164_priv *sil = dvo->dev_priv;
 	struct i2c_adapter *adapter = dvo->i2c_bus;
@@ -106,19 +102,11 @@ static bool sil164_readb(struct intel_dvo_device *dvo, int addr, uint8_t *ch)
 	return false;
 }
 
-<<<<<<< HEAD
 static bool sil164_writeb(struct intel_dvo_device *dvo, int addr, u8 ch)
 {
 	struct sil164_priv *sil = dvo->dev_priv;
 	struct i2c_adapter *adapter = dvo->i2c_bus;
 	u8 out_buf[2];
-=======
-static bool sil164_writeb(struct intel_dvo_device *dvo, int addr, uint8_t ch)
-{
-	struct sil164_priv *sil = dvo->dev_priv;
-	struct i2c_adapter *adapter = dvo->i2c_bus;
-	uint8_t out_buf[2];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct i2c_msg msg = {
 		.addr = dvo->slave_addr,
 		.flags = 0,
@@ -185,11 +173,7 @@ out:
 
 static enum drm_connector_status sil164_detect(struct intel_dvo_device *dvo)
 {
-<<<<<<< HEAD
 	u8 reg9;
-=======
-	uint8_t reg9;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sil164_readb(dvo, SIL164_REG9, &reg9);
 
@@ -259,11 +243,7 @@ static bool sil164_get_hw_state(struct intel_dvo_device *dvo)
 
 static void sil164_dump_regs(struct intel_dvo_device *dvo)
 {
-<<<<<<< HEAD
 	u8 val;
-=======
-	uint8_t val;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sil164_readb(dvo, SIL164_FREQ_LO, &val);
 	DRM_DEBUG_KMS("SIL164_FREQ_LO: 0x%02x\n", val);

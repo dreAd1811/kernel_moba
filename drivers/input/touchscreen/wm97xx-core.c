@@ -44,10 +44,7 @@
 #include <linux/pm.h>
 #include <linux/interrupt.h>
 #include <linux/bitops.h>
-<<<<<<< HEAD
 #include <linux/mfd/wm97xx.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/workqueue.h>
 #include <linux/wm97xx.h>
 #include <linux/uaccess.h>
@@ -71,11 +68,7 @@
  * The default values correspond to Mainstone II in QVGA mode
  *
  * Please read
-<<<<<<< HEAD
  * Documentation/input/input-programming.rst for more details.
-=======
- * Documentation/input/input-programming.txt for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 static int abs_x[3] = {150, 4000, 5};
@@ -589,7 +582,6 @@ static void wm97xx_ts_input_close(struct input_dev *idev)
 		wm->codec->acc_enable(wm, 0);
 }
 
-<<<<<<< HEAD
 static int wm97xx_register_touch(struct wm97xx *wm)
 {
 	struct wm97xx_pdata *pdata = dev_get_platdata(wm->dev);
@@ -662,35 +654,13 @@ static int _wm97xx_probe(struct wm97xx *wm)
 
 	mutex_init(&wm->codec_mutex);
 	dev_set_drvdata(wm->dev, wm);
-=======
-static int wm97xx_probe(struct device *dev)
-{
-	struct wm97xx *wm;
-	struct wm97xx_pdata *pdata = dev_get_platdata(dev);
-	int ret = 0, id = 0;
-
-	wm = kzalloc(sizeof(struct wm97xx), GFP_KERNEL);
-	if (!wm)
-		return -ENOMEM;
-	mutex_init(&wm->codec_mutex);
-
-	wm->dev = dev;
-	dev_set_drvdata(dev, wm);
-	wm->ac97 = to_ac97_t(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* check that we have a supported codec */
 	id = wm97xx_reg_read(wm, AC97_VENDOR_ID1);
 	if (id != WM97XX_ID1) {
-<<<<<<< HEAD
 		dev_err(wm->dev,
 			"Device with vendor %04x is not a wm97xx\n", id);
 		return -ENODEV;
-=======
-		dev_err(dev, "Device with vendor %04x is not a wm97xx\n", id);
-		ret = -ENODEV;
-		goto alloc_err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	wm->id = wm97xx_reg_read(wm, AC97_VENDOR_ID2);
@@ -718,12 +688,7 @@ static int wm97xx_probe(struct device *dev)
 	default:
 		dev_err(wm->dev, "Support for wm97%02x not compiled in.\n",
 			wm->id & 0xff);
-<<<<<<< HEAD
 		return -ENODEV;
-=======
-		ret = -ENODEV;
-		goto alloc_err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* set up physical characteristics */
@@ -737,7 +702,6 @@ static int wm97xx_probe(struct device *dev)
 	wm->gpio[4] = wm97xx_reg_read(wm, AC97_GPIO_STATUS);
 	wm->gpio[5] = wm97xx_reg_read(wm, AC97_MISC_AFE);
 
-<<<<<<< HEAD
 	return wm97xx_register_touch(wm);
 }
 
@@ -790,81 +754,6 @@ static int wm97xx_probe(struct device *dev)
 
 batt_err:
 	wm97xx_unregister_touch(wm);
-=======
-	wm->input_dev = input_allocate_device();
-	if (wm->input_dev == NULL) {
-		ret = -ENOMEM;
-		goto alloc_err;
-	}
-
-	/* set up touch configuration */
-	wm->input_dev->name = "wm97xx touchscreen";
-	wm->input_dev->phys = "wm97xx";
-	wm->input_dev->open = wm97xx_ts_input_open;
-	wm->input_dev->close = wm97xx_ts_input_close;
-
-	__set_bit(EV_ABS, wm->input_dev->evbit);
-	__set_bit(EV_KEY, wm->input_dev->evbit);
-	__set_bit(BTN_TOUCH, wm->input_dev->keybit);
-
-	input_set_abs_params(wm->input_dev, ABS_X, abs_x[0], abs_x[1],
-			     abs_x[2], 0);
-	input_set_abs_params(wm->input_dev, ABS_Y, abs_y[0], abs_y[1],
-			     abs_y[2], 0);
-	input_set_abs_params(wm->input_dev, ABS_PRESSURE, abs_p[0], abs_p[1],
-			     abs_p[2], 0);
-
-	input_set_drvdata(wm->input_dev, wm);
-	wm->input_dev->dev.parent = dev;
-
-	ret = input_register_device(wm->input_dev);
-	if (ret < 0)
-		goto dev_alloc_err;
-
-	/* register our battery device */
-	wm->battery_dev = platform_device_alloc("wm97xx-battery", -1);
-	if (!wm->battery_dev) {
-		ret = -ENOMEM;
-		goto batt_err;
-	}
-	platform_set_drvdata(wm->battery_dev, wm);
-	wm->battery_dev->dev.parent = dev;
-	wm->battery_dev->dev.platform_data = pdata ? pdata->batt_pdata : NULL;
-	ret = platform_device_add(wm->battery_dev);
-	if (ret < 0)
-		goto batt_reg_err;
-
-	/* register our extended touch device (for machine specific
-	 * extensions) */
-	wm->touch_dev = platform_device_alloc("wm97xx-touch", -1);
-	if (!wm->touch_dev) {
-		ret = -ENOMEM;
-		goto touch_err;
-	}
-	platform_set_drvdata(wm->touch_dev, wm);
-	wm->touch_dev->dev.parent = dev;
-	wm->touch_dev->dev.platform_data = pdata;
-	ret = platform_device_add(wm->touch_dev);
-	if (ret < 0)
-		goto touch_reg_err;
-
-	return ret;
-
- touch_reg_err:
-	platform_device_put(wm->touch_dev);
- touch_err:
-	platform_device_del(wm->battery_dev);
- batt_reg_err:
-	platform_device_put(wm->battery_dev);
- batt_err:
-	input_unregister_device(wm->input_dev);
-	wm->input_dev = NULL;
- dev_alloc_err:
-	input_free_device(wm->input_dev);
- alloc_err:
-	kfree(wm);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -872,20 +761,12 @@ static int wm97xx_remove(struct device *dev)
 {
 	struct wm97xx *wm = dev_get_drvdata(dev);
 
-<<<<<<< HEAD
 	wm97xx_remove_battery(wm);
 	wm97xx_unregister_touch(wm);
-=======
-	platform_device_unregister(wm->battery_dev);
-	platform_device_unregister(wm->touch_dev);
-	input_unregister_device(wm->input_dev);
-	kfree(wm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
 static int wm97xx_mfd_probe(struct platform_device *pdev)
 {
 	struct wm97xx *wm;
@@ -919,8 +800,6 @@ static int wm97xx_mfd_remove(struct platform_device *pdev)
 	return wm97xx_remove(&pdev->dev);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __maybe_unused wm97xx_suspend(struct device *dev)
 {
 	struct wm97xx *wm = dev_get_drvdata(dev);
@@ -1017,20 +896,15 @@ EXPORT_SYMBOL_GPL(wm97xx_unregister_mach_ops);
 
 static struct device_driver wm97xx_driver = {
 	.name =		"wm97xx-ts",
-<<<<<<< HEAD
 #ifdef CONFIG_AC97_BUS
 	.bus =		&ac97_bus_type,
 #endif
-=======
-	.bus =		&ac97_bus_type,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.owner =	THIS_MODULE,
 	.probe =	wm97xx_probe,
 	.remove =	wm97xx_remove,
 	.pm =		&wm97xx_pm_ops,
 };
 
-<<<<<<< HEAD
 static struct platform_driver wm97xx_mfd_driver = {
 	.driver = {
 		.name =		"wm97xx-ts",
@@ -1051,22 +925,13 @@ static int __init wm97xx_init(void)
 	if (IS_BUILTIN(CONFIG_AC97_BUS))
 		ret =  driver_register(&wm97xx_driver);
 	return ret;
-=======
-static int __init wm97xx_init(void)
-{
-	return driver_register(&wm97xx_driver);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __exit wm97xx_exit(void)
 {
-<<<<<<< HEAD
 	if (IS_BUILTIN(CONFIG_AC97_BUS))
 		driver_unregister(&wm97xx_driver);
 	platform_driver_unregister(&wm97xx_mfd_driver);
-=======
-	driver_unregister(&wm97xx_driver);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 module_init(wm97xx_init);

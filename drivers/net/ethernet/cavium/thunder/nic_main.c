@@ -18,17 +18,11 @@
 #include "q_struct.h"
 #include "thunder_bgx.h"
 
-<<<<<<< HEAD
 #define DRV_NAME	"nicpf"
 #define DRV_VERSION	"1.0"
 
 #define NIC_VF_PER_MBX_REG      64
 
-=======
-#define DRV_NAME	"thunder-nic"
-#define DRV_VERSION	"1.0"
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct hw_info {
 	u8		bgx_cnt;
 	u8		chans_per_lmac;
@@ -369,22 +363,8 @@ static void nic_set_lmac_vf_mapping(struct nicpf *nic)
 	}
 }
 
-<<<<<<< HEAD
 static void nic_get_hw_info(struct nicpf *nic)
 {
-=======
-static void nic_free_lmacmem(struct nicpf *nic)
-{
-	kfree(nic->vf_lmac_map);
-	kfree(nic->link);
-	kfree(nic->duplex);
-	kfree(nic->speed);
-}
-
-static int nic_get_hw_info(struct nicpf *nic)
-{
-	u8 max_lmac;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 sdevid;
 	struct hw_info *hw = nic->hw;
 
@@ -432,59 +412,22 @@ static int nic_get_hw_info(struct nicpf *nic)
 		break;
 	}
 	hw->tl4_cnt = MAX_QUEUES_PER_QSET * pci_sriov_get_totalvfs(nic->pdev);
-<<<<<<< HEAD
-=======
-
-	/* Allocate memory for LMAC tracking elements */
-	max_lmac = hw->bgx_cnt * MAX_LMAC_PER_BGX;
-	nic->vf_lmac_map = kmalloc_array(max_lmac, sizeof(u8), GFP_KERNEL);
-	if (!nic->vf_lmac_map)
-		goto error;
-	nic->link = kmalloc_array(max_lmac, sizeof(u8), GFP_KERNEL);
-	if (!nic->link)
-		goto error;
-	nic->duplex = kmalloc_array(max_lmac, sizeof(u8), GFP_KERNEL);
-	if (!nic->duplex)
-		goto error;
-	nic->speed = kmalloc_array(max_lmac, sizeof(u32), GFP_KERNEL);
-	if (!nic->speed)
-		goto error;
-	return 0;
-
-error:
-	nic_free_lmacmem(nic);
-	return -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #define BGX0_BLOCK 8
 #define BGX1_BLOCK 9
 
-<<<<<<< HEAD
 static void nic_init_hw(struct nicpf *nic)
 {
 	int i;
 	u64 cqm_cfg;
 
-=======
-static int nic_init_hw(struct nicpf *nic)
-{
-	int i, err;
-	u64 cqm_cfg;
-
-	/* Get HW capability info */
-	err = nic_get_hw_info(nic);
-	if (err)
-		return err;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Enable NIC HW block */
 	nic_reg_write(nic, NIC_PF_CFG, 0x3);
 
 	/* Enable backpressure */
 	nic_reg_write(nic, NIC_PF_BP_CFG, (1ULL << 6) | 0x03);
 
-<<<<<<< HEAD
 	/* TNS and TNS bypass modes are present only on 88xx
 	 * Also offset of this CSR has changed in 81xx and 83xx.
 	 */
@@ -501,15 +444,6 @@ static int nic_init_hw(struct nicpf *nic)
 		for (i = 0; i < nic->hw->bgx_cnt; i++)
 			nic_reg_write(nic, NIC_PF_INTFX_SEND_CFG | (i << 3),
 				      (1ULL << 16));
-=======
-	/* TNS and TNS bypass modes are present only on 88xx */
-	if (nic->pdev->subsystem_device == PCI_SUBSYS_DEVID_88XX_NIC_PF) {
-		/* Disable TNS mode on both interfaces */
-		nic_reg_write(nic, NIC_PF_INTF_0_1_SEND_CFG,
-			      (NIC_TNS_BYPASS_MODE << 7) | BGX0_BLOCK);
-		nic_reg_write(nic, NIC_PF_INTF_0_1_SEND_CFG | (1 << 8),
-			      (NIC_TNS_BYPASS_MODE << 7) | BGX1_BLOCK);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	nic_reg_write(nic, NIC_PF_INTF_0_1_BP_CFG,
@@ -541,11 +475,6 @@ static int nic_init_hw(struct nicpf *nic)
 	cqm_cfg = nic_reg_read(nic, NIC_PF_CQM_CFG);
 	if (cqm_cfg < NICPF_CQM_MIN_DROP_LEVEL)
 		nic_reg_write(nic, NIC_PF_CQM_CFG, NICPF_CQM_MIN_DROP_LEVEL);
-<<<<<<< HEAD
-=======
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Channel parse index configuration */
@@ -630,12 +559,6 @@ static void nic_config_cpi(struct nicpf *nic, struct cpi_cfg_msg *cfg)
 static void nic_send_rss_size(struct nicpf *nic, int vf)
 {
 	union nic_mbx mbx = {};
-<<<<<<< HEAD
-=======
-	u64  *msg;
-
-	msg = (u64 *)&mbx;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mbx.rss_size.msg = NIC_MBOX_MSG_RSS_SIZE;
 	mbx.rss_size.ind_tbl_size = nic->hw->rss_ind_tbl_size;
@@ -657,10 +580,6 @@ static void nic_config_rss(struct nicpf *nic, struct rss_cfg_msg *cfg)
 	rssi_base = nic->rssi_base[cfg->vf_id] + cfg->tbl_offset;
 
 	rssi = rssi_base;
-<<<<<<< HEAD
-=======
-	qset = cfg->vf_id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (; rssi < (rssi_base + cfg->tbl_len); rssi++) {
 		u8 svf = cfg->ind_tbl[idx] >> 3;
@@ -972,7 +891,6 @@ static void nic_pause_frame(struct nicpf *nic, int vf, struct pfc *cfg)
 	}
 }
 
-<<<<<<< HEAD
 /* Enable or disable HW timestamping by BGX for pkts received on a LMAC */
 static void nic_config_timestamp(struct nicpf *nic, int vf, struct set_ptp *ptp)
 {
@@ -1011,8 +929,6 @@ static void nic_config_timestamp(struct nicpf *nic, int vf, struct set_ptp *ptp)
 	nic_reg_write(nic, NIC_PF_PKIND_0_15_CFG | (pkind_idx << 3), pkind_val);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Interrupt handler to handle mailbox messages from VFs */
 static void nic_handle_mbx_intr(struct nicpf *nic, int vf)
 {
@@ -1155,7 +1071,6 @@ static void nic_handle_mbx_intr(struct nicpf *nic, int vf)
 	case NIC_MBOX_MSG_PFC:
 		nic_pause_frame(nic, vf, &mbx.pfc);
 		goto unlock;
-<<<<<<< HEAD
 	case NIC_MBOX_MSG_PTP_CFG:
 		nic_config_timestamp(nic, vf, &mbx.ptp);
 		break;
@@ -1193,8 +1108,6 @@ static void nic_handle_mbx_intr(struct nicpf *nic, int vf)
 		lmac = NIC_GET_LMAC_FROM_VF_LMAC_MAP(nic->vf_lmac_map[vf]);
 		bgx_set_xcast_mode(nic->node, bgx, lmac, mbx.xcast.data.mode);
 		break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		dev_err(&nic->pdev->dev,
 			"Invalid msg from VF%d, msg 0x%x\n", vf, mbx.msg.msg);
@@ -1217,11 +1130,7 @@ static irqreturn_t nic_mbx_intr_handler(int irq, void *nic_irq)
 	struct nicpf *nic = (struct nicpf *)nic_irq;
 	int mbx;
 	u64 intr;
-<<<<<<< HEAD
 	u8  vf;
-=======
-	u8  vf, vf_per_mbx_reg = 64;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (irq == pci_irq_vector(nic->pdev, NIC_PF_INTR_ID_MBOX0))
 		mbx = 0;
@@ -1230,7 +1139,6 @@ static irqreturn_t nic_mbx_intr_handler(int irq, void *nic_irq)
 
 	intr = nic_reg_read(nic, NIC_PF_MAILBOX_INT + (mbx << 3));
 	dev_dbg(&nic->pdev->dev, "PF interrupt Mbox%d 0x%llx\n", mbx, intr);
-<<<<<<< HEAD
 	for (vf = 0; vf < NIC_VF_PER_MBX_REG; vf++) {
 		if (intr & (1ULL << vf)) {
 			dev_dbg(&nic->pdev->dev, "Intr from VF %d\n",
@@ -1238,14 +1146,6 @@ static irqreturn_t nic_mbx_intr_handler(int irq, void *nic_irq)
 
 			nic_handle_mbx_intr(nic, vf +
 					    (mbx * NIC_VF_PER_MBX_REG));
-=======
-	for (vf = 0; vf < vf_per_mbx_reg; vf++) {
-		if (intr & (1ULL << vf)) {
-			dev_dbg(&nic->pdev->dev, "Intr from VF %d\n",
-				vf + (mbx * vf_per_mbx_reg));
-
-			nic_handle_mbx_intr(nic, vf + (mbx * vf_per_mbx_reg));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			nic_clear_mbx_intr(nic, vf, mbx);
 		}
 	}
@@ -1420,10 +1320,7 @@ static int nic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 {
 	struct device *dev = &pdev->dev;
 	struct nicpf *nic;
-<<<<<<< HEAD
 	u8     max_lmac;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int    err;
 
 	BUILD_BUG_ON(sizeof(union nic_mbx) > 16);
@@ -1433,15 +1330,8 @@ static int nic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 		return -ENOMEM;
 
 	nic->hw = devm_kzalloc(dev, sizeof(struct hw_info), GFP_KERNEL);
-<<<<<<< HEAD
 	if (!nic->hw)
 		return -ENOMEM;
-=======
-	if (!nic->hw) {
-		devm_kfree(dev, nic);
-		return -ENOMEM;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pci_set_drvdata(pdev, nic);
 
@@ -1482,7 +1372,6 @@ static int nic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 
 	nic->node = nic_get_node_id(pdev);
 
-<<<<<<< HEAD
 	/* Get HW capability info */
 	nic_get_hw_info(nic);
 
@@ -1509,12 +1398,6 @@ static int nic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 
 	/* Initialize hardware */
 	nic_init_hw(nic);
-=======
-	/* Initialize hardware */
-	err = nic_init_hw(nic);
-	if (err)
-		goto err_release_regions;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	nic_set_lmac_vf_mapping(nic);
 
@@ -1549,12 +1432,6 @@ err_unregister_interrupts:
 err_release_regions:
 	pci_release_regions(pdev);
 err_disable_device:
-<<<<<<< HEAD
-=======
-	nic_free_lmacmem(nic);
-	devm_kfree(dev, nic->hw);
-	devm_kfree(dev, nic);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pci_disable_device(pdev);
 	pci_set_drvdata(pdev, NULL);
 	return err;
@@ -1579,13 +1456,6 @@ static void nic_remove(struct pci_dev *pdev)
 	nic_unregister_interrupts(nic);
 	pci_release_regions(pdev);
 
-<<<<<<< HEAD
-=======
-	nic_free_lmacmem(nic);
-	devm_kfree(&pdev->dev, nic->hw);
-	devm_kfree(&pdev->dev, nic);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pci_disable_device(pdev);
 	pci_set_drvdata(pdev, NULL);
 }

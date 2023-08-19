@@ -13,11 +13,6 @@
 extern void timer_tick(void);
 
 typedef void (*clock_access_fn)(struct timespec64 *);
-<<<<<<< HEAD
 extern int register_persistent_clock(clock_access_fn read_persistent);
-=======
-extern int register_persistent_clock(clock_access_fn read_boot,
-				     clock_access_fn read_persistent);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif

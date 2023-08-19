@@ -373,11 +373,7 @@ static struct soc_button_info soc_button_PNP0C40[] = {
 	{ "home", 1, EV_KEY, KEY_LEFTMETA, false, true },
 	{ "volume_up", 2, EV_KEY, KEY_VOLUMEUP, true, false },
 	{ "volume_down", 3, EV_KEY, KEY_VOLUMEDOWN, true, false },
-<<<<<<< HEAD
 	{ "rotation_lock", 4, EV_KEY, KEY_ROTATE_LOCK_TOGGLE, false, false },
-=======
-	{ "rotation_lock", 4, EV_SW, SW_ROTATE_LOCK, false, false },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ }
 };
 

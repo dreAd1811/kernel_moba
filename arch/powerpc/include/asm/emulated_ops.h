@@ -55,13 +55,10 @@ extern struct ppc_emulated {
 	struct ppc_emulated_entry mfdscr;
 	struct ppc_emulated_entry mtdscr;
 	struct ppc_emulated_entry lq_stq;
-<<<<<<< HEAD
 	struct ppc_emulated_entry lxvw4x;
 	struct ppc_emulated_entry lxvh8x;
 	struct ppc_emulated_entry lxvd2x;
 	struct ppc_emulated_entry lxvb16x;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 } ppc_emulated;
 

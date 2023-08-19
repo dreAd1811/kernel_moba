@@ -315,7 +315,6 @@ static inline bool mips_gic_present(void)
 }
 
 /**
-<<<<<<< HEAD
  * mips_gic_vx_map_reg() - Return GIC_Vx_<intr>_MAP register offset
  * @intr: A GIC local interrupt
  *
@@ -346,8 +345,6 @@ mips_gic_vx_map_reg(enum mips_gic_local_interrupt intr)
 }
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * gic_get_c0_compare_int() - Return cp0 count/compare interrupt virq
  *
  * Determine the virq number to use for the coprocessor 0 count/compare

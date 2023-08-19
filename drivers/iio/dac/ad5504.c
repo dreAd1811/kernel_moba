@@ -232,10 +232,6 @@ static const struct iio_info ad5504_info = {
 	.write_raw = ad5504_write_raw,
 	.read_raw = ad5504_read_raw,
 	.event_attrs = &ad5504_ev_attribute_group,
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct iio_chan_spec_ext_info ad5504_ext_info[] = {

@@ -342,13 +342,8 @@ static int NeedSeek = 0;
 static void fd_select_side( int side );
 static void fd_select_drive( int drive );
 static void fd_deselect( void );
-<<<<<<< HEAD
 static void fd_motor_off_timer(struct timer_list *unused);
 static void check_change(struct timer_list *unused);
-=======
-static void fd_motor_off_timer( unsigned long dummy );
-static void check_change( unsigned long dummy );
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static irqreturn_t floppy_irq (int irq, void *dummy);
 static void fd_error( void );
 static int do_format(int drive, int type, struct atari_format_descr *desc);
@@ -358,20 +353,12 @@ static void fd_calibrate_done( int status );
 static void fd_seek( void );
 static void fd_seek_done( int status );
 static void fd_rwsec( void );
-<<<<<<< HEAD
 static void fd_readtrack_check(struct timer_list *unused);
-=======
-static void fd_readtrack_check( unsigned long dummy );
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void fd_rwsec_done( int status );
 static void fd_rwsec_done1(int status);
 static void fd_writetrack( void );
 static void fd_writetrack_done( int status );
-<<<<<<< HEAD
 static void fd_times_out(struct timer_list *unused);
-=======
-static void fd_times_out( unsigned long dummy );
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void finish_fdc( void );
 static void finish_fdc_done( int dummy );
 static void setup_req_params( int drive );
@@ -386,17 +373,10 @@ static void floppy_release(struct gendisk *disk, fmode_t mode);
 
 /************************* End of Prototypes **************************/
 
-<<<<<<< HEAD
 static DEFINE_TIMER(motor_off_timer, fd_motor_off_timer);
 static DEFINE_TIMER(readtrack_timer, fd_readtrack_check);
 static DEFINE_TIMER(timeout_timer, fd_times_out);
 static DEFINE_TIMER(fd_timer, check_change);
-=======
-static DEFINE_TIMER(motor_off_timer, fd_motor_off_timer, 0, 0);
-static DEFINE_TIMER(readtrack_timer, fd_readtrack_check, 0, 0);
-static DEFINE_TIMER(timeout_timer, fd_times_out, 0, 0);
-static DEFINE_TIMER(fd_timer, check_change, 0, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	
 static void fd_end_request_cur(blk_status_t err)
 {
@@ -499,11 +479,7 @@ static void fd_deselect( void )
  * counts the index signals, which arrive only if one drive is selected.
  */
 
-<<<<<<< HEAD
 static void fd_motor_off_timer(struct timer_list *unused)
-=======
-static void fd_motor_off_timer( unsigned long dummy )
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned char status;
 
@@ -539,11 +515,7 @@ static void fd_motor_off_timer( unsigned long dummy )
  * as possible) and keep track of the current state of the write protection.
  */
 
-<<<<<<< HEAD
 static void check_change(struct timer_list *unused)
-=======
-static void check_change( unsigned long dummy )
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	static int    drive = 0;
 
@@ -994,11 +966,7 @@ static void fd_rwsec( void )
 }
 
     
-<<<<<<< HEAD
 static void fd_readtrack_check(struct timer_list *unused)
-=======
-static void fd_readtrack_check( unsigned long dummy )
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long flags, addr, addr2;
 
@@ -1269,11 +1237,7 @@ static void fd_writetrack_done( int status )
 	fd_error();
 }
 
-<<<<<<< HEAD
 static void fd_times_out(struct timer_list *unused)
-=======
-static void fd_times_out( unsigned long dummy )
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	atari_disable_irq( IRQ_MFP_FDC );
 	if (!FloppyIRQHandler) goto end; /* int occurred after timer was fired, but
@@ -1953,11 +1917,7 @@ static struct kobject *floppy_find(dev_t dev, int *part, void *data)
 	if (drive >= FD_MAX_UNITS || type > NUM_DISK_MINORS)
 		return NULL;
 	*part = 0;
-<<<<<<< HEAD
 	return get_disk_and_module(unit[drive].disk);
-=======
-	return get_disk(unit[drive].disk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int __init atari_floppy_init (void)

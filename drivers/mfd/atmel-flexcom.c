@@ -39,19 +39,15 @@
 #define FLEX_MR_OPMODE(opmode)	(((opmode) << FLEX_MR_OPMODE_OFFSET) &	\
 				 FLEX_MR_OPMODE_MASK)
 
-<<<<<<< HEAD
 struct atmel_flexcom {
 	void __iomem *base;
 	u32 opmode;
 	struct clk *clk;
 };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int atmel_flexcom_probe(struct platform_device *pdev)
 {
 	struct device_node *np = pdev->dev.of_node;
-<<<<<<< HEAD
 	struct resource *res;
 	struct atmel_flexcom *ddata;
 	int err;
@@ -80,32 +76,6 @@ static int atmel_flexcom_probe(struct platform_device *pdev)
 		return PTR_ERR(ddata->clk);
 
 	err = clk_prepare_enable(ddata->clk);
-=======
-	struct clk *clk;
-	struct resource *res;
-	void __iomem *base;
-	u32 opmode;
-	int err;
-
-	err = of_property_read_u32(np, "atmel,flexcom-mode", &opmode);
-	if (err)
-		return err;
-
-	if (opmode < ATMEL_FLEXCOM_MODE_USART ||
-	    opmode > ATMEL_FLEXCOM_MODE_TWI)
-		return -EINVAL;
-
-	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-	base = devm_ioremap_resource(&pdev->dev, res);
-	if (IS_ERR(base))
-		return PTR_ERR(base);
-
-	clk = devm_clk_get(&pdev->dev, NULL);
-	if (IS_ERR(clk))
-		return PTR_ERR(clk);
-
-	err = clk_prepare_enable(clk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		return err;
 
@@ -115,15 +85,9 @@ static int atmel_flexcom_probe(struct platform_device *pdev)
 	 * inaccessible and are read as zero. Also the external I/O lines of the
 	 * Flexcom are muxed to reach the selected device.
 	 */
-<<<<<<< HEAD
 	writel(FLEX_MR_OPMODE(ddata->opmode), ddata->base + FLEX_MR);
 
 	clk_disable_unprepare(ddata->clk);
-=======
-	writel(FLEX_MR_OPMODE(opmode), base + FLEX_MR);
-
-	clk_disable_unprepare(clk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return devm_of_platform_populate(&pdev->dev);
 }
@@ -134,7 +98,6 @@ static const struct of_device_id atmel_flexcom_of_match[] = {
 };
 MODULE_DEVICE_TABLE(of, atmel_flexcom_of_match);
 
-<<<<<<< HEAD
 #ifdef CONFIG_PM_SLEEP
 static int atmel_flexcom_resume(struct device *dev)
 {
@@ -158,16 +121,11 @@ static int atmel_flexcom_resume(struct device *dev)
 static SIMPLE_DEV_PM_OPS(atmel_flexcom_pm_ops, NULL,
 			 atmel_flexcom_resume);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct platform_driver atmel_flexcom_driver = {
 	.probe	= atmel_flexcom_probe,
 	.driver	= {
 		.name		= "atmel_flexcom",
-<<<<<<< HEAD
 		.pm		= &atmel_flexcom_pm_ops,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.of_match_table	= atmel_flexcom_of_match,
 	},
 };

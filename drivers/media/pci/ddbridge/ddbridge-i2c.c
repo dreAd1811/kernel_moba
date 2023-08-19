@@ -73,14 +73,10 @@ static int ddb_i2c_cmd(struct ddb_i2c *i2c, u32 adr, u32 cmd)
 		}
 		return -EIO;
 	}
-<<<<<<< HEAD
 	val &= 0x70000;
 	if (val == 0x20000)
 		dev_err(dev->dev, "I2C bus error\n");
 	if (val)
-=======
-	if (val & 0x70000)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EIO;
 	return 0;
 }
@@ -88,11 +84,7 @@ static int ddb_i2c_cmd(struct ddb_i2c *i2c, u32 adr, u32 cmd)
 static int ddb_i2c_master_xfer(struct i2c_adapter *adapter,
 			       struct i2c_msg msg[], int num)
 {
-<<<<<<< HEAD
 	struct ddb_i2c *i2c = (struct ddb_i2c *)i2c_get_adapdata(adapter);
-=======
-	struct ddb_i2c *i2c = (struct ddb_i2c *) i2c_get_adapdata(adapter);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ddb *dev = i2c->dev;
 	u8 addr = 0;
 
@@ -158,15 +150,9 @@ void ddb_i2c_release(struct ddb *dev)
 	}
 }
 
-<<<<<<< HEAD
 static void i2c_handler(void *priv)
 {
 	struct ddb_i2c *i2c = (struct ddb_i2c *)priv;
-=======
-static void i2c_handler(unsigned long priv)
-{
-	struct ddb_i2c *i2c = (struct ddb_i2c *) priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	complete(&i2c->completion);
 }
@@ -188,32 +174,20 @@ static int ddb_i2c_add(struct ddb *dev, struct ddb_i2c *i2c,
 		(regmap->i2c->base + regmap->i2c->size * i);
 	ddbwritel(dev, I2C_SPEED_100, i2c->regs + I2C_TIMING);
 	ddbwritel(dev, ((i2c->rbuf & 0xffff) << 16) | (i2c->wbuf & 0xffff),
-<<<<<<< HEAD
 		  i2c->regs + I2C_TASKADDRESS);
-=======
-		i2c->regs + I2C_TASKADDRESS);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	init_completion(&i2c->completion);
 
 	adap = &i2c->adap;
 	i2c_set_adapdata(adap, i2c);
 #ifdef I2C_ADAP_CLASS_TV_DIGITAL
-<<<<<<< HEAD
 	adap->class = I2C_ADAP_CLASS_TV_DIGITAL | I2C_CLASS_TV_ANALOG;
-=======
-	adap->class = I2C_ADAP_CLASS_TV_DIGITAL|I2C_CLASS_TV_ANALOG;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 #ifdef I2C_CLASS_TV_ANALOG
 	adap->class = I2C_CLASS_TV_ANALOG;
 #endif
 #endif
 	snprintf(adap->name, I2C_NAME_SIZE, "ddbridge_%02x.%x.%x",
-<<<<<<< HEAD
 		 dev->nr, i2c->link, i);
-=======
-		dev->nr, i2c->link, i);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adap->algo = &ddb_i2c_algo;
 	adap->algo_data = (void *)i2c;
 	adap->dev.parent = dev->dev;
@@ -239,12 +213,7 @@ int ddb_i2c_init(struct ddb *dev)
 			if (!(dev->link[l].info->i2c_mask & (1 << i)))
 				continue;
 			i2c = &dev->i2c[num];
-<<<<<<< HEAD
 			ddb_irq_set(dev, l, i + base, i2c_handler, i2c);
-=======
-			dev->handler_data[l][i + base] = (unsigned long) i2c;
-			dev->handler[l][i + base] = i2c_handler;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			stat = ddb_i2c_add(dev, i2c, regmap, l, i, num);
 			if (stat)
 				break;
@@ -257,14 +226,9 @@ int ddb_i2c_init(struct ddb *dev)
 			adap = &i2c->adap;
 			i2c_del_adapter(adap);
 		}
-<<<<<<< HEAD
 	} else {
 		dev->i2c_num = num;
 	}
 
-=======
-	} else
-		dev->i2c_num = num;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return stat;
 }

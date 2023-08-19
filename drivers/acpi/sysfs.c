@@ -169,12 +169,8 @@ module_param_cb(debug_level, &param_ops_debug_level, &acpi_dbg_level, 0644);
 
 static char trace_method_name[1024];
 
-<<<<<<< HEAD
 static int param_set_trace_method_name(const char *val,
 				       const struct kernel_param *kp)
-=======
-int param_set_trace_method_name(const char *val, const struct kernel_param *kp)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 saved_flags = 0;
 	bool is_abs_path = true;
@@ -820,19 +816,8 @@ end:
  * interface:
  *   echo unmask > /sys/firmware/acpi/interrupts/gpe00
  */
-<<<<<<< HEAD
 #define ACPI_MASKABLE_GPE_MAX	0xFF
 static DECLARE_BITMAP(acpi_masked_gpes_map, ACPI_MASKABLE_GPE_MAX) __initdata;
-=======
-
-/*
- * Currently, the GPE flooding prevention only supports to mask the GPEs
- * numbered from 00 to 7f.
- */
-#define ACPI_MASKABLE_GPE_MAX	0x80
-
-static u64 __initdata acpi_masked_gpes;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int __init acpi_gpe_set_masked_gpes(char *val)
 {
@@ -840,11 +825,7 @@ static int __init acpi_gpe_set_masked_gpes(char *val)
 
 	if (kstrtou8(val, 0, &gpe) || gpe > ACPI_MASKABLE_GPE_MAX)
 		return -EINVAL;
-<<<<<<< HEAD
 	set_bit(gpe, acpi_masked_gpes_map);
-=======
-	acpi_masked_gpes |= ((u64)1<<gpe);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 1;
 }
@@ -856,23 +837,11 @@ void __init acpi_gpe_apply_masked_gpes(void)
 	acpi_status status;
 	u8 gpe;
 
-<<<<<<< HEAD
 	for_each_set_bit(gpe, acpi_masked_gpes_map, ACPI_MASKABLE_GPE_MAX) {
 		status = acpi_get_gpe_device(gpe, &handle);
 		if (ACPI_SUCCESS(status)) {
 			pr_info("Masking GPE 0x%x.\n", gpe);
 			(void)acpi_mask_gpe(handle, gpe, TRUE);
-=======
-	for (gpe = 0;
-	     gpe < min_t(u8, ACPI_MASKABLE_GPE_MAX, acpi_current_gpe_count);
-	     gpe++) {
-		if (acpi_masked_gpes & ((u64)1<<gpe)) {
-			status = acpi_get_gpe_device(gpe, &handle);
-			if (ACPI_SUCCESS(status)) {
-				pr_info("Masking GPE 0x%x.\n", gpe);
-				(void)acpi_mask_gpe(handle, gpe, TRUE);
-			}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 }
@@ -888,20 +857,12 @@ void acpi_irq_stats_init(void)
 	num_gpes = acpi_current_gpe_count;
 	num_counters = num_gpes + ACPI_NUM_FIXED_EVENTS + NUM_COUNTERS_EXTRA;
 
-<<<<<<< HEAD
 	all_attrs = kcalloc(num_counters + 1, sizeof(struct attribute *),
-=======
-	all_attrs = kzalloc(sizeof(struct attribute *) * (num_counters + 1),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    GFP_KERNEL);
 	if (all_attrs == NULL)
 		return;
 
-<<<<<<< HEAD
 	all_counters = kcalloc(num_counters, sizeof(struct event_counter),
-=======
-	all_counters = kzalloc(sizeof(struct event_counter) * (num_counters),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       GFP_KERNEL);
 	if (all_counters == NULL)
 		goto fail;
@@ -910,11 +871,7 @@ void acpi_irq_stats_init(void)
 	if (ACPI_FAILURE(status))
 		goto fail;
 
-<<<<<<< HEAD
 	counter_attrs = kcalloc(num_counters, sizeof(struct kobj_attribute),
-=======
-	counter_attrs = kzalloc(sizeof(struct kobj_attribute) * (num_counters),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				GFP_KERNEL);
 	if (counter_attrs == NULL)
 		goto fail;
@@ -978,21 +935,13 @@ static void __exit interrupt_stats_exit(void)
 }
 
 static ssize_t
-<<<<<<< HEAD
 acpi_show_profile(struct device *dev, struct device_attribute *attr,
-=======
-acpi_show_profile(struct kobject *kobj, struct kobj_attribute *attr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		  char *buf)
 {
 	return sprintf(buf, "%d\n", acpi_gbl_FADT.preferred_profile);
 }
 
-<<<<<<< HEAD
 static const struct device_attribute pm_profile_attr =
-=======
-static const struct kobj_attribute pm_profile_attr =
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__ATTR(pm_profile, S_IRUGO, acpi_show_profile, NULL);
 
 static ssize_t hotplug_enabled_show(struct kobject *kobj,
@@ -1041,15 +990,8 @@ void acpi_sysfs_add_hotplug_profile(struct acpi_hotplug_profile *hotplug,
 
 	error = kobject_init_and_add(&hotplug->kobj,
 		&acpi_hotplug_profile_ktype, hotplug_kobj, "%s", name);
-<<<<<<< HEAD
 	if (error)
 		goto err_out;
-=======
-	if (error) {
-		kobject_put(&hotplug->kobj);
-		goto err_out;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kobject_uevent(&hotplug->kobj, KOBJ_ADD);
 	return;

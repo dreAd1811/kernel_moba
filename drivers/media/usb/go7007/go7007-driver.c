@@ -448,7 +448,6 @@ static struct go7007_buffer *frame_boundary(struct go7007 *go, struct go7007_buf
 {
 	u32 *bytesused;
 	struct go7007_buffer *vb_tmp = NULL;
-<<<<<<< HEAD
 	unsigned long flags;
 
 	if (vb == NULL) {
@@ -457,15 +456,6 @@ static struct go7007_buffer *frame_boundary(struct go7007 *go, struct go7007_buf
 			vb = go->active_buf =
 				list_first_entry(&go->vidq_active, struct go7007_buffer, list);
 		spin_unlock_irqrestore(&go->spinlock, flags);
-=======
-
-	if (vb == NULL) {
-		spin_lock(&go->spinlock);
-		if (!list_empty(&go->vidq_active))
-			vb = go->active_buf =
-				list_first_entry(&go->vidq_active, struct go7007_buffer, list);
-		spin_unlock(&go->spinlock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		go->next_seq++;
 		return vb;
 	}
@@ -479,11 +469,7 @@ static struct go7007_buffer *frame_boundary(struct go7007 *go, struct go7007_buf
 
 	vb->vb.vb2_buf.timestamp = ktime_get_ns();
 	vb_tmp = vb;
-<<<<<<< HEAD
 	spin_lock_irqsave(&go->spinlock, flags);
-=======
-	spin_lock(&go->spinlock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_del(&vb->list);
 	if (list_empty(&go->vidq_active))
 		vb = NULL;
@@ -491,11 +477,7 @@ static struct go7007_buffer *frame_boundary(struct go7007 *go, struct go7007_buf
 		vb = list_first_entry(&go->vidq_active,
 				struct go7007_buffer, list);
 	go->active_buf = vb;
-<<<<<<< HEAD
 	spin_unlock_irqrestore(&go->spinlock, flags);
-=======
-	spin_unlock(&go->spinlock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vb2_buffer_done(&vb_tmp->vb.vb2_buf, VB2_BUF_STATE_DONE);
 	return vb;
 }

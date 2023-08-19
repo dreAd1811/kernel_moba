@@ -87,10 +87,7 @@ static struct mtd_partition davinci_ntosd2_nandflash_partition[] = {
 };
 
 static struct davinci_nand_pdata davinci_ntosd2_nandflash_data = {
-<<<<<<< HEAD
 	.core_chipsel	= 0,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.parts		= davinci_ntosd2_nandflash_partition,
 	.nr_parts	= ARRAY_SIZE(davinci_ntosd2_nandflash_partition),
 	.ecc_mode	= NAND_ECC_HW,
@@ -132,11 +129,7 @@ static struct platform_device davinci_fb_device = {
 	.num_resources = 0,
 };
 
-<<<<<<< HEAD
 static const struct gpio_led ntosd2_leds[] = {
-=======
-static struct gpio_led ntosd2_leds[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ .name = "led1_green", .gpio = GPIO(10), },
 	{ .name = "led1_red",   .gpio = GPIO(11), },
 	{ .name = "led2_green", .gpio = GPIO(12), },
@@ -182,13 +175,10 @@ static __init void davinci_ntosd2_init(void)
 	struct clk *aemif_clk;
 	struct davinci_soc_info *soc_info = &davinci_soc_info;
 
-<<<<<<< HEAD
 	dm644x_register_clocks();
 
 	dm644x_init_devices();
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = dm644x_gpio_register();
 	if (ret)
 		pr_warn("%s: GPIO init failed: %d\n", __func__, ret);
@@ -242,16 +232,8 @@ MACHINE_START(NEUROS_OSD2, "Neuros OSD2")
 	.atag_offset	= 0x100,
 	.map_io		 = davinci_ntosd2_map_io,
 	.init_irq	= davinci_irq_init,
-<<<<<<< HEAD
 	.init_time	= dm644x_init_time,
 	.init_machine = davinci_ntosd2_init,
 	.init_late	= davinci_init_late,
 	.dma_zone_size	= SZ_128M,
-=======
-	.init_time	= davinci_timer_init,
-	.init_machine = davinci_ntosd2_init,
-	.init_late	= davinci_init_late,
-	.dma_zone_size	= SZ_128M,
-	.restart	= davinci_restart,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MACHINE_END

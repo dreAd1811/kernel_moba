@@ -125,11 +125,7 @@
 #define BMC150_ACCEL_SLEEP_1_SEC		0x0F
 
 #define BMC150_ACCEL_REG_TEMP			0x08
-<<<<<<< HEAD
 #define BMC150_ACCEL_TEMP_CENTER_VAL		24
-=======
-#define BMC150_ACCEL_TEMP_CENTER_VAL		23
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define BMC150_ACCEL_AXIS_TO_REG(axis)	(BMC150_ACCEL_REG_XOUT_L + (axis * 2))
 #define BMC150_AUTO_SUSPEND_DELAY_MS		2000
@@ -340,12 +336,7 @@ static int bmc150_accel_update_slope(struct bmc150_accel_data *data)
 		return ret;
 	}
 
-<<<<<<< HEAD
 	dev_dbg(dev, "%x %x\n", data->slope_thres, data->slope_dur);
-=======
-	dev_dbg(dev, "%s: %x %x\n", __func__, data->slope_thres,
-		data->slope_dur);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -846,38 +837,12 @@ static int bmc150_accel_fifo_transfer(struct bmc150_accel_data *data,
 	int sample_length = 3 * 2;
 	int ret;
 	int total_length = samples * sample_length;
-<<<<<<< HEAD
 
 	ret = regmap_raw_read(data->regmap, BMC150_ACCEL_REG_FIFO_DATA,
 			      buffer, total_length);
 	if (ret)
 		dev_err(dev,
 			"Error transferring data from fifo: %d\n", ret);
-=======
-	int i;
-	size_t step = regmap_get_raw_read_max(data->regmap);
-
-	if (!step || step > total_length)
-		step = total_length;
-	else if (step < total_length)
-		step = sample_length;
-
-	/*
-	 * Seems we have a bus with size limitation so we have to execute
-	 * multiple reads
-	 */
-	for (i = 0; i < total_length; i += step) {
-		ret = regmap_raw_read(data->regmap, BMC150_ACCEL_REG_FIFO_DATA,
-				      &buffer[i], step);
-		if (ret)
-			break;
-	}
-
-	if (ret)
-		dev_err(dev,
-			"Error transferring data from fifo in single steps of %zu\n",
-			step);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -1111,10 +1076,6 @@ static const struct iio_info bmc150_accel_info = {
 	.write_event_value	= bmc150_accel_write_event,
 	.write_event_config	= bmc150_accel_write_event_config,
 	.read_event_config	= bmc150_accel_read_event_config,
-<<<<<<< HEAD
-=======
-	.driver_module		= THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct iio_info bmc150_accel_info_fifo = {
@@ -1128,10 +1089,6 @@ static const struct iio_info bmc150_accel_info_fifo = {
 	.validate_trigger	= bmc150_accel_validate_trigger,
 	.hwfifo_set_watermark	= bmc150_accel_set_watermark,
 	.hwfifo_flush_to_buffer	= bmc150_accel_fifo_flush,
-<<<<<<< HEAD
-=======
-	.driver_module		= THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const unsigned long bmc150_accel_scan_masks[] = {
@@ -1223,10 +1180,6 @@ static int bmc150_accel_trigger_set_state(struct iio_trigger *trig,
 static const struct iio_trigger_ops bmc150_accel_trigger_ops = {
 	.set_trigger_state = bmc150_accel_trigger_set_state,
 	.try_reenable = bmc150_accel_trig_try_reen,
-<<<<<<< HEAD
-=======
-	.owner = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int bmc150_accel_handle_roc_event(struct iio_dev *indio_dev)
@@ -1745,10 +1698,6 @@ static int bmc150_accel_runtime_suspend(struct device *dev)
 	struct bmc150_accel_data *data = iio_priv(indio_dev);
 	int ret;
 
-<<<<<<< HEAD
-=======
-	dev_dbg(dev,  __func__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = bmc150_accel_set_mode(data, BMC150_ACCEL_SLEEP_MODE_SUSPEND, 0);
 	if (ret < 0)
 		return -EAGAIN;
@@ -1763,11 +1712,6 @@ static int bmc150_accel_runtime_resume(struct device *dev)
 	int ret;
 	int sleep_val;
 
-<<<<<<< HEAD
-=======
-	dev_dbg(dev,  __func__);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = bmc150_accel_set_mode(data, BMC150_ACCEL_SLEEP_MODE_NORMAL, 0);
 	if (ret < 0)
 		return ret;

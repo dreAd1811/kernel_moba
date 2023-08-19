@@ -76,21 +76,14 @@
 #include <linux/miscdevice.h>
 #include <linux/falloc.h>
 #include <linux/uio.h>
-<<<<<<< HEAD
 #include <linux/ioprio.h>
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "loop.h"
 
 #include <linux/uaccess.h>
 
 static DEFINE_IDR(loop_index_idr);
-<<<<<<< HEAD
 static DEFINE_MUTEX(loop_ctl_mutex);
-=======
-static DEFINE_MUTEX(loop_index_mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int max_part;
 static int part_shift;
@@ -220,7 +213,6 @@ static void __loop_update_dio(struct loop_device *lo, bool dio)
 	 * LO_FLAGS_READ_ONLY, both are set from kernel, and losetup
 	 * will get updated by ioctl(LOOP_GET_STATUS)
 	 */
-<<<<<<< HEAD
 	blk_mq_freeze_queue(lo->lo_queue);
 	lo->use_dio = use_dio;
 	if (use_dio) {
@@ -231,20 +223,6 @@ static void __loop_update_dio(struct loop_device *lo, bool dio)
 		lo->lo_flags &= ~LO_FLAGS_DIRECT_IO;
 	}
 	blk_mq_unfreeze_queue(lo->lo_queue);
-=======
-	if (lo->lo_state == Lo_bound)
-		blk_mq_freeze_queue(lo->lo_queue);
-	lo->use_dio = use_dio;
-	if (use_dio) {
-		queue_flag_clear_unlocked(QUEUE_FLAG_NOMERGES, lo->lo_queue);
-		lo->lo_flags |= LO_FLAGS_DIRECT_IO;
-	} else {
-		queue_flag_set_unlocked(QUEUE_FLAG_NOMERGES, lo->lo_queue);
-		lo->lo_flags &= ~LO_FLAGS_DIRECT_IO;
-	}
-	if (lo->lo_state == Lo_bound)
-		blk_mq_unfreeze_queue(lo->lo_queue);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int
@@ -438,7 +416,6 @@ out_free_page:
 	return ret;
 }
 
-<<<<<<< HEAD
 static int lo_discard(struct loop_device *lo, struct request *rq, loff_t pos)
 {
 	/*
@@ -451,22 +428,6 @@ static int lo_discard(struct loop_device *lo, struct request *rq, loff_t pos)
 	int mode = FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE;
 	int ret;
 
-=======
-static int lo_fallocate(struct loop_device *lo, struct request *rq, loff_t pos,
-			int mode)
-{
-	/*
-	 * We use fallocate to manipulate the space mappings used by the image
-	 * a.k.a. discard/zerorange. However we do not support this if
-	 * encryption is enabled, because it may give an attacker useful
-	 * information.
-	 */
-	struct file *file = lo->lo_backing_file;
-	int ret;
-
-	mode |= FALLOC_FL_KEEP_SIZE;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if ((!file->f_op->fallocate) || lo->lo_encrypt_key_size) {
 		ret = -EOPNOTSUPP;
 		goto out;
@@ -492,7 +453,6 @@ static int lo_req_flush(struct loop_device *lo, struct request *rq)
 static void lo_complete_rq(struct request *rq)
 {
 	struct loop_cmd *cmd = blk_mq_rq_to_pdu(rq);
-<<<<<<< HEAD
 	blk_status_t ret = BLK_STS_OK;
 
 	if (!cmd->use_aio || cmd->ret < 0 || cmd->ret == blk_rq_bytes(rq) ||
@@ -523,47 +483,25 @@ static void lo_complete_rq(struct request *rq)
 end_io:
 		blk_mq_end_request(rq, ret);
 	}
-=======
-
-	if (unlikely(req_op(cmd->rq) == REQ_OP_READ && cmd->use_aio &&
-		     cmd->ret >= 0 && cmd->ret < blk_rq_bytes(cmd->rq))) {
-		struct bio *bio = cmd->rq->bio;
-
-		bio_advance(bio, cmd->ret);
-		zero_fill_bio(bio);
-	}
-
-	blk_mq_end_request(rq, cmd->ret < 0 ? BLK_STS_IOERR : BLK_STS_OK);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void lo_rw_aio_do_completion(struct loop_cmd *cmd)
 {
-<<<<<<< HEAD
 	struct request *rq = blk_mq_rq_from_pdu(cmd);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!atomic_dec_and_test(&cmd->ref))
 		return;
 	kfree(cmd->bvec);
 	cmd->bvec = NULL;
-<<<<<<< HEAD
 	blk_mq_complete_request(rq);
-=======
-	blk_mq_complete_request(cmd->rq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void lo_rw_aio_complete(struct kiocb *iocb, long ret, long ret2)
 {
 	struct loop_cmd *cmd = container_of(iocb, struct loop_cmd, iocb);
 
-<<<<<<< HEAD
 	if (cmd->css)
 		css_put(cmd->css);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cmd->ret = ret;
 	lo_rw_aio_do_completion(cmd);
 }
@@ -573,11 +511,7 @@ static int lo_rw_aio(struct loop_device *lo, struct loop_cmd *cmd,
 {
 	struct iov_iter iter;
 	struct bio_vec *bvec;
-<<<<<<< HEAD
 	struct request *rq = blk_mq_rq_from_pdu(cmd);
-=======
-	struct request *rq = cmd->rq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct bio *bio = rq->bio;
 	struct file *file = lo->lo_backing_file;
 	unsigned int offset;
@@ -590,12 +524,8 @@ static int lo_rw_aio(struct loop_device *lo, struct loop_cmd *cmd,
 
 		__rq_for_each_bio(bio, rq)
 			segments += bio_segments(bio);
-<<<<<<< HEAD
 		bvec = kmalloc_array(segments, sizeof(struct bio_vec),
 				     GFP_NOIO);
-=======
-		bvec = kmalloc(sizeof(struct bio_vec) * segments, GFP_NOIO);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!bvec)
 			return -EIO;
 		cmd->bvec = bvec;
@@ -632,12 +562,9 @@ static int lo_rw_aio(struct loop_device *lo, struct loop_cmd *cmd,
 	cmd->iocb.ki_filp = file;
 	cmd->iocb.ki_complete = lo_rw_aio_complete;
 	cmd->iocb.ki_flags = IOCB_DIRECT;
-<<<<<<< HEAD
 	cmd->iocb.ki_ioprio = IOPRIO_PRIO_VALUE(IOPRIO_CLASS_NONE, 0);
 	if (cmd->css)
 		kthread_associate_blkcg(cmd->css);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (rw == WRITE)
 		ret = call_write_iter(file, &cmd->iocb, &iter);
@@ -645,10 +572,7 @@ static int lo_rw_aio(struct loop_device *lo, struct loop_cmd *cmd,
 		ret = call_read_iter(file, &cmd->iocb, &iter);
 
 	lo_rw_aio_do_completion(cmd);
-<<<<<<< HEAD
 	kthread_associate_blkcg(NULL);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ret != -EIOCBQUEUED)
 		cmd->iocb.ki_complete(&cmd->iocb, ret, 0);
@@ -672,23 +596,9 @@ static int do_req_filebacked(struct loop_device *lo, struct request *rq)
 	switch (req_op(rq)) {
 	case REQ_OP_FLUSH:
 		return lo_req_flush(lo, rq);
-<<<<<<< HEAD
 	case REQ_OP_DISCARD:
 	case REQ_OP_WRITE_ZEROES:
 		return lo_discard(lo, rq, pos);
-=======
-	case REQ_OP_WRITE_ZEROES:
-		/*
-		 * If the caller doesn't want deallocation, call zeroout to
-		 * write zeroes the range.  Otherwise, punch them out.
-		 */
-		return lo_fallocate(lo, rq, pos,
-			(rq->cmd_flags & REQ_NOUNMAP) ?
-				FALLOC_FL_ZERO_RANGE :
-				FALLOC_FL_PUNCH_HOLE);
-	case REQ_OP_DISCARD:
-		return lo_fallocate(lo, rq, pos, FALLOC_FL_PUNCH_HOLE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case REQ_OP_WRITE:
 		if (lo->transfer)
 			return lo_write_transfer(lo, rq, pos);
@@ -721,22 +631,7 @@ static void loop_reread_partitions(struct loop_device *lo,
 {
 	int rc;
 
-<<<<<<< HEAD
 	rc = blkdev_reread_part(bdev);
-=======
-	/*
-	 * bd_mutex has been held already in release path, so don't
-	 * acquire it if this function is called in such case.
-	 *
-	 * If the reread partition isn't from release path, lo_refcnt
-	 * must be at least one and it can only become zero when the
-	 * current holder is released.
-	 */
-	if (!atomic_read(&lo->lo_refcnt))
-		rc = __blkdev_reread_part(bdev);
-	else
-		rc = blkdev_reread_part(bdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc)
 		pr_warn("%s: partition scan of loop%d (%s) failed (rc=%d)\n",
 			__func__, lo->lo_number, lo->lo_file_name, rc);
@@ -762,11 +657,7 @@ static int loop_validate_file(struct file *file, struct block_device *bdev)
 			return -EBADF;
 
 		l = f->f_mapping->host->i_bdev->bd_disk->private_data;
-<<<<<<< HEAD
 		if (l->lo_state != Lo_bound) {
-=======
-		if (l->lo_state == Lo_unbound) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EINVAL;
 		}
 		f = l->lo_backing_file;
@@ -787,7 +678,6 @@ static int loop_validate_file(struct file *file, struct block_device *bdev)
 static int loop_change_fd(struct loop_device *lo, struct block_device *bdev,
 			  unsigned int arg)
 {
-<<<<<<< HEAD
 	struct file	*file = NULL, *old_file;
 	int		error;
 	bool		partscan;
@@ -798,55 +688,28 @@ static int loop_change_fd(struct loop_device *lo, struct block_device *bdev,
 	error = -ENXIO;
 	if (lo->lo_state != Lo_bound)
 		goto out_err;
-=======
-	struct file	*file, *old_file;
-	struct inode	*inode;
-	int		error;
-
-	error = -ENXIO;
-	if (lo->lo_state != Lo_bound)
-		goto out;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* the loop device has to be read-only */
 	error = -EINVAL;
 	if (!(lo->lo_flags & LO_FLAGS_READ_ONLY))
-<<<<<<< HEAD
 		goto out_err;
-=======
-		goto out;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	error = -EBADF;
 	file = fget(arg);
 	if (!file)
-<<<<<<< HEAD
 		goto out_err;
 
 	error = loop_validate_file(file, bdev);
 	if (error)
 		goto out_err;
 
-=======
-		goto out;
-
-	error = loop_validate_file(file, bdev);
-	if (error)
-		goto out_putf;
-
-	inode = file->f_mapping->host;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	old_file = lo->lo_backing_file;
 
 	error = -EINVAL;
 
 	/* size of the new backing store needs to be the same */
 	if (get_loop_size(lo, file) != get_loop_size(lo, old_file))
-<<<<<<< HEAD
 		goto out_err;
-=======
-		goto out_putf;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* and ... switch */
 	blk_mq_freeze_queue(lo->lo_queue);
@@ -857,7 +720,6 @@ static int loop_change_fd(struct loop_device *lo, struct block_device *bdev,
 			     lo->old_gfp_mask & ~(__GFP_IO|__GFP_FS));
 	loop_update_dio(lo);
 	blk_mq_unfreeze_queue(lo->lo_queue);
-<<<<<<< HEAD
 	partscan = lo->lo_flags & LO_FLAGS_PARTSCAN;
 	mutex_unlock(&loop_ctl_mutex);
 	/*
@@ -874,17 +736,6 @@ out_err:
 	mutex_unlock(&loop_ctl_mutex);
 	if (file)
 		fput(file);
-=======
-
-	fput(old_file);
-	if (lo->lo_flags & LO_FLAGS_PARTSCAN)
-		loop_reread_partitions(lo, bdev);
-	return 0;
-
- out_putf:
-	fput(file);
- out:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return error;
 }
 
@@ -907,11 +758,7 @@ static ssize_t loop_attr_do_show_##_name(struct device *d,		\
 	return loop_attr_show(d, b, loop_attr_##_name##_show);		\
 }									\
 static struct device_attribute loop_attr_##_name =			\
-<<<<<<< HEAD
 	__ATTR(_name, 0444, loop_attr_do_show_##_name, NULL);
-=======
-	__ATTR(_name, S_IRUGO, loop_attr_do_show_##_name, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static ssize_t loop_attr_backing_file_show(struct loop_device *lo, char *buf)
 {
@@ -1019,11 +866,7 @@ static void loop_config_discard(struct loop_device *lo)
 		q->limits.discard_alignment = 0;
 		blk_queue_max_discard_sectors(q, 0);
 		blk_queue_max_write_zeroes_sectors(q, 0);
-<<<<<<< HEAD
 		blk_queue_flag_clear(QUEUE_FLAG_DISCARD, q);
-=======
-		queue_flag_clear_unlocked(QUEUE_FLAG_DISCARD, q);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -1032,11 +875,7 @@ static void loop_config_discard(struct loop_device *lo)
 
 	blk_queue_max_discard_sectors(q, UINT_MAX >> 9);
 	blk_queue_max_write_zeroes_sectors(q, UINT_MAX >> 9);
-<<<<<<< HEAD
 	blk_queue_flag_set(QUEUE_FLAG_DISCARD, q);
-=======
-	queue_flag_set_unlocked(QUEUE_FLAG_DISCARD, q);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void loop_unprepare_queue(struct loop_device *lo)
@@ -1071,10 +910,7 @@ static int loop_set_fd(struct loop_device *lo, fmode_t mode,
 	int		lo_flags = 0;
 	int		error;
 	loff_t		size;
-<<<<<<< HEAD
 	bool		partscan;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* This is safe, since we have a reference from open(). */
 	__module_get(THIS_MODULE);
@@ -1084,7 +920,6 @@ static int loop_set_fd(struct loop_device *lo, fmode_t mode,
 	if (!file)
 		goto out;
 
-<<<<<<< HEAD
 	error = mutex_lock_killable(&loop_ctl_mutex);
 	if (error)
 		goto out_putf;
@@ -1096,15 +931,6 @@ static int loop_set_fd(struct loop_device *lo, fmode_t mode,
 	error = loop_validate_file(file, bdev);
 	if (error)
 		goto out_unlock;
-=======
-	error = -EBUSY;
-	if (lo->lo_state != Lo_unbound)
-		goto out_putf;
-
-	error = loop_validate_file(file, bdev);
-	if (error)
-		goto out_putf;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mapping = file->f_mapping;
 	inode = mapping->host;
@@ -1116,17 +942,10 @@ static int loop_set_fd(struct loop_device *lo, fmode_t mode,
 	error = -EFBIG;
 	size = get_loop_size(lo, file);
 	if ((loff_t)(sector_t)size != size)
-<<<<<<< HEAD
 		goto out_unlock;
 	error = loop_prepare_queue(lo);
 	if (error)
 		goto out_unlock;
-=======
-		goto out_putf;
-	error = loop_prepare_queue(lo);
-	if (error)
-		goto out_putf;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	error = 0;
 
@@ -1158,7 +977,6 @@ static int loop_set_fd(struct loop_device *lo, fmode_t mode,
 	lo->lo_state = Lo_bound;
 	if (part_shift)
 		lo->lo_flags |= LO_FLAGS_PARTSCAN;
-<<<<<<< HEAD
 	partscan = lo->lo_flags & LO_FLAGS_PARTSCAN;
 
 	/* Grab the block_device to prevent its destruction after we
@@ -1175,20 +993,6 @@ out_unlock:
 out_putf:
 	fput(file);
 out:
-=======
-	if (lo->lo_flags & LO_FLAGS_PARTSCAN)
-		loop_reread_partitions(lo, bdev);
-
-	/* Grab the block_device to prevent its destruction after we
-	 * put /dev/loopXX inode. Later in loop_clr_fd() we bdput(bdev).
-	 */
-	bdgrab(bdev);
-	return 0;
-
- out_putf:
-	fput(file);
- out:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* This is safe: open() is still holding a reference. */
 	module_put(THIS_MODULE);
 	return error;
@@ -1231,7 +1035,6 @@ loop_init_xfer(struct loop_device *lo, struct loop_func_table *xfer,
 	return err;
 }
 
-<<<<<<< HEAD
 static int __loop_clr_fd(struct loop_device *lo, bool release)
 {
 	struct file *filp = NULL;
@@ -1252,44 +1055,11 @@ static int __loop_clr_fd(struct loop_device *lo, bool release)
 		err = -EINVAL;
 		goto out_unlock;
 	}
-=======
-static int loop_clr_fd(struct loop_device *lo)
-{
-	struct file *filp = lo->lo_backing_file;
-	gfp_t gfp = lo->old_gfp_mask;
-	struct block_device *bdev = lo->lo_device;
-
-	if (lo->lo_state != Lo_bound)
-		return -ENXIO;
-
-	/*
-	 * If we've explicitly asked to tear down the loop device,
-	 * and it has an elevated reference count, set it for auto-teardown when
-	 * the last reference goes away. This stops $!~#$@ udev from
-	 * preventing teardown because it decided that it needs to run blkid on
-	 * the loopback device whenever they appear. xfstests is notorious for
-	 * failing tests because blkid via udev races with a losetup
-	 * <dev>/do something like mkfs/losetup -d <dev> causing the losetup -d
-	 * command to fail with EBUSY.
-	 */
-	if (atomic_read(&lo->lo_refcnt) > 1) {
-		lo->lo_flags |= LO_FLAGS_AUTOCLEAR;
-		mutex_unlock(&lo->lo_ctl_mutex);
-		return 0;
-	}
-
-	if (filp == NULL)
-		return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* freeze request queue during the transition */
 	blk_mq_freeze_queue(lo->lo_queue);
 
 	spin_lock_irq(&lo->lo_lock);
-<<<<<<< HEAD
-=======
-	lo->lo_state = Lo_rundown;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	lo->lo_backing_file = NULL;
 	spin_unlock_irq(&lo->lo_lock);
 
@@ -1310,10 +1080,7 @@ static int loop_clr_fd(struct loop_device *lo)
 	if (bdev) {
 		bdput(bdev);
 		invalidate_bdev(bdev);
-<<<<<<< HEAD
 		bdev->bd_inode->i_mapping->wb_err = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	set_capacity(lo->lo_disk, 0);
 	loop_sysfs_exit(lo);
@@ -1323,15 +1090,10 @@ static int loop_clr_fd(struct loop_device *lo)
 		kobject_uevent(&disk_to_dev(bdev->bd_disk)->kobj, KOBJ_CHANGE);
 	}
 	mapping_set_gfp_mask(filp->f_mapping, gfp);
-<<<<<<< HEAD
-=======
-	lo->lo_state = Lo_unbound;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* This is safe: open() is still holding a reference. */
 	module_put(THIS_MODULE);
 	blk_mq_unfreeze_queue(lo->lo_queue);
 
-<<<<<<< HEAD
 	partscan = lo->lo_flags & LO_FLAGS_PARTSCAN && bdev;
 	lo_number = lo->lo_number;
 	loop_unprepare_queue(lo);
@@ -1414,23 +1176,6 @@ static int loop_clr_fd(struct loop_device *lo)
 	mutex_unlock(&loop_ctl_mutex);
 
 	return __loop_clr_fd(lo, false);
-=======
-	if (lo->lo_flags & LO_FLAGS_PARTSCAN && bdev)
-		loop_reread_partitions(lo, bdev);
-	lo->lo_flags = 0;
-	if (!part_shift)
-		lo->lo_disk->flags |= GENHD_FL_NO_PART_SCAN;
-	loop_unprepare_queue(lo);
-	mutex_unlock(&lo->lo_ctl_mutex);
-	/*
-	 * Need not hold lo_ctl_mutex to fput backing file.
-	 * Calling fput holding lo_ctl_mutex triggers a circular
-	 * lock dependency possibility warning as fput can take
-	 * bd_mutex which is usually taken before lo_ctl_mutex.
-	 */
-	fput(filp);
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int
@@ -1439,7 +1184,6 @@ loop_set_status(struct loop_device *lo, const struct loop_info64 *info)
 	int err;
 	struct loop_func_table *xfer;
 	kuid_t uid = current_uid();
-<<<<<<< HEAD
 	struct block_device *bdev;
 	bool partscan = false;
 
@@ -1460,26 +1204,11 @@ loop_set_status(struct loop_device *lo, const struct loop_info64 *info)
 		err = -EINVAL;
 		goto out_unlock;
 	}
-=======
-
-	if (lo->lo_encrypt_key_size &&
-	    !uid_eq(lo->lo_key_owner, uid) &&
-	    !capable(CAP_SYS_ADMIN))
-		return -EPERM;
-	if (lo->lo_state != Lo_bound)
-		return -ENXIO;
-	if ((unsigned int) info->lo_encrypt_key_size > LO_KEY_SIZE)
-		return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (lo->lo_offset != info->lo_offset ||
 	    lo->lo_sizelimit != info->lo_sizelimit) {
 		sync_blockdev(lo->lo_device);
-<<<<<<< HEAD
 		kill_bdev(lo->lo_device);
-=======
-		invalidate_bdev(lo->lo_device);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* I/O need to be drained during transfer transition */
@@ -1487,42 +1216,26 @@ loop_set_status(struct loop_device *lo, const struct loop_info64 *info)
 
 	err = loop_release_xfer(lo);
 	if (err)
-<<<<<<< HEAD
 		goto out_unfreeze;
-=======
-		goto exit;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (info->lo_encrypt_type) {
 		unsigned int type = info->lo_encrypt_type;
 
 		if (type >= MAX_LO_CRYPT) {
 			err = -EINVAL;
-<<<<<<< HEAD
 			goto out_unfreeze;
-=======
-			goto exit;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		xfer = xfer_funcs[type];
 		if (xfer == NULL) {
 			err = -EINVAL;
-<<<<<<< HEAD
 			goto out_unfreeze;
-=======
-			goto exit;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	} else
 		xfer = NULL;
 
 	err = loop_init_xfer(lo, xfer, info);
 	if (err)
-<<<<<<< HEAD
 		goto out_unfreeze;
-=======
-		goto exit;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (lo->lo_offset != info->lo_offset ||
 	    lo->lo_sizelimit != info->lo_sizelimit) {
@@ -1532,19 +1245,11 @@ loop_set_status(struct loop_device *lo, const struct loop_info64 *info)
 			pr_warn("%s: loop%d (%s) has still dirty pages (nrpages=%lu)\n",
 				__func__, lo->lo_number, lo->lo_file_name,
 				lo->lo_device->bd_inode->i_mapping->nrpages);
-<<<<<<< HEAD
 			goto out_unfreeze;
 		}
 		if (figure_loop_size(lo, info->lo_offset, info->lo_sizelimit)) {
 			err = -EFBIG;
 			goto out_unfreeze;
-=======
-			goto exit;
-		}
-		if (figure_loop_size(lo, info->lo_offset, info->lo_sizelimit)) {
-			err = -EFBIG;
-			goto exit;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -1576,18 +1281,13 @@ loop_set_status(struct loop_device *lo, const struct loop_info64 *info)
 	/* update dio if lo_offset or transfer is changed */
 	__loop_update_dio(lo, lo->use_dio);
 
-<<<<<<< HEAD
 out_unfreeze:
-=======
- exit:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	blk_mq_unfreeze_queue(lo->lo_queue);
 
 	if (!err && (info->lo_flags & LO_FLAGS_PARTSCAN) &&
 	     !(lo->lo_flags & LO_FLAGS_PARTSCAN)) {
 		lo->lo_flags |= LO_FLAGS_PARTSCAN;
 		lo->lo_disk->flags &= ~GENHD_FL_NO_PART_SCAN;
-<<<<<<< HEAD
 		bdev = lo->lo_device;
 		partscan = true;
 	}
@@ -1595,10 +1295,6 @@ out_unlock:
 	mutex_unlock(&loop_ctl_mutex);
 	if (partscan)
 		loop_reread_partitions(lo, bdev);
-=======
-		loop_reread_partitions(lo, lo->lo_device);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return err;
 }
@@ -1610,16 +1306,11 @@ loop_get_status(struct loop_device *lo, struct loop_info64 *info)
 	struct kstat stat;
 	int ret;
 
-<<<<<<< HEAD
 	ret = mutex_lock_killable(&loop_ctl_mutex);
 	if (ret)
 		return ret;
 	if (lo->lo_state != Lo_bound) {
 		mutex_unlock(&loop_ctl_mutex);
-=======
-	if (lo->lo_state != Lo_bound) {
-		mutex_unlock(&lo->lo_ctl_mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENXIO;
 	}
 
@@ -1638,17 +1329,10 @@ loop_get_status(struct loop_device *lo, struct loop_info64 *info)
 		       lo->lo_encrypt_key_size);
 	}
 
-<<<<<<< HEAD
 	/* Drop loop_ctl_mutex while we call into the filesystem. */
 	path = lo->lo_backing_file->f_path;
 	path_get(&path);
 	mutex_unlock(&loop_ctl_mutex);
-=======
-	/* Drop lo_ctl_mutex while we call into the filesystem. */
-	path = lo->lo_backing_file->f_path;
-	path_get(&path);
-	mutex_unlock(&lo->lo_ctl_mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = vfs_getattr(&path, &stat, STATX_INO, AT_STATX_SYNC_AS_STAT);
 	if (!ret) {
 		info->lo_device = huge_encode_dev(stat.dev);
@@ -1739,15 +1423,8 @@ loop_get_status_old(struct loop_device *lo, struct loop_info __user *arg) {
 	struct loop_info64 info64;
 	int err;
 
-<<<<<<< HEAD
 	if (!arg)
 		return -EINVAL;
-=======
-	if (!arg) {
-		mutex_unlock(&lo->lo_ctl_mutex);
-		return -EINVAL;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = loop_get_status(lo, &info64);
 	if (!err)
 		err = loop_info64_to_old(&info64, &info);
@@ -1762,15 +1439,8 @@ loop_get_status64(struct loop_device *lo, struct loop_info64 __user *arg) {
 	struct loop_info64 info64;
 	int err;
 
-<<<<<<< HEAD
 	if (!arg)
 		return -EINVAL;
-=======
-	if (!arg) {
-		mutex_unlock(&lo->lo_ctl_mutex);
-		return -EINVAL;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = loop_get_status(lo, &info64);
 	if (!err && copy_to_user(arg, &info64, sizeof(info64)))
 		err = -EFAULT;
@@ -1810,7 +1480,6 @@ static int loop_set_block_size(struct loop_device *lo, unsigned long arg)
 	if (arg < 512 || arg > PAGE_SIZE || !is_power_of_2(arg))
 		return -EINVAL;
 
-<<<<<<< HEAD
 	if (lo->lo_queue->limits.logical_block_size != arg) {
 		sync_blockdev(lo->lo_device);
 		kill_bdev(lo->lo_device);
@@ -1821,18 +1490,6 @@ static int loop_set_block_size(struct loop_device *lo, unsigned long arg)
 	/* kill_bdev should have truncated all the pages */
 	if (lo->lo_queue->limits.logical_block_size != arg &&
 			lo->lo_device->bd_inode->i_mapping->nrpages) {
-=======
-	if (lo->lo_queue->limits.logical_block_size == arg)
-		return 0;
-
-	sync_blockdev(lo->lo_device);
-	invalidate_bdev(lo->lo_device);
-
-	blk_mq_freeze_queue(lo->lo_queue);
-
-	/* invalidate_bdev should have truncated all the pages */
-	if (lo->lo_device->bd_inode->i_mapping->nrpages) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = -EAGAIN;
 		pr_warn("%s: loop%d (%s) has still dirty pages (nrpages=%lu)\n",
 			__func__, lo->lo_number, lo->lo_file_name,
@@ -1850,7 +1507,6 @@ out_unfreeze:
 	return err;
 }
 
-<<<<<<< HEAD
 static int lo_simple_ioctl(struct loop_device *lo, unsigned int cmd,
 			   unsigned long arg)
 {
@@ -1876,15 +1532,12 @@ static int lo_simple_ioctl(struct loop_device *lo, unsigned int cmd,
 	return err;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int lo_ioctl(struct block_device *bdev, fmode_t mode,
 	unsigned int cmd, unsigned long arg)
 {
 	struct loop_device *lo = bdev->bd_disk->private_data;
 	int err;
 
-<<<<<<< HEAD
 	switch (cmd) {
 	case LOOP_SET_FD:
 		return loop_set_fd(lo, mode, bdev, arg);
@@ -1921,63 +1574,6 @@ static int lo_ioctl(struct block_device *bdev, fmode_t mode,
 		break;
 	}
 
-=======
-	mutex_lock_nested(&lo->lo_ctl_mutex, 1);
-	switch (cmd) {
-	case LOOP_SET_FD:
-		err = loop_set_fd(lo, mode, bdev, arg);
-		break;
-	case LOOP_CHANGE_FD:
-		err = loop_change_fd(lo, bdev, arg);
-		break;
-	case LOOP_CLR_FD:
-		/* loop_clr_fd would have unlocked lo_ctl_mutex on success */
-		err = loop_clr_fd(lo);
-		if (!err)
-			goto out_unlocked;
-		break;
-	case LOOP_SET_STATUS:
-		err = -EPERM;
-		if ((mode & FMODE_WRITE) || capable(CAP_SYS_ADMIN))
-			err = loop_set_status_old(lo,
-					(struct loop_info __user *)arg);
-		break;
-	case LOOP_GET_STATUS:
-		err = loop_get_status_old(lo, (struct loop_info __user *) arg);
-		/* loop_get_status() unlocks lo_ctl_mutex */
-		goto out_unlocked;
-	case LOOP_SET_STATUS64:
-		err = -EPERM;
-		if ((mode & FMODE_WRITE) || capable(CAP_SYS_ADMIN))
-			err = loop_set_status64(lo,
-					(struct loop_info64 __user *) arg);
-		break;
-	case LOOP_GET_STATUS64:
-		err = loop_get_status64(lo, (struct loop_info64 __user *) arg);
-		/* loop_get_status() unlocks lo_ctl_mutex */
-		goto out_unlocked;
-	case LOOP_SET_CAPACITY:
-		err = -EPERM;
-		if ((mode & FMODE_WRITE) || capable(CAP_SYS_ADMIN))
-			err = loop_set_capacity(lo);
-		break;
-	case LOOP_SET_DIRECT_IO:
-		err = -EPERM;
-		if ((mode & FMODE_WRITE) || capable(CAP_SYS_ADMIN))
-			err = loop_set_dio(lo, arg);
-		break;
-	case LOOP_SET_BLOCK_SIZE:
-		err = -EPERM;
-		if ((mode & FMODE_WRITE) || capable(CAP_SYS_ADMIN))
-			err = loop_set_block_size(lo, arg);
-		break;
-	default:
-		err = lo->ioctl ? lo->ioctl(lo, cmd, arg) : -EINVAL;
-	}
-	mutex_unlock(&lo->lo_ctl_mutex);
-
-out_unlocked:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -2091,15 +1687,8 @@ loop_get_status_compat(struct loop_device *lo,
 	struct loop_info64 info64;
 	int err;
 
-<<<<<<< HEAD
 	if (!arg)
 		return -EINVAL;
-=======
-	if (!arg) {
-		mutex_unlock(&lo->lo_ctl_mutex);
-		return -EINVAL;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = loop_get_status(lo, &info64);
 	if (!err)
 		err = loop_info64_to_compat(&info64, arg);
@@ -2114,35 +1703,19 @@ static int lo_compat_ioctl(struct block_device *bdev, fmode_t mode,
 
 	switch(cmd) {
 	case LOOP_SET_STATUS:
-<<<<<<< HEAD
 		err = loop_set_status_compat(lo,
 			     (const struct compat_loop_info __user *)arg);
 		break;
 	case LOOP_GET_STATUS:
 		err = loop_get_status_compat(lo,
 				     (struct compat_loop_info __user *)arg);
-=======
-		mutex_lock(&lo->lo_ctl_mutex);
-		err = loop_set_status_compat(
-			lo, (const struct compat_loop_info __user *) arg);
-		mutex_unlock(&lo->lo_ctl_mutex);
-		break;
-	case LOOP_GET_STATUS:
-		mutex_lock(&lo->lo_ctl_mutex);
-		err = loop_get_status_compat(
-			lo, (struct compat_loop_info __user *) arg);
-		/* loop_get_status() unlocks lo_ctl_mutex */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case LOOP_SET_CAPACITY:
 	case LOOP_CLR_FD:
 	case LOOP_GET_STATUS64:
 	case LOOP_SET_STATUS64:
 		arg = (unsigned long) compat_ptr(arg);
-<<<<<<< HEAD
 		/* fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case LOOP_SET_FD:
 	case LOOP_CHANGE_FD:
 	case LOOP_SET_BLOCK_SIZE:
@@ -2160,17 +1733,11 @@ static int lo_compat_ioctl(struct block_device *bdev, fmode_t mode,
 static int lo_open(struct block_device *bdev, fmode_t mode)
 {
 	struct loop_device *lo;
-<<<<<<< HEAD
 	int err;
 
 	err = mutex_lock_killable(&loop_ctl_mutex);
 	if (err)
 		return err;
-=======
-	int err = 0;
-
-	mutex_lock(&loop_index_mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	lo = bdev->bd_disk->private_data;
 	if (!lo) {
 		err = -ENXIO;
@@ -2179,7 +1746,6 @@ static int lo_open(struct block_device *bdev, fmode_t mode)
 
 	atomic_inc(&lo->lo_refcnt);
 out:
-<<<<<<< HEAD
 	mutex_unlock(&loop_ctl_mutex);
 	return err;
 }
@@ -2198,33 +1764,12 @@ static void lo_release(struct gendisk *disk, fmode_t mode)
 			goto out_unlock;
 		lo->lo_state = Lo_rundown;
 		mutex_unlock(&loop_ctl_mutex);
-=======
-	mutex_unlock(&loop_index_mutex);
-	return err;
-}
-
-static void __lo_release(struct loop_device *lo)
-{
-	int err;
-
-	if (atomic_dec_return(&lo->lo_refcnt))
-		return;
-
-	mutex_lock(&lo->lo_ctl_mutex);
-	if (lo->lo_flags & LO_FLAGS_AUTOCLEAR) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * In autoclear mode, stop the loop thread
 		 * and remove configuration after last close.
 		 */
-<<<<<<< HEAD
 		__loop_clr_fd(lo, true);
 		return;
-=======
-		err = loop_clr_fd(lo);
-		if (!err)
-			return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (lo->lo_state == Lo_bound) {
 		/*
 		 * Otherwise keep thread (if running) and config,
@@ -2234,19 +1779,8 @@ static void __lo_release(struct loop_device *lo)
 		blk_mq_unfreeze_queue(lo->lo_queue);
 	}
 
-<<<<<<< HEAD
 out_unlock:
 	mutex_unlock(&loop_ctl_mutex);
-=======
-	mutex_unlock(&lo->lo_ctl_mutex);
-}
-
-static void lo_release(struct gendisk *disk, fmode_t mode)
-{
-	mutex_lock(&loop_index_mutex);
-	__lo_release(disk->private_data);
-	mutex_unlock(&loop_index_mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct block_device_operations lo_fops = {
@@ -2263,15 +1797,9 @@ static const struct block_device_operations lo_fops = {
  * And now the modules code and kernel interface.
  */
 static int max_loop;
-<<<<<<< HEAD
 module_param(max_loop, int, 0444);
 MODULE_PARM_DESC(max_loop, "Maximum number of loop devices");
 module_param(max_part, int, 0444);
-=======
-module_param(max_loop, int, S_IRUGO);
-MODULE_PARM_DESC(max_loop, "Maximum number of loop devices");
-module_param(max_part, int, S_IRUGO);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_PARM_DESC(max_part, "Maximum number of partitions per loop device");
 MODULE_LICENSE("GPL");
 MODULE_ALIAS_BLOCKDEV_MAJOR(LOOP_MAJOR);
@@ -2291,17 +1819,10 @@ static int unregister_transfer_cb(int id, void *ptr, void *data)
 	struct loop_device *lo = ptr;
 	struct loop_func_table *xfer = data;
 
-<<<<<<< HEAD
 	mutex_lock(&loop_ctl_mutex);
 	if (lo->lo_encryption == xfer)
 		loop_release_xfer(lo);
 	mutex_unlock(&loop_ctl_mutex);
-=======
-	mutex_lock(&lo->lo_ctl_mutex);
-	if (lo->lo_encryption == xfer)
-		loop_release_xfer(lo);
-	mutex_unlock(&lo->lo_ctl_mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -2324,27 +1845,16 @@ EXPORT_SYMBOL(loop_unregister_transfer);
 static blk_status_t loop_queue_rq(struct blk_mq_hw_ctx *hctx,
 		const struct blk_mq_queue_data *bd)
 {
-<<<<<<< HEAD
 	struct request *rq = bd->rq;
 	struct loop_cmd *cmd = blk_mq_rq_to_pdu(rq);
 	struct loop_device *lo = rq->q->queuedata;
 
 	blk_mq_start_request(rq);
-=======
-	struct loop_cmd *cmd = blk_mq_rq_to_pdu(bd->rq);
-	struct loop_device *lo = cmd->rq->q->queuedata;
-
-	blk_mq_start_request(bd->rq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (lo->lo_state != Lo_bound)
 		return BLK_STS_IOERR;
 
-<<<<<<< HEAD
 	switch (req_op(rq)) {
-=======
-	switch (req_op(cmd->rq)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case REQ_OP_FLUSH:
 	case REQ_OP_DISCARD:
 	case REQ_OP_WRITE_ZEROES:
@@ -2355,7 +1865,6 @@ static blk_status_t loop_queue_rq(struct blk_mq_hw_ctx *hctx,
 		break;
 	}
 
-<<<<<<< HEAD
 	/* always use the first bio's css */
 #ifdef CONFIG_BLK_CGROUP
 	if (cmd->use_aio && rq->bio && rq->bio->bi_css) {
@@ -2364,8 +1873,6 @@ static blk_status_t loop_queue_rq(struct blk_mq_hw_ctx *hctx,
 	} else
 #endif
 		cmd->css = NULL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kthread_queue_work(&lo->worker, &cmd->work);
 
 	return BLK_STS_OK;
@@ -2373,14 +1880,9 @@ static blk_status_t loop_queue_rq(struct blk_mq_hw_ctx *hctx,
 
 static void loop_handle_cmd(struct loop_cmd *cmd)
 {
-<<<<<<< HEAD
 	struct request *rq = blk_mq_rq_from_pdu(cmd);
 	const bool write = op_is_write(req_op(rq));
 	struct loop_device *lo = rq->q->queuedata;
-=======
-	const bool write = op_is_write(req_op(cmd->rq));
-	struct loop_device *lo = cmd->rq->q->queuedata;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = 0;
 
 	if (write && (lo->lo_flags & LO_FLAGS_READ_ONLY)) {
@@ -2388,20 +1890,12 @@ static void loop_handle_cmd(struct loop_cmd *cmd)
 		goto failed;
 	}
 
-<<<<<<< HEAD
 	ret = do_req_filebacked(lo, rq);
-=======
-	ret = do_req_filebacked(lo, cmd->rq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  failed:
 	/* complete non-aio request */
 	if (!cmd->use_aio || ret) {
 		cmd->ret = ret ? -EIO : 0;
-<<<<<<< HEAD
 		blk_mq_complete_request(rq);
-=======
-		blk_mq_complete_request(cmd->rq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -2418,13 +1912,7 @@ static int loop_init_request(struct blk_mq_tag_set *set, struct request *rq,
 {
 	struct loop_cmd *cmd = blk_mq_rq_to_pdu(rq);
 
-<<<<<<< HEAD
 	kthread_init_work(&cmd->work, loop_queue_work);
-=======
-	cmd->rq = rq;
-	kthread_init_work(&cmd->work, loop_queue_work);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -2487,11 +1975,7 @@ static int loop_add(struct loop_device **l, int i)
 	 * page. For directio mode, merge does help to dispatch bigger request
 	 * to underlayer disk. We will enable merge once directio is enabled.
 	 */
-<<<<<<< HEAD
 	blk_queue_flag_set(QUEUE_FLAG_NOMERGES, lo->lo_queue);
-=======
-	queue_flag_set_unlocked(QUEUE_FLAG_NOMERGES, lo->lo_queue);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = -ENOMEM;
 	disk = lo->lo_disk = alloc_disk(1 << part_shift);
@@ -2519,10 +2003,6 @@ static int loop_add(struct loop_device **l, int i)
 	if (!part_shift)
 		disk->flags |= GENHD_FL_NO_PART_SCAN;
 	disk->flags |= GENHD_FL_EXT_DEVT;
-<<<<<<< HEAD
-=======
-	mutex_init(&lo->lo_ctl_mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	atomic_set(&lo->lo_refcnt, 0);
 	lo->lo_number		= i;
 	spin_lock_init(&lo->lo_lock);
@@ -2550,13 +2030,8 @@ out:
 
 static void loop_remove(struct loop_device *lo)
 {
-<<<<<<< HEAD
 	del_gendisk(lo->lo_disk);
 	blk_cleanup_queue(lo->lo_queue);
-=======
-	blk_cleanup_queue(lo->lo_queue);
-	del_gendisk(lo->lo_disk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	blk_mq_free_tag_set(&lo->tag_set);
 	put_disk(lo->lo_disk);
 	kfree(lo);
@@ -2606,24 +2081,15 @@ static struct kobject *loop_probe(dev_t dev, int *part, void *data)
 	struct kobject *kobj;
 	int err;
 
-<<<<<<< HEAD
 	mutex_lock(&loop_ctl_mutex);
-=======
-	mutex_lock(&loop_index_mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = loop_lookup(&lo, MINOR(dev) >> part_shift);
 	if (err < 0)
 		err = loop_add(&lo, MINOR(dev) >> part_shift);
 	if (err < 0)
 		kobj = NULL;
 	else
-<<<<<<< HEAD
 		kobj = get_disk_and_module(lo->lo_disk);
 	mutex_unlock(&loop_ctl_mutex);
-=======
-		kobj = get_disk(lo->lo_disk);
-	mutex_unlock(&loop_index_mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	*part = 0;
 	return kobj;
@@ -2633,7 +2099,6 @@ static long loop_control_ioctl(struct file *file, unsigned int cmd,
 			       unsigned long parm)
 {
 	struct loop_device *lo;
-<<<<<<< HEAD
 	int ret;
 
 	ret = mutex_lock_killable(&loop_ctl_mutex);
@@ -2641,11 +2106,6 @@ static long loop_control_ioctl(struct file *file, unsigned int cmd,
 		return ret;
 
 	ret = -ENOSYS;
-=======
-	int ret = -ENOSYS;
-
-	mutex_lock(&loop_index_mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (cmd) {
 	case LOOP_CTL_ADD:
 		ret = loop_lookup(&lo, parm);
@@ -2659,30 +2119,15 @@ static long loop_control_ioctl(struct file *file, unsigned int cmd,
 		ret = loop_lookup(&lo, parm);
 		if (ret < 0)
 			break;
-<<<<<<< HEAD
 		if (lo->lo_state != Lo_unbound) {
 			ret = -EBUSY;
-=======
-		mutex_lock(&lo->lo_ctl_mutex);
-		if (lo->lo_state != Lo_unbound) {
-			ret = -EBUSY;
-			mutex_unlock(&lo->lo_ctl_mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 		if (atomic_read(&lo->lo_refcnt) > 0) {
 			ret = -EBUSY;
-<<<<<<< HEAD
 			break;
 		}
 		lo->lo_disk->private_data = NULL;
-=======
-			mutex_unlock(&lo->lo_ctl_mutex);
-			break;
-		}
-		lo->lo_disk->private_data = NULL;
-		mutex_unlock(&lo->lo_ctl_mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		idr_remove(&loop_index_idr, lo->lo_number);
 		loop_remove(lo);
 		break;
@@ -2692,11 +2137,7 @@ static long loop_control_ioctl(struct file *file, unsigned int cmd,
 			break;
 		ret = loop_add(&lo, -1);
 	}
-<<<<<<< HEAD
 	mutex_unlock(&loop_ctl_mutex);
-=======
-	mutex_unlock(&loop_index_mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -2780,17 +2221,10 @@ static int __init loop_init(void)
 				  THIS_MODULE, loop_probe, NULL, NULL);
 
 	/* pre-create number of devices given by config or max_loop */
-<<<<<<< HEAD
 	mutex_lock(&loop_ctl_mutex);
 	for (i = 0; i < nr; i++)
 		loop_add(&lo, i);
 	mutex_unlock(&loop_ctl_mutex);
-=======
-	mutex_lock(&loop_index_mutex);
-	for (i = 0; i < nr; i++)
-		loop_add(&lo, i);
-	mutex_unlock(&loop_index_mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	printk(KERN_INFO "loop: module loaded\n");
 	return 0;

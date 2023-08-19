@@ -74,7 +74,6 @@ ssize_t __mei_cl_send(struct mei_cl *cl, u8 *buf, size_t length,
 		goto out;
 	}
 
-<<<<<<< HEAD
 	while (cl->tx_cb_queued >= bus->tx_queue_limit) {
 		mutex_unlock(&bus->device_lock);
 		rets = wait_event_interruptible(cl->tx_wait,
@@ -92,8 +91,6 @@ ssize_t __mei_cl_send(struct mei_cl *cl, u8 *buf, size_t length,
 		}
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cb = mei_cl_alloc_cb(cl, length, MEI_FOP_WRITE, NULL);
 	if (!cb) {
 		rets = -ENOMEM;
@@ -119,19 +116,12 @@ out:
  * @buf: buffer to receive
  * @length: buffer length
  * @mode: io mode
-<<<<<<< HEAD
  * @timeout: recv timeout, 0 for infinite timeout
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Return: read size in bytes of < 0 on error
  */
 ssize_t __mei_cl_recv(struct mei_cl *cl, u8 *buf, size_t length,
-<<<<<<< HEAD
 		      unsigned int mode, unsigned long timeout)
-=======
-		      unsigned int mode)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mei_device *bus;
 	struct mei_cl_cb *cb;
@@ -169,7 +159,6 @@ ssize_t __mei_cl_recv(struct mei_cl *cl, u8 *buf, size_t length,
 
 		mutex_unlock(&bus->device_lock);
 
-<<<<<<< HEAD
 		if (timeout) {
 			rets = wait_event_interruptible_timeout
 					(cl->rx_wait,
@@ -192,15 +181,6 @@ ssize_t __mei_cl_recv(struct mei_cl *cl, u8 *buf, size_t length,
 					return -EINTR;
 				return -ERESTARTSYS;
 			}
-=======
-		if (wait_event_interruptible(cl->rx_wait,
-				(!list_empty(&cl->rd_completed)) ||
-				(!mei_cl_is_connected(cl)))) {
-
-			if (signal_pending(current))
-				return -EINTR;
-			return -ERESTARTSYS;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		mutex_lock(&bus->device_lock);
@@ -267,11 +247,7 @@ ssize_t mei_cldev_recv_nonblock(struct mei_cl_device *cldev, u8 *buf,
 {
 	struct mei_cl *cl = cldev->cl;
 
-<<<<<<< HEAD
 	return __mei_cl_recv(cl, buf, length, MEI_CL_IO_RX_NONBLOCK, 0);
-=======
-	return __mei_cl_recv(cl, buf, length, MEI_CL_IO_RX_NONBLOCK);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(mei_cldev_recv_nonblock);
 
@@ -288,11 +264,7 @@ ssize_t mei_cldev_recv(struct mei_cl_device *cldev, u8 *buf, size_t length)
 {
 	struct mei_cl *cl = cldev->cl;
 
-<<<<<<< HEAD
 	return __mei_cl_recv(cl, buf, length, 0, 0);
-=======
-	return __mei_cl_recv(cl, buf, length, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(mei_cldev_recv);
 
@@ -511,7 +483,6 @@ bool mei_cldev_enabled(struct mei_cl_device *cldev)
 EXPORT_SYMBOL_GPL(mei_cldev_enabled);
 
 /**
-<<<<<<< HEAD
  * mei_cl_bus_module_get - acquire module of the underlying
  *    hw driver.
  *
@@ -535,8 +506,6 @@ static void mei_cl_bus_module_put(struct mei_cl_device *cldev)
 }
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * mei_cldev_enable - enable me client device
  *     create connection with me client
  *
@@ -628,22 +597,14 @@ int mei_cldev_disable(struct mei_cl_device *cldev)
 	mutex_lock(&bus->device_lock);
 
 	if (!mei_cl_is_connected(cl)) {
-<<<<<<< HEAD
 		dev_dbg(bus->dev, "Already disconnected\n");
-=======
-		dev_dbg(bus->dev, "Already disconnected");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = 0;
 		goto out;
 	}
 
 	err = mei_cl_disconnect(cl);
 	if (err < 0)
-<<<<<<< HEAD
 		dev_err(bus->dev, "Could not disconnect from the ME client\n");
-=======
-		dev_err(bus->dev, "Could not disconnect from the ME client");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 out:
 	/* Flush queues and remove any pending read */
@@ -656,40 +617,6 @@ out:
 EXPORT_SYMBOL_GPL(mei_cldev_disable);
 
 /**
-<<<<<<< HEAD
-=======
- * mei_cl_bus_module_get - acquire module of the underlying
- *    hw module.
- *
- * @cl: host client
- *
- * Return: true on success; false if the module was removed.
- */
-bool mei_cl_bus_module_get(struct mei_cl *cl)
-{
-	struct mei_cl_device *cldev = cl->cldev;
-
-	if (!cldev)
-		return true;
-
-	return try_module_get(cldev->bus->dev->driver->owner);
-}
-
-/**
- * mei_cl_bus_module_put -  release the underlying hw module.
- *
- * @cl: host client
- */
-void mei_cl_bus_module_put(struct mei_cl *cl)
-{
-	struct mei_cl_device *cldev = cl->cldev;
-
-	if (cldev)
-		module_put(cldev->bus->dev->driver->owner);
-}
-
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * mei_cl_device_find - find matching entry in the driver id table
  *
  * @cldev: me client device
@@ -789,7 +716,6 @@ static int mei_cl_device_probe(struct device *dev)
 	if (!id)
 		return -ENODEV;
 
-<<<<<<< HEAD
 	if (!mei_cl_bus_module_get(cldev)) {
 		dev_err(&cldev->dev, "get hw module failed");
 		return -ENODEV;
@@ -800,11 +726,6 @@ static int mei_cl_device_probe(struct device *dev)
 		mei_cl_bus_module_put(cldev);
 		return ret;
 	}
-=======
-	ret = cldrv->probe(cldev, id);
-	if (ret)
-		return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	__module_get(THIS_MODULE);
 	return 0;
@@ -832,17 +753,11 @@ static int mei_cl_device_remove(struct device *dev)
 
 	mei_cldev_unregister_callbacks(cldev);
 
-<<<<<<< HEAD
 	mei_cl_bus_module_put(cldev);
 	module_put(THIS_MODULE);
 	dev->driver = NULL;
 	return ret;
 
-=======
-	module_put(THIS_MODULE);
-
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static ssize_t name_show(struct device *dev, struct device_attribute *a,
@@ -968,26 +883,15 @@ static const struct device_type mei_cl_device_type = {
 
 /**
  * mei_cl_bus_set_name - set device name for me client device
-<<<<<<< HEAD
-=======
- *  <controller>-<client device>
- *  Example: 0000:00:16.0-55213584-9a29-4916-badf-0fb7ed682aeb
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * @cldev: me client device
  */
 static inline void mei_cl_bus_set_name(struct mei_cl_device *cldev)
 {
-<<<<<<< HEAD
 	dev_set_name(&cldev->dev, "mei:%s:%pUl:%02X",
 		     cldev->name,
 		     mei_me_cl_uuid(cldev->me_cl),
 		     mei_me_cl_ver(cldev->me_cl));
-=======
-	dev_set_name(&cldev->dev, "%s-%pUl",
-		     dev_name(cldev->bus->dev),
-		     mei_me_cl_uuid(cldev->me_cl));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**

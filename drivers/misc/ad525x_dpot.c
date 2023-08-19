@@ -3,11 +3,7 @@
  * Copyright (c) 2009-2010 Analog Devices, Inc.
  * Author: Michael Hennerich <hennerich@blackfin.uclinux.org>
  *
-<<<<<<< HEAD
  * DEVID		#Wipers		#Positions	Resistor Options (kOhm)
-=======
- * DEVID		#Wipers		#Positions 	Resistor Options (kOhm)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * AD5258		1		64		1, 10, 50, 100
  * AD5259		1		256		5, 10, 50, 100
  * AD5251		2		64		1, 10, 50, 100
@@ -88,21 +84,12 @@
 struct dpot_data {
 	struct ad_dpot_bus_data	bdata;
 	struct mutex update_lock;
-<<<<<<< HEAD
 	unsigned int rdac_mask;
 	unsigned int max_pos;
 	unsigned long devid;
 	unsigned int uid;
 	unsigned int feat;
 	unsigned int wipers;
-=======
-	unsigned rdac_mask;
-	unsigned max_pos;
-	unsigned long devid;
-	unsigned uid;
-	unsigned feat;
-	unsigned wipers;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 rdac_cache[MAX_RDACS];
 	DECLARE_BITMAP(otp_en_mask, MAX_RDACS);
 };
@@ -139,11 +126,7 @@ static inline int dpot_write_r8d16(struct dpot_data *dpot, u8 reg, u16 val)
 
 static s32 dpot_read_spi(struct dpot_data *dpot, u8 reg)
 {
-<<<<<<< HEAD
 	unsigned int ctrl = 0;
-=======
-	unsigned ctrl = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int value;
 
 	if (!(reg & (DPOT_ADDR_EEPROM | DPOT_ADDR_CMD))) {
@@ -192,11 +175,7 @@ static s32 dpot_read_spi(struct dpot_data *dpot, u8 reg)
 static s32 dpot_read_i2c(struct dpot_data *dpot, u8 reg)
 {
 	int value;
-<<<<<<< HEAD
 	unsigned int ctrl = 0;
-=======
-	unsigned ctrl = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (dpot->uid) {
 	case DPOT_UID(AD5246_ID):
@@ -259,11 +238,7 @@ static s32 dpot_read(struct dpot_data *dpot, u8 reg)
 
 static s32 dpot_write_spi(struct dpot_data *dpot, u8 reg, u16 value)
 {
-<<<<<<< HEAD
 	unsigned int val = 0;
-=======
-	unsigned val = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!(reg & (DPOT_ADDR_EEPROM | DPOT_ADDR_CMD | DPOT_ADDR_OTP))) {
 		if (dpot->feat & F_RDACS_WONLY)
@@ -353,11 +328,7 @@ static s32 dpot_write_spi(struct dpot_data *dpot, u8 reg, u16 value)
 static s32 dpot_write_i2c(struct dpot_data *dpot, u8 reg, u16 value)
 {
 	/* Only write the instruction byte for certain commands */
-<<<<<<< HEAD
 	unsigned int tmp = 0, ctrl = 0;
-=======
-	unsigned tmp = 0, ctrl = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (dpot->uid) {
 	case DPOT_UID(AD5246_ID):
@@ -544,19 +515,11 @@ set_##_name(struct device *dev, \
 #define DPOT_DEVICE_SHOW_SET(name, reg) \
 DPOT_DEVICE_SHOW(name, reg) \
 DPOT_DEVICE_SET(name, reg) \
-<<<<<<< HEAD
 static DEVICE_ATTR(name, S_IWUSR | S_IRUGO, show_##name, set_##name)
 
 #define DPOT_DEVICE_SHOW_ONLY(name, reg) \
 DPOT_DEVICE_SHOW(name, reg) \
 static DEVICE_ATTR(name, S_IWUSR | S_IRUGO, show_##name, NULL)
-=======
-static DEVICE_ATTR(name, S_IWUSR | S_IRUGO, show_##name, set_##name);
-
-#define DPOT_DEVICE_SHOW_ONLY(name, reg) \
-DPOT_DEVICE_SHOW(name, reg) \
-static DEVICE_ATTR(name, S_IWUSR | S_IRUGO, show_##name, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 DPOT_DEVICE_SHOW_SET(rdac0, DPOT_ADDR_RDAC | DPOT_RDAC0);
 DPOT_DEVICE_SHOW_SET(eeprom0, DPOT_ADDR_EEPROM | DPOT_RDAC0);
@@ -653,11 +616,7 @@ set_##_name(struct device *dev, \
 { \
 	return sysfs_do_cmd(dev, attr, buf, count, _cmd); \
 } \
-<<<<<<< HEAD
 static DEVICE_ATTR(_name, S_IWUSR | S_IRUGO, NULL, set_##_name)
-=======
-static DEVICE_ATTR(_name, S_IWUSR | S_IRUGO, NULL, set_##_name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 DPOT_DEVICE_DO_CMD(inc_all, DPOT_INC_ALL);
 DPOT_DEVICE_DO_CMD(dec_all, DPOT_DEC_ALL);
@@ -677,11 +636,7 @@ static const struct attribute_group ad525x_group_commands = {
 };
 
 static int ad_dpot_add_files(struct device *dev,
-<<<<<<< HEAD
 		unsigned int features, unsigned int rdac)
-=======
-		unsigned features, unsigned rdac)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int err = sysfs_create_file(&dev->kobj,
 		dpot_attrib_wipers[rdac]);
@@ -706,11 +661,7 @@ static int ad_dpot_add_files(struct device *dev,
 }
 
 static inline void ad_dpot_remove_files(struct device *dev,
-<<<<<<< HEAD
 		unsigned int features, unsigned int rdac)
-=======
-		unsigned features, unsigned rdac)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	sysfs_remove_file(&dev->kobj,
 		dpot_attrib_wipers[rdac]);

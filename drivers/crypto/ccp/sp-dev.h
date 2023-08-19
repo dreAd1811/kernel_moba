@@ -42,7 +42,6 @@ struct ccp_vdata {
 	const unsigned int offset;
 	const unsigned int rsamax;
 };
-<<<<<<< HEAD
 
 struct psp_vdata {
 	const unsigned int cmdresp_reg;
@@ -53,18 +52,12 @@ struct psp_vdata {
 	const unsigned int intsts_reg;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Structure to hold SP device data */
 struct sp_dev_vdata {
 	const unsigned int bar;
 
 	const struct ccp_vdata *ccp_vdata;
-<<<<<<< HEAD
 	const struct psp_vdata *psp_vdata;
-=======
-	void *psp_vdata;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct sp_device {
@@ -85,13 +78,10 @@ struct sp_device {
 	/* DMA caching attribute support */
 	unsigned int axcache;
 
-<<<<<<< HEAD
 	/* get and set master device */
 	struct sp_device*(*get_psp_master_device)(void);
 	void (*set_psp_master_device)(struct sp_device *);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool irq_registered;
 	bool use_tasklet;
 
@@ -127,10 +117,7 @@ void sp_free_ccp_irq(struct sp_device *sp, void *data);
 int sp_request_psp_irq(struct sp_device *sp, irq_handler_t handler,
 		       const char *name, void *data);
 void sp_free_psp_irq(struct sp_device *sp, void *data);
-<<<<<<< HEAD
 struct sp_device *sp_get_psp_master_device(void);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_CRYPTO_DEV_SP_CCP
 
@@ -158,7 +145,6 @@ static inline int ccp_dev_resume(struct sp_device *sp)
 }
 #endif	/* CONFIG_CRYPTO_DEV_SP_CCP */
 
-<<<<<<< HEAD
 #ifdef CONFIG_CRYPTO_DEV_SP_PSP
 
 int psp_dev_init(struct sp_device *sp);
@@ -175,6 +161,4 @@ static inline void psp_pci_exit(void) { }
 
 #endif /* CONFIG_CRYPTO_DEV_SP_PSP */
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

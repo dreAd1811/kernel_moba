@@ -21,10 +21,7 @@
  *
  * Authors: Martin Peres
  */
-<<<<<<< HEAD
 #include <nvkm/core/option.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "priv.h"
 
 int
@@ -302,7 +299,6 @@ nvkm_therm_attr_set(struct nvkm_therm *therm,
 	return -EINVAL;
 }
 
-<<<<<<< HEAD
 void
 nvkm_therm_clkgate_enable(struct nvkm_therm *therm)
 {
@@ -335,8 +331,6 @@ nvkm_therm_clkgate_oneinit(struct nvkm_therm *therm)
 	nvkm_info(&therm->subdev, "Clockgating enabled\n");
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void
 nvkm_therm_intr(struct nvkm_subdev *subdev)
 {
@@ -373,10 +367,7 @@ nvkm_therm_oneinit(struct nvkm_subdev *subdev)
 	nvkm_therm_fan_ctor(therm);
 	nvkm_therm_fan_mode(therm, NVKM_THERM_CTRL_AUTO);
 	nvkm_therm_sensor_preinit(therm);
-<<<<<<< HEAD
 	nvkm_therm_clkgate_oneinit(therm);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -385,12 +376,8 @@ nvkm_therm_init(struct nvkm_subdev *subdev)
 {
 	struct nvkm_therm *therm = nvkm_therm(subdev);
 
-<<<<<<< HEAD
 	if (therm->func->init)
 		therm->func->init(therm);
-=======
-	therm->func->init(therm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (therm->suspend >= 0) {
 		/* restore the pwm value only when on manual or auto mode */
@@ -405,7 +392,6 @@ nvkm_therm_init(struct nvkm_subdev *subdev)
 	return 0;
 }
 
-<<<<<<< HEAD
 void
 nvkm_therm_clkgate_init(struct nvkm_therm *therm,
 			const struct nvkm_therm_clkgate_pack *p)
@@ -416,8 +402,6 @@ nvkm_therm_clkgate_init(struct nvkm_therm *therm,
 	therm->func->clkgate_init(therm, p);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void *
 nvkm_therm_dtor(struct nvkm_subdev *subdev)
 {
@@ -435,22 +419,10 @@ nvkm_therm = {
 	.intr = nvkm_therm_intr,
 };
 
-<<<<<<< HEAD
 void
 nvkm_therm_ctor(struct nvkm_therm *therm, struct nvkm_device *device,
 		int index, const struct nvkm_therm_func *func)
 {
-=======
-int
-nvkm_therm_new_(const struct nvkm_therm_func *func, struct nvkm_device *device,
-		int index, struct nvkm_therm **ptherm)
-{
-	struct nvkm_therm *therm;
-
-	if (!(therm = *ptherm = kzalloc(sizeof(*therm), GFP_KERNEL)))
-		return -ENOMEM;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	nvkm_subdev_ctor(&nvkm_therm, device, index, &therm->subdev);
 	therm->func = func;
 
@@ -463,7 +435,6 @@ nvkm_therm_new_(const struct nvkm_therm_func *func, struct nvkm_device *device,
 	therm->attr_get = nvkm_therm_attr_get;
 	therm->attr_set = nvkm_therm_attr_set;
 	therm->mode = therm->suspend = -1; /* undefined */
-<<<<<<< HEAD
 
 	therm->clkgating_enabled = nvkm_boolopt(device->cfgopt,
 						"NvPmEnableGating", false);
@@ -479,7 +450,5 @@ nvkm_therm_new_(const struct nvkm_therm_func *func, struct nvkm_device *device,
 		return -ENOMEM;
 
 	nvkm_therm_ctor(therm, device, index, func);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }

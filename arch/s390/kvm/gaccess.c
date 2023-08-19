@@ -847,11 +847,7 @@ int access_guest(struct kvm_vcpu *vcpu, unsigned long ga, u8 ar, void *data,
 	nr_pages = (((ga & ~PAGE_MASK) + len - 1) >> PAGE_SHIFT) + 1;
 	pages = pages_array;
 	if (nr_pages > ARRAY_SIZE(pages_array))
-<<<<<<< HEAD
 		pages = vmalloc(array_size(nr_pages, sizeof(unsigned long)));
-=======
-		pages = vmalloc(nr_pages * sizeof(unsigned long));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!pages)
 		return -ENOMEM;
 	need_ipte_lock = psw_bits(*psw).dat && !asce.r;
@@ -1054,12 +1050,7 @@ shadow_r2t:
 		rc = gmap_shadow_r2t(sg, saddr, rfte.val, *fake);
 		if (rc)
 			return rc;
-<<<<<<< HEAD
 	} /* fallthrough */
-=======
-		/* fallthrough */
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case ASCE_TYPE_REGION2: {
 		union region2_table_entry rste;
 
@@ -1085,12 +1076,7 @@ shadow_r3t:
 		rc = gmap_shadow_r3t(sg, saddr, rste.val, *fake);
 		if (rc)
 			return rc;
-<<<<<<< HEAD
 	} /* fallthrough */
-=======
-		/* fallthrough */
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case ASCE_TYPE_REGION3: {
 		union region3_table_entry rtte;
 
@@ -1125,12 +1111,7 @@ shadow_sgt:
 		rc = gmap_shadow_sgt(sg, saddr, rtte.val, *fake);
 		if (rc)
 			return rc;
-<<<<<<< HEAD
 	} /* fallthrough */
-=======
-		/* fallthrough */
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case ASCE_TYPE_SEGMENT: {
 		union segment_table_entry ste;
 

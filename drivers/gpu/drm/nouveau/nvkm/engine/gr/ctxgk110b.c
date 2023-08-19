@@ -71,18 +71,11 @@ gk110b_grctx_pack_tpc[] = {
 
 const struct gf100_grctx_func
 gk110b_grctx = {
-<<<<<<< HEAD
 	.main  = gf100_grctx_generate_main,
 	.unkn  = gk104_grctx_generate_unkn,
 	.hub   = gk110_grctx_pack_hub,
 	.gpc_0 = gk110_grctx_pack_gpc_0,
 	.gpc_1 = gk110_grctx_pack_gpc_1,
-=======
-	.main  = gk104_grctx_generate_main,
-	.unkn  = gk104_grctx_generate_unkn,
-	.hub   = gk110_grctx_pack_hub,
-	.gpc   = gk110_grctx_pack_gpc,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.zcull = gf100_grctx_pack_zcull,
 	.tpc   = gk110b_grctx_pack_tpc,
 	.ppc   = gk110_grctx_pack_ppc,
@@ -99,7 +92,6 @@ gk110b_grctx = {
 	.attrib_nr = 0x218,
 	.alpha_nr_max = 0x7ff,
 	.alpha_nr = 0x648,
-<<<<<<< HEAD
 	.patch_ltc = gk104_grctx_generate_patch_ltc,
 	.sm_id = gf100_grctx_generate_sm_id,
 	.tpc_nr = gf100_grctx_generate_tpc_nr,
@@ -109,6 +101,4 @@ gk110b_grctx = {
 	.gpc_tpc_nr = gk104_grctx_generate_gpc_tpc_nr,
 	.r418800 = gk104_grctx_generate_r418800,
 	.r419eb0 = gk110_grctx_generate_r419eb0,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

@@ -23,10 +23,7 @@
 #include <crypto/aes.h>
 #include <crypto/internal/hash.h>
 #include <crypto/aead.h>
-<<<<<<< HEAD
 #include <crypto/gcm.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <crypto/sha.h>
 #include <crypto/sha3.h>
 
@@ -43,11 +40,6 @@
 #define ARC4_STATE_SIZE     4
 
 #define CCM_AES_IV_SIZE    16
-<<<<<<< HEAD
-=======
-#define GCM_AES_IV_SIZE    12
-#define GCM_ESP_IV_SIZE     8
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CCM_ESP_IV_SIZE     8
 #define RFC4543_ICV_SIZE   16
 

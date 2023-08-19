@@ -184,11 +184,7 @@ s32 pch_gbe_phy_write_reg_miic(struct pch_gbe_hw *hw, u32 offset, u16 data)
  * pch_gbe_phy_sw_reset - PHY software reset
  * @hw:	            Pointer to the HW structure
  */
-<<<<<<< HEAD
 static void pch_gbe_phy_sw_reset(struct pch_gbe_hw *hw)
-=======
-void pch_gbe_phy_sw_reset(struct pch_gbe_hw *hw)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u16 phy_ctrl;
 

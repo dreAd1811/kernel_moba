@@ -443,15 +443,9 @@ matrix_keypad_parse_dt(struct device *dev)
 	of_property_read_u32(np, "col-scan-delay-us",
 						&pdata->col_scan_delay_us);
 
-<<<<<<< HEAD
 	gpios = devm_kcalloc(dev,
 			     pdata->num_row_gpios + pdata->num_col_gpios,
 			     sizeof(unsigned int),
-=======
-	gpios = devm_kzalloc(dev,
-			     sizeof(unsigned int) *
-				(pdata->num_row_gpios + pdata->num_col_gpios),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     GFP_KERNEL);
 	if (!gpios) {
 		dev_err(dev, "could not allocate memory for gpios\n");

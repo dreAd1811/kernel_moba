@@ -128,12 +128,7 @@ static struct host1x_channel *acquire_unused_channel(struct host1x *host)
  * host1x_channel_request() - Allocate a channel
  * @device: Host1x unit this channel will be used to send commands to
  *
-<<<<<<< HEAD
  * Allocates a new host1x channel for @device. May return NULL if CDMA
-=======
- * Allocates a new host1x channel for @device. If there are no free channels,
- * this will sleep until one becomes available. May return NULL if CDMA
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * initialization fails.
  */
 struct host1x_channel *host1x_channel_request(struct device *dev)

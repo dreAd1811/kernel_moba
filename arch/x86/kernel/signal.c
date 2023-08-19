@@ -25,10 +25,7 @@
 #include <linux/user-return-notifier.h>
 #include <linux/uprobes.h>
 #include <linux/context_tracking.h>
-<<<<<<< HEAD
 #include <linux/syscalls.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/processor.h>
 #include <asm/ucontext.h>
@@ -610,11 +607,7 @@ static int x32_setup_rt_frame(struct ksignal *ksig,
  * Do a signal return; undo the signal stack.
  */
 #ifdef CONFIG_X86_32
-<<<<<<< HEAD
 SYSCALL_DEFINE0(sigreturn)
-=======
-asmlinkage unsigned long sys_sigreturn(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct pt_regs *regs = current_pt_regs();
 	struct sigframe __user *frame;
@@ -646,11 +639,7 @@ badframe:
 }
 #endif /* CONFIG_X86_32 */
 
-<<<<<<< HEAD
 SYSCALL_DEFINE0(rt_sigreturn)
-=======
-asmlinkage long sys_rt_sigreturn(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct pt_regs *regs = current_pt_regs();
 	struct rt_sigframe __user *frame;
@@ -704,15 +693,12 @@ setup_rt_frame(struct ksignal *ksig, struct pt_regs *regs)
 	sigset_t *set = sigmask_to_save();
 	compat_sigset_t *cset = (compat_sigset_t *) set;
 
-<<<<<<< HEAD
 	/*
 	 * Increment event counter and perform fixup for the pre-signal
 	 * frame.
 	 */
 	rseq_signal_deliver(ksig, regs);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Set up the stack frame */
 	if (is_ia32_frame(ksig)) {
 		if (ksig->ka.sa.sa_flags & SA_SIGINFO)

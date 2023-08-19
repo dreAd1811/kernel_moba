@@ -114,11 +114,7 @@
 			reg = <0x04000000 0x06400000>; /*  100MB */
 		};
 
-<<<<<<< HEAD
 		partition@a400000{
-=======
-		partition@0a400000{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "ncustfs";
 			reg = <0x0a400000 0x35c00000>; /*  860MB */
 		};

@@ -10,12 +10,6 @@ obj-$(CONFIG_VIDEO_IVTV) += ivtv.o
 obj-$(CONFIG_VIDEO_IVTV_ALSA) += ivtv-alsa.o
 obj-$(CONFIG_VIDEO_FB_IVTV) += ivtvfb.o
 
-<<<<<<< HEAD
 ccflags-y += -I$(srctree)/drivers/media/tuners
-=======
-ccflags-y += -I$(srctree)/drivers/media/i2c
-ccflags-y += -I$(srctree)/drivers/media/tuners
-ccflags-y += -I$(srctree)/drivers/media/dvb-core
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 ccflags-y += -I$(srctree)/drivers/media/dvb-frontends
 

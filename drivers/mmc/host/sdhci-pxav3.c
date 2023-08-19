@@ -472,15 +472,8 @@ static int sdhci_pxav3_probe(struct platform_device *pdev)
 	pm_suspend_ignore_children(&pdev->dev, 1);
 
 	ret = sdhci_add_host(host);
-<<<<<<< HEAD
 	if (ret)
 		goto err_add_host;
-=======
-	if (ret) {
-		dev_err(&pdev->dev, "failed to add host\n");
-		goto err_add_host;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (host->mmc->pm_caps & MMC_PM_WAKE_SDIO_IRQ)
 		device_init_wakeup(&pdev->dev, 1);

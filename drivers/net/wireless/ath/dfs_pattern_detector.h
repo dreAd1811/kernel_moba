@@ -97,12 +97,8 @@ struct dfs_pattern_detector {
 	bool (*set_dfs_domain)(struct dfs_pattern_detector *dpd,
 			   enum nl80211_dfs_regions region);
 	bool (*add_pulse)(struct dfs_pattern_detector *dpd,
-<<<<<<< HEAD
 			  struct pulse_event *pe,
 			  struct radar_detector_specs *rs);
-=======
-			  struct pulse_event *pe);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct ath_dfs_pool_stats (*get_stats)(struct dfs_pattern_detector *dpd);
 	enum nl80211_dfs_regions region;

@@ -8,15 +8,9 @@ You find it in:
 
 In case you just want to see the FAQ online, or download the newest version,
 you can have a look at my website:
-<<<<<<< HEAD
 https://www.mhessler.de/i4lfaq/ (view + download)
 or:
 https://www.isdn4linux.de/faq/4lfaq.html (view)
-=======
-http://www.mhessler.de/i4lfaq/ (view + download)
-or:
-http://www.isdn4linux.de/faq/ (view)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 As the extension tells, the FAQ is in SGML format, and you can convert it
 into text/html/... format by using the sgml2txt/sgml2html/... tools.

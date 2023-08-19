@@ -1,41 +1,5 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: BSD-3-Clause OR GPL-2.0
 /* Copyright (c) 2017-2018 Mellanox Technologies. All rights reserved */
-=======
-/*
- * drivers/net/ethernet/mellanox/mlxsw/core_acl_flex_keys.c
- * Copyright (c) 2017 Mellanox Technologies. All rights reserved.
- * Copyright (c) 2017 Jiri Pirko <jiri@mellanox.com>
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- * 3. Neither the names of the copyright holders nor the names of its
- *    contributors may be used to endorse or promote products derived from
- *    this software without specific prior written permission.
- *
- * Alternatively, this software may be distributed under the terms of the
- * GNU General Public License ("GPL") version 2 as published by the Free
- * Software Foundation.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/kernel.h>
 #include <linux/slab.h>
@@ -48,10 +12,7 @@
 struct mlxsw_afk {
 	struct list_head key_info_list;
 	unsigned int max_blocks;
-<<<<<<< HEAD
 	const struct mlxsw_afk_ops *ops;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const struct mlxsw_afk_block *blocks;
 	unsigned int blocks_count;
 };
@@ -78,12 +39,7 @@ static bool mlxsw_afk_blocks_check(struct mlxsw_afk *mlxsw_afk)
 }
 
 struct mlxsw_afk *mlxsw_afk_create(unsigned int max_blocks,
-<<<<<<< HEAD
 				   const struct mlxsw_afk_ops *ops)
-=======
-				   const struct mlxsw_afk_block *blocks,
-				   unsigned int blocks_count)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlxsw_afk *mlxsw_afk;
 
@@ -92,14 +48,9 @@ struct mlxsw_afk *mlxsw_afk_create(unsigned int max_blocks,
 		return NULL;
 	INIT_LIST_HEAD(&mlxsw_afk->key_info_list);
 	mlxsw_afk->max_blocks = max_blocks;
-<<<<<<< HEAD
 	mlxsw_afk->ops = ops;
 	mlxsw_afk->blocks = ops->blocks;
 	mlxsw_afk->blocks_count = ops->blocks_count;
-=======
-	mlxsw_afk->blocks = blocks;
-	mlxsw_afk->blocks_count = blocks_count;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	WARN_ON(!mlxsw_afk_blocks_check(mlxsw_afk));
 	return mlxsw_afk;
 }
@@ -434,20 +385,13 @@ void mlxsw_afk_values_add_buf(struct mlxsw_afk_element_values *values,
 }
 EXPORT_SYMBOL(mlxsw_afk_values_add_buf);
 
-<<<<<<< HEAD
 static void mlxsw_sp_afk_encode_u32(const struct mlxsw_item *storage_item,
 				    const struct mlxsw_item *output_item,
 				    char *storage, char *output)
-=======
-static void mlxsw_afk_encode_u32(const struct mlxsw_item *storage_item,
-				 const struct mlxsw_item *output_item,
-				 char *storage, char *output_indexed)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 value;
 
 	value = __mlxsw_item_get32(storage, storage_item, 0);
-<<<<<<< HEAD
 	__mlxsw_item_set32(output, output_item, 0, value);
 }
 
@@ -457,40 +401,19 @@ static void mlxsw_sp_afk_encode_buf(const struct mlxsw_item *storage_item,
 {
 	char *storage_data = __mlxsw_item_data(storage, storage_item, 0);
 	char *output_data = __mlxsw_item_data(output, output_item, 0);
-=======
-	__mlxsw_item_set32(output_indexed, output_item, 0, value);
-}
-
-static void mlxsw_afk_encode_buf(const struct mlxsw_item *storage_item,
-				 const struct mlxsw_item *output_item,
-				 char *storage, char *output_indexed)
-{
-	char *storage_data = __mlxsw_item_data(storage, storage_item, 0);
-	char *output_data = __mlxsw_item_data(output_indexed, output_item, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	size_t len = output_item->size.bytes;
 
 	memcpy(output_data, storage_data, len);
 }
 
-<<<<<<< HEAD
 static void
 mlxsw_sp_afk_encode_one(const struct mlxsw_afk_element_inst *elinst,
 			char *output, char *storage)
 {
-=======
-#define MLXSW_AFK_KEY_BLOCK_SIZE 16
-
-static void mlxsw_afk_encode_one(const struct mlxsw_afk_element_inst *elinst,
-				 int block_index, char *storage, char *output)
-{
-	char *output_indexed = output + block_index * MLXSW_AFK_KEY_BLOCK_SIZE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const struct mlxsw_item *storage_item = &elinst->info->item;
 	const struct mlxsw_item *output_item = &elinst->item;
 
 	if (elinst->type == MLXSW_AFK_ELEMENT_TYPE_U32)
-<<<<<<< HEAD
 		mlxsw_sp_afk_encode_u32(storage_item, output_item,
 					storage, output);
 	else if (elinst->type == MLXSW_AFK_ELEMENT_TYPE_BUF)
@@ -532,32 +455,6 @@ void mlxsw_afk_encode(struct mlxsw_afk *mlxsw_afk,
 			mlxsw_afk->ops->encode_block(block_key, i, key);
 		if (mask)
 			mlxsw_afk->ops->encode_block(block_mask, i, mask);
-=======
-		mlxsw_afk_encode_u32(storage_item, output_item,
-				     storage, output_indexed);
-	else if (elinst->type == MLXSW_AFK_ELEMENT_TYPE_BUF)
-		mlxsw_afk_encode_buf(storage_item, output_item,
-				     storage, output_indexed);
-}
-
-void mlxsw_afk_encode(struct mlxsw_afk_key_info *key_info,
-		      struct mlxsw_afk_element_values *values,
-		      char *key, char *mask)
-{
-	const struct mlxsw_afk_element_inst *elinst;
-	enum mlxsw_afk_element element;
-	int block_index;
-
-	mlxsw_afk_element_usage_for_each(element, &values->elusage) {
-		elinst = mlxsw_afk_key_info_elinst_get(key_info, element,
-						       &block_index);
-		if (!elinst)
-			continue;
-		mlxsw_afk_encode_one(elinst, block_index,
-				     values->storage.key, key);
-		mlxsw_afk_encode_one(elinst, block_index,
-				     values->storage.mask, mask);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 EXPORT_SYMBOL(mlxsw_afk_encode);

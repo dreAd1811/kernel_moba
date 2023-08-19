@@ -7,15 +7,11 @@
 #endif
 
 #ifdef CONFIG_KASAN
-<<<<<<< HEAD
 #ifdef CONFIG_KASAN_EXTRA
 #define KASAN_STACK_ORDER 2
 #else
 #define KASAN_STACK_ORDER 1
 #endif
-=======
-#define KASAN_STACK_ORDER 1
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 #define KASAN_STACK_ORDER 0
 #endif
@@ -47,7 +43,6 @@
  * a hypervisor (16 slots). Choosing 16 slots for a hypervisor is arbitrary,
  * but it's what Xen requires.
  */
-<<<<<<< HEAD
 #define __PAGE_OFFSET_BASE_L5	_AC(0xff11000000000000, UL)
 #define __PAGE_OFFSET_BASE_L4	_AC(0xffff888000000000, UL)
 
@@ -56,37 +51,16 @@
 #else
 #define __PAGE_OFFSET           __PAGE_OFFSET_BASE_L4
 #endif /* CONFIG_DYNAMIC_MEMORY_LAYOUT */
-=======
-#ifdef CONFIG_X86_5LEVEL
-#define __PAGE_OFFSET_BASE	_AC(0xff11000000000000, UL)
-#else
-#define __PAGE_OFFSET_BASE	_AC(0xffff888000000000, UL)
-#endif
-
-#ifdef CONFIG_RANDOMIZE_MEMORY
-#define __PAGE_OFFSET           page_offset_base
-#else
-#define __PAGE_OFFSET           __PAGE_OFFSET_BASE
-#endif /* CONFIG_RANDOMIZE_MEMORY */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define __START_KERNEL_map	_AC(0xffffffff80000000, UL)
 
 /* See Documentation/x86/x86_64/mm.txt for a description of the memory map. */
-<<<<<<< HEAD
 
 #define __PHYSICAL_MASK_SHIFT	52
 
 #ifdef CONFIG_X86_5LEVEL
 #define __VIRTUAL_MASK_SHIFT	(pgtable_l5_enabled() ? 56 : 47)
 #else
-=======
-#ifdef CONFIG_X86_5LEVEL
-#define __PHYSICAL_MASK_SHIFT	52
-#define __VIRTUAL_MASK_SHIFT	56
-#else
-#define __PHYSICAL_MASK_SHIFT	46
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define __VIRTUAL_MASK_SHIFT	47
 #endif
 

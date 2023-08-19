@@ -66,20 +66,14 @@ static struct mlx5e_ethtool_table *get_flow_table(struct mlx5e_priv *priv,
 	switch (fs->flow_type & ~(FLOW_EXT | FLOW_MAC_EXT)) {
 	case TCP_V4_FLOW:
 	case UDP_V4_FLOW:
-<<<<<<< HEAD
 	case TCP_V6_FLOW:
 	case UDP_V6_FLOW:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		max_tuples = ETHTOOL_NUM_L3_L4_FTS;
 		prio = MLX5E_ETHTOOL_L3_L4_PRIO + (max_tuples - num_tuples);
 		eth_ft = &priv->fs.ethtool.l3_l4_ft[prio];
 		break;
 	case IP_USER_FLOW:
-<<<<<<< HEAD
 	case IPV6_USER_FLOW:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		max_tuples = ETHTOOL_NUM_L3_L4_FTS;
 		prio = MLX5E_ETHTOOL_L3_L4_PRIO + (max_tuples - num_tuples);
 		eth_ft = &priv->fs.ethtool.l3_l4_ft[prio];
@@ -124,7 +118,6 @@ static void mask_spec(u8 *mask, u8 *val, size_t size)
 		*((u8 *)val) = *((u8 *)mask) & *((u8 *)val);
 }
 
-<<<<<<< HEAD
 #define MLX5E_FTE_SET(header_p, fld, v)  \
 	MLX5_SET(fte_match_set_lyr_2_4, header_p, fld, v)
 
@@ -322,31 +315,6 @@ set_dmac(void *headers_c, void *headers_v,
 {
 	ether_addr_copy(MLX5E_FTE_ADDR_OF(headers_c, dmac_47_16), m_dest);
 	ether_addr_copy(MLX5E_FTE_ADDR_OF(headers_v, dmac_47_16), v_dest);
-=======
-static void set_ips(void *outer_headers_v, void *outer_headers_c, __be32 ip4src_m,
-		    __be32 ip4src_v, __be32 ip4dst_m, __be32 ip4dst_v)
-{
-	if (ip4src_m) {
-		memcpy(MLX5_ADDR_OF(fte_match_set_lyr_2_4, outer_headers_v,
-				    src_ipv4_src_ipv6.ipv4_layout.ipv4),
-		       &ip4src_v, sizeof(ip4src_v));
-		memset(MLX5_ADDR_OF(fte_match_set_lyr_2_4, outer_headers_c,
-				    src_ipv4_src_ipv6.ipv4_layout.ipv4),
-		       0xff, sizeof(ip4src_m));
-	}
-	if (ip4dst_m) {
-		memcpy(MLX5_ADDR_OF(fte_match_set_lyr_2_4, outer_headers_v,
-				    dst_ipv4_dst_ipv6.ipv4_layout.ipv4),
-		       &ip4dst_v, sizeof(ip4dst_v));
-		memset(MLX5_ADDR_OF(fte_match_set_lyr_2_4, outer_headers_c,
-				    dst_ipv4_dst_ipv6.ipv4_layout.ipv4),
-		       0xff, sizeof(ip4dst_m));
-	}
-	MLX5_SET(fte_match_set_lyr_2_4, outer_headers_v,
-		 ethertype, ETH_P_IP);
-	MLX5_SET(fte_match_set_lyr_2_4, outer_headers_c,
-		 ethertype, 0xffff);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int set_flow_attrs(u32 *match_c, u32 *match_v,
@@ -357,7 +325,6 @@ static int set_flow_attrs(u32 *match_c, u32 *match_v,
 	void *outer_headers_v = MLX5_ADDR_OF(fte_match_param, match_v,
 					     outer_headers);
 	u32 flow_type = fs->flow_type & ~(FLOW_EXT | FLOW_MAC_EXT);
-<<<<<<< HEAD
 
 	switch (flow_type) {
 	case TCP_V4_FLOW:
@@ -380,96 +347,12 @@ static int set_flow_attrs(u32 *match_c, u32 *match_v,
 		break;
 	case ETHER_FLOW:
 		parse_ether(outer_headers_c, outer_headers_v, fs);
-=======
-	struct ethtool_tcpip4_spec *l4_mask;
-	struct ethtool_tcpip4_spec *l4_val;
-	struct ethtool_usrip4_spec *l3_mask;
-	struct ethtool_usrip4_spec *l3_val;
-	struct ethhdr *eth_val;
-	struct ethhdr *eth_mask;
-
-	switch (flow_type) {
-	case TCP_V4_FLOW:
-		l4_mask = &fs->m_u.tcp_ip4_spec;
-		l4_val = &fs->h_u.tcp_ip4_spec;
-		set_ips(outer_headers_v, outer_headers_c, l4_mask->ip4src,
-			l4_val->ip4src, l4_mask->ip4dst, l4_val->ip4dst);
-
-		if (l4_mask->psrc) {
-			MLX5_SET(fte_match_set_lyr_2_4, outer_headers_c, tcp_sport,
-				 0xffff);
-			MLX5_SET(fte_match_set_lyr_2_4, outer_headers_v, tcp_sport,
-				 ntohs(l4_val->psrc));
-		}
-		if (l4_mask->pdst) {
-			MLX5_SET(fte_match_set_lyr_2_4, outer_headers_c, tcp_dport,
-				 0xffff);
-			MLX5_SET(fte_match_set_lyr_2_4, outer_headers_v, tcp_dport,
-				 ntohs(l4_val->pdst));
-		}
-		MLX5_SET(fte_match_set_lyr_2_4, outer_headers_c, ip_protocol,
-			 0xffff);
-		MLX5_SET(fte_match_set_lyr_2_4, outer_headers_v, ip_protocol,
-			 IPPROTO_TCP);
-		break;
-	case UDP_V4_FLOW:
-		l4_mask = &fs->m_u.tcp_ip4_spec;
-		l4_val = &fs->h_u.tcp_ip4_spec;
-		set_ips(outer_headers_v, outer_headers_c, l4_mask->ip4src,
-			l4_val->ip4src, l4_mask->ip4dst, l4_val->ip4dst);
-
-		if (l4_mask->psrc) {
-			MLX5_SET(fte_match_set_lyr_2_4, outer_headers_c, udp_sport,
-				 0xffff);
-			MLX5_SET(fte_match_set_lyr_2_4, outer_headers_v, udp_sport,
-				 ntohs(l4_val->psrc));
-		}
-		if (l4_mask->pdst) {
-			MLX5_SET(fte_match_set_lyr_2_4, outer_headers_c, udp_dport,
-				 0xffff);
-			MLX5_SET(fte_match_set_lyr_2_4, outer_headers_v, udp_dport,
-				 ntohs(l4_val->pdst));
-		}
-		MLX5_SET(fte_match_set_lyr_2_4, outer_headers_c, ip_protocol,
-			 0xffff);
-		MLX5_SET(fte_match_set_lyr_2_4, outer_headers_v, ip_protocol,
-			 IPPROTO_UDP);
-		break;
-	case IP_USER_FLOW:
-		l3_mask = &fs->m_u.usr_ip4_spec;
-		l3_val = &fs->h_u.usr_ip4_spec;
-		set_ips(outer_headers_v, outer_headers_c, l3_mask->ip4src,
-			l3_val->ip4src, l3_mask->ip4dst, l3_val->ip4dst);
-		break;
-	case ETHER_FLOW:
-		eth_mask = &fs->m_u.ether_spec;
-		eth_val = &fs->h_u.ether_spec;
-
-		mask_spec((u8 *)eth_mask, (u8 *)eth_val, sizeof(*eth_mask));
-		ether_addr_copy(MLX5_ADDR_OF(fte_match_set_lyr_2_4,
-					     outer_headers_c, smac_47_16),
-				eth_mask->h_source);
-		ether_addr_copy(MLX5_ADDR_OF(fte_match_set_lyr_2_4,
-					     outer_headers_v, smac_47_16),
-				eth_val->h_source);
-		ether_addr_copy(MLX5_ADDR_OF(fte_match_set_lyr_2_4,
-					     outer_headers_c, dmac_47_16),
-				eth_mask->h_dest);
-		ether_addr_copy(MLX5_ADDR_OF(fte_match_set_lyr_2_4,
-					     outer_headers_v, dmac_47_16),
-				eth_val->h_dest);
-		MLX5_SET(fte_match_set_lyr_2_4, outer_headers_c, ethertype,
-			 ntohs(eth_mask->h_proto));
-		MLX5_SET(fte_match_set_lyr_2_4, outer_headers_v, ethertype,
-			 ntohs(eth_val->h_proto));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		return -EINVAL;
 	}
 
 	if ((fs->flow_type & FLOW_EXT) &&
-<<<<<<< HEAD
 	    (fs->m_ext.vlan_tci & cpu_to_be16(VLAN_VID_MASK)))
 		set_cvlan(outer_headers_c, outer_headers_v, fs->h_ext.vlan_tci);
 
@@ -478,27 +361,6 @@ static int set_flow_attrs(u32 *match_c, u32 *match_v,
 		mask_spec(fs->m_ext.h_dest, fs->h_ext.h_dest, ETH_ALEN);
 		set_dmac(outer_headers_c, outer_headers_v, fs->m_ext.h_dest,
 			 fs->h_ext.h_dest);
-=======
-	    (fs->m_ext.vlan_tci & cpu_to_be16(VLAN_VID_MASK))) {
-		MLX5_SET(fte_match_set_lyr_2_4, outer_headers_c,
-			 cvlan_tag, 1);
-		MLX5_SET(fte_match_set_lyr_2_4, outer_headers_v,
-			 cvlan_tag, 1);
-		MLX5_SET(fte_match_set_lyr_2_4, outer_headers_c,
-			 first_vid, 0xfff);
-		MLX5_SET(fte_match_set_lyr_2_4, outer_headers_v,
-			 first_vid, ntohs(fs->h_ext.vlan_tci));
-	}
-	if (fs->flow_type & FLOW_MAC_EXT &&
-	    !is_zero_ether_addr(fs->m_ext.h_dest)) {
-		mask_spec(fs->m_ext.h_dest, fs->h_ext.h_dest, ETH_ALEN);
-		ether_addr_copy(MLX5_ADDR_OF(fte_match_set_lyr_2_4,
-					     outer_headers_c, dmac_47_16),
-				fs->m_ext.h_dest);
-		ether_addr_copy(MLX5_ADDR_OF(fte_match_set_lyr_2_4,
-					     outer_headers_v, dmac_47_16),
-				fs->h_ext.h_dest);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -624,7 +486,6 @@ static struct mlx5e_ethtool_rule *get_ethtool_rule(struct mlx5e_priv *priv,
 #define all_zeros_or_all_ones(field)		\
 	((field) == 0 || (field) == (__force typeof(field))-1)
 
-<<<<<<< HEAD
 static int validate_ethter(struct ethtool_rx_flow_spec *fs)
 {
 	struct ethhdr *eth_mask = &fs->m_u.ether_spec;
@@ -762,18 +623,6 @@ static int validate_flow(struct mlx5e_priv *priv,
 
 	if (fs->location >= MAX_NUM_OF_ETHTOOL_RULES)
 		return -ENOSPC;
-=======
-static int validate_flow(struct mlx5e_priv *priv,
-			 struct ethtool_rx_flow_spec *fs)
-{
-	struct ethtool_tcpip4_spec *l4_mask;
-	struct ethtool_usrip4_spec *l3_mask;
-	struct ethhdr *eth_mask;
-	int num_tuples = 0;
-
-	if (fs->location >= MAX_NUM_OF_ETHTOOL_RULES)
-		return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (fs->ring_cookie >= priv->channels.params.num_channels &&
 	    fs->ring_cookie != RX_CLS_FLOW_DISC)
@@ -781,7 +630,6 @@ static int validate_flow(struct mlx5e_priv *priv,
 
 	switch (fs->flow_type & ~(FLOW_EXT | FLOW_MAC_EXT)) {
 	case ETHER_FLOW:
-<<<<<<< HEAD
 		num_tuples += validate_ethter(fs);
 		break;
 	case TCP_V4_FLOW:
@@ -818,75 +666,6 @@ static int validate_flow(struct mlx5e_priv *priv,
 		if (ret < 0)
 			return ret;
 		num_tuples += ret;
-=======
-		eth_mask = &fs->m_u.ether_spec;
-		if (!is_zero_ether_addr(eth_mask->h_dest))
-			num_tuples++;
-		if (!is_zero_ether_addr(eth_mask->h_source))
-			num_tuples++;
-		if (eth_mask->h_proto)
-			num_tuples++;
-		break;
-	case TCP_V4_FLOW:
-	case UDP_V4_FLOW:
-		if (fs->m_u.tcp_ip4_spec.tos)
-			return -EINVAL;
-		l4_mask = &fs->m_u.tcp_ip4_spec;
-		if (l4_mask->ip4src) {
-			if (!all_ones(l4_mask->ip4src))
-				return -EINVAL;
-			num_tuples++;
-		}
-		if (l4_mask->ip4dst) {
-			if (!all_ones(l4_mask->ip4dst))
-				return -EINVAL;
-			num_tuples++;
-		}
-		if (l4_mask->psrc) {
-			if (!all_ones(l4_mask->psrc))
-				return -EINVAL;
-			num_tuples++;
-		}
-		if (l4_mask->pdst) {
-			if (!all_ones(l4_mask->pdst))
-				return -EINVAL;
-			num_tuples++;
-		}
-		/* Flow is TCP/UDP */
-		num_tuples++;
-		break;
-	case IP_USER_FLOW:
-		l3_mask = &fs->m_u.usr_ip4_spec;
-		if (l3_mask->l4_4_bytes || l3_mask->tos || l3_mask->proto ||
-		    fs->h_u.usr_ip4_spec.ip_ver != ETH_RX_NFC_IP4)
-			return -EINVAL;
-		if (l3_mask->ip4src) {
-			if (!all_ones(l3_mask->ip4src))
-				return -EINVAL;
-			num_tuples++;
-		}
-		if (l3_mask->ip4dst) {
-			if (!all_ones(l3_mask->ip4dst))
-				return -EINVAL;
-			num_tuples++;
-		}
-		/* Flow is IPv4 */
-		num_tuples++;
-		break;
-	default:
-		return -EINVAL;
-	}
-	if ((fs->flow_type & FLOW_EXT)) {
-		if (fs->m_ext.vlan_etype ||
-		    (fs->m_ext.vlan_tci != cpu_to_be16(VLAN_VID_MASK)))
-			return -EINVAL;
-
-		if (fs->m_ext.vlan_tci) {
-			if (be16_to_cpu(fs->h_ext.vlan_tci) >= VLAN_N_VID)
-				return -EINVAL;
-		}
-		num_tuples++;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (fs->flow_type & FLOW_MAC_EXT &&
@@ -896,14 +675,9 @@ static int validate_flow(struct mlx5e_priv *priv,
 	return num_tuples;
 }
 
-<<<<<<< HEAD
 static int
 mlx5e_ethtool_flow_replace(struct mlx5e_priv *priv,
 			   struct ethtool_rx_flow_spec *fs)
-=======
-int mlx5e_ethtool_flow_replace(struct mlx5e_priv *priv,
-			       struct ethtool_rx_flow_spec *fs)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlx5e_ethtool_table *eth_ft;
 	struct mlx5e_ethtool_rule *eth_rule;
@@ -913,14 +687,9 @@ int mlx5e_ethtool_flow_replace(struct mlx5e_priv *priv,
 
 	num_tuples = validate_flow(priv, fs);
 	if (num_tuples <= 0) {
-<<<<<<< HEAD
 		netdev_warn(priv->netdev, "%s: flow is not valid %d\n",
 			    __func__, num_tuples);
 		return num_tuples;
-=======
-		netdev_warn(priv->netdev, "%s: flow is not valid\n",  __func__);
-		return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	eth_ft = get_flow_table(priv, fs, num_tuples);
@@ -955,13 +724,8 @@ del_ethtool_rule:
 	return err;
 }
 
-<<<<<<< HEAD
 static int
 mlx5e_ethtool_flow_remove(struct mlx5e_priv *priv, int location)
-=======
-int mlx5e_ethtool_flow_remove(struct mlx5e_priv *priv,
-			      int location)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlx5e_ethtool_rule *eth_rule;
 	int err = 0;
@@ -980,14 +744,9 @@ out:
 	return err;
 }
 
-<<<<<<< HEAD
 static int
 mlx5e_ethtool_get_flow(struct mlx5e_priv *priv,
 		       struct ethtool_rxnfc *info, int location)
-=======
-int mlx5e_ethtool_get_flow(struct mlx5e_priv *priv, struct ethtool_rxnfc *info,
-			   int location)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlx5e_ethtool_rule *eth_rule;
 
@@ -1004,14 +763,9 @@ int mlx5e_ethtool_get_flow(struct mlx5e_priv *priv, struct ethtool_rxnfc *info,
 	return -ENOENT;
 }
 
-<<<<<<< HEAD
 static int
 mlx5e_ethtool_get_all_flows(struct mlx5e_priv *priv,
 			    struct ethtool_rxnfc *info, u32 *rule_locs)
-=======
-int mlx5e_ethtool_get_all_flows(struct mlx5e_priv *priv, struct ethtool_rxnfc *info,
-				u32 *rule_locs)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int location = 0;
 	int idx = 0;
@@ -1040,7 +794,6 @@ void mlx5e_ethtool_init_steering(struct mlx5e_priv *priv)
 {
 	INIT_LIST_HEAD(&priv->fs.ethtool.rules);
 }
-<<<<<<< HEAD
 
 int mlx5e_set_rxnfc(struct net_device *dev, struct ethtool_rxnfc *cmd)
 {
@@ -1089,5 +842,3 @@ int mlx5e_get_rxnfc(struct net_device *dev,
 	return err;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -83,11 +83,7 @@ void output_task_defines(void)
 	OFFSET(TASK_FLAGS, task_struct, flags);
 	OFFSET(TASK_MM, task_struct, mm);
 	OFFSET(TASK_PID, task_struct, pid);
-<<<<<<< HEAD
 #if defined(CONFIG_STACKPROTECTOR)
-=======
-#if defined(CONFIG_CC_STACKPROTECTOR)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	OFFSET(TASK_STACK_CANARY, task_struct, stack_canary);
 #endif
 	DEFINE(TASK_STRUCT_SIZE, sizeof(struct task_struct));

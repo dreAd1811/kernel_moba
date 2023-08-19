@@ -98,17 +98,11 @@ static void kgd_program_sh_mem_settings(struct kgd_dev *kgd, uint32_t vmid,
 static int kgd_set_pasid_vmid_mapping(struct kgd_dev *kgd, unsigned int pasid,
 					unsigned int vmid);
 
-<<<<<<< HEAD
-=======
-static int kgd_init_pipeline(struct kgd_dev *kgd, uint32_t pipe_id,
-				uint32_t hpd_size, uint64_t hpd_gpu_addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int kgd_init_interrupts(struct kgd_dev *kgd, uint32_t pipe_id);
 static int kgd_hqd_load(struct kgd_dev *kgd, void *mqd, uint32_t pipe_id,
 			uint32_t queue_id, uint32_t __user *wptr,
 			uint32_t wptr_shift, uint32_t wptr_mask,
 			struct mm_struct *mm);
-<<<<<<< HEAD
 static int kgd_hqd_dump(struct kgd_dev *kgd,
 			uint32_t pipe_id, uint32_t queue_id,
 			uint32_t (**dump)[2], uint32_t *n_regs);
@@ -117,9 +111,6 @@ static int kgd_hqd_sdma_load(struct kgd_dev *kgd, void *mqd,
 static int kgd_hqd_sdma_dump(struct kgd_dev *kgd,
 			     uint32_t engine_id, uint32_t queue_id,
 			     uint32_t (**dump)[2], uint32_t *n_regs);
-=======
-static int kgd_hqd_sdma_load(struct kgd_dev *kgd, void *mqd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool kgd_hqd_is_occupied(struct kgd_dev *kgd, uint64_t queue_address,
 				uint32_t pipe_id, uint32_t queue_id);
 
@@ -146,22 +137,15 @@ static uint32_t kgd_address_watch_get_offset(struct kgd_dev *kgd,
 static bool get_atc_vmid_pasid_mapping_valid(struct kgd_dev *kgd, uint8_t vmid);
 static uint16_t get_atc_vmid_pasid_mapping_pasid(struct kgd_dev *kgd,
 							uint8_t vmid);
-<<<<<<< HEAD
-=======
-static void write_vmid_invalidate_request(struct kgd_dev *kgd, uint8_t vmid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static uint16_t get_fw_version(struct kgd_dev *kgd, enum kgd_engine_type type);
 static void set_scratch_backing_va(struct kgd_dev *kgd,
 					uint64_t va, uint32_t vmid);
-<<<<<<< HEAD
 static void set_vm_context_page_table_base(struct kgd_dev *kgd, uint32_t vmid,
 		uint32_t page_table_base);
 static int invalidate_tlbs(struct kgd_dev *kgd, uint16_t pasid);
 static int invalidate_tlbs_vmid(struct kgd_dev *kgd, uint16_t vmid);
 static uint32_t read_vmid_from_vmfault_reg(struct kgd_dev *kgd);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Because of REG_GET_FIELD() being used, we put this function in the
  * asic specific file.
@@ -191,7 +175,6 @@ static int get_tile_config(struct kgd_dev *kgd,
 static const struct kfd2kgd_calls kfd2kgd = {
 	.init_gtt_mem_allocation = alloc_gtt_mem,
 	.free_gtt_mem = free_gtt_mem,
-<<<<<<< HEAD
 	.get_local_mem_info = get_local_mem_info,
 	.get_gpu_clock_counter = get_gpu_clock_counter,
 	.get_max_engine_clock_in_mhz = get_max_engine_clock_in_mhz,
@@ -204,17 +187,6 @@ static const struct kfd2kgd_calls kfd2kgd = {
 	.hqd_sdma_load = kgd_hqd_sdma_load,
 	.hqd_dump = kgd_hqd_dump,
 	.hqd_sdma_dump = kgd_hqd_sdma_dump,
-=======
-	.get_vmem_size = get_vmem_size,
-	.get_gpu_clock_counter = get_gpu_clock_counter,
-	.get_max_engine_clock_in_mhz = get_max_engine_clock_in_mhz,
-	.program_sh_mem_settings = kgd_program_sh_mem_settings,
-	.set_pasid_vmid_mapping = kgd_set_pasid_vmid_mapping,
-	.init_pipeline = kgd_init_pipeline,
-	.init_interrupts = kgd_init_interrupts,
-	.hqd_load = kgd_hqd_load,
-	.hqd_sdma_load = kgd_hqd_sdma_load,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.hqd_is_occupied = kgd_hqd_is_occupied,
 	.hqd_sdma_is_occupied = kgd_hqd_sdma_is_occupied,
 	.hqd_destroy = kgd_hqd_destroy,
@@ -225,7 +197,6 @@ static const struct kfd2kgd_calls kfd2kgd = {
 	.address_watch_get_offset = kgd_address_watch_get_offset,
 	.get_atc_vmid_pasid_mapping_pasid = get_atc_vmid_pasid_mapping_pasid,
 	.get_atc_vmid_pasid_mapping_valid = get_atc_vmid_pasid_mapping_valid,
-<<<<<<< HEAD
 	.get_fw_version = get_fw_version,
 	.set_scratch_backing_va = set_scratch_backing_va,
 	.get_tile_config = get_tile_config,
@@ -250,12 +221,6 @@ static const struct kfd2kgd_calls kfd2kgd = {
 	.read_vmid_from_vmfault_reg = read_vmid_from_vmfault_reg,
 	.gpu_recover = amdgpu_amdkfd_gpu_reset,
 	.set_compute_idle = amdgpu_amdkfd_set_compute_idle
-=======
-	.write_vmid_invalidate_request = write_vmid_invalidate_request,
-	.get_fw_version = get_fw_version,
-	.set_scratch_backing_va = set_scratch_backing_va,
-	.get_tile_config = get_tile_config,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct kfd2kgd_calls *amdgpu_amdkfd_gfx_7_get_functions(void)
@@ -346,16 +311,6 @@ static int kgd_set_pasid_vmid_mapping(struct kgd_dev *kgd, unsigned int pasid,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-static int kgd_init_pipeline(struct kgd_dev *kgd, uint32_t pipe_id,
-				uint32_t hpd_size, uint64_t hpd_gpu_addr)
-{
-	/* amdgpu owns the per-pipe state */
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int kgd_init_interrupts(struct kgd_dev *kgd, uint32_t pipe_id)
 {
 	struct amdgpu_device *adev = get_amdgpu_device(kgd);
@@ -406,10 +361,7 @@ static int kgd_hqd_load(struct kgd_dev *kgd, void *mqd, uint32_t pipe_id,
 	struct cik_mqd *m;
 	uint32_t *mqd_hqd;
 	uint32_t reg, wptr_val, data;
-<<<<<<< HEAD
 	bool valid_wptr = false;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	m = get_mqd(mqd);
 
@@ -428,7 +380,6 @@ static int kgd_hqd_load(struct kgd_dev *kgd, void *mqd, uint32_t pipe_id,
 			     CP_HQD_PQ_DOORBELL_CONTROL, DOORBELL_EN, 1);
 	WREG32(mmCP_HQD_PQ_DOORBELL_CONTROL, data);
 
-<<<<<<< HEAD
 	/* read_user_ptr may take the mm->mmap_sem.
 	 * release srbm_mutex to avoid circular dependency between
 	 * srbm_mutex->mm_sem->reservation_ww_class_mutex->srbm_mutex.
@@ -437,9 +388,6 @@ static int kgd_hqd_load(struct kgd_dev *kgd, void *mqd, uint32_t pipe_id,
 	valid_wptr = read_user_wptr(mm, wptr, wptr_val);
 	acquire_queue(kgd, pipe_id, queue_id);
 	if (valid_wptr)
-=======
-	if (read_user_wptr(mm, wptr, wptr_val))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		WREG32(mmCP_HQD_PQ_WPTR, (wptr_val << wptr_shift) & wptr_mask);
 
 	data = REG_SET_FIELD(m->cp_hqd_active, CP_HQD_ACTIVE, ACTIVE, 1);
@@ -450,7 +398,6 @@ static int kgd_hqd_load(struct kgd_dev *kgd, void *mqd, uint32_t pipe_id,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int kgd_hqd_dump(struct kgd_dev *kgd,
 			uint32_t pipe_id, uint32_t queue_id,
 			uint32_t (**dump)[2], uint32_t *n_regs)
@@ -489,9 +436,6 @@ static int kgd_hqd_dump(struct kgd_dev *kgd,
 
 static int kgd_hqd_sdma_load(struct kgd_dev *kgd, void *mqd,
 			     uint32_t __user *wptr, struct mm_struct *mm)
-=======
-static int kgd_hqd_sdma_load(struct kgd_dev *kgd, void *mqd)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct amdgpu_device *adev = get_amdgpu_device(kgd);
 	struct cik_sdma_rlc_registers *m;
@@ -526,7 +470,6 @@ static int kgd_hqd_sdma_load(struct kgd_dev *kgd, void *mqd)
 		WREG32(mmSDMA0_GFX_CONTEXT_CNTL, data);
 	}
 
-<<<<<<< HEAD
 	data = REG_SET_FIELD(m->sdma_rlc_doorbell, SDMA0_RLC0_DOORBELL,
 			     ENABLE, 1);
 	WREG32(sdma_base_addr + mmSDMA0_RLC0_DOORBELL, data);
@@ -538,12 +481,6 @@ static int kgd_hqd_sdma_load(struct kgd_dev *kgd, void *mqd)
 		WREG32(sdma_base_addr + mmSDMA0_RLC0_RB_WPTR,
 		       m->sdma_rlc_rb_rptr);
 
-=======
-	WREG32(sdma_base_addr + mmSDMA0_RLC0_DOORBELL,
-				m->sdma_rlc_doorbell);
-	WREG32(sdma_base_addr + mmSDMA0_RLC0_RB_RPTR, 0);
-	WREG32(sdma_base_addr + mmSDMA0_RLC0_RB_WPTR, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	WREG32(sdma_base_addr + mmSDMA0_RLC0_VIRTUAL_ADDR,
 				m->sdma_rlc_virtual_addr);
 	WREG32(sdma_base_addr + mmSDMA0_RLC0_RB_BASE, m->sdma_rlc_rb_base);
@@ -553,7 +490,6 @@ static int kgd_hqd_sdma_load(struct kgd_dev *kgd, void *mqd)
 			m->sdma_rlc_rb_rptr_addr_lo);
 	WREG32(sdma_base_addr + mmSDMA0_RLC0_RB_RPTR_ADDR_HI,
 			m->sdma_rlc_rb_rptr_addr_hi);
-<<<<<<< HEAD
 
 	data = REG_SET_FIELD(m->sdma_rlc_rb_cntl, SDMA0_RLC0_RB_CNTL,
 			     RB_ENABLE, 1);
@@ -585,10 +521,6 @@ static int kgd_hqd_sdma_dump(struct kgd_dev *kgd,
 
 	WARN_ON_ONCE(i != HQD_N_REGS);
 	*n_regs = i;
-=======
-	WREG32(sdma_base_addr + mmSDMA0_RLC0_RB_CNTL,
-			m->sdma_rlc_rb_cntl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -644,12 +576,9 @@ static int kgd_hqd_destroy(struct kgd_dev *kgd, void *mqd,
 	unsigned long flags, end_jiffies;
 	int retry;
 
-<<<<<<< HEAD
 	if (adev->in_gpu_reset)
 		return -EIO;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	acquire_queue(kgd, pipe_id, queue_id);
 	WREG32(mmCP_HQD_PQ_DOORBELL_CONTROL, 0);
 
@@ -745,11 +674,7 @@ static int kgd_hqd_sdma_destroy(struct kgd_dev *kgd, void *mqd,
 	struct cik_sdma_rlc_registers *m;
 	uint32_t sdma_base_addr;
 	uint32_t temp;
-<<<<<<< HEAD
 	unsigned long end_jiffies = (utimeout * HZ / 1000) + jiffies;
-=======
-	int timeout = utimeout;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	m = get_sdma_mqd(mqd);
 	sdma_base_addr = get_sdma_base_addr(m);
@@ -762,16 +687,9 @@ static int kgd_hqd_sdma_destroy(struct kgd_dev *kgd, void *mqd,
 		temp = RREG32(sdma_base_addr + mmSDMA0_RLC0_CONTEXT_STATUS);
 		if (temp & SDMA0_RLC0_CONTEXT_STATUS__IDLE_MASK)
 			break;
-<<<<<<< HEAD
 		if (time_after(jiffies, end_jiffies))
 			return -ETIME;
 		usleep_range(500, 1000);
-=======
-		if (timeout <= 0)
-			return -ETIME;
-		msleep(20);
-		timeout -= 20;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	WREG32(sdma_base_addr + mmSDMA0_RLC0_DOORBELL, 0);
@@ -779,11 +697,8 @@ static int kgd_hqd_sdma_destroy(struct kgd_dev *kgd, void *mqd,
 		RREG32(sdma_base_addr + mmSDMA0_RLC0_RB_CNTL) |
 		SDMA0_RLC0_RB_CNTL__RB_ENABLE_MASK);
 
-<<<<<<< HEAD
 	m->sdma_rlc_rb_rptr = RREG32(sdma_base_addr + mmSDMA0_RLC0_RB_RPTR);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -887,18 +802,7 @@ static uint16_t get_atc_vmid_pasid_mapping_pasid(struct kgd_dev *kgd,
 	struct amdgpu_device *adev = (struct amdgpu_device *) kgd;
 
 	reg = RREG32(mmATC_VMID0_PASID_MAPPING + vmid);
-<<<<<<< HEAD
 	return reg & ATC_VMID0_PASID_MAPPING__PASID_MASK;
-=======
-	return reg & ATC_VMID0_PASID_MAPPING__VALID_MASK;
-}
-
-static void write_vmid_invalidate_request(struct kgd_dev *kgd, uint8_t vmid)
-{
-	struct amdgpu_device *adev = (struct amdgpu_device *) kgd;
-
-	WREG32(mmVM_INVALIDATE_REQUEST, 1 << vmid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void set_scratch_backing_va(struct kgd_dev *kgd,
@@ -916,11 +820,6 @@ static uint16_t get_fw_version(struct kgd_dev *kgd, enum kgd_engine_type type)
 	struct amdgpu_device *adev = (struct amdgpu_device *) kgd;
 	const union amdgpu_firmware_header *hdr;
 
-<<<<<<< HEAD
-=======
-	BUG_ON(kgd == NULL);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (type) {
 	case KGD_ENGINE_PFP:
 		hdr = (const union amdgpu_firmware_header *)
@@ -973,7 +872,6 @@ static uint16_t get_fw_version(struct kgd_dev *kgd, enum kgd_engine_type type)
 	return hdr->common.ucode_version;
 }
 
-<<<<<<< HEAD
 static void set_vm_context_page_table_base(struct kgd_dev *kgd, uint32_t vmid,
 			uint32_t page_table_base)
 {
@@ -1040,5 +938,3 @@ static uint32_t read_vmid_from_vmfault_reg(struct kgd_dev *kgd)
 
 	return REG_GET_FIELD(status, VM_CONTEXT1_PROTECTION_FAULT_STATUS, VMID);
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

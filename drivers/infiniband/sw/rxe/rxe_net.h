@@ -43,13 +43,6 @@ struct rxe_recv_sockets {
 	struct socket *sk6;
 };
 
-<<<<<<< HEAD
-=======
-extern struct rxe_recv_sockets recv_sockets;
-extern struct notifier_block rxe_net_notifier;
-void rxe_release_udp_tunnel(struct socket *sk);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct rxe_dev *rxe_net_add(struct net_device *ndev);
 
 int rxe_net_init(void);

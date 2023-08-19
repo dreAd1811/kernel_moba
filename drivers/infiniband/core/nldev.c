@@ -31,7 +31,6 @@
  */
 
 #include <linux/module.h>
-<<<<<<< HEAD
 #include <linux/pid.h>
 #include <linux/pid_namespace.h>
 #include <net/netlink.h>
@@ -40,12 +39,6 @@
 
 #include "core_priv.h"
 #include "cma_priv.h"
-=======
-#include <net/netlink.h>
-#include <rdma/rdma_netlink.h>
-
-#include "core_priv.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static const struct nla_policy nldev_policy[RDMA_NLDEV_ATTR_MAX] = {
 	[RDMA_NLDEV_ATTR_DEV_INDEX]     = { .type = NLA_U32 },
@@ -63,7 +56,6 @@ static const struct nla_policy nldev_policy[RDMA_NLDEV_ATTR_MAX] = {
 	[RDMA_NLDEV_ATTR_PORT_STATE]	= { .type = NLA_U8 },
 	[RDMA_NLDEV_ATTR_PORT_PHYS_STATE] = { .type = NLA_U8 },
 	[RDMA_NLDEV_ATTR_DEV_NODE_TYPE] = { .type = NLA_U8 },
-<<<<<<< HEAD
 	[RDMA_NLDEV_ATTR_RES_SUMMARY]	= { .type = NLA_NESTED },
 	[RDMA_NLDEV_ATTR_RES_SUMMARY_ENTRY]	= { .type = NLA_NESTED },
 	[RDMA_NLDEV_ATTR_RES_SUMMARY_ENTRY_NAME] = { .type = NLA_NUL_STRING,
@@ -193,60 +185,34 @@ static int fill_nldev_handle(struct sk_buff *msg, struct ib_device *device)
 	return 0;
 }
 
-=======
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int fill_dev_info(struct sk_buff *msg, struct ib_device *device)
 {
 	char fw[IB_FW_VERSION_NAME_MAX];
 
-<<<<<<< HEAD
 	if (fill_nldev_handle(msg, device))
 		return -EMSGSIZE;
 
-=======
-	if (nla_put_u32(msg, RDMA_NLDEV_ATTR_DEV_INDEX, device->index))
-		return -EMSGSIZE;
-	if (nla_put_string(msg, RDMA_NLDEV_ATTR_DEV_NAME, device->name))
-		return -EMSGSIZE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (nla_put_u32(msg, RDMA_NLDEV_ATTR_PORT_INDEX, rdma_end_port(device)))
 		return -EMSGSIZE;
 
 	BUILD_BUG_ON(sizeof(device->attrs.device_cap_flags) != sizeof(u64));
 	if (nla_put_u64_64bit(msg, RDMA_NLDEV_ATTR_CAP_FLAGS,
-<<<<<<< HEAD
 			      device->attrs.device_cap_flags,
 			      RDMA_NLDEV_ATTR_PAD))
 		return -EMSGSIZE;
 
 	ib_get_device_fw_str(device, fw);
 	/* Device without FW has strlen(fw) = 0 */
-=======
-			      device->attrs.device_cap_flags, 0))
-		return -EMSGSIZE;
-
-	ib_get_device_fw_str(device, fw);
-	/* Device without FW has strlen(fw) */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (strlen(fw) && nla_put_string(msg, RDMA_NLDEV_ATTR_FW_VERSION, fw))
 		return -EMSGSIZE;
 
 	if (nla_put_u64_64bit(msg, RDMA_NLDEV_ATTR_NODE_GUID,
-<<<<<<< HEAD
 			      be64_to_cpu(device->node_guid),
 			      RDMA_NLDEV_ATTR_PAD))
 		return -EMSGSIZE;
 	if (nla_put_u64_64bit(msg, RDMA_NLDEV_ATTR_SYS_IMAGE_GUID,
 			      be64_to_cpu(device->attrs.sys_image_guid),
 			      RDMA_NLDEV_ATTR_PAD))
-=======
-			      be64_to_cpu(device->node_guid), 0))
-		return -EMSGSIZE;
-	if (nla_put_u64_64bit(msg, RDMA_NLDEV_ATTR_SYS_IMAGE_GUID,
-			      be64_to_cpu(device->attrs.sys_image_guid), 0))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EMSGSIZE;
 	if (nla_put_u8(msg, RDMA_NLDEV_ATTR_DEV_NODE_TYPE, device->node_type))
 		return -EMSGSIZE;
@@ -254,7 +220,6 @@ static int fill_dev_info(struct sk_buff *msg, struct ib_device *device)
 }
 
 static int fill_port_info(struct sk_buff *msg,
-<<<<<<< HEAD
 			  struct ib_device *device, u32 port,
 			  const struct net *net)
 {
@@ -265,17 +230,6 @@ static int fill_port_info(struct sk_buff *msg,
 	if (fill_nldev_handle(msg, device))
 		return -EMSGSIZE;
 
-=======
-			  struct ib_device *device, u32 port)
-{
-	struct ib_port_attr attr;
-	int ret;
-
-	if (nla_put_u32(msg, RDMA_NLDEV_ATTR_DEV_INDEX, device->index))
-		return -EMSGSIZE;
-	if (nla_put_string(msg, RDMA_NLDEV_ATTR_DEV_NAME, device->name))
-		return -EMSGSIZE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (nla_put_u32(msg, RDMA_NLDEV_ATTR_PORT_INDEX, port))
 		return -EMSGSIZE;
 
@@ -283,7 +237,6 @@ static int fill_port_info(struct sk_buff *msg,
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	if (rdma_protocol_ib(device, port)) {
 		BUILD_BUG_ON(sizeof(attr.port_cap_flags) > sizeof(u64));
 		if (nla_put_u64_64bit(msg, RDMA_NLDEV_ATTR_CAP_FLAGS,
@@ -293,17 +246,6 @@ static int fill_port_info(struct sk_buff *msg,
 		if (nla_put_u64_64bit(msg, RDMA_NLDEV_ATTR_SUBNET_PREFIX,
 				      attr.subnet_prefix, RDMA_NLDEV_ATTR_PAD))
 			return -EMSGSIZE;
-=======
-	BUILD_BUG_ON(sizeof(attr.port_cap_flags) > sizeof(u64));
-	if (nla_put_u64_64bit(msg, RDMA_NLDEV_ATTR_CAP_FLAGS,
-			      (u64)attr.port_cap_flags, 0))
-		return -EMSGSIZE;
-	if (rdma_protocol_ib(device, port) &&
-	    nla_put_u64_64bit(msg, RDMA_NLDEV_ATTR_SUBNET_PREFIX,
-			      attr.subnet_prefix, 0))
-		return -EMSGSIZE;
-	if (rdma_protocol_ib(device, port)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (nla_put_u32(msg, RDMA_NLDEV_ATTR_LID, attr.lid))
 			return -EMSGSIZE;
 		if (nla_put_u32(msg, RDMA_NLDEV_ATTR_SM_LID, attr.sm_lid))
@@ -315,7 +257,6 @@ static int fill_port_info(struct sk_buff *msg,
 		return -EMSGSIZE;
 	if (nla_put_u8(msg, RDMA_NLDEV_ATTR_PORT_PHYS_STATE, attr.phys_state))
 		return -EMSGSIZE;
-<<<<<<< HEAD
 
 	if (device->get_netdev)
 		netdev = device->get_netdev(device, port);
@@ -652,9 +593,6 @@ err:
 	nla_nest_cancel(msg, entry_attr);
 out:
 	return -EMSGSIZE;
-=======
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int nldev_get_doit(struct sk_buff *skb, struct nlmsghdr *nlh,
@@ -778,11 +716,7 @@ static int nldev_port_get_doit(struct sk_buff *skb, struct nlmsghdr *nlh,
 			RDMA_NL_GET_TYPE(RDMA_NL_NLDEV, RDMA_NLDEV_CMD_GET),
 			0, 0);
 
-<<<<<<< HEAD
 	err = fill_port_info(msg, device, port, sock_net(skb->sk));
-=======
-	err = fill_port_info(msg, device, port);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		goto err_free;
 
@@ -842,11 +776,7 @@ static int nldev_port_get_dumpit(struct sk_buff *skb,
 						 RDMA_NLDEV_CMD_PORT_GET),
 				0, NLM_F_MULTI);
 
-<<<<<<< HEAD
 		if (fill_port_info(skb, device, p, sock_net(skb->sk))) {
-=======
-		if (fill_port_info(skb, device, p)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			nlmsg_cancel(skb, nlh);
 			goto out;
 		}
@@ -860,7 +790,6 @@ out:
 	return skb->len;
 }
 
-<<<<<<< HEAD
 static int nldev_res_get_doit(struct sk_buff *skb, struct nlmsghdr *nlh,
 			      struct netlink_ext_ack *extack)
 {
@@ -1139,8 +1068,6 @@ static int nldev_res_get_pd_dumpit(struct sk_buff *skb,
 	return res_get_common_dumpit(skb, cb, RDMA_RESTRACK_PD);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct rdma_nl_cbs nldev_cb_table[RDMA_NLDEV_NUM_OPS] = {
 	[RDMA_NLDEV_CMD_GET] = {
 		.doit = nldev_get_doit,
@@ -1150,7 +1077,6 @@ static const struct rdma_nl_cbs nldev_cb_table[RDMA_NLDEV_NUM_OPS] = {
 		.doit = nldev_port_get_doit,
 		.dump = nldev_port_get_dumpit,
 	},
-<<<<<<< HEAD
 	[RDMA_NLDEV_CMD_RES_GET] = {
 		.doit = nldev_res_get_doit,
 		.dump = nldev_res_get_dumpit,
@@ -1180,8 +1106,6 @@ static const struct rdma_nl_cbs nldev_cb_table[RDMA_NLDEV_NUM_OPS] = {
 	[RDMA_NLDEV_CMD_RES_PD_GET] = {
 		.dump = nldev_res_get_pd_dumpit,
 	},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 void __init nldev_init(void)

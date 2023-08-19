@@ -8,9 +8,6 @@ obj-y += mem.o xor.o
 lib-$(CONFIG_SMP) += spinlock.o
 lib-$(CONFIG_KPROBES) += probes.o
 lib-$(CONFIG_UPROBES) += probes.o
-<<<<<<< HEAD
 
 chkbss := mem.o
 include $(srctree)/arch/s390/scripts/Makefile.chkbss
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

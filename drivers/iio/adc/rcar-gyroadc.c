@@ -277,10 +277,6 @@ static int rcar_gyroadc_reg_access(struct iio_dev *indio_dev,
 }
 
 static const struct iio_info rcar_gyroadc_iio_info = {
-<<<<<<< HEAD
-=======
-	.driver_module		= THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read_raw		= rcar_gyroadc_read_raw,
 	.debugfs_reg_access	= rcar_gyroadc_reg_access,
 };
@@ -352,11 +348,7 @@ static int rcar_gyroadc_parse_subdevs(struct iio_dev *indio_dev)
 			continue;
 		}
 
-<<<<<<< HEAD
 		childmode = (uintptr_t)of_id->data;
-=======
-		childmode = (unsigned int)of_id->data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		switch (childmode) {
 		case RCAR_GYROADC_MODE_SELECT_1_MB88101A:
 			sample_width = 12;
@@ -399,11 +391,7 @@ static int rcar_gyroadc_parse_subdevs(struct iio_dev *indio_dev)
 				dev_err(dev,
 					"Only %i channels supported with %s, but reg = <%i>.\n",
 					num_channels, child->name, reg);
-<<<<<<< HEAD
 				return -EINVAL;
-=======
-				return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		}
 
@@ -412,11 +400,7 @@ static int rcar_gyroadc_parse_subdevs(struct iio_dev *indio_dev)
 			dev_err(dev,
 				"Channel %i uses different ADC mode than the rest.\n",
 				reg);
-<<<<<<< HEAD
 			return -EINVAL;
-=======
-			return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		/* Channel is valid, grab the regulator. */
@@ -503,11 +487,6 @@ err:
 
 static int rcar_gyroadc_probe(struct platform_device *pdev)
 {
-<<<<<<< HEAD
-=======
-	const struct of_device_id *of_id =
-		of_match_device(rcar_gyroadc_match, &pdev->dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct device *dev = &pdev->dev;
 	struct rcar_gyroadc *priv;
 	struct iio_dev *indio_dev;
@@ -544,12 +523,8 @@ static int rcar_gyroadc_probe(struct platform_device *pdev)
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	priv->model = (enum rcar_gyroadc_model)
 		of_device_get_match_data(&pdev->dev);
-=======
-	priv->model = (enum rcar_gyroadc_model)of_id->data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	platform_set_drvdata(pdev, indio_dev);
 

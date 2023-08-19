@@ -7,10 +7,6 @@
  * between kernel and user space.
  *
  * Pad space is left for:
-<<<<<<< HEAD
-=======
- * - 64-bit time_t to solve y2038 problem
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * - 2 miscellaneous 32-bit values
  *
  * This file is subject to the terms and conditions of the GNU General
@@ -24,7 +20,6 @@
 struct msqid64_ds {
 	struct ipc64_perm msg_perm;
 #ifdef __XTENSA_EB__
-<<<<<<< HEAD
 	unsigned long  msg_stime_high;
 	unsigned long  msg_stime;	/* last msgsnd time */
 	unsigned long  msg_rtime_high;
@@ -38,21 +33,6 @@ struct msqid64_ds {
 	unsigned long  msg_rtime_high;
 	unsigned long  msg_ctime;	/* last change time */
 	unsigned long  msg_ctime_high;
-=======
-	unsigned int	__unused1;
-	__kernel_time_t msg_stime;	/* last msgsnd time */
-	unsigned int	__unused2;
-	__kernel_time_t msg_rtime;	/* last msgrcv time */
-	unsigned int	__unused3;
-	__kernel_time_t msg_ctime;	/* last change time */
-#elif defined(__XTENSA_EL__)
-	__kernel_time_t msg_stime;	/* last msgsnd time */
-	unsigned int	__unused1;
-	__kernel_time_t msg_rtime;	/* last msgrcv time */
-	unsigned int	__unused2;
-	__kernel_time_t msg_ctime;	/* last change time */
-	unsigned int	__unused3;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 # error processor byte order undefined!
 #endif

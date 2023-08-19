@@ -32,15 +32,6 @@
 #define WLAN_NV_FILE               "wlan/prima/WCNSS_qcom_wlan_nv.bin"
 #define WCN36XX_AGGR_BUFFER_SIZE 64
 
-<<<<<<< HEAD
-=======
-/* How many frames until we start a-mpdu TX session */
-#define WCN36XX_AMPDU_START_THRESH	20
-
-#define WCN36XX_MAX_SCAN_SSIDS		9
-#define WCN36XX_MAX_SCAN_IE_LEN		500
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern unsigned int wcn36xx_dbg_mask;
 
 enum wcn36xx_debug_mask {
@@ -59,11 +50,8 @@ enum wcn36xx_debug_mask {
 	WCN36XX_DBG_BEACON_DUMP	= 0x00001000,
 	WCN36XX_DBG_PMC		= 0x00002000,
 	WCN36XX_DBG_PMC_DUMP	= 0x00004000,
-<<<<<<< HEAD
 	WCN36XX_DBG_TESTMODE		= 0x00008000,
 	WCN36XX_DBG_TESTMODE_DUMP	= 0x00010000,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	WCN36XX_DBG_ANY		= 0xffffffff,
 };
 
@@ -102,12 +90,9 @@ enum wcn36xx_ampdu_state {
 #define WCN36XX_FLAGS(__wcn) (__wcn->hw->flags)
 #define WCN36XX_MAX_POWER(__wcn) (__wcn->hw->conf.chandef.chan->max_power)
 
-<<<<<<< HEAD
 #define RF_UNKNOWN	0x0000
 #define RF_IRIS_WCN3620	0x3620
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void buff_to_be(u32 *buf, size_t len)
 {
 	int i;
@@ -134,10 +119,7 @@ struct wcn36xx_vif {
 	bool is_joining;
 	bool sta_assoc;
 	struct wcn36xx_hal_mac_ssid ssid;
-<<<<<<< HEAD
 	enum wcn36xx_hal_bss_type bss_type;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Power management */
 	enum wcn36xx_power_state pw_state;
@@ -147,11 +129,8 @@ struct wcn36xx_vif {
 	u8 self_sta_index;
 	u8 self_dpu_desc_index;
 	u8 self_ucast_dpu_sign;
-<<<<<<< HEAD
 
 	struct list_head sta_list;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -177,10 +156,7 @@ struct wcn36xx_vif {
  * |______________|_____________|_______________|
  */
 struct wcn36xx_sta {
-<<<<<<< HEAD
 	struct list_head list;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct wcn36xx_vif *vif;
 	u16 aid;
 	u16 tid;
@@ -216,11 +192,8 @@ struct wcn36xx {
 	u8			crm_version[WCN36XX_HAL_VERSION_LENGTH + 1];
 	u8			wlan_version[WCN36XX_HAL_VERSION_LENGTH + 1];
 
-<<<<<<< HEAD
 	bool		first_boot;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* IRQs */
 	int			tx_irq;
 	int			rx_irq;
@@ -273,12 +246,9 @@ struct wcn36xx {
 
 	struct sk_buff		*tx_ack_skb;
 
-<<<<<<< HEAD
 	/* RF module */
 	unsigned		rf_id;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_WCN36XX_DEBUGFS
 	/* Debug file system entry */
 	struct wcn36xx_dfs_entry    dfs;

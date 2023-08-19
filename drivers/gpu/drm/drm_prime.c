@@ -73,12 +73,9 @@
  * Drivers should detect this situation and return back the gem object
  * from the dma-buf private.  Prime will do this automatically for drivers that
  * use the drm_gem_prime_{import,export} helpers.
-<<<<<<< HEAD
  *
  * GEM struct &dma_buf_ops symbols are now exported. They can be resued by
  * drivers which implement GEM interface.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 struct drm_prime_member {
@@ -186,7 +183,6 @@ static int drm_prime_lookup_buf_handle(struct drm_prime_file_private *prime_fpri
 	return -ENOENT;
 }
 
-<<<<<<< HEAD
 /**
  * drm_gem_map_attach - dma_buf attach implementation for GEM
  * @dma_buf: buffer to attach device to
@@ -200,11 +196,6 @@ static int drm_prime_lookup_buf_handle(struct drm_prime_file_private *prime_fpri
  */
 int drm_gem_map_attach(struct dma_buf *dma_buf,
 		       struct dma_buf_attachment *attach)
-=======
-static int drm_gem_map_attach(struct dma_buf *dma_buf,
-			      struct device *target_dev,
-			      struct dma_buf_attachment *attach)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_prime_attachment *prime_attach;
 	struct drm_gem_object *obj = dma_buf->priv;
@@ -222,7 +213,6 @@ static int drm_gem_map_attach(struct dma_buf *dma_buf,
 
 	return dev->driver->gem_prime_pin(obj);
 }
-<<<<<<< HEAD
 EXPORT_SYMBOL(drm_gem_map_attach);
 
 /**
@@ -235,16 +225,10 @@ EXPORT_SYMBOL(drm_gem_map_attach);
  */
 void drm_gem_map_detach(struct dma_buf *dma_buf,
 			struct dma_buf_attachment *attach)
-=======
-
-static void drm_gem_map_detach(struct dma_buf *dma_buf,
-			       struct dma_buf_attachment *attach)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_prime_attachment *prime_attach = attach->priv;
 	struct drm_gem_object *obj = dma_buf->priv;
 	struct drm_device *dev = obj->dev;
-<<<<<<< HEAD
 
 	if (prime_attach) {
 		struct sg_table *sgt = prime_attach->sgt;
@@ -267,28 +251,6 @@ static void drm_gem_map_detach(struct dma_buf *dma_buf,
 		dev->driver->gem_prime_unpin(obj);
 }
 EXPORT_SYMBOL(drm_gem_map_detach);
-=======
-	struct sg_table *sgt;
-
-	if (dev->driver->gem_prime_unpin)
-		dev->driver->gem_prime_unpin(obj);
-
-	if (!prime_attach)
-		return;
-
-	sgt = prime_attach->sgt;
-	if (sgt) {
-		if (prime_attach->dir != DMA_NONE)
-			dma_unmap_sg(attach->dev, sgt->sgl, sgt->nents,
-					prime_attach->dir);
-		sg_free_table(sgt);
-	}
-
-	kfree(sgt);
-	kfree(prime_attach);
-	attach->priv = NULL;
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void drm_prime_remove_buf_handle_locked(struct drm_prime_file_private *prime_fpriv,
 					struct dma_buf *dma_buf)
@@ -315,7 +277,6 @@ void drm_prime_remove_buf_handle_locked(struct drm_prime_file_private *prime_fpr
 	}
 }
 
-<<<<<<< HEAD
 /**
  * drm_gem_map_dma_buf - map_dma_buf implementation for GEM
  * @attach: attachment whose scatterlist is to be returned
@@ -330,10 +291,6 @@ void drm_prime_remove_buf_handle_locked(struct drm_prime_file_private *prime_fpr
 
 struct sg_table *drm_gem_map_dma_buf(struct dma_buf_attachment *attach,
 				     enum dma_data_direction dir)
-=======
-static struct sg_table *drm_gem_map_dma_buf(struct dma_buf_attachment *attach,
-					    enum dma_data_direction dir)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_prime_attachment *prime_attach = attach->priv;
 	struct drm_gem_object *obj = attach->dmabuf->priv;
@@ -356,12 +313,8 @@ static struct sg_table *drm_gem_map_dma_buf(struct dma_buf_attachment *attach,
 	sgt = obj->dev->driver->gem_prime_get_sg_table(obj);
 
 	if (!IS_ERR(sgt)) {
-<<<<<<< HEAD
 		if (!dma_map_sg_attrs(attach->dev, sgt->sgl, sgt->nents, dir,
 				      DMA_ATTR_SKIP_CPU_SYNC)) {
-=======
-		if (!dma_map_sg(attach->dev, sgt->sgl, sgt->nents, dir)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			sg_free_table(sgt);
 			kfree(sgt);
 			sgt = ERR_PTR(-ENOMEM);
@@ -373,7 +326,6 @@ static struct sg_table *drm_gem_map_dma_buf(struct dma_buf_attachment *attach,
 
 	return sgt;
 }
-<<<<<<< HEAD
 EXPORT_SYMBOL(drm_gem_map_dma_buf);
 
 /**
@@ -392,15 +344,6 @@ void drm_gem_unmap_dma_buf(struct dma_buf_attachment *attach,
 	/* nothing to be done here */
 }
 EXPORT_SYMBOL(drm_gem_unmap_dma_buf);
-=======
-
-static void drm_gem_unmap_dma_buf(struct dma_buf_attachment *attach,
-				  struct sg_table *sgt,
-				  enum dma_data_direction dir)
-{
-	/* nothing to be done here */
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * drm_gem_dmabuf_export - dma_buf export implementation for GEM
@@ -423,11 +366,7 @@ struct dma_buf *drm_gem_dmabuf_export(struct drm_device *dev,
 	if (IS_ERR(dma_buf))
 		return dma_buf;
 
-<<<<<<< HEAD
 	drm_dev_get(dev);
-=======
-	drm_dev_ref(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drm_gem_object_get(exp_info->priv);
 
 	return dma_buf;
@@ -451,7 +390,6 @@ void drm_gem_dmabuf_release(struct dma_buf *dma_buf)
 	/* drop the reference on the export fd holds */
 	drm_gem_object_put_unlocked(obj);
 
-<<<<<<< HEAD
 	drm_dev_put(dev);
 }
 EXPORT_SYMBOL(drm_gem_dmabuf_release);
@@ -466,18 +404,10 @@ EXPORT_SYMBOL(drm_gem_dmabuf_release);
  * Returns the kernel virtual address.
  */
 void *drm_gem_dmabuf_vmap(struct dma_buf *dma_buf)
-=======
-	drm_dev_unref(dev);
-}
-EXPORT_SYMBOL(drm_gem_dmabuf_release);
-
-static void *drm_gem_dmabuf_vmap(struct dma_buf *dma_buf)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_gem_object *obj = dma_buf->priv;
 	struct drm_device *dev = obj->dev;
 
-<<<<<<< HEAD
 	if (dev->driver->gem_prime_vmap)
 		return dev->driver->gem_prime_vmap(obj);
 	else
@@ -494,17 +424,10 @@ EXPORT_SYMBOL(drm_gem_dmabuf_vmap);
  * &dma_buf_ops.vunmap callback.
  */
 void drm_gem_dmabuf_vunmap(struct dma_buf *dma_buf, void *vaddr)
-=======
-	return dev->driver->gem_prime_vmap(obj);
-}
-
-static void drm_gem_dmabuf_vunmap(struct dma_buf *dma_buf, void *vaddr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_gem_object *obj = dma_buf->priv;
 	struct drm_device *dev = obj->dev;
 
-<<<<<<< HEAD
 	if (dev->driver->gem_prime_vunmap)
 		dev->driver->gem_prime_vunmap(obj, vaddr);
 }
@@ -549,36 +472,6 @@ EXPORT_SYMBOL(drm_gem_dmabuf_kunmap);
  * Returns 0 on success or a negative error code on failure.
  */
 int drm_gem_dmabuf_mmap(struct dma_buf *dma_buf, struct vm_area_struct *vma)
-=======
-	dev->driver->gem_prime_vunmap(obj, vaddr);
-}
-
-static void *drm_gem_dmabuf_kmap_atomic(struct dma_buf *dma_buf,
-					unsigned long page_num)
-{
-	return NULL;
-}
-
-static void drm_gem_dmabuf_kunmap_atomic(struct dma_buf *dma_buf,
-					 unsigned long page_num, void *addr)
-{
-
-}
-static void *drm_gem_dmabuf_kmap(struct dma_buf *dma_buf,
-				 unsigned long page_num)
-{
-	return NULL;
-}
-
-static void drm_gem_dmabuf_kunmap(struct dma_buf *dma_buf,
-				  unsigned long page_num, void *addr)
-{
-
-}
-
-static int drm_gem_dmabuf_mmap(struct dma_buf *dma_buf,
-			       struct vm_area_struct *vma)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_gem_object *obj = dma_buf->priv;
 	struct drm_device *dev = obj->dev;
@@ -588,10 +481,7 @@ static int drm_gem_dmabuf_mmap(struct dma_buf *dma_buf,
 
 	return dev->driver->gem_prime_mmap(obj, vma);
 }
-<<<<<<< HEAD
 EXPORT_SYMBOL(drm_gem_dmabuf_mmap);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static const struct dma_buf_ops drm_gem_prime_dmabuf_ops =  {
 	.attach = drm_gem_map_attach,
@@ -600,13 +490,7 @@ static const struct dma_buf_ops drm_gem_prime_dmabuf_ops =  {
 	.unmap_dma_buf = drm_gem_unmap_dma_buf,
 	.release = drm_gem_dmabuf_release,
 	.map = drm_gem_dmabuf_kmap,
-<<<<<<< HEAD
 	.unmap = drm_gem_dmabuf_kunmap,
-=======
-	.map_atomic = drm_gem_dmabuf_kmap_atomic,
-	.unmap = drm_gem_dmabuf_kunmap,
-	.unmap_atomic = drm_gem_dmabuf_kunmap_atomic,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.mmap = drm_gem_dmabuf_mmap,
 	.vmap = drm_gem_dmabuf_vmap,
 	.vunmap = drm_gem_dmabuf_vunmap,
@@ -795,46 +679,6 @@ out_unlock:
 EXPORT_SYMBOL(drm_gem_prime_handle_to_fd);
 
 /**
-<<<<<<< HEAD
-=======
- * drm_gem_prime_mmap - PRIME mmap function for GEM drivers
- * @obj: GEM object
- * @vma: Virtual address range
- *
- * This function sets up a userspace mapping for PRIME exported buffers using
- * the same codepath that is used for regular GEM buffer mapping on the DRM fd.
- * The fake GEM offset is added to vma->vm_pgoff and &drm_driver->fops->mmap is
- * called to set up the mapping.
- *
- * Drivers can use this as their &drm_driver.gem_prime_mmap callback.
- */
-int drm_gem_prime_mmap(struct drm_gem_object *obj, struct vm_area_struct *vma)
-{
-	/* Used by drm_gem_mmap() to lookup the GEM object */
-	struct drm_file priv = {
-		.minor = obj->dev->primary,
-	};
-	struct file fil = {
-		.private_data = &priv,
-	};
-	int ret;
-
-	ret = drm_vma_node_allow(&obj->vma_node, &priv);
-	if (ret)
-		return ret;
-
-	vma->vm_pgoff += drm_vma_node_start(&obj->vma_node);
-
-	ret = obj->dev->driver->fops->mmap(&fil, vma);
-
-	drm_vma_node_revoke(&obj->vma_node, &priv);
-
-	return ret;
-}
-EXPORT_SYMBOL(drm_gem_prime_mmap);
-
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * drm_gem_prime_import_dev - core implementation of the import callback
  * @dev: drm_device to import into
  * @dma_buf: dma-buf object to import
@@ -1063,70 +907,40 @@ EXPORT_SYMBOL(drm_prime_pages_to_sg);
 /**
  * drm_prime_sg_to_page_addr_arrays - convert an sg table into a page array
  * @sgt: scatter-gather table to convert
-<<<<<<< HEAD
  * @pages: optional array of page pointers to store the page array in
  * @addrs: optional array to store the dma bus address of each page
  * @max_entries: size of both the passed-in arrays
-=======
- * @pages: array of page pointers to store the page array in
- * @addrs: optional array to store the dma bus address of each page
- * @max_pages: size of both the passed-in arrays
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Exports an sg table into an array of pages and addresses. This is currently
  * required by the TTM driver in order to do correct fault handling.
  */
 int drm_prime_sg_to_page_addr_arrays(struct sg_table *sgt, struct page **pages,
-<<<<<<< HEAD
 				     dma_addr_t *addrs, int max_entries)
-=======
-				     dma_addr_t *addrs, int max_pages)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned count;
 	struct scatterlist *sg;
 	struct page *page;
-<<<<<<< HEAD
 	u32 len, index;
 	dma_addr_t addr;
 
 	index = 0;
-=======
-	u32 len;
-	int pg_index;
-	dma_addr_t addr;
-
-	pg_index = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for_each_sg(sgt->sgl, sg, sgt->nents, count) {
 		len = sg->length;
 		page = sg_page(sg);
 		addr = sg_dma_address(sg);
 
 		while (len > 0) {
-<<<<<<< HEAD
 			if (WARN_ON(index >= max_entries))
 				return -1;
 			if (pages)
 				pages[index] = page;
 			if (addrs)
 				addrs[index] = addr;
-=======
-			if (WARN_ON(pg_index >= max_pages))
-				return -1;
-			pages[pg_index] = page;
-			if (addrs)
-				addrs[pg_index] = addr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			page++;
 			addr += PAGE_SIZE;
 			len -= PAGE_SIZE;
-<<<<<<< HEAD
 			index++;
-=======
-			pg_index++;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 	return 0;

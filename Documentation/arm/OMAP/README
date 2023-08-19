@@ -5,10 +5,7 @@ KERNEL		NEW DEPENDENCIES
 v4.3+		Update is needed for custom .config files to make sure
 		CONFIG_REGULATOR_PBIAS is enabled for MMC1 to work
 		properly.
-<<<<<<< HEAD
 
 v4.18+		Update is needed for custom .config files to make sure
 		CONFIG_MMC_SDHCI_OMAP is enabled for all MMC instances
 		to work in DRA7 and K2G based boards.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

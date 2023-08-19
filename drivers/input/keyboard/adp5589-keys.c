@@ -885,10 +885,7 @@ static int adp5589_probe(struct i2c_client *client,
 	switch (id->driver_data) {
 	case ADP5585_02:
 		kpad->support_row5 = true;
-<<<<<<< HEAD
 		/* fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case ADP5585_01:
 		kpad->is_adp5585 = true;
 		kpad->var = &const_adp5585;

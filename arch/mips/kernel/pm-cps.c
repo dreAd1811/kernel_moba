@@ -12,10 +12,7 @@
 #include <linux/init.h>
 #include <linux/percpu.h>
 #include <linux/slab.h>
-<<<<<<< HEAD
 #include <linux/suspend.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/asm-offsets.h>
 #include <asm/cacheflush.h>
@@ -170,11 +167,7 @@ int cps_pm_enter_state(enum cps_pm_state state)
 	nc_core_ready_count = nc_addr;
 
 	/* Ensure ready_count is zero-initialised before the assembly runs */
-<<<<<<< HEAD
 	WRITE_ONCE(*nc_core_ready_count, 0);
-=======
-	ACCESS_ONCE(*nc_core_ready_count) = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	coupled_barrier(&per_cpu(pm_barrier, core), online);
 
 	/* Run the generated entry code */
@@ -678,7 +671,6 @@ static int cps_pm_online_cpu(unsigned int cpu)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int cps_pm_power_notifier(struct notifier_block *this,
 				 unsigned long event, void *ptr)
 {
@@ -707,8 +699,6 @@ static int cps_pm_power_notifier(struct notifier_block *this,
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __init cps_pm_init(void)
 {
 	/* A CM is required for all non-coherent states */
@@ -744,11 +734,8 @@ static int __init cps_pm_init(void)
 		pr_warn("pm-cps: no CPC, clock & power gating unavailable\n");
 	}
 
-<<<<<<< HEAD
 	pm_notifier(cps_pm_power_notifier, 0);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "mips/cps_pm:online",
 				 cps_pm_online_cpu, NULL);
 }

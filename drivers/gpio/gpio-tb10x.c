@@ -22,11 +22,7 @@
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/platform_device.h>
-<<<<<<< HEAD
 #include <linux/gpio/driver.h>
-=======
-#include <linux/gpio.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/slab.h>
 #include <linux/irq.h>
 #include <linux/irqdomain.h>
@@ -34,10 +30,6 @@
 #include <linux/io.h>
 #include <linux/of.h>
 #include <linux/of_platform.h>
-<<<<<<< HEAD
-=======
-#include <linux/of_gpio.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/spinlock.h>
 #include <linux/bitops.h>
 #include <linux/pinctrl/consumer.h>
@@ -200,12 +192,9 @@ static int tb10x_gpio_probe(struct platform_device *pdev)
 
 	tb10x_gpio->gc.label		=
 		devm_kasprintf(&pdev->dev, GFP_KERNEL, "%pOF", pdev->dev.of_node);
-<<<<<<< HEAD
 	if (!tb10x_gpio->gc.label)
 		return -ENOMEM;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tb10x_gpio->gc.parent		= &pdev->dev;
 	tb10x_gpio->gc.owner		= THIS_MODULE;
 	tb10x_gpio->gc.direction_input	= tb10x_gpio_direction_in;

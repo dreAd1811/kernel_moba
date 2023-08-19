@@ -1,15 +1,8 @@
 config INFINIBAND_I40IW
 	tristate "Intel(R) Ethernet X722 iWARP Driver"
 	depends on INET && I40E
-<<<<<<< HEAD
 	depends on IPV6 || !IPV6
 	depends on PCI
 	select GENERIC_ALLOCATOR
 	---help---
 	Intel(R) Ethernet X722 iWARP Driver
-=======
-	select GENERIC_ALLOCATOR
-	---help---
-	Intel(R) Ethernet X722 iWARP Driver
-	INET && I40IW && INFINIBAND && I40E
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -195,17 +195,11 @@ static void t4_report_fw_error(struct adapter *adap)
 	u32 pcie_fw;
 
 	pcie_fw = t4_read_reg(adap, PCIE_FW_A);
-<<<<<<< HEAD
 	if (pcie_fw & PCIE_FW_ERR_F) {
 		dev_err(adap->pdev_dev, "Firmware reports adapter error: %s\n",
 			reason[PCIE_FW_EVAL_G(pcie_fw)]);
 		adap->flags &= ~FW_OK;
 	}
-=======
-	if (pcie_fw & PCIE_FW_ERR_F)
-		dev_err(adap->pdev_dev, "Firmware reports adapter error: %s\n",
-			reason[PCIE_FW_EVAL_G(pcie_fw)]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -325,15 +319,9 @@ int t4_wr_mbox_meat_timeout(struct adapter *adap, int mbox, const void *cmd,
 	 * wait [for a while] till we're at the front [or bail out with an
 	 * EBUSY] ...
 	 */
-<<<<<<< HEAD
 	spin_lock_bh(&adap->mbox_lock);
 	list_add_tail(&entry.list, &adap->mlist.list);
 	spin_unlock_bh(&adap->mbox_lock);
-=======
-	spin_lock(&adap->mbox_lock);
-	list_add_tail(&entry.list, &adap->mlist.list);
-	spin_unlock(&adap->mbox_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	delay_idx = 0;
 	ms = delay[0];
@@ -346,15 +334,9 @@ int t4_wr_mbox_meat_timeout(struct adapter *adap, int mbox, const void *cmd,
 		 */
 		pcie_fw = t4_read_reg(adap, PCIE_FW_A);
 		if (i > FW_CMD_MAX_TIMEOUT || (pcie_fw & PCIE_FW_ERR_F)) {
-<<<<<<< HEAD
 			spin_lock_bh(&adap->mbox_lock);
 			list_del(&entry.list);
 			spin_unlock_bh(&adap->mbox_lock);
-=======
-			spin_lock(&adap->mbox_lock);
-			list_del(&entry.list);
-			spin_unlock(&adap->mbox_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ret = (pcie_fw & PCIE_FW_ERR_F) ? -ENXIO : -EBUSY;
 			t4_record_mbox(adap, cmd, size, access, ret);
 			return ret;
@@ -385,15 +367,9 @@ int t4_wr_mbox_meat_timeout(struct adapter *adap, int mbox, const void *cmd,
 	for (i = 0; v == MBOX_OWNER_NONE && i < 3; i++)
 		v = MBOWNER_G(t4_read_reg(adap, ctl_reg));
 	if (v != MBOX_OWNER_DRV) {
-<<<<<<< HEAD
 		spin_lock_bh(&adap->mbox_lock);
 		list_del(&entry.list);
 		spin_unlock_bh(&adap->mbox_lock);
-=======
-		spin_lock(&adap->mbox_lock);
-		list_del(&entry.list);
-		spin_unlock(&adap->mbox_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = (v == MBOX_OWNER_FW) ? -EBUSY : -ETIMEDOUT;
 		t4_record_mbox(adap, cmd, size, access, ret);
 		return ret;
@@ -444,15 +420,9 @@ int t4_wr_mbox_meat_timeout(struct adapter *adap, int mbox, const void *cmd,
 			execute = i + ms;
 			t4_record_mbox(adap, cmd_rpl,
 				       MBOX_LEN, access, execute);
-<<<<<<< HEAD
 			spin_lock_bh(&adap->mbox_lock);
 			list_del(&entry.list);
 			spin_unlock_bh(&adap->mbox_lock);
-=======
-			spin_lock(&adap->mbox_lock);
-			list_del(&entry.list);
-			spin_unlock(&adap->mbox_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -FW_CMD_RETVAL_G((int)res);
 		}
 	}
@@ -462,15 +432,9 @@ int t4_wr_mbox_meat_timeout(struct adapter *adap, int mbox, const void *cmd,
 	dev_err(adap->pdev_dev, "command %#x in mailbox %d timed out\n",
 		*(const u8 *)cmd, mbox);
 	t4_report_fw_error(adap);
-<<<<<<< HEAD
 	spin_lock_bh(&adap->mbox_lock);
 	list_del(&entry.list);
 	spin_unlock_bh(&adap->mbox_lock);
-=======
-	spin_lock(&adap->mbox_lock);
-	list_del(&entry.list);
-	spin_unlock(&adap->mbox_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	t4_fatal_err(adap);
 	return ret;
 }
@@ -520,7 +484,6 @@ static int t4_edc_err_read(struct adapter *adap, int idx)
 }
 
 /**
-<<<<<<< HEAD
  * t4_memory_rw_init - Get memory window relative offset, base, and size.
  * @adap: the adapter
  * @win: PCI-E Memory Window to use
@@ -632,8 +595,6 @@ void t4_memory_rw_residual(struct adapter *adap, u32 off, u32 addr, u8 *buf,
 }
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *	t4_memory_rw - read/write EDC 0, EDC 1 or MC via PCIE memory window
  *	@adap: the adapter
  *	@win: PCI-E Memory Window to use
@@ -654,14 +615,9 @@ int t4_memory_rw(struct adapter *adap, int win, int mtype, u32 addr,
 		 u32 len, void *hbuf, int dir)
 {
 	u32 pos, offset, resid, memoffset;
-<<<<<<< HEAD
 	u32 win_pf, mem_aperture, mem_base;
 	u32 *buf;
 	int ret;
-=======
-	u32 edc_size, mc_size, win_pf, mem_reg, mem_aperture, mem_base;
-	u32 *buf;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Argument sanity checks ...
 	 */
@@ -677,55 +633,19 @@ int t4_memory_rw(struct adapter *adap, int win, int mtype, u32 addr,
 	resid = len & 0x3;
 	len -= resid;
 
-<<<<<<< HEAD
 	ret = t4_memory_rw_init(adap, win, mtype, &memoffset, &mem_base,
 				&mem_aperture);
 	if (ret)
 		return ret;
-=======
-	/* Offset into the region of memory which is being accessed
-	 * MEM_EDC0 = 0
-	 * MEM_EDC1 = 1
-	 * MEM_MC   = 2 -- MEM_MC for chips with only 1 memory controller
-	 * MEM_MC1  = 3 -- for chips with 2 memory controllers (e.g. T5)
-	 */
-	edc_size  = EDRAM0_SIZE_G(t4_read_reg(adap, MA_EDRAM0_BAR_A));
-	if (mtype != MEM_MC1)
-		memoffset = (mtype * (edc_size * 1024 * 1024));
-	else {
-		mc_size = EXT_MEM0_SIZE_G(t4_read_reg(adap,
-						      MA_EXT_MEMORY0_BAR_A));
-		memoffset = (MEM_MC0 * edc_size + mc_size) * 1024 * 1024;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Determine the PCIE_MEM_ACCESS_OFFSET */
 	addr = addr + memoffset;
 
-<<<<<<< HEAD
-=======
-	/* Each PCI-E Memory Window is programmed with a window size -- or
-	 * "aperture" -- which controls the granularity of its mapping onto
-	 * adapter memory.  We need to grab that aperture in order to know
-	 * how to use the specified window.  The window is also programmed
-	 * with the base address of the Memory Window in BAR0's address
-	 * space.  For T4 this is an absolute PCI-E Bus Address.  For T5
-	 * the address is relative to BAR0.
-	 */
-	mem_reg = t4_read_reg(adap,
-			      PCIE_MEM_ACCESS_REG(PCIE_MEM_ACCESS_BASE_WIN_A,
-						  win));
-	mem_aperture = 1 << (WINDOW_G(mem_reg) + WINDOW_SHIFT_X);
-	mem_base = PCIEOFST_G(mem_reg) << PCIEOFST_SHIFT_X;
-	if (is_t4(adap->params.chip))
-		mem_base -= adap->t4_bar0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	win_pf = is_t4(adap->params.chip) ? 0 : PFNUM_V(adap->pf);
 
 	/* Calculate our initial PCI-E Memory Window Position and Offset into
 	 * that Window.
 	 */
-<<<<<<< HEAD
 	pos = addr & ~(mem_aperture - 1);
 	offset = addr - pos;
 
@@ -733,20 +653,6 @@ int t4_memory_rw(struct adapter *adap, int win, int mtype, u32 addr,
 	 * transfer.
 	 */
 	t4_memory_update_win(adap, win, pos | win_pf);
-=======
-	pos = addr & ~(mem_aperture-1);
-	offset = addr - pos;
-
-	/* Set up initial PCI-E Memory Window to cover the start of our
-	 * transfer.  (Read it back to ensure that changes propagate before we
-	 * attempt to use the new value.)
-	 */
-	t4_write_reg(adap,
-		     PCIE_MEM_ACCESS_REG(PCIE_MEM_ACCESS_OFFSET_A, win),
-		     pos | win_pf);
-	t4_read_reg(adap,
-		    PCIE_MEM_ACCESS_REG(PCIE_MEM_ACCESS_OFFSET_A, win));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Transfer data to/from the adapter as long as there's an integral
 	 * number of 32-bit transfers to complete.
@@ -801,16 +707,7 @@ int t4_memory_rw(struct adapter *adap, int win, int mtype, u32 addr,
 		if (offset == mem_aperture) {
 			pos += mem_aperture;
 			offset = 0;
-<<<<<<< HEAD
 			t4_memory_update_win(adap, win, pos | win_pf);
-=======
-			t4_write_reg(adap,
-				PCIE_MEM_ACCESS_REG(PCIE_MEM_ACCESS_OFFSET_A,
-						    win), pos | win_pf);
-			t4_read_reg(adap,
-				PCIE_MEM_ACCESS_REG(PCIE_MEM_ACCESS_OFFSET_A,
-						    win));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -819,34 +716,9 @@ int t4_memory_rw(struct adapter *adap, int win, int mtype, u32 addr,
 	 * residual amount.  The PCI-E Memory Window has already been moved
 	 * above (if necessary) to cover this final transfer.
 	 */
-<<<<<<< HEAD
 	if (resid)
 		t4_memory_rw_residual(adap, resid, mem_base + offset,
 				      (u8 *)buf, dir);
-=======
-	if (resid) {
-		union {
-			u32 word;
-			char byte[4];
-		} last;
-		unsigned char *bp;
-		int i;
-
-		if (dir == T4_MEMORY_READ) {
-			last.word = le32_to_cpu(
-					(__force __le32)t4_read_reg(adap,
-						mem_base + offset));
-			for (bp = (unsigned char *)buf, i = resid; i < 4; i++)
-				bp[i] = last.byte[i];
-		} else {
-			last.word = *buf;
-			for (i = resid; i < 4; i++)
-				last.byte[i] = 0;
-			t4_write_reg(adap, mem_base + offset,
-				     (__force u32)cpu_to_le32(last.word));
-		}
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -2826,7 +2698,6 @@ void t4_get_regs(struct adapter *adap, void *buf, size_t buf_size)
 #define CHELSIO_VPD_UNIQUE_ID 0x82
 
 /**
-<<<<<<< HEAD
  * t4_eeprom_ptov - translate a physical EEPROM address to virtual
  * @phys_addr: the physical EEPROM address
  * @fn: the PCI function number
@@ -2856,8 +2727,6 @@ int t4_eeprom_ptov(unsigned int phys_addr, unsigned int fn, unsigned int sz)
 }
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *	t4_seeprom_wp - enable/disable EEPROM write protection
  *	@adapter: the adapter
  *	@enable: whether to enable or disable write protection
@@ -3013,7 +2882,6 @@ int t4_get_vpd_params(struct adapter *adapter, struct vpd_params *p)
 	return 0;
 }
 
-<<<<<<< HEAD
 /**
  *	t4_get_pfres - retrieve VF resource limits
  *	@adapter: the adapter
@@ -3065,8 +2933,6 @@ int t4_get_pfres(struct adapter *adapter)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* serial flash and firmware constants */
 enum {
 	SF_ATTEMPTS = 10,             /* max retries for SF operations */
@@ -3079,11 +2945,6 @@ enum {
 	SF_RD_DATA_FAST = 0xb,        /* read flash */
 	SF_RD_ID        = 0x9f,       /* read ID */
 	SF_ERASE_SECTOR = 0xd8,       /* erase sector */
-<<<<<<< HEAD
-=======
-
-	FW_MAX_SIZE = 16 * SF_SEC_SIZE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -3638,11 +3499,7 @@ int t4_prep_fw(struct adapter *adap, struct fw_info *fw_info,
 	drv_fw = &fw_info->fw_hdr;
 
 	/* Read the header of the firmware on the card */
-<<<<<<< HEAD
 	ret = -t4_read_flash(adap, FLASH_FW_START,
-=======
-	ret = t4_read_flash(adap, FLASH_FW_START,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    sizeof(*card_fw) / sizeof(uint32_t),
 			    (uint32_t *)card_fw, 1);
 	if (ret == 0) {
@@ -3671,13 +3528,8 @@ int t4_prep_fw(struct adapter *adap, struct fw_info *fw_info,
 		   should_install_fs_fw(adap, card_fw_usable,
 					be32_to_cpu(fs_fw->fw_ver),
 					be32_to_cpu(card_fw->fw_ver))) {
-<<<<<<< HEAD
 		ret = -t4_fw_upgrade(adap, adap->mbox, fw_data,
 				     fw_size, 0);
-=======
-		ret = t4_fw_upgrade(adap, adap->mbox, fw_data,
-				    fw_size, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret != 0) {
 			dev_err(adap->pdev_dev,
 				"failed to install firmware: %d\n", ret);
@@ -3708,11 +3560,7 @@ int t4_prep_fw(struct adapter *adap, struct fw_info *fw_info,
 			FW_HDR_FW_VER_MICRO_G(c), FW_HDR_FW_VER_BUILD_G(c),
 			FW_HDR_FW_VER_MAJOR_G(k), FW_HDR_FW_VER_MINOR_G(k),
 			FW_HDR_FW_VER_MICRO_G(k), FW_HDR_FW_VER_BUILD_G(k));
-<<<<<<< HEAD
 		ret = EINVAL;
-=======
-		ret = -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto bye;
 	}
 
@@ -3809,14 +3657,9 @@ int t4_load_fw(struct adapter *adap, const u8 *fw_data, unsigned int size)
 	const __be32 *p = (const __be32 *)fw_data;
 	const struct fw_hdr *hdr = (const struct fw_hdr *)fw_data;
 	unsigned int sf_sec_size = adap->params.sf_size / adap->params.sf_nsec;
-<<<<<<< HEAD
 	unsigned int fw_start_sec = FLASH_FW_START_SEC;
 	unsigned int fw_size = FLASH_FW_MAX_SIZE;
 	unsigned int fw_start = FLASH_FW_START;
-=======
-	unsigned int fw_img_start = adap->params.sf_fw_start;
-	unsigned int fw_start_sec = fw_img_start / sf_sec_size;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!size) {
 		dev_err(adap->pdev_dev, "FW image has no data\n");
@@ -3832,15 +3675,9 @@ int t4_load_fw(struct adapter *adap, const u8 *fw_data, unsigned int size)
 			"FW image size differs from size in FW header\n");
 		return -EINVAL;
 	}
-<<<<<<< HEAD
 	if (size > fw_size) {
 		dev_err(adap->pdev_dev, "FW image too large, max is %u bytes\n",
 			fw_size);
-=======
-	if (size > FW_MAX_SIZE) {
-		dev_err(adap->pdev_dev, "FW image too large, max is %u bytes\n",
-			FW_MAX_SIZE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFBIG;
 	}
 	if (!t4_fw_matches_chip(adap, hdr))
@@ -3867,19 +3704,11 @@ int t4_load_fw(struct adapter *adap, const u8 *fw_data, unsigned int size)
 	 */
 	memcpy(first_page, fw_data, SF_PAGE_SIZE);
 	((struct fw_hdr *)first_page)->fw_ver = cpu_to_be32(0xffffffff);
-<<<<<<< HEAD
 	ret = t4_write_flash(adap, fw_start, SF_PAGE_SIZE, first_page);
 	if (ret)
 		goto out;
 
 	addr = fw_start;
-=======
-	ret = t4_write_flash(adap, fw_img_start, SF_PAGE_SIZE, first_page);
-	if (ret)
-		goto out;
-
-	addr = fw_img_start;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (size -= SF_PAGE_SIZE; size; size -= SF_PAGE_SIZE) {
 		addr += SF_PAGE_SIZE;
 		fw_data += SF_PAGE_SIZE;
@@ -3889,11 +3718,7 @@ int t4_load_fw(struct adapter *adap, const u8 *fw_data, unsigned int size)
 	}
 
 	ret = t4_write_flash(adap,
-<<<<<<< HEAD
 			     fw_start + offsetof(struct fw_hdr, fw_ver),
-=======
-			     fw_img_start + offsetof(struct fw_hdr, fw_ver),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     sizeof(hdr->fw_ver), (const u8 *)&hdr->fw_ver);
 out:
 	if (ret)
@@ -3923,11 +3748,7 @@ int t4_phy_fw_ver(struct adapter *adap, int *phy_fw_ver)
 		 FW_PARAMS_PARAM_Z_V(FW_PARAMS_PARAM_DEV_PHYFW_VERSION));
 	ret = t4_query_params(adap, adap->mbox, adap->pf, 0, 1,
 			      &param, &val);
-<<<<<<< HEAD
 	if (ret < 0)
-=======
-	if (ret)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	*phy_fw_ver = val;
 	return 0;
@@ -4068,11 +3889,7 @@ int t4_fwcache(struct adapter *adap, enum fw_params_param_dev_fwcache op)
 	c.param[0].mnem =
 		cpu_to_be32(FW_PARAMS_MNEM_V(FW_PARAMS_MNEM_DEV) |
 			    FW_PARAMS_PARAM_X_V(FW_PARAMS_PARAM_DEV_FWCACHE));
-<<<<<<< HEAD
 	c.param[0].val = (__force __be32)op;
-=======
-	c.param[0].val = cpu_to_be32(op);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return t4_wr_mbox(adap, adap->mbox, &c, sizeof(c), NULL);
 }
@@ -4175,14 +3992,9 @@ static fw_port_cap32_t fwcaps16_to_caps32(fw_port_cap16_t caps16)
 	CAP16_TO_CAP32(FC_RX);
 	CAP16_TO_CAP32(FC_TX);
 	CAP16_TO_CAP32(ANEG);
-<<<<<<< HEAD
 	CAP16_TO_CAP32(FORCE_PAUSE);
 	CAP16_TO_CAP32(MDIAUTO);
 	CAP16_TO_CAP32(MDISTRAIGHT);
-=======
-	CAP16_TO_CAP32(MDIX);
-	CAP16_TO_CAP32(MDIAUTO);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	CAP16_TO_CAP32(FEC_RS);
 	CAP16_TO_CAP32(FEC_BASER_RS);
 	CAP16_TO_CAP32(802_3_PAUSE);
@@ -4222,14 +4034,9 @@ static fw_port_cap16_t fwcaps32_to_caps16(fw_port_cap32_t caps32)
 	CAP32_TO_CAP16(802_3_PAUSE);
 	CAP32_TO_CAP16(802_3_ASM_DIR);
 	CAP32_TO_CAP16(ANEG);
-<<<<<<< HEAD
 	CAP32_TO_CAP16(FORCE_PAUSE);
 	CAP32_TO_CAP16(MDIAUTO);
 	CAP32_TO_CAP16(MDISTRAIGHT);
-=======
-	CAP32_TO_CAP16(MDIX);
-	CAP32_TO_CAP16(MDIAUTO);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	CAP32_TO_CAP16(FEC_RS);
 	CAP32_TO_CAP16(FEC_BASER_RS);
 
@@ -4260,11 +4067,8 @@ static inline fw_port_cap32_t cc_to_fwcap_pause(enum cc_pause cc_pause)
 		fw_pause |= FW_PORT_CAP32_FC_RX;
 	if (cc_pause & PAUSE_TX)
 		fw_pause |= FW_PORT_CAP32_FC_TX;
-<<<<<<< HEAD
 	if (!(cc_pause & PAUSE_AUTONEG))
 		fw_pause |= FW_PORT_CAP32_FORCE_PAUSE;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return fw_pause;
 }
@@ -4309,7 +4113,6 @@ static inline fw_port_cap32_t cc_to_fwcap_fec(enum cc_fec cc_fec)
  *	- If auto-negotiation is off set the MAC to the proper speed/duplex/FC,
  *	  otherwise do it later based on the outcome of auto-negotiation.
  */
-<<<<<<< HEAD
 int t4_link_l1cfg_core(struct adapter *adapter, unsigned int mbox,
 		       unsigned int port, struct link_config *lc,
 		       bool sleep_ok, int timeout)
@@ -4321,18 +4124,6 @@ int t4_link_l1cfg_core(struct adapter *adapter, unsigned int mbox,
 	int ret;
 
 	fw_mdi = (FW_PORT_CAP32_MDI_V(FW_PORT_CAP32_MDI_AUTO) & lc->pcaps);
-=======
-int t4_link_l1cfg(struct adapter *adapter, unsigned int mbox,
-		  unsigned int port, struct link_config *lc)
-{
-	unsigned int fw_caps = adapter->params.fw_caps_support;
-	struct fw_port_cmd cmd;
-	unsigned int fw_mdi = FW_PORT_CAP32_MDI_V(FW_PORT_CAP32_MDI_AUTO);
-	fw_port_cap32_t fw_fc, cc_fec, fw_fec, rcap;
-
-	lc->link_ok = 0;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Convert driver coding of Pause Frame Flow Control settings into the
 	 * Firmware's API.
 	 */
@@ -4354,11 +4145,7 @@ int t4_link_l1cfg(struct adapter *adapter, unsigned int mbox,
 	/* Figure out what our Requested Port Capabilities are going to be.
 	 */
 	if (!(lc->pcaps & FW_PORT_CAP32_ANEG)) {
-<<<<<<< HEAD
 		rcap = lc->acaps | fw_fc | fw_fec;
-=======
-		rcap = (lc->pcaps & ADVERT_MASK) | fw_fc | fw_fec;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		lc->fc = lc->requested_fc & ~PAUSE_AUTONEG;
 		lc->fec = cc_fec;
 	} else if (lc->autoneg == AUTONEG_DISABLE) {
@@ -4369,7 +4156,6 @@ int t4_link_l1cfg(struct adapter *adapter, unsigned int mbox,
 		rcap = lc->acaps | fw_fc | fw_fec | fw_mdi;
 	}
 
-<<<<<<< HEAD
 	/* Note that older Firmware doesn't have FW_PORT_CAP32_FORCE_PAUSE, so
 	 * we need to exclude this from this check in order to maintain
 	 * compatibility ...
@@ -4381,8 +4167,6 @@ int t4_link_l1cfg(struct adapter *adapter, unsigned int mbox,
 		return -EINVAL;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* And send that on to the Firmware ...
 	 */
 	memset(&cmd, 0, sizeof(cmd));
@@ -4393,16 +4177,11 @@ int t4_link_l1cfg(struct adapter *adapter, unsigned int mbox,
 		cpu_to_be32(FW_PORT_CMD_ACTION_V(fw_caps == FW_CAPS16
 						 ? FW_PORT_ACTION_L1_CFG
 						 : FW_PORT_ACTION_L1_CFG32) |
-<<<<<<< HEAD
 						 FW_LEN16(cmd));
-=======
-			    FW_LEN16(cmd));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (fw_caps == FW_CAPS16)
 		cmd.u.l1cfg.rcap = cpu_to_be32(fwcaps32_to_caps16(rcap));
 	else
 		cmd.u.l1cfg32.rcap32 = cpu_to_be32(rcap);
-<<<<<<< HEAD
 
 	ret = t4_wr_mbox_meat_timeout(adapter, mbox, &cmd, sizeof(cmd), NULL,
 				      sleep_ok, timeout);
@@ -4413,9 +4192,6 @@ int t4_link_l1cfg(struct adapter *adapter, unsigned int mbox,
 		return ret;
 	}
 	return ret;
-=======
-	return t4_wr_mbox(adapter, mbox, &cmd, sizeof(cmd), NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -5273,7 +5049,6 @@ void t4_intr_disable(struct adapter *adapter)
 	t4_set_reg_field(adapter, PL_INT_MAP0_A, 1 << pf, 0);
 }
 
-<<<<<<< HEAD
 unsigned int t4_chip_rss_size(struct adapter *adap)
 {
 	if (CHELSIO_CHIP_VERSION(adap->params.chip) <= CHELSIO_T5)
@@ -5282,8 +5057,6 @@ unsigned int t4_chip_rss_size(struct adapter *adap)
 		return T6_RSS_NENTRIES;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  *	t4_config_rss_range - configure a portion of the RSS mapping table
  *	@adapter: the adapter
@@ -5422,18 +5195,11 @@ static int rd_rss_row(struct adapter *adap, int row, u32 *val)
  */
 int t4_read_rss(struct adapter *adapter, u16 *map)
 {
-<<<<<<< HEAD
 	int i, ret, nentries;
 	u32 val;
 
 	nentries = t4_chip_rss_size(adapter);
 	for (i = 0; i < nentries / 2; ++i) {
-=======
-	u32 val;
-	int i, ret;
-
-	for (i = 0; i < RSS_NENTRIES / 2; ++i) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = rd_rss_row(adapter, i, &val);
 		if (ret)
 			return ret;
@@ -5445,7 +5211,6 @@ int t4_read_rss(struct adapter *adapter, u16 *map)
 
 static unsigned int t4_use_ldst(struct adapter *adap)
 {
-<<<<<<< HEAD
 	return (adap->flags & FW_OK) && !adap->use_bd;
 }
 
@@ -5470,29 +5235,6 @@ static int t4_tp_fw_ldst_rw(struct adapter *adap, int cmd, u32 *vals,
 	struct fw_ldst_cmd c;
 
 	for (i = 0; i < nregs; i++) {
-=======
-	return (adap->flags & FW_OK) || !adap->use_bd;
-}
-
-/**
- *	t4_fw_tp_pio_rw - Access TP PIO through LDST
- *	@adap: the adapter
- *	@vals: where the indirect register values are stored/written
- *	@nregs: how many indirect registers to read/write
- *	@start_idx: index of first indirect register to read/write
- *	@rw: Read (1) or Write (0)
- *
- *	Access TP PIO registers through LDST
- */
-static void t4_fw_tp_pio_rw(struct adapter *adap, u32 *vals, unsigned int nregs,
-			    unsigned int start_index, unsigned int rw)
-{
-	int ret, i;
-	int cmd = FW_LDST_ADDRSPC_TP_PIO;
-	struct fw_ldst_cmd c;
-
-	for (i = 0 ; i < nregs; i++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		memset(&c, 0, sizeof(c));
 		c.op_to_addrspace = cpu_to_be32(FW_CMD_OP_V(FW_LDST_CMD) |
 						FW_CMD_REQUEST_F |
@@ -5503,7 +5245,6 @@ static void t4_fw_tp_pio_rw(struct adapter *adap, u32 *vals, unsigned int nregs,
 
 		c.u.addrval.addr = cpu_to_be32(start_index + i);
 		c.u.addrval.val  = rw ? 0 : cpu_to_be32(vals[i]);
-<<<<<<< HEAD
 		ret = t4_wr_mbox_meat(adap, adap->mbox, &c, sizeof(c), &c,
 				      sleep_ok);
 		if (ret)
@@ -5632,19 +5373,12 @@ void t4_tp_mib_read(struct adapter *adap, u32 *buff, u32 nregs, u32 start_index,
 {
 	t4_tp_indirect_rw(adap, TP_MIB_INDEX_A, TP_MIB_DATA_A, buff, nregs,
 			  start_index, 1, sleep_ok);
-=======
-		ret = t4_wr_mbox(adap, adap->mbox, &c, sizeof(c), &c);
-		if (!ret && rw)
-			vals[i] = be32_to_cpu(c.u.addrval.val);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
  *	t4_read_rss_key - read the global RSS key
  *	@adap: the adapter
  *	@key: 10-entry array holding the 320-bit RSS key
-<<<<<<< HEAD
  *      @sleep_ok: if true we may sleep while awaiting command completion
  *
  *	Reads the global 320-bit RSS key.
@@ -5652,18 +5386,6 @@ void t4_tp_mib_read(struct adapter *adap, u32 *buff, u32 nregs, u32 start_index,
 void t4_read_rss_key(struct adapter *adap, u32 *key, bool sleep_ok)
 {
 	t4_tp_pio_read(adap, key, 10, TP_RSS_SECRET_KEY0_A, sleep_ok);
-=======
- *
- *	Reads the global 320-bit RSS key.
- */
-void t4_read_rss_key(struct adapter *adap, u32 *key)
-{
-	if (t4_use_ldst(adap))
-		t4_fw_tp_pio_rw(adap, key, 10, TP_RSS_SECRET_KEY0_A, 1);
-	else
-		t4_read_indirect(adap, TP_PIO_ADDR_A, TP_PIO_DATA_A, key, 10,
-				 TP_RSS_SECRET_KEY0_A);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -5671,21 +5393,14 @@ void t4_read_rss_key(struct adapter *adap, u32 *key)
  *	@adap: the adapter
  *	@key: 10-entry array holding the 320-bit RSS key
  *	@idx: which RSS key to write
-<<<<<<< HEAD
  *      @sleep_ok: if true we may sleep while awaiting command completion
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  *	Writes one of the RSS keys with the given 320-bit value.  If @idx is
  *	0..15 the corresponding entry in the RSS key table is written,
  *	otherwise the global RSS key is written.
  */
-<<<<<<< HEAD
 void t4_write_rss_key(struct adapter *adap, const u32 *key, int idx,
 		      bool sleep_ok)
-=======
-void t4_write_rss_key(struct adapter *adap, const u32 *key, int idx)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u8 rss_key_addr_cnt = 16;
 	u32 vrt = t4_read_reg(adap, TP_RSS_CONFIG_VRT_A);
@@ -5698,15 +5413,7 @@ void t4_write_rss_key(struct adapter *adap, const u32 *key, int idx)
 	    (vrt & KEYEXTEND_F) && (KEYMODE_G(vrt) == 3))
 		rss_key_addr_cnt = 32;
 
-<<<<<<< HEAD
 	t4_tp_pio_write(adap, (void *)key, 10, TP_RSS_SECRET_KEY0_A, sleep_ok);
-=======
-	if (t4_use_ldst(adap))
-		t4_fw_tp_pio_rw(adap, (void *)key, 10, TP_RSS_SECRET_KEY0_A, 0);
-	else
-		t4_write_indirect(adap, TP_PIO_ADDR_A, TP_PIO_DATA_A, key, 10,
-				  TP_RSS_SECRET_KEY0_A);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (idx >= 0 && idx < rss_key_addr_cnt) {
 		if (rss_key_addr_cnt > 16)
@@ -5724,29 +5431,15 @@ void t4_write_rss_key(struct adapter *adap, const u32 *key, int idx)
  *	@adapter: the adapter
  *	@index: the entry in the PF RSS table to read
  *	@valp: where to store the returned value
-<<<<<<< HEAD
  *      @sleep_ok: if true we may sleep while awaiting command completion
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  *	Reads the PF RSS Configuration Table at the specified index and returns
  *	the value found there.
  */
 void t4_read_rss_pf_config(struct adapter *adapter, unsigned int index,
-<<<<<<< HEAD
 			   u32 *valp, bool sleep_ok)
 {
 	t4_tp_pio_read(adapter, valp, 1, TP_RSS_PF0_CONFIG_A + index, sleep_ok);
-=======
-			   u32 *valp)
-{
-	if (t4_use_ldst(adapter))
-		t4_fw_tp_pio_rw(adapter, valp, 1,
-				TP_RSS_PF0_CONFIG_A + index, 1);
-	else
-		t4_read_indirect(adapter, TP_PIO_ADDR_A, TP_PIO_DATA_A,
-				 valp, 1, TP_RSS_PF0_CONFIG_A + index);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -5755,20 +5448,13 @@ void t4_read_rss_pf_config(struct adapter *adapter, unsigned int index,
  *	@index: the entry in the VF RSS table to read
  *	@vfl: where to store the returned VFL
  *	@vfh: where to store the returned VFH
-<<<<<<< HEAD
  *      @sleep_ok: if true we may sleep while awaiting command completion
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  *	Reads the VF RSS Configuration Table at the specified index and returns
  *	the (VFL, VFH) values found there.
  */
 void t4_read_rss_vf_config(struct adapter *adapter, unsigned int index,
-<<<<<<< HEAD
 			   u32 *vfl, u32 *vfh, bool sleep_ok)
-=======
-			   u32 *vfl, u32 *vfh)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 vrt, mask, data;
 
@@ -5789,26 +5475,13 @@ void t4_read_rss_vf_config(struct adapter *adapter, unsigned int index,
 
 	/* Grab the VFL/VFH values ...
 	 */
-<<<<<<< HEAD
 	t4_tp_pio_read(adapter, vfl, 1, TP_RSS_VFL_CONFIG_A, sleep_ok);
 	t4_tp_pio_read(adapter, vfh, 1, TP_RSS_VFH_CONFIG_A, sleep_ok);
-=======
-	if (t4_use_ldst(adapter)) {
-		t4_fw_tp_pio_rw(adapter, vfl, 1, TP_RSS_VFL_CONFIG_A, 1);
-		t4_fw_tp_pio_rw(adapter, vfh, 1, TP_RSS_VFH_CONFIG_A, 1);
-	} else {
-		t4_read_indirect(adapter, TP_PIO_ADDR_A, TP_PIO_DATA_A,
-				 vfl, 1, TP_RSS_VFL_CONFIG_A);
-		t4_read_indirect(adapter, TP_PIO_ADDR_A, TP_PIO_DATA_A,
-				 vfh, 1, TP_RSS_VFH_CONFIG_A);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
  *	t4_read_rss_pf_map - read PF RSS Map
  *	@adapter: the adapter
-<<<<<<< HEAD
  *      @sleep_ok: if true we may sleep while awaiting command completion
  *
  *	Reads the PF RSS Map register and returns its value.
@@ -5818,27 +5491,12 @@ u32 t4_read_rss_pf_map(struct adapter *adapter, bool sleep_ok)
 	u32 pfmap;
 
 	t4_tp_pio_read(adapter, &pfmap, 1, TP_RSS_PF_MAP_A, sleep_ok);
-=======
- *
- *	Reads the PF RSS Map register and returns its value.
- */
-u32 t4_read_rss_pf_map(struct adapter *adapter)
-{
-	u32 pfmap;
-
-	if (t4_use_ldst(adapter))
-		t4_fw_tp_pio_rw(adapter, &pfmap, 1, TP_RSS_PF_MAP_A, 1);
-	else
-		t4_read_indirect(adapter, TP_PIO_ADDR_A, TP_PIO_DATA_A,
-				 &pfmap, 1, TP_RSS_PF_MAP_A);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return pfmap;
 }
 
 /**
  *	t4_read_rss_pf_mask - read PF RSS Mask
  *	@adapter: the adapter
-<<<<<<< HEAD
  *      @sleep_ok: if true we may sleep while awaiting command completion
  *
  *	Reads the PF RSS Mask register and returns its value.
@@ -5848,20 +5506,6 @@ u32 t4_read_rss_pf_mask(struct adapter *adapter, bool sleep_ok)
 	u32 pfmask;
 
 	t4_tp_pio_read(adapter, &pfmask, 1, TP_RSS_PF_MSK_A, sleep_ok);
-=======
- *
- *	Reads the PF RSS Mask register and returns its value.
- */
-u32 t4_read_rss_pf_mask(struct adapter *adapter)
-{
-	u32 pfmask;
-
-	if (t4_use_ldst(adapter))
-		t4_fw_tp_pio_rw(adapter, &pfmask, 1, TP_RSS_PF_MSK_A, 1);
-	else
-		t4_read_indirect(adapter, TP_PIO_ADDR_A, TP_PIO_DATA_A,
-				 &pfmask, 1, TP_RSS_PF_MSK_A);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return pfmask;
 }
 
@@ -5870,20 +5514,13 @@ u32 t4_read_rss_pf_mask(struct adapter *adapter)
  *	@adap: the adapter
  *	@v4: holds the TCP/IP counter values
  *	@v6: holds the TCP/IPv6 counter values
-<<<<<<< HEAD
  *      @sleep_ok: if true we may sleep while awaiting command completion
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  *	Returns the values of TP's TCP/IP and TCP/IPv6 MIB counters.
  *	Either @v4 or @v6 may be %NULL to skip the corresponding stats.
  */
 void t4_tp_get_tcp_stats(struct adapter *adap, struct tp_tcp_stats *v4,
-<<<<<<< HEAD
 			 struct tp_tcp_stats *v6, bool sleep_ok)
-=======
-			 struct tp_tcp_stats *v6)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 val[TP_MIB_TCP_RXT_SEG_LO_A - TP_MIB_TCP_OUT_RST_A + 1];
 
@@ -5892,26 +5529,16 @@ void t4_tp_get_tcp_stats(struct adapter *adap, struct tp_tcp_stats *v4,
 #define STAT64(x)   (((u64)STAT(x##_HI) << 32) | STAT(x##_LO))
 
 	if (v4) {
-<<<<<<< HEAD
 		t4_tp_mib_read(adap, val, ARRAY_SIZE(val),
 			       TP_MIB_TCP_OUT_RST_A, sleep_ok);
-=======
-		t4_read_indirect(adap, TP_MIB_INDEX_A, TP_MIB_DATA_A, val,
-				 ARRAY_SIZE(val), TP_MIB_TCP_OUT_RST_A);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		v4->tcp_out_rsts = STAT(OUT_RST);
 		v4->tcp_in_segs  = STAT64(IN_SEG);
 		v4->tcp_out_segs = STAT64(OUT_SEG);
 		v4->tcp_retrans_segs = STAT64(RXT_SEG);
 	}
 	if (v6) {
-<<<<<<< HEAD
 		t4_tp_mib_read(adap, val, ARRAY_SIZE(val),
 			       TP_MIB_TCP_V6OUT_RST_A, sleep_ok);
-=======
-		t4_read_indirect(adap, TP_MIB_INDEX_A, TP_MIB_DATA_A, val,
-				 ARRAY_SIZE(val), TP_MIB_TCP_V6OUT_RST_A);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		v6->tcp_out_rsts = STAT(OUT_RST);
 		v6->tcp_in_segs  = STAT64(IN_SEG);
 		v6->tcp_out_segs = STAT64(OUT_SEG);
@@ -5926,7 +5553,6 @@ void t4_tp_get_tcp_stats(struct adapter *adap, struct tp_tcp_stats *v4,
  *	t4_tp_get_err_stats - read TP's error MIB counters
  *	@adap: the adapter
  *	@st: holds the counter values
-<<<<<<< HEAD
  *      @sleep_ok: if true we may sleep while awaiting command completion
  *
  *	Returns the values of TP's error counters.
@@ -5954,41 +5580,12 @@ void t4_tp_get_err_stats(struct adapter *adap, struct tp_err_stats *st,
 		       TP_MIB_TCP_V6IN_ERR_0_A, sleep_ok);
 	t4_tp_mib_read(adap, &st->ofld_no_neigh, 2, TP_MIB_OFD_ARP_DROP_A,
 		       sleep_ok);
-=======
- *
- *	Returns the values of TP's error counters.
- */
-void t4_tp_get_err_stats(struct adapter *adap, struct tp_err_stats *st)
-{
-	int nchan = adap->params.arch.nchan;
-
-	t4_read_indirect(adap, TP_MIB_INDEX_A, TP_MIB_DATA_A,
-			 st->mac_in_errs, nchan, TP_MIB_MAC_IN_ERR_0_A);
-	t4_read_indirect(adap, TP_MIB_INDEX_A, TP_MIB_DATA_A,
-			 st->hdr_in_errs, nchan, TP_MIB_HDR_IN_ERR_0_A);
-	t4_read_indirect(adap, TP_MIB_INDEX_A, TP_MIB_DATA_A,
-			 st->tcp_in_errs, nchan, TP_MIB_TCP_IN_ERR_0_A);
-	t4_read_indirect(adap, TP_MIB_INDEX_A, TP_MIB_DATA_A,
-			 st->tnl_cong_drops, nchan, TP_MIB_TNL_CNG_DROP_0_A);
-	t4_read_indirect(adap, TP_MIB_INDEX_A, TP_MIB_DATA_A,
-			 st->ofld_chan_drops, nchan, TP_MIB_OFD_CHN_DROP_0_A);
-	t4_read_indirect(adap, TP_MIB_INDEX_A, TP_MIB_DATA_A,
-			 st->tnl_tx_drops, nchan, TP_MIB_TNL_DROP_0_A);
-	t4_read_indirect(adap, TP_MIB_INDEX_A, TP_MIB_DATA_A,
-			 st->ofld_vlan_drops, nchan, TP_MIB_OFD_VLN_DROP_0_A);
-	t4_read_indirect(adap, TP_MIB_INDEX_A, TP_MIB_DATA_A,
-			 st->tcp6_in_errs, nchan, TP_MIB_TCP_V6IN_ERR_0_A);
-
-	t4_read_indirect(adap, TP_MIB_INDEX_A, TP_MIB_DATA_A,
-			 &st->ofld_no_neigh, 2, TP_MIB_OFD_ARP_DROP_A);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
  *	t4_tp_get_cpl_stats - read TP's CPL MIB counters
  *	@adap: the adapter
  *	@st: holds the counter values
-<<<<<<< HEAD
  *      @sleep_ok: if true we may sleep while awaiting command completion
  *
  *	Returns the values of TP's CPL counters.
@@ -6001,27 +5598,12 @@ void t4_tp_get_cpl_stats(struct adapter *adap, struct tp_cpl_stats *st,
 	t4_tp_mib_read(adap, st->req, nchan, TP_MIB_CPL_IN_REQ_0_A, sleep_ok);
 
 	t4_tp_mib_read(adap, st->rsp, nchan, TP_MIB_CPL_OUT_RSP_0_A, sleep_ok);
-=======
- *
- *	Returns the values of TP's CPL counters.
- */
-void t4_tp_get_cpl_stats(struct adapter *adap, struct tp_cpl_stats *st)
-{
-	int nchan = adap->params.arch.nchan;
-
-	t4_read_indirect(adap, TP_MIB_INDEX_A, TP_MIB_DATA_A, st->req,
-			 nchan, TP_MIB_CPL_IN_REQ_0_A);
-	t4_read_indirect(adap, TP_MIB_INDEX_A, TP_MIB_DATA_A, st->rsp,
-			 nchan, TP_MIB_CPL_OUT_RSP_0_A);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
  *	t4_tp_get_rdma_stats - read TP's RDMA MIB counters
  *	@adap: the adapter
  *	@st: holds the counter values
-<<<<<<< HEAD
  *      @sleep_ok: if true we may sleep while awaiting command completion
  *
  *	Returns the values of TP's RDMA counters.
@@ -6031,15 +5613,6 @@ void t4_tp_get_rdma_stats(struct adapter *adap, struct tp_rdma_stats *st,
 {
 	t4_tp_mib_read(adap, &st->rqe_dfr_pkt, 2, TP_MIB_RQE_DFR_PKT_A,
 		       sleep_ok);
-=======
- *
- *	Returns the values of TP's RDMA counters.
- */
-void t4_tp_get_rdma_stats(struct adapter *adap, struct tp_rdma_stats *st)
-{
-	t4_read_indirect(adap, TP_MIB_INDEX_A, TP_MIB_DATA_A, &st->rqe_dfr_pkt,
-			 2, TP_MIB_RQE_DFR_PKT_A);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -6047,15 +5620,11 @@ void t4_tp_get_rdma_stats(struct adapter *adap, struct tp_rdma_stats *st)
  *	@adap: the adapter
  *	@idx: the port index
  *	@st: holds the counter values
-<<<<<<< HEAD
  *      @sleep_ok: if true we may sleep while awaiting command completion
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  *	Returns the values of TP's FCoE counters for the selected port.
  */
 void t4_get_fcoe_stats(struct adapter *adap, unsigned int idx,
-<<<<<<< HEAD
 		       struct tp_fcoe_stats *st, bool sleep_ok)
 {
 	u32 val[2];
@@ -6069,18 +5638,6 @@ void t4_get_fcoe_stats(struct adapter *adap, unsigned int idx,
 	t4_tp_mib_read(adap, val, 2, TP_MIB_FCOE_BYTE_0_HI_A + 2 * idx,
 		       sleep_ok);
 
-=======
-		       struct tp_fcoe_stats *st)
-{
-	u32 val[2];
-
-	t4_read_indirect(adap, TP_MIB_INDEX_A, TP_MIB_DATA_A, &st->frames_ddp,
-			 1, TP_MIB_FCOE_DDP_0_A + idx);
-	t4_read_indirect(adap, TP_MIB_INDEX_A, TP_MIB_DATA_A, &st->frames_drop,
-			 1, TP_MIB_FCOE_DROP_0_A + idx);
-	t4_read_indirect(adap, TP_MIB_INDEX_A, TP_MIB_DATA_A, val,
-			 2, TP_MIB_FCOE_BYTE_0_HI_A + 2 * idx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	st->octets_ddp = ((u64)val[0] << 32) | val[1];
 }
 
@@ -6088,7 +5645,6 @@ void t4_get_fcoe_stats(struct adapter *adap, unsigned int idx,
  *	t4_get_usm_stats - read TP's non-TCP DDP MIB counters
  *	@adap: the adapter
  *	@st: holds the counter values
-<<<<<<< HEAD
  *      @sleep_ok: if true we may sleep while awaiting command completion
  *
  *	Returns the values of TP's counters for non-TCP directly-placed packets.
@@ -6099,17 +5655,6 @@ void t4_get_usm_stats(struct adapter *adap, struct tp_usm_stats *st,
 	u32 val[4];
 
 	t4_tp_mib_read(adap, val, 4, TP_MIB_USM_PKTS_A, sleep_ok);
-=======
- *
- *	Returns the values of TP's counters for non-TCP directly-placed packets.
- */
-void t4_get_usm_stats(struct adapter *adap, struct tp_usm_stats *st)
-{
-	u32 val[4];
-
-	t4_read_indirect(adap, TP_MIB_INDEX_A, TP_MIB_DATA_A, val, 4,
-			 TP_MIB_USM_PKTS_A);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	st->frames = val[0];
 	st->drops = val[1];
 	st->octets = ((u64)val[2] << 32) | val[3];
@@ -6622,10 +6167,7 @@ unsigned int t4_get_tp_ch_map(struct adapter *adap, int pidx)
 
 	case CHELSIO_T6:
 		switch (nports) {
-<<<<<<< HEAD
 		case 1:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case 2: return 1 << pidx;
 		}
 		break;
@@ -6665,10 +6207,7 @@ const char *t4_get_port_type_description(enum fw_port_type port_type)
 		"CR2_QSFP",
 		"SFP28",
 		"KR_SFP28",
-<<<<<<< HEAD
 		"KR_XLAUI"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	if (port_type < ARRAY_SIZE(port_type_description))
@@ -7124,32 +6663,21 @@ void t4_sge_decode_idma_state(struct adapter *adapter, int state)
  *      t4_sge_ctxt_flush - flush the SGE context cache
  *      @adap: the adapter
  *      @mbox: mailbox to use for the FW command
-<<<<<<< HEAD
  *      @ctx_type: Egress or Ingress
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  *      Issues a FW command through the given mailbox to flush the
  *      SGE context cache.
  */
-<<<<<<< HEAD
 int t4_sge_ctxt_flush(struct adapter *adap, unsigned int mbox, int ctxt_type)
-=======
-int t4_sge_ctxt_flush(struct adapter *adap, unsigned int mbox)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret;
 	u32 ldst_addrspace;
 	struct fw_ldst_cmd c;
 
 	memset(&c, 0, sizeof(c));
-<<<<<<< HEAD
 	ldst_addrspace = FW_LDST_CMD_ADDRSPACE_V(ctxt_type == CTXT_EGRESS ?
 						 FW_LDST_ADDRSPC_SGE_EGRC :
 						 FW_LDST_ADDRSPC_SGE_INGC);
-=======
-	ldst_addrspace = FW_LDST_CMD_ADDRSPACE_V(FW_LDST_ADDRSPC_SGE_EGRC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	c.op_to_addrspace = cpu_to_be32(FW_CMD_OP_V(FW_LDST_CMD) |
 					FW_CMD_REQUEST_F | FW_CMD_READ_F |
 					ldst_addrspace);
@@ -7976,7 +7504,6 @@ int t4_alloc_vi(struct adapter *adap, unsigned int mbox, unsigned int port,
 		switch (nmac) {
 		case 5:
 			memcpy(mac + 24, c.nmac3, sizeof(c.nmac3));
-<<<<<<< HEAD
 			/* Fall through */
 		case 4:
 			memcpy(mac + 18, c.nmac2, sizeof(c.nmac2));
@@ -7984,12 +7511,6 @@ int t4_alloc_vi(struct adapter *adap, unsigned int mbox, unsigned int port,
 		case 3:
 			memcpy(mac + 12, c.nmac1, sizeof(c.nmac1));
 			/* Fall through */
-=======
-		case 4:
-			memcpy(mac + 18, c.nmac2, sizeof(c.nmac2));
-		case 3:
-			memcpy(mac + 12, c.nmac1, sizeof(c.nmac1));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case 2:
 			memcpy(mac + 6,  c.nmac0, sizeof(c.nmac0));
 		}
@@ -8073,7 +7594,6 @@ int t4_set_rxmode(struct adapter *adap, unsigned int mbox, unsigned int viid,
 }
 
 /**
-<<<<<<< HEAD
  *      t4_free_encap_mac_filt - frees MPS entry at given index
  *      @adap: the adapter
  *      @viid: the VI id
@@ -8266,8 +7786,6 @@ int t4_alloc_raw_mac_filt(struct adapter *adap, unsigned int viid,
 }
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *	t4_alloc_mac_filt - allocates exact-match filters for MAC addresses
  *	@adap: the adapter
  *	@mbox: mailbox to use for the FW command
@@ -8558,7 +8076,6 @@ int t4_enable_vi(struct adapter *adap, unsigned int mbox, unsigned int viid,
 }
 
 /**
-<<<<<<< HEAD
  *	t4_enable_pi_params - enable/disable a Port's Virtual Interface
  *      @adap: the adapter
  *      @mbox: mailbox to use for the FW command
@@ -8587,8 +8104,6 @@ int t4_enable_pi_params(struct adapter *adap, unsigned int mbox,
 }
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *	t4_identify_port - identify a VI's port by blinking its LED
  *	@adap: the adapter
  *	@mbox: mailbox to use for the FW command
@@ -8929,12 +8444,9 @@ void t4_handle_get_port_info(struct port_info *pi, const __be64 *rpl)
 	fc = fwcap_to_cc_pause(linkattr);
 	speed = fwcap_to_speed(linkattr);
 
-<<<<<<< HEAD
 	lc->new_module = false;
 	lc->redo_l1cfg = false;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (mod_type != pi->mod_type) {
 		/* With the newer SFP28 and QSFP28 Transceiver Module Types,
 		 * various fundamental Port Capabilities which used to be
@@ -8969,11 +8481,8 @@ void t4_handle_get_port_info(struct port_info *pi, const __be64 *rpl)
 		pi->port_type = port_type;
 
 		pi->mod_type = mod_type;
-<<<<<<< HEAD
 
 		lc->new_module = t4_is_inserted_mod_type(mod_type);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		t4_os_portmod_changed(adapter, pi->port_id);
 	}
 
@@ -8992,13 +8501,9 @@ void t4_handle_get_port_info(struct port_info *pi, const __be64 *rpl)
 		lc->lpacaps = lpacaps;
 		lc->acaps = acaps & ADVERT_MASK;
 
-<<<<<<< HEAD
 		if (!(lc->acaps & FW_PORT_CAP32_ANEG)) {
 			lc->autoneg = AUTONEG_DISABLE;
 		} else if (lc->acaps & FW_PORT_CAP32_ANEG) {
-=======
-		if (lc->acaps & FW_PORT_CAP32_ANEG) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			lc->autoneg = AUTONEG_ENABLE;
 		} else {
 			/* When Autoneg is disabled, user needs to set
@@ -9012,7 +8517,6 @@ void t4_handle_get_port_info(struct port_info *pi, const __be64 *rpl)
 
 		t4_os_link_changed(adapter, pi->port_id, link_ok);
 	}
-<<<<<<< HEAD
 
 	if (lc->new_module && lc->redo_l1cfg) {
 		struct link_config old_lc;
@@ -9033,8 +8537,6 @@ void t4_handle_get_port_info(struct port_info *pi, const __be64 *rpl)
 	}
 	lc->new_module = false;
 	lc->redo_l1cfg = false;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -9206,7 +8708,6 @@ static void init_link_config(struct link_config *lc, fw_port_cap32_t pcaps,
 	lc->requested_fec = FEC_AUTO;
 	lc->fec = fwcap_to_cc_fec(lc->def_acaps);
 
-<<<<<<< HEAD
 	/* If the Port is capable of Auto-Negtotiation, initialize it as
 	 * "enabled" and copy over all of the Physical Port Capabilities
 	 * to the Advertised Port Capabilities.  Otherwise mark it as
@@ -9214,8 +8715,6 @@ static void init_link_config(struct link_config *lc, fw_port_cap32_t pcaps,
 	 * for the link.  Note parallel structure in t4_link_l1cfg_core()
 	 * and t4_handle_get_port_info().
 	 */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (lc->pcaps & FW_PORT_CAP32_ANEG) {
 		lc->acaps = lc->pcaps & ADVERT_MASK;
 		lc->autoneg = AUTONEG_ENABLE;
@@ -9223,10 +8722,7 @@ static void init_link_config(struct link_config *lc, fw_port_cap32_t pcaps,
 	} else {
 		lc->acaps = 0;
 		lc->autoneg = AUTONEG_DISABLE;
-<<<<<<< HEAD
 		lc->speed_caps = fwcap_to_fwspeed(acaps);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -9250,11 +8746,7 @@ struct flash_desc {
 	u32 size_mb;
 };
 
-<<<<<<< HEAD
 static int t4_get_flash_params(struct adapter *adap)
-=======
-static int get_flash_params(struct adapter *adap)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* Table for non-Numonix supported flash parts.  Numonix parts are left
 	 * to the preexisting code.  All flash parts have 64KB sectors.
@@ -9263,7 +8755,6 @@ static int get_flash_params(struct adapter *adap)
 		{ 0x150201, 4 << 20 },       /* Spansion 4MB S25FL032P */
 	};
 
-<<<<<<< HEAD
 	unsigned int part, manufacturer;
 	unsigned int density, size = 0;
 	u32 flashid = 0;
@@ -9278,19 +8769,10 @@ static int get_flash_params(struct adapter *adap)
 	ret = sf1_write(adap, 1, 1, 0, SF_RD_ID);
 	if (!ret)
 		ret = sf1_read(adap, 3, 0, 1, &flashid);
-=======
-	int ret;
-	u32 info;
-
-	ret = sf1_write(adap, 1, 1, 0, SF_RD_ID);
-	if (!ret)
-		ret = sf1_read(adap, 3, 0, 1, &info);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	t4_write_reg(adap, SF_OP_A, 0);                    /* unlock SF */
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	/* Check to see if it's one of our non-standard supported Flash parts.
 	 */
 	for (part = 0; part < ARRAY_SIZE(supported_flash); part++)
@@ -9417,51 +8899,6 @@ found:
 	return 0;
 }
 
-=======
-	for (ret = 0; ret < ARRAY_SIZE(supported_flash); ++ret)
-		if (supported_flash[ret].vendor_and_model_id == info) {
-			adap->params.sf_size = supported_flash[ret].size_mb;
-			adap->params.sf_nsec =
-				adap->params.sf_size / SF_SEC_SIZE;
-			return 0;
-		}
-
-	if ((info & 0xff) != 0x20)             /* not a Numonix flash */
-		return -EINVAL;
-	info >>= 16;                           /* log2 of size */
-	if (info >= 0x14 && info < 0x18)
-		adap->params.sf_nsec = 1 << (info - 16);
-	else if (info == 0x18)
-		adap->params.sf_nsec = 64;
-	else
-		return -EINVAL;
-	adap->params.sf_size = 1 << info;
-	adap->params.sf_fw_start =
-		t4_read_reg(adap, CIM_BOOT_CFG_A) & BOOTADDR_M;
-
-	if (adap->params.sf_size < FLASH_MIN_SIZE)
-		dev_warn(adap->pdev_dev, "WARNING!!! FLASH size %#x < %#x!!!\n",
-			 adap->params.sf_size, FLASH_MIN_SIZE);
-	return 0;
-}
-
-static void set_pcie_completion_timeout(struct adapter *adapter, u8 range)
-{
-	u16 val;
-	u32 pcie_cap;
-
-	pcie_cap = pci_find_capability(adapter->pdev, PCI_CAP_ID_EXP);
-	if (pcie_cap) {
-		pci_read_config_word(adapter->pdev,
-				     pcie_cap + PCI_EXP_DEVCTL2, &val);
-		val &= ~PCI_EXP_DEVCTL2_COMP_TIMEOUT;
-		val |= range;
-		pci_write_config_word(adapter->pdev,
-				      pcie_cap + PCI_EXP_DEVCTL2, val);
-	}
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  *	t4_prep_adapter - prepare SW and HW for operation
  *	@adapter: the adapter
@@ -9480,11 +8917,7 @@ int t4_prep_adapter(struct adapter *adapter)
 	get_pci_mode(adapter, &adapter->params.pci);
 	pl_rev = REV_G(t4_read_reg(adapter, PL_REV_A));
 
-<<<<<<< HEAD
 	ret = t4_get_flash_params(adapter);
-=======
-	ret = get_flash_params(adapter);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0) {
 		dev_err(adapter->pdev_dev, "error %d identifying flash\n", ret);
 		return ret;
@@ -9551,14 +8984,9 @@ int t4_prep_adapter(struct adapter *adapter)
 	adapter->params.portvec = 1;
 	adapter->params.vpd.cclk = 50000;
 
-<<<<<<< HEAD
 	/* Set PCIe completion timeout to 4 seconds. */
 	pcie_capability_clear_and_set_word(adapter->pdev, PCI_EXP_DEVCTL2,
 					   PCI_EXP_DEVCTL2_COMP_TIMEOUT, 0xd);
-=======
-	/* Set pci completion timeout value to 4 seconds. */
-	set_pcie_completion_timeout(adapter, 0xd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -9772,18 +9200,11 @@ int t4_init_sge_params(struct adapter *adapter)
 /**
  *      t4_init_tp_params - initialize adap->params.tp
  *      @adap: the adapter
-<<<<<<< HEAD
  *      @sleep_ok: if true we may sleep while awaiting command completion
  *
  *      Initialize various fields of the adapter's TP Parameters structure.
  */
 int t4_init_tp_params(struct adapter *adap, bool sleep_ok)
-=======
- *
- *      Initialize various fields of the adapter's TP Parameters structure.
- */
-int t4_init_tp_params(struct adapter *adap)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int chan;
 	u32 v;
@@ -9799,27 +9220,11 @@ int t4_init_tp_params(struct adapter *adap)
 	/* Cache the adapter's Compressed Filter Mode and global Incress
 	 * Configuration.
 	 */
-<<<<<<< HEAD
 	t4_tp_pio_read(adap, &adap->params.tp.vlan_pri_map, 1,
 		       TP_VLAN_PRI_MAP_A, sleep_ok);
 	t4_tp_pio_read(adap, &adap->params.tp.ingress_config, 1,
 		       TP_INGRESS_CONFIG_A, sleep_ok);
 
-=======
-	if (t4_use_ldst(adap)) {
-		t4_fw_tp_pio_rw(adap, &adap->params.tp.vlan_pri_map, 1,
-				TP_VLAN_PRI_MAP_A, 1);
-		t4_fw_tp_pio_rw(adap, &adap->params.tp.ingress_config, 1,
-				TP_INGRESS_CONFIG_A, 1);
-	} else {
-		t4_read_indirect(adap, TP_PIO_ADDR_A, TP_PIO_DATA_A,
-				 &adap->params.tp.vlan_pri_map, 1,
-				 TP_VLAN_PRI_MAP_A);
-		t4_read_indirect(adap, TP_PIO_ADDR_A, TP_PIO_DATA_A,
-				 &adap->params.tp.ingress_config, 1,
-				 TP_INGRESS_CONFIG_A);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* For T6, cache the adapter's compressed error vector
 	 * and passing outer header info for encapsulated packets.
 	 */
@@ -9832,7 +9237,6 @@ int t4_init_tp_params(struct adapter *adap)
 	 * shift positions of several elements of the Compressed Filter Tuple
 	 * for this adapter which we need frequently ...
 	 */
-<<<<<<< HEAD
 	adap->params.tp.fcoe_shift = t4_filter_field_shift(adap, FCOE_F);
 	adap->params.tp.port_shift = t4_filter_field_shift(adap, PORT_F);
 	adap->params.tp.vnic_shift = t4_filter_field_shift(adap, VNIC_ID_F);
@@ -9848,13 +9252,6 @@ int t4_init_tp_params(struct adapter *adap)
 								MPSHITTYPE_F);
 	adap->params.tp.frag_shift = t4_filter_field_shift(adap,
 							   FRAGMENTATION_F);
-=======
-	adap->params.tp.vlan_shift = t4_filter_field_shift(adap, VLAN_F);
-	adap->params.tp.vnic_shift = t4_filter_field_shift(adap, VNIC_ID_F);
-	adap->params.tp.port_shift = t4_filter_field_shift(adap, PORT_F);
-	adap->params.tp.protocol_shift = t4_filter_field_shift(adap,
-							       PROTOCOL_F);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* If TP_INGRESS_CONFIG.VNID == 0, then TP_VLAN_PRI_MAP.VNIC_ID
 	 * represents the presence of an Outer VLAN instead of a VNIC ID.
@@ -9862,13 +9259,10 @@ int t4_init_tp_params(struct adapter *adap)
 	if ((adap->params.tp.ingress_config & VNIC_F) == 0)
 		adap->params.tp.vnic_shift = -1;
 
-<<<<<<< HEAD
 	v = t4_read_reg(adap, LE_3_DB_HASH_MASK_GEN_IPV4_T6_A);
 	adap->params.tp.hash_filter_mask = v;
 	v = t4_read_reg(adap, LE_4_DB_HASH_MASK_GEN_IPV4_T6_A);
 	adap->params.tp.hash_filter_mask |= ((u64)v << 32);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -10588,7 +9982,6 @@ int t4_set_vf_mac_acl(struct adapter *adapter, unsigned int vf,
 	return t4_wr_mbox(adapter, adapter->mbox, &cmd, sizeof(cmd), &cmd);
 }
 
-<<<<<<< HEAD
 /**
  * t4_read_pace_tbl - read the pace table
  * @adap: the adapter
@@ -10708,8 +10101,6 @@ int t4_sge_ctxt_rd_bd(struct adapter *adap, unsigned int cid,
 	return ret;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int t4_sched_params(struct adapter *adapter, int type, int level, int mode,
 		    int rateunit, int ratemode, int channel, int class,
 		    int minrate, int maxrate, int weight, int pktsize)
@@ -10738,7 +10129,6 @@ int t4_sched_params(struct adapter *adapter, int type, int level, int mode,
 	return t4_wr_mbox_meat(adapter, adapter->mbox, &cmd, sizeof(cmd),
 			       NULL, 1);
 }
-<<<<<<< HEAD
 
 /**
  *	t4_i2c_rd - read I2C data from adapter
@@ -10827,5 +10217,3 @@ int t4_set_vlan_acl(struct adapter *adap, unsigned int mbox, unsigned int vf,
 
 	return t4_wr_mbox(adap, adap->mbox, &vlan_cmd, sizeof(vlan_cmd), NULL);
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

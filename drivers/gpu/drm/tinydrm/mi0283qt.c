@@ -9,20 +9,13 @@
  * (at your option) any later version.
  */
 
-<<<<<<< HEAD
 #include <linux/backlight.h>
-=======
-#include <drm/tinydrm/ili9341.h>
-#include <drm/tinydrm/mipi-dbi.h>
-#include <drm/tinydrm/tinydrm-helpers.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/delay.h>
 #include <linux/gpio/consumer.h>
 #include <linux/module.h>
 #include <linux/property.h>
 #include <linux/regulator/consumer.h>
 #include <linux/spi/spi.h>
-<<<<<<< HEAD
 
 #include <drm/drm_fb_helper.h>
 #include <drm/drm_modeset_helper.h>
@@ -62,46 +55,16 @@ static void mi0283qt_enable(struct drm_simple_display_pipe *pipe,
 {
 	struct tinydrm_device *tdev = pipe_to_tinydrm(pipe);
 	struct mipi_dbi *mipi = mipi_dbi_from_tinydrm(tdev);
-=======
-#include <video/mipi_display.h>
-
-static int mi0283qt_init(struct mipi_dbi *mipi)
-{
-	struct tinydrm_device *tdev = &mipi->tinydrm;
-	struct device *dev = tdev->drm->dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 addr_mode;
 	int ret;
 
 	DRM_DEBUG_KMS("\n");
 
-<<<<<<< HEAD
 	ret = mipi_dbi_poweron_conditional_reset(mipi);
 	if (ret < 0)
 		return;
 	if (ret == 1)
 		goto out_enable;
-=======
-	ret = regulator_enable(mipi->regulator);
-	if (ret) {
-		dev_err(dev, "Failed to enable regulator %d\n", ret);
-		return ret;
-	}
-
-	/* Avoid flicker by skipping setup if the bootloader has done it */
-	if (mipi_dbi_display_is_on(mipi))
-		return 0;
-
-	mipi_dbi_hw_reset(mipi);
-	ret = mipi_dbi_command(mipi, MIPI_DCS_SOFT_RESET);
-	if (ret) {
-		dev_err(dev, "Error sending command %d\n", ret);
-		regulator_disable(mipi->regulator);
-		return ret;
-	}
-
-	msleep(20);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mipi_dbi_command(mipi, MIPI_DCS_SET_DISPLAY_OFF);
 
@@ -120,29 +83,7 @@ static int mi0283qt_init(struct mipi_dbi *mipi)
 	mipi_dbi_command(mipi, ILI9341_VMCTRL2, 0xbe);
 
 	/* Memory Access Control */
-<<<<<<< HEAD
 	mipi_dbi_command(mipi, MIPI_DCS_SET_PIXEL_FORMAT, MIPI_DCS_PIXEL_FMT_16BIT);
-=======
-	mipi_dbi_command(mipi, MIPI_DCS_SET_PIXEL_FORMAT, 0x55);
-
-	switch (mipi->rotation) {
-	default:
-		addr_mode = ILI9341_MADCTL_MV | ILI9341_MADCTL_MY |
-			    ILI9341_MADCTL_MX;
-		break;
-	case 90:
-		addr_mode = ILI9341_MADCTL_MY;
-		break;
-	case 180:
-		addr_mode = ILI9341_MADCTL_MV;
-		break;
-	case 270:
-		addr_mode = ILI9341_MADCTL_MX;
-		break;
-	}
-	addr_mode |= ILI9341_MADCTL_BGR;
-	mipi_dbi_command(mipi, MIPI_DCS_SET_ADDRESS_MODE, addr_mode);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Frame Rate */
 	mipi_dbi_command(mipi, ILI9341_FRMCTR1, 0x00, 0x1b);
@@ -168,7 +109,6 @@ static int mi0283qt_init(struct mipi_dbi *mipi)
 	mipi_dbi_command(mipi, MIPI_DCS_SET_DISPLAY_ON);
 	msleep(100);
 
-<<<<<<< HEAD
 out_enable:
 	/* The PiTFT (ili9340) has a hardware reset circuit that
 	 * resets only on power-on and not on each reboot through
@@ -201,24 +141,6 @@ static const struct drm_simple_display_pipe_funcs mi0283qt_pipe_funcs = {
 	.disable = mipi_dbi_pipe_disable,
 	.update = tinydrm_display_pipe_update,
 	.prepare_fb = drm_gem_fb_simple_display_pipe_prepare_fb,
-=======
-	return 0;
-}
-
-static void mi0283qt_fini(void *data)
-{
-	struct mipi_dbi *mipi = data;
-
-	DRM_DEBUG_KMS("\n");
-	regulator_disable(mipi->regulator);
-}
-
-static const struct drm_simple_display_pipe_funcs mi0283qt_pipe_funcs = {
-	.enable = mipi_dbi_pipe_enable,
-	.disable = mipi_dbi_pipe_disable,
-	.update = tinydrm_display_pipe_update,
-	.prepare_fb = tinydrm_display_pipe_prepare_fb,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct drm_display_mode mi0283qt_mode = {
@@ -232,10 +154,6 @@ static struct drm_driver mi0283qt_driver = {
 				  DRIVER_ATOMIC,
 	.fops			= &mi0283qt_fops,
 	TINYDRM_GEM_DRIVER_OPS,
-<<<<<<< HEAD
-=======
-	.lastclose		= tinydrm_lastclose,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.debugfs_init		= mipi_dbi_debugfs_init,
 	.name			= "mi0283qt",
 	.desc			= "Multi-Inno MI0283QT",
@@ -259,10 +177,6 @@ MODULE_DEVICE_TABLE(spi, mi0283qt_id);
 static int mi0283qt_probe(struct spi_device *spi)
 {
 	struct device *dev = &spi->dev;
-<<<<<<< HEAD
-=======
-	struct tinydrm_device *tdev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mipi_dbi *mipi;
 	struct gpio_desc *dc;
 	u32 rotation = 0;
@@ -274,21 +188,13 @@ static int mi0283qt_probe(struct spi_device *spi)
 
 	mipi->reset = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
 	if (IS_ERR(mipi->reset)) {
-<<<<<<< HEAD
 		DRM_DEV_ERROR(dev, "Failed to get gpio 'reset'\n");
-=======
-		dev_err(dev, "Failed to get gpio 'reset'\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return PTR_ERR(mipi->reset);
 	}
 
 	dc = devm_gpiod_get_optional(dev, "dc", GPIOD_OUT_LOW);
 	if (IS_ERR(dc)) {
-<<<<<<< HEAD
 		DRM_DEV_ERROR(dev, "Failed to get gpio 'dc'\n");
-=======
-		dev_err(dev, "Failed to get gpio 'dc'\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return PTR_ERR(dc);
 	}
 
@@ -296,11 +202,7 @@ static int mi0283qt_probe(struct spi_device *spi)
 	if (IS_ERR(mipi->regulator))
 		return PTR_ERR(mipi->regulator);
 
-<<<<<<< HEAD
 	mipi->backlight = devm_of_find_backlight(dev);
-=======
-	mipi->backlight = tinydrm_of_find_backlight(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(mipi->backlight))
 		return PTR_ERR(mipi->backlight);
 
@@ -315,37 +217,9 @@ static int mi0283qt_probe(struct spi_device *spi)
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	spi_set_drvdata(spi, mipi);
 
 	return devm_tinydrm_register(&mipi->tinydrm);
-=======
-	ret = mi0283qt_init(mipi);
-	if (ret)
-		return ret;
-
-	/* use devres to fini after drm unregister (drv->remove is before) */
-	ret = devm_add_action(dev, mi0283qt_fini, mipi);
-	if (ret) {
-		mi0283qt_fini(mipi);
-		return ret;
-	}
-
-	tdev = &mipi->tinydrm;
-
-	ret = devm_tinydrm_register(tdev);
-	if (ret)
-		return ret;
-
-	spi_set_drvdata(spi, mipi);
-
-	DRM_DEBUG_DRIVER("Initialized %s:%s @%uMHz on minor %d\n",
-			 tdev->drm->driver->name, dev_name(dev),
-			 spi->max_speed_hz / 1000000,
-			 tdev->drm->primary->index);
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void mi0283qt_shutdown(struct spi_device *spi)
@@ -358,39 +232,17 @@ static void mi0283qt_shutdown(struct spi_device *spi)
 static int __maybe_unused mi0283qt_pm_suspend(struct device *dev)
 {
 	struct mipi_dbi *mipi = dev_get_drvdata(dev);
-<<<<<<< HEAD
 
 	return drm_mode_config_helper_suspend(mipi->tinydrm.drm);
-=======
-	int ret;
-
-	ret = tinydrm_suspend(&mipi->tinydrm);
-	if (ret)
-		return ret;
-
-	mi0283qt_fini(mipi);
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int __maybe_unused mi0283qt_pm_resume(struct device *dev)
 {
 	struct mipi_dbi *mipi = dev_get_drvdata(dev);
-<<<<<<< HEAD
 
 	drm_mode_config_helper_resume(mipi->tinydrm.drm);
 
 	return 0;
-=======
-	int ret;
-
-	ret = mi0283qt_init(mipi);
-	if (ret)
-		return ret;
-
-	return tinydrm_resume(&mipi->tinydrm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct dev_pm_ops mi0283qt_pm_ops = {

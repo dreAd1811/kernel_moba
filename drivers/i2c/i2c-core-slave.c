@@ -47,15 +47,9 @@ int i2c_slave_register(struct i2c_client *client, i2c_slave_cb_t slave_cb)
 
 	client->slave_cb = slave_cb;
 
-<<<<<<< HEAD
 	i2c_lock_bus(client->adapter, I2C_LOCK_ROOT_ADAPTER);
 	ret = client->adapter->algo->reg_slave(client);
 	i2c_unlock_bus(client->adapter, I2C_LOCK_ROOT_ADAPTER);
-=======
-	i2c_lock_adapter(client->adapter);
-	ret = client->adapter->algo->reg_slave(client);
-	i2c_unlock_adapter(client->adapter);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ret) {
 		client->slave_cb = NULL;
@@ -75,15 +69,9 @@ int i2c_slave_unregister(struct i2c_client *client)
 		return -EOPNOTSUPP;
 	}
 
-<<<<<<< HEAD
 	i2c_lock_bus(client->adapter, I2C_LOCK_ROOT_ADAPTER);
 	ret = client->adapter->algo->unreg_slave(client);
 	i2c_unlock_bus(client->adapter, I2C_LOCK_ROOT_ADAPTER);
-=======
-	i2c_lock_adapter(client->adapter);
-	ret = client->adapter->algo->unreg_slave(client);
-	i2c_unlock_adapter(client->adapter);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ret == 0)
 		client->slave_cb = NULL;

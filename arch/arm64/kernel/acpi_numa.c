@@ -26,7 +26,6 @@
 #include <linux/module.h>
 #include <linux/topology.h>
 
-<<<<<<< HEAD
 #include <asm/numa.h>
 
 static int acpi_early_node_map[NR_CPUS] __initdata = { NUMA_NO_NODE };
@@ -88,41 +87,12 @@ void __init acpi_map_cpus_to_nodes(void)
 	acpi_table_parse_entries(ACPI_SIG_SRAT, sizeof(struct acpi_table_srat),
 					    ACPI_SRAT_TYPE_GICC_AFFINITY,
 					    acpi_parse_gicc_pxm, 0);
-=======
-#include <acpi/processor.h>
-#include <asm/numa.h>
-
-static int cpus_in_srat;
-
-struct __node_cpu_hwid {
-	u32 node_id;    /* logical node containing this CPU */
-	u64 cpu_hwid;   /* MPIDR for this CPU */
-};
-
-static struct __node_cpu_hwid early_node_cpu_hwid[NR_CPUS] = {
-[0 ... NR_CPUS - 1] = {NUMA_NO_NODE, PHYS_CPUID_INVALID} };
-
-int acpi_numa_get_nid(unsigned int cpu, u64 hwid)
-{
-	int i;
-
-	for (i = 0; i < cpus_in_srat; i++) {
-		if (hwid == early_node_cpu_hwid[i].cpu_hwid)
-			return early_node_cpu_hwid[i].node_id;
-	}
-
-	return NUMA_NO_NODE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Callback for Proximity Domain -> ACPI processor UID mapping */
 void __init acpi_numa_gicc_affinity_init(struct acpi_srat_gicc_affinity *pa)
 {
 	int pxm, node;
-<<<<<<< HEAD
-=======
-	phys_cpuid_t mpidr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (srat_disabled())
 		return;
@@ -137,15 +107,6 @@ void __init acpi_numa_gicc_affinity_init(struct acpi_srat_gicc_affinity *pa)
 	if (!(pa->flags & ACPI_SRAT_GICC_ENABLED))
 		return;
 
-<<<<<<< HEAD
-=======
-	if (cpus_in_srat >= NR_CPUS) {
-		pr_warn_once("SRAT: cpu_to_node_map[%d] is too small, may not be able to use all cpus\n",
-			     NR_CPUS);
-		return;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pxm = pa->proximity_domain;
 	node = acpi_map_pxm_to_node(pxm);
 
@@ -155,24 +116,7 @@ void __init acpi_numa_gicc_affinity_init(struct acpi_srat_gicc_affinity *pa)
 		return;
 	}
 
-<<<<<<< HEAD
 	node_set(node, numa_nodes_parsed);
-=======
-	mpidr = acpi_map_madt_entry(pa->acpi_processor_uid);
-	if (mpidr == PHYS_CPUID_INVALID) {
-		pr_err("SRAT: PXM %d with ACPI ID %d has no valid MPIDR in MADT\n",
-			pxm, pa->acpi_processor_uid);
-		bad_srat();
-		return;
-	}
-
-	early_node_cpu_hwid[cpus_in_srat].node_id = node;
-	early_node_cpu_hwid[cpus_in_srat].cpu_hwid =  mpidr;
-	node_set(node, numa_nodes_parsed);
-	cpus_in_srat++;
-	pr_info("SRAT: PXM %d -> MPIDR 0x%Lx -> Node %d\n",
-		pxm, mpidr, node);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int __init arm64_acpi_numa_init(void)

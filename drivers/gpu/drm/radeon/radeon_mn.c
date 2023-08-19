@@ -118,7 +118,6 @@ static void radeon_mn_release(struct mmu_notifier *mn,
  * We block for all BOs between start and end to be idle and
  * unmap them by move them into system domain again.
  */
-<<<<<<< HEAD
 static int radeon_mn_invalidate_range_start(struct mmu_notifier *mn,
 					     struct mm_struct *mm,
 					     unsigned long start,
@@ -129,20 +128,10 @@ static int radeon_mn_invalidate_range_start(struct mmu_notifier *mn,
 	struct ttm_operation_ctx ctx = { false, false };
 	struct interval_tree_node *it;
 	int ret = 0;
-=======
-static void radeon_mn_invalidate_range_start(struct mmu_notifier *mn,
-					     struct mm_struct *mm,
-					     unsigned long start,
-					     unsigned long end)
-{
-	struct radeon_mn *rmn = container_of(mn, struct radeon_mn, mn);
-	struct interval_tree_node *it;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* notification is exclusive, but interval is inclusive */
 	end -= 1;
 
-<<<<<<< HEAD
 	/* TODO we should be able to split locking for interval tree and
 	 * the tear down.
 	 */
@@ -150,9 +139,6 @@ static void radeon_mn_invalidate_range_start(struct mmu_notifier *mn,
 		mutex_lock(&rmn->lock);
 	else if (!mutex_trylock(&rmn->lock))
 		return -EAGAIN;
-=======
-	mutex_lock(&rmn->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	it = interval_tree_iter_first(&rmn->objects, start, end);
 	while (it) {
@@ -160,14 +146,11 @@ static void radeon_mn_invalidate_range_start(struct mmu_notifier *mn,
 		struct radeon_bo *bo;
 		long r;
 
-<<<<<<< HEAD
 		if (!blockable) {
 			ret = -EAGAIN;
 			goto out_unlock;
 		}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		node = container_of(it, struct radeon_mn_node, it);
 		it = interval_tree_iter_next(it, start, end);
 
@@ -188,11 +171,7 @@ static void radeon_mn_invalidate_range_start(struct mmu_notifier *mn,
 				DRM_ERROR("(%ld) failed to wait for user bo\n", r);
 
 			radeon_ttm_placement_from_domain(bo, RADEON_GEM_DOMAIN_CPU);
-<<<<<<< HEAD
 			r = ttm_bo_validate(&bo->tbo, &bo->placement, &ctx);
-=======
-			r = ttm_bo_validate(&bo->tbo, &bo->placement, false, false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (r)
 				DRM_ERROR("(%ld) failed to validate user bo\n", r);
 
@@ -200,14 +179,10 @@ static void radeon_mn_invalidate_range_start(struct mmu_notifier *mn,
 		}
 	}
 	
-<<<<<<< HEAD
 out_unlock:
 	mutex_unlock(&rmn->lock);
 
 	return ret;
-=======
-	mutex_unlock(&rmn->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct mmu_notifier_ops radeon_mn_ops = {

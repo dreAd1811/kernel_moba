@@ -152,7 +152,6 @@ static int tpm_tis_spi_write_bytes(struct tpm_tis_data *data, u32 addr,
 
 static int tpm_tis_spi_read16(struct tpm_tis_data *data, u32 addr, u16 *result)
 {
-<<<<<<< HEAD
 	__le16 result_le;
 	int rc;
 
@@ -161,19 +160,11 @@ static int tpm_tis_spi_read16(struct tpm_tis_data *data, u32 addr, u16 *result)
 	if (!rc)
 		*result = le16_to_cpu(result_le);
 
-=======
-	int rc;
-
-	rc = data->phy_ops->read_bytes(data, addr, sizeof(u16), (u8 *)result);
-	if (!rc)
-		*result = le16_to_cpu(*result);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 
 static int tpm_tis_spi_read32(struct tpm_tis_data *data, u32 addr, u32 *result)
 {
-<<<<<<< HEAD
 	__le32 result_le;
 	int rc;
 
@@ -182,19 +173,11 @@ static int tpm_tis_spi_read32(struct tpm_tis_data *data, u32 addr, u32 *result)
 	if (!rc)
 		*result = le32_to_cpu(result_le);
 
-=======
-	int rc;
-
-	rc = data->phy_ops->read_bytes(data, addr, sizeof(u32), (u8 *)result);
-	if (!rc)
-		*result = le32_to_cpu(*result);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 
 static int tpm_tis_spi_write32(struct tpm_tis_data *data, u32 addr, u32 value)
 {
-<<<<<<< HEAD
 	__le32 value_le;
 	int rc;
 
@@ -203,11 +186,6 @@ static int tpm_tis_spi_write32(struct tpm_tis_data *data, u32 addr, u32 value)
 					(u8 *)&value_le);
 
 	return rc;
-=======
-	value = cpu_to_le32(value);
-	return data->phy_ops->write_bytes(data, addr, sizeof(u32),
-					   (u8 *)&value);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct tpm_tis_phy_ops tpm_spi_phy_ops = {

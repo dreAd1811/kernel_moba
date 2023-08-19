@@ -22,17 +22,13 @@
 #include <drm/drm_atomic_helper.h>
 #include <drm/drm_dp_helper.h>
 #include <drm/drm_panel.h>
-<<<<<<< HEAD
 #include <drm/drm_scdc_helper.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "dc.h"
 #include "drm.h"
 #include "sor.h"
 #include "trace.h"
 
-<<<<<<< HEAD
 /*
  * XXX Remove this after the commit adding it to soc/tegra/pmc.h has been
  * merged. Having this around after the commit is merged should be safe since
@@ -41,15 +37,12 @@
  */
 #define TEGRA_IO_PAD_HDMI_DP0 26
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SOR_REKEY 0x38
 
 struct tegra_sor_hdmi_settings {
 	unsigned long frequency;
 
 	u8 vcocap;
-<<<<<<< HEAD
 	u8 filter;
 	u8 ichpmp;
 	u8 loadadj;
@@ -60,13 +53,6 @@ struct tegra_sor_hdmi_settings {
 	u8 avdd10_level;
 	u8 avdd14_level;
 	u8 sparepll;
-=======
-	u8 ichpmp;
-	u8 loadadj;
-	u8 termadj;
-	u8 tx_pu;
-	u8 bg_vref;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	u8 drive_current[4];
 	u8 preemphasis[4];
@@ -77,7 +63,6 @@ static const struct tegra_sor_hdmi_settings tegra210_sor_hdmi_defaults[] = {
 	{
 		.frequency = 54000000,
 		.vcocap = 0x0,
-<<<<<<< HEAD
 		.filter = 0x0,
 		.ichpmp = 0x1,
 		.loadadj = 0x3,
@@ -88,19 +73,11 @@ static const struct tegra_sor_hdmi_settings tegra210_sor_hdmi_defaults[] = {
 		.avdd10_level = 0x4,
 		.avdd14_level = 0x4,
 		.sparepll = 0x0,
-=======
-		.ichpmp = 0x1,
-		.loadadj = 0x3,
-		.termadj = 0x9,
-		.tx_pu = 0x10,
-		.bg_vref = 0x8,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.drive_current = { 0x33, 0x3a, 0x3a, 0x3a },
 		.preemphasis = { 0x00, 0x00, 0x00, 0x00 },
 	}, {
 		.frequency = 75000000,
 		.vcocap = 0x3,
-<<<<<<< HEAD
 		.filter = 0x0,
 		.ichpmp = 0x1,
 		.loadadj = 0x3,
@@ -111,19 +88,11 @@ static const struct tegra_sor_hdmi_settings tegra210_sor_hdmi_defaults[] = {
 		.avdd10_level = 0x4,
 		.avdd14_level = 0x4,
 		.sparepll = 0x0,
-=======
-		.ichpmp = 0x1,
-		.loadadj = 0x3,
-		.termadj = 0x9,
-		.tx_pu = 0x40,
-		.bg_vref = 0x8,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.drive_current = { 0x33, 0x3a, 0x3a, 0x3a },
 		.preemphasis = { 0x00, 0x00, 0x00, 0x00 },
 	}, {
 		.frequency = 150000000,
 		.vcocap = 0x3,
-<<<<<<< HEAD
 		.filter = 0x0,
 		.ichpmp = 0x1,
 		.loadadj = 0x3,
@@ -134,19 +103,11 @@ static const struct tegra_sor_hdmi_settings tegra210_sor_hdmi_defaults[] = {
 		.avdd10_level = 0x4,
 		.avdd14_level = 0x4,
 		.sparepll = 0x0,
-=======
-		.ichpmp = 0x1,
-		.loadadj = 0x3,
-		.termadj = 0x9,
-		.tx_pu = 0x66,
-		.bg_vref = 0x8,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.drive_current = { 0x33, 0x3a, 0x3a, 0x3a },
 		.preemphasis = { 0x00, 0x00, 0x00, 0x00 },
 	}, {
 		.frequency = 300000000,
 		.vcocap = 0x3,
-<<<<<<< HEAD
 		.filter = 0x0,
 		.ichpmp = 0x1,
 		.loadadj = 0x3,
@@ -157,19 +118,11 @@ static const struct tegra_sor_hdmi_settings tegra210_sor_hdmi_defaults[] = {
 		.avdd10_level = 0x4,
 		.avdd14_level = 0x4,
 		.sparepll = 0x0,
-=======
-		.ichpmp = 0x1,
-		.loadadj = 0x3,
-		.termadj = 0x9,
-		.tx_pu = 0x66,
-		.bg_vref = 0xa,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.drive_current = { 0x33, 0x3f, 0x3f, 0x3f },
 		.preemphasis = { 0x00, 0x17, 0x17, 0x17 },
 	}, {
 		.frequency = 600000000,
 		.vcocap = 0x3,
-<<<<<<< HEAD
 		.filter = 0x0,
 		.ichpmp = 0x1,
 		.loadadj = 0x3,
@@ -180,13 +133,6 @@ static const struct tegra_sor_hdmi_settings tegra210_sor_hdmi_defaults[] = {
 		.avdd10_level = 0x4,
 		.avdd14_level = 0x4,
 		.sparepll = 0x0,
-=======
-		.ichpmp = 0x1,
-		.loadadj = 0x3,
-		.termadj = 0x9,
-		.tx_pu = 0x66,
-		.bg_vref = 0x8,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.drive_current = { 0x33, 0x3f, 0x3f, 0x3f },
 		.preemphasis = { 0x00, 0x00, 0x00, 0x00 },
 	},
@@ -196,7 +142,6 @@ static const struct tegra_sor_hdmi_settings tegra210_sor_hdmi_defaults[] = {
 	{
 		.frequency = 75000000,
 		.vcocap = 0x3,
-<<<<<<< HEAD
 		.filter = 0x0,
 		.ichpmp = 0x1,
 		.loadadj = 0x3,
@@ -207,19 +152,11 @@ static const struct tegra_sor_hdmi_settings tegra210_sor_hdmi_defaults[] = {
 		.avdd10_level = 0x4,
 		.avdd14_level = 0x4,
 		.sparepll = 0x0,
-=======
-		.ichpmp = 0x1,
-		.loadadj = 0x3,
-		.termadj = 0x9,
-		.tx_pu = 0x40,
-		.bg_vref = 0x8,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.drive_current = { 0x29, 0x29, 0x29, 0x29 },
 		.preemphasis = { 0x00, 0x00, 0x00, 0x00 },
 	}, {
 		.frequency = 150000000,
 		.vcocap = 0x3,
-<<<<<<< HEAD
 		.filter = 0x0,
 		.ichpmp = 0x1,
 		.loadadj = 0x3,
@@ -230,19 +167,11 @@ static const struct tegra_sor_hdmi_settings tegra210_sor_hdmi_defaults[] = {
 		.avdd10_level = 0x4,
 		.avdd14_level = 0x4,
 		.sparepll = 0x0,
-=======
-		.ichpmp = 0x1,
-		.loadadj = 0x3,
-		.termadj = 0x9,
-		.tx_pu = 0x66,
-		.bg_vref = 0x8,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.drive_current = { 0x30, 0x37, 0x37, 0x37 },
 		.preemphasis = { 0x01, 0x02, 0x02, 0x02 },
 	}, {
 		.frequency = 300000000,
 		.vcocap = 0x3,
-<<<<<<< HEAD
 		.filter = 0x0,
 		.ichpmp = 0x6,
 		.loadadj = 0x3,
@@ -253,19 +182,11 @@ static const struct tegra_sor_hdmi_settings tegra210_sor_hdmi_defaults[] = {
 		.avdd10_level = 0x4,
 		.avdd14_level = 0x4,
 		.sparepll = 0x0,
-=======
-		.ichpmp = 0x6,
-		.loadadj = 0x3,
-		.termadj = 0x9,
-		.tx_pu = 0x66,
-		.bg_vref = 0xf,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.drive_current = { 0x30, 0x37, 0x37, 0x37 },
 		.preemphasis = { 0x10, 0x3e, 0x3e, 0x3e },
 	}, {
 		.frequency = 600000000,
 		.vcocap = 0x3,
-<<<<<<< HEAD
 		.filter = 0x0,
 		.ichpmp = 0xa,
 		.loadadj = 0x3,
@@ -276,20 +197,12 @@ static const struct tegra_sor_hdmi_settings tegra210_sor_hdmi_defaults[] = {
 		.avdd10_level = 0x4,
 		.avdd14_level = 0x4,
 		.sparepll = 0x0,
-=======
-		.ichpmp = 0xa,
-		.loadadj = 0x3,
-		.termadj = 0xb,
-		.tx_pu = 0x66,
-		.bg_vref = 0xe,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.drive_current = { 0x35, 0x3e, 0x3e, 0x3e },
 		.preemphasis = { 0x02, 0x3f, 0x3f, 0x3f },
 	},
 };
 #endif
 
-<<<<<<< HEAD
 static const struct tegra_sor_hdmi_settings tegra186_sor_hdmi_defaults[] = {
 	{
 		.frequency = 54000000,
@@ -384,20 +297,15 @@ struct tegra_sor_regs {
 	unsigned int dp_padctl2;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct tegra_sor_soc {
 	bool supports_edp;
 	bool supports_lvds;
 	bool supports_hdmi;
 	bool supports_dp;
 
-<<<<<<< HEAD
 	const struct tegra_sor_regs *regs;
 	bool has_nvdisplay;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const struct tegra_sor_hdmi_settings *settings;
 	unsigned int num_settings;
 
@@ -419,7 +327,6 @@ struct tegra_sor {
 
 	const struct tegra_sor_soc *soc;
 	void __iomem *regs;
-<<<<<<< HEAD
 	unsigned int index;
 
 	struct reset_control *rst;
@@ -427,30 +334,15 @@ struct tegra_sor {
 	struct clk *clk_safe;
 	struct clk *clk_out;
 	struct clk *clk_pad;
-=======
-
-	struct reset_control *rst;
-	struct clk *clk_parent;
-	struct clk *clk_brick;
-	struct clk *clk_safe;
-	struct clk *clk_src;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct clk *clk_dp;
 	struct clk *clk;
 
 	struct drm_dp_aux *aux;
 
 	struct drm_info_list *debugfs_files;
-<<<<<<< HEAD
 
 	const struct tegra_sor_ops *ops;
 	enum tegra_io_pad pad;
-=======
-	struct drm_minor *minor;
-	struct dentry *debugfs;
-
-	const struct tegra_sor_ops *ops;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* for HDMI 2.0 */
 	struct tegra_sor_hdmi_settings *settings;
@@ -459,22 +351,16 @@ struct tegra_sor {
 	struct regulator *avdd_io_supply;
 	struct regulator *vdd_pll_supply;
 	struct regulator *hdmi_supply;
-<<<<<<< HEAD
 
 	struct delayed_work scdc;
 	bool scdc_enabled;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct tegra_sor_state {
 	struct drm_connector_state base;
 
-<<<<<<< HEAD
 	unsigned int link_speed;
 	unsigned long pclk;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int bpc;
 };
 
@@ -530,11 +416,7 @@ static int tegra_sor_set_parent_clock(struct tegra_sor *sor, struct clk *parent)
 
 	clk_disable_unprepare(sor->clk);
 
-<<<<<<< HEAD
 	err = clk_set_parent(sor->clk_out, parent);
-=======
-	err = clk_set_parent(sor->clk, parent);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err < 0)
 		return err;
 
@@ -545,16 +427,11 @@ static int tegra_sor_set_parent_clock(struct tegra_sor *sor, struct clk *parent)
 	return 0;
 }
 
-<<<<<<< HEAD
 struct tegra_clk_sor_pad {
-=======
-struct tegra_clk_sor_brick {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct clk_hw hw;
 	struct tegra_sor *sor;
 };
 
-<<<<<<< HEAD
 static inline struct tegra_clk_sor_pad *to_pad(struct clk_hw *hw)
 {
 	return container_of(hw, struct tegra_clk_sor_pad, hw);
@@ -568,21 +445,6 @@ static int tegra_clk_sor_pad_set_parent(struct clk_hw *hw, u8 index)
 {
 	struct tegra_clk_sor_pad *pad = to_pad(hw);
 	struct tegra_sor *sor = pad->sor;
-=======
-static inline struct tegra_clk_sor_brick *to_brick(struct clk_hw *hw)
-{
-	return container_of(hw, struct tegra_clk_sor_brick, hw);
-}
-
-static const char * const tegra_clk_sor_brick_parents[] = {
-	"pll_d2_out0", "pll_dp"
-};
-
-static int tegra_clk_sor_brick_set_parent(struct clk_hw *hw, u8 index)
-{
-	struct tegra_clk_sor_brick *brick = to_brick(hw);
-	struct tegra_sor *sor = brick->sor;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 value;
 
 	value = tegra_sor_readl(sor, SOR_CLK_CNTRL);
@@ -603,17 +465,10 @@ static int tegra_clk_sor_brick_set_parent(struct clk_hw *hw, u8 index)
 	return 0;
 }
 
-<<<<<<< HEAD
 static u8 tegra_clk_sor_pad_get_parent(struct clk_hw *hw)
 {
 	struct tegra_clk_sor_pad *pad = to_pad(hw);
 	struct tegra_sor *sor = pad->sor;
-=======
-static u8 tegra_clk_sor_brick_get_parent(struct clk_hw *hw)
-{
-	struct tegra_clk_sor_brick *brick = to_brick(hw);
-	struct tegra_sor *sor = brick->sor;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 parent = U8_MAX;
 	u32 value;
 
@@ -634,7 +489,6 @@ static u8 tegra_clk_sor_brick_get_parent(struct clk_hw *hw)
 	return parent;
 }
 
-<<<<<<< HEAD
 static const struct clk_ops tegra_clk_sor_pad_ops = {
 	.set_parent = tegra_clk_sor_pad_set_parent,
 	.get_parent = tegra_clk_sor_pad_get_parent,
@@ -662,35 +516,6 @@ static struct clk *tegra_clk_sor_pad_register(struct tegra_sor *sor,
 	pad->hw.init = &init;
 
 	clk = devm_clk_register(sor->dev, &pad->hw);
-=======
-static const struct clk_ops tegra_clk_sor_brick_ops = {
-	.set_parent = tegra_clk_sor_brick_set_parent,
-	.get_parent = tegra_clk_sor_brick_get_parent,
-};
-
-static struct clk *tegra_clk_sor_brick_register(struct tegra_sor *sor,
-						const char *name)
-{
-	struct tegra_clk_sor_brick *brick;
-	struct clk_init_data init;
-	struct clk *clk;
-
-	brick = devm_kzalloc(sor->dev, sizeof(*brick), GFP_KERNEL);
-	if (!brick)
-		return ERR_PTR(-ENOMEM);
-
-	brick->sor = sor;
-
-	init.name = name;
-	init.flags = 0;
-	init.parent_names = tegra_clk_sor_brick_parents;
-	init.num_parents = ARRAY_SIZE(tegra_clk_sor_brick_parents);
-	init.ops = &tegra_clk_sor_brick_ops;
-
-	brick->hw.init = &init;
-
-	clk = devm_clk_register(sor->dev, &brick->hw);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return clk;
 }
@@ -725,7 +550,6 @@ static int tegra_sor_dp_train_fast(struct tegra_sor *sor,
 	/* disable LVDS mode */
 	tegra_sor_writel(sor, 0, SOR_LVDS);
 
-<<<<<<< HEAD
 	value = tegra_sor_readl(sor, sor->soc->regs->dp_padctl0);
 	value |= SOR_DP_PADCTL_TX_PU_ENABLE;
 	value &= ~SOR_DP_PADCTL_TX_PU_MASK;
@@ -743,25 +567,6 @@ static int tegra_sor_dp_train_fast(struct tegra_sor *sor,
 	value &= ~(SOR_DP_PADCTL_CM_TXD_3 | SOR_DP_PADCTL_CM_TXD_2 |
 		   SOR_DP_PADCTL_CM_TXD_1 | SOR_DP_PADCTL_CM_TXD_0);
 	tegra_sor_writel(sor, value, sor->soc->regs->dp_padctl0);
-=======
-	value = tegra_sor_readl(sor, SOR_DP_PADCTL0);
-	value |= SOR_DP_PADCTL_TX_PU_ENABLE;
-	value &= ~SOR_DP_PADCTL_TX_PU_MASK;
-	value |= SOR_DP_PADCTL_TX_PU(2); /* XXX: don't hardcode? */
-	tegra_sor_writel(sor, value, SOR_DP_PADCTL0);
-
-	value = tegra_sor_readl(sor, SOR_DP_PADCTL0);
-	value |= SOR_DP_PADCTL_CM_TXD_3 | SOR_DP_PADCTL_CM_TXD_2 |
-		 SOR_DP_PADCTL_CM_TXD_1 | SOR_DP_PADCTL_CM_TXD_0;
-	tegra_sor_writel(sor, value, SOR_DP_PADCTL0);
-
-	usleep_range(10, 100);
-
-	value = tegra_sor_readl(sor, SOR_DP_PADCTL0);
-	value &= ~(SOR_DP_PADCTL_CM_TXD_3 | SOR_DP_PADCTL_CM_TXD_2 |
-		   SOR_DP_PADCTL_CM_TXD_1 | SOR_DP_PADCTL_CM_TXD_0);
-	tegra_sor_writel(sor, value, SOR_DP_PADCTL0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = drm_dp_aux_prepare(sor->aux, DP_SET_ANSI_8B10B);
 	if (err < 0)
@@ -821,50 +626,6 @@ static int tegra_sor_dp_train_fast(struct tegra_sor *sor,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-static void tegra_sor_dp_term_calibrate(struct tegra_sor *sor)
-{
-	u32 mask = 0x08, adj = 0, value;
-
-	/* enable pad calibration logic */
-	value = tegra_sor_readl(sor, SOR_DP_PADCTL0);
-	value &= ~SOR_DP_PADCTL_PAD_CAL_PD;
-	tegra_sor_writel(sor, value, SOR_DP_PADCTL0);
-
-	value = tegra_sor_readl(sor, SOR_PLL1);
-	value |= SOR_PLL1_TMDS_TERM;
-	tegra_sor_writel(sor, value, SOR_PLL1);
-
-	while (mask) {
-		adj |= mask;
-
-		value = tegra_sor_readl(sor, SOR_PLL1);
-		value &= ~SOR_PLL1_TMDS_TERMADJ_MASK;
-		value |= SOR_PLL1_TMDS_TERMADJ(adj);
-		tegra_sor_writel(sor, value, SOR_PLL1);
-
-		usleep_range(100, 200);
-
-		value = tegra_sor_readl(sor, SOR_PLL1);
-		if (value & SOR_PLL1_TERM_COMPOUT)
-			adj &= ~mask;
-
-		mask >>= 1;
-	}
-
-	value = tegra_sor_readl(sor, SOR_PLL1);
-	value &= ~SOR_PLL1_TMDS_TERMADJ_MASK;
-	value |= SOR_PLL1_TMDS_TERMADJ(adj);
-	tegra_sor_writel(sor, value, SOR_PLL1);
-
-	/* disable pad calibration logic */
-	value = tegra_sor_readl(sor, SOR_DP_PADCTL0);
-	value |= SOR_DP_PADCTL_PAD_CAL_PD;
-	tegra_sor_writel(sor, value, SOR_DP_PADCTL0);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void tegra_sor_super_update(struct tegra_sor *sor)
 {
 	tegra_sor_writel(sor, 0, SOR_SUPER_STATE0);
@@ -1256,50 +1017,31 @@ static void tegra_sor_mode_set(struct tegra_sor *sor,
 	 */
 
 	value = ((mode->vtotal & 0x7fff) << 16) | (mode->htotal & 0x7fff);
-<<<<<<< HEAD
 	tegra_sor_writel(sor, value, sor->soc->regs->head_state1 + dc->pipe);
-=======
-	tegra_sor_writel(sor, value, SOR_HEAD_STATE1(dc->pipe));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* sync end = sync width - 1 */
 	vse = mode->vsync_end - mode->vsync_start - 1;
 	hse = mode->hsync_end - mode->hsync_start - 1;
 
 	value = ((vse & 0x7fff) << 16) | (hse & 0x7fff);
-<<<<<<< HEAD
 	tegra_sor_writel(sor, value, sor->soc->regs->head_state2 + dc->pipe);
-=======
-	tegra_sor_writel(sor, value, SOR_HEAD_STATE2(dc->pipe));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* blank end = sync end + back porch */
 	vbe = vse + (mode->vtotal - mode->vsync_end);
 	hbe = hse + (mode->htotal - mode->hsync_end);
 
 	value = ((vbe & 0x7fff) << 16) | (hbe & 0x7fff);
-<<<<<<< HEAD
 	tegra_sor_writel(sor, value, sor->soc->regs->head_state3 + dc->pipe);
-=======
-	tegra_sor_writel(sor, value, SOR_HEAD_STATE3(dc->pipe));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* blank start = blank end + active */
 	vbs = vbe + mode->vdisplay;
 	hbs = hbe + mode->hdisplay;
 
 	value = ((vbs & 0x7fff) << 16) | (hbs & 0x7fff);
-<<<<<<< HEAD
 	tegra_sor_writel(sor, value, sor->soc->regs->head_state4 + dc->pipe);
 
 	/* XXX interlacing support */
 	tegra_sor_writel(sor, 0x001, sor->soc->regs->head_state5 + dc->pipe);
-=======
-	tegra_sor_writel(sor, value, SOR_HEAD_STATE4(dc->pipe));
-
-	/* XXX interlacing support */
-	tegra_sor_writel(sor, 0x001, SOR_HEAD_STATE5(dc->pipe));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int tegra_sor_detach(struct tegra_sor *sor)
@@ -1376,7 +1118,6 @@ static int tegra_sor_power_down(struct tegra_sor *sor)
 
 	/* switch to safe parent clock */
 	err = tegra_sor_set_parent_clock(sor, sor->clk_safe);
-<<<<<<< HEAD
 	if (err < 0) {
 		dev_err(sor->dev, "failed to set safe parent clock: %d\n", err);
 		return err;
@@ -1386,15 +1127,6 @@ static int tegra_sor_power_down(struct tegra_sor *sor)
 	value &= ~(SOR_DP_PADCTL_PD_TXD_3 | SOR_DP_PADCTL_PD_TXD_0 |
 		   SOR_DP_PADCTL_PD_TXD_1 | SOR_DP_PADCTL_PD_TXD_2);
 	tegra_sor_writel(sor, value, sor->soc->regs->dp_padctl0);
-=======
-	if (err < 0)
-		dev_err(sor->dev, "failed to set safe parent clock: %d\n", err);
-
-	value = tegra_sor_readl(sor, SOR_DP_PADCTL0);
-	value &= ~(SOR_DP_PADCTL_PD_TXD_3 | SOR_DP_PADCTL_PD_TXD_0 |
-		   SOR_DP_PADCTL_PD_TXD_1 | SOR_DP_PADCTL_PD_TXD_2);
-	tegra_sor_writel(sor, value, SOR_DP_PADCTL0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* stop lane sequencer */
 	value = SOR_LANE_SEQ_CTL_TRIGGER | SOR_LANE_SEQ_CTL_SEQUENCE_UP |
@@ -1414,7 +1146,6 @@ static int tegra_sor_power_down(struct tegra_sor *sor)
 	if ((value & SOR_LANE_SEQ_CTL_TRIGGER) != 0)
 		return -ETIMEDOUT;
 
-<<<<<<< HEAD
 	value = tegra_sor_readl(sor, sor->soc->regs->pll2);
 	value |= SOR_PLL2_PORT_POWERDOWN;
 	tegra_sor_writel(sor, value, sor->soc->regs->pll2);
@@ -1429,22 +1160,6 @@ static int tegra_sor_power_down(struct tegra_sor *sor)
 	value |= SOR_PLL2_SEQ_PLLCAPPD;
 	value |= SOR_PLL2_SEQ_PLLCAPPD_ENFORCE;
 	tegra_sor_writel(sor, value, sor->soc->regs->pll2);
-=======
-	value = tegra_sor_readl(sor, SOR_PLL2);
-	value |= SOR_PLL2_PORT_POWERDOWN;
-	tegra_sor_writel(sor, value, SOR_PLL2);
-
-	usleep_range(20, 100);
-
-	value = tegra_sor_readl(sor, SOR_PLL0);
-	value |= SOR_PLL0_VCOPD | SOR_PLL0_PWR;
-	tegra_sor_writel(sor, value, SOR_PLL0);
-
-	value = tegra_sor_readl(sor, SOR_PLL2);
-	value |= SOR_PLL2_SEQ_PLLCAPPD;
-	value |= SOR_PLL2_SEQ_PLLCAPPD_ENFORCE;
-	tegra_sor_writel(sor, value, SOR_PLL2);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	usleep_range(20, 100);
 
@@ -1510,7 +1225,6 @@ unlock:
 	return err;
 }
 
-<<<<<<< HEAD
 #define DEBUGFS_REG32(_name) { .name = #_name, .offset = _name }
 
 static const struct debugfs_reg32 tegra_sor_regs[] = {
@@ -1631,18 +1345,13 @@ static const struct debugfs_reg32 tegra_sor_regs[] = {
 	DEBUGFS_REG32(SOR_DP_LQ_CSTM2),
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int tegra_sor_show_regs(struct seq_file *s, void *data)
 {
 	struct drm_info_node *node = s->private;
 	struct tegra_sor *sor = node->info_ent->data;
 	struct drm_crtc *crtc = sor->output.encoder.crtc;
 	struct drm_device *drm = node->minor->dev;
-<<<<<<< HEAD
 	unsigned int i;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err = 0;
 
 	drm_modeset_lock_all(drm);
@@ -1652,135 +1361,12 @@ static int tegra_sor_show_regs(struct seq_file *s, void *data)
 		goto unlock;
 	}
 
-<<<<<<< HEAD
 	for (i = 0; i < ARRAY_SIZE(tegra_sor_regs); i++) {
 		unsigned int offset = tegra_sor_regs[i].offset;
 
 		seq_printf(s, "%-38s %#05x %08x\n", tegra_sor_regs[i].name,
 			   offset, tegra_sor_readl(sor, offset));
 	}
-=======
-#define DUMP_REG(name)						\
-	seq_printf(s, "%-38s %#05x %08x\n", #name, name,	\
-		   tegra_sor_readl(sor, name))
-
-	DUMP_REG(SOR_CTXSW);
-	DUMP_REG(SOR_SUPER_STATE0);
-	DUMP_REG(SOR_SUPER_STATE1);
-	DUMP_REG(SOR_STATE0);
-	DUMP_REG(SOR_STATE1);
-	DUMP_REG(SOR_HEAD_STATE0(0));
-	DUMP_REG(SOR_HEAD_STATE0(1));
-	DUMP_REG(SOR_HEAD_STATE1(0));
-	DUMP_REG(SOR_HEAD_STATE1(1));
-	DUMP_REG(SOR_HEAD_STATE2(0));
-	DUMP_REG(SOR_HEAD_STATE2(1));
-	DUMP_REG(SOR_HEAD_STATE3(0));
-	DUMP_REG(SOR_HEAD_STATE3(1));
-	DUMP_REG(SOR_HEAD_STATE4(0));
-	DUMP_REG(SOR_HEAD_STATE4(1));
-	DUMP_REG(SOR_HEAD_STATE5(0));
-	DUMP_REG(SOR_HEAD_STATE5(1));
-	DUMP_REG(SOR_CRC_CNTRL);
-	DUMP_REG(SOR_DP_DEBUG_MVID);
-	DUMP_REG(SOR_CLK_CNTRL);
-	DUMP_REG(SOR_CAP);
-	DUMP_REG(SOR_PWR);
-	DUMP_REG(SOR_TEST);
-	DUMP_REG(SOR_PLL0);
-	DUMP_REG(SOR_PLL1);
-	DUMP_REG(SOR_PLL2);
-	DUMP_REG(SOR_PLL3);
-	DUMP_REG(SOR_CSTM);
-	DUMP_REG(SOR_LVDS);
-	DUMP_REG(SOR_CRCA);
-	DUMP_REG(SOR_CRCB);
-	DUMP_REG(SOR_BLANK);
-	DUMP_REG(SOR_SEQ_CTL);
-	DUMP_REG(SOR_LANE_SEQ_CTL);
-	DUMP_REG(SOR_SEQ_INST(0));
-	DUMP_REG(SOR_SEQ_INST(1));
-	DUMP_REG(SOR_SEQ_INST(2));
-	DUMP_REG(SOR_SEQ_INST(3));
-	DUMP_REG(SOR_SEQ_INST(4));
-	DUMP_REG(SOR_SEQ_INST(5));
-	DUMP_REG(SOR_SEQ_INST(6));
-	DUMP_REG(SOR_SEQ_INST(7));
-	DUMP_REG(SOR_SEQ_INST(8));
-	DUMP_REG(SOR_SEQ_INST(9));
-	DUMP_REG(SOR_SEQ_INST(10));
-	DUMP_REG(SOR_SEQ_INST(11));
-	DUMP_REG(SOR_SEQ_INST(12));
-	DUMP_REG(SOR_SEQ_INST(13));
-	DUMP_REG(SOR_SEQ_INST(14));
-	DUMP_REG(SOR_SEQ_INST(15));
-	DUMP_REG(SOR_PWM_DIV);
-	DUMP_REG(SOR_PWM_CTL);
-	DUMP_REG(SOR_VCRC_A0);
-	DUMP_REG(SOR_VCRC_A1);
-	DUMP_REG(SOR_VCRC_B0);
-	DUMP_REG(SOR_VCRC_B1);
-	DUMP_REG(SOR_CCRC_A0);
-	DUMP_REG(SOR_CCRC_A1);
-	DUMP_REG(SOR_CCRC_B0);
-	DUMP_REG(SOR_CCRC_B1);
-	DUMP_REG(SOR_EDATA_A0);
-	DUMP_REG(SOR_EDATA_A1);
-	DUMP_REG(SOR_EDATA_B0);
-	DUMP_REG(SOR_EDATA_B1);
-	DUMP_REG(SOR_COUNT_A0);
-	DUMP_REG(SOR_COUNT_A1);
-	DUMP_REG(SOR_COUNT_B0);
-	DUMP_REG(SOR_COUNT_B1);
-	DUMP_REG(SOR_DEBUG_A0);
-	DUMP_REG(SOR_DEBUG_A1);
-	DUMP_REG(SOR_DEBUG_B0);
-	DUMP_REG(SOR_DEBUG_B1);
-	DUMP_REG(SOR_TRIG);
-	DUMP_REG(SOR_MSCHECK);
-	DUMP_REG(SOR_XBAR_CTRL);
-	DUMP_REG(SOR_XBAR_POL);
-	DUMP_REG(SOR_DP_LINKCTL0);
-	DUMP_REG(SOR_DP_LINKCTL1);
-	DUMP_REG(SOR_LANE_DRIVE_CURRENT0);
-	DUMP_REG(SOR_LANE_DRIVE_CURRENT1);
-	DUMP_REG(SOR_LANE4_DRIVE_CURRENT0);
-	DUMP_REG(SOR_LANE4_DRIVE_CURRENT1);
-	DUMP_REG(SOR_LANE_PREEMPHASIS0);
-	DUMP_REG(SOR_LANE_PREEMPHASIS1);
-	DUMP_REG(SOR_LANE4_PREEMPHASIS0);
-	DUMP_REG(SOR_LANE4_PREEMPHASIS1);
-	DUMP_REG(SOR_LANE_POSTCURSOR0);
-	DUMP_REG(SOR_LANE_POSTCURSOR1);
-	DUMP_REG(SOR_DP_CONFIG0);
-	DUMP_REG(SOR_DP_CONFIG1);
-	DUMP_REG(SOR_DP_MN0);
-	DUMP_REG(SOR_DP_MN1);
-	DUMP_REG(SOR_DP_PADCTL0);
-	DUMP_REG(SOR_DP_PADCTL1);
-	DUMP_REG(SOR_DP_DEBUG0);
-	DUMP_REG(SOR_DP_DEBUG1);
-	DUMP_REG(SOR_DP_SPARE0);
-	DUMP_REG(SOR_DP_SPARE1);
-	DUMP_REG(SOR_DP_AUDIO_CTRL);
-	DUMP_REG(SOR_DP_AUDIO_HBLANK_SYMBOLS);
-	DUMP_REG(SOR_DP_AUDIO_VBLANK_SYMBOLS);
-	DUMP_REG(SOR_DP_GENERIC_INFOFRAME_HEADER);
-	DUMP_REG(SOR_DP_GENERIC_INFOFRAME_SUBPACK0);
-	DUMP_REG(SOR_DP_GENERIC_INFOFRAME_SUBPACK1);
-	DUMP_REG(SOR_DP_GENERIC_INFOFRAME_SUBPACK2);
-	DUMP_REG(SOR_DP_GENERIC_INFOFRAME_SUBPACK3);
-	DUMP_REG(SOR_DP_GENERIC_INFOFRAME_SUBPACK4);
-	DUMP_REG(SOR_DP_GENERIC_INFOFRAME_SUBPACK5);
-	DUMP_REG(SOR_DP_GENERIC_INFOFRAME_SUBPACK6);
-	DUMP_REG(SOR_DP_TPG);
-	DUMP_REG(SOR_DP_TPG_CONFIG);
-	DUMP_REG(SOR_DP_LQ_CSTM0);
-	DUMP_REG(SOR_DP_LQ_CSTM1);
-	DUMP_REG(SOR_DP_LQ_CSTM2);
-
-#undef DUMP_REG
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 unlock:
 	drm_modeset_unlock_all(drm);
@@ -1792,7 +1378,6 @@ static const struct drm_info_list debugfs_files[] = {
 	{ "regs", tegra_sor_show_regs, 0, NULL },
 };
 
-<<<<<<< HEAD
 static int tegra_sor_late_register(struct drm_connector *connector)
 {
 	struct tegra_output *output = connector_to_output(connector);
@@ -1814,43 +1399,11 @@ static int tegra_sor_late_register(struct drm_connector *connector)
 	if (err < 0)
 		goto free;
 
-=======
-static int tegra_sor_debugfs_init(struct tegra_sor *sor,
-				  struct drm_minor *minor)
-{
-	const char *name = sor->soc->supports_dp ? "sor1" : "sor";
-	unsigned int i;
-	int err;
-
-	sor->debugfs = debugfs_create_dir(name, minor->debugfs_root);
-	if (!sor->debugfs)
-		return -ENOMEM;
-
-	sor->debugfs_files = kmemdup(debugfs_files, sizeof(debugfs_files),
-				     GFP_KERNEL);
-	if (!sor->debugfs_files) {
-		err = -ENOMEM;
-		goto remove;
-	}
-
-	for (i = 0; i < ARRAY_SIZE(debugfs_files); i++)
-		sor->debugfs_files[i].data = sor;
-
-	err = drm_debugfs_create_files(sor->debugfs_files,
-				       ARRAY_SIZE(debugfs_files),
-				       sor->debugfs, minor);
-	if (err < 0)
-		goto free;
-
-	sor->minor = minor;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 free:
 	kfree(sor->debugfs_files);
 	sor->debugfs_files = NULL;
-<<<<<<< HEAD
 
 	return err;
 }
@@ -1865,25 +1418,6 @@ static void tegra_sor_early_unregister(struct drm_connector *connector)
 				 connector->dev->primary);
 	kfree(sor->debugfs_files);
 	sor->debugfs_files = NULL;
-=======
-remove:
-	debugfs_remove_recursive(sor->debugfs);
-	sor->debugfs = NULL;
-	return err;
-}
-
-static void tegra_sor_debugfs_exit(struct tegra_sor *sor)
-{
-	drm_debugfs_remove_files(sor->debugfs_files, ARRAY_SIZE(debugfs_files),
-				 sor->minor);
-	sor->minor = NULL;
-
-	kfree(sor->debugfs_files);
-	sor->debugfs_files = NULL;
-
-	debugfs_remove_recursive(sor->debugfs);
-	sor->debugfs = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void tegra_sor_connector_reset(struct drm_connector *connector)
@@ -1936,11 +1470,8 @@ static const struct drm_connector_funcs tegra_sor_connector_funcs = {
 	.destroy = tegra_output_connector_destroy,
 	.atomic_duplicate_state = tegra_sor_connector_duplicate_state,
 	.atomic_destroy_state = drm_atomic_helper_connector_destroy_state,
-<<<<<<< HEAD
 	.late_register = tegra_sor_late_register,
 	.early_unregister = tegra_sor_early_unregister,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int tegra_sor_connector_get_modes(struct drm_connector *connector)
@@ -1964,13 +1495,6 @@ static enum drm_mode_status
 tegra_sor_connector_mode_valid(struct drm_connector *connector,
 			       struct drm_display_mode *mode)
 {
-<<<<<<< HEAD
-=======
-	/* HDMI 2.0 modes are not yet supported */
-	if (mode->clock > 340000)
-		return MODE_NOCLOCK;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return MODE_OK;
 }
 
@@ -2007,11 +1531,7 @@ static void tegra_sor_edp_disable(struct drm_encoder *encoder)
 	 */
 	if (dc) {
 		value = tegra_dc_readl(dc, DC_DISP_DISP_WIN_OPTIONS);
-<<<<<<< HEAD
 		value &= ~SOR_ENABLE(0);
-=======
-		value &= ~SOR_ENABLE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		tegra_dc_writel(dc, value, DC_DISP_DISP_WIN_OPTIONS);
 
 		tegra_dc_commit(dc);
@@ -2027,15 +1547,9 @@ static void tegra_sor_edp_disable(struct drm_encoder *encoder)
 			dev_err(sor->dev, "failed to disable DP: %d\n", err);
 	}
 
-<<<<<<< HEAD
 	err = tegra_io_pad_power_disable(sor->pad);
 	if (err < 0)
 		dev_err(sor->dev, "failed to power off I/O pad: %d\n", err);
-=======
-	err = tegra_io_rail_power_off(TEGRA_IO_RAIL_LVDS);
-	if (err < 0)
-		dev_err(sor->dev, "failed to power off I/O rail: %d\n", err);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (output->panel)
 		drm_panel_unprepare(output->panel);
@@ -2133,7 +1647,6 @@ static void tegra_sor_edp_enable(struct drm_encoder *encoder)
 	value |= SOR_CLK_CNTRL_DP_CLK_SEL_SINGLE_DPCLK;
 	tegra_sor_writel(sor, value, SOR_CLK_CNTRL);
 
-<<<<<<< HEAD
 	value = tegra_sor_readl(sor, sor->soc->regs->pll2);
 	value &= ~SOR_PLL2_BANDGAP_POWERDOWN;
 	tegra_sor_writel(sor, value, sor->soc->regs->pll2);
@@ -2158,49 +1671,16 @@ static void tegra_sor_edp_enable(struct drm_encoder *encoder)
 
 	while (true) {
 		value = tegra_sor_readl(sor, sor->soc->regs->pll2);
-=======
-	value = tegra_sor_readl(sor, SOR_PLL2);
-	value &= ~SOR_PLL2_BANDGAP_POWERDOWN;
-	tegra_sor_writel(sor, value, SOR_PLL2);
-	usleep_range(20, 100);
-
-	value = tegra_sor_readl(sor, SOR_PLL3);
-	value |= SOR_PLL3_PLL_VDD_MODE_3V3;
-	tegra_sor_writel(sor, value, SOR_PLL3);
-
-	value = SOR_PLL0_ICHPMP(0xf) | SOR_PLL0_VCOCAP_RST |
-		SOR_PLL0_PLLREG_LEVEL_V45 | SOR_PLL0_RESISTOR_EXT;
-	tegra_sor_writel(sor, value, SOR_PLL0);
-
-	value = tegra_sor_readl(sor, SOR_PLL2);
-	value |= SOR_PLL2_SEQ_PLLCAPPD;
-	value &= ~SOR_PLL2_SEQ_PLLCAPPD_ENFORCE;
-	value |= SOR_PLL2_LVDS_ENABLE;
-	tegra_sor_writel(sor, value, SOR_PLL2);
-
-	value = SOR_PLL1_TERM_COMPOUT | SOR_PLL1_TMDS_TERM;
-	tegra_sor_writel(sor, value, SOR_PLL1);
-
-	while (true) {
-		value = tegra_sor_readl(sor, SOR_PLL2);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if ((value & SOR_PLL2_SEQ_PLLCAPPD_ENFORCE) == 0)
 			break;
 
 		usleep_range(250, 1000);
 	}
 
-<<<<<<< HEAD
 	value = tegra_sor_readl(sor, sor->soc->regs->pll2);
 	value &= ~SOR_PLL2_POWERDOWN_OVERRIDE;
 	value &= ~SOR_PLL2_PORT_POWERDOWN;
 	tegra_sor_writel(sor, value, sor->soc->regs->pll2);
-=======
-	value = tegra_sor_readl(sor, SOR_PLL2);
-	value &= ~SOR_PLL2_POWERDOWN_OVERRIDE;
-	value &= ~SOR_PLL2_PORT_POWERDOWN;
-	tegra_sor_writel(sor, value, SOR_PLL2);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * power up
@@ -2213,7 +1693,6 @@ static void tegra_sor_edp_enable(struct drm_encoder *encoder)
 	tegra_sor_writel(sor, value, SOR_CLK_CNTRL);
 
 	/* step 1 */
-<<<<<<< HEAD
 	value = tegra_sor_readl(sor, sor->soc->regs->pll2);
 	value |= SOR_PLL2_SEQ_PLLCAPPD_ENFORCE | SOR_PLL2_PORT_POWERDOWN |
 		 SOR_PLL2_BANDGAP_POWERDOWN;
@@ -2231,43 +1710,17 @@ static void tegra_sor_edp_enable(struct drm_encoder *encoder)
 	err = tegra_io_pad_power_enable(sor->pad);
 	if (err < 0)
 		dev_err(sor->dev, "failed to power on I/O pad: %d\n", err);
-=======
-	value = tegra_sor_readl(sor, SOR_PLL2);
-	value |= SOR_PLL2_SEQ_PLLCAPPD_ENFORCE | SOR_PLL2_PORT_POWERDOWN |
-		 SOR_PLL2_BANDGAP_POWERDOWN;
-	tegra_sor_writel(sor, value, SOR_PLL2);
-
-	value = tegra_sor_readl(sor, SOR_PLL0);
-	value |= SOR_PLL0_VCOPD | SOR_PLL0_PWR;
-	tegra_sor_writel(sor, value, SOR_PLL0);
-
-	value = tegra_sor_readl(sor, SOR_DP_PADCTL0);
-	value &= ~SOR_DP_PADCTL_PAD_CAL_PD;
-	tegra_sor_writel(sor, value, SOR_DP_PADCTL0);
-
-	/* step 2 */
-	err = tegra_io_rail_power_on(TEGRA_IO_RAIL_LVDS);
-	if (err < 0)
-		dev_err(sor->dev, "failed to power on I/O rail: %d\n", err);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	usleep_range(5, 100);
 
 	/* step 3 */
-<<<<<<< HEAD
 	value = tegra_sor_readl(sor, sor->soc->regs->pll2);
 	value &= ~SOR_PLL2_BANDGAP_POWERDOWN;
 	tegra_sor_writel(sor, value, sor->soc->regs->pll2);
-=======
-	value = tegra_sor_readl(sor, SOR_PLL2);
-	value &= ~SOR_PLL2_BANDGAP_POWERDOWN;
-	tegra_sor_writel(sor, value, SOR_PLL2);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	usleep_range(20, 100);
 
 	/* step 4 */
-<<<<<<< HEAD
 	value = tegra_sor_readl(sor, sor->soc->regs->pll0);
 	value &= ~SOR_PLL0_VCOPD;
 	value &= ~SOR_PLL0_PWR;
@@ -2276,29 +1729,13 @@ static void tegra_sor_edp_enable(struct drm_encoder *encoder)
 	value = tegra_sor_readl(sor, sor->soc->regs->pll2);
 	value &= ~SOR_PLL2_SEQ_PLLCAPPD_ENFORCE;
 	tegra_sor_writel(sor, value, sor->soc->regs->pll2);
-=======
-	value = tegra_sor_readl(sor, SOR_PLL0);
-	value &= ~SOR_PLL0_VCOPD;
-	value &= ~SOR_PLL0_PWR;
-	tegra_sor_writel(sor, value, SOR_PLL0);
-
-	value = tegra_sor_readl(sor, SOR_PLL2);
-	value &= ~SOR_PLL2_SEQ_PLLCAPPD_ENFORCE;
-	tegra_sor_writel(sor, value, SOR_PLL2);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	usleep_range(200, 1000);
 
 	/* step 5 */
-<<<<<<< HEAD
 	value = tegra_sor_readl(sor, sor->soc->regs->pll2);
 	value &= ~SOR_PLL2_PORT_POWERDOWN;
 	tegra_sor_writel(sor, value, sor->soc->regs->pll2);
-=======
-	value = tegra_sor_readl(sor, SOR_PLL2);
-	value &= ~SOR_PLL2_PORT_POWERDOWN;
-	tegra_sor_writel(sor, value, SOR_PLL2);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* XXX not in TRM */
 	for (value = 0, i = 0; i < 5; i++)
@@ -2314,11 +1751,7 @@ static void tegra_sor_edp_enable(struct drm_encoder *encoder)
 		dev_err(sor->dev, "failed to set parent clock: %d\n", err);
 
 	/* power DP lanes */
-<<<<<<< HEAD
 	value = tegra_sor_readl(sor, sor->soc->regs->dp_padctl0);
-=======
-	value = tegra_sor_readl(sor, SOR_DP_PADCTL0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (link.num_lanes <= 2)
 		value &= ~(SOR_DP_PADCTL_PD_TXD_3 | SOR_DP_PADCTL_PD_TXD_2);
@@ -2335,11 +1768,7 @@ static void tegra_sor_edp_enable(struct drm_encoder *encoder)
 	else
 		value |= SOR_DP_PADCTL_PD_TXD_0;
 
-<<<<<<< HEAD
 	tegra_sor_writel(sor, value, sor->soc->regs->dp_padctl0);
-=======
-	tegra_sor_writel(sor, value, SOR_DP_PADCTL0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	value = tegra_sor_readl(sor, SOR_DP_LINKCTL0);
 	value &= ~SOR_DP_LINKCTL_LANE_COUNT_MASK;
@@ -2383,15 +1812,9 @@ static void tegra_sor_edp_enable(struct drm_encoder *encoder)
 	tegra_sor_writel(sor, value, SOR_DP_TPG);
 
 	/* enable pad calibration logic */
-<<<<<<< HEAD
 	value = tegra_sor_readl(sor, sor->soc->regs->dp_padctl0);
 	value |= SOR_DP_PADCTL_PAD_CAL_PD;
 	tegra_sor_writel(sor, value, sor->soc->regs->dp_padctl0);
-=======
-	value = tegra_sor_readl(sor, SOR_DP_PADCTL0);
-	value |= SOR_DP_PADCTL_PAD_CAL_PD;
-	tegra_sor_writel(sor, value, SOR_DP_PADCTL0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = drm_dp_link_probe(sor->aux, &link);
 	if (err < 0)
@@ -2464,11 +1887,7 @@ static void tegra_sor_edp_enable(struct drm_encoder *encoder)
 	tegra_sor_update(sor);
 
 	value = tegra_dc_readl(dc, DC_DISP_DISP_WIN_OPTIONS);
-<<<<<<< HEAD
 	value |= SOR_ENABLE(0);
-=======
-	value |= SOR_ENABLE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tegra_dc_writel(dc, value, DC_DISP_DISP_WIN_OPTIONS);
 
 	tegra_dc_commit(dc);
@@ -2500,7 +1919,6 @@ tegra_sor_encoder_atomic_check(struct drm_encoder *encoder,
 
 	info = &output->connector.display_info;
 
-<<<<<<< HEAD
 	/*
 	 * For HBR2 modes, the SOR brick needs to use the x20 multiplier, so
 	 * the pixel clock must be corrected accordingly.
@@ -2513,8 +1931,6 @@ tegra_sor_encoder_atomic_check(struct drm_encoder *encoder,
 		state->pclk = pclk;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = tegra_dc_state_setup_clock(dc, crtc_state, sor->clk_parent,
 					 pclk, 0);
 	if (err < 0) {
@@ -2665,7 +2081,6 @@ tegra_sor_hdmi_find_settings(struct tegra_sor *sor, unsigned long frequency)
 	return NULL;
 }
 
-<<<<<<< HEAD
 static void tegra_sor_hdmi_disable_scrambling(struct tegra_sor *sor)
 {
 	u32 value;
@@ -2741,8 +2156,6 @@ static void tegra_sor_hdmi_scdc_start(struct tegra_sor *sor)
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void tegra_sor_hdmi_disable(struct drm_encoder *encoder)
 {
 	struct tegra_output *output = encoder_to_output(encoder);
@@ -2751,11 +2164,8 @@ static void tegra_sor_hdmi_disable(struct drm_encoder *encoder)
 	u32 value;
 	int err;
 
-<<<<<<< HEAD
 	tegra_sor_hdmi_scdc_stop(sor);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = tegra_sor_detach(sor);
 	if (err < 0)
 		dev_err(sor->dev, "failed to detach SOR: %d\n", err);
@@ -2765,17 +2175,12 @@ static void tegra_sor_hdmi_disable(struct drm_encoder *encoder)
 
 	/* disable display to SOR clock */
 	value = tegra_dc_readl(dc, DC_DISP_DISP_WIN_OPTIONS);
-<<<<<<< HEAD
 
 	if (!sor->soc->has_nvdisplay)
 		value &= ~(SOR1_TIMING_CYA | SOR_ENABLE(1));
 	else
 		value &= ~SOR_ENABLE(sor->index);
 
-=======
-	value &= ~SOR1_TIMING_CYA;
-	value &= ~SOR1_ENABLE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tegra_dc_writel(dc, value, DC_DISP_DISP_WIN_OPTIONS);
 
 	tegra_dc_commit(dc);
@@ -2784,15 +2189,9 @@ static void tegra_sor_hdmi_disable(struct drm_encoder *encoder)
 	if (err < 0)
 		dev_err(sor->dev, "failed to power down SOR: %d\n", err);
 
-<<<<<<< HEAD
 	err = tegra_io_pad_power_disable(sor->pad);
 	if (err < 0)
 		dev_err(sor->dev, "failed to power off I/O pad: %d\n", err);
-=======
-	err = tegra_io_rail_power_off(TEGRA_IO_RAIL_HDMI);
-	if (err < 0)
-		dev_err(sor->dev, "failed to power off HDMI rail: %d\n", err);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pm_runtime_put(sor->dev);
 }
@@ -2806,26 +2205,19 @@ static void tegra_sor_hdmi_enable(struct drm_encoder *encoder)
 	struct tegra_sor *sor = to_sor(output);
 	struct tegra_sor_state *state;
 	struct drm_display_mode *mode;
-<<<<<<< HEAD
 	unsigned long rate, pclk;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int div, i;
 	u32 value;
 	int err;
 
 	state = to_sor_state(output->connector.state);
 	mode = &encoder->crtc->state->adjusted_mode;
-<<<<<<< HEAD
 	pclk = mode->clock * 1000;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pm_runtime_get_sync(sor->dev);
 
 	/* switch to safe parent clock */
 	err = tegra_sor_set_parent_clock(sor, sor->clk_safe);
-<<<<<<< HEAD
 	if (err < 0) {
 		dev_err(sor->dev, "failed to set safe parent clock: %d\n", err);
 		return;
@@ -2871,51 +2263,6 @@ static void tegra_sor_hdmi_enable(struct drm_encoder *encoder)
 	value |= SOR_DP_PADCTL_PD_TXD_3 | SOR_DP_PADCTL_PD_TXD_0 |
 		 SOR_DP_PADCTL_PD_TXD_1 | SOR_DP_PADCTL_PD_TXD_2;
 	tegra_sor_writel(sor, value, sor->soc->regs->dp_padctl0);
-=======
-	if (err < 0)
-		dev_err(sor->dev, "failed to set safe parent clock: %d\n", err);
-
-	div = clk_get_rate(sor->clk) / 1000000 * 4;
-
-	err = tegra_io_rail_power_on(TEGRA_IO_RAIL_HDMI);
-	if (err < 0)
-		dev_err(sor->dev, "failed to power on HDMI rail: %d\n", err);
-
-	usleep_range(20, 100);
-
-	value = tegra_sor_readl(sor, SOR_PLL2);
-	value &= ~SOR_PLL2_BANDGAP_POWERDOWN;
-	tegra_sor_writel(sor, value, SOR_PLL2);
-
-	usleep_range(20, 100);
-
-	value = tegra_sor_readl(sor, SOR_PLL3);
-	value &= ~SOR_PLL3_PLL_VDD_MODE_3V3;
-	tegra_sor_writel(sor, value, SOR_PLL3);
-
-	value = tegra_sor_readl(sor, SOR_PLL0);
-	value &= ~SOR_PLL0_VCOPD;
-	value &= ~SOR_PLL0_PWR;
-	tegra_sor_writel(sor, value, SOR_PLL0);
-
-	value = tegra_sor_readl(sor, SOR_PLL2);
-	value &= ~SOR_PLL2_SEQ_PLLCAPPD_ENFORCE;
-	tegra_sor_writel(sor, value, SOR_PLL2);
-
-	usleep_range(200, 400);
-
-	value = tegra_sor_readl(sor, SOR_PLL2);
-	value &= ~SOR_PLL2_POWERDOWN_OVERRIDE;
-	value &= ~SOR_PLL2_PORT_POWERDOWN;
-	tegra_sor_writel(sor, value, SOR_PLL2);
-
-	usleep_range(20, 100);
-
-	value = tegra_sor_readl(sor, SOR_DP_PADCTL0);
-	value |= SOR_DP_PADCTL_PD_TXD_3 | SOR_DP_PADCTL_PD_TXD_0 |
-		 SOR_DP_PADCTL_PD_TXD_1 | SOR_DP_PADCTL_PD_TXD_2;
-	tegra_sor_writel(sor, value, SOR_DP_PADCTL0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	while (true) {
 		value = tegra_sor_readl(sor, SOR_LANE_SEQ_CTL);
@@ -2941,7 +2288,6 @@ static void tegra_sor_hdmi_enable(struct drm_encoder *encoder)
 	value &= ~SOR_CLK_CNTRL_DP_LINK_SPEED_MASK;
 	value &= ~SOR_CLK_CNTRL_DP_CLK_SEL_MASK;
 
-<<<<<<< HEAD
 	if (mode->clock < 340000) {
 		DRM_DEBUG_KMS("setting 2.7 GHz link speed\n");
 		value |= SOR_CLK_CNTRL_DP_LINK_SPEED_G2_70;
@@ -2949,17 +2295,10 @@ static void tegra_sor_hdmi_enable(struct drm_encoder *encoder)
 		DRM_DEBUG_KMS("setting 5.4 GHz link speed\n");
 		value |= SOR_CLK_CNTRL_DP_LINK_SPEED_G5_40;
 	}
-=======
-	if (mode->clock < 340000)
-		value |= SOR_CLK_CNTRL_DP_LINK_SPEED_G2_70;
-	else
-		value |= SOR_CLK_CNTRL_DP_LINK_SPEED_G5_40;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	value |= SOR_CLK_CNTRL_DP_CLK_SEL_SINGLE_PCLK;
 	tegra_sor_writel(sor, value, SOR_CLK_CNTRL);
 
-<<<<<<< HEAD
 	/* SOR pad PLL stabilization time */
 	usleep_range(250, 1000);
 
@@ -2973,12 +2312,6 @@ static void tegra_sor_hdmi_enable(struct drm_encoder *encoder)
 	value &= ~SOR_DP_SPARE_PANEL_INTERNAL;
 	value &= ~SOR_DP_SPARE_SEQ_ENABLE;
 	value &= ~SOR_DP_SPARE_MACRO_SOR_CLK;
-=======
-	value = tegra_sor_readl(sor, SOR_DP_SPARE0);
-	value |= SOR_DP_SPARE_DISP_VIDEO_PREAMBLE;
-	value &= ~SOR_DP_SPARE_PANEL_INTERNAL;
-	value |= SOR_DP_SPARE_SEQ_ENABLE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tegra_sor_writel(sor, value, SOR_DP_SPARE0);
 
 	value = SOR_SEQ_CTL_PU_PC(0) | SOR_SEQ_CTL_PU_PC_ALT(0) |
@@ -2990,17 +2323,11 @@ static void tegra_sor_hdmi_enable(struct drm_encoder *encoder)
 	tegra_sor_writel(sor, value, SOR_SEQ_INST(0));
 	tegra_sor_writel(sor, value, SOR_SEQ_INST(8));
 
-<<<<<<< HEAD
 	if (!sor->soc->has_nvdisplay) {
 		/* program the reference clock */
 		value = SOR_REFCLK_DIV_INT(div) | SOR_REFCLK_DIV_FRAC(div);
 		tegra_sor_writel(sor, value, SOR_REFCLK);
 	}
-=======
-	/* program the reference clock */
-	value = SOR_REFCLK_DIV_INT(div) | SOR_REFCLK_DIV_FRAC(div);
-	tegra_sor_writel(sor, value, SOR_REFCLK);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* XXX not in TRM */
 	for (value = 0, i = 0; i < 5; i++)
@@ -3011,7 +2338,6 @@ static void tegra_sor_hdmi_enable(struct drm_encoder *encoder)
 	tegra_sor_writel(sor, value, SOR_XBAR_CTRL);
 
 	/* switch to parent clock */
-<<<<<<< HEAD
 	err = clk_set_parent(sor->clk, sor->clk_parent);
 	if (err < 0) {
 		dev_err(sor->dev, "failed to set parent clock: %d\n", err);
@@ -3043,23 +2369,6 @@ static void tegra_sor_hdmi_enable(struct drm_encoder *encoder)
 
 		tegra_sor_writel(sor, value, SOR_INPUT_CONTROL);
 	}
-=======
-	err = clk_set_parent(sor->clk_src, sor->clk_parent);
-	if (err < 0)
-		dev_err(sor->dev, "failed to set source clock: %d\n", err);
-
-	err = tegra_sor_set_parent_clock(sor, sor->clk_src);
-	if (err < 0)
-		dev_err(sor->dev, "failed to set parent clock: %d\n", err);
-
-	value = SOR_INPUT_CONTROL_HDMI_SRC_SELECT(dc->pipe);
-
-	/* XXX is this the proper check? */
-	if (mode->clock < 75000)
-		value |= SOR_INPUT_CONTROL_ARM_VIDEO_RANGE_LIMITED;
-
-	tegra_sor_writel(sor, value, SOR_INPUT_CONTROL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	max_ac = ((mode->htotal - mode->hdisplay) - SOR_REKEY - 18) / 32;
 
@@ -3067,7 +2376,6 @@ static void tegra_sor_hdmi_enable(struct drm_encoder *encoder)
 		SOR_HDMI_CTRL_AUDIO_LAYOUT | SOR_HDMI_CTRL_REKEY(SOR_REKEY);
 	tegra_sor_writel(sor, value, SOR_HDMI_CTRL);
 
-<<<<<<< HEAD
 	if (!dc->soc->has_nvdisplay) {
 		/* H_PULSE2 setup */
 		pulse_start = h_ref_to_sync +
@@ -3085,22 +2393,6 @@ static void tegra_sor_hdmi_enable(struct drm_encoder *encoder)
 		value |= H_PULSE2_ENABLE;
 		tegra_dc_writel(dc, value, DC_DISP_DISP_SIGNAL_OPTIONS0);
 	}
-=======
-	/* H_PULSE2 setup */
-	pulse_start = h_ref_to_sync + (mode->hsync_end - mode->hsync_start) +
-		      (mode->htotal - mode->hsync_end) - 10;
-
-	value = PULSE_LAST_END_A | PULSE_QUAL_VACTIVE |
-		PULSE_POLARITY_HIGH | PULSE_MODE_NORMAL;
-	tegra_dc_writel(dc, value, DC_DISP_H_PULSE2_CONTROL);
-
-	value = PULSE_END(pulse_start + 8) | PULSE_START(pulse_start);
-	tegra_dc_writel(dc, value, DC_DISP_H_PULSE2_POSITION_A);
-
-	value = tegra_dc_readl(dc, DC_DISP_DISP_SIGNAL_OPTIONS0);
-	value |= H_PULSE2_ENABLE;
-	tegra_dc_writel(dc, value, DC_DISP_DISP_SIGNAL_OPTIONS0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* infoframe setup */
 	err = tegra_sor_hdmi_setup_avi_infoframe(sor, mode);
@@ -3117,15 +2409,9 @@ static void tegra_sor_hdmi_enable(struct drm_encoder *encoder)
 	tegra_sor_writel(sor, value, SOR_STATE1);
 
 	/* power up pad calibration */
-<<<<<<< HEAD
 	value = tegra_sor_readl(sor, sor->soc->regs->dp_padctl0);
 	value &= ~SOR_DP_PADCTL_PAD_CAL_PD;
 	tegra_sor_writel(sor, value, sor->soc->regs->dp_padctl0);
-=======
-	value = tegra_sor_readl(sor, SOR_DP_PADCTL0);
-	value &= ~SOR_DP_PADCTL_PAD_CAL_PD;
-	tegra_sor_writel(sor, value, SOR_DP_PADCTL0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* production settings */
 	settings = tegra_sor_hdmi_find_settings(sor, mode->clock * 1000);
@@ -3135,7 +2421,6 @@ static void tegra_sor_hdmi_enable(struct drm_encoder *encoder)
 		return;
 	}
 
-<<<<<<< HEAD
 	value = tegra_sor_readl(sor, sor->soc->regs->pll0);
 	value &= ~SOR_PLL0_ICHPMP_MASK;
 	value &= ~SOR_PLL0_FILTER_MASK;
@@ -3198,53 +2483,6 @@ static void tegra_sor_hdmi_enable(struct drm_encoder *encoder)
 		value = VSYNC_H_POSITION(1);
 		tegra_dc_writel(dc, value, DC_DISP_DISP_TIMING_OPTIONS);
 	}
-=======
-	value = tegra_sor_readl(sor, SOR_PLL0);
-	value &= ~SOR_PLL0_ICHPMP_MASK;
-	value &= ~SOR_PLL0_VCOCAP_MASK;
-	value |= SOR_PLL0_ICHPMP(settings->ichpmp);
-	value |= SOR_PLL0_VCOCAP(settings->vcocap);
-	tegra_sor_writel(sor, value, SOR_PLL0);
-
-	tegra_sor_dp_term_calibrate(sor);
-
-	value = tegra_sor_readl(sor, SOR_PLL1);
-	value &= ~SOR_PLL1_LOADADJ_MASK;
-	value |= SOR_PLL1_LOADADJ(settings->loadadj);
-	tegra_sor_writel(sor, value, SOR_PLL1);
-
-	value = tegra_sor_readl(sor, SOR_PLL3);
-	value &= ~SOR_PLL3_BG_VREF_LEVEL_MASK;
-	value |= SOR_PLL3_BG_VREF_LEVEL(settings->bg_vref);
-	tegra_sor_writel(sor, value, SOR_PLL3);
-
-	value = settings->drive_current[0] << 24 |
-		settings->drive_current[1] << 16 |
-		settings->drive_current[2] <<  8 |
-		settings->drive_current[3] <<  0;
-	tegra_sor_writel(sor, value, SOR_LANE_DRIVE_CURRENT0);
-
-	value = settings->preemphasis[0] << 24 |
-		settings->preemphasis[1] << 16 |
-		settings->preemphasis[2] <<  8 |
-		settings->preemphasis[3] <<  0;
-	tegra_sor_writel(sor, value, SOR_LANE_PREEMPHASIS0);
-
-	value = tegra_sor_readl(sor, SOR_DP_PADCTL0);
-	value &= ~SOR_DP_PADCTL_TX_PU_MASK;
-	value |= SOR_DP_PADCTL_TX_PU_ENABLE;
-	value |= SOR_DP_PADCTL_TX_PU(settings->tx_pu);
-	tegra_sor_writel(sor, value, SOR_DP_PADCTL0);
-
-	/* power down pad calibration */
-	value = tegra_sor_readl(sor, SOR_DP_PADCTL0);
-	value |= SOR_DP_PADCTL_PAD_CAL_PD;
-	tegra_sor_writel(sor, value, SOR_DP_PADCTL0);
-
-	/* miscellaneous display controller settings */
-	value = VSYNC_H_POSITION(1);
-	tegra_dc_writel(dc, value, DC_DISP_DISP_TIMING_OPTIONS);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	value = tegra_dc_readl(dc, DC_DISP_DISP_COLOR_CONTROL);
 	value &= ~DITHER_CONTROL_MASK;
@@ -3259,7 +2497,6 @@ static void tegra_sor_hdmi_enable(struct drm_encoder *encoder)
 		value |= BASE_COLOR_SIZE_888;
 		break;
 
-<<<<<<< HEAD
 	case 10:
 		value |= BASE_COLOR_SIZE_101010;
 		break;
@@ -3268,8 +2505,6 @@ static void tegra_sor_hdmi_enable(struct drm_encoder *encoder)
 		value |= BASE_COLOR_SIZE_121212;
 		break;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		WARN(1, "%u bits-per-color not supported\n", state->bpc);
 		value |= BASE_COLOR_SIZE_888;
@@ -3278,21 +2513,17 @@ static void tegra_sor_hdmi_enable(struct drm_encoder *encoder)
 
 	tegra_dc_writel(dc, value, DC_DISP_DISP_COLOR_CONTROL);
 
-<<<<<<< HEAD
 	/* XXX set display head owner */
 	value = tegra_sor_readl(sor, SOR_STATE1);
 	value &= ~SOR_STATE_ASY_OWNER_MASK;
 	value |= SOR_STATE_ASY_OWNER(1 + dc->pipe);
 	tegra_sor_writel(sor, value, SOR_STATE1);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = tegra_sor_power_up(sor, 250);
 	if (err < 0)
 		dev_err(sor->dev, "failed to power up SOR: %d\n", err);
 
 	/* configure dynamic range of output */
-<<<<<<< HEAD
 	value = tegra_sor_readl(sor, sor->soc->regs->head_state0 + dc->pipe);
 	value &= ~SOR_HEAD_STATE_RANGECOMPRESS_MASK;
 	value &= ~SOR_HEAD_STATE_DYNRANGE_MASK;
@@ -3303,38 +2534,22 @@ static void tegra_sor_hdmi_enable(struct drm_encoder *encoder)
 	value &= ~SOR_HEAD_STATE_COLORSPACE_MASK;
 	value |= SOR_HEAD_STATE_COLORSPACE_RGB;
 	tegra_sor_writel(sor, value, sor->soc->regs->head_state0 + dc->pipe);
-=======
-	value = tegra_sor_readl(sor, SOR_HEAD_STATE0(dc->pipe));
-	value &= ~SOR_HEAD_STATE_RANGECOMPRESS_MASK;
-	value &= ~SOR_HEAD_STATE_DYNRANGE_MASK;
-	tegra_sor_writel(sor, value, SOR_HEAD_STATE0(dc->pipe));
-
-	/* configure colorspace */
-	value = tegra_sor_readl(sor, SOR_HEAD_STATE0(dc->pipe));
-	value &= ~SOR_HEAD_STATE_COLORSPACE_MASK;
-	value |= SOR_HEAD_STATE_COLORSPACE_RGB;
-	tegra_sor_writel(sor, value, SOR_HEAD_STATE0(dc->pipe));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tegra_sor_mode_set(sor, mode, state);
 
 	tegra_sor_update(sor);
 
-<<<<<<< HEAD
 	/* program preamble timing in SOR (XXX) */
 	value = tegra_sor_readl(sor, SOR_DP_SPARE0);
 	value &= ~SOR_DP_SPARE_DISP_VIDEO_PREAMBLE;
 	tegra_sor_writel(sor, value, SOR_DP_SPARE0);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = tegra_sor_attach(sor);
 	if (err < 0)
 		dev_err(sor->dev, "failed to attach SOR: %d\n", err);
 
 	/* enable display to SOR clock and generate HDMI preamble */
 	value = tegra_dc_readl(dc, DC_DISP_DISP_WIN_OPTIONS);
-<<<<<<< HEAD
 
 	if (!sor->soc->has_nvdisplay)
 		value |= SOR_ENABLE(1) | SOR1_TIMING_CYA;
@@ -3350,21 +2565,13 @@ static void tegra_sor_hdmi_enable(struct drm_encoder *encoder)
 		tegra_dc_writel(dc, value, DC_DISP_CORE_SOR_SET_CONTROL(sor->index));
 	}
 
-=======
-	value |= SOR1_ENABLE | SOR1_TIMING_CYA;
-	tegra_dc_writel(dc, value, DC_DISP_DISP_WIN_OPTIONS);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tegra_dc_commit(dc);
 
 	err = tegra_sor_wakeup(sor);
 	if (err < 0)
 		dev_err(sor->dev, "failed to wakeup SOR: %d\n", err);
-<<<<<<< HEAD
 
 	tegra_sor_hdmi_scdc_start(sor);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct drm_encoder_helper_funcs tegra_sor_hdmi_helpers = {
@@ -3415,11 +2622,7 @@ static int tegra_sor_init(struct host1x_client *client)
 			 encoder, NULL);
 	drm_encoder_helper_add(&sor->output.encoder, helpers);
 
-<<<<<<< HEAD
 	drm_connector_attach_encoder(&sor->output.connector,
-=======
-	drm_mode_connector_attach_encoder(&sor->output.connector,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  &sor->output.encoder);
 	drm_connector_register(&sor->output.connector);
 
@@ -3429,17 +2632,7 @@ static int tegra_sor_init(struct host1x_client *client)
 		return err;
 	}
 
-<<<<<<< HEAD
 	tegra_output_find_possible_crtcs(&sor->output, drm);
-=======
-	sor->output.encoder.possible_crtcs = 0x3;
-
-	if (IS_ENABLED(CONFIG_DEBUG_FS)) {
-		err = tegra_sor_debugfs_init(sor, drm->primary);
-		if (err < 0)
-			dev_err(sor->dev, "debugfs setup failed: %d\n", err);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (sor->aux) {
 		err = drm_dp_aux_attach(sor->aux, &sor->output);
@@ -3509,12 +2702,6 @@ static int tegra_sor_exit(struct host1x_client *client)
 	clk_disable_unprepare(sor->clk_dp);
 	clk_disable_unprepare(sor->clk);
 
-<<<<<<< HEAD
-=======
-	if (IS_ENABLED(CONFIG_DEBUG_FS))
-		tegra_sor_debugfs_exit(sor);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -3572,11 +2759,8 @@ static int tegra_sor_hdmi_probe(struct tegra_sor *sor)
 		return err;
 	}
 
-<<<<<<< HEAD
 	INIT_DELAYED_WORK(&sor->scdc, tegra_sor_hdmi_scdc_work);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -3599,7 +2783,6 @@ static const u8 tegra124_sor_xbar_cfg[5] = {
 	0, 1, 2, 3, 4
 };
 
-<<<<<<< HEAD
 static const struct tegra_sor_regs tegra124_sor_regs = {
 	.head_state0 = 0x05,
 	.head_state1 = 0x07,
@@ -3615,14 +2798,11 @@ static const struct tegra_sor_regs tegra124_sor_regs = {
 	.dp_padctl2 = 0x73,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct tegra_sor_soc tegra124_sor = {
 	.supports_edp = true,
 	.supports_lvds = true,
 	.supports_hdmi = false,
 	.supports_dp = false,
-<<<<<<< HEAD
 	.regs = &tegra124_sor_regs,
 	.has_nvdisplay = false,
 	.xbar_cfg = tegra124_sor_xbar_cfg,
@@ -3643,21 +2823,13 @@ static const struct tegra_sor_regs tegra210_sor_regs = {
 	.dp_padctl2 = 0x73,
 };
 
-=======
-	.xbar_cfg = tegra124_sor_xbar_cfg,
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct tegra_sor_soc tegra210_sor = {
 	.supports_edp = true,
 	.supports_lvds = false,
 	.supports_hdmi = false,
 	.supports_dp = false,
-<<<<<<< HEAD
 	.regs = &tegra210_sor_regs,
 	.has_nvdisplay = false,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.xbar_cfg = tegra124_sor_xbar_cfg,
 };
 
@@ -3671,19 +2843,15 @@ static const struct tegra_sor_soc tegra210_sor1 = {
 	.supports_hdmi = true,
 	.supports_dp = true,
 
-<<<<<<< HEAD
 	.regs = &tegra210_sor_regs,
 	.has_nvdisplay = false,
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.num_settings = ARRAY_SIZE(tegra210_sor_hdmi_defaults),
 	.settings = tegra210_sor_hdmi_defaults,
 
 	.xbar_cfg = tegra210_sor_xbar_cfg,
 };
 
-<<<<<<< HEAD
 static const struct tegra_sor_regs tegra186_sor_regs = {
 	.head_state0 = 0x151,
 	.head_state1 = 0x154,
@@ -3729,9 +2897,6 @@ static const struct tegra_sor_soc tegra186_sor1 = {
 static const struct of_device_id tegra_sor_of_match[] = {
 	{ .compatible = "nvidia,tegra186-sor1", .data = &tegra186_sor1 },
 	{ .compatible = "nvidia,tegra186-sor", .data = &tegra186_sor },
-=======
-static const struct of_device_id tegra_sor_of_match[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ .compatible = "nvidia,tegra210-sor1", .data = &tegra210_sor1 },
 	{ .compatible = "nvidia,tegra210-sor", .data = &tegra210_sor },
 	{ .compatible = "nvidia,tegra124-sor", .data = &tegra124_sor },
@@ -3739,7 +2904,6 @@ static const struct of_device_id tegra_sor_of_match[] = {
 };
 MODULE_DEVICE_TABLE(of, tegra_sor_of_match);
 
-<<<<<<< HEAD
 static int tegra_sor_parse_dt(struct tegra_sor *sor)
 {
 	struct device_node *np = sor->dev->of_node;
@@ -3765,32 +2929,17 @@ static int tegra_sor_parse_dt(struct tegra_sor *sor)
 
 static int tegra_sor_probe(struct platform_device *pdev)
 {
-=======
-static int tegra_sor_probe(struct platform_device *pdev)
-{
-	const struct of_device_id *match;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct device_node *np;
 	struct tegra_sor *sor;
 	struct resource *regs;
 	int err;
 
-<<<<<<< HEAD
-=======
-	match = of_match_device(tegra_sor_of_match, &pdev->dev);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sor = devm_kzalloc(&pdev->dev, sizeof(*sor), GFP_KERNEL);
 	if (!sor)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	sor->soc = of_device_get_match_data(&pdev->dev);
 	sor->output.dev = sor->dev = &pdev->dev;
-=======
-	sor->output.dev = sor->dev = &pdev->dev;
-	sor->soc = match->data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sor->settings = devm_kmemdup(&pdev->dev, sor->soc->settings,
 				     sor->soc->num_settings *
@@ -3813,10 +2962,7 @@ static int tegra_sor_probe(struct platform_device *pdev)
 	if (!sor->aux) {
 		if (sor->soc->supports_hdmi) {
 			sor->ops = &tegra_sor_hdmi_ops;
-<<<<<<< HEAD
 			sor->pad = TEGRA_IO_PAD_HDMI;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else if (sor->soc->supports_lvds) {
 			dev_err(&pdev->dev, "LVDS not supported yet\n");
 			return -ENODEV;
@@ -3827,10 +2973,7 @@ static int tegra_sor_probe(struct platform_device *pdev)
 	} else {
 		if (sor->soc->supports_edp) {
 			sor->ops = &tegra_sor_edp_ops;
-<<<<<<< HEAD
 			sor->pad = TEGRA_IO_PAD_LVDS;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else if (sor->soc->supports_dp) {
 			dev_err(&pdev->dev, "DisplayPort not supported yet\n");
 			return -ENODEV;
@@ -3840,13 +2983,10 @@ static int tegra_sor_probe(struct platform_device *pdev)
 		}
 	}
 
-<<<<<<< HEAD
 	err = tegra_sor_parse_dt(sor);
 	if (err < 0)
 		return err;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = tegra_output_probe(&sor->output);
 	if (err < 0) {
 		dev_err(&pdev->dev, "failed to probe output: %d\n", err);
@@ -3887,7 +3027,6 @@ static int tegra_sor_probe(struct platform_device *pdev)
 	}
 
 	if (sor->soc->supports_hdmi || sor->soc->supports_dp) {
-<<<<<<< HEAD
 		struct device_node *np = pdev->dev.of_node;
 		const char *name;
 
@@ -3911,15 +3050,6 @@ static int tegra_sor_probe(struct platform_device *pdev)
 	} else {
 		/* fall back to the module clock on SOR0 (eDP/LVDS only) */
 		sor->clk_out = sor->clk;
-=======
-		sor->clk_src = devm_clk_get(&pdev->dev, "source");
-		if (IS_ERR(sor->clk_src)) {
-			err = PTR_ERR(sor->clk_src);
-			dev_err(sor->dev, "failed to get source clock: %d\n",
-				err);
-			goto remove;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	sor->clk_parent = devm_clk_get(&pdev->dev, "parent");
@@ -3943,7 +3073,6 @@ static int tegra_sor_probe(struct platform_device *pdev)
 		goto remove;
 	}
 
-<<<<<<< HEAD
 	/*
 	 * Starting with Tegra186, the BPMP provides an implementation for
 	 * the pad output clock, so we have to look it up from device tree.
@@ -3998,18 +3127,6 @@ static int tegra_sor_probe(struct platform_device *pdev)
 		err = PTR_ERR(sor->clk_pad);
 		dev_err(&pdev->dev, "failed to register SOR pad clock: %d\n",
 			err);
-=======
-	platform_set_drvdata(pdev, sor);
-	pm_runtime_enable(&pdev->dev);
-
-	pm_runtime_get_sync(&pdev->dev);
-	sor->clk_brick = tegra_clk_sor_brick_register(sor, "sor1_brick");
-	pm_runtime_put(&pdev->dev);
-
-	if (IS_ERR(sor->clk_brick)) {
-		err = PTR_ERR(sor->clk_brick);
-		dev_err(&pdev->dev, "failed to register SOR clock: %d\n", err);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto remove;
 	}
 

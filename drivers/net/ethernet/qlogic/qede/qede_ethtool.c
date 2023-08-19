@@ -161,10 +161,7 @@ static const struct {
 	QEDE_STAT(no_buff_discards),
 	QEDE_PF_STAT(mftag_filter_discards),
 	QEDE_PF_STAT(mac_filter_discards),
-<<<<<<< HEAD
 	QEDE_PF_STAT(gft_filter_drop),
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	QEDE_STAT(tx_err_drop_pkts),
 	QEDE_STAT(ttl0_discard),
 	QEDE_STAT(packet_too_big_discard),
@@ -174,11 +171,8 @@ static const struct {
 	QEDE_STAT(coalesced_aborts_num),
 	QEDE_STAT(non_coalesced_pkts),
 	QEDE_STAT(coalesced_bytes),
-<<<<<<< HEAD
 
 	QEDE_STAT(link_change_count),
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define QEDE_NUM_STATS	ARRAY_SIZE(qede_stats_arr)
@@ -228,11 +222,7 @@ static void qede_get_strings_stats_txq(struct qede_dev *edev,
 				QEDE_TXQ_XDP_TO_IDX(edev, txq),
 				qede_tqstats_arr[i].string);
 		else
-<<<<<<< HEAD
 			sprintf(*buf, "%d_%d: %s", txq->index, txq->cos,
-=======
-			sprintf(*buf, "%d: %s", txq->index,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				qede_tqstats_arr[i].string);
 		*buf += ETH_GSTRING_LEN;
 	}
@@ -272,7 +262,6 @@ static void qede_get_strings_stats(struct qede_dev *edev, u8 *buf)
 		if (fp->type & QEDE_FASTPATH_XDP)
 			qede_get_strings_stats_txq(edev, fp->xdp_tx, &buf);
 
-<<<<<<< HEAD
 		if (fp->type & QEDE_FASTPATH_TX) {
 			int cos;
 
@@ -280,10 +269,6 @@ static void qede_get_strings_stats(struct qede_dev *edev, u8 *buf)
 				qede_get_strings_stats_txq(edev,
 							   &fp->txq[cos], &buf);
 		}
-=======
-		if (fp->type & QEDE_FASTPATH_TX)
-			qede_get_strings_stats_txq(edev, fp->txq, &buf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Account for non-queue statistics */
@@ -358,17 +343,12 @@ static void qede_get_ethtool_stats(struct net_device *dev,
 		if (fp->type & QEDE_FASTPATH_XDP)
 			qede_get_ethtool_stats_txq(fp->xdp_tx, &buf);
 
-<<<<<<< HEAD
 		if (fp->type & QEDE_FASTPATH_TX) {
 			int cos;
 
 			for_each_cos_in_txq(edev, cos)
 				qede_get_ethtool_stats_txq(&fp->txq[cos], &buf);
 		}
-=======
-		if (fp->type & QEDE_FASTPATH_TX)
-			qede_get_ethtool_stats_txq(fp->txq, &buf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	for (i = 0; i < QEDE_NUM_STATS; i++) {
@@ -395,12 +375,8 @@ static int qede_get_sset_count(struct net_device *dev, int stringset)
 				num_stats--;
 
 		/* Account for the Regular Tx statistics */
-<<<<<<< HEAD
 		num_stats += QEDE_TSS_COUNT(edev) * QEDE_NUM_TQSTATS *
 				edev->dev_info.num_tc;
-=======
-		num_stats += QEDE_TSS_COUNT(edev) * QEDE_NUM_TQSTATS;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Account for the Regular Rx statistics */
 		num_stats += QEDE_RSS_COUNT(edev) * QEDE_NUM_RQSTATS;
@@ -736,7 +712,6 @@ static u32 qede_get_link(struct net_device *dev)
 	return current_link.link_up;
 }
 
-<<<<<<< HEAD
 static int qede_flash_device(struct net_device *dev,
 			     struct ethtool_flash *flash)
 {
@@ -745,8 +720,6 @@ static int qede_flash_device(struct net_device *dev,
 	return edev->ops->common->nvm_flash(edev->cdev, flash->data);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int qede_get_coalesce(struct net_device *dev,
 			     struct ethtool_coalesce *coal)
 {
@@ -778,7 +751,6 @@ static int qede_get_coalesce(struct net_device *dev,
 		}
 
 		for_each_queue(i) {
-<<<<<<< HEAD
 			struct qede_tx_queue *txq;
 
 			fp = &edev->fp_array[i];
@@ -790,11 +762,6 @@ static int qede_get_coalesce(struct net_device *dev,
 			if (fp->type & QEDE_FASTPATH_TX) {
 				txq = QEDE_FP_TC0_TXQ(fp);
 				tx_handle = txq->handle;
-=======
-			fp = &edev->fp_array[i];
-			if (fp->type & QEDE_FASTPATH_TX) {
-				tx_handle = fp->txq->handle;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				break;
 			}
 		}
@@ -852,7 +819,6 @@ static int qede_set_coalesce(struct net_device *dev,
 		}
 
 		if (edev->fp_array[i].type & QEDE_FASTPATH_TX) {
-<<<<<<< HEAD
 			struct qede_tx_queue *txq;
 
 			/* All TX queues of given fastpath uses same
@@ -864,11 +830,6 @@ static int qede_set_coalesce(struct net_device *dev,
 			rc = edev->ops->common->set_coalesce(edev->cdev,
 							     0, txc,
 							     txq->handle);
-=======
-			rc = edev->ops->common->set_coalesce(edev->cdev,
-							     0, txc,
-							     fp->txq->handle);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (rc) {
 				DP_INFO(edev,
 					"Set TX coalesce error, rc = %d\n", rc);
@@ -1016,12 +977,9 @@ int qede_change_mtu(struct net_device *ndev, int new_mtu)
 	DP_VERBOSE(edev, (NETIF_MSG_IFUP | NETIF_MSG_IFDOWN),
 		   "Configuring MTU size of %d\n", new_mtu);
 
-<<<<<<< HEAD
 	if (new_mtu > PAGE_SIZE)
 		ndev->features &= ~NETIF_F_GRO_HW;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Set the mtu field and re-start the interface if needed */
 	args.u.mtu = new_mtu;
 	args.func = &qede_update_mtu;
@@ -1327,11 +1285,7 @@ static int qede_set_rxnfc(struct net_device *dev, struct ethtool_rxnfc *info)
 		rc = qede_add_cls_rule(edev, info);
 		break;
 	case ETHTOOL_SRXCLSRLDEL:
-<<<<<<< HEAD
 		rc = qede_delete_flow_filter(edev, info->fs.location);
-=======
-		rc = qede_del_cls_rule(edev, info);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		DP_INFO(edev, "Command parameters not supported\n");
@@ -1457,15 +1411,10 @@ static int qede_selftest_transmit_traffic(struct qede_dev *edev,
 	u16 val;
 
 	for_each_queue(i) {
-<<<<<<< HEAD
 		struct qede_fastpath *fp = &edev->fp_array[i];
 
 		if (fp->type & QEDE_FASTPATH_TX) {
 			txq = QEDE_FP_TC0_TXQ(fp);
-=======
-		if (edev->fp_array[i].type & QEDE_FASTPATH_TX) {
-			txq = edev->fp_array[i].txq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 	}
@@ -1590,12 +1539,8 @@ static int qede_selftest_receive_traffic(struct qede_dev *edev)
 		len =  le16_to_cpu(fp_cqe->len_on_first_bd);
 		data_ptr = (u8 *)(page_address(sw_rx_data->data) +
 				  fp_cqe->placement_offset +
-<<<<<<< HEAD
 				  sw_rx_data->page_offset +
 				  rxq->rx_headroom);
-=======
-				  sw_rx_data->page_offset);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ether_addr_equal(data_ptr,  edev->ndev->dev_addr) &&
 		    ether_addr_equal(data_ptr + ETH_ALEN,
 				     edev->ndev->dev_addr)) {
@@ -1863,7 +1808,6 @@ static int qede_set_eee(struct net_device *dev, struct ethtool_eee *edata)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int qede_get_module_info(struct net_device *dev,
 				struct ethtool_modinfo *modinfo)
 {
@@ -1950,8 +1894,6 @@ static int qede_get_module_eeprom(struct net_device *dev,
 	return rc;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct ethtool_ops qede_ethtool_ops = {
 	.get_link_ksettings = qede_get_link_ksettings,
 	.set_link_ksettings = qede_set_link_ksettings,
@@ -1985,20 +1927,14 @@ static const struct ethtool_ops qede_ethtool_ops = {
 	.get_channels = qede_get_channels,
 	.set_channels = qede_set_channels,
 	.self_test = qede_self_test,
-<<<<<<< HEAD
 	.get_module_info = qede_get_module_info,
 	.get_module_eeprom = qede_get_module_eeprom,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.get_eee = qede_get_eee,
 	.set_eee = qede_set_eee,
 
 	.get_tunable = qede_get_tunable,
 	.set_tunable = qede_set_tunable,
-<<<<<<< HEAD
 	.flash_device = qede_flash_device,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct ethtool_ops qede_vf_ethtool_ops = {

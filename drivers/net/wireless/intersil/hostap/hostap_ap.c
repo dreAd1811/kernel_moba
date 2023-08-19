@@ -66,17 +66,10 @@ static void prism2_send_mgmt(struct net_device *dev,
 #endif /* PRISM2_NO_KERNEL_IEEE80211_MGMT */
 
 
-<<<<<<< HEAD
 #if !defined(PRISM2_NO_PROCFS_DEBUG) && defined(CONFIG_PROC_FS)
 static int ap_debug_proc_show(struct seq_file *m, void *v)
 {
 	struct ap_data *ap = PDE_DATA(file_inode(m->file));
-=======
-#ifndef PRISM2_NO_PROCFS_DEBUG
-static int ap_debug_proc_show(struct seq_file *m, void *v)
-{
-	struct ap_data *ap = m->private;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	seq_printf(m, "BridgedUnicastFrames=%u\n", ap->bridged_unicast);
 	seq_printf(m, "BridgedMulticastFrames=%u\n", ap->bridged_multicast);
@@ -88,24 +81,7 @@ static int ap_debug_proc_show(struct seq_file *m, void *v)
 	seq_printf(m, "tx_drop_nonassoc=%u\n", ap->tx_drop_nonassoc);
 	return 0;
 }
-<<<<<<< HEAD
 #endif
-=======
-
-static int ap_debug_proc_open(struct inode *inode, struct file *file)
-{
-	return single_open(file, ap_debug_proc_show, PDE_DATA(inode));
-}
-
-static const struct file_operations ap_debug_proc_fops = {
-	.open		= ap_debug_proc_open,
-	.read		= seq_read,
-	.llseek		= seq_lseek,
-	.release	= single_release,
-};
-#endif /* PRISM2_NO_PROCFS_DEBUG */
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void ap_sta_hash_add(struct ap_data *ap, struct sta_info *sta)
 {
@@ -196,15 +172,9 @@ static void hostap_event_expired_sta(struct net_device *dev,
 
 #ifndef PRISM2_NO_KERNEL_IEEE80211_MGMT
 
-<<<<<<< HEAD
 static void ap_handle_timer(struct timer_list *t)
 {
 	struct sta_info *sta = from_timer(sta, t, timer);
-=======
-static void ap_handle_timer(unsigned long data)
-{
-	struct sta_info *sta = (struct sta_info *) data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	local_info_t *local;
 	struct ap_data *ap;
 	unsigned long next_time = 0;
@@ -350,11 +320,7 @@ void hostap_deauth_all_stas(struct net_device *dev, struct ap_data *ap,
 
 static int ap_control_proc_show(struct seq_file *m, void *v)
 {
-<<<<<<< HEAD
 	struct ap_data *ap = PDE_DATA(file_inode(m->file));
-=======
-	struct ap_data *ap = m->private;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	char *policy_txt;
 	struct mac_entry *entry;
 
@@ -386,32 +352,20 @@ static int ap_control_proc_show(struct seq_file *m, void *v)
 
 static void *ap_control_proc_start(struct seq_file *m, loff_t *_pos)
 {
-<<<<<<< HEAD
 	struct ap_data *ap = PDE_DATA(file_inode(m->file));
-=======
-	struct ap_data *ap = m->private;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_bh(&ap->mac_restrictions.lock);
 	return seq_list_start_head(&ap->mac_restrictions.mac_list, *_pos);
 }
 
 static void *ap_control_proc_next(struct seq_file *m, void *v, loff_t *_pos)
 {
-<<<<<<< HEAD
 	struct ap_data *ap = PDE_DATA(file_inode(m->file));
-=======
-	struct ap_data *ap = m->private;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return seq_list_next(v, &ap->mac_restrictions.mac_list, _pos);
 }
 
 static void ap_control_proc_stop(struct seq_file *m, void *v)
 {
-<<<<<<< HEAD
 	struct ap_data *ap = PDE_DATA(file_inode(m->file));
-=======
-	struct ap_data *ap = m->private;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_bh(&ap->mac_restrictions.lock);
 }
 
@@ -422,27 +376,6 @@ static const struct seq_operations ap_control_proc_seqops = {
 	.show	= ap_control_proc_show,
 };
 
-<<<<<<< HEAD
-=======
-static int ap_control_proc_open(struct inode *inode, struct file *file)
-{
-	int ret = seq_open(file, &ap_control_proc_seqops);
-	if (ret == 0) {
-		struct seq_file *m = file->private_data;
-		m->private = PDE_DATA(inode);
-	}
-	return ret;
-}
-
-static const struct file_operations ap_control_proc_fops = {
-	.open		= ap_control_proc_open,
-	.read		= seq_read,
-	.llseek		= seq_lseek,
-	.release	= seq_release,
-};
-
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int ap_control_add_mac(struct mac_restrictions *mac_restrictions, u8 *mac)
 {
 	struct mac_entry *entry;
@@ -621,32 +554,20 @@ static int prism2_ap_proc_show(struct seq_file *m, void *v)
 
 static void *prism2_ap_proc_start(struct seq_file *m, loff_t *_pos)
 {
-<<<<<<< HEAD
 	struct ap_data *ap = PDE_DATA(file_inode(m->file));
-=======
-	struct ap_data *ap = m->private;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_bh(&ap->sta_table_lock);
 	return seq_list_start_head(&ap->sta_list, *_pos);
 }
 
 static void *prism2_ap_proc_next(struct seq_file *m, void *v, loff_t *_pos)
 {
-<<<<<<< HEAD
 	struct ap_data *ap = PDE_DATA(file_inode(m->file));
-=======
-	struct ap_data *ap = m->private;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return seq_list_next(v, &ap->sta_list, _pos);
 }
 
 static void prism2_ap_proc_stop(struct seq_file *m, void *v)
 {
-<<<<<<< HEAD
 	struct ap_data *ap = PDE_DATA(file_inode(m->file));
-=======
-	struct ap_data *ap = m->private;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_bh(&ap->sta_table_lock);
 }
 
@@ -656,26 +577,6 @@ static const struct seq_operations prism2_ap_proc_seqops = {
 	.stop	= prism2_ap_proc_stop,
 	.show	= prism2_ap_proc_show,
 };
-<<<<<<< HEAD
-=======
-
-static int prism2_ap_proc_open(struct inode *inode, struct file *file)
-{
-	int ret = seq_open(file, &prism2_ap_proc_seqops);
-	if (ret == 0) {
-		struct seq_file *m = file->private_data;
-		m->private = PDE_DATA(inode);
-	}
-	return ret;
-}
-
-static const struct file_operations prism2_ap_proc_fops = {
-	.open		= prism2_ap_proc_open,
-	.read		= seq_read,
-	.llseek		= seq_lseek,
-	.release	= seq_release,
-};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* PRISM2_NO_KERNEL_IEEE80211_MGMT */
 
 
@@ -947,7 +848,6 @@ void hostap_init_ap_proc(local_info_t *local)
 		return;
 
 #ifndef PRISM2_NO_PROCFS_DEBUG
-<<<<<<< HEAD
 	proc_create_single_data("ap_debug", 0, ap->proc, ap_debug_proc_show, ap);
 #endif /* PRISM2_NO_PROCFS_DEBUG */
 
@@ -955,14 +855,6 @@ void hostap_init_ap_proc(local_info_t *local)
 	proc_create_seq_data("ap_control", 0, ap->proc, &ap_control_proc_seqops,
 			ap);
 	proc_create_seq_data("ap", 0, ap->proc, &prism2_ap_proc_seqops, ap);
-=======
-	proc_create_data("ap_debug", 0, ap->proc, &ap_debug_proc_fops, ap);
-#endif /* PRISM2_NO_PROCFS_DEBUG */
-
-#ifndef PRISM2_NO_KERNEL_IEEE80211_MGMT
-	proc_create_data("ap_control", 0, ap->proc, &ap_control_proc_fops, ap);
-	proc_create_data("ap", 0, ap->proc, &prism2_ap_proc_fops, ap);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* PRISM2_NO_KERNEL_IEEE80211_MGMT */
 
 }
@@ -1097,11 +989,7 @@ static void prism2_send_mgmt(struct net_device *dev,
 }
 #endif /* PRISM2_NO_KERNEL_IEEE80211_MGMT */
 
-<<<<<<< HEAD
 #ifdef CONFIG_PROC_FS
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int prism2_sta_proc_show(struct seq_file *m, void *v)
 {
 	struct sta_info *sta = m->private;
@@ -1170,22 +1058,7 @@ static int prism2_sta_proc_show(struct seq_file *m, void *v)
 
 	return 0;
 }
-<<<<<<< HEAD
 #endif
-=======
-
-static int prism2_sta_proc_open(struct inode *inode, struct file *file)
-{
-	return single_open(file, prism2_sta_proc_show, PDE_DATA(inode));
-}
-
-static const struct file_operations prism2_sta_proc_fops = {
-	.open		= prism2_sta_proc_open,
-	.read		= seq_read,
-	.llseek		= seq_lseek,
-	.release	= single_release,
-};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void handle_add_proc_queue(struct work_struct *work)
 {
@@ -1207,15 +1080,9 @@ static void handle_add_proc_queue(struct work_struct *work)
 
 		if (sta) {
 			sprintf(name, "%pM", sta->addr);
-<<<<<<< HEAD
 			sta->proc = proc_create_single_data(
 				name, 0, ap->proc,
 				prism2_sta_proc_show, sta);
-=======
-			sta->proc = proc_create_data(
-				name, 0, ap->proc,
-				&prism2_sta_proc_fops, sta);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			atomic_dec(&sta->users);
 		}
@@ -1264,15 +1131,8 @@ static struct sta_info * ap_add_sta(struct ap_data *ap, u8 *addr)
 	}
 
 #ifndef PRISM2_NO_KERNEL_IEEE80211_MGMT
-<<<<<<< HEAD
 	timer_setup(&sta->timer, ap_handle_timer, 0);
 	sta->timer.expires = jiffies + ap->max_inactivity;
-=======
-	init_timer(&sta->timer);
-	sta->timer.expires = jiffies + ap->max_inactivity;
-	sta->timer.data = (unsigned long) sta;
-	sta->timer.function = ap_handle_timer;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ap->local->hostapd)
 		add_timer(&sta->timer);
 #endif /* PRISM2_NO_KERNEL_IEEE80211_MGMT */
@@ -2648,11 +2508,7 @@ static int prism2_hostapd_add_sta(struct ap_data *ap,
 		sta->supported_rates[0] = 2;
 	if (sta->tx_supp_rates & WLAN_RATE_2M)
 		sta->supported_rates[1] = 4;
-<<<<<<< HEAD
  	if (sta->tx_supp_rates & WLAN_RATE_5M5)
-=======
-	if (sta->tx_supp_rates & WLAN_RATE_5M5)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sta->supported_rates[2] = 11;
 	if (sta->tx_supp_rates & WLAN_RATE_11M)
 		sta->supported_rates[3] = 22;

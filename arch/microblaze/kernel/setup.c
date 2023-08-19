@@ -27,20 +27,12 @@
 #include <linux/param.h>
 #include <linux/pci.h>
 #include <linux/cache.h>
-<<<<<<< HEAD
 #include <linux/of.h>
-=======
-#include <linux/of_platform.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/dma-mapping.h>
 #include <asm/cacheflush.h>
 #include <asm/entry.h>
 #include <asm/cpuinfo.h>
 
-<<<<<<< HEAD
-=======
-#include <asm/prom.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/pgtable.h>
 
 DEFINE_PER_CPU(unsigned int, KSP);	/* Saved kernel stack pointer */
@@ -61,12 +53,9 @@ void __init setup_arch(char **cmdline_p)
 {
 	*cmdline_p = boot_command_line;
 
-<<<<<<< HEAD
 	setup_memory();
 	parse_early_param();
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	console_verbose();
 
 	unflatten_device_tree();
@@ -75,16 +64,6 @@ void __init setup_arch(char **cmdline_p)
 
 	microblaze_cache_init();
 
-<<<<<<< HEAD
-=======
-	setup_memory();
-
-#ifdef CONFIG_EARLY_PRINTK
-	/* remap early console to virtual address */
-	remap_early_printk();
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	xilinx_pci_init();
 
 #if defined(CONFIG_DUMMY_CONSOLE)
@@ -149,13 +128,6 @@ void __init machine_early_init(const char *cmdline, unsigned int ram,
 /* initialize device tree for usage in early_printk */
 	early_init_devtree(_fdt_start);
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_EARLY_PRINTK
-	setup_early_printk(NULL);
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* setup kernel_tlb after BSS cleaning
 	 * Maybe worth to move to asm code */
 	kernel_tlb = tlb0 + tlb1;

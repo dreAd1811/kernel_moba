@@ -97,11 +97,7 @@ static void __exit acpi_custom_method_exit(void)
 {
 	if (cm_dentry)
 		debugfs_remove(cm_dentry);
-<<<<<<< HEAD
 }
-=======
- }
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 module_init(acpi_custom_method_init);
 module_exit(acpi_custom_method_exit);

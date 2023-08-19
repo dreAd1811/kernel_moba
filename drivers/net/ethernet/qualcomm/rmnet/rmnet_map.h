@@ -1,19 +1,5 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
 /* Copyright (c) 2013-2019, The Linux Foundation. All rights reserved. */
-=======
-/* Copyright (c) 2013-2019, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifndef _RMNET_MAP_H_
 #define _RMNET_MAP_H_
@@ -186,7 +172,6 @@ struct rmnet_map_dl_ind_trl {
 struct rmnet_map_dl_ind {
 	u8 priority;
 	union {
-<<<<<<< HEAD
 		void (*dl_hdr_handler)(struct rmnet_map_dl_ind_hdr *dlhdr);
 		void (*dl_hdr_handler_v2)(struct rmnet_map_dl_ind_hdr *dlhdr,
 					  struct
@@ -199,18 +184,6 @@ struct rmnet_map_dl_ind {
 					  struct
 					  rmnet_map_control_command_header
 					  * qcmd);
-=======
-		void (*dl_hdr_handler)(struct rmnet_map_dl_ind_hdr *);
-		void (*dl_hdr_handler_v2)(struct rmnet_map_dl_ind_hdr *,
-					  struct
-					  rmnet_map_control_command_header *);
-	} __aligned(1);
-	union {
-		void (*dl_trl_handler)(struct rmnet_map_dl_ind_trl *);
-		void (*dl_trl_handler_v2)(struct rmnet_map_dl_ind_trl *,
-					  struct
-					  rmnet_map_control_command_header *);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} __aligned(1);
 	struct list_head list;
 };

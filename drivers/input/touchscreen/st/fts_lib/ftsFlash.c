@@ -1,15 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * FTS Capacitive touch screen controller (FingerTipS)
  *
  * Copyright (C) 2016-2019, STMicroelectronics Limited.
-=======
-/*
- * FTS Capacitive touch screen controller (FingerTipS)
- *
- * Copyright (C) 2016-2018, STMicroelectronics Limited.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Authors: AMG(Analog Mems Group) <marco.cali@st.com>
  *
  *
@@ -85,11 +78,8 @@
 #define LOAD_FW_FROM 0
 #endif
 
-<<<<<<< HEAD
 #define FTS_LATEST_VERSION 0x1101
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static char tag[8] = "[ FTS ]\0";
 
 int getFirmwareVersion(u16 *fw_vers, u16 *config_id)
@@ -129,7 +119,6 @@ int getFirmwareVersion(u16 *fw_vers, u16 *config_id)
 	return OK;
 }
 
-<<<<<<< HEAD
 int getFWdata_nocheck(const char *pathToFile, u8 **data, int *size, int from)
 {
 	const struct firmware *fw = NULL;
@@ -162,8 +151,6 @@ int getFWdata_nocheck(const char *pathToFile, u8 **data, int *size, int from)
 	return OK;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int getFWdata(const char *pathToFile, u8 **data, int *size, int from)
 {
 	const struct firmware *fw = NULL;
@@ -189,7 +176,6 @@ int getFWdata(const char *pathToFile, u8 **data, int *size, int from)
 #endif
 	default:
 		logError(0, "%s Read FW from BIN file!\n", tag);
-<<<<<<< HEAD
 
 		if (ftsInfo.u16_fwVer >= FTS_LATEST_VERSION)
 			return ERROR_FW_NO_UPDATE;
@@ -198,12 +184,6 @@ int getFWdata(const char *pathToFile, u8 **data, int *size, int from)
 
 		if (dev != NULL) {
 			res = firmware_request_nowarn(&fw, pathToFile, dev);
-=======
-		dev = getDev();
-
-		if (dev != NULL) {
-			res = request_firmware_direct(&fw, pathToFile, dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (res == 0) {
 				*size = fw->size;
 				*data = (u8 *)kmalloc_array((*size), sizeof(u8),
@@ -277,11 +257,7 @@ int flashProcedure(const char *path, int force, int keep_cx)
 	logError(0, "%s Fw file read COMPLETED!\n", tag);
 
 	logError(0, "%s Starting flashing procedure...\n", tag);
-<<<<<<< HEAD
 	res = flash_burn(&fw, force, keep_cx);
-=======
-	res = flash_burn(fw, force, keep_cx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (res < OK && res != (ERROR_FW_NO_UPDATE | ERROR_FLASH_BURN_FAILED)) {
 		logError(1, "%s %s: ERROR %02X\n",
 			tag, __func__, ERROR_FLASH_PROCEDURE);
@@ -515,22 +491,13 @@ int fillMemory(u32 address, u8 *data, int size)
 	return OK;
 }
 
-<<<<<<< HEAD
 int flash_burn(Firmware *fw, int force_burn, int keep_cx)
-=======
-int flash_burn(Firmware fw, int force_burn, int keep_cx)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u8 cmd;
 	int res;
 
-<<<<<<< HEAD
 	if (!force_burn && (ftsInfo.u16_fwVer >= fw->fw_ver)
 		&& (ftsInfo.u16_cfgId >= fw->config_id)) {
-=======
-	if (!force_burn && (ftsInfo.u16_fwVer >= fw.fw_ver)
-		&& (ftsInfo.u16_cfgId >= fw.config_id)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		logError(0, "Firmware in the chip newer");
 		logError(0, " or equal to the one to burn! ");
 		logError(0, "%s %s:NO UPDATE ERROR %02X\n",
@@ -569,11 +536,7 @@ int flash_burn(Firmware fw, int force_burn, int keep_cx)
 	//Write the lower part of the Program RAM
 	logError(0, "%s 3) PREPARING DATA FOR FLASH BURN:\n", tag);
 
-<<<<<<< HEAD
 	res = fillMemory(FLASH_ADDR_CODE, fw->data, fw->data_size);
-=======
-	res = fillMemory(FLASH_ADDR_CODE, fw.data, fw.data_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (res < 0) {
 		logError(1, "%s Error During filling the memory!%02X\n",
 			tag, ERROR_FLASH_BURN_FAILED);
@@ -642,26 +605,15 @@ int flash_burn(Firmware fw, int force_burn, int keep_cx)
 		return (res | ERROR_FLASH_BURN_FAILED);
 	}
 
-<<<<<<< HEAD
 	if ((ftsInfo.u16_fwVer != fw->fw_ver)
 		&& (ftsInfo.u16_cfgId != fw->config_id)) {
-=======
-	if ((ftsInfo.u16_fwVer != fw.fw_ver)
-		&& (ftsInfo.u16_cfgId != fw.config_id)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		logError(1, "Firmware in the chip different");
 		logError(1, " from the one that was burn!");
 		logError(1, "%s fw: %x != %x , conf: %x != %x\n",
 			tag, ftsInfo.u16_fwVer,
-<<<<<<< HEAD
 			fw->fw_ver,
 			ftsInfo.u16_cfgId,
 			fw->config_id);
-=======
-			fw.fw_ver,
-			ftsInfo.u16_cfgId,
-			fw.config_id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ERROR_FLASH_BURN_FAILED;
 	}
 
@@ -1101,7 +1053,6 @@ int fillFlash(u32 address, u8 *data, int size)
 	return OK;
 }
 
-<<<<<<< HEAD
 int flash_burn(struct Firmware *fw, int force_burn, int keep_cx)
 {
 	int res;
@@ -1110,16 +1061,6 @@ int flash_burn(struct Firmware *fw, int force_burn, int keep_cx)
 		&& (ftsInfo.u16_cfgId >= fw->config_id)) {
 		for (res = EXTERNAL_RELEASE_INFO_SIZE-1; res >= 0; res--) {
 			if (fw->externalRelease[res] >
-=======
-int flash_burn(struct Firmware fw, int force_burn, int keep_cx)
-{
-	int res;
-
-	if (!force_burn && (ftsInfo.u16_fwVer >= fw.fw_ver)
-		&& (ftsInfo.u16_cfgId >= fw.config_id)) {
-		for (res = EXTERNAL_RELEASE_INFO_SIZE-1; res >= 0; res--) {
-			if (fw.externalRelease[res] >
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				ftsInfo.u8_extReleaseInfo[res])
 				goto start;
 		}
@@ -1136,34 +1077,13 @@ start:
 	logError(0, "%s Programming Procedure for flashing started:\n\n", tag);
 
 	logError(0, "%s 1) SYSTEM RESET:\n", tag);
-<<<<<<< HEAD
-=======
-	res = fts_system_reset();
-	if (res < 0) {
-		logError(1, "%s system reset FAILED!\n", tag);
-		/**
-		 * if there is no firmware i will not
-		 * get the controller ready event and
-		 * there will be a timeout but i can
-		 * keep going, but if there is an I2C
-		 * error i have to exit
-		 */
-		if (res != (ERROR_SYSTEM_RESET_FAIL | ERROR_TIMEOUT))
-			return (res | ERROR_FLASH_BURN_FAILED);
-	} else
-		logError(0, "%s system reset COMPLETED!\n\n", tag);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	logError(0, "%s 2) WARM BOOT:\n", tag);
 	res = fts_warm_boot();
 	if (res < OK) {
 		logError(1, "%s warm boot FAILED!\n", tag);
 		return (res | ERROR_FLASH_BURN_FAILED);
-<<<<<<< HEAD
 	}
-=======
-	} /*else*/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	logError(0, "%s warm boot COMPLETED!\n\n", tag);
 
 	//mdelay(FLASH_WAIT_TIME);
@@ -1202,13 +1122,8 @@ start:
 
 	//mdelay(FLASH_WAIT_TIME);
 	logError(0, "%s 6) LOAD PROGRAM:\n", tag);
-<<<<<<< HEAD
 	res = fillFlash(FLASH_ADDR_CODE, (u8 *)(&fw->data[0]),
 					fw->sec0_size);
-=======
-	res = fillFlash(FLASH_ADDR_CODE, &fw.data[0],
-					fw.sec0_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (res < OK) {
 		logError(1, "%s   load program ERROR %02X\n",
 			tag, ERROR_FLASH_BURN_FAILED);
@@ -1217,11 +1132,7 @@ start:
 	logError(0, "%s   load program DONE!\n", tag);
 	logError(0, "%s 7) LOAD CONFIG:\n", tag);
 	res = fillFlash(FLASH_ADDR_CONFIG,
-<<<<<<< HEAD
 		&(fw->data[fw->sec0_size]), fw->sec1_size);
-=======
-		&(fw.data[fw.sec0_size]), fw.sec1_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (res < OK) {
 		logError(1, "%s   load config ERROR %02X\n",
 			tag, ERROR_FLASH_BURN_FAILED);
@@ -1249,7 +1160,6 @@ start:
 		return (res | ERROR_FLASH_BURN_FAILED);
 	}
 
-<<<<<<< HEAD
 	if ((ftsInfo.u16_fwVer != fw->fw_ver)
 		&& (ftsInfo.u16_cfgId != fw->config_id)) {
 		pr_err("Firmware is different from the old!\n");
@@ -1257,18 +1167,6 @@ start:
 			tag, ftsInfo.u16_fwVer, fw->fw_ver,
 			ftsInfo.u16_cfgId, fw->config_id);
 		return ERROR_FLASH_BURN_FAILED;
-=======
-	for (res = 0; res < EXTERNAL_RELEASE_INFO_SIZE; res++) {
-		////external release is prined during readChipInfo
-		if (fw.externalRelease[res] != ftsInfo.u8_extReleaseInfo[res]) {
-			pr_err("Firmware in the chip different from");
-			pr_err(" the one that was burn!");
-			logError(1, "%s fw: %x != %x, conf: %x != %x\n",
-				tag, ftsInfo.u16_fwVer, fw.fw_ver,
-				ftsInfo.u16_cfgId, fw.config_id);
-			return ERROR_FLASH_BURN_FAILED;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	logError(0, "%s Final check OK! fw: %02X , conf: %02X\n",

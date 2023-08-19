@@ -1,11 +1,7 @@
 #ifndef _HFI1_DEBUGFS_H
 #define _HFI1_DEBUGFS_H
 /*
-<<<<<<< HEAD
  * Copyright(c) 2015, 2016, 2018 Intel Corporation.
-=======
- * Copyright(c) 2015, 2016 Intel Corporation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This file is provided under a dual BSD/GPLv2 license.  When using or
  * redistributing this file, you may do so under either license.
@@ -52,7 +48,6 @@
  */
 
 struct hfi1_ibdev;
-<<<<<<< HEAD
 
 #define DEBUGFS_FILE_CREATE(name, parent, data, ops, mode)	\
 do { \
@@ -101,57 +96,12 @@ ssize_t hfi1_seq_read(struct file *file, char __user *buf, size_t size,
 		      loff_t *ppos);
 loff_t hfi1_seq_lseek(struct file *file, loff_t offset, int whence);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_DEBUG_FS
 void hfi1_dbg_ibdev_init(struct hfi1_ibdev *ibd);
 void hfi1_dbg_ibdev_exit(struct hfi1_ibdev *ibd);
 void hfi1_dbg_init(void);
 void hfi1_dbg_exit(void);
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_FAULT_INJECTION
-#include <linux/fault-inject.h>
-struct fault_opcode {
-	struct fault_attr attr;
-	struct dentry *dir;
-	bool fault_by_opcode;
-	u64 n_rxfaults[256];
-	u64 n_txfaults[256];
-	u8 opcode;
-	u8 mask;
-};
-
-struct fault_packet {
-	struct fault_attr attr;
-	struct dentry *dir;
-	bool fault_by_packet;
-	u64 n_faults;
-};
-
-bool hfi1_dbg_fault_opcode(struct rvt_qp *qp, u32 opcode, bool rx);
-bool hfi1_dbg_fault_packet(struct hfi1_packet *packet);
-bool hfi1_dbg_fault_suppress_err(struct hfi1_ibdev *ibd);
-#else
-static inline bool hfi1_dbg_fault_packet(struct hfi1_packet *packet)
-{
-	return false;
-}
-
-static inline bool hfi1_dbg_fault_opcode(struct rvt_qp *qp,
-					 u32 opcode, bool rx)
-{
-	return false;
-}
-
-static inline bool hfi1_dbg_fault_suppress_err(struct hfi1_ibdev *ibd)
-{
-	return false;
-}
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 static inline void hfi1_dbg_ibdev_init(struct hfi1_ibdev *ibd)
 {
@@ -168,25 +118,6 @@ static inline void hfi1_dbg_init(void)
 static inline void hfi1_dbg_exit(void)
 {
 }
-<<<<<<< HEAD
-=======
-
-static inline bool hfi1_dbg_fault_packet(struct hfi1_packet *packet)
-{
-	return false;
-}
-
-static inline bool hfi1_dbg_fault_opcode(struct rvt_qp *qp,
-					 u32 opcode, bool rx)
-{
-	return false;
-}
-
-static inline bool hfi1_dbg_fault_suppress_err(struct hfi1_ibdev *ibd)
-{
-	return false;
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 #endif                          /* _HFI1_DEBUGFS_H */

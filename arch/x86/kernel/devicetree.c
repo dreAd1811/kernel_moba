@@ -2,10 +2,6 @@
 /*
  * Architecture specific OF callbacks.
  */
-<<<<<<< HEAD
-=======
-#include <linux/bootmem.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/export.h>
 #include <linux/io.h>
 #include <linux/interrupt.h>
@@ -43,14 +39,6 @@ void __init early_init_dt_add_memory_arch(u64 base, u64 size)
 	BUG();
 }
 
-<<<<<<< HEAD
-=======
-void * __init early_init_dt_alloc_memory_arch(u64 size, u64 align)
-{
-	return __alloc_bootmem(size, align, __pa(MAX_DMA_ADDRESS));
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void __init add_dtb(u64 data)
 {
 	initial_dtb = data + offsetof(struct setup_data, data);
@@ -143,7 +131,6 @@ static void __init dtb_setup_hpet(void)
 #endif
 }
 
-<<<<<<< HEAD
 #ifdef CONFIG_X86_LOCAL_APIC
 
 static void __init dtb_cpu_setup(void)
@@ -181,44 +168,15 @@ static void __init dtb_lapic_setup(void)
 	/* Did the boot loader setup the local APIC ? */
 	if (!boot_cpu_has(X86_FEATURE_APIC)) {
 		if (apic_force_enable(lapic_addr))
-=======
-static void __init dtb_lapic_setup(void)
-{
-#ifdef CONFIG_X86_LOCAL_APIC
-	struct device_node *dn;
-	struct resource r;
-	int ret;
-
-	dn = of_find_compatible_node(NULL, NULL, "intel,ce4100-lapic");
-	if (!dn)
-		return;
-
-	ret = of_address_to_resource(dn, 0, &r);
-	if (WARN_ON(ret))
-		return;
-
-	/* Did the boot loader setup the local APIC ? */
-	if (!boot_cpu_has(X86_FEATURE_APIC)) {
-		if (apic_force_enable(r.start))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return;
 	}
 	smp_found_config = 1;
 	pic_mode = 1;
-<<<<<<< HEAD
 	register_lapic_address(lapic_addr);
 }
 
 #endif /* CONFIG_X86_LOCAL_APIC */
 
-=======
-	register_lapic_address(r.start);
-	generic_processor_info(boot_cpu_physical_apicid,
-			       GET_APIC_VERSION(apic_read(APIC_LVR)));
-#endif
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_X86_IO_APIC
 static unsigned int ioapic_id;
 
@@ -319,7 +277,6 @@ static void __init dtb_ioapic_setup(void) {}
 
 static void __init dtb_apic_setup(void)
 {
-<<<<<<< HEAD
 #ifdef CONFIG_X86_LOCAL_APIC
 	dtb_lapic_setup();
 	dtb_cpu_setup();
@@ -328,13 +285,6 @@ static void __init dtb_apic_setup(void)
 }
 
 #ifdef CONFIG_OF_EARLY_FLATTREE
-=======
-	dtb_lapic_setup();
-	dtb_ioapic_setup();
-}
-
-#ifdef CONFIG_OF_FLATTREE
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void __init x86_flattree_get_config(void)
 {
 	u32 size, map_len;

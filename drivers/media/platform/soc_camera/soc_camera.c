@@ -481,12 +481,8 @@ static int soc_camera_init_user_formats(struct soc_camera_device *icd)
 		return -ENXIO;
 
 	icd->user_formats =
-<<<<<<< HEAD
 		vmalloc(array_size(fmts,
 				   sizeof(struct soc_camera_format_xlate)));
-=======
-		vmalloc(fmts * sizeof(struct soc_camera_format_xlate));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!icd->user_formats)
 		return -ENOMEM;
 
@@ -792,11 +788,7 @@ static int soc_camera_mmap(struct file *file, struct vm_area_struct *vma)
 	struct soc_camera_host *ici = to_soc_camera_host(icd->parent);
 	int err;
 
-<<<<<<< HEAD
 	dev_dbg(icd->pdev, "mmap called, vma=%p\n", vma);
-=======
-	dev_dbg(icd->pdev, "mmap called, vma=0x%08lx\n", (unsigned long)vma);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (icd->streamer != file)
 		return -EBUSY;
@@ -814,7 +806,6 @@ static int soc_camera_mmap(struct file *file, struct vm_area_struct *vma)
 	return err;
 }
 
-<<<<<<< HEAD
 static __poll_t soc_camera_poll(struct file *file, poll_table *pt)
 {
 	struct soc_camera_device *icd = file->private_data;
@@ -823,16 +814,6 @@ static __poll_t soc_camera_poll(struct file *file, poll_table *pt)
 
 	if (icd->streamer != file)
 		return EPOLLERR;
-=======
-static unsigned int soc_camera_poll(struct file *file, poll_table *pt)
-{
-	struct soc_camera_device *icd = file->private_data;
-	struct soc_camera_host *ici = to_soc_camera_host(icd->parent);
-	unsigned res = POLLERR;
-
-	if (icd->streamer != file)
-		return POLLERR;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&ici->host_lock);
 	res = ici->ops->poll(file, pt);
@@ -1411,15 +1392,12 @@ static int soc_camera_async_complete(struct v4l2_async_notifier *notifier)
 	return 0;
 }
 
-<<<<<<< HEAD
 static const struct v4l2_async_notifier_operations soc_camera_async_ops = {
 	.bound = soc_camera_async_bound,
 	.unbind = soc_camera_async_unbind,
 	.complete = soc_camera_async_complete,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int scan_async_group(struct soc_camera_host *ici,
 			    struct v4l2_async_subdev **asd, unsigned int size)
 {
@@ -1466,13 +1444,7 @@ static int scan_async_group(struct soc_camera_host *ici,
 
 	sasc->notifier.subdevs = asd;
 	sasc->notifier.num_subdevs = size;
-<<<<<<< HEAD
 	sasc->notifier.ops = &soc_camera_async_ops;
-=======
-	sasc->notifier.bound = soc_camera_async_bound;
-	sasc->notifier.unbind = soc_camera_async_unbind;
-	sasc->notifier.complete = soc_camera_async_complete;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	icd->sasc = sasc;
 	icd->parent = ici->v4l2_dev.dev;
@@ -1546,11 +1518,7 @@ static int soc_of_bind(struct soc_camera_host *ici,
 	if (!info)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	info->sasd.asd.match.fwnode = of_fwnode_handle(remote);
-=======
-	info->sasd.asd.match.fwnode.fwnode = of_fwnode_handle(remote);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	info->sasd.asd.match_type = V4L2_ASYNC_MATCH_FWNODE;
 	info->subdev = &info->sasd.asd;
 
@@ -1574,13 +1542,7 @@ static int soc_of_bind(struct soc_camera_host *ici,
 
 	sasc->notifier.subdevs = &info->subdev;
 	sasc->notifier.num_subdevs = 1;
-<<<<<<< HEAD
 	sasc->notifier.ops = &soc_camera_async_ops;
-=======
-	sasc->notifier.bound = soc_camera_async_bound;
-	sasc->notifier.unbind = soc_camera_async_unbind;
-	sasc->notifier.complete = soc_camera_async_complete;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	icd->sasc = sasc;
 	icd->parent = ici->v4l2_dev.dev;
@@ -1827,7 +1789,6 @@ static int default_s_selection(struct soc_camera_device *icd,
 }
 
 static int default_g_parm(struct soc_camera_device *icd,
-<<<<<<< HEAD
 			  struct v4l2_streamparm *a)
 {
 	struct v4l2_subdev *sd = soc_camera_to_subdev(icd);
@@ -1841,19 +1802,6 @@ static int default_s_parm(struct soc_camera_device *icd,
 	struct v4l2_subdev *sd = soc_camera_to_subdev(icd);
 
 	return v4l2_s_parm_cap(icd->vdev, sd, a);
-=======
-			  struct v4l2_streamparm *parm)
-{
-	struct v4l2_subdev *sd = soc_camera_to_subdev(icd);
-	return v4l2_subdev_call(sd, video, g_parm, parm);
-}
-
-static int default_s_parm(struct soc_camera_device *icd,
-			  struct v4l2_streamparm *parm)
-{
-	struct v4l2_subdev *sd = soc_camera_to_subdev(icd);
-	return v4l2_subdev_call(sd, video, s_parm, parm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int default_enum_framesizes(struct soc_camera_device *icd,

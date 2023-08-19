@@ -385,12 +385,8 @@ static int mic_dma_alloc_desc_ring(struct mic_dma_chan *ch)
 	if (dma_mapping_error(dev, ch->desc_ring_micpa))
 		goto map_error;
 
-<<<<<<< HEAD
 	ch->tx_array = vzalloc(array_size(MIC_DMA_DESC_RX_SIZE,
 					  sizeof(*ch->tx_array)));
-=======
-	ch->tx_array = vzalloc(MIC_DMA_DESC_RX_SIZE * sizeof(*ch->tx_array));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ch->tx_array)
 		goto tx_error;
 	return 0;
@@ -474,27 +470,13 @@ static void mic_dma_chan_destroy(struct mic_dma_chan *ch)
 	mic_dma_chan_mask_intr(ch);
 }
 
-<<<<<<< HEAD
-=======
-static void mic_dma_unregister_dma_device(struct mic_dma_device *mic_dma_dev)
-{
-	dma_async_device_unregister(&mic_dma_dev->dma_dev);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mic_dma_setup_irq(struct mic_dma_chan *ch)
 {
 	ch->cookie =
 		to_mbus_hw_ops(ch)->request_threaded_irq(to_mbus_device(ch),
 			mic_dma_intr_handler, mic_dma_thread_fn,
 			"mic dma_channel", ch, ch->ch_num);
-<<<<<<< HEAD
 	return PTR_ERR_OR_ZERO(ch->cookie);
-=======
-	if (IS_ERR(ch->cookie))
-		return PTR_ERR(ch->cookie);
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void mic_dma_free_irq(struct mic_dma_chan *ch)
@@ -643,11 +625,7 @@ static int mic_dma_register_dma_device(struct mic_dma_device *mic_dma_dev,
 		list_add_tail(&mic_dma_dev->mic_ch[i].api_ch.device_node,
 			      &mic_dma_dev->dma_dev.channels);
 	}
-<<<<<<< HEAD
 	return dmaenginem_async_device_register(&mic_dma_dev->dma_dev);
-=======
-	return dma_async_device_register(&mic_dma_dev->dma_dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -661,11 +639,7 @@ static struct mic_dma_device *mic_dma_dev_reg(struct mbus_device *mbdev,
 	int ret;
 	struct device *dev = &mbdev->dev;
 
-<<<<<<< HEAD
 	mic_dma_dev = devm_kzalloc(dev, sizeof(*mic_dma_dev), GFP_KERNEL);
-=======
-	mic_dma_dev = kzalloc(sizeof(*mic_dma_dev), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!mic_dma_dev) {
 		ret = -ENOMEM;
 		goto alloc_error;
@@ -690,10 +664,6 @@ static struct mic_dma_device *mic_dma_dev_reg(struct mbus_device *mbdev,
 reg_error:
 	mic_dma_uninit(mic_dma_dev);
 init_error:
-<<<<<<< HEAD
-=======
-	kfree(mic_dma_dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mic_dma_dev = NULL;
 alloc_error:
 	dev_err(dev, "Error at %s %d ret=%d\n", __func__, __LINE__, ret);
@@ -702,13 +672,7 @@ alloc_error:
 
 static void mic_dma_dev_unreg(struct mic_dma_device *mic_dma_dev)
 {
-<<<<<<< HEAD
 	mic_dma_uninit(mic_dma_dev);
-=======
-	mic_dma_unregister_dma_device(mic_dma_dev);
-	mic_dma_uninit(mic_dma_dev);
-	kfree(mic_dma_dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* DEBUGFS CODE */

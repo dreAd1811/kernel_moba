@@ -91,11 +91,7 @@ struct gscps2port {
 	struct parisc_device *padev;
 	struct serio *port;
 	spinlock_t lock;
-<<<<<<< HEAD
 	char __iomem *addr;
-=======
-	char *addr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 act, append; /* position in buffer[] */
 	struct {
 		u8 data;
@@ -118,11 +114,7 @@ struct gscps2port {
  * wait_TBE() - wait for Transmit Buffer Empty
  */
 
-<<<<<<< HEAD
 static int wait_TBE(char __iomem *addr)
-=======
-static int wait_TBE(char *addr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int timeout = 25000; /* device is expected to react within 250 msec */
 	while (gscps2_readb_status(addr) & GSC_STAT_TBNE) {
@@ -154,22 +146,14 @@ static void gscps2_flush(struct gscps2port *ps2port)
 static inline int gscps2_writeb_output(struct gscps2port *ps2port, u8 data)
 {
 	unsigned long flags;
-<<<<<<< HEAD
 	char __iomem *addr = ps2port->addr;
-=======
-	char *addr = ps2port->addr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!wait_TBE(addr)) {
 		printk(KERN_DEBUG PFX "timeout - could not write byte %#x\n", data);
 		return 0;
 	}
 
-<<<<<<< HEAD
 	while (gscps2_readb_status(addr) & GSC_STAT_RBNE)
-=======
-	while (gscps2_readb_status(ps2port->addr) & GSC_STAT_RBNE)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* wait */;
 
 	spin_lock_irqsave(&ps2port->lock, flags);
@@ -216,20 +200,12 @@ static void gscps2_enable(struct gscps2port *ps2port, int enable)
 
 static void gscps2_reset(struct gscps2port *ps2port)
 {
-<<<<<<< HEAD
-=======
-	char *addr = ps2port->addr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 
 	/* reset the interface */
 	spin_lock_irqsave(&ps2port->lock, flags);
 	gscps2_flush(ps2port);
-<<<<<<< HEAD
 	writeb(0xff, ps2port->addr + GSC_RESET);
-=======
-	writeb(0xff, addr+GSC_RESET);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gscps2_flush(ps2port);
 	spin_unlock_irqrestore(&ps2port->lock, flags);
 }
@@ -405,15 +381,9 @@ static int __init gscps2_probe(struct parisc_device *dev)
 		goto fail;
 #endif
 
-<<<<<<< HEAD
 	printk(KERN_INFO "serio: %s port at 0x%p irq %d @ %s\n",
 		ps2port->port->name,
 		ps2port->addr,
-=======
-	pr_info("serio: %s port at 0x%08lx irq %d @ %s\n",
-		ps2port->port->name,
-		hpa,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ps2port->padev->irq,
 		ps2port->port->phys);
 

@@ -92,10 +92,7 @@
  */
 #define MT9M111_OPER_MODE_CTRL		0x106
 #define MT9M111_OUTPUT_FORMAT_CTRL	0x108
-<<<<<<< HEAD
 #define MT9M111_TPG_CTRL		0x148
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MT9M111_REDUCER_XZOOM_B		0x1a0
 #define MT9M111_REDUCER_XSIZE_B		0x1a1
 #define MT9M111_REDUCER_YZOOM_B		0x1a3
@@ -128,10 +125,7 @@
 #define MT9M111_OUTFMT_AVG_CHROMA	(1 << 2)
 #define MT9M111_OUTFMT_SWAP_YCbCr_C_Y_RGB_EVEN	(1 << 1)
 #define MT9M111_OUTFMT_SWAP_YCbCr_Cb_Cr_RGB_R_B	(1 << 0)
-<<<<<<< HEAD
 #define MT9M111_TPG_SEL_MASK		GENMASK(2, 0)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Camera control register addresses (0x200..0x2ff not implemented)
@@ -223,12 +217,9 @@ struct mt9m111 {
 	int power_count;
 	const struct mt9m111_datafmt *fmt;
 	int lastpage;	/* PageMap cache value */
-<<<<<<< HEAD
 #ifdef CONFIG_MEDIA_CONTROLLER
 	struct media_pad pad;
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Find a data format by a pixel code */
@@ -717,7 +708,6 @@ static int mt9m111_set_autowhitebalance(struct mt9m111 *mt9m111, int on)
 	return reg_clear(OPER_MODE_CTRL, MT9M111_OPMODE_AUTOWHITEBAL_EN);
 }
 
-<<<<<<< HEAD
 static const char * const mt9m111_test_pattern_menu[] = {
 	"Disabled",
 	"Vertical monochrome gradient",
@@ -737,8 +727,6 @@ static int mt9m111_set_test_pattern(struct mt9m111 *mt9m111, int val)
 				MT9M111_TPG_SEL_MASK);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mt9m111_s_ctrl(struct v4l2_ctrl *ctrl)
 {
 	struct mt9m111 *mt9m111 = container_of(ctrl->handler,
@@ -757,11 +745,8 @@ static int mt9m111_s_ctrl(struct v4l2_ctrl *ctrl)
 		return mt9m111_set_autoexposure(mt9m111, ctrl->val);
 	case V4L2_CID_AUTO_WHITE_BALANCE:
 		return mt9m111_set_autowhitebalance(mt9m111, ctrl->val);
-<<<<<<< HEAD
 	case V4L2_CID_TEST_PATTERN:
 		return mt9m111_set_test_pattern(mt9m111, ctrl->val);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return -EINVAL;
@@ -986,21 +971,14 @@ static int mt9m111_probe(struct i2c_client *client,
 
 	mt9m111->clk = v4l2_clk_get(&client->dev, "mclk");
 	if (IS_ERR(mt9m111->clk))
-<<<<<<< HEAD
 		return PTR_ERR(mt9m111->clk);
-=======
-		return -EPROBE_DEFER;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Default HIGHPOWER context */
 	mt9m111->ctx = &context_b;
 
 	v4l2_i2c_subdev_init(&mt9m111->subdev, client, &mt9m111_subdev_ops);
-<<<<<<< HEAD
 	mt9m111->subdev.flags |= V4L2_SUBDEV_FL_HAS_DEVNODE;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	v4l2_ctrl_handler_init(&mt9m111->hdl, 5);
 	v4l2_ctrl_new_std(&mt9m111->hdl, &mt9m111_ctrl_ops,
 			V4L2_CID_VFLIP, 0, 1, 1, 0);
@@ -1013,20 +991,16 @@ static int mt9m111_probe(struct i2c_client *client,
 	v4l2_ctrl_new_std_menu(&mt9m111->hdl,
 			&mt9m111_ctrl_ops, V4L2_CID_EXPOSURE_AUTO, 1, 0,
 			V4L2_EXPOSURE_AUTO);
-<<<<<<< HEAD
 	v4l2_ctrl_new_std_menu_items(&mt9m111->hdl,
 			&mt9m111_ctrl_ops, V4L2_CID_TEST_PATTERN,
 			ARRAY_SIZE(mt9m111_test_pattern_menu) - 1, 0, 0,
 			mt9m111_test_pattern_menu);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mt9m111->subdev.ctrl_handler = &mt9m111->hdl;
 	if (mt9m111->hdl.error) {
 		ret = mt9m111->hdl.error;
 		goto out_clkput;
 	}
 
-<<<<<<< HEAD
 #ifdef CONFIG_MEDIA_CONTROLLER
 	mt9m111->pad.flags = MEDIA_PAD_FL_SOURCE;
 	mt9m111->subdev.entity.function = MEDIA_ENT_F_CAM_SENSOR;
@@ -1035,8 +1009,6 @@ static int mt9m111_probe(struct i2c_client *client,
 		goto out_hdlfree;
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Second stage probe - when a capture adapter is there */
 	mt9m111->rect.left	= MT9M111_MIN_DARK_COLS;
 	mt9m111->rect.top	= MT9M111_MIN_DARK_ROWS;
@@ -1050,16 +1022,11 @@ static int mt9m111_probe(struct i2c_client *client,
 
 	ret = mt9m111_video_probe(client);
 	if (ret < 0)
-<<<<<<< HEAD
 		goto out_entityclean;
-=======
-		goto out_hdlfree;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mt9m111->subdev.dev = &client->dev;
 	ret = v4l2_async_register_subdev(&mt9m111->subdev);
 	if (ret < 0)
-<<<<<<< HEAD
 		goto out_entityclean;
 
 	return 0;
@@ -1069,13 +1036,6 @@ out_entityclean:
 	media_entity_cleanup(&mt9m111->subdev.entity);
 out_hdlfree:
 #endif
-=======
-		goto out_hdlfree;
-
-	return 0;
-
-out_hdlfree:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	v4l2_ctrl_handler_free(&mt9m111->hdl);
 out_clkput:
 	v4l2_clk_put(mt9m111->clk);
@@ -1088,10 +1048,7 @@ static int mt9m111_remove(struct i2c_client *client)
 	struct mt9m111 *mt9m111 = to_mt9m111(client);
 
 	v4l2_async_unregister_subdev(&mt9m111->subdev);
-<<<<<<< HEAD
 	media_entity_cleanup(&mt9m111->subdev.entity);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	v4l2_clk_put(mt9m111->clk);
 	v4l2_ctrl_handler_free(&mt9m111->hdl);
 

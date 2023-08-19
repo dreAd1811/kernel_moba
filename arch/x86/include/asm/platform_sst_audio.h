@@ -135,10 +135,7 @@ struct sst_platform_info {
 	const struct sst_res_info *res_info;
 	const struct sst_lib_dnld_info *lib_info;
 	const char *platform;
-<<<<<<< HEAD
 	bool streams_lost_on_suspend;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 int add_sst_platform_device(void);
 #endif

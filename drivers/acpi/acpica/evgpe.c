@@ -1,57 +1,12 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: BSD-3-Clause OR GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /******************************************************************************
  *
  * Module Name: evgpe - General Purpose Event handling and dispatch
  *
-<<<<<<< HEAD
  * Copyright (C) 2000 - 2018, Intel Corp.
  *
  *****************************************************************************/
 
-=======
- *****************************************************************************/
-
-/*
- * Copyright (C) 2000 - 2017, Intel Corp.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions, and the following disclaimer,
- *    without modification.
- * 2. Redistributions in binary form must reproduce at minimum a disclaimer
- *    substantially similar to the "NO WARRANTY" disclaimer below
- *    ("Disclaimer") and any redistribution must be conditioned upon
- *    including a substantially similar Disclaimer requirement for further
- *    binary redistribution.
- * 3. Neither the names of the above-listed copyright holders nor the names
- *    of any contributors may be used to endorse or promote products derived
- *    from this software without specific prior written permission.
- *
- * Alternatively, this software may be distributed under the terms of the
- * GNU General Public License ("GPL") version 2 as published by the Free
- * Software Foundation.
- *
- * NO WARRANTY
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
- * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
- * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGES.
- */
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <acpi/acpi.h>
 #include "accommon.h"
 #include "acevents.h"
@@ -116,11 +71,7 @@ acpi_ev_update_gpe_enable_mask(struct acpi_gpe_event_info *gpe_event_info)
  *
  * RETURN:      Status
  *
-<<<<<<< HEAD
  * DESCRIPTION: Enable a GPE.
-=======
- * DESCRIPTION: Clear a GPE of stale events and enable it.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  ******************************************************************************/
 
@@ -130,16 +81,6 @@ acpi_status acpi_ev_enable_gpe(struct acpi_gpe_event_info *gpe_event_info)
 
 	ACPI_FUNCTION_TRACE(ev_enable_gpe);
 
-<<<<<<< HEAD
-=======
-	/* Clear the GPE (of stale events) */
-
-	status = acpi_hw_clear_gpe(gpe_event_info);
-	if (ACPI_FAILURE(status)) {
-		return_ACPI_STATUS(status);
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Enable the requested GPE */
 
 	status = acpi_hw_low_set_gpe(gpe_event_info, ACPI_GPE_ENABLE);
@@ -205,10 +146,7 @@ acpi_ev_mask_gpe(struct acpi_gpe_event_info *gpe_event_info, u8 is_masked)
  * FUNCTION:    acpi_ev_add_gpe_reference
  *
  * PARAMETERS:  gpe_event_info          - Add a reference to this GPE
-<<<<<<< HEAD
  *              clear_on_enable         - Clear GPE status before enabling it
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * RETURN:      Status
  *
@@ -218,12 +156,8 @@ acpi_ev_mask_gpe(struct acpi_gpe_event_info *gpe_event_info, u8 is_masked)
  ******************************************************************************/
 
 acpi_status
-<<<<<<< HEAD
 acpi_ev_add_gpe_reference(struct acpi_gpe_event_info *gpe_event_info,
 			  u8 clear_on_enable)
-=======
-acpi_ev_add_gpe_reference(struct acpi_gpe_event_info *gpe_event_info)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	acpi_status status = AE_OK;
 
@@ -238,13 +172,10 @@ acpi_ev_add_gpe_reference(struct acpi_gpe_event_info *gpe_event_info)
 
 		/* Enable on first reference */
 
-<<<<<<< HEAD
 		if (clear_on_enable) {
 			(void)acpi_hw_clear_gpe(gpe_event_info);
 		}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		status = acpi_ev_update_gpe_enable_mask(gpe_event_info);
 		if (ACPI_SUCCESS(status)) {
 			status = acpi_ev_enable_gpe(gpe_event_info);
@@ -415,24 +346,12 @@ struct acpi_gpe_event_info *acpi_ev_get_gpe_event_info(acpi_handle gpe_device,
 
 u32 acpi_ev_gpe_detect(struct acpi_gpe_xrupt_info *gpe_xrupt_list)
 {
-<<<<<<< HEAD
-=======
-	acpi_status status;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct acpi_gpe_block_info *gpe_block;
 	struct acpi_namespace_node *gpe_device;
 	struct acpi_gpe_register_info *gpe_register_info;
 	struct acpi_gpe_event_info *gpe_event_info;
 	u32 gpe_number;
-<<<<<<< HEAD
 	u32 int_status = ACPI_INTERRUPT_NOT_HANDLED;
-=======
-	struct acpi_gpe_handler_info *gpe_handler_info;
-	u32 int_status = ACPI_INTERRUPT_NOT_HANDLED;
-	u8 enabled_status_byte;
-	u32 status_reg;
-	u32 enable_reg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	acpi_cpu_flags flags;
 	u32 i;
 	u32 j;
@@ -489,56 +408,11 @@ u32 acpi_ev_gpe_detect(struct acpi_gpe_xrupt_info *gpe_xrupt_list)
 				continue;
 			}
 
-<<<<<<< HEAD
-=======
-			/* Read the Status Register */
-
-			status =
-			    acpi_hw_read(&status_reg,
-					 &gpe_register_info->status_address);
-			if (ACPI_FAILURE(status)) {
-				goto unlock_and_exit;
-			}
-
-			/* Read the Enable Register */
-
-			status =
-			    acpi_hw_read(&enable_reg,
-					 &gpe_register_info->enable_address);
-			if (ACPI_FAILURE(status)) {
-				goto unlock_and_exit;
-			}
-
-			ACPI_DEBUG_PRINT((ACPI_DB_INTERRUPTS,
-					  "Read registers for GPE %02X-%02X: Status=%02X, Enable=%02X, "
-					  "RunEnable=%02X, WakeEnable=%02X\n",
-					  gpe_register_info->base_gpe_number,
-					  gpe_register_info->base_gpe_number +
-					  (ACPI_GPE_REGISTER_WIDTH - 1),
-					  status_reg, enable_reg,
-					  gpe_register_info->enable_for_run,
-					  gpe_register_info->enable_for_wake));
-
-			/* Check if there is anything active at all in this register */
-
-			enabled_status_byte = (u8)(status_reg & enable_reg);
-			if (!enabled_status_byte) {
-
-				/* No active GPEs in this register, move on */
-
-				continue;
-			}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* Now look at the individual GPEs in this byte register */
 
 			for (j = 0; j < ACPI_GPE_REGISTER_WIDTH; j++) {
 
-<<<<<<< HEAD
 				/* Detect and dispatch one GPE bit */
-=======
-				/* Examine one GPE bit */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 				gpe_event_info =
 				    &gpe_block->
@@ -546,83 +420,18 @@ u32 acpi_ev_gpe_detect(struct acpi_gpe_xrupt_info *gpe_xrupt_list)
 						ACPI_GPE_REGISTER_WIDTH) + j];
 				gpe_number =
 				    j + gpe_register_info->base_gpe_number;
-<<<<<<< HEAD
 				acpi_os_release_lock(acpi_gbl_gpe_lock, flags);
 				int_status |=
 				    acpi_ev_detect_gpe(gpe_device,
 						       gpe_event_info,
 						       gpe_number);
 				flags = acpi_os_acquire_lock(acpi_gbl_gpe_lock);
-=======
-
-				if (enabled_status_byte & (1 << j)) {
-
-					/* Invoke global event handler if present */
-
-					acpi_gpe_count++;
-					if (acpi_gbl_global_event_handler) {
-						acpi_gbl_global_event_handler
-						    (ACPI_EVENT_TYPE_GPE,
-						     gpe_device, gpe_number,
-						     acpi_gbl_global_event_handler_context);
-					}
-
-					/* Found an active GPE */
-
-					if (ACPI_GPE_DISPATCH_TYPE
-					    (gpe_event_info->flags) ==
-					    ACPI_GPE_DISPATCH_RAW_HANDLER) {
-
-						/* Dispatch the event to a raw handler */
-
-						gpe_handler_info =
-						    gpe_event_info->dispatch.
-						    handler;
-
-						/*
-						 * There is no protection around the namespace node
-						 * and the GPE handler to ensure a safe destruction
-						 * because:
-						 * 1. The namespace node is expected to always
-						 *    exist after loading a table.
-						 * 2. The GPE handler is expected to be flushed by
-						 *    acpi_os_wait_events_complete() before the
-						 *    destruction.
-						 */
-						acpi_os_release_lock
-						    (acpi_gbl_gpe_lock, flags);
-						int_status |=
-						    gpe_handler_info->
-						    address(gpe_device,
-							    gpe_number,
-							    gpe_handler_info->
-							    context);
-						flags =
-						    acpi_os_acquire_lock
-						    (acpi_gbl_gpe_lock);
-					} else {
-						/*
-						 * Dispatch the event to a standard handler or
-						 * method.
-						 */
-						int_status |=
-						    acpi_ev_gpe_dispatch
-						    (gpe_device, gpe_event_info,
-						     gpe_number);
-					}
-				}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		}
 
 		gpe_block = gpe_block->next;
 	}
 
-<<<<<<< HEAD
-=======
-unlock_and_exit:
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	acpi_os_release_lock(acpi_gbl_gpe_lock, flags);
 	return (int_status);
 }
@@ -795,7 +604,6 @@ acpi_status acpi_ev_finish_gpe(struct acpi_gpe_event_info *gpe_event_info)
 
 /*******************************************************************************
  *
-<<<<<<< HEAD
  * FUNCTION:    acpi_ev_detect_gpe
  *
  * PARAMETERS:  gpe_device          - Device node. NULL for GPE0/GPE1
@@ -923,8 +731,6 @@ error_exit:
 
 /*******************************************************************************
  *
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * FUNCTION:    acpi_ev_gpe_dispatch
  *
  * PARAMETERS:  gpe_device          - Device node. NULL for GPE0/GPE1
@@ -936,11 +742,6 @@ error_exit:
  * DESCRIPTION: Dispatch a General Purpose Event to either a function (e.g. EC)
  *              or method (e.g. _Lxx/_Exx) handler.
  *
-<<<<<<< HEAD
-=======
- *              This function executes at interrupt level.
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  ******************************************************************************/
 
 u32

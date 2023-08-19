@@ -57,13 +57,8 @@ MODULE_LICENSE("GPL v2");
  #define HIL_DATA		0x1
  #define HIL_CMD		0x3
  #define HIL_IRQ		2
-<<<<<<< HEAD
  #define hil_readb(p)		readb((const volatile void __iomem *)(p))
  #define hil_writeb(v, p)	writeb((v), (volatile void __iomem *)(p))
-=======
- #define hil_readb(p)		readb(p)
- #define hil_writeb(v,p)	writeb((v),(p))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #else
 #error "HIL is not supported on this platform"

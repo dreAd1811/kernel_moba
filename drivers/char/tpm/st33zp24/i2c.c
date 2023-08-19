@@ -33,11 +33,7 @@
 
 struct st33zp24_i2c_phy {
 	struct i2c_client *client;
-<<<<<<< HEAD
 	u8 buf[ST33ZP24_BUFSIZE + 1];
-=======
-	u8 buf[TPM_BUFSIZE + 1];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int io_lpcpd;
 };
 

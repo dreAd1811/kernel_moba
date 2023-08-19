@@ -1,35 +1,14 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0-only */
 /* Copyright (c) 2016-2020, The Linux Foundation. All rights reserved. */
-=======
-/* Copyright (c) 2016-2020, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifndef _CNSS_MAIN_H
 #define _CNSS_MAIN_H
 
-<<<<<<< HEAD
 #include <asm/arch_timer.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/esoc_client.h>
 #include <linux/etherdevice.h>
 #include <linux/msm-bus.h>
 #include <linux/pm_qos.h>
-<<<<<<< HEAD
-=======
-#include <linux/of.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <net/cnss2.h>
 #include <soc/qcom/memory_dump.h>
 #include <soc/qcom/subsystem_restart.h>
@@ -39,7 +18,6 @@
 #define MAX_NO_OF_MAC_ADDR		4
 #define QMI_WLFW_MAX_TIMESTAMP_LEN	32
 #define QMI_WLFW_MAX_NUM_MEM_SEG	32
-<<<<<<< HEAD
 #define QMI_WLFW_MAX_BUILD_ID_LEN	128
 #define CNSS_RDDM_TIMEOUT_MS		20000
 #define RECOVERY_TIMEOUT		60000
@@ -53,27 +31,10 @@
 #define CNSS_EVENT_SYNC_UNINTERRUPTIBLE (CNSS_EVENT_SYNC | \
 				CNSS_EVENT_UNINTERRUPTIBLE)
 #define CNSS_EVENT_SYNC_UNKILLABLE (CNSS_EVENT_SYNC | CNSS_EVENT_UNKILLABLE)
-=======
-#define CNSS_RDDM_TIMEOUT_MS		20000
-#define RECOVERY_TIMEOUT		60000
-
-#define CNSS_EVENT_SYNC   BIT(0)
-#define CNSS_EVENT_UNINTERRUPTIBLE BIT(1)
-#define CNSS_EVENT_SYNC_UNINTERRUPTIBLE (CNSS_EVENT_SYNC | \
-				CNSS_EVENT_UNINTERRUPTIBLE)
-
-#define CNSS_FW_PATH_MAX_LEN 32
-
-#define CNSS_MAX_DEV_NUM 2
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum cnss_dev_bus_type {
 	CNSS_BUS_NONE = -1,
 	CNSS_BUS_PCI,
-<<<<<<< HEAD
-=======
-	CNSS_BUS_USB,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct cnss_vreg_cfg {
@@ -82,10 +43,7 @@ struct cnss_vreg_cfg {
 	u32 max_uv;
 	u32 load_ua;
 	u32 delay_us;
-<<<<<<< HEAD
 	u32 need_unvote;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct cnss_vreg_info {
@@ -95,7 +53,6 @@ struct cnss_vreg_info {
 	u32 enabled;
 };
 
-<<<<<<< HEAD
 enum cnss_vreg_type {
 	CNSS_VREG_PRIM,
 };
@@ -113,17 +70,11 @@ struct cnss_clk_info {
 	u32 enabled;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct cnss_pinctrl_info {
 	struct pinctrl *pinctrl;
 	struct pinctrl_state *bootstrap_active;
 	struct pinctrl_state *wlan_en_active;
 	struct pinctrl_state *wlan_en_sleep;
-<<<<<<< HEAD
-=======
-	u32 activated;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct cnss_subsys_info {
@@ -160,21 +111,13 @@ struct cnss_ramdump_info_v2 {
 	struct ramdump_device *ramdump_dev;
 	unsigned long ramdump_size;
 	void *dump_data_vaddr;
-<<<<<<< HEAD
 	u8 dump_data_valid;
-=======
-	bool dump_data_valid;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct cnss_dump_data dump_data;
 };
 
 struct cnss_esoc_info {
 	struct esoc_desc *esoc_desc;
-<<<<<<< HEAD
 	u8 notify_modem_status;
-=======
-	bool notify_modem_status;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void *modem_notify_handler;
 	int modem_current_status;
 };
@@ -189,14 +132,9 @@ struct cnss_fw_mem {
 	size_t size;
 	void *va;
 	phys_addr_t pa;
-<<<<<<< HEAD
 	u8 valid;
 	u32 type;
 	unsigned long attrs;
-=======
-	bool valid;
-	u32 type;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct wlfw_rf_chip_info {
@@ -251,11 +189,6 @@ enum cnss_driver_event_type {
 	CNSS_DRIVER_EVENT_QDSS_TRACE_REQ_MEM,
 	CNSS_DRIVER_EVENT_QDSS_TRACE_SAVE,
 	CNSS_DRIVER_EVENT_QDSS_TRACE_FREE,
-<<<<<<< HEAD
-=======
-	CNSS_DRIVER_EVENT_CAL_UPDATE,
-	CNSS_DRIVER_EVENT_CAL_DOWNLOAD,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	CNSS_DRIVER_EVENT_MAX,
 };
 
@@ -273,14 +206,10 @@ enum cnss_driver_state {
 	CNSS_FW_BOOT_RECOVERY,
 	CNSS_DEV_ERR_NOTIFY,
 	CNSS_DRIVER_DEBUG,
-<<<<<<< HEAD
 	CNSS_COEX_CONNECTED,
 	CNSS_IMS_CONNECTED,
 	CNSS_IN_SUSPEND_RESUME,
 	CNSS_IN_REBOOT,
-=======
-	CNSS_IN_SUSPEND_RESUME,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct cnss_recovery_data {
@@ -316,11 +245,8 @@ enum cnss_debug_quirks {
 	ENABLE_PCI_LINK_DOWN_PANIC,
 	FBC_BYPASS,
 	ENABLE_DAEMON_SUPPORT,
-<<<<<<< HEAD
 	DISABLE_DRV,
 	DISABLE_IO_COHERENCY,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	IGNORE_PCI_LINK_FAILURE,
 };
 
@@ -331,7 +257,6 @@ enum cnss_bdf_type {
 	CNSS_BDF_DUMMY = 255,
 };
 
-<<<<<<< HEAD
 enum cnss_cal_status {
 	CNSS_CAL_DONE,
 	CNSS_CAL_TIMEOUT,
@@ -357,13 +282,6 @@ struct cnss_cpr_info {
 	void __iomem *tcs_cmd_data_addr_io;
 	u32 cpr_pmic_addr;
 	u32 voltage;
-=======
-struct cnss_control_params {
-	unsigned long quirks;
-	unsigned int mhi_timeout;
-	unsigned int qmi_timeout;
-	unsigned int bdf_type;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum cnss_ce_index {
@@ -384,17 +302,10 @@ enum cnss_ce_index {
 
 struct cnss_plat_data {
 	struct platform_device *plat_dev;
-<<<<<<< HEAD
 	void *bus_priv;
 	enum cnss_dev_bus_type bus_type;
 	struct list_head vreg_list;
 	struct list_head clk_list;
-=======
-	enum cnss_driver_mode driver_mode;
-	void *bus_priv;
-	enum cnss_dev_bus_type bus_type;
-	struct list_head vreg_list;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct cnss_pinctrl_info pinctrl_info;
 	struct cnss_subsys_info subsys_info;
 	struct cnss_ramdump_info ramdump_info;
@@ -402,10 +313,7 @@ struct cnss_plat_data {
 	struct cnss_esoc_info esoc_info;
 	struct cnss_bus_bw_info bus_bw_info;
 	struct notifier_block modem_nb;
-<<<<<<< HEAD
 	struct notifier_block reboot_nb;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct cnss_platform_cap cap;
 	struct pm_qos_request qos_request;
 	struct cnss_device_version device_version;
@@ -422,11 +330,8 @@ struct cnss_plat_data {
 	struct wlfw_rf_board_info board_info;
 	struct wlfw_soc_info soc_info;
 	struct wlfw_fw_version_info fw_version_info;
-<<<<<<< HEAD
 	char fw_build_id[QMI_WLFW_MAX_BUILD_ID_LEN + 1];
 	u32 otp_version;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 fw_mem_seg_len;
 	struct cnss_fw_mem fw_mem[QMI_WLFW_MAX_NUM_MEM_SEG];
 	struct cnss_fw_mem m3_mem;
@@ -440,15 +345,11 @@ struct cnss_plat_data {
 	struct completion power_up_complete;
 	struct completion cal_complete;
 	struct mutex dev_lock; /* mutex for register access through debugfs */
-<<<<<<< HEAD
 	u32 device_freq_hz;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 diag_reg_read_addr;
 	u32 diag_reg_read_mem_type;
 	u32 diag_reg_read_len;
 	u8 *diag_reg_read_buf;
-<<<<<<< HEAD
 	u8 cal_done;
 	u8 powered_on;
 	char firmware_name[MAX_FIRMWARE_NAME_LEN];
@@ -509,47 +410,11 @@ int cnss_get_pinctrl(struct cnss_plat_data *plat_priv);
 int cnss_power_on_device(struct cnss_plat_data *plat_priv);
 void cnss_power_off_device(struct cnss_plat_data *plat_priv);
 bool cnss_is_device_powered_on(struct cnss_plat_data *plat_priv);
-=======
-	bool cal_done;
-	char firmware_name[CNSS_FW_PATH_MAX_LEN];
-	struct completion rddm_complete;
-	struct completion recovery_complete;
-	struct cnss_control_params ctrl_params;
-	u32 is_converged_dt;
-	struct device_node *dev_node;
-	u8 set_wlaon_pwr_ctrl;
-	bool fw_pcie_gen_switch;
-	u8 pcie_gen_speed;
-	u32 rc_num;
-	char device_name[16];
-	u32 idx;
-	bool enumerate_done;
-	int qrtr_node_id;
-	unsigned int wlfw_service_instance_id;
-};
-
-struct cnss_plat_data *cnss_get_plat_priv(struct platform_device *plat_dev);
-struct cnss_plat_data *cnss_get_plat_priv_by_rc_num(int rc_num);
-int cnss_get_plat_env_count(void);
-struct cnss_plat_data *cnss_get_plat_env(int index);
-bool cnss_get_dual_wlan(void);
-
-int cnss_driver_event_post(struct cnss_plat_data *plat_priv,
-			   enum cnss_driver_event_type type,
-			   u32 flags, void *data);
-int cnss_get_vreg(struct cnss_plat_data *plat_priv);
-int cnss_get_pinctrl(struct cnss_plat_data *plat_priv);
-void cnss_put_vreg(struct cnss_plat_data *plat_priv);
-void cnss_put_pinctrl(struct cnss_plat_data *plat_priv);
-int cnss_power_on_device(struct cnss_plat_data *plat_priv);
-void cnss_power_off_device(struct cnss_plat_data *plat_priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int cnss_register_subsys(struct cnss_plat_data *plat_priv);
 void cnss_unregister_subsys(struct cnss_plat_data *plat_priv);
 int cnss_register_ramdump(struct cnss_plat_data *plat_priv);
 void cnss_unregister_ramdump(struct cnss_plat_data *plat_priv);
 void cnss_set_pin_connect_status(struct cnss_plat_data *plat_priv);
-<<<<<<< HEAD
 int cnss_get_cpr_info(struct cnss_plat_data *plat_priv);
 int cnss_update_cpr_info(struct cnss_plat_data *plat_priv);
 int cnss_va_to_pa(struct device *dev, size_t size, void *va, dma_addr_t dma,
@@ -560,9 +425,5 @@ int cnss_minidump_add_region(struct cnss_plat_data *plat_priv,
 int cnss_minidump_remove_region(struct cnss_plat_data *plat_priv,
 				enum cnss_fw_dump_type type, int seg_no,
 				void *va, phys_addr_t pa, size_t size);
-=======
-const char *cnss_get_fw_path(struct cnss_plat_data *plat_priv);
-int cnss_dev_specific_power_on(struct cnss_plat_data *plat_priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* _CNSS_MAIN_H */

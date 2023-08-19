@@ -68,14 +68,6 @@ static int amdgpu_vram_mgr_fini(struct ttm_mem_type_manager *man)
 	struct amdgpu_vram_mgr *mgr = man->priv;
 
 	spin_lock(&mgr->lock);
-<<<<<<< HEAD
-=======
-	if (!drm_mm_clean(&mgr->mm)) {
-		spin_unlock(&mgr->lock);
-		return -EBUSY;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drm_mm_takedown(&mgr->mm);
 	spin_unlock(&mgr->lock);
 	kfree(mgr);
@@ -97,7 +89,6 @@ static u64 amdgpu_vram_mgr_vis_size(struct amdgpu_device *adev,
 	uint64_t start = node->start << PAGE_SHIFT;
 	uint64_t end = (node->size + node->start) << PAGE_SHIFT;
 
-<<<<<<< HEAD
 	if (start >= adev->gmc.visible_vram_size)
 		return 0;
 
@@ -107,22 +98,10 @@ static u64 amdgpu_vram_mgr_vis_size(struct amdgpu_device *adev,
 
 /**
  * amdgpu_vram_mgr_bo_visible_size - CPU visible BO size
-=======
-	if (start >= adev->mc.visible_vram_size)
-		return 0;
-
-	return (end > adev->mc.visible_vram_size ?
-		adev->mc.visible_vram_size : end) - start;
-}
-
-/**
- * amdgpu_vram_mgr_bo_invisible_size - CPU invisible BO size
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * @bo: &amdgpu_bo buffer object (must be in VRAM)
  *
  * Returns:
-<<<<<<< HEAD
  * How much of the given &amdgpu_bo buffer object lies in CPU visible VRAM.
  */
 u64 amdgpu_vram_mgr_bo_visible_size(struct amdgpu_bo *bo)
@@ -143,16 +122,6 @@ u64 amdgpu_vram_mgr_bo_visible_size(struct amdgpu_bo *bo)
 		usage += amdgpu_vram_mgr_vis_size(adev, nodes);
 
 	return usage;
-=======
- * How much of the given &amdgpu_bo buffer object lies in CPU invisible VRAM.
- */
-u64 amdgpu_vram_mgr_bo_invisible_size(struct amdgpu_bo *bo)
-{
-	if (bo->flags & AMDGPU_GEM_CREATE_NO_CPU_ACCESS)
-		return amdgpu_bo_size(bo);
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**

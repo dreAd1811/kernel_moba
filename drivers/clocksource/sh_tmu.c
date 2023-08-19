@@ -569,11 +569,7 @@ static int sh_tmu_setup(struct sh_tmu_device *tmu, struct platform_device *pdev)
 	}
 
 	/* Allocate and setup the channels. */
-<<<<<<< HEAD
 	tmu->channels = kcalloc(tmu->num_channels, sizeof(*tmu->channels),
-=======
-	tmu->channels = kzalloc(sizeof(*tmu->channels) * tmu->num_channels,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				GFP_KERNEL);
 	if (tmu->channels == NULL) {
 		ret = -ENOMEM;

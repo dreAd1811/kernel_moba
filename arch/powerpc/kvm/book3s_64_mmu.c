@@ -23,10 +23,6 @@
 #include <linux/kvm_host.h>
 #include <linux/highmem.h>
 
-<<<<<<< HEAD
-=======
-#include <asm/tlbflush.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/kvm_ppc.h>
 #include <asm/kvm_book3s.h>
 #include <asm/book3s/64/mmu-hash.h>
@@ -41,7 +37,6 @@
 
 static void kvmppc_mmu_book3s_64_reset_msr(struct kvm_vcpu *vcpu)
 {
-<<<<<<< HEAD
 	unsigned long msr = vcpu->arch.intr_msr;
 	unsigned long cur_msr = kvmppc_get_msr(vcpu);
 
@@ -52,9 +47,6 @@ static void kvmppc_mmu_book3s_64_reset_msr(struct kvm_vcpu *vcpu)
 		msr |= cur_msr & MSR_TS_MASK;
 
 	kvmppc_set_msr(vcpu, msr);
-=======
-	kvmppc_set_msr(vcpu, vcpu->arch.intr_msr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct kvmppc_slb *kvmppc_mmu_book3s_64_find_slbe(

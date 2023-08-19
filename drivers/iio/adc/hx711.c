@@ -24,12 +24,9 @@
 #include <linux/delay.h>
 #include <linux/iio/iio.h>
 #include <linux/iio/sysfs.h>
-<<<<<<< HEAD
 #include <linux/iio/buffer.h>
 #include <linux/iio/trigger_consumer.h>
 #include <linux/iio/triggered_buffer.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/gpio/consumer.h>
 #include <linux/regulator/consumer.h>
 
@@ -96,14 +93,11 @@ struct hx711_data {
 	int			gain_chan_a;	/* gain for channel A */
 	struct mutex		lock;
 	/*
-<<<<<<< HEAD
 	 * triggered buffer
 	 * 2x32-bit channel + 64-bit timestamp
 	 */
 	u32			buffer[4];
 	/*
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * delay after a rising edge on SCK until the data is ready DOUT
 	 * this is dependent on the hx711 where the datasheet tells a
 	 * maximum value of 100 ns
@@ -181,26 +175,16 @@ static int hx711_wait_for_ready(struct hx711_data *hx711_data)
 	int i, val;
 
 	/*
-<<<<<<< HEAD
 	 * in some rare cases the reset takes quite a long time
 	 * especially when the channel is changed.
 	 * Allow up to one second for it
-=======
-	 * a maximum reset cycle time of 56 ms was measured.
-	 * we round it up to 100 ms
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	for (i = 0; i < 100; i++) {
 		val = gpiod_get_value(hx711_data->gpiod_dout);
 		if (!val)
 			break;
-<<<<<<< HEAD
 		/* sleep at least 10 ms */
 		msleep(10);
-=======
-		/* sleep at least 1 ms */
-		msleep(1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	if (val)
 		return -EIO;
@@ -242,13 +226,7 @@ static int hx711_reset(struct hx711_data *hx711_data)
 		 * after a dummy read we need to wait vor readiness
 		 * for not mixing gain pulses with the clock
 		 */
-<<<<<<< HEAD
 		val = hx711_wait_for_ready(hx711_data);
-=======
-		ret = hx711_wait_for_ready(hx711_data);
-		if (ret)
-			return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return val;
@@ -287,7 +265,6 @@ static int hx711_set_gain_for_channel(struct hx711_data *hx711_data, int chan)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int hx711_reset_read(struct hx711_data *hx711_data, int chan)
 {
 	int ret;
@@ -311,43 +288,17 @@ static int hx711_reset_read(struct hx711_data *hx711_data, int chan)
 	return val;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int hx711_read_raw(struct iio_dev *indio_dev,
 				const struct iio_chan_spec *chan,
 				int *val, int *val2, long mask)
 {
 	struct hx711_data *hx711_data = iio_priv(indio_dev);
-<<<<<<< HEAD
-=======
-	int ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (mask) {
 	case IIO_CHAN_INFO_RAW:
 		mutex_lock(&hx711_data->lock);
 
-<<<<<<< HEAD
 		*val = hx711_reset_read(hx711_data, chan->channel);
-=======
-		/*
-		 * hx711_reset() must be called from here
-		 * because it could be calling hx711_read() by itself
-		 */
-		if (hx711_reset(hx711_data)) {
-			mutex_unlock(&hx711_data->lock);
-			dev_err(hx711_data->dev, "reset failed!");
-			return -EIO;
-		}
-
-		ret = hx711_set_gain_for_channel(hx711_data, chan->channel);
-		if (ret < 0) {
-			mutex_unlock(&hx711_data->lock);
-			return ret;
-		}
-
-		*val = hx711_read(hx711_data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		mutex_unlock(&hx711_data->lock);
 
@@ -423,7 +374,6 @@ static int hx711_write_raw_get_fmt(struct iio_dev *indio_dev,
 	return IIO_VAL_INT_PLUS_NANO;
 }
 
-<<<<<<< HEAD
 static irqreturn_t hx711_trigger(int irq, void *p)
 {
 	struct iio_poll_func *pf = p;
@@ -454,8 +404,6 @@ static irqreturn_t hx711_trigger(int irq, void *p)
 	return IRQ_HANDLED;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static ssize_t hx711_scale_available_show(struct device *dev,
 				struct device_attribute *attr,
 				char *buf)
@@ -491,10 +439,6 @@ static const struct attribute_group hx711_attribute_group = {
 };
 
 static const struct iio_info hx711_iio_info = {
-<<<<<<< HEAD
-=======
-	.driver_module		= THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read_raw		= hx711_read_raw,
 	.write_raw		= hx711_write_raw,
 	.write_raw_get_fmt	= hx711_write_raw_get_fmt,
@@ -508,7 +452,6 @@ static const struct iio_chan_spec hx711_chan_spec[] = {
 		.indexed = 1,
 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
 		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),
-<<<<<<< HEAD
 		.scan_index = 0,
 		.scan_type = {
 			.sign = 'u',
@@ -516,8 +459,6 @@ static const struct iio_chan_spec hx711_chan_spec[] = {
 			.storagebits = 32,
 			.endianness = IIO_CPU,
 		},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{
 		.type = IIO_VOLTAGE,
@@ -525,7 +466,6 @@ static const struct iio_chan_spec hx711_chan_spec[] = {
 		.indexed = 1,
 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
 		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),
-<<<<<<< HEAD
 		.scan_index = 1,
 		.scan_type = {
 			.sign = 'u',
@@ -535,9 +475,6 @@ static const struct iio_chan_spec hx711_chan_spec[] = {
 		},
 	},
 	IIO_CHAN_SOFT_TIMESTAMP(2),
-=======
-	},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int hx711_probe(struct platform_device *pdev)
@@ -603,16 +540,9 @@ static int hx711_probe(struct platform_device *pdev)
 	 * 1 LSB = (AVDD * 100) / GAIN / 1678 [10^-9 mV]
 	 */
 	ret = regulator_get_voltage(hx711_data->reg_avdd);
-<<<<<<< HEAD
 	if (ret < 0)
 		goto error_regulator;
 
-=======
-	if (ret < 0) {
-		regulator_disable(hx711_data->reg_avdd);
-		return ret;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* we need 10^-9 mV */
 	ret *= 100;
 
@@ -648,7 +578,6 @@ static int hx711_probe(struct platform_device *pdev)
 	indio_dev->channels = hx711_chan_spec;
 	indio_dev->num_channels = ARRAY_SIZE(hx711_chan_spec);
 
-<<<<<<< HEAD
 	ret = iio_triggered_buffer_setup(indio_dev, iio_pollfunc_store_time,
 							hx711_trigger, NULL);
 	if (ret < 0) {
@@ -670,14 +599,6 @@ error_buffer:
 error_regulator:
 	regulator_disable(hx711_data->reg_avdd);
 
-=======
-	ret = iio_device_register(indio_dev);
-	if (ret < 0) {
-		dev_err(dev, "Couldn't register the device\n");
-		regulator_disable(hx711_data->reg_avdd);
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -691,11 +612,8 @@ static int hx711_remove(struct platform_device *pdev)
 
 	iio_device_unregister(indio_dev);
 
-<<<<<<< HEAD
 	iio_triggered_buffer_cleanup(indio_dev);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	regulator_disable(hx711_data->reg_avdd);
 
 	return 0;

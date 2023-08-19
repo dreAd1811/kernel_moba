@@ -1,25 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * This is i.MX low power i2c controller driver.
  *
  * Copyright 2016 Freescale Semiconductor, Inc.
-<<<<<<< HEAD
-=======
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/clk.h>
@@ -37,10 +20,7 @@
 #include <linux/of_device.h>
 #include <linux/pinctrl/consumer.h>
 #include <linux/platform_device.h>
-<<<<<<< HEAD
 #include <linux/pm_runtime.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/sched.h>
 #include <linux/slab.h>
 
@@ -101,11 +81,8 @@
 #define FAST_PLUS_MAX_BITRATE	3400000
 #define HIGHSPEED_MAX_BITRATE	5000000
 
-<<<<<<< HEAD
 #define I2C_PM_TIMEOUT		10 /* ms */
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum lpi2c_imx_mode {
 	STANDARD,	/* 100+Kbps */
 	FAST,		/* 400+Kbps */
@@ -193,22 +170,13 @@ static int lpi2c_imx_start(struct lpi2c_imx_struct *lpi2c_imx,
 			   struct i2c_msg *msgs)
 {
 	unsigned int temp;
-<<<<<<< HEAD
-=======
-	u8 read;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	temp = readl(lpi2c_imx->base + LPI2C_MCR);
 	temp |= MCR_RRF | MCR_RTF;
 	writel(temp, lpi2c_imx->base + LPI2C_MCR);
 	writel(0x7f00, lpi2c_imx->base + LPI2C_MSR);
 
-<<<<<<< HEAD
 	temp = i2c_8bit_addr_from_msg(msgs) | (GEN_START << 8);
-=======
-	read = msgs->flags & I2C_M_RD;
-	temp = (msgs->addr << 1 | read) | (GEN_START << 8);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	writel(temp, lpi2c_imx->base + LPI2C_MTDR);
 
 	return lpi2c_imx_bus_busy(lpi2c_imx);
@@ -297,13 +265,8 @@ static int lpi2c_imx_master_enable(struct lpi2c_imx_struct *lpi2c_imx)
 	unsigned int temp;
 	int ret;
 
-<<<<<<< HEAD
 	ret = pm_runtime_get_sync(lpi2c_imx->adapter.dev.parent);
 	if (ret < 0)
-=======
-	ret = clk_enable(lpi2c_imx->clk);
-	if (ret)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 
 	temp = MCR_RST;
@@ -312,11 +275,7 @@ static int lpi2c_imx_master_enable(struct lpi2c_imx_struct *lpi2c_imx)
 
 	ret = lpi2c_imx_config(lpi2c_imx);
 	if (ret)
-<<<<<<< HEAD
 		goto rpm_put;
-=======
-		goto clk_disable;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	temp = readl(lpi2c_imx->base + LPI2C_MCR);
 	temp |= MCR_MEN;
@@ -324,14 +283,9 @@ static int lpi2c_imx_master_enable(struct lpi2c_imx_struct *lpi2c_imx)
 
 	return 0;
 
-<<<<<<< HEAD
 rpm_put:
 	pm_runtime_mark_last_busy(lpi2c_imx->adapter.dev.parent);
 	pm_runtime_put_autosuspend(lpi2c_imx->adapter.dev.parent);
-=======
-clk_disable:
-	clk_disable(lpi2c_imx->clk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -344,12 +298,8 @@ static int lpi2c_imx_master_disable(struct lpi2c_imx_struct *lpi2c_imx)
 	temp &= ~MCR_MEN;
 	writel(temp, lpi2c_imx->base + LPI2C_MCR);
 
-<<<<<<< HEAD
 	pm_runtime_mark_last_busy(lpi2c_imx->adapter.dev.parent);
 	pm_runtime_put_autosuspend(lpi2c_imx->adapter.dev.parent);
-=======
-	clk_disable(lpi2c_imx->clk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -588,10 +538,6 @@ static const struct i2c_algorithm lpi2c_imx_algo = {
 
 static const struct of_device_id lpi2c_imx_of_match[] = {
 	{ .compatible = "fsl,imx7ulp-lpi2c" },
-<<<<<<< HEAD
-=======
-	{ .compatible = "fsl,imx8dv-lpi2c" },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ },
 };
 MODULE_DEVICE_TABLE(of, lpi2c_imx_of_match);
@@ -652,47 +598,31 @@ static int lpi2c_imx_probe(struct platform_device *pdev)
 		return ret;
 	}
 
-<<<<<<< HEAD
 	pm_runtime_set_autosuspend_delay(&pdev->dev, I2C_PM_TIMEOUT);
 	pm_runtime_use_autosuspend(&pdev->dev);
 	pm_runtime_get_noresume(&pdev->dev);
 	pm_runtime_set_active(&pdev->dev);
 	pm_runtime_enable(&pdev->dev);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	temp = readl(lpi2c_imx->base + LPI2C_PARAM);
 	lpi2c_imx->txfifosize = 1 << (temp & 0x0f);
 	lpi2c_imx->rxfifosize = 1 << ((temp >> 8) & 0x0f);
 
-<<<<<<< HEAD
 	ret = i2c_add_adapter(&lpi2c_imx->adapter);
 	if (ret)
 		goto rpm_disable;
 
 	pm_runtime_mark_last_busy(&pdev->dev);
 	pm_runtime_put_autosuspend(&pdev->dev);
-=======
-	clk_disable(lpi2c_imx->clk);
-
-	ret = i2c_add_adapter(&lpi2c_imx->adapter);
-	if (ret)
-		goto clk_unprepare;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_info(&lpi2c_imx->adapter.dev, "LPI2C adapter registered\n");
 
 	return 0;
 
-<<<<<<< HEAD
 rpm_disable:
 	pm_runtime_put(&pdev->dev);
 	pm_runtime_disable(&pdev->dev);
 	pm_runtime_dont_use_autosuspend(&pdev->dev);
-=======
-clk_unprepare:
-	clk_unprepare(lpi2c_imx->clk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -703,33 +633,23 @@ static int lpi2c_imx_remove(struct platform_device *pdev)
 
 	i2c_del_adapter(&lpi2c_imx->adapter);
 
-<<<<<<< HEAD
 	pm_runtime_disable(&pdev->dev);
 	pm_runtime_dont_use_autosuspend(&pdev->dev);
-=======
-	clk_unprepare(lpi2c_imx->clk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
 #ifdef CONFIG_PM_SLEEP
-<<<<<<< HEAD
 static int lpi2c_runtime_suspend(struct device *dev)
 {
 	struct lpi2c_imx_struct *lpi2c_imx = dev_get_drvdata(dev);
 
 	clk_disable_unprepare(lpi2c_imx->clk);
-=======
-static int lpi2c_imx_suspend(struct device *dev)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pinctrl_pm_select_sleep_state(dev);
 
 	return 0;
 }
 
-<<<<<<< HEAD
 static int lpi2c_runtime_resume(struct device *dev)
 {
 	struct lpi2c_imx_struct *lpi2c_imx = dev_get_drvdata(dev);
@@ -756,29 +676,13 @@ static const struct dev_pm_ops lpi2c_pm_ops = {
 #define IMX_LPI2C_PM      NULL
 #endif
 
-=======
-static int lpi2c_imx_resume(struct device *dev)
-{
-	pinctrl_pm_select_default_state(dev);
-
-	return 0;
-}
-#endif
-
-static SIMPLE_DEV_PM_OPS(imx_lpi2c_pm, lpi2c_imx_suspend, lpi2c_imx_resume);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct platform_driver lpi2c_imx_driver = {
 	.probe = lpi2c_imx_probe,
 	.remove = lpi2c_imx_remove,
 	.driver = {
 		.name = DRIVER_NAME,
 		.of_match_table = lpi2c_imx_of_match,
-<<<<<<< HEAD
 		.pm = IMX_LPI2C_PM,
-=======
-		.pm = &imx_lpi2c_pm,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 };
 

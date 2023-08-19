@@ -1,24 +1,9 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Copyright (C) 2009 Felix Fietkau <nbd@nbd.name>
  * Copyright (C) 2011-2012 Gabor Juhos <juhosg@openwrt.org>
  * Copyright (c) 2015, The Linux Foundation. All rights reserved.
  * Copyright (c) 2016 John Crispin <john@phrozen.org>
-<<<<<<< HEAD
-=======
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/module.h>
@@ -466,21 +451,6 @@ qca8k_set_pad_ctrl(struct qca8k_priv *priv, int port, int mode)
 		qca8k_write(priv, QCA8K_REG_PORT5_PAD_CTRL,
 			    QCA8K_PORT_PAD_RGMII_RX_DELAY_EN);
 		break;
-<<<<<<< HEAD
-=======
-	case PHY_INTERFACE_MODE_RGMII_ID:
-		/* RGMII_ID needs internal delay. This is enabled through
-		 * PORT5_PAD_CTRL for all ports, rather than individual port
-		 * registers
-		 */
-		qca8k_write(priv, reg,
-			    QCA8K_PORT_PAD_RGMII_EN |
-			    QCA8K_PORT_PAD_RGMII_TX_DELAY(QCA8K_MAX_DELAY) |
-			    QCA8K_PORT_PAD_RGMII_RX_DELAY(QCA8K_MAX_DELAY));
-		qca8k_write(priv, QCA8K_REG_PORT5_PAD_CTRL,
-			    QCA8K_PORT_PAD_RGMII_RX_DELAY_EN);
-		break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case PHY_INTERFACE_MODE_SGMII:
 		qca8k_write(priv, reg, QCA8K_PORT_PAD_SGMII_EN);
 		break;
@@ -498,11 +468,7 @@ qca8k_port_set_status(struct qca8k_priv *priv, int port, int enable)
 	u32 mask = QCA8K_PORT_STATUS_TXMAC | QCA8K_PORT_STATUS_RXMAC;
 
 	/* Port 0 and 6 have no internal PHY */
-<<<<<<< HEAD
 	if (port > 0 && port < 6)
-=======
-	if ((port > 0) && (port < 6))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mask |= QCA8K_PORT_STATUS_LINK_AUTO;
 
 	if (enable)
@@ -533,11 +499,7 @@ qca8k_setup(struct dsa_switch *ds)
 		pr_warn("regmap initialization failed");
 
 	/* Initialize CPU port pad mode (xMII type, delays...) */
-<<<<<<< HEAD
 	phy_mode = of_get_phy_mode(ds->ports[QCA8K_CPU_PORT].dn);
-=======
-	phy_mode = of_get_phy_mode(ds->dst->cpu_dp->dn);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (phy_mode < 0) {
 		pr_err("Can't find phy-mode for master device\n");
 		return phy_mode;
@@ -570,11 +532,7 @@ qca8k_setup(struct dsa_switch *ds)
 
 	/* Disable MAC by default on all user ports */
 	for (i = 1; i < QCA8K_NUM_PORTS; i++)
-<<<<<<< HEAD
 		if (dsa_is_user_port(ds, i))
-=======
-		if (ds->enabled_port_mask & BIT(i))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			qca8k_port_set_status(priv, i, 0);
 
 	/* Forward all unknown frames to CPU port for Linux processing */
@@ -589,20 +547,11 @@ qca8k_setup(struct dsa_switch *ds)
 		/* CPU port gets connected to all user ports of the switch */
 		if (dsa_is_cpu_port(ds, i)) {
 			qca8k_rmw(priv, QCA8K_PORT_LOOKUP_CTRL(QCA8K_CPU_PORT),
-<<<<<<< HEAD
 				  QCA8K_PORT_LOOKUP_MEMBER, dsa_user_ports(ds));
 		}
 
 		/* Invividual user ports get connected to CPU port only */
 		if (dsa_is_user_port(ds, i)) {
-=======
-				  QCA8K_PORT_LOOKUP_MEMBER,
-				  ds->enabled_port_mask);
-		}
-
-		/* Invividual user ports get connected to CPU port only */
-		if (ds->enabled_port_mask & BIT(i)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			int shift = 16 * (i % 2);
 
 			qca8k_rmw(priv, QCA8K_PORT_LOOKUP_CTRL(i),
@@ -672,7 +621,6 @@ qca8k_adjust_link(struct dsa_switch *ds, int port, struct phy_device *phy)
 }
 
 static void
-<<<<<<< HEAD
 qca8k_get_strings(struct dsa_switch *ds, int port, u32 stringset, uint8_t *data)
 {
 	int i;
@@ -680,12 +628,6 @@ qca8k_get_strings(struct dsa_switch *ds, int port, u32 stringset, uint8_t *data)
 	if (stringset != ETH_SS_STATS)
 		return;
 
-=======
-qca8k_get_strings(struct dsa_switch *ds, int port, uint8_t *data)
-{
-	int i;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < ARRAY_SIZE(ar8327_mib); i++)
 		strncpy(data + i * ETH_GSTRING_LEN, ar8327_mib[i].name,
 			ETH_GSTRING_LEN);
@@ -713,16 +655,11 @@ qca8k_get_ethtool_stats(struct dsa_switch *ds, int port,
 }
 
 static int
-<<<<<<< HEAD
 qca8k_get_sset_count(struct dsa_switch *ds, int port, int sset)
 {
 	if (sset != ETH_SS_STATS)
 		return 0;
 
-=======
-qca8k_get_sset_count(struct dsa_switch *ds)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ARRAY_SIZE(ar8327_mib);
 }
 
@@ -789,11 +726,7 @@ qca8k_port_bridge_join(struct dsa_switch *ds, int port, struct net_device *br)
 	int i;
 
 	for (i = 1; i < QCA8K_NUM_PORTS; i++) {
-<<<<<<< HEAD
 		if (dsa_to_port(ds, i)->bridge_dev != br)
-=======
-		if (ds->ports[i].bridge_dev != br)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 		/* Add this port to the portvlan mask of the other ports
 		 * in the bridge
@@ -818,11 +751,7 @@ qca8k_port_bridge_leave(struct dsa_switch *ds, int port, struct net_device *br)
 	int i;
 
 	for (i = 1; i < QCA8K_NUM_PORTS; i++) {
-<<<<<<< HEAD
 		if (dsa_to_port(ds, i)->bridge_dev != br)
-=======
-		if (ds->ports[i].bridge_dev != br)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 		/* Remove this port to the portvlan mask of the other ports
 		 * in the bridge
@@ -921,11 +850,7 @@ qca8k_port_fdb_dump(struct dsa_switch *ds, int port,
 }
 
 static enum dsa_tag_protocol
-<<<<<<< HEAD
 qca8k_get_tag_protocol(struct dsa_switch *ds, int port)
-=======
-qca8k_get_tag_protocol(struct dsa_switch *ds)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return DSA_TAG_PROTO_QCA;
 }

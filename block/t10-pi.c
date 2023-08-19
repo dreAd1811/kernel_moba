@@ -184,7 +184,6 @@ const struct blk_integrity_profile t10_pi_type3_ip = {
 	.verify_fn		= t10_pi_type3_verify_ip,
 };
 EXPORT_SYMBOL(t10_pi_type3_ip);
-<<<<<<< HEAD
 
 /**
  * t10_pi_prepare - prepare PI prior submitting request to device
@@ -295,5 +294,3 @@ void t10_pi_complete(struct request *rq, u8 protection_type,
 	}
 }
 EXPORT_SYMBOL(t10_pi_complete);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

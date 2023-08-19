@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
 //
 // em28xx-cards.c - driver for Empia EM2800/EM2820/2840 USB
@@ -19,32 +18,6 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-=======
-/*
-   em28xx-cards.c - driver for Empia EM2800/EM2820/2840 USB
-		    video capture devices
-
-   Copyright (C) 2005 Ludovico Cavedon <cavedon@sssup.it>
-		      Markus Rechberger <mrechberger@gmail.com>
-		      Mauro Carvalho Chehab <mchehab@infradead.org>
-		      Sascha Sommer <saschasommer@freenet.de>
-   Copyright (C) 2012 Frank Schäfer <fschaefer.oss@googlemail.com>
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "em28xx.h"
 
@@ -59,18 +32,10 @@
 #include <media/i2c/saa7115.h>
 #include <dt-bindings/media/tvp5150.h>
 #include <media/i2c/tvaudio.h>
-<<<<<<< HEAD
-=======
-#include <media/i2c-addr.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <media/tveeprom.h>
 #include <media/v4l2-common.h>
 #include <sound/ac97_codec.h>
 
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DRIVER_NAME         "em28xx"
 
 static int tuner = -1;
@@ -111,26 +76,17 @@ static void em28xx_pre_card_setup(struct em28xx *dev);
  */
 
 /* Reset for the most [analog] boards */
-<<<<<<< HEAD
 static const struct em28xx_reg_seq default_analog[] = {
-=======
-static struct em28xx_reg_seq default_analog[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2820_R08_GPIO_CTRL,	0x6d,   ~EM_GPIO_4,	10},
 	{	-1,		-1,	-1,		-1},
 };
 
 /* Reset for the most [digital] boards */
-<<<<<<< HEAD
 static const struct em28xx_reg_seq default_digital[] = {
-=======
-static struct em28xx_reg_seq default_digital[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2820_R08_GPIO_CTRL,	0x6e,	~EM_GPIO_4,	10},
 	{	-1,		-1,	-1,		-1},
 };
 
-<<<<<<< HEAD
 /* Board :Zolid Hybrid Tv Stick */
 static struct em28xx_reg_seq zolid_tuner[] = {
 	{EM2820_R08_GPIO_CTRL,		0xfd,		0xff,	100},
@@ -148,21 +104,13 @@ static struct em28xx_reg_seq zolid_digital[] = {
 
 /* Board Hauppauge WinTV HVR 900 analog */
 static const struct em28xx_reg_seq hauppauge_wintv_hvr_900_analog[] = {
-=======
-/* Board Hauppauge WinTV HVR 900 analog */
-static struct em28xx_reg_seq hauppauge_wintv_hvr_900_analog[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2820_R08_GPIO_CTRL,	0x2d,	~EM_GPIO_4,	10},
 	{	0x05,		0xff,	0x10,		10},
 	{	-1,		-1,	-1,		-1},
 };
 
 /* Board Hauppauge WinTV HVR 900 digital */
-<<<<<<< HEAD
 static const struct em28xx_reg_seq hauppauge_wintv_hvr_900_digital[] = {
-=======
-static struct em28xx_reg_seq hauppauge_wintv_hvr_900_digital[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2820_R08_GPIO_CTRL,	0x2e,	~EM_GPIO_4,	10},
 	{EM2880_R04_GPO,	0x04,	0x0f,		10},
 	{EM2880_R04_GPO,	0x0c,	0x0f,		10},
@@ -170,38 +118,20 @@ static struct em28xx_reg_seq hauppauge_wintv_hvr_900_digital[] = {
 };
 
 /* Board Hauppauge WinTV HVR 900 (R2) digital */
-<<<<<<< HEAD
 static const struct em28xx_reg_seq hauppauge_wintv_hvr_900R2_digital[] = {
-=======
-static struct em28xx_reg_seq hauppauge_wintv_hvr_900R2_digital[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2820_R08_GPIO_CTRL,	0x2e,	~EM_GPIO_4,	10},
 	{EM2880_R04_GPO,	0x0c,	0x0f,		10},
 	{	-1,		-1,	-1,		-1},
 };
 
 /* Boards - EM2880 MSI DIGIVOX AD and EM2880_BOARD_MSI_DIGIVOX_AD_II */
-<<<<<<< HEAD
 static const struct em28xx_reg_seq em2880_msi_digivox_ad_analog[] = {
-=======
-static struct em28xx_reg_seq em2880_msi_digivox_ad_analog[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2820_R08_GPIO_CTRL,	0x69,   ~EM_GPIO_4,	10},
 	{	-1,		-1,	-1,		-1},
 };
 
-<<<<<<< HEAD
 /* Board - EM2882 Kworld 315U digital */
 static const struct em28xx_reg_seq em2882_kworld_315u_digital[] = {
-=======
-/* Boards - EM2880 MSI DIGIVOX AD and EM2880_BOARD_MSI_DIGIVOX_AD_II */
-
-/* Board  - EM2870 Kworld 355u
-   Analog - No input analog */
-
-/* Board - EM2882 Kworld 315U digital */
-static struct em28xx_reg_seq em2882_kworld_315u_digital[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2820_R08_GPIO_CTRL,	0xff,	0xff,		10},
 	{EM2820_R08_GPIO_CTRL,	0xfe,	0xff,		10},
 	{EM2880_R04_GPO,	0x04,	0xff,		10},
@@ -210,11 +140,7 @@ static struct em28xx_reg_seq em2882_kworld_315u_digital[] = {
 	{	-1,		-1,	-1,		-1},
 };
 
-<<<<<<< HEAD
 static const struct em28xx_reg_seq em2882_kworld_315u_tuner_gpio[] = {
-=======
-static struct em28xx_reg_seq em2882_kworld_315u_tuner_gpio[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2880_R04_GPO,	0x08,	0xff,		10},
 	{EM2880_R04_GPO,	0x0c,	0xff,		10},
 	{EM2880_R04_GPO,	0x08,	0xff,		10},
@@ -222,27 +148,18 @@ static struct em28xx_reg_seq em2882_kworld_315u_tuner_gpio[] = {
 	{	-1,		-1,	-1,		-1},
 };
 
-<<<<<<< HEAD
 static const struct em28xx_reg_seq kworld_330u_analog[] = {
-=======
-static struct em28xx_reg_seq kworld_330u_analog[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2820_R08_GPIO_CTRL,	0x6d,	~EM_GPIO_4,	10},
 	{EM2880_R04_GPO,	0x00,	0xff,		10},
 	{	-1,		-1,	-1,		-1},
 };
 
-<<<<<<< HEAD
 static const struct em28xx_reg_seq kworld_330u_digital[] = {
-=======
-static struct em28xx_reg_seq kworld_330u_digital[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2820_R08_GPIO_CTRL,	0x6e,	~EM_GPIO_4,	10},
 	{EM2880_R04_GPO,	0x08,	0xff,		10},
 	{	-1,		-1,	-1,		-1},
 };
 
-<<<<<<< HEAD
 /*
  * Evga inDtube
  * GPIO0 - Enable digital power (s5h1409) - low to enable
@@ -251,24 +168,11 @@ static struct em28xx_reg_seq kworld_330u_digital[] = {
  * GOP3  - s5h1409 reset
  */
 static const struct em28xx_reg_seq evga_indtube_analog[] = {
-=======
-/* Evga inDtube
-   GPIO0 - Enable digital power (s5h1409) - low to enable
-   GPIO1 - Enable analog power (tvp5150/emp202) - low to enable
-   GPIO4 - xc3028 reset
-   GOP3  - s5h1409 reset
- */
-static struct em28xx_reg_seq evga_indtube_analog[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2820_R08_GPIO_CTRL,	0x79,   0xff,		60},
 	{	-1,		-1,	-1,		-1},
 };
 
-<<<<<<< HEAD
 static const struct em28xx_reg_seq evga_indtube_digital[] = {
-=======
-static struct em28xx_reg_seq evga_indtube_digital[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2820_R08_GPIO_CTRL,	0x7a,	0xff,		 1},
 	{EM2880_R04_GPO,	0x04,	0xff,		10},
 	{EM2880_R04_GPO,	0x0c,	0xff,		 1},
@@ -286,20 +190,12 @@ static struct em28xx_reg_seq evga_indtube_digital[] = {
  * EM_GPIO_6 - currently unknown
  * EM_GPIO_7 - currently unknown
  */
-<<<<<<< HEAD
 static const struct em28xx_reg_seq kworld_a340_digital[] = {
-=======
-static struct em28xx_reg_seq kworld_a340_digital[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2820_R08_GPIO_CTRL,	0x6d,	~EM_GPIO_4,	10},
 	{	-1,		-1,	-1,		-1},
 };
 
-<<<<<<< HEAD
 static const struct em28xx_reg_seq kworld_ub435q_v3_digital[] = {
-=======
-static struct em28xx_reg_seq kworld_ub435q_v3_digital[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2874_R80_GPIO_P0_CTRL,	0xff,	0xff,	100},
 	{EM2874_R80_GPIO_P0_CTRL,	0xfe,	0xff,	100},
 	{EM2874_R80_GPIO_P0_CTRL,	0xbe,	0xff,	100},
@@ -308,47 +204,30 @@ static struct em28xx_reg_seq kworld_ub435q_v3_digital[] = {
 };
 
 /* Pinnacle Hybrid Pro eb1a:2881 */
-<<<<<<< HEAD
 static const struct em28xx_reg_seq pinnacle_hybrid_pro_analog[] = {
-=======
-static struct em28xx_reg_seq pinnacle_hybrid_pro_analog[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2820_R08_GPIO_CTRL,	0xfd,   ~EM_GPIO_4,	10},
 	{	-1,		-1,	-1,		-1},
 };
 
-<<<<<<< HEAD
 static const struct em28xx_reg_seq pinnacle_hybrid_pro_digital[] = {
-=======
-static struct em28xx_reg_seq pinnacle_hybrid_pro_digital[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2820_R08_GPIO_CTRL,	0x6e,	~EM_GPIO_4,	10},
 	{EM2880_R04_GPO,	0x04,	0xff,	       100},/* zl10353 reset */
 	{EM2880_R04_GPO,	0x0c,	0xff,		 1},
 	{	-1,		-1,	-1,		-1},
 };
 
-<<<<<<< HEAD
 static const struct em28xx_reg_seq terratec_cinergy_USB_XS_FR_analog[] = {
-=======
-static struct em28xx_reg_seq terratec_cinergy_USB_XS_FR_analog[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2820_R08_GPIO_CTRL,	0x6d,	~EM_GPIO_4,	10},
 	{EM2880_R04_GPO,	0x00,	0xff,		10},
 	{	-1,		-1,	-1,		-1},
 };
 
-<<<<<<< HEAD
 static const struct em28xx_reg_seq terratec_cinergy_USB_XS_FR_digital[] = {
-=======
-static struct em28xx_reg_seq terratec_cinergy_USB_XS_FR_digital[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2820_R08_GPIO_CTRL,	0x6e,	~EM_GPIO_4,	10},
 	{EM2880_R04_GPO,	0x08,	0xff,		10},
 	{	-1,		-1,	-1,		-1},
 };
 
-<<<<<<< HEAD
 /*
  * PCTV HD Mini (80e) GPIOs
  * 0-5: not used
@@ -356,32 +235,18 @@ static struct em28xx_reg_seq terratec_cinergy_USB_XS_FR_digital[] = {
  * 7:   LED on, active high
  */
 static const struct em28xx_reg_seq em2874_pctv_80e_digital[] = {
-=======
-/* PCTV HD Mini (80e) GPIOs
-   0-5: not used
-   6:   demod reset, active low
-   7:   LED on, active high */
-static struct em28xx_reg_seq em2874_pctv_80e_digital[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM28XX_R06_I2C_CLK,    0x45,   0xff,		  10}, /*400 KHz*/
 	{EM2874_R80_GPIO_P0_CTRL, 0x00,   0xff,		  100},/*Demod reset*/
 	{EM2874_R80_GPIO_P0_CTRL, 0x40,   0xff,		  10},
 	{  -1,			-1,	-1,		  -1},
 };
 
-<<<<<<< HEAD
 /*
  * eb1a:2868 Reddo DVB-C USB TV Box
  * GPIO4 - CU1216L NIM
  * Other GPIOs seems to be don't care.
  */
 static const struct em28xx_reg_seq reddo_dvb_c_usb_box[] = {
-=======
-/* eb1a:2868 Reddo DVB-C USB TV Box
-   GPIO4 - CU1216L NIM
-   Other GPIOs seems to be don't care. */
-static struct em28xx_reg_seq reddo_dvb_c_usb_box[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2820_R08_GPIO_CTRL,	0xfe,	0xff,		10},
 	{EM2820_R08_GPIO_CTRL,	0xde,	0xff,		10},
 	{EM2820_R08_GPIO_CTRL,	0xfe,	0xff,		10},
@@ -393,11 +258,7 @@ static struct em28xx_reg_seq reddo_dvb_c_usb_box[] = {
 };
 
 /* Callback for the most boards */
-<<<<<<< HEAD
 static const struct em28xx_reg_seq default_tuner_gpio[] = {
-=======
-static struct em28xx_reg_seq default_tuner_gpio[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2820_R08_GPIO_CTRL,	EM_GPIO_4,	EM_GPIO_4,	10},
 	{EM2820_R08_GPIO_CTRL,	0,		EM_GPIO_4,	10},
 	{EM2820_R08_GPIO_CTRL,	EM_GPIO_4,	EM_GPIO_4,	10},
@@ -405,118 +266,70 @@ static struct em28xx_reg_seq default_tuner_gpio[] = {
 };
 
 /* Mute/unmute */
-<<<<<<< HEAD
 static const struct em28xx_reg_seq compro_unmute_tv_gpio[] = {
-=======
-static struct em28xx_reg_seq compro_unmute_tv_gpio[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2820_R08_GPIO_CTRL,	5,	7,	10},
 	{	-1,		-1,	-1,	-1},
 };
 
-<<<<<<< HEAD
 static const struct em28xx_reg_seq compro_unmute_svid_gpio[] = {
-=======
-static struct em28xx_reg_seq compro_unmute_svid_gpio[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2820_R08_GPIO_CTRL,	4,	7,	10},
 	{	-1,		-1,	-1,	-1},
 };
 
-<<<<<<< HEAD
 static const struct em28xx_reg_seq compro_mute_gpio[] = {
-=======
-static struct em28xx_reg_seq compro_mute_gpio[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2820_R08_GPIO_CTRL,	6,	7,	10},
 	{	-1,		-1,	-1,	-1},
 };
 
 /* Terratec AV350 */
-<<<<<<< HEAD
 static const struct em28xx_reg_seq terratec_av350_mute_gpio[] = {
-=======
-static struct em28xx_reg_seq terratec_av350_mute_gpio[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2820_R08_GPIO_CTRL,	0xff,	0x7f,		10},
 	{	-1,		-1,	-1,		-1},
 };
 
-<<<<<<< HEAD
 static const struct em28xx_reg_seq terratec_av350_unmute_gpio[] = {
-=======
-static struct em28xx_reg_seq terratec_av350_unmute_gpio[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2820_R08_GPIO_CTRL,	0xff,	0xff,		10},
 	{	-1,		-1,	-1,		-1},
 };
 
-<<<<<<< HEAD
 static const struct em28xx_reg_seq silvercrest_reg_seq[] = {
-=======
-static struct em28xx_reg_seq silvercrest_reg_seq[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2820_R08_GPIO_CTRL,	0xff,	0xff,		10},
 	{EM2820_R08_GPIO_CTRL,	0x01,	0xf7,		10},
 	{	-1,		-1,	-1,		-1},
 };
 
-<<<<<<< HEAD
 static const struct em28xx_reg_seq vc211a_enable[] = {
-=======
-static struct em28xx_reg_seq vc211a_enable[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2820_R08_GPIO_CTRL,	0xff,	0x07,		10},
 	{EM2820_R08_GPIO_CTRL,	0xff,	0x0f,		10},
 	{EM2820_R08_GPIO_CTRL,	0xff,	0x0b,		10},
 	{	-1,		-1,	-1,		-1},
 };
 
-<<<<<<< HEAD
 static const struct em28xx_reg_seq dikom_dk300_digital[] = {
-=======
-static struct em28xx_reg_seq dikom_dk300_digital[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2820_R08_GPIO_CTRL,	0x6e,	~EM_GPIO_4,	10},
 	{EM2880_R04_GPO,	0x08,	0xff,		10},
 	{	-1,		-1,	-1,		-1},
 };
 
 /* Reset for the most [digital] boards */
-<<<<<<< HEAD
 static const struct em28xx_reg_seq leadership_digital[] = {
-=======
-static struct em28xx_reg_seq leadership_digital[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2874_R80_GPIO_P0_CTRL,	0x70,	0xff,	10},
 	{	-1,			-1,	-1,	-1},
 };
 
-<<<<<<< HEAD
 static const struct em28xx_reg_seq leadership_reset[] = {
-=======
-static struct em28xx_reg_seq leadership_reset[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2874_R80_GPIO_P0_CTRL,	0xf0,	0xff,	10},
 	{EM2874_R80_GPIO_P0_CTRL,	0xb0,	0xff,	10},
 	{EM2874_R80_GPIO_P0_CTRL,	0xf0,	0xff,	10},
 	{	-1,			-1,	-1,	-1},
 };
 
-<<<<<<< HEAD
 /*
  * 2013:024f PCTV nanoStick T2 290e
  * GPIO_6 - demod reset
  * GPIO_7 - LED
  */
 static const struct em28xx_reg_seq pctv_290e[] = {
-=======
-/* 2013:024f PCTV nanoStick T2 290e
- * GPIO_6 - demod reset
- * GPIO_7 - LED
- */
-static struct em28xx_reg_seq pctv_290e[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2874_R80_GPIO_P0_CTRL,	0x00,	0xff,	80},
 	{EM2874_R80_GPIO_P0_CTRL,	0x40,	0xff,	80}, /* GPIO_6 = 1 */
 	{EM2874_R80_GPIO_P0_CTRL,	0xc0,	0xff,	80}, /* GPIO_7 = 1 */
@@ -524,11 +337,7 @@ static struct em28xx_reg_seq pctv_290e[] = {
 };
 
 #if 0
-<<<<<<< HEAD
 static const struct em28xx_reg_seq terratec_h5_gpio[] = {
-=======
-static struct em28xx_reg_seq terratec_h5_gpio[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2820_R08_GPIO_CTRL,		0xff,	0xff,	10},
 	{EM2874_R80_GPIO_P0_CTRL,	0xf6,	0xff,	100},
 	{EM2874_R80_GPIO_P0_CTRL,	0xf2,	0xff,	50},
@@ -536,11 +345,7 @@ static struct em28xx_reg_seq terratec_h5_gpio[] = {
 	{	-1,			-1,	-1,	-1},
 };
 
-<<<<<<< HEAD
 static const struct em28xx_reg_seq terratec_h5_digital[] = {
-=======
-static struct em28xx_reg_seq terratec_h5_digital[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2874_R80_GPIO_P0_CTRL,	0xf6,	0xff,	10},
 	{EM2874_R80_GPIO_P0_CTRL,	0xe6,	0xff,	100},
 	{EM2874_R80_GPIO_P0_CTRL,	0xa6,	0xff,	10},
@@ -548,12 +353,8 @@ static struct em28xx_reg_seq terratec_h5_digital[] = {
 };
 #endif
 
-<<<<<<< HEAD
 /*
  * 2013:024f PCTV DVB-S2 Stick 460e
-=======
-/* 2013:024f PCTV DVB-S2 Stick 460e
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * GPIO_0 - POWER_ON
  * GPIO_1 - BOOST
  * GPIO_2 - VUV_LNB (red LED)
@@ -563,11 +364,7 @@ static struct em28xx_reg_seq terratec_h5_digital[] = {
  * GPIO_6 - RESET_DEM
  * GPIO_7 - LED (green LED)
  */
-<<<<<<< HEAD
 static const struct em28xx_reg_seq pctv_460e[] = {
-=======
-static struct em28xx_reg_seq pctv_460e[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2874_R80_GPIO_P0_CTRL,	0x01,	0xff,	50},
 	{	0x0d,			0xff,	0xff,	50},
 	{EM2874_R80_GPIO_P0_CTRL,	0x41,	0xff,	50}, /* GPIO_6=1 */
@@ -576,11 +373,7 @@ static struct em28xx_reg_seq pctv_460e[] = {
 	{	-1,			-1,	-1,	-1},
 };
 
-<<<<<<< HEAD
 static const struct em28xx_reg_seq c3tech_digital_duo_digital[] = {
-=======
-static struct em28xx_reg_seq c3tech_digital_duo_digital[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2874_R80_GPIO_P0_CTRL,	0xff,	0xff,	10},
 	{EM2874_R80_GPIO_P0_CTRL,	0xfd,	0xff,	10}, /* xc5000 reset */
 	{EM2874_R80_GPIO_P0_CTRL,	0xf9,	0xff,	35},
@@ -603,11 +396,7 @@ static struct em28xx_reg_seq c3tech_digital_duo_digital[] = {
  * GPIO 6 = #RESET_DEM
  * GPIO 7 = P07_LED (green LED)
  */
-<<<<<<< HEAD
 static const struct em28xx_reg_seq pctv_461e[] = {
-=======
-static struct em28xx_reg_seq pctv_461e[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2874_R80_GPIO_P0_CTRL,      0x7f, 0xff,    0},
 	{0x0d,                 0xff, 0xff,    0},
 	{EM2874_R80_GPIO_P0_CTRL,      0x3f, 0xff,  100}, /* reset demod */
@@ -619,11 +408,7 @@ static struct em28xx_reg_seq pctv_461e[] = {
 };
 
 #if 0
-<<<<<<< HEAD
 static const struct em28xx_reg_seq hauppauge_930c_gpio[] = {
-=======
-static struct em28xx_reg_seq hauppauge_930c_gpio[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2874_R80_GPIO_P0_CTRL,	0x6f,	0xff,	10},
 	{EM2874_R80_GPIO_P0_CTRL,	0x4f,	0xff,	10}, /* xc5000 reset */
 	{EM2874_R80_GPIO_P0_CTRL,	0x6f,	0xff,	10},
@@ -631,11 +416,7 @@ static struct em28xx_reg_seq hauppauge_930c_gpio[] = {
 	{	-1,			-1,	-1,	-1},
 };
 
-<<<<<<< HEAD
 static const struct em28xx_reg_seq hauppauge_930c_digital[] = {
-=======
-static struct em28xx_reg_seq hauppauge_930c_digital[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2874_R80_GPIO_P0_CTRL,	0xf6,	0xff,	10},
 	{EM2874_R80_GPIO_P0_CTRL,	0xe6,	0xff,	100},
 	{EM2874_R80_GPIO_P0_CTRL,	0xa6,	0xff,	10},
@@ -643,65 +424,41 @@ static struct em28xx_reg_seq hauppauge_930c_digital[] = {
 };
 #endif
 
-<<<<<<< HEAD
 /*
  * 1b80:e425 MaxMedia UB425-TC
-=======
-/* 1b80:e425 MaxMedia UB425-TC
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * 1b80:e1cc Delock 61959
  * GPIO_6 - demod reset, 0=active
  * GPIO_7 - LED, 0=active
  */
-<<<<<<< HEAD
 static const struct em28xx_reg_seq maxmedia_ub425_tc[] = {
-=======
-static struct em28xx_reg_seq maxmedia_ub425_tc[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2874_R80_GPIO_P0_CTRL,	0x83,	0xff,	100},
 	{EM2874_R80_GPIO_P0_CTRL,	0xc3,	0xff,	100}, /* GPIO_6 = 1 */
 	{EM2874_R80_GPIO_P0_CTRL,	0x43,	0xff,	000}, /* GPIO_7 = 0 */
 	{	-1,			-1,	-1,	-1},
 };
 
-<<<<<<< HEAD
 /*
  * 2304:0242 PCTV QuatroStick (510e)
-=======
-/* 2304:0242 PCTV QuatroStick (510e)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * GPIO_2: decoder reset, 0=active
  * GPIO_4: decoder suspend, 0=active
  * GPIO_6: demod reset, 0=active
  * GPIO_7: LED, 1=active
  */
-<<<<<<< HEAD
 static const struct em28xx_reg_seq pctv_510e[] = {
-=======
-static struct em28xx_reg_seq pctv_510e[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2874_R80_GPIO_P0_CTRL,	0x10,	0xff,	100},
 	{EM2874_R80_GPIO_P0_CTRL,	0x14,	0xff,	100}, /* GPIO_2 = 1 */
 	{EM2874_R80_GPIO_P0_CTRL,	0x54,	0xff,	050}, /* GPIO_6 = 1 */
 	{	-1,			-1,	-1,	-1},
 };
 
-<<<<<<< HEAD
 /*
  * 2013:0251 PCTV QuatroStick nano (520e)
-=======
-/* 2013:0251 PCTV QuatroStick nano (520e)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * GPIO_2: decoder reset, 0=active
  * GPIO_4: decoder suspend, 0=active
  * GPIO_6: demod reset, 0=active
  * GPIO_7: LED, 1=active
  */
-<<<<<<< HEAD
 static const struct em28xx_reg_seq pctv_520e[] = {
-=======
-static struct em28xx_reg_seq pctv_520e[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2874_R80_GPIO_P0_CTRL,	0x10,	0xff,	100},
 	{EM2874_R80_GPIO_P0_CTRL,	0x14,	0xff,	100}, /* GPIO_2 = 1 */
 	{EM2874_R80_GPIO_P0_CTRL,	0x54,	0xff,	050}, /* GPIO_6 = 1 */
@@ -709,12 +466,8 @@ static struct em28xx_reg_seq pctv_520e[] = {
 	{	-1,			-1,	-1,	-1},
 };
 
-<<<<<<< HEAD
 /*
  * 1ae7:9003/9004 SpeedLink Vicious And Devine Laplace webcam
-=======
-/* 1ae7:9003/9004 SpeedLink Vicious And Devine Laplace webcam
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * reg 0x80/0x84:
  * GPIO_0: capturing LED, 0=on, 1=off
  * GPIO_2: AV mute button, 0=pressed, 1=unpressed
@@ -723,21 +476,13 @@ static struct em28xx_reg_seq pctv_520e[] = {
  * reg 0x81/0x85:
  * GPIO_7: snapshot button, 0=pressed, 1=unpressed
  */
-<<<<<<< HEAD
 static const struct em28xx_reg_seq speedlink_vad_laplace_reg_seq[] = {
-=======
-static struct em28xx_reg_seq speedlink_vad_laplace_reg_seq[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2820_R08_GPIO_CTRL,		0xf7,	0xff,	10},
 	{EM2874_R80_GPIO_P0_CTRL,	0xff,	0xb2,	10},
 	{	-1,			-1,	-1,	-1},
 };
 
-<<<<<<< HEAD
 static const struct em28xx_reg_seq pctv_292e[] = {
-=======
-static struct em28xx_reg_seq pctv_292e[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2874_R80_GPIO_P0_CTRL,      0xff, 0xff,      0},
 	{0x0d,                         0xff, 0xff,    950},
 	{EM2874_R80_GPIO_P0_CTRL,      0xbd, 0xff,    100},
@@ -749,11 +494,7 @@ static struct em28xx_reg_seq pctv_292e[] = {
 	{-1,                             -1,   -1,     -1},
 };
 
-<<<<<<< HEAD
 static const struct em28xx_reg_seq terratec_t2_stick_hd[] = {
-=======
-static struct em28xx_reg_seq terratec_t2_stick_hd[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2874_R80_GPIO_P0_CTRL,	0xff,	0xff,	0},
 	{0x0d,				0xff,	0xff,	600},
 	{EM2874_R80_GPIO_P0_CTRL,	0xfc,	0xff,	10},
@@ -767,11 +508,7 @@ static struct em28xx_reg_seq terratec_t2_stick_hd[] = {
 	{-1,                             -1,   -1,     -1},
 };
 
-<<<<<<< HEAD
 static const struct em28xx_reg_seq plex_px_bcud[] = {
-=======
-static struct em28xx_reg_seq plex_px_bcud[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2874_R80_GPIO_P0_CTRL,	0xff,	0xff,	0},
 	{0x0d,				0xff,	0xff,	0},
 	{EM2874_R50_IR_CONFIG,		0x01,	0xff,	0},
@@ -798,11 +535,7 @@ static struct em28xx_reg_seq plex_px_bcud[] = {
  * GPIO_5: Reset #2, 0=active
  * GPIO_6: Reset #1, 0=active
  */
-<<<<<<< HEAD
 static const struct em28xx_reg_seq hauppauge_dualhd_dvb[] = {
-=======
-static struct em28xx_reg_seq hauppauge_dualhd_dvb[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2874_R80_GPIO_P0_CTRL,      0xff, 0xff,      0},
 	{0x0d,                         0xff, 0xff,    200},
 	{0x50,                         0x04, 0xff,    300},
@@ -810,11 +543,7 @@ static struct em28xx_reg_seq hauppauge_dualhd_dvb[] = {
 	{EM2874_R80_GPIO_P0_CTRL,      0xff, 0xff,    100},
 	{EM2874_R80_GPIO_P0_CTRL,      0xdf, 0xff,    100}, /* demod 2 reset */
 	{EM2874_R80_GPIO_P0_CTRL,      0xff, 0xff,    100},
-<<<<<<< HEAD
 	{EM2874_R5F_TS_ENABLE,         0x00, 0xff,     50}, /* disable TS filters */
-=======
-	{EM2874_R5F_TS_ENABLE,         0x44, 0xff,     50},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{EM2874_R5D_TS1_PKT_SIZE,      0x05, 0xff,     50},
 	{EM2874_R5E_TS2_PKT_SIZE,      0x05, 0xff,     50},
 	{-1,                             -1,   -1,     -1},
@@ -823,11 +552,7 @@ static struct em28xx_reg_seq hauppauge_dualhd_dvb[] = {
 /*
  *  Button definitions
  */
-<<<<<<< HEAD
 static const struct em28xx_button std_snapshot_button[] = {
-=======
-static struct em28xx_button std_snapshot_button[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{
 		.role         = EM28XX_BUTTON_SNAPSHOT,
 		.reg_r        = EM28XX_R0C_USBSUSP,
@@ -838,11 +563,7 @@ static struct em28xx_button std_snapshot_button[] = {
 	{-1, 0, 0, 0, 0},
 };
 
-<<<<<<< HEAD
 static const struct em28xx_button speedlink_vad_laplace_buttons[] = {
-=======
-static struct em28xx_button speedlink_vad_laplace_buttons[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{
 		.role     = EM28XX_BUTTON_SNAPSHOT,
 		.reg_r    = EM2874_R85_GPIO_P1_STATE,
@@ -926,11 +647,7 @@ static struct em28xx_led hauppauge_dualhd_leds[] = {
 /*
  *  Board definitions
  */
-<<<<<<< HEAD
 const struct em28xx_board em28xx_boards[] = {
-=======
-struct em28xx_board em28xx_boards[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	[EM2750_BOARD_UNKNOWN] = {
 		.name          = "EM2710/EM2750/EM2751 webcam grabber",
 		.xclk          = EM28XX_XCLK_FREQUENCY_20MHZ,
@@ -964,7 +681,6 @@ struct em28xx_board em28xx_boards[] = {
 		.tuner_type    = TUNER_ABSENT,
 		.is_webcam     = 1,	/* To enable sensor probe */
 	},
-<<<<<<< HEAD
 	[EM2882_BOARD_ZOLID_HYBRID_TV_STICK] = {
 		.name			= ":ZOLID HYBRID TV STICK",
 		.tuner_type		= TUNER_XC2028,
@@ -975,8 +691,6 @@ struct em28xx_board em28xx_boards[] = {
 		.has_dvb		= 1,
 		.dvb_gpio		= zolid_digital,
 	},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	[EM2750_BOARD_DLCW_130] = {
 		/* Beijing Huaqi Information Digital Technology Co., Ltd */
 		.name          = "Huaqi DLCW-130",
@@ -1750,17 +1464,11 @@ struct em28xx_board em28xx_boards[] = {
 			.gpio     = default_analog,
 		} },
 	},
-<<<<<<< HEAD
 	/*
 	 * maybe there's a reason behind it why Terratec sells the Hybrid XS
 	 * as Prodigy XS with a different PID, let's keep it separated for now
 	 * maybe we'll need it later on
 	 */
-=======
-	/* maybe there's a reason behind it why Terratec sells the Hybrid XS
-	   as Prodigy XS with a different PID, let's keep it separated for now
-	   maybe we'll need it lateron */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	[EM2880_BOARD_TERRATEC_PRODIGY_XS] = {
 		.name         = "Terratec Prodigy XS",
 		.tuner_type   = TUNER_XC2028,
@@ -2104,14 +1812,9 @@ struct em28xx_board em28xx_boards[] = {
 		.ir_codes	= RC_MAP_KWORLD_315U,
 		.xclk		= EM28XX_XCLK_FREQUENCY_12MHZ,
 		.i2c_speed	= EM28XX_I2C_CLK_WAIT_ENABLE,
-<<<<<<< HEAD
 #if 0
 		/* FIXME: Analog mode - still not ready */
 		.input        = { {
-=======
-		/* Analog mode - still not ready */
-		/*.input        = { {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.type = EM28XX_VMUX_TELEVISION,
 			.vmux = SAA7115_COMPOSITE2,
 			.amux = EM28XX_AMUX_VIDEO,
@@ -2129,12 +1832,8 @@ struct em28xx_board em28xx_boards[] = {
 			.amux = EM28XX_AMUX_LINE_IN,
 			.gpio = em2882_kworld_315u_analog1,
 			.aout = EM28XX_AOUT_PCM_IN | EM28XX_AOUT_PCM_STEREO,
-<<<<<<< HEAD
 		} },
 #endif
-=======
-		} }, */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	[EM2880_BOARD_EMPIRE_DUAL_TV] = {
 		.name = "Empire dual TV",
@@ -2495,32 +2194,21 @@ struct em28xx_board em28xx_boards[] = {
 			.gpio     = evga_indtube_analog,
 		} },
 	},
-<<<<<<< HEAD
 	/*
 	 * eb1a:2868 Empia EM2870 + Philips CU1216L NIM
 	 * (Philips TDA10023 + Infineon TUA6034)
 	 */
-=======
-	/* eb1a:2868 Empia EM2870 + Philips CU1216L NIM (Philips TDA10023 +
-	   Infineon TUA6034) */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	[EM2870_BOARD_REDDO_DVB_C_USB_BOX] = {
 		.name          = "Reddo DVB-C USB TV Box",
 		.tuner_type    = TUNER_ABSENT,
 		.tuner_gpio    = reddo_dvb_c_usb_box,
 		.has_dvb       = 1,
 	},
-<<<<<<< HEAD
 	/*
 	 * 1b80:a340 - Empia EM2870, NXP TDA18271HD and LG DT3304, sold
 	 * initially as the KWorld PlusTV 340U, then as the UB435-Q.
 	 * Early variants have a TDA18271HD/C1, later ones a TDA18271HD/C2
 	 */
-=======
-	/* 1b80:a340 - Empia EM2870, NXP TDA18271HD and LG DT3304, sold
-	 * initially as the KWorld PlusTV 340U, then as the UB435-Q.
-	 * Early variants have a TDA18271HD/C1, later ones a TDA18271HD/C2 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	[EM2870_BOARD_KWORLD_A340] = {
 		.name       = "KWorld PlusTV 340U or UB435-Q (ATSC)",
 		.tuner_type = TUNER_ABSENT,	/* Digital-only TDA18271HD */
@@ -2528,7 +2216,6 @@ struct em28xx_board em28xx_boards[] = {
 		.dvb_gpio   = kworld_a340_digital,
 		.tuner_gpio = default_tuner_gpio,
 	},
-<<<<<<< HEAD
 	/*
 	 * 2013:024f PCTV nanoStick T2 290e.
 	 * Empia EM28174, Sony CXD2820R and NXP TDA18271HD/C2
@@ -2538,20 +2225,11 @@ struct em28xx_board em28xx_boards[] = {
 		.def_i2c_bus   = 1,
 		.i2c_speed     = EM28XX_I2C_CLK_WAIT_ENABLE |
 				 EM28XX_I2C_FREQ_100_KHZ,
-=======
-	/* 2013:024f PCTV nanoStick T2 290e.
-	 * Empia EM28174, Sony CXD2820R and NXP TDA18271HD/C2 */
-	[EM28174_BOARD_PCTV_290E] = {
-		.name          = "PCTV nanoStick T2 290e",
-		.def_i2c_bus   = 1,
-		.i2c_speed     = EM28XX_I2C_CLK_WAIT_ENABLE | EM28XX_I2C_FREQ_100_KHZ,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.tuner_type    = TUNER_ABSENT,
 		.tuner_gpio    = pctv_290e,
 		.has_dvb       = 1,
 		.ir_codes      = RC_MAP_PINNACLE_PCTV_HD,
 	},
-<<<<<<< HEAD
 	/*
 	 * 2013:024f PCTV DVB-S2 Stick 460e
 	 * Empia EM28174, NXP TDA10071, Conexant CX24118A and Allegro A8293
@@ -2560,28 +2238,16 @@ struct em28xx_board em28xx_boards[] = {
 		.def_i2c_bus   = 1,
 		.i2c_speed     = EM28XX_I2C_CLK_WAIT_ENABLE |
 				 EM28XX_I2C_FREQ_400_KHZ,
-=======
-	/* 2013:024f PCTV DVB-S2 Stick 460e
-	 * Empia EM28174, NXP TDA10071, Conexant CX24118A and Allegro A8293 */
-	[EM28174_BOARD_PCTV_460E] = {
-		.def_i2c_bus   = 1,
-		.i2c_speed     = EM28XX_I2C_CLK_WAIT_ENABLE | EM28XX_I2C_FREQ_400_KHZ,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.name          = "PCTV DVB-S2 Stick (460e)",
 		.tuner_type    = TUNER_ABSENT,
 		.tuner_gpio    = pctv_460e,
 		.has_dvb       = 1,
 		.ir_codes      = RC_MAP_PINNACLE_PCTV_HD,
 	},
-<<<<<<< HEAD
 	/*
 	 * eb1a:5006 Honestech VIDBOX NW03
 	 * Empia EM2860, Philips SAA7113, Empia EMP202, No Tuner
 	 */
-=======
-	/* eb1a:5006 Honestech VIDBOX NW03
-	 * Empia EM2860, Philips SAA7113, Empia EMP202, No Tuner */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	[EM2860_BOARD_HT_VIDBOX_NW03] = {
 		.name                = "Honestech Vidbox NW03",
 		.tuner_type          = TUNER_ABSENT,
@@ -2592,7 +2258,6 @@ struct em28xx_board em28xx_boards[] = {
 			.amux     = EM28XX_AMUX_LINE_IN,
 		}, {
 			.type     = EM28XX_VMUX_SVIDEO,
-<<<<<<< HEAD
 			.vmux     = SAA7115_SVIDEO3,  /* S-VIDEO needs check */
 			.amux     = EM28XX_AMUX_LINE_IN,
 		} },
@@ -2601,14 +2266,6 @@ struct em28xx_board em28xx_boards[] = {
 	 * 1b80:e425 MaxMedia UB425-TC
 	 * Empia EM2874B + Micronas DRX 3913KA2 + NXP TDA18271HDC2
 	 */
-=======
-			.vmux     = SAA7115_SVIDEO3,  /* S-VIDEO needs confirming */
-			.amux     = EM28XX_AMUX_LINE_IN,
-		} },
-	},
-	/* 1b80:e425 MaxMedia UB425-TC
-	 * Empia EM2874B + Micronas DRX 3913KA2 + NXP TDA18271HDC2 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	[EM2874_BOARD_MAXMEDIA_UB425_TC] = {
 		.name          = "MaxMedia UB425-TC",
 		.tuner_type    = TUNER_ABSENT,
@@ -2619,15 +2276,10 @@ struct em28xx_board em28xx_boards[] = {
 		.i2c_speed     = EM28XX_I2C_CLK_WAIT_ENABLE |
 				EM28XX_I2C_FREQ_400_KHZ,
 	},
-<<<<<<< HEAD
 	/*
 	 * 2304:0242 PCTV QuatroStick (510e)
 	 * Empia EM2884 + Micronas DRX 3926K + NXP TDA18271HDC2
 	 */
-=======
-	/* 2304:0242 PCTV QuatroStick (510e)
-	 * Empia EM2884 + Micronas DRX 3926K + NXP TDA18271HDC2 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	[EM2884_BOARD_PCTV_510E] = {
 		.name          = "PCTV QuatroStick (510e)",
 		.tuner_type    = TUNER_ABSENT,
@@ -2638,15 +2290,10 @@ struct em28xx_board em28xx_boards[] = {
 		.i2c_speed     = EM28XX_I2C_CLK_WAIT_ENABLE |
 				EM28XX_I2C_FREQ_400_KHZ,
 	},
-<<<<<<< HEAD
 	/*
 	 * 2013:0251 PCTV QuatroStick nano (520e)
 	 * Empia EM2884 + Micronas DRX 3926K + NXP TDA18271HDC2
 	 */
-=======
-	/* 2013:0251 PCTV QuatroStick nano (520e)
-	 * Empia EM2884 + Micronas DRX 3926K + NXP TDA18271HDC2 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	[EM2884_BOARD_PCTV_520E] = {
 		.name          = "PCTV QuatroStick nano (520e)",
 		.tuner_type    = TUNER_ABSENT,
@@ -2666,17 +2313,11 @@ struct em28xx_board em28xx_boards[] = {
 		.i2c_speed    = EM28XX_I2C_CLK_WAIT_ENABLE |
 				EM28XX_I2C_FREQ_400_KHZ,
 	},
-<<<<<<< HEAD
 	/*
 	 * 1b80:e1cc Delock 61959
 	 * Empia EM2874B + Micronas DRX 3913KA2 + NXP TDA18271HDC2
 	 * mostly the same as MaxMedia UB-425-TC but different remote
 	 */
-=======
-	/* 1b80:e1cc Delock 61959
-	 * Empia EM2874B + Micronas DRX 3913KA2 + NXP TDA18271HDC2
-	 * mostly the same as MaxMedia UB-425-TC but different remote */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	[EM2874_BOARD_DELOCK_61959] = {
 		.name          = "Delock 61959",
 		.tuner_type    = TUNER_ABSENT,
@@ -2722,15 +2363,10 @@ struct em28xx_board em28xx_boards[] = {
 		.ir_codes     = RC_MAP_PINNACLE_PCTV_HD,
 		.leds         = pctv_80e_leds,
 	},
-<<<<<<< HEAD
 	/*
 	 * 1ae7:9003/9004 SpeedLink Vicious And Devine Laplace webcam
 	 * Empia EM2765 + OmniVision OV2640
 	 */
-=======
-	/* 1ae7:9003/9004 SpeedLink Vicious And Devine Laplace webcam
-	 * Empia EM2765 + OmniVision OV2640 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	[EM2765_BOARD_SPEEDLINK_VAD_LAPLACE] = {
 		.name         = "SpeedLink Vicious And Devine Laplace webcam",
 		.xclk         = EM28XX_XCLK_FREQUENCY_24MHZ,
@@ -2747,7 +2383,6 @@ struct em28xx_board em28xx_boards[] = {
 		.buttons = speedlink_vad_laplace_buttons,
 		.leds = speedlink_vad_laplace_leds,
 	},
-<<<<<<< HEAD
 	/*
 	 * 2013:0258 PCTV DVB-S2 Stick (461e)
 	 * Empia EM28178, Montage M88DS3103, Montage M88TS2022, Allegro A8293
@@ -2756,20 +2391,12 @@ struct em28xx_board em28xx_boards[] = {
 		.def_i2c_bus   = 1,
 		.i2c_speed     = EM28XX_I2C_CLK_WAIT_ENABLE |
 				 EM28XX_I2C_FREQ_400_KHZ,
-=======
-	/* 2013:0258 PCTV DVB-S2 Stick (461e)
-	 * Empia EM28178, Montage M88DS3103, Montage M88TS2022, Allegro A8293 */
-	[EM28178_BOARD_PCTV_461E] = {
-		.def_i2c_bus   = 1,
-		.i2c_speed     = EM28XX_I2C_CLK_WAIT_ENABLE | EM28XX_I2C_FREQ_400_KHZ,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.name          = "PCTV DVB-S2 Stick (461e)",
 		.tuner_type    = TUNER_ABSENT,
 		.tuner_gpio    = pctv_461e,
 		.has_dvb       = 1,
 		.ir_codes      = RC_MAP_PINNACLE_PCTV_HD,
 	},
-<<<<<<< HEAD
 	/*
 	 * 2013:025f PCTV tripleStick (292e).
 	 * Empia EM28178, Silicon Labs Si2168, Silicon Labs Si2157
@@ -2779,14 +2406,6 @@ struct em28xx_board em28xx_boards[] = {
 		.def_i2c_bus   = 1,
 		.i2c_speed     = EM28XX_I2C_CLK_WAIT_ENABLE |
 				 EM28XX_I2C_FREQ_400_KHZ,
-=======
-	/* 2013:025f PCTV tripleStick (292e).
-	 * Empia EM28178, Silicon Labs Si2168, Silicon Labs Si2157 */
-	[EM28178_BOARD_PCTV_292E] = {
-		.name          = "PCTV tripleStick (292e)",
-		.def_i2c_bus   = 1,
-		.i2c_speed     = EM28XX_I2C_CLK_WAIT_ENABLE | EM28XX_I2C_FREQ_400_KHZ,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.tuner_type    = TUNER_ABSENT,
 		.tuner_gpio    = pctv_292e,
 		.has_dvb       = 1,
@@ -2806,7 +2425,6 @@ struct em28xx_board em28xx_boards[] = {
 			.amux     = EM28XX_AMUX_LINE_IN,
 		} },
 	},
-<<<<<<< HEAD
 	/*
 	 * eb1a:8179 Terratec Cinergy T2 Stick HD.
 	 * Empia EM28178, Silicon Labs Si2168, Silicon Labs Si2146
@@ -2816,14 +2434,6 @@ struct em28xx_board em28xx_boards[] = {
 		.def_i2c_bus   = 1,
 		.i2c_speed     = EM28XX_I2C_CLK_WAIT_ENABLE |
 				 EM28XX_I2C_FREQ_400_KHZ,
-=======
-	/* eb1a:8179 Terratec Cinergy T2 Stick HD.
-	 * Empia EM28178, Silicon Labs Si2168, Silicon Labs Si2146 */
-	[EM28178_BOARD_TERRATEC_T2_STICK_HD] = {
-		.name          = "Terratec Cinergy T2 Stick HD",
-		.def_i2c_bus   = 1,
-		.i2c_speed     = EM28XX_I2C_CLK_WAIT_ENABLE | EM28XX_I2C_FREQ_400_KHZ,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.tuner_type    = TUNER_ABSENT,
 		.tuner_gpio    = terratec_t2_stick_hd,
 		.has_dvb       = 1,
@@ -2856,10 +2466,7 @@ struct em28xx_board em28xx_boards[] = {
 		.tuner_type    = TUNER_ABSENT,
 		.tuner_gpio    = hauppauge_dualhd_dvb,
 		.has_dvb       = 1,
-<<<<<<< HEAD
 		.has_dual_ts   = 1,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.ir_codes      = RC_MAP_HAUPPAUGE,
 		.leds          = hauppauge_dualhd_leds,
 	},
@@ -2876,10 +2483,7 @@ struct em28xx_board em28xx_boards[] = {
 		.tuner_type    = TUNER_ABSENT,
 		.tuner_gpio    = hauppauge_dualhd_dvb,
 		.has_dvb       = 1,
-<<<<<<< HEAD
 		.has_dual_ts   = 1,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.ir_codes      = RC_MAP_HAUPPAUGE,
 		.leds          = hauppauge_dualhd_leds,
 	},
@@ -2914,11 +2518,7 @@ struct usb_device_id em28xx_id_table[] = {
 			.driver_info = EM2820_BOARD_UNKNOWN },
 	{ USB_DEVICE(0xeb1a, 0x2881),
 			.driver_info = EM2820_BOARD_UNKNOWN },
-<<<<<<< HEAD
 	{ USB_DEVICE(0xeb1a, 0x2883), /* used by :Zolid Hybrid Tv Stick */
-=======
-	{ USB_DEVICE(0xeb1a, 0x2883),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.driver_info = EM2820_BOARD_UNKNOWN },
 	{ USB_DEVICE(0xeb1a, 0x2868),
 			.driver_info = EM2820_BOARD_UNKNOWN },
@@ -2952,17 +2552,10 @@ struct usb_device_id em28xx_id_table[] = {
 			.driver_info = EM2870_BOARD_KWORLD_355U },
 	{ USB_DEVICE(0xeb1a, 0xe359),
 			.driver_info = EM2870_BOARD_KWORLD_355U },
-<<<<<<< HEAD
 	{ USB_DEVICE(0x1b80, 0xe302), /* Kaiser Baas Video to DVD maker */
 			.driver_info = EM2820_BOARD_PINNACLE_DVC_90 },
 	{ USB_DEVICE(0x1b80, 0xe304), /* Kworld DVD Maker 2 */
 			.driver_info = EM2820_BOARD_PINNACLE_DVC_90 },
-=======
-	{ USB_DEVICE(0x1b80, 0xe302),
-			.driver_info = EM2820_BOARD_PINNACLE_DVC_90 }, /* Kaiser Baas Video to DVD maker */
-	{ USB_DEVICE(0x1b80, 0xe304),
-			.driver_info = EM2820_BOARD_PINNACLE_DVC_90 }, /* Kworld DVD Maker 2 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ USB_DEVICE(0x0ccd, 0x0036),
 			.driver_info = EM2820_BOARD_TERRATEC_CINERGY_250 },
 	{ USB_DEVICE(0x0ccd, 0x004c),
@@ -3087,11 +2680,8 @@ struct usb_device_id em28xx_id_table[] = {
 			.driver_info = EM28178_BOARD_PCTV_461E },
 	{ USB_DEVICE(0x2013, 0x025f),
 			.driver_info = EM28178_BOARD_PCTV_292E },
-<<<<<<< HEAD
 	{ USB_DEVICE(0x2013, 0x0264), /* Hauppauge WinTV-soloHD 292e SE */
 			.driver_info = EM28178_BOARD_PCTV_292E },
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ USB_DEVICE(0x2040, 0x0264), /* Hauppauge WinTV-soloHD Isoc */
 			.driver_info = EM28178_BOARD_PCTV_292E },
 	{ USB_DEVICE(0x2040, 0x8264), /* Hauppauge OEM Generic WinTV-soloHD Bulk */
@@ -3113,11 +2703,7 @@ MODULE_DEVICE_TABLE(usb, em28xx_id_table);
 /*
  * EEPROM hash table for devices with generic USB IDs
  */
-<<<<<<< HEAD
 static const struct em28xx_hash_table em28xx_eeprom_hash[] = {
-=======
-static struct em28xx_hash_table em28xx_eeprom_hash[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* P/N: SA 60002070465 Tuner: TVF7533-MF */
 	{0x6ce05a8f, EM2820_BOARD_PROLINK_PLAYTV_USB2, TUNER_YMEC_TVF_5533MF},
 	{0x72cc5a8b, EM2820_BOARD_PROLINK_PLAYTV_BOX4_USB2, TUNER_YMEC_TVF_5533MF},
@@ -3127,18 +2713,11 @@ static struct em28xx_hash_table em28xx_eeprom_hash[] = {
 	{0xb8846b20, EM2881_BOARD_PINNACLE_HYBRID_PRO, TUNER_XC2028},
 	{0x63f653bd, EM2870_BOARD_REDDO_DVB_C_USB_BOX, TUNER_ABSENT},
 	{0x4e913442, EM2882_BOARD_DIKOM_DK300, TUNER_XC2028},
-<<<<<<< HEAD
 	{0x85dd871e, EM2882_BOARD_ZOLID_HYBRID_TV_STICK, TUNER_XC2028},
 };
 
 /* I2C devicelist hash table for devices with generic USB IDs */
 static const struct em28xx_hash_table em28xx_i2c_hash[] = {
-=======
-};
-
-/* I2C devicelist hash table for devices with generic USB IDs */
-static struct em28xx_hash_table em28xx_i2c_hash[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{0xb06a32c3, EM2800_BOARD_TERRATEC_CINERGY_200, TUNER_LG_PAL_NEW_TAPC},
 	{0xf51200e3, EM2800_BOARD_VGEAR_POCKETTV, TUNER_LG_PAL_NEW_TAPC},
 	{0x1ba50080, EM2860_BOARD_SAA711X_REFERENCE_DESIGN, TUNER_ABSENT},
@@ -3146,10 +2725,7 @@ static struct em28xx_hash_table em28xx_i2c_hash[] = {
 	{0xc51200e3, EM2820_BOARD_GADMEI_TVR200, TUNER_LG_PAL_NEW_TAPC},
 	{0x4ba50080, EM2861_BOARD_GADMEI_UTV330PLUS, TUNER_TNF_5335MF},
 	{0x6b800080, EM2874_BOARD_LEADERSHIP_ISDBT, TUNER_ABSENT},
-<<<<<<< HEAD
 	{0x27e10080, EM2882_BOARD_ZOLID_HYBRID_TV_STICK, TUNER_XC2028},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* NOTE: introduce a separate hash table for devices with 16 bit eeproms */
@@ -3172,7 +2748,6 @@ int em28xx_tuner_callback(void *ptr, int component, int command, int arg)
 }
 EXPORT_SYMBOL_GPL(em28xx_tuner_callback);
 
-<<<<<<< HEAD
 static inline void em28xx_set_xclk_i2c_speed(struct em28xx *dev)
 {
 	const struct em28xx_board *board = &em28xx_boards[dev->model];
@@ -3206,33 +2781,13 @@ static inline void em28xx_set_model(struct em28xx *dev)
 	dev->is_webcam = dev->board.is_webcam;
 
 	em28xx_set_xclk_i2c_speed(dev);
-=======
-static inline void em28xx_set_model(struct em28xx *dev)
-{
-	dev->board = em28xx_boards[dev->model];
-
-	/* Those are the default values for the majority of boards
-	   Use those values if not specified otherwise at boards entry
-	 */
-	if (!dev->board.xclk)
-		dev->board.xclk = EM28XX_XCLK_IR_RC5_MODE |
-				  EM28XX_XCLK_FREQUENCY_12MHZ;
-
-	if (!dev->board.i2c_speed)
-		dev->board.i2c_speed = EM28XX_I2C_CLK_WAIT_ENABLE |
-				       EM28XX_I2C_FREQ_100_KHZ;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Should be initialized early, for I2C to work */
 	dev->def_i2c_bus = dev->board.def_i2c_bus;
 }
 
-<<<<<<< HEAD
 /*
  * Wait until AC97_RESET reports the expected value reliably before proceeding.
-=======
-/* Wait until AC97_RESET reports the expected value reliably before proceeding.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * We also check that two unrelated registers accesses don't return the same
  * value to avoid premature return.
  * This procedure helps ensuring AC97 register accesses are reliable.
@@ -3262,30 +2817,17 @@ static int em28xx_wait_until_ac97_features_equals(struct em28xx *dev,
 	return -ETIMEDOUT;
 }
 
-<<<<<<< HEAD
 /*
  * Since em28xx_pre_card_setup() requires a proper dev->model,
-=======
-/* Since em28xx_pre_card_setup() requires a proper dev->model,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * this won't work for boards with generic PCI IDs
  */
 static void em28xx_pre_card_setup(struct em28xx *dev)
 {
-<<<<<<< HEAD
 	/*
 	 * Set the initial XCLK and I2C clock values based on the board
 	 * definition
 	 */
 	em28xx_set_xclk_i2c_speed(dev);
-=======
-	/* Set the initial XCLK and I2C clock values based on the board
-	   definition */
-	em28xx_write_reg(dev, EM28XX_R0F_XCLK, dev->board.xclk & 0x7f);
-	if (!dev->board.is_em2800)
-		em28xx_write_reg(dev, EM28XX_R06_I2C_CLK, dev->board.i2c_speed);
-	msleep(50);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* request some modules */
 	switch (dev->model) {
@@ -3296,7 +2838,6 @@ static void em28xx_pre_card_setup(struct em28xx *dev)
 	case EM2861_BOARD_KWORLD_PVRTV_300U:
 	case EM2880_BOARD_KWORLD_DVB_305U:
 		em28xx_write_reg(dev, EM2820_R08_GPIO_CTRL, 0x6d);
-<<<<<<< HEAD
 		usleep_range(10000, 11000);
 		em28xx_write_reg(dev, EM2820_R08_GPIO_CTRL, 0x7d);
 		usleep_range(10000, 11000);
@@ -3342,47 +2883,6 @@ static void em28xx_pre_card_setup(struct em28xx *dev)
 		msleep(70);
 		em28xx_write_reg(dev, EM2820_R08_GPIO_CTRL, 0xfe);
 		msleep(70);
-=======
-		msleep(10);
-		em28xx_write_reg(dev, EM2820_R08_GPIO_CTRL, 0x7d);
-		msleep(10);
-		break;
-	case EM2870_BOARD_COMPRO_VIDEOMATE:
-		/* TODO: someone can do some cleanup here...
-			 not everything's needed */
-		em28xx_write_reg(dev, EM2880_R04_GPO, 0x00);
-		msleep(10);
-		em28xx_write_reg(dev, EM2880_R04_GPO, 0x01);
-		msleep(10);
-		em28xx_write_reg(dev, EM2820_R08_GPIO_CTRL, 0xfd);
-		mdelay(70);
-		em28xx_write_reg(dev, EM2820_R08_GPIO_CTRL, 0xfc);
-		mdelay(70);
-		em28xx_write_reg(dev, EM2820_R08_GPIO_CTRL, 0xdc);
-		mdelay(70);
-		em28xx_write_reg(dev, EM2820_R08_GPIO_CTRL, 0xfc);
-		mdelay(70);
-		break;
-	case EM2870_BOARD_TERRATEC_XS_MT2060:
-		/* this device needs some gpio writes to get the DVB-T
-		   demod work */
-		em28xx_write_reg(dev, EM2820_R08_GPIO_CTRL, 0xfe);
-		mdelay(70);
-		em28xx_write_reg(dev, EM2820_R08_GPIO_CTRL, 0xde);
-		mdelay(70);
-		em28xx_write_reg(dev, EM2820_R08_GPIO_CTRL, 0xfe);
-		mdelay(70);
-		break;
-	case EM2870_BOARD_PINNACLE_PCTV_DVB:
-		/* this device needs some gpio writes to get the
-		   DVB-T demod work */
-		em28xx_write_reg(dev, EM2820_R08_GPIO_CTRL, 0xfe);
-		mdelay(70);
-		em28xx_write_reg(dev, EM2820_R08_GPIO_CTRL, 0xde);
-		mdelay(70);
-		em28xx_write_reg(dev, EM2820_R08_GPIO_CTRL, 0xfe);
-		mdelay(70);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case EM2820_BOARD_GADMEI_UTV310:
 	case EM2820_BOARD_MSI_VOX_USB_2:
@@ -3392,7 +2892,6 @@ static void em28xx_pre_card_setup(struct em28xx *dev)
 
 	case EM2882_BOARD_KWORLD_ATSC_315U:
 		em28xx_write_reg(dev, EM2820_R08_GPIO_CTRL, 0xff);
-<<<<<<< HEAD
 		usleep_range(10000, 11000);
 		em28xx_write_reg(dev, EM2820_R08_GPIO_CTRL, 0xfe);
 		usleep_range(10000, 11000);
@@ -3400,15 +2899,6 @@ static void em28xx_pre_card_setup(struct em28xx *dev)
 		usleep_range(10000, 11000);
 		em28xx_write_reg(dev, EM2880_R04_GPO, 0x08);
 		usleep_range(10000, 11000);
-=======
-		msleep(10);
-		em28xx_write_reg(dev, EM2820_R08_GPIO_CTRL, 0xfe);
-		msleep(10);
-		em28xx_write_reg(dev, EM2880_R04_GPO, 0x00);
-		msleep(10);
-		em28xx_write_reg(dev, EM2880_R04_GPO, 0x08);
-		msleep(10);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case EM2860_BOARD_KAIOMY_TVNPC_U2:
@@ -3416,19 +2906,11 @@ static void em28xx_pre_card_setup(struct em28xx *dev)
 		em28xx_write_regs(dev, EM28XX_R06_I2C_CLK, "\x40", 1);
 		em28xx_write_regs(dev, 0x0d, "\x42", 1);
 		em28xx_write_regs(dev, 0x08, "\xfd", 1);
-<<<<<<< HEAD
 		usleep_range(10000, 11000);
 		em28xx_write_regs(dev, 0x08, "\xff", 1);
 		usleep_range(10000, 11000);
 		em28xx_write_regs(dev, 0x08, "\x7f", 1);
 		usleep_range(10000, 11000);
-=======
-		msleep(10);
-		em28xx_write_regs(dev, 0x08, "\xff", 1);
-		msleep(10);
-		em28xx_write_regs(dev, 0x08, "\x7f", 1);
-		msleep(10);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		em28xx_write_regs(dev, 0x08, "\x6b", 1);
 
 		break;
@@ -3440,11 +2922,7 @@ static void em28xx_pre_card_setup(struct em28xx *dev)
 		em28xx_write_reg(dev, EM2820_R08_GPIO_CTRL, 0xff);
 		msleep(70);
 		em28xx_write_reg(dev, EM2820_R08_GPIO_CTRL, 0xf7);
-<<<<<<< HEAD
 		usleep_range(10000, 11000);
-=======
-		msleep(10);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		em28xx_write_reg(dev, EM2820_R08_GPIO_CTRL, 0xfe);
 		msleep(70);
 		em28xx_write_reg(dev, EM2820_R08_GPIO_CTRL, 0xfd);
@@ -3452,12 +2930,8 @@ static void em28xx_pre_card_setup(struct em28xx *dev)
 		break;
 
 	case EM2860_BOARD_TERRATEC_GRABBY:
-<<<<<<< HEAD
 		/*
 		 * HACK?: Ensure AC97 register reading is reliable before
-=======
-		/* HACK?: Ensure AC97 register reading is reliable before
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 * proceeding. In practice, this will wait about 1.6 seconds.
 		 */
 		em28xx_wait_until_ac97_features_equals(dev, 0x6a90);
@@ -3475,11 +2949,7 @@ static int em28xx_hint_board(struct em28xx *dev)
 {
 	int i;
 
-<<<<<<< HEAD
 	if (dev->is_webcam) {
-=======
-	if (dev->board.is_webcam) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (dev->em28xx_sensor == EM28XX_MT9V011) {
 			dev->model = EM2820_BOARD_SILVERCREST_WEBCAM;
 		} else if (dev->em28xx_sensor == EM28XX_MT9M001 ||
@@ -3491,12 +2961,8 @@ static int em28xx_hint_board(struct em28xx *dev)
 		return 0;
 	}
 
-<<<<<<< HEAD
 	/*
 	 * HINT method: EEPROM
-=======
-	/* HINT method: EEPROM
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 *
 	 * This method works only for boards with eeprom.
 	 * Uses a hash of all eeprom bytes. The hash should be
@@ -3522,12 +2988,8 @@ static int em28xx_hint_board(struct em28xx *dev)
 		}
 	}
 
-<<<<<<< HEAD
 	/*
 	 * HINT method: I2C attached devices
-=======
-	/* HINT method: I2C attached devices
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 *
 	 * This method works for all boards.
 	 * Uses a hash of i2c scanned devices.
@@ -3577,29 +3039,18 @@ static int em28xx_hint_board(struct em28xx *dev)
 
 static void em28xx_card_setup(struct em28xx *dev)
 {
-<<<<<<< HEAD
 	int i, j, idx;
 	bool duplicate_entry;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * If the device can be a webcam, seek for a sensor.
 	 * If sensor is not found, then it isn't a webcam.
 	 */
-<<<<<<< HEAD
 	if (dev->is_webcam) {
 		em28xx_detect_sensor(dev);
 		if (dev->em28xx_sensor == EM28XX_NOSENSOR)
 			/* NOTE: error/unknown sensor/no sensor */
 			dev->is_webcam = 0;
-=======
-	if (dev->board.is_webcam) {
-		em28xx_detect_sensor(dev);
-		if (dev->em28xx_sensor == EM28XX_NOSENSOR)
-			/* NOTE: error/unknown sensor/no sensor */
-			dev->board.is_webcam = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	switch (dev->model) {
@@ -3619,15 +3070,9 @@ static void em28xx_card_setup(struct em28xx *dev)
 		 * This solution is only valid if they do not share eeprom
 		 * hash identities which has not been determined as yet.
 		 */
-<<<<<<< HEAD
 		if (em28xx_hint_board(dev) < 0) {
 			dev_err(&dev->intf->dev, "Board not discovered\n");
 		} else {
-=======
-		if (em28xx_hint_board(dev) < 0)
-			dev_err(&dev->intf->dev, "Board not discovered\n");
-		else {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			em28xx_set_model(dev);
 			em28xx_pre_card_setup(dev);
 		}
@@ -3637,11 +3082,7 @@ static void em28xx_card_setup(struct em28xx *dev)
 	}
 
 	dev_info(&dev->intf->dev, "Identified as %s (card=%d)\n",
-<<<<<<< HEAD
 		 dev->board.name, dev->model);
-=======
-		dev->board.name, dev->model);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev->tuner_type = em28xx_boards[dev->model].tuner_type;
 
@@ -3658,11 +3099,7 @@ static void em28xx_card_setup(struct em28xx *dev)
 	{
 		struct tveeprom tv;
 
-<<<<<<< HEAD
 		if (!dev->eedata)
-=======
-		if (dev->eedata == NULL)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 #if defined(CONFIG_MODULES) && defined(MODULE)
 		request_module("tveeprom");
@@ -3675,25 +3112,15 @@ static void em28xx_card_setup(struct em28xx *dev)
 
 		if (tv.audio_processor == TVEEPROM_AUDPROC_MSP) {
 			dev->i2s_speed = 2048000;
-<<<<<<< HEAD
 			dev->has_msp34xx = 1;
-=======
-			dev->board.has_msp34xx = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		break;
 	}
 	case EM2882_BOARD_KWORLD_ATSC_315U:
 		em28xx_write_reg(dev, 0x0d, 0x42);
-<<<<<<< HEAD
 		usleep_range(10000, 11000);
 		em28xx_write_reg(dev, EM2820_R08_GPIO_CTRL, 0xfd);
 		usleep_range(10000, 11000);
-=======
-		msleep(10);
-		em28xx_write_reg(dev, EM2820_R08_GPIO_CTRL, 0xfd);
-		msleep(10);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case EM2820_BOARD_KWORLD_PVRTV2800RF:
 		/* GPIO enables sound on KWORLD PVR TV 2800RF */
@@ -3718,19 +3145,12 @@ static void em28xx_card_setup(struct em28xx *dev)
 		if (!em28xx_hint_board(dev))
 			em28xx_set_model(dev);
 
-<<<<<<< HEAD
 		/*
 		 * In cases where we had to use a board hint, the call to
 		 * em28xx_set_mode() in em28xx_pre_card_setup() was a no-op,
 		 * so make the call now so the analog GPIOs are set properly
 		 * before probing the i2c bus.
 		 */
-=======
-		/* In cases where we had to use a board hint, the call to
-		   em28xx_set_mode() in em28xx_pre_card_setup() was a no-op,
-		   so make the call now so the analog GPIOs are set properly
-		   before probing the i2c bus. */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		em28xx_gpio_set(dev, dev->board.tuner_gpio);
 		em28xx_set_mode(dev, EM28XX_ANALOG_MODE);
 		break;
@@ -3752,19 +3172,12 @@ static void em28xx_card_setup(struct em28xx *dev)
 		if (!em28xx_hint_board(dev))
 			em28xx_set_model(dev);
 
-<<<<<<< HEAD
 		/*
 		 * In cases where we had to use a board hint, the call to
 		 * em28xx_set_mode() in em28xx_pre_card_setup() was a no-op,
 		 * so make the call now so the analog GPIOs are set properly
 		 * before probing the i2c bus.
 		 */
-=======
-		/* In cases where we had to use a board hint, the call to
-		   em28xx_set_mode() in em28xx_pre_card_setup() was a no-op,
-		   so make the call now so the analog GPIOs are set properly
-		   before probing the i2c bus. */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		em28xx_gpio_set(dev, dev->board.tuner_gpio);
 		em28xx_set_mode(dev, EM28XX_ANALOG_MODE);
 		break;
@@ -3785,7 +3198,6 @@ static void em28xx_card_setup(struct em28xx *dev)
 	/* Allow override tuner type by a module parameter */
 	if (tuner >= 0)
 		dev->tuner_type = tuner;
-<<<<<<< HEAD
 
 	/*
 	 * Dynamically generate a list of valid audio inputs for this
@@ -3812,8 +3224,6 @@ static void em28xx_card_setup(struct em28xx *dev)
 	}
 	for (; idx < MAX_EM28XX_INPUT; idx++)
 		dev->amux_map[idx] = EM28XX_AMUX_UNUSED;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void em28xx_setup_xc3028(struct em28xx *dev, struct xc2028_ctrl *ctl)
@@ -3828,18 +3238,10 @@ void em28xx_setup_xc3028(struct em28xx *dev, struct xc2028_ctrl *ctl)
 	case EM2880_BOARD_EMPIRE_DUAL_TV:
 	case EM2880_BOARD_HAUPPAUGE_WINTV_HVR_900:
 	case EM2882_BOARD_TERRATEC_HYBRID_XS:
-<<<<<<< HEAD
 	case EM2880_BOARD_TERRATEC_HYBRID_XS:
 	case EM2880_BOARD_TERRATEC_HYBRID_XS_FR:
 	case EM2881_BOARD_PINNACLE_HYBRID_PRO:
 	case EM2882_BOARD_ZOLID_HYBRID_TV_STICK:
-=======
-		ctl->demod = XC3028_FE_ZARLINK456;
-		break;
-	case EM2880_BOARD_TERRATEC_HYBRID_XS:
-	case EM2880_BOARD_TERRATEC_HYBRID_XS_FR:
-	case EM2881_BOARD_PINNACLE_HYBRID_PRO:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ctl->demod = XC3028_FE_ZARLINK456;
 		break;
 	case EM2880_BOARD_HAUPPAUGE_WINTV_HVR_900_R2:
@@ -3885,13 +3287,8 @@ static void request_module_async(struct work_struct *work)
 	 */
 
 	/*
-<<<<<<< HEAD
 	 * Devices with an audio-only intf also have a V4L/DVB/RC
 	 * intf. Don't register extensions twice on those devices.
-=======
-	 * Devicdes with an audio-only interface also have a V4L/DVB/RC
-	 * interface. Don't register extensions twice on those devices.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	if (dev->is_audio_only) {
 #if defined(CONFIG_MODULES) && defined(MODULE)
@@ -3952,10 +3349,6 @@ static int em28xx_media_device_init(struct em28xx *dev,
 
 static void em28xx_unregister_media_device(struct em28xx *dev)
 {
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_MEDIA_CONTROLLER
 	if (dev->media_dev) {
 		media_device_unregister(dev->media_dev);
@@ -3970,11 +3363,7 @@ static void em28xx_unregister_media_device(struct em28xx *dev)
  * em28xx_release_resources()
  * unregisters the v4l2,i2c and usb devices
  * called when the device gets disconnected or at module unload
-<<<<<<< HEAD
  */
-=======
-*/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void em28xx_release_resources(struct em28xx *dev)
 {
 	struct usb_device *udev = interface_to_usbdev(dev->intf);
@@ -3989,12 +3378,8 @@ static void em28xx_release_resources(struct em28xx *dev)
 		em28xx_i2c_unregister(dev, 1);
 	em28xx_i2c_unregister(dev, 0);
 
-<<<<<<< HEAD
 	if (dev->ts == PRIMARY_TS)
 		usb_put_dev(udev);
-=======
-	usb_put_dev(udev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Mark device as unused */
 	clear_bit(dev->devno, em28xx_devused);
@@ -4018,13 +3403,9 @@ void em28xx_free_device(struct kref *ref)
 	if (!dev->disconnected)
 		em28xx_release_resources(dev);
 
-<<<<<<< HEAD
 	if (dev->ts == PRIMARY_TS)
 		kfree(dev->alt_max_pkt_size_isoc);
 
-=======
-	kfree(dev->alt_max_pkt_size_isoc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(dev);
 }
 EXPORT_SYMBOL_GPL(em28xx_free_device);
@@ -4034,21 +3415,13 @@ EXPORT_SYMBOL_GPL(em28xx_free_device);
  * allocates and inits the device structs, registers i2c bus and v4l device
  */
 static int em28xx_init_dev(struct em28xx *dev, struct usb_device *udev,
-<<<<<<< HEAD
 			   struct usb_interface *intf,
-=======
-			   struct usb_interface *interface,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   int minor)
 {
 	int retval;
 	const char *chip_name = NULL;
 
-<<<<<<< HEAD
 	dev->intf = intf;
-=======
-	dev->intf = interface;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_init(&dev->ctrl_urb_lock);
 	spin_lock_init(&dev->slock);
 
@@ -4151,20 +3524,6 @@ static int em28xx_init_dev(struct em28xx *dev, struct usb_device *udev,
 
 	em28xx_pre_card_setup(dev);
 
-<<<<<<< HEAD
-=======
-	if (!dev->board.is_em2800) {
-		/* Resets I2C speed */
-		retval = em28xx_write_reg(dev, EM28XX_R06_I2C_CLK, dev->board.i2c_speed);
-		if (retval < 0) {
-			dev_err(&dev->intf->dev,
-			       "%s: em28xx_write_reg failed! retval [%d]\n",
-			       __func__, retval);
-			return retval;
-		}
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rt_mutex_init(&dev->i2c_bus_lock);
 
 	/* register i2c bus 0 */
@@ -4189,13 +3548,8 @@ static int em28xx_init_dev(struct em28xx *dev, struct usb_device *udev,
 						     EM28XX_I2C_ALGO_EM28XX);
 		if (retval < 0) {
 			dev_err(&dev->intf->dev,
-<<<<<<< HEAD
 				"%s: em28xx_i2c_register bus 1 - error [%d]!\n",
 				__func__, retval);
-=======
-			       "%s: em28xx_i2c_register bus 1 - error [%d]!\n",
-			       __func__, retval);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			em28xx_i2c_unregister(dev, 0);
 
@@ -4209,7 +3563,6 @@ static int em28xx_init_dev(struct em28xx *dev, struct usb_device *udev,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int em28xx_duplicate_dev(struct em28xx *dev)
 {
 	int nr;
@@ -4346,20 +3699,11 @@ static void em28xx_check_usb_descriptor(struct em28xx *dev,
 	}
 }
 
-=======
-/* high bandwidth multiplier, as encoded in highspeed endpoint descriptors */
-#define hb_mult(wMaxPacketSize) (1 + (((wMaxPacketSize) >> 11) & 0x03))
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * em28xx_usb_probe()
  * checks for supported devices
  */
-<<<<<<< HEAD
 static int em28xx_usb_probe(struct usb_interface *intf,
-=======
-static int em28xx_usb_probe(struct usb_interface *interface,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    const struct usb_device_id *id)
 {
 	struct usb_device *udev;
@@ -4367,28 +3711,17 @@ static int em28xx_usb_probe(struct usb_interface *interface,
 	int retval;
 	bool has_vendor_audio = false, has_video = false, has_dvb = false;
 	int i, nr, try_bulk;
-<<<<<<< HEAD
 	const int ifnum = intf->altsetting[0].desc.bInterfaceNumber;
 	char *speed;
 
 	udev = usb_get_dev(interface_to_usbdev(intf));
-=======
-	const int ifnum = interface->altsetting[0].desc.bInterfaceNumber;
-	char *speed;
-
-	udev = usb_get_dev(interface_to_usbdev(interface));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Check to see next free device and mark as used */
 	do {
 		nr = find_first_zero_bit(em28xx_devused, EM28XX_MAXBOARDS);
 		if (nr >= EM28XX_MAXBOARDS) {
 			/* No free device slots */
-<<<<<<< HEAD
 			dev_err(&intf->dev,
-=======
-			dev_err(&interface->dev,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				"Driver supports up to %i em28xx boards.\n",
 			       EM28XX_MAXBOARDS);
 			retval = -ENOMEM;
@@ -4397,22 +3730,13 @@ static int em28xx_usb_probe(struct usb_interface *interface,
 	} while (test_and_set_bit(nr, em28xx_devused));
 
 	/* Don't register audio interfaces */
-<<<<<<< HEAD
 	if (intf->altsetting[0].desc.bInterfaceClass == USB_CLASS_AUDIO) {
 		dev_info(&intf->dev,
-=======
-	if (interface->altsetting[0].desc.bInterfaceClass == USB_CLASS_AUDIO) {
-		dev_err(&interface->dev,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			"audio device (%04x:%04x): interface %i, class %i\n",
 			le16_to_cpu(udev->descriptor.idVendor),
 			le16_to_cpu(udev->descriptor.idProduct),
 			ifnum,
-<<<<<<< HEAD
 			intf->altsetting[0].desc.bInterfaceClass);
-=======
-			interface->altsetting[0].desc.bInterfaceClass);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		retval = -ENODEV;
 		goto err;
@@ -4420,34 +3744,22 @@ static int em28xx_usb_probe(struct usb_interface *interface,
 
 	/* allocate memory for our device state and initialize it */
 	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
-<<<<<<< HEAD
 	if (!dev) {
-=======
-	if (dev == NULL) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		retval = -ENOMEM;
 		goto err;
 	}
 
 	/* compute alternate max packet sizes */
-<<<<<<< HEAD
 	dev->alt_max_pkt_size_isoc = kcalloc(intf->num_altsetting,
 					     sizeof(dev->alt_max_pkt_size_isoc[0]),
 					     GFP_KERNEL);
 	if (!dev->alt_max_pkt_size_isoc) {
-=======
-	dev->alt_max_pkt_size_isoc =
-				kmalloc(sizeof(dev->alt_max_pkt_size_isoc[0]) *
-					interface->num_altsetting, GFP_KERNEL);
-	if (dev->alt_max_pkt_size_isoc == NULL) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(dev);
 		retval = -ENOMEM;
 		goto err;
 	}
 
 	/* Get endpoints */
-<<<<<<< HEAD
 	for (i = 0; i < intf->num_altsetting; i++) {
 		int ep;
 
@@ -4459,92 +3771,6 @@ static int em28xx_usb_probe(struct usb_interface *interface,
 						    &has_vendor_audio,
 						    &has_video,
 						    &has_dvb);
-=======
-	for (i = 0; i < interface->num_altsetting; i++) {
-		int ep;
-
-		for (ep = 0; ep < interface->altsetting[i].desc.bNumEndpoints; ep++) {
-			const struct usb_endpoint_descriptor *e;
-			int sizedescr, size;
-
-			e = &interface->altsetting[i].endpoint[ep].desc;
-
-			sizedescr = le16_to_cpu(e->wMaxPacketSize);
-			size = sizedescr & 0x7ff;
-
-			if (udev->speed == USB_SPEED_HIGH)
-				size = size * hb_mult(sizedescr);
-
-			if (usb_endpoint_dir_in(e)) {
-				switch (e->bEndpointAddress) {
-				case 0x82:
-					has_video = true;
-					if (usb_endpoint_xfer_isoc(e)) {
-						dev->analog_ep_isoc =
-							    e->bEndpointAddress;
-						dev->alt_max_pkt_size_isoc[i] = size;
-					} else if (usb_endpoint_xfer_bulk(e)) {
-						dev->analog_ep_bulk =
-							    e->bEndpointAddress;
-					}
-					break;
-				case 0x83:
-					if (usb_endpoint_xfer_isoc(e)) {
-						has_vendor_audio = true;
-					} else {
-						dev_err(&interface->dev,
-							"error: skipping audio endpoint 0x83, because it uses bulk transfers !\n");
-					}
-					break;
-				case 0x84:
-					if (has_video &&
-					    (usb_endpoint_xfer_bulk(e))) {
-						dev->analog_ep_bulk =
-							    e->bEndpointAddress;
-					} else {
-						if (usb_endpoint_xfer_isoc(e)) {
-							if (size > dev->dvb_max_pkt_size_isoc) {
-								has_dvb = true; /* see NOTE (~) */
-								dev->dvb_ep_isoc = e->bEndpointAddress;
-								dev->dvb_max_pkt_size_isoc = size;
-								dev->dvb_alt_isoc = i;
-							}
-						} else {
-							has_dvb = true;
-							dev->dvb_ep_bulk = e->bEndpointAddress;
-						}
-					}
-					break;
-				}
-			}
-			/* NOTE:
-			 * Old logic with support for isoc transfers only was:
-			 *  0x82	isoc		=> analog
-			 *  0x83	isoc		=> audio
-			 *  0x84	isoc		=> digital
-			 *
-			 * New logic with support for bulk transfers
-			 *  0x82	isoc		=> analog
-			 *  0x82	bulk		=> analog
-			 *  0x83	isoc*		=> audio
-			 *  0x84	isoc		=> digital
-			 *  0x84	bulk		=> analog or digital**
-			 * (*: audio should always be isoc)
-			 * (**: analog, if ep 0x82 is isoc, otherwise digital)
-			 *
-			 * The new logic preserves backwards compatibility and
-			 * reflects the endpoint configurations we have seen
-			 * so far. But there might be devices for which this
-			 * logic is not sufficient...
-			 */
-			/*
-			 * NOTE (~): some manufacturers (e.g. Terratec) disable
-			 * endpoints by setting wMaxPacketSize to 0 bytes for
-			 * all alt settings. So far, we've seen this for
-			 * DVB isoc endpoints only.
-			 */
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (!(has_vendor_audio || has_video || has_dvb)) {
@@ -4567,11 +3793,7 @@ static int em28xx_usb_probe(struct usb_interface *interface,
 		speed = "unknown";
 	}
 
-<<<<<<< HEAD
 	dev_info(&intf->dev,
-=======
-	dev_err(&interface->dev,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		"New device %s %s @ %s Mbps (%04x:%04x, interface %d, class %d)\n",
 		udev->manufacturer ? udev->manufacturer : "",
 		udev->product ? udev->product : "",
@@ -4579,11 +3801,7 @@ static int em28xx_usb_probe(struct usb_interface *interface,
 		le16_to_cpu(udev->descriptor.idVendor),
 		le16_to_cpu(udev->descriptor.idProduct),
 		ifnum,
-<<<<<<< HEAD
 		intf->altsetting->desc.bInterfaceNumber);
-=======
-		interface->altsetting->desc.bInterfaceNumber);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Make sure we have 480 Mbps of bandwidth, otherwise things like
@@ -4591,13 +3809,8 @@ static int em28xx_usb_probe(struct usb_interface *interface,
 	 * not enough even for most Digital TV streams.
 	 */
 	if (udev->speed != USB_SPEED_HIGH && disable_usb_speed_check == 0) {
-<<<<<<< HEAD
 		dev_err(&intf->dev, "Device initialization failed.\n");
 		dev_err(&intf->dev,
-=======
-		dev_err(&interface->dev, "Device initialization failed.\n");
-		dev_err(&interface->dev,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			"Device must be connected to a high-speed USB 2.0 port.\n");
 		retval = -ENODEV;
 		goto err_free;
@@ -4610,7 +3823,6 @@ static int em28xx_usb_probe(struct usb_interface *interface,
 	dev->has_video = has_video;
 	dev->ifnum = ifnum;
 
-<<<<<<< HEAD
 	dev->ts = PRIMARY_TS;
 	snprintf(dev->name, 28, "em28xx");
 	dev->dev_next = NULL;
@@ -4621,53 +3833,30 @@ static int em28xx_usb_probe(struct usb_interface *interface,
 		dev->usb_audio_type = EM28XX_USB_AUDIO_VENDOR;
 	}
 	/* Checks if audio is provided by a USB Audio Class intf */
-=======
-	if (has_vendor_audio) {
-		dev_err(&interface->dev,
-			"Audio interface %i found (Vendor Class)\n", ifnum);
-		dev->usb_audio_type = EM28XX_USB_AUDIO_VENDOR;
-	}
-	/* Checks if audio is provided by a USB Audio Class interface */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < udev->config->desc.bNumInterfaces; i++) {
 		struct usb_interface *uif = udev->config->interface[i];
 
 		if (uif->altsetting[0].desc.bInterfaceClass == USB_CLASS_AUDIO) {
 			if (has_vendor_audio)
-<<<<<<< HEAD
 				dev_err(&intf->dev,
 					"em28xx: device seems to have vendor AND usb audio class interfaces !\n"
 					"\t\tThe vendor interface will be ignored. Please contact the developers <linux-media@vger.kernel.org>\n");
-=======
-				dev_err(&interface->dev,
-					"em28xx: device seems to have vendor AND usb audio class interfaces !\n"
-				       "\t\tThe vendor interface will be ignored. Please contact the developers <linux-media@vger.kernel.org>\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev->usb_audio_type = EM28XX_USB_AUDIO_CLASS;
 			break;
 		}
 	}
 
 	if (has_video)
-<<<<<<< HEAD
 		dev_info(&intf->dev, "Video interface %i found:%s%s\n",
-=======
-		dev_err(&interface->dev, "Video interface %i found:%s%s\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ifnum,
 			dev->analog_ep_bulk ? " bulk" : "",
 			dev->analog_ep_isoc ? " isoc" : "");
 	if (has_dvb)
-<<<<<<< HEAD
 		dev_info(&intf->dev, "DVB interface %i found:%s%s\n",
-=======
-		dev_err(&interface->dev, "DVB interface %i found:%s%s\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ifnum,
 			dev->dvb_ep_bulk ? " bulk" : "",
 			dev->dvb_ep_isoc ? " isoc" : "");
 
-<<<<<<< HEAD
 	dev->num_alt = intf->num_altsetting;
 
 	if ((unsigned int)card[nr] < em28xx_bcount)
@@ -4684,25 +3873,6 @@ static int em28xx_usb_probe(struct usb_interface *interface,
 
 	if (usb_xfer_mode < 0) {
 		if (dev->is_webcam)
-=======
-	dev->num_alt = interface->num_altsetting;
-
-	if ((unsigned)card[nr] < em28xx_bcount)
-		dev->model = card[nr];
-
-	/* save our data pointer in this interface device */
-	usb_set_intfdata(interface, dev);
-
-	/* allocate device struct and check if the device is a webcam */
-	mutex_init(&dev->lock);
-	retval = em28xx_init_dev(dev, udev, interface, nr);
-	if (retval) {
-		goto err_free;
-	}
-
-	if (usb_xfer_mode < 0) {
-		if (dev->board.is_webcam)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			try_bulk = 1;
 		else
 			try_bulk = 0;
@@ -4714,18 +3884,12 @@ static int em28xx_usb_probe(struct usb_interface *interface,
 	if (has_video &&
 	    dev->board.decoder == EM28XX_NODECODER &&
 	    dev->em28xx_sensor == EM28XX_NOSENSOR) {
-<<<<<<< HEAD
 		dev_err(&intf->dev,
-=======
-
-		dev_err(&interface->dev,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			"Currently, V4L2 is not supported on this model\n");
 		has_video = false;
 		dev->has_video = false;
 	}
 
-<<<<<<< HEAD
 	if (dev->board.has_dual_ts &&
 	    (dev->tuner_type != TUNER_ABSENT || INPUT(0)->type)) {
 		/*
@@ -4737,23 +3901,16 @@ static int em28xx_usb_probe(struct usb_interface *interface,
 		has_video = false;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Select USB transfer types to use */
 	if (has_video) {
 		if (!dev->analog_ep_isoc || (try_bulk && dev->analog_ep_bulk))
 			dev->analog_xfer_bulk = 1;
-<<<<<<< HEAD
 		dev_info(&intf->dev, "analog set to %s mode.\n",
-=======
-		dev_err(&interface->dev, "analog set to %s mode.\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev->analog_xfer_bulk ? "bulk" : "isoc");
 	}
 	if (has_dvb) {
 		if (!dev->dvb_ep_isoc || (try_bulk && dev->dvb_ep_bulk))
 			dev->dvb_xfer_bulk = 1;
-<<<<<<< HEAD
 		dev_info(&intf->dev, "dvb set to %s mode.\n",
 			dev->dvb_xfer_bulk ? "bulk" : "isoc");
 	}
@@ -4817,12 +3974,6 @@ static int em28xx_usb_probe(struct usb_interface *interface,
 		kref_init(&dev->dev_next->ref);
 	}
 
-=======
-		dev_err(&interface->dev, "dvb set to %s mode.\n",
-			dev->dvb_xfer_bulk ? "bulk" : "isoc");
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kref_init(&dev->ref);
 
 	request_modules(dev);
@@ -4855,26 +4006,16 @@ err_no_slot:
  * called when the device gets disconnected
  * video device will be unregistered on v4l2_close in case it is still open
  */
-<<<<<<< HEAD
 static void em28xx_usb_disconnect(struct usb_interface *intf)
 {
 	struct em28xx *dev;
 
 	dev = usb_get_intfdata(intf);
 	usb_set_intfdata(intf, NULL);
-=======
-static void em28xx_usb_disconnect(struct usb_interface *interface)
-{
-	struct em28xx *dev;
-
-	dev = usb_get_intfdata(interface);
-	usb_set_intfdata(interface, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!dev)
 		return;
 
-<<<<<<< HEAD
 	if (dev->dev_next) {
 		dev->dev_next->disconnected = 1;
 		dev_info(&dev->intf->dev, "Disconnecting %s\n",
@@ -4884,17 +4025,11 @@ static void em28xx_usb_disconnect(struct usb_interface *interface)
 	dev->disconnected = 1;
 
 	dev_info(&dev->intf->dev, "Disconnecting %s\n", dev->name);
-=======
-	dev->disconnected = 1;
-
-	dev_err(&dev->intf->dev, "Disconnecting\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	flush_request_modules(dev);
 
 	em28xx_close_extension(dev);
 
-<<<<<<< HEAD
 	if (dev->dev_next)
 		em28xx_release_resources(dev->dev_next);
 	em28xx_release_resources(dev);
@@ -4907,41 +4042,22 @@ static void em28xx_usb_disconnect(struct usb_interface *interface)
 }
 
 static int em28xx_usb_suspend(struct usb_interface *intf,
-=======
-	em28xx_release_resources(dev);
-	kref_put(&dev->ref, em28xx_free_device);
-}
-
-static int em28xx_usb_suspend(struct usb_interface *interface,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      pm_message_t message)
 {
 	struct em28xx *dev;
 
-<<<<<<< HEAD
 	dev = usb_get_intfdata(intf);
-=======
-	dev = usb_get_intfdata(interface);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!dev)
 		return 0;
 	em28xx_suspend_extension(dev);
 	return 0;
 }
 
-<<<<<<< HEAD
 static int em28xx_usb_resume(struct usb_interface *intf)
 {
 	struct em28xx *dev;
 
 	dev = usb_get_intfdata(intf);
-=======
-static int em28xx_usb_resume(struct usb_interface *interface)
-{
-	struct em28xx *dev;
-
-	dev = usb_get_intfdata(interface);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!dev)
 		return 0;
 	em28xx_resume_extension(dev);

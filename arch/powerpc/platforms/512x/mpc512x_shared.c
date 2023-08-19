@@ -387,13 +387,8 @@ static unsigned int __init get_fifo_size(struct device_node *np,
 	if (fp)
 		return *fp;
 
-<<<<<<< HEAD
 	pr_warn("no %s property in %pOF node, defaulting to %d\n",
 		prop_name, np, DEFAULT_FIFO_SIZE);
-=======
-	pr_warning("no %s property in %pOF node, defaulting to %d\n",
-		   prop_name, np, DEFAULT_FIFO_SIZE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return DEFAULT_FIFO_SIZE;
 }

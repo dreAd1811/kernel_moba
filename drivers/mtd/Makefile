@@ -32,11 +32,7 @@ obj-$(CONFIG_MTD_SWAP)		+= mtdswap.o
 nftl-objs		:= nftlcore.o nftlmount.o
 inftl-objs		:= inftlcore.o inftlmount.o
 
-<<<<<<< HEAD
 obj-y		+= chips/ lpddr/ maps/ devices/ nand/ tests/
-=======
-obj-y		+= chips/ lpddr/ maps/ devices/ nand/ onenand/ tests/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 obj-$(CONFIG_MTD_SPI_NOR)	+= spi-nor/
 obj-$(CONFIG_MTD_UBI)		+= ubi/

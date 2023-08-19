@@ -76,10 +76,7 @@
 #define EXCCAUSE_COPROCESSOR5_DISABLED		37
 #define EXCCAUSE_COPROCESSOR6_DISABLED		38
 #define EXCCAUSE_COPROCESSOR7_DISABLED		39
-<<<<<<< HEAD
 #define EXCCAUSE_N				64
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*  PS register fields.  */
 

@@ -19,11 +19,7 @@
 #ifndef __ASM_OPENRISC_CPUINFO_H
 #define __ASM_OPENRISC_CPUINFO_H
 
-<<<<<<< HEAD
 struct cpuinfo_or1k {
-=======
-struct cpuinfo {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 clock_frequency;
 
 	u32 icache_size;
@@ -33,17 +29,11 @@ struct cpuinfo {
 	u32 dcache_size;
 	u32 dcache_block_size;
 	u32 dcache_ways;
-<<<<<<< HEAD
 
 	u16 coreid;
 };
 
 extern struct cpuinfo_or1k cpuinfo_or1k[NR_CPUS];
 extern void setup_cpuinfo(void);
-=======
-};
-
-extern struct cpuinfo cpuinfo;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* __ASM_OPENRISC_CPUINFO_H */

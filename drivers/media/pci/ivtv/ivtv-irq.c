@@ -1074,15 +1074,9 @@ irqreturn_t ivtv_irq_handler(int irq, void *dev_id)
 	return vsync_force ? IRQ_NONE : IRQ_HANDLED;
 }
 
-<<<<<<< HEAD
 void ivtv_unfinished_dma(struct timer_list *t)
 {
 	struct ivtv *itv = from_timer(itv, t, dma_timer);
-=======
-void ivtv_unfinished_dma(unsigned long arg)
-{
-	struct ivtv *itv = (struct ivtv *)arg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!test_bit(IVTV_F_I_DMA, &itv->i_flags))
 		return;

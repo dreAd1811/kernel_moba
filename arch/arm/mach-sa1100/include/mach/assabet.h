@@ -96,13 +96,4 @@ extern void assabet_uda1341_reset(int set);
 #define ASSABET_GPIO_BATT_LOW		GPIO_GPIO (26)	/* Low battery */
 #define ASSABET_GPIO_RCLK		GPIO_GPIO (26)	/* CCLK/2  */
 
-<<<<<<< HEAD
-=======
-/* These are gpiolib GPIO numbers, not bitmasks */
-#define ASSABET_GPIO_CF_IRQ		21	/* CF IRQ */
-#define ASSABET_GPIO_CF_CD		22	/* CF CD  */
-#define ASSABET_GPIO_CF_BVD2		24	/* CF BVD / IOSPKR */
-#define ASSABET_GPIO_CF_BVD1		25	/* CF BVD / IOSTSCHG */
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

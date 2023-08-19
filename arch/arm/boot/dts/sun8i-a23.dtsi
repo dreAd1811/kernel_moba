@@ -49,13 +49,8 @@
 		reg = <0x40000000 0x40000000>;
 	};
 
-<<<<<<< HEAD
 	soc@1c00000 {
 		codec: codec@1c22c00 {
-=======
-	soc@01c00000 {
-		codec: codec@01c22c00 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			#sound-dai-cells = <0>;
 			compatible = "allwinner,sun8i-a23-codec";
 			reg = <0x01c22c00 0x400>;

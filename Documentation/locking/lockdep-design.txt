@@ -27,12 +27,8 @@ lock-class.
 State
 -----
 
-<<<<<<< HEAD
 The validator tracks lock-class usage history into 4 * nSTATEs + 1 separate
 state bits:
-=======
-The validator tracks lock-class usage history into 4n + 1 separate state bits:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 - 'ever held in STATE context'
 - 'ever held as readlock in STATE context'
@@ -42,10 +38,6 @@ The validator tracks lock-class usage history into 4n + 1 separate state bits:
 Where STATE can be either one of (kernel/locking/lockdep_states.h)
  - hardirq
  - softirq
-<<<<<<< HEAD
-=======
- - reclaim_fs
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 - 'ever used'                                       [ == !unused        ]
 
@@ -177,7 +169,6 @@ Note: When changing code to use the _nested() primitives, be careful and
 check really thoroughly that the hierarchy is correctly mapped; otherwise
 you can get false positives or false negatives.
 
-<<<<<<< HEAD
 Annotations
 -----------
 
@@ -225,8 +216,6 @@ the runtime checks performed by annotations are invaluable when debugging
 locking problems and they carry the same level of details when inspecting
 code.  Always prefer annotations when in doubt!
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Proof of 100% correctness:
 --------------------------
 

@@ -243,11 +243,7 @@ static int command_from_LL(isdn_ctrl *cntrl)
 		dev_kfree_skb(bcs->rx_skb);
 		gigaset_new_rx_skb(bcs);
 
-<<<<<<< HEAD
 		commands = kcalloc(AT_NUM, sizeof(*commands), GFP_ATOMIC);
-=======
-		commands = kzalloc(AT_NUM * (sizeof *commands), GFP_ATOMIC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!commands) {
 			gigaset_free_channel(bcs);
 			dev_err(cs->dev, "ISDN_CMD_DIAL: out of memory\n");

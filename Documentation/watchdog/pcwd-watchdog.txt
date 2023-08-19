@@ -25,11 +25,7 @@ Last reviewed: 10/05/2007
 
  If you want to write a program to be compatible with the PC Watchdog
  driver, simply use of modify the watchdog test program:
-<<<<<<< HEAD
  tools/testing/selftests/watchdog/watchdog-test.c
-=======
- Documentation/watchdog/src/watchdog-test.c
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
  Other IOCTL functions include:

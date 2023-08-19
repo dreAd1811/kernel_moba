@@ -31,11 +31,7 @@ nvkm_mm_initialised(struct nvkm_mm *mm)
 	return mm->heap_nodes;
 }
 
-<<<<<<< HEAD
 int  nvkm_mm_init(struct nvkm_mm *, u8 heap, u32 offset, u32 length, u32 block);
-=======
-int  nvkm_mm_init(struct nvkm_mm *, u32 offset, u32 length, u32 block);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int  nvkm_mm_fini(struct nvkm_mm *);
 int  nvkm_mm_head(struct nvkm_mm *, u8 heap, u8 type, u32 size_max,
 		  u32 size_min, u32 align, struct nvkm_mm_node **);
@@ -44,7 +40,6 @@ int  nvkm_mm_tail(struct nvkm_mm *, u8 heap, u8 type, u32 size_max,
 void nvkm_mm_free(struct nvkm_mm *, struct nvkm_mm_node **);
 void nvkm_mm_dump(struct nvkm_mm *, const char *);
 
-<<<<<<< HEAD
 static inline u32
 nvkm_mm_heap_size(struct nvkm_mm *mm, u8 heap)
 {
@@ -57,14 +52,11 @@ nvkm_mm_heap_size(struct nvkm_mm *mm, u8 heap)
 	return size;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline bool
 nvkm_mm_contiguous(struct nvkm_mm_node *node)
 {
 	return !node->next;
 }
-<<<<<<< HEAD
 
 static inline u32
 nvkm_mm_addr(struct nvkm_mm_node *node)
@@ -83,6 +75,4 @@ nvkm_mm_size(struct nvkm_mm_node *node)
 	} while ((node = node->next));
 	return size;
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

@@ -9,10 +9,7 @@
 #include <asm/processor.h>
 #include <asm/ppc-opcode.h>
 #include <asm/firmware.h>
-<<<<<<< HEAD
 #include <asm/feature-fixups.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef __ASSEMBLY__
 
@@ -84,15 +81,8 @@ END_FW_FTR_SECTION_IFSET(FW_FEATURE_SPLPAR)
 #else
 #define SAVE_GPR(n, base)	stw	n,GPR0+4*(n)(base)
 #define REST_GPR(n, base)	lwz	n,GPR0+4*(n)(base)
-<<<<<<< HEAD
 #define SAVE_NVGPRS(base)	stmw	13, GPR0+4*13(base)
 #define REST_NVGPRS(base)	lmw	13, GPR0+4*13(base)
-=======
-#define SAVE_NVGPRS(base)	SAVE_GPR(13, base); SAVE_8GPRS(14, base); \
-				SAVE_10GPRS(22, base)
-#define REST_NVGPRS(base)	REST_GPR(13, base); REST_8GPRS(14, base); \
-				REST_10GPRS(22, base)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 #define SAVE_2GPRS(n, base)	SAVE_GPR(n, base); SAVE_GPR(n+1, base)
@@ -448,22 +438,11 @@ END_FTR_SECTION_IFCLR(CPU_FTR_601)
 
 /* The following stops all load and store data streams associated with stream
  * ID (ie. streams created explicitly).  The embedded and server mnemonics for
-<<<<<<< HEAD
  * dcbt are different so this must only be used for server.
  */
 #define DCBT_BOOK3S_STOP_ALL_STREAM_IDS(scratch)	\
        lis     scratch,0x60000000@h;			\
        dcbt    0,scratch,0b01010
-=======
- * dcbt are different so we use machine "power4" here explicitly.
- */
-#define DCBT_STOP_ALL_STREAM_IDS(scratch)	\
-.machine push ;					\
-.machine "power4" ;				\
-       lis     scratch,0x60000000@h;		\
-       dcbt    0,scratch,0b01010;		\
-.machine pop
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * toreal/fromreal/tophys/tovirt macros. 32-bit BookE makes them
@@ -791,7 +770,6 @@ END_FTR_SECTION_IFCLR(CPU_FTR_601)
 #ifdef CONFIG_PPC_BOOK3E
 #define FIXUP_ENDIAN
 #else
-<<<<<<< HEAD
 /*
  * This version may be used in in HV or non-HV context.
  * MSR[EE] must be disabled.
@@ -799,11 +777,6 @@ END_FTR_SECTION_IFCLR(CPU_FTR_601)
 #define FIXUP_ENDIAN						   \
 	tdi   0,0,0x48;	  /* Reverse endian of b . + 8		*/ \
 	b     191f;	  /* Skip trampoline if endian is good	*/ \
-=======
-#define FIXUP_ENDIAN						   \
-	tdi   0,0,0x48;	  /* Reverse endian of b . + 8		*/ \
-	b     $+44;	  /* Skip trampoline if endian is good	*/ \
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.long 0xa600607d; /* mfmsr r11				*/ \
 	.long 0x01006b69; /* xori r11,r11,1			*/ \
 	.long 0x00004039; /* li r10,0				*/ \
@@ -813,7 +786,6 @@ END_FTR_SECTION_IFCLR(CPU_FTR_601)
 	.long 0x14004a39; /* addi r10,r10,20			*/ \
 	.long 0xa6035a7d; /* mtsrr0 r10				*/ \
 	.long 0xa6037b7d; /* mtsrr1 r11				*/ \
-<<<<<<< HEAD
 	.long 0x2400004c; /* rfid				*/ \
 191:
 
@@ -834,9 +806,6 @@ END_FTR_SECTION_IFCLR(CPU_FTR_601)
 	.long 0xa64b7b7d; /* mthsrr1 r11			*/ \
 	.long 0x2402004c; /* hrfid				*/ \
 191:
-=======
-	.long 0x2400004c  /* rfid				*/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* !CONFIG_PPC_BOOK3E */
 

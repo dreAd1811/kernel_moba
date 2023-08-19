@@ -33,15 +33,11 @@ void sync_icache_aliases(void *kaddr, unsigned long len)
 		__clean_dcache_area_pou(kaddr, len);
 		__flush_icache_all();
 	} else {
-<<<<<<< HEAD
 		/*
 		 * Don't issue kick_all_cpus_sync() after I-cache invalidation
 		 * for user mappings.
 		 */
 		__flush_icache_range(addr, addr + len);
-=======
-		flush_icache_range(addr, addr + len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -66,11 +62,7 @@ void copy_to_user_page(struct vm_area_struct *vma, struct page *page,
 	flush_ptrace_access(vma, page, uaddr, dst, len);
 }
 
-<<<<<<< HEAD
 void __sync_icache_dcache(pte_t pte)
-=======
-void __sync_icache_dcache(pte_t pte, unsigned long addr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct page *page = pte_page(pte);
 
@@ -78,10 +70,7 @@ void __sync_icache_dcache(pte_t pte, unsigned long addr)
 		sync_icache_aliases(page_address(page),
 				    PAGE_SIZE << compound_order(page));
 }
-<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(__sync_icache_dcache);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * This function is called when a page has been modified by the kernel. Mark
@@ -99,11 +88,7 @@ EXPORT_SYMBOL(flush_dcache_page);
  * Additional functions defined in assembly.
  */
 EXPORT_SYMBOL(flush_cache_all);
-<<<<<<< HEAD
 EXPORT_SYMBOL(__flush_icache_range);
-=======
-EXPORT_SYMBOL(flush_icache_range);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_ARCH_HAS_PMEM_API
 void arch_wb_cache_pmem(void *addr, size_t size)

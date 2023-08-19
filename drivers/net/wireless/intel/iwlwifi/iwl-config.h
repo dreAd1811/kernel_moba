@@ -7,10 +7,7 @@
  *
  * Copyright(c) 2007 - 2014 Intel Corporation. All rights reserved.
  * Copyright (C) 2016 - 2017 Intel Deutschland GmbH
-<<<<<<< HEAD
  * Copyright(c) 2018 Intel Corporation
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of version 2 of the GNU General Public License as
@@ -37,10 +34,7 @@
  *
  * Copyright(c) 2005 - 2014 Intel Corporation. All rights reserved.
  * Copyright (C) 2016 - 2017 Intel Deutschland GmbH
-<<<<<<< HEAD
  * Copyright(c) 2018 Intel Corporation
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -77,10 +71,7 @@
 #include <linux/netdevice.h>
 #include <linux/ieee80211.h>
 #include <linux/nl80211.h>
-<<<<<<< HEAD
 #include "iwl-csr.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum iwl_device_family {
 	IWL_DEVICE_FAMILY_UNDEFINED,
@@ -101,12 +92,8 @@ enum iwl_device_family {
 	IWL_DEVICE_FAMILY_7000,
 	IWL_DEVICE_FAMILY_8000,
 	IWL_DEVICE_FAMILY_9000,
-<<<<<<< HEAD
 	IWL_DEVICE_FAMILY_22000,
 	IWL_DEVICE_FAMILY_22560,
-=======
-	IWL_DEVICE_FAMILY_A000,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /*
@@ -168,11 +155,8 @@ enum iwl_nvm_type {
 #define	ANT_AC		(ANT_A | ANT_C)
 #define ANT_BC		(ANT_B | ANT_C)
 #define ANT_ABC		(ANT_A | ANT_B | ANT_C)
-<<<<<<< HEAD
 #define MAX_ANT_NUM 3
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline u8 num_of_ant(u8 mask)
 {
@@ -193,10 +177,7 @@ static inline u8 num_of_ant(u8 mask)
  * @apmg_wake_up_wa: should the MAC access REQ be asserted when a command
  *	is in flight. This is due to a HW bug in 7260, 3160 and 7265.
  * @scd_chain_ext_wa: should the chain extension feature in SCD be disabled.
-<<<<<<< HEAD
  * @max_tfd_queue_size: max number of entries in tfd queue.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct iwl_base_params {
 	unsigned int wd_timeout;
@@ -212,10 +193,7 @@ struct iwl_base_params {
 	   scd_chain_ext_wa:1;
 
 	u16 num_of_queues;	/* def: HW dependent */
-<<<<<<< HEAD
 	u32 max_tfd_queue_size;	/* def: HW dependent */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	u8 max_ll_items;
 	u8 led_compensation;
@@ -296,11 +274,7 @@ struct iwl_tt_params {
 #define OTP_LOW_IMAGE_SIZE_FAMILY_7000	(16 * 512 * sizeof(u16)) /* 16 KB */
 #define OTP_LOW_IMAGE_SIZE_FAMILY_8000	(32 * 512 * sizeof(u16)) /* 32 KB */
 #define OTP_LOW_IMAGE_SIZE_FAMILY_9000	OTP_LOW_IMAGE_SIZE_FAMILY_8000
-<<<<<<< HEAD
 #define OTP_LOW_IMAGE_SIZE_FAMILY_22000	OTP_LOW_IMAGE_SIZE_FAMILY_9000
-=======
-#define OTP_LOW_IMAGE_SIZE_FAMILY_A000	OTP_LOW_IMAGE_SIZE_FAMILY_9000
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct iwl_eeprom_params {
 	const u8 regulatory_bands[7];
@@ -317,7 +291,6 @@ struct iwl_pwr_tx_backoff {
 };
 
 /**
-<<<<<<< HEAD
  * struct iwl_csr_params
  *
  * @flag_sw_reset: reset the device
@@ -364,8 +337,6 @@ struct iwl_csr_params {
 };
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * struct iwl_cfg
  * @name: Official name of the device
  * @fw_name_pre: Firmware filename prefix. The api version and extension
@@ -377,13 +348,8 @@ struct iwl_csr_params {
  *	next step. Supported only in integrated solutions.
  * @ucode_api_max: Highest version of uCode API supported by driver.
  * @ucode_api_min: Lowest version of uCode API supported by driver.
-<<<<<<< HEAD
  * @max_inst_size: The maximal length of the fw inst section (only DVM)
  * @max_data_size: The maximal length of the fw data section (only DVM)
-=======
- * @max_inst_size: The maximal length of the fw inst section
- * @max_data_size: The maximal length of the fw data section
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @valid_tx_ant: valid transmit antenna
  * @valid_rx_ant: valid receive antenna
  * @non_shared_ant: the antenna that is for WiFi only
@@ -402,10 +368,7 @@ struct iwl_csr_params {
  * @mac_addr_from_csr: read HW address from CSR registers
  * @features: hw features, any combination of feature_whitelist
  * @pwr_tx_backoffs: translation table between power limits and backoffs
-<<<<<<< HEAD
  * @csr: csr flags and addresses that are different across devices
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @max_rx_agg_size: max RX aggregation size of the ADDBA request/response
  * @max_tx_agg_size: max TX aggregation size of the ADDBA request/response
  * @max_ht_ampdu_factor: the exponent of the max length of A-MPDU that the
@@ -422,11 +385,7 @@ struct iwl_csr_params {
  * @vht_mu_mimo_supported: VHT MU-MIMO support
  * @rf_id: need to read rf_id to determine the firmware image
  * @integrated: discrete or integrated
-<<<<<<< HEAD
  * @gen2: 22000 and on transport operation
-=======
- * @gen2: a000 and on transport operation
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @cdb: CDB support
  * @nvm_type: see &enum iwl_nvm_type
  *
@@ -448,10 +407,7 @@ struct iwl_cfg {
 	const struct iwl_pwr_tx_backoff *pwr_tx_backoffs;
 	const char *default_nvm_file_C_step;
 	const struct iwl_tt_params *thermal_params;
-<<<<<<< HEAD
 	const struct iwl_csr_params *csr;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	enum iwl_device_family device_family;
 	enum iwl_led_mode led_mode;
 	enum iwl_nvm_type nvm_type;
@@ -467,11 +423,7 @@ struct iwl_cfg {
 	u32 soc_latency;
 	u16 nvm_ver;
 	u16 nvm_calib_ver;
-<<<<<<< HEAD
 	u32 rx_with_siso_diversity:1,
-=======
-	u16 rx_with_siso_diversity:1,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    bt_shared_single_ant:1,
 	    internal_wimax_coex:1,
 	    host_interrupt_operation_mode:1,
@@ -498,7 +450,6 @@ struct iwl_cfg {
 	u8 max_vht_ampdu_exponent;
 	u8 ucode_api_max;
 	u8 ucode_api_min;
-<<<<<<< HEAD
 	u32 min_umac_error_event_table;
 	u32 extra_phy_cfg_flags;
 };
@@ -533,11 +484,6 @@ static const struct iwl_csr_params iwl_csr_v2 = {
 	.mac_addr1_strap = 0x3C
 };
 
-=======
-	u32 extra_phy_cfg_flags;
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * This list declares the config structures for all devices.
  */
@@ -606,12 +552,6 @@ extern const struct iwl_cfg iwl8260_2ac_cfg;
 extern const struct iwl_cfg iwl8265_2ac_cfg;
 extern const struct iwl_cfg iwl8275_2ac_cfg;
 extern const struct iwl_cfg iwl4165_2ac_cfg;
-<<<<<<< HEAD
-=======
-extern const struct iwl_cfg iwl8260_2ac_sdio_cfg;
-extern const struct iwl_cfg iwl8265_2ac_sdio_cfg;
-extern const struct iwl_cfg iwl4165_2ac_sdio_cfg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern const struct iwl_cfg iwl9160_2ac_cfg;
 extern const struct iwl_cfg iwl9260_2ac_cfg;
 extern const struct iwl_cfg iwl9260_killer_2ac_cfg;
@@ -630,7 +570,6 @@ extern const struct iwl_cfg iwl9462_2ac_cfg_shared_clk;
 extern const struct iwl_cfg iwl9560_2ac_cfg_shared_clk;
 extern const struct iwl_cfg iwl9560_killer_2ac_cfg_shared_clk;
 extern const struct iwl_cfg iwl9560_killer_s_2ac_cfg_shared_clk;
-<<<<<<< HEAD
 extern const struct iwl_cfg iwl22000_2ac_cfg_hr;
 extern const struct iwl_cfg iwl22000_2ac_cfg_hr_cdb;
 extern const struct iwl_cfg iwl22000_2ac_cfg_jf;
@@ -648,15 +587,5 @@ extern const struct iwl_cfg iwl22000_2ax_cfg_qnj_jf_b0;
 extern const struct iwl_cfg iwl22000_2ax_cfg_qnj_hr_a0;
 extern const struct iwl_cfg iwl22560_2ax_cfg_su_cdb;
 #endif /* CPTCFG_IWLMVM || CPTCFG_IWLFMAC */
-=======
-extern const struct iwl_cfg iwla000_2ac_cfg_hr;
-extern const struct iwl_cfg iwla000_2ac_cfg_hr_cdb;
-extern const struct iwl_cfg iwla000_2ac_cfg_jf;
-extern const struct iwl_cfg iwla000_2ax_cfg_hr;
-extern const struct iwl_cfg iwla000_2ax_cfg_qnj_hr_f0;
-extern const struct iwl_cfg iwla000_2ax_cfg_qnj_jf_b0;
-extern const struct iwl_cfg iwla000_2ax_cfg_qnj_hr_a0;
-#endif /* CONFIG_IWLMVM */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* __IWL_CONFIG_H__ */

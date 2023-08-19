@@ -31,7 +31,6 @@
 #include <linux/workqueue.h>
 #include <linux/spinlock.h>
 #include <linux/kfd_ioctl.h>
-<<<<<<< HEAD
 #include <linux/idr.h>
 #include <linux/kfifo.h>
 #include <linux/seq_file.h>
@@ -75,18 +74,6 @@
 /*
  * When working with cp scheduler we should assign the HIQ manually or via
  * the amdgpu driver to a fixed hqd slot, here are the fixed HIQ hqd slot
-=======
-#include <kgd_kfd_interface.h>
-
-#define KFD_SYSFS_FILE_MODE 0444
-
-#define KFD_MMAP_DOORBELL_MASK 0x8000000000000
-#define KFD_MMAP_EVENTS_MASK 0x4000000000000
-
-/*
- * When working with cp scheduler we should assign the HIQ manually or via
- * the radeon driver to a fixed hqd slot, here are the fixed HIQ hqd slot
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * definitions for Kaveri. In Kaveri only the first ME queues participates
  * in the cp scheduling taking that in mind we set the HIQ slot in the
  * second ME.
@@ -94,12 +81,6 @@
 #define KFD_CIK_HIQ_PIPE 4
 #define KFD_CIK_HIQ_QUEUE 0
 
-<<<<<<< HEAD
-=======
-/* GPU ID hash width in bits */
-#define KFD_GPU_ID_HASH_WIDTH 16
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Macro for allocating structures */
 #define kfd_alloc_struct(ptr_to_struct)	\
 	((typeof(ptr_to_struct)) kzalloc(sizeof(*ptr_to_struct), GFP_KERNEL))
@@ -108,7 +89,6 @@
 #define KFD_MAX_NUM_OF_QUEUES_PER_PROCESS 1024
 
 /*
-<<<<<<< HEAD
  * Size of the per-process TBA+TMA buffer: 2 pages
  *
  * The first page is the TBA used for the CWSR ISA code. The second
@@ -118,8 +98,6 @@
 #define KFD_CWSR_TMA_OFFSET PAGE_SIZE
 
 /*
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Kernel module parameter to specify maximum number of supported queues per
  * device
  */
@@ -136,7 +114,6 @@ extern int max_num_of_queues_per_device;
 extern int sched_policy;
 
 /*
-<<<<<<< HEAD
  * Kernel module parameter to specify the maximum process
  * number per HW scheduler
  */
@@ -145,14 +122,11 @@ extern int hws_max_conc_proc;
 extern int cwsr_enable;
 
 /*
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Kernel module parameter to specify whether to send sigterm to HSA process on
  * unhandled exception
  */
 extern int send_sigterm;
 
-<<<<<<< HEAD
 /*
  * This kernel module is used to simulate large bar machine on non-large bar
  * enabled machines.
@@ -175,8 +149,6 @@ extern int noretry;
  */
 extern int halt_if_hws_hang;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * enum kfd_sched_policy
  *
@@ -209,7 +181,6 @@ enum cache_policy {
 	cache_policy_noncoherent
 };
 
-<<<<<<< HEAD
 #define KFD_IS_SOC15(chip) ((chip) >= CHIP_VEGA10)
 
 struct kfd_event_interrupt_class {
@@ -233,28 +204,6 @@ struct kfd_device_info {
 	bool needs_iommu_device;
 	bool needs_pci_atomics;
 	unsigned int num_sdma_engines;
-=======
-enum asic_family_type {
-	CHIP_KAVERI = 0,
-	CHIP_CARRIZO
-};
-
-struct kfd_event_interrupt_class {
-	bool (*interrupt_isr)(struct kfd_dev *dev,
-				const uint32_t *ih_ring_entry);
-	void (*interrupt_wq)(struct kfd_dev *dev,
-				const uint32_t *ih_ring_entry);
-};
-
-struct kfd_device_info {
-	unsigned int asic_family;
-	const struct kfd_event_interrupt_class *event_interrupt_class;
-	unsigned int max_pasid_bits;
-	unsigned int max_no_of_hqd;
-	size_t ih_ring_entry_size;
-	uint8_t num_of_watch_points;
-	uint16_t mqd_size_aligned;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct kfd_mem_obj {
@@ -262,7 +211,6 @@ struct kfd_mem_obj {
 	uint32_t range_end;
 	uint64_t gpu_addr;
 	uint32_t *cpu_ptr;
-<<<<<<< HEAD
 	void *gtt_mem;
 };
 
@@ -270,8 +218,6 @@ struct kfd_vmid_info {
 	uint32_t first_vmid_kfd;
 	uint32_t last_vmid_kfd;
 	uint32_t vmid_num_kfd;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct kfd_dev {
@@ -290,21 +236,12 @@ struct kfd_dev {
 					 * to HW doorbell, GFX reserved some
 					 * at the start)
 					 */
-<<<<<<< HEAD
-=======
-	size_t doorbell_process_limit;	/* Number of processes we have doorbell
-					 * space for.
-					 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 __iomem *doorbell_kernel_ptr; /* This is a pointer for a doorbells
 					   * page used by kernel queue
 					   */
 
 	struct kgd2kfd_shared_resources shared_resources;
-<<<<<<< HEAD
 	struct kfd_vmid_info vm_info;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	const struct kfd2kgd_calls *kfd2kgd;
 	struct mutex doorbell_mutex;
@@ -320,15 +257,8 @@ struct kfd_dev {
 	unsigned int gtt_sa_num_of_chunks;
 
 	/* Interrupts */
-<<<<<<< HEAD
 	struct kfifo ih_fifo;
 	struct workqueue_struct *ih_wq;
-=======
-	void *interrupt_ring;
-	size_t interrupt_ring_size;
-	atomic_t interrupt_ring_rptr;
-	atomic_t interrupt_ring_wptr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct work_struct interrupt_work;
 	spinlock_t interrupt_lock;
 
@@ -344,7 +274,6 @@ struct kfd_dev {
 
 	/* Debug manager */
 	struct kfd_dbgmgr           *dbgmgr;
-<<<<<<< HEAD
 
 	/* Maximum process number mapped to HW scheduler */
 	unsigned int max_proc_per_quantum;
@@ -353,8 +282,6 @@ struct kfd_dev {
 	bool cwsr_enabled;
 	const void *cwsr_isa;
 	unsigned int cwsr_isa_size;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* KGD2KFD callbacks */
@@ -377,7 +304,6 @@ void kfd_chardev_exit(void);
 struct device *kfd_chardev(void);
 
 /**
-<<<<<<< HEAD
  * enum kfd_unmap_queues_filter
  *
  * @KFD_UNMAP_QUEUES_FILTER_SINGLE_QUEUE: Preempts single queue.
@@ -394,24 +320,6 @@ enum kfd_unmap_queues_filter {
 	KFD_UNMAP_QUEUES_FILTER_ALL_QUEUES,
 	KFD_UNMAP_QUEUES_FILTER_DYNAMIC_QUEUES,
 	KFD_UNMAP_QUEUES_FILTER_BY_PASID
-=======
- * enum kfd_preempt_type_filter
- *
- * @KFD_PREEMPT_TYPE_FILTER_SINGLE_QUEUE: Preempts single queue.
- *
- * @KFD_PRERMPT_TYPE_FILTER_ALL_QUEUES: Preempts all queues in the
- *						running queues list.
- *
- * @KFD_PRERMPT_TYPE_FILTER_BY_PASID: Preempts queues that belongs to
- *						specific process.
- *
- */
-enum kfd_preempt_type_filter {
-	KFD_PREEMPT_TYPE_FILTER_SINGLE_QUEUE,
-	KFD_PREEMPT_TYPE_FILTER_ALL_QUEUES,
-	KFD_PREEMPT_TYPE_FILTER_DYNAMIC_QUEUES,
-	KFD_PREEMPT_TYPE_FILTER_BY_PASID
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -472,15 +380,11 @@ enum kfd_queue_format {
  * @is_interop: Defines if this is a interop queue. Interop queue means that
  * the queue can access both graphics and compute resources.
  *
-<<<<<<< HEAD
  * @is_evicted: Defines if the queue is evicted. Only active queues
  * are evicted, rendering them inactive.
  *
  * @is_active: Defines if the queue is active or not. @is_active and
  * @is_evicted are protected by the DQM lock.
-=======
- * @is_active: Defines if the queue is active or not.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * @vmid: If the scheduling mode is no cp scheduling the field defines the vmid
  * of the queue.
@@ -499,16 +403,10 @@ struct queue_properties {
 	uint32_t queue_percent;
 	uint32_t *read_ptr;
 	uint32_t *write_ptr;
-<<<<<<< HEAD
 	void __iomem *doorbell_ptr;
 	uint32_t doorbell_off;
 	bool is_interop;
 	bool is_evicted;
-=======
-	uint32_t __iomem *doorbell_ptr;
-	uint32_t doorbell_off;
-	bool is_interop;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool is_active;
 	/* Not relevant for user mode queues in cp scheduling */
 	unsigned int vmid;
@@ -521,15 +419,12 @@ struct queue_properties {
 	uint32_t eop_ring_buffer_size;
 	uint64_t ctx_save_restore_area_address;
 	uint32_t ctx_save_restore_area_size;
-<<<<<<< HEAD
 	uint32_t ctl_stack_size;
 	uint64_t tba_addr;
 	uint64_t tma_addr;
 	/* Relevant for CU */
 	uint32_t cu_mask_count; /* Must be a multiple of 32 */
 	uint32_t *cu_mask;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -574,10 +469,7 @@ struct queue {
 	uint32_t queue;
 
 	unsigned int sdma_id;
-<<<<<<< HEAD
 	unsigned int doorbell_id;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct kfd_process	*process;
 	struct kfd_dev		*device;
@@ -607,10 +499,6 @@ struct scheduling_resources {
 struct process_queue_manager {
 	/* data */
 	struct kfd_process	*process;
-<<<<<<< HEAD
-=======
-	unsigned int		num_concurrent_processes;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct list_head	queues;
 	unsigned long		*queue_slot_bitmap;
 };
@@ -626,7 +514,6 @@ struct qcm_process_device {
 	unsigned int queue_count;
 	unsigned int vmid;
 	bool is_debug;
-<<<<<<< HEAD
 	unsigned int evicted; /* eviction counter, 0=active */
 
 	/* This flag tells if we should reset all wavefronts on
@@ -634,8 +521,6 @@ struct qcm_process_device {
 	 */
 	bool reset_wavefronts;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * All the memory management data should be here too
 	 */
@@ -649,7 +534,6 @@ struct qcm_process_device {
 	uint32_t num_gws;
 	uint32_t num_oac;
 	uint32_t sh_hidden_private_base;
-<<<<<<< HEAD
 
 	/* CWSR memory */
 	void *cwsr_kaddr;
@@ -691,8 +575,6 @@ enum kfd_pdd_bound {
 	PDD_UNBOUND = 0,
 	PDD_BOUND,
 	PDD_BOUND_SUSPENDED,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Data that is per-process-per device. */
@@ -706,11 +588,8 @@ struct kfd_process_device {
 	/* The device that owns this data. */
 	struct kfd_dev *dev;
 
-<<<<<<< HEAD
 	/* The process that owns this kfd_process_device. */
 	struct kfd_process *process;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* per-process-per device QCM data structure */
 	struct qcm_process_device qpd;
@@ -723,7 +602,6 @@ struct kfd_process_device {
 	uint64_t scratch_base;
 	uint64_t scratch_limit;
 
-<<<<<<< HEAD
 	/* VM context for GPUVM allocations */
 	struct file *drm_file;
 	void *vm;
@@ -740,15 +618,6 @@ struct kfd_process_device {
 
 	/* Is this process/pasid bound to this device? (amd_iommu_bind_pasid) */
 	enum kfd_pdd_bound bound;
-=======
-	/* Is this process/pasid bound to this device? (amd_iommu_bind_pasid) */
-	bool bound;
-
-	/* This flag tells if we should reset all
-	 * wavefronts on process termination
-	 */
-	bool reset_wavefronts;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define qpd_to_pdd(x) container_of(x, struct kfd_process_device, qpd)
@@ -761,7 +630,6 @@ struct kfd_process {
 	 */
 	struct hlist_node kfd_processes;
 
-<<<<<<< HEAD
 	/*
 	 * Opaque pointer to mm_struct. We don't hold a reference to
 	 * it so it should never be dereferenced from here. This is
@@ -771,9 +639,6 @@ struct kfd_process {
 
 	struct kref ref;
 	struct work_struct release_work;
-=======
-	struct mm_struct *mm;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct mutex mutex;
 
@@ -781,11 +646,8 @@ struct kfd_process {
 	 * In any process, the thread that started main() is the lead
 	 * thread and outlives the rest.
 	 * It is here because amd_iommu_bind_pasid wants a task_struct.
-<<<<<<< HEAD
 	 * It can also be used for safely getting a reference to the
 	 * mm_struct of the process.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	struct task_struct *lead_thread;
 
@@ -796,10 +658,7 @@ struct kfd_process {
 	struct rcu_head	rcu;
 
 	unsigned int pasid;
-<<<<<<< HEAD
 	unsigned int doorbell_index;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * List of kfd_process_device structures,
@@ -809,21 +668,11 @@ struct kfd_process {
 
 	struct process_queue_manager pqm;
 
-<<<<<<< HEAD
-=======
-	/* The process's queues. */
-	size_t queue_array_size;
-
-	/* Size is queue_array_size, up to MAX_PROCESS_QUEUES. */
-	struct kfd_queue **queues;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*Is the user space process 32 bit?*/
 	bool is_32bit_user_mode;
 
 	/* Event-related data */
 	struct mutex event_mutex;
-<<<<<<< HEAD
 	/* Event ID allocator and lookup */
 	struct idr event_idr;
 	/* Event page */
@@ -855,17 +704,6 @@ struct kfd_process {
 extern DECLARE_HASHTABLE(kfd_processes_table, KFD_PROCESS_TABLE_SIZE);
 extern struct srcu_struct kfd_processes_srcu;
 
-=======
-	/* All events in process hashed by ID, linked on kfd_event.events. */
-	DECLARE_HASHTABLE(events, 4);
-	/* struct slot_page_header.event_pages */
-	struct list_head signal_event_pages;
-	u32 next_nonsignal_event_id;
-	size_t signal_event_count;
-	bool signal_event_limit_reached;
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * Ioctl function type.
  *
@@ -884,7 +722,6 @@ struct amdkfd_ioctl_desc {
 	const char *name;
 };
 
-<<<<<<< HEAD
 int kfd_process_create_wq(void);
 void kfd_process_destroy_wq(void);
 struct kfd_process *kfd_create_process(struct file *filep);
@@ -901,23 +738,11 @@ int kfd_process_device_init_vm(struct kfd_process_device *pdd,
 			       struct file *drm_file);
 struct kfd_process_device *kfd_bind_process_to_device(struct kfd_dev *dev,
 						struct kfd_process *p);
-=======
-void kfd_process_create_wq(void);
-void kfd_process_destroy_wq(void);
-struct kfd_process *kfd_create_process(const struct task_struct *);
-struct kfd_process *kfd_get_process(const struct task_struct *);
-struct kfd_process *kfd_lookup_process_by_pasid(unsigned int pasid);
-
-struct kfd_process_device *kfd_bind_process_to_device(struct kfd_dev *dev,
-							struct kfd_process *p);
-void kfd_unbind_process_from_device(struct kfd_dev *dev, unsigned int pasid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct kfd_process_device *kfd_get_process_device_data(struct kfd_dev *dev,
 							struct kfd_process *p);
 struct kfd_process_device *kfd_create_process_device_data(struct kfd_dev *dev,
 							struct kfd_process *p);
 
-<<<<<<< HEAD
 int kfd_reserved_mem_mmap(struct kfd_dev *dev, struct kfd_process *process,
 			  struct vm_area_struct *vma);
 
@@ -929,8 +754,6 @@ void *kfd_process_device_translate_handle(struct kfd_process_device *p,
 void kfd_process_device_remove_obj_handle(struct kfd_process_device *pdd,
 					int handle);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Process device data iterator */
 struct kfd_process_device *kfd_get_first_process_device_data(
 							struct kfd_process *p);
@@ -948,7 +771,6 @@ unsigned int kfd_pasid_alloc(void);
 void kfd_pasid_free(unsigned int pasid);
 
 /* Doorbells */
-<<<<<<< HEAD
 size_t kfd_doorbell_process_slice(struct kfd_dev *kfd);
 int kfd_doorbell_init(struct kfd_dev *kfd);
 void kfd_doorbell_fini(struct kfd_dev *kfd);
@@ -967,19 +789,6 @@ phys_addr_t kfd_get_process_doorbells(struct kfd_dev *dev,
 					struct kfd_process *process);
 int kfd_alloc_process_doorbells(struct kfd_process *process);
 void kfd_free_process_doorbells(struct kfd_process *process);
-=======
-int kfd_doorbell_init(struct kfd_dev *kfd);
-void kfd_doorbell_fini(struct kfd_dev *kfd);
-int kfd_doorbell_mmap(struct kfd_process *process, struct vm_area_struct *vma);
-u32 __iomem *kfd_get_kernel_doorbell(struct kfd_dev *kfd,
-					unsigned int *doorbell_off);
-void kfd_release_kernel_doorbell(struct kfd_dev *kfd, u32 __iomem *db_addr);
-u32 read_kernel_doorbell(u32 __iomem *db);
-void write_kernel_doorbell(u32 __iomem *db, u32 value);
-unsigned int kfd_queue_id_to_doorbell(struct kfd_dev *kfd,
-					struct kfd_process *process,
-					unsigned int queue_id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* GTT Sub-Allocator */
 
@@ -995,7 +804,6 @@ int kfd_topology_init(void);
 void kfd_topology_shutdown(void);
 int kfd_topology_add_device(struct kfd_dev *gpu);
 int kfd_topology_remove_device(struct kfd_dev *gpu);
-<<<<<<< HEAD
 struct kfd_topology_device *kfd_topology_device_by_proximity_domain(
 						uint32_t proximity_domain);
 struct kfd_topology_device *kfd_topology_device_by_id(uint32_t gpu_id);
@@ -1003,45 +811,28 @@ struct kfd_dev *kfd_device_by_id(uint32_t gpu_id);
 struct kfd_dev *kfd_device_by_pci_dev(const struct pci_dev *pdev);
 int kfd_topology_enum_kfd_devices(uint8_t idx, struct kfd_dev **kdev);
 int kfd_numa_node_to_apic_id(int numa_node_id);
-=======
-struct kfd_dev *kfd_device_by_id(uint32_t gpu_id);
-struct kfd_dev *kfd_device_by_pci_dev(const struct pci_dev *pdev);
-struct kfd_dev *kfd_topology_enum_kfd_devices(uint8_t idx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Interrupts */
 int kfd_interrupt_init(struct kfd_dev *dev);
 void kfd_interrupt_exit(struct kfd_dev *dev);
 void kgd2kfd_interrupt(struct kfd_dev *kfd, const void *ih_ring_entry);
 bool enqueue_ih_ring_entry(struct kfd_dev *kfd,	const void *ih_ring_entry);
-<<<<<<< HEAD
 bool interrupt_is_wanted(struct kfd_dev *dev,
 				const uint32_t *ih_ring_entry,
 				uint32_t *patched_ihre, bool *flag);
-=======
-bool interrupt_is_wanted(struct kfd_dev *dev, const uint32_t *ih_ring_entry);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Power Management */
 void kgd2kfd_suspend(struct kfd_dev *kfd);
 int kgd2kfd_resume(struct kfd_dev *kfd);
 
-<<<<<<< HEAD
 /* GPU reset */
 int kgd2kfd_pre_reset(struct kfd_dev *kfd);
 int kgd2kfd_post_reset(struct kfd_dev *kfd);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* amdkfd Apertures */
 int kfd_init_apertures(struct kfd_process *process);
 
 /* Queue Context Management */
-<<<<<<< HEAD
-=======
-struct cik_sdma_rlc_registers *get_sdma_mqd(void *mqd);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int init_queue(struct queue **q, const struct queue_properties *properties);
 void uninit_queue(struct queue *q);
 void print_queue_properties(struct queue_properties *q);
@@ -1051,7 +842,6 @@ struct mqd_manager *mqd_manager_init(enum KFD_MQD_TYPE type,
 					struct kfd_dev *dev);
 struct mqd_manager *mqd_manager_init_cik(enum KFD_MQD_TYPE type,
 		struct kfd_dev *dev);
-<<<<<<< HEAD
 struct mqd_manager *mqd_manager_init_cik_hawaii(enum KFD_MQD_TYPE type,
 		struct kfd_dev *dev);
 struct mqd_manager *mqd_manager_init_vi(enum KFD_MQD_TYPE type,
@@ -1060,19 +850,12 @@ struct mqd_manager *mqd_manager_init_vi_tonga(enum KFD_MQD_TYPE type,
 		struct kfd_dev *dev);
 struct mqd_manager *mqd_manager_init_v9(enum KFD_MQD_TYPE type,
 		struct kfd_dev *dev);
-=======
-struct mqd_manager *mqd_manager_init_vi(enum KFD_MQD_TYPE type,
-		struct kfd_dev *dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct device_queue_manager *device_queue_manager_init(struct kfd_dev *dev);
 void device_queue_manager_uninit(struct device_queue_manager *dqm);
 struct kernel_queue *kernel_queue_init(struct kfd_dev *dev,
 					enum kfd_queue_type type);
 void kernel_queue_uninit(struct kernel_queue *kq);
-<<<<<<< HEAD
 int kfd_process_vm_fault(struct device_queue_manager *dqm, unsigned int pasid);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Process Queue Manager */
 struct process_queue_node {
@@ -1081,54 +864,31 @@ struct process_queue_node {
 	struct list_head process_queue_list;
 };
 
-<<<<<<< HEAD
 void kfd_process_dequeue_from_device(struct kfd_process_device *pdd);
 void kfd_process_dequeue_from_all_devices(struct kfd_process *p);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int pqm_init(struct process_queue_manager *pqm, struct kfd_process *p);
 void pqm_uninit(struct process_queue_manager *pqm);
 int pqm_create_queue(struct process_queue_manager *pqm,
 			    struct kfd_dev *dev,
 			    struct file *f,
 			    struct queue_properties *properties,
-<<<<<<< HEAD
-=======
-			    unsigned int flags,
-			    enum kfd_queue_type type,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    unsigned int *qid);
 int pqm_destroy_queue(struct process_queue_manager *pqm, unsigned int qid);
 int pqm_update_queue(struct process_queue_manager *pqm, unsigned int qid,
 			struct queue_properties *p);
-<<<<<<< HEAD
 int pqm_set_cu_mask(struct process_queue_manager *pqm, unsigned int qid,
 			struct queue_properties *p);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct kernel_queue *pqm_get_kernel_queue(struct process_queue_manager *pqm,
 						unsigned int qid);
 
 int amdkfd_fence_wait_timeout(unsigned int *fence_addr,
 				unsigned int fence_value,
-<<<<<<< HEAD
 				unsigned int timeout_ms);
 
 /* Packet Manager */
 
 #define KFD_FENCE_COMPLETED (100)
 #define KFD_FENCE_INIT   (10)
-=======
-				unsigned long timeout);
-
-/* Packet Manager */
-
-#define KFD_HIQ_TIMEOUT (500)
-
-#define KFD_FENCE_COMPLETED (100)
-#define KFD_FENCE_INIT   (10)
-#define KFD_UNMAP_LATENCY (150)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct packet_manager {
 	struct device_queue_manager *dqm;
@@ -1136,7 +896,6 @@ struct packet_manager {
 	struct mutex lock;
 	bool allocated;
 	struct kfd_mem_obj *ib_buffer_obj;
-<<<<<<< HEAD
 	unsigned int ib_size_bytes;
 
 	const struct packet_manager_funcs *pmf;
@@ -1174,10 +933,6 @@ struct packet_manager_funcs {
 extern const struct packet_manager_funcs kfd_vi_pm_funcs;
 extern const struct packet_manager_funcs kfd_v9_pm_funcs;
 
-=======
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int pm_init(struct packet_manager *pm, struct device_queue_manager *dqm);
 void pm_uninit(struct packet_manager *pm);
 int pm_send_set_resources(struct packet_manager *pm,
@@ -1187,17 +942,12 @@ int pm_send_query_status(struct packet_manager *pm, uint64_t fence_address,
 				uint32_t fence_value);
 
 int pm_send_unmap_queue(struct packet_manager *pm, enum kfd_queue_type type,
-<<<<<<< HEAD
 			enum kfd_unmap_queues_filter mode,
-=======
-			enum kfd_preempt_type_filter mode,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			uint32_t filter_param, bool reset,
 			unsigned int sdma_engine);
 
 void pm_release_ib(struct packet_manager *pm);
 
-<<<<<<< HEAD
 /* Following PM funcs can be shared among VI and AI */
 unsigned int pm_build_pm4_header(unsigned int opcode, size_t packet_size);
 int pm_set_resources_vi(struct packet_manager *pm, uint32_t *buffer,
@@ -1211,33 +961,13 @@ extern const struct kfd_event_interrupt_class event_interrupt_class_v9;
 
 extern const struct kfd_device_global_init_class device_global_init_class_cik;
 
-=======
-uint64_t kfd_get_number_elems(struct kfd_dev *kfd);
-phys_addr_t kfd_get_process_doorbells(struct kfd_dev *dev,
-					struct kfd_process *process);
-
-/* Events */
-extern const struct kfd_event_interrupt_class event_interrupt_class_cik;
-extern const struct kfd_device_global_init_class device_global_init_class_cik;
-
-enum kfd_event_wait_result {
-	KFD_WAIT_COMPLETE,
-	KFD_WAIT_TIMEOUT,
-	KFD_WAIT_ERROR
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void kfd_event_init_process(struct kfd_process *p);
 void kfd_event_free_process(struct kfd_process *p);
 int kfd_event_mmap(struct kfd_process *process, struct vm_area_struct *vma);
 int kfd_wait_on_events(struct kfd_process *p,
 		       uint32_t num_events, void __user *data,
 		       bool all, uint32_t user_timeout_ms,
-<<<<<<< HEAD
 		       uint32_t *wait_result);
-=======
-		       enum kfd_event_wait_result *wait_result);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void kfd_signal_event_interrupt(unsigned int pasid, uint32_t partial_id,
 				uint32_t valid_id_bits);
 void kfd_signal_iommu_event(struct kfd_dev *dev,
@@ -1246,18 +976,14 @@ void kfd_signal_iommu_event(struct kfd_dev *dev,
 void kfd_signal_hw_exception_event(unsigned int pasid);
 int kfd_set_event(struct kfd_process *p, uint32_t event_id);
 int kfd_reset_event(struct kfd_process *p, uint32_t event_id);
-<<<<<<< HEAD
 int kfd_event_page_set(struct kfd_process *p, void *kernel_address,
 		       uint64_t size);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int kfd_event_create(struct file *devkfd, struct kfd_process *p,
 		     uint32_t event_type, bool auto_reset, uint32_t node_id,
 		     uint32_t *event_id, uint32_t *event_trigger_data,
 		     uint64_t *event_page_offset, uint32_t *event_slot_index);
 int kfd_event_destroy(struct kfd_process *p, uint32_t event_id);
 
-<<<<<<< HEAD
 void kfd_signal_vm_fault_event(struct kfd_dev *dev, unsigned int pasid,
 				struct kfd_vm_fault_info *info);
 
@@ -1292,8 +1018,4 @@ static inline void kfd_debugfs_fini(void) {}
 
 #endif
 
-=======
-int dbgdev_wave_reset_wavefronts(struct kfd_dev *dev, struct kfd_process *p);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

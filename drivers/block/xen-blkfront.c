@@ -46,10 +46,7 @@
 #include <linux/scatterlist.h>
 #include <linux/bitmap.h>
 #include <linux/list.h>
-<<<<<<< HEAD
 #include <linux/workqueue.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <xen/xen.h>
 #include <xen/xenbus.h>
@@ -125,11 +122,8 @@ static inline struct blkif_req *blkif_req(struct request *rq)
 
 static DEFINE_MUTEX(blkfront_mutex);
 static const struct block_device_operations xlvbd_block_fops;
-<<<<<<< HEAD
 static struct delayed_work blkfront_work;
 static LIST_HEAD(info_list);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Maximum number of segments in indirect requests, the actual value used by
@@ -138,21 +132,12 @@ static LIST_HEAD(info_list);
  */
 
 static unsigned int xen_blkif_max_segments = 32;
-<<<<<<< HEAD
 module_param_named(max_indirect_segments, xen_blkif_max_segments, uint, 0444);
-=======
-module_param_named(max_indirect_segments, xen_blkif_max_segments, uint,
-		   S_IRUGO);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_PARM_DESC(max_indirect_segments,
 		 "Maximum amount of segments in indirect requests (default is 32)");
 
 static unsigned int xen_blkif_max_queues = 4;
-<<<<<<< HEAD
 module_param_named(max_queues, xen_blkif_max_queues, uint, 0444);
-=======
-module_param_named(max_queues, xen_blkif_max_queues, uint, S_IRUGO);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_PARM_DESC(max_queues, "Maximum number of hardware queues/rings used per virtual disk");
 
 /*
@@ -160,11 +145,7 @@ MODULE_PARM_DESC(max_queues, "Maximum number of hardware queues/rings used per v
  * backend, 4KB page granularity is used.
  */
 static unsigned int xen_blkif_max_ring_order;
-<<<<<<< HEAD
 module_param_named(max_ring_page_order, xen_blkif_max_ring_order, int, 0444);
-=======
-module_param_named(max_ring_page_order, xen_blkif_max_ring_order, int, S_IRUGO);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_PARM_DESC(max_ring_page_order, "Maximum order of pages to be used for the shared ring");
 
 #define BLK_RING_SIZE(info)	\
@@ -238,10 +219,7 @@ struct blkfront_info
 	/* Save uncomplete reqs and bios for migration. */
 	struct list_head requests;
 	struct bio_list bio_list;
-<<<<<<< HEAD
 	struct list_head info_list;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static unsigned int nr_minors;
@@ -277,20 +255,9 @@ static DEFINE_SPINLOCK(minor_lock);
 #define GRANTS_PER_INDIRECT_FRAME \
 	(XEN_PAGE_SIZE / sizeof(struct blkif_request_segment))
 
-<<<<<<< HEAD
 #define INDIRECT_GREFS(_grants)		\
 	DIV_ROUND_UP(_grants, GRANTS_PER_INDIRECT_FRAME)
 
-=======
-#define PSEGS_PER_INDIRECT_FRAME	\
-	(GRANTS_INDIRECT_FRAME / GRANTS_PSEGS)
-
-#define INDIRECT_GREFS(_grants)		\
-	DIV_ROUND_UP(_grants, GRANTS_PER_INDIRECT_FRAME)
-
-#define GREFS(_psegs)	((_psegs) * GRANTS_PER_PSEG)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int blkfront_setup_indirect(struct blkfront_ring_info *rinfo);
 static void blkfront_gather_backend_features(struct blkfront_info *info);
 static int negotiate_mq(struct blkfront_info *info);
@@ -943,11 +910,7 @@ out_err:
 out_busy:
 	blk_mq_stop_hw_queue(hctx);
 	spin_unlock_irqrestore(&rinfo->ring_lock, flags);
-<<<<<<< HEAD
 	return BLK_STS_DEV_RESOURCE;
-=======
-	return BLK_STS_RESOURCE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void blkif_complete_rq(struct request *rq)
@@ -967,26 +930,15 @@ static void blkif_set_queue_limits(struct blkfront_info *info)
 	unsigned int segments = info->max_indirect_segments ? :
 				BLKIF_MAX_SEGMENTS_PER_REQUEST;
 
-<<<<<<< HEAD
 	blk_queue_flag_set(QUEUE_FLAG_VIRT, rq);
 
 	if (info->feature_discard) {
 		blk_queue_flag_set(QUEUE_FLAG_DISCARD, rq);
-=======
-	queue_flag_set_unlocked(QUEUE_FLAG_VIRT, rq);
-
-	if (info->feature_discard) {
-		queue_flag_set_unlocked(QUEUE_FLAG_DISCARD, rq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		blk_queue_max_discard_sectors(rq, get_capacity(gd));
 		rq->limits.discard_granularity = info->discard_granularity;
 		rq->limits.discard_alignment = info->discard_alignment;
 		if (info->feature_secdiscard)
-<<<<<<< HEAD
 			blk_queue_flag_set(QUEUE_FLAG_SECERASE, rq);
-=======
-			queue_flag_set_unlocked(QUEUE_FLAG_SECERASE, rq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Hard sector size and max sectors impersonate the equiv. hardware. */
@@ -1161,13 +1113,8 @@ static int xlvbd_alloc_gendisk(blkif_sector_t capacity,
 	if (!VDEV_IS_EXTENDED(info->vdevice)) {
 		err = xen_translate_vdev(info->vdevice, &minor, &offset);
 		if (err)
-<<<<<<< HEAD
 			return err;		
  		nr_parts = PARTS_PER_DISK;
-=======
-			return err;
-		nr_parts = PARTS_PER_DISK;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		minor = BLKIF_MINOR_EXT(info->vdevice);
 		nr_parts = PARTS_PER_EXT_DISK;
@@ -1363,19 +1310,11 @@ static void blkif_free_ring(struct blkfront_ring_info *rinfo)
 		}
 
 free_shadow:
-<<<<<<< HEAD
 		kvfree(rinfo->shadow[i].grants_used);
 		rinfo->shadow[i].grants_used = NULL;
 		kvfree(rinfo->shadow[i].indirect_grants);
 		rinfo->shadow[i].indirect_grants = NULL;
 		kvfree(rinfo->shadow[i].sg);
-=======
-		kfree(rinfo->shadow[i].grants_used);
-		rinfo->shadow[i].grants_used = NULL;
-		kfree(rinfo->shadow[i].indirect_grants);
-		rinfo->shadow[i].indirect_grants = NULL;
-		kfree(rinfo->shadow[i].sg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rinfo->shadow[i].sg = NULL;
 	}
 
@@ -1414,11 +1353,7 @@ static void blkif_free(struct blkfront_info *info, int suspend)
 	for (i = 0; i < info->nr_rings; i++)
 		blkif_free_ring(&info->rinfo[i]);
 
-<<<<<<< HEAD
 	kvfree(info->rinfo);
-=======
-	kfree(info->rinfo);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	info->rinfo = NULL;
 	info->nr_rings = 0;
 }
@@ -1505,11 +1440,7 @@ static bool blkif_completion(unsigned long *id,
 
 		/* Wait the second response if not yet here. */
 		if (s2->status == REQ_WAITING)
-<<<<<<< HEAD
 			return false;
-=======
-			return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		bret->status = blkif_get_final_status(s->status,
 						      s2->status);
@@ -1610,11 +1541,7 @@ static bool blkif_completion(unsigned long *id,
 		}
 	}
 
-<<<<<<< HEAD
 	return true;
-=======
-	return 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static irqreturn_t blkif_interrupt(int irq, void *dev_id)
@@ -1682,13 +1609,8 @@ static irqreturn_t blkif_interrupt(int irq, void *dev_id)
 				blkif_req(req)->error = BLK_STS_NOTSUPP;
 				info->feature_discard = 0;
 				info->feature_secdiscard = 0;
-<<<<<<< HEAD
 				blk_queue_flag_clear(QUEUE_FLAG_DISCARD, rq);
 				blk_queue_flag_clear(QUEUE_FLAG_SECERASE, rq);
-=======
-				queue_flag_clear(QUEUE_FLAG_DISCARD, rq);
-				queue_flag_clear(QUEUE_FLAG_SECERASE, rq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 			break;
 		case BLKIF_OP_FLUSH_DISKCACHE:
@@ -1841,15 +1763,12 @@ abort_transaction:
 	return err;
 }
 
-<<<<<<< HEAD
 static void free_info(struct blkfront_info *info)
 {
 	list_del(&info->info_list);
 	kfree(info);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Common code used when first setting up, and when resuming. */
 static int talk_to_blkback(struct xenbus_device *dev,
 			   struct blkfront_info *info)
@@ -1971,14 +1890,10 @@ again:
  destroy_blkring:
 	blkif_free(info, 0);
 
-<<<<<<< HEAD
 	mutex_lock(&blkfront_mutex);
 	free_info(info);
 	mutex_unlock(&blkfront_mutex);
 
-=======
-	kfree(info);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_set_drvdata(&dev->dev, NULL);
 
 	return err;
@@ -1999,13 +1914,9 @@ static int negotiate_mq(struct blkfront_info *info)
 	if (!info->nr_rings)
 		info->nr_rings = 1;
 
-<<<<<<< HEAD
 	info->rinfo = kvcalloc(info->nr_rings,
 			       sizeof(struct blkfront_ring_info),
 			       GFP_KERNEL);
-=======
-	info->rinfo = kzalloc(sizeof(struct blkfront_ring_info) * info->nr_rings, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!info->rinfo) {
 		xenbus_dev_fatal(info->xbdev, -ENOMEM, "allocating ring_info structure");
 		info->nr_rings = 0;
@@ -2094,13 +2005,10 @@ static int blkfront_probe(struct xenbus_device *dev,
 	info->handle = simple_strtoul(strrchr(dev->nodename, '/')+1, NULL, 0);
 	dev_set_drvdata(&dev->dev, info);
 
-<<<<<<< HEAD
 	mutex_lock(&blkfront_mutex);
 	list_add(&info->info_list, &info_list);
 	mutex_unlock(&blkfront_mutex);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -2323,7 +2231,6 @@ static int blkfront_setup_indirect(struct blkfront_ring_info *rinfo)
 	}
 
 	for (i = 0; i < BLK_RING_SIZE(info); i++) {
-<<<<<<< HEAD
 		rinfo->shadow[i].grants_used =
 			kvcalloc(grants,
 				 sizeof(rinfo->shadow[i].grants_used[0]),
@@ -2336,17 +2243,6 @@ static int blkfront_setup_indirect(struct blkfront_ring_info *rinfo)
 				kvcalloc(INDIRECT_GREFS(grants),
 					 sizeof(rinfo->shadow[i].indirect_grants[0]),
 					 GFP_NOIO);
-=======
-		rinfo->shadow[i].grants_used = kzalloc(
-			sizeof(rinfo->shadow[i].grants_used[0]) * grants,
-			GFP_NOIO);
-		rinfo->shadow[i].sg = kzalloc(sizeof(rinfo->shadow[i].sg[0]) * psegs, GFP_NOIO);
-		if (info->max_indirect_segments)
-			rinfo->shadow[i].indirect_grants = kzalloc(
-				sizeof(rinfo->shadow[i].indirect_grants[0]) *
-				INDIRECT_GREFS(grants),
-				GFP_NOIO);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if ((rinfo->shadow[i].grants_used == NULL) ||
 			(rinfo->shadow[i].sg == NULL) ||
 		     (info->max_indirect_segments &&
@@ -2360,19 +2256,11 @@ static int blkfront_setup_indirect(struct blkfront_ring_info *rinfo)
 
 out_of_memory:
 	for (i = 0; i < BLK_RING_SIZE(info); i++) {
-<<<<<<< HEAD
 		kvfree(rinfo->shadow[i].grants_used);
 		rinfo->shadow[i].grants_used = NULL;
 		kvfree(rinfo->shadow[i].sg);
 		rinfo->shadow[i].sg = NULL;
 		kvfree(rinfo->shadow[i].indirect_grants);
-=======
-		kfree(rinfo->shadow[i].grants_used);
-		rinfo->shadow[i].grants_used = NULL;
-		kfree(rinfo->shadow[i].sg);
-		rinfo->shadow[i].sg = NULL;
-		kfree(rinfo->shadow[i].indirect_grants);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rinfo->shadow[i].indirect_grants = NULL;
 	}
 	if (!list_empty(&rinfo->indirect_pages)) {
@@ -2431,15 +2319,12 @@ static void blkfront_gather_backend_features(struct blkfront_info *info)
 	if (indirect_segments <= BLKIF_MAX_SEGMENTS_PER_REQUEST)
 		indirect_segments = 0;
 	info->max_indirect_segments = indirect_segments;
-<<<<<<< HEAD
 
 	if (info->feature_persistent) {
 		mutex_lock(&blkfront_mutex);
 		schedule_delayed_work(&blkfront_work, HZ * 10);
 		mutex_unlock(&blkfront_mutex);
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -2624,13 +2509,9 @@ static int blkfront_remove(struct xenbus_device *xbdev)
 	mutex_unlock(&info->mutex);
 
 	if (!bdev) {
-<<<<<<< HEAD
 		mutex_lock(&blkfront_mutex);
 		free_info(info);
 		mutex_unlock(&blkfront_mutex);
-=======
-		kfree(info);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 
@@ -2650,13 +2531,9 @@ static int blkfront_remove(struct xenbus_device *xbdev)
 	if (info && !bdev->bd_openers) {
 		xlvbd_release_gendisk(info);
 		disk->private_data = NULL;
-<<<<<<< HEAD
 		mutex_lock(&blkfront_mutex);
 		free_info(info);
 		mutex_unlock(&blkfront_mutex);
-=======
-		kfree(info);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	mutex_unlock(&bdev->bd_mutex);
@@ -2739,11 +2616,7 @@ static void blkif_release(struct gendisk *disk, fmode_t mode)
 		dev_info(disk_to_dev(bdev->bd_disk), "releasing disk\n");
 		xlvbd_release_gendisk(info);
 		disk->private_data = NULL;
-<<<<<<< HEAD
 		free_info(info);
-=======
-		kfree(info);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 out:
@@ -2776,7 +2649,6 @@ static struct xenbus_driver blkfront_driver = {
 	.is_ready = blkfront_is_ready,
 };
 
-<<<<<<< HEAD
 static void purge_persistent_grants(struct blkfront_info *info)
 {
 	unsigned int i;
@@ -2832,8 +2704,6 @@ static void blkfront_delay_work(struct work_struct *work)
 	mutex_unlock(&blkfront_mutex);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __init xlblk_init(void)
 {
 	int ret;
@@ -2842,7 +2712,6 @@ static int __init xlblk_init(void)
 	if (!xen_domain())
 		return -ENODEV;
 
-<<<<<<< HEAD
 	if (!xen_has_pv_disk_devices())
 		return -ENODEV;
 
@@ -2852,8 +2721,6 @@ static int __init xlblk_init(void)
 		return -ENODEV;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (xen_blkif_max_segments < BLKIF_MAX_SEGMENTS_PER_REQUEST)
 		xen_blkif_max_segments = BLKIF_MAX_SEGMENTS_PER_REQUEST;
 
@@ -2869,18 +2736,7 @@ static int __init xlblk_init(void)
 		xen_blkif_max_queues = nr_cpus;
 	}
 
-<<<<<<< HEAD
 	INIT_DELAYED_WORK(&blkfront_work, blkfront_delay_work);
-=======
-	if (!xen_has_pv_disk_devices())
-		return -ENODEV;
-
-	if (register_blkdev(XENVBD_MAJOR, DEV_NAME)) {
-		printk(KERN_WARNING "xen_blk: can't get major %d with name %s\n",
-		       XENVBD_MAJOR, DEV_NAME);
-		return -ENODEV;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = xenbus_register_frontend(&blkfront_driver);
 	if (ret) {
@@ -2895,11 +2751,8 @@ module_init(xlblk_init);
 
 static void __exit xlblk_exit(void)
 {
-<<<<<<< HEAD
 	cancel_delayed_work_sync(&blkfront_work);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	xenbus_unregister_driver(&blkfront_driver);
 	unregister_blkdev(XENVBD_MAJOR, DEV_NAME);
 	kfree(minors);

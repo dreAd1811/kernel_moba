@@ -32,10 +32,7 @@
  */
 
 #include <linux/etherdevice.h>
-<<<<<<< HEAD
 #include <linux/lockdep.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/pci.h>
 #include <linux/skbuff.h>
 #include <linux/vmalloc.h>
@@ -104,7 +101,6 @@ nfp_flower_repr_get(struct nfp_app *app, u32 port_id)
 	if (port >= reprs->num_reprs)
 		return NULL;
 
-<<<<<<< HEAD
 	return rcu_dereference(reprs->reprs[port]);
 }
 
@@ -156,9 +152,6 @@ nfp_flower_wait_repr_reify(struct nfp_app *app, atomic_t *replies, int tot_repl)
 	}
 
 	return 0;
-=======
-	return reprs->reprs[port];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int
@@ -166,18 +159,10 @@ nfp_flower_repr_netdev_open(struct nfp_app *app, struct nfp_repr *repr)
 {
 	int err;
 
-<<<<<<< HEAD
 	err = nfp_flower_cmsg_portmod(repr, true, repr->netdev->mtu, false);
 	if (err)
 		return err;
 
-=======
-	err = nfp_flower_cmsg_portmod(repr, true);
-	if (err)
-		return err;
-
-	netif_carrier_on(repr->netdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	netif_tx_wake_all_queues(repr->netdev);
 
 	return 0;
@@ -186,7 +171,6 @@ nfp_flower_repr_netdev_open(struct nfp_app *app, struct nfp_repr *repr)
 static int
 nfp_flower_repr_netdev_stop(struct nfp_app *app, struct nfp_repr *repr)
 {
-<<<<<<< HEAD
 	netif_tx_disable(repr->netdev);
 
 	return nfp_flower_cmsg_portmod(repr, false, repr->netdev->mtu, false);
@@ -227,12 +211,6 @@ nfp_flower_repr_netdev_preclean(struct nfp_app *app, struct net_device *netdev)
 	}
 
 	nfp_flower_wait_repr_reify(app, replies, 1);
-=======
-	netif_carrier_off(repr->netdev);
-	netif_tx_disable(repr->netdev);
-
-	return nfp_flower_cmsg_portmod(repr, false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void nfp_flower_sriov_disable(struct nfp_app *app)
@@ -252,7 +230,6 @@ nfp_flower_spawn_vnic_reprs(struct nfp_app *app,
 {
 	u8 nfp_pcie = nfp_cppcore_pcie_unit(app->pf->cpp);
 	struct nfp_flower_priv *priv = app->priv;
-<<<<<<< HEAD
 	atomic_t *replies = &priv->reify_replies;
 	struct nfp_flower_repr_priv *repr_priv;
 	enum nfp_port_type port_type;
@@ -260,12 +237,6 @@ nfp_flower_spawn_vnic_reprs(struct nfp_app *app,
 	struct nfp_reprs *reprs;
 	int i, err, reify_cnt;
 	const u8 queue = 0;
-=======
-	struct nfp_reprs *reprs, *old_reprs;
-	enum nfp_port_type port_type;
-	const u8 queue = 0;
-	int i, err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	port_type = repr_type == NFP_REPR_TYPE_PF ? NFP_PORT_PF_PORT :
 						    NFP_PORT_VF_PORT;
@@ -275,25 +246,16 @@ nfp_flower_spawn_vnic_reprs(struct nfp_app *app,
 		return -ENOMEM;
 
 	for (i = 0; i < cnt; i++) {
-<<<<<<< HEAD
 		struct net_device *repr;
 		struct nfp_port *port;
 		u32 port_id;
 
 		repr = nfp_repr_alloc(app);
 		if (!repr) {
-=======
-		struct nfp_port *port;
-		u32 port_id;
-
-		reprs->reprs[i] = nfp_repr_alloc(app);
-		if (!reprs->reprs[i]) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			err = -ENOMEM;
 			goto err_reprs_clean;
 		}
 
-<<<<<<< HEAD
 		repr_priv = kzalloc(sizeof(*repr_priv), GFP_KERNEL);
 		if (!repr_priv) {
 			err = -ENOMEM;
@@ -314,12 +276,6 @@ nfp_flower_spawn_vnic_reprs(struct nfp_app *app,
 			nfp_repr_free(repr);
 			goto err_reprs_clean;
 		}
-=======
-		/* For now we only support 1 PF */
-		WARN_ON(repr_type == NFP_REPR_TYPE_PF && i);
-
-		port = nfp_port_alloc(app, port_type, reprs->reprs[i]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (repr_type == NFP_REPR_TYPE_PF) {
 			port->pf_id = i;
 			port->vnic = priv->nn->dp.ctrl_bar;
@@ -330,7 +286,6 @@ nfp_flower_spawn_vnic_reprs(struct nfp_app *app,
 				app->pf->vf_cfg_mem + i * NFP_NET_CFG_BAR_SZ;
 		}
 
-<<<<<<< HEAD
 		eth_hw_addr_random(repr);
 
 		port_id = nfp_flower_cmsg_pcie_port(nfp_pcie, vnic_type,
@@ -369,33 +324,6 @@ err_reprs_remove:
 	reprs = nfp_app_reprs_set(app, repr_type, NULL);
 err_reprs_clean:
 	nfp_reprs_clean_and_free(app, reprs);
-=======
-		eth_hw_addr_random(reprs->reprs[i]);
-
-		port_id = nfp_flower_cmsg_pcie_port(nfp_pcie, vnic_type,
-						    i, queue);
-		err = nfp_repr_init(app, reprs->reprs[i],
-				    port_id, port, priv->nn->dp.netdev);
-		if (err) {
-			nfp_port_free(port);
-			goto err_reprs_clean;
-		}
-
-		nfp_info(app->cpp, "%s%d Representor(%s) created\n",
-			 repr_type == NFP_REPR_TYPE_PF ? "PF" : "VF", i,
-			 reprs->reprs[i]->name);
-	}
-
-	old_reprs = nfp_app_reprs_set(app, repr_type, reprs);
-	if (IS_ERR(old_reprs)) {
-		err = PTR_ERR(old_reprs);
-		goto err_reprs_clean;
-	}
-
-	return 0;
-err_reprs_clean:
-	nfp_reprs_clean_and_free(reprs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -415,7 +343,6 @@ static int
 nfp_flower_spawn_phy_reprs(struct nfp_app *app, struct nfp_flower_priv *priv)
 {
 	struct nfp_eth_table *eth_tbl = app->pf->eth_tbl;
-<<<<<<< HEAD
 	atomic_t *replies = &priv->reify_replies;
 	struct nfp_flower_repr_priv *repr_priv;
 	struct nfp_repr *nfp_repr;
@@ -423,12 +350,6 @@ nfp_flower_spawn_phy_reprs(struct nfp_app *app, struct nfp_flower_priv *priv)
 	struct nfp_reprs *reprs;
 	int err, reify_cnt;
 	unsigned int i;
-=======
-	struct nfp_reprs *reprs, *old_reprs;
-	struct sk_buff *ctrl_skb;
-	unsigned int i;
-	int err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ctrl_skb = nfp_flower_cmsg_mac_repr_start(app, eth_tbl->count);
 	if (!ctrl_skb)
@@ -442,25 +363,16 @@ nfp_flower_spawn_phy_reprs(struct nfp_app *app, struct nfp_flower_priv *priv)
 
 	for (i = 0; i < eth_tbl->count; i++) {
 		unsigned int phys_port = eth_tbl->ports[i].index;
-<<<<<<< HEAD
 		struct net_device *repr;
 		struct nfp_port *port;
 		u32 cmsg_port_id;
 
 		repr = nfp_repr_alloc(app);
 		if (!repr) {
-=======
-		struct nfp_port *port;
-		u32 cmsg_port_id;
-
-		reprs->reprs[phys_port] = nfp_repr_alloc(app);
-		if (!reprs->reprs[phys_port]) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			err = -ENOMEM;
 			goto err_reprs_clean;
 		}
 
-<<<<<<< HEAD
 		repr_priv = kzalloc(sizeof(*repr_priv), GFP_KERNEL);
 		if (!repr_priv) {
 			err = -ENOMEM;
@@ -476,17 +388,10 @@ nfp_flower_spawn_phy_reprs(struct nfp_app *app, struct nfp_flower_priv *priv)
 			err = PTR_ERR(port);
 			kfree(repr_priv);
 			nfp_repr_free(repr);
-=======
-		port = nfp_port_alloc(app, NFP_PORT_PHYS_PORT,
-				      reprs->reprs[phys_port]);
-		if (IS_ERR(port)) {
-			err = PTR_ERR(port);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto err_reprs_clean;
 		}
 		err = nfp_port_init_phy_port(app->pf, app, port, i);
 		if (err) {
-<<<<<<< HEAD
 			kfree(repr_priv);
 			nfp_port_free(port);
 			nfp_repr_free(repr);
@@ -503,20 +408,6 @@ nfp_flower_spawn_phy_reprs(struct nfp_app *app, struct nfp_flower_priv *priv)
 			kfree(repr_priv);
 			nfp_port_free(port);
 			nfp_repr_free(repr);
-=======
-			nfp_port_free(port);
-			goto err_reprs_clean;
-		}
-
-		SET_NETDEV_DEV(reprs->reprs[phys_port], &priv->nn->pdev->dev);
-		nfp_net_get_mac_addr(app->pf, port);
-
-		cmsg_port_id = nfp_flower_cmsg_phys_port(phys_port);
-		err = nfp_repr_init(app, reprs->reprs[phys_port],
-				    cmsg_port_id, port, priv->nn->dp.netdev);
-		if (err) {
-			nfp_port_free(port);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto err_reprs_clean;
 		}
 
@@ -525,7 +416,6 @@ nfp_flower_spawn_phy_reprs(struct nfp_app *app, struct nfp_flower_priv *priv)
 					     eth_tbl->ports[i].base,
 					     phys_port);
 
-<<<<<<< HEAD
 		RCU_INIT_POINTER(reprs->reprs[phys_port], repr);
 		nfp_info(app->cpp, "Phys Port %d Representor(%s) created\n",
 			 phys_port, repr->name);
@@ -534,26 +424,12 @@ nfp_flower_spawn_phy_reprs(struct nfp_app *app, struct nfp_flower_priv *priv)
 	nfp_app_reprs_set(app, NFP_REPR_TYPE_PHYS_PORT, reprs);
 
 	/* The REIFY/MAC_REPR control messages should be sent after the MAC
-=======
-		nfp_info(app->cpp, "Phys Port %d Representor(%s) created\n",
-			 phys_port, reprs->reprs[phys_port]->name);
-	}
-
-	old_reprs = nfp_app_reprs_set(app, NFP_REPR_TYPE_PHYS_PORT, reprs);
-	if (IS_ERR(old_reprs)) {
-		err = PTR_ERR(old_reprs);
-		goto err_reprs_clean;
-	}
-
-	/* The MAC_REPR control message should be sent after the MAC
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * representors are registered using nfp_app_reprs_set().  This is
 	 * because the firmware may respond with control messages for the
 	 * MAC representors, f.e. to provide the driver with information
 	 * about their state, and without registration the driver will drop
 	 * any such messages.
 	 */
-<<<<<<< HEAD
 	atomic_set(replies, 0);
 	reify_cnt = nfp_flower_reprs_reify(app, NFP_REPR_TYPE_PHYS_PORT, true);
 	if (reify_cnt < 0) {
@@ -573,13 +449,6 @@ err_reprs_remove:
 	reprs = nfp_app_reprs_set(app, NFP_REPR_TYPE_PHYS_PORT, NULL);
 err_reprs_clean:
 	nfp_reprs_clean_and_free(app, reprs);
-=======
-	nfp_ctrl_tx(app->ctrl, ctrl_skb);
-
-	return 0;
-err_reprs_clean:
-	nfp_reprs_clean_and_free(reprs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_free_ctrl_skb:
 	kfree_skb(ctrl_skb);
 	return err;
@@ -595,10 +464,7 @@ static int nfp_flower_vnic_alloc(struct nfp_app *app, struct nfp_net *nn,
 
 	eth_hw_addr_random(nn->dp.netdev);
 	netif_keep_dst(nn->dp.netdev);
-<<<<<<< HEAD
 	nn->vnic_no_name = true;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 
@@ -660,11 +526,7 @@ static int nfp_flower_init(struct nfp_app *app)
 {
 	const struct nfp_pf *pf = app->pf;
 	struct nfp_flower_priv *app_priv;
-<<<<<<< HEAD
 	u64 version, features;
-=======
-	u64 version;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	if (!pf->eth_tbl) {
@@ -700,7 +562,6 @@ static int nfp_flower_init(struct nfp_app *app)
 
 	app->priv = app_priv;
 	app_priv->app = app;
-<<<<<<< HEAD
 	skb_queue_head_init(&app_priv->cmsg_skbs_high);
 	skb_queue_head_init(&app_priv->cmsg_skbs_low);
 	INIT_WORK(&app_priv->cmsg_work, nfp_flower_cmsg_process_rx);
@@ -708,16 +569,11 @@ static int nfp_flower_init(struct nfp_app *app)
 
 	init_waitqueue_head(&app_priv->mtu_conf.wait_q);
 	spin_lock_init(&app_priv->mtu_conf.lock);
-=======
-	skb_queue_head_init(&app_priv->cmsg_skbs);
-	INIT_WORK(&app_priv->cmsg_work, nfp_flower_cmsg_process_rx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = nfp_flower_metadata_init(app);
 	if (err)
 		goto err_free_app_priv;
 
-<<<<<<< HEAD
 	/* Extract the extra features supported by the firmware. */
 	features = nfp_rtsym_read_le(app->pf->rtbl,
 				     "_abi_flower_extra_features", &err);
@@ -742,10 +598,6 @@ static int nfp_flower_init(struct nfp_app *app)
 
 err_cleanup_metadata:
 	nfp_flower_metadata_cleanup(app);
-=======
-	return 0;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_free_app_priv:
 	vfree(app->priv);
 	return err;
@@ -755,7 +607,6 @@ static void nfp_flower_clean(struct nfp_app *app)
 {
 	struct nfp_flower_priv *app_priv = app->priv;
 
-<<<<<<< HEAD
 	skb_queue_purge(&app_priv->cmsg_skbs_high);
 	skb_queue_purge(&app_priv->cmsg_skbs_low);
 	flush_work(&app_priv->cmsg_work);
@@ -763,17 +614,11 @@ static void nfp_flower_clean(struct nfp_app *app)
 	if (app_priv->flower_ext_feats & NFP_FL_FEATS_LAG)
 		nfp_flower_lag_cleanup(&app_priv->nfp_lag);
 
-=======
-	skb_queue_purge(&app_priv->cmsg_skbs);
-	flush_work(&app_priv->cmsg_work);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	nfp_flower_metadata_cleanup(app);
 	vfree(app->priv);
 	app->priv = NULL;
 }
 
-<<<<<<< HEAD
 static bool nfp_flower_check_ack(struct nfp_flower_priv *app_priv)
 {
 	bool ret;
@@ -866,11 +711,6 @@ const struct nfp_app_type app_flower = {
 	.name		= "flower",
 
 	.ctrl_cap_mask	= ~0U,
-=======
-const struct nfp_app_type app_flower = {
-	.id		= NFP_APP_FLOWER_NIC,
-	.name		= "flower",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ctrl_has_meta	= true,
 
 	.extra_cap	= nfp_flower_extra_cap,
@@ -878,16 +718,12 @@ const struct nfp_app_type app_flower = {
 	.init		= nfp_flower_init,
 	.clean		= nfp_flower_clean,
 
-<<<<<<< HEAD
 	.repr_change_mtu  = nfp_flower_repr_change_mtu,
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.vnic_alloc	= nfp_flower_vnic_alloc,
 	.vnic_init	= nfp_flower_vnic_init,
 	.vnic_clean	= nfp_flower_vnic_clean,
 
-<<<<<<< HEAD
 	.repr_init	= nfp_flower_repr_netdev_init,
 	.repr_preclean	= nfp_flower_repr_netdev_preclean,
 	.repr_clean	= nfp_flower_repr_netdev_clean,
@@ -898,11 +734,6 @@ const struct nfp_app_type app_flower = {
 	.start		= nfp_flower_start,
 	.stop		= nfp_flower_stop,
 
-=======
-	.repr_open	= nfp_flower_repr_netdev_open,
-	.repr_stop	= nfp_flower_repr_netdev_stop,
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ctrl_msg_rx	= nfp_flower_cmsg_rx,
 
 	.sriov_enable	= nfp_flower_sriov_enable,

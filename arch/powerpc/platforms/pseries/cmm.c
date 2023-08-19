@@ -72,7 +72,6 @@ MODULE_DESCRIPTION("IBM System p Collaborative Memory Manager");
 MODULE_LICENSE("GPL");
 MODULE_VERSION(CMM_DRIVER_VERSION);
 
-<<<<<<< HEAD
 module_param_named(delay, delay, uint, 0644);
 MODULE_PARM_DESC(delay, "Delay (in seconds) between polls to query hypervisor paging requests. "
 		 "[Default=" __stringify(CMM_DEFAULT_DELAY) "]");
@@ -87,22 +86,6 @@ module_param_named(min_mem_mb, min_mem_mb, ulong, 0644);
 MODULE_PARM_DESC(min_mem_mb, "Minimum amount of memory (in MB) to not balloon. "
 		 "[Default=" __stringify(CMM_MIN_MEM_MB) "]");
 module_param_named(debug, cmm_debug, uint, 0644);
-=======
-module_param_named(delay, delay, uint, S_IRUGO | S_IWUSR);
-MODULE_PARM_DESC(delay, "Delay (in seconds) between polls to query hypervisor paging requests. "
-		 "[Default=" __stringify(CMM_DEFAULT_DELAY) "]");
-module_param_named(hotplug_delay, hotplug_delay, uint, S_IRUGO | S_IWUSR);
-MODULE_PARM_DESC(hotplug_delay, "Delay (in seconds) after memory hotplug remove "
-		 "before loaning resumes. "
-		 "[Default=" __stringify(CMM_HOTPLUG_DELAY) "]");
-module_param_named(oom_kb, oom_kb, uint, S_IRUGO | S_IWUSR);
-MODULE_PARM_DESC(oom_kb, "Amount of memory in kb to free on OOM. "
-		 "[Default=" __stringify(CMM_OOM_KB) "]");
-module_param_named(min_mem_mb, min_mem_mb, ulong, S_IRUGO | S_IWUSR);
-MODULE_PARM_DESC(min_mem_mb, "Minimum amount of memory (in MB) to not balloon. "
-		 "[Default=" __stringify(CMM_MIN_MEM_MB) "]");
-module_param_named(debug, cmm_debug, uint, S_IRUGO | S_IWUSR);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_PARM_DESC(debug, "Enable module debugging logging. Set to 1 to enable. "
 		 "[Default=" __stringify(CMM_DEBUG) "]");
 
@@ -402,11 +385,7 @@ static int cmm_thread(void *dummy)
 	{							\
 		return sprintf(buf, format, ##args);		\
 	}							\
-<<<<<<< HEAD
 	static DEVICE_ATTR(name, 0444, show_##name, NULL)
-=======
-	static DEVICE_ATTR(name, S_IRUGO, show_##name, NULL)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 CMM_SHOW(loaned_kb, "%lu\n", PAGES2KB(loaned_pages));
 CMM_SHOW(loaned_target_kb, "%lu\n", PAGES2KB(loaned_pages_target));
@@ -432,11 +411,7 @@ static ssize_t store_oom_pages(struct device *dev,
 	return count;
 }
 
-<<<<<<< HEAD
 static DEVICE_ATTR(oom_freed_kb, 0644,
-=======
-static DEVICE_ATTR(oom_freed_kb, S_IWUSR | S_IRUGO,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		   show_oom_pages, store_oom_pages);
 
 static struct device_attribute *cmm_attrs[] = {
@@ -450,13 +425,6 @@ static struct bus_type cmm_subsys = {
 	.dev_name = "cmm",
 };
 
-<<<<<<< HEAD
-=======
-static void cmm_release_device(struct device *dev)
-{
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * cmm_sysfs_register - Register with sysfs
  *
@@ -472,10 +440,6 @@ static int cmm_sysfs_register(struct device *dev)
 
 	dev->id = 0;
 	dev->bus = &cmm_subsys;
-<<<<<<< HEAD
-=======
-	dev->release = cmm_release_device;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if ((rc = device_register(dev)))
 		goto subsys_unregister;
@@ -801,11 +765,7 @@ static int cmm_set_disable(const char *val, const struct kernel_param *kp)
 }
 
 module_param_call(disable, cmm_set_disable, param_get_uint,
-<<<<<<< HEAD
 		  &cmm_disabled, 0644);
-=======
-		  &cmm_disabled, S_IRUGO | S_IWUSR);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_PARM_DESC(disable, "Disable CMM. Set to 1 to disable. "
 		 "[Default=" __stringify(CMM_DISABLE) "]");
 

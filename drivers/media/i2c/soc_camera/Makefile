@@ -1,11 +1,5 @@
 # SPDX-License-Identifier: GPL-2.0
-<<<<<<< HEAD
 obj-$(CONFIG_SOC_CAMERA_MT9M001)	+= mt9m001.o
-=======
-obj-$(CONFIG_SOC_CAMERA_IMX074)		+= imx074.o
-obj-$(CONFIG_SOC_CAMERA_MT9M001)	+= mt9m001.o
-obj-$(CONFIG_SOC_CAMERA_MT9T031)	+= mt9t031.o
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 obj-$(CONFIG_SOC_CAMERA_MT9T112)	+= mt9t112.o
 obj-$(CONFIG_SOC_CAMERA_MT9V022)	+= mt9v022.o
 obj-$(CONFIG_SOC_CAMERA_OV5642)		+= ov5642.o

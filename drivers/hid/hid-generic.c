@@ -24,7 +24,6 @@
 
 #include <linux/hid.h>
 
-<<<<<<< HEAD
 static struct hid_driver hid_generic;
 
 static int __check_hid_generic(struct device_driver *drv, void *data)
@@ -73,10 +72,6 @@ static int hid_generic_probe(struct hid_device *hdev,
 
 static const struct hid_device_id hid_table[] = {
 	{ HID_DEVICE(HID_BUS_ANY, HID_GROUP_ANY, HID_ANY_ID, HID_ANY_ID) },
-=======
-static const struct hid_device_id hid_table[] = {
-	{ HID_DEVICE(HID_BUS_ANY, HID_GROUP_GENERIC, HID_ANY_ID, HID_ANY_ID) },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ }
 };
 MODULE_DEVICE_TABLE(hid, hid_table);
@@ -84,11 +79,8 @@ MODULE_DEVICE_TABLE(hid, hid_table);
 static struct hid_driver hid_generic = {
 	.name = "hid-generic",
 	.id_table = hid_table,
-<<<<<<< HEAD
 	.match = hid_generic_match,
 	.probe = hid_generic_probe,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 module_hid_driver(hid_generic);
 

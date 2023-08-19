@@ -33,21 +33,15 @@
 #ifndef __MLX5E_IPOB_H__
 #define __MLX5E_IPOB_H__
 
-<<<<<<< HEAD
 #ifdef CONFIG_MLX5_CORE_IPOIB
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/mlx5/fs.h>
 #include "en.h"
 
 #define MLX5I_MAX_NUM_TC 1
 
 extern const struct ethtool_ops mlx5i_ethtool_ops;
-<<<<<<< HEAD
 extern const struct ethtool_ops mlx5i_pkey_ethtool_ops;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define MLX5_IB_GRH_BYTES       40
 #define MLX5_IPOIB_ENCAP_LEN    4
@@ -58,7 +52,6 @@ extern const struct ethtool_ops mlx5i_pkey_ethtool_ops;
 struct mlx5i_priv {
 	struct rdma_netdev rn; /* keep this first */
 	struct mlx5_core_qp qp;
-<<<<<<< HEAD
 	bool   sub_interface;
 	u32    qkey;
 	u16    pkey_index;
@@ -124,21 +117,9 @@ static inline void mlx5i_sq_fetch_wqe(struct mlx5e_txqsq *sq,
 	memset(*wqe, 0, sizeof(**wqe));
 }
 
-=======
-	u32    qkey;
-	char  *mlx5e_priv[0];
-};
-
-/* Extract mlx5e_priv from IPoIB netdev */
-#define mlx5i_epriv(netdev) ((void *)(((struct mlx5i_priv *)netdev_priv(netdev))->mlx5e_priv))
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 netdev_tx_t mlx5i_sq_xmit(struct mlx5e_txqsq *sq, struct sk_buff *skb,
 			  struct mlx5_av *av, u32 dqpn, u32 dqkey);
 void mlx5i_handle_rx_cqe(struct mlx5e_rq *rq, struct mlx5_cqe64 *cqe);
 
-<<<<<<< HEAD
 #endif /* CONFIG_MLX5_CORE_IPOIB */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __MLX5E_IPOB_H__ */

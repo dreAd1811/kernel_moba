@@ -57,7 +57,6 @@ struct venus_format {
 	u32 type;
 };
 
-<<<<<<< HEAD
 #define MAX_PLANES		4
 #define MAX_FMT_ENTRIES		32
 #define MAX_CAP_ENTRIES		32
@@ -82,8 +81,6 @@ struct venus_caps {
 	bool valid;	/* used only for Venus v1xx */
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * struct venus_core - holds core parameters valid for all instances
  *
@@ -92,11 +89,8 @@ struct venus_caps {
  * @clks:	an array of struct clk pointers
  * @core0_clk:	a struct clk pointer for core0
  * @core1_clk:	a struct clk pointer for core1
-<<<<<<< HEAD
  * @core0_bus_clk: a struct clk pointer for core0 bus clock
  * @core1_bus_clk: a struct clk pointer for core1 bus clock
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @vdev_dec:	a reference to video device structure for decoder instances
  * @vdev_enc:	a reference to video device structure for encoder instances
  * @v4l2_dev:	a holder for v4l2 device structure
@@ -126,11 +120,8 @@ struct venus_core {
 	struct clk *clks[VIDC_CLKS_NUM_MAX];
 	struct clk *core0_clk;
 	struct clk *core1_clk;
-<<<<<<< HEAD
 	struct clk *core0_bus_clk;
 	struct clk *core1_bus_clk;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct video_device *vdev_dec;
 	struct video_device *vdev_enc;
 	struct v4l2_device v4l2_dev;
@@ -146,13 +137,8 @@ struct venus_core {
 	unsigned int error;
 	bool sys_error;
 	const struct hfi_core_ops *core_ops;
-<<<<<<< HEAD
 	unsigned long enc_codecs;
 	unsigned long dec_codecs;
-=======
-	u32 enc_codecs;
-	u32 dec_codecs;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int max_sessions_supported;
 #define ENC_ROTATION_CAPABILITY		0x1
 #define ENC_SCALING_CAPABILITY		0x2
@@ -162,11 +148,8 @@ struct venus_core {
 	void *priv;
 	const struct hfi_ops *ops;
 	struct delayed_work work;
-<<<<<<< HEAD
 	struct venus_caps caps[MAX_CODEC_NUM];
 	unsigned int codecs_count;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct vdec_controls {
@@ -191,13 +174,8 @@ struct venc_controls {
 	u32 h264_min_qp;
 	u32 h264_max_qp;
 	u32 h264_loop_filter_mode;
-<<<<<<< HEAD
 	s32 h264_loop_filter_alpha;
 	s32 h264_loop_filter_beta;
-=======
-	u32 h264_loop_filter_alpha;
-	u32 h264_loop_filter_beta;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	u32 vp8_min_qp;
 	u32 vp8_max_qp;
@@ -212,18 +190,12 @@ struct venc_controls {
 		u32 mpeg4;
 		u32 h264;
 		u32 vpx;
-<<<<<<< HEAD
 		u32 hevc;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} profile;
 	struct {
 		u32 mpeg4;
 		u32 h264;
-<<<<<<< HEAD
 		u32 hevc;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} level;
 };
 
@@ -245,10 +217,7 @@ struct venus_buffer {
  * @list:	used for attach an instance to the core
  * @lock:	instance lock
  * @core:	a reference to the core struct
-<<<<<<< HEAD
  * @dpbbufs:	a list of decoded picture buffers
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @internalbufs:	a list of internal bufferes
  * @registeredbufs:	a list of registered capture bufferes
  * @delayed_process	a list of delayed buffers
@@ -273,7 +242,6 @@ struct venus_buffer {
  * @num_output_bufs:	holds number of output buffers
  * @input_buf_size	holds input buffer size
  * @output_buf_size:	holds output buffer size
-<<<<<<< HEAD
  * @output2_buf_size:	holds secondary decoder output buffer size
  * @dpb_buftype:	decoded picture buffer type
  * @dpb_fmt:		decoded picture buffer raw format
@@ -283,11 +251,6 @@ struct venus_buffer {
  * @reconfig_width:	holds the new width
  * @reconfig_height:	holds the new height
  * @hfi_codec:		current codec for this instance in HFI space
-=======
- * @reconfig:	a flag raised by decoder when the stream resolution changed
- * @reconfig_width:	holds the new width
- * @reconfig_height:	holds the new height
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @sequence_cap:	a sequence counter for capture queue
  * @sequence_out:	a sequence counter for output queue
  * @m2m_dev:	a reference to m2m device structure
@@ -300,34 +263,12 @@ struct venus_buffer {
  * @priv:	a private for HFI operations callbacks
  * @session_type:	the type of the session (decoder or encoder)
  * @hprop:	a union used as a holder by get property
-<<<<<<< HEAD
-=======
- * @cap_width:	width capability
- * @cap_height:	height capability
- * @cap_mbs_per_frame:	macroblocks per frame capability
- * @cap_mbs_per_sec:	macroblocks per second capability
- * @cap_framerate:	framerate capability
- * @cap_scale_x:		horizontal scaling capability
- * @cap_scale_y:		vertical scaling capability
- * @cap_bitrate:		bitrate capability
- * @cap_hier_p:		hier capability
- * @cap_ltr_count:	LTR count capability
- * @cap_secure_output2_threshold: secure OUTPUT2 threshold capability
- * @cap_bufs_mode_static:	buffers allocation mode capability
- * @cap_bufs_mode_dynamic:	buffers allocation mode capability
- * @pl_count:	count of supported profiles/levels
- * @pl:		supported profiles/levels
- * @bufreq:	holds buffer requirements
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct venus_inst {
 	struct list_head list;
 	struct mutex lock;
 	struct venus_core *core;
-<<<<<<< HEAD
 	struct list_head dpbbufs;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct list_head internalbufs;
 	struct list_head registeredbufs;
 	struct list_head delayed_process;
@@ -356,7 +297,6 @@ struct venus_inst {
 	unsigned int num_output_bufs;
 	unsigned int input_buf_size;
 	unsigned int output_buf_size;
-<<<<<<< HEAD
 	unsigned int output2_buf_size;
 	u32 dpb_buftype;
 	u32 dpb_fmt;
@@ -366,11 +306,6 @@ struct venus_inst {
 	u32 reconfig_width;
 	u32 reconfig_height;
 	u32 hfi_codec;
-=======
-	bool reconfig;
-	u32 reconfig_width;
-	u32 reconfig_height;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 sequence_cap;
 	u32 sequence_out;
 	struct v4l2_m2m_dev *m2m_dev;
@@ -382,33 +317,12 @@ struct venus_inst {
 	const struct hfi_inst_ops *ops;
 	u32 session_type;
 	union hfi_get_property hprop;
-<<<<<<< HEAD
 };
 
 #define IS_V1(core)	((core)->res->hfi_version == HFI_VERSION_1XX)
 #define IS_V3(core)	((core)->res->hfi_version == HFI_VERSION_3XX)
 #define IS_V4(core)	((core)->res->hfi_version == HFI_VERSION_4XX)
 
-=======
-	struct hfi_capability cap_width;
-	struct hfi_capability cap_height;
-	struct hfi_capability cap_mbs_per_frame;
-	struct hfi_capability cap_mbs_per_sec;
-	struct hfi_capability cap_framerate;
-	struct hfi_capability cap_scale_x;
-	struct hfi_capability cap_scale_y;
-	struct hfi_capability cap_bitrate;
-	struct hfi_capability cap_hier_p;
-	struct hfi_capability cap_ltr_count;
-	struct hfi_capability cap_secure_output2_threshold;
-	bool cap_bufs_mode_static;
-	bool cap_bufs_mode_dynamic;
-	unsigned int pl_count;
-	struct hfi_profile_level pl[HFI_MAX_PROFILE_COUNT];
-	struct hfi_buffer_requirements bufreq[HFI_BUFFER_TYPE_MAX];
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ctrl_to_inst(ctrl)	\
 	container_of((ctrl)->handler, struct venus_inst, ctrl_handler)
 
@@ -422,7 +336,6 @@ static inline void *to_hfi_priv(struct venus_core *core)
 	return core->priv;
 }
 
-<<<<<<< HEAD
 static inline struct venus_caps *
 venus_caps_by_codec(struct venus_core *core, u32 codec, u32 domain)
 {
@@ -437,6 +350,4 @@ venus_caps_by_codec(struct venus_core *core, u32 codec, u32 domain)
 	return NULL;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

@@ -49,11 +49,6 @@ struct tegra_sync_source_initdata {
 #define SYNC(_name) \
 	{\
 		.name		= #_name,\
-<<<<<<< HEAD
-=======
-		.rate		= 24000000,\
-		.max_rate	= 24000000,\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.clk_id		= tegra_clk_ ## _name,\
 	}
 
@@ -179,11 +174,7 @@ static void __init tegra_audio_sync_clk_init(void __iomem *clk_base,
 void __init tegra_audio_clk_init(void __iomem *clk_base,
 			void __iomem *pmc_base, struct tegra_clk *tegra_clks,
 			struct tegra_audio_clk_info *audio_info,
-<<<<<<< HEAD
 			unsigned int num_plls, unsigned long sync_max_rate)
-=======
-			unsigned int num_plls)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct clk *clk;
 	struct clk **dt_clk;
@@ -228,12 +219,7 @@ void __init tegra_audio_clk_init(void __iomem *clk_base,
 		if (!dt_clk)
 			continue;
 
-<<<<<<< HEAD
 		clk = tegra_clk_register_sync_source(data->name, sync_max_rate);
-=======
-		clk = tegra_clk_register_sync_source(data->name,
-					data->rate, data->max_rate);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*dt_clk = clk;
 	}
 

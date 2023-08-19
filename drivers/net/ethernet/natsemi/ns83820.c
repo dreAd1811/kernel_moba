@@ -1600,17 +1600,10 @@ static void ns83820_tx_timeout(struct net_device *ndev)
 	spin_unlock_irqrestore(&dev->tx_lock, flags);
 }
 
-<<<<<<< HEAD
 static void ns83820_tx_watch(struct timer_list *t)
 {
 	struct ns83820 *dev = from_timer(dev, t, tx_watchdog);
 	struct net_device *ndev = dev->ndev;
-=======
-static void ns83820_tx_watch(unsigned long data)
-{
-	struct net_device *ndev = (void *)data;
-	struct ns83820 *dev = PRIV(ndev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #if defined(DEBUG)
 	printk("ns83820_tx_watch: %u %u %d\n",
@@ -1659,13 +1652,7 @@ static int ns83820_open(struct net_device *ndev)
 	writel(0, dev->base + TXDP_HI);
 	writel(desc, dev->base + TXDP);
 
-<<<<<<< HEAD
 	timer_setup(&dev->tx_watchdog, ns83820_tx_watch, 0);
-=======
-	init_timer(&dev->tx_watchdog);
-	dev->tx_watchdog.data = (unsigned long)ndev;
-	dev->tx_watchdog.function = ns83820_tx_watch;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mod_timer(&dev->tx_watchdog, jiffies + 2*HZ);
 
 	netif_start_queue(ndev);	/* FIXME: wait for phy to come up */

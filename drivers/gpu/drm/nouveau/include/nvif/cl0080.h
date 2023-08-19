@@ -31,10 +31,7 @@ struct nv_device_info_v0 {
 #define NV_DEVICE_INFO_V0_KEPLER                                           0x08
 #define NV_DEVICE_INFO_V0_MAXWELL                                          0x09
 #define NV_DEVICE_INFO_V0_PASCAL                                           0x0a
-<<<<<<< HEAD
 #define NV_DEVICE_INFO_V0_VOLTA                                            0x0b
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__u8  family;
 	__u8  pad06[2];
 	__u64 ram_size;
@@ -43,7 +40,6 @@ struct nv_device_info_v0 {
 	char  name[64];
 };
 
-<<<<<<< HEAD
 struct nv_device_info_v1 {
 	__u8  version;
 	__u8  count;
@@ -54,14 +50,11 @@ struct nv_device_info_v1 {
 	} data[];
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct nv_device_time_v0 {
 	__u8  version;
 	__u8  pad01[7];
 	__u64 time;
 };
-<<<<<<< HEAD
 
 #define NV_DEVICE_INFO_UNIT                               (0xffffffffULL << 32)
 #define NV_DEVICE_INFO(n)                          ((n) | (0x00000000ULL << 32))
@@ -98,6 +91,4 @@ struct nv_device_time_v0 {
 /* These return a mask of engines available on a particular runlist. */
 #define NV_DEVICE_FIFO_RUNLIST_ENGINES(n)     ((n) + NV_DEVICE_FIFO(0x00000010))
 #define NV_DEVICE_FIFO_RUNLIST_ENGINES__SIZE                                64
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

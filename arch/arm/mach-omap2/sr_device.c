@@ -89,7 +89,6 @@ static void __init sr_set_nvalues(struct omap_volt_data *volt_data,
 	sr_data->nvalue_count = j;
 }
 
-<<<<<<< HEAD
 extern struct omap_sr_data omap_sr_pdata[];
 
 static int __init sr_dev_init(struct omap_hwmod *oh, void *user)
@@ -111,20 +110,6 @@ static int __init sr_dev_init(struct omap_hwmod *oh, void *user)
 		pr_err("%s: Unknown instance %s\n", __func__, oh->name);
 		return -EINVAL;
 	}
-=======
-static int __init sr_dev_init(struct omap_hwmod *oh, void *user)
-{
-	struct omap_sr_data *sr_data;
-	struct platform_device *pdev;
-	struct omap_volt_data *volt_data;
-	struct omap_smartreflex_dev_attr *sr_dev_attr;
-	char *name = "smartreflex";
-	static int i;
-
-	sr_data = kzalloc(sizeof(*sr_data), GFP_KERNEL);
-	if (!sr_data)
-		return -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sr_dev_attr = (struct omap_smartreflex_dev_attr *)oh->dev_attr;
 	if (!sr_dev_attr || !sr_dev_attr->sensor_voltdm_name) {
@@ -169,19 +154,9 @@ static int __init sr_dev_init(struct omap_hwmod *oh, void *user)
 
 	sr_data->enable_on_init = sr_enable_on_init;
 
-<<<<<<< HEAD
 exit:
 	i++;
 
-=======
-	pdev = omap_device_build(name, i, oh, sr_data, sizeof(*sr_data));
-	if (IS_ERR(pdev))
-		pr_warn("%s: Could not build omap_device for %s: %s\n",
-			__func__, name, oh->name);
-exit:
-	i++;
-	kfree(sr_data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

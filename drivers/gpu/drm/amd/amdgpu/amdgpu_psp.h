@@ -33,11 +33,8 @@
 #define PSP_ASD_SHARED_MEM_SIZE	0x4000
 #define PSP_1_MEG		0x100000
 
-<<<<<<< HEAD
 struct psp_context;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum psp_ring_type
 {
 	PSP_RING_TYPE__INVALID = 0,
@@ -58,17 +55,8 @@ struct psp_ring
 	uint32_t			ring_size;
 };
 
-<<<<<<< HEAD
 struct psp_funcs
 {
-=======
-struct psp_context
-{
-	struct amdgpu_device            *adev;
-	struct psp_ring                 km_ring;
-	struct psp_gfx_cmd_resp		*cmd;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int (*init_microcode)(struct psp_context *psp);
 	int (*bootloader_load_sysdrv)(struct psp_context *psp);
 	int (*bootloader_load_sos)(struct psp_context *psp);
@@ -76,11 +64,8 @@ struct psp_context
 			    struct psp_gfx_cmd_resp *cmd);
 	int (*ring_init)(struct psp_context *psp, enum psp_ring_type ring_type);
 	int (*ring_create)(struct psp_context *psp, enum psp_ring_type ring_type);
-<<<<<<< HEAD
 	int (*ring_stop)(struct psp_context *psp,
 			    enum psp_ring_type ring_type);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int (*ring_destroy)(struct psp_context *psp,
 			    enum psp_ring_type ring_type);
 	int (*cmd_submit)(struct psp_context *psp, struct amdgpu_firmware_info *ucode,
@@ -89,7 +74,6 @@ struct psp_context
 				  struct amdgpu_firmware_info *ucode,
 				  enum AMDGPU_UCODE_ID ucode_type);
 	bool (*smu_reload_quirk)(struct psp_context *psp);
-<<<<<<< HEAD
 	int (*mode1_reset)(struct psp_context *psp);
 };
 
@@ -100,8 +84,6 @@ struct psp_context
 	struct psp_gfx_cmd_resp		*cmd;
 
 	const struct psp_funcs 		*funcs;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* fence buffer */
 	struct amdgpu_bo 		*fw_pri_bo;
@@ -148,7 +130,6 @@ struct amdgpu_psp_funcs {
 					enum AMDGPU_UCODE_ID);
 };
 
-<<<<<<< HEAD
 #define psp_prep_cmd_buf(ucode, type) (psp)->funcs->prep_cmd_buf((ucode), (type))
 #define psp_ring_init(psp, type) (psp)->funcs->ring_init((psp), (type))
 #define psp_ring_create(psp, type) (psp)->funcs->ring_create((psp), (type))
@@ -168,24 +149,6 @@ struct amdgpu_psp_funcs {
 		((psp)->funcs->smu_reload_quirk ? (psp)->funcs->smu_reload_quirk((psp)) : false)
 #define psp_mode1_reset(psp) \
 		((psp)->funcs->mode1_reset ? (psp)->funcs->mode1_reset((psp)) : false)
-=======
-#define psp_prep_cmd_buf(ucode, type) (psp)->prep_cmd_buf((ucode), (type))
-#define psp_ring_init(psp, type) (psp)->ring_init((psp), (type))
-#define psp_ring_create(psp, type) (psp)->ring_create((psp), (type))
-#define psp_ring_destroy(psp, type) ((psp)->ring_destroy((psp), (type)))
-#define psp_cmd_submit(psp, ucode, cmd_mc, fence_mc, index) \
-		(psp)->cmd_submit((psp), (ucode), (cmd_mc), (fence_mc), (index))
-#define psp_compare_sram_data(psp, ucode, type) \
-		(psp)->compare_sram_data((psp), (ucode), (type))
-#define psp_init_microcode(psp) \
-		((psp)->init_microcode ? (psp)->init_microcode((psp)) : 0)
-#define psp_bootloader_load_sysdrv(psp) \
-		((psp)->bootloader_load_sysdrv ? (psp)->bootloader_load_sysdrv((psp)) : 0)
-#define psp_bootloader_load_sos(psp) \
-		((psp)->bootloader_load_sos ? (psp)->bootloader_load_sos((psp)) : 0)
-#define psp_smu_reload_quirk(psp) \
-		((psp)->smu_reload_quirk ? (psp)->smu_reload_quirk((psp)) : false)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 extern const struct amd_ip_funcs psp_ip_funcs;
 
@@ -195,9 +158,6 @@ extern int psp_wait_for(struct psp_context *psp, uint32_t reg_index,
 
 extern const struct amdgpu_ip_block_version psp_v10_0_ip_block;
 
-<<<<<<< HEAD
 int psp_gpu_reset(struct amdgpu_device *adev);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

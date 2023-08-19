@@ -25,7 +25,6 @@
 #include "amdgpu_vf_error.h"
 #include "mxgpu_ai.h"
 
-<<<<<<< HEAD
 void amdgpu_vf_error_put(struct amdgpu_device *adev,
 			 uint16_t sub_error_code,
 			 uint16_t error_flags,
@@ -46,32 +45,6 @@ void amdgpu_vf_error_put(struct amdgpu_device *adev,
 	adev->virt.vf_errors.data [index] = error_data;
 	adev->virt.vf_errors.write_count ++;
 	mutex_unlock(&adev->virt.vf_errors.lock);
-=======
-#define AMDGPU_VF_ERROR_ENTRY_SIZE    16 
-
-/* struct error_entry - amdgpu VF error information. */
-struct amdgpu_vf_error_buffer {
-	int read_count;
-	int write_count;
-	uint16_t code[AMDGPU_VF_ERROR_ENTRY_SIZE];
-	uint16_t flags[AMDGPU_VF_ERROR_ENTRY_SIZE];
-	uint64_t data[AMDGPU_VF_ERROR_ENTRY_SIZE];
-};
-
-struct amdgpu_vf_error_buffer admgpu_vf_errors;
-
-
-void amdgpu_vf_error_put(uint16_t sub_error_code, uint16_t error_flags, uint64_t error_data)
-{
-	int index;
-	uint16_t error_code = AMDGIM_ERROR_CODE(AMDGIM_ERROR_CATEGORY_VF, sub_error_code);
-
-	index = admgpu_vf_errors.write_count % AMDGPU_VF_ERROR_ENTRY_SIZE;
-	admgpu_vf_errors.code [index] = error_code;
-	admgpu_vf_errors.flags [index] = error_flags;
-	admgpu_vf_errors.data [index] = error_data;
-	admgpu_vf_errors.write_count ++;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 
@@ -81,12 +54,8 @@ void amdgpu_vf_error_trans_all(struct amdgpu_device *adev)
 	u32 data1, data2, data3;
 	int index;
 
-<<<<<<< HEAD
 	if ((NULL == adev) || (!amdgpu_sriov_vf(adev)) ||
 	    (!adev->virt.ops) || (!adev->virt.ops->trans_msg)) {
-=======
-	if ((NULL == adev) || (!amdgpu_sriov_vf(adev)) || (!adev->virt.ops) || (!adev->virt.ops->trans_msg)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 /*
@@ -96,7 +65,6 @@ void amdgpu_vf_error_trans_all(struct amdgpu_device *adev)
 		return;
 	}
 */
-<<<<<<< HEAD
 
 	mutex_lock(&adev->virt.vf_errors.lock);
 	/* The errors are overlay of array, correct read_count as full. */
@@ -115,20 +83,4 @@ void amdgpu_vf_error_trans_all(struct amdgpu_device *adev)
 		adev->virt.vf_errors.read_count ++;
 	}
 	mutex_unlock(&adev->virt.vf_errors.lock);
-=======
-	/* The errors are overlay of array, correct read_count as full. */
-	if (admgpu_vf_errors.write_count - admgpu_vf_errors.read_count > AMDGPU_VF_ERROR_ENTRY_SIZE) {
-		admgpu_vf_errors.read_count = admgpu_vf_errors.write_count - AMDGPU_VF_ERROR_ENTRY_SIZE;
-	}
-
-	while (admgpu_vf_errors.read_count < admgpu_vf_errors.write_count) {
-		index =admgpu_vf_errors.read_count % AMDGPU_VF_ERROR_ENTRY_SIZE;
-		data1 = AMDGIM_ERROR_CODE_FLAGS_TO_MAILBOX (admgpu_vf_errors.code[index], admgpu_vf_errors.flags[index]);
-		data2 = admgpu_vf_errors.data[index] & 0xFFFFFFFF;
-		data3 = (admgpu_vf_errors.data[index] >> 32) & 0xFFFFFFFF;
-
-		adev->virt.ops->trans_msg(adev, IDH_LOG_VF_ERROR, data1, data2, data3);
-		admgpu_vf_errors.read_count ++;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

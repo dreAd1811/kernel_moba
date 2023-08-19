@@ -81,20 +81,13 @@ static void raid6_dual_recov(int disks, size_t bytes, int faila, int failb, stru
 			init_async_submit(&submit, 0, NULL, NULL, NULL, addr_conv);
 			tx = async_gen_syndrome(ptrs, 0, disks, bytes, &submit);
 		} else {
-<<<<<<< HEAD
 			struct page *blocks[NDISKS];
-=======
-			struct page *blocks[disks];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			struct page *dest;
 			int count = 0;
 			int i;
 
-<<<<<<< HEAD
 			BUG_ON(disks > NDISKS);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* data+Q failure.  Reconstruct data from P,
 			 * then rebuild syndrome
 			 */

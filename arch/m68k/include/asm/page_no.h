@@ -18,11 +18,7 @@ extern unsigned long memory_end;
 #define __HAVE_ARCH_ALLOC_ZEROED_USER_HIGHPAGE
 
 #define __pa(vaddr)		((unsigned long)(vaddr))
-<<<<<<< HEAD
 #define __va(paddr)		((void *)((unsigned long)(paddr)))
-=======
-#define __va(paddr)		((void *)(paddr))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define virt_to_pfn(kaddr)	(__pa(kaddr) >> PAGE_SHIFT)
 #define pfn_to_virt(pfn)	__va((pfn) << PAGE_SHIFT)

@@ -70,7 +70,6 @@ EXPORT_SYMBOL(cpumask_of_node);
 
 #endif
 
-<<<<<<< HEAD
 static void numa_update_cpu(unsigned int cpu, bool remove)
 {
 	int nid = cpu_to_node(cpu);
@@ -97,21 +96,6 @@ void numa_remove_cpu(unsigned int cpu)
 void numa_clear_node(unsigned int cpu)
 {
 	numa_remove_cpu(cpu);
-=======
-static void map_cpu_to_node(unsigned int cpu, int nid)
-{
-	set_cpu_numa_node(cpu, nid);
-	if (nid >= 0)
-		cpumask_set_cpu(cpu, node_to_cpumask_map[nid]);
-}
-
-void numa_clear_node(unsigned int cpu)
-{
-	int nid = cpu_to_node(cpu);
-
-	if (nid >= 0)
-		cpumask_clear_cpu(cpu, node_to_cpumask_map[nid]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	set_cpu_numa_node(cpu, NUMA_NO_NODE);
 }
 
@@ -145,11 +129,7 @@ static void __init setup_node_to_cpumask_map(void)
  */
 void numa_store_cpu_info(unsigned int cpu)
 {
-<<<<<<< HEAD
 	set_cpu_numa_node(cpu, cpu_to_node_map[cpu]);
-=======
-	map_cpu_to_node(cpu, cpu_to_node_map[cpu]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void __init early_map_cpu_to_node(unsigned int cpu, int nid)
@@ -452,11 +432,7 @@ static int __init dummy_numa_init(void)
 	if (numa_off)
 		pr_info("NUMA disabled\n"); /* Forced off on command line. */
 	pr_info("Faking a node at [mem %#018Lx-%#018Lx]\n",
-<<<<<<< HEAD
 		0LLU, PFN_PHYS(max_pfn) - 1);
-=======
-		memblock_start_of_DRAM(), memblock_end_of_DRAM() - 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for_each_memblock(memory, mblk) {
 		ret = numa_add_memblk(0, mblk->base, mblk->base + mblk->size);

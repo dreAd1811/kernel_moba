@@ -187,16 +187,10 @@ that can be performed on them (see "struct coresight_ops").  The
 specific to that component only.  "Implementation defined" customisations are
 expected to be accessed and controlled using those entries.
 
-<<<<<<< HEAD
-=======
-Last but not least, "struct module *owner" is expected to be set to reflect
-the information carried in "THIS_MODULE".
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 How to use the tracer modules
 -----------------------------
 
-<<<<<<< HEAD
 There are two ways to use the Coresight framework: 1) using the perf cmd line
 tools and 2) interacting directly with the Coresight devices using the sysFS
 interface.  Preference is given to the former as using the sysFS interface
@@ -206,9 +200,6 @@ provide details on using both methods.
 1) Using the sysFS interface:
 
 Before trace collection can start, a coresight sink needs to be identified.
-=======
-Before trace collection can start, a coresight sink needs to be identify.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 There is no limit on the amount of sinks (nor sources) that can be enabled at
 any given moment.  As a generic operation, all device pertaining to the sink
 class will have an "active" entry in sysfs:
@@ -313,7 +304,6 @@ Instruction     13570831        0x8026B584      E28DD00C        false   ADD     
 Instruction     0       0x8026B588      E8BD8000        true    LDM      sp!,{pc}
 Timestamp                                       Timestamp: 17107041535
 
-<<<<<<< HEAD
 2) Using perf framework:
 
 Coresight tracers are represented using the Perf framework's Performance
@@ -405,8 +395,6 @@ sort example is from the AutoFDO tutorial (https://gcc.gnu.org/wiki/AutoFDO/Tuto
 	5806 ms
 
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 How to use the STM module
 -------------------------
 
@@ -438,9 +426,5 @@ root@genericarmv8:~#
 Details on how to use the generic STM API can be found here [2].
 
 [1]. Documentation/ABI/testing/sysfs-bus-coresight-devices-stm
-<<<<<<< HEAD
 [2]. Documentation/trace/stm.rst
 [3]. https://github.com/Linaro/perf-opencsd
-=======
-[2]. Documentation/trace/stm.txt
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

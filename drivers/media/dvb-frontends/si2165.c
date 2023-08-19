@@ -1,11 +1,7 @@
 /*
  *  Driver for Silicon Labs Si2161 DVB-T and Si2165 DVB-C/-T Demodulator
  *
-<<<<<<< HEAD
  *  Copyright (C) 2013-2017 Matthias Schwarzott <zzam@gentoo.org>
-=======
- *  Copyright (C) 2013-2014 Matthias Schwarzott <zzam@gentoo.org>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -31,13 +27,8 @@
 #include <linux/firmware.h>
 #include <linux/regmap.h>
 
-<<<<<<< HEAD
 #include <media/dvb_frontend.h>
 #include <media/dvb_math.h>
-=======
-#include "dvb_frontend.h"
-#include "dvb_math.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "si2165_priv.h"
 #include "si2165.h"
 
@@ -66,18 +57,14 @@ struct si2165_state {
 	u32 sys_clk;
 	u32 adc_clk;
 
-<<<<<<< HEAD
 	/* DVBv3 stats */
 	u64 ber_prev;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool has_dvbc;
 	bool has_dvbt;
 	bool firmware_loaded;
 };
 
-<<<<<<< HEAD
 static int si2165_write(struct si2165_state *state, const u16 reg,
 			const u8 *src, const int count)
 {
@@ -85,60 +72,6 @@ static int si2165_write(struct si2165_state *state, const u16 reg,
 
 	dev_dbg(&state->client->dev, "i2c write: reg: 0x%04x, data: %*ph\n",
 		reg, count, src);
-=======
-#define DEBUG_OTHER	0x01
-#define DEBUG_I2C_WRITE	0x02
-#define DEBUG_I2C_READ	0x04
-#define DEBUG_REG_READ	0x08
-#define DEBUG_REG_WRITE	0x10
-#define DEBUG_FW_LOAD	0x20
-
-static int debug = 0x00;
-
-#define dprintk(args...) \
-	do { \
-		if (debug & DEBUG_OTHER) \
-			printk(KERN_DEBUG "si2165: " args); \
-	} while (0)
-
-#define deb_i2c_write(args...) \
-	do { \
-		if (debug & DEBUG_I2C_WRITE) \
-			printk(KERN_DEBUG "si2165: i2c write: " args); \
-	} while (0)
-
-#define deb_i2c_read(args...) \
-	do { \
-		if (debug & DEBUG_I2C_READ) \
-			printk(KERN_DEBUG "si2165: i2c read: " args); \
-	} while (0)
-
-#define deb_readreg(args...) \
-	do { \
-		if (debug & DEBUG_REG_READ) \
-			printk(KERN_DEBUG "si2165: reg read: " args); \
-	} while (0)
-
-#define deb_writereg(args...) \
-	do { \
-		if (debug & DEBUG_REG_WRITE) \
-			printk(KERN_DEBUG "si2165: reg write: " args); \
-	} while (0)
-
-#define deb_fw_load(args...) \
-	do { \
-		if (debug & DEBUG_FW_LOAD) \
-			printk(KERN_DEBUG "si2165: fw load: " args); \
-	} while (0)
-
-static int si2165_write(struct si2165_state *state, const u16 reg,
-		       const u8 *src, const int count)
-{
-	int ret;
-
-	if (debug & DEBUG_I2C_WRITE)
-		deb_i2c_write("reg: 0x%04x, data: %*ph\n", reg, count, src);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = regmap_bulk_write(state->regmap, reg, src, count);
 
@@ -159,47 +92,29 @@ static int si2165_read(struct si2165_state *state,
 		return ret;
 	}
 
-<<<<<<< HEAD
 	dev_dbg(&state->client->dev, "i2c read: reg: 0x%04x, data: %*ph\n",
 		reg, count, val);
-=======
-	if (debug & DEBUG_I2C_READ)
-		deb_i2c_read("reg: 0x%04x, data: %*ph\n", reg, count, val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
 static int si2165_readreg8(struct si2165_state *state,
-<<<<<<< HEAD
 			   const u16 reg, u8 *val)
-=======
-		       const u16 reg, u8 *val)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned int val_tmp;
 	int ret = regmap_read(state->regmap, reg, &val_tmp);
 	*val = (u8)val_tmp;
-<<<<<<< HEAD
 	dev_dbg(&state->client->dev, "reg read: R(0x%04x)=0x%02x\n", reg, *val);
-=======
-	deb_readreg("R(0x%04x)=0x%02x\n", reg, *val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
 static int si2165_readreg16(struct si2165_state *state,
-<<<<<<< HEAD
 			    const u16 reg, u16 *val)
-=======
-		       const u16 reg, u16 *val)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u8 buf[2];
 
 	int ret = si2165_read(state, reg, buf, 2);
 	*val = buf[0] | buf[1] << 8;
-<<<<<<< HEAD
 	dev_dbg(&state->client->dev, "reg read: R(0x%04x)=0x%04x\n", reg, *val);
 	return ret;
 }
@@ -212,9 +127,6 @@ static int si2165_readreg24(struct si2165_state *state,
 	int ret = si2165_read(state, reg, buf, 3);
 	*val = buf[0] | buf[1] << 8 | buf[2] << 16;
 	dev_dbg(&state->client->dev, "reg read: R(0x%04x)=0x%06x\n", reg, *val);
-=======
-	deb_readreg("R(0x%04x)=0x%04x\n", reg, *val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -265,13 +177,9 @@ static int si2165_writereg_mask8(struct si2165_state *state, const u16 reg,
 	return si2165_writereg8(state, reg, val);
 }
 
-<<<<<<< HEAD
 #define REG16(reg, val) \
 	{ (reg), (val) & 0xff }, \
 	{ (reg) + 1, (val) >> 8 & 0xff }
-=======
-#define REG16(reg, val) { (reg), (val) & 0xff }, { (reg)+1, (val)>>8 & 0xff }
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct si2165_reg_value_pair {
 	u16 reg;
 	u8 val;
@@ -301,11 +209,7 @@ static int si2165_get_tune_settings(struct dvb_frontend *fe,
 
 static int si2165_init_pll(struct si2165_state *state)
 {
-<<<<<<< HEAD
 	u32 ref_freq_hz = state->config.ref_freq_hz;
-=======
-	u32 ref_freq_Hz = state->config.ref_freq_Hz;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 divr = 1; /* 1..7 */
 	u8 divp = 1; /* only 1 or 4 */
 	u8 divn = 56; /* 1..63 */
@@ -317,11 +221,7 @@ static int si2165_init_pll(struct si2165_state *state)
 	 * hardcoded values can be deleted if calculation is verified
 	 * or it yields the same values as the windows driver
 	 */
-<<<<<<< HEAD
 	switch (ref_freq_hz) {
-=======
-	switch (ref_freq_Hz) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case 16000000u:
 		divn = 56;
 		break;
@@ -332,67 +232,39 @@ static int si2165_init_pll(struct si2165_state *state)
 		break;
 	default:
 		/* ref_freq / divr must be between 4 and 16 MHz */
-<<<<<<< HEAD
 		if (ref_freq_hz > 16000000u)
-=======
-		if (ref_freq_Hz > 16000000u)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			divr = 2;
 
 		/*
 		 * now select divn and divp such that
 		 * fvco is in 1624..1824 MHz
 		 */
-<<<<<<< HEAD
 		if (1624000000u * divr > ref_freq_hz * 2u * 63u)
 			divp = 4;
 
 		/* is this already correct regarding rounding? */
 		divn = 1624000000u * divr / (ref_freq_hz * 2u * divp);
-=======
-		if (1624000000u * divr > ref_freq_Hz * 2u * 63u)
-			divp = 4;
-
-		/* is this already correct regarding rounding? */
-		divn = 1624000000u * divr / (ref_freq_Hz * 2u * divp);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 
 	/* adc_clk and sys_clk depend on xtal and pll settings */
-<<<<<<< HEAD
 	state->fvco_hz = ref_freq_hz / divr
-=======
-	state->fvco_hz = ref_freq_Hz / divr
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			* 2u * divn * divp;
 	state->adc_clk = state->fvco_hz / (divm * 4u);
 	state->sys_clk = state->fvco_hz / (divl * 2u);
 
-<<<<<<< HEAD
 	/* write all 4 pll registers 0x00a0..0x00a3 at once */
-=======
-	/* write pll registers 0x00a0..0x00a3 at once */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	buf[0] = divl;
 	buf[1] = divm;
 	buf[2] = (divn & 0x3f) | ((divp == 1) ? 0x40 : 0x00) | 0x80;
 	buf[3] = divr;
-<<<<<<< HEAD
 	return si2165_write(state, REG_PLL_DIVL, buf, 4);
-=======
-	return si2165_write(state, 0x00a0, buf, 4);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int si2165_adjust_pll_divl(struct si2165_state *state, u8 divl)
 {
 	state->sys_clk = state->fvco_hz / (divl * 2u);
-<<<<<<< HEAD
 	return si2165_writereg8(state, REG_PLL_DIVL, divl);
-=======
-	return si2165_writereg8(state, 0x00a0, divl); /* pll_divl */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static u32 si2165_get_fe_clk(struct si2165_state *state)
@@ -403,27 +275,18 @@ static u32 si2165_get_fe_clk(struct si2165_state *state)
 
 static int si2165_wait_init_done(struct si2165_state *state)
 {
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret = -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 val = 0;
 	int i;
 
 	for (i = 0; i < 3; ++i) {
-<<<<<<< HEAD
 		ret = si2165_readreg8(state, REG_INIT_DONE, &val);
 		if (ret < 0)
 			return ret;
-=======
-		si2165_readreg8(state, 0x0054, &val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (val == 0x01)
 			return 0;
 		usleep_range(1000, 50000);
 	}
-<<<<<<< HEAD
 	dev_err(&state->client->dev, "init_done was not set\n");
 	return -EINVAL;
 }
@@ -431,15 +294,6 @@ static int si2165_wait_init_done(struct si2165_state *state)
 static int si2165_upload_firmware_block(struct si2165_state *state,
 					const u8 *data, u32 len, u32 *poffset,
 					u32 block_count)
-=======
-	dev_err(&state->client->dev, "%s: init_done was not set\n",
-		KBUILD_MODNAME);
-	return ret;
-}
-
-static int si2165_upload_firmware_block(struct si2165_state *state,
-	const u8 *data, u32 len, u32 *poffset, u32 block_count)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret;
 	u8 buf_ctrl[4] = { 0x00, 0x00, 0x00, 0xc0 };
@@ -452,7 +306,6 @@ static int si2165_upload_firmware_block(struct si2165_state *state,
 	if (len % 4 != 0)
 		return -EINVAL;
 
-<<<<<<< HEAD
 	dev_dbg(&state->client->dev,
 		"fw load: %s: called with len=0x%x offset=0x%x blockcount=0x%x\n",
 		__func__, len, offset, block_count);
@@ -466,61 +319,30 @@ static int si2165_upload_firmware_block(struct si2165_state *state,
 			dev_warn(&state->client->dev,
 				 "bad fw data[0..3] = %*ph\n",
 				 4, data);
-=======
-	deb_fw_load(
-		"si2165_upload_firmware_block called with len=0x%x offset=0x%x blockcount=0x%x\n",
-				len, offset, block_count);
-	while (offset+12 <= len && cur_block < block_count) {
-		deb_fw_load(
-			"si2165_upload_firmware_block in while len=0x%x offset=0x%x cur_block=0x%x blockcount=0x%x\n",
-					len, offset, cur_block, block_count);
-		wordcount = data[offset];
-		if (wordcount < 1 || data[offset+1] ||
-		    data[offset+2] || data[offset+3]) {
-			dev_warn(&state->client->dev,
-				 "%s: bad fw data[0..3] = %*ph\n",
-				KBUILD_MODNAME, 4, data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EINVAL;
 		}
 
 		if (offset + 8 + wordcount * 4 > len) {
 			dev_warn(&state->client->dev,
-<<<<<<< HEAD
 				 "len is too small for block len=%d, wordcount=%d\n",
 				len, wordcount);
-=======
-				 "%s: len is too small for block len=%d, wordcount=%d\n",
-				KBUILD_MODNAME, len, wordcount);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EINVAL;
 		}
 
 		buf_ctrl[0] = wordcount - 1;
 
-<<<<<<< HEAD
 		ret = si2165_write(state, REG_DCOM_CONTROL_BYTE, buf_ctrl, 4);
 		if (ret < 0)
 			goto error;
 		ret = si2165_write(state, REG_DCOM_ADDR, data + offset + 4, 4);
-=======
-		ret = si2165_write(state, 0x0364, buf_ctrl, 4);
-		if (ret < 0)
-			goto error;
-		ret = si2165_write(state, 0x0368, data+offset+4, 4);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret < 0)
 			goto error;
 
 		offset += 8;
 
 		while (wordcount > 0) {
-<<<<<<< HEAD
 			ret = si2165_write(state, REG_DCOM_DATA,
 					   data + offset, 4);
-=======
-			ret = si2165_write(state, 0x36c, data+offset, 4);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (ret < 0)
 				goto error;
 			wordcount--;
@@ -529,27 +351,16 @@ static int si2165_upload_firmware_block(struct si2165_state *state,
 		cur_block++;
 	}
 
-<<<<<<< HEAD
 	dev_dbg(&state->client->dev,
 		"fw load: %s: after while len=0x%x offset=0x%x cur_block=0x%x blockcount=0x%x\n",
 		__func__, len, offset, cur_block, block_count);
-=======
-	deb_fw_load(
-		"si2165_upload_firmware_block after while len=0x%x offset=0x%x cur_block=0x%x blockcount=0x%x\n",
-				len, offset, cur_block, block_count);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (poffset)
 		*poffset = offset;
 
-<<<<<<< HEAD
 	dev_dbg(&state->client->dev,
 		"fw load: %s: returned offset=0x%x\n",
 		__func__, offset);
-=======
-	deb_fw_load("si2165_upload_firmware_block returned offset=0x%x\n",
-				offset);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 error:
@@ -577,69 +388,40 @@ static int si2165_upload_firmware(struct si2165_state *state)
 		fw_file = SI2165_FIRMWARE_REV_D;
 		break;
 	default:
-<<<<<<< HEAD
 		dev_info(&state->client->dev, "no firmware file for revision=%d\n",
 			 state->chip_revcode);
-=======
-		dev_info(&state->client->dev, "%s: no firmware file for revision=%d\n",
-			KBUILD_MODNAME, state->chip_revcode);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 
 	/* request the firmware, this will block and timeout */
 	ret = request_firmware(&fw, fw_file, &state->client->dev);
 	if (ret) {
-<<<<<<< HEAD
 		dev_warn(&state->client->dev, "firmware file '%s' not found\n",
 			 fw_file);
-=======
-		dev_warn(&state->client->dev, "%s: firmware file '%s' not found\n",
-				KBUILD_MODNAME, fw_file);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto error;
 	}
 
 	data = fw->data;
 	len = fw->size;
 
-<<<<<<< HEAD
 	dev_info(&state->client->dev, "downloading firmware from file '%s' size=%d\n",
 		 fw_file, len);
 
 	if (len % 4 != 0) {
 		dev_warn(&state->client->dev, "firmware size is not multiple of 4\n");
-=======
-	dev_info(&state->client->dev, "%s: downloading firmware from file '%s' size=%d\n",
-			KBUILD_MODNAME, fw_file, len);
-
-	if (len % 4 != 0) {
-		dev_warn(&state->client->dev, "%s: firmware size is not multiple of 4\n",
-				KBUILD_MODNAME);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -EINVAL;
 		goto error;
 	}
 
 	/* check header (8 bytes) */
 	if (len < 8) {
-<<<<<<< HEAD
 		dev_warn(&state->client->dev, "firmware header is missing\n");
-=======
-		dev_warn(&state->client->dev, "%s: firmware header is missing\n",
-				KBUILD_MODNAME);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -EINVAL;
 		goto error;
 	}
 
 	if (data[0] != 1 || data[1] != 0) {
-<<<<<<< HEAD
 		dev_warn(&state->client->dev, "firmware file version is wrong\n");
-=======
-		dev_warn(&state->client->dev, "%s: firmware file version is wrong\n",
-				KBUILD_MODNAME);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -EINVAL;
 		goto error;
 	}
@@ -650,7 +432,6 @@ static int si2165_upload_firmware(struct si2165_state *state)
 
 	/* start uploading fw */
 	/* boot/wdog status */
-<<<<<<< HEAD
 	ret = si2165_writereg8(state, REG_WDOG_AND_BOOT, 0x00);
 	if (ret < 0)
 		goto error;
@@ -660,22 +441,10 @@ static int si2165_upload_firmware(struct si2165_state *state)
 		goto error;
 	/* boot/wdog status */
 	ret = si2165_readreg8(state, REG_WDOG_AND_BOOT, val);
-=======
-	ret = si2165_writereg8(state, 0x0341, 0x00);
-	if (ret < 0)
-		goto error;
-	/* reset */
-	ret = si2165_writereg8(state, 0x00c0, 0x00);
-	if (ret < 0)
-		goto error;
-	/* boot/wdog status */
-	ret = si2165_readreg8(state, 0x0341, val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		goto error;
 
 	/* enable reset on error */
-<<<<<<< HEAD
 	ret = si2165_readreg8(state, REG_EN_RST_ERROR, val);
 	if (ret < 0)
 		goto error;
@@ -683,47 +452,25 @@ static int si2165_upload_firmware(struct si2165_state *state)
 	if (ret < 0)
 		goto error;
 	ret = si2165_writereg8(state, REG_EN_RST_ERROR, 0x02);
-=======
-	ret = si2165_readreg8(state, 0x035c, val);
-	if (ret < 0)
-		goto error;
-	ret = si2165_readreg8(state, 0x035c, val);
-	if (ret < 0)
-		goto error;
-	ret = si2165_writereg8(state, 0x035c, 0x02);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		goto error;
 
 	/* start right after the header */
 	offset = 8;
 
-<<<<<<< HEAD
 	dev_info(&state->client->dev, "%s: extracted patch_version=0x%02x, block_count=0x%02x, crc_expected=0x%04x\n",
 		 __func__, patch_version, block_count, crc_expected);
-=======
-	dev_info(&state->client->dev, "%s: si2165_upload_firmware extracted patch_version=0x%02x, block_count=0x%02x, crc_expected=0x%04x\n",
-		KBUILD_MODNAME, patch_version, block_count, crc_expected);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = si2165_upload_firmware_block(state, data, len, &offset, 1);
 	if (ret < 0)
 		goto error;
 
-<<<<<<< HEAD
 	ret = si2165_writereg8(state, REG_PATCH_VERSION, patch_version);
-=======
-	ret = si2165_writereg8(state, 0x0344, patch_version);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		goto error;
 
 	/* reset crc */
-<<<<<<< HEAD
 	ret = si2165_writereg8(state, REG_RST_CRC, 0x01);
-=======
-	ret = si2165_writereg8(state, 0x0379, 0x01);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto error;
 
@@ -731,33 +478,19 @@ static int si2165_upload_firmware(struct si2165_state *state)
 					   &offset, block_count);
 	if (ret < 0) {
 		dev_err(&state->client->dev,
-<<<<<<< HEAD
 			"firmware could not be uploaded\n");
-=======
-			"%s: firmware could not be uploaded\n",
-			KBUILD_MODNAME);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto error;
 	}
 
 	/* read crc */
-<<<<<<< HEAD
 	ret = si2165_readreg16(state, REG_CRC, &val16);
-=======
-	ret = si2165_readreg16(state, 0x037a, &val16);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto error;
 
 	if (val16 != crc_expected) {
 		dev_err(&state->client->dev,
-<<<<<<< HEAD
 			"firmware crc mismatch %04x != %04x\n",
 			val16, crc_expected);
-=======
-			"%s: firmware crc mismatch %04x != %04x\n",
-			KBUILD_MODNAME, val16, crc_expected);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -EINVAL;
 		goto error;
 	}
@@ -768,40 +501,23 @@ static int si2165_upload_firmware(struct si2165_state *state)
 
 	if (len != offset) {
 		dev_err(&state->client->dev,
-<<<<<<< HEAD
 			"firmware len mismatch %04x != %04x\n",
 			len, offset);
-=======
-			"%s: firmware len mismatch %04x != %04x\n",
-			KBUILD_MODNAME, len, offset);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -EINVAL;
 		goto error;
 	}
 
 	/* reset watchdog error register */
-<<<<<<< HEAD
 	ret = si2165_writereg_mask8(state, REG_WDOG_AND_BOOT, 0x02, 0x02);
-=======
-	ret = si2165_writereg_mask8(state, 0x0341, 0x02, 0x02);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		goto error;
 
 	/* enable reset on error */
-<<<<<<< HEAD
 	ret = si2165_writereg_mask8(state, REG_EN_RST_ERROR, 0x01, 0x01);
 	if (ret < 0)
 		goto error;
 
 	dev_info(&state->client->dev, "fw load finished\n");
-=======
-	ret = si2165_writereg_mask8(state, 0x035c, 0x01, 0x01);
-	if (ret < 0)
-		goto error;
-
-	dev_info(&state->client->dev, "%s: fw load finished\n", KBUILD_MODNAME);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = 0;
 	state->firmware_loaded = true;
@@ -818,7 +534,6 @@ static int si2165_init(struct dvb_frontend *fe)
 {
 	int ret = 0;
 	struct si2165_state *state = fe->demodulator_priv;
-<<<<<<< HEAD
 	struct dtv_frontend_properties *c = &fe->dtv_property_cache;
 	u8 val;
 	u8 patch_version = 0x00;
@@ -839,32 +554,10 @@ static int si2165_init(struct dvb_frontend *fe)
 		goto error;
 	if (val != state->config.chip_mode) {
 		dev_err(&state->client->dev, "could not set chip_mode\n");
-=======
-	u8 val;
-	u8 patch_version = 0x00;
-
-	dprintk("%s: called\n", __func__);
-
-	/* powerup */
-	ret = si2165_writereg8(state, 0x0000, state->config.chip_mode);
-	if (ret < 0)
-		goto error;
-	/* dsp_clock_enable */
-	ret = si2165_writereg8(state, 0x0104, 0x01);
-	if (ret < 0)
-		goto error;
-	ret = si2165_readreg8(state, 0x0000, &val); /* verify chip_mode */
-	if (ret < 0)
-		goto error;
-	if (val != state->config.chip_mode) {
-		dev_err(&state->client->dev, "%s: could not set chip_mode\n",
-			KBUILD_MODNAME);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
 	/* agc */
-<<<<<<< HEAD
 	ret = si2165_writereg8(state, REG_AGC_IF_TRI, 0x00);
 	if (ret < 0)
 		goto error;
@@ -882,25 +575,6 @@ static int si2165_init(struct dvb_frontend *fe)
 	if (ret < 0)
 		goto error;
 	ret = si2165_writereg8(state, REG_RSSI_ENABLE, 0x00);
-=======
-	ret = si2165_writereg8(state, 0x018b, 0x00);
-	if (ret < 0)
-		goto error;
-	ret = si2165_writereg8(state, 0x0190, 0x01);
-	if (ret < 0)
-		goto error;
-	ret = si2165_writereg8(state, 0x0170, 0x00);
-	if (ret < 0)
-		goto error;
-	ret = si2165_writereg8(state, 0x0171, 0x07);
-	if (ret < 0)
-		goto error;
-	/* rssi pad */
-	ret = si2165_writereg8(state, 0x0646, 0x00);
-	if (ret < 0)
-		goto error;
-	ret = si2165_writereg8(state, 0x0641, 0x00);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		goto error;
 
@@ -909,19 +583,11 @@ static int si2165_init(struct dvb_frontend *fe)
 		goto error;
 
 	/* enable chip_init */
-<<<<<<< HEAD
 	ret = si2165_writereg8(state, REG_CHIP_INIT, 0x01);
 	if (ret < 0)
 		goto error;
 	/* set start_init */
 	ret = si2165_writereg8(state, REG_START_INIT, 0x01);
-=======
-	ret = si2165_writereg8(state, 0x0050, 0x01);
-	if (ret < 0)
-		goto error;
-	/* set start_init */
-	ret = si2165_writereg8(state, 0x0096, 0x01);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		goto error;
 	ret = si2165_wait_init_done(state);
@@ -929,7 +595,6 @@ static int si2165_init(struct dvb_frontend *fe)
 		goto error;
 
 	/* disable chip_init */
-<<<<<<< HEAD
 	ret = si2165_writereg8(state, REG_CHIP_INIT, 0x00);
 	if (ret < 0)
 		goto error;
@@ -945,39 +610,15 @@ static int si2165_init(struct dvb_frontend *fe)
 		goto error;
 
 	ret = si2165_writereg8(state, REG_AUTO_RESET, 0x00);
-=======
-	ret = si2165_writereg8(state, 0x0050, 0x00);
-	if (ret < 0)
-		goto error;
-
-	/* ber_pkt */
-	ret = si2165_writereg16(state, 0x0470, 0x7530);
-	if (ret < 0)
-		goto error;
-
-	ret = si2165_readreg8(state, 0x0344, &patch_version);
-	if (ret < 0)
-		goto error;
-
-	ret = si2165_writereg8(state, 0x00cb, 0x00);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		goto error;
 
 	/* dsp_addr_jump */
-<<<<<<< HEAD
 	ret = si2165_writereg32(state, REG_ADDR_JUMP, 0xf4000000);
 	if (ret < 0)
 		goto error;
 	/* boot/wdog status */
 	ret = si2165_readreg8(state, REG_WDOG_AND_BOOT, &val);
-=======
-	ret = si2165_writereg32(state, 0x0348, 0xf4000000);
-	if (ret < 0)
-		goto error;
-	/* boot/wdog status */
-	ret = si2165_readreg8(state, 0x0341, &val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		goto error;
 
@@ -988,7 +629,6 @@ static int si2165_init(struct dvb_frontend *fe)
 	}
 
 	/* ts output config */
-<<<<<<< HEAD
 	ret = si2165_writereg8(state, REG_TS_DATA_MODE, 0x20);
 	if (ret < 0)
 		return ret;
@@ -1012,20 +652,6 @@ static int si2165_init(struct dvb_frontend *fe)
 	c->post_bit_error.stat[0].scale = FE_SCALE_NOT_AVAILABLE;
 	c->post_bit_count.len = 1;
 	c->post_bit_count.stat[0].scale = FE_SCALE_NOT_AVAILABLE;
-=======
-	ret = si2165_writereg8(state, 0x04e4, 0x20);
-	if (ret < 0)
-		return ret;
-	ret = si2165_writereg16(state, 0x04ef, 0x00fe);
-	if (ret < 0)
-		return ret;
-	ret = si2165_writereg24(state, 0x04f4, 0x555555);
-	if (ret < 0)
-		return ret;
-	ret = si2165_writereg8(state, 0x04e5, 0x01);
-	if (ret < 0)
-		return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 error:
@@ -1038,19 +664,11 @@ static int si2165_sleep(struct dvb_frontend *fe)
 	struct si2165_state *state = fe->demodulator_priv;
 
 	/* dsp clock disable */
-<<<<<<< HEAD
 	ret = si2165_writereg8(state, REG_DSP_CLOCK, 0x00);
 	if (ret < 0)
 		return ret;
 	/* chip mode */
 	ret = si2165_writereg8(state, REG_CHIP_MODE, SI2165_MODE_OFF);
-=======
-	ret = si2165_writereg8(state, 0x0104, 0x00);
-	if (ret < 0)
-		return ret;
-	/* chip mode */
-	ret = si2165_writereg8(state, 0x0000, SI2165_MODE_OFF);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		return ret;
 	return 0;
@@ -1059,7 +677,6 @@ static int si2165_sleep(struct dvb_frontend *fe)
 static int si2165_read_status(struct dvb_frontend *fe, enum fe_status *status)
 {
 	int ret;
-<<<<<<< HEAD
 	u8 u8tmp;
 	u32 u32tmp;
 	struct si2165_state *state = fe->demodulator_priv;
@@ -1102,20 +719,6 @@ static int si2165_read_status(struct dvb_frontend *fe, enum fe_status *status)
 	if (ret < 0)
 		return ret;
 	if (u8tmp & 0x01) {
-=======
-	u8 fec_lock = 0;
-	struct si2165_state *state = fe->demodulator_priv;
-
-	if (!state->has_dvbt)
-		return -EINVAL;
-
-	/* check fec_lock */
-	ret = si2165_readreg8(state, 0x4e0, &fec_lock);
-	if (ret < 0)
-		return ret;
-	*status = 0;
-	if (fec_lock & 0x01) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*status |= FE_HAS_SIGNAL;
 		*status |= FE_HAS_CARRIER;
 		*status |= FE_HAS_VITERBI;
@@ -1123,7 +726,6 @@ static int si2165_read_status(struct dvb_frontend *fe, enum fe_status *status)
 		*status |= FE_HAS_LOCK;
 	}
 
-<<<<<<< HEAD
 	/* CNR */
 	if (delsys == SYS_DVBC_ANNEX_A && *status & FE_HAS_VITERBI) {
 		ret = si2165_readreg24(state, REG_C_N, &u32tmp);
@@ -1227,8 +829,6 @@ static int si2165_read_ber(struct dvb_frontend *fe, u32 *ber)
 	*ber = c->post_bit_error.stat[0].uvalue - state->ber_prev;
 	state->ber_prev = c->post_bit_error.stat[0].uvalue;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1245,13 +845,8 @@ static int si2165_set_oversamp(struct si2165_state *state, u32 dvb_rate)
 	do_div(oversamp, dvb_rate);
 	reg_value = oversamp & 0x3fffffff;
 
-<<<<<<< HEAD
 	dev_dbg(&state->client->dev, "Write oversamp=%#x\n", reg_value);
 	return si2165_writereg32(state, REG_OVERSAMP, reg_value);
-=======
-	dprintk("%s: Write oversamp=%#x\n", __func__, reg_value);
-	return si2165_writereg32(state, 0x00e4, reg_value);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int si2165_set_if_freq_shift(struct si2165_state *state)
@@ -1264,12 +859,7 @@ static int si2165_set_if_freq_shift(struct si2165_state *state)
 
 	if (!fe->ops.tuner_ops.get_if_frequency) {
 		dev_err(&state->client->dev,
-<<<<<<< HEAD
 			"Error: get_if_frequency() not defined at tuner. Can't work without it!\n");
-=======
-			"%s: Error: get_if_frequency() not defined at tuner. Can't work without it!\n",
-			KBUILD_MODNAME);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -1289,16 +879,11 @@ static int si2165_set_if_freq_shift(struct si2165_state *state)
 	reg_value = reg_value & 0x1fffffff;
 
 	/* if_freq_shift, usbdump contained 0x023ee08f; */
-<<<<<<< HEAD
 	return si2165_writereg32(state, REG_IF_FREQ_SHIFT, reg_value);
-=======
-	return si2165_writereg32(state, 0x00e8, reg_value);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct si2165_reg_value_pair dvbt_regs[] = {
 	/* standard = DVB-T */
-<<<<<<< HEAD
 	{ REG_DVB_STANDARD, 0x01 },
 	/* impulsive_noise_remover */
 	{ REG_IMPULSIVE_NOISE_REM, 0x01 },
@@ -1317,27 +902,6 @@ static const struct si2165_reg_value_pair dvbt_regs[] = {
 	REG16(REG_FREQ_SYNC_RANGE, 0x0064),
 	/* gp_reg0 */
 	{ REG_GP_REG0_MSB, 0x00 }
-=======
-	{ 0x00ec, 0x01 },
-	{ 0x08f8, 0x00 },
-	/* impulsive_noise_remover */
-	{ 0x031c, 0x01 },
-	{ 0x00cb, 0x00 },
-	/* agc2 */
-	{ 0x016e, 0x41 },
-	{ 0x016c, 0x0e },
-	{ 0x016d, 0x10 },
-	/* agc */
-	{ 0x015b, 0x03 },
-	{ 0x0150, 0x78 },
-	/* agc */
-	{ 0x01a0, 0x78 },
-	{ 0x01c8, 0x68 },
-	/* freq_sync_range */
-	REG16(0x030c, 0x0064),
-	/* gp_reg0 */
-	{ 0x0387, 0x00 }
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int si2165_set_frontend_dvbt(struct dvb_frontend *fe)
@@ -1349,11 +913,7 @@ static int si2165_set_frontend_dvbt(struct dvb_frontend *fe)
 	u16 bw10k;
 	u32 bw_hz = p->bandwidth_hz;
 
-<<<<<<< HEAD
 	dev_dbg(&state->client->dev, "%s: called\n", __func__);
-=======
-	dprintk("%s: called\n", __func__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!state->has_dvbt)
 		return -EINVAL;
@@ -1370,11 +930,7 @@ static int si2165_set_frontend_dvbt(struct dvb_frontend *fe)
 		return ret;
 
 	/* bandwidth in 10KHz steps */
-<<<<<<< HEAD
 	ret = si2165_writereg16(state, REG_T_BANDWIDTH, bw10k);
-=======
-	ret = si2165_writereg16(state, 0x0308, bw10k);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		return ret;
 	ret = si2165_set_oversamp(state, dvb_rate);
@@ -1390,7 +946,6 @@ static int si2165_set_frontend_dvbt(struct dvb_frontend *fe)
 
 static const struct si2165_reg_value_pair dvbc_regs[] = {
 	/* standard = DVB-C */
-<<<<<<< HEAD
 	{ REG_DVB_STANDARD, 0x05 },
 
 	/* agc2 */
@@ -1415,35 +970,6 @@ static const struct si2165_reg_value_pair dvbc_regs[] = {
 	REG16(REG_UNKNOWN_27C, 0x0000),
 	{ REG_SWEEP_STEP, 0x03 },
 	{ REG_AGC_IF_TRI, 0x00 },
-=======
-	{ 0x00ec, 0x05 },
-	{ 0x08f8, 0x00 },
-
-	/* agc2 */
-	{ 0x016e, 0x50 },
-	{ 0x016c, 0x0e },
-	{ 0x016d, 0x10 },
-	/* agc */
-	{ 0x015b, 0x03 },
-	{ 0x0150, 0x68 },
-	/* agc */
-	{ 0x01a0, 0x68 },
-	{ 0x01c8, 0x50 },
-
-	{ 0x0278, 0x0d },
-
-	{ 0x023a, 0x05 },
-	{ 0x0261, 0x09 },
-	REG16(0x0350, 0x3e80),
-	{ 0x02f4, 0x00 },
-
-	{ 0x00cb, 0x01 },
-	REG16(0x024c, 0x0000),
-	REG16(0x027c, 0x0000),
-	{ 0x0232, 0x03 },
-	{ 0x02f4, 0x0b },
-	{ 0x018b, 0x00 },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int si2165_set_frontend_dvbc(struct dvb_frontend *fe)
@@ -1452,11 +978,7 @@ static int si2165_set_frontend_dvbc(struct dvb_frontend *fe)
 	int ret;
 	struct dtv_frontend_properties *p = &fe->dtv_property_cache;
 	const u32 dvb_rate = p->symbol_rate;
-<<<<<<< HEAD
 	u8 u8tmp;
-=======
-	const u32 bw_hz = p->bandwidth_hz;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!state->has_dvbc)
 		return -EINVAL;
@@ -1473,7 +995,6 @@ static int si2165_set_frontend_dvbc(struct dvb_frontend *fe)
 	if (ret < 0)
 		return ret;
 
-<<<<<<< HEAD
 	switch (p->modulation) {
 	case QPSK:
 		u8tmp = 0x3;
@@ -1500,9 +1021,6 @@ static int si2165_set_frontend_dvbc(struct dvb_frontend *fe)
 		return ret;
 
 	ret = si2165_writereg32(state, REG_LOCK_TIMEOUT, 0x007a1200);
-=======
-	ret = si2165_writereg32(state, 0x00c4, bw_hz);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		return ret;
 
@@ -1513,21 +1031,12 @@ static int si2165_set_frontend_dvbc(struct dvb_frontend *fe)
 	return 0;
 }
 
-<<<<<<< HEAD
 static const struct si2165_reg_value_pair adc_rewrite[] = {
 	{ REG_ADC_RI1, 0x46 },
 	{ REG_ADC_RI3, 0x00 },
 	{ REG_ADC_RI5, 0x0a },
 	{ REG_ADC_RI6, 0xff },
 	{ REG_ADC_RI8, 0x70 }
-=======
-static const struct si2165_reg_value_pair agc_rewrite[] = {
-	{ 0x012a, 0x46 },
-	{ 0x012c, 0x00 },
-	{ 0x012e, 0x0a },
-	{ 0x012f, 0xff },
-	{ 0x0123, 0x70 }
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int si2165_set_frontend(struct dvb_frontend *fe)
@@ -1559,11 +1068,7 @@ static int si2165_set_frontend(struct dvb_frontend *fe)
 	}
 
 	/* dsp_addr_jump */
-<<<<<<< HEAD
 	ret = si2165_writereg32(state, REG_ADDR_JUMP, 0xf4000000);
-=======
-	ret = si2165_writereg32(state, 0x0348, 0xf4000000);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		return ret;
 
@@ -1576,62 +1081,34 @@ static int si2165_set_frontend(struct dvb_frontend *fe)
 		return ret;
 
 	/* boot/wdog status */
-<<<<<<< HEAD
 	ret = si2165_readreg8(state, REG_WDOG_AND_BOOT, val);
 	if (ret < 0)
 		return ret;
 	ret = si2165_writereg8(state, REG_WDOG_AND_BOOT, 0x00);
-=======
-	ret = si2165_readreg8(state, 0x0341, val);
-	if (ret < 0)
-		return ret;
-	ret = si2165_writereg8(state, 0x0341, 0x00);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		return ret;
 
 	/* reset all */
-<<<<<<< HEAD
 	ret = si2165_writereg8(state, REG_RST_ALL, 0x00);
 	if (ret < 0)
 		return ret;
 	/* gp_reg0 */
 	ret = si2165_writereg32(state, REG_GP_REG0_LSB, 0x00000000);
-=======
-	ret = si2165_writereg8(state, 0x00c0, 0x00);
-	if (ret < 0)
-		return ret;
-	/* gp_reg0 */
-	ret = si2165_writereg32(state, 0x0384, 0x00000000);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		return ret;
 
 	/* write adc values after each reset*/
-<<<<<<< HEAD
 	ret = si2165_write_reg_list(state, adc_rewrite,
 				    ARRAY_SIZE(adc_rewrite));
-=======
-	ret = si2165_write_reg_list(state, agc_rewrite,
-				    ARRAY_SIZE(agc_rewrite));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		return ret;
 
 	/* start_synchro */
-<<<<<<< HEAD
 	ret = si2165_writereg8(state, REG_START_SYNCHRO, 0x01);
 	if (ret < 0)
 		return ret;
 	/* boot/wdog status */
 	ret = si2165_readreg8(state, REG_WDOG_AND_BOOT, val);
-=======
-	ret = si2165_writereg8(state, 0x02e0, 0x01);
-	if (ret < 0)
-		return ret;
-	/* boot/wdog status */
-	ret = si2165_readreg8(state, 0x0341, val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		return ret;
 
@@ -1645,11 +1122,7 @@ static const struct dvb_frontend_ops si2165_ops = {
 		.symbol_rate_min = 1000000,
 		.symbol_rate_max = 7200000,
 		/* For DVB-T */
-<<<<<<< HEAD
 		.frequency_stepsize_hz = 166667,
-=======
-		.frequency_stepsize = 166667,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.caps = FE_CAN_FEC_1_2 |
 			FE_CAN_FEC_2_3 |
 			FE_CAN_FEC_3_4 |
@@ -1662,10 +1135,6 @@ static const struct dvb_frontend_ops si2165_ops = {
 			FE_CAN_QAM_64 |
 			FE_CAN_QAM_128 |
 			FE_CAN_QAM_256 |
-<<<<<<< HEAD
-=======
-			FE_CAN_QAM_AUTO |
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			FE_CAN_GUARD_INTERVAL_AUTO |
 			FE_CAN_HIERARCHY_AUTO |
 			FE_CAN_MUTE_TS |
@@ -1680,19 +1149,12 @@ static const struct dvb_frontend_ops si2165_ops = {
 
 	.set_frontend      = si2165_set_frontend,
 	.read_status       = si2165_read_status,
-<<<<<<< HEAD
 	.read_snr          = si2165_read_snr,
 	.read_ber          = si2165_read_ber,
 };
 
 static int si2165_probe(struct i2c_client *client,
 			const struct i2c_device_id *id)
-=======
-};
-
-static int si2165_probe(struct i2c_client *client,
-		const struct i2c_device_id *id)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct si2165_state *state = NULL;
 	struct si2165_platform_data *pdata = client->dev.platform_data;
@@ -1708,13 +1170,8 @@ static int si2165_probe(struct i2c_client *client,
 	};
 
 	/* allocate memory for the internal state */
-<<<<<<< HEAD
 	state = kzalloc(sizeof(*state), GFP_KERNEL);
 	if (!state) {
-=======
-	state = kzalloc(sizeof(struct si2165_state), GFP_KERNEL);
-	if (state == NULL) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -ENOMEM;
 		goto error;
 	}
@@ -1730,7 +1187,6 @@ static int si2165_probe(struct i2c_client *client,
 	state->client = client;
 	state->config.i2c_addr = client->addr;
 	state->config.chip_mode = pdata->chip_mode;
-<<<<<<< HEAD
 	state->config.ref_freq_hz = pdata->ref_freq_hz;
 	state->config.inversion = pdata->inversion;
 
@@ -1738,71 +1194,38 @@ static int si2165_probe(struct i2c_client *client,
 	    state->config.ref_freq_hz > 27000000) {
 		dev_err(&state->client->dev, "ref_freq of %d Hz not supported by this driver\n",
 			state->config.ref_freq_hz);
-=======
-	state->config.ref_freq_Hz = pdata->ref_freq_Hz;
-	state->config.inversion = pdata->inversion;
-
-	if (state->config.ref_freq_Hz < 4000000
-	    || state->config.ref_freq_Hz > 27000000) {
-		dev_err(&state->client->dev, "%s: ref_freq of %d Hz not supported by this driver\n",
-			 KBUILD_MODNAME, state->config.ref_freq_Hz);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -EINVAL;
 		goto error;
 	}
 
 	/* create dvb_frontend */
 	memcpy(&state->fe.ops, &si2165_ops,
-<<<<<<< HEAD
 	       sizeof(struct dvb_frontend_ops));
-=======
-		sizeof(struct dvb_frontend_ops));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	state->fe.ops.release = NULL;
 	state->fe.demodulator_priv = state;
 	i2c_set_clientdata(client, state);
 
 	/* powerup */
-<<<<<<< HEAD
 	ret = si2165_writereg8(state, REG_CHIP_MODE, state->config.chip_mode);
 	if (ret < 0)
 		goto nodev_error;
 
 	ret = si2165_readreg8(state, REG_CHIP_MODE, &val);
-=======
-	ret = si2165_writereg8(state, 0x0000, state->config.chip_mode);
-	if (ret < 0)
-		goto nodev_error;
-
-	ret = si2165_readreg8(state, 0x0000, &val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		goto nodev_error;
 	if (val != state->config.chip_mode)
 		goto nodev_error;
 
-<<<<<<< HEAD
 	ret = si2165_readreg8(state, REG_CHIP_REVCODE, &state->chip_revcode);
 	if (ret < 0)
 		goto nodev_error;
 
 	ret = si2165_readreg8(state, REV_CHIP_TYPE, &state->chip_type);
-=======
-	ret = si2165_readreg8(state, 0x0023, &state->chip_revcode);
-	if (ret < 0)
-		goto nodev_error;
-
-	ret = si2165_readreg8(state, 0x0118, &state->chip_type);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		goto nodev_error;
 
 	/* powerdown */
-<<<<<<< HEAD
 	ret = si2165_writereg8(state, REG_CHIP_MODE, SI2165_MODE_OFF);
-=======
-	ret = si2165_writereg8(state, 0x0000, SI2165_MODE_OFF);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		goto nodev_error;
 
@@ -1822,32 +1245,18 @@ static int si2165_probe(struct i2c_client *client,
 		state->has_dvbc = true;
 		break;
 	default:
-<<<<<<< HEAD
 		dev_err(&state->client->dev, "Unsupported Silicon Labs chip (type %d, rev %d)\n",
 			state->chip_type, state->chip_revcode);
-=======
-		dev_err(&state->client->dev, "%s: Unsupported Silicon Labs chip (type %d, rev %d)\n",
-			KBUILD_MODNAME, state->chip_type, state->chip_revcode);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto nodev_error;
 	}
 
 	dev_info(&state->client->dev,
-<<<<<<< HEAD
 		 "Detected Silicon Labs %s-%c (type %d, rev %d)\n",
 		chip_name, rev_char, state->chip_type,
 		state->chip_revcode);
 
 	strlcat(state->fe.ops.info.name, chip_name,
 		sizeof(state->fe.ops.info.name));
-=======
-		"%s: Detected Silicon Labs %s-%c (type %d, rev %d)\n",
-		KBUILD_MODNAME, chip_name, rev_char, state->chip_type,
-		state->chip_revcode);
-
-	strlcat(state->fe.ops.info.name, chip_name,
-			sizeof(state->fe.ops.info.name));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	n = 0;
 	if (state->has_dvbt) {
@@ -1902,12 +1311,6 @@ static struct i2c_driver si2165_driver = {
 
 module_i2c_driver(si2165_driver);
 
-<<<<<<< HEAD
-=======
-module_param(debug, int, 0644);
-MODULE_PARM_DESC(debug, "Turn on/off frontend debugging (default:off).");
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_DESCRIPTION("Silicon Labs Si2165 DVB-C/-T Demodulator driver");
 MODULE_AUTHOR("Matthias Schwarzott <zzam@gentoo.org>");
 MODULE_LICENSE("GPL");

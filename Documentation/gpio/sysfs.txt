@@ -1,7 +1,6 @@
 GPIO Sysfs Interface for Userspace
 ==================================
 
-<<<<<<< HEAD
 THIS ABI IS DEPRECATED, THE ABI DOCUMENTATION HAS BEEN MOVED TO
 Documentation/ABI/obsolete/sysfs-gpio AND NEW USERSPACE CONSUMERS
 ARE SUPPOSED TO USE THE CHARACTER DEVICE ABI. THIS OLD SYSFS ABI WILL
@@ -13,8 +12,6 @@ include/uapi/linux/gpio.h
 
 The deprecated sysfs ABI
 ------------------------
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Platforms which use the "gpiolib" implementors framework may choose to
 configure a sysfs user interface to GPIOs. This is different from the
 debugfs interface, since it provides control over GPIO direction and
@@ -35,14 +32,8 @@ standard kernels won't know about. And for some tasks, simple userspace
 GPIO drivers could be all that the system really needs.
 
 DO NOT ABUSE SYSFS TO CONTROL HARDWARE THAT HAS PROPER KERNEL DRIVERS.
-<<<<<<< HEAD
 PLEASE READ THE DOCUMENT AT Documentation/driver-api/gpio/drivers-on-gpio.rst
 TO AVOID REINVENTING KERNEL WHEELS IN USERSPACE. I MEAN IT. REALLY.
-=======
-PLEASE READ THE DOCUMENT NAMED "drivers-on-gpio.txt" IN THIS DOCUMENTATION
-DIRECTORY TO AVOID REINVENTING KERNEL WHEELS IN USERSPACE. I MEAN IT.
-REALLY.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Paths in Sysfs
 --------------

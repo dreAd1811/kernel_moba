@@ -25,10 +25,7 @@
 
 #include <subdev/secboot.h>
 #include <subdev/mmu.h>
-<<<<<<< HEAD
 struct nvkm_gpuobj;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct nvkm_secboot_func {
 	int (*oneinit)(struct nvkm_secboot *);
@@ -43,11 +40,8 @@ int nvkm_secboot_ctor(const struct nvkm_secboot_func *, struct nvkm_acr *,
 int nvkm_secboot_falcon_reset(struct nvkm_secboot *);
 int nvkm_secboot_falcon_run(struct nvkm_secboot *);
 
-<<<<<<< HEAD
 extern const struct nvkm_secboot_func gp102_secboot;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct flcn_u64 {
 	u32 lo;
 	u32 hi;

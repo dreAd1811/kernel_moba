@@ -16,12 +16,7 @@
 #else
 #include <asm/types.h>
 #endif
-<<<<<<< HEAD
 #include <asm/asm-const.h>
-=======
-#include <asm/asm-compat.h>
-#include <asm/kdump.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * On regular PPC32 page size is 4K (but we support 4K/16K/64K/256K pages
@@ -43,10 +38,7 @@
 
 #ifndef __ASSEMBLY__
 #ifdef CONFIG_HUGETLB_PAGE
-<<<<<<< HEAD
 extern bool hugetlb_disabled;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern unsigned int HPAGE_SHIFT;
 #else
 #define HPAGE_SHIFT PAGE_SHIFT
@@ -134,7 +126,6 @@ extern long long virt_phys_offset;
 
 #ifdef CONFIG_FLATMEM
 #define ARCH_PFN_OFFSET		((unsigned long)(MEMORY_START >> PAGE_SHIFT))
-<<<<<<< HEAD
 #ifndef __ASSEMBLY__
 extern unsigned long max_mapnr;
 static inline bool pfn_valid(unsigned long pfn)
@@ -144,9 +135,6 @@ static inline bool pfn_valid(unsigned long pfn)
 	return pfn >= min_pfn && pfn < max_mapnr;
 }
 #endif
-=======
-#define pfn_valid(pfn)		((pfn) >= ARCH_PFN_OFFSET && (pfn) < max_mapnr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 #define virt_to_pfn(kaddr)	(__pa(kaddr) >> PAGE_SHIFT)

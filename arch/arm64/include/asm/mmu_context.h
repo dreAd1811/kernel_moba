@@ -46,10 +46,7 @@ static inline void contextidr_thread_switch(struct task_struct *next)
 	write_sysreg(pid, contextidr_el1);
 	isb();
 
-<<<<<<< HEAD
 	uncached_logk(LOGK_CTXID, (void *)(u64)pid);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 }
 
@@ -58,11 +55,7 @@ static inline void contextidr_thread_switch(struct task_struct *next)
  */
 static inline void cpu_set_reserved_ttbr0(void)
 {
-<<<<<<< HEAD
 	unsigned long ttbr = phys_to_ttbr(__pa_symbol(empty_zero_page));
-=======
-	unsigned long ttbr = __pa_symbol(empty_zero_page);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	write_sysreg(ttbr, ttbr0_el1);
 	isb();
@@ -81,7 +74,6 @@ static inline void cpu_switch_mm(pgd_t *pgd, struct mm_struct *mm)
  * physical memory, in which case it will be smaller.
  */
 extern u64 idmap_t0sz;
-<<<<<<< HEAD
 extern u64 idmap_ptrs_per_pgd;
 
 static inline bool __cpu_uses_extended_idmap(void)
@@ -96,13 +88,6 @@ static inline bool __cpu_uses_extended_idmap(void)
 static inline bool __cpu_uses_extended_idmap_level(void)
 {
 	return ARM64_HW_PGTABLE_LEVELS(64 - idmap_t0sz) > CONFIG_PGTABLE_LEVELS;
-=======
-
-static inline bool __cpu_uses_extended_idmap(void)
-{
-	return (!IS_ENABLED(CONFIG_ARM64_VA_BITS_48) &&
-		unlikely(idmap_t0sz != TCR_T0SZ(VA_BITS)));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -162,25 +147,15 @@ static inline void cpu_install_idmap(void)
  * Atomically replaces the active TTBR1_EL1 PGD with a new VA-compatible PGD,
  * avoiding the possibility of conflicting TLB entries being allocated.
  */
-<<<<<<< HEAD
 static inline void __nocfi cpu_replace_ttbr1(pgd_t *pgdp)
-=======
-static inline void __nocfi cpu_replace_ttbr1(pgd_t *pgd)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	typedef void (ttbr_replace_func)(phys_addr_t);
 	extern ttbr_replace_func idmap_cpu_replace_ttbr1;
 	ttbr_replace_func *replace_phys;
 
-<<<<<<< HEAD
 	phys_addr_t pgd_phys = virt_to_phys(pgdp);
 
 	replace_phys = (void *)__pa_symbol(idmap_cpu_replace_ttbr1);
-=======
-	phys_addr_t pgd_phys = virt_to_phys(pgd);
-
-	replace_phys = (void *)__pa_function(idmap_cpu_replace_ttbr1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cpu_install_idmap();
 	replace_phys(pgd_phys);
@@ -271,10 +246,7 @@ switch_mm(struct mm_struct *prev, struct mm_struct *next,
 
 void verify_cpu_asid_bits(void);
 void post_ttbr_update_workaround(void);
-<<<<<<< HEAD
 void arm64_workaround_1542418_asid_rollover(void);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* !__ASSEMBLY__ */
 

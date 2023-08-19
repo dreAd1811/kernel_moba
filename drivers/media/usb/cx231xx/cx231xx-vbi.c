@@ -43,17 +43,10 @@ static inline void print_err_status(struct cx231xx *dev, int packet, int status)
 
 	switch (status) {
 	case -ENOENT:
-<<<<<<< HEAD
 		errmsg = "unlinked synchronously";
 		break;
 	case -ECONNRESET:
 		errmsg = "unlinked asynchronously";
-=======
-		errmsg = "unlinked synchronuously";
-		break;
-	case -ECONNRESET:
-		errmsg = "unlinked asynchronuously";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case -ENOSR:
 		errmsg = "Buffer error (overrun)";
@@ -292,11 +285,7 @@ static void vbi_buffer_release(struct videobuf_queue *vq,
 	free_buffer(vq, buf);
 }
 
-<<<<<<< HEAD
 const struct videobuf_queue_ops cx231xx_vbi_qops = {
-=======
-struct videobuf_queue_ops cx231xx_vbi_qops = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.buf_setup   = vbi_buffer_setup,
 	.buf_prepare = vbi_buffer_prepare,
 	.buf_queue   = vbi_buffer_queue,
@@ -316,10 +305,7 @@ static void cx231xx_irq_vbi_callback(struct urb *urb)
 	struct cx231xx_video_mode *vmode =
 	    container_of(dma_q, struct cx231xx_video_mode, vidq);
 	struct cx231xx *dev = container_of(vmode, struct cx231xx, vbi_mode);
-<<<<<<< HEAD
 	unsigned long flags;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (urb->status) {
 	case 0:		/* success */
@@ -331,24 +317,14 @@ static void cx231xx_irq_vbi_callback(struct urb *urb)
 		return;
 	default:		/* error */
 		dev_err(dev->dev,
-<<<<<<< HEAD
 			"urb completion error %d.\n", urb->status);
-=======
-			"urb completition error %d.\n",	urb->status);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 
 	/* Copy data from URB */
-<<<<<<< HEAD
 	spin_lock_irqsave(&dev->vbi_mode.slock, flags);
 	dev->vbi_mode.bulk_ctl.bulk_copy(dev, urb);
 	spin_unlock_irqrestore(&dev->vbi_mode.slock, flags);
-=======
-	spin_lock(&dev->vbi_mode.slock);
-	dev->vbi_mode.bulk_ctl.bulk_copy(dev, urb);
-	spin_unlock(&dev->vbi_mode.slock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Reset status */
 	urb->status = 0;
@@ -440,11 +416,7 @@ int cx231xx_init_vbi_isoc(struct cx231xx *dev, int max_packets,
 	for (i = 0; i < 8; i++)
 		dma_q->partial_buf[i] = 0;
 
-<<<<<<< HEAD
 	dev->vbi_mode.bulk_ctl.urb = kcalloc(num_bufs, sizeof(void *),
-=======
-	dev->vbi_mode.bulk_ctl.urb = kzalloc(sizeof(void *) * num_bufs,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					     GFP_KERNEL);
 	if (!dev->vbi_mode.bulk_ctl.urb) {
 		dev_err(dev->dev,
@@ -453,11 +425,7 @@ int cx231xx_init_vbi_isoc(struct cx231xx *dev, int max_packets,
 	}
 
 	dev->vbi_mode.bulk_ctl.transfer_buffer =
-<<<<<<< HEAD
 	    kcalloc(num_bufs, sizeof(void *), GFP_KERNEL);
-=======
-	    kzalloc(sizeof(void *) * num_bufs, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!dev->vbi_mode.bulk_ctl.transfer_buffer) {
 		dev_err(dev->dev,
 			"cannot allocate memory for usbtransfer\n");

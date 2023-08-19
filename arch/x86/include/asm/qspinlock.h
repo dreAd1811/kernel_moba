@@ -2,10 +2,7 @@
 #ifndef _ASM_X86_QSPINLOCK_H
 #define _ASM_X86_QSPINLOCK_H
 
-<<<<<<< HEAD
 #include <linux/jump_label.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/cpufeature.h>
 #include <asm-generic/qspinlock_types.h>
 #include <asm/paravirt.h>
@@ -33,15 +30,12 @@ static __always_inline u32 queued_fetch_set_pending_acquire(struct qspinlock *lo
 	return val;
 }
 
-<<<<<<< HEAD
 #ifdef CONFIG_PARAVIRT_SPINLOCKS
 extern void native_queued_spin_lock_slowpath(struct qspinlock *lock, u32 val);
 extern void __pv_init_lock_hash(void);
 extern void __pv_queued_spin_lock_slowpath(struct qspinlock *lock, u32 val);
 extern void __raw_callee_save___pv_queued_spin_unlock(struct qspinlock *lock);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define	queued_spin_unlock queued_spin_unlock
 /**
  * queued_spin_unlock - release a queued spinlock
@@ -54,15 +48,6 @@ static inline void native_queued_spin_unlock(struct qspinlock *lock)
 	smp_store_release(&lock->locked, 0);
 }
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_PARAVIRT_SPINLOCKS
-extern void native_queued_spin_lock_slowpath(struct qspinlock *lock, u32 val);
-extern void __pv_init_lock_hash(void);
-extern void __pv_queued_spin_lock_slowpath(struct qspinlock *lock, u32 val);
-extern void __raw_callee_save___pv_queued_spin_unlock(struct qspinlock *lock);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void queued_spin_lock_slowpath(struct qspinlock *lock, u32 val)
 {
 	pv_queued_spin_lock_slowpath(lock, val);
@@ -78,7 +63,6 @@ static inline bool vcpu_is_preempted(long cpu)
 {
 	return pv_vcpu_is_preempted(cpu);
 }
-<<<<<<< HEAD
 #endif
 
 #ifdef CONFIG_PARAVIRT
@@ -90,20 +74,6 @@ void native_pv_lock_init(void) __init;
 static inline bool virt_spin_lock(struct qspinlock *lock)
 {
 	if (!static_branch_likely(&virt_spin_lock_key))
-=======
-#else
-static inline void queued_spin_unlock(struct qspinlock *lock)
-{
-	native_queued_spin_unlock(lock);
-}
-#endif
-
-#ifdef CONFIG_PARAVIRT
-#define virt_spin_lock virt_spin_lock
-static inline bool virt_spin_lock(struct qspinlock *lock)
-{
-	if (!static_cpu_has(X86_FEATURE_HYPERVISOR))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return false;
 
 	/*
@@ -119,13 +89,10 @@ static inline bool virt_spin_lock(struct qspinlock *lock)
 
 	return true;
 }
-<<<<<<< HEAD
 #else
 static inline void native_pv_lock_init(void)
 {
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_PARAVIRT */
 
 #include <asm-generic/qspinlock.h>

@@ -1,18 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Device Tree Source for the Gose board
  *
  * Copyright (C) 2014-2015 Renesas Electronics Corporation
-<<<<<<< HEAD
-=======
- *
- * This file is licensed under the terms of the GNU General Public License
- * version 2.  This program is licensed "as is" without any warranty of any
- * kind, whether express or implied.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /*
@@ -55,13 +45,10 @@
 	aliases {
 		serial0 = &scif0;
 		serial1 = &scif1;
-<<<<<<< HEAD
 		i2c9 = &gpioi2c2;
 		i2c10 = &gpioi2c4;
 		i2c11 = &i2chdmi;
 		i2c12 = &i2cexio4;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	chosen {
@@ -310,7 +297,6 @@
 		#clock-cells = <0>;
 		clock-frequency = <148500000>;
 	};
-<<<<<<< HEAD
 
 	gpioi2c2: i2c-9 {
 		#address-cells = <1>;
@@ -451,8 +437,6 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &du {
@@ -460,18 +444,9 @@
 	pinctrl-names = "default";
 	status = "okay";
 
-<<<<<<< HEAD
 	clocks = <&cpg CPG_MOD 724>, <&cpg CPG_MOD 723>,
 		 <&x13_clk>, <&x2_clk>;
 	clock-names = "du.0", "du.1", "dclkin.0", "dclkin.1";
-=======
-	clocks = <&mstp7_clks R8A7793_CLK_DU0>,
-		 <&mstp7_clks R8A7793_CLK_DU1>,
-		 <&mstp7_clks R8A7793_CLK_LVDS0>,
-		 <&x13_clk>, <&x2_clk>;
-	clock-names = "du.0", "du.1", "lvds.0",
-		      "dclkin.0", "dclkin.1";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ports {
 		port@0 {
@@ -479,14 +454,11 @@
 				remote-endpoint = <&adv7511_in>;
 			};
 		};
-<<<<<<< HEAD
 	};
 };
 
 &lvds0 {
 	ports {
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		port@1 {
 			lvds_connector: endpoint {
 			};
@@ -507,14 +479,11 @@
 		function = "i2c2";
 	};
 
-<<<<<<< HEAD
 	i2c4_pins: i2c4 {
 		groups = "i2c4_c";
 		function = "i2c4";
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	du_pins: du {
 		groups = "du_rgb888", "du_sync", "du_disp", "du_clk_out_0";
 		function = "du";
@@ -627,14 +596,11 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
 &rwdt {
 	timeout-sec = <60>;
 	status = "okay";
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &scif0 {
 	pinctrl-0 = <&scif0_pins>;
 	pinctrl-names = "default";
@@ -733,114 +699,11 @@
 
 &i2c2 {
 	pinctrl-0 = <&i2c2_pins>;
-<<<<<<< HEAD
 	pinctrl-names = "i2c-hdmi";
-=======
-	pinctrl-names = "default";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	status = "okay";
 	clock-frequency = <100000>;
 
-<<<<<<< HEAD
-=======
-	ak4643: codec@12 {
-		compatible = "asahi-kasei,ak4643";
-		#sound-dai-cells = <0>;
-		reg = <0x12>;
-	};
-
-	composite-in@20 {
-		compatible = "adi,adv7180cp";
-		reg = <0x20>;
-		remote = <&vin1>;
-
-		port {
-			#address-cells = <1>;
-			#size-cells = <0>;
-
-			port@0 {
-				reg = <0>;
-				adv7180_in: endpoint {
-					remote-endpoint = <&composite_con_in>;
-				};
-			};
-
-			port@3 {
-				reg = <3>;
-				adv7180_out: endpoint {
-					bus-width = <8>;
-					remote-endpoint = <&vin1ep>;
-				};
-			};
-		};
-	};
-
-	hdmi@39 {
-		compatible = "adi,adv7511w";
-		reg = <0x39>;
-		interrupt-parent = <&gpio3>;
-		interrupts = <29 IRQ_TYPE_LEVEL_LOW>;
-
-		adi,input-depth = <8>;
-		adi,input-colorspace = "rgb";
-		adi,input-clock = "1x";
-		adi,input-style = <1>;
-		adi,input-justification = "evenly";
-
-		ports {
-			#address-cells = <1>;
-			#size-cells = <0>;
-
-			port@0 {
-				reg = <0>;
-				adv7511_in: endpoint {
-					remote-endpoint = <&du_out_rgb>;
-				};
-			};
-
-			port@1 {
-				reg = <1>;
-				adv7511_out: endpoint {
-					remote-endpoint = <&hdmi_con_out>;
-				};
-			};
-		};
-	};
-
-	hdmi-in@4c {
-		compatible = "adi,adv7612";
-		reg = <0x4c>;
-		interrupt-parent = <&gpio4>;
-		interrupts = <2 IRQ_TYPE_LEVEL_LOW>;
-		default-input = <0>;
-
-		port {
-			#address-cells = <1>;
-			#size-cells = <0>;
-
-			port@0 {
-				reg = <0>;
-				adv7612_in: endpoint {
-					remote-endpoint = <&hdmi_con_in>;
-				};
-			};
-
-			port@2 {
-				reg = <2>;
-				adv7612_out: endpoint {
-					remote-endpoint = <&vin0ep2>;
-				};
-			};
-		};
-	};
-
-	eeprom@50 {
-		compatible = "renesas,r1ex24002", "atmel,24c02";
-		reg = <0x50>;
-		pagesize = <16>;
-	};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &i2c6 {
@@ -864,14 +727,11 @@
 	};
 };
 
-<<<<<<< HEAD
 &i2c4 {
 	pinctrl-0 = <&i2c4_pins>;
 	pinctrl-names = "i2c-exio4";
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &rcar_sound {
 	pinctrl-0 = <&sound_pins &sound_clk_pins>;
 	pinctrl-names = "default";
@@ -900,12 +760,6 @@
 	pinctrl-names = "default";
 
 	port {
-<<<<<<< HEAD
-=======
-		#address-cells = <1>;
-		#size-cells = <0>;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		vin0ep2: endpoint {
 			remote-endpoint = <&adv7612_out>;
 			bus-width = <24>;
@@ -925,12 +779,6 @@
 	status = "okay";
 
 	port {
-<<<<<<< HEAD
-=======
-		#address-cells = <1>;
-		#size-cells = <0>;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		vin1ep: endpoint {
 			remote-endpoint = <&adv7180_out>;
 			bus-width = <8>;

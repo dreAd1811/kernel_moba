@@ -43,13 +43,8 @@
 #include "usnic_ib_qp_grp.h"
 #include "usnic_vnic.h"
 #include "usnic_ib_verbs.h"
-<<<<<<< HEAD
 #include "usnic_ib_sysfs.h"
 #include "usnic_log.h"
-=======
-#include "usnic_log.h"
-#include "usnic_ib_sysfs.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static ssize_t usnic_ib_show_board(struct device *device,
 					struct device_attribute *attr,

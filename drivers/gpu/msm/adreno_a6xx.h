@@ -1,26 +1,11 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0-only */
 /*
  * Copyright (c) 2017-2020, The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2017-2020, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #ifndef _ADRENO_A6XX_H_
 #define _ADRENO_A6XX_H_
 
-<<<<<<< HEAD
 #include <linux/delay.h>
 
 #include "a6xx_reg.h"
@@ -83,20 +68,13 @@ struct adreno_a6xx_core {
 	bool disable_tseskip;
 };
 
-=======
-#include "a6xx_reg.h"
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CP_CLUSTER_FE		0x0
 #define CP_CLUSTER_SP_VS	0x1
 #define CP_CLUSTER_PC_VS	0x2
 #define CP_CLUSTER_GRAS		0x3
 #define CP_CLUSTER_SP_PS	0x4
 #define CP_CLUSTER_PS		0x5
-<<<<<<< HEAD
 #define CP_CLUSTER_VPC_PS	0x6
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * struct a6xx_cp_preemption_record - CP context record for
@@ -169,17 +147,11 @@ struct cpu_gpu_lock {
 };
 
 #define A6XX_CP_CTXRECORD_MAGIC_REF     0xAE399D6EUL
-<<<<<<< HEAD
-=======
-/* Size of the preemption counter block (in bytes) */
-#define A6XX_CP_CTXRECORD_PREEMPTION_COUNTER_SIZE   (16 * 4)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Size of the user context record block (in bytes) */
 #define A6XX_CP_CTXRECORD_USER_RESTORE_SIZE (192 * 1024)
 /* Size of the performance counter save/restore block (in bytes) */
 #define A6XX_CP_PERFCOUNTER_SAVE_RESTORE_SIZE   (4 * 1024)
 
-<<<<<<< HEAD
 #define A6XX_CP_RB_CNTL_DEFAULT (((ilog2(4) << 8) & 0x1F00) | \
 		(ilog2(KGSL_RB_DWORDS >> 1) & 0x3F))
 
@@ -198,11 +170,6 @@ to_a6xx_core(struct adreno_device *adreno_dev)
 	return container_of(core, struct adreno_a6xx_core, base);
 }
 
-=======
-#define A6XX_CP_RB_CNTL_DEFAULT ((1 << 27) | ((ilog2(4) << 8) & 0x1F00) | \
-		(ilog2(KGSL_RB_DWORDS >> 1) & 0x3F))
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * timed_poll_check() - polling *gmu* register at given offset until
  * its value changed to match expected value. The function times
@@ -240,7 +207,6 @@ static inline int timed_poll_check(struct kgsl_device *device,
 	return -ETIMEDOUT;
 }
 
-<<<<<<< HEAD
 static inline int timed_poll_check_rscc(struct kgsl_device *device,
 		unsigned int offset, unsigned int expected_ret,
 		unsigned int timeout, unsigned int mask)
@@ -274,8 +240,6 @@ static inline int timed_poll_check_rscc(struct kgsl_device *device,
 	return -ETIMEDOUT;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Preemption functions */
 void a6xx_preemption_trigger(struct adreno_device *adreno_dev);
 void a6xx_preemption_schedule(struct adreno_device *adreno_dev);
@@ -304,10 +268,5 @@ void a6xx_crashdump_init(struct adreno_device *adreno_dev);
 int a6xx_gmu_sptprac_enable(struct adreno_device *adreno_dev);
 void a6xx_gmu_sptprac_disable(struct adreno_device *adreno_dev);
 bool a6xx_gmu_sptprac_is_on(struct adreno_device *adreno_dev);
-<<<<<<< HEAD
-=======
-size_t a6xx_snapshot_preemption(struct kgsl_device *device, u8 *buf,
-		size_t remain, void *priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 u64 a6xx_gmu_read_ao_counter(struct kgsl_device *device);
 #endif

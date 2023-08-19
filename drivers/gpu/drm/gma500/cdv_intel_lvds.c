@@ -244,11 +244,7 @@ static void cdv_intel_lvds_restore(struct drm_connector *connector)
 {
 }
 
-<<<<<<< HEAD
 static enum drm_mode_status cdv_intel_lvds_mode_valid(struct drm_connector *connector,
-=======
-static int cdv_intel_lvds_mode_valid(struct drm_connector *connector,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      struct drm_display_mode *mode)
 {
 	struct drm_device *dev = connector->dev;

@@ -74,25 +74,14 @@ nouveau_fence_signal(struct nouveau_fence *fence)
 }
 
 static struct nouveau_fence *
-<<<<<<< HEAD
 nouveau_local_fence(struct dma_fence *fence, struct nouveau_drm *drm)
 {
-=======
-nouveau_local_fence(struct dma_fence *fence, struct nouveau_drm *drm) {
-	struct nouveau_fence_priv *priv = (void*)drm->fence;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (fence->ops != &nouveau_fence_ops_legacy &&
 	    fence->ops != &nouveau_fence_ops_uevent)
 		return NULL;
 
-<<<<<<< HEAD
 	if (fence->context < drm->chan.context_base ||
 	    fence->context >= drm->chan.context_base + drm->chan.nr)
-=======
-	if (fence->context < priv->context_base ||
-	    fence->context >= priv->context_base + priv->contexts)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return NULL;
 
 	return from_fence(fence);
@@ -168,11 +157,7 @@ nouveau_fence_wait_uevent_handler(struct nvif_notify *notify)
 
 		fence = list_entry(fctx->pending.next, typeof(*fence), head);
 		chan = rcu_dereference_protected(fence->channel, lockdep_is_held(&fctx->lock));
-<<<<<<< HEAD
 		if (nouveau_fence_update(fence->channel, fctx))
-=======
-		if (nouveau_fence_update(chan, fctx))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ret = NVIF_NOTIFY_DROP;
 	}
 	spin_unlock_irqrestore(&fctx->lock, flags);
@@ -190,11 +175,7 @@ nouveau_fence_context_new(struct nouveau_channel *chan, struct nouveau_fence_cha
 	INIT_LIST_HEAD(&fctx->flip);
 	INIT_LIST_HEAD(&fctx->pending);
 	spin_lock_init(&fctx->lock);
-<<<<<<< HEAD
 	fctx->context = chan->drm->chan.context_base + chan->chid;
-=======
-	fctx->context = priv->context_base + chan->chid;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (chan == chan->drm->cechan)
 		strcpy(fctx->name, "copy engine channel");
@@ -217,65 +198,6 @@ nouveau_fence_context_new(struct nouveau_channel *chan, struct nouveau_fence_cha
 	WARN_ON(ret);
 }
 
-<<<<<<< HEAD
-=======
-struct nouveau_fence_work {
-	struct work_struct work;
-	struct dma_fence_cb cb;
-	void (*func)(void *);
-	void *data;
-};
-
-static void
-nouveau_fence_work_handler(struct work_struct *kwork)
-{
-	struct nouveau_fence_work *work = container_of(kwork, typeof(*work), work);
-	work->func(work->data);
-	kfree(work);
-}
-
-static void nouveau_fence_work_cb(struct dma_fence *fence, struct dma_fence_cb *cb)
-{
-	struct nouveau_fence_work *work = container_of(cb, typeof(*work), cb);
-
-	schedule_work(&work->work);
-}
-
-void
-nouveau_fence_work(struct dma_fence *fence,
-		   void (*func)(void *), void *data)
-{
-	struct nouveau_fence_work *work;
-
-	if (dma_fence_is_signaled(fence))
-		goto err;
-
-	work = kmalloc(sizeof(*work), GFP_KERNEL);
-	if (!work) {
-		/*
-		 * this might not be a nouveau fence any more,
-		 * so force a lazy wait here
-		 */
-		WARN_ON(nouveau_fence_wait((struct nouveau_fence *)fence,
-					   true, false));
-		goto err;
-	}
-
-	INIT_WORK(&work->work, nouveau_fence_work_handler);
-	work->func = func;
-	work->data = data;
-
-	if (dma_fence_add_callback(fence, &work->cb, nouveau_fence_work_cb) < 0)
-		goto err_free;
-	return;
-
-err_free:
-	kfree(work);
-err:
-	func(data);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int
 nouveau_fence_emit(struct nouveau_fence *fence, struct nouveau_channel *chan)
 {
@@ -495,11 +417,6 @@ nouveau_fence_new(struct nouveau_channel *chan, bool sysmem,
 	if (!fence)
 		return -ENOMEM;
 
-<<<<<<< HEAD
-=======
-	fence->sysmem = sysmem;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = nouveau_fence_emit(fence, chan);
 	if (ret)
 		nouveau_fence_unref(&fence);

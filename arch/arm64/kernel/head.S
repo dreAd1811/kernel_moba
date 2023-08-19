@@ -37,10 +37,6 @@
 #include <asm/pgtable-hwdef.h>
 #include <asm/pgtable.h>
 #include <asm/page.h>
-<<<<<<< HEAD
-=======
-#include <asm/scs.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/smp.h>
 #include <asm/sysreg.h>
 #include <asm/thread_info.h>
@@ -116,11 +112,6 @@ pe_header:
 	 *  x23        stext() .. start_kernel()  physical misalignment/KASLR offset
 	 *  x28        __create_page_tables()     callee preserved temp register
 	 *  x19/x20    __primary_switch()         callee preserved temp registers
-<<<<<<< HEAD
-=======
-	 *  x24        __primary_switch() .. relocate_kernel()
-	 *                                        current RELR displacement
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 ENTRY(stext)
 	bl	preserve_boot_args
@@ -165,7 +156,6 @@ ENDPROC(preserve_boot_args)
  *	ptrs:	#imm pointers per table page
  *
  * Preserves:	virt
-<<<<<<< HEAD
  * Corrupts:	ptrs, tmp1, tmp2
  * Returns:	tbl -> next level table page address
  */
@@ -176,22 +166,11 @@ ENDPROC(preserve_boot_args)
 	lsr	\tmp1, \virt, #\shift
 	sub	\ptrs, \ptrs, #1
 	and	\tmp1, \tmp1, \ptrs		// table index
-=======
- * Corrupts:	tmp1, tmp2
- * Returns:	tbl -> next level table page address
- */
-	.macro	create_table_entry, tbl, virt, shift, ptrs, tmp1, tmp2
-	lsr	\tmp1, \virt, #\shift
-	and	\tmp1, \tmp1, #\ptrs - 1	// table index
-	add	\tmp2, \tbl, #PAGE_SIZE
-	orr	\tmp2, \tmp2, #PMD_TYPE_TABLE	// address of next table and entry type
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	str	\tmp2, [\tbl, \tmp1, lsl #3]
 	add	\tbl, \tbl, #PAGE_SIZE		// next level table page
 	.endm
 
 /*
-<<<<<<< HEAD
  * Macro to populate page table entries, these entries can be pointers to the next level
  * or last level entries pointing to physical memory.
  *
@@ -295,43 +274,6 @@ ENDPROC(preserve_boot_args)
 	compute_indices \vstart, \vend, #SWAPPER_BLOCK_SHIFT, #PTRS_PER_PTE, \istart, \iend, \count
 	bic \count, \phys, #SWAPPER_BLOCK_SIZE - 1
 	populate_entries \tbl, \count, \istart, \iend, \flags, #SWAPPER_BLOCK_SIZE, \tmp
-=======
- * Macro to populate the PGD (and possibily PUD) for the corresponding
- * block entry in the next level (tbl) for the given virtual address.
- *
- * Preserves:	tbl, next, virt
- * Corrupts:	tmp1, tmp2
- */
-	.macro	create_pgd_entry, tbl, virt, tmp1, tmp2
-	create_table_entry \tbl, \virt, PGDIR_SHIFT, PTRS_PER_PGD, \tmp1, \tmp2
-#if SWAPPER_PGTABLE_LEVELS > 3
-	create_table_entry \tbl, \virt, PUD_SHIFT, PTRS_PER_PUD, \tmp1, \tmp2
-#endif
-#if SWAPPER_PGTABLE_LEVELS > 2
-	create_table_entry \tbl, \virt, SWAPPER_TABLE_SHIFT, PTRS_PER_PTE, \tmp1, \tmp2
-#endif
-	.endm
-
-/*
- * Macro to populate block entries in the page table for the start..end
- * virtual range (inclusive).
- *
- * Preserves:	tbl, flags
- * Corrupts:	phys, start, end, pstate
- */
-	.macro	create_block_map, tbl, flags, phys, start, end
-	lsr	\phys, \phys, #SWAPPER_BLOCK_SHIFT
-	lsr	\start, \start, #SWAPPER_BLOCK_SHIFT
-	and	\start, \start, #PTRS_PER_PTE - 1	// table index
-	orr	\phys, \flags, \phys, lsl #SWAPPER_BLOCK_SHIFT	// table entry
-	lsr	\end, \end, #SWAPPER_BLOCK_SHIFT
-	and	\end, \end, #PTRS_PER_PTE - 1		// table end index
-9999:	str	\phys, [\tbl, \start, lsl #3]		// store the entry
-	add	\start, \start, #1			// next entry
-	add	\phys, \phys, #SWAPPER_BLOCK_SIZE		// next block
-	cmp	\start, \end
-	b.ls	9999b
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.endm
 
 /*
@@ -349,24 +291,16 @@ __create_page_tables:
 	 * dirty cache lines being evicted.
 	 */
 	adrp	x0, idmap_pg_dir
-<<<<<<< HEAD
 	adrp	x1, swapper_pg_end
 	sub	x1, x1, x0
-=======
-	ldr	x1, =(IDMAP_DIR_SIZE + SWAPPER_DIR_SIZE + RESERVED_TTBR0_SIZE)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bl	__inval_dcache_area
 
 	/*
 	 * Clear the idmap and swapper page tables.
 	 */
 	adrp	x0, idmap_pg_dir
-<<<<<<< HEAD
 	adrp	x1, swapper_pg_end
 	sub	x1, x1, x0
-=======
-	ldr	x1, =(IDMAP_DIR_SIZE + SWAPPER_DIR_SIZE + RESERVED_TTBR0_SIZE)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 1:	stp	xzr, xzr, [x0], #16
 	stp	xzr, xzr, [x0], #16
 	stp	xzr, xzr, [x0], #16
@@ -382,7 +316,6 @@ __create_page_tables:
 	adrp	x0, idmap_pg_dir
 	adrp	x3, __idmap_text_start		// __pa(__idmap_text_start)
 
-<<<<<<< HEAD
 	/*
 	 * VA_BITS may be too small to allow for an ID mapping to be created
 	 * that covers system RAM if that is located sufficiently high in the
@@ -411,18 +344,6 @@ __create_page_tables:
 
 	/*
 	 * If VA_BITS < 48, we have to configure an additional table level.
-=======
-#ifndef CONFIG_ARM64_VA_BITS_48
-#define EXTRA_SHIFT	(PGDIR_SHIFT + PAGE_SHIFT - 3)
-#define EXTRA_PTRS	(1 << (48 - EXTRA_SHIFT))
-
-	/*
-	 * If VA_BITS < 48, it may be too small to allow for an ID mapping to be
-	 * created that covers system RAM if that is located sufficiently high
-	 * in the physical address space. So for the ID map, use an extended
-	 * virtual range in that case, by configuring an additional translation
-	 * level.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * First, we have to verify our assumption that the current value of
 	 * VA_BITS was chosen such that all translation levels are fully
 	 * utilised, and that lowering T0SZ will always result in an additional
@@ -432,7 +353,6 @@ __create_page_tables:
 #error "Mismatch between VA_BITS and page size/number of translation levels"
 #endif
 
-<<<<<<< HEAD
 	mov	x4, EXTRA_PTRS
 	create_table_entry x0, x3, EXTRA_SHIFT, x4, x5, x6
 #else
@@ -449,32 +369,6 @@ __create_page_tables:
 	adr_l	x6, __idmap_text_end		// __pa(__idmap_text_end)
 
 	map_memory x0, x1, x3, x6, x7, x3, x4, x10, x11, x12, x13, x14
-=======
-	/*
-	 * Calculate the maximum allowed value for TCR_EL1.T0SZ so that the
-	 * entire ID map region can be mapped. As T0SZ == (64 - #bits used),
-	 * this number conveniently equals the number of leading zeroes in
-	 * the physical address of __idmap_text_end.
-	 */
-	adrp	x5, __idmap_text_end
-	clz	x5, x5
-	cmp	x5, TCR_T0SZ(VA_BITS)	// default T0SZ small enough?
-	b.ge	1f			// .. then skip additional level
-
-	adr_l	x6, idmap_t0sz
-	str	x5, [x6]
-	dmb	sy
-	dc	ivac, x6		// Invalidate potentially stale cache line
-
-	create_table_entry x0, x3, EXTRA_SHIFT, EXTRA_PTRS, x5, x6
-1:
-#endif
-
-	create_pgd_entry x0, x3, x5, x6
-	mov	x5, x3				// __pa(__idmap_text_start)
-	adr_l	x6, __idmap_text_end		// __pa(__idmap_text_end)
-	create_block_map x0, x7, x3, x5, x6
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Map the kernel image (starting with PHYS_OFFSET).
@@ -482,21 +376,13 @@ __create_page_tables:
 	adrp	x0, swapper_pg_dir
 	mov_q	x5, KIMAGE_VADDR + TEXT_OFFSET	// compile time __va(_text)
 	add	x5, x5, x23			// add KASLR displacement
-<<<<<<< HEAD
 	mov	x4, PTRS_PER_PGD
-=======
-	create_pgd_entry x0, x5, x3, x6
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adrp	x6, _end			// runtime __pa(_end)
 	adrp	x3, _text			// runtime __pa(_text)
 	sub	x6, x6, x3			// _end - _text
 	add	x6, x6, x5			// runtime __va(_end)
-<<<<<<< HEAD
 
 	map_memory x0, x1, x5, x6, x7, x3, x4, x10, x11, x12, x13, x14
-=======
-	create_block_map x0, x7, x3, x5, x6
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Since the page tables have been populated with non-cacheable
@@ -504,12 +390,8 @@ __create_page_tables:
 	 * tables again to remove any speculatively loaded cache lines.
 	 */
 	adrp	x0, idmap_pg_dir
-<<<<<<< HEAD
 	adrp	x1, swapper_pg_end
 	sub	x1, x1, x0
-=======
-	ldr	x1, =(IDMAP_DIR_SIZE + SWAPPER_DIR_SIZE + RESERVED_TTBR0_SIZE)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dmb	sy
 	bl	__inval_dcache_area
 
@@ -535,13 +417,6 @@ __primary_switched:
 	stp	xzr, x30, [sp, #-16]!
 	mov	x29, sp
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_SHADOW_CALL_STACK
-	adr_l	x18, init_shadow_call_stack	// Set shadow call stack
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	str_l	x21, __fdt_pointer, x5		// Save FDT pointer
 
 	ldr_l	x4, kimage_vaddr		// Save the offset between
@@ -683,7 +558,6 @@ set_hcr:
 
 	/* Statistical profiling */
 	ubfx	x0, x1, #32, #4			// Check ID_AA64DFR0_EL1 PMSVer
-<<<<<<< HEAD
 	cbz	x0, 7f				// Skip if SPE not present
 	cbnz	x2, 6f				// VHE?
 	mrs_s	x4, SYS_PMBIDR_EL1		// If SPE available at EL2,
@@ -708,18 +582,6 @@ set_hcr:
 	msr_s	SYS_LORC_EL1, xzr
 1:
 
-=======
-	cbz	x0, 6f				// Skip if SPE not present
-	cbnz	x2, 5f				// VHE?
-	mov	x1, #(MDCR_EL2_E2PB_MASK << MDCR_EL2_E2PB_SHIFT)
-	orr	x3, x3, x1			// If we don't have VHE, then
-	b	6f				// use EL1&0 translation.
-5:						// For VHE, use EL2 translation
-	orr	x3, x3, #MDCR_EL2_TPMS		// and disable access from EL1
-6:
-	msr	mdcr_el2, x3			// Configure debug traps
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Stage-2 translation */
 	msr	vttbr_el2, xzr
 
@@ -744,7 +606,6 @@ install_el2_stub:
 	mov	x0, #0x33ff
 	msr	cptr_el2, x0			// Disable copro. traps to EL2
 
-<<<<<<< HEAD
 	/* SVE register access */
 	mrs	x1, id_aa64pfr0_el1
 	ubfx	x1, x1, #ID_AA64PFR0_SVE_SHIFT, #4
@@ -758,10 +619,6 @@ install_el2_stub:
 
 	/* Hypervisor stub */
 7:	adr_l	x0, __hyp_stub_vectors
-=======
-	/* Hypervisor stub */
-	adr_l	x0, __hyp_stub_vectors
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	msr	vbar_el2, x0
 
 	/* spsr */
@@ -810,11 +667,7 @@ ENTRY(__boot_cpu_mode)
  * with MMU turned off.
  */
 ENTRY(__early_cpu_boot_status)
-<<<<<<< HEAD
 	.long 	0
-=======
-	.quad 	0
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	.popsection
 
@@ -850,10 +703,6 @@ secondary_startup:
 	/*
 	 * Common entry point for secondary CPUs.
 	 */
-<<<<<<< HEAD
-=======
-	bl	__cpu_secondary_check52bitva
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bl	__cpu_setup			// initialise processor
 	bl	__enable_mmu
 	ldr	x8, =__secondary_switched
@@ -870,13 +719,6 @@ __secondary_switched:
 	mov	sp, x1
 	ldr	x2, [x0, #CPU_BOOT_TASK]
 	msr	sp_el0, x2
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_SHADOW_CALL_STACK
-	ldr	x18, [x2, #TSK_TI_SCS]		// set shadow call stack
-	str	xzr, [x2, #TSK_TI_SCS]		// limit visibility of saved SCS
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mov	x29, #0
 	mov	x30, #0
 	b	secondary_start_kernel
@@ -919,15 +761,10 @@ ENTRY(__enable_mmu)
 	update_early_cpu_boot_status 0, x1, x2
 	adrp	x1, idmap_pg_dir
 	adrp	x2, swapper_pg_dir
-<<<<<<< HEAD
 	phys_to_ttbr x3, x1
 	phys_to_ttbr x4, x2
 	msr	ttbr0_el1, x3			// load TTBR0
 	msr	ttbr1_el1, x4			// load TTBR1
-=======
-	msr	ttbr0_el1, x1			// load TTBR0
-	msr	ttbr1_el1, x2			// load TTBR1
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	isb
 	msr	sctlr_el1, x0
 	isb
@@ -942,34 +779,6 @@ ENTRY(__enable_mmu)
 	ret
 ENDPROC(__enable_mmu)
 
-<<<<<<< HEAD
-=======
-ENTRY(__cpu_secondary_check52bitva)
-#ifdef CONFIG_ARM64_52BIT_VA
-	ldr_l	x0, vabits_user
-	cmp	x0, #52
-	b.ne	2f
-
-	mrs_s	x0, SYS_ID_AA64MMFR2_EL1
-	and	x0, x0, #(0xf << ID_AA64MMFR2_LVA_SHIFT)
-	cbnz	x0, 2f
-
-	adr_l	x0, va52mismatch
-	mov	w1, #1
-	strb	w1, [x0]
-	dmb	sy
-	dc	ivac, x0	// Invalidate potentially stale cache line
-
-	update_early_cpu_boot_status CPU_STUCK_IN_KERNEL, x0, x1
-1:	wfe
-	wfi
-	b	1b
-
-#endif
-2:	ret
-ENDPROC(__cpu_secondary_check52bitva)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 __no_granule_support:
 	/* Indicate that this CPU can't boot and is stuck in the kernel */
 	update_early_cpu_boot_status CPU_STUCK_IN_KERNEL, x1, x2
@@ -995,7 +804,6 @@ __relocate_kernel:
 
 0:	cmp	x9, x10
 	b.hs	1f
-<<<<<<< HEAD
 	ldp	x11, x12, [x9], #24
 	ldr	x13, [x9, #-8]
 	cmp	w12, #R_AARCH64_RELATIVE
@@ -1004,95 +812,6 @@ __relocate_kernel:
 	str	x13, [x11, x23]
 	b	0b
 1:	ret
-=======
-	ldp	x12, x13, [x9], #24
-	ldr	x14, [x9, #-8]
-	cmp	w13, #R_AARCH64_RELATIVE
-	b.ne	0b
-	add	x14, x14, x23			// relocate
-	str	x14, [x12, x23]
-	b	0b
-
-1:
-#ifdef CONFIG_RELR
-	/*
-	 * Apply RELR relocations.
-	 *
-	 * RELR is a compressed format for storing relative relocations. The
-	 * encoded sequence of entries looks like:
-	 * [ AAAAAAAA BBBBBBB1 BBBBBBB1 ... AAAAAAAA BBBBBB1 ... ]
-	 *
-	 * i.e. start with an address, followed by any number of bitmaps. The
-	 * address entry encodes 1 relocation. The subsequent bitmap entries
-	 * encode up to 63 relocations each, at subsequent offsets following
-	 * the last address entry.
-	 *
-	 * The bitmap entries must have 1 in the least significant bit. The
-	 * assumption here is that an address cannot have 1 in lsb. Odd
-	 * addresses are not supported. Any odd addresses are stored in the RELA
-	 * section, which is handled above.
-	 *
-	 * Excluding the least significant bit in the bitmap, each non-zero
-	 * bit in the bitmap represents a relocation to be applied to
-	 * a corresponding machine word that follows the base address
-	 * word. The second least significant bit represents the machine
-	 * word immediately following the initial address, and each bit
-	 * that follows represents the next word, in linear order. As such,
-	 * a single bitmap can encode up to 63 relocations in a 64-bit object.
-	 *
-	 * In this implementation we store the address of the next RELR table
-	 * entry in x9, the address being relocated by the current address or
-	 * bitmap entry in x13 and the address being relocated by the current
-	 * bit in x14.
-	 *
-	 * Because addends are stored in place in the binary, RELR relocations
-	 * cannot be applied idempotently. We use x24 to keep track of the
-	 * currently applied displacement so that we can correctly relocate if
-	 * __relocate_kernel is called twice with non-zero displacements (i.e.
-	 * if there is both a physical misalignment and a KASLR displacement).
-	 */
-	ldr	w9, =__relr_offset		// offset to reloc table
-	ldr	w10, =__relr_size		// size of reloc table
-	add	x9, x9, x11			// __va(.relr)
-	add	x10, x9, x10			// __va(.relr) + sizeof(.relr)
-
-	sub	x15, x23, x24			// delta from previous offset
-	cbz	x15, 7f				// nothing to do if unchanged
-	mov	x24, x23			// save new offset
-
-2:	cmp	x9, x10
-	b.hs	7f
-	ldr	x11, [x9], #8
-	tbnz	x11, #0, 3f			// branch to handle bitmaps
-	add	x13, x11, x23
-	ldr	x12, [x13]			// relocate address entry
-	add	x12, x12, x15
-	str	x12, [x13], #8			// adjust to start of bitmap
-	b	2b
-
-3:	mov	x14, x13
-4:	lsr	x11, x11, #1
-	cbz	x11, 6f
-	tbz	x11, #0, 5f			// skip bit if not set
-	ldr	x12, [x14]			// relocate bit
-	add	x12, x12, x15
-	str	x12, [x14]
-
-5:	add	x14, x14, #8			// move to next bit's address
-	b	4b
-
-6:	/*
-	 * Move to the next bitmap's address. 8 is the word size, and 63 is the
-	 * number of significant bits in a bitmap entry.
-	 */
-	add	x13, x13, #(8 * 63)
-	b	2b
-
-7:
-#endif
-	ret
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 ENDPROC(__relocate_kernel)
 #endif
 
@@ -1104,12 +823,6 @@ __primary_switch:
 
 	bl	__enable_mmu
 #ifdef CONFIG_RELOCATABLE
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_RELR
-	mov	x24, #0				// no RELR displacement yet
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bl	__relocate_kernel
 #ifdef CONFIG_RANDOMIZE_BASE
 	ldr	x8, =__primary_switched

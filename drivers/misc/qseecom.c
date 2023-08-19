@@ -1,24 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * QTI Secure Execution Environment Communicator (QSEECOM) driver
  *
  * Copyright (c) 2012-2020, The Linux Foundation. All rights reserved.
-=======
-/*
- * QTI Secure Execution Environment Communicator (QSEECOM) driver
- *
- * Copyright (c) 2012-2021, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #define pr_fmt(fmt) "QSEECOM: %s: " fmt, __func__
@@ -60,16 +44,12 @@
 #include <linux/ion_kernel.h>
 #include <linux/compat.h>
 #include "compat_qseecom.h"
-<<<<<<< HEAD
 #include <linux/pfk.h>
 #include <linux/kthread.h>
 #include <linux/dma-contiguous.h>
 #include <linux/cma.h>
 #include <linux/of_platform.h>
 #include <soc/qcom/qtee_shmbridge.h>
-=======
-#include <linux/kthread.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define QSEECOM_DEV			"qseecom"
 #define QSEOS_VERSION_14		0x14
@@ -92,17 +72,10 @@
 #define QSEECOM_INVALID_KEY_ID  0xff
 
 /* Save partition image hash for authentication check */
-<<<<<<< HEAD
 #define SCM_SAVE_PARTITION_HASH_ID	0x01
 
 /* Check if enterprise security is activate */
 #define SCM_IS_ACTIVATED_ID		0x02
-=======
-#define	SCM_SAVE_PARTITION_HASH_ID	0x01
-
-/* Check if enterprise security is activate */
-#define	SCM_IS_ACTIVATED_ID		0x02
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Encrypt/Decrypt Data Integrity Partition (DIP) for MDTP */
 #define SCM_MDTP_CIPHER_DIP		0x01
@@ -118,11 +91,7 @@
 #define TWO 2
 #define QSEECOM_UFS_ICE_CE_NUM 10
 #define QSEECOM_SDCC_ICE_CE_NUM 20
-<<<<<<< HEAD
 #define QSEECOM_ICE_FDE_KEY_INDEX 0
-=======
-#define QSEECOM_ICE_FDE_KEY_INDEX 31
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define PHY_ADDR_4G	(1ULL<<32)
 
@@ -186,12 +155,6 @@ enum qseecom_unload_app_kthread_state {
 	UNLOAD_APP_KT_WAKEUP,
 };
 
-<<<<<<< HEAD
-=======
-static struct class *driver_class;
-static dev_t qseecom_device_no;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static DEFINE_MUTEX(qsee_bw_mutex);
 static DEFINE_MUTEX(app_access_lock);
 static DEFINE_MUTEX(clk_access_lock);
@@ -205,11 +168,7 @@ struct sglist_info {
 };
 
 /*
-<<<<<<< HEAD
  * The 31st bit indicates only one or multiple physical address inside
-=======
- * The 31th bit indicates only one or multiple physical address inside
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * the request buffer. If it is set,  the index locates a single physical addr
  * inside the request buffer, and `sizeOrCount` is the size of the memory being
  * shared at that physical address.
@@ -256,12 +215,8 @@ struct qseecom_registered_listener_list {
 	bool                       listener_in_use;
 	/* wq for thread blocked on this listener*/
 	wait_queue_head_t          listener_block_app_wq;
-<<<<<<< HEAD
 	struct sglist_info         *sglistinfo_ptr;
 	struct qtee_shm            sglistinfo_shm;
-=======
-	struct sglist_info         sglistinfo_ptr[MAX_ION_FD];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t                   sglist_cnt;
 	int                        abort;
 	bool                       unregister_pending;
@@ -330,12 +285,9 @@ struct qseecom_control {
 	uint32_t          qsee_version;
 	struct device *pdev;        /* class_dev */
 	struct device *dev;         /* platform_dev->dev */
-<<<<<<< HEAD
 	struct class *driver_class;
 	dev_t qseecom_device_no;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool  whitelist_support;
 	bool  commonlib_loaded;
 	bool  commonlib64_loaded;
@@ -369,12 +321,9 @@ struct qseecom_control {
 	atomic_t qseecom_state;
 	int is_apps_region_protected;
 	bool smcinvoke_support;
-<<<<<<< HEAD
 	uint64_t qseecom_bridge_handle;
 	uint64_t ta_bridge_handle;
 	uint64_t user_contig_bridge_handle;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct list_head  unregister_lsnr_pending_list_head;
 	wait_queue_head_t register_lsnr_pending_wq;
@@ -397,12 +346,8 @@ struct qseecom_sec_buf_fd_info {
 	bool is_sec_buf_fd;
 	size_t size;
 	void *vbase;
-<<<<<<< HEAD
 	phys_addr_t pbase;
 	struct qtee_shm shm;
-=======
-	dma_addr_t pbase;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct qseecom_param_memref {
@@ -423,10 +368,7 @@ struct qseecom_client_handle {
 	u32  app_arch;
 	struct qseecom_sec_buf_fd_info sec_buf_fd[MAX_ION_FD];
 	bool from_smcinvoke;
-<<<<<<< HEAD
 	struct qtee_shm shm; /* kernel client's shm for req/rsp buf */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool unload_pending;
 };
 
@@ -451,12 +393,8 @@ struct qseecom_dev_handle {
 	bool  perf_enabled;
 	bool  fast_load_enabled;
 	enum qseecom_bandwidth_request_mode mode;
-<<<<<<< HEAD
 	struct sglist_info *sglistinfo_ptr;
 	struct qtee_shm sglistinfo_shm;
-=======
-	struct sglist_info sglistinfo_ptr[MAX_ION_FD];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t sglist_cnt;
 	bool use_legacy_cmd;
 };
@@ -529,12 +467,9 @@ static int __qseecom_scm_call2_locked(uint32_t smc_id, struct scm_desc *desc)
 	int ret = 0;
 	int retry_count = 0;
 
-<<<<<<< HEAD
 	if (qseecom.support_bus_scaling)
 		return scm_call2(smc_id, desc);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	do {
 		ret = scm_call2_noretry(smc_id, desc);
 		if (ret == -EBUSY) {
@@ -549,7 +484,6 @@ static int __qseecom_scm_call2_locked(uint32_t smc_id, struct scm_desc *desc)
 	return ret;
 }
 
-<<<<<<< HEAD
 static char *__qseecom_alloc_tzbuf(uint32_t size,
 				phys_addr_t *pa, struct qtee_shm *shm)
 {
@@ -569,8 +503,6 @@ static void __qseecom_free_tzbuf(struct qtee_shm *shm)
 	qtee_shmbridge_free_shm(shm);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int qseecom_scm_call2(uint32_t svc_id, uint32_t tz_cmd_id,
 			const void *req_buf, void *resp_buf)
 {
@@ -579,11 +511,8 @@ static int qseecom_scm_call2(uint32_t svc_id, uint32_t tz_cmd_id,
 	uint32_t qseos_cmd_id = 0;
 	struct scm_desc desc = {0};
 	struct qseecom_command_scm_resp *scm_resp = NULL;
-<<<<<<< HEAD
 	struct qtee_shm shm = {0};
 	phys_addr_t pa;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!req_buf || !resp_buf) {
 		pr_err("Invalid buffer pointer\n");
@@ -593,11 +522,7 @@ static int qseecom_scm_call2(uint32_t svc_id, uint32_t tz_cmd_id,
 	scm_resp = (struct qseecom_command_scm_resp *)resp_buf;
 
 	switch (svc_id) {
-<<<<<<< HEAD
 	case SCM_SVC_INFO: {
-=======
-	case 6: {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (tz_cmd_id == 3) {
 			smc_id = TZ_INFO_GET_FEATURE_VERSION_ID;
 			desc.arginfo = TZ_INFO_GET_FEATURE_VERSION_ID_PARAM_ID;
@@ -617,13 +542,8 @@ static int qseecom_scm_call2(uint32_t svc_id, uint32_t tz_cmd_id,
 			struct qseecom_save_partition_hash_req *p_hash_req =
 				(struct qseecom_save_partition_hash_req *)
 				req_buf;
-<<<<<<< HEAD
 			char *tzbuf = __qseecom_alloc_tzbuf(
 						tzbuflen, &pa, &shm);
-=======
-			char *tzbuf = kzalloc(tzbuflen, GFP_KERNEL);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (!tzbuf)
 				return -ENOMEM;
 			memset(tzbuf, 0, tzbuflen);
@@ -633,17 +553,10 @@ static int qseecom_scm_call2(uint32_t svc_id, uint32_t tz_cmd_id,
 			smc_id = TZ_ES_SAVE_PARTITION_HASH_ID;
 			desc.arginfo = TZ_ES_SAVE_PARTITION_HASH_ID_PARAM_ID;
 			desc.args[0] = p_hash_req->partition_id;
-<<<<<<< HEAD
 			desc.args[1] = pa;
 			desc.args[2] = SHA256_DIGEST_LENGTH;
 			ret = __qseecom_scm_call2_locked(smc_id, &desc);
 			__qseecom_free_tzbuf(&shm);
-=======
-			desc.args[1] = virt_to_phys(tzbuf);
-			desc.args[2] = SHA256_DIGEST_LENGTH;
-			ret = __qseecom_scm_call2_locked(smc_id, &desc);
-			kzfree(tzbuf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 		default: {
@@ -693,13 +606,8 @@ static int qseecom_scm_call2(uint32_t svc_id, uint32_t tz_cmd_id,
 		case QSEOS_APP_LOOKUP_COMMAND: {
 			struct qseecom_check_app_ireq *req;
 			u32 tzbuflen = PAGE_ALIGN(sizeof(req->app_name));
-<<<<<<< HEAD
 			char *tzbuf = __qseecom_alloc_tzbuf(
 						tzbuflen, &pa, &shm);
-=======
-			char *tzbuf = kzalloc(tzbuflen, GFP_KERNEL);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (!tzbuf)
 				return -ENOMEM;
 			req = (struct qseecom_check_app_ireq *)req_buf;
@@ -708,19 +616,11 @@ static int qseecom_scm_call2(uint32_t svc_id, uint32_t tz_cmd_id,
 			dmac_flush_range(tzbuf, tzbuf + tzbuflen);
 			smc_id = TZ_OS_APP_LOOKUP_ID;
 			desc.arginfo = TZ_OS_APP_LOOKUP_ID_PARAM_ID;
-<<<<<<< HEAD
 			desc.args[0] = pa;
 			desc.args[1] = strlen(req->app_name);
 			__qseecom_reentrancy_check_if_no_app_blocked(smc_id);
 			ret = __qseecom_scm_call2_locked(smc_id, &desc);
 			__qseecom_free_tzbuf(&shm);
-=======
-			desc.args[0] = virt_to_phys(tzbuf);
-			desc.args[1] = strlen(req->app_name);
-			__qseecom_reentrancy_check_if_no_app_blocked(smc_id);
-			ret = __qseecom_scm_call2_locked(smc_id, &desc);
-			kzfree(tzbuf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 		case QSEOS_APP_REGION_NOTIFICATION: {
@@ -975,27 +875,12 @@ static int qseecom_scm_call2(uint32_t svc_id, uint32_t tz_cmd_id,
 			ret = __qseecom_scm_call2_locked(smc_id, &desc);
 			break;
 		}
-<<<<<<< HEAD
-=======
-		case QSEOS_SOTA_NOTIFICATION_CHECK_STATUS: {
-			smc_id = TZ_SOTA_UPDATE_NOTIFICATION_ID;
-			desc.arginfo = TZ_SOTA_UPDATE_NOTIFICATION_ID_PARAM_ID;
-			__qseecom_reentrancy_check_if_no_app_blocked(smc_id);
-			ret = __qseecom_scm_call2_locked(smc_id, &desc);
-			break;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case QSEOS_GENERATE_KEY: {
 			u32 tzbuflen = PAGE_ALIGN(sizeof
 				(struct qseecom_key_generate_ireq) -
 				sizeof(uint32_t));
-<<<<<<< HEAD
 			char *tzbuf = __qseecom_alloc_tzbuf(
 						tzbuflen, &pa, &shm);
-=======
-			char *tzbuf = kzalloc(tzbuflen, GFP_KERNEL);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (!tzbuf)
 				return -ENOMEM;
 			memset(tzbuf, 0, tzbuflen);
@@ -1005,32 +890,19 @@ static int qseecom_scm_call2(uint32_t svc_id, uint32_t tz_cmd_id,
 			dmac_flush_range(tzbuf, tzbuf + tzbuflen);
 			smc_id = TZ_OS_KS_GEN_KEY_ID;
 			desc.arginfo = TZ_OS_KS_GEN_KEY_ID_PARAM_ID;
-<<<<<<< HEAD
 			desc.args[0] = pa;
 			desc.args[1] = tzbuflen;
 			__qseecom_reentrancy_check_if_no_app_blocked(smc_id);
 			ret = __qseecom_scm_call2_locked(smc_id, &desc);
 			__qseecom_free_tzbuf(&shm);
-=======
-			desc.args[0] = virt_to_phys(tzbuf);
-			desc.args[1] = tzbuflen;
-			__qseecom_reentrancy_check_if_no_app_blocked(smc_id);
-			ret = __qseecom_scm_call2_locked(smc_id, &desc);
-			kzfree(tzbuf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 		case QSEOS_DELETE_KEY: {
 			u32 tzbuflen = PAGE_ALIGN(sizeof
 				(struct qseecom_key_delete_ireq) -
 				sizeof(uint32_t));
-<<<<<<< HEAD
 			char *tzbuf = __qseecom_alloc_tzbuf(
 						tzbuflen, &pa, &shm);
-=======
-			char *tzbuf = kzalloc(tzbuflen, GFP_KERNEL);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (!tzbuf)
 				return -ENOMEM;
 			memset(tzbuf, 0, tzbuflen);
@@ -1040,32 +912,19 @@ static int qseecom_scm_call2(uint32_t svc_id, uint32_t tz_cmd_id,
 			dmac_flush_range(tzbuf, tzbuf + tzbuflen);
 			smc_id = TZ_OS_KS_DEL_KEY_ID;
 			desc.arginfo = TZ_OS_KS_DEL_KEY_ID_PARAM_ID;
-<<<<<<< HEAD
 			desc.args[0] = pa;
 			desc.args[1] = tzbuflen;
 			__qseecom_reentrancy_check_if_no_app_blocked(smc_id);
 			ret = __qseecom_scm_call2_locked(smc_id, &desc);
 			__qseecom_free_tzbuf(&shm);
-=======
-			desc.args[0] = virt_to_phys(tzbuf);
-			desc.args[1] = tzbuflen;
-			__qseecom_reentrancy_check_if_no_app_blocked(smc_id);
-			ret = __qseecom_scm_call2_locked(smc_id, &desc);
-			kzfree(tzbuf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 		case QSEOS_SET_KEY: {
 			u32 tzbuflen = PAGE_ALIGN(sizeof
 				(struct qseecom_key_select_ireq) -
 				sizeof(uint32_t));
-<<<<<<< HEAD
 			char *tzbuf = __qseecom_alloc_tzbuf(
 						tzbuflen, &pa, &shm);
-=======
-			char *tzbuf = kzalloc(tzbuflen, GFP_KERNEL);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (!tzbuf)
 				return -ENOMEM;
 			memset(tzbuf, 0, tzbuflen);
@@ -1075,32 +934,19 @@ static int qseecom_scm_call2(uint32_t svc_id, uint32_t tz_cmd_id,
 			dmac_flush_range(tzbuf, tzbuf + tzbuflen);
 			smc_id = TZ_OS_KS_SET_PIPE_KEY_ID;
 			desc.arginfo = TZ_OS_KS_SET_PIPE_KEY_ID_PARAM_ID;
-<<<<<<< HEAD
 			desc.args[0] = pa;
 			desc.args[1] = tzbuflen;
 			__qseecom_reentrancy_check_if_no_app_blocked(smc_id);
 			ret = __qseecom_scm_call2_locked(smc_id, &desc);
 			__qseecom_free_tzbuf(&shm);
-=======
-			desc.args[0] = virt_to_phys(tzbuf);
-			desc.args[1] = tzbuflen;
-			__qseecom_reentrancy_check_if_no_app_blocked(smc_id);
-			ret = __qseecom_scm_call2_locked(smc_id, &desc);
-			kzfree(tzbuf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 		case QSEOS_UPDATE_KEY_USERINFO: {
 			u32 tzbuflen = PAGE_ALIGN(sizeof
 				(struct qseecom_key_userinfo_update_ireq) -
 				sizeof(uint32_t));
-<<<<<<< HEAD
 			char *tzbuf = __qseecom_alloc_tzbuf(
 						tzbuflen, &pa, &shm);
-=======
-			char *tzbuf = kzalloc(tzbuflen, GFP_KERNEL);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (!tzbuf)
 				return -ENOMEM;
 			memset(tzbuf, 0, tzbuflen);
@@ -1110,19 +956,11 @@ static int qseecom_scm_call2(uint32_t svc_id, uint32_t tz_cmd_id,
 			dmac_flush_range(tzbuf, tzbuf + tzbuflen);
 			smc_id = TZ_OS_KS_UPDATE_KEY_ID;
 			desc.arginfo = TZ_OS_KS_UPDATE_KEY_ID_PARAM_ID;
-<<<<<<< HEAD
 			desc.args[0] = pa;
 			desc.args[1] = tzbuflen;
 			__qseecom_reentrancy_check_if_no_app_blocked(smc_id);
 			ret = __qseecom_scm_call2_locked(smc_id, &desc);
 			__qseecom_free_tzbuf(&shm);
-=======
-			desc.args[0] = virt_to_phys(tzbuf);
-			desc.args[1] = tzbuflen;
-			__qseecom_reentrancy_check_if_no_app_blocked(smc_id);
-			ret = __qseecom_scm_call2_locked(smc_id, &desc);
-			kzfree(tzbuf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 		case QSEOS_TEE_OPEN_SESSION: {
@@ -1327,10 +1165,6 @@ static int qseecom_scm_call2(uint32_t svc_id, uint32_t tz_cmd_id,
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int qseecom_scm_call(u32 svc_id, u32 tz_cmd_id, const void *cmd_buf,
 		size_t cmd_len, void *resp_buf, size_t resp_len)
 {
@@ -1394,7 +1228,6 @@ exit:
 	return ret;
 }
 
-<<<<<<< HEAD
 static int qseecom_destroy_bridge_callback(
 				struct dma_buf *dmabuf, void *dtor_data)
 {
@@ -1497,8 +1330,6 @@ exit:
 	return ret;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int qseecom_dmabuf_map(int ion_fd, struct sg_table **sgt,
 				struct dma_buf_attachment **attach,
 				struct dma_buf **dmabuf)
@@ -1529,25 +1360,19 @@ static int qseecom_dmabuf_map(int ion_fd, struct sg_table **sgt,
 				ion_fd, ret);
 		goto err_detach;
 	}
-<<<<<<< HEAD
 
 	ret = qseecom_create_bridge_for_secbuf(ion_fd, new_dma_buf, new_sgt);
 	if (ret) {
 		pr_err("failed to create bridge for fd %d\n", ion_fd);
 		goto err_unmap_attachment;
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	*sgt = new_sgt;
 	*attach = new_attach;
 	*dmabuf = new_dma_buf;
 	return ret;
 
-<<<<<<< HEAD
 err_unmap_attachment:
 	dma_buf_unmap_attachment(new_attach, new_sgt, DMA_BIDIRECTIONAL);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_detach:
 	dma_buf_detach(new_dma_buf, new_attach);
 err_put:
@@ -1682,11 +1507,7 @@ err:
 	if (svc->dmabuf) {
 		qseecom_vaddr_unmap(svc->sb_virt, svc->sgt, svc->attach,
 			svc->dmabuf);
-<<<<<<< HEAD
 		MAKE_NULL(svc->sgt, svc->attach, svc->dmabuf);
-=======
-		 MAKE_NULL(svc->sgt, svc->attach, svc->dmabuf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return ret;
 }
@@ -1710,11 +1531,7 @@ static int qseecom_register_listener(struct qseecom_dev_handle *data,
 
 	ptr_svc = __qseecom_find_svc(rcvd_lstnr.listener_id);
 	if (ptr_svc) {
-<<<<<<< HEAD
 		if (!ptr_svc->unregister_pending) {
-=======
-		if (ptr_svc->unregister_pending == false) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pr_err("Service %d is not unique\n",
 				rcvd_lstnr.listener_id);
 		data->released = true;
@@ -1743,7 +1560,6 @@ static int qseecom_register_listener(struct qseecom_dev_handle *data,
 	memcpy(&new_entry->svc, &rcvd_lstnr, sizeof(rcvd_lstnr));
 	new_entry->rcv_req_flag = 0;
 
-<<<<<<< HEAD
 	new_entry->sglistinfo_ptr =
 				(struct sglist_info *)__qseecom_alloc_tzbuf(
 				sizeof(struct sglist_info) * MAX_ION_FD,
@@ -1753,18 +1569,13 @@ static int qseecom_register_listener(struct qseecom_dev_handle *data,
 		kfree(new_entry);
 		return -ENOMEM;
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	new_entry->svc.listener_id = rcvd_lstnr.listener_id;
 	new_entry->sb_length = rcvd_lstnr.sb_size;
 	new_entry->user_virt_sb_base = rcvd_lstnr.virt_sb_base;
 	if (__qseecom_set_sb_memory(new_entry, data, &rcvd_lstnr)) {
 		pr_err("qseecom_set_sb_memory failed for listener %d, size %d\n",
 				rcvd_lstnr.listener_id, rcvd_lstnr.sb_size);
-<<<<<<< HEAD
 		__qseecom_free_tzbuf(&new_entry->sglistinfo_shm);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kzfree(new_entry);
 		return -ENOMEM;
 	}
@@ -1826,15 +1637,9 @@ exit:
 	if (ptr_svc->dmabuf) {
 		qseecom_vaddr_unmap(ptr_svc->sb_virt,
 			ptr_svc->sgt, ptr_svc->attach, ptr_svc->dmabuf);
-<<<<<<< HEAD
 		MAKE_NULL(ptr_svc->sgt, ptr_svc->attach, ptr_svc->dmabuf);
 	}
 	__qseecom_free_tzbuf(&ptr_svc->sglistinfo_shm);
-=======
-		 MAKE_NULL(ptr_svc->sgt, ptr_svc->attach, ptr_svc->dmabuf);
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_del(&ptr_svc->list);
 	kzfree(ptr_svc);
 
@@ -1914,10 +1719,7 @@ static void __qseecom_processing_pending_lsnr_unregister(void)
 			} else
 				pr_err("invalid listener %d\n",
 					entry->data->listener.id);
-<<<<<<< HEAD
 			__qseecom_free_tzbuf(&entry->data->sglistinfo_shm);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			kzfree(entry->data);
 		}
 		list_del(pos);
@@ -2001,11 +1803,7 @@ static void qseecom_bw_inactive_req_work(struct work_struct *work)
 	mutex_unlock(&app_access_lock);
 }
 
-<<<<<<< HEAD
 static void qseecom_scale_bus_bandwidth_timer_callback(struct timer_list *data)
-=======
-static void qseecom_scale_bus_bandwidth_timer_callback(unsigned long data)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	schedule_work(&qseecom.bw_inactive_req_ws);
 }
@@ -2075,29 +1873,15 @@ err_scale_timer:
 static int qseecom_unregister_bus_bandwidth_needs(
 					struct qseecom_dev_handle *data)
 {
-<<<<<<< HEAD
 	qseecom.cumulative_mode -= data->mode;
 	data->mode = INACTIVE;
 
 	return 0;
-=======
-	int32_t ret = 0;
-
-	qseecom.cumulative_mode -= data->mode;
-	data->mode = INACTIVE;
-
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int __qseecom_register_bus_bandwidth_needs(
 			struct qseecom_dev_handle *data, uint32_t request_mode)
 {
-<<<<<<< HEAD
-=======
-	int32_t ret = 0;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (data->mode == INACTIVE) {
 		qseecom.cumulative_mode += request_mode;
 		data->mode = request_mode;
@@ -2108,11 +1892,7 @@ static int __qseecom_register_bus_bandwidth_needs(
 			data->mode = request_mode;
 		}
 	}
-<<<<<<< HEAD
 	return 0;
-=======
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int qseecom_perf_enable(struct qseecom_dev_handle *data)
@@ -2231,11 +2011,7 @@ static int qseecom_set_client_mem_param(struct qseecom_dev_handle *data,
 
 	if ((req.ifd_data_fd <= 0) || (req.virt_sb_base == NULL) ||
 					(req.sb_len == 0)) {
-<<<<<<< HEAD
 		pr_err("Invalid input(s)ion_fd(%d), sb_len(%d), vaddr(0x%pK)\n",
-=======
-		pr_err("Inavlid input(s)ion_fd(%d), sb_len(%d), vaddr(0x%pK)\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			req.ifd_data_fd, req.sb_len, req.virt_sb_base);
 		return -EFAULT;
 	}
@@ -2407,11 +2183,7 @@ static int __qseecom_process_incomplete_cmd(struct qseecom_dev_handle *data,
 		/* restore signal mask */
 		sigprocmask(SIG_SETMASK, &old_sigset, NULL);
 		if (data->abort || ptr_svc->abort) {
-<<<<<<< HEAD
 			pr_err("Abort clnt %d waiting on lstnr svc %d, ret %d\n",
-=======
-			pr_err("Abort clnt %d waiting on lstnr svc %d, ret %d",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				data->client.app_id, lstnr, ret);
 			rc = -ENODEV;
 			status = QSEOS_RESULT_FAILURE;
@@ -2451,11 +2223,7 @@ err_resp:
 			cmd_buf = (void *)&send_data_rsp_64bit;
 			cmd_len = sizeof(send_data_rsp_64bit);
 		}
-<<<<<<< HEAD
 		if (!qseecom.whitelist_support || table == NULL)
-=======
-		if (qseecom.whitelist_support == false || table == NULL)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			*(uint32_t *)cmd_buf = QSEOS_LISTENER_DATA_RSP_COMMAND;
 		else
 			*(uint32_t *)cmd_buf =
@@ -2484,13 +2252,6 @@ err_resp:
 				goto exit;
 			}
 
-<<<<<<< HEAD
-=======
-			ret = qseecom_dmabuf_cache_operations(ptr_svc->dmabuf,
-						QSEECOM_CACHE_INVALIDATE);
-			if (ret)
-				goto exit;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else {
 			ret = qseecom_scm_call(SCM_SVC_TZSCHEDULER, 1,
 					cmd_buf, cmd_len, resp, sizeof(*resp));
@@ -2756,11 +2517,7 @@ static int __qseecom_reentrancy_process_incomplete_cmd(
 		/* restore signal mask */
 		sigprocmask(SIG_SETMASK, &old_sigset, NULL);
 		if (data->abort || ptr_svc->abort) {
-<<<<<<< HEAD
 			pr_err("Abort clnt %d waiting on lstnr svc %d, ret %d\n",
-=======
-			pr_err("Abort clnt %d waiting on lstnr svc %d, ret %d",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				data->client.app_id, lstnr, ret);
 			rc = -ENODEV;
 			status  = QSEOS_RESULT_FAILURE;
@@ -2797,11 +2554,7 @@ err_resp:
 			cmd_buf = (void *)&send_data_rsp_64bit;
 			cmd_len = sizeof(send_data_rsp_64bit);
 		}
-<<<<<<< HEAD
 		if (!qseecom.whitelist_support || table == NULL)
-=======
-		if (qseecom.whitelist_support == false || table == NULL)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			*(uint32_t *)cmd_buf = QSEOS_LISTENER_DATA_RSP_COMMAND;
 		else
 			*(uint32_t *)cmd_buf =
@@ -2830,13 +2583,6 @@ err_resp:
 					ret, data->client.app_id);
 				goto exit;
 			}
-<<<<<<< HEAD
-=======
-			ret = qseecom_dmabuf_cache_operations(ptr_svc->dmabuf,
-						QSEECOM_CACHE_INVALIDATE);
-			if (ret)
-				goto exit;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else {
 			ret = qseecom_scm_call(SCM_SVC_TZSCHEDULER, 1,
 					cmd_buf, cmd_len, resp, sizeof(*resp));
@@ -2931,11 +2677,7 @@ static void __qseecom_reentrancy_check_if_this_app_blocked(
 	}
 }
 
-<<<<<<< HEAD
 static int __qseecom_check_app_exists(struct qseecom_check_app_ireq req,
-=======
-static int __qseecom_check_app_exists(struct qseecom_check_app_ireq *req,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					uint32_t *app_id)
 {
 	int32_t ret;
@@ -2954,11 +2696,7 @@ static int __qseecom_check_app_exists(struct qseecom_check_app_ireq *req,
 	spin_lock_irqsave(&qseecom.registered_app_list_lock, flags);
 	list_for_each_entry(entry,
 			&qseecom.registered_app_list_head, list) {
-<<<<<<< HEAD
 		if (!strcmp(entry->app_name, req.app_name)) {
-=======
-		if (!strcmp(entry->app_name, req->app_name)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			found_app = true;
 			break;
 		}
@@ -2973,11 +2711,7 @@ static int __qseecom_check_app_exists(struct qseecom_check_app_ireq *req,
 	memset((void *)&resp, 0, sizeof(resp));
 
 	/*  SCM_CALL  to check if app_id for the mentioned app exists */
-<<<<<<< HEAD
 	ret = qseecom_scm_call(SCM_SVC_TZSCHEDULER, 1, &req,
-=======
-	ret = qseecom_scm_call(SCM_SVC_TZSCHEDULER, 1, req,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				sizeof(struct qseecom_check_app_ireq),
 				&resp, sizeof(resp));
 	if (ret) {
@@ -2991,21 +2725,13 @@ static int __qseecom_check_app_exists(struct qseecom_check_app_ireq *req,
 	switch (resp.resp_type) {
 	/*qsee returned listener type response */
 	case QSEOS_LISTENER_ID:
-<<<<<<< HEAD
 		pr_err("resp type is of listener type instead of app\n");
-=======
-		pr_err("resp type is of listener type instead of app");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	case QSEOS_APP_ID:
 		*app_id = resp.data;
 		return 0;
 	default:
-<<<<<<< HEAD
 		pr_err("invalid resp type (%d) from qsee\n",
-=======
-		pr_err("invalid resp type (%d) from qsee",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				resp.resp_type);
 		return -ENODEV;
 	}
@@ -3026,35 +2752,19 @@ static int qseecom_load_app(struct qseecom_dev_handle *data, void __user *argp)
 
 	size_t len;
 	struct qseecom_command_scm_resp resp;
-<<<<<<< HEAD
 	struct qseecom_check_app_ireq req;
-=======
-	struct qseecom_check_app_ireq *req = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct qseecom_load_app_ireq load_req;
 	struct qseecom_load_app_64bit_ireq load_req_64bit;
 	void *cmd_buf = NULL;
 	size_t cmd_len;
 	bool first_time = false;
 
-<<<<<<< HEAD
-=======
-	req = kzalloc(sizeof(*req), GFP_KERNEL);
-	if (!req)
-		return -ENOMEM;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Copy the relevant information needed for loading the image */
 	if (copy_from_user(&load_img_req,
 				(void __user *)argp,
 				sizeof(struct qseecom_load_img_req))) {
 		pr_err("copy_from_user failed\n");
-<<<<<<< HEAD
 		return -EFAULT;
-=======
-		ret = -EFAULT;
-		goto req_free;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Check and load cmnlib */
@@ -3064,12 +2774,7 @@ static int qseecom_load_app(struct qseecom_dev_handle *data, void __user *argp)
 			ret = qseecom_load_commonlib_image(data, "cmnlib");
 			if (ret) {
 				pr_err("failed to load cmnlib\n");
-<<<<<<< HEAD
 				return -EIO;
-=======
-				ret = -EIO;
-				goto req_free;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 			qseecom.commonlib_loaded = true;
 			pr_debug("cmnlib is loaded\n");
@@ -3080,12 +2785,7 @@ static int qseecom_load_app(struct qseecom_dev_handle *data, void __user *argp)
 			ret = qseecom_load_commonlib_image(data, "cmnlib64");
 			if (ret) {
 				pr_err("failed to load cmnlib64\n");
-<<<<<<< HEAD
 				return -EIO;
-=======
-				ret = -EIO;
-				goto req_free;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 			qseecom.commonlib64_loaded = true;
 			pr_debug("cmnlib64 is loaded\n");
@@ -3097,11 +2797,7 @@ static int qseecom_load_app(struct qseecom_dev_handle *data, void __user *argp)
 		ret = __qseecom_register_bus_bandwidth_needs(data, MEDIUM);
 		mutex_unlock(&qsee_bw_mutex);
 		if (ret)
-<<<<<<< HEAD
 			return ret;
-=======
-			goto req_free;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Vote for the SFPB clock */
@@ -3109,15 +2805,9 @@ static int qseecom_load_app(struct qseecom_dev_handle *data, void __user *argp)
 	if (ret)
 		goto enable_clk_err;
 
-<<<<<<< HEAD
 	req.qsee_cmd_id = QSEOS_APP_LOOKUP_COMMAND;
 	load_img_req.img_name[MAX_APP_NAME_SIZE-1] = '\0';
 	strlcpy(req.app_name, load_img_req.img_name, MAX_APP_NAME_SIZE);
-=======
-	req->qsee_cmd_id = QSEOS_APP_LOOKUP_COMMAND;
-	load_img_req.img_name[MAX_APP_NAME_SIZE-1] = '\0';
-	strlcpy(req->app_name, load_img_req.img_name, MAX_APP_NAME_SIZE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = __qseecom_check_app_exists(req, &app_id);
 	if (ret < 0)
@@ -3125,22 +2815,14 @@ static int qseecom_load_app(struct qseecom_dev_handle *data, void __user *argp)
 
 	if (app_id) {
 		pr_debug("App id %d (%s) already exists\n", app_id,
-<<<<<<< HEAD
 			(char *)(req.app_name));
-=======
-			(char *)(req->app_name));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_lock_irqsave(&qseecom.registered_app_list_lock, flags);
 		list_for_each_entry(entry,
 		&qseecom.registered_app_list_head, list){
 			if (entry->app_id == app_id) {
 				if (entry->ref_cnt == U32_MAX) {
 					pr_err("App %d (%s) ref_cnt overflow\n",
-<<<<<<< HEAD
 						app_id, req.app_name);
-=======
-						app_id, req->app_name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					ret = -EINVAL;
 					goto loadapp_err;
 				}
@@ -3149,11 +2831,7 @@ static int qseecom_load_app(struct qseecom_dev_handle *data, void __user *argp)
 			}
 		}
 		spin_unlock_irqrestore(
-<<<<<<< HEAD
 			&qseecom.registered_app_list_lock, flags);
-=======
-		&qseecom.registered_app_list_lock, flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = 0;
 	} else {
 		first_time = true;
@@ -3289,11 +2967,7 @@ static int qseecom_load_app(struct qseecom_dev_handle *data, void __user *argp)
 	if (copy_to_user(argp, &load_img_req, sizeof(load_img_req))) {
 		pr_err("copy_to_user failed\n");
 		ret = -EFAULT;
-<<<<<<< HEAD
 		if (first_time) {
-=======
-		if (first_time == true) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			spin_lock_irqsave(
 				&qseecom.registered_app_list_lock, flags);
 			list_del(&entry->list);
@@ -3315,11 +2989,6 @@ enable_clk_err:
 		qseecom_unregister_bus_bandwidth_needs(data);
 		mutex_unlock(&qsee_bw_mutex);
 	}
-<<<<<<< HEAD
-=======
-req_free:
-	kfree(req);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -3359,14 +3028,8 @@ static int __qseecom_unload_app(struct qseecom_dev_handle *data,
 			sizeof(struct qseecom_unload_app_ireq),
 			&resp, sizeof(resp));
 	if (ret) {
-<<<<<<< HEAD
 		pr_err("scm_call to unload app (id = %d) failed\n", app_id);
 		return -EFAULT;
-=======
-		pr_err("scm_call to unload app (id = %d) failed ret: %d\n",
-			app_id, ret);
-		return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	switch (resp.result) {
 	case QSEOS_RESULT_SUCCESS:
@@ -3541,10 +3204,7 @@ static void __qseecom_processing_pending_unload_app(void)
 					entry->data->client.app_id, ret);
 			mutex_unlock(&app_access_lock);
 			mutex_lock(&unload_app_pending_list_lock);
-<<<<<<< HEAD
 			__qseecom_free_tzbuf(&entry->data->sglistinfo_shm);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			kzfree(entry->data);
 		}
 		list_del(pos);
@@ -3621,45 +3281,6 @@ int __qseecom_process_rpmb_svc_cmd(struct qseecom_dev_handle *data_ptr,
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
-static int __qseecom_process_sota_svc_cmd(struct qseecom_dev_handle *data_ptr,
-		struct qseecom_send_svc_cmd_req *req_ptr,
-		struct qseecom_client_send_service_ireq *send_svc_ireq_ptr)
-{
-	int ret = 0;
-	void *req_buf = NULL;
-
-	if ((req_ptr == NULL) || (send_svc_ireq_ptr == NULL)) {
-		pr_err("Error with pointer: req_ptr = %pK, send_svc_ptr = %pK\n",
-			req_ptr, send_svc_ireq_ptr);
-		return -EINVAL;
-	}
-
-	/* Clients need to ensure req_buf is at base offset of shared buffer */
-	if ((uintptr_t)req_ptr->cmd_req_buf !=
-			data_ptr->client.user_virt_sb_base) {
-		pr_err("cmd buf not pointing to base offset of shared buffer\n");
-		return -EINVAL;
-	}
-
-	if (data_ptr->client.sb_length <
-			sizeof(struct qseecom_rpmb_provision_key)) {
-		pr_err("shared buffer is too small to hold key type\n");
-		return -EINVAL;
-	}
-	req_buf = data_ptr->client.sb_virt;
-
-	send_svc_ireq_ptr->qsee_cmd_id = req_ptr->cmd_id;
-	send_svc_ireq_ptr->req_len = req_ptr->cmd_req_len;
-	send_svc_ireq_ptr->rsp_ptr = (uint32_t)(__qseecom_uvirt_to_kphys(
-			data_ptr, (uintptr_t)req_ptr->resp_buf));
-	send_svc_ireq_ptr->rsp_len = req_ptr->resp_len;
-
-	return ret;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int __qseecom_process_fsm_key_svc_cmd(struct qseecom_dev_handle *data_ptr,
 		struct qseecom_send_svc_cmd_req *req_ptr,
 		struct qseecom_client_send_fsm_key_req *send_svc_ireq_ptr)
@@ -3675,11 +3296,7 @@ int __qseecom_process_fsm_key_svc_cmd(struct qseecom_dev_handle *data_ptr,
 
 	reqd_len_sb_in = req_ptr->cmd_req_len + req_ptr->resp_len;
 	if (reqd_len_sb_in > data_ptr->client.sb_length) {
-<<<<<<< HEAD
 		pr_err("Not enough memory to fit cmd_buf and resp_buf.\n");
-=======
-		pr_err("Not enough memory to fit cmd_buf and resp_buf. ");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_err("Required: %u, Available: %zu\n",
 				reqd_len_sb_in, data_ptr->client.sb_length);
 		return -ENOMEM;
@@ -3807,10 +3424,7 @@ static int qseecom_send_service_cmd(struct qseecom_dev_handle *data,
 		return -EINVAL;
 
 	data->type = QSEECOM_SECURE_SERVICE;
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (req.cmd_id) {
 	case QSEOS_RPMB_PROVISION_KEY_COMMAND:
 	case QSEOS_RPMB_ERASE_COMMAND:
@@ -3821,16 +3435,6 @@ static int qseecom_send_service_cmd(struct qseecom_dev_handle *data,
 				send_req_ptr))
 			return -EINVAL;
 		break;
-<<<<<<< HEAD
-=======
-	case QSEOS_SOTA_NOTIFICATION_CHECK_STATUS:
-		send_req_ptr = &send_svc_ireq;
-		req_buf_size = sizeof(send_svc_ireq);
-		if (__qseecom_process_sota_svc_cmd(data, &req,
-				send_req_ptr))
-			return -EINVAL;
-		break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case QSEOS_FSM_LTEOTA_REQ_CMD:
 	case QSEOS_FSM_LTEOTA_REQ_RSP_CMD:
 	case QSEOS_FSM_IKE_REQ_CMD:
@@ -4017,11 +3621,7 @@ int __qseecom_process_reentrancy(struct qseecom_command_scm_resp *resp,
 			data->client.app_id, data->client.app_name, resp->data);
 			return ret;
 		}
-<<<<<<< HEAD
 		/* fall through to process incomplete request */
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case QSEOS_RESULT_INCOMPLETE:
 		qseecom.app_block_ref_cnt++;
 		ptr_app->app_blocked = true;
@@ -4092,11 +3692,7 @@ static int __qseecom_send_cmd(struct qseecom_dev_handle *data,
 					data, (uintptr_t)req->resp_buf));
 		send_data_req.rsp_len = req->resp_len;
 		send_data_req.sglistinfo_ptr =
-<<<<<<< HEAD
 				(uint32_t)data->sglistinfo_shm.paddr;
-=======
-				(uint32_t)virt_to_phys(table);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		send_data_req.sglistinfo_len = SGLISTINFO_TABLE_SIZE;
 		dmac_flush_range((void *)table,
 				(void *)table + SGLISTINFO_TABLE_SIZE);
@@ -4125,11 +3721,7 @@ static int __qseecom_send_cmd(struct qseecom_dev_handle *data,
 			return -EFAULT;
 		}
 		send_data_req_64bit.sglistinfo_ptr =
-<<<<<<< HEAD
 				(uint64_t)data->sglistinfo_shm.paddr;
-=======
-				(uint64_t)virt_to_phys(table);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		send_data_req_64bit.sglistinfo_len = SGLISTINFO_TABLE_SIZE;
 		dmac_flush_range((void *)table,
 				(void *)table + SGLISTINFO_TABLE_SIZE);
@@ -4137,11 +3729,7 @@ static int __qseecom_send_cmd(struct qseecom_dev_handle *data,
 		cmd_len = sizeof(struct qseecom_client_send_data_64bit_ireq);
 	}
 
-<<<<<<< HEAD
 	if (!qseecom.whitelist_support || data->use_legacy_cmd)
-=======
-	if (qseecom.whitelist_support == false || data->use_legacy_cmd == true)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*(uint32_t *)cmd_buf = QSEOS_CLIENT_SEND_DATA_COMMAND;
 	else
 		*(uint32_t *)cmd_buf = QSEOS_CLIENT_SEND_DATA_COMMAND_WHITELIST;
@@ -4165,17 +3753,6 @@ static int __qseecom_send_cmd(struct qseecom_dev_handle *data,
 					ret, data->client.app_id);
 		goto exit;
 	}
-<<<<<<< HEAD
-=======
-	if (data->client.dmabuf) {
-		ret = qseecom_dmabuf_cache_operations(data->client.dmabuf,
-					QSEECOM_CACHE_INVALIDATE);
-		if (ret) {
-			pr_err("cache operation failed %d\n", ret);
-			goto exit;
-		}
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (qseecom.qsee_reentrancy_support) {
 		ret = __qseecom_process_reentrancy(&resp, ptr_app, data);
@@ -4198,7 +3775,6 @@ static int __qseecom_send_cmd(struct qseecom_dev_handle *data,
 			}
 		}
 	}
-<<<<<<< HEAD
 
 	if (data->client.dmabuf) {
 		ret = qseecom_dmabuf_cache_operations(data->client.dmabuf,
@@ -4208,8 +3784,6 @@ static int __qseecom_send_cmd(struct qseecom_dev_handle *data,
 			goto exit;
 		}
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 exit:
 	return ret;
 }
@@ -4230,18 +3804,11 @@ static int qseecom_send_cmd(struct qseecom_dev_handle *data, void __user *argp)
 
 	ret = __qseecom_send_cmd(data, &req);
 
-<<<<<<< HEAD
-=======
-	if (ret)
-		return ret;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
 int __boundary_checks_offset(struct qseecom_send_modfd_cmd_req *req,
 			struct qseecom_send_modfd_listener_resp *lstnr_resp,
-<<<<<<< HEAD
 			struct qseecom_dev_handle *data, int i)
 {
 
@@ -4250,24 +3817,10 @@ int __boundary_checks_offset(struct qseecom_send_modfd_cmd_req *req,
 		if ((req->cmd_req_len < sizeof(uint32_t)) ||
 			(req->ifd_data[i].cmd_buf_offset >
 			req->cmd_req_len - sizeof(uint32_t))) {
-=======
-			struct qseecom_dev_handle *data, int i, size_t size)
-{
-	char *curr_field = NULL;
-	char *temp_field = NULL;
-	int j = 0;
-
-	if ((data->type != QSEECOM_LISTENER_SERVICE) &&
-						(req->ifd_data[i].fd > 0)) {
-		if ((req->cmd_req_len < size) ||
-			(req->ifd_data[i].cmd_buf_offset >
-			req->cmd_req_len - size)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pr_err("Invalid offset (req len) 0x%x\n",
 				req->ifd_data[i].cmd_buf_offset);
 			return -EINVAL;
 		}
-<<<<<<< HEAD
 	} else if ((data->type == QSEECOM_LISTENER_SERVICE) &&
 					(lstnr_resp->ifd_data[i].fd > 0)) {
 		if ((lstnr_resp->resp_len < sizeof(uint32_t)) ||
@@ -4300,50 +3853,10 @@ static int __boundary_checks_offset_64(struct qseecom_send_modfd_cmd_req *req,
 		if ((lstnr_resp->resp_len < sizeof(uint64_t)) ||
 			(lstnr_resp->ifd_data[i].cmd_buf_offset >
 			lstnr_resp->resp_len - sizeof(uint64_t))) {
-=======
-
-		curr_field = (char *) (req->cmd_req_buf +
-				req->ifd_data[i].cmd_buf_offset);
-		for (j = 0; j < MAX_ION_FD; j++) {
-			if ((req->ifd_data[j].fd > 0) && i != j) {
-				temp_field = (char *) (req->cmd_req_buf +
-					req->ifd_data[j].cmd_buf_offset);
-				if (temp_field >= curr_field && temp_field <
-					(curr_field + size)) {
-					pr_err("Invalid field offset 0x%x\n",
-					req->ifd_data[i].cmd_buf_offset);
-					return -EINVAL;
-				}
-			}
-		}
-	} else if ((data->type == QSEECOM_LISTENER_SERVICE) &&
-					(lstnr_resp->ifd_data[i].fd > 0)) {
-		if ((lstnr_resp->resp_len < size) ||
-			(lstnr_resp->ifd_data[i].cmd_buf_offset >
-			lstnr_resp->resp_len - size)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pr_err("Invalid offset (lstnr resp len) 0x%x\n",
 				lstnr_resp->ifd_data[i].cmd_buf_offset);
 			return -EINVAL;
 		}
-<<<<<<< HEAD
-=======
-
-		curr_field = (char *) (lstnr_resp->resp_buf_ptr +
-				lstnr_resp->ifd_data[i].cmd_buf_offset);
-		for (j = 0; j < MAX_ION_FD; j++) {
-			if ((lstnr_resp->ifd_data[j].fd > 0) && i != j) {
-				temp_field = (char *) lstnr_resp->resp_buf_ptr +
-					lstnr_resp->ifd_data[j].cmd_buf_offset;
-				if (temp_field >= curr_field && temp_field <
-					(curr_field + size)) {
-					pr_err("Invalid lstnr field offset 0x%x\n",
-					lstnr_resp->ifd_data[i].cmd_buf_offset);
-					return -EINVAL;
-				}
-			}
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return 0;
 }
@@ -4409,11 +3922,7 @@ static int __qseecom_update_cmd_buf(void *msg, bool cleanup,
 			goto err;
 		}
 		if (sg_ptr->nents > QSEECOM_MAX_SG_ENTRY) {
-<<<<<<< HEAD
 			pr_err("Num of scattered entries\n");
-=======
-			pr_err("Num of scattered entries");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pr_err(" (%d) is greater than max supported %d\n",
 				sg_ptr->nents, QSEECOM_MAX_SG_ENTRY);
 			goto err;
@@ -4422,15 +3931,8 @@ static int __qseecom_update_cmd_buf(void *msg, bool cleanup,
 		if (sg_ptr->nents == 1) {
 			uint32_t *update;
 
-<<<<<<< HEAD
 			if (__boundary_checks_offset(req, lstnr_resp, data, i))
 				goto err;
-=======
-			if (__boundary_checks_offset(req, lstnr_resp, data, i,
-				sizeof(uint32_t)))
-				goto err;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if ((data->type == QSEECOM_CLIENT_APP &&
 				(data->client.app_arch == ELFCLASS32 ||
 				data->client.app_arch == ELFCLASS64)) ||
@@ -4461,7 +3963,6 @@ static int __qseecom_update_cmd_buf(void *msg, bool cleanup,
 			struct qseecom_sg_entry *update;
 			int j = 0;
 
-<<<<<<< HEAD
 			if ((data->type != QSEECOM_LISTENER_SERVICE) &&
 					(req->ifd_data[i].fd > 0)) {
 
@@ -4486,12 +3987,6 @@ static int __qseecom_update_cmd_buf(void *msg, bool cleanup,
 					goto err;
 				}
 			}
-=======
-			if (__boundary_checks_offset(req, lstnr_resp, data, i,
-				(SG_ENTRY_SZ * sg_ptr->nents)))
-				goto err;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if ((data->type == QSEECOM_CLIENT_APP &&
 				(data->client.app_arch == ELFCLASS32 ||
 				data->client.app_arch == ELFCLASS64)) ||
@@ -4685,11 +4180,7 @@ static int __qseecom_update_cmd_buf_64(void *msg, bool cleanup,
 			goto err;
 		}
 		if (sg_ptr->nents > QSEECOM_MAX_SG_ENTRY) {
-<<<<<<< HEAD
 			pr_warn("Num of scattered entries\n");
-=======
-			pr_warn("Num of scattered entries");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pr_warn(" (%d) is greater than %d\n",
 				sg_ptr->nents, QSEECOM_MAX_SG_ENTRY);
 			if (cleanup) {
@@ -4715,16 +4206,9 @@ static int __qseecom_update_cmd_buf_64(void *msg, bool cleanup,
 		if (sg_ptr->nents == 1) {
 			uint64_t *update_64bit;
 
-<<<<<<< HEAD
 			if (__boundary_checks_offset_64(req, lstnr_resp,
 							data, i))
 				goto err;
-=======
-			if (__boundary_checks_offset(req, lstnr_resp, data, i,
-				sizeof(uint64_t)))
-				goto err;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				/* 64bit app uses 64bit address */
 			update_64bit = (uint64_t *) field;
 			*update_64bit = cleanup ? 0 :
@@ -4734,7 +4218,6 @@ static int __qseecom_update_cmd_buf_64(void *msg, bool cleanup,
 			struct qseecom_sg_entry_64bit *update_64bit;
 			int j = 0;
 
-<<<<<<< HEAD
 			if ((data->type != QSEECOM_LISTENER_SERVICE) &&
 					(req->ifd_data[i].fd > 0)) {
 
@@ -4759,11 +4242,6 @@ static int __qseecom_update_cmd_buf_64(void *msg, bool cleanup,
 					goto err;
 				}
 			}
-=======
-			if (__boundary_checks_offset(req, lstnr_resp, data, i,
-				(SG_ENTRY_SZ_64BIT * sg_ptr->nents)))
-				goto err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* 64bit app uses 64bit address */
 			update_64bit = (struct qseecom_sg_entry_64bit *)field;
 			for (j = 0; j < sg_ptr->nents; j++) {
@@ -5035,15 +4513,9 @@ static int __qseecom_get_fw_size(const char *appname, uint32_t *fw_size,
 	int num_images = 0;
 
 	snprintf(fw_name, sizeof(fw_name), "%s.mdt", appname);
-<<<<<<< HEAD
 	rc = firmware_request_nowarn(&fw_entry, fw_name,  qseecom.pdev);
 	if (rc) {
 		pr_err("error with firmware_request_nowarn, rc = %d\n", rc);
-=======
-	rc = request_firmware(&fw_entry, fw_name,  qseecom.pdev);
-	if (rc) {
-		pr_err("error with request_firmware\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -EIO;
 		goto err;
 	}
@@ -5071,11 +4543,7 @@ static int __qseecom_get_fw_size(const char *appname, uint32_t *fw_size,
 	for (i = 0; i < num_images; i++) {
 		memset(fw_name, 0, sizeof(fw_name));
 		snprintf(fw_name, ARRAY_SIZE(fw_name), "%s.b%02d", appname, i);
-<<<<<<< HEAD
 		ret = firmware_request_nowarn(&fw_entry, fw_name, qseecom.pdev);
-=======
-		ret = request_firmware(&fw_entry, fw_name, qseecom.pdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			goto err;
 		if (*fw_size > U32_MAX - fw_entry->size) {
@@ -5111,11 +4579,7 @@ static int __qseecom_get_fw_data(const char *appname, u8 *img_data,
 	unsigned char app_arch = 0;
 
 	snprintf(fw_name, sizeof(fw_name), "%s.mdt", appname);
-<<<<<<< HEAD
 	rc = firmware_request_nowarn(&fw_entry, fw_name,  qseecom.pdev);
-=======
-	rc = request_firmware(&fw_entry, fw_name,  qseecom.pdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc) {
 		ret = -EIO;
 		goto err;
@@ -5149,11 +4613,7 @@ static int __qseecom_get_fw_data(const char *appname, u8 *img_data,
 	fw_entry = NULL;
 	for (i = 0; i < num_images; i++) {
 		snprintf(fw_name, ARRAY_SIZE(fw_name), "%s.b%02d", appname, i);
-<<<<<<< HEAD
 		ret = firmware_request_nowarn(&fw_entry, fw_name, qseecom.pdev);
-=======
-		ret = request_firmware(&fw_entry, fw_name,  qseecom.pdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret) {
 			pr_err("Failed to locate blob %s\n", fw_name);
 			goto err;
@@ -5494,11 +4954,7 @@ int qseecom_start_app(struct qseecom_handle **handle,
 	int32_t ret = 0;
 	unsigned long flags = 0;
 	struct qseecom_dev_handle *data = NULL;
-<<<<<<< HEAD
 	struct qseecom_check_app_ireq app_ireq;
-=======
-	struct qseecom_check_app_ireq *app_ireq = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct qseecom_registered_app_list *entry = NULL;
 	struct qseecom_registered_kclient_list *kclient_entry = NULL;
 	bool found_app = false;
@@ -5532,15 +4988,8 @@ int qseecom_start_app(struct qseecom_handle **handle,
 
 	data = kzalloc(sizeof(*data), GFP_KERNEL);
 	if (!data) {
-<<<<<<< HEAD
 		kfree(*handle);
 		*handle = NULL;
-=======
-		if (ret == 0) {
-			kfree(*handle);
-			*handle = NULL;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOMEM;
 	}
 	data->abort = 0;
@@ -5548,7 +4997,6 @@ int qseecom_start_app(struct qseecom_handle **handle,
 	data->released = false;
 	data->client.sb_length = size;
 	data->client.user_virt_sb_base = 0;
-<<<<<<< HEAD
 	data->sglistinfo_ptr = (struct sglist_info *)__qseecom_alloc_tzbuf(
 				sizeof(struct sglist_info) * MAX_ION_FD,
 				&data->sglistinfo_shm.paddr,
@@ -5557,56 +5005,30 @@ int qseecom_start_app(struct qseecom_handle **handle,
 		ret = -ENOMEM;
 		goto err;
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	init_waitqueue_head(&data->abort_wq);
 
 	mutex_lock(&app_access_lock);
 
-<<<<<<< HEAD
 	app_ireq.qsee_cmd_id = QSEOS_APP_LOOKUP_COMMAND;
 	strlcpy(app_ireq.app_name, app_name, MAX_APP_NAME_SIZE);
 	ret = __qseecom_check_app_exists(app_ireq, &app_id);
 	if (ret)
 		goto err;
-=======
-	app_ireq = kzalloc(sizeof(*app_ireq), GFP_KERNEL);
-	if (!app_ireq) {
-		ret = -ENOMEM;
-		goto err;
-	}
-
-	app_ireq->qsee_cmd_id = QSEOS_APP_LOOKUP_COMMAND;
-	strlcpy(app_ireq->app_name, app_name, MAX_APP_NAME_SIZE);
-	ret = __qseecom_check_app_exists(app_ireq, &app_id);
-	if (ret)
-		goto app_ireq_free;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	strlcpy(data->client.app_name, app_name, MAX_APP_NAME_SIZE);
 	if (app_id) {
 		pr_warn("App id %d for [%s] app exists\n", app_id,
-<<<<<<< HEAD
 			(char *)app_ireq.app_name);
-=======
-			(char *)app_ireq->app_name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_lock_irqsave(&qseecom.registered_app_list_lock, flags);
 		list_for_each_entry(entry,
 				&qseecom.registered_app_list_head, list){
 			if (entry->app_id == app_id) {
 				if (entry->ref_cnt == U32_MAX) {
 					pr_err("App %d (%s) ref_cnt overflow\n",
-<<<<<<< HEAD
 						app_id, app_ireq.app_name);
 					ret = -EINVAL;
 					goto err;
-=======
-						app_id, app_ireq->app_name);
-					ret = -EINVAL;
-					goto app_ireq_free;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				}
 				entry->ref_cnt++;
 				found_app = true;
@@ -5617,25 +5039,15 @@ int qseecom_start_app(struct qseecom_handle **handle,
 				&qseecom.registered_app_list_lock, flags);
 		if (!found_app)
 			pr_warn("App_id %d [%s] was loaded but not registered\n",
-<<<<<<< HEAD
 					ret, (char *)app_ireq.app_name);
-=======
-					ret, (char *)app_ireq->app_name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		/* load the app and get the app_id  */
 		pr_debug("%s: Loading app for the first time'\n",
 				qseecom.pdev->init_name);
 		ret = __qseecom_load_fw(data, app_name, &app_id);
 		if (ret < 0)
-<<<<<<< HEAD
 			goto err;
 	}
-=======
-			goto app_ireq_free;
-	}
-	kfree(app_ireq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	data->client.app_id = app_id;
 	if (!found_app) {
 		entry = kmalloc(sizeof(*entry), GFP_KERNEL);
@@ -5693,18 +5105,10 @@ int qseecom_start_app(struct qseecom_handle **handle,
 	__wakeup_unload_app_kthread();
 	return 0;
 
-<<<<<<< HEAD
 err:
 	if (va)
 		__qseecom_free_coherent_buf(size, va, pa);
 	__qseecom_free_tzbuf(&data->sglistinfo_shm);
-=======
-app_ireq_free:
-	kfree(app_ireq);
-err:
-	if (va)
-		__qseecom_free_coherent_buf(size, va, pa);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(data);
 	kfree(*handle);
 	*handle = NULL;
@@ -5736,11 +5140,7 @@ int qseecom_shutdown_app(struct qseecom_handle **handle)
 		pr_err("Handle is not initialized\n");
 		return -EINVAL;
 	}
-<<<<<<< HEAD
 	data = (struct qseecom_dev_handle *) ((*handle)->dev);
-=======
-	data =	(struct qseecom_dev_handle *) ((*handle)->dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&app_access_lock);
 
 	spin_lock_irqsave(&qseecom.registered_kclient_list_lock, flags);
@@ -5763,10 +5163,7 @@ int qseecom_shutdown_app(struct qseecom_handle **handle)
 		if (data->client.sb_virt)
 			__qseecom_free_coherent_buf(data->client.sb_length,
 				data->client.sb_virt, data->client.sb_phys);
-<<<<<<< HEAD
 		__qseecom_free_tzbuf(&data->sglistinfo_shm);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kzfree(data);
 		kzfree(*handle);
 		kzfree(kclient);
@@ -5835,15 +5232,8 @@ int qseecom_send_command(struct qseecom_handle *handle, void *send_buf,
 		}
 		perf_enabled = true;
 	}
-<<<<<<< HEAD
 	if (!strcmp(data->client.app_name, "securemm"))
 		data->use_legacy_cmd = true;
-=======
-	if (!strcmp(data->client.app_name, "securemm") ||
-	    !strcmp(data->client.app_name, "bgapp")) {
-		data->use_legacy_cmd = true;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dmac_flush_range(req.cmd_req_buf, req.cmd_req_buf + req.cmd_req_len);
 
@@ -6029,11 +5419,7 @@ static int __qseecom_send_modfd_resp(struct qseecom_dev_handle *data,
 	struct qseecom_registered_listener_list *this_lstnr = NULL;
 
 	if (copy_from_user(&resp, argp, sizeof(resp))) {
-<<<<<<< HEAD
 		pr_err("copy_from_user failed\n");
-=======
-		pr_err("copy_from_user failed");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -6075,20 +5461,12 @@ static int qseecom_get_qseos_version(struct qseecom_dev_handle *data,
 	struct qseecom_qseos_version_req req;
 
 	if (copy_from_user(&req, argp, sizeof(req))) {
-<<<<<<< HEAD
 		pr_err("copy_from_user failed\n");
-=======
-		pr_err("copy_from_user failed");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 	req.qseos_version = qseecom.qseos_version;
 	if (copy_to_user(argp, &req, sizeof(req))) {
-<<<<<<< HEAD
 		pr_err("copy_to_user failed\n");
-=======
-		pr_err("copy_to_user failed");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 	return 0;
@@ -6534,56 +5912,28 @@ static int qseecom_unload_external_elf(struct qseecom_dev_handle *data)
 	}
 
 qseecom_unload_external_elf_scm_err:
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
 static int qseecom_query_app_loaded(struct qseecom_dev_handle *data,
 					void __user *argp)
 {
-<<<<<<< HEAD
 	int32_t ret = 0;
 	struct qseecom_qseos_app_load_query query_req = { {0} };
 	struct qseecom_check_app_ireq req;
-=======
-
-	int32_t ret = 0;
-	struct qseecom_qseos_app_load_query *query_req = NULL;
-	struct qseecom_check_app_ireq *req = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct qseecom_registered_app_list *entry = NULL;
 	unsigned long flags = 0;
 	uint32_t app_arch = 0, app_id = 0;
 	bool found_app = false;
 
-<<<<<<< HEAD
 	/* Copy the relevant information needed for loading the image */
 	if (copy_from_user(&query_req, (void __user *)argp,
-=======
-	query_req = kzalloc(sizeof(struct qseecom_qseos_app_load_query),
-				GFP_KERNEL);
-	if (!query_req)
-		return -ENOMEM;
-
-	req = kzalloc(sizeof(*req), GFP_KERNEL);
-	if (!req) {
-		ret = -ENOMEM;
-		goto query_req_exit;
-	}
-
-	/* Copy the relevant information needed for loading the image */
-	if (copy_from_user(query_req, (void __user *)argp,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				sizeof(struct qseecom_qseos_app_load_query))) {
 		pr_err("copy_from_user failed\n");
 		ret = -EFAULT;
 		goto exit_free;
 	}
 
-<<<<<<< HEAD
 	req.qsee_cmd_id = QSEOS_APP_LOOKUP_COMMAND;
 	query_req.app_name[MAX_APP_NAME_SIZE-1] = '\0';
 	strlcpy(req.app_name, query_req.app_name, MAX_APP_NAME_SIZE);
@@ -6591,24 +5941,11 @@ static int qseecom_query_app_loaded(struct qseecom_dev_handle *data,
 	ret = __qseecom_check_app_exists(req, &app_id);
 	if (ret) {
 		pr_err(" scm call to check if app is loaded failed\n");
-=======
-	req->qsee_cmd_id = QSEOS_APP_LOOKUP_COMMAND;
-	query_req->app_name[MAX_APP_NAME_SIZE-1] = '\0';
-	strlcpy(req->app_name, query_req->app_name, MAX_APP_NAME_SIZE);
-
-	ret = __qseecom_check_app_exists(req, &app_id);
-	if (ret) {
-		pr_err(" scm call to check if app is loaded failed");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto exit_free;
 	}
 	if (app_id) {
 		pr_debug("App id %d (%s) already exists\n", app_id,
-<<<<<<< HEAD
 			(char *)(req.app_name));
-=======
-			(char *)(req->app_name));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_lock_irqsave(&qseecom.registered_app_list_lock, flags);
 		list_for_each_entry(entry,
 				&qseecom.registered_app_list_head, list){
@@ -6616,11 +5953,7 @@ static int qseecom_query_app_loaded(struct qseecom_dev_handle *data,
 				app_arch = entry->app_arch;
 				if (entry->ref_cnt == U32_MAX) {
 					pr_err("App %d (%s) ref_cnt overflow\n",
-<<<<<<< HEAD
 						app_id, req.app_name);
-=======
-						app_id, req->app_name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					ret = -EINVAL;
 					goto exit_free;
 				}
@@ -6632,7 +5965,6 @@ static int qseecom_query_app_loaded(struct qseecom_dev_handle *data,
 		spin_unlock_irqrestore(
 				&qseecom.registered_app_list_lock, flags);
 		data->client.app_id = app_id;
-<<<<<<< HEAD
 		query_req.app_id = app_id;
 		if (app_arch) {
 			data->client.app_arch = app_arch;
@@ -6642,17 +5974,6 @@ static int qseecom_query_app_loaded(struct qseecom_dev_handle *data,
 			query_req.app_arch = 0;
 		}
 		strlcpy(data->client.app_name, query_req.app_name,
-=======
-		query_req->app_id = app_id;
-		if (app_arch) {
-			data->client.app_arch = app_arch;
-			query_req->app_arch = app_arch;
-		} else {
-			data->client.app_arch = 0;
-			query_req->app_arch = 0;
-		}
-		strlcpy(data->client.app_name, query_req->app_name,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				MAX_APP_NAME_SIZE);
 		/*
 		 * If app was loaded by appsbl before and was not registered,
@@ -6660,11 +5981,7 @@ static int qseecom_query_app_loaded(struct qseecom_dev_handle *data,
 		 */
 		if (!found_app) {
 			pr_debug("Register app %d [%s] which was loaded before\n",
-<<<<<<< HEAD
 					ret, (char *)query_req.app_name);
-=======
-					ret, (char *)query_req->app_name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			entry = kmalloc(sizeof(*entry), GFP_KERNEL);
 			if (!entry) {
 				pr_err("kmalloc for app entry failed\n");
@@ -6686,11 +6003,7 @@ static int qseecom_query_app_loaded(struct qseecom_dev_handle *data,
 			spin_unlock_irqrestore(
 				&qseecom.registered_app_list_lock, flags);
 		}
-<<<<<<< HEAD
 		if (copy_to_user(argp, &query_req, sizeof(query_req))) {
-=======
-		if (copy_to_user(argp, query_req, sizeof(*query_req))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pr_err("copy_to_user failed\n");
 			ret = -EFAULT;
 			goto exit_free;
@@ -6700,13 +6013,6 @@ static int qseecom_query_app_loaded(struct qseecom_dev_handle *data,
 	}
 
 exit_free:
-<<<<<<< HEAD
-=======
-	kfree(req);
-query_req_exit:
-	kfree(query_req);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;	/* app not loaded */
 }
 
@@ -7142,11 +6448,7 @@ static int qseecom_create_key(struct qseecom_dev_handle *data,
 	else
 		flags |= QSEECOM_ICE_FDE_KEY_SIZE_16_BYTE;
 
-<<<<<<< HEAD
 	if (qseecom.enable_key_wrap_in_ks)
-=======
-	if (qseecom.enable_key_wrap_in_ks == true)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		flags |= ENABLE_KEY_WRAP_IN_KS;
 
 	generate_key_ireq.flags = flags;
@@ -7485,11 +6787,8 @@ static int qseecom_mdtp_cipher_dip(void __user *argp)
 	char *tzbufin = NULL, *tzbufout = NULL;
 	struct scm_desc desc = {0};
 	int ret;
-<<<<<<< HEAD
 	phys_addr_t pain, paout;
 	struct qtee_shm shmin = {0}, shmout = {0};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	do {
 		/* Copy the parameters from userspace */
@@ -7516,11 +6815,7 @@ static int qseecom_mdtp_cipher_dip(void __user *argp)
 
 		/* Copy the input buffer from userspace to kernel space */
 		tzbuflenin = PAGE_ALIGN(req.in_buf_size);
-<<<<<<< HEAD
 		tzbufin = __qseecom_alloc_tzbuf(tzbuflenin, &pain, &shmin);
-=======
-		tzbufin = kzalloc(tzbuflenin, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!tzbufin) {
 			pr_err("error allocating in buffer\n");
 			ret = -ENOMEM;
@@ -7537,11 +6832,7 @@ static int qseecom_mdtp_cipher_dip(void __user *argp)
 
 		/* Prepare the output buffer in kernel space */
 		tzbuflenout = PAGE_ALIGN(req.out_buf_size);
-<<<<<<< HEAD
 		tzbufout = __qseecom_alloc_tzbuf(tzbuflenout, &paout, &shmout);
-=======
-		tzbufout = kzalloc(tzbuflenout, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!tzbufout) {
 			pr_err("error allocating out buffer\n");
 			ret = -ENOMEM;
@@ -7552,15 +6843,9 @@ static int qseecom_mdtp_cipher_dip(void __user *argp)
 
 		/* Send the command to TZ */
 		desc.arginfo = TZ_MDTP_CIPHER_DIP_ID_PARAM_ID;
-<<<<<<< HEAD
 		desc.args[0] = pain;
 		desc.args[1] = req.in_buf_size;
 		desc.args[2] = paout;
-=======
-		desc.args[0] = virt_to_phys(tzbufin);
-		desc.args[1] = req.in_buf_size;
-		desc.args[2] = virt_to_phys(tzbufout);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		desc.args[3] = req.out_buf_size;
 		desc.args[4] = req.direction;
 
@@ -7587,13 +6872,8 @@ static int qseecom_mdtp_cipher_dip(void __user *argp)
 		}
 	} while (0);
 
-<<<<<<< HEAD
 	__qseecom_free_tzbuf(&shmin);
 	__qseecom_free_tzbuf(&shmout);
-=======
-	kzfree(tzbufin);
-	kzfree(tzbufout);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -7952,11 +7232,7 @@ static int __qseecom_qteec_issue_cmd(struct qseecom_dev_handle *data,
 		cmd_buf = (void *)&ireq_64bit;
 		cmd_len = sizeof(struct qseecom_qteec_64bit_ireq);
 	}
-<<<<<<< HEAD
 	if (qseecom.whitelist_support
-=======
-	if (qseecom.whitelist_support == true
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		&& cmd_id == QSEOS_TEE_OPEN_SESSION)
 		*(uint32_t *)cmd_buf = QSEOS_TEE_OPEN_SESSION_WHITELIST;
 	else
@@ -8152,11 +7428,7 @@ static int qseecom_qteec_invoke_modfd_cmd(struct qseecom_dev_handle *data,
 				(void *)table + SGLISTINFO_TABLE_SIZE);
 	}
 	reqd_len_sb_in = req.req_len + req.resp_len;
-<<<<<<< HEAD
 	if (qseecom.whitelist_support)
-=======
-	if (qseecom.whitelist_support == true)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*(uint32_t *)cmd_buf = QSEOS_TEE_INVOKE_COMMAND_WHITELIST;
 	else
 		*(uint32_t *)cmd_buf = QSEOS_TEE_INVOKE_COMMAND;
@@ -8950,7 +8222,6 @@ static long qseecom_ioctl(struct file *file,
 		qcom_ice_set_fde_flag(ice_data.flag);
 		break;
 	}
-<<<<<<< HEAD
 	case QSEECOM_IOCTL_FBE_CLEAR_KEY: {
 		struct qseecom_ice_key_data_t key_data;
 
@@ -8964,8 +8235,6 @@ static long qseecom_ioctl(struct file *file,
 				key_data.salt, key_data.salt_len);
 		break;
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		pr_err("Invalid IOCTL: 0x%x\n", cmd);
 		return -EINVAL;
@@ -8989,15 +8258,12 @@ static int qseecom_open(struct inode *inode, struct file *file)
 	data->mode = INACTIVE;
 	init_waitqueue_head(&data->abort_wq);
 	atomic_set(&data->ioctl_count, 0);
-<<<<<<< HEAD
 	data->sglistinfo_ptr = (struct sglist_info *)__qseecom_alloc_tzbuf(
 				sizeof(struct sglist_info) * MAX_ION_FD,
 				&data->sglistinfo_shm.paddr,
 				&data->sglistinfo_shm);
 	if (!data->sglistinfo_ptr)
 		return -ENOMEM;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -9066,25 +8332,16 @@ static int qseecom_release(struct inode *inode, struct file *file)
 		case QSEECOM_UNAVAILABLE_CLIENT_APP:
 			break;
 		default:
-<<<<<<< HEAD
 			pr_err("Unsupported clnt_handle_type %d\n",
-=======
-			pr_err("Unsupported clnt_handle_type %d",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				data->type);
 			break;
 		}
 	}
 
-<<<<<<< HEAD
 	if (free_private_data) {
 		__qseecom_free_tzbuf(&data->sglistinfo_shm);
 		kfree(data);
 	}
-=======
-	if (free_private_data)
-		kfree(data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -9095,19 +8352,11 @@ static int qseecom_release(struct inode *inode, struct file *file)
 #endif
 
 static const struct file_operations qseecom_fops = {
-<<<<<<< HEAD
 	.owner = THIS_MODULE,
 	.unlocked_ioctl = qseecom_ioctl,
 	.compat_ioctl = compat_qseecom_ioctl,
 	.open = qseecom_open,
 	.release = qseecom_release
-=======
-		.owner = THIS_MODULE,
-		.unlocked_ioctl = qseecom_ioctl,
-		.compat_ioctl = compat_qseecom_ioctl,
-		.open = qseecom_open,
-		.release = qseecom_release
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int __qseecom_init_clk(enum qseecom_ce_hw_instance ce)
@@ -9276,11 +8525,7 @@ static int qseecom_retrieve_ce_data(struct platform_device *pdev)
 						"qcom,support-pfe");
 
 	if (!qseecom.support_pfe && !qseecom.support_fde) {
-<<<<<<< HEAD
 		pr_warn("Device does not support PFE/FDE\n");
-=======
-		pr_warn("Device does not support PFE/FDE");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out;
 	}
 
@@ -9305,10 +8550,6 @@ static int qseecom_retrieve_ce_data(struct platform_device *pdev)
 		total_units = 0;
 
 		if (!pfde_tbl || !unit_tbl) {
-<<<<<<< HEAD
-=======
-			pr_err("failed to alloc memory\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rc = -ENOMEM;
 			goto out;
 		}
@@ -9336,10 +8577,6 @@ static int qseecom_retrieve_ce_data(struct platform_device *pdev)
 			total_units, sizeof(struct qseecom_ce_info_use),
 				GFP_KERNEL);
 		if (!pce_info_use) {
-<<<<<<< HEAD
-=======
-			pr_err("failed to alloc memory\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rc = -ENOMEM;
 			goto out;
 		}
@@ -9361,10 +8598,6 @@ static int qseecom_retrieve_ce_data(struct platform_device *pdev)
 					sizeof(struct qseecom_ce_pipe_entry),
 					GFP_KERNEL);
 			if (pce_entry == NULL) {
-<<<<<<< HEAD
-=======
-				pr_err("failed to alloc memory\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				rc = -ENOMEM;
 				goto out;
 			}
@@ -9405,10 +8638,6 @@ static int qseecom_retrieve_ce_data(struct platform_device *pdev)
 		unit_tbl = kcalloc(tbl_size, sizeof(int), GFP_KERNEL);
 		total_units = 0;
 		if (!pfde_tbl || !unit_tbl) {
-<<<<<<< HEAD
-=======
-			pr_err("failed to alloc memory\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rc = -ENOMEM;
 			goto out;
 		}
@@ -9436,10 +8665,6 @@ static int qseecom_retrieve_ce_data(struct platform_device *pdev)
 			total_units, sizeof(struct qseecom_ce_info_use),
 				GFP_KERNEL);
 		if (!pce_info_use) {
-<<<<<<< HEAD
-=======
-			pr_err("failed to alloc memory\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rc = -ENOMEM;
 			goto out;
 		}
@@ -9461,10 +8686,6 @@ static int qseecom_retrieve_ce_data(struct platform_device *pdev)
 					sizeof(struct qseecom_ce_pipe_entry),
 					GFP_KERNEL);
 			if (pce_entry == NULL) {
-<<<<<<< HEAD
-=======
-				pr_err("failed to alloc memory\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				rc = -ENOMEM;
 				goto out;
 			}
@@ -9520,10 +8741,6 @@ static int qseecom_retrieve_ce_data(struct platform_device *pdev)
 		pce_info_use = qseecom.ce_info.fde =
 			kzalloc(sizeof(struct qseecom_ce_info_use), GFP_KERNEL);
 		if (!pce_info_use) {
-<<<<<<< HEAD
-=======
-			pr_err("failed to alloc memory\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rc = -ENOMEM;
 			goto out;
 		}
@@ -9540,11 +8757,7 @@ static int qseecom_retrieve_ce_data(struct platform_device *pdev)
 			rc = -EINVAL;
 				goto out;
 		} else {
-<<<<<<< HEAD
 			pr_debug("disk-encrypt-pipe-pair=0x%x\n",
-=======
-			pr_debug("disk-encrypt-pipe-pair=0x%x",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				disk_encrypt_pipe);
 		}
 		entry = pce_info_use->num_ce_pipe_entries =
@@ -9554,10 +8767,6 @@ static int qseecom_retrieve_ce_data(struct platform_device *pdev)
 				sizeof(struct qseecom_ce_pipe_entry),
 				GFP_KERNEL);
 		if (pce_entry == NULL) {
-<<<<<<< HEAD
-=======
-			pr_err("failed to alloc memory\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rc = -ENOMEM;
 			goto out;
 		}
@@ -9568,21 +8777,13 @@ static int qseecom_retrieve_ce_data(struct platform_device *pdev)
 			pce_entry++;
 		}
 	} else {
-<<<<<<< HEAD
 		pr_warn("Device does not support FDE\n");
-=======
-		pr_warn("Device does not support FDE");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		disk_encrypt_pipe = 0xff;
 	}
 	if (qseecom.support_pfe) {
 		pce_info_use = qseecom.ce_info.pfe =
 			kzalloc(sizeof(struct qseecom_ce_info_use), GFP_KERNEL);
 		if (!pce_info_use) {
-<<<<<<< HEAD
-=======
-			pr_err("failed to alloc memory\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rc = -ENOMEM;
 			goto out;
 		}
@@ -9600,11 +8801,7 @@ static int qseecom_retrieve_ce_data(struct platform_device *pdev)
 			rc = -EINVAL;
 			goto out;
 		} else {
-<<<<<<< HEAD
 			pr_debug("file-encrypt-pipe-pair=0x%x\n",
-=======
-			pr_debug("file-encrypt-pipe-pair=0x%x",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				file_encrypt_pipe);
 		}
 		entry = pce_info_use->num_ce_pipe_entries =
@@ -9614,10 +8811,6 @@ static int qseecom_retrieve_ce_data(struct platform_device *pdev)
 				sizeof(struct qseecom_ce_pipe_entry),
 				GFP_KERNEL);
 		if (pce_entry == NULL) {
-<<<<<<< HEAD
-=======
-			pr_err("failed to alloc memory\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rc = -ENOMEM;
 			goto out;
 		}
@@ -9628,11 +8821,7 @@ static int qseecom_retrieve_ce_data(struct platform_device *pdev)
 			pce_entry++;
 		}
 	} else {
-<<<<<<< HEAD
 		pr_warn("Device does not support PFE\n");
-=======
-		pr_warn("Device does not support PFE");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		file_encrypt_pipe = 0xff;
 	}
 
@@ -9915,7 +9104,6 @@ static int qseecom_check_whitelist_feature(void)
 	return version >= MAKE_WHITELIST_VERSION(1, 0, 0);
 }
 
-<<<<<<< HEAD
 static int qseecom_init_clk(void)
 {
 	int rc;
@@ -9948,326 +9136,10 @@ static void qseecom_deinit_clk(void)
 {
 	if (qseecom.no_clock_support)
 		return;
-=======
-static int qseecom_probe(struct platform_device *pdev)
-{
-	int rc;
-	int i;
-	uint32_t feature = 10;
-	struct device *class_dev;
-	struct qseecom_command_scm_resp resp;
-	struct qseecom_ce_info_use *pce_info_use = NULL;
-	struct msm_bus_scale_pdata *qseecom_platform_support = NULL;
-
-	qseecom.qsee_bw_count = 0;
-	qseecom.qsee_perf_client = 0;
-	qseecom.qsee_sfpb_bw_count = 0;
-
-	qseecom.qsee.ce_core_clk = NULL;
-	qseecom.qsee.ce_clk = NULL;
-	qseecom.qsee.ce_core_src_clk = NULL;
-	qseecom.qsee.ce_bus_clk = NULL;
-
-	qseecom.cumulative_mode = 0;
-	qseecom.current_mode = INACTIVE;
-	qseecom.support_bus_scaling = false;
-	qseecom.support_fde = false;
-	qseecom.support_pfe = false;
-
-	qseecom.ce_drv.ce_core_clk = NULL;
-	qseecom.ce_drv.ce_clk = NULL;
-	qseecom.ce_drv.ce_core_src_clk = NULL;
-	qseecom.ce_drv.ce_bus_clk = NULL;
-	atomic_set(&qseecom.qseecom_state, QSEECOM_STATE_NOT_READY);
-
-	qseecom.app_block_ref_cnt = 0;
-	init_waitqueue_head(&qseecom.app_block_wq);
-	qseecom.whitelist_support = true;
-
-	rc = alloc_chrdev_region(&qseecom_device_no, 0, 1, QSEECOM_DEV);
-	if (rc < 0) {
-		pr_err("alloc_chrdev_region failed %d\n", rc);
-		return rc;
-	}
-
-	driver_class = class_create(THIS_MODULE, QSEECOM_DEV);
-	if (IS_ERR(driver_class)) {
-		rc = -ENOMEM;
-		pr_err("class_create failed %d\n", rc);
-		goto exit_unreg_chrdev_region;
-	}
-
-	class_dev = device_create(driver_class, NULL, qseecom_device_no, NULL,
-			QSEECOM_DEV);
-	if (IS_ERR(class_dev)) {
-		pr_err("class_device_create failed %d\n", rc);
-		rc = -ENOMEM;
-		goto exit_destroy_class;
-	}
-
-	cdev_init(&qseecom.cdev, &qseecom_fops);
-	qseecom.cdev.owner = THIS_MODULE;
-
-	rc = cdev_add(&qseecom.cdev, MKDEV(MAJOR(qseecom_device_no), 0), 1);
-	if (rc < 0) {
-		pr_err("cdev_add failed %d\n", rc);
-		goto exit_destroy_device;
-	}
-
-	INIT_LIST_HEAD(&qseecom.registered_listener_list_head);
-	INIT_LIST_HEAD(&qseecom.registered_app_list_head);
-	spin_lock_init(&qseecom.registered_app_list_lock);
-	INIT_LIST_HEAD(&qseecom.unregister_lsnr_pending_list_head);
-	INIT_LIST_HEAD(&qseecom.registered_kclient_list_head);
-	spin_lock_init(&qseecom.registered_kclient_list_lock);
-	init_waitqueue_head(&qseecom.send_resp_wq);
-	init_waitqueue_head(&qseecom.register_lsnr_pending_wq);
-	init_waitqueue_head(&qseecom.unregister_lsnr_kthread_wq);
-	INIT_LIST_HEAD(&qseecom.unload_app_pending_list_head);
-	init_waitqueue_head(&qseecom.unload_app_kthread_wq);
-	qseecom.send_resp_flag = 0;
-
-	qseecom.qsee_version = QSEEE_VERSION_00;
-	mutex_lock(&app_access_lock);
-	rc = qseecom_scm_call(6, 3, &feature, sizeof(feature),
-		&resp, sizeof(resp));
-	mutex_unlock(&app_access_lock);
-	pr_info("qseecom.qsee_version = 0x%x\n", resp.result);
-	if (rc) {
-		pr_err("Failed to get QSEE version info %d\n", rc);
-		goto exit_del_cdev;
-	}
-	qseecom.qsee_version = resp.result;
-	qseecom.qseos_version = QSEOS_VERSION_14;
-	qseecom.commonlib_loaded = false;
-	qseecom.commonlib64_loaded = false;
-	qseecom.pdev = class_dev;
-	qseecom.dev = &pdev->dev;
-
-	rc = dma_set_mask(qseecom.dev, DMA_BIT_MASK(64));
-	if (rc) {
-		pr_err("qseecom failed to set dma mask %d\n", rc);
-		goto exit_del_cdev;
-	}
-
-	/* register client for bus scaling */
-	if (pdev->dev.of_node) {
-		qseecom.pdev->of_node = pdev->dev.of_node;
-		qseecom.support_bus_scaling =
-				of_property_read_bool((&pdev->dev)->of_node,
-						"qcom,support-bus-scaling");
-		rc = qseecom_retrieve_ce_data(pdev);
-		if (rc)
-			goto exit_destroy_ion_client;
-		qseecom.appsbl_qseecom_support =
-				of_property_read_bool((&pdev->dev)->of_node,
-						"qcom,appsbl-qseecom-support");
-		pr_debug("qseecom.appsbl_qseecom_support = 0x%x",
-				qseecom.appsbl_qseecom_support);
-
-		qseecom.commonlib64_loaded =
-				of_property_read_bool((&pdev->dev)->of_node,
-						"qcom,commonlib64-loaded-by-uefi");
-		pr_debug("qseecom.commonlib64-loaded-by-uefi = 0x%x",
-				qseecom.commonlib64_loaded);
-		qseecom.fde_key_size =
-			of_property_read_bool((&pdev->dev)->of_node,
-						"qcom,fde-key-size");
-		qseecom.no_clock_support =
-				of_property_read_bool((&pdev->dev)->of_node,
-						"qcom,no-clock-support");
-		if (!qseecom.no_clock_support) {
-			pr_info("qseecom clocks handled by other subsystem\n");
-		} else {
-			pr_info("no-clock-support=0x%x",
-			qseecom.no_clock_support);
-		}
-
-		if (of_property_read_u32((&pdev->dev)->of_node,
-					"qcom,qsee-reentrancy-support",
-					&qseecom.qsee_reentrancy_support)) {
-			pr_warn("qsee reentrancy support phase is not defined, setting to default 0\n");
-			qseecom.qsee_reentrancy_support = 0;
-		} else {
-			pr_warn("qseecom.qsee_reentrancy_support = %d\n",
-				qseecom.qsee_reentrancy_support);
-		}
-
-		qseecom.enable_key_wrap_in_ks =
-			of_property_read_bool((&pdev->dev)->of_node,
-					"qcom,enable-key-wrap-in-ks");
-		if (qseecom.enable_key_wrap_in_ks) {
-			pr_warn("qseecom.enable_key_wrap_in_ks = %d\n",
-					qseecom.enable_key_wrap_in_ks);
-		}
-
-		/*
-		 * The qseecom bus scaling flag can not be enabled when
-		 * crypto clock is not handled by HLOS.
-		 */
-		if (qseecom.no_clock_support && qseecom.support_bus_scaling) {
-			pr_err("support_bus_scaling flag can not be enabled.\n");
-			rc = -EINVAL;
-			goto exit_destroy_ion_client;
-		}
-
-		if (of_property_read_u32((&pdev->dev)->of_node,
-				"qcom,ce-opp-freq",
-				&qseecom.ce_opp_freq_hz)) {
-			pr_debug("CE operating frequency is not defined, setting to default 100MHZ\n");
-			qseecom.ce_opp_freq_hz = QSEE_CE_CLK_100MHZ;
-		}
-		rc = __qseecom_init_clk(CLK_QSEE);
-		if (rc)
-			goto exit_destroy_ion_client;
-
-		if ((qseecom.qsee.instance != qseecom.ce_drv.instance) &&
-				(qseecom.support_pfe || qseecom.support_fde)) {
-			rc = __qseecom_init_clk(CLK_CE_DRV);
-			if (rc) {
-				__qseecom_deinit_clk(CLK_QSEE);
-				goto exit_destroy_ion_client;
-			}
-		} else {
-			struct qseecom_clk *qclk;
-
-			qclk = &qseecom.qsee;
-			qseecom.ce_drv.ce_core_clk = qclk->ce_core_clk;
-			qseecom.ce_drv.ce_clk = qclk->ce_clk;
-			qseecom.ce_drv.ce_core_src_clk = qclk->ce_core_src_clk;
-			qseecom.ce_drv.ce_bus_clk = qclk->ce_bus_clk;
-		}
-
-		qseecom_platform_support = (struct msm_bus_scale_pdata *)
-						msm_bus_cl_get_pdata(pdev);
-
-		if (qseecom.qsee_version >= (QSEE_VERSION_02) &&
-			(!qseecom.is_apps_region_protected &&
-			!qseecom.appsbl_qseecom_support)) {
-			struct resource *resource = NULL;
-			struct qsee_apps_region_info_ireq req;
-			struct qsee_apps_region_info_64bit_ireq req_64bit;
-			struct qseecom_command_scm_resp resp;
-			void *cmd_buf = NULL;
-			size_t cmd_len;
-
-			resource = platform_get_resource_byname(pdev,
-					IORESOURCE_MEM, "secapp-region");
-			if (resource) {
-				if (qseecom.qsee_version < QSEE_VERSION_40) {
-					req.qsee_cmd_id =
-						QSEOS_APP_REGION_NOTIFICATION;
-					req.addr = (uint32_t)resource->start;
-					req.size = resource_size(resource);
-					cmd_buf = (void *)&req;
-					cmd_len = sizeof(struct
-						qsee_apps_region_info_ireq);
-					pr_warn("secure app region addr=0x%x size=0x%x",
-							req.addr, req.size);
-				} else {
-					req_64bit.qsee_cmd_id =
-						QSEOS_APP_REGION_NOTIFICATION;
-					req_64bit.addr = resource->start;
-					req_64bit.size = resource_size(
-							resource);
-					cmd_buf = (void *)&req_64bit;
-					cmd_len = sizeof(struct
-					qsee_apps_region_info_64bit_ireq);
-					pr_warn("secure app region addr=0x%llx size=0x%x",
-						req_64bit.addr, req_64bit.size);
-				}
-			} else {
-				pr_err("Fail to get secure app region info\n");
-				rc = -EINVAL;
-				goto exit_deinit_clock;
-			}
-			rc = __qseecom_enable_clk(CLK_QSEE);
-			if (rc) {
-				pr_err("CLK_QSEE enabling failed (%d)\n", rc);
-				rc = -EIO;
-				goto exit_deinit_clock;
-			}
-			mutex_lock(&app_access_lock);
-			rc = qseecom_scm_call(SCM_SVC_TZSCHEDULER, 1,
-					cmd_buf, cmd_len,
-					&resp, sizeof(resp));
-			mutex_unlock(&app_access_lock);
-			__qseecom_disable_clk(CLK_QSEE);
-			if (rc || (resp.result != QSEOS_RESULT_SUCCESS)) {
-				pr_err("send secapp reg fail %d resp.res %d\n",
-							rc, resp.result);
-				rc = -EINVAL;
-				goto exit_deinit_clock;
-			}
-		}
-	/*
-	 * By default, appsbl only loads cmnlib. If OEM changes appsbl to
-	 * load cmnlib64 too, while cmnlib64 img is not present in non_hlos.bin,
-	 * Pls add "qseecom.commonlib64_loaded = true" here too.
-	 */
-		if (qseecom.is_apps_region_protected ||
-					qseecom.appsbl_qseecom_support)
-			qseecom.commonlib_loaded = true;
-	} else {
-		qseecom_platform_support = (struct msm_bus_scale_pdata *)
-						pdev->dev.platform_data;
-	}
-
-	if (qseecom.support_bus_scaling) {
-		init_timer(&(qseecom.bw_scale_down_timer));
-		INIT_WORK(&qseecom.bw_inactive_req_ws,
-					qseecom_bw_inactive_req_work);
-		qseecom.bw_scale_down_timer.function =
-				qseecom_scale_bus_bandwidth_timer_callback;
-		qseecom.timer_running = false;
-		qseecom.qsee_perf_client = msm_bus_scale_register_client(
-		      qseecom_platform_support);
-	}
-
-	qseecom.whitelist_support = qseecom_check_whitelist_feature();
-	pr_warn("qseecom.whitelist_support = %d\n",
-				qseecom.whitelist_support);
-
-	/*create a kthread to process pending listener unregister task */
-	qseecom.unregister_lsnr_kthread_task = kthread_run(
-			__qseecom_unregister_listener_kthread_func,
-			NULL, "qseecom-unreg-lsnr");
-	if (IS_ERR(qseecom.unregister_lsnr_kthread_task)) {
-		pr_err("failed to create kthread to unregister listener\n");
-		rc = -EINVAL;
-		goto exit_deinit_clock;
-	}
-	atomic_set(&qseecom.unregister_lsnr_kthread_state,
-					LSNR_UNREG_KT_SLEEP);
-
-	/*create a kthread to process pending ta unloading task */
-	qseecom.unload_app_kthread_task = kthread_run(
-			__qseecom_unload_app_kthread_func,
-			NULL, "qseecom-unload-ta");
-	if (IS_ERR(qseecom.unload_app_kthread_task)) {
-		pr_err("failed to create kthread to unload ta\n");
-		rc = -EINVAL;
-		goto exit_kill_unreg_lsnr_kthread;
-	}
-	atomic_set(&qseecom.unload_app_kthread_state,
-						UNLOAD_APP_KT_SLEEP);
-
-	if (!qseecom.qsee_perf_client)
-		pr_err("Unable to register bus client\n");
-
-	atomic_set(&qseecom.qseecom_state, QSEECOM_STATE_READY);
-	return 0;
-
-exit_kill_unreg_lsnr_kthread:
-	kthread_stop(qseecom.unregister_lsnr_kthread_task);
-
-exit_deinit_clock:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__qseecom_deinit_clk(CLK_QSEE);
 	if ((qseecom.qsee.instance != qseecom.ce_drv.instance) &&
 		(qseecom.support_pfe || qseecom.support_fde))
 		__qseecom_deinit_clk(CLK_CE_DRV);
-<<<<<<< HEAD
 }
 
 static int qseecom_init_bus(struct platform_device *pdev)
@@ -10357,9 +9229,6 @@ static void qseecom_release_ce_data(void)
 	int i;
 	struct qseecom_ce_info_use *pce_info_use = NULL;
 
-=======
-exit_destroy_ion_client:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (qseecom.ce_info.fde) {
 		pce_info_use = qseecom.ce_info.fde;
 		for (i = 0; i < qseecom.ce_info.num_fde; i++) {
@@ -10376,7 +9245,6 @@ exit_destroy_ion_client:
 		}
 		kfree(qseecom.ce_info.pfe);
 	}
-<<<<<<< HEAD
 }
 
 static int qseecom_init_dev(struct platform_device *pdev)
@@ -10707,31 +9575,12 @@ exit_deinit_dev:
 }
 
 
-=======
-exit_del_cdev:
-	cdev_del(&qseecom.cdev);
-exit_destroy_device:
-	device_destroy(driver_class, qseecom_device_no);
-exit_destroy_class:
-	class_destroy(driver_class);
-exit_unreg_chrdev_region:
-	unregister_chrdev_region(qseecom_device_no, 1);
-	return rc;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int qseecom_remove(struct platform_device *pdev)
 {
 	struct qseecom_registered_kclient_list *kclient = NULL;
 	struct qseecom_registered_kclient_list *kclient_tmp = NULL;
 	unsigned long flags = 0;
 	int ret = 0;
-<<<<<<< HEAD
-=======
-	int i;
-	struct qseecom_ce_pipe_entry *pce_entry;
-	struct qseecom_ce_info_use *pce_info_use;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	atomic_set(&qseecom.qseecom_state, QSEECOM_STATE_NOT_READY);
 	spin_lock_irqsave(&qseecom.registered_kclient_list_lock, flags);
@@ -10762,7 +9611,6 @@ static int qseecom_remove(struct platform_device *pdev)
 	if (qseecom.qseos_version > QSEEE_VERSION_00)
 		qseecom_unload_commonlib_image();
 
-<<<<<<< HEAD
 	qseecom_deregister_shmbridge();
 	kthread_stop(qseecom.unload_app_kthread_task);
 	kthread_stop(qseecom.unregister_lsnr_kthread_task);
@@ -10770,58 +9618,6 @@ static int qseecom_remove(struct platform_device *pdev)
 	qseecom_deinit_clk();
 	qseecom_release_ce_data();
 	qseecom_deinit_dev();
-=======
-	if (qseecom.qsee_perf_client)
-		msm_bus_scale_client_update_request(qseecom.qsee_perf_client,
-									0);
-	if (pdev->dev.platform_data != NULL)
-		msm_bus_scale_unregister_client(qseecom.qsee_perf_client);
-
-	if (qseecom.support_bus_scaling) {
-		cancel_work_sync(&qseecom.bw_inactive_req_ws);
-		del_timer_sync(&qseecom.bw_scale_down_timer);
-	}
-
-	if (qseecom.ce_info.fde) {
-		pce_info_use = qseecom.ce_info.fde;
-		for (i = 0; i < qseecom.ce_info.num_fde; i++) {
-			pce_entry = pce_info_use->ce_pipe_entry;
-			kfree(pce_entry);
-			pce_info_use++;
-		}
-	}
-	kfree(qseecom.ce_info.fde);
-	if (qseecom.ce_info.pfe) {
-		pce_info_use = qseecom.ce_info.pfe;
-		for (i = 0; i < qseecom.ce_info.num_pfe; i++) {
-			pce_entry = pce_info_use->ce_pipe_entry;
-			kfree(pce_entry);
-			pce_info_use++;
-		}
-	}
-	kfree(qseecom.ce_info.pfe);
-
-	/* register client for bus scaling */
-	if (pdev->dev.of_node) {
-		__qseecom_deinit_clk(CLK_QSEE);
-		if ((qseecom.qsee.instance != qseecom.ce_drv.instance) &&
-				(qseecom.support_pfe || qseecom.support_fde))
-			__qseecom_deinit_clk(CLK_CE_DRV);
-	}
-
-	kthread_stop(qseecom.unload_app_kthread_task);
-
-	kthread_stop(qseecom.unregister_lsnr_kthread_task);
-
-	cdev_del(&qseecom.cdev);
-
-	device_destroy(driver_class, qseecom_device_no);
-
-	class_destroy(driver_class);
-
-	unregister_chrdev_region(qseecom_device_no, 1);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -10960,10 +9756,6 @@ static struct platform_driver qseecom_plat_driver = {
 	.resume = qseecom_resume,
 	.driver = {
 		.name = "qseecom",
-<<<<<<< HEAD
-=======
-		.owner = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.of_match_table = qseecom_match,
 	},
 };

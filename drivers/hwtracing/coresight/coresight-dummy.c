@@ -1,19 +1,6 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2016-2017, The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2016-2017, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/kernel.h>
@@ -48,11 +35,7 @@ static void dummy_source_disable(struct coresight_device *csdev,
 	dev_info(drvdata->dev, "Dummy source disabled\n");
 }
 
-<<<<<<< HEAD
 static int dummy_sink_enable(struct coresight_device *csdev, u32 mode)
-=======
-static int dummy_sink_enable(struct coresight_device *csdev, u32 mode, void *data)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct dummy_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
 
@@ -61,20 +44,11 @@ static int dummy_sink_enable(struct coresight_device *csdev, u32 mode, void *dat
 	return 0;
 }
 
-<<<<<<< HEAD
 static void dummy_sink_disable(struct coresight_device *csdev)
-=======
-static int dummy_sink_disable(struct coresight_device *csdev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct dummy_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
 
 	dev_info(drvdata->dev, "Dummy sink disabled\n");
-<<<<<<< HEAD
-=======
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int dummy_trace_id(struct coresight_device *csdev)
@@ -169,10 +143,6 @@ static struct platform_driver dummy_driver = {
 	.remove	= dummy_remove,
 	.driver	= {
 		.name   = "coresight-dummy",
-<<<<<<< HEAD
-=======
-		.owner	= THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.of_match_table = dummy_match,
 	},
 };

@@ -1,19 +1,6 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2014-2015, 2017-2019, The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2014-2015, 2017-2018, 2020, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/coresight.h>
@@ -569,10 +556,7 @@ static irqreturn_t mdm_status_change(int irq, void *dev_id)
 		cancel_delayed_work(&mdm->mdm2ap_status_check_work);
 		dev_dbg(dev, "status = 1: mdm is now ready\n");
 		mdm->ready = true;
-<<<<<<< HEAD
 		esoc_clink_evt_notify(ESOC_BOOT_STATE, esoc);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mdm_trigger_dbg(mdm);
 		queue_work(mdm->mdm_queue, &mdm->mdm_status_work);
 		if (mdm->get_restart_reason)
@@ -1061,16 +1045,11 @@ err_destroy_wrkq:
 	return ret;
 }
 
-<<<<<<< HEAD
 static int sdx55m_setup_hw(struct mdm_ctrl *mdm,
-=======
-static int sdxprairie_setup_hw(struct mdm_ctrl *mdm,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					const struct mdm_ops *ops,
 					struct platform_device *pdev)
 {
 	int ret;
-<<<<<<< HEAD
 	struct device_node *node;
 	struct esoc_clink *esoc;
 	const struct esoc_clink_ops *const clink_ops = ops->clink_ops;
@@ -1163,40 +1142,6 @@ err_release_ipc:
 	mdm_release_ipc_gpio(mdm);
 err_destroy_wrkq:
 	destroy_workqueue(mdm->mdm_queue);
-=======
-
-	/* Same configuration as that of sdx50, except for the name */
-	ret = sdx50m_setup_hw(mdm, ops, pdev);
-	if (ret) {
-		dev_err(mdm->dev, "Hardware setup failed for sdxprairie\n");
-		esoc_mdm_log("Hardware setup failed for sdxprairie\n");
-		return ret;
-	}
-
-	mdm->esoc->name = SDXPRAIRIE_LABEL;
-	esoc_mdm_log("Hardware setup done for sdxprairie\n");
-
-	return ret;
-}
-
-static int marmot_setup_hw(struct mdm_ctrl *mdm,
-					const struct mdm_ops *ops,
-					struct platform_device *pdev)
-{
-	int ret;
-
-	/* Same configuration as that of sdx50, except for the name */
-	ret = sdx50m_setup_hw(mdm, ops, pdev);
-	if (ret) {
-		dev_err(mdm->dev, "Hardware setup failed for marmot\n");
-		esoc_mdm_log("Hardware setup failed for marmot\n");
-		return ret;
-	}
-
-	mdm->esoc->name = MARMOT_LABEL;
-	esoc_mdm_log("Hardware setup done for marmot\n");
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -1219,23 +1164,10 @@ static struct mdm_ops sdx50m_ops = {
 	.pon_ops = &sdx50m_pon_ops,
 };
 
-<<<<<<< HEAD
 static struct mdm_ops sdx55m_ops = {
 	.clink_ops = &mdm_cops,
 	.config_hw = sdx55m_setup_hw,
 	.pon_ops = &sdx55m_pon_ops,
-=======
-static struct mdm_ops sdxprairie_ops = {
-	.clink_ops = &mdm_cops,
-	.config_hw = sdxprairie_setup_hw,
-	.pon_ops = &sdx50m_pon_ops,
-};
-
-static struct mdm_ops marmot_ops = {
-	.clink_ops = &mdm_cops,
-	.config_hw = marmot_setup_hw,
-	.pon_ops = &sdxmarmot_pon_ops,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct of_device_id mdm_dt_match[] = {
@@ -1243,15 +1175,8 @@ static const struct of_device_id mdm_dt_match[] = {
 		.data = &mdm9x55_ops, },
 	{ .compatible = "qcom,ext-sdx50m",
 		.data = &sdx50m_ops, },
-<<<<<<< HEAD
 	{ .compatible = "qcom,ext-sdx55m",
 		.data = &sdx55m_ops, },
-=======
-	{ .compatible = "qcom,ext-sdxprairie",
-		.data = &sdxprairie_ops, },
-	{ .compatible = "qcom,ext-marmot",
-		.data = &marmot_ops, },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{},
 };
 MODULE_DEVICE_TABLE(of, mdm_dt_match);

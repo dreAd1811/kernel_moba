@@ -41,10 +41,7 @@
 #include "qed_rdma.h"
 #include "qed_reg_addr.h"
 #include "qed_sp.h"
-<<<<<<< HEAD
 #include "qed_ooo.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define QED_IWARP_ORD_DEFAULT		32
 #define QED_IWARP_IRD_DEFAULT		32
@@ -67,29 +64,21 @@ struct mpa_v2_hdr {
 
 #define QED_IWARP_INVALID_TCP_CID	0xffffffff
 #define QED_IWARP_RCV_WND_SIZE_DEF	(256 * 1024)
-<<<<<<< HEAD
 #define QED_IWARP_RCV_WND_SIZE_MIN	(0xffff)
 #define TIMESTAMP_HEADER_SIZE		(12)
 #define QED_IWARP_MAX_FIN_RT_DEFAULT	(2)
-=======
-#define QED_IWARP_RCV_WND_SIZE_MIN	(64 * 1024)
-#define TIMESTAMP_HEADER_SIZE		(12)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define QED_IWARP_TS_EN			BIT(0)
 #define QED_IWARP_DA_EN			BIT(1)
 #define QED_IWARP_PARAM_CRC_NEEDED	(1)
 #define QED_IWARP_PARAM_P2P		(1)
 
-<<<<<<< HEAD
 #define QED_IWARP_DEF_MAX_RT_TIME	(0)
 #define QED_IWARP_DEF_CWND_FACTOR	(4)
 #define QED_IWARP_DEF_KA_MAX_PROBE_CNT	(5)
 #define QED_IWARP_DEF_KA_TIMEOUT	(1200000)	/* 20 min */
 #define QED_IWARP_DEF_KA_INTERVAL	(1000)		/* 1 sec */
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int qed_iwarp_async_event(struct qed_hwfn *p_hwfn,
 				 u8 fw_event_code, u16 echo,
 				 union event_ring_data *data,
@@ -138,7 +127,6 @@ static void qed_iwarp_cid_cleaned(struct qed_hwfn *p_hwfn, u32 cid)
 	spin_unlock_bh(&p_hwfn->p_rdma_info->lock);
 }
 
-<<<<<<< HEAD
 void
 qed_iwarp_init_fw_ramrod(struct qed_hwfn *p_hwfn,
 			 struct iwarp_init_func_ramrod_data *p_ramrod)
@@ -152,8 +140,6 @@ qed_iwarp_init_fw_ramrod(struct qed_hwfn *p_hwfn,
 	return;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int qed_iwarp_alloc_cid(struct qed_hwfn *p_hwfn, u32 *cid)
 {
 	int rc;
@@ -285,11 +271,8 @@ int qed_iwarp_create_qp(struct qed_hwfn *p_hwfn,
 	p_ramrod->sq_num_pages = qp->sq_num_pages;
 	p_ramrod->rq_num_pages = qp->rq_num_pages;
 
-<<<<<<< HEAD
 	p_ramrod->srq_id.srq_idx = cpu_to_le16(qp->srq_id);
 	p_ramrod->srq_id.opaque_fid = cpu_to_le16(p_hwfn->hw_info.opaque_fid);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	p_ramrod->qp_handle_for_cqe.hi = cpu_to_le32(qp->qp_handle.hi);
 	p_ramrod->qp_handle_for_cqe.lo = cpu_to_le32(qp->qp_handle.lo);
 
@@ -394,11 +377,7 @@ qed_iwarp2roce_state(enum qed_iwarp_qp_state state)
 	}
 }
 
-<<<<<<< HEAD
 const static char *iwarp_state_names[] = {
-=======
-const char *iwarp_state_names[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	"IDLE",
 	"RTS",
 	"TERMINATE",
@@ -553,12 +532,7 @@ int qed_iwarp_destroy_qp(struct qed_hwfn *p_hwfn, struct qed_rdma_qp *qp)
 
 	/* Make sure ep is closed before returning and freeing memory. */
 	if (ep) {
-<<<<<<< HEAD
 		while (ep->state != QED_IWARP_EP_CLOSED && wait_count++ < 200)
-=======
-		while (READ_ONCE(ep->state) != QED_IWARP_EP_CLOSED &&
-		       wait_count++ < 200)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			msleep(100);
 
 		if (ep->state != QED_IWARP_EP_CLOSED)
@@ -740,15 +714,12 @@ qed_iwarp_tcp_offload(struct qed_hwfn *p_hwfn, struct qed_iwarp_ep *ep)
 	tcp->ttl = 0x40;
 	tcp->tos_or_tc = 0;
 
-<<<<<<< HEAD
 	tcp->max_rt_time = QED_IWARP_DEF_MAX_RT_TIME;
 	tcp->cwnd = QED_IWARP_DEF_CWND_FACTOR *  tcp->mss;
 	tcp->ka_max_probe_cnt = QED_IWARP_DEF_KA_MAX_PROBE_CNT;
 	tcp->ka_timeout = QED_IWARP_DEF_KA_TIMEOUT;
 	tcp->ka_interval = QED_IWARP_DEF_KA_INTERVAL;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tcp->rcv_wnd_scale = (u8)p_hwfn->p_rdma_info->iwarp.rcv_wnd_scale;
 	tcp->connect_mode = ep->connect_mode;
 
@@ -857,10 +828,7 @@ static int
 qed_iwarp_mpa_offload(struct qed_hwfn *p_hwfn, struct qed_iwarp_ep *ep)
 {
 	struct iwarp_mpa_offload_ramrod_data *p_mpa_ramrod;
-<<<<<<< HEAD
 	struct qed_iwarp_info *iwarp_info;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct qed_sp_init_data init_data;
 	dma_addr_t async_output_phys;
 	struct qed_spq_entry *p_ent;
@@ -928,11 +896,8 @@ qed_iwarp_mpa_offload(struct qed_hwfn *p_hwfn, struct qed_iwarp_ep *ep)
 		p_mpa_ramrod->common.reject = 1;
 	}
 
-<<<<<<< HEAD
 	iwarp_info = &p_hwfn->p_rdma_info->iwarp;
 	p_mpa_ramrod->rcv_wnd = iwarp_info->rcv_wnd_size;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	p_mpa_ramrod->mode = ep->mpa_rev;
 	SET_FIELD(p_mpa_ramrod->rtr_pref,
 		  IWARP_MPA_OFFLOAD_RAMROD_DATA_RTR_SUPPORTED, ep->rtr_type);
@@ -977,11 +942,7 @@ qed_iwarp_return_ep(struct qed_hwfn *p_hwfn, struct qed_iwarp_ep *ep)
 	spin_unlock_bh(&p_hwfn->p_rdma_info->iwarp.iw_lock);
 }
 
-<<<<<<< HEAD
 static void
-=======
-void
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 qed_iwarp_parse_private_data(struct qed_hwfn *p_hwfn, struct qed_iwarp_ep *ep)
 {
 	struct mpa_v2_hdr *mpa_v2_params;
@@ -1006,11 +967,7 @@ qed_iwarp_parse_private_data(struct qed_hwfn *p_hwfn, struct qed_iwarp_ep *ep)
 				       mpa_data_size;
 }
 
-<<<<<<< HEAD
 static void
-=======
-void
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 qed_iwarp_mpa_reply_arrived(struct qed_hwfn *p_hwfn, struct qed_iwarp_ep *ep)
 {
 	struct qed_iwarp_cm_event_params params;
@@ -1066,11 +1023,8 @@ qed_iwarp_mpa_complete(struct qed_hwfn *p_hwfn,
 
 	params.ep_context = ep;
 
-<<<<<<< HEAD
 	ep->state = QED_IWARP_EP_CLOSED;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (fw_return_code) {
 	case RDMA_RETURN_OK:
 		ep->qp->max_rd_atomic_req = ep->cm_info.ord;
@@ -1130,13 +1084,6 @@ qed_iwarp_mpa_complete(struct qed_hwfn *p_hwfn,
 		break;
 	}
 
-<<<<<<< HEAD
-=======
-	if (fw_return_code != RDMA_RETURN_OK)
-		/* paired with READ_ONCE in destroy_qp */
-		smp_store_release(&ep->state, QED_IWARP_EP_CLOSED);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ep->event_cb(ep->cb_context, &params);
 
 	/* on passive side, if there is no associated QP (REJECT) we need to
@@ -1212,10 +1159,6 @@ int qed_iwarp_connect(void *rdma_cxt,
 	struct qed_iwarp_info *iwarp_info;
 	struct qed_iwarp_ep *ep;
 	u8 mpa_data_size = 0;
-<<<<<<< HEAD
-=======
-	u8 ts_hdr_size = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 cid;
 	int rc;
 
@@ -1274,14 +1217,7 @@ int qed_iwarp_connect(void *rdma_cxt,
 	       iparams->cm_info.private_data,
 	       iparams->cm_info.private_data_len);
 
-<<<<<<< HEAD
 	ep->mss = iparams->mss;
-=======
-	if (p_hwfn->p_rdma_info->iwarp.tcp_flags & QED_IWARP_TS_EN)
-		ts_hdr_size = TIMESTAMP_HEADER_SIZE;
-
-	ep->mss = iparams->mss - ts_hdr_size;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ep->mss = min_t(u16, QED_IWARP_MAX_FW_MSS, ep->mss);
 
 	ep->event_cb = iparams->event_cb;
@@ -1494,20 +1430,15 @@ int qed_iwarp_alloc(struct qed_hwfn *p_hwfn)
 	INIT_LIST_HEAD(&p_hwfn->p_rdma_info->iwarp.ep_free_list);
 	spin_lock_init(&p_hwfn->p_rdma_info->iwarp.iw_lock);
 
-<<<<<<< HEAD
 	rc = qed_iwarp_prealloc_ep(p_hwfn, true);
 	if (rc)
 		return rc;
 
 	return qed_ooo_alloc(p_hwfn);
-=======
-	return qed_iwarp_prealloc_ep(p_hwfn, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void qed_iwarp_resc_free(struct qed_hwfn *p_hwfn)
 {
-<<<<<<< HEAD
 	struct qed_iwarp_info *iwarp_info = &p_hwfn->p_rdma_info->iwarp;
 
 	qed_ooo_free(p_hwfn);
@@ -1515,9 +1446,6 @@ void qed_iwarp_resc_free(struct qed_hwfn *p_hwfn)
 	kfree(iwarp_info->mpa_bufs);
 	kfree(iwarp_info->partial_fpdus);
 	kfree(iwarp_info->mpa_intermediate_buf);
-=======
-	qed_rdma_bmap_free(p_hwfn, &p_hwfn->p_rdma_info->tcp_cid_map, 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int qed_iwarp_accept(void *rdma_cxt, struct qed_iwarp_accept_in *iparams)
@@ -1839,7 +1767,6 @@ qed_iwarp_parse_rx_pkt(struct qed_hwfn *p_hwfn,
 	return 0;
 }
 
-<<<<<<< HEAD
 static struct qed_iwarp_fpdu *qed_iwarp_get_curr_fpdu(struct qed_hwfn *p_hwfn,
 						      u16 cid)
 {
@@ -2403,8 +2330,6 @@ err:
 			      iwarp_info->ll2_mpa_handle);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void
 qed_iwarp_ll2_comp_syn_pkt(void *cxt, struct qed_ll2_comp_rx_data *data)
 {
@@ -2417,10 +2342,6 @@ qed_iwarp_ll2_comp_syn_pkt(void *cxt, struct qed_ll2_comp_rx_data *data)
 	u8 local_mac_addr[ETH_ALEN];
 	struct qed_iwarp_ep *ep;
 	int tcp_start_offset;
-<<<<<<< HEAD
-=======
-	u8 ts_hdr_size = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 ll2_syn_handle;
 	int payload_len;
 	u32 hdr_size;
@@ -2428,7 +2349,6 @@ qed_iwarp_ll2_comp_syn_pkt(void *cxt, struct qed_ll2_comp_rx_data *data)
 
 	memset(&cm_info, 0, sizeof(cm_info));
 	ll2_syn_handle = p_hwfn->p_rdma_info->iwarp.ll2_syn_handle;
-<<<<<<< HEAD
 
 	/* Check if packet was received with errors... */
 	if (data->err_flags) {
@@ -2437,8 +2357,6 @@ qed_iwarp_ll2_comp_syn_pkt(void *cxt, struct qed_ll2_comp_rx_data *data)
 		goto err;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (GET_FIELD(data->parse_flags,
 		      PARSING_AND_ERR_FLAGS_L4CHKSMWASCALCULATED) &&
 	    GET_FIELD(data->parse_flags, PARSING_AND_ERR_FLAGS_L4CHKSMERROR)) {
@@ -2463,16 +2381,6 @@ qed_iwarp_ll2_comp_syn_pkt(void *cxt, struct qed_ll2_comp_rx_data *data)
 
 		memset(&tx_pkt, 0, sizeof(tx_pkt));
 		tx_pkt.num_of_bds = 1;
-<<<<<<< HEAD
-=======
-		tx_pkt.vlan = data->vlan;
-
-		if (GET_FIELD(data->parse_flags,
-			      PARSING_AND_ERR_FLAGS_TAG8021QEXIST))
-			SET_FIELD(tx_pkt.bd_flags,
-				  CORE_TX_BD_DATA_VLAN_INSERTION, 1);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		tx_pkt.l4_hdr_offset_w = (data->length.packet_length) >> 2;
 		tx_pkt.tx_dest = QED_LL2_TX_DEST_LB;
 		tx_pkt.first_frag = buf->data_phys_addr +
@@ -2511,15 +2419,7 @@ qed_iwarp_ll2_comp_syn_pkt(void *cxt, struct qed_ll2_comp_rx_data *data)
 
 	memcpy(&ep->cm_info, &cm_info, sizeof(ep->cm_info));
 
-<<<<<<< HEAD
 	hdr_size = ((cm_info.ip_version == QED_TCP_IPV4) ? 40 : 60);
-=======
-	if (p_hwfn->p_rdma_info->iwarp.tcp_flags & QED_IWARP_TS_EN)
-		ts_hdr_size = TIMESTAMP_HEADER_SIZE;
-
-	hdr_size = ((cm_info.ip_version == QED_TCP_IPV4) ? 40 : 60) +
-		   ts_hdr_size;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ep->mss = p_hwfn->p_rdma_info->iwarp.max_mtu - hdr_size;
 	ep->mss = min_t(u16, QED_IWARP_MAX_FW_MSS, ep->mss);
 
@@ -2560,7 +2460,6 @@ static void qed_iwarp_ll2_comp_tx_pkt(void *cxt, u8 connection_handle,
 				      bool b_last_fragment, bool b_last_packet)
 {
 	struct qed_iwarp_ll2_buff *buffer = cookie;
-<<<<<<< HEAD
 	struct qed_iwarp_ll2_buff *piggy;
 	struct qed_hwfn *p_hwfn = cxt;
 
@@ -2580,12 +2479,6 @@ static void qed_iwarp_ll2_comp_tx_pkt(void *cxt, u8 connection_handle,
 		qed_iwarp_process_pending_pkts(p_hwfn);
 
 	return;
-=======
-	struct qed_hwfn *p_hwfn = cxt;
-
-	/* this was originally an rx packet, post it back */
-	qed_iwarp_ll2_post_rx(p_hwfn, buffer, connection_handle);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void qed_iwarp_ll2_rel_tx_pkt(void *cxt, u8 connection_handle,
@@ -2598,7 +2491,6 @@ static void qed_iwarp_ll2_rel_tx_pkt(void *cxt, u8 connection_handle,
 	if (!buffer)
 		return;
 
-<<<<<<< HEAD
 	if (buffer->piggy_buf) {
 		dma_free_coherent(&p_hwfn->cdev->pdev->dev,
 				  buffer->piggy_buf->buff_size,
@@ -2608,15 +2500,12 @@ static void qed_iwarp_ll2_rel_tx_pkt(void *cxt, u8 connection_handle,
 		kfree(buffer->piggy_buf);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dma_free_coherent(&p_hwfn->cdev->pdev->dev, buffer->buff_size,
 			  buffer->data, buffer->data_phys_addr);
 
 	kfree(buffer);
 }
 
-<<<<<<< HEAD
 /* The only slowpath for iwarp ll2 is unalign flush. When this completion
  * is received, need to reset the FPDU.
  */
@@ -2640,8 +2529,6 @@ qed_iwarp_ll2_slowpath(void *cxt,
 		memset(fpdu, 0, sizeof(*fpdu));
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int qed_iwarp_ll2_stop(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt)
 {
 	struct qed_iwarp_info *iwarp_info = &p_hwfn->p_rdma_info->iwarp;
@@ -2657,7 +2544,6 @@ static int qed_iwarp_ll2_stop(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt)
 		iwarp_info->ll2_syn_handle = QED_IWARP_HANDLE_INVAL;
 	}
 
-<<<<<<< HEAD
 	if (iwarp_info->ll2_ooo_handle != QED_IWARP_HANDLE_INVAL) {
 		rc = qed_ll2_terminate_connection(p_hwfn,
 						  iwarp_info->ll2_ooo_handle);
@@ -2678,8 +2564,6 @@ static int qed_iwarp_ll2_stop(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt)
 		iwarp_info->ll2_mpa_handle = QED_IWARP_HANDLE_INVAL;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	qed_llh_remove_mac_filter(p_hwfn,
 				  p_ptt, p_hwfn->p_rdma_info->iwarp.mac_addr);
 	return rc;
@@ -2731,7 +2615,6 @@ qed_iwarp_ll2_start(struct qed_hwfn *p_hwfn,
 	struct qed_iwarp_info *iwarp_info;
 	struct qed_ll2_acquire_data data;
 	struct qed_ll2_cbs cbs;
-<<<<<<< HEAD
 	u32 buff_size;
 	u16 n_ooo_bufs;
 	int rc = 0;
@@ -2741,12 +2624,6 @@ qed_iwarp_ll2_start(struct qed_hwfn *p_hwfn,
 	iwarp_info->ll2_syn_handle = QED_IWARP_HANDLE_INVAL;
 	iwarp_info->ll2_ooo_handle = QED_IWARP_HANDLE_INVAL;
 	iwarp_info->ll2_mpa_handle = QED_IWARP_HANDLE_INVAL;
-=======
-	int rc = 0;
-
-	iwarp_info = &p_hwfn->p_rdma_info->iwarp;
-	iwarp_info->ll2_syn_handle = QED_IWARP_HANDLE_INVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	iwarp_info->max_mtu = params->max_mtu;
 
@@ -2765,11 +2642,7 @@ qed_iwarp_ll2_start(struct qed_hwfn *p_hwfn,
 
 	memset(&data, 0, sizeof(data));
 	data.input.conn_type = QED_LL2_TYPE_IWARP;
-<<<<<<< HEAD
 	data.input.mtu = params->max_mtu;
-=======
-	data.input.mtu = QED_IWARP_MAX_SYN_PKT_SIZE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	data.input.rx_num_desc = QED_IWARP_LL2_SYN_RX_SIZE;
 	data.input.tx_num_desc = QED_IWARP_LL2_SYN_TX_SIZE;
 	data.input.tx_max_bds_per_packet = 1;	/* will never be fragmented */
@@ -2791,21 +2664,14 @@ qed_iwarp_ll2_start(struct qed_hwfn *p_hwfn,
 		goto err;
 	}
 
-<<<<<<< HEAD
 	buff_size = QED_IWARP_MAX_BUF_SIZE(params->max_mtu);
 	rc = qed_iwarp_ll2_alloc_buffers(p_hwfn,
 					 QED_IWARP_LL2_SYN_RX_SIZE,
 					 buff_size,
-=======
-	rc = qed_iwarp_ll2_alloc_buffers(p_hwfn,
-					 QED_IWARP_LL2_SYN_RX_SIZE,
-					 QED_IWARP_MAX_SYN_PKT_SIZE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 iwarp_info->ll2_syn_handle);
 	if (rc)
 		goto err;
 
-<<<<<<< HEAD
 	/* Start OOO connection */
 	data.input.conn_type = QED_LL2_TYPE_OOO;
 	data.input.mtu = params->max_mtu;
@@ -2892,8 +2758,6 @@ qed_iwarp_ll2_start(struct qed_hwfn *p_hwfn,
 	for (i = 0; i < data.input.rx_num_desc; i++)
 		list_add_tail(&iwarp_info->mpa_bufs[i].list_entry,
 			      &iwarp_info->mpa_buf_list);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 err:
 	qed_iwarp_ll2_stop(p_hwfn, p_ptt);
@@ -2915,10 +2779,7 @@ int qed_iwarp_setup(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt,
 	/* value 0 is used for ilog2(QED_IWARP_RCV_WND_SIZE_MIN) */
 	iwarp_info->rcv_wnd_scale = ilog2(rcv_wnd_size) -
 	    ilog2(QED_IWARP_RCV_WND_SIZE_MIN);
-<<<<<<< HEAD
 	iwarp_info->rcv_wnd_size = rcv_wnd_size >> iwarp_info->rcv_wnd_scale;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	iwarp_info->crc_needed = QED_IWARP_PARAM_CRC_NEEDED;
 	iwarp_info->mpa_rev = MPA_NEGOTIATION_TYPE_ENHANCED;
 
@@ -2934,10 +2795,7 @@ int qed_iwarp_setup(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt,
 
 	qed_spq_register_async_cb(p_hwfn, PROTOCOLID_IWARP,
 				  qed_iwarp_async_event);
-<<<<<<< HEAD
 	qed_ooo_setup(p_hwfn);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return qed_iwarp_ll2_start(p_hwfn, params, p_ptt);
 }
@@ -2956,14 +2814,9 @@ int qed_iwarp_stop(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt)
 	return qed_iwarp_ll2_stop(p_hwfn, p_ptt);
 }
 
-<<<<<<< HEAD
 static void qed_iwarp_qp_in_error(struct qed_hwfn *p_hwfn,
 				  struct qed_iwarp_ep *ep,
 				  u8 fw_return_code)
-=======
-void qed_iwarp_qp_in_error(struct qed_hwfn *p_hwfn,
-			   struct qed_iwarp_ep *ep, u8 fw_return_code)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct qed_iwarp_cm_event_params params;
 
@@ -2975,13 +2828,7 @@ void qed_iwarp_qp_in_error(struct qed_hwfn *p_hwfn,
 	params.status = (fw_return_code == IWARP_QP_IN_ERROR_GOOD_CLOSE) ?
 			 0 : -ECONNRESET;
 
-<<<<<<< HEAD
 	ep->state = QED_IWARP_EP_CLOSED;
-=======
-	/* paired with READ_ONCE in destroy_qp */
-	smp_store_release(&ep->state, QED_IWARP_EP_CLOSED);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_bh(&p_hwfn->p_rdma_info->iwarp.iw_lock);
 	list_del(&ep->list_entry);
 	spin_unlock_bh(&p_hwfn->p_rdma_info->iwarp.iw_lock);
@@ -2989,14 +2836,9 @@ void qed_iwarp_qp_in_error(struct qed_hwfn *p_hwfn,
 	ep->event_cb(ep->cb_context, &params);
 }
 
-<<<<<<< HEAD
 static void qed_iwarp_exception_received(struct qed_hwfn *p_hwfn,
 					 struct qed_iwarp_ep *ep,
 					 int fw_ret_code)
-=======
-void qed_iwarp_exception_received(struct qed_hwfn *p_hwfn,
-				  struct qed_iwarp_ep *ep, int fw_ret_code)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct qed_iwarp_cm_event_params params;
 	bool event_cb = false;
@@ -3075,12 +2917,7 @@ qed_iwarp_tcp_connect_unsuccessful(struct qed_hwfn *p_hwfn,
 	params.event = QED_IWARP_EVENT_ACTIVE_COMPLETE;
 	params.ep_context = ep;
 	params.cm_info = &ep->cm_info;
-<<<<<<< HEAD
 	ep->state = QED_IWARP_EP_CLOSED;
-=======
-	/* paired with READ_ONCE in destroy_qp */
-	smp_store_release(&ep->state, QED_IWARP_EP_CLOSED);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (fw_return_code) {
 	case IWARP_CONN_ERROR_TCP_CONNECT_INVALID_PACKET:
@@ -3130,11 +2967,7 @@ qed_iwarp_tcp_connect_unsuccessful(struct qed_hwfn *p_hwfn,
 	}
 }
 
-<<<<<<< HEAD
 static void
-=======
-void
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 qed_iwarp_connect_complete(struct qed_hwfn *p_hwfn,
 			   struct qed_iwarp_ep *ep, u8 fw_return_code)
 {
@@ -3177,16 +3010,11 @@ static int qed_iwarp_async_event(struct qed_hwfn *p_hwfn,
 				 union event_ring_data *data,
 				 u8 fw_return_code)
 {
-<<<<<<< HEAD
 	struct qed_rdma_events events = p_hwfn->p_rdma_info->events;
 	struct regpair *fw_handle = &data->rdma_data.async_handle;
 	struct qed_iwarp_ep *ep = NULL;
 	u16 srq_offset;
 	u16 srq_id;
-=======
-	struct regpair *fw_handle = &data->rdma_data.async_handle;
-	struct qed_iwarp_ep *ep = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 cid;
 
 	ep = (struct qed_iwarp_ep *)(uintptr_t)HILO_64(fw_handle->hi,
@@ -3248,7 +3076,6 @@ static int qed_iwarp_async_event(struct qed_hwfn *p_hwfn,
 		qed_iwarp_cid_cleaned(p_hwfn, cid);
 
 		break;
-<<<<<<< HEAD
 	case IWARP_EVENT_TYPE_ASYNC_SRQ_EMPTY:
 		DP_NOTICE(p_hwfn, "IWARP_EVENT_TYPE_ASYNC_SRQ_EMPTY\n");
 		srq_offset = p_hwfn->p_rdma_info->srq_id_offset;
@@ -3267,8 +3094,6 @@ static int qed_iwarp_async_event(struct qed_hwfn *p_hwfn,
 					QED_IWARP_EVENT_SRQ_LIMIT,
 					&srq_id);
 		break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case IWARP_EVENT_TYPE_ASYNC_CQ_OVERFLOW:
 		DP_NOTICE(p_hwfn, "IWARP_EVENT_TYPE_ASYNC_CQ_OVERFLOW\n");
 

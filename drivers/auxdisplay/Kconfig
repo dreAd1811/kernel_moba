@@ -134,13 +134,8 @@ config CFAG12864B_RATE
 config IMG_ASCII_LCD
 	tristate "Imagination Technologies ASCII LCD Display"
 	depends on HAS_IOMEM
-<<<<<<< HEAD
 	default y if MIPS_MALTA
 	select MFD_SYSCON
-=======
-	default y if MIPS_MALTA || MIPS_SEAD3
-	select SYSCON
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Enable this to support the simple ASCII LCD displays found on
 	  development boards such as the MIPS Boston, MIPS Malta & MIPS SEAD3
@@ -171,11 +166,7 @@ config ARM_CHARLCD
 
 endif # AUXDISPLAY
 
-<<<<<<< HEAD
 menuconfig PANEL
-=======
-config PANEL
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tristate "Parallel port LCD/Keypad Panel support"
 	depends on PARPORT
 	select CHARLCD

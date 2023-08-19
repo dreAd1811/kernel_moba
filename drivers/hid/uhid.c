@@ -25,10 +25,6 @@
 #include <linux/spinlock.h>
 #include <linux/uhid.h>
 #include <linux/wait.h>
-<<<<<<< HEAD
-=======
-#include <linux/eventpoll.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define UHID_NAME	"uhid"
 #define UHID_BUFSIZE	32
@@ -501,10 +497,7 @@ static int uhid_dev_create2(struct uhid_device *uhid,
 		goto err_free;
 	}
 
-<<<<<<< HEAD
 	/* @hid is zero-initialized, strncpy() is correct, strlcpy() not */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	len = min(sizeof(hid->name), sizeof(ev->u.create2.name)) - 1;
 	strncpy(hid->name, ev->u.create2.name, len);
 	len = min(sizeof(hid->phys), sizeof(ev->u.create2.phys)) - 1;
@@ -773,29 +766,16 @@ unlock:
 	return ret ? ret : count;
 }
 
-<<<<<<< HEAD
 static __poll_t uhid_char_poll(struct file *file, poll_table *wait)
 {
 	struct uhid_device *uhid = file->private_data;
-=======
-static unsigned int uhid_char_poll(struct file *file, poll_table *wait)
-{
-	struct uhid_device *uhid = file->private_data;
-	unsigned int mask = POLLOUT | POLLWRNORM; /* uhid is always writable */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	poll_wait(file, &uhid->waitq, wait);
 
 	if (uhid->head != uhid->tail)
-<<<<<<< HEAD
 		return EPOLLIN | EPOLLRDNORM;
 
 	return 0;
-=======
-		mask |= POLLIN | POLLRDNORM;
-
-	return mask;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct file_operations uhid_fops = {

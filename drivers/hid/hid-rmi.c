@@ -368,14 +368,11 @@ static int rmi_check_sanity(struct hid_device *hdev, u8 *data, int size)
 static int rmi_raw_event(struct hid_device *hdev,
 		struct hid_report *report, u8 *data, int size)
 {
-<<<<<<< HEAD
 	struct rmi_data *hdata = hid_get_drvdata(hdev);
 
 	if (!(hdata->device_flags & RMI_DEVICE))
 		return 0;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	size = rmi_check_sanity(hdev, data, size);
 	if (size < 2)
 		return 0;
@@ -416,7 +413,6 @@ static int rmi_event(struct hid_device *hdev, struct hid_field *field,
 	return 0;
 }
 
-<<<<<<< HEAD
 static void rmi_report(struct hid_device *hid, struct hid_report *report)
 {
 	struct hid_field *field = report->field[0];
@@ -435,8 +431,6 @@ static void rmi_report(struct hid_device *hid, struct hid_report *report)
 		input_sync(field->hidinput->input);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_PM
 static int rmi_suspend(struct hid_device *hdev, pm_message_t message)
 {
@@ -661,10 +655,7 @@ static int rmi_probe(struct hid_device *hdev, const struct hid_device_id *id)
 	hid_set_drvdata(hdev, data);
 
 	hdev->quirks |= HID_QUIRK_NO_INIT_REPORTS;
-<<<<<<< HEAD
 	hdev->quirks |= HID_QUIRK_NO_INPUT_SYNC;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = hid_parse(hdev);
 	if (ret) {
@@ -746,17 +737,11 @@ static void rmi_remove(struct hid_device *hdev)
 {
 	struct rmi_data *hdata = hid_get_drvdata(hdev);
 
-<<<<<<< HEAD
 	if (hdata->device_flags & RMI_DEVICE) {
 		clear_bit(RMI_STARTED, &hdata->flags);
 		cancel_work_sync(&hdata->reset_work);
 		rmi_unregister_transport_device(&hdata->xport);
 	}
-=======
-	clear_bit(RMI_STARTED, &hdata->flags);
-	cancel_work_sync(&hdata->reset_work);
-	rmi_unregister_transport_device(&hdata->xport);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	hid_hw_stop(hdev);
 }
@@ -765,10 +750,7 @@ static const struct hid_device_id rmi_id[] = {
 	{ HID_USB_DEVICE(USB_VENDOR_ID_RAZER, USB_DEVICE_ID_RAZER_BLADE_14),
 		.driver_data = RMI_DEVICE_HAS_PHYS_BUTTONS },
 	{ HID_USB_DEVICE(USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_X1_COVER) },
-<<<<<<< HEAD
 	{ HID_USB_DEVICE(USB_VENDOR_ID_PRIMAX, USB_DEVICE_ID_PRIMAX_REZEL) },
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ HID_DEVICE(HID_BUS_ANY, HID_GROUP_RMI, HID_ANY_ID, HID_ANY_ID) },
 	{ }
 };
@@ -781,10 +763,7 @@ static struct hid_driver rmi_driver = {
 	.remove			= rmi_remove,
 	.event			= rmi_event,
 	.raw_event		= rmi_raw_event,
-<<<<<<< HEAD
 	.report			= rmi_report,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.input_mapping		= rmi_input_mapping,
 	.input_configured	= rmi_input_configured,
 #ifdef CONFIG_PM

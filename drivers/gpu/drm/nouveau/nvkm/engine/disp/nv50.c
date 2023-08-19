@@ -24,19 +24,12 @@
 #include "nv50.h"
 #include "head.h"
 #include "ior.h"
-<<<<<<< HEAD
 #include "channv50.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "rootnv50.h"
 
 #include <core/client.h>
 #include <core/enum.h>
-<<<<<<< HEAD
 #include <core/ramht.h>
-=======
-#include <core/gpuobj.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <subdev/bios.h>
 #include <subdev/bios/disp.h>
 #include <subdev/bios/init.h>
@@ -57,7 +50,6 @@ nv50_disp_intr_(struct nvkm_disp *base)
 	disp->func->intr(disp);
 }
 
-<<<<<<< HEAD
 static void
 nv50_disp_fini_(struct nvkm_disp *base)
 {
@@ -72,13 +64,10 @@ nv50_disp_init_(struct nvkm_disp *base)
 	return disp->func->init(disp);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void *
 nv50_disp_dtor_(struct nvkm_disp *base)
 {
 	struct nv50_disp *disp = nv50_disp(base);
-<<<<<<< HEAD
 
 	nvkm_ramht_del(&disp->ramht);
 	nvkm_gpuobj_del(&disp->inst);
@@ -160,34 +149,16 @@ nv50_disp_ = {
 	.oneinit = nv50_disp_oneinit_,
 	.init = nv50_disp_init_,
 	.fini = nv50_disp_fini_,
-=======
-	nvkm_event_fini(&disp->uevent);
-	if (disp->wq)
-		destroy_workqueue(disp->wq);
-	return disp;
-}
-
-static const struct nvkm_disp_func
-nv50_disp_ = {
-	.dtor = nv50_disp_dtor_,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.intr = nv50_disp_intr_,
 	.root = nv50_disp_root_,
 };
 
 int
 nv50_disp_new_(const struct nv50_disp_func *func, struct nvkm_device *device,
-<<<<<<< HEAD
 	       int index, struct nvkm_disp **pdisp)
 {
 	struct nv50_disp *disp;
 	int ret;
-=======
-	       int index, int heads, struct nvkm_disp **pdisp)
-{
-	struct nv50_disp *disp;
-	int ret, i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!(disp = kzalloc(sizeof(*disp), GFP_KERNEL)))
 		return -ENOMEM;
@@ -201,41 +172,11 @@ nv50_disp_new_(const struct nv50_disp_func *func, struct nvkm_device *device,
 	disp->wq = create_singlethread_workqueue("nvkm-disp");
 	if (!disp->wq)
 		return -ENOMEM;
-<<<<<<< HEAD
 
 	INIT_WORK(&disp->supervisor, func->super);
 
 	return nvkm_event_init(func->uevent, 1, ARRAY_SIZE(disp->chan),
 			       &disp->uevent);
-=======
-	INIT_WORK(&disp->supervisor, func->super);
-
-	for (i = 0; func->head.new && i < heads; i++) {
-		ret = func->head.new(&disp->base, i);
-		if (ret)
-			return ret;
-	}
-
-	for (i = 0; func->dac.new && i < func->dac.nr; i++) {
-		ret = func->dac.new(&disp->base, i);
-		if (ret)
-			return ret;
-	}
-
-	for (i = 0; func->pior.new && i < func->pior.nr; i++) {
-		ret = func->pior.new(&disp->base, i);
-		if (ret)
-			return ret;
-	}
-
-	for (i = 0; func->sor.new && i < func->sor.nr; i++) {
-		ret = func->sor.new(&disp->base, i);
-		if (ret)
-			return ret;
-	}
-
-	return nvkm_event_init(func->uevent, 1, 1 + (heads * 4), &disp->uevent);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static u32
@@ -737,7 +678,6 @@ nv50_disp_intr(struct nv50_disp *disp)
 	}
 }
 
-<<<<<<< HEAD
 void
 nv50_disp_fini(struct nv50_disp *disp)
 {
@@ -816,33 +756,18 @@ static const struct nv50_disp_func
 nv50_disp = {
 	.init = nv50_disp_init,
 	.fini = nv50_disp_fini,
-=======
-static const struct nv50_disp_func
-nv50_disp = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.intr = nv50_disp_intr,
 	.uevent = &nv50_disp_chan_uevent,
 	.super = nv50_disp_super,
 	.root = &nv50_disp_root_oclass,
-<<<<<<< HEAD
 	.head = { .cnt = nv50_head_cnt, .new = nv50_head_new },
 	.dac = { .cnt = nv50_dac_cnt, .new = nv50_dac_new },
 	.sor = { .cnt = nv50_sor_cnt, .new = nv50_sor_new },
 	.pior = { .cnt = nv50_pior_cnt, .new = nv50_pior_new },
-=======
-	.head.new = nv50_head_new,
-	.dac = { .nr = 3, .new = nv50_dac_new },
-	.sor = { .nr = 2, .new = nv50_sor_new },
-	.pior = { .nr = 3, .new = nv50_pior_new },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int
 nv50_disp_new(struct nvkm_device *device, int index, struct nvkm_disp **pdisp)
 {
-<<<<<<< HEAD
 	return nv50_disp_new_(&nv50_disp, device, index, pdisp);
-=======
-	return nv50_disp_new_(&nv50_disp, device, index, 2, pdisp);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

@@ -44,24 +44,14 @@ static struct mlx5_core_rsc_common *mlx5_get_rsc(struct mlx5_core_dev *dev,
 {
 	struct mlx5_qp_table *table = &dev->priv.qp_table;
 	struct mlx5_core_rsc_common *common;
-<<<<<<< HEAD
 
 	spin_lock(&table->lock);
-=======
-	unsigned long flags;
-
-	spin_lock_irqsave(&table->lock, flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	common = radix_tree_lookup(&table->tree, rsn);
 	if (common)
 		atomic_inc(&common->refcount);
 
-<<<<<<< HEAD
 	spin_unlock(&table->lock);
-=======
-	spin_unlock_irqrestore(&table->lock, flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!common) {
 		mlx5_core_warn(dev, "Async event for bogus resource 0x%x\n",
@@ -108,14 +98,11 @@ static u64 sq_allowed_event_types(void)
 	return BIT(MLX5_EVENT_TYPE_WQ_CATAS_ERROR);
 }
 
-<<<<<<< HEAD
 static u64 dct_allowed_event_types(void)
 {
 	return BIT(MLX5_EVENT_TYPE_DCT_DRAINED);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool is_event_type_allowed(int rsc_type, int event_type)
 {
 	switch (rsc_type) {
@@ -125,11 +112,8 @@ static bool is_event_type_allowed(int rsc_type, int event_type)
 		return BIT(event_type) & rq_allowed_event_types();
 	case MLX5_EVENT_QUEUE_TYPE_SQ:
 		return BIT(event_type) & sq_allowed_event_types();
-<<<<<<< HEAD
 	case MLX5_EVENT_QUEUE_TYPE_DCT:
 		return BIT(event_type) & dct_allowed_event_types();
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		WARN(1, "Event arrived for unknown resource type");
 		return false;
@@ -139,10 +123,7 @@ static bool is_event_type_allowed(int rsc_type, int event_type)
 void mlx5_rsc_event(struct mlx5_core_dev *dev, u32 rsn, int event_type)
 {
 	struct mlx5_core_rsc_common *common = mlx5_get_rsc(dev, rsn);
-<<<<<<< HEAD
 	struct mlx5_core_dct *dct;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mlx5_core_qp *qp;
 
 	if (!common)
@@ -151,11 +132,7 @@ void mlx5_rsc_event(struct mlx5_core_dev *dev, u32 rsn, int event_type)
 	if (!is_event_type_allowed((rsn >> MLX5_USER_INDEX_LEN), event_type)) {
 		mlx5_core_warn(dev, "event 0x%.2x is not allowed on resource 0x%.8x\n",
 			       event_type, rsn);
-<<<<<<< HEAD
 		return;
-=======
-		goto out;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	switch (common->res) {
@@ -165,7 +142,6 @@ void mlx5_rsc_event(struct mlx5_core_dev *dev, u32 rsn, int event_type)
 		qp = (struct mlx5_core_qp *)common;
 		qp->event(qp, event_type);
 		break;
-<<<<<<< HEAD
 	case MLX5_RES_DCT:
 		dct = (struct mlx5_core_dct *)common;
 		if (event_type == MLX5_EVENT_TYPE_DCT_DRAINED)
@@ -181,19 +157,6 @@ void mlx5_rsc_event(struct mlx5_core_dev *dev, u32 rsn, int event_type)
 static int create_resource_common(struct mlx5_core_dev *dev,
 				  struct mlx5_core_qp *qp,
 				  int rsc_type)
-=======
-
-	default:
-		mlx5_core_warn(dev, "invalid resource type for 0x%x\n", rsn);
-	}
-out:
-	mlx5_core_put_rsc(common);
-}
-
-static int create_qprqsq_common(struct mlx5_core_dev *dev,
-				struct mlx5_core_qp *qp,
-				int rsc_type)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlx5_qp_table *table = &dev->priv.qp_table;
 	int err;
@@ -214,13 +177,8 @@ static int create_qprqsq_common(struct mlx5_core_dev *dev,
 	return 0;
 }
 
-<<<<<<< HEAD
 static void destroy_resource_common(struct mlx5_core_dev *dev,
 				    struct mlx5_core_qp *qp)
-=======
-static void destroy_qprqsq_common(struct mlx5_core_dev *dev,
-				  struct mlx5_core_qp *qp)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlx5_qp_table *table = &dev->priv.qp_table;
 	unsigned long flags;
@@ -233,7 +191,6 @@ static void destroy_qprqsq_common(struct mlx5_core_dev *dev,
 	wait_for_completion(&qp->common.free);
 }
 
-<<<<<<< HEAD
 int mlx5_core_create_dct(struct mlx5_core_dev *dev,
 			 struct mlx5_core_dct *dct,
 			 u32 *in, int inlen)
@@ -268,8 +225,6 @@ err_cmd:
 }
 EXPORT_SYMBOL_GPL(mlx5_core_create_dct);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int mlx5_core_create_qp(struct mlx5_core_dev *dev,
 			struct mlx5_core_qp *qp,
 			u32 *in, int inlen)
@@ -288,11 +243,7 @@ int mlx5_core_create_qp(struct mlx5_core_dev *dev,
 	qp->qpn = MLX5_GET(create_qp_out, out, qpn);
 	mlx5_core_dbg(dev, "qpn = 0x%x\n", qp->qpn);
 
-<<<<<<< HEAD
 	err = create_resource_common(dev, qp, MLX5_RES_QP);
-=======
-	err = create_qprqsq_common(dev, qp, MLX5_RES_QP);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		goto err_cmd;
 
@@ -315,7 +266,6 @@ err_cmd:
 }
 EXPORT_SYMBOL_GPL(mlx5_core_create_qp);
 
-<<<<<<< HEAD
 static int mlx5_core_drain_dct(struct mlx5_core_dev *dev,
 			       struct mlx5_core_dct *dct)
 {
@@ -357,8 +307,6 @@ destroy:
 }
 EXPORT_SYMBOL_GPL(mlx5_core_destroy_dct);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int mlx5_core_destroy_qp(struct mlx5_core_dev *dev,
 			 struct mlx5_core_qp *qp)
 {
@@ -368,11 +316,7 @@ int mlx5_core_destroy_qp(struct mlx5_core_dev *dev,
 
 	mlx5_debug_qp_remove(dev, qp);
 
-<<<<<<< HEAD
 	destroy_resource_common(dev, qp);
-=======
-	destroy_qprqsq_common(dev, qp);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	MLX5_SET(destroy_qp_in, in, opcode, MLX5_CMD_OP_DESTROY_QP);
 	MLX5_SET(destroy_qp_in, in, qpn, qp->qpn);
@@ -463,7 +407,6 @@ static int modify_qp_mbox_alloc(struct mlx5_core_dev *dev, u16 opcode, int qpn,
 	case MLX5_CMD_OP_RST2INIT_QP:
 		if (MBOX_ALLOC(mbox, rst2init_qp))
 			return -ENOMEM;
-<<<<<<< HEAD
 		MOD_QP_IN_SET_QPC(rst2init_qp, mbox->in, opcode, qpn,
 				  opt_param_mask, qpc);
 		break;
@@ -479,23 +422,6 @@ static int modify_qp_mbox_alloc(struct mlx5_core_dev *dev, u16 opcode, int qpn,
 		MOD_QP_IN_SET_QPC(rtr2rts_qp, mbox->in, opcode, qpn,
 				  opt_param_mask, qpc);
 		break;
-=======
-		 MOD_QP_IN_SET_QPC(rst2init_qp, mbox->in, opcode, qpn,
-				   opt_param_mask, qpc);
-		 break;
-	case MLX5_CMD_OP_INIT2RTR_QP:
-		if (MBOX_ALLOC(mbox, init2rtr_qp))
-			return -ENOMEM;
-		 MOD_QP_IN_SET_QPC(init2rtr_qp, mbox->in, opcode, qpn,
-				   opt_param_mask, qpc);
-		 break;
-	case MLX5_CMD_OP_RTR2RTS_QP:
-		if (MBOX_ALLOC(mbox, rtr2rts_qp))
-			return -ENOMEM;
-		 MOD_QP_IN_SET_QPC(rtr2rts_qp, mbox->in, opcode, qpn,
-				   opt_param_mask, qpc);
-		 break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case MLX5_CMD_OP_RTS2RTS_QP:
 		if (MBOX_ALLOC(mbox, rts2rts_qp))
 			return -ENOMEM;
@@ -566,7 +492,6 @@ int mlx5_core_qp_query(struct mlx5_core_dev *dev, struct mlx5_core_qp *qp,
 }
 EXPORT_SYMBOL_GPL(mlx5_core_qp_query);
 
-<<<<<<< HEAD
 int mlx5_core_dct_query(struct mlx5_core_dev *dev, struct mlx5_core_dct *dct,
 			u32 *out, int outlen)
 {
@@ -581,8 +506,6 @@ int mlx5_core_dct_query(struct mlx5_core_dev *dev, struct mlx5_core_dct *dct,
 }
 EXPORT_SYMBOL_GPL(mlx5_core_dct_query);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int mlx5_core_xrcd_alloc(struct mlx5_core_dev *dev, u32 *xrcdn)
 {
 	u32 out[MLX5_ST_SZ_DW(alloc_xrcd_out)] = {0};
@@ -619,11 +542,7 @@ int mlx5_core_create_rq_tracked(struct mlx5_core_dev *dev, u32 *in, int inlen,
 		return err;
 
 	rq->qpn = rqn;
-<<<<<<< HEAD
 	err = create_resource_common(dev, rq, MLX5_RES_RQ);
-=======
-	err = create_qprqsq_common(dev, rq, MLX5_RES_RQ);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		goto err_destroy_rq;
 
@@ -639,11 +558,7 @@ EXPORT_SYMBOL(mlx5_core_create_rq_tracked);
 void mlx5_core_destroy_rq_tracked(struct mlx5_core_dev *dev,
 				  struct mlx5_core_qp *rq)
 {
-<<<<<<< HEAD
 	destroy_resource_common(dev, rq);
-=======
-	destroy_qprqsq_common(dev, rq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlx5_core_destroy_rq(dev, rq->qpn);
 }
 EXPORT_SYMBOL(mlx5_core_destroy_rq_tracked);
@@ -659,11 +574,7 @@ int mlx5_core_create_sq_tracked(struct mlx5_core_dev *dev, u32 *in, int inlen,
 		return err;
 
 	sq->qpn = sqn;
-<<<<<<< HEAD
 	err = create_resource_common(dev, sq, MLX5_RES_SQ);
-=======
-	err = create_qprqsq_common(dev, sq, MLX5_RES_SQ);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		goto err_destroy_sq;
 
@@ -679,11 +590,7 @@ EXPORT_SYMBOL(mlx5_core_create_sq_tracked);
 void mlx5_core_destroy_sq_tracked(struct mlx5_core_dev *dev,
 				  struct mlx5_core_qp *sq)
 {
-<<<<<<< HEAD
 	destroy_resource_common(dev, sq);
-=======
-	destroy_qprqsq_common(dev, sq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlx5_core_destroy_sq(dev, sq->qpn);
 }
 EXPORT_SYMBOL(mlx5_core_destroy_sq_tracked);

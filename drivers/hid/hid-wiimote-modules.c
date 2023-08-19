@@ -1950,7 +1950,6 @@ static const struct wiimod_ops wiimod_pro = {
 };
 
 /*
-<<<<<<< HEAD
  * Drums
  * Guitar-Hero, Rock-Band and other games came bundled with drums which can
  * be plugged as extension to a Wiimote. Drum-reports are still not entirely
@@ -2389,8 +2388,6 @@ static const struct wiimod_ops wiimod_guitar = {
 };
 
 /*
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Builtin Motion Plus
  * This module simply sets the WIIPROTO_FLAG_BUILTIN_MP protocol flag which
  * disables polling for Motion-Plus. This should be set only for devices which
@@ -2642,9 +2639,6 @@ const struct wiimod_ops *wiimod_ext_table[WIIMOTE_EXT_NUM] = {
 	[WIIMOTE_EXT_CLASSIC_CONTROLLER] = &wiimod_classic,
 	[WIIMOTE_EXT_BALANCE_BOARD] = &wiimod_bboard,
 	[WIIMOTE_EXT_PRO_CONTROLLER] = &wiimod_pro,
-<<<<<<< HEAD
 	[WIIMOTE_EXT_DRUMS] = &wiimod_drums,
 	[WIIMOTE_EXT_GUITAR] = &wiimod_guitar,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

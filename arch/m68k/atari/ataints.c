@@ -142,11 +142,7 @@ struct mfptimerbase {
 	.name		= "MFP Timer D"
 };
 
-<<<<<<< HEAD
 static irqreturn_t mfptimer_handler(int irq, void *dev_id)
-=======
-static irqreturn_t mfp_timer_d_handler(int irq, void *dev_id)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mfptimerbase *base = dev_id;
 	int mach_irq;
@@ -348,11 +344,7 @@ void __init atari_init_IRQ(void)
 	st_mfp.tim_ct_cd = (st_mfp.tim_ct_cd & 0xf0) | 0x6;
 
 	/* request timer D dispatch handler */
-<<<<<<< HEAD
 	if (request_irq(IRQ_MFP_TIMD, mfptimer_handler, IRQF_SHARED,
-=======
-	if (request_irq(IRQ_MFP_TIMD, mfp_timer_d_handler, IRQF_SHARED,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			stmfp_base.name, &stmfp_base))
 		pr_err("Couldn't register %s interrupt\n", stmfp_base.name);
 

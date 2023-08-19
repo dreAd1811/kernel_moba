@@ -47,11 +47,8 @@ static bool is_supported_device(struct drm_i915_private *dev_priv)
 		return true;
 	if (IS_KABYLAKE(dev_priv))
 		return true;
-<<<<<<< HEAD
 	if (IS_BROXTON(dev_priv))
 		return true;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return false;
 }
 
@@ -63,11 +60,7 @@ static bool is_supported_device(struct drm_i915_private *dev_priv)
  */
 void intel_gvt_sanitize_options(struct drm_i915_private *dev_priv)
 {
-<<<<<<< HEAD
 	if (!i915_modparams.enable_gvt)
-=======
-	if (!i915.enable_gvt)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	if (intel_vgpu_active(dev_priv)) {
@@ -82,11 +75,7 @@ void intel_gvt_sanitize_options(struct drm_i915_private *dev_priv)
 
 	return;
 bail:
-<<<<<<< HEAD
 	i915_modparams.enable_gvt = 0;
-=======
-	i915.enable_gvt = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -103,28 +92,15 @@ int intel_gvt_init(struct drm_i915_private *dev_priv)
 {
 	int ret;
 
-<<<<<<< HEAD
 	if (i915_inject_load_failure())
 		return -ENODEV;
 
 	if (!i915_modparams.enable_gvt) {
-=======
-	if (!i915.enable_gvt) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		DRM_DEBUG_DRIVER("GVT-g is disabled by kernel params\n");
 		return 0;
 	}
 
-<<<<<<< HEAD
 	if (USES_GUC_SUBMISSION(dev_priv)) {
-=======
-	if (!i915.enable_execlists) {
-		DRM_ERROR("i915 GVT-g loading failed due to disabled execlists mode\n");
-		return -EIO;
-	}
-
-	if (i915.enable_guc_submission) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		DRM_ERROR("i915 GVT-g loading failed due to Graphics virtualization is not yet supported with GuC submission\n");
 		return -EIO;
 	}
@@ -147,11 +123,7 @@ int intel_gvt_init(struct drm_i915_private *dev_priv)
 	return 0;
 
 bail:
-<<<<<<< HEAD
 	i915_modparams.enable_gvt = 0;
-=======
-	i915.enable_gvt = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

@@ -268,11 +268,7 @@ static int max8997_led_probe(struct platform_device *pdev)
 		mode = pdata->led_pdata->mode[led->id];
 		brightness = pdata->led_pdata->brightness[led->id];
 
-<<<<<<< HEAD
 		max8997_led_set_mode(led, mode);
-=======
-		max8997_led_set_mode(led, pdata->led_pdata->mode[led->id]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (brightness > led->cdev.max_brightness)
 			brightness = led->cdev.max_brightness;

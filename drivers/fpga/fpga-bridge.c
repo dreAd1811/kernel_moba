@@ -1,27 +1,9 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * FPGA Bridge Framework Driver
  *
  *  Copyright (C) 2013-2016 Altera Corporation, All Rights Reserved.
-<<<<<<< HEAD
  *  Copyright (C) 2017 Intel Corporation
-=======
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms and conditions of the GNU General Public License,
- * version 2, as published by the Free Software Foundation.
- *
- * This program is distributed in the hope it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
- * more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program.  If not, see <http://www.gnu.org/licenses/>.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #include <linux/fpga/fpga-bridge.h>
 #include <linux/idr.h>
@@ -78,7 +60,6 @@ int fpga_bridge_disable(struct fpga_bridge *bridge)
 }
 EXPORT_SYMBOL_GPL(fpga_bridge_disable);
 
-<<<<<<< HEAD
 static struct fpga_bridge *__fpga_bridge_get(struct device *dev,
 					     struct fpga_image_info *info)
 {
@@ -86,34 +67,6 @@ static struct fpga_bridge *__fpga_bridge_get(struct device *dev,
 	int ret = -ENODEV;
 
 	bridge = to_fpga_bridge(dev);
-=======
-/**
- * of_fpga_bridge_get - get an exclusive reference to a fpga bridge
- *
- * @np: node pointer of a FPGA bridge
- * @info: fpga image specific information
- *
- * Return fpga_bridge struct if successful.
- * Return -EBUSY if someone already has a reference to the bridge.
- * Return -ENODEV if @np is not a FPGA Bridge.
- */
-struct fpga_bridge *of_fpga_bridge_get(struct device_node *np,
-				       struct fpga_image_info *info)
-
-{
-	struct device *dev;
-	struct fpga_bridge *bridge;
-	int ret = -ENODEV;
-
-	dev = class_find_device(fpga_bridge_class, NULL, np,
-				fpga_bridge_of_node_match);
-	if (!dev)
-		goto err_dev;
-
-	bridge = to_fpga_bridge(dev);
-	if (!bridge)
-		goto err_dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	bridge->info = info;
 
@@ -135,7 +88,6 @@ err_dev:
 	put_device(dev);
 	return ERR_PTR(ret);
 }
-<<<<<<< HEAD
 
 /**
  * of_fpga_bridge_get - get an exclusive reference to a fpga bridge
@@ -189,10 +141,6 @@ struct fpga_bridge *fpga_bridge_get(struct device *dev,
 }
 EXPORT_SYMBOL_GPL(fpga_bridge_get);
 
-=======
-EXPORT_SYMBOL_GPL(of_fpga_bridge_get);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * fpga_bridge_put - release a reference to a bridge
  *
@@ -280,11 +228,7 @@ void fpga_bridges_put(struct list_head *bridge_list)
 EXPORT_SYMBOL_GPL(fpga_bridges_put);
 
 /**
-<<<<<<< HEAD
  * of_fpga_bridge_get_to_list - get a bridge, add it to a list
-=======
- * fpga_bridges_get_to_list - get a bridge, add it to a list
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * @np: node pointer of a FPGA bridge
  * @info: fpga image specific information
@@ -294,7 +238,6 @@ EXPORT_SYMBOL_GPL(fpga_bridges_put);
  *
  * Return 0 for success, error code from of_fpga_bridge_get() othewise.
  */
-<<<<<<< HEAD
 int of_fpga_bridge_get_to_list(struct device_node *np,
 			       struct fpga_image_info *info,
 			       struct list_head *bridge_list)
@@ -326,20 +269,13 @@ EXPORT_SYMBOL_GPL(of_fpga_bridge_get_to_list);
  * Return 0 for success, error code from fpga_bridge_get() othewise.
  */
 int fpga_bridge_get_to_list(struct device *dev,
-=======
-int fpga_bridge_get_to_list(struct device_node *np,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    struct fpga_image_info *info,
 			    struct list_head *bridge_list)
 {
 	struct fpga_bridge *bridge;
 	unsigned long flags;
 
-<<<<<<< HEAD
 	bridge = fpga_bridge_get(dev, info);
-=======
-	bridge = of_fpga_bridge_get(np, info);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(bridge))
 		return PTR_ERR(bridge);
 
@@ -382,48 +318,29 @@ static struct attribute *fpga_bridge_attrs[] = {
 ATTRIBUTE_GROUPS(fpga_bridge);
 
 /**
-<<<<<<< HEAD
  * fpga_bridge_create - create and initialize a struct fpga_bridge
-=======
- * fpga_bridge_register - register a fpga bridge driver
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @dev:	FPGA bridge device from pdev
  * @name:	FPGA bridge name
  * @br_ops:	pointer to structure of fpga bridge ops
  * @priv:	FPGA bridge private data
  *
-<<<<<<< HEAD
  * Return: struct fpga_bridge or NULL
  */
 struct fpga_bridge *fpga_bridge_create(struct device *dev, const char *name,
 				       const struct fpga_bridge_ops *br_ops,
 				       void *priv)
-=======
- * Return: 0 for success, error code otherwise.
- */
-int fpga_bridge_register(struct device *dev, const char *name,
-			 const struct fpga_bridge_ops *br_ops, void *priv)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct fpga_bridge *bridge;
 	int id, ret = 0;
 
 	if (!name || !strlen(name)) {
 		dev_err(dev, "Attempt to register with no name!\n");
-<<<<<<< HEAD
 		return NULL;
-=======
-		return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	bridge = kzalloc(sizeof(*bridge), GFP_KERNEL);
 	if (!bridge)
-<<<<<<< HEAD
 		return NULL;
-=======
-		return -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	id = ida_simple_get(&fpga_bridge_ida, 0, 0, GFP_KERNEL);
 	if (id < 0) {
@@ -439,44 +356,23 @@ int fpga_bridge_register(struct device *dev, const char *name,
 	bridge->priv = priv;
 
 	device_initialize(&bridge->dev);
-<<<<<<< HEAD
 	bridge->dev.groups = br_ops->groups;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bridge->dev.class = fpga_bridge_class;
 	bridge->dev.parent = dev;
 	bridge->dev.of_node = dev->of_node;
 	bridge->dev.id = id;
-<<<<<<< HEAD
-=======
-	dev_set_drvdata(dev, bridge);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = dev_set_name(&bridge->dev, "br%d", id);
 	if (ret)
 		goto error_device;
 
-<<<<<<< HEAD
 	return bridge;
-=======
-	ret = device_add(&bridge->dev);
-	if (ret)
-		goto error_device;
-
-	of_platform_populate(dev->of_node, NULL, NULL, dev);
-
-	dev_info(bridge->dev.parent, "fpga bridge [%s] registered\n",
-		 bridge->name);
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 error_device:
 	ida_simple_remove(&fpga_bridge_ida, id);
 error_kfree:
 	kfree(bridge);
 
-<<<<<<< HEAD
 	return NULL;
 }
 EXPORT_SYMBOL_GPL(fpga_bridge_create);
@@ -512,28 +408,15 @@ int fpga_bridge_register(struct fpga_bridge *bridge)
 	dev_info(dev->parent, "fpga bridge [%s] registered\n", bridge->name);
 
 	return 0;
-=======
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(fpga_bridge_register);
 
 /**
-<<<<<<< HEAD
  * fpga_bridge_unregister - unregister and free a fpga bridge
  * @bridge:	FPGA bridge struct created by fpga_bridge_create
  */
 void fpga_bridge_unregister(struct fpga_bridge *bridge)
 {
-=======
- * fpga_bridge_unregister - unregister a fpga bridge driver
- * @dev: FPGA bridge device from pdev
- */
-void fpga_bridge_unregister(struct device *dev)
-{
-	struct fpga_bridge *bridge = dev_get_drvdata(dev);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * If the low level driver provides a method for putting bridge into
 	 * a desired state upon unregister, do it.
@@ -549,12 +432,7 @@ static void fpga_bridge_dev_release(struct device *dev)
 {
 	struct fpga_bridge *bridge = to_fpga_bridge(dev);
 
-<<<<<<< HEAD
 	fpga_bridge_free(bridge);
-=======
-	ida_simple_remove(&fpga_bridge_ida, bridge->dev.id);
-	kfree(bridge);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int __init fpga_bridge_dev_init(void)
@@ -578,11 +456,7 @@ static void __exit fpga_bridge_dev_exit(void)
 }
 
 MODULE_DESCRIPTION("FPGA Bridge Driver");
-<<<<<<< HEAD
 MODULE_AUTHOR("Alan Tull <atull@kernel.org>");
-=======
-MODULE_AUTHOR("Alan Tull <atull@opensource.altera.com>");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_LICENSE("GPL v2");
 
 subsys_initcall(fpga_bridge_dev_init);

@@ -27,14 +27,11 @@
 
 #include "physaddr.h"
 
-<<<<<<< HEAD
 struct ioremap_mem_flags {
 	bool system_ram;
 	bool desc_other;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Fix up the linear direct mapping of the kernel to avoid cache attribute
  * conflicts.
@@ -64,7 +61,6 @@ int ioremap_change_attr(unsigned long vaddr, unsigned long size,
 	return err;
 }
 
-<<<<<<< HEAD
 static bool __ioremap_check_ram(struct resource *res)
 {
 	unsigned long start_pfn, stop_pfn;
@@ -118,19 +114,6 @@ static void __ioremap_check_mem(resource_size_t addr, unsigned long size,
 	memset(flags, 0, sizeof(*flags));
 
 	walk_mem_res(start, end, flags, __ioremap_res_check);
-=======
-static int __ioremap_check_ram(unsigned long start_pfn, unsigned long nr_pages,
-			       void *arg)
-{
-	unsigned long i;
-
-	for (i = 0; i < nr_pages; ++i)
-		if (pfn_valid(start_pfn + i) &&
-		    !PageReserved(pfn_to_page(start_pfn + i)))
-			return 1;
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -151,16 +134,10 @@ static void __iomem *__ioremap_caller(resource_size_t phys_addr,
 		unsigned long size, enum page_cache_mode pcm, void *caller)
 {
 	unsigned long offset, vaddr;
-<<<<<<< HEAD
 	resource_size_t last_addr;
 	const resource_size_t unaligned_phys_addr = phys_addr;
 	const unsigned long unaligned_size = size;
 	struct ioremap_mem_flags mem_flags;
-=======
-	resource_size_t pfn, last_pfn, last_addr;
-	const resource_size_t unaligned_phys_addr = phys_addr;
-	const unsigned long unaligned_size = size;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct vm_struct *area;
 	enum page_cache_mode new_pcm;
 	pgprot_t prot;
@@ -179,22 +156,12 @@ static void __iomem *__ioremap_caller(resource_size_t phys_addr,
 		return NULL;
 	}
 
-<<<<<<< HEAD
 	__ioremap_check_mem(phys_addr, size, &mem_flags);
 
 	/*
 	 * Don't allow anybody to remap normal RAM that we're using..
 	 */
 	if (mem_flags.system_ram) {
-=======
-	/*
-	 * Don't allow anybody to remap normal RAM that we're using..
-	 */
-	pfn      = phys_addr >> PAGE_SHIFT;
-	last_pfn = last_addr >> PAGE_SHIFT;
-	if (walk_system_ram_range(pfn, last_pfn - pfn + 1, NULL,
-					  __ioremap_check_ram) == 1) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		WARN_ONCE(1, "ioremap on RAM at %pa - %pa\n",
 			  &phys_addr, &last_addr);
 		return NULL;
@@ -226,7 +193,6 @@ static void __iomem *__ioremap_caller(resource_size_t phys_addr,
 		pcm = new_pcm;
 	}
 
-<<<<<<< HEAD
 	/*
 	 * If the page being mapped is in memory and SEV is active then
 	 * make sure the memory encryption attribute is enabled in the
@@ -236,9 +202,6 @@ static void __iomem *__ioremap_caller(resource_size_t phys_addr,
 	if (sev_active() && mem_flags.desc_other)
 		prot = pgprot_encrypted(prot);
 
-=======
-	prot = PAGE_KERNEL_IO;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (pcm) {
 	case _PAGE_CACHE_MODE_UC:
 	default:
@@ -514,12 +477,9 @@ void unxlate_dev_mem_ptr(phys_addr_t phys, void *addr)
  * areas should be mapped decrypted. And since the encryption key can
  * change across reboots, persistent memory should also be mapped
  * decrypted.
-<<<<<<< HEAD
  *
  * If SEV is active, that implies that BIOS/UEFI also ran encrypted so
  * only persistent memory should be mapped decrypted.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static bool memremap_should_map_decrypted(resource_size_t phys_addr,
 					  unsigned long size)
@@ -556,14 +516,11 @@ static bool memremap_should_map_decrypted(resource_size_t phys_addr,
 	case E820_TYPE_ACPI:
 	case E820_TYPE_NVS:
 	case E820_TYPE_UNUSABLE:
-<<<<<<< HEAD
 		/* For SEV, these areas are encrypted */
 		if (sev_active())
 			break;
 		/* Fallthrough */
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case E820_TYPE_PRAM:
 		return true;
 	default:
@@ -687,11 +644,7 @@ static bool __init early_memremap_is_setup_data(resource_size_t phys_addr,
 bool arch_memremap_can_ram_remap(resource_size_t phys_addr, unsigned long size,
 				 unsigned long flags)
 {
-<<<<<<< HEAD
 	if (!mem_encrypt_active())
-=======
-	if (!sme_active())
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return true;
 
 	if (flags & MEMREMAP_ENC)
@@ -700,7 +653,6 @@ bool arch_memremap_can_ram_remap(resource_size_t phys_addr, unsigned long size,
 	if (flags & MEMREMAP_DEC)
 		return false;
 
-<<<<<<< HEAD
 	if (sme_active()) {
 		if (memremap_is_setup_data(phys_addr, size) ||
 		    memremap_is_efi_data(phys_addr, size))
@@ -708,14 +660,6 @@ bool arch_memremap_can_ram_remap(resource_size_t phys_addr, unsigned long size,
 	}
 
 	return !memremap_should_map_decrypted(phys_addr, size);
-=======
-	if (memremap_is_setup_data(phys_addr, size) ||
-	    memremap_is_efi_data(phys_addr, size) ||
-	    memremap_should_map_decrypted(phys_addr, size))
-		return false;
-
-	return true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -728,7 +672,6 @@ pgprot_t __init early_memremap_pgprot_adjust(resource_size_t phys_addr,
 					     unsigned long size,
 					     pgprot_t prot)
 {
-<<<<<<< HEAD
 	bool encrypted_prot;
 
 	if (!mem_encrypt_active())
@@ -747,19 +690,6 @@ pgprot_t __init early_memremap_pgprot_adjust(resource_size_t phys_addr,
 
 	return encrypted_prot ? pgprot_encrypted(prot)
 			      : pgprot_decrypted(prot);
-=======
-	if (!sme_active())
-		return prot;
-
-	if (early_memremap_is_setup_data(phys_addr, size) ||
-	    memremap_is_efi_data(phys_addr, size) ||
-	    memremap_should_map_decrypted(phys_addr, size))
-		prot = pgprot_decrypted(prot);
-	else
-		prot = pgprot_encrypted(prot);
-
-	return prot;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 bool phys_mem_access_encrypted(unsigned long phys_addr, unsigned long size)
@@ -886,12 +816,9 @@ void __init __early_set_fixmap(enum fixed_addresses idx,
 	}
 	pte = early_ioremap_pte(addr);
 
-<<<<<<< HEAD
 	/* Sanitize 'prot' against any unsupported bits: */
 	pgprot_val(flags) &= __default_kernel_pte_mask;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (pgprot_val(flags))
 		set_pte(pte, pfn_pte(phys >> PAGE_SHIFT, flags));
 	else

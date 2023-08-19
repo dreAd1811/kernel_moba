@@ -248,10 +248,7 @@ static int sata_dwc_dma_init_old(struct platform_device *pdev,
 		return -ENOMEM;
 
 	hsdev->dma->dev = &pdev->dev;
-<<<<<<< HEAD
 	hsdev->dma->id = pdev->id;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Get SATA DMA interrupt number */
 	hsdev->dma->irq = irq_of_parse_and_map(np, 1);
@@ -764,11 +761,7 @@ static void sata_dwc_dma_xfer_complete(struct ata_port *ap, u32 check_status)
 	if (tag > 0) {
 		dev_info(ap->dev,
 			 "%s tag=%u cmd=0x%02x dma dir=%s proto=%s dmacr=0x%08x\n",
-<<<<<<< HEAD
 			 __func__, qc->hw_tag, qc->tf.command,
-=======
-			 __func__, qc->tag, qc->tf.command,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 get_dma_dir_descript(qc->dma_dir),
 			 get_prot_descript(qc->tf.protocol),
 			 sata_dwc_readl(&hsdev->sata_dwc_regs->dmacr));
@@ -796,11 +789,7 @@ static int sata_dwc_qc_complete(struct ata_port *ap, struct ata_queued_cmd *qc,
 {
 	u8 status = 0;
 	u32 mask = 0x0;
-<<<<<<< HEAD
 	u8 tag = qc->hw_tag;
-=======
-	u8 tag = qc->tag;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct sata_dwc_device *hsdev = HSDEV_FROM_AP(ap);
 	struct sata_dwc_device_port *hsdevp = HSDEVP_FROM_AP(ap);
 	hsdev->sactive_queued = 0;
@@ -912,10 +901,6 @@ static int sata_dwc_port_start(struct ata_port *ap)
 	/* Allocate Port Struct */
 	hsdevp = kzalloc(sizeof(*hsdevp), GFP_KERNEL);
 	if (!hsdevp) {
-<<<<<<< HEAD
-=======
-		dev_err(ap->dev, "%s: kmalloc failed for hsdevp\n", __func__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = -ENOMEM;
 		goto CLEANUP;
 	}
@@ -1012,11 +997,7 @@ static void sata_dwc_bmdma_setup_by_tag(struct ata_queued_cmd *qc, u8 tag)
 
 static void sata_dwc_bmdma_setup(struct ata_queued_cmd *qc)
 {
-<<<<<<< HEAD
 	u8 tag = qc->hw_tag;
-=======
-	u8 tag = qc->tag;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ata_is_ncq(qc->tf.protocol)) {
 		dev_dbg(qc->ap->dev, "%s: ap->link.sactive=0x%08x tag=%d\n",
@@ -1078,11 +1059,7 @@ static void sata_dwc_bmdma_start_by_tag(struct ata_queued_cmd *qc, u8 tag)
 
 static void sata_dwc_bmdma_start(struct ata_queued_cmd *qc)
 {
-<<<<<<< HEAD
 	u8 tag = qc->hw_tag;
-=======
-	u8 tag = qc->tag;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ata_is_ncq(qc->tf.protocol)) {
 		dev_dbg(qc->ap->dev, "%s: ap->link.sactive=0x%08x tag=%d\n",
@@ -1097,29 +1074,17 @@ static void sata_dwc_bmdma_start(struct ata_queued_cmd *qc)
 static unsigned int sata_dwc_qc_issue(struct ata_queued_cmd *qc)
 {
 	u32 sactive;
-<<<<<<< HEAD
 	u8 tag = qc->hw_tag;
-=======
-	u8 tag = qc->tag;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ata_port *ap = qc->ap;
 	struct sata_dwc_device_port *hsdevp = HSDEVP_FROM_AP(ap);
 
 #ifdef DEBUG_NCQ
-<<<<<<< HEAD
 	if (qc->hw_tag > 0 || ap->link.sactive > 1)
-=======
-	if (qc->tag > 0 || ap->link.sactive > 1)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_info(ap->dev,
 			 "%s ap id=%d cmd(0x%02x)=%s qc tag=%d prot=%s ap active_tag=0x%08x ap sactive=0x%08x\n",
 			 __func__, ap->print_id, qc->tf.command,
 			 ata_get_cmd_descript(qc->tf.command),
-<<<<<<< HEAD
 			 qc->hw_tag, get_prot_descript(qc->tf.protocol),
-=======
-			 qc->tag, get_prot_descript(qc->tf.protocol),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 ap->link.active_tag, ap->link.sactive);
 #endif
 

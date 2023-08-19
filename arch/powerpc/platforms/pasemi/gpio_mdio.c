@@ -256,11 +256,7 @@ static int gpio_mdio_probe(struct platform_device *ofdev)
 	err = of_mdiobus_register(new_bus, np);
 
 	if (err != 0) {
-<<<<<<< HEAD
 		pr_err("%s: Cannot register as MDIO bus, err %d\n",
-=======
-		printk(KERN_ERR "%s: Cannot register as MDIO bus, err %d\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				new_bus->name, err);
 		goto out_free_irq;
 	}

@@ -228,11 +228,7 @@ static int acpi_memory_enable_device(struct acpi_memory_device *mem_device)
 		if (node < 0)
 			node = memory_add_physaddr_to_nid(info->start_addr);
 
-<<<<<<< HEAD
 		result = add_memory(node, info->start_addr, info->length);
-=======
-		result = __add_memory(node, info->start_addr, info->length);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/*
 		 * If the memory block has been used by the kernel, add_memory()

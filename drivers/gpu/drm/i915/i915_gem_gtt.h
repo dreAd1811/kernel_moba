@@ -38,7 +38,6 @@
 #include <linux/mm.h>
 #include <linux/pagevec.h>
 
-<<<<<<< HEAD
 #include "i915_request.h"
 #include "i915_selftest.h"
 #include "i915_timeline.h"
@@ -52,13 +51,6 @@
 
 #define I915_GTT_PAGE_MASK -I915_GTT_PAGE_SIZE
 
-=======
-#include "i915_gem_timeline.h"
-#include "i915_gem_request.h"
-#include "i915_selftest.h"
-
-#define I915_GTT_PAGE_SIZE 4096UL
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define I915_GTT_MIN_ALIGNMENT I915_GTT_PAGE_SIZE
 
 #define I915_FENCE_REG_NONE -1
@@ -68,10 +60,7 @@
 
 struct drm_i915_file_private;
 struct drm_i915_fence_reg;
-<<<<<<< HEAD
 struct i915_vma;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 typedef u32 gen6_pte_t;
 typedef u64 gen8_pte_t;
@@ -79,11 +68,7 @@ typedef u64 gen8_pde_t;
 typedef u64 gen8_ppgtt_pdpe_t;
 typedef u64 gen8_ppgtt_pml4e_t;
 
-<<<<<<< HEAD
 #define ggtt_total_entries(ggtt) ((ggtt)->vm.total >> PAGE_SHIFT)
-=======
-#define ggtt_total_entries(ggtt) ((ggtt)->base.total >> PAGE_SHIFT)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* gen6-hsw has bit 11-4 for physical addr bit 39-32 */
 #define GEN6_GTT_ADDR_ENCODE(addr)	((addr) | (((addr) >> 28) & 0xff0))
@@ -150,7 +135,6 @@ typedef u64 gen8_ppgtt_pml4e_t;
  * tables */
 #define GEN8_PDPE_MASK			0x1ff
 
-<<<<<<< HEAD
 #define PPAT_UNCACHED			(_PAGE_PWT | _PAGE_PCD)
 #define PPAT_CACHED_PDE			0 /* WB LLC */
 #define PPAT_CACHED			_PAGE_PAT /* WB LLCeLLC */
@@ -158,15 +142,6 @@ typedef u64 gen8_ppgtt_pml4e_t;
 
 #define CHV_PPAT_SNOOP			(1<<6)
 #define GEN8_PPAT_AGE(x)		((x)<<4)
-=======
-#define PPAT_UNCACHED_INDEX		(_PAGE_PWT | _PAGE_PCD)
-#define PPAT_CACHED_PDE_INDEX		0 /* WB LLC */
-#define PPAT_CACHED_INDEX		_PAGE_PAT /* WB LLCeLLC */
-#define PPAT_DISPLAY_ELLC_INDEX		_PAGE_PCD /* WT eLLC */
-
-#define CHV_PPAT_SNOOP			(1<<6)
-#define GEN8_PPAT_AGE(x)		(x<<4)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define GEN8_PPAT_LLCeLLC		(3<<2)
 #define GEN8_PPAT_LLCELLC		(2<<2)
 #define GEN8_PPAT_LLC			(1<<2)
@@ -177,7 +152,6 @@ typedef u64 gen8_ppgtt_pml4e_t;
 #define GEN8_PPAT_ELLC_OVERRIDE		(0<<2)
 #define GEN8_PPAT(i, x)			((u64)(x) << ((i) * 8))
 
-<<<<<<< HEAD
 #define GEN8_PPAT_GET_CA(x) ((x) & 3)
 #define GEN8_PPAT_GET_TC(x) ((x) & (3 << 2))
 #define GEN8_PPAT_GET_AGE(x) ((x) & (3 << 4))
@@ -186,8 +160,6 @@ typedef u64 gen8_ppgtt_pml4e_t;
 #define GEN8_PDE_IPS_64K BIT(11)
 #define GEN8_PDE_PS_2M   BIT(7)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct sg_table;
 
 struct intel_rotation_info {
@@ -247,10 +219,7 @@ struct i915_vma;
 
 struct i915_page_dma {
 	struct page *page;
-<<<<<<< HEAD
 	int order;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	union {
 		dma_addr_t daddr;
 
@@ -288,7 +257,6 @@ struct i915_pml4 {
 	struct i915_page_directory_pointer *pdps[GEN8_PML4ES_PER_PML4];
 };
 
-<<<<<<< HEAD
 struct i915_vma_ops {
 	/* Map an object into an address space with the given cache flags. */
 	int (*bind_vma)(struct i915_vma *vma,
@@ -311,11 +279,6 @@ struct pagestash {
 
 struct i915_address_space {
 	struct drm_mm mm;
-=======
-struct i915_address_space {
-	struct drm_mm mm;
-	struct i915_gem_timeline timeline;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_i915_private *i915;
 	struct device *dma;
 	/* Every address space belongs to a struct file - except for the global
@@ -327,20 +290,13 @@ struct i915_address_space {
 	 * assign blame.
 	 */
 	struct drm_i915_file_private *file;
-<<<<<<< HEAD
-=======
-	struct list_head global_link;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 total;		/* size addr space maps (ex. 2GB for ggtt) */
 	u64 reserved;		/* size addr space reserved */
 
 	bool closed;
 
-<<<<<<< HEAD
 	struct mutex mutex; /* protects vma and our lists */
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct i915_page_dma scratch_page;
 	struct i915_page_table *scratch_pt;
 	struct i915_page_directory *scratch_pd;
@@ -376,11 +332,7 @@ struct i915_address_space {
 	 */
 	struct list_head unbound_list;
 
-<<<<<<< HEAD
 	struct pagestash free_pages;
-=======
-	struct pagevec free_pages;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Some systems require uncached updates of the page directories */
 	bool pt_kmap_wc:1;
@@ -408,23 +360,11 @@ struct i915_address_space {
 			       enum i915_cache_level cache_level,
 			       u32 flags);
 	void (*cleanup)(struct i915_address_space *vm);
-<<<<<<< HEAD
 
 	struct i915_vma_ops vma_ops;
 
 	I915_SELFTEST_DECLARE(struct fault_attr fault_attr);
 	I915_SELFTEST_DECLARE(bool scrub_64K);
-=======
-	/** Unmap an object from an address space. This usually consists of
-	 * setting the valid PTE entries to a reserved scratch page. */
-	void (*unbind_vma)(struct i915_vma *vma);
-	/* Map an object into an address space with the given cache flags. */
-	int (*bind_vma)(struct i915_vma *vma,
-			enum i915_cache_level cache_level,
-			u32 flags);
-
-	I915_SELFTEST_DECLARE(struct fault_attr fault_attr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define i915_is_ggtt(V) (!(V)->file)
@@ -435,15 +375,12 @@ i915_vm_is_48bit(const struct i915_address_space *vm)
 	return (vm->total - 1) >> 32;
 }
 
-<<<<<<< HEAD
 static inline bool
 i915_vm_has_scratch_64K(struct i915_address_space *vm)
 {
 	return vm->scratch_page.order == get_order(I915_GTT_PAGE_SIZE_64K);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* The Graphics Translation Table is the way in which GEN hardware translates a
  * Graphics Virtual Address into a Physical Address. In addition to the normal
  * collateral associated with any va->pa translations GEN hardware also has a
@@ -452,32 +389,11 @@ i915_vm_has_scratch_64K(struct i915_address_space *vm)
  * the spec.
  */
 struct i915_ggtt {
-<<<<<<< HEAD
 	struct i915_address_space vm;
 
 	struct io_mapping iomap;	/* Mapping to our CPU mappable region */
 	struct resource gmadr;          /* GMADR resource */
 	resource_size_t mappable_end;	/* End offset that we can CPU map */
-=======
-	struct i915_address_space base;
-	struct io_mapping mappable;	/* Mapping to our CPU mappable region */
-
-	phys_addr_t mappable_base;	/* PA of our GMADR */
-	u64 mappable_end;		/* End offset that we can CPU map */
-
-	/* Stolen memory is segmented in hardware with different portions
-	 * offlimits to certain functions.
-	 *
-	 * The drm_mm is initialised to the total accessible range, as found
-	 * from the PCI config. On Broadwell+, this is further restricted to
-	 * avoid the first page! The upper end of stolen memory is reserved for
-	 * hardware functions and similarly removed from the accessible range.
-	 */
-	u32 stolen_size;		/* Total size of stolen memory */
-	u32 stolen_usable_size;	/* Total size minus reserved ranges */
-	u32 stolen_reserved_base;
-	u32 stolen_reserved_size;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/** "Graphics Stolen Memory" holds the global PTEs */
 	void __iomem *gsm;
@@ -491,15 +407,9 @@ struct i915_ggtt {
 };
 
 struct i915_hw_ppgtt {
-<<<<<<< HEAD
 	struct i915_address_space vm;
 	struct kref ref;
 
-=======
-	struct i915_address_space base;
-	struct kref ref;
-	struct drm_mm_node node;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long pd_dirty_rings;
 	union {
 		struct i915_pml4 pml4;		/* GEN8+ & 48b PPGTT */
@@ -507,7 +417,6 @@ struct i915_hw_ppgtt {
 		struct i915_page_directory pd;		/* GEN6-7 */
 	};
 
-<<<<<<< HEAD
 	void (*debug_dump)(struct i915_hw_ppgtt *ppgtt, struct seq_file *m);
 };
 
@@ -530,15 +439,6 @@ static inline struct gen6_hw_ppgtt *to_gen6_ppgtt(struct i915_hw_ppgtt *base)
 	return __to_gen6_ppgtt(base);
 }
 
-=======
-	gen6_pte_t __iomem *pd_addr;
-
-	int (*switch_mm)(struct i915_hw_ppgtt *ppgtt,
-			 struct drm_i915_gem_request *req);
-	void (*debug_dump)(struct i915_hw_ppgtt *ppgtt, struct seq_file *m);
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * gen6_for_each_pde() iterates over every pde from start until start+length.
  * If start and start+length are not perfectly divisible, the macro will round
@@ -577,13 +477,8 @@ static inline u32 i915_pte_count(u64 addr, u64 length, unsigned int pde_shift)
 	const u64 mask = ~((1ULL << pde_shift) - 1);
 	u64 end;
 
-<<<<<<< HEAD
 	GEM_BUG_ON(length == 0);
 	GEM_BUG_ON(offset_in_page(addr | length));
-=======
-	WARN_ON(length == 0);
-	WARN_ON(offset_in_page(addr|length));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	end = addr + length;
 
@@ -685,7 +580,6 @@ static inline struct i915_ggtt *
 i915_vm_to_ggtt(struct i915_address_space *vm)
 {
 	GEM_BUG_ON(!i915_is_ggtt(vm));
-<<<<<<< HEAD
 	return container_of(vm, struct i915_ggtt, vm);
 }
 
@@ -720,11 +614,6 @@ const struct intel_ppat_entry *
 intel_ppat_get(struct drm_i915_private *i915, u8 value);
 void intel_ppat_put(const struct intel_ppat_entry *entry);
 
-=======
-	return container_of(vm, struct i915_ggtt, base);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int i915_gem_init_aliasing_ppgtt(struct drm_i915_private *i915);
 void i915_gem_fini_aliasing_ppgtt(struct drm_i915_private *i915);
 
@@ -739,12 +628,7 @@ void i915_ggtt_cleanup_hw(struct drm_i915_private *dev_priv);
 int i915_ppgtt_init_hw(struct drm_i915_private *dev_priv);
 void i915_ppgtt_release(struct kref *kref);
 struct i915_hw_ppgtt *i915_ppgtt_create(struct drm_i915_private *dev_priv,
-<<<<<<< HEAD
 					struct drm_i915_file_private *fpriv);
-=======
-					struct drm_i915_file_private *fpriv,
-					const char *name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void i915_ppgtt_close(struct i915_address_space *vm);
 static inline void i915_ppgtt_get(struct i915_hw_ppgtt *ppgtt)
 {
@@ -757,12 +641,9 @@ static inline void i915_ppgtt_put(struct i915_hw_ppgtt *ppgtt)
 		kref_put(&ppgtt->ref, i915_ppgtt_release);
 }
 
-<<<<<<< HEAD
 int gen6_ppgtt_pin(struct i915_hw_ppgtt *base);
 void gen6_ppgtt_unpin(struct i915_hw_ppgtt *base);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void i915_check_and_clear_faults(struct drm_i915_private *dev_priv);
 void i915_gem_suspend_gtt_mappings(struct drm_i915_private *dev_priv);
 void i915_gem_restore_gtt_mappings(struct drm_i915_private *dev_priv);

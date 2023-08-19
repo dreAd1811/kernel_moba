@@ -107,11 +107,7 @@ static int clk_frac_set_rate(struct clk_hw *hw, unsigned long rate,
 	return mxs_clk_wait(frac->reg, frac->busy);
 }
 
-<<<<<<< HEAD
 static const struct clk_ops clk_frac_ops = {
-=======
-static struct clk_ops clk_frac_ops = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.recalc_rate = clk_frac_recalc_rate,
 	.round_rate = clk_frac_round_rate,
 	.set_rate = clk_frac_set_rate,

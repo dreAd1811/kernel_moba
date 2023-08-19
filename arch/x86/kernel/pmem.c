@@ -7,11 +7,7 @@
 #include <linux/init.h>
 #include <linux/ioport.h>
 
-<<<<<<< HEAD
 static int found(struct resource *res, void *data)
-=======
-static int found(u64 start, u64 end, void *data)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return 1;
 }

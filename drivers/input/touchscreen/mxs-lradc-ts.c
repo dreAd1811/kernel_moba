@@ -584,11 +584,7 @@ static void mxs_lradc_ts_hw_init(struct mxs_lradc_ts *ts)
 
 static int mxs_lradc_ts_register(struct mxs_lradc_ts *ts)
 {
-<<<<<<< HEAD
 	struct input_dev *input;
-=======
-	struct input_dev *input = ts->ts_input;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct device *dev = ts->dev;
 
 	input = devm_input_allocate_device(dev);

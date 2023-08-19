@@ -82,11 +82,8 @@
 #define EDID_QUIRK_FORCE_6BPC			(1 << 10)
 /* Force 10bpc */
 #define EDID_QUIRK_FORCE_10BPC			(1 << 11)
-<<<<<<< HEAD
 /* Non desktop display (i.e. HMD) */
 #define EDID_QUIRK_NON_DESKTOP			(1 << 12)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct detailed_mode_closure {
 	struct drm_connector *connector;
@@ -185,7 +182,6 @@ static const struct edid_quirk {
 
 	/* Rotel RSX-1058 forwards sink's EDID but only does HDMI 1.1*/
 	{ "ETR", 13896, EDID_QUIRK_FORCE_8BPC },
-<<<<<<< HEAD
 
 	/* Valve Index Headset */
 	{ "VLV", 0x91a8, EDID_QUIRK_NON_DESKTOP },
@@ -233,8 +229,6 @@ static const struct edid_quirk {
 
 	/* OSVR HDK and HDK2 VR Headsets */
 	{ "SVR", 0x1019, EDID_QUIRK_NON_DESKTOP },
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /*
@@ -741,43 +735,26 @@ static const struct minimode extra_modes[] = {
 static const struct drm_display_mode edid_cea_modes[] = {
 	/* 0 - dummy, VICs start at 1 */
 	{ },
-<<<<<<< HEAD
 	/* 1 - 640x480@60Hz 4:3 */
-=======
-	/* 1 - 640x480@60Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("640x480", DRM_MODE_TYPE_DRIVER, 25175, 640, 656,
 		   752, 800, 0, 480, 490, 492, 525, 0,
 		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC),
 	  .vrefresh = 60, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_4_3, },
-<<<<<<< HEAD
 	/* 2 - 720x480@60Hz 4:3 */
-=======
-	/* 2 - 720x480@60Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("720x480", DRM_MODE_TYPE_DRIVER, 27000, 720, 736,
 		   798, 858, 0, 480, 489, 495, 525, 0,
 		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC),
 	  .vrefresh = 60, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_4_3, },
-<<<<<<< HEAD
 	/* 3 - 720x480@60Hz 16:9 */
-=======
-	/* 3 - 720x480@60Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("720x480", DRM_MODE_TYPE_DRIVER, 27000, 720, 736,
 		   798, 858, 0, 480, 489, 495, 525, 0,
 		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC),
 	  .vrefresh = 60, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-<<<<<<< HEAD
 	/* 4 - 1280x720@60Hz 16:9 */
-=======
-	/* 4 - 1280x720@60Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1280x720", DRM_MODE_TYPE_DRIVER, 74250, 1280, 1390,
 		   1430, 1650, 0, 720, 725, 730, 750, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 60, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-<<<<<<< HEAD
 	/* 5 - 1920x1080i@60Hz 16:9 */
 	{ DRM_MODE("1920x1080i", DRM_MODE_TYPE_DRIVER, 74250, 1920, 2008,
 		   2052, 2200, 0, 1080, 1084, 1094, 1125, 0,
@@ -821,119 +798,45 @@ static const struct drm_display_mode edid_cea_modes[] = {
 		   DRM_MODE_FLAG_INTERLACE),
 	  .vrefresh = 60, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
 	/* 12 - 2880x240@60Hz 4:3 */
-=======
-	/* 5 - 1920x1080i@60Hz */
-	{ DRM_MODE("1920x1080i", DRM_MODE_TYPE_DRIVER, 74250, 1920, 2008,
-		   2052, 2200, 0, 1080, 1084, 1094, 1125, 0,
-		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC |
-			DRM_MODE_FLAG_INTERLACE),
-	  .vrefresh = 60, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-	/* 6 - 720(1440)x480i@60Hz */
-	{ DRM_MODE("720x480i", DRM_MODE_TYPE_DRIVER, 13500, 720, 739,
-		   801, 858, 0, 480, 488, 494, 525, 0,
-		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC |
-			DRM_MODE_FLAG_INTERLACE | DRM_MODE_FLAG_DBLCLK),
-	  .vrefresh = 60, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_4_3, },
-	/* 7 - 720(1440)x480i@60Hz */
-	{ DRM_MODE("720x480i", DRM_MODE_TYPE_DRIVER, 13500, 720, 739,
-		   801, 858, 0, 480, 488, 494, 525, 0,
-		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC |
-			DRM_MODE_FLAG_INTERLACE | DRM_MODE_FLAG_DBLCLK),
-	  .vrefresh = 60, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-	/* 8 - 720(1440)x240@60Hz */
-	{ DRM_MODE("720x240", DRM_MODE_TYPE_DRIVER, 13500, 720, 739,
-		   801, 858, 0, 240, 244, 247, 262, 0,
-		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC |
-			DRM_MODE_FLAG_DBLCLK),
-	  .vrefresh = 60, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_4_3, },
-	/* 9 - 720(1440)x240@60Hz */
-	{ DRM_MODE("720x240", DRM_MODE_TYPE_DRIVER, 13500, 720, 739,
-		   801, 858, 0, 240, 244, 247, 262, 0,
-		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC |
-			DRM_MODE_FLAG_DBLCLK),
-	  .vrefresh = 60, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-	/* 10 - 2880x480i@60Hz */
-	{ DRM_MODE("2880x480i", DRM_MODE_TYPE_DRIVER, 54000, 2880, 2956,
-		   3204, 3432, 0, 480, 488, 494, 525, 0,
-		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC |
-			DRM_MODE_FLAG_INTERLACE),
-	  .vrefresh = 60, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_4_3, },
-	/* 11 - 2880x480i@60Hz */
-	{ DRM_MODE("2880x480i", DRM_MODE_TYPE_DRIVER, 54000, 2880, 2956,
-		   3204, 3432, 0, 480, 488, 494, 525, 0,
-		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC |
-			DRM_MODE_FLAG_INTERLACE),
-	  .vrefresh = 60, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-	/* 12 - 2880x240@60Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("2880x240", DRM_MODE_TYPE_DRIVER, 54000, 2880, 2956,
 		   3204, 3432, 0, 240, 244, 247, 262, 0,
 		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC),
 	  .vrefresh = 60, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_4_3, },
-<<<<<<< HEAD
 	/* 13 - 2880x240@60Hz 16:9 */
-=======
-	/* 13 - 2880x240@60Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("2880x240", DRM_MODE_TYPE_DRIVER, 54000, 2880, 2956,
 		   3204, 3432, 0, 240, 244, 247, 262, 0,
 		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC),
 	  .vrefresh = 60, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-<<<<<<< HEAD
 	/* 14 - 1440x480@60Hz 4:3 */
-=======
-	/* 14 - 1440x480@60Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1440x480", DRM_MODE_TYPE_DRIVER, 54000, 1440, 1472,
 		   1596, 1716, 0, 480, 489, 495, 525, 0,
 		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC),
 	  .vrefresh = 60, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_4_3, },
-<<<<<<< HEAD
 	/* 15 - 1440x480@60Hz 16:9 */
-=======
-	/* 15 - 1440x480@60Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1440x480", DRM_MODE_TYPE_DRIVER, 54000, 1440, 1472,
 		   1596, 1716, 0, 480, 489, 495, 525, 0,
 		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC),
 	  .vrefresh = 60, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-<<<<<<< HEAD
 	/* 16 - 1920x1080@60Hz 16:9 */
-=======
-	/* 16 - 1920x1080@60Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1920x1080", DRM_MODE_TYPE_DRIVER, 148500, 1920, 2008,
 		   2052, 2200, 0, 1080, 1084, 1089, 1125, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 60, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-<<<<<<< HEAD
 	/* 17 - 720x576@50Hz 4:3 */
-=======
-	/* 17 - 720x576@50Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("720x576", DRM_MODE_TYPE_DRIVER, 27000, 720, 732,
 		   796, 864, 0, 576, 581, 586, 625, 0,
 		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC),
 	  .vrefresh = 50, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_4_3, },
-<<<<<<< HEAD
 	/* 18 - 720x576@50Hz 16:9 */
-=======
-	/* 18 - 720x576@50Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("720x576", DRM_MODE_TYPE_DRIVER, 27000, 720, 732,
 		   796, 864, 0, 576, 581, 586, 625, 0,
 		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC),
 	  .vrefresh = 50, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-<<<<<<< HEAD
 	/* 19 - 1280x720@50Hz 16:9 */
-=======
-	/* 19 - 1280x720@50Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1280x720", DRM_MODE_TYPE_DRIVER, 74250, 1280, 1720,
 		   1760, 1980, 0, 720, 725, 730, 750, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 50, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-<<<<<<< HEAD
 	/* 20 - 1920x1080i@50Hz 16:9 */
 	{ DRM_MODE("1920x1080i", DRM_MODE_TYPE_DRIVER, 74250, 1920, 2448,
 		   2492, 2640, 0, 1080, 1084, 1094, 1125, 0,
@@ -977,155 +880,65 @@ static const struct drm_display_mode edid_cea_modes[] = {
 		   DRM_MODE_FLAG_INTERLACE),
 	  .vrefresh = 50, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
 	/* 27 - 2880x288@50Hz 4:3 */
-=======
-	/* 20 - 1920x1080i@50Hz */
-	{ DRM_MODE("1920x1080i", DRM_MODE_TYPE_DRIVER, 74250, 1920, 2448,
-		   2492, 2640, 0, 1080, 1084, 1094, 1125, 0,
-		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC |
-			DRM_MODE_FLAG_INTERLACE),
-	  .vrefresh = 50, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-	/* 21 - 720(1440)x576i@50Hz */
-	{ DRM_MODE("720x576i", DRM_MODE_TYPE_DRIVER, 13500, 720, 732,
-		   795, 864, 0, 576, 580, 586, 625, 0,
-		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC |
-			DRM_MODE_FLAG_INTERLACE | DRM_MODE_FLAG_DBLCLK),
-	  .vrefresh = 50, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_4_3, },
-	/* 22 - 720(1440)x576i@50Hz */
-	{ DRM_MODE("720x576i", DRM_MODE_TYPE_DRIVER, 13500, 720, 732,
-		   795, 864, 0, 576, 580, 586, 625, 0,
-		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC |
-			DRM_MODE_FLAG_INTERLACE | DRM_MODE_FLAG_DBLCLK),
-	  .vrefresh = 50, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-	/* 23 - 720(1440)x288@50Hz */
-	{ DRM_MODE("720x288", DRM_MODE_TYPE_DRIVER, 13500, 720, 732,
-		   795, 864, 0, 288, 290, 293, 312, 0,
-		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC |
-			DRM_MODE_FLAG_DBLCLK),
-	  .vrefresh = 50, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_4_3, },
-	/* 24 - 720(1440)x288@50Hz */
-	{ DRM_MODE("720x288", DRM_MODE_TYPE_DRIVER, 13500, 720, 732,
-		   795, 864, 0, 288, 290, 293, 312, 0,
-		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC |
-			DRM_MODE_FLAG_DBLCLK),
-	  .vrefresh = 50, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-	/* 25 - 2880x576i@50Hz */
-	{ DRM_MODE("2880x576i", DRM_MODE_TYPE_DRIVER, 54000, 2880, 2928,
-		   3180, 3456, 0, 576, 580, 586, 625, 0,
-		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC |
-			DRM_MODE_FLAG_INTERLACE),
-	  .vrefresh = 50, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_4_3, },
-	/* 26 - 2880x576i@50Hz */
-	{ DRM_MODE("2880x576i", DRM_MODE_TYPE_DRIVER, 54000, 2880, 2928,
-		   3180, 3456, 0, 576, 580, 586, 625, 0,
-		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC |
-			DRM_MODE_FLAG_INTERLACE),
-	  .vrefresh = 50, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-	/* 27 - 2880x288@50Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("2880x288", DRM_MODE_TYPE_DRIVER, 54000, 2880, 2928,
 		   3180, 3456, 0, 288, 290, 293, 312, 0,
 		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC),
 	  .vrefresh = 50, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_4_3, },
-<<<<<<< HEAD
 	/* 28 - 2880x288@50Hz 16:9 */
-=======
-	/* 28 - 2880x288@50Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("2880x288", DRM_MODE_TYPE_DRIVER, 54000, 2880, 2928,
 		   3180, 3456, 0, 288, 290, 293, 312, 0,
 		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC),
 	  .vrefresh = 50, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-<<<<<<< HEAD
 	/* 29 - 1440x576@50Hz 4:3 */
-=======
-	/* 29 - 1440x576@50Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1440x576", DRM_MODE_TYPE_DRIVER, 54000, 1440, 1464,
 		   1592, 1728, 0, 576, 581, 586, 625, 0,
 		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC),
 	  .vrefresh = 50, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_4_3, },
-<<<<<<< HEAD
 	/* 30 - 1440x576@50Hz 16:9 */
-=======
-	/* 30 - 1440x576@50Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1440x576", DRM_MODE_TYPE_DRIVER, 54000, 1440, 1464,
 		   1592, 1728, 0, 576, 581, 586, 625, 0,
 		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC),
 	  .vrefresh = 50, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-<<<<<<< HEAD
 	/* 31 - 1920x1080@50Hz 16:9 */
-=======
-	/* 31 - 1920x1080@50Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1920x1080", DRM_MODE_TYPE_DRIVER, 148500, 1920, 2448,
 		   2492, 2640, 0, 1080, 1084, 1089, 1125, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 50, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-<<<<<<< HEAD
 	/* 32 - 1920x1080@24Hz 16:9 */
-=======
-	/* 32 - 1920x1080@24Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1920x1080", DRM_MODE_TYPE_DRIVER, 74250, 1920, 2558,
 		   2602, 2750, 0, 1080, 1084, 1089, 1125, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 24, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-<<<<<<< HEAD
 	/* 33 - 1920x1080@25Hz 16:9 */
-=======
-	/* 33 - 1920x1080@25Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1920x1080", DRM_MODE_TYPE_DRIVER, 74250, 1920, 2448,
 		   2492, 2640, 0, 1080, 1084, 1089, 1125, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 25, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-<<<<<<< HEAD
 	/* 34 - 1920x1080@30Hz 16:9 */
-=======
-	/* 34 - 1920x1080@30Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1920x1080", DRM_MODE_TYPE_DRIVER, 74250, 1920, 2008,
 		   2052, 2200, 0, 1080, 1084, 1089, 1125, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 30, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-<<<<<<< HEAD
 	/* 35 - 2880x480@60Hz 4:3 */
-=======
-	/* 35 - 2880x480@60Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("2880x480", DRM_MODE_TYPE_DRIVER, 108000, 2880, 2944,
 		   3192, 3432, 0, 480, 489, 495, 525, 0,
 		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC),
 	  .vrefresh = 60, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_4_3, },
-<<<<<<< HEAD
 	/* 36 - 2880x480@60Hz 16:9 */
-=======
-	/* 36 - 2880x480@60Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("2880x480", DRM_MODE_TYPE_DRIVER, 108000, 2880, 2944,
 		   3192, 3432, 0, 480, 489, 495, 525, 0,
 		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC),
 	  .vrefresh = 60, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-<<<<<<< HEAD
 	/* 37 - 2880x576@50Hz 4:3 */
-=======
-	/* 37 - 2880x576@50Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("2880x576", DRM_MODE_TYPE_DRIVER, 108000, 2880, 2928,
 		   3184, 3456, 0, 576, 581, 586, 625, 0,
 		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC),
 	  .vrefresh = 50, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_4_3, },
-<<<<<<< HEAD
 	/* 38 - 2880x576@50Hz 16:9 */
-=======
-	/* 38 - 2880x576@50Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("2880x576", DRM_MODE_TYPE_DRIVER, 108000, 2880, 2928,
 		   3184, 3456, 0, 576, 581, 586, 625, 0,
 		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC),
 	  .vrefresh = 50, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-<<<<<<< HEAD
 	/* 39 - 1920x1080i@50Hz 16:9 */
 	{ DRM_MODE("1920x1080i", DRM_MODE_TYPE_DRIVER, 72000, 1920, 1952,
 		   2120, 2304, 0, 1080, 1126, 1136, 1250, 0,
@@ -1139,44 +952,20 @@ static const struct drm_display_mode edid_cea_modes[] = {
 		   DRM_MODE_FLAG_INTERLACE),
 	  .vrefresh = 100, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
 	/* 41 - 1280x720@100Hz 16:9 */
-=======
-	/* 39 - 1920x1080i@50Hz */
-	{ DRM_MODE("1920x1080i", DRM_MODE_TYPE_DRIVER, 72000, 1920, 1952,
-		   2120, 2304, 0, 1080, 1126, 1136, 1250, 0,
-		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_NVSYNC |
-			DRM_MODE_FLAG_INTERLACE),
-	  .vrefresh = 50, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-	/* 40 - 1920x1080i@100Hz */
-	{ DRM_MODE("1920x1080i", DRM_MODE_TYPE_DRIVER, 148500, 1920, 2448,
-		   2492, 2640, 0, 1080, 1084, 1094, 1125, 0,
-		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC |
-			DRM_MODE_FLAG_INTERLACE),
-	  .vrefresh = 100, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-	/* 41 - 1280x720@100Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1280x720", DRM_MODE_TYPE_DRIVER, 148500, 1280, 1720,
 		   1760, 1980, 0, 720, 725, 730, 750, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 100, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-<<<<<<< HEAD
 	/* 42 - 720x576@100Hz 4:3 */
-=======
-	/* 42 - 720x576@100Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("720x576", DRM_MODE_TYPE_DRIVER, 54000, 720, 732,
 		   796, 864, 0, 576, 581, 586, 625, 0,
 		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC),
 	  .vrefresh = 100, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_4_3, },
-<<<<<<< HEAD
 	/* 43 - 720x576@100Hz 16:9 */
-=======
-	/* 43 - 720x576@100Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("720x576", DRM_MODE_TYPE_DRIVER, 54000, 720, 732,
 		   796, 864, 0, 576, 581, 586, 625, 0,
 		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC),
 	  .vrefresh = 100, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-<<<<<<< HEAD
 	/* 44 - 720(1440)x576i@100Hz 4:3 */
 	{ DRM_MODE("720x576i", DRM_MODE_TYPE_DRIVER, 27000, 720, 732,
 		   795, 864, 0, 576, 580, 586, 625, 0,
@@ -1196,50 +985,20 @@ static const struct drm_display_mode edid_cea_modes[] = {
 		   DRM_MODE_FLAG_INTERLACE),
 	  .vrefresh = 120, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
 	/* 47 - 1280x720@120Hz 16:9 */
-=======
-	/* 44 - 720(1440)x576i@100Hz */
-	{ DRM_MODE("720x576i", DRM_MODE_TYPE_DRIVER, 27000, 720, 732,
-		   795, 864, 0, 576, 580, 586, 625, 0,
-		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC |
-			DRM_MODE_FLAG_INTERLACE | DRM_MODE_FLAG_DBLCLK),
-	  .vrefresh = 100, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_4_3, },
-	/* 45 - 720(1440)x576i@100Hz */
-	{ DRM_MODE("720x576i", DRM_MODE_TYPE_DRIVER, 27000, 720, 732,
-		   795, 864, 0, 576, 580, 586, 625, 0,
-		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC |
-			DRM_MODE_FLAG_INTERLACE | DRM_MODE_FLAG_DBLCLK),
-	  .vrefresh = 100, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-	/* 46 - 1920x1080i@120Hz */
-	{ DRM_MODE("1920x1080i", DRM_MODE_TYPE_DRIVER, 148500, 1920, 2008,
-		   2052, 2200, 0, 1080, 1084, 1094, 1125, 0,
-		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC |
-			DRM_MODE_FLAG_INTERLACE),
-	  .vrefresh = 120, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-	/* 47 - 1280x720@120Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1280x720", DRM_MODE_TYPE_DRIVER, 148500, 1280, 1390,
 		   1430, 1650, 0, 720, 725, 730, 750, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 120, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-<<<<<<< HEAD
 	/* 48 - 720x480@120Hz 4:3 */
-=======
-	/* 48 - 720x480@120Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("720x480", DRM_MODE_TYPE_DRIVER, 54000, 720, 736,
 		   798, 858, 0, 480, 489, 495, 525, 0,
 		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC),
 	  .vrefresh = 120, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_4_3, },
-<<<<<<< HEAD
 	/* 49 - 720x480@120Hz 16:9 */
-=======
-	/* 49 - 720x480@120Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("720x480", DRM_MODE_TYPE_DRIVER, 54000, 720, 736,
 		   798, 858, 0, 480, 489, 495, 525, 0,
 		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC),
 	  .vrefresh = 120, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-<<<<<<< HEAD
 	/* 50 - 720(1440)x480i@120Hz 4:3 */
 	{ DRM_MODE("720x480i", DRM_MODE_TYPE_DRIVER, 27000, 720, 739,
 		   801, 858, 0, 480, 488, 494, 525, 0,
@@ -1253,35 +1012,15 @@ static const struct drm_display_mode edid_cea_modes[] = {
 		   DRM_MODE_FLAG_INTERLACE | DRM_MODE_FLAG_DBLCLK),
 	  .vrefresh = 120, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
 	/* 52 - 720x576@200Hz 4:3 */
-=======
-	/* 50 - 720(1440)x480i@120Hz */
-	{ DRM_MODE("720x480i", DRM_MODE_TYPE_DRIVER, 27000, 720, 739,
-		   801, 858, 0, 480, 488, 494, 525, 0,
-		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC |
-			DRM_MODE_FLAG_INTERLACE | DRM_MODE_FLAG_DBLCLK),
-	  .vrefresh = 120, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_4_3, },
-	/* 51 - 720(1440)x480i@120Hz */
-	{ DRM_MODE("720x480i", DRM_MODE_TYPE_DRIVER, 27000, 720, 739,
-		   801, 858, 0, 480, 488, 494, 525, 0,
-		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC |
-			DRM_MODE_FLAG_INTERLACE | DRM_MODE_FLAG_DBLCLK),
-	  .vrefresh = 120, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-	/* 52 - 720x576@200Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("720x576", DRM_MODE_TYPE_DRIVER, 108000, 720, 732,
 		   796, 864, 0, 576, 581, 586, 625, 0,
 		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC),
 	  .vrefresh = 200, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_4_3, },
-<<<<<<< HEAD
 	/* 53 - 720x576@200Hz 16:9 */
-=======
-	/* 53 - 720x576@200Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("720x576", DRM_MODE_TYPE_DRIVER, 108000, 720, 732,
 		   796, 864, 0, 576, 581, 586, 625, 0,
 		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC),
 	  .vrefresh = 200, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-<<<<<<< HEAD
 	/* 54 - 720(1440)x576i@200Hz 4:3 */
 	{ DRM_MODE("720x576i", DRM_MODE_TYPE_DRIVER, 54000, 720, 732,
 		   795, 864, 0, 576, 580, 586, 625, 0,
@@ -1295,35 +1034,15 @@ static const struct drm_display_mode edid_cea_modes[] = {
 		   DRM_MODE_FLAG_INTERLACE | DRM_MODE_FLAG_DBLCLK),
 	  .vrefresh = 200, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
 	/* 56 - 720x480@240Hz 4:3 */
-=======
-	/* 54 - 720(1440)x576i@200Hz */
-	{ DRM_MODE("720x576i", DRM_MODE_TYPE_DRIVER, 54000, 720, 732,
-		   795, 864, 0, 576, 580, 586, 625, 0,
-		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC |
-			DRM_MODE_FLAG_INTERLACE | DRM_MODE_FLAG_DBLCLK),
-	  .vrefresh = 200, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_4_3, },
-	/* 55 - 720(1440)x576i@200Hz */
-	{ DRM_MODE("720x576i", DRM_MODE_TYPE_DRIVER, 54000, 720, 732,
-		   795, 864, 0, 576, 580, 586, 625, 0,
-		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC |
-			DRM_MODE_FLAG_INTERLACE | DRM_MODE_FLAG_DBLCLK),
-	  .vrefresh = 200, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-	/* 56 - 720x480@240Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("720x480", DRM_MODE_TYPE_DRIVER, 108000, 720, 736,
 		   798, 858, 0, 480, 489, 495, 525, 0,
 		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC),
 	  .vrefresh = 240, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_4_3, },
-<<<<<<< HEAD
 	/* 57 - 720x480@240Hz 16:9 */
-=======
-	/* 57 - 720x480@240Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("720x480", DRM_MODE_TYPE_DRIVER, 108000, 720, 736,
 		   798, 858, 0, 480, 489, 495, 525, 0,
 		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC),
 	  .vrefresh = 240, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-<<<<<<< HEAD
 	/* 58 - 720(1440)x480i@240Hz 4:3 */
 	{ DRM_MODE("720x480i", DRM_MODE_TYPE_DRIVER, 54000, 720, 739,
 		   801, 858, 0, 480, 488, 494, 525, 0,
@@ -1337,44 +1056,20 @@ static const struct drm_display_mode edid_cea_modes[] = {
 		   DRM_MODE_FLAG_INTERLACE | DRM_MODE_FLAG_DBLCLK),
 	  .vrefresh = 240, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
 	/* 60 - 1280x720@24Hz 16:9 */
-=======
-	/* 58 - 720(1440)x480i@240Hz */
-	{ DRM_MODE("720x480i", DRM_MODE_TYPE_DRIVER, 54000, 720, 739,
-		   801, 858, 0, 480, 488, 494, 525, 0,
-		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC |
-			DRM_MODE_FLAG_INTERLACE | DRM_MODE_FLAG_DBLCLK),
-	  .vrefresh = 240, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_4_3, },
-	/* 59 - 720(1440)x480i@240Hz */
-	{ DRM_MODE("720x480i", DRM_MODE_TYPE_DRIVER, 54000, 720, 739,
-		   801, 858, 0, 480, 488, 494, 525, 0,
-		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC |
-			DRM_MODE_FLAG_INTERLACE | DRM_MODE_FLAG_DBLCLK),
-	  .vrefresh = 240, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-	/* 60 - 1280x720@24Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1280x720", DRM_MODE_TYPE_DRIVER, 59400, 1280, 3040,
 		   3080, 3300, 0, 720, 725, 730, 750, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 24, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-<<<<<<< HEAD
 	/* 61 - 1280x720@25Hz 16:9 */
-=======
-	/* 61 - 1280x720@25Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1280x720", DRM_MODE_TYPE_DRIVER, 74250, 1280, 3700,
 		   3740, 3960, 0, 720, 725, 730, 750, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 25, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-<<<<<<< HEAD
 	/* 62 - 1280x720@30Hz 16:9 */
-=======
-	/* 62 - 1280x720@30Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1280x720", DRM_MODE_TYPE_DRIVER, 74250, 1280, 3040,
 		   3080, 3300, 0, 720, 725, 730, 750, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 30, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-<<<<<<< HEAD
 	/* 63 - 1920x1080@120Hz 16:9 */
 	{ DRM_MODE("1920x1080", DRM_MODE_TYPE_DRIVER, 297000, 1920, 2008,
 		   2052, 2200, 0, 1080, 1084, 1089, 1125, 0,
@@ -1386,397 +1081,216 @@ static const struct drm_display_mode edid_cea_modes[] = {
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 100, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
 	/* 65 - 1280x720@24Hz 64:27 */
-=======
-	/* 63 - 1920x1080@120Hz */
-	{ DRM_MODE("1920x1080", DRM_MODE_TYPE_DRIVER, 297000, 1920, 2008,
-		   2052, 2200, 0, 1080, 1084, 1089, 1125, 0,
-		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
-	 .vrefresh = 120, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-	/* 64 - 1920x1080@100Hz */
-	{ DRM_MODE("1920x1080", DRM_MODE_TYPE_DRIVER, 297000, 1920, 2448,
-		   2492, 2640, 0, 1080, 1084, 1089, 1125, 0,
-		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
-	 .vrefresh = 100, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-	/* 65 - 1280x720@24Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1280x720", DRM_MODE_TYPE_DRIVER, 59400, 1280, 3040,
 		   3080, 3300, 0, 720, 725, 730, 750, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 24, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_64_27, },
-<<<<<<< HEAD
 	/* 66 - 1280x720@25Hz 64:27 */
-=======
-	/* 66 - 1280x720@25Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1280x720", DRM_MODE_TYPE_DRIVER, 74250, 1280, 3700,
 		   3740, 3960, 0, 720, 725, 730, 750, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 25, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_64_27, },
-<<<<<<< HEAD
 	/* 67 - 1280x720@30Hz 64:27 */
-=======
-	/* 67 - 1280x720@30Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1280x720", DRM_MODE_TYPE_DRIVER, 74250, 1280, 3040,
 		   3080, 3300, 0, 720, 725, 730, 750, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 30, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_64_27, },
-<<<<<<< HEAD
 	/* 68 - 1280x720@50Hz 64:27 */
-=======
-	/* 68 - 1280x720@50Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1280x720", DRM_MODE_TYPE_DRIVER, 74250, 1280, 1720,
 		   1760, 1980, 0, 720, 725, 730, 750, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 50, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_64_27, },
-<<<<<<< HEAD
 	/* 69 - 1280x720@60Hz 64:27 */
-=======
-	/* 69 - 1280x720@60Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1280x720", DRM_MODE_TYPE_DRIVER, 74250, 1280, 1390,
 		   1430, 1650, 0, 720, 725, 730, 750, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 60, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_64_27, },
-<<<<<<< HEAD
 	/* 70 - 1280x720@100Hz 64:27 */
-=======
-	/* 70 - 1280x720@100Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1280x720", DRM_MODE_TYPE_DRIVER, 148500, 1280, 1720,
 		   1760, 1980, 0, 720, 725, 730, 750, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 100, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_64_27, },
-<<<<<<< HEAD
 	/* 71 - 1280x720@120Hz 64:27 */
-=======
-	/* 71 - 1280x720@120Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1280x720", DRM_MODE_TYPE_DRIVER, 148500, 1280, 1390,
 		   1430, 1650, 0, 720, 725, 730, 750, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 120, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_64_27, },
-<<<<<<< HEAD
 	/* 72 - 1920x1080@24Hz 64:27 */
-=======
-	/* 72 - 1920x1080@24Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1920x1080", DRM_MODE_TYPE_DRIVER, 74250, 1920, 2558,
 		   2602, 2750, 0, 1080, 1084, 1089, 1125, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 24, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_64_27, },
-<<<<<<< HEAD
 	/* 73 - 1920x1080@25Hz 64:27 */
-=======
-	/* 73 - 1920x1080@25Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1920x1080", DRM_MODE_TYPE_DRIVER, 74250, 1920, 2448,
 		   2492, 2640, 0, 1080, 1084, 1089, 1125, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 25, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_64_27, },
-<<<<<<< HEAD
 	/* 74 - 1920x1080@30Hz 64:27 */
-=======
-	/* 74 - 1920x1080@30Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1920x1080", DRM_MODE_TYPE_DRIVER, 74250, 1920, 2008,
 		   2052, 2200, 0, 1080, 1084, 1089, 1125, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 30, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_64_27, },
-<<<<<<< HEAD
 	/* 75 - 1920x1080@50Hz 64:27 */
-=======
-	/* 75 - 1920x1080@50Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1920x1080", DRM_MODE_TYPE_DRIVER, 148500, 1920, 2448,
 		   2492, 2640, 0, 1080, 1084, 1089, 1125, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 50, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_64_27, },
-<<<<<<< HEAD
 	/* 76 - 1920x1080@60Hz 64:27 */
-=======
-	/* 76 - 1920x1080@60Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1920x1080", DRM_MODE_TYPE_DRIVER, 148500, 1920, 2008,
 		   2052, 2200, 0, 1080, 1084, 1089, 1125, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 60, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_64_27, },
-<<<<<<< HEAD
 	/* 77 - 1920x1080@100Hz 64:27 */
-=======
-	/* 77 - 1920x1080@100Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1920x1080", DRM_MODE_TYPE_DRIVER, 297000, 1920, 2448,
 		   2492, 2640, 0, 1080, 1084, 1089, 1125, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 100, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_64_27, },
-<<<<<<< HEAD
 	/* 78 - 1920x1080@120Hz 64:27 */
-=======
-	/* 78 - 1920x1080@120Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1920x1080", DRM_MODE_TYPE_DRIVER, 297000, 1920, 2008,
 		   2052, 2200, 0, 1080, 1084, 1089, 1125, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 120, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_64_27, },
-<<<<<<< HEAD
 	/* 79 - 1680x720@24Hz 64:27 */
-=======
-	/* 79 - 1680x720@24Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1680x720", DRM_MODE_TYPE_DRIVER, 59400, 1680, 3040,
 		   3080, 3300, 0, 720, 725, 730, 750, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 24, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_64_27, },
-<<<<<<< HEAD
 	/* 80 - 1680x720@25Hz 64:27 */
-=======
-	/* 80 - 1680x720@25Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1680x720", DRM_MODE_TYPE_DRIVER, 59400, 1680, 2908,
 		   2948, 3168, 0, 720, 725, 730, 750, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 25, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_64_27, },
-<<<<<<< HEAD
 	/* 81 - 1680x720@30Hz 64:27 */
-=======
-	/* 81 - 1680x720@30Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1680x720", DRM_MODE_TYPE_DRIVER, 59400, 1680, 2380,
 		   2420, 2640, 0, 720, 725, 730, 750, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 30, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_64_27, },
-<<<<<<< HEAD
 	/* 82 - 1680x720@50Hz 64:27 */
-=======
-	/* 82 - 1680x720@50Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1680x720", DRM_MODE_TYPE_DRIVER, 82500, 1680, 1940,
 		   1980, 2200, 0, 720, 725, 730, 750, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 50, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_64_27, },
-<<<<<<< HEAD
 	/* 83 - 1680x720@60Hz 64:27 */
-=======
-	/* 83 - 1680x720@60Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1680x720", DRM_MODE_TYPE_DRIVER, 99000, 1680, 1940,
 		   1980, 2200, 0, 720, 725, 730, 750, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 60, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_64_27, },
-<<<<<<< HEAD
 	/* 84 - 1680x720@100Hz 64:27 */
-=======
-	/* 84 - 1680x720@100Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1680x720", DRM_MODE_TYPE_DRIVER, 165000, 1680, 1740,
 		   1780, 2000, 0, 720, 725, 730, 825, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 100, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_64_27, },
-<<<<<<< HEAD
 	/* 85 - 1680x720@120Hz 64:27 */
-=======
-	/* 85 - 1680x720@120Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("1680x720", DRM_MODE_TYPE_DRIVER, 198000, 1680, 1740,
 		   1780, 2000, 0, 720, 725, 730, 825, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 120, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_64_27, },
-<<<<<<< HEAD
 	/* 86 - 2560x1080@24Hz 64:27 */
-=======
-	/* 86 - 2560x1080@24Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("2560x1080", DRM_MODE_TYPE_DRIVER, 99000, 2560, 3558,
 		   3602, 3750, 0, 1080, 1084, 1089, 1100, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 24, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_64_27, },
-<<<<<<< HEAD
 	/* 87 - 2560x1080@25Hz 64:27 */
-=======
-	/* 87 - 2560x1080@25Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("2560x1080", DRM_MODE_TYPE_DRIVER, 90000, 2560, 3008,
 		   3052, 3200, 0, 1080, 1084, 1089, 1125, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 25, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_64_27, },
-<<<<<<< HEAD
 	/* 88 - 2560x1080@30Hz 64:27 */
-=======
-	/* 88 - 2560x1080@30Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("2560x1080", DRM_MODE_TYPE_DRIVER, 118800, 2560, 3328,
 		   3372, 3520, 0, 1080, 1084, 1089, 1125, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 30, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_64_27, },
-<<<<<<< HEAD
 	/* 89 - 2560x1080@50Hz 64:27 */
-=======
-	/* 89 - 2560x1080@50Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("2560x1080", DRM_MODE_TYPE_DRIVER, 185625, 2560, 3108,
 		   3152, 3300, 0, 1080, 1084, 1089, 1125, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 50, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_64_27, },
-<<<<<<< HEAD
 	/* 90 - 2560x1080@60Hz 64:27 */
-=======
-	/* 90 - 2560x1080@60Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("2560x1080", DRM_MODE_TYPE_DRIVER, 198000, 2560, 2808,
 		   2852, 3000, 0, 1080, 1084, 1089, 1100, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 60, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_64_27, },
-<<<<<<< HEAD
 	/* 91 - 2560x1080@100Hz 64:27 */
-=======
-	/* 91 - 2560x1080@100Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("2560x1080", DRM_MODE_TYPE_DRIVER, 371250, 2560, 2778,
 		   2822, 2970, 0, 1080, 1084, 1089, 1250, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 100, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_64_27, },
-<<<<<<< HEAD
 	/* 92 - 2560x1080@120Hz 64:27 */
-=======
-	/* 92 - 2560x1080@120Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("2560x1080", DRM_MODE_TYPE_DRIVER, 495000, 2560, 3108,
 		   3152, 3300, 0, 1080, 1084, 1089, 1250, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 120, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_64_27, },
-<<<<<<< HEAD
 	/* 93 - 3840x2160@24Hz 16:9 */
-=======
-	/* 93 - 3840x2160p@24Hz 16:9 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("3840x2160", DRM_MODE_TYPE_DRIVER, 297000, 3840, 5116,
 		   5204, 5500, 0, 2160, 2168, 2178, 2250, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 24, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-<<<<<<< HEAD
 	/* 94 - 3840x2160@25Hz 16:9 */
-=======
-	/* 94 - 3840x2160p@25Hz 16:9 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("3840x2160", DRM_MODE_TYPE_DRIVER, 297000, 3840, 4896,
 		   4984, 5280, 0, 2160, 2168, 2178, 2250, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 25, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-<<<<<<< HEAD
 	/* 95 - 3840x2160@30Hz 16:9 */
-=======
-	/* 95 - 3840x2160p@30Hz 16:9 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("3840x2160", DRM_MODE_TYPE_DRIVER, 297000, 3840, 4016,
 		   4104, 4400, 0, 2160, 2168, 2178, 2250, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 30, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-<<<<<<< HEAD
 	/* 96 - 3840x2160@50Hz 16:9 */
-=======
-	/* 96 - 3840x2160p@50Hz 16:9 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("3840x2160", DRM_MODE_TYPE_DRIVER, 594000, 3840, 4896,
 		   4984, 5280, 0, 2160, 2168, 2178, 2250, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 50, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-<<<<<<< HEAD
 	/* 97 - 3840x2160@60Hz 16:9 */
-=======
-	/* 97 - 3840x2160p@60Hz 16:9 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("3840x2160", DRM_MODE_TYPE_DRIVER, 594000, 3840, 4016,
 		   4104, 4400, 0, 2160, 2168, 2178, 2250, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 60, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
-<<<<<<< HEAD
 	/* 98 - 4096x2160@24Hz 256:135 */
-=======
-	/* 98 - 4096x2160p@24Hz 256:135 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("4096x2160", DRM_MODE_TYPE_DRIVER, 297000, 4096, 5116,
 		   5204, 5500, 0, 2160, 2168, 2178, 2250, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 24, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_256_135, },
-<<<<<<< HEAD
 	/* 99 - 4096x2160@25Hz 256:135 */
-=======
-	/* 99 - 4096x2160p@25Hz 256:135 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("4096x2160", DRM_MODE_TYPE_DRIVER, 297000, 4096, 5064,
 		   5152, 5280, 0, 2160, 2168, 2178, 2250, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 25, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_256_135, },
-<<<<<<< HEAD
 	/* 100 - 4096x2160@30Hz 256:135 */
-=======
-	/* 100 - 4096x2160p@30Hz 256:135 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("4096x2160", DRM_MODE_TYPE_DRIVER, 297000, 4096, 4184,
 		   4272, 4400, 0, 2160, 2168, 2178, 2250, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 30, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_256_135, },
-<<<<<<< HEAD
 	/* 101 - 4096x2160@50Hz 256:135 */
-=======
-	/* 101 - 4096x2160p@50Hz 256:135 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("4096x2160", DRM_MODE_TYPE_DRIVER, 594000, 4096, 5064,
 		   5152, 5280, 0, 2160, 2168, 2178, 2250, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 50, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_256_135, },
-<<<<<<< HEAD
 	/* 102 - 4096x2160@60Hz 256:135 */
-=======
-	/* 102 - 4096x2160p@60Hz 256:135 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("4096x2160", DRM_MODE_TYPE_DRIVER, 594000, 4096, 4184,
 		   4272, 4400, 0, 2160, 2168, 2178, 2250, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 60, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_256_135, },
-<<<<<<< HEAD
 	/* 103 - 3840x2160@24Hz 64:27 */
-=======
-	/* 103 - 3840x2160p@24Hz 64:27 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("3840x2160", DRM_MODE_TYPE_DRIVER, 297000, 3840, 5116,
 		   5204, 5500, 0, 2160, 2168, 2178, 2250, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 24, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_64_27, },
-<<<<<<< HEAD
 	/* 104 - 3840x2160@25Hz 64:27 */
-=======
-	/* 104 - 3840x2160p@25Hz 64:27 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("3840x2160", DRM_MODE_TYPE_DRIVER, 297000, 3840, 4896,
 		   4984, 5280, 0, 2160, 2168, 2178, 2250, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 25, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_64_27, },
-<<<<<<< HEAD
 	/* 105 - 3840x2160@30Hz 64:27 */
-=======
-	/* 105 - 3840x2160p@30Hz 64:27 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("3840x2160", DRM_MODE_TYPE_DRIVER, 297000, 3840, 4016,
 		   4104, 4400, 0, 2160, 2168, 2178, 2250, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 30, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_64_27, },
-<<<<<<< HEAD
 	/* 106 - 3840x2160@50Hz 64:27 */
-=======
-	/* 106 - 3840x2160p@50Hz 64:27 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("3840x2160", DRM_MODE_TYPE_DRIVER, 594000, 3840, 4896,
 		   4984, 5280, 0, 2160, 2168, 2178, 2250, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	  .vrefresh = 50, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_64_27, },
-<<<<<<< HEAD
 	/* 107 - 3840x2160@60Hz 64:27 */
-=======
-	/* 107 - 3840x2160p@60Hz 64:27 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ DRM_MODE("3840x2160", DRM_MODE_TYPE_DRIVER, 594000, 3840, 4016,
 		   4104, 4400, 0, 2160, 2168, 2178, 2250, 0,
 		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
@@ -1848,10 +1362,7 @@ MODULE_PARM_DESC(edid_fixup,
 
 static void drm_get_displayid(struct drm_connector *connector,
 			      struct edid *edid);
-<<<<<<< HEAD
 static int validate_displayid(u8 *displayid, int length, int idx);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int drm_edid_block_checksum(const u8 *raw_edid)
 {
@@ -2059,12 +1570,9 @@ static void connector_bad_edid(struct drm_connector *connector,
 			       u8 *edid, int num_blocks)
 {
 	int i;
-<<<<<<< HEAD
 	u32 csum = 0x100 | drm_edid_block_checksum(edid);
 
 	connector->checksum = 0x100 - (csum - edid[EDID_LENGTH - 1]);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (connector->bad_edid_counter++ && !(drm_debug & DRM_UT_KMS))
 		return;
@@ -2089,7 +1597,6 @@ static void connector_bad_edid(struct drm_connector *connector,
 	}
 }
 
-<<<<<<< HEAD
 /* Get override or firmware EDID */
 static struct edid *drm_get_override_edid(struct drm_connector *connector)
 {
@@ -2134,8 +1641,6 @@ int drm_add_override_edid_modes(struct drm_connector *connector)
 }
 EXPORT_SYMBOL(drm_add_override_edid_modes);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * drm_do_get_edid - get EDID data using a custom EDID block read function
  * @connector: connector we're probing
@@ -2150,13 +1655,10 @@ EXPORT_SYMBOL(drm_add_override_edid_modes);
  * level, drivers must make all reasonable efforts to expose it as an I2C
  * adapter and use drm_get_edid() instead of abusing this function.
  *
-<<<<<<< HEAD
  * The EDID may be overridden using debugfs override_edid or firmare EDID
  * (drm_load_edid_firmware() and drm.edid_firmware parameter), in this priority
  * order. Having either of them bypasses actual EDID reads.
  *
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Return: Pointer to valid EDID or NULL if we couldn't find any.
  */
 struct edid *drm_do_get_edid(struct drm_connector *connector,
@@ -2166,7 +1668,6 @@ struct edid *drm_do_get_edid(struct drm_connector *connector,
 {
 	int i, j = 0, valid_extensions = 0;
 	u8 *edid, *new;
-<<<<<<< HEAD
 	struct edid *override;
 
 	connector->checksum = 0;
@@ -2174,8 +1675,6 @@ struct edid *drm_do_get_edid(struct drm_connector *connector,
 	override = drm_get_override_edid(connector);
 	if (override)
 		return override;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if ((edid = kmalloc(EDID_LENGTH, GFP_KERNEL)) == NULL)
 		return NULL;
@@ -2227,12 +1726,8 @@ struct edid *drm_do_get_edid(struct drm_connector *connector,
 		edid[EDID_LENGTH-1] += edid[0x7e] - valid_extensions;
 		edid[0x7e] = valid_extensions;
 
-<<<<<<< HEAD
 		new = kmalloc_array(valid_extensions + 1, EDID_LENGTH,
 				    GFP_KERNEL);
-=======
-		new = kmalloc((valid_extensions + 1) * EDID_LENGTH, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!new)
 			goto out;
 
@@ -2350,11 +1845,7 @@ EXPORT_SYMBOL(drm_edid_duplicate);
  *
  * Returns true if @vendor is in @edid, false otherwise
  */
-<<<<<<< HEAD
 static bool edid_vendor(const struct edid *edid, const char *vendor)
-=======
-static bool edid_vendor(struct edid *edid, const char *vendor)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	char edid_vendor[3];
 
@@ -2372,11 +1863,7 @@ static bool edid_vendor(struct edid *edid, const char *vendor)
  *
  * This tells subsequent routines what fixes they need to apply.
  */
-<<<<<<< HEAD
 static u32 edid_get_quirks(const struct edid *edid)
-=======
-static u32 edid_get_quirks(struct edid *edid)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	const struct edid_quirk *quirk;
 	int i;
@@ -2710,11 +2197,8 @@ drm_mode_std(struct drm_connector *connector, struct edid *edid,
 	if (hsize == 1366 && vsize == 768 && vrefresh_rate == 60) {
 		mode = drm_cvt_mode(dev, 1366, 768, vrefresh_rate, 0, 0,
 				    false);
-<<<<<<< HEAD
 		if (!mode)
 			return NULL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mode->hdisplay = 1366;
 		mode->hsync_start = mode->hsync_start - 1;
 		mode->hsync_end = mode->hsync_end - 1;
@@ -3399,11 +2883,7 @@ do_detailed_mode(struct detailed_timing *timing, void *c)
 
 		drm_mode_probed_add(closure->connector, newmode);
 		closure->modes++;
-<<<<<<< HEAD
 		closure->preferred = false;
-=======
-		closure->preferred = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -3420,11 +2900,7 @@ add_detailed_modes(struct drm_connector *connector, struct edid *edid,
 	struct detailed_mode_closure closure = {
 		.connector = connector,
 		.edid = edid,
-<<<<<<< HEAD
 		.preferred = true,
-=======
-		.preferred = 1,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.quirks = quirks,
 	};
 
@@ -3441,18 +2917,12 @@ add_detailed_modes(struct drm_connector *connector, struct edid *edid,
 #define VIDEO_BLOCK     0x02
 #define VENDOR_BLOCK    0x03
 #define SPEAKER_BLOCK	0x04
-<<<<<<< HEAD
 #define VENDOR_SPECIFIC_VIDEO_DATA_BLOCK 0x01
 #define VSVDB_HDR10_PLUS_IEEE_CODE 0x90848b
 #define VSVDB_HDR10_PLUS_APP_VER_MASK 0x3
 #define HDR_STATIC_METADATA_EXTENDED_DATA_BLOCK 0x06
 #define COLORIMETRY_EXTENDED_DATA_BLOCK 0x05
 #define USE_EXTENDED_TAG 0x07
-=======
-#define HDR_STATIC_METADATA_EXTENDED_DATA_BLOCK 0x06
-#define USE_EXTENDED_TAG 0x07
-#define VIDEO_CAPABILITY_BLOCK	0x07
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define EXT_VIDEO_CAPABILITY_BLOCK 0x00
 #define EXT_VIDEO_DATA_BLOCK_420	0x0E
 #define EXT_VIDEO_CAP_BLOCK_Y420CMDB 0x0F
@@ -3464,11 +2934,7 @@ add_detailed_modes(struct drm_connector *connector, struct edid *edid,
 /*
  * Search EDID for CEA extension block.
  */
-<<<<<<< HEAD
 static u8 *drm_find_edid_extension(const struct edid *edid, int ext_id)
-=======
-static u8 *drm_find_edid_extension(struct edid *edid, int ext_id)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u8 *edid_ext = NULL;
 	int i;
@@ -3490,7 +2956,6 @@ static u8 *drm_find_edid_extension(struct edid *edid, int ext_id)
 	return edid_ext;
 }
 
-<<<<<<< HEAD
 
 static u8 *drm_find_displayid_extension(const struct edid *edid)
 {
@@ -3529,16 +2994,6 @@ static u8 *drm_find_cea_extension(const struct edid *edid)
 	}
 
 	return cea;
-=======
-static u8 *drm_find_cea_extension(struct edid *edid)
-{
-	return drm_find_edid_extension(edid, CEA_EXT);
-}
-
-static u8 *drm_find_displayid_extension(struct edid *edid)
-{
-	return drm_find_edid_extension(edid, DISPLAYID_EXT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -3604,21 +3059,15 @@ cea_mode_alternate_timings(u8 vic, struct drm_display_mode *mode)
 static u8 drm_match_cea_mode_clock_tolerance(const struct drm_display_mode *to_match,
 					     unsigned int clock_tolerance)
 {
-<<<<<<< HEAD
 	unsigned int match_flags = DRM_MODE_MATCH_TIMINGS | DRM_MODE_MATCH_FLAGS;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 vic;
 
 	if (!to_match->clock)
 		return 0;
 
-<<<<<<< HEAD
 	if (to_match->picture_aspect_ratio)
 		match_flags |= DRM_MODE_MATCH_ASPECT_RATIO;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (vic = 1; vic < ARRAY_SIZE(edid_cea_modes); vic++) {
 		struct drm_display_mode cea_mode = edid_cea_modes[vic];
 		unsigned int clock1, clock2;
@@ -3632,11 +3081,7 @@ static u8 drm_match_cea_mode_clock_tolerance(const struct drm_display_mode *to_m
 			continue;
 
 		do {
-<<<<<<< HEAD
 			if (drm_mode_match(to_match, &cea_mode, match_flags))
-=======
-			if (drm_mode_equal_no_clocks_no_stereo(to_match, &cea_mode))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				return vic;
 		} while (cea_mode_alternate_timings(vic, &cea_mode));
 	}
@@ -3653,21 +3098,15 @@ static u8 drm_match_cea_mode_clock_tolerance(const struct drm_display_mode *to_m
  */
 u8 drm_match_cea_mode(const struct drm_display_mode *to_match)
 {
-<<<<<<< HEAD
 	unsigned int match_flags = DRM_MODE_MATCH_TIMINGS | DRM_MODE_MATCH_FLAGS;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 vic;
 
 	if (!to_match->clock)
 		return 0;
 
-<<<<<<< HEAD
 	if (to_match->picture_aspect_ratio)
 		match_flags |= DRM_MODE_MATCH_ASPECT_RATIO;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (vic = 1; vic < ARRAY_SIZE(edid_cea_modes); vic++) {
 		struct drm_display_mode cea_mode = edid_cea_modes[vic];
 		unsigned int clock1, clock2;
@@ -3681,11 +3120,7 @@ u8 drm_match_cea_mode(const struct drm_display_mode *to_match)
 			continue;
 
 		do {
-<<<<<<< HEAD
 			if (drm_mode_match(to_match, &cea_mode, match_flags))
-=======
-			if (drm_mode_equal_no_clocks_no_stereo(to_match, &cea_mode))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				return vic;
 		} while (cea_mode_alternate_timings(vic, &cea_mode));
 	}
@@ -3732,10 +3167,7 @@ hdmi_mode_alternate_clock(const struct drm_display_mode *hdmi_mode)
 static u8 drm_match_hdmi_mode_clock_tolerance(const struct drm_display_mode *to_match,
 					      unsigned int clock_tolerance)
 {
-<<<<<<< HEAD
 	unsigned int match_flags = DRM_MODE_MATCH_TIMINGS | DRM_MODE_MATCH_FLAGS;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 vic;
 
 	if (!to_match->clock)
@@ -3753,11 +3185,7 @@ static u8 drm_match_hdmi_mode_clock_tolerance(const struct drm_display_mode *to_
 		    abs(to_match->clock - clock2) > clock_tolerance)
 			continue;
 
-<<<<<<< HEAD
 		if (drm_mode_match(to_match, hdmi_mode, match_flags))
-=======
-		if (drm_mode_equal_no_clocks(to_match, hdmi_mode))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return vic;
 	}
 
@@ -3774,10 +3202,7 @@ static u8 drm_match_hdmi_mode_clock_tolerance(const struct drm_display_mode *to_
  */
 static u8 drm_match_hdmi_mode(const struct drm_display_mode *to_match)
 {
-<<<<<<< HEAD
 	unsigned int match_flags = DRM_MODE_MATCH_TIMINGS | DRM_MODE_MATCH_FLAGS;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 vic;
 
 	if (!to_match->clock)
@@ -3793,11 +3218,7 @@ static u8 drm_match_hdmi_mode(const struct drm_display_mode *to_match)
 
 		if ((KHZ2PICOS(to_match->clock) == KHZ2PICOS(clock1) ||
 		     KHZ2PICOS(to_match->clock) == KHZ2PICOS(clock2)) &&
-<<<<<<< HEAD
 		    drm_mode_match(to_match, hdmi_mode, match_flags))
-=======
-		    drm_mode_equal_no_clocks_no_stereo(to_match, hdmi_mode))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return vic;
 	}
 	return 0;
@@ -4138,10 +3559,7 @@ static int
 do_hdmi_vsdb_modes(struct drm_connector *connector, const u8 *db, u8 len,
 		   const u8 *video_db, u8 video_len)
 {
-<<<<<<< HEAD
 	struct drm_display_info *info = &connector->display_info;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int modes = 0, offset = 0, i, multi_present = 0, multi_len;
 	u8 vic_len, hdmi_3d_len = 0;
 	u16 mask;
@@ -4269,11 +3687,8 @@ do_hdmi_vsdb_modes(struct drm_connector *connector, const u8 *db, u8 len,
 	}
 
 out:
-<<<<<<< HEAD
 	if (modes > 0)
 		info->has_hdmi_infoframe = true;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return modes;
 }
 
@@ -4304,7 +3719,6 @@ cea_revision(const u8 *cea)
 static int
 cea_db_offsets(const u8 *cea, int *start, int *end)
 {
-<<<<<<< HEAD
 	/* DisplayID CTA extension blocks and top-level CEA EDID
 	 * block header definitions differ in the following bytes:
 	 *   1) Byte 2 of the header specifies length differently,
@@ -4337,15 +3751,6 @@ cea_db_offsets(const u8 *cea, int *start, int *end)
 		return -ENOTSUPP;
 	}
 
-=======
-	/* Data block offset in CEA extension block */
-	*start = 4;
-	*end = cea[2];
-	if (*end == 0)
-		*end = 127;
-	if (*end < 4 || *end > 127)
-		return -ERANGE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -4545,13 +3950,8 @@ drm_parse_hdmi_vsdb_audio(struct drm_connector *connector, const u8 *db)
 {
 	u8 len = cea_db_payload_len(db);
 
-<<<<<<< HEAD
 	if (len >= 6 && (db[6] & (1 << 7)))
 		connector->eld[DRM_ELD_SAD_COUNT_CONN_TYPE] |= DRM_ELD_SUPPORTS_AI;
-=======
-	if (len >= 6)
-		connector->eld[5] |= (db[6] >> 7) << 1;  /* Supports_AI */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (len >= 8) {
 		connector->latency_present[0] = db[8] >> 7;
 		connector->latency_present[1] = (db[8] >> 6) & 1;
@@ -4576,7 +3976,6 @@ drm_parse_hdmi_vsdb_audio(struct drm_connector *connector, const u8 *db)
 		      connector->audio_latency[1]);
 }
 
-<<<<<<< HEAD
 static void drm_parse_ycbcr420_deep_color_info(struct drm_connector *connector,
 					       const u8 *db)
 {
@@ -4631,72 +4030,6 @@ static void drm_parse_hdmi_forum_vsdb(struct drm_connector *connector,
 	}
 
 	drm_parse_ycbcr420_deep_color_info(connector, hf_vsdb);
-=======
-static u8 *
-drm_edid_find_extended_tag_block(struct edid *edid, int blk_id)
-{
-	u8 *db = NULL;
-	u8 *cea = NULL;
-
-	if (!edid)
-		return NULL;
-
-	cea = drm_find_cea_extension(edid);
-
-	if (cea && cea_revision(cea) >= 3) {
-		int i, start, end;
-
-		if (cea_db_offsets(cea, &start, &end))
-			return NULL;
-
-		for_each_cea_db(cea, i, start, end) {
-			db = &cea[i];
-			if ((cea_db_tag(db) == USE_EXTENDED_TAG) &&
-				(db[1] == blk_id))
-				return db;
-		}
-	}
-	return NULL;
-}
-
-/*
- * add_YCbCr420VDB_modes - add the modes found in Ycbcr420 VDB block
- * @connector: connector corresponding to the HDMI sink
- * @edid: handle to the EDID structure
- * Parses the YCbCr420 VDB block and adds the modes to @connector.
- */
-static int
-add_YCbCr420VDB_modes(struct drm_connector *connector, struct edid *edid)
-{
-
-	const u8 *db = NULL;
-	u32 i = 0;
-	u32 modes = 0;
-	u32 video_format = 0;
-	u8 len = 0;
-
-	/*Find the YCbCr420 VDB*/
-	db = drm_edid_find_extended_tag_block(edid, EXT_VIDEO_DATA_BLOCK_420);
-	/* Offset to byte 3 */
-	if (db) {
-		len = db[0] & 0x1F;
-		db += 2;
-		for (i = 0; i < len - 1; i++) {
-			struct drm_display_mode *mode;
-
-			video_format = *(db + i) & 0x7F;
-			mode = drm_display_mode_from_vic_index(connector,
-					db, len-1, i);
-			if (mode) {
-				DRM_DEBUG_KMS("Adding mode for vic = %d\n",
-				video_format);
-				drm_mode_probed_add(connector, mode);
-				modes++;
-			}
-		}
-	}
-	return modes;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -4730,7 +4063,6 @@ drm_extract_vcdb_info(struct drm_connector *connector, const u8 *db)
 			  (int) connector->ce_scan_info);
 }
 
-<<<<<<< HEAD
 static void
 drm_parse_vsvdb_hdr_plus(struct drm_connector *connector, const u8 *db)
 {
@@ -4753,8 +4085,6 @@ drm_extract_vsvdb_info(struct drm_connector *connector, const u8 *db)
 		drm_parse_vsvdb_hdr_plus(connector, db);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool drm_edid_is_luminance_value_present(
 u32 block_length, enum luminance_value value)
 {
@@ -4762,7 +4092,6 @@ u32 block_length, enum luminance_value value)
 }
 
 /*
-<<<<<<< HEAD
  * drm_extract_clrmetry_db - Parse the HDMI colorimetry extended block
  * @connector: connector corresponding to the HDMI sink
  * @db: start of the HDMI colorimetry extended block
@@ -4810,8 +4139,6 @@ drm_extract_clrmetry_db(struct drm_connector *connector, const u8 *db)
 }
 
 /*
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * drm_extract_hdr_db - Parse the HDMI HDR extended block
  * @connector: connector corresponding to the HDMI sink
  * @db: start of the HDMI HDR extended block
@@ -4857,10 +4184,6 @@ drm_extract_hdr_db(struct drm_connector *connector, const u8 *db)
 	DRM_DEBUG_KMS("avg luminance %d\n", connector->hdr_avg_luminance);
 	DRM_DEBUG_KMS("min luminance %d\n", connector->hdr_min_luminance);
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * drm_hdmi_extract_extended_blk_info - Parse the HDMI extended tag blocks
  * @connector: connector corresponding to the HDMI sink
@@ -4869,11 +4192,7 @@ drm_extract_hdr_db(struct drm_connector *connector, const u8 *db)
  */
 static void
 drm_hdmi_extract_extended_blk_info(struct drm_connector *connector,
-<<<<<<< HEAD
 		const struct edid *edid)
-=======
-		struct edid *edid)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	const u8 *cea = drm_find_cea_extension(edid);
 	const u8 *db = NULL;
@@ -4894,7 +4213,6 @@ drm_hdmi_extract_extended_blk_info(struct drm_connector *connector,
 				case VIDEO_CAPABILITY_EXTENDED_DATA_BLOCK:
 					drm_extract_vcdb_info(connector, db);
 					break;
-<<<<<<< HEAD
 				case VENDOR_SPECIFIC_VIDEO_DATA_BLOCK:
 					drm_extract_vsvdb_info(connector, db);
 					break;
@@ -4904,11 +4222,6 @@ drm_hdmi_extract_extended_blk_info(struct drm_connector *connector,
 				case COLORIMETRY_EXTENDED_DATA_BLOCK:
 					drm_extract_clrmetry_db(connector, db);
 					break;
-=======
-				case HDR_STATIC_METADATA_EXTENDED_DATA_BLOCK:
-					drm_extract_hdr_db(connector, db);
-					break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				default:
 					break;
 				}
@@ -4918,40 +4231,6 @@ drm_hdmi_extract_extended_blk_info(struct drm_connector *connector,
 }
 
 static void
-<<<<<<< HEAD
-=======
-parse_hdmi_hf_vsdb(struct drm_connector *connector, const u8 *db)
-{
-	u8 len = cea_db_payload_len(db);
-
-	if (len < 7)
-		return;
-
-	if (db[4] != 1)
-		return; /* invalid version */
-
-	connector->max_tmds_char = db[5] * 5;
-	connector->scdc_present = db[6] & (1 << 7);
-	connector->rr_capable = db[6] & (1 << 6);
-	connector->flags_3d = db[6] & 0x7;
-	connector->supports_scramble = connector->scdc_present &&
-			(db[6] & (1 << 3));
-
-	DRM_DEBUG_KMS("HDMI v2: max TMDS char %d, "
-			"scdc %s, "
-			"rr %s, "
-			"3D flags 0x%x, "
-			"scramble %s\n",
-			connector->max_tmds_char,
-			connector->scdc_present ? "available" : "not available",
-			connector->rr_capable ? "capable" : "not capable",
-			connector->flags_3d,
-			connector->supports_scramble ?
-				"supported" : "not supported");
-}
-
-static void
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 monitor_name(struct detailed_timing *t, void *data)
 {
 	if (t->data.other_data.type == EDID_DETAIL_MONITOR_NAME)
@@ -4988,11 +4267,7 @@ void drm_edid_get_monitor_name(struct edid *edid, char *name, int bufsize)
 {
 	int name_length;
 	char buf[13];
-<<<<<<< HEAD
 	
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (bufsize <= 0)
 		return;
 
@@ -5002,7 +4277,6 @@ void drm_edid_get_monitor_name(struct edid *edid, char *name, int bufsize)
 }
 EXPORT_SYMBOL(drm_edid_get_monitor_name);
 
-<<<<<<< HEAD
 static void clear_eld(struct drm_connector *connector)
 {
 	memset(connector->eld, 0, sizeof(connector->eld));
@@ -5016,9 +4290,6 @@ static void clear_eld(struct drm_connector *connector)
 }
 
 /*
-=======
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * drm_edid_to_eld - build ELD from EDID
  * @connector: connector corresponding to the HDMI/DP sink
  * @edid: EDID to parse
@@ -5026,11 +4297,7 @@ static void clear_eld(struct drm_connector *connector)
  * Fill the ELD (EDID-Like Data) buffer for passing to the audio driver. The
  * HDCP and Port_ID ELD fields are left for the graphics driver to fill in.
  */
-<<<<<<< HEAD
 static void drm_edid_to_eld(struct drm_connector *connector, struct edid *edid)
-=======
-void drm_edid_to_eld(struct drm_connector *connector, struct edid *edid)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	uint8_t *eld = connector->eld;
 	u8 *cea;
@@ -5039,18 +4306,7 @@ void drm_edid_to_eld(struct drm_connector *connector, struct edid *edid)
 	int mnl;
 	int dbl;
 
-<<<<<<< HEAD
 	clear_eld(connector);
-=======
-	memset(eld, 0, sizeof(connector->eld));
-
-	connector->latency_present[0] = false;
-	connector->latency_present[1] = false;
-	connector->video_latency[0] = 0;
-	connector->audio_latency[0] = 0;
-	connector->video_latency[1] = 0;
-	connector->audio_latency[1] = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!edid)
 		return;
@@ -5061,7 +4317,6 @@ void drm_edid_to_eld(struct drm_connector *connector, struct edid *edid)
 		return;
 	}
 
-<<<<<<< HEAD
 	mnl = get_monitor_name(edid, &eld[DRM_ELD_MONITOR_NAME_STRING]);
 	DRM_DEBUG_KMS("ELD monitor %s\n", &eld[DRM_ELD_MONITOR_NAME_STRING]);
 
@@ -5074,19 +4329,6 @@ void drm_edid_to_eld(struct drm_connector *connector, struct edid *edid)
 	eld[DRM_ELD_MANUFACTURER_NAME1] = edid->mfg_id[1];
 	eld[DRM_ELD_PRODUCT_CODE0] = edid->prod_code[0];
 	eld[DRM_ELD_PRODUCT_CODE1] = edid->prod_code[1];
-=======
-	mnl = get_monitor_name(edid, eld + 20);
-
-	eld[4] = (cea[1] << 5) | mnl;
-	DRM_DEBUG_KMS("ELD monitor %s\n", eld + 20);
-
-	eld[0] = 2 << 3;		/* ELD version: 2 */
-
-	eld[16] = edid->mfg_id[0];
-	eld[17] = edid->mfg_id[1];
-	eld[18] = edid->prod_code[0];
-	eld[19] = edid->prod_code[1];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (cea_revision(cea) >= 3) {
 		int i, start, end;
@@ -5107,22 +4349,14 @@ void drm_edid_to_eld(struct drm_connector *connector, struct edid *edid)
 				/* Audio Data Block, contains SADs */
 				sad_count = min(dbl / 3, 15 - total_sad_count);
 				if (sad_count >= 1)
-<<<<<<< HEAD
 					memcpy(&eld[DRM_ELD_CEA_SAD(mnl, total_sad_count)],
-=======
-					memcpy(eld + 20 + mnl + total_sad_count * 3,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					       &db[1], sad_count * 3);
 				total_sad_count += sad_count;
 				break;
 			case SPEAKER_BLOCK:
 				/* Speaker Allocation Data Block */
 				if (dbl >= 1)
-<<<<<<< HEAD
 					eld[DRM_ELD_SPEAKER] = db[1];
-=======
-					eld[7] = db[1];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				break;
 			case VENDOR_BLOCK:
 				/* HDMI Vendor-Specific Data Block */
@@ -5130,23 +4364,15 @@ void drm_edid_to_eld(struct drm_connector *connector, struct edid *edid)
 					drm_parse_hdmi_vsdb_audio(connector, db);
 				/* HDMI Forum Vendor-Specific Data Block */
 				else if (cea_db_is_hdmi_forum_vsdb(db))
-<<<<<<< HEAD
 					drm_parse_hdmi_forum_vsdb(connector,
 								  db);
-=======
-					parse_hdmi_hf_vsdb(connector, db);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				break;
 			default:
 				break;
 			}
 		}
 	}
-<<<<<<< HEAD
 	eld[DRM_ELD_SAD_COUNT_CONN_TYPE] |= total_sad_count << DRM_ELD_SAD_COUNT_SHIFT;
-=======
-	eld[5] |= total_sad_count << 4;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort ||
 	    connector->connector_type == DRM_MODE_CONNECTOR_eDP)
@@ -5160,10 +4386,6 @@ void drm_edid_to_eld(struct drm_connector *connector, struct edid *edid)
 	DRM_DEBUG_KMS("ELD size %d, SAD count %d\n",
 		      drm_eld_size(eld), total_sad_count);
 }
-<<<<<<< HEAD
-=======
-EXPORT_SYMBOL(drm_edid_to_eld);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * drm_edid_to_sad - extracts SADs from EDID
@@ -5457,63 +4679,6 @@ drm_default_rgb_quant_range(const struct drm_display_mode *mode)
 }
 EXPORT_SYMBOL(drm_default_rgb_quant_range);
 
-<<<<<<< HEAD
-=======
-static void drm_parse_ycbcr420_deep_color_info(struct drm_connector *connector,
-					       const u8 *db)
-{
-	u8 dc_mask;
-	struct drm_hdmi_info *hdmi = &connector->display_info.hdmi;
-
-	dc_mask = db[7] & DRM_EDID_YCBCR420_DC_MASK;
-	hdmi->y420_dc_modes = dc_mask;
-}
-
-static void drm_parse_hdmi_forum_vsdb(struct drm_connector *connector,
-				 const u8 *hf_vsdb)
-{
-	struct drm_display_info *display = &connector->display_info;
-	struct drm_hdmi_info *hdmi = &display->hdmi;
-
-	if (hf_vsdb[6] & 0x80) {
-		hdmi->scdc.supported = true;
-		if (hf_vsdb[6] & 0x40)
-			hdmi->scdc.read_request = true;
-	}
-
-	/*
-	 * All HDMI 2.0 monitors must support scrambling at rates > 340 MHz.
-	 * And as per the spec, three factors confirm this:
-	 * * Availability of a HF-VSDB block in EDID (check)
-	 * * Non zero Max_TMDS_Char_Rate filed in HF-VSDB (let's check)
-	 * * SCDC support available (let's check)
-	 * Lets check it out.
-	 */
-
-	if (hf_vsdb[5]) {
-		/* max clock is 5000 KHz times block value */
-		u32 max_tmds_clock = hf_vsdb[5] * 5000;
-		struct drm_scdc *scdc = &hdmi->scdc;
-
-		if (max_tmds_clock > 340000) {
-			display->max_tmds_clock = max_tmds_clock;
-			DRM_DEBUG_KMS("HF-VSDB: max TMDS clock %d kHz\n",
-				display->max_tmds_clock);
-		}
-
-		if (scdc->supported) {
-			scdc->scrambling.supported = true;
-
-			/* Few sinks support scrambling for cloks < 340M */
-			if ((hf_vsdb[6] & 0x8))
-				scdc->scrambling.low_rates = true;
-		}
-	}
-
-	drm_parse_ycbcr420_deep_color_info(connector, hf_vsdb);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void drm_parse_hdmi_deep_color_info(struct drm_connector *connector,
 					   const u8 *hdmi)
 {
@@ -5601,11 +4766,7 @@ drm_parse_hdmi_vsdb_video(struct drm_connector *connector, const u8 *db)
 }
 
 static void drm_parse_cea_ext(struct drm_connector *connector,
-<<<<<<< HEAD
 			      const struct edid *edid)
-=======
-			      struct edid *edid)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_display_info *info = &connector->display_info;
 	const u8 *edid_ext;
@@ -5639,7 +4800,6 @@ static void drm_parse_cea_ext(struct drm_connector *connector,
 	}
 }
 
-<<<<<<< HEAD
 /* A connector has no EDID information, so we've got no EDID to compute quirks from. Reset
  * all of the values which would have been set from EDID
  */
@@ -5665,10 +4825,6 @@ drm_reset_display_info(struct drm_connector *connector)
 static void
 drm_hdmi_extract_vsdbs_info(struct drm_connector *connector,
 		const struct edid *edid)
-=======
-static void
-drm_hdmi_extract_vsdbs_info(struct drm_connector *connector, struct edid *edid)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	const u8 *cea = drm_find_cea_extension(edid);
 	const u8 *db = NULL;
@@ -5692,18 +4848,13 @@ drm_hdmi_extract_vsdbs_info(struct drm_connector *connector, struct edid *edid)
 				}
 				/* HDMI Forum Vendor-Specific Data Block */
 				else if (cea_db_is_hdmi_forum_vsdb(db))
-<<<<<<< HEAD
 					drm_parse_hdmi_forum_vsdb(connector,
 								  db);
-=======
-					parse_hdmi_hf_vsdb(connector, db);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		}
 	}
 }
 
-<<<<<<< HEAD
 u32 drm_add_display_info(struct drm_connector *connector, const struct edid *edid)
 {
 	struct drm_display_info *info = &connector->display_info;
@@ -5724,28 +4875,6 @@ u32 drm_add_display_info(struct drm_connector *connector, const struct edid *edi
 
 	if (!(edid->input & DRM_EDID_INPUT_DIGITAL))
 		return quirks;
-=======
-static void drm_add_display_info(struct drm_connector *connector,
-				 struct edid *edid)
-{
-	struct drm_display_info *info = &connector->display_info;
-
-	info->width_mm = edid->width_cm * 10;
-	info->height_mm = edid->height_cm * 10;
-
-	/* driver figures it out in this case */
-	info->bpc = 0;
-	info->color_formats = 0;
-	info->cea_rev = 0;
-	info->max_tmds_clock = 0;
-	info->dvi_dual = false;
-
-	if (edid->revision < 3)
-		return;
-
-	if (!(edid->input & DRM_EDID_INPUT_DIGITAL))
-		return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	drm_parse_cea_ext(connector, edid);
 
@@ -5770,11 +4899,7 @@ static void drm_add_display_info(struct drm_connector *connector,
 
 	/* Only defined for 1.4 with digital displays */
 	if (edid->revision < 4)
-<<<<<<< HEAD
 		return quirks;
-=======
-		return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (edid->input & DRM_EDID_DIGITAL_DEPTH_MASK) {
 	case DRM_EDID_DIGITAL_DEPTH_6:
@@ -5809,10 +4934,7 @@ static void drm_add_display_info(struct drm_connector *connector,
 		info->color_formats |= DRM_COLOR_FORMAT_YCRCB444;
 	if (edid->features & DRM_EDID_FEATURE_RGB_YCRCB422)
 		info->color_formats |= DRM_COLOR_FORMAT_YCRCB422;
-<<<<<<< HEAD
 	return quirks;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int validate_displayid(u8 *displayid, int length, int idx)
@@ -5844,11 +4966,7 @@ static struct drm_display_mode *drm_mode_displayid_detailed(struct drm_device *d
 	struct drm_display_mode *mode;
 	unsigned pixel_clock = (timings->pixel_clock[0] |
 				(timings->pixel_clock[1] << 8) |
-<<<<<<< HEAD
 				(timings->pixel_clock[2] << 16));
-=======
-				(timings->pixel_clock[2] << 16)) + 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned hactive = (timings->hactive[0] | timings->hactive[1] << 8) + 1;
 	unsigned hblank = (timings->hblank[0] | timings->hblank[1] << 8) + 1;
 	unsigned hsync = (timings->hsync[0] | (timings->hsync[1] & 0x7f) << 8) + 1;
@@ -5952,13 +5070,8 @@ static int add_displayid_detailed_modes(struct drm_connector *connector,
  * @edid: EDID data
  *
  * Add the specified modes to the connector's mode list. Also fills out the
-<<<<<<< HEAD
  * &drm_display_info structure and ELD in @connector with any information which
  * can be derived from the edid.
-=======
- * &drm_display_info structure in @connector with any information which can be
- * derived from the edid.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Return: The number of modes added or 0 if we couldn't find any.
  */
@@ -5968,38 +5081,24 @@ int drm_add_edid_modes(struct drm_connector *connector, struct edid *edid)
 	u32 quirks;
 
 	if (edid == NULL) {
-<<<<<<< HEAD
 		clear_eld(connector);
 		return 0;
 	}
 	if (!drm_edid_is_valid(edid)) {
 		clear_eld(connector);
-=======
-		return 0;
-	}
-	if (!drm_edid_is_valid(edid)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_warn(connector->dev->dev, "%s: EDID invalid.\n",
 			 connector->name);
 		return 0;
 	}
 
-<<<<<<< HEAD
 	drm_edid_to_eld(connector, edid);
-=======
-	quirks = edid_get_quirks(edid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * CEA-861-F adds ycbcr capability map block, for HDMI 2.0 sinks.
 	 * To avoid multiple parsing of same block, lets parse that map
 	 * from sink info, before parsing CEA modes.
 	 */
-<<<<<<< HEAD
 	quirks = drm_add_display_info(connector, edid);
-=======
-	drm_add_display_info(connector, edid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * EDID spec says modes should be preferred in this order:
@@ -6022,10 +5121,6 @@ int drm_add_edid_modes(struct drm_connector *connector, struct edid *edid)
 	num_modes += add_cea_modes(connector, edid);
 	num_modes += add_alternate_cea_modes(connector, edid);
 	num_modes += add_displayid_detailed_modes(connector, edid);
-<<<<<<< HEAD
-=======
-	num_modes += add_YCbCr420VDB_modes(connector, edid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (edid->features & DRM_EDID_FEATURE_DEFAULT_GTF)
 		num_modes += add_inferred_modes(connector, edid);
 
@@ -6132,10 +5227,7 @@ drm_hdmi_avi_infoframe_from_display_mode(struct hdmi_avi_infoframe *frame,
 					 const struct drm_display_mode *mode,
 					 bool is_hdmi2_sink)
 {
-<<<<<<< HEAD
 	enum hdmi_picture_aspect picture_aspect;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	if (!frame || !mode)
@@ -6175,7 +5267,6 @@ drm_hdmi_avi_infoframe_from_display_mode(struct hdmi_avi_infoframe *frame,
 	frame->picture_aspect = HDMI_PICTURE_ASPECT_NONE;
 
 	/*
-<<<<<<< HEAD
 	 * As some drivers don't support atomic, we can't use connector state.
 	 * So just initialize the frame with default values, just the same way
 	 * as it's done with other properties here.
@@ -6204,18 +5295,6 @@ drm_hdmi_avi_infoframe_from_display_mode(struct hdmi_avi_infoframe *frame,
 	}
 
 	frame->picture_aspect = picture_aspect;
-=======
-	 * Populate picture aspect ratio from either
-	 * user input (if specified) or from the CEA mode list.
-	 */
-	if (mode->picture_aspect_ratio == HDMI_PICTURE_ASPECT_4_3 ||
-		mode->picture_aspect_ratio == HDMI_PICTURE_ASPECT_16_9)
-		frame->picture_aspect = mode->picture_aspect_ratio;
-	else if (frame->video_code > 0)
-		frame->picture_aspect = drm_get_cea_aspect_ratio(
-						frame->video_code);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	frame->active_aspect = HDMI_ACTIVE_ASPECT_PICTURE;
 	frame->scan_mode = HDMI_SCAN_MODE_UNDERSCAN;
 
@@ -6230,14 +5309,11 @@ EXPORT_SYMBOL(drm_hdmi_avi_infoframe_from_display_mode);
  * @mode: DRM display mode
  * @rgb_quant_range: RGB quantization range (Q)
  * @rgb_quant_range_selectable: Sink support selectable RGB quantization range (QS)
-<<<<<<< HEAD
  * @is_hdmi2_sink: HDMI 2.0 sink, which has different default recommendations
  *
  * Note that @is_hdmi2_sink can be derived by looking at the
  * &drm_scdc.supported flag stored in &drm_hdmi_info.scdc,
  * &drm_display_info.hdmi, which can be found in &drm_connector.display_info.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 void
 drm_hdmi_avi_infoframe_quant_range(struct hdmi_avi_infoframe *frame,
@@ -6316,10 +5392,7 @@ s3d_structure_from_display_mode(const struct drm_display_mode *mode)
  * drm_hdmi_vendor_infoframe_from_display_mode() - fill an HDMI infoframe with
  * data from a DRM display mode
  * @frame: HDMI vendor infoframe
-<<<<<<< HEAD
  * @connector: the connector
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @mode: DRM display mode
  *
  * Note that there's is a need to send HDMI vendor infoframes only when using a
@@ -6330,7 +5403,6 @@ s3d_structure_from_display_mode(const struct drm_display_mode *mode)
  */
 int
 drm_hdmi_vendor_infoframe_from_display_mode(struct hdmi_vendor_infoframe *frame,
-<<<<<<< HEAD
 					    struct drm_connector *connector,
 					    const struct drm_display_mode *mode)
 {
@@ -6340,10 +5412,6 @@ drm_hdmi_vendor_infoframe_from_display_mode(struct hdmi_vendor_infoframe *frame,
 	 */
 	bool has_hdmi_infoframe = connector ?
 		connector->display_info.has_hdmi_infoframe : false;
-=======
-					    const struct drm_display_mode *mode)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 	u32 s3d_flags;
 	u8 vic;
@@ -6351,7 +5419,6 @@ drm_hdmi_vendor_infoframe_from_display_mode(struct hdmi_vendor_infoframe *frame,
 	if (!frame || !mode)
 		return -EINVAL;
 
-<<<<<<< HEAD
 	if (!has_hdmi_infoframe)
 		return -EINVAL;
 
@@ -6367,13 +5434,6 @@ drm_hdmi_vendor_infoframe_from_display_mode(struct hdmi_vendor_infoframe *frame,
 	 * mode if the source simply stops sending the infoframe when
 	 * it wants to switch from 3D to 2D.
 	 */
-=======
-	vic = drm_match_hdmi_mode(mode);
-	s3d_flags = mode->flags & DRM_MODE_FLAG_3D_MASK;
-
-	if (!vic && !s3d_flags)
-		return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (vic && s3d_flags)
 		return -EINVAL;
@@ -6382,15 +5442,8 @@ drm_hdmi_vendor_infoframe_from_display_mode(struct hdmi_vendor_infoframe *frame,
 	if (err < 0)
 		return err;
 
-<<<<<<< HEAD
 	frame->vic = vic;
 	frame->s3d_struct = s3d_structure_from_display_mode(mode);
-=======
-	if (vic)
-		frame->vic = vic;
-	else
-		frame->s3d_struct = s3d_structure_from_display_mode(mode);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -6484,12 +5537,9 @@ static int drm_parse_display_id(struct drm_connector *connector,
 		case DATA_BLOCK_TYPE_1_DETAILED_TIMING:
 			/* handled in mode gathering code. */
 			break;
-<<<<<<< HEAD
 		case DATA_BLOCK_CTA:
 			/* handled in the cea parser code. */
 			break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		default:
 			DRM_DEBUG_KMS("found DisplayID tag 0x%x, unhandled\n", block->tag);
 			break;

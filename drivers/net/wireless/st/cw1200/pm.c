@@ -91,11 +91,7 @@ struct cw1200_suspend_state {
 	u8 prev_ps_mode;
 };
 
-<<<<<<< HEAD
 static void cw1200_pm_stay_awake_tmo(struct timer_list *unused)
-=======
-static void cw1200_pm_stay_awake_tmo(unsigned long arg)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* XXX what's the point of this ? */
 }
@@ -105,12 +101,7 @@ int cw1200_pm_init(struct cw1200_pm_state *pm,
 {
 	spin_lock_init(&pm->lock);
 
-<<<<<<< HEAD
 	timer_setup(&pm->stay_awake, cw1200_pm_stay_awake_tmo, 0);
-=======
-	setup_timer(&pm->stay_awake, cw1200_pm_stay_awake_tmo,
-		    (unsigned long)pm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

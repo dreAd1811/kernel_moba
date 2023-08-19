@@ -44,11 +44,7 @@ struct host1x_job;
 struct push_buffer {
 	void *mapped;			/* mapped pushbuffer memory */
 	dma_addr_t dma;			/* device address of pushbuffer */
-<<<<<<< HEAD
 	dma_addr_t phys;		/* physical address of pushbuffer */
-=======
-	phys_addr_t phys;		/* physical address of pushbuffer */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 fence;			/* index we've written */
 	u32 pos;			/* index to write to */
 	u32 size;
@@ -62,11 +58,7 @@ struct buffer_timeout {
 	u32 syncpt_val;			/* syncpt value when completed */
 	ktime_t start_ktime;		/* starting time */
 	/* context timeout information */
-<<<<<<< HEAD
 	struct host1x_client *client;
-=======
-	int client;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum cdma_event {

@@ -33,13 +33,9 @@
 #include <linux/platform_device.h>
 #include <linux/acpi.h>
 #include <linux/etherdevice.h>
-<<<<<<< HEAD
 #include <linux/interrupt.h>
 #include <linux/of.h>
 #include <linux/of_platform.h>
-=======
-#include <linux/of.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <rdma/ib_umem.h>
 #include "hns_roce_common.h"
 #include "hns_roce_device.h"
@@ -62,14 +58,9 @@ static void set_raddr_seg(struct hns_roce_wqe_raddr_seg *rseg, u64 remote_addr,
 	rseg->len   = 0;
 }
 
-<<<<<<< HEAD
 static int hns_roce_v1_post_send(struct ib_qp *ibqp,
 				 const struct ib_send_wr *wr,
 				 const struct ib_send_wr **bad_wr)
-=======
-int hns_roce_v1_post_send(struct ib_qp *ibqp, struct ib_send_wr *wr,
-			  struct ib_send_wr **bad_wr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct hns_roce_dev *hr_dev = to_hr_dev(ibqp->device);
 	struct hns_roce_ah *ah = to_hr_ah(ud_wr(wr)->ah);
@@ -183,7 +174,6 @@ int hns_roce_v1_post_send(struct ib_qp *ibqp, struct ib_send_wr *wr,
 
 			roce_set_field(ud_sq_wqe->u32_36,
 				       UD_SEND_WQE_U32_36_FLOW_LABEL_M,
-<<<<<<< HEAD
 				       UD_SEND_WQE_U32_36_FLOW_LABEL_S,
 				       ah->av.sl_tclass_flowlabel &
 				       HNS_ROCE_FLOW_LABEL_MASK);
@@ -192,14 +182,6 @@ int hns_roce_v1_post_send(struct ib_qp *ibqp, struct ib_send_wr *wr,
 				      UD_SEND_WQE_U32_36_PRIORITY_S,
 				      le32_to_cpu(ah->av.sl_tclass_flowlabel) >>
 				      HNS_ROCE_SL_SHIFT);
-=======
-				       UD_SEND_WQE_U32_36_FLOW_LABEL_S, 0);
-			roce_set_field(ud_sq_wqe->u32_36,
-				       UD_SEND_WQE_U32_36_PRIORITY_M,
-				       UD_SEND_WQE_U32_36_PRIORITY_S,
-				       ah->av.sl_tclass_flowlabel >>
-				       HNS_ROCE_SL_SHIFT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			roce_set_field(ud_sq_wqe->u32_36,
 				       UD_SEND_WQE_U32_36_SGID_INDEX_M,
 				       UD_SEND_WQE_U32_36_SGID_INDEX_S,
@@ -212,7 +194,6 @@ int hns_roce_v1_post_send(struct ib_qp *ibqp, struct ib_send_wr *wr,
 				       ah->av.hop_limit);
 			roce_set_field(ud_sq_wqe->u32_40,
 				       UD_SEND_WQE_U32_40_TRAFFIC_CLASS_M,
-<<<<<<< HEAD
 				       UD_SEND_WQE_U32_40_TRAFFIC_CLASS_S,
 				       ah->av.sl_tclass_flowlabel >>
 				       HNS_ROCE_TCLASS_SHIFT);
@@ -260,29 +241,6 @@ int hns_roce_v1_post_send(struct ib_qp *ibqp, struct ib_send_wr *wr,
 				ctrl->imm_data = 0;
 				break;
 			}
-=======
-				       UD_SEND_WQE_U32_40_TRAFFIC_CLASS_S, 0);
-
-			memcpy(&ud_sq_wqe->dgid[0], &ah->av.dgid[0], GID_LEN);
-
-			ud_sq_wqe->va0_l = (u32)wr->sg_list[0].addr;
-			ud_sq_wqe->va0_h = (wr->sg_list[0].addr) >> 32;
-			ud_sq_wqe->l_key0 = wr->sg_list[0].lkey;
-
-			ud_sq_wqe->va1_l = (u32)wr->sg_list[1].addr;
-			ud_sq_wqe->va1_h = (wr->sg_list[1].addr) >> 32;
-			ud_sq_wqe->l_key1 = wr->sg_list[1].lkey;
-			ind++;
-		} else if (ibqp->qp_type == IB_QPT_RC) {
-			ctrl = wqe;
-			memset(ctrl, 0, sizeof(struct hns_roce_wqe_ctrl_seg));
-			for (i = 0; i < wr->num_sge; i++)
-				ctrl->msg_length += wr->sg_list[i].length;
-
-			ctrl->sgl_pa_h = 0;
-			ctrl->flag = 0;
-			ctrl->imm_data = send_ieth(wr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			/*Ctrl field, ctrl set type: sig, solic, imm, fence */
 			/* SO wait for conforming application scenarios */
@@ -329,13 +287,8 @@ int hns_roce_v1_post_send(struct ib_qp *ibqp, struct ib_send_wr *wr,
 
 			dseg = wqe;
 			if (wr->send_flags & IB_SEND_INLINE && wr->num_sge) {
-<<<<<<< HEAD
 				if (le32_to_cpu(ctrl->msg_length) >
 				    hr_dev->caps.max_sq_inline) {
-=======
-				if (ctrl->msg_length >
-					hr_dev->caps.max_sq_inline) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					ret = -EINVAL;
 					*bad_wr = wr;
 					dev_err(dev, "inline len(1-%d)=%d, illegal",
@@ -349,11 +302,7 @@ int hns_roce_v1_post_send(struct ib_qp *ibqp, struct ib_send_wr *wr,
 					       wr->sg_list[i].length);
 					wqe += wr->sg_list[i].length;
 				}
-<<<<<<< HEAD
 				ctrl->flag |= cpu_to_le32(HNS_ROCE_WQE_INLINE);
-=======
-				ctrl->flag |= HNS_ROCE_WQE_INLINE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			} else {
 				/*sqe num is two */
 				for (i = 0; i < wr->num_sge; i++)
@@ -386,17 +335,10 @@ out:
 			       SQ_DOORBELL_U32_8_QPN_S, qp->doorbell_qpn);
 		roce_set_bit(sq_db.u32_8, SQ_DOORBELL_HW_SYNC_S, 1);
 
-<<<<<<< HEAD
 		doorbell[0] = le32_to_cpu(sq_db.u32_4);
 		doorbell[1] = le32_to_cpu(sq_db.u32_8);
 
 		hns_roce_write64_k((__le32 *)doorbell, qp->sq.db_reg_l);
-=======
-		doorbell[0] = sq_db.u32_4;
-		doorbell[1] = sq_db.u32_8;
-
-		hns_roce_write64_k(doorbell, qp->sq.db_reg_l);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		qp->sq_next_wqe = ind;
 	}
 
@@ -405,24 +347,15 @@ out:
 	return ret;
 }
 
-<<<<<<< HEAD
 static int hns_roce_v1_post_recv(struct ib_qp *ibqp,
 				 const struct ib_recv_wr *wr,
 				 const struct ib_recv_wr **bad_wr)
-=======
-int hns_roce_v1_post_recv(struct ib_qp *ibqp, struct ib_recv_wr *wr,
-			  struct ib_recv_wr **bad_wr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret = 0;
 	int nreq = 0;
 	int ind = 0;
 	int i = 0;
-<<<<<<< HEAD
 	u32 reg_val;
-=======
-	u32 reg_val = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags = 0;
 	struct hns_roce_rq_wqe_ctrl *ctrl = NULL;
 	struct hns_roce_wqe_data_seg *scat = NULL;
@@ -475,28 +408,18 @@ out:
 		wmb();
 
 		if (ibqp->qp_type == IB_QPT_GSI) {
-<<<<<<< HEAD
 			__le32 tmp;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* SW update GSI rq header */
 			reg_val = roce_read(to_hr_dev(ibqp->device),
 					    ROCEE_QP1C_CFG3_0_REG +
 					    QP1C_CFGN_OFFSET * hr_qp->phy_port);
-<<<<<<< HEAD
 			tmp = cpu_to_le32(reg_val);
 			roce_set_field(tmp,
 				       ROCEE_QP1C_CFG3_0_ROCEE_QP1C_RQ_HEAD_M,
 				       ROCEE_QP1C_CFG3_0_ROCEE_QP1C_RQ_HEAD_S,
 				       hr_qp->rq.head);
 			reg_val = le32_to_cpu(tmp);
-=======
-			roce_set_field(reg_val,
-				       ROCEE_QP1C_CFG3_0_ROCEE_QP1C_RQ_HEAD_M,
-				       ROCEE_QP1C_CFG3_0_ROCEE_QP1C_RQ_HEAD_S,
-				       hr_qp->rq.head);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			roce_write(to_hr_dev(ibqp->device),
 				   ROCEE_QP1C_CFG3_0_REG +
 				   QP1C_CFGN_OFFSET * hr_qp->phy_port, reg_val);
@@ -514,18 +437,11 @@ out:
 			roce_set_bit(rq_db.u32_8, RQ_DOORBELL_U32_8_HW_SYNC_S,
 				     1);
 
-<<<<<<< HEAD
 			doorbell[0] = le32_to_cpu(rq_db.u32_4);
 			doorbell[1] = le32_to_cpu(rq_db.u32_8);
 
 			hns_roce_write64_k((__le32 *)doorbell,
 					   hr_qp->rq.db_reg_l);
-=======
-			doorbell[0] = rq_db.u32_4;
-			doorbell[1] = rq_db.u32_8;
-
-			hns_roce_write64_k(doorbell, hr_qp->rq.db_reg_l);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 	spin_unlock_irqrestore(&hr_qp->rq.lock, flags);
@@ -536,7 +452,6 @@ out:
 static void hns_roce_set_db_event_mode(struct hns_roce_dev *hr_dev,
 				       int sdb_mode, int odb_mode)
 {
-<<<<<<< HEAD
 	__le32 tmp;
 	u32 val;
 
@@ -545,90 +460,55 @@ static void hns_roce_set_db_event_mode(struct hns_roce_dev *hr_dev,
 	roce_set_bit(tmp, ROCEE_GLB_CFG_ROCEE_DB_SQ_MODE_S, sdb_mode);
 	roce_set_bit(tmp, ROCEE_GLB_CFG_ROCEE_DB_OTH_MODE_S, odb_mode);
 	val = le32_to_cpu(tmp);
-=======
-	u32 val;
-
-	val = roce_read(hr_dev, ROCEE_GLB_CFG_REG);
-	roce_set_bit(val, ROCEE_GLB_CFG_ROCEE_DB_SQ_MODE_S, sdb_mode);
-	roce_set_bit(val, ROCEE_GLB_CFG_ROCEE_DB_OTH_MODE_S, odb_mode);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	roce_write(hr_dev, ROCEE_GLB_CFG_REG, val);
 }
 
 static void hns_roce_set_db_ext_mode(struct hns_roce_dev *hr_dev, u32 sdb_mode,
 				     u32 odb_mode)
 {
-<<<<<<< HEAD
 	__le32 tmp;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 val;
 
 	/* Configure SDB/ODB extend mode */
 	val = roce_read(hr_dev, ROCEE_GLB_CFG_REG);
-<<<<<<< HEAD
 	tmp = cpu_to_le32(val);
 	roce_set_bit(tmp, ROCEE_GLB_CFG_SQ_EXT_DB_MODE_S, sdb_mode);
 	roce_set_bit(tmp, ROCEE_GLB_CFG_OTH_EXT_DB_MODE_S, odb_mode);
 	val = le32_to_cpu(tmp);
-=======
-	roce_set_bit(val, ROCEE_GLB_CFG_SQ_EXT_DB_MODE_S, sdb_mode);
-	roce_set_bit(val, ROCEE_GLB_CFG_OTH_EXT_DB_MODE_S, odb_mode);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	roce_write(hr_dev, ROCEE_GLB_CFG_REG, val);
 }
 
 static void hns_roce_set_sdb(struct hns_roce_dev *hr_dev, u32 sdb_alept,
 			     u32 sdb_alful)
 {
-<<<<<<< HEAD
 	__le32 tmp;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 val;
 
 	/* Configure SDB */
 	val = roce_read(hr_dev, ROCEE_DB_SQ_WL_REG);
-<<<<<<< HEAD
 	tmp = cpu_to_le32(val);
 	roce_set_field(tmp, ROCEE_DB_SQ_WL_ROCEE_DB_SQ_WL_M,
 		       ROCEE_DB_SQ_WL_ROCEE_DB_SQ_WL_S, sdb_alful);
 	roce_set_field(tmp, ROCEE_DB_SQ_WL_ROCEE_DB_SQ_WL_EMPTY_M,
 		       ROCEE_DB_SQ_WL_ROCEE_DB_SQ_WL_EMPTY_S, sdb_alept);
 	val = le32_to_cpu(tmp);
-=======
-	roce_set_field(val, ROCEE_DB_SQ_WL_ROCEE_DB_SQ_WL_M,
-		       ROCEE_DB_SQ_WL_ROCEE_DB_SQ_WL_S, sdb_alful);
-	roce_set_field(val, ROCEE_DB_SQ_WL_ROCEE_DB_SQ_WL_EMPTY_M,
-		       ROCEE_DB_SQ_WL_ROCEE_DB_SQ_WL_EMPTY_S, sdb_alept);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	roce_write(hr_dev, ROCEE_DB_SQ_WL_REG, val);
 }
 
 static void hns_roce_set_odb(struct hns_roce_dev *hr_dev, u32 odb_alept,
 			     u32 odb_alful)
 {
-<<<<<<< HEAD
 	__le32 tmp;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 val;
 
 	/* Configure ODB */
 	val = roce_read(hr_dev, ROCEE_DB_OTHERS_WL_REG);
-<<<<<<< HEAD
 	tmp = cpu_to_le32(val);
 	roce_set_field(tmp, ROCEE_DB_OTHERS_WL_ROCEE_DB_OTH_WL_M,
 		       ROCEE_DB_OTHERS_WL_ROCEE_DB_OTH_WL_S, odb_alful);
 	roce_set_field(tmp, ROCEE_DB_OTHERS_WL_ROCEE_DB_OTH_WL_EMPTY_M,
 		       ROCEE_DB_OTHERS_WL_ROCEE_DB_OTH_WL_EMPTY_S, odb_alept);
 	val = le32_to_cpu(tmp);
-=======
-	roce_set_field(val, ROCEE_DB_OTHERS_WL_ROCEE_DB_OTH_WL_M,
-		       ROCEE_DB_OTHERS_WL_ROCEE_DB_OTH_WL_S, odb_alful);
-	roce_set_field(val, ROCEE_DB_OTHERS_WL_ROCEE_DB_OTH_WL_EMPTY_M,
-		       ROCEE_DB_OTHERS_WL_ROCEE_DB_OTH_WL_EMPTY_S, odb_alept);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	roce_write(hr_dev, ROCEE_DB_OTHERS_WL_REG, val);
 }
 
@@ -639,16 +519,10 @@ static void hns_roce_set_sdb_ext(struct hns_roce_dev *hr_dev, u32 ext_sdb_alept,
 	struct hns_roce_v1_priv *priv;
 	struct hns_roce_db_table *db;
 	dma_addr_t sdb_dma_addr;
-<<<<<<< HEAD
 	__le32 tmp;
 	u32 val;
 
 	priv = (struct hns_roce_v1_priv *)hr_dev->priv;
-=======
-	u32 val;
-
-	priv = (struct hns_roce_v1_priv *)hr_dev->hw->priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	db = &priv->db_table;
 
 	/* Configure extend SDB threshold */
@@ -661,12 +535,8 @@ static void hns_roce_set_sdb_ext(struct hns_roce_dev *hr_dev, u32 ext_sdb_alept,
 
 	/* Configure extend SDB depth */
 	val = roce_read(hr_dev, ROCEE_EXT_DB_SQ_H_REG);
-<<<<<<< HEAD
 	tmp = cpu_to_le32(val);
 	roce_set_field(tmp, ROCEE_EXT_DB_SQ_H_EXT_DB_SQ_SHIFT_M,
-=======
-	roce_set_field(val, ROCEE_EXT_DB_SQ_H_EXT_DB_SQ_SHIFT_M,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		       ROCEE_EXT_DB_SQ_H_EXT_DB_SQ_SHIFT_S,
 		       db->ext_db->esdb_dep);
 	/*
@@ -674,14 +544,9 @@ static void hns_roce_set_sdb_ext(struct hns_roce_dev *hr_dev, u32 ext_sdb_alept,
 	 * using 4K page, and shift more 32 because of
 	 * caculating the high 32 bit value evaluated to hardware.
 	 */
-<<<<<<< HEAD
 	roce_set_field(tmp, ROCEE_EXT_DB_SQ_H_EXT_DB_SQ_BA_H_M,
 		       ROCEE_EXT_DB_SQ_H_EXT_DB_SQ_BA_H_S, sdb_dma_addr >> 44);
 	val = le32_to_cpu(tmp);
-=======
-	roce_set_field(val, ROCEE_EXT_DB_SQ_H_EXT_DB_SQ_BA_H_M,
-		       ROCEE_EXT_DB_SQ_H_EXT_DB_SQ_BA_H_S, sdb_dma_addr >> 44);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	roce_write(hr_dev, ROCEE_EXT_DB_SQ_H_REG, val);
 
 	dev_dbg(dev, "ext SDB depth: 0x%x\n", db->ext_db->esdb_dep);
@@ -696,16 +561,10 @@ static void hns_roce_set_odb_ext(struct hns_roce_dev *hr_dev, u32 ext_odb_alept,
 	struct hns_roce_v1_priv *priv;
 	struct hns_roce_db_table *db;
 	dma_addr_t odb_dma_addr;
-<<<<<<< HEAD
 	__le32 tmp;
 	u32 val;
 
 	priv = (struct hns_roce_v1_priv *)hr_dev->priv;
-=======
-	u32 val;
-
-	priv = (struct hns_roce_v1_priv *)hr_dev->hw->priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	db = &priv->db_table;
 
 	/* Configure extend ODB threshold */
@@ -718,7 +577,6 @@ static void hns_roce_set_odb_ext(struct hns_roce_dev *hr_dev, u32 ext_odb_alept,
 
 	/* Configure extend ODB depth */
 	val = roce_read(hr_dev, ROCEE_EXT_DB_OTH_H_REG);
-<<<<<<< HEAD
 	tmp = cpu_to_le32(val);
 	roce_set_field(tmp, ROCEE_EXT_DB_OTH_H_EXT_DB_OTH_SHIFT_M,
 		       ROCEE_EXT_DB_OTH_H_EXT_DB_OTH_SHIFT_S,
@@ -727,14 +585,6 @@ static void hns_roce_set_odb_ext(struct hns_roce_dev *hr_dev, u32 ext_odb_alept,
 		       ROCEE_EXT_DB_SQ_H_EXT_DB_OTH_BA_H_S,
 		       db->ext_db->eodb_dep);
 	val = le32_to_cpu(tmp);
-=======
-	roce_set_field(val, ROCEE_EXT_DB_OTH_H_EXT_DB_OTH_SHIFT_M,
-		       ROCEE_EXT_DB_OTH_H_EXT_DB_OTH_SHIFT_S,
-		       db->ext_db->eodb_dep);
-	roce_set_field(val, ROCEE_EXT_DB_SQ_H_EXT_DB_OTH_BA_H_M,
-		       ROCEE_EXT_DB_SQ_H_EXT_DB_OTH_BA_H_S,
-		       db->ext_db->eodb_dep);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	roce_write(hr_dev, ROCEE_EXT_DB_OTH_H_REG, val);
 
 	dev_dbg(dev, "ext ODB depth: 0x%x\n", db->ext_db->eodb_dep);
@@ -752,11 +602,7 @@ static int hns_roce_db_ext_init(struct hns_roce_dev *hr_dev, u32 sdb_ext_mod,
 	dma_addr_t odb_dma_addr;
 	int ret = 0;
 
-<<<<<<< HEAD
 	priv = (struct hns_roce_v1_priv *)hr_dev->priv;
-=======
-	priv = (struct hns_roce_v1_priv *)hr_dev->hw->priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	db = &priv->db_table;
 
 	db->ext_db = kmalloc(sizeof(*db->ext_db), GFP_KERNEL);
@@ -877,11 +723,7 @@ static int hns_roce_v1_rsv_lp_qp(struct hns_roce_dev *hr_dev)
 	u8 port = 0;
 	u8 sl;
 
-<<<<<<< HEAD
 	priv = (struct hns_roce_v1_priv *)hr_dev->priv;
-=======
-	priv = (struct hns_roce_v1_priv *)hr_dev->hw->priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	free_mr = &priv->free_mr;
 
 	/* Reserved cq for loop qp */
@@ -909,10 +751,7 @@ static int hns_roce_v1_rsv_lp_qp(struct hns_roce_dev *hr_dev)
 	free_mr->mr_free_pd = to_hr_pd(pd);
 	free_mr->mr_free_pd->ibpd.device  = &hr_dev->ib_dev;
 	free_mr->mr_free_pd->ibpd.uobject = NULL;
-<<<<<<< HEAD
 	free_mr->mr_free_pd->ibpd.__internal_mr = NULL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	atomic_set(&free_mr->mr_free_pd->ibpd.usecnt, 0);
 
 	attr.qp_access_flags	= IB_ACCESS_REMOTE_WRITE;
@@ -952,10 +791,7 @@ static int hns_roce_v1_rsv_lp_qp(struct hns_roce_dev *hr_dev)
 		free_mr->mr_free_qp[i] = hns_roce_v1_create_lp_qp(hr_dev, pd);
 		if (!free_mr->mr_free_qp[i]) {
 			dev_err(dev, "Create loop qp failed!\n");
-<<<<<<< HEAD
 			ret = -ENOMEM;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto create_lp_qp_failed;
 		}
 		hr_qp = free_mr->mr_free_qp[i];
@@ -994,11 +830,7 @@ static int hns_roce_v1_rsv_lp_qp(struct hns_roce_dev *hr_dev)
 			goto create_lp_qp_failed;
 		}
 
-<<<<<<< HEAD
 		ret = hr_dev->hw->modify_qp(&hr_qp->ibqp, &attr, IB_QP_DEST_QPN,
-=======
-		ret = hr_dev->hw->modify_qp(&hr_qp->ibqp, &attr, attr_mask,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    IB_QPS_INIT, IB_QPS_RTR);
 		if (ret) {
 			dev_err(dev, "modify qp failed(%d)!\n", ret);
@@ -1029,11 +861,7 @@ alloc_pd_failed:
 	if (hns_roce_ib_destroy_cq(cq))
 		dev_err(dev, "Destroy cq for create_lp_qp failed!\n");
 
-<<<<<<< HEAD
 	return ret;
-=======
-	return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void hns_roce_v1_release_lp_qp(struct hns_roce_dev *hr_dev)
@@ -1045,11 +873,7 @@ static void hns_roce_v1_release_lp_qp(struct hns_roce_dev *hr_dev)
 	int ret;
 	int i;
 
-<<<<<<< HEAD
 	priv = (struct hns_roce_v1_priv *)hr_dev->priv;
-=======
-	priv = (struct hns_roce_v1_priv *)hr_dev->hw->priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	free_mr = &priv->free_mr;
 
 	for (i = 0; i < HNS_ROCE_V1_RESV_QP; i++) {
@@ -1083,11 +907,7 @@ static int hns_roce_db_init(struct hns_roce_dev *hr_dev)
 	u32 odb_evt_mod;
 	int ret = 0;
 
-<<<<<<< HEAD
 	priv = (struct hns_roce_v1_priv *)hr_dev->priv;
-=======
-	priv = (struct hns_roce_v1_priv *)hr_dev->hw->priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	db = &priv->db_table;
 
 	memset(db, 0, sizeof(*db));
@@ -1113,11 +933,7 @@ static int hns_roce_db_init(struct hns_roce_dev *hr_dev)
 	return 0;
 }
 
-<<<<<<< HEAD
 static void hns_roce_v1_recreate_lp_qp_work_fn(struct work_struct *work)
-=======
-void hns_roce_v1_recreate_lp_qp_work_fn(struct work_struct *work)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct hns_roce_recreate_lp_qp_work *lp_qp_work;
 	struct hns_roce_dev *hr_dev;
@@ -1147,20 +963,13 @@ static int hns_roce_v1_recreate_lp_qp(struct hns_roce_dev *hr_dev)
 	unsigned long end =
 	  msecs_to_jiffies(HNS_ROCE_V1_RECREATE_LP_QP_TIMEOUT_MSECS) + jiffies;
 
-<<<<<<< HEAD
 	priv = (struct hns_roce_v1_priv *)hr_dev->priv;
-=======
-	priv = (struct hns_roce_v1_priv *)hr_dev->hw->priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	free_mr = &priv->free_mr;
 
 	lp_qp_work = kzalloc(sizeof(struct hns_roce_recreate_lp_qp_work),
 			     GFP_KERNEL);
-<<<<<<< HEAD
 	if (!lp_qp_work)
 		return -ENOMEM;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	INIT_WORK(&(lp_qp_work->work), hns_roce_v1_recreate_lp_qp_work_fn);
 
@@ -1190,12 +999,8 @@ static int hns_roce_v1_send_lp_wqe(struct hns_roce_qp *hr_qp)
 {
 	struct hns_roce_dev *hr_dev = to_hr_dev(hr_qp->ibqp.device);
 	struct device *dev = &hr_dev->pdev->dev;
-<<<<<<< HEAD
 	struct ib_send_wr send_wr;
 	const struct ib_send_wr *bad_wr;
-=======
-	struct ib_send_wr send_wr, *bad_wr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	memset(&send_wr, 0, sizeof(send_wr));
@@ -1237,11 +1042,7 @@ static void hns_roce_v1_mr_free_work_fn(struct work_struct *work)
 	hr_dev = to_hr_dev(mr_work->ib_dev);
 	dev = &hr_dev->pdev->dev;
 
-<<<<<<< HEAD
 	priv = (struct hns_roce_v1_priv *)hr_dev->priv;
-=======
-	priv = (struct hns_roce_v1_priv *)hr_dev->hw->priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	free_mr = &priv->free_mr;
 	mr_free_cq = free_mr->mr_free_cq;
 
@@ -1261,21 +1062,13 @@ static void hns_roce_v1_mr_free_work_fn(struct work_struct *work)
 	}
 
 	if (!ne) {
-<<<<<<< HEAD
 		dev_err(dev, "Reserved loop qp is absent!\n");
-=======
-		dev_err(dev, "Reseved loop qp is absent!\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto free_work;
 	}
 
 	do {
 		ret = hns_roce_v1_poll_cq(&mr_free_cq->ib_cq, ne, wc);
-<<<<<<< HEAD
 		if (ret < 0 && hr_qp) {
-=======
-		if (ret < 0) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev_err(dev,
 			   "(qp:0x%lx) starts, Poll cqe failed(%d) for mr 0x%x free! Remain %d cqe\n",
 			   hr_qp->qpn, ret, hr_mr->key, ne);
@@ -1297,12 +1090,8 @@ free_work:
 	kfree(mr_work);
 }
 
-<<<<<<< HEAD
 static int hns_roce_v1_dereg_mr(struct hns_roce_dev *hr_dev,
 				struct hns_roce_mr *mr)
-=======
-int hns_roce_v1_dereg_mr(struct hns_roce_dev *hr_dev, struct hns_roce_mr *mr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct device *dev = &hr_dev->pdev->dev;
 	struct hns_roce_mr_free_work *mr_work;
@@ -1315,11 +1104,7 @@ int hns_roce_v1_dereg_mr(struct hns_roce_dev *hr_dev, struct hns_roce_mr *mr)
 	int npages;
 	int ret = 0;
 
-<<<<<<< HEAD
 	priv = (struct hns_roce_v1_priv *)hr_dev->priv;
-=======
-	priv = (struct hns_roce_v1_priv *)hr_dev->hw->priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	free_mr = &priv->free_mr;
 
 	if (mr->enabled) {
@@ -1384,11 +1169,7 @@ static void hns_roce_db_free(struct hns_roce_dev *hr_dev)
 	struct hns_roce_v1_priv *priv;
 	struct hns_roce_db_table *db;
 
-<<<<<<< HEAD
 	priv = (struct hns_roce_v1_priv *)hr_dev->priv;
-=======
-	priv = (struct hns_roce_v1_priv *)hr_dev->hw->priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	db = &priv->db_table;
 
 	if (db->sdb_ext_mod) {
@@ -1411,25 +1192,15 @@ static void hns_roce_db_free(struct hns_roce_dev *hr_dev)
 static int hns_roce_raq_init(struct hns_roce_dev *hr_dev)
 {
 	int ret;
-<<<<<<< HEAD
 	u32 val;
 	__le32 tmp;
 	int raq_shift = 0;
 	dma_addr_t addr;
-=======
-	int raq_shift = 0;
-	dma_addr_t addr;
-	u32 val;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct hns_roce_v1_priv *priv;
 	struct hns_roce_raq_table *raq;
 	struct device *dev = &hr_dev->pdev->dev;
 
-<<<<<<< HEAD
 	priv = (struct hns_roce_v1_priv *)hr_dev->priv;
-=======
-	priv = (struct hns_roce_v1_priv *)hr_dev->hw->priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	raq = &priv->raq_table;
 
 	raq->e_raq_buf = kzalloc(sizeof(*(raq->e_raq_buf)), GFP_KERNEL);
@@ -1450,50 +1221,33 @@ static int hns_roce_raq_init(struct hns_roce_dev *hr_dev)
 	/* Configure raq_shift */
 	raq_shift = ilog2(HNS_ROCE_V1_RAQ_SIZE / HNS_ROCE_V1_RAQ_ENTRY);
 	val = roce_read(hr_dev, ROCEE_EXT_RAQ_H_REG);
-<<<<<<< HEAD
 	tmp = cpu_to_le32(val);
 	roce_set_field(tmp, ROCEE_EXT_RAQ_H_EXT_RAQ_SHIFT_M,
-=======
-	roce_set_field(val, ROCEE_EXT_RAQ_H_EXT_RAQ_SHIFT_M,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		       ROCEE_EXT_RAQ_H_EXT_RAQ_SHIFT_S, raq_shift);
 	/*
 	 * 44 = 32 + 12, When evaluating addr to hardware, shift 12 because of
 	 * using 4K page, and shift more 32 because of
 	 * caculating the high 32 bit value evaluated to hardware.
 	 */
-<<<<<<< HEAD
 	roce_set_field(tmp, ROCEE_EXT_RAQ_H_EXT_RAQ_BA_H_M,
 		       ROCEE_EXT_RAQ_H_EXT_RAQ_BA_H_S,
 		       raq->e_raq_buf->map >> 44);
 	val = le32_to_cpu(tmp);
-=======
-	roce_set_field(val, ROCEE_EXT_RAQ_H_EXT_RAQ_BA_H_M,
-		       ROCEE_EXT_RAQ_H_EXT_RAQ_BA_H_S,
-		       raq->e_raq_buf->map >> 44);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	roce_write(hr_dev, ROCEE_EXT_RAQ_H_REG, val);
 	dev_dbg(dev, "Configure raq_shift 0x%x.\n", val);
 
 	/* Configure raq threshold */
 	val = roce_read(hr_dev, ROCEE_RAQ_WL_REG);
-<<<<<<< HEAD
 	tmp = cpu_to_le32(val);
 	roce_set_field(tmp, ROCEE_RAQ_WL_ROCEE_RAQ_WL_M,
 		       ROCEE_RAQ_WL_ROCEE_RAQ_WL_S,
 		       HNS_ROCE_V1_EXT_RAQ_WF);
 	val = le32_to_cpu(tmp);
-=======
-	roce_set_field(val, ROCEE_RAQ_WL_ROCEE_RAQ_WL_M,
-		       ROCEE_RAQ_WL_ROCEE_RAQ_WL_S,
-		       HNS_ROCE_V1_EXT_RAQ_WF);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	roce_write(hr_dev, ROCEE_RAQ_WL_REG, val);
 	dev_dbg(dev, "Configure raq_wl 0x%x.\n", val);
 
 	/* Enable extend raq */
 	val = roce_read(hr_dev, ROCEE_WRMS_POL_TIME_INTERVAL_REG);
-<<<<<<< HEAD
 	tmp = cpu_to_le32(val);
 	roce_set_field(tmp,
 		       ROCEE_WRMS_POL_TIME_INTERVAL_WRMS_POL_TIME_INTERVAL_M,
@@ -1507,31 +1261,14 @@ static int hns_roce_raq_init(struct hns_roce_dev *hr_dev)
 	roce_set_bit(tmp,
 		     ROCEE_WRMS_POL_TIME_INTERVAL_WRMS_RAQ_TIMEOUT_CHK_EN_S, 1);
 	val = le32_to_cpu(tmp);
-=======
-	roce_set_field(val,
-		       ROCEE_WRMS_POL_TIME_INTERVAL_WRMS_POL_TIME_INTERVAL_M,
-		       ROCEE_WRMS_POL_TIME_INTERVAL_WRMS_POL_TIME_INTERVAL_S,
-		       POL_TIME_INTERVAL_VAL);
-	roce_set_bit(val, ROCEE_WRMS_POL_TIME_INTERVAL_WRMS_EXT_RAQ_MODE, 1);
-	roce_set_field(val,
-		       ROCEE_WRMS_POL_TIME_INTERVAL_WRMS_RAQ_TIMEOUT_CHK_CFG_M,
-		       ROCEE_WRMS_POL_TIME_INTERVAL_WRMS_RAQ_TIMEOUT_CHK_CFG_S,
-		       2);
-	roce_set_bit(val,
-		     ROCEE_WRMS_POL_TIME_INTERVAL_WRMS_RAQ_TIMEOUT_CHK_EN_S, 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	roce_write(hr_dev, ROCEE_WRMS_POL_TIME_INTERVAL_REG, val);
 	dev_dbg(dev, "Configure WrmsPolTimeInterval 0x%x.\n", val);
 
 	/* Enable raq drop */
 	val = roce_read(hr_dev, ROCEE_GLB_CFG_REG);
-<<<<<<< HEAD
 	tmp = cpu_to_le32(val);
 	roce_set_bit(tmp, ROCEE_GLB_CFG_TRP_RAQ_DROP_EN_S, 1);
 	val = le32_to_cpu(tmp);
-=======
-	roce_set_bit(val, ROCEE_GLB_CFG_TRP_RAQ_DROP_EN_S, 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	roce_write(hr_dev, ROCEE_GLB_CFG_REG, val);
 	dev_dbg(dev, "Configure GlbCfg = 0x%x.\n", val);
 
@@ -1548,11 +1285,7 @@ static void hns_roce_raq_free(struct hns_roce_dev *hr_dev)
 	struct hns_roce_v1_priv *priv;
 	struct hns_roce_raq_table *raq;
 
-<<<<<<< HEAD
 	priv = (struct hns_roce_v1_priv *)hr_dev->priv;
-=======
-	priv = (struct hns_roce_v1_priv *)hr_dev->hw->priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	raq = &priv->raq_table;
 
 	dma_free_coherent(dev, HNS_ROCE_V1_RAQ_SIZE, raq->e_raq_buf->buf,
@@ -1562,39 +1295,25 @@ static void hns_roce_raq_free(struct hns_roce_dev *hr_dev)
 
 static void hns_roce_port_enable(struct hns_roce_dev *hr_dev, int enable_flag)
 {
-<<<<<<< HEAD
 	__le32 tmp;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 val;
 
 	if (enable_flag) {
 		val = roce_read(hr_dev, ROCEE_GLB_CFG_REG);
 		 /* Open all ports */
-<<<<<<< HEAD
 		tmp = cpu_to_le32(val);
 		roce_set_field(tmp, ROCEE_GLB_CFG_ROCEE_PORT_ST_M,
 			       ROCEE_GLB_CFG_ROCEE_PORT_ST_S,
 			       ALL_PORT_VAL_OPEN);
 		val = le32_to_cpu(tmp);
-=======
-		roce_set_field(val, ROCEE_GLB_CFG_ROCEE_PORT_ST_M,
-			       ROCEE_GLB_CFG_ROCEE_PORT_ST_S,
-			       ALL_PORT_VAL_OPEN);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		roce_write(hr_dev, ROCEE_GLB_CFG_REG, val);
 	} else {
 		val = roce_read(hr_dev, ROCEE_GLB_CFG_REG);
 		/* Close all ports */
-<<<<<<< HEAD
 		tmp = cpu_to_le32(val);
 		roce_set_field(tmp, ROCEE_GLB_CFG_ROCEE_PORT_ST_M,
 			       ROCEE_GLB_CFG_ROCEE_PORT_ST_S, 0x0);
 		val = le32_to_cpu(tmp);
-=======
-		roce_set_field(val, ROCEE_GLB_CFG_ROCEE_PORT_ST_M,
-			       ROCEE_GLB_CFG_ROCEE_PORT_ST_S, 0x0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		roce_write(hr_dev, ROCEE_GLB_CFG_REG, val);
 	}
 }
@@ -1605,11 +1324,7 @@ static int hns_roce_bt_init(struct hns_roce_dev *hr_dev)
 	struct hns_roce_v1_priv *priv;
 	int ret;
 
-<<<<<<< HEAD
 	priv = (struct hns_roce_v1_priv *)hr_dev->priv;
-=======
-	priv = (struct hns_roce_v1_priv *)hr_dev->hw->priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	priv->bt_table.qpc_buf.buf = dma_alloc_coherent(dev,
 		HNS_ROCE_BT_RSV_BUF_SIZE, &priv->bt_table.qpc_buf.map,
@@ -1651,11 +1366,7 @@ static void hns_roce_bt_free(struct hns_roce_dev *hr_dev)
 	struct device *dev = &hr_dev->pdev->dev;
 	struct hns_roce_v1_priv *priv;
 
-<<<<<<< HEAD
 	priv = (struct hns_roce_v1_priv *)hr_dev->priv;
-=======
-	priv = (struct hns_roce_v1_priv *)hr_dev->hw->priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dma_free_coherent(dev, HNS_ROCE_BT_RSV_BUF_SIZE,
 		priv->bt_table.cqc_buf.buf, priv->bt_table.cqc_buf.map);
@@ -1673,11 +1384,7 @@ static int hns_roce_tptr_init(struct hns_roce_dev *hr_dev)
 	struct hns_roce_buf_list *tptr_buf;
 	struct hns_roce_v1_priv *priv;
 
-<<<<<<< HEAD
 	priv = (struct hns_roce_v1_priv *)hr_dev->priv;
-=======
-	priv = (struct hns_roce_v1_priv *)hr_dev->hw->priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tptr_buf = &priv->tptr_table.tptr_buf;
 
 	/*
@@ -1703,11 +1410,7 @@ static void hns_roce_tptr_free(struct hns_roce_dev *hr_dev)
 	struct hns_roce_buf_list *tptr_buf;
 	struct hns_roce_v1_priv *priv;
 
-<<<<<<< HEAD
 	priv = (struct hns_roce_v1_priv *)hr_dev->priv;
-=======
-	priv = (struct hns_roce_v1_priv *)hr_dev->hw->priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tptr_buf = &priv->tptr_table.tptr_buf;
 
 	dma_free_coherent(dev, HNS_ROCE_V1_TPTR_BUF_SIZE,
@@ -1721,11 +1424,7 @@ static int hns_roce_free_mr_init(struct hns_roce_dev *hr_dev)
 	struct hns_roce_v1_priv *priv;
 	int ret = 0;
 
-<<<<<<< HEAD
 	priv = (struct hns_roce_v1_priv *)hr_dev->priv;
-=======
-	priv = (struct hns_roce_v1_priv *)hr_dev->hw->priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	free_mr = &priv->free_mr;
 
 	free_mr->free_mr_wq = create_singlethread_workqueue("hns_roce_free_mr");
@@ -1749,11 +1448,7 @@ static void hns_roce_free_mr_free(struct hns_roce_dev *hr_dev)
 	struct hns_roce_free_mr *free_mr;
 	struct hns_roce_v1_priv *priv;
 
-<<<<<<< HEAD
 	priv = (struct hns_roce_v1_priv *)hr_dev->priv;
-=======
-	priv = (struct hns_roce_v1_priv *)hr_dev->hw->priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	free_mr = &priv->free_mr;
 
 	flush_workqueue(free_mr->free_mr_wq);
@@ -1768,11 +1463,7 @@ static void hns_roce_free_mr_free(struct hns_roce_dev *hr_dev)
  * @enable: true -- drop reset, false -- reset
  * return 0 - success , negative --fail
  */
-<<<<<<< HEAD
 static int hns_roce_v1_reset(struct hns_roce_dev *hr_dev, bool dereset)
-=======
-int hns_roce_v1_reset(struct hns_roce_dev *hr_dev, bool dereset)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct device_node *dsaf_node;
 	struct device *dev = &hr_dev->pdev->dev;
@@ -1789,11 +1480,7 @@ int hns_roce_v1_reset(struct hns_roce_dev *hr_dev, bool dereset)
 		}
 		fwnode = &dsaf_node->fwnode;
 	} else if (is_acpi_device_node(dev->fwnode)) {
-<<<<<<< HEAD
 		struct fwnode_reference_args args;
-=======
-		struct acpi_reference_args args;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		ret = acpi_node_get_property_reference(dev->fwnode,
 						       "dsaf-handle", 0, &args);
@@ -1801,11 +1488,7 @@ int hns_roce_v1_reset(struct hns_roce_dev *hr_dev, bool dereset)
 			dev_err(dev, "could not find dsaf-handle\n");
 			return ret;
 		}
-<<<<<<< HEAD
 		fwnode = args.fwnode;
-=======
-		fwnode = acpi_fwnode_handle(args.adev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		dev_err(dev, "cannot read data from DT or ACPI\n");
 		return -ENXIO;
@@ -1829,11 +1512,7 @@ static int hns_roce_des_qp_init(struct hns_roce_dev *hr_dev)
 	struct hns_roce_v1_priv *priv;
 	struct hns_roce_des_qp *des_qp;
 
-<<<<<<< HEAD
 	priv = (struct hns_roce_v1_priv *)hr_dev->priv;
-=======
-	priv = (struct hns_roce_v1_priv *)hr_dev->hw->priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	des_qp = &priv->des_qp;
 
 	des_qp->requeue_flag = 1;
@@ -1851,11 +1530,7 @@ static void hns_roce_des_qp_free(struct hns_roce_dev *hr_dev)
 	struct hns_roce_v1_priv *priv;
 	struct hns_roce_des_qp *des_qp;
 
-<<<<<<< HEAD
 	priv = (struct hns_roce_v1_priv *)hr_dev->priv;
-=======
-	priv = (struct hns_roce_v1_priv *)hr_dev->hw->priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	des_qp = &priv->des_qp;
 
 	des_qp->requeue_flag = 0;
@@ -1863,56 +1538,32 @@ static void hns_roce_des_qp_free(struct hns_roce_dev *hr_dev)
 	destroy_workqueue(des_qp->qp_wq);
 }
 
-<<<<<<< HEAD
 static int hns_roce_v1_profile(struct hns_roce_dev *hr_dev)
-=======
-void hns_roce_v1_profile(struct hns_roce_dev *hr_dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i = 0;
 	struct hns_roce_caps *caps = &hr_dev->caps;
 
-<<<<<<< HEAD
 	hr_dev->vendor_id = roce_read(hr_dev, ROCEE_VENDOR_ID_REG);
 	hr_dev->vendor_part_id = roce_read(hr_dev, ROCEE_VENDOR_PART_ID_REG);
 	hr_dev->sys_image_guid = roce_read(hr_dev, ROCEE_SYS_IMAGE_GUID_L_REG) |
 				((u64)roce_read(hr_dev,
 					    ROCEE_SYS_IMAGE_GUID_H_REG) << 32);
-=======
-	hr_dev->vendor_id = le32_to_cpu(roce_read(hr_dev, ROCEE_VENDOR_ID_REG));
-	hr_dev->vendor_part_id = le32_to_cpu(roce_read(hr_dev,
-					     ROCEE_VENDOR_PART_ID_REG));
-	hr_dev->sys_image_guid = le32_to_cpu(roce_read(hr_dev,
-					     ROCEE_SYS_IMAGE_GUID_L_REG)) |
-				((u64)le32_to_cpu(roce_read(hr_dev,
-					    ROCEE_SYS_IMAGE_GUID_H_REG)) << 32);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hr_dev->hw_rev		= HNS_ROCE_HW_VER1;
 
 	caps->num_qps		= HNS_ROCE_V1_MAX_QP_NUM;
 	caps->max_wqes		= HNS_ROCE_V1_MAX_WQE_NUM;
-<<<<<<< HEAD
 	caps->min_wqes		= HNS_ROCE_MIN_WQE_NUM;
 	caps->num_cqs		= HNS_ROCE_V1_MAX_CQ_NUM;
 	caps->min_cqes		= HNS_ROCE_MIN_CQE_NUM;
-=======
-	caps->num_cqs		= HNS_ROCE_V1_MAX_CQ_NUM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	caps->max_cqes		= HNS_ROCE_V1_MAX_CQE_NUM;
 	caps->max_sq_sg		= HNS_ROCE_V1_SG_NUM;
 	caps->max_rq_sg		= HNS_ROCE_V1_SG_NUM;
 	caps->max_sq_inline	= HNS_ROCE_V1_INLINE_SIZE;
 	caps->num_uars		= HNS_ROCE_V1_UAR_NUM;
 	caps->phy_num_uars	= HNS_ROCE_V1_PHY_UAR_NUM;
-<<<<<<< HEAD
 	caps->num_aeq_vectors	= HNS_ROCE_V1_AEQE_VEC_NUM;
 	caps->num_comp_vectors	= HNS_ROCE_V1_COMP_VEC_NUM;
 	caps->num_other_vectors	= HNS_ROCE_V1_ABNORMAL_VEC_NUM;
-=======
-	caps->num_aeq_vectors	= HNS_ROCE_AEQE_VEC_NUM;
-	caps->num_comp_vectors	= HNS_ROCE_COMP_VEC_NUM;
-	caps->num_other_vectors	= HNS_ROCE_AEQE_OF_VEC_NUM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	caps->num_mtpts		= HNS_ROCE_V1_MAX_MTPT_NUM;
 	caps->num_mtt_segs	= HNS_ROCE_V1_MAX_MTT_SEGS;
 	caps->num_pds		= HNS_ROCE_V1_MAX_PD_NUM;
@@ -1932,10 +1583,7 @@ void hns_roce_v1_profile(struct hns_roce_dev *hr_dev)
 	caps->reserved_mrws	= 1;
 	caps->reserved_uars	= 0;
 	caps->reserved_cqs	= 0;
-<<<<<<< HEAD
 	caps->chunk_sz		= HNS_ROCE_V1_TABLE_CHUNK_SIZE;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < caps->num_ports; i++)
 		caps->pkey_table_len[i] = 1;
@@ -1950,7 +1598,6 @@ void hns_roce_v1_profile(struct hns_roce_dev *hr_dev)
 						 caps->num_ports + 1;
 	}
 
-<<<<<<< HEAD
 	caps->ceqe_depth = HNS_ROCE_V1_COMP_EQE_NUM;
 	caps->aeqe_depth = HNS_ROCE_V1_ASYNC_EQE_NUM;
 	caps->local_ca_ack_delay = roce_read(hr_dev, ROCEE_ACK_DELAY_REG);
@@ -1964,26 +1611,10 @@ static int hns_roce_v1_init(struct hns_roce_dev *hr_dev)
 	int ret;
 	u32 val;
 	__le32 tmp;
-=======
-	for (i = 0; i < caps->num_comp_vectors; i++)
-		caps->ceqe_depth[i] = HNS_ROCE_V1_NUM_COMP_EQE;
-
-	caps->aeqe_depth = HNS_ROCE_V1_NUM_ASYNC_EQE;
-	caps->local_ca_ack_delay = le32_to_cpu(roce_read(hr_dev,
-							 ROCEE_ACK_DELAY_REG));
-	caps->max_mtu = IB_MTU_2048;
-}
-
-int hns_roce_v1_init(struct hns_roce_dev *hr_dev)
-{
-	int ret;
-	u32 val;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct device *dev = &hr_dev->pdev->dev;
 
 	/* DMAE user config */
 	val = roce_read(hr_dev, ROCEE_DMAE_USER_CFG1_REG);
-<<<<<<< HEAD
 	tmp = cpu_to_le32(val);
 	roce_set_field(tmp, ROCEE_DMAE_USER_CFG1_ROCEE_CACHE_TB_CFG_M,
 		       ROCEE_DMAE_USER_CFG1_ROCEE_CACHE_TB_CFG_S, 0xf);
@@ -1998,19 +1629,6 @@ int hns_roce_v1_init(struct hns_roce_dev *hr_dev)
 	roce_set_field(tmp, ROCEE_DMAE_USER_CFG2_ROCEE_CACHE_PKT_CFG_M,
 		       ROCEE_DMAE_USER_CFG2_ROCEE_CACHE_PKT_CFG_S, 0xf);
 	roce_set_field(tmp, ROCEE_DMAE_USER_CFG2_ROCEE_STREAM_ID_PKT_CFG_M,
-=======
-	roce_set_field(val, ROCEE_DMAE_USER_CFG1_ROCEE_CACHE_TB_CFG_M,
-		       ROCEE_DMAE_USER_CFG1_ROCEE_CACHE_TB_CFG_S, 0xf);
-	roce_set_field(val, ROCEE_DMAE_USER_CFG1_ROCEE_STREAM_ID_TB_CFG_M,
-		       ROCEE_DMAE_USER_CFG1_ROCEE_STREAM_ID_TB_CFG_S,
-		       1 << PAGES_SHIFT_16);
-	roce_write(hr_dev, ROCEE_DMAE_USER_CFG1_REG, val);
-
-	val = roce_read(hr_dev, ROCEE_DMAE_USER_CFG2_REG);
-	roce_set_field(val, ROCEE_DMAE_USER_CFG2_ROCEE_CACHE_PKT_CFG_M,
-		       ROCEE_DMAE_USER_CFG2_ROCEE_CACHE_PKT_CFG_S, 0xf);
-	roce_set_field(val, ROCEE_DMAE_USER_CFG2_ROCEE_STREAM_ID_PKT_CFG_M,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		       ROCEE_DMAE_USER_CFG2_ROCEE_STREAM_ID_PKT_CFG_S,
 		       1 << PAGES_SHIFT_16);
 
@@ -2071,11 +1689,7 @@ error_failed_raq_init:
 	return ret;
 }
 
-<<<<<<< HEAD
 static void hns_roce_v1_exit(struct hns_roce_dev *hr_dev)
-=======
-void hns_roce_v1_exit(struct hns_roce_dev *hr_dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	hns_roce_port_enable(hr_dev, HNS_ROCE_PORT_DOWN);
 	hns_roce_free_mr_free(hr_dev);
@@ -2086,7 +1700,6 @@ void hns_roce_v1_exit(struct hns_roce_dev *hr_dev)
 	hns_roce_db_free(hr_dev);
 }
 
-<<<<<<< HEAD
 static int hns_roce_v1_cmd_pending(struct hns_roce_dev *hr_dev)
 {
 	u32 status = readl(hr_dev->reg_base + ROCEE_MB6_REG);
@@ -2166,10 +1779,6 @@ static int hns_roce_v1_chk_mbox(struct hns_roce_dev *hr_dev,
 static int hns_roce_v1_set_gid(struct hns_roce_dev *hr_dev, u8 port,
 			       int gid_index, const union ib_gid *gid,
 			       const struct ib_gid_attr *attr)
-=======
-void hns_roce_v1_set_gid(struct hns_roce_dev *hr_dev, u8 port, int gid_index,
-			 union ib_gid *gid)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 *p = NULL;
 	u8 gid_idx = 0;
@@ -2191,7 +1800,6 @@ void hns_roce_v1_set_gid(struct hns_roce_dev *hr_dev, u8 port, int gid_index,
 	p = (u32 *)&gid->raw[0xc];
 	roce_raw_write(*p, hr_dev->reg_base + ROCEE_PORT_GID_H_0_REG +
 		       (HNS_ROCE_V1_GID_NUM * gid_idx));
-<<<<<<< HEAD
 
 	return 0;
 }
@@ -2202,14 +1810,6 @@ static int hns_roce_v1_set_mac(struct hns_roce_dev *hr_dev, u8 phy_port,
 	u32 reg_smac_l;
 	u16 reg_smac_h;
 	__le32 tmp;
-=======
-}
-
-void hns_roce_v1_set_mac(struct hns_roce_dev *hr_dev, u8 phy_port, u8 *addr)
-{
-	u32 reg_smac_l;
-	u16 reg_smac_h;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 *p_h;
 	u32 *p;
 	u32 val;
@@ -2219,7 +1819,6 @@ void hns_roce_v1_set_mac(struct hns_roce_dev *hr_dev, u8 phy_port, u8 *addr)
 	 * because of smac not equal to dmac.
 	 * We Need to release and create reserved qp again.
 	 */
-<<<<<<< HEAD
 	if (hr_dev->hw->dereg_mr) {
 		int ret;
 
@@ -2227,10 +1826,6 @@ void hns_roce_v1_set_mac(struct hns_roce_dev *hr_dev, u8 phy_port, u8 *addr)
 		if (ret && ret != -ETIMEDOUT)
 			return ret;
 	}
-=======
-	if (hr_dev->hw->dereg_mr && hns_roce_v1_recreate_lp_qp(hr_dev))
-		dev_warn(&hr_dev->pdev->dev, "recreate lp qp timeout!\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	p = (u32 *)(&addr[0]);
 	reg_smac_l = *p;
@@ -2239,7 +1834,6 @@ void hns_roce_v1_set_mac(struct hns_roce_dev *hr_dev, u8 phy_port, u8 *addr)
 
 	val = roce_read(hr_dev,
 			ROCEE_SMAC_H_0_REG + phy_port * PHY_PORT_OFFSET);
-<<<<<<< HEAD
 	tmp = cpu_to_le32(val);
 	p_h = (u16 *)(&addr[4]);
 	reg_smac_h  = *p_h;
@@ -2256,43 +1850,20 @@ static void hns_roce_v1_set_mtu(struct hns_roce_dev *hr_dev, u8 phy_port,
 				enum ib_mtu mtu)
 {
 	__le32 tmp;
-=======
-	p_h = (u16 *)(&addr[4]);
-	reg_smac_h  = *p_h;
-	roce_set_field(val, ROCEE_SMAC_H_ROCEE_SMAC_H_M,
-		       ROCEE_SMAC_H_ROCEE_SMAC_H_S, reg_smac_h);
-	roce_write(hr_dev, ROCEE_SMAC_H_0_REG + phy_port * PHY_PORT_OFFSET,
-		   val);
-}
-
-void hns_roce_v1_set_mtu(struct hns_roce_dev *hr_dev, u8 phy_port,
-			 enum ib_mtu mtu)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 val;
 
 	val = roce_read(hr_dev,
 			ROCEE_SMAC_H_0_REG + phy_port * PHY_PORT_OFFSET);
-<<<<<<< HEAD
 	tmp = cpu_to_le32(val);
 	roce_set_field(tmp, ROCEE_SMAC_H_ROCEE_PORT_MTU_M,
 		       ROCEE_SMAC_H_ROCEE_PORT_MTU_S, mtu);
 	val = le32_to_cpu(tmp);
-=======
-	roce_set_field(val, ROCEE_SMAC_H_ROCEE_PORT_MTU_M,
-		       ROCEE_SMAC_H_ROCEE_PORT_MTU_S, mtu);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	roce_write(hr_dev, ROCEE_SMAC_H_0_REG + phy_port * PHY_PORT_OFFSET,
 		   val);
 }
 
-<<<<<<< HEAD
 static int hns_roce_v1_write_mtpt(void *mb_buf, struct hns_roce_mr *mr,
 				  unsigned long mtpt_idx)
-=======
-int hns_roce_v1_write_mtpt(void *mb_buf, struct hns_roce_mr *mr,
-			   unsigned long mtpt_idx)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct hns_roce_v1_mpt_entry *mpt_entry;
 	struct scatterlist *sg;
@@ -2332,15 +1903,9 @@ int hns_roce_v1_write_mtpt(void *mb_buf, struct hns_roce_mr *mr,
 	roce_set_field(mpt_entry->mpt_byte_12, MPT_BYTE_12_MW_BIND_COUNTER_M,
 		       MPT_BYTE_12_MW_BIND_COUNTER_S, 0);
 
-<<<<<<< HEAD
 	mpt_entry->virt_addr_l = cpu_to_le32((u32)mr->iova);
 	mpt_entry->virt_addr_h = cpu_to_le32((u32)(mr->iova >> 32));
 	mpt_entry->length = cpu_to_le32((u32)mr->size);
-=======
-	mpt_entry->virt_addr_l = (u32)mr->iova;
-	mpt_entry->virt_addr_h = (u32)(mr->iova >> 32);
-	mpt_entry->length = (u32)mr->size;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	roce_set_field(mpt_entry->mpt_byte_28, MPT_BYTE_28_PD_M,
 		       MPT_BYTE_28_PD_S, mr->pd);
@@ -2375,112 +1940,59 @@ int hns_roce_v1_write_mtpt(void *mb_buf, struct hns_roce_mr *mr,
 			roce_set_field(mpt_entry->mpt_byte_36,
 				MPT_BYTE_36_PA0_H_M,
 				MPT_BYTE_36_PA0_H_S,
-<<<<<<< HEAD
 				(u32)(pages[i] >> PAGES_SHIFT_32));
-=======
-				cpu_to_le32((u32)(pages[i] >> PAGES_SHIFT_32)));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		case 1:
 			roce_set_field(mpt_entry->mpt_byte_36,
 				       MPT_BYTE_36_PA1_L_M,
-<<<<<<< HEAD
 				       MPT_BYTE_36_PA1_L_S, (u32)(pages[i]));
 			roce_set_field(mpt_entry->mpt_byte_40,
 				MPT_BYTE_40_PA1_H_M,
 				MPT_BYTE_40_PA1_H_S,
 				(u32)(pages[i] >> PAGES_SHIFT_24));
-=======
-				       MPT_BYTE_36_PA1_L_S,
-				       cpu_to_le32((u32)(pages[i])));
-			roce_set_field(mpt_entry->mpt_byte_40,
-				MPT_BYTE_40_PA1_H_M,
-				MPT_BYTE_40_PA1_H_S,
-				cpu_to_le32((u32)(pages[i] >> PAGES_SHIFT_24)));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		case 2:
 			roce_set_field(mpt_entry->mpt_byte_40,
 				       MPT_BYTE_40_PA2_L_M,
-<<<<<<< HEAD
 				       MPT_BYTE_40_PA2_L_S, (u32)(pages[i]));
 			roce_set_field(mpt_entry->mpt_byte_44,
 				MPT_BYTE_44_PA2_H_M,
 				MPT_BYTE_44_PA2_H_S,
 				(u32)(pages[i] >> PAGES_SHIFT_16));
-=======
-				       MPT_BYTE_40_PA2_L_S,
-				       cpu_to_le32((u32)(pages[i])));
-			roce_set_field(mpt_entry->mpt_byte_44,
-				MPT_BYTE_44_PA2_H_M,
-				MPT_BYTE_44_PA2_H_S,
-				cpu_to_le32((u32)(pages[i] >> PAGES_SHIFT_16)));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		case 3:
 			roce_set_field(mpt_entry->mpt_byte_44,
 				       MPT_BYTE_44_PA3_L_M,
-<<<<<<< HEAD
 				       MPT_BYTE_44_PA3_L_S, (u32)(pages[i]));
 			roce_set_field(mpt_entry->mpt_byte_48,
 				MPT_BYTE_48_PA3_H_M,
 				MPT_BYTE_48_PA3_H_S,
 				(u32)(pages[i] >> PAGES_SHIFT_8));
-=======
-				       MPT_BYTE_44_PA3_L_S,
-				       cpu_to_le32((u32)(pages[i])));
-			roce_set_field(mpt_entry->mpt_byte_48,
-				MPT_BYTE_48_PA3_H_M,
-				MPT_BYTE_48_PA3_H_S,
-				cpu_to_le32((u32)(pages[i] >> PAGES_SHIFT_8)));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		case 4:
 			mpt_entry->pa4_l = cpu_to_le32((u32)(pages[i]));
 			roce_set_field(mpt_entry->mpt_byte_56,
 				MPT_BYTE_56_PA4_H_M,
 				MPT_BYTE_56_PA4_H_S,
-<<<<<<< HEAD
 				(u32)(pages[i] >> PAGES_SHIFT_32));
-=======
-				cpu_to_le32((u32)(pages[i] >> PAGES_SHIFT_32)));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		case 5:
 			roce_set_field(mpt_entry->mpt_byte_56,
 				       MPT_BYTE_56_PA5_L_M,
-<<<<<<< HEAD
 				       MPT_BYTE_56_PA5_L_S, (u32)(pages[i]));
 			roce_set_field(mpt_entry->mpt_byte_60,
 				MPT_BYTE_60_PA5_H_M,
 				MPT_BYTE_60_PA5_H_S,
 				(u32)(pages[i] >> PAGES_SHIFT_24));
-=======
-				       MPT_BYTE_56_PA5_L_S,
-				       cpu_to_le32((u32)(pages[i])));
-			roce_set_field(mpt_entry->mpt_byte_60,
-				MPT_BYTE_60_PA5_H_M,
-				MPT_BYTE_60_PA5_H_S,
-				cpu_to_le32((u32)(pages[i] >> PAGES_SHIFT_24)));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		case 6:
 			roce_set_field(mpt_entry->mpt_byte_60,
 				       MPT_BYTE_60_PA6_L_M,
-<<<<<<< HEAD
 				       MPT_BYTE_60_PA6_L_S, (u32)(pages[i]));
 			roce_set_field(mpt_entry->mpt_byte_64,
 				MPT_BYTE_64_PA6_H_M,
 				MPT_BYTE_64_PA6_H_S,
 				(u32)(pages[i] >> PAGES_SHIFT_16));
-=======
-				       MPT_BYTE_60_PA6_L_S,
-				       cpu_to_le32((u32)(pages[i])));
-			roce_set_field(mpt_entry->mpt_byte_64,
-				MPT_BYTE_64_PA6_H_M,
-				MPT_BYTE_64_PA6_H_S,
-				cpu_to_le32((u32)(pages[i] >> PAGES_SHIFT_16)));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		default:
 			break;
@@ -2489,11 +2001,7 @@ int hns_roce_v1_write_mtpt(void *mb_buf, struct hns_roce_mr *mr,
 
 	free_page((unsigned long) pages);
 
-<<<<<<< HEAD
 	mpt_entry->pbl_addr_l = cpu_to_le32((u32)(mr->pbl_dma_addr));
-=======
-	mpt_entry->pbl_addr_l = (u32)(mr->pbl_dma_addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	roce_set_field(mpt_entry->mpt_byte_12, MPT_BYTE_12_PBL_ADDR_H_M,
 		       MPT_BYTE_12_PBL_ADDR_H_S,
@@ -2522,19 +2030,11 @@ static struct hns_roce_cqe *next_cqe_sw(struct hns_roce_cq *hr_cq)
 	return get_sw_cqe(hr_cq, hr_cq->cons_index);
 }
 
-<<<<<<< HEAD
 static void hns_roce_v1_cq_set_ci(struct hns_roce_cq *hr_cq, u32 cons_index)
 {
 	__le32 doorbell[2];
 
 	doorbell[0] = cpu_to_le32(cons_index & ((hr_cq->cq_depth << 1) - 1));
-=======
-void hns_roce_v1_cq_set_ci(struct hns_roce_cq *hr_cq, u32 cons_index)
-{
-	u32 doorbell[2];
-
-	doorbell[0] = cons_index & ((hr_cq->cq_depth << 1) - 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	doorbell[1] = 0;
 	roce_set_bit(doorbell[1], ROCEE_DB_OTHERS_H_ROCEE_DB_OTH_HW_SYNS_S, 1);
 	roce_set_field(doorbell[1], ROCEE_DB_OTHERS_H_ROCEE_DB_OTH_CMD_M,
@@ -2603,16 +2103,10 @@ static void hns_roce_v1_cq_clean(struct hns_roce_cq *hr_cq, u32 qpn,
 	spin_unlock_irq(&hr_cq->lock);
 }
 
-<<<<<<< HEAD
 static void hns_roce_v1_write_cqc(struct hns_roce_dev *hr_dev,
 				  struct hns_roce_cq *hr_cq, void *mb_buf,
 				  u64 *mtts, dma_addr_t dma_handle, int nent,
 				  u32 vector)
-=======
-void hns_roce_v1_write_cqc(struct hns_roce_dev *hr_dev,
-			   struct hns_roce_cq *hr_cq, void *mb_buf, u64 *mtts,
-			   dma_addr_t dma_handle, int nent, u32 vector)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct hns_roce_cq_context *cq_context = NULL;
 	struct hns_roce_buf_list *tptr_buf;
@@ -2620,11 +2114,7 @@ void hns_roce_v1_write_cqc(struct hns_roce_dev *hr_dev,
 	dma_addr_t tptr_dma_addr;
 	int offset;
 
-<<<<<<< HEAD
 	priv = (struct hns_roce_v1_priv *)hr_dev->priv;
-=======
-	priv = (struct hns_roce_v1_priv *)hr_dev->hw->priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tptr_buf = &priv->tptr_table.tptr_buf;
 
 	cq_context = mb_buf;
@@ -2641,15 +2131,8 @@ void hns_roce_v1_write_cqc(struct hns_roce_dev *hr_dev,
 		       CQ_CONTEXT_CQC_BYTE_4_CQC_STATE_S, CQ_STATE_VALID);
 	roce_set_field(cq_context->cqc_byte_4, CQ_CONTEXT_CQC_BYTE_4_CQN_M,
 		       CQ_CONTEXT_CQC_BYTE_4_CQN_S, hr_cq->cqn);
-<<<<<<< HEAD
 
 	cq_context->cq_bt_l = cpu_to_le32((u32)dma_handle);
-=======
-	cq_context->cqc_byte_4 = cpu_to_le32(cq_context->cqc_byte_4);
-
-	cq_context->cq_bt_l = (u32)dma_handle;
-	cq_context->cq_bt_l = cpu_to_le32(cq_context->cq_bt_l);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	roce_set_field(cq_context->cqc_byte_12,
 		       CQ_CONTEXT_CQC_BYTE_12_CQ_BT_H_M,
@@ -2661,24 +2144,12 @@ void hns_roce_v1_write_cqc(struct hns_roce_dev *hr_dev,
 		       ilog2((unsigned int)nent));
 	roce_set_field(cq_context->cqc_byte_12, CQ_CONTEXT_CQC_BYTE_12_CEQN_M,
 		       CQ_CONTEXT_CQC_BYTE_12_CEQN_S, vector);
-<<<<<<< HEAD
 
 	cq_context->cur_cqe_ba0_l = cpu_to_le32((u32)(mtts[0]));
 
 	roce_set_field(cq_context->cqc_byte_20,
 		       CQ_CONTEXT_CQC_BYTE_20_CUR_CQE_BA0_H_M,
 		       CQ_CONTEXT_CQC_BYTE_20_CUR_CQE_BA0_H_S, (mtts[0]) >> 32);
-=======
-	cq_context->cqc_byte_12 = cpu_to_le32(cq_context->cqc_byte_12);
-
-	cq_context->cur_cqe_ba0_l = (u32)(mtts[0]);
-	cq_context->cur_cqe_ba0_l = cpu_to_le32(cq_context->cur_cqe_ba0_l);
-
-	roce_set_field(cq_context->cqc_byte_20,
-		       CQ_CONTEXT_CQC_BYTE_20_CUR_CQE_BA0_H_M,
-		       CQ_CONTEXT_CQC_BYTE_20_CUR_CQE_BA0_H_S,
-		       cpu_to_le32((mtts[0]) >> 32));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Dedicated hardware, directly set 0 */
 	roce_set_field(cq_context->cqc_byte_20,
 		       CQ_CONTEXT_CQC_BYTE_20_CQ_CUR_INDEX_M,
@@ -2692,14 +2163,8 @@ void hns_roce_v1_write_cqc(struct hns_roce_dev *hr_dev,
 		       CQ_CONTEXT_CQC_BYTE_20_CQE_TPTR_ADDR_H_M,
 		       CQ_CONTEXT_CQC_BYTE_20_CQE_TPTR_ADDR_H_S,
 		       tptr_dma_addr >> 44);
-<<<<<<< HEAD
 
 	cq_context->cqe_tptr_addr_l = cpu_to_le32((u32)(tptr_dma_addr >> 12));
-=======
-	cq_context->cqc_byte_20 = cpu_to_le32(cq_context->cqc_byte_20);
-
-	cq_context->cqe_tptr_addr_l = (u32)(tptr_dma_addr >> 12);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	roce_set_field(cq_context->cqc_byte_32,
 		       CQ_CONTEXT_CQC_BYTE_32_CUR_CQE_BA1_H_M,
@@ -2717,7 +2182,6 @@ void hns_roce_v1_write_cqc(struct hns_roce_dev *hr_dev,
 	roce_set_field(cq_context->cqc_byte_32,
 		       CQ_CONTEXT_CQC_BYTE_32_CQ_CONS_IDX_M,
 		       CQ_CONTEXT_CQC_BYTE_32_CQ_CONS_IDX_S, 0);
-<<<<<<< HEAD
 }
 
 static int hns_roce_v1_modify_cq(struct ib_cq *cq, u16 cq_count, u16 cq_period)
@@ -2731,16 +2195,6 @@ static int hns_roce_v1_req_notify_cq(struct ib_cq *ibcq,
 	struct hns_roce_cq *hr_cq = to_hr_cq(ibcq);
 	u32 notification_flag;
 	__le32 doorbell[2];
-=======
-	cq_context->cqc_byte_32 = cpu_to_le32(cq_context->cqc_byte_32);
-}
-
-int hns_roce_v1_req_notify_cq(struct ib_cq *ibcq, enum ib_cq_notify_flags flags)
-{
-	struct hns_roce_cq *hr_cq = to_hr_cq(ibcq);
-	u32 notification_flag;
-	u32 doorbell[2];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	notification_flag = (flags & IB_CQ_SOLICITED_MASK) ==
 			    IB_CQ_SOLICITED ? CQ_DB_REQ_NOT : CQ_DB_REQ_NOT_SOL;
@@ -2748,12 +2202,8 @@ int hns_roce_v1_req_notify_cq(struct ib_cq *ibcq, enum ib_cq_notify_flags flags)
 	 * flags = 0; Notification Flag = 1, next
 	 * flags = 1; Notification Flag = 0, solocited
 	 */
-<<<<<<< HEAD
 	doorbell[0] =
 		cpu_to_le32(hr_cq->cons_index & ((hr_cq->cq_depth << 1) - 1));
-=======
-	doorbell[0] = hr_cq->cons_index & ((hr_cq->cq_depth << 1) - 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	roce_set_bit(doorbell[1], ROCEE_DB_OTHERS_H_ROCEE_DB_OTH_HW_SYNS_S, 1);
 	roce_set_field(doorbell[1], ROCEE_DB_OTHERS_H_ROCEE_DB_OTH_CMD_M,
 		       ROCEE_DB_OTHERS_H_ROCEE_DB_OTH_CMD_S, 3);
@@ -2880,11 +2330,7 @@ static int hns_roce_v1_poll_one(struct hns_roce_cq *hr_cq,
 						CQE_BYTE_4_WQE_INDEX_M,
 						CQE_BYTE_4_WQE_INDEX_S)&
 						((*cur_qp)->sq.wqe_cnt-1));
-<<<<<<< HEAD
 		switch (le32_to_cpu(sq_wqe->flag) & HNS_ROCE_WQE_OPCODE_MASK) {
-=======
-		switch (sq_wqe->flag & HNS_ROCE_WQE_OPCODE_MASK) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case HNS_ROCE_WQE_OPCODE_SEND:
 			wc->opcode = IB_WC_SEND;
 			break;
@@ -2905,11 +2351,7 @@ static int hns_roce_v1_poll_one(struct hns_roce_cq *hr_cq,
 			wc->status = IB_WC_GENERAL_ERR;
 			break;
 		}
-<<<<<<< HEAD
 		wc->wc_flags = (le32_to_cpu(sq_wqe->flag) & HNS_ROCE_WQE_IMM ?
-=======
-		wc->wc_flags = (sq_wqe->flag & HNS_ROCE_WQE_IMM ?
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				IB_WC_WITH_IMM : 0);
 
 		wq = &(*cur_qp)->sq;
@@ -2938,25 +2380,16 @@ static int hns_roce_v1_poll_one(struct hns_roce_cq *hr_cq,
 		case HNS_ROCE_OPCODE_RDMA_WITH_IMM_RECEIVE:
 			wc->opcode = IB_WC_RECV_RDMA_WITH_IMM;
 			wc->wc_flags = IB_WC_WITH_IMM;
-<<<<<<< HEAD
 			wc->ex.imm_data =
 				cpu_to_be32(le32_to_cpu(cqe->immediate_data));
-=======
-			wc->ex.imm_data = le32_to_cpu(cqe->immediate_data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		case HNS_ROCE_OPCODE_SEND_DATA_RECEIVE:
 			if (roce_get_bit(cqe->cqe_byte_4,
 					 CQE_BYTE_4_IMM_INDICATOR_S)) {
 				wc->opcode = IB_WC_RECV;
 				wc->wc_flags = IB_WC_WITH_IMM;
-<<<<<<< HEAD
 				wc->ex.imm_data = cpu_to_be32(
 					le32_to_cpu(cqe->immediate_data));
-=======
-				wc->ex.imm_data = le32_to_cpu(
-						  cqe->immediate_data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			} else {
 				wc->opcode = IB_WC_RECV;
 				wc->wc_flags = 0;
@@ -3020,31 +2453,18 @@ int hns_roce_v1_poll_cq(struct ib_cq *ibcq, int num_entries, struct ib_wc *wc)
 		return ret;
 }
 
-<<<<<<< HEAD
 static int hns_roce_v1_clear_hem(struct hns_roce_dev *hr_dev,
 				 struct hns_roce_hem_table *table, int obj,
 				 int step_idx)
-=======
-int hns_roce_v1_clear_hem(struct hns_roce_dev *hr_dev,
-		struct hns_roce_hem_table *table, int obj)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct device *dev = &hr_dev->pdev->dev;
 	struct hns_roce_v1_priv *priv;
 	unsigned long end = 0, flags = 0;
-<<<<<<< HEAD
 	__le32 bt_cmd_val[2] = {0};
 	void __iomem *bt_cmd;
 	u64 bt_ba = 0;
 
 	priv = (struct hns_roce_v1_priv *)hr_dev->priv;
-=======
-	uint32_t bt_cmd_val[2] = {0};
-	void __iomem *bt_cmd;
-	u64 bt_ba = 0;
-
-	priv = (struct hns_roce_v1_priv *)hr_dev->hw->priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (table->type) {
 	case HEM_TYPE_QPC:
@@ -3092,11 +2512,7 @@ int hns_roce_v1_clear_hem(struct hns_roce_dev *hr_dev,
 		msleep(HW_SYNC_SLEEP_TIME_INTERVAL);
 	}
 
-<<<<<<< HEAD
 	bt_cmd_val[0] = (__le32)bt_ba;
-=======
-	bt_cmd_val[0] = (uint32_t)bt_ba;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	roce_set_field(bt_cmd_val[1], ROCEE_BT_CMD_H_ROCEE_BT_CMD_BA_H_M,
 		ROCEE_BT_CMD_H_ROCEE_BT_CMD_BA_H_S, bt_ba >> 32);
 	hns_roce_write64_k(bt_cmd_val, hr_dev->reg_base + ROCEE_BT_CMD_L_REG);
@@ -3197,29 +2613,18 @@ static int hns_roce_v1_m_sqp(struct ib_qp *ibqp, const struct ib_qp_attr *attr,
 	struct hns_roce_sqp_context *context;
 	struct device *dev = &hr_dev->pdev->dev;
 	dma_addr_t dma_handle = 0;
-<<<<<<< HEAD
 	u32 __iomem *addr;
 	int rq_pa_start;
 	__le32 tmp;
 	u32 reg_val;
 	u64 *mtts;
-=======
-	int rq_pa_start;
-	u32 reg_val;
-	u64 *mtts;
-	u32 *addr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	context = kzalloc(sizeof(*context), GFP_KERNEL);
 	if (!context)
 		return -ENOMEM;
 
 	/* Search QP buf's MTTs */
-<<<<<<< HEAD
 	mtts = hns_roce_table_find(hr_dev, &hr_dev->mr_table.mtt_table,
-=======
-	mtts = hns_roce_table_find(&hr_dev->mr_table.mtt_table,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   hr_qp->mtt.first_seg, &dma_handle);
 	if (!mtts) {
 		dev_err(dev, "qp buf pa find failed\n");
@@ -3238,11 +2643,7 @@ static int hns_roce_v1_m_sqp(struct ib_qp *ibqp, const struct ib_qp_attr *attr,
 		roce_set_field(context->qp1c_bytes_4, QP1C_BYTES_4_PD_M,
 			       QP1C_BYTES_4_PD_S, to_hr_pd(ibqp->pd)->pdn);
 
-<<<<<<< HEAD
 		context->sq_rq_bt_l = cpu_to_le32((u32)(dma_handle));
-=======
-		context->sq_rq_bt_l = (u32)(dma_handle);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		roce_set_field(context->qp1c_bytes_12,
 			       QP1C_BYTES_12_SQ_RQ_BT_H_M,
 			       QP1C_BYTES_12_SQ_RQ_BT_H_S,
@@ -3254,11 +2655,7 @@ static int hns_roce_v1_m_sqp(struct ib_qp *ibqp, const struct ib_qp_attr *attr,
 			       QP1C_BYTES_16_PORT_NUM_S, hr_qp->phy_port);
 		roce_set_bit(context->qp1c_bytes_16,
 			     QP1C_BYTES_16_SIGNALING_TYPE_S,
-<<<<<<< HEAD
 			     le32_to_cpu(hr_qp->sq_signal_bits));
-=======
-			     hr_qp->sq_signal_bits);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		roce_set_bit(context->qp1c_bytes_16, QP1C_BYTES_16_RQ_BA_FLG_S,
 			     1);
 		roce_set_bit(context->qp1c_bytes_16, QP1C_BYTES_16_SQ_BA_FLG_S,
@@ -3272,12 +2669,8 @@ static int hns_roce_v1_m_sqp(struct ib_qp *ibqp, const struct ib_qp_attr *attr,
 			       QP1C_BYTES_20_PKEY_IDX_S, attr->pkey_index);
 
 		rq_pa_start = (u32)hr_qp->rq.offset / PAGE_SIZE;
-<<<<<<< HEAD
 		context->cur_rq_wqe_ba_l =
 				cpu_to_le32((u32)(mtts[rq_pa_start]));
-=======
-		context->cur_rq_wqe_ba_l = (u32)(mtts[rq_pa_start]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		roce_set_field(context->qp1c_bytes_28,
 			       QP1C_BYTES_28_CUR_RQ_WQE_BA_H_M,
@@ -3296,11 +2689,7 @@ static int hns_roce_v1_m_sqp(struct ib_qp *ibqp, const struct ib_qp_attr *attr,
 			       QP1C_BYTES_32_TX_CQ_NUM_S,
 			       to_hr_cq(ibqp->send_cq)->cqn);
 
-<<<<<<< HEAD
 		context->cur_sq_wqe_ba_l  = cpu_to_le32((u32)mtts[0]);
-=======
-		context->cur_sq_wqe_ba_l  = (u32)mtts[0];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		roce_set_field(context->qp1c_bytes_40,
 			       QP1C_BYTES_40_CUR_SQ_WQE_BA_H_M,
@@ -3311,7 +2700,6 @@ static int hns_roce_v1_m_sqp(struct ib_qp *ibqp, const struct ib_qp_attr *attr,
 			       QP1C_BYTES_40_SQ_CUR_IDX_S, 0);
 
 		/* Copy context to QP1C register */
-<<<<<<< HEAD
 		addr = (u32 __iomem *)(hr_dev->reg_base +
 				       ROCEE_QP1C_CFG0_0_REG +
 				       hr_qp->phy_port * sizeof(*context));
@@ -3326,35 +2714,15 @@ static int hns_roce_v1_m_sqp(struct ib_qp *ibqp, const struct ib_qp_attr *attr,
 		writel(le32_to_cpu(context->qp1c_bytes_32), addr + 7);
 		writel(le32_to_cpu(context->cur_sq_wqe_ba_l), addr + 8);
 		writel(le32_to_cpu(context->qp1c_bytes_40), addr + 9);
-=======
-		addr = (u32 *)(hr_dev->reg_base + ROCEE_QP1C_CFG0_0_REG +
-			hr_qp->phy_port * sizeof(*context));
-
-		writel(context->qp1c_bytes_4, addr);
-		writel(context->sq_rq_bt_l, addr + 1);
-		writel(context->qp1c_bytes_12, addr + 2);
-		writel(context->qp1c_bytes_16, addr + 3);
-		writel(context->qp1c_bytes_20, addr + 4);
-		writel(context->cur_rq_wqe_ba_l, addr + 5);
-		writel(context->qp1c_bytes_28, addr + 6);
-		writel(context->qp1c_bytes_32, addr + 7);
-		writel(context->cur_sq_wqe_ba_l, addr + 8);
-		writel(context->qp1c_bytes_40, addr + 9);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Modify QP1C status */
 	reg_val = roce_read(hr_dev, ROCEE_QP1C_CFG0_0_REG +
 			    hr_qp->phy_port * sizeof(*context));
-<<<<<<< HEAD
 	tmp = cpu_to_le32(reg_val);
 	roce_set_field(tmp, ROCEE_QP1C_CFG0_0_ROCEE_QP1C_QP_ST_M,
 		       ROCEE_QP1C_CFG0_0_ROCEE_QP1C_QP_ST_S, new_state);
 	reg_val = le32_to_cpu(tmp);
-=======
-	roce_set_field(reg_val, ROCEE_QP1C_CFG0_0_ROCEE_QP1C_QP_ST_M,
-		       ROCEE_QP1C_CFG0_0_ROCEE_QP1C_QP_ST_S, new_state);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	roce_write(hr_dev, ROCEE_QP1C_CFG0_0_REG +
 		    hr_qp->phy_port * sizeof(*context), reg_val);
 
@@ -3392,11 +2760,7 @@ static int hns_roce_v1_m_qp(struct ib_qp *ibqp, const struct ib_qp_attr *attr,
 	const struct ib_global_route *grh = rdma_ah_read_grh(&attr->ah_attr);
 	dma_addr_t dma_handle_2 = 0;
 	dma_addr_t dma_handle = 0;
-<<<<<<< HEAD
 	__le32 doorbell[2] = {0};
-=======
-	uint32_t doorbell[2] = {0};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rq_pa_start = 0;
 	u64 *mtts_2 = NULL;
 	int ret = -EINVAL;
@@ -3411,11 +2775,7 @@ static int hns_roce_v1_m_qp(struct ib_qp *ibqp, const struct ib_qp_attr *attr,
 		return -ENOMEM;
 
 	/* Search qp buf's mtts */
-<<<<<<< HEAD
 	mtts = hns_roce_table_find(hr_dev, &hr_dev->mr_table.mtt_table,
-=======
-	mtts = hns_roce_table_find(&hr_dev->mr_table.mtt_table,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   hr_qp->mtt.first_seg, &dma_handle);
 	if (mtts == NULL) {
 		dev_err(dev, "qp buf pa find failed\n");
@@ -3423,13 +2783,8 @@ static int hns_roce_v1_m_qp(struct ib_qp *ibqp, const struct ib_qp_attr *attr,
 	}
 
 	/* Search IRRL's mtts */
-<<<<<<< HEAD
 	mtts_2 = hns_roce_table_find(hr_dev, &hr_dev->qp_table.irrl_table,
 				     hr_qp->qpn, &dma_handle_2);
-=======
-	mtts_2 = hns_roce_table_find(&hr_dev->qp_table.irrl_table, hr_qp->qpn,
-				     &dma_handle_2);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (mtts_2 == NULL) {
 		dev_err(dev, "qp irrl_table find failed\n");
 		goto out;
@@ -3580,11 +2935,7 @@ static int hns_roce_v1_m_qp(struct ib_qp *ibqp, const struct ib_qp_attr *attr,
 
 		dmac = (u8 *)attr->ah_attr.roce.dmac;
 
-<<<<<<< HEAD
 		context->sq_rq_bt_l = cpu_to_le32((u32)(dma_handle));
-=======
-		context->sq_rq_bt_l = (u32)(dma_handle);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		roce_set_field(context->qpc_bytes_24,
 			       QP_CONTEXT_QPC_BYTES_24_SQ_RQ_BT_H_M,
 			       QP_CONTEXT_QPC_BYTES_24_SQ_RQ_BT_H_S,
@@ -3596,11 +2947,7 @@ static int hns_roce_v1_m_qp(struct ib_qp *ibqp, const struct ib_qp_attr *attr,
 			       QP_CONTEXT_QPC_BYTES_24_MINIMUM_RNR_NAK_TIMER_M,
 			       QP_CONTEXT_QPC_BYTES_24_MINIMUM_RNR_NAK_TIMER_S,
 			       attr->min_rnr_timer);
-<<<<<<< HEAD
 		context->irrl_ba_l = cpu_to_le32((u32)(dma_handle_2));
-=======
-		context->irrl_ba_l = (u32)(dma_handle_2);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		roce_set_field(context->qpc_bytes_32,
 			       QP_CONTEXT_QPC_BYTES_32_IRRL_BA_H_M,
 			       QP_CONTEXT_QPC_BYTES_32_IRRL_BA_H_S,
@@ -3614,11 +2961,7 @@ static int hns_roce_v1_m_qp(struct ib_qp *ibqp, const struct ib_qp_attr *attr,
 			     1);
 		roce_set_bit(context->qpc_bytes_32,
 			     QP_CONTEXT_QPC_BYTE_32_SIGNALING_TYPE_S,
-<<<<<<< HEAD
 			     le32_to_cpu(hr_qp->sq_signal_bits));
-=======
-			     hr_qp->sq_signal_bits);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		port = (attr_mask & IB_QP_PORT) ? (attr->port_num - 1) :
 			hr_qp->port;
@@ -3637,18 +2980,11 @@ static int hns_roce_v1_m_qp(struct ib_qp *ibqp, const struct ib_qp_attr *attr,
 			       QP_CONTEXT_QPC_BYTES_32_RESPONDER_RESOURCES_S,
 			       ilog2((unsigned int)attr->max_dest_rd_atomic));
 
-<<<<<<< HEAD
 		if (attr_mask & IB_QP_DEST_QPN)
 			roce_set_field(context->qpc_bytes_36,
 				       QP_CONTEXT_QPC_BYTES_36_DEST_QP_M,
 				       QP_CONTEXT_QPC_BYTES_36_DEST_QP_S,
 				       attr->dest_qp_num);
-=======
-		roce_set_field(context->qpc_bytes_36,
-			       QP_CONTEXT_QPC_BYTES_36_DEST_QP_M,
-			       QP_CONTEXT_QPC_BYTES_36_DEST_QP_S,
-			       attr->dest_qp_num);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Configure GID index */
 		port_num = rdma_ah_get_port_num(&attr->ah_attr);
@@ -3703,12 +3039,8 @@ static int hns_roce_v1_m_qp(struct ib_qp *ibqp, const struct ib_qp_attr *attr,
 			       QP_CONTEXT_QPC_BYTES_68_RQ_CUR_INDEX_S, 0);
 
 		rq_pa_start = (u32)hr_qp->rq.offset / PAGE_SIZE;
-<<<<<<< HEAD
 		context->cur_rq_wqe_ba_l =
 				cpu_to_le32((u32)(mtts[rq_pa_start]));
-=======
-		context->cur_rq_wqe_ba_l = (u32)(mtts[rq_pa_start]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		roce_set_field(context->qpc_bytes_76,
 			QP_CONTEXT_QPC_BYTES_76_CUR_RQ_WQE_BA_H_M,
@@ -3788,11 +3120,7 @@ static int hns_roce_v1_m_qp(struct ib_qp *ibqp, const struct ib_qp_attr *attr,
 			goto out;
 		}
 
-<<<<<<< HEAD
 		context->rx_cur_sq_wqe_ba_l = cpu_to_le32((u32)(mtts[0]));
-=======
-		context->rx_cur_sq_wqe_ba_l = (u32)(mtts[0]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		roce_set_field(context->qpc_bytes_120,
 			       QP_CONTEXT_QPC_BYTES_120_RX_CUR_SQ_WQE_BA_H_M,
@@ -3940,11 +3268,7 @@ static int hns_roce_v1_m_qp(struct ib_qp *ibqp, const struct ib_qp_attr *attr,
 			       QP_CONTEXT_QPC_BYTES_180_SQ_HEAD_M,
 			       QP_CONTEXT_QPC_BYTES_180_SQ_HEAD_S, 0);
 
-<<<<<<< HEAD
 		context->tx_cur_sq_wqe_ba_l = cpu_to_le32((u32)(mtts[0]));
-=======
-		context->tx_cur_sq_wqe_ba_l = (u32)(mtts[0]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		roce_set_field(context->qpc_bytes_188,
 			       QP_CONTEXT_QPC_BYTES_188_TX_CUR_SQ_WQE_BA_H_M,
@@ -4001,11 +3325,7 @@ static int hns_roce_v1_m_qp(struct ib_qp *ibqp, const struct ib_qp_attr *attr,
 
 		if (ibqp->uobject) {
 			hr_qp->rq.db_reg_l = hr_dev->reg_base +
-<<<<<<< HEAD
 				     hr_dev->odb_offset +
-=======
-				     ROCEE_DB_OTHERS_L_0_REG +
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     DB_REG_OFFSET * hr_dev->priv_uar.index;
 		}
 
@@ -4039,16 +3359,10 @@ out:
 	return ret;
 }
 
-<<<<<<< HEAD
 static int hns_roce_v1_modify_qp(struct ib_qp *ibqp,
 				 const struct ib_qp_attr *attr, int attr_mask,
 				 enum ib_qp_state cur_state,
 				 enum ib_qp_state new_state)
-=======
-int hns_roce_v1_modify_qp(struct ib_qp *ibqp, const struct ib_qp_attr *attr,
-			  int attr_mask, enum ib_qp_state cur_state,
-			  enum ib_qp_state new_state)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 
 	if (ibqp->qp_type == IB_QPT_GSI || ibqp->qp_type == IB_QPT_SMI)
@@ -4121,7 +3435,6 @@ static int hns_roce_v1_q_sqp(struct ib_qp *ibqp, struct ib_qp_attr *qp_attr,
 
 	addr = ROCEE_QP1C_CFG0_0_REG +
 		hr_qp->port * sizeof(struct hns_roce_sqp_context);
-<<<<<<< HEAD
 	context.qp1c_bytes_4 = cpu_to_le32(roce_read(hr_dev, addr));
 	context.sq_rq_bt_l = cpu_to_le32(roce_read(hr_dev, addr + 1));
 	context.qp1c_bytes_12 = cpu_to_le32(roce_read(hr_dev, addr + 2));
@@ -4132,18 +3445,6 @@ static int hns_roce_v1_q_sqp(struct ib_qp *ibqp, struct ib_qp_attr *qp_attr,
 	context.qp1c_bytes_32 = cpu_to_le32(roce_read(hr_dev, addr + 7));
 	context.cur_sq_wqe_ba_l = cpu_to_le32(roce_read(hr_dev, addr + 8));
 	context.qp1c_bytes_40 = cpu_to_le32(roce_read(hr_dev, addr + 9));
-=======
-	context.qp1c_bytes_4 = roce_read(hr_dev, addr);
-	context.sq_rq_bt_l = roce_read(hr_dev, addr + 1);
-	context.qp1c_bytes_12 = roce_read(hr_dev, addr + 2);
-	context.qp1c_bytes_16 = roce_read(hr_dev, addr + 3);
-	context.qp1c_bytes_20 = roce_read(hr_dev, addr + 4);
-	context.cur_rq_wqe_ba_l = roce_read(hr_dev, addr + 5);
-	context.qp1c_bytes_28 = roce_read(hr_dev, addr + 6);
-	context.qp1c_bytes_32 = roce_read(hr_dev, addr + 7);
-	context.cur_sq_wqe_ba_l = roce_read(hr_dev, addr + 8);
-	context.qp1c_bytes_40 = roce_read(hr_dev, addr + 9);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	hr_qp->state = roce_get_field(context.qp1c_bytes_4,
 				      QP1C_BYTES_4_QP_STATE_M,
@@ -4152,10 +3453,7 @@ static int hns_roce_v1_q_sqp(struct ib_qp *ibqp, struct ib_qp_attr *qp_attr,
 	qp_attr->path_mtu	= IB_MTU_256;
 	qp_attr->path_mig_state	= IB_MIG_ARMED;
 	qp_attr->qkey		= QKEY_VAL;
-<<<<<<< HEAD
 	qp_attr->ah_attr.type   = RDMA_AH_ATTR_TYPE_ROCE;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	qp_attr->rq_psn		= 0;
 	qp_attr->sq_psn		= 0;
 	qp_attr->dest_qp_num	= 1;
@@ -4237,10 +3535,7 @@ static int hns_roce_v1_q_qp(struct ib_qp *ibqp, struct ib_qp_attr *qp_attr,
 					       QP_CONTEXT_QPC_BYTES_48_MTU_M,
 					       QP_CONTEXT_QPC_BYTES_48_MTU_S);
 	qp_attr->path_mig_state = IB_MIG_ARMED;
-<<<<<<< HEAD
 	qp_attr->ah_attr.type   = RDMA_AH_ATTR_TYPE_ROCE;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (hr_qp->ibqp.qp_type == IB_QPT_UD)
 		qp_attr->qkey = QKEY_VAL;
 
@@ -4296,17 +3591,10 @@ static int hns_roce_v1_q_qp(struct ib_qp *ibqp, struct ib_qp_attr *qp_attr,
 			      QP_CONTEXT_QPC_BYTES_12_P_KEY_INDEX_S);
 	qp_attr->port_num = hr_qp->port + 1;
 	qp_attr->sq_draining = 0;
-<<<<<<< HEAD
 	qp_attr->max_rd_atomic = 1 << roce_get_field(context->qpc_bytes_156,
 				 QP_CONTEXT_QPC_BYTES_156_INITIATOR_DEPTH_M,
 				 QP_CONTEXT_QPC_BYTES_156_INITIATOR_DEPTH_S);
 	qp_attr->max_dest_rd_atomic = 1 << roce_get_field(context->qpc_bytes_32,
-=======
-	qp_attr->max_rd_atomic = roce_get_field(context->qpc_bytes_156,
-				 QP_CONTEXT_QPC_BYTES_156_INITIATOR_DEPTH_M,
-				 QP_CONTEXT_QPC_BYTES_156_INITIATOR_DEPTH_S);
-	qp_attr->max_dest_rd_atomic = roce_get_field(context->qpc_bytes_32,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 QP_CONTEXT_QPC_BYTES_32_RESPONDER_RESOURCES_M,
 				 QP_CONTEXT_QPC_BYTES_32_RESPONDER_RESOURCES_S);
 	qp_attr->min_rnr_timer = (u8)(roce_get_field(context->qpc_bytes_24,
@@ -4318,11 +3606,7 @@ static int hns_roce_v1_q_qp(struct ib_qp *ibqp, struct ib_qp_attr *qp_attr,
 	qp_attr->retry_cnt = roce_get_field(context->qpc_bytes_148,
 			     QP_CONTEXT_QPC_BYTES_148_RETRY_COUNT_M,
 			     QP_CONTEXT_QPC_BYTES_148_RETRY_COUNT_S);
-<<<<<<< HEAD
 	qp_attr->rnr_retry = (u8)context->rnr_retry;
-=======
-	qp_attr->rnr_retry = context->rnr_retry;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 done:
 	qp_attr->cur_qp_state = qp_attr->qp_state;
@@ -4345,14 +3629,9 @@ out:
 	return ret;
 }
 
-<<<<<<< HEAD
 static int hns_roce_v1_query_qp(struct ib_qp *ibqp, struct ib_qp_attr *qp_attr,
 				int qp_attr_mask,
 				struct ib_qp_init_attr *qp_init_attr)
-=======
-int hns_roce_v1_query_qp(struct ib_qp *ibqp, struct ib_qp_attr *qp_attr,
-			 int qp_attr_mask, struct ib_qp_init_attr *qp_init_attr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct hns_roce_qp *hr_qp = to_hr_qp(ibqp);
 
@@ -4361,7 +3640,6 @@ int hns_roce_v1_query_qp(struct ib_qp *ibqp, struct ib_qp_attr *qp_attr,
 		hns_roce_v1_q_qp(ibqp, qp_attr, qp_attr_mask, qp_init_attr);
 }
 
-<<<<<<< HEAD
 static void hns_roce_check_sdb_status(struct hns_roce_dev *hr_dev,
 				      u32 *old_send, u32 *old_retry,
 				      u32 *tsp_st, u32 *success_flags)
@@ -4414,8 +3692,6 @@ static void hns_roce_check_sdb_status(struct hns_roce_dev *hr_dev,
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int check_qp_db_process_status(struct hns_roce_dev *hr_dev,
 				      struct hns_roce_qp *hr_qp,
 				      u32 sdb_issue_ptr,
@@ -4423,7 +3699,6 @@ static int check_qp_db_process_status(struct hns_roce_dev *hr_dev,
 				      u32 *wait_stage)
 {
 	struct device *dev = &hr_dev->pdev->dev;
-<<<<<<< HEAD
 	u32 sdb_send_ptr, old_send;
 	__le32 sdb_issue_ptr_tmp;
 	__le32 sdb_send_ptr_tmp;
@@ -4433,16 +3708,6 @@ static int check_qp_db_process_status(struct hns_roce_dev *hr_dev,
 	u32 inv_cnt;
 	u32 tsp_st;
 	__le32 tmp;
-=======
-	u32 sdb_retry_cnt, old_retry;
-	u32 sdb_send_ptr, old_send;
-	u32 success_flags = 0;
-	u32 cur_cnt, old_cnt;
-	unsigned long end;
-	u32 send_ptr;
-	u32 inv_cnt;
-	u32 tsp_st;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (*wait_stage > HNS_ROCE_V1_DB_STAGE2 ||
 	    *wait_stage < HNS_ROCE_V1_DB_STAGE1) {
@@ -4471,19 +3736,12 @@ static int check_qp_db_process_status(struct hns_roce_dev *hr_dev,
 						 ROCEE_SDB_SEND_PTR_REG);
 		}
 
-<<<<<<< HEAD
 		sdb_send_ptr_tmp = cpu_to_le32(sdb_send_ptr);
 		sdb_issue_ptr_tmp = cpu_to_le32(sdb_issue_ptr);
 		if (roce_get_field(sdb_issue_ptr_tmp,
 				   ROCEE_SDB_ISSUE_PTR_SDB_ISSUE_PTR_M,
 				   ROCEE_SDB_ISSUE_PTR_SDB_ISSUE_PTR_S) ==
 		    roce_get_field(sdb_send_ptr_tmp,
-=======
-		if (roce_get_field(sdb_issue_ptr,
-				   ROCEE_SDB_ISSUE_PTR_SDB_ISSUE_PTR_M,
-				   ROCEE_SDB_ISSUE_PTR_SDB_ISSUE_PTR_S) ==
-		    roce_get_field(sdb_send_ptr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   ROCEE_SDB_SEND_PTR_SDB_SEND_PTR_M,
 				   ROCEE_SDB_SEND_PTR_SDB_SEND_PTR_S)) {
 			old_send = roce_read(hr_dev, ROCEE_SDB_SEND_PTR_REG);
@@ -4491,12 +3749,8 @@ static int check_qp_db_process_status(struct hns_roce_dev *hr_dev,
 
 			do {
 				tsp_st = roce_read(hr_dev, ROCEE_TSP_BP_ST_REG);
-<<<<<<< HEAD
 				tmp = cpu_to_le32(tsp_st);
 				if (roce_get_bit(tmp,
-=======
-				if (roce_get_bit(tsp_st,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					ROCEE_TSP_BP_ST_QH_FIFO_ENTRY_S) == 1) {
 					*wait_stage = HNS_ROCE_V1_DB_WAIT_OK;
 					return 0;
@@ -4505,66 +3759,17 @@ static int check_qp_db_process_status(struct hns_roce_dev *hr_dev,
 				if (!time_before(jiffies, end)) {
 					dev_dbg(dev, "QP(0x%lx) db process stage1 timeout when send ptr equals issue ptr.\n"
 						     "issue 0x%x send 0x%x.\n",
-<<<<<<< HEAD
 						hr_qp->qpn,
 						le32_to_cpu(sdb_issue_ptr_tmp),
 						le32_to_cpu(sdb_send_ptr_tmp));
-=======
-						hr_qp->qpn, sdb_issue_ptr,
-						sdb_send_ptr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					return 0;
 				}
 
 				msleep(HNS_ROCE_V1_CHECK_DB_SLEEP_MSECS);
 
-<<<<<<< HEAD
 				hns_roce_check_sdb_status(hr_dev, &old_send,
 							  &old_retry, &tsp_st,
 							  &success_flags);
-=======
-				sdb_send_ptr = roce_read(hr_dev,
-							ROCEE_SDB_SEND_PTR_REG);
-				sdb_retry_cnt =	roce_read(hr_dev,
-						       ROCEE_SDB_RETRY_CNT_REG);
-				cur_cnt = roce_get_field(sdb_send_ptr,
-					ROCEE_SDB_SEND_PTR_SDB_SEND_PTR_M,
-					ROCEE_SDB_SEND_PTR_SDB_SEND_PTR_S) +
-					roce_get_field(sdb_retry_cnt,
-					ROCEE_SDB_RETRY_CNT_SDB_RETRY_CT_M,
-					ROCEE_SDB_RETRY_CNT_SDB_RETRY_CT_S);
-				if (!roce_get_bit(tsp_st,
-					ROCEE_CNT_CLR_CE_CNT_CLR_CE_S)) {
-					old_cnt = roce_get_field(old_send,
-					ROCEE_SDB_SEND_PTR_SDB_SEND_PTR_M,
-					ROCEE_SDB_SEND_PTR_SDB_SEND_PTR_S) +
-					roce_get_field(old_retry,
-					ROCEE_SDB_RETRY_CNT_SDB_RETRY_CT_M,
-					ROCEE_SDB_RETRY_CNT_SDB_RETRY_CT_S);
-					if (cur_cnt - old_cnt > SDB_ST_CMP_VAL)
-						success_flags = 1;
-				} else {
-					old_cnt = roce_get_field(old_send,
-					ROCEE_SDB_SEND_PTR_SDB_SEND_PTR_M,
-					ROCEE_SDB_SEND_PTR_SDB_SEND_PTR_S);
-					if (cur_cnt - old_cnt >
-					    SDB_ST_CMP_VAL) {
-						success_flags = 1;
-					} else {
-						send_ptr =
-							roce_get_field(old_send,
-					    ROCEE_SDB_SEND_PTR_SDB_SEND_PTR_M,
-					    ROCEE_SDB_SEND_PTR_SDB_SEND_PTR_S) +
-					    roce_get_field(sdb_retry_cnt,
-					    ROCEE_SDB_RETRY_CNT_SDB_RETRY_CT_M,
-					    ROCEE_SDB_RETRY_CNT_SDB_RETRY_CT_S);
-					    roce_set_field(old_send,
-					    ROCEE_SDB_SEND_PTR_SDB_SEND_PTR_M,
-					    ROCEE_SDB_SEND_PTR_SDB_SEND_PTR_S,
-						send_ptr);
-					}
-				}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			} while (!success_flags);
 		}
 
@@ -4664,11 +3869,7 @@ static void hns_roce_v1_destroy_qp_work_fn(struct work_struct *work)
 	qp_work_entry = container_of(work, struct hns_roce_qp_work, work);
 	hr_dev = to_hr_dev(qp_work_entry->ib_dev);
 	dev = &hr_dev->pdev->dev;
-<<<<<<< HEAD
 	priv = (struct hns_roce_v1_priv *)hr_dev->priv;
-=======
-	priv = (struct hns_roce_v1_priv *)hr_dev->hw->priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hr_qp = qp_work_entry->qp;
 	qpn = hr_qp->qpn;
 
@@ -4785,11 +3986,7 @@ int hns_roce_v1_destroy_qp(struct ib_qp *ibqp)
 		qp_work->sdb_inv_cnt	= qp_work_entry.sdb_inv_cnt;
 		qp_work->sche_cnt	= qp_work_entry.sche_cnt;
 
-<<<<<<< HEAD
 		priv = (struct hns_roce_v1_priv *)hr_dev->priv;
-=======
-		priv = (struct hns_roce_v1_priv *)hr_dev->hw->priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		queue_work(priv->des_qp.qp_wq, &qp_work->work);
 		dev_dbg(dev, "Begin destroy QP(0x%lx) work.\n", hr_qp->qpn);
 	}
@@ -4797,11 +3994,7 @@ int hns_roce_v1_destroy_qp(struct ib_qp *ibqp)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int hns_roce_v1_destroy_cq(struct ib_cq *ibcq)
-=======
-int hns_roce_v1_destroy_cq(struct ib_cq *ibcq)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct hns_roce_dev *hr_dev = to_hr_dev(ibcq->device);
 	struct hns_roce_cq *hr_cq = to_hr_cq(ibcq);
@@ -4853,7 +4046,6 @@ int hns_roce_v1_destroy_cq(struct ib_cq *ibcq)
 	return ret;
 }
 
-<<<<<<< HEAD
 static void set_eq_cons_index_v1(struct hns_roce_eq *eq, int req_not)
 {
 	roce_raw_write((eq->cons_index & HNS_ROCE_V1_CONS_IDX_M) |
@@ -5602,29 +4794,18 @@ static void hns_roce_v1_cleanup_eq_table(struct hns_roce_dev *hr_dev)
 }
 
 static const struct hns_roce_hw hns_roce_hw_v1 = {
-=======
-struct hns_roce_v1_priv hr_v1_priv;
-
-struct hns_roce_hw hns_roce_hw_v1 = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.reset = hns_roce_v1_reset,
 	.hw_profile = hns_roce_v1_profile,
 	.hw_init = hns_roce_v1_init,
 	.hw_exit = hns_roce_v1_exit,
-<<<<<<< HEAD
 	.post_mbox = hns_roce_v1_post_mbox,
 	.chk_mbox = hns_roce_v1_chk_mbox,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.set_gid = hns_roce_v1_set_gid,
 	.set_mac = hns_roce_v1_set_mac,
 	.set_mtu = hns_roce_v1_set_mtu,
 	.write_mtpt = hns_roce_v1_write_mtpt,
 	.write_cqc = hns_roce_v1_write_cqc,
-<<<<<<< HEAD
 	.modify_cq = hns_roce_v1_modify_cq,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.clear_hem = hns_roce_v1_clear_hem,
 	.modify_qp = hns_roce_v1_modify_qp,
 	.query_qp = hns_roce_v1_query_qp,
@@ -5635,7 +4816,6 @@ struct hns_roce_hw hns_roce_hw_v1 = {
 	.poll_cq = hns_roce_v1_poll_cq,
 	.dereg_mr = hns_roce_v1_dereg_mr,
 	.destroy_cq = hns_roce_v1_destroy_cq,
-<<<<<<< HEAD
 	.init_eq = hns_roce_v1_init_eq_table,
 	.cleanup_eq = hns_roce_v1_cleanup_eq_table,
 };
@@ -5887,7 +5067,3 @@ MODULE_AUTHOR("Wei Hu <xavier.huwei@huawei.com>");
 MODULE_AUTHOR("Nenglong Zhao <zhaonenglong@hisilicon.com>");
 MODULE_AUTHOR("Lijun Ou <oulijun@huawei.com>");
 MODULE_DESCRIPTION("Hisilicon Hip06 Family RoCE Driver");
-=======
-	.priv = &hr_v1_priv,
-};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

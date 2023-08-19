@@ -42,22 +42,15 @@
 
 #include <linux/slab.h>
 #include <linux/device.h>
-<<<<<<< HEAD
 #include <linux/kfifo.h>
 #include "kfd_priv.h"
 
 #define KFD_IH_NUM_ENTRIES 8192
-=======
-#include "kfd_priv.h"
-
-#define KFD_INTERRUPT_RING_SIZE 1024
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void interrupt_wq(struct work_struct *);
 
 int kfd_interrupt_init(struct kfd_dev *kfd)
 {
-<<<<<<< HEAD
 	int r;
 
 	r = kfifo_alloc(&kfd->ih_fifo,
@@ -69,20 +62,6 @@ int kfd_interrupt_init(struct kfd_dev *kfd)
 	}
 
 	kfd->ih_wq = alloc_workqueue("KFD IH", WQ_HIGHPRI, 1);
-=======
-	void *interrupt_ring = kmalloc_array(KFD_INTERRUPT_RING_SIZE,
-					kfd->device_info->ih_ring_entry_size,
-					GFP_KERNEL);
-	if (!interrupt_ring)
-		return -ENOMEM;
-
-	kfd->interrupt_ring = interrupt_ring;
-	kfd->interrupt_ring_size =
-		KFD_INTERRUPT_RING_SIZE * kfd->device_info->ih_ring_entry_size;
-	atomic_set(&kfd->interrupt_ring_wptr, 0);
-	atomic_set(&kfd->interrupt_ring_rptr, 0);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_init(&kfd->interrupt_lock);
 
 	INIT_WORK(&kfd->interrupt_work, interrupt_wq);
@@ -113,7 +92,6 @@ void kfd_interrupt_exit(struct kfd_dev *kfd)
 	spin_unlock_irqrestore(&kfd->interrupt_lock, flags);
 
 	/*
-<<<<<<< HEAD
 	 * flush_work ensures that there are no outstanding
 	 * work-queue items that will access interrupt_ring. New work items
 	 * can't be created because we stopped interrupt handling above.
@@ -139,47 +117,10 @@ bool enqueue_ih_ring_entry(struct kfd_dev *kfd,	const void *ih_ring_entry)
 		return false;
 	}
 
-=======
-	 * Flush_scheduled_work ensures that there are no outstanding
-	 * work-queue items that will access interrupt_ring. New work items
-	 * can't be created because we stopped interrupt handling above.
-	 */
-	flush_scheduled_work();
-
-	kfree(kfd->interrupt_ring);
-}
-
-/*
- * This assumes that it can't be called concurrently with itself
- * but only with dequeue_ih_ring_entry.
- */
-bool enqueue_ih_ring_entry(struct kfd_dev *kfd,	const void *ih_ring_entry)
-{
-	unsigned int rptr = atomic_read(&kfd->interrupt_ring_rptr);
-	unsigned int wptr = atomic_read(&kfd->interrupt_ring_wptr);
-
-	if ((rptr - wptr) % kfd->interrupt_ring_size ==
-					kfd->device_info->ih_ring_entry_size) {
-		/* This is very bad, the system is likely to hang. */
-		dev_err_ratelimited(kfd_chardev(),
-			"Interrupt ring overflow, dropping interrupt.\n");
-		return false;
-	}
-
-	memcpy(kfd->interrupt_ring + wptr, ih_ring_entry,
-			kfd->device_info->ih_ring_entry_size);
-
-	wptr = (wptr + kfd->device_info->ih_ring_entry_size) %
-			kfd->interrupt_ring_size;
-	smp_wmb(); /* Ensure memcpy'd data is visible before wptr update. */
-	atomic_set(&kfd->interrupt_ring_wptr, wptr);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return true;
 }
 
 /*
-<<<<<<< HEAD
  * Assumption: single reader/writer. This function is not re-entrant
  */
 static bool dequeue_ih_ring_entry(struct kfd_dev *kfd, void *ih_ring_entry)
@@ -192,80 +133,33 @@ static bool dequeue_ih_ring_entry(struct kfd_dev *kfd, void *ih_ring_entry)
 	WARN_ON(count && count != kfd->device_info->ih_ring_entry_size);
 
 	return count == kfd->device_info->ih_ring_entry_size;
-=======
- * This assumes that it can't be called concurrently with itself
- * but only with enqueue_ih_ring_entry.
- */
-static bool dequeue_ih_ring_entry(struct kfd_dev *kfd, void *ih_ring_entry)
-{
-	/*
-	 * Assume that wait queues have an implicit barrier, i.e. anything that
-	 * happened in the ISR before it queued work is visible.
-	 */
-
-	unsigned int wptr = atomic_read(&kfd->interrupt_ring_wptr);
-	unsigned int rptr = atomic_read(&kfd->interrupt_ring_rptr);
-
-	if (rptr == wptr)
-		return false;
-
-	memcpy(ih_ring_entry, kfd->interrupt_ring + rptr,
-			kfd->device_info->ih_ring_entry_size);
-
-	rptr = (rptr + kfd->device_info->ih_ring_entry_size) %
-			kfd->interrupt_ring_size;
-
-	/*
-	 * Ensure the rptr write update is not visible until
-	 * memcpy has finished reading.
-	 */
-	smp_mb();
-	atomic_set(&kfd->interrupt_ring_rptr, rptr);
-
-	return true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void interrupt_wq(struct work_struct *work)
 {
 	struct kfd_dev *dev = container_of(work, struct kfd_dev,
 						interrupt_work);
-<<<<<<< HEAD
 	uint32_t ih_ring_entry[KFD_MAX_RING_ENTRY_SIZE];
 
 	if (dev->device_info->ih_ring_entry_size > sizeof(ih_ring_entry)) {
 		dev_err_once(kfd_chardev(), "Ring entry too small\n");
 		return;
 	}
-=======
-
-	uint32_t ih_ring_entry[DIV_ROUND_UP(
-				dev->device_info->ih_ring_entry_size,
-				sizeof(uint32_t))];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	while (dequeue_ih_ring_entry(dev, ih_ring_entry))
 		dev->device_info->event_interrupt_class->interrupt_wq(dev,
 								ih_ring_entry);
 }
 
-<<<<<<< HEAD
 bool interrupt_is_wanted(struct kfd_dev *dev,
 			const uint32_t *ih_ring_entry,
 			uint32_t *patched_ihre, bool *flag)
-=======
-bool interrupt_is_wanted(struct kfd_dev *dev, const uint32_t *ih_ring_entry)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* integer and bitwise OR so there is no boolean short-circuiting */
 	unsigned int wanted = 0;
 
 	wanted |= dev->device_info->event_interrupt_class->interrupt_isr(dev,
-<<<<<<< HEAD
 					 ih_ring_entry, patched_ihre, flag);
-=======
-								ih_ring_entry);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return wanted != 0;
 }

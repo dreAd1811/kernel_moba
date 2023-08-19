@@ -999,11 +999,7 @@ struct mdfld_dsi_encoder *mdfld_dsi_dpi_init(struct drm_device *dev,
 				p_funcs->encoder_helper_funcs);
 
 	/*attach to given connector*/
-<<<<<<< HEAD
 	drm_connector_attach_encoder(connector, encoder);
-=======
-	drm_mode_connector_attach_encoder(connector, encoder);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*set possible crtcs and clones*/
 	if (dsi_connector->pipe) {

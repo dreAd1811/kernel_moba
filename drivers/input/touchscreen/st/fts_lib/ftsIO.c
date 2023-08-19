@@ -1,15 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * FTS Capacitive touch screen controller (FingerTipS)
  *
  * Copyright (C) 2016-2019, STMicroelectronics Limited.
-=======
-/*
- * FTS Capacitive touch screen controller (FingerTipS)
- *
- * Copyright (C) 2016-2018, STMicroelectronics Limited.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Authors: AMG(Analog Mems Group) <marco.cali@st.com>
  *
  *

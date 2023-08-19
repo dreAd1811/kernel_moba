@@ -86,11 +86,7 @@ void i40iw_sc_vsi_init(struct i40iw_sc_vsi *vsi, struct i40iw_vsi_init_info *inf
 
 void i40iw_change_l2params(struct i40iw_sc_vsi *vsi, struct i40iw_l2params *l2params);
 void i40iw_qp_add_qos(struct i40iw_sc_qp *qp);
-<<<<<<< HEAD
 void i40iw_qp_rem_qos(struct i40iw_sc_qp *qp);
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void i40iw_terminate_send_fin(struct i40iw_sc_qp *qp);
 
 void i40iw_terminate_connection(struct i40iw_sc_qp *qp, struct i40iw_aeqe_info *info);
@@ -127,9 +123,6 @@ enum i40iw_status_code i40iw_allocate_virt_mem(struct i40iw_hw *hw,
 enum i40iw_status_code i40iw_free_virt_mem(struct i40iw_hw *hw,
 					   struct i40iw_virt_mem *mem);
 u8 i40iw_get_encoded_wqe_size(u32 wqsize, bool cqpsq);
-<<<<<<< HEAD
 void i40iw_reinitialize_ieq(struct i40iw_sc_dev *dev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif

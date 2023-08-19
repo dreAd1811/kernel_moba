@@ -88,7 +88,6 @@ static void i9xx_check_fifo_underruns(struct intel_crtc *crtc)
 {
 	struct drm_i915_private *dev_priv = to_i915(crtc->base.dev);
 	i915_reg_t reg = PIPESTAT(crtc->pipe);
-<<<<<<< HEAD
 	u32 enable_mask;
 
 	lockdep_assert_held(&dev_priv->irq_lock);
@@ -98,16 +97,6 @@ static void i9xx_check_fifo_underruns(struct intel_crtc *crtc)
 
 	enable_mask = i915_pipestat_enable_mask(dev_priv, crtc->pipe);
 	I915_WRITE(reg, enable_mask | PIPE_FIFO_UNDERRUN_STATUS);
-=======
-	u32 pipestat = I915_READ(reg) & 0xffff0000;
-
-	lockdep_assert_held(&dev_priv->irq_lock);
-
-	if ((pipestat & PIPE_FIFO_UNDERRUN_STATUS) == 0)
-		return;
-
-	I915_WRITE(reg, pipestat | PIPE_FIFO_UNDERRUN_STATUS);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	POSTING_READ(reg);
 
 	trace_intel_cpu_fifo_underrun(dev_priv, crtc->pipe);
@@ -120,27 +109,16 @@ static void i9xx_set_fifo_underrun_reporting(struct drm_device *dev,
 {
 	struct drm_i915_private *dev_priv = to_i915(dev);
 	i915_reg_t reg = PIPESTAT(pipe);
-<<<<<<< HEAD
-=======
-	u32 pipestat = I915_READ(reg) & 0xffff0000;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	lockdep_assert_held(&dev_priv->irq_lock);
 
 	if (enable) {
-<<<<<<< HEAD
 		u32 enable_mask = i915_pipestat_enable_mask(dev_priv, pipe);
 
 		I915_WRITE(reg, enable_mask | PIPE_FIFO_UNDERRUN_STATUS);
 		POSTING_READ(reg);
 	} else {
 		if (old && I915_READ(reg) & PIPE_FIFO_UNDERRUN_STATUS)
-=======
-		I915_WRITE(reg, pipestat | PIPE_FIFO_UNDERRUN_STATUS);
-		POSTING_READ(reg);
-	} else {
-		if (old && pipestat & PIPE_FIFO_UNDERRUN_STATUS)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			DRM_ERROR("pipe %c underrun\n", pipe_name(pipe));
 	}
 }

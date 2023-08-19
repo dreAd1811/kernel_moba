@@ -13,12 +13,9 @@
 #include <linux/reboot.h>
 #include <linux/delay.h>
 
-<<<<<<< HEAD
 #include <asm/compiler.h>
 #include <asm/idle.h>
 #include <asm/mipsregs.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/reboot.h>
 
 /*
@@ -32,7 +29,6 @@ void (*pm_power_off)(void);
 
 EXPORT_SYMBOL(pm_power_off);
 
-<<<<<<< HEAD
 static void machine_hang(void)
 {
 	/*
@@ -89,8 +85,6 @@ static void machine_hang(void)
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void machine_restart(char *command)
 {
 	if (_machine_restart)
@@ -103,12 +97,7 @@ void machine_restart(char *command)
 	do_kernel_restart(command);
 	mdelay(1000);
 	pr_emerg("Reboot failed -- System halted\n");
-<<<<<<< HEAD
 	machine_hang();
-=======
-	local_irq_disable();
-	while (1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void machine_halt(void)
@@ -120,12 +109,7 @@ void machine_halt(void)
 	preempt_disable();
 	smp_send_stop();
 #endif
-<<<<<<< HEAD
 	machine_hang();
-=======
-	local_irq_disable();
-	while (1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void machine_power_off(void)
@@ -137,10 +121,5 @@ void machine_power_off(void)
 	preempt_disable();
 	smp_send_stop();
 #endif
-<<<<<<< HEAD
 	machine_hang();
-=======
-	local_irq_disable();
-	while (1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

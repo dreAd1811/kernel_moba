@@ -2,24 +2,14 @@
 
 .. _VIDIOC_G_STD:
 
-<<<<<<< HEAD
 **************************************************************************
 ioctl VIDIOC_G_STD, VIDIOC_S_STD, VIDIOC_SUBDEV_G_STD, VIDIOC_SUBDEV_S_STD
 **************************************************************************
-=======
-********************************
-ioctl VIDIOC_G_STD, VIDIOC_S_STD
-********************************
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Name
 ====
 
-<<<<<<< HEAD
 VIDIOC_G_STD - VIDIOC_S_STD - VIDIOC_SUBDEV_G_STD - VIDIOC_SUBDEV_S_STD - Query or select the video standard of the current input
-=======
-VIDIOC_G_STD - VIDIOC_S_STD - Query or select the video standard of the current input
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 Synopsis
@@ -31,15 +21,12 @@ Synopsis
 .. c:function:: int ioctl( int fd, VIDIOC_S_STD, const v4l2_std_id *argp )
     :name: VIDIOC_S_STD
 
-<<<<<<< HEAD
 .. c:function:: int ioctl( int fd, VIDIOC_SUBDEV_G_STD, v4l2_std_id *argp )
     :name: VIDIOC_SUBDEV_G_STD
 
 .. c:function:: int ioctl( int fd, VIDIOC_SUBDEV_S_STD, const v4l2_std_id *argp )
     :name: VIDIOC_SUBDEV_S_STD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Arguments
 =========

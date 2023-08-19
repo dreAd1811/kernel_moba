@@ -304,11 +304,6 @@ static int mtk_ir_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
 	struct device_node *dn = dev->of_node;
-<<<<<<< HEAD
-=======
-	const struct of_device_id *of_id =
-		of_match_device(mtk_ir_match, &pdev->dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct resource *res;
 	struct mtk_ir *ir;
 	u32 val;
@@ -320,11 +315,7 @@ static int mtk_ir_probe(struct platform_device *pdev)
 		return -ENOMEM;
 
 	ir->dev = dev;
-<<<<<<< HEAD
 	ir->data = of_device_get_match_data(dev);
-=======
-	ir->data = of_id->data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ir->clk = devm_clk_get(dev, "clk");
 	if (IS_ERR(ir->clk)) {

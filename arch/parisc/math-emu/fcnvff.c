@@ -148,11 +148,7 @@ dbl_to_sgl_fcnvff(
         register int src_exponent, dest_exponent, dest_mantissa;
         register boolean inexact = FALSE, guardbit = FALSE, stickybit = FALSE;
 	register boolean lsb_odd = FALSE;
-<<<<<<< HEAD
 	boolean is_tiny = FALSE;
-=======
-	boolean is_tiny;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	Dbl_copyfromptr(srcptr,srcp1,srcp2);
         src_exponent = Dbl_exponent(srcp1);

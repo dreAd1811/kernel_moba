@@ -80,7 +80,6 @@ NOKPROBE_SYMBOL(_mcount);
 EXPORT_SYMBOL(__arm_smccc_smc);
 EXPORT_SYMBOL(__arm_smccc_hvc);
 
-<<<<<<< HEAD
 	/* tishift.S */
 extern long long __ashlti3(long long a, int b);
 EXPORT_SYMBOL(__ashlti3);
@@ -89,8 +88,6 @@ EXPORT_SYMBOL(__ashrti3);
 extern long long __lshrti3(long long a, int b);
 EXPORT_SYMBOL(__lshrti3);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* caching functions */
 EXPORT_SYMBOL(__dma_inv_area);
 EXPORT_SYMBOL(__dma_clean_area);

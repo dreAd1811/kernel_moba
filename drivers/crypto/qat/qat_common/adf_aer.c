@@ -163,11 +163,7 @@ static int adf_dev_aer_schedule_reset(struct adf_accel_dev *accel_dev,
 		return 0;
 
 	set_bit(ADF_STATUS_RESTARTING, &accel_dev->status);
-<<<<<<< HEAD
 	reset_data = kzalloc(sizeof(*reset_data), GFP_KERNEL);
-=======
-	reset_data = kzalloc(sizeof(*reset_data), GFP_ATOMIC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!reset_data)
 		return -ENOMEM;
 	reset_data->accel_dev = accel_dev;

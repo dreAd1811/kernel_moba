@@ -139,15 +139,9 @@ static netdev_tx_t eql_slave_xmit(struct sk_buff *skb, struct net_device *dev);
 
 static void eql_kill_one_slave(slave_queue_t *queue, slave_t *slave);
 
-<<<<<<< HEAD
 static void eql_timer(struct timer_list *t)
 {
 	equalizer_t *eql = from_timer(eql, t, timer);
-=======
-static void eql_timer(unsigned long param)
-{
-	equalizer_t *eql = (equalizer_t *) param;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct list_head *this, *tmp, *head;
 
 	spin_lock(&eql->queue.lock);
@@ -184,15 +178,8 @@ static void __init eql_setup(struct net_device *dev)
 {
 	equalizer_t *eql = netdev_priv(dev);
 
-<<<<<<< HEAD
 	timer_setup(&eql->timer, eql_timer, 0);
 	eql->timer.expires  	= jiffies + EQL_DEFAULT_RESCHED_IVAL;
-=======
-	init_timer(&eql->timer);
-	eql->timer.data     	= (unsigned long) eql;
-	eql->timer.expires  	= jiffies + EQL_DEFAULT_RESCHED_IVAL;
-	eql->timer.function 	= eql_timer;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_init(&eql->queue.lock);
 	INIT_LIST_HEAD(&eql->queue.all_slaves);

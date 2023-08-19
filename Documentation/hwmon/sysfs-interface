@@ -171,7 +171,6 @@ in[0-*]_label	Suggested voltage channel label.
 		user-space.
 		RO
 
-<<<<<<< HEAD
 in[0-*]_enable
 		Enable or disable the sensors.
 		When disabled the sensor read will return -ENODATA.
@@ -179,8 +178,6 @@ in[0-*]_enable
 		0: Disable
 		RW
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 cpu[0-*]_vid	CPU core reference voltage.
 		Unit: millivolt
 		RO
@@ -246,7 +243,6 @@ fan[1-*]_label	Suggested fan channel label.
 		In all other cases, the label is provided by user-space.
 		RO
 
-<<<<<<< HEAD
 fan[1-*]_enable
 		Enable or disable the sensors.
 		When disabled the sensor read will return -ENODATA.
@@ -254,8 +250,6 @@ fan[1-*]_enable
 		0: Disable
 		RW
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Also see the Alarms section for status flags associated with fans.
 
 
@@ -429,7 +423,6 @@ temp_reset_history
 		Reset temp_lowest and temp_highest for all sensors
 		WO
 
-<<<<<<< HEAD
 temp[1-*]_enable
 		Enable or disable the sensors.
 		When disabled the sensor read will return -ENODATA.
@@ -437,8 +430,6 @@ temp[1-*]_enable
 		0: Disable
 		RW
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Some chips measure temperature using external thermistors and an ADC, and
 report the temperature measurement as a voltage. Converting this voltage
 back to a temperature (or the other way around for limits) requires
@@ -498,7 +489,6 @@ curr_reset_history
 		Reset currX_lowest and currX_highest for all sensors
 		WO
 
-<<<<<<< HEAD
 curr[1-*]_enable
 		Enable or disable the sensors.
 		When disabled the sensor read will return -ENODATA.
@@ -506,8 +496,6 @@ curr[1-*]_enable
 		0: Disable
 		RW
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Also see the Alarms section for status flags associated with currents.
 
 *********
@@ -606,7 +594,6 @@ power[1-*]_crit			Critical maximum power.
 				Unit: microWatt
 				RW
 
-<<<<<<< HEAD
 power[1-*]_enable		Enable or disable the sensors.
 				When disabled the sensor read will return
 				-ENODATA.
@@ -614,8 +601,6 @@ power[1-*]_enable		Enable or disable the sensors.
 				0: Disable
 				RW
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Also see the Alarms section for status flags associated with power readings.
 
 **********
@@ -626,15 +611,12 @@ energy[1-*]_input		Cumulative energy use
 				Unit: microJoule
 				RO
 
-<<<<<<< HEAD
 energy[1-*]_enable		Enable or disable the sensors.
 				When disabled the sensor read will return
 				-ENODATA.
 				1: Enable
 				0: Disable
 				RW
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 ************
 * Humidity *
@@ -645,7 +627,6 @@ humidity[1-*]_input		Humidity
 				RO
 
 
-<<<<<<< HEAD
 humidity[1-*]_enable		Enable or disable the sensors
 				When disabled the sensor read will return
 				-ENODATA.
@@ -653,8 +634,6 @@ humidity[1-*]_enable		Enable or disable the sensors
 				0: Disable
 				RW
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 **********
 * Alarms *
 **********

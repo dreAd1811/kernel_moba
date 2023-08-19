@@ -89,11 +89,6 @@ static struct phy_driver ste10xp_pdriver[] = {
 	.features = PHY_BASIC_FEATURES | SUPPORTED_Pause,
 	.flags = PHY_HAS_INTERRUPT,
 	.config_init = ste10Xp_config_init,
-<<<<<<< HEAD
-=======
-	.config_aneg = genphy_config_aneg,
-	.read_status = genphy_read_status,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ack_interrupt = ste10Xp_ack_interrupt,
 	.config_intr = ste10Xp_config_intr,
 	.suspend = genphy_suspend,
@@ -105,11 +100,6 @@ static struct phy_driver ste10xp_pdriver[] = {
 	.features = PHY_BASIC_FEATURES | SUPPORTED_Pause,
 	.flags = PHY_HAS_INTERRUPT,
 	.config_init = ste10Xp_config_init,
-<<<<<<< HEAD
-=======
-	.config_aneg = genphy_config_aneg,
-	.read_status = genphy_read_status,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ack_interrupt = ste10Xp_ack_interrupt,
 	.config_intr = ste10Xp_config_intr,
 	.suspend = genphy_suspend,

@@ -12,12 +12,8 @@
  */
 
 #include <linux/clk-provider.h>
-<<<<<<< HEAD
 #include <linux/platform_device.h>
 #include <linux/regmap.h>
-=======
-#include <linux/of_address.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "ccu_common.h"
 #include "ccu_reset.h"
@@ -70,7 +66,6 @@ static SUNXI_CCU_NM_WITH_GATE_LOCK(pll_audio_base_clk, "pll-audio-base",
 				   CLK_SET_RATE_UNGATE);
 
 /* TODO: The result of N/M is required to be in [8, 25] range. */
-<<<<<<< HEAD
 static SUNXI_CCU_NM_WITH_FRAC_GATE_LOCK_MIN(pll_video0_clk, "pll-video0",
 					    "osc24M", 0x0010,
 					    192000000,	/* Minimum rate */
@@ -83,19 +78,6 @@ static SUNXI_CCU_NM_WITH_FRAC_GATE_LOCK_MIN(pll_video0_clk, "pll-video0",
 					    BIT(31),	/* gate */
 					    BIT(28),	/* lock */
 					    CLK_SET_RATE_UNGATE);
-=======
-static SUNXI_CCU_NM_WITH_FRAC_GATE_LOCK(pll_video0_clk, "pll-video0",
-					"osc24M", 0x0010,
-					8, 7,		/* N */
-					0, 4,		/* M */
-					BIT(24),	/* frac enable */
-					BIT(25),	/* frac select */
-					270000000,	/* frac rate 0 */
-					297000000,	/* frac rate 1 */
-					BIT(31),	/* gate */
-					BIT(28),	/* lock */
-					CLK_SET_RATE_UNGATE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* TODO: The result of N/M is required to be in [8, 25] range. */
 static SUNXI_CCU_NM_WITH_FRAC_GATE_LOCK(pll_ve_clk, "pll-ve",
@@ -171,7 +153,6 @@ static struct ccu_nk pll_periph1_clk = {
 };
 
 /* TODO: The result of N/M is required to be in [8, 25] range. */
-<<<<<<< HEAD
 static SUNXI_CCU_NM_WITH_FRAC_GATE_LOCK_MIN(pll_video1_clk, "pll-video1",
 					    "osc24M", 0x030,
 					    192000000,	/* Minimum rate */
@@ -184,19 +165,6 @@ static SUNXI_CCU_NM_WITH_FRAC_GATE_LOCK_MIN(pll_video1_clk, "pll-video1",
 					    BIT(31),	/* gate */
 					    BIT(28),	/* lock */
 					    CLK_SET_RATE_UNGATE);
-=======
-static SUNXI_CCU_NM_WITH_FRAC_GATE_LOCK(pll_video1_clk, "pll-video1",
-					"osc24M", 0x030,
-					8, 7,		/* N */
-					0, 4,		/* M */
-					BIT(24),	/* frac enable */
-					BIT(25),	/* frac select */
-					270000000,	/* frac rate 0 */
-					297000000,	/* frac rate 1 */
-					BIT(31),	/* gate */
-					BIT(28),	/* lock */
-					CLK_SET_RATE_UNGATE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct ccu_nkm pll_sata_clk = {
 	.enable		= BIT(31),
@@ -688,12 +656,8 @@ static SUNXI_CCU_GATE(dram_deinterlace_clk,	"dram-deinterlace",	"dram",
 
 static const char * const de_parents[] = { "pll-periph0-2x", "pll-de" };
 static SUNXI_CCU_M_WITH_MUX_GATE(de_clk, "de", de_parents,
-<<<<<<< HEAD
 				 0x104, 0, 4, 24, 3, BIT(31),
 				 CLK_SET_RATE_PARENT);
-=======
-				 0x104, 0, 4, 24, 3, BIT(31), 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static SUNXI_CCU_M_WITH_MUX_GATE(mp_clk, "mp", de_parents,
 				 0x108, 0, 4, 24, 3, BIT(31), 0);
 
@@ -705,17 +669,11 @@ static SUNXI_CCU_MUX_WITH_GATE(tcon_lcd0_clk, "tcon-lcd0", tcon_parents,
 static SUNXI_CCU_MUX_WITH_GATE(tcon_lcd1_clk, "tcon-lcd1", tcon_parents,
 			       0x114, 24, 3, BIT(31), CLK_SET_RATE_PARENT);
 static SUNXI_CCU_M_WITH_MUX_GATE(tcon_tv0_clk, "tcon-tv0", tcon_parents,
-<<<<<<< HEAD
 				 0x118, 0, 4, 24, 3, BIT(31),
 				 CLK_SET_RATE_PARENT);
 static SUNXI_CCU_M_WITH_MUX_GATE(tcon_tv1_clk, "tcon-tv1", tcon_parents,
 				 0x11c, 0, 4, 24, 3, BIT(31),
 				 CLK_SET_RATE_PARENT);
-=======
-				 0x118, 0, 4, 24, 3, BIT(31), 0);
-static SUNXI_CCU_M_WITH_MUX_GATE(tcon_tv1_clk, "tcon-tv1", tcon_parents,
-				 0x11c, 0, 4, 24, 3, BIT(31), 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static const char * const deinterlace_parents[] = { "pll-periph0",
 						    "pll-periph1" };
@@ -745,12 +703,8 @@ static SUNXI_CCU_GATE(avs_clk,		"avs",		"osc24M",
 
 static const char * const hdmi_parents[] = { "pll-video0", "pll-video1" };
 static SUNXI_CCU_M_WITH_MUX_GATE(hdmi_clk, "hdmi", hdmi_parents,
-<<<<<<< HEAD
 				 0x150, 0, 4, 24, 2, BIT(31),
 				 CLK_SET_RATE_PARENT);
-=======
-				 0x150, 0, 4, 24, 2, BIT(31), 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static SUNXI_CCU_GATE(hdmi_slow_clk,	"hdmi-slow",	"osc24M",
 		      0x154, BIT(31), 0);
@@ -1303,7 +1257,6 @@ static struct ccu_mux_nb sun8i_r40_cpu_nb = {
 	.bypass_index	= 1, /* index of 24 MHz oscillator */
 };
 
-<<<<<<< HEAD
 /*
  * Add a regmap for the GMAC driver (dwmac-sun8i) to access the
  * GMAC configuration register.
@@ -1343,19 +1296,6 @@ static int sun8i_r40_ccu_probe(struct platform_device *pdev)
 	reg = devm_ioremap_resource(&pdev->dev, res);
 	if (IS_ERR(reg))
 		return PTR_ERR(reg);
-=======
-static void __init sun8i_r40_ccu_setup(struct device_node *node)
-{
-	void __iomem *reg;
-	u32 val;
-
-	reg = of_io_request_and_map(node, 0, of_node_full_name(node));
-	if (IS_ERR(reg)) {
-		pr_err("%s: Could not map the clock registers\n",
-		       of_node_full_name(node));
-		return;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Force the PLL-Audio-1x divider to 4 */
 	val = readl(reg + SUN8I_R40_PLL_AUDIO_REG);
@@ -1372,7 +1312,6 @@ static void __init sun8i_r40_ccu_setup(struct device_node *node)
 	val &= ~GENMASK(25, 20);
 	writel(val, reg + SUN8I_R40_USB_CLK_REG);
 
-<<<<<<< HEAD
 	regmap = devm_regmap_init_mmio(&pdev->dev, reg,
 				       &sun8i_r40_ccu_regmap_config);
 	if (IS_ERR(regmap))
@@ -1381,9 +1320,6 @@ static void __init sun8i_r40_ccu_setup(struct device_node *node)
 	ret = sunxi_ccu_probe(pdev->dev.of_node, reg, &sun8i_r40_ccu_desc);
 	if (ret)
 		return ret;
-=======
-	sunxi_ccu_probe(node, reg, &sun8i_r40_ccu_desc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Gate then ungate PLL CPU after any rate changes */
 	ccu_pll_notifier_register(&sun8i_r40_pll_cpu_nb);
@@ -1391,7 +1327,6 @@ static void __init sun8i_r40_ccu_setup(struct device_node *node)
 	/* Reparent CPU during PLL CPU rate changes */
 	ccu_mux_notifier_register(pll_cpu_clk.common.hw.clk,
 				  &sun8i_r40_cpu_nb);
-<<<<<<< HEAD
 
 	return 0;
 }
@@ -1409,8 +1344,3 @@ static struct platform_driver sun8i_r40_ccu_driver = {
 	},
 };
 builtin_platform_driver(sun8i_r40_ccu_driver);
-=======
-}
-CLK_OF_DECLARE(sun8i_r40_ccu, "allwinner,sun8i-r40-ccu",
-	       sun8i_r40_ccu_setup);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

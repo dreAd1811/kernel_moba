@@ -91,7 +91,6 @@ static bool mdio_bus_phy_may_suspend(struct phy_device *phydev)
 	 * MDIO bus driver and clock gated at this point.
 	 */
 	if (!netdev)
-<<<<<<< HEAD
 		return !phydev->suspended;
 
 	if (netdev->wol_enabled)
@@ -100,11 +99,6 @@ static bool mdio_bus_phy_may_suspend(struct phy_device *phydev)
 	/* As long as not all affected network drivers support the
 	 * wol_enabled flag, let's check for hints that WoL is enabled.
 	 * Don't suspend PHY if the attached netdev parent may wake up.
-=======
-		goto out;
-
-	/* Don't suspend PHY if the attached netdev parent may wakeup.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * The parent may point to a PCI device, as in tg3 driver.
 	 */
 	if (netdev->dev.parent && device_may_wakeup(netdev->dev.parent))
@@ -117,12 +111,7 @@ static bool mdio_bus_phy_may_suspend(struct phy_device *phydev)
 	if (device_may_wakeup(&netdev->dev))
 		return false;
 
-<<<<<<< HEAD
 	return true;
-=======
-out:
-	return !phydev->suspended;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int mdio_bus_phy_suspend(struct device *dev)
@@ -140,11 +129,6 @@ static int mdio_bus_phy_suspend(struct device *dev)
 	if (!mdio_bus_phy_may_suspend(phydev))
 		return 0;
 
-<<<<<<< HEAD
-=======
-	phydev->suspended_by_mdio_bus = true;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return phy_suspend(phydev);
 }
 
@@ -153,17 +137,9 @@ static int mdio_bus_phy_resume(struct device *dev)
 	struct phy_device *phydev = to_phy_device(dev);
 	int ret;
 
-<<<<<<< HEAD
 	if (!mdio_bus_phy_may_suspend(phydev))
 		goto no_resume;
 
-=======
-	if (!phydev->suspended_by_mdio_bus)
-		goto no_resume;
-
-	phydev->suspended_by_mdio_bus = false;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = phy_resume(phydev);
 	if (ret < 0)
 		return ret;
@@ -372,7 +348,6 @@ static int phy_bus_match(struct device *dev, struct device_driver *drv)
 	}
 }
 
-<<<<<<< HEAD
 static ssize_t
 phy_id_show(struct device *dev, struct device_attribute *attr, char *buf)
 {
@@ -422,8 +397,6 @@ static const struct device_type mdio_bus_phy_type = {
 	.pm = MDIO_BUS_PHY_PM_OPS,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct phy_device *phy_device_create(struct mii_bus *bus, int addr, int phy_id,
 				     bool is_c45,
 				     struct phy_c45_device_ids *c45_ids)
@@ -437,37 +410,21 @@ struct phy_device *phy_device_create(struct mii_bus *bus, int addr, int phy_id,
 		return ERR_PTR(-ENOMEM);
 
 	mdiodev = &dev->mdio;
-<<<<<<< HEAD
 	mdiodev->dev.parent = &bus->dev;
 	mdiodev->dev.bus = &mdio_bus_type;
 	mdiodev->dev.type = &mdio_bus_phy_type;
 	mdiodev->bus = bus;
-=======
-	mdiodev->dev.release = phy_device_release;
-	mdiodev->dev.parent = &bus->dev;
-	mdiodev->dev.bus = &mdio_bus_type;
-	mdiodev->bus = bus;
-	mdiodev->pm_ops = MDIO_BUS_PHY_PM_OPS;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mdiodev->bus_match = phy_bus_match;
 	mdiodev->addr = addr;
 	mdiodev->flags = MDIO_DEVICE_FLAG_PHY;
 	mdiodev->device_free = phy_mdio_device_free;
 	mdiodev->device_remove = phy_mdio_device_remove;
 
-<<<<<<< HEAD
 	dev->speed = 0;
 	dev->duplex = -1;
 	dev->pause = 0;
 	dev->asym_pause = 0;
 	dev->link = 0;
-=======
-	dev->speed = SPEED_UNKNOWN;
-	dev->duplex = DUPLEX_UNKNOWN;
-	dev->pause = 0;
-	dev->asym_pause = 0;
-	dev->link = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev->interface = PHY_INTERFACE_MODE_GMII;
 
 	dev->autoneg = AUTONEG_ENABLE;
@@ -628,7 +585,6 @@ static int get_phy_id(struct mii_bus *bus, int addr, u32 *phy_id,
 
 	/* Grab the bits from PHYIR1, and put them in the upper half */
 	phy_reg = mdiobus_read(bus, addr, MII_PHYSID1);
-<<<<<<< HEAD
 	if (phy_reg < 0) {
 		/* if there is no device, return without an error so scanning
 		 * the bus works properly
@@ -640,10 +596,6 @@ static int get_phy_id(struct mii_bus *bus, int addr, u32 *phy_id,
 
 		return -EIO;
 	}
-=======
-	if (phy_reg < 0)
-		return -EIO;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	*phy_id = (phy_reg & 0xffff) << 16;
 
@@ -685,51 +637,6 @@ struct phy_device *get_phy_device(struct mii_bus *bus, int addr, bool is_c45)
 }
 EXPORT_SYMBOL(get_phy_device);
 
-<<<<<<< HEAD
-=======
-static ssize_t
-phy_id_show(struct device *dev, struct device_attribute *attr, char *buf)
-{
-	struct phy_device *phydev = to_phy_device(dev);
-
-	return sprintf(buf, "0x%.8lx\n", (unsigned long)phydev->phy_id);
-}
-static DEVICE_ATTR_RO(phy_id);
-
-static ssize_t
-phy_interface_show(struct device *dev, struct device_attribute *attr, char *buf)
-{
-	struct phy_device *phydev = to_phy_device(dev);
-	const char *mode = NULL;
-
-	if (phy_is_internal(phydev))
-		mode = "internal";
-	else
-		mode = phy_modes(phydev->interface);
-
-	return sprintf(buf, "%s\n", mode);
-}
-static DEVICE_ATTR_RO(phy_interface);
-
-static ssize_t
-phy_has_fixups_show(struct device *dev, struct device_attribute *attr,
-		    char *buf)
-{
-	struct phy_device *phydev = to_phy_device(dev);
-
-	return sprintf(buf, "%d\n", phydev->has_fixups);
-}
-static DEVICE_ATTR_RO(phy_has_fixups);
-
-static struct attribute *phy_dev_attrs[] = {
-	&dev_attr_phy_id.attr,
-	&dev_attr_phy_interface.attr,
-	&dev_attr_phy_has_fixups.attr,
-	NULL,
-};
-ATTRIBUTE_GROUPS(phy_dev);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * phy_device_register - Register the phy device on the MDIO bus
  * @phydev: phy_device structure to be added to the MDIO bus
@@ -742,12 +649,9 @@ int phy_device_register(struct phy_device *phydev)
 	if (err)
 		return err;
 
-<<<<<<< HEAD
 	/* Deassert the reset signal */
 	phy_device_reset(phydev, 0);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Run all of the fixups for this PHY */
 	err = phy_scan_fixups(phydev);
 	if (err) {
@@ -755,11 +659,6 @@ int phy_device_register(struct phy_device *phydev)
 		goto out;
 	}
 
-<<<<<<< HEAD
-=======
-	phydev->mdio.dev.groups = phy_dev_groups;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = device_add(&phydev->mdio.dev);
 	if (err) {
 		pr_err("PHY %d failed to add\n", phydev->mdio.addr);
@@ -769,12 +668,9 @@ int phy_device_register(struct phy_device *phydev)
 	return 0;
 
  out:
-<<<<<<< HEAD
 	/* Assert the reset signal */
 	phy_device_reset(phydev, 1);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mdiobus_unregister_device(&phydev->mdio);
 	return err;
 }
@@ -791,13 +687,10 @@ EXPORT_SYMBOL(phy_device_register);
 void phy_device_remove(struct phy_device *phydev)
 {
 	device_del(&phydev->mdio.dev);
-<<<<<<< HEAD
 
 	/* Assert the reset signal */
 	phy_device_reset(phydev, 1);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mdiobus_unregister_device(&phydev->mdio);
 }
 EXPORT_SYMBOL(phy_device_remove);
@@ -984,7 +877,6 @@ int phy_init_hw(struct phy_device *phydev)
 {
 	int ret = 0;
 
-<<<<<<< HEAD
 	/* Deassert the reset signal */
 	phy_device_reset(phydev, 0);
 
@@ -998,20 +890,6 @@ int phy_init_hw(struct phy_device *phydev)
 
 	if (ret < 0)
 		return ret;
-=======
-	if (!phydev->drv || !phydev->drv->config_init)
-		return 0;
-
-	if (!phydev->skip_sw_reset) {
-		if (phydev->drv->soft_reset)
-			ret = phydev->drv->soft_reset(phydev);
-		else
-			ret = genphy_soft_reset(phydev);
-
-		if (ret < 0)
-			return ret;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = phy_scan_fixups(phydev);
 	if (ret < 0)
@@ -1262,15 +1140,9 @@ void phy_detach(struct phy_device *phydev)
 		sysfs_remove_link(&dev->dev.kobj, "phydev");
 		sysfs_remove_link(&phydev->mdio.dev.kobj, "attached_dev");
 	}
-<<<<<<< HEAD
 	phy_suspend(phydev);
 	phydev->attached_dev->phydev = NULL;
 	phydev->attached_dev = NULL;
-=======
-	phydev->attached_dev->phydev = NULL;
-	phydev->attached_dev = NULL;
-	phy_suspend(phydev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	phydev->phylink = NULL;
 
 	phy_led_triggers_unregister(phydev);
@@ -1295,32 +1167,22 @@ void phy_detach(struct phy_device *phydev)
 	put_device(&phydev->mdio.dev);
 	if (ndev_owner != bus->owner)
 		module_put(bus->owner);
-<<<<<<< HEAD
 
 	/* Assert the reset signal */
 	phy_device_reset(phydev, 1);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(phy_detach);
 
 int phy_suspend(struct phy_device *phydev)
 {
 	struct phy_driver *phydrv = to_phy_driver(phydev->mdio.dev.driver);
-<<<<<<< HEAD
 	struct net_device *netdev = phydev->attached_dev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ethtool_wolinfo wol = { .cmd = ETHTOOL_GWOL };
 	int ret = 0;
 
 	/* If the device has WOL enabled, we cannot suspend the PHY */
 	phy_ethtool_get_wol(phydev, &wol);
-<<<<<<< HEAD
 	if (wol.wolopts || (netdev && netdev->wol_enabled))
-=======
-	if (wol.wolopts)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EBUSY;
 
 	if (phydev->drv && phydrv->suspend)
@@ -1399,7 +1261,6 @@ out:
 }
 EXPORT_SYMBOL(phy_loopback);
 
-<<<<<<< HEAD
 /**
  * phy_reset_after_clk_enable - perform a PHY reset if needed
  * @phydev: target phy_device struct
@@ -1424,8 +1285,6 @@ int phy_reset_after_clk_enable(struct phy_device *phydev)
 }
 EXPORT_SYMBOL(phy_reset_after_clk_enable);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Generic PHY support and helper functions */
 
 /**
@@ -1546,14 +1405,8 @@ static int genphy_config_eee_advert(struct phy_device *phydev)
  */
 int genphy_setup_forced(struct phy_device *phydev)
 {
-<<<<<<< HEAD
 	u16 ctl = 0;
 
-=======
-	int ctl = phy_read(phydev, MII_BMCR);
-
-	ctl &= BMCR_LOOPBACK | BMCR_ISOLATE | BMCR_PDOWN;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	phydev->pause = 0;
 	phydev->asym_pause = 0;
 
@@ -1565,12 +1418,8 @@ int genphy_setup_forced(struct phy_device *phydev)
 	if (DUPLEX_FULL == phydev->duplex)
 		ctl |= BMCR_FULLDPLX;
 
-<<<<<<< HEAD
 	return phy_modify(phydev, MII_BMCR,
 			  ~(BMCR_LOOPBACK | BMCR_ISOLATE | BMCR_PDOWN), ctl);
-=======
-	return phy_write(phydev, MII_BMCR, ctl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(genphy_setup_forced);
 
@@ -1580,23 +1429,9 @@ EXPORT_SYMBOL(genphy_setup_forced);
  */
 int genphy_restart_aneg(struct phy_device *phydev)
 {
-<<<<<<< HEAD
 	/* Don't isolate the PHY if we're negotiating */
 	return phy_modify(phydev, MII_BMCR, BMCR_ISOLATE,
 			  BMCR_ANENABLE | BMCR_ANRESTART);
-=======
-	int ctl = phy_read(phydev, MII_BMCR);
-
-	if (ctl < 0)
-		return ctl;
-
-	ctl |= BMCR_ANENABLE | BMCR_ANRESTART;
-
-	/* Don't isolate the PHY if we're negotiating */
-	ctl &= ~BMCR_ISOLATE;
-
-	return phy_write(phydev, MII_BMCR, ctl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(genphy_restart_aneg);
 
@@ -1674,7 +1509,6 @@ int genphy_update_link(struct phy_device *phydev)
 {
 	int status;
 
-<<<<<<< HEAD
 	/* The link state is latched low so that momentary link
 	 * drops can be detected. Do not double-read the status
 	 * in polling mode to detect such short link drops.
@@ -1684,12 +1518,6 @@ int genphy_update_link(struct phy_device *phydev)
 		if (status < 0)
 			return status;
 	}
-=======
-	/* Do a fake read */
-	status = phy_read(phydev, MII_BMSR);
-	if (status < 0)
-		return status;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Read link and autonegotiation status */
 	status = phy_read(phydev, MII_BMSR);
@@ -1741,7 +1569,6 @@ int genphy_read_status(struct phy_device *phydev)
 			if (adv < 0)
 				return adv;
 
-<<<<<<< HEAD
 			if (lpagb & LPA_1000MSFAIL) {
 				if (adv & CTL1000_ENABLE_MASTER)
 					phydev_err(phydev, "Master/Slave resolution failed, maybe conflicting manual settings?\n");
@@ -1750,8 +1577,6 @@ int genphy_read_status(struct phy_device *phydev)
 				return -ENOLINK;
 			}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			phydev->lp_advertising =
 				mii_stat1000_to_ethtool_lpa_t(lpagb);
 			common_adv_gb = lpagb & adv << 2;
@@ -1902,57 +1727,20 @@ EXPORT_SYMBOL(genphy_write_mmd_unsupported);
 
 int genphy_suspend(struct phy_device *phydev)
 {
-<<<<<<< HEAD
 	return phy_set_bits(phydev, MII_BMCR, BMCR_PDOWN);
-=======
-	int value;
-
-	mutex_lock(&phydev->lock);
-
-	value = phy_read(phydev, MII_BMCR);
-	phy_write(phydev, MII_BMCR, value | BMCR_PDOWN);
-
-	mutex_unlock(&phydev->lock);
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(genphy_suspend);
 
 int genphy_resume(struct phy_device *phydev)
 {
-<<<<<<< HEAD
 	return phy_clear_bits(phydev, MII_BMCR, BMCR_PDOWN);
-=======
-	int value;
-
-	value = phy_read(phydev, MII_BMCR);
-	phy_write(phydev, MII_BMCR, value & ~BMCR_PDOWN);
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(genphy_resume);
 
 int genphy_loopback(struct phy_device *phydev, bool enable)
 {
-<<<<<<< HEAD
 	return phy_modify(phydev, MII_BMCR, BMCR_LOOPBACK,
 			  enable ? BMCR_LOOPBACK : 0);
-=======
-	int value;
-
-	value = phy_read(phydev, MII_BMCR);
-	if (value < 0)
-		return value;
-
-	if (enable)
-		value |= BMCR_LOOPBACK;
-	else
-		value &= ~BMCR_LOOPBACK;
-
-	return phy_write(phydev, MII_BMCR, value);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(genphy_loopback);
 
@@ -2094,7 +1882,6 @@ static int phy_probe(struct device *dev)
 	/* Set the state to READY by default */
 	phydev->state = PHY_READY;
 
-<<<<<<< HEAD
 	if (phydev->drv->probe) {
 		/* Deassert the reset signal */
 		phy_device_reset(phydev, 0);
@@ -2105,10 +1892,6 @@ static int phy_probe(struct device *dev)
 			phy_device_reset(phydev, 1);
 		}
 	}
-=======
-	if (phydev->drv->probe)
-		err = phydev->drv->probe(phydev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_unlock(&phydev->lock);
 
@@ -2125,17 +1908,12 @@ static int phy_remove(struct device *dev)
 	phydev->state = PHY_DOWN;
 	mutex_unlock(&phydev->lock);
 
-<<<<<<< HEAD
 	if (phydev->drv && phydev->drv->remove) {
 		phydev->drv->remove(phydev);
 
 		/* Assert the reset signal */
 		phy_device_reset(phydev, 1);
 	}
-=======
-	if (phydev->drv && phydev->drv->remove)
-		phydev->drv->remove(phydev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	phydev->drv = NULL;
 
 	return 0;
@@ -2157,7 +1935,6 @@ int phy_driver_register(struct phy_driver *new_driver, struct module *owner)
 	new_driver->mdiodrv.driver.remove = phy_remove;
 	new_driver->mdiodrv.driver.owner = owner;
 
-<<<<<<< HEAD
 	/* The following works around an issue where the PHY driver doesn't bind
 	 * to the device, resulting in the genphy driver being used instead of
 	 * the dedicated driver. The root cause of the issue isn't known yet
@@ -2166,8 +1943,6 @@ int phy_driver_register(struct phy_driver *new_driver, struct module *owner)
 	 */
 	new_driver->mdiodrv.driver.probe_type = PROBE_FORCE_SYNCHRONOUS;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	retval = driver_register(&new_driver->mdiodrv.driver);
 	if (retval) {
 		pr_err("%s: Error %d in registering driver\n",
@@ -2223,13 +1998,7 @@ static struct phy_driver genphy_driver = {
 	.features	= PHY_GBIT_FEATURES | SUPPORTED_MII |
 			  SUPPORTED_AUI | SUPPORTED_FIBRE |
 			  SUPPORTED_BNC,
-<<<<<<< HEAD
 	.aneg_done	= genphy_aneg_done,
-=======
-	.config_aneg	= genphy_config_aneg,
-	.aneg_done	= genphy_aneg_done,
-	.read_status	= genphy_read_status,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.suspend	= genphy_suspend,
 	.resume		= genphy_resume,
 	.set_loopback   = genphy_loopback,

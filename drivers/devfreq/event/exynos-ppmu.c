@@ -518,11 +518,7 @@ static int of_get_devfreq_events(struct device_node *np,
 	event_ops = exynos_bus_get_ops(np);
 
 	count = of_get_child_count(events_np);
-<<<<<<< HEAD
 	desc = devm_kcalloc(dev, count, sizeof(*desc), GFP_KERNEL);
-=======
-	desc = devm_kzalloc(dev, sizeof(*desc) * count, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!desc)
 		return -ENOMEM;
 	info->num_events = count;
@@ -631,17 +627,9 @@ static int exynos_ppmu_probe(struct platform_device *pdev)
 
 	size = sizeof(struct devfreq_event_dev *) * info->num_events;
 	info->edev = devm_kzalloc(&pdev->dev, size, GFP_KERNEL);
-<<<<<<< HEAD
 	if (!info->edev)
 		return -ENOMEM;
 
-=======
-	if (!info->edev) {
-		dev_err(&pdev->dev,
-			"failed to allocate memory devfreq-event devices\n");
-		return -ENOMEM;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	edev = info->edev;
 	platform_set_drvdata(pdev, info);
 

@@ -34,7 +34,6 @@
 #define KXCJK1013_DRV_NAME "kxcjk1013"
 #define KXCJK1013_IRQ_NAME "kxcjk1013_event"
 
-<<<<<<< HEAD
 #define KXTF9_REG_HP_XOUT_L		0x00
 #define KXTF9_REG_HP_XOUT_H		0x01
 #define KXTF9_REG_HP_YOUT_L		0x02
@@ -42,8 +41,6 @@
 #define KXTF9_REG_HP_ZOUT_L		0x04
 #define KXTF9_REG_HP_ZOUT_H		0x05
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define KXCJK1013_REG_XOUT_L		0x06
 /*
  * From low byte X axis register, all the other addresses of Y and Z can be
@@ -58,19 +55,14 @@
 
 #define KXCJK1013_REG_DCST_RESP		0x0C
 #define KXCJK1013_REG_WHO_AM_I		0x0F
-<<<<<<< HEAD
 #define KXTF9_REG_TILT_POS_CUR		0x10
 #define KXTF9_REG_TILT_POS_PREV		0x11
 #define KXTF9_REG_INT_SRC1		0x15
 #define KXCJK1013_REG_INT_SRC1		0x16	/* compatible, but called INT_SRC2 in KXTF9 ds */
-=======
-#define KXCJK1013_REG_INT_SRC1		0x16
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define KXCJK1013_REG_INT_SRC2		0x17
 #define KXCJK1013_REG_STATUS_REG	0x18
 #define KXCJK1013_REG_INT_REL		0x1A
 #define KXCJK1013_REG_CTRL1		0x1B
-<<<<<<< HEAD
 #define KXTF9_REG_CTRL2			0x1C
 #define KXCJK1013_REG_CTRL2		0x1D	/* mostly compatible, CTRL_REG3 in KTXF9 ds */
 #define KXCJK1013_REG_INT_CTRL1		0x1E
@@ -90,14 +82,6 @@
 #define KXTF9_REG_WAKE_THRESH		0x5A
 #define KXTF9_REG_TILT_ANGLE		0x5C
 #define KXTF9_REG_HYST_SET		0x5F
-=======
-#define KXCJK1013_REG_CTRL2		0x1D
-#define KXCJK1013_REG_INT_CTRL1		0x1E
-#define KXCJK1013_REG_INT_CTRL2		0x1F
-#define KXCJK1013_REG_DATA_CTRL		0x21
-#define KXCJK1013_REG_WAKE_TIMER	0x29
-#define KXCJK1013_REG_SELF_TEST		0x3A
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define KXCJK1013_REG_WAKE_THRES	0x6A
 
 #define KXCJK1013_REG_CTRL1_BIT_PC1	BIT(7)
@@ -106,7 +90,6 @@
 #define KXCJK1013_REG_CTRL1_BIT_GSEL1	BIT(4)
 #define KXCJK1013_REG_CTRL1_BIT_GSEL0	BIT(3)
 #define KXCJK1013_REG_CTRL1_BIT_WUFE	BIT(1)
-<<<<<<< HEAD
 
 #define KXCJK1013_REG_INT_CTRL1_BIT_IEU	BIT(2)	/* KXTF9 */
 #define KXCJK1013_REG_INT_CTRL1_BIT_IEL	BIT(3)
@@ -119,17 +102,12 @@
 #define KXTF9_REG_TILT_BIT_UPPER_EDGE	BIT(2)
 #define KXTF9_REG_TILT_BIT_FACE_DOWN	BIT(1)
 #define KXTF9_REG_TILT_BIT_FACE_UP	BIT(0)
-=======
-#define KXCJK1013_REG_INT_REG1_BIT_IEA	BIT(4)
-#define KXCJK1013_REG_INT_REG1_BIT_IEN	BIT(5)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define KXCJK1013_DATA_MASK_12_BIT	0x0FFF
 #define KXCJK1013_MAX_STARTUP_TIME_US	100000
 
 #define KXCJK1013_SLEEP_DELAY_MS	2000
 
-<<<<<<< HEAD
 #define KXCJK1013_REG_INT_SRC1_BIT_TPS	BIT(0)	/* KXTF9 */
 #define KXCJK1013_REG_INT_SRC1_BIT_WUFS	BIT(1)
 #define KXCJK1013_REG_INT_SRC1_MASK_TDTS	(BIT(2) | BIT(3))	/* KXTF9 */
@@ -139,8 +117,6 @@
 #define KXCJK1013_REG_INT_SRC1_BIT_DRDY	BIT(4)
 
 /* KXCJK: INT_SOURCE2: motion detect, KXTF9: INT_SRC_REG1: tap detect */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define KXCJK1013_REG_INT_SRC2_BIT_ZP	BIT(0)
 #define KXCJK1013_REG_INT_SRC2_BIT_ZN	BIT(1)
 #define KXCJK1013_REG_INT_SRC2_BIT_YP	BIT(2)
@@ -154,10 +130,7 @@ enum kx_chipset {
 	KXCJK1013,
 	KXCJ91008,
 	KXTJ21009,
-<<<<<<< HEAD
 	KXTF9,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	KX_MAX_CHIPS /* this must be last */
 };
 
@@ -198,7 +171,6 @@ enum kxcjk1013_range {
 	KXCJK1013_RANGE_8G,
 };
 
-<<<<<<< HEAD
 struct kx_odr_map {
 	int val;
 	int val2;
@@ -235,17 +207,6 @@ static const struct kx_odr_map kxtf9_samp_freq_table[] = {
 
 static const char *const kxtf9_samp_freq_avail =
 	"25 50 100 200 400 800";
-=======
-static const struct {
-	int val;
-	int val2;
-	int odr_bits;
-} samp_freq_table[] = { {0, 781000, 0x08}, {1, 563000, 0x09},
-			{3, 125000, 0x0A}, {6, 250000, 0x0B}, {12, 500000, 0},
-			{25, 0, 0x01}, {50, 0, 0x02}, {100, 0, 0x03},
-			{200, 0, 0x04}, {400, 0, 0x05}, {800, 0, 0x06},
-			{1600, 0, 0x07} };
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Refer to section 4 of the specification */
 static const struct {
@@ -297,7 +258,6 @@ static const struct {
 		{0x06, 3000},
 		{0x07, 2000},
 	},
-<<<<<<< HEAD
 	/* KXTF9 */
 	{
 		{0x01, 81000},
@@ -307,8 +267,6 @@ static const struct {
 		{0x05, 5100},
 		{0x06, 2700},
 	},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct {
@@ -319,26 +277,6 @@ static const struct {
 			      {19163, 1, 0},
 			      {38326, 0, 1} };
 
-<<<<<<< HEAD
-=======
-static const struct {
-	int val;
-	int val2;
-	int odr_bits;
-} wake_odr_data_rate_table[] = { {0, 781000, 0x00},
-				 {1, 563000, 0x01},
-				 {3, 125000, 0x02},
-				 {6, 250000, 0x03},
-				 {12, 500000, 0x04},
-				 {25, 0, 0x05},
-				 {50, 0, 0x06},
-				 {100, 0, 0x06},
-				 {200, 0, 0x06},
-				 {400, 0, 0x06},
-				 {800, 0, 0x06},
-				 {1600, 0, 0x06} };
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int kxcjk1013_set_mode(struct kxcjk1013_data *data,
 			      enum kxcjk1013_mode mode)
 {
@@ -465,15 +403,9 @@ static int kxcjk1013_chip_init(struct kxcjk1013_data *data)
 	}
 
 	if (data->active_high_intr)
-<<<<<<< HEAD
 		ret |= KXCJK1013_REG_INT_CTRL1_BIT_IEA;
 	else
 		ret &= ~KXCJK1013_REG_INT_CTRL1_BIT_IEA;
-=======
-		ret |= KXCJK1013_REG_INT_REG1_BIT_IEA;
-	else
-		ret &= ~KXCJK1013_REG_INT_REG1_BIT_IEA;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = i2c_smbus_write_byte_data(data->client, KXCJK1013_REG_INT_CTRL1,
 					ret);
@@ -531,11 +463,7 @@ static int kxcjk1013_set_power_state(struct kxcjk1013_data *data, bool on)
 
 static int kxcjk1013_chip_update_thresholds(struct kxcjk1013_data *data)
 {
-<<<<<<< HEAD
 	int waketh_reg, ret;
-=======
-	int ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = i2c_smbus_write_byte_data(data->client,
 					KXCJK1013_REG_WAKE_TIMER,
@@ -546,14 +474,9 @@ static int kxcjk1013_chip_update_thresholds(struct kxcjk1013_data *data)
 		return ret;
 	}
 
-<<<<<<< HEAD
 	waketh_reg = data->chipset == KXTF9 ?
 		KXTF9_REG_WAKE_THRESH : KXCJK1013_REG_WAKE_THRES;
 	ret = i2c_smbus_write_byte_data(data->client, waketh_reg,
-=======
-	ret = i2c_smbus_write_byte_data(data->client,
-					KXCJK1013_REG_WAKE_THRES,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					data->wake_thres);
 	if (ret < 0) {
 		dev_err(&data->client->dev, "Error writing reg_wake_thres\n");
@@ -589,15 +512,9 @@ static int kxcjk1013_setup_any_motion_interrupt(struct kxcjk1013_data *data,
 	}
 
 	if (status)
-<<<<<<< HEAD
 		ret |= KXCJK1013_REG_INT_CTRL1_BIT_IEN;
 	else
 		ret &= ~KXCJK1013_REG_INT_CTRL1_BIT_IEN;
-=======
-		ret |= KXCJK1013_REG_INT_REG1_BIT_IEN;
-	else
-		ret &= ~KXCJK1013_REG_INT_REG1_BIT_IEN;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = i2c_smbus_write_byte_data(data->client, KXCJK1013_REG_INT_CTRL1,
 					ret);
@@ -655,15 +572,9 @@ static int kxcjk1013_setup_new_data_interrupt(struct kxcjk1013_data *data,
 	}
 
 	if (status)
-<<<<<<< HEAD
 		ret |= KXCJK1013_REG_INT_CTRL1_BIT_IEN;
 	else
 		ret &= ~KXCJK1013_REG_INT_CTRL1_BIT_IEN;
-=======
-		ret |= KXCJK1013_REG_INT_REG1_BIT_IEN;
-	else
-		ret &= ~KXCJK1013_REG_INT_REG1_BIT_IEN;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = i2c_smbus_write_byte_data(data->client, KXCJK1013_REG_INT_CTRL1,
 					ret);
@@ -699,7 +610,6 @@ static int kxcjk1013_setup_new_data_interrupt(struct kxcjk1013_data *data,
 	return 0;
 }
 
-<<<<<<< HEAD
 static const struct kx_odr_map *kxcjk1013_find_odr_value(
 	const struct kx_odr_map *map, size_t map_size, int val, int val2)
 {
@@ -724,30 +634,6 @@ static int kxcjk1013_convert_odr_value(const struct kx_odr_map *map,
 			*val = map[i].val;
 			*val2 = map[i].val2;
 			return IIO_VAL_INT_PLUS_MICRO;
-=======
-static int kxcjk1013_convert_freq_to_bit(int val, int val2)
-{
-	int i;
-
-	for (i = 0; i < ARRAY_SIZE(samp_freq_table); ++i) {
-		if (samp_freq_table[i].val == val &&
-			samp_freq_table[i].val2 == val2) {
-			return samp_freq_table[i].odr_bits;
-		}
-	}
-
-	return -EINVAL;
-}
-
-static int kxcjk1013_convert_wake_odr_to_bit(int val, int val2)
-{
-	int i;
-
-	for (i = 0; i < ARRAY_SIZE(wake_odr_data_rate_table); ++i) {
-		if (wake_odr_data_rate_table[i].val == val &&
-			wake_odr_data_rate_table[i].val2 == val2) {
-			return wake_odr_data_rate_table[i].odr_bits;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -757,19 +643,13 @@ static int kxcjk1013_convert_wake_odr_to_bit(int val, int val2)
 static int kxcjk1013_set_odr(struct kxcjk1013_data *data, int val, int val2)
 {
 	int ret;
-<<<<<<< HEAD
 	enum kxcjk1013_mode store_mode;
 	const struct kx_odr_map *odr_setting;
-=======
-	int odr_bits;
-	enum kxcjk1013_mode store_mode;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = kxcjk1013_get_mode(data, &store_mode);
 	if (ret < 0)
 		return ret;
 
-<<<<<<< HEAD
 	if (data->chipset == KXTF9)
 		odr_setting = kxcjk1013_find_odr_value(kxtf9_samp_freq_table,
 						       ARRAY_SIZE(kxtf9_samp_freq_table),
@@ -781,11 +661,6 @@ static int kxcjk1013_set_odr(struct kxcjk1013_data *data, int val, int val2)
 
 	if (IS_ERR(odr_setting))
 		return PTR_ERR(odr_setting);
-=======
-	odr_bits = kxcjk1013_convert_freq_to_bit(val, val2);
-	if (odr_bits < 0)
-		return odr_bits;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* To change ODR, the chip must be set to STANDBY as per spec */
 	ret = kxcjk1013_set_mode(data, STANDBY);
@@ -793,31 +668,16 @@ static int kxcjk1013_set_odr(struct kxcjk1013_data *data, int val, int val2)
 		return ret;
 
 	ret = i2c_smbus_write_byte_data(data->client, KXCJK1013_REG_DATA_CTRL,
-<<<<<<< HEAD
 					odr_setting->odr_bits);
-=======
-					odr_bits);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0) {
 		dev_err(&data->client->dev, "Error writing data_ctrl\n");
 		return ret;
 	}
 
-<<<<<<< HEAD
 	data->odr_bits = odr_setting->odr_bits;
 
 	ret = i2c_smbus_write_byte_data(data->client, KXCJK1013_REG_CTRL2,
 					odr_setting->wuf_bits);
-=======
-	data->odr_bits = odr_bits;
-
-	odr_bits = kxcjk1013_convert_wake_odr_to_bit(val, val2);
-	if (odr_bits < 0)
-		return odr_bits;
-
-	ret = i2c_smbus_write_byte_data(data->client, KXCJK1013_REG_CTRL2,
-					odr_bits);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0) {
 		dev_err(&data->client->dev, "Error writing reg_ctrl2\n");
 		return ret;
@@ -834,7 +694,6 @@ static int kxcjk1013_set_odr(struct kxcjk1013_data *data, int val, int val2)
 
 static int kxcjk1013_get_odr(struct kxcjk1013_data *data, int *val, int *val2)
 {
-<<<<<<< HEAD
 	if (data->chipset == KXTF9)
 		return kxcjk1013_convert_odr_value(kxtf9_samp_freq_table,
 						   ARRAY_SIZE(kxtf9_samp_freq_table),
@@ -843,19 +702,6 @@ static int kxcjk1013_get_odr(struct kxcjk1013_data *data, int *val, int *val2)
 		return kxcjk1013_convert_odr_value(samp_freq_table,
 						   ARRAY_SIZE(samp_freq_table),
 						   data->odr_bits, val, val2);
-=======
-	int i;
-
-	for (i = 0; i < ARRAY_SIZE(samp_freq_table); ++i) {
-		if (samp_freq_table[i].odr_bits == data->odr_bits) {
-			*val = samp_freq_table[i].val;
-			*val2 = samp_freq_table[i].val2;
-			return IIO_VAL_INT_PLUS_MICRO;
-		}
-	}
-
-	return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int kxcjk1013_get_acc_reg(struct kxcjk1013_data *data, int axis)
@@ -1106,7 +952,6 @@ static int kxcjk1013_buffer_postdisable(struct iio_dev *indio_dev)
 	return kxcjk1013_set_power_state(data, false);
 }
 
-<<<<<<< HEAD
 static ssize_t kxcjk1013_get_samp_freq_avail(struct device *dev,
 					     struct device_attribute *attr,
 					     char *buf)
@@ -1125,19 +970,11 @@ static ssize_t kxcjk1013_get_samp_freq_avail(struct device *dev,
 
 static IIO_DEVICE_ATTR(in_accel_sampling_frequency_available, S_IRUGO,
 		       kxcjk1013_get_samp_freq_avail, NULL, 0);
-=======
-static IIO_CONST_ATTR_SAMP_FREQ_AVAIL(
-	"0.781000 1.563000 3.125000 6.250000 12.500000 25 50 100 200 400 800 1600");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static IIO_CONST_ATTR(in_accel_scale_available, "0.009582 0.019163 0.038326");
 
 static struct attribute *kxcjk1013_attributes[] = {
-<<<<<<< HEAD
 	&iio_dev_attr_in_accel_sampling_frequency_available.dev_attr.attr,
-=======
-	&iio_const_attr_sampling_frequency_available.dev_attr.attr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	&iio_const_attr_in_accel_scale_available.dev_attr.attr,
 	NULL,
 };
@@ -1195,10 +1032,6 @@ static const struct iio_info kxcjk1013_info = {
 	.write_event_value	= kxcjk1013_write_event,
 	.write_event_config	= kxcjk1013_write_event_config,
 	.read_event_config	= kxcjk1013_read_event_config,
-<<<<<<< HEAD
-=======
-	.driver_module		= THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const unsigned long kxcjk1013_scan_masks[] = {0x7, 0};
@@ -1284,7 +1117,6 @@ static int kxcjk1013_data_rdy_trigger_set_state(struct iio_trigger *trig,
 static const struct iio_trigger_ops kxcjk1013_trigger_ops = {
 	.set_trigger_state = kxcjk1013_data_rdy_trigger_set_state,
 	.try_reenable = kxcjk1013_trig_try_reen,
-<<<<<<< HEAD
 };
 
 static void kxcjk1013_report_motion_event(struct iio_dev *indio_dev)
@@ -1353,11 +1185,6 @@ static void kxcjk1013_report_motion_event(struct iio_dev *indio_dev)
 			       data->timestamp);
 }
 
-=======
-	.owner = THIS_MODULE,
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static irqreturn_t kxcjk1013_event_handler(int irq, void *private)
 {
 	struct iio_dev *indio_dev = private;
@@ -1370,7 +1197,6 @@ static irqreturn_t kxcjk1013_event_handler(int irq, void *private)
 		goto ack_intr;
 	}
 
-<<<<<<< HEAD
 	if (ret & KXCJK1013_REG_INT_SRC1_BIT_WUFS) {
 		if (data->chipset == KXTF9)
 			iio_push_event(indio_dev,
@@ -1382,68 +1208,6 @@ static irqreturn_t kxcjk1013_event_handler(int irq, void *private)
 				       data->timestamp);
 		else
 			kxcjk1013_report_motion_event(indio_dev);
-=======
-	if (ret & 0x02) {
-		ret = i2c_smbus_read_byte_data(data->client,
-					       KXCJK1013_REG_INT_SRC2);
-		if (ret < 0) {
-			dev_err(&data->client->dev,
-				"Error reading reg_int_src2\n");
-			goto ack_intr;
-		}
-
-		if (ret & KXCJK1013_REG_INT_SRC2_BIT_XN)
-			iio_push_event(indio_dev,
-				       IIO_MOD_EVENT_CODE(IIO_ACCEL,
-				       0,
-				       IIO_MOD_X,
-				       IIO_EV_TYPE_THRESH,
-				       IIO_EV_DIR_FALLING),
-				       data->timestamp);
-		if (ret & KXCJK1013_REG_INT_SRC2_BIT_XP)
-			iio_push_event(indio_dev,
-				       IIO_MOD_EVENT_CODE(IIO_ACCEL,
-				       0,
-				       IIO_MOD_X,
-				       IIO_EV_TYPE_THRESH,
-				       IIO_EV_DIR_RISING),
-				       data->timestamp);
-
-
-		if (ret & KXCJK1013_REG_INT_SRC2_BIT_YN)
-			iio_push_event(indio_dev,
-				       IIO_MOD_EVENT_CODE(IIO_ACCEL,
-				       0,
-				       IIO_MOD_Y,
-				       IIO_EV_TYPE_THRESH,
-				       IIO_EV_DIR_FALLING),
-				       data->timestamp);
-		if (ret & KXCJK1013_REG_INT_SRC2_BIT_YP)
-			iio_push_event(indio_dev,
-				       IIO_MOD_EVENT_CODE(IIO_ACCEL,
-				       0,
-				       IIO_MOD_Y,
-				       IIO_EV_TYPE_THRESH,
-				       IIO_EV_DIR_RISING),
-				       data->timestamp);
-
-		if (ret & KXCJK1013_REG_INT_SRC2_BIT_ZN)
-			iio_push_event(indio_dev,
-				       IIO_MOD_EVENT_CODE(IIO_ACCEL,
-				       0,
-				       IIO_MOD_Z,
-				       IIO_EV_TYPE_THRESH,
-				       IIO_EV_DIR_FALLING),
-				       data->timestamp);
-		if (ret & KXCJK1013_REG_INT_SRC2_BIT_ZP)
-			iio_push_event(indio_dev,
-				       IIO_MOD_EVENT_CODE(IIO_ACCEL,
-				       0,
-				       IIO_MOD_Z,
-				       IIO_EV_TYPE_THRESH,
-				       IIO_EV_DIR_RISING),
-				       data->timestamp);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 ack_intr:
@@ -1739,10 +1503,7 @@ static const struct i2c_device_id kxcjk1013_id[] = {
 	{"kxcjk1013", KXCJK1013},
 	{"kxcj91008", KXCJ91008},
 	{"kxtj21009", KXTJ21009},
-<<<<<<< HEAD
 	{"kxtf9",     KXTF9},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{"SMO8500",   KXCJ91008},
 	{}
 };

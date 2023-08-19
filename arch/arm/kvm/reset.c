@@ -26,10 +26,7 @@
 #include <asm/cputype.h>
 #include <asm/kvm_arm.h>
 #include <asm/kvm_coproc.h>
-<<<<<<< HEAD
 #include <asm/kvm_emulate.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <kvm/arm_arch_timer.h>
 
@@ -73,7 +70,6 @@ int kvm_reset_vcpu(struct kvm_vcpu *vcpu)
 	/* Reset CP15 registers */
 	kvm_reset_coprocs(vcpu);
 
-<<<<<<< HEAD
 	/*
 	 * Additional reset state handling that PSCI may have imposed on us.
 	 * Must be done after all the sys_reg reset.
@@ -97,8 +93,6 @@ int kvm_reset_vcpu(struct kvm_vcpu *vcpu)
 		vcpu->arch.reset_state.reset = false;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Reset arch_timer context */
 	return kvm_timer_vcpu_reset(vcpu);
 }

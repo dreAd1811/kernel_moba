@@ -33,10 +33,6 @@ static int dev_pm_attach_wake_irq(struct device *dev, int irq,
 				  struct wake_irq *wirq)
 {
 	unsigned long flags;
-<<<<<<< HEAD
-=======
-	int err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!dev || !wirq)
 		return -EINVAL;
@@ -48,20 +44,11 @@ static int dev_pm_attach_wake_irq(struct device *dev, int irq,
 		return -EEXIST;
 	}
 
-<<<<<<< HEAD
 	dev->power.wakeirq = wirq;
 	device_wakeup_attach_irq(dev, wirq);
 
 	spin_unlock_irqrestore(&dev->power.lock, flags);
 	return 0;
-=======
-	err = device_wakeup_attach_irq(dev, wirq);
-	if (!err)
-		dev->power.wakeirq = wirq;
-
-	spin_unlock_irqrestore(&dev->power.lock, flags);
-	return err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -125,10 +112,7 @@ void dev_pm_clear_wake_irq(struct device *dev)
 		free_irq(wirq->irq, wirq);
 		wirq->status &= ~WAKE_IRQ_DEDICATED_MASK;
 	}
-<<<<<<< HEAD
 	kfree(wirq->name);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(wirq);
 }
 EXPORT_SYMBOL_GPL(dev_pm_clear_wake_irq);
@@ -201,15 +185,12 @@ int dev_pm_set_dedicated_wake_irq(struct device *dev, int irq)
 	if (!wirq)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	wirq->name = kasprintf(GFP_KERNEL, "%s:wakeup", dev_name(dev));
 	if (!wirq->name) {
 		err = -ENOMEM;
 		goto err_free;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wirq->dev = dev;
 	wirq->irq = irq;
 	irq_set_status_flags(irq, IRQ_NOAUTOEN);
@@ -222,15 +203,9 @@ int dev_pm_set_dedicated_wake_irq(struct device *dev, int irq)
 	 * so we use a threaded irq.
 	 */
 	err = request_threaded_irq(irq, NULL, handle_threaded_wake_irq,
-<<<<<<< HEAD
 				   IRQF_ONESHOT, wirq->name, wirq);
 	if (err)
 		goto err_free_name;
-=======
-				   IRQF_ONESHOT, dev_name(dev), wirq);
-	if (err)
-		goto err_free;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = dev_pm_attach_wake_irq(dev, irq, wirq);
 	if (err)
@@ -242,11 +217,8 @@ int dev_pm_set_dedicated_wake_irq(struct device *dev, int irq)
 
 err_free_irq:
 	free_irq(irq, wirq);
-<<<<<<< HEAD
 err_free_name:
 	kfree(wirq->name);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_free:
 	kfree(wirq);
 

@@ -51,10 +51,7 @@ static inline void arch_leave_lazy_mmu_mode(void)
 
 #define arch_flush_lazy_mmu_mode()      do {} while (0)
 
-<<<<<<< HEAD
 extern void hash__tlbiel_all(unsigned int action);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 extern void flush_hash_page(unsigned long vpn, real_pte_t pte, int psize,
 			    int ssize, unsigned long flags);
@@ -70,7 +67,6 @@ static inline void hash__flush_tlb_mm(struct mm_struct *mm)
 {
 }
 
-<<<<<<< HEAD
 static inline void hash__local_flush_all_mm(struct mm_struct *mm)
 {
 	/*
@@ -93,8 +89,6 @@ static inline void hash__flush_all_mm(struct mm_struct *mm)
 	WARN_ON_ONCE(1);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void hash__local_flush_tlb_page(struct vm_area_struct *vma,
 					  unsigned long vmaddr)
 {

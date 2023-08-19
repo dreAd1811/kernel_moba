@@ -32,11 +32,7 @@
 
 #define DVB_USB_LOG_PREFIX "anysee"
 #include "dvb_usb.h"
-<<<<<<< HEAD
 #include <media/dvb_ca_en50221.h>
-=======
-#include "dvb_ca_en50221.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum cmd {
 	CMD_I2C_READ            = 0x33,

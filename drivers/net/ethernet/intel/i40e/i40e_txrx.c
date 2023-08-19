@@ -1,41 +1,10 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /* Copyright(c) 2013 - 2018 Intel Corporation. */
-=======
-/*******************************************************************************
- *
- * Intel Ethernet Controller XL710 Family Linux Driver
- * Copyright(c) 2013 - 2016 Intel Corporation.
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms and conditions of the GNU General Public License,
- * version 2, as published by the Free Software Foundation.
- *
- * This program is distributed in the hope it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
- * more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * The full GNU General Public License is included in this distribution in
- * the file called "COPYING".
- *
- * Contact Information:
- * e1000-devel Mailing List <e1000-devel@lists.sourceforge.net>
- * Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497
- *
- ******************************************************************************/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/prefetch.h>
 #include <net/busy_poll.h>
 #include <linux/bpf_trace.h>
-<<<<<<< HEAD
 #include <net/xdp.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "i40e.h"
 #include "i40e_trace.h"
 #include "i40e_prototype.h"
@@ -343,11 +312,7 @@ static int i40e_add_del_fdir_tcpv4(struct i40e_vsi *vsi,
 		if ((pf->flags & I40E_FLAG_FD_ATR_ENABLED) &&
 		    I40E_DEBUG_FD & pf->hw.debug_mask)
 			dev_info(&pf->pdev->dev, "Forcing ATR off, sideband rules for TCP/IPv4 flow being applied\n");
-<<<<<<< HEAD
 		set_bit(__I40E_FD_ATR_AUTO_DISABLED, pf->state);
-=======
-		pf->flags |= I40E_FLAG_FD_ATR_AUTO_DISABLED;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		pf->fd_tcp4_filter_cnt--;
 	}
@@ -506,11 +471,7 @@ static int i40e_add_del_fdir_ipv4(struct i40e_vsi *vsi,
 /**
  * i40e_add_del_fdir - Build raw packets to add/del fdir filter
  * @vsi: pointer to the targeted VSI
-<<<<<<< HEAD
  * @input: filter to add or delete
-=======
- * @cmd: command to get or set RX flow classification rules
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @add: true adds a filter, false removes it
  *
  **/
@@ -609,7 +570,6 @@ static void i40e_fd_handle_status(struct i40e_ring *rx_ring,
 		pf->fd_atr_cnt = i40e_get_current_atr_cnt(pf);
 
 		if ((rx_desc->wb.qword0.hi_dword.fd_id == 0) &&
-<<<<<<< HEAD
 		    test_bit(__I40E_FD_SB_AUTO_DISABLED, pf->state)) {
 			/* These set_bit() calls aren't atomic with the
 			 * test_bit() here, but worse case we potentially
@@ -618,10 +578,6 @@ static void i40e_fd_handle_status(struct i40e_ring *rx_ring,
 			 * issue in practice
 			 */
 			set_bit(__I40E_FD_ATR_AUTO_DISABLED, pf->state);
-=======
-		    pf->flags & I40E_FLAG_FD_SB_AUTO_DISABLED) {
-			pf->flags |= I40E_FLAG_FD_ATR_AUTO_DISABLED;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			set_bit(__I40E_FD_FLUSH_REQUESTED, pf->state);
 		}
 
@@ -634,18 +590,10 @@ static void i40e_fd_handle_status(struct i40e_ring *rx_ring,
 		 */
 		if (fcnt_prog >= (fcnt_avail - I40E_FDIR_BUFFER_FULL_MARGIN)) {
 			if ((pf->flags & I40E_FLAG_FD_SB_ENABLED) &&
-<<<<<<< HEAD
 			    !test_and_set_bit(__I40E_FD_SB_AUTO_DISABLED,
 					      pf->state))
 				if (I40E_DEBUG_FD & pf->hw.debug_mask)
 					dev_warn(&pdev->dev, "FD filter space full, new ntuple rules will not be added\n");
-=======
-			    !(pf->flags & I40E_FLAG_FD_SB_AUTO_DISABLED)) {
-				pf->flags |= I40E_FLAG_FD_SB_AUTO_DISABLED;
-				if (I40E_DEBUG_FD & pf->hw.debug_mask)
-					dev_warn(&pdev->dev, "FD filter space full, new ntuple rules will not be added\n");
-			}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	} else if (error == BIT(I40E_RX_PROG_STATUS_DESC_NO_FD_ENTRY_SHIFT)) {
 		if (I40E_DEBUG_FD & pf->hw.debug_mask)
@@ -666,11 +614,7 @@ static void i40e_unmap_and_free_tx_resource(struct i40e_ring *ring,
 		if (tx_buffer->tx_flags & I40E_TX_FLAGS_FD_SB)
 			kfree(tx_buffer->raw_buf);
 		else if (ring_is_xdp(ring))
-<<<<<<< HEAD
 			xdp_return_frame(tx_buffer->xdpf);
-=======
-			page_frag_free(tx_buffer->raw_buf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		else
 			dev_kfree_skb_any(tx_buffer->skb);
 		if (dma_unmap_len(tx_buffer, len))
@@ -745,17 +689,12 @@ void i40e_free_tx_resources(struct i40e_ring *tx_ring)
 
 /**
  * i40e_get_tx_pending - how many tx descriptors not processed
-<<<<<<< HEAD
  * @ring: the ring of descriptors
  * @in_sw: use SW variables
-=======
- * @tx_ring: the ring of descriptors
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Since there is no access to the ring head register
  * in XL710, we need to use our local copies
  **/
-<<<<<<< HEAD
 u32 i40e_get_tx_pending(struct i40e_ring *ring, bool in_sw)
 {
 	u32 head, tail;
@@ -767,14 +706,6 @@ u32 i40e_get_tx_pending(struct i40e_ring *ring, bool in_sw)
 		head = ring->next_to_clean;
 		tail = ring->next_to_use;
 	}
-=======
-u32 i40e_get_tx_pending(struct i40e_ring *ring)
-{
-	u32 head, tail;
-
-	head = i40e_get_head(ring);
-	tail = readl(ring->tail);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (head != tail)
 		return (head < tail) ?
@@ -783,7 +714,6 @@ u32 i40e_get_tx_pending(struct i40e_ring *ring)
 	return 0;
 }
 
-<<<<<<< HEAD
 /**
  * i40e_detect_recover_hung - Function to detect and recover hung_queues
  * @vsi:  pointer to vsi struct with tx queues
@@ -837,8 +767,6 @@ void i40e_detect_recover_hung(struct i40e_vsi *vsi)
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define WB_STRIDE 4
 
 /**
@@ -889,11 +817,7 @@ static bool i40e_clean_tx_irq(struct i40e_vsi *vsi,
 
 		/* free the skb/XDP data */
 		if (ring_is_xdp(tx_ring))
-<<<<<<< HEAD
 			xdp_return_frame(tx_buf->xdpf);
-=======
-			page_frag_free(tx_buf->raw_buf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		else
 			napi_consume_skb(tx_buf->skb, napi_budget);
 
@@ -962,11 +886,7 @@ static bool i40e_clean_tx_irq(struct i40e_vsi *vsi,
 		 * them to be written back in case we stay in NAPI.
 		 * In this mode on X722 we do not enable Interrupt.
 		 */
-<<<<<<< HEAD
 		unsigned int j = i40e_get_tx_pending(tx_ring, false);
-=======
-		unsigned int j = i40e_get_tx_pending(tx_ring);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (budget &&
 		    ((j / WB_STRIDE) == 0) && (j > 0) &&
@@ -1024,11 +944,7 @@ static void i40e_enable_wb_on_itr(struct i40e_vsi *vsi,
 		      I40E_PFINT_DYN_CTLN_ITR_INDX_MASK; /* set noitr */
 
 		wr32(&vsi->back->hw,
-<<<<<<< HEAD
 		     I40E_PFINT_DYN_CTLN(q_vector->reg_idx),
-=======
-		     I40E_PFINT_DYN_CTLN(q_vector->v_idx + vsi->base_vector - 1),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		     val);
 	} else {
 		val = I40E_PFINT_DYN_CTL0_WB_ON_ITR_MASK |
@@ -1055,12 +971,7 @@ void i40e_force_wb(struct i40e_vsi *vsi, struct i40e_q_vector *q_vector)
 			  /* allow 00 to be written to the index */
 
 		wr32(&vsi->back->hw,
-<<<<<<< HEAD
 		     I40E_PFINT_DYN_CTLN(q_vector->reg_idx), val);
-=======
-		     I40E_PFINT_DYN_CTLN(q_vector->v_idx +
-					 vsi->base_vector - 1), val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		u32 val = I40E_PFINT_DYN_CTL0_INTENA_MASK |
 			  I40E_PFINT_DYN_CTL0_ITR_INDX_MASK | /* set noitr */
@@ -1072,7 +983,6 @@ void i40e_force_wb(struct i40e_vsi *vsi, struct i40e_q_vector *q_vector)
 	}
 }
 
-<<<<<<< HEAD
 static inline bool i40e_container_is_rx(struct i40e_q_vector *q_vector,
 					struct i40e_ring_container *rc)
 {
@@ -1308,101 +1218,6 @@ clear_counts:
 
 	rc->total_bytes = 0;
 	rc->total_packets = 0;
-=======
-/**
- * i40e_set_new_dynamic_itr - Find new ITR level
- * @rc: structure containing ring performance data
- *
- * Returns true if ITR changed, false if not
- *
- * Stores a new ITR value based on packets and byte counts during
- * the last interrupt.  The advantage of per interrupt computation
- * is faster updates and more accurate ITR for the current traffic
- * pattern.  Constants in this function were computed based on
- * theoretical maximum wire speed and thresholds were set based on
- * testing data as well as attempting to minimize response time
- * while increasing bulk throughput.
- **/
-static bool i40e_set_new_dynamic_itr(struct i40e_ring_container *rc)
-{
-	enum i40e_latency_range new_latency_range = rc->latency_range;
-	u32 new_itr = rc->itr;
-	int bytes_per_int;
-	unsigned int usecs, estimated_usecs;
-
-	if (rc->total_packets == 0 || !rc->itr)
-		return false;
-
-	usecs = (rc->itr << 1) * ITR_COUNTDOWN_START;
-	bytes_per_int = rc->total_bytes / usecs;
-
-	/* The calculations in this algorithm depend on interrupts actually
-	 * firing at the ITR rate. This may not happen if the packet rate is
-	 * really low, or if we've been napi polling. Check to make sure
-	 * that's not the case before we continue.
-	 */
-	estimated_usecs = jiffies_to_usecs(jiffies - rc->last_itr_update);
-	if (estimated_usecs > usecs) {
-		new_latency_range = I40E_LOW_LATENCY;
-		goto reset_latency;
-	}
-
-	/* simple throttlerate management
-	 *   0-10MB/s   lowest (50000 ints/s)
-	 *  10-20MB/s   low    (20000 ints/s)
-	 *  20-1249MB/s bulk   (18000 ints/s)
-	 *
-	 * The math works out because the divisor is in 10^(-6) which
-	 * turns the bytes/us input value into MB/s values, but
-	 * make sure to use usecs, as the register values written
-	 * are in 2 usec increments in the ITR registers, and make sure
-	 * to use the smoothed values that the countdown timer gives us.
-	 */
-	switch (new_latency_range) {
-	case I40E_LOWEST_LATENCY:
-		if (bytes_per_int > 10)
-			new_latency_range = I40E_LOW_LATENCY;
-		break;
-	case I40E_LOW_LATENCY:
-		if (bytes_per_int > 20)
-			new_latency_range = I40E_BULK_LATENCY;
-		else if (bytes_per_int <= 10)
-			new_latency_range = I40E_LOWEST_LATENCY;
-		break;
-	case I40E_BULK_LATENCY:
-	default:
-		if (bytes_per_int <= 20)
-			new_latency_range = I40E_LOW_LATENCY;
-		break;
-	}
-
-reset_latency:
-	rc->latency_range = new_latency_range;
-
-	switch (new_latency_range) {
-	case I40E_LOWEST_LATENCY:
-		new_itr = I40E_ITR_50K;
-		break;
-	case I40E_LOW_LATENCY:
-		new_itr = I40E_ITR_20K;
-		break;
-	case I40E_BULK_LATENCY:
-		new_itr = I40E_ITR_18K;
-		break;
-	default:
-		break;
-	}
-
-	rc->total_bytes = 0;
-	rc->total_packets = 0;
-	rc->last_itr_update = jiffies;
-
-	if (new_itr != rc->itr) {
-		rc->itr = new_itr;
-		return true;
-	}
-	return false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -1530,10 +1345,7 @@ int i40e_setup_tx_descriptors(struct i40e_ring *tx_ring)
 
 	tx_ring->next_to_use = 0;
 	tx_ring->next_to_clean = 0;
-<<<<<<< HEAD
 	tx_ring->tx_stats.prev_pkt_ctr = -1;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 err:
@@ -1608,11 +1420,8 @@ void i40e_clean_rx_ring(struct i40e_ring *rx_ring)
 void i40e_free_rx_resources(struct i40e_ring *rx_ring)
 {
 	i40e_clean_rx_ring(rx_ring);
-<<<<<<< HEAD
 	if (rx_ring->vsi->type == I40E_VSI_MAIN)
 		xdp_rxq_info_unreg(&rx_ring->xdp_rxq);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rx_ring->xdp_prog = NULL;
 	kfree(rx_ring->rx_bi);
 	rx_ring->rx_bi = NULL;
@@ -1633,10 +1442,7 @@ void i40e_free_rx_resources(struct i40e_ring *rx_ring)
 int i40e_setup_rx_descriptors(struct i40e_ring *rx_ring)
 {
 	struct device *dev = rx_ring->dev;
-<<<<<<< HEAD
 	int err = -ENOMEM;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int bi_size;
 
 	/* warn if we are about to overwrite the pointer */
@@ -1664,7 +1470,6 @@ int i40e_setup_rx_descriptors(struct i40e_ring *rx_ring)
 	rx_ring->next_to_clean = 0;
 	rx_ring->next_to_use = 0;
 
-<<<<<<< HEAD
 	/* XDP RX-queue info only needed for RX rings exposed to XDP */
 	if (rx_ring->vsi->type == I40E_VSI_MAIN) {
 		err = xdp_rxq_info_reg(&rx_ring->xdp_rxq, rx_ring->netdev,
@@ -1673,19 +1478,13 @@ int i40e_setup_rx_descriptors(struct i40e_ring *rx_ring)
 			goto err;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rx_ring->xdp_prog = rx_ring->vsi->xdp_prog;
 
 	return 0;
 err:
 	kfree(rx_ring->rx_bi);
 	rx_ring->rx_bi = NULL;
-<<<<<<< HEAD
 	return err;
-=======
-	return -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -1765,14 +1564,8 @@ static bool i40e_alloc_mapped_page(struct i40e_ring *rx_ring,
 	bi->dma = dma;
 	bi->page = page;
 	bi->page_offset = i40e_rx_offset(rx_ring);
-<<<<<<< HEAD
 	page_ref_add(page, USHRT_MAX - 1);
 	bi->pagecnt_bias = USHRT_MAX;
-=======
-
-	/* initialize pagecnt_bias to 1 representing we fully own page */
-	bi->pagecnt_bias = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return true;
 }
@@ -1978,11 +1771,8 @@ static inline int i40e_ptype_to_htype(u8 ptype)
  * i40e_rx_hash - set the hash value in the skb
  * @ring: descriptor ring
  * @rx_desc: specific descriptor
-<<<<<<< HEAD
  * @skb: skb currently being received and modified
  * @rx_ptype: Rx packet type
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  **/
 static inline void i40e_rx_hash(struct i40e_ring *ring,
 				union i40e_rx_desc *rx_desc,
@@ -2143,13 +1933,8 @@ static bool i40e_can_reuse_rx_page(struct i40e_rx_buffer *rx_buffer)
 	 * the pagecnt_bias and page count so that we fully restock the
 	 * number of references the driver holds.
 	 */
-<<<<<<< HEAD
 	if (unlikely(pagecnt_bias == 1)) {
 		page_ref_add(page, USHRT_MAX - 1);
-=======
-	if (unlikely(!pagecnt_bias)) {
-		page_ref_add(page, USHRT_MAX);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rx_buffer->pagecnt_bias = USHRT_MAX;
 	}
 
@@ -2247,7 +2032,6 @@ static struct sk_buff *i40e_construct_skb(struct i40e_ring *rx_ring,
 #if L1_CACHE_BYTES < 128
 	prefetch(xdp->data + L1_CACHE_BYTES);
 #endif
-<<<<<<< HEAD
 	/* Note, we get here by enabling legacy-rx via:
 	 *
 	 *    ethtool --set-priv-flags <dev> legacy-rx on
@@ -2263,8 +2047,6 @@ static struct sk_buff *i40e_construct_skb(struct i40e_ring *rx_ring,
 	 * change in future for legacy-rx mode on, then lets also
 	 * add xdp->data_meta handling here.
 	 */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* allocate a skb to store the frags */
 	skb = __napi_alloc_skb(&rx_ring->q_vector->napi,
@@ -2316,16 +2098,11 @@ static struct sk_buff *i40e_build_skb(struct i40e_ring *rx_ring,
 				      struct i40e_rx_buffer *rx_buffer,
 				      struct xdp_buff *xdp)
 {
-<<<<<<< HEAD
 	unsigned int metasize = xdp->data - xdp->data_meta;
-=======
-	unsigned int size = xdp->data_end - xdp->data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #if (PAGE_SIZE < 8192)
 	unsigned int truesize = i40e_rx_pg_size(rx_ring) / 2;
 #else
 	unsigned int truesize = SKB_DATA_ALIGN(sizeof(struct skb_shared_info)) +
-<<<<<<< HEAD
 				SKB_DATA_ALIGN(xdp->data_end -
 					       xdp->data_hard_start);
 #endif
@@ -2339,16 +2116,6 @@ static struct sk_buff *i40e_build_skb(struct i40e_ring *rx_ring,
 	prefetch(xdp->data_meta);
 #if L1_CACHE_BYTES < 128
 	prefetch(xdp->data_meta + L1_CACHE_BYTES);
-=======
-				SKB_DATA_ALIGN(I40E_SKB_PAD + size);
-#endif
-	struct sk_buff *skb;
-
-	/* prefetch first cache line of first page */
-	prefetch(xdp->data);
-#if L1_CACHE_BYTES < 128
-	prefetch(xdp->data + L1_CACHE_BYTES);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 	/* build an skb around the page buffer */
 	skb = build_skb(xdp->data_hard_start, truesize);
@@ -2356,15 +2123,10 @@ static struct sk_buff *i40e_build_skb(struct i40e_ring *rx_ring,
 		return NULL;
 
 	/* update pointers within the skb to store the data */
-<<<<<<< HEAD
 	skb_reserve(skb, xdp->data - xdp->data_hard_start);
 	__skb_put(skb, xdp->data_end - xdp->data);
 	if (metasize)
 		skb_metadata_set(skb, metasize);
-=======
-	skb_reserve(skb, I40E_SKB_PAD);
-	__skb_put(skb, size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* buffer is used by skb, update page_offset */
 #if (PAGE_SIZE < 8192)
@@ -2382,11 +2144,7 @@ static struct sk_buff *i40e_build_skb(struct i40e_ring *rx_ring,
  * @rx_buffer: rx buffer to pull data from
  *
  * This function will clean up the contents of the rx_buffer.  It will
-<<<<<<< HEAD
  * either recycle the buffer or unmap it and free the associated resources.
-=======
- * either recycle the bufer or unmap it and free the associated resources.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static void i40e_put_rx_buffer(struct i40e_ring *rx_ring,
 			       struct i40e_rx_buffer *rx_buffer)
@@ -2441,7 +2199,6 @@ static bool i40e_is_non_eop(struct i40e_ring *rx_ring,
 	return true;
 }
 
-<<<<<<< HEAD
 #define I40E_XDP_PASS		0
 #define I40E_XDP_CONSUMED	BIT(0)
 #define I40E_XDP_TX		BIT(1)
@@ -2461,15 +2218,6 @@ static int i40e_xmit_xdp_tx_ring(struct xdp_buff *xdp,
 	return i40e_xmit_xdp_ring(xdpf, xdp_ring);
 }
 
-=======
-#define I40E_XDP_PASS 0
-#define I40E_XDP_CONSUMED 1
-#define I40E_XDP_TX 2
-
-static int i40e_xmit_xdp_ring(struct xdp_buff *xdp,
-			      struct i40e_ring *xdp_ring);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * i40e_run_xdp - run an XDP program
  * @rx_ring: Rx ring being processed
@@ -2478,11 +2226,7 @@ static int i40e_xmit_xdp_ring(struct xdp_buff *xdp,
 static struct sk_buff *i40e_run_xdp(struct i40e_ring *rx_ring,
 				    struct xdp_buff *xdp)
 {
-<<<<<<< HEAD
 	int err, result = I40E_XDP_PASS;
-=======
-	int result = I40E_XDP_PASS;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct i40e_ring *xdp_ring;
 	struct bpf_prog *xdp_prog;
 	u32 act;
@@ -2493,18 +2237,14 @@ static struct sk_buff *i40e_run_xdp(struct i40e_ring *rx_ring,
 	if (!xdp_prog)
 		goto xdp_out;
 
-<<<<<<< HEAD
 	prefetchw(xdp->data_hard_start); /* xdp_frame write */
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	act = bpf_prog_run_xdp(xdp_prog, xdp);
 	switch (act) {
 	case XDP_PASS:
 		break;
 	case XDP_TX:
 		xdp_ring = rx_ring->vsi->xdp_rings[rx_ring->queue_index];
-<<<<<<< HEAD
 		result = i40e_xmit_xdp_tx_ring(xdp, xdp_ring);
 		break;
 	case XDP_REDIRECT:
@@ -2517,15 +2257,6 @@ static struct sk_buff *i40e_run_xdp(struct i40e_ring *rx_ring,
 	case XDP_ABORTED:
 		trace_xdp_exception(rx_ring->netdev, xdp_prog, act);
 		/* fall through -- handle aborts by dropping packet */
-=======
-		result = i40e_xmit_xdp_ring(xdp, xdp_ring);
-		break;
-	default:
-		bpf_warn_invalid_xdp_action(act);
-	case XDP_ABORTED:
-		trace_xdp_exception(rx_ring->netdev, xdp_prog, act);
-		/* fallthrough -- handle aborts by dropping packet */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case XDP_DROP:
 		result = I40E_XDP_CONSUMED;
 		break;
@@ -2556,7 +2287,6 @@ static void i40e_rx_buffer_flip(struct i40e_ring *rx_ring,
 #endif
 }
 
-<<<<<<< HEAD
 static inline void i40e_xdp_ring_update_tail(struct i40e_ring *xdp_ring)
 {
 	/* Force memory writes to complete before letting h/w
@@ -2566,8 +2296,6 @@ static inline void i40e_xdp_ring_update_tail(struct i40e_ring *xdp_ring)
 	writel_relaxed(xdp_ring->next_to_use, xdp_ring->tail);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * i40e_clean_rx_irq - Clean completed descriptors from Rx ring - bounce buf
  * @rx_ring: rx descriptor ring to transact packets on
@@ -2585,23 +2313,15 @@ static int i40e_clean_rx_irq(struct i40e_ring *rx_ring, int budget)
 	unsigned int total_rx_bytes = 0, total_rx_packets = 0;
 	struct sk_buff *skb = rx_ring->skb;
 	u16 cleaned_count = I40E_DESC_UNUSED(rx_ring);
-<<<<<<< HEAD
 	unsigned int xdp_xmit = 0;
 	bool failure = false;
 	struct xdp_buff xdp;
 
 	xdp.rxq = &rx_ring->xdp_rxq;
-=======
-	bool failure = false, xdp_xmit = false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	while (likely(total_rx_packets < (unsigned int)budget)) {
 		struct i40e_rx_buffer *rx_buffer;
 		union i40e_rx_desc *rx_desc;
-<<<<<<< HEAD
-=======
-		struct xdp_buff xdp;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		unsigned int size;
 		u16 vlan_tag;
 		u8 rx_ptype;
@@ -2646,10 +2366,7 @@ static int i40e_clean_rx_irq(struct i40e_ring *rx_ring, int budget)
 		if (!skb) {
 			xdp.data = page_address(rx_buffer->page) +
 				   rx_buffer->page_offset;
-<<<<<<< HEAD
 			xdp.data_meta = xdp.data;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			xdp.data_hard_start = xdp.data -
 					      i40e_rx_offset(rx_ring);
 			xdp.data_end = xdp.data + size;
@@ -2658,15 +2375,10 @@ static int i40e_clean_rx_irq(struct i40e_ring *rx_ring, int budget)
 		}
 
 		if (IS_ERR(skb)) {
-<<<<<<< HEAD
 			unsigned int xdp_res = -PTR_ERR(skb);
 
 			if (xdp_res & (I40E_XDP_TX | I40E_XDP_REDIR)) {
 				xdp_xmit |= xdp_res;
-=======
-			if (PTR_ERR(skb) == -I40E_XDP_TX) {
-				xdp_xmit = true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				i40e_rx_buffer_flip(rx_ring, rx_buffer, size);
 			} else {
 				rx_buffer->pagecnt_bias++;
@@ -2720,7 +2432,6 @@ static int i40e_clean_rx_irq(struct i40e_ring *rx_ring, int budget)
 		total_rx_packets++;
 	}
 
-<<<<<<< HEAD
 	if (xdp_xmit & I40E_XDP_REDIR)
 		xdp_do_flush_map();
 
@@ -2729,19 +2440,6 @@ static int i40e_clean_rx_irq(struct i40e_ring *rx_ring, int budget)
 			rx_ring->vsi->xdp_rings[rx_ring->queue_index];
 
 		i40e_xdp_ring_update_tail(xdp_ring);
-=======
-	if (xdp_xmit) {
-		struct i40e_ring *xdp_ring;
-
-		xdp_ring = rx_ring->vsi->xdp_rings[rx_ring->queue_index];
-
-		/* Force memory writes to complete before letting h/w
-		 * know there are new descriptors to fetch.
-		 */
-		wmb();
-
-		writel(xdp_ring->next_to_use, xdp_ring->tail);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	rx_ring->skb = skb;
@@ -2757,7 +2455,6 @@ static int i40e_clean_rx_irq(struct i40e_ring *rx_ring, int budget)
 	return failure ? budget : (int)total_rx_packets;
 }
 
-<<<<<<< HEAD
 static inline u32 i40e_buildreg_itr(const int type, u16 itr)
 {
 	u32 val;
@@ -2782,25 +2479,12 @@ static inline u32 i40e_buildreg_itr(const int type, u16 itr)
 	val = I40E_PFINT_DYN_CTLN_INTENA_MASK |
 	      (type << I40E_PFINT_DYN_CTLN_ITR_INDX_SHIFT) |
 	      (itr << (I40E_PFINT_DYN_CTLN_INTERVAL_SHIFT - 1));
-=======
-static u32 i40e_buildreg_itr(const int type, const u16 itr)
-{
-	u32 val;
-
-	val = I40E_PFINT_DYN_CTLN_INTENA_MASK |
-	      /* Don't clear PBA because that can cause lost interrupts that
-	       * came in while we were cleaning/polling
-	       */
-	      (type << I40E_PFINT_DYN_CTLN_ITR_INDX_SHIFT) |
-	      (itr << I40E_PFINT_DYN_CTLN_INTERVAL_SHIFT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return val;
 }
 
 /* a small macro to shorten up some long lines */
 #define INTREG I40E_PFINT_DYN_CTLN
-<<<<<<< HEAD
 
 /* The act of updating the ITR will cause it to immediately trigger. In order
  * to prevent this from throwing off adaptive update statistics we defer the
@@ -2810,17 +2494,6 @@ static u32 i40e_buildreg_itr(const int type, const u16 itr)
  * 3 interrupts.
  */
 #define ITR_COUNTDOWN_START 3
-=======
-static inline int get_rx_itr(struct i40e_vsi *vsi, int idx)
-{
-	return vsi->rx_rings[idx]->rx_itr_setting;
-}
-
-static inline int get_tx_itr(struct i40e_vsi *vsi, int idx)
-{
-	return vsi->tx_rings[idx]->tx_itr_setting;
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * i40e_update_enable_itr - Update itr and re-enable MSIX interrupt
@@ -2832,7 +2505,6 @@ static inline void i40e_update_enable_itr(struct i40e_vsi *vsi,
 					  struct i40e_q_vector *q_vector)
 {
 	struct i40e_hw *hw = &vsi->back->hw;
-<<<<<<< HEAD
 	u32 intval;
 
 	/* If we don't have MSIX, then we only need to re-enable icr0 */
@@ -2884,81 +2556,6 @@ static inline void i40e_update_enable_itr(struct i40e_vsi *vsi,
 
 	if (!test_bit(__I40E_VSI_DOWN, vsi->state))
 		wr32(hw, INTREG(q_vector->reg_idx), intval);
-=======
-	bool rx = false, tx = false;
-	u32 rxval, txval;
-	int vector;
-	int idx = q_vector->v_idx;
-	int rx_itr_setting, tx_itr_setting;
-
-	/* If we don't have MSIX, then we only need to re-enable icr0 */
-	if (!(vsi->back->flags & I40E_FLAG_MSIX_ENABLED)) {
-		i40e_irq_dynamic_enable_icr0(vsi->back, false);
-		return;
-	}
-
-	vector = (q_vector->v_idx + vsi->base_vector);
-
-	/* avoid dynamic calculation if in countdown mode OR if
-	 * all dynamic is disabled
-	 */
-	rxval = txval = i40e_buildreg_itr(I40E_ITR_NONE, 0);
-
-	rx_itr_setting = get_rx_itr(vsi, idx);
-	tx_itr_setting = get_tx_itr(vsi, idx);
-
-	if (q_vector->itr_countdown > 0 ||
-	    (!ITR_IS_DYNAMIC(rx_itr_setting) &&
-	     !ITR_IS_DYNAMIC(tx_itr_setting))) {
-		goto enable_int;
-	}
-
-	if (ITR_IS_DYNAMIC(rx_itr_setting)) {
-		rx = i40e_set_new_dynamic_itr(&q_vector->rx);
-		rxval = i40e_buildreg_itr(I40E_RX_ITR, q_vector->rx.itr);
-	}
-
-	if (ITR_IS_DYNAMIC(tx_itr_setting)) {
-		tx = i40e_set_new_dynamic_itr(&q_vector->tx);
-		txval = i40e_buildreg_itr(I40E_TX_ITR, q_vector->tx.itr);
-	}
-
-	if (rx || tx) {
-		/* get the higher of the two ITR adjustments and
-		 * use the same value for both ITR registers
-		 * when in adaptive mode (Rx and/or Tx)
-		 */
-		u16 itr = max(q_vector->tx.itr, q_vector->rx.itr);
-
-		q_vector->tx.itr = q_vector->rx.itr = itr;
-		txval = i40e_buildreg_itr(I40E_TX_ITR, itr);
-		tx = true;
-		rxval = i40e_buildreg_itr(I40E_RX_ITR, itr);
-		rx = true;
-	}
-
-	/* only need to enable the interrupt once, but need
-	 * to possibly update both ITR values
-	 */
-	if (rx) {
-		/* set the INTENA_MSK_MASK so that this first write
-		 * won't actually enable the interrupt, instead just
-		 * updating the ITR (it's bit 31 PF and VF)
-		 */
-		rxval |= BIT(31);
-		/* don't check _DOWN because interrupt isn't being enabled */
-		wr32(hw, INTREG(vector - 1), rxval);
-	}
-
-enable_int:
-	if (!test_bit(__I40E_VSI_DOWN, vsi->state))
-		wr32(hw, INTREG(vector - 1), txval);
-
-	if (q_vector->itr_countdown)
-		q_vector->itr_countdown--;
-	else
-		q_vector->itr_countdown = ITR_COUNTDOWN_START;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -3082,11 +2679,7 @@ static void i40e_atr(struct i40e_ring *tx_ring, struct sk_buff *skb,
 	if (!(pf->flags & I40E_FLAG_FD_ATR_ENABLED))
 		return;
 
-<<<<<<< HEAD
 	if (test_bit(__I40E_FD_ATR_AUTO_DISABLED, pf->state))
-=======
-	if (pf->flags & I40E_FLAG_FD_ATR_AUTO_DISABLED)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	/* if sampling is disabled do nothing */
@@ -3126,11 +2719,7 @@ static void i40e_atr(struct i40e_ring *tx_ring, struct sk_buff *skb,
 	th = (struct tcphdr *)(hdr.network + hlen);
 
 	/* Due to lack of space, no more new filters can be programmed */
-<<<<<<< HEAD
 	if (th->syn && test_bit(__I40E_FD_ATR_AUTO_DISABLED, pf->state))
-=======
-	if (th->syn && (pf->flags & I40E_FLAG_FD_ATR_AUTO_DISABLED))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	if (pf->flags & I40E_FLAG_HW_ATR_EVICT_ENABLED) {
 		/* HW ATR eviction will take care of removing filters on FIN
@@ -3848,47 +3437,12 @@ static inline int i40e_tx_map(struct i40e_ring *tx_ring, struct sk_buff *skb,
 	/* write last descriptor with EOP bit */
 	td_cmd |= I40E_TX_DESC_CMD_EOP;
 
-<<<<<<< HEAD
 	/* We OR these values together to check both against 4 (WB_STRIDE)
 	 * below. This is safe since we don't re-use desc_count afterwards.
 	 */
 	desc_count |= ++tx_ring->packet_stride;
 
 	if (desc_count >= WB_STRIDE) {
-=======
-	/* We can OR these values together as they both are checked against
-	 * 4 below and at this point desc_count will be used as a boolean value
-	 * after this if/else block.
-	 */
-	desc_count |= ++tx_ring->packet_stride;
-
-	/* Algorithm to optimize tail and RS bit setting:
-	 * if queue is stopped
-	 *	mark RS bit
-	 *	reset packet counter
-	 * else if xmit_more is supported and is true
-	 *	advance packet counter to 4
-	 *	reset desc_count to 0
-	 *
-	 * if desc_count >= 4
-	 *	mark RS bit
-	 *	reset packet counter
-	 * if desc_count > 0
-	 *	update tail
-	 *
-	 * Note: If there are less than 4 descriptors
-	 * pending and interrupts were disabled the service task will
-	 * trigger a force WB.
-	 */
-	if (netif_xmit_stopped(txring_txq(tx_ring))) {
-		goto do_rs;
-	} else if (skb->xmit_more) {
-		/* set stride to arm on next packet and reset desc_count */
-		tx_ring->packet_stride = WB_STRIDE;
-		desc_count = 0;
-	} else if (desc_count >= WB_STRIDE) {
-do_rs:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* write last descriptor with RS bit set */
 		td_cmd |= I40E_TX_DESC_CMD_RS;
 		tx_ring->packet_stride = 0;
@@ -3909,11 +3463,7 @@ do_rs:
 	first->next_to_watch = tx_desc;
 
 	/* notify HW of packet */
-<<<<<<< HEAD
 	if (netif_xmit_stopped(txring_txq(tx_ring)) || !skb->xmit_more) {
-=======
-	if (desc_count) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		writel(i, tx_ring->tail);
 
 		/* we need this if more than one processor can write to our tail
@@ -3948,7 +3498,6 @@ dma_error:
  * @xdp: data to transmit
  * @xdp_ring: XDP Tx ring
  **/
-<<<<<<< HEAD
 static int i40e_xmit_xdp_ring(struct xdp_frame *xdpf,
 			      struct i40e_ring *xdp_ring)
 {
@@ -3956,15 +3505,6 @@ static int i40e_xmit_xdp_ring(struct xdp_frame *xdpf,
 	struct i40e_tx_buffer *tx_bi;
 	struct i40e_tx_desc *tx_desc;
 	u32 size = xdpf->len;
-=======
-static int i40e_xmit_xdp_ring(struct xdp_buff *xdp,
-			      struct i40e_ring *xdp_ring)
-{
-	u32 size = xdp->data_end - xdp->data;
-	u16 i = xdp_ring->next_to_use;
-	struct i40e_tx_buffer *tx_bi;
-	struct i40e_tx_desc *tx_desc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dma_addr_t dma;
 
 	if (!unlikely(I40E_DESC_UNUSED(xdp_ring))) {
@@ -3972,22 +3512,14 @@ static int i40e_xmit_xdp_ring(struct xdp_buff *xdp,
 		return I40E_XDP_CONSUMED;
 	}
 
-<<<<<<< HEAD
 	dma = dma_map_single(xdp_ring->dev, xdpf->data, size, DMA_TO_DEVICE);
-=======
-	dma = dma_map_single(xdp_ring->dev, xdp->data, size, DMA_TO_DEVICE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dma_mapping_error(xdp_ring->dev, dma))
 		return I40E_XDP_CONSUMED;
 
 	tx_bi = &xdp_ring->tx_bi[i];
 	tx_bi->bytecount = size;
 	tx_bi->gso_segs = 1;
-<<<<<<< HEAD
 	tx_bi->xdpf = xdpf;
-=======
-	tx_bi->raw_buf = xdp->data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* record length, and DMA address */
 	dma_unmap_len_set(tx_bi, len, size);
@@ -4155,7 +3687,6 @@ netdev_tx_t i40e_lan_xmit_frame(struct sk_buff *skb, struct net_device *netdev)
 
 	return i40e_xmit_frame_ring(skb, tx_ring);
 }
-<<<<<<< HEAD
 
 /**
  * i40e_xdp_xmit - Implements ndo_xdp_xmit
@@ -4205,5 +3736,3 @@ int i40e_xdp_xmit(struct net_device *dev, int n, struct xdp_frame **frames,
 
 	return n - drops;
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -121,11 +121,7 @@ static int qxlhw_handle_to_bo(struct drm_file *file_priv, uint64_t handle,
 	qobj = gem_to_qxl_bo(gobj);
 
 	ret = qxl_release_list_add(release, qobj);
-<<<<<<< HEAD
 	drm_gem_object_put_unlocked(gobj);
-=======
-	drm_gem_object_unreference_unlocked(gobj);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -186,15 +182,9 @@ static int qxl_process_single_command(struct qxl_device *qdev,
 		goto out_free_reloc;
 
 	/* TODO copy slow path code from i915 */
-<<<<<<< HEAD
 	fb_cmd = qxl_bo_kmap_atomic_page(qdev, cmd_bo, (release->release_offset & PAGE_MASK));
 	unwritten = __copy_from_user_inatomic_nocache
 		(fb_cmd + sizeof(union qxl_release_info) + (release->release_offset & ~PAGE_MASK),
-=======
-	fb_cmd = qxl_bo_kmap_atomic_page(qdev, cmd_bo, (release->release_offset & PAGE_SIZE));
-	unwritten = __copy_from_user_inatomic_nocache
-		(fb_cmd + sizeof(union qxl_release_info) + (release->release_offset & ~PAGE_SIZE),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 u64_to_user_ptr(cmd->command), cmd->command_size);
 
 	{
@@ -267,16 +257,11 @@ static int qxl_process_single_command(struct qxl_device *qdev,
 			apply_surf_reloc(qdev, &reloc_info[i]);
 	}
 
-<<<<<<< HEAD
 	ret = qxl_push_command_ring_release(qdev, release, cmd->type, true);
 	if (ret)
 		qxl_release_backoff_reserve_list(release);
 	else
 		qxl_release_fence_buffer_objects(release);
-=======
-	qxl_release_fence_buffer_objects(release);
-	ret = qxl_push_command_ring_release(qdev, release, cmd->type, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 out_free_bos:
 out_free_release:
@@ -324,10 +309,7 @@ static int qxl_update_area_ioctl(struct drm_device *dev, void *data,
 	int ret;
 	struct drm_gem_object *gobj = NULL;
 	struct qxl_bo *qobj = NULL;
-<<<<<<< HEAD
 	struct ttm_operation_ctx ctx = { true, false };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (update_area->left >= update_area->right ||
 	    update_area->top >= update_area->bottom)
@@ -345,12 +327,7 @@ static int qxl_update_area_ioctl(struct drm_device *dev, void *data,
 
 	if (!qobj->pin_count) {
 		qxl_ttm_placement_from_domain(qobj, qobj->type, false);
-<<<<<<< HEAD
 		ret = ttm_bo_validate(&qobj->tbo, &qobj->placement, &ctx);
-=======
-		ret = ttm_bo_validate(&qobj->tbo, &qobj->placement,
-				      true, false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (unlikely(ret))
 			goto out;
 	}
@@ -366,11 +343,7 @@ out2:
 	qxl_bo_unreserve(qobj);
 
 out:
-<<<<<<< HEAD
 	drm_gem_object_put_unlocked(gobj);
-=======
-	drm_gem_object_unreference_unlocked(gobj);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 

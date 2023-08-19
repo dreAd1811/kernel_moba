@@ -5,7 +5,3 @@ hdma_mgmt-objs	 := hidma_mgmt.o hidma_mgmt_sys.o
 obj-$(CONFIG_QCOM_HIDMA) +=  hdma.o
 hdma-objs        := hidma_ll.o hidma.o hidma_dbg.o
 obj-$(CONFIG_QCOM_GPI_DMA) += gpi.o
-<<<<<<< HEAD
-=======
-obj-$(CONFIG_QCOM_PCI_EDMA) += pci-edma.o
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

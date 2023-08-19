@@ -96,11 +96,7 @@ int emac_mii_reset_gpcs(struct mii_phy *phy)
 	if ((val & BMCR_ISOLATE) && limit > 0)
 		gpcs_phy_write(phy, MII_BMCR, val & ~BMCR_ISOLATE);
 
-<<<<<<< HEAD
 	if (limit > 0 && phy->mode == PHY_INTERFACE_MODE_SGMII) {
-=======
-	if (limit > 0 && phy->mode == PHY_MODE_SGMII) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Configure GPCS interface to recommended setting for SGMII */
 		gpcs_phy_write(phy, 0x04, 0x8120); /* AsymPause, FDX */
 		gpcs_phy_write(phy, 0x07, 0x2801); /* msg_pg, toggle */
@@ -317,7 +313,6 @@ static int cis8201_init(struct mii_phy *phy)
 	epcr &= ~EPCR_MODE_MASK;
 
 	switch (phy->mode) {
-<<<<<<< HEAD
 	case PHY_INTERFACE_MODE_TBI:
 		epcr |= EPCR_TBI_MODE;
 		break;
@@ -328,18 +323,6 @@ static int cis8201_init(struct mii_phy *phy)
 		epcr |= EPCR_GMII_MODE;
 		break;
 	case PHY_INTERFACE_MODE_RGMII:
-=======
-	case PHY_MODE_TBI:
-		epcr |= EPCR_TBI_MODE;
-		break;
-	case PHY_MODE_RTBI:
-		epcr |= EPCR_RTBI_MODE;
-		break;
-	case PHY_MODE_GMII:
-		epcr |= EPCR_GMII_MODE;
-		break;
-	case PHY_MODE_RGMII:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		epcr |= EPCR_RGMII_MODE;
 	}

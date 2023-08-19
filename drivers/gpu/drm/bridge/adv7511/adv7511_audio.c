@@ -20,7 +20,6 @@ static void adv7511_calc_cts_n(unsigned int f_tmds, unsigned int fs,
 {
 	switch (fs) {
 	case 32000:
-<<<<<<< HEAD
 		*n = 4096;
 		break;
 	case 44100:
@@ -28,17 +27,6 @@ static void adv7511_calc_cts_n(unsigned int f_tmds, unsigned int fs,
 		break;
 	case 48000:
 		*n = 6144;
-=======
-	case 48000:
-	case 96000:
-	case 192000:
-		*n = fs * 128 / 1000;
-		break;
-	case 44100:
-	case 88200:
-	case 176400:
-		*n = fs * 128 / 900;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 
@@ -222,11 +210,7 @@ static const struct hdmi_codec_ops adv7511_codec_ops = {
 	.get_dai_id	= adv7511_hdmi_i2s_get_dai_id,
 };
 
-<<<<<<< HEAD
 static const struct hdmi_codec_pdata codec_data = {
-=======
-static struct hdmi_codec_pdata codec_data = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ops = &adv7511_codec_ops,
 	.max_i2s_channels = 2,
 	.i2s = 1,

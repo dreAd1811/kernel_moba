@@ -17,13 +17,9 @@ available subsections can be seen below.
    basics
    infrastructure
    pm/index
-<<<<<<< HEAD
    clk
    device-io
    device_connection
-=======
-   device-io
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    dma-buf
    device_link
    message-based
@@ -36,18 +32,12 @@ available subsections can be seen below.
    pci
    spi
    i2c
-<<<<<<< HEAD
    i3c/index
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    hsi
    edac
    scsi
    libata
-<<<<<<< HEAD
    target
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    mtdnand
    miscellaneous
    w1
@@ -58,17 +48,12 @@ available subsections can be seen below.
    uio-howto
    firmware/index
    pinctl
-<<<<<<< HEAD
    gpio/index
    misc_devices
    dmaengine/index
    slimbus
    soundwire/index
    fpga/index
-=======
-   gpio
-   misc_devices
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 .. only::  subproject and html
 

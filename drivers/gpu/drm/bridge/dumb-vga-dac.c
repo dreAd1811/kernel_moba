@@ -11,10 +11,7 @@
  */
 
 #include <linux/module.h>
-<<<<<<< HEAD
 #include <linux/of_device.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/of_graph.h>
 #include <linux/regulator/consumer.h>
 
@@ -58,11 +55,7 @@ static int dumb_vga_get_modes(struct drm_connector *connector)
 		goto fallback;
 	}
 
-<<<<<<< HEAD
 	drm_connector_update_edid_property(connector, edid);
-=======
-	drm_mode_connector_update_edid_property(connector, edid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = drm_add_edid_modes(connector, edid);
 	kfree(edid);
 	return ret;
@@ -129,11 +122,7 @@ static int dumb_vga_attach(struct drm_bridge *bridge)
 		return ret;
 	}
 
-<<<<<<< HEAD
 	drm_connector_attach_encoder(&vga->connector,
-=======
-	drm_mode_connector_attach_encoder(&vga->connector,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  bridge->encoder);
 
 	return 0;
@@ -218,10 +207,7 @@ static int dumb_vga_probe(struct platform_device *pdev)
 
 	vga->bridge.funcs = &dumb_vga_bridge_funcs;
 	vga->bridge.of_node = pdev->dev.of_node;
-<<<<<<< HEAD
 	vga->bridge.timings = of_device_get_match_data(&pdev->dev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	drm_bridge_add(&vga->bridge);
 
@@ -240,7 +226,6 @@ static int dumb_vga_remove(struct platform_device *pdev)
 	return 0;
 }
 
-<<<<<<< HEAD
 /*
  * We assume the ADV7123 DAC is the "default" for historical reasons
  * Information taken from the ADV7123 datasheet, revision D.
@@ -296,12 +281,6 @@ static const struct of_device_id dumb_vga_match[] = {
 		.compatible = "ti,ths8134",
 		.data = &ti_ths8134_dac_timings,
 	},
-=======
-static const struct of_device_id dumb_vga_match[] = {
-	{ .compatible = "dumb-vga-dac" },
-	{ .compatible = "adi,adv7123" },
-	{ .compatible = "ti,ths8135" },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{},
 };
 MODULE_DEVICE_TABLE(of, dumb_vga_match);

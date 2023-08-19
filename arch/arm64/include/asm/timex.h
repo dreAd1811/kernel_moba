@@ -22,11 +22,7 @@
  * Use the current timer as a cycle counter since this is what we use for
  * the delay loop.
  */
-<<<<<<< HEAD
 #define get_cycles()	arch_timer_read_counter()
-=======
-#define get_cycles()	arch_counter_get_cntvct()
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm-generic/timex.h>
 

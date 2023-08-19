@@ -443,11 +443,7 @@ union zip_corex_bist_status {
 
 static inline u64 ZIP_COREX_BIST_STATUS(u64 param1)
 {
-<<<<<<< HEAD
 	if (param1 <= 1)
-=======
-	if (((param1 <= 1)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0x0520ull + (param1 & 1) * 0x8ull;
 	pr_err("ZIP_COREX_BIST_STATUS: %llu\n", param1);
 	return 0;
@@ -541,11 +537,7 @@ union zip_dbg_corex_inst {
 
 static inline u64 ZIP_DBG_COREX_INST(u64 param1)
 {
-<<<<<<< HEAD
 	if (param1 <= 1)
-=======
-	if (((param1 <= 1)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0x0640ull + (param1 & 1) * 0x8ull;
 	pr_err("ZIP_DBG_COREX_INST: %llu\n", param1);
 	return 0;
@@ -576,11 +568,7 @@ union zip_dbg_corex_sta {
 
 static inline u64 ZIP_DBG_COREX_STA(u64 param1)
 {
-<<<<<<< HEAD
 	if (param1 <= 1)
-=======
-	if (((param1 <= 1)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0x0680ull + (param1 & 1) * 0x8ull;
 	pr_err("ZIP_DBG_COREX_STA: %llu\n", param1);
 	return 0;
@@ -611,11 +599,7 @@ union zip_dbg_quex_sta {
 
 static inline u64 ZIP_DBG_QUEX_STA(u64 param1)
 {
-<<<<<<< HEAD
 	if (param1 <= 7)
-=======
-	if (((param1 <= 7)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0x1800ull + (param1 & 7) * 0x8ull;
 	pr_err("ZIP_DBG_QUEX_STA: %llu\n", param1);
 	return 0;
@@ -833,11 +817,7 @@ union zip_msix_pbax {
 
 static inline u64 ZIP_MSIX_PBAX(u64 param1)
 {
-<<<<<<< HEAD
 	if (param1 == 0)
-=======
-	if (((param1 == 0)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0x0000838000FF0000ull;
 	pr_err("ZIP_MSIX_PBAX: %llu\n", param1);
 	return 0;
@@ -866,11 +846,7 @@ union zip_msix_vecx_addr {
 
 static inline u64 ZIP_MSIX_VECX_ADDR(u64 param1)
 {
-<<<<<<< HEAD
 	if (param1 <= 17)
-=======
-	if (((param1 <= 17)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0x0000838000F00000ull + (param1 & 31) * 0x10ull;
 	pr_err("ZIP_MSIX_VECX_ADDR: %llu\n", param1);
 	return 0;
@@ -899,11 +875,7 @@ union zip_msix_vecx_ctl {
 
 static inline u64 ZIP_MSIX_VECX_CTL(u64 param1)
 {
-<<<<<<< HEAD
 	if (param1 <= 17)
-=======
-	if (((param1 <= 17)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0x0000838000F00008ull + (param1 & 31) * 0x10ull;
 	pr_err("ZIP_MSIX_VECX_CTL: %llu\n", param1);
 	return 0;
@@ -928,11 +900,7 @@ union zip_quex_done {
 
 static inline u64 ZIP_QUEX_DONE(u64 param1)
 {
-<<<<<<< HEAD
 	if (param1 <= 7)
-=======
-	if (((param1 <= 7)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0x2000ull + (param1 & 7) * 0x8ull;
 	pr_err("ZIP_QUEX_DONE: %llu\n", param1);
 	return 0;
@@ -957,11 +925,7 @@ union zip_quex_done_ack {
 
 static inline u64 ZIP_QUEX_DONE_ACK(u64 param1)
 {
-<<<<<<< HEAD
 	if (param1 <= 7)
-=======
-	if (((param1 <= 7)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0x2200ull + (param1 & 7) * 0x8ull;
 	pr_err("ZIP_QUEX_DONE_ACK: %llu\n", param1);
 	return 0;
@@ -986,11 +950,7 @@ union zip_quex_done_ena_w1c {
 
 static inline u64 ZIP_QUEX_DONE_ENA_W1C(u64 param1)
 {
-<<<<<<< HEAD
 	if (param1 <= 7)
-=======
-	if (((param1 <= 7)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0x2600ull + (param1 & 7) * 0x8ull;
 	pr_err("ZIP_QUEX_DONE_ENA_W1C: %llu\n", param1);
 	return 0;
@@ -1015,11 +975,7 @@ union zip_quex_done_ena_w1s {
 
 static inline u64 ZIP_QUEX_DONE_ENA_W1S(u64 param1)
 {
-<<<<<<< HEAD
 	if (param1 <= 7)
-=======
-	if (((param1 <= 7)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0x2400ull + (param1 & 7) * 0x8ull;
 	pr_err("ZIP_QUEX_DONE_ENA_W1S: %llu\n", param1);
 	return 0;
@@ -1048,11 +1004,7 @@ union zip_quex_done_wait {
 
 static inline u64 ZIP_QUEX_DONE_WAIT(u64 param1)
 {
-<<<<<<< HEAD
 	if (param1 <= 7)
-=======
-	if (((param1 <= 7)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0x2800ull + (param1 & 7) * 0x8ull;
 	pr_err("ZIP_QUEX_DONE_WAIT: %llu\n", param1);
 	return 0;
@@ -1077,11 +1029,7 @@ union zip_quex_doorbell {
 
 static inline u64 ZIP_QUEX_DOORBELL(u64 param1)
 {
-<<<<<<< HEAD
 	if (param1 <= 7)
-=======
-	if (((param1 <= 7)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0x4000ull + (param1 & 7) * 0x8ull;
 	pr_err("ZIP_QUEX_DOORBELL: %llu\n", param1);
 	return 0;
@@ -1110,11 +1058,7 @@ union zip_quex_err_ena_w1c {
 
 static inline u64 ZIP_QUEX_ERR_ENA_W1C(u64 param1)
 {
-<<<<<<< HEAD
 	if (param1 <= 7)
-=======
-	if (((param1 <= 7)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0x3600ull + (param1 & 7) * 0x8ull;
 	pr_err("ZIP_QUEX_ERR_ENA_W1C: %llu\n", param1);
 	return 0;
@@ -1143,11 +1087,7 @@ union zip_quex_err_ena_w1s {
 
 static inline u64 ZIP_QUEX_ERR_ENA_W1S(u64 param1)
 {
-<<<<<<< HEAD
 	if (param1 <= 7)
-=======
-	if (((param1 <= 7)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0x3400ull + (param1 & 7) * 0x8ull;
 	pr_err("ZIP_QUEX_ERR_ENA_W1S: %llu\n", param1);
 	return 0;
@@ -1180,11 +1120,7 @@ union zip_quex_err_int {
 
 static inline u64 ZIP_QUEX_ERR_INT(u64 param1)
 {
-<<<<<<< HEAD
 	if (param1 <= 7)
-=======
-	if (((param1 <= 7)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0x3000ull + (param1 & 7) * 0x8ull;
 	pr_err("ZIP_QUEX_ERR_INT: %llu\n", param1);
 	return 0;
@@ -1214,11 +1150,7 @@ union zip_quex_err_int_w1s {
 
 static inline u64 ZIP_QUEX_ERR_INT_W1S(u64 param1)
 {
-<<<<<<< HEAD
 	if (param1 <= 7)
-=======
-	if (((param1 <= 7)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0x3200ull + (param1 & 7) * 0x8ull;
 	pr_err("ZIP_QUEX_ERR_INT_W1S: %llu\n", param1);
 	return 0;
@@ -1247,11 +1179,7 @@ union zip_quex_gcfg {
 
 static inline u64 ZIP_QUEX_GCFG(u64 param1)
 {
-<<<<<<< HEAD
 	if (param1 <= 7)
-=======
-	if (((param1 <= 7)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0x1A00ull + (param1 & 7) * 0x8ull;
 	pr_err("ZIP_QUEX_GCFG: %llu\n", param1);
 	return 0;
@@ -1276,11 +1204,7 @@ union zip_quex_map {
 
 static inline u64 ZIP_QUEX_MAP(u64 param1)
 {
-<<<<<<< HEAD
 	if (param1 <= 7)
-=======
-	if (((param1 <= 7)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0x1400ull + (param1 & 7) * 0x8ull;
 	pr_err("ZIP_QUEX_MAP: %llu\n", param1);
 	return 0;
@@ -1312,11 +1236,7 @@ union zip_quex_sbuf_addr {
 
 static inline u64 ZIP_QUEX_SBUF_ADDR(u64 param1)
 {
-<<<<<<< HEAD
 	if (param1 <= 7)
-=======
-	if (((param1 <= 7)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0x1000ull + (param1 & 7) * 0x8ull;
 	pr_err("ZIP_QUEX_SBUF_ADDR: %llu\n", param1);
 	return 0;
@@ -1356,11 +1276,7 @@ union zip_quex_sbuf_ctl {
 
 static inline u64 ZIP_QUEX_SBUF_CTL(u64 param1)
 {
-<<<<<<< HEAD
 	if (param1 <= 7)
-=======
-	if (((param1 <= 7)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0x1200ull + (param1 & 7) * 0x8ull;
 	pr_err("ZIP_QUEX_SBUF_CTL: %llu\n", param1);
 	return 0;

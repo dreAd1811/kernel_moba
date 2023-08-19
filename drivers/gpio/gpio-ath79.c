@@ -51,11 +51,7 @@ static u32 ath79_gpio_read(struct ath79_gpio_ctrl *ctrl, unsigned reg)
 static void ath79_gpio_write(struct ath79_gpio_ctrl *ctrl,
 			unsigned reg, u32 val)
 {
-<<<<<<< HEAD
 	writel(val, ctrl->base + reg);
-=======
-	return writel(val, ctrl->base + reg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool ath79_gpio_update_bits(
@@ -136,10 +132,7 @@ static int ath79_gpio_irq_set_type(struct irq_data *data,
 
 	case IRQ_TYPE_LEVEL_HIGH:
 		polarity |= mask;
-<<<<<<< HEAD
 		/* fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case IRQ_TYPE_LEVEL_LOW:
 		type |= mask;
 		break;
@@ -216,11 +209,7 @@ static void ath79_gpio_irq_handler(struct irq_desc *desc)
 	if (pending) {
 		for_each_set_bit(irq, &pending, gc->ngpio)
 			generic_handle_irq(
-<<<<<<< HEAD
 				irq_linear_revmap(gc->irq.domain, irq));
-=======
-				irq_linear_revmap(gc->irqdomain, irq));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	chained_irq_exit(irqchip, desc);
@@ -269,11 +258,8 @@ static int ath79_gpio_probe(struct platform_device *pdev)
 	}
 
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-<<<<<<< HEAD
 	if (!res)
 		return -EINVAL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ctrl->base = devm_ioremap_nocache(
 		&pdev->dev, res->start, resource_size(res));
 	if (!ctrl->base)

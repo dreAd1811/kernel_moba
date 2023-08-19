@@ -1,13 +1,8 @@
 /*
  * dwmac-stm32.c - DWMAC Specific Glue layer for STM32 MCU
  *
-<<<<<<< HEAD
  * Copyright (C) STMicroelectronics SA 2017
  * Author:  Alexandre Torgue <alexandre.torgue@st.com> for STMicroelectronics.
-=======
- * Copyright (C) Alexandre Torgue 2015
- * Author:  Alexandre Torgue <alexandre.torgue@gmail.com>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * License terms:  GNU General Public License (GPL), version 2
  *
  */
@@ -21,17 +16,13 @@
 #include <linux/of_net.h>
 #include <linux/phy.h>
 #include <linux/platform_device.h>
-<<<<<<< HEAD
 #include <linux/pm_wakeirq.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/regmap.h>
 #include <linux/slab.h>
 #include <linux/stmmac.h>
 
 #include "stmmac_platform.h"
 
-<<<<<<< HEAD
 #define SYSCFG_MCU_ETH_MASK		BIT(23)
 #define SYSCFG_MP1_ETH_MASK		GENMASK(23, 16)
 
@@ -43,14 +34,10 @@
 #define SYSCFG_PMCR_ETH_SEL_GMII	0
 #define SYSCFG_MCU_ETH_SEL_MII		0
 #define SYSCFG_MCU_ETH_SEL_RMII		1
-=======
-#define MII_PHY_SEL_MASK	BIT(23)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct stm32_dwmac {
 	struct clk *clk_tx;
 	struct clk *clk_rx;
-<<<<<<< HEAD
 	struct clk *clk_eth_ck;
 	struct clk *clk_ethstp;
 	struct clk *syscfg_clk;
@@ -70,17 +57,11 @@ struct stm32_ops {
 	int (*parse_data)(struct stm32_dwmac *dwmac,
 			  struct device *dev);
 	u32 syscfg_eth_mask;
-=======
-	u32 mode_reg;		/* MAC glue-logic mode register */
-	struct regmap *regmap;
-	u32 speed;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int stm32_dwmac_init(struct plat_stmmacenet_data *plat_dat)
 {
 	struct stm32_dwmac *dwmac = plat_dat->bsp_priv;
-<<<<<<< HEAD
 	int ret;
 
 	if (dwmac->ops->set_mode) {
@@ -88,22 +69,11 @@ static int stm32_dwmac_init(struct plat_stmmacenet_data *plat_dat)
 		if (ret)
 			return ret;
 	}
-=======
-	u32 reg = dwmac->mode_reg;
-	u32 val;
-	int ret;
-
-	val = (plat_dat->interface == PHY_INTERFACE_MODE_MII) ? 0 : 1;
-	ret = regmap_update_bits(dwmac->regmap, reg, MII_PHY_SEL_MASK, val);
-	if (ret)
-		return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = clk_prepare_enable(dwmac->clk_tx);
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	if (!dwmac->dev->power.is_suspended) {
 		ret = clk_prepare_enable(dwmac->clk_rx);
 		if (ret) {
@@ -119,16 +89,10 @@ static int stm32_dwmac_init(struct plat_stmmacenet_data *plat_dat)
 			clk_disable_unprepare(dwmac->clk_tx);
 		}
 	}
-=======
-	ret = clk_prepare_enable(dwmac->clk_rx);
-	if (ret)
-		clk_disable_unprepare(dwmac->clk_tx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
 
-<<<<<<< HEAD
 static int stm32mp1_clk_prepare(struct stm32_dwmac *dwmac, bool prepare)
 {
 	int ret = 0;
@@ -219,18 +183,13 @@ static int stm32mcu_set_mode(struct plat_stmmacenet_data *plat_dat)
 				 dwmac->ops->syscfg_eth_mask, val);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void stm32_dwmac_clk_disable(struct stm32_dwmac *dwmac)
 {
 	clk_disable_unprepare(dwmac->clk_tx);
 	clk_disable_unprepare(dwmac->clk_rx);
-<<<<<<< HEAD
 
 	if (dwmac->ops->clk_prepare)
 		dwmac->ops->clk_prepare(dwmac, false);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int stm32_dwmac_parse_data(struct stm32_dwmac *dwmac,
@@ -242,7 +201,6 @@ static int stm32_dwmac_parse_data(struct stm32_dwmac *dwmac,
 	/*  Get TX/RX clocks */
 	dwmac->clk_tx = devm_clk_get(dev, "mac-clk-tx");
 	if (IS_ERR(dwmac->clk_tx)) {
-<<<<<<< HEAD
 		dev_err(dev, "No ETH Tx clock provided...\n");
 		return PTR_ERR(dwmac->clk_tx);
 	}
@@ -259,17 +217,6 @@ static int stm32_dwmac_parse_data(struct stm32_dwmac *dwmac,
 			return err;
 	}
 
-=======
-		dev_err(dev, "No tx clock provided...\n");
-		return PTR_ERR(dwmac->clk_tx);
-	}
-	dwmac->clk_rx = devm_clk_get(dev, "mac-clk-rx");
-	if (IS_ERR(dwmac->clk_rx)) {
-		dev_err(dev, "No rx clock provided...\n");
-		return PTR_ERR(dwmac->clk_rx);
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Get mode register */
 	dwmac->regmap = syscon_regmap_lookup_by_phandle(np, "st,syscon");
 	if (IS_ERR(dwmac->regmap))
@@ -282,7 +229,6 @@ static int stm32_dwmac_parse_data(struct stm32_dwmac *dwmac,
 	return err;
 }
 
-<<<<<<< HEAD
 static int stm32mp1_parse_data(struct stm32_dwmac *dwmac,
 			       struct device *dev)
 {
@@ -317,17 +263,12 @@ static int stm32mp1_parse_data(struct stm32_dwmac *dwmac,
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int stm32_dwmac_probe(struct platform_device *pdev)
 {
 	struct plat_stmmacenet_data *plat_dat;
 	struct stmmac_resources stmmac_res;
 	struct stm32_dwmac *dwmac;
-<<<<<<< HEAD
 	const struct stm32_ops *data;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	ret = stmmac_get_platform_resources(pdev, &stmmac_res);
@@ -344,7 +285,6 @@ static int stm32_dwmac_probe(struct platform_device *pdev)
 		goto err_remove_config_dt;
 	}
 
-<<<<<<< HEAD
 	data = of_device_get_match_data(&pdev->dev);
 	if (!data) {
 		dev_err(&pdev->dev, "no of match data provided\n");
@@ -355,8 +295,6 @@ static int stm32_dwmac_probe(struct platform_device *pdev)
 	dwmac->ops = data;
 	dwmac->dev = &pdev->dev;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = stm32_dwmac_parse_data(dwmac, &pdev->dev);
 	if (ret) {
 		dev_err(&pdev->dev, "Unable to parse OF data\n");
@@ -394,7 +332,6 @@ static int stm32_dwmac_remove(struct platform_device *pdev)
 	return ret;
 }
 
-<<<<<<< HEAD
 static int stm32mp1_suspend(struct stm32_dwmac *dwmac)
 {
 	int ret = 0;
@@ -424,14 +361,11 @@ static int stm32mcu_suspend(struct stm32_dwmac *dwmac)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_PM_SLEEP
 static int stm32_dwmac_suspend(struct device *dev)
 {
 	struct net_device *ndev = dev_get_drvdata(dev);
 	struct stmmac_priv *priv = netdev_priv(ndev);
-<<<<<<< HEAD
 	struct stm32_dwmac *dwmac = priv->plat->bsp_priv;
 
 	int ret;
@@ -440,12 +374,6 @@ static int stm32_dwmac_suspend(struct device *dev)
 
 	if (dwmac->ops->suspend)
 		ret = dwmac->ops->suspend(dwmac);
-=======
-	int ret;
-
-	ret = stmmac_suspend(dev);
-	stm32_dwmac_clk_disable(priv->plat->bsp_priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -454,17 +382,12 @@ static int stm32_dwmac_resume(struct device *dev)
 {
 	struct net_device *ndev = dev_get_drvdata(dev);
 	struct stmmac_priv *priv = netdev_priv(ndev);
-<<<<<<< HEAD
 	struct stm32_dwmac *dwmac = priv->plat->bsp_priv;
 	int ret;
 
 	if (dwmac->ops->resume)
 		dwmac->ops->resume(dwmac);
 
-=======
-	int ret;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = stm32_dwmac_init(priv->plat);
 	if (ret)
 		return ret;
@@ -478,7 +401,6 @@ static int stm32_dwmac_resume(struct device *dev)
 static SIMPLE_DEV_PM_OPS(stm32_dwmac_pm_ops,
 	stm32_dwmac_suspend, stm32_dwmac_resume);
 
-<<<<<<< HEAD
 static struct stm32_ops stm32mcu_dwmac_data = {
 	.set_mode = stm32mcu_set_mode,
 	.suspend = stm32mcu_suspend,
@@ -497,10 +419,6 @@ static struct stm32_ops stm32mp1_dwmac_data = {
 static const struct of_device_id stm32_dwmac_match[] = {
 	{ .compatible = "st,stm32-dwmac", .data = &stm32mcu_dwmac_data},
 	{ .compatible = "st,stm32mp1-dwmac", .data = &stm32mp1_dwmac_data},
-=======
-static const struct of_device_id stm32_dwmac_match[] = {
-	{ .compatible = "st,stm32-dwmac"},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ }
 };
 MODULE_DEVICE_TABLE(of, stm32_dwmac_match);
@@ -517,10 +435,6 @@ static struct platform_driver stm32_dwmac_driver = {
 module_platform_driver(stm32_dwmac_driver);
 
 MODULE_AUTHOR("Alexandre Torgue <alexandre.torgue@gmail.com>");
-<<<<<<< HEAD
 MODULE_AUTHOR("Christophe Roullier <christophe.roullier@st.com>");
 MODULE_DESCRIPTION("STMicroelectronics STM32 DWMAC Specific Glue layer");
-=======
-MODULE_DESCRIPTION("STMicroelectronics MCU DWMAC Specific Glue layer");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_LICENSE("GPL v2");

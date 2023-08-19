@@ -36,28 +36,13 @@
 #include <asm/mmu.h>
 #include <asm/copro.h>
 #include <asm/hugetlb.h>
-<<<<<<< HEAD
 #include <asm/mmu_context.h>
 
 static DEFINE_SPINLOCK(slice_convert_lock);
-=======
-
-static DEFINE_SPINLOCK(slice_convert_lock);
-/*
- * One bit per slice. We have lower slices which cover 256MB segments
- * upto 4G range. That gets us 16 low slices. For the rest we track slices
- * in 1TB size.
- */
-struct slice_mask {
-	u64 low_slices;
-	DECLARE_BITMAP(high_slices, SLICE_NUM_HIGH);
-};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef DEBUG
 int _slice_debug = 1;
 
-<<<<<<< HEAD
 static void slice_print_mask(const char *label, const struct slice_mask *mask)
 {
 	if (!_slice_debug)
@@ -66,30 +51,17 @@ static void slice_print_mask(const char *label, const struct slice_mask *mask)
 			(int)SLICE_NUM_LOW, &mask->low_slices);
 	pr_devel("%s high_slice: %*pbl\n", label,
 			(int)SLICE_NUM_HIGH, mask->high_slices);
-=======
-static void slice_print_mask(const char *label, struct slice_mask mask)
-{
-	if (!_slice_debug)
-		return;
-	pr_devel("%s low_slice: %*pbl\n", label, (int)SLICE_NUM_LOW, &mask.low_slices);
-	pr_devel("%s high_slice: %*pbl\n", label, (int)SLICE_NUM_HIGH, mask.high_slices);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #define slice_dbg(fmt...) do { if (_slice_debug) pr_devel(fmt); } while (0)
 
 #else
 
-<<<<<<< HEAD
 static void slice_print_mask(const char *label, const struct slice_mask *mask) {}
-=======
-static void slice_print_mask(const char *label, struct slice_mask mask) {}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define slice_dbg(fmt...)
 
 #endif
 
-<<<<<<< HEAD
 static inline bool slice_addr_is_low(unsigned long addr)
 {
 	u64 tmp = (u64)addr;
@@ -97,8 +69,6 @@ static inline bool slice_addr_is_low(unsigned long addr)
 	return tmp < SLICE_LOW_TOP;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void slice_range_to_mask(unsigned long start, unsigned long len,
 				struct slice_mask *ret)
 {
@@ -108,11 +78,7 @@ static void slice_range_to_mask(unsigned long start, unsigned long len,
 	if (SLICE_NUM_HIGH)
 		bitmap_zero(ret->high_slices, SLICE_NUM_HIGH);
 
-<<<<<<< HEAD
 	if (slice_addr_is_low(start)) {
-=======
-	if (start < SLICE_LOW_TOP) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		unsigned long mend = min(end,
 					 (unsigned long)(SLICE_LOW_TOP - 1));
 
@@ -120,11 +86,7 @@ static void slice_range_to_mask(unsigned long start, unsigned long len,
 			- (1u << GET_LOW_SLICE_INDEX(start));
 	}
 
-<<<<<<< HEAD
 	if (SLICE_NUM_HIGH && !slice_addr_is_low(end)) {
-=======
-	if ((start + len) > SLICE_LOW_TOP) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		unsigned long start_index = GET_HIGH_SLICE_INDEX(start);
 		unsigned long align_end = ALIGN(end, (1UL << SLICE_HIGH_SHIFT));
 		unsigned long count = GET_HIGH_SLICE_INDEX(align_end) - start_index;
@@ -138,11 +100,7 @@ static int slice_area_is_free(struct mm_struct *mm, unsigned long addr,
 {
 	struct vm_area_struct *vma;
 
-<<<<<<< HEAD
 	if ((mm->context.slb_addr_limit - len) < addr)
-=======
-	if ((mm->context.addr_limit - len) < addr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	vma = find_vma(mm, addr);
 	return (!vma || (addr + len) <= vm_start_gap(vma));
@@ -170,12 +128,8 @@ static int slice_high_has_vma(struct mm_struct *mm, unsigned long slice)
 	return !slice_area_is_free(mm, start, end - start);
 }
 
-<<<<<<< HEAD
 static void slice_mask_for_free(struct mm_struct *mm, struct slice_mask *ret,
 				unsigned long high_limit)
-=======
-static void slice_mask_for_free(struct mm_struct *mm, struct slice_mask *ret)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long i;
 
@@ -187,22 +141,14 @@ static void slice_mask_for_free(struct mm_struct *mm, struct slice_mask *ret)
 		if (!slice_low_has_vma(mm, i))
 			ret->low_slices |= 1u << i;
 
-<<<<<<< HEAD
 	if (slice_addr_is_low(high_limit - 1))
 		return;
 
 	for (i = 0; i < GET_HIGH_SLICE_INDEX(high_limit); i++)
-=======
-	if (mm->context.addr_limit <= SLICE_LOW_TOP)
-		return;
-
-	for (i = 0; i < GET_HIGH_SLICE_INDEX(mm->context.addr_limit); i++)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!slice_high_has_vma(mm, i))
 			__set_bit(i, ret->high_slices);
 }
 
-<<<<<<< HEAD
 #ifdef CONFIG_PPC_BOOK3S_64
 static struct slice_mask *slice_mask_for_size(struct mm_struct *mm, int psize)
 {
@@ -267,48 +213,6 @@ static bool slice_check_range_fits(struct mm_struct *mm,
 	}
 
 	return true;
-=======
-static void slice_mask_for_size(struct mm_struct *mm, int psize, struct slice_mask *ret)
-{
-	unsigned char *hpsizes;
-	int index, mask_index;
-	unsigned long i;
-	u64 lpsizes;
-
-	ret->low_slices = 0;
-	if (SLICE_NUM_HIGH)
-		bitmap_zero(ret->high_slices, SLICE_NUM_HIGH);
-
-	lpsizes = mm->context.low_slices_psize;
-	for (i = 0; i < SLICE_NUM_LOW; i++)
-		if (((lpsizes >> (i * 4)) & 0xf) == psize)
-			ret->low_slices |= 1u << i;
-
-	hpsizes = mm->context.high_slices_psize;
-	for (i = 0; i < GET_HIGH_SLICE_INDEX(mm->context.addr_limit); i++) {
-		mask_index = i & 0x1;
-		index = i >> 1;
-		if (((hpsizes[index] >> (mask_index * 4)) & 0xf) == psize)
-			__set_bit(i, ret->high_slices);
-	}
-}
-
-static int slice_check_fit(struct mm_struct *mm,
-			   struct slice_mask mask, struct slice_mask available)
-{
-	DECLARE_BITMAP(result, SLICE_NUM_HIGH);
-	unsigned long slice_count = GET_HIGH_SLICE_INDEX(mm->context.addr_limit);
-
-	if (!SLICE_NUM_HIGH)
-		return (mask.low_slices & available.low_slices) ==
-		       mask.low_slices;
-
-	bitmap_and(result, mask.high_slices,
-		   available.high_slices, slice_count);
-
-	return (mask.low_slices & available.low_slices) == mask.low_slices &&
-		bitmap_equal(result, mask.high_slices, slice_count);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void slice_flush_segments(void *parm)
@@ -328,7 +232,6 @@ static void slice_flush_segments(void *parm)
 #endif
 }
 
-<<<<<<< HEAD
 static void slice_convert(struct mm_struct *mm,
 				const struct slice_mask *mask, int psize)
 {
@@ -338,31 +241,18 @@ static void slice_convert(struct mm_struct *mm,
 	struct slice_mask *psize_mask, *old_mask;
 	unsigned long i, flags;
 	int old_psize;
-=======
-static void slice_convert(struct mm_struct *mm, struct slice_mask mask, int psize)
-{
-	int index, mask_index;
-	/* Write the new slice psize bits */
-	unsigned char *hpsizes;
-	u64 lpsizes;
-	unsigned long i, flags;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	slice_dbg("slice_convert(mm=%p, psize=%d)\n", mm, psize);
 	slice_print_mask(" mask", mask);
 
-<<<<<<< HEAD
 	psize_mask = slice_mask_for_size(mm, psize);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* We need to use a spinlock here to protect against
 	 * concurrent 64k -> 4k demotion ...
 	 */
 	spin_lock_irqsave(&slice_convert_lock, flags);
 
 	lpsizes = mm->context.low_slices_psize;
-<<<<<<< HEAD
 	for (i = 0; i < SLICE_NUM_LOW; i++) {
 		if (!(mask->low_slices & (1u << i)))
 			continue;
@@ -397,23 +287,6 @@ static void slice_convert(struct mm_struct *mm, struct slice_mask mask, int psiz
 
 		/* Update the sizes array */
 		hpsizes[index] = (hpsizes[index] & ~(0xf << (mask_index * 4))) |
-=======
-	for (i = 0; i < SLICE_NUM_LOW; i++)
-		if (mask.low_slices & (1u << i))
-			lpsizes = (lpsizes & ~(0xful << (i * 4))) |
-				(((unsigned long)psize) << (i * 4));
-
-	/* Assign the value back */
-	mm->context.low_slices_psize = lpsizes;
-
-	hpsizes = mm->context.high_slices_psize;
-	for (i = 0; i < GET_HIGH_SLICE_INDEX(mm->context.addr_limit); i++) {
-		mask_index = i & 0x1;
-		index = i >> 1;
-		if (test_bit(i, mask.high_slices))
-			hpsizes[index] = (hpsizes[index] &
-					  ~(0xf << (mask_index * 4))) |
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				(((unsigned long)psize) << (mask_index * 4));
 	}
 
@@ -434,7 +307,6 @@ static void slice_convert(struct mm_struct *mm, struct slice_mask mask, int psiz
  * 'available' slice_mark.
  */
 static bool slice_scan_available(unsigned long addr,
-<<<<<<< HEAD
 				 const struct slice_mask *available,
 				 int end, unsigned long *boundary_addr)
 {
@@ -443,36 +315,17 @@ static bool slice_scan_available(unsigned long addr,
 		slice = GET_LOW_SLICE_INDEX(addr);
 		*boundary_addr = (slice + end) << SLICE_LOW_SHIFT;
 		return !!(available->low_slices & (1u << slice));
-=======
-				 struct slice_mask available,
-				 int end,
-				 unsigned long *boundary_addr)
-{
-	unsigned long slice;
-	if (addr < SLICE_LOW_TOP) {
-		slice = GET_LOW_SLICE_INDEX(addr);
-		*boundary_addr = (slice + end) << SLICE_LOW_SHIFT;
-		return !!(available.low_slices & (1u << slice));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		slice = GET_HIGH_SLICE_INDEX(addr);
 		*boundary_addr = (slice + end) ?
 			((slice + end) << SLICE_HIGH_SHIFT) : SLICE_LOW_TOP;
-<<<<<<< HEAD
 		return !!test_bit(slice, available->high_slices);
-=======
-		return !!test_bit(slice, available.high_slices);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
 static unsigned long slice_find_area_bottomup(struct mm_struct *mm,
 					      unsigned long len,
-<<<<<<< HEAD
 					      const struct slice_mask *available,
-=======
-					      struct slice_mask available,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					      int psize, unsigned long high_limit)
 {
 	int pshift = max_t(int, mmu_psize_defs[psize].shift, PAGE_SHIFT);
@@ -518,11 +371,7 @@ static unsigned long slice_find_area_bottomup(struct mm_struct *mm,
 
 static unsigned long slice_find_area_topdown(struct mm_struct *mm,
 					     unsigned long len,
-<<<<<<< HEAD
 					     const struct slice_mask *available,
-=======
-					     struct slice_mask available,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					     int psize, unsigned long high_limit)
 {
 	int pshift = max_t(int, mmu_psize_defs[psize].shift, PAGE_SHIFT);
@@ -542,13 +391,8 @@ static unsigned long slice_find_area_topdown(struct mm_struct *mm,
 	 * Only for that request for which high_limit is above
 	 * DEFAULT_MAP_WINDOW we should apply this.
 	 */
-<<<<<<< HEAD
 	if (high_limit > DEFAULT_MAP_WINDOW)
 		addr += mm->context.slb_addr_limit - DEFAULT_MAP_WINDOW;
-=======
-	if (high_limit  > DEFAULT_MAP_WINDOW)
-		addr += mm->context.addr_limit - DEFAULT_MAP_WINDOW;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	while (addr > min_addr) {
 		info.high_limit = addr;
@@ -586,11 +430,7 @@ static unsigned long slice_find_area_topdown(struct mm_struct *mm,
 
 
 static unsigned long slice_find_area(struct mm_struct *mm, unsigned long len,
-<<<<<<< HEAD
 				     const struct slice_mask *mask, int psize,
-=======
-				     struct slice_mask mask, int psize,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     int topdown, unsigned long high_limit)
 {
 	if (topdown)
@@ -599,7 +439,6 @@ static unsigned long slice_find_area(struct mm_struct *mm, unsigned long len,
 		return slice_find_area_bottomup(mm, len, mask, psize, high_limit);
 }
 
-<<<<<<< HEAD
 static inline void slice_copy_mask(struct slice_mask *dst,
 					const struct slice_mask *src)
 {
@@ -627,25 +466,6 @@ static inline void slice_andnot_mask(struct slice_mask *dst,
 	if (!SLICE_NUM_HIGH)
 		return;
 	bitmap_andnot(dst->high_slices, src1->high_slices, src2->high_slices, SLICE_NUM_HIGH);
-=======
-static inline void slice_or_mask(struct slice_mask *dst, struct slice_mask *src)
-{
-	dst->low_slices |= src->low_slices;
-	if (!SLICE_NUM_HIGH)
-		return;
-	bitmap_or(dst->high_slices, dst->high_slices, src->high_slices,
-		  SLICE_NUM_HIGH);
-}
-
-static inline void slice_andnot_mask(struct slice_mask *dst, struct slice_mask *src)
-{
-	dst->low_slices &= ~src->low_slices;
-
-	if (!SLICE_NUM_HIGH)
-		return;
-	bitmap_andnot(dst->high_slices, dst->high_slices, src->high_slices,
-		      SLICE_NUM_HIGH);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #ifdef CONFIG_PPC_64K_PAGES
@@ -658,17 +478,10 @@ unsigned long slice_get_unmapped_area(unsigned long addr, unsigned long len,
 				      unsigned long flags, unsigned int psize,
 				      int topdown)
 {
-<<<<<<< HEAD
 	struct slice_mask good_mask;
 	struct slice_mask potential_mask;
 	const struct slice_mask *maskp;
 	const struct slice_mask *compat_maskp = NULL;
-=======
-	struct slice_mask mask;
-	struct slice_mask good_mask;
-	struct slice_mask potential_mask;
-	struct slice_mask compat_mask;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int fixed = (flags & MAP_FIXED);
 	int pshift = max_t(int, mmu_psize_defs[psize].shift, PAGE_SHIFT);
 	unsigned long page_size = 1UL << pshift;
@@ -691,7 +504,6 @@ unsigned long slice_get_unmapped_area(unsigned long addr, unsigned long len,
 			return -ENOMEM;
 	}
 
-<<<<<<< HEAD
 	if (high_limit > mm->context.slb_addr_limit) {
 		/*
 		 * Increasing the slb_addr_limit does not require
@@ -706,32 +518,6 @@ unsigned long slice_get_unmapped_area(unsigned long addr, unsigned long len,
 	/* Sanity checks */
 	BUG_ON(mm->task_size == 0);
 	BUG_ON(mm->context.slb_addr_limit == 0);
-=======
-	if (high_limit > mm->context.addr_limit) {
-		mm->context.addr_limit = high_limit;
-		on_each_cpu(slice_flush_segments, mm, 1);
-	}
-
-	/*
-	 * init different masks
-	 */
-	mask.low_slices = 0;
-
-	/* silence stupid warning */;
-	potential_mask.low_slices = 0;
-
-	compat_mask.low_slices = 0;
-
-	if (SLICE_NUM_HIGH) {
-		bitmap_zero(mask.high_slices, SLICE_NUM_HIGH);
-		bitmap_zero(potential_mask.high_slices, SLICE_NUM_HIGH);
-		bitmap_zero(compat_mask.high_slices, SLICE_NUM_HIGH);
-	}
-
-	/* Sanity checks */
-	BUG_ON(mm->task_size == 0);
-	BUG_ON(mm->context.addr_limit == 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	VM_BUG_ON(radix_enabled());
 
 	slice_dbg("slice_get_unmapped_area(mm=%p, psize=%d...\n", mm, psize);
@@ -751,12 +537,7 @@ unsigned long slice_get_unmapped_area(unsigned long addr, unsigned long len,
 	/* First make up a "good" mask of slices that have the right size
 	 * already
 	 */
-<<<<<<< HEAD
 	maskp = slice_mask_for_size(mm, psize);
-=======
-	slice_mask_for_size(mm, psize, &good_mask);
-	slice_print_mask(" good_mask", good_mask);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Here "good" means slices that are already the right page size,
@@ -777,7 +558,6 @@ unsigned long slice_get_unmapped_area(unsigned long addr, unsigned long len,
 	 *	search in good | compat | free, found => convert free.
 	 */
 
-<<<<<<< HEAD
 	/*
 	 * If we support combo pages, we can allow 64k pages in 4k slices
 	 * The mask copies could be avoided in most cases here if we had
@@ -806,46 +586,18 @@ unsigned long slice_get_unmapped_area(unsigned long addr, unsigned long len,
 			slice_dbg(" fits good !\n");
 			newaddr = addr;
 			goto return_addr;
-=======
-#ifdef CONFIG_PPC_64K_PAGES
-	/* If we support combo pages, we can allow 64k pages in 4k slices */
-	if (psize == MMU_PAGE_64K) {
-		slice_mask_for_size(mm, MMU_PAGE_4K, &compat_mask);
-		if (fixed)
-			slice_or_mask(&good_mask, &compat_mask);
-	}
-#endif
-
-	/* First check hint if it's valid or if we have MAP_FIXED */
-	if (addr != 0 || fixed) {
-		/* Build a mask for the requested range */
-		slice_range_to_mask(addr, len, &mask);
-		slice_print_mask(" mask", mask);
-
-		/* Check if we fit in the good mask. If we do, we just return,
-		 * nothing else to do
-		 */
-		if (slice_check_fit(mm, mask, good_mask)) {
-			slice_dbg(" fits good !\n");
-			return addr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	} else {
 		/* Now let's see if we can find something in the existing
 		 * slices for that size
 		 */
-<<<<<<< HEAD
 		newaddr = slice_find_area(mm, len, &good_mask,
-=======
-		newaddr = slice_find_area(mm, len, good_mask,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  psize, topdown, high_limit);
 		if (newaddr != -ENOMEM) {
 			/* Found within the good mask, we don't have to setup,
 			 * we thus return directly
 			 */
 			slice_dbg(" found area at 0x%lx\n", newaddr);
-<<<<<<< HEAD
 			goto return_addr;
 		}
 	}
@@ -863,22 +615,6 @@ unsigned long slice_get_unmapped_area(unsigned long addr, unsigned long len,
 			newaddr = addr;
 			goto convert;
 		}
-=======
-			return newaddr;
-		}
-	}
-
-	/* We don't fit in the good mask, check what other slices are
-	 * empty and thus can be converted
-	 */
-	slice_mask_for_free(mm, &potential_mask);
-	slice_or_mask(&potential_mask, &good_mask);
-	slice_print_mask(" potential", potential_mask);
-
-	if ((addr != 0 || fixed) && slice_check_fit(mm, mask, potential_mask)) {
-		slice_dbg(" fits potential !\n");
-		goto convert;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* If we have MAP_FIXED and failed the above steps, then error out */
@@ -891,26 +627,17 @@ unsigned long slice_get_unmapped_area(unsigned long addr, unsigned long len,
 	 * anywhere in the good area.
 	 */
 	if (addr) {
-<<<<<<< HEAD
 		newaddr = slice_find_area(mm, len, &good_mask,
 					  psize, topdown, high_limit);
 		if (newaddr != -ENOMEM) {
 			slice_dbg(" found area at 0x%lx\n", newaddr);
 			goto return_addr;
-=======
-		addr = slice_find_area(mm, len, good_mask,
-				       psize, topdown, high_limit);
-		if (addr != -ENOMEM) {
-			slice_dbg(" found area at 0x%lx\n", addr);
-			return addr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
 	/* Now let's see if we can find something in the existing slices
 	 * for that size plus free slices
 	 */
-<<<<<<< HEAD
 	newaddr = slice_find_area(mm, len, &potential_mask,
 				  psize, topdown, high_limit);
 
@@ -958,39 +685,6 @@ return_addr:
 			return -ENOMEM;
 	}
 	return newaddr;
-=======
-	addr = slice_find_area(mm, len, potential_mask,
-			       psize, topdown, high_limit);
-
-#ifdef CONFIG_PPC_64K_PAGES
-	if (addr == -ENOMEM && psize == MMU_PAGE_64K) {
-		/* retry the search with 4k-page slices included */
-		slice_or_mask(&potential_mask, &compat_mask);
-		addr = slice_find_area(mm, len, potential_mask,
-				       psize, topdown, high_limit);
-	}
-#endif
-
-	if (addr == -ENOMEM)
-		return -ENOMEM;
-
-	slice_range_to_mask(addr, len, &mask);
-	slice_dbg(" found potential area at 0x%lx\n", addr);
-	slice_print_mask(" mask", mask);
-
- convert:
-	slice_andnot_mask(&mask, &good_mask);
-	slice_andnot_mask(&mask, &compat_mask);
-	if (mask.low_slices ||
-	    (SLICE_NUM_HIGH &&
-	     !bitmap_empty(mask.high_slices, SLICE_NUM_HIGH))) {
-		slice_convert(mm, mask, psize);
-		if (psize > MMU_PAGE_BASE)
-			on_each_cpu(slice_flush_segments, mm, 1);
-	}
-	return addr;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(slice_get_unmapped_area);
 
@@ -1016,7 +710,6 @@ unsigned long arch_get_unmapped_area_topdown(struct file *filp,
 
 unsigned int get_slice_psize(struct mm_struct *mm, unsigned long addr)
 {
-<<<<<<< HEAD
 	unsigned char *psizes;
 	int index, mask_index;
 
@@ -1071,96 +764,6 @@ void slice_init_new_context_exec(struct mm_struct *mm)
 	mask->low_slices = ~0UL;
 	if (SLICE_NUM_HIGH)
 		bitmap_fill(mask->high_slices, SLICE_NUM_HIGH);
-=======
-	unsigned char *hpsizes;
-	int index, mask_index;
-
-	/*
-	 * Radix doesn't use slice, but can get enabled along with MMU_SLICE
-	 */
-	if (radix_enabled()) {
-#ifdef CONFIG_PPC_64K_PAGES
-		return MMU_PAGE_64K;
-#else
-		return MMU_PAGE_4K;
-#endif
-	}
-	if (addr < SLICE_LOW_TOP) {
-		u64 lpsizes;
-		lpsizes = mm->context.low_slices_psize;
-		index = GET_LOW_SLICE_INDEX(addr);
-		return (lpsizes >> (index * 4)) & 0xf;
-	}
-	hpsizes = mm->context.high_slices_psize;
-	index = GET_HIGH_SLICE_INDEX(addr);
-	mask_index = index & 0x1;
-	return (hpsizes[index >> 1] >> (mask_index * 4)) & 0xf;
-}
-EXPORT_SYMBOL_GPL(get_slice_psize);
-
-/*
- * This is called by hash_page when it needs to do a lazy conversion of
- * an address space from real 64K pages to combo 4K pages (typically
- * when hitting a non cacheable mapping on a processor or hypervisor
- * that won't allow them for 64K pages).
- *
- * This is also called in init_new_context() to change back the user
- * psize from whatever the parent context had it set to
- * N.B. This may be called before mm->context.id has been set.
- *
- * This function will only change the content of the {low,high)_slice_psize
- * masks, it will not flush SLBs as this shall be handled lazily by the
- * caller.
- */
-void slice_set_user_psize(struct mm_struct *mm, unsigned int psize)
-{
-	int index, mask_index;
-	unsigned char *hpsizes;
-	unsigned long flags, lpsizes;
-	unsigned int old_psize;
-	int i;
-
-	slice_dbg("slice_set_user_psize(mm=%p, psize=%d)\n", mm, psize);
-
-	VM_BUG_ON(radix_enabled());
-	spin_lock_irqsave(&slice_convert_lock, flags);
-
-	old_psize = mm->context.user_psize;
-	slice_dbg(" old_psize=%d\n", old_psize);
-	if (old_psize == psize)
-		goto bail;
-
-	mm->context.user_psize = psize;
-	wmb();
-
-	lpsizes = mm->context.low_slices_psize;
-	for (i = 0; i < SLICE_NUM_LOW; i++)
-		if (((lpsizes >> (i * 4)) & 0xf) == old_psize)
-			lpsizes = (lpsizes & ~(0xful << (i * 4))) |
-				(((unsigned long)psize) << (i * 4));
-	/* Assign the value back */
-	mm->context.low_slices_psize = lpsizes;
-
-	hpsizes = mm->context.high_slices_psize;
-	for (i = 0; i < SLICE_NUM_HIGH; i++) {
-		mask_index = i & 0x1;
-		index = i >> 1;
-		if (((hpsizes[index] >> (mask_index * 4)) & 0xf) == old_psize)
-			hpsizes[index] = (hpsizes[index] &
-					  ~(0xf << (mask_index * 4))) |
-				(((unsigned long)psize) << (mask_index * 4));
-	}
-
-
-
-
-	slice_dbg(" lsps=%lx, hsps=%lx\n",
-		  (unsigned long)mm->context.low_slices_psize,
-		  (unsigned long)mm->context.high_slices_psize);
-
- bail:
-	spin_unlock_irqrestore(&slice_convert_lock, flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void slice_set_range_psize(struct mm_struct *mm, unsigned long start,
@@ -1171,11 +774,7 @@ void slice_set_range_psize(struct mm_struct *mm, unsigned long start,
 	VM_BUG_ON(radix_enabled());
 
 	slice_range_to_mask(start, len, &mask);
-<<<<<<< HEAD
 	slice_convert(mm, &mask, psize);
-=======
-	slice_convert(mm, mask, psize);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #ifdef CONFIG_HUGETLB_PAGE
@@ -1198,7 +797,6 @@ void slice_set_range_psize(struct mm_struct *mm, unsigned long start,
  * for now as we only use slices with hugetlbfs enabled. This should
  * be fixed as the generic code gets fixed.
  */
-<<<<<<< HEAD
 int slice_is_hugepage_only_range(struct mm_struct *mm, unsigned long addr,
 			   unsigned long len)
 {
@@ -1221,34 +819,5 @@ int slice_is_hugepage_only_range(struct mm_struct *mm, unsigned long addr,
 #endif
 
 	return !slice_check_range_fits(mm, maskp, addr, len);
-=======
-int is_hugepage_only_range(struct mm_struct *mm, unsigned long addr,
-			   unsigned long len)
-{
-	struct slice_mask mask, available;
-	unsigned int psize = mm->context.user_psize;
-
-	if (radix_enabled())
-		return 0;
-
-	slice_range_to_mask(addr, len, &mask);
-	slice_mask_for_size(mm, psize, &available);
-#ifdef CONFIG_PPC_64K_PAGES
-	/* We need to account for 4k slices too */
-	if (psize == MMU_PAGE_64K) {
-		struct slice_mask compat_mask;
-		slice_mask_for_size(mm, MMU_PAGE_4K, &compat_mask);
-		slice_or_mask(&available, &compat_mask);
-	}
-#endif
-
-#if 0 /* too verbose */
-	slice_dbg("is_hugepage_only_range(mm=%p, addr=%lx, len=%lx)\n",
-		 mm, addr, len);
-	slice_print_mask(" mask", mask);
-	slice_print_mask(" available", available);
-#endif
-	return !slice_check_fit(mm, mask, available);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #endif

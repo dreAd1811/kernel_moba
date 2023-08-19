@@ -226,11 +226,7 @@ $ rm configs/<config name>.<number>/<function>
 where <config name>.<number> specify the configuration and <function> is
 a symlink to a function being removed from the configuration, e.g.:
 
-<<<<<<< HEAD
 $ rm configs/c.1/ncm.usb0
-=======
-$ rm configfs/c.1/ncm.usb0
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 ...
 ...

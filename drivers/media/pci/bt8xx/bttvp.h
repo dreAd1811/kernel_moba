@@ -122,10 +122,7 @@ struct bttv_format {
 
 struct bttv_ir {
 	struct rc_dev           *dev;
-<<<<<<< HEAD
 	struct bttv		*btv;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct timer_list       timer;
 
 	char                    name[32];
@@ -144,11 +141,7 @@ struct bttv_ir {
 	bool			rc5_gpio;   /* Is RC5 legacy GPIO enabled? */
 	u32                     last_bit;   /* last raw bit seen */
 	u32                     code;       /* raw code under construction */
-<<<<<<< HEAD
 	ktime_t						base_time;  /* time of last seen code */
-=======
-	ktime_t          				base_time;  /* time of last seen code */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool                    active;     /* building raw code */
 };
 
@@ -289,11 +282,7 @@ int bttv_try_fmt_vbi_cap(struct file *file, void *fh, struct v4l2_format *f);
 int bttv_g_fmt_vbi_cap(struct file *file, void *fh, struct v4l2_format *f);
 int bttv_s_fmt_vbi_cap(struct file *file, void *fh, struct v4l2_format *f);
 
-<<<<<<< HEAD
 extern const struct videobuf_queue_ops bttv_vbi_qops;
-=======
-extern struct videobuf_queue_ops bttv_vbi_qops;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* ---------------------------------------------------------- */
 /* bttv-gpio.c */
@@ -411,13 +400,8 @@ struct bttv {
 	int                        i2c_state, i2c_rc;
 	int                        i2c_done;
 	wait_queue_head_t          i2c_queue;
-<<<<<<< HEAD
 	struct v4l2_subdev	  *sd_msp34xx;
 	struct v4l2_subdev	  *sd_tvaudio;
-=======
-	struct v4l2_subdev 	  *sd_msp34xx;
-	struct v4l2_subdev 	  *sd_tvaudio;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct v4l2_subdev	  *sd_tda7432;
 
 	/* video4linux (1) */

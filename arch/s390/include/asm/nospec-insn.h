@@ -4,18 +4,11 @@
 
 #include <asm/alternative-asm.h>
 #include <asm/asm-offsets.h>
-<<<<<<< HEAD
 #include <asm/dwarf.h>
 
 #ifdef __ASSEMBLY__
 
 #ifdef CC_USING_EXPOLINE
-=======
-
-#ifdef __ASSEMBLY__
-
-#ifdef CONFIG_EXPOLINE
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 _LC_BR_R1 = __LC_BR_R1
 
@@ -30,19 +23,11 @@ _LC_BR_R1 = __LC_BR_R1
 	.hidden \name
 	.type \name,@function
 \name:
-<<<<<<< HEAD
 	CFI_STARTPROC
 	.endm
 
 	.macro __THUNK_EPILOG
 	CFI_ENDPROC
-=======
-	.cfi_startproc
-	.endm
-
-	.macro __THUNK_EPILOG
-	.cfi_endproc
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.popsection
 	.endm
 
@@ -204,11 +189,7 @@ _LC_BR_R1 = __LC_BR_R1
 	.macro BASR_EX rsave,rtarget,ruse=%r1
 	basr	\rsave,\rtarget
 	.endm
-<<<<<<< HEAD
 #endif /* CC_USING_EXPOLINE */
-=======
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* __ASSEMBLY__ */
 

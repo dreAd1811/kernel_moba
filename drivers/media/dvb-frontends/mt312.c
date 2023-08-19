@@ -32,11 +32,7 @@
 #include <linux/string.h>
 #include <linux/slab.h>
 
-<<<<<<< HEAD
 #include <media/dvb_frontend.h>
-=======
-#include "dvb_frontend.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "mt312_priv.h"
 #include "mt312.h"
 
@@ -563,13 +559,8 @@ static int mt312_set_frontend(struct dvb_frontend *fe)
 
 	dprintk("%s: Freq %d\n", __func__, p->frequency);
 
-<<<<<<< HEAD
 	if ((p->frequency < fe->ops.info.frequency_min_hz / kHz)
 	    || (p->frequency > fe->ops.info.frequency_max_hz / kHz))
-=======
-	if ((p->frequency < fe->ops.info.frequency_min)
-	    || (p->frequency > fe->ops.info.frequency_max))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	if (((int)p->inversion < INVERSION_OFF)
@@ -764,17 +755,10 @@ static const struct dvb_frontend_ops mt312_ops = {
 	.delsys = { SYS_DVBS },
 	.info = {
 		.name = "Zarlink ???? DVB-S",
-<<<<<<< HEAD
 		.frequency_min_hz =  950 * MHz,
 		.frequency_max_hz = 2150 * MHz,
 		/* FIXME: adjust freq to real used xtal */
 		.frequency_stepsize_hz = MT312_PLL_CLK / 128,
-=======
-		.frequency_min = 950000,
-		.frequency_max = 2150000,
-		/* FIXME: adjust freq to real used xtal */
-		.frequency_stepsize = (MT312_PLL_CLK / 1000) / 128,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.symbol_rate_min = MT312_SYS_CLK / 128, /* FIXME as above */
 		.symbol_rate_max = MT312_SYS_CLK / 2,
 		.caps =

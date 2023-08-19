@@ -26,10 +26,7 @@
 #include <linux/platform_device.h>
 #include <linux/adb.h>
 #include <linux/cuda.h>
-<<<<<<< HEAD
 #include <linux/pmu.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/rtc.h>
 
 #include <asm/setup.h>
@@ -60,18 +57,11 @@ static unsigned long mac_orig_videoaddr;
 /* Mac specific timer functions */
 extern u32 mac_gettimeoffset(void);
 extern int mac_hwclk(int, struct rtc_time *);
-<<<<<<< HEAD
-=======
-extern int mac_set_clock_mmss(unsigned long);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern void iop_preinit(void);
 extern void iop_init(void);
 extern void via_init(void);
 extern void via_init_clock(irq_handler_t func);
-<<<<<<< HEAD
 extern void via_flush_cache(void);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern void oss_init(void);
 extern void psc_init(void);
 extern void baboon_init(void);
@@ -142,7 +132,6 @@ int __init mac_parse_bootinfo(const struct bi_record *record)
 	return unknown;
 }
 
-<<<<<<< HEAD
 /*
  * Flip into 24bit mode for an instant - flushes the L2 cache card. We
  * have to disable interrupts for this. Our IRQ handlers will crap
@@ -158,8 +147,6 @@ static void mac_cache_card_flush(int writeback)
 	local_irq_restore(flags);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void __init config_mac(void)
 {
 	if (!MACH_IS_MAC)
@@ -170,10 +157,6 @@ void __init config_mac(void)
 	mach_get_model = mac_get_model;
 	arch_gettimeoffset = mac_gettimeoffset;
 	mach_hwclk = mac_hwclk;
-<<<<<<< HEAD
-=======
-	mach_set_clock_mmss = mac_set_clock_mmss;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mach_reset = mac_reset;
 	mach_halt = mac_poweroff;
 	mach_power_off = mac_poweroff;
@@ -195,14 +178,9 @@ void __init config_mac(void)
 	 * not.
 	 */
 
-<<<<<<< HEAD
 	if (macintosh_config->ident == MAC_MODEL_IICI
 	    || macintosh_config->ident == MAC_MODEL_IIFX)
 		mach_l2_flush = mac_cache_card_flush;
-=======
-	if (macintosh_config->ident == MAC_MODEL_IICI)
-		mach_l2_flush = via_l2_flush;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 
@@ -233,11 +211,7 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_II,
 		.scsi_type	= MAC_SCSI_OLD,
 		.scc_type	= MAC_SCC_II,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_NUBUS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_IWM,
 	},
 
@@ -252,11 +226,7 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_II,
 		.scsi_type	= MAC_SCSI_OLD,
 		.scc_type	= MAC_SCC_II,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_NUBUS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_IWM,
 	}, {
 		.ident		= MAC_MODEL_IIX,
@@ -265,11 +235,7 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_II,
 		.scsi_type	= MAC_SCSI_OLD,
 		.scc_type	= MAC_SCC_II,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_NUBUS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR2,
 	}, {
 		.ident		= MAC_MODEL_IICX,
@@ -278,11 +244,7 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_II,
 		.scsi_type	= MAC_SCSI_OLD,
 		.scc_type	= MAC_SCC_II,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_NUBUS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR2,
 	}, {
 		.ident		= MAC_MODEL_SE30,
@@ -291,11 +253,7 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_II,
 		.scsi_type	= MAC_SCSI_OLD,
 		.scc_type	= MAC_SCC_II,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_PDS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR2,
 	},
 
@@ -313,11 +271,7 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_IICI,
 		.scsi_type	= MAC_SCSI_OLD,
 		.scc_type	= MAC_SCC_II,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_NUBUS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR2,
 	}, {
 		.ident		= MAC_MODEL_IIFX,
@@ -326,11 +280,7 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_IICI,
 		.scsi_type	= MAC_SCSI_IIFX,
 		.scc_type	= MAC_SCC_IOP,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_PDS_NUBUS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_IOP,
 	}, {
 		.ident		= MAC_MODEL_IISI,
@@ -339,11 +289,7 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_IICI,
 		.scsi_type	= MAC_SCSI_OLD,
 		.scc_type	= MAC_SCC_II,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_PDS_NUBUS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR2,
 	}, {
 		.ident		= MAC_MODEL_IIVI,
@@ -352,11 +298,7 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_IICI,
 		.scsi_type	= MAC_SCSI_LC,
 		.scc_type	= MAC_SCC_II,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_NUBUS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR2,
 	}, {
 		.ident		= MAC_MODEL_IIVX,
@@ -365,11 +307,7 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_IICI,
 		.scsi_type	= MAC_SCSI_LC,
 		.scc_type	= MAC_SCC_II,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_NUBUS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR2,
 	},
 
@@ -384,10 +322,6 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_IICI,
 		.scsi_type	= MAC_SCSI_LC,
 		.scc_type	= MAC_SCC_II,
-<<<<<<< HEAD
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR2,
 	}, {
 		.ident		= MAC_MODEL_CCL,
@@ -396,11 +330,7 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_IICI,
 		.scsi_type	= MAC_SCSI_LC,
 		.scc_type	= MAC_SCC_II,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_PDS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR2,
 	}, {
 		.ident		= MAC_MODEL_CCLII,
@@ -409,11 +339,7 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_IICI,
 		.scsi_type	= MAC_SCSI_LC,
 		.scc_type	= MAC_SCC_II,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_PDS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR2,
 	},
 
@@ -428,11 +354,7 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_IICI,
 		.scsi_type	= MAC_SCSI_LC,
 		.scc_type	= MAC_SCC_II,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_PDS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR2,
 	}, {
 		.ident		= MAC_MODEL_LCII,
@@ -441,11 +363,7 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_IICI,
 		.scsi_type	= MAC_SCSI_LC,
 		.scc_type	= MAC_SCC_II,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_PDS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR2,
 	}, {
 		.ident		= MAC_MODEL_LCIII,
@@ -454,11 +372,7 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_IICI,
 		.scsi_type	= MAC_SCSI_LC,
 		.scc_type	= MAC_SCC_II,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_PDS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR2,
 	},
 
@@ -479,11 +393,7 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_QUADRA,
 		.scsi_type	= MAC_SCSI_QUADRA,
 		.scc_type	= MAC_SCC_QUADRA,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_PDS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR1,
 	}, {
 		.ident		= MAC_MODEL_Q605_ACC,
@@ -492,11 +402,7 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_QUADRA,
 		.scsi_type	= MAC_SCSI_QUADRA,
 		.scc_type	= MAC_SCC_QUADRA,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_PDS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR1,
 	}, {
 		.ident		= MAC_MODEL_Q610,
@@ -506,11 +412,7 @@ static struct mac_model mac_data_table[] = {
 		.scsi_type	= MAC_SCSI_QUADRA,
 		.scc_type	= MAC_SCC_QUADRA,
 		.ether_type	= MAC_ETHER_SONIC,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_PDS_NUBUS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR1,
 	}, {
 		.ident		= MAC_MODEL_Q630,
@@ -520,12 +422,7 @@ static struct mac_model mac_data_table[] = {
 		.scsi_type	= MAC_SCSI_QUADRA,
 		.ide_type	= MAC_IDE_QUADRA,
 		.scc_type	= MAC_SCC_QUADRA,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_PDS_COMM,
-=======
-		.ether_type	= MAC_ETHER_SONIC,
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR1,
 	}, {
 		.ident		= MAC_MODEL_Q650,
@@ -535,11 +432,7 @@ static struct mac_model mac_data_table[] = {
 		.scsi_type	= MAC_SCSI_QUADRA,
 		.scc_type	= MAC_SCC_QUADRA,
 		.ether_type	= MAC_ETHER_SONIC,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_PDS_NUBUS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR1,
 	},
 	/* The Q700 does have a NS Sonic */
@@ -551,11 +444,7 @@ static struct mac_model mac_data_table[] = {
 		.scsi_type	= MAC_SCSI_QUADRA2,
 		.scc_type	= MAC_SCC_QUADRA,
 		.ether_type	= MAC_ETHER_SONIC,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_PDS_NUBUS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR1,
 	}, {
 		.ident		= MAC_MODEL_Q800,
@@ -565,11 +454,7 @@ static struct mac_model mac_data_table[] = {
 		.scsi_type	= MAC_SCSI_QUADRA,
 		.scc_type	= MAC_SCC_QUADRA,
 		.ether_type	= MAC_ETHER_SONIC,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_PDS_NUBUS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR1,
 	}, {
 		.ident		= MAC_MODEL_Q840,
@@ -579,11 +464,7 @@ static struct mac_model mac_data_table[] = {
 		.scsi_type	= MAC_SCSI_QUADRA3,
 		.scc_type	= MAC_SCC_PSC,
 		.ether_type	= MAC_ETHER_MACE,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_NUBUS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_AV,
 	}, {
 		.ident		= MAC_MODEL_Q900,
@@ -593,11 +474,7 @@ static struct mac_model mac_data_table[] = {
 		.scsi_type	= MAC_SCSI_QUADRA2,
 		.scc_type	= MAC_SCC_IOP,
 		.ether_type	= MAC_ETHER_SONIC,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_PDS_NUBUS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_IOP,
 	}, {
 		.ident		= MAC_MODEL_Q950,
@@ -607,11 +484,7 @@ static struct mac_model mac_data_table[] = {
 		.scsi_type	= MAC_SCSI_QUADRA2,
 		.scc_type	= MAC_SCC_IOP,
 		.ether_type	= MAC_ETHER_SONIC,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_PDS_NUBUS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_IOP,
 	},
 
@@ -626,11 +499,7 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_IICI,
 		.scsi_type	= MAC_SCSI_LC,
 		.scc_type	= MAC_SCC_II,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_PDS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR2,
 	}, {
 		.ident		= MAC_MODEL_P475,
@@ -639,11 +508,7 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_QUADRA,
 		.scsi_type	= MAC_SCSI_QUADRA,
 		.scc_type	= MAC_SCC_II,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_PDS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR1,
 	}, {
 		.ident		= MAC_MODEL_P475F,
@@ -652,11 +517,7 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_QUADRA,
 		.scsi_type	= MAC_SCSI_QUADRA,
 		.scc_type	= MAC_SCC_II,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_PDS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR1,
 	}, {
 		.ident		= MAC_MODEL_P520,
@@ -665,11 +526,7 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_IICI,
 		.scsi_type	= MAC_SCSI_LC,
 		.scc_type	= MAC_SCC_II,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_PDS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR2,
 	}, {
 		.ident		= MAC_MODEL_P550,
@@ -678,11 +535,7 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_IICI,
 		.scsi_type	= MAC_SCSI_LC,
 		.scc_type	= MAC_SCC_II,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_PDS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR2,
 	},
 	/* These have the comm slot, and therefore possibly SONIC ethernet */
@@ -693,12 +546,7 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_QUADRA,
 		.scsi_type	= MAC_SCSI_QUADRA,
 		.scc_type	= MAC_SCC_II,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_PDS_COMM,
-=======
-		.ether_type	= MAC_ETHER_SONIC,
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR1,
 	}, {
 		.ident		= MAC_MODEL_P588,
@@ -708,12 +556,7 @@ static struct mac_model mac_data_table[] = {
 		.scsi_type	= MAC_SCSI_QUADRA,
 		.ide_type	= MAC_IDE_QUADRA,
 		.scc_type	= MAC_SCC_II,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_PDS_COMM,
-=======
-		.ether_type	= MAC_ETHER_SONIC,
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR1,
 	}, {
 		.ident		= MAC_MODEL_TV,
@@ -722,10 +565,6 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_IICI,
 		.scsi_type	= MAC_SCSI_LC,
 		.scc_type	= MAC_SCC_II,
-<<<<<<< HEAD
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR2,
 	}, {
 		.ident		= MAC_MODEL_P600,
@@ -734,11 +573,7 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_IICI,
 		.scsi_type	= MAC_SCSI_LC,
 		.scc_type	= MAC_SCC_II,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_NUBUS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR2,
 	},
 
@@ -755,11 +590,7 @@ static struct mac_model mac_data_table[] = {
 		.scsi_type	= MAC_SCSI_QUADRA,
 		.scc_type	= MAC_SCC_QUADRA,
 		.ether_type	= MAC_ETHER_SONIC,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_PDS_NUBUS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR1,
 	}, {
 		.ident		= MAC_MODEL_C650,
@@ -769,11 +600,7 @@ static struct mac_model mac_data_table[] = {
 		.scsi_type	= MAC_SCSI_QUADRA,
 		.scc_type	= MAC_SCC_QUADRA,
 		.ether_type	= MAC_ETHER_SONIC,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_PDS_NUBUS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR1,
 	}, {
 		.ident		= MAC_MODEL_C660,
@@ -783,11 +610,7 @@ static struct mac_model mac_data_table[] = {
 		.scsi_type	= MAC_SCSI_QUADRA3,
 		.scc_type	= MAC_SCC_PSC,
 		.ether_type	= MAC_ETHER_MACE,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_PDS_NUBUS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_AV,
 	},
 
@@ -804,10 +627,6 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_QUADRA,
 		.scsi_type	= MAC_SCSI_OLD,
 		.scc_type	= MAC_SCC_QUADRA,
-<<<<<<< HEAD
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR2,
 	}, {
 		.ident		= MAC_MODEL_PB145,
@@ -816,10 +635,6 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_QUADRA,
 		.scsi_type	= MAC_SCSI_OLD,
 		.scc_type	= MAC_SCC_QUADRA,
-<<<<<<< HEAD
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR2,
 	}, {
 		.ident		= MAC_MODEL_PB150,
@@ -829,10 +644,6 @@ static struct mac_model mac_data_table[] = {
 		.scsi_type	= MAC_SCSI_OLD,
 		.ide_type	= MAC_IDE_PB,
 		.scc_type	= MAC_SCC_QUADRA,
-<<<<<<< HEAD
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR2,
 	}, {
 		.ident		= MAC_MODEL_PB160,
@@ -841,10 +652,6 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_QUADRA,
 		.scsi_type	= MAC_SCSI_OLD,
 		.scc_type	= MAC_SCC_QUADRA,
-<<<<<<< HEAD
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR2,
 	}, {
 		.ident		= MAC_MODEL_PB165,
@@ -853,10 +660,6 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_QUADRA,
 		.scsi_type	= MAC_SCSI_OLD,
 		.scc_type	= MAC_SCC_QUADRA,
-<<<<<<< HEAD
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR2,
 	}, {
 		.ident		= MAC_MODEL_PB165C,
@@ -865,10 +668,6 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_QUADRA,
 		.scsi_type	= MAC_SCSI_OLD,
 		.scc_type	= MAC_SCC_QUADRA,
-<<<<<<< HEAD
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR2,
 	}, {
 		.ident		= MAC_MODEL_PB170,
@@ -877,10 +676,6 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_QUADRA,
 		.scsi_type	= MAC_SCSI_OLD,
 		.scc_type	= MAC_SCC_QUADRA,
-<<<<<<< HEAD
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR2,
 	}, {
 		.ident		= MAC_MODEL_PB180,
@@ -889,10 +684,6 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_QUADRA,
 		.scsi_type	= MAC_SCSI_OLD,
 		.scc_type	= MAC_SCC_QUADRA,
-<<<<<<< HEAD
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR2,
 	}, {
 		.ident		= MAC_MODEL_PB180C,
@@ -901,42 +692,24 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_QUADRA,
 		.scsi_type	= MAC_SCSI_OLD,
 		.scc_type	= MAC_SCC_QUADRA,
-<<<<<<< HEAD
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR2,
 	}, {
 		.ident		= MAC_MODEL_PB190,
 		.name		= "PowerBook 190",
 		.adb_type	= MAC_ADB_PB2,
 		.via_type	= MAC_VIA_QUADRA,
-<<<<<<< HEAD
 		.scsi_type	= MAC_SCSI_OLD,
 		.ide_type	= MAC_IDE_BABOON,
 		.scc_type	= MAC_SCC_QUADRA,
-=======
-		.scsi_type	= MAC_SCSI_LATE,
-		.ide_type	= MAC_IDE_BABOON,
-		.scc_type	= MAC_SCC_QUADRA,
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR2,
 	}, {
 		.ident		= MAC_MODEL_PB520,
 		.name		= "PowerBook 520",
 		.adb_type	= MAC_ADB_PB2,
 		.via_type	= MAC_VIA_QUADRA,
-<<<<<<< HEAD
 		.scsi_type	= MAC_SCSI_OLD,
 		.scc_type	= MAC_SCC_QUADRA,
 		.ether_type	= MAC_ETHER_SONIC,
-=======
-		.scsi_type	= MAC_SCSI_LATE,
-		.scc_type	= MAC_SCC_QUADRA,
-		.ether_type	= MAC_ETHER_SONIC,
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR2,
 	},
 
@@ -953,11 +726,7 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_IICI,
 		.scsi_type	= MAC_SCSI_DUO,
 		.scc_type	= MAC_SCC_QUADRA,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_NUBUS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR2,
 	}, {
 		.ident		= MAC_MODEL_PB230,
@@ -966,11 +735,7 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_IICI,
 		.scsi_type	= MAC_SCSI_DUO,
 		.scc_type	= MAC_SCC_QUADRA,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_NUBUS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR2,
 	}, {
 		.ident		= MAC_MODEL_PB250,
@@ -979,11 +744,7 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_IICI,
 		.scsi_type	= MAC_SCSI_DUO,
 		.scc_type	= MAC_SCC_QUADRA,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_NUBUS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR2,
 	}, {
 		.ident		= MAC_MODEL_PB270C,
@@ -992,11 +753,7 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_IICI,
 		.scsi_type	= MAC_SCSI_DUO,
 		.scc_type	= MAC_SCC_QUADRA,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_NUBUS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR2,
 	}, {
 		.ident		= MAC_MODEL_PB280,
@@ -1005,11 +762,7 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_IICI,
 		.scsi_type	= MAC_SCSI_DUO,
 		.scc_type	= MAC_SCC_QUADRA,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_NUBUS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR2,
 	}, {
 		.ident		= MAC_MODEL_PB280C,
@@ -1018,11 +771,7 @@ static struct mac_model mac_data_table[] = {
 		.via_type	= MAC_VIA_IICI,
 		.scsi_type	= MAC_SCSI_DUO,
 		.scc_type	= MAC_SCC_QUADRA,
-<<<<<<< HEAD
 		.expansion_type	= MAC_EXP_NUBUS,
-=======
-		.nubus_type	= MAC_NUBUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.floppy_type	= MAC_FLOPPY_SWIM_ADDR2,
 	},
 
@@ -1132,25 +881,17 @@ static void __init mac_identify(void)
 		mac_bi_data.id, mac_bi_data.cpuid, mac_bi_data.memsize);
 
 	iop_init();
-<<<<<<< HEAD
 	oss_init();
 	via_init();
-=======
-	via_init();
-	oss_init();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	psc_init();
 	baboon_init();
 
 #ifdef CONFIG_ADB_CUDA
 	find_via_cuda();
 #endif
-<<<<<<< HEAD
 #ifdef CONFIG_ADB_PMU
 	find_via_pmu();
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __init mac_report_hardware(void)
@@ -1200,21 +941,6 @@ static const struct resource mac_scsi_old_rsrc[] __initconst = {
 	},
 };
 
-<<<<<<< HEAD
-=======
-static const struct resource mac_scsi_late_rsrc[] __initconst = {
-	{
-		.flags = IORESOURCE_IRQ,
-		.start = IRQ_MAC_SCSI,
-		.end   = IRQ_MAC_SCSI,
-	}, {
-		.flags = IORESOURCE_MEM,
-		.start = 0x50010000,
-		.end   = 0x50011FFF,
-	},
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct resource mac_scsi_ccl_rsrc[] __initconst = {
 	{
 		.flags = IORESOURCE_IRQ,
@@ -1324,16 +1050,6 @@ int __init mac_platform_init(void)
 		platform_device_register_simple("mac_scsi", 0,
 			mac_scsi_old_rsrc, ARRAY_SIZE(mac_scsi_old_rsrc));
 		break;
-<<<<<<< HEAD
-=======
-	case MAC_SCSI_LATE:
-		/* PDMA logic in 68040 PowerBooks is somehow different to
-		 * '030 models. It's probably more like Quadras (see mac_esp).
-		 */
-		platform_device_register_simple("mac_scsi", 0,
-			mac_scsi_late_rsrc, ARRAY_SIZE(mac_scsi_late_rsrc));
-		break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case MAC_SCSI_LC:
 		/* Addresses from Mac LC data in Designing Cards & Drivers 3ed.
 		 * Also from the Developer Notes for Classic II, LC III,
@@ -1351,7 +1067,6 @@ int __init mac_platform_init(void)
 	 * Ethernet device
 	 */
 
-<<<<<<< HEAD
 	if (macintosh_config->ether_type == MAC_ETHER_SONIC ||
 	    macintosh_config->expansion_type == MAC_EXP_PDS_COMM)
 		platform_device_register_simple("macsonic", -1, NULL, 0);
@@ -1362,16 +1077,6 @@ int __init mac_platform_init(void)
 
 	if (macintosh_config->ether_type == MAC_ETHER_MACE)
 		platform_device_register_simple("macmace", -1, NULL, 0);
-=======
-	switch (macintosh_config->ether_type) {
-	case MAC_ETHER_SONIC:
-		platform_device_register_simple("macsonic", -1, NULL, 0);
-		break;
-	case MAC_ETHER_MACE:
-		platform_device_register_simple("macmace", -1, NULL, 0);
-		break;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

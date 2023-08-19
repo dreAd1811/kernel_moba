@@ -108,11 +108,7 @@ struct pcan_usb_msg_context {
 	u8 *end;
 	u8 rec_cnt;
 	u8 rec_idx;
-<<<<<<< HEAD
 	u8 rec_data_idx;
-=======
-	u8 rec_ts_idx;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct net_device *netdev;
 	struct pcan_usb *pdev;
 };
@@ -263,7 +259,6 @@ static int pcan_usb_write_mode(struct peak_usb_device *dev, u8 onoff)
 /*
  * handle end of waiting for the device to reset
  */
-<<<<<<< HEAD
 static void pcan_usb_restart(struct timer_list *t)
 {
 	struct pcan_usb *pdev = from_timer(pdev, t, restart_timer);
@@ -271,12 +266,6 @@ static void pcan_usb_restart(struct timer_list *t)
 
 	/* notify candev and netdev */
 	peak_usb_restart_complete(dev);
-=======
-static void pcan_usb_restart(unsigned long arg)
-{
-	/* notify candev and netdev */
-	peak_usb_restart_complete((struct peak_usb_device *)arg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -419,10 +408,6 @@ static int pcan_usb_decode_error(struct pcan_usb_msg_context *mc, u8 n,
 {
 	struct sk_buff *skb;
 	struct can_frame *cf;
-<<<<<<< HEAD
-=======
-	struct timeval tv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	enum can_state new_state;
 
 	/* ignore this error until 1st ts received */
@@ -438,10 +423,7 @@ static int pcan_usb_decode_error(struct pcan_usb_msg_context *mc, u8 n,
 			new_state = CAN_STATE_ERROR_WARNING;
 			break;
 		}
-<<<<<<< HEAD
 		/* else: fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	case CAN_STATE_ERROR_WARNING:
 		if (n & PCAN_USB_ERROR_BUS_HEAVY) {
@@ -462,13 +444,8 @@ static int pcan_usb_decode_error(struct pcan_usb_msg_context *mc, u8 n,
 		}
 		if ((n & PCAN_USB_ERROR_BUS_LIGHT) == 0) {
 			/* no error (back to active state) */
-<<<<<<< HEAD
 			mc->pdev->dev.can.state = CAN_STATE_ERROR_ACTIVE;
 			return 0;
-=======
-			new_state = CAN_STATE_ERROR_ACTIVE;
-			break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		break;
 
@@ -491,15 +468,9 @@ static int pcan_usb_decode_error(struct pcan_usb_msg_context *mc, u8 n,
 		}
 
 		if ((n & PCAN_USB_ERROR_BUS_HEAVY) == 0) {
-<<<<<<< HEAD
 			/* no error (back to active state) */
 			mc->pdev->dev.can.state = CAN_STATE_ERROR_ACTIVE;
 			return 0;
-=======
-			/* no error (back to warning state) */
-			new_state = CAN_STATE_ERROR_WARNING;
-			break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		break;
 
@@ -538,14 +509,6 @@ static int pcan_usb_decode_error(struct pcan_usb_msg_context *mc, u8 n,
 		mc->pdev->dev.can.can_stats.error_warning++;
 		break;
 
-<<<<<<< HEAD
-=======
-	case CAN_STATE_ERROR_ACTIVE:
-		cf->can_id |= CAN_ERR_CRTL;
-		cf->data[1] = CAN_ERR_CRTL_ACTIVE;
-		break;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		/* CAN_STATE_MAX (trick to handle other errors) */
 		cf->can_id |= CAN_ERR_CRTL;
@@ -562,13 +525,8 @@ static int pcan_usb_decode_error(struct pcan_usb_msg_context *mc, u8 n,
 	if (status_len & PCAN_USB_STATUSLEN_TIMESTAMP) {
 		struct skb_shared_hwtstamps *hwts = skb_hwtstamps(skb);
 
-<<<<<<< HEAD
 		peak_usb_get_ts_time(&mc->pdev->time_ref, mc->ts16,
 				     &hwts->hwtstamp);
-=======
-		peak_usb_get_ts_tv(&mc->pdev->time_ref, mc->ts16, &tv);
-		hwts->hwtstamp = timeval_to_ktime(tv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	mc->netdev->stats.rx_packets++;
@@ -597,22 +555,10 @@ static int pcan_usb_decode_status(struct pcan_usb_msg_context *mc,
 	mc->ptr += PCAN_USB_CMD_ARGS;
 
 	if (status_len & PCAN_USB_STATUSLEN_TIMESTAMP) {
-<<<<<<< HEAD
 		int err = pcan_usb_decode_ts(mc, !mc->rec_idx);
 
 		if (err)
 			return err;
-=======
-		int err = pcan_usb_decode_ts(mc, !mc->rec_ts_idx);
-
-		if (err)
-			return err;
-
-		/* Next packet in the buffer will have a timestamp on a single
-		 * byte
-		 */
-		mc->rec_ts_idx++;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	switch (f) {
@@ -664,10 +610,6 @@ static int pcan_usb_decode_data(struct pcan_usb_msg_context *mc, u8 status_len)
 	u8 rec_len = status_len & PCAN_USB_STATUSLEN_DLC;
 	struct sk_buff *skb;
 	struct can_frame *cf;
-<<<<<<< HEAD
-=======
-	struct timeval tv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct skb_shared_hwtstamps *hwts;
 
 	skb = alloc_can_skb(mc->netdev, &cf);
@@ -698,20 +640,10 @@ static int pcan_usb_decode_data(struct pcan_usb_msg_context *mc, u8 status_len)
 
 	cf->can_dlc = get_can_dlc(rec_len);
 
-<<<<<<< HEAD
 	/* first data packet timestamp is a word */
 	if (pcan_usb_decode_ts(mc, !mc->rec_data_idx))
 		goto decode_failed;
 
-=======
-	/* Only first packet timestamp is a word */
-	if (pcan_usb_decode_ts(mc, !mc->rec_ts_idx))
-		goto decode_failed;
-
-	/* Next packet in the buffer will have a timestamp on a single byte */
-	mc->rec_ts_idx++;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* read data */
 	memset(cf->data, 0x0, sizeof(cf->data));
 	if (status_len & PCAN_USB_STATUSLEN_RTR) {
@@ -725,14 +657,8 @@ static int pcan_usb_decode_data(struct pcan_usb_msg_context *mc, u8 status_len)
 	}
 
 	/* convert timestamp into kernel time */
-<<<<<<< HEAD
 	hwts = skb_hwtstamps(skb);
 	peak_usb_get_ts_time(&mc->pdev->time_ref, mc->ts16, &hwts->hwtstamp);
-=======
-	peak_usb_get_ts_tv(&mc->pdev->time_ref, mc->ts16, &tv);
-	hwts = skb_hwtstamps(skb);
-	hwts->hwtstamp = timeval_to_ktime(tv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* update statistics */
 	mc->netdev->stats.rx_packets++;
@@ -770,10 +696,7 @@ static int pcan_usb_decode_msg(struct peak_usb_device *dev, u8 *ibuf, u32 lbuf)
 		/* handle normal can frames here */
 		} else {
 			err = pcan_usb_decode_data(&mc, sl);
-<<<<<<< HEAD
 			mc.rec_data_idx++;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -876,13 +799,7 @@ static int pcan_usb_init(struct peak_usb_device *dev)
 	int err;
 
 	/* initialize a timer needed to wait for hardware restart */
-<<<<<<< HEAD
 	timer_setup(&pdev->restart_timer, pcan_usb_restart, 0);
-=======
-	init_timer(&pdev->restart_timer);
-	pdev->restart_timer.function = pcan_usb_restart;
-	pdev->restart_timer.data = (unsigned long)dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * explicit use of dev_xxx() instead of netdev_xxx() here:

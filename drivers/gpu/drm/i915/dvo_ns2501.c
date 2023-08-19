@@ -191,13 +191,8 @@ enum {
 };
 
 struct ns2501_reg {
-<<<<<<< HEAD
 	u8 offset;
 	u8 value;
-=======
-	 uint8_t offset;
-	 uint8_t value;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /*
@@ -207,7 +202,6 @@ struct ns2501_reg {
  * read all this with a grain of salt.
  */
 struct ns2501_configuration {
-<<<<<<< HEAD
 	u8 sync;		/* configuration of the C0 register */
 	u8 conf;		/* configuration register 8 */
 	u8 syncb;		/* configuration register 41 */
@@ -225,25 +219,6 @@ struct ns2501_configuration {
 	u16 voffs;		/* vertical output offset, 9c/9d */
 	u16 hscale;		/* horizontal scaling factor, b8/b9 */
 	u16 vscale;		/* vertical scaling factor, 10/11 */
-=======
-	uint8_t sync;		/* configuration of the C0 register */
-	uint8_t conf;		/* configuration register 8 */
-	uint8_t syncb;		/* configuration register 41 */
-	uint8_t	dither;		/* configuration of the dithering */
-	uint8_t pll_a;		/* PLL configuration, register A, 1B */
-	uint16_t pll_b;		/* PLL configuration, register B, 1C/1D */
-	uint16_t hstart;	/* horizontal start, registers C1/C2 */
-	uint16_t hstop;		/* horizontal total, registers C3/C4 */
-	uint16_t vstart;	/* vertical start, registers C5/C6 */
-	uint16_t vstop;		/* vertical total, registers C7/C8 */
-	uint16_t vsync;         /* manual vertical sync start, 80/81 */
-	uint16_t vtotal;        /* number of lines generated, 82/83 */
-	uint16_t hpos;		/* horizontal position + 256, 98/99  */
-	uint16_t vpos;		/* vertical position, 8e/8f */
-	uint16_t voffs;		/* vertical output offset, 9c/9d */
-	uint16_t hscale;	/* horizontal scaling factor, b8/b9 */
-	uint16_t vscale;	/* vertical scaling factor, 10/11 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /*
@@ -414,11 +389,7 @@ struct ns2501_priv {
 ** If it returns false, it might be wise to enable the
 ** DVO with the above function.
 */
-<<<<<<< HEAD
 static bool ns2501_readb(struct intel_dvo_device *dvo, int addr, u8 *ch)
-=======
-static bool ns2501_readb(struct intel_dvo_device *dvo, int addr, uint8_t * ch)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ns2501_priv *ns = dvo->dev_priv;
 	struct i2c_adapter *adapter = dvo->i2c_bus;
@@ -463,19 +434,11 @@ static bool ns2501_readb(struct intel_dvo_device *dvo, int addr, uint8_t * ch)
 ** If it returns false, it might be wise to enable the
 ** DVO with the above function.
 */
-<<<<<<< HEAD
 static bool ns2501_writeb(struct intel_dvo_device *dvo, int addr, u8 ch)
 {
 	struct ns2501_priv *ns = dvo->dev_priv;
 	struct i2c_adapter *adapter = dvo->i2c_bus;
 	u8 out_buf[2];
-=======
-static bool ns2501_writeb(struct intel_dvo_device *dvo, int addr, uint8_t ch)
-{
-	struct ns2501_priv *ns = dvo->dev_priv;
-	struct i2c_adapter *adapter = dvo->i2c_bus;
-	uint8_t out_buf[2];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct i2c_msg msg = {
 		.addr = dvo->slave_addr,

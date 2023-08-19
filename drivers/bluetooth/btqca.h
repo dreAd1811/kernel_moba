@@ -34,65 +34,11 @@
 #define EDL_SET_BAUDRATE_RSP_EVT	(0x92)
 #define EDL_NVM_ACCESS_CODE_EVT		(0x0B)
 
-<<<<<<< HEAD
 #define EDL_TAG_ID_HCI			(17)
 #define EDL_TAG_ID_DEEP_SLEEP		(27)
 
 #define QCA_WCN3990_POWERON_PULSE	0xFC
 #define QCA_WCN3990_POWEROFF_PULSE	0xC0
-=======
-#define EDL_TAG_ID_BD_ADDRESS		(2)
-#define EDL_TAG_ID_HCI			(17)
-#define EDL_TAG_ID_DEEP_SLEEP		(27)
-
-#define QCA_BT_VER(s, p, b) (((u64)(s) << 32) | ((u64)(p & 0xffff) << 16) \
-				| ((u64)(b & 0xffff)))
-
-enum {
-	ROME_SOC_ID_44 = 0x00000044,
-};
-
-enum {
-	ROME_PROD_ID = 0x08,
-};
-
-enum {
-	ROME_BUILD_VER_0302 = 0x0302,
-};
-
-enum {
-	HST_SOC_ID_0200 = 0x400A0200,
-};
-
-enum {
-	HST_PROD_ID = 0x10,
-};
-
-enum {
-	HST_BUILD_VER_0200 = 0x0200,
-};
-
-enum {
-	GNA_SOC_ID_0200 = 0x400B0200,
-};
-
-enum {
-	GNA_PROD_ID = 0x12,
-};
-
-enum {
-	GNA_BUILD_VER_0200 = 0x0200,
-};
-
-enum {
-	ROME_VER_3_2 = QCA_BT_VER(ROME_SOC_ID_44, ROME_PROD_ID,
-						ROME_BUILD_VER_0302),
-	HST_VER_2_0  = QCA_BT_VER(HST_SOC_ID_0200, HST_PROD_ID,
-						HST_BUILD_VER_0200),
-	GNA_VER_2_0  = QCA_BT_VER(GNA_SOC_ID_0200, GNA_PROD_ID,
-						GNA_BUILD_VER_0200),
-};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum qca_bardrate {
 	QCA_BAUDRATE_115200 	= 0,
@@ -118,7 +64,6 @@ enum qca_bardrate {
 	QCA_BAUDRATE_RESERVED
 };
 
-<<<<<<< HEAD
 enum rome_tlv_dnld_mode {
 	ROME_SKIP_EVT_NONE,
 	ROME_SKIP_EVT_VSE,
@@ -126,8 +71,6 @@ enum rome_tlv_dnld_mode {
 	ROME_SKIP_EVT_VSE_CC
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum rome_tlv_type {
 	TLV_TYPE_PATCH = 1,
 	TLV_TYPE_NVM
@@ -137,10 +80,7 @@ struct rome_config {
 	u8 type;
 	char fwname[64];
 	uint8_t user_baud_rate;
-<<<<<<< HEAD
 	enum rome_tlv_dnld_mode dnld_mode;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct edl_event_hdr {
@@ -149,28 +89,7 @@ struct edl_event_hdr {
 	__u8 data[0];
 } __packed;
 
-<<<<<<< HEAD
 struct rome_version {
-=======
-struct edl_hst_event_hdr {
-	__u8 status;
-	__u8 sbcode;
-	__u8 len;
-	__u8 data[0];
-} __packed;
-
-struct cmd_cpl_event {
-	__u8 type;
-	__u8 event;
-	__u8 len;
-	__u8 num;
-	__le16 opcode;
-	__u8 status;
-	__u8 sbcode;
-} __packed;
-
-struct qca_version {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le32 product_id;
 	__le16 patch_ver;
 	__le16 rome_ver;
@@ -186,12 +105,8 @@ struct tlv_type_patch {
 	__le32 data_length;
 	__u8   format_version;
 	__u8   signature;
-<<<<<<< HEAD
 	__u8   download_mode;
 	__u8   reserved1;
-=======
-	__le16 reserved1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le16 product_id;
 	__le16 rom_build;
 	__le16 patch_version;
@@ -212,29 +127,19 @@ struct tlv_type_hdr {
 	__u8   data[0];
 } __packed;
 
-<<<<<<< HEAD
 enum qca_btsoc_type {
 	QCA_INVALID = -1,
 	QCA_AR3002,
 	QCA_ROME,
 	QCA_WCN3990
 };
-=======
-typedef int (*qca_enque_send_callback)(struct hci_dev *hdev,
-						struct sk_buff *skb);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #if IS_ENABLED(CONFIG_BT_QCA)
 
 int qca_set_bdaddr_rome(struct hci_dev *hdev, const bdaddr_t *bdaddr);
-<<<<<<< HEAD
 int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
 		   enum qca_btsoc_type soc_type, u32 soc_ver);
 int qca_read_soc_version(struct hci_dev *hdev, u32 *soc_version);
-=======
-int qca_uart_setup_rome(struct hci_dev *hdev, uint8_t baudrate,
-					qca_enque_send_callback callback);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #else
 
@@ -243,7 +148,6 @@ static inline int qca_set_bdaddr_rome(struct hci_dev *hdev, const bdaddr_t *bdad
 	return -EOPNOTSUPP;
 }
 
-<<<<<<< HEAD
 static inline int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
 				 enum qca_btsoc_type soc_type, u32 soc_ver)
 {
@@ -251,10 +155,6 @@ static inline int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
 }
 
 static inline int qca_read_soc_version(struct hci_dev *hdev, u32 *soc_version)
-=======
-static inline int qca_uart_setup_rome(struct hci_dev *hdev, int speed,
-					qca_enque_send_callback callback)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return -EOPNOTSUPP;
 }

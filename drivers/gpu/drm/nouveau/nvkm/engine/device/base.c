@@ -28,10 +28,7 @@
 #include <core/option.h>
 
 #include <subdev/bios.h>
-<<<<<<< HEAD
 #include <subdev/therm.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static DEFINE_MUTEX(nv_devices_mutex);
 static LIST_HEAD(nv_devices);
@@ -931,11 +928,7 @@ nv84_chipset = {
 	.i2c = nv50_i2c_new,
 	.imem = nv50_instmem_new,
 	.mc = g84_mc_new,
-<<<<<<< HEAD
 	.mmu = g84_mmu_new,
-=======
-	.mmu = nv50_mmu_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.mxm = nv50_mxm_new,
 	.pci = g84_pci_new,
 	.therm = g84_therm_new,
@@ -967,11 +960,7 @@ nv86_chipset = {
 	.i2c = nv50_i2c_new,
 	.imem = nv50_instmem_new,
 	.mc = g84_mc_new,
-<<<<<<< HEAD
 	.mmu = g84_mmu_new,
-=======
-	.mmu = nv50_mmu_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.mxm = nv50_mxm_new,
 	.pci = g84_pci_new,
 	.therm = g84_therm_new,
@@ -1003,11 +992,7 @@ nv92_chipset = {
 	.i2c = nv50_i2c_new,
 	.imem = nv50_instmem_new,
 	.mc = g84_mc_new,
-<<<<<<< HEAD
 	.mmu = g84_mmu_new,
-=======
-	.mmu = nv50_mmu_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.mxm = nv50_mxm_new,
 	.pci = g92_pci_new,
 	.therm = g84_therm_new,
@@ -1039,11 +1024,7 @@ nv94_chipset = {
 	.i2c = g94_i2c_new,
 	.imem = nv50_instmem_new,
 	.mc = g84_mc_new,
-<<<<<<< HEAD
 	.mmu = g84_mmu_new,
-=======
-	.mmu = nv50_mmu_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.mxm = nv50_mxm_new,
 	.pci = g94_pci_new,
 	.therm = g84_therm_new,
@@ -1075,11 +1056,7 @@ nv96_chipset = {
 	.i2c = g94_i2c_new,
 	.imem = nv50_instmem_new,
 	.mc = g84_mc_new,
-<<<<<<< HEAD
 	.mmu = g84_mmu_new,
-=======
-	.mmu = nv50_mmu_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.mxm = nv50_mxm_new,
 	.pci = g94_pci_new,
 	.therm = g84_therm_new,
@@ -1111,11 +1088,7 @@ nv98_chipset = {
 	.i2c = g94_i2c_new,
 	.imem = nv50_instmem_new,
 	.mc = g98_mc_new,
-<<<<<<< HEAD
 	.mmu = g84_mmu_new,
-=======
-	.mmu = nv50_mmu_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.mxm = nv50_mxm_new,
 	.pci = g94_pci_new,
 	.therm = g84_therm_new,
@@ -1147,11 +1120,7 @@ nva0_chipset = {
 	.i2c = nv50_i2c_new,
 	.imem = nv50_instmem_new,
 	.mc = g84_mc_new,
-<<<<<<< HEAD
 	.mmu = g84_mmu_new,
-=======
-	.mmu = nv50_mmu_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.mxm = nv50_mxm_new,
 	.pci = g94_pci_new,
 	.therm = g84_therm_new,
@@ -1183,11 +1152,7 @@ nva3_chipset = {
 	.i2c = g94_i2c_new,
 	.imem = nv50_instmem_new,
 	.mc = gt215_mc_new,
-<<<<<<< HEAD
 	.mmu = g84_mmu_new,
-=======
-	.mmu = nv50_mmu_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.mxm = nv50_mxm_new,
 	.pci = g94_pci_new,
 	.pmu = gt215_pmu_new,
@@ -1221,11 +1186,7 @@ nva5_chipset = {
 	.i2c = g94_i2c_new,
 	.imem = nv50_instmem_new,
 	.mc = gt215_mc_new,
-<<<<<<< HEAD
 	.mmu = g84_mmu_new,
-=======
-	.mmu = nv50_mmu_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.mxm = nv50_mxm_new,
 	.pci = g94_pci_new,
 	.pmu = gt215_pmu_new,
@@ -1258,11 +1219,7 @@ nva8_chipset = {
 	.i2c = g94_i2c_new,
 	.imem = nv50_instmem_new,
 	.mc = gt215_mc_new,
-<<<<<<< HEAD
 	.mmu = g84_mmu_new,
-=======
-	.mmu = nv50_mmu_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.mxm = nv50_mxm_new,
 	.pci = g94_pci_new,
 	.pmu = gt215_pmu_new,
@@ -1295,11 +1252,7 @@ nvaa_chipset = {
 	.i2c = g94_i2c_new,
 	.imem = nv50_instmem_new,
 	.mc = g98_mc_new,
-<<<<<<< HEAD
 	.mmu = mcp77_mmu_new,
-=======
-	.mmu = nv50_mmu_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.mxm = nv50_mxm_new,
 	.pci = g94_pci_new,
 	.therm = g84_therm_new,
@@ -1331,11 +1284,7 @@ nvac_chipset = {
 	.i2c = g94_i2c_new,
 	.imem = nv50_instmem_new,
 	.mc = g98_mc_new,
-<<<<<<< HEAD
 	.mmu = mcp77_mmu_new,
-=======
-	.mmu = nv50_mmu_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.mxm = nv50_mxm_new,
 	.pci = g94_pci_new,
 	.therm = g84_therm_new,
@@ -1367,11 +1316,7 @@ nvaf_chipset = {
 	.i2c = g94_i2c_new,
 	.imem = nv50_instmem_new,
 	.mc = gt215_mc_new,
-<<<<<<< HEAD
 	.mmu = g84_mmu_new,
-=======
-	.mmu = nv50_mmu_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.mxm = nv50_mxm_new,
 	.pci = g94_pci_new,
 	.pmu = gt215_pmu_new,
@@ -1734,19 +1679,11 @@ nve4_chipset = {
 	.imem = nv50_instmem_new,
 	.ltc = gk104_ltc_new,
 	.mc = gk104_mc_new,
-<<<<<<< HEAD
 	.mmu = gk104_mmu_new,
 	.mxm = nv50_mxm_new,
 	.pci = gk104_pci_new,
 	.pmu = gk104_pmu_new,
 	.therm = gk104_therm_new,
-=======
-	.mmu = gf100_mmu_new,
-	.mxm = nv50_mxm_new,
-	.pci = gk104_pci_new,
-	.pmu = gk104_pmu_new,
-	.therm = gf119_therm_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.timer = nv41_timer_new,
 	.top = gk104_top_new,
 	.volt = gk104_volt_new,
@@ -1781,19 +1718,11 @@ nve6_chipset = {
 	.imem = nv50_instmem_new,
 	.ltc = gk104_ltc_new,
 	.mc = gk104_mc_new,
-<<<<<<< HEAD
 	.mmu = gk104_mmu_new,
 	.mxm = nv50_mxm_new,
 	.pci = gk104_pci_new,
 	.pmu = gk104_pmu_new,
 	.therm = gk104_therm_new,
-=======
-	.mmu = gf100_mmu_new,
-	.mxm = nv50_mxm_new,
-	.pci = gk104_pci_new,
-	.pmu = gk104_pmu_new,
-	.therm = gf119_therm_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.timer = nv41_timer_new,
 	.top = gk104_top_new,
 	.volt = gk104_volt_new,
@@ -1828,19 +1757,11 @@ nve7_chipset = {
 	.imem = nv50_instmem_new,
 	.ltc = gk104_ltc_new,
 	.mc = gk104_mc_new,
-<<<<<<< HEAD
 	.mmu = gk104_mmu_new,
 	.mxm = nv50_mxm_new,
 	.pci = gk104_pci_new,
 	.pmu = gk104_pmu_new,
 	.therm = gk104_therm_new,
-=======
-	.mmu = gf100_mmu_new,
-	.mxm = nv50_mxm_new,
-	.pci = gk104_pci_new,
-	.pmu = gk104_pmu_new,
-	.therm = gf119_therm_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.timer = nv41_timer_new,
 	.top = gk104_top_new,
 	.volt = gk104_volt_new,
@@ -1870,11 +1791,7 @@ nvea_chipset = {
 	.imem = gk20a_instmem_new,
 	.ltc = gk104_ltc_new,
 	.mc = gk20a_mc_new,
-<<<<<<< HEAD
 	.mmu = gk20a_mmu_new,
-=======
-	.mmu = gf100_mmu_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.pmu = gk20a_pmu_new,
 	.timer = gk20a_timer_new,
 	.top = gk104_top_new,
@@ -1895,11 +1812,7 @@ nvf0_chipset = {
 	.bus = gf100_bus_new,
 	.clk = gk104_clk_new,
 	.devinit = gf100_devinit_new,
-<<<<<<< HEAD
 	.fb = gk110_fb_new,
-=======
-	.fb = gk104_fb_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.fuse = gf100_fuse_new,
 	.gpio = gk104_gpio_new,
 	.i2c = gk104_i2c_new,
@@ -1908,19 +1821,11 @@ nvf0_chipset = {
 	.imem = nv50_instmem_new,
 	.ltc = gk104_ltc_new,
 	.mc = gk104_mc_new,
-<<<<<<< HEAD
 	.mmu = gk104_mmu_new,
 	.mxm = nv50_mxm_new,
 	.pci = gk104_pci_new,
 	.pmu = gk110_pmu_new,
 	.therm = gk104_therm_new,
-=======
-	.mmu = gf100_mmu_new,
-	.mxm = nv50_mxm_new,
-	.pci = gk104_pci_new,
-	.pmu = gk110_pmu_new,
-	.therm = gf119_therm_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.timer = nv41_timer_new,
 	.top = gk104_top_new,
 	.volt = gk104_volt_new,
@@ -1945,11 +1850,7 @@ nvf1_chipset = {
 	.bus = gf100_bus_new,
 	.clk = gk104_clk_new,
 	.devinit = gf100_devinit_new,
-<<<<<<< HEAD
 	.fb = gk110_fb_new,
-=======
-	.fb = gk104_fb_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.fuse = gf100_fuse_new,
 	.gpio = gk104_gpio_new,
 	.i2c = gk104_i2c_new,
@@ -1958,19 +1859,11 @@ nvf1_chipset = {
 	.imem = nv50_instmem_new,
 	.ltc = gk104_ltc_new,
 	.mc = gk104_mc_new,
-<<<<<<< HEAD
 	.mmu = gk104_mmu_new,
 	.mxm = nv50_mxm_new,
 	.pci = gk104_pci_new,
 	.pmu = gk110_pmu_new,
 	.therm = gk104_therm_new,
-=======
-	.mmu = gf100_mmu_new,
-	.mxm = nv50_mxm_new,
-	.pci = gk104_pci_new,
-	.pmu = gk110_pmu_new,
-	.therm = gf119_therm_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.timer = nv41_timer_new,
 	.top = gk104_top_new,
 	.volt = gk104_volt_new,
@@ -1995,11 +1888,7 @@ nv106_chipset = {
 	.bus = gf100_bus_new,
 	.clk = gk104_clk_new,
 	.devinit = gf100_devinit_new,
-<<<<<<< HEAD
 	.fb = gk110_fb_new,
-=======
-	.fb = gk104_fb_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.fuse = gf100_fuse_new,
 	.gpio = gk104_gpio_new,
 	.i2c = gk104_i2c_new,
@@ -2008,19 +1897,11 @@ nv106_chipset = {
 	.imem = nv50_instmem_new,
 	.ltc = gk104_ltc_new,
 	.mc = gk20a_mc_new,
-<<<<<<< HEAD
 	.mmu = gk104_mmu_new,
 	.mxm = nv50_mxm_new,
 	.pci = gk104_pci_new,
 	.pmu = gk208_pmu_new,
 	.therm = gk104_therm_new,
-=======
-	.mmu = gf100_mmu_new,
-	.mxm = nv50_mxm_new,
-	.pci = gk104_pci_new,
-	.pmu = gk208_pmu_new,
-	.therm = gf119_therm_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.timer = nv41_timer_new,
 	.top = gk104_top_new,
 	.volt = gk104_volt_new,
@@ -2045,11 +1926,7 @@ nv108_chipset = {
 	.bus = gf100_bus_new,
 	.clk = gk104_clk_new,
 	.devinit = gf100_devinit_new,
-<<<<<<< HEAD
 	.fb = gk110_fb_new,
-=======
-	.fb = gk104_fb_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.fuse = gf100_fuse_new,
 	.gpio = gk104_gpio_new,
 	.i2c = gk104_i2c_new,
@@ -2058,19 +1935,11 @@ nv108_chipset = {
 	.imem = nv50_instmem_new,
 	.ltc = gk104_ltc_new,
 	.mc = gk20a_mc_new,
-<<<<<<< HEAD
 	.mmu = gk104_mmu_new,
 	.mxm = nv50_mxm_new,
 	.pci = gk104_pci_new,
 	.pmu = gk208_pmu_new,
 	.therm = gk104_therm_new,
-=======
-	.mmu = gf100_mmu_new,
-	.mxm = nv50_mxm_new,
-	.pci = gk104_pci_new,
-	.pmu = gk208_pmu_new,
-	.therm = gf119_therm_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.timer = nv41_timer_new,
 	.top = gk104_top_new,
 	.volt = gk104_volt_new,
@@ -2090,11 +1959,7 @@ nv108_chipset = {
 static const struct nvkm_device_chip
 nv117_chipset = {
 	.name = "GM107",
-<<<<<<< HEAD
 	.bar = gm107_bar_new,
-=======
-	.bar = gf100_bar_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.bios = nvkm_bios_new,
 	.bus = gf100_bus_new,
 	.clk = gk104_clk_new,
@@ -2108,11 +1973,7 @@ nv117_chipset = {
 	.imem = nv50_instmem_new,
 	.ltc = gm107_ltc_new,
 	.mc = gk20a_mc_new,
-<<<<<<< HEAD
 	.mmu = gk104_mmu_new,
-=======
-	.mmu = gf100_mmu_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.mxm = nv50_mxm_new,
 	.pci = gk104_pci_new,
 	.pmu = gm107_pmu_new,
@@ -2132,11 +1993,7 @@ nv117_chipset = {
 static const struct nvkm_device_chip
 nv118_chipset = {
 	.name = "GM108",
-<<<<<<< HEAD
 	.bar = gm107_bar_new,
-=======
-	.bar = gf100_bar_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.bios = nvkm_bios_new,
 	.bus = gf100_bus_new,
 	.clk = gk104_clk_new,
@@ -2150,11 +2007,7 @@ nv118_chipset = {
 	.imem = nv50_instmem_new,
 	.ltc = gm107_ltc_new,
 	.mc = gk20a_mc_new,
-<<<<<<< HEAD
 	.mmu = gk104_mmu_new,
-=======
-	.mmu = gf100_mmu_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.mxm = nv50_mxm_new,
 	.pci = gk104_pci_new,
 	.pmu = gm107_pmu_new,
@@ -2174,11 +2027,7 @@ nv118_chipset = {
 static const struct nvkm_device_chip
 nv120_chipset = {
 	.name = "GM200",
-<<<<<<< HEAD
 	.bar = gm107_bar_new,
-=======
-	.bar = gf100_bar_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.bios = nvkm_bios_new,
 	.bus = gf100_bus_new,
 	.devinit = gm200_devinit_new,
@@ -2191,11 +2040,7 @@ nv120_chipset = {
 	.imem = nv50_instmem_new,
 	.ltc = gm200_ltc_new,
 	.mc = gk20a_mc_new,
-<<<<<<< HEAD
 	.mmu = gm200_mmu_new,
-=======
-	.mmu = gf100_mmu_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.mxm = nv50_mxm_new,
 	.pci = gk104_pci_new,
 	.pmu = gm107_pmu_new,
@@ -2217,11 +2062,7 @@ nv120_chipset = {
 static const struct nvkm_device_chip
 nv124_chipset = {
 	.name = "GM204",
-<<<<<<< HEAD
 	.bar = gm107_bar_new,
-=======
-	.bar = gf100_bar_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.bios = nvkm_bios_new,
 	.bus = gf100_bus_new,
 	.devinit = gm200_devinit_new,
@@ -2234,11 +2075,7 @@ nv124_chipset = {
 	.imem = nv50_instmem_new,
 	.ltc = gm200_ltc_new,
 	.mc = gk20a_mc_new,
-<<<<<<< HEAD
 	.mmu = gm200_mmu_new,
-=======
-	.mmu = gf100_mmu_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.mxm = nv50_mxm_new,
 	.pci = gk104_pci_new,
 	.pmu = gm107_pmu_new,
@@ -2260,11 +2097,7 @@ nv124_chipset = {
 static const struct nvkm_device_chip
 nv126_chipset = {
 	.name = "GM206",
-<<<<<<< HEAD
 	.bar = gm107_bar_new,
-=======
-	.bar = gf100_bar_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.bios = nvkm_bios_new,
 	.bus = gf100_bus_new,
 	.devinit = gm200_devinit_new,
@@ -2277,11 +2110,7 @@ nv126_chipset = {
 	.imem = nv50_instmem_new,
 	.ltc = gm200_ltc_new,
 	.mc = gk20a_mc_new,
-<<<<<<< HEAD
 	.mmu = gm200_mmu_new,
-=======
-	.mmu = gf100_mmu_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.mxm = nv50_mxm_new,
 	.pci = gk104_pci_new,
 	.pmu = gm107_pmu_new,
@@ -2303,11 +2132,7 @@ nv126_chipset = {
 static const struct nvkm_device_chip
 nv12b_chipset = {
 	.name = "GM20B",
-<<<<<<< HEAD
 	.bar = gm20b_bar_new,
-=======
-	.bar = gk20a_bar_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.bus = gf100_bus_new,
 	.clk = gm20b_clk_new,
 	.fb = gm20b_fb_new,
@@ -2316,11 +2141,7 @@ nv12b_chipset = {
 	.imem = gk20a_instmem_new,
 	.ltc = gm200_ltc_new,
 	.mc = gk20a_mc_new,
-<<<<<<< HEAD
 	.mmu = gm20b_mmu_new,
-=======
-	.mmu = gf100_mmu_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.pmu = gm20b_pmu_new,
 	.secboot = gm20b_secboot_new,
 	.timer = gk20a_timer_new,
@@ -2336,18 +2157,11 @@ nv12b_chipset = {
 static const struct nvkm_device_chip
 nv130_chipset = {
 	.name = "GP100",
-<<<<<<< HEAD
 	.bar = gm107_bar_new,
 	.bios = nvkm_bios_new,
 	.bus = gf100_bus_new,
 	.devinit = gm200_devinit_new,
 	.fault = gp100_fault_new,
-=======
-	.bar = gf100_bar_new,
-	.bios = nvkm_bios_new,
-	.bus = gf100_bus_new,
-	.devinit = gm200_devinit_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.fb = gp100_fb_new,
 	.fuse = gm107_fuse_new,
 	.gpio = gk104_gpio_new,
@@ -2356,12 +2170,8 @@ nv130_chipset = {
 	.imem = nv50_instmem_new,
 	.ltc = gp100_ltc_new,
 	.mc = gp100_mc_new,
-<<<<<<< HEAD
 	.mmu = gp100_mmu_new,
 	.therm = gp100_therm_new,
-=======
-	.mmu = gf100_mmu_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.secboot = gm200_secboot_new,
 	.pci = gp100_pci_new,
 	.pmu = gp100_pmu_new,
@@ -2383,34 +2193,21 @@ nv130_chipset = {
 static const struct nvkm_device_chip
 nv132_chipset = {
 	.name = "GP102",
-<<<<<<< HEAD
 	.bar = gm107_bar_new,
 	.bios = nvkm_bios_new,
 	.bus = gf100_bus_new,
 	.devinit = gm200_devinit_new,
 	.fault = gp100_fault_new,
-=======
-	.bar = gf100_bar_new,
-	.bios = nvkm_bios_new,
-	.bus = gf100_bus_new,
-	.devinit = gm200_devinit_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.fb = gp102_fb_new,
 	.fuse = gm107_fuse_new,
 	.gpio = gk104_gpio_new,
 	.i2c = gm200_i2c_new,
 	.ibus = gm200_ibus_new,
 	.imem = nv50_instmem_new,
-<<<<<<< HEAD
 	.ltc = gp102_ltc_new,
 	.mc = gp100_mc_new,
 	.mmu = gp100_mmu_new,
 	.therm = gp100_therm_new,
-=======
-	.ltc = gp100_ltc_new,
-	.mc = gp100_mc_new,
-	.mmu = gf100_mmu_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.secboot = gp102_secboot_new,
 	.pci = gp100_pci_new,
 	.pmu = gp102_pmu_new,
@@ -2432,34 +2229,21 @@ nv132_chipset = {
 static const struct nvkm_device_chip
 nv134_chipset = {
 	.name = "GP104",
-<<<<<<< HEAD
 	.bar = gm107_bar_new,
 	.bios = nvkm_bios_new,
 	.bus = gf100_bus_new,
 	.devinit = gm200_devinit_new,
 	.fault = gp100_fault_new,
-=======
-	.bar = gf100_bar_new,
-	.bios = nvkm_bios_new,
-	.bus = gf100_bus_new,
-	.devinit = gm200_devinit_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.fb = gp102_fb_new,
 	.fuse = gm107_fuse_new,
 	.gpio = gk104_gpio_new,
 	.i2c = gm200_i2c_new,
 	.ibus = gm200_ibus_new,
 	.imem = nv50_instmem_new,
-<<<<<<< HEAD
 	.ltc = gp102_ltc_new,
 	.mc = gp100_mc_new,
 	.mmu = gp100_mmu_new,
 	.therm = gp100_therm_new,
-=======
-	.ltc = gp100_ltc_new,
-	.mc = gp100_mc_new,
-	.mmu = gf100_mmu_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.secboot = gp102_secboot_new,
 	.pci = gp100_pci_new,
 	.pmu = gp102_pmu_new,
@@ -2472,11 +2256,7 @@ nv134_chipset = {
 	.disp = gp102_disp_new,
 	.dma = gf119_dma_new,
 	.fifo = gp100_fifo_new,
-<<<<<<< HEAD
 	.gr = gp104_gr_new,
-=======
-	.gr = gp102_gr_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.nvdec = gp102_nvdec_new,
 	.sec2 = gp102_sec2_new,
 	.sw = gf100_sw_new,
@@ -2485,34 +2265,21 @@ nv134_chipset = {
 static const struct nvkm_device_chip
 nv136_chipset = {
 	.name = "GP106",
-<<<<<<< HEAD
 	.bar = gm107_bar_new,
 	.bios = nvkm_bios_new,
 	.bus = gf100_bus_new,
 	.devinit = gm200_devinit_new,
 	.fault = gp100_fault_new,
-=======
-	.bar = gf100_bar_new,
-	.bios = nvkm_bios_new,
-	.bus = gf100_bus_new,
-	.devinit = gm200_devinit_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.fb = gp102_fb_new,
 	.fuse = gm107_fuse_new,
 	.gpio = gk104_gpio_new,
 	.i2c = gm200_i2c_new,
 	.ibus = gm200_ibus_new,
 	.imem = nv50_instmem_new,
-<<<<<<< HEAD
 	.ltc = gp102_ltc_new,
 	.mc = gp100_mc_new,
 	.mmu = gp100_mmu_new,
 	.therm = gp100_therm_new,
-=======
-	.ltc = gp100_ltc_new,
-	.mc = gp100_mc_new,
-	.mmu = gf100_mmu_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.secboot = gp102_secboot_new,
 	.pci = gp100_pci_new,
 	.pmu = gp102_pmu_new,
@@ -2525,11 +2292,7 @@ nv136_chipset = {
 	.disp = gp102_disp_new,
 	.dma = gf119_dma_new,
 	.fifo = gp100_fifo_new,
-<<<<<<< HEAD
 	.gr = gp104_gr_new,
-=======
-	.gr = gp102_gr_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.nvdec = gp102_nvdec_new,
 	.sec2 = gp102_sec2_new,
 	.sw = gf100_sw_new,
@@ -2538,34 +2301,21 @@ nv136_chipset = {
 static const struct nvkm_device_chip
 nv137_chipset = {
 	.name = "GP107",
-<<<<<<< HEAD
 	.bar = gm107_bar_new,
 	.bios = nvkm_bios_new,
 	.bus = gf100_bus_new,
 	.devinit = gm200_devinit_new,
 	.fault = gp100_fault_new,
-=======
-	.bar = gf100_bar_new,
-	.bios = nvkm_bios_new,
-	.bus = gf100_bus_new,
-	.devinit = gm200_devinit_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.fb = gp102_fb_new,
 	.fuse = gm107_fuse_new,
 	.gpio = gk104_gpio_new,
 	.i2c = gm200_i2c_new,
 	.ibus = gm200_ibus_new,
 	.imem = nv50_instmem_new,
-<<<<<<< HEAD
 	.ltc = gp102_ltc_new,
 	.mc = gp100_mc_new,
 	.mmu = gp100_mmu_new,
 	.therm = gp100_therm_new,
-=======
-	.ltc = gp100_ltc_new,
-	.mc = gp100_mc_new,
-	.mmu = gf100_mmu_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.secboot = gp102_secboot_new,
 	.pci = gp100_pci_new,
 	.pmu = gp102_pmu_new,
@@ -2587,35 +2337,22 @@ nv137_chipset = {
 static const struct nvkm_device_chip
 nv138_chipset = {
 	.name = "GP108",
-<<<<<<< HEAD
 	.bar = gm107_bar_new,
 	.bios = nvkm_bios_new,
 	.bus = gf100_bus_new,
 	.devinit = gm200_devinit_new,
 	.fault = gp100_fault_new,
-=======
-	.bar = gf100_bar_new,
-	.bios = nvkm_bios_new,
-	.bus = gf100_bus_new,
-	.devinit = gm200_devinit_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.fb = gp102_fb_new,
 	.fuse = gm107_fuse_new,
 	.gpio = gk104_gpio_new,
 	.i2c = gm200_i2c_new,
 	.ibus = gm200_ibus_new,
 	.imem = nv50_instmem_new,
-<<<<<<< HEAD
 	.ltc = gp102_ltc_new,
 	.mc = gp100_mc_new,
 	.mmu = gp100_mmu_new,
 	.therm = gp100_therm_new,
 	.secboot = gp108_secboot_new,
-=======
-	.ltc = gp100_ltc_new,
-	.mc = gp100_mc_new,
-	.mmu = gf100_mmu_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.pci = gp100_pci_new,
 	.pmu = gp102_pmu_new,
 	.timer = gk20a_timer_new,
@@ -2627,39 +2364,25 @@ nv138_chipset = {
 	.disp = gp102_disp_new,
 	.dma = gf119_dma_new,
 	.fifo = gp100_fifo_new,
-<<<<<<< HEAD
 	.gr = gp107_gr_new,
 	.nvdec = gp102_nvdec_new,
 	.sec2 = gp102_sec2_new,
 	.sw = gf100_sw_new,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct nvkm_device_chip
 nv13b_chipset = {
 	.name = "GP10B",
-<<<<<<< HEAD
 	.bar = gm20b_bar_new,
 	.bus = gf100_bus_new,
 	.fault = gp100_fault_new,
-=======
-	.bar = gk20a_bar_new,
-	.bus = gf100_bus_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.fb = gp10b_fb_new,
 	.fuse = gm107_fuse_new,
 	.ibus = gp10b_ibus_new,
 	.imem = gk20a_instmem_new,
-<<<<<<< HEAD
 	.ltc = gp102_ltc_new,
 	.mc = gp10b_mc_new,
 	.mmu = gp10b_mmu_new,
-=======
-	.ltc = gp100_ltc_new,
-	.mc = gp10b_mc_new,
-	.mmu = gf100_mmu_new,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.secboot = gp10b_secboot_new,
 	.pmu = gm20b_pmu_new,
 	.timer = gk20a_timer_new,
@@ -2671,7 +2394,6 @@ nv13b_chipset = {
 	.sw = gf100_sw_new,
 };
 
-<<<<<<< HEAD
 static const struct nvkm_device_chip
 nv140_chipset = {
 	.name = "GV100",
@@ -2712,8 +2434,6 @@ nv140_chipset = {
 	.sec2 = gp102_sec2_new,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int
 nvkm_device_event_ctor(struct nvkm_object *object, void *data, u32 size,
 		       struct nvkm_notify *notify)
@@ -2747,10 +2467,7 @@ nvkm_device_subdev(struct nvkm_device *device, int index)
 	_(BUS     , device->bus     , &device->bus->subdev);
 	_(CLK     , device->clk     , &device->clk->subdev);
 	_(DEVINIT , device->devinit , &device->devinit->subdev);
-<<<<<<< HEAD
 	_(FAULT   , device->fault   , &device->fault->subdev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	_(FB      , device->fb      , &device->fb->subdev);
 	_(FUSE    , device->fuse    , &device->fuse->subdev);
 	_(GPIO    , device->gpio    , &device->gpio->subdev);
@@ -2794,12 +2511,9 @@ nvkm_device_engine(struct nvkm_device *device, int index)
 	_(CE3    , device->ce[3]   ,  device->ce[3]);
 	_(CE4    , device->ce[4]   ,  device->ce[4]);
 	_(CE5    , device->ce[5]   ,  device->ce[5]);
-<<<<<<< HEAD
 	_(CE6    , device->ce[6]   ,  device->ce[6]);
 	_(CE7    , device->ce[7]   ,  device->ce[7]);
 	_(CE8    , device->ce[8]   ,  device->ce[8]);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	_(CIPHER , device->cipher  ,  device->cipher);
 	_(DISP   , device->disp    , &device->disp->engine);
 	_(DMAOBJ , device->dma     , &device->dma->engine);
@@ -2851,10 +2565,7 @@ nvkm_device_fini(struct nvkm_device *device, bool suspend)
 		}
 	}
 
-<<<<<<< HEAD
 	nvkm_therm_clkgate_fini(device->therm, suspend);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (device->func->fini)
 		device->func->fini(device, suspend);
@@ -2944,10 +2655,7 @@ nvkm_device_init(struct nvkm_device *device)
 	}
 
 	nvkm_acpi_init(device);
-<<<<<<< HEAD
 	nvkm_therm_clkgate_enable(device->therm);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	time = ktime_to_us(ktime_get()) - time;
 	nvdev_trace(device, "init completed in %lldus\n", time);
@@ -3082,10 +2790,7 @@ nvkm_device_ctor(const struct nvkm_device_func *func,
 			case 0x110:
 			case 0x120: device->card_type = GM100; break;
 			case 0x130: device->card_type = GP100; break;
-<<<<<<< HEAD
 			case 0x140: device->card_type = GV100; break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			default:
 				break;
 			}
@@ -3177,10 +2882,7 @@ nvkm_device_ctor(const struct nvkm_device_func *func,
 		case 0x137: device->chip = &nv137_chipset; break;
 		case 0x138: device->chip = &nv138_chipset; break;
 		case 0x13b: device->chip = &nv13b_chipset; break;
-<<<<<<< HEAD
 		case 0x140: device->chip = &nv140_chipset; break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		default:
 			nvdev_error(device, "unknown chipset (%08x)\n", boot0);
 			goto done;
@@ -3242,10 +2944,7 @@ nvkm_device_ctor(const struct nvkm_device_func *func,
 		_(NVKM_SUBDEV_BUS     ,      bus);
 		_(NVKM_SUBDEV_CLK     ,      clk);
 		_(NVKM_SUBDEV_DEVINIT ,  devinit);
-<<<<<<< HEAD
 		_(NVKM_SUBDEV_FAULT   ,    fault);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		_(NVKM_SUBDEV_FB      ,       fb);
 		_(NVKM_SUBDEV_FUSE    ,     fuse);
 		_(NVKM_SUBDEV_GPIO    ,     gpio);
@@ -3271,12 +2970,9 @@ nvkm_device_ctor(const struct nvkm_device_func *func,
 		_(NVKM_ENGINE_CE3     ,    ce[3]);
 		_(NVKM_ENGINE_CE4     ,    ce[4]);
 		_(NVKM_ENGINE_CE5     ,    ce[5]);
-<<<<<<< HEAD
 		_(NVKM_ENGINE_CE6     ,    ce[6]);
 		_(NVKM_ENGINE_CE7     ,    ce[7]);
 		_(NVKM_ENGINE_CE8     ,    ce[8]);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		_(NVKM_ENGINE_CIPHER  ,   cipher);
 		_(NVKM_ENGINE_DISP    ,     disp);
 		_(NVKM_ENGINE_DMAOBJ  ,      dma);

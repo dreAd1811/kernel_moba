@@ -22,10 +22,7 @@
 #include <linux/errno.h>
 #include <linux/string.h>
 #include <linux/types.h>
-<<<<<<< HEAD
 #include <linux/pagemap.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/ptrace.h>
 #include <linux/mman.h>
 #include <linux/mm.h>
@@ -45,10 +42,6 @@
 #include <asm/pgtable.h>
 #include <asm/mmu.h>
 #include <asm/mmu_context.h>
-<<<<<<< HEAD
-=======
-#include <asm/tlbflush.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/siginfo.h>
 #include <asm/debug.h>
 
@@ -73,29 +66,16 @@ static inline bool notify_page_fault(struct pt_regs *regs)
 }
 
 /*
-<<<<<<< HEAD
  * Check whether the instruction inst is a store using
  * an update addressing form which will update r1.
  */
 static bool store_updates_sp(unsigned int inst)
 {
-=======
- * Check whether the instruction at regs->nip is a store using
- * an update addressing form which will update r1.
- */
-static bool store_updates_sp(struct pt_regs *regs)
-{
-	unsigned int inst;
-
-	if (get_user(inst, (unsigned int __user *)regs->nip))
-		return false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* check for 1 in the rA field */
 	if (((inst >> 16) & 0x1f) != 1)
 		return false;
 	/* check major opcode */
 	switch (inst >> 26) {
-<<<<<<< HEAD
 	case OP_STWU:
 	case OP_STBU:
 	case OP_STHU:
@@ -113,25 +93,6 @@ static bool store_updates_sp(struct pt_regs *regs)
 		case OP_31_XOP_STHUX:
 		case OP_31_XOP_STFSUX:
 		case OP_31_XOP_STFDUX:
-=======
-	case 37:	/* stwu */
-	case 39:	/* stbu */
-	case 45:	/* sthu */
-	case 53:	/* stfsu */
-	case 55:	/* stfdu */
-		return true;
-	case 62:	/* std or stdu */
-		return (inst & 3) == 1;
-	case 31:
-		/* check minor opcode */
-		switch ((inst >> 1) & 0x3ff) {
-		case 181:	/* stdux */
-		case 183:	/* stwux */
-		case 247:	/* stbux */
-		case 439:	/* sthux */
-		case 695:	/* stfsux */
-		case 759:	/* stfdux */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return true;
 		}
 	}
@@ -142,12 +103,8 @@ static bool store_updates_sp(struct pt_regs *regs)
  */
 
 static int
-<<<<<<< HEAD
 __bad_area_nosemaphore(struct pt_regs *regs, unsigned long address, int si_code,
 		int pkey)
-=======
-__bad_area_nosemaphore(struct pt_regs *regs, unsigned long address, int si_code)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/*
 	 * If we are in kernel mode, bail out with a SEGV, this will
@@ -157,29 +114,18 @@ __bad_area_nosemaphore(struct pt_regs *regs, unsigned long address, int si_code)
 	if (!user_mode(regs))
 		return SIGSEGV;
 
-<<<<<<< HEAD
 	_exception_pkey(SIGSEGV, regs, si_code, address, pkey);
-=======
-	_exception(SIGSEGV, regs, si_code, address);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
 static noinline int bad_area_nosemaphore(struct pt_regs *regs, unsigned long address)
 {
-<<<<<<< HEAD
 	return __bad_area_nosemaphore(regs, address, SEGV_MAPERR, 0);
 }
 
 static int __bad_area(struct pt_regs *regs, unsigned long address, int si_code,
 			int pkey)
-=======
-	return __bad_area_nosemaphore(regs, address, SEGV_MAPERR);
-}
-
-static int __bad_area(struct pt_regs *regs, unsigned long address, int si_code)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mm_struct *mm = current->mm;
 
@@ -189,16 +135,11 @@ static int __bad_area(struct pt_regs *regs, unsigned long address, int si_code)
 	 */
 	up_read(&mm->mmap_sem);
 
-<<<<<<< HEAD
 	return __bad_area_nosemaphore(regs, address, si_code, pkey);
-=======
-	return __bad_area_nosemaphore(regs, address, si_code);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static noinline int bad_area(struct pt_regs *regs, unsigned long address)
 {
-<<<<<<< HEAD
 	return __bad_area(regs, address, SEGV_MAPERR, 0);
 }
 
@@ -206,26 +147,15 @@ static int bad_key_fault_exception(struct pt_regs *regs, unsigned long address,
 				    int pkey)
 {
 	return __bad_area_nosemaphore(regs, address, SEGV_PKUERR, pkey);
-=======
-	return __bad_area(regs, address, SEGV_MAPERR);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static noinline int bad_access(struct pt_regs *regs, unsigned long address)
 {
-<<<<<<< HEAD
 	return __bad_area(regs, address, SEGV_ACCERR, 0);
 }
 
 static int do_sigbus(struct pt_regs *regs, unsigned long address,
 		     vm_fault_t fault)
-=======
-	return __bad_area(regs, address, SEGV_ACCERR);
-}
-
-static int do_sigbus(struct pt_regs *regs, unsigned long address,
-		     unsigned int fault)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	siginfo_t info;
 	unsigned int lsb = 0;
@@ -234,10 +164,7 @@ static int do_sigbus(struct pt_regs *regs, unsigned long address,
 		return SIGBUS;
 
 	current->thread.trap_nr = BUS_ADRERR;
-<<<<<<< HEAD
 	clear_siginfo(&info);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	info.si_signo = SIGBUS;
 	info.si_errno = 0;
 	info.si_code = BUS_ADRERR;
@@ -259,12 +186,8 @@ static int do_sigbus(struct pt_regs *regs, unsigned long address,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int mm_fault_error(struct pt_regs *regs, unsigned long addr,
 				vm_fault_t fault)
-=======
-static int mm_fault_error(struct pt_regs *regs, unsigned long addr, int fault)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/*
 	 * Kernel page fault interrupted by SIGKILL. We have no reason to
@@ -311,13 +234,8 @@ static bool bad_kernel_fault(bool is_exec, unsigned long error_code,
 }
 
 static bool bad_stack_expansion(struct pt_regs *regs, unsigned long address,
-<<<<<<< HEAD
 				struct vm_area_struct *vma, unsigned int flags,
 				bool *must_retry)
-=======
-				struct vm_area_struct *vma,
-				bool store_update_sp)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/*
 	 * N.B. The POWER/Open ABI allows programs to access up to
@@ -329,10 +247,7 @@ static bool bad_stack_expansion(struct pt_regs *regs, unsigned long address,
 	 * expand to 1MB without further checks.
 	 */
 	if (address + 0x100000 < vma->vm_end) {
-<<<<<<< HEAD
 		unsigned int __user *nip = (unsigned int __user *)regs->nip;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* get user regs even if this fault is in kernel mode */
 		struct pt_regs *uregs = current->thread.regs;
 		if (uregs == NULL)
@@ -350,7 +265,6 @@ static bool bad_stack_expansion(struct pt_regs *regs, unsigned long address,
 		 * between the last mapped region and the stack will
 		 * expand the stack rather than segfaulting.
 		 */
-<<<<<<< HEAD
 		if (address + 2048 >= uregs->gpr[1])
 			return false;
 
@@ -367,10 +281,6 @@ static bool bad_stack_expansion(struct pt_regs *regs, unsigned long address,
 			*must_retry = true;
 		}
 		return true;
-=======
-		if (address + 2048 < uregs->gpr[1] && !store_update_sp)
-			return true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return false;
 }
@@ -402,16 +312,12 @@ static bool access_error(bool is_write, bool is_exec,
 
 	if (unlikely(!(vma->vm_flags & (VM_READ | VM_EXEC | VM_WRITE))))
 		return true;
-<<<<<<< HEAD
 	/*
 	 * We should ideally do the vma pkey access check here. But in the
 	 * fault path, handle_mm_fault() also does the same check. To avoid
 	 * these multiple checks, we skip it here and handle access error due
 	 * to pkeys later.
 	 */
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return false;
 }
 
@@ -511,13 +417,8 @@ static int __do_page_fault(struct pt_regs *regs, unsigned long address,
  	int is_exec = TRAP(regs) == 0x400;
 	int is_user = user_mode(regs);
 	int is_write = page_fault_is_write(error_code);
-<<<<<<< HEAD
 	vm_fault_t fault, major = 0;
 	bool must_retry = false;
-=======
-	int fault, major = 0;
-	bool store_update_sp = false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (notify_page_fault(regs))
 		return 0;
@@ -559,24 +460,15 @@ static int __do_page_fault(struct pt_regs *regs, unsigned long address,
 
 	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, address);
 
-<<<<<<< HEAD
 	if (error_code & DSISR_KEYFAULT)
 		return bad_key_fault_exception(regs, address,
 					       get_mm_addr_key(mm, address));
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * We want to do this outside mmap_sem, because reading code around nip
 	 * can result in fault, which will cause a deadlock when called with
 	 * mmap_sem held
 	 */
-<<<<<<< HEAD
-=======
-	if (is_write && is_user)
-		store_update_sp = store_updates_sp(regs);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (is_user)
 		flags |= FAULT_FLAG_USER;
 	if (is_write)
@@ -623,7 +515,6 @@ retry:
 		return bad_area(regs, address);
 
 	/* The stack is being expanded, check if it's valid */
-<<<<<<< HEAD
 	if (unlikely(bad_stack_expansion(regs, address, vma, flags,
 					 &must_retry))) {
 		if (!must_retry)
@@ -635,10 +526,6 @@ retry:
 			return bad_area_nosemaphore(regs, address);
 		goto retry;
 	}
-=======
-	if (unlikely(bad_stack_expansion(regs, address, vma, store_update_sp)))
-		return bad_area(regs, address);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Try to expand it */
 	if (unlikely(expand_stack(vma, address)))
@@ -654,7 +541,6 @@ good_area:
 	 * the fault.
 	 */
 	fault = handle_mm_fault(vma, address, flags);
-<<<<<<< HEAD
 
 #ifdef CONFIG_PPC_MEM_KEYS
 	/*
@@ -671,8 +557,6 @@ good_area:
 	}
 #endif /* CONFIG_PPC_MEM_KEYS */
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	major |= fault & VM_FAULT_MAJOR;
 
 	/*
@@ -746,7 +630,6 @@ void bad_page_fault(struct pt_regs *regs, unsigned long address, int sig)
 
 	/* kernel has accessed a bad area */
 
-<<<<<<< HEAD
 	switch (TRAP(regs)) {
 	case 0x300:
 	case 0x380:
@@ -765,27 +648,6 @@ void bad_page_fault(struct pt_regs *regs, unsigned long address, int sig)
 	default:
 		printk(KERN_ALERT "Unable to handle kernel paging request for "
 			"unknown fault\n");
-=======
-	switch (regs->trap) {
-	case 0x300:
-	case 0x380:
-		pr_alert("BUG: %s at 0x%08lx\n",
-			 regs->dar < PAGE_SIZE ? "Kernel NULL pointer dereference" :
-			 "Unable to handle kernel data access", regs->dar);
-		break;
-	case 0x400:
-	case 0x480:
-		pr_alert("BUG: Unable to handle kernel instruction fetch%s",
-			 regs->nip < PAGE_SIZE ? " (NULL pointer?)\n" : "\n");
-		break;
-	case 0x600:
-		pr_alert("BUG: Unable to handle kernel unaligned access at 0x%08lx\n",
-			 regs->dar);
-		break;
-	default:
-		pr_alert("BUG: Unable to handle unknown paging fault at 0x%08lx\n",
-			 regs->dar);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 	printk(KERN_ALERT "Faulting instruction address: 0x%08lx\n",

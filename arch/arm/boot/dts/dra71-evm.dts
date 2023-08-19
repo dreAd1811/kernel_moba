@@ -7,10 +7,7 @@
  */
 
 #include "dra72-evm-common.dtsi"
-<<<<<<< HEAD
 #include "dra7-mmc-iodelay.dtsi"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "dra72x-mmc-iodelay.dtsi"
 #include <dt-bindings/net/ti-dp83867.h>
 
@@ -178,11 +175,7 @@
 
 &mmc1 {
 	pinctrl-names = "default", "hs", "sdr12", "sdr25", "sdr50", "ddr50", "sdr104";
-<<<<<<< HEAD
 	pinctrl-0 = <&mmc1_pins_default_no_clk_pu>;
-=======
-	pinctrl-0 = <&mmc1_pins_default>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pinctrl-1 = <&mmc1_pins_hs>;
 	pinctrl-2 = <&mmc1_pins_sdr12>;
 	pinctrl-3 = <&mmc1_pins_sdr25>;
@@ -199,10 +192,7 @@
 	pinctrl-2 = <&mmc2_pins_ddr_rev20 &mmc2_iodelay_ddr_conf>;
 	pinctrl-3 = <&mmc2_pins_hs200 &mmc2_iodelay_hs200_rev20_conf>;
 	vmmc-supply = <&evm_1v8_sw>;
-<<<<<<< HEAD
 	vqmmc-supply = <&evm_1v8_sw>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &mac {
@@ -275,7 +265,6 @@
 	/* Supplied by VDA_1V8_PHY */
 	vdda_video-supply = <&lp8732_ldo1_reg>;
 };
-<<<<<<< HEAD
 
 &extcon_usb1 {
 	vbus-gpio = <&pcf_lcd 14 GPIO_ACTIVE_HIGH>;
@@ -284,5 +273,3 @@
 &extcon_usb2 {
 	vbus-gpio = <&pcf_lcd 15 GPIO_ACTIVE_HIGH>;
 };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

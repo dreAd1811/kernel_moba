@@ -1,17 +1,7 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Componentized device handling.
  *
-=======
-/*
- * Componentized device handling.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * This is work in progress.  We gather up the component devices into a list,
  * and bind them when instructed.  At the moment, we're specific to the DRM
  * subsystem, and only handles one master device, but this doesn't have to be
@@ -24,10 +14,7 @@
 #include <linux/module.h>
 #include <linux/mutex.h>
 #include <linux/slab.h>
-<<<<<<< HEAD
 #include <linux/debugfs.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct component;
 
@@ -52,10 +39,7 @@ struct master {
 	const struct component_master_ops *ops;
 	struct device *dev;
 	struct component_match *match;
-<<<<<<< HEAD
 	struct dentry *dentry;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct component {
@@ -71,7 +55,6 @@ static DEFINE_MUTEX(component_mutex);
 static LIST_HEAD(component_list);
 static LIST_HEAD(masters);
 
-<<<<<<< HEAD
 #ifdef CONFIG_DEBUG_FS
 
 static struct dentry *component_debugfs_dir;
@@ -146,8 +129,6 @@ static void component_master_debugfs_del(struct master *m)
 
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct master *__master_find(struct device *dev,
 	const struct component_master_ops *ops)
 {
@@ -254,12 +235,7 @@ static int try_to_bring_up_master(struct master *master,
 	ret = master->ops->bind(master->dev);
 	if (ret < 0) {
 		devres_release_group(master->dev, NULL);
-<<<<<<< HEAD
 		dev_info(master->dev, "master bind failed: %d\n", ret);
-=======
-		if (ret != -EPROBE_DEFER)
-			dev_info(master->dev, "master bind failed: %d\n", ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
@@ -387,10 +363,7 @@ static void free_master(struct master *master)
 	struct component_match *match = master->match;
 	int i;
 
-<<<<<<< HEAD
 	component_master_debugfs_del(master);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_del(&master->node);
 
 	if (match) {
@@ -424,10 +397,7 @@ int component_master_add_with_match(struct device *dev,
 	master->ops = ops;
 	master->match = match;
 
-<<<<<<< HEAD
 	component_master_debugfs_add(master);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Add to the list of available masters. */
 	mutex_lock(&component_mutex);
 	list_add(&master->node, &masters);
@@ -536,14 +506,8 @@ static int component_bind(struct component *component, struct master *master,
 		devres_release_group(component->dev, NULL);
 		devres_release_group(master->dev, NULL);
 
-<<<<<<< HEAD
 		dev_err(master->dev, "failed to bind %s (ops %ps): %d\n",
 			dev_name(component->dev), component->ops, ret);
-=======
-		if (ret != -EPROBE_DEFER)
-			dev_err(master->dev, "failed to bind %s (ops %ps): %d\n",
-				dev_name(component->dev), component->ops, ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return ret;
@@ -572,15 +536,9 @@ int component_bind_all(struct device *master_dev, void *data)
 		}
 
 	if (ret != 0) {
-<<<<<<< HEAD
 		for (; i--; )
 			if (!master->match->compare[i].duplicate) {
 				c = master->match->compare[i].component;
-=======
-		for (; i > 0; i--)
-			if (!master->match->compare[i - 1].duplicate) {
-				c = master->match->compare[i - 1].component;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				component_unbind(c, master, data);
 			}
 	}

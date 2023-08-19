@@ -101,16 +101,6 @@ struct tx4939_irc_reg {
 	struct tx4939_le_reg maskext;
 };
 
-<<<<<<< HEAD
-=======
-struct tx4939_rtc_reg {
-	__u32 ctl;
-	__u32 adr;
-	__u32 dat;
-	__u32 tbc;
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct tx4939_crypto_reg {
 	struct tx4939_le_reg csr;
 	struct tx4939_le_reg idesptr;
@@ -373,29 +363,6 @@ struct tx4939_vpc_desc {
 #define TX4939_CLKCTR_CYPRST	0x00000001
 
 /*
-<<<<<<< HEAD
-=======
- * RTC
- */
-#define TX4939_RTCCTL_ALME	0x00000080
-#define TX4939_RTCCTL_ALMD	0x00000040
-#define TX4939_RTCCTL_BUSY	0x00000020
-
-#define TX4939_RTCCTL_COMMAND	0x00000007
-#define TX4939_RTCCTL_COMMAND_NOP	0x00000000
-#define TX4939_RTCCTL_COMMAND_GETTIME	0x00000001
-#define TX4939_RTCCTL_COMMAND_SETTIME	0x00000002
-#define TX4939_RTCCTL_COMMAND_GETALARM	0x00000003
-#define TX4939_RTCCTL_COMMAND_SETALARM	0x00000004
-
-#define TX4939_RTCTBC_PM	0x00000080
-#define TX4939_RTCTBC_COMP	0x0000007f
-
-#define TX4939_RTC_REG_RAMSIZE	0x00000100
-#define TX4939_RTC_REG_RWBSIZE	0x00000006
-
-/*
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * CRYPTO
  */
 #define TX4939_CRYPTO_CSR_SAESO 0x08000000
@@ -504,11 +471,6 @@ struct tx4939_vpc_desc {
 #define tx4939_ccfgptr \
 		((struct tx4939_ccfg_reg __iomem *)TX4939_CCFG_REG)
 #define tx4939_sramcptr		tx4938_sramcptr
-<<<<<<< HEAD
-=======
-#define tx4939_rtcptr \
-		((struct tx4939_rtc_reg __iomem *)TX4939_RTC_REG)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define tx4939_cryptoptr \
 		((struct tx4939_crypto_reg __iomem *)TX4939_CRYPTO_REG)
 #define tx4939_vpcptr	((struct tx4939_vpc_reg __iomem *)TX4939_VPC_REG)

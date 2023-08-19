@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /*
  * aQuantia Corporation Network Driver
  * Copyright (C) 2017 aQuantia Corporation. All rights reserved
@@ -8,18 +7,6 @@
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU General Public License,
  * version 2, as published by the Free Software Foundation.
-=======
-// SPDX-License-Identifier: GPL-2.0-only
-/* Atlantic Network Driver
- *
- * Copyright (C) 2017 aQuantia Corporation
- * Copyright (C) 2019-2020 Marvell International Ltd.
- * Portions Copyright (C) various contributors (see specific commit references)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include "atl_common.h"
@@ -28,19 +15,10 @@
 #include <linux/cpu.h>
 #include <linux/interrupt.h>
 
-<<<<<<< HEAD
 #ifdef ATL_COMPAT_PCI_IRQ_VECTOR
 /* From commit aff171641d181ea573380efc3f559c9de4741fc5 */
 int atl_compat_pci_irq_vector(struct pci_dev *dev, unsigned int nr)
 {
-=======
-#ifdef ATL_COMPAT_PCI_ALLOC_IRQ_VECTORS
-
-/* From commit aff171641d181ea573380efc3f559c9de4741fc5 */
-int atl_compat_pci_irq_vector(struct pci_dev *dev, unsigned int nr)
-{
-#ifdef CONFIG_PCI_MSI
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dev->msix_enabled) {
 		struct msi_desc *entry;
 		int i = 0;
@@ -63,15 +41,10 @@ int atl_compat_pci_irq_vector(struct pci_dev *dev, unsigned int nr)
 		if (WARN_ON_ONCE(nr > 0))
 			return -EINVAL;
 	}
-<<<<<<< HEAD
-=======
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return dev->irq + nr;
 }
 
-<<<<<<< HEAD
 #endif
 
 #ifdef ATL_COMPAT_PCI_ALLOC_IRQ_VECTORS_AFFINITY
@@ -149,13 +122,6 @@ int atl_compat_pci_alloc_irq_vectors_affinity(struct pci_dev *dev,
 	if (affd)
 		max_vecs = irq_calc_affinity_vectors(min_vecs, max_vecs, affd);
 
-=======
-int atl_compat_pci_alloc_irq_vectors(struct pci_dev *dev,
-	unsigned int min_vecs, unsigned int max_vecs, unsigned int flags)
-{
-	int vecs = -ENOSPC;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (flags & PCI_IRQ_MSIX) {
 		struct msix_entry *entries;
 		int i;
@@ -189,56 +155,3 @@ int atl_compat_pci_alloc_irq_vectors(struct pci_dev *dev,
 }
 
 #endif
-<<<<<<< HEAD
-=======
-
-#ifdef ATL_COMPAT_PCI_ENABLE_MSIX_RANGE
-/* from commit 302a2523c277bea0bbe8340312b09507905849ed */
-int atl_compat_pci_enable_msi_range(struct pci_dev *dev, int minvec, int maxvec)
-{
-	int nvec = maxvec;
-	int rc;
-
-	if (maxvec < minvec)
-		return -ERANGE;
-
-	do {
-		rc = pci_enable_msi_block(dev, nvec);
-		if (rc < 0) {
-			return rc;
-		} else if (rc > 0) {
-			if (rc < minvec)
-				return -ENOSPC;
-			nvec = rc;
-		}
-	} while (rc);
-
-	return nvec;
-}
-
-int atl_compat_pci_enable_msix_range(struct pci_dev *dev,
-				     struct msix_entry *entries,
-				     int minvec, int maxvec)
-{
-	int nvec = maxvec;
-	int rc;
-
-	if (maxvec < minvec)
-		return -ERANGE;
-
-	do {
-		rc = pci_enable_msix(dev, entries, nvec);
-		if (rc < 0) {
-			return rc;
-		} else if (rc > 0) {
-			if (rc < minvec)
-				return -ENOSPC;
-			nvec = rc;
-		}
-	} while (rc);
-
-	return nvec;
-}
-
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

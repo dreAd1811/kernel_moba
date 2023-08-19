@@ -170,7 +170,6 @@ void cpsw_phy_sel(struct device *dev, phy_interface_t phy_mode, int slave)
 	struct device_node *node;
 	struct cpsw_phy_sel_priv *priv;
 
-<<<<<<< HEAD
 	node = of_parse_phandle(dev->of_node, "cpsw-phy-sel", 0);
 	if (!node) {
 		node = of_get_child_by_name(dev->of_node, "cpsw-phy-sel");
@@ -178,12 +177,6 @@ void cpsw_phy_sel(struct device *dev, phy_interface_t phy_mode, int slave)
 			dev_err(dev, "Phy mode driver DT not found\n");
 			return;
 		}
-=======
-	node = of_get_child_by_name(dev->of_node, "cpsw-phy-sel");
-	if (!node) {
-		dev_err(dev, "Phy mode driver DT not found\n");
-		return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	dev = bus_find_device(&platform_bus_type, NULL, node, match);

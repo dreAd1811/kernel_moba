@@ -1,24 +1,6 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
 /*
  * Copyright (C) 2015 Microchip Technology
-=======
-/*
- * Copyright (C) 2015 Microchip Technology
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses/>.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #include <linux/version.h>
 #include <linux/module.h>
@@ -37,31 +19,19 @@
 #include <linux/mdio.h>
 #include <linux/phy.h>
 #include <net/ip6_checksum.h>
-<<<<<<< HEAD
-=======
-#include <net/vxlan.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/interrupt.h>
 #include <linux/irqdomain.h>
 #include <linux/irq.h>
 #include <linux/irqchip/chained_irq.h>
 #include <linux/microchipphy.h>
-<<<<<<< HEAD
 #include <linux/phy_fixed.h>
 #include <linux/of_mdio.h>
-=======
-#include <linux/phy.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/of_net.h>
 #include "lan78xx.h"
 
 #define DRIVER_AUTHOR	"WOOJUNG HUH <woojung.huh@microchip.com>"
 #define DRIVER_DESC	"LAN78XX USB 3.0 Gigabit Ethernet Devices"
 #define DRIVER_NAME	"lan78xx"
-<<<<<<< HEAD
-=======
-#define DRIVER_VERSION	"1.0.6"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define TX_TIMEOUT_JIFFIES		(5 * HZ)
 #define THROTTLE_JIFFIES		(HZ / 8)
@@ -82,10 +52,7 @@
 #define DEFAULT_RX_CSUM_ENABLE		(true)
 #define DEFAULT_TSO_CSUM_ENABLE		(true)
 #define DEFAULT_VLAN_FILTER_ENABLE	(true)
-<<<<<<< HEAD
 #define DEFAULT_VLAN_RX_OFFLOAD		(true)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define TX_OVERHEAD			(8)
 #define RXW_PADDING			2
 
@@ -301,7 +268,6 @@ struct lan78xx_statstage64 {
 	u64 eee_tx_lpi_time;
 };
 
-<<<<<<< HEAD
 static u32 lan78xx_regs[] = {
 	ID_REV,
 	INT_STS,
@@ -326,8 +292,6 @@ static u32 lan78xx_regs[] = {
 
 #define PHY_REG_SIZE (32 * sizeof(u32))
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct lan78xx_net;
 
 struct lan78xx_priv {
@@ -546,11 +510,7 @@ static int lan78xx_read_stats(struct lan78xx_net *dev,
 		}
 	} else {
 		netdev_warn(dev->net,
-<<<<<<< HEAD
 			    "Failed to read stat ret = 0x%x", ret);
-=======
-			    "Failed to read stat ret = %d", ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	kfree(stats);
@@ -1053,11 +1013,7 @@ done:
 static void lan78xx_set_addr_filter(struct lan78xx_priv *pdata,
 				    int index, u8 addr[ETH_ALEN])
 {
-<<<<<<< HEAD
 	u32 temp;
-=======
-	u32	temp;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if ((pdata) && (index > 0) && (index < NUM_OF_MAF)) {
 		temp = addr[3];
@@ -1526,10 +1482,6 @@ static void lan78xx_get_drvinfo(struct net_device *net,
 	struct lan78xx_net *dev = netdev_priv(net);
 
 	strncpy(info->driver, DRIVER_NAME, sizeof(info->driver));
-<<<<<<< HEAD
-=======
-	strncpy(info->version, DRIVER_VERSION, sizeof(info->version));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	usb_make_path(dev->udev, info->bus_info, sizeof(info->bus_info));
 }
 
@@ -1657,7 +1609,6 @@ exit:
 	return ret;
 }
 
-<<<<<<< HEAD
 static int lan78xx_get_regs_len(struct net_device *netdev)
 {
 	if (!netdev->phydev)
@@ -1686,8 +1637,6 @@ lan78xx_get_regs(struct net_device *netdev, struct ethtool_regs *regs,
 		data[i] = phy_read(netdev->phydev, j);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct ethtool_ops lan78xx_ethtool_ops = {
 	.get_link	= lan78xx_get_link,
 	.nway_reset	= phy_ethtool_nway_reset,
@@ -1708,11 +1657,8 @@ static const struct ethtool_ops lan78xx_ethtool_ops = {
 	.set_pauseparam	= lan78xx_set_pause,
 	.get_link_ksettings = lan78xx_get_link_ksettings,
 	.set_link_ksettings = lan78xx_set_link_ksettings,
-<<<<<<< HEAD
 	.get_regs_len	= lan78xx_get_regs_len,
 	.get_regs	= lan78xx_get_regs,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int lan78xx_ioctl(struct net_device *netdev, struct ifreq *rq, int cmd)
@@ -1754,11 +1700,7 @@ static void lan78xx_init_mac_address(struct lan78xx_net *dev)
 				  "MAC address read from EEPROM");
 		} else {
 			/* generate random MAC */
-<<<<<<< HEAD
 			eth_random_addr(addr);
-=======
-			random_ether_addr(addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			netif_dbg(dev, ifup, dev->net,
 				  "MAC address set to random addr");
 		}
@@ -1851,10 +1793,7 @@ done:
 
 static int lan78xx_mdio_init(struct lan78xx_net *dev)
 {
-<<<<<<< HEAD
 	struct device_node *node;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	dev->mdiobus = mdiobus_alloc();
@@ -1867,10 +1806,6 @@ static int lan78xx_mdio_init(struct lan78xx_net *dev)
 	dev->mdiobus->read = lan78xx_mdiobus_read;
 	dev->mdiobus->write = lan78xx_mdiobus_write;
 	dev->mdiobus->name = "lan78xx-mdiobus";
-<<<<<<< HEAD
-=======
-	dev->mdiobus->parent = &dev->udev->dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	snprintf(dev->mdiobus->id, MII_BUS_ID_SIZE, "usb-%03d:%03d",
 		 dev->udev->bus->busnum, dev->udev->devnum);
@@ -1887,13 +1822,9 @@ static int lan78xx_mdio_init(struct lan78xx_net *dev)
 		break;
 	}
 
-<<<<<<< HEAD
 	node = of_get_child_by_name(dev->udev->dev.of_node, "mdio");
 	ret = of_mdiobus_register(dev->mdiobus, node);
 	of_node_put(node);
-=======
-	ret = mdiobus_register(dev->mdiobus);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		netdev_err(dev->net, "can't register MDIO bus\n");
 		goto exit1;
@@ -2106,7 +2037,6 @@ static int ksz9031rnx_fixup(struct phy_device *phydev)
 	return 1;
 }
 
-<<<<<<< HEAD
 static struct phy_device *lan7801_phy_init(struct lan78xx_net *dev)
 {
 	u32 buf;
@@ -2142,61 +2072,23 @@ static struct phy_device *lan7801_phy_init(struct lan78xx_net *dev)
 			return NULL;
 		}
 		dev->interface = PHY_INTERFACE_MODE_RGMII;
-=======
-static int lan78xx_phy_init(struct lan78xx_net *dev)
-{
-	int ret;
-	u32 mii_adv;
-	struct phy_device *phydev = dev->net->phydev;
-
-	phydev = phy_find_first(dev->mdiobus);
-	if (!phydev) {
-		netdev_err(dev->net, "no PHY found\n");
-		return -EIO;
-	}
-
-	if ((dev->chipid == ID_REV_CHIP_ID_7800_) ||
-	    (dev->chipid == ID_REV_CHIP_ID_7850_)) {
-		phydev->is_internal = true;
-		dev->interface = PHY_INTERFACE_MODE_GMII;
-
-	} else if (dev->chipid == ID_REV_CHIP_ID_7801_) {
-		if (!phydev->drv) {
-			netdev_err(dev->net, "no PHY driver found\n");
-			return -EIO;
-		}
-
-		dev->interface = PHY_INTERFACE_MODE_RGMII;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* external PHY fixup for KSZ9031RNX */
 		ret = phy_register_fixup_for_uid(PHY_KSZ9031RNX, 0xfffffff0,
 						 ksz9031rnx_fixup);
 		if (ret < 0) {
-<<<<<<< HEAD
 			netdev_err(dev->net, "Failed to register fixup for PHY_KSZ9031RNX\n");
 			return NULL;
-=======
-			netdev_err(dev->net, "fail to register fixup\n");
-			return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		/* external PHY fixup for LAN8835 */
 		ret = phy_register_fixup_for_uid(PHY_LAN8835, 0xfffffff0,
 						 lan8835_fixup);
 		if (ret < 0) {
-<<<<<<< HEAD
 			netdev_err(dev->net, "Failed to register fixup for PHY_LAN8835\n");
 			return NULL;
-=======
-			netdev_err(dev->net, "fail to register fixup\n");
-			return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		/* add more external PHY fixup here if needed */
 
 		phydev->is_internal = false;
-<<<<<<< HEAD
 	}
 	return phydev;
 }
@@ -2230,12 +2122,6 @@ static int lan78xx_phy_init(struct lan78xx_net *dev)
 	default:
 		netdev_err(dev->net, "Unknown CHIP ID found\n");
 		return -EIO;
-=======
-	} else {
-		netdev_err(dev->net, "unknown ID found\n");
-		ret = -EIO;
-		goto error;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* if phyirq is not set, use polling mode in phylib */
@@ -2254,7 +2140,6 @@ static int lan78xx_phy_init(struct lan78xx_net *dev)
 	if (ret) {
 		netdev_err(dev->net, "can't attach PHY to %s\n",
 			   dev->mdiobus->id);
-<<<<<<< HEAD
 		if (dev->chipid == ID_REV_CHIP_ID_7801_) {
 			if (phy_is_pseudo_fixed_link(phydev)) {
 				fixed_phy_unregister(phydev);
@@ -2265,8 +2150,6 @@ static int lan78xx_phy_init(struct lan78xx_net *dev)
 							     0xfffffff0);
 			}
 		}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EIO;
 	}
 
@@ -2279,7 +2162,6 @@ static int lan78xx_phy_init(struct lan78xx_net *dev)
 	mii_adv = (u32)mii_advertise_flowctrl(dev->fc_request_control);
 	phydev->advertising |= mii_adv_to_ethtool_adv_t(mii_adv);
 
-<<<<<<< HEAD
 	if (phydev->mdio.dev.of_node) {
 		u32 reg;
 		int len;
@@ -2302,22 +2184,11 @@ static int lan78xx_phy_init(struct lan78xx_net *dev)
 		}
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	genphy_config_aneg(phydev);
 
 	dev->fc_autoneg = phydev->autoneg;
 
 	return 0;
-<<<<<<< HEAD
-=======
-
-error:
-	phy_unregister_fixup_for_uid(PHY_KSZ9031RNX, 0xfffffff0);
-	phy_unregister_fixup_for_uid(PHY_LAN8835, 0xfffffff0);
-
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int lan78xx_set_rx_max_frame_length(struct lan78xx_net *dev, int size)
@@ -2406,11 +2277,7 @@ static int lan78xx_change_mtu(struct net_device *netdev, int new_mtu)
 	if ((ll_mtu % dev->maxpacket) == 0)
 		return -EDOM;
 
-<<<<<<< HEAD
 	ret = lan78xx_set_rx_max_frame_length(dev, new_mtu + VLAN_ETH_HLEN);
-=======
-	ret = lan78xx_set_rx_max_frame_length(dev, new_mtu + ETH_HLEN);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	netdev->mtu = new_mtu;
 
@@ -2480,14 +2347,11 @@ static int lan78xx_set_features(struct net_device *netdev,
 	}
 
 	if (features & NETIF_F_HW_VLAN_CTAG_RX)
-<<<<<<< HEAD
 		pdata->rfe_ctl |= RFE_CTL_VLAN_STRIP_;
 	else
 		pdata->rfe_ctl &= ~RFE_CTL_VLAN_STRIP_;
 
 	if (features & NETIF_F_HW_VLAN_CTAG_FILTER)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pdata->rfe_ctl |= RFE_CTL_VLAN_FILTER_;
 	else
 		pdata->rfe_ctl &= ~RFE_CTL_VLAN_FILTER_;
@@ -2711,12 +2575,8 @@ static int lan78xx_reset(struct lan78xx_net *dev)
 	buf |= FCT_TX_CTL_EN_;
 	ret = lan78xx_write_reg(dev, FCT_TX_CTL, buf);
 
-<<<<<<< HEAD
 	ret = lan78xx_set_rx_max_frame_length(dev,
 					      dev->net->mtu + VLAN_ETH_HLEN);
-=======
-	ret = lan78xx_set_rx_max_frame_length(dev, dev->net->mtu + ETH_HLEN);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = lan78xx_read_reg(dev, MAC_RX, &buf);
 	buf |= MAC_RX_RXEN_;
@@ -2752,11 +2612,7 @@ static void lan78xx_init_stats(struct lan78xx_net *dev)
 	dev->stats.rollover_max.eee_tx_lpi_transitions = 0xFFFFFFFF;
 	dev->stats.rollover_max.eee_tx_lpi_time = 0xFFFFFFFF;
 
-<<<<<<< HEAD
 	set_bit(EVENT_STAT_UPDATE, &dev->flags);
-=======
-	lan78xx_defer_kevent(dev, EVENT_STAT_UPDATE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int lan78xx_open(struct net_device *net)
@@ -2826,11 +2682,7 @@ static void lan78xx_terminate_urbs(struct lan78xx_net *dev)
 
 static int lan78xx_stop(struct net_device *net)
 {
-<<<<<<< HEAD
 	struct lan78xx_net *dev = netdev_priv(net);
-=======
-	struct lan78xx_net		*dev = netdev_priv(net);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (timer_pending(&dev->stat_monitor))
 		del_timer_sync(&dev->stat_monitor);
@@ -2865,14 +2717,11 @@ static int lan78xx_stop(struct net_device *net)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int lan78xx_linearize(struct sk_buff *skb)
 {
 	return skb_linearize(skb);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct sk_buff *lan78xx_tx_prep(struct lan78xx_net *dev,
 				       struct sk_buff *skb, gfp_t flags)
 {
@@ -2883,15 +2732,8 @@ static struct sk_buff *lan78xx_tx_prep(struct lan78xx_net *dev,
 		return NULL;
 	}
 
-<<<<<<< HEAD
 	if (lan78xx_linearize(skb) < 0)
 		return NULL;
-=======
-	if (skb_linearize(skb)) {
-		dev_kfree_skb_any(skb);
-		return NULL;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tx_cmd_a = (u32)(skb->len & TX_CMD_A_LEN_MASK_) | TX_CMD_A_FCS_;
 
@@ -3127,15 +2969,12 @@ static int lan78xx_bind(struct lan78xx_net *dev, struct usb_interface *intf)
 	if (DEFAULT_TSO_CSUM_ENABLE)
 		dev->net->features |= NETIF_F_TSO | NETIF_F_TSO6 | NETIF_F_SG;
 
-<<<<<<< HEAD
 	if (DEFAULT_VLAN_RX_OFFLOAD)
 		dev->net->features |= NETIF_F_HW_VLAN_CTAG_RX;
 
 	if (DEFAULT_VLAN_FILTER_ENABLE)
 		dev->net->features |= NETIF_F_HW_VLAN_CTAG_FILTER;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev->net->hw_features = dev->net->features;
 
 	ret = lan78xx_setup_irq_domain(dev);
@@ -3200,7 +3039,6 @@ static void lan78xx_rx_csum_offload(struct lan78xx_net *dev,
 				    struct sk_buff *skb,
 				    u32 rx_cmd_a, u32 rx_cmd_b)
 {
-<<<<<<< HEAD
 	/* HW Checksum offload appears to be flawed if used when not stripping
 	 * VLAN headers. Drop back to S/W checksums under these conditions.
 	 */
@@ -3208,10 +3046,6 @@ static void lan78xx_rx_csum_offload(struct lan78xx_net *dev,
 	    unlikely(rx_cmd_a & RX_CMD_A_ICSM_) ||
 	    ((rx_cmd_a & RX_CMD_A_FVTG_) &&
 	     !(dev->net->features & NETIF_F_HW_VLAN_CTAG_RX))) {
-=======
-	if (!(dev->net->features & NETIF_F_RXCSUM) ||
-	    unlikely(rx_cmd_a & RX_CMD_A_ICSM_)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		skb->ip_summed = CHECKSUM_NONE;
 	} else {
 		skb->csum = ntohs((u16)(rx_cmd_b >> RX_CMD_B_CSUM_SHIFT_));
@@ -3219,7 +3053,6 @@ static void lan78xx_rx_csum_offload(struct lan78xx_net *dev,
 	}
 }
 
-<<<<<<< HEAD
 static void lan78xx_rx_vlan_offload(struct lan78xx_net *dev,
 				    struct sk_buff *skb,
 				    u32 rx_cmd_a, u32 rx_cmd_b)
@@ -3233,11 +3066,6 @@ static void lan78xx_rx_vlan_offload(struct lan78xx_net *dev,
 static void lan78xx_skb_return(struct lan78xx_net *dev, struct sk_buff *skb)
 {
 	int status;
-=======
-static void lan78xx_skb_return(struct lan78xx_net *dev, struct sk_buff *skb)
-{
-	int		status;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (test_bit(EVENT_RX_PAUSED, &dev->flags)) {
 		skb_queue_tail(&dev->rxq_pause, skb);
@@ -3299,11 +3127,8 @@ static int lan78xx_rx(struct lan78xx_net *dev, struct sk_buff *skb)
 			if (skb->len == size) {
 				lan78xx_rx_csum_offload(dev, skb,
 							rx_cmd_a, rx_cmd_b);
-<<<<<<< HEAD
 				lan78xx_rx_vlan_offload(dev, skb,
 							rx_cmd_a, rx_cmd_b);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 				skb_trim(skb, skb->len - 4); /* remove fcs */
 				skb->truesize = size + sizeof(struct sk_buff);
@@ -3322,10 +3147,7 @@ static int lan78xx_rx(struct lan78xx_net *dev, struct sk_buff *skb)
 			skb_set_tail_pointer(skb2, size);
 
 			lan78xx_rx_csum_offload(dev, skb2, rx_cmd_a, rx_cmd_b);
-<<<<<<< HEAD
 			lan78xx_rx_vlan_offload(dev, skb2, rx_cmd_a, rx_cmd_b);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			skb_trim(skb2, skb2->len - 4); /* remove fcs */
 			skb2->truesize = size + sizeof(struct sk_buff);
@@ -3803,16 +3625,10 @@ static void intr_complete(struct urb *urb)
 
 static void lan78xx_disconnect(struct usb_interface *intf)
 {
-<<<<<<< HEAD
 	struct lan78xx_net *dev;
 	struct usb_device *udev;
 	struct net_device *net;
 	struct phy_device *phydev;
-=======
-	struct lan78xx_net		*dev;
-	struct usb_device		*udev;
-	struct net_device		*net;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev = usb_get_intfdata(intf);
 	usb_set_intfdata(intf, NULL);
@@ -3821,22 +3637,16 @@ static void lan78xx_disconnect(struct usb_interface *intf)
 
 	udev = interface_to_usbdev(intf);
 	net = dev->net;
-<<<<<<< HEAD
 	phydev = net->phydev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	phy_unregister_fixup_for_uid(PHY_KSZ9031RNX, 0xfffffff0);
 	phy_unregister_fixup_for_uid(PHY_LAN8835, 0xfffffff0);
 
 	phy_disconnect(net->phydev);
 
-<<<<<<< HEAD
 	if (phy_is_pseudo_fixed_link(phydev))
 		fixed_phy_unregister(phydev);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unregister_netdev(net);
 
 	cancel_delayed_work_sync(&dev->wq);
@@ -3860,22 +3670,6 @@ static void lan78xx_tx_timeout(struct net_device *net)
 	tasklet_schedule(&dev->bh);
 }
 
-<<<<<<< HEAD
-=======
-static netdev_features_t lan78xx_features_check(struct sk_buff *skb,
-						struct net_device *netdev,
-						netdev_features_t features)
-{
-	if (skb->len + TX_OVERHEAD > MAX_SINGLE_PACKET_SIZE)
-		features &= ~NETIF_F_GSO_MASK;
-
-	features = vlan_features_check(skb, features);
-	features = vxlan_features_check(skb, features);
-
-	return features;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct net_device_ops lan78xx_netdev_ops = {
 	.ndo_open		= lan78xx_open,
 	.ndo_stop		= lan78xx_stop,
@@ -3889,22 +3683,11 @@ static const struct net_device_ops lan78xx_netdev_ops = {
 	.ndo_set_features	= lan78xx_set_features,
 	.ndo_vlan_rx_add_vid	= lan78xx_vlan_rx_add_vid,
 	.ndo_vlan_rx_kill_vid	= lan78xx_vlan_rx_kill_vid,
-<<<<<<< HEAD
 };
 
 static void lan78xx_stat_monitor(struct timer_list *t)
 {
 	struct lan78xx_net *dev = from_timer(dev, t, stat_monitor);
-=======
-	.ndo_features_check	= lan78xx_features_check,
-};
-
-static void lan78xx_stat_monitor(unsigned long param)
-{
-	struct lan78xx_net *dev;
-
-	dev = (struct lan78xx_net *)param;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	lan78xx_defer_kevent(dev, EVENT_STAT_UPDATE);
 }
@@ -3955,15 +3738,8 @@ static int lan78xx_probe(struct usb_interface *intf,
 	netdev->watchdog_timeo = TX_TIMEOUT_JIFFIES;
 	netdev->ethtool_ops = &lan78xx_ethtool_ops;
 
-<<<<<<< HEAD
 	dev->delta = 1;
 	timer_setup(&dev->stat_monitor, lan78xx_stat_monitor, 0);
-=======
-	dev->stat_monitor.function = lan78xx_stat_monitor;
-	dev->stat_monitor.data = (unsigned long)dev;
-	dev->delta = 1;
-	init_timer(&dev->stat_monitor);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_init(&dev->stats.access_lock);
 
@@ -3976,10 +3752,6 @@ static int lan78xx_probe(struct usb_interface *intf,
 
 	/* MTU range: 68 - 9000 */
 	netdev->max_mtu = MAX_SINGLE_PACKET_SIZE;
-<<<<<<< HEAD
-=======
-	netif_set_gso_max_size(netdev, MAX_SINGLE_PACKET_SIZE - MAX_HEADER);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev->ep_blkin = (intf->cur_altsetting)->endpoint + 0;
 	dev->ep_blkout = (intf->cur_altsetting)->endpoint + 1;
@@ -4013,21 +3785,10 @@ static int lan78xx_probe(struct usb_interface *intf,
 	/* driver requires remote-wakeup capability during autosuspend. */
 	intf->needs_remote_wakeup = 1;
 
-<<<<<<< HEAD
 	ret = register_netdev(netdev);
 	if (ret != 0) {
 		netif_err(dev, probe, netdev, "couldn't register the device\n");
 		goto out4;
-=======
-	ret = lan78xx_phy_init(dev);
-	if (ret < 0)
-		goto out4;
-
-	ret = register_netdev(netdev);
-	if (ret != 0) {
-		netif_err(dev, probe, netdev, "couldn't register the device\n");
-		goto out5;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	usb_set_intfdata(intf, dev);
@@ -4040,7 +3801,6 @@ static int lan78xx_probe(struct usb_interface *intf,
 	pm_runtime_set_autosuspend_delay(&udev->dev,
 					 DEFAULT_AUTOSUSPEND_DELAY);
 
-<<<<<<< HEAD
 	ret = lan78xx_phy_init(dev);
 	if (ret < 0)
 		goto out5;
@@ -4049,12 +3809,6 @@ static int lan78xx_probe(struct usb_interface *intf,
 
 out5:
 	unregister_netdev(netdev);
-=======
-	return 0;
-
-out5:
-	phy_disconnect(netdev->phydev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out4:
 	usb_free_urb(dev->urb_intr);
 out3:

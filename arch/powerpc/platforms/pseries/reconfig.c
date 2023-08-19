@@ -33,11 +33,7 @@ static int pSeries_reconfig_add_node(const char *path, struct property *proplist
 	if (!np)
 		goto out_err;
 
-<<<<<<< HEAD
 	np->full_name = kstrdup(kbasename(path), GFP_KERNEL);
-=======
-	np->full_name = kstrdup(path, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!np->full_name)
 		goto out_err;
 
@@ -409,11 +405,7 @@ static int proc_ppc64_create_ofdt(void)
 {
 	struct proc_dir_entry *ent;
 
-<<<<<<< HEAD
 	ent = proc_create("powerpc/ofdt", 0200, NULL, &ofdt_fops);
-=======
-	ent = proc_create("powerpc/ofdt", S_IWUSR, NULL, &ofdt_fops);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ent)
 		proc_set_size(ent, 0);
 

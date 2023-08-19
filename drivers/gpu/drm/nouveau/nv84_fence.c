@@ -25,10 +25,7 @@
 #include "nouveau_drv.h"
 #include "nouveau_dma.h"
 #include "nouveau_fence.h"
-<<<<<<< HEAD
 #include "nouveau_vmm.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "nv50_display.h"
 
@@ -72,16 +69,7 @@ nv84_fence_emit(struct nouveau_fence *fence)
 {
 	struct nouveau_channel *chan = fence->channel;
 	struct nv84_fence_chan *fctx = chan->fence;
-<<<<<<< HEAD
 	u64 addr = fctx->vma->addr + chan->chid * 16;
-=======
-	u64 addr = chan->chid * 16;
-
-	if (fence->sysmem)
-		addr += fctx->vma_gart.offset;
-	else
-		addr += fctx->vma.offset;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return fctx->base.emit32(chan, addr, fence->base.seqno);
 }
@@ -91,16 +79,7 @@ nv84_fence_sync(struct nouveau_fence *fence,
 		struct nouveau_channel *prev, struct nouveau_channel *chan)
 {
 	struct nv84_fence_chan *fctx = chan->fence;
-<<<<<<< HEAD
 	u64 addr = fctx->vma->addr + prev->chid * 16;
-=======
-	u64 addr = prev->chid * 16;
-
-	if (fence->sysmem)
-		addr += fctx->vma_gart.offset;
-	else
-		addr += fctx->vma.offset;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return fctx->base.sync32(chan, addr, fence->base.seqno);
 }
@@ -120,12 +99,7 @@ nv84_fence_context_del(struct nouveau_channel *chan)
 
 	nouveau_bo_wr32(priv->bo, chan->chid * 16 / 4, fctx->base.sequence);
 	mutex_lock(&priv->mutex);
-<<<<<<< HEAD
 	nouveau_vma_del(&fctx->vma);
-=======
-	nouveau_bo_vma_del(priv->bo, &fctx->vma_gart);
-	nouveau_bo_vma_del(priv->bo, &fctx->vma);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&priv->mutex);
 	nouveau_fence_context_del(&fctx->base);
 	chan->fence = NULL;
@@ -153,15 +127,7 @@ nv84_fence_context_new(struct nouveau_channel *chan)
 	fctx->base.sequence = nv84_fence_read(chan);
 
 	mutex_lock(&priv->mutex);
-<<<<<<< HEAD
 	ret = nouveau_vma_new(priv->bo, &cli->vmm, &fctx->vma);
-=======
-	ret = nouveau_bo_vma_add(priv->bo, cli->vm, &fctx->vma);
-	if (ret == 0) {
-		ret = nouveau_bo_vma_add(priv->bo_gart, cli->vm,
-					&fctx->vma_gart);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&priv->mutex);
 
 	if (ret)
@@ -175,15 +141,9 @@ nv84_fence_suspend(struct nouveau_drm *drm)
 	struct nv84_fence_priv *priv = drm->fence;
 	int i;
 
-<<<<<<< HEAD
 	priv->suspend = vmalloc(array_size(sizeof(u32), drm->chan.nr));
 	if (priv->suspend) {
 		for (i = 0; i < drm->chan.nr; i++)
-=======
-	priv->suspend = vmalloc(priv->base.contexts * sizeof(u32));
-	if (priv->suspend) {
-		for (i = 0; i < priv->base.contexts; i++)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			priv->suspend[i] = nouveau_bo_rd32(priv->bo, i*4);
 	}
 
@@ -197,11 +157,7 @@ nv84_fence_resume(struct nouveau_drm *drm)
 	int i;
 
 	if (priv->suspend) {
-<<<<<<< HEAD
 		for (i = 0; i < drm->chan.nr; i++)
-=======
-		for (i = 0; i < priv->base.contexts; i++)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			nouveau_bo_wr32(priv->bo, i*4, priv->suspend[i]);
 		vfree(priv->suspend);
 		priv->suspend = NULL;
@@ -212,13 +168,6 @@ static void
 nv84_fence_destroy(struct nouveau_drm *drm)
 {
 	struct nv84_fence_priv *priv = drm->fence;
-<<<<<<< HEAD
-=======
-	nouveau_bo_unmap(priv->bo_gart);
-	if (priv->bo_gart)
-		nouveau_bo_unpin(priv->bo_gart);
-	nouveau_bo_ref(NULL, &priv->bo_gart);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	nouveau_bo_unmap(priv->bo);
 	if (priv->bo)
 		nouveau_bo_unpin(priv->bo);
@@ -230,10 +179,6 @@ nv84_fence_destroy(struct nouveau_drm *drm)
 int
 nv84_fence_create(struct nouveau_drm *drm)
 {
-<<<<<<< HEAD
-=======
-	struct nvkm_fifo *fifo = nvxx_fifo(&drm->client.device);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct nv84_fence_priv *priv;
 	u32 domain;
 	int ret;
@@ -248,11 +193,6 @@ nv84_fence_create(struct nouveau_drm *drm)
 	priv->base.context_new = nv84_fence_context_new;
 	priv->base.context_del = nv84_fence_context_del;
 
-<<<<<<< HEAD
-=======
-	priv->base.contexts = fifo->nr;
-	priv->base.context_base = dma_fence_context_alloc(priv->base.contexts);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	priv->base.uevent = true;
 
 	mutex_init(&priv->mutex);
@@ -264,11 +204,7 @@ nv84_fence_create(struct nouveau_drm *drm)
 			  * will lose CPU/GPU coherency!
 			  */
 			 TTM_PL_FLAG_TT | TTM_PL_FLAG_UNCACHED;
-<<<<<<< HEAD
 	ret = nouveau_bo_new(&drm->client, 16 * drm->chan.nr, 0,
-=======
-	ret = nouveau_bo_new(&drm->client, 16 * priv->base.contexts, 0,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     domain, 0, 0, NULL, NULL, &priv->bo);
 	if (ret == 0) {
 		ret = nouveau_bo_pin(priv->bo, domain, false);
@@ -281,24 +217,6 @@ nv84_fence_create(struct nouveau_drm *drm)
 			nouveau_bo_ref(NULL, &priv->bo);
 	}
 
-<<<<<<< HEAD
-=======
-	if (ret == 0)
-		ret = nouveau_bo_new(&drm->client, 16 * priv->base.contexts, 0,
-				     TTM_PL_FLAG_TT | TTM_PL_FLAG_UNCACHED, 0,
-				     0, NULL, NULL, &priv->bo_gart);
-	if (ret == 0) {
-		ret = nouveau_bo_pin(priv->bo_gart, TTM_PL_FLAG_TT, false);
-		if (ret == 0) {
-			ret = nouveau_bo_map(priv->bo_gart);
-			if (ret)
-				nouveau_bo_unpin(priv->bo_gart);
-		}
-		if (ret)
-			nouveau_bo_ref(NULL, &priv->bo_gart);
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		nv84_fence_destroy(drm);
 	return ret;

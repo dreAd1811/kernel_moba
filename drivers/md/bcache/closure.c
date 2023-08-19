@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Asynchronous refcounty things
  *
@@ -12,10 +9,7 @@
 #include <linux/debugfs.h>
 #include <linux/module.h>
 #include <linux/seq_file.h>
-<<<<<<< HEAD
 #include <linux/sched/debug.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "closure.h"
 
@@ -26,13 +20,6 @@ static inline void closure_put_after_sub(struct closure *cl, int flags)
 	BUG_ON(flags & CLOSURE_GUARD_MASK);
 	BUG_ON(!r && (flags & ~CLOSURE_DESTRUCTOR));
 
-<<<<<<< HEAD
-=======
-	/* Must deliver precisely one wakeup */
-	if (r == 1 && (flags & CLOSURE_SLEEPING))
-		wake_up_process(cl->task);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!r) {
 		if (cl->fn && !(flags & CLOSURE_DESTRUCTOR)) {
 			atomic_set(&cl->remaining,
@@ -60,11 +47,7 @@ void closure_sub(struct closure *cl, int v)
 }
 EXPORT_SYMBOL(closure_sub);
 
-<<<<<<< HEAD
 /*
-=======
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * closure_put - decrement a closure's refcount
  */
 void closure_put(struct closure *cl)
@@ -73,11 +56,7 @@ void closure_put(struct closure *cl)
 }
 EXPORT_SYMBOL(closure_put);
 
-<<<<<<< HEAD
 /*
-=======
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * closure_wake_up - wake up all closures on a wait list, without memory barrier
  */
 void __closure_wake_up(struct closure_waitlist *wait_list)
@@ -101,15 +80,9 @@ EXPORT_SYMBOL(__closure_wake_up);
 
 /**
  * closure_wait - add a closure to a waitlist
-<<<<<<< HEAD
  * @waitlist: will own a ref on @cl, which will be released when
  * closure_wake_up() is called on @waitlist.
  * @cl: closure pointer.
-=======
- *
- * @waitlist will own a ref on @cl, which will be released when
- * closure_wake_up() is called on @waitlist.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  */
 bool closure_wait(struct closure_waitlist *waitlist, struct closure *cl)
@@ -125,7 +98,6 @@ bool closure_wait(struct closure_waitlist *waitlist, struct closure *cl)
 }
 EXPORT_SYMBOL(closure_wait);
 
-<<<<<<< HEAD
 struct closure_syncer {
 	struct task_struct	*task;
 	int			done;
@@ -160,30 +132,6 @@ void __sched __closure_sync(struct closure *cl)
 	__set_current_state(TASK_RUNNING);
 }
 EXPORT_SYMBOL(__closure_sync);
-=======
-/**
- * closure_sync - sleep until a closure has nothing left to wait on
- *
- * Sleeps until the refcount hits 1 - the thread that's running the closure owns
- * the last refcount.
- */
-void closure_sync(struct closure *cl)
-{
-	while (1) {
-		__closure_start_sleep(cl);
-		closure_set_ret_ip(cl);
-
-		if ((atomic_read(&cl->remaining) &
-		     CLOSURE_REMAINING_MASK) == 1)
-			break;
-
-		schedule();
-	}
-
-	__closure_end_sleep(cl);
-}
-EXPORT_SYMBOL(closure_sync);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_BCACHE_CLOSURES_DEBUG
 
@@ -216,25 +164,17 @@ void closure_debug_destroy(struct closure *cl)
 }
 EXPORT_SYMBOL(closure_debug_destroy);
 
-<<<<<<< HEAD
 static struct dentry *closure_debug;
-=======
-static struct dentry *debug;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int debug_seq_show(struct seq_file *f, void *data)
 {
 	struct closure *cl;
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_irq(&closure_list_lock);
 
 	list_for_each_entry(cl, &closure_list, all) {
 		int r = atomic_read(&cl->remaining);
 
-<<<<<<< HEAD
 		seq_printf(f, "%p: %pS -> %pS p %p r %i ",
 			   cl, (void *) cl->ip, cl->fn, cl->parent,
 			   r & CLOSURE_REMAINING_MASK);
@@ -246,21 +186,6 @@ static int debug_seq_show(struct seq_file *f, void *data)
 
 		if (r & CLOSURE_WAITING)
 			seq_printf(f, " W %pS\n",
-=======
-		seq_printf(f, "%p: %pF -> %pf p %p r %i ",
-			   cl, (void *) cl->ip, cl->fn, cl->parent,
-			   r & CLOSURE_REMAINING_MASK);
-
-		seq_printf(f, "%s%s%s%s\n",
-			   test_bit(WORK_STRUCT_PENDING_BIT,
-				    work_data_bits(&cl->work)) ? "Q" : "",
-			   r & CLOSURE_RUNNING	? "R" : "",
-			   r & CLOSURE_STACK	? "S" : "",
-			   r & CLOSURE_SLEEPING	? "Sl" : "");
-
-		if (r & CLOSURE_WAITING)
-			seq_printf(f, " W %pF\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   (void *) cl->waiting_on);
 
 		seq_printf(f, "\n");
@@ -282,7 +207,6 @@ static const struct file_operations debug_ops = {
 	.release	= single_release
 };
 
-<<<<<<< HEAD
 void  __init closure_debug_init(void)
 {
 	if (!IS_ERR_OR_NULL(bcache_debug))
@@ -294,13 +218,6 @@ void  __init closure_debug_init(void)
 		closure_debug = debugfs_create_file(
 			"closures", 0400, bcache_debug, NULL, &debug_ops);
 }
-=======
-void __init closure_debug_init(void)
-{
-	debug = debugfs_create_file("closures", 0400, NULL, NULL, &debug_ops);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 MODULE_AUTHOR("Kent Overstreet <koverstreet@google.com>");

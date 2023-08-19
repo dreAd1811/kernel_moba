@@ -1,19 +1,6 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
 //
 // Copyright 2012 Sascha Hauer, Pengutronix <s.hauer@pengutronix.de>
-=======
-/*
- * Copyright 2012 Sascha Hauer, Pengutronix <s.hauer@pengutronix.de>
- *
- * The code contained herein is licensed under the GNU General Public
- * License. You may obtain a copy of the GNU General Public License
- * Version 2 or later at the following locations:
- *
- * http://www.opensource.org/licenses/gpl-license.html
- * http://www.gnu.org/copyleft/gpl.html
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <dt-bindings/gpio/gpio.h>
 #include "imx25-pinfunc.h"
@@ -28,11 +15,7 @@
 	 * Also for U-Boot there must be a pre-existing /memory node.
 	 */
 	chosen {};
-<<<<<<< HEAD
 	memory { device_type = "memory"; };
-=======
-	memory { device_type = "memory"; reg = <0 0>; };
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	aliases {
 		ethernet0 = &fec;
@@ -80,12 +63,6 @@
 	};
 
 	clocks {
-<<<<<<< HEAD
-=======
-		#address-cells = <1>;
-		#size-cells = <0>;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		osc {
 			compatible = "fsl,imx-osc", "fixed-clock";
 			#clock-cells = <0>;
@@ -135,11 +112,7 @@
 			};
 
 			can1: can@43f88000 {
-<<<<<<< HEAD
 				compatible = "fsl,imx25-flexcan";
-=======
-				compatible = "fsl,imx25-flexcan", "fsl,p1010-flexcan";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				reg = <0x43f88000 0x4000>;
 				interrupts = <43>;
 				clocks = <&clks 75>, <&clks 75>;
@@ -148,11 +121,7 @@
 			};
 
 			can2: can@43f8c000 {
-<<<<<<< HEAD
 				compatible = "fsl,imx25-flexcan";
-=======
-				compatible = "fsl,imx25-flexcan", "fsl,p1010-flexcan";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				reg = <0x43f8c000 0x4000>;
 				interrupts = <44>;
 				clocks = <&clks 76>, <&clks 76>;
@@ -290,10 +259,7 @@
 				dmas = <&sdma 24 1 0>,
 				       <&sdma 25 1 0>;
 				dma-names = "rx", "tx";
-<<<<<<< HEAD
 				fsl,fifo-depth = <15>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				status = "disabled";
 			};
 
@@ -354,10 +320,7 @@
 				dmas = <&sdma 28 1 0>,
 				       <&sdma 29 1 0>;
 				dma-names = "rx", "tx";
-<<<<<<< HEAD
 				fsl,fifo-depth = <15>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				status = "disabled";
 			};
 
@@ -657,19 +620,13 @@
 		usbphy0: usb-phy@0 {
 			reg = <0>;
 			compatible = "usb-nop-xceiv";
-<<<<<<< HEAD
 			#phy-cells = <0>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		usbphy1: usb-phy@1 {
 			reg = <1>;
 			compatible = "usb-nop-xceiv";
-<<<<<<< HEAD
 			#phy-cells = <0>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 	};
 };

@@ -6,14 +6,9 @@
  *    Author(s): Martin Schwidefsky <schwidefsky@de.ibm.com>
  */
 
-<<<<<<< HEAD
 #include <linux/sysctl.h>
 #include <linux/slab.h>
 #include <linux/mm.h>
-=======
-#include <linux/mm.h>
-#include <linux/sysctl.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/mmu_context.h>
 #include <asm/pgalloc.h>
 #include <asm/gmap.h>
@@ -77,15 +72,8 @@ static void __crst_table_upgrade(void *arg)
 {
 	struct mm_struct *mm = arg;
 
-<<<<<<< HEAD
 	if (current->active_mm == mm)
 		set_user_asce(mm);
-=======
-	if (current->active_mm == mm) {
-		clear_user_asce();
-		set_user_asce(mm);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__tlb_flush_local();
 }
 
@@ -113,10 +101,7 @@ int crst_table_upgrade(struct mm_struct *mm, unsigned long end)
 			mm->context.asce_limit = _REGION1_SIZE;
 			mm->context.asce = __pa(mm->pgd) | _ASCE_TABLE_LENGTH |
 				_ASCE_USER_BITS | _ASCE_TYPE_REGION2;
-<<<<<<< HEAD
 			mm_inc_nr_puds(mm);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else {
 			crst_table_init(table, _REGION1_ENTRY_EMPTY);
 			pgd_populate(mm, (pgd_t *) table, (p4d_t *) pgd);
@@ -172,7 +157,6 @@ static inline unsigned int atomic_xor_bits(atomic_t *v, unsigned int bits)
 struct page *page_table_alloc_pgste(struct mm_struct *mm)
 {
 	struct page *page;
-<<<<<<< HEAD
 	u64 *table;
 
 	page = alloc_page(GFP_KERNEL);
@@ -180,15 +164,6 @@ struct page *page_table_alloc_pgste(struct mm_struct *mm)
 		table = (u64 *)page_to_phys(page);
 		memset64(table, _PAGE_INVALID, PTRS_PER_PTE);
 		memset64(table + PTRS_PER_PTE, 0, PTRS_PER_PTE);
-=======
-	unsigned long *table;
-
-	page = alloc_page(GFP_KERNEL);
-	if (page) {
-		table = (unsigned long *) page_to_phys(page);
-		clear_table(table, _PAGE_INVALID, PAGE_SIZE/2);
-		clear_table(table + PTRS_PER_PTE, 0, PAGE_SIZE/2);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return page;
 }
@@ -216,23 +191,15 @@ unsigned long *page_table_alloc(struct mm_struct *mm)
 		if (!list_empty(&mm->context.pgtable_list)) {
 			page = list_first_entry(&mm->context.pgtable_list,
 						struct page, lru);
-<<<<<<< HEAD
 			mask = atomic_read(&page->_refcount) >> 24;
-=======
-			mask = atomic_read(&page->_mapcount);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			mask = (mask | (mask >> 4)) & 3;
 			if (mask != 3) {
 				table = (unsigned long *) page_to_phys(page);
 				bit = mask & 1;		/* =1 -> second 2K */
 				if (bit)
 					table += PTRS_PER_PTE;
-<<<<<<< HEAD
 				atomic_xor_bits(&page->_refcount,
 							1U << (bit + 24));
-=======
-				atomic_xor_bits(&page->_mapcount, 1U << bit);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				list_del(&page->lru);
 			}
 		}
@@ -253,7 +220,6 @@ unsigned long *page_table_alloc(struct mm_struct *mm)
 	table = (unsigned long *) page_to_phys(page);
 	if (mm_alloc_pgste(mm)) {
 		/* Return 4K page table with PGSTEs */
-<<<<<<< HEAD
 		atomic_xor_bits(&page->_refcount, 3 << 24);
 		memset64((u64 *)table, _PAGE_INVALID, PTRS_PER_PTE);
 		memset64((u64 *)table + PTRS_PER_PTE, 0, PTRS_PER_PTE);
@@ -261,15 +227,6 @@ unsigned long *page_table_alloc(struct mm_struct *mm)
 		/* Return the first 2K fragment of the page */
 		atomic_xor_bits(&page->_refcount, 1 << 24);
 		memset64((u64 *)table, _PAGE_INVALID, 2 * PTRS_PER_PTE);
-=======
-		atomic_set(&page->_mapcount, 3);
-		clear_table(table, _PAGE_INVALID, PAGE_SIZE/2);
-		clear_table(table + PTRS_PER_PTE, 0, PAGE_SIZE/2);
-	} else {
-		/* Return the first 2K fragment of the page */
-		atomic_set(&page->_mapcount, 1);
-		clear_table(table, _PAGE_INVALID, PAGE_SIZE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_lock_bh(&mm->context.lock);
 		list_add(&page->lru, &mm->context.pgtable_list);
 		spin_unlock_bh(&mm->context.lock);
@@ -287,12 +244,8 @@ void page_table_free(struct mm_struct *mm, unsigned long *table)
 		/* Free 2K page table fragment of a 4K page */
 		bit = (__pa(table) & ~PAGE_MASK)/(PTRS_PER_PTE*sizeof(pte_t));
 		spin_lock_bh(&mm->context.lock);
-<<<<<<< HEAD
 		mask = atomic_xor_bits(&page->_refcount, 1U << (bit + 24));
 		mask >>= 24;
-=======
-		mask = atomic_xor_bits(&page->_mapcount, 1U << bit);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (mask & 3)
 			list_add(&page->lru, &mm->context.pgtable_list);
 		else
@@ -300,18 +253,11 @@ void page_table_free(struct mm_struct *mm, unsigned long *table)
 		spin_unlock_bh(&mm->context.lock);
 		if (mask != 0)
 			return;
-<<<<<<< HEAD
 	} else {
 		atomic_xor_bits(&page->_refcount, 3U << 24);
 	}
 
 	pgtable_page_dtor(page);
-=======
-	}
-
-	pgtable_page_dtor(page);
-	atomic_set(&page->_mapcount, -1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__free_page(page);
 }
 
@@ -332,12 +278,8 @@ void page_table_free_rcu(struct mmu_gather *tlb, unsigned long *table,
 	}
 	bit = (__pa(table) & ~PAGE_MASK) / (PTRS_PER_PTE*sizeof(pte_t));
 	spin_lock_bh(&mm->context.lock);
-<<<<<<< HEAD
 	mask = atomic_xor_bits(&page->_refcount, 0x11U << (bit + 24));
 	mask >>= 24;
-=======
-	mask = atomic_xor_bits(&page->_mapcount, 0x11U << bit);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (mask & 3)
 		list_add_tail(&page->lru, &mm->context.pgtable_list);
 	else
@@ -359,7 +301,6 @@ static void __tlb_remove_table(void *_table)
 		break;
 	case 1:		/* lower 2K of a 4K page table */
 	case 2:		/* higher 2K of a 4K page table */
-<<<<<<< HEAD
 		mask = atomic_xor_bits(&page->_refcount, mask << (4 + 24));
 		mask >>= 24;
 		if (mask != 0)
@@ -369,14 +310,6 @@ static void __tlb_remove_table(void *_table)
 		if (mask & 3)
 			atomic_xor_bits(&page->_refcount, 3 << 24);
 		pgtable_page_dtor(page);
-=======
-		if (atomic_xor_bits(&page->_mapcount, mask << 4) != 0)
-			break;
-		/* fallthrough */
-	case 3:		/* 4K page table with pgstes */
-		pgtable_page_dtor(page);
-		atomic_set(&page->_mapcount, -1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__free_page(page);
 		break;
 	}
@@ -442,7 +375,6 @@ void tlb_remove_table(struct mmu_gather *tlb, void *table)
 	if ((*batch)->nr == MAX_TABLE_BATCH)
 		tlb_flush_mmu(tlb);
 }
-<<<<<<< HEAD
 
 /*
  * Base infrastructure required to generate basic asces, region, segment,
@@ -733,5 +665,3 @@ unsigned long base_asce_alloc(unsigned long addr, unsigned long num_pages)
 	}
 	return asce;
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

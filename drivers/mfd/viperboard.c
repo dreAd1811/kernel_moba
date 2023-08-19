@@ -59,15 +59,8 @@ static int vprbrd_probe(struct usb_interface *interface,
 
 	/* allocate memory for our device state and initialize it */
 	vb = kzalloc(sizeof(*vb), GFP_KERNEL);
-<<<<<<< HEAD
 	if (!vb)
 		return -ENOMEM;
-=======
-	if (vb == NULL) {
-		dev_err(&interface->dev, "Out of memory\n");
-		return -ENOMEM;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_init(&vb->lock);
 

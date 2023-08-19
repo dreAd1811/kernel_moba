@@ -84,11 +84,6 @@ gp100_ram = {
 	.probe_fbp_amount = gm200_ram_probe_fbp_amount,
 	.probe_fbpa_amount = gp100_ram_probe_fbpa,
 	.init = gp100_ram_init,
-<<<<<<< HEAD
-=======
-	.get = gf100_ram_get,
-	.put = gf100_ram_put,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int

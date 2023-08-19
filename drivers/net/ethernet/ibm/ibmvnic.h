@@ -30,11 +30,8 @@
 #define IBMVNIC_DRIVER_VERSION	"1.0.1"
 #define IBMVNIC_INVALID_MAP	-1
 #define IBMVNIC_STATS_TIMEOUT	1
-<<<<<<< HEAD
 #define IBMVNIC_INIT_FAILED	2
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* basic structures plus 100 2k buffers */
 #define IBMVNIC_IO_ENTITLEMENT_DEFAULT	610305
 
@@ -42,7 +39,6 @@
 #define IBMVNIC_RX_WEIGHT		16
 /* when changing this, update IBMVNIC_IO_ENTITLEMENT_DEFAULT */
 #define IBMVNIC_BUFFS_PER_POOL	100
-<<<<<<< HEAD
 #define IBMVNIC_MAX_QUEUES	10
 
 #define IBMVNIC_TSO_BUF_SZ	65536
@@ -51,9 +47,6 @@
 
 #define IBMVNIC_MAX_LTB_SIZE ((1 << (MAX_ORDER - 1)) * PAGE_SIZE)
 #define IBMVNIC_BUFFER_HLEN 500
-=======
-#define IBMVNIC_MAX_TX_QUEUES	5
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct ibmvnic_login_buffer {
 	__be32 len;
@@ -65,11 +58,8 @@ struct ibmvnic_login_buffer {
 	__be32 off_rxcomp_subcrqs;
 	__be32 login_rsp_ioba;
 	__be32 login_rsp_len;
-<<<<<<< HEAD
 	__be32 client_data_offset;
 	__be32 client_data_len;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } __packed __aligned(8);
 
 struct ibmvnic_login_rsp_buffer {
@@ -522,27 +512,6 @@ struct ibmvnic_error_indication {
 	u8 reserved2[2];
 } __packed __aligned(8);
 
-<<<<<<< HEAD
-=======
-struct ibmvnic_request_error_info {
-	u8 first;
-	u8 cmd;
-	u8 reserved[2];
-	__be32 ioba;
-	__be32 len;
-	__be32 error_id;
-} __packed __aligned(8);
-
-struct ibmvnic_request_error_rsp {
-	u8 first;
-	u8 cmd;
-	u8 reserved[2];
-	__be32 error_id;
-	__be32 len;
-	struct ibmvnic_rc rc;
-} __packed __aligned(8);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct ibmvnic_link_state_indication {
 	u8 first;
 	u8 cmd;
@@ -574,15 +543,12 @@ struct ibmvnic_multicast_ctrl {
 	struct ibmvnic_rc rc;
 } __packed __aligned(8);
 
-<<<<<<< HEAD
 struct ibmvnic_get_vpd_size {
 	u8 first;
 	u8 cmd;
 	u8 reserved[14];
 } __packed __aligned(8);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct ibmvnic_get_vpd_size_rsp {
 	u8 first;
 	u8 cmd;
@@ -600,7 +566,6 @@ struct ibmvnic_get_vpd {
 	u8 reserved[4];
 } __packed __aligned(8);
 
-<<<<<<< HEAD
 struct ibmvnic_get_vpd_rsp {
 	u8 first;
 	u8 cmd;
@@ -608,8 +573,6 @@ struct ibmvnic_get_vpd_rsp {
 	struct ibmvnic_rc rc;
 } __packed __aligned(8);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct ibmvnic_acl_change_indication {
 	u8 first;
 	u8 cmd;
@@ -728,27 +691,15 @@ union ibmvnic_crq {
 	struct ibmvnic_request_debug_stats request_debug_stats;
 	struct ibmvnic_request_debug_stats request_debug_stats_rsp;
 	struct ibmvnic_error_indication error_indication;
-<<<<<<< HEAD
-=======
-	struct ibmvnic_request_error_info request_error_info;
-	struct ibmvnic_request_error_rsp request_error_rsp;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ibmvnic_link_state_indication link_state_indication;
 	struct ibmvnic_change_mac_addr change_mac_addr;
 	struct ibmvnic_change_mac_addr change_mac_addr_rsp;
 	struct ibmvnic_multicast_ctrl multicast_ctrl;
 	struct ibmvnic_multicast_ctrl multicast_ctrl_rsp;
-<<<<<<< HEAD
 	struct ibmvnic_get_vpd_size get_vpd_size;
 	struct ibmvnic_get_vpd_size_rsp get_vpd_size_rsp;
 	struct ibmvnic_get_vpd get_vpd;
 	struct ibmvnic_get_vpd_rsp get_vpd_rsp;
-=======
-	struct ibmvnic_generic_crq get_vpd_size;
-	struct ibmvnic_get_vpd_size_rsp get_vpd_size_rsp;
-	struct ibmvnic_get_vpd get_vpd;
-	struct ibmvnic_generic_crq get_vpd_rsp;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ibmvnic_acl_change_indication acl_change_indication;
 	struct ibmvnic_acl_query acl_query;
 	struct ibmvnic_generic_crq acl_query_rsp;
@@ -838,11 +789,6 @@ enum ibmvnic_commands {
 	SET_PHYS_PARMS = 0x07,
 	SET_PHYS_PARMS_RSP = 0x87,
 	ERROR_INDICATION = 0x08,
-<<<<<<< HEAD
-=======
-	REQUEST_ERROR_INFO = 0x09,
-	REQUEST_ERROR_RSP = 0x89,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	LOGICAL_LINK_STATE = 0x0C,
 	LOGICAL_LINK_STATE_RSP = 0x8C,
 	REQUEST_STATISTICS = 0x0D,
@@ -897,10 +843,7 @@ struct ibmvnic_crq_queue {
 	int size, cur;
 	dma_addr_t msg_token;
 	spinlock_t lock;
-<<<<<<< HEAD
 	bool active;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 union sub_crq {
@@ -946,10 +889,7 @@ struct ibmvnic_tx_buff {
 	union sub_crq indir_arr[6];
 	u8 hdr_data[140];
 	dma_addr_t indir_dma;
-<<<<<<< HEAD
 	int num_entries;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct ibmvnic_tx_pool {
@@ -957,15 +897,9 @@ struct ibmvnic_tx_pool {
 	int *free_map;
 	int consumer_index;
 	int producer_index;
-<<<<<<< HEAD
 	struct ibmvnic_long_term_buff long_term_buff;
 	int num_buffers;
 	int buf_size;
-=======
-	wait_queue_head_t ibmvnic_tx_comp_q;
-	struct task_struct *work_thread;
-	struct ibmvnic_long_term_buff long_term_buff;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct ibmvnic_rx_buff {
@@ -989,19 +923,10 @@ struct ibmvnic_rx_pool {
 	struct ibmvnic_long_term_buff long_term_buff;
 };
 
-<<<<<<< HEAD
 struct ibmvnic_vpd {
 	unsigned char *buff;
 	dma_addr_t dma_addr;
 	u64 len;
-=======
-struct ibmvnic_error_buff {
-	char *buff;
-	dma_addr_t dma;
-	int len;
-	struct list_head list;
-	__be32 error_id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum vnic_state {VNIC_PROBING = 1,
@@ -1017,19 +942,14 @@ enum ibmvnic_reset_reason {VNIC_RESET_FAILOVER = 1,
 			   VNIC_RESET_MOBILITY,
 			   VNIC_RESET_FATAL,
 			   VNIC_RESET_NON_FATAL,
-<<<<<<< HEAD
 			   VNIC_RESET_TIMEOUT,
 			   VNIC_RESET_CHANGE_PARAM};
-=======
-			   VNIC_RESET_TIMEOUT};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct ibmvnic_rwi {
 	enum ibmvnic_reset_reason reset_reason;
 	struct list_head list;
 };
 
-<<<<<<< HEAD
 struct ibmvnic_tunables {
 	u64 rx_queues;
 	u64 tx_queues;
@@ -1039,8 +959,6 @@ struct ibmvnic_tunables {
 	struct sockaddr mac;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct ibmvnic_adapter {
 	struct vio_dev *vdev;
 	struct net_device *netdev;
@@ -1052,13 +970,10 @@ struct ibmvnic_adapter {
 	dma_addr_t ip_offload_ctrl_tok;
 	u32 msg_enable;
 
-<<<<<<< HEAD
 	/* Vital Product Data (VPD) */
 	struct ibmvnic_vpd *vpd;
 	char fw_version[32];
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Statistics */
 	struct ibmvnic_statistics stats;
 	dma_addr_t stats_token;
@@ -1091,10 +1006,6 @@ struct ibmvnic_adapter {
 
 	struct ibmvnic_sub_crq_queue **tx_scrq;
 	struct ibmvnic_sub_crq_queue **rx_scrq;
-<<<<<<< HEAD
-=======
-	bool renegotiate;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* rx structs */
 	struct napi_struct *napi;
@@ -1102,7 +1013,6 @@ struct ibmvnic_adapter {
 	u64 promisc;
 
 	struct ibmvnic_tx_pool *tx_pool;
-<<<<<<< HEAD
 	struct ibmvnic_tx_pool *tso_pool;
 	struct completion init_done;
 	int init_done_rc;
@@ -1114,17 +1024,6 @@ struct ibmvnic_adapter {
 	int reset_done_rc;
 	bool wait_for_reset;
 
-=======
-	struct completion init_done;
-	int init_done_rc;
-
-	struct list_head errors;
-	spinlock_t error_list_lock;
-
-	struct completion fw_done;
-	int fw_done_rc;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* partner capabilities */
 	u64 min_tx_queues;
 	u64 min_rx_queues;
@@ -1160,28 +1059,20 @@ struct ibmvnic_adapter {
 	u64 opt_rxba_entries_per_subcrq;
 	__be64 tx_rx_desc_req;
 	u8 map_id;
-<<<<<<< HEAD
 	u32 num_active_rx_scrqs;
 	u32 num_active_rx_pools;
 	u32 num_active_rx_napi;
 	u32 num_active_tx_scrqs;
 	u32 num_active_tx_pools;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct tasklet_struct tasklet;
 	enum vnic_state state;
 	enum ibmvnic_reset_reason reset_reason;
-<<<<<<< HEAD
 	spinlock_t rwi_lock;
-=======
-	struct mutex reset_lock, rwi_lock;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct list_head rwi_list;
 	struct work_struct ibmvnic_reset;
 	bool resetting;
 	bool napi_enabled, from_passive_init;
-<<<<<<< HEAD
 
 	bool mac_change_pending;
 	bool failover_pending;
@@ -1189,6 +1080,4 @@ struct ibmvnic_adapter {
 
 	struct ibmvnic_tunables desired;
 	struct ibmvnic_tunables fallback;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

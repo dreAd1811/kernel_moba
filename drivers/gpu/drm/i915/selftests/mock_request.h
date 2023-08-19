@@ -27,35 +27,20 @@
 
 #include <linux/list.h>
 
-<<<<<<< HEAD
 #include "../i915_request.h"
 
 struct mock_request {
 	struct i915_request base;
-=======
-#include "../i915_gem_request.h"
-
-struct mock_request {
-	struct drm_i915_gem_request base;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct list_head link;
 	unsigned long delay;
 };
 
-<<<<<<< HEAD
 struct i915_request *
-=======
-struct drm_i915_gem_request *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 mock_request(struct intel_engine_cs *engine,
 	     struct i915_gem_context *context,
 	     unsigned long delay);
 
-<<<<<<< HEAD
 bool mock_cancel_request(struct i915_request *request);
-=======
-bool mock_cancel_request(struct drm_i915_gem_request *request);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* !__MOCK_REQUEST__ */

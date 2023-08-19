@@ -1,18 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Device Tree Source for the KZM9D board
  *
  * Copyright (C) 2013 Renesas Solutions Corp.
-<<<<<<< HEAD
-=======
- *
- * This file is licensed under the terms of the GNU General Public License
- * version 2.  This program is licensed "as is" without any warranty of any
- * kind, whether express or implied.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 /dts-v1/;
 
@@ -41,49 +31,29 @@
 
 	gpio_keys {
 		compatible = "gpio-keys";
-<<<<<<< HEAD
 		one {
 			debounce-interval = <50>;
-=======
-		#address-cells = <1>;
-		#size-cells = <0>;
-
-		one {
-			debounce_interval = <50>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			wakeup-source;
 			label = "DSW2-1";
 			linux,code = <KEY_1>;
 			gpios = <&gpio0 14 GPIO_ACTIVE_HIGH>;
 		};
 		two {
-<<<<<<< HEAD
 			debounce-interval = <50>;
-=======
-			debounce_interval = <50>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			wakeup-source;
 			label = "DSW2-2";
 			linux,code = <KEY_2>;
 			gpios = <&gpio0 15 GPIO_ACTIVE_HIGH>;
 		};
 		three {
-<<<<<<< HEAD
 			debounce-interval = <50>;
-=======
-			debounce_interval = <50>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			wakeup-source;
 			label = "DSW2-3";
 			linux,code = <KEY_3>;
 			gpios = <&gpio0 16 GPIO_ACTIVE_HIGH>;
 		};
 		four {
-<<<<<<< HEAD
 			debounce-interval = <50>;
-=======
-			debounce_interval = <50>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			wakeup-source;
 			label = "DSW2-4";
 			linux,code = <KEY_4>;

@@ -45,11 +45,7 @@
 #include "imx6ul.dtsi"
 
 / {
-<<<<<<< HEAD
 	memory@80000000 {
-=======
-	memory {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x80000000 0x20000000>;
 	};
 
@@ -146,10 +142,7 @@
 	sgtl5000: codec@a {
 		compatible = "fsl,sgtl5000";
 		reg = <0x0a>;
-<<<<<<< HEAD
 		#sound-dai-cells = <0>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		clocks = <&clks IMX6UL_CLK_OSC>;
 		clock-names = "mclk";
 		VDDA-supply = <&reg_3p3v>;
@@ -160,11 +153,6 @@
 	stmpe811: gpio-expander@44 {
 		compatible = "st,stmpe811";
 		reg = <0x44>;
-<<<<<<< HEAD
-=======
-		#address-cells = <1>;
-		#size-cells = <0>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_stmpe>;
 		interrupt-parent = <&gpio1>;

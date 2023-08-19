@@ -12,11 +12,8 @@
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
 #include <linux/errno.h>
-<<<<<<< HEAD
 #include <linux/gpio.h>
 #include <linux/gpio/consumer.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/init.h>
 #include <linux/interrupt.h>
 #include <linux/kernel.h>
@@ -27,10 +24,7 @@
 #include <linux/slab.h>
 #include <linux/string.h>
 #include <linux/unistd.h>
-<<<<<<< HEAD
 #include <linux/delay.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void mdio_device_free(struct mdio_device *mdiodev)
 {
@@ -123,7 +117,6 @@ void mdio_device_remove(struct mdio_device *mdiodev)
 }
 EXPORT_SYMBOL(mdio_device_remove);
 
-<<<<<<< HEAD
 void mdio_device_reset(struct mdio_device *mdiodev, int value)
 {
 	unsigned int d;
@@ -139,8 +132,6 @@ void mdio_device_reset(struct mdio_device *mdiodev, int value)
 }
 EXPORT_SYMBOL(mdio_device_reset);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * mdio_probe - probe an MDIO device
  * @dev: device to probe
@@ -155,7 +146,6 @@ static int mdio_probe(struct device *dev)
 	struct mdio_driver *mdiodrv = to_mdio_driver(drv);
 	int err = 0;
 
-<<<<<<< HEAD
 	if (mdiodrv->probe) {
 		/* Deassert the reset signal */
 		mdio_device_reset(mdiodev, 0);
@@ -166,10 +156,6 @@ static int mdio_probe(struct device *dev)
 			mdio_device_reset(mdiodev, 1);
 		}
 	}
-=======
-	if (mdiodrv->probe)
-		err = mdiodrv->probe(mdiodev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return err;
 }
@@ -180,7 +166,6 @@ static int mdio_remove(struct device *dev)
 	struct device_driver *drv = mdiodev->dev.driver;
 	struct mdio_driver *mdiodrv = to_mdio_driver(drv);
 
-<<<<<<< HEAD
 	if (mdiodrv->remove) {
 		mdiodrv->remove(mdiodev);
 
@@ -188,11 +173,6 @@ static int mdio_remove(struct device *dev)
 		mdio_device_reset(mdiodev, 1);
 	}
 
-=======
-	if (mdiodrv->remove)
-		mdiodrv->remove(mdiodev);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

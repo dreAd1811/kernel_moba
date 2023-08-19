@@ -49,13 +49,6 @@ ath10k_usb_alloc_urb_from_pipe(struct ath10k_usb_pipe *pipe)
 	struct ath10k_urb_context *urb_context = NULL;
 	unsigned long flags;
 
-<<<<<<< HEAD
-=======
-	/* bail if this pipe is not initialized */
-	if (!pipe->ar_usb)
-		return NULL;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_irqsave(&pipe->ar_usb->cs_lock, flags);
 	if (!list_empty(&pipe->urb_list_head)) {
 		urb_context = list_first_entry(&pipe->urb_list_head,
@@ -73,13 +66,6 @@ static void ath10k_usb_free_urb_to_pipe(struct ath10k_usb_pipe *pipe,
 {
 	unsigned long flags;
 
-<<<<<<< HEAD
-=======
-	/* bail if this pipe is not initialized */
-	if (!pipe->ar_usb)
-		return;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_irqsave(&pipe->ar_usb->cs_lock, flags);
 
 	pipe->urb_cnt++;
@@ -460,10 +446,6 @@ static int ath10k_usb_hif_tx_sg(struct ath10k *ar, u8 pipe_id,
 			ath10k_dbg(ar, ATH10K_DBG_USB_BULK,
 				   "usb bulk transmit failed: %d\n", ret);
 			usb_unanchor_urb(urb);
-<<<<<<< HEAD
-=======
-			usb_free_urb(urb);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ret = -EINVAL;
 			goto err_free_urb_to_pipe;
 		}
@@ -1001,11 +983,7 @@ static int ath10k_usb_probe(struct usb_interface *interface,
 	struct usb_device *dev = interface_to_usbdev(interface);
 	int ret, vendor_id, product_id;
 	enum ath10k_hw_rev hw_rev;
-<<<<<<< HEAD
 	u32 chip_id;
-=======
-	struct ath10k_bus_params bus_params;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Assumption: All USB based chipsets (so far) are QCA9377 based.
 	 * If there will be newer chipsets that does not use the hw reg
@@ -1038,16 +1016,9 @@ static int ath10k_usb_probe(struct usb_interface *interface,
 	ar->id.vendor = vendor_id;
 	ar->id.device = product_id;
 
-<<<<<<< HEAD
 	/* TODO: don't know yet how to get chip_id with USB */
 	chip_id = 0;
 	ret = ath10k_core_register(ar, chip_id);
-=======
-	bus_params.dev_type = ATH10K_DEV_TYPE_HL;
-	/* TODO: don't know yet how to get chip_id with USB */
-	bus_params.chip_id = 0;
-	ret = ath10k_core_register(ar, &bus_params);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		ath10k_warn(ar, "failed to register driver core: %d\n", ret);
 		goto err;

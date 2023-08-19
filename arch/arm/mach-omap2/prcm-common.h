@@ -506,10 +506,6 @@ struct omap_prcm_irq_setup {
 	u8 nr_irqs;
 	const struct omap_prcm_irq *irqs;
 	int irq;
-<<<<<<< HEAD
-=======
-	unsigned int (*xlate_irq)(unsigned int);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void (*read_pending_irqs)(unsigned long *events);
 	void (*ocp_barrier)(void);
 	void (*save_and_clear_irqen)(u32 *saved_mask);
@@ -532,10 +528,7 @@ struct omap_prcm_irq_setup {
 struct omap_domain_base {
 	u32 pa;
 	void __iomem *va;
-<<<<<<< HEAD
 	s16 offset;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**

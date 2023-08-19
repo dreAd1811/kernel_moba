@@ -146,10 +146,7 @@ static struct amiga_floppy_struct unit[FD_MAX_UNITS];
 
 static struct timer_list flush_track_timer[FD_MAX_UNITS];
 static struct timer_list post_write_timer;
-<<<<<<< HEAD
 static unsigned long post_write_timer_drive;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct timer_list motor_on_timer;
 static struct timer_list motor_off_timer[FD_MAX_UNITS];
 static int on_attempts;
@@ -327,11 +324,7 @@ static void fd_deselect (int drive)
 
 }
 
-<<<<<<< HEAD
 static void motor_on_callback(struct timer_list *unused)
-=======
-static void motor_on_callback(unsigned long nr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (!(ciaa.pra & DSKRDY) || --on_attempts == 0) {
 		complete_all(&motor_on_completion);
@@ -352,10 +345,6 @@ static int fd_motor_on(int nr)
 		fd_select(nr);
 
 		reinit_completion(&motor_on_completion);
-<<<<<<< HEAD
-=======
-		motor_on_timer.data = nr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mod_timer(&motor_on_timer, jiffies + HZ/2);
 
 		on_attempts = 10;
@@ -367,11 +356,7 @@ static int fd_motor_on(int nr)
 		on_attempts = -1;
 #if 0
 		printk (KERN_ERR "motor_on failed, turning motor off\n");
-<<<<<<< HEAD
 		fd_motor_off (motor_off_timer + nr);
-=======
-		fd_motor_off (nr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 #else
 		printk (KERN_WARNING "DSKRDY not set after 1.5 seconds - assuming drive is spinning notwithstanding\n");
@@ -381,7 +366,6 @@ static int fd_motor_on(int nr)
 	return 1;
 }
 
-<<<<<<< HEAD
 static void fd_motor_off(struct timer_list *timer)
 {
 	unsigned long drive = ((unsigned long)timer -
@@ -393,22 +377,6 @@ static void fd_motor_off(struct timer_list *timer)
 		/* We would be blocked in an interrupt, so try again later */
 		timer->expires = jiffies + 1;
 		add_timer(timer);
-=======
-static void fd_motor_off(unsigned long drive)
-{
-	long calledfromint;
-#ifdef MODULE
-	long decusecount;
-
-	decusecount = drive & 0x40000000;
-#endif
-	calledfromint = drive & 0x80000000;
-	drive&=3;
-	if (calledfromint && !try_fdc(drive)) {
-		/* We would be blocked in an interrupt, so try again later */
-		motor_off_timer[drive].expires = jiffies + 1;
-		add_timer(motor_off_timer + drive);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 	unit[drive].motor = 0;
@@ -422,11 +390,6 @@ static void floppy_off (unsigned int nr)
 	int drive;
 
 	drive = nr & 3;
-<<<<<<< HEAD
-=======
-	/* called this way it is always from interrupt */
-	motor_off_timer[drive].data = nr | 0x80000000;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mod_timer(motor_off_timer + drive, jiffies + 3*HZ);
 }
 
@@ -468,11 +431,7 @@ static int fd_calibrate(int drive)
 			break;
 		if (--n == 0) {
 			printk (KERN_ERR "fd%d: calibrate failed, turning motor off\n", drive);
-<<<<<<< HEAD
 			fd_motor_off (motor_off_timer + drive);
-=======
-			fd_motor_off (drive);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			unit[drive].track = -1;
 			rel_fdc();
 			return 0;
@@ -601,11 +560,7 @@ static irqreturn_t fd_block_done(int irq, void *dummy)
 	if (block_flag == 2) { /* writing */
 		writepending = 2;
 		post_write_timer.expires = jiffies + 1; /* at least 2 ms */
-<<<<<<< HEAD
 		post_write_timer_drive = selected;
-=======
-		post_write_timer.data = selected;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		add_timer(&post_write_timer);
 	}
 	else {                /* reading */
@@ -692,13 +647,10 @@ static void post_write (unsigned long drive)
 	rel_fdc(); /* corresponds to get_fdc() in raw_write */
 }
 
-<<<<<<< HEAD
 static void post_write_callback(struct timer_list *timer)
 {
 	post_write(post_write_timer_drive);
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * The following functions are to convert the block contents into raw data
@@ -1292,17 +1244,12 @@ static void dos_write(int disk)
 /* FIXME: this assumes the drive is still spinning -
  * which is only true if we complete writing a track within three seconds
  */
-<<<<<<< HEAD
 static void flush_track_callback(struct timer_list *timer)
 {
 	unsigned long nr = ((unsigned long)timer -
 			       (unsigned long)&flush_track_timer[0]) /
 					sizeof(flush_track_timer[0]);
 
-=======
-static void flush_track_callback(unsigned long nr)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	nr&=3;
 	writefromint = 1;
 	if (!try_fdc(nr)) {
@@ -1706,12 +1653,7 @@ static void floppy_release(struct gendisk *disk, fmode_t mode)
 		fd_ref[drive] = 0;
 	}
 #ifdef MODULE
-<<<<<<< HEAD
 	floppy_off (drive);
-=======
-/* the mod_use counter is handled this way */
-	floppy_off (drive | 0x40000000);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 	mutex_unlock(&amiflop_mutex);
 }
@@ -1759,48 +1701,11 @@ static const struct block_device_operations floppy_fops = {
 	.check_events	= amiga_check_events,
 };
 
-<<<<<<< HEAD
-=======
-static struct gendisk *fd_alloc_disk(int drive)
-{
-	struct gendisk *disk;
-
-	disk = alloc_disk(1);
-	if (!disk)
-		goto out;
-
-	disk->queue = blk_init_queue(do_fd_request, &amiflop_lock);
-	if (IS_ERR(disk->queue)) {
-		disk->queue = NULL;
-		goto out_put_disk;
-	}
-
-	unit[drive].trackbuf = kmalloc(FLOPPY_MAX_SECTORS * 512, GFP_KERNEL);
-	if (!unit[drive].trackbuf)
-		goto out_cleanup_queue;
-
-	return disk;
-
-out_cleanup_queue:
-	blk_cleanup_queue(disk->queue);
-	disk->queue = NULL;
-out_put_disk:
-	put_disk(disk);
-out:
-	unit[drive].type->code = FD_NODRIVE;
-	return NULL;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __init fd_probe_drives(void)
 {
 	int drive,drives,nomem;
 
-<<<<<<< HEAD
 	printk(KERN_INFO "FD: probing units\nfound ");
-=======
-	pr_info("FD: probing units\nfound");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drives=0;
 	nomem=0;
 	for(drive=0;drive<FD_MAX_UNITS;drive++) {
@@ -1808,7 +1713,6 @@ static int __init fd_probe_drives(void)
 		fd_probe(drive);
 		if (unit[drive].type->code == FD_NODRIVE)
 			continue;
-<<<<<<< HEAD
 		disk = alloc_disk(1);
 		if (!disk) {
 			unit[drive].type->code = FD_NODRIVE;
@@ -1830,19 +1734,6 @@ static int __init fd_probe_drives(void)
 			nomem = 1;
 		}
 		printk("fd%d ",drive);
-=======
-
-		disk = fd_alloc_disk(drive);
-		if (!disk) {
-			pr_cont(" no mem for fd%d", drive);
-			nomem = 1;
-			continue;
-		}
-		unit[drive].gendisk = disk;
-		drives++;
-
-		pr_cont(" fd%d",drive);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		disk->major = FLOPPY_MAJOR;
 		disk->first_minor = drive;
 		disk->fops = &floppy_fops;
@@ -1853,19 +1744,11 @@ static int __init fd_probe_drives(void)
 	}
 	if ((drives > 0) || (nomem == 0)) {
 		if (drives == 0)
-<<<<<<< HEAD
 			printk("no drives");
 		printk("\n");
 		return drives;
 	}
 	printk("\n");
-=======
-			pr_cont(" no drives");
-		pr_cont("\n");
-		return drives;
-	}
-	pr_cont("\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return -ENOMEM;
 }
  
@@ -1875,11 +1758,7 @@ static struct kobject *floppy_find(dev_t dev, int *part, void *data)
 	if (unit[drive].type->code == FD_NODRIVE)
 		return NULL;
 	*part = 0;
-<<<<<<< HEAD
 	return get_disk_and_module(unit[drive].gendisk);
-=======
-	return get_disk(unit[drive].gendisk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int __init amiga_floppy_probe(struct platform_device *pdev)
@@ -1915,7 +1794,6 @@ static int __init amiga_floppy_probe(struct platform_device *pdev)
 				floppy_find, NULL, NULL);
 
 	/* initialize variables */
-<<<<<<< HEAD
 	timer_setup(&motor_on_timer, motor_on_callback, 0);
 	motor_on_timer.expires = 0;
 	for (i = 0; i < FD_MAX_UNITS; i++) {
@@ -1923,34 +1801,12 @@ static int __init amiga_floppy_probe(struct platform_device *pdev)
 		motor_off_timer[i].expires = 0;
 		timer_setup(&flush_track_timer[i], flush_track_callback, 0);
 		flush_track_timer[i].expires = 0;
-=======
-	init_timer(&motor_on_timer);
-	motor_on_timer.expires = 0;
-	motor_on_timer.data = 0;
-	motor_on_timer.function = motor_on_callback;
-	for (i = 0; i < FD_MAX_UNITS; i++) {
-		init_timer(&motor_off_timer[i]);
-		motor_off_timer[i].expires = 0;
-		motor_off_timer[i].data = i|0x80000000;
-		motor_off_timer[i].function = fd_motor_off;
-		init_timer(&flush_track_timer[i]);
-		flush_track_timer[i].expires = 0;
-		flush_track_timer[i].data = i;
-		flush_track_timer[i].function = flush_track_callback;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		unit[i].track = -1;
 	}
 
-<<<<<<< HEAD
 	timer_setup(&post_write_timer, post_write_callback, 0);
 	post_write_timer.expires = 0;
-=======
-	init_timer(&post_write_timer);
-	post_write_timer.expires = 0;
-	post_write_timer.data = 0;
-	post_write_timer.function = post_write;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
   
 	for (i = 0; i < 128; i++)
 		mfmdecode[i]=255;
@@ -1975,7 +1831,6 @@ out_blkdev:
 	return ret;
 }
 
-<<<<<<< HEAD
 #if 0 /* not safe to unload */
 static int __exit amiga_floppy_remove(struct platform_device *pdev)
 {
@@ -2000,8 +1855,6 @@ static int __exit amiga_floppy_remove(struct platform_device *pdev)
 }
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct platform_driver amiga_floppy_driver = {
 	.driver   = {
 		.name	= "amiga-floppy",

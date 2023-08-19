@@ -823,10 +823,6 @@ nv17_tv_create(struct drm_connector *connector, struct dcb_output *entry)
 	encoder->possible_clones = 0;
 
 	nv17_tv_create_resources(encoder, connector);
-<<<<<<< HEAD
 	drm_connector_attach_encoder(connector, encoder);
-=======
-	drm_mode_connector_attach_encoder(connector, encoder);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }

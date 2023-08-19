@@ -130,11 +130,7 @@ static inline int atomic_cmpxchg_relaxed(atomic_t *ptr, int old, int new)
 }
 #define atomic_cmpxchg_relaxed		atomic_cmpxchg_relaxed
 
-<<<<<<< HEAD
 static inline int atomic_fetch_add_unless(atomic_t *v, int a, int u)
-=======
-static inline int __atomic_add_unless(atomic_t *v, int a, int u)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int oldval, newval;
 	unsigned long tmp;
@@ -160,10 +156,7 @@ static inline int __atomic_add_unless(atomic_t *v, int a, int u)
 
 	return oldval;
 }
-<<<<<<< HEAD
 #define atomic_fetch_add_unless		atomic_fetch_add_unless
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #else /* ARM_ARCH_6 */
 
@@ -223,19 +216,7 @@ static inline int atomic_cmpxchg(atomic_t *v, int old, int new)
 	return ret;
 }
 
-<<<<<<< HEAD
 #define atomic_fetch_andnot		atomic_fetch_andnot
-=======
-static inline int __atomic_add_unless(atomic_t *v, int a, int u)
-{
-	int c, old;
-
-	c = atomic_read(v);
-	while (c != u && (old = atomic_cmpxchg((v), c, c + a)) != c)
-		c = old;
-	return c;
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* __LINUX_ARM_ARCH__ */
 
@@ -266,20 +247,6 @@ ATOMIC_OPS(xor, ^=, eor)
 
 #define atomic_xchg(v, new) (xchg(&((v)->counter), new))
 
-<<<<<<< HEAD
-=======
-#define atomic_inc(v)		atomic_add(1, v)
-#define atomic_dec(v)		atomic_sub(1, v)
-
-#define atomic_inc_and_test(v)	(atomic_add_return(1, v) == 0)
-#define atomic_dec_and_test(v)	(atomic_sub_return(1, v) == 0)
-#define atomic_inc_return_relaxed(v)    (atomic_add_return_relaxed(1, v))
-#define atomic_dec_return_relaxed(v)    (atomic_sub_return_relaxed(1, v))
-#define atomic_sub_and_test(i, v) (atomic_sub_return(i, v) == 0)
-
-#define atomic_add_negative(i,v) (atomic_add_return(i, v) < 0)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifndef CONFIG_GENERIC_ATOMIC64
 typedef struct {
 	long long counter;
@@ -509,7 +476,6 @@ static inline long long atomic64_dec_if_positive(atomic64_t *v)
 
 	return result;
 }
-<<<<<<< HEAD
 #define atomic64_dec_if_positive atomic64_dec_if_positive
 
 static inline long long atomic64_fetch_add_unless(atomic64_t *v, long long a,
@@ -517,14 +483,6 @@ static inline long long atomic64_fetch_add_unless(atomic64_t *v, long long a,
 {
 	long long oldval, newval;
 	unsigned long tmp;
-=======
-
-static inline int atomic64_add_unless(atomic64_t *v, long long a, long long u)
-{
-	long long val;
-	unsigned long tmp;
-	int ret = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	smp_mb();
 	prefetchw(&v->counter);
@@ -533,7 +491,6 @@ static inline int atomic64_add_unless(atomic64_t *v, long long a, long long u)
 "1:	ldrexd	%0, %H0, [%4]\n"
 "	teq	%0, %5\n"
 "	teqeq	%H0, %H5\n"
-<<<<<<< HEAD
 "	beq	2f\n"
 "	adds	%Q1, %Q0, %Q6\n"
 "	adc	%R1, %R0, %R6\n"
@@ -551,35 +508,6 @@ static inline int atomic64_add_unless(atomic64_t *v, long long a, long long u)
 	return oldval;
 }
 #define atomic64_fetch_add_unless atomic64_fetch_add_unless
-=======
-"	moveq	%1, #0\n"
-"	beq	2f\n"
-"	adds	%Q0, %Q0, %Q6\n"
-"	adc	%R0, %R0, %R6\n"
-"	strexd	%2, %0, %H0, [%4]\n"
-"	teq	%2, #0\n"
-"	bne	1b\n"
-"2:"
-	: "=&r" (val), "+r" (ret), "=&r" (tmp), "+Qo" (v->counter)
-	: "r" (&v->counter), "r" (u), "r" (a)
-	: "cc");
-
-	if (ret)
-		smp_mb();
-
-	return ret;
-}
-
-#define atomic64_add_negative(a, v)	(atomic64_add_return((a), (v)) < 0)
-#define atomic64_inc(v)			atomic64_add(1LL, (v))
-#define atomic64_inc_return_relaxed(v)	atomic64_add_return_relaxed(1LL, (v))
-#define atomic64_inc_and_test(v)	(atomic64_inc_return(v) == 0)
-#define atomic64_sub_and_test(a, v)	(atomic64_sub_return((a), (v)) == 0)
-#define atomic64_dec(v)			atomic64_sub(1LL, (v))
-#define atomic64_dec_return_relaxed(v)	atomic64_sub_return_relaxed(1LL, (v))
-#define atomic64_dec_and_test(v)	(atomic64_dec_return((v)) == 0)
-#define atomic64_inc_not_zero(v)	atomic64_add_unless((v), 1LL, 0LL)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* !CONFIG_GENERIC_ATOMIC64 */
 #endif

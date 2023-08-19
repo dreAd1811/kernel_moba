@@ -21,22 +21,10 @@
  *
  * Authors: Ben Skeggs
  */
-<<<<<<< HEAD
 #include "channv50.h"
 
 #include <subdev/timer.h>
 
-=======
-#include "dmacnv50.h"
-#include "rootnv50.h"
-
-#include <core/client.h>
-#include <subdev/timer.h>
-
-#include <nvif/class.h>
-#include <nvif/unpack.h>
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 const struct nv50_disp_mthd_list
 gf119_disp_core_mthd_base = {
 	.mthd = 0x0000,
@@ -164,11 +152,7 @@ gf119_disp_core_mthd_head = {
 };
 
 static const struct nv50_disp_chan_mthd
-<<<<<<< HEAD
 gf119_disp_core_mthd = {
-=======
-gf119_disp_core_chan_mthd = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.name = "Core",
 	.addr = 0x000000,
 	.prev = -0x020000,
@@ -183,16 +167,9 @@ gf119_disp_core_chan_mthd = {
 };
 
 void
-<<<<<<< HEAD
 gf119_disp_core_fini(struct nv50_disp_chan *chan)
 {
 	struct nvkm_subdev *subdev = &chan->disp->base.engine.subdev;
-=======
-gf119_disp_core_fini(struct nv50_disp_dmac *chan)
-{
-	struct nv50_disp *disp = chan->base.root->disp;
-	struct nvkm_subdev *subdev = &disp->base.engine.subdev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct nvkm_device *device = subdev->device;
 
 	/* deactivate channel */
@@ -205,7 +182,6 @@ gf119_disp_core_fini(struct nv50_disp_dmac *chan)
 		nvkm_error(subdev, "core fini: %08x\n",
 			   nvkm_rd32(device, 0x610490));
 	}
-<<<<<<< HEAD
 }
 
 static int
@@ -214,24 +190,6 @@ gf119_disp_core_init(struct nv50_disp_chan *chan)
 	struct nvkm_subdev *subdev = &chan->disp->base.engine.subdev;
 	struct nvkm_device *device = subdev->device;
 
-=======
-
-	/* disable error reporting and completion notification */
-	nvkm_mask(device, 0x610090, 0x00000001, 0x00000000);
-	nvkm_mask(device, 0x6100a0, 0x00000001, 0x00000000);
-}
-
-static int
-gf119_disp_core_init(struct nv50_disp_dmac *chan)
-{
-	struct nv50_disp *disp = chan->base.root->disp;
-	struct nvkm_subdev *subdev = &disp->base.engine.subdev;
-	struct nvkm_device *device = subdev->device;
-
-	/* enable error reporting */
-	nvkm_mask(device, 0x6100a0, 0x00000001, 0x00000001);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* initialise channel for dma command submission */
 	nvkm_wr32(device, 0x610494, chan->push);
 	nvkm_wr32(device, 0x610498, 0x00010000);
@@ -253,7 +211,6 @@ gf119_disp_core_init(struct nv50_disp_dmac *chan)
 	return 0;
 }
 
-<<<<<<< HEAD
 const struct nv50_disp_chan_func
 gf119_disp_core_func = {
 	.init = gf119_disp_core_init,
@@ -270,22 +227,3 @@ gf119_disp_core_new(const struct nvkm_oclass *oclass, void *argv, u32 argc,
 	return nv50_disp_core_new_(&gf119_disp_core_func, &gf119_disp_core_mthd,
 				   disp, 0, oclass, argv, argc, pobject);
 }
-=======
-const struct nv50_disp_dmac_func
-gf119_disp_core_func = {
-	.init = gf119_disp_core_init,
-	.fini = gf119_disp_core_fini,
-	.bind = gf119_disp_dmac_bind,
-};
-
-const struct nv50_disp_dmac_oclass
-gf119_disp_core_oclass = {
-	.base.oclass = GF110_DISP_CORE_CHANNEL_DMA,
-	.base.minver = 0,
-	.base.maxver = 0,
-	.ctor = nv50_disp_core_new,
-	.func = &gf119_disp_core_func,
-	.mthd = &gf119_disp_core_chan_mthd,
-	.chid = 0,
-};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

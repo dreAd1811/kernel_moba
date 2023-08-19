@@ -51,11 +51,7 @@ static void host1x_pushbuffer_destroy(struct push_buffer *pb)
 	struct host1x_cdma *cdma = pb_to_cdma(pb);
 	struct host1x *host1x = cdma_to_host1x(cdma);
 
-<<<<<<< HEAD
 	if (!pb->mapped)
-=======
-	if (!pb->phys)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	if (host1x->domain) {
@@ -131,11 +127,7 @@ static int host1x_pushbuffer_init(struct push_buffer *pb)
 iommu_free_iova:
 	__free_iova(&host1x->iova, alloc);
 iommu_free_mem:
-<<<<<<< HEAD
 	dma_free_wc(host1x->dev, size, pb->mapped, pb->phys);
-=======
-	dma_free_wc(host1x->dev, pb->alloc_size, pb->mapped, pb->phys);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return err;
 }
@@ -255,11 +247,7 @@ static void cdma_start_timer_locked(struct host1x_cdma *cdma,
 static void stop_cdma_timer_locked(struct host1x_cdma *cdma)
 {
 	cancel_delayed_work(&cdma->timeout.wq);
-<<<<<<< HEAD
 	cdma->timeout.client = NULL;
-=======
-	cdma->timeout.client = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*

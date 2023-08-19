@@ -33,38 +33,6 @@
 #define I5		0x1d
 #define FP		0x1e
 #define I7		0x1f
-<<<<<<< HEAD
-=======
-
-#define r_SKB		L0
-#define r_HEADLEN	L4
-#define r_SKB_DATA	L5
-#define r_TMP		G1
-#define r_TMP2		G3
-
-/* assembly code in arch/sparc/net/bpf_jit_asm_64.S */
-extern u32 bpf_jit_load_word[];
-extern u32 bpf_jit_load_half[];
-extern u32 bpf_jit_load_byte[];
-extern u32 bpf_jit_load_byte_msh[];
-extern u32 bpf_jit_load_word_positive_offset[];
-extern u32 bpf_jit_load_half_positive_offset[];
-extern u32 bpf_jit_load_byte_positive_offset[];
-extern u32 bpf_jit_load_byte_msh_positive_offset[];
-extern u32 bpf_jit_load_word_negative_offset[];
-extern u32 bpf_jit_load_half_negative_offset[];
-extern u32 bpf_jit_load_byte_negative_offset[];
-extern u32 bpf_jit_load_byte_msh_negative_offset[];
-
-#else
-#define r_RESULT	%o0
-#define r_SKB		%o0
-#define r_OFF		%o1
-#define r_HEADLEN	%l4
-#define r_SKB_DATA	%l5
-#define r_TMP		%g1
-#define r_TMP2		%g3
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 #endif /* _BPF_JIT_H */

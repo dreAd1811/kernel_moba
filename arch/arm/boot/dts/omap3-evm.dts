@@ -9,7 +9,6 @@
 
 #include "omap34xx.dtsi"
 #include "omap3-evm-common.dtsi"
-<<<<<<< HEAD
 #include "omap3-evm-processor-common.dtsi"
 
 / {
@@ -86,15 +85,5 @@
 
 		#address-cells = <1>;
 		#size-cells = <1>;
-=======
-
-/ {
-	model = "TI OMAP35XX EVM (TMDSEVM3530)";
-	compatible = "ti,omap3-evm", "ti,omap3";
-
-	memory@80000000 {
-		device_type = "memory";
-		reg = <0x80000000 0x10000000>; /* 256 MB */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };

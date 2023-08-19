@@ -1,23 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Copyright (c) 2011-2012,2017, The Linux Foundation. All rights reserved.
  *
  * Description: CoreSight Funnel driver
-=======
-/* Copyright (c) 2011-2012, 2017, 2020, The Linux Foundation. All rights reserved.
- *
- * Description: CoreSight Funnel driver
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/kernel.h>
@@ -27,11 +12,6 @@
 #include <linux/err.h>
 #include <linux/fs.h>
 #include <linux/slab.h>
-<<<<<<< HEAD
-=======
-#include <linux/of.h>
-#include <linux/platform_device.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/pm_runtime.h>
 #include <linux/coresight.h>
 #include <linux/amba/bus.h>
@@ -46,10 +26,6 @@
 #define FUNNEL_HOLDTIME_MASK	0xf00
 #define FUNNEL_HOLDTIME_SHFT	0x8
 #define FUNNEL_HOLDTIME		(0x7 << FUNNEL_HOLDTIME_SHFT)
-<<<<<<< HEAD
-=======
-#define FUNNEL_ENSx_MASK	0xff
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * struct funnel_drvdata - specifics associated to a funnel component
@@ -58,10 +34,6 @@
  * @atclk:	optional clock for the core parts of the funnel.
  * @csdev:	component vitals needed by the framework.
  * @priority:	port selection order.
-<<<<<<< HEAD
-=======
- * @spinlock:	serialize enable/disable operations.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct funnel_drvdata {
 	void __iomem		*base;
@@ -69,54 +41,27 @@ struct funnel_drvdata {
 	struct clk		*atclk;
 	struct coresight_device	*csdev;
 	unsigned long		priority;
-<<<<<<< HEAD
 };
 
 static void funnel_enable_hw(struct funnel_drvdata *drvdata, int port)
 {
 	u32 functl;
-=======
-	spinlock_t		spinlock;
-};
-
-static int dynamic_funnel_enable_hw(struct funnel_drvdata *drvdata, int port)
-{
-	u32 functl;
-	int rc = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	CS_UNLOCK(drvdata->base);
 
 	functl = readl_relaxed(drvdata->base + FUNNEL_FUNCTL);
-<<<<<<< HEAD
-=======
-	/* Claim the device only when we enable the first slave */
-	if (!(functl & FUNNEL_ENSx_MASK)) {
-		rc = coresight_claim_device_unlocked(drvdata->base);
-		if (rc)
-			goto done;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	functl &= ~FUNNEL_HOLDTIME_MASK;
 	functl |= FUNNEL_HOLDTIME;
 	functl |= (1 << port);
 	writel_relaxed(functl, drvdata->base + FUNNEL_FUNCTL);
 	writel_relaxed(drvdata->priority, drvdata->base + FUNNEL_PRICTL);
-<<<<<<< HEAD
 
 	CS_LOCK(drvdata->base);
-=======
-done:
-	CS_LOCK(drvdata->base);
-	return rc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int funnel_enable(struct coresight_device *csdev, int inport,
 			 int outport)
 {
-<<<<<<< HEAD
 	struct funnel_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
 
 	funnel_enable_hw(drvdata, inport);
@@ -126,31 +71,6 @@ static int funnel_enable(struct coresight_device *csdev, int inport,
 }
 
 static void funnel_disable_hw(struct funnel_drvdata *drvdata, int inport)
-=======
-	int rc = 0;
-	struct funnel_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
-	unsigned long flags;
-	bool first_enable = false;
-
-	spin_lock_irqsave(&drvdata->spinlock, flags);
-	if (atomic_read(&csdev->refcnt[inport]) == 0) {
-		if (drvdata->base)
-			rc = dynamic_funnel_enable_hw(drvdata, inport);
-		if (!rc)
-			first_enable = true;
-	}
-	if (!rc)
-		atomic_inc(&csdev->refcnt[inport]);
-	spin_unlock_irqrestore(&drvdata->spinlock, flags);
-
-	if (first_enable)
-		dev_info(drvdata->dev, "FUNNEL inport %d enabled\n", inport);
-	return rc;
-}
-
-static void dynamic_funnel_disable_hw(struct funnel_drvdata *drvdata,
-				      int inport)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 functl;
 
@@ -160,13 +80,6 @@ static void dynamic_funnel_disable_hw(struct funnel_drvdata *drvdata,
 	functl &= ~(1 << inport);
 	writel_relaxed(functl, drvdata->base + FUNNEL_FUNCTL);
 
-<<<<<<< HEAD
-=======
-	/* Disclaim the device if none of the slaves are now active */
-	if (!(functl & FUNNEL_ENSx_MASK))
-		coresight_disclaim_device_unlocked(drvdata->base);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	CS_LOCK(drvdata->base);
 }
 
@@ -174,26 +87,10 @@ static void funnel_disable(struct coresight_device *csdev, int inport,
 			   int outport)
 {
 	struct funnel_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
-<<<<<<< HEAD
 
 	funnel_disable_hw(drvdata, inport);
 
 	dev_info(drvdata->dev, "FUNNEL inport %d disabled\n", inport);
-=======
-	unsigned long flags;
-	bool last_disable = false;
-
-	spin_lock_irqsave(&drvdata->spinlock, flags);
-	if (atomic_dec_return(&csdev->refcnt[inport]) == 0) {
-		if (drvdata->base)
-			dynamic_funnel_disable_hw(drvdata, inport);
-		last_disable = true;
-	}
-	spin_unlock_irqrestore(&drvdata->spinlock, flags);
-
-	if (last_disable)
-		dev_info(&csdev->dev, "FUNNEL inport %d disabled\n", inport);;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct coresight_ops_link funnel_link_ops = {
@@ -288,7 +185,6 @@ static int funnel_get_resource_byname(struct device_node *np,
 	return of_address_to_resource(np, index, res);
 }
 
-<<<<<<< HEAD
 static int funnel_probe(struct amba_device *adev, const struct amba_id *id)
 {
 	int ret;
@@ -300,54 +196,26 @@ static int funnel_probe(struct amba_device *adev, const struct amba_id *id)
 	struct resource res_real;
 	struct coresight_desc desc = { 0 };
 	struct device_node *np = adev->dev.of_node;
-=======
-static int funnel_probe(struct device *dev, struct resource *res)
-{
-	int ret;
-	void __iomem *base;
-	struct coresight_platform_data *pdata = NULL;
-	struct funnel_drvdata *drvdata;
-	struct resource res_real;
-	struct coresight_desc desc = { 0 };
-	struct device_node *np = dev->of_node;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (np) {
 		pdata = of_get_coresight_platform_data(dev, np);
 		if (IS_ERR(pdata))
 			return PTR_ERR(pdata);
-<<<<<<< HEAD
 		adev->dev.platform_data = pdata;
 	}
 
-=======
-		dev->platform_data = pdata;
-	}
-
-	if (of_device_is_compatible(np, "arm,coresight-funnel"))
-		pr_warn_once("Uses OBSOLETE CoreSight funnel binding\n");
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drvdata = devm_kzalloc(dev, sizeof(*drvdata), GFP_KERNEL);
 	if (!drvdata)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	drvdata->dev = &adev->dev;
 	drvdata->atclk = devm_clk_get(&adev->dev, "atclk"); /* optional */
-=======
-	drvdata->dev = dev;
-	drvdata->atclk = devm_clk_get(dev, "atclk"); /* optional */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!IS_ERR(drvdata->atclk)) {
 		ret = clk_prepare_enable(drvdata->atclk);
 		if (ret)
 			return ret;
 	}
-<<<<<<< HEAD
 	dev_set_drvdata(dev, drvdata);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (of_property_read_bool(np, "qcom,duplicate-funnel")) {
 		ret = funnel_get_resource_byname(np, "funnel-base-real",
@@ -357,7 +225,6 @@ static int funnel_probe(struct device *dev, struct resource *res)
 
 		res = &res_real;
 		base = devm_ioremap(dev, res->start, resource_size(res));
-<<<<<<< HEAD
 	} else {
 		/* Validity of resource is already checked by the AMBA core */
 		res = &adev->res;
@@ -369,57 +236,15 @@ static int funnel_probe(struct device *dev, struct resource *res)
 	drvdata->base = base;
 	pm_runtime_put(&adev->dev);
 
-=======
-		if (IS_ERR(base)) {
-			ret = PTR_ERR(base);
-			goto out_disable_clk;
-		}
-		drvdata->base = base;
-		desc.groups = coresight_funnel_groups;
-	} else if (res) {
-		/*
-		* Map the device base for dynamic-funnel, which has been
-		* validated by AMBA core.
-		*/
-		base = devm_ioremap_resource(dev, res);
-		if (IS_ERR(base)) {
-			ret = PTR_ERR(base);
-			goto out_disable_clk;
-		}
-		drvdata->base = base;
-		desc.groups = coresight_funnel_groups;
-	}
-
-	dev_set_drvdata(dev, drvdata);
-
-	spin_lock_init(&drvdata->spinlock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	desc.type = CORESIGHT_DEV_TYPE_LINK;
 	desc.subtype.link_subtype = CORESIGHT_DEV_SUBTYPE_LINK_MERG;
 	desc.ops = &funnel_cs_ops;
 	desc.pdata = pdata;
 	desc.dev = dev;
-<<<<<<< HEAD
 	desc.groups = coresight_funnel_groups;
 	drvdata->csdev = coresight_register(&desc);
 
 	return PTR_ERR_OR_ZERO(drvdata->csdev);
-=======
-	drvdata->csdev = coresight_register(&desc);
-	if (IS_ERR(drvdata->csdev)) {
-		ret = PTR_ERR(drvdata->csdev);
-		goto out_disable_clk;
-	}
-
-	pm_runtime_put(dev);
-	dev_info(drvdata->dev, "FUNNEL initialized\n");
-	ret = 0;
-
-out_disable_clk:
-	if (ret && !IS_ERR_OR_NULL(drvdata->atclk))
-		clk_disable_unprepare(drvdata->atclk);
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #ifdef CONFIG_PM
@@ -448,58 +273,10 @@ static const struct dev_pm_ops funnel_dev_pm_ops = {
 	SET_RUNTIME_PM_OPS(funnel_runtime_suspend, funnel_runtime_resume, NULL)
 };
 
-<<<<<<< HEAD
 static const struct amba_id funnel_ids[] = {
 	{
 		.id     = 0x000bb908,
 		.mask   = 0x000fffff,
-=======
-static int static_funnel_probe(struct platform_device *pdev)
-{
-	int ret;
-
-	pm_runtime_get_noresume(&pdev->dev);
-	pm_runtime_set_active(&pdev->dev);
-	pm_runtime_enable(&pdev->dev);
-
-	/* Static funnel do not have programming base */
-	ret = funnel_probe(&pdev->dev, NULL);
-
-	if (ret) {
-		pm_runtime_put_noidle(&pdev->dev);
-		pm_runtime_disable(&pdev->dev);
-	}
-
-	return ret;
-}
-
-static const struct of_device_id static_funnel_match[] = {
-	{.compatible = "arm,coresight-static-funnel"},
-	{}
-};
-
-static struct platform_driver static_funnel_driver = {
-	.probe          = static_funnel_probe,
-	.driver         = {
-		.name   = "coresight-static-funnel",
-		.of_match_table = static_funnel_match,
-		.pm	= &funnel_dev_pm_ops,
-		.suppress_bind_attrs = true,
-	},
-};
-builtin_platform_driver(static_funnel_driver);
-
-static int dynamic_funnel_probe(struct amba_device *adev,
-				const struct amba_id *id)
-{
-	return funnel_probe(&adev->dev, &adev->res);
-}
-
-static const struct amba_id dynamic_funnel_ids[] = {
-	{
-		.id     = 0x0003b908,
-		.mask   = 0x0003ffff,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{
 		/* Coresight SoC-600 */
@@ -509,27 +286,14 @@ static const struct amba_id dynamic_funnel_ids[] = {
 	{ 0, 0},
 };
 
-<<<<<<< HEAD
 static struct amba_driver funnel_driver = {
 	.drv = {
 		.name	= "coresight-funnel",
-=======
-static struct amba_driver dynamic_funnel_driver = {
-	.drv = {
-		.name	= "coresight-dynamic-funnel",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.owner	= THIS_MODULE,
 		.pm	= &funnel_dev_pm_ops,
 		.suppress_bind_attrs = true,
 	},
-<<<<<<< HEAD
 	.probe		= funnel_probe,
 	.id_table	= funnel_ids,
 };
 builtin_amba_driver(funnel_driver);
-=======
-	.probe		= dynamic_funnel_probe,
-	.id_table	= dynamic_funnel_ids,
-};
-builtin_amba_driver(dynamic_funnel_driver);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

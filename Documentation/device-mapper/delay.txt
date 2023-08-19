@@ -5,12 +5,8 @@ Device-Mapper's "delay" target delays reads and/or writes
 and maps them to different devices.
 
 Parameters:
-<<<<<<< HEAD
     <device> <offset> <delay> [<write_device> <write_offset> <write_delay>
 			       [<flush_device> <flush_offset> <flush_delay>]]
-=======
-    <device> <offset> <delay> [<write_device> <write_offset> <write_delay>]
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 With separate write parameters, the first set is only used for reads.
 Offsets are specified in sectors.

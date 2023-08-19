@@ -37,7 +37,6 @@ saved_pc	.req	lr
 #define TRACE(x...)
 #endif
 
-<<<<<<< HEAD
 	.section .entry.text,"ax",%progbits
 	.align	5
 #if !(IS_ENABLED(CONFIG_TRACE_IRQFLAGS) || IS_ENABLED(CONFIG_CONTEXT_TRACKING) || \
@@ -47,15 +46,6 @@ saved_pc	.req	lr
  * such as avoiding writing r0 to the stack.  We only use this path if we
  * have tracing, context tracking and rseq debug disabled - the overheads
  * from those features make this path too inefficient.
-=======
-	.align	5
-#if !(IS_ENABLED(CONFIG_TRACE_IRQFLAGS) || IS_ENABLED(CONFIG_CONTEXT_TRACKING))
-/*
- * This is the fast syscall return path.  We do as little as possible here,
- * such as avoiding writing r0 to the stack.  We only use this path if we
- * have tracing and context tracking disabled - the overheads from those
- * features make this path too inefficient.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 ret_fast_syscall:
 __ret_fast_syscall:
@@ -83,30 +73,21 @@ fast_work_pending:
 	/* fall through to work_pending */
 #else
 /*
-<<<<<<< HEAD
  * The "replacement" ret_fast_syscall for when tracing, context tracking,
  * or rseq debug is enabled.  As we will need to call out to some C functions,
  * we save r0 first to avoid needing to save registers around each C function
  * call.
-=======
- * The "replacement" ret_fast_syscall for when tracing or context tracking
- * is enabled.  As we will need to call out to some C functions, we save
- * r0 first to avoid needing to save registers around each C function call.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 ret_fast_syscall:
 __ret_fast_syscall:
  UNWIND(.fnstart	)
  UNWIND(.cantunwind	)
 	str	r0, [sp, #S_R0 + S_OFF]!	@ save returned r0
-<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_DEBUG_RSEQ)
 	/* do_rseq_syscall needs interrupts enabled. */
 	mov	r0, sp				@ 'regs'
 	bl	do_rseq_syscall
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	disable_irq_notrace			@ disable interrupts
 	ldr	r2, [tsk, #TI_ADDR_LIMIT]
 	cmp	r2, #TASK_SIZE
@@ -141,15 +122,12 @@ ENDPROC(ret_fast_syscall)
  */
 ENTRY(ret_to_user)
 ret_slow_syscall:
-<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_DEBUG_RSEQ)
 	/* do_rseq_syscall needs interrupts enabled. */
 	enable_irq_notrace			@ enable interrupts
 	mov	r0, sp				@ 'regs'
 	bl	do_rseq_syscall
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	disable_irq_notrace			@ disable interrupts
 ENTRY(ret_to_user_from_irq)
 	ldr	r2, [tsk, #TI_ADDR_LIMIT]
@@ -318,27 +296,16 @@ __sys_trace:
 	cmp	scno, #-1			@ skip the syscall?
 	bne	2b
 	add	sp, sp, #S_OFF			@ restore stack
-<<<<<<< HEAD
 	b	ret_slow_syscall
 
 __sys_trace_return:
 	str	r0, [sp, #S_R0 + S_OFF]!	@ save returned r0
-=======
-
-__sys_trace_return_nosave:
-	enable_irq_notrace
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mov	r0, sp
 	bl	syscall_trace_exit
 	b	ret_slow_syscall
 
-<<<<<<< HEAD
 __sys_trace_return_nosave:
 	enable_irq_notrace
-=======
-__sys_trace_return:
-	str	r0, [sp, #S_R0 + S_OFF]!	@ save returned r0
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mov	r0, sp
 	bl	syscall_trace_exit
 	b	ret_slow_syscall
@@ -445,22 +412,8 @@ ENDPROC(sys_fstatfs64_wrapper)
  * offset, we return EINVAL.
  */
 sys_mmap2:
-<<<<<<< HEAD
 		str	r5, [sp, #4]
 		b	sys_mmap_pgoff
-=======
-#if PAGE_SHIFT > 12
-		tst	r5, #PGOFF_MASK
-		moveq	r5, r5, lsr #PAGE_SHIFT - 12
-		streq	r5, [sp, #4]
-		beq	sys_mmap_pgoff
-		mov	r0, #-EINVAL
-		ret	lr
-#else
-		str	r5, [sp, #4]
-		b	sys_mmap_pgoff
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 ENDPROC(sys_mmap2)
 
 #ifdef CONFIG_OABI_COMPAT

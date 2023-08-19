@@ -92,10 +92,6 @@
 
 #define to_cirrus_crtc(x) container_of(x, struct cirrus_crtc, base)
 #define to_cirrus_encoder(x) container_of(x, struct cirrus_encoder, base)
-<<<<<<< HEAD
-=======
-#define to_cirrus_framebuffer(x) container_of(x, struct cirrus_framebuffer, base)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct cirrus_crtc {
 	struct drm_crtc			base;
@@ -120,14 +116,6 @@ struct cirrus_connector {
 	struct drm_connector		base;
 };
 
-<<<<<<< HEAD
-=======
-struct cirrus_framebuffer {
-	struct drm_framebuffer		base;
-	struct drm_gem_object *obj;
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct cirrus_mc {
 	resource_size_t			vram_size;
 	resource_size_t			vram_base;
@@ -158,11 +146,7 @@ struct cirrus_device {
 
 struct cirrus_fbdev {
 	struct drm_fb_helper helper;
-<<<<<<< HEAD
 	struct drm_framebuffer *gfb;
-=======
-	struct cirrus_framebuffer gfb;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void *sysram;
 	int size;
 	int x1, y1, x2, y2; /* dirty rect */
@@ -208,11 +192,7 @@ int cirrus_dumb_create(struct drm_file *file,
 		       struct drm_mode_create_dumb *args);
 
 int cirrus_framebuffer_init(struct drm_device *dev,
-<<<<<<< HEAD
 			    struct drm_framebuffer *gfb,
-=======
-			   struct cirrus_framebuffer *gfb,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    const struct drm_mode_fb_cmd2 *mode_cmd,
 			    struct drm_gem_object *obj);
 

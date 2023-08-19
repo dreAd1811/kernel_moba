@@ -107,11 +107,7 @@ void rxe_mem_cleanup(struct rxe_pool_entry *arg)
 	}
 }
 
-<<<<<<< HEAD
 static int rxe_mem_alloc(struct rxe_mem *mem, int num_buf)
-=======
-static int rxe_mem_alloc(struct rxe_dev *rxe, struct rxe_mem *mem, int num_buf)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i;
 	int num_map;
@@ -149,11 +145,7 @@ err1:
 	return -ENOMEM;
 }
 
-<<<<<<< HEAD
 int rxe_mem_init_dma(struct rxe_pd *pd,
-=======
-int rxe_mem_init_dma(struct rxe_dev *rxe, struct rxe_pd *pd,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		     int access, struct rxe_mem *mem)
 {
 	rxe_mem_init(access, mem);
@@ -166,11 +158,7 @@ int rxe_mem_init_dma(struct rxe_dev *rxe, struct rxe_pd *pd,
 	return 0;
 }
 
-<<<<<<< HEAD
 int rxe_mem_init_user(struct rxe_pd *pd, u64 start,
-=======
-int rxe_mem_init_user(struct rxe_dev *rxe, struct rxe_pd *pd, u64 start,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		      u64 length, u64 iova, int access, struct ib_udata *udata,
 		      struct rxe_mem *mem)
 {
@@ -196,11 +184,7 @@ int rxe_mem_init_user(struct rxe_dev *rxe, struct rxe_pd *pd, u64 start,
 
 	rxe_mem_init(access, mem);
 
-<<<<<<< HEAD
 	err = rxe_mem_alloc(mem, num_buf);
-=======
-	err = rxe_mem_alloc(rxe, mem, num_buf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err) {
 		pr_warn("err %d from rxe_mem_alloc\n", err);
 		ib_umem_release(umem);
@@ -252,11 +236,7 @@ err1:
 	return err;
 }
 
-<<<<<<< HEAD
 int rxe_mem_init_fast(struct rxe_pd *pd,
-=======
-int rxe_mem_init_fast(struct rxe_dev *rxe, struct rxe_pd *pd,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		      int max_pages, struct rxe_mem *mem)
 {
 	int err;
@@ -266,11 +246,7 @@ int rxe_mem_init_fast(struct rxe_dev *rxe, struct rxe_pd *pd,
 	/* In fastreg, we also set the rkey */
 	mem->ibmr.rkey = mem->ibmr.lkey;
 
-<<<<<<< HEAD
 	err = rxe_mem_alloc(mem, max_pages);
-=======
-	err = rxe_mem_alloc(rxe, mem, max_pages);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		goto err1;
 
@@ -458,10 +434,6 @@ err1:
  * under the control of a dma descriptor
  */
 int copy_data(
-<<<<<<< HEAD
-=======
-	struct rxe_dev		*rxe,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct rxe_pd		*pd,
 	int			access,
 	struct rxe_dma_info	*dma,

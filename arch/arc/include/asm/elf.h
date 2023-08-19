@@ -26,11 +26,7 @@
 #define  R_ARC_32_PCREL		0x31
 
 /*to set parameters in the core dumps */
-<<<<<<< HEAD
 #define ELF_ARCH		EM_ARCOMPACT
-=======
-#define ELF_ARCH		EM_ARC_INUSE
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ELF_CLASS		ELFCLASS32
 
 #ifdef CONFIG_CPU_BIG_ENDIAN

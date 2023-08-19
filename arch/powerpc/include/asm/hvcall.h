@@ -88,10 +88,7 @@
 #define H_P8		-61
 #define H_P9		-62
 #define H_TOO_BIG	-64
-<<<<<<< HEAD
 #define H_UNSUPPORTED	-67
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define H_OVERLAP	-68
 #define H_INTERRUPT	-69
 #define H_BAD_DATA	-70
@@ -282,10 +279,7 @@
 #define H_GET_MPP_X		0x314
 #define H_SET_MODE		0x31C
 #define H_CLEAR_HPT		0x358
-<<<<<<< HEAD
 #define H_REQUEST_VMC		0x360
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define H_RESIZE_HPT_PREPARE	0x36C
 #define H_RESIZE_HPT_COMMIT	0x370
 #define H_REGISTER_PROC_TBL	0x37C

@@ -26,11 +26,7 @@ struct hash_ctx {
 
 	u8 *result;
 
-<<<<<<< HEAD
 	struct crypto_wait wait;
-=======
-	struct af_alg_completion completion;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	unsigned int len;
 	bool more;
@@ -87,12 +83,7 @@ static int hash_sendmsg(struct socket *sock, struct msghdr *msg,
 		if ((msg->msg_flags & MSG_MORE))
 			hash_free_result(sk, ctx);
 
-<<<<<<< HEAD
 		err = crypto_wait_req(crypto_ahash_init(&ctx->req), &ctx->wait);
-=======
-		err = af_alg_wait_for_completion(crypto_ahash_init(&ctx->req),
-						&ctx->completion);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (err)
 			goto unlock;
 	}
@@ -113,13 +104,8 @@ static int hash_sendmsg(struct socket *sock, struct msghdr *msg,
 
 		ahash_request_set_crypt(&ctx->req, ctx->sgl.sg, NULL, len);
 
-<<<<<<< HEAD
 		err = crypto_wait_req(crypto_ahash_update(&ctx->req),
 				      &ctx->wait);
-=======
-		err = af_alg_wait_for_completion(crypto_ahash_update(&ctx->req),
-						 &ctx->completion);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		af_alg_free_sg(&ctx->sgl);
 		if (err)
 			goto unlock;
@@ -137,13 +123,8 @@ static int hash_sendmsg(struct socket *sock, struct msghdr *msg,
 			goto unlock;
 
 		ahash_request_set_crypt(&ctx->req, NULL, ctx->result, 0);
-<<<<<<< HEAD
 		err = crypto_wait_req(crypto_ahash_final(&ctx->req),
 				      &ctx->wait);
-=======
-		err = af_alg_wait_for_completion(crypto_ahash_final(&ctx->req),
-						 &ctx->completion);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 unlock:
@@ -184,11 +165,7 @@ static ssize_t hash_sendpage(struct socket *sock, struct page *page,
 	} else {
 		if (!ctx->more) {
 			err = crypto_ahash_init(&ctx->req);
-<<<<<<< HEAD
 			err = crypto_wait_req(err, &ctx->wait);
-=======
-			err = af_alg_wait_for_completion(err, &ctx->completion);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (err)
 				goto unlock;
 		}
@@ -196,11 +173,7 @@ static ssize_t hash_sendpage(struct socket *sock, struct page *page,
 		err = crypto_ahash_update(&ctx->req);
 	}
 
-<<<<<<< HEAD
 	err = crypto_wait_req(err, &ctx->wait);
-=======
-	err = af_alg_wait_for_completion(err, &ctx->completion);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		goto unlock;
 
@@ -236,27 +209,16 @@ static int hash_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
 	ahash_request_set_crypt(&ctx->req, NULL, ctx->result, 0);
 
 	if (!result && !ctx->more) {
-<<<<<<< HEAD
 		err = crypto_wait_req(crypto_ahash_init(&ctx->req),
 				      &ctx->wait);
-=======
-		err = af_alg_wait_for_completion(
-				crypto_ahash_init(&ctx->req),
-				&ctx->completion);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (err)
 			goto unlock;
 	}
 
 	if (!result || ctx->more) {
 		ctx->more = 0;
-<<<<<<< HEAD
 		err = crypto_wait_req(crypto_ahash_final(&ctx->req),
 				      &ctx->wait);
-=======
-		err = af_alg_wait_for_completion(crypto_ahash_final(&ctx->req),
-						 &ctx->completion);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (err)
 			goto unlock;
 	}
@@ -277,11 +239,7 @@ static int hash_accept(struct socket *sock, struct socket *newsock, int flags,
 	struct alg_sock *ask = alg_sk(sk);
 	struct hash_ctx *ctx = ask->private;
 	struct ahash_request *req = &ctx->req;
-<<<<<<< HEAD
 	char state[HASH_MAX_STATESIZE];
-=======
-	char state[crypto_ahash_statesize(crypto_ahash_reqtfm(req)) ? : 1];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct sock *sk2;
 	struct alg_sock *ask2;
 	struct hash_ctx *ctx2;
@@ -330,10 +288,6 @@ static struct proto_ops algif_hash_ops = {
 	.mmap		=	sock_no_mmap,
 	.bind		=	sock_no_bind,
 	.setsockopt	=	sock_no_setsockopt,
-<<<<<<< HEAD
-=======
-	.poll		=	sock_no_poll,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	.release	=	af_alg_release,
 	.sendmsg	=	hash_sendmsg,
@@ -352,11 +306,7 @@ static int hash_check_key(struct socket *sock)
 	struct alg_sock *ask = alg_sk(sk);
 
 	lock_sock(sk);
-<<<<<<< HEAD
 	if (ask->refcnt)
-=======
-	if (!atomic_read(&ask->nokey_refcnt))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto unlock_child;
 
 	psk = ask->parent;
@@ -368,16 +318,11 @@ static int hash_check_key(struct socket *sock)
 	if (crypto_ahash_get_flags(tfm) & CRYPTO_TFM_NEED_KEY)
 		goto unlock;
 
-<<<<<<< HEAD
 	if (!pask->refcnt++)
 		sock_hold(psk);
 
 	ask->refcnt = 1;
 	sock_put(psk);
-=======
-	atomic_dec(&pask->nokey_refcnt);
-	atomic_set(&ask->nokey_refcnt, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = 0;
 
@@ -450,10 +395,6 @@ static struct proto_ops algif_hash_ops_nokey = {
 	.mmap		=	sock_no_mmap,
 	.bind		=	sock_no_bind,
 	.setsockopt	=	sock_no_setsockopt,
-<<<<<<< HEAD
-=======
-	.poll		=	sock_no_poll,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	.release	=	af_alg_release,
 	.sendmsg	=	hash_sendmsg_nokey,
@@ -501,21 +442,13 @@ static int hash_accept_parent_nokey(void *private, struct sock *sk)
 	ctx->result = NULL;
 	ctx->len = len;
 	ctx->more = 0;
-<<<<<<< HEAD
 	crypto_init_wait(&ctx->wait);
-=======
-	af_alg_init_completion(&ctx->completion);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ask->private = ctx;
 
 	ahash_request_set_tfm(&ctx->req, tfm);
 	ahash_request_set_callback(&ctx->req, CRYPTO_TFM_REQ_MAY_BACKLOG,
-<<<<<<< HEAD
 				   crypto_req_done, &ctx->wait);
-=======
-				   af_alg_complete, &ctx->completion);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sk->sk_destruct = hash_sock_destruct;
 

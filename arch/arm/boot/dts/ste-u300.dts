@@ -442,11 +442,7 @@
 			dma-names = "rx";
 		};
 
-<<<<<<< HEAD
 		spi: ssp@c0006000 {
-=======
-		spi: spi@c0006000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "arm,pl022", "arm,primecell";
 			reg = <0xc0006000 0x1000>;
 			interrupt-parent = <&vica>;

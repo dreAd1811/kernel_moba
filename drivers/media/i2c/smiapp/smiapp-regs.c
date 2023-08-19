@@ -231,12 +231,9 @@ int smiapp_write_no_quirk(struct smiapp_sensor *sensor, u32 reg, u32 val)
 	     len != SMIAPP_REG_32BIT) || flags)
 		return -EINVAL;
 
-<<<<<<< HEAD
 	if (!sensor->active)
 		return 0;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	msg.addr = client->addr;
 	msg.flags = 0; /* Write */
 	msg.len = 2 + len;

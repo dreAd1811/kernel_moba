@@ -9,11 +9,7 @@
 #define TICK_SIZE (tick_nsec / 1000)
 
 unsigned long long native_sched_clock(void);
-<<<<<<< HEAD
 extern void recalibrate_cpu_khz(void);
-=======
-extern int recalibrate_cpu_khz(void);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 extern int no_timer_check;
 

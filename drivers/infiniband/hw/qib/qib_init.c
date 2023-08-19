@@ -93,11 +93,7 @@ unsigned qib_cc_table_size;
 module_param_named(cc_table_size, qib_cc_table_size, uint, S_IRUGO);
 MODULE_PARM_DESC(cc_table_size, "Congestion control table entries 0 (CCA disabled - default), min = 128, max = 1984");
 
-<<<<<<< HEAD
 static void verify_interrupt(struct timer_list *);
-=======
-static void verify_interrupt(unsigned long);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct idr qib_unit_table;
 u32 qib_cpulist_count;
@@ -237,12 +233,7 @@ int qib_init_pportdata(struct qib_pportdata *ppd, struct qib_devdata *dd,
 	spin_lock_init(&ppd->cc_shadow_lock);
 	init_waitqueue_head(&ppd->state_wait);
 
-<<<<<<< HEAD
 	timer_setup(&ppd->symerr_clear_timer, qib_clear_symerror_on_linkup, 0);
-=======
-	setup_timer(&ppd->symerr_clear_timer, qib_clear_symerror_on_linkup,
-		    (unsigned long)ppd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ppd->qib_wq = NULL;
 	ppd->ibport_data.pmastats =
@@ -378,7 +369,6 @@ static void init_shadow_tids(struct qib_devdata *dd)
 	struct page **pages;
 	dma_addr_t *addrs;
 
-<<<<<<< HEAD
 	pages = vzalloc(array_size(sizeof(struct page *),
 				   dd->cfgctxts * dd->rcvtidcnt));
 	if (!pages)
@@ -386,13 +376,6 @@ static void init_shadow_tids(struct qib_devdata *dd)
 
 	addrs = vzalloc(array_size(sizeof(dma_addr_t),
 				   dd->cfgctxts * dd->rcvtidcnt));
-=======
-	pages = vzalloc(dd->cfgctxts * dd->rcvtidcnt * sizeof(struct page *));
-	if (!pages)
-		goto bail;
-
-	addrs = vzalloc(dd->cfgctxts * dd->rcvtidcnt * sizeof(dma_addr_t));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!addrs)
 		goto bail_free;
 
@@ -446,12 +429,7 @@ static int loadtime_init(struct qib_devdata *dd)
 	qib_get_eeprom_info(dd);
 
 	/* setup time (don't start yet) to verify we got interrupt */
-<<<<<<< HEAD
 	timer_setup(&dd->intrchk_timer, verify_interrupt, 0);
-=======
-	setup_timer(&dd->intrchk_timer, verify_interrupt,
-		    (unsigned long)dd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 done:
 	return ret;
 }
@@ -515,15 +493,9 @@ static void enable_chip(struct qib_devdata *dd)
 	}
 }
 
-<<<<<<< HEAD
 static void verify_interrupt(struct timer_list *t)
 {
 	struct qib_devdata *dd = from_timer(dd, t, intrchk_timer);
-=======
-static void verify_interrupt(unsigned long opaque)
-{
-	struct qib_devdata *dd = (struct qib_devdata *) opaque;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 int_counter;
 
 	if (!dd)
@@ -708,17 +680,9 @@ int qib_init(struct qib_devdata *dd, int reinit)
 		lastfail = qib_create_rcvhdrq(dd, rcd);
 		if (!lastfail)
 			lastfail = qib_setup_eagerbufs(rcd);
-<<<<<<< HEAD
 		if (lastfail)
 			qib_dev_err(dd,
 				"failed to allocate kernel ctxt's rcvhdrq and/or egr bufs\n");
-=======
-		if (lastfail) {
-			qib_dev_err(dd,
-				"failed to allocate kernel ctxt's rcvhdrq and/or egr bufs\n");
-			continue;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	for (pidx = 0; pidx < dd->num_pports; ++pidx) {
@@ -787,12 +751,7 @@ done:
 				continue;
 			if (dd->flags & QIB_HAS_SEND_DMA)
 				ret = qib_setup_sdma(ppd);
-<<<<<<< HEAD
 			timer_setup(&ppd->hol_timer, qib_hol_event, 0);
-=======
-			setup_timer(&ppd->hol_timer, qib_hol_event,
-				    (unsigned long)ppd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ppd->hol_state = QIB_HOL_UP;
 		}
 
@@ -853,7 +812,6 @@ static void qib_stop_timers(struct qib_devdata *dd)
 	struct qib_pportdata *ppd;
 	int pidx;
 
-<<<<<<< HEAD
 	if (dd->stats_timer.function)
 		del_timer_sync(&dd->stats_timer);
 	if (dd->intrchk_timer.function)
@@ -867,25 +825,6 @@ static void qib_stop_timers(struct qib_devdata *dd)
 			atomic_set(&ppd->led_override_timer_active, 0);
 		}
 		if (ppd->symerr_clear_timer.function)
-=======
-	if (dd->stats_timer.data) {
-		del_timer_sync(&dd->stats_timer);
-		dd->stats_timer.data = 0;
-	}
-	if (dd->intrchk_timer.data) {
-		del_timer_sync(&dd->intrchk_timer);
-		dd->intrchk_timer.data = 0;
-	}
-	for (pidx = 0; pidx < dd->num_pports; ++pidx) {
-		ppd = dd->pport + pidx;
-		if (ppd->hol_timer.data)
-			del_timer_sync(&ppd->hol_timer);
-		if (ppd->led_override_timer.data) {
-			del_timer_sync(&ppd->led_override_timer);
-			atomic_set(&ppd->led_override_timer_active, 0);
-		}
-		if (ppd->symerr_clear_timer.data)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			del_timer_sync(&ppd->symerr_clear_timer);
 	}
 }
@@ -1184,11 +1123,8 @@ struct qib_devdata *qib_alloc_devdata(struct pci_dev *pdev, size_t extra)
 			      "Could not allocate unit ID: error %d\n", -ret);
 		goto bail;
 	}
-<<<<<<< HEAD
 	rvt_set_ibdev_name(&dd->verbs_dev.rdi, "%s%d", "qib", dd->unit);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dd->int_counter = alloc_percpu(u64);
 	if (!dd->int_counter) {
 		ret = -ENOMEM;
@@ -1200,13 +1136,8 @@ struct qib_devdata *qib_alloc_devdata(struct pci_dev *pdev, size_t extra)
 	if (!qib_cpulist_count) {
 		u32 count = num_online_cpus();
 
-<<<<<<< HEAD
 		qib_cpulist = kcalloc(BITS_TO_LONGS(count), sizeof(long),
 				      GFP_KERNEL);
-=======
-		qib_cpulist = kzalloc(BITS_TO_LONGS(count) *
-				      sizeof(long), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (qib_cpulist)
 			qib_cpulist_count = count;
 	}
@@ -1744,26 +1675,16 @@ int qib_setup_eagerbufs(struct qib_ctxtdata *rcd)
 	size = rcd->rcvegrbuf_size;
 	if (!rcd->rcvegrbuf) {
 		rcd->rcvegrbuf =
-<<<<<<< HEAD
 			kcalloc_node(chunk, sizeof(rcd->rcvegrbuf[0]),
 				     GFP_KERNEL, rcd->node_id);
-=======
-			kzalloc_node(chunk * sizeof(rcd->rcvegrbuf[0]),
-				GFP_KERNEL, rcd->node_id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!rcd->rcvegrbuf)
 			goto bail;
 	}
 	if (!rcd->rcvegrbuf_phys) {
 		rcd->rcvegrbuf_phys =
-<<<<<<< HEAD
 			kmalloc_array_node(chunk,
 					   sizeof(rcd->rcvegrbuf_phys[0]),
 					   GFP_KERNEL, rcd->node_id);
-=======
-			kmalloc_node(chunk * sizeof(rcd->rcvegrbuf_phys[0]),
-				GFP_KERNEL, rcd->node_id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!rcd->rcvegrbuf_phys)
 			goto bail_rcvegrbuf;
 	}

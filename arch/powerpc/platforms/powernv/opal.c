@@ -127,11 +127,7 @@ int __init early_init_dt_scan_opal(unsigned long node,
 
 	if (of_flat_dt_is_compatible(node, "ibm,opal-v3")) {
 		powerpc_firmware_features |= FW_FEATURE_OPAL;
-<<<<<<< HEAD
 		pr_debug("OPAL detected !\n");
-=======
-		pr_info("OPAL detected !\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		panic("OPAL != V3 detected, no longer supported.\n");
 	}
@@ -243,13 +239,8 @@ int opal_message_notifier_register(enum opal_msg_type msg_type,
 					struct notifier_block *nb)
 {
 	if (!nb || msg_type >= OPAL_MSG_TYPE_MAX) {
-<<<<<<< HEAD
 		pr_warn("%s: Invalid arguments, msg_type:%d\n",
 			__func__, msg_type);
-=======
-		pr_warning("%s: Invalid arguments, msg_type:%d\n",
-			   __func__, msg_type);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -290,13 +281,8 @@ static void opal_handle_message(void)
 
 	/* check for errors. */
 	if (ret) {
-<<<<<<< HEAD
 		pr_warn("%s: Failed to retrieve opal message, err=%lld\n",
 			__func__, ret);
-=======
-		pr_warning("%s: Failed to retrieve opal message, err=%lld\n",
-				__func__, ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -358,27 +344,16 @@ int opal_get_chars(uint32_t vtermno, char *buf, int count)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int __opal_put_chars(uint32_t vtermno, const char *data, int total_len, bool atomic)
 {
 	unsigned long flags = 0 /* shut up gcc */;
 	int written;
 	__be64 olen;
 	s64 rc;
-=======
-int opal_put_chars(uint32_t vtermno, const char *data, int total_len)
-{
-	int written = 0;
-	__be64 olen;
-	s64 len, rc;
-	unsigned long flags;
-	__be64 evt;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!opal.entry)
 		return -ENODEV;
 
-<<<<<<< HEAD
 	if (atomic)
 		spin_lock_irqsave(&opal_write_lock, flags);
 	rc = opal_console_write_buffer_space(vtermno, &olen);
@@ -509,61 +484,6 @@ int opal_flush_chars(uint32_t vtermno, bool wait)
 
 		return opal_error_code(rc);
 	}
-=======
-	/* We want put_chars to be atomic to avoid mangling of hvsi
-	 * packets. To do that, we first test for room and return
-	 * -EAGAIN if there isn't enough.
-	 *
-	 * Unfortunately, opal_console_write_buffer_space() doesn't
-	 * appear to work on opal v1, so we just assume there is
-	 * enough room and be done with it
-	 */
-	spin_lock_irqsave(&opal_write_lock, flags);
-	rc = opal_console_write_buffer_space(vtermno, &olen);
-	len = be64_to_cpu(olen);
-	if (rc || len < total_len) {
-		spin_unlock_irqrestore(&opal_write_lock, flags);
-		/* Closed -> drop characters */
-		if (rc)
-			return total_len;
-		opal_poll_events(NULL);
-		return -EAGAIN;
-	}
-
-	/* We still try to handle partial completions, though they
-	 * should no longer happen.
-	 */
-	rc = OPAL_BUSY;
-	while(total_len > 0 && (rc == OPAL_BUSY ||
-				rc == OPAL_BUSY_EVENT || rc == OPAL_SUCCESS)) {
-		olen = cpu_to_be64(total_len);
-		rc = opal_console_write(vtermno, &olen, data);
-		len = be64_to_cpu(olen);
-
-		/* Closed or other error drop */
-		if (rc != OPAL_SUCCESS && rc != OPAL_BUSY &&
-		    rc != OPAL_BUSY_EVENT) {
-			written += total_len;
-			break;
-		}
-		if (rc == OPAL_SUCCESS) {
-			total_len -= len;
-			data += len;
-			written += len;
-		}
-		/* This is a bit nasty but we need that for the console to
-		 * flush when there aren't any interrupts. We will clean
-		 * things a bit later to limit that to synchronous path
-		 * such as the kernel console and xmon/udbg
-		 */
-		do
-			opal_poll_events(&evt);
-		while(rc == OPAL_SUCCESS &&
-			(be64_to_cpu(evt) & OPAL_EVENT_CONSOLE_OUTPUT));
-	}
-	spin_unlock_irqrestore(&opal_write_lock, flags);
-	return written;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int opal_recover_mce(struct pt_regs *regs,
@@ -617,34 +537,14 @@ static int opal_recover_mce(struct pt_regs *regs,
 
 void pnv_platform_error_reboot(struct pt_regs *regs, const char *msg)
 {
-<<<<<<< HEAD
 	panic_flush_kmsg_start();
 
-=======
-	/*
-	 * This is mostly taken from kernel/panic.c, but tries to do
-	 * relatively minimal work. Don't use delay functions (TB may
-	 * be broken), don't crash dump (need to set a firmware log),
-	 * don't run notifiers. We do want to get some information to
-	 * Linux console.
-	 */
-	console_verbose();
-	bust_spinlocks(1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pr_emerg("Hardware platform error: %s\n", msg);
 	if (regs)
 		show_regs(regs);
 	smp_send_stop();
-<<<<<<< HEAD
 
 	panic_flush_kmsg_end();
-=======
-	printk_safe_flush_on_panic();
-	kmsg_dump(KMSG_DUMP_PANIC);
-	bust_spinlocks(0);
-	debug_locks_off();
-	console_flush_on_panic();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Don't bother to shut things down because this will
@@ -666,18 +566,12 @@ void pnv_platform_error_reboot(struct pt_regs *regs, const char *msg)
 	 *    opal to trigger checkstop explicitly for error analysis.
 	 *    The FSP PRD component would have already got notified
 	 *    about this error through other channels.
-<<<<<<< HEAD
 	 * 4. We are running on a newer skiboot that by default does
 	 *    not cause a checkstop, drops us back to the kernel to
 	 *    extract context and state at the time of the error.
 	 */
 
 	panic(msg);
-=======
-	 */
-
-	ppc_md.restart(NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int opal_machine_check(struct pt_regs *regs)
@@ -722,31 +616,15 @@ int opal_hmi_exception_early(struct pt_regs *regs)
 /* HMI exception handler called in virtual mode during check_irq_replay. */
 int opal_handle_hmi_exception(struct pt_regs *regs)
 {
-<<<<<<< HEAD
 	/*
 	 * Check if HMI event is available.
 	 * if Yes, then wake kopald to process them.
-=======
-	s64 rc;
-	__be64 evt = 0;
-
-	/*
-	 * Check if HMI event is available.
-	 * if Yes, then call opal_poll_events to pull opal messages and
-	 * process them.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	if (!local_paca->hmi_event_available)
 		return 0;
 
 	local_paca->hmi_event_available = 0;
-<<<<<<< HEAD
 	opal_wake_poller();
-=======
-	rc = opal_poll_events(&evt);
-	if (rc == OPAL_SUCCESS && evt)
-		opal_handle_events(be64_to_cpu(evt));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 1;
 }
@@ -952,15 +830,10 @@ static void __init opal_imc_init_dev(void)
 static int kopald(void *unused)
 {
 	unsigned long timeout = msecs_to_jiffies(opal_heartbeat) + 1;
-<<<<<<< HEAD
-=======
-	__be64 events;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	set_freezable();
 	do {
 		try_to_freeze();
-<<<<<<< HEAD
 
 		opal_handle_events();
 
@@ -970,11 +843,6 @@ static int kopald(void *unused)
 		else
 			schedule_timeout(timeout);
 
-=======
-		opal_poll_events(&events);
-		opal_handle_events(be64_to_cpu(events));
-		schedule_timeout_interruptible(timeout);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} while (!kthread_should_stop());
 
 	return 0;
@@ -1034,12 +902,9 @@ static int __init opal_init(void)
 	/* Create i2c platform devices */
 	opal_pdev_init("ibm,opal-i2c");
 
-<<<<<<< HEAD
 	/* Handle non-volatile memory devices */
 	opal_pdev_init("pmem-region");
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Setup a heatbeat thread if requested by OPAL */
 	opal_init_heartbeat();
 
@@ -1136,10 +1001,7 @@ EXPORT_SYMBOL_GPL(opal_flash_read);
 EXPORT_SYMBOL_GPL(opal_flash_write);
 EXPORT_SYMBOL_GPL(opal_flash_erase);
 EXPORT_SYMBOL_GPL(opal_prd_msg);
-<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(opal_check_token);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Convert a region of vmalloc memory to an opal sg list */
 struct opal_sg_list *opal_vmalloc_to_sg_list(void *vmalloc_addr,
@@ -1211,10 +1073,7 @@ int opal_error_code(int rc)
 
 	case OPAL_PARAMETER:		return -EINVAL;
 	case OPAL_ASYNC_COMPLETION:	return -EINPROGRESS;
-<<<<<<< HEAD
 	case OPAL_BUSY:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case OPAL_BUSY_EVENT:		return -EBUSY;
 	case OPAL_NO_MEM:		return -ENOMEM;
 	case OPAL_PERMISSION:		return -EPERM;
@@ -1254,9 +1113,6 @@ EXPORT_SYMBOL_GPL(opal_write_oppanel_async);
 /* Export this for KVM */
 EXPORT_SYMBOL_GPL(opal_int_set_mfrr);
 EXPORT_SYMBOL_GPL(opal_int_eoi);
-<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(opal_error_code);
 /* Export the below symbol for NX compression */
 EXPORT_SYMBOL(opal_nx_coproc_init);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

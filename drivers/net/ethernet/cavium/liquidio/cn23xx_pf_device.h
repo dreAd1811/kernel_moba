@@ -43,7 +43,6 @@ struct octeon_cn23xx_pf {
 
 #define CN23XX_SLI_DEF_BP			0x40
 
-<<<<<<< HEAD
 struct oct_vf_stats {
 	u64 rx_packets;
 	u64 tx_packets;
@@ -53,8 +52,6 @@ struct oct_vf_stats {
 	u64 multicast;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int setup_cn23xx_octeon_pf_device(struct octeon_device *oct);
 
 int validate_cn23xx_pf_config_info(struct octeon_device *oct,
@@ -64,19 +61,13 @@ u32 cn23xx_pf_get_oq_ticks(struct octeon_device *oct, u32 time_intr_in_us);
 
 void cn23xx_dump_pf_initialized_regs(struct octeon_device *oct);
 
-<<<<<<< HEAD
 int cn23xx_sriov_config(struct octeon_device *oct);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int cn23xx_fw_loaded(struct octeon_device *oct);
 
 void cn23xx_tell_vf_its_macaddr_changed(struct octeon_device *oct, int vfidx,
 					u8 *mac);
-<<<<<<< HEAD
 
 int cn23xx_get_vf_stats(struct octeon_device *oct, int ifidx,
 			struct oct_vf_stats *stats);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

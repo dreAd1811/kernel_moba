@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * STM32 Low-Power Timer Trigger driver
  *
@@ -9,11 +6,6 @@
  *
  * Author: Fabrice Gasnier <fabrice.gasnier@st.com>.
  *
-<<<<<<< HEAD
-=======
- * License terms:  GNU General Public License (GPL), version 2
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Inspired by Benjamin Gaignard's stm32-timer-trigger driver
  */
 
@@ -44,10 +36,6 @@ static int stm32_lptim_validate_device(struct iio_trigger *trig,
 }
 
 static const struct iio_trigger_ops stm32_lptim_trigger_ops = {
-<<<<<<< HEAD
-=======
-	.owner = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.validate_device = stm32_lptim_validate_device,
 };
 

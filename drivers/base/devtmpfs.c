@@ -356,12 +356,8 @@ int devtmpfs_mount(const char *mntdir)
 	if (!thread)
 		return 0;
 
-<<<<<<< HEAD
 	err = ksys_mount("devtmpfs", (char *)mntdir, "devtmpfs", MS_SILENT,
 			 NULL);
-=======
-	err = sys_mount("devtmpfs", (char *)mntdir, "devtmpfs", MS_SILENT, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		printk(KERN_INFO "devtmpfs: error mounting %i\n", err);
 	else
@@ -384,7 +380,6 @@ static int devtmpfsd(void *p)
 {
 	char options[] = "mode=0755";
 	int *err = p;
-<<<<<<< HEAD
 	*err = ksys_unshare(CLONE_NEWNS);
 	if (*err)
 		goto out;
@@ -393,16 +388,6 @@ static int devtmpfsd(void *p)
 		goto out;
 	ksys_chdir("/.."); /* will traverse into overmounted root */
 	ksys_chroot(".");
-=======
-	*err = sys_unshare(CLONE_NEWNS);
-	if (*err)
-		goto out;
-	*err = sys_mount("devtmpfs", "/", "devtmpfs", MS_SILENT, options);
-	if (*err)
-		goto out;
-	sys_chdir("/.."); /* will traverse into overmounted root */
-	sys_chroot(".");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	complete(&setup_done);
 	while (1) {
 		spin_lock(&req_lock);

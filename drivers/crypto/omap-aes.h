@@ -13,11 +13,8 @@
 #ifndef __OMAP_AES_H__
 #define __OMAP_AES_H__
 
-<<<<<<< HEAD
 #include <crypto/engine.h>
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DST_MAXBURST			4
 #define DMA_MIN				(DST_MAXBURST * sizeof(u32))
 
@@ -100,10 +97,7 @@ struct omap_aes_gcm_result {
 };
 
 struct omap_aes_ctx {
-<<<<<<< HEAD
 	struct crypto_engine_ctx enginectx;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int		keylen;
 	u32		key[AES_KEYSIZE_256 / sizeof(u32)];
 	u8		nonce[4];

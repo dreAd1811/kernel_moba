@@ -118,17 +118,10 @@ void assert_shared_dpll(struct drm_i915_private *dev_priv,
 	if (WARN(!pll, "asserting DPLL %s with no DPLL\n", onoff(state)))
 		return;
 
-<<<<<<< HEAD
 	cur_state = pll->info->funcs->get_hw_state(dev_priv, pll, &hw_state);
 	I915_STATE_WARN(cur_state != state,
 	     "%s assertion failure (expected %s, current %s)\n",
 			pll->info->name, onoff(state), onoff(cur_state));
-=======
-	cur_state = pll->funcs.get_hw_state(dev_priv, pll, &hw_state);
-	I915_STATE_WARN(cur_state != state,
-	     "%s assertion failure (expected %s, current %s)\n",
-			pll->name, onoff(state), onoff(cur_state));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -150,19 +143,11 @@ void intel_prepare_shared_dpll(struct intel_crtc *crtc)
 	mutex_lock(&dev_priv->dpll_lock);
 	WARN_ON(!pll->state.crtc_mask);
 	if (!pll->active_mask) {
-<<<<<<< HEAD
 		DRM_DEBUG_DRIVER("setting up %s\n", pll->info->name);
 		WARN_ON(pll->on);
 		assert_shared_dpll_disabled(dev_priv, pll);
 
 		pll->info->funcs->prepare(dev_priv, pll);
-=======
-		DRM_DEBUG_DRIVER("setting up %s\n", pll->name);
-		WARN_ON(pll->on);
-		assert_shared_dpll_disabled(dev_priv, pll);
-
-		pll->funcs.prepare(dev_priv, pll);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	mutex_unlock(&dev_priv->dpll_lock);
 }
@@ -178,13 +163,8 @@ void intel_enable_shared_dpll(struct intel_crtc *crtc)
 	struct drm_device *dev = crtc->base.dev;
 	struct drm_i915_private *dev_priv = to_i915(dev);
 	struct intel_shared_dpll *pll = crtc->config->shared_dpll;
-<<<<<<< HEAD
 	unsigned int crtc_mask = drm_crtc_mask(&crtc->base);
 	unsigned int old_mask;
-=======
-	unsigned crtc_mask = 1 << drm_crtc_index(&crtc->base);
-	unsigned old_mask;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (WARN_ON(pll == NULL))
 		return;
@@ -199,11 +179,7 @@ void intel_enable_shared_dpll(struct intel_crtc *crtc)
 	pll->active_mask |= crtc_mask;
 
 	DRM_DEBUG_KMS("enable %s (active %x, on? %d) for crtc %d\n",
-<<<<<<< HEAD
 		      pll->info->name, pll->active_mask, pll->on,
-=======
-		      pll->name, pll->active_mask, pll->on,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		      crtc->base.base.id);
 
 	if (old_mask) {
@@ -213,13 +189,8 @@ void intel_enable_shared_dpll(struct intel_crtc *crtc)
 	}
 	WARN_ON(pll->on);
 
-<<<<<<< HEAD
 	DRM_DEBUG_KMS("enabling %s\n", pll->info->name);
 	pll->info->funcs->enable(dev_priv, pll);
-=======
-	DRM_DEBUG_KMS("enabling %s\n", pll->name);
-	pll->funcs.enable(dev_priv, pll);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pll->on = true;
 
 out:
@@ -236,11 +207,7 @@ void intel_disable_shared_dpll(struct intel_crtc *crtc)
 {
 	struct drm_i915_private *dev_priv = to_i915(crtc->base.dev);
 	struct intel_shared_dpll *pll = crtc->config->shared_dpll;
-<<<<<<< HEAD
 	unsigned int crtc_mask = drm_crtc_mask(&crtc->base);
-=======
-	unsigned crtc_mask = 1 << drm_crtc_index(&crtc->base);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* PCH only available on ILK+ */
 	if (INTEL_GEN(dev_priv) < 5)
@@ -254,11 +221,7 @@ void intel_disable_shared_dpll(struct intel_crtc *crtc)
 		goto out;
 
 	DRM_DEBUG_KMS("disable %s (active %x, on? %d) for crtc %d\n",
-<<<<<<< HEAD
 		      pll->info->name, pll->active_mask, pll->on,
-=======
-		      pll->name, pll->active_mask, pll->on,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		      crtc->base.base.id);
 
 	assert_shared_dpll_enabled(dev_priv, pll);
@@ -268,13 +231,8 @@ void intel_disable_shared_dpll(struct intel_crtc *crtc)
 	if (pll->active_mask)
 		goto out;
 
-<<<<<<< HEAD
 	DRM_DEBUG_KMS("disabling %s\n", pll->info->name);
 	pll->info->funcs->disable(dev_priv, pll);
-=======
-	DRM_DEBUG_KMS("disabling %s\n", pll->name);
-	pll->funcs.disable(dev_priv, pll);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pll->on = false;
 
 out:
@@ -305,12 +263,8 @@ intel_find_shared_dpll(struct intel_crtc *crtc,
 			   &shared_dpll[i].hw_state,
 			   sizeof(crtc_state->dpll_hw_state)) == 0) {
 			DRM_DEBUG_KMS("[CRTC:%d:%s] sharing existing %s (crtc mask 0x%08x, active %x)\n",
-<<<<<<< HEAD
 				      crtc->base.base.id, crtc->base.name,
 				      pll->info->name,
-=======
-				      crtc->base.base.id, crtc->base.name, pll->name,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      shared_dpll[i].crtc_mask,
 				      pll->active_mask);
 			return pll;
@@ -322,12 +276,8 @@ intel_find_shared_dpll(struct intel_crtc *crtc,
 		pll = &dev_priv->shared_dplls[i];
 		if (shared_dpll[i].crtc_mask == 0) {
 			DRM_DEBUG_KMS("[CRTC:%d:%s] allocated %s\n",
-<<<<<<< HEAD
 				      crtc->base.base.id, crtc->base.name,
 				      pll->info->name);
-=======
-				      crtc->base.base.id, crtc->base.name, pll->name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return pll;
 		}
 	}
@@ -341,7 +291,6 @@ intel_reference_shared_dpll(struct intel_shared_dpll *pll,
 {
 	struct intel_shared_dpll_state *shared_dpll;
 	struct intel_crtc *crtc = to_intel_crtc(crtc_state->base.crtc);
-<<<<<<< HEAD
 	const enum intel_dpll_id id = pll->info->id;
 
 	shared_dpll = intel_atomic_get_shared_dpll_state(crtc_state->base.state);
@@ -355,21 +304,6 @@ intel_reference_shared_dpll(struct intel_shared_dpll *pll,
 			 pipe_name(crtc->pipe));
 
 	shared_dpll[id].crtc_mask |= 1 << crtc->pipe;
-=======
-	enum intel_dpll_id i = pll->id;
-
-	shared_dpll = intel_atomic_get_shared_dpll_state(crtc_state->base.state);
-
-	if (shared_dpll[i].crtc_mask == 0)
-		shared_dpll[i].hw_state =
-			crtc_state->dpll_hw_state;
-
-	crtc_state->shared_dpll = pll;
-	DRM_DEBUG_DRIVER("using %s for pipe %c\n", pll->name,
-			 pipe_name(crtc->pipe));
-
-	shared_dpll[pll->id].crtc_mask |= 1 << crtc->pipe;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -409,26 +343,16 @@ static bool ibx_pch_dpll_get_hw_state(struct drm_i915_private *dev_priv,
 				      struct intel_shared_dpll *pll,
 				      struct intel_dpll_hw_state *hw_state)
 {
-<<<<<<< HEAD
 	const enum intel_dpll_id id = pll->info->id;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t val;
 
 	if (!intel_display_power_get_if_enabled(dev_priv, POWER_DOMAIN_PLLS))
 		return false;
 
-<<<<<<< HEAD
 	val = I915_READ(PCH_DPLL(id));
 	hw_state->dpll = val;
 	hw_state->fp0 = I915_READ(PCH_FP0(id));
 	hw_state->fp1 = I915_READ(PCH_FP1(id));
-=======
-	val = I915_READ(PCH_DPLL(pll->id));
-	hw_state->dpll = val;
-	hw_state->fp0 = I915_READ(PCH_FP0(pll->id));
-	hw_state->fp1 = I915_READ(PCH_FP1(pll->id));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	intel_display_power_put(dev_priv, POWER_DOMAIN_PLLS);
 
@@ -438,15 +362,10 @@ static bool ibx_pch_dpll_get_hw_state(struct drm_i915_private *dev_priv,
 static void ibx_pch_dpll_prepare(struct drm_i915_private *dev_priv,
 				 struct intel_shared_dpll *pll)
 {
-<<<<<<< HEAD
 	const enum intel_dpll_id id = pll->info->id;
 
 	I915_WRITE(PCH_FP0(id), pll->state.hw_state.fp0);
 	I915_WRITE(PCH_FP1(id), pll->state.hw_state.fp1);
-=======
-	I915_WRITE(PCH_FP0(pll->id), pll->state.hw_state.fp0);
-	I915_WRITE(PCH_FP1(pll->id), pll->state.hw_state.fp1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void ibx_assert_pch_refclk_enabled(struct drm_i915_private *dev_priv)
@@ -465,7 +384,6 @@ static void ibx_assert_pch_refclk_enabled(struct drm_i915_private *dev_priv)
 static void ibx_pch_dpll_enable(struct drm_i915_private *dev_priv,
 				struct intel_shared_dpll *pll)
 {
-<<<<<<< HEAD
 	const enum intel_dpll_id id = pll->info->id;
 
 	/* PCH refclock must be enabled first */
@@ -475,15 +393,6 @@ static void ibx_pch_dpll_enable(struct drm_i915_private *dev_priv,
 
 	/* Wait for the clocks to stabilize. */
 	POSTING_READ(PCH_DPLL(id));
-=======
-	/* PCH refclock must be enabled first */
-	ibx_assert_pch_refclk_enabled(dev_priv);
-
-	I915_WRITE(PCH_DPLL(pll->id), pll->state.hw_state.dpll);
-
-	/* Wait for the clocks to stabilize. */
-	POSTING_READ(PCH_DPLL(pll->id));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	udelay(150);
 
 	/* The pixel multiplier can only be updated once the
@@ -491,23 +400,15 @@ static void ibx_pch_dpll_enable(struct drm_i915_private *dev_priv,
 	 *
 	 * So write it again.
 	 */
-<<<<<<< HEAD
 	I915_WRITE(PCH_DPLL(id), pll->state.hw_state.dpll);
 	POSTING_READ(PCH_DPLL(id));
-=======
-	I915_WRITE(PCH_DPLL(pll->id), pll->state.hw_state.dpll);
-	POSTING_READ(PCH_DPLL(pll->id));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	udelay(200);
 }
 
 static void ibx_pch_dpll_disable(struct drm_i915_private *dev_priv,
 				 struct intel_shared_dpll *pll)
 {
-<<<<<<< HEAD
 	const enum intel_dpll_id id = pll->info->id;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_device *dev = &dev_priv->drm;
 	struct intel_crtc *crtc;
 
@@ -517,13 +418,8 @@ static void ibx_pch_dpll_disable(struct drm_i915_private *dev_priv,
 			assert_pch_transcoder_disabled(dev_priv, crtc->pipe);
 	}
 
-<<<<<<< HEAD
 	I915_WRITE(PCH_DPLL(id), 0);
 	POSTING_READ(PCH_DPLL(id));
-=======
-	I915_WRITE(PCH_DPLL(pll->id), 0);
-	POSTING_READ(PCH_DPLL(pll->id));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	udelay(200);
 }
 
@@ -541,12 +437,8 @@ ibx_get_dpll(struct intel_crtc *crtc, struct intel_crtc_state *crtc_state,
 		pll = &dev_priv->shared_dplls[i];
 
 		DRM_DEBUG_KMS("[CRTC:%d:%s] using pre-allocated %s\n",
-<<<<<<< HEAD
 			      crtc->base.base.id, crtc->base.name,
 			      pll->info->name);
-=======
-			      crtc->base.base.id, crtc->base.name, pll->name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		pll = intel_find_shared_dpll(crtc, crtc_state,
 					     DPLL_ID_PCH_PLL_A,
@@ -583,15 +475,10 @@ static const struct intel_shared_dpll_funcs ibx_pch_dpll_funcs = {
 static void hsw_ddi_wrpll_enable(struct drm_i915_private *dev_priv,
 			       struct intel_shared_dpll *pll)
 {
-<<<<<<< HEAD
 	const enum intel_dpll_id id = pll->info->id;
 
 	I915_WRITE(WRPLL_CTL(id), pll->state.hw_state.wrpll);
 	POSTING_READ(WRPLL_CTL(id));
-=======
-	I915_WRITE(WRPLL_CTL(pll->id), pll->state.hw_state.wrpll);
-	POSTING_READ(WRPLL_CTL(pll->id));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	udelay(20);
 }
 
@@ -606,20 +493,12 @@ static void hsw_ddi_spll_enable(struct drm_i915_private *dev_priv,
 static void hsw_ddi_wrpll_disable(struct drm_i915_private *dev_priv,
 				  struct intel_shared_dpll *pll)
 {
-<<<<<<< HEAD
 	const enum intel_dpll_id id = pll->info->id;
 	uint32_t val;
 
 	val = I915_READ(WRPLL_CTL(id));
 	I915_WRITE(WRPLL_CTL(id), val & ~WRPLL_PLL_ENABLE);
 	POSTING_READ(WRPLL_CTL(id));
-=======
-	uint32_t val;
-
-	val = I915_READ(WRPLL_CTL(pll->id));
-	I915_WRITE(WRPLL_CTL(pll->id), val & ~WRPLL_PLL_ENABLE);
-	POSTING_READ(WRPLL_CTL(pll->id));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void hsw_ddi_spll_disable(struct drm_i915_private *dev_priv,
@@ -636,20 +515,13 @@ static bool hsw_ddi_wrpll_get_hw_state(struct drm_i915_private *dev_priv,
 				       struct intel_shared_dpll *pll,
 				       struct intel_dpll_hw_state *hw_state)
 {
-<<<<<<< HEAD
 	const enum intel_dpll_id id = pll->info->id;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t val;
 
 	if (!intel_display_power_get_if_enabled(dev_priv, POWER_DOMAIN_PLLS))
 		return false;
 
-<<<<<<< HEAD
 	val = I915_READ(WRPLL_CTL(id));
-=======
-	val = I915_READ(WRPLL_CTL(pll->id));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hw_state->wrpll = val;
 
 	intel_display_power_put(dev_priv, POWER_DOMAIN_PLLS);
@@ -954,23 +826,11 @@ hsw_get_dpll(struct intel_crtc *crtc, struct intel_crtc_state *crtc_state,
 	memset(&crtc_state->dpll_hw_state, 0,
 	       sizeof(crtc_state->dpll_hw_state));
 
-<<<<<<< HEAD
 	if (intel_crtc_has_type(crtc_state, INTEL_OUTPUT_HDMI)) {
 		pll = hsw_ddi_hdmi_get_dpll(clock, crtc, crtc_state);
 	} else if (intel_crtc_has_dp_encoder(crtc_state)) {
 		pll = hsw_ddi_dp_get_dpll(encoder, clock);
 	} else if (intel_crtc_has_type(crtc_state, INTEL_OUTPUT_ANALOG)) {
-=======
-	if (encoder->type == INTEL_OUTPUT_HDMI) {
-		pll = hsw_ddi_hdmi_get_dpll(clock, crtc, crtc_state);
-
-	} else if (encoder->type == INTEL_OUTPUT_DP ||
-		   encoder->type == INTEL_OUTPUT_DP_MST ||
-		   encoder->type == INTEL_OUTPUT_EDP) {
-		pll = hsw_ddi_dp_get_dpll(encoder, clock);
-
-	} else if (encoder->type == INTEL_OUTPUT_ANALOG) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (WARN_ON(crtc_state->port_clock / 2 != 135000))
 			return NULL;
 
@@ -1067,24 +927,15 @@ static const struct skl_dpll_regs skl_dpll_regs[4] = {
 static void skl_ddi_pll_write_ctrl1(struct drm_i915_private *dev_priv,
 				    struct intel_shared_dpll *pll)
 {
-<<<<<<< HEAD
 	const enum intel_dpll_id id = pll->info->id;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t val;
 
 	val = I915_READ(DPLL_CTRL1);
 
-<<<<<<< HEAD
 	val &= ~(DPLL_CTRL1_HDMI_MODE(id) |
 		 DPLL_CTRL1_SSC(id) |
 		 DPLL_CTRL1_LINK_RATE_MASK(id));
 	val |= pll->state.hw_state.ctrl1 << (id * 6);
-=======
-	val &= ~(DPLL_CTRL1_HDMI_MODE(pll->id) | DPLL_CTRL1_SSC(pll->id) |
-		 DPLL_CTRL1_LINK_RATE_MASK(pll->id));
-	val |= pll->state.hw_state.ctrl1 << (pll->id * 6);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	I915_WRITE(DPLL_CTRL1, val);
 	POSTING_READ(DPLL_CTRL1);
@@ -1094,7 +945,6 @@ static void skl_ddi_pll_enable(struct drm_i915_private *dev_priv,
 			       struct intel_shared_dpll *pll)
 {
 	const struct skl_dpll_regs *regs = skl_dpll_regs;
-<<<<<<< HEAD
 	const enum intel_dpll_id id = pll->info->id;
 
 	skl_ddi_pll_write_ctrl1(dev_priv, pll);
@@ -1114,26 +964,6 @@ static void skl_ddi_pll_enable(struct drm_i915_private *dev_priv,
 				    DPLL_LOCK(id),
 				    5))
 		DRM_ERROR("DPLL %d not locked\n", id);
-=======
-
-	skl_ddi_pll_write_ctrl1(dev_priv, pll);
-
-	I915_WRITE(regs[pll->id].cfgcr1, pll->state.hw_state.cfgcr1);
-	I915_WRITE(regs[pll->id].cfgcr2, pll->state.hw_state.cfgcr2);
-	POSTING_READ(regs[pll->id].cfgcr1);
-	POSTING_READ(regs[pll->id].cfgcr2);
-
-	/* the enable bit is always bit 31 */
-	I915_WRITE(regs[pll->id].ctl,
-		   I915_READ(regs[pll->id].ctl) | LCPLL_PLL_ENABLE);
-
-	if (intel_wait_for_register(dev_priv,
-				    DPLL_STATUS,
-				    DPLL_LOCK(pll->id),
-				    DPLL_LOCK(pll->id),
-				    5))
-		DRM_ERROR("DPLL %d not locked\n", pll->id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void skl_ddi_dpll0_enable(struct drm_i915_private *dev_priv,
@@ -1146,20 +976,12 @@ static void skl_ddi_pll_disable(struct drm_i915_private *dev_priv,
 				struct intel_shared_dpll *pll)
 {
 	const struct skl_dpll_regs *regs = skl_dpll_regs;
-<<<<<<< HEAD
 	const enum intel_dpll_id id = pll->info->id;
 
 	/* the enable bit is always bit 31 */
 	I915_WRITE(regs[id].ctl,
 		   I915_READ(regs[id].ctl) & ~LCPLL_PLL_ENABLE);
 	POSTING_READ(regs[id].ctl);
-=======
-
-	/* the enable bit is always bit 31 */
-	I915_WRITE(regs[pll->id].ctl,
-		   I915_READ(regs[pll->id].ctl) & ~LCPLL_PLL_ENABLE);
-	POSTING_READ(regs[pll->id].ctl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void skl_ddi_dpll0_disable(struct drm_i915_private *dev_priv,
@@ -1173,10 +995,7 @@ static bool skl_ddi_pll_get_hw_state(struct drm_i915_private *dev_priv,
 {
 	uint32_t val;
 	const struct skl_dpll_regs *regs = skl_dpll_regs;
-<<<<<<< HEAD
 	const enum intel_dpll_id id = pll->info->id;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool ret;
 
 	if (!intel_display_power_get_if_enabled(dev_priv, POWER_DOMAIN_PLLS))
@@ -1184,30 +1003,17 @@ static bool skl_ddi_pll_get_hw_state(struct drm_i915_private *dev_priv,
 
 	ret = false;
 
-<<<<<<< HEAD
 	val = I915_READ(regs[id].ctl);
-=======
-	val = I915_READ(regs[pll->id].ctl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!(val & LCPLL_PLL_ENABLE))
 		goto out;
 
 	val = I915_READ(DPLL_CTRL1);
-<<<<<<< HEAD
 	hw_state->ctrl1 = (val >> (id * 6)) & 0x3f;
 
 	/* avoid reading back stale values if HDMI mode is not enabled */
 	if (val & DPLL_CTRL1_HDMI_MODE(id)) {
 		hw_state->cfgcr1 = I915_READ(regs[id].cfgcr1);
 		hw_state->cfgcr2 = I915_READ(regs[id].cfgcr2);
-=======
-	hw_state->ctrl1 = (val >> (pll->id * 6)) & 0x3f;
-
-	/* avoid reading back stale values if HDMI mode is not enabled */
-	if (val & DPLL_CTRL1_HDMI_MODE(pll->id)) {
-		hw_state->cfgcr1 = I915_READ(regs[pll->id].cfgcr1);
-		hw_state->cfgcr2 = I915_READ(regs[pll->id].cfgcr2);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	ret = true;
 
@@ -1223,10 +1029,7 @@ static bool skl_ddi_dpll0_get_hw_state(struct drm_i915_private *dev_priv,
 {
 	uint32_t val;
 	const struct skl_dpll_regs *regs = skl_dpll_regs;
-<<<<<<< HEAD
 	const enum intel_dpll_id id = pll->info->id;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool ret;
 
 	if (!intel_display_power_get_if_enabled(dev_priv, POWER_DOMAIN_PLLS))
@@ -1235,20 +1038,12 @@ static bool skl_ddi_dpll0_get_hw_state(struct drm_i915_private *dev_priv,
 	ret = false;
 
 	/* DPLL0 is always enabled since it drives CDCLK */
-<<<<<<< HEAD
 	val = I915_READ(regs[id].ctl);
-=======
-	val = I915_READ(regs[pll->id].ctl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (WARN_ON(!(val & LCPLL_PLL_ENABLE)))
 		goto out;
 
 	val = I915_READ(DPLL_CTRL1);
-<<<<<<< HEAD
 	hw_state->ctrl1 = (val >> (id * 6)) & 0x3f;
-=======
-	hw_state->ctrl1 = (val >> (pll->id * 6)) & 0x3f;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = true;
 
@@ -1589,23 +1384,13 @@ skl_get_dpll(struct intel_crtc *crtc, struct intel_crtc_state *crtc_state,
 
 	memset(&dpll_hw_state, 0, sizeof(dpll_hw_state));
 
-<<<<<<< HEAD
 	if (intel_crtc_has_type(crtc_state, INTEL_OUTPUT_HDMI)) {
-=======
-	if (encoder->type == INTEL_OUTPUT_HDMI) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bret = skl_ddi_hdmi_pll_dividers(crtc, crtc_state, clock);
 		if (!bret) {
 			DRM_DEBUG_KMS("Could not get HDMI pll dividers.\n");
 			return NULL;
 		}
-<<<<<<< HEAD
 	} else if (intel_crtc_has_dp_encoder(crtc_state)) {
-=======
-	} else if (encoder->type == INTEL_OUTPUT_DP ||
-		   encoder->type == INTEL_OUTPUT_DP_MST ||
-		   encoder->type == INTEL_OUTPUT_EDP) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bret = skl_ddi_dp_set_dpll_hw_state(clock, &dpll_hw_state);
 		if (!bret) {
 			DRM_DEBUG_KMS("Could not set DP dpll HW state.\n");
@@ -1616,11 +1401,7 @@ skl_get_dpll(struct intel_crtc *crtc, struct intel_crtc_state *crtc_state,
 		return NULL;
 	}
 
-<<<<<<< HEAD
 	if (intel_crtc_has_type(crtc_state, INTEL_OUTPUT_EDP))
-=======
-	if (encoder->type == INTEL_OUTPUT_EDP)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pll = intel_find_shared_dpll(crtc, crtc_state,
 					     DPLL_ID_SKL_DPLL0,
 					     DPLL_ID_SKL_DPLL0);
@@ -1662,11 +1443,7 @@ static void bxt_ddi_pll_enable(struct drm_i915_private *dev_priv,
 				struct intel_shared_dpll *pll)
 {
 	uint32_t temp;
-<<<<<<< HEAD
 	enum port port = (enum port)pll->info->id; /* 1:1 port->PLL mapping */
-=======
-	enum port port = (enum port)pll->id;	/* 1:1 port->PLL mapping */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	enum dpio_phy phy;
 	enum dpio_channel ch;
 
@@ -1785,11 +1562,7 @@ static void bxt_ddi_pll_enable(struct drm_i915_private *dev_priv,
 static void bxt_ddi_pll_disable(struct drm_i915_private *dev_priv,
 					struct intel_shared_dpll *pll)
 {
-<<<<<<< HEAD
 	enum port port = (enum port)pll->info->id; /* 1:1 port->PLL mapping */
-=======
-	enum port port = (enum port)pll->id;	/* 1:1 port->PLL mapping */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t temp;
 
 	temp = I915_READ(BXT_PORT_PLL_ENABLE(port));
@@ -1812,11 +1585,7 @@ static bool bxt_ddi_pll_get_hw_state(struct drm_i915_private *dev_priv,
 					struct intel_shared_dpll *pll,
 					struct intel_dpll_hw_state *hw_state)
 {
-<<<<<<< HEAD
 	enum port port = (enum port)pll->info->id; /* 1:1 port->PLL mapping */
-=======
-	enum port port = (enum port)pll->id;	/* 1:1 port->PLL mapping */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t val;
 	bool ret;
 	enum dpio_phy phy;
@@ -2052,29 +1821,15 @@ bxt_get_dpll(struct intel_crtc *crtc,
 {
 	struct intel_dpll_hw_state dpll_hw_state = { };
 	struct drm_i915_private *dev_priv = to_i915(crtc->base.dev);
-<<<<<<< HEAD
 	struct intel_shared_dpll *pll;
 	int i, clock = crtc_state->port_clock;
 
 	if (intel_crtc_has_type(crtc_state, INTEL_OUTPUT_HDMI) &&
-=======
-	struct intel_digital_port *intel_dig_port;
-	struct intel_shared_dpll *pll;
-	int i, clock = crtc_state->port_clock;
-
-	if (encoder->type == INTEL_OUTPUT_HDMI &&
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    !bxt_ddi_hdmi_set_dpll_hw_state(crtc, crtc_state, clock,
 					    &dpll_hw_state))
 		return NULL;
 
-<<<<<<< HEAD
 	if (intel_crtc_has_dp_encoder(crtc_state) &&
-=======
-	if ((encoder->type == INTEL_OUTPUT_DP ||
-	     encoder->type == INTEL_OUTPUT_EDP ||
-	     encoder->type == INTEL_OUTPUT_DP_MST) &&
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    !bxt_ddi_dp_set_dpll_hw_state(clock, &dpll_hw_state))
 		return NULL;
 
@@ -2083,28 +1838,12 @@ bxt_get_dpll(struct intel_crtc *crtc,
 
 	crtc_state->dpll_hw_state = dpll_hw_state;
 
-<<<<<<< HEAD
 	/* 1:1 mapping between ports and PLLs */
 	i = (enum intel_dpll_id) encoder->port;
 	pll = intel_get_shared_dpll_by_id(dev_priv, i);
 
 	DRM_DEBUG_KMS("[CRTC:%d:%s] using pre-allocated %s\n",
 		      crtc->base.base.id, crtc->base.name, pll->info->name);
-=======
-	if (encoder->type == INTEL_OUTPUT_DP_MST) {
-		struct intel_dp_mst_encoder *intel_mst = enc_to_mst(&encoder->base);
-
-		intel_dig_port = intel_mst->primary;
-	} else
-		intel_dig_port = enc_to_dig_port(&encoder->base);
-
-	/* 1:1 mapping between ports and PLLs */
-	i = (enum intel_dpll_id) intel_dig_port->port;
-	pll = intel_get_shared_dpll_by_id(dev_priv, i);
-
-	DRM_DEBUG_KMS("[CRTC:%d:%s] using pre-allocated %s\n",
-		      crtc->base.base.id, crtc->base.name, pll->name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	intel_reference_shared_dpll(pll, crtc_state);
 
@@ -2157,16 +1896,6 @@ static void intel_ddi_pll_init(struct drm_device *dev)
 	}
 }
 
-<<<<<<< HEAD
-=======
-struct dpll_info {
-	const char *name;
-	const int id;
-	const struct intel_shared_dpll_funcs *funcs;
-	uint32_t flags;
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct intel_dpll_mgr {
 	const struct dpll_info *dpll_info;
 
@@ -2179,15 +1908,9 @@ struct intel_dpll_mgr {
 };
 
 static const struct dpll_info pch_plls[] = {
-<<<<<<< HEAD
 	{ "PCH DPLL A", &ibx_pch_dpll_funcs, DPLL_ID_PCH_PLL_A, 0 },
 	{ "PCH DPLL B", &ibx_pch_dpll_funcs, DPLL_ID_PCH_PLL_B, 0 },
 	{ },
-=======
-	{ "PCH DPLL A", DPLL_ID_PCH_PLL_A, &ibx_pch_dpll_funcs, 0 },
-	{ "PCH DPLL B", DPLL_ID_PCH_PLL_B, &ibx_pch_dpll_funcs, 0 },
-	{ NULL, -1, NULL, 0 },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct intel_dpll_mgr pch_pll_mgr = {
@@ -2197,7 +1920,6 @@ static const struct intel_dpll_mgr pch_pll_mgr = {
 };
 
 static const struct dpll_info hsw_plls[] = {
-<<<<<<< HEAD
 	{ "WRPLL 1",    &hsw_ddi_wrpll_funcs, DPLL_ID_WRPLL1,     0 },
 	{ "WRPLL 2",    &hsw_ddi_wrpll_funcs, DPLL_ID_WRPLL2,     0 },
 	{ "SPLL",       &hsw_ddi_spll_funcs,  DPLL_ID_SPLL,       0 },
@@ -2205,15 +1927,6 @@ static const struct dpll_info hsw_plls[] = {
 	{ "LCPLL 1350", &hsw_ddi_lcpll_funcs, DPLL_ID_LCPLL_1350, INTEL_DPLL_ALWAYS_ON },
 	{ "LCPLL 2700", &hsw_ddi_lcpll_funcs, DPLL_ID_LCPLL_2700, INTEL_DPLL_ALWAYS_ON },
 	{ },
-=======
-	{ "WRPLL 1",    DPLL_ID_WRPLL1,     &hsw_ddi_wrpll_funcs, 0 },
-	{ "WRPLL 2",    DPLL_ID_WRPLL2,     &hsw_ddi_wrpll_funcs, 0 },
-	{ "SPLL",       DPLL_ID_SPLL,       &hsw_ddi_spll_funcs,  0 },
-	{ "LCPLL 810",  DPLL_ID_LCPLL_810,  &hsw_ddi_lcpll_funcs, INTEL_DPLL_ALWAYS_ON },
-	{ "LCPLL 1350", DPLL_ID_LCPLL_1350, &hsw_ddi_lcpll_funcs, INTEL_DPLL_ALWAYS_ON },
-	{ "LCPLL 2700", DPLL_ID_LCPLL_2700, &hsw_ddi_lcpll_funcs, INTEL_DPLL_ALWAYS_ON },
-	{ NULL, -1, NULL, },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct intel_dpll_mgr hsw_pll_mgr = {
@@ -2223,19 +1936,11 @@ static const struct intel_dpll_mgr hsw_pll_mgr = {
 };
 
 static const struct dpll_info skl_plls[] = {
-<<<<<<< HEAD
 	{ "DPLL 0", &skl_ddi_dpll0_funcs, DPLL_ID_SKL_DPLL0, INTEL_DPLL_ALWAYS_ON },
 	{ "DPLL 1", &skl_ddi_pll_funcs,   DPLL_ID_SKL_DPLL1, 0 },
 	{ "DPLL 2", &skl_ddi_pll_funcs,   DPLL_ID_SKL_DPLL2, 0 },
 	{ "DPLL 3", &skl_ddi_pll_funcs,   DPLL_ID_SKL_DPLL3, 0 },
 	{ },
-=======
-	{ "DPLL 0", DPLL_ID_SKL_DPLL0, &skl_ddi_dpll0_funcs, INTEL_DPLL_ALWAYS_ON },
-	{ "DPLL 1", DPLL_ID_SKL_DPLL1, &skl_ddi_pll_funcs,   0 },
-	{ "DPLL 2", DPLL_ID_SKL_DPLL2, &skl_ddi_pll_funcs,   0 },
-	{ "DPLL 3", DPLL_ID_SKL_DPLL3, &skl_ddi_pll_funcs,   0 },
-	{ NULL, -1, NULL, },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct intel_dpll_mgr skl_pll_mgr = {
@@ -2245,17 +1950,10 @@ static const struct intel_dpll_mgr skl_pll_mgr = {
 };
 
 static const struct dpll_info bxt_plls[] = {
-<<<<<<< HEAD
 	{ "PORT PLL A", &bxt_ddi_pll_funcs, DPLL_ID_SKL_DPLL0, 0 },
 	{ "PORT PLL B", &bxt_ddi_pll_funcs, DPLL_ID_SKL_DPLL1, 0 },
 	{ "PORT PLL C", &bxt_ddi_pll_funcs, DPLL_ID_SKL_DPLL2, 0 },
 	{ },
-=======
-	{ "PORT PLL A", DPLL_ID_SKL_DPLL0, &bxt_ddi_pll_funcs, 0 },
-	{ "PORT PLL B", DPLL_ID_SKL_DPLL1, &bxt_ddi_pll_funcs, 0 },
-	{ "PORT PLL C", DPLL_ID_SKL_DPLL2, &bxt_ddi_pll_funcs, 0 },
-	{ NULL, -1, NULL, },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct intel_dpll_mgr bxt_pll_mgr = {
@@ -2267,7 +1965,6 @@ static const struct intel_dpll_mgr bxt_pll_mgr = {
 static void cnl_ddi_pll_enable(struct drm_i915_private *dev_priv,
 			       struct intel_shared_dpll *pll)
 {
-<<<<<<< HEAD
 	const enum intel_dpll_id id = pll->info->id;
 	uint32_t val;
 
@@ -2283,53 +1980,24 @@ static void cnl_ddi_pll_enable(struct drm_i915_private *dev_priv,
 				    PLL_POWER_STATE,
 				    5))
 		DRM_ERROR("PLL %d Power not enabled\n", id);
-=======
-	uint32_t val;
-
-	/* 1. Enable DPLL power in DPLL_ENABLE. */
-	val = I915_READ(CNL_DPLL_ENABLE(pll->id));
-	val |= PLL_POWER_ENABLE;
-	I915_WRITE(CNL_DPLL_ENABLE(pll->id), val);
-
-	/* 2. Wait for DPLL power state enabled in DPLL_ENABLE. */
-	if (intel_wait_for_register(dev_priv,
-				    CNL_DPLL_ENABLE(pll->id),
-				    PLL_POWER_STATE,
-				    PLL_POWER_STATE,
-				    5))
-		DRM_ERROR("PLL %d Power not enabled\n", pll->id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * 3. Configure DPLL_CFGCR0 to set SSC enable/disable,
 	 * select DP mode, and set DP link rate.
 	 */
 	val = pll->state.hw_state.cfgcr0;
-<<<<<<< HEAD
 	I915_WRITE(CNL_DPLL_CFGCR0(id), val);
 
 	/* 4. Reab back to ensure writes completed */
 	POSTING_READ(CNL_DPLL_CFGCR0(id));
-=======
-	I915_WRITE(CNL_DPLL_CFGCR0(pll->id), val);
-
-	/* 4. Reab back to ensure writes completed */
-	POSTING_READ(CNL_DPLL_CFGCR0(pll->id));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* 3. Configure DPLL_CFGCR0 */
 	/* Avoid touch CFGCR1 if HDMI mode is not enabled */
 	if (pll->state.hw_state.cfgcr0 & DPLL_CFGCR0_HDMI_MODE) {
 		val = pll->state.hw_state.cfgcr1;
-<<<<<<< HEAD
 		I915_WRITE(CNL_DPLL_CFGCR1(id), val);
 		/* 4. Reab back to ensure writes completed */
 		POSTING_READ(CNL_DPLL_CFGCR1(id));
-=======
-		I915_WRITE(CNL_DPLL_CFGCR1(pll->id), val);
-		/* 4. Reab back to ensure writes completed */
-		POSTING_READ(CNL_DPLL_CFGCR1(pll->id));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/*
@@ -2337,7 +2005,6 @@ static void cnl_ddi_pll_enable(struct drm_i915_private *dev_priv,
 	 * requirement, follow the Display Voltage Frequency Switching
 	 * Sequence Before Frequency Change
 	 *
-<<<<<<< HEAD
 	 * Note: DVFS is actually handled via the cdclk code paths,
 	 * hence we do nothing here.
 	 */
@@ -2354,37 +2021,14 @@ static void cnl_ddi_pll_enable(struct drm_i915_private *dev_priv,
 				    PLL_LOCK,
 				    5))
 		DRM_ERROR("PLL %d not locked\n", id);
-=======
-	 * FIXME: (DVFS) is used to adjust the display voltage to match the
-	 * display clock frequencies
-	 */
-
-	/* 6. Enable DPLL in DPLL_ENABLE. */
-	val = I915_READ(CNL_DPLL_ENABLE(pll->id));
-	val |= PLL_ENABLE;
-	I915_WRITE(CNL_DPLL_ENABLE(pll->id), val);
-
-	/* 7. Wait for PLL lock status in DPLL_ENABLE. */
-	if (intel_wait_for_register(dev_priv,
-				    CNL_DPLL_ENABLE(pll->id),
-				    PLL_LOCK,
-				    PLL_LOCK,
-				    5))
-		DRM_ERROR("PLL %d not locked\n", pll->id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * 8. If the frequency will result in a change to the voltage
 	 * requirement, follow the Display Voltage Frequency Switching
 	 * Sequence After Frequency Change
 	 *
-<<<<<<< HEAD
 	 * Note: DVFS is actually handled via the cdclk code paths,
 	 * hence we do nothing here.
-=======
-	 * FIXME: (DVFS) is used to adjust the display voltage to match the
-	 * display clock frequencies
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 
 	/*
@@ -2396,10 +2040,7 @@ static void cnl_ddi_pll_enable(struct drm_i915_private *dev_priv,
 static void cnl_ddi_pll_disable(struct drm_i915_private *dev_priv,
 				struct intel_shared_dpll *pll)
 {
-<<<<<<< HEAD
 	const enum intel_dpll_id id = pll->info->id;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t val;
 
 	/*
@@ -2412,7 +2053,6 @@ static void cnl_ddi_pll_disable(struct drm_i915_private *dev_priv,
 	 * requirement, follow the Display Voltage Frequency Switching
 	 * Sequence Before Frequency Change
 	 *
-<<<<<<< HEAD
 	 * Note: DVFS is actually handled via the cdclk code paths,
 	 * hence we do nothing here.
 	 */
@@ -2429,31 +2069,12 @@ static void cnl_ddi_pll_disable(struct drm_i915_private *dev_priv,
 				    0,
 				    5))
 		DRM_ERROR("PLL %d locked\n", id);
-=======
-	 * FIXME: (DVFS) is used to adjust the display voltage to match the
-	 * display clock frequencies
-	 */
-
-	/* 3. Disable DPLL through DPLL_ENABLE. */
-	val = I915_READ(CNL_DPLL_ENABLE(pll->id));
-	val &= ~PLL_ENABLE;
-	I915_WRITE(CNL_DPLL_ENABLE(pll->id), val);
-
-	/* 4. Wait for PLL not locked status in DPLL_ENABLE. */
-	if (intel_wait_for_register(dev_priv,
-				    CNL_DPLL_ENABLE(pll->id),
-				    PLL_LOCK,
-				    0,
-				    5))
-		DRM_ERROR("PLL %d locked\n", pll->id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * 5. If the frequency will result in a change to the voltage
 	 * requirement, follow the Display Voltage Frequency Switching
 	 * Sequence After Frequency Change
 	 *
-<<<<<<< HEAD
 	 * Note: DVFS is actually handled via the cdclk code paths,
 	 * hence we do nothing here.
 	 */
@@ -2470,34 +2091,13 @@ static void cnl_ddi_pll_disable(struct drm_i915_private *dev_priv,
 				    0,
 				    5))
 		DRM_ERROR("PLL %d Power not disabled\n", id);
-=======
-	 * FIXME: (DVFS) is used to adjust the display voltage to match the
-	 * display clock frequencies
-	 */
-
-	/* 6. Disable DPLL power in DPLL_ENABLE. */
-	val = I915_READ(CNL_DPLL_ENABLE(pll->id));
-	val &= ~PLL_POWER_ENABLE;
-	I915_WRITE(CNL_DPLL_ENABLE(pll->id), val);
-
-	/* 7. Wait for DPLL power state disabled in DPLL_ENABLE. */
-	if (intel_wait_for_register(dev_priv,
-				    CNL_DPLL_ENABLE(pll->id),
-				    PLL_POWER_STATE,
-				    0,
-				    5))
-		DRM_ERROR("PLL %d Power not disabled\n", pll->id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool cnl_ddi_pll_get_hw_state(struct drm_i915_private *dev_priv,
 				     struct intel_shared_dpll *pll,
 				     struct intel_dpll_hw_state *hw_state)
 {
-<<<<<<< HEAD
 	const enum intel_dpll_id id = pll->info->id;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t val;
 	bool ret;
 
@@ -2506,28 +2106,16 @@ static bool cnl_ddi_pll_get_hw_state(struct drm_i915_private *dev_priv,
 
 	ret = false;
 
-<<<<<<< HEAD
 	val = I915_READ(CNL_DPLL_ENABLE(id));
 	if (!(val & PLL_ENABLE))
 		goto out;
 
 	val = I915_READ(CNL_DPLL_CFGCR0(id));
-=======
-	val = I915_READ(CNL_DPLL_ENABLE(pll->id));
-	if (!(val & PLL_ENABLE))
-		goto out;
-
-	val = I915_READ(CNL_DPLL_CFGCR0(pll->id));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hw_state->cfgcr0 = val;
 
 	/* avoid reading back stale values if HDMI mode is not enabled */
 	if (val & DPLL_CFGCR0_HDMI_MODE) {
-<<<<<<< HEAD
 		hw_state->cfgcr1 = I915_READ(CNL_DPLL_CFGCR1(id));
-=======
-		hw_state->cfgcr1 = I915_READ(CNL_DPLL_CFGCR1(pll->id));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	ret = true;
 
@@ -2537,15 +2125,8 @@ out:
 	return ret;
 }
 
-<<<<<<< HEAD
 static void cnl_wrpll_get_multipliers(int bestdiv, int *pdiv,
 				      int *qdiv, int *kdiv)
-=======
-static void cnl_wrpll_get_multipliers(unsigned int bestdiv,
-				      unsigned int *pdiv,
-				      unsigned int *qdiv,
-				      unsigned int *kdiv)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* even dividers */
 	if (bestdiv % 2 == 0) {
@@ -2583,19 +2164,12 @@ static void cnl_wrpll_get_multipliers(unsigned int bestdiv,
 	}
 }
 
-<<<<<<< HEAD
 static void cnl_wrpll_params_populate(struct skl_wrpll_params *params,
 				      u32 dco_freq, u32 ref_freq,
 				      int pdiv, int qdiv, int kdiv)
 {
 	u32 dco;
 
-=======
-static void cnl_wrpll_params_populate(struct skl_wrpll_params *params, uint32_t dco_freq,
-				      uint32_t ref_freq, uint32_t pdiv, uint32_t qdiv,
-				      uint32_t kdiv)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (kdiv) {
 	case 1:
 		params->kdiv = 1;
@@ -2627,17 +2201,11 @@ static void cnl_wrpll_params_populate(struct skl_wrpll_params *params, uint32_t 
 		WARN(1, "Incorrect PDiv\n");
 	}
 
-<<<<<<< HEAD
 	WARN_ON(kdiv != 2 && qdiv != 1);
-=======
-	if (kdiv != 2)
-		qdiv = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	params->qdiv_ratio = qdiv;
 	params->qdiv_mode = (qdiv == 1) ? 0 : 1;
 
-<<<<<<< HEAD
 	dco = div_u64((u64)dco_freq << 15, ref_freq);
 
 	params->dco_integer = dco >> 15;
@@ -2654,41 +2222,15 @@ cnl_ddi_calculate_wrpll(int clock,
 	u32 dco_min = 7998000;
 	u32 dco_max = 10000000;
 	u32 dco_mid = (dco_min + dco_max) / 2;
-=======
-	params->dco_integer = div_u64(dco_freq, ref_freq);
-	params->dco_fraction = div_u64((div_u64((uint64_t)dco_freq<<15, (uint64_t)ref_freq) -
-					((uint64_t)params->dco_integer<<15)) * 0x8000, 0x8000);
-}
-
-static bool
-cnl_ddi_calculate_wrpll(int clock /* in Hz */,
-			struct drm_i915_private *dev_priv,
-			struct skl_wrpll_params *wrpll_params)
-{
-	uint64_t afe_clock = clock * 5 / KHz(1); /* clocks in kHz */
-	unsigned int dco_min = 7998 * KHz(1);
-	unsigned int dco_max = 10000 * KHz(1);
-	unsigned int dco_mid = (dco_min + dco_max) / 2;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	static const int dividers[] = {  2,  4,  6,  8, 10, 12,  14,  16,
 					 18, 20, 24, 28, 30, 32,  36,  40,
 					 42, 44, 48, 50, 52, 54,  56,  60,
 					 64, 66, 68, 70, 72, 76,  78,  80,
 					 84, 88, 90, 92, 96, 98, 100, 102,
 					  3,  5,  7,  9, 15, 21 };
-<<<<<<< HEAD
 	u32 dco, best_dco = 0, dco_centrality = 0;
 	u32 best_dco_centrality = U32_MAX; /* Spec meaning of 999999 MHz */
 	int d, best_div = 0, pdiv = 0, qdiv = 0, kdiv = 0;
-=======
-	unsigned int d, dco;
-	unsigned int dco_centrality = 0;
-	unsigned int best_dco_centrality = 999999;
-	unsigned int best_div = 0;
-	unsigned int best_dco = 0;
-	unsigned int pdiv = 0, qdiv = 0, kdiv = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (d = 0; d < ARRAY_SIZE(dividers); d++) {
 		dco = afe_clock * dividers[d];
@@ -2709,7 +2251,6 @@ cnl_ddi_calculate_wrpll(int clock /* in Hz */,
 
 	cnl_wrpll_get_multipliers(best_div, &pdiv, &qdiv, &kdiv);
 
-<<<<<<< HEAD
 	ref_clock = dev_priv->cdclk.hw.ref;
 
 	/*
@@ -2721,10 +2262,6 @@ cnl_ddi_calculate_wrpll(int clock /* in Hz */,
 
 	cnl_wrpll_params_populate(wrpll_params, best_dco, ref_clock, pdiv, qdiv,
 				  kdiv);
-=======
-	cnl_wrpll_params_populate(wrpll_params, best_dco,
-				  dev_priv->cdclk.hw.ref, pdiv, qdiv, kdiv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return true;
 }
@@ -2739,11 +2276,7 @@ static bool cnl_ddi_hdmi_pll_dividers(struct intel_crtc *crtc,
 
 	cfgcr0 = DPLL_CFGCR0_HDMI_MODE;
 
-<<<<<<< HEAD
 	if (!cnl_ddi_calculate_wrpll(clock, dev_priv, &wrpll_params))
-=======
-	if (!cnl_ddi_calculate_wrpll(clock * 1000, dev_priv, &wrpll_params))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return false;
 
 	cfgcr0 |= DPLL_CFGCR0_DCO_FRACTION(wrpll_params.dco_fraction) |
@@ -2753,10 +2286,6 @@ static bool cnl_ddi_hdmi_pll_dividers(struct intel_crtc *crtc,
 		DPLL_CFGCR1_QDIV_MODE(wrpll_params.qdiv_mode) |
 		DPLL_CFGCR1_KDIV(wrpll_params.kdiv) |
 		DPLL_CFGCR1_PDIV(wrpll_params.pdiv) |
-<<<<<<< HEAD
-=======
-		wrpll_params.central_freq |
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		DPLL_CFGCR1_CENTRAL_FREQ;
 
 	memset(&crtc_state->dpll_hw_state, 0,
@@ -2820,23 +2349,13 @@ cnl_get_dpll(struct intel_crtc *crtc, struct intel_crtc_state *crtc_state,
 
 	memset(&dpll_hw_state, 0, sizeof(dpll_hw_state));
 
-<<<<<<< HEAD
 	if (intel_crtc_has_type(crtc_state, INTEL_OUTPUT_HDMI)) {
-=======
-	if (encoder->type == INTEL_OUTPUT_HDMI) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bret = cnl_ddi_hdmi_pll_dividers(crtc, crtc_state, clock);
 		if (!bret) {
 			DRM_DEBUG_KMS("Could not get HDMI pll dividers.\n");
 			return NULL;
 		}
-<<<<<<< HEAD
 	} else if (intel_crtc_has_dp_encoder(crtc_state)) {
-=======
-	} else if (encoder->type == INTEL_OUTPUT_DP ||
-		   encoder->type == INTEL_OUTPUT_DP_MST ||
-		   encoder->type == INTEL_OUTPUT_EDP) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bret = cnl_ddi_dp_set_dpll_hw_state(clock, &dpll_hw_state);
 		if (!bret) {
 			DRM_DEBUG_KMS("Could not set DP dpll HW state.\n");
@@ -2844,13 +2363,8 @@ cnl_get_dpll(struct intel_crtc *crtc, struct intel_crtc_state *crtc_state,
 		}
 		crtc_state->dpll_hw_state = dpll_hw_state;
 	} else {
-<<<<<<< HEAD
 		DRM_DEBUG_KMS("Skip DPLL setup for output_types 0x%x\n",
 			      crtc_state->output_types);
-=======
-		DRM_DEBUG_KMS("Skip DPLL setup for encoder %d\n",
-			      encoder->type);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return NULL;
 	}
 
@@ -2883,17 +2397,10 @@ static const struct intel_shared_dpll_funcs cnl_ddi_pll_funcs = {
 };
 
 static const struct dpll_info cnl_plls[] = {
-<<<<<<< HEAD
 	{ "DPLL 0", &cnl_ddi_pll_funcs, DPLL_ID_SKL_DPLL0, 0 },
 	{ "DPLL 1", &cnl_ddi_pll_funcs, DPLL_ID_SKL_DPLL1, 0 },
 	{ "DPLL 2", &cnl_ddi_pll_funcs, DPLL_ID_SKL_DPLL2, 0 },
 	{ },
-=======
-	{ "DPLL 0", DPLL_ID_SKL_DPLL0, &cnl_ddi_pll_funcs, 0 },
-	{ "DPLL 1", DPLL_ID_SKL_DPLL1, &cnl_ddi_pll_funcs, 0 },
-	{ "DPLL 2", DPLL_ID_SKL_DPLL2, &cnl_ddi_pll_funcs, 0 },
-	{ NULL, -1, NULL, },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct intel_dpll_mgr cnl_pll_mgr = {
@@ -2902,7 +2409,6 @@ static const struct intel_dpll_mgr cnl_pll_mgr = {
 	.dump_hw_state = cnl_dump_hw_state,
 };
 
-<<<<<<< HEAD
 /*
  * These values alrea already adjusted: they're the bits we write to the
  * registers, not the logical values.
@@ -3684,8 +3190,6 @@ static const struct intel_dpll_mgr icl_pll_mgr = {
 	.dump_hw_state = icl_dump_hw_state,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * intel_shared_dpll_init - Initialize shared DPLLs
  * @dev: drm device
@@ -3699,13 +3203,9 @@ void intel_shared_dpll_init(struct drm_device *dev)
 	const struct dpll_info *dpll_info;
 	int i;
 
-<<<<<<< HEAD
 	if (IS_ICELAKE(dev_priv))
 		dpll_mgr = &icl_pll_mgr;
 	else if (IS_CANNONLAKE(dev_priv))
-=======
-	if (IS_CANNONLAKE(dev_priv))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dpll_mgr = &cnl_pll_mgr;
 	else if (IS_GEN9_BC(dev_priv))
 		dpll_mgr = &skl_pll_mgr;
@@ -3723,19 +3223,9 @@ void intel_shared_dpll_init(struct drm_device *dev)
 
 	dpll_info = dpll_mgr->dpll_info;
 
-<<<<<<< HEAD
 	for (i = 0; dpll_info[i].name; i++) {
 		WARN_ON(i != dpll_info[i].id);
 		dev_priv->shared_dplls[i].info = &dpll_info[i];
-=======
-	for (i = 0; dpll_info[i].id >= 0; i++) {
-		WARN_ON(i != dpll_info[i].id);
-
-		dev_priv->shared_dplls[i].id = dpll_info[i].id;
-		dev_priv->shared_dplls[i].name = dpll_info[i].name;
-		dev_priv->shared_dplls[i].funcs = *dpll_info[i].funcs;
-		dev_priv->shared_dplls[i].flags = dpll_info[i].flags;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	dev_priv->dpll_mgr = dpll_mgr;
@@ -3795,11 +3285,7 @@ void intel_release_shared_dpll(struct intel_shared_dpll *dpll,
 	struct intel_shared_dpll_state *shared_dpll_state;
 
 	shared_dpll_state = intel_atomic_get_shared_dpll_state(state);
-<<<<<<< HEAD
 	shared_dpll_state[dpll->info->id].crtc_mask &= ~(1 << crtc->pipe);
-=======
-	shared_dpll_state[dpll->id].crtc_mask &= ~(1 << crtc->pipe);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**

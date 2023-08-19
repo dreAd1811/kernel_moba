@@ -117,12 +117,8 @@ static int exynos_cpuidle_probe(struct platform_device *pdev)
 	int ret;
 
 	if (IS_ENABLED(CONFIG_SMP) &&
-<<<<<<< HEAD
 	    (of_machine_is_compatible("samsung,exynos4210") ||
 	     of_machine_is_compatible("samsung,exynos3250"))) {
-=======
-	    of_machine_is_compatible("samsung,exynos4210")) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		exynos_cpuidle_pdata = pdev->dev.platform_data;
 
 		ret = cpuidle_register(&exynos_coupled_idle_driver,

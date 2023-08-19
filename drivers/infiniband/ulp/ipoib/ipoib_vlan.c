@@ -50,7 +50,6 @@ static ssize_t show_parent(struct device *d, struct device_attribute *attr,
 }
 static DEVICE_ATTR(parent, S_IRUGO, show_parent, NULL);
 
-<<<<<<< HEAD
 static bool is_child_unique(struct ipoib_dev_priv *ppriv,
 			    struct ipoib_dev_priv *priv)
 {
@@ -133,47 +132,10 @@ int __ipoib_vlan_add(struct ipoib_dev_priv *ppriv, struct ipoib_dev_priv *priv,
 		 * sometimes not. Make sure it was done.
 		 */
 		goto out_early;
-=======
-int __ipoib_vlan_add(struct ipoib_dev_priv *ppriv, struct ipoib_dev_priv *priv,
-		     u16 pkey, int type)
-{
-	int result;
-
-	priv->max_ib_mtu = ppriv->max_ib_mtu;
-	/* MTU will be reset when mcast join happens */
-	priv->dev->mtu   = IPOIB_UD_MTU(priv->max_ib_mtu);
-	priv->mcast_mtu  = priv->admin_mtu = priv->dev->mtu;
-	priv->parent = ppriv->dev;
-	set_bit(IPOIB_FLAG_SUBINTERFACE, &priv->flags);
-
-	ipoib_set_dev_features(priv, ppriv->ca);
-
-	priv->pkey = pkey;
-
-	memcpy(priv->dev->dev_addr, ppriv->dev->dev_addr, INFINIBAND_ALEN);
-	memcpy(&priv->local_gid, &ppriv->local_gid, sizeof(priv->local_gid));
-	set_bit(IPOIB_FLAG_DEV_ADDR_SET, &priv->flags);
-	priv->dev->broadcast[8] = pkey >> 8;
-	priv->dev->broadcast[9] = pkey & 0xff;
-
-	result = ipoib_dev_init(priv->dev, ppriv->ca, ppriv->port);
-	if (result < 0) {
-		ipoib_warn(ppriv, "failed to initialize subinterface: "
-			   "device %s, port %d",
-			   ppriv->ca->name, ppriv->port);
-		goto err;
-	}
-
-	result = register_netdevice(priv->dev);
-	if (result) {
-		ipoib_warn(priv, "failed to initialize; error %i", result);
-		goto register_failed;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* RTNL childs don't need proprietary sysfs entries */
 	if (type == IPOIB_LEGACY_CHILD) {
-<<<<<<< HEAD
 		if (ipoib_cm_add_mode_attr(ndev))
 			goto sysfs_failed;
 		if (ipoib_add_pkey_attr(ndev))
@@ -194,32 +156,6 @@ sysfs_failed:
 out_early:
 	if (ndev->priv_destructor)
 		ndev->priv_destructor(ndev);
-=======
-		if (ipoib_cm_add_mode_attr(priv->dev))
-			goto sysfs_failed;
-		if (ipoib_add_pkey_attr(priv->dev))
-			goto sysfs_failed;
-		if (ipoib_add_umcast_attr(priv->dev))
-			goto sysfs_failed;
-
-		if (device_create_file(&priv->dev->dev, &dev_attr_parent))
-			goto sysfs_failed;
-	}
-
-	priv->child_type  = type;
-	list_add_tail(&priv->list, &ppriv->child_intfs);
-
-	return 0;
-
-sysfs_failed:
-	result = -ENOMEM;
-	unregister_netdevice(priv->dev);
-
-register_failed:
-	ipoib_dev_cleanup(priv->dev);
-
-err:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return result;
 }
 
@@ -227,17 +163,12 @@ int ipoib_vlan_add(struct net_device *pdev, unsigned short pkey)
 {
 	struct ipoib_dev_priv *ppriv, *priv;
 	char intf_name[IFNAMSIZ];
-<<<<<<< HEAD
 	struct net_device *ndev;
-=======
-	struct ipoib_dev_priv *tpriv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int result;
 
 	if (!capable(CAP_NET_ADMIN))
 		return -EPERM;
 
-<<<<<<< HEAD
 	if (!rtnl_trylock())
 		return restart_syscall();
 
@@ -251,36 +182,11 @@ int ipoib_vlan_add(struct net_device *pdev, unsigned short pkey)
 	snprintf(intf_name, sizeof(intf_name), "%s.%04x",
 		 ppriv->dev->name, pkey);
 
-=======
-	ppriv = ipoib_priv(pdev);
-
-	if (test_bit(IPOIB_FLAG_GOING_DOWN, &ppriv->flags))
-		return -EPERM;
-
-	snprintf(intf_name, sizeof intf_name, "%s.%04x",
-		 ppriv->dev->name, pkey);
-
-	if (!mutex_trylock(&ppriv->sysfs_mutex))
-		return restart_syscall();
-
-	if (!rtnl_trylock()) {
-		mutex_unlock(&ppriv->sysfs_mutex);
-		return restart_syscall();
-	}
-
-	if (!down_write_trylock(&ppriv->vlan_rwsem)) {
-		rtnl_unlock();
-		mutex_unlock(&ppriv->sysfs_mutex);
-		return restart_syscall();
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	priv = ipoib_intf_alloc(ppriv->ca, ppriv->port, intf_name);
 	if (!priv) {
 		result = -ENOMEM;
 		goto out;
 	}
-<<<<<<< HEAD
 	ndev = priv->dev;
 
 	result = __ipoib_vlan_add(ppriv, priv, pkey, IPOIB_LEGACY_CHILD);
@@ -329,58 +235,16 @@ static void ipoib_vlan_delete_task(struct work_struct *work)
 	rtnl_unlock();
 
 	kfree(pwork);
-=======
-
-	/*
-	 * First ensure this isn't a duplicate. We check the parent device and
-	 * then all of the legacy child interfaces to make sure the Pkey
-	 * doesn't match.
-	 */
-	if (ppriv->pkey == pkey) {
-		result = -ENOTUNIQ;
-		goto out;
-	}
-
-	list_for_each_entry(tpriv, &ppriv->child_intfs, list) {
-		if (tpriv->pkey == pkey &&
-		    tpriv->child_type == IPOIB_LEGACY_CHILD) {
-			result = -ENOTUNIQ;
-			goto out;
-		}
-	}
-
-	result = __ipoib_vlan_add(ppriv, priv, pkey, IPOIB_LEGACY_CHILD);
-
-out:
-	up_write(&ppriv->vlan_rwsem);
-	rtnl_unlock();
-	mutex_unlock(&ppriv->sysfs_mutex);
-
-	if (result && priv) {
-		struct rdma_netdev *rn;
-
-		rn = netdev_priv(priv->dev);
-		rn->free_rdma_netdev(priv->dev);
-		kfree(priv);
-	}
-
-	return result;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int ipoib_vlan_delete(struct net_device *pdev, unsigned short pkey)
 {
 	struct ipoib_dev_priv *ppriv, *priv, *tpriv;
-<<<<<<< HEAD
 	int rc;
-=======
-	struct net_device *dev = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!capable(CAP_NET_ADMIN))
 		return -EPERM;
 
-<<<<<<< HEAD
 	if (!rtnl_trylock())
 		return restart_syscall();
 
@@ -419,53 +283,4 @@ out:
 	rtnl_unlock();
 
 	return rc;
-=======
-	ppriv = ipoib_priv(pdev);
-
-	if (test_bit(IPOIB_FLAG_GOING_DOWN, &ppriv->flags))
-		return -EPERM;
-
-	if (!mutex_trylock(&ppriv->sysfs_mutex))
-		return restart_syscall();
-
-	if (!rtnl_trylock()) {
-		mutex_unlock(&ppriv->sysfs_mutex);
-		return restart_syscall();
-	}
-
-	if (!down_write_trylock(&ppriv->vlan_rwsem)) {
-		rtnl_unlock();
-		mutex_unlock(&ppriv->sysfs_mutex);
-		return restart_syscall();
-	}
-
-	list_for_each_entry_safe(priv, tpriv, &ppriv->child_intfs, list) {
-		if (priv->pkey == pkey &&
-		    priv->child_type == IPOIB_LEGACY_CHILD) {
-			list_del(&priv->list);
-			dev = priv->dev;
-			break;
-		}
-	}
-	up_write(&ppriv->vlan_rwsem);
-
-	if (dev) {
-		ipoib_dbg(ppriv, "delete child vlan %s\n", dev->name);
-		unregister_netdevice(dev);
-	}
-
-	rtnl_unlock();
-	mutex_unlock(&ppriv->sysfs_mutex);
-
-	if (dev) {
-		struct rdma_netdev *rn;
-
-		rn = netdev_priv(dev);
-		rn->free_rdma_netdev(priv->dev);
-		kfree(priv);
-		return 0;
-	}
-
-	return -ENODEV;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

@@ -50,11 +50,7 @@
 		bootargs = "console=ttyLP1,115200";
 	};
 
-<<<<<<< HEAD
 	memory@80000000 {
-=======
-	memory {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x80000000 0x8000000>;
 	};
 
@@ -202,11 +198,7 @@
 	pinctrl-0 = <&pinctrl_i2c0>;
 	status = "okay";
 
-<<<<<<< HEAD
 	codec: sgtl5000@a {
-=======
-	codec: sgtl5000@0a {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	       #sound-dai-cells = <0>;
 	       compatible = "fsl,sgtl5000";
 	       reg = <0x0a>;

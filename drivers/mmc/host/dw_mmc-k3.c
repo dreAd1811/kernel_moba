@@ -75,11 +75,7 @@ struct hs_timing {
 	u32 smpl_phase_min;
 };
 
-<<<<<<< HEAD
 static struct hs_timing hs_timing_cfg[TIMING_MODE][TIMING_CFG_NUM] = {
-=======
-struct hs_timing hs_timing_cfg[TIMING_MODE][TIMING_CFG_NUM] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ /* reserved */ },
 	{ /* SD */
 		{7, 0, 15, 15,},  /* 0: LEGACY 400k */

@@ -14,10 +14,6 @@
 #include <linux/of_platform.h>
 #include <linux/pci.h>
 
-<<<<<<< HEAD
-=======
-#include <asm/debug.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/io.h>
 #include <asm/hw_irq.h>
 #include <asm/ipic.h>
@@ -154,22 +150,3 @@ void __init mpc83xx_setup_arch(void)
 
 	mpc83xx_setup_pci();
 }
-<<<<<<< HEAD
-=======
-
-int machine_check_83xx(struct pt_regs *regs)
-{
-	u32 mask = 1 << (31 - IPIC_MCP_WDT);
-
-	if (!(regs->msr & SRR1_MCE_MCP) || !(ipic_get_mcp_status() & mask))
-		return machine_check_generic(regs);
-	ipic_clear_mcp_status(mask);
-
-	if (debugger_fault_handler(regs))
-		return 1;
-
-	die("Watchdog NMI Reset", regs, 0);
-
-	return 1;
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

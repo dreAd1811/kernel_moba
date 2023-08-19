@@ -1343,15 +1343,9 @@ struct ipw_priv {
 
 	s8 tx_power;
 
-<<<<<<< HEAD
 	/* Track time in suspend using CLOCK_BOOTIME */
 	time64_t suspend_at;
 	time64_t suspend_time;
-=======
-	/* Track time in suspend */
-	unsigned long suspend_at;
-	unsigned long suspend_time;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_PM
 	u32 pm_state[16];

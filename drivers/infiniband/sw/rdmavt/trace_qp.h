@@ -85,7 +85,6 @@ DEFINE_EVENT(rvt_qphash_template, rvt_qpremove,
 	TP_PROTO(struct rvt_qp *qp, u32 bucket),
 	TP_ARGS(qp, bucket));
 
-<<<<<<< HEAD
 DECLARE_EVENT_CLASS(
 	rvt_rnrnak_template,
 	TP_PROTO(struct rvt_qp *qp, u32 to),
@@ -128,8 +127,6 @@ DEFINE_EVENT(
 	rvt_rnrnak_template, rvt_rnrnak_stop,
 	TP_PROTO(struct rvt_qp *qp, u32 to),
 	TP_ARGS(qp, to));
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* __RVT_TRACE_QP_H */
 

@@ -11,10 +11,7 @@
 #include <linux/module.h>
 #include <linux/gpio/driver.h>
 #include <linux/platform_device.h>
-<<<<<<< HEAD
 #include <linux/bitops.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Loongson 1 GPIO Register Definitions */
 #define GPIO_CFG		0x0
@@ -26,18 +23,10 @@ static void __iomem *gpio_reg_base;
 
 static int ls1x_gpio_request(struct gpio_chip *gc, unsigned int offset)
 {
-<<<<<<< HEAD
 	unsigned long flags;
 
 	spin_lock_irqsave(&gc->bgpio_lock, flags);
 	__raw_writel(__raw_readl(gpio_reg_base + GPIO_CFG) | BIT(offset),
-=======
-	unsigned long pinmask = gc->pin2mask(gc, offset);
-	unsigned long flags;
-
-	spin_lock_irqsave(&gc->bgpio_lock, flags);
-	__raw_writel(__raw_readl(gpio_reg_base + GPIO_CFG) | pinmask,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		     gpio_reg_base + GPIO_CFG);
 	spin_unlock_irqrestore(&gc->bgpio_lock, flags);
 
@@ -46,18 +35,10 @@ static int ls1x_gpio_request(struct gpio_chip *gc, unsigned int offset)
 
 static void ls1x_gpio_free(struct gpio_chip *gc, unsigned int offset)
 {
-<<<<<<< HEAD
 	unsigned long flags;
 
 	spin_lock_irqsave(&gc->bgpio_lock, flags);
 	__raw_writel(__raw_readl(gpio_reg_base + GPIO_CFG) & ~BIT(offset),
-=======
-	unsigned long pinmask = gc->pin2mask(gc, offset);
-	unsigned long flags;
-
-	spin_lock_irqsave(&gc->bgpio_lock, flags);
-	__raw_writel(__raw_readl(gpio_reg_base + GPIO_CFG) & ~pinmask,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		     gpio_reg_base + GPIO_CFG);
 	spin_unlock_irqrestore(&gc->bgpio_lock, flags);
 }

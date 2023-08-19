@@ -150,10 +150,6 @@ static int ep93xx_read_raw(struct iio_dev *iiodev,
 }
 
 static const struct iio_info ep93xx_adc_info = {
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read_raw = ep93xx_read_raw,
 };
 
@@ -171,13 +167,6 @@ static int ep93xx_adc_probe(struct platform_device *pdev)
 	priv = iio_priv(iiodev);
 
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-<<<<<<< HEAD
-=======
-	if (!res) {
-		dev_err(&pdev->dev, "Cannot obtain memory resource\n");
-		return -ENXIO;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	priv->base = devm_ioremap_resource(&pdev->dev, res);
 	if (IS_ERR(priv->base)) {
 		dev_err(&pdev->dev, "Cannot map memory resource\n");

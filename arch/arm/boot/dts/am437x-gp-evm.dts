@@ -55,11 +55,7 @@
 		enable-active-high;
 	};
 
-<<<<<<< HEAD
 	lcd_bl: backlight {
-=======
-	backlight {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "pwm-backlight";
 		pwms = <&ecap0 0 50000 PWM_POLARITY_INVERTED>;
 		brightness-levels = <0 51 53 56 62 75 101 152 255>;
@@ -87,17 +83,11 @@
 		};
 
 	lcd0: display {
-<<<<<<< HEAD
 		compatible = "osddisplays,osd057T0559-34ts", "panel-dpi";
 		label = "lcd";
 
 		backlight = <&lcd_bl>;
 
-=======
-		compatible = "osddisplays,osd070t1718-19ts", "panel-dpi";
-		label = "lcd";
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		panel-timing {
 			clock-frequency = <33000000>;
 			hactive = <800>;
@@ -553,11 +543,7 @@
 	tps65218: tps65218@24 {
 		reg = <0x24>;
 		compatible = "ti,tps65218";
-<<<<<<< HEAD
 		interrupts = <GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH>; /* NMIn */
-=======
-		interrupts = <GIC_SPI 7 IRQ_TYPE_NONE>; /* NMIn */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		interrupt-controller;
 		#interrupt-cells = <2>;
 
@@ -804,11 +790,7 @@
 		compatible = "ti,wl1835";
 		reg = <2>;
 		interrupt-parent = <&gpio1>;
-<<<<<<< HEAD
 		interrupts = <23 IRQ_TYPE_EDGE_RISING>;
-=======
-		interrupts = <23 IRQ_TYPE_LEVEL_HIGH>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };
 
@@ -823,11 +805,7 @@
 };
 
 &usb1 {
-<<<<<<< HEAD
 	dr_mode = "otg";
-=======
-	dr_mode = "peripheral";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 

@@ -18,11 +18,7 @@ READELF := $(CROSS_COMPILE)readelf
 
 export AWK
 
-<<<<<<< HEAD
 CHECKFLAGS	+= -D__ia64=1 -D__ia64__=1 -D_LP64 -D__LP64__
-=======
-CHECKFLAGS	+= -m64 -D__ia64=1 -D__ia64__=1 -D_LP64 -D__LP64__
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 OBJCOPYFLAGS	:= --strip-all
 LDFLAGS_vmlinux	:= -static
@@ -46,11 +42,7 @@ $(error Sorry, you need a newer version of the assember, one that is built from	
 endif
 
 KBUILD_CFLAGS += $(cflags-y)
-<<<<<<< HEAD
 head-y := arch/ia64/kernel/head.o
-=======
-head-y := arch/ia64/kernel/head.o arch/ia64/kernel/init_task.o
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 libs-y				+= arch/ia64/lib/
 core-y				+= arch/ia64/kernel/ arch/ia64/mm/

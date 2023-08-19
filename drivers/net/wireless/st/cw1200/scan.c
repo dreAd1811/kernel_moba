@@ -232,15 +232,9 @@ void cw1200_scan_work(struct work_struct *work)
 			scan.type = WSM_SCAN_TYPE_BACKGROUND;
 			scan.flags = WSM_SCAN_FLAG_FORCE_BACKGROUND;
 		}
-<<<<<<< HEAD
 		scan.ch = kcalloc(it - priv->scan.curr,
 				  sizeof(struct wsm_scan_ch),
 				  GFP_KERNEL);
-=======
-		scan.ch = kzalloc(
-			sizeof(struct wsm_scan_ch) * (it - priv->scan.curr),
-			GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!scan.ch) {
 			priv->scan.status = -ENOMEM;
 			goto fail;

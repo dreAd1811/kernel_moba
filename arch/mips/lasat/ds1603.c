@@ -136,11 +136,7 @@ static void rtc_end_op(void)
 	lasat_ndelay(1000);
 }
 
-<<<<<<< HEAD
 void read_persistent_clock64(struct timespec64 *ts)
-=======
-void read_persistent_clock(struct timespec *ts)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long word;
 	unsigned long flags;
@@ -156,28 +152,19 @@ void read_persistent_clock(struct timespec *ts)
 	ts->tv_nsec = 0;
 }
 
-<<<<<<< HEAD
 int update_persistent_clock64(struct timespec64 now)
 {
 	time64_t time = now.tv_sec;
-=======
-int rtc_mips_set_mmss(unsigned long time)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 
 	spin_lock_irqsave(&rtc_lock, flags);
 	rtc_init_op();
 	rtc_write_byte(SET_TIME_CMD);
-<<<<<<< HEAD
 	/*
 	 * Due to the hardware limitation, we cast to 'unsigned long' type,
 	 * so it will overflow in year 2106 on 32-bit machine.
 	 */
 	rtc_write_word((unsigned long)time);
-=======
-	rtc_write_word(time);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rtc_end_op();
 	spin_unlock_irqrestore(&rtc_lock, flags);
 

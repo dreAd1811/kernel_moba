@@ -2,10 +2,6 @@
 config ARCH_AXXIA
 	bool "LSI Axxia platforms"
 	depends on ARCH_MULTI_V7 && ARM_LPAE
-<<<<<<< HEAD
-=======
-	select ARCH_DMA_ADDR_T_64BIT
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select ARM_AMBA
 	select ARM_GIC
 	select ARM_TIMER_SP804

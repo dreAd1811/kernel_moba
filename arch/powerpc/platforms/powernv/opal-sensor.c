@@ -19,19 +19,10 @@
  */
 
 #include <linux/delay.h>
-<<<<<<< HEAD
-=======
-#include <linux/mutex.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/of_platform.h>
 #include <asm/opal.h>
 #include <asm/machdep.h>
 
-<<<<<<< HEAD
-=======
-static DEFINE_MUTEX(opal_sensor_mutex);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * This will return sensor information to driver based on the requested sensor
  * handle. A handle is an opaque id for the powernv, read by the driver from the
@@ -44,19 +35,9 @@ int opal_get_sensor_data(u32 sensor_hndl, u32 *sensor_data)
 	__be32 data;
 
 	token = opal_async_get_token_interruptible();
-<<<<<<< HEAD
 	if (token < 0)
 		return token;
 
-=======
-	if (token < 0) {
-		pr_err("%s: Couldn't get the token, returning\n", __func__);
-		ret = token;
-		goto out;
-	}
-
-	mutex_lock(&opal_sensor_mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = opal_sensor_read(sensor_hndl, token, &data);
 	switch (ret) {
 	case OPAL_ASYNC_COMPLETION:
@@ -64,7 +45,6 @@ int opal_get_sensor_data(u32 sensor_hndl, u32 *sensor_data)
 		if (ret) {
 			pr_err("%s: Failed to wait for the async response, %d\n",
 			       __func__, ret);
-<<<<<<< HEAD
 			goto out;
 		}
 
@@ -118,26 +98,16 @@ int opal_get_sensor_data_u64(u32 sensor_hndl, u64 *sensor_data)
 		if (ret) {
 			pr_err("%s: Failed to wait for the async response, %d\n",
 			       __func__, ret);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto out_token;
 		}
 
 		ret = opal_error_code(opal_get_async_rc(msg));
-<<<<<<< HEAD
 		*sensor_data = be64_to_cpu(data);
-=======
-		*sensor_data = be32_to_cpu(data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case OPAL_SUCCESS:
 		ret = 0;
-<<<<<<< HEAD
 		*sensor_data = be64_to_cpu(data);
-=======
-		*sensor_data = be32_to_cpu(data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case OPAL_WRONG_STATE:
@@ -150,19 +120,10 @@ int opal_get_sensor_data_u64(u32 sensor_hndl, u64 *sensor_data)
 	}
 
 out_token:
-<<<<<<< HEAD
 	opal_async_release_token(token);
 	return ret;
 }
 EXPORT_SYMBOL_GPL(opal_get_sensor_data_u64);
-=======
-	mutex_unlock(&opal_sensor_mutex);
-	opal_async_release_token(token);
-out:
-	return ret;
-}
-EXPORT_SYMBOL_GPL(opal_get_sensor_data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int __init opal_sensor_init(void)
 {

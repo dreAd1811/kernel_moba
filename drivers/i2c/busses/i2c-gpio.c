@@ -7,22 +7,15 @@
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation.
  */
-<<<<<<< HEAD
 #include <linux/debugfs.h>
 #include <linux/delay.h>
 #include <linux/i2c.h>
 #include <linux/i2c-algo-bit.h>
 #include <linux/platform_data/i2c-gpio.h>
-=======
-#include <linux/i2c.h>
-#include <linux/i2c-algo-bit.h>
-#include <linux/i2c-gpio.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/init.h>
 #include <linux/module.h>
 #include <linux/slab.h>
 #include <linux/platform_device.h>
-<<<<<<< HEAD
 #include <linux/gpio/consumer.h>
 #include <linux/of.h>
 
@@ -37,29 +30,6 @@ struct i2c_gpio_private_data {
 #endif
 };
 
-=======
-#include <linux/gpio.h>
-#include <linux/of.h>
-#include <linux/of_gpio.h>
-
-struct i2c_gpio_private_data {
-	struct i2c_adapter adap;
-	struct i2c_algo_bit_data bit_data;
-	struct i2c_gpio_platform_data pdata;
-};
-
-/* Toggle SDA by changing the direction of the pin */
-static void i2c_gpio_setsda_dir(void *data, int state)
-{
-	struct i2c_gpio_platform_data *pdata = data;
-
-	if (state)
-		gpio_direction_input(pdata->sda_pin);
-	else
-		gpio_direction_output(pdata->sda_pin, 0);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Toggle SDA by changing the output value of the pin. This is only
  * valid for pins configured as open drain (i.e. setting the value
@@ -67,26 +37,9 @@ static void i2c_gpio_setsda_dir(void *data, int state)
  */
 static void i2c_gpio_setsda_val(void *data, int state)
 {
-<<<<<<< HEAD
 	struct i2c_gpio_private_data *priv = data;
 
 	gpiod_set_value_cansleep(priv->sda, state);
-=======
-	struct i2c_gpio_platform_data *pdata = data;
-
-	gpio_set_value(pdata->sda_pin, state);
-}
-
-/* Toggle SCL by changing the direction of the pin. */
-static void i2c_gpio_setscl_dir(void *data, int state)
-{
-	struct i2c_gpio_platform_data *pdata = data;
-
-	if (state)
-		gpio_direction_input(pdata->scl_pin);
-	else
-		gpio_direction_output(pdata->scl_pin, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -97,33 +50,20 @@ static void i2c_gpio_setscl_dir(void *data, int state)
  */
 static void i2c_gpio_setscl_val(void *data, int state)
 {
-<<<<<<< HEAD
 	struct i2c_gpio_private_data *priv = data;
 
 	gpiod_set_value_cansleep(priv->scl, state);
-=======
-	struct i2c_gpio_platform_data *pdata = data;
-
-	gpio_set_value(pdata->scl_pin, state);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int i2c_gpio_getsda(void *data)
 {
-<<<<<<< HEAD
 	struct i2c_gpio_private_data *priv = data;
 
 	return gpiod_get_value_cansleep(priv->sda);
-=======
-	struct i2c_gpio_platform_data *pdata = data;
-
-	return gpio_get_value(pdata->sda_pin);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int i2c_gpio_getscl(void *data)
 {
-<<<<<<< HEAD
 	struct i2c_gpio_private_data *priv = data;
 
 	return gpiod_get_value_cansleep(priv->scl);
@@ -259,33 +199,6 @@ static void i2c_gpio_fault_injector_exit(struct platform_device *pdev)
 static inline void i2c_gpio_fault_injector_init(struct platform_device *pdev) {}
 static inline void i2c_gpio_fault_injector_exit(struct platform_device *pdev) {}
 #endif /* CONFIG_I2C_GPIO_FAULT_INJECTOR*/
-=======
-	struct i2c_gpio_platform_data *pdata = data;
-
-	return gpio_get_value(pdata->scl_pin);
-}
-
-static int of_i2c_gpio_get_pins(struct device_node *np,
-				unsigned int *sda_pin, unsigned int *scl_pin)
-{
-	if (of_gpio_count(np) < 2)
-		return -ENODEV;
-
-	*sda_pin = of_get_gpio(np, 0);
-	*scl_pin = of_get_gpio(np, 1);
-
-	if (*sda_pin == -EPROBE_DEFER || *scl_pin == -EPROBE_DEFER)
-		return -EPROBE_DEFER;
-
-	if (!gpio_is_valid(*sda_pin) || !gpio_is_valid(*scl_pin)) {
-		pr_err("%pOF: invalid GPIO pins, sda=%d/scl=%d\n",
-		       np, *sda_pin, *scl_pin);
-		return -ENODEV;
-	}
-
-	return 0;
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void of_i2c_gpio_get_props(struct device_node *np,
 				  struct i2c_gpio_platform_data *pdata)
@@ -305,7 +218,6 @@ static void of_i2c_gpio_get_props(struct device_node *np,
 		of_property_read_bool(np, "i2c-gpio,scl-output-only");
 }
 
-<<<<<<< HEAD
 static struct gpio_desc *i2c_gpio_get_desc(struct device *dev,
 					   const char *con_id,
 					   unsigned int index,
@@ -342,15 +254,12 @@ static struct gpio_desc *i2c_gpio_get_desc(struct device *dev,
 	return retdesc;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int i2c_gpio_probe(struct platform_device *pdev)
 {
 	struct i2c_gpio_private_data *priv;
 	struct i2c_gpio_platform_data *pdata;
 	struct i2c_algo_bit_data *bit_data;
 	struct i2c_adapter *adap;
-<<<<<<< HEAD
 	struct device *dev = &pdev->dev;
 	struct device_node *np = dev->of_node;
 	enum gpiod_flags gflags;
@@ -360,46 +269,10 @@ static int i2c_gpio_probe(struct platform_device *pdev)
 	if (!priv)
 		return -ENOMEM;
 
-=======
-	unsigned int sda_pin, scl_pin;
-	int ret;
-
-	/* First get the GPIO pins; if it fails, we'll defer the probe. */
-	if (pdev->dev.of_node) {
-		ret = of_i2c_gpio_get_pins(pdev->dev.of_node,
-					   &sda_pin, &scl_pin);
-		if (ret)
-			return ret;
-	} else {
-		if (!dev_get_platdata(&pdev->dev))
-			return -ENXIO;
-		pdata = dev_get_platdata(&pdev->dev);
-		sda_pin = pdata->sda_pin;
-		scl_pin = pdata->scl_pin;
-	}
-
-	ret = devm_gpio_request(&pdev->dev, sda_pin, "sda");
-	if (ret) {
-		if (ret == -EINVAL)
-			ret = -EPROBE_DEFER;	/* Try again later */
-		return ret;
-	}
-	ret = devm_gpio_request(&pdev->dev, scl_pin, "scl");
-	if (ret) {
-		if (ret == -EINVAL)
-			ret = -EPROBE_DEFER;	/* Try again later */
-		return ret;
-	}
-
-	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
-	if (!priv)
-		return -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adap = &priv->adap;
 	bit_data = &priv->bit_data;
 	pdata = &priv->pdata;
 
-<<<<<<< HEAD
 	if (np) {
 		of_i2c_gpio_get_props(np, pdata);
 	} else {
@@ -447,31 +320,6 @@ static int i2c_gpio_probe(struct platform_device *pdev)
 
 	bit_data->setsda = i2c_gpio_setsda_val;
 	bit_data->setscl = i2c_gpio_setscl_val;
-=======
-	if (pdev->dev.of_node) {
-		pdata->sda_pin = sda_pin;
-		pdata->scl_pin = scl_pin;
-		of_i2c_gpio_get_props(pdev->dev.of_node, pdata);
-	} else {
-		memcpy(pdata, dev_get_platdata(&pdev->dev), sizeof(*pdata));
-	}
-
-	if (pdata->sda_is_open_drain) {
-		gpio_direction_output(pdata->sda_pin, 1);
-		bit_data->setsda = i2c_gpio_setsda_val;
-	} else {
-		gpio_direction_input(pdata->sda_pin);
-		bit_data->setsda = i2c_gpio_setsda_dir;
-	}
-
-	if (pdata->scl_is_open_drain || pdata->scl_is_output_only) {
-		gpio_direction_output(pdata->scl_pin, 1);
-		bit_data->setscl = i2c_gpio_setscl_val;
-	} else {
-		gpio_direction_input(pdata->scl_pin);
-		bit_data->setscl = i2c_gpio_setscl_dir;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!pdata->scl_is_output_only)
 		bit_data->getscl = i2c_gpio_getscl;
@@ -489,31 +337,18 @@ static int i2c_gpio_probe(struct platform_device *pdev)
 	else
 		bit_data->timeout = HZ / 10;		/* 100 ms */
 
-<<<<<<< HEAD
 	bit_data->data = priv;
 
 	adap->owner = THIS_MODULE;
 	if (np)
 		strlcpy(adap->name, dev_name(dev), sizeof(adap->name));
-=======
-	bit_data->data = pdata;
-
-	adap->owner = THIS_MODULE;
-	if (pdev->dev.of_node)
-		strlcpy(adap->name, dev_name(&pdev->dev), sizeof(adap->name));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		snprintf(adap->name, sizeof(adap->name), "i2c-gpio%d", pdev->id);
 
 	adap->algo_data = bit_data;
 	adap->class = I2C_CLASS_HWMON | I2C_CLASS_SPD;
-<<<<<<< HEAD
 	adap->dev.parent = dev;
 	adap->dev.of_node = np;
-=======
-	adap->dev.parent = &pdev->dev;
-	adap->dev.of_node = pdev->dev.of_node;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	adap->nr = pdev->id;
 	ret = i2c_bit_add_numbered_bus(adap);
@@ -522,7 +357,6 @@ static int i2c_gpio_probe(struct platform_device *pdev)
 
 	platform_set_drvdata(pdev, priv);
 
-<<<<<<< HEAD
 	/*
 	 * FIXME: using global GPIO numbers is not helpful. If/when we
 	 * get accessors to get the actual name of the GPIO line,
@@ -535,13 +369,6 @@ static int i2c_gpio_probe(struct platform_device *pdev)
 
 	i2c_gpio_fault_injector_init(pdev);
 
-=======
-	dev_info(&pdev->dev, "using pins %u (SDA) and %u (SCL%s)\n",
-		 pdata->sda_pin, pdata->scl_pin,
-		 pdata->scl_is_output_only
-		 ? ", no clock stretching" : "");
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -550,11 +377,8 @@ static int i2c_gpio_remove(struct platform_device *pdev)
 	struct i2c_gpio_private_data *priv;
 	struct i2c_adapter *adap;
 
-<<<<<<< HEAD
 	i2c_gpio_fault_injector_exit(pdev);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	priv = platform_get_drvdata(pdev);
 	adap = &priv->adap;
 

@@ -15,7 +15,6 @@ mlxsw_switchx2-objs		:= switchx2.o
 obj-$(CONFIG_MLXSW_SPECTRUM)	+= mlxsw_spectrum.o
 mlxsw_spectrum-objs		:= spectrum.o spectrum_buffers.o \
 				   spectrum_switchdev.o spectrum_router.o \
-<<<<<<< HEAD
 				   spectrum1_kvdl.o spectrum2_kvdl.o \
 				   spectrum_kvdl.o \
 				   spectrum_acl_tcam.o spectrum_acl_ctcam.o \
@@ -29,12 +28,6 @@ mlxsw_spectrum-objs		:= spectrum.o spectrum_buffers.o \
 				   spectrum1_mr_tcam.o spectrum2_mr_tcam.o \
 				   spectrum_mr_tcam.o spectrum_mr.o \
 				   spectrum_qdisc.o spectrum_span.o
-=======
-				   spectrum_kvdl.o spectrum_acl_tcam.o \
-				   spectrum_acl.o spectrum_flower.o \
-				   spectrum_cnt.o spectrum_fid.o \
-				   spectrum_ipip.o
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 mlxsw_spectrum-$(CONFIG_MLXSW_SPECTRUM_DCB)	+= spectrum_dcb.o
 mlxsw_spectrum-$(CONFIG_NET_DEVLINK) += spectrum_dpipe.o
 obj-$(CONFIG_MLXSW_MINIMAL)	+= mlxsw_minimal.o

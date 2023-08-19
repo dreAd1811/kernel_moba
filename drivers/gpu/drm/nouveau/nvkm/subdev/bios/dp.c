@@ -25,11 +25,7 @@
 #include <subdev/bios/bit.h>
 #include <subdev/bios/dp.h>
 
-<<<<<<< HEAD
 u16
-=======
-static u16
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 nvbios_dp_table(struct nvkm_bios *bios, u8 *ver, u8 *hdr, u8 *cnt, u8 *len)
 {
 	struct bit_entry d;
@@ -40,10 +36,7 @@ nvbios_dp_table(struct nvkm_bios *bios, u8 *ver, u8 *hdr, u8 *cnt, u8 *len)
 			if (data) {
 				*ver = nvbios_rd08(bios, data + 0x00);
 				switch (*ver) {
-<<<<<<< HEAD
 				case 0x20:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				case 0x21:
 				case 0x30:
 				case 0x40:
@@ -71,10 +64,7 @@ nvbios_dpout_entry(struct nvkm_bios *bios, u8 idx,
 	if (data && idx < *cnt) {
 		u16 outp = nvbios_rd16(bios, data + *hdr + idx * *len);
 		switch (*ver * !!outp) {
-<<<<<<< HEAD
 		case 0x20:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case 0x21:
 		case 0x30:
 			*hdr = nvbios_rd08(bios, data + 0x04);
@@ -108,23 +98,16 @@ nvbios_dpout_parse(struct nvkm_bios *bios, u8 idx,
 		info->type = nvbios_rd16(bios, data + 0x00);
 		info->mask = nvbios_rd16(bios, data + 0x02);
 		switch (*ver) {
-<<<<<<< HEAD
 		case 0x20:
 			info->mask |= 0x00c0; /* match any link */
 			/* fall-through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case 0x21:
 		case 0x30:
 			info->flags     = nvbios_rd08(bios, data + 0x05);
 			info->script[0] = nvbios_rd16(bios, data + 0x06);
 			info->script[1] = nvbios_rd16(bios, data + 0x08);
-<<<<<<< HEAD
 			if (*len >= 0x0c)
 				info->lnkcmp    = nvbios_rd16(bios, data + 0x0a);
-=======
-			info->lnkcmp    = nvbios_rd16(bios, data + 0x0a);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (*len >= 0x0f) {
 				info->script[2] = nvbios_rd16(bios, data + 0x0c);
 				info->script[3] = nvbios_rd16(bios, data + 0x0e);
@@ -193,10 +176,7 @@ nvbios_dpcfg_parse(struct nvkm_bios *bios, u16 outp, u8 idx,
 	memset(info, 0x00, sizeof(*info));
 	if (data) {
 		switch (*ver) {
-<<<<<<< HEAD
 		case 0x20:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case 0x21:
 			info->dc    = nvbios_rd08(bios, data + 0x02);
 			info->pe    = nvbios_rd08(bios, data + 0x03);

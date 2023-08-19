@@ -46,10 +46,7 @@
 #include <linux/init.h>
 #include <linux/interrupt.h>
 #include <linux/slab.h>
-<<<<<<< HEAD
 #include <linux/refcount.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/unaligned.h>
 #include <linux/uaccess.h>
 
@@ -76,11 +73,7 @@ struct syncppp {
 
 	struct tasklet_struct tsk;
 
-<<<<<<< HEAD
 	refcount_t	refcnt;
-=======
-	atomic_t	refcnt;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct completion dead_cmp;
 	struct ppp_channel chan;	/* interface to generic ppp layer */
 };
@@ -149,22 +142,14 @@ static struct syncppp *sp_get(struct tty_struct *tty)
 	read_lock(&disc_data_lock);
 	ap = tty->disc_data;
 	if (ap != NULL)
-<<<<<<< HEAD
 		refcount_inc(&ap->refcnt);
-=======
-		atomic_inc(&ap->refcnt);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	read_unlock(&disc_data_lock);
 	return ap;
 }
 
 static void sp_put(struct syncppp *ap)
 {
-<<<<<<< HEAD
 	if (refcount_dec_and_test(&ap->refcnt))
-=======
-	if (atomic_dec_and_test(&ap->refcnt))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		complete(&ap->dead_cmp);
 }
 
@@ -198,11 +183,7 @@ ppp_sync_open(struct tty_struct *tty)
 	skb_queue_head_init(&ap->rqueue);
 	tasklet_init(&ap->tsk, ppp_sync_process, (unsigned long) ap);
 
-<<<<<<< HEAD
 	refcount_set(&ap->refcnt, 1);
-=======
-	atomic_set(&ap->refcnt, 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	init_completion(&ap->dead_cmp);
 
 	ap->chan.private = ap;
@@ -252,11 +233,7 @@ ppp_sync_close(struct tty_struct *tty)
 	 * our channel ops (i.e. ppp_sync_send/ioctl) are in progress
 	 * by the time it returns.
 	 */
-<<<<<<< HEAD
 	if (!refcount_dec_and_test(&ap->refcnt))
-=======
-	if (!atomic_dec_and_test(&ap->refcnt))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		wait_for_completion(&ap->dead_cmp);
 	tasklet_kill(&ap->tsk);
 
@@ -350,11 +327,7 @@ ppp_synctty_ioctl(struct tty_struct *tty, struct file *file,
 }
 
 /* No kernel lock - fine */
-<<<<<<< HEAD
 static __poll_t
-=======
-static unsigned int
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 ppp_sync_poll(struct tty_struct *tty, struct file *file, poll_table *wait)
 {
 	return 0;

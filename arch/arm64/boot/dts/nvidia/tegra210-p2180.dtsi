@@ -282,10 +282,6 @@
 		status = "okay";
 		bus-width = <8>;
 		non-removable;
-<<<<<<< HEAD
-=======
-		vqmmc-supply = <&vdd_1v8>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	clocks {
@@ -301,7 +297,6 @@
 		};
 	};
 
-<<<<<<< HEAD
 	cpus {
 		cpu@0 {
 			enable-method = "psci";
@@ -325,8 +320,6 @@
 		method = "smc";
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	regulators {
 		vdd_gpu: regulator@100 {
 			compatible = "pwm-regulator";

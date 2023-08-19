@@ -19,10 +19,6 @@
 #include <linux/scatterlist.h>
 
 #include <asm/io.h>
-<<<<<<< HEAD
-=======
-#include <asm/prom.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/pci-bridge.h>
 
 #define PCIBIOS_MIN_IO		0x1000
@@ -50,16 +46,10 @@ extern int pci_proc_domain(struct pci_bus *bus);
 
 struct vm_area_struct;
 
-<<<<<<< HEAD
 /* Tell PCI code what kind of PCI resource mappings we support */
 #define HAVE_PCI_MMAP			1
 #define ARCH_GENERIC_PCI_MMAP_RESOURCE	1
 #define arch_can_pci_mmap_io()		1
-=======
-/* Tell drivers/pci/proc.c that we have pci_mmap_page_range() */
-#define HAVE_PCI_MMAP		1
-#define arch_can_pci_mmap_io()	1
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 extern int pci_legacy_read(struct pci_bus *bus, loff_t port, u32 *val,
 			   size_t count);
@@ -71,19 +61,6 @@ extern int pci_mmap_legacy_page_range(struct pci_bus *bus,
 
 #define HAVE_PCI_LEGACY	1
 
-<<<<<<< HEAD
-=======
-/* The PCI address space does equal the physical memory
- * address space (no IOMMU).  The IDE and SCSI device layers use
- * this boolean for bounce buffer decisions.
- */
-#define PCI_DMA_BUS_IS_PHYS     (1)
-
-extern void pcibios_claim_one_bus(struct pci_bus *b);
-
-extern void pcibios_finish_adding_to_bus(struct pci_bus *bus);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern void pcibios_resource_survey(void);
 
 struct file;

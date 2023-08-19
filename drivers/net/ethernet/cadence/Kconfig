@@ -2,11 +2,7 @@
 # Atmel device configuration
 #
 
-<<<<<<< HEAD
 config NET_VENDOR_CADENCE
-=======
-config NET_CADENCE
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool "Cadence devices"
 	depends on HAS_IOMEM
 	default y
@@ -20,11 +16,7 @@ config NET_CADENCE
 	  the remaining Atmel network card questions. If you say Y, you will be
 	  asked for your specific card in the following questions.
 
-<<<<<<< HEAD
 if NET_VENDOR_CADENCE
-=======
-if NET_CADENCE
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config MACB
 	tristate "Cadence MACB/GEM support"
@@ -56,8 +48,4 @@ config MACB_PCI
 	  To compile this driver as a module, choose M here: the module
 	  will be called macb_pci.
 
-<<<<<<< HEAD
 endif # NET_VENDOR_CADENCE
-=======
-endif # NET_CADENCE
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

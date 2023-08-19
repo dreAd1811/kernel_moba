@@ -704,11 +704,7 @@ static int pn544_hci_check_presence(struct nfc_hci_dev *hdev,
 		    target->nfcid1_len != 10)
 			return -EOPNOTSUPP;
 
-<<<<<<< HEAD
 		 return nfc_hci_send_cmd(hdev, NFC_HCI_RF_READER_A_GATE,
-=======
-		return nfc_hci_send_cmd(hdev, NFC_HCI_RF_READER_A_GATE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     PN544_RF_READER_CMD_ACTIVATE_NEXT,
 				     target->nfcid1, target->nfcid1_len, NULL);
 	} else if (target->supported_protocols & (NFC_PROTO_JEWEL_MASK |

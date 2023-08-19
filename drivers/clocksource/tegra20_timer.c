@@ -230,11 +230,7 @@ static int __init tegra20_init_timer(struct device_node *np)
 		return ret;
 	}
 
-<<<<<<< HEAD
 	tegra_clockevent.cpumask = cpu_possible_mask;
-=======
-	tegra_clockevent.cpumask = cpu_all_mask;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tegra_clockevent.irq = tegra_timer_irq.irq;
 	clockevents_config_and_register(&tegra_clockevent, 1000000,
 					0x1, 0x1fffffff);
@@ -263,10 +259,6 @@ static int __init tegra20_init_rtc(struct device_node *np)
 	else
 		clk_prepare_enable(clk);
 
-<<<<<<< HEAD
 	return register_persistent_clock(tegra_read_persistent_clock64);
-=======
-	return register_persistent_clock(NULL, tegra_read_persistent_clock64);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 TIMER_OF_DECLARE(tegra20_rtc, "nvidia,tegra20-rtc", tegra20_init_rtc);

@@ -21,11 +21,7 @@
 #ifndef __MANTIS_VP1034_H
 #define __MANTIS_VP1034_H
 
-<<<<<<< HEAD
 #include <media/dvb_frontend.h>
-=======
-#include "dvb_frontend.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "mantis_common.h"
 
 

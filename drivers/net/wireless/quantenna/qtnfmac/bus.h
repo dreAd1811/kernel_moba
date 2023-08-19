@@ -27,12 +27,8 @@ enum qtnf_fw_state {
 	QTNF_FW_STATE_FW_DNLD_DONE,
 	QTNF_FW_STATE_BOOT_DONE,
 	QTNF_FW_STATE_ACTIVE,
-<<<<<<< HEAD
 	QTNF_FW_STATE_DETACHED,
 	QTNF_FW_STATE_EP_DEAD,
-=======
-	QTNF_FW_STATE_DEAD,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct qtnf_bus;
@@ -64,14 +60,9 @@ struct qtnf_bus {
 	char fwname[32];
 	struct napi_struct mux_napi;
 	struct net_device mux_dev;
-<<<<<<< HEAD
 	struct completion firmware_init_complete;
 	struct workqueue_struct *workqueue;
 	struct work_struct fw_work;
-=======
-	struct completion request_firmware_complete;
-	struct workqueue_struct *workqueue;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct work_struct event_work;
 	struct mutex bus_lock; /* lock during command/event processing */
 	struct dentry *dbg_dir;

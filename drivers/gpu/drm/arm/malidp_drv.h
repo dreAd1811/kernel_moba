@@ -13,7 +13,6 @@
 #ifndef __MALIDP_DRV_H__
 #define __MALIDP_DRV_H__
 
-<<<<<<< HEAD
 #include <drm/drm_writeback.h>
 #include <drm/drm_encoder.h>
 #include <linux/mutex.h>
@@ -46,21 +45,6 @@ struct malidp_drm {
 	/* Protects errors stats */
 	spinlock_t errors_lock;
 #endif
-=======
-#include <linux/mutex.h>
-#include <linux/wait.h>
-#include <drm/drmP.h>
-#include "malidp_hw.h"
-
-struct malidp_drm {
-	struct malidp_hw_device *dev;
-	struct drm_fbdev_cma *fbdev;
-	struct drm_crtc crtc;
-	wait_queue_head_t wq;
-	atomic_t config_valid;
-	struct drm_atomic_state *pm_state;
-	u32 core_id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define crtc_to_malidp_device(x) container_of(x, struct malidp_drm, crtc)
@@ -96,7 +80,6 @@ struct malidp_crtc_state {
 #define to_malidp_crtc_state(x) container_of(x, struct malidp_crtc_state, base)
 
 int malidp_de_planes_init(struct drm_device *drm);
-<<<<<<< HEAD
 int malidp_crtc_init(struct drm_device *drm);
 
 #ifdef CONFIG_DEBUG_FS
@@ -105,11 +88,6 @@ void malidp_error(struct malidp_drm *malidp,
 		  u64 vblank);
 #endif
 
-=======
-void malidp_de_planes_destroy(struct drm_device *drm);
-int malidp_crtc_init(struct drm_device *drm);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* often used combination of rotational bits */
 #define MALIDP_ROTATED_MASK	(DRM_MODE_ROTATE_90 | DRM_MODE_ROTATE_270)
 

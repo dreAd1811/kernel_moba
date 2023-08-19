@@ -158,14 +158,7 @@ static int ocrdma_register_device(struct ocrdma_dev *dev)
 	dev->ibdev.query_device = ocrdma_query_device;
 	dev->ibdev.query_port = ocrdma_query_port;
 	dev->ibdev.modify_port = ocrdma_modify_port;
-<<<<<<< HEAD
 	dev->ibdev.get_netdev = ocrdma_get_netdev;
-=======
-	dev->ibdev.query_gid = ocrdma_query_gid;
-	dev->ibdev.get_netdev = ocrdma_get_netdev;
-	dev->ibdev.add_gid = ocrdma_add_gid;
-	dev->ibdev.del_gid = ocrdma_del_gid;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev->ibdev.get_link_layer = ocrdma_link_layer;
 	dev->ibdev.alloc_pd = ocrdma_alloc_pd;
 	dev->ibdev.dealloc_pd = ocrdma_dealloc_pd;
@@ -183,10 +176,6 @@ static int ocrdma_register_device(struct ocrdma_dev *dev)
 	dev->ibdev.create_ah = ocrdma_create_ah;
 	dev->ibdev.destroy_ah = ocrdma_destroy_ah;
 	dev->ibdev.query_ah = ocrdma_query_ah;
-<<<<<<< HEAD
-=======
-	dev->ibdev.modify_ah = ocrdma_modify_ah;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev->ibdev.poll_cq = ocrdma_poll_cq;
 	dev->ibdev.post_send = ocrdma_post_send;
@@ -224,44 +213,27 @@ static int ocrdma_register_device(struct ocrdma_dev *dev)
 		dev->ibdev.destroy_srq = ocrdma_destroy_srq;
 		dev->ibdev.post_srq_recv = ocrdma_post_srq_recv;
 	}
-<<<<<<< HEAD
 	dev->ibdev.driver_id = RDMA_DRIVER_OCRDMA;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ib_register_device(&dev->ibdev, NULL);
 }
 
 static int ocrdma_alloc_resources(struct ocrdma_dev *dev)
 {
 	mutex_init(&dev->dev_lock);
-<<<<<<< HEAD
 	dev->cq_tbl = kcalloc(OCRDMA_MAX_CQ, sizeof(struct ocrdma_cq *),
 			      GFP_KERNEL);
-=======
-	dev->cq_tbl = kzalloc(sizeof(struct ocrdma_cq *) *
-			      OCRDMA_MAX_CQ, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!dev->cq_tbl)
 		goto alloc_err;
 
 	if (dev->attr.max_qp) {
-<<<<<<< HEAD
 		dev->qp_tbl = kcalloc(OCRDMA_MAX_QP,
 				      sizeof(struct ocrdma_qp *),
 				      GFP_KERNEL);
-=======
-		dev->qp_tbl = kzalloc(sizeof(struct ocrdma_qp *) *
-				      OCRDMA_MAX_QP, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!dev->qp_tbl)
 			goto alloc_err;
 	}
 
-<<<<<<< HEAD
 	dev->stag_arr = kcalloc(OCRDMA_MAX_STAG, sizeof(u64), GFP_KERNEL);
-=======
-	dev->stag_arr = kzalloc(sizeof(u64) * OCRDMA_MAX_STAG, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dev->stag_arr == NULL)
 		goto alloc_err;
 

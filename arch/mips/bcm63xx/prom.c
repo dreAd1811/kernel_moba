@@ -84,11 +84,7 @@ void __init prom_init(void)
 		 * Here we will start up CPU1 in the background and ask it to
 		 * reconfigure itself then go back to sleep.
 		 */
-<<<<<<< HEAD
 		memcpy((void *)0xa0000200, &bmips_smp_movevec, 0x20);
-=======
-		memcpy((void *)0xa0000200, bmips_smp_movevec, 0x20);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__sync();
 		set_c0_cause(C_SW0);
 		cpumask_set_cpu(1, &bmips_booted_mask);

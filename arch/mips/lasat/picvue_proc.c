@@ -156,11 +156,7 @@ static const struct file_operations pvc_scroll_proc_fops = {
 	.write		= pvc_scroll_proc_write,
 };
 
-<<<<<<< HEAD
 void pvc_proc_timerfunc(struct timer_list *unused)
-=======
-void pvc_proc_timerfunc(unsigned long data)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (scroll_dir < 0)
 		pvc_move(DISPLAY|RIGHT);
@@ -201,12 +197,7 @@ static int __init pvc_proc_init(void)
 	if (proc_entry == NULL)
 		goto error;
 
-<<<<<<< HEAD
 	timer_setup(&timer, pvc_proc_timerfunc, 0);
-=======
-	init_timer(&timer);
-	timer.function = pvc_proc_timerfunc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 error:

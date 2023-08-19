@@ -268,11 +268,7 @@ static irqreturn_t tc3589x_gpio_irq(int irq, void *dev)
 		while (stat) {
 			int bit = __ffs(stat);
 			int line = i * 8 + bit;
-<<<<<<< HEAD
 			int irq = irq_find_mapping(tc3589x_gpio->chip.irq.domain,
-=======
-			int irq = irq_find_mapping(tc3589x_gpio->chip.irqdomain,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						   line);
 
 			handle_nested_irq(irq);

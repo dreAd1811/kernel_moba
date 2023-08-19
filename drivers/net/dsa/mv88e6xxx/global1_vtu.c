@@ -11,12 +11,9 @@
  * (at your option) any later version.
  */
 
-<<<<<<< HEAD
 #include <linux/interrupt.h>
 #include <linux/irqdomain.h>
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "chip.h"
 #include "global1.h"
 
@@ -519,7 +516,6 @@ int mv88e6xxx_g1_vtu_flush(struct mv88e6xxx_chip *chip)
 
 	return mv88e6xxx_g1_vtu_op(chip, MV88E6XXX_G1_VTU_OP_FLUSH_ALL);
 }
-<<<<<<< HEAD
 
 static irqreturn_t mv88e6xxx_g1_vtu_prob_irq_thread_fn(int irq, void *dev_id)
 {
@@ -594,5 +590,3 @@ void mv88e6xxx_g1_vtu_prob_irq_free(struct mv88e6xxx_chip *chip)
 	free_irq(chip->vtu_prob_irq, chip);
 	irq_dispose_mapping(chip->vtu_prob_irq);
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

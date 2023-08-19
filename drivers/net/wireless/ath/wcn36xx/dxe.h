@@ -33,7 +33,6 @@ H2H_TEST_RX_TX = DMA2
 #define WCN36XX_CCU_DXE_INT_SELECT_RIVA		0x310
 #define WCN36XX_CCU_DXE_INT_SELECT_PRONTO	0x10dc
 
-<<<<<<< HEAD
 /* Descriptor valid */
 #define WCN36xx_DXE_CTRL_VLD		BIT(0)
 /* End of packet */
@@ -134,17 +133,6 @@ H2H_TEST_RX_TX = DMA2
 	WCN36xx_DXE_CTRL_BTHLD_SEL_SET(5) | WCN36xx_DXE_CTRL_PRIO_SET(4) | \
 	WCN36xx_DXE_CTRL_INT | WCN36xx_DXE_CTRL_SWAP | \
 	WCN36xx_DXE_CTRL_ENDIANNESS)
-=======
-/* TODO This must calculated properly but not hardcoded */
-#define WCN36XX_DXE_CTRL_TX_L			0x328a44
-#define WCN36XX_DXE_CTRL_TX_H			0x32ce44
-#define WCN36XX_DXE_CTRL_RX_L			0x12ad2f
-#define WCN36XX_DXE_CTRL_RX_H			0x12d12f
-#define WCN36XX_DXE_CTRL_TX_H_BD		0x30ce45
-#define WCN36XX_DXE_CTRL_TX_H_SKB		0x32ce4d
-#define WCN36XX_DXE_CTRL_TX_L_BD		0x308a45
-#define WCN36XX_DXE_CTRL_TX_L_SKB		0x328a4d
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* TODO This must calculated properly but not hardcoded */
 #define WCN36XX_DXE_WQ_TX_L			0x17
@@ -152,7 +140,6 @@ H2H_TEST_RX_TX = DMA2
 #define WCN36XX_DXE_WQ_RX_L			0xB
 #define WCN36XX_DXE_WQ_RX_H			0x4
 
-<<<<<<< HEAD
 /* Channel enable or restart */
 #define WCN36xx_DXE_CH_CTRL_EN			BIT(0)
 /* End of packet bit */
@@ -253,17 +240,6 @@ H2H_TEST_RX_TX = DMA2
 		WCN36xx_DXE_CH_CTRL_EDEN | WCN36xx_DXE_CH_CTRL_EDVEN | \
 		WCN36xx_DXE_CH_CTRL_SEL_SET(0) | WCN36xx_DXE_CH_CTRL_ENDIANNESS | \
 		WCN36xx_DXE_CH_CTRL_SWAP)
-=======
-/* DXE descriptor control filed */
-#define WCN36XX_DXE_CTRL_VALID_MASK (0x00000001)
-
-/* TODO This must calculated properly but not hardcoded */
-/* DXE default control register values */
-#define WCN36XX_DXE_CH_DEFAULT_CTL_RX_L		0x847EAD2F
-#define WCN36XX_DXE_CH_DEFAULT_CTL_RX_H		0x84FED12F
-#define WCN36XX_DXE_CH_DEFAULT_CTL_TX_H		0x853ECF4D
-#define WCN36XX_DXE_CH_DEFAULT_CTL_TX_L		0x843e8b4d
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Common DXE registers */
 #define WCN36XX_DXE_MEM_CSR			(WCN36XX_DXE_MEM_REG + 0x00)
@@ -286,13 +262,10 @@ H2H_TEST_RX_TX = DMA2
 #define WCN36XX_DXE_0_INT_DONE_CLR		(WCN36XX_DXE_MEM_REG + 0x38)
 #define WCN36XX_DXE_0_INT_ERR_CLR		(WCN36XX_DXE_MEM_REG + 0x3C)
 
-<<<<<<< HEAD
 #define WCN36XX_CH_STAT_INT_DONE_MASK   0x00008000
 #define WCN36XX_CH_STAT_INT_ERR_MASK    0x00004000
 #define WCN36XX_CH_STAT_INT_ED_MASK     0x00002000
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define WCN36XX_DXE_0_CH0_STATUS		(WCN36XX_DXE_MEM_REG + 0x404)
 #define WCN36XX_DXE_0_CH1_STATUS		(WCN36XX_DXE_MEM_REG + 0x444)
 #define WCN36XX_DXE_0_CH2_STATUS		(WCN36XX_DXE_MEM_REG + 0x484)
@@ -449,10 +422,6 @@ struct wcn36xx_dxe_ctl {
 	unsigned int		desc_phy_addr;
 	int			ctl_blk_order;
 	struct sk_buff		*skb;
-<<<<<<< HEAD
-=======
-	spinlock_t              skb_lock;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void			*bd_cpu_addr;
 	dma_addr_t		bd_phy_addr;
 };
@@ -482,10 +451,7 @@ struct wcn36xx_dxe_mem_pool {
 	dma_addr_t	phy_addr;
 };
 
-<<<<<<< HEAD
 struct wcn36xx_tx_bd;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct wcn36xx_vif;
 int wcn36xx_dxe_allocate_mem_pools(struct wcn36xx *wcn);
 void wcn36xx_dxe_free_mem_pools(struct wcn36xx *wcn);
@@ -497,15 +463,8 @@ void wcn36xx_dxe_deinit(struct wcn36xx *wcn);
 int wcn36xx_dxe_init_channels(struct wcn36xx *wcn);
 int wcn36xx_dxe_tx_frame(struct wcn36xx *wcn,
 			 struct wcn36xx_vif *vif_priv,
-<<<<<<< HEAD
 			 struct wcn36xx_tx_bd *bd,
 			 struct sk_buff *skb,
 			 bool is_low);
 void wcn36xx_dxe_tx_ack_ind(struct wcn36xx *wcn, u32 status);
-=======
-			 struct sk_buff *skb,
-			 bool is_low);
-void wcn36xx_dxe_tx_ack_ind(struct wcn36xx *wcn, u32 status);
-void *wcn36xx_dxe_get_next_bd(struct wcn36xx *wcn, bool is_low);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif	/* _DXE_H_ */

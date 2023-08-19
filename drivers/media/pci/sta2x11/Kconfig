@@ -1,11 +1,6 @@
 config STA2X11_VIP
 	tristate "STA2X11 VIP Video For Linux"
-<<<<<<< HEAD
 	depends on STA2X11 || COMPILE_TEST
-=======
-	depends on STA2X11
-	depends on HAS_DMA
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select VIDEO_ADV7180 if MEDIA_SUBDRV_AUTOSELECT
 	select VIDEOBUF2_DMA_CONTIG
 	depends on PCI && VIDEO_V4L2 && VIRT_TO_BUS

@@ -7,7 +7,6 @@
  */
 #include <dt-bindings/clock/stih410-clks.h>
 / {
-<<<<<<< HEAD
 	/*
 	 * Fixed 30MHz oscillator inputs to SoC
 	 */
@@ -24,8 +23,6 @@
 		clock-frequency = <0>;
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clocks {
 		#address-cells = <1>;
 		#size-cells = <1>;
@@ -34,30 +31,6 @@
 		compatible = "st,stih410-clk", "simple-bus";
 
 		/*
-<<<<<<< HEAD
-=======
-		 * Fixed 30MHz oscillator inputs to SoC
-		 */
-		clk_sysin: clk-sysin {
-			#clock-cells = <0>;
-			compatible = "fixed-clock";
-			clock-frequency = <30000000>;
-			clock-output-names = "CLK_SYSIN";
-		};
-
-		/*
-		 * ARM Peripheral clock for timers
-		 */
-		arm_periph_clk: clk-m-a9-periphs {
-			#clock-cells = <0>;
-			compatible = "fixed-factor-clock";
-			clocks = <&clk_m_a9>;
-			clock-div = <2>;
-			clock-mult = <1>;
-		};
-
-		/*
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 * A9 PLL.
 		 */
 		clockgen-a9@92b0000 {
@@ -86,7 +59,6 @@
 				 <&clockgen_a9_pll 0>,
 				 <&clk_s_c0_flexgen 13>,
 				 <&clk_m_a9_ext2f_div2>;
-<<<<<<< HEAD
 			/*
 			 * ARM Peripheral clock for timers
 			 */
@@ -100,37 +72,6 @@
 		};
 
 		clockgen-a@90ff000 {
-=======
-		};
-
-		/*
-		 * ARM Peripheral clock for timers
-		 */
-		clk_m_a9_ext2f_div2: clk-m-a9-ext2f-div2s {
-			#clock-cells = <0>;
-			compatible = "fixed-factor-clock";
-
-			clocks = <&clk_s_c0_flexgen 13>;
-
-			clock-output-names = "clk-m-a9-ext2f-div2";
-
-			clock-div = <2>;
-			clock-mult = <1>;
-		};
-
-		/*
-		 * Bootloader initialized system infrastructure clock for
-		 * serial devices.
-		 */
-		clk_ext2f_a9: clockgen-c0@13 {
-			#clock-cells = <0>;
-			compatible = "fixed-clock";
-			clock-frequency = <200000000>;
-			clock-output-names = "clk-s-icn-reg-0";
-		};
-
-		clockgen-a@090ff000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "st,clkgen-c32";
 			reg = <0x90ff000 0x1000>;
 
@@ -172,11 +113,7 @@
 			clock-critical = <0>; /* clk-s-c0-fs0-ch0 */
 		};
 
-<<<<<<< HEAD
 		clk_s_c0: clockgen-c@9103000 {
-=======
-		clk_s_c0: clockgen-c@09103000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "st,clkgen-c32";
 			reg = <0x9103000 0x1000>;
 
@@ -256,7 +193,6 @@
 						 <CLK_EXT2F_A9>,
 						 <CLK_ICN_LMI>,
 						 <CLK_ICN_SBC>;
-<<<<<<< HEAD
 
 				/*
 				 * ARM Peripheral clock for timers
@@ -272,8 +208,6 @@
 					clock-div = <2>;
 					clock-mult = <1>;
 				};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 		};
 
@@ -290,11 +224,7 @@
 					     "clk-s-d0-fs0-ch3";
 		};
 
-<<<<<<< HEAD
 		clockgen-d0@9104000 {
-=======
-		clockgen-d0@09104000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "st,clkgen-c32";
 			reg = <0x9104000 0x1000>;
 
@@ -330,17 +260,7 @@
 					     "clk-s-d2-fs0-ch3";
 		};
 
-<<<<<<< HEAD
 		clockgen-d2@9106000 {
-=======
-		clk_tmdsout_hdmi: clk-tmdsout-hdmi {
-			#clock-cells = <0>;
-			compatible = "fixed-clock";
-			clock-frequency = <0>;
-		};
-
-		clockgen-d2@x9106000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "st,clkgen-c32";
 			reg = <0x9106000 0x1000>;
 

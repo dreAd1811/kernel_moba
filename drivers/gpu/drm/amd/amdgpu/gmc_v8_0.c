@@ -22,17 +22,11 @@
  */
 #include <linux/firmware.h>
 #include <drm/drmP.h>
-<<<<<<< HEAD
 #include <drm/drm_cache.h>
 #include "amdgpu.h"
 #include "gmc_v8_0.h"
 #include "amdgpu_ucode.h"
 #include "amdgpu_amdkfd.h"
-=======
-#include "amdgpu.h"
-#include "gmc_v8_0.h"
-#include "amdgpu_ucode.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "gmc/gmc_8_1_d.h"
 #include "gmc/gmc_8_1_sh_mask.h"
@@ -51,14 +45,9 @@
 
 #include "amdgpu_atombios.h"
 
-<<<<<<< HEAD
 #include "ivsrcid/ivsrcid_vislands30.h"
 
 static void gmc_v8_0_set_gmc_funcs(struct amdgpu_device *adev);
-=======
-
-static void gmc_v8_0_set_gart_funcs(struct amdgpu_device *adev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void gmc_v8_0_set_irq_funcs(struct amdgpu_device *adev);
 static int gmc_v8_0_wait_for_idle(void *handle);
 
@@ -137,7 +126,6 @@ static void gmc_v8_0_init_golden_registers(struct amdgpu_device *adev)
 {
 	switch (adev->asic_type) {
 	case CHIP_FIJI:
-<<<<<<< HEAD
 		amdgpu_device_program_register_sequence(adev,
 							fiji_mgcg_cgcg_init,
 							ARRAY_SIZE(fiji_mgcg_cgcg_init));
@@ -177,46 +165,6 @@ static void gmc_v8_0_init_golden_registers(struct amdgpu_device *adev)
 		amdgpu_device_program_register_sequence(adev,
 							golden_settings_stoney_common,
 							ARRAY_SIZE(golden_settings_stoney_common));
-=======
-		amdgpu_program_register_sequence(adev,
-						 fiji_mgcg_cgcg_init,
-						 (const u32)ARRAY_SIZE(fiji_mgcg_cgcg_init));
-		amdgpu_program_register_sequence(adev,
-						 golden_settings_fiji_a10,
-						 (const u32)ARRAY_SIZE(golden_settings_fiji_a10));
-		break;
-	case CHIP_TONGA:
-		amdgpu_program_register_sequence(adev,
-						 tonga_mgcg_cgcg_init,
-						 (const u32)ARRAY_SIZE(tonga_mgcg_cgcg_init));
-		amdgpu_program_register_sequence(adev,
-						 golden_settings_tonga_a11,
-						 (const u32)ARRAY_SIZE(golden_settings_tonga_a11));
-		break;
-	case CHIP_POLARIS11:
-	case CHIP_POLARIS12:
-		amdgpu_program_register_sequence(adev,
-						 golden_settings_polaris11_a11,
-						 (const u32)ARRAY_SIZE(golden_settings_polaris11_a11));
-		break;
-	case CHIP_POLARIS10:
-		amdgpu_program_register_sequence(adev,
-						 golden_settings_polaris10_a11,
-						 (const u32)ARRAY_SIZE(golden_settings_polaris10_a11));
-		break;
-	case CHIP_CARRIZO:
-		amdgpu_program_register_sequence(adev,
-						 cz_mgcg_cgcg_init,
-						 (const u32)ARRAY_SIZE(cz_mgcg_cgcg_init));
-		break;
-	case CHIP_STONEY:
-		amdgpu_program_register_sequence(adev,
-						 stoney_mgcg_cgcg_init,
-						 (const u32)ARRAY_SIZE(stoney_mgcg_cgcg_init));
-		amdgpu_program_register_sequence(adev,
-						 golden_settings_stoney_common,
-						 (const u32)ARRAY_SIZE(golden_settings_stoney_common));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		break;
@@ -315,37 +263,22 @@ static int gmc_v8_0_init_microcode(struct amdgpu_device *adev)
 	case CHIP_FIJI:
 	case CHIP_CARRIZO:
 	case CHIP_STONEY:
-<<<<<<< HEAD
 	case CHIP_VEGAM:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	default: BUG();
 	}
 
 	snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_mc.bin", chip_name);
-<<<<<<< HEAD
 	err = request_firmware(&adev->gmc.fw, fw_name, adev->dev);
 	if (err)
 		goto out;
 	err = amdgpu_ucode_validate(adev->gmc.fw);
-=======
-	err = request_firmware(&adev->mc.fw, fw_name, adev->dev);
-	if (err)
-		goto out;
-	err = amdgpu_ucode_validate(adev->mc.fw);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 out:
 	if (err) {
 		pr_err("mc: Failed to load firmware \"%s\"\n", fw_name);
-<<<<<<< HEAD
 		release_firmware(adev->gmc.fw);
 		adev->gmc.fw = NULL;
-=======
-		release_firmware(adev->mc.fw);
-		adev->mc.fw = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return err;
 }
@@ -374,7 +307,6 @@ static int gmc_v8_0_tonga_mc_load_microcode(struct amdgpu_device *adev)
 	if (amdgpu_sriov_bios(adev))
 		return 0;
 
-<<<<<<< HEAD
 	if (!adev->gmc.fw)
 		return -EINVAL;
 
@@ -388,21 +320,6 @@ static int gmc_v8_0_tonga_mc_load_microcode(struct amdgpu_device *adev)
 	ucode_size = le32_to_cpu(hdr->header.ucode_size_bytes) / 4;
 	fw_data = (const __le32 *)
 		(adev->gmc.fw->data + le32_to_cpu(hdr->header.ucode_array_offset_bytes));
-=======
-	if (!adev->mc.fw)
-		return -EINVAL;
-
-	hdr = (const struct mc_firmware_header_v1_0 *)adev->mc.fw->data;
-	amdgpu_ucode_print_mc_hdr(&hdr->header);
-
-	adev->mc.fw_version = le32_to_cpu(hdr->header.ucode_version);
-	regs_size = le32_to_cpu(hdr->io_debug_size_bytes) / (4 * 2);
-	io_mc_regs = (const __le32 *)
-		(adev->mc.fw->data + le32_to_cpu(hdr->io_debug_array_offset_bytes));
-	ucode_size = le32_to_cpu(hdr->header.ucode_size_bytes) / 4;
-	fw_data = (const __le32 *)
-		(adev->mc.fw->data + le32_to_cpu(hdr->header.ucode_array_offset_bytes));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	running = REG_GET_FIELD(RREG32(mmMC_SEQ_SUP_CNTL), MC_SEQ_SUP_CNTL, RUN);
 
@@ -448,11 +365,7 @@ static int gmc_v8_0_polaris_mc_load_microcode(struct amdgpu_device *adev)
 	const struct mc_firmware_header_v1_0 *hdr;
 	const __le32 *fw_data = NULL;
 	const __le32 *io_mc_regs = NULL;
-<<<<<<< HEAD
 	u32 data;
-=======
-	u32 data, vbios_version;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i, ucode_size, regs_size;
 
 	/* Skip MC ucode loading on SR-IOV capable boards.
@@ -463,7 +376,6 @@ static int gmc_v8_0_polaris_mc_load_microcode(struct amdgpu_device *adev)
 	if (amdgpu_sriov_bios(adev))
 		return 0;
 
-<<<<<<< HEAD
 	if (!adev->gmc.fw)
 		return -EINVAL;
 
@@ -477,28 +389,6 @@ static int gmc_v8_0_polaris_mc_load_microcode(struct amdgpu_device *adev)
 	ucode_size = le32_to_cpu(hdr->header.ucode_size_bytes) / 4;
 	fw_data = (const __le32 *)
 		(adev->gmc.fw->data + le32_to_cpu(hdr->header.ucode_array_offset_bytes));
-=======
-	WREG32(mmMC_SEQ_IO_DEBUG_INDEX, 0x9F);
-	data = RREG32(mmMC_SEQ_IO_DEBUG_DATA);
-	vbios_version = data & 0xf;
-
-	if (vbios_version == 0)
-		return 0;
-
-	if (!adev->mc.fw)
-		return -EINVAL;
-
-	hdr = (const struct mc_firmware_header_v1_0 *)adev->mc.fw->data;
-	amdgpu_ucode_print_mc_hdr(&hdr->header);
-
-	adev->mc.fw_version = le32_to_cpu(hdr->header.ucode_version);
-	regs_size = le32_to_cpu(hdr->io_debug_size_bytes) / (4 * 2);
-	io_mc_regs = (const __le32 *)
-		(adev->mc.fw->data + le32_to_cpu(hdr->io_debug_array_offset_bytes));
-	ucode_size = le32_to_cpu(hdr->header.ucode_size_bytes) / 4;
-	fw_data = (const __le32 *)
-		(adev->mc.fw->data + le32_to_cpu(hdr->header.ucode_array_offset_bytes));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	data = RREG32(mmMC_SEQ_MISC0);
 	data &= ~(0x40);
@@ -534,11 +424,7 @@ static int gmc_v8_0_polaris_mc_load_microcode(struct amdgpu_device *adev)
 }
 
 static void gmc_v8_0_vram_gtt_location(struct amdgpu_device *adev,
-<<<<<<< HEAD
 				       struct amdgpu_gmc *mc)
-=======
-				       struct amdgpu_mc *mc)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u64 base = 0;
 
@@ -546,19 +432,8 @@ static void gmc_v8_0_vram_gtt_location(struct amdgpu_device *adev,
 		base = RREG32(mmMC_VM_FB_LOCATION) & 0xFFFF;
 	base <<= 24;
 
-<<<<<<< HEAD
 	amdgpu_device_vram_location(adev, &adev->gmc, base);
 	amdgpu_device_gart_location(adev, mc);
-=======
-	if (mc->mc_vram_size > 0xFFC0000000ULL) {
-		/* leave room for at least 1024M GTT */
-		dev_warn(adev->dev, "limiting VRAM\n");
-		mc->real_vram_size = 0xFFC0000000ULL;
-		mc->mc_vram_size = 0xFFC0000000ULL;
-	}
-	amdgpu_vram_location(adev, &adev->mc, base);
-	amdgpu_gart_location(adev, mc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -600,32 +475,18 @@ static void gmc_v8_0_mc_program(struct amdgpu_device *adev)
 	}
 	/* Update configuration */
 	WREG32(mmMC_VM_SYSTEM_APERTURE_LOW_ADDR,
-<<<<<<< HEAD
 	       adev->gmc.vram_start >> 12);
 	WREG32(mmMC_VM_SYSTEM_APERTURE_HIGH_ADDR,
 	       adev->gmc.vram_end >> 12);
-=======
-	       adev->mc.vram_start >> 12);
-	WREG32(mmMC_VM_SYSTEM_APERTURE_HIGH_ADDR,
-	       adev->mc.vram_end >> 12);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	WREG32(mmMC_VM_SYSTEM_APERTURE_DEFAULT_ADDR,
 	       adev->vram_scratch.gpu_addr >> 12);
 
 	if (amdgpu_sriov_vf(adev)) {
-<<<<<<< HEAD
 		tmp = ((adev->gmc.vram_end >> 24) & 0xFFFF) << 16;
 		tmp |= ((adev->gmc.vram_start >> 24) & 0xFFFF);
 		WREG32(mmMC_VM_FB_LOCATION, tmp);
 		/* XXX double check these! */
 		WREG32(mmHDP_NONSURFACE_BASE, (adev->gmc.vram_start >> 8));
-=======
-		tmp = ((adev->mc.vram_end >> 24) & 0xFFFF) << 16;
-		tmp |= ((adev->mc.vram_start >> 24) & 0xFFFF);
-		WREG32(mmMC_VM_FB_LOCATION, tmp);
-		/* XXX double check these! */
-		WREG32(mmHDP_NONSURFACE_BASE, (adev->mc.vram_start >> 8));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		WREG32(mmHDP_NONSURFACE_INFO, (2 << 7) | (1 << 30));
 		WREG32(mmHDP_NONSURFACE_SIZE, 0x3FFFFFFF);
 	}
@@ -658,15 +519,10 @@ static void gmc_v8_0_mc_program(struct amdgpu_device *adev)
  */
 static int gmc_v8_0_mc_init(struct amdgpu_device *adev)
 {
-<<<<<<< HEAD
 	int r;
 
 	adev->gmc.vram_width = amdgpu_atombios_get_vram_width(adev);
 	if (!adev->gmc.vram_width) {
-=======
-	adev->mc.vram_width = amdgpu_atombios_get_vram_width(adev);
-	if (!adev->mc.vram_width) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u32 tmp;
 		int chansize, numchan;
 
@@ -708,7 +564,6 @@ static int gmc_v8_0_mc_init(struct amdgpu_device *adev)
 			numchan = 16;
 			break;
 		}
-<<<<<<< HEAD
 		adev->gmc.vram_width = numchan * chansize;
 	}
 	/* size in MB on si */
@@ -727,58 +582,28 @@ static int gmc_v8_0_mc_init(struct amdgpu_device *adev)
 	if (adev->flags & AMD_IS_APU) {
 		adev->gmc.aper_base = ((u64)RREG32(mmMC_VM_FB_OFFSET)) << 22;
 		adev->gmc.aper_size = adev->gmc.real_vram_size;
-=======
-		adev->mc.vram_width = numchan * chansize;
-	}
-	/* Could aper size report 0 ? */
-	adev->mc.aper_base = pci_resource_start(adev->pdev, 0);
-	adev->mc.aper_size = pci_resource_len(adev->pdev, 0);
-	/* size in MB on si */
-	adev->mc.mc_vram_size = RREG32(mmCONFIG_MEMSIZE) * 1024ULL * 1024ULL;
-	adev->mc.real_vram_size = RREG32(mmCONFIG_MEMSIZE) * 1024ULL * 1024ULL;
-
-#ifdef CONFIG_X86_64
-	if (adev->flags & AMD_IS_APU) {
-		adev->mc.aper_base = ((u64)RREG32(mmMC_VM_FB_OFFSET)) << 22;
-		adev->mc.aper_size = adev->mc.real_vram_size;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 #endif
 
 	/* In case the PCI BAR is larger than the actual amount of vram */
-<<<<<<< HEAD
 	adev->gmc.visible_vram_size = adev->gmc.aper_size;
 	if (adev->gmc.visible_vram_size > adev->gmc.real_vram_size)
 		adev->gmc.visible_vram_size = adev->gmc.real_vram_size;
-=======
-	adev->mc.visible_vram_size = adev->mc.aper_size;
-	if (adev->mc.visible_vram_size > adev->mc.real_vram_size)
-		adev->mc.visible_vram_size = adev->mc.real_vram_size;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* set the gart size */
 	if (amdgpu_gart_size == -1) {
 		switch (adev->asic_type) {
-<<<<<<< HEAD
 		case CHIP_POLARIS10: /* all engines support GPUVM */
 		case CHIP_POLARIS11: /* all engines support GPUVM */
 		case CHIP_POLARIS12: /* all engines support GPUVM */
 		case CHIP_VEGAM:     /* all engines support GPUVM */
 		default:
 			adev->gmc.gart_size = 256ULL << 20;
-=======
-		case CHIP_POLARIS11: /* all engines support GPUVM */
-		case CHIP_POLARIS10: /* all engines support GPUVM */
-		case CHIP_POLARIS12: /* all engines support GPUVM */
-		default:
-			adev->mc.gart_size = 256ULL << 20;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		case CHIP_TONGA:   /* UVD, VCE do not support GPUVM */
 		case CHIP_FIJI:    /* UVD, VCE do not support GPUVM */
 		case CHIP_CARRIZO: /* UVD, VCE do not support GPUVM, DCE SG support */
 		case CHIP_STONEY:  /* UVD does not support GPUVM, DCE SG support */
-<<<<<<< HEAD
 			adev->gmc.gart_size = 1024ULL << 20;
 			break;
 		}
@@ -787,16 +612,6 @@ static int gmc_v8_0_mc_init(struct amdgpu_device *adev)
 	}
 
 	gmc_v8_0_vram_gtt_location(adev, &adev->gmc);
-=======
-			adev->mc.gart_size = 1024ULL << 20;
-			break;
-		}
-	} else {
-		adev->mc.gart_size = (u64)amdgpu_gart_size << 20;
-	}
-
-	gmc_v8_0_vram_gtt_location(adev, &adev->mc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -809,34 +624,20 @@ static int gmc_v8_0_mc_init(struct amdgpu_device *adev)
  */
 
 /**
-<<<<<<< HEAD
  * gmc_v8_0_flush_gpu_tlb - gart tlb flush callback
-=======
- * gmc_v8_0_gart_flush_gpu_tlb - gart tlb flush callback
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * @adev: amdgpu_device pointer
  * @vmid: vm instance to flush
  *
  * Flush the TLB for the requested page table (CIK).
  */
-<<<<<<< HEAD
 static void gmc_v8_0_flush_gpu_tlb(struct amdgpu_device *adev,
 					uint32_t vmid)
 {
-=======
-static void gmc_v8_0_gart_flush_gpu_tlb(struct amdgpu_device *adev,
-					uint32_t vmid)
-{
-	/* flush hdp cache */
-	WREG32(mmHDP_MEM_COHERENCY_FLUSH_CNTL, 0);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* bits 0-15 are the VM contexts0-15 */
 	WREG32(mmVM_INVALIDATE_REQUEST, 1 << vmid);
 }
 
-<<<<<<< HEAD
 static uint64_t gmc_v8_0_emit_flush_gpu_tlb(struct amdgpu_ring *ring,
 					    unsigned vmid, uint64_t pd_addr)
 {
@@ -862,10 +663,6 @@ static void gmc_v8_0_emit_pasid_mapping(struct amdgpu_ring *ring, unsigned vmid,
 
 /**
  * gmc_v8_0_set_pte_pde - update the page tables using MMIO
-=======
-/**
- * gmc_v8_0_gart_set_pte_pde - update the page tables using MMIO
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * @adev: amdgpu_device pointer
  * @cpu_pt_addr: cpu address of the page table
@@ -875,17 +672,9 @@ static void gmc_v8_0_emit_pasid_mapping(struct amdgpu_ring *ring, unsigned vmid,
  *
  * Update the page tables using the CPU.
  */
-<<<<<<< HEAD
 static int gmc_v8_0_set_pte_pde(struct amdgpu_device *adev, void *cpu_pt_addr,
 				uint32_t gpu_page_idx, uint64_t addr,
 				uint64_t flags)
-=======
-static int gmc_v8_0_gart_set_pte_pde(struct amdgpu_device *adev,
-				     void *cpu_pt_addr,
-				     uint32_t gpu_page_idx,
-				     uint64_t addr,
-				     uint64_t flags)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	void __iomem *ptr = (void *)cpu_pt_addr;
 	uint64_t value;
@@ -934,17 +723,10 @@ static uint64_t gmc_v8_0_get_vm_pte_flags(struct amdgpu_device *adev,
 	return pte_flag;
 }
 
-<<<<<<< HEAD
 static void gmc_v8_0_get_vm_pde(struct amdgpu_device *adev, int level,
 				uint64_t *addr, uint64_t *flags)
 {
 	BUG_ON(*addr & 0xFFFFFF0000000FFFULL);
-=======
-static uint64_t gmc_v8_0_get_vm_pde(struct amdgpu_device *adev, uint64_t addr)
-{
-	BUG_ON(addr & 0xFFFFFF0000000FFFULL);
-	return addr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -986,15 +768,9 @@ static void gmc_v8_0_set_prt(struct amdgpu_device *adev, bool enable)
 {
 	u32 tmp;
 
-<<<<<<< HEAD
 	if (enable && !adev->gmc.prt_warning) {
 		dev_warn(adev->dev, "Disabling VM faults because of PRT request!\n");
 		adev->gmc.prt_warning = true;
-=======
-	if (enable && !adev->mc.prt_warning) {
-		dev_warn(adev->dev, "Disabling VM faults because of PRT request!\n");
-		adev->mc.prt_warning = true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	tmp = RREG32(mmVM_PRT_CNTL);
@@ -1016,12 +792,8 @@ static void gmc_v8_0_set_prt(struct amdgpu_device *adev, bool enable)
 
 	if (enable) {
 		uint32_t low = AMDGPU_VA_RESERVED_SIZE >> AMDGPU_GPU_PAGE_SHIFT;
-<<<<<<< HEAD
 		uint32_t high = adev->vm_manager.max_pfn -
 			(AMDGPU_VA_RESERVED_SIZE >> AMDGPU_GPU_PAGE_SHIFT);
-=======
-		uint32_t high = adev->vm_manager.max_pfn;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		WREG32(mmVM_PRT_APERTURE0_LOW_ADDR, low);
 		WREG32(mmVM_PRT_APERTURE1_LOW_ADDR, low);
@@ -1111,19 +883,11 @@ static int gmc_v8_0_gart_enable(struct amdgpu_device *adev)
 	tmp = REG_SET_FIELD(tmp, VM_L2_CNTL4, VMC_TAP_CONTEXT1_PTE_REQUEST_SNOOP, 0);
 	WREG32(mmVM_L2_CNTL4, tmp);
 	/* setup context0 */
-<<<<<<< HEAD
 	WREG32(mmVM_CONTEXT0_PAGE_TABLE_START_ADDR, adev->gmc.gart_start >> 12);
 	WREG32(mmVM_CONTEXT0_PAGE_TABLE_END_ADDR, adev->gmc.gart_end >> 12);
 	WREG32(mmVM_CONTEXT0_PAGE_TABLE_BASE_ADDR, adev->gart.table_addr >> 12);
 	WREG32(mmVM_CONTEXT0_PROTECTION_FAULT_DEFAULT_ADDR,
 			(u32)(adev->dummy_page_addr >> 12));
-=======
-	WREG32(mmVM_CONTEXT0_PAGE_TABLE_START_ADDR, adev->mc.gart_start >> 12);
-	WREG32(mmVM_CONTEXT0_PAGE_TABLE_END_ADDR, adev->mc.gart_end >> 12);
-	WREG32(mmVM_CONTEXT0_PAGE_TABLE_BASE_ADDR, adev->gart.table_addr >> 12);
-	WREG32(mmVM_CONTEXT0_PROTECTION_FAULT_DEFAULT_ADDR,
-			(u32)(adev->dummy_page.addr >> 12));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	WREG32(mmVM_CONTEXT0_CNTL2, 0);
 	tmp = RREG32(mmVM_CONTEXT0_CNTL);
 	tmp = REG_SET_FIELD(tmp, VM_CONTEXT0_CNTL, ENABLE_CONTEXT, 1);
@@ -1153,11 +917,7 @@ static int gmc_v8_0_gart_enable(struct amdgpu_device *adev)
 
 	/* enable context1-15 */
 	WREG32(mmVM_CONTEXT1_PROTECTION_FAULT_DEFAULT_ADDR,
-<<<<<<< HEAD
 	       (u32)(adev->dummy_page_addr >> 12));
-=======
-	       (u32)(adev->dummy_page.addr >> 12));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	WREG32(mmVM_CONTEXT1_CNTL2, 4);
 	tmp = RREG32(mmVM_CONTEXT1_CNTL);
 	tmp = REG_SET_FIELD(tmp, VM_CONTEXT1_CNTL, ENABLE_CONTEXT, 1);
@@ -1177,15 +937,9 @@ static int gmc_v8_0_gart_enable(struct amdgpu_device *adev)
 	else
 		gmc_v8_0_set_fault_enable_default(adev, true);
 
-<<<<<<< HEAD
 	gmc_v8_0_flush_gpu_tlb(adev, 0);
 	DRM_INFO("PCIE GART of %uM enabled (table at 0x%016llX).\n",
 		 (unsigned)(adev->gmc.gart_size >> 20),
-=======
-	gmc_v8_0_gart_flush_gpu_tlb(adev, 0);
-	DRM_INFO("PCIE GART of %uM enabled (table at 0x%016llX).\n",
-		 (unsigned)(adev->mc.gart_size >> 20),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 (unsigned long long)adev->gart.table_addr);
 	adev->gart.ready = true;
 	return 0;
@@ -1237,22 +991,6 @@ static void gmc_v8_0_gart_disable(struct amdgpu_device *adev)
 }
 
 /**
-<<<<<<< HEAD
-=======
- * gmc_v8_0_gart_fini - vm fini callback
- *
- * @adev: amdgpu_device pointer
- *
- * Tears down the driver GART/VM setup (CIK).
- */
-static void gmc_v8_0_gart_fini(struct amdgpu_device *adev)
-{
-	amdgpu_gart_table_vram_free(adev);
-	amdgpu_gart_fini(adev);
-}
-
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * gmc_v8_0_vm_decode_fault - print human readable fault info
  *
  * @adev: amdgpu_device pointer
@@ -1261,36 +999,21 @@ static void gmc_v8_0_gart_fini(struct amdgpu_device *adev)
  *
  * Print human readable fault information (CIK).
  */
-<<<<<<< HEAD
 static void gmc_v8_0_vm_decode_fault(struct amdgpu_device *adev, u32 status,
 				     u32 addr, u32 mc_client, unsigned pasid)
 {
-=======
-static void gmc_v8_0_vm_decode_fault(struct amdgpu_device *adev,
-				     u32 status, u32 addr, u32 mc_client)
-{
-	u32 mc_id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 vmid = REG_GET_FIELD(status, VM_CONTEXT1_PROTECTION_FAULT_STATUS, VMID);
 	u32 protections = REG_GET_FIELD(status, VM_CONTEXT1_PROTECTION_FAULT_STATUS,
 					PROTECTIONS);
 	char block[5] = { mc_client >> 24, (mc_client >> 16) & 0xff,
 		(mc_client >> 8) & 0xff, mc_client & 0xff, 0 };
-<<<<<<< HEAD
 	u32 mc_id;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mc_id = REG_GET_FIELD(status, VM_CONTEXT1_PROTECTION_FAULT_STATUS,
 			      MEMORY_CLIENT_ID);
 
-<<<<<<< HEAD
 	dev_err(adev->dev, "VM fault (0x%02x, vmid %d, pasid %d) at page %u, %s from '%s' (0x%08x) (%d)\n",
 	       protections, vmid, pasid, addr,
-=======
-	dev_err(adev->dev, "VM fault (0x%02x, vmid %d) at page %u, %s from '%s' (0x%08x) (%d)\n",
-	       protections, vmid, addr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	       REG_GET_FIELD(status, VM_CONTEXT1_PROTECTION_FAULT_STATUS,
 			     MEMORY_CLIENT_RW) ?
 	       "write" : "read", block, mc_client, mc_id);
@@ -1322,7 +1045,6 @@ static int gmc_v8_0_early_init(void *handle)
 {
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
 
-<<<<<<< HEAD
 	gmc_v8_0_set_gmc_funcs(adev);
 	gmc_v8_0_set_irq_funcs(adev);
 
@@ -1333,18 +1055,6 @@ static int gmc_v8_0_early_init(void *handle)
 		adev->gmc.shared_aperture_end + 1;
 	adev->gmc.private_aperture_end =
 		adev->gmc.private_aperture_start + (4ULL << 30) - 1;
-=======
-	gmc_v8_0_set_gart_funcs(adev);
-	gmc_v8_0_set_irq_funcs(adev);
-
-	adev->mc.shared_aperture_start = 0x2000000000000000ULL;
-	adev->mc.shared_aperture_end =
-		adev->mc.shared_aperture_start + (4ULL << 30) - 1;
-	adev->mc.private_aperture_start =
-		adev->mc.shared_aperture_end + 1;
-	adev->mc.private_aperture_end =
-		adev->mc.private_aperture_start + (4ULL << 30) - 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -1353,20 +1063,14 @@ static int gmc_v8_0_late_init(void *handle)
 {
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
 
-<<<<<<< HEAD
 	amdgpu_bo_late_init(adev);
 
 	if (amdgpu_vm_fault_stop != AMDGPU_VM_FAULT_STOP_ALWAYS)
 		return amdgpu_irq_get(adev, &adev->gmc.vm_fault, 0);
-=======
-	if (amdgpu_vm_fault_stop != AMDGPU_VM_FAULT_STOP_ALWAYS)
-		return amdgpu_irq_get(adev, &adev->mc.vm_fault, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		return 0;
 }
 
-<<<<<<< HEAD
 static unsigned gmc_v8_0_get_vbios_fb_size(struct amdgpu_device *adev)
 {
 	u32 d1vga_control = RREG32(mmD1VGA_CONTROL);
@@ -1386,8 +1090,6 @@ static unsigned gmc_v8_0_get_vbios_fb_size(struct amdgpu_device *adev)
 	return size;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define mmMC_SEQ_MISC0_FIJI 0xA71
 
 static int gmc_v8_0_sw_init(void *handle)
@@ -1397,25 +1099,16 @@ static int gmc_v8_0_sw_init(void *handle)
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
 
 	if (adev->flags & AMD_IS_APU) {
-<<<<<<< HEAD
 		adev->gmc.vram_type = AMDGPU_VRAM_TYPE_UNKNOWN;
 	} else {
 		u32 tmp;
 
 		if ((adev->asic_type == CHIP_FIJI) ||
 		    (adev->asic_type == CHIP_VEGAM))
-=======
-		adev->mc.vram_type = AMDGPU_VRAM_TYPE_UNKNOWN;
-	} else {
-		u32 tmp;
-
-		if (adev->asic_type == CHIP_FIJI)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			tmp = RREG32(mmMC_SEQ_MISC0_FIJI);
 		else
 			tmp = RREG32(mmMC_SEQ_MISC0);
 		tmp &= MC_SEQ_MISC0__MT__MASK;
-<<<<<<< HEAD
 		adev->gmc.vram_type = gmc_v8_0_convert_vram_type(tmp);
 	}
 
@@ -1424,16 +1117,6 @@ static int gmc_v8_0_sw_init(void *handle)
 		return r;
 
 	r = amdgpu_irq_add_id(adev, AMDGPU_IH_CLIENTID_LEGACY, VISLANDS30_IV_SRCID_GFX_MEM_PROT_FAULT, &adev->gmc.vm_fault);
-=======
-		adev->mc.vram_type = gmc_v8_0_convert_vram_type(tmp);
-	}
-
-	r = amdgpu_irq_add_id(adev, AMDGPU_IH_CLIENTID_LEGACY, 146, &adev->mc.vm_fault);
-	if (r)
-		return r;
-
-	r = amdgpu_irq_add_id(adev, AMDGPU_IH_CLIENTID_LEGACY, 147, &adev->mc.vm_fault);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r)
 		return r;
 
@@ -1441,24 +1124,13 @@ static int gmc_v8_0_sw_init(void *handle)
 	 * Currently set to 4GB ((1 << 20) 4k pages).
 	 * Max GPUVM size for cayman and SI is 40 bits.
 	 */
-<<<<<<< HEAD
 	amdgpu_vm_adjust_size(adev, 64, 9, 1, 40);
-=======
-	amdgpu_vm_adjust_size(adev, 64, 4);
-	adev->vm_manager.max_pfn = adev->vm_manager.vm_size << 18;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Set the internal MC address mask
 	 * This is the max address of the GPU's
 	 * internal address space.
 	 */
-<<<<<<< HEAD
 	adev->gmc.mc_mask = 0xffffffffffULL; /* 40 bit MC */
-=======
-	adev->mc.mc_mask = 0xffffffffffULL; /* 40 bit MC */
-
-	adev->mc.stolen_size = 256 * 1024;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* set DMA mask + need_dma32 flags.
 	 * PCIE - can handle 40-bits.
@@ -1478,10 +1150,7 @@ static int gmc_v8_0_sw_init(void *handle)
 		pci_set_consistent_dma_mask(adev->pdev, DMA_BIT_MASK(32));
 		pr_warn("amdgpu: No coherent DMA available\n");
 	}
-<<<<<<< HEAD
 	adev->need_swiotlb = drm_get_max_iomem() > ((u64)1 << dma_bits);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	r = gmc_v8_0_init_microcode(adev);
 	if (r) {
@@ -1493,11 +1162,8 @@ static int gmc_v8_0_sw_init(void *handle)
 	if (r)
 		return r;
 
-<<<<<<< HEAD
 	adev->gmc.stolen_size = gmc_v8_0_get_vbios_fb_size(adev);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Memory manager */
 	r = amdgpu_bo_init(adev);
 	if (r)
@@ -1514,10 +1180,6 @@ static int gmc_v8_0_sw_init(void *handle)
 	 * amdkfd will use VMIDs 8-15
 	 */
 	adev->vm_manager.id_mgr[0].num_ids = AMDGPU_NUM_OF_VMIDS;
-<<<<<<< HEAD
-=======
-	adev->vm_manager.num_level = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	amdgpu_vm_manager_init(adev);
 
 	/* base offset of vram pages */
@@ -1530,15 +1192,12 @@ static int gmc_v8_0_sw_init(void *handle)
 		adev->vm_manager.vram_base_offset = 0;
 	}
 
-<<<<<<< HEAD
 	adev->gmc.vm_fault_info = kmalloc(sizeof(struct kfd_vm_fault_info),
 					GFP_KERNEL);
 	if (!adev->gmc.vm_fault_info)
 		return -ENOMEM;
 	atomic_set(&adev->gmc.vm_fault_info_updated, 0);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1546,7 +1205,6 @@ static int gmc_v8_0_sw_fini(void *handle)
 {
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
 
-<<<<<<< HEAD
 	amdgpu_gem_force_release(adev);
 	amdgpu_vm_manager_fini(adev);
 	kfree(adev->gmc.vm_fault_info);
@@ -1555,12 +1213,6 @@ static int gmc_v8_0_sw_fini(void *handle)
 	amdgpu_gart_fini(adev);
 	release_firmware(adev->gmc.fw);
 	adev->gmc.fw = NULL;
-=======
-	amdgpu_vm_manager_fini(adev);
-	gmc_v8_0_gart_fini(adev);
-	amdgpu_gem_force_release(adev);
-	amdgpu_bo_fini(adev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -1601,11 +1253,7 @@ static int gmc_v8_0_hw_fini(void *handle)
 {
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
 
-<<<<<<< HEAD
 	amdgpu_irq_put(adev, &adev->gmc.vm_fault, 0);
-=======
-	amdgpu_irq_put(adev, &adev->mc.vm_fault, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gmc_v8_0_gart_disable(adev);
 
 	return 0;
@@ -1629,11 +1277,7 @@ static int gmc_v8_0_resume(void *handle)
 	if (r)
 		return r;
 
-<<<<<<< HEAD
 	amdgpu_vmid_reset_all(adev);
-=======
-	amdgpu_vm_reset_all_ids(adev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -1689,17 +1333,10 @@ static bool gmc_v8_0_check_soft_reset(void *handle)
 							SRBM_SOFT_RESET, SOFT_RESET_MC, 1);
 	}
 	if (srbm_soft_reset) {
-<<<<<<< HEAD
 		adev->gmc.srbm_soft_reset = srbm_soft_reset;
 		return true;
 	} else {
 		adev->gmc.srbm_soft_reset = 0;
-=======
-		adev->mc.srbm_soft_reset = srbm_soft_reset;
-		return true;
-	} else {
-		adev->mc.srbm_soft_reset = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return false;
 	}
 }
@@ -1708,11 +1345,7 @@ static int gmc_v8_0_pre_soft_reset(void *handle)
 {
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
 
-<<<<<<< HEAD
 	if (!adev->gmc.srbm_soft_reset)
-=======
-	if (!adev->mc.srbm_soft_reset)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	gmc_v8_0_mc_stop(adev);
@@ -1728,15 +1361,9 @@ static int gmc_v8_0_soft_reset(void *handle)
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
 	u32 srbm_soft_reset;
 
-<<<<<<< HEAD
 	if (!adev->gmc.srbm_soft_reset)
 		return 0;
 	srbm_soft_reset = adev->gmc.srbm_soft_reset;
-=======
-	if (!adev->mc.srbm_soft_reset)
-		return 0;
-	srbm_soft_reset = adev->mc.srbm_soft_reset;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (srbm_soft_reset) {
 		u32 tmp;
@@ -1764,11 +1391,7 @@ static int gmc_v8_0_post_soft_reset(void *handle)
 {
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
 
-<<<<<<< HEAD
 	if (!adev->gmc.srbm_soft_reset)
-=======
-	if (!adev->mc.srbm_soft_reset)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	gmc_v8_0_mc_resume(adev);
@@ -1821,11 +1444,7 @@ static int gmc_v8_0_process_interrupt(struct amdgpu_device *adev,
 				      struct amdgpu_irq_src *source,
 				      struct amdgpu_iv_entry *entry)
 {
-<<<<<<< HEAD
 	u32 addr, status, mc_client, vmid;
-=======
-	u32 addr, status, mc_client;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (amdgpu_sriov_vf(adev)) {
 		dev_err(adev->dev, "GPU fault detected: %d 0x%08x\n",
@@ -1847,7 +1466,6 @@ static int gmc_v8_0_process_interrupt(struct amdgpu_device *adev,
 		gmc_v8_0_set_fault_enable_default(adev, false);
 
 	if (printk_ratelimit()) {
-<<<<<<< HEAD
 		struct amdgpu_task_info task_info = { 0 };
 
 		amdgpu_vm_get_task_info(adev, entry->pasid, &task_info);
@@ -1855,15 +1473,10 @@ static int gmc_v8_0_process_interrupt(struct amdgpu_device *adev,
 		dev_err(adev->dev, "GPU fault detected: %d 0x%08x for process %s pid %d thread %s pid %d\n",
 			entry->src_id, entry->src_data[0], task_info.process_name,
 			task_info.tgid, task_info.task_name, task_info.pid);
-=======
-		dev_err(adev->dev, "GPU fault detected: %d 0x%08x\n",
-			entry->src_id, entry->src_data[0]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(adev->dev, "  VM_CONTEXT1_PROTECTION_FAULT_ADDR   0x%08X\n",
 			addr);
 		dev_err(adev->dev, "  VM_CONTEXT1_PROTECTION_FAULT_STATUS 0x%08X\n",
 			status);
-<<<<<<< HEAD
 		gmc_v8_0_vm_decode_fault(adev, status, addr, mc_client,
 					 entry->pasid);
 	}
@@ -1889,9 +1502,6 @@ static int gmc_v8_0_process_interrupt(struct amdgpu_device *adev,
 		info->prot_exec = protections & 0x20 ? true : false;
 		mb();
 		atomic_set(&adev->gmc.vm_fault_info_updated, 1);
-=======
-		gmc_v8_0_vm_decode_fault(adev, status, addr, mc_client);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -2123,17 +1733,11 @@ static const struct amd_ip_funcs gmc_v8_0_ip_funcs = {
 	.get_clockgating_state = gmc_v8_0_get_clockgating_state,
 };
 
-<<<<<<< HEAD
 static const struct amdgpu_gmc_funcs gmc_v8_0_gmc_funcs = {
 	.flush_gpu_tlb = gmc_v8_0_flush_gpu_tlb,
 	.emit_flush_gpu_tlb = gmc_v8_0_emit_flush_gpu_tlb,
 	.emit_pasid_mapping = gmc_v8_0_emit_pasid_mapping,
 	.set_pte_pde = gmc_v8_0_set_pte_pde,
-=======
-static const struct amdgpu_gart_funcs gmc_v8_0_gart_funcs = {
-	.flush_gpu_tlb = gmc_v8_0_gart_flush_gpu_tlb,
-	.set_pte_pde = gmc_v8_0_gart_set_pte_pde,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.set_prt = gmc_v8_0_set_prt,
 	.get_vm_pte_flags = gmc_v8_0_get_vm_pte_flags,
 	.get_vm_pde = gmc_v8_0_get_vm_pde
@@ -2144,28 +1748,16 @@ static const struct amdgpu_irq_src_funcs gmc_v8_0_irq_funcs = {
 	.process = gmc_v8_0_process_interrupt,
 };
 
-<<<<<<< HEAD
 static void gmc_v8_0_set_gmc_funcs(struct amdgpu_device *adev)
 {
 	if (adev->gmc.gmc_funcs == NULL)
 		adev->gmc.gmc_funcs = &gmc_v8_0_gmc_funcs;
-=======
-static void gmc_v8_0_set_gart_funcs(struct amdgpu_device *adev)
-{
-	if (adev->gart.gart_funcs == NULL)
-		adev->gart.gart_funcs = &gmc_v8_0_gart_funcs;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void gmc_v8_0_set_irq_funcs(struct amdgpu_device *adev)
 {
-<<<<<<< HEAD
 	adev->gmc.vm_fault.num_types = 1;
 	adev->gmc.vm_fault.funcs = &gmc_v8_0_irq_funcs;
-=======
-	adev->mc.vm_fault.num_types = 1;
-	adev->mc.vm_fault.funcs = &gmc_v8_0_irq_funcs;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 const struct amdgpu_ip_block_version gmc_v8_0_ip_block =

@@ -54,15 +54,6 @@
 #define SC_USER   3	/* must be the last one: it may take all left */
 #define SC_MAX    4	/* count of send context types */
 
-<<<<<<< HEAD
-=======
-/*
- * SC_VNIC types are allocated (dynamically) from the user context pool,
- * (SC_USER) and used by kernel driver as kernel contexts (SC_KERNEL).
- */
-#define SC_VNIC   SC_MAX
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* invalid send context index */
 #define INVALID_SCI 0xff
 

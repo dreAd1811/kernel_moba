@@ -169,7 +169,6 @@ void arch_uninstall_hw_breakpoint(struct perf_event *bp)
 		set_dr_addr_mask(0, i);
 }
 
-<<<<<<< HEAD
 static int arch_bp_generic_len(int x86_len)
 {
 	switch (x86_len) {
@@ -186,35 +185,13 @@ static int arch_bp_generic_len(int x86_len)
 	default:
 		return -EINVAL;
 	}
-=======
-/*
- * Check for virtual address in kernel space.
- */
-int arch_check_bp_in_kernelspace(struct perf_event *bp)
-{
-	unsigned int len;
-	unsigned long va;
-	struct arch_hw_breakpoint *info = counter_arch_bp(bp);
-
-	va = info->address;
-	len = bp->attr.bp_len;
-
-	/*
-	 * We don't need to worry about va + len - 1 overflowing:
-	 * we already require that va is aligned to a multiple of len.
-	 */
-	return (va >= TASK_SIZE_MAX) || ((va + len - 1) >= TASK_SIZE_MAX);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int arch_bp_generic_fields(int x86_len, int x86_type,
 			   int *gen_len, int *gen_type)
 {
-<<<<<<< HEAD
 	int len;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Type */
 	switch (x86_type) {
 	case X86_BREAKPOINT_EXECUTE:
@@ -235,36 +212,14 @@ int arch_bp_generic_fields(int x86_len, int x86_type,
 	}
 
 	/* Len */
-<<<<<<< HEAD
 	len = arch_bp_generic_len(x86_len);
 	if (len < 0)
 		return -EINVAL;
 	*gen_len = len;
-=======
-	switch (x86_len) {
-	case X86_BREAKPOINT_LEN_1:
-		*gen_len = HW_BREAKPOINT_LEN_1;
-		break;
-	case X86_BREAKPOINT_LEN_2:
-		*gen_len = HW_BREAKPOINT_LEN_2;
-		break;
-	case X86_BREAKPOINT_LEN_4:
-		*gen_len = HW_BREAKPOINT_LEN_4;
-		break;
-#ifdef CONFIG_X86_64
-	case X86_BREAKPOINT_LEN_8:
-		*gen_len = HW_BREAKPOINT_LEN_8;
-		break;
-#endif
-	default:
-		return -EINVAL;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
 /*
  * Check for virtual address in kernel space.
  */
@@ -298,22 +253,6 @@ static int arch_build_bp_info(struct perf_event *bp,
 		break;
 	case HW_BREAKPOINT_W | HW_BREAKPOINT_R:
 		hw->type = X86_BREAKPOINT_RW;
-=======
-
-static int arch_build_bp_info(struct perf_event *bp)
-{
-	struct arch_hw_breakpoint *info = counter_arch_bp(bp);
-
-	info->address = bp->attr.bp_addr;
-
-	/* Type */
-	switch (bp->attr.bp_type) {
-	case HW_BREAKPOINT_W:
-		info->type = X86_BREAKPOINT_WRITE;
-		break;
-	case HW_BREAKPOINT_W | HW_BREAKPOINT_R:
-		info->type = X86_BREAKPOINT_RW;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case HW_BREAKPOINT_X:
 		/*
@@ -321,38 +260,23 @@ static int arch_build_bp_info(struct perf_event *bp)
 		 * acceptable for kprobes.  On non-kprobes kernels, we don't
 		 * allow kernel breakpoints at all.
 		 */
-<<<<<<< HEAD
 		if (attr->bp_addr >= TASK_SIZE_MAX) {
 #ifdef CONFIG_KPROBES
 			if (within_kprobe_blacklist(attr->bp_addr))
-=======
-		if (bp->attr.bp_addr >= TASK_SIZE_MAX) {
-#ifdef CONFIG_KPROBES
-			if (within_kprobe_blacklist(bp->attr.bp_addr))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				return -EINVAL;
 #else
 			return -EINVAL;
 #endif
 		}
 
-<<<<<<< HEAD
 		hw->type = X86_BREAKPOINT_EXECUTE;
-=======
-		info->type = X86_BREAKPOINT_EXECUTE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * x86 inst breakpoints need to have a specific undefined len.
 		 * But we still need to check userspace is not trying to setup
 		 * an unsupported length, to get a range breakpoint for example.
 		 */
-<<<<<<< HEAD
 		if (attr->bp_len == sizeof(long)) {
 			hw->len = X86_BREAKPOINT_LEN_X;
-=======
-		if (bp->attr.bp_len == sizeof(long)) {
-			info->len = X86_BREAKPOINT_LEN_X;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return 0;
 		}
 	default:
@@ -360,7 +284,6 @@ static int arch_build_bp_info(struct perf_event *bp)
 	}
 
 	/* Len */
-<<<<<<< HEAD
 	switch (attr->bp_len) {
 	case HW_BREAKPOINT_LEN_1:
 		hw->len = X86_BREAKPOINT_LEN_1;
@@ -374,36 +297,13 @@ static int arch_build_bp_info(struct perf_event *bp)
 #ifdef CONFIG_X86_64
 	case HW_BREAKPOINT_LEN_8:
 		hw->len = X86_BREAKPOINT_LEN_8;
-=======
-	info->mask = 0;
-
-	switch (bp->attr.bp_len) {
-	case HW_BREAKPOINT_LEN_1:
-		info->len = X86_BREAKPOINT_LEN_1;
-		break;
-	case HW_BREAKPOINT_LEN_2:
-		info->len = X86_BREAKPOINT_LEN_2;
-		break;
-	case HW_BREAKPOINT_LEN_4:
-		info->len = X86_BREAKPOINT_LEN_4;
-		break;
-#ifdef CONFIG_X86_64
-	case HW_BREAKPOINT_LEN_8:
-		info->len = X86_BREAKPOINT_LEN_8;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 #endif
 	default:
 		/* AMD range breakpoint */
-<<<<<<< HEAD
 		if (!is_power_of_2(attr->bp_len))
 			return -EINVAL;
 		if (attr->bp_addr & (attr->bp_len - 1))
-=======
-		if (!is_power_of_2(bp->attr.bp_len))
-			return -EINVAL;
-		if (bp->attr.bp_addr & (bp->attr.bp_len - 1))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EINVAL;
 
 		if (!boot_cpu_has(X86_FEATURE_BPEXT))
@@ -416,13 +316,8 @@ static int arch_build_bp_info(struct perf_event *bp)
 		 * breakpoints, then we'll have to check for kprobe-blacklisted
 		 * addresses anywhere in the range.
 		 */
-<<<<<<< HEAD
 		hw->mask = attr->bp_len - 1;
 		hw->len = X86_BREAKPOINT_LEN_1;
-=======
-		info->mask = bp->attr.bp_len - 1;
-		info->len = X86_BREAKPOINT_LEN_1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -431,21 +326,14 @@ static int arch_build_bp_info(struct perf_event *bp)
 /*
  * Validate the arch-specific HW Breakpoint register settings
  */
-<<<<<<< HEAD
 int hw_breakpoint_arch_parse(struct perf_event *bp,
 			     const struct perf_event_attr *attr,
 			     struct arch_hw_breakpoint *hw)
 {
-=======
-int arch_validate_hwbkpt_settings(struct perf_event *bp)
-{
-	struct arch_hw_breakpoint *info = counter_arch_bp(bp);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int align;
 	int ret;
 
 
-<<<<<<< HEAD
 	ret = arch_build_bp_info(bp, attr, hw);
 	if (ret)
 		return ret;
@@ -455,17 +343,6 @@ int arch_validate_hwbkpt_settings(struct perf_event *bp)
 		align = 0;
 		if (hw->mask)
 			align = hw->mask;
-=======
-	ret = arch_build_bp_info(bp);
-	if (ret)
-		return ret;
-
-	switch (info->len) {
-	case X86_BREAKPOINT_LEN_1:
-		align = 0;
-		if (info->mask)
-			align = info->mask;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case X86_BREAKPOINT_LEN_2:
 		align = 1;
@@ -487,11 +364,7 @@ int arch_validate_hwbkpt_settings(struct perf_event *bp)
 	 * Check that the low-order bits of the address are appropriate
 	 * for the alignment implied by len.
 	 */
-<<<<<<< HEAD
 	if (hw->address & align)
-=======
-	if (info->address & align)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	return 0;

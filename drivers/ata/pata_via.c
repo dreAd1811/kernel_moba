@@ -471,11 +471,7 @@ static struct ata_port_operations via_port_ops = {
 
 static struct ata_port_operations via_port_ops_noirq = {
 	.inherits	= &via_port_ops,
-<<<<<<< HEAD
 	.sff_data_xfer	= ata_sff_data_xfer32,
-=======
-	.sff_data_xfer	= ata_sff_data_xfer_noirq,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**

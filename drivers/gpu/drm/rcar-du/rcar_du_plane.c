@@ -332,13 +332,8 @@ static void rcar_du_plane_write(struct rcar_du_group *rgrp,
 static void rcar_du_plane_setup_scanout(struct rcar_du_group *rgrp,
 					const struct rcar_du_plane_state *state)
 {
-<<<<<<< HEAD
 	unsigned int src_x = state->state.src.x1 >> 16;
 	unsigned int src_y = state->state.src.y1 >> 16;
-=======
-	unsigned int src_x = state->state.src_x >> 16;
-	unsigned int src_y = state->state.src_y >> 16;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int index = state->hwindex;
 	unsigned int pitch;
 	bool interlaced;
@@ -362,11 +357,7 @@ static void rcar_du_plane_setup_scanout(struct rcar_du_group *rgrp,
 			dma[i] = gem->paddr + fb->offsets[i];
 		}
 	} else {
-<<<<<<< HEAD
 		pitch = drm_rect_width(&state->state.src) >> 16;
-=======
-		pitch = state->state.src_w >> 16;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dma[0] = 0;
 		dma[1] = 0;
 	}
@@ -432,11 +423,7 @@ static void rcar_du_plane_setup_mode(struct rcar_du_group *rgrp,
 		rcar_du_plane_write(rgrp, index, PnALPHAR, PnALPHAR_ABIT_0);
 	else
 		rcar_du_plane_write(rgrp, index, PnALPHAR,
-<<<<<<< HEAD
 				    PnALPHAR_ABIT_X | state->state.alpha >> 8);
-=======
-				    PnALPHAR_ABIT_X | state->alpha);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pnmr = PnMR_BM_MD | state->format->pnmr;
 
@@ -534,10 +521,7 @@ static void rcar_du_plane_setup_format(struct rcar_du_group *rgrp,
 				       const struct rcar_du_plane_state *state)
 {
 	struct rcar_du_device *rcdu = rgrp->dev;
-<<<<<<< HEAD
 	const struct drm_rect *dst = &state->state.dst;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (rcdu->info->gen < 3)
 		rcar_du_plane_setup_format_gen2(rgrp, index, state);
@@ -545,17 +529,10 @@ static void rcar_du_plane_setup_format(struct rcar_du_group *rgrp,
 		rcar_du_plane_setup_format_gen3(rgrp, index, state);
 
 	/* Destination position and size */
-<<<<<<< HEAD
 	rcar_du_plane_write(rgrp, index, PnDSXR, drm_rect_width(dst));
 	rcar_du_plane_write(rgrp, index, PnDSYR, drm_rect_height(dst));
 	rcar_du_plane_write(rgrp, index, PnDPXR, dst->x1);
 	rcar_du_plane_write(rgrp, index, PnDPYR, dst->y1);
-=======
-	rcar_du_plane_write(rgrp, index, PnDSXR, state->state.crtc_w);
-	rcar_du_plane_write(rgrp, index, PnDSYR, state->state.crtc_h);
-	rcar_du_plane_write(rgrp, index, PnDPXR, state->state.crtc_x);
-	rcar_du_plane_write(rgrp, index, PnDPYR, state->state.crtc_y);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (rcdu->info->gen < 3) {
 		/* Wrap-around and blinking, disabled */
@@ -589,7 +566,6 @@ void __rcar_du_plane_setup(struct rcar_du_group *rgrp,
 	}
 }
 
-<<<<<<< HEAD
 int __rcar_du_plane_atomic_check(struct drm_plane *plane,
 				 struct drm_plane_state *state,
 				 const struct rcar_du_format_info **format)
@@ -627,29 +603,6 @@ int __rcar_du_plane_atomic_check(struct drm_plane *plane,
 	*format = rcar_du_format_info(state->fb->format->format);
 	if (*format == NULL) {
 		dev_dbg(dev->dev, "%s: unsupported format %08x\n", __func__,
-=======
-static int rcar_du_plane_atomic_check(struct drm_plane *plane,
-				      struct drm_plane_state *state)
-{
-	struct rcar_du_plane_state *rstate = to_rcar_plane_state(state);
-	struct rcar_du_plane *rplane = to_rcar_plane(plane);
-	struct rcar_du_device *rcdu = rplane->group->dev;
-
-	if (!state->fb || !state->crtc) {
-		rstate->format = NULL;
-		return 0;
-	}
-
-	if (state->src_w >> 16 != state->crtc_w ||
-	    state->src_h >> 16 != state->crtc_h) {
-		dev_dbg(rcdu->dev, "%s: scaling not supported\n", __func__);
-		return -EINVAL;
-	}
-
-	rstate->format = rcar_du_format_info(state->fb->format->format);
-	if (rstate->format == NULL) {
-		dev_dbg(rcdu->dev, "%s: unsupported format %08x\n", __func__,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			state->fb->format->format);
 		return -EINVAL;
 	}
@@ -657,7 +610,6 @@ static int rcar_du_plane_atomic_check(struct drm_plane *plane,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int rcar_du_plane_atomic_check(struct drm_plane *plane,
 				      struct drm_plane_state *state)
 {
@@ -666,8 +618,6 @@ static int rcar_du_plane_atomic_check(struct drm_plane *plane,
 	return __rcar_du_plane_atomic_check(plane, state, &rstate->format);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void rcar_du_plane_atomic_update(struct drm_plane *plane,
 					struct drm_plane_state *old_state)
 {
@@ -675,11 +625,7 @@ static void rcar_du_plane_atomic_update(struct drm_plane *plane,
 	struct rcar_du_plane_state *old_rstate;
 	struct rcar_du_plane_state *new_rstate;
 
-<<<<<<< HEAD
 	if (!plane->state->visible)
-=======
-	if (!plane->state->crtc)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	rcar_du_plane_setup(rplane);
@@ -746,18 +692,11 @@ static void rcar_du_plane_reset(struct drm_plane *plane)
 
 	state->hwindex = -1;
 	state->source = RCAR_DU_PLANE_MEMORY;
-<<<<<<< HEAD
-=======
-	state->alpha = 255;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	state->colorkey = RCAR_DU_COLORKEY_NONE;
 	state->state.zpos = plane->type == DRM_PLANE_TYPE_PRIMARY ? 0 : 1;
 
 	plane->state = &state->state;
-<<<<<<< HEAD
 	plane->state->alpha = DRM_BLEND_ALPHA_OPAQUE;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	plane->state->plane = plane;
 }
 
@@ -769,13 +708,7 @@ static int rcar_du_plane_atomic_set_property(struct drm_plane *plane,
 	struct rcar_du_plane_state *rstate = to_rcar_plane_state(state);
 	struct rcar_du_device *rcdu = to_rcar_plane(plane)->group->dev;
 
-<<<<<<< HEAD
 	if (property == rcdu->props.colorkey)
-=======
-	if (property == rcdu->props.alpha)
-		rstate->alpha = val;
-	else if (property == rcdu->props.colorkey)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rstate->colorkey = val;
 	else
 		return -EINVAL;
@@ -791,13 +724,7 @@ static int rcar_du_plane_atomic_get_property(struct drm_plane *plane,
 		container_of(state, const struct rcar_du_plane_state, state);
 	struct rcar_du_device *rcdu = to_rcar_plane(plane)->group->dev;
 
-<<<<<<< HEAD
 	if (property == rcdu->props.colorkey)
-=======
-	if (property == rcdu->props.alpha)
-		*val = rstate->alpha;
-	else if (property == rcdu->props.colorkey)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*val = rstate->colorkey;
 	else
 		return -EINVAL;
@@ -866,16 +793,9 @@ int rcar_du_planes_init(struct rcar_du_group *rgrp)
 			continue;
 
 		drm_object_attach_property(&plane->plane.base,
-<<<<<<< HEAD
 					   rcdu->props.colorkey,
 					   RCAR_DU_COLORKEY_NONE);
 		drm_plane_create_alpha_property(&plane->plane);
-=======
-					   rcdu->props.alpha, 255);
-		drm_object_attach_property(&plane->plane.base,
-					   rcdu->props.colorkey,
-					   RCAR_DU_COLORKEY_NONE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		drm_plane_create_zpos_property(&plane->plane, 1, 1, 7);
 	}
 

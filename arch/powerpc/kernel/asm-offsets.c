@@ -13,10 +13,7 @@
  * 2 of the License, or (at your option) any later version.
  */
 
-<<<<<<< HEAD
 #include <linux/compat.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/signal.h>
 #include <linux/sched.h>
 #include <linux/kernel.h>
@@ -46,10 +43,6 @@
 #include <asm/paca.h>
 #include <asm/lppaca.h>
 #include <asm/cache.h>
-<<<<<<< HEAD
-=======
-#include <asm/compat.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/mmu.h>
 #include <asm/hvcall.h>
 #include <asm/xics.h>
@@ -185,24 +178,15 @@ int main(void)
 	OFFSET(PACATOC, paca_struct, kernel_toc);
 	OFFSET(PACAKBASE, paca_struct, kernelbase);
 	OFFSET(PACAKMSR, paca_struct, kernel_msr);
-<<<<<<< HEAD
 	OFFSET(PACAIRQSOFTMASK, paca_struct, irq_soft_mask);
 	OFFSET(PACAIRQHAPPENED, paca_struct, irq_happened);
 	OFFSET(PACA_FTRACE_ENABLED, paca_struct, ftrace_enabled);
-=======
-	OFFSET(PACASOFTIRQEN, paca_struct, soft_enabled);
-	OFFSET(PACAIRQHAPPENED, paca_struct, irq_happened);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_PPC_BOOK3S
 	OFFSET(PACACONTEXTID, paca_struct, mm_ctx_id);
 #ifdef CONFIG_PPC_MM_SLICES
 	OFFSET(PACALOWSLICESPSIZE, paca_struct, mm_ctx_low_slices_psize);
 	OFFSET(PACAHIGHSLICEPSIZE, paca_struct, mm_ctx_high_slices_psize);
-<<<<<<< HEAD
 	OFFSET(PACA_SLB_ADDR_LIMIT, paca_struct, mm_ctx_slb_addr_limit);
-=======
-	DEFINE(PACA_ADDR_LIMIT, offsetof(struct paca_struct, addr_limit));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DEFINE(MMUPSIZEDEFSIZE, sizeof(struct mmu_psize_def));
 #endif /* CONFIG_PPC_MM_SLICES */
 #endif
@@ -225,11 +209,7 @@ int main(void)
 	OFFSET(TCD_ESEL_FIRST, tlb_core_data, esel_first);
 #endif /* CONFIG_PPC_BOOK3E */
 
-<<<<<<< HEAD
 #ifdef CONFIG_PPC_BOOK3S_64
-=======
-#ifdef CONFIG_PPC_STD_MMU_64
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	OFFSET(PACASLBCACHE, paca_struct, slb_cache);
 	OFFSET(PACASLBCACHEPTR, paca_struct, slb_cache_ptr);
 	OFFSET(PACAVMALLOCSLLP, paca_struct, vmalloc_sllp);
@@ -242,19 +222,14 @@ int main(void)
 	OFFSET(PACA_EXMC, paca_struct, exmc);
 	OFFSET(PACA_EXSLB, paca_struct, exslb);
 	OFFSET(PACA_EXNMI, paca_struct, exnmi);
-<<<<<<< HEAD
 #ifdef CONFIG_PPC_PSERIES
 	OFFSET(PACALPPACAPTR, paca_struct, lppaca_ptr);
 #endif
-=======
-	OFFSET(PACALPPACAPTR, paca_struct, lppaca_ptr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	OFFSET(PACA_SLBSHADOWPTR, paca_struct, slb_shadow_ptr);
 	OFFSET(SLBSHADOW_STACKVSID, slb_shadow, save_area[SLB_NUM_BOLTED - 1].vsid);
 	OFFSET(SLBSHADOW_STACKESID, slb_shadow, save_area[SLB_NUM_BOLTED - 1].esid);
 	OFFSET(SLBSHADOW_SAVEAREA, slb_shadow, save_area);
 	OFFSET(LPPACA_PMCINUSE, lppaca, pmcregs_in_use);
-<<<<<<< HEAD
 #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
 	OFFSET(PACA_PMCINUSE, paca_struct, pmcregs_in_use);
 #endif
@@ -262,12 +237,6 @@ int main(void)
 	OFFSET(LPPACA_YIELDCOUNT, lppaca, yield_count);
 	OFFSET(PACA_DTL_RIDX, paca_struct, dtl_ridx);
 #endif /* CONFIG_PPC_BOOK3S_64 */
-=======
-	OFFSET(LPPACA_DTLIDX, lppaca, dtl_idx);
-	OFFSET(LPPACA_YIELDCOUNT, lppaca, yield_count);
-	OFFSET(PACA_DTL_RIDX, paca_struct, dtl_ridx);
-#endif /* CONFIG_PPC_STD_MMU_64 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	OFFSET(PACAEMERGSP, paca_struct, emergency_sp);
 #ifdef CONFIG_PPC_BOOK3S_64
 	OFFSET(PACAMCEMERGSP, paca_struct, mc_emergency_sp);
@@ -410,10 +379,6 @@ int main(void)
 	OFFSET(WTOM_CLOCK_NSEC, vdso_data, wtom_clock_nsec);
 	OFFSET(STAMP_XTIME, vdso_data, stamp_xtime);
 	OFFSET(STAMP_SEC_FRAC, vdso_data, stamp_sec_fraction);
-<<<<<<< HEAD
-=======
-	OFFSET(CLOCK_HRTIMER_RES, vdso_data, hrtimer_res);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	OFFSET(CFG_ICACHE_BLOCKSZ, vdso_data, icache_block_size);
 	OFFSET(CFG_DCACHE_BLOCKSZ, vdso_data, dcache_block_size);
 	OFFSET(CFG_ICACHE_LOGBLOCKSZ, vdso_data, icache_log_block_size);
@@ -441,14 +406,10 @@ int main(void)
 	/* Other bits used by the vdso */
 	DEFINE(CLOCK_REALTIME, CLOCK_REALTIME);
 	DEFINE(CLOCK_MONOTONIC, CLOCK_MONOTONIC);
-<<<<<<< HEAD
 	DEFINE(CLOCK_REALTIME_COARSE, CLOCK_REALTIME_COARSE);
 	DEFINE(CLOCK_MONOTONIC_COARSE, CLOCK_MONOTONIC_COARSE);
 	DEFINE(NSEC_PER_SEC, NSEC_PER_SEC);
 	DEFINE(CLOCK_REALTIME_RES, MONOTONIC_RES_NSEC);
-=======
-	DEFINE(NSEC_PER_SEC, NSEC_PER_SEC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_BUG
 	DEFINE(BUG_ENTRY_SIZE, sizeof(struct bug_entry));
@@ -465,17 +426,12 @@ int main(void)
 	OFFSET(VCPU_HOST_STACK, kvm_vcpu, arch.host_stack);
 	OFFSET(VCPU_HOST_PID, kvm_vcpu, arch.host_pid);
 	OFFSET(VCPU_GUEST_PID, kvm_vcpu, arch.pid);
-<<<<<<< HEAD
 	OFFSET(VCPU_GPRS, kvm_vcpu, arch.regs.gpr);
-=======
-	OFFSET(VCPU_GPRS, kvm_vcpu, arch.gpr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	OFFSET(VCPU_VRSAVE, kvm_vcpu, arch.vrsave);
 	OFFSET(VCPU_FPRS, kvm_vcpu, arch.fp.fpr);
 #ifdef CONFIG_ALTIVEC
 	OFFSET(VCPU_VRS, kvm_vcpu, arch.vr.vr);
 #endif
-<<<<<<< HEAD
 	OFFSET(VCPU_XER, kvm_vcpu, arch.regs.xer);
 	OFFSET(VCPU_CTR, kvm_vcpu, arch.regs.ctr);
 	OFFSET(VCPU_LR, kvm_vcpu, arch.regs.link);
@@ -484,16 +440,6 @@ int main(void)
 #endif
 	OFFSET(VCPU_CR, kvm_vcpu, arch.regs.ccr);
 	OFFSET(VCPU_PC, kvm_vcpu, arch.regs.nip);
-=======
-	OFFSET(VCPU_XER, kvm_vcpu, arch.xer);
-	OFFSET(VCPU_CTR, kvm_vcpu, arch.ctr);
-	OFFSET(VCPU_LR, kvm_vcpu, arch.lr);
-#ifdef CONFIG_PPC_BOOK3S
-	OFFSET(VCPU_TAR, kvm_vcpu, arch.tar);
-#endif
-	OFFSET(VCPU_CR, kvm_vcpu, arch.cr);
-	OFFSET(VCPU_PC, kvm_vcpu, arch.pc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
 	OFFSET(VCPU_MSR, kvm_vcpu, arch.shregs.msr);
 	OFFSET(VCPU_SRR0, kvm_vcpu, arch.shregs.srr0);
@@ -580,10 +526,7 @@ int main(void)
 	OFFSET(VCPU_PENDING_EXC, kvm_vcpu, arch.pending_exceptions);
 	OFFSET(VCPU_CEDED, kvm_vcpu, arch.ceded);
 	OFFSET(VCPU_PRODDED, kvm_vcpu, arch.prodded);
-<<<<<<< HEAD
 	OFFSET(VCPU_IRQ_PENDING, kvm_vcpu, arch.irq_pending);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	OFFSET(VCPU_DBELL_REQ, kvm_vcpu, arch.doorbell_request);
 	OFFSET(VCPU_MMCR, kvm_vcpu, arch.mmcr);
 	OFFSET(VCPU_PMC, kvm_vcpu, arch.pmc);
@@ -620,10 +563,7 @@ int main(void)
 	OFFSET(VCORE_NAPPING_THREADS, kvmppc_vcore, napping_threads);
 	OFFSET(VCORE_KVM, kvmppc_vcore, kvm);
 	OFFSET(VCORE_TB_OFFSET, kvmppc_vcore, tb_offset);
-<<<<<<< HEAD
 	OFFSET(VCORE_TB_OFFSET_APPL, kvmppc_vcore, tb_offset_applied);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	OFFSET(VCORE_LPCR, kvmppc_vcore, lpcr);
 	OFFSET(VCORE_PCR, kvmppc_vcore, pcr);
 	OFFSET(VCORE_DPDES, kvmppc_vcore, dpdes);
@@ -635,10 +575,7 @@ int main(void)
 	OFFSET(VCPU_TFHAR, kvm_vcpu, arch.tfhar);
 	OFFSET(VCPU_TFIAR, kvm_vcpu, arch.tfiar);
 	OFFSET(VCPU_TEXASR, kvm_vcpu, arch.texasr);
-<<<<<<< HEAD
 	OFFSET(VCPU_ORIG_TEXASR, kvm_vcpu, arch.orig_texasr);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	OFFSET(VCPU_GPR_TM, kvm_vcpu, arch.gpr_tm);
 	OFFSET(VCPU_FPRS_TM, kvm_vcpu, arch.fp_tm.fpr);
 	OFFSET(VCPU_VRS_TM, kvm_vcpu, arch.vr_tm.vr);
@@ -720,11 +657,8 @@ int main(void)
 	HSTATE_FIELD(HSTATE_SAVED_XIRR, saved_xirr);
 	HSTATE_FIELD(HSTATE_HOST_IPI, host_ipi);
 	HSTATE_FIELD(HSTATE_PTID, ptid);
-<<<<<<< HEAD
 	HSTATE_FIELD(HSTATE_TID, tid);
 	HSTATE_FIELD(HSTATE_FAKE_SUSPEND, fake_suspend);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	HSTATE_FIELD(HSTATE_MMCR0, host_mmcr[0]);
 	HSTATE_FIELD(HSTATE_MMCR1, host_mmcr[1]);
 	HSTATE_FIELD(HSTATE_MMCRA, host_mmcr[2]);
@@ -750,11 +684,8 @@ int main(void)
 	OFFSET(KVM_SPLIT_LDBAR, kvm_split_mode, ldbar);
 	OFFSET(KVM_SPLIT_DO_NAP, kvm_split_mode, do_nap);
 	OFFSET(KVM_SPLIT_NAPPED, kvm_split_mode, napped);
-<<<<<<< HEAD
 	OFFSET(KVM_SPLIT_DO_SET, kvm_split_mode, do_set);
 	OFFSET(KVM_SPLIT_DO_RESTORE, kvm_split_mode, do_restore);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_KVM_BOOK3S_HV_POSSIBLE */
 
 #ifdef CONFIG_PPC_BOOK3S_64
@@ -764,19 +695,11 @@ int main(void)
 #endif /* CONFIG_PPC_BOOK3S_64 */
 
 #else /* CONFIG_PPC_BOOK3S */
-<<<<<<< HEAD
 	OFFSET(VCPU_CR, kvm_vcpu, arch.regs.ccr);
 	OFFSET(VCPU_XER, kvm_vcpu, arch.regs.xer);
 	OFFSET(VCPU_LR, kvm_vcpu, arch.regs.link);
 	OFFSET(VCPU_CTR, kvm_vcpu, arch.regs.ctr);
 	OFFSET(VCPU_PC, kvm_vcpu, arch.regs.nip);
-=======
-	OFFSET(VCPU_CR, kvm_vcpu, arch.cr);
-	OFFSET(VCPU_XER, kvm_vcpu, arch.xer);
-	OFFSET(VCPU_LR, kvm_vcpu, arch.lr);
-	OFFSET(VCPU_CTR, kvm_vcpu, arch.ctr);
-	OFFSET(VCPU_PC, kvm_vcpu, arch.pc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	OFFSET(VCPU_SPRG9, kvm_vcpu, arch.sprg9);
 	OFFSET(VCPU_LAST_INST, kvm_vcpu, arch.last_inst);
 	OFFSET(VCPU_FAULT_DEAR, kvm_vcpu, arch.fault_dear);
@@ -826,12 +749,9 @@ int main(void)
 	DEFINE(VCPU_XIVE_CAM_WORD, offsetof(struct kvm_vcpu,
 					    arch.xive_cam_word));
 	DEFINE(VCPU_XIVE_PUSHED, offsetof(struct kvm_vcpu, arch.xive_pushed));
-<<<<<<< HEAD
 	DEFINE(VCPU_XIVE_ESC_ON, offsetof(struct kvm_vcpu, arch.xive_esc_on));
 	DEFINE(VCPU_XIVE_ESC_RADDR, offsetof(struct kvm_vcpu, arch.xive_esc_raddr));
 	DEFINE(VCPU_XIVE_ESC_VADDR, offsetof(struct kvm_vcpu, arch.xive_esc_vaddr));
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 #ifdef CONFIG_KVM_EXIT_TIMING
@@ -846,13 +766,8 @@ int main(void)
 	OFFSET(PACA_THREAD_IDLE_STATE, paca_struct, thread_idle_state);
 	OFFSET(PACA_THREAD_MASK, paca_struct, thread_mask);
 	OFFSET(PACA_SUBCORE_SIBLING_MASK, paca_struct, subcore_sibling_mask);
-<<<<<<< HEAD
 	OFFSET(PACA_REQ_PSSCR, paca_struct, requested_psscr);
 	OFFSET(PACA_DONT_STOP, paca_struct, dont_stop);
-=======
-	OFFSET(PACA_SIBLING_PACA_PTRS, paca_struct, thread_sibling_pacas);
-	OFFSET(PACA_REQ_PSSCR, paca_struct, requested_psscr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define STOP_SPR(x, f)	OFFSET(x, paca_struct, stop_sprs.f)
 	STOP_SPR(STOP_PID, pid);
 	STOP_SPR(STOP_LDBAR, ldbar);

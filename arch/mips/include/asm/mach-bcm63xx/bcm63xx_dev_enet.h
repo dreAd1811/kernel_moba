@@ -55,13 +55,10 @@ struct bcm63xx_enet_platform_data {
 
 	/* DMA descriptor shift */
 	unsigned int dma_desc_shift;
-<<<<<<< HEAD
 
 	/* dma channel ids */
 	int rx_chan;
 	int tx_chan;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /*

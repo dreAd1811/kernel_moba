@@ -72,11 +72,7 @@ static int clk_busy_divider_set_rate(struct clk_hw *hw, unsigned long rate,
 	return ret;
 }
 
-<<<<<<< HEAD
 static const struct clk_ops clk_busy_divider_ops = {
-=======
-static struct clk_ops clk_busy_divider_ops = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.recalc_rate = clk_busy_divider_recalc_rate,
 	.round_rate = clk_busy_divider_round_rate,
 	.set_rate = clk_busy_divider_set_rate,
@@ -105,11 +101,7 @@ struct clk *imx_clk_busy_divider(const char *name, const char *parent_name,
 
 	init.name = name;
 	init.ops = &clk_busy_divider_ops;
-<<<<<<< HEAD
 	init.flags = CLK_SET_RATE_PARENT | CLK_IS_CRITICAL;
-=======
-	init.flags = CLK_SET_RATE_PARENT;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	init.parent_names = &parent_name;
 	init.num_parents = 1;
 
@@ -155,11 +147,7 @@ static int clk_busy_mux_set_parent(struct clk_hw *hw, u8 index)
 	return ret;
 }
 
-<<<<<<< HEAD
 static const struct clk_ops clk_busy_mux_ops = {
-=======
-static struct clk_ops clk_busy_mux_ops = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.get_parent = clk_busy_mux_get_parent,
 	.set_parent = clk_busy_mux_set_parent,
 };
@@ -187,11 +175,7 @@ struct clk *imx_clk_busy_mux(const char *name, void __iomem *reg, u8 shift,
 
 	init.name = name;
 	init.ops = &clk_busy_mux_ops;
-<<<<<<< HEAD
 	init.flags = CLK_IS_CRITICAL;
-=======
-	init.flags = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	init.parent_names = parent_names;
 	init.num_parents = num_parents;
 

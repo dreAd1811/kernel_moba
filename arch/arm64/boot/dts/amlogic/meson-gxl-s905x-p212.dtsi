@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Copyright (c) 2016 Martin Blumenstingl <martin.blumenstingl@googlemail.com>.
  * Based on meson-gx-p23x-q20x.dtsi:
@@ -9,11 +6,6 @@
  *   Author: Carlo Caione <carlo@endlessm.com>
  * - Copyright (c) 2016 BayLibre, SAS.
  *   Author: Neil Armstrong <narmstrong@baylibre.com>
-<<<<<<< HEAD
-=======
- *
- * SPDX-License-Identifier: (GPL-2.0+ OR MIT)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /* Common DTSI for devices which are based on the P212 reference board. */
@@ -24,10 +16,7 @@
 	aliases {
 		serial0 = &uart_AO;
 		serial1 = &uart_A;
-<<<<<<< HEAD
 		ethernet0 = &ethmac;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	chosen {
@@ -39,7 +28,6 @@
 		reg = <0x0 0x0 0x0 0x80000000>;
 	};
 
-<<<<<<< HEAD
 	hdmi_5v: regulator-hdmi-5v {
 		compatible = "regulator-fixed";
 
@@ -52,8 +40,6 @@
 		regulator-always-on;
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vddio_boot: regulator-vddio_boot {
 		compatible = "regulator-fixed";
 		regulator-name = "VDDIO_BOOT";
@@ -161,11 +147,7 @@
 /* eMMC */
 &sd_emmc_c {
 	status = "okay";
-<<<<<<< HEAD
 	pinctrl-0 = <&emmc_pins>, <&emmc_ds_pins>;
-=======
-	pinctrl-0 = <&emmc_pins>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pinctrl-1 = <&emmc_clk_gate_pins>;
 	pinctrl-names = "default", "clk-gate";
 
@@ -203,7 +185,6 @@
 	pinctrl-0 = <&uart_ao_a_pins>;
 	pinctrl-names = "default";
 };
-<<<<<<< HEAD
 
 &usb0 {
 	status = "okay";
@@ -215,5 +196,3 @@
 	 */
 	phy-supply = <&hdmi_5v>;
 };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

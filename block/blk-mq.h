@@ -3,7 +3,6 @@
 #define INT_BLK_MQ_H
 
 #include "blk-stat.h"
-<<<<<<< HEAD
 #include "blk-mq-tag.h"
 
 struct blk_mq_tag_set;
@@ -11,11 +10,6 @@ struct blk_mq_tag_set;
 /**
  * struct blk_mq_ctx - State for a software queue facing the submitting CPUs
  */
-=======
-
-struct blk_mq_tag_set;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct blk_mq_ctx {
 	struct {
 		spinlock_t		lock;
@@ -36,7 +30,6 @@ struct blk_mq_ctx {
 	struct kobject		kobj;
 } ____cacheline_aligned_in_smp;
 
-<<<<<<< HEAD
 void blk_mq_freeze_queue(struct request_queue *q);
 void blk_mq_exit_queue(struct request_queue *q);
 int blk_mq_update_nr_requests(struct request_queue *q, unsigned int nr);
@@ -46,17 +39,6 @@ void blk_mq_flush_busy_ctxs(struct blk_mq_hw_ctx *hctx, struct list_head *list);
 bool blk_mq_get_driver_tag(struct request *rq);
 struct request *blk_mq_dequeue_from_ctx(struct blk_mq_hw_ctx *hctx,
 					struct blk_mq_ctx *start);
-=======
-void blk_mq_run_hw_queue(struct blk_mq_hw_ctx *hctx, bool async);
-void blk_mq_free_queue(struct request_queue *q);
-int blk_mq_update_nr_requests(struct request_queue *q, unsigned int nr);
-void blk_mq_wake_waiters(struct request_queue *q);
-bool blk_mq_dispatch_rq_list(struct request_queue *, struct list_head *);
-void blk_mq_flush_busy_ctxs(struct blk_mq_hw_ctx *hctx, struct list_head *list);
-bool blk_mq_hctx_has_pending(struct blk_mq_hw_ctx *hctx);
-bool blk_mq_get_driver_tag(struct request *rq, struct blk_mq_hw_ctx **hctx,
-				bool wait);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Internal helpers for allocating/freeing the request map
@@ -76,7 +58,6 @@ int blk_mq_alloc_rqs(struct blk_mq_tag_set *set, struct blk_mq_tags *tags,
  */
 void __blk_mq_insert_request(struct blk_mq_hw_ctx *hctx, struct request *rq,
 				bool at_head);
-<<<<<<< HEAD
 void blk_mq_request_bypass_insert(struct request *rq, bool run_queue);
 void blk_mq_insert_requests(struct blk_mq_hw_ctx *hctx, struct blk_mq_ctx *ctx,
 				struct list_head *list);
@@ -86,12 +67,6 @@ blk_status_t blk_mq_request_issue_directly(struct request *rq);
 void blk_mq_try_issue_list_directly(struct blk_mq_hw_ctx *hctx,
 				    struct list_head *list);
 
-=======
-void blk_mq_request_bypass_insert(struct request *rq);
-void blk_mq_insert_requests(struct blk_mq_hw_ctx *hctx, struct blk_mq_ctx *ctx,
-				struct list_head *list);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * CPU -> queue mappings
  */
@@ -113,7 +88,6 @@ extern int blk_mq_sysfs_register(struct request_queue *q);
 extern void blk_mq_sysfs_unregister(struct request_queue *q);
 extern void blk_mq_hctx_kobj_init(struct blk_mq_hw_ctx *hctx);
 
-<<<<<<< HEAD
 void blk_mq_release(struct request_queue *q);
 
 /**
@@ -124,11 +98,6 @@ static inline enum mq_rq_state blk_mq_rq_state(struct request *rq)
 {
 	return READ_ONCE(rq->state);
 }
-=======
-extern void blk_mq_rq_timed_out(struct request *req, bool reserved);
-
-void blk_mq_release(struct request_queue *q);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline struct blk_mq_ctx *__blk_mq_get_ctx(struct request_queue *q,
 					   unsigned int cpu)
@@ -155,11 +124,7 @@ static inline void blk_mq_put_ctx(struct blk_mq_ctx *ctx)
 struct blk_mq_alloc_data {
 	/* input parameter */
 	struct request_queue *q;
-<<<<<<< HEAD
 	blk_mq_req_flags_t flags;
-=======
-	unsigned int flags;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int shallow_depth;
 
 	/* input & output parameter */
@@ -190,7 +155,6 @@ void blk_mq_in_flight(struct request_queue *q, struct hd_struct *part,
 void blk_mq_in_flight_rw(struct request_queue *q, struct hd_struct *part,
 			 unsigned int inflight[2]);
 
-<<<<<<< HEAD
 static inline void blk_mq_put_dispatch_budget(struct blk_mq_hw_ctx *hctx)
 {
 	struct request_queue *q = hctx->queue;
@@ -248,6 +212,4 @@ static inline void blk_mq_clear_mq_map(struct blk_mq_tag_set *set)
 		set->mq_map[cpu] = 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

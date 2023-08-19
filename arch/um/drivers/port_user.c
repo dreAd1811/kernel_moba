@@ -168,11 +168,7 @@ int port_connection(int fd, int *socket, int *pid_out)
 {
 	int new, err;
 	char *argv[] = { "/usr/sbin/in.telnetd", "-L",
-<<<<<<< HEAD
 			 OS_LIB_PATH "/uml/port-helper", NULL };
-=======
-			 "/usr/lib/uml/port-helper", NULL };
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct port_pre_exec_data data;
 
 	new = accept(fd, NULL, 0);

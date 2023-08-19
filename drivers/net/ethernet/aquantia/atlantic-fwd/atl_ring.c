@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /*
  * aQuantia Corporation Network Driver
  * Copyright (C) 2017 aQuantia Corporation. All rights reserved
@@ -6,17 +5,6 @@
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU General Public License,
  * version 2, as published by the Free Software Foundation.
-=======
-// SPDX-License-Identifier: GPL-2.0-only
-/* Atlantic Network Driver
- *
- * Copyright (C) 2017 aQuantia Corporation
- * Copyright (C) 2019-2020 Marvell International Ltd.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include "atl_ring.h"
@@ -27,7 +15,6 @@
 #include <linux/if_vlan.h>
 #include <linux/vmalloc.h>
 #include <linux/interrupt.h>
-<<<<<<< HEAD
 
 #include "atl_trace.h"
 
@@ -39,16 +26,6 @@ do {								\
 	_ring->stats.stat += (delta);				\
 	u64_stats_update_end(&_ring->syncp);			\
 } while (0)
-=======
-#include <linux/cpu.h>
-#include <uapi/linux/ip.h>
-#include <uapi/linux/tcp.h>
-#include <uapi/linux/udp.h>
-
-#include "atl_trace.h"
-#include "atl_fwdnl.h"
-#include "atl_hw_ptp.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline uint32_t fetch_tx_head(struct atl_desc_ring *ring)
 {
@@ -59,24 +36,14 @@ static inline uint32_t fetch_tx_head(struct atl_desc_ring *ring)
 #endif
 }
 
-<<<<<<< HEAD
 static int tx_full(struct atl_desc_ring *ring, int needed)
 {
 	struct atl_nic *nic = ring->qvec->nic;
-=======
-int atl_tx_full(struct atl_desc_ring *ring, int needed)
-{
-	struct atl_nic *nic = ring->nic;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (likely(ring_space(ring) >= needed))
 		return 0;
 
-<<<<<<< HEAD
 	netif_stop_subqueue(ring->qvec->nic->ndev, ring->qvec->idx);
-=======
-	netif_stop_subqueue(nic->ndev, ring->qvec->idx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	atl_nic_dbg("Stopping tx queue\n");
 
 	smp_mb();
@@ -85,11 +52,7 @@ int atl_tx_full(struct atl_desc_ring *ring, int needed)
 	if (likely(ring_space(ring) < needed))
 		return -EAGAIN;
 
-<<<<<<< HEAD
 	netif_start_subqueue(ring->qvec->nic->ndev, ring->qvec->idx);
-=======
-	netif_start_subqueue(nic->ndev, ring->qvec->idx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	atl_nic_dbg("Restarting tx queue in %s...\n", __func__);
 	atl_update_ring_stat(ring, tx.tx_restart, 1);
 	return 0;
@@ -124,7 +87,6 @@ static void atl_txbuf_free(struct atl_txbuf *txbuf, struct device *dev,
 
 static inline struct netdev_queue *atl_txq(struct atl_desc_ring *ring)
 {
-<<<<<<< HEAD
 	return netdev_get_tx_queue(ring->qvec->nic->ndev,
 		ring->qvec->idx);
 }
@@ -140,30 +102,13 @@ static inline int skb_xmit_more(struct sk_buff *skb)
 	return skb->xmit_more;
 }
 
-=======
-	return netdev_get_tx_queue(ring->nic->ndev, ring->qvec->idx);
-}
-
-unsigned int atl_tx_free_low = MAX_SKB_FRAGS + 4;
-module_param_named(tx_free_low, atl_tx_free_low, uint, 0644);
-
-unsigned int atl_tx_free_high = MAX_SKB_FRAGS * 3;
-module_param_named(tx_free_high, atl_tx_free_high, uint, 0644);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static netdev_tx_t atl_map_xmit_skb(struct sk_buff *skb,
 	struct atl_desc_ring *ring, struct atl_txbuf *first_buf)
 {
 	int idx = ring->tail;
-<<<<<<< HEAD
 	struct device *dev = ring->qvec->dev;
 	struct atl_tx_desc *desc = &ring->desc.tx;
 	struct skb_frag_struct *frag;
-=======
-	struct device *dev = &ring->nic->hw.pdev->dev;
-	struct atl_tx_desc *desc = &ring->desc.tx;
-	skb_frag_t *frag;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Header's DMA mapping must be stored in the txbuf that has
 	 * ->skb set, even if it corresponds to the context
 	 * descriptor and not the first data descriptor
@@ -185,12 +130,7 @@ static netdev_tx_t atl_map_xmit_skb(struct sk_buff *skb,
 		desc->daddr = cpu_to_le64(daddr);
 		while (len > ATL_DATA_PER_TXD) {
 			desc->len = cpu_to_le16(ATL_DATA_PER_TXD);
-<<<<<<< HEAD
 			WRITE_ONCE(ring->hw.descs[idx].tx, *desc);
-=======
-			trace_atl_tx_descr(ring->qvec->idx, idx, (u64 *)desc);
-			ring->hw.descs[idx].tx = *desc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			bump_ptr(idx, ring, 1);
 			daddr += ATL_DATA_PER_TXD;
 			len -= ATL_DATA_PER_TXD;
@@ -201,12 +141,7 @@ static netdev_tx_t atl_map_xmit_skb(struct sk_buff *skb,
 		if (!frags)
 			break;
 
-<<<<<<< HEAD
 		WRITE_ONCE(ring->hw.descs[idx].tx, *desc);
-=======
-		trace_atl_tx_descr(ring->qvec->idx, idx, (u64 *)desc);
-		ring->hw.descs[idx].tx = *desc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bump_ptr(idx, ring, 1);
 		txbuf = &ring->txbufs[idx];
 		len = skb_frag_size(frag);
@@ -223,23 +158,14 @@ static netdev_tx_t atl_map_xmit_skb(struct sk_buff *skb,
 #if defined(ATL_TX_DESC_WB) || defined(ATL_TX_HEAD_WB)
 	desc->cmd |= tx_desc_cmd_wb;
 #endif
-<<<<<<< HEAD
 	WRITE_ONCE(ring->hw.descs[idx].tx, *desc);
-=======
-	trace_atl_tx_descr(ring->qvec->idx, idx, (u64 *)desc);
-	ring->hw.descs[idx].tx = *desc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	first_buf->last = idx;
 	bump_ptr(idx, ring, 1);
 	ring->txbufs[idx].last = -1;
 	ring->tail = idx;
 
 	/* Stop queue if no space for another packet */
-<<<<<<< HEAD
 	tx_full(ring, atl_tx_free_low);
-=======
-	atl_tx_full(ring, atl_tx_free_low);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Delay bumping the HW tail if another packet is pending and
 	 * there's space for it.
@@ -314,10 +240,6 @@ static uint32_t atl_insert_context(struct atl_txbuf *txbuf,
 	if (tx_cmd) {
 		ctx->type = tx_desc_type_context;
 		ctx->idx = 0;
-<<<<<<< HEAD
-=======
-		trace_atl_tx_context_descr(ring->qvec->idx, ring->tail, (u64 *)ctx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		COMMIT_DESC(ring, ring->tail, scratch);
 		bump_tail(ring, 1);
 	}
@@ -329,62 +251,16 @@ netdev_tx_t atl_start_xmit(struct sk_buff *skb, struct net_device *ndev)
 {
 	struct atl_nic *nic = netdev_priv(ndev);
 	struct atl_desc_ring *ring = &nic->qvecs[skb->queue_mapping].tx;
-<<<<<<< HEAD
-=======
-
-	if (unlikely(nic->hw.link_state.ptp_datapath_up)) {
-		/* Hardware adds the Timestamp for PTPv2 802.AS1
-		 * and PTPv2 IPv4 UDP.
-		 * We have to push even general 320 port messages to the ptp
-		 * queue explicitly. This is a limitation of current firmware
-		 * and hardware PTP design of the chip. Otherwise ptp stream
-		 * will fail to sync
-		 */
-		if (unlikely(skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) ||
-		    unlikely((ip_hdr(skb)->version == 4) &&
-			     (ip_hdr(skb)->protocol == IPPROTO_UDP) &&
-			     ((udp_hdr(skb)->dest == htons(319)) ||
-			      (udp_hdr(skb)->dest == htons(320)))) ||
-		    unlikely(eth_hdr(skb)->h_proto == htons(ETH_P_1588)))
-			return atl_ptp_start_xmit(nic, skb);
-	}
-
-	skb_tx_timestamp(skb);
-	if (nic->priv_flags & ATL_PF_BIT(LPB_NET_DMA))
-		return NETDEV_TX_BUSY;
-
-#if IS_ENABLED(CONFIG_ATLFWD_FWD_NETLINK)
-	/* atl_max_queues is the number of standard queues.
-	 * Extra queue is allocated for FWD processing.
-	 */
-	if (unlikely(skb->queue_mapping >= nic->nvecs))
-		return atlfwd_nl_xmit(skb, ndev);
-#endif
-
-	if (atl_tx_full(ring, skb_shinfo(skb)->nr_frags + 4)) {
-		atl_update_ring_stat(ring, tx.tx_busy, 1);
-		return NETDEV_TX_BUSY;
-	}
-
-	return atl_map_skb(skb, ring);
-}
-
-netdev_tx_t atl_map_skb(struct sk_buff *skb, struct atl_desc_ring *ring)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int len = skb->len;
 	struct atl_tx_desc *desc;
 	struct atl_txbuf *txbuf;
 	uint32_t cmd_from_ctx;
 
-<<<<<<< HEAD
 	if (tx_full(ring, skb_shinfo(skb)->nr_frags + 4)) {
 		atl_update_ring_stat(ring, tx.tx_busy, 1);
 		return NETDEV_TX_BUSY;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	txbuf = &ring->txbufs[ring->tail];
 
 	txbuf->skb = skb;
@@ -428,23 +304,14 @@ netdev_tx_t atl_map_skb(struct sk_buff *skb, struct atl_desc_ring *ring)
 	return atl_map_xmit_skb(skb, ring, txbuf);
 }
 
-<<<<<<< HEAD
 static unsigned int atl_tx_clean_budget = 256;
-=======
-unsigned int atl_tx_clean_budget = 256;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 module_param_named(tx_clean_budget, atl_tx_clean_budget, uint, 0644);
 
 // Returns true if all work done
 static bool atl_clean_tx(struct atl_desc_ring *ring)
 {
-<<<<<<< HEAD
 	struct atl_nic *nic = ring->qvec->nic;
 	struct device *dev = ring->qvec->dev;
-=======
-	struct atl_nic *nic = ring->nic;
-	struct device *dev = &nic->hw.pdev->dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t first = READ_ONCE(ring->head);
 #ifndef ATL_TX_DESC_WB
 	uint32_t done = atl_get_tx_head(ring);
@@ -504,7 +371,6 @@ static bool atl_clean_tx(struct atl_desc_ring *ring)
 		}
 	} while (--budget);
 
-<<<<<<< HEAD
 	u64_stats_update_begin(&ring->syncp);
 	ring->stats.tx.bytes += bytes;
 	ring->stats.tx.packets += packets;
@@ -513,28 +379,11 @@ static bool atl_clean_tx(struct atl_desc_ring *ring)
 	WRITE_ONCE(ring->head, first);
 
 	if (ring_space(ring) > atl_tx_free_high) {
-=======
-	if (likely(ring->qvec->type != ATL_QUEUE_PTP)) {
-		u64_stats_update_begin(&ring->syncp);
-		ring->stats.tx.bytes += bytes;
-		ring->stats.tx.packets += packets;
-		u64_stats_update_end(&ring->syncp);
-	}
-
-	ring->head = first;
-
-	if (likely(ring->qvec->type != ATL_QUEUE_PTP) &&
-	    ring_space(ring) > atl_tx_free_high) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct net_device *ndev = nic->ndev;
 
 		smp_mb();
 		if (__netif_subqueue_stopped(ndev, ring->qvec->idx) &&
-<<<<<<< HEAD
 			test_bit(ATL_ST_UP, &nic->state)) {
-=======
-			test_bit(ATL_ST_RINGS_RUNNING, &nic->hw.state)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			atl_nic_dbg("restarting tx queue\n");
 			netif_wake_subqueue(ndev, ring->qvec->idx);
 			atl_update_ring_stat(ring, tx.tx_restart, 1);
@@ -544,99 +393,12 @@ static bool atl_clean_tx(struct atl_desc_ring *ring)
 	return !!budget;
 }
 
-<<<<<<< HEAD
 static bool atl_rx_checksum(struct sk_buff *skb, struct atl_rx_desc_wb *desc,
 	struct atl_desc_ring *ring)
 {
 	struct atl_nic *nic = ring->qvec->nic;
 	struct net_device *ndev = nic->ndev;
 	int csum_ok = 1, recheck = 0;
-=======
-/* work around HW bugs in checksum calculation:
- * - packets less than 60 octets
- * - ip, tcp or udp checksum is 0xFFFF
- * - non-zero padding
- */
-static bool atl_checksum_workaround(struct sk_buff *skb,
-				    struct atl_rx_desc_wb *desc)
-{
-	int ip_header_offset = 14;
-	int l4_header_offset = 0;
-	struct iphdr *ip;
-	struct ipv6hdr *ipv6;
-	struct tcphdr *tcp;
-	struct udphdr *udp;
-
-	if (desc->pkt_len <= 60)
-		return true;
-
-	if (((desc->pkt_type & atl_rx_pkt_type_vlan_msk) ==
-	    atl_rx_pkt_type_vlan) &&
-	    !(desc->rx_estat & atl_rx_estat_vlan_stripped)) 
-		ip_header_offset += sizeof(struct vlan_hdr);
-
-	if ((desc->pkt_type & atl_rx_pkt_type_vlan_msk) ==
-	    atl_rx_pkt_type_dbl_vlan) {
-	    	if (desc->rx_estat & atl_rx_estat_vlan_stripped)
-			ip_header_offset += sizeof(struct vlan_hdr);
-		else
-			ip_header_offset += sizeof(struct vlan_hdr) * 2;
-	}
-
-	switch (desc->pkt_type & atl_rx_pkt_type_l3_msk) {
-	case atl_rx_pkt_type_ipv4:
-		ip = (struct iphdr *) &skb->data[ip_header_offset];
-
-		if (ip->check == 0xFFFF)
-			return true;
-		l4_header_offset = ip->ihl << 2;
-		/* padding inside Ethernet frame */
-		if (ntohs(ip->tot_len) + ip_header_offset < desc->pkt_len)
-			return true;
-		break;
-	case atl_rx_pkt_type_ipv6:
-		ipv6 = (struct ipv6hdr *) &skb->data[ip_header_offset];
-		l4_header_offset = sizeof(struct ipv6hdr);
-		/* padding inside Ethernet frame */
-		if (ip_header_offset + sizeof(struct ipv6hdr) +
-		    ntohs(ipv6->payload_len) < desc->pkt_len)
-			return true;
-		break;
-	default:
-		return false;
-	}
-
-	switch (desc->pkt_type & atl_rx_pkt_type_l4_msk) {
-	case atl_rx_pkt_type_tcp:
-		tcp = (struct tcphdr *) &skb->data[ip_header_offset +
-						  l4_header_offset];
-
-		if (tcp->check == 0xFFFF)
-			return true;
-		break;
-	case atl_rx_pkt_type_udp:
-		udp = (struct udphdr *) &skb->data[ip_header_offset +
-						  l4_header_offset];
-		if (udp->check == 0xFFFF)
-			return true;
-		/* padding inside IP frame */
-		if (l4_header_offset + ntohs(udp->len) < desc->pkt_len)
-			return true;
-		break;
-	default:
-		return false;
-	}
-
-	return false;
-}
-
-bool atl_rx_checksum(struct sk_buff *skb, struct atl_rx_desc_wb *desc,
-		     struct atl_desc_ring *ring)
-{
-	struct atl_nic *nic = ring->nic;
-	struct net_device *ndev = nic->ndev;
-	int csum_ok = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	skb_checksum_none_assert(skb);
 
@@ -663,10 +425,7 @@ bool atl_rx_checksum(struct sk_buff *skb, struct atl_rx_desc_wb *desc,
 	switch (desc->pkt_type & atl_rx_pkt_type_l4_msk) {
 	case atl_rx_pkt_type_tcp:
 	case atl_rx_pkt_type_udp:
-<<<<<<< HEAD
 		recheck = desc->pkt_len <= 60;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		csum_ok &= !(desc->rx_stat & atl_rx_stat_l4_err);
 		break;
 	default:
@@ -676,15 +435,8 @@ bool atl_rx_checksum(struct sk_buff *skb, struct atl_rx_desc_wb *desc,
 	if (csum_ok) {
 		skb->ip_summed = CHECKSUM_UNNECESSARY;
 		return true;
-<<<<<<< HEAD
 	} else if (recheck)
 		return true;
-=======
-	} else {
-		if (atl_checksum_workaround(skb, desc))
-			return true;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	atl_update_ring_stat(ring, rx.csum_err, 1);
 
@@ -699,13 +451,8 @@ drop:
 	return false;
 }
 
-<<<<<<< HEAD
 static void atl_rx_hash(struct sk_buff *skb, struct atl_rx_desc_wb *desc,
 	struct net_device *ndev)
-=======
-void atl_rx_hash(struct sk_buff *skb, struct atl_rx_desc_wb *desc,
-		 struct net_device *ndev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	uint8_t rss_type = desc->rss_type;
 
@@ -717,67 +464,31 @@ void atl_rx_hash(struct sk_buff *skb, struct atl_rx_desc_wb *desc,
 		PKT_HASH_TYPE_L3);
 }
 
-<<<<<<< HEAD
 static bool atl_rx_packet(struct sk_buff *skb, struct atl_rx_desc_wb *desc,
 			  struct atl_desc_ring *ring)
 {
 	struct net_device *ndev = ring->qvec->nic->ndev;
 	struct napi_struct *napi = &ring->qvec->napi;
 
-=======
-static int atl_napi_receive_skb(struct atl_desc_ring *ring, struct sk_buff *skb)
-{
-	bool is_ptp_ring = atl_is_ptp_ring(ring->nic, ring);
-	struct net_device *ndev = ring->nic->ndev;
-	struct napi_struct *napi = &ring->qvec->napi;
-
-	/* Send all PTP traffic to 0 queue */
-	skb_record_rx_queue(skb, is_ptp_ring ? 0 : ring->qvec->idx);
-	skb->protocol = eth_type_trans(skb, ndev);
-	napi_gro_receive(napi, skb);
-
-	return 0;
-}
-
-static bool atl_rx_packet(struct sk_buff *skb, struct atl_rx_desc_wb *desc,
-			  struct atl_desc_ring *ring,
-			  rx_skb_handler_t rx_skb_func)
-{
-	struct net_device *ndev = ring->nic->ndev;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!atl_rx_checksum(skb, desc, ring))
 		return false;
 
 	if (!skb_is_nonlinear(skb) && eth_skb_pad(skb))
 		return false;
 
-<<<<<<< HEAD
 	if (ndev->features & NETIF_F_HW_VLAN_CTAG_RX
 	    && desc->rx_estat & atl_rx_estat_vlan_stripped) {
-=======
-	if ((ndev->features & NETIF_F_HW_VLAN_CTAG_RX) &&
-	    (desc->rx_estat & atl_rx_estat_vlan_stripped)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__vlan_hwaccel_put_tag(skb, htons(ETH_P_8021Q),
 				       le16_to_cpu(desc->vlan_tag));
 	}
 
 	atl_rx_hash(skb, desc, ndev);
 
-<<<<<<< HEAD
 	skb_record_rx_queue(skb, ring->qvec->idx);
 	skb->protocol = eth_type_trans(skb, ndev);
 	if (skb->pkt_type == PACKET_MULTICAST)
 		atl_update_ring_stat(ring, rx.multicast, 1);
 	napi_gro_receive(napi, skb);
-=======
-	if (skb->pkt_type == PACKET_MULTICAST)
-		atl_update_ring_stat(ring, rx.multicast, 1);
-
-	rx_skb_func(ring, skb);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return true;
 }
 
@@ -789,32 +500,18 @@ module_param_named(rx_linear, atl_rx_linear, uint, 0444);
  * for the target page.
  */
 static int atl_get_page(struct atl_pgref *pgref, unsigned int order,
-<<<<<<< HEAD
 	struct device *dev)
-=======
-	struct device *dev, bool atomic)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct atl_rxpage *rxpage;
 	struct page *page;
 	dma_addr_t daddr;
 	int ret = -ENOMEM;
-<<<<<<< HEAD
 
 	rxpage = kmalloc(sizeof(*rxpage), GFP_ATOMIC | __GFP_NOWARN);
 	if (unlikely(!rxpage))
 		return ret;
 
 	page = dev_alloc_pages(order);
-=======
-	gfp_t flags = atomic ? GFP_ATOMIC | __GFP_NOWARN : GFP_KERNEL;
-
-	rxpage = kmalloc(sizeof(*rxpage), flags);
-	if (unlikely(!rxpage))
-		return ret;
-
-	page = __dev_alloc_pages(flags, order);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(!page))
 		goto free_rxpage;
 
@@ -844,29 +541,17 @@ free_rxpage:
 }
 
 static int atl_get_pages(struct atl_rxbuf *rxbuf,
-<<<<<<< HEAD
 	struct atl_desc_ring *ring)
 {
 	int ret;
 	struct device *dev = ring->qvec->dev;
-=======
-	struct atl_desc_ring *ring, bool atomic)
-{
-	int ret;
-	struct device *dev = &ring->nic->hw.pdev->dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (likely((rxbuf->head.rxpage || atl_rx_linear)
 			&& rxbuf->data.rxpage))
 		return 0;
 
 	if (!rxbuf->head.rxpage && !atl_rx_linear) {
-<<<<<<< HEAD
 		ret = atl_get_page(&rxbuf->head, ATL_RX_HEAD_ORDER, dev);
-=======
-		ret = atl_get_page(&rxbuf->head, ATL_RX_HEAD_ORDER,
-			dev, atomic);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret) {
 			atl_update_ring_stat(ring,
 				rx.alloc_head_page_failed, 1);
@@ -876,12 +561,7 @@ static int atl_get_pages(struct atl_rxbuf *rxbuf,
 	}
 
 	if (!rxbuf->data.rxpage) {
-<<<<<<< HEAD
 		ret = atl_get_page(&rxbuf->data, ATL_RX_DATA_ORDER, dev);
-=======
-		ret = atl_get_page(&rxbuf->data, ATL_RX_DATA_ORDER,
-			dev, atomic);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret) {
 			atl_update_ring_stat(ring,
 				rx.alloc_data_page_failed, 1);
@@ -914,22 +594,14 @@ static inline void atl_fill_rx_desc(struct atl_desc_ring *ring,
 	COMMIT_DESC(ring, ring->tail, scratch);
 }
 
-<<<<<<< HEAD
 static int atl_fill_rx(struct atl_desc_ring *ring, uint32_t count)
-=======
-static int atl_fill_rx(struct atl_desc_ring *ring, uint32_t count, bool atomic)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret = 0;
 
 	while (count) {
 		struct atl_rxbuf *rxbuf = &ring->rxbufs[ring->tail];
 
-<<<<<<< HEAD
 		ret = atl_get_pages(rxbuf, ring);
-=======
-		ret = atl_get_pages(rxbuf, ring, atomic);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			break;
 
@@ -953,29 +625,6 @@ static int atl_fill_rx(struct atl_desc_ring *ring, uint32_t count, bool atomic)
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
-static int atl_fill_hwts_rx(struct atl_desc_ring *ring, uint32_t count, bool atomic)
-{
-	struct atl_rx_desc *desc;
-
-	while (count) {
-		DECLARE_SCRATCH_DESC(scratch);
-
-		desc  = &DESC_PTR(ring, ring->tail, scratch)->rx;
-		desc->daddr = ring->hw.daddr + ring->hw.size * sizeof(*ring->hw.descs);
-		desc->haddr = 0;
-
-		COMMIT_DESC(ring, ring->tail, scratch);
-
-		bump_tail(ring, 1);
-		count--;
-	}
-
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void atl_get_rxpage(struct atl_pgref *pgref)
 {
 	pgref->rxpage->mapcount++;
@@ -1031,29 +680,17 @@ static void atl_maybe_recycle_rxbuf(struct atl_desc_ring *ring,
 	struct atl_rxbuf *new = &ring->rxbufs[ring->next_to_recycle];
 	unsigned int data_len = ATL_RX_BUF_SIZE +
 		(atl_rx_linear ? ATL_RX_HDR_OVRHD : 0);
-<<<<<<< HEAD
 
 	if (!atl_rx_linear
 		&& atl_recycle_or_put_page(head,
 			ATL_RX_HDR_SIZE + ATL_RX_HDR_OVRHD, ring->qvec->dev)) {
-=======
-	struct device *dev = &ring->nic->hw.pdev->dev;
-
-	if (!atl_rx_linear &&
-	    atl_recycle_or_put_page(head, ATL_RX_HDR_SIZE + ATL_RX_HDR_OVRHD,
-				    dev)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		new->head = *head;
 		reused = 1;
 		atl_update_ring_stat(ring, rx.reused_head_page, 1);
 	}
 	head->rxpage = 0;
 
-<<<<<<< HEAD
 	if (atl_recycle_or_put_page(data, data_len, ring->qvec->dev)) {
-=======
-	if (atl_recycle_or_put_page(data, data_len, dev)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		new->data = *data;
 		reused = 1;
 		atl_update_ring_stat(ring, rx.reused_data_page, 1);
@@ -1083,15 +720,9 @@ static void atl_sync_range(struct atl_desc_ring *ring,
 {
 	dma_addr_t daddr = pgref->rxpage->daddr;
 	unsigned int pg_off = pgref->pg_off + offt;
-<<<<<<< HEAD
 
 	dma_sync_single_range_for_cpu(ring->qvec->dev, daddr, pg_off, len,
 		DMA_FROM_DEVICE);
-=======
-	struct device *dev = &ring->nic->hw.pdev->dev;
-
-	dma_sync_single_range_for_cpu(dev, daddr, pg_off, len, DMA_FROM_DEVICE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	trace_atl_sync_rx_range(-1, daddr, pg_off, len);
 }
 
@@ -1103,11 +734,7 @@ static struct sk_buff *atl_init_skb(struct atl_desc_ring *ring,
 	unsigned int data_len = atl_data_len(wb);
 	void *hdr;
 	struct atl_pgref *pgref;
-<<<<<<< HEAD
 	struct atl_nic *nic = ring->qvec->nic;
-=======
-	struct atl_nic *nic = ring->nic;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (atl_rx_linear) {
 		if (!wb->eop) {
@@ -1215,19 +842,7 @@ static struct sk_buff *atl_process_rx_frag(struct atl_desc_ring *ring,
 	struct sk_buff *skb = rxbuf->skb;
 	struct atl_cb *atl_cb;
 	struct atl_pgref *headref = &rxbuf->head, *dataref = &rxbuf->data;
-<<<<<<< HEAD
 	struct device *dev = ring->qvec->dev;
-=======
-	struct device *dev = &ring->nic->hw.pdev->dev;
-	bool is_ptp_ring = atl_is_ptp_ring(ring->nic, ring);
-
-	if (unlikely(wb->rdm_err)) {
-		if (skb && skb != (void *)-1l)
-			dev_kfree_skb_any(skb);
-
-		skb = (void *)-1l;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!skb) {
 		 /* First buffer of a packet */
@@ -1241,13 +856,6 @@ static struct sk_buff *atl_process_rx_frag(struct atl_desc_ring *ring,
 
 	hdr_len = wb->hdr_len;
 	data_len = atl_data_len(wb);
-<<<<<<< HEAD
-=======
-	if (is_ptp_ring) {
-		data_len -= atl_ptp_extract_ts(ring->nic, skb, atl_buf_vaddr(dataref),
-					       data_len);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (atl_rx_linear) {
 		/* Linear skb mode. The entire packet was DMA'd into
@@ -1347,17 +955,8 @@ static struct sk_buff *atl_process_rx_frag(struct atl_desc_ring *ring,
 unsigned int atl_rx_refill_batch = 16;
 module_param_named(rx_refill_batch, atl_rx_refill_batch, uint, 0644);
 
-<<<<<<< HEAD
 static int atl_clean_rx(struct atl_desc_ring *ring, int budget)
 {
-=======
-int atl_clean_rx(struct atl_desc_ring *ring, int budget,
-		 rx_skb_handler_t rx_skb_func)
-{
-	unsigned int refill_batch =
-		min_t(typeof(atl_rx_refill_batch), atl_rx_refill_batch,
-		      ring->hw.size - 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int packets = 0;
 	unsigned int bytes = 0;
 	struct sk_buff *skb;
@@ -1369,13 +968,8 @@ int atl_clean_rx(struct atl_desc_ring *ring, int budget,
 		unsigned int len;
 		DECLARE_SCRATCH_DESC(scratch);
 
-<<<<<<< HEAD
 		if (space >= atl_rx_refill_batch)
 			atl_fill_rx(ring, space);
-=======
-		if (space >= refill_batch)
-			atl_fill_rx(ring, space, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		rxbuf = &ring->rxbufs[ring->head];
 
@@ -1386,20 +980,11 @@ int atl_clean_rx(struct atl_desc_ring *ring, int budget,
 			break;
 		DESC_RMB();
 
-<<<<<<< HEAD
-=======
-		trace_atl_rx_descr(ring->qvec->idx, ring->head, (u64 *)wb);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		skb = atl_process_rx_frag(ring, rxbuf, wb);
 
 		/* Treat allocation errors as transient and retry later */
 		if (!skb) {
-<<<<<<< HEAD
 			struct atl_nic *nic = ring->qvec->nic;
-=======
-			struct atl_nic *nic = ring->nic;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			atl_nic_err("failed to alloc skb for RX packet\n");
 			break;
@@ -1428,11 +1013,7 @@ int atl_clean_rx(struct atl_desc_ring *ring, int budget,
 			continue;
 
 		len = skb->len;
-<<<<<<< HEAD
 		if (atl_rx_packet(skb, wb, ring)) {
-=======
-		if (atl_rx_packet(skb, wb, ring, rx_skb_func)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			packets++;
 			bytes += len;
 		}
@@ -1446,45 +1027,6 @@ int atl_clean_rx(struct atl_desc_ring *ring, int budget,
 	return packets;
 }
 
-<<<<<<< HEAD
-=======
-int atl_clean_hwts_rx(struct atl_desc_ring *ring, int budget)
-{
-	unsigned int refill_batch =
-		min_t(typeof(atl_rx_refill_batch), atl_rx_refill_batch,
-		      ring->hw.size - 1);
-	unsigned int packets = 0;
-
-	while (packets < budget) {
-		uint32_t space = ring_space(ring);
-		struct atl_rx_desc_hwts_wb *wb;
-		struct atl_rxbuf *rxbuf;
-		u64 ns;
-		DECLARE_SCRATCH_DESC(scratch);
-
-		if (space >= refill_batch)
-			atl_fill_hwts_rx(ring, space, true);
-
-		rxbuf = &ring->rxbufs[ring->head];
-
-		wb = &DESC_PTR(ring, ring->head, scratch)->hwts_wb;
-		FETCH_DESC(ring, ring->head, scratch);
-
-		if (!wb->dd)
-			break;
-		DESC_RMB();
-
-		hw_atl_extract_hwts(&ring->nic->hw, wb, &ns);
-		atl_ptp_tx_hwtstamp(ring->nic, ns);
-
-		bump_head(ring, 1);
-		packets++;
-	}
-
-	return packets;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 unsigned int atl_min_intr_delay = 10;
 module_param_named(min_intr_delay, atl_min_intr_delay, uint, 0644);
 
@@ -1498,74 +1040,36 @@ static void atl_set_intr_throttle(struct atl_queue_vec *qvec)
 static int atl_poll(struct napi_struct *napi, int budget)
 {
 	struct atl_queue_vec *qvec;
-<<<<<<< HEAD
-=======
-
-	qvec = container_of(napi, struct atl_queue_vec, napi);
-
-	return atl_poll_qvec(qvec, budget);
-}
-
-int atl_poll_qvec(struct atl_queue_vec *qvec, int budget)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct atl_nic *nic;
 	bool clean_done;
 	int rx_cleaned;
 
-<<<<<<< HEAD
 	qvec = container_of(napi, struct atl_queue_vec, napi);
 	nic = qvec->nic;
 
 	clean_done = atl_clean_tx(&qvec->tx);
 	rx_cleaned = atl_clean_rx(&qvec->rx, budget);
-=======
-	nic = qvec->nic;
-
-	clean_done = atl_clean_tx(&qvec->tx);
-	rx_cleaned = atl_clean_rx(&qvec->rx, budget, atl_napi_receive_skb);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	clean_done &= (rx_cleaned < budget);
 
 	if (!clean_done)
 		return budget;
 
-<<<<<<< HEAD
 	napi_complete_done(napi, rx_cleaned);
 	atl_intr_enable(&nic->hw, BIT(atl_qvec_intr(qvec)));
 	/* atl_set_intr_throttle(&nic->hw, qvec->idx); */
-=======
-	if (likely(qvec->type != ATL_QUEUE_PTP)) {
-		napi_complete_done(&qvec->napi, rx_cleaned);
-		atl_intr_enable(&nic->hw, BIT(atl_qvec_intr(qvec)));
-		/* atl_set_intr_throttle(&nic->hw, qvec->idx); */
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rx_cleaned;
 }
 
 /* XXX NOTE: only checked on device probe for now */
-<<<<<<< HEAD
 static int enable_msi = 1;
 module_param_named(msi, enable_msi, int, 0444);
-=======
-#ifdef CONFIG_PCI_MSI
-bool atl_enable_msi = true;
-#else
-bool atl_enable_msi /*= false*/;
-#endif
-module_param_named(msi, atl_enable_msi, bool, 0444);
-bool atl_wq_non_msi /*= false*/;
-module_param_named(wq_non_msi, atl_wq_non_msi, bool, 0444);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int atl_config_interrupts(struct atl_nic *nic)
 {
 	struct atl_hw *hw = &nic->hw;
 	unsigned int flags;
 	int ret;
-<<<<<<< HEAD
 	struct irq_affinity iaff = {
 		.pre_vectors = ATL_NUM_NON_RING_IRQS,
 		.post_vectors = 0,
@@ -1577,29 +1081,13 @@ static int atl_config_interrupts(struct atl_nic *nic)
 			ATL_NUM_NON_RING_IRQS + 1,
 			ATL_NUM_NON_RING_IRQS + nic->requested_nvecs,
 			flags, &iaff);
-=======
-
-	if (atl_enable_msi) {
-		int nvecs;
-
-		nvecs = min_t(unsigned int, nic->requested_nvecs,
-			      num_present_cpus());
-		flags = PCI_IRQ_MSIX | PCI_IRQ_MSI;
-		ret = pci_alloc_irq_vectors(hw->pdev,
-			ATL_NUM_NON_RING_IRQS + 1,
-			ATL_NUM_NON_RING_IRQS + nvecs,
-			flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* pci_alloc_irq_vectors() never allocates less
 		 * than min_vectors
 		 */
 		if (ret > 0) {
 			ret -= ATL_NUM_NON_RING_IRQS;
-<<<<<<< HEAD
 			nic->nvecs = ret;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			nic->flags |= ATL_FL_MULTIPLE_VECTORS;
 			return ret;
 		}
@@ -1607,27 +1095,16 @@ static int atl_config_interrupts(struct atl_nic *nic)
 
 	atl_nic_warn("Couldn't allocate MSI-X / MSI vectors, falling back to legacy interrupts\n");
 
-<<<<<<< HEAD
 	ret = pci_alloc_irq_vectors(hw->pdev, 1, 1, PCI_IRQ_LEGACY);
-=======
-	flags = PCI_IRQ_LEGACY;
-	ret = pci_alloc_irq_vectors(hw->pdev, 1, 1, flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0) {
 		atl_nic_err("Couldn't allocate legacy IRQ\n");
 		return ret;
 	}
 
-<<<<<<< HEAD
 	nic->nvecs = 1;
 	nic->flags &= ~ATL_FL_MULTIPLE_VECTORS;
 
 	return 1;
-=======
-	nic->flags &= ~ATL_FL_MULTIPLE_VECTORS;
-
-	return min_t(unsigned int, atl_max_queues_non_msi, num_present_cpus());
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 irqreturn_t atl_ring_irq(int irq, void *priv)
@@ -1638,16 +1115,6 @@ irqreturn_t atl_ring_irq(int irq, void *priv)
 	return IRQ_HANDLED;
 }
 
-<<<<<<< HEAD
-=======
-void atl_ring_work(struct work_struct *work)
-{
-	struct legacy_irq_work *irq_work = to_irq_work(work);
-
-	napi_schedule(irq_work->napi);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void atl_clear_datapath(struct atl_nic *nic)
 {
 	int i;
@@ -1658,7 +1125,6 @@ void atl_clear_datapath(struct atl_nic *nic)
 	 * pci_ops->remove(), without an intervening
 	 * atl_setup_datapath().
 	 */
-<<<<<<< HEAD
 	if (!test_and_clear_bit(ATL_ST_CONFIGURED, &nic->state))
 		return;
 
@@ -1669,118 +1135,31 @@ void atl_clear_datapath(struct atl_nic *nic)
 		irq_set_affinity_hint(vector, NULL);
 	}
 #endif
-=======
-	if (!test_and_clear_bit(ATL_ST_CONFIGURED, &nic->hw.state))
-		return;
-
-	atl_ptp_irq_free(nic);
-	atl_free_link_intr(nic);
-
-	if (nic->flags & ATL_FL_MULTIPLE_VECTORS) {
-		for (i = 0; i < nic->nvecs; i++) {
-			int vector = pci_irq_vector(nic->hw.pdev,
-						    i + ATL_NUM_NON_RING_IRQS);
-			irq_set_affinity_hint(vector, NULL);
-		}
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pci_free_irq_vectors(nic->hw.pdev);
 
 	if (!qvecs)
 		return;
 
-<<<<<<< HEAD
 	for (i = 0; i < nic->nvecs; i++)
 		netif_napi_del(&qvecs[i].napi);
-=======
-	for (i = 0; i < nic->nvecs; i++) {
-		if (unlikely(!(nic->flags & ATL_FL_MULTIPLE_VECTORS)))
-			cancel_work_sync(qvecs[i].work);
-		netif_napi_del(&qvecs[i].napi);
-	}
-
-	atl_ptp_ring_stop(nic);
-
-	kfree(to_irq_work(qvecs[0].work));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(qvecs);
 	nic->qvecs = NULL;
 }
 
-<<<<<<< HEAD
 int atl_setup_datapath(struct atl_nic *nic)
 {
 	int nvecs, i, ret;
 	struct atl_queue_vec *qvec;
-=======
-static void atl_calc_affinities(struct atl_nic *nic)
-{
-	int i;
-	unsigned int cpu;
-
-	get_online_cpus();
-	cpu = cpumask_first(cpu_online_mask);
-
-	for (i = 0; i < nic->nvecs; i++) {
-		cpumask_t *cpumask = &nic->qvecs[i].affinity_hint;
-
-		/* If more vectors got allocated (based on
-		 * cpu_present_mask) than cpus currently online,
-		 * spread the remaining vectors among online cpus.
-		 */
-		if (cpu >= nr_cpumask_bits)
-			cpu = cpumask_first(cpu_online_mask);
-
-		cpumask_clear(cpumask);
-		cpumask_set_cpu(cpu, cpumask);
-		cpu = cpumask_next(cpu, cpu_online_mask);
-	}
-	put_online_cpus();
-}
-
-void atl_init_qvec(struct atl_nic *nic, struct atl_queue_vec *qvec, int idx)
-{
-	qvec->nic = nic;
-	qvec->idx = idx;
-
-	qvec->rx.hw.reg_base = ATL_RX_RING(idx);
-	qvec->rx.hw.size = nic->requested_rx_size;
-	qvec->rx.nic = nic;
-	qvec->rx.qvec = qvec;
-
-	qvec->tx.hw.reg_base = ATL_TX_RING(idx);
-	qvec->tx.hw.size = nic->requested_tx_size;
-	qvec->tx.nic = nic;
-	qvec->tx.qvec = qvec;
-
-	u64_stats_init(&qvec->rx.syncp);
-	u64_stats_init(&qvec->tx.syncp);
-
-	if (likely(qvec->type == ATL_QUEUE_REGULAR))
-		netif_napi_add(nic->ndev, &qvec->napi, atl_poll, 64);
-}
-
-int atl_setup_datapath(struct atl_nic *nic)
-{
-	struct legacy_irq_work *irq_work = NULL;
-	struct atl_queue_vec *qvec;
-	int nvecs, i, ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	nvecs = atl_config_interrupts(nic);
 	if (nvecs < 0)
 		return nvecs;
-<<<<<<< HEAD
-=======
-	nic->nvecs = nvecs;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	qvec = kcalloc(nvecs, sizeof(*qvec), GFP_KERNEL);
 	if (!qvec) {
 		atl_nic_err("Couldn't alloc qvecs\n");
 		ret = -ENOMEM;
-<<<<<<< HEAD
 		goto exit_free;
 	}
 	nic->qvecs = qvec;
@@ -1813,65 +1192,6 @@ int atl_setup_datapath(struct atl_nic *nic)
 
 exit_free:
 	atl_clear_datapath(nic);
-=======
-		goto err_alloc;
-	}
-	nic->qvecs = qvec;
-
-	if (unlikely(!(nic->flags & ATL_FL_MULTIPLE_VECTORS))) {
-		irq_work = kcalloc(nvecs, sizeof(*irq_work), GFP_KERNEL);
-		if (!irq_work) {
-			ret = -ENOMEM;
-			goto err_alloc_work;
-		}
-	}
-
-	ret = atl_alloc_link_intr(nic);
-	if (ret)
-		goto err_link_intr;
-
-	ret = atl_ptp_irq_alloc(nic);
-	if (ret < 0)
-		goto err_ptp_intr;
-
-	ret = atl_ptp_ring_start(nic);
-	if (ret < 0)
-		goto err_ptp_ring;
-
-	for (i = 0; i < nvecs; i++, qvec++) {
-		atl_init_qvec(nic, qvec, i);
-
-		if (unlikely(irq_work)) {
-			INIT_WORK(&irq_work[i].work, atl_ring_work);
-			irq_work[i].napi = &qvec->napi;
-			qvec->work = &irq_work[i].work;
-		}
-	}
-
-	atl_calc_affinities(nic);
-
-	nic->max_mtu = atl_rx_linear ? ATL_MAX_RX_LINEAR_MTU : ATL_MAX_MTU;
-
-	set_bit(ATL_ST_CONFIGURED, &nic->hw.state);
-	return 0;
-
-err_ptp_ring:
-	atl_ptp_irq_free(nic);
-
-err_ptp_intr:
-	atl_free_link_intr(nic);
-
-err_link_intr:
-	kfree(irq_work);
-
-err_alloc_work:
-	kfree(nic->qvecs);
-	nic->qvecs = NULL;
-
-err_alloc:
-	pci_free_irq_vectors(nic->hw.pdev);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -1890,17 +1210,10 @@ static inline void atl_free_rxpage(struct atl_pgref *pgref, struct device *dev)
 /* Releases any skbs that may have been queued on ring positions yet
  * to be processes by poll. The buffers are kept to be re-used after
  * resume / thaw. */
-<<<<<<< HEAD
 static void atl_clear_rx_bufs(struct atl_desc_ring *ring)
 {
 	unsigned int bufs = ring_occupied(ring);
 	struct device *dev = ring->qvec->dev;
-=======
-void atl_clear_rx_bufs(struct atl_desc_ring *ring)
-{
-	unsigned int bufs = ring_occupied(ring);
-	struct device *dev = &ring->nic->hw.pdev->dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	while (bufs) {
 		struct atl_rxbuf *rxbuf = &ring->rxbufs[ring->head];
@@ -1921,11 +1234,7 @@ void atl_clear_rx_bufs(struct atl_desc_ring *ring)
 
 static void atl_free_rx_bufs(struct atl_desc_ring *ring)
 {
-<<<<<<< HEAD
 	struct device *dev = ring->qvec->dev;
-=======
-	struct device *dev = &ring->nic->hw.pdev->dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct atl_rxbuf *rxbuf;
 
 	if (!ring->rxbufs)
@@ -1951,88 +1260,39 @@ static void atl_free_tx_bufs(struct atl_desc_ring *ring)
 		bump_tail(ring, -1);
 		txbuf = &ring->txbufs[ring->tail];
 
-<<<<<<< HEAD
 		atl_txbuf_free(txbuf, ring->qvec->dev, ring->tail);
-=======
-		atl_txbuf_free(txbuf, &ring->nic->hw.pdev->dev, ring->tail);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bufs--;
 	}
 }
 
-<<<<<<< HEAD
 static void atl_free_ring(struct atl_desc_ring *ring)
 {
-=======
-static size_t atl_ring_extra_size(struct atl_desc_ring *ring)
-{
-	switch (ring->qvec->type) {
-	case ATL_QUEUE_REGULAR:
-	case ATL_QUEUE_PTP:
-		return 0;
-	case ATL_QUEUE_HWTS:
-		return ATL_RX_BUF_SIZE;
-	default:
-		WARN_ONCE(true, "Unknown queue type\n");
-		break;
-	}
-
-	return 0;
-}
-
-static void atl_free_ring(struct atl_desc_ring *ring)
-{
-	size_t extra = atl_ring_extra_size(ring);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ring->bufs) {
 		vfree(ring->bufs);
 		ring->bufs = 0;
 	}
 
-<<<<<<< HEAD
 	atl_free_descs(ring->qvec->nic, &ring->hw);
-=======
-	atl_free_descs(ring->nic, &ring->hw, extra);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int atl_alloc_ring(struct atl_desc_ring *ring, size_t buf_size,
 	char *type)
 {
-<<<<<<< HEAD
 	int ret;
 	struct atl_nic *nic = ring->qvec->nic;
 	int idx = ring->qvec->idx;
 
 	ret = atl_alloc_descs(nic, &ring->hw);
-=======
-	size_t extra = atl_ring_extra_size(ring);
-	struct atl_nic *nic = ring->nic;
-	int idx = ring->qvec->idx;
-	int ret;
-
-	ret = atl_alloc_descs(nic, &ring->hw, extra);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		atl_nic_err("Couldn't alloc %s[%d] descriptors\n", type, idx);
 		return ret;
 	}
 
-<<<<<<< HEAD
 	ring->bufs = vzalloc(ring->hw.size * buf_size);
 	if (!ring->bufs) {
 		atl_nic_err("Couldn't alloc %s[%d] %sbufs\n", type, idx, type);
 		ret = -ENOMEM;
 		goto free;
-=======
-	if (likely(ring->qvec->type != ATL_QUEUE_HWTS)) {
-		ring->bufs = vzalloc(ring->hw.size * buf_size);
-		if (!ring->bufs) {
-			ret = -ENOMEM;
-			goto free;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ring->head = ring->tail =
@@ -2044,16 +1304,6 @@ free:
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
-static void atl_set_affinity(int vector, struct atl_queue_vec *qvec)
-{
-	cpumask_t *cpumask = qvec ? &qvec->affinity_hint : NULL;
-
-	irq_set_affinity_hint(vector, cpumask);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int atl_alloc_qvec_intr(struct atl_queue_vec *qvec)
 {
 	struct atl_nic *nic = qvec->nic;
@@ -2067,29 +1317,19 @@ static int atl_alloc_qvec_intr(struct atl_queue_vec *qvec)
 		return 0;
 
 	vector = pci_irq_vector(nic->hw.pdev, atl_qvec_intr(qvec));
-<<<<<<< HEAD
 	ret = request_irq(vector, atl_ring_irq, 0, qvec->name, &qvec->napi);
-=======
-	ret = request_irq(vector, atl_ring_irq, IRQF_NO_SUSPEND,
-			  qvec->name, &qvec->napi);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		atl_nic_err("request MSI ring vector failed: %d\n", -ret);
 		return ret;
 	}
 
-<<<<<<< HEAD
 	atl_compat_set_affinity(vector, qvec);
-=======
-	atl_set_affinity(vector, qvec);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
 static void atl_free_qvec_intr(struct atl_queue_vec *qvec)
 {
-<<<<<<< HEAD
 	int vector = pci_irq_vector(qvec->nic->hw.pdev, atl_qvec_intr(qvec));
 
 	if (!(qvec->nic->flags & ATL_FL_MULTIPLE_VECTORS))
@@ -2112,91 +1352,25 @@ static int atl_alloc_qvec(struct atl_queue_vec *qvec)
 	ret = atl_alloc_ring(&qvec->tx, sizeof(struct atl_txbuf), "tx");
 	if (ret)
 		goto free_irq;
-=======
-	struct atl_nic *nic = qvec->nic;
-	int vector;
-
-	if (unlikely(!nic))
-		return;
-
-	if (!(nic->flags & ATL_FL_MULTIPLE_VECTORS))
-		return;
-
-	vector = pci_irq_vector(nic->hw.pdev, atl_qvec_intr(qvec));
-	atl_set_affinity(vector, NULL);
-	free_irq(vector, &qvec->napi);
-}
-
-int atl_alloc_qvec(struct atl_queue_vec *qvec)
-{
-	struct atl_txbuf *txbuf;
-	int count = qvec->tx.hw.size;
-	int ret = 0;
-
-	switch (qvec->type) {
-	case ATL_QUEUE_REGULAR:
-		ret = atl_alloc_qvec_intr(qvec);
-		break;
-	case ATL_QUEUE_PTP:
-	case ATL_QUEUE_HWTS:
-		break;
-	default:
-		WARN_ONCE(true, "Unknown queue type\n");
-		break;
-	}
-
-	if (ret)
-		return ret;
-
-	if (likely(qvec->type != ATL_QUEUE_HWTS)) {
-		ret = atl_alloc_ring(&qvec->tx, sizeof(struct atl_txbuf), "tx");
-		if (ret)
-			goto free_irq;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = atl_alloc_ring(&qvec->rx, sizeof(struct atl_rxbuf), "rx");
 	if (ret)
 		goto free_tx;
 
-<<<<<<< HEAD
 	for (txbuf = qvec->tx.txbufs; count; count--)
 		(txbuf++)->last = -1;
-=======
-	if (likely(qvec->type != ATL_QUEUE_HWTS)) {
-		for (txbuf = qvec->tx.txbufs; count; count--)
-			(txbuf++)->last = -1;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 
 free_tx:
-<<<<<<< HEAD
 	atl_free_ring(&qvec->tx);
 free_irq:
 	atl_free_qvec_intr(qvec);
-=======
-	if (likely(qvec->type != ATL_QUEUE_HWTS))
-		atl_free_ring(&qvec->tx);
-free_irq:
-	switch (qvec->type) {
-	case ATL_QUEUE_REGULAR:
-		atl_free_qvec_intr(qvec);
-		break;
-	default:
-		break;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
 
-<<<<<<< HEAD
 static void atl_free_qvec(struct atl_queue_vec *qvec)
-=======
-void atl_free_qvec(struct atl_queue_vec *qvec)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct atl_desc_ring *rx = &qvec->rx;
 	struct atl_desc_ring *tx = &qvec->tx;
@@ -2204,25 +1378,8 @@ void atl_free_qvec(struct atl_queue_vec *qvec)
 	atl_free_rx_bufs(rx);
 	atl_free_ring(rx);
 
-<<<<<<< HEAD
 	atl_free_ring(tx);
 	atl_free_qvec_intr(qvec);
-=======
-	if (likely(qvec->type != ATL_QUEUE_HWTS))
-		atl_free_ring(tx);
-
-	switch (qvec->type) {
-	case ATL_QUEUE_REGULAR:
-		atl_free_qvec_intr(qvec);
-		break;
-	case ATL_QUEUE_PTP:
-	case ATL_QUEUE_HWTS:
-		break;
-	default:
-		WARN_ONCE(true, "Unknown queue type\n");
-		break;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int atl_alloc_rings(struct atl_nic *nic)
@@ -2264,10 +1421,6 @@ static void atl_set_intr_mod_qvec(struct atl_queue_vec *qvec)
 	struct atl_hw *hw = &nic->hw;
 	unsigned int min, max;
 	int idx = qvec->idx;
-<<<<<<< HEAD
-=======
-	uint32_t reg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	min = nic->rx_intr_delay - atl_min_intr_delay;
 	max = min + atl_rx_mod_hyst;
@@ -2278,16 +1431,8 @@ static void atl_set_intr_mod_qvec(struct atl_queue_vec *qvec)
 	min = nic->tx_intr_delay - atl_min_intr_delay;
 	max = min + atl_tx_mod_hyst;
 
-<<<<<<< HEAD
 	atl_write(hw, ATL_TX_INTR_MOD_CTRL(idx),
 		(max / 2) << 0x10 | (min / 2) << 8 | 2);
-=======
-	if (hw->chip_id == ATL_ANTIGUA)
-		reg = ATL2_TX_INTR_MOD_CTRL(idx);
-	else
-		reg = ATL_TX_INTR_MOD_CTRL(idx);
-	atl_write(hw, reg, (max / 2) << 0x10 | (min / 2) << 8 | 2);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void atl_set_intr_mod(struct atl_nic *nic)
@@ -2298,179 +1443,53 @@ void atl_set_intr_mod(struct atl_nic *nic)
 		atl_set_intr_mod_qvec(qvec);
 }
 
-<<<<<<< HEAD
 static void atl_start_rx_ring(struct atl_desc_ring *ring)
 {
 	struct atl_hw *hw = &ring->qvec->nic->hw;
-=======
-int atl_init_rx_ring(struct atl_desc_ring *rx)
-{
-	struct atl_hw *hw = &rx->nic->hw;
-	struct atl_rxbuf *rxbuf;
-	int ret = 0;
-
-	rx->head = rx->tail = atl_read(hw, ATL_RING_HEAD(rx)) & 0xffff;
-	if (rx->head > 0x1FFF)
-		return -EIO;
-
-	switch (rx->qvec->type) {
-	case ATL_QUEUE_HWTS:
-		ret = atl_fill_hwts_rx(rx, ring_space(rx), false);
-		break;
-	case ATL_QUEUE_PTP:
-	case ATL_QUEUE_REGULAR:
-		ret = atl_fill_rx(rx, ring_space(rx), false);
-		break;
-	default:
-		WARN_ONCE(true, "Unknown queue type\n");
-		break;
-	}
-
-	if (ret)
-		return ret;
-
-	if (likely(rx->qvec->type != ATL_QUEUE_HWTS)) {
-		rx->next_to_recycle = rx->tail;
-		/* rxbuf at ->next_to_recycle is always kept empty so that
-		 * atl_maybe_recycle_rxbuf() always have a spot to recycle into
-		 * without overwriting a pgref to an already allocated page,
-		 * leaking memory. It's also the guard element in the ring
-		 * that keeps ->tail from overrunning ->head. If it's nonempty
-		 * on ring init (e.g. after a sleep-wake cycle) just release
-		 * the pages.
-		 */
-		rxbuf = &rx->rxbufs[rx->next_to_recycle];
-		atl_put_rxpage(&rxbuf->head, &hw->pdev->dev);
-		atl_put_rxpage(&rxbuf->data, &hw->pdev->dev);
-	}
-
-	return 0;
-}
-
-int atl_init_tx_ring(struct atl_desc_ring *tx)
-{
-	struct atl_hw *hw = &tx->nic->hw;
-
-	tx->head = tx->tail = atl_read(hw, ATL_RING_HEAD(tx)) & 0xffff;
-	if (tx->head > 0x1FFF)
-		return -EIO;
-
-	return 0;
-}
-
-static void atl_start_rx_ring(struct atl_desc_ring *ring)
-{
-	struct atl_hw *hw = &ring->nic->hw;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int idx = ring->qvec->idx;
 	unsigned int rx_ctl;
 
 	atl_write(hw, ATL_RING_BASE_LSW(ring), ring->hw.daddr);
-<<<<<<< HEAD
 	atl_write(hw, ATL_RING_BASE_MSW(ring), ring->hw.daddr >> 32);
 
 	atl_write(hw, ATL_RX_RING_TAIL(ring), ring->tail);
 	atl_write(hw, ATL_RX_RING_BUF_SIZE(ring),
 		(ATL_RX_HDR_SIZE / 64) << 8 | ATL_RX_BUF_SIZE / 1024);
-=======
-	atl_write(hw, ATL_RING_BASE_MSW(ring), upper_32_bits(ring->hw.daddr));
-
-	atl_write(hw, ATL_RX_RING_TAIL(ring), ring->tail);
-	switch (ring->qvec->type) {
-	case ATL_QUEUE_REGULAR:
-		atl_write(hw, ATL_RX_RING_BUF_SIZE(ring),
-			(ATL_RX_HDR_SIZE / 64) << 8 | ATL_RX_BUF_SIZE / 1024);
-		break;
-	case ATL_QUEUE_PTP:
-	case ATL_QUEUE_HWTS:
-		atl_write(hw, ATL_RX_RING_BUF_SIZE(ring),
-			ATL_RX_BUF_SIZE / 1024);
-		break;
-	default:
-		WARN_ONCE(true, "Unknown queue type\n");
-		break;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	atl_write(hw, ATL_RX_RING_THRESH(ring), 8 << 0x10 | 24 << 0x18);
 
 	/* LRO */
 	atl_write_bits(hw, ATL_RX_LRO_PKT_LIM(idx),
 		(idx & 7) * 4, 2, 3);
 
-<<<<<<< HEAD
 	/* Enable ring | VLAN offload | header split in non-linear mode */
 	rx_ctl = BIT(31) | BIT(29) | ring->hw.size |
 		(atl_rx_linear ? 0 : BIT(28));
-=======
-	/* Enable ring | VLAN offload */
-	rx_ctl = BIT(31) | BIT(29) | ring->hw.size;
-	switch (ring->qvec->type) {
-	case ATL_QUEUE_REGULAR:
-		/* Enable header split in non-linear mode */
-		rx_ctl |= (atl_rx_linear ? 0 : BIT(28));
-		break;
-	case ATL_QUEUE_PTP:
-	case ATL_QUEUE_HWTS:
-		break;
-	default:
-		break;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	atl_write(hw, ATL_RX_RING_CTL(ring), rx_ctl);
 }
 
 static void atl_start_tx_ring(struct atl_desc_ring *ring)
 {
-<<<<<<< HEAD
 	struct atl_nic *nic = ring->qvec->nic;
 	struct atl_hw *hw = &nic->hw;
 
 	atl_write(hw, ATL_RING_BASE_LSW(ring), ring->hw.daddr);
 	atl_write(hw, ATL_RING_BASE_MSW(ring), ring->hw.daddr >> 32);
-=======
-	struct atl_nic *nic = ring->nic;
-	struct atl_hw *hw = &nic->hw;
-
-	atl_write(hw, ATL_RING_BASE_LSW(ring), ring->hw.daddr);
-	atl_write(hw, ATL_RING_BASE_MSW(ring), upper_32_bits(ring->hw.daddr));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Enable TSO on all active Tx rings */
 	atl_write(hw, ATL_TX_LSO_CTRL, BIT(nic->nvecs) - 1);
 
 	atl_write(hw, ATL_TX_RING_TAIL(ring), ring->tail);
-<<<<<<< HEAD
 	atl_write(hw, ATL_TX_RING_THRESH(ring), 8 << 8 | 8 << 0x10 |
 		24 << 0x18);
 	atl_write(hw, ATL_TX_RING_CTL(ring), BIT(31) | ring->hw.size);
 }
 
 static int atl_start_qvec(struct atl_queue_vec *qvec)
-=======
-	switch (ring->qvec->type) {
-	case ATL_QUEUE_REGULAR:
-		atl_write(hw, ATL_TX_RING_THRESH(ring), 8 << 8 | 8 << 0x10 |
-			24 << 0x18);
-		break;
-	case ATL_QUEUE_PTP:
-	case ATL_QUEUE_HWTS:
-		atl_write(hw, ATL_TX_RING_THRESH(ring), 0);
-		break;
-	default:
-		WARN_ONCE(true, "Unknown queue type\n");
-		break;
-	}
-	atl_write(hw, ATL_TX_RING_CTL(ring), BIT(31) | ring->hw.size);
-}
-
-int atl_start_qvec(struct atl_queue_vec *qvec)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct atl_desc_ring *rx = &qvec->rx;
 	struct atl_desc_ring *tx = &qvec->tx;
 	struct atl_hw *hw = &qvec->nic->hw;
 	int intr = atl_qvec_intr(qvec);
-<<<<<<< HEAD
 	struct atl_rxbuf *rxbuf;
 	int ret;
 
@@ -2492,48 +1511,22 @@ int atl_start_qvec(struct atl_queue_vec *qvec)
 	rxbuf = &rx->rxbufs[rx->next_to_recycle];
 	atl_put_rxpage(&rxbuf->head, qvec->dev);
 	atl_put_rxpage(&rxbuf->data, qvec->dev);
-=======
-	int ret;
-
-	ret = atl_init_rx_ring(rx);
-	if (ret)
-		return ret;
-	if (likely(qvec->type != ATL_QUEUE_HWTS)) {
-		ret = atl_init_tx_ring(tx);
-		if (ret)
-			return ret;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Map ring interrups into corresponding cause bit*/
 	atl_set_intr_bits(hw, qvec->idx, intr, intr);
 	atl_set_intr_throttle(qvec);
 
-<<<<<<< HEAD
 	napi_enable(&qvec->napi);
 	atl_set_intr_mod_qvec(qvec);
 	atl_intr_enable(hw, BIT(atl_qvec_intr(qvec)));
 
 	atl_start_tx_ring(tx);
-=======
-	if (likely(qvec->type == ATL_QUEUE_REGULAR))
-		napi_enable(&qvec->napi);
-	atl_set_intr_mod_qvec(qvec);
-	atl_intr_enable(hw, BIT(intr));
-
-	if (likely(qvec->type != ATL_QUEUE_HWTS))
-		atl_start_tx_ring(tx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	atl_start_rx_ring(rx);
 
 	return 0;
 }
 
-<<<<<<< HEAD
 static void atl_stop_qvec(struct atl_queue_vec *qvec)
-=======
-void atl_stop_qvec(struct atl_queue_vec *qvec)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct atl_desc_ring *rx = &qvec->rx;
 	struct atl_desc_ring *tx = &qvec->tx;
@@ -2541,7 +1534,6 @@ void atl_stop_qvec(struct atl_queue_vec *qvec)
 
 	/* Disable and reset rings */
 	atl_write(hw, ATL_RING_CTL(rx), BIT(25));
-<<<<<<< HEAD
 	atl_write(hw, ATL_RING_CTL(tx), BIT(25));
 	udelay(10);
 	atl_write(hw, ATL_RING_CTL(rx), 0);
@@ -2552,23 +1544,6 @@ void atl_stop_qvec(struct atl_queue_vec *qvec)
 
 	atl_clear_rx_bufs(rx);
 	atl_free_tx_bufs(tx);
-=======
-	if (likely(qvec->type != ATL_QUEUE_HWTS))
-		atl_write(hw, ATL_RING_CTL(tx), BIT(25));
-	udelay(10);
-	atl_write(hw, ATL_RING_CTL(rx), 0);
-	if (likely(qvec->type != ATL_QUEUE_HWTS))
-		atl_write(hw, ATL_RING_CTL(tx), 0);
-
-	atl_intr_disable(hw, BIT(atl_qvec_intr(qvec)));
-	if (likely(qvec->type == ATL_QUEUE_REGULAR))
-		napi_disable(&qvec->napi);
-
-	if (likely(qvec->type != ATL_QUEUE_HWTS)) {
-		atl_clear_rx_bufs(rx);
-		atl_free_tx_bufs(tx);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void atl_set_lro(struct atl_nic *nic)
@@ -2577,12 +1552,6 @@ static void atl_set_lro(struct atl_nic *nic)
 	uint32_t val = nic->ndev->features & NETIF_F_LRO ?
 		BIT(nic->nvecs) - 1 : 0;
 
-<<<<<<< HEAD
-=======
-	if (val)
-		atl_nic_warn("There are unresolved issues with LRO, enabling it isn't recommended for now\n");
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	atl_write_bits(hw, ATL_RX_LRO_CTRL1, 0, nic->nvecs, val);
 	atl_write_bits(hw, ATL_INTR_RSC_EN, 0, nic->nvecs, val);
 }
@@ -2594,7 +1563,6 @@ int atl_start_rings(struct atl_nic *nic)
 	struct atl_queue_vec *qvec;
 	int ret;
 
-<<<<<<< HEAD
 	mask = BIT(nic->nvecs + ATL_NUM_NON_RING_IRQS) -
 		BIT(ATL_NUM_NON_RING_IRQS);
 	/* Enable auto-masking of ring interrupts on intr generation */
@@ -2604,24 +1572,6 @@ int atl_start_rings(struct atl_nic *nic)
 
 	atl_set_lro(nic);
 	atl_set_rss_tbl(hw);
-=======
-	if (test_bit(ATL_ST_RINGS_RUNNING, &hw->state))
-		return 0;
-
-	if (nic->flags & ATL_FL_MULTIPLE_VECTORS) {
-		mask = BIT(nic->nvecs + ATL_NUM_NON_RING_IRQS) -
-			BIT(ATL_NUM_NON_RING_IRQS);
-		/* Enable auto-masking of ring interrupts on intr generation */
-		atl_set_bits(hw, ATL_INTR_AUTO_MASK, mask);
-		/* Enable status auto-clear on intr generation */
-		atl_set_bits(hw, ATL_INTR_AUTO_CLEAR, mask);
-	}
-
-	atl_set_lro(nic);
-	ret = atl_set_rss_tbl(hw);
-	if (ret)
-		return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	atl_for_each_qvec(nic, qvec) {
 		ret = atl_start_qvec(qvec);
@@ -2629,12 +1579,6 @@ int atl_start_rings(struct atl_nic *nic)
 			goto stop;
 	}
 
-<<<<<<< HEAD
-=======
-	set_bit(ATL_ST_RINGS_RUNNING, &hw->state);
-	netif_tx_start_all_queues(nic->ndev);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 stop:
@@ -2644,7 +1588,6 @@ stop:
 	return ret;
 }
 
-<<<<<<< HEAD
 void atl_stop_rings(struct atl_nic *nic)
 {
 	struct atl_queue_vec *qvec;
@@ -2652,45 +1595,12 @@ void atl_stop_rings(struct atl_nic *nic)
 
 	atl_for_each_qvec(nic, qvec)
 		atl_stop_qvec(qvec);
-=======
-void atl_clear_tdm_cache(struct atl_nic *nic)
-{
-	struct atl_hw *hw = &nic->hw;
-
-	atl_write_bit(hw, 0x7b00, 0, 1);
-	udelay(10);
-	atl_write_bit(hw, 0x7b00, 0, 0);
-}
-
-void atl_clear_rdm_cache(struct atl_nic *nic)
-{
-	struct atl_hw *hw = &nic->hw;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	atl_write_bit(hw, 0x5a00, 0, 1);
 	udelay(10);
 	atl_write_bit(hw, 0x5a00, 0, 0);
 }
 
-<<<<<<< HEAD
-=======
-void atl_stop_rings(struct atl_nic *nic)
-{
-	struct atl_queue_vec *qvec;
-
-	if (!test_and_clear_bit(ATL_ST_RINGS_RUNNING, &nic->hw.state))
-		return;
-
-	netif_tx_stop_all_queues(nic->ndev);
-
-	atl_for_each_qvec(nic, qvec)
-		atl_stop_qvec(qvec);
-
-	atl_clear_rdm_cache(nic);
-	atl_clear_tdm_cache(nic);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int atl_set_features(struct net_device *ndev, netdev_features_t features)
 {
 	netdev_features_t changed = ndev->features ^ features;
@@ -2729,17 +1639,8 @@ void atl_update_global_stats(struct atl_nic *nic)
 	int i;
 	struct atl_ring_stats stats;
 
-<<<<<<< HEAD
 	memset(&stats, 0, sizeof(stats));
 	atl_update_eth_stats(nic);
-=======
-	if (!test_bit(ATL_ST_ENABLED, &nic->hw.state) ||
-	    test_bit(ATL_ST_RESETTING, &nic->hw.state) ||
-	    !test_bit(ATL_ST_CONFIGURED, &nic->hw.state))
-		return;
-
-	memset(&stats, 0, sizeof(stats));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock(&nic->stats_lock);
 
@@ -2755,24 +1656,6 @@ void atl_update_global_stats(struct atl_nic *nic)
 		atl_add_stats(nic->stats.tx, stats.tx);
 	}
 
-<<<<<<< HEAD
-=======
-#if IS_ENABLED(CONFIG_ATLFWD_FWD_NETLINK)
-	for (i = 0; i < ATL_NUM_FWD_RINGS; i++) {
-		if (atlfwd_nl_is_tx_fwd_ring_created(nic->ndev, i)) {
-			atl_fwd_get_ring_stats(nic->fwd.rings[ATL_FWDIR_TX][i],
-					       &stats);
-			atl_add_stats(nic->stats.tx, stats.tx);
-		}
-		if (atlfwd_nl_is_rx_fwd_ring_created(nic->ndev, i)) {
-			atl_fwd_get_ring_stats(nic->fwd.rings[ATL_FWDIR_RX][i],
-					       &stats);
-			atl_add_stats(nic->stats.rx, stats.rx);
-		}
-	}
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock(&nic->stats_lock);
 }
 
@@ -2784,13 +1667,8 @@ void atl_get_stats64(struct net_device *ndev,
 
 	atl_update_global_stats(nic);
 
-<<<<<<< HEAD
 	nstats->rx_bytes = stats->rx.bytes;
 	nstats->rx_packets = stats->rx.packets;
-=======
-	nstats->rx_bytes = stats->rx.bytes + stats->rx_fwd.bytes;
-	nstats->rx_packets = stats->rx.packets + stats->rx_fwd.packets;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	nstats->tx_bytes = stats->tx.bytes;
 	nstats->tx_packets = stats->tx.packets;
 	nstats->rx_crc_errors = stats->rx.csum_err;

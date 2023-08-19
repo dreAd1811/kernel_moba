@@ -130,16 +130,9 @@ ltq_dma_alloc(struct ltq_dma_channel *ch)
 	unsigned long flags;
 
 	ch->desc = 0;
-<<<<<<< HEAD
 	ch->desc_base = dma_zalloc_coherent(ch->dev,
 				LTQ_DESC_NUM * LTQ_DESC_SIZE,
 				&ch->phys, GFP_ATOMIC);
-=======
-	ch->desc_base = dma_alloc_coherent(NULL,
-				LTQ_DESC_NUM * LTQ_DESC_SIZE,
-				&ch->phys, GFP_ATOMIC);
-	memset(ch->desc_base, 0, LTQ_DESC_NUM * LTQ_DESC_SIZE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irqsave(&ltq_dma_lock, flags);
 	ltq_dma_w32(ch->nr, LTQ_DMA_CS);
@@ -189,11 +182,7 @@ ltq_dma_free(struct ltq_dma_channel *ch)
 	if (!ch->desc_base)
 		return;
 	ltq_dma_close(ch);
-<<<<<<< HEAD
 	dma_free_coherent(ch->dev, LTQ_DESC_NUM * LTQ_DESC_SIZE,
-=======
-	dma_free_coherent(NULL, LTQ_DESC_NUM * LTQ_DESC_SIZE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ch->desc_base, ch->phys);
 }
 EXPORT_SYMBOL_GPL(ltq_dma_free);

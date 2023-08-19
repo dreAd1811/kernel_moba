@@ -16,10 +16,7 @@
 #include "bnxt_hsi.h"
 #include "bnxt.h"
 #include "bnxt_vfr.h"
-<<<<<<< HEAD
 #include "bnxt_devlink.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "bnxt_tc.h"
 
 #ifdef CONFIG_BNXT_SRIOV
@@ -67,7 +64,6 @@ static int hwrm_cfa_vfr_free(struct bnxt *bp, u16 vf_idx)
 	return rc;
 }
 
-<<<<<<< HEAD
 static int bnxt_hwrm_vfr_qcfg(struct bnxt *bp, struct bnxt_vf_rep *vf_rep,
 			      u16 *max_mtu)
 {
@@ -93,8 +89,6 @@ static int bnxt_hwrm_vfr_qcfg(struct bnxt *bp, struct bnxt_vf_rep *vf_rep,
 	return rc;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int bnxt_vf_rep_open(struct net_device *dev)
 {
 	struct bnxt_vf_rep *vf_rep = netdev_priv(dev);
@@ -147,7 +141,6 @@ bnxt_vf_rep_get_stats64(struct net_device *dev,
 	stats->tx_bytes = vf_rep->tx_stats.bytes;
 }
 
-<<<<<<< HEAD
 static int bnxt_vf_rep_setup_tc_block_cb(enum tc_setup_type type,
 					 void *type_data,
 					 void *cb_priv)
@@ -160,15 +153,6 @@ static int bnxt_vf_rep_setup_tc_block_cb(enum tc_setup_type type,
 	    !tc_cls_can_offload_and_chain0(bp->dev, type_data))
 		return -EOPNOTSUPP;
 
-=======
-static int bnxt_vf_rep_setup_tc(struct net_device *dev, enum tc_setup_type type,
-				void *type_data)
-{
-	struct bnxt_vf_rep *vf_rep = netdev_priv(dev);
-	struct bnxt *bp = vf_rep->bp;
-	int vf_fid = bp->pf.vf[vf_rep->vf_idx].fw_fid;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (type) {
 	case TC_SETUP_CLSFLOWER:
 		return bnxt_tc_setup_flower(bp, vf_fid, type_data);
@@ -177,7 +161,6 @@ static int bnxt_vf_rep_setup_tc(struct net_device *dev, enum tc_setup_type type,
 	}
 }
 
-<<<<<<< HEAD
 static int bnxt_vf_rep_setup_tc_block(struct net_device *dev,
 				      struct tc_block_offload *f)
 {
@@ -211,8 +194,6 @@ static int bnxt_vf_rep_setup_tc(struct net_device *dev, enum tc_setup_type type,
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct net_device *bnxt_get_vf_rep(struct bnxt *bp, u16 cfa_code)
 {
 	u16 vf_idx;
@@ -286,14 +267,11 @@ static const struct net_device_ops bnxt_vf_rep_netdev_ops = {
 	.ndo_get_phys_port_name = bnxt_vf_rep_get_phys_port_name
 };
 
-<<<<<<< HEAD
 bool bnxt_dev_is_vf_rep(struct net_device *dev)
 {
 	return dev->netdev_ops == &bnxt_vf_rep_netdev_ops;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Called when the parent PF interface is closed:
  * As the mode transition from SWITCHDEV to LEGACY
  * happens under the rtnl_lock() this routine is safe
@@ -412,10 +390,7 @@ static void bnxt_vf_rep_netdev_init(struct bnxt *bp, struct bnxt_vf_rep *vf_rep,
 				    struct net_device *dev)
 {
 	struct net_device *pf_dev = bp->dev;
-<<<<<<< HEAD
 	u16 max_mtu;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev->netdev_ops = &bnxt_vf_rep_netdev_ops;
 	dev->ethtool_ops = &bnxt_vf_rep_ethtool_ops;
@@ -431,7 +406,6 @@ static void bnxt_vf_rep_netdev_init(struct bnxt *bp, struct bnxt_vf_rep *vf_rep,
 	bnxt_vf_rep_eth_addr_gen(bp->pf.mac_addr, vf_rep->vf_idx,
 				 dev->perm_addr);
 	ether_addr_copy(dev->dev_addr, dev->perm_addr);
-<<<<<<< HEAD
 	/* Set VF-Rep's max-mtu to the corresponding VF's max-mtu */
 	if (!bnxt_hwrm_vfr_qcfg(bp, vf_rep, &max_mtu))
 		dev->max_mtu = max_mtu;
@@ -456,8 +430,6 @@ static int bnxt_pcie_dsn_get(struct bnxt *bp, u8 dsn[])
 	pci_read_config_dword(pdev, pos + 4, &dw);
 	put_unaligned_le32(dw, &dsn[4]);
 	return 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int bnxt_vf_reps_create(struct bnxt *bp)
@@ -472,13 +444,8 @@ static int bnxt_vf_reps_create(struct bnxt *bp)
 		return -ENOMEM;
 
 	/* storage for cfa_code to vf-idx mapping */
-<<<<<<< HEAD
 	cfa_code_map = kmalloc_array(MAX_CFA_CODE, sizeof(*bp->cfa_code_map),
 				     GFP_KERNEL);
-=======
-	cfa_code_map = kmalloc(sizeof(*bp->cfa_code_map) * MAX_CFA_CODE,
-			       GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!cfa_code_map) {
 		rc = -ENOMEM;
 		goto err;
@@ -529,14 +496,11 @@ static int bnxt_vf_reps_create(struct bnxt *bp)
 		}
 	}
 
-<<<<<<< HEAD
 	/* Read the adapter's DSN to use as the eswitch switch_id */
 	rc = bnxt_pcie_dsn_get(bp, bp->switch_id);
 	if (rc)
 		goto err;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* publish cfa_code_map only after all VF-reps have been initialized */
 	bp->cfa_code_map = cfa_code_map;
 	bp->eswitch_mode = DEVLINK_ESWITCH_MODE_SWITCHDEV;
@@ -551,11 +515,7 @@ err:
 }
 
 /* Devlink related routines */
-<<<<<<< HEAD
 int bnxt_dl_eswitch_mode_get(struct devlink *devlink, u16 *mode)
-=======
-static int bnxt_dl_eswitch_mode_get(struct devlink *devlink, u16 *mode)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct bnxt *bp = bnxt_get_bp_from_dl(devlink);
 
@@ -563,11 +523,7 @@ static int bnxt_dl_eswitch_mode_get(struct devlink *devlink, u16 *mode)
 	return 0;
 }
 
-<<<<<<< HEAD
 int bnxt_dl_eswitch_mode_set(struct devlink *devlink, u16 mode)
-=======
-static int bnxt_dl_eswitch_mode_set(struct devlink *devlink, u16 mode)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct bnxt *bp = bnxt_get_bp_from_dl(devlink);
 	int rc = 0;
@@ -587,7 +543,6 @@ static int bnxt_dl_eswitch_mode_set(struct devlink *devlink, u16 mode)
 		break;
 
 	case DEVLINK_ESWITCH_MODE_SWITCHDEV:
-<<<<<<< HEAD
 		if (bp->hwrm_spec_code < 0x10803) {
 			netdev_warn(bp->dev, "FW does not support SRIOV E-Switch SWITCHDEV mode\n");
 			rc = -ENOTSUPP;
@@ -596,11 +551,6 @@ static int bnxt_dl_eswitch_mode_set(struct devlink *devlink, u16 mode)
 
 		if (pci_num_vf(bp->pdev) == 0) {
 			netdev_info(bp->dev, "Enable VFs before setting switchdev mode");
-=======
-		if (pci_num_vf(bp->pdev) == 0) {
-			netdev_info(bp->dev,
-				    "Enable VFs before setting switchdev mode");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rc = -EPERM;
 			goto done;
 		}
@@ -616,55 +566,4 @@ done:
 	return rc;
 }
 
-<<<<<<< HEAD
-=======
-static const struct devlink_ops bnxt_dl_ops = {
-	.eswitch_mode_set = bnxt_dl_eswitch_mode_set,
-	.eswitch_mode_get = bnxt_dl_eswitch_mode_get
-};
-
-int bnxt_dl_register(struct bnxt *bp)
-{
-	struct devlink *dl;
-	int rc;
-
-	if (!pci_find_ext_capability(bp->pdev, PCI_EXT_CAP_ID_SRIOV))
-		return 0;
-
-	if (bp->hwrm_spec_code < 0x10800) {
-		netdev_warn(bp->dev, "Firmware does not support SR-IOV E-Switch SWITCHDEV mode.\n");
-		return -ENOTSUPP;
-	}
-
-	dl = devlink_alloc(&bnxt_dl_ops, sizeof(struct bnxt_dl));
-	if (!dl) {
-		netdev_warn(bp->dev, "devlink_alloc failed");
-		return -ENOMEM;
-	}
-
-	bnxt_link_bp_to_dl(bp, dl);
-	bp->eswitch_mode = DEVLINK_ESWITCH_MODE_LEGACY;
-	rc = devlink_register(dl, &bp->pdev->dev);
-	if (rc) {
-		bnxt_link_bp_to_dl(bp, NULL);
-		devlink_free(dl);
-		netdev_warn(bp->dev, "devlink_register failed. rc=%d", rc);
-		return rc;
-	}
-
-	return 0;
-}
-
-void bnxt_dl_unregister(struct bnxt *bp)
-{
-	struct devlink *dl = bp->dl;
-
-	if (!dl)
-		return;
-
-	devlink_unregister(dl);
-	devlink_free(dl);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

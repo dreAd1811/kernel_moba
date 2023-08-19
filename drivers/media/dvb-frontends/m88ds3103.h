@@ -25,7 +25,6 @@
  */
 
 /**
-<<<<<<< HEAD
  * enum m88ds3103_ts_mode - TS connection mode
  * @M88DS3103_TS_SERIAL:	TS output pin D0, normal
  * @M88DS3103_TS_SERIAL_D7:	TS output pin D7
@@ -54,8 +53,6 @@ enum m88ds3103_clock_out {
 };
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * struct m88ds3103_platform_data - Platform data for the m88ds3103 driver
  * @clk: Clock frequency.
  * @i2c_wr_max: Max bytes I2C adapter can write at once.
@@ -75,36 +72,16 @@ enum m88ds3103_clock_out {
  * @get_dvb_frontend: Get DVB frontend.
  * @get_i2c_adapter: Get I2C adapter.
  */
-<<<<<<< HEAD
 struct m88ds3103_platform_data {
 	u32 clk;
 	u16 i2c_wr_max;
 	enum m88ds3103_ts_mode ts_mode;
 	u32 ts_clk;
 	enum m88ds3103_clock_out clk_out;
-=======
-
-struct m88ds3103_platform_data {
-	u32 clk;
-	u16 i2c_wr_max;
-#define M88DS3103_TS_SERIAL             0 /* TS output pin D0, normal */
-#define M88DS3103_TS_SERIAL_D7          1 /* TS output pin D7 */
-#define M88DS3103_TS_PARALLEL           2 /* TS Parallel mode */
-#define M88DS3103_TS_CI                 3 /* TS CI Mode */
-	u8 ts_mode:2;
-	u32 ts_clk;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 ts_clk_pol:1;
 	u8 spec_inv:1;
 	u8 agc;
 	u8 agc_inv:1;
-<<<<<<< HEAD
-=======
-#define M88DS3103_CLOCK_OUT_DISABLED        0
-#define M88DS3103_CLOCK_OUT_ENABLED         1
-#define M88DS3103_CLOCK_OUT_ENABLED_DIV2    2
-	u8 clk_out:2;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 envelope_mode:1;
 	u8 lnb_hv_pol:1;
 	u8 lnb_en_pol:1;
@@ -116,7 +93,6 @@ struct m88ds3103_platform_data {
 	u8 attach_in_use:1;
 };
 
-<<<<<<< HEAD
 /**
  * struct m88ds3103_config - m88ds3102 configuration
  *
@@ -155,108 +131,11 @@ struct m88ds3103_config {
 	u8 envelope_mode:1;
 	u8 agc;
 	u8 lnb_hv_pol:1;
-=======
-/*
- * Do not add new m88ds3103_attach() users! Use I2C bindings instead.
- */
-struct m88ds3103_config {
-	/*
-	 * I2C address
-	 * Default: none, must set
-	 * 0x68, ...
-	 */
-	u8 i2c_addr;
-
-	/*
-	 * clock
-	 * Default: none, must set
-	 * 27000000
-	 */
-	u32 clock;
-
-	/*
-	 * max bytes I2C provider is asked to write at once
-	 * Default: none, must set
-	 * 33, 65, ...
-	 */
-	u16 i2c_wr_max;
-
-	/*
-	 * TS output mode
-	 * Default: M88DS3103_TS_SERIAL
-	 */
-#define M88DS3103_TS_SERIAL             0 /* TS output pin D0, normal */
-#define M88DS3103_TS_SERIAL_D7          1 /* TS output pin D7 */
-#define M88DS3103_TS_PARALLEL           2 /* TS Parallel mode */
-#define M88DS3103_TS_CI                 3 /* TS CI Mode */
-	u8 ts_mode;
-
-	/*
-	 * TS clk in KHz
-	 * Default: 0.
-	 */
-	u32 ts_clk;
-
-	/*
-	 * TS clk polarity.
-	 * Default: 0. 1-active at falling edge; 0-active at rising edge.
-	 */
-	u8 ts_clk_pol:1;
-
-	/*
-	 * spectrum inversion
-	 * Default: 0
-	 */
-	u8 spec_inv:1;
-
-	/*
-	 * AGC polarity
-	 * Default: 0
-	 */
-	u8 agc_inv:1;
-
-	/*
-	 * clock output
-	 * Default: M88DS3103_CLOCK_OUT_DISABLED
-	 */
-#define M88DS3103_CLOCK_OUT_DISABLED        0
-#define M88DS3103_CLOCK_OUT_ENABLED         1
-#define M88DS3103_CLOCK_OUT_ENABLED_DIV2    2
-	u8 clock_out;
-
-	/*
-	 * DiSEqC envelope mode
-	 * Default: 0
-	 */
-	u8 envelope_mode:1;
-
-	/*
-	 * AGC configuration
-	 * Default: none, must set
-	 */
-	u8 agc;
-
-	/*
-	 * LNB H/V pin polarity
-	 * Default: 0.
-	 * 1: pin high set to VOLTAGE_13, pin low to set VOLTAGE_18.
-	 * 0: pin high set to VOLTAGE_18, pin low to set VOLTAGE_13.
-	 */
-	u8 lnb_hv_pol:1;
-
-	/*
-	 * LNB enable pin polarity
-	 * Default: 0.
-	 * 1: pin high to enable, pin low to disable.
-	 * 0: pin high to disable, pin low to enable.
-	 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 lnb_en_pol:1;
 };
 
 #if defined(CONFIG_DVB_M88DS3103) || \
 		(defined(CONFIG_DVB_M88DS3103_MODULE) && defined(MODULE))
-<<<<<<< HEAD
 /**
  * Attach a m88ds3103 demod
  *
@@ -268,8 +147,6 @@ struct m88ds3103_config {
  * return: FE pointer on success, NULL on failure.
  * Note: Do not add new m88ds3103_attach() users! Use I2C bindings instead.
  */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern struct dvb_frontend *m88ds3103_attach(
 		const struct m88ds3103_config *config,
 		struct i2c_adapter *i2c,

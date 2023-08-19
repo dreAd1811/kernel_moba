@@ -26,10 +26,7 @@
 #include <asm/apic.h>
 #include <asm/intel-family.h>
 #include <asm/i8259.h>
-<<<<<<< HEAD
 #include <asm/uv/uv.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 unsigned int __read_mostly cpu_khz;	/* TSC clocks / usec, not used here */
 EXPORT_SYMBOL(cpu_khz);
@@ -37,24 +34,13 @@ EXPORT_SYMBOL(cpu_khz);
 unsigned int __read_mostly tsc_khz;
 EXPORT_SYMBOL(tsc_khz);
 
-<<<<<<< HEAD
 #define KHZ	1000
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * TSC can be unstable due to cpufreq or due to unsynced TSCs
  */
 static int __read_mostly tsc_unstable;
 
-<<<<<<< HEAD
-=======
-/* native_sched_clock() is called before tsc_init(), so
-   we must start with the TSC soft disabled to prevent
-   erroneous rdtsc usage on !boot_cpu_has(X86_FEATURE_TSC) processors */
-static int __read_mostly tsc_disabled = -1;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static DEFINE_STATIC_KEY_FALSE(__use_tsc);
 
 int tsc_clocksource_reliable;
@@ -118,26 +104,6 @@ void __always_inline cyc2ns_read_end(void)
  *                      -johnstul@us.ibm.com "math is hard, lets go shopping!"
  */
 
-<<<<<<< HEAD
-=======
-static void cyc2ns_data_init(struct cyc2ns_data *data)
-{
-	data->cyc2ns_mul = 0;
-	data->cyc2ns_shift = 0;
-	data->cyc2ns_offset = 0;
-}
-
-static void cyc2ns_init(int cpu)
-{
-	struct cyc2ns *c2n = &per_cpu(cyc2ns, cpu);
-
-	cyc2ns_data_init(&c2n->data[0]);
-	cyc2ns_data_init(&c2n->data[1]);
-
-	seqcount_init(&c2n->seq);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static __always_inline unsigned long long cycles_2_ns(unsigned long long cyc)
 {
 	struct cyc2ns_data data;
@@ -153,25 +119,11 @@ static __always_inline unsigned long long cycles_2_ns(unsigned long long cyc)
 	return ns;
 }
 
-<<<<<<< HEAD
 static void __set_cyc2ns_scale(unsigned long khz, int cpu, unsigned long long tsc_now)
-=======
-static void set_cyc2ns_scale(unsigned long khz, int cpu, unsigned long long tsc_now)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long long ns_now;
 	struct cyc2ns_data data;
 	struct cyc2ns *c2n;
-<<<<<<< HEAD
-=======
-	unsigned long flags;
-
-	local_irq_save(flags);
-	sched_clock_idle_sleep_event();
-
-	if (!khz)
-		goto done;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ns_now = cycles_2_ns(tsc_now);
 
@@ -203,7 +155,6 @@ static void set_cyc2ns_scale(unsigned long khz, int cpu, unsigned long long tsc_
 	c2n->data[0] = data;
 	raw_write_seqcount_latch(&c2n->seq);
 	c2n->data[1] = data;
-<<<<<<< HEAD
 }
 
 static void set_cyc2ns_scale(unsigned long khz, int cpu, unsigned long long tsc_now)
@@ -216,16 +167,11 @@ static void set_cyc2ns_scale(unsigned long khz, int cpu, unsigned long long tsc_
 	if (khz)
 		__set_cyc2ns_scale(khz, cpu, tsc_now);
 
-=======
-
-done:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sched_clock_idle_wakeup_event();
 	local_irq_restore(flags);
 }
 
 /*
-<<<<<<< HEAD
  * Initialize cyc2ns for boot cpu
  */
 static void __init cyc2ns_init_boot_cpu(void)
@@ -259,8 +205,6 @@ static void __init cyc2ns_init_secondary_cpus(void)
 }
 
 /*
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Scheduler clock - returns current time in nanosec units.
  */
 u64 native_sched_clock(void)
@@ -321,12 +265,7 @@ EXPORT_SYMBOL_GPL(check_tsc_unstable);
 #ifdef CONFIG_X86_TSC
 int __init notsc_setup(char *str)
 {
-<<<<<<< HEAD
 	mark_tsc_unstable("boot parameter notsc");
-=======
-	pr_warn("Kernel compiled with CONFIG_X86_TSC, cannot disable TSC completely\n");
-	tsc_disabled = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 1;
 }
 #else
@@ -742,7 +681,6 @@ static unsigned long cpu_khz_from_cpuid(void)
 	return eax_base_mhz * 1000;
 }
 
-<<<<<<< HEAD
 /*
  * calibrate cpu using pit, hpet, and ptimer methods. They are available
  * later in boot after acpi is initialized.
@@ -754,32 +692,6 @@ static unsigned long pit_hpet_ptimer_calibrate_cpu(void)
 	unsigned long flags, latch, ms;
 	int hpet = is_hpet_enabled(), i, loopmin;
 
-=======
-/**
- * native_calibrate_cpu - calibrate the cpu on boot
- */
-unsigned long native_calibrate_cpu(void)
-{
-	u64 tsc1, tsc2, delta, ref1, ref2;
-	unsigned long tsc_pit_min = ULONG_MAX, tsc_ref_min = ULONG_MAX;
-	unsigned long flags, latch, ms, fast_calibrate;
-	int hpet = is_hpet_enabled(), i, loopmin;
-
-	fast_calibrate = cpu_khz_from_cpuid();
-	if (fast_calibrate)
-		return fast_calibrate;
-
-	fast_calibrate = cpu_khz_from_msr();
-	if (fast_calibrate)
-		return fast_calibrate;
-
-	local_irq_save(flags);
-	fast_calibrate = quick_pit_calibrate();
-	local_irq_restore(flags);
-	if (fast_calibrate)
-		return fast_calibrate;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Run 5 calibration loops to get the lowest frequency value
 	 * (the best estimate). We use two different calibration modes
@@ -922,7 +834,6 @@ unsigned long native_calibrate_cpu(void)
 	return tsc_pit_min;
 }
 
-<<<<<<< HEAD
 /**
  * native_calibrate_cpu_early - can calibrate the cpu early in boot
  */
@@ -955,19 +866,12 @@ static unsigned long native_calibrate_cpu(void)
 }
 
 void recalibrate_cpu_khz(void)
-=======
-int recalibrate_cpu_khz(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 #ifndef CONFIG_SMP
 	unsigned long cpu_khz_old = cpu_khz;
 
 	if (!boot_cpu_has(X86_FEATURE_TSC))
-<<<<<<< HEAD
 		return;
-=======
-		return -ENODEV;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cpu_khz = x86_platform.calibrate_cpu();
 	tsc_khz = x86_platform.calibrate_tsc();
@@ -977,13 +881,6 @@ int recalibrate_cpu_khz(void)
 		cpu_khz = tsc_khz;
 	cpu_data(0).loops_per_jiffy = cpufreq_scale(cpu_data(0).loops_per_jiffy,
 						    cpu_khz_old, cpu_khz);
-<<<<<<< HEAD
-=======
-
-	return 0;
-#else
-	return -ENODEV;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 }
 
@@ -1111,18 +1008,13 @@ core_initcall(cpufreq_register_tsc_scaling);
 /*
  * If ART is present detect the numerator:denominator to convert to TSC
  */
-<<<<<<< HEAD
 static void __init detect_art(void)
-=======
-static void detect_art(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned int unused[2];
 
 	if (boot_cpu_data.cpuid_level < ART_CPUID_LEAF)
 		return;
 
-<<<<<<< HEAD
 	/*
 	 * Don't enable ART in a VM, non-stop TSC and TSC_ADJUST required,
 	 * and the TSC counter resets must not occur asynchronously.
@@ -1131,12 +1023,6 @@ static void detect_art(void)
 	    !boot_cpu_has(X86_FEATURE_NONSTOP_TSC) ||
 	    !boot_cpu_has(X86_FEATURE_TSC_ADJUST) ||
 	    tsc_async_resets)
-=======
-	/* Don't enable ART in a VM, non-stop TSC and TSC_ADJUST required */
-	if (boot_cpu_has(X86_FEATURE_HYPERVISOR) ||
-	    !boot_cpu_has(X86_FEATURE_NONSTOP_TSC) ||
-	    !boot_cpu_has(X86_FEATURE_TSC_ADJUST))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	cpuid(ART_CPUID_LEAF, &art_to_tsc_denominator,
@@ -1154,11 +1040,6 @@ static void detect_art(void)
 
 /* clocksource code */
 
-<<<<<<< HEAD
-=======
-static struct clocksource clocksource_tsc;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void tsc_resume(struct clocksource *cs)
 {
 	tsc_verify_tsc_adjust(true);
@@ -1209,7 +1090,6 @@ static void tsc_cs_tick_stable(struct clocksource *cs)
 /*
  * .mask MUST be CLOCKSOURCE_MASK(64). See comment above read_tsc()
  */
-<<<<<<< HEAD
 static struct clocksource clocksource_tsc_early = {
 	.name                   = "tsc-early",
 	.rating                 = 299,
@@ -1229,27 +1109,19 @@ static struct clocksource clocksource_tsc_early = {
  * this one will immediately take over. We will only register if TSC has
  * been found good.
  */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct clocksource clocksource_tsc = {
 	.name                   = "tsc",
 	.rating                 = 300,
 	.read                   = read_tsc,
 	.mask                   = CLOCKSOURCE_MASK(64),
 	.flags                  = CLOCK_SOURCE_IS_CONTINUOUS |
-<<<<<<< HEAD
 				  CLOCK_SOURCE_VALID_FOR_HRES |
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  CLOCK_SOURCE_MUST_VERIFY,
 	.archdata               = { .vclock_mode = VCLOCK_TSC },
 	.resume			= tsc_resume,
 	.mark_unstable		= tsc_cs_mark_unstable,
 	.tick_stable		= tsc_cs_tick_stable,
-<<<<<<< HEAD
 	.list			= LIST_HEAD_INIT(clocksource_tsc.list),
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 void mark_tsc_unstable(char *reason)
@@ -1262,19 +1134,9 @@ void mark_tsc_unstable(char *reason)
 		clear_sched_clock_stable();
 	disable_sched_clock_irqtime();
 	pr_info("Marking TSC unstable due to %s\n", reason);
-<<<<<<< HEAD
 
 	clocksource_mark_unstable(&clocksource_tsc_early);
 	clocksource_mark_unstable(&clocksource_tsc);
-=======
-	/* Change only the rating, when not registered */
-	if (clocksource_tsc.mult) {
-		clocksource_mark_unstable(&clocksource_tsc);
-	} else {
-		clocksource_tsc.flags |= CLOCK_SOURCE_UNSTABLE;
-		clocksource_tsc.rating = 0;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 EXPORT_SYMBOL_GPL(mark_tsc_unstable);
@@ -1349,7 +1211,6 @@ struct system_counterval_t convert_art_to_tsc(u64 art)
 }
 EXPORT_SYMBOL(convert_art_to_tsc);
 
-<<<<<<< HEAD
 /**
  * convert_art_ns_to_tsc() - Convert ART in nanoseconds to TSC.
  * @art_ns: ART (Always Running Timer) in unit of nanoseconds
@@ -1389,8 +1250,6 @@ struct system_counterval_t convert_art_ns_to_tsc(u64 art_ns)
 EXPORT_SYMBOL(convert_art_ns_to_tsc);
 
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void tsc_refine_calibration_work(struct work_struct *work);
 static DECLARE_DELAYED_WORK(tsc_irqwork, tsc_refine_calibration_work);
 /**
@@ -1416,13 +1275,8 @@ static void tsc_refine_calibration_work(struct work_struct *work)
 	int cpu;
 
 	/* Don't bother refining TSC on unstable systems */
-<<<<<<< HEAD
 	if (tsc_unstable)
 		goto unreg;
-=======
-	if (check_tsc_unstable())
-		goto out;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Since the work is started early in boot, we may be
@@ -1474,7 +1328,6 @@ static void tsc_refine_calibration_work(struct work_struct *work)
 		set_cyc2ns_scale(tsc_khz, cpu, tsc_stop);
 
 out:
-<<<<<<< HEAD
 	if (tsc_unstable)
 		goto unreg;
 
@@ -1483,17 +1336,11 @@ out:
 	clocksource_register_khz(&clocksource_tsc, tsc_khz);
 unreg:
 	clocksource_unregister(&clocksource_tsc_early);
-=======
-	if (boot_cpu_has(X86_FEATURE_ART))
-		art_related_clocksource = &clocksource_tsc;
-	clocksource_register_khz(&clocksource_tsc, tsc_khz);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 
 static int __init init_tsc_clocksource(void)
 {
-<<<<<<< HEAD
 	if (!boot_cpu_has(X86_FEATURE_TSC) || !tsc_khz)
 		return 0;
 
@@ -1502,18 +1349,6 @@ static int __init init_tsc_clocksource(void)
 
 	if (tsc_clocksource_reliable)
 		clocksource_tsc.flags &= ~CLOCK_SOURCE_MUST_VERIFY;
-=======
-	if (!boot_cpu_has(X86_FEATURE_TSC) || tsc_disabled > 0 || !tsc_khz)
-		return 0;
-
-	if (tsc_clocksource_reliable)
-		clocksource_tsc.flags &= ~CLOCK_SOURCE_MUST_VERIFY;
-	/* lower the rating if we already know its unstable: */
-	if (check_tsc_unstable()) {
-		clocksource_tsc.rating = 0;
-		clocksource_tsc.flags &= ~CLOCK_SOURCE_IS_CONTINUOUS;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (boot_cpu_has(X86_FEATURE_NONSTOP_TSC_S3))
 		clocksource_tsc.flags |= CLOCK_SOURCE_SUSPEND_NONSTOP;
@@ -1526,11 +1361,8 @@ static int __init init_tsc_clocksource(void)
 		if (boot_cpu_has(X86_FEATURE_ART))
 			art_related_clocksource = &clocksource_tsc;
 		clocksource_register_khz(&clocksource_tsc, tsc_khz);
-<<<<<<< HEAD
 unreg:
 		clocksource_unregister(&clocksource_tsc_early);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 
@@ -1543,7 +1375,6 @@ unreg:
  */
 device_initcall(init_tsc_clocksource);
 
-<<<<<<< HEAD
 static bool __init determine_cpu_tsc_frequencies(bool early)
 {
 	/* Make sure that cpu and tsc are not already calibrated */
@@ -1560,23 +1391,6 @@ static bool __init determine_cpu_tsc_frequencies(bool early)
 
 	/*
 	 * Trust non-zero tsc_khz as authoritative,
-=======
-void __init tsc_init(void)
-{
-	u64 lpj, cyc;
-	int cpu;
-
-	if (!boot_cpu_has(X86_FEATURE_TSC)) {
-		setup_clear_cpu_cap(X86_FEATURE_TSC_DEADLINE_TIMER);
-		return;
-	}
-
-	cpu_khz = x86_platform.calibrate_cpu();
-	tsc_khz = x86_platform.calibrate_tsc();
-
-	/*
-	 * Trust non-zero tsc_khz as authorative,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * and use it to sanity check cpu_khz,
 	 * which will be off if system timer is off.
 	 */
@@ -1585,7 +1399,6 @@ void __init tsc_init(void)
 	else if (abs(cpu_khz - tsc_khz) * 10 > tsc_khz)
 		cpu_khz = tsc_khz;
 
-<<<<<<< HEAD
 	if (tsc_khz == 0)
 		return false;
 
@@ -1641,15 +1454,10 @@ void __init tsc_init(void)
 		x86_platform.calibrate_cpu = native_calibrate_cpu;
 
 	if (!boot_cpu_has(X86_FEATURE_TSC)) {
-=======
-	if (!tsc_khz) {
-		mark_tsc_unstable("could not calculate TSC khz");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		setup_clear_cpu_cap(X86_FEATURE_TSC_DEADLINE_TIMER);
 		return;
 	}
 
-<<<<<<< HEAD
 	if (!tsc_khz) {
 		/* We failed to determine frequencies earlier, try again */
 		if (!determine_cpu_tsc_frequencies(false)) {
@@ -1661,62 +1469,21 @@ void __init tsc_init(void)
 	}
 
 	cyc2ns_init_secondary_cpus();
-=======
-	pr_info("Detected %lu.%03lu MHz processor\n",
-		(unsigned long)cpu_khz / 1000,
-		(unsigned long)cpu_khz % 1000);
-
-	/* Sanitize TSC ADJUST before cyc2ns gets initialized */
-	tsc_store_and_check_tsc_adjust(true);
-
-	/*
-	 * Secondary CPUs do not run through tsc_init(), so set up
-	 * all the scale factors for all CPUs, assuming the same
-	 * speed as the bootup CPU. (cpufreq notifiers will fix this
-	 * up if their speed diverges)
-	 */
-	cyc = rdtsc();
-	for_each_possible_cpu(cpu) {
-		cyc2ns_init(cpu);
-		set_cyc2ns_scale(tsc_khz, cpu, cyc);
-	}
-
-	if (tsc_disabled > 0)
-		return;
-
-	/* now allow native_sched_clock() to use rdtsc */
-
-	tsc_disabled = 0;
-	static_branch_enable(&__use_tsc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!no_sched_irq_time)
 		enable_sched_clock_irqtime();
 
-<<<<<<< HEAD
 	lpj_fine = get_loops_per_jiffy();
-=======
-	lpj = ((u64)tsc_khz * 1000);
-	do_div(lpj, HZ);
-	lpj_fine = lpj;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	use_tsc_delay();
 
 	check_system_tsc_reliable();
 
-<<<<<<< HEAD
 	if (unsynchronized_tsc()) {
 		mark_tsc_unstable("TSCs unsynchronized");
 		return;
 	}
 
 	clocksource_register_khz(&clocksource_tsc_early, tsc_khz);
-=======
-	if (unsynchronized_tsc())
-		mark_tsc_unstable("TSCs unsynchronized");
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	detect_art();
 }
 
@@ -1733,11 +1500,7 @@ unsigned long calibrate_delay_is_known(void)
 	int constant_tsc = cpu_has(&cpu_data(cpu), X86_FEATURE_CONSTANT_TSC);
 	const struct cpumask *mask = topology_core_cpumask(cpu);
 
-<<<<<<< HEAD
 	if (!constant_tsc || !mask)
-=======
-	if (tsc_disabled || !constant_tsc || !mask)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	sibling = cpumask_any_but(mask, cpu);

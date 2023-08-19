@@ -362,11 +362,7 @@ EXPORT_SYMBOL(dump_elf_task_fp);
  * all.  -- r~
  */
 
-<<<<<<< HEAD
 static unsigned long
-=======
-unsigned long
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 thread_saved_pc(struct task_struct *t)
 {
 	unsigned long base = (unsigned long)task_stack_page(t);

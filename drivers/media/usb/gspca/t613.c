@@ -363,11 +363,7 @@ static void reg_w_ixbuf(struct gspca_dev *gspca_dev,
 	if (len * 2 <= USB_BUF_SZ) {
 		p = tmpbuf = gspca_dev->usb_buf;
 	} else {
-<<<<<<< HEAD
 		p = tmpbuf = kmalloc_array(len, 2, GFP_KERNEL);
-=======
-		p = tmpbuf = kmalloc(len * 2, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!tmpbuf) {
 			pr_err("Out of memory\n");
 			return;
@@ -494,11 +490,7 @@ static void setcolors(struct gspca_dev *gspca_dev, s32 val)
 
 static void setgamma(struct gspca_dev *gspca_dev, s32 val)
 {
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Gamma: %d\n", val);
-=======
-	PDEBUG(D_CONF, "Gamma: %d", val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	reg_w_ixbuf(gspca_dev, 0x90,
 		gamma_table[val], sizeof gamma_table[0]);
 }
@@ -600,7 +592,6 @@ static int sd_init(struct gspca_dev *gspca_dev)
 			| reg_r(gspca_dev, 0x07);
 	switch (sensor_id & 0xff0f) {
 	case 0x0801:
-<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_PROBE, "sensor tas5130a\n");
 		sd->sensor = SENSOR_TAS5130A;
 		break;
@@ -614,21 +605,6 @@ static int sd_init(struct gspca_dev *gspca_dev)
 		break;
 	case 0x0807:
 		gspca_dbg(gspca_dev, D_PROBE, "sensor om6802\n");
-=======
-		PDEBUG(D_PROBE, "sensor tas5130a");
-		sd->sensor = SENSOR_TAS5130A;
-		break;
-	case 0x0802:
-		PDEBUG(D_PROBE, "sensor lt168g");
-		sd->sensor = SENSOR_LT168G;
-		break;
-	case 0x0803:
-		PDEBUG(D_PROBE, "sensor 'other'");
-		sd->sensor = SENSOR_OTHER;
-		break;
-	case 0x0807:
-		PDEBUG(D_PROBE, "sensor om6802");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sd->sensor = SENSOR_OM6802;
 		break;
 	default:
@@ -656,13 +632,8 @@ static int sd_init(struct gspca_dev *gspca_dev)
 	i = 0;
 	while (read_indexs[i] != 0x00) {
 		test_byte = reg_r(gspca_dev, read_indexs[i]);
-<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_STREAM, "Reg 0x%02x = 0x%02x\n",
 			  read_indexs[i], test_byte);
-=======
-		PDEBUG(D_STREAM, "Reg 0x%02x = 0x%02x", read_indexs[i],
-		       test_byte);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		i++;
 	}
 
@@ -672,13 +643,8 @@ static int sd_init(struct gspca_dev *gspca_dev)
 
 	if (sd->sensor == SENSOR_LT168G) {
 		test_byte = reg_r(gspca_dev, 0x80);
-<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_STREAM, "Reg 0x%02x = 0x%02x\n", 0x80,
 			  test_byte);
-=======
-		PDEBUG(D_STREAM, "Reg 0x%02x = 0x%02x", 0x80,
-		       test_byte);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg_w(gspca_dev, 0x6c80);
 	}
 
@@ -699,13 +665,8 @@ static int sd_init(struct gspca_dev *gspca_dev)
 
 	if (sd->sensor == SENSOR_LT168G) {
 		test_byte = reg_r(gspca_dev, 0x80);
-<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_STREAM, "Reg 0x%02x = 0x%02x\n", 0x80,
 			  test_byte);
-=======
-		PDEBUG(D_STREAM, "Reg 0x%02x = 0x%02x", 0x80,
-		       test_byte);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg_w(gspca_dev, 0x6c80);
 	}
 
@@ -776,11 +737,7 @@ static void poll_sensor(struct gspca_dev *gspca_dev)
 		 0xa1, 0xb1, 0xda, 0x6b, 0xdb, 0x98, 0xdf, 0x0c,
 		 0xc2, 0x80, 0xc3, 0x10};
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_STREAM, "[Sensor requires polling]\n");
-=======
-	PDEBUG(D_STREAM, "[Sensor requires polling]");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	reg_w_buf(gspca_dev, poll1, sizeof poll1);
 	reg_w_buf(gspca_dev, poll2, sizeof poll2);
 	reg_w_buf(gspca_dev, noise03, sizeof noise03);

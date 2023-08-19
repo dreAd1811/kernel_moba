@@ -20,7 +20,6 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-<<<<<<< HEAD
 #include <linux/types.h>
 #include "kfd_priv.h"
 
@@ -41,70 +40,18 @@ bool kfd_set_pasid_limit(unsigned int new_limit)
 
 		while (new_limit < (1U << pasid_bits))
 			pasid_bits--;
-=======
-#include <linux/slab.h>
-#include <linux/types.h>
-#include "kfd_priv.h"
-
-static unsigned long *pasid_bitmap;
-static unsigned int pasid_limit;
-static DEFINE_MUTEX(pasid_mutex);
-
-int kfd_pasid_init(void)
-{
-	pasid_limit = KFD_MAX_NUM_OF_PROCESSES;
-
-	pasid_bitmap = kcalloc(BITS_TO_LONGS(pasid_limit), sizeof(long),
-				GFP_KERNEL);
-	if (!pasid_bitmap)
-		return -ENOMEM;
-
-	set_bit(0, pasid_bitmap); /* PASID 0 is reserved. */
-
-	return 0;
-}
-
-void kfd_pasid_exit(void)
-{
-	kfree(pasid_bitmap);
-}
-
-bool kfd_set_pasid_limit(unsigned int new_limit)
-{
-	if (new_limit < pasid_limit) {
-		bool ok;
-
-		mutex_lock(&pasid_mutex);
-
-		/* ensure that no pasids >= new_limit are in-use */
-		ok = (find_next_bit(pasid_bitmap, pasid_limit, new_limit) ==
-								pasid_limit);
-		if (ok)
-			pasid_limit = new_limit;
-
-		mutex_unlock(&pasid_mutex);
-
-		return ok;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return true;
 }
 
-<<<<<<< HEAD
 unsigned int kfd_get_pasid_limit(void)
 {
 	return 1U << pasid_bits;
-=======
-inline unsigned int kfd_get_pasid_limit(void)
-{
-	return pasid_limit;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 unsigned int kfd_pasid_alloc(void)
 {
-<<<<<<< HEAD
 	int r;
 
 	/* Find the first best KFD device for calling KGD */
@@ -127,30 +74,10 @@ unsigned int kfd_pasid_alloc(void)
 	r = kfd2kgd->alloc_pasid(pasid_bits);
 
 	return r > 0 ? r : 0;
-=======
-	unsigned int found;
-
-	mutex_lock(&pasid_mutex);
-
-	found = find_first_zero_bit(pasid_bitmap, pasid_limit);
-	if (found == pasid_limit)
-		found = 0;
-	else
-		set_bit(found, pasid_bitmap);
-
-	mutex_unlock(&pasid_mutex);
-
-	return found;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void kfd_pasid_free(unsigned int pasid)
 {
-<<<<<<< HEAD
 	if (kfd2kgd)
 		kfd2kgd->free_pasid(pasid);
-=======
-	if (!WARN_ON(pasid == 0 || pasid >= pasid_limit))
-		clear_bit(pasid, pasid_bitmap);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

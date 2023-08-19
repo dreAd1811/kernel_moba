@@ -222,11 +222,7 @@ static int ptn3460_get_modes(struct drm_connector *connector)
 	}
 
 	ptn_bridge->edid = (struct edid *)edid;
-<<<<<<< HEAD
 	drm_connector_update_edid_property(connector, ptn_bridge->edid);
-=======
-	drm_mode_connector_update_edid_property(connector, ptn_bridge->edid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	num_modes = drm_add_edid_modes(connector, ptn_bridge->edid);
 
@@ -269,11 +265,7 @@ static int ptn3460_bridge_attach(struct drm_bridge *bridge)
 	drm_connector_helper_add(&ptn_bridge->connector,
 					&ptn3460_connector_helper_funcs);
 	drm_connector_register(&ptn_bridge->connector);
-<<<<<<< HEAD
 	drm_connector_attach_encoder(&ptn_bridge->connector,
-=======
-	drm_mode_connector_attach_encoder(&ptn_bridge->connector,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							bridge->encoder);
 
 	if (ptn_bridge->panel)

@@ -403,11 +403,7 @@ static int ve_spc_populate_opps(uint32_t cluster)
 	uint32_t data = 0, off, ret, idx;
 	struct ve_spc_opp *opps;
 
-<<<<<<< HEAD
 	opps = kcalloc(MAX_OPPS, sizeof(*opps), GFP_KERNEL);
-=======
-	opps = kzalloc(sizeof(*opps) * MAX_OPPS, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!opps)
 		return -ENOMEM;
 
@@ -455,15 +451,8 @@ int __init ve_spc_init(void __iomem *baseaddr, u32 a15_clusid, int irq)
 {
 	int ret;
 	info = kzalloc(sizeof(*info), GFP_KERNEL);
-<<<<<<< HEAD
 	if (!info)
 		return -ENOMEM;
-=======
-	if (!info) {
-		pr_err(SPCLOG "unable to allocate mem\n");
-		return -ENOMEM;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	info->baseaddr = baseaddr;
 	info->a15_clusid = a15_clusid;
@@ -544,15 +533,8 @@ static struct clk *ve_spc_clk_register(struct device *cpu_dev)
 	struct clk_spc *spc;
 
 	spc = kzalloc(sizeof(*spc), GFP_KERNEL);
-<<<<<<< HEAD
 	if (!spc)
 		return ERR_PTR(-ENOMEM);
-=======
-	if (!spc) {
-		pr_err("could not allocate spc clk\n");
-		return ERR_PTR(-ENOMEM);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spc->hw.init = &init;
 	spc->cluster = topology_physical_package_id(cpu_dev->id);
@@ -569,14 +551,8 @@ static struct clk *ve_spc_clk_register(struct device *cpu_dev)
 
 static int __init ve_spc_clk_init(void)
 {
-<<<<<<< HEAD
 	int cpu;
 	struct clk *clk;
-=======
-	int cpu, cluster;
-	struct clk *clk;
-	bool init_opp_table[MAX_CLUSTERS] = { false };
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!info)
 		return 0; /* Continue only if SPC is initialised */
@@ -602,22 +578,8 @@ static int __init ve_spc_clk_init(void)
 			continue;
 		}
 
-<<<<<<< HEAD
 		if (ve_init_opp_table(cpu_dev))
 			pr_warn("failed to initialise cpu%d opp table\n", cpu);
-=======
-		cluster = topology_physical_package_id(cpu_dev->id);
-		if (init_opp_table[cluster])
-			continue;
-
-		if (ve_init_opp_table(cpu_dev))
-			pr_warn("failed to initialise cpu%d opp table\n", cpu);
-		else if (dev_pm_opp_set_sharing_cpus(cpu_dev,
-			 topology_core_cpumask(cpu_dev->id)))
-			pr_warn("failed to mark OPPs shared for cpu%d\n", cpu);
-		else
-			init_opp_table[cluster] = true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	platform_device_register_simple("vexpress-spc-cpufreq", -1, NULL, 0);

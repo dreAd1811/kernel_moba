@@ -10,11 +10,8 @@
 #ifndef _ASM_POWERPC_VAS_H
 #define _ASM_POWERPC_VAS_H
 
-<<<<<<< HEAD
 struct vas_window;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Min and max FIFO sizes are based on Version 1.05 Section 3.1.4.25
  * (Local FIFO Size Register) of the VAS workbook.
@@ -109,7 +106,6 @@ struct vas_tx_win_attr {
 };
 
 /*
-<<<<<<< HEAD
  * Helper to map a chip id to VAS id.
  * For POWER9, this is a 1:1 mapping. In the future this maybe a 1:N
  * mapping in which case, we will need to update this helper.
@@ -119,8 +115,6 @@ struct vas_tx_win_attr {
 int chip_to_vas_id(int chipid);
 
 /*
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Helper to initialize receive window attributes to defaults for an
  * NX window.
  */
@@ -173,7 +167,6 @@ int vas_copy_crb(void *crb, int offset);
  */
 int vas_paste_crb(struct vas_window *win, int offset, bool re);
 
-<<<<<<< HEAD
 /*
  * Return a system-wide unique id for the VAS window @win.
  */
@@ -184,6 +177,4 @@ extern u32 vas_win_id(struct vas_window *win);
  * can map that address into their address space.
  */
 extern u64 vas_win_paste_addr(struct vas_window *win);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __ASM_POWERPC_VAS_H */

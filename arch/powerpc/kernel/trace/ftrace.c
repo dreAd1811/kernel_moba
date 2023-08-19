@@ -144,11 +144,7 @@ __ftrace_make_nop(struct module *mod,
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 #ifdef CONFIG_MPROFILE_KERNEL
-=======
-#ifdef CC_USING_MPROFILE_KERNEL
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* When using -mkernel_profile there is no load to jump over */
 	pop = PPC_INST_NOP;
 
@@ -192,11 +188,7 @@ __ftrace_make_nop(struct module *mod,
 		pr_err("Expected %08x found %08x\n", PPC_INST_LD_TOC, op);
 		return -EINVAL;
 	}
-<<<<<<< HEAD
 #endif /* CONFIG_MPROFILE_KERNEL */
-=======
-#endif /* CC_USING_MPROFILE_KERNEL */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (patch_instruction((unsigned int *)ip, pop)) {
 		pr_err("Patching NOP failed.\n");
@@ -332,11 +324,7 @@ int ftrace_make_nop(struct module *mod,
  * They should effectively be a NOP, and follow formal constraints,
  * depending on the ABI. Return false if they don't.
  */
-<<<<<<< HEAD
 #ifndef CONFIG_MPROFILE_KERNEL
-=======
-#ifndef CC_USING_MPROFILE_KERNEL
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int
 expected_nop_sequence(void *ip, unsigned int op0, unsigned int op1)
 {
@@ -369,11 +357,8 @@ __ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
 {
 	unsigned int op[2];
 	void *ip = (void *)rec->ip;
-<<<<<<< HEAD
 	unsigned long entry, ptr, tramp;
 	struct module *mod = rec->arch.mod;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* read where this goes */
 	if (probe_kernel_read(op, ip, sizeof(op)))
@@ -385,22 +370,16 @@ __ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 	/* If we never set up ftrace trampoline(s), then bail */
 #ifdef CONFIG_DYNAMIC_FTRACE_WITH_REGS
 	if (!mod->arch.tramp || !mod->arch.tramp_regs) {
 #else
 	if (!mod->arch.tramp) {
 #endif
-=======
-	/* If we never set up a trampoline to ftrace_caller, then bail */
-	if (!rec->arch.mod->arch.tramp) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_err("No ftrace trampoline\n");
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 #ifdef CONFIG_DYNAMIC_FTRACE_WITH_REGS
 	if (rec->flags & FTRACE_FL_REGS)
 		tramp = mod->arch.tramp_regs;
@@ -424,19 +403,11 @@ __ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
 
 	/* Ensure branch is within 24 bits */
 	if (!create_branch(ip, tramp, BRANCH_SET_LINK)) {
-=======
-	/* Ensure branch is within 24 bits */
-	if (!create_branch(ip, rec->arch.mod->arch.tramp, BRANCH_SET_LINK)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_err("Branch out of range\n");
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 	if (patch_branch(ip, tramp, BRANCH_SET_LINK)) {
-=======
-	if (patch_branch(ip, rec->arch.mod->arch.tramp, BRANCH_SET_LINK)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_err("REL24 out of range!\n");
 		return -EINVAL;
 	}
@@ -444,17 +415,6 @@ __ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_DYNAMIC_FTRACE_WITH_REGS
-int ftrace_modify_call(struct dyn_ftrace *rec, unsigned long old_addr,
-			unsigned long addr)
-{
-	return ftrace_make_call(rec, addr);
-}
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else  /* !CONFIG_PPC64: */
 static int
 __ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
@@ -531,7 +491,6 @@ int ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
 #endif /* CONFIG_MODULES */
 }
 
-<<<<<<< HEAD
 #ifdef CONFIG_DYNAMIC_FTRACE_WITH_REGS
 #ifdef CONFIG_MODULES
 static int
@@ -663,8 +622,6 @@ int ftrace_modify_call(struct dyn_ftrace *rec, unsigned long old_addr,
 }
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int ftrace_update_ftrace_func(ftrace_func_t func)
 {
 	unsigned long ip = (unsigned long)(&ftrace_call);
@@ -675,7 +632,6 @@ int ftrace_update_ftrace_func(ftrace_func_t func)
 	new = ftrace_call_replace(ip, (unsigned long)func, 1);
 	ret = ftrace_modify_code(ip, old, new);
 
-<<<<<<< HEAD
 #ifdef CONFIG_DYNAMIC_FTRACE_WITH_REGS
 	/* Also update the regs callback function */
 	if (!ret) {
@@ -689,47 +645,6 @@ int ftrace_update_ftrace_func(ftrace_func_t func)
 	return ret;
 }
 
-=======
-	return ret;
-}
-
-static int __ftrace_replace_code(struct dyn_ftrace *rec, int enable)
-{
-	unsigned long ftrace_addr = (unsigned long)FTRACE_ADDR;
-	int ret;
-
-	ret = ftrace_update_record(rec, enable);
-
-	switch (ret) {
-	case FTRACE_UPDATE_IGNORE:
-		return 0;
-	case FTRACE_UPDATE_MAKE_CALL:
-		return ftrace_make_call(rec, ftrace_addr);
-	case FTRACE_UPDATE_MAKE_NOP:
-		return ftrace_make_nop(NULL, rec, ftrace_addr);
-	}
-
-	return 0;
-}
-
-void ftrace_replace_code(int enable)
-{
-	struct ftrace_rec_iter *iter;
-	struct dyn_ftrace *rec;
-	int ret;
-
-	for (iter = ftrace_rec_iter_start(); iter;
-	     iter = ftrace_rec_iter_next(iter)) {
-		rec = ftrace_rec_iter_record(iter);
-		ret = __ftrace_replace_code(rec, enable);
-		if (ret) {
-			ftrace_bug(ret, rec);
-			return;
-		}
-	}
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Use the default ftrace_modify_all_code, but without
  * stop_machine().
@@ -747,10 +662,6 @@ int __init ftrace_dyn_arch_init(void)
 
 #ifdef CONFIG_FUNCTION_GRAPH_TRACER
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_DYNAMIC_FTRACE
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern void ftrace_graph_call(void);
 extern void ftrace_graph_stub(void);
 
@@ -779,10 +690,6 @@ int ftrace_disable_ftrace_graph_caller(void)
 
 	return ftrace_modify_code(ip, old, new);
 }
-<<<<<<< HEAD
-=======
-#endif /* CONFIG_DYNAMIC_FTRACE */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Hook the return address and push it in the stack of return addrs
@@ -790,10 +697,6 @@ int ftrace_disable_ftrace_graph_caller(void)
  */
 unsigned long prepare_ftrace_return(unsigned long parent, unsigned long ip)
 {
-<<<<<<< HEAD
-=======
-	struct ftrace_graph_ent trace;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long return_hooker;
 
 	if (unlikely(ftrace_graph_is_dead()))
@@ -804,23 +707,8 @@ unsigned long prepare_ftrace_return(unsigned long parent, unsigned long ip)
 
 	return_hooker = ppc_function_entry(return_to_handler);
 
-<<<<<<< HEAD
 	if (!function_graph_enter(parent, ip, 0, NULL))
 		parent = return_hooker;
-=======
-	trace.func = ip;
-	trace.depth = current->curr_ret_stack + 1;
-
-	/* Only trace if the calling function expects to */
-	if (!ftrace_graph_entry(&trace))
-		goto out;
-
-	if (ftrace_push_return_trace(parent, ip, &trace.depth, 0,
-				     NULL) == -EBUSY)
-		goto out;
-
-	parent = return_hooker;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	return parent;
 }

@@ -5,10 +5,5 @@ config USB_M5602
 	  Say Y here if you want support for cameras based on the
 	  ALi m5602 connected to various image sensors.
 
-<<<<<<< HEAD
-=======
-	  See <file:Documentation/video4linux/m5602.txt> for more info.
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	  To compile this driver as a module, choose M here: the
 	  module will be called gspca_m5602.

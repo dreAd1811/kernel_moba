@@ -44,11 +44,7 @@ struct host1x_syncpt {
 	const char *name;
 	bool client_managed;
 	struct host1x *host;
-<<<<<<< HEAD
 	struct host1x_client *client;
-=======
-	struct device *dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct host1x_syncpt_base *base;
 
 	/* interrupt data */
@@ -128,10 +124,4 @@ static inline int host1x_syncpt_is_valid(struct host1x_syncpt *sp)
 	return sp->id < host1x_syncpt_nb_pts(sp->host);
 }
 
-<<<<<<< HEAD
-=======
-/* Patch a wait by replacing it with a wait for syncpt 0 value 0 */
-int host1x_syncpt_patch_wait(struct host1x_syncpt *sp, void *patch_addr);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

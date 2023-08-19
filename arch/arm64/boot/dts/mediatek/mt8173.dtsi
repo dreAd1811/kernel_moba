@@ -51,7 +51,6 @@
 		mdp_wrot1 = &mdp_wrot1;
 	};
 
-<<<<<<< HEAD
 	cluster0_opp: opp_table0 {
 		compatible = "operating-points-v2";
 		opp-shared;
@@ -126,8 +125,6 @@
 		};
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cpus {
 		#address-cells = <1>;
 		#size-cells = <0>;
@@ -159,13 +156,10 @@
 			enable-method = "psci";
 			cpu-idle-states = <&CPU_SLEEP_0>;
 			#cooling-cells = <2>;
-<<<<<<< HEAD
 			clocks = <&infracfg CLK_INFRA_CA53SEL>,
 				 <&apmixedsys CLK_APMIXED_MAINPLL>;
 			clock-names = "cpu", "intermediate";
 			operating-points-v2 = <&cluster0_opp>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		cpu1: cpu@1 {
@@ -174,14 +168,11 @@
 			reg = <0x001>;
 			enable-method = "psci";
 			cpu-idle-states = <&CPU_SLEEP_0>;
-<<<<<<< HEAD
 			#cooling-cells = <2>;
 			clocks = <&infracfg CLK_INFRA_CA53SEL>,
 				 <&apmixedsys CLK_APMIXED_MAINPLL>;
 			clock-names = "cpu", "intermediate";
 			operating-points-v2 = <&cluster0_opp>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		cpu2: cpu@100 {
@@ -191,13 +182,10 @@
 			enable-method = "psci";
 			cpu-idle-states = <&CPU_SLEEP_0>;
 			#cooling-cells = <2>;
-<<<<<<< HEAD
 			clocks = <&infracfg CLK_INFRA_CA57SEL>,
 				 <&apmixedsys CLK_APMIXED_MAINPLL>;
 			clock-names = "cpu", "intermediate";
 			operating-points-v2 = <&cluster1_opp>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		cpu3: cpu@101 {
@@ -206,14 +194,11 @@
 			reg = <0x101>;
 			enable-method = "psci";
 			cpu-idle-states = <&CPU_SLEEP_0>;
-<<<<<<< HEAD
 			#cooling-cells = <2>;
 			clocks = <&infracfg CLK_INFRA_CA57SEL>,
 				 <&apmixedsys CLK_APMIXED_MAINPLL>;
 			clock-names = "cpu", "intermediate";
 			operating-points-v2 = <&cluster1_opp>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		idle-states {
@@ -358,11 +343,7 @@
 			reg = <0 0x10005000 0 0x1000>;
 		};
 
-<<<<<<< HEAD
 		pio: pinctrl@10005000 {
-=======
-		pio: pinctrl@0x10005000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "mediatek,mt8173-pinctrl";
 			reg = <0 0x1000b000 0 0x1000>;
 			mediatek,pctl-regmap = <&syscfg_pctl_a>;
@@ -795,12 +776,7 @@
 		};
 
 		mmc0: mmc@11230000 {
-<<<<<<< HEAD
 			compatible = "mediatek,mt8173-mmc";
-=======
-			compatible = "mediatek,mt8173-mmc",
-				     "mediatek,mt8135-mmc";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			reg = <0 0x11230000 0 0x1000>;
 			interrupts = <GIC_SPI 71 IRQ_TYPE_LEVEL_LOW>;
 			clocks = <&pericfg CLK_PERI_MSDC30_0>,
@@ -810,12 +786,7 @@
 		};
 
 		mmc1: mmc@11240000 {
-<<<<<<< HEAD
 			compatible = "mediatek,mt8173-mmc";
-=======
-			compatible = "mediatek,mt8173-mmc",
-				     "mediatek,mt8135-mmc";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			reg = <0 0x11240000 0 0x1000>;
 			interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_LOW>;
 			clocks = <&pericfg CLK_PERI_MSDC30_1>,
@@ -825,12 +796,7 @@
 		};
 
 		mmc2: mmc@11250000 {
-<<<<<<< HEAD
 			compatible = "mediatek,mt8173-mmc";
-=======
-			compatible = "mediatek,mt8173-mmc",
-				     "mediatek,mt8135-mmc";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			reg = <0 0x11250000 0 0x1000>;
 			interrupts = <GIC_SPI 73 IRQ_TYPE_LEVEL_LOW>;
 			clocks = <&pericfg CLK_PERI_MSDC30_2>,
@@ -840,12 +806,7 @@
 		};
 
 		mmc3: mmc@11260000 {
-<<<<<<< HEAD
 			compatible = "mediatek,mt8173-mmc";
-=======
-			compatible = "mediatek,mt8173-mmc",
-				     "mediatek,mt8135-mmc";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			reg = <0 0x11260000 0 0x1000>;
 			interrupts = <GIC_SPI 74 IRQ_TYPE_LEVEL_LOW>;
 			clocks = <&pericfg CLK_PERI_MSDC30_3>,
@@ -864,21 +825,9 @@
 			       <&u3port0 PHY_TYPE_USB3>,
 			       <&u2port1 PHY_TYPE_USB2>;
 			power-domains = <&scpsys MT8173_POWER_DOMAIN_USB>;
-<<<<<<< HEAD
 			clocks = <&topckgen CLK_TOP_USB30_SEL>, <&clk26m>;
 			clock-names = "sys_ck", "ref_ck";
 			mediatek,syscon-wakeup = <&pericfg 0x400 1>;
-=======
-			clocks = <&topckgen CLK_TOP_USB30_SEL>,
-				 <&clk26m>,
-				 <&pericfg CLK_PERI_USB0>,
-				 <&pericfg CLK_PERI_USB1>;
-			clock-names = "sys_ck",
-				      "ref_ck",
-				      "wakeup_deb_p0",
-				      "wakeup_deb_p1";
-			mediatek,syscon-wakeup = <&pericfg>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			#address-cells = <2>;
 			#size-cells = <2>;
 			ranges;

@@ -191,11 +191,7 @@ static char *res_strings[] = {
 	"reserved 37",
 	"reserved 38",
 	"reserved 39",
-<<<<<<< HEAD
 	"reserved 40",
-=======
-	"reseverd 40",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	"reserved 41", 
 	"reserved 42", 
 	"reserved 43", 
@@ -931,10 +927,6 @@ static int fs_open(struct atm_vcc *atm_vcc)
 			}
 			if (!to) {
 				printk ("No more free channels for FS50..\n");
-<<<<<<< HEAD
-=======
-				kfree(vcc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				return -EBUSY;
 			}
 			vcc->channo = dev->channo;
@@ -945,10 +937,6 @@ static int fs_open(struct atm_vcc *atm_vcc)
 			if (((DO_DIRECTION(rxtp) && dev->atm_vccs[vcc->channo])) ||
 			    ( DO_DIRECTION(txtp) && test_bit (vcc->channo, dev->tx_inuse))) {
 				printk ("Channel is in use for FS155.\n");
-<<<<<<< HEAD
-=======
-				kfree(vcc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				return -EBUSY;
 			}
 		}
@@ -962,10 +950,6 @@ static int fs_open(struct atm_vcc *atm_vcc)
 			    tc, sizeof (struct fs_transmit_config));
 		if (!tc) {
 			fs_dprintk (FS_DEBUG_OPEN, "fs: can't alloc transmit_config.\n");
-<<<<<<< HEAD
-=======
-			kfree(vcc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -ENOMEM;
 		}
 
@@ -1672,15 +1656,9 @@ static irqreturn_t fs_irq (int irq, void *dev_id)
 
 
 #ifdef FS_POLL_FREQ
-<<<<<<< HEAD
 static void fs_poll (struct timer_list *t)
 {
 	struct fs_dev *dev = from_timer(dev, t, timer);
-=======
-static void fs_poll (unsigned long data)
-{
-	struct fs_dev *dev = (struct fs_dev *) data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
   
 	fs_irq (0, dev);
 	dev->timer.expires = jiffies + FS_POLL_FREQ;
@@ -1907,13 +1885,7 @@ static int fs_init(struct fs_dev *dev)
 	}
 
 #ifdef FS_POLL_FREQ
-<<<<<<< HEAD
 	timer_setup(&dev->timer, fs_poll, 0);
-=======
-	init_timer (&dev->timer);
-	dev->timer.data = (unsigned long) dev;
-	dev->timer.function = fs_poll;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev->timer.expires = jiffies + FS_POLL_FREQ;
 	add_timer (&dev->timer);
 #endif

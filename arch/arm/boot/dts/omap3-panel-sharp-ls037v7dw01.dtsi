@@ -30,10 +30,7 @@
 		compatible = "sharp,ls037v7dw01";
 		label = "lcd";
 		power-supply = <&lcd_3v3>;
-<<<<<<< HEAD
 		envdd-supply = <&lcd_3v3>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		port {
 			lcd_in: endpoint {

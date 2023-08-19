@@ -1,20 +1,10 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Device Tree file for Seagate Personal Cloud NAS (Armada 370 SoC).
  *
  * Copyright (C) 2015 Seagate
  *
  * Author: Simon Guinot <simon.guinot@sequanux.org>
-<<<<<<< HEAD
-=======
- *
- * This file is licensed under the terms of the GNU General Public
- * License version 2.  This program is licensed "as is" without any
- * warranty of any kind, whether express or implied.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /*

@@ -17,10 +17,7 @@
 #include <linux/cpu.h>
 #include <linux/io.h>
 #include <linux/mfd/syscon.h>
-<<<<<<< HEAD
 #include <linux/module.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/init.h>
 #include <linux/of.h>
 #include <linux/of_platform.h>
@@ -54,10 +51,7 @@ struct ti_cpufreq_soc_data {
 	unsigned long efuse_mask;
 	unsigned long efuse_shift;
 	unsigned long rev_offset;
-<<<<<<< HEAD
 	bool multi_regulator;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct ti_cpufreq_data {
@@ -65,10 +59,7 @@ struct ti_cpufreq_data {
 	struct device_node *opp_node;
 	struct regmap *syscon;
 	const struct ti_cpufreq_soc_data *soc_data;
-<<<<<<< HEAD
 	struct opp_table *opp_table;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static unsigned long amx3_efuse_xlate(struct ti_cpufreq_data *opp_data,
@@ -107,10 +98,7 @@ static struct ti_cpufreq_soc_data am3x_soc_data = {
 	.efuse_offset = 0x07fc,
 	.efuse_mask = 0x1fff,
 	.rev_offset = 0x600,
-<<<<<<< HEAD
 	.multi_regulator = false,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct ti_cpufreq_soc_data am4x_soc_data = {
@@ -119,10 +107,7 @@ static struct ti_cpufreq_soc_data am4x_soc_data = {
 	.efuse_offset = 0x0610,
 	.efuse_mask = 0x3f,
 	.rev_offset = 0x600,
-<<<<<<< HEAD
 	.multi_regulator = false,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct ti_cpufreq_soc_data dra7_soc_data = {
@@ -131,10 +116,7 @@ static struct ti_cpufreq_soc_data dra7_soc_data = {
 	.efuse_mask = 0xf80000,
 	.efuse_shift = 19,
 	.rev_offset = 0x204,
-<<<<<<< HEAD
 	.multi_regulator = true,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -219,25 +201,14 @@ static const struct of_device_id ti_cpufreq_of_match[] = {
 	{},
 };
 
-<<<<<<< HEAD
 static const struct of_device_id *ti_cpufreq_match_node(void)
 {
 	struct device_node *np;
 	const struct of_device_id *match;
-=======
-static int ti_cpufreq_init(void)
-{
-	u32 version[VERSION_COUNT];
-	struct device_node *np;
-	const struct of_device_id *match;
-	struct ti_cpufreq_data *opp_data;
-	int ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	np = of_find_node_by_path("/");
 	match = of_match_node(ti_cpufreq_of_match, np);
 	of_node_put(np);
-<<<<<<< HEAD
 
 	return match;
 }
@@ -256,12 +227,6 @@ static int ti_cpufreq_probe(struct platform_device *pdev)
 		return -ENODEV;
 
 	opp_data = devm_kzalloc(&pdev->dev, sizeof(*opp_data), GFP_KERNEL);
-=======
-	if (!match)
-		return -ENODEV;
-
-	opp_data = kzalloc(sizeof(*opp_data), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!opp_data)
 		return -ENOMEM;
 
@@ -298,7 +263,6 @@ static int ti_cpufreq_probe(struct platform_device *pdev)
 	if (ret)
 		goto fail_put_node;
 
-<<<<<<< HEAD
 	ti_opp_table = dev_pm_opp_set_supported_hw(opp_data->cpu_dev,
 						   version, VERSION_COUNT);
 	if (IS_ERR(ti_opp_table)) {
@@ -322,18 +286,6 @@ static int ti_cpufreq_probe(struct platform_device *pdev)
 	}
 
 	of_node_put(opp_data->opp_node);
-=======
-	ret = PTR_ERR_OR_ZERO(dev_pm_opp_set_supported_hw(opp_data->cpu_dev,
-							  version, VERSION_COUNT));
-	if (ret) {
-		dev_err(opp_data->cpu_dev,
-			"Failed to set supported hardware\n");
-		goto fail_put_node;
-	}
-
-	of_node_put(opp_data->opp_node);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 register_cpufreq_dt:
 	platform_device_register_simple("cpufreq-dt", -1, NULL, 0);
 
@@ -344,7 +296,6 @@ fail_put_node:
 
 	return ret;
 }
-<<<<<<< HEAD
 
 static int ti_cpufreq_init(void)
 {
@@ -371,6 +322,3 @@ builtin_platform_driver(ti_cpufreq_driver);
 MODULE_DESCRIPTION("TI CPUFreq/OPP hw-supported driver");
 MODULE_AUTHOR("Dave Gerlach <d-gerlach@ti.com>");
 MODULE_LICENSE("GPL v2");
-=======
-device_initcall(ti_cpufreq_init);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

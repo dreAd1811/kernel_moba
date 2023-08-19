@@ -351,11 +351,7 @@ static int cvm_enc_dec_init(struct crypto_tfm *tfm)
 	return 0;
 }
 
-<<<<<<< HEAD
 static struct crypto_alg algs[] = { {
-=======
-struct crypto_alg algs[] = { {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.cra_flags = CRYPTO_ALG_TYPE_ABLKCIPHER | CRYPTO_ALG_ASYNC,
 	.cra_blocksize = AES_BLOCK_SIZE,
 	.cra_ctxsize = sizeof(struct cvm_enc_ctx),

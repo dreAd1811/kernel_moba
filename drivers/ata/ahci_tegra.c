@@ -34,12 +34,8 @@
 #define DRV_NAME "tegra-ahci"
 
 #define SATA_CONFIGURATION_0				0x180
-<<<<<<< HEAD
 #define SATA_CONFIGURATION_0_EN_FPCI			BIT(0)
 #define SATA_CONFIGURATION_0_CLK_OVERRIDE			BIT(31)
-=======
-#define SATA_CONFIGURATION_EN_FPCI			BIT(0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define SCFG_OFFSET					0x1000
 
@@ -50,24 +46,16 @@
 #define T_SATA0_CFG_1_SERR				BIT(8)
 
 #define T_SATA0_CFG_9					0x24
-<<<<<<< HEAD
 #define T_SATA0_CFG_9_BASE_ADDRESS			0x40020000
 
 #define SATA_FPCI_BAR5					0x94
 #define SATA_FPCI_BAR5_START_MASK			(0xfffffff << 4)
 #define SATA_FPCI_BAR5_START				(0x0040020 << 4)
 #define SATA_FPCI_BAR5_ACCESS_TYPE			(0x1)
-=======
-#define T_SATA0_CFG_9_BASE_ADDRESS_SHIFT		13
-
-#define SATA_FPCI_BAR5					0x94
-#define SATA_FPCI_BAR5_START_SHIFT			4
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define SATA_INTR_MASK					0x188
 #define SATA_INTR_MASK_IP_INT_MASK			BIT(16)
 
-<<<<<<< HEAD
 #define T_SATA0_CFG_35					0x94
 #define T_SATA0_CFG_35_IDP_INDEX_MASK			(0x7ff << 2)
 #define T_SATA0_CFG_35_IDP_INDEX			(0x2a << 2)
@@ -107,11 +95,6 @@
 #define T_SATA0_BKDOOR_CC_CLASS_CODE			(0x0106 << 16)
 #define T_SATA0_BKDOOR_CC_PROG_IF_MASK			(0xff << 8)
 #define T_SATA0_BKDOOR_CC_PROG_IF			(0x01 << 8)
-=======
-#define T_SATA0_AHCI_HBA_CAP_BKDR			0x300
-
-#define T_SATA0_BKDOOR_CC				0x4a4
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define T_SATA0_CFG_SATA				0x54c
 #define T_SATA0_CFG_SATA_BACKDOOR_PROG_IF_EN		BIT(12)
@@ -138,7 +121,6 @@
 #define T_SATA0_CHX_PHY_CTRL11				0x6d0
 #define T_SATA0_CHX_PHY_CTRL11_GEN2_RX_EQ		(0x2800 << 16)
 
-<<<<<<< HEAD
 #define T_SATA0_CHX_PHY_CTRL17_0			0x6e8
 #define T_SATA0_CHX_PHY_CTRL17_0_RX_EQ_CTRL_L_GEN1	0x55010000
 #define T_SATA0_CHX_PHY_CTRL18_0			0x6ec
@@ -160,8 +142,6 @@
 #define SATA_AUX_SPARE_CFG0_0				0x18
 #define SATA_AUX_SPARE_CFG0_0_MDAT_TIMER_AFTER_PG_VALID	BIT(14)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define FUSE_SATA_CALIB					0x124
 #define FUSE_SATA_CALIB_MASK				0x3
 
@@ -179,7 +159,6 @@ static const struct sata_pad_calibration tegra124_pad_calibration[] = {
 	{0x14, 0x0e, 0x1a, 0x0e},
 };
 
-<<<<<<< HEAD
 struct tegra_ahci_ops {
 	int (*init)(struct ahci_host_priv *hpriv);
 };
@@ -195,17 +174,11 @@ struct tegra_ahci_priv {
 	struct platform_device	   *pdev;
 	void __iomem		   *sata_regs;
 	void __iomem		   *sata_aux_regs;
-=======
-struct tegra_ahci_priv {
-	struct platform_device	   *pdev;
-	void __iomem		   *sata_regs;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct reset_control	   *sata_rst;
 	struct reset_control	   *sata_oob_rst;
 	struct reset_control	   *sata_cold_rst;
 	/* Needs special handling, cannot use ahci_platform */
 	struct clk		   *sata_clk;
-<<<<<<< HEAD
 	struct regulator_bulk_data *supplies;
 	const struct tegra_ahci_soc *soc;
 };
@@ -266,21 +239,12 @@ static int tegra124_ahci_init(struct ahci_host_priv *hpriv)
 	return 0;
 }
 
-=======
-	struct regulator_bulk_data supplies[5];
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int tegra_ahci_power_on(struct ahci_host_priv *hpriv)
 {
 	struct tegra_ahci_priv *tegra = hpriv->plat_data;
 	int ret;
 
-<<<<<<< HEAD
 	ret = regulator_bulk_enable(tegra->soc->num_supplies,
-=======
-	ret = regulator_bulk_enable(ARRAY_SIZE(tegra->supplies),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    tegra->supplies);
 	if (ret)
 		return ret;
@@ -309,11 +273,7 @@ disable_power:
 	tegra_powergate_power_off(TEGRA_POWERGATE_SATA);
 
 disable_regulators:
-<<<<<<< HEAD
 	regulator_bulk_disable(tegra->soc->num_supplies, tegra->supplies);
-=======
-	regulator_bulk_disable(ARRAY_SIZE(tegra->supplies), tegra->supplies);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -331,23 +291,14 @@ static void tegra_ahci_power_off(struct ahci_host_priv *hpriv)
 	clk_disable_unprepare(tegra->sata_clk);
 	tegra_powergate_power_off(TEGRA_POWERGATE_SATA);
 
-<<<<<<< HEAD
 	regulator_bulk_disable(tegra->soc->num_supplies, tegra->supplies);
-=======
-	regulator_bulk_disable(ARRAY_SIZE(tegra->supplies), tegra->supplies);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int tegra_ahci_controller_init(struct ahci_host_priv *hpriv)
 {
 	struct tegra_ahci_priv *tegra = hpriv->plat_data;
 	int ret;
-<<<<<<< HEAD
 	u32 val;
-=======
-	unsigned int val;
-	struct sata_pad_calibration calib;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = tegra_ahci_power_on(hpriv);
 	if (ret) {
@@ -356,7 +307,6 @@ static int tegra_ahci_controller_init(struct ahci_host_priv *hpriv)
 		return ret;
 	}
 
-<<<<<<< HEAD
 	/*
 	 * Program the following SATA IPFS registers to allow SW accesses to
 	 * SATA's MMIO register range.
@@ -420,76 +370,21 @@ static int tegra_ahci_controller_init(struct ahci_host_priv *hpriv)
 	writel(val, tegra->sata_regs + SCFG_OFFSET + T_SATA0_CFG_9);
 
 	/* Program Class Code and Programming interface for SATA */
-=======
-	val = readl(tegra->sata_regs + SATA_CONFIGURATION_0);
-	val |= SATA_CONFIGURATION_EN_FPCI;
-	writel(val, tegra->sata_regs + SATA_CONFIGURATION_0);
-
-	/* Pad calibration */
-
-	ret = tegra_fuse_readl(FUSE_SATA_CALIB, &val);
-	if (ret) {
-		dev_err(&tegra->pdev->dev,
-			"failed to read calibration fuse: %d\n", ret);
-		return ret;
-	}
-
-	calib = tegra124_pad_calibration[val & FUSE_SATA_CALIB_MASK];
-
-	writel(BIT(0), tegra->sata_regs + SCFG_OFFSET + T_SATA0_INDEX);
-
-	val = readl(tegra->sata_regs +
-		SCFG_OFFSET + T_SATA0_CHX_PHY_CTRL1_GEN1);
-	val &= ~T_SATA0_CHX_PHY_CTRL1_GEN1_TX_AMP_MASK;
-	val &= ~T_SATA0_CHX_PHY_CTRL1_GEN1_TX_PEAK_MASK;
-	val |= calib.gen1_tx_amp <<
-			T_SATA0_CHX_PHY_CTRL1_GEN1_TX_AMP_SHIFT;
-	val |= calib.gen1_tx_peak <<
-			T_SATA0_CHX_PHY_CTRL1_GEN1_TX_PEAK_SHIFT;
-	writel(val, tegra->sata_regs + SCFG_OFFSET +
-		T_SATA0_CHX_PHY_CTRL1_GEN1);
-
-	val = readl(tegra->sata_regs +
-			SCFG_OFFSET + T_SATA0_CHX_PHY_CTRL1_GEN2);
-	val &= ~T_SATA0_CHX_PHY_CTRL1_GEN2_TX_AMP_MASK;
-	val &= ~T_SATA0_CHX_PHY_CTRL1_GEN2_TX_PEAK_MASK;
-	val |= calib.gen2_tx_amp <<
-			T_SATA0_CHX_PHY_CTRL1_GEN1_TX_AMP_SHIFT;
-	val |= calib.gen2_tx_peak <<
-			T_SATA0_CHX_PHY_CTRL1_GEN1_TX_PEAK_SHIFT;
-	writel(val, tegra->sata_regs + SCFG_OFFSET +
-		T_SATA0_CHX_PHY_CTRL1_GEN2);
-
-	writel(T_SATA0_CHX_PHY_CTRL11_GEN2_RX_EQ,
-		tegra->sata_regs + SCFG_OFFSET + T_SATA0_CHX_PHY_CTRL11);
-	writel(T_SATA0_CHX_PHY_CTRL2_CDR_CNTL_GEN1,
-		tegra->sata_regs + SCFG_OFFSET + T_SATA0_CHX_PHY_CTRL2);
-
-	writel(0, tegra->sata_regs + SCFG_OFFSET + T_SATA0_INDEX);
-
-	/* Program controller device ID */
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	val = readl(tegra->sata_regs + SCFG_OFFSET + T_SATA0_CFG_SATA);
 	val |= T_SATA0_CFG_SATA_BACKDOOR_PROG_IF_EN;
 	writel(val, tegra->sata_regs + SCFG_OFFSET + T_SATA0_CFG_SATA);
 
-<<<<<<< HEAD
 	val = readl(tegra->sata_regs + SCFG_OFFSET + T_SATA0_BKDOOR_CC);
 	val &=
 	    ~(T_SATA0_BKDOOR_CC_CLASS_CODE_MASK |
 	      T_SATA0_BKDOOR_CC_PROG_IF_MASK);
 	val |= T_SATA0_BKDOOR_CC_CLASS_CODE | T_SATA0_BKDOOR_CC_PROG_IF;
 	writel(val, tegra->sata_regs + SCFG_OFFSET + T_SATA0_BKDOOR_CC);
-=======
-	writel(0x01060100, tegra->sata_regs + SCFG_OFFSET + T_SATA0_BKDOOR_CC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	val = readl(tegra->sata_regs + SCFG_OFFSET + T_SATA0_CFG_SATA);
 	val &= ~T_SATA0_CFG_SATA_BACKDOOR_PROG_IF_EN;
 	writel(val, tegra->sata_regs + SCFG_OFFSET + T_SATA0_CFG_SATA);
 
-<<<<<<< HEAD
 	/* Enabling LPM capabilities through Backdoor Programming */
 	val = readl(tegra->sata_regs + SCFG_OFFSET + T_SATA0_AHCI_HBA_CAP_BKDR);
 	val |= (T_SATA0_AHCI_HBA_CAP_BKDR_PARTIAL_ST_CAP |
@@ -521,22 +416,6 @@ static int tegra_ahci_controller_init(struct ahci_host_priv *hpriv)
 	writel(val, tegra->sata_regs + SATA_CONFIGURATION_0);
 
 	tegra_ahci_handle_quirks(hpriv);
-=======
-	/* Enable IO & memory access, bus master mode */
-
-	val = readl(tegra->sata_regs + SCFG_OFFSET + T_SATA0_CFG_1);
-	val |= T_SATA0_CFG_1_IO_SPACE | T_SATA0_CFG_1_MEMORY_SPACE |
-		T_SATA0_CFG_1_BUS_MASTER | T_SATA0_CFG_1_SERR;
-	writel(val, tegra->sata_regs + SCFG_OFFSET + T_SATA0_CFG_1);
-
-	/* Program SATA MMIO */
-
-	writel(0x10000 << SATA_FPCI_BAR5_START_SHIFT,
-	       tegra->sata_regs + SATA_FPCI_BAR5);
-
-	writel(0x08000 << T_SATA0_CFG_9_BASE_ADDRESS_SHIFT,
-	       tegra->sata_regs + SCFG_OFFSET + T_SATA0_CFG_9);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Unmask SATA interrupts */
 
@@ -565,17 +444,12 @@ static struct ata_port_operations ahci_tegra_port_ops = {
 };
 
 static const struct ata_port_info ahci_tegra_port_info = {
-<<<<<<< HEAD
 	.flags		= AHCI_FLAG_COMMON | ATA_FLAG_NO_DIPM,
-=======
-	.flags		= AHCI_FLAG_COMMON,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.pio_mask	= ATA_PIO4,
 	.udma_mask	= ATA_UDMA6,
 	.port_ops	= &ahci_tegra_port_ops,
 };
 
-<<<<<<< HEAD
 static const char *const tegra124_supply_names[] = {
 	"avdd", "hvdd", "vddio", "target-5v", "target-12v"
 };
@@ -604,10 +478,6 @@ static const struct of_device_id tegra_ahci_of_match[] = {
 		.compatible = "nvidia,tegra210-ahci",
 		.data = &tegra210_ahci_soc
 	},
-=======
-static const struct of_device_id tegra_ahci_of_match[] = {
-	{ .compatible = "nvidia,tegra124-ahci" },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{}
 };
 MODULE_DEVICE_TABLE(of, tegra_ahci_of_match);
@@ -622,14 +492,9 @@ static int tegra_ahci_probe(struct platform_device *pdev)
 	struct tegra_ahci_priv *tegra;
 	struct resource *res;
 	int ret;
-<<<<<<< HEAD
 	unsigned int i;
 
 	hpriv = ahci_platform_get_resources(pdev, 0);
-=======
-
-	hpriv = ahci_platform_get_resources(pdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(hpriv))
 		return PTR_ERR(hpriv);
 
@@ -640,17 +505,13 @@ static int tegra_ahci_probe(struct platform_device *pdev)
 	hpriv->plat_data = tegra;
 
 	tegra->pdev = pdev;
-<<<<<<< HEAD
 	tegra->soc = of_device_get_match_data(&pdev->dev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
 	tegra->sata_regs = devm_ioremap_resource(&pdev->dev, res);
 	if (IS_ERR(tegra->sata_regs))
 		return PTR_ERR(tegra->sata_regs);
 
-<<<<<<< HEAD
 	/*
 	 * AUX registers is optional.
 	 */
@@ -661,8 +522,6 @@ static int tegra_ahci_probe(struct platform_device *pdev)
 			return PTR_ERR(tegra->sata_aux_regs);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tegra->sata_rst = devm_reset_control_get(&pdev->dev, "sata");
 	if (IS_ERR(tegra->sata_rst)) {
 		dev_err(&pdev->dev, "Failed to get sata reset\n");
@@ -687,7 +546,6 @@ static int tegra_ahci_probe(struct platform_device *pdev)
 		return PTR_ERR(tegra->sata_clk);
 	}
 
-<<<<<<< HEAD
 	tegra->supplies = devm_kcalloc(&pdev->dev,
 				       tegra->soc->num_supplies,
 				       sizeof(*tegra->supplies), GFP_KERNEL);
@@ -699,15 +557,6 @@ static int tegra_ahci_probe(struct platform_device *pdev)
 
 	ret = devm_regulator_bulk_get(&pdev->dev,
 				      tegra->soc->num_supplies,
-=======
-	tegra->supplies[0].supply = "avdd";
-	tegra->supplies[1].supply = "hvdd";
-	tegra->supplies[2].supply = "vddio";
-	tegra->supplies[3].supply = "target-5v";
-	tegra->supplies[4].supply = "target-12v";
-
-	ret = devm_regulator_bulk_get(&pdev->dev, ARRAY_SIZE(tegra->supplies),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      tegra->supplies);
 	if (ret) {
 		dev_err(&pdev->dev, "Failed to get regulators\n");
@@ -743,9 +592,5 @@ static struct platform_driver tegra_ahci_driver = {
 module_platform_driver(tegra_ahci_driver);
 
 MODULE_AUTHOR("Mikko Perttunen <mperttunen@nvidia.com>");
-<<<<<<< HEAD
 MODULE_DESCRIPTION("Tegra AHCI SATA driver");
-=======
-MODULE_DESCRIPTION("Tegra124 AHCI SATA driver");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_LICENSE("GPL v2");

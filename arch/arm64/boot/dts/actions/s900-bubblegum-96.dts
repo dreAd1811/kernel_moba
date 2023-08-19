@@ -24,15 +24,12 @@
 		device_type = "memory";
 		reg = <0x0 0x0 0x0 0x80000000>;
 	};
-<<<<<<< HEAD
 
 	uart5_clk: uart5-clk {
 		compatible = "fixed-clock";
 		clock-frequency = <921600>;
 		#clock-cells = <0>;
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &timer {
@@ -41,8 +38,5 @@
 
 &uart5 {
 	status = "okay";
-<<<<<<< HEAD
 	clocks = <&uart5_clk>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

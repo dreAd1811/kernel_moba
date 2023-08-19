@@ -166,11 +166,7 @@ int __init efi_runtime_map_init(struct kobject *efi_kobj)
 	if (!efi_enabled(EFI_MEMMAP))
 		return 0;
 
-<<<<<<< HEAD
 	map_entries = kcalloc(efi.memmap.nr_map, sizeof(entry), GFP_KERNEL);
-=======
-	map_entries = kzalloc(efi.memmap.nr_map * sizeof(entry), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!map_entries) {
 		ret = -ENOMEM;
 		goto out;

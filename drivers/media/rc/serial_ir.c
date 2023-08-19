@@ -470,11 +470,7 @@ static int hardware_init_port(void)
 	return 0;
 }
 
-<<<<<<< HEAD
 static void serial_ir_timeout(struct timer_list *unused)
-=======
-static void serial_ir_timeout(unsigned long arg)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	DEFINE_IR_RAW_EVENT(ev);
 
@@ -544,12 +540,7 @@ static int serial_ir_probe(struct platform_device *dev)
 
 	serial_ir.rcdev = rcdev;
 
-<<<<<<< HEAD
 	timer_setup(&serial_ir.timeout_timer, serial_ir_timeout, 0);
-=======
-	setup_timer(&serial_ir.timeout_timer, serial_ir_timeout,
-		    (unsigned long)&serial_ir);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	result = devm_request_irq(&dev->dev, irq, serial_ir_irq_handler,
 				  share_irq ? IRQF_SHARED : 0,

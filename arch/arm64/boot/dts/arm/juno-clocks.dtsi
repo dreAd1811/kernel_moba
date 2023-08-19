@@ -8,17 +8,10 @@
  */
 / {
 	/* SoC fixed clocks */
-<<<<<<< HEAD
 	soc_uartclk: refclk7273800hz {
 		compatible = "fixed-clock";
 		#clock-cells = <0>;
 		clock-frequency = <7273800>;
-=======
-	soc_uartclk: refclk7372800hz {
-		compatible = "fixed-clock";
-		#clock-cells = <0>;
-		clock-frequency = <7372800>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		clock-output-names = "juno:uartclk";
 	};
 

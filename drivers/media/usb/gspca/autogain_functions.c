@@ -32,11 +32,7 @@ int gspca_expo_autogain(
 	int i, steps, retval = 0;
 
 	if (v4l2_ctrl_g_ctrl(gspca_dev->autogain) == 0)
-<<<<<<< HEAD
 		return 0;
-=======
-	        return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	orig_gain = gain = v4l2_ctrl_g_ctrl(gspca_dev->gain);
 	orig_exposure = exposure = v4l2_ctrl_g_ctrl(gspca_dev->exposure);
@@ -45,13 +41,8 @@ int gspca_expo_autogain(
 	   desired lumination fast (with the risc of a slight overshoot) */
 	steps = abs(desired_avg_lum - avg_lum) / deadzone;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_FRAM, "autogain: lum: %d, desired: %d, steps: %d\n",
 		  avg_lum, desired_avg_lum, steps);
-=======
-	PDEBUG(D_FRAM, "autogain: lum: %d, desired: %d, steps: %d",
-		avg_lum, desired_avg_lum, steps);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < steps; i++) {
 		if (avg_lum > desired_avg_lum) {
@@ -84,30 +75,17 @@ int gspca_expo_autogain(
 	}
 
 	if (gain != orig_gain) {
-<<<<<<< HEAD
 		v4l2_ctrl_s_ctrl(gspca_dev->gain, gain);
 		retval = 1;
 	}
 	if (exposure != orig_exposure) {
 		v4l2_ctrl_s_ctrl(gspca_dev->exposure, exposure);
-=======
-	        v4l2_ctrl_s_ctrl(gspca_dev->gain, gain);
-		retval = 1;
-	}
-	if (exposure != orig_exposure) {
-	        v4l2_ctrl_s_ctrl(gspca_dev->exposure, exposure);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		retval = 1;
 	}
 
 	if (retval)
-<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_FRAM, "autogain: changed gain: %d, expo: %d\n",
 			  gain, exposure);
-=======
-		PDEBUG(D_FRAM, "autogain: changed gain: %d, expo: %d",
-			gain, exposure);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return retval;
 }
 EXPORT_SYMBOL(gspca_expo_autogain);
@@ -134,11 +112,7 @@ int gspca_coarse_grained_expo_autogain(
 	int steps, retval = 0;
 
 	if (v4l2_ctrl_g_ctrl(gspca_dev->autogain) == 0)
-<<<<<<< HEAD
 		return 0;
-=======
-	        return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	orig_gain = gain = v4l2_ctrl_g_ctrl(gspca_dev->gain);
 	orig_exposure = exposure = v4l2_ctrl_g_ctrl(gspca_dev->exposure);
@@ -152,13 +126,8 @@ int gspca_coarse_grained_expo_autogain(
 	   desired lumination fast (with the risc of a slight overshoot) */
 	steps = (desired_avg_lum - avg_lum) / deadzone;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_FRAM, "autogain: lum: %d, desired: %d, steps: %d\n",
 		  avg_lum, desired_avg_lum, steps);
-=======
-	PDEBUG(D_FRAM, "autogain: lum: %d, desired: %d, steps: %d",
-		avg_lum, desired_avg_lum, steps);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if ((gain + steps) > gain_high &&
 	    exposure < gspca_dev->exposure->maximum) {
@@ -189,30 +158,17 @@ int gspca_coarse_grained_expo_autogain(
 	}
 
 	if (gain != orig_gain) {
-<<<<<<< HEAD
 		v4l2_ctrl_s_ctrl(gspca_dev->gain, gain);
 		retval = 1;
 	}
 	if (exposure != orig_exposure) {
 		v4l2_ctrl_s_ctrl(gspca_dev->exposure, exposure);
-=======
-	        v4l2_ctrl_s_ctrl(gspca_dev->gain, gain);
-		retval = 1;
-	}
-	if (exposure != orig_exposure) {
-	        v4l2_ctrl_s_ctrl(gspca_dev->exposure, exposure);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		retval = 1;
 	}
 
 	if (retval)
-<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_FRAM, "autogain: changed gain: %d, expo: %d\n",
 			  gain, exposure);
-=======
-		PDEBUG(D_FRAM, "autogain: changed gain: %d, expo: %d",
-			gain, exposure);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return retval;
 }
 EXPORT_SYMBOL(gspca_coarse_grained_expo_autogain);

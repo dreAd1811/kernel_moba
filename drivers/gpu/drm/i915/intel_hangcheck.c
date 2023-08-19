@@ -27,19 +27,9 @@
 static bool
 ipehr_is_semaphore_wait(struct intel_engine_cs *engine, u32 ipehr)
 {
-<<<<<<< HEAD
 	ipehr &= ~MI_SEMAPHORE_SYNC_MASK;
 	return ipehr == (MI_SEMAPHORE_MBOX | MI_SEMAPHORE_COMPARE |
 			 MI_SEMAPHORE_REGISTER);
-=======
-	if (INTEL_GEN(engine->i915) >= 8) {
-		return (ipehr >> 23) == 0x1c;
-	} else {
-		ipehr &= ~MI_SEMAPHORE_SYNC_MASK;
-		return ipehr == (MI_SEMAPHORE_MBOX | MI_SEMAPHORE_COMPARE |
-				 MI_SEMAPHORE_REGISTER);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct intel_engine_cs *
@@ -47,7 +37,6 @@ semaphore_wait_to_signaller_ring(struct intel_engine_cs *engine, u32 ipehr,
 				 u64 offset)
 {
 	struct drm_i915_private *dev_priv = engine->i915;
-<<<<<<< HEAD
 	u32 sync_bits = ipehr & MI_SEMAPHORE_SYNC_MASK;
 	struct intel_engine_cs *signaller;
 	enum intel_engine_id id;
@@ -62,33 +51,6 @@ semaphore_wait_to_signaller_ring(struct intel_engine_cs *engine, u32 ipehr,
 
 	DRM_DEBUG_DRIVER("No signaller ring found for %s, ipehr 0x%08x\n",
 			 engine->name, ipehr);
-=======
-	struct intel_engine_cs *signaller;
-	enum intel_engine_id id;
-
-	if (INTEL_GEN(dev_priv) >= 8) {
-		for_each_engine(signaller, dev_priv, id) {
-			if (engine == signaller)
-				continue;
-
-			if (offset == signaller->semaphore.signal_ggtt[engine->hw_id])
-				return signaller;
-		}
-	} else {
-		u32 sync_bits = ipehr & MI_SEMAPHORE_SYNC_MASK;
-
-		for_each_engine(signaller, dev_priv, id) {
-			if(engine == signaller)
-				continue;
-
-			if (sync_bits == signaller->semaphore.mbox.wait[engine->hw_id])
-				return signaller;
-		}
-	}
-
-	DRM_DEBUG_DRIVER("No signaller ring found for %s, ipehr 0x%08x, offset 0x%016llx\n",
-			 engine->name, ipehr, offset);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ERR_PTR(-ENODEV);
 }
@@ -158,14 +120,6 @@ semaphore_waits_for(struct intel_engine_cs *engine, u32 *seqno)
 		return NULL;
 
 	*seqno = ioread32(vaddr + head + 4) + 1;
-<<<<<<< HEAD
-=======
-	if (INTEL_GEN(dev_priv) >= 8) {
-		offset = ioread32(vaddr + head + 12);
-		offset <<= 32;
-		offset |= ioread32(vaddr + head + 8);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return semaphore_wait_to_signaller_ring(engine, ipehr, offset);
 }
 
@@ -292,34 +246,19 @@ engine_stuck(struct intel_engine_cs *engine, u64 acthd)
 	 */
 	tmp = I915_READ_CTL(engine);
 	if (tmp & RING_WAIT) {
-<<<<<<< HEAD
 		i915_handle_error(dev_priv, BIT(engine->id), 0,
 				  "stuck wait on %s", engine->name);
-=======
-		i915_handle_error(dev_priv, 0,
-				  "Kicking stuck wait on %s",
-				  engine->name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		I915_WRITE_CTL(engine, tmp);
 		return ENGINE_WAIT_KICK;
 	}
 
-<<<<<<< HEAD
 	if (IS_GEN(dev_priv, 6, 7) && tmp & RING_WAIT_SEMAPHORE) {
-=======
-	if (INTEL_GEN(dev_priv) >= 6 && tmp & RING_WAIT_SEMAPHORE) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		switch (semaphore_passed(engine)) {
 		default:
 			return ENGINE_DEAD;
 		case 1:
-<<<<<<< HEAD
 			i915_handle_error(dev_priv, ALL_ENGINES, 0,
 					  "stuck semaphore on %s",
-=======
-			i915_handle_error(dev_priv, 0,
-					  "Kicking stuck semaphore on %s",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  engine->name);
 			I915_WRITE_CTL(engine, tmp);
 			return ENGINE_WAIT_KICK;
@@ -355,10 +294,7 @@ static void hangcheck_store_sample(struct intel_engine_cs *engine,
 	engine->hangcheck.seqno = hc->seqno;
 	engine->hangcheck.action = hc->action;
 	engine->hangcheck.stalled = hc->stalled;
-<<<<<<< HEAD
 	engine->hangcheck.wedged = hc->wedged;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static enum intel_engine_hangcheck_action
@@ -413,25 +349,18 @@ static void hangcheck_accumulate_sample(struct intel_engine_cs *engine,
 
 	case ENGINE_ACTIVE_HEAD:
 	case ENGINE_ACTIVE_SUBUNITS:
-<<<<<<< HEAD
 		/*
 		 * Seqno stuck with still active engine gets leeway,
-=======
-		/* Seqno stuck with still active engine gets leeway,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 * in hopes that it is just a long shader.
 		 */
 		timeout = I915_SEQNO_DEAD_TIMEOUT;
 		break;
 
 	case ENGINE_DEAD:
-<<<<<<< HEAD
 		if (GEM_SHOW_DEBUG()) {
 			struct drm_printer p = drm_debug_printer("hangcheck");
 			intel_engine_dump(engine, &p, "%s\n", engine->name);
 		}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	default:
@@ -440,12 +369,9 @@ static void hangcheck_accumulate_sample(struct intel_engine_cs *engine,
 
 	hc->stalled = time_after(jiffies,
 				 engine->hangcheck.action_timestamp + timeout);
-<<<<<<< HEAD
 	hc->wedged = time_after(jiffies,
 				 engine->hangcheck.action_timestamp +
 				 I915_ENGINE_WEDGED_TIMEOUT);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void hangcheck_declare_hang(struct drm_i915_private *i915,
@@ -463,21 +389,13 @@ static void hangcheck_declare_hang(struct drm_i915_private *i915,
 	if (stuck != hung)
 		hung &= ~stuck;
 	len = scnprintf(msg, sizeof(msg),
-<<<<<<< HEAD
 			"%s on ", stuck == hung ? "no progress" : "hang");
-=======
-			"%s on ", stuck == hung ? "No progress" : "Hang");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for_each_engine_masked(engine, i915, hung, tmp)
 		len += scnprintf(msg + len, sizeof(msg) - len,
 				 "%s, ", engine->name);
 	msg[len-2] = '\0';
 
-<<<<<<< HEAD
 	return i915_handle_error(i915, hung, I915_ERROR_CAPTURE, "%s", msg);
-=======
-	return i915_handle_error(i915, hung, "%s", msg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -495,16 +413,9 @@ static void i915_hangcheck_elapsed(struct work_struct *work)
 			     gpu_error.hangcheck_work.work);
 	struct intel_engine_cs *engine;
 	enum intel_engine_id id;
-<<<<<<< HEAD
 	unsigned int hung = 0, stuck = 0, wedged = 0;
 
 	if (!i915_modparams.enable_hangcheck)
-=======
-	unsigned int hung = 0, stuck = 0;
-	int busy_count = 0;
-
-	if (!i915.enable_hangcheck)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	if (!READ_ONCE(dev_priv->gt.awake))
@@ -520,7 +431,6 @@ static void i915_hangcheck_elapsed(struct work_struct *work)
 	intel_uncore_arm_unclaimed_mmio_detection(dev_priv);
 
 	for_each_engine(engine, dev_priv, id) {
-<<<<<<< HEAD
 		struct intel_engine_hangcheck hc;
 
 		semaphore_clear_deadlocks(dev_priv);
@@ -545,45 +455,19 @@ static void i915_hangcheck_elapsed(struct work_struct *work)
 			" cancelling all in-flight rendering.\n");
 		GEM_TRACE_DUMP();
 		i915_gem_set_wedged(dev_priv);
-=======
-		struct intel_engine_hangcheck cur_state, *hc = &cur_state;
-		const bool busy = intel_engine_has_waiter(engine);
-
-		semaphore_clear_deadlocks(dev_priv);
-
-		hangcheck_load_sample(engine, hc);
-		hangcheck_accumulate_sample(engine, hc);
-		hangcheck_store_sample(engine, hc);
-
-		if (engine->hangcheck.stalled) {
-			hung |= intel_engine_flag(engine);
-			if (hc->action != ENGINE_DEAD)
-				stuck |= intel_engine_flag(engine);
-		}
-
-		busy_count += busy;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (hung)
 		hangcheck_declare_hang(dev_priv, hung, stuck);
 
 	/* Reset timer in case GPU hangs without another request being added */
-<<<<<<< HEAD
 	i915_queue_hangcheck(dev_priv);
-=======
-	if (busy_count)
-		i915_queue_hangcheck(dev_priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void intel_engine_init_hangcheck(struct intel_engine_cs *engine)
 {
 	memset(&engine->hangcheck, 0, sizeof(engine->hangcheck));
-<<<<<<< HEAD
 	engine->hangcheck.action_timestamp = jiffies;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void intel_hangcheck_init(struct drm_i915_private *i915)

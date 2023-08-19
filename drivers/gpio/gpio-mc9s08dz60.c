@@ -18,11 +18,7 @@
 #include <linux/init.h>
 #include <linux/slab.h>
 #include <linux/i2c.h>
-<<<<<<< HEAD
 #include <linux/gpio/driver.h>
-=======
-#include <linux/gpio.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define GPIO_GROUP_NUM 2
 #define GPIO_NUM_PER_GROUP 8

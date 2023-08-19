@@ -29,10 +29,7 @@ to brightness information.
     pixfmt-y10
     pixfmt-y12
     pixfmt-y10b
-<<<<<<< HEAD
     pixfmt-y10p
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     pixfmt-y16
     pixfmt-y16-be
     pixfmt-y8i

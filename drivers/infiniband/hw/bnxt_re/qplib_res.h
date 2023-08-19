@@ -169,11 +169,7 @@ struct bnxt_qplib_ctx {
 	u32				cq_count;
 	struct bnxt_qplib_hwq		cq_tbl;
 	struct bnxt_qplib_hwq		tim_tbl;
-<<<<<<< HEAD
 #define MAX_TQM_ALLOC_REQ		48
-=======
-#define MAX_TQM_ALLOC_REQ		32
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MAX_TQM_ALLOC_BLK_SIZE		8
 	u8				tqm_count[MAX_TQM_ALLOC_REQ];
 	struct bnxt_qplib_hwq		tqm_pde;

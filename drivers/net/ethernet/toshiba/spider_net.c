@@ -880,15 +880,9 @@ out:
  * @skb: packet to send out
  * @netdev: interface device structure
  *
-<<<<<<< HEAD
  * returns 0 on success, !0 on failure
  */
 static int
-=======
- * returns NETDEV_TX_OK on success, NETDEV_TX_BUSY on failure
- */
-static netdev_tx_t
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 spider_net_xmit(struct sk_buff *skb, struct net_device *netdev)
 {
 	int cnt;
@@ -918,14 +912,9 @@ spider_net_xmit(struct sk_buff *skb, struct net_device *netdev)
  * packets, including updating the queue tail pointer.
  */
 static void
-<<<<<<< HEAD
 spider_net_cleanup_tx_ring(struct timer_list *t)
 {
 	struct spider_net_card *card = from_timer(card, t, tx_timer);
-=======
-spider_net_cleanup_tx_ring(struct spider_net_card *card)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if ((spider_net_release_tx_chain(card, 0) != 0) &&
 	    (card->netdev->flags & IFF_UP)) {
 		spider_net_kick_tx_dma(card);
@@ -1277,11 +1266,7 @@ static int spider_net_poll(struct napi_struct *napi, int budget)
 	spider_net_refill_rx_chain(card);
 	spider_net_enable_rxdmac(card);
 
-<<<<<<< HEAD
 	spider_net_cleanup_tx_ring(&card->tx_timer);
-=======
-	spider_net_cleanup_tx_ring(card);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* if all packets are in the stack, enable interrupts and return 0 */
 	/* if not, return 1 */
@@ -1993,15 +1978,9 @@ init_firmware_failed:
  * @data: used for pointer to card structure
  *
  */
-<<<<<<< HEAD
 static void spider_net_link_phy(struct timer_list *t)
 {
 	struct spider_net_card *card = from_timer(card, t, aneg_timer);
-=======
-static void spider_net_link_phy(unsigned long data)
-{
-	struct spider_net_card *card = (struct spider_net_card *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mii_phy *phy = &card->phy;
 
 	/* if link didn't come up after SPIDER_NET_ANEG_TIMEOUT tries, setup phy again */
@@ -2278,24 +2257,11 @@ spider_net_setup_netdev(struct spider_net_card *card)
 
 	pci_set_drvdata(card->pdev, netdev);
 
-<<<<<<< HEAD
 	timer_setup(&card->tx_timer, spider_net_cleanup_tx_ring, 0);
 	netdev->irq = card->pdev->irq;
 
 	card->aneg_count = 0;
 	timer_setup(&card->aneg_timer, spider_net_link_phy, 0);
-=======
-	init_timer(&card->tx_timer);
-	card->tx_timer.function =
-		(void (*)(unsigned long)) spider_net_cleanup_tx_ring;
-	card->tx_timer.data = (unsigned long) card;
-	netdev->irq = card->pdev->irq;
-
-	card->aneg_count = 0;
-	init_timer(&card->aneg_timer);
-	card->aneg_timer.function = spider_net_link_phy;
-	card->aneg_timer.data = (unsigned long) card;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	netif_napi_add(netdev, &card->napi,
 		       spider_net_poll, SPIDER_NET_NAPI_WEIGHT);

@@ -10,11 +10,7 @@
 	model = "Toradex Colibri T30";
 	compatible = "toradex,colibri_t30", "nvidia,tegra30";
 
-<<<<<<< HEAD
 	memory@80000000 {
-=======
-	memory {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x80000000 0x40000000>;
 	};
 
@@ -219,11 +215,7 @@
 	};
 
 	hdmiddc: i2c@7000c700 {
-<<<<<<< HEAD
 		clock-frequency = <10000>;
-=======
-		clock-frequency = <100000>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	/*
@@ -359,11 +351,6 @@
 		/* STMPE811 touch screen controller */
 		stmpe811@41 {
 			compatible = "st,stmpe811";
-<<<<<<< HEAD
-=======
-			#address-cells = <1>;
-			#size-cells = <0>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			reg = <0x41>;
 			interrupts = <TEGRA_GPIO(V, 0) IRQ_TYPE_LEVEL_LOW>;
 			interrupt-parent = <&gpio>;
@@ -374,10 +361,6 @@
 
 			stmpe_touchscreen {
 				compatible = "st,stmpe-ts";
-<<<<<<< HEAD
-=======
-				reg = <0>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				/* 3.25 MHz ADC clock speed */
 				st,adc-freq = <1>;
 				/* 8 sample average control */

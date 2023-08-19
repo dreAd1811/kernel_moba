@@ -61,37 +61,22 @@ static void vgem_gem_free_object(struct drm_gem_object *obj)
 	kfree(vgem_obj);
 }
 
-<<<<<<< HEAD
 static vm_fault_t vgem_gem_fault(struct vm_fault *vmf)
-=======
-static int vgem_gem_fault(struct vm_fault *vmf)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct vm_area_struct *vma = vmf->vma;
 	struct drm_vgem_gem_object *obj = vma->vm_private_data;
 	/* We don't use vmf->pgoff since that has the fake offset */
 	unsigned long vaddr = vmf->address;
-<<<<<<< HEAD
 	vm_fault_t ret = VM_FAULT_SIGBUS;
-=======
-	int ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	loff_t num_pages;
 	pgoff_t page_offset;
 	page_offset = (vaddr - vma->vm_start) >> PAGE_SHIFT;
 
 	num_pages = DIV_ROUND_UP(obj->base.size, PAGE_SIZE);
 
-<<<<<<< HEAD
 	if (page_offset >= num_pages)
 		return VM_FAULT_SIGBUS;
 
-=======
-	if (page_offset > num_pages)
-		return VM_FAULT_SIGBUS;
-
-	ret = -ENOENT;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&obj->pages_lock);
 	if (obj->pages) {
 		get_page(obj->pages[page_offset]);

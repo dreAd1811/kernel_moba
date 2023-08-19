@@ -47,11 +47,8 @@ int arm_cpuidle_suspend(int index)
 
 #include <acpi/processor.h>
 
-<<<<<<< HEAD
 #define ARM64_LPI_IS_RETENTION_STATE(arch_flags) (!(arch_flags))
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int acpi_processor_ffh_lpi_probe(unsigned int cpu)
 {
 	return arm_cpuidle_init(cpu);
@@ -59,14 +56,10 @@ int acpi_processor_ffh_lpi_probe(unsigned int cpu)
 
 int acpi_processor_ffh_lpi_enter(struct acpi_lpi_state *lpi)
 {
-<<<<<<< HEAD
 	if (ARM64_LPI_IS_RETENTION_STATE(lpi->arch_flags))
 		return CPU_PM_CPU_IDLE_ENTER_RETENTION(arm_cpuidle_suspend,
 						lpi->index);
 	else
 		return CPU_PM_CPU_IDLE_ENTER(arm_cpuidle_suspend, lpi->index);
-=======
-	return CPU_PM_CPU_IDLE_ENTER(arm_cpuidle_suspend, lpi->index);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #endif

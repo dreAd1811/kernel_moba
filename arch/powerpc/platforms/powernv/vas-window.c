@@ -16,7 +16,6 @@
 #include <linux/log2.h>
 #include <linux/rcupdate.h>
 #include <linux/cred.h>
-<<<<<<< HEAD
 #include <asm/switch_to.h>
 #include <asm/ppc-opcode.h>
 #include "vas.h"
@@ -25,12 +24,6 @@
 #define CREATE_TRACE_POINTS
 #include "vas-trace.h"
 
-=======
-
-#include "vas.h"
-#include "copy-paste.h"
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Compute the paste address region for the window @window using the
  * ->paste_base_addr and ->paste_win_id_shift we got from device tree.
@@ -51,7 +44,6 @@ static void compute_paste_address(struct vas_window *window, u64 *addr, int *len
 	pr_debug("Txwin #%d: Paste addr 0x%llx\n", winid, *addr);
 }
 
-<<<<<<< HEAD
 u64 vas_win_paste_addr(struct vas_window *win)
 {
 	u64 addr;
@@ -62,8 +54,6 @@ u64 vas_win_paste_addr(struct vas_window *win)
 }
 EXPORT_SYMBOL(vas_win_paste_addr);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void get_hvwc_mmio_bar(struct vas_window *window,
 			u64 *start, int *len)
 {
@@ -169,20 +159,15 @@ static void unmap_paste_region(struct vas_window *window)
 }
 
 /*
-<<<<<<< HEAD
  * Unmap the MMIO regions for a window. Hold the vas_mutex so we don't
  * unmap when the window's debugfs dir is in use. This serializes close
  * of a window even on another VAS instance but since its not a critical
  * path, just minimize the time we hold the mutex for now. We can add
  * a per-instance mutex later if necessary.
-=======
- * Unmap the MMIO regions for a window.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static void unmap_winctx_mmio_bars(struct vas_window *window)
 {
 	int len;
-<<<<<<< HEAD
 	void *uwc_map;
 	void *hvwc_map;
 	u64 busaddr_start;
@@ -205,20 +190,6 @@ static void unmap_winctx_mmio_bars(struct vas_window *window)
 	if (uwc_map) {
 		get_uwc_mmio_bar(window, &busaddr_start, &len);
 		unmap_region(uwc_map, busaddr_start, len);
-=======
-	u64 busaddr_start;
-
-	if (window->hvwc_map) {
-		get_hvwc_mmio_bar(window, &busaddr_start, &len);
-		unmap_region(window->hvwc_map, busaddr_start, len);
-		window->hvwc_map = NULL;
-	}
-
-	if (window->uwc_map) {
-		get_uwc_mmio_bar(window, &busaddr_start, &len);
-		unmap_region(window->uwc_map, busaddr_start, len);
-		window->uwc_map = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -544,48 +515,17 @@ int init_winctx_regs(struct vas_window *window, struct vas_winctx *winctx)
 	return 0;
 }
 
-<<<<<<< HEAD
 static void vas_release_window_id(struct ida *ida, int winid)
 {
 	ida_free(ida, winid);
-=======
-static DEFINE_SPINLOCK(vas_ida_lock);
-
-static void vas_release_window_id(struct ida *ida, int winid)
-{
-	spin_lock(&vas_ida_lock);
-	ida_remove(ida, winid);
-	spin_unlock(&vas_ida_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int vas_assign_window_id(struct ida *ida)
 {
-<<<<<<< HEAD
 	int winid = ida_alloc_max(ida, VAS_WINDOWS_PER_CHIP - 1, GFP_KERNEL);
 
 	if (winid == -ENOSPC) {
 		pr_err("Too many (%d) open windows\n", VAS_WINDOWS_PER_CHIP);
-=======
-	int rc, winid;
-
-	do {
-		rc = ida_pre_get(ida, GFP_KERNEL);
-		if (!rc)
-			return -EAGAIN;
-
-		spin_lock(&vas_ida_lock);
-		rc = ida_get_new(ida, &winid);
-		spin_unlock(&vas_ida_lock);
-	} while (rc == -EAGAIN);
-
-	if (rc)
-		return rc;
-
-	if (winid > VAS_WINDOWS_PER_CHIP) {
-		pr_err("Too many (%d) open windows\n", winid);
-		vas_release_window_id(ida, winid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EAGAIN;
 	}
 
@@ -598,12 +538,9 @@ static void vas_window_free(struct vas_window *window)
 	struct vas_instance *vinst = window->vinst;
 
 	unmap_winctx_mmio_bars(window);
-<<<<<<< HEAD
 
 	vas_window_free_dbgdir(window);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(window);
 
 	vas_release_window_id(&vinst->ida, winid);
@@ -628,11 +565,8 @@ static struct vas_window *vas_window_alloc(struct vas_instance *vinst)
 	if (map_winctx_mmio_bars(window))
 		goto out_free;
 
-<<<<<<< HEAD
 	vas_window_init_dbgdir(window);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return window;
 
 out_free:
@@ -650,7 +584,6 @@ static void put_rx_win(struct vas_window *rxwin)
 }
 
 /*
-<<<<<<< HEAD
  * Find the user space receive window given the @pswid.
  *      - We must have a valid vasid and it must belong to this instance.
  *        (so both send and receive windows are on the same VAS instance)
@@ -677,8 +610,6 @@ static struct vas_window *get_user_rxwin(struct vas_instance *vinst, u32 pswid)
 }
 
 /*
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Get the VAS receive window associated with NX engine identified
  * by @cop and if applicable, @pswid.
  *
@@ -691,17 +622,10 @@ static struct vas_window *get_vinst_rxwin(struct vas_instance *vinst,
 
 	mutex_lock(&vinst->mutex);
 
-<<<<<<< HEAD
 	if (cop == VAS_COP_TYPE_FTW)
 		rxwin = get_user_rxwin(vinst, pswid);
 	else
 		rxwin = vinst->rxwin[cop] ?: ERR_PTR(-EINVAL);
-=======
-	if (cop == VAS_COP_TYPE_842 || cop == VAS_COP_TYPE_842_HIPRI)
-		rxwin = vinst->rxwin[cop] ?: ERR_PTR(-EINVAL);
-	else
-		rxwin = ERR_PTR(-EINVAL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!IS_ERR(rxwin))
 		atomic_inc(&rxwin->num_txwins);
@@ -791,28 +715,18 @@ static void init_winctx_for_rxwin(struct vas_window *rxwin,
 
 	winctx->rx_fifo = rxattr->rx_fifo;
 	winctx->rx_fifo_size = rxattr->rx_fifo_size;
-<<<<<<< HEAD
 	winctx->wcreds_max = rxwin->wcreds_max;
-=======
-	winctx->wcreds_max = rxattr->wcreds_max ?: VAS_WCREDS_DEFAULT;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	winctx->pin_win = rxattr->pin_win;
 
 	winctx->nx_win = rxattr->nx_win;
 	winctx->fault_win = rxattr->fault_win;
-<<<<<<< HEAD
 	winctx->user_win = rxattr->user_win;
 	winctx->rej_no_credit = rxattr->rej_no_credit;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	winctx->rx_word_mode = rxattr->rx_win_ord_mode;
 	winctx->tx_word_mode = rxattr->tx_win_ord_mode;
 	winctx->rx_wcred_mode = rxattr->rx_wcred_mode;
 	winctx->tx_wcred_mode = rxattr->tx_wcred_mode;
-<<<<<<< HEAD
 	winctx->notify_early = rxattr->notify_early;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (winctx->nx_win) {
 		winctx->data_stamp = true;
@@ -853,14 +767,10 @@ static void init_winctx_for_rxwin(struct vas_window *rxwin,
 static bool rx_win_args_valid(enum vas_cop_type cop,
 			struct vas_rx_win_attr *attr)
 {
-<<<<<<< HEAD
 	pr_debug("Rxattr: fault %d, notify %d, intr %d, early %d, fifo %d\n",
 			attr->fault_win, attr->notify_disable,
 			attr->intr_disable, attr->notify_early,
 			attr->rx_fifo_size);
-=======
-	dump_rx_win_attr(attr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (cop >= VAS_COP_TYPE_MAX)
 		return false;
@@ -872,12 +782,9 @@ static bool rx_win_args_valid(enum vas_cop_type cop,
 	if (attr->rx_fifo_size > VAS_RX_FIFO_SIZE_MAX)
 		return false;
 
-<<<<<<< HEAD
 	if (attr->wcreds_max > VAS_RX_WCREDS_MAX)
 		return false;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (attr->nx_win) {
 		/* cannot be fault or user window if it is nx */
 		if (attr->fault_win || attr->user_win)
@@ -958,11 +865,8 @@ struct vas_window *vas_rx_win_open(int vasid, enum vas_cop_type cop,
 	struct vas_winctx winctx;
 	struct vas_instance *vinst;
 
-<<<<<<< HEAD
 	trace_vas_rx_win_open(current, vasid, cop, rxattr);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!rx_win_args_valid(cop, rxattr))
 		return ERR_PTR(-EINVAL);
 
@@ -983,10 +887,7 @@ struct vas_window *vas_rx_win_open(int vasid, enum vas_cop_type cop,
 	rxwin->nx_win = rxattr->nx_win;
 	rxwin->user_win = rxattr->user_win;
 	rxwin->cop = cop;
-<<<<<<< HEAD
 	rxwin->wcreds_max = rxattr->wcreds_max ?: VAS_WCREDS_DEFAULT;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rxattr->user_win)
 		rxwin->pid = task_pid_vnr(current);
 
@@ -1036,38 +937,23 @@ static void init_winctx_for_txwin(struct vas_window *txwin,
 	 */
 	memset(winctx, 0, sizeof(struct vas_winctx));
 
-<<<<<<< HEAD
 	winctx->wcreds_max = txwin->wcreds_max;
-=======
-	winctx->wcreds_max = txattr->wcreds_max ?: VAS_WCREDS_DEFAULT;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	winctx->user_win = txattr->user_win;
 	winctx->nx_win = txwin->rxwin->nx_win;
 	winctx->pin_win = txattr->pin_win;
-<<<<<<< HEAD
 	winctx->rej_no_credit = txattr->rej_no_credit;
 	winctx->rsvd_txbuf_enable = txattr->rsvd_txbuf_enable;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	winctx->rx_wcred_mode = txattr->rx_wcred_mode;
 	winctx->tx_wcred_mode = txattr->tx_wcred_mode;
 	winctx->rx_word_mode = txattr->rx_win_ord_mode;
 	winctx->tx_word_mode = txattr->tx_win_ord_mode;
-<<<<<<< HEAD
 	winctx->rsvd_txbuf_count = txattr->rsvd_txbuf_count;
 
 	winctx->intr_disable = true;
 	if (winctx->nx_win)
 		winctx->data_stamp = true;
-=======
-
-	if (winctx->nx_win) {
-		winctx->data_stamp = true;
-		winctx->intr_disable = true;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	winctx->lpid = txattr->lpid;
 	winctx->pidr = txattr->pidr;
@@ -1090,12 +976,9 @@ static bool tx_win_args_valid(enum vas_cop_type cop,
 	if (cop > VAS_COP_TYPE_MAX)
 		return false;
 
-<<<<<<< HEAD
 	if (attr->wcreds_max > VAS_TX_WCREDS_MAX)
 		return false;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (attr->user_win &&
 			(cop != VAS_COP_TYPE_FTW || attr->rsvd_txbuf_count))
 		return false;
@@ -1112,7 +995,6 @@ struct vas_window *vas_tx_win_open(int vasid, enum vas_cop_type cop,
 	struct vas_winctx winctx;
 	struct vas_instance *vinst;
 
-<<<<<<< HEAD
 	trace_vas_tx_win_open(current, vasid, cop, attr);
 
 	if (!tx_win_args_valid(cop, attr))
@@ -1126,11 +1008,6 @@ struct vas_window *vas_tx_win_open(int vasid, enum vas_cop_type cop,
 	if (vasid == -1 && attr->pswid)
 		decode_pswid(attr->pswid, &vasid, NULL);
 
-=======
-	if (!tx_win_args_valid(cop, attr))
-		return ERR_PTR(-EINVAL);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vinst = find_vas_instance(vasid);
 	if (!vinst) {
 		pr_devel("vasid %d not found!\n", vasid);
@@ -1149,19 +1026,13 @@ struct vas_window *vas_tx_win_open(int vasid, enum vas_cop_type cop,
 		goto put_rxwin;
 	}
 
-<<<<<<< HEAD
 	txwin->cop = cop;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	txwin->tx_win = 1;
 	txwin->rxwin = rxwin;
 	txwin->nx_win = txwin->rxwin->nx_win;
 	txwin->pid = attr->pid;
 	txwin->user_win = attr->user_win;
-<<<<<<< HEAD
 	txwin->wcreds_max = attr->wcreds_max ?: VAS_WCREDS_DEFAULT;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	init_winctx_for_txwin(txwin, attr, &winctx);
 
@@ -1181,7 +1052,6 @@ struct vas_window *vas_tx_win_open(int vasid, enum vas_cop_type cop,
 			rc = PTR_ERR(txwin->paste_kaddr);
 			goto free_window;
 		}
-<<<<<<< HEAD
 	} else {
 		/*
 		 * A user mapping must ensure that context switch issues
@@ -1190,8 +1060,6 @@ struct vas_window *vas_tx_win_open(int vasid, enum vas_cop_type cop,
 		rc = set_thread_uses_vas();
 		if (rc)
 			goto free_window;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	set_vinst_win(vinst, txwin);
@@ -1221,11 +1089,8 @@ int vas_paste_crb(struct vas_window *txwin, int offset, bool re)
 	void *addr;
 	uint64_t val;
 
-<<<<<<< HEAD
 	trace_vas_paste_crb(current, txwin);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Only NX windows are supported for now and hardware assumes
 	 * report-enable flag is set for NX windows. Ensure software
@@ -1253,18 +1118,13 @@ int vas_paste_crb(struct vas_window *txwin, int offset, bool re)
 	else
 		rc = -EINVAL;
 
-<<<<<<< HEAD
 	pr_debug("Txwin #%d: Msg count %llu\n", txwin->winid,
 			read_hvwc_reg(txwin, VREG(LRFIFO_PUSH)));
-=======
-	print_fifo_msg_count(txwin);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return rc;
 }
 EXPORT_SYMBOL_GPL(vas_paste_crb);
 
-<<<<<<< HEAD
 /*
  * If credit checking is enabled for this window, poll for the return
  * of window credits (i.e for NX engines to process any outstanding CRBs).
@@ -1313,35 +1173,22 @@ retry:
  * short time to queue a CRB, so window should not be busy for too long.
  * Trying 5ms intervals.
  */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void poll_window_busy_state(struct vas_window *window)
 {
 	int busy;
 	u64 val;
 
 retry:
-<<<<<<< HEAD
-=======
-	/*
-	 * Poll Window Busy flag
-	 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	val = read_hvwc_reg(window, VREG(WIN_STATUS));
 	busy = GET_FIELD(VAS_WIN_BUSY, val);
 	if (busy) {
 		val = 0;
 		set_current_state(TASK_UNINTERRUPTIBLE);
-<<<<<<< HEAD
 		schedule_timeout(msecs_to_jiffies(5));
-=======
-		schedule_timeout(HZ);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto retry;
 	}
 }
 
-<<<<<<< HEAD
 /*
  * Have the hardware cast a window out of cache and wait for it to
  * be completed.
@@ -1375,27 +1222,6 @@ static void unpin_close_window(struct vas_window *window)
 	val = SET_FIELD(VAS_WINCTL_PIN, val, 0);
 	val = SET_FIELD(VAS_WINCTL_OPEN, val, 0);
 	write_hvwc_reg(window, VREG(WINCTL), val);
-=======
-static void poll_window_castout(struct vas_window *window)
-{
-	int cached;
-	u64 val;
-
-	/* Cast window context out of the cache */
-retry:
-	val = read_hvwc_reg(window, VREG(WIN_CTX_CACHING_CTL));
-	cached = GET_FIELD(VAS_WIN_CACHE_STATUS, val);
-	if (cached) {
-		val = 0ULL;
-		val = SET_FIELD(VAS_CASTOUT_REQ, val, 1);
-		val = SET_FIELD(VAS_PUSH_TO_MEM, val, 0);
-		write_hvwc_reg(window, VREG(WIN_CTX_CACHING_CTL), val);
-
-		set_current_state(TASK_UNINTERRUPTIBLE);
-		schedule_timeout(HZ);
-		goto retry;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -1412,11 +1238,6 @@ retry:
  */
 int vas_win_close(struct vas_window *window)
 {
-<<<<<<< HEAD
-=======
-	u64 val;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!window)
 		return 0;
 
@@ -1432,17 +1253,9 @@ int vas_win_close(struct vas_window *window)
 
 	poll_window_busy_state(window);
 
-<<<<<<< HEAD
 	unpin_close_window(window);
 
 	poll_window_credits(window);
-=======
-	/* Unpin window from cache and close it */
-	val = read_hvwc_reg(window, VREG(WINCTL));
-	val = SET_FIELD(VAS_WINCTL_PIN, val, 0);
-	val = SET_FIELD(VAS_WINCTL_OPEN, val, 0);
-	write_hvwc_reg(window, VREG(WINCTL), val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	poll_window_castout(window);
 
@@ -1455,7 +1268,6 @@ int vas_win_close(struct vas_window *window)
 	return 0;
 }
 EXPORT_SYMBOL_GPL(vas_win_close);
-<<<<<<< HEAD
 
 /*
  * Return a system-wide unique window id for the window @win.
@@ -1465,5 +1277,3 @@ u32 vas_win_id(struct vas_window *win)
 	return encode_pswid(win->vinst->vas_id, win->winid);
 }
 EXPORT_SYMBOL_GPL(vas_win_id);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -107,14 +107,7 @@ static void vchan_complete(unsigned long arg)
 		dmaengine_desc_get_callback(&vd->tx, &cb);
 
 		list_del(&vd->node);
-<<<<<<< HEAD
 		vchan_vdesc_fini(vd);
-=======
-		if (dmaengine_desc_test_reuse(&vd->tx))
-			list_add(&vd->node, &vc->desc_allocated);
-		else
-			vc->desc_free(vd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		dmaengine_desc_callback_invoke(&cb, NULL);
 	}

@@ -277,11 +277,7 @@ unregisters the partitions in the MTD layer.
     static void __exit board_cleanup (void)
     {
         /* Release resources, unregister device */
-<<<<<<< HEAD
         nand_release (board_mtd);
-=======
-        nand_release (mtd_to_nand(board_mtd));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
         /* unmap physical address */
         iounmap(baseaddr);
@@ -378,11 +374,7 @@ The nand driver supports three different types of hardware ECC.
 
 -  NAND_ECC_HW8_512
 
-<<<<<<< HEAD
    Hardware ECC generator providing 8 bytes ECC per 512 byte.
-=======
-   Hardware ECC generator providing 6 bytes ECC per 512 byte.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 If your hardware generator has a different functionality add it at the
 appropriate place in nand_base.c
@@ -897,11 +889,7 @@ Use these constants to select the ECC algorithm::
     #define NAND_ECC_HW3_512    3
     /* Hardware ECC 6 byte ECC per 512 Byte data */
     #define NAND_ECC_HW6_512    4
-<<<<<<< HEAD
     /* Hardware ECC 8 byte ECC per 512 Byte data */
-=======
-    /* Hardware ECC 6 byte ECC per 512 Byte data */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     #define NAND_ECC_HW8_512    6
 
 
@@ -979,17 +967,10 @@ API functions which are exported. Each function has a short description
 which is marked with an [XXX] identifier. See the chapter "Documentation
 hints" for an explanation.
 
-<<<<<<< HEAD
 .. kernel-doc:: drivers/mtd/nand/raw/nand_base.c
    :export:
 
 .. kernel-doc:: drivers/mtd/nand/raw/nand_ecc.c
-=======
-.. kernel-doc:: drivers/mtd/nand/nand_base.c
-   :export:
-
-.. kernel-doc:: drivers/mtd/nand/nand_ecc.c
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    :export:
 
 Internal Functions Provided
@@ -1001,17 +982,10 @@ marked with an [XXX] identifier. See the chapter "Documentation hints"
 for an explanation. The functions marked with [DEFAULT] might be
 relevant for a board driver developer.
 
-<<<<<<< HEAD
 .. kernel-doc:: drivers/mtd/nand/raw/nand_base.c
    :internal:
 
 .. kernel-doc:: drivers/mtd/nand/raw/nand_bbt.c
-=======
-.. kernel-doc:: drivers/mtd/nand/nand_base.c
-   :internal:
-
-.. kernel-doc:: drivers/mtd/nand/nand_bbt.c
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    :internal:
 
 Credits

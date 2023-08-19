@@ -16,10 +16,7 @@ config H8300
 	select OF_IRQ
 	select OF_EARLY_FLATTREE
 	select HAVE_MEMBLOCK
-<<<<<<< HEAD
 	select NO_BOOTMEM
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select TIMER_OF
 	select H8300_TMR8
 	select HAVE_KERNEL_GZIP
@@ -27,10 +24,7 @@ config H8300
 	select HAVE_ARCH_KGDB
 	select HAVE_ARCH_HASH
 	select CPU_NO_EFFICIENT_FFS
-<<<<<<< HEAD
 	select DMA_DIRECT_OPS
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config CPU_BIG_ENDIAN
 	def_bool y
@@ -55,44 +49,4 @@ config NR_CPUS
 	int
 	default 1
 
-<<<<<<< HEAD
 source "arch/h8300/Kconfig.cpu"
-=======
-source "init/Kconfig"
-
-source "kernel/Kconfig.freezer"
-
-source "arch/h8300/Kconfig.cpu"
-
-menu "Kernel Features"
-
-source "kernel/Kconfig.preempt"
-
-source "mm/Kconfig"
-
-endmenu
-
-menu "Executable file formats"
-
-source "fs/Kconfig.binfmt"
-
-endmenu
-
-source "net/Kconfig"
-
-source "drivers/Kconfig"
-
-source "fs/Kconfig"
-
-menu "Kernel hacking"
-
-source "lib/Kconfig.debug"
-
-endmenu
-
-source "security/Kconfig"
-
-source "crypto/Kconfig"
-
-source "lib/Kconfig"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -184,7 +184,6 @@ static void bcma_core_mips_print_irq(struct bcma_device *dev, unsigned int irq)
 {
 	int i;
 	static const char *irq_name[] = {"2(S)", "3", "4", "5", "6", "D", "I"};
-<<<<<<< HEAD
 	char interrupts[25];
 	char *ints = interrupts;
 
@@ -193,12 +192,6 @@ static void bcma_core_mips_print_irq(struct bcma_device *dev, unsigned int irq)
 				irq_name[i], i == irq ? '*' : ' ');
 
 	bcma_debug(dev->bus, "core 0x%04x, irq:%s\n", dev->id.id, interrupts);
-=======
-	printk(KERN_DEBUG KBUILD_MODNAME ": core 0x%04x, irq :", dev->id.id);
-	for (i = 0; i <= 6; i++)
-		printk(" %s%s", irq_name[i], i == irq ? "*" : " ");
-	printk("\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void bcma_core_mips_dump_irq(struct bcma_bus *bus)

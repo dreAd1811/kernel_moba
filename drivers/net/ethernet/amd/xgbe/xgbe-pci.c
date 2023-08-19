@@ -335,7 +335,6 @@ static int xgbe_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 	pdata->awcr = XGBE_DMA_PCI_AWCR;
 	pdata->awarcr = XGBE_DMA_PCI_AWARCR;
 
-<<<<<<< HEAD
 	/* Read the port property registers */
 	pdata->pp0 = XP_IOREAD(pdata, XP_PROP_0);
 	pdata->pp1 = XP_IOREAD(pdata, XP_PROP_1);
@@ -363,18 +362,6 @@ static int xgbe_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 		dev_dbg(dev, "max tx/rx channel count = %u/%u\n",
 			pdata->tx_max_channel_count,
 			pdata->rx_max_channel_count);
-=======
-	/* Set the maximum channels and queues */
-	reg = XP_IOREAD(pdata, XP_PROP_1);
-	pdata->tx_max_channel_count = XP_GET_BITS(reg, XP_PROP_1, MAX_TX_DMA);
-	pdata->rx_max_channel_count = XP_GET_BITS(reg, XP_PROP_1, MAX_RX_DMA);
-	pdata->tx_max_q_count = XP_GET_BITS(reg, XP_PROP_1, MAX_TX_QUEUES);
-	pdata->rx_max_q_count = XP_GET_BITS(reg, XP_PROP_1, MAX_RX_QUEUES);
-	if (netif_msg_probe(pdata)) {
-		dev_dbg(dev, "max tx/rx channel count = %u/%u\n",
-			pdata->tx_max_channel_count,
-			pdata->tx_max_channel_count);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_dbg(dev, "max tx/rx hw queue count = %u/%u\n",
 			pdata->tx_max_q_count, pdata->rx_max_q_count);
 	}
@@ -383,7 +370,6 @@ static int xgbe_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 	xgbe_set_counts(pdata);
 
 	/* Set the maximum fifo amounts */
-<<<<<<< HEAD
 	pdata->tx_max_fifo_size = XP_GET_BITS(pdata->pp2, XP_PROP_2,
 					      TX_FIFO_SIZE);
 	pdata->tx_max_fifo_size *= 16384;
@@ -391,14 +377,6 @@ static int xgbe_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 				      pdata->vdata->tx_max_fifo_size);
 	pdata->rx_max_fifo_size = XP_GET_BITS(pdata->pp2, XP_PROP_2,
 					      RX_FIFO_SIZE);
-=======
-	reg = XP_IOREAD(pdata, XP_PROP_2);
-	pdata->tx_max_fifo_size = XP_GET_BITS(reg, XP_PROP_2, TX_FIFO_SIZE);
-	pdata->tx_max_fifo_size *= 16384;
-	pdata->tx_max_fifo_size = min(pdata->tx_max_fifo_size,
-				      pdata->vdata->tx_max_fifo_size);
-	pdata->rx_max_fifo_size = XP_GET_BITS(reg, XP_PROP_2, RX_FIFO_SIZE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pdata->rx_max_fifo_size *= 16384;
 	pdata->rx_max_fifo_size = min(pdata->rx_max_fifo_size,
 				      pdata->vdata->rx_max_fifo_size);

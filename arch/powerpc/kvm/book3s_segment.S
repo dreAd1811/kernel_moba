@@ -19,12 +19,9 @@
 
 /* Real mode helpers */
 
-<<<<<<< HEAD
 #include <asm/asm-compat.h>
 #include <asm/feature-fixups.h>
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #if defined(CONFIG_PPC_BOOK3S_64)
 
 #define GET_SHADOW_VCPU(reg)    \
@@ -389,7 +386,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
 	 */
 
 	PPC_LL	r6, HSTATE_HOST_MSR(r13)
-<<<<<<< HEAD
 #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
 	/*
 	 * We don't want to change MSR[TS] bits via rfi here.
@@ -403,8 +399,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
 	rldicl  r7, r7, 64 - MSR_TS_S_LG, 62
 	rldimi  r6, r7, MSR_TS_S_LG, 63 - MSR_TS_T_LG
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	PPC_LL	r8, HSTATE_VMHANDLER(r13)
 
 #ifdef CONFIG_PPC64

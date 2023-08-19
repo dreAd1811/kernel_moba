@@ -34,10 +34,7 @@
 #include <linux/mlx5/fs.h>
 #include <net/switchdev.h>
 #include <net/pkt_cls.h>
-<<<<<<< HEAD
 #include <net/act_api.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <net/netevent.h>
 #include <net/arp.h>
 
@@ -69,7 +66,6 @@ static const struct counter_desc sw_rep_stats_desc[] = {
 	{ MLX5E_DECLARE_STAT(struct mlx5e_sw_stats, tx_bytes) },
 };
 
-<<<<<<< HEAD
 struct vport_stats {
 	u64 vport_rx_packets;
 	u64 vport_tx_packets;
@@ -86,14 +82,10 @@ static const struct counter_desc vport_rep_stats_desc[] = {
 
 #define NUM_VPORT_REP_SW_COUNTERS ARRAY_SIZE(sw_rep_stats_desc)
 #define NUM_VPORT_REP_HW_COUNTERS ARRAY_SIZE(vport_rep_stats_desc)
-=======
-#define NUM_VPORT_REP_COUNTERS	ARRAY_SIZE(sw_rep_stats_desc)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void mlx5e_rep_get_strings(struct net_device *dev,
 				  u32 stringset, uint8_t *data)
 {
-<<<<<<< HEAD
 	int i, j;
 
 	switch (stringset) {
@@ -104,15 +96,6 @@ static void mlx5e_rep_get_strings(struct net_device *dev,
 		for (j = 0; j < NUM_VPORT_REP_HW_COUNTERS; j++, i++)
 			strcpy(data + (i * ETH_GSTRING_LEN),
 			       vport_rep_stats_desc[j].format);
-=======
-	int i;
-
-	switch (stringset) {
-	case ETH_SS_STATS:
-		for (i = 0; i < NUM_VPORT_REP_COUNTERS; i++)
-			strcpy(data + (i * ETH_GSTRING_LEN),
-			       sw_rep_stats_desc[i].format);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 }
@@ -151,21 +134,13 @@ static void mlx5e_rep_update_sw_counters(struct mlx5e_priv *priv)
 	for (i = 0; i < priv->channels.num; i++) {
 		struct mlx5e_channel *c = priv->channels.c[i];
 
-<<<<<<< HEAD
 		rq_stats = c->rq.stats;
-=======
-		rq_stats = &c->rq.stats;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		s->rx_packets	+= rq_stats->packets;
 		s->rx_bytes	+= rq_stats->bytes;
 
 		for (j = 0; j < priv->channels.params.num_tc; j++) {
-<<<<<<< HEAD
 			sq_stats = c->sq[j].stats;
-=======
-			sq_stats = &c->sq[j].stats;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			s->tx_packets		+= sq_stats->packets;
 			s->tx_bytes		+= sq_stats->bytes;
@@ -174,24 +149,11 @@ static void mlx5e_rep_update_sw_counters(struct mlx5e_priv *priv)
 	}
 }
 
-<<<<<<< HEAD
-=======
-static void mlx5e_rep_update_stats(struct mlx5e_priv *priv)
-{
-	mlx5e_rep_update_sw_counters(priv);
-	mlx5e_rep_update_hw_counters(priv);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void mlx5e_rep_get_ethtool_stats(struct net_device *dev,
 					struct ethtool_stats *stats, u64 *data)
 {
 	struct mlx5e_priv *priv = netdev_priv(dev);
-<<<<<<< HEAD
 	int i, j;
-=======
-	int i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!data)
 		return;
@@ -199,7 +161,6 @@ static void mlx5e_rep_get_ethtool_stats(struct net_device *dev,
 	mutex_lock(&priv->state_lock);
 	if (test_bit(MLX5E_STATE_OPENED, &priv->state))
 		mlx5e_rep_update_sw_counters(priv);
-<<<<<<< HEAD
 	mlx5e_rep_update_hw_counters(priv);
 	mutex_unlock(&priv->state_lock);
 
@@ -210,24 +171,13 @@ static void mlx5e_rep_get_ethtool_stats(struct net_device *dev,
 	for (j = 0; j < NUM_VPORT_REP_HW_COUNTERS; j++, i++)
 		data[i] = MLX5E_READ_CTR64_CPU(&priv->stats.vf_vport,
 					       vport_rep_stats_desc, j);
-=======
-	mutex_unlock(&priv->state_lock);
-
-	for (i = 0; i < NUM_VPORT_REP_COUNTERS; i++)
-		data[i] = MLX5E_READ_CTR64_CPU(&priv->stats.sw,
-					       sw_rep_stats_desc, i);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int mlx5e_rep_get_sset_count(struct net_device *dev, int sset)
 {
 	switch (sset) {
 	case ETH_SS_STATS:
-<<<<<<< HEAD
 		return NUM_VPORT_REP_SW_COUNTERS + NUM_VPORT_REP_HW_COUNTERS;
-=======
-		return NUM_VPORT_REP_COUNTERS;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		return -EOPNOTSUPP;
 	}
@@ -263,7 +213,6 @@ int mlx5e_attr_get(struct net_device *dev, struct switchdev_attr *attr)
 	return 0;
 }
 
-<<<<<<< HEAD
 static void mlx5e_sqs2vport_stop(struct mlx5_eswitch *esw,
 				 struct mlx5_eswitch_rep *rep)
 {
@@ -321,8 +270,6 @@ out_err:
 	return err;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int mlx5e_add_sqs_fwd_rules(struct mlx5e_priv *priv)
 {
 	struct mlx5_eswitch *esw = priv->mdev->priv.eswitch;
@@ -331,15 +278,9 @@ int mlx5e_add_sqs_fwd_rules(struct mlx5e_priv *priv)
 	struct mlx5e_channel *c;
 	int n, tc, num_sqs = 0;
 	int err = -ENOMEM;
-<<<<<<< HEAD
 	u32 *sqs;
 
 	sqs = kcalloc(priv->channels.num * priv->channels.params.num_tc, sizeof(*sqs), GFP_KERNEL);
-=======
-	u16 *sqs;
-
-	sqs = kcalloc(priv->channels.num * priv->channels.params.num_tc, sizeof(u16), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!sqs)
 		goto out;
 
@@ -349,11 +290,7 @@ int mlx5e_add_sqs_fwd_rules(struct mlx5e_priv *priv)
 			sqs[num_sqs++] = c->sq[tc].sqn;
 	}
 
-<<<<<<< HEAD
 	err = mlx5e_sqs2vport_start(esw, rep, sqs, num_sqs);
-=======
-	err = mlx5_eswitch_sqs2vport_start(esw, rep, sqs, num_sqs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(sqs);
 
 out:
@@ -368,11 +305,7 @@ void mlx5e_remove_sqs_fwd_rules(struct mlx5e_priv *priv)
 	struct mlx5e_rep_priv *rpriv = priv->ppriv;
 	struct mlx5_eswitch_rep *rep = rpriv->rep;
 
-<<<<<<< HEAD
 	mlx5e_sqs2vport_stop(esw, rep);
-=======
-	mlx5_eswitch_sqs2vport_stop(esw, rep);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void mlx5e_rep_neigh_update_init_interval(struct mlx5e_rep_priv *rpriv)
@@ -385,11 +318,7 @@ static void mlx5e_rep_neigh_update_init_interval(struct mlx5e_rep_priv *rpriv)
 #endif
 	unsigned long ipv4_interval = NEIGH_VAR(&arp_tbl.parms,
 						DELAY_PROBE_TIME);
-<<<<<<< HEAD
 	struct net_device *netdev = rpriv->netdev;
-=======
-	struct net_device *netdev = rpriv->rep->netdev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mlx5e_priv *priv = netdev_priv(netdev);
 
 	rpriv->neigh_update.min_interval = min_t(unsigned long, ipv6_interval, ipv4_interval);
@@ -410,11 +339,7 @@ static void mlx5e_rep_neigh_stats_work(struct work_struct *work)
 {
 	struct mlx5e_rep_priv *rpriv = container_of(work, struct mlx5e_rep_priv,
 						    neigh_update.neigh_stats_work.work);
-<<<<<<< HEAD
 	struct net_device *netdev = rpriv->netdev;
-=======
-	struct net_device *netdev = rpriv->rep->netdev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mlx5e_priv *priv = netdev_priv(netdev);
 	struct mlx5e_neigh_hash_entry *nhe;
 
@@ -510,11 +435,7 @@ static int mlx5e_rep_netevent_event(struct notifier_block *nb,
 	struct mlx5e_rep_priv *rpriv = container_of(nb, struct mlx5e_rep_priv,
 						    neigh_update.netevent_nb);
 	struct mlx5e_neigh_update_table *neigh_update = &rpriv->neigh_update;
-<<<<<<< HEAD
 	struct net_device *netdev = rpriv->netdev;
-=======
-	struct net_device *netdev = rpriv->rep->netdev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mlx5e_priv *priv = netdev_priv(netdev);
 	struct mlx5e_neigh_hash_entry *nhe = NULL;
 	struct mlx5e_neigh m_neigh = {};
@@ -642,11 +563,7 @@ out_err:
 static void mlx5e_rep_neigh_cleanup(struct mlx5e_rep_priv *rpriv)
 {
 	struct mlx5e_neigh_update_table *neigh_update = &rpriv->neigh_update;
-<<<<<<< HEAD
 	struct mlx5e_priv *priv = netdev_priv(rpriv->netdev);
-=======
-	struct mlx5e_priv *priv = netdev_priv(rpriv->rep->netdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	unregister_netevent_notifier(&neigh_update->netevent_nb);
 
@@ -782,13 +699,8 @@ static int mlx5e_rep_open(struct net_device *dev)
 		goto unlock;
 
 	if (!mlx5_modify_vport_admin_state(priv->mdev,
-<<<<<<< HEAD
 					   MLX5_VPORT_STATE_OP_MOD_ESW_VPORT,
 					   rep->vport, MLX5_VPORT_ADMIN_STATE_UP))
-=======
-			MLX5_QUERY_VPORT_STATE_IN_OP_MOD_ESW_VPORT,
-			rep->vport, MLX5_ESW_VPORT_ADMIN_STATE_UP))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		netif_carrier_on(dev);
 
 unlock:
@@ -805,13 +717,8 @@ static int mlx5e_rep_close(struct net_device *dev)
 
 	mutex_lock(&priv->state_lock);
 	mlx5_modify_vport_admin_state(priv->mdev,
-<<<<<<< HEAD
 				      MLX5_VPORT_STATE_OP_MOD_ESW_VPORT,
 				      rep->vport, MLX5_VPORT_ADMIN_STATE_DOWN);
-=======
-			MLX5_QUERY_VPORT_STATE_IN_OP_MOD_ESW_VPORT,
-			rep->vport, MLX5_ESW_VPORT_ADMIN_STATE_DOWN);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = mlx5e_close_locked(dev);
 	mutex_unlock(&priv->state_lock);
 	return ret;
@@ -833,7 +740,6 @@ static int mlx5e_rep_get_phys_port_name(struct net_device *dev,
 }
 
 static int
-<<<<<<< HEAD
 mlx5e_rep_setup_tc_cls_flower(struct mlx5e_priv *priv,
 			      struct tc_cls_flower_offload *cls_flower, int flags)
 {
@@ -896,32 +802,6 @@ static int mlx5e_rep_setup_tc_block(struct net_device *dev,
 	case TC_BLOCK_UNBIND:
 		tcf_block_cb_unregister(f->block, mlx5e_rep_setup_tc_cb, priv);
 		return 0;
-=======
-mlx5e_rep_setup_tc_cls_flower(struct net_device *dev,
-			      struct tc_cls_flower_offload *cls_flower)
-{
-	struct mlx5e_priv *priv = netdev_priv(dev);
-
-	if (!is_classid_clsact_ingress(cls_flower->common.classid) ||
-	    cls_flower->common.chain_index)
-		return -EOPNOTSUPP;
-
-	if (cls_flower->egress_dev) {
-		struct mlx5_eswitch *esw = priv->mdev->priv.eswitch;
-
-		dev = mlx5_eswitch_get_uplink_netdev(esw);
-		return dev->netdev_ops->ndo_setup_tc(dev, TC_SETUP_CLSFLOWER,
-						     cls_flower);
-	}
-
-	switch (cls_flower->command) {
-	case TC_CLSFLOWER_REPLACE:
-		return mlx5e_configure_flower(priv, cls_flower);
-	case TC_CLSFLOWER_DESTROY:
-		return mlx5e_delete_flower(priv, cls_flower);
-	case TC_CLSFLOWER_STATS:
-		return mlx5e_stats_flower(priv, cls_flower);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		return -EOPNOTSUPP;
 	}
@@ -931,13 +811,8 @@ static int mlx5e_rep_setup_tc(struct net_device *dev, enum tc_setup_type type,
 			      void *type_data)
 {
 	switch (type) {
-<<<<<<< HEAD
 	case TC_SETUP_BLOCK:
 		return mlx5e_rep_setup_tc_block(dev, type_data);
-=======
-	case TC_SETUP_CLSFLOWER:
-		return mlx5e_rep_setup_tc_cls_flower(dev, type_data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		return -EOPNOTSUPP;
 	}
@@ -995,11 +870,8 @@ mlx5e_get_sw_stats64(const struct net_device *dev,
 	struct mlx5e_priv *priv = netdev_priv(dev);
 	struct mlx5e_sw_stats *sstats = &priv->stats.sw;
 
-<<<<<<< HEAD
 	mlx5e_rep_update_sw_counters(priv);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	stats->rx_packets = sstats->rx_packets;
 	stats->rx_bytes   = sstats->rx_bytes;
 	stats->tx_packets = sstats->tx_packets;
@@ -1026,12 +898,9 @@ mlx5e_rep_get_stats(struct net_device *dev, struct rtnl_link_stats64 *stats)
 {
 	struct mlx5e_priv *priv = netdev_priv(dev);
 
-<<<<<<< HEAD
 	/* update HW stats in background for next time */
 	queue_delayed_work(priv->wq, &priv->update_stats_work, 0);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memcpy(stats, &priv->stats.vf_vport, sizeof(*stats));
 }
 
@@ -1039,14 +908,11 @@ static const struct switchdev_ops mlx5e_rep_switchdev_ops = {
 	.switchdev_port_attr_get	= mlx5e_attr_get,
 };
 
-<<<<<<< HEAD
 static int mlx5e_change_rep_mtu(struct net_device *netdev, int new_mtu)
 {
 	return mlx5e_change_mtu(netdev, new_mtu, NULL);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct net_device_ops mlx5e_netdev_ops_rep = {
 	.ndo_open                = mlx5e_rep_open,
 	.ndo_stop                = mlx5e_rep_close,
@@ -1056,24 +922,16 @@ static const struct net_device_ops mlx5e_netdev_ops_rep = {
 	.ndo_get_stats64         = mlx5e_rep_get_stats,
 	.ndo_has_offload_stats	 = mlx5e_has_offload_stats,
 	.ndo_get_offload_stats	 = mlx5e_get_offload_stats,
-<<<<<<< HEAD
 	.ndo_change_mtu          = mlx5e_change_rep_mtu,
 };
 
 static void mlx5e_build_rep_params(struct mlx5_core_dev *mdev,
 				   struct mlx5e_params *params, u16 mtu)
-=======
-};
-
-static void mlx5e_build_rep_params(struct mlx5_core_dev *mdev,
-				   struct mlx5e_params *params)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u8 cq_period_mode = MLX5_CAP_GEN(mdev, cq_period_start_from_cqe) ?
 					 MLX5_CQ_PERIOD_MODE_START_FROM_CQE :
 					 MLX5_CQ_PERIOD_MODE_START_FROM_EQE;
 
-<<<<<<< HEAD
 	params->hard_mtu    = MLX5E_ETH_HARD_MTU;
 	params->sw_mtu      = mtu;
 	params->log_sq_size = MLX5E_REP_PARAMS_LOG_SQ_SIZE;
@@ -1083,16 +941,6 @@ static void mlx5e_build_rep_params(struct mlx5_core_dev *mdev,
 	params->rx_dim_enabled = MLX5_CAP_GEN(mdev, cq_moderation);
 	mlx5e_set_rx_cq_mode_params(params, cq_period_mode);
 
-=======
-	params->log_sq_size = MLX5E_REP_PARAMS_LOG_SQ_SIZE;
-	params->rq_wq_type  = MLX5_WQ_TYPE_LINKED_LIST;
-	params->log_rq_size = MLX5E_REP_PARAMS_LOG_RQ_SIZE;
-
-	params->rx_am_enabled = MLX5_CAP_GEN(mdev, cq_moderation);
-	mlx5e_set_rx_cq_mode_params(params, cq_period_mode);
-
-	params->tx_max_inline         = mlx5e_get_max_inline_cap(mdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	params->num_tc                = 1;
 	params->lro_wqe_sz            = MLX5E_PARAMS_DEFAULT_LRO_WQE_SZ;
 
@@ -1101,13 +949,10 @@ static void mlx5e_build_rep_params(struct mlx5_core_dev *mdev,
 
 static void mlx5e_build_rep_netdev(struct net_device *netdev)
 {
-<<<<<<< HEAD
 	struct mlx5e_priv *priv = netdev_priv(netdev);
 	struct mlx5_core_dev *mdev = priv->mdev;
 	u16 max_mtu;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	netdev->netdev_ops = &mlx5e_netdev_ops_rep;
 
 	netdev->watchdog_timeo    = 15 * HZ;
@@ -1120,13 +965,10 @@ static void mlx5e_build_rep_netdev(struct net_device *netdev)
 	netdev->hw_features      |= NETIF_F_HW_TC;
 
 	eth_hw_addr_random(netdev);
-<<<<<<< HEAD
 
 	netdev->min_mtu = ETH_MIN_MTU;
 	mlx5_query_port_max_mtu(mdev, &max_mtu, 1);
 	netdev->max_mtu = MLX5E_HW2SW_MTU(&priv->channels.params, max_mtu);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void mlx5e_init_rep(struct mlx5_core_dev *mdev,
@@ -1147,17 +989,10 @@ static void mlx5e_init_rep(struct mlx5_core_dev *mdev,
 
 	priv->channels.params.num_channels = profile->max_nch(mdev);
 
-<<<<<<< HEAD
 	mlx5e_build_rep_params(mdev, &priv->channels.params, netdev->mtu);
 	mlx5e_build_rep_netdev(netdev);
 
 	mlx5e_timestamp_init(priv);
-=======
-	priv->hard_mtu = MLX5E_ETH_HARD_MTU;
-
-	mlx5e_build_rep_params(mdev, &priv->channels.params);
-	mlx5e_build_rep_netdev(netdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int mlx5e_init_rep_rx(struct mlx5e_priv *priv)
@@ -1185,23 +1020,10 @@ static int mlx5e_init_rep_rx(struct mlx5e_priv *priv)
 		err = PTR_ERR(flow_rule);
 		goto err_destroy_direct_tirs;
 	}
-<<<<<<< HEAD
 	rpriv->vport_rx_rule = flow_rule;
 
 	return 0;
 
-=======
-	rep->vport_rx_rule = flow_rule;
-
-	err = mlx5e_tc_init(priv);
-	if (err)
-		goto err_del_flow_rule;
-
-	return 0;
-
-err_del_flow_rule:
-	mlx5_del_flow_rules(rep->vport_rx_rule);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_destroy_direct_tirs:
 	mlx5e_destroy_direct_tirs(priv);
 err_destroy_direct_rqts:
@@ -1212,15 +1034,8 @@ err_destroy_direct_rqts:
 static void mlx5e_cleanup_rep_rx(struct mlx5e_priv *priv)
 {
 	struct mlx5e_rep_priv *rpriv = priv->ppriv;
-<<<<<<< HEAD
 
 	mlx5_del_flow_rules(rpriv->vport_rx_rule);
-=======
-	struct mlx5_eswitch_rep *rep = rpriv->rep;
-
-	mlx5e_tc_cleanup(priv);
-	mlx5_del_flow_rules(rep->vport_rx_rule);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlx5e_destroy_direct_tirs(priv);
 	mlx5e_destroy_direct_rqts(priv);
 }
@@ -1249,11 +1064,7 @@ static const struct mlx5e_profile mlx5e_rep_profile = {
 	.cleanup_rx		= mlx5e_cleanup_rep_rx,
 	.init_tx		= mlx5e_init_rep_tx,
 	.cleanup_tx		= mlx5e_cleanup_nic_tx,
-<<<<<<< HEAD
 	.update_stats           = mlx5e_rep_update_hw_counters,
-=======
-	.update_stats           = mlx5e_rep_update_stats,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.max_nch		= mlx5e_get_rep_max_num_channels,
 	.update_carrier		= NULL,
 	.rx_handlers.handle_rx_cqe       = mlx5e_handle_rx_cqe_rep,
@@ -1264,17 +1075,10 @@ static const struct mlx5e_profile mlx5e_rep_profile = {
 /* e-Switch vport representors */
 
 static int
-<<<<<<< HEAD
 mlx5e_nic_rep_load(struct mlx5_core_dev *dev, struct mlx5_eswitch_rep *rep)
 {
 	struct mlx5e_rep_priv *rpriv = mlx5e_rep_to_rep_priv(rep);
 	struct mlx5e_priv *priv = netdev_priv(rpriv->netdev);
-=======
-mlx5e_nic_rep_load(struct mlx5_eswitch *esw, struct mlx5_eswitch_rep *rep)
-{
-	struct mlx5e_priv *priv = netdev_priv(rep->netdev);
-	struct mlx5e_rep_priv *rpriv = priv->ppriv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	int err;
 
@@ -1288,7 +1092,6 @@ mlx5e_nic_rep_load(struct mlx5_eswitch *esw, struct mlx5_eswitch_rep *rep)
 	if (err)
 		goto err_remove_sqs;
 
-<<<<<<< HEAD
 	/* init shared tc flow table */
 	err = mlx5e_tc_esw_init(&rpriv->tc_ht);
 	if (err)
@@ -1298,68 +1101,40 @@ mlx5e_nic_rep_load(struct mlx5_eswitch *esw, struct mlx5_eswitch_rep *rep)
 
 err_neigh_cleanup:
 	mlx5e_rep_neigh_cleanup(rpriv);
-=======
-	return 0;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_remove_sqs:
 	mlx5e_remove_sqs_fwd_rules(priv);
 	return err;
 }
 
 static void
-<<<<<<< HEAD
 mlx5e_nic_rep_unload(struct mlx5_eswitch_rep *rep)
 {
 	struct mlx5e_rep_priv *rpriv = mlx5e_rep_to_rep_priv(rep);
 	struct mlx5e_priv *priv = netdev_priv(rpriv->netdev);
-=======
-mlx5e_nic_rep_unload(struct mlx5_eswitch *esw, struct mlx5_eswitch_rep *rep)
-{
-	struct mlx5e_priv *priv = netdev_priv(rep->netdev);
-	struct mlx5e_rep_priv *rpriv = priv->ppriv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (test_bit(MLX5E_STATE_OPENED, &priv->state))
 		mlx5e_remove_sqs_fwd_rules(priv);
 
-<<<<<<< HEAD
 	/* clean uplink offloaded TC rules, delete shared tc flow table */
 	mlx5e_tc_esw_cleanup(&rpriv->tc_ht);
-=======
-	/* clean (and re-init) existing uplink offloaded TC rules */
-	mlx5e_tc_cleanup(priv);
-	mlx5e_tc_init(priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mlx5e_rep_neigh_cleanup(rpriv);
 }
 
 static int
-<<<<<<< HEAD
 mlx5e_vport_rep_load(struct mlx5_core_dev *dev, struct mlx5_eswitch_rep *rep)
 {
 	struct mlx5e_rep_priv *uplink_rpriv;
 	struct mlx5e_rep_priv *rpriv;
 	struct net_device *netdev;
 	struct mlx5e_priv *upriv;
-=======
-mlx5e_vport_rep_load(struct mlx5_eswitch *esw, struct mlx5_eswitch_rep *rep)
-{
-	struct mlx5e_rep_priv *rpriv;
-	struct net_device *netdev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	rpriv = kzalloc(sizeof(*rpriv), GFP_KERNEL);
 	if (!rpriv)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	netdev = mlx5e_create_netdev(dev, &mlx5e_rep_profile, rpriv);
-=======
-	netdev = mlx5e_create_netdev(esw->dev, &mlx5e_rep_profile, rpriv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!netdev) {
 		pr_warn("Failed to create representor netdev for vport %d\n",
 			rep->vport);
@@ -1367,15 +1142,10 @@ mlx5e_vport_rep_load(struct mlx5_eswitch *esw, struct mlx5_eswitch_rep *rep)
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 	rpriv->netdev = netdev;
 	rpriv->rep = rep;
 	rep->rep_if[REP_ETH].priv = rpriv;
 	INIT_LIST_HEAD(&rpriv->vport_sqs_list);
-=======
-	rep->netdev = netdev;
-	rpriv->rep = rep;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = mlx5e_attach_netdev(netdev_priv(netdev));
 	if (err) {
@@ -1391,7 +1161,6 @@ mlx5e_vport_rep_load(struct mlx5_eswitch *esw, struct mlx5_eswitch_rep *rep)
 		goto err_detach_netdev;
 	}
 
-<<<<<<< HEAD
 	uplink_rpriv = mlx5_eswitch_get_uplink_priv(dev->priv.eswitch, REP_ETH);
 	upriv = netdev_priv(uplink_rpriv->netdev);
 	err = tc_setup_cb_egdev_register(netdev, mlx5e_rep_setup_tc_cb_egdev,
@@ -1399,28 +1168,19 @@ mlx5e_vport_rep_load(struct mlx5_eswitch *esw, struct mlx5_eswitch_rep *rep)
 	if (err)
 		goto err_neigh_cleanup;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = register_netdev(netdev);
 	if (err) {
 		pr_warn("Failed to register representor netdev for vport %d\n",
 			rep->vport);
-<<<<<<< HEAD
 		goto err_egdev_cleanup;
-=======
-		goto err_neigh_cleanup;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
 
-<<<<<<< HEAD
 err_egdev_cleanup:
 	tc_setup_cb_egdev_unregister(netdev, mlx5e_rep_setup_tc_cb_egdev,
 				     upriv);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_neigh_cleanup:
 	mlx5e_rep_neigh_cleanup(rpriv);
 
@@ -1434,7 +1194,6 @@ err_destroy_netdev:
 }
 
 static void
-<<<<<<< HEAD
 mlx5e_vport_rep_unload(struct mlx5_eswitch_rep *rep)
 {
 	struct mlx5e_rep_priv *rpriv = mlx5e_rep_to_rep_priv(rep);
@@ -1450,24 +1209,12 @@ mlx5e_vport_rep_unload(struct mlx5_eswitch_rep *rep)
 	upriv = netdev_priv(uplink_rpriv->netdev);
 	tc_setup_cb_egdev_unregister(netdev, mlx5e_rep_setup_tc_cb_egdev,
 				     upriv);
-=======
-mlx5e_vport_rep_unload(struct mlx5_eswitch *esw, struct mlx5_eswitch_rep *rep)
-{
-	struct net_device *netdev = rep->netdev;
-	struct mlx5e_priv *priv = netdev_priv(netdev);
-	struct mlx5e_rep_priv *rpriv = priv->ppriv;
-	void *ppriv = priv->ppriv;
-
-	unregister_netdev(rep->netdev);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlx5e_rep_neigh_cleanup(rpriv);
 	mlx5e_detach_netdev(priv);
 	mlx5e_destroy_netdev(priv);
 	kfree(ppriv); /* mlx5e_rep_priv */
 }
 
-<<<<<<< HEAD
 static void *mlx5e_vport_rep_get_proto_dev(struct mlx5_eswitch_rep *rep)
 {
 	struct mlx5e_rep_priv *rpriv;
@@ -1477,15 +1224,12 @@ static void *mlx5e_vport_rep_get_proto_dev(struct mlx5_eswitch_rep *rep)
 	return rpriv->netdev;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void mlx5e_rep_register_vf_vports(struct mlx5e_priv *priv)
 {
 	struct mlx5_core_dev *mdev = priv->mdev;
 	struct mlx5_eswitch *esw   = mdev->priv.eswitch;
 	int total_vfs = MLX5_TOTAL_VPORTS(mdev);
 	int vport;
-<<<<<<< HEAD
 
 	for (vport = 1; vport < total_vfs; vport++) {
 		struct mlx5_eswitch_rep_if rep_if = {};
@@ -1494,20 +1238,6 @@ static void mlx5e_rep_register_vf_vports(struct mlx5e_priv *priv)
 		rep_if.unload = mlx5e_vport_rep_unload;
 		rep_if.get_proto_dev = mlx5e_vport_rep_get_proto_dev;
 		mlx5_eswitch_register_vport_rep(esw, vport, &rep_if, REP_ETH);
-=======
-	u8 mac[ETH_ALEN];
-
-	mlx5_query_nic_vport_mac_address(mdev, 0, mac);
-
-	for (vport = 1; vport < total_vfs; vport++) {
-		struct mlx5_eswitch_rep rep;
-
-		rep.load = mlx5e_vport_rep_load;
-		rep.unload = mlx5e_vport_rep_unload;
-		rep.vport = vport;
-		ether_addr_copy(rep.hw_id, mac);
-		mlx5_eswitch_register_vport_rep(esw, vport, &rep);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -1519,18 +1249,13 @@ static void mlx5e_rep_unregister_vf_vports(struct mlx5e_priv *priv)
 	int vport;
 
 	for (vport = 1; vport < total_vfs; vport++)
-<<<<<<< HEAD
 		mlx5_eswitch_unregister_vport_rep(esw, vport, REP_ETH);
-=======
-		mlx5_eswitch_unregister_vport_rep(esw, vport);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void mlx5e_register_vport_reps(struct mlx5e_priv *priv)
 {
 	struct mlx5_core_dev *mdev = priv->mdev;
 	struct mlx5_eswitch *esw   = mdev->priv.eswitch;
-<<<<<<< HEAD
 	struct mlx5_eswitch_rep_if rep_if;
 	struct mlx5e_rep_priv *rpriv;
 
@@ -1543,16 +1268,6 @@ void mlx5e_register_vport_reps(struct mlx5e_priv *priv)
 	rep_if.priv = rpriv;
 	INIT_LIST_HEAD(&rpriv->vport_sqs_list);
 	mlx5_eswitch_register_vport_rep(esw, 0, &rep_if, REP_ETH); /* UPLINK PF vport*/
-=======
-	struct mlx5_eswitch_rep rep;
-
-	mlx5_query_nic_vport_mac_address(mdev, 0, rep.hw_id);
-	rep.load = mlx5e_nic_rep_load;
-	rep.unload = mlx5e_nic_rep_unload;
-	rep.vport = FDB_UPLINK_VPORT;
-	rep.netdev = priv->netdev;
-	mlx5_eswitch_register_vport_rep(esw, 0, &rep); /* UPLINK PF vport*/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mlx5e_rep_register_vf_vports(priv); /* VFs vports */
 }
@@ -1563,11 +1278,7 @@ void mlx5e_unregister_vport_reps(struct mlx5e_priv *priv)
 	struct mlx5_eswitch *esw   = mdev->priv.eswitch;
 
 	mlx5e_rep_unregister_vf_vports(priv); /* VFs vports */
-<<<<<<< HEAD
 	mlx5_eswitch_unregister_vport_rep(esw, 0, REP_ETH); /* UPLINK PF*/
-=======
-	mlx5_eswitch_unregister_vport_rep(esw, 0); /* UPLINK PF*/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void *mlx5e_alloc_nic_rep_priv(struct mlx5_core_dev *mdev)

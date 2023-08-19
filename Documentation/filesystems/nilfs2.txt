@@ -25,13 +25,8 @@ available from the following download page.  At least "mkfs.nilfs2",
 cleaner or garbage collector) are required.  Details on the tools are
 described in the man pages included in the package.
 
-<<<<<<< HEAD
 Project web page:    https://nilfs.sourceforge.io/
 Download page:       https://nilfs.sourceforge.io/en/download.html
-=======
-Project web page:    http://nilfs.sourceforge.net/
-Download page:       http://nilfs.sourceforge.net/en/download.html
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 List info:           http://vger.kernel.org/vger-lists.html#linux-nilfs
 
 Caveats

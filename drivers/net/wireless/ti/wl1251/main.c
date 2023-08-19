@@ -122,12 +122,7 @@ static int wl1251_fetch_nvs(struct wl1251 *wl)
 		goto out;
 	}
 
-<<<<<<< HEAD
 	wl->nvs = kmemdup(fw->data, fw->size, GFP_KERNEL);
-=======
-	wl->nvs_len = fw->size;
-	wl->nvs = kmemdup(fw->data, wl->nvs_len, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!wl->nvs) {
 		wl1251_error("could not allocate memory for the nvs file");
@@ -135,11 +130,8 @@ static int wl1251_fetch_nvs(struct wl1251 *wl)
 		goto out;
 	}
 
-<<<<<<< HEAD
 	wl->nvs_len = fw->size;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = 0;
 
 out:
@@ -211,16 +203,6 @@ static int wl1251_chip_wakeup(struct wl1251 *wl)
 			goto out;
 	}
 
-<<<<<<< HEAD
-=======
-	if (wl->nvs == NULL && !wl->use_eeprom) {
-		/* No NVS from netlink, try to get it from the filesystem */
-		ret = wl1251_fetch_nvs(wl);
-		if (ret < 0)
-			goto out;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	return ret;
 }
@@ -1458,7 +1440,6 @@ static int wl1251_read_eeprom_mac(struct wl1251 *wl)
 	return 0;
 }
 
-<<<<<<< HEAD
 #define NVS_OFF_MAC_LEN 0x19
 #define NVS_OFF_MAC_ADDR_LO 0x1a
 #define NVS_OFF_MAC_ADDR_HI 0x1b
@@ -1514,8 +1495,6 @@ static int wl1251_write_nvs_mac(struct wl1251 *wl)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int wl1251_register_hw(struct wl1251 *wl)
 {
 	int ret;
@@ -1559,7 +1538,6 @@ int wl1251_init_ieee80211(struct wl1251 *wl)
 
 	wl->hw->queues = 4;
 
-<<<<<<< HEAD
 	if (wl->nvs == NULL && !wl->use_eeprom) {
 		ret = wl1251_fetch_nvs(wl);
 		if (ret < 0)
@@ -1587,10 +1565,6 @@ int wl1251_init_ieee80211(struct wl1251 *wl)
 		wl1251_warning("MAC address in eeprom or nvs data is not valid");
 		wl1251_warning("Setting random MAC address: %pM", wl->mac_addr);
 	}
-=======
-	if (wl->use_eeprom)
-		wl1251_read_eeprom_mac(wl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = wl1251_register_hw(wl);
 	if (ret)
@@ -1611,10 +1585,6 @@ struct ieee80211_hw *wl1251_alloc_hw(void)
 	struct ieee80211_hw *hw;
 	struct wl1251 *wl;
 	int i;
-<<<<<<< HEAD
-=======
-	static const u8 nokia_oui[3] = {0x00, 0x1f, 0xdf};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	hw = ieee80211_alloc_hw(sizeof(*wl), &wl1251_ops);
 	if (!hw) {
@@ -1664,16 +1634,6 @@ struct ieee80211_hw *wl1251_alloc_hw(void)
 	INIT_WORK(&wl->irq_work, wl1251_irq_work);
 	INIT_WORK(&wl->tx_work, wl1251_tx_work);
 
-<<<<<<< HEAD
-=======
-	/*
-	 * In case our MAC address is not correctly set,
-	 * we use a random but Nokia MAC.
-	 */
-	memcpy(wl->mac_addr, nokia_oui, 3);
-	get_random_bytes(wl->mac_addr + 3, 3);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wl->state = WL1251_STATE_OFF;
 	mutex_init(&wl->mutex);
 	spin_lock_init(&wl->wl_lock);

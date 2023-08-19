@@ -9,10 +9,7 @@
 #include <linux/kernel.h>
 #include <asm/sgialib.h>
 #include <asm/bcache.h>
-<<<<<<< HEAD
 #include <asm/setup.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * IP22 boardcache is not compatible with board caches.	 Thus we disable it

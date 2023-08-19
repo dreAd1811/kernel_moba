@@ -89,11 +89,7 @@ static void dostream(struct work_struct *work)
 	int ret = 0;
 	int len;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_STREAM, "dostream started\n");
-=======
-	PDEBUG(D_STREAM, "dostream started");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* loop reading a frame */
 again:
@@ -164,11 +160,7 @@ again:
 	}
 
 out:
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_STREAM, "dostream stopped\n");
-=======
-	PDEBUG(D_STREAM, "dostream stopped");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* this function is called at probe time */

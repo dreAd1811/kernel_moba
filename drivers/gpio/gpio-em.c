@@ -27,11 +27,7 @@
 #include <linux/irqdomain.h>
 #include <linux/bitops.h>
 #include <linux/err.h>
-<<<<<<< HEAD
 #include <linux/gpio/driver.h>
-=======
-#include <linux/gpio.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/slab.h>
 #include <linux/module.h>
 #include <linux/pinctrl/consumer.h>
@@ -105,7 +101,6 @@ static void em_gio_irq_enable(struct irq_data *d)
 static int em_gio_irq_reqres(struct irq_data *d)
 {
 	struct em_gio_priv *p = irq_data_get_irq_chip_data(d);
-<<<<<<< HEAD
 	int ret;
 
 	ret = gpiochip_lock_as_irq(&p->gpio_chip, irqd_to_hwirq(d));
@@ -114,14 +109,6 @@ static int em_gio_irq_reqres(struct irq_data *d)
 			"unable to lock HW IRQ %lu for IRQ\n",
 			irqd_to_hwirq(d));
 		return ret;
-=======
-
-	if (gpiochip_lock_as_irq(&p->gpio_chip, irqd_to_hwirq(d))) {
-		dev_err(p->gpio_chip.parent,
-			"unable to lock HW IRQ %lu for IRQ\n",
-			irqd_to_hwirq(d));
-		return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return 0;
 }
@@ -254,20 +241,12 @@ static int em_gio_to_irq(struct gpio_chip *chip, unsigned offset)
 
 static int em_gio_request(struct gpio_chip *chip, unsigned offset)
 {
-<<<<<<< HEAD
 	return pinctrl_gpio_request(chip->base + offset);
-=======
-	return pinctrl_request_gpio(chip->base + offset);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void em_gio_free(struct gpio_chip *chip, unsigned offset)
 {
-<<<<<<< HEAD
 	pinctrl_gpio_free(chip->base + offset);
-=======
-	pinctrl_free_gpio(chip->base + offset);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Set the GPIO as an input to ensure that the next GPIO request won't
 	* drive the GPIO pin as an output.

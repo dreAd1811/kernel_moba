@@ -1,11 +1,7 @@
 /*
  * TFP410 DPI-to-DVI encoder driver
  *
-<<<<<<< HEAD
  * Copyright (C) 2013 Texas Instruments Incorporated - http://www.ti.com/
-=======
- * Copyright (C) 2013 Texas Instruments
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Author: Tomi Valkeinen <tomi.valkeinen@ti.com>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -36,17 +32,12 @@ static int tfp410_connect(struct omap_dss_device *dssdev,
 		struct omap_dss_device *dst)
 {
 	struct panel_drv_data *ddata = to_panel_data(dssdev);
-<<<<<<< HEAD
 	struct omap_dss_device *in;
-=======
-	struct omap_dss_device *in = ddata->in;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int r;
 
 	if (omapdss_device_is_connected(dssdev))
 		return -EBUSY;
 
-<<<<<<< HEAD
 	in = omapdss_of_find_source_for_first_ep(dssdev->dev->of_node);
 	if (IS_ERR(in)) {
 		dev_err(dssdev->dev, "failed to find video source\n");
@@ -58,19 +49,11 @@ static int tfp410_connect(struct omap_dss_device *dssdev,
 		omap_dss_put_device(in);
 		return r;
 	}
-=======
-	r = in->ops.dpi->connect(in, dssdev);
-	if (r)
-		return r;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dst->src = dssdev;
 	dssdev->dst = dst;
 
-<<<<<<< HEAD
 	ddata->in = in;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -92,12 +75,9 @@ static void tfp410_disconnect(struct omap_dss_device *dssdev,
 	dssdev->dst = NULL;
 
 	in->ops.dpi->disconnect(in, &ddata->dssdev);
-<<<<<<< HEAD
 
 	omap_dss_put_device(in);
 	ddata->in = NULL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int tfp410_enable(struct omap_dss_device *dssdev)
@@ -197,10 +177,6 @@ static int tfp410_probe_of(struct platform_device *pdev)
 {
 	struct panel_drv_data *ddata = platform_get_drvdata(pdev);
 	struct device_node *node = pdev->dev.of_node;
-<<<<<<< HEAD
-=======
-	struct omap_dss_device *in;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int gpio;
 
 	gpio = of_get_named_gpio(node, "powerdown-gpios", 0);
@@ -208,26 +184,11 @@ static int tfp410_probe_of(struct platform_device *pdev)
 	if (gpio_is_valid(gpio) || gpio == -ENOENT) {
 		ddata->pd_gpio = gpio;
 	} else {
-<<<<<<< HEAD
 		if (gpio != -EPROBE_DEFER)
 			dev_err(&pdev->dev, "failed to parse PD gpio\n");
 		return gpio;
 	}
 
-=======
-		dev_err(&pdev->dev, "failed to parse PD gpio\n");
-		return gpio;
-	}
-
-	in = omapdss_of_find_source_for_first_ep(node);
-	if (IS_ERR(in)) {
-		dev_err(&pdev->dev, "failed to find video source\n");
-		return PTR_ERR(in);
-	}
-
-	ddata->in = in;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -243,12 +204,6 @@ static int tfp410_probe(struct platform_device *pdev)
 
 	platform_set_drvdata(pdev, ddata);
 
-<<<<<<< HEAD
-=======
-	if (!pdev->dev.of_node)
-		return -ENODEV;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	r = tfp410_probe_of(pdev);
 	if (r)
 		return r;
@@ -259,11 +214,7 @@ static int tfp410_probe(struct platform_device *pdev)
 		if (r) {
 			dev_err(&pdev->dev, "Failed to request PD GPIO %d\n",
 					ddata->pd_gpio);
-<<<<<<< HEAD
 			return r;
-=======
-			goto err_gpio;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -278,31 +229,16 @@ static int tfp410_probe(struct platform_device *pdev)
 	r = omapdss_register_output(dssdev);
 	if (r) {
 		dev_err(&pdev->dev, "Failed to register output\n");
-<<<<<<< HEAD
 		return r;
 	}
 
 	return 0;
-=======
-		goto err_reg;
-	}
-
-	return 0;
-err_reg:
-err_gpio:
-	omap_dss_put_device(ddata->in);
-	return r;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int __exit tfp410_remove(struct platform_device *pdev)
 {
 	struct panel_drv_data *ddata = platform_get_drvdata(pdev);
 	struct omap_dss_device *dssdev = &ddata->dssdev;
-<<<<<<< HEAD
-=======
-	struct omap_dss_device *in = ddata->in;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	omapdss_unregister_output(&ddata->dssdev);
 
@@ -314,11 +250,6 @@ static int __exit tfp410_remove(struct platform_device *pdev)
 	if (omapdss_device_is_connected(dssdev))
 		tfp410_disconnect(dssdev, dssdev->dst);
 
-<<<<<<< HEAD
-=======
-	omap_dss_put_device(in);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

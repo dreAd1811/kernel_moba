@@ -36,11 +36,8 @@ MODULE_PARM_DESC(log_ecn_error, "Log packets received with corrupted ECN");
 
 #define GENEVE_VER 0
 #define GENEVE_BASE_HLEN (sizeof(struct udphdr) + sizeof(struct genevehdr))
-<<<<<<< HEAD
 #define GENEVE_IPV4_HLEN (ETH_HLEN + sizeof(struct iphdr) + GENEVE_BASE_HLEN)
 #define GENEVE_IPV6_HLEN (ETH_HLEN + sizeof(struct ipv6hdr) + GENEVE_BASE_HLEN)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* per-network namespace private data for this module */
 struct geneve_net {
@@ -239,12 +236,8 @@ static void geneve_rx(struct geneve_dev *geneve, struct geneve_sock *gs,
 		}
 		/* Update tunnel dst according to Geneve options. */
 		ip_tunnel_info_opts_set(&tun_dst->u.tun_info,
-<<<<<<< HEAD
 					gnvh->options, gnvh->opt_len * 4,
 					TUNNEL_GENEVE_OPT);
-=======
-					gnvh->options, gnvh->opt_len * 4);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		/* Drop packets w/ critical options,
 		 * since we don't support any...
@@ -426,20 +419,12 @@ static int geneve_hlen(struct genevehdr *gh)
 	return sizeof(*gh) + gh->opt_len * 4;
 }
 
-<<<<<<< HEAD
 static struct sk_buff *geneve_gro_receive(struct sock *sk,
 					  struct list_head *head,
 					  struct sk_buff *skb)
 {
 	struct sk_buff *pp = NULL;
 	struct sk_buff *p;
-=======
-static struct sk_buff **geneve_gro_receive(struct sock *sk,
-					   struct sk_buff **head,
-					   struct sk_buff *skb)
-{
-	struct sk_buff *p, **pp = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct genevehdr *gh, *gh2;
 	unsigned int hlen, gh_len, off_gnv;
 	const struct packet_offload *ptype;
@@ -466,11 +451,7 @@ static struct sk_buff **geneve_gro_receive(struct sock *sk,
 			goto out;
 	}
 
-<<<<<<< HEAD
 	list_for_each_entry(p, head, list) {
-=======
-	for (p = *head; p; p = p->next) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!NAPI_GRO_CB(p)->same_flow)
 			continue;
 
@@ -700,12 +681,8 @@ static void geneve_build_header(struct genevehdr *geneveh,
 	geneveh->proto_type = htons(ETH_P_TEB);
 	geneveh->rsvd2 = 0;
 
-<<<<<<< HEAD
 	if (info->key.tun_flags & TUNNEL_GENEVE_OPT)
 		ip_tunnel_info_opts_get(geneveh->options, info);
-=======
-	ip_tunnel_info_opts_get(geneveh->options, info);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int geneve_build_skb(struct dst_entry *dst, struct sk_buff *skb,
@@ -824,13 +801,7 @@ static struct dst_entry *geneve_get_v6_dst(struct sk_buff *skb,
 		if (dst)
 			return dst;
 	}
-<<<<<<< HEAD
 	if (ipv6_stub->ipv6_dst_lookup(geneve->net, gs6->sock->sk, &dst, fl6)) {
-=======
-	dst = ipv6_stub->ipv6_dst_lookup_flow(geneve->net, gs6->sock->sk, fl6,
-					      NULL);
-	if (IS_ERR(dst)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		netdev_dbg(dev, "no route to %pI6\n", &fl6->daddr);
 		return ERR_PTR(-ENETUNREACH);
 	}
@@ -864,17 +835,8 @@ static int geneve_xmit_skb(struct sk_buff *skb, struct net_device *dev,
 	if (IS_ERR(rt))
 		return PTR_ERR(rt);
 
-<<<<<<< HEAD
 	skb_tunnel_check_pmtu(skb, &rt->dst,
 			      GENEVE_IPV4_HLEN + info->options_len);
-=======
-	if (skb_dst(skb)) {
-		int mtu = dst_mtu(&rt->dst) - sizeof(struct iphdr) -
-			  GENEVE_BASE_HLEN - info->options_len - 14;
-
-		skb_dst_update_pmtu(skb, mtu);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sport = udp_flow_src_port(geneve->net, skb, 1, USHRT_MAX, true);
 	if (geneve->collect_md) {
@@ -915,16 +877,7 @@ static int geneve6_xmit_skb(struct sk_buff *skb, struct net_device *dev,
 	if (IS_ERR(dst))
 		return PTR_ERR(dst);
 
-<<<<<<< HEAD
 	skb_tunnel_check_pmtu(skb, dst, GENEVE_IPV6_HLEN + info->options_len);
-=======
-	if (skb_dst(skb)) {
-		int mtu = dst_mtu(dst) - sizeof(struct ipv6hdr) -
-			  GENEVE_BASE_HLEN - info->options_len - 14;
-
-		skb_dst_update_pmtu(skb, mtu);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sport = udp_flow_src_port(geneve->net, skb, 1, USHRT_MAX, true);
 	if (geneve->collect_md) {
@@ -956,16 +909,9 @@ static netdev_tx_t geneve_xmit(struct sk_buff *skb, struct net_device *dev)
 	if (geneve->collect_md) {
 		info = skb_tunnel_info(skb);
 		if (unlikely(!info || !(info->mode & IP_TUNNEL_INFO_TX))) {
-<<<<<<< HEAD
 			err = -EINVAL;
 			netdev_dbg(dev, "no tunnel metadata\n");
 			goto tx_error;
-=======
-			netdev_dbg(dev, "no tunnel metadata\n");
-			dev_kfree_skb(skb);
-			dev->stats.tx_dropped++;
-			return NETDEV_TX_OK;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	} else {
 		info = &geneve->info;
@@ -982,11 +928,7 @@ static netdev_tx_t geneve_xmit(struct sk_buff *skb, struct net_device *dev)
 
 	if (likely(!err))
 		return NETDEV_TX_OK;
-<<<<<<< HEAD
 tx_error:
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_kfree_skb(skb);
 
 	if (err == -ELOOP)
@@ -1000,18 +942,10 @@ tx_error:
 
 static int geneve_change_mtu(struct net_device *dev, int new_mtu)
 {
-<<<<<<< HEAD
 	if (new_mtu > dev->max_mtu)
 		new_mtu = dev->max_mtu;
 	else if (new_mtu < dev->min_mtu)
 		new_mtu = dev->min_mtu;
-=======
-	/* Only possible if called internally, ndo_change_mtu path's new_mtu
-	 * is guaranteed to be between dev->min_mtu and dev->max_mtu.
-	 */
-	if (new_mtu > dev->max_mtu)
-		new_mtu = dev->max_mtu;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev->mtu = new_mtu;
 	return 0;
@@ -1214,32 +1148,11 @@ static struct geneve_dev *geneve_find_dev(struct geneve_net *gn,
 	return t;
 }
 
-<<<<<<< HEAD
 static bool is_tnl_info_zero(const struct ip_tunnel_info *info)
 {
 	return !(info->key.tun_id || info->key.tun_flags || info->key.tos ||
 		 info->key.ttl || info->key.label || info->key.tp_src ||
 		 memchr_inv(&info->key.u, 0, sizeof(info->key.u)));
-=======
-static bool is_all_zero(const u8 *fp, size_t size)
-{
-	int i;
-
-	for (i = 0; i < size; i++)
-		if (fp[i])
-			return false;
-	return true;
-}
-
-static bool is_tnl_info_zero(const struct ip_tunnel_info *info)
-{
-	if (info->key.tun_id || info->key.tun_flags || info->key.tos ||
-	    info->key.ttl || info->key.label || info->key.tp_src ||
-	    !is_all_zero((const u8 *)&info->key.u, sizeof(info->key.u)))
-		return false;
-	else
-		return true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool geneve_dst_addr_equal(struct ip_tunnel_info *a,
@@ -1348,11 +1261,7 @@ static int geneve_nl2info(struct nlattr *tb[], struct nlattr *data[],
 	}
 
 	if (data[IFLA_GENEVE_REMOTE6]) {
-<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_IPV6)
-=======
- #if IS_ENABLED(CONFIG_IPV6)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (changelink && (ip_tunnel_info_af(info) == AF_INET)) {
 			attrtype = IFLA_GENEVE_REMOTE6;
 			goto change_notsup;
@@ -1478,7 +1387,6 @@ change_notsup:
 	return -EOPNOTSUPP;
 }
 
-<<<<<<< HEAD
 static void geneve_link_config(struct net_device *dev,
 			       struct ip_tunnel_info *info, struct nlattr *tb[])
 {
@@ -1525,8 +1433,6 @@ static void geneve_link_config(struct net_device *dev,
 	geneve_change_mtu(dev, ldev_mtu - info->options_len);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int geneve_newlink(struct net *net, struct net_device *dev,
 			  struct nlattr *tb[], struct nlattr *data[],
 			  struct netlink_ext_ack *extack)
@@ -1542,7 +1448,6 @@ static int geneve_newlink(struct net *net, struct net_device *dev,
 	if (err)
 		return err;
 
-<<<<<<< HEAD
 	err = geneve_configure(net, dev, extack, &info, metadata,
 			       use_udp6_rx_checksums);
 	if (err)
@@ -1551,10 +1456,6 @@ static int geneve_newlink(struct net *net, struct net_device *dev,
 	geneve_link_config(dev, &info, tb);
 
 	return 0;
-=======
-	return geneve_configure(net, dev, extack, &info, metadata,
-				use_udp6_rx_checksums);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Quiesces the geneve device data path for both TX and RX.
@@ -1628,15 +1529,10 @@ static int geneve_changelink(struct net_device *dev, struct nlattr *tb[],
 	if (err)
 		return err;
 
-<<<<<<< HEAD
 	if (!geneve_dst_addr_equal(&geneve->info, &info)) {
 		dst_cache_reset(&info.dst_cache);
 		geneve_link_config(dev, &info, tb);
 	}
-=======
-	if (!geneve_dst_addr_equal(&geneve->info, &info))
-		dst_cache_reset(&info.dst_cache);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	geneve_quiesce(geneve, &gs4, &gs6);
 	geneve->info = info;
@@ -1810,30 +1706,16 @@ static __net_init int geneve_init_net(struct net *net)
 	return 0;
 }
 
-<<<<<<< HEAD
 static void geneve_destroy_tunnels(struct net *net, struct list_head *head)
-=======
-static void __net_exit geneve_exit_net(struct net *net)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct geneve_net *gn = net_generic(net, geneve_net_id);
 	struct geneve_dev *geneve, *next;
 	struct net_device *dev, *aux;
-<<<<<<< HEAD
-=======
-	LIST_HEAD(list);
-
-	rtnl_lock();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* gather any geneve devices that were moved into this ns */
 	for_each_netdev_safe(net, dev, aux)
 		if (dev->rtnl_link_ops == &geneve_link_ops)
-<<<<<<< HEAD
 			unregister_netdevice_queue(dev, head);
-=======
-			unregister_netdevice_queue(dev, &list);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* now gather any other geneve devices that were created in this ns */
 	list_for_each_entry_safe(geneve, next, &gn->geneve_list, next) {
@@ -1841,7 +1723,6 @@ static void __net_exit geneve_exit_net(struct net *net)
 		 * to the list by the previous loop.
 		 */
 		if (!net_eq(dev_net(geneve->dev), net))
-<<<<<<< HEAD
 			unregister_netdevice_queue(geneve->dev, head);
 	}
 
@@ -1857,11 +1738,6 @@ static void __net_exit geneve_exit_batch_net(struct list_head *net_list)
 	list_for_each_entry(net, net_list, exit_list)
 		geneve_destroy_tunnels(net, &list);
 
-=======
-			unregister_netdevice_queue(geneve->dev, &list);
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* unregister the devices gathered above */
 	unregister_netdevice_many(&list);
 	rtnl_unlock();
@@ -1869,11 +1745,7 @@ static void __net_exit geneve_exit_batch_net(struct list_head *net_list)
 
 static struct pernet_operations geneve_net_ops = {
 	.init = geneve_init_net,
-<<<<<<< HEAD
 	.exit_batch = geneve_exit_batch_net,
-=======
-	.exit = geneve_exit_net,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.id   = &geneve_net_id,
 	.size = sizeof(struct geneve_net),
 };

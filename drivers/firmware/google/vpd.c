@@ -289,30 +289,15 @@ static int vpd_sections_init(phys_addr_t physaddr)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int vpd_probe(struct coreboot_device *dev)
 {
 	int ret;
-=======
-static int vpd_probe(struct platform_device *pdev)
-{
-	int ret;
-	struct lb_cbmem_ref entry;
-
-	ret = coreboot_table_find(CB_TAG_VPD, &entry, sizeof(entry));
-	if (ret)
-		return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vpd_kobj = kobject_create_and_add("vpd", firmware_kobj);
 	if (!vpd_kobj)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	ret = vpd_sections_init(dev->cbmem_ref.cbmem_addr);
-=======
-	ret = vpd_sections_init(entry.cbmem_addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		kobject_put(vpd_kobj);
 		return ret;
@@ -321,11 +306,7 @@ static int vpd_probe(struct platform_device *pdev)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int vpd_remove(struct coreboot_device *dev)
-=======
-static int vpd_remove(struct platform_device *pdev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	vpd_section_destroy(&ro_vpd);
 	vpd_section_destroy(&rw_vpd);
@@ -335,7 +316,6 @@ static int vpd_remove(struct platform_device *pdev)
 	return 0;
 }
 
-<<<<<<< HEAD
 static struct coreboot_driver vpd_driver = {
 	.probe = vpd_probe,
 	.remove = vpd_remove,
@@ -357,43 +337,6 @@ static void __exit coreboot_vpd_exit(void)
 
 module_init(coreboot_vpd_init);
 module_exit(coreboot_vpd_exit);
-=======
-static struct platform_driver vpd_driver = {
-	.probe = vpd_probe,
-	.remove = vpd_remove,
-	.driver = {
-		.name = "vpd",
-	},
-};
-
-static struct platform_device *vpd_pdev;
-
-static int __init vpd_platform_init(void)
-{
-	int ret;
-
-	ret = platform_driver_register(&vpd_driver);
-	if (ret)
-		return ret;
-
-	vpd_pdev = platform_device_register_simple("vpd", -1, NULL, 0);
-	if (IS_ERR(vpd_pdev)) {
-		platform_driver_unregister(&vpd_driver);
-		return PTR_ERR(vpd_pdev);
-	}
-
-	return 0;
-}
-
-static void __exit vpd_platform_exit(void)
-{
-	platform_device_unregister(vpd_pdev);
-	platform_driver_unregister(&vpd_driver);
-}
-
-module_init(vpd_platform_init);
-module_exit(vpd_platform_exit);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 MODULE_AUTHOR("Google, Inc.");
 MODULE_LICENSE("GPL");

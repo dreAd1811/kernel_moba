@@ -53,11 +53,7 @@ static int dbell2prio(ulong param)
 
 static int kvmppc_e500_emul_msgclr(struct kvm_vcpu *vcpu, int rb)
 {
-<<<<<<< HEAD
 	ulong param = vcpu->arch.regs.gpr[rb];
-=======
-	ulong param = vcpu->arch.gpr[rb];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int prio = dbell2prio(param);
 
 	if (prio < 0)
@@ -69,11 +65,7 @@ static int kvmppc_e500_emul_msgclr(struct kvm_vcpu *vcpu, int rb)
 
 static int kvmppc_e500_emul_msgsnd(struct kvm_vcpu *vcpu, int rb)
 {
-<<<<<<< HEAD
 	ulong param = vcpu->arch.regs.gpr[rb];
-=======
-	ulong param = vcpu->arch.gpr[rb];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int prio = dbell2prio(rb);
 	int pir = param & PPC_DBELL_PIR_MASK;
 	int i;
@@ -102,11 +94,7 @@ static int kvmppc_e500_emul_ehpriv(struct kvm_run *run, struct kvm_vcpu *vcpu,
 	switch (get_oc(inst)) {
 	case EHPRIV_OC_DEBUG:
 		run->exit_reason = KVM_EXIT_DEBUG;
-<<<<<<< HEAD
 		run->debug.arch.address = vcpu->arch.regs.nip;
-=======
-		run->debug.arch.address = vcpu->arch.pc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		run->debug.arch.status = 0;
 		kvmppc_account_exit(vcpu, DEBUG_EXITS);
 		emulated = EMULATE_EXIT_USER;

@@ -497,12 +497,6 @@ static int pppoe_disc_rcv(struct sk_buff *skb, struct net_device *dev,
 	if (!skb)
 		goto out;
 
-<<<<<<< HEAD
-=======
-	if (skb->pkt_type != PACKET_HOST)
-		goto abort;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!pskb_may_pull(skb, sizeof(struct pppoe_hdr)))
 		goto abort;
 
@@ -728,11 +722,7 @@ err_put:
 }
 
 static int pppoe_getname(struct socket *sock, struct sockaddr *uaddr,
-<<<<<<< HEAD
 		  int peer)
-=======
-		  int *usockaddr_len, int peer)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int len = sizeof(struct sockaddr_pppox);
 	struct sockaddr_pppox sp;
@@ -744,13 +734,7 @@ static int pppoe_getname(struct socket *sock, struct sockaddr *uaddr,
 
 	memcpy(uaddr, &sp, len);
 
-<<<<<<< HEAD
 	return len;
-=======
-	*usockaddr_len = len;
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int pppoe_ioctl(struct socket *sock, unsigned int cmd,
@@ -1116,24 +1100,6 @@ static const struct seq_operations pppoe_seq_ops = {
 	.stop		= pppoe_seq_stop,
 	.show		= pppoe_seq_show,
 };
-<<<<<<< HEAD
-=======
-
-static int pppoe_seq_open(struct inode *inode, struct file *file)
-{
-	return seq_open_net(inode, file, &pppoe_seq_ops,
-			sizeof(struct seq_net_private));
-}
-
-static const struct file_operations pppoe_seq_fops = {
-	.owner		= THIS_MODULE,
-	.open		= pppoe_seq_open,
-	.read		= seq_read,
-	.llseek		= seq_lseek,
-	.release	= seq_release_net,
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_PROC_FS */
 
 static const struct proto_ops pppoe_ops = {
@@ -1172,12 +1138,8 @@ static __net_init int pppoe_init_net(struct net *net)
 
 	rwlock_init(&pn->hash_lock);
 
-<<<<<<< HEAD
 	pde = proc_create_net("pppoe", 0444, net->proc_net,
 			&pppoe_seq_ops, sizeof(struct seq_net_private));
-=======
-	pde = proc_create("pppoe", S_IRUGO, net->proc_net, &pppoe_seq_fops);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_PROC_FS
 	if (!pde)
 		return -ENOMEM;

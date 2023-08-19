@@ -17,13 +17,8 @@
 #include <linux/oid_registry.h>
 #include <crypto/public_key.h>
 #include "x509_parser.h"
-<<<<<<< HEAD
 #include "x509.asn1.h"
 #include "x509_akid.asn1.h"
-=======
-#include "x509-asn1.h"
-#include "x509_akid-asn1.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct x509_parse_context {
 	struct x509_certificate	*cert;		/* Certificate being constructed */

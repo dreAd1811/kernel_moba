@@ -707,10 +707,7 @@ static ssize_t mousedev_write(struct file *file, const char __user *buffer,
 		mousedev_generate_response(client, c);
 
 		spin_unlock_irq(&client->packet_lock);
-<<<<<<< HEAD
 		cond_resched();
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	kill_fasync(&client->fasync, SIGIO, POLL_IN);
@@ -761,7 +758,6 @@ static ssize_t mousedev_read(struct file *file, char __user *buffer,
 }
 
 /* No kernel lock - fine */
-<<<<<<< HEAD
 static __poll_t mousedev_poll(struct file *file, poll_table *wait)
 {
 	struct mousedev_client *client = file->private_data;
@@ -773,19 +769,6 @@ static __poll_t mousedev_poll(struct file *file, poll_table *wait)
 	mask = mousedev->exist ? EPOLLOUT | EPOLLWRNORM : EPOLLHUP | EPOLLERR;
 	if (client->ready || client->buffer)
 		mask |= EPOLLIN | EPOLLRDNORM;
-=======
-static unsigned int mousedev_poll(struct file *file, poll_table *wait)
-{
-	struct mousedev_client *client = file->private_data;
-	struct mousedev *mousedev = client->mousedev;
-	unsigned int mask;
-
-	poll_wait(file, &mousedev->wait, wait);
-
-	mask = mousedev->exist ? POLLOUT | POLLWRNORM : POLLHUP | POLLERR;
-	if (client->ready || client->buffer)
-		mask |= POLLIN | POLLRDNORM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return mask;
 }

@@ -27,11 +27,7 @@
 #include <linux/i2c.h>
 #include <linux/mutex.h>
 
-<<<<<<< HEAD
 #include <media/dvb_frontend.h>
-=======
-#include "dvb_frontend.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "dib0070.h"
 #include "dibx000_common.h"
@@ -730,17 +726,10 @@ static void dib0070_release(struct dvb_frontend *fe)
 
 static const struct dvb_tuner_ops dib0070_ops = {
 	.info = {
-<<<<<<< HEAD
 		.name              = "DiBcom DiB0070",
 		.frequency_min_hz  =  45 * MHz,
 		.frequency_max_hz  = 860 * MHz,
 		.frequency_step_hz =   1 * kHz,
-=======
-		.name           = "DiBcom DiB0070",
-		.frequency_min  =  45000000,
-		.frequency_max  = 860000000,
-		.frequency_step =      1000,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.release       = dib0070_release,
 

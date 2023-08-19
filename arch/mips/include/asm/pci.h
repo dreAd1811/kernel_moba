@@ -106,11 +106,6 @@ extern unsigned long PCIBIOS_MIN_MEM;
 
 #define PCIBIOS_MIN_CARDBUS_IO	0x4000
 
-<<<<<<< HEAD
-=======
-extern void pcibios_set_master(struct pci_dev *dev);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define HAVE_PCI_MMAP
 #define ARCH_GENERIC_PCI_MMAP_RESOURCE
 #define HAVE_ARCH_PCI_RESOURCE_TO_USER
@@ -126,18 +121,6 @@ extern void pcibios_set_master(struct pci_dev *dev);
 #include <linux/string.h>
 #include <asm/io.h>
 
-<<<<<<< HEAD
-=======
-struct pci_dev;
-
-/*
- * The PCI address space does equal the physical memory address space.
- * The networking and block device layers use this boolean for bounce
- * buffer decisions.
- */
-#define PCI_DMA_BUS_IS_PHYS     (1)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_PCI_DOMAINS_GENERIC
 static inline int pci_proc_domain(struct pci_bus *bus)
 {

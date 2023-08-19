@@ -34,26 +34,15 @@ void virtio_gpu_gem_free_object(struct drm_gem_object *gem_obj)
 		virtio_gpu_object_unref(&obj);
 }
 
-<<<<<<< HEAD
 struct virtio_gpu_object *virtio_gpu_alloc_object(struct drm_device *dev,
 						  size_t size, bool kernel,
 						  bool pinned)
-=======
-struct virtio_gpu_object*
-virtio_gpu_alloc_object(struct drm_device *dev,
-			struct virtio_gpu_object_params *params,
-			struct virtio_gpu_fence *fence)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct virtio_gpu_device *vgdev = dev->dev_private;
 	struct virtio_gpu_object *obj;
 	int ret;
 
-<<<<<<< HEAD
 	ret = virtio_gpu_object_create(vgdev, size, kernel, pinned, &obj);
-=======
-	ret = virtio_gpu_object_create(vgdev, params, &obj, fence);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ERR_PTR(ret);
 
@@ -62,11 +51,7 @@ virtio_gpu_alloc_object(struct drm_device *dev,
 
 int virtio_gpu_gem_create(struct drm_file *file,
 			  struct drm_device *dev,
-<<<<<<< HEAD
 			  uint64_t size,
-=======
-			  struct virtio_gpu_object_params *params,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  struct drm_gem_object **obj_p,
 			  uint32_t *handle_p)
 {
@@ -74,11 +59,7 @@ int virtio_gpu_gem_create(struct drm_file *file,
 	int ret;
 	u32 handle;
 
-<<<<<<< HEAD
 	obj = virtio_gpu_alloc_object(dev, size, false, false);
-=======
-	obj = virtio_gpu_alloc_object(dev, params, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(obj))
 		return PTR_ERR(obj);
 
@@ -101,7 +82,6 @@ int virtio_gpu_mode_dumb_create(struct drm_file *file_priv,
 				struct drm_device *dev,
 				struct drm_mode_create_dumb *args)
 {
-<<<<<<< HEAD
 	struct virtio_gpu_device *vgdev = dev->dev_private;
 	struct drm_gem_object *gobj;
 	struct virtio_gpu_object *obj;
@@ -109,32 +89,16 @@ int virtio_gpu_mode_dumb_create(struct drm_file *file_priv,
 	uint32_t pitch;
 	uint32_t resid;
 	uint32_t format;
-=======
-	struct drm_gem_object *gobj;
-	struct virtio_gpu_object_params params = { 0 };
-	int ret;
-	uint32_t pitch;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pitch = args->width * ((args->bpp + 1) / 8);
 	args->size = pitch * args->height;
 	args->size = ALIGN(args->size, PAGE_SIZE);
 
-<<<<<<< HEAD
 	ret = virtio_gpu_gem_create(file_priv, dev, args->size, &gobj,
-=======
-	params.format = virtio_gpu_translate_format(DRM_FORMAT_HOST_XRGB8888);
-	params.width = args->width;
-	params.height = args->height;
-	params.size = args->size;
-	params.dumb = true;
-	ret = virtio_gpu_gem_create(file_priv, dev, &params, &gobj,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    &args->handle);
 	if (ret)
 		goto fail;
 
-<<<<<<< HEAD
 	format = virtio_gpu_translate_format(DRM_FORMAT_XRGB8888);
 	virtio_gpu_resource_id_get(vgdev, &resid);
 	virtio_gpu_cmd_create_resource(vgdev, resid, format,
@@ -147,8 +111,6 @@ int virtio_gpu_mode_dumb_create(struct drm_file *file_priv,
 		goto fail;
 
 	obj->dumb = true;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	args->pitch = pitch;
 	return ret;
 

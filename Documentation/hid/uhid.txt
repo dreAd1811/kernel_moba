@@ -160,11 +160,7 @@ them but you should handle them according to your needs.
   UHID_OUTPUT:
   This is sent if the HID device driver wants to send raw data to the I/O
   device on the interrupt channel. You should read the payload and forward it to
-<<<<<<< HEAD
   the device. The payload is of type "struct uhid_data_req".
-=======
-  the device. The payload is of type "struct uhid_output_req".
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
   This may be received even though you haven't received UHID_OPEN, yet.
 
   UHID_GET_REPORT:

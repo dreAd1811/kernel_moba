@@ -10,26 +10,12 @@
 #include <linux/kbuild.h>
 #include <linux/kvm_host.h>
 #include <linux/sched.h>
-<<<<<<< HEAD
 #include <linux/purgatory.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/idle.h>
 #include <asm/vdso.h>
 #include <asm/pgtable.h>
 #include <asm/gmap.h>
-<<<<<<< HEAD
 #include <asm/nmi.h>
-=======
-
-/*
- * Make sure that the compiler is new enough. We want a compiler that
- * is known to work with the "Q" assembler constraint.
- */
-#if __GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 3)
-#error Your compiler is too old; please use version 4.3 or newer
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int main(void)
 {
@@ -70,10 +56,7 @@ int main(void)
 	OFFSET(__SF_SIE_CONTROL, stack_frame, empty1[0]);
 	OFFSET(__SF_SIE_SAVEAREA, stack_frame, empty1[1]);
 	OFFSET(__SF_SIE_REASON, stack_frame, empty1[2]);
-<<<<<<< HEAD
 	OFFSET(__SF_SIE_FLAGS, stack_frame, empty1[3]);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	BLANK();
 	/* timeval/timezone offsets for use by vdso */
 	OFFSET(__VDSO_UPD_COUNT, vdso_data, tb_update_count);
@@ -171,10 +154,7 @@ int main(void)
 	OFFSET(__LC_LAST_UPDATE_CLOCK, lowcore, last_update_clock);
 	OFFSET(__LC_INT_CLOCK, lowcore, int_clock);
 	OFFSET(__LC_MCCK_CLOCK, lowcore, mcck_clock);
-<<<<<<< HEAD
 	OFFSET(__LC_CLOCK_COMPARATOR, lowcore, clock_comparator);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	OFFSET(__LC_BOOT_CLOCK, lowcore, boot_clock);
 	OFFSET(__LC_CURRENT, lowcore, current_task);
 	OFFSET(__LC_KERNEL_STACK, lowcore, kernel_stack);
@@ -185,10 +165,7 @@ int main(void)
 	OFFSET(__LC_RESTART_DATA, lowcore, restart_data);
 	OFFSET(__LC_RESTART_SOURCE, lowcore, restart_source);
 	OFFSET(__LC_USER_ASCE, lowcore, user_asce);
-<<<<<<< HEAD
 	OFFSET(__LC_VDSO_ASCE, lowcore, vdso_asce);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	OFFSET(__LC_LPP, lowcore, lpp);
 	OFFSET(__LC_CURRENT_PID, lowcore, current_pid);
 	OFFSET(__LC_PERCPU_OFFSET, lowcore, percpu_offset);
@@ -196,10 +173,6 @@ int main(void)
 	OFFSET(__LC_MACHINE_FLAGS, lowcore, machine_flags);
 	OFFSET(__LC_PREEMPT_COUNT, lowcore, preempt_count);
 	OFFSET(__LC_GMAP, lowcore, gmap);
-<<<<<<< HEAD
-=======
-	OFFSET(__LC_PASTE, lowcore, paste);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	OFFSET(__LC_BR_R1, lowcore, br_r1_trampoline);
 	/* software defined ABI-relevant lowcore locations 0xe00 - 0xe20 */
 	OFFSET(__LC_DUMP_REIPL, lowcore, ipib);
@@ -218,22 +191,16 @@ int main(void)
 	OFFSET(__LC_CREGS_SAVE_AREA, lowcore, cregs_save_area);
 	OFFSET(__LC_PGM_TDB, lowcore, pgm_tdb);
 	BLANK();
-<<<<<<< HEAD
 	/* extended machine check save area */
 	OFFSET(__MCESA_GS_SAVE_AREA, mcesa, guarded_storage_save_area);
 	BLANK();
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* gmap/sie offsets */
 	OFFSET(__GMAP_ASCE, gmap, asce);
 	OFFSET(__SIE_PROG0C, kvm_s390_sie_block, prog0c);
 	OFFSET(__SIE_PROG20, kvm_s390_sie_block, prog20);
-<<<<<<< HEAD
 	/* kexec_sha_region */
 	OFFSET(__KEXEC_SHA_REGION_START, kexec_sha_region, start);
 	OFFSET(__KEXEC_SHA_REGION_LEN, kexec_sha_region, len);
 	DEFINE(__KEXEC_SHA_REGION_SIZE, sizeof(struct kexec_sha_region));
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }

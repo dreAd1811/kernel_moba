@@ -25,11 +25,7 @@
 
 int read_current_timer(unsigned long *timer_value)
 {
-<<<<<<< HEAD
 	*timer_value = get_cycles();
-=======
-	*timer_value = mfspr(SPR_TTCR);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

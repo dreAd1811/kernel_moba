@@ -189,11 +189,7 @@ struct csis_drvdata {
  * @irq: requested s5p-mipi-csis irq number
  * @interrupt_mask: interrupt mask of the all used interrupts
  * @flags: the state variable for power and streaming control
-<<<<<<< HEAD
  * @clk_frequency: device bus clock frequency
-=======
- * @clock_frequency: device bus clock frequency
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @hs_settle: HS-RX settle time
  * @num_lanes: number of MIPI-CSI data lanes used
  * @max_num_lanes: maximum number of MIPI-CSI data lanes supported
@@ -895,12 +891,7 @@ e_clkput:
 
 static int s5pcsis_pm_suspend(struct device *dev, bool runtime)
 {
-<<<<<<< HEAD
 	struct v4l2_subdev *sd = dev_get_drvdata(dev);
-=======
-	struct platform_device *pdev = to_platform_device(dev);
-	struct v4l2_subdev *sd = platform_get_drvdata(pdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct csis_state *state = sd_to_csis_state(sd);
 	int ret = 0;
 
@@ -929,12 +920,7 @@ static int s5pcsis_pm_suspend(struct device *dev, bool runtime)
 
 static int s5pcsis_pm_resume(struct device *dev, bool runtime)
 {
-<<<<<<< HEAD
 	struct v4l2_subdev *sd = dev_get_drvdata(dev);
-=======
-	struct platform_device *pdev = to_platform_device(dev);
-	struct v4l2_subdev *sd = platform_get_drvdata(pdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct csis_state *state = sd_to_csis_state(sd);
 	int ret = 0;
 

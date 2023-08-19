@@ -119,10 +119,6 @@ static int max5481_write_raw(struct iio_dev *indio_dev,
 static const struct iio_info max5481_info = {
 	.read_raw = max5481_read_raw,
 	.write_raw = max5481_write_raw,
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #if defined(CONFIG_OF)
@@ -210,10 +206,6 @@ MODULE_DEVICE_TABLE(acpi, max5481_acpi_match);
 static struct spi_driver max5481_driver = {
 	.driver = {
 		.name  = "max5481",
-<<<<<<< HEAD
-=======
-		.owner = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.of_match_table = of_match_ptr(max5481_match),
 		.acpi_match_table = ACPI_PTR(max5481_acpi_match),
 	},

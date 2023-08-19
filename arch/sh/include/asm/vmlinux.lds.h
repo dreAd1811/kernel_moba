@@ -7,15 +7,9 @@
 #ifdef CONFIG_DWARF_UNWINDER
 #define DWARF_EH_FRAME							\
 	.eh_frame : AT(ADDR(.eh_frame) - LOAD_OFFSET) {			\
-<<<<<<< HEAD
 		  __start_eh_frame = .;					\
 		  *(.eh_frame)						\
 		  __stop_eh_frame = .;					\
-=======
-		  VMLINUX_SYMBOL(__start_eh_frame) = .;			\
-		  *(.eh_frame)						\
-		  VMLINUX_SYMBOL(__stop_eh_frame) = .;			\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 #else
 #define DWARF_EH_FRAME

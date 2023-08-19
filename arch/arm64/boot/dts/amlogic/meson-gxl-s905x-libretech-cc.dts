@@ -1,16 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Copyright (c) 2017 BayLibre, SAS.
  * Author: Neil Armstrong <narmstrong@baylibre.com>
  * Author: Jerome Brunet <jbrunet@baylibre.com>
-<<<<<<< HEAD
-=======
- *
- * SPDX-License-Identifier: (GPL-2.0+ OR MIT)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /dts-v1/;
@@ -21,18 +13,11 @@
 
 / {
 	compatible = "libretech,cc", "amlogic,s905x", "amlogic,meson-gxl";
-<<<<<<< HEAD
 	model = "Libre Technology CC";
 
 	aliases {
 		serial0 = &uart_AO;
 		ethernet0 = &ethmac;
-=======
-	model = "Libre Computer Board AML-S905X-CC";
-
-	aliases {
-		serial0 = &uart_AO;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	chosen {
@@ -87,7 +72,6 @@
 		reg = <0x0 0x0 0x0 0x80000000>;
 	};
 
-<<<<<<< HEAD
 	hdmi_5v: regulator-hdmi-5v {
 		compatible = "regulator-fixed";
 
@@ -100,8 +84,6 @@
 		regulator-always-on;
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vcc_3v3: regulator-vcc_3v3 {
 		compatible = "regulator-fixed";
 		regulator-name = "VCC_3V3";
@@ -126,7 +108,6 @@
 		regulator-settling-time-down-us = <50000>;
 	};
 
-<<<<<<< HEAD
 	vddio_ao18: regulator-vddio_ao18 {
 		compatible = "regulator-fixed";
 		regulator-name = "VDDIO_AO18";
@@ -134,8 +115,6 @@
 		regulator-max-microvolt = <1800000>;
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vddio_boot: regulator-vddio_boot {
 		compatible = "regulator-fixed";
 		regulator-name = "VDDIO_BOOT";
@@ -161,14 +140,11 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
 &internal_phy {
 	pinctrl-0 = <&eth_link_led_pins>, <&eth_act_led_pins>;
 	pinctrl-names = "default";
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &ir {
 	status = "okay";
 	pinctrl-0 = <&remote_input_ao_pins>;
@@ -187,11 +163,7 @@
 	};
 };
 
-<<<<<<< HEAD
 &pinctrl_aobus {
-=======
-&gpio_ao {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gpio-line-names = "UART TX",
 			  "UART RX",
 			  "Blue LED",
@@ -201,19 +173,12 @@
 			  "7J1 Header Pin12",
 			  "IR In",
 			  "9J3 Switch HDMI CEC/7J1 Header Pin11",
-<<<<<<< HEAD
 			  "7J1 Header Pin13",
 			  /* GPIO_TEST_N */
 			  "7J1 Header Pin15";
 };
 
 &pinctrl_periphs {
-=======
-			  "7J1 Header Pin13";
-};
-
-&gpio {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gpio-line-names = /* Bank GPIOZ */
 			  "", "", "", "", "", "", "",
 			  "", "", "", "", "", "", "",
@@ -252,18 +217,12 @@
 			  "7J1 Header Pin32", "7J1 Header Pin29",
 			  "7J1 Header Pin31",
 			  /* Bank GPIOCLK */
-<<<<<<< HEAD
 			  "7J1 Header Pin7", "";
 };
 
 &saradc {
 	status = "okay";
 	vref-supply = <&vddio_ao18>;
-=======
-			  "7J1 Header Pin7", "",
-			  /* GPIO_TEST_N */
-			  "7J1 Header Pin15";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* SD card */
@@ -288,11 +247,7 @@
 /* eMMC */
 &sd_emmc_c {
 	status = "okay";
-<<<<<<< HEAD
 	pinctrl-0 = <&emmc_pins>, <&emmc_ds_pins>;
-=======
-	pinctrl-0 = <&emmc_pins>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pinctrl-1 = <&emmc_clk_gate_pins>;
 	pinctrl-names = "default", "clk-gate";
 
@@ -300,10 +255,7 @@
 	cap-mmc-highspeed;
 	mmc-ddr-3_3v;
 	max-frequency = <50000000>;
-<<<<<<< HEAD
 	non-removable;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	disable-wp;
 
 	mmc-pwrseq = <&emmc_pwrseq>;
@@ -316,7 +268,6 @@
 	pinctrl-0 = <&uart_ao_a_pins>;
 	pinctrl-names = "default";
 };
-<<<<<<< HEAD
 
 &usb0 {
 	status = "okay";
@@ -329,5 +280,3 @@
 	 */
 	phy-supply = <&hdmi_5v>;
 };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

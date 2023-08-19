@@ -1,9 +1,6 @@
 /*
  * Copyright (c) 2014-2017 Qualcomm Atheros, Inc.
-<<<<<<< HEAD
  * Copyright (c) 2018, The Linux Foundation. All rights reserved.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -20,7 +17,6 @@
 
 #include "core.h"
 #include "wmi-ops.h"
-<<<<<<< HEAD
 #include "txrx.h"
 #include "debug.h"
 
@@ -140,10 +136,6 @@ exit:
 	rcu_read_unlock();
 }
 
-=======
-#include "debug.h"
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void ath10k_sta_update_extd_stats_rx_duration(struct ath10k *ar,
 						     struct ath10k_fw_stats *stats)
 {
@@ -262,21 +254,12 @@ static ssize_t ath10k_dbg_sta_write_addba(struct file *file,
 	struct ath10k *ar = arsta->arvif->ar;
 	u32 tid, buf_size;
 	int ret;
-<<<<<<< HEAD
 	char buf[64] = {0};
 
 	ret = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos,
 				     user_buf, count);
 	if (ret <= 0)
 		return ret;
-=======
-	char buf[64];
-
-	simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, user_buf, count);
-
-	/* make sure that buf is null terminated */
-	buf[sizeof(buf) - 1] = '\0';
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = sscanf(buf, "%u %u", &tid, &buf_size);
 	if (ret != 2)
@@ -322,21 +305,12 @@ static ssize_t ath10k_dbg_sta_write_addba_resp(struct file *file,
 	struct ath10k *ar = arsta->arvif->ar;
 	u32 tid, status;
 	int ret;
-<<<<<<< HEAD
 	char buf[64] = {0};
 
 	ret = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos,
 				     user_buf, count);
 	if (ret <= 0)
 		return ret;
-=======
-	char buf[64];
-
-	simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, user_buf, count);
-
-	/* make sure that buf is null terminated */
-	buf[sizeof(buf) - 1] = '\0';
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = sscanf(buf, "%u %u", &tid, &status);
 	if (ret != 2)
@@ -381,21 +355,12 @@ static ssize_t ath10k_dbg_sta_write_delba(struct file *file,
 	struct ath10k *ar = arsta->arvif->ar;
 	u32 tid, initiator, reason;
 	int ret;
-<<<<<<< HEAD
 	char buf[64] = {0};
 
 	ret = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos,
 				     user_buf, count);
 	if (ret <= 0)
 		return ret;
-=======
-	char buf[64];
-
-	simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, user_buf, count);
-
-	/* make sure that buf is null terminated */
-	buf[sizeof(buf) - 1] = '\0';
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = sscanf(buf, "%u %u %u", &tid, &initiator, &reason);
 	if (ret != 3)
@@ -495,7 +460,6 @@ static const struct file_operations fops_peer_debug_trigger = {
 	.llseek = default_llseek,
 };
 
-<<<<<<< HEAD
 static char *get_err_str(enum ath10k_pkt_rx_err i)
 {
 	switch (i) {
@@ -662,8 +626,6 @@ static const struct file_operations fops_tid_stats_dump = {
 	.llseek = default_llseek,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void ath10k_sta_add_debugfs(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 			    struct ieee80211_sta *sta, struct dentry *dir)
 {
@@ -673,9 +635,6 @@ void ath10k_sta_add_debugfs(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 	debugfs_create_file("delba", 0200, dir, sta, &fops_delba);
 	debugfs_create_file("peer_debug_trigger", 0600, dir, sta,
 			    &fops_peer_debug_trigger);
-<<<<<<< HEAD
 	debugfs_create_file("dump_tid_stats", 0400, dir, sta,
 			    &fops_tid_stats_dump);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

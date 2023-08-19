@@ -36,11 +36,7 @@ int spu_alloc_lscsa(struct spu_state *csa)
 	struct spu_lscsa *lscsa;
 	unsigned char *p;
 
-<<<<<<< HEAD
 	lscsa = vzalloc(sizeof(*lscsa));
-=======
-	lscsa = vzalloc(sizeof(struct spu_lscsa));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!lscsa)
 		return -ENOMEM;
 	csa->lscsa = lscsa;

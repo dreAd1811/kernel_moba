@@ -722,15 +722,9 @@ EXPORT_SYMBOL_GPL(lbs_resume);
  *
  * @data: &struct lbs_private pointer
  */
-<<<<<<< HEAD
 static void lbs_cmd_timeout_handler(struct timer_list *t)
 {
 	struct lbs_private *priv = from_timer(priv, t, command_timer);
-=======
-static void lbs_cmd_timeout_handler(unsigned long data)
-{
-	struct lbs_private *priv = (struct lbs_private *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 
 	spin_lock_irqsave(&priv->driver_lock, flags);
@@ -762,15 +756,9 @@ out:
  *
  * @data: &struct lbs_private pointer
  */
-<<<<<<< HEAD
 static void lbs_tx_lockup_handler(struct timer_list *t)
 {
 	struct lbs_private *priv = from_timer(priv, t, tx_lockup_timer);
-=======
-static void lbs_tx_lockup_handler(unsigned long data)
-{
-	struct lbs_private *priv = (struct lbs_private *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 
 	spin_lock_irqsave(&priv->driver_lock, flags);
@@ -791,15 +779,9 @@ static void lbs_tx_lockup_handler(unsigned long data)
  * @data:	&struct lbs_private pointer
  * returns:	N/A
  */
-<<<<<<< HEAD
 static void auto_deepsleep_timer_fn(struct timer_list *t)
 {
 	struct lbs_private *priv = from_timer(priv, t, auto_deepsleep_timer);
-=======
-static void auto_deepsleep_timer_fn(unsigned long data)
-{
-	struct lbs_private *priv = (struct lbs_private *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (priv->is_activity_detected) {
 		priv->is_activity_detected = 0;
@@ -865,18 +847,9 @@ static int lbs_init_adapter(struct lbs_private *priv)
 	init_waitqueue_head(&priv->fw_waitq);
 	mutex_init(&priv->lock);
 
-<<<<<<< HEAD
 	timer_setup(&priv->command_timer, lbs_cmd_timeout_handler, 0);
 	timer_setup(&priv->tx_lockup_timer, lbs_tx_lockup_handler, 0);
 	timer_setup(&priv->auto_deepsleep_timer, auto_deepsleep_timer_fn, 0);
-=======
-	setup_timer(&priv->command_timer, lbs_cmd_timeout_handler,
-		(unsigned long)priv);
-	setup_timer(&priv->tx_lockup_timer, lbs_tx_lockup_handler,
-		(unsigned long)priv);
-	setup_timer(&priv->auto_deepsleep_timer, auto_deepsleep_timer_fn,
-			(unsigned long)priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	INIT_LIST_HEAD(&priv->cmdfreeq);
 	INIT_LIST_HEAD(&priv->cmdpendingq);

@@ -13,10 +13,7 @@
  */
 
 #include <linux/err.h>
-<<<<<<< HEAD
 #include <linux/hwspinlock.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/io.h>
 #include <linux/module.h>
 #include <linux/list.h>
@@ -91,7 +88,6 @@ static struct syscon *of_syscon_register(struct device_node *np)
 	if (ret)
 		reg_io_width = 4;
 
-<<<<<<< HEAD
 	ret = of_hwspin_lock_get_id(np, 0);
 	if (ret > 0 || (IS_ENABLED(CONFIG_HWSPINLOCK) && ret == 0)) {
 		syscon_config.use_hwlock = true;
@@ -115,11 +111,6 @@ static struct syscon *of_syscon_register(struct device_node *np)
 	syscon_config.val_bits = reg_io_width * 8;
 	syscon_config.max_register = resource_size(&res) - reg_io_width;
 	syscon_config.name = of_node_full_name(np);
-=======
-	syscon_config.reg_stride = reg_io_width;
-	syscon_config.val_bits = reg_io_width * 8;
-	syscon_config.max_register = resource_size(&res) - reg_io_width;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	regmap = regmap_init_mmio(NULL, base, &syscon_config);
 	if (IS_ERR(regmap)) {

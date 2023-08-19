@@ -51,13 +51,8 @@ int stv06xx_write_bridge(struct sd *sd, u16 address, u16 i2c_data)
 			      0x04, 0x40, address, 0, buf, len,
 			      STV06XX_URB_MSG_TIMEOUT);
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Written 0x%x to address 0x%x, status: %d\n",
 		  i2c_data, address, err);
-=======
-	PDEBUG(D_CONF, "Written 0x%x to address 0x%x, status: %d",
-	       i2c_data, address, err);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return (err < 0) ? err : 0;
 }
@@ -75,13 +70,8 @@ int stv06xx_read_bridge(struct sd *sd, u16 address, u8 *i2c_data)
 
 	*i2c_data = buf[0];
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Reading 0x%x from address 0x%x, status %d\n",
 		  *i2c_data, address, err);
-=======
-	PDEBUG(D_CONF, "Reading 0x%x from address 0x%x, status %d",
-	       *i2c_data, address, err);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return (err < 0) ? err : 0;
 }
@@ -123,25 +113,16 @@ int stv06xx_write_sensor_bytes(struct sd *sd, const u8 *data, u8 len)
 	struct usb_device *udev = sd->gspca_dev.dev;
 	__u8 *buf = sd->gspca_dev.usb_buf;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "I2C: Command buffer contains %d entries\n",
 		  len);
-=======
-	PDEBUG(D_CONF, "I2C: Command buffer contains %d entries", len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < len;) {
 		/* Build the command buffer */
 		memset(buf, 0, I2C_BUFFER_LENGTH);
 		for (j = 0; j < I2C_MAX_BYTES && i < len; j++, i++) {
 			buf[j] = data[2*i];
 			buf[0x10 + j] = data[2*i+1];
-<<<<<<< HEAD
 			gspca_dbg(gspca_dev, D_CONF, "I2C: Writing 0x%02x to reg 0x%02x\n",
 				  data[2*i+1], data[2*i]);
-=======
-			PDEBUG(D_CONF, "I2C: Writing 0x%02x to reg 0x%02x",
-			data[2*i+1], data[2*i]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		buf[0x20] = sd->sensor->i2c_addr;
 		buf[0x21] = j - 1; /* Number of commands to send - 1 */
@@ -163,12 +144,8 @@ int stv06xx_write_sensor_words(struct sd *sd, const u16 *data, u8 len)
 	struct usb_device *udev = sd->gspca_dev.dev;
 	__u8 *buf = sd->gspca_dev.usb_buf;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "I2C: Command buffer contains %d entries\n",
 		  len);
-=======
-	PDEBUG(D_CONF, "I2C: Command buffer contains %d entries", len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < len;) {
 		/* Build the command buffer */
@@ -177,13 +154,8 @@ int stv06xx_write_sensor_words(struct sd *sd, const u16 *data, u8 len)
 			buf[j] = data[2*i];
 			buf[0x10 + j * 2] = data[2*i+1];
 			buf[0x10 + j * 2 + 1] = data[2*i+1] >> 8;
-<<<<<<< HEAD
 			gspca_dbg(gspca_dev, D_CONF, "I2C: Writing 0x%04x to reg 0x%02x\n",
 				  data[2*i+1], data[2*i]);
-=======
-			PDEBUG(D_CONF, "I2C: Writing 0x%04x to reg 0x%02x",
-				data[2*i+1], data[2*i]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		buf[0x20] = sd->sensor->i2c_addr;
 		buf[0x21] = j - 1; /* Number of commands to send - 1 */
@@ -235,13 +207,8 @@ int stv06xx_read_sensor(struct sd *sd, const u8 address, u16 *value)
 	else
 		*value = buf[0];
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "I2C: Read 0x%x from address 0x%x, status: %d\n",
 		  *value, address, err);
-=======
-	PDEBUG(D_CONF, "I2C: Read 0x%x from address 0x%x, status: %d",
-	       *value, address, err);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return (err < 0) ? err : 0;
 }
@@ -284,11 +251,7 @@ static int stv06xx_init(struct gspca_dev *gspca_dev)
 	struct sd *sd = (struct sd *) gspca_dev;
 	int err;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_PROBE, "Initializing camera\n");
-=======
-	PDEBUG(D_PROBE, "Initializing camera");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Let the usb init settle for a bit
 	   before performing the initialization */
@@ -307,11 +270,7 @@ static int stv06xx_init_controls(struct gspca_dev *gspca_dev)
 {
 	struct sd *sd = (struct sd *) gspca_dev;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_PROBE, "Initializing controls\n");
-=======
-	PDEBUG(D_PROBE, "Initializing controls");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	gspca_dev->vdev.ctrl_handler = &gspca_dev->ctrl_handler;
 	return sd->sensor->init_controls(sd);
@@ -328,20 +287,10 @@ static int stv06xx_start(struct gspca_dev *gspca_dev)
 	intf = usb_ifnum_to_if(sd->gspca_dev.dev, sd->gspca_dev.iface);
 	alt = usb_altnum_to_altsetting(intf, sd->gspca_dev.alt);
 	if (!alt) {
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "Couldn't get altsetting\n");
 		return -EIO;
 	}
 
-=======
-		PERR("Couldn't get altsetting");
-		return -EIO;
-	}
-
-	if (alt->desc.bNumEndpoints < 1)
-		return -ENODEV;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	packet_size = le16_to_cpu(alt->endpoint[0].desc.wMaxPacketSize);
 	err = stv06xx_write_bridge(sd, STV_ISO_SIZE_L, packet_size);
 	if (err < 0)
@@ -357,44 +306,20 @@ static int stv06xx_start(struct gspca_dev *gspca_dev)
 
 out:
 	if (err < 0)
-<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_STREAM, "Starting stream failed\n");
 	else
 		gspca_dbg(gspca_dev, D_STREAM, "Started streaming\n");
-=======
-		PDEBUG(D_STREAM, "Starting stream failed");
-	else
-		PDEBUG(D_STREAM, "Started streaming");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return (err < 0) ? err : 0;
 }
 
 static int stv06xx_isoc_init(struct gspca_dev *gspca_dev)
 {
-<<<<<<< HEAD
 	struct usb_host_interface *alt;
 	struct sd *sd = (struct sd *) gspca_dev;
 
 	/* Start isoc bandwidth "negotiation" at max isoc bandwidth */
 	alt = &gspca_dev->dev->actconfig->intf_cache[0]->altsetting[1];
-=======
-	struct usb_interface_cache *intfc;
-	struct usb_host_interface *alt;
-	struct sd *sd = (struct sd *) gspca_dev;
-
-	intfc = gspca_dev->dev->actconfig->intf_cache[0];
-
-	if (intfc->num_altsetting < 2)
-		return -ENODEV;
-
-	alt = &intfc->altsetting[1];
-
-	if (alt->desc.bNumEndpoints < 1)
-		return -ENODEV;
-
-	/* Start isoc bandwidth "negotiation" at max isoc bandwidth */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	alt->endpoint[0].desc.wMaxPacketSize =
 		cpu_to_le16(sd->sensor->max_packet_size[gspca_dev->curr_mode]);
 
@@ -407,13 +332,6 @@ static int stv06xx_isoc_nego(struct gspca_dev *gspca_dev)
 	struct usb_host_interface *alt;
 	struct sd *sd = (struct sd *) gspca_dev;
 
-<<<<<<< HEAD
-=======
-	/*
-	 * Existence of altsetting and endpoint was verified in
-	 * stv06xx_isoc_init()
-	 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	alt = &gspca_dev->dev->actconfig->intf_cache[0]->altsetting[1];
 	packet_size = le16_to_cpu(alt->endpoint[0].desc.wMaxPacketSize);
 	min_packet_size = sd->sensor->min_packet_size[gspca_dev->curr_mode];
@@ -427,11 +345,7 @@ static int stv06xx_isoc_nego(struct gspca_dev *gspca_dev)
 
 	ret = usb_set_interface(gspca_dev->dev, gspca_dev->iface, 1);
 	if (ret < 0)
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "set alt 1 err %d\n", ret);
-=======
-		PERR("set alt 1 err %d", ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -450,15 +364,9 @@ static void stv06xx_stopN(struct gspca_dev *gspca_dev)
 
 out:
 	if (err < 0)
-<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_STREAM, "Failed to stop stream\n");
 	else
 		gspca_dbg(gspca_dev, D_STREAM, "Stopped streaming\n");
-=======
-		PDEBUG(D_STREAM, "Failed to stop stream");
-	else
-		PDEBUG(D_STREAM, "Stopped streaming");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -479,11 +387,7 @@ static void stv06xx_pkt_scan(struct gspca_dev *gspca_dev,
 {
 	struct sd *sd = (struct sd *) gspca_dev;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_PACK, "Packet of length %d arrived\n", len);
-=======
-	PDEBUG(D_PACK, "Packet of length %d arrived", len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* A packet may contain several frames
 	   loop until the whole packet is reached */
@@ -491,11 +395,7 @@ static void stv06xx_pkt_scan(struct gspca_dev *gspca_dev,
 		int id, chunk_len;
 
 		if (len < 4) {
-<<<<<<< HEAD
 			gspca_dbg(gspca_dev, D_PACK, "Packet is smaller than 4 bytes\n");
-=======
-			PDEBUG(D_PACK, "Packet is smaller than 4 bytes");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return;
 		}
 
@@ -504,22 +404,14 @@ static void stv06xx_pkt_scan(struct gspca_dev *gspca_dev,
 
 		/* Capture the chunk length */
 		chunk_len = (data[2] << 8) | data[3];
-<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_PACK, "Chunk id: %x, length: %d\n",
 			  id, chunk_len);
-=======
-		PDEBUG(D_PACK, "Chunk id: %x, length: %d", id, chunk_len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		data += 4;
 		len -= 4;
 
 		if (len < chunk_len) {
-<<<<<<< HEAD
 			gspca_err(gspca_dev, "URB packet length is smaller than the specified chunk length\n");
-=======
-			PERR("URB packet length is smaller than the specified chunk length");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			gspca_dev->last_packet_type = DISCARD_PACKET;
 			return;
 		}
@@ -532,11 +424,7 @@ static void stv06xx_pkt_scan(struct gspca_dev *gspca_dev,
 		case 0x0200:
 		case 0x4200:
 frame_data:
-<<<<<<< HEAD
 			gspca_dbg(gspca_dev, D_PACK, "Frame data packet detected\n");
-=======
-			PDEBUG(D_PACK, "Frame data packet detected");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			if (sd->to_skip) {
 				int skip = (sd->to_skip < chunk_len) ?
@@ -555,11 +443,7 @@ frame_data:
 		case 0x8005:
 		case 0xc001:
 		case 0xc005:
-<<<<<<< HEAD
 			gspca_dbg(gspca_dev, D_PACK, "Starting new frame\n");
-=======
-			PDEBUG(D_PACK, "Starting new frame");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			/* Create a new frame, chunk length should be zero */
 			gspca_frame_add(gspca_dev, FIRST_PACKET,
@@ -569,69 +453,41 @@ frame_data:
 				sd->to_skip = gspca_dev->pixfmt.width * 4;
 
 			if (chunk_len)
-<<<<<<< HEAD
 				gspca_err(gspca_dev, "Chunk length is non-zero on a SOF\n");
-=======
-				PERR("Chunk length is non-zero on a SOF");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 
 		case 0x8002:
 		case 0x8006:
 		case 0xc002:
-<<<<<<< HEAD
 			gspca_dbg(gspca_dev, D_PACK, "End of frame detected\n");
-=======
-			PDEBUG(D_PACK, "End of frame detected");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			/* Complete the last frame (if any) */
 			gspca_frame_add(gspca_dev, LAST_PACKET,
 					NULL, 0);
 
 			if (chunk_len)
-<<<<<<< HEAD
 				gspca_err(gspca_dev, "Chunk length is non-zero on a EOF\n");
 			break;
 
 		case 0x0005:
 			gspca_dbg(gspca_dev, D_PACK, "Chunk 0x005 detected\n");
-=======
-				PERR("Chunk length is non-zero on a EOF");
-			break;
-
-		case 0x0005:
-			PDEBUG(D_PACK, "Chunk 0x005 detected");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* Unknown chunk with 11 bytes of data,
 			   occurs just before end of each frame
 			   in compressed mode */
 			break;
 
 		case 0x0100:
-<<<<<<< HEAD
 			gspca_dbg(gspca_dev, D_PACK, "Chunk 0x0100 detected\n");
-=======
-			PDEBUG(D_PACK, "Chunk 0x0100 detected");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* Unknown chunk with 2 bytes of data,
 			   occurs 2-3 times per USB interrupt */
 			break;
 		case 0x42ff:
-<<<<<<< HEAD
 			gspca_dbg(gspca_dev, D_PACK, "Chunk 0x42ff detected\n");
 			/* Special chunk seen sometimes on the ST6422 */
 			break;
 		default:
 			gspca_dbg(gspca_dev, D_PACK, "Unknown chunk 0x%04x detected\n",
 				  id);
-=======
-			PDEBUG(D_PACK, "Chunk 0x42ff detected");
-			/* Special chunk seen sometimes on the ST6422 */
-			break;
-		default:
-			PDEBUG(D_PACK, "Unknown chunk 0x%04x detected", id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* Unknown chunk */
 		}
 		data    += chunk_len;
@@ -687,11 +543,7 @@ static int stv06xx_config(struct gspca_dev *gspca_dev,
 {
 	struct sd *sd = (struct sd *) gspca_dev;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_PROBE, "Configuring camera\n");
-=======
-	PDEBUG(D_PROBE, "Configuring camera");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sd->bridge = id->driver_info;
 	gspca_dev->sd_desc = &sd_desc;
@@ -727,11 +579,7 @@ static int stv06xx_config(struct gspca_dev *gspca_dev,
 
 /* -- module initialisation -- */
 static const struct usb_device_id device_table[] = {
-<<<<<<< HEAD
 	{USB_DEVICE(0x046d, 0x0840), .driver_info = BRIDGE_STV600 },	/* QuickCam Express */
-=======
-	{USB_DEVICE(0x046d, 0x0840), .driver_info = BRIDGE_STV600 }, 	/* QuickCam Express */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{USB_DEVICE(0x046d, 0x0850), .driver_info = BRIDGE_STV610 },	/* LEGO cam / QuickCam Web */
 	{USB_DEVICE(0x046d, 0x0870), .driver_info = BRIDGE_STV602 },	/* Dexxa WebCam USB */
 	{USB_DEVICE(0x046D, 0x08F0), .driver_info = BRIDGE_ST6422 },	/* QuickCam Messenger */
@@ -754,11 +602,7 @@ static void sd_disconnect(struct usb_interface *intf)
 	struct gspca_dev *gspca_dev = usb_get_intfdata(intf);
 	struct sd *sd = (struct sd *) gspca_dev;
 	void *priv = sd->sensor_priv;
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_PROBE, "Disconnecting the stv06xx device\n");
-=======
-	PDEBUG(D_PROBE, "Disconnecting the stv06xx device");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sd->sensor = NULL;
 	gspca_disconnect(intf);

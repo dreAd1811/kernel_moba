@@ -44,11 +44,7 @@ choice
 	prompt "Flash cmd/query data swapping"
 	depends on MTD_CFI_ADV_OPTIONS
 	default MTD_CFI_NOSWAP
-<<<<<<< HEAD
 	help
-=======
-	---help---
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	  This option defines the way in which the CPU attempts to arrange
 	  data bits when writing the 'magic' commands to the chips. Saying
 	  'NO', which is the default when CONFIG_MTD_CFI_ADV_OPTIONS isn't

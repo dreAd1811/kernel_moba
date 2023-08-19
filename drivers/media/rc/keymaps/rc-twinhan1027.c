@@ -66,11 +66,7 @@ static struct rc_map_list twinhan_vp1027_map = {
 	.map = {
 		.scan     = twinhan_vp1027,
 		.size     = ARRAY_SIZE(twinhan_vp1027),
-<<<<<<< HEAD
 		.rc_proto = RC_PROTO_NEC,
-=======
-		.rc_proto = RC_PROTO_UNKNOWN,	/* Legacy IR type */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.name     = RC_MAP_TWINHAN_VP1027_DVBS,
 	}
 };

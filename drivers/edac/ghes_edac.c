@@ -28,7 +28,6 @@ struct ghes_edac_pvt {
 	char msg[80];
 };
 
-<<<<<<< HEAD
 static atomic_t ghes_init = ATOMIC_INIT(0);
 static struct ghes_edac_pvt *ghes_pvt;
 
@@ -42,12 +41,6 @@ static DEFINE_SPINLOCK(ghes_lock);
 /* "ghes_edac.force_load=1" skips the platform check */
 static bool __read_mostly force_load;
 module_param(force_load, bool, 0);
-=======
-static LIST_HEAD(ghes_reglist);
-static DEFINE_MUTEX(ghes_edac_lock);
-static int ghes_edac_mc_num;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Memory Device - Type 17 of SMBIOS spec */
 struct memdev_dmi_entry {
@@ -98,10 +91,7 @@ static void ghes_edac_dmidecode(const struct dmi_header *dh, void *arg)
 		struct dimm_info *dimm = EDAC_DIMM_PTR(mci->layers, mci->dimms,
 						       mci->n_layers,
 						       dimm_fill->count, 0, 0);
-<<<<<<< HEAD
 		u16 rdr_mask = BIT(7) | BIT(13);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (entry->size == 0xffff) {
 			pr_info("Can't get DIMM%i size\n",
@@ -110,35 +100,21 @@ static void ghes_edac_dmidecode(const struct dmi_header *dh, void *arg)
 		} else if (entry->size == 0x7fff) {
 			dimm->nr_pages = MiB_TO_PAGES(entry->extended_size);
 		} else {
-<<<<<<< HEAD
 			if (entry->size & BIT(15))
 				dimm->nr_pages = MiB_TO_PAGES((entry->size & 0x7fff) << 10);
-=======
-			if (entry->size & 1 << 15)
-				dimm->nr_pages = MiB_TO_PAGES((entry->size &
-							       0x7fff) << 10);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			else
 				dimm->nr_pages = MiB_TO_PAGES(entry->size);
 		}
 
 		switch (entry->memory_type) {
 		case 0x12:
-<<<<<<< HEAD
 			if (entry->type_detail & BIT(13))
-=======
-			if (entry->type_detail & 1 << 13)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				dimm->mtype = MEM_RDDR;
 			else
 				dimm->mtype = MEM_DDR;
 			break;
 		case 0x13:
-<<<<<<< HEAD
 			if (entry->type_detail & BIT(13))
-=======
-			if (entry->type_detail & 1 << 13)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				dimm->mtype = MEM_RDDR2;
 			else
 				dimm->mtype = MEM_DDR2;
@@ -147,18 +123,13 @@ static void ghes_edac_dmidecode(const struct dmi_header *dh, void *arg)
 			dimm->mtype = MEM_FB_DDR2;
 			break;
 		case 0x18:
-<<<<<<< HEAD
 			if (entry->type_detail & BIT(12))
 				dimm->mtype = MEM_NVDIMM;
 			else if (entry->type_detail & BIT(13))
-=======
-			if (entry->type_detail & 1 << 13)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				dimm->mtype = MEM_RDDR3;
 			else
 				dimm->mtype = MEM_DDR3;
 			break;
-<<<<<<< HEAD
 		case 0x1a:
 			if (entry->type_detail & BIT(12))
 				dimm->mtype = MEM_NVDIMM;
@@ -175,17 +146,6 @@ static void ghes_edac_dmidecode(const struct dmi_header *dh, void *arg)
 			else if (entry->type_detail & BIT(7))
 				dimm->mtype = MEM_SDR;
 			else if (entry->type_detail & BIT(9))
-=======
-		default:
-			if (entry->type_detail & 1 << 6)
-				dimm->mtype = MEM_RMBS;
-			else if ((entry->type_detail & ((1 << 7) | (1 << 13)))
-				 == ((1 << 7) | (1 << 13)))
-				dimm->mtype = MEM_RDR;
-			else if (entry->type_detail & 1 << 7)
-				dimm->mtype = MEM_SDR;
-			else if (entry->type_detail & 1 << 9)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				dimm->mtype = MEM_EDO;
 			else
 				dimm->mtype = MEM_UNKNOWN;
@@ -221,17 +181,11 @@ static void ghes_edac_dmidecode(const struct dmi_header *dh, void *arg)
 	}
 }
 
-<<<<<<< HEAD
 void ghes_edac_report_mem_error(int sev, struct cper_sec_mem_err *mem_err)
-=======
-void ghes_edac_report_mem_error(struct ghes *ghes, int sev,
-				struct cper_sec_mem_err *mem_err)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	enum hw_event_mc_err_type type;
 	struct edac_raw_error_desc *e;
 	struct mem_ctl_info *mci;
-<<<<<<< HEAD
 	struct ghes_edac_pvt *pvt = ghes_pvt;
 	unsigned long flags;
 	char *p;
@@ -250,30 +204,12 @@ void ghes_edac_report_mem_error(struct ghes *ghes, int sev,
 
 	spin_lock_irqsave(&ghes_lock, flags);
 
-=======
-	struct ghes_edac_pvt *pvt = NULL;
-	char *p;
-	u8 grain_bits;
-
-	list_for_each_entry(pvt, &ghes_reglist, list) {
-		if (ghes == pvt->ghes)
-			break;
-	}
-	if (!pvt) {
-		pr_err("Internal error: Can't find EDAC structure\n");
-		return;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mci = pvt->mci;
 	e = &mci->error_desc;
 
 	/* Cleans the error report buffer */
 	memset(e, 0, sizeof (*e));
 	e->error_count = 1;
-<<<<<<< HEAD
-=======
-	e->grain = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	strcpy(e->label, "unknown label");
 	e->msg = pvt->msg;
 	e->other_detail = pvt->other_detail;
@@ -369,11 +305,7 @@ void ghes_edac_report_mem_error(struct ghes *ghes, int sev,
 
 	/* Error grain */
 	if (mem_err->validation_bits & CPER_MEM_VALID_PA_MASK)
-<<<<<<< HEAD
 		e->grain = ~(mem_err->physical_addr_mask & ~PAGE_MASK);
-=======
-		e->grain = ~mem_err->physical_addr_mask + 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Memory error location, mapped on e->location */
 	p = e->location;
@@ -480,18 +412,8 @@ void ghes_edac_report_mem_error(struct ghes *ghes, int sev,
 	if (p > pvt->other_detail)
 		*(p - 1) = '\0';
 
-<<<<<<< HEAD
 	/* Generate the trace event */
 	grain_bits = fls_long(e->grain);
-=======
-	/* Sanity-check driver-supplied grain value. */
-	if (WARN_ON_ONCE(!e->grain))
-		e->grain = 1;
-
-	grain_bits = fls_long(e->grain - 1);
-
-	/* Generate the trace event */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	snprintf(pvt->detail_location, sizeof(pvt->detail_location),
 		 "APEI location: %s %s", e->location, e->other_detail);
 	trace_mc_event(type, e->msg, e->label, e->error_count,
@@ -499,7 +421,6 @@ void ghes_edac_report_mem_error(struct ghes *ghes, int sev,
 		       (e->page_frame_number << PAGE_SHIFT) | e->offset_in_page,
 		       grain_bits, e->syndrome, pvt->detail_location);
 
-<<<<<<< HEAD
 	edac_raw_mc_handle_error(type, mci, e);
 	spin_unlock_irqrestore(&ghes_lock, flags);
 }
@@ -511,12 +432,6 @@ static struct acpi_platform_list plat_list[] = {
 	{"HPE   ", "Server  ", 0, ACPI_SIG_FADT, all_versions},
 	{ } /* End */
 };
-=======
-	/* Report the error via EDAC API */
-	edac_raw_mc_handle_error(type, mci, e);
-}
-EXPORT_SYMBOL_GPL(ghes_edac_report_mem_error);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int ghes_edac_register(struct ghes *ghes, struct device *dev)
 {
@@ -524,7 +439,6 @@ int ghes_edac_register(struct ghes *ghes, struct device *dev)
 	int rc, num_dimm = 0;
 	struct mem_ctl_info *mci;
 	struct edac_mc_layer layers[1];
-<<<<<<< HEAD
 	struct ghes_edac_dimm_fill dimm_fill;
 	int idx = -1;
 
@@ -542,10 +456,6 @@ int ghes_edac_register(struct ghes *ghes, struct device *dev)
 	 */
 	if (atomic_inc_return(&ghes_init) > 1)
 		return 0;
-=======
-	struct ghes_edac_pvt *pvt;
-	struct ghes_edac_dimm_fill dimm_fill;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Get the number of DIMMs */
 	dmi_walk(ghes_edac_count_dimms, &num_dimm);
@@ -560,7 +470,6 @@ int ghes_edac_register(struct ghes *ghes, struct device *dev)
 	layers[0].size = num_dimm;
 	layers[0].is_virt_csrow = true;
 
-<<<<<<< HEAD
 	mci = edac_mc_alloc(0, ARRAY_SIZE(layers), layers, sizeof(struct ghes_edac_pvt));
 	if (!mci) {
 		pr_info("Can't allocate memory for EDAC data\n");
@@ -572,28 +481,6 @@ int ghes_edac_register(struct ghes *ghes, struct device *dev)
 	ghes_pvt->mci	= mci;
 
 	mci->pdev = dev;
-=======
-	/*
-	 * We need to serialize edac_mc_alloc() and edac_mc_add_mc(),
-	 * to avoid duplicated memory controller numbers
-	 */
-	mutex_lock(&ghes_edac_lock);
-	mci = edac_mc_alloc(ghes_edac_mc_num, ARRAY_SIZE(layers), layers,
-			    sizeof(*pvt));
-	if (!mci) {
-		pr_info("Can't allocate memory for EDAC data\n");
-		mutex_unlock(&ghes_edac_lock);
-		return -ENOMEM;
-	}
-
-	pvt = mci->pvt_info;
-	memset(pvt, 0, sizeof(*pvt));
-	list_add_tail(&pvt->list, &ghes_reglist);
-	pvt->ghes = ghes;
-	pvt->mci  = mci;
-	mci->pdev = dev;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mci->mtype_cap = MEM_FLAG_EMPTY;
 	mci->edac_ctl_cap = EDAC_FLAG_NONE;
 	mci->edac_cap = EDAC_FLAG_NONE;
@@ -601,7 +488,6 @@ int ghes_edac_register(struct ghes *ghes, struct device *dev)
 	mci->ctl_name = "ghes_edac";
 	mci->dev_name = "ghes";
 
-<<<<<<< HEAD
 	if (fake) {
 		pr_info("This system has a very crappy BIOS: It doesn't even list the DIMMS.\n");
 		pr_info("Its SMBIOS info is wrong. It is doubtful that the error report would\n");
@@ -619,38 +505,6 @@ int ghes_edac_register(struct ghes *ghes, struct device *dev)
 		dimm_fill.count = 0;
 		dimm_fill.mci = mci;
 		dmi_walk(ghes_edac_dmidecode, &dimm_fill);
-=======
-	if (!ghes_edac_mc_num) {
-		if (!fake) {
-			pr_info("This EDAC driver relies on BIOS to enumerate memory and get error reports.\n");
-			pr_info("Unfortunately, not all BIOSes reflect the memory layout correctly.\n");
-			pr_info("So, the end result of using this driver varies from vendor to vendor.\n");
-			pr_info("If you find incorrect reports, please contact your hardware vendor\n");
-			pr_info("to correct its BIOS.\n");
-			pr_info("This system has %d DIMM sockets.\n",
-				num_dimm);
-		} else {
-			pr_info("This system has a very crappy BIOS: It doesn't even list the DIMMS.\n");
-			pr_info("Its SMBIOS info is wrong. It is doubtful that the error report would\n");
-			pr_info("work on such system. Use this driver with caution\n");
-		}
-	}
-
-	if (!fake) {
-		/*
-		 * Fill DIMM info from DMI for the memory controller #0
-		 *
-		 * Keep it in blank for the other memory controllers, as
-		 * there's no reliable way to properly credit each DIMM to
-		 * the memory controller, as different BIOSes fill the
-		 * DMI bank location fields on different ways
-		 */
-		if (!ghes_edac_mc_num) {
-			dimm_fill.count = 0;
-			dimm_fill.mci = mci;
-			dmi_walk(ghes_edac_dmidecode, &dimm_fill);
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		struct dimm_info *dimm = EDAC_DIMM_PTR(mci->layers, mci->dimms,
 						       mci->n_layers, 0, 0, 0);
@@ -666,27 +520,14 @@ int ghes_edac_register(struct ghes *ghes, struct device *dev)
 	if (rc < 0) {
 		pr_info("Can't register at EDAC core\n");
 		edac_mc_free(mci);
-<<<<<<< HEAD
 		return -ENODEV;
 	}
 	return 0;
 }
-=======
-		mutex_unlock(&ghes_edac_lock);
-		return -ENODEV;
-	}
-
-	ghes_edac_mc_num++;
-	mutex_unlock(&ghes_edac_lock);
-	return 0;
-}
-EXPORT_SYMBOL_GPL(ghes_edac_register);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void ghes_edac_unregister(struct ghes *ghes)
 {
 	struct mem_ctl_info *mci;
-<<<<<<< HEAD
 
 	if (!ghes_pvt)
 		return;
@@ -699,17 +540,3 @@ void ghes_edac_unregister(struct ghes *ghes)
 	edac_mc_del_mc(mci->pdev);
 	edac_mc_free(mci);
 }
-=======
-	struct ghes_edac_pvt *pvt, *tmp;
-
-	list_for_each_entry_safe(pvt, tmp, &ghes_reglist, list) {
-		if (ghes == pvt->ghes) {
-			mci = pvt->mci;
-			edac_mc_del_mc(mci->pdev);
-			edac_mc_free(mci);
-			list_del(&pvt->list);
-		}
-	}
-}
-EXPORT_SYMBOL_GPL(ghes_edac_unregister);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

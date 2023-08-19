@@ -18,12 +18,8 @@
 #ifdef CONFIG_COMPAT
 
 struct input_event_compat {
-<<<<<<< HEAD
 	compat_ulong_t sec;
 	compat_ulong_t usec;
-=======
-	struct compat_timeval time;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__u16 type;
 	__u16 code;
 	__s32 value;

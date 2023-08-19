@@ -52,7 +52,6 @@
 #define ADDRESS_U1_PAD_BTN		0x00800052
 #define ADDRESS_U1_SP_BTN		0x0080009F
 
-<<<<<<< HEAD
 #define T4_INPUT_REPORT_LEN			sizeof(struct t4_input_report)
 #define T4_FEATURE_REPORT_LEN		T4_INPUT_REPORT_LEN
 #define T4_FEATURE_REPORT_ID		7
@@ -77,10 +76,6 @@ enum dev_num {
 	T4,
 	UNKNOWN,
 };
-=======
-#define MAX_TOUCHES	5
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * struct u1_data
  *
@@ -88,71 +83,38 @@ enum dev_num {
  * @input2: pointer to the kernel input2 device
  * @hdev: pointer to the struct hid_device
  *
-<<<<<<< HEAD
  * @dev_type: device type
  * @max_fingers: total number of fingers
  * @has_sp: boolean of sp existense
  * @sp_btn_info: button information
-=======
- * @dev_ctrl: device control parameter
- * @dev_type: device type
- * @sen_line_num_x: number of sensor line of X
- * @sen_line_num_y: number of sensor line of Y
- * @pitch_x: sensor pitch of X
- * @pitch_y: sensor pitch of Y
- * @resolution: resolution
- * @btn_info: button information
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @x_active_len_mm: active area length of X (mm)
  * @y_active_len_mm: active area length of Y (mm)
  * @x_max: maximum x coordinate value
  * @y_max: maximum y coordinate value
-<<<<<<< HEAD
  * @x_min: minimum x coordinate value
  * @y_min: minimum y coordinate value
  * @btn_cnt: number of buttons
  * @sp_btn_cnt: number of stick buttons
  */
 struct alps_dev {
-=======
- * @btn_cnt: number of buttons
- * @sp_btn_cnt: number of stick buttons
- */
-struct u1_dev {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct input_dev *input;
 	struct input_dev *input2;
 	struct hid_device *hdev;
 
-<<<<<<< HEAD
 	enum dev_num dev_type;
 	u8  max_fingers;
 	u8  has_sp;
-=======
-	u8	dev_ctrl;
-	u8	dev_type;
-	u8	sen_line_num_x;
-	u8	sen_line_num_y;
-	u8	pitch_x;
-	u8	pitch_y;
-	u8	resolution;
-	u8	btn_info;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8	sp_btn_info;
 	u32	x_active_len_mm;
 	u32	y_active_len_mm;
 	u32	x_max;
 	u32	y_max;
-<<<<<<< HEAD
 	u32	x_min;
 	u32	y_min;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32	btn_cnt;
 	u32	sp_btn_cnt;
 };
 
-<<<<<<< HEAD
 struct t4_contact_data {
 	u8  palm;
 	u8	x_lo;
@@ -290,8 +252,6 @@ exit:
 	return ret;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int u1_read_write_register(struct hid_device *hdev, u32 address,
 	u8 *read_val, u8 write_val, bool read_flag)
 {
@@ -359,7 +319,6 @@ exit:
 	return ret;
 }
 
-<<<<<<< HEAD
 static int t4_raw_event(struct alps_dev *hdata, u8 *data, int size)
 {
 	unsigned int x, y, z;
@@ -400,33 +359,20 @@ static int t4_raw_event(struct alps_dev *hdata, u8 *data, int size)
 }
 
 static int u1_raw_event(struct alps_dev *hdata, u8 *data, int size)
-=======
-static int alps_raw_event(struct hid_device *hdev,
-		struct hid_report *report, u8 *data, int size)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned int x, y, z;
 	int i;
 	short sp_x, sp_y;
-<<<<<<< HEAD
 
 	if (!data)
 		return 0;
-=======
-	struct u1_dev *hdata = hid_get_drvdata(hdev);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (data[0]) {
 	case U1_MOUSE_REPORT_ID:
 		break;
 	case U1_FEATURE_REPORT_ID:
 		break;
 	case U1_ABSOLUTE_REPORT_ID:
-<<<<<<< HEAD
 		for (i = 0; i < hdata->max_fingers; i++) {
-=======
-		for (i = 0; i < MAX_TOUCHES; i++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			u8 *contact = &data[i * 5];
 
 			x = get_unaligned_le16(contact + 3);
@@ -488,7 +434,6 @@ static int alps_raw_event(struct hid_device *hdev,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int alps_raw_event(struct hid_device *hdev,
 		struct hid_report *report, u8 *data, int size)
 {
@@ -733,27 +678,6 @@ static int alps_input_configured(struct hid_device *hdev, struct hid_input *hi)
 {
 	struct alps_dev *data = hid_get_drvdata(hdev);
 	struct input_dev *input = hi->input, *input2;
-=======
-#ifdef CONFIG_PM
-static int alps_post_reset(struct hid_device *hdev)
-{
-	return u1_read_write_register(hdev, ADDRESS_U1_DEV_CTRL_1,
-				NULL, U1_TP_ABS_MODE | U1_SP_ABS_MODE, false);
-}
-
-static int alps_post_resume(struct hid_device *hdev)
-{
-	return u1_read_write_register(hdev, ADDRESS_U1_DEV_CTRL_1,
-				NULL, U1_TP_ABS_MODE | U1_SP_ABS_MODE, false);
-}
-#endif /* CONFIG_PM */
-
-static int alps_input_configured(struct hid_device *hdev, struct hid_input *hi)
-{
-	struct u1_dev *data = hid_get_drvdata(hdev);
-	struct input_dev *input = hi->input, *input2;
-	struct u1_dev devInfo;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 	int res_x, res_y, i;
 
@@ -766,7 +690,6 @@ static int alps_input_configured(struct hid_device *hdev, struct hid_input *hi)
 
 	/* Allow incoming hid reports */
 	hid_device_io_start(hdev);
-<<<<<<< HEAD
 	switch (data->dev_type) {
 	case T4:
 		ret = T4_init(hdev, data);
@@ -790,93 +713,6 @@ static int alps_input_configured(struct hid_device *hdev, struct hid_input *hi)
 	if (data->x_active_len_mm && data->y_active_len_mm) {
 		res_x = (data->x_max - 1) / data->x_active_len_mm;
 		res_y = (data->y_max - 1) / data->y_active_len_mm;
-=======
-
-	/* Device initialization */
-	ret = u1_read_write_register(hdev, ADDRESS_U1_DEV_CTRL_1,
-			&devInfo.dev_ctrl, 0, true);
-	if (ret < 0) {
-		dev_err(&hdev->dev, "failed U1_DEV_CTRL_1 (%d)\n", ret);
-		goto exit;
-	}
-
-	devInfo.dev_ctrl &= ~U1_DISABLE_DEV;
-	devInfo.dev_ctrl |= U1_TP_ABS_MODE;
-	ret = u1_read_write_register(hdev, ADDRESS_U1_DEV_CTRL_1,
-			NULL, devInfo.dev_ctrl, false);
-	if (ret < 0) {
-		dev_err(&hdev->dev, "failed to change TP mode (%d)\n", ret);
-		goto exit;
-	}
-
-	ret = u1_read_write_register(hdev, ADDRESS_U1_NUM_SENS_X,
-			&devInfo.sen_line_num_x, 0, true);
-	if (ret < 0) {
-		dev_err(&hdev->dev, "failed U1_NUM_SENS_X (%d)\n", ret);
-		goto exit;
-	}
-
-	ret = u1_read_write_register(hdev, ADDRESS_U1_NUM_SENS_Y,
-			&devInfo.sen_line_num_y, 0, true);
-		if (ret < 0) {
-		dev_err(&hdev->dev, "failed U1_NUM_SENS_Y (%d)\n", ret);
-		goto exit;
-	}
-
-	ret = u1_read_write_register(hdev, ADDRESS_U1_PITCH_SENS_X,
-			&devInfo.pitch_x, 0, true);
-	if (ret < 0) {
-		dev_err(&hdev->dev, "failed U1_PITCH_SENS_X (%d)\n", ret);
-		goto exit;
-	}
-
-	ret = u1_read_write_register(hdev, ADDRESS_U1_PITCH_SENS_Y,
-			&devInfo.pitch_y, 0, true);
-	if (ret < 0) {
-		dev_err(&hdev->dev, "failed U1_PITCH_SENS_Y (%d)\n", ret);
-		goto exit;
-	}
-
-	ret = u1_read_write_register(hdev, ADDRESS_U1_RESO_DWN_ABS,
-		&devInfo.resolution, 0, true);
-	if (ret < 0) {
-		dev_err(&hdev->dev, "failed U1_RESO_DWN_ABS (%d)\n", ret);
-		goto exit;
-	}
-
-	ret = u1_read_write_register(hdev, ADDRESS_U1_PAD_BTN,
-			&devInfo.btn_info, 0, true);
-	if (ret < 0) {
-		dev_err(&hdev->dev, "failed U1_PAD_BTN (%d)\n", ret);
-		goto exit;
-	}
-
-	/* Check StickPointer device */
-	ret = u1_read_write_register(hdev, ADDRESS_U1_DEVICE_TYP,
-			&devInfo.dev_type, 0, true);
-	if (ret < 0) {
-		dev_err(&hdev->dev, "failed U1_DEVICE_TYP (%d)\n", ret);
-		goto exit;
-	}
-
-	devInfo.x_active_len_mm =
-		(devInfo.pitch_x * (devInfo.sen_line_num_x - 1)) / 10;
-	devInfo.y_active_len_mm =
-		(devInfo.pitch_y * (devInfo.sen_line_num_y - 1)) / 10;
-
-	devInfo.x_max =
-		(devInfo.resolution << 2) * (devInfo.sen_line_num_x - 1);
-	devInfo.y_max =
-		(devInfo.resolution << 2) * (devInfo.sen_line_num_y - 1);
-
-	__set_bit(EV_ABS, input->evbit);
-	input_set_abs_params(input, ABS_MT_POSITION_X, 1, devInfo.x_max, 0, 0);
-	input_set_abs_params(input, ABS_MT_POSITION_Y, 1, devInfo.y_max, 0, 0);
-
-	if (devInfo.x_active_len_mm && devInfo.y_active_len_mm) {
-		res_x = (devInfo.x_max - 1) / devInfo.x_active_len_mm;
-		res_y = (devInfo.y_max - 1) / devInfo.y_active_len_mm;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		input_abs_set_res(input, ABS_MT_POSITION_X, res_x);
 		input_abs_set_res(input, ABS_MT_POSITION_Y, res_y);
@@ -884,7 +720,6 @@ static int alps_input_configured(struct hid_device *hdev, struct hid_input *hi)
 
 	input_set_abs_params(input, ABS_MT_PRESSURE, 0, 64, 0, 0);
 
-<<<<<<< HEAD
 	input_mt_init_slots(input, data->max_fingers, INPUT_MT_POINTER);
 
 	__set_bit(EV_KEY, input->evbit);
@@ -900,54 +735,10 @@ static int alps_input_configured(struct hid_device *hdev, struct hid_input *hi)
 		input2 = input_allocate_device();
 		if (!input2) {
 			input_free_device(input2);
-=======
-	input_mt_init_slots(input, MAX_TOUCHES, INPUT_MT_POINTER);
-
-	__set_bit(EV_KEY, input->evbit);
-	if ((devInfo.btn_info & 0x0F) == (devInfo.btn_info & 0xF0) >> 4) {
-		devInfo.btn_cnt = (devInfo.btn_info & 0x0F);
-	} else {
-		/* Button pad */
-		devInfo.btn_cnt = 1;
-		__set_bit(INPUT_PROP_BUTTONPAD, input->propbit);
-	}
-
-	for (i = 0; i < devInfo.btn_cnt; i++)
-		__set_bit(BTN_LEFT + i, input->keybit);
-
-
-	/* Stick device initialization */
-	if (devInfo.dev_type & U1_DEVTYPE_SP_SUPPORT) {
-
-		input2 = input_allocate_device();
-		if (!input2) {
-			ret = -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto exit;
 		}
 
 		data->input2 = input2;
-<<<<<<< HEAD
-=======
-
-		devInfo.dev_ctrl |= U1_SP_ABS_MODE;
-		ret = u1_read_write_register(hdev, ADDRESS_U1_DEV_CTRL_1,
-			NULL, devInfo.dev_ctrl, false);
-		if (ret < 0) {
-			dev_err(&hdev->dev, "failed SP mode (%d)\n", ret);
-			input_free_device(input2);
-			goto exit;
-		}
-
-		ret = u1_read_write_register(hdev, ADDRESS_U1_SP_BTN,
-			&devInfo.sp_btn_info, 0, true);
-		if (ret < 0) {
-			dev_err(&hdev->dev, "failed U1_SP_BTN (%d)\n", ret);
-			input_free_device(input2);
-			goto exit;
-		}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		input2->phys = input->phys;
 		input2->name = "DualPoint Stick";
 		input2->id.bustype = BUS_I2C;
@@ -956,7 +747,6 @@ static int alps_input_configured(struct hid_device *hdev, struct hid_input *hi)
 		input2->id.version = input->id.version;
 		input2->dev.parent = input->dev.parent;
 
-<<<<<<< HEAD
 		input_set_drvdata(input2, hdev);
 		input2->open = alps_sp_open;
 		input2->close = alps_sp_close;
@@ -964,11 +754,6 @@ static int alps_input_configured(struct hid_device *hdev, struct hid_input *hi)
 		__set_bit(EV_KEY, input2->evbit);
 		data->sp_btn_cnt = (data->sp_btn_info & 0x0F);
 		for (i = 0; i < data->sp_btn_cnt; i++)
-=======
-		__set_bit(EV_KEY, input2->evbit);
-		devInfo.sp_btn_cnt = (devInfo.sp_btn_info & 0x0F);
-		for (i = 0; i < devInfo.sp_btn_cnt; i++)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			__set_bit(BTN_LEFT + i, input2->keybit);
 
 		__set_bit(EV_REL, input2->evbit);
@@ -977,12 +762,7 @@ static int alps_input_configured(struct hid_device *hdev, struct hid_input *hi)
 		__set_bit(INPUT_PROP_POINTER, input2->propbit);
 		__set_bit(INPUT_PROP_POINTING_STICK, input2->propbit);
 
-<<<<<<< HEAD
 		if (input_register_device(data->input2)) {
-=======
-		ret = input_register_device(data->input2);
-		if (ret) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			input_free_device(input2);
 			goto exit;
 		}
@@ -1003,16 +783,9 @@ static int alps_input_mapping(struct hid_device *hdev,
 
 static int alps_probe(struct hid_device *hdev, const struct hid_device_id *id)
 {
-<<<<<<< HEAD
 	struct alps_dev *data = NULL;
 	int ret;
 	data = devm_kzalloc(&hdev->dev, sizeof(struct alps_dev), GFP_KERNEL);
-=======
-	struct u1_dev *data = NULL;
-	int ret;
-
-	data = devm_kzalloc(&hdev->dev, sizeof(struct u1_dev), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!data)
 		return -ENOMEM;
 
@@ -1027,7 +800,6 @@ static int alps_probe(struct hid_device *hdev, const struct hid_device_id *id)
 		return ret;
 	}
 
-<<<<<<< HEAD
 	switch (hdev->product) {
 	case HID_DEVICE_ID_ALPS_T4_BTNLESS:
 		data->dev_type = T4;
@@ -1040,8 +812,6 @@ static int alps_probe(struct hid_device *hdev, const struct hid_device_id *id)
 		data->dev_type = UNKNOWN;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = hid_hw_start(hdev, HID_CONNECT_DEFAULT);
 	if (ret) {
 		hid_err(hdev, "hw start failed\n");
@@ -1059,13 +829,10 @@ static void alps_remove(struct hid_device *hdev)
 static const struct hid_device_id alps_id[] = {
 	{ HID_DEVICE(HID_BUS_ANY, HID_GROUP_ANY,
 		USB_VENDOR_ID_ALPS_JP, HID_DEVICE_ID_ALPS_U1_DUAL) },
-<<<<<<< HEAD
 	{ HID_DEVICE(HID_BUS_ANY, HID_GROUP_ANY,
 		USB_VENDOR_ID_ALPS_JP, HID_DEVICE_ID_ALPS_U1) },
 	{ HID_DEVICE(HID_BUS_ANY, HID_GROUP_ANY,
 		USB_VENDOR_ID_ALPS_JP, HID_DEVICE_ID_ALPS_T4_BTNLESS) },
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ }
 };
 MODULE_DEVICE_TABLE(hid, alps_id);

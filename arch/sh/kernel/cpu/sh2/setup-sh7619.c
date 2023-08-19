@@ -122,10 +122,6 @@ static struct platform_device scif2_device = {
 
 static struct sh_eth_plat_data eth_platform_data = {
 	.phy		= 1,
-<<<<<<< HEAD
-=======
-	.edmac_endian	= EDMAC_LITTLE_ENDIAN,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.phy_interface	= PHY_INTERFACE_MODE_MII,
 };
 

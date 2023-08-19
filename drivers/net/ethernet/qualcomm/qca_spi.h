@@ -92,10 +92,6 @@ struct qcaspi {
 
 	unsigned int intr_req;
 	unsigned int intr_svc;
-<<<<<<< HEAD
-=======
-	u16 reset_count;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_DEBUG_FS
 	struct dentry *device_root;

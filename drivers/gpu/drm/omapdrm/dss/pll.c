@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
  * Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
-=======
- * Copyright (C) 2014 Texas Instruments Incorporated
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 as published by
@@ -20,10 +16,7 @@
 
 #define DSS_SUBSYS_NAME "PLL"
 
-<<<<<<< HEAD
 #include <linux/delay.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/clk.h>
 #include <linux/io.h>
 #include <linux/kernel.h>
@@ -43,7 +36,6 @@
 #define PLL_SSC_CONFIGURATION2		0x001C
 #define PLL_CONFIGURATION4		0x0020
 
-<<<<<<< HEAD
 int dss_pll_register(struct dss_device *dss, struct dss_pll *pll)
 {
 	int i;
@@ -52,17 +44,6 @@ int dss_pll_register(struct dss_device *dss, struct dss_pll *pll)
 		if (!dss->plls[i]) {
 			dss->plls[i] = pll;
 			pll->dss = dss;
-=======
-static struct dss_pll *dss_plls[4];
-
-int dss_pll_register(struct dss_pll *pll)
-{
-	int i;
-
-	for (i = 0; i < ARRAY_SIZE(dss_plls); ++i) {
-		if (!dss_plls[i]) {
-			dss_plls[i] = pll;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return 0;
 		}
 	}
@@ -72,7 +53,6 @@ int dss_pll_register(struct dss_pll *pll)
 
 void dss_pll_unregister(struct dss_pll *pll)
 {
-<<<<<<< HEAD
 	struct dss_device *dss = pll->dss;
 	int i;
 
@@ -80,19 +60,11 @@ void dss_pll_unregister(struct dss_pll *pll)
 		if (dss->plls[i] == pll) {
 			dss->plls[i] = NULL;
 			pll->dss = NULL;
-=======
-	int i;
-
-	for (i = 0; i < ARRAY_SIZE(dss_plls); ++i) {
-		if (dss_plls[i] == pll) {
-			dss_plls[i] = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return;
 		}
 	}
 }
 
-<<<<<<< HEAD
 struct dss_pll *dss_pll_find(struct dss_device *dss, const char *name)
 {
 	int i;
@@ -100,26 +72,13 @@ struct dss_pll *dss_pll_find(struct dss_device *dss, const char *name)
 	for (i = 0; i < ARRAY_SIZE(dss->plls); ++i) {
 		if (dss->plls[i] && strcmp(dss->plls[i]->name, name) == 0)
 			return dss->plls[i];
-=======
-struct dss_pll *dss_pll_find(const char *name)
-{
-	int i;
-
-	for (i = 0; i < ARRAY_SIZE(dss_plls); ++i) {
-		if (dss_plls[i] && strcmp(dss_plls[i]->name, name) == 0)
-			return dss_plls[i];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return NULL;
 }
 
-<<<<<<< HEAD
 struct dss_pll *dss_pll_find_by_src(struct dss_device *dss,
 				    enum dss_clk_source src)
-=======
-struct dss_pll *dss_pll_find_by_src(enum dss_clk_source src)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct dss_pll *pll;
 
@@ -129,47 +88,27 @@ struct dss_pll *dss_pll_find_by_src(enum dss_clk_source src)
 		return NULL;
 
 	case DSS_CLK_SRC_HDMI_PLL:
-<<<<<<< HEAD
 		return dss_pll_find(dss, "hdmi");
-=======
-		return dss_pll_find("hdmi");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	case DSS_CLK_SRC_PLL1_1:
 	case DSS_CLK_SRC_PLL1_2:
 	case DSS_CLK_SRC_PLL1_3:
-<<<<<<< HEAD
 		pll = dss_pll_find(dss, "dsi0");
 		if (!pll)
 			pll = dss_pll_find(dss, "video0");
-=======
-		pll = dss_pll_find("dsi0");
-		if (!pll)
-			pll = dss_pll_find("video0");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return pll;
 
 	case DSS_CLK_SRC_PLL2_1:
 	case DSS_CLK_SRC_PLL2_2:
 	case DSS_CLK_SRC_PLL2_3:
-<<<<<<< HEAD
 		pll = dss_pll_find(dss, "dsi1");
 		if (!pll)
 			pll = dss_pll_find(dss, "video1");
-=======
-		pll = dss_pll_find("dsi1");
-		if (!pll)
-			pll = dss_pll_find("video1");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return pll;
 	}
 }
 
-<<<<<<< HEAD
 unsigned int dss_pll_get_clkout_idx_for_src(enum dss_clk_source src)
-=======
-unsigned dss_pll_get_clkout_idx_for_src(enum dss_clk_source src)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	switch (src) {
 	case DSS_CLK_SRC_HDMI_PLL:
@@ -341,11 +280,7 @@ bool dss_pll_calc_b(const struct dss_pll *pll, unsigned long clkin,
 	unsigned long fint, clkdco, clkout;
 	unsigned long target_clkdco;
 	unsigned long min_dco;
-<<<<<<< HEAD
 	unsigned int n, m, mf, m2, sd;
-=======
-	unsigned n, m, mf, m2, sd;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const struct dss_pll_hw *hw = pll->hw;
 
 	DSSDBG("clkin %lu, target clkout %lu\n", clkin, target_clkout);
@@ -447,7 +382,6 @@ static int dss_wait_hsdiv_ack(struct dss_pll *pll, u32 hsdiv_ack_mask)
 	return -ETIMEDOUT;
 }
 
-<<<<<<< HEAD
 static bool pll_is_locked(u32 stat)
 {
 	/*
@@ -464,8 +398,6 @@ static bool pll_is_locked(u32 stat)
 	return ((stat & 0x6f) == 0x3);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int dss_pll_write_config_type_a(struct dss_pll *pll,
 		const struct dss_pll_clock_info *cinfo)
 {
@@ -521,7 +453,6 @@ int dss_pll_write_config_type_a(struct dss_pll *pll,
 	l = FLD_MOD(l, 0, 25, 25);		/* M7_CLOCK_EN */
 	writel_relaxed(l, base + PLL_CONFIGURATION2);
 
-<<<<<<< HEAD
 	if (hw->errata_i932) {
 		int cnt = 0;
 		u32 sleep_time;
@@ -570,20 +501,6 @@ int dss_pll_write_config_type_a(struct dss_pll *pll,
 			r = -EIO;
 			goto err;
 		}
-=======
-	writel_relaxed(1, base + PLL_GO);	/* PLL_GO */
-
-	if (wait_for_bit_change(base + PLL_GO, 0, 0) != 0) {
-		DSSERR("DSS DPLL GO bit not going down.\n");
-		r = -EIO;
-		goto err;
-	}
-
-	if (wait_for_bit_change(base + PLL_STATUS, 1, 1) != 1) {
-		DSSERR("cannot lock DSS DPLL\n");
-		r = -EIO;
-		goto err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	l = readl_relaxed(base + PLL_CONFIGURATION2);

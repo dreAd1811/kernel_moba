@@ -110,11 +110,7 @@
 #define MTK_NOR_PRG_REG(n)		(MTK_NOR_PRGDATA0_REG + 4 * (n))
 #define MTK_NOR_SHREG(n)		(MTK_NOR_SHREG0_REG + 4 * (n))
 
-<<<<<<< HEAD
 struct mtk_nor {
-=======
-struct mt8173_nor {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct spi_nor nor;
 	struct device *dev;
 	void __iomem *base;	/* nor flash base address */
@@ -122,7 +118,6 @@ struct mt8173_nor {
 	struct clk *nor_clk;
 };
 
-<<<<<<< HEAD
 static void mtk_nor_set_read_mode(struct mtk_nor *mtk_nor)
 {
 	struct spi_nor *nor = &mtk_nor->nor;
@@ -148,48 +143,16 @@ static void mtk_nor_set_read_mode(struct mtk_nor *mtk_nor)
 		break;
 	default:
 		writeb(MTK_NOR_DUAL_DISABLE, mtk_nor->base +
-=======
-static void mt8173_nor_set_read_mode(struct mt8173_nor *mt8173_nor)
-{
-	struct spi_nor *nor = &mt8173_nor->nor;
-
-	switch (nor->read_proto) {
-	case SNOR_PROTO_1_1_1:
-		writeb(nor->read_opcode, mt8173_nor->base +
-		       MTK_NOR_PRGDATA3_REG);
-		writeb(MTK_NOR_FAST_READ, mt8173_nor->base +
-		       MTK_NOR_CFG1_REG);
-		break;
-	case SNOR_PROTO_1_1_2:
-		writeb(nor->read_opcode, mt8173_nor->base +
-		       MTK_NOR_PRGDATA3_REG);
-		writeb(MTK_NOR_DUAL_READ_EN, mt8173_nor->base +
-		       MTK_NOR_DUAL_REG);
-		break;
-	case SNOR_PROTO_1_1_4:
-		writeb(nor->read_opcode, mt8173_nor->base +
-		       MTK_NOR_PRGDATA4_REG);
-		writeb(MTK_NOR_QUAD_READ_EN, mt8173_nor->base +
-		       MTK_NOR_DUAL_REG);
-		break;
-	default:
-		writeb(MTK_NOR_DUAL_DISABLE, mt8173_nor->base +
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		       MTK_NOR_DUAL_REG);
 		break;
 	}
 }
 
-<<<<<<< HEAD
 static int mtk_nor_execute_cmd(struct mtk_nor *mtk_nor, u8 cmdval)
-=======
-static int mt8173_nor_execute_cmd(struct mt8173_nor *mt8173_nor, u8 cmdval)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int reg;
 	u8 val = cmdval & 0x1f;
 
-<<<<<<< HEAD
 	writeb(cmdval, mtk_nor->base + MTK_NOR_CMD_REG);
 	return readl_poll_timeout(mtk_nor->base + MTK_NOR_CMD_REG, reg,
 				  !(reg & val), 100, 10000);
@@ -197,15 +160,6 @@ static int mt8173_nor_execute_cmd(struct mt8173_nor *mt8173_nor, u8 cmdval)
 
 static int mtk_nor_do_tx_rx(struct mtk_nor *mtk_nor, u8 op,
 			    u8 *tx, int txlen, u8 *rx, int rxlen)
-=======
-	writeb(cmdval, mt8173_nor->base + MTK_NOR_CMD_REG);
-	return readl_poll_timeout(mt8173_nor->base + MTK_NOR_CMD_REG, reg,
-				  !(reg & val), 100, 10000);
-}
-
-static int mt8173_nor_do_tx_rx(struct mt8173_nor *mt8173_nor, u8 op,
-			       u8 *tx, int txlen, u8 *rx, int rxlen)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int len = 1 + txlen + rxlen;
 	int i, ret, idx;
@@ -213,26 +167,17 @@ static int mt8173_nor_do_tx_rx(struct mt8173_nor *mt8173_nor, u8 op,
 	if (len > MTK_NOR_MAX_SHIFT)
 		return -EINVAL;
 
-<<<<<<< HEAD
 	writeb(len * 8, mtk_nor->base + MTK_NOR_CNT_REG);
-=======
-	writeb(len * 8, mt8173_nor->base + MTK_NOR_CNT_REG);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* start at PRGDATA5, go down to PRGDATA0 */
 	idx = MTK_NOR_MAX_RX_TX_SHIFT - 1;
 
 	/* opcode */
-<<<<<<< HEAD
 	writeb(op, mtk_nor->base + MTK_NOR_PRG_REG(idx));
-=======
-	writeb(op, mt8173_nor->base + MTK_NOR_PRG_REG(idx));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	idx--;
 
 	/* program TX data */
 	for (i = 0; i < txlen; i++, idx--)
-<<<<<<< HEAD
 		writeb(tx[i], mtk_nor->base + MTK_NOR_PRG_REG(idx));
 
 	/* clear out rest of TX registers */
@@ -242,17 +187,6 @@ static int mt8173_nor_do_tx_rx(struct mt8173_nor *mt8173_nor, u8 op,
 	}
 
 	ret = mtk_nor_execute_cmd(mtk_nor, MTK_NOR_PRG_CMD);
-=======
-		writeb(tx[i], mt8173_nor->base + MTK_NOR_PRG_REG(idx));
-
-	/* clear out rest of TX registers */
-	while (idx >= 0) {
-		writeb(0, mt8173_nor->base + MTK_NOR_PRG_REG(idx));
-		idx--;
-	}
-
-	ret = mt8173_nor_execute_cmd(mt8173_nor, MTK_NOR_PRG_CMD);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -261,17 +195,12 @@ static int mt8173_nor_do_tx_rx(struct mt8173_nor *mt8173_nor, u8 op,
 
 	/* read out RX data */
 	for (i = 0; i < rxlen; i++, idx--)
-<<<<<<< HEAD
 		rx[i] = readb(mtk_nor->base + MTK_NOR_SHREG(idx));
-=======
-		rx[i] = readb(mt8173_nor->base + MTK_NOR_SHREG(idx));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
 /* Do a WRSR (Write Status Register) command */
-<<<<<<< HEAD
 static int mtk_nor_wr_sr(struct mtk_nor *mtk_nor, u8 sr)
 {
 	writeb(sr, mtk_nor->base + MTK_NOR_PRGDATA5_REG);
@@ -280,16 +209,6 @@ static int mtk_nor_wr_sr(struct mtk_nor *mtk_nor, u8 sr)
 }
 
 static int mtk_nor_write_buffer_enable(struct mtk_nor *mtk_nor)
-=======
-static int mt8173_nor_wr_sr(struct mt8173_nor *mt8173_nor, u8 sr)
-{
-	writeb(sr, mt8173_nor->base + MTK_NOR_PRGDATA5_REG);
-	writeb(8, mt8173_nor->base + MTK_NOR_CNT_REG);
-	return mt8173_nor_execute_cmd(mt8173_nor, MTK_NOR_WRSR_CMD);
-}
-
-static int mt8173_nor_write_buffer_enable(struct mt8173_nor *mt8173_nor)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u8 reg;
 
@@ -297,7 +216,6 @@ static int mt8173_nor_write_buffer_enable(struct mt8173_nor *mt8173_nor)
 	 * 0: pre-fetch buffer use for read
 	 * 1: pre-fetch buffer use for page program
 	 */
-<<<<<<< HEAD
 	writel(MTK_NOR_WR_BUF_ENABLE, mtk_nor->base + MTK_NOR_CFG2_REG);
 	return readb_poll_timeout(mtk_nor->base + MTK_NOR_CFG2_REG, reg,
 				  0x01 == (reg & 0x01), 100, 10000);
@@ -309,38 +227,16 @@ static int mtk_nor_write_buffer_disable(struct mtk_nor *mtk_nor)
 
 	writel(MTK_NOR_WR_BUF_DISABLE, mtk_nor->base + MTK_NOR_CFG2_REG);
 	return readb_poll_timeout(mtk_nor->base + MTK_NOR_CFG2_REG, reg,
-=======
-	writel(MTK_NOR_WR_BUF_ENABLE, mt8173_nor->base + MTK_NOR_CFG2_REG);
-	return readb_poll_timeout(mt8173_nor->base + MTK_NOR_CFG2_REG, reg,
-				  0x01 == (reg & 0x01), 100, 10000);
-}
-
-static int mt8173_nor_write_buffer_disable(struct mt8173_nor *mt8173_nor)
-{
-	u8 reg;
-
-	writel(MTK_NOR_WR_BUF_DISABLE, mt8173_nor->base + MTK_NOR_CFG2_REG);
-	return readb_poll_timeout(mt8173_nor->base + MTK_NOR_CFG2_REG, reg,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  MTK_NOR_WR_BUF_DISABLE == (reg & 0x1), 100,
 				  10000);
 }
 
-<<<<<<< HEAD
 static void mtk_nor_set_addr_width(struct mtk_nor *mtk_nor)
 {
 	u8 val;
 	struct spi_nor *nor = &mtk_nor->nor;
 
 	val = readb(mtk_nor->base + MTK_NOR_DUAL_REG);
-=======
-static void mt8173_nor_set_addr_width(struct mt8173_nor *mt8173_nor)
-{
-	u8 val;
-	struct spi_nor *nor = &mt8173_nor->nor;
-
-	val = readb(mt8173_nor->base + MTK_NOR_DUAL_REG);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (nor->addr_width) {
 	case 3:
@@ -350,16 +246,11 @@ static void mt8173_nor_set_addr_width(struct mt8173_nor *mt8173_nor)
 		val |= MTK_NOR_4B_ADDR_EN;
 		break;
 	default:
-<<<<<<< HEAD
 		dev_warn(mtk_nor->dev, "Unexpected address width %u.\n",
-=======
-		dev_warn(mt8173_nor->dev, "Unexpected address width %u.\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 nor->addr_width);
 		break;
 	}
 
-<<<<<<< HEAD
 	writeb(val, mtk_nor->base + MTK_NOR_DUAL_REG);
 }
 
@@ -379,32 +270,10 @@ static void mtk_nor_set_addr(struct mtk_nor *mtk_nor, u32 addr)
 
 static ssize_t mtk_nor_read(struct spi_nor *nor, loff_t from, size_t length,
 			    u_char *buffer)
-=======
-	writeb(val, mt8173_nor->base + MTK_NOR_DUAL_REG);
-}
-
-static void mt8173_nor_set_addr(struct mt8173_nor *mt8173_nor, u32 addr)
-{
-	int i;
-
-	mt8173_nor_set_addr_width(mt8173_nor);
-
-	for (i = 0; i < 3; i++) {
-		writeb(addr & 0xff, mt8173_nor->base + MTK_NOR_RADR0_REG + i * 4);
-		addr >>= 8;
-	}
-	/* Last register is non-contiguous */
-	writeb(addr & 0xff, mt8173_nor->base + MTK_NOR_RADR3_REG);
-}
-
-static ssize_t mt8173_nor_read(struct spi_nor *nor, loff_t from, size_t length,
-			       u_char *buffer)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i, ret;
 	int addr = (int)from;
 	u8 *buf = (u8 *)buffer;
-<<<<<<< HEAD
 	struct mtk_nor *mtk_nor = nor->priv;
 
 	/* set mode for fast read mode ,dual mode or quad mode */
@@ -416,24 +285,10 @@ static ssize_t mt8173_nor_read(struct spi_nor *nor, loff_t from, size_t length,
 		if (ret < 0)
 			return ret;
 		buf[i] = readb(mtk_nor->base + MTK_NOR_RDATA_REG);
-=======
-	struct mt8173_nor *mt8173_nor = nor->priv;
-
-	/* set mode for fast read mode ,dual mode or quad mode */
-	mt8173_nor_set_read_mode(mt8173_nor);
-	mt8173_nor_set_addr(mt8173_nor, addr);
-
-	for (i = 0; i < length; i++) {
-		ret = mt8173_nor_execute_cmd(mt8173_nor, MTK_NOR_PIO_READ_CMD);
-		if (ret < 0)
-			return ret;
-		buf[i] = readb(mt8173_nor->base + MTK_NOR_RDATA_REG);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return length;
 }
 
-<<<<<<< HEAD
 static int mtk_nor_write_single_byte(struct mtk_nor *mtk_nor,
 				     int addr, int length, u8 *data)
 {
@@ -444,46 +299,24 @@ static int mtk_nor_write_single_byte(struct mtk_nor *mtk_nor,
 	for (i = 0; i < length; i++) {
 		writeb(*data++, mtk_nor->base + MTK_NOR_WDATA_REG);
 		ret = mtk_nor_execute_cmd(mtk_nor, MTK_NOR_PIO_WR_CMD);
-=======
-static int mt8173_nor_write_single_byte(struct mt8173_nor *mt8173_nor,
-					int addr, int length, u8 *data)
-{
-	int i, ret;
-
-	mt8173_nor_set_addr(mt8173_nor, addr);
-
-	for (i = 0; i < length; i++) {
-		writeb(*data++, mt8173_nor->base + MTK_NOR_WDATA_REG);
-		ret = mt8173_nor_execute_cmd(mt8173_nor, MTK_NOR_PIO_WR_CMD);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret < 0)
 			return ret;
 	}
 	return 0;
 }
 
-<<<<<<< HEAD
 static int mtk_nor_write_buffer(struct mtk_nor *mtk_nor, int addr,
 				const u8 *buf)
 {
 	int i, bufidx, data;
 
 	mtk_nor_set_addr(mtk_nor, addr);
-=======
-static int mt8173_nor_write_buffer(struct mt8173_nor *mt8173_nor, int addr,
-				   const u8 *buf)
-{
-	int i, bufidx, data;
-
-	mt8173_nor_set_addr(mt8173_nor, addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	bufidx = 0;
 	for (i = 0; i < SFLASH_WRBUF_SIZE; i += 4) {
 		data = buf[bufidx + 3]<<24 | buf[bufidx + 2]<<16 |
 		       buf[bufidx + 1]<<8 | buf[bufidx];
 		bufidx += 4;
-<<<<<<< HEAD
 		writel(data, mtk_nor->base + MTK_NOR_PP_DATA_REG);
 	}
 	return mtk_nor_execute_cmd(mtk_nor, MTK_NOR_WR_CMD);
@@ -499,65 +332,29 @@ static ssize_t mtk_nor_write(struct spi_nor *nor, loff_t to, size_t len,
 	ret = mtk_nor_write_buffer_enable(mtk_nor);
 	if (ret < 0) {
 		dev_warn(mtk_nor->dev, "write buffer enable failed!\n");
-=======
-		writel(data, mt8173_nor->base + MTK_NOR_PP_DATA_REG);
-	}
-	return mt8173_nor_execute_cmd(mt8173_nor, MTK_NOR_WR_CMD);
-}
-
-static ssize_t mt8173_nor_write(struct spi_nor *nor, loff_t to, size_t len,
-				const u_char *buf)
-{
-	int ret;
-	struct mt8173_nor *mt8173_nor = nor->priv;
-	size_t i;
-
-	ret = mt8173_nor_write_buffer_enable(mt8173_nor);
-	if (ret < 0) {
-		dev_warn(mt8173_nor->dev, "write buffer enable failed!\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
 	for (i = 0; i + SFLASH_WRBUF_SIZE <= len; i += SFLASH_WRBUF_SIZE) {
-<<<<<<< HEAD
 		ret = mtk_nor_write_buffer(mtk_nor, to, buf);
 		if (ret < 0) {
 			dev_err(mtk_nor->dev, "write buffer failed!\n");
-=======
-		ret = mt8173_nor_write_buffer(mt8173_nor, to, buf);
-		if (ret < 0) {
-			dev_err(mt8173_nor->dev, "write buffer failed!\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return ret;
 		}
 		to += SFLASH_WRBUF_SIZE;
 		buf += SFLASH_WRBUF_SIZE;
 	}
-<<<<<<< HEAD
 	ret = mtk_nor_write_buffer_disable(mtk_nor);
 	if (ret < 0) {
 		dev_warn(mtk_nor->dev, "write buffer disable failed!\n");
-=======
-	ret = mt8173_nor_write_buffer_disable(mt8173_nor);
-	if (ret < 0) {
-		dev_warn(mt8173_nor->dev, "write buffer disable failed!\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
 	if (i < len) {
-<<<<<<< HEAD
 		ret = mtk_nor_write_single_byte(mtk_nor, to,
 						(int)(len - i), (u8 *)buf);
 		if (ret < 0) {
 			dev_err(mtk_nor->dev, "write single byte failed!\n");
-=======
-		ret = mt8173_nor_write_single_byte(mt8173_nor, to,
-						   (int)(len - i), (u8 *)buf);
-		if (ret < 0) {
-			dev_err(mt8173_nor->dev, "write single byte failed!\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return ret;
 		}
 	}
@@ -565,7 +362,6 @@ static ssize_t mt8173_nor_write(struct spi_nor *nor, loff_t to, size_t len,
 	return len;
 }
 
-<<<<<<< HEAD
 static int mtk_nor_read_reg(struct spi_nor *nor, u8 opcode, u8 *buf, int len)
 {
 	int ret;
@@ -583,68 +379,31 @@ static int mtk_nor_read_reg(struct spi_nor *nor, u8 opcode, u8 *buf, int len)
 		break;
 	default:
 		ret = mtk_nor_do_tx_rx(mtk_nor, opcode, NULL, 0, buf, len);
-=======
-static int mt8173_nor_read_reg(struct spi_nor *nor, u8 opcode, u8 *buf, int len)
-{
-	int ret;
-	struct mt8173_nor *mt8173_nor = nor->priv;
-
-	switch (opcode) {
-	case SPINOR_OP_RDSR:
-		ret = mt8173_nor_execute_cmd(mt8173_nor, MTK_NOR_RDSR_CMD);
-		if (ret < 0)
-			return ret;
-		if (len == 1)
-			*buf = readb(mt8173_nor->base + MTK_NOR_RDSR_REG);
-		else
-			dev_err(mt8173_nor->dev, "len should be 1 for read status!\n");
-		break;
-	default:
-		ret = mt8173_nor_do_tx_rx(mt8173_nor, opcode, NULL, 0, buf, len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 	return ret;
 }
 
-<<<<<<< HEAD
 static int mtk_nor_write_reg(struct spi_nor *nor, u8 opcode, u8 *buf,
 			     int len)
 {
 	int ret;
 	struct mtk_nor *mtk_nor = nor->priv;
-=======
-static int mt8173_nor_write_reg(struct spi_nor *nor, u8 opcode, u8 *buf,
-				int len)
-{
-	int ret;
-	struct mt8173_nor *mt8173_nor = nor->priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (opcode) {
 	case SPINOR_OP_WRSR:
 		/* We only handle 1 byte */
-<<<<<<< HEAD
 		ret = mtk_nor_wr_sr(mtk_nor, *buf);
 		break;
 	default:
 		ret = mtk_nor_do_tx_rx(mtk_nor, opcode, buf, len, NULL, 0);
 		if (ret)
 			dev_warn(mtk_nor->dev, "write reg failure!\n");
-=======
-		ret = mt8173_nor_wr_sr(mt8173_nor, *buf);
-		break;
-	default:
-		ret = mt8173_nor_do_tx_rx(mt8173_nor, opcode, buf, len, NULL, 0);
-		if (ret)
-			dev_warn(mt8173_nor->dev, "write reg failure!\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 	return ret;
 }
 
-<<<<<<< HEAD
 static void mtk_nor_disable_clk(struct mtk_nor *mtk_nor)
 {
 	clk_disable_unprepare(mtk_nor->spi_clk);
@@ -669,9 +428,6 @@ static int mtk_nor_enable_clk(struct mtk_nor *mtk_nor)
 }
 
 static int mtk_nor_init(struct mtk_nor *mtk_nor,
-=======
-static int mtk_nor_init(struct mt8173_nor *mt8173_nor,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			struct device_node *flash_node)
 {
 	const struct spi_nor_hwcaps hwcaps = {
@@ -683,7 +439,6 @@ static int mtk_nor_init(struct mt8173_nor *mt8173_nor,
 	struct spi_nor *nor;
 
 	/* initialize controller to accept commands */
-<<<<<<< HEAD
 	writel(MTK_NOR_ENABLE_SF_CMD, mtk_nor->base + MTK_NOR_WRPROT_REG);
 
 	nor = &mtk_nor->nor;
@@ -696,20 +451,6 @@ static int mtk_nor_init(struct mt8173_nor *mt8173_nor,
 	nor->read_reg = mtk_nor_read_reg;
 	nor->write = mtk_nor_write;
 	nor->write_reg = mtk_nor_write_reg;
-=======
-	writel(MTK_NOR_ENABLE_SF_CMD, mt8173_nor->base + MTK_NOR_WRPROT_REG);
-
-	nor = &mt8173_nor->nor;
-	nor->dev = mt8173_nor->dev;
-	nor->priv = mt8173_nor;
-	spi_nor_set_flash_node(nor, flash_node);
-
-	/* fill the hooks to spi nor */
-	nor->read = mt8173_nor_read;
-	nor->read_reg = mt8173_nor_read_reg;
-	nor->write = mt8173_nor_write;
-	nor->write_reg = mt8173_nor_write_reg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	nor->mtd.name = "mtk_nor";
 	/* initialized with NULL */
 	ret = spi_nor_scan(nor, NULL, &hwcaps);
@@ -724,18 +465,13 @@ static int mtk_nor_drv_probe(struct platform_device *pdev)
 	struct device_node *flash_np;
 	struct resource *res;
 	int ret;
-<<<<<<< HEAD
 	struct mtk_nor *mtk_nor;
-=======
-	struct mt8173_nor *mt8173_nor;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!pdev->dev.of_node) {
 		dev_err(&pdev->dev, "No DT found\n");
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 	mtk_nor = devm_kzalloc(&pdev->dev, sizeof(*mtk_nor), GFP_KERNEL);
 	if (!mtk_nor)
 		return -ENOMEM;
@@ -760,36 +496,6 @@ static int mtk_nor_drv_probe(struct platform_device *pdev)
 	if (ret)
 		return ret;
 
-=======
-	mt8173_nor = devm_kzalloc(&pdev->dev, sizeof(*mt8173_nor), GFP_KERNEL);
-	if (!mt8173_nor)
-		return -ENOMEM;
-	platform_set_drvdata(pdev, mt8173_nor);
-
-	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-	mt8173_nor->base = devm_ioremap_resource(&pdev->dev, res);
-	if (IS_ERR(mt8173_nor->base))
-		return PTR_ERR(mt8173_nor->base);
-
-	mt8173_nor->spi_clk = devm_clk_get(&pdev->dev, "spi");
-	if (IS_ERR(mt8173_nor->spi_clk))
-		return PTR_ERR(mt8173_nor->spi_clk);
-
-	mt8173_nor->nor_clk = devm_clk_get(&pdev->dev, "sf");
-	if (IS_ERR(mt8173_nor->nor_clk))
-		return PTR_ERR(mt8173_nor->nor_clk);
-
-	mt8173_nor->dev = &pdev->dev;
-	ret = clk_prepare_enable(mt8173_nor->spi_clk);
-	if (ret)
-		return ret;
-
-	ret = clk_prepare_enable(mt8173_nor->nor_clk);
-	if (ret) {
-		clk_disable_unprepare(mt8173_nor->spi_clk);
-		return ret;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* only support one attached flash */
 	flash_np = of_get_next_available_child(pdev->dev.of_node, NULL);
 	if (!flash_np) {
@@ -797,28 +503,17 @@ static int mtk_nor_drv_probe(struct platform_device *pdev)
 		ret = -ENODEV;
 		goto nor_free;
 	}
-<<<<<<< HEAD
 	ret = mtk_nor_init(mtk_nor, flash_np);
 
 nor_free:
 	if (ret)
 		mtk_nor_disable_clk(mtk_nor);
 
-=======
-	ret = mtk_nor_init(mt8173_nor, flash_np);
-
-nor_free:
-	if (ret) {
-		clk_disable_unprepare(mt8173_nor->spi_clk);
-		clk_disable_unprepare(mt8173_nor->nor_clk);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
 static int mtk_nor_drv_remove(struct platform_device *pdev)
 {
-<<<<<<< HEAD
 	struct mtk_nor *mtk_nor = platform_get_drvdata(pdev);
 
 	mtk_nor_disable_clk(mtk_nor);
@@ -853,15 +548,6 @@ static const struct dev_pm_ops mtk_nor_dev_pm_ops = {
 #define MTK_NOR_DEV_PM_OPS	NULL
 #endif
 
-=======
-	struct mt8173_nor *mt8173_nor = platform_get_drvdata(pdev);
-
-	clk_disable_unprepare(mt8173_nor->spi_clk);
-	clk_disable_unprepare(mt8173_nor->nor_clk);
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct of_device_id mtk_nor_of_ids[] = {
 	{ .compatible = "mediatek,mt8173-nor"},
 	{ /* sentinel */ }
@@ -873,10 +559,7 @@ static struct platform_driver mtk_nor_driver = {
 	.remove = mtk_nor_drv_remove,
 	.driver = {
 		.name = "mtk-nor",
-<<<<<<< HEAD
 		.pm = MTK_NOR_DEV_PM_OPS,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.of_match_table = mtk_nor_of_ids,
 	},
 };

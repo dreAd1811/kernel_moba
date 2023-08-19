@@ -3,11 +3,7 @@ Documentation for /proc/sys/user/*	kernel version 4.9.0
 
 ==============================================================
 
-<<<<<<< HEAD
 This file contains the documentation for the sysctl files in
-=======
-This file contains the documetation for the sysctl files in
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /proc/sys/user.
 
 The files in this directory can be used to override the default

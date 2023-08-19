@@ -7,10 +7,7 @@
  *
  * Copyright(c) 2012 - 2014 Intel Corporation. All rights reserved.
  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
-<<<<<<< HEAD
  * Copyright(c) 2018 Intel Corporation
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of version 2 of the GNU General Public License as
@@ -32,10 +29,7 @@
  *
  * Copyright(c) 2012 - 2014 Intel Corporation. All rights reserved.
  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
-<<<<<<< HEAD
  * Copyright(c) 2018 Intel Corporation
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -129,11 +123,7 @@ enum iwl_tx_flags {
 }; /* TX_FLAGS_BITS_API_S_VER_1 */
 
 /**
-<<<<<<< HEAD
  * enum iwl_tx_cmd_flags - bitmasks for tx_flags in TX command for 22000
-=======
- * enum iwl_tx_cmd_flags - bitmasks for tx_flags in TX command for a000
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @IWL_TX_FLAGS_CMD_RATE: use rate from the TX command
  * @IWL_TX_FLAGS_ENCRYPT_DIS: frame should not be encrypted, even if it belongs
  *	to a secured STA
@@ -313,11 +303,7 @@ struct iwl_dram_sec_info {
 } __packed; /* DRAM_SEC_INFO_API_S_VER_1 */
 
 /**
-<<<<<<< HEAD
  * struct iwl_tx_cmd_gen2 - TX command struct to FW for 22000 devices
-=======
- * struct iwl_tx_cmd_gen2 - TX command struct to FW for a000 devices
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * ( TX_CMD = 0x1c )
  * @len: in bytes of the payload, see below for details
  * @offload_assist: TX offload configuration
@@ -336,7 +322,6 @@ struct iwl_tx_cmd_gen2 {
 	struct ieee80211_hdr hdr[0];
 } __packed; /* TX_CMD_API_S_VER_7 */
 
-<<<<<<< HEAD
 /**
  * struct iwl_tx_cmd_gen3 - TX command struct to FW for 22560 devices
  * ( TX_CMD = 0x1c )
@@ -360,8 +345,6 @@ struct iwl_tx_cmd_gen3 {
 	struct ieee80211_hdr hdr[0];
 } __packed; /* TX_CMD_API_S_VER_8 */
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * TX response related data
  */
@@ -752,11 +735,7 @@ enum iwl_mvm_ba_resp_flags {
  * @reduced_txp: power reduced according to TPC. This is the actual value and
  *	not a copy from the LQ command. Thus, if not the first rate was used
  *	for Tx-ing then this value will be set to 0 by FW.
-<<<<<<< HEAD
  * @tlc_rate_info: TLC rate info, initial rate index, TLC table color
-=======
- * @initial_rate: TLC rate info, initial rate index, TLC table color
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @retry_cnt: retry count
  * @query_byte_cnt: SCD query byte count
  * @query_frame_cnt: SCD query frame count
@@ -768,25 +747,15 @@ enum iwl_mvm_ba_resp_flags {
  * @tfd_cnt: number of TFD-Q elements
  * @ra_tid_cnt: number of RATID-Q elements
  * @tfd: array of TFD queue status updates. See &iwl_mvm_compressed_ba_tfd
-<<<<<<< HEAD
  *	for details.
  * @ra_tid: array of RA-TID queue status updates. For debug purposes only. See
  *	&iwl_mvm_compressed_ba_ratid for more details.
-=======
- *	for details. Length in @tfd_cnt.
- * @ra_tid: array of RA-TID queue status updates. For debug purposes only. See
- *	&iwl_mvm_compressed_ba_ratid for more details. Length in @ra_tid_cnt.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct iwl_mvm_compressed_ba_notif {
 	__le32 flags;
 	u8 sta_id;
 	u8 reduced_txp;
-<<<<<<< HEAD
 	u8 tlc_rate_info;
-=======
-	u8 initial_rate;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 retry_cnt;
 	__le32 query_byte_cnt;
 	__le16 query_frame_cnt;
@@ -797,11 +766,7 @@ struct iwl_mvm_compressed_ba_notif {
 	__le32 tx_rate;
 	__le16 tfd_cnt;
 	__le16 ra_tid_cnt;
-<<<<<<< HEAD
 	struct iwl_mvm_compressed_ba_tfd tfd[1];
-=======
-	struct iwl_mvm_compressed_ba_tfd tfd[0];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct iwl_mvm_compressed_ba_ratid ra_tid[0];
 } __packed; /* COMPRESSED_BA_RES_API_S_VER_4 */
 

@@ -1,20 +1,9 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+ OR MIT
 //
 // Device Tree Source for UniPhier LD6b Reference Board
 //
 // Copyright (C) 2015-2016 Socionext Inc.
 //   Author: Masahiro Yamada <yamada.masahiro@socionext.com>
-=======
-/*
- * Device Tree Source for UniPhier LD6b Reference Board
- *
- * Copyright (C) 2015-2016 Socionext Inc.
- *   Author: Masahiro Yamada <yamada.masahiro@socionext.com>
- *
- * SPDX-License-Identifier: (GPL-2.0+ OR MIT)
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /dts-v1/;
 #include "uniphier-ld6b.dtsi"
@@ -49,11 +38,7 @@
 };
 
 &ethsc {
-<<<<<<< HEAD
 	interrupts = <4 8>;
-=======
-	interrupts = <0 52 4>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &serial0 {
@@ -68,7 +53,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
 &gpio {
 	xirq4 {
 		gpio-hog;
@@ -77,13 +61,10 @@
 	};
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &i2c0 {
 	status = "okay";
 };
 
-<<<<<<< HEAD
 &eth {
 	status = "okay";
 	phy-handle = <&ethphy>;
@@ -95,8 +76,6 @@
 	};
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &nand {
 	status = "okay";
 };

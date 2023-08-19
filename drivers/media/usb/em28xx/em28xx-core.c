@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
 //
 // em28xx-core.c - driver for Empia EM2800/EM2820/2840 USB video capture devices
@@ -18,31 +17,6 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-=======
-/*
-   em28xx-core.c - driver for Empia EM2800/EM2820/2840 USB video capture devices
-
-   Copyright (C) 2005 Ludovico Cavedon <cavedon@sssup.it>
-		      Markus Rechberger <mrechberger@gmail.com>
-		      Mauro Carvalho Chehab <mchehab@infradead.org>
-		      Sascha Sommer <saschasommer@freenet.de>
-   Copyright (C) 2012 Frank Schäfer <fschaefer.oss@googlemail.com>
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "em28xx.h"
 
@@ -58,20 +32,12 @@
 
 #define DRIVER_AUTHOR "Ludovico Cavedon <cavedon@sssup.it>, " \
 		      "Markus Rechberger <mrechberger@gmail.com>, " \
-<<<<<<< HEAD
 		      "Mauro Carvalho Chehab <mchehab@kernel.org>, " \
-=======
-		      "Mauro Carvalho Chehab <mchehab@infradead.org>, " \
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		      "Sascha Sommer <saschasommer@freenet.de>"
 
 MODULE_AUTHOR(DRIVER_AUTHOR);
 MODULE_DESCRIPTION(DRIVER_DESC);
-<<<<<<< HEAD
 MODULE_LICENSE("GPL v2");
-=======
-MODULE_LICENSE("GPL");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_VERSION(EM28XX_VERSION);
 
 /* #define ENABLE_DEBUG_ISOC_FRAMES */
@@ -90,10 +56,6 @@ static unsigned int reg_debug;
 module_param(reg_debug, int, 0644);
 MODULE_PARM_DESC(reg_debug, "enable debug messages [URB reg]");
 
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define em28xx_regdbg(fmt, arg...) do {				\
 	if (reg_debug)							\
 		dev_printk(KERN_DEBUG, &dev->intf->dev,			\
@@ -130,18 +92,11 @@ int em28xx_read_reg_req_len(struct em28xx *dev, u8 req, u16 reg,
 			      0x0000, reg, dev->urb_buf, len, HZ);
 	if (ret < 0) {
 		em28xx_regdbg("(pipe 0x%08x): IN:  %02x %02x %02x %02x %02x %02x %02x %02x  failed with error %i\n",
-<<<<<<< HEAD
 			      pipe,
 			      USB_DIR_IN | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
 			      req, 0, 0,
 			      reg & 0xff, reg >> 8,
 			      len & 0xff, len >> 8, ret);
-=======
-			     pipe, USB_DIR_IN | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
-			     req, 0, 0,
-			     reg & 0xff, reg >> 8,
-			     len & 0xff, len >> 8, ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_unlock(&dev->ctrl_urb_lock);
 		return usb_translate_errors(ret);
 	}
@@ -152,17 +107,10 @@ int em28xx_read_reg_req_len(struct em28xx *dev, u8 req, u16 reg,
 	mutex_unlock(&dev->ctrl_urb_lock);
 
 	em28xx_regdbg("(pipe 0x%08x): IN:  %02x %02x %02x %02x %02x %02x %02x %02x <<< %*ph\n",
-<<<<<<< HEAD
 		      pipe, USB_DIR_IN | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
 		      req, 0, 0,
 		      reg & 0xff, reg >> 8,
 		      len & 0xff, len >> 8, len, buf);
-=======
-		     pipe, USB_DIR_IN | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
-		     req, 0, 0,
-		     reg & 0xff, reg >> 8,
-		     len & 0xff, len >> 8, len, buf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -203,11 +151,7 @@ int em28xx_write_regs_req(struct em28xx *dev, u8 req, u16 reg, char *buf,
 	if (dev->disconnected)
 		return -ENODEV;
 
-<<<<<<< HEAD
 	if (len < 1 || len > URB_MAX_CTRL_SIZE)
-=======
-	if ((len < 1) || (len > URB_MAX_CTRL_SIZE))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	mutex_lock(&dev->ctrl_urb_lock);
@@ -393,14 +337,9 @@ static int set_ac97_input(struct em28xx *dev)
 	int ret, i;
 	enum em28xx_amux amux = dev->ctl_ainput;
 
-<<<<<<< HEAD
 	/*
 	 * EM28XX_AMUX_VIDEO2 is a special case used to indicate that
 	 * em28xx should point to LINE IN, while AC97 should use VIDEO
-=======
-	/* EM28XX_AMUX_VIDEO2 is a special case used to indicate that
-	   em28xx should point to LINE IN, while AC97 should use VIDEO
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	if (amux == EM28XX_AMUX_VIDEO2)
 		amux = EM28XX_AMUX_VIDEO;
@@ -436,15 +375,9 @@ static int em28xx_set_audio_source(struct em28xx *dev)
 			return ret;
 	}
 
-<<<<<<< HEAD
 	if (dev->has_msp34xx) {
 		input = EM28XX_AUDIO_SRC_TUNER;
 	} else {
-=======
-	if (dev->board.has_msp34xx)
-		input = EM28XX_AUDIO_SRC_TUNER;
-	else {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		switch (dev->ctl_ainput) {
 		case EM28XX_AMUX_VIDEO:
 			input = EM28XX_AUDIO_SRC_TUNER;
@@ -463,11 +396,7 @@ static int em28xx_set_audio_source(struct em28xx *dev)
 	ret = em28xx_write_reg_bits(dev, EM28XX_R0E_AUDIOSRC, input, 0xc0);
 	if (ret < 0)
 		return ret;
-<<<<<<< HEAD
 	usleep_range(10000, 11000);
-=======
-	msleep(5);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (dev->audio_mode.ac97) {
 	case EM28XX_NO_AC97:
@@ -500,14 +429,9 @@ int em28xx_audio_analog_set(struct em28xx *dev)
 	if (dev->int_audio_type == EM28XX_INT_AUDIO_NONE)
 		return 0;
 
-<<<<<<< HEAD
 	/*
 	 * It is assumed that all devices use master volume for output.
 	 * It would be possible to use also line output.
-=======
-	/* It is assumed that all devices use master volume for output.
-	   It would be possible to use also line output.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	if (dev->audio_mode.ac97 != EM28XX_NO_AC97) {
 		/* Mute all outputs */
@@ -527,11 +451,7 @@ int em28xx_audio_analog_set(struct em28xx *dev)
 	ret = em28xx_write_reg(dev, EM28XX_R0F_XCLK, xclk);
 	if (ret < 0)
 		return ret;
-<<<<<<< HEAD
 	usleep_range(10000, 11000);
-=======
-	msleep(10);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Selects the proper audio input */
 	ret = em28xx_set_audio_source(dev);
@@ -565,15 +485,10 @@ int em28xx_audio_analog_set(struct em28xx *dev)
 		if (dev->ctl_aoutput & EM28XX_AOUT_PCM_IN) {
 			int sel = ac97_return_record_select(dev->ctl_aoutput);
 
-<<<<<<< HEAD
 			/*
 			 * Use the same input for both left and right
 			 * channels
 			 */
-=======
-			/* Use the same input for both left and right
-			   channels */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			sel |= (sel << 8);
 
 			em28xx_write_ac97(dev, AC97_REC_SEL, sel);
@@ -624,11 +539,7 @@ int em28xx_audio_setup(struct em28xx *dev)
 		else
 			i2s_samplerates = 3;
 		dev_info(&dev->intf->dev, "I2S Audio (%d sample rate(s))\n",
-<<<<<<< HEAD
 			 i2s_samplerates);
-=======
-			i2s_samplerates);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Skip the code that does AC97 vendor detection */
 		dev->audio_mode.ac97 = EM28XX_NO_AC97;
 		goto init_audio;
@@ -668,11 +579,7 @@ int em28xx_audio_setup(struct em28xx *dev)
 	dev_warn(&dev->intf->dev, "AC97 features = 0x%04x\n", feat);
 
 	/* Try to identify what audio processor we have */
-<<<<<<< HEAD
 	if ((vid == 0xffffffff || vid == 0x83847650) && feat == 0x6a90)
-=======
-	if (((vid == 0xffffffff) || (vid == 0x83847650)) && (feat == 0x6a90))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev->audio_mode.ac97 = EM28XX_AC97_EM202;
 	else if ((vid >> 8) == 0x838476)
 		dev->audio_mode.ac97 = EM28XX_AC97_SIGMATEL;
@@ -731,7 +638,6 @@ int em28xx_capture_start(struct em28xx *dev, int start)
 	    dev->chip_id == CHIP_ID_EM28174 ||
 	    dev->chip_id == CHIP_ID_EM28178) {
 		/* The Transport Stream Enable Register moved in em2874 */
-<<<<<<< HEAD
 		if (dev->dvb_xfer_bulk) {
 			/* Max Tx Size = 188 * 256 = 48128 - LCM(188,512) * 2 */
 			em28xx_write_reg(dev, (dev->ts == PRIMARY_TS) ?
@@ -755,12 +661,6 @@ int em28xx_capture_start(struct em28xx *dev, int start)
 						   EM2874_R5F_TS_ENABLE,
 						   start ? EM2874_TS2_CAPTURE_ENABLE : 0x00,
 						   EM2874_TS2_CAPTURE_ENABLE | EM2874_TS2_FILTER_ENABLE | EM2874_TS2_NULL_DISCARD);
-=======
-		rc = em28xx_write_reg_bits(dev, EM2874_R5F_TS_ENABLE,
-					   start ?
-					       EM2874_TS1_CAPTURE_ENABLE : 0x00,
-					   EM2874_TS1_CAPTURE_ENABLE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		/* FIXME: which is the best order? */
 		/* video registers are sampled by VREF */
@@ -770,11 +670,7 @@ int em28xx_capture_start(struct em28xx *dev, int start)
 			return rc;
 
 		if (start) {
-<<<<<<< HEAD
 			if (dev->is_webcam)
-=======
-			if (dev->board.is_webcam)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				rc = em28xx_write_reg(dev, 0x13, 0x0c);
 
 			/* Enable video capture */
@@ -793,11 +689,7 @@ int em28xx_capture_start(struct em28xx *dev, int start)
 			if (rc < 0)
 				return rc;
 
-<<<<<<< HEAD
 			usleep_range(10000, 11000);
-=======
-			msleep(6);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else {
 			/* disable video capture */
 			rc = em28xx_write_reg(dev, EM28XX_R12_VINENABLE, 0x27);
@@ -818,11 +710,7 @@ int em28xx_capture_start(struct em28xx *dev, int start)
 	return rc;
 }
 
-<<<<<<< HEAD
 int em28xx_gpio_set(struct em28xx *dev, const struct em28xx_reg_seq *gpio)
-=======
-int em28xx_gpio_set(struct em28xx *dev, struct em28xx_reg_seq *gpio)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int rc = 0;
 
@@ -835,11 +723,7 @@ int em28xx_gpio_set(struct em28xx *dev, struct em28xx_reg_seq *gpio)
 			em28xx_write_reg(dev, EM28XX_R12_VINENABLE, 0x67);
 		else
 			em28xx_write_reg(dev, EM28XX_R12_VINENABLE, 0x37);
-<<<<<<< HEAD
 		usleep_range(10000, 11000);
-=======
-		msleep(6);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Send GPIO reset sequences specified at board entry */
@@ -883,15 +767,9 @@ int em28xx_set_mode(struct em28xx *dev, enum em28xx_mode set_mode)
 }
 EXPORT_SYMBOL_GPL(em28xx_set_mode);
 
-<<<<<<< HEAD
 /*
  *URB control
  */
-=======
-/* ------------------------------------------------------------------
-	URB control
-   ------------------------------------------------------------------*/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * URB completion handler for isoc/bulk transfers
@@ -910,11 +788,7 @@ static void em28xx_irq_callback(struct urb *urb)
 	case -ESHUTDOWN:
 		return;
 	default:            /* error */
-<<<<<<< HEAD
 		em28xx_isocdbg("urb completion error %d.\n", urb->status);
-=======
-		em28xx_isocdbg("urb completition error %d.\n", urb->status);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 
@@ -945,17 +819,9 @@ void em28xx_uninit_usb_xfer(struct em28xx *dev, enum em28xx_mode mode)
 {
 	struct urb *urb;
 	struct em28xx_usb_bufs *usb_bufs;
-<<<<<<< HEAD
 	int i;
 
 	em28xx_isocdbg("called %s in mode %d\n", __func__, mode);
-=======
-	struct usb_device *udev = interface_to_usbdev(dev->intf);
-	int i;
-
-	em28xx_isocdbg("em28xx: called em28xx_uninit_usb_xfer in mode %d\n",
-		       mode);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (mode == EM28XX_DIGITAL_MODE)
 		usb_bufs = &dev->usb_ctl.digital_bufs;
@@ -970,7 +836,6 @@ void em28xx_uninit_usb_xfer(struct em28xx *dev, enum em28xx_mode mode)
 			else
 				usb_unlink_urb(urb);
 
-<<<<<<< HEAD
 			usb_free_urb(urb);
 			usb_bufs->urb[i] = NULL;
 		}
@@ -981,25 +846,6 @@ void em28xx_uninit_usb_xfer(struct em28xx *dev, enum em28xx_mode mode)
 
 	usb_bufs->urb = NULL;
 	usb_bufs->buf = NULL;
-=======
-			if (usb_bufs->transfer_buffer[i]) {
-				usb_free_coherent(udev,
-						  urb->transfer_buffer_length,
-						  usb_bufs->transfer_buffer[i],
-						  urb->transfer_dma);
-			}
-			usb_free_urb(urb);
-			usb_bufs->urb[i] = NULL;
-		}
-		usb_bufs->transfer_buffer[i] = NULL;
-	}
-
-	kfree(usb_bufs->urb);
-	kfree(usb_bufs->transfer_buffer);
-
-	usb_bufs->urb = NULL;
-	usb_bufs->transfer_buffer = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	usb_bufs->num_bufs = 0;
 
 	em28xx_capture_start(dev, 0);
@@ -1015,11 +861,7 @@ void em28xx_stop_urbs(struct em28xx *dev)
 	struct urb *urb;
 	struct em28xx_usb_bufs *isoc_bufs = &dev->usb_ctl.digital_bufs;
 
-<<<<<<< HEAD
 	em28xx_isocdbg("called %s\n", __func__);
-=======
-	em28xx_isocdbg("em28xx: called em28xx_stop_urbs\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < isoc_bufs->num_bufs; i++) {
 		urb = isoc_bufs->urb[i];
@@ -1048,19 +890,12 @@ int em28xx_alloc_urbs(struct em28xx *dev, enum em28xx_mode mode, int xfer_bulk,
 	int sb_size, pipe;
 	int j, k;
 
-<<<<<<< HEAD
 	em28xx_isocdbg("em28xx: called %s in mode %d\n", __func__, mode);
 
 	/*
 	 * Check mode and if we have an endpoint for the selected
 	 * transfer type, select buffer
 	 */
-=======
-	em28xx_isocdbg("em28xx: called em28xx_alloc_isoc in mode %d\n", mode);
-
-	/* Check mode and if we have an endpoint for the selected
-	   transfer type, select buffer				 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (mode == EM28XX_DIGITAL_MODE) {
 		if ((xfer_bulk && !dev->dvb_ep_bulk) ||
 		    (!xfer_bulk && !dev->dvb_ep_isoc)) {
@@ -1089,7 +924,6 @@ int em28xx_alloc_urbs(struct em28xx *dev, enum em28xx_mode mode, int xfer_bulk,
 
 	usb_bufs->num_bufs = num_bufs;
 
-<<<<<<< HEAD
 	usb_bufs->urb = kcalloc(num_bufs, sizeof(void *), GFP_KERNEL);
 	if (!usb_bufs->urb)
 		return -ENOMEM;
@@ -1097,16 +931,6 @@ int em28xx_alloc_urbs(struct em28xx *dev, enum em28xx_mode mode, int xfer_bulk,
 	usb_bufs->buf = kcalloc(num_bufs, sizeof(void *), GFP_KERNEL);
 	if (!usb_bufs->buf) {
 		kfree(usb_bufs->buf);
-=======
-	usb_bufs->urb = kzalloc(sizeof(void *)*num_bufs,  GFP_KERNEL);
-	if (!usb_bufs->urb)
-		return -ENOMEM;
-
-	usb_bufs->transfer_buffer = kzalloc(sizeof(void *)*num_bufs,
-					     GFP_KERNEL);
-	if (!usb_bufs->transfer_buffer) {
-		kfree(usb_bufs->urb);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOMEM;
 	}
 
@@ -1129,7 +953,6 @@ int em28xx_alloc_urbs(struct em28xx *dev, enum em28xx_mode mode, int xfer_bulk,
 		}
 		usb_bufs->urb[i] = urb;
 
-<<<<<<< HEAD
 		usb_bufs->buf[i] = kzalloc(sb_size, GFP_KERNEL);
 		if (!usb_bufs->buf[i]) {
 			em28xx_uninit_usb_xfer(dev, mode);
@@ -1144,50 +967,22 @@ int em28xx_alloc_urbs(struct em28xx *dev, enum em28xx_mode mode, int xfer_bulk,
 		}
 
 		urb->transfer_flags = URB_FREE_BUFFER;
-=======
-		usb_bufs->transfer_buffer[i] = usb_alloc_coherent(udev,
-			sb_size, GFP_KERNEL, &urb->transfer_dma);
-		if (!usb_bufs->transfer_buffer[i]) {
-			dev_err(&dev->intf->dev,
-				"unable to allocate %i bytes for transfer buffer %i%s\n",
-			       sb_size, i,
-			       in_interrupt() ? " while in int" : "");
-			em28xx_uninit_usb_xfer(dev, mode);
-			return -ENOMEM;
-		}
-		memset(usb_bufs->transfer_buffer[i], 0, sb_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (xfer_bulk) { /* bulk */
 			pipe = usb_rcvbulkpipe(udev,
 					       mode == EM28XX_ANALOG_MODE ?
 					       dev->analog_ep_bulk :
 					       dev->dvb_ep_bulk);
-<<<<<<< HEAD
 			usb_fill_bulk_urb(urb, udev, pipe, usb_bufs->buf[i],
 					  sb_size, em28xx_irq_callback, dev);
-=======
-			usb_fill_bulk_urb(urb, udev, pipe,
-					  usb_bufs->transfer_buffer[i], sb_size,
-					  em28xx_irq_callback, dev);
-			urb->transfer_flags = URB_NO_TRANSFER_DMA_MAP;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else { /* isoc */
 			pipe = usb_rcvisocpipe(udev,
 					       mode == EM28XX_ANALOG_MODE ?
 					       dev->analog_ep_isoc :
 					       dev->dvb_ep_isoc);
-<<<<<<< HEAD
 			usb_fill_int_urb(urb, udev, pipe, usb_bufs->buf[i],
 					 sb_size, em28xx_irq_callback, dev, 1);
 			urb->transfer_flags |= URB_ISO_ASAP;
-=======
-			usb_fill_int_urb(urb, udev, pipe,
-					 usb_bufs->transfer_buffer[i], sb_size,
-					 em28xx_irq_callback, dev, 1);
-			urb->transfer_flags = URB_ISO_ASAP |
-					      URB_NO_TRANSFER_DMA_MAP;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			k = 0;
 			for (j = 0; j < usb_bufs->num_packets; j++) {
 				urb->iso_frame_desc[j].offset = k;
@@ -1220,12 +1015,7 @@ int em28xx_init_usb_xfer(struct em28xx *dev, enum em28xx_mode mode,
 	int rc;
 	int alloc;
 
-<<<<<<< HEAD
 	em28xx_isocdbg("em28xx: called %s in mode %d\n", __func__, mode);
-=======
-	em28xx_isocdbg("em28xx: called em28xx_init_usb_xfer in mode %d\n",
-		       mode);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev->usb_ctl.urb_data_copy = urb_data_copy;
 
@@ -1263,11 +1053,7 @@ int em28xx_init_usb_xfer(struct em28xx *dev, enum em28xx_mode mode,
 
 	/* submit urbs and enables IRQ */
 	for (i = 0; i < usb_bufs->num_bufs; i++) {
-<<<<<<< HEAD
 		rc = usb_submit_urb(usb_bufs->urb[i], GFP_KERNEL);
-=======
-		rc = usb_submit_urb(usb_bufs->urb[i], GFP_ATOMIC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (rc) {
 			dev_err(&dev->intf->dev,
 				"submit of urb %i failed (error=%i)\n", i, rc);
@@ -1300,15 +1086,11 @@ int em28xx_register_extension(struct em28xx_ops *ops)
 	mutex_lock(&em28xx_devlist_mutex);
 	list_add_tail(&ops->next, &em28xx_extension_devlist);
 	list_for_each_entry(dev, &em28xx_devlist, devlist) {
-<<<<<<< HEAD
 		if (ops->init) {
 			ops->init(dev);
 			if (dev->dev_next)
 				ops->init(dev->dev_next);
 		}
-=======
-		ops->init(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	mutex_unlock(&em28xx_devlist_mutex);
 	pr_info("em28xx: Registered (%s) extension\n", ops->name);
@@ -1322,15 +1104,11 @@ void em28xx_unregister_extension(struct em28xx_ops *ops)
 
 	mutex_lock(&em28xx_devlist_mutex);
 	list_for_each_entry(dev, &em28xx_devlist, devlist) {
-<<<<<<< HEAD
 		if (ops->fini) {
 			if (dev->dev_next)
 				ops->fini(dev->dev_next);
 			ops->fini(dev);
 		}
-=======
-		ops->fini(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	list_del(&ops->next);
 	mutex_unlock(&em28xx_devlist_mutex);
@@ -1345,16 +1123,11 @@ void em28xx_init_extension(struct em28xx *dev)
 	mutex_lock(&em28xx_devlist_mutex);
 	list_add_tail(&dev->devlist, &em28xx_devlist);
 	list_for_each_entry(ops, &em28xx_extension_devlist, next) {
-<<<<<<< HEAD
 		if (ops->init) {
 			ops->init(dev);
 			if (dev->dev_next)
 				ops->init(dev->dev_next);
 		}
-=======
-		if (ops->init)
-			ops->init(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	mutex_unlock(&em28xx_devlist_mutex);
 }
@@ -1365,16 +1138,11 @@ void em28xx_close_extension(struct em28xx *dev)
 
 	mutex_lock(&em28xx_devlist_mutex);
 	list_for_each_entry(ops, &em28xx_extension_devlist, next) {
-<<<<<<< HEAD
 		if (ops->fini) {
 			if (dev->dev_next)
 				ops->fini(dev->dev_next);
 			ops->fini(dev);
 		}
-=======
-		if (ops->fini)
-			ops->fini(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	list_del(&dev->devlist);
 	mutex_unlock(&em28xx_devlist_mutex);
@@ -1389,11 +1157,8 @@ int em28xx_suspend_extension(struct em28xx *dev)
 	list_for_each_entry(ops, &em28xx_extension_devlist, next) {
 		if (ops->suspend)
 			ops->suspend(dev);
-<<<<<<< HEAD
 		if (dev->dev_next)
 			ops->suspend(dev->dev_next);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	mutex_unlock(&em28xx_devlist_mutex);
 	return 0;
@@ -1406,16 +1171,11 @@ int em28xx_resume_extension(struct em28xx *dev)
 	dev_info(&dev->intf->dev, "Resuming extensions\n");
 	mutex_lock(&em28xx_devlist_mutex);
 	list_for_each_entry(ops, &em28xx_extension_devlist, next) {
-<<<<<<< HEAD
 		if (!ops->resume)
 			continue;
 		ops->resume(dev);
 		if (dev->dev_next)
 			ops->resume(dev->dev_next);
-=======
-		if (ops->resume)
-			ops->resume(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	mutex_unlock(&em28xx_devlist_mutex);
 	return 0;

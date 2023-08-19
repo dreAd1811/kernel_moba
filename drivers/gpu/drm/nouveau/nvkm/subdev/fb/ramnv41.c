@@ -28,10 +28,6 @@ nv41_ram_new(struct nvkm_fb *fb, struct nvkm_ram **pram)
 {
 	struct nvkm_device *device = fb->subdev.device;
 	u32  size = nvkm_rd32(device, 0x10020c) & 0xff000000;
-<<<<<<< HEAD
-=======
-	u32  tags = nvkm_rd32(device, 0x100320);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 fb474 = nvkm_rd32(device, 0x100474);
 	enum nvkm_ram_type type = NVKM_RAM_TYPE_UNKNOWN;
 	int ret;
@@ -43,11 +39,7 @@ nv41_ram_new(struct nvkm_fb *fb, struct nvkm_ram **pram)
 	if (fb474 & 0x00000001)
 		type = NVKM_RAM_TYPE_DDR1;
 
-<<<<<<< HEAD
 	ret = nv40_ram_new_(fb, type, size, pram);
-=======
-	ret = nv40_ram_new_(fb, type, size, tags, pram);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 

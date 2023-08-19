@@ -29,10 +29,7 @@
 #include <linux/kvm_host.h>
 #include <linux/highmem.h>
 #include <linux/sched/cputime.h>
-<<<<<<< HEAD
 #include <linux/eventfd.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/apicdef.h>
 #include <trace/events/kvm.h>
@@ -78,30 +75,11 @@ static bool synic_has_vector_auto_eoi(struct kvm_vcpu_hv_synic *synic,
 	return false;
 }
 
-<<<<<<< HEAD
 static void synic_update_vector(struct kvm_vcpu_hv_synic *synic,
 				int vector)
 {
 	if (vector < HV_SYNIC_FIRST_VALID_VECTOR)
 		return;
-=======
-static int synic_set_sint(struct kvm_vcpu_hv_synic *synic, int sint,
-			  u64 data, bool host)
-{
-	int vector;
-
-	vector = data & HV_SYNIC_SINT_VECTOR_MASK;
-	if (vector < 16 && !host)
-		return 1;
-	/*
-	 * Guest may configure multiple SINTs to use the same vector, so
-	 * we maintain a bitmap of vectors handled by synic, and a
-	 * bitmap of vectors with auto-eoi behavior.  The bitmaps are
-	 * updated here, and atomically queried on fast paths.
-	 */
-
-	atomic64_set(&synic->sint[sint], data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (synic_has_vector_connected(synic, vector))
 		__set_bit(vector, synic->vec_bitmap);
@@ -112,7 +90,6 @@ static int synic_set_sint(struct kvm_vcpu_hv_synic *synic, int sint,
 		__set_bit(vector, synic->auto_eoi_bitmap);
 	else
 		__clear_bit(vector, synic->auto_eoi_bitmap);
-<<<<<<< HEAD
 }
 
 static int synic_set_sint(struct kvm_vcpu_hv_synic *synic, int sint,
@@ -144,8 +121,6 @@ static int synic_set_sint(struct kvm_vcpu_hv_synic *synic, int sint,
 	synic_update_vector(synic, old_vector);
 
 	synic_update_vector(synic, vector);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Load SynIC vectors into EOI exit bitmap */
 	kvm_make_request(KVM_REQ_SCAN_IOAPIC, synic_to_vcpu(synic));
@@ -157,15 +132,10 @@ static struct kvm_vcpu *get_vcpu_by_vpidx(struct kvm *kvm, u32 vpidx)
 	struct kvm_vcpu *vcpu = NULL;
 	int i;
 
-<<<<<<< HEAD
 	if (vpidx >= KVM_MAX_VCPUS)
 		return NULL;
 
 	vcpu = kvm_get_vcpu(kvm, vpidx);
-=======
-	if (vpidx < KVM_MAX_VCPUS)
-		vcpu = kvm_get_vcpu(kvm, vpidx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (vcpu && vcpu_to_hv_vcpu(vcpu)->vp_index == vpidx)
 		return vcpu;
 	kvm_for_each_vcpu(i, vcpu, kvm)
@@ -267,11 +237,7 @@ static int synic_set_msr(struct kvm_vcpu_hv_synic *synic,
 	struct kvm_vcpu *vcpu = synic_to_vcpu(synic);
 	int ret;
 
-<<<<<<< HEAD
 	if (!synic->active && !host)
-=======
-	if (!synic->active)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 1;
 
 	trace_kvm_hv_synic_set_msr(vcpu->vcpu_id, msr, data, host);
@@ -331,20 +297,12 @@ static int synic_set_msr(struct kvm_vcpu_hv_synic *synic,
 	return ret;
 }
 
-<<<<<<< HEAD
 static int synic_get_msr(struct kvm_vcpu_hv_synic *synic, u32 msr, u64 *pdata,
 			 bool host)
 {
 	int ret;
 
 	if (!synic->active && !host)
-=======
-static int synic_get_msr(struct kvm_vcpu_hv_synic *synic, u32 msr, u64 *pdata)
-{
-	int ret;
-
-	if (!synic->active)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 1;
 
 	ret = 0;
@@ -733,7 +691,6 @@ void kvm_hv_vcpu_uninit(struct kvm_vcpu *vcpu)
 		stimer_cleanup(&hv_vcpu->stimer[i]);
 }
 
-<<<<<<< HEAD
 bool kvm_hv_assist_page_enabled(struct kvm_vcpu *vcpu)
 {
 	if (!(vcpu->arch.hyperv.hv_vapic & HV_X64_MSR_VP_ASSIST_PAGE_ENABLE))
@@ -752,8 +709,6 @@ bool kvm_hv_get_assist_page(struct kvm_vcpu *vcpu,
 }
 EXPORT_SYMBOL_GPL(kvm_hv_get_assist_page);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void stimer_prepare_msg(struct kvm_vcpu_hv_stimer *stimer)
 {
 	struct hv_message *msg = &stimer->msg;
@@ -823,12 +778,9 @@ static bool kvm_hv_msr_partition_wide(u32 msr)
 	case HV_X64_MSR_CRASH_CTL:
 	case HV_X64_MSR_CRASH_P0 ... HV_X64_MSR_CRASH_P4:
 	case HV_X64_MSR_RESET:
-<<<<<<< HEAD
 	case HV_X64_MSR_REENLIGHTENMENT_CONTROL:
 	case HV_X64_MSR_TSC_EMULATION_CONTROL:
 	case HV_X64_MSR_TSC_EMULATION_STATUS:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		r = true;
 		break;
 	}
@@ -840,20 +792,11 @@ static int kvm_hv_msr_get_crash_data(struct kvm_vcpu *vcpu,
 				     u32 index, u64 *pdata)
 {
 	struct kvm_hv *hv = &vcpu->kvm->arch.hyperv;
-<<<<<<< HEAD
 
 	if (WARN_ON_ONCE(index >= ARRAY_SIZE(hv->hv_crash_param)))
 		return -EINVAL;
 
 	*pdata = hv->hv_crash_param[index];
-=======
-	size_t size = ARRAY_SIZE(hv->hv_crash_param);
-
-	if (WARN_ON_ONCE(index >= size))
-		return -EINVAL;
-
-	*pdata = hv->hv_crash_param[array_index_nospec(index, size)];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -892,20 +835,11 @@ static int kvm_hv_msr_set_crash_data(struct kvm_vcpu *vcpu,
 				     u32 index, u64 data)
 {
 	struct kvm_hv *hv = &vcpu->kvm->arch.hyperv;
-<<<<<<< HEAD
 
 	if (WARN_ON_ONCE(index >= ARRAY_SIZE(hv->hv_crash_param)))
 		return -EINVAL;
 
 	hv->hv_crash_param[index] = data;
-=======
-	size_t size = ARRAY_SIZE(hv->hv_crash_param);
-
-	if (WARN_ON_ONCE(index >= size))
-		return -EINVAL;
-
-	hv->hv_crash_param[array_index_nospec(index, size)] = data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1092,7 +1026,6 @@ static int kvm_hv_set_msr_pw(struct kvm_vcpu *vcpu, u32 msr, u64 data,
 			kvm_make_request(KVM_REQ_HV_RESET, vcpu);
 		}
 		break;
-<<<<<<< HEAD
 	case HV_X64_MSR_REENLIGHTENMENT_CONTROL:
 		hv->hv_reenlightenment_control = data;
 		break;
@@ -1107,8 +1040,6 @@ static int kvm_hv_set_msr_pw(struct kvm_vcpu *vcpu, u32 msr, u64 data,
 		if (!host)
 			return 1;
 		break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		vcpu_unimpl(vcpu, "Hyper-V uhandled wrmsr: 0x%x data 0x%llx\n",
 			    msr, data);
@@ -1129,7 +1060,6 @@ static u64 current_task_runtime_100ns(void)
 
 static int kvm_hv_set_msr(struct kvm_vcpu *vcpu, u32 msr, u64 data, bool host)
 {
-<<<<<<< HEAD
 	struct kvm_vcpu_hv *hv_vcpu = &vcpu->arch.hyperv;
 
 	switch (msr) {
@@ -1169,44 +1099,16 @@ static int kvm_hv_set_msr(struct kvm_vcpu *vcpu, u32 msr, u64 data, bool host)
 			break;
 		}
 		gfn = data >> HV_X64_MSR_VP_ASSIST_PAGE_ADDRESS_SHIFT;
-=======
-	struct kvm_vcpu_hv *hv = &vcpu->arch.hyperv;
-
-	switch (msr) {
-	case HV_X64_MSR_VP_INDEX:
-		if (!host)
-			return 1;
-		hv->vp_index = (u32)data;
-		break;
-	case HV_X64_MSR_APIC_ASSIST_PAGE: {
-		u64 gfn;
-		unsigned long addr;
-
-		if (!(data & HV_X64_MSR_APIC_ASSIST_PAGE_ENABLE)) {
-			hv->hv_vapic = data;
-			if (kvm_lapic_enable_pv_eoi(vcpu, 0))
-				return 1;
-			break;
-		}
-		gfn = data >> HV_X64_MSR_APIC_ASSIST_PAGE_ADDRESS_SHIFT;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		addr = kvm_vcpu_gfn_to_hva(vcpu, gfn);
 		if (kvm_is_error_hva(addr))
 			return 1;
 		if (__clear_user((void __user *)addr, PAGE_SIZE))
 			return 1;
-<<<<<<< HEAD
 		hv_vcpu->hv_vapic = data;
 		kvm_vcpu_mark_page_dirty(vcpu, gfn);
 		if (kvm_lapic_enable_pv_eoi(vcpu,
 					    gfn_to_gpa(gfn) | KVM_MSR_ENABLED,
 					    sizeof(struct hv_vp_assist_page)))
-=======
-		hv->hv_vapic = data;
-		kvm_vcpu_mark_page_dirty(vcpu, gfn);
-		if (kvm_lapic_enable_pv_eoi(vcpu,
-					    gfn_to_gpa(gfn) | KVM_MSR_ENABLED))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return 1;
 		break;
 	}
@@ -1219,11 +1121,7 @@ static int kvm_hv_set_msr(struct kvm_vcpu *vcpu, u32 msr, u64 data, bool host)
 	case HV_X64_MSR_VP_RUNTIME:
 		if (!host)
 			return 1;
-<<<<<<< HEAD
 		hv_vcpu->runtime_offset = data - current_task_runtime_100ns();
-=======
-		hv->runtime_offset = data - current_task_runtime_100ns();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case HV_X64_MSR_SCONTROL:
 	case HV_X64_MSR_SVERSION:
@@ -1250,15 +1148,12 @@ static int kvm_hv_set_msr(struct kvm_vcpu *vcpu, u32 msr, u64 data, bool host)
 		return stimer_set_count(vcpu_to_stimer(vcpu, timer_index),
 					data, host);
 	}
-<<<<<<< HEAD
 	case HV_X64_MSR_TSC_FREQUENCY:
 	case HV_X64_MSR_APIC_FREQUENCY:
 		/* read-only, but still ignore it if host-initiated */
 		if (!host)
 			return 1;
 		break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		vcpu_unimpl(vcpu, "Hyper-V uhandled wrmsr: 0x%x data 0x%llx\n",
 			    msr, data);
@@ -1296,7 +1191,6 @@ static int kvm_hv_get_msr_pw(struct kvm_vcpu *vcpu, u32 msr, u64 *pdata)
 	case HV_X64_MSR_RESET:
 		data = 0;
 		break;
-<<<<<<< HEAD
 	case HV_X64_MSR_REENLIGHTENMENT_CONTROL:
 		data = hv->hv_reenlightenment_control;
 		break;
@@ -1306,8 +1200,6 @@ static int kvm_hv_get_msr_pw(struct kvm_vcpu *vcpu, u32 msr, u64 *pdata)
 	case HV_X64_MSR_TSC_EMULATION_STATUS:
 		data = hv->hv_tsc_emulation_status;
 		break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		vcpu_unimpl(vcpu, "Hyper-V unhandled rdmsr: 0x%x\n", msr);
 		return 1;
@@ -1317,7 +1209,6 @@ static int kvm_hv_get_msr_pw(struct kvm_vcpu *vcpu, u32 msr, u64 *pdata)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int kvm_hv_get_msr(struct kvm_vcpu *vcpu, u32 msr, u64 *pdata,
 			  bool host)
 {
@@ -1327,16 +1218,6 @@ static int kvm_hv_get_msr(struct kvm_vcpu *vcpu, u32 msr, u64 *pdata,
 	switch (msr) {
 	case HV_X64_MSR_VP_INDEX:
 		data = hv_vcpu->vp_index;
-=======
-static int kvm_hv_get_msr(struct kvm_vcpu *vcpu, u32 msr, u64 *pdata)
-{
-	u64 data = 0;
-	struct kvm_vcpu_hv *hv = &vcpu->arch.hyperv;
-
-	switch (msr) {
-	case HV_X64_MSR_VP_INDEX:
-		data = hv->vp_index;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case HV_X64_MSR_EOI:
 		return kvm_hv_vapic_msr_read(vcpu, APIC_EOI, pdata);
@@ -1344,19 +1225,11 @@ static int kvm_hv_get_msr(struct kvm_vcpu *vcpu, u32 msr, u64 *pdata)
 		return kvm_hv_vapic_msr_read(vcpu, APIC_ICR, pdata);
 	case HV_X64_MSR_TPR:
 		return kvm_hv_vapic_msr_read(vcpu, APIC_TASKPRI, pdata);
-<<<<<<< HEAD
 	case HV_X64_MSR_VP_ASSIST_PAGE:
 		data = hv_vcpu->hv_vapic;
 		break;
 	case HV_X64_MSR_VP_RUNTIME:
 		data = current_task_runtime_100ns() + hv_vcpu->runtime_offset;
-=======
-	case HV_X64_MSR_APIC_ASSIST_PAGE:
-		data = hv->hv_vapic;
-		break;
-	case HV_X64_MSR_VP_RUNTIME:
-		data = current_task_runtime_100ns() + hv->runtime_offset;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case HV_X64_MSR_SCONTROL:
 	case HV_X64_MSR_SVERSION:
@@ -1364,11 +1237,7 @@ static int kvm_hv_get_msr(struct kvm_vcpu *vcpu, u32 msr, u64 *pdata)
 	case HV_X64_MSR_SIMP:
 	case HV_X64_MSR_EOM:
 	case HV_X64_MSR_SINT0 ... HV_X64_MSR_SINT15:
-<<<<<<< HEAD
 		return synic_get_msr(vcpu_to_synic(vcpu), msr, pdata, host);
-=======
-		return synic_get_msr(vcpu_to_synic(vcpu), msr, pdata);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case HV_X64_MSR_STIMER0_CONFIG:
 	case HV_X64_MSR_STIMER1_CONFIG:
 	case HV_X64_MSR_STIMER2_CONFIG:
@@ -1414,11 +1283,7 @@ int kvm_hv_set_msr_common(struct kvm_vcpu *vcpu, u32 msr, u64 data, bool host)
 		return kvm_hv_set_msr(vcpu, msr, data, host);
 }
 
-<<<<<<< HEAD
 int kvm_hv_get_msr_common(struct kvm_vcpu *vcpu, u32 msr, u64 *pdata, bool host)
-=======
-int kvm_hv_get_msr_common(struct kvm_vcpu *vcpu, u32 msr, u64 *pdata)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (kvm_hv_msr_partition_wide(msr)) {
 		int r;
@@ -1428,7 +1293,6 @@ int kvm_hv_get_msr_common(struct kvm_vcpu *vcpu, u32 msr, u64 *pdata)
 		mutex_unlock(&vcpu->kvm->arch.hyperv.hv_lock);
 		return r;
 	} else
-<<<<<<< HEAD
 		return kvm_hv_get_msr(vcpu, msr, pdata, host);
 }
 
@@ -1554,9 +1418,6 @@ ret_success:
 	/* We always do full TLB flush, set rep_done = rep_cnt. */
 	return (u64)HV_STATUS_SUCCESS |
 		((u64)rep_cnt << HV_HYPERCALL_REP_COMP_OFFSET);
-=======
-		return kvm_hv_get_msr(vcpu, msr, pdata);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 bool kvm_hv_hypercall_enabled(struct kvm *kvm)
@@ -1577,7 +1438,6 @@ static void kvm_hv_hypercall_set_result(struct kvm_vcpu *vcpu, u64 result)
 	}
 }
 
-<<<<<<< HEAD
 static int kvm_hv_hypercall_complete(struct kvm_vcpu *vcpu, u64 result)
 {
 	kvm_hv_hypercall_set_result(vcpu, result);
@@ -1627,27 +1487,13 @@ static u16 kvm_hvcall_signal_event(struct kvm_vcpu *vcpu, bool fast, u64 param)
 
 	eventfd_signal(eventfd, 1);
 	return HV_STATUS_SUCCESS;
-=======
-static int kvm_hv_hypercall_complete_userspace(struct kvm_vcpu *vcpu)
-{
-	struct kvm_run *run = vcpu->run;
-
-	kvm_hv_hypercall_set_result(vcpu, run->hyperv.u.hcall.result);
-	return kvm_skip_emulated_instruction(vcpu);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int kvm_hv_hypercall(struct kvm_vcpu *vcpu)
 {
-<<<<<<< HEAD
 	u64 param, ingpa, outgpa, ret = HV_STATUS_SUCCESS;
 	uint16_t code, rep_idx, rep_cnt;
 	bool fast, longmode, rep;
-=======
-	u64 param, ingpa, outgpa, ret;
-	uint16_t code, rep_idx, rep_cnt, res = HV_STATUS_SUCCESS, rep_done = 0;
-	bool fast, longmode;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * hypercall generates UD from non zero cpl and real mode
@@ -1677,7 +1523,6 @@ int kvm_hv_hypercall(struct kvm_vcpu *vcpu)
 #endif
 
 	code = param & 0xffff;
-<<<<<<< HEAD
 	fast = !!(param & HV_HYPERCALL_FAST_BIT);
 	rep_cnt = (param >> HV_HYPERCALL_REP_COMP_OFFSET) & 0xfff;
 	rep_idx = (param >> HV_HYPERCALL_REP_START_OFFSET) & 0xfff;
@@ -1706,29 +1551,6 @@ int kvm_hv_hypercall(struct kvm_vcpu *vcpu)
 		/* don't bother userspace if it has no way to handle it */
 		if (unlikely(rep || !vcpu_to_synic(vcpu)->active)) {
 			ret = HV_STATUS_INVALID_HYPERCALL_INPUT;
-=======
-	fast = (param >> 16) & 0x1;
-	rep_cnt = (param >> 32) & 0xfff;
-	rep_idx = (param >> 48) & 0xfff;
-
-	trace_kvm_hv_hypercall(code, fast, rep_cnt, rep_idx, ingpa, outgpa);
-
-	/* Hypercall continuation is not supported yet */
-	if (rep_cnt || rep_idx) {
-		res = HV_STATUS_INVALID_HYPERCALL_CODE;
-		goto set_result;
-	}
-
-	switch (code) {
-	case HVCALL_NOTIFY_LONG_SPIN_WAIT:
-		kvm_vcpu_on_spin(vcpu, true);
-		break;
-	case HVCALL_POST_MESSAGE:
-	case HVCALL_SIGNAL_EVENT:
-		/* don't bother userspace if it has no way to handle it */
-		if (!vcpu_to_synic(vcpu)->active) {
-			res = HV_STATUS_INVALID_HYPERCALL_CODE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 		vcpu->run->exit_reason = KVM_EXIT_HYPERV;
@@ -1739,7 +1561,6 @@ int kvm_hv_hypercall(struct kvm_vcpu *vcpu)
 		vcpu->arch.complete_userspace_io =
 				kvm_hv_hypercall_complete_userspace;
 		return 0;
-<<<<<<< HEAD
 	case HVCALL_FLUSH_VIRTUAL_ADDRESS_LIST:
 		if (unlikely(fast || !rep_cnt || rep_idx)) {
 			ret = HV_STATUS_INVALID_HYPERCALL_INPUT;
@@ -1842,15 +1663,4 @@ int kvm_vm_ioctl_hv_eventfd(struct kvm *kvm, struct kvm_hyperv_eventfd *args)
 	if (args->flags == KVM_HYPERV_EVENTFD_DEASSIGN)
 		return kvm_hv_eventfd_deassign(kvm, args->conn_id);
 	return kvm_hv_eventfd_assign(kvm, args->conn_id, args->fd);
-=======
-	default:
-		res = HV_STATUS_INVALID_HYPERCALL_CODE;
-		break;
-	}
-
-set_result:
-	ret = res | (((u64)rep_done & 0xfff) << 32);
-	kvm_hv_hypercall_set_result(vcpu, ret);
-	return 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

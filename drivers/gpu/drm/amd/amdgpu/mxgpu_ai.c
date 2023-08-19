@@ -22,18 +22,10 @@
  */
 
 #include "amdgpu.h"
-<<<<<<< HEAD
 #include "nbio/nbio_6_1_offset.h"
 #include "nbio/nbio_6_1_sh_mask.h"
 #include "gc/gc_9_0_offset.h"
 #include "gc/gc_9_0_sh_mask.h"
-=======
-#include "vega10/soc15ip.h"
-#include "vega10/NBIO/nbio_6_1_offset.h"
-#include "vega10/NBIO/nbio_6_1_sh_mask.h"
-#include "vega10/GC/gc_9_0_offset.h"
-#include "vega10/GC/gc_9_0_sh_mask.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "soc15.h"
 #include "vega10_ih.h"
 #include "soc15_common.h"
@@ -41,39 +33,11 @@
 
 static void xgpu_ai_mailbox_send_ack(struct amdgpu_device *adev)
 {
-<<<<<<< HEAD
 	WREG8(AI_MAIBOX_CONTROL_RCV_OFFSET_BYTE, 2);
-=======
-	u32 reg;
-	int timeout = AI_MAILBOX_TIMEDOUT;
-	u32 mask = REG_FIELD_MASK(BIF_BX_PF0_MAILBOX_CONTROL, RCV_MSG_VALID);
-
-	reg = RREG32_NO_KIQ(SOC15_REG_OFFSET(NBIO, 0,
-					     mmBIF_BX_PF0_MAILBOX_CONTROL));
-	reg = REG_SET_FIELD(reg, BIF_BX_PF0_MAILBOX_CONTROL, RCV_MSG_ACK, 1);
-	WREG32_NO_KIQ(SOC15_REG_OFFSET(NBIO, 0,
-				       mmBIF_BX_PF0_MAILBOX_CONTROL), reg);
-
-	/*Wait for RCV_MSG_VALID to be 0*/
-	reg = RREG32_NO_KIQ(SOC15_REG_OFFSET(NBIO, 0,
-					     mmBIF_BX_PF0_MAILBOX_CONTROL));
-	while (reg & mask) {
-		if (timeout <= 0) {
-			pr_err("RCV_MSG_VALID is not cleared\n");
-			break;
-		}
-		mdelay(1);
-		timeout -=1;
-
-		reg = RREG32_NO_KIQ(SOC15_REG_OFFSET(NBIO, 0,
-						     mmBIF_BX_PF0_MAILBOX_CONTROL));
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void xgpu_ai_mailbox_set_valid(struct amdgpu_device *adev, bool val)
 {
-<<<<<<< HEAD
 	WREG8(AI_MAIBOX_CONTROL_TRN_OFFSET_BYTE, val ? 1 : 0);
 }
 
@@ -93,33 +57,10 @@ static enum idh_event xgpu_ai_mailbox_peek_msg(struct amdgpu_device *adev)
 }
 
 
-=======
-	u32 reg;
-
-	reg = RREG32_NO_KIQ(SOC15_REG_OFFSET(NBIO, 0,
-					     mmBIF_BX_PF0_MAILBOX_CONTROL));
-	reg = REG_SET_FIELD(reg, BIF_BX_PF0_MAILBOX_CONTROL,
-			    TRN_MSG_VALID, val ? 1 : 0);
-	WREG32_NO_KIQ(SOC15_REG_OFFSET(NBIO, 0, mmBIF_BX_PF0_MAILBOX_CONTROL),
-		      reg);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int xgpu_ai_mailbox_rcv_msg(struct amdgpu_device *adev,
 				   enum idh_event event)
 {
 	u32 reg;
-<<<<<<< HEAD
-=======
-	u32 mask = REG_FIELD_MASK(BIF_BX_PF0_MAILBOX_CONTROL, RCV_MSG_VALID);
-
-	if (event != IDH_FLR_NOTIFICATION_CMPL) {
-		reg = RREG32_NO_KIQ(SOC15_REG_OFFSET(NBIO, 0,
-						     mmBIF_BX_PF0_MAILBOX_CONTROL));
-		if (!(reg & mask))
-			return -ENOENT;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	reg = RREG32_NO_KIQ(SOC15_REG_OFFSET(NBIO, 0,
 					     mmBIF_BX_PF0_MAILBOX_MSGBUF_RCV_DW0));
@@ -131,7 +72,6 @@ static int xgpu_ai_mailbox_rcv_msg(struct amdgpu_device *adev,
 	return 0;
 }
 
-<<<<<<< HEAD
 static uint8_t xgpu_ai_peek_ack(struct amdgpu_device *adev) {
 	return RREG8(AI_MAIBOX_CONTROL_TRN_OFFSET_BYTE) & 2;
 }
@@ -153,35 +93,10 @@ static int xgpu_ai_poll_ack(struct amdgpu_device *adev)
 	pr_err("Doesn't get TRN_MSG_ACK from pf in %d msec\n", AI_MAILBOX_POLL_ACK_TIMEDOUT);
 
 	return -ETIME;
-=======
-static int xgpu_ai_poll_ack(struct amdgpu_device *adev)
-{
-	int r = 0, timeout = AI_MAILBOX_TIMEDOUT;
-	u32 mask = REG_FIELD_MASK(BIF_BX_PF0_MAILBOX_CONTROL, TRN_MSG_ACK);
-	u32 reg;
-
-	reg = RREG32_NO_KIQ(SOC15_REG_OFFSET(NBIO, 0,
-					     mmBIF_BX_PF0_MAILBOX_CONTROL));
-	while (!(reg & mask)) {
-		if (timeout <= 0) {
-			pr_err("Doesn't get ack from pf.\n");
-			r = -ETIME;
-			break;
-		}
-		mdelay(5);
-		timeout -= 5;
-
-		reg = RREG32_NO_KIQ(SOC15_REG_OFFSET(NBIO, 0,
-						     mmBIF_BX_PF0_MAILBOX_CONTROL));
-	}
-
-	return r;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int xgpu_ai_poll_msg(struct amdgpu_device *adev, enum idh_event event)
 {
-<<<<<<< HEAD
 	int r, timeout = AI_MAILBOX_POLL_MSG_TIMEDOUT;
 
 	do {
@@ -196,31 +111,12 @@ static int xgpu_ai_poll_msg(struct amdgpu_device *adev, enum idh_event event)
 	pr_err("Doesn't get msg:%d from pf, error=%d\n", event, r);
 
 	return -ETIME;
-=======
-	int r = 0, timeout = AI_MAILBOX_TIMEDOUT;
-
-	r = xgpu_ai_mailbox_rcv_msg(adev, event);
-	while (r) {
-		if (timeout <= 0) {
-			pr_err("Doesn't get msg:%d from pf.\n", event);
-			r = -ETIME;
-			break;
-		}
-		mdelay(5);
-		timeout -= 5;
-
-		r = xgpu_ai_mailbox_rcv_msg(adev, event);
-	}
-
-	return r;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void xgpu_ai_mailbox_trans_msg (struct amdgpu_device *adev,
 	      enum idh_request req, u32 data1, u32 data2, u32 data3) {
 	u32 reg;
 	int r;
-<<<<<<< HEAD
 	uint8_t trn;
 
 	/* IMPORTANT:
@@ -237,8 +133,6 @@ static void xgpu_ai_mailbox_trans_msg (struct amdgpu_device *adev,
 			msleep(1);
 		}
 	} while(trn);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	reg = RREG32_NO_KIQ(SOC15_REG_OFFSET(NBIO, 0,
 					     mmBIF_BX_PF0_MAILBOX_MSGBUF_TRN_DW0));
@@ -279,15 +173,12 @@ static int xgpu_ai_send_access_requests(struct amdgpu_device *adev,
 			pr_err("Doesn't get READY_TO_ACCESS_GPU from pf, give up\n");
 			return r;
 		}
-<<<<<<< HEAD
 		/* Retrieve checksum from mailbox2 */
 		if (req == IDH_REQ_GPU_INIT_ACCESS || req == IDH_REQ_GPU_RESET_ACCESS) {
 			adev->virt.fw_reserve.checksum_key =
 				RREG32_NO_KIQ(SOC15_REG_OFFSET(NBIO, 0,
 					mmBIF_BX_PF0_MAILBOX_MSGBUF_RCV_DW2));
 		}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -345,7 +236,6 @@ static void xgpu_ai_mailbox_flr_work(struct work_struct *work)
 {
 	struct amdgpu_virt *virt = container_of(work, struct amdgpu_virt, flr_work);
 	struct amdgpu_device *adev = container_of(virt, struct amdgpu_device, virt);
-<<<<<<< HEAD
 	int timeout = AI_MAILBOX_POLL_FLR_TIMEDOUT;
 	int locked;
 
@@ -378,17 +268,6 @@ flr_done:
 	/* Trigger recovery for world switch failure if no TDR */
 	if (amdgpu_lockup_timeout == 0)
 		amdgpu_device_gpu_recover(adev, NULL, true);
-=======
-
-	/* wait until RCV_MSG become 3 */
-	if (xgpu_ai_poll_msg(adev, IDH_FLR_NOTIFICATION_CMPL)) {
-		pr_err("failed to recieve FLR_CMPL\n");
-		return;
-	}
-
-	/* Trigger recovery due to world switch failure */
-	amdgpu_sriov_gpu_reset(adev, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int xgpu_ai_set_mailbox_rcv_irq(struct amdgpu_device *adev,
@@ -409,7 +288,6 @@ static int xgpu_ai_mailbox_rcv_irq(struct amdgpu_device *adev,
 				   struct amdgpu_irq_src *source,
 				   struct amdgpu_iv_entry *entry)
 {
-<<<<<<< HEAD
 	enum idh_event event = xgpu_ai_mailbox_peek_msg(adev);
 
 	switch (event) {
@@ -426,26 +304,6 @@ static int xgpu_ai_mailbox_rcv_irq(struct amdgpu_device *adev,
 		case IDH_READY_TO_ACCESS_GPU:
 		default:
 		break;
-=======
-	int r;
-
-	/* trigger gpu-reset by hypervisor only if TDR disbaled */
-	if (amdgpu_lockup_timeout == 0) {
-		/* see what event we get */
-		r = xgpu_ai_mailbox_rcv_msg(adev, IDH_FLR_NOTIFICATION);
-
-		/* sometimes the interrupt is delayed to inject to VM, so under such case
-		 * the IDH_FLR_NOTIFICATION is overwritten by VF FLR from GIM side, thus
-		 * above recieve message could be failed, we should schedule the flr_work
-		 * anyway
-		 */
-		if (r) {
-			DRM_ERROR("FLR_NOTIFICATION is missed\n");
-			xgpu_ai_mailbox_send_ack(adev);
-		}
-
-		schedule_work(&adev->virt.flr_work);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -473,19 +331,11 @@ int xgpu_ai_mailbox_add_irq_id(struct amdgpu_device *adev)
 {
 	int r;
 
-<<<<<<< HEAD
 	r = amdgpu_irq_add_id(adev, SOC15_IH_CLIENTID_BIF, 135, &adev->virt.rcv_irq);
 	if (r)
 		return r;
 
 	r = amdgpu_irq_add_id(adev, SOC15_IH_CLIENTID_BIF, 138, &adev->virt.ack_irq);
-=======
-	r = amdgpu_irq_add_id(adev, AMDGPU_IH_CLIENTID_BIF, 135, &adev->virt.rcv_irq);
-	if (r)
-		return r;
-
-	r = amdgpu_irq_add_id(adev, AMDGPU_IH_CLIENTID_BIF, 138, &adev->virt.ack_irq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r) {
 		amdgpu_irq_put(adev, &adev->virt.rcv_irq, 0);
 		return r;
@@ -522,9 +372,6 @@ const struct amdgpu_virt_ops xgpu_ai_virt_ops = {
 	.req_full_gpu	= xgpu_ai_request_full_gpu_access,
 	.rel_full_gpu	= xgpu_ai_release_full_gpu_access,
 	.reset_gpu = xgpu_ai_request_reset,
-<<<<<<< HEAD
 	.wait_reset = NULL,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.trans_msg = xgpu_ai_mailbox_trans_msg,
 };

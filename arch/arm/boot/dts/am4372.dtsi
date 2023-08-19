@@ -10,10 +10,7 @@
 
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/interrupt-controller/arm-gic.h>
-<<<<<<< HEAD
 #include <dt-bindings/clock/am4.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 / {
 	compatible = "ti,am4372", "ti,am43";
@@ -95,7 +92,6 @@
 		};
 	};
 
-<<<<<<< HEAD
 	soc {
 		compatible = "ti,omap-infra";
 		mpu {
@@ -106,8 +102,6 @@
 		};
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gic: interrupt-controller@48241000 {
 		compatible = "arm,cortex-a9-gic";
 		interrupt-controller;
@@ -159,10 +153,7 @@
 		#size-cells = <1>;
 		ranges;
 		ti,hwmods = "l3_main";
-<<<<<<< HEAD
 		ti,no-idle;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x44000000 0x400000
 		       0x44800000 0x400000>;
 		interrupts = <GIC_SPI 9 IRQ_TYPE_LEVEL_HIGH>,
@@ -184,18 +175,12 @@
 			};
 
 			prcm: prcm@1f0000 {
-<<<<<<< HEAD
 				compatible = "ti,am4-prcm", "simple-bus";
 				reg = <0x1f0000 0x11000>;
 				interrupts = <GIC_SPI 11 IRQ_TYPE_LEVEL_HIGH>;
 				#address-cells = <1>;
 				#size-cells = <1>;
 				ranges = <0 0x1f0000 0x11000>;
-=======
-				compatible = "ti,am4-prcm";
-				reg = <0x1f0000 0x11000>;
-				interrupts = <GIC_SPI 11 IRQ_TYPE_LEVEL_HIGH>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 				prcm_clocks: clocks {
 					#address-cells = <1>;
@@ -263,13 +248,10 @@
 			compatible = "ti,emif-am4372";
 			reg = <0x4c000000 0x1000000>;
 			ti,hwmods = "emif";
-<<<<<<< HEAD
 			interrupts = <GIC_SPI 101 IRQ_TYPE_LEVEL_HIGH>;
 			ti,no-idle;
 			sram = <&pm_sram_code
 				&pm_sram_data>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		edma: edma@49000000 {
@@ -362,11 +344,7 @@
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
 		mailbox: mailbox@480c8000 {
-=======
-		mailbox: mailbox@480C8000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "ti,omap4-mailbox";
 			reg = <0x480C8000 0x200>;
 			interrupts = <GIC_SPI 77 IRQ_TYPE_LEVEL_HIGH>;
@@ -387,11 +365,8 @@
 			interrupts = <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>;
 			ti,timer-alwon;
 			ti,hwmods = "timer1";
-<<<<<<< HEAD
 			clocks = <&timer1_fck>;
 			clock-names = "fck";
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		timer2: timer@48040000  {
@@ -399,11 +374,8 @@
 			reg = <0x48040000  0x400>;
 			interrupts = <GIC_SPI 68 IRQ_TYPE_LEVEL_HIGH>;
 			ti,hwmods = "timer2";
-<<<<<<< HEAD
 			clocks = <&timer2_fck>;
 			clock-names = "fck";
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		timer3: timer@48042000 {
@@ -497,10 +469,7 @@
 			ti,hwmods = "rtc";
 			clocks = <&clk_32768_ck>;
 			clock-names = "int-clk";
-<<<<<<< HEAD
 			system-power-controller;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 
@@ -991,11 +960,7 @@
 			dma-names = "tx", "rx";
 		};
 
-<<<<<<< HEAD
 		mcasp1: mcasp@4803c000 {
-=======
-		mcasp1: mcasp@4803C000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "ti,am33xx-mcasp-audio";
 			ti,hwmods = "mcasp1";
 			reg = <0x4803C000 0x2000>,
@@ -1052,11 +1017,7 @@
 				reg = <0x483a8000 0x8000>;
 				syscon-phy-power = <&scm_conf 0x620>;
 				clocks = <&usb_phy0_always_on_clk32k>,
-<<<<<<< HEAD
 					 <&l4_per_clkctrl AM4_USB_OTG_SS0_CLKCTRL 8>;
-=======
-					 <&usb_otg_ss0_refclk960m>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				clock-names = "wkupclk", "refclk";
 				#phy-cells = <0>;
 				status = "disabled";
@@ -1075,11 +1036,7 @@
 				reg = <0x483e8000 0x8000>;
 				syscon-phy-power = <&scm_conf 0x628>;
 				clocks = <&usb_phy1_always_on_clk32k>,
-<<<<<<< HEAD
 					 <&l4_per_clkctrl AM4_USB_OTG_SS1_CLKCTRL 8>;
-=======
-					 <&usb_otg_ss1_refclk960m>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				clock-names = "wkupclk", "refclk";
 				#phy-cells = <0>;
 				status = "disabled";
@@ -1202,7 +1159,6 @@
 		ocmcram: ocmcram@40300000 {
 			compatible = "mmio-sram";
 			reg = <0x40300000 0x40000>; /* 256k */
-<<<<<<< HEAD
 			ranges = <0x0 0x40300000 0x40000>;
 			#address-cells = <1>;
 			#size-cells = <1>;
@@ -1218,8 +1174,6 @@
 				reg = <0x1000 0x1000>;
 				pool;
 			};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		dcan0: can@481cc000 {
@@ -1262,8 +1216,4 @@
 	};
 };
 
-<<<<<<< HEAD
 #include "am43xx-clocks.dtsi"
-=======
-/include/ "am43xx-clocks.dtsi"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -194,11 +194,7 @@ static int adis16480_show_serial_number(void *arg, u64 *val)
 
 	return 0;
 }
-<<<<<<< HEAD
 DEFINE_DEBUGFS_ATTRIBUTE(adis16480_serial_number_fops,
-=======
-DEFINE_SIMPLE_ATTRIBUTE(adis16480_serial_number_fops,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adis16480_show_serial_number, NULL, "0x%.4llx\n");
 
 static int adis16480_show_product_id(void *arg, u64 *val)
@@ -216,11 +212,7 @@ static int adis16480_show_product_id(void *arg, u64 *val)
 
 	return 0;
 }
-<<<<<<< HEAD
 DEFINE_DEBUGFS_ATTRIBUTE(adis16480_product_id_fops,
-=======
-DEFINE_SIMPLE_ATTRIBUTE(adis16480_product_id_fops,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adis16480_show_product_id, NULL, "%llu\n");
 
 static int adis16480_show_flash_count(void *arg, u64 *val)
@@ -238,18 +230,13 @@ static int adis16480_show_flash_count(void *arg, u64 *val)
 
 	return 0;
 }
-<<<<<<< HEAD
 DEFINE_DEBUGFS_ATTRIBUTE(adis16480_flash_count_fops,
-=======
-DEFINE_SIMPLE_ATTRIBUTE(adis16480_flash_count_fops,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adis16480_show_flash_count, NULL, "%lld\n");
 
 static int adis16480_debugfs_init(struct iio_dev *indio_dev)
 {
 	struct adis16480 *adis16480 = iio_priv(indio_dev);
 
-<<<<<<< HEAD
 	debugfs_create_file_unsafe("firmware_revision", 0400,
 		indio_dev->debugfs_dentry, adis16480,
 		&adis16480_firmware_revision_fops);
@@ -265,19 +252,6 @@ static int adis16480_debugfs_init(struct iio_dev *indio_dev)
 	debugfs_create_file_unsafe("flash_count", 0400,
 		indio_dev->debugfs_dentry, adis16480,
 		&adis16480_flash_count_fops);
-=======
-	debugfs_create_file("firmware_revision", 0400,
-		indio_dev->debugfs_dentry, adis16480,
-		&adis16480_firmware_revision_fops);
-	debugfs_create_file("firmware_date", 0400, indio_dev->debugfs_dentry,
-		adis16480, &adis16480_firmware_date_fops);
-	debugfs_create_file("serial_number", 0400, indio_dev->debugfs_dentry,
-		adis16480, &adis16480_serial_number_fops);
-	debugfs_create_file("product_id", 0400, indio_dev->debugfs_dentry,
-		adis16480, &adis16480_product_id_fops);
-	debugfs_create_file("flash_count", 0400, indio_dev->debugfs_dentry,
-		adis16480, &adis16480_flash_count_fops);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -296,16 +270,8 @@ static int adis16480_set_freq(struct iio_dev *indio_dev, int val, int val2)
 	struct adis16480 *st = iio_priv(indio_dev);
 	unsigned int t;
 
-<<<<<<< HEAD
 	t =  val * 1000 + val2 / 1000;
 	if (t <= 0)
-=======
-	if (val < 0 || val2 < 0)
-		return -EINVAL;
-
-	t =  val * 1000 + val2 / 1000;
-	if (t == 0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	t = 2460000 / t;
@@ -407,22 +373,12 @@ static int adis16480_get_calibbias(struct iio_dev *indio_dev,
 	case IIO_MAGN:
 	case IIO_PRESSURE:
 		ret = adis_read_reg_16(&st->adis, reg, &val16);
-<<<<<<< HEAD
 		*bias = sign_extend32(val16, 15);
-=======
-		if (ret == 0)
-			*bias = sign_extend32(val16, 15);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case IIO_ANGL_VEL:
 	case IIO_ACCEL:
 		ret = adis_read_reg_32(&st->adis, reg, &val32);
-<<<<<<< HEAD
 		*bias = sign_extend32(val32, 31);
-=======
-		if (ret == 0)
-			*bias = sign_extend32(val32, 31);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 			ret = -EINVAL;
@@ -768,11 +724,6 @@ static const struct iio_info adis16480_info = {
 	.read_raw = &adis16480_read_raw,
 	.write_raw = &adis16480_write_raw,
 	.update_scan_mode = adis_update_scan_mode,
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
-	.debugfs_reg_access = adis_debugfs_reg_access,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int adis16480_stop_device(struct iio_dev *indio_dev)

@@ -24,9 +24,6 @@ int  gf100_devinit_pll_set(struct nvkm_devinit *, u32, u32);
 void gf100_devinit_preinit(struct nvkm_devinit *);
 
 u64  gm107_devinit_disable(struct nvkm_devinit *);
-<<<<<<< HEAD
 
 int gm200_devinit_post(struct nvkm_devinit *, bool);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

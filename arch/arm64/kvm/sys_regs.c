@@ -23,10 +23,7 @@
 #include <linux/bsearch.h>
 #include <linux/kvm_host.h>
 #include <linux/mm.h>
-<<<<<<< HEAD
 #include <linux/printk.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/uaccess.h>
 
 #include <asm/cacheflush.h>
@@ -34,17 +31,10 @@
 #include <asm/debug-monitors.h>
 #include <asm/esr.h>
 #include <asm/kvm_arm.h>
-<<<<<<< HEAD
 #include <asm/kvm_coproc.h>
 #include <asm/kvm_emulate.h>
 #include <asm/kvm_host.h>
 #include <asm/kvm_hyp.h>
-=======
-#include <asm/kvm_asm.h>
-#include <asm/kvm_coproc.h>
-#include <asm/kvm_emulate.h>
-#include <asm/kvm_host.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/kvm_mmu.h>
 #include <asm/perf_event.h>
 #include <asm/sysreg.h>
@@ -86,7 +76,6 @@ static bool write_to_read_only(struct kvm_vcpu *vcpu,
 	return false;
 }
 
-<<<<<<< HEAD
 u64 vcpu_read_sys_reg(struct kvm_vcpu *vcpu, int reg)
 {
 	if (!vcpu->arch.sysregs_loaded_on_cpu)
@@ -174,8 +163,6 @@ immediate_write:
 	 __vcpu_sys_reg(vcpu, reg) = val;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* 3 bits per cache level, as per CLIDR, but non-existent caches always 0 */
 static u32 cache_levels;
 
@@ -207,7 +194,6 @@ static bool access_dcsw(struct kvm_vcpu *vcpu,
 	if (!p->is_write)
 		return read_from_write_only(vcpu, p, r);
 
-<<<<<<< HEAD
 	/*
 	 * Only track S/W ops if we don't have FWB. It still indicates
 	 * that the guest is a bit broken (S/W operations should only
@@ -218,9 +204,6 @@ static bool access_dcsw(struct kvm_vcpu *vcpu,
 	if (!cpus_have_const_cap(ARM64_HAS_STAGE2_FWB))
 		kvm_set_way_flush(vcpu);
 
-=======
-	kvm_set_way_flush(vcpu);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return true;
 }
 
@@ -234,7 +217,6 @@ static bool access_vm_reg(struct kvm_vcpu *vcpu,
 			  const struct sys_reg_desc *r)
 {
 	bool was_enabled = vcpu_has_cache_enabled(vcpu);
-<<<<<<< HEAD
 	u64 val;
 	int reg = r->reg;
 
@@ -255,18 +237,6 @@ static bool access_vm_reg(struct kvm_vcpu *vcpu,
 				lower_32_bits(p->regval);
 	}
 	vcpu_write_sys_reg(vcpu, val, reg);
-=======
-
-	BUG_ON(!p->is_write);
-
-	if (!p->is_aarch32) {
-		vcpu_sys_reg(vcpu, r->reg) = p->regval;
-	} else {
-		if (!p->is_32bit)
-			vcpu_cp15_64_high(vcpu, r->reg) = upper_32_bits(p->regval);
-		vcpu_cp15_64_low(vcpu, r->reg) = lower_32_bits(p->regval);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kvm_toggle_cache(vcpu, was_enabled);
 	return true;
@@ -282,7 +252,6 @@ static bool access_gic_sgi(struct kvm_vcpu *vcpu,
 			   struct sys_reg_params *p,
 			   const struct sys_reg_desc *r)
 {
-<<<<<<< HEAD
 	bool g1;
 
 	if (!p->is_write)
@@ -320,12 +289,6 @@ static bool access_gic_sgi(struct kvm_vcpu *vcpu,
 	}
 
 	vgic_v3_dispatch_sgi(vcpu, p->regval, g1);
-=======
-	if (!p->is_write)
-		return read_from_write_only(vcpu, p, r);
-
-	vgic_v3_dispatch_sgi(vcpu, p->regval);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return true;
 }
@@ -351,7 +314,6 @@ static bool trap_raz_wi(struct kvm_vcpu *vcpu,
 		return read_zero(vcpu, p);
 }
 
-<<<<<<< HEAD
 static bool trap_undef(struct kvm_vcpu *vcpu,
 		       struct sys_reg_params *p,
 		       const struct sys_reg_desc *r)
@@ -360,8 +322,6 @@ static bool trap_undef(struct kvm_vcpu *vcpu,
 	return false;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool trap_oslsr_el1(struct kvm_vcpu *vcpu,
 			   struct sys_reg_params *p,
 			   const struct sys_reg_desc *r)
@@ -418,17 +378,10 @@ static bool trap_debug_regs(struct kvm_vcpu *vcpu,
 			    const struct sys_reg_desc *r)
 {
 	if (p->is_write) {
-<<<<<<< HEAD
 		vcpu_write_sys_reg(vcpu, p->regval, r->reg);
 		vcpu->arch.flags |= KVM_ARM64_DEBUG_DIRTY;
 	} else {
 		p->regval = vcpu_read_sys_reg(vcpu, r->reg);
-=======
-		vcpu_sys_reg(vcpu, r->reg) = p->regval;
-		vcpu->arch.debug_flags |= KVM_ARM64_DEBUG_DIRTY;
-	} else {
-		p->regval = vcpu_sys_reg(vcpu, r->reg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	trace_trap_reg(__func__, r->reg, p->is_write, p->regval);
@@ -457,11 +410,7 @@ static void reg_to_dbg(struct kvm_vcpu *vcpu,
 	}
 
 	*dbg_reg = val;
-<<<<<<< HEAD
 	vcpu->arch.flags |= KVM_ARM64_DEBUG_DIRTY;
-=======
-	vcpu->arch.debug_flags |= KVM_ARM64_DEBUG_DIRTY;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void dbg_to_reg(struct kvm_vcpu *vcpu,
@@ -645,12 +594,8 @@ static void reset_wcr(struct kvm_vcpu *vcpu,
 
 static void reset_amair_el1(struct kvm_vcpu *vcpu, const struct sys_reg_desc *r)
 {
-<<<<<<< HEAD
 	u64 amair = read_sysreg(amair_el1);
 	vcpu_write_sys_reg(vcpu, amair, AMAIR_EL1);
-=======
-	vcpu_sys_reg(vcpu, AMAIR_EL1) = read_sysreg(amair_el1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void reset_mpidr(struct kvm_vcpu *vcpu, const struct sys_reg_desc *r)
@@ -667,11 +612,7 @@ static void reset_mpidr(struct kvm_vcpu *vcpu, const struct sys_reg_desc *r)
 	mpidr = (vcpu->vcpu_id & 0x0f) << MPIDR_LEVEL_SHIFT(0);
 	mpidr |= ((vcpu->vcpu_id >> 4) & 0xff) << MPIDR_LEVEL_SHIFT(1);
 	mpidr |= ((vcpu->vcpu_id >> 12) & 0xff) << MPIDR_LEVEL_SHIFT(2);
-<<<<<<< HEAD
 	vcpu_write_sys_reg(vcpu, (1ULL << 31) | mpidr, MPIDR_EL1);
-=======
-	vcpu_sys_reg(vcpu, MPIDR_EL1) = (1ULL << 31) | mpidr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void reset_pmcr(struct kvm_vcpu *vcpu, const struct sys_reg_desc *r)
@@ -685,20 +626,12 @@ static void reset_pmcr(struct kvm_vcpu *vcpu, const struct sys_reg_desc *r)
 	 */
 	val = ((pmcr & ~ARMV8_PMU_PMCR_MASK)
 	       | (ARMV8_PMU_PMCR_MASK & 0xdecafbad)) & (~ARMV8_PMU_PMCR_E);
-<<<<<<< HEAD
 	__vcpu_sys_reg(vcpu, r->reg) = val;
-=======
-	vcpu_sys_reg(vcpu, PMCR_EL0) = val;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool check_pmu_access_disabled(struct kvm_vcpu *vcpu, u64 flags)
 {
-<<<<<<< HEAD
 	u64 reg = __vcpu_sys_reg(vcpu, PMUSERENR_EL0);
-=======
-	u64 reg = vcpu_sys_reg(vcpu, PMUSERENR_EL0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool enabled = (reg & flags) || vcpu_mode_priv(vcpu);
 
 	if (!enabled)
@@ -740,7 +673,6 @@ static bool access_pmcr(struct kvm_vcpu *vcpu, struct sys_reg_params *p,
 
 	if (p->is_write) {
 		/* Only update writeable bits of PMCR */
-<<<<<<< HEAD
 		val = __vcpu_sys_reg(vcpu, PMCR_EL0);
 		val &= ~ARMV8_PMU_PMCR_MASK;
 		val |= p->regval & ARMV8_PMU_PMCR_MASK;
@@ -749,16 +681,6 @@ static bool access_pmcr(struct kvm_vcpu *vcpu, struct sys_reg_params *p,
 	} else {
 		/* PMCR.P & PMCR.C are RAZ */
 		val = __vcpu_sys_reg(vcpu, PMCR_EL0)
-=======
-		val = vcpu_sys_reg(vcpu, PMCR_EL0);
-		val &= ~ARMV8_PMU_PMCR_MASK;
-		val |= p->regval & ARMV8_PMU_PMCR_MASK;
-		vcpu_sys_reg(vcpu, PMCR_EL0) = val;
-		kvm_pmu_handle_pmcr(vcpu, val);
-	} else {
-		/* PMCR.P & PMCR.C are RAZ */
-		val = vcpu_sys_reg(vcpu, PMCR_EL0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		      & ~(ARMV8_PMU_PMCR_P | ARMV8_PMU_PMCR_C);
 		p->regval = val;
 	}
@@ -776,17 +698,10 @@ static bool access_pmselr(struct kvm_vcpu *vcpu, struct sys_reg_params *p,
 		return false;
 
 	if (p->is_write)
-<<<<<<< HEAD
 		__vcpu_sys_reg(vcpu, PMSELR_EL0) = p->regval;
 	else
 		/* return PMSELR.SEL field */
 		p->regval = __vcpu_sys_reg(vcpu, PMSELR_EL0)
-=======
-		vcpu_sys_reg(vcpu, PMSELR_EL0) = p->regval;
-	else
-		/* return PMSELR.SEL field */
-		p->regval = vcpu_sys_reg(vcpu, PMSELR_EL0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    & ARMV8_PMU_COUNTER_MASK;
 
 	return true;
@@ -819,11 +734,7 @@ static bool pmu_counter_idx_valid(struct kvm_vcpu *vcpu, u64 idx)
 {
 	u64 pmcr, val;
 
-<<<<<<< HEAD
 	pmcr = __vcpu_sys_reg(vcpu, PMCR_EL0);
-=======
-	pmcr = vcpu_sys_reg(vcpu, PMCR_EL0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	val = (pmcr >> ARMV8_PMU_PMCR_N_SHIFT) & ARMV8_PMU_PMCR_N_MASK;
 	if (idx >= val && idx != ARMV8_PMU_CYCLE_IDX) {
 		kvm_inject_undefined(vcpu);
@@ -848,11 +759,7 @@ static bool access_pmu_evcntr(struct kvm_vcpu *vcpu,
 			if (pmu_access_event_counter_el0_disabled(vcpu))
 				return false;
 
-<<<<<<< HEAD
 			idx = __vcpu_sys_reg(vcpu, PMSELR_EL0)
-=======
-			idx = vcpu_sys_reg(vcpu, PMSELR_EL0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      & ARMV8_PMU_COUNTER_MASK;
 		} else if (r->Op2 == 0) {
 			/* PMCCNTR_EL0 */
@@ -907,11 +814,7 @@ static bool access_pmu_evtyper(struct kvm_vcpu *vcpu, struct sys_reg_params *p,
 
 	if (r->CRn == 9 && r->CRm == 13 && r->Op2 == 1) {
 		/* PMXEVTYPER_EL0 */
-<<<<<<< HEAD
 		idx = __vcpu_sys_reg(vcpu, PMSELR_EL0) & ARMV8_PMU_COUNTER_MASK;
-=======
-		idx = vcpu_sys_reg(vcpu, PMSELR_EL0) & ARMV8_PMU_COUNTER_MASK;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = PMEVTYPER0_EL0 + idx;
 	} else if (r->CRn == 14 && (r->CRm & 12) == 12) {
 		idx = ((r->CRm & 3) << 3) | (r->Op2 & 7);
@@ -929,15 +832,9 @@ static bool access_pmu_evtyper(struct kvm_vcpu *vcpu, struct sys_reg_params *p,
 
 	if (p->is_write) {
 		kvm_pmu_set_counter_event_type(vcpu, p->regval, idx);
-<<<<<<< HEAD
 		__vcpu_sys_reg(vcpu, reg) = p->regval & ARMV8_PMU_EVTYPE_MASK;
 	} else {
 		p->regval = __vcpu_sys_reg(vcpu, reg) & ARMV8_PMU_EVTYPE_MASK;
-=======
-		vcpu_sys_reg(vcpu, reg) = p->regval & ARMV8_PMU_EVTYPE_MASK;
-	} else {
-		p->regval = vcpu_sys_reg(vcpu, reg) & ARMV8_PMU_EVTYPE_MASK;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return true;
@@ -959,7 +856,6 @@ static bool access_pmcnten(struct kvm_vcpu *vcpu, struct sys_reg_params *p,
 		val = p->regval & mask;
 		if (r->Op2 & 0x1) {
 			/* accessing PMCNTENSET_EL0 */
-<<<<<<< HEAD
 			__vcpu_sys_reg(vcpu, PMCNTENSET_EL0) |= val;
 			kvm_pmu_enable_counter(vcpu, val);
 		} else {
@@ -969,17 +865,6 @@ static bool access_pmcnten(struct kvm_vcpu *vcpu, struct sys_reg_params *p,
 		}
 	} else {
 		p->regval = __vcpu_sys_reg(vcpu, PMCNTENSET_EL0) & mask;
-=======
-			vcpu_sys_reg(vcpu, PMCNTENSET_EL0) |= val;
-			kvm_pmu_enable_counter(vcpu, val);
-		} else {
-			/* accessing PMCNTENCLR_EL0 */
-			vcpu_sys_reg(vcpu, PMCNTENSET_EL0) &= ~val;
-			kvm_pmu_disable_counter(vcpu, val);
-		}
-	} else {
-		p->regval = vcpu_sys_reg(vcpu, PMCNTENSET_EL0) & mask;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return true;
@@ -1003,21 +888,12 @@ static bool access_pminten(struct kvm_vcpu *vcpu, struct sys_reg_params *p,
 
 		if (r->Op2 & 0x1)
 			/* accessing PMINTENSET_EL1 */
-<<<<<<< HEAD
 			__vcpu_sys_reg(vcpu, PMINTENSET_EL1) |= val;
 		else
 			/* accessing PMINTENCLR_EL1 */
 			__vcpu_sys_reg(vcpu, PMINTENSET_EL1) &= ~val;
 	} else {
 		p->regval = __vcpu_sys_reg(vcpu, PMINTENSET_EL1) & mask;
-=======
-			vcpu_sys_reg(vcpu, PMINTENSET_EL1) |= val;
-		else
-			/* accessing PMINTENCLR_EL1 */
-			vcpu_sys_reg(vcpu, PMINTENSET_EL1) &= ~val;
-	} else {
-		p->regval = vcpu_sys_reg(vcpu, PMINTENSET_EL1) & mask;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return true;
@@ -1037,21 +913,12 @@ static bool access_pmovs(struct kvm_vcpu *vcpu, struct sys_reg_params *p,
 	if (p->is_write) {
 		if (r->CRm & 0x2)
 			/* accessing PMOVSSET_EL0 */
-<<<<<<< HEAD
 			__vcpu_sys_reg(vcpu, PMOVSSET_EL0) |= (p->regval & mask);
 		else
 			/* accessing PMOVSCLR_EL0 */
 			__vcpu_sys_reg(vcpu, PMOVSSET_EL0) &= ~(p->regval & mask);
 	} else {
 		p->regval = __vcpu_sys_reg(vcpu, PMOVSSET_EL0) & mask;
-=======
-			vcpu_sys_reg(vcpu, PMOVSSET_EL0) |= (p->regval & mask);
-		else
-			/* accessing PMOVSCLR_EL0 */
-			vcpu_sys_reg(vcpu, PMOVSSET_EL0) &= ~(p->regval & mask);
-	} else {
-		p->regval = vcpu_sys_reg(vcpu, PMOVSSET_EL0) & mask;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return true;
@@ -1088,17 +955,10 @@ static bool access_pmuserenr(struct kvm_vcpu *vcpu, struct sys_reg_params *p,
 			return false;
 		}
 
-<<<<<<< HEAD
 		__vcpu_sys_reg(vcpu, PMUSERENR_EL0) =
 			       p->regval & ARMV8_PMU_USERENR_MASK;
 	} else {
 		p->regval = __vcpu_sys_reg(vcpu, PMUSERENR_EL0)
-=======
-		vcpu_sys_reg(vcpu, PMUSERENR_EL0) = p->regval
-						    & ARMV8_PMU_USERENR_MASK;
-	} else {
-		p->regval = vcpu_sys_reg(vcpu, PMUSERENR_EL0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    & ARMV8_PMU_USERENR_MASK;
 	}
 
@@ -1108,7 +968,6 @@ static bool access_pmuserenr(struct kvm_vcpu *vcpu, struct sys_reg_params *p,
 /* Silly macro to expand the DBG{BCR,BVR,WVR,WCR}n_EL1 registers in one go */
 #define DBG_BCR_BVR_WCR_WVR_EL1(n)					\
 	{ SYS_DESC(SYS_DBGBVRn_EL1(n)),					\
-<<<<<<< HEAD
 	  trap_bvr, reset_bvr, 0, 0, get_bvr, set_bvr },		\
 	{ SYS_DESC(SYS_DBGBCRn_EL1(n)),					\
 	  trap_bcr, reset_bcr, 0, 0, get_bcr, set_bcr },		\
@@ -1116,15 +975,6 @@ static bool access_pmuserenr(struct kvm_vcpu *vcpu, struct sys_reg_params *p,
 	  trap_wvr, reset_wvr, 0, 0,  get_wvr, set_wvr },		\
 	{ SYS_DESC(SYS_DBGWCRn_EL1(n)),					\
 	  trap_wcr, reset_wcr, 0, 0,  get_wcr, set_wcr }
-=======
-	  trap_bvr, reset_bvr, n, 0, get_bvr, set_bvr },		\
-	{ SYS_DESC(SYS_DBGBCRn_EL1(n)),					\
-	  trap_bcr, reset_bcr, n, 0, get_bcr, set_bcr },		\
-	{ SYS_DESC(SYS_DBGWVRn_EL1(n)),					\
-	  trap_wvr, reset_wvr, n, 0,  get_wvr, set_wvr },		\
-	{ SYS_DESC(SYS_DBGWCRn_EL1(n)),					\
-	  trap_wcr, reset_wcr, n, 0,  get_wcr, set_wcr }
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Macro to expand the PMEVCNTRn_EL0 register */
 #define PMU_PMEVCNTR_EL0(n)						\
@@ -1140,7 +990,6 @@ static bool access_cntp_tval(struct kvm_vcpu *vcpu,
 		struct sys_reg_params *p,
 		const struct sys_reg_desc *r)
 {
-<<<<<<< HEAD
 	u64 now = kvm_phys_timer_read();
 	u64 cval;
 
@@ -1151,15 +1000,6 @@ static bool access_cntp_tval(struct kvm_vcpu *vcpu,
 		cval = kvm_arm_timer_get_reg(vcpu, KVM_REG_ARM_PTIMER_CVAL);
 		p->regval = cval - now;
 	}
-=======
-	struct arch_timer_context *ptimer = vcpu_ptimer(vcpu);
-	u64 now = kvm_phys_timer_read();
-
-	if (p->is_write)
-		ptimer->cnt_cval = p->regval + now;
-	else
-		p->regval = ptimer->cnt_cval - now;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return true;
 }
@@ -1168,31 +1008,10 @@ static bool access_cntp_ctl(struct kvm_vcpu *vcpu,
 		struct sys_reg_params *p,
 		const struct sys_reg_desc *r)
 {
-<<<<<<< HEAD
 	if (p->is_write)
 		kvm_arm_timer_set_reg(vcpu, KVM_REG_ARM_PTIMER_CTL, p->regval);
 	else
 		p->regval = kvm_arm_timer_get_reg(vcpu, KVM_REG_ARM_PTIMER_CTL);
-=======
-	struct arch_timer_context *ptimer = vcpu_ptimer(vcpu);
-
-	if (p->is_write) {
-		/* ISTATUS bit is read-only */
-		ptimer->cnt_ctl = p->regval & ~ARCH_TIMER_CTRL_IT_STAT;
-	} else {
-		u64 now = kvm_phys_timer_read();
-
-		p->regval = ptimer->cnt_ctl;
-		/*
-		 * Set ISTATUS bit if it's expired.
-		 * Note that according to ARMv8 ARM Issue A.k, ISTATUS bit is
-		 * UNKNOWN when ENABLE bit is 0, so we chose to set ISTATUS bit
-		 * regardless of ENABLE bit for our implementation convenience.
-		 */
-		if (ptimer->cnt_cval <= now)
-			p->regval |= ARCH_TIMER_CTRL_IT_STAT;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return true;
 }
@@ -1201,24 +1020,14 @@ static bool access_cntp_cval(struct kvm_vcpu *vcpu,
 		struct sys_reg_params *p,
 		const struct sys_reg_desc *r)
 {
-<<<<<<< HEAD
 	if (p->is_write)
 		kvm_arm_timer_set_reg(vcpu, KVM_REG_ARM_PTIMER_CVAL, p->regval);
 	else
 		p->regval = kvm_arm_timer_get_reg(vcpu, KVM_REG_ARM_PTIMER_CVAL);
-=======
-	struct arch_timer_context *ptimer = vcpu_ptimer(vcpu);
-
-	if (p->is_write)
-		ptimer->cnt_cval = p->regval;
-	else
-		p->regval = ptimer->cnt_cval;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return true;
 }
 
-<<<<<<< HEAD
 /* Read a sanitised cpufeature ID register by sys_reg_desc */
 static u64 read_id_reg(struct sys_reg_desc const *r, bool raz)
 {
@@ -1363,8 +1172,6 @@ static int set_raz_id_reg(struct kvm_vcpu *vcpu, const struct sys_reg_desc *rd,
 	.set_user = set_raz_id_reg,		\
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Architected system registers.
  * Important: Must be sorted ascending by Op0, Op1, CRn, CRm, Op2
@@ -1417,7 +1224,6 @@ static const struct sys_reg_desc sys_reg_descs[] = {
 	{ SYS_DESC(SYS_DBGVCR32_EL2), NULL, reset_val, DBGVCR32_EL2, 0 },
 
 	{ SYS_DESC(SYS_MPIDR_EL1), NULL, reset_mpidr, MPIDR_EL1 },
-<<<<<<< HEAD
 
 	/*
 	 * ID regs: all ID_SANITISED() entries here must have corresponding
@@ -1496,8 +1302,6 @@ static const struct sys_reg_desc sys_reg_descs[] = {
 	ID_UNALLOCATED(7,6),
 	ID_UNALLOCATED(7,7),
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ SYS_DESC(SYS_SCTLR_EL1), access_vm_reg, reset_val, SCTLR_EL1, 0x00C50078 },
 	{ SYS_DESC(SYS_CPACR_EL1), NULL, reset_val, CPACR_EL1, 0 },
 	{ SYS_DESC(SYS_TTBR0_EL1), access_vm_reg, reset_unknown, TTBR0_EL1 },
@@ -1507,7 +1311,6 @@ static const struct sys_reg_desc sys_reg_descs[] = {
 	{ SYS_DESC(SYS_AFSR0_EL1), access_vm_reg, reset_unknown, AFSR0_EL1 },
 	{ SYS_DESC(SYS_AFSR1_EL1), access_vm_reg, reset_unknown, AFSR1_EL1 },
 	{ SYS_DESC(SYS_ESR_EL1), access_vm_reg, reset_unknown, ESR_EL1 },
-<<<<<<< HEAD
 
 	{ SYS_DESC(SYS_ERRIDR_EL1), trap_raz_wi },
 	{ SYS_DESC(SYS_ERRSELR_EL1), trap_raz_wi },
@@ -1518,8 +1321,6 @@ static const struct sys_reg_desc sys_reg_descs[] = {
 	{ SYS_DESC(SYS_ERXMISC0_EL1), trap_raz_wi },
 	{ SYS_DESC(SYS_ERXMISC1_EL1), trap_raz_wi },
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ SYS_DESC(SYS_FAR_EL1), access_vm_reg, reset_unknown, FAR_EL1 },
 	{ SYS_DESC(SYS_PAR_EL1), NULL, reset_unknown, PAR_EL1 },
 
@@ -1529,7 +1330,6 @@ static const struct sys_reg_desc sys_reg_descs[] = {
 	{ SYS_DESC(SYS_MAIR_EL1), access_vm_reg, reset_unknown, MAIR_EL1 },
 	{ SYS_DESC(SYS_AMAIR_EL1), access_vm_reg, reset_amair_el1, AMAIR_EL1 },
 
-<<<<<<< HEAD
 	{ SYS_DESC(SYS_LORSA_EL1), trap_undef },
 	{ SYS_DESC(SYS_LOREA_EL1), trap_undef },
 	{ SYS_DESC(SYS_LORN_EL1), trap_undef },
@@ -1538,9 +1338,6 @@ static const struct sys_reg_desc sys_reg_descs[] = {
 
 	{ SYS_DESC(SYS_VBAR_EL1), NULL, reset_val, VBAR_EL1, 0 },
 	{ SYS_DESC(SYS_DISR_EL1), NULL, reset_val, DISR_EL1, 0 },
-=======
-	{ SYS_DESC(SYS_VBAR_EL1), NULL, reset_val, VBAR_EL1, 0 },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	{ SYS_DESC(SYS_ICC_IAR0_EL1), write_to_read_only },
 	{ SYS_DESC(SYS_ICC_EOIR0_EL1), read_from_write_only },
@@ -1548,11 +1345,8 @@ static const struct sys_reg_desc sys_reg_descs[] = {
 	{ SYS_DESC(SYS_ICC_DIR_EL1), read_from_write_only },
 	{ SYS_DESC(SYS_ICC_RPR_EL1), write_to_read_only },
 	{ SYS_DESC(SYS_ICC_SGI1R_EL1), access_gic_sgi },
-<<<<<<< HEAD
 	{ SYS_DESC(SYS_ICC_ASGI1R_EL1), access_gic_sgi },
 	{ SYS_DESC(SYS_ICC_SGI0R_EL1), access_gic_sgi },
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ SYS_DESC(SYS_ICC_IAR1_EL1), write_to_read_only },
 	{ SYS_DESC(SYS_ICC_EOIR1_EL1), read_from_write_only },
 	{ SYS_DESC(SYS_ICC_HPPIR1_EL1), write_to_read_only },
@@ -1565,11 +1359,7 @@ static const struct sys_reg_desc sys_reg_descs[] = {
 
 	{ SYS_DESC(SYS_CSSELR_EL1), NULL, reset_unknown, CSSELR_EL1 },
 
-<<<<<<< HEAD
 	{ SYS_DESC(SYS_PMCR_EL0), access_pmcr, reset_pmcr, PMCR_EL0 },
-=======
-	{ SYS_DESC(SYS_PMCR_EL0), access_pmcr, reset_pmcr, },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ SYS_DESC(SYS_PMCNTENSET_EL0), access_pmcnten, reset_unknown, PMCNTENSET_EL0 },
 	{ SYS_DESC(SYS_PMCNTENCLR_EL0), access_pmcnten, NULL, PMCNTENSET_EL0 },
 	{ SYS_DESC(SYS_PMOVSCLR_EL0), access_pmovs, NULL, PMOVSSET_EL0 },
@@ -1694,11 +1484,7 @@ static bool trap_debug32(struct kvm_vcpu *vcpu,
 {
 	if (p->is_write) {
 		vcpu_cp14(vcpu, r->reg) = p->regval;
-<<<<<<< HEAD
 		vcpu->arch.flags |= KVM_ARM64_DEBUG_DIRTY;
-=======
-		vcpu->arch.debug_flags |= KVM_ARM64_DEBUG_DIRTY;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		p->regval = vcpu_cp14(vcpu, r->reg);
 	}
@@ -1730,11 +1516,7 @@ static bool trap_xvr(struct kvm_vcpu *vcpu,
 		val |= p->regval << 32;
 		*dbg_reg = val;
 
-<<<<<<< HEAD
 		vcpu->arch.flags |= KVM_ARM64_DEBUG_DIRTY;
-=======
-		vcpu->arch.debug_flags |= KVM_ARM64_DEBUG_DIRTY;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		p->regval = *dbg_reg >> 32;
 	}
@@ -1875,11 +1657,6 @@ static const struct sys_reg_desc cp14_64_regs[] = {
  * register).
  */
 static const struct sys_reg_desc cp15_regs[] = {
-<<<<<<< HEAD
-=======
-	{ Op1( 0), CRn( 0), CRm(12), Op2( 0), access_gic_sgi },
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ Op1( 0), CRn( 1), CRm( 0), Op2( 0), access_vm_reg, NULL, c1_SCTLR },
 	{ Op1( 0), CRn( 2), CRm( 0), Op2( 0), access_vm_reg, NULL, c2_TTBR0 },
 	{ Op1( 0), CRn( 2), CRm( 0), Op2( 1), access_vm_reg, NULL, c2_TTBR1 },
@@ -1926,14 +1703,11 @@ static const struct sys_reg_desc cp15_regs[] = {
 
 	{ Op1( 0), CRn(13), CRm( 0), Op2( 1), access_vm_reg, NULL, c13_CID },
 
-<<<<<<< HEAD
 	/* CNTP_TVAL */
 	{ Op1( 0), CRn(14), CRm( 2), Op2( 0), access_cntp_tval },
 	/* CNTP_CTL */
 	{ Op1( 0), CRn(14), CRm( 2), Op2( 1), access_cntp_ctl },
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* PMEVCNTRn */
 	PMU_PMEVCNTR(0),
 	PMU_PMEVCNTR(1),
@@ -2005,16 +1779,11 @@ static const struct sys_reg_desc cp15_regs[] = {
 static const struct sys_reg_desc cp15_64_regs[] = {
 	{ Op1( 0), CRn( 0), CRm( 2), Op2( 0), access_vm_reg, NULL, c2_TTBR0 },
 	{ Op1( 0), CRn( 0), CRm( 9), Op2( 0), access_pmu_evcntr },
-<<<<<<< HEAD
 	{ Op1( 0), CRn( 0), CRm(12), Op2( 0), access_gic_sgi }, /* ICC_SGI1R */
 	{ Op1( 1), CRn( 0), CRm( 2), Op2( 0), access_vm_reg, NULL, c2_TTBR1 },
 	{ Op1( 1), CRn( 0), CRm(12), Op2( 0), access_gic_sgi }, /* ICC_ASGI1R */
 	{ Op1( 2), CRn( 0), CRm(12), Op2( 0), access_gic_sgi }, /* ICC_SGI0R */
 	{ Op1( 2), CRn( 0), CRm(14), Op2( 0), access_cntp_cval },
-=======
-	{ Op1( 0), CRn( 0), CRm(12), Op2( 0), access_gic_sgi },
-	{ Op1( 1), CRn( 0), CRm( 2), Op2( 0), access_vm_reg, NULL, c2_TTBR1 },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Target specific emulation tables */
@@ -2303,17 +2072,12 @@ static int emulate_sys_reg(struct kvm_vcpu *vcpu,
 }
 
 static void reset_sys_reg_descs(struct kvm_vcpu *vcpu,
-<<<<<<< HEAD
 				const struct sys_reg_desc *table, size_t num,
 				unsigned long *bmap)
-=======
-			      const struct sys_reg_desc *table, size_t num)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long i;
 
 	for (i = 0; i < num; i++)
-<<<<<<< HEAD
 		if (table[i].reset) {
 			int reg = table[i].reg;
 
@@ -2321,10 +2085,6 @@ static void reset_sys_reg_descs(struct kvm_vcpu *vcpu,
 			if (reg > 0 && reg < NR_SYS_REGS)
 				set_bit(reg, bmap);
 		}
-=======
-		if (table[i].reset)
-			table[i].reset(vcpu, &table[i]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -2414,7 +2174,6 @@ static const struct sys_reg_desc *index_to_sys_reg_desc(struct kvm_vcpu *vcpu,
 	if ((id & KVM_REG_ARM_COPROC_MASK) != KVM_REG_ARM64_SYSREG)
 		return NULL;
 
-<<<<<<< HEAD
 	table = get_target_table(vcpu->arch.target, true, &num);
 	r = find_reg_by_id(id, &params, table, num);
 	if (!r)
@@ -2422,18 +2181,6 @@ static const struct sys_reg_desc *index_to_sys_reg_desc(struct kvm_vcpu *vcpu,
 
 	/* Not saved in the sys_reg array and not otherwise accessible? */
 	if (r && !(r->reg || r->get_user))
-=======
-	if (!index_to_params(id, &params))
-		return NULL;
-
-	table = get_target_table(vcpu->arch.target, true, &num);
-	r = find_reg(&params, table, num);
-	if (!r)
-		r = find_reg(&params, sys_reg_descs, ARRAY_SIZE(sys_reg_descs));
-
-	/* Not saved in the sys_reg array? */
-	if (r && !r->reg)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		r = NULL;
 
 	return r;
@@ -2457,23 +2204,6 @@ static const struct sys_reg_desc *index_to_sys_reg_desc(struct kvm_vcpu *vcpu,
 FUNCTION_INVARIANT(midr_el1)
 FUNCTION_INVARIANT(ctr_el0)
 FUNCTION_INVARIANT(revidr_el1)
-<<<<<<< HEAD
-=======
-FUNCTION_INVARIANT(id_pfr0_el1)
-FUNCTION_INVARIANT(id_pfr1_el1)
-FUNCTION_INVARIANT(id_dfr0_el1)
-FUNCTION_INVARIANT(id_afr0_el1)
-FUNCTION_INVARIANT(id_mmfr0_el1)
-FUNCTION_INVARIANT(id_mmfr1_el1)
-FUNCTION_INVARIANT(id_mmfr2_el1)
-FUNCTION_INVARIANT(id_mmfr3_el1)
-FUNCTION_INVARIANT(id_isar0_el1)
-FUNCTION_INVARIANT(id_isar1_el1)
-FUNCTION_INVARIANT(id_isar2_el1)
-FUNCTION_INVARIANT(id_isar3_el1)
-FUNCTION_INVARIANT(id_isar4_el1)
-FUNCTION_INVARIANT(id_isar5_el1)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 FUNCTION_INVARIANT(clidr_el1)
 FUNCTION_INVARIANT(aidr_el1)
 
@@ -2481,23 +2211,6 @@ FUNCTION_INVARIANT(aidr_el1)
 static struct sys_reg_desc invariant_sys_regs[] = {
 	{ SYS_DESC(SYS_MIDR_EL1), NULL, get_midr_el1 },
 	{ SYS_DESC(SYS_REVIDR_EL1), NULL, get_revidr_el1 },
-<<<<<<< HEAD
-=======
-	{ SYS_DESC(SYS_ID_PFR0_EL1), NULL, get_id_pfr0_el1 },
-	{ SYS_DESC(SYS_ID_PFR1_EL1), NULL, get_id_pfr1_el1 },
-	{ SYS_DESC(SYS_ID_DFR0_EL1), NULL, get_id_dfr0_el1 },
-	{ SYS_DESC(SYS_ID_AFR0_EL1), NULL, get_id_afr0_el1 },
-	{ SYS_DESC(SYS_ID_MMFR0_EL1), NULL, get_id_mmfr0_el1 },
-	{ SYS_DESC(SYS_ID_MMFR1_EL1), NULL, get_id_mmfr1_el1 },
-	{ SYS_DESC(SYS_ID_MMFR2_EL1), NULL, get_id_mmfr2_el1 },
-	{ SYS_DESC(SYS_ID_MMFR3_EL1), NULL, get_id_mmfr3_el1 },
-	{ SYS_DESC(SYS_ID_ISAR0_EL1), NULL, get_id_isar0_el1 },
-	{ SYS_DESC(SYS_ID_ISAR1_EL1), NULL, get_id_isar1_el1 },
-	{ SYS_DESC(SYS_ID_ISAR2_EL1), NULL, get_id_isar2_el1 },
-	{ SYS_DESC(SYS_ID_ISAR3_EL1), NULL, get_id_isar3_el1 },
-	{ SYS_DESC(SYS_ID_ISAR4_EL1), NULL, get_id_isar4_el1 },
-	{ SYS_DESC(SYS_ID_ISAR5_EL1), NULL, get_id_isar5_el1 },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ SYS_DESC(SYS_CLIDR_EL1), NULL, get_clidr_el1 },
 	{ SYS_DESC(SYS_AIDR_EL1), NULL, get_aidr_el1 },
 	{ SYS_DESC(SYS_CTR_EL0), NULL, get_ctr_el0 },
@@ -2653,11 +2366,7 @@ int kvm_arm_sys_reg_get_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg
 	if (r->get_user)
 		return (r->get_user)(vcpu, r, reg, uaddr);
 
-<<<<<<< HEAD
 	return reg_to_user(uaddr, &__vcpu_sys_reg(vcpu, r->reg), reg->id);
-=======
-	return reg_to_user(uaddr, &vcpu_sys_reg(vcpu, r->reg), reg->id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int kvm_arm_sys_reg_set_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
@@ -2678,11 +2387,7 @@ int kvm_arm_sys_reg_set_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg
 	if (r->set_user)
 		return (r->set_user)(vcpu, r, reg, uaddr);
 
-<<<<<<< HEAD
 	return reg_from_user(&__vcpu_sys_reg(vcpu, r->reg), uaddr, reg->id);
-=======
-	return reg_from_user(&vcpu_sys_reg(vcpu, r->reg), uaddr, reg->id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static unsigned int num_demux_regs(void)
@@ -2735,7 +2440,6 @@ static bool copy_reg_to_user(const struct sys_reg_desc *reg, u64 __user **uind)
 	return true;
 }
 
-<<<<<<< HEAD
 static int walk_one_sys_reg(const struct sys_reg_desc *rd,
 			    u64 __user **uind,
 			    unsigned int *total)
@@ -2754,18 +2458,13 @@ static int walk_one_sys_reg(const struct sys_reg_desc *rd,
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Assumed ordered tables, see kvm_sys_reg_table_init. */
 static int walk_sys_regs(struct kvm_vcpu *vcpu, u64 __user *uind)
 {
 	const struct sys_reg_desc *i1, *i2, *end1, *end2;
 	unsigned int total = 0;
 	size_t num;
-<<<<<<< HEAD
 	int err;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* We check for duplicates here, to allow arch-specific overrides. */
 	i1 = get_target_table(vcpu->arch.target, true, &num);
@@ -2779,7 +2478,6 @@ static int walk_sys_regs(struct kvm_vcpu *vcpu, u64 __user *uind)
 	while (i1 || i2) {
 		int cmp = cmp_sys_reg(i1, i2);
 		/* target-specific overrides generic entry. */
-<<<<<<< HEAD
 		if (cmp <= 0)
 			err = walk_one_sys_reg(i1, &uind, &total);
 		else
@@ -2787,23 +2485,6 @@ static int walk_sys_regs(struct kvm_vcpu *vcpu, u64 __user *uind)
 
 		if (err)
 			return err;
-=======
-		if (cmp <= 0) {
-			/* Ignore registers we trap but don't save. */
-			if (i1->reg) {
-				if (!copy_reg_to_user(i1, &uind))
-					return -EFAULT;
-				total++;
-			}
-		} else {
-			/* Ignore registers we trap but don't save. */
-			if (i2->reg) {
-				if (!copy_reg_to_user(i2, &uind))
-					return -EFAULT;
-				total++;
-			}
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (cmp <= 0 && ++i1 == end1)
 			i1 = NULL;
@@ -2901,7 +2582,6 @@ void kvm_reset_sys_regs(struct kvm_vcpu *vcpu)
 {
 	size_t num;
 	const struct sys_reg_desc *table;
-<<<<<<< HEAD
 	DECLARE_BITMAP(bmap, NR_SYS_REGS) = { 0, };
 
 	/* Generic chip reset first (so target could override). */
@@ -2915,19 +2595,4 @@ void kvm_reset_sys_regs(struct kvm_vcpu *vcpu)
 			 "Didn't reset __vcpu_sys_reg(%zi)\n", num))
 			break;
 	}
-=======
-
-	/* Catch someone adding a register without putting in reset entry. */
-	memset(&vcpu->arch.ctxt.sys_regs, 0x42, sizeof(vcpu->arch.ctxt.sys_regs));
-
-	/* Generic chip reset first (so target could override). */
-	reset_sys_reg_descs(vcpu, sys_reg_descs, ARRAY_SIZE(sys_reg_descs));
-
-	table = get_target_table(vcpu->arch.target, true, &num);
-	reset_sys_reg_descs(vcpu, table, num);
-
-	for (num = 1; num < NR_SYS_REGS; num++)
-		if (vcpu_sys_reg(vcpu, num) == 0x4242424242424242)
-			panic("Didn't reset vcpu_sys_reg(%zi)", num);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

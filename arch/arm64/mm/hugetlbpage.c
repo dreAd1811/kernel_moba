@@ -54,7 +54,6 @@ static inline pgprot_t pte_pgprot(pte_t pte)
 static int find_num_contig(struct mm_struct *mm, unsigned long addr,
 			   pte_t *ptep, size_t *pgsize)
 {
-<<<<<<< HEAD
 	pgd_t *pgdp = pgd_offset(mm, addr);
 	pud_t *pudp;
 	pmd_t *pmdp;
@@ -63,16 +62,6 @@ static int find_num_contig(struct mm_struct *mm, unsigned long addr,
 	pudp = pud_offset(pgdp, addr);
 	pmdp = pmd_offset(pudp, addr);
 	if ((pte_t *)pmdp == ptep) {
-=======
-	pgd_t *pgd = pgd_offset(mm, addr);
-	pud_t *pud;
-	pmd_t *pmd;
-
-	*pgsize = PAGE_SIZE;
-	pud = pud_offset(pgd, addr);
-	pmd = pmd_offset(pud, addr);
-	if ((pte_t *)pmd == ptep) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*pgsize = PMD_SIZE;
 		return CONT_PMDS;
 	}
@@ -119,10 +108,6 @@ static pte_t get_clear_flush(struct mm_struct *mm,
 			     unsigned long pgsize,
 			     unsigned long ncontig)
 {
-<<<<<<< HEAD
-=======
-	struct vm_area_struct vma = { .vm_mm = mm };
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pte_t orig_pte = huge_ptep_get(ptep);
 	bool valid = pte_valid(orig_pte);
 	unsigned long i, saddr = addr;
@@ -142,15 +127,10 @@ static pte_t get_clear_flush(struct mm_struct *mm,
 			orig_pte = pte_mkyoung(orig_pte);
 	}
 
-<<<<<<< HEAD
 	if (valid) {
 		struct vm_area_struct vma = TLB_FLUSH_VMA(mm, 0);
 		flush_tlb_range(&vma, saddr, addr);
 	}
-=======
-	if (valid)
-		flush_tlb_range(&vma, saddr, addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return orig_pte;
 }
 
@@ -169,11 +149,7 @@ static void clear_flush(struct mm_struct *mm,
 			     unsigned long pgsize,
 			     unsigned long ncontig)
 {
-<<<<<<< HEAD
 	struct vm_area_struct vma = TLB_FLUSH_VMA(mm, 0);
-=======
-	struct vm_area_struct vma = { .vm_mm = mm };
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long i, saddr = addr;
 
 	for (i = 0; i < ncontig; i++, addr += pgsize, ptep++)
@@ -209,16 +185,8 @@ void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
 
 	clear_flush(mm, addr, ptep, pgsize, ncontig);
 
-<<<<<<< HEAD
 	for (i = 0; i < ncontig; i++, ptep++, addr += pgsize, pfn += dpfn)
 		set_pte_at(mm, addr, ptep, pfn_pte(pfn, hugeprot));
-=======
-	for (i = 0; i < ncontig; i++, ptep++, addr += pgsize, pfn += dpfn) {
-		pr_debug("%s: set pte %p to 0x%llx\n", __func__, ptep,
-			 pte_val(pfn_pte(pfn, hugeprot)));
-		set_pte_at(mm, addr, ptep, pfn_pte(pfn, hugeprot));
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void set_huge_swap_pte_at(struct mm_struct *mm, unsigned long addr,
@@ -236,7 +204,6 @@ void set_huge_swap_pte_at(struct mm_struct *mm, unsigned long addr,
 pte_t *huge_pte_alloc(struct mm_struct *mm,
 		      unsigned long addr, unsigned long sz)
 {
-<<<<<<< HEAD
 	pgd_t *pgdp;
 	pud_t *pudp;
 	pmd_t *pmdp;
@@ -251,22 +218,6 @@ pte_t *huge_pte_alloc(struct mm_struct *mm,
 		ptep = (pte_t *)pudp;
 	} else if (sz == (PAGE_SIZE * CONT_PTES)) {
 		pmdp = pmd_alloc(mm, pudp, addr);
-=======
-	pgd_t *pgd;
-	pud_t *pud;
-	pte_t *pte = NULL;
-
-	pr_debug("%s: addr:0x%lx sz:0x%lx\n", __func__, addr, sz);
-	pgd = pgd_offset(mm, addr);
-	pud = pud_alloc(mm, pgd, addr);
-	if (!pud)
-		return NULL;
-
-	if (sz == PUD_SIZE) {
-		pte = (pte_t *)pud;
-	} else if (sz == (PAGE_SIZE * CONT_PTES)) {
-		pmd_t *pmd = pmd_alloc(mm, pud, addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		WARN_ON(addr & (sz - 1));
 		/*
@@ -276,7 +227,6 @@ pte_t *huge_pte_alloc(struct mm_struct *mm,
 		 * will be no pte_unmap() to correspond with this
 		 * pte_alloc_map().
 		 */
-<<<<<<< HEAD
 		ptep = pte_alloc_map(mm, pmdp, addr);
 	} else if (sz == PMD_SIZE) {
 		if (IS_ENABLED(CONFIG_ARCH_WANT_HUGE_PMD_SHARE) &&
@@ -291,32 +241,11 @@ pte_t *huge_pte_alloc(struct mm_struct *mm,
 	}
 
 	return ptep;
-=======
-		pte = pte_alloc_map(mm, pmd, addr);
-	} else if (sz == PMD_SIZE) {
-		if (IS_ENABLED(CONFIG_ARCH_WANT_HUGE_PMD_SHARE) &&
-		    pud_none(*pud))
-			pte = huge_pmd_share(mm, addr, pud);
-		else
-			pte = (pte_t *)pmd_alloc(mm, pud, addr);
-	} else if (sz == (PMD_SIZE * CONT_PMDS)) {
-		pmd_t *pmd;
-
-		pmd = pmd_alloc(mm, pud, addr);
-		WARN_ON(addr & (sz - 1));
-		return (pte_t *)pmd;
-	}
-
-	pr_debug("%s: addr:0x%lx sz:0x%lx ret pte=%p/0x%llx\n", __func__, addr,
-	       sz, pte, pte_val(*pte));
-	return pte;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 pte_t *huge_pte_offset(struct mm_struct *mm,
 		       unsigned long addr, unsigned long sz)
 {
-<<<<<<< HEAD
 	pgd_t *pgdp;
 	pud_t *pudp, pud;
 	pmd_t *pmdp, pmd;
@@ -332,29 +261,11 @@ pte_t *huge_pte_offset(struct mm_struct *mm,
 	/* hugepage or swap? */
 	if (pud_huge(pud) || !pud_present(pud))
 		return (pte_t *)pudp;
-=======
-	pgd_t *pgd;
-	pud_t *pud;
-	pmd_t *pmd;
-
-	pgd = pgd_offset(mm, addr);
-	pr_debug("%s: addr:0x%lx pgd:%p\n", __func__, addr, pgd);
-	if (!pgd_present(*pgd))
-		return NULL;
-
-	pud = pud_offset(pgd, addr);
-	if (sz != PUD_SIZE && pud_none(*pud))
-		return NULL;
-	/* hugepage or swap? */
-	if (pud_huge(*pud) || !pud_present(*pud))
-		return (pte_t *)pud;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* table; check the next level */
 
 	if (sz == CONT_PMD_SIZE)
 		addr &= CONT_PMD_MASK;
 
-<<<<<<< HEAD
 	pmdp = pmd_offset(pudp, addr);
 	pmd = READ_ONCE(*pmdp);
 	if (!(sz == PMD_SIZE || sz == CONT_PMD_SIZE) &&
@@ -365,19 +276,6 @@ pte_t *huge_pte_offset(struct mm_struct *mm,
 
 	if (sz == CONT_PTE_SIZE)
 		return pte_offset_kernel(pmdp, (addr & CONT_PTE_MASK));
-=======
-	pmd = pmd_offset(pud, addr);
-	if (!(sz == PMD_SIZE || sz == CONT_PMD_SIZE) &&
-	    pmd_none(*pmd))
-		return NULL;
-	if (pmd_huge(*pmd) || !pmd_present(*pmd))
-		return (pte_t *)pmd;
-
-	if (sz == CONT_PTE_SIZE) {
-		pte_t *pte = pte_offset_kernel(pmd, (addr & CONT_PTE_MASK));
-		return pte;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return NULL;
 }
@@ -425,7 +323,6 @@ pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
 	return get_clear_flush(mm, addr, ptep, pgsize, ncontig);
 }
 
-<<<<<<< HEAD
 /*
  * huge_ptep_set_access_flags will update access flags (dirty, accesssed)
  * and write permission.
@@ -455,17 +352,11 @@ static int __cont_access_flags_changed(pte_t *ptep, pte_t pte, int ncontig)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int huge_ptep_set_access_flags(struct vm_area_struct *vma,
 			       unsigned long addr, pte_t *ptep,
 			       pte_t pte, int dirty)
 {
-<<<<<<< HEAD
 	int ncontig, i;
-=======
-	int ncontig, i, changed = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	size_t pgsize = 0;
 	unsigned long pfn = pte_pfn(pte), dpfn;
 	pgprot_t hugeprot;
@@ -477,16 +368,10 @@ int huge_ptep_set_access_flags(struct vm_area_struct *vma,
 	ncontig = find_num_contig(vma->vm_mm, addr, ptep, &pgsize);
 	dpfn = pgsize >> PAGE_SHIFT;
 
-<<<<<<< HEAD
 	if (!__cont_access_flags_changed(ptep, pte, ncontig))
 		return 0;
 
 	orig_pte = get_clear_flush(vma->vm_mm, addr, ptep, pgsize, ncontig);
-=======
-	orig_pte = get_clear_flush(vma->vm_mm, addr, ptep, pgsize, ncontig);
-	if (!pte_same(orig_pte, pte))
-		changed = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Make sure we don't lose the dirty or young state */
 	if (pte_dirty(orig_pte))
@@ -499,11 +384,7 @@ int huge_ptep_set_access_flags(struct vm_area_struct *vma,
 	for (i = 0; i < ncontig; i++, ptep++, addr += pgsize, pfn += dpfn)
 		set_pte_at(vma->vm_mm, addr, ptep, pfn_pte(pfn, hugeprot));
 
-<<<<<<< HEAD
 	return 1;
-=======
-	return changed;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void huge_ptep_set_wrprotect(struct mm_struct *mm,
@@ -515,11 +396,7 @@ void huge_ptep_set_wrprotect(struct mm_struct *mm,
 	size_t pgsize;
 	pte_t pte;
 
-<<<<<<< HEAD
 	if (!pte_cont(READ_ONCE(*ptep))) {
-=======
-	if (!pte_cont(*ptep)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ptep_set_wrprotect(mm, addr, ptep);
 		return;
 	}
@@ -543,11 +420,7 @@ void huge_ptep_clear_flush(struct vm_area_struct *vma,
 	size_t pgsize;
 	int ncontig;
 
-<<<<<<< HEAD
 	if (!pte_cont(READ_ONCE(*ptep))) {
-=======
-	if (!pte_cont(*ptep)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ptep_clear_flush(vma, addr, ptep);
 		return;
 	}

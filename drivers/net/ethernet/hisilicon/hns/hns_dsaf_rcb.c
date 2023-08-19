@@ -728,11 +728,7 @@ void hns_rcb_get_queue_mode(enum dsaf_mode dsaf_mode, u16 *max_vfn,
 	}
 }
 
-<<<<<<< HEAD
 static int hns_rcb_get_ring_num(struct dsaf_device *dsaf_dev)
-=======
-int hns_rcb_get_ring_num(struct dsaf_device *dsaf_dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	switch (dsaf_dev->dsaf_mode) {
 	case DSAF_MODE_ENABLE_FIX:
@@ -768,11 +764,7 @@ int hns_rcb_get_ring_num(struct dsaf_device *dsaf_dev)
 	}
 }
 
-<<<<<<< HEAD
 static void __iomem *hns_rcb_common_get_vaddr(struct rcb_common_cb *rcb_common)
-=======
-void __iomem *hns_rcb_common_get_vaddr(struct rcb_common_cb *rcb_common)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct dsaf_device *dsaf_dev = rcb_common->dsaf_dev;
 

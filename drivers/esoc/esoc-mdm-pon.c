@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2014-2015, 2017-2019, The Linux Foundation. All rights reserved.
@@ -6,21 +5,6 @@
 
 #include "esoc-mdm.h"
 #include <linux/input/qpnp-power-on.h>
-=======
-/* Copyright (c) 2014-2015, 2017-2020, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
-
-#include "esoc-mdm.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* This function can be called from atomic context. */
 static int mdm9x55_toggle_soft_reset(struct mdm_ctrl *mdm, bool atomic)
@@ -72,11 +56,7 @@ static int sdx50m_toggle_soft_reset(struct mdm_ctrl *mdm, bool atomic)
 	 * Allow PS hold assert to be detected
 	 */
 	if (!atomic)
-<<<<<<< HEAD
 		usleep_range(80000, 180000);
-=======
-		usleep_range(120000, 180000);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		/*
 		 * The flow falls through this path as a part of the
@@ -91,7 +71,6 @@ static int sdx50m_toggle_soft_reset(struct mdm_ctrl *mdm, bool atomic)
 	return 0;
 }
 
-<<<<<<< HEAD
 /* This function can be called from atomic context. */
 static int sdx55m_toggle_soft_reset(struct mdm_ctrl *mdm, bool atomic)
 {
@@ -108,8 +87,6 @@ static int sdx55m_toggle_soft_reset(struct mdm_ctrl *mdm, bool atomic)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mdm4x_do_first_power_on(struct mdm_ctrl *mdm)
 {
 	int i;
@@ -148,47 +125,6 @@ static int mdm4x_do_first_power_on(struct mdm_ctrl *mdm)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-static int sdxmarmot_do_first_power_on(struct mdm_ctrl *mdm)
-{
-	int i;
-	int pblrdy;
-	struct device *dev = mdm->dev;
-
-	esoc_mdm_log("Powering on modem for the first time\n");
-	dev_dbg(dev, "Powering on modem for the first time\n");
-	if (mdm->esoc->auto_boot)
-		return 0;
-
-	mdm_toggle_soft_reset(mdm, false);
-	/* Add a delay to allow PON sequence to complete*/
-	msleep(325);
-	esoc_mdm_log("Setting AP2MDM_STATUS = 1\n");
-	gpio_direction_output(MDM_GPIO(mdm, AP2MDM_STATUS), 1);
-	if (gpio_is_valid(MDM_GPIO(mdm, MDM2AP_PBLRDY))) {
-		for (i = 0; i  < MDM_PBLRDY_CNT; i++) {
-			pblrdy = gpio_get_value(MDM_GPIO(mdm, MDM2AP_PBLRDY));
-			if (pblrdy)
-				break;
-			usleep_range(5000, 6000);
-		}
-		dev_dbg(dev, "pblrdy i:%d\n", i);
-		msleep(200);
-	}
-	/*
-	 * No PBLRDY gpio associated with this modem
-	 * Send request for image. Let userspace confirm establishment of
-	 * link to external modem.
-	 */
-	else {
-		esoc_mdm_log("Queueing the request: ESOC_REQ_IMG\n");
-		esoc_clink_queue_request(ESOC_REQ_IMG, mdm->esoc);
-	}
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mdm9x55_power_down(struct mdm_ctrl *mdm)
 {
 	struct device *dev = mdm->dev;
@@ -236,15 +172,12 @@ static int sdx50m_power_down(struct mdm_ctrl *mdm)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int sdx55m_power_down(struct mdm_ctrl *mdm)
 {
 	esoc_mdm_log("Performing warm reset as cold reset is not supported\n");
 	return sdx55m_toggle_soft_reset(mdm, false);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void mdm9x55_cold_reset(struct mdm_ctrl *mdm)
 {
 	dev_dbg(mdm->dev, "Triggering mdm cold reset");
@@ -354,18 +287,8 @@ struct mdm_pon_ops sdx50m_pon_ops = {
 	.setup = mdm4x_pon_setup,
 };
 
-<<<<<<< HEAD
 struct mdm_pon_ops sdx55m_pon_ops = {
 	.pon = mdm4x_do_first_power_on,
 	.soft_reset = sdx55m_toggle_soft_reset,
 	.poff_force = sdx55m_power_down,
-=======
-struct mdm_pon_ops sdxmarmot_pon_ops = {
-	.pon = sdxmarmot_do_first_power_on,
-	.soft_reset = sdx50m_toggle_soft_reset,
-	.poff_force = sdx50m_power_down,
-	.cold_reset = sdx50m_cold_reset,
-	.dt_init = mdm4x_pon_dt_init,
-	.setup = mdm4x_pon_setup,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

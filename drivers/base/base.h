@@ -66,12 +66,9 @@ struct driver_private {
  *	probed first.
  * @device - pointer back to the struct device that this structure is
  * associated with.
-<<<<<<< HEAD
  * @dead - This device is currently either in the process of or has been
  *	removed from the system. Any asynchronous events scheduled for this
  *	device should exit without taking any action.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Nothing outside of the driver core should ever touch these fields.
  */
@@ -82,10 +79,7 @@ struct device_private {
 	struct klist_node knode_bus;
 	struct list_head deferred_probe;
 	struct device *device;
-<<<<<<< HEAD
 	u8 dead:1;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 #define to_device_private_parent(obj)	\
 	container_of(obj, struct device_private, knode_parent)
@@ -94,11 +88,6 @@ struct device_private {
 #define to_device_private_bus(obj)	\
 	container_of(obj, struct device_private, knode_bus)
 
-<<<<<<< HEAD
-=======
-extern int device_private_init(struct device *dev);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* initialisation functions */
 extern int devices_init(void);
 extern int buses_init(void);
@@ -174,9 +163,6 @@ extern void device_links_driver_cleanup(struct device *dev);
 extern void device_links_no_driver(struct device *dev);
 extern bool device_links_busy(struct device *dev);
 extern void device_links_unbind_consumers(struct device *dev);
-<<<<<<< HEAD
 
 /* device pm support */
 void device_pm_move_to_tail(struct device *dev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

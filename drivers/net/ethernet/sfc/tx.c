@@ -77,7 +77,6 @@ static void efx_dequeue_buffer(struct efx_tx_queue *tx_queue,
 	}
 
 	if (buffer->flags & EFX_TX_BUF_SKB) {
-<<<<<<< HEAD
 		struct sk_buff *skb = (struct sk_buff *)buffer->skb;
 
 		EFX_WARN_ON_PARANOID(!pkts_compl || !bytes_compl);
@@ -95,11 +94,6 @@ static void efx_dequeue_buffer(struct efx_tx_queue *tx_queue,
 			tx_queue->completed_timestamp_major = 0;
 			tx_queue->completed_timestamp_minor = 0;
 		}
-=======
-		EFX_WARN_ON_PARANOID(!pkts_compl || !bytes_compl);
-		(*pkts_compl)++;
-		(*bytes_compl) += buffer->skb->len;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_consume_skb_any((struct sk_buff *)buffer->skb);
 		netif_vdbg(tx_queue->efx, tx_done, tx_queue->efx->net_dev,
 			   "TX queue %d transmission id %x complete\n",
@@ -157,13 +151,8 @@ static void efx_tx_maybe_stop_queue(struct efx_tx_queue *txq1)
 	 */
 	netif_tx_stop_queue(txq1->core_txq);
 	smp_mb();
-<<<<<<< HEAD
 	txq1->old_read_count = READ_ONCE(txq1->read_count);
 	txq2->old_read_count = READ_ONCE(txq2->read_count);
-=======
-	txq1->old_read_count = ACCESS_ONCE(txq1->read_count);
-	txq2->old_read_count = ACCESS_ONCE(txq2->read_count);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	fill_level = max(txq1->insert_count - txq1->old_read_count,
 			 txq2->insert_count - txq2->old_read_count);
@@ -446,29 +435,18 @@ static int efx_tx_map_data(struct efx_tx_queue *tx_queue, struct sk_buff *skb,
 	} while (1);
 }
 
-<<<<<<< HEAD
 /* Remove buffers put into a tx_queue for the current packet.
  * None of the buffers must have an skb attached.
  */
 static void efx_enqueue_unwind(struct efx_tx_queue *tx_queue,
 			       unsigned int insert_count)
-=======
-/* Remove buffers put into a tx_queue.  None of the buffers must have
- * an skb attached.
- */
-static void efx_enqueue_unwind(struct efx_tx_queue *tx_queue)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct efx_tx_buffer *buffer;
 	unsigned int bytes_compl = 0;
 	unsigned int pkts_compl = 0;
 
 	/* Work backwards until we hit the original insert pointer value */
-<<<<<<< HEAD
 	while (tx_queue->insert_count != insert_count) {
-=======
-	while (tx_queue->insert_count != tx_queue->write_count) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		--tx_queue->insert_count;
 		buffer = __efx_tx_queue_get_insert_buffer(tx_queue);
 		efx_dequeue_buffer(tx_queue, buffer, &pkts_compl, &bytes_compl);
@@ -527,11 +505,8 @@ static int efx_tx_tso_fallback(struct efx_tx_queue *tx_queue,
  */
 netdev_tx_t efx_enqueue_skb(struct efx_tx_queue *tx_queue, struct sk_buff *skb)
 {
-<<<<<<< HEAD
 	unsigned int old_insert_count = tx_queue->insert_count;
 	bool xmit_more = skb->xmit_more;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool data_mapped = false;
 	unsigned int segments;
 	unsigned int skb_len;
@@ -581,15 +556,10 @@ netdev_tx_t efx_enqueue_skb(struct efx_tx_queue *tx_queue, struct sk_buff *skb)
 	/* Update BQL */
 	netdev_tx_sent_queue(tx_queue->core_txq, skb_len);
 
-<<<<<<< HEAD
 	efx_tx_maybe_stop_queue(tx_queue);
 
 	/* Pass off to hardware */
 	if (!xmit_more || netif_xmit_stopped(tx_queue->core_txq)) {
-=======
-	/* Pass off to hardware */
-	if (!skb->xmit_more || netif_xmit_stopped(tx_queue->core_txq)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct efx_tx_queue *txq2 = efx_tx_queue_partner(tx_queue);
 
 		/* There could be packets left on the partner queue if those
@@ -612,16 +582,10 @@ netdev_tx_t efx_enqueue_skb(struct efx_tx_queue *tx_queue, struct sk_buff *skb)
 		tx_queue->tx_packets++;
 	}
 
-<<<<<<< HEAD
-=======
-	efx_tx_maybe_stop_queue(tx_queue);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return NETDEV_TX_OK;
 
 
 err:
-<<<<<<< HEAD
 	efx_enqueue_unwind(tx_queue, old_insert_count);
 	dev_kfree_skb_any(skb);
 
@@ -638,10 +602,6 @@ err:
 		efx_nic_push_buffers(tx_queue);
 	}
 
-=======
-	efx_enqueue_unwind(tx_queue);
-	dev_kfree_skb_any(skb);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return NETDEV_TX_OK;
 }
 
@@ -737,11 +697,7 @@ int efx_setup_tc(struct net_device *net_dev, enum tc_setup_type type,
 	unsigned tc, num_tc;
 	int rc;
 
-<<<<<<< HEAD
 	if (type != TC_SETUP_QDISC_MQPRIO)
-=======
-	if (type != TC_SETUP_MQPRIO)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EOPNOTSUPP;
 
 	num_tc = mqprio->num_tc;
@@ -830,11 +786,7 @@ void efx_xmit_done(struct efx_tx_queue *tx_queue, unsigned int index)
 
 	/* Check whether the hardware queue is now empty */
 	if ((int)(tx_queue->read_count - tx_queue->old_write_count) >= 0) {
-<<<<<<< HEAD
 		tx_queue->old_write_count = READ_ONCE(tx_queue->write_count);
-=======
-		tx_queue->old_write_count = ACCESS_ONCE(tx_queue->write_count);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (tx_queue->read_count == tx_queue->old_write_count) {
 			smp_mb();
 			tx_queue->empty_read_count =
@@ -907,14 +859,11 @@ void efx_init_tx_queue(struct efx_tx_queue *tx_queue)
 	tx_queue->old_read_count = 0;
 	tx_queue->empty_read_count = 0 | EFX_EMPTY_COUNT_VALID;
 	tx_queue->xmit_more_available = false;
-<<<<<<< HEAD
 	tx_queue->timestamping = (efx_ptp_use_mac_tx_timestamps(efx) &&
 				  tx_queue->channel == efx_ptp_channel(efx));
 	tx_queue->completed_desc_ptr = tx_queue->ptr_mask;
 	tx_queue->completed_timestamp_major = 0;
 	tx_queue->completed_timestamp_minor = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Set up default function pointers. These may get replaced by
 	 * efx_nic_init_tx() based off NIC/queue capabilities.

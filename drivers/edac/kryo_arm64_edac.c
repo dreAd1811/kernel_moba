@@ -1,19 +1,6 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2016-2020, The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2016-2018, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/kernel.h>
@@ -24,10 +11,7 @@
 #include <linux/cpu.h>
 #include <linux/cpu_pm.h>
 #include <linux/interrupt.h>
-<<<<<<< HEAD
 #include <linux/notifier.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/of_irq.h>
 
 #include <asm/cputype.h>
@@ -57,10 +41,7 @@ module_param(poll_msec, int, 0444);
 #define L3_BIT 0x2
 
 #define QCOM_CPU_PART_KRYO4XX_GOLD 0x804
-<<<<<<< HEAD
 #define QCOM_CPU_PART_KRYO5XX_GOLD 0xD0D
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define QCOM_CPU_PART_KRYO4XX_SILVER_V1 0x803
 #define QCOM_CPU_PART_KRYO4XX_SILVER_V2 0x805
 
@@ -156,10 +137,7 @@ struct erp_drvdata {
 	struct edac_device_ctl_info *edev_ctl;
 	struct erp_drvdata __percpu **erp_cpu_drvdata;
 	struct notifier_block nb_pm;
-<<<<<<< HEAD
 	struct notifier_block nb_panic;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ppi;
 };
 
@@ -300,10 +278,7 @@ static void kryo_parse_l1_l2_cache_error(u64 errxstatus, u64 errxmisc,
 		}
 		break;
 	case QCOM_CPU_PART_KRYO4XX_GOLD:
-<<<<<<< HEAD
 	case QCOM_CPU_PART_KRYO5XX_GOLD:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		switch (KRYO_ERRXMISC_LVL_GOLD(errxmisc)) {
 		case L1_GOLD_DC_BIT:
 		case L1_GOLD_IC_BIT:
@@ -430,7 +405,6 @@ void kryo_poll_cache_errors(struct edac_device_ctl_info *edev_ctl)
 			edev_ctl, 0);
 }
 
-<<<<<<< HEAD
 static int kryo_cpu_panic_notify(struct notifier_block *this,
 				unsigned long event, void *ptr)
 {
@@ -446,8 +420,6 @@ static int kryo_cpu_panic_notify(struct notifier_block *this,
 	return NOTIFY_OK;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static irqreturn_t kryo_l1_l2_handler(int irq, void *drvdata)
 {
 	kryo_check_l1_l2_ecc(panic_handler_drvdata->edev_ctl);
@@ -533,12 +505,9 @@ static int kryo_cpu_erp_probe(struct platform_device *pdev)
 	drv->edev_ctl->panic_on_ce = ARM64_ERP_PANIC_ON_CE;
 	drv->edev_ctl->panic_on_ue = ARM64_ERP_PANIC_ON_UE;
 	drv->nb_pm.notifier_call = kryo_pmu_cpu_pm_notify;
-<<<<<<< HEAD
 	drv->nb_panic.notifier_call = kryo_cpu_panic_notify;
 	atomic_notifier_chain_register(&panic_notifier_list,
 				       &drv->nb_panic);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	platform_set_drvdata(pdev, drv);
 
 	rc = edac_device_add_device(drv->edev_ctl);

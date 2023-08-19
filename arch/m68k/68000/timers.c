@@ -125,13 +125,9 @@ int m68328_hwclk(int set, struct rtc_time *t)
 {
 	if (!set) {
 		long now = RTCTIME;
-<<<<<<< HEAD
 		t->tm_year = 1;
 		t->tm_mon = 0;
 		t->tm_mday = 1;
-=======
-		t->tm_year = t->tm_mon = t->tm_mday = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		t->tm_hour = (now >> 24) % 24;
 		t->tm_min = (now >> 16) % 60;
 		t->tm_sec = now % 60;

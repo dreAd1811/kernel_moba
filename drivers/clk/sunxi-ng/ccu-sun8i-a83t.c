@@ -76,21 +76,17 @@ static struct ccu_mult pll_c1cpux_clk = {
  */
 #define SUN8I_A83T_PLL_AUDIO_REG	0x008
 
-<<<<<<< HEAD
 /* clock rates doubled for post divider */
 static struct ccu_sdm_setting pll_audio_sdm_table[] = {
 	{ .rate = 45158400, .pattern = 0xc00121ff, .m = 29, .n = 54 },
 	{ .rate = 49152000, .pattern = 0xc000e147, .m = 30, .n = 61 },
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct ccu_nm pll_audio_clk = {
 	.enable		= BIT(31),
 	.lock		= BIT(2),
 	.n		= _SUNXI_CCU_MULT_OFFSET_MIN_MAX(8, 8, 0, 12, 0),
 	.m		= _SUNXI_CCU_DIV(0, 6),
-<<<<<<< HEAD
 	.fixed_post_div	= 2,
 	.sdm		= _SUNXI_CCU_SDM(pll_audio_sdm_table, BIT(24),
 					 0x284, BIT(31)),
@@ -100,12 +96,6 @@ static struct ccu_nm pll_audio_clk = {
 		.features	= CCU_FEATURE_LOCK_REG |
 				  CCU_FEATURE_FIXED_POSTDIV |
 				  CCU_FEATURE_SIGMA_DELTA_MOD,
-=======
-	.common		= {
-		.reg		= SUN8I_A83T_PLL_AUDIO_REG,
-		.lock_reg	= CCU_SUN8I_A83T_LOCK_REG,
-		.features	= CCU_FEATURE_LOCK_REG,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.hw.init	= CLK_HW_INIT("pll-audio", "osc24M",
 					      &ccu_nm_ops, CLK_SET_RATE_UNGATE),
 	},
@@ -527,11 +517,7 @@ static SUNXI_CCU_M_WITH_MUX_TABLE_GATE(csi_mclk_clk, "csi-mclk",
 				       csi_mclk_parents, csi_mclk_table,
 				       0x134,
 				       0, 5,	/* M */
-<<<<<<< HEAD
 				       8, 3,	/* mux */
-=======
-				       10, 3,	/* mux */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       BIT(15),	/* gate */
 				       0);
 
@@ -914,16 +900,10 @@ static int sun8i_a83t_ccu_probe(struct platform_device *pdev)
 	if (IS_ERR(reg))
 		return PTR_ERR(reg);
 
-<<<<<<< HEAD
 	/* Enforce d1 = 0, d2 = 1 for Audio PLL */
 	val = readl(reg + SUN8I_A83T_PLL_AUDIO_REG);
 	val &= ~BIT(16);
 	val |= BIT(18);
-=======
-	/* Enforce d1 = 0, d2 = 0 for Audio PLL */
-	val = readl(reg + SUN8I_A83T_PLL_AUDIO_REG);
-	val &= ~(BIT(16) | BIT(18));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	writel(val, reg + SUN8I_A83T_PLL_AUDIO_REG);
 
 	/* Enforce P = 1 for both CPU cluster PLLs */

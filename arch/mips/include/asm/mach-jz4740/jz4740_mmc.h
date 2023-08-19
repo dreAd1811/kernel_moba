@@ -4,11 +4,6 @@
 
 struct jz4740_mmc_platform_data {
 	int gpio_power;
-<<<<<<< HEAD
-=======
-	int gpio_card_detect;
-	int gpio_read_only;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned card_detect_active_low:1;
 	unsigned read_only_active_low:1;
 	unsigned power_active_low:1;

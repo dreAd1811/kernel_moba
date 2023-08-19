@@ -418,7 +418,6 @@ static efi_status_t efi_file_close(void *handle)
 	return efi_call_proto(efi_file_handle, close, handle);
 }
 
-<<<<<<< HEAD
 static efi_status_t efi_open_volume(efi_system_table_t *sys_table_arg,
 				    efi_loaded_image_t *image,
 				    efi_file_handle_t **__fh)
@@ -447,8 +446,6 @@ static efi_status_t efi_open_volume(efi_system_table_t *sys_table_arg,
 	return status;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Parse the ASCII string 'cmdline' for EFI options, denoted by the efi=
  * option, e.g. efi=nochunk.
@@ -604,12 +601,7 @@ efi_status_t handle_cmdline_files(efi_system_table_t *sys_table_arg,
 
 		/* Only open the volume once. */
 		if (!i) {
-<<<<<<< HEAD
 			status = efi_open_volume(sys_table_arg, image, &fh);
-=======
-			status = efi_open_volume(sys_table_arg, image,
-						 (void **)&fh);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (status != EFI_SUCCESS)
 				goto free_files;
 		}

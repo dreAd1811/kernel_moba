@@ -46,7 +46,6 @@ enum qed_iwarp_qp_state qed_roce2iwarp_state(enum qed_roce_qp_state state);
 
 #define QED_IWARP_LL2_SYN_TX_SIZE       (128)
 #define QED_IWARP_LL2_SYN_RX_SIZE       (256)
-<<<<<<< HEAD
 
 #define QED_IWARP_LL2_OOO_DEF_TX_SIZE   (256)
 #define QED_IWARP_MAX_OOO		(16)
@@ -56,18 +55,11 @@ enum qed_iwarp_qp_state qed_roce2iwarp_state(enum qed_roce_qp_state state);
 
 struct qed_iwarp_ll2_buff {
 	struct qed_iwarp_ll2_buff *piggy_buf;
-=======
-#define QED_IWARP_MAX_SYN_PKT_SIZE      (128)
-#define QED_IWARP_HANDLE_INVAL			(0xff)
-
-struct qed_iwarp_ll2_buff {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void *data;
 	dma_addr_t data_phys_addr;
 	u32 buff_size;
 };
 
-<<<<<<< HEAD
 struct qed_iwarp_ll2_mpa_buf {
 	struct list_head list_entry;
 	struct qed_iwarp_ll2_buff *ll2_buf;
@@ -93,30 +85,21 @@ struct qed_iwarp_fpdu {
 	u8 pkt_hdr_size;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct qed_iwarp_info {
 	struct list_head listen_list;	/* qed_iwarp_listener */
 	struct list_head ep_list;	/* qed_iwarp_ep */
 	struct list_head ep_free_list;	/* pre-allocated ep's */
-<<<<<<< HEAD
 	struct list_head mpa_buf_list;	/* list of mpa_bufs */
 	struct list_head mpa_buf_pending_list;
 	spinlock_t iw_lock;	/* for iwarp resources */
 	spinlock_t qp_lock;	/* for teardown races */
 	u32 rcv_wnd_scale;
 	u16 rcv_wnd_size;
-=======
-	spinlock_t iw_lock;	/* for iwarp resources */
-	spinlock_t qp_lock;	/* for teardown races */
-	u32 rcv_wnd_scale;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 max_mtu;
 	u8 mac_addr[ETH_ALEN];
 	u8 crc_needed;
 	u8 tcp_flags;
 	u8 ll2_syn_handle;
-<<<<<<< HEAD
 	u8 ll2_ooo_handle;
 	u8 ll2_mpa_handle;
 	u8 peer2peer;
@@ -126,11 +109,6 @@ struct qed_iwarp_info {
 	struct qed_iwarp_ll2_mpa_buf *mpa_bufs;
 	u8 *mpa_intermediate_buf;
 	u16 max_num_partial_fpdus;
-=======
-	u8 peer2peer;
-	enum mpa_negotiation_mode mpa_rev;
-	enum mpa_rtr_type rtr_type;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum qed_iwarp_ep_state {
@@ -208,12 +186,9 @@ int qed_iwarp_alloc(struct qed_hwfn *p_hwfn);
 int qed_iwarp_setup(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt,
 		    struct qed_rdma_start_in_params *params);
 
-<<<<<<< HEAD
 void qed_iwarp_init_fw_ramrod(struct qed_hwfn *p_hwfn,
 			      struct iwarp_init_func_ramrod_data *p_ramrod);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int qed_iwarp_stop(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt);
 
 void qed_iwarp_resc_free(struct qed_hwfn *p_hwfn);

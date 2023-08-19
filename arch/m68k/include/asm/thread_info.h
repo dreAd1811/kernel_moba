@@ -41,11 +41,6 @@ struct thread_info {
 	.preempt_count	= INIT_PREEMPT_COUNT,	\
 }
 
-<<<<<<< HEAD
-=======
-#define init_stack		(init_thread_union.stack)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifndef __ASSEMBLY__
 /* how to get the thread information struct from C */
 static inline struct thread_info *current_thread_info(void)
@@ -61,11 +56,6 @@ static inline struct thread_info *current_thread_info(void)
 }
 #endif
 
-<<<<<<< HEAD
-=======
-#define init_thread_info	(init_thread_union.thread_info)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* entry.S relies on these definitions!
  * bits 0-7 are tested at every exception exit
  * bits 8-15 are also tested at syscall exit

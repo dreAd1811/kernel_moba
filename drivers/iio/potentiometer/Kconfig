@@ -5,7 +5,6 @@
 
 menu "Digital potentiometers"
 
-<<<<<<< HEAD
 config AD5272
 	tristate "Analog Devices AD5272 and similar Digital Potentiometer driver"
 	depends on I2C
@@ -16,8 +15,6 @@ config AD5272
 	  To compile this driver as a module, choose M here: the
 	  module will be called ad5272.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config DS1803
 	tristate "Maxim Integrated DS1803 Digital Potentiometer driver"
 	depends on I2C
@@ -50,7 +47,6 @@ config MAX5487
           To compile this driver as a module, choose M here: the
           module will be called max5487.
 
-<<<<<<< HEAD
 config MCP4018
 	tristate "Microchip MCP4017/18/19 Digital Potentiometer driver"
 	depends on I2C
@@ -62,8 +58,6 @@ config MCP4018
 	  To compile this driver as a module, choose M here: the
 	  module will be called mcp4018.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config MCP4131
 	tristate "Microchip MCP413X/414X/415X/416X/423X/424X/425X/426X Digital Potentiometer driver"
 	depends on SPI

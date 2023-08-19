@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #
 # Copyright 2017 Advanced Micro Devices, Inc.
 #
@@ -20,9 +19,6 @@
 # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 #
-=======
-# SPDX-License-Identifier: GPL-2.0
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #
 # Makefile for Heterogenous System Architecture support for AMD GPU devices
 #
@@ -34,7 +30,6 @@ amdkfd-y	:= kfd_module.o kfd_device.o kfd_chardev.o kfd_topology.o \
 		kfd_pasid.o kfd_doorbell.o kfd_flat_memory.o \
 		kfd_process.o kfd_queue.o kfd_mqd_manager.o \
 		kfd_mqd_manager_cik.o kfd_mqd_manager_vi.o \
-<<<<<<< HEAD
 		kfd_mqd_manager_v9.o \
 		kfd_kernel_queue.o kfd_kernel_queue_cik.o \
 		kfd_kernel_queue_vi.o kfd_kernel_queue_v9.o \
@@ -49,13 +44,5 @@ amdkfd-y += kfd_iommu.o
 endif
 
 amdkfd-$(CONFIG_DEBUG_FS) += kfd_debugfs.o
-=======
-		kfd_kernel_queue.o kfd_kernel_queue_cik.o \
-		kfd_kernel_queue_vi.o kfd_packet_manager.o \
-		kfd_process_queue_manager.o kfd_device_queue_manager.o \
-		kfd_device_queue_manager_cik.o kfd_device_queue_manager_vi.o \
-		kfd_interrupt.o kfd_events.o cik_event_interrupt.o \
-		kfd_dbgdev.o kfd_dbgmgr.o
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 obj-$(CONFIG_HSA_AMD)	+= amdkfd.o

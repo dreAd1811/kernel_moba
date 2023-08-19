@@ -163,15 +163,6 @@ EXPORT_SYMBOL(__cputime_usec_factor);
 void (*dtl_consumer)(struct dtl_entry *, u64);
 #endif
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_PPC64
-#define get_accounting(tsk)	(&get_paca()->accounting)
-#else
-#define get_accounting(tsk)	(&task_thread_info(tsk)->accounting)
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void calc_cputime_factors(void)
 {
 	struct div_result res;
@@ -244,17 +235,10 @@ static u64 scan_dispatch_log(u64 stop_tb)
  * Accumulate stolen time by scanning the dispatch trace log.
  * Called on entry from user mode.
  */
-<<<<<<< HEAD
 void accumulate_stolen_time(void)
 {
 	u64 sst, ust;
 	unsigned long save_irq_soft_mask = irq_soft_mask_return();
-=======
-void notrace accumulate_stolen_time(void)
-{
-	u64 sst, ust;
-	u8 save_soft_enabled = local_paca->soft_enabled;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct cpu_accounting_data *acct = &local_paca->accounting;
 
 	/* We are called early in the exception entry, before
@@ -263,11 +247,7 @@ void notrace accumulate_stolen_time(void)
 	 * needs to reflect that so various debug stuff doesn't
 	 * complain
 	 */
-<<<<<<< HEAD
 	irq_soft_mask_set(IRQS_DISABLED);
-=======
-	local_paca->soft_enabled = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sst = scan_dispatch_log(acct->starttime_user);
 	ust = scan_dispatch_log(acct->starttime);
@@ -275,21 +255,14 @@ void notrace accumulate_stolen_time(void)
 	acct->utime -= ust;
 	acct->steal_time += ust + sst;
 
-<<<<<<< HEAD
 	irq_soft_mask_set(save_irq_soft_mask);
-=======
-	local_paca->soft_enabled = save_soft_enabled;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline u64 calculate_stolen_time(u64 stop_tb)
 {
-<<<<<<< HEAD
 	if (!firmware_has_feature(FW_FEATURE_SPLPAR))
 		return 0;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (get_paca()->dtl_ridx != be64_to_cpu(get_lppaca()->dtl_idx))
 		return scan_dispatch_log(stop_tb);
 
@@ -442,24 +415,6 @@ void vtime_flush(struct task_struct *tsk)
 	acct->softirq_time = 0;
 }
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_PPC32
-/*
- * Called from the context switch with interrupts disabled, to charge all
- * accumulated times to the current process, and to prepare accounting on
- * the next process.
- */
-void arch_vtime_task_switch(struct task_struct *prev)
-{
-	struct cpu_accounting_data *acct = get_accounting(current);
-
-	acct->starttime = get_accounting(prev)->starttime;
-	acct->startspurr = get_accounting(prev)->startspurr;
-}
-#endif /* CONFIG_PPC32 */
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else /* ! CONFIG_VIRT_CPU_ACCOUNTING_NATIVE */
 #define calc_cputime_factors()
 #endif
@@ -537,7 +492,6 @@ static inline void clear_irq_work_pending(void)
 		"i" (offsetof(struct paca_struct, irq_work_pending)));
 }
 
-<<<<<<< HEAD
 void arch_irq_work_raise(void)
 {
 	preempt_disable();
@@ -567,8 +521,6 @@ void arch_irq_work_raise(void)
 	preempt_enable();
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else /* 32-bit */
 
 DEFINE_PER_CPU(u8, irq_work_pending);
@@ -577,11 +529,6 @@ DEFINE_PER_CPU(u8, irq_work_pending);
 #define test_irq_work_pending()		__this_cpu_read(irq_work_pending)
 #define clear_irq_work_pending()	__this_cpu_write(irq_work_pending, 0)
 
-<<<<<<< HEAD
-=======
-#endif /* 32 vs 64 bit */
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void arch_irq_work_raise(void)
 {
 	preempt_disable();
@@ -590,11 +537,8 @@ void arch_irq_work_raise(void)
 	preempt_enable();
 }
 
-<<<<<<< HEAD
 #endif /* 32 vs 64 bit */
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else  /* CONFIG_IRQ_WORK */
 
 #define test_irq_work_pending()	0
@@ -602,7 +546,6 @@ void arch_irq_work_raise(void)
 
 #endif /* CONFIG_IRQ_WORK */
 
-<<<<<<< HEAD
 /*
  * timer_interrupt - gets called when the decrementer overflows,
  * with interrupts disabled.
@@ -650,15 +593,6 @@ void timer_interrupt(struct pt_regs *regs)
 
 	old_regs = set_irq_regs(regs);
 	irq_enter();
-=======
-static void __timer_interrupt(void)
-{
-	struct pt_regs *regs = get_irq_regs();
-	u64 *next_tb = this_cpu_ptr(&decrementers_next_tb);
-	struct clock_event_device *evt = this_cpu_ptr(&decrementers);
-	u64 now;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	trace_timer_interrupt_entry(regs);
 
 	if (test_irq_work_pending()) {
@@ -682,67 +616,12 @@ static void __timer_interrupt(void)
 		__this_cpu_inc(irq_stat.timer_irqs_others);
 	}
 
-<<<<<<< HEAD
 	trace_timer_interrupt_exit(regs);
-=======
-#ifdef CONFIG_PPC64
-	/* collect purr register values often, for accurate calculations */
-	if (firmware_has_feature(FW_FEATURE_SPLPAR)) {
-		struct cpu_usage *cu = this_cpu_ptr(&cpu_usage_array);
-		cu->current_tb = mfspr(SPRN_PURR);
-	}
-#endif
-
-	trace_timer_interrupt_exit(regs);
-}
-
-/*
- * timer_interrupt - gets called when the decrementer overflows,
- * with interrupts disabled.
- */
-void timer_interrupt(struct pt_regs * regs)
-{
-	struct pt_regs *old_regs;
-	u64 *next_tb = this_cpu_ptr(&decrementers_next_tb);
-
-	/* Ensure a positive value is written to the decrementer, or else
-	 * some CPUs will continue to take decrementer exceptions.
-	 */
-	set_dec(decrementer_max);
-
-	/* Some implementations of hotplug will get timer interrupts while
-	 * offline, just ignore these and we also need to set
-	 * decrementers_next_tb as MAX to make sure __check_irq_replay
-	 * don't replay timer interrupt when return, otherwise we'll trap
-	 * here infinitely :(
-	 */
-	if (!cpu_online(smp_processor_id())) {
-		*next_tb = ~(u64)0;
-		return;
-	}
-
-	/* Conditionally hard-enable interrupts now that the DEC has been
-	 * bumped to its maximum value
-	 */
-	may_hard_irq_enable();
-
-
-#if defined(CONFIG_PPC32) && defined(CONFIG_PPC_PMAC)
-	if (atomic_read(&ppc_n_lost_interrupts) != 0)
-		do_IRQ(regs);
-#endif
-
-	old_regs = set_irq_regs(regs);
-	irq_enter();
-
-	__timer_interrupt();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	irq_exit();
 	set_irq_regs(old_regs);
 }
 EXPORT_SYMBOL(timer_interrupt);
 
-<<<<<<< HEAD
 #ifdef CONFIG_GENERIC_CLOCKEVENTS_BROADCAST
 void timer_broadcast_interrupt(void)
 {
@@ -754,8 +633,6 @@ void timer_broadcast_interrupt(void)
 }
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Hypervisor decrementer interrupts shouldn't occur but are sometimes
  * left pending on exit from a KVM guest.  We don't need to do anything
@@ -913,33 +790,19 @@ void __init generic_calibrate_decr(void)
 	}
 }
 
-<<<<<<< HEAD
 int update_persistent_clock64(struct timespec64 now)
-=======
-int update_persistent_clock(struct timespec now)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rtc_time tm;
 
 	if (!ppc_md.set_rtc_time)
 		return -ENODEV;
 
-<<<<<<< HEAD
 	rtc_time64_to_tm(now.tv_sec + 1 + timezone_offset, &tm);
-=======
-	to_tm(now.tv_sec + 1 + timezone_offset, &tm);
-	tm.tm_year -= 1900;
-	tm.tm_mon -= 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ppc_md.set_rtc_time(&tm);
 }
 
-<<<<<<< HEAD
 static void __read_persistent_clock(struct timespec64 *ts)
-=======
-static void __read_persistent_clock(struct timespec *ts)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rtc_time tm;
 	static int first = 1;
@@ -963,18 +826,10 @@ static void __read_persistent_clock(struct timespec *ts)
 	}
 	ppc_md.get_rtc_time(&tm);
 
-<<<<<<< HEAD
 	ts->tv_sec = rtc_tm_to_time64(&tm);
 }
 
 void read_persistent_clock64(struct timespec64 *ts)
-=======
-	ts->tv_sec = mktime(tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday,
-			    tm.tm_hour, tm.tm_min, tm.tm_sec);
-}
-
-void read_persistent_clock(struct timespec *ts)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	__read_persistent_clock(ts);
 
@@ -1074,10 +929,6 @@ void update_vsyscall(struct timekeeper *tk)
 	vdso_data->wtom_clock_nsec = tk->wall_to_monotonic.tv_nsec;
 	vdso_data->stamp_xtime = xt;
 	vdso_data->stamp_sec_fraction = frac_sec;
-<<<<<<< HEAD
-=======
-	vdso_data->hrtimer_res = hrtimer_resolution;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	smp_wmb();
 	++(vdso_data->tb_update_count);
 }
@@ -1126,18 +977,6 @@ static int decrementer_shutdown(struct clock_event_device *dev)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-/* Interrupt handler for the timer broadcast IPI */
-void tick_broadcast_ipi_handler(void)
-{
-	u64 *next_tb = this_cpu_ptr(&decrementers_next_tb);
-
-	*next_tb = get_tb_or_rtc();
-	__timer_interrupt();
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void register_decrementer_clockevent(int cpu)
 {
 	struct clock_event_device *dec = &per_cpu(decrementers, cpu);
@@ -1145,21 +984,10 @@ static void register_decrementer_clockevent(int cpu)
 	*dec = decrementer_clockevent;
 	dec->cpumask = cpumask_of(cpu);
 
-<<<<<<< HEAD
 	printk_once(KERN_DEBUG "clockevent: %s mult[%x] shift[%d] cpu[%d]\n",
 		    dec->name, dec->mult, dec->shift, cpu);
 
 	clockevents_register_device(dec);
-=======
-	clockevents_config_and_register(dec, ppc_tb_freq, 2, decrementer_max);
-
-	printk_once(KERN_DEBUG "clockevent: %s mult[%x] shift[%d] cpu[%d]\n",
-		    dec->name, dec->mult, dec->shift, cpu);
-
-	/* Set values for KVM, see kvm_emulate_dec() */
-	decrementer_clockevent.mult = dec->mult;
-	decrementer_clockevent.shift = dec->shift;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void enable_large_decrementer(void)
@@ -1207,7 +1035,6 @@ static void __init set_decrementer_max(void)
 
 static void __init init_decrementer_clockevent(void)
 {
-<<<<<<< HEAD
 	int cpu = smp_processor_id();
 
 	clockevents_calc_mult_shift(&decrementer_clockevent, ppc_tb_freq, 4);
@@ -1220,9 +1047,6 @@ static void __init init_decrementer_clockevent(void)
 	decrementer_clockevent.min_delta_ticks = 2;
 
 	register_decrementer_clockevent(cpu);
-=======
-	register_decrementer_clockevent(smp_processor_id());
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void secondary_cpu_time_init(void)
@@ -1314,59 +1138,6 @@ void __init time_init(void)
 #endif
 }
 
-<<<<<<< HEAD
-=======
-
-#define FEBRUARY	2
-#define	STARTOFTIME	1970
-#define SECDAY		86400L
-#define SECYR		(SECDAY * 365)
-#define	leapyear(year)		((year) % 4 == 0 && \
-				 ((year) % 100 != 0 || (year) % 400 == 0))
-#define	days_in_year(a) 	(leapyear(a) ? 366 : 365)
-#define	days_in_month(a) 	(month_days[(a) - 1])
-
-static int month_days[12] = {
-	31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
-};
-
-void to_tm(int tim, struct rtc_time * tm)
-{
-	register int    i;
-	register long   hms, day;
-
-	day = tim / SECDAY;
-	hms = tim % SECDAY;
-
-	/* Hours, minutes, seconds are easy */
-	tm->tm_hour = hms / 3600;
-	tm->tm_min = (hms % 3600) / 60;
-	tm->tm_sec = (hms % 3600) % 60;
-
-	/* Number of years in days */
-	for (i = STARTOFTIME; day >= days_in_year(i); i++)
-		day -= days_in_year(i);
-	tm->tm_year = i;
-
-	/* Number of months in days left */
-	if (leapyear(tm->tm_year))
-		days_in_month(FEBRUARY) = 29;
-	for (i = 1; day >= days_in_month(i); i++)
-		day -= days_in_month(i);
-	days_in_month(FEBRUARY) = 28;
-	tm->tm_mon = i;
-
-	/* Days are what is left over (+1) from all that. */
-	tm->tm_mday = day + 1;
-
-	/*
-	 * No-one uses the day of the week.
-	 */
-	tm->tm_wday = -1;
-}
-EXPORT_SYMBOL(to_tm);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Divide a 128-bit dividend by a 32-bit divisor, leaving a 128 bit
  * result.
@@ -1413,11 +1184,7 @@ void calibrate_delay(void)
 static int rtc_generic_get_time(struct device *dev, struct rtc_time *tm)
 {
 	ppc_md.get_rtc_time(tm);
-<<<<<<< HEAD
 	return 0;
-=======
-	return rtc_valid_tm(tm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int rtc_generic_set_time(struct device *dev, struct rtc_time *tm)

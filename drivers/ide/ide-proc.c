@@ -56,22 +56,6 @@ static int ide_imodel_proc_show(struct seq_file *m, void *v)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-static int ide_imodel_proc_open(struct inode *inode, struct file *file)
-{
-	return single_open(file, ide_imodel_proc_show, PDE_DATA(inode));
-}
-
-static const struct file_operations ide_imodel_proc_fops = {
-	.owner		= THIS_MODULE,
-	.open		= ide_imodel_proc_open,
-	.read		= seq_read,
-	.llseek		= seq_lseek,
-	.release	= single_release,
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ide_mate_proc_show(struct seq_file *m, void *v)
 {
 	ide_hwif_t	*hwif = (ide_hwif_t *) m->private;
@@ -83,22 +67,6 @@ static int ide_mate_proc_show(struct seq_file *m, void *v)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-static int ide_mate_proc_open(struct inode *inode, struct file *file)
-{
-	return single_open(file, ide_mate_proc_show, PDE_DATA(inode));
-}
-
-static const struct file_operations ide_mate_proc_fops = {
-	.owner		= THIS_MODULE,
-	.open		= ide_mate_proc_open,
-	.read		= seq_read,
-	.llseek		= seq_lseek,
-	.release	= single_release,
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ide_channel_proc_show(struct seq_file *m, void *v)
 {
 	ide_hwif_t	*hwif = (ide_hwif_t *) m->private;
@@ -107,22 +75,6 @@ static int ide_channel_proc_show(struct seq_file *m, void *v)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-static int ide_channel_proc_open(struct inode *inode, struct file *file)
-{
-	return single_open(file, ide_channel_proc_show, PDE_DATA(inode));
-}
-
-static const struct file_operations ide_channel_proc_fops = {
-	.owner		= THIS_MODULE,
-	.open		= ide_channel_proc_open,
-	.read		= seq_read,
-	.llseek		= seq_lseek,
-	.release	= single_release,
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ide_identify_proc_show(struct seq_file *m, void *v)
 {
 	ide_drive_t *drive = (ide_drive_t *)m->private;
@@ -150,22 +102,6 @@ static int ide_identify_proc_show(struct seq_file *m, void *v)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-static int ide_identify_proc_open(struct inode *inode, struct file *file)
-{
-	return single_open(file, ide_identify_proc_show, PDE_DATA(inode));
-}
-
-static const struct file_operations ide_identify_proc_fops = {
-	.owner		= THIS_MODULE,
-	.open		= ide_identify_proc_open,
-	.read		= seq_read,
-	.llseek		= seq_lseek,
-	.release	= single_release,
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  *	ide_find_setting	-	find a specific setting
  *	@st: setting table pointer
@@ -453,37 +389,14 @@ static const struct file_operations ide_settings_proc_fops = {
 	.write		= ide_settings_proc_write,
 };
 
-<<<<<<< HEAD
 int ide_capacity_proc_show(struct seq_file *m, void *v)
-=======
-static int ide_capacity_proc_show(struct seq_file *m, void *v)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	seq_printf(m, "%llu\n", (long long)0x7fffffff);
 	return 0;
 }
-<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(ide_capacity_proc_show);
 
 int ide_geometry_proc_show(struct seq_file *m, void *v)
-=======
-
-static int ide_capacity_proc_open(struct inode *inode, struct file *file)
-{
-	return single_open(file, ide_capacity_proc_show, NULL);
-}
-
-const struct file_operations ide_capacity_proc_fops = {
-	.owner		= THIS_MODULE,
-	.open		= ide_capacity_proc_open,
-	.read		= seq_read,
-	.llseek		= seq_lseek,
-	.release	= single_release,
-};
-EXPORT_SYMBOL_GPL(ide_capacity_proc_fops);
-
-static int ide_geometry_proc_show(struct seq_file *m, void *v)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	ide_drive_t	*drive = (ide_drive_t *) m->private;
 
@@ -493,24 +406,7 @@ static int ide_geometry_proc_show(struct seq_file *m, void *v)
 			drive->bios_cyl, drive->bios_head, drive->bios_sect);
 	return 0;
 }
-<<<<<<< HEAD
 EXPORT_SYMBOL(ide_geometry_proc_show);
-=======
-
-static int ide_geometry_proc_open(struct inode *inode, struct file *file)
-{
-	return single_open(file, ide_geometry_proc_show, PDE_DATA(inode));
-}
-
-const struct file_operations ide_geometry_proc_fops = {
-	.owner		= THIS_MODULE,
-	.open		= ide_geometry_proc_open,
-	.read		= seq_read,
-	.llseek		= seq_lseek,
-	.release	= single_release,
-};
-EXPORT_SYMBOL(ide_geometry_proc_fops);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int ide_dmodel_proc_show(struct seq_file *seq, void *v)
 {
@@ -521,22 +417,6 @@ static int ide_dmodel_proc_show(struct seq_file *seq, void *v)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-static int ide_dmodel_proc_open(struct inode *inode, struct file *file)
-{
-	return single_open(file, ide_dmodel_proc_show, PDE_DATA(inode));
-}
-
-static const struct file_operations ide_dmodel_proc_fops = {
-	.owner		= THIS_MODULE,
-	.open		= ide_dmodel_proc_open,
-	.read		= seq_read,
-	.llseek		= seq_lseek,
-	.release	= single_release,
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ide_driver_proc_show(struct seq_file *m, void *v)
 {
 	ide_drive_t		*drive = (ide_drive_t *)m->private;
@@ -552,68 +432,6 @@ static int ide_driver_proc_show(struct seq_file *m, void *v)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-static int ide_driver_proc_open(struct inode *inode, struct file *file)
-{
-	return single_open(file, ide_driver_proc_show, PDE_DATA(inode));
-}
-
-static int ide_replace_subdriver(ide_drive_t *drive, const char *driver)
-{
-	struct device *dev = &drive->gendev;
-	int ret = 1;
-	int err;
-
-	device_release_driver(dev);
-	/* FIXME: device can still be in use by previous driver */
-	strlcpy(drive->driver_req, driver, sizeof(drive->driver_req));
-	err = device_attach(dev);
-	if (err < 0)
-		printk(KERN_WARNING "IDE: %s: device_attach error: %d\n",
-			__func__, err);
-	drive->driver_req[0] = 0;
-	if (dev->driver == NULL) {
-		err = device_attach(dev);
-		if (err < 0)
-			printk(KERN_WARNING
-				"IDE: %s: device_attach(2) error: %d\n",
-				__func__, err);
-	}
-	if (dev->driver && !strcmp(dev->driver->name, driver))
-		ret = 0;
-
-	return ret;
-}
-
-static ssize_t ide_driver_proc_write(struct file *file, const char __user *buffer,
-				     size_t count, loff_t *pos)
-{
-	ide_drive_t	*drive = PDE_DATA(file_inode(file));
-	char name[32];
-
-	if (!capable(CAP_SYS_ADMIN))
-		return -EACCES;
-	if (count > 31)
-		count = 31;
-	if (copy_from_user(name, buffer, count))
-		return -EFAULT;
-	name[count] = '\0';
-	if (ide_replace_subdriver(drive, name))
-		return -EINVAL;
-	return count;
-}
-
-static const struct file_operations ide_driver_proc_fops = {
-	.owner		= THIS_MODULE,
-	.open		= ide_driver_proc_open,
-	.read		= seq_read,
-	.llseek		= seq_lseek,
-	.release	= single_release,
-	.write		= ide_driver_proc_write,
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ide_media_proc_show(struct seq_file *m, void *v)
 {
 	ide_drive_t	*drive = (ide_drive_t *) m->private;
@@ -645,18 +463,10 @@ static const struct file_operations ide_media_proc_fops = {
 };
 
 static ide_proc_entry_t generic_drive_entries[] = {
-<<<<<<< HEAD
 	{ "driver",	S_IFREG|S_IRUGO,	 ide_driver_proc_show	},
 	{ "identify",	S_IFREG|S_IRUSR,	 ide_identify_proc_show	},
 	{ "media",	S_IFREG|S_IRUGO,	 ide_media_proc_show	},
 	{ "model",	S_IFREG|S_IRUGO,	 ide_dmodel_proc_show	},
-=======
-	{ "driver",	S_IFREG|S_IRUGO,	 &ide_driver_proc_fops	},
-	{ "identify",	S_IFREG|S_IRUSR,	 &ide_identify_proc_fops},
-	{ "media",	S_IFREG|S_IRUGO,	 &ide_media_proc_fops	},
-	{ "model",	S_IFREG|S_IRUGO,	 &ide_dmodel_proc_fops	},
-	{ "settings",	S_IFREG|S_IRUSR|S_IWUSR, &ide_settings_proc_fops},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{}
 };
 
@@ -667,11 +477,7 @@ static void ide_add_proc_entries(struct proc_dir_entry *dir, ide_proc_entry_t *p
 	if (!dir || !p)
 		return;
 	while (p->name != NULL) {
-<<<<<<< HEAD
 		ent = proc_create_single_data(p->name, p->mode, dir, p->show, data);
-=======
-		ent = proc_create_data(p->name, p->mode, dir, p->proc_fops, data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!ent) return;
 		p++;
 	}
@@ -736,17 +542,12 @@ void ide_proc_port_register_devices(ide_hwif_t *hwif)
 			continue;
 
 		drive->proc = proc_mkdir(drive->name, parent);
-<<<<<<< HEAD
 		if (drive->proc) {
 			ide_add_proc_entries(drive->proc, generic_drive_entries, drive);
 			proc_create_data("settings", S_IFREG|S_IRUSR|S_IWUSR,
 					drive->proc, &ide_settings_proc_fops,
 					drive);
 		}
-=======
-		if (drive->proc)
-			ide_add_proc_entries(drive->proc, generic_drive_entries, drive);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sprintf(name, "ide%d/%s", (drive->name[2]-'a')/2, drive->name);
 		ent = proc_symlink(drive->name, proc_ide_root, name);
 		if (!ent) return;
@@ -756,10 +557,7 @@ void ide_proc_port_register_devices(ide_hwif_t *hwif)
 void ide_proc_unregister_device(ide_drive_t *drive)
 {
 	if (drive->proc) {
-<<<<<<< HEAD
 		remove_proc_entry("settings", drive->proc);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ide_remove_proc_entries(drive->proc, generic_drive_entries);
 		remove_proc_entry(drive->name, proc_ide_root);
 		remove_proc_entry(drive->name, drive->hwif->proc);
@@ -768,15 +566,9 @@ void ide_proc_unregister_device(ide_drive_t *drive)
 }
 
 static ide_proc_entry_t hwif_entries[] = {
-<<<<<<< HEAD
 	{ "channel",	S_IFREG|S_IRUGO,	ide_channel_proc_show	},
 	{ "mate",	S_IFREG|S_IRUGO,	ide_mate_proc_show	},
 	{ "model",	S_IFREG|S_IRUGO,	ide_imodel_proc_show	},
-=======
-	{ "channel",	S_IFREG|S_IRUGO,	&ide_channel_proc_fops	},
-	{ "mate",	S_IFREG|S_IRUGO,	&ide_mate_proc_fops	},
-	{ "model",	S_IFREG|S_IRUGO,	&ide_imodel_proc_fops	},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{}
 };
 

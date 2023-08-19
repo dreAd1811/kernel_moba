@@ -181,11 +181,7 @@ int qxl_device_init(struct qxl_device *qdev,
 				&(qdev->ram_header->cursor_ring_hdr),
 				sizeof(struct qxl_command),
 				QXL_CURSOR_RING_SIZE,
-<<<<<<< HEAD
 				qdev->io_base + QXL_IO_NOTIFY_CMD,
-=======
-				qdev->io_base + QXL_IO_NOTIFY_CURSOR,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				false,
 				&qdev->cursor_event);
 
@@ -204,13 +200,8 @@ int qxl_device_init(struct qxl_device *qdev,
 		(~(uint64_t)0) >> (qdev->slot_id_bits + qdev->slot_gen_bits);
 
 	qdev->mem_slots =
-<<<<<<< HEAD
 		kmalloc_array(qdev->n_mem_slots, sizeof(struct qxl_memslot),
 			      GFP_KERNEL);
-=======
-		kmalloc(qdev->n_mem_slots * sizeof(struct qxl_memslot),
-			GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	idr_init(&qdev->release_idr);
 	spin_lock_init(&qdev->release_idr_lock);

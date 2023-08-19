@@ -27,10 +27,7 @@
 #include <drm/drm_crtc_helper.h>
 #include <drm/drm_fb_cma_helper.h>
 #include <drm/drm_gem_cma_helper.h>
-<<<<<<< HEAD
 #include <drm/drm_modeset_helper.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "fsl_dcu_drm_crtc.h"
 #include "fsl_dcu_drm_drv.h"
@@ -192,38 +189,17 @@ static struct drm_driver fsl_dcu_drm_driver = {
 static int fsl_dcu_drm_pm_suspend(struct device *dev)
 {
 	struct fsl_dcu_drm_device *fsl_dev = dev_get_drvdata(dev);
-<<<<<<< HEAD
 	int ret;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!fsl_dev)
 		return 0;
 
 	disable_irq(fsl_dev->irq);
-<<<<<<< HEAD
 
 	ret = drm_mode_config_helper_suspend(fsl_dev->drm);
 	if (ret) {
 		enable_irq(fsl_dev->irq);
 		return ret;
-=======
-	drm_kms_helper_poll_disable(fsl_dev->drm);
-
-	console_lock();
-	drm_fbdev_cma_set_suspend(fsl_dev->fbdev, 1);
-	console_unlock();
-
-	fsl_dev->state = drm_atomic_helper_suspend(fsl_dev->drm);
-	if (IS_ERR(fsl_dev->state)) {
-		console_lock();
-		drm_fbdev_cma_set_suspend(fsl_dev->fbdev, 0);
-		console_unlock();
-
-		drm_kms_helper_poll_enable(fsl_dev->drm);
-		enable_irq(fsl_dev->irq);
-		return PTR_ERR(fsl_dev->state);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	clk_disable_unprepare(fsl_dev->clk);
@@ -249,18 +225,8 @@ static int fsl_dcu_drm_pm_resume(struct device *dev)
 		fsl_tcon_bypass_enable(fsl_dev->tcon);
 	fsl_dcu_drm_init_planes(fsl_dev->drm);
 	enable_irq(fsl_dev->irq);
-<<<<<<< HEAD
 
 	drm_mode_config_helper_resume(fsl_dev->drm);
-=======
-	drm_atomic_helper_resume(fsl_dev->drm, fsl_dev->state);
-
-	console_lock();
-	drm_fbdev_cma_set_suspend(fsl_dev->fbdev, 0);
-	console_unlock();
-
-	drm_kms_helper_poll_enable(fsl_dev->drm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

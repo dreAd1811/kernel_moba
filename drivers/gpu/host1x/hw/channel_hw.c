@@ -104,12 +104,7 @@ static int channel_submit(struct host1x_job *job)
 	sp = host->syncpt + job->syncpt_id;
 	trace_host1x_channel_submit(dev_name(ch->dev),
 				    job->num_gathers, job->num_relocs,
-<<<<<<< HEAD
 				    job->syncpt_id, job->syncpt_incrs);
-=======
-				    job->num_waitchk, job->syncpt_id,
-				    job->syncpt_incrs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* before error checks, return current max */
 	prev_max = job->syncpt_end = host1x_syncpt_read_max(sp);
@@ -151,11 +146,8 @@ static int channel_submit(struct host1x_job *job)
 
 	syncval = host1x_syncpt_incr_max(sp, user_syncpt_incrs);
 
-<<<<<<< HEAD
 	host1x_hw_syncpt_assign_to_channel(host, sp, ch);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	job->syncpt_end = syncval;
 
 	/* add a setclass for modules that require it */
@@ -172,11 +164,7 @@ static int channel_submit(struct host1x_job *job)
 	trace_host1x_channel_submitted(dev_name(ch->dev), prev_max, syncval);
 
 	/* schedule a submit complete interrupt */
-<<<<<<< HEAD
 	err = host1x_intr_add_action(host, sp, syncval,
-=======
-	err = host1x_intr_add_action(host, job->syncpt_id, syncval,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     HOST1X_INTR_ACTION_SUBMIT_COMPLETE, ch,
 				     completed_waiter, NULL);
 	completed_waiter = NULL;
@@ -191,7 +179,6 @@ error:
 	return err;
 }
 
-<<<<<<< HEAD
 static void enable_gather_filter(struct host1x *host,
 				 struct host1x_channel *ch)
 {
@@ -213,16 +200,11 @@ static void enable_gather_filter(struct host1x *host,
 #endif
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int host1x_channel_init(struct host1x_channel *ch, struct host1x *dev,
 			       unsigned int index)
 {
 	ch->regs = dev->regs + index * HOST1X_CHANNEL_SIZE;
-<<<<<<< HEAD
 	enable_gather_filter(dev, ch);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

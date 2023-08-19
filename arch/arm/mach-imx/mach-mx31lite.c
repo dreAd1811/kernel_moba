@@ -83,20 +83,8 @@ static const struct imxuart_platform_data uart_pdata __initconst = {
 };
 
 /* SPI */
-<<<<<<< HEAD
 static const struct spi_imx_master spi0_pdata __initconst = {
 	.num_chipselect	= 3,
-=======
-static int spi0_internal_chipselect[] = {
-	MXC_SPI_CS(0),
-	MXC_SPI_CS(1),
-	MXC_SPI_CS(2),
-};
-
-static const struct spi_imx_master spi0_pdata __initconst = {
-	.chipselect	= spi0_internal_chipselect,
-	.num_chipselect	= ARRAY_SIZE(spi0_internal_chipselect),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct mxc_nand_platform_data
@@ -138,18 +126,8 @@ static struct platform_device smsc911x_device = {
  * The MC13783 is the only hard-wired SPI device on the module.
  */
 
-<<<<<<< HEAD
 static const struct spi_imx_master spi1_pdata __initconst = {
 	.num_chipselect	= 1,
-=======
-static int spi1_internal_chipselect[] = {
-	MXC_SPI_CS(0),
-};
-
-static const struct spi_imx_master spi1_pdata __initconst = {
-	.chipselect	= spi1_internal_chipselect,
-	.num_chipselect	= ARRAY_SIZE(spi1_internal_chipselect),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct mc13xxx_platform_data mc13783_pdata __initdata = {
@@ -255,11 +233,7 @@ static struct map_desc mx31lite_io_desc[] __initdata = {
 /*
  * Set up static virtual mappings.
  */
-<<<<<<< HEAD
 static void __init mx31lite_map_io(void)
-=======
-void __init mx31lite_map_io(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	mx31_map_io();
 	iotable_init(mx31lite_io_desc, ARRAY_SIZE(mx31lite_io_desc));

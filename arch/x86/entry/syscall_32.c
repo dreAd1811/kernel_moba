@@ -7,7 +7,6 @@
 #include <asm/asm-offsets.h>
 #include <asm/syscall.h>
 
-<<<<<<< HEAD
 #ifdef CONFIG_IA32_EMULATION
 /* On X86_64, we use struct pt_regs * to pass parameters to syscalls */
 #define __SYSCALL_I386(nr, sym, qual) extern asmlinkage long sym(const struct pt_regs *);
@@ -18,28 +17,16 @@ extern asmlinkage long sys_ni_syscall(unsigned long, unsigned long, unsigned lon
 #define __sys_ni_syscall sys_ni_syscall
 #endif /* CONFIG_IA32_EMULATION */
 
-=======
-#define __SYSCALL_I386(nr, sym, qual) extern asmlinkage long sym(unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long) ;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/syscalls_32.h>
 #undef __SYSCALL_I386
 
 #define __SYSCALL_I386(nr, sym, qual) [nr] = sym,
 
-<<<<<<< HEAD
-=======
-extern asmlinkage long sys_ni_syscall(unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 __visible const sys_call_ptr_t ia32_sys_call_table[__NR_syscall_compat_max+1] = {
 	/*
 	 * Smells like a compiler bug -- it doesn't work
 	 * when the & below is removed.
 	 */
-<<<<<<< HEAD
 	[0 ... __NR_syscall_compat_max] = &__sys_ni_syscall,
-=======
-	[0 ... __NR_syscall_compat_max] = &sys_ni_syscall,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/syscalls_32.h>
 };

@@ -91,7 +91,6 @@ static void macii_poll(void);
 static int macii_reset_bus(void);
 
 struct adb_driver via_macii_driver = {
-<<<<<<< HEAD
 	.name         = "Mac II",
 	.probe        = macii_probe,
 	.init         = macii_init,
@@ -99,15 +98,6 @@ struct adb_driver via_macii_driver = {
 	.autopoll     = macii_autopoll,
 	.poll         = macii_poll,
 	.reset_bus    = macii_reset_bus,
-=======
-	"Mac II",
-	macii_probe,
-	macii_init,
-	macii_send_request,
-	macii_autopoll,
-	macii_poll,
-	macii_reset_bus
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static enum macii_state {

@@ -1,19 +1,9 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Adjunct processor (AP) interfaces
  *
  * Copyright IBM Corp. 2017
  *
-<<<<<<< HEAD
-=======
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (version 2 only)
- * as published by the Free Software Foundation.
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Author(s): Tony Krowiak <akrowia@linux.vnet.ibm.com>
  *	      Martin Schwidefsky <schwidefsky@de.ibm.com>
  *	      Harald Freudenberger <freude@de.ibm.com>
@@ -30,15 +20,9 @@
  */
 typedef unsigned int ap_qid_t;
 
-<<<<<<< HEAD
 #define AP_MKQID(_card, _queue) (((_card) & 0xff) << 8 | ((_queue) & 0xff))
 #define AP_QID_CARD(_qid) (((_qid) >> 8) & 0xff)
 #define AP_QID_QUEUE(_qid) ((_qid) & 0xff)
-=======
-#define AP_MKQID(_card, _queue) (((_card) & 63) << 8 | ((_queue) & 255))
-#define AP_QID_CARD(_qid) (((_qid) >> 8) & 63)
-#define AP_QID_QUEUE(_qid) ((_qid) & 255)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * struct ap_queue_status - Holds the AP queue status.
@@ -63,7 +47,6 @@ struct ap_queue_status {
 };
 
 /**
-<<<<<<< HEAD
  * ap_intructions_available() - Test if AP instructions are available.
  *
  * Returns true if the AP instructions are installed, otherwise false.
@@ -108,8 +91,6 @@ static inline struct ap_queue_status ap_tapq(ap_qid_t qid, unsigned long *info)
 }
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * ap_test_queue(): Test adjunct processor queue.
  * @qid: The AP queue number
  * @tbit: Test facilities bit
@@ -117,7 +98,6 @@ static inline struct ap_queue_status ap_tapq(ap_qid_t qid, unsigned long *info)
  *
  * Returns AP queue status structure.
  */
-<<<<<<< HEAD
 static inline struct ap_queue_status ap_test_queue(ap_qid_t qid,
 						   int tbit,
 						   unsigned long *info)
@@ -169,12 +149,6 @@ static inline struct ap_queue_status ap_zapq(ap_qid_t qid)
  * struct ap_config_info - convenience struct for AP crypto
  * config info as returned by the ap_qci() function.
  */
-=======
-struct ap_queue_status ap_test_queue(ap_qid_t qid,
-				     int tbit,
-				     unsigned long *info);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct ap_config_info {
 	unsigned int apsc	 : 1;	/* S bit */
 	unsigned int apxa	 : 1;	/* N bit */
@@ -191,7 +165,6 @@ struct ap_config_info {
 	unsigned char _reserved4[16];
 } __aligned(8);
 
-<<<<<<< HEAD
 /**
  * ap_qci(): Get AP configuration data
  *
@@ -386,52 +359,5 @@ static inline struct ap_queue_status ap_dqap(ap_qid_t qid,
 	*psmid = (((unsigned long long) reg6) << 32) + reg7;
 	return reg1;
 }
-=======
-/*
- * ap_query_configuration(): Fetch cryptographic config info
- *
- * Returns the ap configuration info fetched via PQAP(QCI).
- * On success 0 is returned, on failure a negative errno
- * is returned, e.g. if the PQAP(QCI) instruction is not
- * available, the return value will be -EOPNOTSUPP.
- */
-int ap_query_configuration(struct ap_config_info *info);
-
-/*
- * struct ap_qirq_ctrl - convenient struct for easy invocation
- * of the ap_queue_irq_ctrl() function. This struct is passed
- * as GR1 parameter to the PQAP(AQIC) instruction. For details
- * please see the AR documentation.
- */
-struct ap_qirq_ctrl {
-	unsigned int _res1 : 8;
-	unsigned int zone  : 8;  /* zone info */
-	unsigned int ir    : 1;  /* ir flag: enable (1) or disable (0) irq */
-	unsigned int _res2 : 4;
-	unsigned int gisc  : 3;  /* guest isc field */
-	unsigned int _res3 : 6;
-	unsigned int gf    : 2;  /* gisa format */
-	unsigned int _res4 : 1;
-	unsigned int gisa  : 27; /* gisa origin */
-	unsigned int _res5 : 1;
-	unsigned int isc   : 3;  /* irq sub class */
-};
-
-/**
- * ap_queue_irq_ctrl(): Control interruption on a AP queue.
- * @qid: The AP queue number
- * @qirqctrl: struct ap_qirq_ctrl, see above
- * @ind: The notification indicator byte
- *
- * Returns AP queue status.
- *
- * Control interruption on the given AP queue.
- * Just a simple wrapper function for the low level PQAP(AQIC)
- * instruction available for other kernel modules.
- */
-struct ap_queue_status ap_queue_irq_ctrl(ap_qid_t qid,
-					 struct ap_qirq_ctrl qirqctrl,
-					 void *ind);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* _ASM_S390_AP_H_ */

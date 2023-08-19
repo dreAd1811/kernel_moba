@@ -1,33 +1,5 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /* Copyright(c) 2013 - 2018 Intel Corporation. */
-=======
-/*******************************************************************************
- *
- * Intel Ethernet Controller XL710 Family Linux Virtual Function Driver
- * Copyright(c) 2013 - 2014 Intel Corporation.
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms and conditions of the GNU General Public License,
- * version 2, as published by the Free Software Foundation.
- *
- * This program is distributed in the hope it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
- * more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * The full GNU General Public License is included in this distribution in
- * the file called "COPYING".
- *
- * Contact Information:
- * e1000-devel Mailing List <e1000-devel@lists.sourceforge.net>
- * Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497
- *
- ******************************************************************************/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "i40evf.h"
 #include "i40e_prototype.h"
@@ -57,11 +29,7 @@ static int i40evf_send_pf_msg(struct i40evf_adapter *adapter,
 
 	err = i40e_aq_send_msg_to_pf(hw, op, 0, msg, len, NULL);
 	if (err)
-<<<<<<< HEAD
 		dev_dbg(&adapter->pdev->dev, "Unable to send opcode %d to PF, err %s, aq_err %s\n",
-=======
-		dev_err(&adapter->pdev->dev, "Unable to send opcode %d to PF, err %s, aq_err %s\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			op, i40evf_stat_str(hw, err),
 			i40evf_aq_str(hw, hw->aq.asq_last_status));
 	return err;
@@ -169,13 +137,9 @@ int i40evf_send_vf_config_msg(struct i40evf_adapter *adapter)
 	       VIRTCHNL_VF_OFFLOAD_WB_ON_ITR |
 	       VIRTCHNL_VF_OFFLOAD_RSS_PCTYPE_V2 |
 	       VIRTCHNL_VF_OFFLOAD_ENCAP |
-<<<<<<< HEAD
 	       VIRTCHNL_VF_OFFLOAD_ENCAP_CSUM |
 	       VIRTCHNL_VF_OFFLOAD_REQ_QUEUES |
 	       VIRTCHNL_VF_OFFLOAD_ADQ;
-=======
-	       VIRTCHNL_VF_OFFLOAD_ENCAP_CSUM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	adapter->current_op = VIRTCHNL_OP_GET_VF_RESOURCES;
 	adapter->aq_required &= ~I40EVF_FLAG_AQ_GET_CONFIG;
@@ -191,12 +155,7 @@ int i40evf_send_vf_config_msg(struct i40evf_adapter *adapter)
 
 /**
  * i40evf_get_vf_config
-<<<<<<< HEAD
  * @adapter: private adapter structure
-=======
- * @hw: pointer to the hardware structure
- * @len: length of buffer
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Get VF configuration from PF and populate hw structure. Must be called after
  * admin queue is initialized. Busy waits until response is received from PF,
@@ -362,10 +321,7 @@ void i40evf_disable_queues(struct i40evf_adapter *adapter)
 void i40evf_map_queues(struct i40evf_adapter *adapter)
 {
 	struct virtchnl_irq_map_info *vimi;
-<<<<<<< HEAD
 	struct virtchnl_vector_map *vecmap;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int v_idx, q_vectors, len;
 	struct i40e_q_vector *q_vector;
 
@@ -389,7 +345,6 @@ void i40evf_map_queues(struct i40evf_adapter *adapter)
 	vimi->num_vectors = adapter->num_msix_vectors;
 	/* Queue vectors first */
 	for (v_idx = 0; v_idx < q_vectors; v_idx++) {
-<<<<<<< HEAD
 		q_vector = &adapter->q_vectors[v_idx];
 		vecmap = &vimi->vecmap[v_idx];
 
@@ -406,19 +361,6 @@ void i40evf_map_queues(struct i40evf_adapter *adapter)
 	vecmap->vector_id = 0;
 	vecmap->txq_map = 0;
 	vecmap->rxq_map = 0;
-=======
-		q_vector = adapter->q_vectors + v_idx;
-		vimi->vecmap[v_idx].vsi_id = adapter->vsi_res->vsi_id;
-		vimi->vecmap[v_idx].vector_id = v_idx + NONQ_VECS;
-		vimi->vecmap[v_idx].txq_map = q_vector->ring_mask;
-		vimi->vecmap[v_idx].rxq_map = q_vector->ring_mask;
-	}
-	/* Misc vector last - this is only for AdminQ messages */
-	vimi->vecmap[v_idx].vsi_id = adapter->vsi_res->vsi_id;
-	vimi->vecmap[v_idx].vector_id = 0;
-	vimi->vecmap[v_idx].txq_map = 0;
-	vimi->vecmap[v_idx].rxq_map = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	adapter->aq_required &= ~I40EVF_FLAG_AQ_MAP_VECTORS;
 	i40evf_send_pf_msg(adapter, VIRTCHNL_OP_CONFIG_IRQ_MAP,
@@ -427,7 +369,6 @@ void i40evf_map_queues(struct i40evf_adapter *adapter)
 }
 
 /**
-<<<<<<< HEAD
  * i40evf_request_queues
  * @adapter: adapter structure
  * @num: number of requested queues
@@ -457,12 +398,6 @@ int i40evf_request_queues(struct i40evf_adapter *adapter, int num)
 /**
  * i40evf_add_ether_addrs
  * @adapter: adapter structure
-=======
- * i40evf_add_ether_addrs
- * @adapter: adapter structure
- * @addrs: the MAC address filters to add (contiguous)
- * @count: number of filters
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Request that the PF add one or more addresses to our filters.
  **/
@@ -479,22 +414,16 @@ void i40evf_add_ether_addrs(struct i40evf_adapter *adapter)
 			adapter->current_op);
 		return;
 	}
-<<<<<<< HEAD
 
 	spin_lock_bh(&adapter->mac_vlan_list_lock);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_for_each_entry(f, &adapter->mac_filter_list, list) {
 		if (f->add)
 			count++;
 	}
 	if (!count) {
 		adapter->aq_required &= ~I40EVF_FLAG_AQ_ADD_MAC_FILTER;
-<<<<<<< HEAD
 		spin_unlock_bh(&adapter->mac_vlan_list_lock);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 	adapter->current_op = VIRTCHNL_OP_ADD_ETH_ADDR;
@@ -511,17 +440,11 @@ void i40evf_add_ether_addrs(struct i40evf_adapter *adapter)
 		more = true;
 	}
 
-<<<<<<< HEAD
 	veal = kzalloc(len, GFP_ATOMIC);
 	if (!veal) {
 		spin_unlock_bh(&adapter->mac_vlan_list_lock);
 		return;
 	}
-=======
-	veal = kzalloc(len, GFP_KERNEL);
-	if (!veal)
-		return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	veal->vsi_id = adapter->vsi_res->vsi_id;
 	veal->num_elements = count;
@@ -536,12 +459,9 @@ void i40evf_add_ether_addrs(struct i40evf_adapter *adapter)
 	}
 	if (!more)
 		adapter->aq_required &= ~I40EVF_FLAG_AQ_ADD_MAC_FILTER;
-<<<<<<< HEAD
 
 	spin_unlock_bh(&adapter->mac_vlan_list_lock);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i40evf_send_pf_msg(adapter, VIRTCHNL_OP_ADD_ETH_ADDR,
 			   (u8 *)veal, len);
 	kfree(veal);
@@ -550,11 +470,6 @@ void i40evf_add_ether_addrs(struct i40evf_adapter *adapter)
 /**
  * i40evf_del_ether_addrs
  * @adapter: adapter structure
-<<<<<<< HEAD
-=======
- * @addrs: the MAC address filters to remove (contiguous)
- * @count: number of filtes
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Request that the PF remove one or more addresses from our filters.
  **/
@@ -571,22 +486,16 @@ void i40evf_del_ether_addrs(struct i40evf_adapter *adapter)
 			adapter->current_op);
 		return;
 	}
-<<<<<<< HEAD
 
 	spin_lock_bh(&adapter->mac_vlan_list_lock);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_for_each_entry(f, &adapter->mac_filter_list, list) {
 		if (f->remove)
 			count++;
 	}
 	if (!count) {
 		adapter->aq_required &= ~I40EVF_FLAG_AQ_DEL_MAC_FILTER;
-<<<<<<< HEAD
 		spin_unlock_bh(&adapter->mac_vlan_list_lock);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 	adapter->current_op = VIRTCHNL_OP_DEL_ETH_ADDR;
@@ -602,17 +511,11 @@ void i40evf_del_ether_addrs(struct i40evf_adapter *adapter)
 		      (count * sizeof(struct virtchnl_ether_addr));
 		more = true;
 	}
-<<<<<<< HEAD
 	veal = kzalloc(len, GFP_ATOMIC);
 	if (!veal) {
 		spin_unlock_bh(&adapter->mac_vlan_list_lock);
 		return;
 	}
-=======
-	veal = kzalloc(len, GFP_KERNEL);
-	if (!veal)
-		return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	veal->vsi_id = adapter->vsi_res->vsi_id;
 	veal->num_elements = count;
@@ -628,12 +531,9 @@ void i40evf_del_ether_addrs(struct i40evf_adapter *adapter)
 	}
 	if (!more)
 		adapter->aq_required &= ~I40EVF_FLAG_AQ_DEL_MAC_FILTER;
-<<<<<<< HEAD
 
 	spin_unlock_bh(&adapter->mac_vlan_list_lock);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i40evf_send_pf_msg(adapter, VIRTCHNL_OP_DEL_ETH_ADDR,
 			   (u8 *)veal, len);
 	kfree(veal);
@@ -642,11 +542,6 @@ void i40evf_del_ether_addrs(struct i40evf_adapter *adapter)
 /**
  * i40evf_add_vlans
  * @adapter: adapter structure
-<<<<<<< HEAD
-=======
- * @vlans: the VLANs to add
- * @count: number of VLANs
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Request that the PF add one or more VLAN filters to our VSI.
  **/
@@ -664,21 +559,15 @@ void i40evf_add_vlans(struct i40evf_adapter *adapter)
 		return;
 	}
 
-<<<<<<< HEAD
 	spin_lock_bh(&adapter->mac_vlan_list_lock);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_for_each_entry(f, &adapter->vlan_filter_list, list) {
 		if (f->add)
 			count++;
 	}
 	if (!count) {
 		adapter->aq_required &= ~I40EVF_FLAG_AQ_ADD_VLAN_FILTER;
-<<<<<<< HEAD
 		spin_unlock_bh(&adapter->mac_vlan_list_lock);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 	adapter->current_op = VIRTCHNL_OP_ADD_VLAN;
@@ -694,17 +583,11 @@ void i40evf_add_vlans(struct i40evf_adapter *adapter)
 		      (count * sizeof(u16));
 		more = true;
 	}
-<<<<<<< HEAD
 	vvfl = kzalloc(len, GFP_ATOMIC);
 	if (!vvfl) {
 		spin_unlock_bh(&adapter->mac_vlan_list_lock);
 		return;
 	}
-=======
-	vvfl = kzalloc(len, GFP_KERNEL);
-	if (!vvfl)
-		return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vvfl->vsi_id = adapter->vsi_res->vsi_id;
 	vvfl->num_elements = count;
@@ -719,12 +602,9 @@ void i40evf_add_vlans(struct i40evf_adapter *adapter)
 	}
 	if (!more)
 		adapter->aq_required &= ~I40EVF_FLAG_AQ_ADD_VLAN_FILTER;
-<<<<<<< HEAD
 
 	spin_unlock_bh(&adapter->mac_vlan_list_lock);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i40evf_send_pf_msg(adapter, VIRTCHNL_OP_ADD_VLAN, (u8 *)vvfl, len);
 	kfree(vvfl);
 }
@@ -732,11 +612,6 @@ void i40evf_add_vlans(struct i40evf_adapter *adapter)
 /**
  * i40evf_del_vlans
  * @adapter: adapter structure
-<<<<<<< HEAD
-=======
- * @vlans: the VLANs to remove
- * @count: number of VLANs
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Request that the PF remove one or more VLAN filters from our VSI.
  **/
@@ -754,21 +629,15 @@ void i40evf_del_vlans(struct i40evf_adapter *adapter)
 		return;
 	}
 
-<<<<<<< HEAD
 	spin_lock_bh(&adapter->mac_vlan_list_lock);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_for_each_entry(f, &adapter->vlan_filter_list, list) {
 		if (f->remove)
 			count++;
 	}
 	if (!count) {
 		adapter->aq_required &= ~I40EVF_FLAG_AQ_DEL_VLAN_FILTER;
-<<<<<<< HEAD
 		spin_unlock_bh(&adapter->mac_vlan_list_lock);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 	adapter->current_op = VIRTCHNL_OP_DEL_VLAN;
@@ -784,17 +653,11 @@ void i40evf_del_vlans(struct i40evf_adapter *adapter)
 		      (count * sizeof(u16));
 		more = true;
 	}
-<<<<<<< HEAD
 	vvfl = kzalloc(len, GFP_ATOMIC);
 	if (!vvfl) {
 		spin_unlock_bh(&adapter->mac_vlan_list_lock);
 		return;
 	}
-=======
-	vvfl = kzalloc(len, GFP_KERNEL);
-	if (!vvfl)
-		return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vvfl->vsi_id = adapter->vsi_res->vsi_id;
 	vvfl->num_elements = count;
@@ -810,12 +673,9 @@ void i40evf_del_vlans(struct i40evf_adapter *adapter)
 	}
 	if (!more)
 		adapter->aq_required &= ~I40EVF_FLAG_AQ_DEL_VLAN_FILTER;
-<<<<<<< HEAD
 
 	spin_unlock_bh(&adapter->mac_vlan_list_lock);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i40evf_send_pf_msg(adapter, VIRTCHNL_OP_DEL_VLAN, (u8 *)vvfl, len);
 	kfree(vvfl);
 }
@@ -854,15 +714,10 @@ void i40evf_set_promiscuous(struct i40evf_adapter *adapter, int flags)
 	}
 
 	if (!flags) {
-<<<<<<< HEAD
 		adapter->flags &= ~(I40EVF_FLAG_PROMISC_ON |
 				    I40EVF_FLAG_ALLMULTI_ON);
 		adapter->aq_required &= ~(I40EVF_FLAG_AQ_RELEASE_PROMISC |
 					  I40EVF_FLAG_AQ_RELEASE_ALLMULTI);
-=======
-		adapter->flags &= ~I40EVF_FLAG_PROMISC_ON;
-		adapter->aq_required &= ~I40EVF_FLAG_AQ_RELEASE_PROMISC;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_info(&adapter->pdev->dev, "Leaving promiscuous mode\n");
 	}
 
@@ -1087,7 +942,6 @@ static void i40evf_print_link_message(struct i40evf_adapter *adapter)
 }
 
 /**
-<<<<<<< HEAD
  * i40evf_enable_channel
  * @adapter: adapter structure
  *
@@ -1287,8 +1141,6 @@ void i40evf_del_cloud_filter(struct i40evf_adapter *adapter)
 }
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * i40evf_request_reset
  * @adapter: adapter structure
  *
@@ -1333,7 +1185,6 @@ void i40evf_virtchnl_completion(struct i40evf_adapter *adapter,
 			if (adapter->link_up == link_up)
 				break;
 
-<<<<<<< HEAD
 			if (link_up) {
 				/* If we get link up message and start queues
 				 * before our queues are configured it will
@@ -1353,16 +1204,6 @@ void i40evf_virtchnl_completion(struct i40evf_adapter *adapter,
 				    I40EVF_FLAG_QUEUES_DISABLED)
 					break;
 			}
-=======
-			/* If we get link up message and start queues before
-			 * our queues are configured it will trigger a TX hang.
-			 * In that case, just ignore the link status message,
-			 * we'll get another one after we enable queues and
-			 * actually prepared to send traffic.
-			 */
-			if (link_up && adapter->state != __I40EVF_RUNNING)
-				break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			adapter->link_up = link_up;
 			if (link_up) {
@@ -1375,11 +1216,7 @@ void i40evf_virtchnl_completion(struct i40evf_adapter *adapter,
 			i40evf_print_link_message(adapter);
 			break;
 		case VIRTCHNL_EVENT_RESET_IMPENDING:
-<<<<<<< HEAD
 			dev_info(&adapter->pdev->dev, "Reset warning received from the PF\n");
-=======
-			dev_info(&adapter->pdev->dev, "PF reset warning received\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (!(adapter->flags & I40EVF_FLAG_RESET_PENDING)) {
 				adapter->flags |= I40EVF_FLAG_RESET_PENDING;
 				dev_info(&adapter->pdev->dev, "Scheduling reset task\n");
@@ -1411,7 +1248,6 @@ void i40evf_virtchnl_completion(struct i40evf_adapter *adapter,
 			dev_err(&adapter->pdev->dev, "Failed to delete MAC filter, error %s\n",
 				i40evf_stat_str(&adapter->hw, v_retval));
 			break;
-<<<<<<< HEAD
 		case VIRTCHNL_OP_ENABLE_CHANNELS:
 			dev_err(&adapter->pdev->dev, "Failed to configure queue channels, error %s\n",
 				i40evf_stat_str(&adapter->hw, v_retval));
@@ -1463,8 +1299,6 @@ void i40evf_virtchnl_completion(struct i40evf_adapter *adapter,
 			}
 			}
 			break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		default:
 			dev_err(&adapter->pdev->dev, "PF returned error %d (%s) to our request %d\n",
 				v_retval,
@@ -1504,10 +1338,7 @@ void i40evf_virtchnl_completion(struct i40evf_adapter *adapter,
 	case VIRTCHNL_OP_ENABLE_QUEUES:
 		/* enable transmits */
 		i40evf_irq_enable(adapter, true);
-<<<<<<< HEAD
 		adapter->flags &= ~I40EVF_FLAG_QUEUES_DISABLED;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case VIRTCHNL_OP_DISABLE_QUEUES:
 		i40evf_free_all_tx_resources(adapter);
@@ -1549,7 +1380,6 @@ void i40evf_virtchnl_completion(struct i40evf_adapter *adapter,
 				 "Invalid message %d from PF\n", v_opcode);
 		}
 		break;
-<<<<<<< HEAD
 	case VIRTCHNL_OP_REQUEST_QUEUES: {
 		struct virtchnl_vf_res_request *vfres =
 			(struct virtchnl_vf_res_request *)msg;
@@ -1586,8 +1416,6 @@ void i40evf_virtchnl_completion(struct i40evf_adapter *adapter,
 		}
 		}
 		break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		if (adapter->current_op && (v_opcode != adapter->current_op))
 			dev_warn(&adapter->pdev->dev, "Expected response %d from PF, received %d\n",

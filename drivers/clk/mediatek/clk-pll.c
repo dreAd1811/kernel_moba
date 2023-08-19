@@ -47,10 +47,7 @@ struct mtk_clk_pll {
 	void __iomem	*pd_addr;
 	void __iomem	*pwr_addr;
 	void __iomem	*tuner_addr;
-<<<<<<< HEAD
 	void __iomem	*tuner_en_addr;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void __iomem	*pcw_addr;
 	const struct mtk_pll_data *data;
 };
@@ -91,7 +88,6 @@ static unsigned long __mtk_pll_recalc_rate(struct mtk_clk_pll *pll, u32 fin,
 	return ((unsigned long)vco + postdiv - 1) / postdiv;
 }
 
-<<<<<<< HEAD
 static void __mtk_pll_tuner_enable(struct mtk_clk_pll *pll)
 {
 	u32 r;
@@ -118,8 +114,6 @@ static void __mtk_pll_tuner_disable(struct mtk_clk_pll *pll)
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void mtk_pll_set_rate_regs(struct mtk_clk_pll *pll, u32 pcw,
 		int postdiv)
 {
@@ -128,12 +122,9 @@ static void mtk_pll_set_rate_regs(struct mtk_clk_pll *pll, u32 pcw,
 
 	pll_en = readl(pll->base_addr + REG_CON0) & CON0_BASE_EN;
 
-<<<<<<< HEAD
 	/* disable tuner */
 	__mtk_pll_tuner_disable(pll);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* set postdiv */
 	val = readl(pll->pd_addr);
 	val &= ~(POSTDIV_MASK << pll->data->pd_shift);
@@ -160,12 +151,9 @@ static void mtk_pll_set_rate_regs(struct mtk_clk_pll *pll, u32 pcw,
 	if (pll->tuner_addr)
 		writel(con1 + 1, pll->tuner_addr);
 
-<<<<<<< HEAD
 	/* restore tuner_en */
 	__mtk_pll_tuner_enable(pll);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (pll_en)
 		udelay(20);
 }
@@ -272,14 +260,7 @@ static int mtk_pll_prepare(struct clk_hw *hw)
 	r |= pll->data->en_mask;
 	writel(r, pll->base_addr + REG_CON0);
 
-<<<<<<< HEAD
 	__mtk_pll_tuner_enable(pll);
-=======
-	if (pll->tuner_addr) {
-		r = readl(pll->tuner_addr) | AUDPLL_TUNER_EN;
-		writel(r, pll->tuner_addr);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	udelay(20);
 
@@ -303,14 +284,7 @@ static void mtk_pll_unprepare(struct clk_hw *hw)
 		writel(r, pll->base_addr + REG_CON0);
 	}
 
-<<<<<<< HEAD
 	__mtk_pll_tuner_disable(pll);
-=======
-	if (pll->tuner_addr) {
-		r = readl(pll->tuner_addr) & ~AUDPLL_TUNER_EN;
-		writel(r, pll->tuner_addr);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	r = readl(pll->base_addr + REG_CON0);
 	r &= ~CON0_BASE_EN;
@@ -350,11 +324,8 @@ static struct clk *mtk_clk_register_pll(const struct mtk_pll_data *data,
 	pll->pcw_addr = base + data->pcw_reg;
 	if (data->tuner_reg)
 		pll->tuner_addr = base + data->tuner_reg;
-<<<<<<< HEAD
 	if (data->tuner_en_reg)
 		pll->tuner_en_addr = base + data->tuner_en_reg;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pll->hw.init = &init;
 	pll->data = data;
 

@@ -411,15 +411,9 @@ static long saa6588_ioctl(struct v4l2_subdev *sd, unsigned int cmd, void *arg)
 		break;
 		/* --- poll() for /dev/radio --- */
 	case SAA6588_CMD_POLL:
-<<<<<<< HEAD
 		a->poll_mask = 0;
 		if (s->data_available_for_read)
 			a->poll_mask |= EPOLLIN | EPOLLRDNORM;
-=======
-		a->result = 0;
-		if (s->data_available_for_read)
-			a->result |= POLLIN | POLLRDNORM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		poll_wait(a->instance, &s->read_queue, a->event_list);
 		break;
 

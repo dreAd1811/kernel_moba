@@ -64,7 +64,6 @@ enum hwsim_tx_control_flags {
  * @HWSIM_CMD_TX_INFO_FRAME: Transmission info report from user space to
  *	kernel, uses:
  *	%HWSIM_ATTR_ADDR_TRANSMITTER, %HWSIM_ATTR_FLAGS,
-<<<<<<< HEAD
  *	%HWSIM_ATTR_TX_INFO, %WSIM_ATTR_TX_INFO_FLAGS,
  *	%HWSIM_ATTR_SIGNAL, %HWSIM_ATTR_COOKIE
  * @HWSIM_CMD_NEW_RADIO: create a new radio with the given parameters,
@@ -75,12 +74,6 @@ enum hwsim_tx_control_flags {
  *	%HWSIM_ATTR_NO_VIF, %HWSIM_ATTR_RADIO_NAME, %HWSIM_ATTR_USE_CHANCTX,
  *	%HWSIM_ATTR_REG_HINT_ALPHA2, %HWSIM_ATTR_REG_CUSTOM_REG,
  *	%HWSIM_ATTR_PERM_ADDR
-=======
- *	%HWSIM_ATTR_TX_INFO, %HWSIM_ATTR_SIGNAL, %HWSIM_ATTR_COOKIE
- * @HWSIM_CMD_NEW_RADIO: create a new radio with the given parameters,
- *	returns the radio ID (>= 0) or negative on errors, if successful
- *	then multicast the result
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @HWSIM_CMD_DEL_RADIO: destroy a radio, reply is multicasted
  * @HWSIM_CMD_GET_RADIO: fetch information about existing radios, uses:
  *	%HWSIM_ATTR_RADIO_ID
@@ -136,12 +129,9 @@ enum {
  * @HWSIM_ATTR_RADIO_NAME: Name of radio, e.g. phy666
  * @HWSIM_ATTR_NO_VIF:  Do not create vif (wlanX) when creating radio.
  * @HWSIM_ATTR_FREQ: Frequency at which packet is transmitted or received.
-<<<<<<< HEAD
  * @HWSIM_ATTR_TX_INFO_FLAGS: additional flags for corresponding
  *	rates of %HWSIM_ATTR_TX_INFO
  * @HWSIM_ATTR_PERM_ADDR: permanent mac address of new radio
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @__HWSIM_ATTR_MAX: enum limit
  */
 
@@ -168,11 +158,8 @@ enum {
 	HWSIM_ATTR_NO_VIF,
 	HWSIM_ATTR_FREQ,
 	HWSIM_ATTR_PAD,
-<<<<<<< HEAD
 	HWSIM_ATTR_TX_INFO_FLAGS,
 	HWSIM_ATTR_PERM_ADDR,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__HWSIM_ATTR_MAX,
 };
 #define HWSIM_ATTR_MAX (__HWSIM_ATTR_MAX - 1)
@@ -195,7 +182,6 @@ struct hwsim_tx_rate {
 	u8 count;
 } __packed;
 
-<<<<<<< HEAD
 /**
  * enum hwsim_tx_rate_flags - per-rate flags set by the rate control algorithm.
  *	Inspired by structure mac80211_rate_control_flags. New flags may be
@@ -258,6 +244,4 @@ struct hwsim_tx_rate_flag {
 	s8 idx;
 	u16 flags;
 } __packed;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __MAC80211_HWSIM_H */

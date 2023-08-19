@@ -702,19 +702,11 @@ static int hid_sensor_custom_open(struct inode *inode, struct file *file)
 	return nonseekable_open(inode, file);
 }
 
-<<<<<<< HEAD
 static __poll_t hid_sensor_custom_poll(struct file *file,
 					   struct poll_table_struct *wait)
 {
 	struct hid_sensor_custom *sensor_inst;
 	__poll_t mask = 0;
-=======
-static unsigned int hid_sensor_custom_poll(struct file *file,
-					   struct poll_table_struct *wait)
-{
-	struct hid_sensor_custom *sensor_inst;
-	unsigned int mask = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sensor_inst = container_of(file->private_data,
 				   struct hid_sensor_custom, custom_dev);
@@ -722,11 +714,7 @@ static unsigned int hid_sensor_custom_poll(struct file *file,
 	poll_wait(file, &sensor_inst->wait, wait);
 
 	if (!kfifo_is_empty(&sensor_inst->data_fifo))
-<<<<<<< HEAD
 		mask = EPOLLIN | EPOLLRDNORM;
-=======
-		mask = POLLIN | POLLRDNORM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return mask;
 }

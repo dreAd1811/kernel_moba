@@ -1,28 +1,15 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Google Snow board device tree source
  *
  * Copyright (c) 2012 Google, Inc
-<<<<<<< HEAD
-=======
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/clock/maxim,max77686.h>
 #include <dt-bindings/interrupt-controller/irq.h>
 #include <dt-bindings/input/input.h>
-<<<<<<< HEAD
 #include <dt-bindings/sound/samsung-i2s.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "exynos5250.dtsi"
 
 / {
@@ -239,7 +226,6 @@
 	};
 };
 
-<<<<<<< HEAD
 &clock {
 	assigned-clocks = <&clock CLK_FOUT_EPLL>;
 	assigned-clock-rates = <49152000>;
@@ -250,8 +236,6 @@
 	assigned-clock-parents = <&clock CLK_FOUT_EPLL>;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &cpu0 {
 	cpu0-supply = <&buck2_reg>;
 };
@@ -285,17 +269,10 @@
 };
 
 &hdmi {
-<<<<<<< HEAD
 	status = "okay";
 	hpd-gpios = <&gpx3 7 GPIO_ACTIVE_HIGH>;
 	pinctrl-names = "default";
 	pinctrl-0 = <&hdmi_hpd_irq>;
-=======
-	hpd-gpios = <&gpx3 7 GPIO_ACTIVE_HIGH>;
-	pinctrl-names = "default";
-	pinctrl-0 = <&hdmi_hpd_irq>;
-	phy = <&hdmiphy>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ddc = <&i2c_2>;
 	hdmi-en-supply = <&tps65090_fet7>;
 	vdd-supply = <&ldo8_reg>;
@@ -312,11 +289,7 @@
 	samsung,i2c-sda-delay = <100>;
 	samsung,i2c-max-bus-freq = <378000>;
 
-<<<<<<< HEAD
 	max77686: max77686@9 {
-=======
-	max77686: max77686@09 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "maxim,max77686";
 		interrupt-parent = <&gpx3>;
 		interrupts = <2 IRQ_TYPE_NONE>;
@@ -485,19 +458,9 @@
 
 &i2c_2 {
 	status = "okay";
-<<<<<<< HEAD
 	/* used by HDMI DDC */
 	samsung,i2c-sda-delay = <100>;
 	samsung,i2c-max-bus-freq = <66000>;
-=======
-	samsung,i2c-sda-delay = <100>;
-	samsung,i2c-max-bus-freq = <66000>;
-
-	hdmiddc@50 {
-		compatible = "samsung,exynos4210-hdmiddc";
-		reg = <0x50>;
-	};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &i2c_3 {
@@ -555,7 +518,6 @@
 
 &i2c_8 {
 	status = "okay";
-<<<<<<< HEAD
 	/* used by HDMI PHY */
 	samsung,i2c-sda-delay = <100>;
 	samsung,i2c-max-bus-freq = <378000>;
@@ -568,18 +530,6 @@
 };
 
 &mixer {
-=======
-	samsung,i2c-sda-delay = <100>;
-	samsung,i2c-max-bus-freq = <378000>;
-
-	hdmiphy: hdmiphy@38 {
-		compatible = "samsung,exynos4212-hdmiphy";
-		reg = <0x38>;
-	};
-};
-
-&i2s0 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
@@ -712,14 +662,11 @@
 	};
 };
 
-<<<<<<< HEAD
 &pmu_system_controller {
 	assigned-clocks = <&pmu_system_controller 0>;
 	assigned-clock-parents = <&clock CLK_FIN_PLL>;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &rtc {
 	status = "okay";
 	clocks = <&clock CLK_RTC>, <&max77686 MAX77686_CLK_AP>;

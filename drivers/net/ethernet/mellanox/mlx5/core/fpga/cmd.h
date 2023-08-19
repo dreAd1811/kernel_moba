@@ -35,7 +35,6 @@
 
 #include <linux/mlx5/driver.h>
 
-<<<<<<< HEAD
 enum mlx5_fpga_device_id {
 	MLX5_FPGA_DEVICE_UNKNOWN = 0,
 	MLX5_FPGA_DEVICE_KU040 = 1,
@@ -43,8 +42,6 @@ enum mlx5_fpga_device_id {
 	MLX5_FPGA_DEVICE_KU060_2 = 3,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum mlx5_fpga_image {
 	MLX5_FPGA_IMAGE_USER = 0,
 	MLX5_FPGA_IMAGE_FACTORY,

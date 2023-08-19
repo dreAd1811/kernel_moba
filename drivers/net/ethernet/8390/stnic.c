@@ -71,11 +71,7 @@ static void stnic_init (struct net_device *dev);
 
 static u32 stnic_msg_enable;
 
-<<<<<<< HEAD
 module_param_named(msg_enable, stnic_msg_enable, uint, 0444);
-=======
-module_param_named(msg_enable, stnic_msg_enable, uint, (S_IRUSR|S_IRGRP|S_IROTH));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_PARM_DESC(msg_enable, "Debug message level (see linux/netdevice.h for bitmap)");
 
 /* SH7750 specific read/write io. */

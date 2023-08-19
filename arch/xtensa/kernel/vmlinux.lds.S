@@ -20,11 +20,7 @@
 
 #include <asm/vectors.h>
 #include <variant/core.h>
-<<<<<<< HEAD
 
-=======
-#include <platform/hardware.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 OUTPUT_ARCH(xtensa)
 ENTRY(_start)
 
@@ -49,7 +45,6 @@ jiffies = jiffies_64;
 	LONG(sym ## _end);			\
 	LONG(LOADADDR(section))
 
-<<<<<<< HEAD
 /*
  * Macro to define a section for a vector. When CONFIG_VECTORS_OFFSET is
  * defined code for every vector is located with other init data. At startup
@@ -60,26 +55,6 @@ jiffies = jiffies_64;
 #ifdef CONFIG_VECTORS_OFFSET
 #define SECTION_VECTOR(sym, section, addr, prevsec)                         \
   section addr : AT(((LOADADDR(prevsec) + SIZEOF(prevsec)) + 3) & ~ 3)      \
-=======
-/* Macro to define a section for a vector.
- *
- * Use of the MIN function catches the types of errors illustrated in
- * the following example:
- *
- * Assume the section .DoubleExceptionVector.literal is completely
- * full.  Then a programmer adds code to .DoubleExceptionVector.text
- * that produces another literal.  The final literal position will
- * overlay onto the first word of the adjacent code section
- * .DoubleExceptionVector.text.  (In practice, the literals will
- * overwrite the code, and the first few instructions will be
- * garbage.)
- */
-
-#ifdef CONFIG_VECTORS_OFFSET
-#define SECTION_VECTOR(sym, section, addr, max_prevsec_size, prevsec)       \
-  section addr : AT((MIN(LOADADDR(prevsec) + max_prevsec_size,		    \
-		         LOADADDR(prevsec) + SIZEOF(prevsec)) + 3) & ~ 3)   \
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
   {									    \
     . = ALIGN(4);							    \
     sym ## _start = ABSOLUTE(.);		 			    \
@@ -129,7 +104,6 @@ SECTIONS
 #if XCHAL_EXCM_LEVEL >= 6
   SECTION_VECTOR (.Level6InterruptVector.text, INTLEVEL6_VECTOR_VADDR)
 #endif
-<<<<<<< HEAD
   SECTION_VECTOR (.DebugInterruptVector.text, DEBUG_VECTOR_VADDR)
   SECTION_VECTOR (.KernelExceptionVector.text, KERNEL_VECTOR_VADDR)
   SECTION_VECTOR (.UserExceptionVector.text, USER_VECTOR_VADDR)
@@ -143,28 +117,6 @@ SECTIONS
     SCHED_TEXT
     CPUIDLE_TEXT
     LOCK_TEXT
-=======
-  SECTION_VECTOR (.DebugInterruptVector.literal, DEBUG_VECTOR_VADDR - 4)
-  SECTION_VECTOR (.DebugInterruptVector.text, DEBUG_VECTOR_VADDR)
-  SECTION_VECTOR (.KernelExceptionVector.literal, KERNEL_VECTOR_VADDR - 4)
-  SECTION_VECTOR (.KernelExceptionVector.text, KERNEL_VECTOR_VADDR)
-  SECTION_VECTOR (.UserExceptionVector.literal, USER_VECTOR_VADDR - 4)
-  SECTION_VECTOR (.UserExceptionVector.text, USER_VECTOR_VADDR)
-  SECTION_VECTOR (.DoubleExceptionVector.literal, DOUBLEEXC_VECTOR_VADDR - 20)
-  SECTION_VECTOR (.DoubleExceptionVector.text, DOUBLEEXC_VECTOR_VADDR)
-#endif
-
-    TEXT_TEXT
-    VMLINUX_SYMBOL(__sched_text_start) = .;
-    *(.sched.literal .sched.text)
-    VMLINUX_SYMBOL(__sched_text_end) = .;
-    VMLINUX_SYMBOL(__cpuidle_text_start) = .;
-    *(.cpuidle.literal .cpuidle.text)
-    VMLINUX_SYMBOL(__cpuidle_text_end) = .;
-    VMLINUX_SYMBOL(__lock_text_start) = .;
-    *(.spinlock.literal .spinlock.text)
-    VMLINUX_SYMBOL(__lock_text_end) = .;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
   }
   _etext = .;
@@ -230,11 +182,6 @@ SECTIONS
 		   .KernelExceptionVector.text);
     RELOCATE_ENTRY(_UserExceptionVector_text,
 		   .UserExceptionVector.text);
-<<<<<<< HEAD
-=======
-    RELOCATE_ENTRY(_DoubleExceptionVector_literal,
-		   .DoubleExceptionVector.literal);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     RELOCATE_ENTRY(_DoubleExceptionVector_text,
 		   .DoubleExceptionVector.text);
     RELOCATE_ENTRY(_DebugInterruptVector_text,
@@ -267,38 +214,19 @@ SECTIONS
 
   SECTION_VECTOR (_WindowVectors_text,
 		  .WindowVectors.text,
-<<<<<<< HEAD
 		  WINDOW_VECTORS_VADDR,
 		  .dummy)
   SECTION_VECTOR (_DebugInterruptVector_text,
 		  .DebugInterruptVector.text,
 		  DEBUG_VECTOR_VADDR,
 		  .WindowVectors.text)
-=======
-		  WINDOW_VECTORS_VADDR, 4,
-		  .dummy)
-  SECTION_VECTOR (_DebugInterruptVector_literal,
-		  .DebugInterruptVector.literal,
-		  DEBUG_VECTOR_VADDR - 4,
-		  SIZEOF(.WindowVectors.text),
-		  .WindowVectors.text)
-  SECTION_VECTOR (_DebugInterruptVector_text,
-		  .DebugInterruptVector.text,
-		  DEBUG_VECTOR_VADDR,
-		  4,
-		  .DebugInterruptVector.literal)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #undef LAST
 #define LAST	.DebugInterruptVector.text
 #if XCHAL_EXCM_LEVEL >= 2
   SECTION_VECTOR (_Level2InterruptVector_text,
 		  .Level2InterruptVector.text,
 		  INTLEVEL2_VECTOR_VADDR,
-<<<<<<< HEAD
 		  LAST)
-=======
-		  SIZEOF(LAST), LAST)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 # undef LAST
 # define LAST	.Level2InterruptVector.text
 #endif
@@ -306,11 +234,7 @@ SECTIONS
   SECTION_VECTOR (_Level3InterruptVector_text,
 		  .Level3InterruptVector.text,
 		  INTLEVEL3_VECTOR_VADDR,
-<<<<<<< HEAD
 		  LAST)
-=======
-		  SIZEOF(LAST), LAST)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 # undef LAST
 # define LAST	.Level3InterruptVector.text
 #endif
@@ -318,11 +242,7 @@ SECTIONS
   SECTION_VECTOR (_Level4InterruptVector_text,
 		  .Level4InterruptVector.text,
 		  INTLEVEL4_VECTOR_VADDR,
-<<<<<<< HEAD
 		  LAST)
-=======
-		  SIZEOF(LAST), LAST)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 # undef LAST
 # define LAST	.Level4InterruptVector.text
 #endif
@@ -330,11 +250,7 @@ SECTIONS
   SECTION_VECTOR (_Level5InterruptVector_text,
 		  .Level5InterruptVector.text,
 		  INTLEVEL5_VECTOR_VADDR,
-<<<<<<< HEAD
 		  LAST)
-=======
-		  SIZEOF(LAST), LAST)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 # undef LAST
 # define LAST	.Level5InterruptVector.text
 #endif
@@ -342,7 +258,6 @@ SECTIONS
   SECTION_VECTOR (_Level6InterruptVector_text,
 		  .Level6InterruptVector.text,
 		  INTLEVEL6_VECTOR_VADDR,
-<<<<<<< HEAD
 		  LAST)
 # undef LAST
 # define LAST	.Level6InterruptVector.text
@@ -360,42 +275,6 @@ SECTIONS
 		  .DoubleExceptionVector.text,
 		  DOUBLEEXC_VECTOR_VADDR,
 		  .UserExceptionVector.text)
-=======
-		  SIZEOF(LAST), LAST)
-# undef LAST
-# define LAST	.Level6InterruptVector.text
-#endif
-  SECTION_VECTOR (_KernelExceptionVector_literal,
-		  .KernelExceptionVector.literal,
-		  KERNEL_VECTOR_VADDR - 4,
-		  SIZEOF(LAST), LAST)
-#undef LAST
-  SECTION_VECTOR (_KernelExceptionVector_text,
-		  .KernelExceptionVector.text,
-		  KERNEL_VECTOR_VADDR,
-		  4,
-		  .KernelExceptionVector.literal)
-  SECTION_VECTOR (_UserExceptionVector_literal,
-		  .UserExceptionVector.literal,
-		  USER_VECTOR_VADDR - 4,
-		  SIZEOF(.KernelExceptionVector.text),
-		  .KernelExceptionVector.text)
-  SECTION_VECTOR (_UserExceptionVector_text,
-		  .UserExceptionVector.text,
-		  USER_VECTOR_VADDR,
-		  4,
-		  .UserExceptionVector.literal)
-  SECTION_VECTOR (_DoubleExceptionVector_literal,
-		  .DoubleExceptionVector.literal,
-		  DOUBLEEXC_VECTOR_VADDR - 20,
-		  SIZEOF(.UserExceptionVector.text),
-		  .UserExceptionVector.text)
-  SECTION_VECTOR (_DoubleExceptionVector_text,
-		  .DoubleExceptionVector.text,
-		  DOUBLEEXC_VECTOR_VADDR,
-		  20,
-		  .DoubleExceptionVector.literal)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
   . = (LOADADDR( .DoubleExceptionVector.text ) + SIZEOF( .DoubleExceptionVector.text ) + 3) & ~ 3;
 
@@ -405,10 +284,6 @@ SECTIONS
   SECTION_VECTOR (_SecondaryResetVector_text,
 		  .SecondaryResetVector.text,
 		  RESET_VECTOR1_VADDR,
-<<<<<<< HEAD
-=======
-		  SIZEOF(.DoubleExceptionVector.text),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		  .DoubleExceptionVector.text)
 
   . = LOADADDR(.SecondaryResetVector.text)+SIZEOF(.SecondaryResetVector.text);
@@ -458,8 +333,4 @@ SECTIONS
 
   /* Sections to be discarded */
   DISCARDS
-<<<<<<< HEAD
-=======
-  /DISCARD/ : { *(.exit.literal) }
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

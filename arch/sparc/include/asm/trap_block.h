@@ -76,11 +76,8 @@ extern struct sun4v_1insn_patch_entry __sun4v_1insn_patch,
 	__sun4v_1insn_patch_end;
 extern struct sun4v_1insn_patch_entry __fast_win_ctrl_1insn_patch,
 	__fast_win_ctrl_1insn_patch_end;
-<<<<<<< HEAD
 extern struct sun4v_1insn_patch_entry __sun_m7_1insn_patch,
 	__sun_m7_1insn_patch_end;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct sun4v_2insn_patch_entry {
 	unsigned int	addr;

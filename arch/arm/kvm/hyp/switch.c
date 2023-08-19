@@ -18,10 +18,7 @@
 
 #include <asm/kvm_asm.h>
 #include <asm/kvm_hyp.h>
-<<<<<<< HEAD
 #include <asm/kvm_mmu.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 __asm__(".arch_extension     virt");
 
@@ -47,11 +44,7 @@ static void __hyp_text __activate_traps(struct kvm_vcpu *vcpu, u32 *fpexc_host)
 		isb();
 	}
 
-<<<<<<< HEAD
 	write_sysreg(vcpu->arch.hcr, HCR);
-=======
-	write_sysreg(vcpu->arch.hcr | vcpu->arch.irq_lines, HCR);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Trap on AArch32 cp15 c15 accesses (EL1 or EL0) */
 	write_sysreg(HSTR_T(15), HSTR);
 	write_sysreg(HCPTR_TTA | HCPTR_TCP(10) | HCPTR_TCP(11), HCPTR);
@@ -97,32 +90,18 @@ static void __hyp_text __deactivate_vm(struct kvm_vcpu *vcpu)
 
 static void __hyp_text __vgic_save_state(struct kvm_vcpu *vcpu)
 {
-<<<<<<< HEAD
 	if (static_branch_unlikely(&kvm_vgic_global_state.gicv3_cpuif)) {
 		__vgic_v3_save_state(vcpu);
 		__vgic_v3_deactivate_traps(vcpu);
 	}
-=======
-	if (static_branch_unlikely(&kvm_vgic_global_state.gicv3_cpuif))
-		__vgic_v3_save_state(vcpu);
-	else
-		__vgic_v2_save_state(vcpu);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __hyp_text __vgic_restore_state(struct kvm_vcpu *vcpu)
 {
-<<<<<<< HEAD
 	if (static_branch_unlikely(&kvm_vgic_global_state.gicv3_cpuif)) {
 		__vgic_v3_activate_traps(vcpu);
 		__vgic_v3_restore_state(vcpu);
 	}
-=======
-	if (static_branch_unlikely(&kvm_vgic_global_state.gicv3_cpuif))
-		__vgic_v3_restore_state(vcpu);
-	else
-		__vgic_v2_restore_state(vcpu);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool __hyp_text __populate_fault_info(struct kvm_vcpu *vcpu)
@@ -175,11 +154,7 @@ static bool __hyp_text __populate_fault_info(struct kvm_vcpu *vcpu)
 	return true;
 }
 
-<<<<<<< HEAD
 int __hyp_text __kvm_vcpu_run_nvhe(struct kvm_vcpu *vcpu)
-=======
-int __hyp_text __kvm_vcpu_run(struct kvm_vcpu *vcpu)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct kvm_cpu_context *host_ctxt;
 	struct kvm_cpu_context *guest_ctxt;
@@ -200,11 +175,7 @@ int __hyp_text __kvm_vcpu_run(struct kvm_vcpu *vcpu)
 	__activate_vm(vcpu);
 
 	__vgic_restore_state(vcpu);
-<<<<<<< HEAD
 	__timer_enable_traps(vcpu);
-=======
-	__timer_restore_state(vcpu);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	__sysreg_restore_state(guest_ctxt);
 	__banked_restore_state(guest_ctxt);
@@ -221,12 +192,8 @@ again:
 
 	__banked_save_state(guest_ctxt);
 	__sysreg_save_state(guest_ctxt);
-<<<<<<< HEAD
 	__timer_disable_traps(vcpu);
 
-=======
-	__timer_save_state(vcpu);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__vgic_save_state(vcpu);
 
 	__deactivate_traps(vcpu);
@@ -272,11 +239,7 @@ void __hyp_text __noreturn __hyp_panic(int cause)
 
 		vcpu = (struct kvm_vcpu *)read_sysreg(HTPIDR);
 		host_ctxt = kern_hyp_va(vcpu->arch.host_cpu_context);
-<<<<<<< HEAD
 		__timer_disable_traps(vcpu);
-=======
-		__timer_save_state(vcpu);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__deactivate_traps(vcpu);
 		__deactivate_vm(vcpu);
 		__banked_restore_state(host_ctxt);

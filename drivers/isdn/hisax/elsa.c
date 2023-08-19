@@ -606,14 +606,9 @@ check_arcofi(struct IsdnCardState *cs)
 #endif /* ARCOFI_USE */
 
 static void
-<<<<<<< HEAD
 elsa_led_handler(struct timer_list *t)
 {
 	struct IsdnCardState *cs = from_timer(cs, t, hw.elsa.tl);
-=======
-elsa_led_handler(struct IsdnCardState *cs)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int blink = 0;
 
 	if (cs->subtyp == ELSA_PCMCIA || cs->subtyp == ELSA_PCMCIA_IPAC)
@@ -646,10 +641,6 @@ elsa_led_handler(struct IsdnCardState *cs)
 	} else
 		byteout(cs->hw.elsa.ctrl, cs->hw.elsa.ctrl_reg);
 	if (blink) {
-<<<<<<< HEAD
-=======
-		init_timer(&cs->hw.elsa.tl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cs->hw.elsa.tl.expires = jiffies + ((blink * HZ) / 1000);
 		add_timer(&cs->hw.elsa.tl);
 	}
@@ -724,11 +715,7 @@ Elsa_card_msg(struct IsdnCardState *cs, int mt, void *arg)
 			init_modem(cs);
 		}
 #endif
-<<<<<<< HEAD
 		elsa_led_handler(&cs->hw.elsa.tl);
-=======
-		elsa_led_handler(cs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return (ret);
 	case (MDL_REMOVE | REQUEST):
 		cs->hw.elsa.status &= 0;
@@ -780,11 +767,7 @@ Elsa_card_msg(struct IsdnCardState *cs, int mt, void *arg)
 		else
 			cs->hw.elsa.status &= ~ELSA_BAD_PWR;
 	}
-<<<<<<< HEAD
 	elsa_led_handler(&cs->hw.elsa.tl);
-=======
-	elsa_led_handler(cs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return (ret);
 }
 
@@ -962,11 +945,7 @@ static int setup_elsa_isapnp(struct IsdnCard *card)
 					card->para[1] = pnp_port_start(pnp_d, 0);
 					card->para[0] = pnp_irq(pnp_d, 0);
 
-<<<<<<< HEAD
 					if (card->para[0] == -1 || !card->para[1]) {
-=======
-					if (!card->para[0] || !card->para[1]) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						printk(KERN_ERR "Elsa PnP:some resources are missing %ld/%lx\n",
 						       card->para[0], card->para[1]);
 						pnp_disable_dev(pnp_d);
@@ -1168,11 +1147,7 @@ static int setup_elsa_common(struct IsdnCard *card)
 	init_arcofi(cs);
 #endif
 	setup_isac(cs);
-<<<<<<< HEAD
 	timer_setup(&cs->hw.elsa.tl, elsa_led_handler, 0);
-=======
-	setup_timer(&cs->hw.elsa.tl, (void *)elsa_led_handler, (long)cs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Teste Timer */
 	if (cs->hw.elsa.timer) {
 		byteout(cs->hw.elsa.trig, 0xff);

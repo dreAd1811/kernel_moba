@@ -202,22 +202,16 @@ static int blk_ioctl_discard(struct block_device *bdev, fmode_t mode,
 {
 	uint64_t range[2];
 	uint64_t start, len;
-<<<<<<< HEAD
 	struct request_queue *q = bdev_get_queue(bdev);
 	struct address_space *mapping = bdev->bd_inode->i_mapping;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!(mode & FMODE_WRITE))
 		return -EBADF;
 
-<<<<<<< HEAD
 	if (!blk_queue_discard(q))
 		return -EOPNOTSUPP;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (copy_from_user(range, (void __user *)arg, sizeof(range)))
 		return -EFAULT;
 
@@ -228,21 +222,12 @@ static int blk_ioctl_discard(struct block_device *bdev, fmode_t mode,
 		return -EINVAL;
 	if (len & 511)
 		return -EINVAL;
-<<<<<<< HEAD
 
 	if (start + len > i_size_read(bdev->bd_inode))
 		return -EINVAL;
 	truncate_inode_pages_range(mapping, start, start + len - 1);
 	return blkdev_issue_discard(bdev, start >> 9, len >> 9,
 				    GFP_KERNEL, flags);
-=======
-	start >>= 9;
-	len >>= 9;
-
-	if (start + len > (i_size_read(bdev->bd_inode) >> 9))
-		return -EINVAL;
-	return blkdev_issue_discard(bdev, start, len, GFP_KERNEL, flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int blk_ioctl_zeroout(struct block_device *bdev, fmode_t mode,
@@ -458,20 +443,12 @@ static int blkdev_roset(struct block_device *bdev, fmode_t mode,
 {
 	int ret, n;
 
-<<<<<<< HEAD
 	if (!capable(CAP_SYS_ADMIN))
 		return -EACCES;
 
 	ret = __blkdev_driver_ioctl(bdev, mode, cmd, arg);
 	if (!is_unrecognized_ioctl(ret))
 		return ret;
-=======
-	ret = __blkdev_driver_ioctl(bdev, mode, cmd, arg);
-	if (!is_unrecognized_ioctl(ret))
-		return ret;
-	if (!capable(CAP_SYS_ADMIN))
-		return -EACCES;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (get_user(n, (int __user *)arg))
 		return -EFAULT;
 	set_device_ro(bdev, n);

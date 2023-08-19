@@ -173,15 +173,9 @@ static void battery_flat(struct appleir *appleir)
 	dev_err(&appleir->input_dev->dev, "possible flat battery?\n");
 }
 
-<<<<<<< HEAD
 static void key_up_tick(struct timer_list *t)
 {
 	struct appleir *appleir = from_timer(appleir, t, key_up_timer);
-=======
-static void key_up_tick(unsigned long data)
-{
-	struct appleir *appleir = (struct appleir *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct hid_device *hid = appleir->hid;
 	unsigned long flags;
 
@@ -309,12 +303,7 @@ static int appleir_probe(struct hid_device *hid, const struct hid_device_id *id)
 	hid->quirks |= HID_QUIRK_HIDINPUT_FORCE;
 
 	spin_lock_init(&appleir->lock);
-<<<<<<< HEAD
 	timer_setup(&appleir->key_up_timer, key_up_tick, 0);
-=======
-	setup_timer(&appleir->key_up_timer,
-		    key_up_tick, (unsigned long) appleir);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	hid_set_drvdata(hid, appleir);
 

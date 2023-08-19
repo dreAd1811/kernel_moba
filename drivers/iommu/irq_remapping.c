@@ -27,11 +27,7 @@ int disable_irq_post = 0;
 static int disable_irq_remap;
 static struct irq_remap_ops *remap_ops;
 
-<<<<<<< HEAD
 static void irq_remapping_restore_boot_irq_mode(void)
-=======
-static void irq_remapping_disable_io_apic(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/*
 	 * With interrupt-remapping, for now we will use virtual wire A
@@ -46,11 +42,7 @@ static void irq_remapping_disable_io_apic(void)
 
 static void __init irq_remapping_modify_x86_ops(void)
 {
-<<<<<<< HEAD
 	x86_apic_ops.restore = irq_remapping_restore_boot_irq_mode;
-=======
-	x86_io_apic_ops.disable		= irq_remapping_disable_io_apic;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static __init int setup_nointremap(char *str)
@@ -164,14 +156,6 @@ void panic_if_irq_remap(const char *msg)
 		panic(msg);
 }
 
-<<<<<<< HEAD
-=======
-void ir_ack_apic_edge(struct irq_data *data)
-{
-	ack_APIC_irq();
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * irq_remapping_get_ir_irq_domain - Get the irqdomain associated with the IOMMU
  *				     device serving request @info

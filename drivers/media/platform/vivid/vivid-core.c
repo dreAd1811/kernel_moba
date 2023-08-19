@@ -1,27 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * vivid-core.c - A Virtual Video Test Driver, core initialization
  *
  * Copyright 2014 Cisco Systems, Inc. and/or its affiliates. All rights reserved.
-<<<<<<< HEAD
-=======
- *
- * This program is free software; you may redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 2 of the License.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
- * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
- * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/module.h>
@@ -423,11 +404,7 @@ static ssize_t vivid_radio_write(struct file *file, const char __user *buf,
 	return vivid_radio_tx_write(file, buf, size, offset);
 }
 
-<<<<<<< HEAD
 static __poll_t vivid_radio_poll(struct file *file, struct poll_table_struct *wait)
-=======
-static unsigned int vivid_radio_poll(struct file *file, struct poll_table_struct *wait)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct video_device *vdev = video_devdata(file);
 
@@ -867,17 +844,10 @@ static int vivid_create_instance(struct platform_device *pdev, int inst)
 	tpg_init(&dev->tpg, 640, 360);
 	if (tpg_alloc(&dev->tpg, MAX_ZOOM * MAX_WIDTH))
 		goto free_dev;
-<<<<<<< HEAD
 	dev->scaled_line = vzalloc(array_size(MAX_WIDTH, MAX_ZOOM));
 	if (!dev->scaled_line)
 		goto free_dev;
 	dev->blended_line = vzalloc(array_size(MAX_WIDTH, MAX_ZOOM));
-=======
-	dev->scaled_line = vzalloc(MAX_ZOOM * MAX_WIDTH);
-	if (!dev->scaled_line)
-		goto free_dev;
-	dev->blended_line = vzalloc(MAX_ZOOM * MAX_WIDTH);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!dev->blended_line)
 		goto free_dev;
 
@@ -889,14 +859,9 @@ static int vivid_create_instance(struct platform_device *pdev, int inst)
 	/* create a string array containing the names of all the preset timings */
 	while (v4l2_dv_timings_presets[dev->query_dv_timings_size].bt.width)
 		dev->query_dv_timings_size++;
-<<<<<<< HEAD
 	dev->query_dv_timings_qmenu = kmalloc_array(dev->query_dv_timings_size,
 						    (sizeof(void *) + 32),
 						    GFP_KERNEL);
-=======
-	dev->query_dv_timings_qmenu = kmalloc(dev->query_dv_timings_size *
-					   (sizeof(void *) + 32), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dev->query_dv_timings_qmenu == NULL)
 		goto free_dev;
 	for (i = 0; i < dev->query_dv_timings_size; i++) {
@@ -1019,11 +984,7 @@ static int vivid_create_instance(struct platform_device *pdev, int inst)
 
 	dev->edid_max_blocks = dev->edid_blocks = 2;
 	memcpy(dev->edid, vivid_hdmi_edid, sizeof(vivid_hdmi_edid));
-<<<<<<< HEAD
 	dev->radio_rds_init_time = ktime_get();
-=======
-	ktime_get_ts(&dev->radio_rds_init_ts);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* create all controls */
 	ret = vivid_create_controls(dev, ccs_cap == -1, ccs_out == -1, no_error_inj,

@@ -22,11 +22,7 @@
 
 /* DCBx version control
  */
-<<<<<<< HEAD
 const char * const dcb_ver_array[] = {
-=======
-static const char * const dcb_ver_array[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	"Unknown",
 	"DCBx-CIN",
 	"DCBx-CEE 1.01",
@@ -44,12 +40,7 @@ static inline bool cxgb4_dcb_state_synced(enum cxgb4_dcb_state state)
 		return false;
 }
 
-<<<<<<< HEAD
 /* Initialize a port's Data Center Bridging state.
-=======
-/* Initialize a port's Data Center Bridging state.  Typically used after a
- * Link Down event.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 void cxgb4_dcb_state_init(struct net_device *dev)
 {
@@ -114,7 +105,6 @@ static void cxgb4_dcb_cleanup_apps(struct net_device *dev)
 	}
 }
 
-<<<<<<< HEAD
 /* Reset a port's Data Center Bridging state.  Typically used after a
  * Link Down event.
  */
@@ -124,8 +114,6 @@ void cxgb4_dcb_reset(struct net_device *dev)
 	cxgb4_dcb_state_init(dev);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Finite State machine for Data Center Bridging.
  */
 void cxgb4_dcb_state_fsm(struct net_device *dev,
@@ -214,12 +202,7 @@ void cxgb4_dcb_state_fsm(struct net_device *dev,
 			 * state.  We need to reset back to a ground state
 			 * of incomplete.
 			 */
-<<<<<<< HEAD
 			cxgb4_dcb_reset(dev);
-=======
-			cxgb4_dcb_cleanup_apps(dev);
-			cxgb4_dcb_state_init(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dcb->state = CXGB4_DCB_STATE_FW_INCOMPLETE;
 			dcb->supported = CXGB4_DCBX_FW_SUPPORT;
 			linkwatch_fire_event(dev);
@@ -290,13 +273,8 @@ void cxgb4_dcb_handle_fw_update(struct adapter *adap,
 		enum cxgb4_dcb_state_input input =
 			((pcmd->u.dcb.control.all_syncd_pkd &
 			  FW_PORT_CMD_ALL_SYNCD_F)
-<<<<<<< HEAD
 			 ? CXGB4_DCB_STATE_FW_ALLSYNCED
 			 : CXGB4_DCB_STATE_FW_INCOMPLETE);
-=======
-			 ? CXGB4_DCB_INPUT_FW_ALLSYNCED
-			 : CXGB4_DCB_INPUT_FW_INCOMPLETE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (dcb->dcb_version != FW_PORT_DCB_VER_UNKNOWN) {
 			dcb_running_version = FW_PORT_CMD_DCB_VERSION_G(

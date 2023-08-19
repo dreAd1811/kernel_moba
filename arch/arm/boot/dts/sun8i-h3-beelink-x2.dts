@@ -53,11 +53,7 @@
 
 	aliases {
 		serial0 = &uart0;
-<<<<<<< HEAD
 		ethernet0 = &emac;
-=======
-		/* ethernet0 is the H3 emac, defined in sun8i-h3.dtsi */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ethernet1 = &sdiowifi;
 	};
 
@@ -65,7 +61,6 @@
 		stdout-path = "serial0:115200n8";
 	};
 
-<<<<<<< HEAD
 	connector {
 		compatible = "hdmi-connector";
 		type = "a";
@@ -77,8 +72,6 @@
 		};
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	leds {
 		compatible = "gpio-leds";
 
@@ -97,11 +90,6 @@
 	wifi_pwrseq: wifi_pwrseq {
 		compatible = "mmc-pwrseq-simple";
 		reset-gpios = <&r_pio 0 7 GPIO_ACTIVE_LOW>; /* PL7 */
-<<<<<<< HEAD
-=======
-		clocks = <&rtc 1>;
-		clock-names = "ext_clock";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	sound_spdif {
@@ -123,13 +111,10 @@
 	};
 };
 
-<<<<<<< HEAD
 &de {
 	status = "okay";
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &ehci0 {
 	status = "okay";
 };
@@ -138,7 +123,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
 &emac {
 	phy-handle = <&int_mii_phy>;
 	phy-mode = "mii";
@@ -156,8 +140,6 @@
 	};
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &ir {
 	pinctrl-names = "default";
 	pinctrl-0 = <&ir_pins_a>;
@@ -165,31 +147,14 @@
 };
 
 &mmc0 {
-<<<<<<< HEAD
 	vmmc-supply = <&reg_vcc3v3>;
 	bus-width = <4>;
 	cd-gpios = <&pio 5 6 GPIO_ACTIVE_LOW>; /* PF6 */
-=======
-	pinctrl-names = "default";
-	pinctrl-0 = <&mmc0_pins_a>, <&mmc0_cd_pin>;
-	vmmc-supply = <&reg_vcc3v3>;
-	bus-width = <4>;
-	cd-gpios = <&pio 5 6 GPIO_ACTIVE_HIGH>; /* PF6 */
-	cd-inverted;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
 &mmc1 {
-<<<<<<< HEAD
 	vmmc-supply = <&reg_vcc3v3>;
-=======
-	pinctrl-names = "default";
-	pinctrl-0 = <&mmc1_pins_a>;
-	vmmc-supply = <&reg_vcc3v3>;
-	vqmmc-supply = <&reg_vcc3v3>;
-	mmc-pwrseq = <&wifi_pwrseq>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bus-width = <4>;
 	non-removable;
 	status = "okay";

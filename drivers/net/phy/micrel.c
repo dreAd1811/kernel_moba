@@ -29,12 +29,6 @@
 #include <linux/micrel_phy.h>
 #include <linux/of.h>
 #include <linux/clk.h>
-<<<<<<< HEAD
-=======
-#include <linux/netdevice.h>
-#include <linux/etherdevice.h>
-#include <linux/delay.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Operation Mode Strap Override */
 #define MII_KSZPHY_OMSO				0x16
@@ -80,24 +74,6 @@
 
 #define PS_TO_REG				200
 
-<<<<<<< HEAD
-=======
-/*Register 2.10. 15:14 PME Output Select*/
-#define MII_KSZPHY_OMSO_PME_N2                  BIT(10)
-/*Register 2.10. BITS 6, 1 and 0 to detect the type of WOL */
-#define MII_KSZPHY_WOL_MAGIC_PKT                BIT(6)
-#define MII_KSZPHY_WOL_LINK_DOWN                BIT(1)
-#define MII_KSZPHY_WOL_LINK_UP                  BIT(0)
-/* Register 2.10.15:14 PME Output Select */
-#define MII_KSZPHY_WOL_CTRL_PME_N2              BIT(15)
-#define MII_KSZPHY_WOL_CTRL_INT_N               BIT(14)
-
-/* MMD Address 2h, Register 2h Operation Mode Strap Override*/
-#define MII_KSZPHY_OMSO_REG                     0x2
-/* MMD Address 2h, Register 10h Wake-On-LAN Control   */
-#define MII_KSZPHY_WOL_CTRL_REG                 0x10
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct kszphy_hw_stat {
 	const char *string;
 	u8 reg;
@@ -494,40 +470,6 @@ static int ksz9031_extended_read(struct phy_device *phydev,
 	return phy_read(phydev, MII_KSZ9031RN_MMD_REGDATA_REG);
 }
 
-<<<<<<< HEAD
-=======
-static int ksz9031_ack_interrupt(struct phy_device *phydev)
-{
-	/* bit[7..0] int status, which is a read and clear register. */
-	int rc;
-	u32 reg_value;
-
-	rc = phy_read(phydev, MII_KSZPHY_INTCS);
-
-	reg_value = ksz9031_extended_read(
-	   phydev, OP_DATA, 0x2, MII_KSZPHY_OMSO_REG);
-	if (reg_value & MII_KSZPHY_OMSO_PME_N2) {
-		/* PME output is cleared by disabling the PME trigger src */
-		reg_value = ksz9031_extended_read(
-		   phydev, OP_DATA, 0x2, MII_KSZPHY_WOL_CTRL_REG);
-		reg_value &= ~MII_KSZPHY_WOL_MAGIC_PKT;
-		reg_value &= ~MII_KSZPHY_WOL_LINK_UP;
-		reg_value &= ~MII_KSZPHY_WOL_LINK_DOWN;
-		ksz9031_extended_write(
-		   phydev, OP_DATA, 0x2, MII_KSZPHY_WOL_CTRL_REG, reg_value);
-		reg_value = ksz9031_extended_read(
-		   phydev, OP_DATA, 0x2, MII_KSZPHY_WOL_CTRL_REG);
-		reg_value |= MII_KSZPHY_WOL_MAGIC_PKT;
-		reg_value |= MII_KSZPHY_WOL_LINK_UP;
-		reg_value |= MII_KSZPHY_WOL_LINK_DOWN;
-		ksz9031_extended_write(
-		   phydev, OP_DATA, 0x2, MII_KSZPHY_WOL_CTRL_REG, reg_value);
-	}
-
-	return (rc < 0) ? rc : 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ksz9031_of_load_skew_values(struct phy_device *phydev,
 				       const struct device_node *of_node,
 				       u16 reg, size_t field_sz,
@@ -565,15 +507,11 @@ static int ksz9031_of_load_skew_values(struct phy_device *phydev,
 	return ksz9031_extended_write(phydev, OP_DATA, 2, reg, newval);
 }
 
-<<<<<<< HEAD
 /* Center KSZ9031RNX FLP timing at 16ms. */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ksz9031_center_flp_timing(struct phy_device *phydev)
 {
 	int result;
 
-<<<<<<< HEAD
 	result = ksz9031_extended_write(phydev, OP_DATA, 0,
 					MII_KSZ9031RN_FLP_BURST_TX_HI, 0x0006);
 	if (result)
@@ -581,14 +519,6 @@ static int ksz9031_center_flp_timing(struct phy_device *phydev)
 
 	result = ksz9031_extended_write(phydev, OP_DATA, 0,
 					MII_KSZ9031RN_FLP_BURST_TX_LO, 0x1A80);
-=======
-	/* Center KSZ9031RNX FLP timing at 16ms. */
-	result = ksz9031_extended_write(phydev, OP_DATA, 0,
-					MII_KSZ9031RN_FLP_BURST_TX_HI, 0x0006);
-	result = ksz9031_extended_write(phydev, OP_DATA, 0,
-					MII_KSZ9031RN_FLP_BURST_TX_LO, 0x1A80);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (result)
 		return result;
 
@@ -654,7 +584,6 @@ static int ksz9031_config_init(struct phy_device *phydev)
 		ksz9031_of_load_skew_values(phydev, of_node,
 				MII_KSZ9031RN_TX_DATA_PAD_SKEW, 4,
 				tx_data_skews, 4);
-<<<<<<< HEAD
 
 		/* Silicon Errata Sheet (DS80000691D or DS80000692D):
 		 * When the device links in the 1000BASE-T slave mode only,
@@ -689,11 +618,6 @@ static int ksz9031_config_init(struct phy_device *phydev)
 err_force_master:
 	phydev_err(phydev, "failed to force the phy to master mode\n");
 	return result;
-=======
-	}
-
-	return ksz9031_center_flp_timing(phydev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #define KSZ8873MLL_GLOBAL_CONTROL_4	0x06
@@ -740,13 +664,7 @@ static int ksz9031_read_status(struct phy_device *phydev)
 	if ((regval & 0xFF) == 0xFF) {
 		phy_init_hw(phydev);
 		phydev->link = 0;
-<<<<<<< HEAD
 		if (phydev->drv->config_intr && phy_interrupt_is_valid(phydev))
-=======
-		if (phydev->drv->config_intr &&
-		    (phydev->irq == PHY_IGNORE_INTERRUPT ||
-		   phy_interrupt_is_valid(phydev)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			phydev->drv->config_intr(phydev);
 		return genphy_config_aneg(phydev);
 	}
@@ -759,28 +677,6 @@ static int ksz8873mll_config_aneg(struct phy_device *phydev)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-/* This routine returns -1 as an indication to the caller that the
- * Micrel ksz9021 10/100/1000 PHY does not support standard IEEE
- * MMD extended PHY registers.
- */
-static int
-ksz9021_rd_mmd_phyreg(struct phy_device *phydev, int devad, u16 regnum)
-{
-	return -1;
-}
-
-/* This routine does nothing since the Micrel ksz9021 does not support
- * standard IEEE MMD extended PHY registers.
- */
-static int
-ksz9021_wr_mmd_phyreg(struct phy_device *phydev, int devad, u16 regnum, u16 val)
-{
-	return -1;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int kszphy_get_sset_count(struct phy_device *phydev)
 {
 	return ARRAY_SIZE(kszphy_hw_stats);
@@ -796,12 +692,6 @@ static void kszphy_get_strings(struct phy_device *phydev, u8 *data)
 	}
 }
 
-<<<<<<< HEAD
-=======
-#ifndef UINT64_MAX
-#define UINT64_MAX              (u64)(~((u64)0))
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static u64 kszphy_get_stat(struct phy_device *phydev, int i)
 {
 	struct kszphy_hw_stat stat = kszphy_hw_stats[i];
@@ -811,11 +701,7 @@ static u64 kszphy_get_stat(struct phy_device *phydev, int i)
 
 	val = phy_read(phydev, stat.reg);
 	if (val < 0) {
-<<<<<<< HEAD
 		ret = U64_MAX;
-=======
-		ret = UINT64_MAX;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		val = val & ((1 << stat.bits) - 1);
 		priv->stats[i] += val;
@@ -852,15 +738,6 @@ static int kszphy_resume(struct phy_device *phydev)
 
 	genphy_resume(phydev);
 
-<<<<<<< HEAD
-=======
-	/* After switching from power-down to normal mode, an internal global
-	 * reset is automatically generated. Wait a minimum of 1 ms before
-	 * read/write access to the PHY registers.
-	 */
-	usleep_range(1000, 2000);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = kszphy_config_reset(phydev);
 	if (ret)
 		return ret;
@@ -936,109 +813,6 @@ static int kszphy_probe(struct phy_device *phydev)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-static void ksz9031_set_wol_settings(struct phy_device *phydev)
-{
-	u32 reg_value;
-
-	/* Enable both PHY and PME_N2 interrupts */
-	reg_value = ksz9031_extended_read(
-	   phydev, OP_DATA, 0x2, MII_KSZPHY_WOL_CTRL_REG);
-	reg_value |= MII_KSZPHY_WOL_CTRL_PME_N2;
-	reg_value &= ~MII_KSZPHY_WOL_CTRL_INT_N;
-	reg_value |= MII_KSZPHY_WOL_MAGIC_PKT;
-	reg_value |= MII_KSZPHY_WOL_LINK_UP;
-	reg_value |= MII_KSZPHY_WOL_LINK_DOWN;
-	ksz9031_extended_write(
-	   phydev, OP_DATA, 0x2, MII_KSZPHY_WOL_CTRL_REG, reg_value);
-}
-
-static int ksz9031_set_wol(
-	struct phy_device *phydev, struct ethtool_wolinfo *wol)
-{
-	struct net_device *ndev = phydev->attached_dev;
-	const u8 *mac;
-	int ret = 0;
-	u32 reg_value;
-
-	if (!ndev)
-		return -ENODEV;
-
-	if (wol->wolopts & WAKE_MAGIC) {
-		mac = (const u8 *)ndev->dev_addr;
-
-		if (!is_valid_ether_addr(mac))
-			return -EINVAL;
-
-		ksz9031_extended_write(
-		   phydev, OP_DATA, 0x2, 0x11, mac[5] | (mac[4] << 8));
-		ksz9031_extended_write(
-		   phydev, OP_DATA, 0x2, 0x12, mac[3] | (mac[2] << 8));
-		ksz9031_extended_write(
-		   phydev, OP_DATA, 0x2, 0x13, mac[1] | (mac[0] << 8));
-
-		/* Enable WOL interrupt for magic pkt, link up and down */
-		ksz9031_set_wol_settings(phydev);
-
-		/* Enable PME_N2 output */
-		reg_value = ksz9031_extended_read(
-		   phydev, OP_DATA, 0x2, MII_KSZPHY_OMSO_REG);
-		reg_value |= MII_KSZPHY_OMSO_PME_N2;
-		ksz9031_extended_write(
-		   phydev, OP_DATA, 0x2, MII_KSZPHY_OMSO_REG, reg_value);
-	}
-
-	return ret;
-}
-
-static void ksz9031_get_wol(
-	struct phy_device *phydev, struct ethtool_wolinfo *wol)
-{
-	u32 reg_value;
-
-	wol->supported = WAKE_MAGIC;
-	wol->wolopts = 0;
-
-	reg_value = ksz9031_extended_read(
-	   phydev, OP_DATA, 0x2, MII_KSZPHY_OMSO_REG);
-	if (reg_value & MII_KSZPHY_OMSO_PME_N2)
-		wol->wolopts |= WAKE_MAGIC;
-}
-
-static int ksz9031_suspend(struct phy_device *phydev)
-{
-	int value;
-	int wol_enabled;
-	u32 reg_value;
-
-	reg_value = ksz9031_extended_read(
-	   phydev, OP_DATA, 0x2, MII_KSZPHY_OMSO_REG);
-	wol_enabled = reg_value & MII_KSZPHY_OMSO_PME_N2;
-
-	value = phy_read(phydev, MII_BMCR);
-	if (wol_enabled)
-		value |= BMCR_ISOLATE;
-	else
-		value |= BMCR_PDOWN;
-
-	phy_write(phydev, MII_BMCR, value);
-
-	return 0;
-}
-
-static int ksz9031_resume(struct phy_device *phydev)
-{
-	int value;
-
-	value = phy_read(phydev, MII_BMCR);
-	value &= ~(BMCR_PDOWN | BMCR_ISOLATE);
-	phy_write(phydev, MII_BMCR, value);
-
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct phy_driver ksphy_driver[] = {
 {
 	.phy_id		= PHY_ID_KS8737,
@@ -1048,11 +822,6 @@ static struct phy_driver ksphy_driver[] = {
 	.flags		= PHY_HAS_INTERRUPT,
 	.driver_data	= &ks8737_type,
 	.config_init	= kszphy_config_init,
-<<<<<<< HEAD
-=======
-	.config_aneg	= genphy_config_aneg,
-	.read_status	= genphy_read_status,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ack_interrupt	= kszphy_ack_interrupt,
 	.config_intr	= kszphy_config_intr,
 	.suspend	= genphy_suspend,
@@ -1066,11 +835,6 @@ static struct phy_driver ksphy_driver[] = {
 	.driver_data	= &ksz8021_type,
 	.probe		= kszphy_probe,
 	.config_init	= kszphy_config_init,
-<<<<<<< HEAD
-=======
-	.config_aneg	= genphy_config_aneg,
-	.read_status	= genphy_read_status,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ack_interrupt	= kszphy_ack_interrupt,
 	.config_intr	= kszphy_config_intr,
 	.get_sset_count = kszphy_get_sset_count,
@@ -1087,11 +851,6 @@ static struct phy_driver ksphy_driver[] = {
 	.driver_data	= &ksz8021_type,
 	.probe		= kszphy_probe,
 	.config_init	= kszphy_config_init,
-<<<<<<< HEAD
-=======
-	.config_aneg	= genphy_config_aneg,
-	.read_status	= genphy_read_status,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ack_interrupt	= kszphy_ack_interrupt,
 	.config_intr	= kszphy_config_intr,
 	.get_sset_count = kszphy_get_sset_count,
@@ -1109,10 +868,6 @@ static struct phy_driver ksphy_driver[] = {
 	.probe		= kszphy_probe,
 	.config_init	= ksz8041_config_init,
 	.config_aneg	= ksz8041_config_aneg,
-<<<<<<< HEAD
-=======
-	.read_status	= genphy_read_status,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ack_interrupt	= kszphy_ack_interrupt,
 	.config_intr	= kszphy_config_intr,
 	.get_sset_count = kszphy_get_sset_count,
@@ -1129,11 +884,6 @@ static struct phy_driver ksphy_driver[] = {
 	.driver_data	= &ksz8041_type,
 	.probe		= kszphy_probe,
 	.config_init	= kszphy_config_init,
-<<<<<<< HEAD
-=======
-	.config_aneg	= genphy_config_aneg,
-	.read_status	= genphy_read_status,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ack_interrupt	= kszphy_ack_interrupt,
 	.config_intr	= kszphy_config_intr,
 	.get_sset_count = kszphy_get_sset_count,
@@ -1150,11 +900,6 @@ static struct phy_driver ksphy_driver[] = {
 	.driver_data	= &ksz8051_type,
 	.probe		= kszphy_probe,
 	.config_init	= kszphy_config_init,
-<<<<<<< HEAD
-=======
-	.config_aneg	= genphy_config_aneg,
-	.read_status	= genphy_read_status,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ack_interrupt	= kszphy_ack_interrupt,
 	.config_intr	= kszphy_config_intr,
 	.get_sset_count = kszphy_get_sset_count,
@@ -1171,11 +916,6 @@ static struct phy_driver ksphy_driver[] = {
 	.driver_data	= &ksz8041_type,
 	.probe		= kszphy_probe,
 	.config_init	= kszphy_config_init,
-<<<<<<< HEAD
-=======
-	.config_aneg	= genphy_config_aneg,
-	.read_status	= genphy_read_status,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ack_interrupt	= kszphy_ack_interrupt,
 	.config_intr	= kszphy_config_intr,
 	.get_sset_count = kszphy_get_sset_count,
@@ -1192,11 +932,6 @@ static struct phy_driver ksphy_driver[] = {
 	.driver_data	= &ksz8081_type,
 	.probe		= kszphy_probe,
 	.config_init	= kszphy_config_init,
-<<<<<<< HEAD
-=======
-	.config_aneg	= genphy_config_aneg,
-	.read_status	= genphy_read_status,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ack_interrupt	= kszphy_ack_interrupt,
 	.config_intr	= kszphy_config_intr,
 	.get_sset_count = kszphy_get_sset_count,
@@ -1211,11 +946,6 @@ static struct phy_driver ksphy_driver[] = {
 	.features	= PHY_BASIC_FEATURES,
 	.flags		= PHY_HAS_INTERRUPT,
 	.config_init	= ksz8061_config_init,
-<<<<<<< HEAD
-=======
-	.config_aneg	= genphy_config_aneg,
-	.read_status	= genphy_read_status,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ack_interrupt	= kszphy_ack_interrupt,
 	.config_intr	= kszphy_config_intr,
 	.suspend	= genphy_suspend,
@@ -1229,11 +959,6 @@ static struct phy_driver ksphy_driver[] = {
 	.driver_data	= &ksz9021_type,
 	.probe		= kszphy_probe,
 	.config_init	= ksz9021_config_init,
-<<<<<<< HEAD
-=======
-	.config_aneg	= genphy_config_aneg,
-	.read_status	= genphy_read_status,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ack_interrupt	= kszphy_ack_interrupt,
 	.config_intr	= kszphy_config_intr,
 	.get_sset_count = kszphy_get_sset_count,
@@ -1241,47 +966,25 @@ static struct phy_driver ksphy_driver[] = {
 	.get_stats	= kszphy_get_stats,
 	.suspend	= genphy_suspend,
 	.resume		= genphy_resume,
-<<<<<<< HEAD
 	.read_mmd	= genphy_read_mmd_unsupported,
 	.write_mmd	= genphy_write_mmd_unsupported,
-=======
-	.read_mmd	= ksz9021_rd_mmd_phyreg,
-	.write_mmd	= ksz9021_wr_mmd_phyreg,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }, {
 	.phy_id		= PHY_ID_KSZ9031,
 	.phy_id_mask	= MICREL_PHY_ID_MASK,
 	.name		= "Micrel KSZ9031 Gigabit PHY",
-<<<<<<< HEAD
 	.features	= PHY_GBIT_FEATURES,
-=======
-	.features	= (PHY_GBIT_FEATURES | SUPPORTED_Pause),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.flags		= PHY_HAS_INTERRUPT,
 	.driver_data	= &ksz9021_type,
 	.probe		= kszphy_probe,
 	.config_init	= ksz9031_config_init,
-<<<<<<< HEAD
 	.read_status	= ksz9031_read_status,
 	.ack_interrupt	= kszphy_ack_interrupt,
-=======
-	.config_aneg	= genphy_config_aneg,
-	.read_status	= ksz9031_read_status,
-	.ack_interrupt	= ksz9031_ack_interrupt,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.config_intr	= kszphy_config_intr,
 	.get_sset_count = kszphy_get_sset_count,
 	.get_strings	= kszphy_get_strings,
 	.get_stats	= kszphy_get_stats,
-<<<<<<< HEAD
 	.suspend	= genphy_suspend,
 	.resume		= kszphy_resume,
-=======
-	.set_wol	= ksz9031_set_wol,
-	.get_wol	= ksz9031_get_wol,
-	.suspend	= ksz9031_suspend,
-	.resume		= ksz9031_resume,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }, {
 	.phy_id		= PHY_ID_KSZ8873MLL,
 	.phy_id_mask	= MICREL_PHY_ID_MASK,
@@ -1298,11 +1001,6 @@ static struct phy_driver ksphy_driver[] = {
 	.features	= PHY_BASIC_FEATURES,
 	.flags		= PHY_HAS_INTERRUPT,
 	.config_init	= kszphy_config_init,
-<<<<<<< HEAD
-=======
-	.config_aneg	= genphy_config_aneg,
-	.read_status	= genphy_read_status,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.suspend	= genphy_suspend,
 	.resume		= genphy_resume,
 }, {
@@ -1322,11 +1020,6 @@ static struct phy_driver ksphy_driver[] = {
 	.name		= "Microchip KSZ9477",
 	.features	= PHY_GBIT_FEATURES,
 	.config_init	= kszphy_config_init,
-<<<<<<< HEAD
-=======
-	.config_aneg	= genphy_config_aneg,
-	.read_status	= genphy_read_status,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.suspend	= genphy_suspend,
 	.resume		= genphy_resume,
 } };

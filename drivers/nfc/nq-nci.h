@@ -1,19 +1,6 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0-only */
 /*
  * Copyright (c) 2015-2020, The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2015-2020, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #ifndef __NQ_NCI_H
@@ -37,7 +24,6 @@
 #define SET_EMULATOR_TEST_POINT		_IOW(0xE9, 0x05, unsigned int)
 #define NFCC_INITIAL_CORE_RESET_NTF	_IOW(0xE9, 0x10, unsigned int)
 
-<<<<<<< HEAD
 #define DEV_COUNT			1
 #define DEVICE_NAME			"nq-nci"
 #define CLASS_NAME			"nqx"
@@ -59,14 +45,11 @@
 #define COLD_RESET_RSP_GID		0x4F
 #define COLD_RESET_OID			0x1E
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define NFC_RX_BUFFER_CNT_START		(0x0)
 #define PAYLOAD_HEADER_LENGTH		(0x3)
 #define PAYLOAD_LENGTH_MAX		(256)
 #define BYTE				(0x8)
 #define NCI_IDENTIFIER			(0x10)
-<<<<<<< HEAD
 #define NFC_LDO_SUPPLY_DT_NAME		"qcom,nq-vdd-1p8"
 #define NFC_LDO_SUPPLY_NAME		"qcom,nq-vdd-1p8-supply"
 #define NFC_LDO_VOL_DT_NAME		"qcom,nq-vdd-1p8-voltage"
@@ -108,36 +91,6 @@ enum nfcc_ioctl_request {
 	/* NFC disable without VEN gpio modification */
 	NFC_DISABLE
 };
-=======
-
-#define DEV_COUNT	1
-#define DEVICE_NAME	"nq-nci"
-#define CLASS_NAME	"nqx"
-/*
- * From MW 11.04 buffer size increased to support
- * frame size of 554 in FW download mode
- * Frame len(2) + Frame Header(6) + DATA(512) + HASH(32) + CRC(2) + RFU(4)
- */
-#define MAX_BUFFER_SIZE			(558)
-#define WAKEUP_SRC_TIMEOUT		(2000)
-#define MAX_RETRY_COUNT			3
-#define NCI_RESET_CMD_LEN		4
-#define NCI_RESET_RSP_LEN		6
-#define NCI_RESET_NTF_LEN		13
-#define NCI_INIT_CMD_LEN		3
-#define NCI_INIT_RSP_LEN		28
-#define NCI_GET_VERSION_CMD_LEN		8
-#define NCI_GET_VERSION_RSP_LEN		12
-#define NCI_HEADER_LEN			3
-#define NCI_1_0_RESET_RSP_PAYLOAD_LEN	3
-#define NCI_PAYLOAD_START_INDEX		3
-#define NCI_PAYLOAD_LENGTH_INDEX	(NCI_PAYLOAD_START_INDEX - 1)
-#define MAX_IRQ_WAIT_TIME		(90) /* in ms */
-#define NFCC_HW_CHIP_ID_OFFSET		4
-#define NFCC_HW_ROM_VER_OFFSET		3
-#define NFCC_HW_MAJOR_NO_OFFSET		2
-#define NFCC_HW_MINOR_NO_OFFSET		1
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum nfcc_initial_core_reset_ntf {
 	TIMEDOUT_INITIAL_CORE_RESET_NTF = 0, /* 0*/

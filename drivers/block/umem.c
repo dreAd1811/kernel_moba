@@ -718,11 +718,7 @@ static void check_batteries(struct cardinfo *card)
 		set_fault_to_battery_status(card);
 }
 
-<<<<<<< HEAD
 static void check_all_batteries(struct timer_list *unused)
-=======
-static void check_all_batteries(unsigned long ptr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i;
 
@@ -742,12 +738,7 @@ static void check_all_batteries(unsigned long ptr)
 
 static void init_battery_timer(void)
 {
-<<<<<<< HEAD
 	timer_setup(&battery_timer, check_all_batteries, 0);
-=======
-	init_timer(&battery_timer);
-	battery_timer.function = check_all_batteries;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	battery_timer.expires = jiffies + (HZ * 60);
 	add_timer(&battery_timer);
 }
@@ -897,23 +888,14 @@ static int mm_pci_probe(struct pci_dev *dev, const struct pci_device_id *id)
 	card->Active = -1;	/* no page is active */
 	card->bio = NULL;
 	card->biotail = &card->bio;
-<<<<<<< HEAD
 	spin_lock_init(&card->lock);
 
 	card->queue = blk_alloc_queue_node(GFP_KERNEL, NUMA_NO_NODE,
 					   &card->lock);
-=======
-
-	card->queue = blk_alloc_queue(GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!card->queue)
 		goto failed_alloc;
 
 	blk_queue_make_request(card->queue, mm_make_request);
-<<<<<<< HEAD
-=======
-	card->queue->queue_lock = &card->lock;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	card->queue->queuedata = card;
 
 	tasklet_init(&card->tasklet, process_page, (unsigned long)card);
@@ -987,11 +969,6 @@ static int mm_pci_probe(struct pci_dev *dev, const struct pci_device_id *id)
 	dev_printk(KERN_INFO, &card->dev->dev,
 		"Window size %d bytes, IRQ %d\n", data, dev->irq);
 
-<<<<<<< HEAD
-=======
-	spin_lock_init(&card->lock);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pci_set_drvdata(dev, card);
 
 	if (pci_write_cmd != 0x0F) 	/* If not Memory Write & Invalidate */

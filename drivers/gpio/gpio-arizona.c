@@ -15,11 +15,7 @@
 #include <linux/kernel.h>
 #include <linux/slab.h>
 #include <linux/module.h>
-<<<<<<< HEAD
 #include <linux/gpio/driver.h>
-=======
-#include <linux/gpio.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/platform_device.h>
 #include <linux/pm_runtime.h>
 #include <linux/seq_file.h>
@@ -73,10 +69,6 @@ static int arizona_gpio_get(struct gpio_chip *chip, unsigned offset)
 		ret = pm_runtime_get_sync(chip->parent);
 		if (ret < 0) {
 			dev_err(chip->parent, "Failed to resume: %d\n", ret);
-<<<<<<< HEAD
-=======
-			pm_runtime_put_autosuspend(chip->parent);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return ret;
 		}
 
@@ -85,23 +77,12 @@ static int arizona_gpio_get(struct gpio_chip *chip, unsigned offset)
 		if (ret < 0) {
 			dev_err(chip->parent, "Failed to drop cache: %d\n",
 				ret);
-<<<<<<< HEAD
-=======
-			pm_runtime_put_autosuspend(chip->parent);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return ret;
 		}
 
 		ret = regmap_read(arizona->regmap, reg, &val);
-<<<<<<< HEAD
 		if (ret < 0)
 			return ret;
-=======
-		if (ret < 0) {
-			pm_runtime_put_autosuspend(chip->parent);
-			return ret;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		pm_runtime_mark_last_busy(chip->parent);
 		pm_runtime_put_autosuspend(chip->parent);
@@ -130,10 +111,6 @@ static int arizona_gpio_direction_out(struct gpio_chip *chip,
 		ret = pm_runtime_get_sync(chip->parent);
 		if (ret < 0) {
 			dev_err(chip->parent, "Failed to resume: %d\n", ret);
-<<<<<<< HEAD
-=======
-			pm_runtime_put(chip->parent);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return ret;
 		}
 	}

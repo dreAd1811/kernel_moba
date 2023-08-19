@@ -29,10 +29,7 @@
 #include <linux/phy.h>
 #include <linux/slab.h>
 
-<<<<<<< HEAD
 #include "dwxgmac2.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "stmmac.h"
 
 #define MII_BUSY 0x00000001
@@ -43,7 +40,6 @@
 #define MII_GMAC4_WRITE			(1 << MII_GMAC4_GOC_SHIFT)
 #define MII_GMAC4_READ			(3 << MII_GMAC4_GOC_SHIFT)
 
-<<<<<<< HEAD
 /* XGMAC defines */
 #define MII_XGMAC_SADDR			BIT(18)
 #define MII_XGMAC_CMD_SHIFT		16
@@ -153,8 +149,6 @@ static int stmmac_xgmac2_mdio_write(struct mii_bus *bus, int phyaddr,
 				  !(tmp & MII_XGMAC_BUSY), 100, 10000);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * stmmac_mdio_read
  * @bus: points to the mii_bus structure
@@ -322,11 +316,7 @@ int stmmac_mdio_register(struct net_device *ndev)
 	struct stmmac_mdio_bus_data *mdio_bus_data = priv->plat->mdio_bus_data;
 	struct device_node *mdio_node = priv->plat->mdio_node;
 	struct device *dev = ndev->dev.parent;
-<<<<<<< HEAD
 	int addr, found, max_addr;
-=======
-	int addr, found;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!mdio_bus_data)
 		return 0;
@@ -344,7 +334,6 @@ int stmmac_mdio_register(struct net_device *ndev)
 #endif
 
 	new_bus->name = "stmmac";
-<<<<<<< HEAD
 
 	if (priv->plat->has_xgmac) {
 		new_bus->read = &stmmac_xgmac2_mdio_read;
@@ -362,10 +351,6 @@ int stmmac_mdio_register(struct net_device *ndev)
 		new_bus->write = &stmmac_mdio_write;
 		max_addr = PHY_MAX_ADDR;
 	}
-=======
-	new_bus->read = &stmmac_mdio_read;
-	new_bus->write = &stmmac_mdio_write;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	new_bus->reset = &stmmac_mdio_reset;
 	snprintf(new_bus->id, MII_BUS_ID_SIZE, "%s-%x",
@@ -374,14 +359,7 @@ int stmmac_mdio_register(struct net_device *ndev)
 	new_bus->phy_mask = mdio_bus_data->phy_mask;
 	new_bus->parent = priv->device;
 
-<<<<<<< HEAD
 	err = of_mdiobus_register(new_bus, mdio_node);
-=======
-	if (mdio_node)
-		err = of_mdiobus_register(new_bus, mdio_node);
-	else
-		err = mdiobus_register(new_bus);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err != 0) {
 		dev_err(dev, "Cannot register the MDIO bus\n");
 		goto bus_register_fail;
@@ -391,17 +369,10 @@ int stmmac_mdio_register(struct net_device *ndev)
 		goto bus_register_done;
 
 	found = 0;
-<<<<<<< HEAD
 	for (addr = 0; addr < max_addr; addr++) {
 		struct phy_device *phydev = mdiobus_get_phy(new_bus, addr);
 
 		if (!phydev)
-=======
-	for (addr = 0; addr < PHY_MAX_ADDR; addr++) {
-		struct phy_device *phydev = mdiobus_get_phy(new_bus, addr);
-
-		if (!phydev || phydev->phy_id == 0xffff)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 
 		/*
@@ -422,10 +393,6 @@ int stmmac_mdio_register(struct net_device *ndev)
 		if (priv->plat->phy_addr == -1)
 			priv->plat->phy_addr = addr;
 
-<<<<<<< HEAD
-=======
-		priv->phydev = phydev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		phy_attached_info(phydev);
 		found = 1;
 	}

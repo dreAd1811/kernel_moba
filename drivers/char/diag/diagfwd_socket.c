@@ -1,18 +1,5 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /* Copyright (c) 2015-2019, The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2015-2019, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/slab.h>
@@ -28,11 +15,8 @@
 #include <linux/diagchar.h>
 #include <linux/of.h>
 #include <linux/kmemleak.h>
-<<<<<<< HEAD
 #include <linux/net.h>
 #include <linux/socket.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/current.h>
 #include <net/sock.h>
 #include <linux/notifier.h>
@@ -63,11 +47,7 @@
 #define INST_ID_DCI_CMD		3
 #define INST_ID_DCI		4
 
-<<<<<<< HEAD
 #define MAX_BUF_SIZE		0x4400
-=======
-#define MAX_BUF_SIZE 		0x4400
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MAX_NO_PACKETS		10
 #define DIAG_SO_RCVBUF_SIZE	(MAX_BUF_SIZE * MAX_NO_PACKETS)
 
@@ -491,10 +471,6 @@ static void socket_open_server(struct diag_socket_info *info)
 	struct msghdr msg = {0};
 	struct kvec iv = { &pkt, sizeof(pkt) };
 	int ret;
-<<<<<<< HEAD
-=======
-	int sl = sizeof(sq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int size = DIAG_SO_RCVBUF_SIZE;
 
 	if (!info || info->port_type != PORT_TYPE_SERVER)
@@ -506,11 +482,7 @@ static void socket_open_server(struct diag_socket_info *info)
 		       info->name);
 		return;
 	}
-<<<<<<< HEAD
 	ret = kernel_getsockname(info->hdl, (struct sockaddr *)&sq);
-=======
-	ret = kernel_getsockname(info->hdl, (struct sockaddr *)&sq, &sl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0) {
 		pr_err("diag: In %s, getsockname failed %d\n", __func__,
 		       ret);
@@ -570,13 +542,8 @@ static void __socket_close_channel(struct diag_socket_info *info)
 	sock_release(info->hdl);
 	info->hdl = NULL;
 	mutex_unlock(&info->socket_info_mutex);
-<<<<<<< HEAD
 	wake_up_interruptible(&info->read_wait_q);
 	cancel_work_sync(&info->read_work);
-=======
-	cancel_work(&info->read_work);
-	wake_up_interruptible(&info->read_wait_q);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irqsave(&info->lock, flags);
 	info->data_ready = 0;
@@ -742,11 +709,7 @@ static void diag_socket_drop_data(struct diag_socket_info *info)
 		iov.iov_len = PERIPHERAL_BUF_SZ;
 		read_msg.msg_name = &src_addr;
 		read_msg.msg_namelen = sizeof(src_addr);
-<<<<<<< HEAD
 		err = info->hdl->ops->ioctl(info->hdl, TIOCINQ,
-=======
-		err = kernel_sock_ioctl(info->hdl, TIOCINQ,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					(unsigned long)&pkt_len);
 		if (err || pkt_len < 0)
 			break;
@@ -838,11 +801,7 @@ static int diag_socket_read(void *ctxt, unsigned char *buf, int buf_len)
 			mutex_unlock(&info->socket_info_mutex);
 			goto fail;
 		}
-<<<<<<< HEAD
 		err =  info->hdl->ops->ioctl(info->hdl, TIOCINQ,
-=======
-		err = kernel_sock_ioctl(info->hdl, TIOCINQ,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					(unsigned long)&pkt_len);
 		if (err || pkt_len < 0) {
 			mutex_unlock(&info->socket_info_mutex);

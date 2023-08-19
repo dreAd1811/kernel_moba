@@ -78,21 +78,6 @@ static int vbi_nr[PVR_NUM] = {[0 ... PVR_NUM-1] = -1};
 module_param_array(vbi_nr, int, NULL, 0444);
 MODULE_PARM_DESC(vbi_nr, "Offset for device's vbi dev minor");
 
-<<<<<<< HEAD
-=======
-static struct v4l2_fmtdesc pvr_fmtdesc [] = {
-	{
-		.index          = 0,
-		.type           = V4L2_BUF_TYPE_VIDEO_CAPTURE,
-		.flags          = V4L2_FMT_FLAG_COMPRESSED,
-		.description    = "MPEG1/2",
-		// This should really be V4L2_PIX_FMT_MPEG, but xawtv
-		// breaks when I do that.
-		.pixelformat    = 0, // V4L2_PIX_FMT_MPEG,
-	}
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define PVR_FORMAT_PIX  0
 #define PVR_FORMAT_VBI  1
 
@@ -102,25 +87,11 @@ static struct v4l2_format pvr_format [] = {
 		.fmt    = {
 			.pix        = {
 				.width          = 720,
-<<<<<<< HEAD
 				.height         = 576,
 				.pixelformat    = V4L2_PIX_FMT_MPEG,
 				.field          = V4L2_FIELD_INTERLACED,
 				/* FIXME : Don't know what to put here... */
 				.sizeimage      = 32 * 1024,
-=======
-				.height             = 576,
-				// This should really be V4L2_PIX_FMT_MPEG,
-				// but xawtv breaks when I do that.
-				.pixelformat    = 0, // V4L2_PIX_FMT_MPEG,
-				.field          = V4L2_FIELD_INTERLACED,
-				.bytesperline   = 0,  // doesn't make sense
-						      // here
-				//FIXME : Don't know what to put here...
-				.sizeimage          = (32*1024),
-				.colorspace     = 0, // doesn't make sense here
-				.priv           = 0
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		}
 	},
@@ -164,11 +135,8 @@ static int pvr2_querycap(struct file *file, void *priv, struct v4l2_capability *
 	case VFL_TYPE_RADIO:
 		cap->device_caps = V4L2_CAP_RADIO;
 		break;
-<<<<<<< HEAD
 	default:
 		return -EINVAL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	cap->device_caps |= V4L2_CAP_TUNER | V4L2_CAP_READWRITE;
 	return 0;
@@ -191,18 +159,12 @@ static int pvr2_s_std(struct file *file, void *priv, v4l2_std_id std)
 {
 	struct pvr2_v4l2_fh *fh = file->private_data;
 	struct pvr2_hdw *hdw = fh->channel.mc_head->hdw;
-<<<<<<< HEAD
 	int ret;
 
 	ret = pvr2_ctrl_set_value(
 		pvr2_hdw_get_ctrl_by_id(hdw, PVR2_CID_STDCUR), std);
 	pvr2_hdw_commit_ctl(hdw);
 	return ret;
-=======
-
-	return pvr2_ctrl_set_value(
-		pvr2_hdw_get_ctrl_by_id(hdw, PVR2_CID_STDCUR), std);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int pvr2_querystd(struct file *file, void *priv, v4l2_std_id *std)
@@ -292,7 +254,6 @@ static int pvr2_s_input(struct file *file, void *priv, unsigned int inp)
 {
 	struct pvr2_v4l2_fh *fh = file->private_data;
 	struct pvr2_hdw *hdw = fh->channel.mc_head->hdw;
-<<<<<<< HEAD
 	int ret;
 
 	if (inp >= fh->input_cnt)
@@ -302,14 +263,6 @@ static int pvr2_s_input(struct file *file, void *priv, unsigned int inp)
 			fh->input_map[inp]);
 	pvr2_hdw_commit_ctl(hdw);
 	return ret;
-=======
-
-	if (inp >= fh->input_cnt)
-		return -EINVAL;
-	return pvr2_ctrl_set_value(
-			pvr2_hdw_get_ctrl_by_id(hdw, PVR2_CID_INPUT),
-			fh->input_map[inp]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int pvr2_enumaudio(struct file *file, void *priv, struct v4l2_audio *vin)
@@ -368,25 +321,16 @@ static int pvr2_s_tuner(struct file *file, void *priv, const struct v4l2_tuner *
 {
 	struct pvr2_v4l2_fh *fh = file->private_data;
 	struct pvr2_hdw *hdw = fh->channel.mc_head->hdw;
-<<<<<<< HEAD
 	int ret;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (vt->index != 0)
 		return -EINVAL;
 
-<<<<<<< HEAD
 	ret = pvr2_ctrl_set_value(
 			pvr2_hdw_get_ctrl_by_id(hdw, PVR2_CID_AUDIOMODE),
 			vt->audmode);
 	pvr2_hdw_commit_ctl(hdw);
 	return ret;
-=======
-	return pvr2_ctrl_set_value(
-			pvr2_hdw_get_ctrl_by_id(hdw, PVR2_CID_AUDIOMODE),
-			vt->audmode);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int pvr2_s_frequency(struct file *file, void *priv, const struct v4l2_frequency *vf)
@@ -418,15 +362,10 @@ static int pvr2_s_frequency(struct file *file, void *priv, const struct v4l2_fre
 		fv = (fv * 125) / 2;
 	else
 		fv = fv * 62500;
-<<<<<<< HEAD
 	ret = pvr2_ctrl_set_value(
 			pvr2_hdw_get_ctrl_by_id(hdw,PVR2_CID_FREQUENCY),fv);
 	pvr2_hdw_commit_ctl(hdw);
 	return ret;
-=======
-	return pvr2_ctrl_set_value(
-			pvr2_hdw_get_ctrl_by_id(hdw,PVR2_CID_FREQUENCY),fv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int pvr2_g_frequency(struct file *file, void *priv, struct v4l2_frequency *vf)
@@ -463,19 +402,11 @@ static int pvr2_g_frequency(struct file *file, void *priv, struct v4l2_frequency
 
 static int pvr2_enum_fmt_vid_cap(struct file *file, void *priv, struct v4l2_fmtdesc *fd)
 {
-<<<<<<< HEAD
 	/* Only one format is supported: MPEG. */
 	if (fd->index)
 		return -EINVAL;
 
 	fd->pixelformat = V4L2_PIX_FMT_MPEG;
-=======
-	/* Only one format is supported : mpeg.*/
-	if (fd->index != 0)
-		return -EINVAL;
-
-	memcpy(fd, pvr_fmtdesc, sizeof(struct v4l2_fmtdesc));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -550,10 +481,7 @@ static int pvr2_s_fmt_vid_cap(struct file *file, void *priv, struct v4l2_format 
 	vcp = pvr2_hdw_get_ctrl_by_id(hdw, PVR2_CID_VRES);
 	pvr2_ctrl_set_value(hcp, vf->fmt.pix.width);
 	pvr2_ctrl_set_value(vcp, vf->fmt.pix.height);
-<<<<<<< HEAD
 	pvr2_hdw_commit_ctl(hdw);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -681,18 +609,12 @@ static int pvr2_s_ctrl(struct file *file, void *priv, struct v4l2_control *vc)
 {
 	struct pvr2_v4l2_fh *fh = file->private_data;
 	struct pvr2_hdw *hdw = fh->channel.mc_head->hdw;
-<<<<<<< HEAD
 	int ret;
 
 	ret = pvr2_ctrl_set_value(pvr2_hdw_get_ctrl_v4l(hdw, vc->id),
 			vc->value);
 	pvr2_hdw_commit_ctl(hdw);
 	return ret;
-=======
-
-	return pvr2_ctrl_set_value(pvr2_hdw_get_ctrl_v4l(hdw, vc->id),
-			vc->value);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int pvr2_g_ext_ctrls(struct file *file, void *priv,
@@ -751,19 +673,12 @@ static int pvr2_s_ext_ctrls(struct file *file, void *priv,
 				ctrl->value);
 		if (ret) {
 			ctls->error_idx = idx;
-<<<<<<< HEAD
 			goto commit;
 		}
 	}
 commit:
 	pvr2_hdw_commit_ctl(hdw);
 	return ret;
-=======
-			return ret;
-		}
-	}
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int pvr2_try_ext_ctrls(struct file *file, void *priv,
@@ -866,25 +781,16 @@ static int pvr2_s_selection(struct file *file, void *priv,
 			pvr2_hdw_get_ctrl_by_id(hdw, PVR2_CID_CROPL),
 			sel->r.left);
 	if (ret != 0)
-<<<<<<< HEAD
 		goto commit;
-=======
-		return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = pvr2_ctrl_set_value(
 			pvr2_hdw_get_ctrl_by_id(hdw, PVR2_CID_CROPT),
 			sel->r.top);
 	if (ret != 0)
-<<<<<<< HEAD
 		goto commit;
-=======
-		return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = pvr2_ctrl_set_value(
 			pvr2_hdw_get_ctrl_by_id(hdw, PVR2_CID_CROPW),
 			sel->r.width);
 	if (ret != 0)
-<<<<<<< HEAD
 		goto commit;
 	ret = pvr2_ctrl_set_value(
 			pvr2_hdw_get_ctrl_by_id(hdw, PVR2_CID_CROPH),
@@ -892,15 +798,6 @@ static int pvr2_s_selection(struct file *file, void *priv,
 commit:
 	pvr2_hdw_commit_ctl(hdw);
 	return ret;
-=======
-		return -EINVAL;
-	ret = pvr2_ctrl_set_value(
-			pvr2_hdw_get_ctrl_by_id(hdw, PVR2_CID_CROPH),
-			sel->r.height);
-	if (ret != 0)
-		return -EINVAL;
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int pvr2_log_status(struct file *file, void *priv)
@@ -1019,62 +916,12 @@ static void pvr2_v4l2_internal_check(struct pvr2_channel *chp)
 	pvr2_v4l2_dev_disassociate_parent(vp->dev_video);
 	pvr2_v4l2_dev_disassociate_parent(vp->dev_radio);
 	if (!list_empty(&vp->dev_video->devbase.fh_list) ||
-<<<<<<< HEAD
 	    !list_empty(&vp->dev_radio->devbase.fh_list))
 		return;
-=======
-	    (vp->dev_radio &&
-	     !list_empty(&vp->dev_radio->devbase.fh_list))) {
-		pvr2_trace(PVR2_TRACE_STRUCT,
-			   "pvr2_v4l2 internal_check exit-empty id=%p", vp);
-		return;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pvr2_v4l2_destroy_no_lock(vp);
 }
 
 
-<<<<<<< HEAD
-=======
-static long pvr2_v4l2_ioctl(struct file *file,
-			   unsigned int cmd, unsigned long arg)
-{
-
-	struct pvr2_v4l2_fh *fh = file->private_data;
-	struct pvr2_hdw *hdw = fh->channel.mc_head->hdw;
-	long ret = -EINVAL;
-
-	if (pvrusb2_debug & PVR2_TRACE_V4LIOCTL)
-		v4l_printk_ioctl(pvr2_hdw_get_driver_name(hdw), cmd);
-
-	if (!pvr2_hdw_dev_ok(hdw)) {
-		pvr2_trace(PVR2_TRACE_ERROR_LEGS,
-			   "ioctl failed - bad or no context");
-		return -EFAULT;
-	}
-
-	ret = video_ioctl2(file, cmd, arg);
-
-	pvr2_hdw_commit_ctl(hdw);
-
-	if (ret < 0) {
-		if (pvrusb2_debug & PVR2_TRACE_V4LIOCTL) {
-			pvr2_trace(PVR2_TRACE_V4LIOCTL,
-				   "pvr2_v4l2_do_ioctl failure, ret=%ld command was:",
-ret);
-			v4l_printk_ioctl(pvr2_hdw_get_driver_name(hdw), cmd);
-		}
-	} else {
-		pvr2_trace(PVR2_TRACE_V4LIOCTL,
-			   "pvr2_v4l2_do_ioctl complete, ret=%ld (0x%lx)",
-			   ret, ret);
-	}
-	return ret;
-
-}
-
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int pvr2_v4l2_release(struct file *file)
 {
 	struct pvr2_v4l2_fh *fhp = file->private_data;
@@ -1106,12 +953,7 @@ static int pvr2_v4l2_release(struct file *file)
 	kfree(fhp);
 	if (vp->channel.mc_head->disconnect_flag &&
 	    list_empty(&vp->dev_video->devbase.fh_list) &&
-<<<<<<< HEAD
 	    list_empty(&vp->dev_radio->devbase.fh_list)) {
-=======
-	    (!vp->dev_radio ||
-	     list_empty(&vp->dev_radio->devbase.fh_list))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pvr2_v4l2_destroy_no_lock(vp);
 	}
 	return 0;
@@ -1311,44 +1153,26 @@ static ssize_t pvr2_v4l2_read(struct file *file,
 }
 
 
-<<<<<<< HEAD
 static __poll_t pvr2_v4l2_poll(struct file *file, poll_table *wait)
 {
 	__poll_t mask = 0;
-=======
-static unsigned int pvr2_v4l2_poll(struct file *file, poll_table *wait)
-{
-	unsigned int mask = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct pvr2_v4l2_fh *fh = file->private_data;
 	int ret;
 
 	if (fh->fw_mode_flag) {
-<<<<<<< HEAD
 		mask |= EPOLLIN | EPOLLRDNORM;
-=======
-		mask |= POLLIN | POLLRDNORM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return mask;
 	}
 
 	if (!fh->rhp) {
 		ret = pvr2_v4l2_iosetup(fh);
-<<<<<<< HEAD
 		if (ret) return EPOLLERR;
-=======
-		if (ret) return POLLERR;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	poll_wait(file,&fh->wait_data,wait);
 
 	if (pvr2_ioread_avail(fh->rhp) >= 0) {
-<<<<<<< HEAD
 		mask |= EPOLLIN | EPOLLRDNORM;
-=======
-		mask |= POLLIN | POLLRDNORM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return mask;
@@ -1360,11 +1184,7 @@ static const struct v4l2_file_operations vdev_fops = {
 	.open       = pvr2_v4l2_open,
 	.release    = pvr2_v4l2_release,
 	.read       = pvr2_v4l2_read,
-<<<<<<< HEAD
 	.unlocked_ioctl = video_ioctl2,
-=======
-	.unlocked_ioctl = pvr2_v4l2_ioctl,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.poll       = pvr2_v4l2_poll,
 };
 

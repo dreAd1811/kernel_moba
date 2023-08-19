@@ -10,11 +10,7 @@
 
 / {
 	model = "DRA62x J5 Eco EVM";
-<<<<<<< HEAD
 	compatible = "ti,dra62x-j5eco-evm", "ti,dra62x", "ti,dm8148", "ti,dm814";
-=======
-	compatible = "ti,dra62x-j5eco-evm", "ti,dra62x", "ti,dm8148";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memory@80000000 {
 		device_type = "memory";
@@ -78,7 +74,6 @@
 			label = "X-Loader";
 			reg = <0 0x80000>;
 		};
-<<<<<<< HEAD
 		partition@80000 {
 			label = "U-Boot";
 			reg = <0x80000 0x1c0000>;
@@ -92,21 +87,6 @@
 			reg = <0x280000 0x500000>;
 		};
 		partition@780000 {
-=======
-		partition@0x80000 {
-			label = "U-Boot";
-			reg = <0x80000 0x1c0000>;
-		};
-		partition@0x1c0000 {
-			label = "Environment";
-			reg = <0x240000 0x40000>;
-		};
-		partition@0x280000 {
-			label = "Kernel";
-			reg = <0x280000 0x500000>;
-		};
-		partition@0x780000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "Filesystem";
 			reg = <0x780000 0xf880000>;
 		};

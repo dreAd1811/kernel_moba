@@ -1763,13 +1763,8 @@ static int reg_write(struct gspca_dev *gspca_dev,
 			req,
 			USB_TYPE_VENDOR | USB_RECIP_DEVICE,
 			value, index, NULL, 0, 500);
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_USBO, "reg write: 0x%02x 0x%02x 0x%02x\n",
 		  req, index, value);
-=======
-	PDEBUG(D_USBO, "reg write: 0x%02x 0x%02x 0x%02x",
-		req, index, value);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		pr_err("reg write: error %d\n", ret);
 	return ret;
@@ -1784,13 +1779,8 @@ static int write_vector(struct gspca_dev *gspca_dev, const __u16 data[][3])
 		ret = reg_write(gspca_dev, data[i][0], data[i][2],
 								data[i][1]);
 		if (ret < 0) {
-<<<<<<< HEAD
 			gspca_err(gspca_dev, "Reg write failed for 0x%02x,0x%02x,0x%02x\n",
 				  data[i][0], data[i][1], data[i][2]);
-=======
-			PERR("Reg write failed for 0x%02x,0x%02x,0x%02x",
-				data[i][0], data[i][1], data[i][2]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return ret;
 		}
 		i++;
@@ -1862,11 +1852,7 @@ static int sd_init(struct gspca_dev *gspca_dev)
 			goto error;
 		break;
 	}
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_STREAM, "Initializing SPCA501 finished\n");
-=======
-	PDEBUG(D_STREAM, "Initializing SPCA501 finished");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 error:
 	return -EINVAL;

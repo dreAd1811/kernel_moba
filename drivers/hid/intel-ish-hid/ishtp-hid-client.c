@@ -77,25 +77,11 @@ static void process_recv(struct ishtp_cl *hid_ishtp_cl, void *recv_buf,
 	struct ishtp_cl_data *client_data = hid_ishtp_cl->client_data;
 	int curr_hid_dev = client_data->cur_hid_dev;
 
-<<<<<<< HEAD
-=======
-	if (data_len < sizeof(struct hostif_msg_hdr)) {
-		dev_err(&client_data->cl_device->dev,
-			"[hid-ish]: error, received %u which is less than data header %u\n",
-			(unsigned int)data_len,
-			(unsigned int)sizeof(struct hostif_msg_hdr));
-		++client_data->bad_recv_cnt;
-		ish_hw_reset(hid_ishtp_cl->dev);
-		return;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	payload = recv_buf + sizeof(struct hostif_msg_hdr);
 	total_len = data_len;
 	cur_pos = 0;
 
 	do {
-<<<<<<< HEAD
 		if (cur_pos + sizeof(struct hostif_msg) > total_len) {
 			dev_err(&client_data->cl_device->dev,
 				"[hid-ish]: error, received %u which is less than data header %u\n",
@@ -106,8 +92,6 @@ static void process_recv(struct ishtp_cl *hid_ishtp_cl, void *recv_buf,
 			break;
 		}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		recv_msg = (struct hostif_msg *)(recv_buf + cur_pos);
 		payload_len = recv_msg->hdr.size;
 
@@ -137,15 +121,9 @@ static void process_recv(struct ishtp_cl *hid_ishtp_cl, void *recv_buf,
 			}
 			client_data->hid_dev_count = (unsigned int)*payload;
 			if (!client_data->hid_devices)
-<<<<<<< HEAD
 				client_data->hid_devices = devm_kcalloc(
 						&client_data->cl_device->dev,
 						client_data->hid_dev_count,
-=======
-				client_data->hid_devices = devm_kzalloc(
-						&client_data->cl_device->dev,
-						client_data->hid_dev_count *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						sizeof(struct device_info),
 						GFP_KERNEL);
 			if (!client_data->hid_devices) {
@@ -434,13 +412,7 @@ void hid_ishtp_get_report(struct hid_device *hid, int report_id,
 {
 	struct ishtp_hid_data *hid_data =  hid->driver_data;
 	struct ishtp_cl_data *client_data = hid_data->client_data;
-<<<<<<< HEAD
 	struct hostif_msg_to_sensor msg = {};
-=======
-	static unsigned char	buf[10];
-	unsigned int	len;
-	struct hostif_msg_to_sensor *msg = (struct hostif_msg_to_sensor *)buf;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int	rv;
 	int	i;
 
@@ -452,22 +424,11 @@ void hid_ishtp_get_report(struct hid_device *hid, int report_id,
 		return;
 	}
 
-<<<<<<< HEAD
 	msg.hdr.command = (report_type == HID_FEATURE_REPORT) ?
 		HOSTIF_GET_FEATURE_REPORT : HOSTIF_GET_INPUT_REPORT;
 	for (i = 0; i < client_data->num_hid_devices; ++i) {
 		if (hid == client_data->hid_sensor_hubs[i]) {
 			msg.hdr.device_id =
-=======
-	len = sizeof(struct hostif_msg_to_sensor);
-
-	memset(msg, 0, sizeof(struct hostif_msg_to_sensor));
-	msg->hdr.command = (report_type == HID_FEATURE_REPORT) ?
-		HOSTIF_GET_FEATURE_REPORT : HOSTIF_GET_INPUT_REPORT;
-	for (i = 0; i < client_data->num_hid_devices; ++i) {
-		if (hid == client_data->hid_sensor_hubs[i]) {
-			msg->hdr.device_id =
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				client_data->hid_devices[i].dev_id;
 			break;
 		}
@@ -476,14 +437,9 @@ void hid_ishtp_get_report(struct hid_device *hid, int report_id,
 	if (i == client_data->num_hid_devices)
 		return;
 
-<<<<<<< HEAD
 	msg.report_id = report_id;
 	rv = ishtp_cl_send(client_data->hid_ishtp_cl, (uint8_t *)&msg,
 			    sizeof(msg));
-=======
-	msg->report_id = report_id;
-	rv = ishtp_cl_send(client_data->hid_ishtp_cl, buf, len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rv)
 		hid_ishtp_trace(client_data,  "%s hid %p send failed\n",
 				__func__, hid);

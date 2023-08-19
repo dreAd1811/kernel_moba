@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * drivers/base/core.c - core driver model code (device registration, etc)
  *
@@ -9,12 +6,6 @@
  * Copyright (c) 2002-3 Open Source Development Labs
  * Copyright (c) 2006 Greg Kroah-Hartman <gregkh@suse.de>
  * Copyright (c) 2006 Novell, Inc.
-<<<<<<< HEAD
-=======
- *
- * This file is released under the GPLv2
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/cpufreq.h>
@@ -30,10 +21,6 @@
 #include <linux/of.h>
 #include <linux/of_device.h>
 #include <linux/genhd.h>
-<<<<<<< HEAD
-=======
-#include <linux/kallsyms.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/mutex.h>
 #include <linux/pm_runtime.h>
 #include <linux/netdevice.h>
@@ -119,11 +106,7 @@ static int device_is_dependent(struct device *dev, void *target)
 	struct device_link *link;
 	int ret;
 
-<<<<<<< HEAD
 	if (dev == target)
-=======
-	if (WARN_ON(dev == target))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 1;
 
 	ret = device_for_each_child(dev, target, device_is_dependent);
@@ -131,11 +114,7 @@ static int device_is_dependent(struct device *dev, void *target)
 		return ret;
 
 	list_for_each_entry(link, &dev->links.consumers, s_node) {
-<<<<<<< HEAD
 		if (link->consumer == target)
-=======
-		if (WARN_ON(link->consumer == target))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return 1;
 
 		ret = device_is_dependent(link->consumer, target);
@@ -167,7 +146,6 @@ static int device_reorder_to_tail(struct device *dev, void *not_used)
 }
 
 /**
-<<<<<<< HEAD
  * device_pm_move_to_tail - Move set of devices to the end of device lists
  * @dev: Device to move
  *
@@ -188,8 +166,6 @@ void device_pm_move_to_tail(struct device *dev)
 }
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * device_link_add - Create a link between two devices.
  * @consumer: Consumer end of the link.
  * @supplier: Supplier end of the link.
@@ -203,17 +179,10 @@ void device_pm_move_to_tail(struct device *dev)
  * of the link.  If DL_FLAG_PM_RUNTIME is not set, DL_FLAG_RPM_ACTIVE will be
  * ignored.
  *
-<<<<<<< HEAD
  * If the DL_FLAG_AUTOREMOVE_CONSUMER is set, the link will be removed
  * automatically when the consumer device driver unbinds from it.
  * The combination of both DL_FLAG_AUTOREMOVE_CONSUMER and DL_FLAG_STATELESS
  * set is invalid and will cause NULL to be returned.
-=======
- * If the DL_FLAG_AUTOREMOVE is set, the link will be removed automatically
- * when the consumer device driver unbinds from it.  The combination of both
- * DL_FLAG_AUTOREMOVE and DL_FLAG_STATELESS set is invalid and will cause NULL
- * to be returned.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * A side effect of the link creation is re-ordering of dpm_list and the
  * devices_kset list by moving the consumer device and all devices depending
@@ -228,29 +197,12 @@ struct device_link *device_link_add(struct device *consumer,
 				    struct device *supplier, u32 flags)
 {
 	struct device_link *link;
-<<<<<<< HEAD
 
 	if (!consumer || !supplier ||
 	    ((flags & DL_FLAG_STATELESS) &&
 	     (flags & DL_FLAG_AUTOREMOVE_CONSUMER)))
 		return NULL;
 
-=======
-	bool rpm_put_supplier = false;
-
-	if (!consumer || !supplier ||
-	    ((flags & DL_FLAG_STATELESS) && (flags & DL_FLAG_AUTOREMOVE)))
-		return NULL;
-
-	if (flags & DL_FLAG_PM_RUNTIME && flags & DL_FLAG_RPM_ACTIVE) {
-		if (pm_runtime_get_sync(supplier) < 0) {
-			pm_runtime_put_noidle(supplier);
-			return NULL;
-		}
-		rpm_put_supplier = true;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	device_links_write_lock();
 	device_pm_lock();
 
@@ -266,15 +218,10 @@ struct device_link *device_link_add(struct device *consumer,
 	}
 
 	list_for_each_entry(link, &supplier->links.consumers, s_node)
-<<<<<<< HEAD
 		if (link->consumer == consumer) {
 			kref_get(&link->kref);
 			goto out;
 		}
-=======
-		if (link->consumer == consumer)
-			goto out;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	link = kzalloc(sizeof(*link), GFP_KERNEL);
 	if (!link)
@@ -282,7 +229,6 @@ struct device_link *device_link_add(struct device *consumer,
 
 	if (flags & DL_FLAG_PM_RUNTIME) {
 		if (flags & DL_FLAG_RPM_ACTIVE) {
-<<<<<<< HEAD
 			if (pm_runtime_get_sync(supplier) < 0) {
 				pm_runtime_put_noidle(supplier);
 				kfree(link);
@@ -290,10 +236,6 @@ struct device_link *device_link_add(struct device *consumer,
 				goto out;
 			}
 			link->rpm_active = true;
-=======
-			link->rpm_active = true;
-			rpm_put_supplier = false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		pm_runtime_new_link(consumer);
 		/*
@@ -311,10 +253,7 @@ struct device_link *device_link_add(struct device *consumer,
 	link->consumer = consumer;
 	INIT_LIST_HEAD(&link->c_node);
 	link->flags = flags;
-<<<<<<< HEAD
 	kref_init(&link->kref);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Determine the initial link state. */
 	if (flags & DL_FLAG_STATELESS) {
@@ -368,13 +307,6 @@ struct device_link *device_link_add(struct device *consumer,
  out:
 	device_pm_unlock();
 	device_links_write_unlock();
-<<<<<<< HEAD
-=======
-
-	if (rpm_put_supplier)
-		pm_runtime_put(supplier);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return link;
 }
 EXPORT_SYMBOL_GPL(device_link_add);
@@ -392,15 +324,10 @@ static void __device_link_free_srcu(struct rcu_head *rhead)
 	device_link_free(container_of(rhead, struct device_link, rcu_head));
 }
 
-<<<<<<< HEAD
 static void __device_link_del(struct kref *kref)
 {
 	struct device_link *link = container_of(kref, struct device_link, kref);
 
-=======
-static void __device_link_del(struct device_link *link)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_info(link->consumer, "Dropping the link to %s\n",
 		 dev_name(link->supplier));
 
@@ -412,15 +339,10 @@ static void __device_link_del(struct device_link *link)
 	call_srcu(&device_links_srcu, &link->rcu_head, __device_link_free_srcu);
 }
 #else /* !CONFIG_SRCU */
-<<<<<<< HEAD
 static void __device_link_del(struct kref *kref)
 {
 	struct device_link *link = container_of(kref, struct device_link, kref);
 
-=======
-static void __device_link_del(struct device_link *link)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_info(link->consumer, "Dropping the link to %s\n",
 		 dev_name(link->supplier));
 
@@ -438,29 +360,20 @@ static void __device_link_del(struct device_link *link)
  * @link: Device link to delete.
  *
  * The caller must ensure proper synchronization of this function with runtime
-<<<<<<< HEAD
  * PM.  If the link was added multiple times, it needs to be deleted as often.
  * Care is required for hotplugged devices:  Their links are purged on removal
  * and calling device_link_del() is then no longer allowed.
-=======
- * PM.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 void device_link_del(struct device_link *link)
 {
 	device_links_write_lock();
 	device_pm_lock();
-<<<<<<< HEAD
 	kref_put(&link->kref, __device_link_del);
-=======
-	__device_link_del(link);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	device_pm_unlock();
 	device_links_write_unlock();
 }
 EXPORT_SYMBOL_GPL(device_link_del);
 
-<<<<<<< HEAD
 /**
  * device_link_remove - remove a link between two devices.
  * @consumer: Consumer end of the link.
@@ -491,8 +404,6 @@ void device_link_remove(void *consumer, struct device *supplier)
 }
 EXPORT_SYMBOL_GPL(device_link_remove);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void device_links_missing_supplier(struct device *dev)
 {
 	struct device_link *link;
@@ -600,13 +511,8 @@ static void __device_links_no_driver(struct device *dev)
 		if (link->flags & DL_FLAG_STATELESS)
 			continue;
 
-<<<<<<< HEAD
 		if (link->flags & DL_FLAG_AUTOREMOVE_CONSUMER)
 			kref_put(&link->kref, __device_link_del);
-=======
-		if (link->flags & DL_FLAG_AUTOREMOVE)
-			__device_link_del(link);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		else if (link->status != DL_STATE_SUPPLIER_UNBIND)
 			WRITE_ONCE(link->status, DL_STATE_AVAILABLE);
 	}
@@ -641,7 +547,6 @@ void device_links_driver_cleanup(struct device *dev)
 		if (link->flags & DL_FLAG_STATELESS)
 			continue;
 
-<<<<<<< HEAD
 		WARN_ON(link->flags & DL_FLAG_AUTOREMOVE_CONSUMER);
 		WARN_ON(link->status != DL_STATE_SUPPLIER_UNBIND);
 
@@ -654,10 +559,6 @@ void device_links_driver_cleanup(struct device *dev)
 		    link->flags & DL_FLAG_AUTOREMOVE_SUPPLIER)
 			kref_put(&link->kref, __device_link_del);
 
-=======
-		WARN_ON(link->flags & DL_FLAG_AUTOREMOVE);
-		WARN_ON(link->status != DL_STATE_SUPPLIER_UNBIND);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		WRITE_ONCE(link->status, DL_STATE_DORMANT);
 	}
 
@@ -774,21 +675,13 @@ static void device_links_purge(struct device *dev)
 
 	list_for_each_entry_safe_reverse(link, ln, &dev->links.suppliers, c_node) {
 		WARN_ON(link->status == DL_STATE_ACTIVE);
-<<<<<<< HEAD
 		__device_link_del(&link->kref);
-=======
-		__device_link_del(link);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	list_for_each_entry_safe_reverse(link, ln, &dev->links.consumers, s_node) {
 		WARN_ON(link->status != DL_STATE_DORMANT &&
 			link->status != DL_STATE_NONE);
-<<<<<<< HEAD
 		__device_link_del(&link->kref);
-=======
-		__device_link_del(link);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	device_links_write_unlock();
@@ -858,11 +751,7 @@ const char *dev_driver_string(const struct device *dev)
 	 * so be careful about accessing it.  dev->bus and dev->class should
 	 * never change once they are set, so they don't need special care.
 	 */
-<<<<<<< HEAD
 	drv = READ_ONCE(dev->driver);
-=======
-	drv = ACCESS_ONCE(dev->driver);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return drv ? drv->name :
 			(dev->bus ? dev->bus->name :
 			(dev->class ? dev->class->name : ""));
@@ -881,13 +770,8 @@ static ssize_t dev_attr_show(struct kobject *kobj, struct attribute *attr,
 	if (dev_attr->show)
 		ret = dev_attr->show(dev, dev_attr, buf);
 	if (ret >= (ssize_t)PAGE_SIZE) {
-<<<<<<< HEAD
 		printk("dev_attr_show: %pS returned bad count\n",
 				dev_attr->show);
-=======
-		print_symbol("dev_attr_show: %s returned bad count\n",
-				(unsigned long)dev_attr->show);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return ret;
 }
@@ -1029,7 +913,6 @@ static const void *device_namespace(struct kobject *kobj)
 	return ns;
 }
 
-<<<<<<< HEAD
 static void device_get_ownership(struct kobject *kobj, kuid_t *uid, kgid_t *gid)
 {
 	struct device *dev = kobj_to_dev(kobj);
@@ -1038,16 +921,11 @@ static void device_get_ownership(struct kobject *kobj, kuid_t *uid, kgid_t *gid)
 		dev->class->get_ownership(dev, uid, gid);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct kobj_type device_ktype = {
 	.release	= device_release,
 	.sysfs_ops	= &dev_sysfs_ops,
 	.namespace	= device_namespace,
-<<<<<<< HEAD
 	.get_ownership	= device_get_ownership,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 
@@ -1973,11 +1851,7 @@ static void device_remove_sys_dev_entry(struct device *dev)
 	}
 }
 
-<<<<<<< HEAD
 static int device_private_init(struct device *dev)
-=======
-int device_private_init(struct device *dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	dev->p = kzalloc(sizeof(*dev->p), GFP_KERNEL);
 	if (!dev->p)
@@ -2214,7 +2088,6 @@ void put_device(struct device *dev)
 }
 EXPORT_SYMBOL_GPL(put_device);
 
-<<<<<<< HEAD
 bool kill_device(struct device *dev)
 {
 	/*
@@ -2233,8 +2106,6 @@ bool kill_device(struct device *dev)
 }
 EXPORT_SYMBOL_GPL(kill_device);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * device_del - delete device from system.
  * @dev: device.
@@ -2254,13 +2125,10 @@ void device_del(struct device *dev)
 	struct kobject *glue_dir = NULL;
 	struct class_interface *class_intf;
 
-<<<<<<< HEAD
 	device_lock(dev);
 	kill_device(dev);
 	device_unlock(dev);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Notify clients of device removal.  This call must come
 	 * before dpm_sysfs_remove().
 	 */
@@ -2426,11 +2294,7 @@ int device_for_each_child(struct device *parent, void *data,
 		return 0;
 
 	klist_iter_init(&parent->p->klist_children, &i);
-<<<<<<< HEAD
 	while (!error && (child = next_device(&i)))
-=======
-	while ((child = next_device(&i)) && !error)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		error = fn(child, data);
 	klist_iter_exit(&i);
 	return error;
@@ -2711,11 +2575,7 @@ static void device_create_release(struct device *dev)
 	kfree(dev);
 }
 
-<<<<<<< HEAD
 static __printf(6, 0) struct device *
-=======
-static struct device *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 device_create_groups_vargs(struct class *class, struct device *parent,
 			   dev_t devt, void *drvdata,
 			   const struct attribute_group **groups,
@@ -2993,11 +2853,7 @@ static int device_move_class_links(struct device *dev,
 /**
  * device_move - moves a device to a new parent
  * @dev: the pointer to the struct device to be moved
-<<<<<<< HEAD
  * @new_parent: the new parent of the device (can be NULL)
-=======
- * @new_parent: the new parent of the device (can by NULL)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @dpm_order: how to reorder the dpm_list
  */
 int device_move(struct device *dev, struct device *new_parent,
@@ -3288,21 +3144,12 @@ void func(const struct device *dev, const char *fmt, ...)	\
 }								\
 EXPORT_SYMBOL(func);
 
-<<<<<<< HEAD
 define_dev_printk_level(_dev_emerg, KERN_EMERG);
 define_dev_printk_level(_dev_alert, KERN_ALERT);
 define_dev_printk_level(_dev_crit, KERN_CRIT);
 define_dev_printk_level(_dev_err, KERN_ERR);
 define_dev_printk_level(_dev_warn, KERN_WARNING);
 define_dev_printk_level(_dev_notice, KERN_NOTICE);
-=======
-define_dev_printk_level(dev_emerg, KERN_EMERG);
-define_dev_printk_level(dev_alert, KERN_ALERT);
-define_dev_printk_level(dev_crit, KERN_CRIT);
-define_dev_printk_level(dev_err, KERN_ERR);
-define_dev_printk_level(dev_warn, KERN_WARNING);
-define_dev_printk_level(dev_notice, KERN_NOTICE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 define_dev_printk_level(_dev_info, KERN_INFO);
 
 #endif

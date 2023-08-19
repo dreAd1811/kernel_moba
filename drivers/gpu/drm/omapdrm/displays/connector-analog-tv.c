@@ -1,11 +1,7 @@
 /*
  * Analog TV Connector driver
  *
-<<<<<<< HEAD
  * Copyright (C) 2013 Texas Instruments Incorporated - http://www.ti.com/
-=======
- * Copyright (C) 2013 Texas Instruments
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Author: Tomi Valkeinen <tomi.valkeinen@ti.com>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -44,21 +40,12 @@ static const struct videomode tvc_pal_vm = {
 			  DISPLAY_FLAGS_VSYNC_LOW,
 };
 
-<<<<<<< HEAD
-=======
-static const struct of_device_id tvc_of_match[];
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define to_panel_data(x) container_of(x, struct panel_drv_data, dssdev)
 
 static int tvc_connect(struct omap_dss_device *dssdev)
 {
 	struct panel_drv_data *ddata = to_panel_data(dssdev);
-<<<<<<< HEAD
 	struct omap_dss_device *in;
-=======
-	struct omap_dss_device *in = ddata->in;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int r;
 
 	dev_dbg(ddata->dev, "connect\n");
@@ -66,7 +53,6 @@ static int tvc_connect(struct omap_dss_device *dssdev)
 	if (omapdss_device_is_connected(dssdev))
 		return 0;
 
-<<<<<<< HEAD
 	in = omapdss_of_find_source_for_first_ep(ddata->dev->of_node);
 	if (IS_ERR(in)) {
 		dev_err(ddata->dev, "failed to find video source\n");
@@ -80,12 +66,6 @@ static int tvc_connect(struct omap_dss_device *dssdev)
 	}
 
 	ddata->in = in;
-=======
-	r = in->ops.atv->connect(in, dssdev);
-	if (r)
-		return r;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -100,12 +80,9 @@ static void tvc_disconnect(struct omap_dss_device *dssdev)
 		return;
 
 	in->ops.atv->disconnect(in, dssdev);
-<<<<<<< HEAD
 
 	omap_dss_put_device(in);
 	ddata->in = NULL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int tvc_enable(struct omap_dss_device *dssdev)
@@ -208,38 +185,12 @@ static struct omap_dss_driver tvc_driver = {
 	.set_wss		= tvc_set_wss,
 };
 
-<<<<<<< HEAD
-=======
-static int tvc_probe_of(struct platform_device *pdev)
-{
-	struct panel_drv_data *ddata = platform_get_drvdata(pdev);
-	struct device_node *node = pdev->dev.of_node;
-	struct omap_dss_device *in;
-
-	in = omapdss_of_find_source_for_first_ep(node);
-	if (IS_ERR(in)) {
-		dev_err(&pdev->dev, "failed to find video source\n");
-		return PTR_ERR(in);
-	}
-
-	ddata->in = in;
-
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int tvc_probe(struct platform_device *pdev)
 {
 	struct panel_drv_data *ddata;
 	struct omap_dss_device *dssdev;
 	int r;
 
-<<<<<<< HEAD
-=======
-	if (!pdev->dev.of_node)
-		return -ENODEV;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ddata = devm_kzalloc(&pdev->dev, sizeof(*ddata), GFP_KERNEL);
 	if (!ddata)
 		return -ENOMEM;
@@ -247,13 +198,6 @@ static int tvc_probe(struct platform_device *pdev)
 	platform_set_drvdata(pdev, ddata);
 	ddata->dev = &pdev->dev;
 
-<<<<<<< HEAD
-=======
-	r = tvc_probe_of(pdev);
-	if (r)
-		return r;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ddata->vm = tvc_pal_vm;
 
 	dssdev = &ddata->dssdev;
@@ -266,41 +210,22 @@ static int tvc_probe(struct platform_device *pdev)
 	r = omapdss_register_display(dssdev);
 	if (r) {
 		dev_err(&pdev->dev, "Failed to register panel\n");
-<<<<<<< HEAD
 		return r;
 	}
 
 	return 0;
-=======
-		goto err_reg;
-	}
-
-	return 0;
-err_reg:
-	omap_dss_put_device(ddata->in);
-	return r;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int __exit tvc_remove(struct platform_device *pdev)
 {
 	struct panel_drv_data *ddata = platform_get_drvdata(pdev);
 	struct omap_dss_device *dssdev = &ddata->dssdev;
-<<<<<<< HEAD
-=======
-	struct omap_dss_device *in = ddata->in;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	omapdss_unregister_display(&ddata->dssdev);
 
 	tvc_disable(dssdev);
 	tvc_disconnect(dssdev);
 
-<<<<<<< HEAD
-=======
-	omap_dss_put_device(in);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

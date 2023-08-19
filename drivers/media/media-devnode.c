@@ -4,11 +4,7 @@
  * Copyright (C) 2010 Nokia Corporation
  *
  * Based on drivers/media/video/v4l2_dev.c code authored by
-<<<<<<< HEAD
  *	Mauro Carvalho Chehab <mchehab@kernel.org> (version 2)
-=======
- *	Mauro Carvalho Chehab <mchehab@infradead.org> (version 2)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *	Alan Cox, <alan@lxorguk.ukuu.org.uk> (version 1)
  *
  * Contacts: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
@@ -103,21 +99,13 @@ static ssize_t media_write(struct file *filp, const char __user *buf,
 	return devnode->fops->write(filp, buf, sz, off);
 }
 
-<<<<<<< HEAD
 static __poll_t media_poll(struct file *filp,
-=======
-static unsigned int media_poll(struct file *filp,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       struct poll_table_struct *poll)
 {
 	struct media_devnode *devnode = media_devnode_data(filp);
 
 	if (!media_devnode_is_registered(devnode))
-<<<<<<< HEAD
 		return EPOLLERR | EPOLLHUP;
-=======
-		return POLLERR | POLLHUP;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!devnode->fops->poll)
 		return DEFAULT_POLLMASK;
 	return devnode->fops->poll(filp, poll);

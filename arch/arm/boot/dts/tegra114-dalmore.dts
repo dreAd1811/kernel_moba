@@ -23,11 +23,7 @@
 		stdout-path = "serial0:115200n8";
 	};
 
-<<<<<<< HEAD
 	memory@80000000 {
-=======
-	memory {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x80000000 0x40000000>;
 	};
 
@@ -784,11 +780,7 @@
 			compatible = "realtek,rt5640";
 			reg = <0x1c>;
 			interrupt-parent = <&gpio>;
-<<<<<<< HEAD
 			interrupts = <TEGRA_GPIO(W, 3) IRQ_TYPE_EDGE_FALLING>;
-=======
-			interrupts = <TEGRA_GPIO(W, 3) GPIO_ACTIVE_HIGH>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			realtek,ldo1-en-gpios =
 				<&gpio TEGRA_GPIO(V, 3) GPIO_ACTIVE_HIGH>;
 		};

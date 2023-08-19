@@ -1,57 +1,12 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: BSD-3-Clause OR GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /******************************************************************************
  *
  * Module Name: nsinit - namespace initialization
  *
-<<<<<<< HEAD
  * Copyright (C) 2000 - 2018, Intel Corp.
  *
  *****************************************************************************/
 
-=======
- *****************************************************************************/
-
-/*
- * Copyright (C) 2000 - 2017, Intel Corp.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions, and the following disclaimer,
- *    without modification.
- * 2. Redistributions in binary form must reproduce at minimum a disclaimer
- *    substantially similar to the "NO WARRANTY" disclaimer below
- *    ("Disclaimer") and any redistribution must be conditioned upon
- *    including a substantially similar Disclaimer requirement for further
- *    binary redistribution.
- * 3. Neither the names of the above-listed copyright holders nor the names
- *    of any contributors may be used to endorse or promote products derived
- *    from this software without specific prior written permission.
- *
- * Alternatively, this software may be distributed under the terms of the
- * GNU General Public License ("GPL") version 2 as published by the Free
- * Software Foundation.
- *
- * NO WARRANTY
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
- * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
- * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGES.
- */
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <acpi/acpi.h>
 #include "accommon.h"
 #include "acnamesp.h"
@@ -287,7 +242,6 @@ error_exit:
 
 /*******************************************************************************
  *
-<<<<<<< HEAD
  * FUNCTION:    acpi_ns_init_one_package
  *
  * PARAMETERS:  obj_handle      - Node
@@ -340,8 +294,6 @@ acpi_ns_init_one_package(acpi_handle obj_handle,
 
 /*******************************************************************************
  *
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * FUNCTION:    acpi_ns_init_one_object
  *
  * PARAMETERS:  obj_handle      - Node
@@ -352,11 +304,7 @@ acpi_ns_init_one_package(acpi_handle obj_handle,
  * RETURN:      Status
  *
  * DESCRIPTION: Callback from acpi_walk_namespace. Invoked for every object
-<<<<<<< HEAD
  *              within the namespace.
-=======
- *              within the  namespace.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  *              Currently, the only objects that require initialization are:
  *              1) Methods
@@ -464,30 +412,11 @@ acpi_ns_init_one_object(acpi_handle obj_handle,
 
 	case ACPI_TYPE_PACKAGE:
 
-<<<<<<< HEAD
 		/* Complete the initialization/resolution of the package object */
 
 		info->package_init++;
 		status =
 		    acpi_ns_init_one_package(obj_handle, level, NULL, NULL);
-=======
-		info->package_init++;
-		status = acpi_ds_get_package_arguments(obj_desc);
-		if (ACPI_FAILURE(status)) {
-			break;
-		}
-
-		/*
-		 * Resolve all named references in package objects (and all
-		 * sub-packages). This action has been deferred until the entire
-		 * namespace has been loaded, in order to support external and
-		 * forward references from individual package elements (05/2017).
-		 */
-		status = acpi_ut_walk_package_tree(obj_desc, NULL,
-						   acpi_ds_init_package_element,
-						   NULL);
-		obj_desc->package.flags |= AOPOBJ_DATA_VALID;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	default:

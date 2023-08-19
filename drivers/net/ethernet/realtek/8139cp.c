@@ -753,13 +753,8 @@ static netdev_tx_t cp_start_xmit (struct sk_buff *skb,
 	mss = skb_shinfo(skb)->gso_size;
 
 	if (mss > MSSMask) {
-<<<<<<< HEAD
 		netdev_WARN_ONCE(dev, "Net bug: GSO size %d too large for 8139CP\n",
 				 mss);
-=======
-		WARN_ONCE(1, "Net bug: GSO size %d too large for 8139CP\n",
-			  mss);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out_dma_error;
 	}
 

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 //
 //	originally from arch/arm/plat-s3c24xx/devs.c
@@ -7,21 +6,6 @@
 //	Ben Dooks <ben@simtec.co.uk>
 //
 // Base S3C24XX platform device definitions
-=======
-/* linux/arch/arm/plat-samsung/dev-uart.c
- *	originally from arch/arm/plat-s3c24xx/devs.c
- *x
- * Copyright (c) 2004 Simtec Electronics
- *	Ben Dooks <ben@simtec.co.uk>
- *
- * Base S3C24XX platform device definitions
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
- *
-*/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/kernel.h>
 #include <linux/platform_device.h>

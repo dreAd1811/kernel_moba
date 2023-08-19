@@ -291,7 +291,6 @@
 			#interrupt-cells = <2>;
 			num-pins = <128>;
 		};
-<<<<<<< HEAD
 
 		mbigen_pcie0: intc_pcie0 {
 			msi-parent = <&its_dsa 0x40085>;
@@ -299,8 +298,6 @@
 			#interrupt-cells = <2>;
 			num-pins = <10>;
 		};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	mbigen_dsa@c0080000 {
@@ -322,7 +319,6 @@
 		};
 	};
 
-<<<<<<< HEAD
 	/**
 	 *  HiSilicon erratum 161010801: This describes the limitation
 	 *  of HiSilicon platforms hip06/hip07 to support the SMMUv3
@@ -348,15 +344,12 @@
 		status = "disabled";
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	soc {
 		compatible = "simple-bus";
 		#address-cells = <2>;
 		#size-cells = <2>;
 		ranges;
 
-<<<<<<< HEAD
 		isa@a01b0000 {
 			compatible = "hisilicon,hip06-lpc";
 			#size-cells = <1>;
@@ -378,8 +371,6 @@
 			};
 		};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		refclk: refclk {
 			compatible = "fixed-clock";
 			clock-frequency = <50000000>;
@@ -738,7 +729,6 @@
 				     <637 1>,<638 1>,<639 1>;
 			status = "disabled";
 		};
-<<<<<<< HEAD
 
 		pcie0: pcie@a0090000 {
 			compatible = "hisilicon,hip06-pcie-ecam";
@@ -763,8 +753,6 @@
 			status = "disabled";
 		};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 };

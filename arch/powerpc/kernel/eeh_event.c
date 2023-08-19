@@ -73,10 +73,6 @@ static int eeh_event_handler(void * dummy)
 		/* We might have event without binding PE */
 		pe = event->pe;
 		if (pe) {
-<<<<<<< HEAD
-=======
-			eeh_pe_state_mark(pe, EEH_PE_RECOVERING);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (pe->type & EEH_PE_PHB)
 				pr_info("EEH: Detected error on PHB#%x\n",
 					 pe->phb->global_number);
@@ -84,16 +80,9 @@ static int eeh_event_handler(void * dummy)
 				pr_info("EEH: Detected PCI bus error on "
 					"PHB#%x-PE#%x\n",
 					pe->phb->global_number, pe->addr);
-<<<<<<< HEAD
 			eeh_handle_normal_event(pe);
 		} else {
 			eeh_handle_special_event();
-=======
-			eeh_handle_event(pe);
-			eeh_pe_state_clear(pe, EEH_PE_RECOVERING);
-		} else {
-			eeh_handle_event(NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		kfree(event);

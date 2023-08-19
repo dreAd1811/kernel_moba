@@ -32,16 +32,12 @@
 #define AHCI_VEND_PP3C  0xB0
 #define AHCI_VEND_PP4C  0xB4
 #define AHCI_VEND_PP5C  0xB8
-<<<<<<< HEAD
 #define AHCI_VEND_AXICC 0xBC
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define AHCI_VEND_PAXIC 0xC0
 #define AHCI_VEND_PTC   0xC8
 
 /* Vendor Specific Register bit definitions */
 #define PAXIC_ADBW_BW64 0x1
-<<<<<<< HEAD
 #define PAXIC_MAWID(i)	(((i) * 2) << 4)
 #define PAXIC_MARID(i)	(((i) * 2) << 12)
 #define PAXIC_MARIDD(i)	((((i) * 2) + 1) << 16)
@@ -57,12 +53,6 @@
 #define AXICC_AWCD_VAL  (0xF << 20)
 #define AXICC_AWCF_VAL  (0xF << 24)
 
-=======
-#define PAXIC_MAWIDD	(1 << 8)
-#define PAXIC_MARIDD	(1 << 16)
-#define PAXIC_OTL	(0x4 << 20)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define PCFG_TPSS_VAL	(0x32 << 16)
 #define PCFG_TPRS_VAL	(0x2 << 12)
 #define PCFG_PAD_VAL	0x2
@@ -72,24 +62,6 @@
 #define PPCFG_PSS_EN	(1 << 29)
 #define PPCFG_ESDF_EN	(1 << 31)
 
-<<<<<<< HEAD
-=======
-#define PP2C_CIBGMN	0x0F
-#define PP2C_CIBGMX	(0x25 << 8)
-#define PP2C_CIBGN	(0x18 << 16)
-#define PP2C_CINMP	(0x29 << 24)
-
-#define PP3C_CWBGMN	0x04
-#define PP3C_CWBGMX	(0x0B << 8)
-#define PP3C_CWBGN	(0x08 << 16)
-#define PP3C_CWNMP	(0x0F << 24)
-
-#define PP4C_BMX	0x0a
-#define PP4C_BNM	(0x08 << 8)
-#define PP4C_SFD	(0x4a << 16)
-#define PP4C_PTST	(0x06 << 24)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define PP5C_RIT	0x60216
 #define PP5C_RCT	(0x7f0 << 20)
 
@@ -100,10 +72,7 @@
 #define PORT1_BASE	0x180
 
 /* Port Control Register Bit Definitions */
-<<<<<<< HEAD
 #define PORT_SCTL_SPD_GEN3	(0x3 << 4)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define PORT_SCTL_SPD_GEN2	(0x2 << 4)
 #define PORT_SCTL_SPD_GEN1	(0x1 << 4)
 #define PORT_SCTL_IPM		(0x3 << 8)
@@ -114,7 +83,6 @@
 #define DRV_NAME	"ahci-ceva"
 #define CEVA_FLAG_BROKEN_GEN2	1
 
-<<<<<<< HEAD
 static unsigned int rx_watermark = PTC_RX_WM_VAL;
 module_param(rx_watermark, uint, 0644);
 MODULE_PARM_DESC(rx_watermark, "RxWaterMark value (0 - 0x80)");
@@ -152,15 +120,6 @@ static unsigned int ceva_ahci_read_id(struct ata_device *dev,
 static struct ata_port_operations ahci_ceva_ops = {
 	.inherits = &ahci_platform_ops,
 	.read_id = ceva_ahci_read_id,
-=======
-struct ceva_ahci_priv {
-	struct platform_device *ahci_pdev;
-	int flags;
-};
-
-static struct ata_port_operations ahci_ceva_ops = {
-	.inherits = &ahci_platform_ops,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct ata_port_info ahci_ceva_port_info = {
@@ -177,17 +136,6 @@ static void ahci_ceva_setup(struct ahci_host_priv *hpriv)
 	u32 tmp;
 	int i;
 
-<<<<<<< HEAD
-=======
-	/*
-	 * AXI Data bus width to 64
-	 * Set Mem Addr Read, Write ID for data transfers
-	 * Transfer limit to 72 DWord
-	 */
-	tmp = PAXIC_ADBW_BW64 | PAXIC_MAWIDD | PAXIC_MARIDD | PAXIC_OTL;
-	writel(tmp, mmio + AHCI_VEND_PAXIC);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Set AHCI Enable */
 	tmp = readl(mmio + HOST_CTL);
 	tmp |= HOST_AHCI_EN;
@@ -198,7 +146,6 @@ static void ahci_ceva_setup(struct ahci_host_priv *hpriv)
 		tmp = PCFG_TPSS_VAL | PCFG_TPRS_VAL | (PCFG_PAD_VAL + i);
 		writel(tmp, mmio + AHCI_VEND_PCFG);
 
-<<<<<<< HEAD
 		/*
 		 * AXI Data bus width to 64
 		 * Set Mem Addr Read, Write ID for data transfers
@@ -219,14 +166,11 @@ static void ahci_ceva_setup(struct ahci_host_priv *hpriv)
 			writel(tmp, mmio + AHCI_VEND_AXICC);
 		}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Port Phy Cfg register enables */
 		tmp = PPCFG_TTA | PPCFG_PSS_EN | PPCFG_ESDF_EN;
 		writel(tmp, mmio + AHCI_VEND_PPCFG);
 
 		/* Phy Control OOB timing parameters COMINIT */
-<<<<<<< HEAD
 		writel(cevapriv->pp2c[i], mmio + AHCI_VEND_PP2C);
 
 		/* Phy Control OOB timing parameters COMWAKE */
@@ -244,29 +188,6 @@ static void ahci_ceva_setup(struct ahci_host_priv *hpriv)
 
 		/* Default to Gen 3 Speed and Gen 1 if Gen2 is broken */
 		tmp = PORT_SCTL_SPD_GEN3 | PORT_SCTL_IPM;
-=======
-		tmp = PP2C_CIBGMN | PP2C_CIBGMX | PP2C_CIBGN | PP2C_CINMP;
-		writel(tmp, mmio + AHCI_VEND_PP2C);
-
-		/* Phy Control OOB timing parameters COMWAKE */
-		tmp = PP3C_CWBGMN | PP3C_CWBGMX | PP3C_CWBGN | PP3C_CWNMP;
-		writel(tmp, mmio + AHCI_VEND_PP3C);
-
-		/* Phy Control Burst timing setting */
-		tmp = PP4C_BMX | PP4C_BNM | PP4C_SFD | PP4C_PTST;
-		writel(tmp, mmio + AHCI_VEND_PP4C);
-
-		/* Rate Change Timer and Retry Interval Timer setting */
-		tmp = PP5C_RIT | PP5C_RCT;
-		writel(tmp, mmio + AHCI_VEND_PP5C);
-
-		/* Rx Watermark setting  */
-		tmp = PTC_RX_WM_VAL | PTC_RSVD;
-		writel(tmp, mmio + AHCI_VEND_PTC);
-
-		/* Default to Gen 2 Speed and Gen 1 if Gen2 is broken */
-		tmp = PORT_SCTL_SPD_GEN2 | PORT_SCTL_IPM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (cevapriv->flags & CEVA_FLAG_BROKEN_GEN2)
 			tmp = PORT_SCTL_SPD_GEN1 | PORT_SCTL_IPM;
 		writel(tmp, mmio + PORT_SCR_CTL + PORT_BASE + PORT_OFFSET * i);
@@ -283,10 +204,7 @@ static int ceva_ahci_probe(struct platform_device *pdev)
 	struct device *dev = &pdev->dev;
 	struct ahci_host_priv *hpriv;
 	struct ceva_ahci_priv *cevapriv;
-<<<<<<< HEAD
 	enum dev_dma_attr attr;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc;
 
 	cevapriv = devm_kzalloc(dev, sizeof(*cevapriv), GFP_KERNEL);
@@ -295,11 +213,7 @@ static int ceva_ahci_probe(struct platform_device *pdev)
 
 	cevapriv->ahci_pdev = pdev;
 
-<<<<<<< HEAD
 	hpriv = ahci_platform_get_resources(pdev, 0);
-=======
-	hpriv = ahci_platform_get_resources(pdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(hpriv))
 		return PTR_ERR(hpriv);
 
@@ -310,7 +224,6 @@ static int ceva_ahci_probe(struct platform_device *pdev)
 	if (of_property_read_bool(np, "ceva,broken-gen2"))
 		cevapriv->flags = CEVA_FLAG_BROKEN_GEN2;
 
-<<<<<<< HEAD
 	/* Read OOB timing value for COMINIT from device-tree */
 	if (of_property_read_u8_array(np, "ceva,p0-cominit-params",
 					(u8 *)&cevapriv->pp2c[0], 4) < 0) {
@@ -370,8 +283,6 @@ static int ceva_ahci_probe(struct platform_device *pdev)
 	attr = device_get_dma_attr(dev);
 	cevapriv->is_cci_enabled = (attr == DEV_DMA_COHERENT);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hpriv->plat_data = cevapriv;
 
 	/* CEVA specific initialization */
@@ -391,16 +302,11 @@ disable_resources:
 
 static int __maybe_unused ceva_ahci_suspend(struct device *dev)
 {
-<<<<<<< HEAD
 	return ahci_platform_suspend(dev);
-=======
-	return ahci_platform_suspend_host(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int __maybe_unused ceva_ahci_resume(struct device *dev)
 {
-<<<<<<< HEAD
 	struct ata_host *host = dev_get_drvdata(dev);
 	struct ahci_host_priv *hpriv = host->private_data;
 	int rc;
@@ -427,9 +333,6 @@ disable_resources:
 	ahci_platform_disable_resources(hpriv);
 
 	return rc;
-=======
-	return ahci_platform_resume_host(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static SIMPLE_DEV_PM_OPS(ahci_ceva_pm_ops, ceva_ahci_suspend, ceva_ahci_resume);

@@ -17,11 +17,7 @@
 #include <linux/delay.h>
 #include <linux/interrupt.h>
 #include <linux/i2c.h>
-<<<<<<< HEAD
 #include <linux/platform_data/i2c-pca-platform.h>
-=======
-#include <linux/i2c-pca-platform.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/i2c-algo-pca.h>
 #include <linux/usb/r8a66597.h>
 #include <linux/sh_intc.h>
@@ -29,10 +25,7 @@
 #include <linux/io.h>
 #include <linux/clk.h>
 #include <linux/errno.h>
-<<<<<<< HEAD
 #include <linux/gpio/machine.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <mach/sh7785lcr.h>
 #include <cpu/sh7785.h>
 #include <asm/heartbeat.h>
@@ -251,7 +244,6 @@ static struct resource i2c_resources[] = {
 	},
 };
 
-<<<<<<< HEAD
 static struct gpiod_lookup_table i2c_gpio_table = {
 	.dev_id = "i2c.0",
 	.table = {
@@ -261,10 +253,6 @@ static struct gpiod_lookup_table i2c_gpio_table = {
 };
 
 static struct i2c_pca9564_pf_platform_data i2c_platform_data = {
-=======
-static struct i2c_pca9564_pf_platform_data i2c_platform_data = {
-	.gpio			= 0,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.i2c_clock_speed	= I2C_PCA_CON_330kHz,
 	.timeout		= HZ,
 };
@@ -303,10 +291,7 @@ static int __init sh7785lcr_devices_setup(void)
 		i2c_device.num_resources = ARRAY_SIZE(i2c_proto_resources);
 	}
 
-<<<<<<< HEAD
 	gpiod_add_lookup_table(&i2c_gpio_table);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return platform_add_devices(sh7785lcr_devices,
 				    ARRAY_SIZE(sh7785lcr_devices));
 }

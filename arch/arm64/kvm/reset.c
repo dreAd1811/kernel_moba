@@ -31,10 +31,7 @@
 #include <asm/kvm_arm.h>
 #include <asm/kvm_asm.h>
 #include <asm/kvm_coproc.h>
-<<<<<<< HEAD
 #include <asm/kvm_emulate.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/kvm_mmu.h>
 
 /*
@@ -46,13 +43,8 @@ static const struct kvm_regs default_regs_reset = {
 };
 
 static const struct kvm_regs default_regs_reset32 = {
-<<<<<<< HEAD
 	.regs.pstate = (PSR_AA32_MODE_SVC | PSR_AA32_A_BIT |
 			PSR_AA32_I_BIT | PSR_AA32_F_BIT),
-=======
-	.regs.pstate = (COMPAT_PSR_MODE_SVC | COMPAT_PSR_A_BIT |
-			COMPAT_PSR_I_BIT | COMPAT_PSR_F_BIT),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static bool cpu_has_32bit_el1(void)
@@ -86,17 +78,12 @@ int kvm_arch_dev_ioctl_check_extension(struct kvm *kvm, long ext)
 	case KVM_CAP_ARM_PMU_V3:
 		r = kvm_arm_support_pmu_v3();
 		break;
-<<<<<<< HEAD
 	case KVM_CAP_ARM_INJECT_SERROR_ESR:
 		r = cpus_have_const_cap(ARM64_HAS_RAS_EXTN);
 		break;
 	case KVM_CAP_SET_GUEST_DEBUG:
 	case KVM_CAP_VCPU_ATTRIBUTES:
 	case KVM_CAP_VCPU_EVENTS:
-=======
-	case KVM_CAP_SET_GUEST_DEBUG:
-	case KVM_CAP_VCPU_ATTRIBUTES:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		r = 1;
 		break;
 	default:
@@ -130,12 +117,9 @@ int kvm_reset_vcpu(struct kvm_vcpu *vcpu)
 	int ret = -EINVAL;
 	bool loaded;
 
-<<<<<<< HEAD
 	/* Reset PMU outside of the non-preemptible section */
 	kvm_pmu_vcpu_reset(vcpu);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	preempt_disable();
 	loaded = (vcpu->cpu != -1);
 	if (loaded)
@@ -160,7 +144,6 @@ int kvm_reset_vcpu(struct kvm_vcpu *vcpu)
 	/* Reset system registers */
 	kvm_reset_sys_regs(vcpu);
 
-<<<<<<< HEAD
 	/*
 	 * Additional reset state handling that PSCI may have imposed on us.
 	 * Must be done after all the sys_reg reset.
@@ -183,10 +166,6 @@ int kvm_reset_vcpu(struct kvm_vcpu *vcpu)
 
 		vcpu->arch.reset_state.reset = false;
 	}
-=======
-	/* Reset PMU */
-	kvm_pmu_vcpu_reset(vcpu);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Default workaround setup is enabled (if supported) */
 	if (kvm_arm_have_ssbd() == KVM_SSBD_KERNEL)

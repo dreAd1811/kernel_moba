@@ -20,42 +20,12 @@
 #include <linux/serial_reg.h>
 
 #include <asm/bootinfo.h>
-<<<<<<< HEAD
 #include <asm/fw/fw.h>
 #include <asm/mach-jz4740/base.h>
 
 void __init prom_init(void)
 {
 	fw_init_cmdline();
-=======
-#include <asm/mach-jz4740/base.h>
-
-static __init void jz4740_init_cmdline(int argc, char *argv[])
-{
-	unsigned int count = COMMAND_LINE_SIZE - 1;
-	int i;
-	char *dst = &(arcs_cmdline[0]);
-	char *src;
-
-	for (i = 1; i < argc && count; ++i) {
-		src = argv[i];
-		while (*src && count) {
-			*dst++ = *src++;
-			--count;
-		}
-		*dst++ = ' ';
-	}
-	if (i > 1)
-		--dst;
-
-	*dst = 0;
-}
-
-void __init prom_init(void)
-{
-	jz4740_init_cmdline((int)fw_arg0, (char **)fw_arg1);
-	mips_machtype = MACH_INGENIC_JZ4740;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void __init prom_free_prom_memory(void)

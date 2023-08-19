@@ -65,11 +65,7 @@ static int gnss_serial_write_raw(struct gnss_device *gdev,
 
 	/* write is only buffered synchronously */
 	ret = serdev_device_write(serdev, buf, count, MAX_SCHEDULE_TIMEOUT);
-<<<<<<< HEAD
 	if (ret < 0)
-=======
-	if (ret < 0 || ret < count)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 
 	/* FIXME: determine if interrupted? */

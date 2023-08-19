@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2018-2020, The Linux Foundation. All rights reserved.
@@ -10,38 +9,10 @@
 #include "kgsl_device.h"
 #include "kgsl_gmu_core.h"
 #include "kgsl_trace.h"
-=======
-/* Copyright (c) 2018-2020, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- */
-#include <linux/module.h>
-#include <linux/types.h>
-
-#include "kgsl_device.h"
-#include "kgsl_gmu_core.h"
-#include "kgsl_trace.h"
-#include "adreno.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #undef MODULE_PARAM_PREFIX
 #define MODULE_PARAM_PREFIX "kgsl_gmu."
 
-<<<<<<< HEAD
-=======
-static bool nogmu;
-module_param(nogmu, bool, 0444);
-MODULE_PARM_DESC(nogmu, "Disable the GMU");
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct {
 	char *compat;
 	struct gmu_core_ops *core_ops;
@@ -125,16 +96,11 @@ bool gmu_core_isenabled(struct kgsl_device *device)
 
 bool gmu_core_gpmu_isenabled(struct kgsl_device *device)
 {
-<<<<<<< HEAD
 	return test_bit(GMU_GPMU, &device->gmu_core.flags);
-=======
-	return test_bit(GMU_GPMU, &device->gmu_core.flags) && !nogmu;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 bool gmu_core_scales_bandwidth(struct kgsl_device *device)
 {
-<<<<<<< HEAD
 	struct adreno_device *adreno_dev = ADRENO_DEVICE(device);
 
 	if (device->gmu_core.type == GMU_CORE_TYPE_PCC)
@@ -152,14 +118,6 @@ int gmu_core_init(struct kgsl_device *device)
 		return gmu_core_ops->init(device);
 
 	return 0;
-=======
-	if (device->gmu_core.type == GMU_CORE_TYPE_PCC)
-		return false;
-	else
-		return gmu_core_gpmu_isenabled(device) &&
-		(adreno_is_a640(ADRENO_DEVICE(device)) ||
-			adreno_is_a680(ADRENO_DEVICE(device)));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int gmu_core_start(struct kgsl_device *device)
@@ -243,16 +201,9 @@ void gmu_core_regread(struct kgsl_device *device, unsigned int offsetwords,
 {
 	void __iomem *reg;
 
-<<<<<<< HEAD
 	if (WARN(!gmu_core_is_register_offset(device, offsetwords),
 			"Out of bounds register read: 0x%x\n", offsetwords))
 		return;
-=======
-	if (!gmu_core_is_register_offset(device, offsetwords)) {
-		WARN(1, "Out of bounds register read: 0x%x\n", offsetwords);
-		return;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	offsetwords -= device->gmu_core.gmu2gpu_offset;
 
@@ -272,16 +223,9 @@ void gmu_core_regwrite(struct kgsl_device *device, unsigned int offsetwords,
 {
 	void __iomem *reg;
 
-<<<<<<< HEAD
 	if (WARN(!gmu_core_is_register_offset(device, offsetwords),
 			"Out of bounds register write: 0x%x\n", offsetwords))
 		return;
-=======
-	if (!gmu_core_is_register_offset(device, offsetwords)) {
-		WARN(1, "Out of bounds register write: 0x%x\n", offsetwords);
-		return;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	trace_kgsl_regwrite(device, offsetwords, value);
 
@@ -301,15 +245,8 @@ void gmu_core_blkwrite(struct kgsl_device *device, unsigned int offsetwords,
 {
 	void __iomem *base;
 
-<<<<<<< HEAD
 	if (WARN_ON(!gmu_core_is_register_offset(device, offsetwords)))
 		return;
-=======
-	if (!gmu_core_is_register_offset(device, offsetwords)) {
-		WARN(1, "Out of bounds register write: 0x%x\n", offsetwords);
-		return;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	offsetwords -= device->gmu_core.gmu2gpu_offset;
 	base = device->gmu_core.reg_virt + (offsetwords << 2);
@@ -323,23 +260,15 @@ void gmu_core_regrmw(struct kgsl_device *device,
 {
 	unsigned int val = 0;
 
-<<<<<<< HEAD
 	if (WARN(!gmu_core_is_register_offset(device, offsetwords),
 			"Out of bounds register rmw: 0x%x\n", offsetwords))
 		return;
-=======
-	if (!gmu_core_is_register_offset(device, offsetwords)) {
-		WARN(1, "Out of bounds register rmw: 0x%x\n", offsetwords);
-		return;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	gmu_core_regread(device, offsetwords, &val);
 	val &= ~mask;
 	gmu_core_regwrite(device, offsetwords, val | bits);
 }
 
-<<<<<<< HEAD
 int gmu_core_dev_oob_set(struct kgsl_device *device, enum oob_request req)
 {
 	struct gmu_dev_ops *ops = GMU_DEVICE_OPS(device);
@@ -414,8 +343,6 @@ bool gmu_core_dev_gx_is_on(struct kgsl_device *device)
 	return true;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 bool gmu_core_dev_cx_is_on(struct kgsl_device *device)
 {
 	struct gmu_dev_ops *ops = GMU_DEVICE_OPS(device);
@@ -426,7 +353,6 @@ bool gmu_core_dev_cx_is_on(struct kgsl_device *device)
 	return true;
 }
 
-<<<<<<< HEAD
 int gmu_core_dev_ifpc_show(struct kgsl_device *device)
 {
 	struct gmu_dev_ops *ops = GMU_DEVICE_OPS(device);
@@ -463,16 +389,6 @@ int gmu_core_dev_wait_for_active_transition(struct kgsl_device *device)
 		return ops->wait_for_active_transition(device);
 
 	return 0;
-=======
-bool gmu_core_is_initialized(struct kgsl_device *device)
-{
-	struct gmu_core_ops *gmu_core_ops = GMU_CORE_OPS(device);
-
-	if (gmu_core_ops && gmu_core_ops->is_initialized)
-		return gmu_core_ops->is_initialized(device);
-
-	return false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 u64 gmu_core_dev_read_ao_counter(struct kgsl_device *device)

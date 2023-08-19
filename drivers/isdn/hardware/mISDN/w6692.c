@@ -311,10 +311,6 @@ W6692_fill_Dfifo(struct w6692_hw *card)
 		pr_debug("%s: fill_Dfifo dbusytimer running\n", card->name);
 		del_timer(&dch->timer);
 	}
-<<<<<<< HEAD
-=======
-	init_timer(&dch->timer);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dch->timer.expires = jiffies + ((DBUSY_TIMER_VALUE * HZ) / 1000);
 	add_timer(&dch->timer);
 	if (debug & DEBUG_HW_DFIFO) {
@@ -822,14 +818,9 @@ w6692_irq(int intno, void *dev_id)
 }
 
 static void
-<<<<<<< HEAD
 dbusy_timer_handler(struct timer_list *t)
 {
 	struct dchannel *dch = from_timer(dch, t, timer);
-=======
-dbusy_timer_handler(struct dchannel *dch)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct w6692_hw	*card = dch->hw;
 	int		rbch, star;
 	u_long		flags;
@@ -861,12 +852,7 @@ static void initW6692(struct w6692_hw *card)
 {
 	u8	val;
 
-<<<<<<< HEAD
 	timer_setup(&card->dch.timer, dbusy_timer_handler, 0);
-=======
-	setup_timer(&card->dch.timer, (void *)dbusy_timer_handler,
-		    (u_long)&card->dch);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	w6692_mode(&card->bc[0], ISDN_P_NONE);
 	w6692_mode(&card->bc[1], ISDN_P_NONE);
 	WriteW6692(card, W_D_CTL, 0x00);

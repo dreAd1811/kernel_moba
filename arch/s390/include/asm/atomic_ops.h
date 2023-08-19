@@ -40,7 +40,6 @@ __ATOMIC_OPS(__atomic64_xor, long, "laxg")
 #undef __ATOMIC_OPS
 #undef __ATOMIC_OP
 
-<<<<<<< HEAD
 #define __ATOMIC_CONST_OP(op_name, op_type, op_string, op_barrier)	\
 static inline void op_name(op_type val, op_type *ptr)			\
 {									\
@@ -59,21 +58,6 @@ __ATOMIC_CONST_OPS(__atomic64_add_const, long, "agsi")
 
 #undef __ATOMIC_CONST_OPS
 #undef __ATOMIC_CONST_OP
-=======
-static inline void __atomic_add_const(int val, int *ptr)
-{
-	asm volatile(
-		"	asi	%[ptr],%[val]\n"
-		: [ptr] "+Q" (*ptr) : [val] "i" (val) : "cc");
-}
-
-static inline void __atomic64_add_const(long val, long *ptr)
-{
-	asm volatile(
-		"	agsi	%[ptr],%[val]\n"
-		: [ptr] "+Q" (*ptr) : [val] "i" (val) : "cc");
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #else /* CONFIG_HAVE_MARCH_Z196_FEATURES */
 
@@ -129,14 +113,11 @@ __ATOMIC64_OPS(__atomic64_xor, "xgr")
 
 #undef __ATOMIC64_OPS
 
-<<<<<<< HEAD
 #define __atomic_add_const(val, ptr)		__atomic_add(val, ptr)
 #define __atomic_add_const_barrier(val, ptr)	__atomic_add(val, ptr)
 #define __atomic64_add_const(val, ptr)		__atomic64_add(val, ptr)
 #define __atomic64_add_const_barrier(val, ptr)	__atomic64_add(val, ptr)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_HAVE_MARCH_Z196_FEATURES */
 
 static inline int __atomic_cmpxchg(int *ptr, int old, int new)

@@ -78,16 +78,10 @@ struct mtd_info *lpddr_cmdset(struct map_info *map)
 	mtd->erasesize = 1 << lpddr->qinfo->UniformBlockSizeShift;
 	mtd->writesize = 1 << lpddr->qinfo->BufSizeShift;
 
-<<<<<<< HEAD
 	shared = kmalloc_array(lpddr->numchips, sizeof(struct flchip_shared),
 						GFP_KERNEL);
 	if (!shared) {
 		kfree(lpddr);
-=======
-	shared = kmalloc(sizeof(struct flchip_shared) * lpddr->numchips,
-						GFP_KERNEL);
-	if (!shared) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(mtd);
 		return NULL;
 	}
@@ -699,11 +693,6 @@ static int lpddr_erase(struct mtd_info *mtd, struct erase_info *instr)
 		ofs += size;
 		len -= size;
 	}
-<<<<<<< HEAD
-=======
-	instr->state = MTD_ERASE_DONE;
-	mtd_erase_callback(instr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

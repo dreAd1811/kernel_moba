@@ -732,7 +732,6 @@ static int sht3x_probe(struct i2c_client *client,
 	mutex_init(&data->i2c_lock);
 	mutex_init(&data->data_lock);
 
-<<<<<<< HEAD
 	/*
 	 * An attempt to read limits register too early
 	 * causes a NACK response from the chip.
@@ -740,8 +739,6 @@ static int sht3x_probe(struct i2c_client *client,
 	 */
 	usleep_range(500, 600);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = limits_update(data);
 	if (ret)
 		return ret;

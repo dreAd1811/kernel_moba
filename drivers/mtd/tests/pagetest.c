@@ -127,11 +127,7 @@ static int crosstest(void)
 	unsigned char *pp1, *pp2, *pp3, *pp4;
 
 	pr_info("crosstest\n");
-<<<<<<< HEAD
 	pp1 = kcalloc(pgsize, 4, GFP_KERNEL);
-=======
-	pp1 = kzalloc(pgsize * 4, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!pp1)
 		return -ENOMEM;
 	pp2 = pp1 + pgsize;
@@ -439,7 +435,6 @@ static int __init mtd_pagetest_init(void)
 	if (err)
 		goto out;
 
-<<<<<<< HEAD
 	if (ebcnt > 1) {
 		err = erasecrosstest();
 		if (err)
@@ -447,11 +442,6 @@ static int __init mtd_pagetest_init(void)
 	} else {
 		pr_info("skipping erasecrosstest, 2 erase blocks needed\n");
 	}
-=======
-	err = erasecrosstest();
-	if (err)
-		goto out;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = erasetest();
 	if (err)

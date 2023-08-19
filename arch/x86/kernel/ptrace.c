@@ -40,10 +40,6 @@
 #include <asm/hw_breakpoint.h>
 #include <asm/traps.h>
 #include <asm/syscall.h>
-<<<<<<< HEAD
-=======
-#include <asm/mmu_context.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "tls.h"
 
@@ -347,52 +343,6 @@ static int set_segment_reg(struct task_struct *task,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-static unsigned long task_seg_base(struct task_struct *task,
-				   unsigned short selector)
-{
-	unsigned short idx = selector >> 3;
-	unsigned long base;
-
-	if (likely((selector & SEGMENT_TI_MASK) == 0)) {
-		if (unlikely(idx >= GDT_ENTRIES))
-			return 0;
-
-		/*
-		 * There are no user segments in the GDT with nonzero bases
-		 * other than the TLS segments.
-		 */
-		if (idx < GDT_ENTRY_TLS_MIN || idx > GDT_ENTRY_TLS_MAX)
-			return 0;
-
-		idx -= GDT_ENTRY_TLS_MIN;
-		base = get_desc_base(&task->thread.tls_array[idx]);
-	} else {
-#ifdef CONFIG_MODIFY_LDT_SYSCALL
-		struct ldt_struct *ldt;
-
-		/*
-		 * If performance here mattered, we could protect the LDT
-		 * with RCU.  This is a slow path, though, so we can just
-		 * take the mutex.
-		 */
-		mutex_lock(&task->mm->context.lock);
-		ldt = task->mm->context.ldt;
-		if (unlikely(idx >= ldt->nr_entries))
-			base = 0;
-		else
-			base = get_desc_base(ldt->entries + idx);
-		mutex_unlock(&task->mm->context.lock);
-#else
-		base = 0;
-#endif
-	}
-
-	return base;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif	/* CONFIG_X86_32 */
 
 static unsigned long get_flags(struct task_struct *task)
@@ -486,7 +436,6 @@ static unsigned long getreg(struct task_struct *task, unsigned long offset)
 
 #ifdef CONFIG_X86_64
 	case offsetof(struct user_regs_struct, fs_base): {
-<<<<<<< HEAD
 		/*
 		 * XXX: This will not behave as expected if called on
 		 * current or if fsindex != 0.
@@ -499,18 +448,6 @@ static unsigned long getreg(struct task_struct *task, unsigned long offset)
 		 * current or if fsindex != 0.
 		 */
 		return task->thread.gsbase;
-=======
-		if (task->thread.fsindex == 0)
-			return task->thread.fsbase;
-		else
-			return task_seg_base(task, task->thread.fsindex);
-	}
-	case offsetof(struct user_regs_struct, gs_base): {
-		if (task->thread.gsindex == 0)
-			return task->thread.gsbase;
-		else
-			return task_seg_base(task, task->thread.gsindex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 #endif
 	}
@@ -1442,10 +1379,6 @@ static void fill_sigtrap_info(struct task_struct *tsk,
 	tsk->thread.trap_nr = X86_TRAP_DB;
 	tsk->thread.error_code = error_code;
 
-<<<<<<< HEAD
-=======
-	memset(info, 0, sizeof(*info));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	info->si_signo = SIGTRAP;
 	info->si_code = si_code;
 	info->si_addr = user_mode(regs) ? (void __user *)regs->ip : NULL;
@@ -1463,10 +1396,7 @@ void send_sigtrap(struct task_struct *tsk, struct pt_regs *regs,
 {
 	struct siginfo info;
 
-<<<<<<< HEAD
 	clear_siginfo(&info);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	fill_sigtrap_info(tsk, regs, error_code, si_code, &info);
 	/* Send us the fake SIGTRAP */
 	force_sig_info(SIGTRAP, &info, tsk);

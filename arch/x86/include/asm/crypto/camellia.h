@@ -2,14 +2,9 @@
 #ifndef ASM_X86_CAMELLIA_H
 #define ASM_X86_CAMELLIA_H
 
-<<<<<<< HEAD
 #include <crypto/b128ops.h>
 #include <linux/crypto.h>
 #include <linux/kernel.h>
-=======
-#include <linux/kernel.h>
-#include <linux/crypto.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define CAMELLIA_MIN_KEY_SIZE	16
 #define CAMELLIA_MAX_KEY_SIZE	32
@@ -17,24 +12,13 @@
 #define CAMELLIA_TABLE_BYTE_LEN	272
 #define CAMELLIA_PARALLEL_BLOCKS 2
 
-<<<<<<< HEAD
 struct crypto_skcipher;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct camellia_ctx {
 	u64 key_table[CAMELLIA_TABLE_BYTE_LEN / sizeof(u64)];
 	u32 key_length;
 };
 
-<<<<<<< HEAD
-=======
-struct camellia_lrw_ctx {
-	struct lrw_table_ctx lrw_table;
-	struct camellia_ctx camellia_ctx;
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct camellia_xts_ctx {
 	struct camellia_ctx tweak_ctx;
 	struct camellia_ctx crypt_ctx;
@@ -44,15 +28,7 @@ extern int __camellia_setkey(struct camellia_ctx *cctx,
 			     const unsigned char *key,
 			     unsigned int key_len, u32 *flags);
 
-<<<<<<< HEAD
 extern int xts_camellia_setkey(struct crypto_skcipher *tfm, const u8 *key,
-=======
-extern int lrw_camellia_setkey(struct crypto_tfm *tfm, const u8 *key,
-			       unsigned int keylen);
-extern void lrw_camellia_exit_tfm(struct crypto_tfm *tfm);
-
-extern int xts_camellia_setkey(struct crypto_tfm *tfm, const u8 *key,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       unsigned int keylen);
 
 /* regular block cipher functions */

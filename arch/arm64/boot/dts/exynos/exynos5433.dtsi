@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Samsung's Exynos5433 SoC device tree source
  *
@@ -14,13 +11,6 @@
  * Note: This file does not include device nodes for all the controllers in
  * Exynos5433 SoC. As device tree coverage for Exynos5433 increases,
  * additional nodes can be added to this file.
-<<<<<<< HEAD
-=======
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <dt-bindings/clock/exynos5433.h>
@@ -28,13 +18,8 @@
 
 / {
 	compatible = "samsung,exynos5433";
-<<<<<<< HEAD
 	#address-cells = <1>;
 	#size-cells = <1>;
-=======
-	#address-cells = <2>;
-	#size-cells = <2>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	interrupt-parent = <&gic>;
 
@@ -246,21 +231,10 @@
 		cpu_on = <0xC4000003>;
 	};
 
-<<<<<<< HEAD
-=======
-	reboot: syscon-reboot {
-		compatible = "syscon-reboot";
-		regmap = <&pmu_system_controller>;
-		offset = <0x400>; /* SWRESET */
-		mask = <0x1>;
-	};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	soc: soc {
 		compatible = "simple-bus";
 		#address-cells = <1>;
 		#size-cells = <1>;
-<<<<<<< HEAD
 		ranges;
 
 		arm_a53_pmu {
@@ -280,9 +254,6 @@
 				     <GIC_SPI 55 IRQ_TYPE_LEVEL_HIGH>;
 			interrupt-affinity = <&cpu4>, <&cpu5>, <&cpu6>, <&cpu7>;
 		};
-=======
-		ranges = <0x0 0x0 0x0 0x18000000>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		chipid@10000000 {
 			compatible = "samsung,exynos4210-chipid";
@@ -380,10 +351,7 @@
 			clocks = <&xxti>,
 				<&cmu_top CLK_ACLK_G2D_266>,
 				<&cmu_top CLK_ACLK_G2D_400>;
-<<<<<<< HEAD
 			power-domains = <&pd_g2d>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		cmu_disp: clock-controller@13b90000 {
@@ -409,10 +377,7 @@
 				<&cmu_mif CLK_SCLK_DECON_ECLK_DISP>,
 				<&cmu_mif CLK_SCLK_DECON_TV_VCLK_DISP>,
 				<&cmu_mif CLK_ACLK_DISP_333>;
-<<<<<<< HEAD
 			power-domains = <&pd_disp>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		cmu_aud: clock-controller@114c0000 {
@@ -421,10 +386,7 @@
 			#clock-cells = <1>;
 			clock-names = "oscclk", "fout_aud_pll";
 			clocks = <&xxti>, <&cmu_top CLK_FOUT_AUD_PLL>;
-<<<<<<< HEAD
 			power-domains = <&pd_aud>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		cmu_bus0: clock-controller@13600000 {
@@ -461,10 +423,7 @@
 
 			clock-names = "oscclk", "aclk_g3d_400";
 			clocks = <&xxti>, <&cmu_top CLK_ACLK_G3D_400>;
-<<<<<<< HEAD
 			power-domains = <&pd_g3d>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		cmu_gscl: clock-controller@13cf0000 {
@@ -478,10 +437,7 @@
 			clocks = <&xxti>,
 				<&cmu_top CLK_ACLK_GSCL_111>,
 				<&cmu_top CLK_ACLK_GSCL_333>;
-<<<<<<< HEAD
 			power-domains = <&pd_gscl>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		cmu_apollo: clock-controller@11900000 {
@@ -502,11 +458,7 @@
 			clocks = <&xxti>, <&cmu_mif CLK_SCLK_BUS_PLL_ATLAS>;
 		};
 
-<<<<<<< HEAD
 		cmu_mscl: clock-controller@150d0000 {
-=======
-		cmu_mscl: clock-controller@105d0000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "samsung,exynos5433-cmu-mscl";
 			reg = <0x150d0000 0x1000>;
 			#clock-cells = <1>;
@@ -517,10 +469,7 @@
 			clocks = <&xxti>,
 				<&cmu_top CLK_SCLK_JPEG_MSCL>,
 				<&cmu_top CLK_ACLK_MSCL_400>;
-<<<<<<< HEAD
 			power-domains = <&pd_mscl>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		cmu_mfc: clock-controller@15280000 {
@@ -530,10 +479,7 @@
 
 			clock-names = "oscclk", "aclk_mfc_400";
 			clocks = <&xxti>, <&cmu_top CLK_ACLK_MFC_400>;
-<<<<<<< HEAD
 			power-domains = <&pd_mfc>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		cmu_hevc: clock-controller@14f80000 {
@@ -543,10 +489,7 @@
 
 			clock-names = "oscclk", "aclk_hevc_400";
 			clocks = <&xxti>, <&cmu_top CLK_ACLK_HEVC_400>;
-<<<<<<< HEAD
 			power-domains = <&pd_hevc>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		cmu_isp: clock-controller@146d0000 {
@@ -560,10 +503,7 @@
 			clocks = <&xxti>,
 				<&cmu_top CLK_ACLK_ISP_DIS_400>,
 				<&cmu_top CLK_ACLK_ISP_400>;
-<<<<<<< HEAD
 			power-domains = <&pd_isp>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		cmu_cam0: clock-controller@120d0000 {
@@ -579,10 +519,7 @@
 				<&cmu_top CLK_ACLK_CAM0_333>,
 				<&cmu_top CLK_ACLK_CAM0_400>,
 				<&cmu_top CLK_ACLK_CAM0_552>;
-<<<<<<< HEAD
 			power-domains = <&pd_cam0>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		cmu_cam1: clock-controller@145d0000 {
@@ -604,7 +541,6 @@
 				<&cmu_top CLK_ACLK_CAM1_333>,
 				<&cmu_top CLK_ACLK_CAM1_400>,
 				<&cmu_top CLK_ACLK_CAM1_552>;
-<<<<<<< HEAD
 			power-domains = <&pd_cam1>;
 		};
 
@@ -685,8 +621,6 @@
 			reg = <0x105c41c0 0x20>;
 			#power-domain-cells = <0>;
 			label = "HEVC";
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		tmu_atlas0: tmu@10060000 {
@@ -696,11 +630,7 @@
 			clocks = <&cmu_peris CLK_PCLK_TMU0_APBIF>,
 				<&cmu_peris CLK_SCLK_TMU0>;
 			clock-names = "tmu_apbif", "tmu_sclk";
-<<<<<<< HEAD
 			#thermal-sensor-cells = <0>;
-=======
-			#include "exynos5433-tmu-sensor-conf.dtsi"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 
@@ -711,11 +641,7 @@
 			clocks = <&cmu_peris CLK_PCLK_TMU0_APBIF>,
 				<&cmu_peris CLK_SCLK_TMU0>;
 			clock-names = "tmu_apbif", "tmu_sclk";
-<<<<<<< HEAD
 			#thermal-sensor-cells = <0>;
-=======
-			#include "exynos5433-tmu-sensor-conf.dtsi"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 
@@ -726,11 +652,7 @@
 			clocks = <&cmu_peris CLK_PCLK_TMU1_APBIF>,
 				<&cmu_peris CLK_SCLK_TMU1>;
 			clock-names = "tmu_apbif", "tmu_sclk";
-<<<<<<< HEAD
 			#thermal-sensor-cells = <0>;
-=======
-			#include "exynos5433-tmu-g3d-sensor-conf.dtsi"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 
@@ -741,11 +663,7 @@
 			clocks = <&cmu_peris CLK_PCLK_TMU1_APBIF>,
 				<&cmu_peris CLK_SCLK_TMU1>;
 			clock-names = "tmu_apbif", "tmu_sclk";
-<<<<<<< HEAD
 			#thermal-sensor-cells = <0>;
-=======
-			#include "exynos5433-tmu-sensor-conf.dtsi"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 
@@ -756,11 +674,7 @@
 			clocks = <&cmu_peris CLK_PCLK_TMU1_APBIF>,
 				<&cmu_peris CLK_SCLK_TMU1>;
 			clock-names = "tmu_apbif", "tmu_sclk";
-<<<<<<< HEAD
 			#thermal-sensor-cells = <0>;
-=======
-			#include "exynos5433-tmu-sensor-conf.dtsi"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 
@@ -821,10 +735,7 @@
 			compatible = "samsung,exynos5433-pinctrl";
 			reg = <0x114b0000 0x1000>;
 			interrupts = <GIC_SPI 68 IRQ_TYPE_LEVEL_HIGH>;
-<<<<<<< HEAD
 			power-domains = <&pd_aud>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		pinctrl_cpif: pinctrl@10fe0000 {
@@ -881,7 +792,6 @@
 			#clock-cells = <1>;
 			clock-names = "clkout16";
 			clocks = <&xxti>;
-<<<<<<< HEAD
 
 			reboot: syscon-reboot {
 				compatible = "syscon-reboot";
@@ -889,8 +799,6 @@
 				offset = <0x400>; /* SWRESET */
 				mask = <0x1>;
 			};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		gic: interrupt-controller@11001000 {
@@ -921,24 +829,17 @@
 				<&cmu_disp CLK_ACLK_SMMU_DECON0X>,
 				<&cmu_disp CLK_ACLK_XIU_DECON0X>,
 				<&cmu_disp CLK_PCLK_SMMU_DECON0X>,
-<<<<<<< HEAD
 				<&cmu_disp CLK_ACLK_SMMU_DECON1X>,
 				<&cmu_disp CLK_ACLK_XIU_DECON1X>,
 				<&cmu_disp CLK_PCLK_SMMU_DECON1X>,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				<&cmu_disp CLK_SCLK_DECON_VCLK>,
 				<&cmu_disp CLK_SCLK_DECON_ECLK>;
 			clock-names = "pclk", "aclk_decon", "aclk_smmu_decon0x",
 				"aclk_xiu_decon0x", "pclk_smmu_decon0x",
-<<<<<<< HEAD
 				"aclk_smmu_decon1x", "aclk_xiu_decon1x",
 				"pclk_smmu_decon1x", "sclk_decon_vclk",
 				"sclk_decon_eclk";
 			power-domains = <&pd_disp>;
-=======
-				"sclk_decon_vclk", "sclk_decon_eclk";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			interrupt-names = "fifo", "vsync", "lcd_sys";
 			interrupts = <GIC_SPI 201 IRQ_TYPE_LEVEL_HIGH>,
 				     <GIC_SPI 202 IRQ_TYPE_LEVEL_HIGH>,
@@ -970,26 +871,18 @@
 				 <&cmu_disp CLK_ACLK_SMMU_TV0X>,
 				 <&cmu_disp CLK_ACLK_XIU_TV0X>,
 				 <&cmu_disp CLK_PCLK_SMMU_TV0X>,
-<<<<<<< HEAD
 				 <&cmu_disp CLK_ACLK_SMMU_TV1X>,
 				 <&cmu_disp CLK_ACLK_XIU_TV1X>,
 				 <&cmu_disp CLK_PCLK_SMMU_TV1X>,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 <&cmu_disp CLK_SCLK_DECON_TV_VCLK>,
 				 <&cmu_disp CLK_SCLK_DECON_TV_ECLK>;
 			clock-names = "pclk", "aclk_decon", "aclk_smmu_decon0x",
 				      "aclk_xiu_decon0x", "pclk_smmu_decon0x",
-<<<<<<< HEAD
 				      "aclk_smmu_decon1x", "aclk_xiu_decon1x",
 				      "pclk_smmu_decon1x", "sclk_decon_vclk",
 				      "sclk_decon_eclk";
 			samsung,disp-sysreg = <&syscon_disp>;
 			power-domains = <&pd_disp>;
-=======
-				      "sclk_decon_vclk", "sclk_decon_eclk";
-			samsung,disp-sysreg = <&syscon_disp>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			interrupt-names = "fifo", "vsync", "lcd_sys";
 			interrupts = <GIC_SPI 210 IRQ_TYPE_LEVEL_HIGH>,
 				     <GIC_SPI 211 IRQ_TYPE_LEVEL_HIGH>,
@@ -1015,10 +908,7 @@
 					"phyclk_mipidphy0_rxclkesc0",
 					"sclk_rgb_vclk_to_dsim0",
 					"sclk_mipi";
-<<<<<<< HEAD
 			power-domains = <&pd_disp>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 			#address-cells = <1>;
 			#size-cells = <0>;
@@ -1042,10 +932,7 @@
 			clocks = <&cmu_disp CLK_PCLK_MIC0>,
 				<&cmu_disp CLK_SCLK_RGB_VCLK_TO_MIC0>;
 			clock-names = "pclk_mic0", "sclk_rgb_vclk_to_mic0";
-<<<<<<< HEAD
 			power-domains = <&pd_disp>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			samsung,disp-syscon = <&syscon_disp>;
 			status = "disabled";
 
@@ -1092,10 +979,7 @@
 			ddc = <&hsi2c_11>;
 			samsung,syscon-phandle = <&pmu_system_controller>;
 			samsung,sysreg-phandle = <&syscon_disp>;
-<<<<<<< HEAD
 			#sound-dai-cells = <0>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 
@@ -1118,11 +1002,7 @@
 			reg = <0x145f0000 0x1038>;
 		};
 
-<<<<<<< HEAD
 		gsc_0: video-scaler@13c00000 {
-=======
-		gsc_0: video-scaler@13C00000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "samsung,exynos5433-gsc";
 			reg = <0x13c00000 0x1000>;
 			interrupts = <GIC_SPI 297 IRQ_TYPE_LEVEL_HIGH>;
@@ -1133,16 +1013,10 @@
 				 <&cmu_gscl CLK_ACLK_XIU_GSCLX>,
 				 <&cmu_gscl CLK_ACLK_GSCLBEND_333>;
 			iommus = <&sysmmu_gscl0>;
-<<<<<<< HEAD
 			power-domains = <&pd_gscl>;
 		};
 
 		gsc_1: video-scaler@13c10000 {
-=======
-		};
-
-		gsc_1: video-scaler@13C10000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "samsung,exynos5433-gsc";
 			reg = <0x13c10000 0x1000>;
 			interrupts = <GIC_SPI 298 IRQ_TYPE_LEVEL_HIGH>;
@@ -1153,16 +1027,10 @@
 				 <&cmu_gscl CLK_ACLK_XIU_GSCLX>,
 				 <&cmu_gscl CLK_ACLK_GSCLBEND_333>;
 			iommus = <&sysmmu_gscl1>;
-<<<<<<< HEAD
 			power-domains = <&pd_gscl>;
 		};
 
 		gsc_2: video-scaler@13c20000 {
-=======
-		};
-
-		gsc_2: video-scaler@13C20000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "samsung,exynos5433-gsc";
 			reg = <0x13c20000 0x1000>;
 			interrupts = <GIC_SPI 299 IRQ_TYPE_LEVEL_HIGH>;
@@ -1173,7 +1041,6 @@
 				 <&cmu_gscl CLK_ACLK_XIU_GSCLX>,
 				 <&cmu_gscl CLK_ACLK_GSCLBEND_333>;
 			iommus = <&sysmmu_gscl2>;
-<<<<<<< HEAD
 			power-domains = <&pd_gscl>;
 		};
 
@@ -1199,8 +1066,6 @@
 				 <&cmu_mscl CLK_ACLK_XIU_MSCLX>;
 			iommus = <&sysmmu_scaler_1>;
 			power-domains = <&pd_mscl>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		jpeg: codec@15020000 {
@@ -1213,16 +1078,10 @@
 				 <&cmu_mscl CLK_ACLK_XIU_MSCLX>,
 				 <&cmu_mscl CLK_SCLK_JPEG>;
 			iommus = <&sysmmu_jpeg>;
-<<<<<<< HEAD
 			power-domains = <&pd_mscl>;
 		};
 
 		mfc: codec@152e0000 {
-=======
-		};
-
-		mfc: codec@152E0000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "samsung,exynos5433-mfc";
 			reg = <0x152E0000 0x10000>;
 			interrupts = <GIC_SPI 358 IRQ_TYPE_LEVEL_HIGH>;
@@ -1232,10 +1091,7 @@
 				 <&cmu_mfc CLK_ACLK_XIU_MFCX>;
 			iommus = <&sysmmu_mfc_0>, <&sysmmu_mfc_1>;
 			iommu-names = "left", "right";
-<<<<<<< HEAD
 			power-domains = <&pd_mfc>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		sysmmu_decon0x: sysmmu@13a00000 {
@@ -1245,10 +1101,7 @@
 			clock-names = "pclk", "aclk";
 			clocks = <&cmu_disp CLK_PCLK_SMMU_DECON0X>,
 				<&cmu_disp CLK_ACLK_SMMU_DECON0X>;
-<<<<<<< HEAD
 			power-domains = <&pd_disp>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			#iommu-cells = <0>;
 		};
 
@@ -1260,10 +1113,7 @@
 			clocks = <&cmu_disp CLK_PCLK_SMMU_DECON1X>,
 				<&cmu_disp CLK_ACLK_SMMU_DECON1X>;
 			#iommu-cells = <0>;
-<<<<<<< HEAD
 			power-domains = <&pd_disp>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		sysmmu_tv0x: sysmmu@13a20000 {
@@ -1274,10 +1124,7 @@
 			clocks = <&cmu_disp CLK_PCLK_SMMU_TV0X>,
 				<&cmu_disp CLK_ACLK_SMMU_TV0X>;
 			#iommu-cells = <0>;
-<<<<<<< HEAD
 			power-domains = <&pd_disp>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		sysmmu_tv1x: sysmmu@13a30000 {
@@ -1288,10 +1135,7 @@
 			clocks = <&cmu_disp CLK_PCLK_SMMU_TV1X>,
 				<&cmu_disp CLK_ACLK_SMMU_TV1X>;
 			#iommu-cells = <0>;
-<<<<<<< HEAD
 			power-domains = <&pd_disp>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		sysmmu_gscl0: sysmmu@13c80000 {
@@ -1302,10 +1146,7 @@
 			clocks = <&cmu_gscl CLK_ACLK_SMMU_GSCL0>,
 				 <&cmu_gscl CLK_PCLK_SMMU_GSCL0>;
 			#iommu-cells = <0>;
-<<<<<<< HEAD
 			power-domains = <&pd_gscl>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		sysmmu_gscl1: sysmmu@13c90000 {
@@ -1316,10 +1157,7 @@
 			clocks = <&cmu_gscl CLK_ACLK_SMMU_GSCL1>,
 				 <&cmu_gscl CLK_PCLK_SMMU_GSCL1>;
 			#iommu-cells = <0>;
-<<<<<<< HEAD
 			power-domains = <&pd_gscl>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		sysmmu_gscl2: sysmmu@13ca0000 {
@@ -1330,7 +1168,6 @@
 			clocks = <&cmu_gscl CLK_ACLK_SMMU_GSCL2>,
 				 <&cmu_gscl CLK_PCLK_SMMU_GSCL2>;
 			#iommu-cells = <0>;
-<<<<<<< HEAD
 			power-domains = <&pd_gscl>;
 		};
 
@@ -1354,8 +1191,6 @@
 				 <&cmu_mscl CLK_ACLK_SMMU_M2MSCALER1>;
 			#iommu-cells = <0>;
 			power-domains = <&pd_mscl>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		sysmmu_jpeg: sysmmu@15060000 {
@@ -1366,10 +1201,7 @@
 			clocks = <&cmu_mscl CLK_PCLK_SMMU_JPEG>,
 				 <&cmu_mscl CLK_ACLK_SMMU_JPEG>;
 			#iommu-cells = <0>;
-<<<<<<< HEAD
 			power-domains = <&pd_mscl>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		sysmmu_mfc_0: sysmmu@15200000 {
@@ -1380,10 +1212,7 @@
 			clocks = <&cmu_mfc CLK_PCLK_SMMU_MFC_0>,
 				 <&cmu_mfc CLK_ACLK_SMMU_MFC_0>;
 			#iommu-cells = <0>;
-<<<<<<< HEAD
 			power-domains = <&pd_mfc>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		sysmmu_mfc_1: sysmmu@15210000 {
@@ -1394,10 +1223,7 @@
 			clocks = <&cmu_mfc CLK_PCLK_SMMU_MFC_1>,
 				 <&cmu_mfc CLK_ACLK_SMMU_MFC_1>;
 			#iommu-cells = <0>;
-<<<<<<< HEAD
 			power-domains = <&pd_mfc>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		serial_0: serial@14c10000 {
@@ -1542,7 +1368,6 @@
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
 		i2s1: i2s@14d60000 {
 			compatible = "samsung,exynos7-i2s";
 			reg = <0x14d60000 0x100>;
@@ -1562,8 +1387,6 @@
 			status = "disabled";
 		};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pwm: pwm@14dd0000 {
 			compatible = "samsung,exynos4210-pwm";
 			reg = <0x14dd0000 0x100>;
@@ -1875,10 +1698,7 @@
 			clocks = <&cmu_aud CLK_PCLK_SFR0_CTRL>;
 			clock-names = "sfr0_ctrl";
 			samsung,pmu-syscon = <&pmu_system_controller>;
-<<<<<<< HEAD
 			power-domains = <&pd_aud>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			#address-cells = <1>;
 			#size-cells = <1>;
 			ranges;
@@ -1892,16 +1712,10 @@
 				#dma-cells = <1>;
 				#dma-channels = <8>;
 				#dma-requests = <32>;
-<<<<<<< HEAD
 				power-domains = <&pd_aud>;
 			};
 
 			i2s0: i2s@11440000 {
-=======
-			};
-
-			i2s0: i2s0@11440000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				compatible = "samsung,exynos7-i2s";
 				reg = <0x11440000 0x100>;
 				dmas = <&adma 0 &adma 2>;
@@ -1913,16 +1727,11 @@
 					<&cmu_aud CLK_SCLK_AUD_I2S>,
 					<&cmu_aud CLK_SCLK_I2S_BCLK>;
 				clock-names = "iis", "i2s_opclk0", "i2s_opclk1";
-<<<<<<< HEAD
 				#clock-cells = <1>;
 				pinctrl-names = "default";
 				pinctrl-0 = <&i2s0_bus>;
 				power-domains = <&pd_aud>;
 				#sound-dai-cells = <1>;
-=======
-				pinctrl-names = "default";
-				pinctrl-0 = <&i2s0_bus>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				status = "disabled";
 			};
 
@@ -1935,10 +1744,7 @@
 				clock-names = "uart", "clk_uart_baud0";
 				pinctrl-names = "default";
 				pinctrl-0 = <&uart_aud_bus>;
-<<<<<<< HEAD
 				power-domains = <&pd_aud>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				status = "disabled";
 			};
 		};

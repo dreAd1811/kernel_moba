@@ -234,11 +234,7 @@ static void pseries_cpu_die(unsigned int cpu)
 	 * done here.  Change isolate state to Isolate and
 	 * change allocation-state to Unusable.
 	 */
-<<<<<<< HEAD
 	paca_ptrs[cpu]->cpu_start = 0;
-=======
-	paca[cpu].cpu_start = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -369,11 +365,8 @@ static int dlpar_online_cpu(struct device_node *dn)
 			BUG_ON(get_cpu_current_state(cpu)
 					!= CPU_STATE_OFFLINE);
 			cpu_maps_update_done();
-<<<<<<< HEAD
 			timed_topology_update(1);
 			find_and_online_cpu_nid(cpu);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rc = device_online(get_cpu_device(cpu));
 			if (rc)
 				goto out;
@@ -544,10 +537,7 @@ static int dlpar_offline_cpu(struct device_node *dn)
 				set_preferred_offline_state(cpu,
 							    CPU_STATE_OFFLINE);
 				cpu_maps_update_done();
-<<<<<<< HEAD
 				timed_topology_update(1);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				rc = device_offline(get_cpu_device(cpu));
 				if (rc)
 					goto out;

@@ -39,13 +39,7 @@ config KMX61
 	  be called kmx61.
 
 source "drivers/iio/imu/inv_mpu6050/Kconfig"
-<<<<<<< HEAD
 source "drivers/iio/imu/st_lsm6dsx/Kconfig"
-=======
-source "drivers/iio/imu/inv_mpu/Kconfig"
-source "drivers/iio/imu/st_lsm6dsx/Kconfig"
-source "drivers/iio/imu/st_asm330lhh/Kconfig"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 endmenu
 

@@ -63,11 +63,8 @@
 
 #define ENA_REGS_ADMIN_INTR_MASK 1
 
-<<<<<<< HEAD
 #define ENA_POLL_MS	5
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*****************************************************************************/
 /*****************************************************************************/
 /*****************************************************************************/
@@ -204,14 +201,6 @@ static inline void comp_ctxt_release(struct ena_com_admin_queue *queue,
 static struct ena_comp_ctx *get_comp_ctxt(struct ena_com_admin_queue *queue,
 					  u16 command_id, bool capture)
 {
-<<<<<<< HEAD
-=======
-	if (unlikely(!queue->comp_ctx)) {
-		pr_err("Completion context is NULL\n");
-		return NULL;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(command_id >= queue->q_depth)) {
 		pr_err("command id is larger than the queue size. cmd_id: %u queue size %d\n",
 		       command_id, queue->q_depth);
@@ -328,11 +317,7 @@ static struct ena_comp_ctx *ena_com_submit_admin_cmd(struct ena_com_admin_queue 
 					      cmd_size_in_bytes,
 					      comp,
 					      comp_size_in_bytes);
-<<<<<<< HEAD
 	if (IS_ERR(comp_ctx))
-=======
-	if (unlikely(IS_ERR(comp_ctx)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		admin_queue->running_state = false;
 	spin_unlock_irqrestore(&admin_queue->q_lock, flags);
 
@@ -479,11 +464,7 @@ static void ena_com_handle_admin_completion(struct ena_com_admin_queue *admin_qu
 		/* Do not read the rest of the completion entry before the
 		 * phase bit was validated
 		 */
-<<<<<<< HEAD
 		dma_rmb();
-=======
-		rmb();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ena_com_handle_single_admin_completion(admin_queue, cqe);
 
 		head_masked++;
@@ -555,11 +536,7 @@ static int ena_com_wait_and_process_admin_cq_polling(struct ena_comp_ctx *comp_c
 			goto err;
 		}
 
-<<<<<<< HEAD
 		msleep(ENA_POLL_MS);
-=======
-		msleep(100);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (unlikely(comp_ctx->status == ENA_CMD_ABORTED)) {
@@ -650,14 +627,6 @@ static u32 ena_com_reg_bar_read32(struct ena_com_dev *ena_dev, u16 offset)
 	mmio_read_reg |= mmio_read->seq_num &
 			ENA_REGS_MMIO_REG_READ_REQ_ID_MASK;
 
-<<<<<<< HEAD
-=======
-	/* make sure read_resp->req_id get updated before the hw can write
-	 * there
-	 */
-	wmb();
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	writel(mmio_read_reg, ena_dev->reg_bar + ENA_REGS_MMIO_REG_READ_OFF);
 
 	for (i = 0; i < timeout; i++) {
@@ -775,12 +744,9 @@ static int wait_for_reset_state(struct ena_com_dev *ena_dev, u32 timeout,
 {
 	u32 val, i;
 
-<<<<<<< HEAD
 	/* Convert timeout from resolution of 100ms to ENA_POLL_MS */
 	timeout = (timeout * 100) / ENA_POLL_MS;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < timeout; i++) {
 		val = ena_com_reg_bar_read32(ena_dev, ENA_REGS_DEV_STS_OFF);
 
@@ -793,12 +759,7 @@ static int wait_for_reset_state(struct ena_com_dev *ena_dev, u32 timeout,
 			exp_state)
 			return 0;
 
-<<<<<<< HEAD
 		msleep(ENA_POLL_MS);
-=======
-		/* The resolution of the timeout is 100ms */
-		msleep(100);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return -ETIME;
@@ -881,27 +842,6 @@ static int ena_com_get_feature(struct ena_com_dev *ena_dev,
 				      0);
 }
 
-<<<<<<< HEAD
-=======
-static void ena_com_hash_key_fill_default_key(struct ena_com_dev *ena_dev)
-{
-	struct ena_admin_feature_rss_flow_hash_control *hash_key =
-		(ena_dev->rss).hash_key;
-
-	netdev_rss_key_fill(&hash_key->key, sizeof(hash_key->key));
-	/* The key is stored in the device in u32 array
-	 * as well as the API requires the key to be passed in this
-	 * format. Thus the size of our array should be divided by 4
-	 */
-	hash_key->keys_num = sizeof(hash_key->key) / sizeof(u32);
-}
-
-int ena_com_get_current_hash_function(struct ena_com_dev *ena_dev)
-{
-	return ena_dev->rss.hash_func;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ena_com_hash_key_allocate(struct ena_com_dev *ena_dev)
 {
 	struct ena_rss *rss = &ena_dev->rss;
@@ -1190,11 +1130,7 @@ int ena_com_execute_admin_command(struct ena_com_admin_queue *admin_queue,
 
 	comp_ctx = ena_com_submit_admin_cmd(admin_queue, cmd, cmd_size,
 					    comp, comp_size);
-<<<<<<< HEAD
 	if (IS_ERR(comp_ctx)) {
-=======
-	if (unlikely(IS_ERR(comp_ctx))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (comp_ctx == ERR_PTR(-ENODEV))
 			pr_debug("Failed to submit command [%ld]\n",
 				 PTR_ERR(comp_ctx));
@@ -1317,11 +1253,7 @@ void ena_com_wait_for_abort_completion(struct ena_com_dev *ena_dev)
 	spin_lock_irqsave(&admin_queue->q_lock, flags);
 	while (atomic_read(&admin_queue->outstanding_cmds) != 0) {
 		spin_unlock_irqrestore(&admin_queue->q_lock, flags);
-<<<<<<< HEAD
 		msleep(ENA_POLL_MS);
-=======
-		msleep(20);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_lock_irqsave(&admin_queue->q_lock, flags);
 	}
 	spin_unlock_irqrestore(&admin_queue->q_lock, flags);
@@ -1859,14 +1791,11 @@ void ena_com_aenq_intr_handler(struct ena_com_dev *dev, void *data)
 	/* Go over all the events */
 	while ((READ_ONCE(aenq_common->flags) &
 		ENA_ADMIN_AENQ_COMMON_DESC_PHASE_MASK) == phase) {
-<<<<<<< HEAD
 		/* Make sure the phase bit (ownership) is as expected before
 		 * reading the rest of the descriptor.
 		 */
 		dma_rmb();
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_debug("AENQ! Group[%x] Syndrom[%x] timestamp: [%llus]\n",
 			 aenq_common->group, aenq_common->syndrom,
 			 (u64)aenq_common->timestamp_low +
@@ -1898,13 +1827,9 @@ void ena_com_aenq_intr_handler(struct ena_com_dev *dev, void *data)
 
 	/* write the aenq doorbell after all AENQ descriptors were read */
 	mb();
-<<<<<<< HEAD
 	writel_relaxed((u32)aenq->head,
 		       dev->reg_bar + ENA_REGS_AENQ_HEAD_DB_OFF);
 	mmiowb();
-=======
-	writel((u32)aenq->head, dev->reg_bar + ENA_REGS_AENQ_HEAD_DB_OFF);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int ena_com_dev_reset(struct ena_com_dev *ena_dev,
@@ -2083,11 +2008,7 @@ int ena_com_set_hash_function(struct ena_com_dev *ena_dev)
 	if (unlikely(ret))
 		return ret;
 
-<<<<<<< HEAD
 	if (get_resp.u.flow_hash_func.supported_func & (1 << rss->hash_func)) {
-=======
-	if (!(get_resp.u.flow_hash_func.supported_func & BIT(rss->hash_func))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_err("Func hash %d isn't supported by device, abort\n",
 		       rss->hash_func);
 		return -EOPNOTSUPP;
@@ -2154,7 +2075,6 @@ int ena_com_fill_hash_function(struct ena_com_dev *ena_dev,
 
 	switch (func) {
 	case ENA_ADMIN_TOEPLITZ:
-<<<<<<< HEAD
 		if (key_len > sizeof(hash_key->key)) {
 			pr_err("key len (%hu) is bigger than the max supported (%zu)\n",
 			       key_len, sizeof(hash_key->key));
@@ -2164,18 +2084,6 @@ int ena_com_fill_hash_function(struct ena_com_dev *ena_dev,
 		memcpy(hash_key->key, key, key_len);
 		rss->hash_init_val = init_val;
 		hash_key->keys_num = key_len >> 2;
-=======
-		if (key) {
-			if (key_len != sizeof(hash_key->key)) {
-				pr_err("key len (%hu) doesn't equal the supported size (%zu)\n",
-				       key_len, sizeof(hash_key->key));
-				return -EINVAL;
-			}
-			memcpy(hash_key->key, key, key_len);
-			rss->hash_init_val = init_val;
-			hash_key->keys_num = key_len >> 2;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case ENA_ADMIN_CRC32:
 		rss->hash_init_val = init_val;
@@ -2185,10 +2093,6 @@ int ena_com_fill_hash_function(struct ena_com_dev *ena_dev,
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
-=======
-	rss->hash_func = func;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rc = ena_com_set_hash_function(ena_dev);
 
 	/* Restore the old function */
@@ -2208,12 +2112,6 @@ int ena_com_get_hash_function(struct ena_com_dev *ena_dev,
 		rss->hash_key;
 	int rc;
 
-<<<<<<< HEAD
-=======
-	if (unlikely(!func))
-		return -EINVAL;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rc = ena_com_get_feature_ex(ena_dev, &get_resp,
 				    ENA_ADMIN_RSS_HASH_FUNCTION,
 				    rss->hash_key_dma_addr,
@@ -2221,18 +2119,9 @@ int ena_com_get_hash_function(struct ena_com_dev *ena_dev,
 	if (unlikely(rc))
 		return rc;
 
-<<<<<<< HEAD
 	rss->hash_func = get_resp.u.flow_hash_func.selected_func;
 	if (func)
 		*func = rss->hash_func;
-=======
-	/* ffs() returns 1 in case the lsb is set */
-	rss->hash_func = ffs(get_resp.u.flow_hash_func.selected_func);
-	if (rss->hash_func)
-		rss->hash_func--;
-
-	*func = rss->hash_func;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (key)
 		memcpy(key, hash_key->key, (size_t)(hash_key->keys_num) << 2);
@@ -2518,11 +2407,6 @@ int ena_com_rss_init(struct ena_com_dev *ena_dev, u16 indr_tbl_log_size)
 	if (unlikely(rc))
 		goto err_hash_key;
 
-<<<<<<< HEAD
-=======
-	ena_com_hash_key_fill_default_key(ena_dev);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rc = ena_com_hash_ctrl_init(ena_dev);
 	if (unlikely(rc))
 		goto err_hash_ctrl;

@@ -7,10 +7,7 @@
  */
 
 #include <dt-bindings/interrupt-controller/arm-gic.h>
-<<<<<<< HEAD
 #include <dt-bindings/power/owl-s500-powergate.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 / {
 	compatible = "actions,s500";
@@ -47,10 +44,7 @@
 			compatible = "arm,cortex-a9";
 			reg = <0x2>;
 			enable-method = "actions,s500-smp";
-<<<<<<< HEAD
 			power-domains = <&sps S500_PD_CPU2>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		cpu3: cpu@3 {
@@ -58,10 +52,7 @@
 			compatible = "arm,cortex-a9";
 			reg = <0x3>;
 			enable-method = "actions,s500-smp";
-<<<<<<< HEAD
 			power-domains = <&sps S500_PD_CPU3>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 	};
 

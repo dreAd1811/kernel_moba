@@ -98,18 +98,13 @@ EXPORT_SYMBOL_GPL(dev_pm_put_subsys_data);
  * Callers must ensure proper synchronization of this function with power
  * management callbacks.
  *
-<<<<<<< HEAD
  * Returns 0 on successfully attached PM domain, or when it is found that the
  * device doesn't need a PM domain, else a negative error code.
-=======
- * Returns 0 on successfully attached PM domain or negative error code.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 int dev_pm_domain_attach(struct device *dev, bool power_on)
 {
 	int ret;
 
-<<<<<<< HEAD
 	if (dev->pm_domain)
 		return 0;
 
@@ -118,18 +113,10 @@ int dev_pm_domain_attach(struct device *dev, bool power_on)
 		ret = genpd_dev_pm_attach(dev);
 
 	return ret < 0 ? ret : 0;
-=======
-	ret = acpi_dev_pm_attach(dev, power_on);
-	if (ret)
-		ret = genpd_dev_pm_attach(dev);
-
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(dev_pm_domain_attach);
 
 /**
-<<<<<<< HEAD
  * dev_pm_domain_attach_by_id - Associate a device with one of its PM domains.
  * @dev: The device used to lookup the PM domain.
  * @index: The index of the PM domain.
@@ -183,22 +170,14 @@ struct device *dev_pm_domain_attach_by_name(struct device *dev,
 EXPORT_SYMBOL_GPL(dev_pm_domain_attach_by_name);
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * dev_pm_domain_detach - Detach a device from its PM domain.
  * @dev: Device to detach.
  * @power_off: Used to indicate whether we should power off the device.
  *
-<<<<<<< HEAD
  * This functions will reverse the actions from dev_pm_domain_attach() and
  * dev_pm_domain_attach_by_id(), thus it detaches @dev from its PM domain.
  * Typically it should be invoked during the remove phase, either from
  * subsystem level code or from drivers.
-=======
- * This functions will reverse the actions from dev_pm_domain_attach() and thus
- * try to detach the @dev from its PM domain. Typically it should be invoked
- * from subsystem level code during the remove phase.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Callers must ensure proper synchronization of this function with power
  * management callbacks.

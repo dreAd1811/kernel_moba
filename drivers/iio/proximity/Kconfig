@@ -20,7 +20,6 @@ endmenu
 
 menu "Proximity and distance sensors"
 
-<<<<<<< HEAD
 config ISL29501
 	tristate "Intersil ISL29501 Time Of Flight sensor"
 	depends on I2C
@@ -34,8 +33,6 @@ config ISL29501
 	  To compile this driver as a module, choose M here: the module will be
 	  called isl29501.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config LIDAR_LITE_V2
 	tristate "PulsedLight LIDAR sensor"
 	select IIO_BUFFER
@@ -48,7 +45,6 @@ config LIDAR_LITE_V2
 	  To compile this driver as a module, choose M here: the
 	  module will be called pulsedlight-lite-v2
 
-<<<<<<< HEAD
 config RFD77402
 	tristate "RFD77402 ToF sensor"
 	depends on I2C
@@ -59,8 +55,6 @@ config RFD77402
 	  To compile this driver as a module, choose M here: the
 	  module will be called rfd77402.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config SRF04
 	tristate "Devantech SRF04 ultrasonic ranger sensor"
 	depends on GPIOLIB

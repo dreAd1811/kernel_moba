@@ -323,28 +323,16 @@ xpc_handle_notify_IRQ_sn2(int irq, void *dev_id)
  * was received.
  */
 static void
-<<<<<<< HEAD
 xpc_check_for_dropped_notify_IRQ_sn2(struct timer_list *t)
 {
 	struct xpc_partition *part =
 		from_timer(part, t, sn.sn2.dropped_notify_IRQ_timer);
-=======
-xpc_check_for_dropped_notify_IRQ_sn2(struct xpc_partition *part)
-{
-	struct xpc_partition_sn2 *part_sn2 = &part->sn.sn2;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (xpc_part_ref(part)) {
 		xpc_check_for_sent_chctl_flags_sn2(part);
 
-<<<<<<< HEAD
 		t->expires = jiffies + XPC_DROPPED_NOTIFY_IRQ_WAIT_INTERVAL;
 		add_timer(t);
-=======
-		part_sn2->dropped_notify_IRQ_timer.expires = jiffies +
-		    XPC_DROPPED_NOTIFY_IRQ_WAIT_INTERVAL;
-		add_timer(&part_sn2->dropped_notify_IRQ_timer);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		xpc_part_deref(part);
 	}
 }
@@ -1244,14 +1232,7 @@ xpc_setup_ch_structures_sn2(struct xpc_partition *part)
 
 	/* Setup a timer to check for dropped notify IRQs */
 	timer = &part_sn2->dropped_notify_IRQ_timer;
-<<<<<<< HEAD
 	timer_setup(timer, xpc_check_for_dropped_notify_IRQ_sn2, 0);
-=======
-	init_timer(timer);
-	timer->function =
-	    (void (*)(unsigned long))xpc_check_for_dropped_notify_IRQ_sn2;
-	timer->data = (unsigned long)part;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	timer->expires = jiffies + XPC_DROPPED_NOTIFY_IRQ_WAIT_INTERVAL;
 	add_timer(timer);
 

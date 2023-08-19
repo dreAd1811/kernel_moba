@@ -27,11 +27,7 @@
 #include <linux/i2c.h>
 #include "pmbus.h"
 
-<<<<<<< HEAD
 enum chips { max34440, max34441, max34446, max34451, max34460, max34461 };
-=======
-enum chips { max34440, max34441, max34446, max34460, max34461 };
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define MAX34440_MFR_VOUT_PEAK		0xd4
 #define MAX34440_MFR_IOUT_PEAK		0xd5
@@ -48,12 +44,9 @@ enum chips { max34440, max34441, max34446, max34460, max34461 };
 #define MAX34440_STATUS_OT_FAULT	BIT(5)
 #define MAX34440_STATUS_OT_WARN		BIT(6)
 
-<<<<<<< HEAD
 #define MAX34451_MFR_CHANNEL_CONFIG	0xe4
 #define MAX34451_MFR_CHANNEL_CONFIG_SEL_MASK	0x3f
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct max34440_data {
 	int id;
 	struct pmbus_driver_info info;
@@ -77,11 +70,7 @@ static int max34440_read_word_data(struct i2c_client *client, int page, int reg)
 					   MAX34440_MFR_VOUT_PEAK);
 		break;
 	case PMBUS_VIRT_READ_IOUT_AVG:
-<<<<<<< HEAD
 		if (data->id != max34446 && data->id != max34451)
-=======
-		if (data->id != max34446)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -ENXIO;
 		ret = pmbus_read_word_data(client, page,
 					   MAX34446_MFR_IOUT_AVG);
@@ -157,11 +146,7 @@ static int max34440_write_word_data(struct i2c_client *client, int page,
 	case PMBUS_VIRT_RESET_IOUT_HISTORY:
 		ret = pmbus_write_word_data(client, page,
 					    MAX34440_MFR_IOUT_PEAK, 0);
-<<<<<<< HEAD
 		if (!ret && (data->id == max34446 || data->id == max34451))
-=======
-		if (!ret && data->id == max34446)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ret = pmbus_write_word_data(client, page,
 					MAX34446_MFR_IOUT_AVG, 0);
 
@@ -220,7 +205,6 @@ static int max34440_read_byte_data(struct i2c_client *client, int page, int reg)
 	return ret;
 }
 
-<<<<<<< HEAD
 static int max34451_set_supported_funcs(struct i2c_client *client,
 					 struct max34440_data *data)
 {
@@ -273,8 +257,6 @@ static int max34451_set_supported_funcs(struct i2c_client *client,
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct pmbus_driver_info max34440_info[] = {
 	[max34440] = {
 		.pages = 14,
@@ -398,7 +380,6 @@ static struct pmbus_driver_info max34440_info[] = {
 		.read_word_data = max34440_read_word_data,
 		.write_word_data = max34440_write_word_data,
 	},
-<<<<<<< HEAD
 	[max34451] = {
 		.pages = 21,
 		.format[PSC_VOLTAGE_OUT] = direct,
@@ -423,8 +404,6 @@ static struct pmbus_driver_info max34440_info[] = {
 		.read_word_data = max34440_read_word_data,
 		.write_word_data = max34440_write_word_data,
 	},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	[max34460] = {
 		.pages = 18,
 		.format[PSC_VOLTAGE_OUT] = direct,
@@ -498,10 +477,7 @@ static int max34440_probe(struct i2c_client *client,
 			  const struct i2c_device_id *id)
 {
 	struct max34440_data *data;
-<<<<<<< HEAD
 	int rv;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	data = devm_kzalloc(&client->dev, sizeof(struct max34440_data),
 			    GFP_KERNEL);
@@ -510,15 +486,12 @@ static int max34440_probe(struct i2c_client *client,
 	data->id = id->driver_data;
 	data->info = max34440_info[id->driver_data];
 
-<<<<<<< HEAD
 	if (data->id == max34451) {
 		rv = max34451_set_supported_funcs(client, data);
 		if (rv)
 			return rv;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return pmbus_do_probe(client, id, &data->info);
 }
 
@@ -526,10 +499,7 @@ static const struct i2c_device_id max34440_id[] = {
 	{"max34440", max34440},
 	{"max34441", max34441},
 	{"max34446", max34446},
-<<<<<<< HEAD
 	{"max34451", max34451},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{"max34460", max34460},
 	{"max34461", max34461},
 	{}

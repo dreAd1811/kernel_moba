@@ -23,35 +23,12 @@
  */
 #include "priv.h"
 
-<<<<<<< HEAD
 #include <core/memory.h>
 
 void
 nvkm_ltc_tags_clear(struct nvkm_device *device, u32 first, u32 count)
 {
 	struct nvkm_ltc *ltc = device->ltc;
-=======
-#include <subdev/fb.h>
-
-int
-nvkm_ltc_tags_alloc(struct nvkm_ltc *ltc, u32 n, struct nvkm_mm_node **pnode)
-{
-	int ret = nvkm_mm_head(&ltc->tags, 0, 1, n, n, 1, pnode);
-	if (ret)
-		*pnode = NULL;
-	return ret;
-}
-
-void
-nvkm_ltc_tags_free(struct nvkm_ltc *ltc, struct nvkm_mm_node **pnode)
-{
-	nvkm_mm_free(&ltc->tags, pnode);
-}
-
-void
-nvkm_ltc_tags_clear(struct nvkm_ltc *ltc, u32 first, u32 count)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const u32 limit = first + count - 1;
 
 	BUG_ON((first > limit) || (limit >= ltc->num_tags));
@@ -78,7 +55,6 @@ nvkm_ltc_zbc_depth_get(struct nvkm_ltc *ltc, int index, const u32 depth)
 	return index;
 }
 
-<<<<<<< HEAD
 int
 nvkm_ltc_zbc_stencil_get(struct nvkm_ltc *ltc, int index, const u32 stencil)
 {
@@ -87,8 +63,6 @@ nvkm_ltc_zbc_stencil_get(struct nvkm_ltc *ltc, int index, const u32 stencil)
 	return index;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void
 nvkm_ltc_invalidate(struct nvkm_ltc *ltc)
 {
@@ -126,11 +100,8 @@ nvkm_ltc_init(struct nvkm_subdev *subdev)
 	for (i = ltc->zbc_min; i <= ltc->zbc_max; i++) {
 		ltc->func->zbc_clear_color(ltc, i, ltc->zbc_color[i]);
 		ltc->func->zbc_clear_depth(ltc, i, ltc->zbc_depth[i]);
-<<<<<<< HEAD
 		if (ltc->func->zbc_clear_stencil)
 			ltc->func->zbc_clear_stencil(ltc, i, ltc->zbc_stencil[i]);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ltc->func->init(ltc);
@@ -141,14 +112,7 @@ static void *
 nvkm_ltc_dtor(struct nvkm_subdev *subdev)
 {
 	struct nvkm_ltc *ltc = nvkm_ltc(subdev);
-<<<<<<< HEAD
 	nvkm_memory_unref(&ltc->tag_ram);
-=======
-	struct nvkm_ram *ram = ltc->subdev.device->fb->ram;
-	nvkm_mm_fini(&ltc->tags);
-	if (ram)
-		nvkm_mm_free(&ram->vram, &ltc->tag_ram);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ltc;
 }
 

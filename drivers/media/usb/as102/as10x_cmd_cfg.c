@@ -133,15 +133,9 @@ out:
  * as10x_cmd_eLNA_change_mode - send eLNA change mode command to AS10x
  * @adap:      pointer to AS10x bus adapter
  * @mode:      mode selected:
-<<<<<<< HEAD
  *		- ON    : 0x0 => eLNA always ON
  *		- OFF   : 0x1 => eLNA always OFF
  *		- AUTO  : 0x2 => eLNA follow hysteresis parameters
-=======
- *	        - ON    : 0x0 => eLNA always ON
- *	        - OFF   : 0x1 => eLNA always OFF
- *	        - AUTO  : 0x2 => eLNA follow hysteresis parameters
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *				 to be ON or OFF
  *
  * Return 0 on success or negative value in case of error.

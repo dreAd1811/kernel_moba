@@ -97,11 +97,7 @@ static ssize_t mei_dbgfs_read_active(struct file *fp, char __user *ubuf,
 	int pos = 0;
 	int ret;
 
-<<<<<<< HEAD
 #define HDR "   |me|host|state|rd|wr|wrq\n"
-=======
-#define HDR "   |me|host|state|rd|wr|\n"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!dev)
 		return -ENODEV;
@@ -134,16 +130,10 @@ static ssize_t mei_dbgfs_read_active(struct file *fp, char __user *ubuf,
 	list_for_each_entry(cl, &dev->file_list, link) {
 
 		pos += scnprintf(buf + pos, bufsz - pos,
-<<<<<<< HEAD
 			"%3d|%2d|%4d|%5d|%2d|%2d|%3u\n",
 			i, mei_cl_me_id(cl), cl->host_client_id, cl->state,
 			!list_empty(&cl->rd_completed), cl->writing_state,
 			cl->tx_cb_queued);
-=======
-			"%3d|%2d|%4d|%5d|%2d|%2d|\n",
-			i, mei_cl_me_id(cl), cl->host_client_id, cl->state,
-			!list_empty(&cl->rd_completed), cl->writing_state);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		i++;
 	}
 out:
@@ -193,11 +183,8 @@ static ssize_t mei_dbgfs_read_devstate(struct file *fp, char __user *ubuf,
 				 dev->hbm_f_fa_supported);
 		pos += scnprintf(buf + pos, bufsz - pos, "\tOS: %01d\n",
 				 dev->hbm_f_os_supported);
-<<<<<<< HEAD
 		pos += scnprintf(buf + pos, bufsz - pos, "\tDR: %01d\n",
 				 dev->hbm_f_dr_supported);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	pos += scnprintf(buf + pos, bufsz - pos, "pg:  %s, %s\n",

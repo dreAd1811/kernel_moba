@@ -58,13 +58,10 @@ static const struct {
 	HVS_REG(SCALER_DISPSTAT2),
 	HVS_REG(SCALER_DISPBASE2),
 	HVS_REG(SCALER_DISPALPHA2),
-<<<<<<< HEAD
 	HVS_REG(SCALER_OLEDOFFS),
 	HVS_REG(SCALER_OLEDCOEF0),
 	HVS_REG(SCALER_OLEDCOEF1),
 	HVS_REG(SCALER_OLEDCOEF2),
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 void vc4_hvs_dump_state(struct drm_device *dev)

@@ -18,13 +18,8 @@
 #ifndef __LOCAL_ST33ZP24_H__
 #define __LOCAL_ST33ZP24_H__
 
-<<<<<<< HEAD
 #define TPM_WRITE_DIRECTION	0x80
 #define ST33ZP24_BUFSIZE	2048
-=======
-#define TPM_WRITE_DIRECTION             0x80
-#define TPM_BUFSIZE                     2048
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct st33zp24_dev {
 	struct tpm_chip *chip;

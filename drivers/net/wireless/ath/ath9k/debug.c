@@ -538,11 +538,7 @@ static int read_file_interrupt(struct seq_file *file, void *data)
 	if (sc->sc_ah->caps.hw_caps & ATH9K_HW_CAP_EDMA) {
 		PR_IS("RXLP", rxlp);
 		PR_IS("RXHP", rxhp);
-<<<<<<< HEAD
 		PR_IS("WATCHDOG", bb_watchdog);
-=======
-		PR_IS("WATHDOG", bb_watchdog);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		PR_IS("RX", rxok);
 	}
@@ -920,11 +916,7 @@ static int open_file_regdump(struct inode *inode, struct file *file)
 	u8 *buf;
 	int i, j = 0;
 	unsigned long num_regs, regdump_len, max_reg_offset;
-<<<<<<< HEAD
 	static const struct reg_hole {
-=======
-	const struct reg_hole {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u32 start;
 		u32 end;
 	} reg_hole_list[] = {
@@ -1175,11 +1167,7 @@ static ssize_t write_file_tpc(struct file *file, const char __user *user_buf,
 	if (kstrtoul(buf, 0, &val))
 		return -EINVAL;
 
-<<<<<<< HEAD
 	if (val > 1)
-=======
-	if (val < 0 || val > 1)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	tpc_enabled = !!val;
@@ -1397,11 +1385,7 @@ int ath9k_init_debug(struct ath_hw *ah)
 		return -ENOMEM;
 
 #ifdef CONFIG_ATH_DEBUG
-<<<<<<< HEAD
 	debugfs_create_file("debug", 0600, sc->debug.debugfs_phy,
-=======
-	debugfs_create_file("debug", S_IRUSR | S_IWUSR, sc->debug.debugfs_phy,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    sc, &fops_debug);
 #endif
 
@@ -1425,7 +1409,6 @@ int ath9k_init_debug(struct ath_hw *ah)
 	ath9k_cmn_debug_recv(sc->debug.debugfs_phy, &sc->debug.stats.rxstats);
 	ath9k_cmn_debug_phy_err(sc->debug.debugfs_phy, &sc->debug.stats.rxstats);
 
-<<<<<<< HEAD
 	debugfs_create_u8("rx_chainmask", 0400, sc->debug.debugfs_phy,
 			  &ah->rxchainmask);
 	debugfs_create_u8("tx_chainmask", 0400, sc->debug.debugfs_phy,
@@ -1442,24 +1425,6 @@ int ath9k_init_debug(struct ath_hw *ah)
 			    sc->debug.debugfs_phy,
 			    &ah->config.cwm_ignore_extcca);
 	debugfs_create_file("regdump", 0400, sc->debug.debugfs_phy, sc,
-=======
-	debugfs_create_u8("rx_chainmask", S_IRUSR, sc->debug.debugfs_phy,
-			  &ah->rxchainmask);
-	debugfs_create_u8("tx_chainmask", S_IRUSR, sc->debug.debugfs_phy,
-			  &ah->txchainmask);
-	debugfs_create_file("ani", S_IRUSR | S_IWUSR,
-			    sc->debug.debugfs_phy, sc, &fops_ani);
-	debugfs_create_bool("paprd", S_IRUSR | S_IWUSR, sc->debug.debugfs_phy,
-			    &sc->sc_ah->config.enable_paprd);
-	debugfs_create_file("regidx", S_IRUSR | S_IWUSR, sc->debug.debugfs_phy,
-			    sc, &fops_regidx);
-	debugfs_create_file("regval", S_IRUSR | S_IWUSR, sc->debug.debugfs_phy,
-			    sc, &fops_regval);
-	debugfs_create_bool("ignore_extcca", S_IRUSR | S_IWUSR,
-			    sc->debug.debugfs_phy,
-			    &ah->config.cwm_ignore_extcca);
-	debugfs_create_file("regdump", S_IRUSR, sc->debug.debugfs_phy, sc,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    &fops_regdump);
 	debugfs_create_devm_seqfile(sc->dev, "dump_nfcal",
 				    sc->debug.debugfs_phy,
@@ -1468,7 +1433,6 @@ int ath9k_init_debug(struct ath_hw *ah)
 	ath9k_cmn_debug_base_eeprom(sc->debug.debugfs_phy, sc->sc_ah);
 	ath9k_cmn_debug_modal_eeprom(sc->debug.debugfs_phy, sc->sc_ah);
 
-<<<<<<< HEAD
 	debugfs_create_u32("gpio_mask", 0600,
 			   sc->debug.debugfs_phy, &sc->sc_ah->gpio_mask);
 	debugfs_create_u32("gpio_val", 0600,
@@ -1479,23 +1443,10 @@ int ath9k_init_debug(struct ath_hw *ah)
 	debugfs_create_file("bt_ant_diversity", 0600,
 			    sc->debug.debugfs_phy, sc, &fops_bt_ant_diversity);
 	debugfs_create_file("btcoex", 0400, sc->debug.debugfs_phy, sc,
-=======
-	debugfs_create_u32("gpio_mask", S_IRUSR | S_IWUSR,
-			   sc->debug.debugfs_phy, &sc->sc_ah->gpio_mask);
-	debugfs_create_u32("gpio_val", S_IRUSR | S_IWUSR,
-			   sc->debug.debugfs_phy, &sc->sc_ah->gpio_val);
-	debugfs_create_file("antenna_diversity", S_IRUSR,
-			    sc->debug.debugfs_phy, sc, &fops_antenna_diversity);
-#ifdef CONFIG_ATH9K_BTCOEX_SUPPORT
-	debugfs_create_file("bt_ant_diversity", S_IRUSR | S_IWUSR,
-			    sc->debug.debugfs_phy, sc, &fops_bt_ant_diversity);
-	debugfs_create_file("btcoex", S_IRUSR, sc->debug.debugfs_phy, sc,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    &fops_btcoex);
 #endif
 
 #ifdef CONFIG_ATH9K_WOW
-<<<<<<< HEAD
 	debugfs_create_file("wow", 0600, sc->debug.debugfs_phy, sc, &fops_wow);
 #endif
 
@@ -1509,23 +1460,6 @@ int ath9k_init_debug(struct ath_hw *ah)
 			   sc->debug.debugfs_phy, &sc->airtime_flags);
 
 	debugfs_create_file("nf_override", 0600,
-=======
-	debugfs_create_file("wow", S_IRUSR | S_IWUSR,
-			    sc->debug.debugfs_phy, sc, &fops_wow);
-#endif
-
-#ifdef CONFIG_ATH9K_DYNACK
-	debugfs_create_file("ack_to", S_IRUSR, sc->debug.debugfs_phy,
-			    sc, &fops_ackto);
-#endif
-	debugfs_create_file("tpc", S_IRUSR | S_IWUSR,
-			    sc->debug.debugfs_phy, sc, &fops_tpc);
-
-	debugfs_create_u16("airtime_flags", S_IRUSR | S_IWUSR,
-			   sc->debug.debugfs_phy, &sc->airtime_flags);
-
-	debugfs_create_file("nf_override", S_IRUSR | S_IWUSR,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    sc->debug.debugfs_phy, sc, &fops_nf_override);
 
 	return 0;

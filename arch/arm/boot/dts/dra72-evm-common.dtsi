@@ -44,7 +44,6 @@
 		regulator-boot-on;
 	};
 
-<<<<<<< HEAD
 	evm_3v6: fixedregulator-evm_3v6 {
 		compatible = "regulator-fixed";
 		regulator-name = "evm_3v6";
@@ -55,8 +54,6 @@
 		regulator-boot-on;
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vsys_3v3: fixedregulator-vsys3v3 {
 		/* Output 2 of TPS43351QDAPRQ1 on dra72-evm */
 		/* Output 2 of LM5140QRWGTQ1 on dra71-evm */
@@ -184,7 +181,6 @@
 			clocks = <&atl_clkin2_ck>;
 		};
 	};
-<<<<<<< HEAD
 
 	vmmcwl_fixed: fixedregulator-mmcwl {
 		compatible = "regulator-fixed";
@@ -197,38 +193,6 @@
 };
 
 &dra7_pmx_core {
-=======
-};
-
-&dra7_pmx_core {
-	mmc1_pins_default: mmc1_pins_default {
-		pinctrl-single,pins = <
-			DRA7XX_CORE_IOPAD(0x376c, PIN_INPUT | MUX_MODE14)	/* mmc1sdcd.gpio219 */
-			DRA7XX_CORE_IOPAD(0x3754, PIN_INPUT_PULLUP | MUX_MODE0) /* mmc1_clk.clk */
-			DRA7XX_CORE_IOPAD(0x3758, PIN_INPUT_PULLUP | MUX_MODE0) /* mmc1_cmd.cmd */
-			DRA7XX_CORE_IOPAD(0x375c, PIN_INPUT_PULLUP | MUX_MODE0) /* mmc1_dat0.dat0 */
-			DRA7XX_CORE_IOPAD(0x3760, PIN_INPUT_PULLUP | MUX_MODE0) /* mmc1_dat1.dat1 */
-			DRA7XX_CORE_IOPAD(0x3764, PIN_INPUT_PULLUP | MUX_MODE0) /* mmc1_dat2.dat2 */
-			DRA7XX_CORE_IOPAD(0x3768, PIN_INPUT_PULLUP | MUX_MODE0) /* mmc1_dat3.dat3 */
-		>;
-	};
-
-	mmc2_pins_default: mmc2_pins_default {
-		pinctrl-single,pins = <
-			DRA7XX_CORE_IOPAD(0x349c, PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_a23.mmc2_clk */
-			DRA7XX_CORE_IOPAD(0x34b0, PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_cs1.mmc2_cmd */
-			DRA7XX_CORE_IOPAD(0x34a0, PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_a24.mmc2_dat0 */
-			DRA7XX_CORE_IOPAD(0x34a4, PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_a25.mmc2_dat1 */
-			DRA7XX_CORE_IOPAD(0x34a8, PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_a26.mmc2_dat2 */
-			DRA7XX_CORE_IOPAD(0x34ac, PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_a27.mmc2_dat3 */
-			DRA7XX_CORE_IOPAD(0x348c, PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_a19.mmc2_dat4 */
-			DRA7XX_CORE_IOPAD(0x3490, PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_a20.mmc2_dat5 */
-			DRA7XX_CORE_IOPAD(0x3494, PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_a21.mmc2_dat6 */
-			DRA7XX_CORE_IOPAD(0x3498, PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_a22.mmc2_dat7 */
-		>;
-	};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dcan1_pins_default: dcan1_pins_default {
 		pinctrl-single,pins = <
 			DRA7XX_CORE_IOPAD(0x37d0, PIN_OUTPUT_PULLUP | MUX_MODE0) /* dcan1_tx */
@@ -427,10 +391,7 @@
 
 &usb2 {
 	dr_mode = "host";
-<<<<<<< HEAD
 	extcon = <&extcon_usb2>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &mmc1 {
@@ -453,7 +414,6 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&mmc2_pins_default>;
 	bus-width = <8>;
-<<<<<<< HEAD
 	non-removable;
 	max-frequency = <192000000>;
 };
@@ -481,12 +441,6 @@
 	};
 };
 
-=======
-	ti,non-removable;
-	max-frequency = <192000000>;
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &mac {
 	status = "okay";
 };
@@ -576,11 +530,7 @@
 
 &atl {
 	assigned-clocks = <&abe_dpll_sys_clk_mux>,
-<<<<<<< HEAD
 			  <&atl_clkctrl DRA7_ATL_CLKCTRL 26>,
-=======
-			  <&atl_gfclk_mux>,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  <&dpll_abe_ck>,
 			  <&dpll_abe_m2x2_ck>,
 			  <&atl_clkin2_ck>;
@@ -598,11 +548,7 @@
 &mcasp3 {
 	#sound-dai-cells = <0>;
 
-<<<<<<< HEAD
 	assigned-clocks = <&l4per_clkctrl DRA7_MCASP3_CLKCTRL 24>;
-=======
-	assigned-clocks = <&mcasp3_ahclkx_mux>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	assigned-clock-parents = <&atl_clkin2_ck>;
 
 	status = "okay";

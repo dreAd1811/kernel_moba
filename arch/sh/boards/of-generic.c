@@ -56,24 +56,15 @@ const struct of_cpu_method __cpu_method_of_table_sentinel
 
 static void sh_of_smp_probe(void)
 {
-<<<<<<< HEAD
 	struct device_node *np;
 	const char *method = NULL;
-=======
-	struct device_node *np = 0;
-	const char *method = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const struct of_cpu_method *m = __cpu_method_of_table;
 
 	pr_info("SH generic board support: scanning for cpus\n");
 
 	init_cpu_possible(cpumask_of(0));
 
-<<<<<<< HEAD
 	for_each_node_by_type(np, "cpu") {
-=======
-	while ((np = of_find_node_by_type(np, "cpu"))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		const __be32 *cell = of_get_property(np, "reg", NULL);
 		u64 id = -1;
 		if (cell) id = of_read_number(cell, of_n_addr_cells(np));
@@ -89,10 +80,7 @@ static void sh_of_smp_probe(void)
 	if (!method) {
 		np = of_find_node_by_name(NULL, "cpus");
 		of_property_read_string(np, "enable-method", &method);
-<<<<<<< HEAD
 		of_node_put(np);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	pr_info("CPU enable method: %s\n", method);
@@ -139,15 +127,6 @@ static void __init sh_of_setup(char **cmdline_p)
 {
 	struct device_node *root;
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_USE_BUILTIN_DTB
-	unflatten_and_copy_device_tree();
-#else
-	unflatten_device_tree();
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	board_time_init = sh_of_time_init;
 
 	sh_mv.mv_name = "Unknown SH model";

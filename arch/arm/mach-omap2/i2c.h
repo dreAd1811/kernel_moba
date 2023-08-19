@@ -19,30 +19,10 @@
  *
  */
 
-<<<<<<< HEAD
 #ifndef __MACH_OMAP2_I2C_H
 #define __MACH_OMAP2_I2C_H
 
 struct omap_hwmod;
-=======
-#include <plat/i2c.h>
-
-#ifndef __MACH_OMAP2_I2C_H
-#define __MACH_OMAP2_I2C_H
-
-/**
- * i2c_dev_attr - OMAP I2C controller device attributes for omap_hwmod
- * @fifo_depth: total controller FIFO size (in bytes)
- * @flags: differences in hardware support capability
- *
- * @fifo_depth represents what exists on the hardware, not what is
- * actually configured at runtime by the device driver.
- */
-struct omap_i2c_dev_attr {
-	u8	fifo_depth;
-	u32	flags;
-};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int omap_i2c_reset(struct omap_hwmod *oh);
 

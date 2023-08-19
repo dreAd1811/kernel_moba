@@ -1,18 +1,5 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /* Copyright (c) 2012-2020, The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2012-2021, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/slab.h>
@@ -86,7 +73,6 @@ struct dci_ops_tbl_t dci_ops_tbl[NUM_DCI_PROC] = {
 		.send_event_mask = diag_send_dci_event_mask_remote,
 		.peripheral_status = 0,
 		.mempool = POOL_TYPE_MDM_DCI_WRITE,
-<<<<<<< HEAD
 	},
 	{
 		.ctx = DIAGFWD_MDM_DCI_2,
@@ -94,8 +80,6 @@ struct dci_ops_tbl_t dci_ops_tbl[NUM_DCI_PROC] = {
 		.send_event_mask = diag_send_dci_event_mask_remote,
 		.peripheral_status = 0,
 		.mempool = POOL_TYPE_MDM2_DCI_WRITE,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 #endif
 };
@@ -206,11 +190,7 @@ static void create_dci_event_mask_tbl(unsigned char *tbl_buf)
 		memset(tbl_buf, 0, DCI_EVENT_MASK_SIZE);
 }
 
-<<<<<<< HEAD
 void dci_drain_data(struct timer_list *tlist)
-=======
-void dci_drain_data(unsigned long data)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	queue_work(driver->diag_dci_wq, &dci_data_drain_work);
 }
@@ -261,7 +241,6 @@ static void dci_handshake_work_fn(struct work_struct *work)
 		  jiffies + msecs_to_jiffies(DCI_HANDSHAKE_WAIT_TIME));
 }
 
-<<<<<<< HEAD
 static void dci_chk_handshake(struct timer_list *tlist)
 {
 	int index;
@@ -273,12 +252,6 @@ static void dci_chk_handshake(struct timer_list *tlist)
 		return;
 
 	index = status->id;
-=======
-static void dci_chk_handshake(unsigned long data)
-{
-	int index = (int)data;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (index < 0 || index >= NUM_DCI_PROC)
 		return;
 
@@ -308,11 +281,7 @@ static int diag_dci_init_buffer(struct diag_dci_buffer_t *buffer, int type)
 			return -ENOMEM;
 		break;
 	default:
-<<<<<<< HEAD
 		pr_err("diag: In %s, unknown type %d\n", __func__, type);
-=======
-		pr_err("diag: In %s, unknown type %d", __func__, type);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -504,11 +473,7 @@ static int diag_process_single_dci_pkt(unsigned char *buf, int len,
 		extract_dci_ctrl_pkt(buf, len, token);
 		break;
 	default:
-<<<<<<< HEAD
 		pr_err("diag: Unable to process single DCI packet, cmd_code: %d, data_source: %d\n",
-=======
-		pr_err("diag: Unable to process single DCI packet, cmd_code: %d, data_source: %d",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			cmd_code, data_source);
 		return -EINVAL;
 	}
@@ -635,11 +600,7 @@ start:
 		 * (1 byte) + version (1 byte) + length (2 bytes)
 		 */
 		err = diag_process_single_dci_pkt(buf + 4, dci_pkt_len,
-<<<<<<< HEAD
 						 DCI_REMOTE_DATA, token);
-=======
-						 DCI_REMOTE_DATA, DCI_MDM_PROC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (err)
 			break;
 		read_bytes += header_len + dci_pkt_len;
@@ -688,11 +649,7 @@ void diag_dci_process_peripheral_data(struct diagfwd_info *p_info, void *buf,
 		 * and End byte (1)
 		 */
 		if ((dci_pkt_len + 5) > (recd_bytes - read_bytes)) {
-<<<<<<< HEAD
 			pr_err("diag: Invalid length in %s, len: %d, dci_pkt_len: %d\n",
-=======
-			pr_err("diag: Invalid length in %s, len: %d, dci_pkt_len: %d",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				__func__, recd_bytes, dci_pkt_len);
 			diag_ws_release();
 			return;
@@ -982,7 +939,6 @@ static void dci_process_ctrl_handshake_pkt(unsigned char *buf, int len,
 	if (header->magic == DCI_MAGIC) {
 		dci_channel_status[token].open = 1;
 		err = dci_ops_tbl[token].send_log_mask(token);
-<<<<<<< HEAD
 		if (err && err != DIAG_DCI_NO_ERROR) {
 			pr_err("diag: In %s, unable to send log mask to token: %d, err: %d\n",
 			       __func__, token, err);
@@ -992,15 +948,6 @@ static void dci_process_ctrl_handshake_pkt(unsigned char *buf, int len,
 			pr_err("diag: In %s, unable to send event mask to token: %d, err: %d\n",
 			       __func__, token, err);
 		}
-=======
-		if (err && err != DIAG_DCI_NO_ERROR)
-			pr_err("diag: In %s, unable to send log mask to token: %d, err: %d\n",
-			       __func__, token, err);
-		err = dci_ops_tbl[token].send_event_mask(token);
-		if (err && err != DIAG_DCI_NO_ERROR)
-			pr_err("diag: In %s, unable to send event mask to token: %d, err: %d\n",
-			       __func__, token, err);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -1122,14 +1069,6 @@ void extract_dci_pkt_rsp(unsigned char *buf, int len, int data_source,
 		return;
 	}
 
-<<<<<<< HEAD
-=======
-	if (token != entry->client_info.token) {
-		mutex_unlock(&driver->dci_mutex);
-		return;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&entry->buffers[data_source].buf_mutex);
 	rsp_buf = entry->buffers[data_source].buf_cmd;
 
@@ -1183,11 +1122,7 @@ void extract_dci_pkt_rsp(unsigned char *buf, int len, int data_source,
 static void copy_ext_hdr(struct diag_dci_buffer_t *data_buffer, void *ext_hdr)
 {
 	if (!data_buffer) {
-<<<<<<< HEAD
 		pr_err("diag: In %s, data buffer is NULL\n", __func__);
-=======
-		pr_err("diag: In %s, data buffer is NULL", __func__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -1208,11 +1143,7 @@ static void copy_dci_event(unsigned char *buf, int len,
 	int err = 0, total_len = 0;
 
 	if (!buf || !client) {
-<<<<<<< HEAD
 		pr_err("diag: Invalid pointers in %s\n", __func__);
-=======
-		pr_err("diag: Invalid pointers in %s", __func__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -1309,11 +1240,7 @@ void extract_dci_events(unsigned char *buf, int len, int data_source,
 				memcpy(timestamp, buf + temp_len + 2,
 					timestamp_len);
 			else {
-<<<<<<< HEAD
 				pr_err("diag: Invalid length in %s, len: %d, temp_len: %d\n",
-=======
-				pr_err("diag: Invalid length in %s, len: %d, temp_len: %d",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						__func__, len, temp_len);
 				return;
 			}
@@ -1325,11 +1252,7 @@ void extract_dci_events(unsigned char *buf, int len, int data_source,
 				payload_len = *(uint8_t *)
 					(buf + temp_len + 2 + timestamp_len);
 			} else {
-<<<<<<< HEAD
 				pr_err("diag: Invalid length in %s, len: %d, temp_len: %d\n",
-=======
-				pr_err("diag: Invalid length in %s, len: %d, temp_len: %d",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						__func__, len, temp_len);
 				return;
 			}
@@ -1379,11 +1302,7 @@ void extract_dci_events(unsigned char *buf, int len, int data_source,
 		temp_len += sizeof(uint16_t) + timestamp_len +
 						payload_len_field + payload_len;
 		if (temp_len > len) {
-<<<<<<< HEAD
 			pr_err("diag: Invalid length in %s, len: %d, read: %d\n",
-=======
-			pr_err("diag: Invalid length in %s, len: %d, read: %d",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						__func__, len, temp_len);
 			return;
 		}
@@ -1426,21 +1345,13 @@ static void copy_dci_log(unsigned char *buf, int len,
 	int err = 0, total_len = 0;
 
 	if (!buf || !client) {
-<<<<<<< HEAD
 		pr_err("diag: Invalid pointers in %s\n", __func__);
-=======
-		pr_err("diag: Invalid pointers in %s", __func__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
 	log_length = *(uint16_t *)(buf + 2);
 	if (log_length > USHRT_MAX - 4) {
-<<<<<<< HEAD
 		pr_err("diag: Integer overflow in %s, log_len: %d\n",
-=======
-		pr_err("diag: Integer overflow in %s, log_len: %d",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				__func__, log_length);
 		return;
 	}
@@ -1452,11 +1363,7 @@ static void copy_dci_log(unsigned char *buf, int len,
 	 * first 4 bytes for the Log code(2) and the length bytes (2)
 	 */
 	if ((log_length + sizeof(uint16_t) + 2) > len) {
-<<<<<<< HEAD
 		pr_err("diag: Invalid length in %s, log_len: %d, len: %d\n",
-=======
-		pr_err("diag: Invalid length in %s, log_len: %d, len: %d",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						__func__, log_length, len);
 		return;
 	}
@@ -1528,11 +1435,7 @@ void extract_dci_log(unsigned char *buf, int len, int data_source, int token,
 		if (entry->client_info.token != token)
 			continue;
 		if (diag_dci_query_log_mask(entry, log_code)) {
-<<<<<<< HEAD
 			pr_debug("\t log code %x needed by client %d\n",
-=======
-			pr_debug("\t log code %x needed by client %d",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 log_code, entry->client->tgid);
 			/* copy to client buffer */
 			copy_dci_log(buf, len, entry, data_source, ext_hdr);
@@ -1752,11 +1655,7 @@ static int diag_send_dci_pkt(struct diag_cmd_reg_t *entry,
 					     driver->apps_dci_buf,
 					     write_len);
 	} else {
-<<<<<<< HEAD
 		pr_err("diag: Cannot send packet to peripheral %d\n",
-=======
-		pr_err("diag: Cannot send packet to peripheral %d",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		       entry->proc);
 		status = DIAG_DCI_SEND_DATA_FAIL;
 	}
@@ -1841,20 +1740,7 @@ static int diag_send_dci_pkt_remote(unsigned char *data, int len, int tag,
 	write_len += dci_header_size;
 	*(int *)(buf + write_len) = tag;
 	write_len += sizeof(int);
-<<<<<<< HEAD
 	memcpy(buf + write_len, data, len);
-=======
-	if ((write_len + len) < DIAG_MDM_BUF_SIZE) {
-		memcpy(buf + write_len, data, len);
-	} else {
-		pr_err("diag: skip writing invalid length packet, token: %d, pkt_len: %d\n",
-			token, (write_len + len));
-		spin_lock_irqsave(&driver->dci_mempool_lock, flags);
-		diagmem_free(driver, buf, dci_ops_tbl[token].mempool);
-		spin_unlock_irqrestore(&driver->dci_mempool_lock, flags);
-		return -EAGAIN;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	write_len += len;
 	*(buf + write_len) = CONTROL_CHAR; /* End Terminator */
 	write_len += sizeof(uint8_t);
@@ -2010,12 +1896,7 @@ static int diag_dci_process_apps_pkt(struct diag_pkt_header_t *pkt_header,
 							DIAG_MAX_REQ_SIZE;
 			write_len += sizeof(uint32_t);
 		} else if (ss_cmd_code == DIAG_DIAG_STM) {
-<<<<<<< HEAD
 			write_len = diag_process_stm_cmd(req_buf, payload_ptr);
-=======
-			write_len = diag_process_stm_cmd(req_buf, req_len,
-				payload_ptr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	} else if (subsys_id == DIAG_SS_PARAMS) {
 		if (ss_cmd_code == DIAG_DIAG_POLL) {
@@ -2111,12 +1992,8 @@ static int diag_process_dci_pkt_rsp(unsigned char *buf, int len)
 
 	if (len < sizeof(struct dci_pkt_req_t) ||
 		len > DCI_REQ_BUF_SIZE) {
-<<<<<<< HEAD
 		pr_err("diag: dci: Invalid length %d len in %s\n",
 			len, __func__);
-=======
-		pr_err("diag: dci: Invalid length %d len in %s", len, __func__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EIO;
 	}
 
@@ -2327,11 +2204,7 @@ int diag_process_dci_transaction(unsigned char *buf, int len)
 
 		while (count < num_codes) {
 			if (read_len + sizeof(uint16_t) > len) {
-<<<<<<< HEAD
 				pr_err("diag: dci: Invalid length for log type in %s\n",
-=======
-				pr_err("diag: dci: Invalid length for log type in %s",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 								__func__);
 				mutex_unlock(&driver->dci_mutex);
 				return -EIO;
@@ -2445,11 +2318,7 @@ int diag_process_dci_transaction(unsigned char *buf, int len)
 		count = 0; /* iterator for extracting log codes */
 		while (count < num_codes) {
 			if (read_len + sizeof(int) > len) {
-<<<<<<< HEAD
 				pr_err("diag: dci: Invalid length for event type in %s\n",
-=======
-				pr_err("diag: dci: Invalid length for event type in %s",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 								__func__);
 				mutex_unlock(&driver->dci_mutex);
 				return -EIO;
@@ -2568,11 +2437,7 @@ void update_dci_cumulative_event_mask(int offset, uint8_t byte_mask, int token)
 			break;
 		}
 	}
-<<<<<<< HEAD
 	if (!is_set)
-=======
-	if (is_set == false)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*update_ptr &= ~byte_mask;
 	else
 		*update_ptr |= byte_mask;
@@ -2757,11 +2622,7 @@ void update_dci_cumulative_log_mask(int offset, unsigned int byte_index,
 		}
 	}
 
-<<<<<<< HEAD
 	if (!is_set)
-=======
-	if (is_set == false)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*update_ptr &= ~byte_mask;
 	else
 		*update_ptr |= byte_mask;
@@ -2945,11 +2806,7 @@ static void diag_dci_init_handshake_remote(void)
 		temp = &dci_channel_status[i];
 		temp->id = i;
 		INIT_WORK(&temp->handshake_work, dci_handshake_work_fn);
-<<<<<<< HEAD
 		timer_setup(&temp->wait_time, dci_chk_handshake, 0);
-=======
-		setup_timer(&temp->wait_time, dci_chk_handshake, i);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -3032,17 +2889,10 @@ int diag_dci_init(void)
 
 	INIT_WORK(&dci_data_drain_work, dci_data_drain_work_fn);
 
-<<<<<<< HEAD
 	timer_setup(&dci_drain_timer, dci_drain_data, 0);
 	return DIAG_DCI_NO_ERROR;
 err:
 	pr_err("diag: Could not initialize diag DCI buffers\n");
-=======
-	setup_timer(&dci_drain_timer, dci_drain_data, 0);
-	return DIAG_DCI_NO_ERROR;
-err:
-	pr_err("diag: Could not initialize diag DCI buffers");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vfree(driver->apps_dci_buf);
 	driver->apps_dci_buf = NULL;
 
@@ -3166,11 +3016,6 @@ int diag_dci_register_client(struct diag_dci_reg_tbl_t *reg_entry)
 	int i, err = 0;
 	struct diag_dci_client_tbl *new_entry = NULL;
 	struct diag_dci_buf_peripheral_t *proc_buf = NULL;
-<<<<<<< HEAD
-=======
-	struct pid *pid_struct = NULL;
-	struct task_struct *task_s = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!reg_entry)
 		return DIAG_DCI_NO_REG;
@@ -3186,7 +3031,6 @@ int diag_dci_register_client(struct diag_dci_reg_tbl_t *reg_entry)
 	if (driver->num_dci_client >= MAX_DCI_CLIENTS)
 		return DIAG_DCI_NO_REG;
 
-<<<<<<< HEAD
 	new_entry = kzalloc(sizeof(struct diag_dci_client_tbl), GFP_KERNEL);
 	if (!new_entry)
 		return DIAG_DCI_NO_REG;
@@ -3195,27 +3039,6 @@ int diag_dci_register_client(struct diag_dci_reg_tbl_t *reg_entry)
 
 	get_task_struct(current);
 	new_entry->client = current;
-=======
-	pid_struct = find_get_pid(current->tgid);
-	if (!pid_struct)
-		return DIAG_DCI_NO_REG;
-	task_s = get_pid_task(pid_struct, PIDTYPE_PID);
-	if (!task_s) {
-		put_pid(pid_struct);
-		return DIAG_DCI_NO_REG;
-	}
-	new_entry = kzalloc(sizeof(struct diag_dci_client_tbl), GFP_KERNEL);
-	if (!new_entry) {
-		put_pid(pid_struct);
-		put_task_struct(task_s);
-		return DIAG_DCI_NO_REG;
-	}
-
-	get_task_struct(task_s);
-
-	mutex_lock(&driver->dci_mutex);
-	new_entry->client = task_s;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	new_entry->tgid = current->tgid;
 	new_entry->client_info.notification_list =
 				reg_entry->notification_list;
@@ -3227,10 +3050,7 @@ int diag_dci_register_client(struct diag_dci_reg_tbl_t *reg_entry)
 		new_entry->num_buffers = NUM_DCI_PERIPHERALS;
 		break;
 	case DCI_MDM_PROC:
-<<<<<<< HEAD
 	case DCI_MDM_2_PROC:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		new_entry->num_buffers = 1;
 		break;
 	}
@@ -3308,12 +3128,7 @@ int diag_dci_register_client(struct diag_dci_reg_tbl_t *reg_entry)
 		diag_update_proc_vote(DIAG_PROC_DCI, VOTE_UP, reg_entry->token);
 	queue_work(driver->diag_real_time_wq, &driver->diag_real_time_work);
 	mutex_unlock(&driver->dci_mutex);
-<<<<<<< HEAD
 
-=======
-	put_pid(pid_struct);
-	put_task_struct(task_s);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return reg_entry->client_id;
 
 fail_alloc:
@@ -3351,12 +3166,6 @@ fail_alloc:
 		new_entry = NULL;
 	}
 	mutex_unlock(&driver->dci_mutex);
-<<<<<<< HEAD
-=======
-	put_task_struct(task_s);
-	put_task_struct(task_s);
-	put_pid(pid_struct);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return DIAG_DCI_NO_REG;
 }
 
@@ -3518,11 +3327,7 @@ int diag_dci_write_proc(uint8_t peripheral, int pkt_type, char *buf, int len)
 	} else if (pkt_type == DIAG_CNTL_TYPE) {
 		dest_channel = TYPE_CNTL;
 	} else {
-<<<<<<< HEAD
 		pr_err("diag: Invalid DCI pkt type in %s\n", __func__);
-=======
-		pr_err("diag: Invalid DCI pkt type in %s", __func__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 

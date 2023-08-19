@@ -7,10 +7,7 @@
 #define __IRQ_USER_H__
 
 #include <sysdep/ptrace.h>
-<<<<<<< HEAD
 #include <stdbool.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct irq_fd {
 	struct irq_fd *next;
@@ -19,7 +16,6 @@ struct irq_fd {
 	int type;
 	int irq;
 	int events;
-<<<<<<< HEAD
 	bool active;
 	bool pending;
 	bool purge;
@@ -31,12 +27,6 @@ struct irq_fd {
 #define MAX_IRQ_TYPE (IRQ_NONE + 1)
 
 
-=======
-	int current_events;
-};
-
-enum { IRQ_READ, IRQ_WRITE };
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct siginfo;
 extern void sigio_handler(int sig, struct siginfo *unused_si, struct uml_pt_regs *regs);

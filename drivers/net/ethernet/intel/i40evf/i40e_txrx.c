@@ -1,33 +1,5 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /* Copyright(c) 2013 - 2018 Intel Corporation. */
-=======
-/*******************************************************************************
- *
- * Intel Ethernet Controller XL710 Family Linux Virtual Function Driver
- * Copyright(c) 2013 - 2016 Intel Corporation.
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms and conditions of the GNU General Public License,
- * version 2, as published by the Free Software Foundation.
- *
- * This program is distributed in the hope it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
- * more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * The full GNU General Public License is included in this distribution in
- * the file called "COPYING".
- *
- * Contact Information:
- * e1000-devel Mailing List <e1000-devel@lists.sourceforge.net>
- * Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497
- *
- ******************************************************************************/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/prefetch.h>
 #include <net/busy_poll.h>
@@ -133,11 +105,7 @@ void i40evf_free_tx_resources(struct i40e_ring *tx_ring)
 
 /**
  * i40evf_get_tx_pending - how many Tx descriptors not processed
-<<<<<<< HEAD
  * @ring: the ring of descriptors
-=======
- * @tx_ring: the ring of descriptors
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @in_sw: is tx_pending being checked in SW or HW
  *
  * Since there is no access to the ring head register
@@ -157,7 +125,6 @@ u32 i40evf_get_tx_pending(struct i40e_ring *ring, bool in_sw)
 	return 0;
 }
 
-<<<<<<< HEAD
 /**
  * i40evf_detect_recover_hung - Function to detect and recover hung_queues
  * @vsi:  pointer to vsi struct with tx queues
@@ -211,8 +178,6 @@ void i40evf_detect_recover_hung(struct i40e_vsi *vsi)
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define WB_STRIDE 4
 
 /**
@@ -381,12 +346,7 @@ static void i40e_enable_wb_on_itr(struct i40e_vsi *vsi,
 	      I40E_VFINT_DYN_CTLN1_ITR_INDX_MASK; /* set noitr */
 
 	wr32(&vsi->back->hw,
-<<<<<<< HEAD
 	     I40E_VFINT_DYN_CTLN1(q_vector->reg_idx), val);
-=======
-	     I40E_VFINT_DYN_CTLN1(q_vector->v_idx +
-				  vsi->base_vector - 1), val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	q_vector->arm_wb_state = true;
 }
 
@@ -405,7 +365,6 @@ void i40evf_force_wb(struct i40e_vsi *vsi, struct i40e_q_vector *q_vector)
 		  /* allow 00 to be written to the index */;
 
 	wr32(&vsi->back->hw,
-<<<<<<< HEAD
 	     I40E_VFINT_DYN_CTLN1(q_vector->reg_idx),
 	     val);
 }
@@ -645,105 +604,6 @@ clear_counts:
 
 	rc->total_bytes = 0;
 	rc->total_packets = 0;
-=======
-	     I40E_VFINT_DYN_CTLN1(q_vector->v_idx + vsi->base_vector - 1),
-	     val);
-}
-
-/**
- * i40e_set_new_dynamic_itr - Find new ITR level
- * @rc: structure containing ring performance data
- *
- * Returns true if ITR changed, false if not
- *
- * Stores a new ITR value based on packets and byte counts during
- * the last interrupt.  The advantage of per interrupt computation
- * is faster updates and more accurate ITR for the current traffic
- * pattern.  Constants in this function were computed based on
- * theoretical maximum wire speed and thresholds were set based on
- * testing data as well as attempting to minimize response time
- * while increasing bulk throughput.
- **/
-static bool i40e_set_new_dynamic_itr(struct i40e_ring_container *rc)
-{
-	enum i40e_latency_range new_latency_range = rc->latency_range;
-	u32 new_itr = rc->itr;
-	int bytes_per_int;
-	unsigned int usecs, estimated_usecs;
-
-	if (rc->total_packets == 0 || !rc->itr)
-		return false;
-
-	usecs = (rc->itr << 1) * ITR_COUNTDOWN_START;
-	bytes_per_int = rc->total_bytes / usecs;
-
-	/* The calculations in this algorithm depend on interrupts actually
-	 * firing at the ITR rate. This may not happen if the packet rate is
-	 * really low, or if we've been napi polling. Check to make sure
-	 * that's not the case before we continue.
-	 */
-	estimated_usecs = jiffies_to_usecs(jiffies - rc->last_itr_update);
-	if (estimated_usecs > usecs) {
-		new_latency_range = I40E_LOW_LATENCY;
-		goto reset_latency;
-	}
-
-	/* simple throttlerate management
-	 *   0-10MB/s   lowest (50000 ints/s)
-	 *  10-20MB/s   low    (20000 ints/s)
-	 *  20-1249MB/s bulk   (18000 ints/s)
-	 *
-	 * The math works out because the divisor is in 10^(-6) which
-	 * turns the bytes/us input value into MB/s values, but
-	 * make sure to use usecs, as the register values written
-	 * are in 2 usec increments in the ITR registers, and make sure
-	 * to use the smoothed values that the countdown timer gives us.
-	 */
-	switch (new_latency_range) {
-	case I40E_LOWEST_LATENCY:
-		if (bytes_per_int > 10)
-			new_latency_range = I40E_LOW_LATENCY;
-		break;
-	case I40E_LOW_LATENCY:
-		if (bytes_per_int > 20)
-			new_latency_range = I40E_BULK_LATENCY;
-		else if (bytes_per_int <= 10)
-			new_latency_range = I40E_LOWEST_LATENCY;
-		break;
-	case I40E_BULK_LATENCY:
-	default:
-		if (bytes_per_int <= 20)
-			new_latency_range = I40E_LOW_LATENCY;
-		break;
-	}
-
-reset_latency:
-	rc->latency_range = new_latency_range;
-
-	switch (new_latency_range) {
-	case I40E_LOWEST_LATENCY:
-		new_itr = I40E_ITR_50K;
-		break;
-	case I40E_LOW_LATENCY:
-		new_itr = I40E_ITR_20K;
-		break;
-	case I40E_BULK_LATENCY:
-		new_itr = I40E_ITR_18K;
-		break;
-	default:
-		break;
-	}
-
-	rc->total_bytes = 0;
-	rc->total_packets = 0;
-	rc->last_itr_update = jiffies;
-
-	if (new_itr != rc->itr) {
-		rc->itr = new_itr;
-		return true;
-	}
-	return false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -780,10 +640,7 @@ int i40evf_setup_tx_descriptors(struct i40e_ring *tx_ring)
 
 	tx_ring->next_to_use = 0;
 	tx_ring->next_to_clean = 0;
-<<<<<<< HEAD
 	tx_ring->tx_stats.prev_pkt_ctr = -1;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 err:
@@ -1189,11 +1046,8 @@ static inline int i40e_ptype_to_htype(u8 ptype)
  * i40e_rx_hash - set the hash value in the skb
  * @ring: descriptor ring
  * @rx_desc: specific descriptor
-<<<<<<< HEAD
  * @skb: skb currently being received and modified
  * @rx_ptype: Rx packet type
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  **/
 static inline void i40e_rx_hash(struct i40e_ring *ring,
 				union i40e_rx_desc *rx_desc,
@@ -1542,11 +1396,7 @@ static struct sk_buff *i40e_build_skb(struct i40e_ring *rx_ring,
  * @rx_buffer: rx buffer to pull data from
  *
  * This function will clean up the contents of the rx_buffer.  It will
-<<<<<<< HEAD
  * either recycle the buffer or unmap it and free the associated resources.
-=======
- * either recycle the bufer or unmap it and free the associated resources.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static void i40e_put_rx_buffer(struct i40e_ring *rx_ring,
 			       struct i40e_rx_buffer *rx_buffer)
@@ -1730,7 +1580,6 @@ static int i40e_clean_rx_irq(struct i40e_ring *rx_ring, int budget)
 	return failure ? budget : (int)total_rx_packets;
 }
 
-<<<<<<< HEAD
 static inline u32 i40e_buildreg_itr(const int type, u16 itr)
 {
 	u32 val;
@@ -1755,25 +1604,12 @@ static inline u32 i40e_buildreg_itr(const int type, u16 itr)
 	val = I40E_VFINT_DYN_CTLN1_INTENA_MASK |
 	      (type << I40E_VFINT_DYN_CTLN1_ITR_INDX_SHIFT) |
 	      (itr << (I40E_VFINT_DYN_CTLN1_INTERVAL_SHIFT - 1));
-=======
-static u32 i40e_buildreg_itr(const int type, const u16 itr)
-{
-	u32 val;
-
-	val = I40E_VFINT_DYN_CTLN1_INTENA_MASK |
-	      /* Don't clear PBA because that can cause lost interrupts that
-	       * came in while we were cleaning/polling
-	       */
-	      (type << I40E_VFINT_DYN_CTLN1_ITR_INDX_SHIFT) |
-	      (itr << I40E_VFINT_DYN_CTLN1_INTERVAL_SHIFT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return val;
 }
 
 /* a small macro to shorten up some long lines */
 #define INTREG I40E_VFINT_DYN_CTLN1
-<<<<<<< HEAD
 
 /* The act of updating the ITR will cause it to immediately trigger. In order
  * to prevent this from throwing off adaptive update statistics we defer the
@@ -1783,21 +1619,6 @@ static u32 i40e_buildreg_itr(const int type, const u16 itr)
  * 3 interrupts.
  */
 #define ITR_COUNTDOWN_START 3
-=======
-static inline int get_rx_itr(struct i40e_vsi *vsi, int idx)
-{
-	struct i40evf_adapter *adapter = vsi->back;
-
-	return adapter->rx_rings[idx].rx_itr_setting;
-}
-
-static inline int get_tx_itr(struct i40e_vsi *vsi, int idx)
-{
-	struct i40evf_adapter *adapter = vsi->back;
-
-	return adapter->tx_rings[idx].tx_itr_setting;
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * i40e_update_enable_itr - Update itr and re-enable MSIX interrupt
@@ -1809,7 +1630,6 @@ static inline void i40e_update_enable_itr(struct i40e_vsi *vsi,
 					  struct i40e_q_vector *q_vector)
 {
 	struct i40e_hw *hw = &vsi->back->hw;
-<<<<<<< HEAD
 	u32 intval;
 
 	/* These will do nothing if dynamic updates are not enabled */
@@ -1855,75 +1675,6 @@ static inline void i40e_update_enable_itr(struct i40e_vsi *vsi,
 
 	if (!test_bit(__I40E_VSI_DOWN, vsi->state))
 		wr32(hw, INTREG(q_vector->reg_idx), intval);
-=======
-	bool rx = false, tx = false;
-	u32 rxval, txval;
-	int vector;
-	int idx = q_vector->v_idx;
-	int rx_itr_setting, tx_itr_setting;
-
-	vector = (q_vector->v_idx + vsi->base_vector);
-
-	/* avoid dynamic calculation if in countdown mode OR if
-	 * all dynamic is disabled
-	 */
-	rxval = txval = i40e_buildreg_itr(I40E_ITR_NONE, 0);
-
-	rx_itr_setting = get_rx_itr(vsi, idx);
-	tx_itr_setting = get_tx_itr(vsi, idx);
-
-	if (q_vector->itr_countdown > 0 ||
-	    (!ITR_IS_DYNAMIC(rx_itr_setting) &&
-	     !ITR_IS_DYNAMIC(tx_itr_setting))) {
-		goto enable_int;
-	}
-
-	if (ITR_IS_DYNAMIC(rx_itr_setting)) {
-		rx = i40e_set_new_dynamic_itr(&q_vector->rx);
-		rxval = i40e_buildreg_itr(I40E_RX_ITR, q_vector->rx.itr);
-	}
-
-	if (ITR_IS_DYNAMIC(tx_itr_setting)) {
-		tx = i40e_set_new_dynamic_itr(&q_vector->tx);
-		txval = i40e_buildreg_itr(I40E_TX_ITR, q_vector->tx.itr);
-	}
-
-	if (rx || tx) {
-		/* get the higher of the two ITR adjustments and
-		 * use the same value for both ITR registers
-		 * when in adaptive mode (Rx and/or Tx)
-		 */
-		u16 itr = max(q_vector->tx.itr, q_vector->rx.itr);
-
-		q_vector->tx.itr = q_vector->rx.itr = itr;
-		txval = i40e_buildreg_itr(I40E_TX_ITR, itr);
-		tx = true;
-		rxval = i40e_buildreg_itr(I40E_RX_ITR, itr);
-		rx = true;
-	}
-
-	/* only need to enable the interrupt once, but need
-	 * to possibly update both ITR values
-	 */
-	if (rx) {
-		/* set the INTENA_MSK_MASK so that this first write
-		 * won't actually enable the interrupt, instead just
-		 * updating the ITR (it's bit 31 PF and VF)
-		 */
-		rxval |= BIT(31);
-		/* don't check _DOWN because interrupt isn't being enabled */
-		wr32(hw, INTREG(vector - 1), rxval);
-	}
-
-enable_int:
-	if (!test_bit(__I40E_VSI_DOWN, vsi->state))
-		wr32(hw, INTREG(vector - 1), txval);
-
-	if (q_vector->itr_countdown)
-		q_vector->itr_countdown--;
-	else
-		q_vector->itr_countdown = ITR_COUNTDOWN_START;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**

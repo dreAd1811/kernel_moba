@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
 //
 // Empiatech em28x1 audio extension
@@ -21,30 +20,6 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-=======
-/*
- *  Empiatech em28x1 audio extension
- *
- *  Copyright (C) 2006 Markus Rechberger <mrechberger@gmail.com>
- *
- *  Copyright (C) 2007-2016 Mauro Carvalho Chehab
- *	- Port to work with the in-kernel driver
- *	- Cleanups, fixes, alsa-controls, etc.
- *
- *  This driver is based on my previous au600 usb pstn audio driver
- *  and inherits all the copyrights
- *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "em28xx.h"
 
@@ -128,11 +103,7 @@ static void em28xx_audio_isocirq(struct urb *urb)
 	case -ESHUTDOWN:
 		return;
 	default:            /* error */
-<<<<<<< HEAD
 		dprintk("urb completion error %d.\n", urb->status);
-=======
-		dprintk("urb completition error %d.\n", urb->status);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 
@@ -194,19 +165,11 @@ static void em28xx_audio_isocirq(struct urb *urb)
 		dev_err(&dev->intf->dev,
 			"resubmit of audio urb failed (error=%i)\n",
 			status);
-<<<<<<< HEAD
-=======
-	return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int em28xx_init_audio_isoc(struct em28xx *dev)
 {
-<<<<<<< HEAD
 	int       i, err;
-=======
-	int       i, errCode;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dprintk("Starting isoc transfers\n");
 
@@ -215,7 +178,6 @@ static int em28xx_init_audio_isoc(struct em28xx *dev)
 		memset(dev->adev.transfer_buffer[i], 0x80,
 		       dev->adev.urb[i]->transfer_buffer_length);
 
-<<<<<<< HEAD
 		err = usb_submit_urb(dev->adev.urb[i], GFP_ATOMIC);
 		if (err) {
 			dev_err(&dev->intf->dev,
@@ -225,18 +187,6 @@ static int em28xx_init_audio_isoc(struct em28xx *dev)
 			atomic_set(&dev->adev.stream_started, 0);
 			return err;
 		}
-=======
-		errCode = usb_submit_urb(dev->adev.urb[i], GFP_ATOMIC);
-		if (errCode) {
-			dev_err(&dev->intf->dev,
-				"submit of audio urb failed (error=%i)\n",
-				errCode);
-			em28xx_deinit_isoc_audio(dev);
-			atomic_set(&dev->adev.stream_started, 0);
-			return errCode;
-		}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -316,27 +266,17 @@ static int snd_em28xx_capture_open(struct snd_pcm_substream *substream)
 	if (nonblock) {
 		if (!mutex_trylock(&dev->lock))
 			return -EAGAIN;
-<<<<<<< HEAD
 	} else {
 		mutex_lock(&dev->lock);
 	}
-=======
-	} else
-		mutex_lock(&dev->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	runtime->hw = snd_em28xx_hw_capture;
 
 	if (dev->adev.users == 0) {
-<<<<<<< HEAD
 		if (!dev->alt || dev->is_audio_only) {
 			struct usb_device *udev;
 
 			udev = interface_to_usbdev(dev->intf);
-=======
-		if (dev->alt == 0 || dev->is_audio_only) {
-			struct usb_device *udev = interface_to_usbdev(dev->intf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			if (dev->is_audio_only)
 				/* audio is on a separate interface */
@@ -428,17 +368,11 @@ static int snd_em28xx_hw_capture_params(struct snd_pcm_substream *substream,
 	if (ret < 0)
 		return ret;
 #if 0
-<<<<<<< HEAD
 	/*
 	 * TODO: set up em28xx audio chip to deliver the correct audio format,
 	 * current default is 48000hz multiplexed => 96000hz mono
 	 * which shouldn't matter since analogue TV only supports mono
 	 */
-=======
-	/* TODO: set up em28xx audio chip to deliver the correct audio format,
-	   current default is 48000hz multiplexed => 96000hz mono
-	   which shouldn't matter since analogue TV only supports mono */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int channels, rate, format;
 
 	format = params_format(hw_params);
@@ -582,14 +516,9 @@ static int em28xx_vol_put(struct snd_kcontrol *kcontrol,
 	if (nonblock) {
 		if (!mutex_trylock(&dev->lock))
 			return -EAGAIN;
-<<<<<<< HEAD
 	} else {
 		mutex_lock(&dev->lock);
 	}
-=======
-	} else
-		mutex_lock(&dev->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rc = em28xx_read_ac97(dev, kcontrol->private_value);
 	if (rc < 0)
 		goto err;
@@ -626,14 +555,9 @@ static int em28xx_vol_get(struct snd_kcontrol *kcontrol,
 	if (nonblock) {
 		if (!mutex_trylock(&dev->lock))
 			return -EAGAIN;
-<<<<<<< HEAD
 	} else {
 		mutex_lock(&dev->lock);
 	}
-=======
-	} else
-		mutex_lock(&dev->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	val = em28xx_read_ac97(dev, kcontrol->private_value);
 	mutex_unlock(&dev->lock);
 	if (val < 0)
@@ -667,14 +591,9 @@ static int em28xx_vol_put_mute(struct snd_kcontrol *kcontrol,
 	if (nonblock) {
 		if (!mutex_trylock(&dev->lock))
 			return -EAGAIN;
-<<<<<<< HEAD
 	} else {
 		mutex_lock(&dev->lock);
 	}
-=======
-	} else
-		mutex_lock(&dev->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rc = em28xx_read_ac97(dev, kcontrol->private_value);
 	if (rc < 0)
 		goto err;
@@ -714,14 +633,9 @@ static int em28xx_vol_get_mute(struct snd_kcontrol *kcontrol,
 	if (nonblock) {
 		if (!mutex_trylock(&dev->lock))
 			return -EAGAIN;
-<<<<<<< HEAD
 	} else {
 		mutex_lock(&dev->lock);
 	}
-=======
-	} else
-		mutex_lock(&dev->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	val = em28xx_read_ac97(dev, kcontrol->private_value);
 	mutex_unlock(&dev->lock);
 	if (val < 0)
@@ -855,11 +769,7 @@ static int em28xx_audio_urb_init(struct em28xx *dev)
 
 	if (intf->num_altsetting <= alt) {
 		dev_err(&dev->intf->dev, "alt %d doesn't exist on interface %d\n",
-<<<<<<< HEAD
 			dev->ifnum, alt);
-=======
-			      dev->ifnum, alt);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 	}
 
@@ -933,14 +843,8 @@ static int em28xx_audio_urb_init(struct em28xx *dev)
 	dev->adev.transfer_buffer = kcalloc(num_urb,
 					    sizeof(*dev->adev.transfer_buffer),
 					    GFP_ATOMIC);
-<<<<<<< HEAD
 	if (!dev->adev.transfer_buffer)
 		return -ENOMEM;
-=======
-	if (!dev->adev.transfer_buffer) {
-		return -ENOMEM;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev->adev.urb = kcalloc(num_urb, sizeof(*dev->adev.urb), GFP_ATOMIC);
 	if (!dev->adev.urb) {
@@ -1001,17 +905,11 @@ static int em28xx_audio_init(struct em28xx *dev)
 	int		    err;
 
 	if (dev->usb_audio_type != EM28XX_USB_AUDIO_VENDOR) {
-<<<<<<< HEAD
 		/*
 		 * This device does not support the extension (in this case
 		 * the device is expecting the snd-usb-audio module or
 		 * doesn't have analog audio support at all)
 		 */
-=======
-		/* This device does not support the extension (in this case
-		   the device is expecting the snd-usb-audio module or
-		   doesn't have analog audio support at all) */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 
@@ -1087,7 +985,6 @@ card_free:
 
 static int em28xx_audio_fini(struct em28xx *dev)
 {
-<<<<<<< HEAD
 	if (!dev)
 		return 0;
 
@@ -1097,15 +994,6 @@ static int em28xx_audio_fini(struct em28xx *dev)
 		 * the device is expecting the snd-usb-audio module or
 		 * doesn't have analog audio support at all)
 		 */
-=======
-	if (dev == NULL)
-		return 0;
-
-	if (dev->usb_audio_type != EM28XX_USB_AUDIO_VENDOR) {
-		/* This device does not support the extension (in this case
-		   the device is expecting the snd-usb-audio module or
-		   doesn't have analog audio support at all) */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 
@@ -1127,11 +1015,7 @@ static int em28xx_audio_fini(struct em28xx *dev)
 
 static int em28xx_audio_suspend(struct em28xx *dev)
 {
-<<<<<<< HEAD
 	if (!dev)
-=======
-	if (dev == NULL)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	if (dev->usb_audio_type != EM28XX_USB_AUDIO_VENDOR)
@@ -1145,11 +1029,7 @@ static int em28xx_audio_suspend(struct em28xx *dev)
 
 static int em28xx_audio_resume(struct em28xx *dev)
 {
-<<<<<<< HEAD
 	if (!dev)
-=======
-	if (dev == NULL)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	if (dev->usb_audio_type != EM28XX_USB_AUDIO_VENDOR)
@@ -1180,11 +1060,7 @@ static void __exit em28xx_alsa_unregister(void)
 	em28xx_unregister_extension(&audio_ops);
 }
 
-<<<<<<< HEAD
 MODULE_LICENSE("GPL v2");
-=======
-MODULE_LICENSE("GPL");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_AUTHOR("Markus Rechberger <mrechberger@gmail.com>");
 MODULE_AUTHOR("Mauro Carvalho Chehab");
 MODULE_DESCRIPTION(DRIVER_DESC " - audio interface");

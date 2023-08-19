@@ -212,15 +212,8 @@ static int jz4740_adc_probe(struct platform_device *pdev)
 	int irq_base;
 
 	adc = devm_kzalloc(&pdev->dev, sizeof(*adc), GFP_KERNEL);
-<<<<<<< HEAD
 	if (!adc)
 		return -ENOMEM;
-=======
-	if (!adc) {
-		dev_err(&pdev->dev, "Failed to allocate driver structure\n");
-		return -ENOMEM;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	adc->irq = platform_get_irq(pdev, 0);
 	if (adc->irq < 0) {

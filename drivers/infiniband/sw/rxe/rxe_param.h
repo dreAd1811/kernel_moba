@@ -83,11 +83,7 @@ enum rxe_device_param {
 	RXE_MAX_SGE_RD			= 32,
 	RXE_MAX_CQ			= 16384,
 	RXE_MAX_LOG_CQE			= 15,
-<<<<<<< HEAD
 	RXE_MAX_MR			= 256 * 1024,
-=======
-	RXE_MAX_MR			= 2 * 1024,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	RXE_MAX_PD			= 0x7ffc,
 	RXE_MAX_QP_RD_ATOM		= 128,
 	RXE_MAX_EE_RD_ATOM		= 0,

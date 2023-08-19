@@ -105,12 +105,8 @@ u64 mlx4_make_profile(struct mlx4_dev *dev,
 	request->num_mtt =
 		roundup_pow_of_two(max_t(unsigned, request->num_mtt,
 					 min(1UL << (31 - log_mtts_per_seg),
-<<<<<<< HEAD
 					     (si.totalram << 1) >> log_mtts_per_seg)));
 
-=======
-					     si.totalram >> (log_mtts_per_seg - 1))));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	profile[MLX4_RES_QP].size     = dev_cap->qpc_entry_sz;
 	profile[MLX4_RES_RDMARC].size = dev_cap->rdmarc_entry_sz;

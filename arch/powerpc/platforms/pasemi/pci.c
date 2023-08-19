@@ -205,11 +205,7 @@ static int __init pas_add_bridge(struct device_node *dev)
 
 	setup_pa_pxp(hose);
 
-<<<<<<< HEAD
 	pr_info("Found PA-PXP PCI host bridge.\n");
-=======
-	printk(KERN_INFO "Found PA-PXP PCI host bridge.\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Interpret the "ranges" property */
 	pci_process_bridge_OF_ranges(hose, dev, 1);
@@ -220,7 +216,6 @@ static int __init pas_add_bridge(struct device_node *dev)
 void __init pas_pci_init(void)
 {
 	struct device_node *np, *root;
-<<<<<<< HEAD
 	int res;
 
 	root = of_find_node_by_path("/");
@@ -236,21 +231,6 @@ void __init pas_pci_init(void)
 		res = pas_add_bridge(np);
 		of_node_put(np);
 	}
-=======
-
-	root = of_find_node_by_path("/");
-	if (!root) {
-		printk(KERN_CRIT "pas_pci_init: can't find root "
-			"of device tree\n");
-		return;
-	}
-
-	for (np = NULL; (np = of_get_next_child(root, np)) != NULL;)
-		if (np->name && !strcmp(np->name, "pxp") && !pas_add_bridge(np))
-			of_node_get(np);
-
-	of_node_put(root);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void __iomem *pasemi_pci_getcfgaddr(struct pci_dev *dev, int offset)

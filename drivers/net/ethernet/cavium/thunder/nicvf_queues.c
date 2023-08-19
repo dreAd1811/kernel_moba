@@ -291,13 +291,8 @@ static int  nicvf_init_rbdr(struct nicvf *nic, struct rbdr *rbdr,
 		rbdr->is_xdp = true;
 	}
 	rbdr->pgcnt = roundup_pow_of_two(rbdr->pgcnt);
-<<<<<<< HEAD
 	rbdr->pgcache = kcalloc(rbdr->pgcnt, sizeof(*rbdr->pgcache),
 				GFP_KERNEL);
-=======
-	rbdr->pgcache = kzalloc(sizeof(*rbdr->pgcache) *
-				rbdr->pgcnt, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!rbdr->pgcache)
 		return -ENOMEM;
 	rbdr->pgidx = 0;
@@ -764,10 +759,7 @@ static void nicvf_rcv_queue_config(struct nicvf *nic, struct queue_set *qs,
 
 	if (!rq->enable) {
 		nicvf_reclaim_rcv_queue(nic, qs, qidx);
-<<<<<<< HEAD
 		xdp_rxq_info_unreg(&rq->xdp_rxq);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -780,12 +772,9 @@ static void nicvf_rcv_queue_config(struct nicvf *nic, struct queue_set *qs,
 	/* all writes of RBDR data to be loaded into L2 Cache as well*/
 	rq->caching = 1;
 
-<<<<<<< HEAD
 	/* Driver have no proper error path for failed XDP RX-queue info reg */
 	WARN_ON(xdp_rxq_info_reg(&rq->xdp_rxq, nic->netdev, qidx) < 0);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Send a mailbox msg to PF to config RQ */
 	mbx.rq.msg = NIC_MBOX_MSG_RQ_CFG;
 	mbx.rq.qs_num = qs->vnic_id;
@@ -992,12 +981,9 @@ void nicvf_qset_config(struct nicvf *nic, bool enable)
 		qs_cfg->be = 1;
 #endif
 		qs_cfg->vnic = qs->vnic_id;
-<<<<<<< HEAD
 		/* Enable Tx timestamping capability */
 		if (nic->ptp_clock)
 			qs_cfg->send_tstmp_ena = 1;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	nicvf_send_msg_to_pf(nic, &mbx);
 }
@@ -1405,7 +1391,6 @@ nicvf_sq_add_hdr_subdesc(struct nicvf *nic, struct snd_queue *sq, int qentry,
 		hdr->inner_l3_offset = skb_network_offset(skb) - 2;
 		this_cpu_inc(nic->pnicvf->drv_stats->tx_tso);
 	}
-<<<<<<< HEAD
 
 	/* Check if timestamp is requested */
 	if (!(skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP)) {
@@ -1429,8 +1414,6 @@ nicvf_sq_add_hdr_subdesc(struct nicvf *nic, struct snd_queue *sq, int qentry,
 	 * for this packet i.e CQE_TYPE_SEND and CQE_TYPE_SEND_PTP.
 	 */
 	hdr->tstmp = 1;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* SQ GATHER subdescriptor

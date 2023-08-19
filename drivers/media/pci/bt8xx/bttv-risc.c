@@ -189,24 +189,12 @@ bttv_risc_planar(struct bttv *btv, struct btcx_riscmem *risc,
 				yoffset -= sg_dma_len(ysg);
 				ysg = sg_next(ysg);
 			}
-<<<<<<< HEAD
-=======
-			while (uoffset && uoffset >= sg_dma_len(usg)) {
-				uoffset -= sg_dma_len(usg);
-				usg = sg_next(usg);
-			}
-			while (voffset && voffset >= sg_dma_len(vsg)) {
-				voffset -= sg_dma_len(vsg);
-				vsg = sg_next(vsg);
-			}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			/* calculate max number of bytes we can write */
 			ylen = todo;
 			if (yoffset + ylen > sg_dma_len(ysg))
 				ylen = sg_dma_len(ysg) - yoffset;
 			if (chroma) {
-<<<<<<< HEAD
 				while (uoffset && uoffset >= sg_dma_len(usg)) {
 					uoffset -= sg_dma_len(usg);
 					usg = sg_next(usg);
@@ -216,8 +204,6 @@ bttv_risc_planar(struct bttv *btv, struct btcx_riscmem *risc,
 					vsg = sg_next(vsg);
 				}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				if (uoffset + (ylen>>hshift) > sg_dma_len(usg))
 					ylen = (sg_dma_len(usg) - uoffset) << hshift;
 				if (voffset + (ylen>>hshift) > sg_dma_len(vsg))
@@ -270,12 +256,8 @@ bttv_risc_overlay(struct bttv *btv, struct btcx_riscmem *risc,
 	u32 addr;
 
 	/* skip list for window clipping */
-<<<<<<< HEAD
 	skips = kmalloc_array(ov->nclips, sizeof(*skips),GFP_KERNEL);
 	if (NULL == skips)
-=======
-	if (NULL == (skips = kmalloc(sizeof(*skips) * ov->nclips,GFP_KERNEL)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOMEM;
 
 	/* estimate risc mem: worst case is (1.5*clip+1) * lines instructions

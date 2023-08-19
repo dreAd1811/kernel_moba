@@ -30,10 +30,7 @@
 
 #include <linux/types.h>
 #include <linux/bitmap.h>
-<<<<<<< HEAD
 #include <linux/dma-fence.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct pci_dev;
 
@@ -50,7 +47,6 @@ enum kfd_preempt_type {
 	KFD_PREEMPT_TYPE_WAVEFRONT_RESET,
 };
 
-<<<<<<< HEAD
 struct kfd_vm_fault_info {
 	uint64_t	page_addr;
 	uint32_t	vmid;
@@ -84,8 +80,6 @@ struct kfd_local_mem_info {
 	uint32_t mem_clk_max;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum kgd_memory_pool {
 	KGD_POOL_SYSTEM_CACHEABLE = 1,
 	KGD_POOL_SYSTEM_WRITECOMBINE = 2,
@@ -117,7 +111,6 @@ struct kgd2kfd_shared_resources {
 	/* Bit n == 1 means Queue n is available for KFD */
 	DECLARE_BITMAP(queue_bitmap, KGD_MAX_QUEUES);
 
-<<<<<<< HEAD
 	/* Doorbell assignments (SOC15 and later chips only). Only
 	 * specific doorbells are routed to each SDMA engine. Others
 	 * are routed to IH and VCN. They are not usable by the CP.
@@ -133,8 +126,6 @@ struct kgd2kfd_shared_resources {
 	unsigned int reserved_doorbell_mask;
 	unsigned int reserved_doorbell_val;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Base address of doorbell aperture. */
 	phys_addr_t doorbell_physical_address;
 
@@ -143,15 +134,12 @@ struct kgd2kfd_shared_resources {
 
 	/* Number of bytes at start of aperture reserved for KGD. */
 	size_t doorbell_start_offset;
-<<<<<<< HEAD
 
 	/* GPUVM address space size in bytes */
 	uint64_t gpuvm_size;
 
 	/* Minor device number of the render node */
 	int drm_render_minor;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct tile_config {
@@ -165,7 +153,6 @@ struct tile_config {
 	uint32_t num_ranks;
 };
 
-<<<<<<< HEAD
 
 /*
  * Allocation flag domains
@@ -187,8 +174,6 @@ struct tile_config {
 #define ALLOC_MEM_FLAGS_AQL_QUEUE_MEM	(1 << 27)
 #define ALLOC_MEM_FLAGS_COHERENT	(1 << 26) /* For GFXv9 or later */
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * struct kfd2kgd_calls
  *
@@ -197,22 +182,15 @@ struct tile_config {
  *
  * @free_gtt_mem: Frees a buffer that was allocated on the gart aperture
  *
-<<<<<<< HEAD
  * @get_local_mem_info: Retrieves information about GPU local memory
-=======
- * @get_vmem_size: Retrieves (physical) size of VRAM
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * @get_gpu_clock_counter: Retrieves GPU clock counter
  *
  * @get_max_engine_clock_in_mhz: Retrieves maximum GPU clock in MHz
  *
-<<<<<<< HEAD
  * @alloc_pasid: Allocate a PASID
  * @free_pasid: Free a PASID
  *
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @program_sh_mem_settings: A function that should initiate the memory
  * properties such as main aperture memory type (cache / non cached) and
  * secondary aperture base address, size and memory type.
@@ -221,26 +199,18 @@ struct tile_config {
  * @set_pasid_vmid_mapping: Exposes pasid/vmid pair to the H/W for no cp
  * scheduling mode. Only used for no cp scheduling mode.
  *
-<<<<<<< HEAD
-=======
- * @init_pipeline: Initialized the compute pipelines.
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @hqd_load: Loads the mqd structure to a H/W hqd slot. used only for no cp
  * sceduling mode.
  *
  * @hqd_sdma_load: Loads the SDMA mqd structure to a H/W SDMA hqd slot.
  * used only for no HWS mode.
  *
-<<<<<<< HEAD
  * @hqd_dump: Dumps CPC HQD registers to an array of address-value pairs.
  * Array is allocated with kmalloc, needs to be freed with kfree by caller.
  *
  * @hqd_sdma_dump: Dumps SDMA HQD registers to an array of address-value pairs.
  * Array is allocated with kmalloc, needs to be freed with kfree by caller.
  *
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @hqd_is_occupies: Checks if a hqd slot is occupied.
  *
  * @hqd_destroy: Destructs and preempts the queue assigned to that hqd slot.
@@ -257,7 +227,6 @@ struct tile_config {
  *
  * @get_tile_config: Returns GPU-specific tiling mode information
  *
-<<<<<<< HEAD
  * @get_cu_info: Retrieves activated cu info
  *
  * @get_vram_usage: Returns current VRAM usage
@@ -316,8 +285,6 @@ struct tile_config {
  * @set_compute_idle: Indicates that compute is idle on a device. This
  * can be used to change power profiles depending on compute activity.
  *
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * This structure contains function pointers to services that the kgd driver
  * provides to amdkfd driver.
  *
@@ -325,30 +292,19 @@ struct tile_config {
 struct kfd2kgd_calls {
 	int (*init_gtt_mem_allocation)(struct kgd_dev *kgd, size_t size,
 					void **mem_obj, uint64_t *gpu_addr,
-<<<<<<< HEAD
 					void **cpu_ptr, bool mqd_gfx9);
 
 	void (*free_gtt_mem)(struct kgd_dev *kgd, void *mem_obj);
 
 	void (*get_local_mem_info)(struct kgd_dev *kgd,
 			struct kfd_local_mem_info *mem_info);
-=======
-					void **cpu_ptr);
-
-	void (*free_gtt_mem)(struct kgd_dev *kgd, void *mem_obj);
-
-	uint64_t (*get_vmem_size)(struct kgd_dev *kgd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint64_t (*get_gpu_clock_counter)(struct kgd_dev *kgd);
 
 	uint32_t (*get_max_engine_clock_in_mhz)(struct kgd_dev *kgd);
 
-<<<<<<< HEAD
 	int (*alloc_pasid)(unsigned int bits);
 	void (*free_pasid)(unsigned int pasid);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Register access functions */
 	void (*program_sh_mem_settings)(struct kgd_dev *kgd, uint32_t vmid,
 			uint32_t sh_mem_config,	uint32_t sh_mem_ape1_base,
@@ -357,12 +313,6 @@ struct kfd2kgd_calls {
 	int (*set_pasid_vmid_mapping)(struct kgd_dev *kgd, unsigned int pasid,
 					unsigned int vmid);
 
-<<<<<<< HEAD
-=======
-	int (*init_pipeline)(struct kgd_dev *kgd, uint32_t pipe_id,
-				uint32_t hpd_size, uint64_t hpd_gpu_addr);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int (*init_interrupts)(struct kgd_dev *kgd, uint32_t pipe_id);
 
 	int (*hqd_load)(struct kgd_dev *kgd, void *mqd, uint32_t pipe_id,
@@ -370,7 +320,6 @@ struct kfd2kgd_calls {
 			uint32_t wptr_shift, uint32_t wptr_mask,
 			struct mm_struct *mm);
 
-<<<<<<< HEAD
 	int (*hqd_sdma_load)(struct kgd_dev *kgd, void *mqd,
 			     uint32_t __user *wptr, struct mm_struct *mm);
 
@@ -381,9 +330,6 @@ struct kfd2kgd_calls {
 	int (*hqd_sdma_dump)(struct kgd_dev *kgd,
 			     uint32_t engine_id, uint32_t queue_id,
 			     uint32_t (**dump)[2], uint32_t *n_regs);
-=======
-	int (*hqd_sdma_load)(struct kgd_dev *kgd, void *mqd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	bool (*hqd_is_occupied)(struct kgd_dev *kgd, uint64_t queue_address,
 				uint32_t pipe_id, uint32_t queue_id);
@@ -415,18 +361,12 @@ struct kfd2kgd_calls {
 	uint16_t (*get_atc_vmid_pasid_mapping_pasid)(
 					struct kgd_dev *kgd,
 					uint8_t vmid);
-<<<<<<< HEAD
-=======
-	void (*write_vmid_invalidate_request)(struct kgd_dev *kgd,
-					uint8_t vmid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	uint16_t (*get_fw_version)(struct kgd_dev *kgd,
 				enum kgd_engine_type type);
 	void (*set_scratch_backing_va)(struct kgd_dev *kgd,
 				uint64_t va, uint32_t vmid);
 	int (*get_tile_config)(struct kgd_dev *kgd, struct tile_config *config);
-<<<<<<< HEAD
 
 	void (*get_cu_info)(struct kgd_dev *kgd,
 			struct kfd_cu_info *cu_info);
@@ -468,8 +408,6 @@ struct kfd2kgd_calls {
 	void (*gpu_recover)(struct kgd_dev *kgd);
 
 	void (*set_compute_idle)(struct kgd_dev *kgd, bool idle);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -488,7 +426,6 @@ struct kfd2kgd_calls {
  *
  * @resume: Notifies amdkfd about a resume action done to a kgd device
  *
-<<<<<<< HEAD
  * @quiesce_mm: Quiesce all user queue access to specified MM address space
  *
  * @resume_mm: Resume user queue access to specified MM address space
@@ -500,8 +437,6 @@ struct kfd2kgd_calls {
  *
  * @post_reset: Notify amdkfd that amgpu successfully reseted the gpu
  *
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * This structure contains function callback pointers so the kgd driver
  * will notify to the amdkfd about certain status changes.
  *
@@ -516,15 +451,12 @@ struct kgd2kfd_calls {
 	void (*interrupt)(struct kfd_dev *kfd, const void *ih_ring_entry);
 	void (*suspend)(struct kfd_dev *kfd);
 	int (*resume)(struct kfd_dev *kfd);
-<<<<<<< HEAD
 	int (*quiesce_mm)(struct mm_struct *mm);
 	int (*resume_mm)(struct mm_struct *mm);
 	int (*schedule_evict_and_restore_process)(struct mm_struct *mm,
 			struct dma_fence *fence);
 	int  (*pre_reset)(struct kfd_dev *kfd);
 	int  (*post_reset)(struct kfd_dev *kfd);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int kgd2kfd_init(unsigned interface_version,

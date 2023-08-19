@@ -81,14 +81,11 @@
 #define IPROC_CLK_PLL_RESET_ACTIVE_LOW BIT(9)
 
 /*
-<<<<<<< HEAD
  * Calculate the PLL parameters are runtime, instead of using table
  */
 #define IPROC_CLK_PLL_CALC_PARAM BIT(10)
 
 /*
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Parameters for VCO frequency configuration
  *
  * VCO frequency =

@@ -53,11 +53,7 @@ int exit_vmx_usercopy(void)
 	return 0;
 }
 
-<<<<<<< HEAD
 int enter_vmx_ops(void)
-=======
-int enter_vmx_copy(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (in_interrupt())
 		return 0;
@@ -74,11 +70,7 @@ int enter_vmx_copy(void)
  * passed a pointer to the destination which we return as required by a
  * memcpy implementation.
  */
-<<<<<<< HEAD
 void *exit_vmx_ops(void *dest)
-=======
-void *exit_vmx_copy(void *dest)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	disable_kernel_altivec();
 	preempt_enable();

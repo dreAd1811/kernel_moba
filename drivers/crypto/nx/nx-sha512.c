@@ -294,10 +294,6 @@ struct shash_alg nx_shash_sha512_alg = {
 		.cra_name        = "sha512",
 		.cra_driver_name = "sha512-nx",
 		.cra_priority    = 300,
-<<<<<<< HEAD
-=======
-		.cra_flags       = CRYPTO_ALG_TYPE_SHASH,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.cra_blocksize   = SHA512_BLOCK_SIZE,
 		.cra_module      = THIS_MODULE,
 		.cra_ctxsize     = sizeof(struct nx_crypto_ctx),

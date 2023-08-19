@@ -311,10 +311,6 @@ static inline int bfchg_mem_test_and_change_bit(int nr,
  *	functions.
  */
 #if defined(CONFIG_CPU_HAS_NO_BITFIELDS)
-<<<<<<< HEAD
-=======
-#include <asm-generic/bitops/find.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm-generic/bitops/ffz.h>
 #else
 
@@ -444,11 +440,8 @@ static inline unsigned long ffz(unsigned long word)
 
 #endif
 
-<<<<<<< HEAD
 #include <asm-generic/bitops/find.h>
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef __KERNEL__
 
 #if defined(CONFIG_CPU_HAS_NO_BITFIELDS)
@@ -461,11 +454,7 @@ static inline unsigned long ffz(unsigned long word)
  */
 #if (defined(__mcfisaaplus__) || defined(__mcfisac__)) && \
 	!defined(CONFIG_M68000) && !defined(CONFIG_MCPU32)
-<<<<<<< HEAD
 static inline unsigned long __ffs(unsigned long x)
-=======
-static inline int __ffs(int x)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	__asm__ __volatile__ ("bitrev %0; ff1 %0"
 		: "=d" (x)
@@ -504,15 +493,11 @@ static inline int ffs(int x)
 		: "dm" (x & -x));
 	return 32 - cnt;
 }
-<<<<<<< HEAD
 
 static inline unsigned long __ffs(unsigned long x)
 {
 	return ffs(x) - 1;
 }
-=======
-#define __ffs(x) (ffs(x) - 1)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  *	fls: find last bit set.
@@ -534,23 +519,16 @@ static inline int __fls(int x)
 
 #endif
 
-<<<<<<< HEAD
 /* Simple test-and-set bit locks */
 #define test_and_set_bit_lock	test_and_set_bit
 #define clear_bit_unlock	clear_bit
 #define __clear_bit_unlock	clear_bit_unlock
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm-generic/bitops/ext2-atomic.h>
 #include <asm-generic/bitops/le.h>
 #include <asm-generic/bitops/fls64.h>
 #include <asm-generic/bitops/sched.h>
 #include <asm-generic/bitops/hweight.h>
-<<<<<<< HEAD
-=======
-#include <asm-generic/bitops/lock.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __KERNEL__ */
 
 #endif /* _M68K_BITOPS_H */

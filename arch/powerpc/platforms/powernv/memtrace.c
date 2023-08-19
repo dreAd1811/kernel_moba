@@ -47,44 +47,9 @@ static ssize_t memtrace_read(struct file *filp, char __user *ubuf,
 	return simple_read_from_buffer(ubuf, count, ppos, ent->mem, ent->size);
 }
 
-<<<<<<< HEAD
 static const struct file_operations memtrace_fops = {
 	.llseek = default_llseek,
 	.read	= memtrace_read,
-=======
-static bool valid_memtrace_range(struct memtrace_entry *dev,
-				 unsigned long start, unsigned long size)
-{
-	if ((start >= dev->start) &&
-	    ((start + size) <= (dev->start + dev->size)))
-		return true;
-
-	return false;
-}
-
-static int memtrace_mmap(struct file *filp, struct vm_area_struct *vma)
-{
-	unsigned long size = vma->vm_end - vma->vm_start;
-	struct memtrace_entry *dev = filp->private_data;
-
-	if (!valid_memtrace_range(dev, vma->vm_pgoff << PAGE_SHIFT, size))
-		return -EINVAL;
-
-	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
-
-	if (remap_pfn_range(vma, vma->vm_start,
-			    vma->vm_pgoff + (dev->start >> PAGE_SHIFT),
-			    size, vma->vm_page_prot))
-		return -EAGAIN;
-
-	return 0;
-}
-
-static const struct file_operations memtrace_fops = {
-	.llseek = default_llseek,
-	.read	= memtrace_read,
-	.mmap	= memtrace_mmap,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.open	= simple_open,
 };
 
@@ -105,10 +70,6 @@ static int change_memblock_state(struct memory_block *mem, void *arg)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-/* called with device_hotplug_lock held */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool memtrace_offline_pages(u32 nid, u64 start_pfn, u64 nr_pages)
 {
 	u64 end_pfn = start_pfn + nr_pages - 1;
@@ -139,11 +100,7 @@ static u64 memtrace_alloc_node(u32 nid, u64 size)
 	u64 base_pfn;
 	u64 bytes = memory_block_size_bytes();
 
-<<<<<<< HEAD
 	if (!node_spanned_pages(nid))
-=======
-	if (!NODE_DATA(nid) || !node_spanned_pages(nid))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	start_pfn = node_start_pfn(nid);
@@ -153,10 +110,6 @@ static u64 memtrace_alloc_node(u32 nid, u64 size)
 	/* Trace memory needs to be aligned to the size */
 	end_pfn = round_down(end_pfn - nr_pages, nr_pages);
 
-<<<<<<< HEAD
-=======
-	lock_device_hotplug();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (base_pfn = end_pfn; base_pfn > start_pfn; base_pfn -= nr_pages) {
 		if (memtrace_offline_pages(nid, base_pfn, nr_pages) == true) {
 			/*
@@ -165,10 +118,7 @@ static u64 memtrace_alloc_node(u32 nid, u64 size)
 			 * we never try to remove memory that spans two iomem
 			 * resources.
 			 */
-<<<<<<< HEAD
 			lock_device_hotplug();
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			end_pfn = base_pfn + nr_pages;
 			for (pfn = base_pfn; pfn < end_pfn; pfn += bytes>> PAGE_SHIFT) {
 				remove_memory(nid, pfn << PAGE_SHIFT, bytes);
@@ -177,10 +127,6 @@ static u64 memtrace_alloc_node(u32 nid, u64 size)
 			return base_pfn << PAGE_SHIFT;
 		}
 	}
-<<<<<<< HEAD
-=======
-	unlock_device_hotplug();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -242,16 +188,11 @@ static int memtrace_init_debugfs(void)
 
 		snprintf(ent->name, 16, "%08x", ent->nid);
 		dir = debugfs_create_dir(ent->name, memtrace_debugfs_dir);
-<<<<<<< HEAD
 		if (!dir) {
 			pr_err("Failed to create debugfs directory for node %d\n",
 				ent->nid);
 			return -1;
 		}
-=======
-		if (!dir)
-			return -1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		ent->dir = dir;
 		debugfs_create_file("trace", 0400, dir, ent, &memtrace_fops);
@@ -262,7 +203,6 @@ static int memtrace_init_debugfs(void)
 	return ret;
 }
 
-<<<<<<< HEAD
 static int online_mem_block(struct memory_block *mem, void *arg)
 {
 	return device_online(&mem->dev);
@@ -350,20 +290,6 @@ static int memtrace_enable_set(void *data, u64 val)
 		return 0;
 
 	/* Offline and remove memory */
-=======
-static int memtrace_enable_set(void *data, u64 val)
-{
-	if (memtrace_size)
-		return -EINVAL;
-
-	if (!val)
-		return -EINVAL;
-
-	/* Make sure size is aligned to a memory block */
-	if (val & (memory_block_size_bytes() - 1))
-		return -EINVAL;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (memtrace_init_regions_runtime(val))
 		return -EINVAL;
 

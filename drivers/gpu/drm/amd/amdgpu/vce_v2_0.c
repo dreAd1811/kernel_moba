@@ -56,11 +56,7 @@ static uint64_t vce_v2_0_ring_get_rptr(struct amdgpu_ring *ring)
 {
 	struct amdgpu_device *adev = ring->adev;
 
-<<<<<<< HEAD
 	if (ring->me == 0)
-=======
-	if (ring == &adev->vce.ring[0])
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return RREG32(mmVCE_RB_RPTR);
 	else
 		return RREG32(mmVCE_RB_RPTR2);
@@ -77,11 +73,7 @@ static uint64_t vce_v2_0_ring_get_wptr(struct amdgpu_ring *ring)
 {
 	struct amdgpu_device *adev = ring->adev;
 
-<<<<<<< HEAD
 	if (ring->me == 0)
-=======
-	if (ring == &adev->vce.ring[0])
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return RREG32(mmVCE_RB_WPTR);
 	else
 		return RREG32(mmVCE_RB_WPTR2);
@@ -98,11 +90,7 @@ static void vce_v2_0_ring_set_wptr(struct amdgpu_ring *ring)
 {
 	struct amdgpu_device *adev = ring->adev;
 
-<<<<<<< HEAD
 	if (ring->me == 0)
-=======
-	if (ring == &adev->vce.ring[0])
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		WREG32(mmVCE_RB_WPTR, lower_32_bits(ring->wptr));
 	else
 		WREG32(mmVCE_RB_WPTR2, lower_32_bits(ring->wptr));
@@ -451,11 +439,8 @@ static int vce_v2_0_sw_init(void *handle)
 			return r;
 	}
 
-<<<<<<< HEAD
 	r = amdgpu_vce_entity_init(adev);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return r;
 }
 
@@ -644,15 +629,10 @@ static void vce_v2_0_set_ring_funcs(struct amdgpu_device *adev)
 {
 	int i;
 
-<<<<<<< HEAD
 	for (i = 0; i < adev->vce.num_rings; i++) {
 		adev->vce.ring[i].funcs = &vce_v2_0_ring_funcs;
 		adev->vce.ring[i].me = i;
 	}
-=======
-	for (i = 0; i < adev->vce.num_rings; i++)
-		adev->vce.ring[i].funcs = &vce_v2_0_ring_funcs;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct amdgpu_irq_src_funcs vce_v2_0_irq_funcs = {

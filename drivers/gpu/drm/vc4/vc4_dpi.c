@@ -96,12 +96,6 @@ struct vc4_dpi {
 	struct platform_device *pdev;
 
 	struct drm_encoder *encoder;
-<<<<<<< HEAD
-=======
-	struct drm_connector *connector;
-	struct drm_bridge *bridge;
-	bool is_panel_bridge;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	void __iomem *regs;
 
@@ -169,7 +163,6 @@ static void vc4_dpi_encoder_disable(struct drm_encoder *encoder)
 
 static void vc4_dpi_encoder_enable(struct drm_encoder *encoder)
 {
-<<<<<<< HEAD
 	struct drm_device *dev = encoder->dev;
 	struct drm_display_mode *mode = &encoder->crtc->mode;
 	struct vc4_dpi_encoder *vc4_encoder = to_vc4_dpi_encoder(encoder);
@@ -195,16 +188,6 @@ static void vc4_dpi_encoder_enable(struct drm_encoder *encoder)
 
 	if (connector && connector->display_info.num_bus_formats) {
 		u32 bus_format = connector->display_info.bus_formats[0];
-=======
-	struct drm_display_mode *mode = &encoder->crtc->mode;
-	struct vc4_dpi_encoder *vc4_encoder = to_vc4_dpi_encoder(encoder);
-	struct vc4_dpi *dpi = vc4_encoder->dpi;
-	u32 dpi_c = DPI_ENABLE | DPI_OUTPUT_ENABLE_MODE;
-	int ret;
-
-	if (dpi->connector->display_info.num_bus_formats) {
-		u32 bus_format = dpi->connector->display_info.bus_formats[0];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		switch (bus_format) {
 		case MEDIA_BUS_FMT_RGB888_1X24:
@@ -232,12 +215,9 @@ static void vc4_dpi_encoder_enable(struct drm_encoder *encoder)
 			DRM_ERROR("Unknown media bus format %d\n", bus_format);
 			break;
 		}
-<<<<<<< HEAD
 	} else {
 		/* Default to 24bit if no connector found. */
 		dpi_c |= VC4_SET_FIELD(DPI_FORMAT_24BIT_888_RGB, DPI_FORMAT);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (mode->flags & DRM_MODE_FLAG_NHSYNC)
@@ -288,18 +268,11 @@ static int vc4_dpi_init_bridge(struct vc4_dpi *dpi)
 {
 	struct device *dev = &dpi->pdev->dev;
 	struct drm_panel *panel;
-<<<<<<< HEAD
 	struct drm_bridge *bridge;
 	int ret;
 
 	ret = drm_of_find_panel_or_bridge(dev->of_node, 0, 0,
 					  &panel, &bridge);
-=======
-	int ret;
-
-	ret = drm_of_find_panel_or_bridge(dev->of_node, 0, 0,
-					  &panel, &dpi->bridge);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		/* If nothing was connected in the DT, that's not an
 		 * error.
@@ -310,20 +283,10 @@ static int vc4_dpi_init_bridge(struct vc4_dpi *dpi)
 			return ret;
 	}
 
-<<<<<<< HEAD
 	if (panel)
 		bridge = drm_panel_bridge_add(panel, DRM_MODE_CONNECTOR_DPI);
 
 	return drm_bridge_attach(dpi->encoder, bridge, NULL);
-=======
-	if (panel) {
-		dpi->bridge = drm_panel_bridge_add(panel,
-						   DRM_MODE_CONNECTOR_DPI);
-		dpi->is_panel_bridge = true;
-	}
-
-	return drm_bridge_attach(dpi->encoder, dpi->bridge, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int vc4_dpi_bind(struct device *dev, struct device *master, void *data)
@@ -404,12 +367,7 @@ static void vc4_dpi_unbind(struct device *dev, struct device *master,
 	struct vc4_dev *vc4 = to_vc4_dev(drm);
 	struct vc4_dpi *dpi = dev_get_drvdata(dev);
 
-<<<<<<< HEAD
 	drm_of_panel_bridge_remove(dev->of_node, 0, 0);
-=======
-	if (dpi->is_panel_bridge)
-		drm_panel_bridge_remove(dpi->bridge);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	drm_encoder_cleanup(dpi->encoder);
 

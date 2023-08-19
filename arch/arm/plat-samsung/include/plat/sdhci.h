@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
 /*
-=======
-/* linux/arch/arm/plat-samsung/include/plat/sdhci.h
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Copyright (c) 2011 Samsung Electronics Co., Ltd.
  *		http://www.samsung.com
  *
@@ -14,15 +9,7 @@
  *	Ben Dooks <ben@simtec.co.uk>
  *
  * S3C Platform - SDHCI (HSMMC) platform data definitions
-<<<<<<< HEAD
  */
-=======
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
-*/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifndef __PLAT_S3C_SDHCI_H
 #define __PLAT_S3C_SDHCI_H __FILE__

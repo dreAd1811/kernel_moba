@@ -196,19 +196,12 @@ int rtl8723_download_fw(struct ieee80211_hw *hw,
 	enum version_8723e version = rtlhal->version;
 	int max_page;
 
-<<<<<<< HEAD
 	if (rtlpriv->max_fw_size == 0 || !rtlhal->pfirmware)
 		return 1;
 
 	pfwheader = (struct rtlwifi_firmware_header *)rtlhal->pfirmware;
 	rtlhal->fw_version = le16_to_cpu(pfwheader->version);
 	rtlhal->fw_subversion = pfwheader->subversion;
-=======
-	if (!rtlhal->pfirmware)
-		return 1;
-
-	pfwheader = (struct rtlwifi_firmware_header *)rtlhal->pfirmware;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pfwdata = rtlhal->pfirmware;
 	fwsize = rtlhal->fwsize;
 
@@ -262,12 +255,8 @@ bool rtl8723_cmd_send_packet(struct ieee80211_hw *hw,
 	spin_lock_irqsave(&rtlpriv->locks.irq_th_lock, flags);
 
 	pdesc = &ring->desc[0];
-<<<<<<< HEAD
 	own = (u8)rtlpriv->cfg->ops->get_desc(hw, (u8 *)pdesc, true,
 					      HW_DESC_OWN);
-=======
-	own = (u8) rtlpriv->cfg->ops->get_desc((u8 *)pdesc, true, HW_DESC_OWN);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtlpriv->cfg->ops->fill_tx_cmddesc(hw, (u8 *)pdesc, 1, 1, skb);
 

@@ -6,12 +6,9 @@
  *
  * This uses code from arch/sparc/kernel/nmi.c and kernel/watchdog.c
  */
-<<<<<<< HEAD
 
 #define pr_fmt(fmt) "watchdog: " fmt
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/kernel.h>
 #include <linux/param.h>
 #include <linux/init.h>
@@ -32,7 +29,6 @@
 #include <asm/paca.h>
 
 /*
-<<<<<<< HEAD
  * The powerpc watchdog ensures that each CPU is able to service timers.
  * The watchdog sets up a simple timer on each CPU to run once per timer
  * period, and updates a per-cpu timestamp and a "pending" cpumask. This is
@@ -72,17 +68,6 @@
  * watchdog to detect an unresponsive CPU and pull it out of its stuck
  * state with the NMI IPI, to get crash/debug data from it. This way the
  * SMP watchdog can detect hardware interrupts off lockups.
-=======
- * The watchdog has a simple timer that runs on each CPU, once per timer
- * period. This is the heartbeat.
- *
- * Then there are checks to see if the heartbeat has not triggered on a CPU
- * for the panic timeout period. Currently the watchdog only supports an
- * SMP check, so the heartbeat only turns on when we have 2 or more CPUs.
- *
- * This is not an NMI watchdog, but Linux uses that name for a generic
- * watchdog in some cases, so NMI gets used in some places.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 static cpumask_t wd_cpus_enabled __read_mostly;
@@ -92,29 +77,10 @@ static u64 wd_smp_panic_timeout_tb __read_mostly; /* panic other CPUs */
 
 static u64 wd_timer_period_ms __read_mostly;  /* interval between heartbeat */
 
-<<<<<<< HEAD
 static DEFINE_PER_CPU(struct hrtimer, wd_hrtimer);
 static DEFINE_PER_CPU(u64, wd_timer_tb);
 
 /* SMP checker bits */
-=======
-static DEFINE_PER_CPU(struct timer_list, wd_timer);
-static DEFINE_PER_CPU(u64, wd_timer_tb);
-
-/*
- * These are for the SMP checker. CPUs clear their pending bit in their
- * heartbeat. If the bitmask becomes empty, the time is noted and the
- * bitmask is refilled.
- *
- * All CPUs clear their bit in the pending mask every timer period.
- * Once all have cleared, the time is noted and the bits are reset.
- * If the time since all clear was greater than the panic timeout,
- * we can panic with the list of stuck CPUs.
- *
- * This will work best with NMI IPIs for crash code so the stuck CPUs
- * can be pulled out to get their backtraces.
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static unsigned long __wd_smp_lock;
 static cpumask_t wd_smp_cpus_pending;
 static cpumask_t wd_smp_cpus_stuck;
@@ -145,7 +111,6 @@ static inline void wd_smp_unlock(unsigned long *flags)
 
 static void wd_lockup_ipi(struct pt_regs *regs)
 {
-<<<<<<< HEAD
 	int cpu = raw_smp_processor_id();
 	u64 tb = get_tb();
 
@@ -153,9 +118,6 @@ static void wd_lockup_ipi(struct pt_regs *regs)
 	pr_emerg("CPU %d TB:%lld, last heartbeat TB:%lld (%lldms ago)\n",
 		 cpu, tb, per_cpu(wd_timer_tb, cpu),
 		 tb_to_ns(tb - per_cpu(wd_timer_tb, cpu)) / 1000000);
-=======
-	pr_emerg("Watchdog CPU:%d Hard LOCKUP\n", raw_smp_processor_id());
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	print_modules();
 	print_irqtrace_events(current);
 	if (regs)
@@ -163,12 +125,7 @@ static void wd_lockup_ipi(struct pt_regs *regs)
 	else
 		dump_stack();
 
-<<<<<<< HEAD
 	/* Do not panic from here because that can recurse into NMI IPI layer */
-=======
-	if (hardlockup_panic)
-		nmi_panic(regs, "Hard LOCKUP");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void set_cpumask_stuck(const struct cpumask *cpumask, u64 tb)
@@ -201,7 +158,6 @@ static void watchdog_smp_panic(int cpu, u64 tb)
 	if (cpumask_weight(&wd_smp_cpus_pending) == 0)
 		goto out;
 
-<<<<<<< HEAD
 	pr_emerg("CPU %d detected hard LOCKUP on other CPUs %*pbl\n",
 		 cpu, cpumask_pr_args(&wd_smp_cpus_pending));
 	pr_emerg("CPU %d TB:%lld, last SMP heartbeat TB:%lld (%lldms ago)\n",
@@ -219,20 +175,6 @@ static void watchdog_smp_panic(int cpu, u64 tb)
 			smp_send_nmi_ipi(c, wd_lockup_ipi, 1000000);
 		}
 	}
-=======
-	pr_emerg("Watchdog CPU:%d detected Hard LOCKUP other CPUS:%*pbl\n",
-			cpu, cpumask_pr_args(&wd_smp_cpus_pending));
-
-	/*
-	 * Try to trigger the stuck CPUs.
-	 */
-	for_each_cpu(c, &wd_smp_cpus_pending) {
-		if (c == cpu)
-			continue;
-		smp_send_nmi_ipi(c, wd_lockup_ipi, 1000000);
-	}
-	smp_flush_nmi_ipi(1000000);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Take the stuck CPUs out of the watch group */
 	set_cpumask_stuck(&wd_smp_cpus_pending, tb);
@@ -260,7 +202,6 @@ static void wd_smp_clear_cpu_pending(int cpu, u64 tb)
 {
 	if (!cpumask_test_cpu(cpu, &wd_smp_cpus_pending)) {
 		if (unlikely(cpumask_test_cpu(cpu, &wd_smp_cpus_stuck))) {
-<<<<<<< HEAD
 			struct pt_regs *regs = get_irq_regs();
 			unsigned long flags;
 
@@ -274,12 +215,6 @@ static void wd_smp_clear_cpu_pending(int cpu, u64 tb)
 			else
 				dump_stack();
 
-=======
-			unsigned long flags;
-
-			pr_emerg("Watchdog CPU:%d became unstuck\n", cpu);
-			wd_smp_lock(&flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			cpumask_clear_cpu(cpu, &wd_smp_cpus_stuck);
 			wd_smp_unlock(&flags);
 		}
@@ -327,11 +262,6 @@ void soft_nmi_interrupt(struct pt_regs *regs)
 
 	tb = get_tb();
 	if (tb - per_cpu(wd_timer_tb, cpu) >= wd_panic_timeout_tb) {
-<<<<<<< HEAD
-=======
-		per_cpu(wd_timer_tb, cpu) = tb;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		wd_smp_lock(&flags);
 		if (cpumask_test_cpu(cpu, &wd_smp_cpus_stuck)) {
 			wd_smp_unlock(&flags);
@@ -339,7 +269,6 @@ void soft_nmi_interrupt(struct pt_regs *regs)
 		}
 		set_cpu_stuck(cpu, tb);
 
-<<<<<<< HEAD
 		pr_emerg("CPU %d self-detected hard LOCKUP @ %pS\n",
 			 cpu, (void *)regs->nip);
 		pr_emerg("CPU %d TB:%lld, last heartbeat TB:%lld (%lldms ago)\n",
@@ -348,15 +277,6 @@ void soft_nmi_interrupt(struct pt_regs *regs)
 		print_modules();
 		print_irqtrace_events(current);
 		show_regs(regs);
-=======
-		pr_emerg("Watchdog CPU:%d Hard LOCKUP\n", cpu);
-		print_modules();
-		print_irqtrace_events(current);
-		if (regs)
-			show_regs(regs);
-		else
-			dump_stack();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		wd_smp_unlock(&flags);
 
@@ -373,7 +293,6 @@ out:
 	nmi_exit();
 }
 
-<<<<<<< HEAD
 static enum hrtimer_restart watchdog_timer_fn(struct hrtimer *hrtimer)
 {
 	int cpu = smp_processor_id();
@@ -389,24 +308,6 @@ static enum hrtimer_restart watchdog_timer_fn(struct hrtimer *hrtimer)
 	hrtimer_forward_now(hrtimer, ms_to_ktime(wd_timer_period_ms));
 
 	return HRTIMER_RESTART;
-=======
-static void wd_timer_reset(unsigned int cpu, struct timer_list *t)
-{
-	t->expires = jiffies + msecs_to_jiffies(wd_timer_period_ms);
-	if (wd_timer_period_ms > 1000)
-		t->expires = __round_jiffies_up(t->expires, cpu);
-	add_timer_on(t, cpu);
-}
-
-static void wd_timer_fn(unsigned long data)
-{
-	struct timer_list *t = this_cpu_ptr(&wd_timer);
-	int cpu = smp_processor_id();
-
-	watchdog_timer_interrupt(cpu);
-
-	wd_timer_reset(cpu, t);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void arch_touch_nmi_watchdog(void)
@@ -422,37 +323,14 @@ void arch_touch_nmi_watchdog(void)
 }
 EXPORT_SYMBOL(arch_touch_nmi_watchdog);
 
-<<<<<<< HEAD
 static void start_watchdog(void *arg)
 {
 	struct hrtimer *hrtimer = this_cpu_ptr(&wd_hrtimer);
 	int cpu = smp_processor_id();
-=======
-static void start_watchdog_timer_on(unsigned int cpu)
-{
-	struct timer_list *t = per_cpu_ptr(&wd_timer, cpu);
-
-	per_cpu(wd_timer_tb, cpu) = get_tb();
-
-	setup_pinned_timer(t, wd_timer_fn, 0);
-	wd_timer_reset(cpu, t);
-}
-
-static void stop_watchdog_timer_on(unsigned int cpu)
-{
-	struct timer_list *t = per_cpu_ptr(&wd_timer, cpu);
-
-	del_timer_sync(t);
-}
-
-static int start_wd_on_cpu(unsigned int cpu)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 
 	if (cpumask_test_cpu(cpu, &wd_cpus_enabled)) {
 		WARN_ON(1);
-<<<<<<< HEAD
 		return;
 	}
 
@@ -461,16 +339,6 @@ static int start_wd_on_cpu(unsigned int cpu)
 
 	if (!cpumask_test_cpu(cpu, &watchdog_cpumask))
 		return;
-=======
-		return 0;
-	}
-
-	if (!(watchdog_enabled & NMI_WATCHDOG_ENABLED))
-		return 0;
-
-	if (!cpumask_test_cpu(cpu, &watchdog_cpumask))
-		return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	wd_smp_lock(&flags);
 	cpumask_set_cpu(cpu, &wd_cpus_enabled);
@@ -480,7 +348,6 @@ static int start_wd_on_cpu(unsigned int cpu)
 	}
 	wd_smp_unlock(&flags);
 
-<<<<<<< HEAD
 	*this_cpu_ptr(&wd_timer_tb) = get_tb();
 
 	hrtimer_init(hrtimer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
@@ -504,37 +371,17 @@ static void stop_watchdog(void *arg)
 		return; /* Can happen in CPU unplug case */
 
 	hrtimer_cancel(hrtimer);
-=======
-	start_watchdog_timer_on(cpu);
-
-	return 0;
-}
-
-static int stop_wd_on_cpu(unsigned int cpu)
-{
-	unsigned long flags;
-
-	if (!cpumask_test_cpu(cpu, &wd_cpus_enabled))
-		return 0; /* Can happen in CPU unplug case */
-
-	stop_watchdog_timer_on(cpu);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	wd_smp_lock(&flags);
 	cpumask_clear_cpu(cpu, &wd_cpus_enabled);
 	wd_smp_unlock(&flags);
 
 	wd_smp_clear_cpu_pending(cpu, get_tb());
-<<<<<<< HEAD
 }
 
 static int stop_watchdog_on_cpu(unsigned int cpu)
 {
 	return smp_call_function_single(cpu, stop_watchdog, NULL, true);
-=======
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void watchdog_calc_timeouts(void)
@@ -553,11 +400,7 @@ void watchdog_nmi_stop(void)
 	int cpu;
 
 	for_each_cpu(cpu, &wd_cpus_enabled)
-<<<<<<< HEAD
 		stop_watchdog_on_cpu(cpu);
-=======
-		stop_wd_on_cpu(cpu);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void watchdog_nmi_start(void)
@@ -566,11 +409,7 @@ void watchdog_nmi_start(void)
 
 	watchdog_calc_timeouts();
 	for_each_cpu_and(cpu, cpu_online_mask, &watchdog_cpumask)
-<<<<<<< HEAD
 		start_watchdog_on_cpu(cpu);
-=======
-		start_wd_on_cpu(cpu);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -582,42 +421,11 @@ int __init watchdog_nmi_probe(void)
 
 	err = cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN,
 					"powerpc/watchdog:online",
-<<<<<<< HEAD
 					start_watchdog_on_cpu,
 					stop_watchdog_on_cpu);
 	if (err < 0) {
 		pr_warn("could not be initialized");
-=======
-					start_wd_on_cpu, stop_wd_on_cpu);
-	if (err < 0) {
-		pr_warn("Watchdog could not be initialized");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return err;
 	}
 	return 0;
 }
-<<<<<<< HEAD
-=======
-
-static void handle_backtrace_ipi(struct pt_regs *regs)
-{
-	nmi_cpu_backtrace(regs);
-}
-
-static void raise_backtrace_ipi(cpumask_t *mask)
-{
-	unsigned int cpu;
-
-	for_each_cpu(cpu, mask) {
-		if (cpu == smp_processor_id())
-			handle_backtrace_ipi(NULL);
-		else
-			smp_send_nmi_ipi(cpu, handle_backtrace_ipi, 1000000);
-	}
-}
-
-void arch_trigger_cpumask_backtrace(const cpumask_t *mask, bool exclude_self)
-{
-	nmi_trigger_cpumask_backtrace(mask, exclude_self, raise_backtrace_ipi);
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

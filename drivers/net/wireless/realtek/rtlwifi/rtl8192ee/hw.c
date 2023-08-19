@@ -840,7 +840,6 @@ static bool _rtl92ee_init_mac(struct ieee80211_hw *hw)
 	/* Set TCR register */
 	rtl_write_dword(rtlpriv, REG_TCR, rtlpci->transmit_config);
 
-<<<<<<< HEAD
 	/* Set TX/RX descriptor physical address -- HI part */
 	if (!rtlpriv->cfg->mod_params->dma64)
 		goto dma64_end;
@@ -866,8 +865,6 @@ static bool _rtl92ee_init_mac(struct ieee80211_hw *hw)
 
 dma64_end:
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Set TX/RX descriptor physical address(from OS API). */
 	rtl_write_dword(rtlpriv, REG_BCNQ_DESA,
 			((u64)rtlpci->tx_ring[BEACON_QUEUE].buffer_desc_dma) &
@@ -941,21 +938,9 @@ dma64_end:
 	rtl_write_word(rtlpriv, REG_HI7Q_TXBD_NUM,
 		       TX_DESC_NUM_92E | ((RTL8192EE_SEG_NUM << 12) & 0x3000));
 	/*Rx*/
-<<<<<<< HEAD
 	rtl_write_word(rtlpriv, REG_RX_RXBD_NUM,
 		       RX_DESC_NUM_92E |
 		       ((RTL8192EE_SEG_NUM << 13) & 0x6000) | 0x8000);
-=======
-#if (DMA_IS_64BIT == 1)
-	rtl_write_word(rtlpriv, REG_RX_RXBD_NUM,
-		       RX_DESC_NUM_92E |
-		       ((RTL8192EE_SEG_NUM << 13) & 0x6000) | 0x8000);
-#else
-	rtl_write_word(rtlpriv, REG_RX_RXBD_NUM,
-		       RX_DESC_NUM_92E |
-		       ((RTL8192EE_SEG_NUM << 13) & 0x6000) | 0x0000);
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtl_write_dword(rtlpriv, REG_TSFTIMER_HCI, 0XFFFFFFFF);
 
@@ -1709,28 +1694,16 @@ void rtl92ee_card_disable(struct ieee80211_hw *hw)
 }
 
 void rtl92ee_interrupt_recognized(struct ieee80211_hw *hw,
-<<<<<<< HEAD
 				  struct rtl_int *intvec)
-=======
-				  u32 *p_inta, u32 *p_intb)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rtl_priv *rtlpriv = rtl_priv(hw);
 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
 
-<<<<<<< HEAD
 	intvec->inta = rtl_read_dword(rtlpriv, ISR) & rtlpci->irq_mask[0];
 	rtl_write_dword(rtlpriv, ISR, intvec->inta);
 
 	intvec->intb = rtl_read_dword(rtlpriv, REG_HISRE) & rtlpci->irq_mask[1];
 	rtl_write_dword(rtlpriv, REG_HISRE, intvec->intb);
-=======
-	*p_inta = rtl_read_dword(rtlpriv, ISR) & rtlpci->irq_mask[0];
-	rtl_write_dword(rtlpriv, ISR, *p_inta);
-
-	*p_intb = rtl_read_dword(rtlpriv, REG_HISRE) & rtlpci->irq_mask[1];
-	rtl_write_dword(rtlpriv, REG_HISRE, *p_intb);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void rtl92ee_set_beacon_related_registers(struct ieee80211_hw *hw)
@@ -2297,11 +2270,7 @@ static u8 _rtl92ee_mrate_idx_to_arfr_id(struct ieee80211_hw *hw, u8 rate_index)
 
 static void rtl92ee_update_hal_rate_mask(struct ieee80211_hw *hw,
 					 struct ieee80211_sta *sta,
-<<<<<<< HEAD
 					 u8 rssi_level, bool update_bw)
-=======
-					 u8 rssi_level)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rtl_priv *rtlpriv = rtl_priv(hw);
 	struct rtl_phy *rtlphy = &rtlpriv->phy;
@@ -2420,11 +2389,7 @@ static void rtl92ee_update_hal_rate_mask(struct ieee80211_hw *hw,
 				       (ratr_index << 28);
 	rate_mask[0] = macid;
 	rate_mask[1] = ratr_index | (b_shortgi ? 0x80 : 0x00);
-<<<<<<< HEAD
 	rate_mask[2] = curtxbw_40mhz | ((!update_bw) << 3);
-=======
-	rate_mask[2] = curtxbw_40mhz;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rate_mask[3] = (u8)(ratr_bitmap & 0x000000ff);
 	rate_mask[4] = (u8)((ratr_bitmap & 0x0000ff00) >> 8);
 	rate_mask[5] = (u8)((ratr_bitmap & 0x00ff0000) >> 16);
@@ -2439,21 +2404,13 @@ static void rtl92ee_update_hal_rate_mask(struct ieee80211_hw *hw,
 }
 
 void rtl92ee_update_hal_rate_tbl(struct ieee80211_hw *hw,
-<<<<<<< HEAD
 				 struct ieee80211_sta *sta, u8 rssi_level,
 				 bool update_bw)
-=======
-				 struct ieee80211_sta *sta, u8 rssi_level)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rtl_priv *rtlpriv = rtl_priv(hw);
 
 	if (rtlpriv->dm.useramask)
-<<<<<<< HEAD
 		rtl92ee_update_hal_rate_mask(hw, sta, rssi_level, update_bw);
-=======
-		rtl92ee_update_hal_rate_mask(hw, sta, rssi_level);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void rtl92ee_update_channel_access_setting(struct ieee80211_hw *hw)
@@ -2617,19 +2574,11 @@ void rtl92ee_read_bt_coexist_info_from_hwpg(struct ieee80211_hw *hw,
 			rtlpriv->btcoexist.btc_info.btcoexist = 0;
 
 		rtlpriv->btcoexist.btc_info.bt_type = BT_RTL8192E;
-<<<<<<< HEAD
 		rtlpriv->btcoexist.btc_info.ant_num = ANT_X2;
 	} else {
 		rtlpriv->btcoexist.btc_info.btcoexist = 1;
 		rtlpriv->btcoexist.btc_info.bt_type = BT_RTL8192E;
 		rtlpriv->btcoexist.btc_info.ant_num = ANT_X1;
-=======
-		rtlpriv->btcoexist.btc_info.ant_num = ANT_TOTAL_X2;
-	} else {
-		rtlpriv->btcoexist.btc_info.btcoexist = 1;
-		rtlpriv->btcoexist.btc_info.bt_type = BT_RTL8192E;
-		rtlpriv->btcoexist.btc_info.ant_num = ANT_TOTAL_X1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 

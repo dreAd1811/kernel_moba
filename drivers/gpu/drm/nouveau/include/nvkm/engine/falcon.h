@@ -4,10 +4,7 @@
 #define nvkm_falcon(p) container_of((p), struct nvkm_falcon, engine)
 #include <core/engine.h>
 struct nvkm_fifo_chan;
-<<<<<<< HEAD
 struct nvkm_gpuobj;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum nvkm_falcon_dmaidx {
 	FALCON_DMAIDX_UCODE		= 0,
@@ -82,11 +79,7 @@ struct nvkm_falcon_func {
 	void (*load_imem)(struct nvkm_falcon *, void *, u32, u32, u16, u8, bool);
 	void (*load_dmem)(struct nvkm_falcon *, void *, u32, u32, u8);
 	void (*read_dmem)(struct nvkm_falcon *, u32, u32, u8, void *);
-<<<<<<< HEAD
 	void (*bind_context)(struct nvkm_falcon *, struct nvkm_memory *);
-=======
-	void (*bind_context)(struct nvkm_falcon *, struct nvkm_gpuobj *);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int (*wait_for_halt)(struct nvkm_falcon *, u32);
 	int (*clear_interrupt)(struct nvkm_falcon *, u32);
 	void (*set_start_addr)(struct nvkm_falcon *, u32 start_addr);
@@ -121,11 +114,7 @@ void nvkm_falcon_load_imem(struct nvkm_falcon *, void *, u32, u32, u16, u8,
 			   bool);
 void nvkm_falcon_load_dmem(struct nvkm_falcon *, void *, u32, u32, u8);
 void nvkm_falcon_read_dmem(struct nvkm_falcon *, u32, u32, u8, void *);
-<<<<<<< HEAD
 void nvkm_falcon_bind_context(struct nvkm_falcon *, struct nvkm_memory *);
-=======
-void nvkm_falcon_bind_context(struct nvkm_falcon *, struct nvkm_gpuobj *);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void nvkm_falcon_set_start_addr(struct nvkm_falcon *, u32);
 void nvkm_falcon_start(struct nvkm_falcon *);
 int nvkm_falcon_wait_for_halt(struct nvkm_falcon *, u32);

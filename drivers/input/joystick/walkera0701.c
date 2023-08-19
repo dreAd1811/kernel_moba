@@ -3,11 +3,7 @@
  *
  *  Copyright (c) 2008 Peter Popovec
  *
-<<<<<<< HEAD
  *  More about driver:  <file:Documentation/input/devices/walkera0701.rst>
-=======
- *  More about driver:  <file:Documentation/input/walkera0701.txt>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /*

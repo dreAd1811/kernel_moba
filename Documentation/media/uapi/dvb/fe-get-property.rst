@@ -48,16 +48,11 @@ depends on the delivery system and on the device:
 
    -  This call requires read/write access to the device.
 
-<<<<<<< HEAD
 .. note::
 
    At return, the values aren't updated to reflect the actual
    parameters used. If the actual parameters are needed, an explicit
    call to ``FE_GET_PROPERTY`` is needed.
-=======
-   -  At return, the values are updated to reflect the actual parameters
-      used.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 -  ``FE_GET_PROPERTY:``
 

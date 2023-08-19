@@ -80,11 +80,7 @@ static struct _intel_private {
 	unsigned int needs_dmar : 1;
 	phys_addr_t gma_bus_addr;
 	/*  Size of memory reserved for graphics by the BIOS */
-<<<<<<< HEAD
 	resource_size_t stolen_size;
-=======
-	unsigned int stolen_size;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Total number of gtt entries. */
 	unsigned int gtt_total_entries;
 	/* Part of the gtt that is mappable by the cpu, for those chips where
@@ -337,21 +333,13 @@ static void i810_write_entry(dma_addr_t addr, unsigned int entry,
 	writel_relaxed(addr | pte_flags, intel_private.gtt + entry);
 }
 
-<<<<<<< HEAD
 static resource_size_t intel_gtt_stolen_size(void)
-=======
-static unsigned int intel_gtt_stolen_size(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u16 gmch_ctrl;
 	u8 rdct;
 	int local = 0;
 	static const int ddt[4] = { 0, 16, 32, 64 };
-<<<<<<< HEAD
 	resource_size_t stolen_size = 0;
-=======
-	unsigned int stolen_size = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (INTEL_GTT_GEN == 1)
 		return 0; /* no stolen mem on i81x */
@@ -429,13 +417,8 @@ static unsigned int intel_gtt_stolen_size(void)
 	}
 
 	if (stolen_size > 0) {
-<<<<<<< HEAD
 		dev_info(&intel_private.bridge_dev->dev, "detected %lluK %s memory\n",
 		       (u64)stolen_size / KB(1), local ? "local" : "stolen");
-=======
-		dev_info(&intel_private.bridge_dev->dev, "detected %dK %s memory\n",
-		       stolen_size / KB(1), local ? "local" : "stolen");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		dev_info(&intel_private.bridge_dev->dev,
 		       "no pre-allocated video memory detected\n");
@@ -863,10 +846,6 @@ void intel_gtt_insert_page(dma_addr_t addr,
 			   unsigned int flags)
 {
 	intel_private.driver->write_entry(addr, pg, flags);
-<<<<<<< HEAD
-=======
-	readl(intel_private.gtt + pg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (intel_private.driver->chipset_flush)
 		intel_private.driver->chipset_flush();
 }
@@ -892,11 +871,7 @@ void intel_gtt_insert_sg_entries(struct sg_table *st,
 			j++;
 		}
 	}
-<<<<<<< HEAD
 	wmb();
-=======
-	readl(intel_private.gtt + j - 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (intel_private.driver->chipset_flush)
 		intel_private.driver->chipset_flush();
 }
@@ -1130,10 +1105,6 @@ static void i9xx_cleanup(void)
 
 static void i9xx_chipset_flush(void)
 {
-<<<<<<< HEAD
-=======
-	wmb();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (intel_private.i9xx_flush_page)
 		writel(1, intel_private.i9xx_flush_page);
 }
@@ -1453,19 +1424,10 @@ int intel_gmch_probe(struct pci_dev *bridge_pdev, struct pci_dev *gpu_pdev,
 EXPORT_SYMBOL(intel_gmch_probe);
 
 void intel_gtt_get(u64 *gtt_total,
-<<<<<<< HEAD
 		   phys_addr_t *mappable_base,
 		   resource_size_t *mappable_end)
 {
 	*gtt_total = intel_private.gtt_total_entries << PAGE_SHIFT;
-=======
-		   u32 *stolen_size,
-		   phys_addr_t *mappable_base,
-		   u64 *mappable_end)
-{
-	*gtt_total = intel_private.gtt_total_entries << PAGE_SHIFT;
-	*stolen_size = intel_private.stolen_size;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	*mappable_base = intel_private.gma_bus_addr;
 	*mappable_end = intel_private.gtt_mappable_entries << PAGE_SHIFT;
 }

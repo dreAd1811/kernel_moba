@@ -4,16 +4,11 @@
 
 #if defined(CONFIG_AS_LSE) && defined(CONFIG_ARM64_LSE_ATOMICS)
 
-<<<<<<< HEAD
 #include <linux/compiler_types.h>
 #include <linux/export.h>
 #include <linux/stringify.h>
 #include <asm/alternative.h>
 #include <asm/cpucaps.h>
-=======
-#include <linux/stringify.h>
-#include <asm/alternative.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef __ASSEMBLER__
 

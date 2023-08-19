@@ -48,11 +48,7 @@ static inline long do_mmap2(unsigned long addr, size_t len,
 {
 	long ret = -EINVAL;
 
-<<<<<<< HEAD
 	if (!arch_validate_prot(prot, addr))
-=======
-	if (!arch_validate_prot(prot))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out;
 
 	if (shift) {
@@ -61,11 +57,7 @@ static inline long do_mmap2(unsigned long addr, size_t len,
 		off >>= shift;
 	}
 
-<<<<<<< HEAD
 	ret = ksys_mmap_pgoff(addr, len, prot, flags, fd, off);
-=======
-	ret = sys_mmap_pgoff(addr, len, prot, flags, fd, off);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	return ret;
 }
@@ -127,13 +119,8 @@ long ppc64_personality(unsigned long personality)
 long ppc_fadvise64_64(int fd, int advice, u32 offset_high, u32 offset_low,
 		      u32 len_high, u32 len_low)
 {
-<<<<<<< HEAD
 	return ksys_fadvise64_64(fd, (u64)offset_high << 32 | offset_low,
 				 (u64)len_high << 32 | len_low, advice);
-=======
-	return sys_fadvise64(fd, (u64)offset_high << 32 | offset_low,
-			     (u64)len_high << 32 | len_low, advice);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 long sys_switch_endian(void)

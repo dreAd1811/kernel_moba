@@ -57,12 +57,7 @@ static struct s5p_mfc_fmt formats[] = {
 		.codec_mode	= S5P_MFC_CODEC_NONE,
 		.type		= MFC_FMT_RAW,
 		.num_planes	= 2,
-<<<<<<< HEAD
 		.versions	= MFC_V5PLUS_BITS,
-=======
-		.versions	= MFC_V5_BIT | MFC_V6_BIT | MFC_V7_BIT |
-								MFC_V8_BIT,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{
 		.name		= "4:2:0 2 Planes Y/CrCb",
@@ -70,11 +65,7 @@ static struct s5p_mfc_fmt formats[] = {
 		.codec_mode	= S5P_MFC_CODEC_NONE,
 		.type		= MFC_FMT_RAW,
 		.num_planes	= 2,
-<<<<<<< HEAD
 		.versions	= MFC_V6PLUS_BITS,
-=======
-		.versions	= MFC_V6_BIT | MFC_V7_BIT | MFC_V8_BIT,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{
 		.name		= "H264 Encoded Stream",
@@ -82,12 +73,7 @@ static struct s5p_mfc_fmt formats[] = {
 		.codec_mode	= S5P_MFC_CODEC_H264_ENC,
 		.type		= MFC_FMT_ENC,
 		.num_planes	= 1,
-<<<<<<< HEAD
 		.versions	= MFC_V5PLUS_BITS,
-=======
-		.versions	= MFC_V5_BIT | MFC_V6_BIT | MFC_V7_BIT |
-								MFC_V8_BIT,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{
 		.name		= "MPEG4 Encoded Stream",
@@ -95,12 +81,7 @@ static struct s5p_mfc_fmt formats[] = {
 		.codec_mode	= S5P_MFC_CODEC_MPEG4_ENC,
 		.type		= MFC_FMT_ENC,
 		.num_planes	= 1,
-<<<<<<< HEAD
 		.versions	= MFC_V5PLUS_BITS,
-=======
-		.versions	= MFC_V5_BIT | MFC_V6_BIT | MFC_V7_BIT |
-								MFC_V8_BIT,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{
 		.name		= "H263 Encoded Stream",
@@ -108,12 +89,7 @@ static struct s5p_mfc_fmt formats[] = {
 		.codec_mode	= S5P_MFC_CODEC_H263_ENC,
 		.type		= MFC_FMT_ENC,
 		.num_planes	= 1,
-<<<<<<< HEAD
 		.versions	= MFC_V5PLUS_BITS,
-=======
-		.versions	= MFC_V5_BIT | MFC_V6_BIT | MFC_V7_BIT |
-								MFC_V8_BIT,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{
 		.name		= "VP8 Encoded Stream",
@@ -121,7 +97,6 @@ static struct s5p_mfc_fmt formats[] = {
 		.codec_mode	= S5P_MFC_CODEC_VP8_ENC,
 		.type		= MFC_FMT_ENC,
 		.num_planes	= 1,
-<<<<<<< HEAD
 		.versions	= MFC_V7PLUS_BITS,
 	},
 	{
@@ -130,9 +105,6 @@ static struct s5p_mfc_fmt formats[] = {
 		.type		= MFC_FMT_ENC,
 		.num_planes	= 1,
 		.versions	= MFC_V10_BIT,
-=======
-		.versions	= MFC_V7_BIT | MFC_V8_BIT,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 };
 
@@ -720,7 +692,6 @@ static struct mfc_control controls[] = {
 		.default_value = 10,
 	},
 	{
-<<<<<<< HEAD
 		.id = V4L2_CID_MPEG_VIDEO_VP8_PROFILE,
 		.type = V4L2_CTRL_TYPE_MENU,
 		.minimum = V4L2_MPEG_VIDEO_VP8_PROFILE_0,
@@ -1087,12 +1058,6 @@ static struct mfc_control controls[] = {
 		.type = V4L2_CTRL_TYPE_INTEGER,
 		.minimum = 0,
 		.maximum = 1,
-=======
-		.id = V4L2_CID_MPEG_VIDEO_VPX_PROFILE,
-		.type = V4L2_CTRL_TYPE_INTEGER,
-		.minimum = 0,
-		.maximum = 3,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.step = 1,
 		.default_value = 0,
 	},
@@ -1217,14 +1182,11 @@ static int enc_post_seq_start(struct s5p_mfc_ctx *ctx)
 				get_enc_dpb_count, dev);
 		if (ctx->pb_count < enc_pb_count)
 			ctx->pb_count = enc_pb_count;
-<<<<<<< HEAD
 		if (FW_HAS_E_MIN_SCRATCH_BUF(dev)) {
 			ctx->scratch_buf_size = s5p_mfc_hw_call(dev->mfc_ops,
 					get_e_min_scratch_buf_size, dev);
 			ctx->bank1.size += ctx->scratch_buf_size;
 		}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ctx->state = MFCINST_HEAD_PRODUCED;
 	}
 
@@ -1258,11 +1220,7 @@ static int enc_post_frame_start(struct s5p_mfc_ctx *ctx)
 {
 	struct s5p_mfc_dev *dev = ctx->dev;
 	struct s5p_mfc_buf *mb_entry;
-<<<<<<< HEAD
 	unsigned long enc_y_addr = 0, enc_c_addr = 0;
-=======
-	unsigned long enc_y_addr, enc_c_addr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long mb_y_addr, mb_c_addr;
 	int slice_type;
 	unsigned int strm_size;
@@ -1355,13 +1313,8 @@ static int vidioc_querycap(struct file *file, void *priv,
 {
 	struct s5p_mfc_dev *dev = video_drvdata(file);
 
-<<<<<<< HEAD
 	strlcpy(cap->driver, S5P_MFC_NAME, sizeof(cap->driver));
 	strlcpy(cap->card, dev->vfd_enc->name, sizeof(cap->card));
-=======
-	strncpy(cap->driver, S5P_MFC_NAME, sizeof(cap->driver) - 1);
-	strncpy(cap->card, dev->vfd_enc->name, sizeof(cap->card) - 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	snprintf(cap->bus_info, sizeof(cap->bus_info), "platform:%s",
 		 dev_name(&dev->plat_dev->dev));
 	/*
@@ -1775,7 +1728,6 @@ static inline int mpeg4_level(enum v4l2_mpeg_video_mpeg4_level lvl)
 	return t[lvl];
 }
 
-<<<<<<< HEAD
 static inline int hevc_level(enum v4l2_mpeg_video_hevc_level lvl)
 {
 	static unsigned int t[] = {
@@ -1796,8 +1748,6 @@ static inline int hevc_level(enum v4l2_mpeg_video_hevc_level lvl)
 	return t[lvl];
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int vui_sar_idc(enum v4l2_mpeg_video_h264_vui_sar_idc sar)
 {
 	static unsigned int t[V4L2_MPEG_VIDEO_H264_VUI_SAR_IDC_EXTENDED + 1] = {
@@ -1823,7 +1773,6 @@ static inline int vui_sar_idc(enum v4l2_mpeg_video_h264_vui_sar_idc sar)
 	return t[sar];
 }
 
-<<<<<<< HEAD
 /*
  * Update range of all HEVC quantization parameter controls that depend on the
  * V4L2_CID_MPEG_VIDEO_HEVC_MIN_QP, V4L2_CID_MPEG_VIDEO_HEVC_MAX_QP controls.
@@ -1860,8 +1809,6 @@ static void __enc_update_hevc_qp_ctrls_range(struct s5p_mfc_ctx *ctx,
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int s5p_mfc_enc_s_ctrl(struct v4l2_ctrl *ctrl)
 {
 	struct s5p_mfc_ctx *ctx = ctrl_to_ctx(ctrl);
@@ -2110,7 +2057,6 @@ static int s5p_mfc_enc_s_ctrl(struct v4l2_ctrl *ctrl)
 	case V4L2_CID_MPEG_VIDEO_VPX_P_FRAME_QP:
 		p->codec.vp8.rc_p_frame_qp = ctrl->val;
 		break;
-<<<<<<< HEAD
 	case V4L2_CID_MPEG_VIDEO_VP8_PROFILE:
 		p->codec.vp8.profile = ctrl->val;
 		break;
@@ -2265,11 +2211,6 @@ static int s5p_mfc_enc_s_ctrl(struct v4l2_ctrl *ctrl)
 	case V4L2_CID_MPEG_VIDEO_PREPEND_SPSPPS_TO_IDR:
 		p->codec.hevc.prepend_sps_pps_to_idr = ctrl->val;
 		break;
-=======
-	case V4L2_CID_MPEG_VIDEO_VPX_PROFILE:
-		p->codec.vp8.profile = ctrl->val;
-		break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		v4l2_err(&dev->v4l2_dev, "Invalid control, id=%d, val=%d\n",
 							ctrl->id, ctrl->val);
@@ -2716,11 +2657,7 @@ int s5p_mfc_enc_ctrls_setup(struct s5p_mfc_ctx *ctx)
 
 			if (cfg.type == V4L2_CTRL_TYPE_MENU) {
 				cfg.step = 0;
-<<<<<<< HEAD
 				cfg.menu_skip_mask = controls[i].menu_skip_mask;
-=======
-				cfg.menu_skip_mask = cfg.menu_skip_mask;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				cfg.qmenu = mfc51_get_menu(cfg.id);
 			} else {
 				cfg.step = controls[i].step;
@@ -2774,7 +2711,3 @@ void s5p_mfc_enc_init(struct s5p_mfc_ctx *ctx)
 	f.fmt.pix_mp.pixelformat = DEF_DST_FMT_ENC;
 	ctx->dst_fmt = find_format(&f, MFC_FMT_ENC);
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

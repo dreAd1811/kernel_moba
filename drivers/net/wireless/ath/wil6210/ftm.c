@@ -1,23 +1,5 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: ISC
 /* Copyright (c) 2016-2019, The Linux Foundation. All rights reserved. */
-=======
-/*
- * Copyright (c) 2016-2018 The Linux Foundation. All rights reserved.
- *
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- *
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/etherdevice.h>
 #include <net/netlink.h>
@@ -49,7 +31,6 @@
 #define WIL_TOF_FTM_MAX_LCI_LENGTH		(240)
 #define WIL_TOF_FTM_MAX_LCR_LENGTH		(240)
 
-<<<<<<< HEAD
 enum qca_attr_loc_reuse {
 	QCA_ATTR_MAC_ADDR = 6,
 	QCA_ATTR_PAD = 13,
@@ -85,40 +66,6 @@ nla_policy wil_nl80211_ftm_meas_param_policy[QCA_ATTR_FTM_PARAM_MAX + 1] = {
 	[QCA_ATTR_FTM_PARAM_NUM_BURSTS_EXP] = { .type = NLA_U8 },
 	[QCA_ATTR_FTM_PARAM_BURST_DURATION] = { .type = NLA_U8 },
 	[QCA_ATTR_FTM_PARAM_BURST_PERIOD] = { .type = NLA_U16 },
-=======
-static const struct
-nla_policy wil_nl80211_loc_policy[QCA_WLAN_VENDOR_ATTR_LOC_MAX + 1] = {
-	[QCA_WLAN_VENDOR_ATTR_FTM_SESSION_COOKIE] = { .type = NLA_U64 },
-	[QCA_WLAN_VENDOR_ATTR_LOC_CAPA] = { .type = NLA_NESTED },
-	[QCA_WLAN_VENDOR_ATTR_FTM_MEAS_PEERS] = { .type = NLA_NESTED },
-	[QCA_WLAN_VENDOR_ATTR_FTM_MEAS_PEER_RESULTS] = { .type = NLA_NESTED },
-	[QCA_WLAN_VENDOR_ATTR_FTM_RESPONDER_ENABLE] = { .type = NLA_FLAG },
-	[QCA_WLAN_VENDOR_ATTR_LOC_SESSION_STATUS] = { .type = NLA_U32 },
-	[QCA_WLAN_VENDOR_ATTR_FTM_INITIAL_TOKEN] = { .type = NLA_U8 },
-	[QCA_WLAN_VENDOR_ATTR_AOA_TYPE] = { .type = NLA_U32 },
-	[QCA_WLAN_VENDOR_ATTR_LOC_ANTENNA_ARRAY_MASK] = { .type = NLA_U32 },
-	[QCA_WLAN_VENDOR_ATTR_FREQ] = { .type = NLA_U32 },
-};
-
-static const struct
-nla_policy wil_nl80211_ftm_peer_policy[
-	QCA_WLAN_VENDOR_ATTR_FTM_PEER_MAX + 1] = {
-	[QCA_WLAN_VENDOR_ATTR_FTM_PEER_MAC_ADDR] = { .len = ETH_ALEN },
-	[QCA_WLAN_VENDOR_ATTR_FTM_PEER_MEAS_FLAGS] = { .type = NLA_U32 },
-	[QCA_WLAN_VENDOR_ATTR_FTM_PEER_MEAS_PARAMS] = { .type = NLA_NESTED },
-	[QCA_WLAN_VENDOR_ATTR_FTM_PEER_SECURE_TOKEN_ID] = { .type = NLA_U8 },
-	[QCA_WLAN_VENDOR_ATTR_FTM_PEER_AOA_BURST_PERIOD] = { .type = NLA_U16 },
-	[QCA_WLAN_VENDOR_ATTR_FTM_PEER_FREQ] = { .type = NLA_U32 },
-};
-
-static const struct
-nla_policy wil_nl80211_ftm_meas_param_policy[
-	QCA_WLAN_VENDOR_ATTR_FTM_PARAM_MAX + 1] = {
-	[QCA_WLAN_VENDOR_ATTR_FTM_PARAM_MEAS_PER_BURST] = { .type = NLA_U8 },
-	[QCA_WLAN_VENDOR_ATTR_FTM_PARAM_NUM_BURSTS_EXP] = { .type = NLA_U8 },
-	[QCA_WLAN_VENDOR_ATTR_FTM_PARAM_BURST_DURATION] = { .type = NLA_U8 },
-	[QCA_WLAN_VENDOR_ATTR_FTM_PARAM_BURST_PERIOD] = { .type = NLA_U16 },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static u8 wil_ftm_get_channel(struct wil6210_priv *wil,
@@ -156,11 +103,7 @@ static int wil_ftm_parse_meas_params(struct wil6210_priv *wil,
 				     struct nlattr *attr,
 				     struct wil_ftm_meas_params *params)
 {
-<<<<<<< HEAD
 	struct nlattr *tb[QCA_ATTR_FTM_PARAM_MAX + 1];
-=======
-	struct nlattr *tb[QCA_WLAN_VENDOR_ATTR_FTM_PARAM_MAX + 1];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc;
 
 	if (!attr) {
@@ -169,17 +112,12 @@ static int wil_ftm_parse_meas_params(struct wil6210_priv *wil,
 		params->burst_period = 5; /* 500 milliseconds */
 		return 0;
 	}
-<<<<<<< HEAD
 	rc = nla_parse_nested(tb, QCA_ATTR_FTM_PARAM_MAX,
-=======
-	rc = nla_parse_nested(tb, QCA_WLAN_VENDOR_ATTR_FTM_PARAM_MAX,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      attr, wil_nl80211_ftm_meas_param_policy, NULL);
 	if (rc) {
 		wil_err(wil, "invalid measurement params\n");
 		return rc;
 	}
-<<<<<<< HEAD
 	if (tb[QCA_ATTR_FTM_PARAM_MEAS_PER_BURST])
 		params->meas_per_burst =
 			nla_get_u8(tb[QCA_ATTR_FTM_PARAM_MEAS_PER_BURST]);
@@ -192,20 +130,6 @@ static int wil_ftm_parse_meas_params(struct wil6210_priv *wil,
 	if (tb[QCA_ATTR_FTM_PARAM_BURST_PERIOD])
 		params->burst_period =
 			nla_get_u16(tb[QCA_ATTR_FTM_PARAM_BURST_PERIOD]);
-=======
-	if (tb[QCA_WLAN_VENDOR_ATTR_FTM_PARAM_MEAS_PER_BURST])
-		params->meas_per_burst = nla_get_u8(
-			tb[QCA_WLAN_VENDOR_ATTR_FTM_PARAM_MEAS_PER_BURST]);
-	if (tb[QCA_WLAN_VENDOR_ATTR_FTM_PARAM_NUM_BURSTS_EXP])
-		params->num_of_bursts_exp = nla_get_u8(
-			tb[QCA_WLAN_VENDOR_ATTR_FTM_PARAM_NUM_BURSTS_EXP]);
-	if (tb[QCA_WLAN_VENDOR_ATTR_FTM_PARAM_BURST_DURATION])
-		params->burst_duration = nla_get_u8(
-			tb[QCA_WLAN_VENDOR_ATTR_FTM_PARAM_BURST_DURATION]);
-	if (tb[QCA_WLAN_VENDOR_ATTR_FTM_PARAM_BURST_PERIOD])
-		params->burst_period = nla_get_u16(
-			tb[QCA_WLAN_VENDOR_ATTR_FTM_PARAM_BURST_PERIOD]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -228,7 +152,6 @@ static int wil_ftm_append_meas_params(struct wil6210_priv *wil,
 {
 	struct nlattr *nl_p;
 
-<<<<<<< HEAD
 	nl_p = nla_nest_start(msg, QCA_ATTR_FTM_PEER_RES_MEAS_PARAMS);
 	if (!nl_p)
 		goto out_put_failure;
@@ -239,19 +162,6 @@ static int wil_ftm_append_meas_params(struct wil6210_priv *wil,
 	    nla_put_u8(msg, QCA_ATTR_FTM_PARAM_BURST_DURATION,
 		       params->burst_duration) ||
 	    nla_put_u16(msg, QCA_ATTR_FTM_PARAM_BURST_PERIOD,
-=======
-	nl_p = nla_nest_start(
-		msg, QCA_WLAN_VENDOR_ATTR_FTM_PEER_RES_MEAS_PARAMS);
-	if (!nl_p)
-		goto out_put_failure;
-	if (nla_put_u8(msg, QCA_WLAN_VENDOR_ATTR_FTM_PARAM_MEAS_PER_BURST,
-		       params->meas_per_burst) ||
-	    nla_put_u8(msg, QCA_WLAN_VENDOR_ATTR_FTM_PARAM_NUM_BURSTS_EXP,
-		       params->num_of_bursts_exp) ||
-	    nla_put_u8(msg, QCA_WLAN_VENDOR_ATTR_FTM_PARAM_BURST_DURATION,
-		       params->burst_duration) ||
-	    nla_put_u16(msg, QCA_WLAN_VENDOR_ATTR_FTM_PARAM_BURST_PERIOD,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			params->burst_period))
 		goto out_put_failure;
 	nla_nest_end(msg, nl_p);
@@ -267,7 +177,6 @@ static int wil_ftm_append_peer_meas_res(struct wil6210_priv *wil,
 	struct nlattr *nl_mres, *nl_f;
 	int i;
 
-<<<<<<< HEAD
 	if (nla_put(msg, QCA_ATTR_FTM_PEER_RES_MAC_ADDR,
 		    ETH_ALEN, res->mac_addr) ||
 	    nla_put_u32(msg, QCA_ATTR_FTM_PEER_RES_FLAGS,
@@ -278,35 +187,18 @@ static int wil_ftm_append_peer_meas_res(struct wil6210_priv *wil,
 	if (res->status == QCA_ATTR_FTM_PEER_RES_STATUS_FAILED &&
 	    nla_put_u8(msg,
 		       QCA_ATTR_FTM_PEER_RES_VALUE_SECONDS,
-=======
-	if (nla_put(msg, QCA_WLAN_VENDOR_ATTR_FTM_PEER_RES_MAC_ADDR,
-		    ETH_ALEN, res->mac_addr) ||
-	    nla_put_u32(msg, QCA_WLAN_VENDOR_ATTR_FTM_PEER_RES_FLAGS,
-			res->flags) ||
-	    nla_put_u8(msg, QCA_WLAN_VENDOR_ATTR_FTM_PEER_RES_STATUS,
-		       res->status))
-		goto out_put_failure;
-	if (res->status == QCA_WLAN_VENDOR_ATTR_FTM_PEER_RES_STATUS_FAILED &&
-	    nla_put_u8(msg,
-		       QCA_WLAN_VENDOR_ATTR_FTM_PEER_RES_VALUE_SECONDS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		       res->value_seconds))
 		goto out_put_failure;
 	if (res->has_params &&
 	    wil_ftm_append_meas_params(wil, msg, &res->params))
 		goto out_put_failure;
-<<<<<<< HEAD
 	nl_mres = nla_nest_start(msg, QCA_ATTR_FTM_PEER_RES_MEAS);
-=======
-	nl_mres = nla_nest_start(msg, QCA_WLAN_VENDOR_ATTR_FTM_PEER_RES_MEAS);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!nl_mres)
 		goto out_put_failure;
 	for (i = 0; i < res->n_meas; i++) {
 		nl_f = nla_nest_start(msg, i);
 		if (!nl_f)
 			goto out_put_failure;
-<<<<<<< HEAD
 		if (nla_put_u64_64bit(msg, QCA_ATTR_FTM_MEAS_T1,
 				      res->meas[i].t1,
 				      QCA_ATTR_FTM_MEAS_PAD) ||
@@ -319,20 +211,6 @@ static int wil_ftm_append_peer_meas_res(struct wil6210_priv *wil,
 		    nla_put_u64_64bit(msg, QCA_ATTR_FTM_MEAS_T4,
 				      res->meas[i].t4,
 				      QCA_ATTR_FTM_MEAS_PAD))
-=======
-		if (nla_put_u64_64bit(msg, QCA_WLAN_VENDOR_ATTR_FTM_MEAS_T1,
-				      res->meas[i].t1,
-				      QCA_WLAN_VENDOR_ATTR_FTM_MEAS_PAD) ||
-		    nla_put_u64_64bit(msg, QCA_WLAN_VENDOR_ATTR_FTM_MEAS_T2,
-				      res->meas[i].t2,
-				      QCA_WLAN_VENDOR_ATTR_FTM_MEAS_PAD) ||
-		    nla_put_u64_64bit(msg, QCA_WLAN_VENDOR_ATTR_FTM_MEAS_T3,
-				      res->meas[i].t3,
-				      QCA_WLAN_VENDOR_ATTR_FTM_MEAS_PAD) ||
-		    nla_put_u64_64bit(msg, QCA_WLAN_VENDOR_ATTR_FTM_MEAS_T4,
-				      res->meas[i].t4,
-				      QCA_WLAN_VENDOR_ATTR_FTM_MEAS_PAD))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto out_put_failure;
 		nla_nest_end(msg, nl_f);
 	}
@@ -354,45 +232,26 @@ static void wil_ftm_send_meas_result(struct wil6210_vif *vif,
 	wil_dbg_misc(wil, "sending %d results for peer %pM\n",
 		     res->n_meas, res->mac_addr);
 
-<<<<<<< HEAD
 	vendor_event =
 		cfg80211_vendor_event_alloc(wil_to_wiphy(wil),
 					    vif_to_wdev(vif),
 					    WIL_FTM_MEAS_RESULT_MAX_LENGTH,
 					    QCA_EVENT_FTM_MEAS_RESULT_INDEX,
 					    GFP_KERNEL);
-=======
-	vendor_event = cfg80211_vendor_event_alloc(
-				wil_to_wiphy(wil),
-				vif_to_wdev(vif),
-				WIL_FTM_MEAS_RESULT_MAX_LENGTH,
-				QCA_NL80211_VENDOR_EVENT_FTM_MEAS_RESULT_INDEX,
-				GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!vendor_event) {
 		wil_err(wil, "fail to allocate measurement result\n");
 		rc = -ENOMEM;
 		goto out;
 	}
 
-<<<<<<< HEAD
 	if (nla_put_u64_64bit(vendor_event, QCA_ATTR_FTM_SESSION_COOKIE,
 			      vif->ftm.session_cookie, QCA_ATTR_PAD)) {
-=======
-	if (nla_put_u64_64bit(
-		vendor_event, QCA_WLAN_VENDOR_ATTR_FTM_SESSION_COOKIE,
-		vif->ftm.session_cookie, QCA_WLAN_VENDOR_ATTR_PAD)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rc = -ENOBUFS;
 		goto out;
 	}
 
 	nl_res = nla_nest_start(vendor_event,
-<<<<<<< HEAD
 				QCA_ATTR_FTM_MEAS_PEER_RESULTS);
-=======
-				QCA_WLAN_VENDOR_ATTR_FTM_MEAS_PEER_RESULTS);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!nl_res) {
 		rc = -ENOBUFS;
 		goto out;
@@ -435,11 +294,7 @@ static void wil_aoa_measurement_timeout(struct work_struct *work)
 	memset(&res, 0, sizeof(res));
 	ether_addr_copy(res.mac_addr, vif->ftm.aoa_peer_mac_addr);
 	res.type = vif->ftm.aoa_type;
-<<<<<<< HEAD
 	res.status = QCA_ATTR_LOC_SESSION_ST_ABORT;
-=======
-	res.status = QCA_WLAN_VENDOR_ATTR_LOC_SESSION_STATUS_ABORTED;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wil_aoa_cfg80211_meas_result(vif, &res);
 }
 
@@ -463,17 +318,10 @@ wil_ftm_cfg80211_start_session(struct wil6210_vif *vif,
 
 	for (i = 0; i < request->n_peers; i++) {
 		if (request->peers[i].flags &
-<<<<<<< HEAD
 		    QCA_ATTR_FTM_PEER_MEAS_FLAG_LCI)
 			has_lci = true;
 		if (request->peers[i].flags &
 		    QCA_ATTR_FTM_PEER_MEAS_FLAG_LCR)
-=======
-		    QCA_WLAN_VENDOR_ATTR_FTM_PEER_MEAS_FLAG_LCI)
-			has_lci = true;
-		if (request->peers[i].flags &
-		    QCA_WLAN_VENDOR_ATTR_FTM_PEER_MEAS_FLAG_LCR)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			has_lcr = true;
 		max_meas = max(max_meas,
 			       request->peers[i].params.meas_per_burst);
@@ -521,11 +369,7 @@ wil_ftm_cfg80211_start_session(struct wil6210_vif *vif,
 		}
 		cmd->ftm_dest_info[i].channel = channel - 1;
 		if (request->peers[i].flags &
-<<<<<<< HEAD
 		    QCA_ATTR_FTM_PEER_MEAS_FLAG_SECURE) {
-=======
-		    QCA_WLAN_VENDOR_ATTR_FTM_PEER_MEAS_FLAG_SECURE) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			cmd->ftm_dest_info[i].flags |=
 				WMI_TOF_SESSION_START_FLAG_SECURED;
 			cmd->ftm_dest_info[i].initial_token =
@@ -535,7 +379,6 @@ wil_ftm_cfg80211_start_session(struct wil6210_vif *vif,
 				WIL_TOF_FTM_DEFAULT_INITIAL_TOKEN;
 		}
 		if (request->peers[i].flags &
-<<<<<<< HEAD
 		    QCA_ATTR_FTM_PEER_MEAS_FLAG_ASAP)
 			cmd->ftm_dest_info[i].flags |=
 				WMI_TOF_SESSION_START_FLAG_ASAP;
@@ -545,17 +388,6 @@ wil_ftm_cfg80211_start_session(struct wil6210_vif *vif,
 				WMI_TOF_SESSION_START_FLAG_LCI_REQ;
 		if (request->peers[i].flags &
 		    QCA_ATTR_FTM_PEER_MEAS_FLAG_LCR)
-=======
-		    QCA_WLAN_VENDOR_ATTR_FTM_PEER_MEAS_FLAG_ASAP)
-			cmd->ftm_dest_info[i].flags |=
-				WMI_TOF_SESSION_START_FLAG_ASAP;
-		if (request->peers[i].flags &
-		    QCA_WLAN_VENDOR_ATTR_FTM_PEER_MEAS_FLAG_LCI)
-			cmd->ftm_dest_info[i].flags |=
-				WMI_TOF_SESSION_START_FLAG_LCI_REQ;
-		if (request->peers[i].flags &
-		    QCA_WLAN_VENDOR_ATTR_FTM_PEER_MEAS_FLAG_LCR)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			cmd->ftm_dest_info[i].flags |=
 				WMI_TOF_SESSION_START_FLAG_LCR_REQ;
 		cmd->ftm_dest_info[i].num_of_ftm_per_burst =
@@ -612,38 +444,21 @@ wil_ftm_cfg80211_session_ended(struct wil6210_vif *vif, u32 status)
 	kfree(vif->ftm.ftm_res);
 	vif->ftm.ftm_res = NULL;
 
-<<<<<<< HEAD
 	vendor_event =
 		cfg80211_vendor_event_alloc(wil_to_wiphy(wil),
 					    vif_to_wdev(vif),
 					    WIL_FTM_NL_EXTRA_ALLOC,
 					    QCA_EVENT_FTM_SESSION_DONE_INDEX,
 					    GFP_KERNEL);
-=======
-	vendor_event = cfg80211_vendor_event_alloc(
-		wil_to_wiphy(wil),
-		vif_to_wdev(vif),
-		WIL_FTM_NL_EXTRA_ALLOC,
-		QCA_NL80211_VENDOR_EVENT_FTM_SESSION_DONE_INDEX,
-		GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!vendor_event)
 		goto out;
 
 	if (nla_put_u64_64bit(vendor_event,
-<<<<<<< HEAD
 			      QCA_ATTR_FTM_SESSION_COOKIE,
 			      vif->ftm.session_cookie,
 			      QCA_ATTR_PAD) ||
 	    nla_put_u32(vendor_event,
 			QCA_ATTR_LOC_SESSION_STATUS, status)) {
-=======
-			      QCA_WLAN_VENDOR_ATTR_FTM_SESSION_COOKIE,
-			      vif->ftm.session_cookie,
-			      QCA_WLAN_VENDOR_ATTR_PAD) ||
-	    nla_put_u32(vendor_event,
-			QCA_WLAN_VENDOR_ATTR_LOC_SESSION_STATUS, status)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		wil_err(wil, "failed to fill session done event\n");
 		goto out;
 	}
@@ -679,11 +494,7 @@ wil_aoa_cfg80211_start_measurement(struct wil6210_vif *vif,
 		rc = -EAGAIN;
 		goto out;
 	}
-<<<<<<< HEAD
 	if (request->type >= QCA_ATTR_AOA_TYPE_MAX) {
-=======
-	if (request->type >= QCA_WLAN_VENDOR_ATTR_AOA_TYPE_MAX) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		wil_err(wil, "invalid AOA type: %d\n", request->type);
 		rc = -EINVAL;
 		goto out;
@@ -728,27 +539,17 @@ void wil_aoa_cfg80211_meas_result(struct wil6210_vif *vif,
 
 	wil_dbg_misc(wil, "sending AOA measurement result\n");
 
-<<<<<<< HEAD
 	vendor_event =
 		cfg80211_vendor_event_alloc(wil_to_wiphy(wil),
 					    vif_to_wdev(vif), result->length +
 					    WIL_FTM_NL_EXTRA_ALLOC,
 					    QCA_EVENT_AOA_MEAS_RESULT_INDEX,
 					    GFP_KERNEL);
-=======
-	vendor_event = cfg80211_vendor_event_alloc(
-				wil_to_wiphy(wil),
-				vif_to_wdev(vif),
-				result->length + WIL_FTM_NL_EXTRA_ALLOC,
-				QCA_NL80211_VENDOR_EVENT_AOA_MEAS_RESULT_INDEX,
-				GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!vendor_event) {
 		wil_err(wil, "fail to allocate measurement result\n");
 		goto out;
 	}
 
-<<<<<<< HEAD
 	if (nla_put(vendor_event, QCA_ATTR_MAC_ADDR,
 		    ETH_ALEN, result->mac_addr) ||
 	    nla_put_u32(vendor_event, QCA_ATTR_AOA_TYPE,
@@ -757,27 +558,13 @@ void wil_aoa_cfg80211_meas_result(struct wil6210_vif *vif,
 			result->status) ||
 	    nla_put_u32(vendor_event,
 			QCA_ATTR_LOC_ANTENNA_ARRAY_MASK,
-=======
-	if (nla_put(vendor_event, QCA_WLAN_VENDOR_ATTR_MAC_ADDR,
-		    ETH_ALEN, result->mac_addr) ||
-	    nla_put_u32(vendor_event, QCA_WLAN_VENDOR_ATTR_AOA_TYPE,
-			result->type) ||
-	    nla_put_u32(vendor_event, QCA_WLAN_VENDOR_ATTR_LOC_SESSION_STATUS,
-			result->status) ||
-	    nla_put_u32(vendor_event,
-			QCA_WLAN_VENDOR_ATTR_LOC_ANTENNA_ARRAY_MASK,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			result->antenna_array_mask)) {
 		wil_err(wil, "failed to fill vendor event\n");
 		goto out;
 	}
 
 	if (result->length > 0 &&
-<<<<<<< HEAD
 	    nla_put(vendor_event, QCA_ATTR_AOA_MEAS_RESULT,
-=======
-	    nla_put(vendor_event, QCA_WLAN_VENDOR_ATTR_AOA_MEAS_RESULT,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    result->length, result->data)) {
 		wil_err(wil, "failed to fill vendor event with AOA data\n");
 		goto out;
@@ -798,7 +585,6 @@ void wil_ftm_evt_session_ended(struct wil6210_vif *vif,
 
 	switch (evt->status) {
 	case WMI_TOF_SESSION_END_NO_ERROR:
-<<<<<<< HEAD
 		status = QCA_ATTR_LOC_SESSION_ST_OK;
 		break;
 	case WMI_TOF_SESSION_END_PARAMS_ERROR:
@@ -812,21 +598,6 @@ void wil_ftm_evt_session_ended(struct wil6210_vif *vif,
 		break;
 	default:
 		status = QCA_ATTR_LOC_SESSION_ST_FAIL;
-=======
-		status = QCA_WLAN_VENDOR_ATTR_LOC_SESSION_STATUS_OK;
-		break;
-	case WMI_TOF_SESSION_END_PARAMS_ERROR:
-		status = QCA_WLAN_VENDOR_ATTR_LOC_SESSION_STATUS_INVALID;
-		break;
-	case WMI_TOF_SESSION_END_FAIL:
-		status = QCA_WLAN_VENDOR_ATTR_LOC_SESSION_STATUS_FAILED;
-		break;
-	case WMI_TOF_SESSION_END_ABORTED:
-		status = QCA_WLAN_VENDOR_ATTR_LOC_SESSION_STATUS_ABORTED;
-		break;
-	default:
-		status = QCA_WLAN_VENDOR_ATTR_LOC_SESSION_STATUS_FAILED;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 
@@ -863,38 +634,22 @@ void wil_ftm_evt_per_dest_res(struct wil6210_vif *vif,
 	switch (evt->status) {
 	case WMI_PER_DEST_RES_NO_ERROR:
 		vif->ftm.ftm_res->status =
-<<<<<<< HEAD
 			QCA_ATTR_FTM_PEER_RES_STATUS_OK;
-=======
-			QCA_WLAN_VENDOR_ATTR_FTM_PEER_RES_STATUS_OK;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case WMI_PER_DEST_RES_TX_RX_FAIL:
 		/* FW reports corrupted results here, discard. */
 		n_meas = 0;
 		vif->ftm.ftm_res->status =
-<<<<<<< HEAD
 			QCA_ATTR_FTM_PEER_RES_STATUS_OK;
 		break;
 	case WMI_PER_DEST_RES_PARAM_DONT_MATCH:
 		vif->ftm.ftm_res->status =
 			QCA_ATTR_FTM_PEER_RES_STATUS_INVALID;
-=======
-			QCA_WLAN_VENDOR_ATTR_FTM_PEER_RES_STATUS_OK;
-		break;
-	case WMI_PER_DEST_RES_PARAM_DONT_MATCH:
-		vif->ftm.ftm_res->status =
-			QCA_WLAN_VENDOR_ATTR_FTM_PEER_RES_STATUS_INVALID;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		wil_err(wil, "unexpected status %d\n", evt->status);
 		vif->ftm.ftm_res->status =
-<<<<<<< HEAD
 			QCA_ATTR_FTM_PEER_RES_STATUS_INVALID;
-=======
-			QCA_WLAN_VENDOR_ATTR_FTM_PEER_RES_STATUS_INVALID;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 
@@ -974,7 +729,6 @@ int wil_ftm_get_capabilities(struct wiphy *wiphy, struct wireless_dev *wdev,
 	skb = cfg80211_vendor_cmd_alloc_reply_skb(wiphy, 128);
 	if (!skb)
 		return -ENOMEM;
-<<<<<<< HEAD
 	attr = nla_nest_start(skb, QCA_ATTR_LOC_CAPA);
 	if (!attr ||
 	    nla_put_u32(skb, QCA_ATTR_LOC_CAPA_FLAGS,
@@ -991,24 +745,6 @@ int wil_ftm_get_capabilities(struct wiphy *wiphy, struct wireless_dev *wdev,
 		       4) ||
 	    nla_put_u32(skb, QCA_ATTR_AOA_CAPA_SUPPORTED_TYPES,
 			BIT(QCA_ATTR_AOA_TYPE_TOP_CIR_PHASE))) {
-=======
-	attr = nla_nest_start(skb, QCA_WLAN_VENDOR_ATTR_LOC_CAPA);
-	if (!attr ||
-	    nla_put_u32(skb, QCA_WLAN_VENDOR_ATTR_LOC_CAPA_FLAGS,
-			QCA_WLAN_VENDOR_ATTR_LOC_CAPA_FLAG_FTM_RESPONDER |
-			QCA_WLAN_VENDOR_ATTR_LOC_CAPA_FLAG_FTM_INITIATOR |
-			QCA_WLAN_VENDOR_ATTR_LOC_CAPA_FLAG_ASAP |
-			QCA_WLAN_VENDOR_ATTR_LOC_CAPA_FLAG_AOA) ||
-	    nla_put_u16(skb, QCA_WLAN_VENDOR_ATTR_FTM_CAPA_MAX_NUM_SESSIONS,
-			1) ||
-	    nla_put_u16(skb, QCA_WLAN_VENDOR_ATTR_FTM_CAPA_MAX_NUM_PEERS, 1) ||
-	    nla_put_u8(skb, QCA_WLAN_VENDOR_ATTR_FTM_CAPA_MAX_NUM_BURSTS_EXP,
-		       0) ||
-	    nla_put_u8(skb, QCA_WLAN_VENDOR_ATTR_FTM_CAPA_MAX_MEAS_PER_BURST,
-		       4) ||
-	    nla_put_u32(skb, QCA_WLAN_VENDOR_ATTR_AOA_CAPA_SUPPORTED_TYPES,
-			BIT(QCA_WLAN_VENDOR_ATTR_AOA_TYPE_TOP_CIR_PHASE))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		wil_err(wil, "fail to fill get_capabilities reply\n");
 		kfree_skb(skb);
 		return -ENOMEM;
@@ -1024,13 +760,8 @@ int wil_ftm_start_session(struct wiphy *wiphy, struct wireless_dev *wdev,
 	struct wil6210_priv *wil = wiphy_to_wil(wiphy);
 	struct wil6210_vif *vif = wdev_to_vif(wil, wdev);
 	struct wil_ftm_session_request *request;
-<<<<<<< HEAD
 	struct nlattr *tb[QCA_ATTR_LOC_MAX + 1];
 	struct nlattr *tb2[QCA_ATTR_FTM_PEER_MAX + 1];
-=======
-	struct nlattr *tb[QCA_WLAN_VENDOR_ATTR_LOC_MAX + 1];
-	struct nlattr *tb2[QCA_WLAN_VENDOR_ATTR_FTM_PEER_MAX + 1];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct nlattr *peer;
 	int rc, n_peers = 0, index = 0, tmp;
 	u32 aoa_type = 0;
@@ -1038,54 +769,32 @@ int wil_ftm_start_session(struct wiphy *wiphy, struct wireless_dev *wdev,
 	if (!test_bit(WMI_FW_CAPABILITY_FTM, wil->fw_capabilities))
 		return -ENOTSUPP;
 
-<<<<<<< HEAD
 	rc = nla_parse(tb, QCA_ATTR_LOC_MAX, data, data_len,
-=======
-	rc = nla_parse(tb, QCA_WLAN_VENDOR_ATTR_LOC_MAX, data, data_len,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		       wil_nl80211_loc_policy, NULL);
 	if (rc) {
 		wil_err(wil, "Invalid ATTR\n");
 		return rc;
 	}
 
-<<<<<<< HEAD
 	if (!tb[QCA_ATTR_FTM_MEAS_PEERS]) {
-=======
-	if (!tb[QCA_WLAN_VENDOR_ATTR_FTM_MEAS_PEERS]) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		wil_err(wil, "no peers specified\n");
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 	if (!tb[QCA_ATTR_FTM_SESSION_COOKIE]) {
-=======
-	if (!tb[QCA_WLAN_VENDOR_ATTR_FTM_SESSION_COOKIE]) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		wil_err(wil, "session cookie not specified\n");
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 	if (tb[QCA_ATTR_AOA_TYPE]) {
 		aoa_type = nla_get_u32(tb[QCA_ATTR_AOA_TYPE]);
 		if (aoa_type >= QCA_ATTR_AOA_TYPE_MAX) {
-=======
-	if (tb[QCA_WLAN_VENDOR_ATTR_AOA_TYPE]) {
-		aoa_type = nla_get_u32(tb[QCA_WLAN_VENDOR_ATTR_AOA_TYPE]);
-		if (aoa_type >= QCA_WLAN_VENDOR_ATTR_AOA_TYPE_MAX) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			wil_err(wil, "invalid AOA type: %d\n", aoa_type);
 			return -EINVAL;
 		}
 	}
 
-<<<<<<< HEAD
 	nla_for_each_nested(peer, tb[QCA_ATTR_FTM_MEAS_PEERS],
-=======
-	nla_for_each_nested(peer, tb[QCA_WLAN_VENDOR_ATTR_FTM_MEAS_PEERS],
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    tmp)
 		n_peers++;
 
@@ -1107,40 +816,25 @@ int wil_ftm_start_session(struct wiphy *wiphy, struct wireless_dev *wdev,
 		return -ENOMEM;
 
 	request->session_cookie =
-<<<<<<< HEAD
 		nla_get_u64(tb[QCA_ATTR_FTM_SESSION_COOKIE]);
 	request->aoa_type = aoa_type;
 	request->n_peers = n_peers;
 	nla_for_each_nested(peer, tb[QCA_ATTR_FTM_MEAS_PEERS],
 			    tmp) {
 		rc = nla_parse_nested(tb2, QCA_ATTR_FTM_PEER_MAX,
-=======
-		nla_get_u64(tb[QCA_WLAN_VENDOR_ATTR_FTM_SESSION_COOKIE]);
-	request->aoa_type = aoa_type;
-	request->n_peers = n_peers;
-	nla_for_each_nested(peer, tb[QCA_WLAN_VENDOR_ATTR_FTM_MEAS_PEERS],
-			    tmp) {
-		rc = nla_parse_nested(tb2, QCA_WLAN_VENDOR_ATTR_FTM_PEER_MAX,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      peer, wil_nl80211_ftm_peer_policy, NULL);
 		if (rc) {
 			wil_err(wil, "Invalid peer ATTR\n");
 			goto out;
 		}
-<<<<<<< HEAD
 		if (!tb2[QCA_ATTR_FTM_PEER_MAC_ADDR] ||
 		    nla_len(tb2[QCA_ATTR_FTM_PEER_MAC_ADDR])
-=======
-		if (!tb2[QCA_WLAN_VENDOR_ATTR_FTM_PEER_MAC_ADDR] ||
-		    nla_len(tb2[QCA_WLAN_VENDOR_ATTR_FTM_PEER_MAC_ADDR])
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    != ETH_ALEN) {
 			wil_err(wil, "Peer MAC address missing or invalid\n");
 			rc = -EINVAL;
 			goto out;
 		}
 		memcpy(request->peers[index].mac_addr,
-<<<<<<< HEAD
 		       nla_data(tb2[QCA_ATTR_FTM_PEER_MAC_ADDR]),
 		       ETH_ALEN);
 		if (tb2[QCA_ATTR_FTM_PEER_FREQ])
@@ -1155,22 +849,6 @@ int wil_ftm_start_session(struct wiphy *wiphy, struct wireless_dev *wdev,
 		if (tb2[QCA_ATTR_FTM_PEER_AOA_BURST_PERIOD]) {
 			request->peers[index].aoa_burst_period = nla_get_u16(
 			    tb2[QCA_ATTR_FTM_PEER_AOA_BURST_PERIOD]);
-=======
-		       nla_data(tb2[QCA_WLAN_VENDOR_ATTR_FTM_PEER_MAC_ADDR]),
-		       ETH_ALEN);
-		if (tb2[QCA_WLAN_VENDOR_ATTR_FTM_PEER_FREQ])
-			request->peers[index].freq = nla_get_u32(
-				tb2[QCA_WLAN_VENDOR_ATTR_FTM_PEER_FREQ]);
-		if (tb2[QCA_WLAN_VENDOR_ATTR_FTM_PEER_MEAS_FLAGS])
-			request->peers[index].flags = nla_get_u32(
-				tb2[QCA_WLAN_VENDOR_ATTR_FTM_PEER_MEAS_FLAGS]);
-		if (tb2[QCA_WLAN_VENDOR_ATTR_FTM_PEER_SECURE_TOKEN_ID])
-			request->peers[index].secure_token_id = nla_get_u8(
-			   tb2[QCA_WLAN_VENDOR_ATTR_FTM_PEER_SECURE_TOKEN_ID]);
-		if (tb2[QCA_WLAN_VENDOR_ATTR_FTM_PEER_AOA_BURST_PERIOD]) {
-			request->peers[index].aoa_burst_period = nla_get_u16(
-			  tb2[QCA_WLAN_VENDOR_ATTR_FTM_PEER_AOA_BURST_PERIOD]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (request->peers[index].aoa_burst_period >
 			    WIL_AOA_MAX_BURST_PERIOD) {
 				wil_err(wil, "Invalid AOA burst period at index: %d\n",
@@ -1181,12 +859,7 @@ int wil_ftm_start_session(struct wiphy *wiphy, struct wireless_dev *wdev,
 		}
 
 		rc = wil_ftm_parse_meas_params(
-<<<<<<< HEAD
 			wil, tb2[QCA_ATTR_FTM_PEER_MEAS_PARAMS],
-=======
-			wil,
-			tb2[QCA_WLAN_VENDOR_ATTR_FTM_PEER_MEAS_PARAMS],
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			&request->peers[index].params);
 		if (!rc)
 			rc = wil_ftm_validate_meas_params(
@@ -1226,11 +899,7 @@ int wil_aoa_start_measurement(struct wiphy *wiphy, struct wireless_dev *wdev,
 	struct wil6210_priv *wil = wiphy_to_wil(wiphy);
 	struct wil6210_vif *vif = wdev_to_vif(wil, wdev);
 	struct wil_aoa_meas_request request;
-<<<<<<< HEAD
 	struct nlattr *tb[QCA_ATTR_LOC_MAX + 1];
-=======
-	struct nlattr *tb[QCA_WLAN_VENDOR_ATTR_LOC_MAX + 1];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc;
 
 	if (!test_bit(WMI_FW_CAPABILITY_FTM, wil->fw_capabilities))
@@ -1238,41 +907,25 @@ int wil_aoa_start_measurement(struct wiphy *wiphy, struct wireless_dev *wdev,
 
 	wil_dbg_misc(wil, "AOA start measurement\n");
 
-<<<<<<< HEAD
 	rc = nla_parse(tb, QCA_ATTR_LOC_MAX, data, data_len,
-=======
-	rc = nla_parse(tb, QCA_WLAN_VENDOR_ATTR_LOC_MAX, data, data_len,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		       wil_nl80211_loc_policy, NULL);
 	if (rc) {
 		wil_err(wil, "Invalid ATTR\n");
 		return rc;
 	}
 
-<<<<<<< HEAD
 	if (!tb[QCA_ATTR_MAC_ADDR] ||
 	    !tb[QCA_ATTR_AOA_TYPE]) {
-=======
-	if (!tb[QCA_WLAN_VENDOR_ATTR_MAC_ADDR] ||
-	    !tb[QCA_WLAN_VENDOR_ATTR_AOA_TYPE]) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		wil_err(wil, "Must specify MAC address and type\n");
 		return -EINVAL;
 	}
 
 	memset(&request, 0, sizeof(request));
 	ether_addr_copy(request.mac_addr,
-<<<<<<< HEAD
 			nla_data(tb[QCA_ATTR_MAC_ADDR]));
 	request.type = nla_get_u32(tb[QCA_ATTR_AOA_TYPE]);
 	if (tb[QCA_ATTR_FREQ])
 		request.freq = nla_get_u32(tb[QCA_ATTR_FREQ]);
-=======
-			nla_data(tb[QCA_WLAN_VENDOR_ATTR_MAC_ADDR]));
-	request.type = nla_get_u32(tb[QCA_WLAN_VENDOR_ATTR_AOA_TYPE]);
-	if (tb[QCA_WLAN_VENDOR_ATTR_FREQ])
-		request.freq = nla_get_u32(tb[QCA_WLAN_VENDOR_ATTR_FREQ]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rc = wil_aoa_cfg80211_start_measurement(vif, &request);
 	return rc;
@@ -1310,12 +963,7 @@ void wil_ftm_stop_operations(struct wil6210_priv *wil)
 
 		if (!vif)
 			continue;
-<<<<<<< HEAD
 		wil_ftm_cfg80211_session_ended(vif,
 					       QCA_ATTR_LOC_SESSION_ST_ABORT);
-=======
-		wil_ftm_cfg80211_session_ended(
-			vif, QCA_WLAN_VENDOR_ATTR_LOC_SESSION_STATUS_ABORTED);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }

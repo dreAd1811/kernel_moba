@@ -95,11 +95,7 @@ static void qxlfb_destroy_pinned_object(struct drm_gem_object *gobj)
 	qxl_bo_kunmap(qbo);
 	qxl_bo_unpin(qbo);
 
-<<<<<<< HEAD
 	drm_gem_object_put_unlocked(gobj);
-=======
-	drm_gem_object_unreference_unlocked(gobj);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int qxl_get_handle_for_primary_fb(struct qxl_device *qdev,
@@ -189,11 +185,6 @@ static int qxlfb_framebuffer_dirty(struct drm_framebuffer *fb,
 	/*
 	 * we are using a shadow draw buffer, at qdev->surface0_shadow
 	 */
-<<<<<<< HEAD
-=======
-	qxl_io_log(qdev, "dirty x[%d, %d], y[%d, %d]\n", clips->x1, clips->x2,
-		   clips->y1, clips->y2);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	image->dx = clips->x1;
 	image->dy = clips->y1;
 	image->width = clips->x2 - clips->x1;
@@ -247,7 +238,6 @@ static int qxlfb_create(struct qxl_fbdev *qfbdev,
 		return ret;
 
 	qbo = gem_to_qxl_bo(gobj);
-<<<<<<< HEAD
 	DRM_DEBUG_DRIVER("%dx%d %d\n", mode_cmd.width,
 			 mode_cmd.height, mode_cmd.pitches[0]);
 
@@ -257,20 +247,6 @@ static int qxlfb_create(struct qxl_fbdev *qfbdev,
 	DRM_DEBUG_DRIVER("surface0 at gpu offset %lld, mmap_offset %lld (virt %p, shadow %p)\n",
 			 qxl_bo_gpu_offset(qbo), qxl_bo_mmap_offset(qbo),
 			 qbo->kptr, shadow);
-=======
-	QXL_INFO(qdev, "%s: %dx%d %d\n", __func__, mode_cmd.width,
-		 mode_cmd.height, mode_cmd.pitches[0]);
-
-	shadow = vmalloc(mode_cmd.pitches[0] * mode_cmd.height);
-	/* TODO: what's the usual response to memory allocation errors? */
-	BUG_ON(!shadow);
-	QXL_INFO(qdev,
-	"surface0 at gpu offset %lld, mmap_offset %lld (virt %p, shadow %p)\n",
-		 qxl_bo_gpu_offset(qbo),
-		 qxl_bo_mmap_offset(qbo),
-		 qbo->kptr,
-		 shadow);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	size = mode_cmd.pitches[0] * mode_cmd.height;
 
 	info = drm_fb_helper_alloc_fbi(&qfbdev->helper);
@@ -338,19 +314,11 @@ out_unref:
 		qxl_bo_unpin(qbo);
 	}
 	if (fb && ret) {
-<<<<<<< HEAD
 		drm_gem_object_put_unlocked(gobj);
 		drm_framebuffer_cleanup(fb);
 		kfree(fb);
 	}
 	drm_gem_object_put_unlocked(gobj);
-=======
-		drm_gem_object_unreference_unlocked(gobj);
-		drm_framebuffer_cleanup(fb);
-		kfree(fb);
-	}
-	drm_gem_object_unreference_unlocked(gobj);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 

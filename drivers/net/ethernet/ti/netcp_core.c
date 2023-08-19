@@ -715,11 +715,7 @@ static int netcp_process_one_rx_packet(struct netcp_intf *netcp)
 		/* warning!!!! We are retrieving the virtual ptr in the sw_data
 		 * field as a 32bit value. Will not work on 64bit machines
 		 */
-<<<<<<< HEAD
 		page = (struct page *)GET_SW_DATA0(ndesc);
-=======
-		page = (struct page *)GET_SW_DATA0(desc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (likely(dma_buff && buf_len && page)) {
 			dma_unmap_page(netcp->dev, dma_buff, PAGE_SIZE,
@@ -910,11 +906,7 @@ static int netcp_allocate_rx_buf(struct netcp_intf *netcp, int fdq)
 		sw_data[0] = (u32)bufptr;
 	} else {
 		/* Allocate a secondary receive queue entry */
-<<<<<<< HEAD
 		page = alloc_page(GFP_ATOMIC | GFP_DMA);
-=======
-		page = alloc_page(GFP_ATOMIC | GFP_DMA | __GFP_COLD);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (unlikely(!page)) {
 			dev_warn_ratelimited(netcp->ndev_dev, "Secondary page alloc failed\n");
 			goto fail;
@@ -1517,7 +1509,6 @@ static void netcp_addr_sweep_add(struct netcp_intf *netcp)
 	}
 }
 
-<<<<<<< HEAD
 static int netcp_set_promiscuous(struct netcp_intf *netcp, bool promisc)
 {
 	struct netcp_intf_modpriv *priv;
@@ -1536,8 +1527,6 @@ static int netcp_set_promiscuous(struct netcp_intf *netcp, bool promisc)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void netcp_set_rx_mode(struct net_device *ndev)
 {
 	struct netcp_intf *netcp = netdev_priv(ndev);
@@ -1567,10 +1556,7 @@ static void netcp_set_rx_mode(struct net_device *ndev)
 	/* finally sweep and callout into modules */
 	netcp_addr_sweep_del(netcp);
 	netcp_addr_sweep_add(netcp);
-<<<<<<< HEAD
 	netcp_set_promiscuous(netcp, promisc);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock(&netcp->lock);
 }
 
@@ -1903,16 +1889,6 @@ static int netcp_rx_kill_vid(struct net_device *ndev, __be16 proto, u16 vid)
 	return err;
 }
 
-<<<<<<< HEAD
-=======
-static u16 netcp_select_queue(struct net_device *dev, struct sk_buff *skb,
-			      void *accel_priv,
-			      select_queue_fallback_t fallback)
-{
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int netcp_setup_tc(struct net_device *dev, enum tc_setup_type type,
 			  void *type_data)
 {
@@ -1923,11 +1899,7 @@ static int netcp_setup_tc(struct net_device *dev, enum tc_setup_type type,
 	/* setup tc must be called under rtnl lock */
 	ASSERT_RTNL();
 
-<<<<<<< HEAD
 	if (type != TC_SETUP_QDISC_MQPRIO)
-=======
-	if (type != TC_SETUP_MQPRIO)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EOPNOTSUPP;
 
 	mqprio->hw = TC_MQPRIO_HW_OFFLOAD_TCS;
@@ -1993,11 +1965,7 @@ static const struct net_device_ops netcp_netdev_ops = {
 	.ndo_vlan_rx_add_vid	= netcp_rx_add_vid,
 	.ndo_vlan_rx_kill_vid	= netcp_rx_kill_vid,
 	.ndo_tx_timeout		= netcp_ndo_tx_timeout,
-<<<<<<< HEAD
 	.ndo_select_queue	= dev_pick_tx_zero,
-=======
-	.ndo_select_queue	= netcp_select_queue,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ndo_setup_tc		= netcp_setup_tc,
 };
 
@@ -2077,11 +2045,7 @@ static int netcp_create_interface(struct netcp_device *netcp_device,
 		if (is_valid_ether_addr(efuse_mac_addr))
 			ether_addr_copy(ndev->dev_addr, efuse_mac_addr);
 		else
-<<<<<<< HEAD
 			eth_random_addr(ndev->dev_addr);
-=======
-			random_ether_addr(ndev->dev_addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		devm_iounmap(dev, efuse);
 		devm_release_mem_region(dev, res.start, size);
@@ -2090,11 +2054,7 @@ static int netcp_create_interface(struct netcp_device *netcp_device,
 		if (mac_addr)
 			ether_addr_copy(ndev->dev_addr, mac_addr);
 		else
-<<<<<<< HEAD
 			eth_random_addr(ndev->dev_addr);
-=======
-			random_ether_addr(ndev->dev_addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ret = of_property_read_string(node_interface, "rx-channel",
@@ -2207,7 +2167,6 @@ static int netcp_probe(struct platform_device *pdev)
 	struct device_node *child, *interfaces;
 	struct netcp_device *netcp_device;
 	struct device *dev = &pdev->dev;
-<<<<<<< HEAD
 	struct netcp_module *module;
 	int ret;
 
@@ -2215,10 +2174,6 @@ static int netcp_probe(struct platform_device *pdev)
 	    !knav_qmss_device_ready())
 		return -EPROBE_DEFER;
 
-=======
-	int ret;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!node) {
 		dev_err(dev, "could not find device info\n");
 		return -ENODEV;
@@ -2265,7 +2220,6 @@ static int netcp_probe(struct platform_device *pdev)
 	/* Add the device instance to the list */
 	list_add_tail(&netcp_device->device_list, &netcp_devices);
 
-<<<<<<< HEAD
 	/* Probe & attach any modules already registered */
 	mutex_lock(&netcp_modules_lock);
 	for_each_netcp_module(module) {
@@ -2274,8 +2228,6 @@ static int netcp_probe(struct platform_device *pdev)
 			dev_err(dev, "module(%s) probe failed\n", module->name);
 	}
 	mutex_unlock(&netcp_modules_lock);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 probe_quit_interface:

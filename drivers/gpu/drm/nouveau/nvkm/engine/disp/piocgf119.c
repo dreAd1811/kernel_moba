@@ -29,11 +29,7 @@
 static void
 gf119_disp_pioc_fini(struct nv50_disp_chan *chan)
 {
-<<<<<<< HEAD
 	struct nv50_disp *disp = chan->disp;
-=======
-	struct nv50_disp *disp = chan->root->disp;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct nvkm_subdev *subdev = &disp->base.engine.subdev;
 	struct nvkm_device *device = subdev->device;
 	int ctrl = chan->chid.ctrl;
@@ -47,34 +43,17 @@ gf119_disp_pioc_fini(struct nv50_disp_chan *chan)
 		nvkm_error(subdev, "ch %d fini: %08x\n", user,
 			   nvkm_rd32(device, 0x610490 + (ctrl * 0x10)));
 	}
-<<<<<<< HEAD
-=======
-
-	/* disable error reporting and completion notification */
-	nvkm_mask(device, 0x610090, 0x00000001 << user, 0x00000000);
-	nvkm_mask(device, 0x6100a0, 0x00000001 << user, 0x00000000);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int
 gf119_disp_pioc_init(struct nv50_disp_chan *chan)
 {
-<<<<<<< HEAD
 	struct nv50_disp *disp = chan->disp;
-=======
-	struct nv50_disp *disp = chan->root->disp;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct nvkm_subdev *subdev = &disp->base.engine.subdev;
 	struct nvkm_device *device = subdev->device;
 	int ctrl = chan->chid.ctrl;
 	int user = chan->chid.user;
 
-<<<<<<< HEAD
-=======
-	/* enable error reporting */
-	nvkm_mask(device, 0x6100a0, 0x00000001 << user, 0x00000001 << user);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* activate channel */
 	nvkm_wr32(device, 0x610490 + (ctrl * 0x10), 0x00000001);
 	if (nvkm_msec(device, 2000,
@@ -94,9 +73,6 @@ const struct nv50_disp_chan_func
 gf119_disp_pioc_func = {
 	.init = gf119_disp_pioc_init,
 	.fini = gf119_disp_pioc_fini,
-<<<<<<< HEAD
 	.intr = gf119_disp_chan_intr,
 	.user = nv50_disp_chan_user,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

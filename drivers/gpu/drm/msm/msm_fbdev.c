@@ -117,11 +117,7 @@ static int msm_fbdev_create(struct drm_fb_helper *helper,
 		goto fail_unlock;
 	}
 
-<<<<<<< HEAD
 	DBG("fbi=%p, dev=%p", fbi, dev);
-=======
-	DBG("fbi=%pK, dev=%pK", fbi, dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	fbdev->fb = fb;
 	helper->fb = fb;
@@ -145,11 +141,7 @@ static int msm_fbdev_create(struct drm_fb_helper *helper,
 	fbi->fix.smem_start = paddr;
 	fbi->fix.smem_len = bo->size;
 
-<<<<<<< HEAD
 	DBG("par=%p, %dx%d", fbi->par, fbi->var.xres, fbi->var.yres);
-=======
-	DBG("par=%pK, %dx%d", fbi->par, fbi->var.xres, fbi->var.yres);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DBG("allocated %dx%d fb", fbdev->fb->width, fbdev->fb->height);
 
 	mutex_unlock(&dev->struct_mutex);

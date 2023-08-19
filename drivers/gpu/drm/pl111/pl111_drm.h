@@ -21,22 +21,17 @@
 
 #include <drm/drm_gem.h>
 #include <drm/drm_simple_kms_helper.h>
-<<<<<<< HEAD
 #include <drm/drm_connector.h>
 #include <drm/drm_encoder.h>
 #include <drm/drm_panel.h>
 #include <drm/drm_bridge.h>
 #include <linux/clk-provider.h>
 #include <linux/interrupt.h>
-=======
-#include <linux/clk-provider.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define CLCD_IRQ_NEXTBASE_UPDATE BIT(2)
 
 struct drm_minor;
 
-<<<<<<< HEAD
 /**
  * struct pl111_variant_data - encodes IP differences
  * @name: the name of this variant
@@ -64,17 +59,11 @@ struct pl111_variant_data {
 	const u32 *formats;
 	unsigned int nformats;
 	unsigned int fb_bpp;
-=======
-struct pl111_drm_connector {
-	struct drm_connector connector;
-	struct drm_panel *panel;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct pl111_drm_dev_private {
 	struct drm_device *drm;
 
-<<<<<<< HEAD
 	struct drm_connector *connector;
 	struct drm_panel *panel;
 	struct drm_bridge *bridge;
@@ -84,13 +73,6 @@ struct pl111_drm_dev_private {
 	u32 memory_bw;
 	u32 ienb;
 	u32 ctrl;
-=======
-	struct pl111_drm_connector connector;
-	struct drm_simple_display_pipe pipe;
-	struct drm_fbdev_cma *fbdev;
-
-	void *regs;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* The pixel clock (a reference to our clock divider off of CLCDCLK). */
 	struct clk *clk;
 	/* pl111's internal clock divider. */
@@ -99,7 +81,6 @@ struct pl111_drm_dev_private {
 	 * subsystem and pl111_display_enable().
 	 */
 	spinlock_t tim2_lock;
-<<<<<<< HEAD
 	const struct pl111_variant_data *variant;
 	void (*variant_display_enable) (struct drm_device *drm, u32 format);
 	void (*variant_display_disable) (struct drm_device *drm);
@@ -108,22 +89,6 @@ struct pl111_drm_dev_private {
 
 int pl111_display_init(struct drm_device *dev);
 irqreturn_t pl111_irq(int irq, void *data);
-=======
-};
-
-#define to_pl111_connector(x) \
-	container_of(x, struct pl111_drm_connector, connector)
-
-int pl111_display_init(struct drm_device *dev);
-int pl111_enable_vblank(struct drm_device *drm, unsigned int crtc);
-void pl111_disable_vblank(struct drm_device *drm, unsigned int crtc);
-irqreturn_t pl111_irq(int irq, void *data);
-int pl111_connector_init(struct drm_device *dev);
-int pl111_encoder_init(struct drm_device *dev);
-int pl111_dumb_create(struct drm_file *file_priv,
-		      struct drm_device *dev,
-		      struct drm_mode_create_dumb *args);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int pl111_debugfs_init(struct drm_minor *minor);
 
 #endif /* _PL111_DRM_H_ */

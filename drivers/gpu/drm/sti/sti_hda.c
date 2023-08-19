@@ -1,14 +1,7 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Copyright (C) STMicroelectronics SA 2014
  * Author: Fabien Dessenne <fabien.dessenne@st.com> for STMicroelectronics.
-=======
-/*
- * Copyright (C) STMicroelectronics SA 2014
- * Author: Fabien Dessenne <fabien.dessenne@st.com> for STMicroelectronics.
- * License terms:  GNU General Public License (GPL), version 2
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/clk.h>
@@ -716,11 +709,7 @@ static int sti_hda_bind(struct device *dev, struct device *master, void *data)
 	drm_connector_helper_add(drm_connector,
 			&sti_hda_connector_helper_funcs);
 
-<<<<<<< HEAD
 	err = drm_connector_attach_encoder(drm_connector, encoder);
-=======
-	err = drm_mode_connector_attach_encoder(drm_connector, encoder);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err) {
 		DRM_ERROR("Failed to attach a connector to a encoder\n");
 		goto err_sysfs;
@@ -732,10 +721,7 @@ static int sti_hda_bind(struct device *dev, struct device *master, void *data)
 	return 0;
 
 err_sysfs:
-<<<<<<< HEAD
 	drm_bridge_remove(bridge);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return -EINVAL;
 }
 

@@ -277,11 +277,7 @@ retry:
 		 * Need to restart list traversal if there has been
 		 * an asynchronous list entry deletion.
 		 */
-<<<<<<< HEAD
 		if (READ_ONCE(ep->rma_info.async_list_del))
-=======
-		if (ACCESS_ONCE(ep->rma_info.async_list_del))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto retry;
 	}
 	mutex_unlock(&ep->rma_info.rma_lock);

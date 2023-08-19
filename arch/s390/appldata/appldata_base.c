@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Base infrastructure for Linux-z/VM Monitor Stream, Stage 1.
  * Exports appldata_register_ops() and appldata_unregister_ops() for the
@@ -209,7 +206,6 @@ static int
 appldata_timer_handler(struct ctl_table *ctl, int write,
 			   void __user *buffer, size_t *lenp, loff_t *ppos)
 {
-<<<<<<< HEAD
 	int timer_active = appldata_timer_active;
 	int zero = 0;
 	int one = 1;
@@ -232,37 +228,6 @@ appldata_timer_handler(struct ctl_table *ctl, int write,
 	else
 		__appldata_vtimer_setup(APPLDATA_DEL_TIMER);
 	spin_unlock(&appldata_timer_lock);
-=======
-	unsigned int len;
-	char buf[2];
-
-	if (!*lenp || *ppos) {
-		*lenp = 0;
-		return 0;
-	}
-	if (!write) {
-		strncpy(buf, appldata_timer_active ? "1\n" : "0\n",
-			ARRAY_SIZE(buf));
-		len = strnlen(buf, ARRAY_SIZE(buf));
-		if (len > *lenp)
-			len = *lenp;
-		if (copy_to_user(buffer, buf, len))
-			return -EFAULT;
-		goto out;
-	}
-	len = *lenp;
-	if (copy_from_user(buf, buffer, len > sizeof(buf) ? sizeof(buf) : len))
-		return -EFAULT;
-	spin_lock(&appldata_timer_lock);
-	if (buf[0] == '1')
-		__appldata_vtimer_setup(APPLDATA_ADD_TIMER);
-	else if (buf[0] == '0')
-		__appldata_vtimer_setup(APPLDATA_DEL_TIMER);
-	spin_unlock(&appldata_timer_lock);
-out:
-	*lenp = len;
-	*ppos += len;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -276,7 +241,6 @@ static int
 appldata_interval_handler(struct ctl_table *ctl, int write,
 			   void __user *buffer, size_t *lenp, loff_t *ppos)
 {
-<<<<<<< HEAD
 	int interval = appldata_interval;
 	int one = 1;
 	int rc;
@@ -290,42 +254,11 @@ appldata_interval_handler(struct ctl_table *ctl, int write,
 	rc = proc_dointvec_minmax(&ctl_entry, write, buffer, lenp, ppos);
 	if (rc < 0 || !write)
 		return rc;
-=======
-	unsigned int len;
-	int interval;
-	char buf[16];
-
-	if (!*lenp || *ppos) {
-		*lenp = 0;
-		return 0;
-	}
-	if (!write) {
-		len = sprintf(buf, "%i\n", appldata_interval);
-		if (len > *lenp)
-			len = *lenp;
-		if (copy_to_user(buffer, buf, len))
-			return -EFAULT;
-		goto out;
-	}
-	len = *lenp;
-	if (copy_from_user(buf, buffer, len > sizeof(buf) ? sizeof(buf) : len))
-		return -EFAULT;
-	interval = 0;
-	sscanf(buf, "%i", &interval);
-	if (interval <= 0)
-		return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock(&appldata_timer_lock);
 	appldata_interval = interval;
 	__appldata_vtimer_setup(APPLDATA_MOD_TIMER);
 	spin_unlock(&appldata_timer_lock);
-<<<<<<< HEAD
-=======
-out:
-	*lenp = len;
-	*ppos += len;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -340,7 +273,6 @@ appldata_generic_handler(struct ctl_table *ctl, int write,
 			   void __user *buffer, size_t *lenp, loff_t *ppos)
 {
 	struct appldata_ops *ops = NULL, *tmp_ops;
-<<<<<<< HEAD
 	struct list_head *lh;
 	int rc, found;
 	int active;
@@ -352,12 +284,6 @@ appldata_generic_handler(struct ctl_table *ctl, int write,
 		.extra1		= &zero,
 		.extra2		= &one,
 	};
-=======
-	unsigned int len;
-	int rc, found;
-	char buf[2];
-	struct list_head *lh;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	found = 0;
 	mutex_lock(&appldata_ops_mutex);
@@ -378,7 +304,6 @@ appldata_generic_handler(struct ctl_table *ctl, int write,
 	}
 	mutex_unlock(&appldata_ops_mutex);
 
-<<<<<<< HEAD
 	active = ops->active;
 	rc = proc_douintvec_minmax(&ctl_entry, write, buffer, lenp, ppos);
 	if (rc < 0 || !write) {
@@ -388,33 +313,6 @@ appldata_generic_handler(struct ctl_table *ctl, int write,
 
 	mutex_lock(&appldata_ops_mutex);
 	if (active && (ops->active == 0)) {
-=======
-	if (!*lenp || *ppos) {
-		*lenp = 0;
-		module_put(ops->owner);
-		return 0;
-	}
-	if (!write) {
-		strncpy(buf, ops->active ? "1\n" : "0\n", ARRAY_SIZE(buf));
-		len = strnlen(buf, ARRAY_SIZE(buf));
-		if (len > *lenp)
-			len = *lenp;
-		if (copy_to_user(buffer, buf, len)) {
-			module_put(ops->owner);
-			return -EFAULT;
-		}
-		goto out;
-	}
-	len = *lenp;
-	if (copy_from_user(buf, buffer,
-			   len > sizeof(buf) ? sizeof(buf) : len)) {
-		module_put(ops->owner);
-		return -EFAULT;
-	}
-
-	mutex_lock(&appldata_ops_mutex);
-	if ((buf[0] == '1') && (ops->active == 0)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		// protect work queue callback
 		if (!try_module_get(ops->owner)) {
 			mutex_unlock(&appldata_ops_mutex);
@@ -432,11 +330,7 @@ appldata_generic_handler(struct ctl_table *ctl, int write,
 			module_put(ops->owner);
 		} else
 			ops->active = 1;
-<<<<<<< HEAD
 	} else if (!active && (ops->active == 1)) {
-=======
-	} else if ((buf[0] == '0') && (ops->active == 1)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ops->active = 0;
 		rc = appldata_diag(ops->record_nr, APPLDATA_STOP_REC,
 				(unsigned long) ops->data, ops->size,
@@ -447,12 +341,6 @@ appldata_generic_handler(struct ctl_table *ctl, int write,
 		module_put(ops->owner);
 	}
 	mutex_unlock(&appldata_ops_mutex);
-<<<<<<< HEAD
-=======
-out:
-	*lenp = len;
-	*ppos += len;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	module_put(ops->owner);
 	return 0;
 }
@@ -471,11 +359,7 @@ int appldata_register_ops(struct appldata_ops *ops)
 	if (ops->size > APPLDATA_MAX_REC_SIZE)
 		return -EINVAL;
 
-<<<<<<< HEAD
 	ops->ctl_table = kcalloc(4, sizeof(struct ctl_table), GFP_KERNEL);
-=======
-	ops->ctl_table = kzalloc(4 * sizeof(struct ctl_table), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ops->ctl_table)
 		return -ENOMEM;
 

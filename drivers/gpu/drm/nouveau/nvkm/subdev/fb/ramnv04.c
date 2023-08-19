@@ -61,9 +61,5 @@ nv04_ram_new(struct nvkm_fb *fb, struct nvkm_ram **pram)
 	else
 		type = NVKM_RAM_TYPE_SDRAM;
 
-<<<<<<< HEAD
 	return nvkm_ram_new_(&nv04_ram_func, fb, type, size, pram);
-=======
-	return nvkm_ram_new_(&nv04_ram_func, fb, type, size, 0, pram);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

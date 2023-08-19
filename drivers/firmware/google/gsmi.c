@@ -480,18 +480,11 @@ static ssize_t eventlog_write(struct file *filp, struct kobject *kobj,
 	if (count < sizeof(u32))
 		return -EINVAL;
 	param.type = *(u32 *)buf;
-<<<<<<< HEAD
 	count -= sizeof(u32);
 	buf += sizeof(u32);
 
 	/* The remaining buffer is the data payload */
 	if (count > gsmi_dev.data_buf->length)
-=======
-	buf += sizeof(u32);
-
-	/* The remaining buffer is the data payload */
-	if ((count - sizeof(u32)) > gsmi_dev.data_buf->length)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	param.data_len = count - sizeof(u32);
 
@@ -511,11 +504,7 @@ static ssize_t eventlog_write(struct file *filp, struct kobject *kobj,
 
 	spin_unlock_irqrestore(&gsmi_dev.lock, flags);
 
-<<<<<<< HEAD
 	return rc;
-=======
-	return (rc == 0) ? count : rc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 }
 

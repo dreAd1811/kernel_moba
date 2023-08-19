@@ -47,29 +47,16 @@
 #include <linux/interrupt.h>
 #include <linux/pci.h>
 #include <linux/ethtool.h>
-<<<<<<< HEAD
 #include <linux/firmware.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "nfpcore/nfp.h"
 #include "nfpcore/nfp_nsp.h"
 #include "nfp_app.h"
-<<<<<<< HEAD
 #include "nfp_main.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "nfp_net_ctrl.h"
 #include "nfp_net.h"
 #include "nfp_port.h"
 
-<<<<<<< HEAD
-=======
-enum nfp_dump_diag {
-	NFP_DUMP_NSP_DIAG = 0,
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct nfp_et_stat {
 	char name[ETH_GSTRING_LEN];
 	int off;
@@ -115,11 +102,7 @@ static const struct nfp_et_stat nfp_mac_et_stats[] = {
 	{ "rx_frame_too_long_errors",
 			NFP_MAC_STATS_RX_FRAME_TOO_LONG_ERRORS, },
 	{ "rx_range_length_errors",	NFP_MAC_STATS_RX_RANGE_LENGTH_ERRORS, },
-<<<<<<< HEAD
 	{ "rx_vlan_received_ok",	NFP_MAC_STATS_RX_VLAN_RECEIVED_OK, },
-=======
-	{ "rx_vlan_reveive_ok",		NFP_MAC_STATS_RX_VLAN_REVEIVE_OK, },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ "rx_errors",			NFP_MAC_STATS_RX_IN_ERRORS, },
 	{ "rx_broadcast_pkts",		NFP_MAC_STATS_RX_IN_BROADCAST_PKTS, },
 	{ "rx_drop_events",		NFP_MAC_STATS_RX_DROP_EVENTS, },
@@ -196,12 +179,8 @@ static const struct nfp_et_stat nfp_mac_et_stats[] = {
 
 #define NN_ET_GLOBAL_STATS_LEN ARRAY_SIZE(nfp_net_et_stats)
 #define NN_ET_SWITCH_STATS_LEN 9
-<<<<<<< HEAD
 #define NN_RVEC_GATHER_STATS	9
 #define NN_RVEC_PER_Q_STATS	3
-=======
-#define NN_ET_RVEC_GATHER_STATS 7
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void nfp_net_get_nspinfo(struct nfp_app *app, char *version)
 {
@@ -254,7 +233,6 @@ nfp_net_get_drvinfo(struct net_device *netdev, struct ethtool_drvinfo *drvinfo)
 static void
 nfp_app_get_drvinfo(struct net_device *netdev, struct ethtool_drvinfo *drvinfo)
 {
-<<<<<<< HEAD
 	struct nfp_app *app = nfp_app_from_netdev(netdev);
 
 	strlcpy(drvinfo->bus_info, pci_name(app->pdev),
@@ -284,15 +262,6 @@ nfp_net_set_fec_link_mode(struct nfp_eth_table_port *eth_port,
 		ethtool_link_ksettings_add_link_mode(c, supported, FEC_RS);
 		ethtool_link_ksettings_add_link_mode(c, advertising, FEC_RS);
 	}
-=======
-	struct nfp_app *app;
-
-	app = nfp_app_from_netdev(netdev);
-	if (!app)
-		return;
-
-	nfp_get_drvinfo(app, app->pdev, "*", drvinfo);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -329,17 +298,11 @@ nfp_net_get_link_ksettings(struct net_device *netdev,
 
 	port = nfp_port_from_netdev(netdev);
 	eth_port = nfp_port_get_eth_port(port);
-<<<<<<< HEAD
 	if (eth_port) {
 		cmd->base.autoneg = eth_port->aneg != NFP_ANEG_DISABLED ?
 			AUTONEG_ENABLE : AUTONEG_DISABLE;
 		nfp_net_set_fec_link_mode(eth_port, cmd);
 	}
-=======
-	if (eth_port)
-		cmd->base.autoneg = eth_port->aneg != NFP_ANEG_DISABLED ?
-			AUTONEG_ENABLE : AUTONEG_DISABLE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!netif_carrier_ok(netdev))
 		return 0;
@@ -387,11 +350,7 @@ nfp_net_set_link_ksettings(struct net_device *netdev,
 		return -EOPNOTSUPP;
 
 	if (netif_running(netdev)) {
-<<<<<<< HEAD
 		netdev_warn(netdev, "Changing settings not allowed on an active interface. It may cause the port to be disabled until driver reload.\n");
-=======
-		netdev_warn(netdev, "Changing settings not allowed on an active interface. It may cause the port to be disabled until reboot.\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EBUSY;
 	}
 
@@ -476,11 +435,7 @@ static int nfp_net_set_ringparam(struct net_device *netdev,
 	return nfp_net_set_ring_size(nn, rxd_cnt, txd_cnt);
 }
 
-<<<<<<< HEAD
 __printf(2, 3) u8 *nfp_pr_et(u8 *data, const char *fmt, ...)
-=======
-static __printf(2, 3) u8 *nfp_pr_et(u8 *data, const char *fmt, ...)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	va_list args;
 
@@ -495,11 +450,7 @@ static unsigned int nfp_vnic_get_sw_stats_count(struct net_device *netdev)
 {
 	struct nfp_net *nn = netdev_priv(netdev);
 
-<<<<<<< HEAD
 	return NN_RVEC_GATHER_STATS + nn->max_r_vecs * NN_RVEC_PER_Q_STATS;
-=======
-	return NN_ET_RVEC_GATHER_STATS + nn->dp.num_r_vecs * 3;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static u8 *nfp_vnic_get_sw_stats_strings(struct net_device *netdev, u8 *data)
@@ -507,11 +458,7 @@ static u8 *nfp_vnic_get_sw_stats_strings(struct net_device *netdev, u8 *data)
 	struct nfp_net *nn = netdev_priv(netdev);
 	int i;
 
-<<<<<<< HEAD
 	for (i = 0; i < nn->max_r_vecs; i++) {
-=======
-	for (i = 0; i < nn->dp.num_r_vecs; i++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		data = nfp_pr_et(data, "rvec_%u_rx_pkts", i);
 		data = nfp_pr_et(data, "rvec_%u_tx_pkts", i);
 		data = nfp_pr_et(data, "rvec_%u_tx_busy", i);
@@ -519,13 +466,9 @@ static u8 *nfp_vnic_get_sw_stats_strings(struct net_device *netdev, u8 *data)
 
 	data = nfp_pr_et(data, "hw_rx_csum_ok");
 	data = nfp_pr_et(data, "hw_rx_csum_inner_ok");
-<<<<<<< HEAD
 	data = nfp_pr_et(data, "hw_rx_csum_complete");
 	data = nfp_pr_et(data, "hw_rx_csum_err");
 	data = nfp_pr_et(data, "rx_replace_buf_alloc_fail");
-=======
-	data = nfp_pr_et(data, "hw_rx_csum_err");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	data = nfp_pr_et(data, "hw_tx_csum");
 	data = nfp_pr_et(data, "hw_tx_inner_csum");
 	data = nfp_pr_et(data, "tx_gather");
@@ -536,21 +479,12 @@ static u8 *nfp_vnic_get_sw_stats_strings(struct net_device *netdev, u8 *data)
 
 static u64 *nfp_vnic_get_sw_stats(struct net_device *netdev, u64 *data)
 {
-<<<<<<< HEAD
 	u64 gathered_stats[NN_RVEC_GATHER_STATS] = {};
 	struct nfp_net *nn = netdev_priv(netdev);
 	u64 tmp[NN_RVEC_GATHER_STATS];
 	unsigned int i, j;
 
 	for (i = 0; i < nn->max_r_vecs; i++) {
-=======
-	u64 gathered_stats[NN_ET_RVEC_GATHER_STATS] = {};
-	struct nfp_net *nn = netdev_priv(netdev);
-	u64 tmp[NN_ET_RVEC_GATHER_STATS];
-	unsigned int i, j;
-
-	for (i = 0; i < nn->dp.num_r_vecs; i++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		unsigned int start;
 
 		do {
@@ -558,20 +492,15 @@ static u64 *nfp_vnic_get_sw_stats(struct net_device *netdev, u64 *data)
 			data[0] = nn->r_vecs[i].rx_pkts;
 			tmp[0] = nn->r_vecs[i].hw_csum_rx_ok;
 			tmp[1] = nn->r_vecs[i].hw_csum_rx_inner_ok;
-<<<<<<< HEAD
 			tmp[2] = nn->r_vecs[i].hw_csum_rx_complete;
 			tmp[3] = nn->r_vecs[i].hw_csum_rx_error;
 			tmp[4] = nn->r_vecs[i].rx_replace_buf_alloc_fail;
-=======
-			tmp[2] = nn->r_vecs[i].hw_csum_rx_error;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} while (u64_stats_fetch_retry(&nn->r_vecs[i].rx_sync, start));
 
 		do {
 			start = u64_stats_fetch_begin(&nn->r_vecs[i].tx_sync);
 			data[1] = nn->r_vecs[i].tx_pkts;
 			data[2] = nn->r_vecs[i].tx_busy;
-<<<<<<< HEAD
 			tmp[5] = nn->r_vecs[i].hw_csum_tx;
 			tmp[6] = nn->r_vecs[i].hw_csum_tx_inner;
 			tmp[7] = nn->r_vecs[i].tx_gather;
@@ -585,27 +514,11 @@ static u64 *nfp_vnic_get_sw_stats(struct net_device *netdev, u64 *data)
 	}
 
 	for (j = 0; j < NN_RVEC_GATHER_STATS; j++)
-=======
-			tmp[3] = nn->r_vecs[i].hw_csum_tx;
-			tmp[4] = nn->r_vecs[i].hw_csum_tx_inner;
-			tmp[5] = nn->r_vecs[i].tx_gather;
-			tmp[6] = nn->r_vecs[i].tx_lso;
-		} while (u64_stats_fetch_retry(&nn->r_vecs[i].tx_sync, start));
-
-		data += 3;
-
-		for (j = 0; j < NN_ET_RVEC_GATHER_STATS; j++)
-			gathered_stats[j] += tmp[j];
-	}
-
-	for (j = 0; j < NN_ET_RVEC_GATHER_STATS; j++)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*data++ = gathered_stats[j];
 
 	return data;
 }
 
-<<<<<<< HEAD
 static unsigned int nfp_vnic_get_hw_stats_count(unsigned int num_vecs)
 {
 	return NN_ET_GLOBAL_STATS_LEN + num_vecs * 4;
@@ -613,17 +526,6 @@ static unsigned int nfp_vnic_get_hw_stats_count(unsigned int num_vecs)
 
 static u8 *
 nfp_vnic_get_hw_stats_strings(u8 *data, unsigned int num_vecs, bool repr)
-=======
-static unsigned int
-nfp_vnic_get_hw_stats_count(unsigned int rx_rings, unsigned int tx_rings)
-{
-	return NN_ET_GLOBAL_STATS_LEN + (rx_rings + tx_rings) * 2;
-}
-
-static u8 *
-nfp_vnic_get_hw_stats_strings(u8 *data, unsigned int rx_rings,
-			      unsigned int tx_rings, bool repr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int swap_off, i;
 
@@ -643,60 +545,31 @@ nfp_vnic_get_hw_stats_strings(u8 *data, unsigned int rx_rings,
 	for (i = NN_ET_SWITCH_STATS_LEN * 2; i < NN_ET_GLOBAL_STATS_LEN; i++)
 		data = nfp_pr_et(data, nfp_net_et_stats[i].name);
 
-<<<<<<< HEAD
 	for (i = 0; i < num_vecs; i++) {
 		data = nfp_pr_et(data, "rxq_%u_pkts", i);
 		data = nfp_pr_et(data, "rxq_%u_bytes", i);
-=======
-	for (i = 0; i < tx_rings; i++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		data = nfp_pr_et(data, "txq_%u_pkts", i);
 		data = nfp_pr_et(data, "txq_%u_bytes", i);
 	}
 
-<<<<<<< HEAD
-=======
-	for (i = 0; i < rx_rings; i++) {
-		data = nfp_pr_et(data, "rxq_%u_pkts", i);
-		data = nfp_pr_et(data, "rxq_%u_bytes", i);
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return data;
 }
 
 static u64 *
-<<<<<<< HEAD
 nfp_vnic_get_hw_stats(u64 *data, u8 __iomem *mem, unsigned int num_vecs)
-=======
-nfp_vnic_get_hw_stats(u64 *data, u8 __iomem *mem,
-		      unsigned int rx_rings, unsigned int tx_rings)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned int i;
 
 	for (i = 0; i < NN_ET_GLOBAL_STATS_LEN; i++)
 		*data++ = readq(mem + nfp_net_et_stats[i].off);
 
-<<<<<<< HEAD
 	for (i = 0; i < num_vecs; i++) {
 		*data++ = readq(mem + NFP_NET_CFG_RXR_STATS(i));
 		*data++ = readq(mem + NFP_NET_CFG_RXR_STATS(i) + 8);
-=======
-	for (i = 0; i < tx_rings; i++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*data++ = readq(mem + NFP_NET_CFG_TXR_STATS(i));
 		*data++ = readq(mem + NFP_NET_CFG_TXR_STATS(i) + 8);
 	}
 
-<<<<<<< HEAD
-=======
-	for (i = 0; i < rx_rings; i++) {
-		*data++ = readq(mem + NFP_NET_CFG_RXR_STATS(i));
-		*data++ = readq(mem + NFP_NET_CFG_RXR_STATS(i) + 8);
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return data;
 }
 
@@ -749,17 +622,10 @@ static void nfp_net_get_strings(struct net_device *netdev,
 	switch (stringset) {
 	case ETH_SS_STATS:
 		data = nfp_vnic_get_sw_stats_strings(netdev, data);
-<<<<<<< HEAD
 		data = nfp_vnic_get_hw_stats_strings(data, nn->max_r_vecs,
 						     false);
 		data = nfp_mac_get_stats_strings(netdev, data);
 		data = nfp_app_port_get_stats_strings(nn->port, data);
-=======
-		data = nfp_vnic_get_hw_stats_strings(data, nn->dp.num_rx_rings,
-						     nn->dp.num_tx_rings,
-						     false);
-		data = nfp_mac_get_stats_strings(netdev, data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 }
@@ -771,15 +637,9 @@ nfp_net_get_stats(struct net_device *netdev, struct ethtool_stats *stats,
 	struct nfp_net *nn = netdev_priv(netdev);
 
 	data = nfp_vnic_get_sw_stats(netdev, data);
-<<<<<<< HEAD
 	data = nfp_vnic_get_hw_stats(data, nn->dp.ctrl_bar, nn->max_r_vecs);
 	data = nfp_mac_get_stats(netdev, data);
 	data = nfp_app_port_get_stats(nn->port, data);
-=======
-	data = nfp_vnic_get_hw_stats(data, nn->dp.ctrl_bar,
-				     nn->dp.num_rx_rings, nn->dp.num_tx_rings);
-	data = nfp_mac_get_stats(netdev, data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int nfp_net_get_sset_count(struct net_device *netdev, int sset)
@@ -789,15 +649,9 @@ static int nfp_net_get_sset_count(struct net_device *netdev, int sset)
 	switch (sset) {
 	case ETH_SS_STATS:
 		return nfp_vnic_get_sw_stats_count(netdev) +
-<<<<<<< HEAD
 		       nfp_vnic_get_hw_stats_count(nn->max_r_vecs) +
 		       nfp_mac_get_stats_count(netdev) +
 		       nfp_app_port_get_stats_count(nn->port);
-=======
-		       nfp_vnic_get_hw_stats_count(nn->dp.num_rx_rings,
-						   nn->dp.num_tx_rings) +
-		       nfp_mac_get_stats_count(netdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		return -EOPNOTSUPP;
 	}
@@ -811,16 +665,10 @@ static void nfp_port_get_strings(struct net_device *netdev,
 	switch (stringset) {
 	case ETH_SS_STATS:
 		if (nfp_port_is_vnic(port))
-<<<<<<< HEAD
 			data = nfp_vnic_get_hw_stats_strings(data, 0, true);
 		else
 			data = nfp_mac_get_stats_strings(netdev, data);
 		data = nfp_app_port_get_stats_strings(port, data);
-=======
-			data = nfp_vnic_get_hw_stats_strings(data, 0, 0, true);
-		else
-			data = nfp_mac_get_stats_strings(netdev, data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 }
@@ -832,16 +680,10 @@ nfp_port_get_stats(struct net_device *netdev, struct ethtool_stats *stats,
 	struct nfp_port *port = nfp_port_from_netdev(netdev);
 
 	if (nfp_port_is_vnic(port))
-<<<<<<< HEAD
 		data = nfp_vnic_get_hw_stats(data, port->vnic, 0);
 	else
 		data = nfp_mac_get_stats(netdev, data);
 	data = nfp_app_port_get_stats(port, data);
-=======
-		data = nfp_vnic_get_hw_stats(data, port->vnic, 0, 0);
-	else
-		data = nfp_mac_get_stats(netdev, data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int nfp_port_get_sset_count(struct net_device *netdev, int sset)
@@ -852,23 +694,16 @@ static int nfp_port_get_sset_count(struct net_device *netdev, int sset)
 	switch (sset) {
 	case ETH_SS_STATS:
 		if (nfp_port_is_vnic(port))
-<<<<<<< HEAD
 			count = nfp_vnic_get_hw_stats_count(0);
 		else
 			count = nfp_mac_get_stats_count(netdev);
 		count += nfp_app_port_get_stats_count(port);
-=======
-			count = nfp_vnic_get_hw_stats_count(0, 0);
-		else
-			count = nfp_mac_get_stats_count(netdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return count;
 	default:
 		return -EOPNOTSUPP;
 	}
 }
 
-<<<<<<< HEAD
 static int nfp_port_fec_ethtool_to_nsp(u32 fec)
 {
 	switch (fec) {
@@ -954,8 +789,6 @@ nfp_port_set_fecparam(struct net_device *netdev,
 	return err < 0 ? err : 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* RX network flow classification (RSS, filters, etc)
  */
 static u32 ethtool_flow_to_nfp_flag(u32 flow_type)
@@ -1225,7 +1058,6 @@ exit_release:
 	return ret;
 }
 
-<<<<<<< HEAD
 /* Set the dump flag/level. Calculate the dump length for flag > 0 only (new TLV
  * based dumps), since flag 0 (default) calculates the length in
  * nfp_app_get_dump_flag(), and we need to support triggering a level 0 dump
@@ -1235,16 +1067,10 @@ static int nfp_app_set_dump(struct net_device *netdev, struct ethtool_dump *val)
 {
 	struct nfp_app *app = nfp_app_from_netdev(netdev);
 	s64 len;
-=======
-static int nfp_app_set_dump(struct net_device *netdev, struct ethtool_dump *val)
-{
-	struct nfp_app *app = nfp_app_from_netdev(netdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!app)
 		return -EOPNOTSUPP;
 
-<<<<<<< HEAD
 	if (val->flag == NFP_DUMP_NSP_DIAG) {
 		app->pf->dump_flag = val->flag;
 		return 0;
@@ -1260,10 +1086,6 @@ static int nfp_app_set_dump(struct net_device *netdev, struct ethtool_dump *val)
 
 	app->pf->dump_flag = val->flag;
 	app->pf->dump_len = len;
-=======
-	if (val->flag != NFP_DUMP_NSP_DIAG)
-		return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -1271,7 +1093,6 @@ static int nfp_app_set_dump(struct net_device *netdev, struct ethtool_dump *val)
 static int
 nfp_app_get_dump_flag(struct net_device *netdev, struct ethtool_dump *dump)
 {
-<<<<<<< HEAD
 	struct nfp_app *app = nfp_app_from_netdev(netdev);
 
 	if (!app)
@@ -1284,16 +1105,12 @@ nfp_app_get_dump_flag(struct net_device *netdev, struct ethtool_dump *dump)
 	dump->len = app->pf->dump_len;
 
 	return 0;
-=======
-	return nfp_dump_nsp_diag(nfp_app_from_netdev(netdev), dump, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int
 nfp_app_get_dump_data(struct net_device *netdev, struct ethtool_dump *dump,
 		      void *buffer)
 {
-<<<<<<< HEAD
 	struct nfp_app *app = nfp_app_from_netdev(netdev);
 
 	if (!app)
@@ -1307,9 +1124,6 @@ nfp_app_get_dump_data(struct net_device *netdev, struct ethtool_dump *dump,
 
 	return nfp_net_dump_populate_buffer(app->pf, app->pf->dumpspec, dump,
 					    buffer);
-=======
-	return nfp_dump_nsp_diag(nfp_app_from_netdev(netdev), dump, buffer);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int nfp_net_set_coalesce(struct net_device *netdev,
@@ -1450,7 +1264,6 @@ static int nfp_net_set_channels(struct net_device *netdev,
 	return nfp_net_set_num_rings(nn, total_rx, total_tx);
 }
 
-<<<<<<< HEAD
 static int
 nfp_net_flash_device(struct net_device *netdev, struct ethtool_flash *flash)
 {
@@ -1502,8 +1315,6 @@ exit_close_nsp:
 	return err;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct ethtool_ops nfp_net_ethtool_ops = {
 	.get_drvinfo		= nfp_net_get_drvinfo,
 	.get_link		= ethtool_op_get_link,
@@ -1514,10 +1325,7 @@ static const struct ethtool_ops nfp_net_ethtool_ops = {
 	.get_sset_count		= nfp_net_get_sset_count,
 	.get_rxnfc		= nfp_net_get_rxnfc,
 	.set_rxnfc		= nfp_net_set_rxnfc,
-<<<<<<< HEAD
 	.flash_device		= nfp_net_flash_device,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.get_rxfh_indir_size	= nfp_net_get_rxfh_indir_size,
 	.get_rxfh_key_size	= nfp_net_get_rxfh_key_size,
 	.get_rxfh		= nfp_net_get_rxfh,
@@ -1533,11 +1341,8 @@ static const struct ethtool_ops nfp_net_ethtool_ops = {
 	.set_channels		= nfp_net_set_channels,
 	.get_link_ksettings	= nfp_net_get_link_ksettings,
 	.set_link_ksettings	= nfp_net_set_link_ksettings,
-<<<<<<< HEAD
 	.get_fecparam		= nfp_port_get_fecparam,
 	.set_fecparam		= nfp_port_set_fecparam,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 const struct ethtool_ops nfp_port_ethtool_ops = {
@@ -1546,7 +1351,6 @@ const struct ethtool_ops nfp_port_ethtool_ops = {
 	.get_strings		= nfp_port_get_strings,
 	.get_ethtool_stats	= nfp_port_get_stats,
 	.get_sset_count		= nfp_port_get_sset_count,
-<<<<<<< HEAD
 	.flash_device		= nfp_net_flash_device,
 	.set_dump		= nfp_app_set_dump,
 	.get_dump_flag		= nfp_app_get_dump_flag,
@@ -1555,11 +1359,6 @@ const struct ethtool_ops nfp_port_ethtool_ops = {
 	.set_link_ksettings	= nfp_net_set_link_ksettings,
 	.get_fecparam		= nfp_port_get_fecparam,
 	.set_fecparam		= nfp_port_set_fecparam,
-=======
-	.set_dump		= nfp_app_set_dump,
-	.get_dump_flag		= nfp_app_get_dump_flag,
-	.get_dump_data		= nfp_app_get_dump_data,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 void nfp_net_set_ethtool_ops(struct net_device *netdev)

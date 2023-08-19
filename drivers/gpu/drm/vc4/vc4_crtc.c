@@ -42,64 +42,20 @@
 #include "vc4_drv.h"
 #include "vc4_regs.h"
 
-<<<<<<< HEAD
-=======
-struct vc4_crtc {
-	struct drm_crtc base;
-	const struct vc4_crtc_data *data;
-	void __iomem *regs;
-
-	/* Timestamp at start of vblank irq - unaffected by lock delays. */
-	ktime_t t_vblank;
-
-	/* Which HVS channel we're using for our CRTC. */
-	int channel;
-
-	u8 lut_r[256];
-	u8 lut_g[256];
-	u8 lut_b[256];
-	/* Size in pixels of the COB memory allocated to this CRTC. */
-	u32 cob_size;
-
-	struct drm_pending_vblank_event *event;
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct vc4_crtc_state {
 	struct drm_crtc_state base;
 	/* Dlist area for this CRTC configuration. */
 	struct drm_mm_node mm;
-<<<<<<< HEAD
 	bool feed_txp;
 	bool txp_armed;
 };
 
-=======
-};
-
-static inline struct vc4_crtc *
-to_vc4_crtc(struct drm_crtc *crtc)
-{
-	return (struct vc4_crtc *)crtc;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline struct vc4_crtc_state *
 to_vc4_crtc_state(struct drm_crtc_state *crtc_state)
 {
 	return (struct vc4_crtc_state *)crtc_state;
 }
 
-<<<<<<< HEAD
-=======
-struct vc4_crtc_data {
-	/* Which channel of the HVS this pixelvalve sources from. */
-	int hvs_channel;
-
-	enum vc4_encoder_type encoder_types[4];
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CRTC_WRITE(offset, val) writel(val, vc4_crtc->regs + (offset))
 #define CRTC_READ(offset) readl(vc4_crtc->regs + (offset))
 
@@ -311,7 +267,6 @@ vc4_crtc_lut_load(struct drm_crtc *crtc)
 		HVS_WRITE(SCALER_GAMDATA, vc4_crtc->lut_b[i]);
 }
 
-<<<<<<< HEAD
 static void
 vc4_crtc_update_gamma_lut(struct drm_crtc *crtc)
 {
@@ -327,25 +282,6 @@ vc4_crtc_update_gamma_lut(struct drm_crtc *crtc)
 	}
 
 	vc4_crtc_lut_load(crtc);
-=======
-static int
-vc4_crtc_gamma_set(struct drm_crtc *crtc, u16 *r, u16 *g, u16 *b,
-		   uint32_t size,
-		   struct drm_modeset_acquire_ctx *ctx)
-{
-	struct vc4_crtc *vc4_crtc = to_vc4_crtc(crtc);
-	u32 i;
-
-	for (i = 0; i < size; i++) {
-		vc4_crtc->lut_r[i] = r[i] >> 8;
-		vc4_crtc->lut_g[i] = g[i] >> 8;
-		vc4_crtc->lut_b[i] = b[i] >> 8;
-	}
-
-	vc4_crtc_lut_load(crtc);
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static u32 vc4_get_fifo_full_level(u32 format)
@@ -390,15 +326,8 @@ static struct drm_encoder *vc4_get_crtc_encoder(struct drm_crtc *crtc)
 	return NULL;
 }
 
-<<<<<<< HEAD
 static void vc4_crtc_config_pv(struct drm_crtc *crtc)
 {
-=======
-static void vc4_crtc_mode_set_nofb(struct drm_crtc *crtc)
-{
-	struct drm_device *dev = crtc->dev;
-	struct vc4_dev *vc4 = to_vc4_dev(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_encoder *encoder = vc4_get_crtc_encoder(crtc);
 	struct vc4_encoder *vc4_encoder = to_vc4_encoder(encoder);
 	struct vc4_crtc *vc4_crtc = to_vc4_crtc(crtc);
@@ -409,15 +338,6 @@ static void vc4_crtc_mode_set_nofb(struct drm_crtc *crtc)
 	bool is_dsi = (vc4_encoder->type == VC4_ENCODER_TYPE_DSI0 ||
 		       vc4_encoder->type == VC4_ENCODER_TYPE_DSI1);
 	u32 format = is_dsi ? PV_CONTROL_FORMAT_DSIV_24 : PV_CONTROL_FORMAT_24;
-<<<<<<< HEAD
-=======
-	bool debug_dump_regs = false;
-
-	if (debug_dump_regs) {
-		DRM_INFO("CRTC %d regs before:\n", drm_crtc_index(crtc));
-		vc4_crtc_dump_regs(vc4_crtc);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Reset the PV fifo. */
 	CRTC_WRITE(PV_CONTROL, 0);
@@ -493,7 +413,6 @@ static void vc4_crtc_mode_set_nofb(struct drm_crtc *crtc)
 				 PV_CONTROL_CLK_SELECT) |
 		   PV_CONTROL_FIFO_CLR |
 		   PV_CONTROL_EN);
-<<<<<<< HEAD
 }
 
 static void vc4_crtc_mode_set_nofb(struct drm_crtc *crtc)
@@ -537,8 +456,6 @@ static void vc4_crtc_mode_set_nofb(struct drm_crtc *crtc)
 
 	if (!vc4_state->feed_txp)
 		vc4_crtc_config_pv(crtc);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	HVS_WRITE(SCALER_DISPBKGNDX(vc4_crtc->channel),
 		  SCALER_DISPBKGND_AUTOHS |
@@ -619,7 +536,6 @@ static void vc4_crtc_atomic_disable(struct drm_crtc *crtc,
 	}
 }
 
-<<<<<<< HEAD
 void vc4_crtc_txp_armed(struct drm_crtc_state *state)
 {
 	struct vc4_crtc_state *vc4_state = to_vc4_crtc_state(state);
@@ -627,8 +543,6 @@ void vc4_crtc_txp_armed(struct drm_crtc_state *state)
 	vc4_state->txp_armed = true;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void vc4_crtc_update_dlist(struct drm_crtc *crtc)
 {
 	struct drm_device *dev = crtc->dev;
@@ -644,16 +558,11 @@ static void vc4_crtc_update_dlist(struct drm_crtc *crtc)
 		WARN_ON(drm_crtc_vblank_get(crtc) != 0);
 
 		spin_lock_irqsave(&dev->event_lock, flags);
-<<<<<<< HEAD
 
 		if (!vc4_state->feed_txp || vc4_state->txp_armed) {
 			vc4_crtc->event = crtc->state->event;
 			crtc->state->event = NULL;
 		}
-=======
-		vc4_crtc->event = crtc->state->event;
-		crtc->state->event = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		HVS_WRITE(SCALER_DISPLISTX(vc4_crtc->channel),
 			  vc4_state->mm.start);
@@ -671,13 +580,8 @@ static void vc4_crtc_atomic_enable(struct drm_crtc *crtc,
 	struct drm_device *dev = crtc->dev;
 	struct vc4_dev *vc4 = to_vc4_dev(dev);
 	struct vc4_crtc *vc4_crtc = to_vc4_crtc(crtc);
-<<<<<<< HEAD
 	struct vc4_crtc_state *vc4_state = to_vc4_crtc_state(crtc->state);
 	struct drm_display_mode *mode = &crtc->state->adjusted_mode;
-=======
-	struct drm_crtc_state *state = crtc->state;
-	struct drm_display_mode *mode = &state->adjusted_mode;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	require_hvs_enabled(dev);
 
@@ -689,16 +593,12 @@ static void vc4_crtc_atomic_enable(struct drm_crtc *crtc,
 
 	/* Turn on the scaler, which will wait for vstart to start
 	 * compositing.
-<<<<<<< HEAD
 	 * When feeding the transposer, we should operate in oneshot
 	 * mode.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	HVS_WRITE(SCALER_DISPCTRLX(vc4_crtc->channel),
 		  VC4_SET_FIELD(mode->hdisplay, SCALER_DISPCTRLX_WIDTH) |
 		  VC4_SET_FIELD(mode->vdisplay, SCALER_DISPCTRLX_HEIGHT) |
-<<<<<<< HEAD
 		  SCALER_DISPCTRLX_ENABLE |
 		  (vc4_state->feed_txp ? SCALER_DISPCTRLX_ONESHOT : 0));
 
@@ -708,13 +608,6 @@ static void vc4_crtc_atomic_enable(struct drm_crtc *crtc,
 	if (!vc4_state->feed_txp)
 		CRTC_WRITE(PV_V_CONTROL,
 			   CRTC_READ(PV_V_CONTROL) | PV_VCONTROL_VIDEN);
-=======
-		  SCALER_DISPCTRLX_ENABLE);
-
-	/* Turn on the pixel valve, which will emit the vstart signal. */
-	CRTC_WRITE(PV_V_CONTROL,
-		   CRTC_READ(PV_V_CONTROL) | PV_VCONTROL_VIDEN);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static enum drm_mode_status vc4_crtc_mode_valid(struct drm_crtc *crtc,
@@ -739,15 +632,10 @@ static int vc4_crtc_atomic_check(struct drm_crtc *crtc,
 	struct drm_plane *plane;
 	unsigned long flags;
 	const struct drm_plane_state *plane_state;
-<<<<<<< HEAD
 	struct drm_connector *conn;
 	struct drm_connector_state *conn_state;
 	u32 dlist_count = 0;
 	int ret, i;
-=======
-	u32 dlist_count = 0;
-	int ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* The pixelvalve can only feed one encoder (and encoders are
 	 * 1:1 with connectors.)
@@ -767,7 +655,6 @@ static int vc4_crtc_atomic_check(struct drm_crtc *crtc,
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	for_each_new_connector_in_state(state->state, conn, conn_state, i) {
 		if (conn_state->crtc != crtc)
 			continue;
@@ -786,8 +673,6 @@ static int vc4_crtc_atomic_check(struct drm_crtc *crtc,
 		break;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -796,18 +681,12 @@ static void vc4_crtc_atomic_flush(struct drm_crtc *crtc,
 {
 	struct drm_device *dev = crtc->dev;
 	struct vc4_dev *vc4 = to_vc4_dev(dev);
-<<<<<<< HEAD
 	struct vc4_crtc *vc4_crtc = to_vc4_crtc(crtc);
 	struct vc4_crtc_state *vc4_state = to_vc4_crtc_state(crtc->state);
 	struct drm_plane *plane;
 	struct vc4_plane_state *vc4_plane_state;
 	bool debug_dump_regs = false;
 	bool enable_bg_fill = false;
-=======
-	struct vc4_crtc_state *vc4_state = to_vc4_crtc_state(crtc->state);
-	struct drm_plane *plane;
-	bool debug_dump_regs = false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 __iomem *dlist_start = vc4->hvs->dlist + vc4_state->mm.start;
 	u32 __iomem *dlist_next = dlist_start;
 
@@ -818,7 +697,6 @@ static void vc4_crtc_atomic_flush(struct drm_crtc *crtc,
 
 	/* Copy all the active planes' dlist contents to the hardware dlist. */
 	drm_atomic_crtc_for_each_plane(plane, crtc) {
-<<<<<<< HEAD
 		/* Is this the first active plane? */
 		if (dlist_next == dlist_start) {
 			/* We need to enable background fill when a plane
@@ -833,8 +711,6 @@ static void vc4_crtc_atomic_flush(struct drm_crtc *crtc,
 			enable_bg_fill = vc4_plane_state->needs_bg_fill;
 		}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dlist_next += vc4_plane_write_dlist(plane, dlist_next);
 	}
 
@@ -843,7 +719,6 @@ static void vc4_crtc_atomic_flush(struct drm_crtc *crtc,
 
 	WARN_ON_ONCE(dlist_next - dlist_start != vc4_state->mm.size);
 
-<<<<<<< HEAD
 	if (enable_bg_fill)
 		/* This sets a black background color fill, as is the case
 		 * with other DRM drivers.
@@ -852,8 +727,6 @@ static void vc4_crtc_atomic_flush(struct drm_crtc *crtc,
 			  HVS_READ(SCALER_DISPBKGNDX(vc4_crtc->channel)) |
 			  SCALER_DISPBKGND_FILL);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Only update DISPLIST if the CRTC was already running and is not
 	 * being disabled.
 	 * vc4_crtc_enable() takes care of updating the dlist just after
@@ -864,7 +737,6 @@ static void vc4_crtc_atomic_flush(struct drm_crtc *crtc,
 	if (crtc->state->active && old_state->active)
 		vc4_crtc_update_dlist(crtc);
 
-<<<<<<< HEAD
 	if (crtc->state->color_mgmt_changed) {
 		u32 dispbkgndx = HVS_READ(SCALER_DISPBKGNDX(vc4_crtc->channel));
 
@@ -881,8 +753,6 @@ static void vc4_crtc_atomic_flush(struct drm_crtc *crtc,
 		HVS_WRITE(SCALER_DISPBKGNDX(vc4_crtc->channel), dispbkgndx);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (debug_dump_regs) {
 		DRM_INFO("CRTC %d HVS after:\n", drm_crtc_index(crtc));
 		vc4_hvs_dump_state(dev);
@@ -916,12 +786,8 @@ static void vc4_crtc_handle_page_flip(struct vc4_crtc *vc4_crtc)
 
 	spin_lock_irqsave(&dev->event_lock, flags);
 	if (vc4_crtc->event &&
-<<<<<<< HEAD
 	    (vc4_state->mm.start == HVS_READ(SCALER_DISPLACTX(chan)) ||
 	     vc4_state->feed_txp)) {
-=======
-	    (vc4_state->mm.start == HVS_READ(SCALER_DISPLACTX(chan)))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		drm_crtc_send_vblank_event(crtc, vc4_crtc->event);
 		vc4_crtc->event = NULL;
 		drm_crtc_vblank_put(crtc);
@@ -929,7 +795,6 @@ static void vc4_crtc_handle_page_flip(struct vc4_crtc *vc4_crtc)
 	spin_unlock_irqrestore(&dev->event_lock, flags);
 }
 
-<<<<<<< HEAD
 void vc4_crtc_handle_vblank(struct vc4_crtc *crtc)
 {
 	crtc->t_vblank = ktime_get();
@@ -937,8 +802,6 @@ void vc4_crtc_handle_vblank(struct vc4_crtc *crtc)
 	vc4_crtc_handle_page_flip(crtc);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static irqreturn_t vc4_crtc_irq_handler(int irq, void *data)
 {
 	struct vc4_crtc *vc4_crtc = data;
@@ -946,15 +809,8 @@ static irqreturn_t vc4_crtc_irq_handler(int irq, void *data)
 	irqreturn_t ret = IRQ_NONE;
 
 	if (stat & PV_INT_VFP_START) {
-<<<<<<< HEAD
 		CRTC_WRITE(PV_INTSTAT, PV_INT_VFP_START);
 		vc4_crtc_handle_vblank(vc4_crtc);
-=======
-		vc4_crtc->t_vblank = ktime_get();
-		CRTC_WRITE(PV_INTSTAT, PV_INT_VFP_START);
-		drm_crtc_handle_vblank(&vc4_crtc->base);
-		vc4_crtc_handle_page_flip(vc4_crtc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = IRQ_HANDLED;
 	}
 
@@ -964,10 +820,7 @@ static irqreturn_t vc4_crtc_irq_handler(int irq, void *data)
 struct vc4_async_flip_state {
 	struct drm_crtc *crtc;
 	struct drm_framebuffer *fb;
-<<<<<<< HEAD
 	struct drm_framebuffer *old_fb;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_pending_vblank_event *event;
 
 	struct vc4_seqno_cb cb;
@@ -997,7 +850,6 @@ vc4_async_page_flip_complete(struct vc4_seqno_cb *cb)
 
 	drm_crtc_vblank_put(crtc);
 	drm_framebuffer_put(flip_state->fb);
-<<<<<<< HEAD
 
 	/* Decrement the BO usecnt in order to keep the inc/dec calls balanced
 	 * when the planes are updated through the async update path.
@@ -1015,8 +867,6 @@ vc4_async_page_flip_complete(struct vc4_seqno_cb *cb)
 		drm_framebuffer_put(flip_state->old_fb);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(flip_state);
 
 	up(&vc4->async_modeset);
@@ -1041,7 +891,6 @@ static int vc4_async_page_flip(struct drm_crtc *crtc,
 	struct drm_gem_cma_object *cma_bo = drm_fb_cma_get_gem_obj(fb, 0);
 	struct vc4_bo *bo = to_vc4_bo(&cma_bo->base);
 
-<<<<<<< HEAD
 	/* Increment the BO usecnt here, so that we never end up with an
 	 * unbalanced number of vc4_bo_{dec,inc}_usecnt() calls when the
 	 * plane is later updated through the non-async path.
@@ -1058,11 +907,6 @@ static int vc4_async_page_flip(struct drm_crtc *crtc,
 		vc4_bo_dec_usecnt(bo);
 		return -ENOMEM;
 	}
-=======
-	flip_state = kzalloc(sizeof(*flip_state), GFP_KERNEL);
-	if (!flip_state)
-		return -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	drm_framebuffer_get(fb);
 	flip_state->fb = fb;
@@ -1073,15 +917,11 @@ static int vc4_async_page_flip(struct drm_crtc *crtc,
 	ret = down_interruptible(&vc4->async_modeset);
 	if (ret) {
 		drm_framebuffer_put(fb);
-<<<<<<< HEAD
 		vc4_bo_dec_usecnt(bo);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(flip_state);
 		return ret;
 	}
 
-<<<<<<< HEAD
 	/* Save the current FB before it's replaced by the new one in
 	 * drm_atomic_set_fb_for_plane(). We'll need the old FB in
 	 * vc4_async_page_flip_complete() to decrement the BO usecnt and keep
@@ -1094,8 +934,6 @@ static int vc4_async_page_flip(struct drm_crtc *crtc,
 	if (flip_state->old_fb)
 		drm_framebuffer_get(flip_state->old_fb);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	WARN_ON(drm_crtc_vblank_get(crtc) != 0);
 
 	/* Immediately update the plane's legacy fb pointer, so that later
@@ -1103,10 +941,6 @@ static int vc4_async_page_flip(struct drm_crtc *crtc,
 	 * is released.
 	 */
 	drm_atomic_set_fb_for_plane(plane->state, fb);
-<<<<<<< HEAD
-=======
-	plane->fb = fb;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vc4_queue_seqno_cb(dev, &flip_state->cb, bo->seqno,
 			   vc4_async_page_flip_complete);
@@ -1129,22 +963,15 @@ static int vc4_page_flip(struct drm_crtc *crtc,
 
 static struct drm_crtc_state *vc4_crtc_duplicate_state(struct drm_crtc *crtc)
 {
-<<<<<<< HEAD
 	struct vc4_crtc_state *vc4_state, *old_vc4_state;
-=======
-	struct vc4_crtc_state *vc4_state;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vc4_state = kzalloc(sizeof(*vc4_state), GFP_KERNEL);
 	if (!vc4_state)
 		return NULL;
 
-<<<<<<< HEAD
 	old_vc4_state = to_vc4_crtc_state(crtc->state);
 	vc4_state->feed_txp = old_vc4_state->feed_txp;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__drm_atomic_helper_crtc_duplicate_state(crtc, &vc4_state->base);
 	return &vc4_state->base;
 }
@@ -1188,11 +1015,7 @@ static const struct drm_crtc_funcs vc4_crtc_funcs = {
 	.reset = vc4_crtc_reset,
 	.atomic_duplicate_state = vc4_crtc_duplicate_state,
 	.atomic_destroy_state = vc4_crtc_destroy_state,
-<<<<<<< HEAD
 	.gamma_set = drm_atomic_helper_legacy_gamma_set,
-=======
-	.gamma_set = vc4_crtc_gamma_set,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.enable_vblank = vc4_enable_vblank,
 	.disable_vblank = vc4_disable_vblank,
 };
@@ -1246,7 +1069,6 @@ static void vc4_set_crtc_possible_masks(struct drm_device *drm,
 	struct drm_encoder *encoder;
 
 	drm_for_each_encoder(encoder, drm) {
-<<<<<<< HEAD
 		struct vc4_encoder *vc4_encoder;
 		int i;
 
@@ -1258,11 +1080,6 @@ static void vc4_set_crtc_possible_masks(struct drm_device *drm,
 		}
 
 		vc4_encoder = to_vc4_encoder(encoder);
-=======
-		struct vc4_encoder *vc4_encoder = to_vc4_encoder(encoder);
-		int i;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		for (i = 0; i < ARRAY_SIZE(crtc_data->encoder_types); i++) {
 			if (vc4_encoder->type == encoder_types[i]) {
 				vc4_encoder->clock_select = i;
@@ -1329,7 +1146,6 @@ static int vc4_crtc_bind(struct device *dev, struct device *master, void *data)
 	drm_crtc_init_with_planes(drm, crtc, primary_plane, NULL,
 				  &vc4_crtc_funcs, NULL);
 	drm_crtc_helper_add(crtc, &vc4_crtc_helper_funcs);
-<<<<<<< HEAD
 	vc4_crtc->channel = vc4_crtc->data->hvs_channel;
 	drm_mode_crtc_set_gamma_size(crtc, ARRAY_SIZE(vc4_crtc->lut_r));
 	drm_crtc_enable_color_mgmt(crtc, 0, false, crtc->gamma_size);
@@ -1338,11 +1154,6 @@ static int vc4_crtc_bind(struct device *dev, struct device *master, void *data)
 	 * implemented as private driver state in vc4_kms, not here.
 	 */
 	drm_crtc_enable_color_mgmt(crtc, 0, true, crtc->gamma_size);
-=======
-	primary_plane->crtc = crtc;
-	vc4_crtc->channel = vc4_crtc->data->hvs_channel;
-	drm_mode_crtc_set_gamma_size(crtc, ARRAY_SIZE(vc4_crtc->lut_r));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Set up some arbitrary number of planes.  We're not limited
 	 * by a set number of physical registers, just the space in
@@ -1360,11 +1171,7 @@ static int vc4_crtc_bind(struct device *dev, struct device *master, void *data)
 		if (IS_ERR(plane))
 			continue;
 
-<<<<<<< HEAD
 		plane->possible_crtcs = drm_crtc_mask(crtc);
-=======
-		plane->possible_crtcs = 1 << drm_crtc_index(crtc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Set up the legacy cursor after overlay initialization,
@@ -1373,12 +1180,7 @@ static int vc4_crtc_bind(struct device *dev, struct device *master, void *data)
 	 */
 	cursor_plane = vc4_plane_init(drm, DRM_PLANE_TYPE_CURSOR);
 	if (!IS_ERR(cursor_plane)) {
-<<<<<<< HEAD
 		cursor_plane->possible_crtcs = drm_crtc_mask(crtc);
-=======
-		cursor_plane->possible_crtcs = 1 << drm_crtc_index(crtc);
-		cursor_plane->crtc = crtc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		crtc->cursor = cursor_plane;
 	}
 
@@ -1406,11 +1208,7 @@ static int vc4_crtc_bind(struct device *dev, struct device *master, void *data)
 err_destroy_planes:
 	list_for_each_entry_safe(destroy_plane, temp,
 				 &drm->mode_config.plane_list, head) {
-<<<<<<< HEAD
 		if (destroy_plane->possible_crtcs == drm_crtc_mask(crtc))
-=======
-		if (destroy_plane->possible_crtcs == 1 << drm_crtc_index(crtc))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    destroy_plane->funcs->destroy(destroy_plane);
 	}
 err:

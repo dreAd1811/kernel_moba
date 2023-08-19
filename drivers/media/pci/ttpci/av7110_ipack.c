@@ -24,11 +24,7 @@ void av7110_ipack_reset(struct ipack *p)
 int av7110_ipack_init(struct ipack *p, int size,
 		      void (*func)(u8 *buf, int size, void *priv))
 {
-<<<<<<< HEAD
 	if (!(p->buf = vmalloc(size))) {
-=======
-	if (!(p->buf = vmalloc(size*sizeof(u8)))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		printk(KERN_WARNING "Couldn't allocate memory for ipack\n");
 		return -ENOMEM;
 	}

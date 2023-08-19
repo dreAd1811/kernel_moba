@@ -99,19 +99,6 @@ Description:
 		device for zram to write incompressible pages.
 		For using, user should enable CONFIG_ZRAM_WRITEBACK.
 
-<<<<<<< HEAD
-=======
-What:		/sys/block/zram<id>/use_dedup
-Date:		March 2017
-Contact:	Joonsoo Kim <iamjoonsoo.kim@lge.com>
-Description:
-		The use_dedup file is read-write and specifies deduplication
-		feature is used or not. If enabled, duplicated data is
-		managed by reference count and will not be stored in memory
-		twice. Benefit of this feature largely depends on the workload
-		so keep attention when use.
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 What:		/sys/block/zram<id>/idle
 Date:		November 2018
 Contact:	Minchan Kim <minchan@kernel.org>
@@ -150,7 +137,6 @@ Description:
 		The writeback_limit file is read-write and specifies the maximum
 		amount of writeback ZRAM can do. The limit could be changed
 		in run time.
-<<<<<<< HEAD
 
 What:		/sys/block/zram<id>/use_dedup
 Date:		March 2017
@@ -161,5 +147,3 @@ Description:
 		managed by reference count and will not be stored in memory
 		twice. Benefit of this feature largely depends on the workload
 		so keep attention when use.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -40,15 +40,9 @@ static const struct renesas_sdhi_of_data of_rz_compatible = {
 };
 
 static const struct renesas_sdhi_of_data of_rcar_gen1_compatible = {
-<<<<<<< HEAD
 	.tmio_flags	= TMIO_MMC_HAS_IDLE_WAIT | TMIO_MMC_CLK_ACTUAL,
 	.capabilities	= MMC_CAP_SD_HIGHSPEED | MMC_CAP_SDIO_IRQ,
 	.capabilities2	= MMC_CAP2_NO_WRITE_PROTECT,
-=======
-	.tmio_flags	= TMIO_MMC_HAS_IDLE_WAIT | TMIO_MMC_WRPROTECT_DISABLE |
-			  TMIO_MMC_CLK_ACTUAL,
-	.capabilities	= MMC_CAP_SD_HIGHSPEED | MMC_CAP_SDIO_IRQ,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Definitions for sampling clocks */
@@ -64,19 +58,11 @@ static struct renesas_sdhi_scc rcar_gen2_scc_taps[] = {
 };
 
 static const struct renesas_sdhi_of_data of_rcar_gen2_compatible = {
-<<<<<<< HEAD
 	.tmio_flags	= TMIO_MMC_HAS_IDLE_WAIT | TMIO_MMC_CLK_ACTUAL |
 			  TMIO_MMC_HAVE_CBSY | TMIO_MMC_MIN_RCAR2,
 	.capabilities	= MMC_CAP_SD_HIGHSPEED | MMC_CAP_SDIO_IRQ |
 			  MMC_CAP_CMD23,
 	.capabilities2	= MMC_CAP2_NO_WRITE_PROTECT,
-=======
-	.tmio_flags	= TMIO_MMC_HAS_IDLE_WAIT | TMIO_MMC_WRPROTECT_DISABLE |
-			  TMIO_MMC_CLK_ACTUAL | TMIO_MMC_HAVE_CBSY |
-			  TMIO_MMC_MIN_RCAR2,
-	.capabilities	= MMC_CAP_SD_HIGHSPEED | MMC_CAP_SDIO_IRQ |
-			  MMC_CAP_CMD23,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.dma_buswidth	= DMA_SLAVE_BUSWIDTH_4_BYTES,
 	.dma_rx_offset	= 0x2000,
 	.scc_offset	= 0x0300,
@@ -93,7 +79,6 @@ static struct renesas_sdhi_scc rcar_gen3_scc_taps[] = {
 	},
 };
 
-<<<<<<< HEAD
 static const struct renesas_sdhi_of_data of_rcar_r8a7795_compatible = {
 	.tmio_flags	= TMIO_MMC_HAS_IDLE_WAIT | TMIO_MMC_CLK_ACTUAL |
 			  TMIO_MMC_HAVE_CBSY | TMIO_MMC_MIN_RCAR2 |
@@ -113,14 +98,6 @@ static const struct renesas_sdhi_of_data of_rcar_gen3_compatible = {
 	.capabilities	= MMC_CAP_SD_HIGHSPEED | MMC_CAP_SDIO_IRQ |
 			  MMC_CAP_CMD23,
 	.capabilities2	= MMC_CAP2_NO_WRITE_PROTECT,
-=======
-static const struct renesas_sdhi_of_data of_rcar_gen3_compatible = {
-	.tmio_flags	= TMIO_MMC_HAS_IDLE_WAIT | TMIO_MMC_WRPROTECT_DISABLE |
-			  TMIO_MMC_CLK_ACTUAL | TMIO_MMC_HAVE_CBSY |
-			  TMIO_MMC_MIN_RCAR2,
-	.capabilities	= MMC_CAP_SD_HIGHSPEED | MMC_CAP_SDIO_IRQ |
-			  MMC_CAP_CMD23,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.bus_shift	= 2,
 	.scc_offset	= 0x1000,
 	.taps		= rcar_gen3_scc_taps,
@@ -128,10 +105,6 @@ static const struct renesas_sdhi_of_data of_rcar_gen3_compatible = {
 };
 
 static const struct of_device_id renesas_sdhi_sys_dmac_of_match[] = {
-<<<<<<< HEAD
-=======
-	{ .compatible = "renesas,sdhi-shmobile" },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ .compatible = "renesas,sdhi-sh73a0", .data = &of_default_cfg, },
 	{ .compatible = "renesas,sdhi-r8a73a4", .data = &of_default_cfg, },
 	{ .compatible = "renesas,sdhi-r8a7740", .data = &of_default_cfg, },
@@ -145,17 +118,12 @@ static const struct of_device_id renesas_sdhi_sys_dmac_of_match[] = {
 	{ .compatible = "renesas,sdhi-r8a7792", .data = &of_rcar_gen2_compatible, },
 	{ .compatible = "renesas,sdhi-r8a7793", .data = &of_rcar_gen2_compatible, },
 	{ .compatible = "renesas,sdhi-r8a7794", .data = &of_rcar_gen2_compatible, },
-<<<<<<< HEAD
 	{ .compatible = "renesas,sdhi-r8a7795", .data = &of_rcar_r8a7795_compatible, },
 	{ .compatible = "renesas,sdhi-r8a7796", .data = &of_rcar_r8a7795_compatible, },
 	{ .compatible = "renesas,rcar-gen1-sdhi", .data = &of_rcar_gen1_compatible, },
 	{ .compatible = "renesas,rcar-gen2-sdhi", .data = &of_rcar_gen2_compatible, },
 	{ .compatible = "renesas,rcar-gen3-sdhi", .data = &of_rcar_gen3_compatible, },
 	{ .compatible = "renesas,sdhi-shmobile" },
-=======
-	{ .compatible = "renesas,sdhi-r8a7795", .data = &of_rcar_gen3_compatible, },
-	{ .compatible = "renesas,sdhi-r8a7796", .data = &of_rcar_gen3_compatible, },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{},
 };
 MODULE_DEVICE_TABLE(of, renesas_sdhi_sys_dmac_of_match);
@@ -163,7 +131,6 @@ MODULE_DEVICE_TABLE(of, renesas_sdhi_sys_dmac_of_match);
 static void renesas_sdhi_sys_dmac_enable_dma(struct tmio_mmc_host *host,
 					     bool enable)
 {
-<<<<<<< HEAD
 	struct renesas_sdhi *priv = host_to_priv(host);
 
 	if (!host->chan_tx || !host->chan_rx)
@@ -171,13 +138,6 @@ static void renesas_sdhi_sys_dmac_enable_dma(struct tmio_mmc_host *host,
 
 	if (priv->dma_priv.enable)
 		priv->dma_priv.enable(host, enable);
-=======
-	if (!host->chan_tx || !host->chan_rx)
-		return;
-
-	if (host->dma->enable)
-		host->dma->enable(host, enable);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void renesas_sdhi_sys_dmac_abort_dma(struct tmio_mmc_host *host)
@@ -194,22 +154,15 @@ static void renesas_sdhi_sys_dmac_abort_dma(struct tmio_mmc_host *host)
 
 static void renesas_sdhi_sys_dmac_dataend_dma(struct tmio_mmc_host *host)
 {
-<<<<<<< HEAD
 	struct renesas_sdhi *priv = host_to_priv(host);
 
 	complete(&priv->dma_priv.dma_dataend);
-=======
-	complete(&host->dma_dataend);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void renesas_sdhi_sys_dmac_dma_callback(void *arg)
 {
 	struct tmio_mmc_host *host = arg;
-<<<<<<< HEAD
 	struct renesas_sdhi *priv = host_to_priv(host);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irq(&host->lock);
 
@@ -227,11 +180,7 @@ static void renesas_sdhi_sys_dmac_dma_callback(void *arg)
 
 	spin_unlock_irq(&host->lock);
 
-<<<<<<< HEAD
 	wait_for_completion(&priv->dma_priv.dma_dataend);
-=======
-	wait_for_completion(&host->dma_dataend);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irq(&host->lock);
 	tmio_mmc_do_data_irq(host);
@@ -241,10 +190,7 @@ out:
 
 static void renesas_sdhi_sys_dmac_start_dma_rx(struct tmio_mmc_host *host)
 {
-<<<<<<< HEAD
 	struct renesas_sdhi *priv = host_to_priv(host);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct scatterlist *sg = host->sg_ptr, *sg_tmp;
 	struct dma_async_tx_descriptor *desc = NULL;
 	struct dma_chan *chan = host->chan_rx;
@@ -273,11 +219,6 @@ static void renesas_sdhi_sys_dmac_start_dma_rx(struct tmio_mmc_host *host)
 		return;
 	}
 
-<<<<<<< HEAD
-=======
-	tmio_mmc_disable_mmc_irqs(host, TMIO_STAT_RXRDY);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* The only sg element can be unaligned, use our bounce buffer then */
 	if (!aligned) {
 		sg_init_one(&host->bounce_sg, host->bounce_buf, sg->length);
@@ -291,11 +232,7 @@ static void renesas_sdhi_sys_dmac_start_dma_rx(struct tmio_mmc_host *host)
 					       DMA_CTRL_ACK);
 
 	if (desc) {
-<<<<<<< HEAD
 		reinit_completion(&priv->dma_priv.dma_dataend);
-=======
-		reinit_completion(&host->dma_dataend);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		desc->callback = renesas_sdhi_sys_dmac_dma_callback;
 		desc->callback_param = host;
 
@@ -326,10 +263,7 @@ pio:
 
 static void renesas_sdhi_sys_dmac_start_dma_tx(struct tmio_mmc_host *host)
 {
-<<<<<<< HEAD
 	struct renesas_sdhi *priv = host_to_priv(host);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct scatterlist *sg = host->sg_ptr, *sg_tmp;
 	struct dma_async_tx_descriptor *desc = NULL;
 	struct dma_chan *chan = host->chan_tx;
@@ -358,11 +292,6 @@ static void renesas_sdhi_sys_dmac_start_dma_tx(struct tmio_mmc_host *host)
 		return;
 	}
 
-<<<<<<< HEAD
-=======
-	tmio_mmc_disable_mmc_irqs(host, TMIO_STAT_TXRQ);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* The only sg element can be unaligned, use our bounce buffer then */
 	if (!aligned) {
 		unsigned long flags;
@@ -381,11 +310,7 @@ static void renesas_sdhi_sys_dmac_start_dma_tx(struct tmio_mmc_host *host)
 					       DMA_CTRL_ACK);
 
 	if (desc) {
-<<<<<<< HEAD
 		reinit_completion(&priv->dma_priv.dma_dataend);
-=======
-		reinit_completion(&host->dma_dataend);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		desc->callback = renesas_sdhi_sys_dmac_dma_callback;
 		desc->callback_param = host;
 
@@ -433,11 +358,7 @@ static void renesas_sdhi_sys_dmac_issue_tasklet_fn(unsigned long priv)
 
 	spin_lock_irq(&host->lock);
 
-<<<<<<< HEAD
 	if (host->data) {
-=======
-	if (host && host->data) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (host->data->flags & MMC_DATA_READ)
 			chan = host->chan_rx;
 		else
@@ -455,17 +376,11 @@ static void renesas_sdhi_sys_dmac_issue_tasklet_fn(unsigned long priv)
 static void renesas_sdhi_sys_dmac_request_dma(struct tmio_mmc_host *host,
 					      struct tmio_mmc_data *pdata)
 {
-<<<<<<< HEAD
 	struct renesas_sdhi *priv = host_to_priv(host);
 
 	/* We can only either use DMA for both Tx and Rx or not use it at all */
 	if (!host->pdev->dev.of_node &&
 	    (!pdata->chan_priv_tx || !pdata->chan_priv_rx))
-=======
-	/* We can only either use DMA for both Tx and Rx or not use it at all */
-	if (!host->dma || (!host->pdev->dev.of_node &&
-			   (!pdata->chan_priv_tx || !pdata->chan_priv_rx)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	if (!host->chan_tx && !host->chan_rx) {
@@ -482,11 +397,7 @@ static void renesas_sdhi_sys_dmac_request_dma(struct tmio_mmc_host *host,
 		dma_cap_set(DMA_SLAVE, mask);
 
 		host->chan_tx = dma_request_slave_channel_compat(mask,
-<<<<<<< HEAD
 					priv->dma_priv.filter, pdata->chan_priv_tx,
-=======
-					host->dma->filter, pdata->chan_priv_tx,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					&host->pdev->dev, "tx");
 		dev_dbg(&host->pdev->dev, "%s: TX: got channel %p\n", __func__,
 			host->chan_tx);
@@ -497,11 +408,7 @@ static void renesas_sdhi_sys_dmac_request_dma(struct tmio_mmc_host *host,
 		cfg.direction = DMA_MEM_TO_DEV;
 		cfg.dst_addr = res->start +
 			(CTL_SD_DATA_PORT << host->bus_shift);
-<<<<<<< HEAD
 		cfg.dst_addr_width = priv->dma_priv.dma_buswidth;
-=======
-		cfg.dst_addr_width = host->dma->dma_buswidth;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!cfg.dst_addr_width)
 			cfg.dst_addr_width = DMA_SLAVE_BUSWIDTH_2_BYTES;
 		cfg.src_addr = 0;
@@ -510,11 +417,7 @@ static void renesas_sdhi_sys_dmac_request_dma(struct tmio_mmc_host *host,
 			goto ecfgtx;
 
 		host->chan_rx = dma_request_slave_channel_compat(mask,
-<<<<<<< HEAD
 					priv->dma_priv.filter, pdata->chan_priv_rx,
-=======
-					host->dma->filter, pdata->chan_priv_rx,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					&host->pdev->dev, "rx");
 		dev_dbg(&host->pdev->dev, "%s: RX: got channel %p\n", __func__,
 			host->chan_rx);
@@ -524,11 +427,7 @@ static void renesas_sdhi_sys_dmac_request_dma(struct tmio_mmc_host *host,
 
 		cfg.direction = DMA_DEV_TO_MEM;
 		cfg.src_addr = cfg.dst_addr + host->pdata->dma_rx_offset;
-<<<<<<< HEAD
 		cfg.src_addr_width = priv->dma_priv.dma_buswidth;
-=======
-		cfg.src_addr_width = host->dma->dma_buswidth;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!cfg.src_addr_width)
 			cfg.src_addr_width = DMA_SLAVE_BUSWIDTH_2_BYTES;
 		cfg.dst_addr = 0;
@@ -540,11 +439,7 @@ static void renesas_sdhi_sys_dmac_request_dma(struct tmio_mmc_host *host,
 		if (!host->bounce_buf)
 			goto ebouncebuf;
 
-<<<<<<< HEAD
 		init_completion(&priv->dma_priv.dma_dataend);
-=======
-		init_completion(&host->dma_dataend);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		tasklet_init(&host->dma_issue,
 			     renesas_sdhi_sys_dmac_issue_tasklet_fn,
 			     (unsigned long)host);
@@ -604,12 +499,8 @@ static const struct soc_device_attribute gen3_soc_whitelist[] = {
 
 static int renesas_sdhi_sys_dmac_probe(struct platform_device *pdev)
 {
-<<<<<<< HEAD
 	if ((of_device_get_match_data(&pdev->dev) == &of_rcar_gen3_compatible ||
 	    of_device_get_match_data(&pdev->dev) == &of_rcar_r8a7795_compatible) &&
-=======
-	if (of_device_get_match_data(&pdev->dev) == &of_rcar_gen3_compatible &&
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    !soc_device_match(gen3_soc_whitelist))
 		return -ENODEV;
 

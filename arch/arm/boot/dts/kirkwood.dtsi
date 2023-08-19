@@ -41,11 +41,7 @@
 		pcie-mem-aperture = <0xe0000000 0x10000000>; /* 256 MiB memory space */
 		pcie-io-aperture  = <0xf2000000 0x100000>;   /*   1 MiB    I/O space */
 
-<<<<<<< HEAD
 		nand: nand@12f {
-=======
-		nand: nand@012f {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			#address-cells = <1>;
 			#size-cells = <1>;
 			cle = <0>;
@@ -61,11 +57,7 @@
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
 		crypto_sram: sa-sram@301 {
-=======
-		crypto_sram: sa-sram@0301 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "mmio-sram";
 			reg = <MBUS_ID(0x03, 0x01) 0x0 0x800>;
 			clocks = <&gate_clk 17>;
@@ -390,11 +382,7 @@
 
 		audio0: audio-controller@a0000 {
 			compatible = "marvell,kirkwood-audio";
-<<<<<<< HEAD
 			#sound-dai-cells = <0>;
-=======
-			#sound-dai-cells = <1>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			reg = <0xa0000 0x2210>;
 			interrupts = <24>;
 			clocks = <&gate_clk 9>;

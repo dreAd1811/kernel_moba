@@ -55,18 +55,10 @@
 # define __protected_by(x)       __attribute__((require_context(x,1,999,"rdwr")))
 # define __protected_read_by(x)  __attribute__((require_context(x,1,999,"read")))
 # define __protected_write_by(x) __attribute__((require_context(x,1,999,"write")))
-<<<<<<< HEAD
-=======
-# define __must_hold(x)       __attribute__((context(x,1,1), require_context(x,1,999,"call")))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 # define __protected_by(x)
 # define __protected_read_by(x)
 # define __protected_write_by(x)
-<<<<<<< HEAD
-=======
-# define __must_hold(x)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 /* shared module parameters, defined in drbd_main.c */
@@ -732,17 +724,10 @@ struct drbd_connection {
 	struct list_head transfer_log;	/* all requests not yet fully processed */
 
 	struct crypto_shash *cram_hmac_tfm;
-<<<<<<< HEAD
 	struct crypto_shash *integrity_tfm;  /* checksums we compute, updates protected by connection->data->mutex */
 	struct crypto_shash *peer_integrity_tfm;  /* checksums we verify, only accessed from receiver thread  */
 	struct crypto_shash *csums_tfm;
 	struct crypto_shash *verify_tfm;
-=======
-	struct crypto_ahash *integrity_tfm;  /* checksums we compute, updates protected by connection->data->mutex */
-	struct crypto_ahash *peer_integrity_tfm;  /* checksums we verify, only accessed from receiver thread  */
-	struct crypto_ahash *csums_tfm;
-	struct crypto_ahash *verify_tfm;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void *int_dig_in;
 	void *int_dig_vv;
 
@@ -1418,13 +1403,8 @@ extern struct kmem_cache *drbd_request_cache;
 extern struct kmem_cache *drbd_ee_cache;	/* peer requests */
 extern struct kmem_cache *drbd_bm_ext_cache;	/* bitmap extents */
 extern struct kmem_cache *drbd_al_ext_cache;	/* activity log extents */
-<<<<<<< HEAD
 extern mempool_t drbd_request_mempool;
 extern mempool_t drbd_ee_mempool;
-=======
-extern mempool_t *drbd_request_mempool;
-extern mempool_t *drbd_ee_mempool;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* drbd's page pool, used to buffer data received from the peer,
  * or data requested by the peer.
@@ -1450,28 +1430,16 @@ extern wait_queue_head_t drbd_pp_wait;
  * 128 should be plenty, currently we probably can get away with as few as 1.
  */
 #define DRBD_MIN_POOL_PAGES	128
-<<<<<<< HEAD
 extern mempool_t drbd_md_io_page_pool;
 
 /* We also need to make sure we get a bio
  * when we need it for housekeeping purposes */
 extern struct bio_set drbd_md_io_bio_set;
-=======
-extern mempool_t *drbd_md_io_page_pool;
-
-/* We also need to make sure we get a bio
- * when we need it for housekeeping purposes */
-extern struct bio_set *drbd_md_io_bio_set;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* to allocate from that set */
 extern struct bio *bio_alloc_drbd(gfp_t gfp_mask);
 
 /* And a bio_set for cloning */
-<<<<<<< HEAD
 extern struct bio_set drbd_io_bio_set;
-=======
-extern struct bio_set *drbd_io_bio_set;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 extern struct mutex resources_mutex;
 
@@ -1563,14 +1531,9 @@ static inline void ov_out_of_sync_print(struct drbd_device *device)
 }
 
 
-<<<<<<< HEAD
 extern void drbd_csum_bio(struct crypto_shash *, struct bio *, void *);
 extern void drbd_csum_ee(struct crypto_shash *, struct drbd_peer_request *,
 			 void *);
-=======
-extern void drbd_csum_bio(struct crypto_ahash *, struct bio *, void *);
-extern void drbd_csum_ee(struct crypto_ahash *, struct drbd_peer_request *, void *);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* worker callbacks */
 extern int w_e_end_data_req(struct drbd_work *, int);
 extern int w_e_end_rsdata_req(struct drbd_work *, int);
@@ -1587,13 +1550,8 @@ extern int w_restart_disk_io(struct drbd_work *, int);
 extern int w_send_out_of_sync(struct drbd_work *, int);
 extern int w_start_resync(struct drbd_work *, int);
 
-<<<<<<< HEAD
 extern void resync_timer_fn(struct timer_list *t);
 extern void start_resync_timer_fn(struct timer_list *t);
-=======
-extern void resync_timer_fn(unsigned long data);
-extern void start_resync_timer_fn(unsigned long data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 extern void drbd_endio_write_sec_final(struct drbd_peer_request *peer_req);
 
@@ -1684,11 +1642,7 @@ void drbd_bump_write_ordering(struct drbd_resource *resource, struct drbd_backin
 
 /* drbd_proc.c */
 extern struct proc_dir_entry *drbd_proc;
-<<<<<<< HEAD
 int drbd_seq_show(struct seq_file *seq, void *v);
-=======
-extern const struct file_operations drbd_proc_fops;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* drbd_actlog.c */
 extern bool drbd_al_begin_io_prepare(struct drbd_device *device, struct drbd_interval *i);

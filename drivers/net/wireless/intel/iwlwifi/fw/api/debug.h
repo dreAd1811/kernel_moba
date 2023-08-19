@@ -250,19 +250,12 @@ struct iwl_mfu_assert_dump_notif {
  * The ids for different type of markers to insert into the usniffer logs
  *
  * @MARKER_ID_TX_FRAME_LATENCY: TX latency marker
-<<<<<<< HEAD
  * @MARKER_ID_SYNC_CLOCK: sync FW time and systime
  */
 enum iwl_mvm_marker_id {
 	MARKER_ID_TX_FRAME_LATENCY = 1,
 	MARKER_ID_SYNC_CLOCK = 2,
 }; /* MARKER_ID_API_E_VER_2 */
-=======
- */
-enum iwl_mvm_marker_id {
-	MARKER_ID_TX_FRAME_LATENCY = 1,
-}; /* MARKER_ID_API_E_VER_1 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * struct iwl_mvm_marker - mark info into the usniffer logs
@@ -287,7 +280,6 @@ struct iwl_mvm_marker {
 	__le32 metadata[0];
 } __packed; /* MARKER_API_S_VER_1 */
 
-<<<<<<< HEAD
 /**
  * struct iwl_mvm_marker_rsp - Response to marker cmd
  *
@@ -297,8 +289,6 @@ struct iwl_mvm_marker_rsp {
 	__le32 gp2;
 } __packed;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Operation types for the debug mem access */
 enum {
 	DEBUG_MEM_OP_READ = 0,

@@ -2,11 +2,7 @@
  * Toppoly TD028TTEC1 panel support
  *
  * Copyright (C) 2008 Nokia Corporation
-<<<<<<< HEAD
  * Author: Tomi Valkeinen <tomi.valkeinen@ti.com>
-=======
- * Author: Tomi Valkeinen <tomi.valkeinen@nokia.com>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Neo 1973 code (jbt6k74.c):
  * Copyright (C) 2006-2007 by OpenMoko, Inc.
@@ -173,17 +169,12 @@ enum jbt_register {
 static int td028ttec1_panel_connect(struct omap_dss_device *dssdev)
 {
 	struct panel_drv_data *ddata = to_panel_data(dssdev);
-<<<<<<< HEAD
 	struct omap_dss_device *in;
-=======
-	struct omap_dss_device *in = ddata->in;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int r;
 
 	if (omapdss_device_is_connected(dssdev))
 		return 0;
 
-<<<<<<< HEAD
 	in = omapdss_of_find_source_for_first_ep(dssdev->dev->of_node);
 	if (IS_ERR(in)) {
 		dev_err(dssdev->dev, "failed to find video source\n");
@@ -197,12 +188,6 @@ static int td028ttec1_panel_connect(struct omap_dss_device *dssdev)
 	}
 
 	ddata->in = in;
-=======
-	r = in->ops.dpi->connect(in, dssdev);
-	if (r)
-		return r;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -215,12 +200,9 @@ static void td028ttec1_panel_disconnect(struct omap_dss_device *dssdev)
 		return;
 
 	in->ops.dpi->disconnect(in, dssdev);
-<<<<<<< HEAD
 
 	omap_dss_put_device(in);
 	ddata->in = NULL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int td028ttec1_panel_enable(struct omap_dss_device *dssdev)
@@ -392,26 +374,6 @@ static struct omap_dss_driver td028ttec1_ops = {
 	.check_timings	= td028ttec1_panel_check_timings,
 };
 
-<<<<<<< HEAD
-=======
-static int td028ttec1_probe_of(struct spi_device *spi)
-{
-	struct device_node *node = spi->dev.of_node;
-	struct panel_drv_data *ddata = dev_get_drvdata(&spi->dev);
-	struct omap_dss_device *in;
-
-	in = omapdss_of_find_source_for_first_ep(node);
-	if (IS_ERR(in)) {
-		dev_err(&spi->dev, "failed to find video source\n");
-		return PTR_ERR(in);
-	}
-
-	ddata->in = in;
-
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int td028ttec1_panel_probe(struct spi_device *spi)
 {
 	struct panel_drv_data *ddata;
@@ -437,16 +399,6 @@ static int td028ttec1_panel_probe(struct spi_device *spi)
 
 	ddata->spi_dev = spi;
 
-<<<<<<< HEAD
-=======
-	if (!spi->dev.of_node)
-		return -ENODEV;
-
-	r = td028ttec1_probe_of(spi);
-	if (r)
-		return r;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ddata->vm = td028ttec1_panel_vm;
 
 	dssdev = &ddata->dssdev;
@@ -459,31 +411,16 @@ static int td028ttec1_panel_probe(struct spi_device *spi)
 	r = omapdss_register_display(dssdev);
 	if (r) {
 		dev_err(&spi->dev, "Failed to register panel\n");
-<<<<<<< HEAD
 		return r;
 	}
 
 	return 0;
-=======
-		goto err_reg;
-	}
-
-	return 0;
-
-err_reg:
-	omap_dss_put_device(ddata->in);
-	return r;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int td028ttec1_panel_remove(struct spi_device *spi)
 {
 	struct panel_drv_data *ddata = dev_get_drvdata(&spi->dev);
 	struct omap_dss_device *dssdev = &ddata->dssdev;
-<<<<<<< HEAD
-=======
-	struct omap_dss_device *in = ddata->in;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_dbg(&ddata->spi_dev->dev, "%s\n", __func__);
 
@@ -492,11 +429,6 @@ static int td028ttec1_panel_remove(struct spi_device *spi)
 	td028ttec1_panel_disable(dssdev);
 	td028ttec1_panel_disconnect(dssdev);
 
-<<<<<<< HEAD
-=======
-	omap_dss_put_device(in);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -509,7 +441,6 @@ static const struct of_device_id td028ttec1_of_match[] = {
 
 MODULE_DEVICE_TABLE(of, td028ttec1_of_match);
 
-<<<<<<< HEAD
 static const struct spi_device_id td028ttec1_ids[] = {
 	{ "toppoly,td028ttec1", 0 },
 	{ "tpo,td028ttec1", 0},
@@ -523,11 +454,6 @@ static struct spi_driver td028ttec1_spi_driver = {
 	.probe		= td028ttec1_panel_probe,
 	.remove		= td028ttec1_panel_remove,
 	.id_table	= td028ttec1_ids,
-=======
-static struct spi_driver td028ttec1_spi_driver = {
-	.probe		= td028ttec1_panel_probe,
-	.remove		= td028ttec1_panel_remove,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	.driver         = {
 		.name   = "panel-tpo-td028ttec1",
@@ -538,11 +464,6 @@ static struct spi_driver td028ttec1_spi_driver = {
 
 module_spi_driver(td028ttec1_spi_driver);
 
-<<<<<<< HEAD
-=======
-MODULE_ALIAS("spi:tpo,td028ttec1");
-MODULE_ALIAS("spi:toppoly,td028ttec1");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_AUTHOR("H. Nikolaus Schaller <hns@goldelico.com>");
 MODULE_DESCRIPTION("Toppoly TD028TTEC1 panel driver");
 MODULE_LICENSE("GPL");

@@ -1,18 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Device Tree Source for the Porter board
  *
  * Copyright (C) 2015 Cogent Embedded, Inc.
-<<<<<<< HEAD
-=======
- *
- * This file is licensed under the terms of the GNU General Public License
- * version 2.  This program is licensed "as is" without any warranty of any
- * kind, whether express or implied.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /*
@@ -36,11 +26,8 @@
 
 	aliases {
 		serial0 = &scif0;
-<<<<<<< HEAD
 		i2c9 = &gpioi2c2;
 		i2c10 = &i2chdmi;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	chosen {
@@ -147,7 +134,6 @@
 			clocks = <&x14_clk>;
 		};
 	};
-<<<<<<< HEAD
 
 	gpioi2c2: i2c-9 {
 		#address-cells = <1>;
@@ -220,8 +206,6 @@
 			};
 		};
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &extal_clk {
@@ -383,7 +367,6 @@
 
 &i2c2 {
 	pinctrl-0 = <&i2c2_pins>;
-<<<<<<< HEAD
 	pinctrl-names = "i2c-hdmi";
 
 	clock-frequency = <400000>;
@@ -415,62 +398,6 @@
 		regulator-max-microvolt = <1000000>;
 		regulator-boot-on;
 		regulator-always-on;
-=======
-	pinctrl-names = "default";
-
-	status = "okay";
-	clock-frequency = <400000>;
-
-	ak4642: codec@12 {
-		compatible = "asahi-kasei,ak4642";
-		#sound-dai-cells = <0>;
-		reg = <0x12>;
-	};
-
-	composite-in@20 {
-		compatible = "adi,adv7180";
-		reg = <0x20>;
-		remote = <&vin0>;
-
-		port {
-			adv7180: endpoint {
-				bus-width = <8>;
-				remote-endpoint = <&vin0ep>;
-			};
-		};
-	};
-
-	hdmi@39 {
-		compatible = "adi,adv7511w";
-		reg = <0x39>;
-		interrupt-parent = <&gpio3>;
-		interrupts = <29 IRQ_TYPE_LEVEL_LOW>;
-
-		adi,input-depth = <8>;
-		adi,input-colorspace = "rgb";
-		adi,input-clock = "1x";
-		adi,input-style = <1>;
-		adi,input-justification = "evenly";
-
-		ports {
-			#address-cells = <1>;
-			#size-cells = <0>;
-
-			port@0 {
-				reg = <0>;
-				adv7511_in: endpoint {
-					remote-endpoint = <&du_out_rgb>;
-				};
-			};
-
-			port@1 {
-				reg = <1>;
-				adv7511_out: endpoint {
-					remote-endpoint = <&hdmi_con>;
-				};
-			};
-		};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };
 
@@ -478,13 +405,10 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
 &cpu0 {
 	cpu0-supply = <&vdd_dvfs>;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* composite video input */
 &vin0 {
 	status = "okay";
@@ -492,12 +416,6 @@
 	pinctrl-names = "default";
 
 	port {
-<<<<<<< HEAD
-=======
-		#address-cells = <1>;
-		#size-cells = <0>;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		vin0ep: endpoint {
 			remote-endpoint = <&adv7180>;
 			bus-width = <8>;
@@ -550,18 +468,9 @@
 	pinctrl-names = "default";
 	status = "okay";
 
-<<<<<<< HEAD
 	clocks = <&cpg CPG_MOD 724>, <&cpg CPG_MOD 723>,
 		 <&x3_clk>, <&x16_clk>;
 	clock-names = "du.0", "du.1", "dclkin.0", "dclkin.1";
-=======
-	clocks = <&mstp7_clks R8A7791_CLK_DU0>,
-		 <&mstp7_clks R8A7791_CLK_DU1>,
-		 <&mstp7_clks R8A7791_CLK_LVDS0>,
-		 <&x3_clk>, <&x16_clk>;
-	clock-names = "du.0", "du.1", "lvds.0",
-		      "dclkin.0", "dclkin.1";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ports {
 		port@0 {
@@ -572,7 +481,6 @@
 	};
 };
 
-<<<<<<< HEAD
 &lvds0 {
 	status = "okay";
 
@@ -584,8 +492,6 @@
 	};
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &rcar_sound {
 	pinctrl-0 = <&ssi_pins &audio_clk_pins>;
 	pinctrl-names = "default";
@@ -602,14 +508,11 @@
 	};
 };
 
-<<<<<<< HEAD
 &rwdt {
 	timeout-sec = <60>;
 	status = "okay";
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &ssi1 {
 	shared-pin;
 };

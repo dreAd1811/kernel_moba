@@ -142,12 +142,7 @@ iser_prepare_write_cmd(struct iscsi_task *task,
 			hdr->write_va = cpu_to_be64(mem_reg->sge.addr + unsol_sz);
 		}
 
-<<<<<<< HEAD
 		iser_dbg("Cmd itt:%d, WRITE tags, RKEY:%#.4X VA:%#llX + unsol:%d\n",
-=======
-		iser_dbg("Cmd itt:%d, WRITE tags, RKEY:%#.4X "
-			 "VA:%#llX + unsol:%d\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 task->itt, mem_reg->rkey,
 			 (unsigned long long)mem_reg->sge.addr, unsol_sz);
 	}
@@ -256,25 +251,16 @@ int iser_alloc_rx_descriptors(struct iser_conn *iser_conn,
 	iser_conn->min_posted_rx = iser_conn->qp_max_recv_dtos >> 2;
 
 	if (device->reg_ops->alloc_reg_res(ib_conn, session->scsi_cmds_max,
-<<<<<<< HEAD
 					   iser_conn->pages_per_mr))
-=======
-					   iser_conn->scsi_sg_tablesize))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto create_rdma_reg_res_failed;
 
 	if (iser_alloc_login_buf(iser_conn))
 		goto alloc_login_buf_fail;
 
 	iser_conn->num_rx_descs = session->cmds_max;
-<<<<<<< HEAD
 	iser_conn->rx_descs = kmalloc_array(iser_conn->num_rx_descs,
 					    sizeof(struct iser_rx_desc),
 					    GFP_KERNEL);
-=======
-	iser_conn->rx_descs = kmalloc(iser_conn->num_rx_descs *
-				sizeof(struct iser_rx_desc), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!iser_conn->rx_descs)
 		goto rx_desc_alloc_fail;
 
@@ -450,11 +436,7 @@ int iser_send_data_out(struct iscsi_conn *conn,
 {
 	struct iser_conn *iser_conn = conn->dd_data;
 	struct iscsi_iser_task *iser_task = task->dd_data;
-<<<<<<< HEAD
 	struct iser_tx_desc *tx_desc;
-=======
-	struct iser_tx_desc *tx_desc = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct iser_mem_reg *mem_reg;
 	unsigned long buf_offset;
 	unsigned long data_seg_len;
@@ -470,15 +452,8 @@ int iser_send_data_out(struct iscsi_conn *conn,
 		 __func__,(int)itt,(int)data_seg_len,(int)buf_offset);
 
 	tx_desc = kmem_cache_zalloc(ig.desc_cache, GFP_ATOMIC);
-<<<<<<< HEAD
 	if (!tx_desc)
 		return -ENOMEM;
-=======
-	if (tx_desc == NULL) {
-		iser_err("Failed to alloc desc for post dataout\n");
-		return -ENOMEM;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tx_desc->type = ISCSI_TX_DATAOUT;
 	tx_desc->cqe.done = iser_dataout_comp;
@@ -498,12 +473,7 @@ int iser_send_data_out(struct iscsi_conn *conn,
 	tx_desc->num_sge = 2;
 
 	if (buf_offset + data_seg_len > iser_task->data[ISER_DIR_OUT].data_len) {
-<<<<<<< HEAD
 		iser_err("Offset:%ld & DSL:%ld in Data-Out inconsistent with total len:%ld, itt:%d\n",
-=======
-		iser_err("Offset:%ld & DSL:%ld in Data-Out "
-			 "inconsistent with total len:%ld, itt:%d\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 buf_offset, data_seg_len,
 			 iser_task->data[ISER_DIR_OUT].data_len, itt);
 		err = -EINVAL;
@@ -619,7 +589,6 @@ void iser_login_rsp(struct ib_cq *cq, struct ib_wc *wc)
 	ib_conn->post_recv_buf_count--;
 }
 
-<<<<<<< HEAD
 static inline void
 iser_inv_desc(struct iser_fr_desc *desc, u32 rkey)
 {
@@ -627,21 +596,6 @@ iser_inv_desc(struct iser_fr_desc *desc, u32 rkey)
 		desc->rsc.mr_valid = 0;
 	else if (likely(rkey == desc->pi_ctx->sig_mr->rkey))
 		desc->pi_ctx->sig_mr_valid = 0;
-=======
-static inline int
-iser_inv_desc(struct iser_fr_desc *desc, u32 rkey)
-{
-	if (likely(rkey == desc->rsc.mr->rkey)) {
-		desc->rsc.mr_valid = 0;
-	} else if (likely(desc->pi_ctx && rkey == desc->pi_ctx->sig_mr->rkey)) {
-		desc->pi_ctx->sig_mr_valid = 0;
-	} else {
-		iser_err("Bogus remote invalidation for rkey %#x\n", rkey);
-		return -EINVAL;
-	}
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int
@@ -657,13 +611,8 @@ iser_check_remote_inv(struct iser_conn *iser_conn,
 			 iser_conn, rkey);
 
 		if (unlikely(!iser_conn->snd_w_inv)) {
-<<<<<<< HEAD
 			iser_err("conn %p: unexpected remote invalidation, terminating connection\n",
 				 iser_conn);
-=======
-			iser_err("conn %p: unexpected remote invalidation, "
-				 "terminating connection\n", iser_conn);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EPROTO;
 		}
 
@@ -674,22 +623,12 @@ iser_check_remote_inv(struct iser_conn *iser_conn,
 
 			if (iser_task->dir[ISER_DIR_IN]) {
 				desc = iser_task->rdma_reg[ISER_DIR_IN].mem_h;
-<<<<<<< HEAD
 				iser_inv_desc(desc, rkey);
-=======
-				if (unlikely(iser_inv_desc(desc, rkey)))
-					return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 
 			if (iser_task->dir[ISER_DIR_OUT]) {
 				desc = iser_task->rdma_reg[ISER_DIR_OUT].mem_h;
-<<<<<<< HEAD
 				iser_inv_desc(desc, rkey);
-=======
-				if (unlikely(iser_inv_desc(desc, rkey)))
-					return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		} else {
 			iser_err("failed to get task for itt=%d\n", hdr->itt);

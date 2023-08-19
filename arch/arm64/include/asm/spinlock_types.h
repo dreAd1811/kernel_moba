@@ -20,26 +20,7 @@
 # error "please don't include this file directly"
 #endif
 
-<<<<<<< HEAD
 #include <asm-generic/qspinlock_types.h>
-=======
-#include <linux/types.h>
-
-#define TICKET_SHIFT	16
-
-typedef struct {
-#ifdef __AARCH64EB__
-	u16 next;
-	u16 owner;
-#else
-	u16 owner;
-	u16 next;
-#endif
-} __aligned(4) arch_spinlock_t;
-
-#define __ARCH_SPIN_LOCK_UNLOCKED	{ 0 , 0 }
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm-generic/qrwlock_types.h>
 
 #endif

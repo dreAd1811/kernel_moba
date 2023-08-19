@@ -64,11 +64,7 @@ static int ds1803_read_raw(struct iio_dev *indio_dev,
 	struct ds1803_data *data = iio_priv(indio_dev);
 	int pot = chan->channel;
 	int ret;
-<<<<<<< HEAD
 	u8 result[ARRAY_SIZE(ds1803_channels)];
-=======
-	u8 result[indio_dev->num_channels];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (mask) {
 	case IIO_CHAN_INFO_RAW:
@@ -114,10 +110,6 @@ static int ds1803_write_raw(struct iio_dev *indio_dev,
 static const struct iio_info ds1803_info = {
 	.read_raw = ds1803_read_raw,
 	.write_raw = ds1803_write_raw,
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int ds1803_probe(struct i2c_client *client,

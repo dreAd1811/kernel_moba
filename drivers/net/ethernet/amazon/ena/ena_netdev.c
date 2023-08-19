@@ -75,12 +75,9 @@ static struct workqueue_struct *ena_wq;
 MODULE_DEVICE_TABLE(pci, ena_pci_tbl);
 
 static int ena_rss_init_default(struct ena_adapter *adapter);
-<<<<<<< HEAD
 static void check_for_admin_com_state(struct ena_adapter *adapter);
 static void ena_destroy_device(struct ena_adapter *adapter, bool graceful);
 static int ena_restore_device(struct ena_adapter *adapter);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void ena_tx_timeout(struct net_device *dev)
 {
@@ -164,11 +161,8 @@ static void ena_init_io_rings_common(struct ena_adapter *adapter,
 	ring->per_napi_packets = 0;
 	ring->per_napi_bytes = 0;
 	ring->cpu = 0;
-<<<<<<< HEAD
 	ring->first_interrupt = false;
 	ring->no_interrupt_event_cnt = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64_stats_init(&ring->syncp);
 }
 
@@ -528,11 +522,7 @@ static int ena_refill_rx_bufs(struct ena_ring *rx_ring, u32 num)
 
 
 		rc = ena_alloc_rx_page(rx_ring, rx_info,
-<<<<<<< HEAD
 				       GFP_ATOMIC | __GFP_COMP);
-=======
-				       __GFP_COLD | GFP_ATOMIC | __GFP_COMP);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (unlikely(rc < 0)) {
 			netif_warn(rx_ring->adapter, rx_err, rx_ring->netdev,
 				   "failed to alloc buffer for rx queue %d\n",
@@ -561,19 +551,9 @@ static int ena_refill_rx_bufs(struct ena_ring *rx_ring, u32 num)
 			    rx_ring->qid, i, num);
 	}
 
-<<<<<<< HEAD
 	/* ena_com_write_sq_doorbell issues a wmb() */
 	if (likely(i))
 		ena_com_write_sq_doorbell(rx_ring->ena_com_io_sq);
-=======
-	if (likely(i)) {
-		/* Add memory barrier to make sure the desc were written before
-		 * issue a doorbell
-		 */
-		wmb();
-		ena_com_write_sq_doorbell(rx_ring->ena_com_io_sq);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rx_ring->next_to_use = next_to_use;
 
@@ -1217,13 +1197,8 @@ static int ena_io_poll(struct napi_struct *napi, int budget)
 	struct ena_napi *ena_napi = container_of(napi, struct ena_napi, napi);
 	struct ena_ring *tx_ring, *rx_ring;
 
-<<<<<<< HEAD
 	u32 tx_work_done;
 	u32 rx_work_done;
-=======
-	int tx_work_done;
-	int rx_work_done = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int tx_budget;
 	int napi_comp_call = 0;
 	int ret;
@@ -1240,15 +1215,7 @@ static int ena_io_poll(struct napi_struct *napi, int budget)
 	}
 
 	tx_work_done = ena_clean_tx_irq(tx_ring, tx_budget);
-<<<<<<< HEAD
 	rx_work_done = ena_clean_rx_irq(rx_ring, napi, budget);
-=======
-	/* On netpoll the budget is zero and the handler should only clean the
-	 * tx completions.
-	 */
-	if (likely(budget))
-		rx_work_done = ena_clean_rx_irq(rx_ring, napi, budget);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* If the device is about to reset or down, avoid unmask
 	 * the interrupt and return 0 so NAPI won't reschedule
@@ -1308,12 +1275,9 @@ static irqreturn_t ena_intr_msix_io(int irq, void *data)
 {
 	struct ena_napi *ena_napi = data;
 
-<<<<<<< HEAD
 	ena_napi->tx_ring->first_interrupt = true;
 	ena_napi->rx_ring->first_interrupt = true;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	napi_schedule_irqoff(&ena_napi->napi);
 
 	return IRQ_HANDLED;
@@ -1832,10 +1796,6 @@ err_setup_rx:
 err_setup_tx:
 	ena_free_io_irq(adapter);
 err_req_irq:
-<<<<<<< HEAD
-=======
-	ena_del_napi(adapter);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return rc;
 }
@@ -1933,7 +1893,6 @@ static int ena_close(struct net_device *netdev)
 	if (test_bit(ENA_FLAG_DEV_UP, &adapter->flags))
 		ena_down(adapter);
 
-<<<<<<< HEAD
 	/* Check for device status and issue reset if needed*/
 	check_for_admin_com_state(adapter);
 	if (unlikely(test_bit(ENA_FLAG_TRIGGER_RESET, &adapter->flags))) {
@@ -1945,8 +1904,6 @@ static int ena_close(struct net_device *netdev)
 		ena_restore_device(adapter);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -2155,15 +2112,6 @@ static netdev_tx_t ena_start_xmit(struct sk_buff *skb, struct net_device *dev)
 	tx_ring->next_to_use = ENA_TX_RING_IDX_NEXT(next_to_use,
 		tx_ring->ring_size);
 
-<<<<<<< HEAD
-=======
-	/* This WMB is aimed to:
-	 * 1 - perform smp barrier before reading next_to_completion
-	 * 2 - make sure the desc were written before trigger DB
-	 */
-	wmb();
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* stop the queue when no more space available, the packet can have up
 	 * to sgl_size + 2. one for the meta descriptor and one for header
 	 * (if the header is larger than tx_max_header_size).
@@ -2182,18 +2130,11 @@ static netdev_tx_t ena_start_xmit(struct sk_buff *skb, struct net_device *dev)
 		 * stop the queue but meanwhile clean_tx_irq updates
 		 * next_to_completion and terminates.
 		 * The queue will remain stopped forever.
-<<<<<<< HEAD
 		 * To solve this issue add a mb() to make sure that
 		 * netif_tx_stop_queue() write is vissible before checking if
 		 * there is additional space in the queue.
 		 */
 		smp_mb();
-=======
-		 * To solve this issue this function perform rmb, check
-		 * the wakeup condition and wake up the queue if needed.
-		 */
-		smp_rmb();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (ena_com_sq_empty_space(tx_ring->ena_com_io_sq)
 				> ENA_TX_WAKEUP_THRESH) {
@@ -2205,13 +2146,9 @@ static netdev_tx_t ena_start_xmit(struct sk_buff *skb, struct net_device *dev)
 	}
 
 	if (netif_xmit_stopped(txq) || !skb->xmit_more) {
-<<<<<<< HEAD
 		/* trigger the dma engine. ena_com_write_sq_doorbell()
 		 * has a mb
 		 */
-=======
-		/* trigger the dma engine */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ena_com_write_sq_doorbell(tx_ring->ena_com_io_sq);
 		u64_stats_update_begin(&tx_ring->syncp);
 		tx_ring->tx_stats.doorbells++;
@@ -2253,33 +2190,9 @@ error_drop_packet:
 	return NETDEV_TX_OK;
 }
 
-<<<<<<< HEAD
 static u16 ena_select_queue(struct net_device *dev, struct sk_buff *skb,
 			    struct net_device *sb_dev,
 			    select_queue_fallback_t fallback)
-=======
-#ifdef CONFIG_NET_POLL_CONTROLLER
-static void ena_netpoll(struct net_device *netdev)
-{
-	struct ena_adapter *adapter = netdev_priv(netdev);
-	int i;
-
-	/* Dont schedule NAPI if the driver is in the middle of reset
-	 * or netdev is down.
-	 */
-
-	if (!test_bit(ENA_FLAG_DEV_UP, &adapter->flags) ||
-	    test_bit(ENA_FLAG_TRIGGER_RESET, &adapter->flags))
-		return;
-
-	for (i = 0; i < adapter->num_queues; i++)
-		napi_schedule(&adapter->ena_napi[i].napi);
-}
-#endif /* CONFIG_NET_POLL_CONTROLLER */
-
-static u16 ena_select_queue(struct net_device *dev, struct sk_buff *skb,
-			    void *accel_priv, select_queue_fallback_t fallback)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u16 qid;
 	/* we suspect that this is good for in--kernel network services that
@@ -2289,11 +2202,7 @@ static u16 ena_select_queue(struct net_device *dev, struct sk_buff *skb,
 	if (skb_rx_queue_recorded(skb))
 		qid = skb_get_rx_queue(skb);
 	else
-<<<<<<< HEAD
 		qid = fallback(dev, skb, NULL);
-=======
-		qid = fallback(dev, skb);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return qid;
 }
@@ -2446,48 +2355,8 @@ static const struct net_device_ops ena_netdev_ops = {
 	.ndo_change_mtu		= ena_change_mtu,
 	.ndo_set_mac_address	= NULL,
 	.ndo_validate_addr	= eth_validate_addr,
-<<<<<<< HEAD
 };
 
-=======
-#ifdef CONFIG_NET_POLL_CONTROLLER
-	.ndo_poll_controller	= ena_netpoll,
-#endif /* CONFIG_NET_POLL_CONTROLLER */
-};
-
-static void ena_device_io_suspend(struct work_struct *work)
-{
-	struct ena_adapter *adapter =
-		container_of(work, struct ena_adapter, suspend_io_task);
-	struct net_device *netdev = adapter->netdev;
-
-	/* ena_napi_disable_all disables only the IO handling.
-	 * We are still subject to AENQ keep alive watchdog.
-	 */
-	u64_stats_update_begin(&adapter->syncp);
-	adapter->dev_stats.io_suspend++;
-	u64_stats_update_begin(&adapter->syncp);
-	ena_napi_disable_all(adapter);
-	netif_tx_lock(netdev);
-	netif_device_detach(netdev);
-	netif_tx_unlock(netdev);
-}
-
-static void ena_device_io_resume(struct work_struct *work)
-{
-	struct ena_adapter *adapter =
-		container_of(work, struct ena_adapter, resume_io_task);
-	struct net_device *netdev = adapter->netdev;
-
-	u64_stats_update_begin(&adapter->syncp);
-	adapter->dev_stats.io_resume++;
-	u64_stats_update_end(&adapter->syncp);
-
-	netif_device_attach(netdev);
-	ena_napi_enable_all(adapter);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ena_device_validate_params(struct ena_adapter *adapter,
 				      struct ena_com_dev_get_features_ctx *get_feat_ctx)
 {
@@ -2656,7 +2525,6 @@ err_disable_msix:
 	return rc;
 }
 
-<<<<<<< HEAD
 static void ena_destroy_device(struct ena_adapter *adapter, bool graceful)
 {
 	struct net_device *netdev = adapter->netdev;
@@ -2665,30 +2533,11 @@ static void ena_destroy_device(struct ena_adapter *adapter, bool graceful)
 
 	if (!test_bit(ENA_FLAG_DEVICE_RUNNING, &adapter->flags))
 		return;
-=======
-static void ena_fw_reset_device(struct work_struct *work)
-{
-	struct ena_com_dev_get_features_ctx get_feat_ctx;
-	struct ena_adapter *adapter =
-		container_of(work, struct ena_adapter, reset_task);
-	struct net_device *netdev = adapter->netdev;
-	struct ena_com_dev *ena_dev = adapter->ena_dev;
-	struct pci_dev *pdev = adapter->pdev;
-	bool dev_up, wd_state;
-	int rc;
-
-	if (unlikely(!test_bit(ENA_FLAG_TRIGGER_RESET, &adapter->flags))) {
-		dev_err(&pdev->dev,
-			"device reset schedule while reset bit is off\n");
-		return;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	netif_carrier_off(netdev);
 
 	del_timer_sync(&adapter->timer_service);
 
-<<<<<<< HEAD
 	dev_up = test_bit(ENA_FLAG_DEV_UP, &adapter->flags);
 	adapter->dev_up_before_reset = dev_up;
 
@@ -2705,18 +2554,6 @@ static void ena_fw_reset_device(struct work_struct *work)
 	 */
 	if (!(test_bit(ENA_FLAG_TRIGGER_RESET, &adapter->flags) && dev_up))
 		ena_com_dev_reset(adapter->ena_dev, adapter->reset_reason);
-=======
-	rtnl_lock();
-
-	dev_up = test_bit(ENA_FLAG_DEV_UP, &adapter->flags);
-	ena_com_set_admin_running_state(ena_dev, false);
-
-	/* After calling ena_close the tx queues and the napi
-	 * are disabled so no one can interfere or touch the
-	 * data structures
-	 */
-	ena_close(netdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ena_free_mgmnt_irq(adapter);
 
@@ -2731,7 +2568,6 @@ static void ena_fw_reset_device(struct work_struct *work)
 	ena_com_mmio_reg_read_request_destroy(ena_dev);
 
 	adapter->reset_reason = ENA_REGS_RESET_NORMAL;
-<<<<<<< HEAD
 
 	clear_bit(ENA_FLAG_TRIGGER_RESET, &adapter->flags);
 	clear_bit(ENA_FLAG_DEVICE_RUNNING, &adapter->flags);
@@ -2746,12 +2582,6 @@ static int ena_restore_device(struct ena_adapter *adapter)
 	int rc;
 
 	set_bit(ENA_FLAG_ONGOING_RESET, &adapter->flags);
-=======
-	clear_bit(ENA_FLAG_TRIGGER_RESET, &adapter->flags);
-
-	/* Finish with the destroy part. Start the init part */
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rc = ena_device_init(ena_dev, adapter->pdev, &get_feat_ctx, &wd_state);
 	if (rc) {
 		dev_err(&pdev->dev, "Can not initialize device\n");
@@ -2772,11 +2602,7 @@ static int ena_restore_device(struct ena_adapter *adapter)
 		goto err_device_destroy;
 	}
 	/* If the interface was up before the reset bring it up */
-<<<<<<< HEAD
 	if (adapter->dev_up_before_reset) {
-=======
-	if (dev_up) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rc = ena_up(adapter);
 		if (rc) {
 			dev_err(&pdev->dev, "Failed to create I/O queues\n");
@@ -2784,7 +2610,6 @@ static int ena_restore_device(struct ena_adapter *adapter)
 		}
 	}
 
-<<<<<<< HEAD
 	set_bit(ENA_FLAG_DEVICE_RUNNING, &adapter->flags);
 
 	clear_bit(ENA_FLAG_ONGOING_RESET, &adapter->flags);
@@ -2795,20 +2620,10 @@ static int ena_restore_device(struct ena_adapter *adapter)
 	dev_err(&pdev->dev, "Device reset completed successfully\n");
 
 	return rc;
-=======
-	mod_timer(&adapter->timer_service, round_jiffies(jiffies + HZ));
-
-	rtnl_unlock();
-
-	dev_err(&pdev->dev, "Device reset completed successfully\n");
-
-	return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_disable_msix:
 	ena_free_mgmnt_irq(adapter);
 	ena_disable_msix(adapter);
 err_device_destroy:
-<<<<<<< HEAD
 	ena_com_abort_admin_commands(ena_dev);
 	ena_com_wait_for_abort_completion(ena_dev);
 	ena_com_admin_destroy(ena_dev);
@@ -2866,34 +2681,15 @@ static int check_for_rx_interrupt_queue(struct ena_adapter *adapter,
 
 static int check_missing_comp_in_tx_queue(struct ena_adapter *adapter,
 					  struct ena_ring *tx_ring)
-=======
-	ena_com_admin_destroy(ena_dev);
-err:
-	rtnl_unlock();
-
-	clear_bit(ENA_FLAG_DEVICE_RUNNING, &adapter->flags);
-
-	dev_err(&pdev->dev,
-		"Reset attempt failed. Can not reset the device\n");
-}
-
-static int check_missing_comp_in_queue(struct ena_adapter *adapter,
-				       struct ena_ring *tx_ring)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ena_tx_buffer *tx_buf;
 	unsigned long last_jiffies;
 	u32 missed_tx = 0;
-<<<<<<< HEAD
 	int i, rc = 0;
-=======
-	int i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < tx_ring->ring_size; i++) {
 		tx_buf = &tx_ring->tx_buffer_info[i];
 		last_jiffies = tx_buf->last_jiffies;
-<<<<<<< HEAD
 
 		if (last_jiffies == 0)
 			/* no pending Tx at this location */
@@ -2915,10 +2711,6 @@ static int check_missing_comp_in_queue(struct ena_adapter *adapter,
 
 		if (unlikely(time_is_before_jiffies(last_jiffies +
 				adapter->missing_tx_completion_to))) {
-=======
-		if (unlikely(last_jiffies &&
-			     time_is_before_jiffies(last_jiffies + adapter->missing_tx_completion_to))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (!tx_buf->print_once)
 				netif_notice(adapter, tx_err, adapter->netdev,
 					     "Found a Tx that wasn't completed on time, qid %d, index %d.\n",
@@ -2926,7 +2718,6 @@ static int check_missing_comp_in_queue(struct ena_adapter *adapter,
 
 			tx_buf->print_once = 1;
 			missed_tx++;
-<<<<<<< HEAD
 		}
 	}
 
@@ -2952,28 +2743,6 @@ static void check_for_missing_completions(struct ena_adapter *adapter)
 {
 	struct ena_ring *tx_ring;
 	struct ena_ring *rx_ring;
-=======
-
-			if (unlikely(missed_tx > adapter->missing_tx_completion_threshold)) {
-				netif_err(adapter, tx_err, adapter->netdev,
-					  "The number of lost tx completions is above the threshold (%d > %d). Reset the device\n",
-					  missed_tx,
-					  adapter->missing_tx_completion_threshold);
-				adapter->reset_reason =
-					ENA_REGS_RESET_MISS_TX_CMPL;
-				set_bit(ENA_FLAG_TRIGGER_RESET, &adapter->flags);
-				return -EIO;
-			}
-		}
-	}
-
-	return 0;
-}
-
-static void check_for_missing_tx_completions(struct ena_adapter *adapter)
-{
-	struct ena_ring *tx_ring;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i, budget, rc;
 
 	/* Make sure the driver doesn't turn the device in other process */
@@ -2992,7 +2761,6 @@ static void check_for_missing_tx_completions(struct ena_adapter *adapter)
 
 	for (i = adapter->last_monitored_tx_qid; i < adapter->num_queues; i++) {
 		tx_ring = &adapter->tx_ring[i];
-<<<<<<< HEAD
 		rx_ring = &adapter->rx_ring[i];
 
 		rc = check_missing_comp_in_tx_queue(adapter, tx_ring);
@@ -3000,10 +2768,6 @@ static void check_for_missing_tx_completions(struct ena_adapter *adapter)
 			return;
 
 		rc = check_for_rx_interrupt_queue(adapter, rx_ring);
-=======
-
-		rc = check_missing_comp_in_queue(adapter, tx_ring);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (unlikely(rc))
 			return;
 
@@ -3078,13 +2842,8 @@ static void check_for_missing_keep_alive(struct ena_adapter *adapter)
 	if (adapter->keep_alive_timeout == ENA_HW_HINTS_NO_TIMEOUT)
 		return;
 
-<<<<<<< HEAD
 	keep_alive_expired = round_jiffies(adapter->last_keep_alive_jiffies +
 					   adapter->keep_alive_timeout);
-=======
-	keep_alive_expired = adapter->last_keep_alive_jiffies +
-			     adapter->keep_alive_timeout;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(time_is_before_jiffies(keep_alive_expired))) {
 		netif_err(adapter, drv, adapter->netdev,
 			  "Keep alive watchdog timeout.\n");
@@ -3156,15 +2915,9 @@ static void ena_update_host_info(struct ena_admin_host_info *host_info,
 		(netdev->features & GENMASK_ULL(63, 32)) >> 32;
 }
 
-<<<<<<< HEAD
 static void ena_timer_service(struct timer_list *t)
 {
 	struct ena_adapter *adapter = from_timer(adapter, t, timer_service);
-=======
-static void ena_timer_service(unsigned long data)
-{
-	struct ena_adapter *adapter = (struct ena_adapter *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 *debug_area = adapter->ena_dev->host_attr.debug_area_virt_addr;
 	struct ena_admin_host_info *host_info =
 		adapter->ena_dev->host_attr.host_info;
@@ -3173,11 +2926,7 @@ static void ena_timer_service(unsigned long data)
 
 	check_for_admin_com_state(adapter);
 
-<<<<<<< HEAD
 	check_for_missing_completions(adapter);
-=======
-	check_for_missing_tx_completions(adapter);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	check_for_empty_rx_ring(adapter);
 
@@ -3196,11 +2945,7 @@ static void ena_timer_service(unsigned long data)
 	}
 
 	/* Reset the timer */
-<<<<<<< HEAD
 	mod_timer(&adapter->timer_service, jiffies + HZ);
-=======
-	mod_timer(&adapter->timer_service, round_jiffies(jiffies + HZ));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int ena_calc_io_queue_num(struct pci_dev *pdev,
@@ -3573,11 +3318,6 @@ static int ena_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 		goto err_rss;
 	}
 
-<<<<<<< HEAD
-=======
-	INIT_WORK(&adapter->suspend_io_task, ena_device_io_suspend);
-	INIT_WORK(&adapter->resume_io_task, ena_device_io_resume);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INIT_WORK(&adapter->reset_task, ena_fw_reset_device);
 
 	adapter->last_keep_alive_jiffies = jiffies;
@@ -3587,12 +3327,7 @@ static int ena_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 
 	ena_update_hints(adapter, &get_feat_ctx.hw_hints);
 
-<<<<<<< HEAD
 	timer_setup(&adapter->timer_service, ena_timer_service, 0);
-=======
-	setup_timer(&adapter->timer_service, ena_timer_service,
-		    (unsigned long)adapter);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mod_timer(&adapter->timer_service, round_jiffies(jiffies + HZ));
 
 	dev_info(&pdev->dev, "%s found at mem %lx, mac addr %pM Queues %d\n",
@@ -3615,11 +3350,6 @@ err_free_msix:
 err_worker_destroy:
 	ena_com_destroy_interrupt_moderation(ena_dev);
 	del_timer(&adapter->timer_service);
-<<<<<<< HEAD
-=======
-	cancel_work_sync(&adapter->suspend_io_task);
-	cancel_work_sync(&adapter->resume_io_task);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_netdev_destroy:
 	free_netdev(netdev);
 err_device_destroy:
@@ -3635,35 +3365,6 @@ err_disable_device:
 }
 
 /*****************************************************************************/
-<<<<<<< HEAD
-=======
-static int ena_sriov_configure(struct pci_dev *dev, int numvfs)
-{
-	int rc;
-
-	if (numvfs > 0) {
-		rc = pci_enable_sriov(dev, numvfs);
-		if (rc != 0) {
-			dev_err(&dev->dev,
-				"pci_enable_sriov failed to enable: %d vfs with the error: %d\n",
-				numvfs, rc);
-			return rc;
-		}
-
-		return numvfs;
-	}
-
-	if (numvfs == 0) {
-		pci_disable_sriov(dev);
-		return 0;
-	}
-
-	return -EINVAL;
-}
-
-/*****************************************************************************/
-/*****************************************************************************/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* ena_remove - Device Removal Routine
  * @pdev: PCI device information struct
@@ -3686,16 +3387,10 @@ static void ena_remove(struct pci_dev *pdev)
 		netdev->rx_cpu_rmap = NULL;
 	}
 #endif /* CONFIG_RFS_ACCEL */
-<<<<<<< HEAD
-=======
-
-	unregister_netdev(netdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	del_timer_sync(&adapter->timer_service);
 
 	cancel_work_sync(&adapter->reset_task);
 
-<<<<<<< HEAD
 	unregister_netdev(netdev);
 
 	/* If the device is running then we want to make sure the device will be
@@ -3710,30 +3405,6 @@ static void ena_remove(struct pci_dev *pdev)
 
 	free_netdev(netdev);
 
-=======
-	cancel_work_sync(&adapter->suspend_io_task);
-
-	cancel_work_sync(&adapter->resume_io_task);
-
-	/* Reset the device only if the device is running. */
-	if (test_bit(ENA_FLAG_DEVICE_RUNNING, &adapter->flags))
-		ena_com_dev_reset(ena_dev, adapter->reset_reason);
-
-	ena_free_mgmnt_irq(adapter);
-
-	ena_disable_msix(adapter);
-
-	free_netdev(netdev);
-
-	ena_com_mmio_reg_read_request_destroy(ena_dev);
-
-	ena_com_abort_admin_commands(ena_dev);
-
-	ena_com_wait_for_abort_completion(ena_dev);
-
-	ena_com_admin_destroy(ena_dev);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ena_com_rss_destroy(ena_dev);
 
 	ena_com_delete_debug_area(ena_dev);
@@ -3749,7 +3420,6 @@ static void ena_remove(struct pci_dev *pdev)
 	vfree(ena_dev);
 }
 
-<<<<<<< HEAD
 #ifdef CONFIG_PM
 /* ena_suspend - PM suspend callback
  * @pdev: PCI device information struct
@@ -3794,22 +3464,16 @@ static int ena_resume(struct pci_dev *pdev)
 }
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct pci_driver ena_pci_driver = {
 	.name		= DRV_MODULE_NAME,
 	.id_table	= ena_pci_tbl,
 	.probe		= ena_probe,
 	.remove		= ena_remove,
-<<<<<<< HEAD
 #ifdef CONFIG_PM
 	.suspend    = ena_suspend,
 	.resume     = ena_resume,
 #endif
 	.sriov_configure = pci_sriov_configure_simple,
-=======
-	.sriov_configure = ena_sriov_configure,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int __init ena_init(void)
@@ -3853,12 +3517,8 @@ static void ena_update_on_link_change(void *adapter_data,
 	if (status) {
 		netdev_dbg(adapter->netdev, "%s\n", __func__);
 		set_bit(ENA_FLAG_LINK_UP, &adapter->flags);
-<<<<<<< HEAD
 		if (!test_bit(ENA_FLAG_ONGOING_RESET, &adapter->flags))
 			netif_carrier_on(adapter->netdev);
-=======
-		netif_carrier_on(adapter->netdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		clear_bit(ENA_FLAG_LINK_UP, &adapter->flags);
 		netif_carrier_off(adapter->netdev);
@@ -3894,19 +3554,6 @@ static void ena_notification(void *adapter_data,
 	     ENA_ADMIN_NOTIFICATION);
 
 	switch (aenq_e->aenq_common_desc.syndrom) {
-<<<<<<< HEAD
-=======
-	case ENA_ADMIN_SUSPEND:
-		/* Suspend just the IO queues.
-		 * We deliberately don't suspend admin so the timer and
-		 * the keep_alive events should remain.
-		 */
-		queue_work(ena_wq, &adapter->suspend_io_task);
-		break;
-	case ENA_ADMIN_RESUME:
-		queue_work(ena_wq, &adapter->resume_io_task);
-		break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case ENA_ADMIN_UPDATE_HINTS:
 		hints = (struct ena_admin_ena_hw_hints *)
 			(&aenq_e->inline_data_w4);

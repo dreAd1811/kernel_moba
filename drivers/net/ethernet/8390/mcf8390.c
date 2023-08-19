@@ -38,10 +38,6 @@ static const char version[] =
 
 #define NESM_START_PG	0x40	/* First page of TX buffer */
 #define NESM_STOP_PG	0x80	/* Last page +1 of RX ring */
-<<<<<<< HEAD
-=======
-static u32 mcf8390_msg_enable;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef NE2000_ODDOFFSET
 /*
@@ -410,10 +406,6 @@ static int mcf8390_init(struct net_device *dev)
 static int mcf8390_probe(struct platform_device *pdev)
 {
 	struct net_device *dev;
-<<<<<<< HEAD
-=======
-	struct ei_device *ei_local;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct resource *mem, *irq;
 	resource_size_t msize;
 	int ret;
@@ -441,11 +433,6 @@ static int mcf8390_probe(struct platform_device *pdev)
 
 	SET_NETDEV_DEV(dev, &pdev->dev);
 	platform_set_drvdata(pdev, dev);
-<<<<<<< HEAD
-=======
-	ei_local = netdev_priv(dev);
-	ei_local->msg_enable = mcf8390_msg_enable;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev->irq = irq->start;
 	dev->base_addr = mem->start;

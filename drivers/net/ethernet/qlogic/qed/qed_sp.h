@@ -400,7 +400,6 @@ struct qed_sp_init_data {
 	struct qed_spq_comp_cb *p_comp_data;
 };
 
-<<<<<<< HEAD
 /**
  * @brief Returns a SPQ entry to the pool / frees the entry if allocated.
  *        Should be called on in error flows after initializing the SPQ entry
@@ -412,8 +411,6 @@ struct qed_sp_init_data {
 void qed_sp_destroy_request(struct qed_hwfn *p_hwfn,
 			    struct qed_spq_entry *p_ent);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int qed_sp_init_request(struct qed_hwfn *p_hwfn,
 			struct qed_spq_entry **pp_ent,
 			u8 cmd,
@@ -434,10 +431,6 @@ int qed_sp_init_request(struct qed_hwfn *p_hwfn,
  * @param p_hwfn
  * @param p_ptt
  * @param p_tunn
-<<<<<<< HEAD
-=======
- * @param mode
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @param allow_npar_tx_switch
  *
  * @return int
@@ -446,11 +439,7 @@ int qed_sp_init_request(struct qed_hwfn *p_hwfn,
 int qed_sp_pf_start(struct qed_hwfn *p_hwfn,
 		    struct qed_ptt *p_ptt,
 		    struct qed_tunnel_info *p_tunn,
-<<<<<<< HEAD
 		    bool allow_npar_tx_switch);
-=======
-		    enum qed_mf_mode mode, bool allow_npar_tx_switch);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * @brief qed_sp_pf_update - PF Function Update Ramrod
@@ -488,7 +477,6 @@ int qed_sp_pf_update_stag(struct qed_hwfn *p_hwfn);
  * @return int
  */
 
-<<<<<<< HEAD
 /**
  * @brief qed_sp_pf_update_ufp - PF ufp update Ramrod
  *
@@ -498,8 +486,6 @@ int qed_sp_pf_update_stag(struct qed_hwfn *p_hwfn);
  */
 int qed_sp_pf_update_ufp(struct qed_hwfn *p_hwfn);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int qed_sp_pf_stop(struct qed_hwfn *p_hwfn);
 
 int qed_sp_pf_update_tunn_cfg(struct qed_hwfn *p_hwfn,

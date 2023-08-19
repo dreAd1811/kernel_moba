@@ -399,15 +399,9 @@ static void __init gemini_cc_init(struct device_node *np)
 	int ret;
 	int i;
 
-<<<<<<< HEAD
 	gemini_clk_data = kzalloc(struct_size(gemini_clk_data, hws,
 					      GEMINI_NUM_CLKS),
 				  GFP_KERNEL);
-=======
-	gemini_clk_data = kzalloc(sizeof(*gemini_clk_data) +
-			sizeof(*gemini_clk_data->hws) * GEMINI_NUM_CLKS,
-			GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!gemini_clk_data)
 		return;
 

@@ -74,15 +74,11 @@ MODULE_PARM_DESC(timeout, "Transfer Timeout in msec (default: 3000), "
 
 static bool noverify;
 module_param(noverify, bool, S_IRUGO | S_IWUSR);
-<<<<<<< HEAD
 MODULE_PARM_DESC(noverify, "Disable data verification (default: verify)");
 
 static bool norandom;
 module_param(norandom, bool, 0644);
 MODULE_PARM_DESC(norandom, "Disable random offset setup (default: random)");
-=======
-MODULE_PARM_DESC(noverify, "Disable random data setup and verification");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static bool verbose;
 module_param(verbose, bool, S_IRUGO | S_IWUSR);
@@ -111,10 +107,7 @@ struct dmatest_params {
 	unsigned int	pq_sources;
 	int		timeout;
 	bool		noverify;
-<<<<<<< HEAD
 	bool		norandom;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -475,11 +468,8 @@ static int dmatest_func(void *data)
 	unsigned long long	total_len = 0;
 	u8			align = 0;
 	bool			is_memset = false;
-<<<<<<< HEAD
 	dma_addr_t		*srcs;
 	dma_addr_t		*dma_pq;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	set_freezable();
 
@@ -563,7 +553,6 @@ static int dmatest_func(void *data)
 
 	set_user_nice(current, 10);
 
-<<<<<<< HEAD
 	srcs = kcalloc(src_cnt, sizeof(dma_addr_t), GFP_KERNEL);
 	if (!srcs)
 		goto err_dstbuf;
@@ -572,26 +561,16 @@ static int dmatest_func(void *data)
 	if (!dma_pq)
 		goto err_srcs_array;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * src and dst buffers are freed by ourselves below
 	 */
 	flags = DMA_CTRL_ACK | DMA_PREP_INTERRUPT;
 
 	ktime = ktime_get();
-<<<<<<< HEAD
 	while (!kthread_should_stop()
 	       && !(params->iterations && total_tests >= params->iterations)) {
 		struct dma_async_tx_descriptor *tx = NULL;
 		struct dmaengine_unmap_data *um;
-=======
-	while (!(kthread_should_stop() ||
-	       (params->iterations && total_tests >= params->iterations))) {
-		struct dma_async_tx_descriptor *tx = NULL;
-		struct dmaengine_unmap_data *um;
-		dma_addr_t srcs[src_cnt];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dma_addr_t *dsts;
 		unsigned int src_off, dst_off, len;
 
@@ -610,11 +589,7 @@ static int dmatest_func(void *data)
 			break;
 		}
 
-<<<<<<< HEAD
 		if (params->norandom)
-=======
-		if (params->noverify)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			len = params->buf_size;
 		else
 			len = dmatest_random() % params->buf_size + 1;
@@ -625,31 +600,19 @@ static int dmatest_func(void *data)
 
 		total_len += len;
 
-<<<<<<< HEAD
 		if (params->norandom) {
 			src_off = 0;
 			dst_off = 0;
 		} else {
-=======
-		if (params->noverify) {
-			src_off = 0;
-			dst_off = 0;
-		} else {
-			start = ktime_get();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			src_off = dmatest_random() % (params->buf_size - len + 1);
 			dst_off = dmatest_random() % (params->buf_size - len + 1);
 
 			src_off = (src_off >> align) << align;
 			dst_off = (dst_off >> align) << align;
-<<<<<<< HEAD
 		}
 
 		if (!params->noverify) {
 			start = ktime_get();
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dmatest_init_srcs(thread->srcs, src_off, len,
 					  params->buf_size, is_memset);
 			dmatest_init_dsts(thread->dsts, dst_off, len,
@@ -718,11 +681,6 @@ static int dmatest_func(void *data)
 						      srcs, src_cnt,
 						      len, flags);
 		else if (thread->type == DMA_PQ) {
-<<<<<<< HEAD
-=======
-			dma_addr_t dma_pq[dst_cnt];
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			for (i = 0; i < dst_cnt; i++)
 				dma_pq[i] = dsts[i] + dst_off;
 			tx = dev->device_prep_dma_pq(chan, dma_pq, srcs,
@@ -824,12 +782,9 @@ error_unmap_continue:
 	runtime = ktime_to_us(ktime);
 
 	ret = 0;
-<<<<<<< HEAD
 	kfree(dma_pq);
 err_srcs_array:
 	kfree(srcs);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_dstbuf:
 	for (i = 0; thread->udsts[i]; i++)
 		kfree(thread->udsts[i]);
@@ -1033,10 +988,7 @@ static void run_threaded_test(struct dmatest_info *info)
 	params->pq_sources = pq_sources;
 	params->timeout = timeout;
 	params->noverify = noverify;
-<<<<<<< HEAD
 	params->norandom = norandom;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	request_channels(info, DMA_MEMCPY);
 	request_channels(info, DMA_MEMSET);

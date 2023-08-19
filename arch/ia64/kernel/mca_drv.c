@@ -350,12 +350,8 @@ init_record_index_pools(void)
 	/* - 3 - */
 	slidx_pool.max_idx = (rec_max_size/sect_min_size) * 2 + 1;
 	slidx_pool.buffer =
-<<<<<<< HEAD
 		kmalloc_array(slidx_pool.max_idx, sizeof(slidx_list_t),
 			      GFP_KERNEL);
-=======
-		kmalloc(slidx_pool.max_idx * sizeof(slidx_list_t), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return slidx_pool.buffer ? 0 : -ENOMEM;
 }

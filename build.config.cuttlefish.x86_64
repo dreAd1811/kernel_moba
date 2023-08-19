@@ -1,9 +1,5 @@
 . ${ROOT_DIR}/common/build.config.common
 . ${ROOT_DIR}/common/build.config.x86_64
 
-<<<<<<< HEAD
-=======
-LZ4_RAMDISK=1
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 DEFCONFIG=x86_64_cuttlefish_defconfig
 POST_DEFCONFIG_CMDS="check_defconfig"

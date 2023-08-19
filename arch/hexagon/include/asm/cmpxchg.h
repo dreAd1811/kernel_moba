@@ -44,11 +44,7 @@ static inline unsigned long __xchg(unsigned long x, volatile void *ptr,
 	__asm__ __volatile__ (
 	"1:	%0 = memw_locked(%1);\n"    /*  load into retval */
 	"	memw_locked(%1,P0) = %2;\n" /*  store into memory */
-<<<<<<< HEAD
 	"	if !P0 jump 1b;\n"
-=======
-	"	if (!P0) jump 1b;\n"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	: "=&r" (retval)
 	: "r" (ptr), "r" (x)
 	: "memory", "p0"

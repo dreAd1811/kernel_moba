@@ -64,11 +64,6 @@ static char version[] =
 
 #include "lib8390.c"
 
-<<<<<<< HEAD
-=======
-static u32 etherh_msg_enable;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct etherh_priv {
 	void __iomem	*ioc_fast;
 	void __iomem	*memc;
@@ -505,21 +500,6 @@ etherh_close(struct net_device *dev)
 }
 
 /*
-<<<<<<< HEAD
-=======
- * Initialisation
- */
-
-static void __init etherh_banner(void)
-{
-	static int version_printed;
-
-	if ((etherh_msg_enable & NETIF_MSG_DRV) && (version_printed++ == 0))
-		pr_info("%s", version);
-}
-
-/*
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Read the ethernet address string from the on board rom.
  * This is an ascii string...
  */
@@ -677,11 +657,6 @@ etherh_probe(struct expansion_card *ec, const struct ecard_id *id)
 	struct etherh_priv *eh;
 	int ret;
 
-<<<<<<< HEAD
-=======
-	etherh_banner();
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = ecard_request_resources(ec);
 	if (ret)
 		goto out;
@@ -766,10 +741,6 @@ etherh_probe(struct expansion_card *ec, const struct ecard_id *id)
 	ei_local->block_output  = etherh_block_output;
 	ei_local->get_8390_hdr  = etherh_get_header;
 	ei_local->interface_num = 0;
-<<<<<<< HEAD
-=======
-	ei_local->msg_enable = etherh_msg_enable;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	etherh_reset(dev);
 	__NS8390_init(dev, 0);

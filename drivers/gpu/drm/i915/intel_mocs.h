@@ -52,11 +52,7 @@
 #include <drm/drmP.h>
 #include "i915_drv.h"
 
-<<<<<<< HEAD
 int intel_rcs_context_init_mocs(struct i915_request *rq);
-=======
-int intel_rcs_context_init_mocs(struct drm_i915_gem_request *req);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void intel_mocs_init_l3cc_table(struct drm_i915_private *dev_priv);
 int intel_mocs_init_engine(struct intel_engine_cs *engine);
 

@@ -272,28 +272,10 @@ int wcn36xx_start_tx(struct wcn36xx *wcn,
 	bool is_low = ieee80211_is_data(hdr->frame_control);
 	bool bcast = is_broadcast_ether_addr(hdr->addr1) ||
 		is_multicast_ether_addr(hdr->addr1);
-<<<<<<< HEAD
 	struct wcn36xx_tx_bd bd;
 	int ret;
 
 	memset(&bd, 0, sizeof(bd));
-=======
-	struct wcn36xx_tx_bd *bd = wcn36xx_dxe_get_next_bd(wcn, is_low);
-
-	if (!bd) {
-		/*
-		 * TX DXE are used in pairs. One for the BD and one for the
-		 * actual frame. The BD DXE's has a preallocated buffer while
-		 * the skb ones does not. If this isn't true something is really
-		 * wierd. TODO: Recover from this situation
-		 */
-
-		wcn36xx_err("bd address may not be NULL for BD DXE\n");
-		return -EINVAL;
-	}
-
-	memset(bd, 0, sizeof(*bd));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	wcn36xx_dbg(WCN36XX_DBG_TX,
 		    "tx skb %p len %d fc %04x sn %d %s %s\n",
@@ -303,17 +285,10 @@ int wcn36xx_start_tx(struct wcn36xx *wcn,
 
 	wcn36xx_dbg_dump(WCN36XX_DBG_TX_DUMP, "", skb->data, skb->len);
 
-<<<<<<< HEAD
 	bd.dpu_rf = WCN36XX_BMU_WQ_TX;
 
 	bd.tx_comp = !!(info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS);
 	if (bd.tx_comp) {
-=======
-	bd->dpu_rf = WCN36XX_BMU_WQ_TX;
-
-	bd->tx_comp = !!(info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS);
-	if (bd->tx_comp) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		wcn36xx_dbg(WCN36XX_DBG_DXE, "TX_ACK status requested\n");
 		spin_lock_irqsave(&wcn->dxe_lock, flags);
 		if (wcn->tx_ack_skb) {
@@ -335,7 +310,6 @@ int wcn36xx_start_tx(struct wcn36xx *wcn,
 
 	/* Data frames served first*/
 	if (is_low)
-<<<<<<< HEAD
 		wcn36xx_set_tx_data(&bd, wcn, &vif_priv, sta_priv, skb, bcast);
 	else
 		/* MGMT and CTRL frames are handeld here*/
@@ -357,15 +331,4 @@ int wcn36xx_start_tx(struct wcn36xx *wcn,
 	}
 
 	return ret;
-=======
-		wcn36xx_set_tx_data(bd, wcn, &vif_priv, sta_priv, skb, bcast);
-	else
-		/* MGMT and CTRL frames are handeld here*/
-		wcn36xx_set_tx_mgmt(bd, wcn, &vif_priv, skb, bcast);
-
-	buff_to_be((u32 *)bd, sizeof(*bd)/sizeof(u32));
-	bd->tx_bd_sign = 0xbdbdbdbd;
-
-	return wcn36xx_dxe_tx_frame(wcn, vif_priv, skb, is_low);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

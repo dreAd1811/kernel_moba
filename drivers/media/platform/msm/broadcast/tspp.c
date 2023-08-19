@@ -1,19 +1,6 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2011-2019, The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2011-2018, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/module.h>        /* Just for modules */
@@ -40,11 +27,7 @@
 #include <linux/wait.h>          /* wait() macros, sleeping */
 #include <linux/bitops.h>        /* BIT() macro */
 #include <linux/regulator/consumer.h>
-<<<<<<< HEAD
 #include <dt-bindings/regulator/qcom,rpmh-regulator-levels.h>
-=======
-#include <dt-bindings/regulator/qcom,rpmh-regulator.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/msm-sps.h>       /* BAM stuff */
 #include <linux/timer.h>         /* Timer services */
 #include <linux/jiffies.h>       /* Jiffies counter */
@@ -601,21 +584,12 @@ static void tspp_sps_complete_cb(struct sps_event_notify *notify)
 	tasklet_schedule(&pdev->tlet);
 }
 
-<<<<<<< HEAD
 static void tspp_expiration_timer(struct timer_list *t)
 {
 	struct tspp_channel *channel = from_timer(channel, t, expiration_timer);
 
 	if (channel && channel->pdev)
 		tasklet_schedule(&channel->pdev->tlet);
-=======
-static void tspp_expiration_timer(unsigned long data)
-{
-	struct tspp_device *pdev = (struct tspp_device *)data;
-
-	if (pdev)
-		tasklet_schedule(&pdev->tlet);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*** tasklet ***/
@@ -853,11 +827,7 @@ static int tspp_clock_start(struct tspp_device *device)
 
 	if (device->tsif_vreg) {
 		rc = regulator_set_voltage(device->tsif_vreg,
-<<<<<<< HEAD
 					0,
-=======
-					RPMH_REGULATOR_LEVEL_OFF,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					RPMH_REGULATOR_LEVEL_MAX);
 		if (rc) {
 			pr_err("%s: unable to set CX voltage\n", __func__);
@@ -873,11 +843,7 @@ static int tspp_clock_start(struct tspp_device *device)
 
 		if (device->tsif_vreg) {
 			regulator_set_voltage(device->tsif_vreg,
-<<<<<<< HEAD
 					0,
-=======
-					RPMH_REGULATOR_LEVEL_OFF,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					RPMH_REGULATOR_LEVEL_MAX);
 		}
 
@@ -893,11 +859,7 @@ static int tspp_clock_start(struct tspp_device *device)
 		clk_disable_unprepare(device->tsif_pclk);
 		if (device->tsif_vreg) {
 			regulator_set_voltage(device->tsif_vreg,
-<<<<<<< HEAD
 					0,
-=======
-					RPMH_REGULATOR_LEVEL_OFF,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					RPMH_REGULATOR_LEVEL_MAX);
 		}
 
@@ -922,11 +884,7 @@ static void tspp_clock_stop(struct tspp_device *device)
 
 	if (device->tsif_vreg) {
 		rc = regulator_set_voltage(device->tsif_vreg,
-<<<<<<< HEAD
 					0,
-=======
-					RPMH_REGULATOR_LEVEL_OFF,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					RPMH_REGULATOR_LEVEL_MAX);
 		if (rc)
 			pr_err("%s: unable to set CX voltage\n", __func__);
@@ -1081,52 +1039,9 @@ static void tspp_free_key_entry(int entry)
 	tspp_key_entry &= ~(1 << entry);
 }
 
-<<<<<<< HEAD
 
 static void tspp_iommu_release_iomapping(struct tspp_device *device)
 {
-=======
-static int tspp_iommu_init(struct tspp_device *device)
-{
-	struct dma_iommu_mapping *iommu_map;
-	struct device_node *node;
-	int s1_bypass;
-	int ret;
-
-	node = device->pdev->dev.of_node;
-
-	iommu_map = arm_iommu_create_mapping(&platform_bus_type,
-						TSPP_SMMU_IOVA_START,
-						TSPP_SMMU_IOVA_SIZE);
-	if (IS_ERR(iommu_map)) {
-		pr_err("%s: iommu_create_mapping failure\n", __func__);
-		return PTR_ERR(iommu_map);
-	}
-
-	s1_bypass = of_property_read_bool(node, "qcom,smmu-s1-bypass");
-	ret = iommu_domain_set_attr(iommu_map->domain,
-			DOMAIN_ATTR_S1_BYPASS, &s1_bypass);
-	if (ret) {
-		pr_err("%s: IOMMU set s1 bypass (%d) failed (%d)\n", __func__,
-			s1_bypass, ret);
-	}
-
-	if (arm_iommu_attach_device(&device->pdev->dev, iommu_map)) {
-		pr_err("%s: can't arm_iommu_attach_device\n", __func__);
-		arm_iommu_release_mapping(iommu_map);
-		return -EIO;
-	}
-
-	device->iommu_mapping = iommu_map;
-	return 0;
-}
-
-static void tspp_iommu_release_iomapping(struct tspp_device *device)
-{
-	if (device->iommu_mapping)
-		arm_iommu_release_mapping(device->iommu_mapping);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	device->iommu_mapping = NULL;
 }
 
@@ -1785,13 +1700,7 @@ int tspp_open_channel(u32 dev, u32 channel_id)
 		goto err_event;
 	}
 
-<<<<<<< HEAD
 	timer_setup(&channel->expiration_timer, tspp_expiration_timer, 0);
-=======
-	init_timer(&channel->expiration_timer);
-	channel->expiration_timer.function = tspp_expiration_timer;
-	channel->expiration_timer.data = (unsigned long)pdev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	channel->expiration_timer.expires = 0xffffffffL;
 
 	rc = pm_runtime_get(&pdev->pdev->dev);
@@ -2862,11 +2771,7 @@ static int debugfs_iomem_x32_get(void *data, u64 *val)
 	return 0;
 }
 
-<<<<<<< HEAD
 DEFINE_DEBUGFS_ATTRIBUTE(fops_iomem_x32, debugfs_iomem_x32_get,
-=======
-DEFINE_SIMPLE_ATTRIBUTE(fops_iomem_x32, debugfs_iomem_x32_get,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			debugfs_iomem_x32_set, "0x%08llx");
 
 static void tsif_debugfs_init(struct tspp_tsif_device *tsif_device,
@@ -3068,11 +2973,7 @@ static int msm_tspp_probe(struct platform_device *pdev)
 	} else {
 		/* Set an initial voltage and enable the regulator */
 		rc = regulator_set_voltage(device->tsif_vreg,
-<<<<<<< HEAD
 					0,
-=======
-					RPMH_REGULATOR_LEVEL_OFF,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					RPMH_REGULATOR_LEVEL_MAX);
 		if (rc) {
 			pr_err("%s: Unable to set CX voltage\n", __func__);
@@ -3167,12 +3068,6 @@ static int msm_tspp_probe(struct platform_device *pdev)
 		goto err_irq;
 	device->req_irqs = false;
 
-<<<<<<< HEAD
-=======
-	if (tspp_iommu_init(device))
-		goto err_iommu;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	device->tts_source = TSIF_TTS_TCR;
 	for (i = 0; i < TSPP_TSIF_INSTANCES; i++)
 		device->tsif[i].tts_source = device->tts_source;
@@ -3243,11 +3138,7 @@ err_clock:
 	tspp_debugfs_exit(device);
 	for (i = 0; i < TSPP_TSIF_INSTANCES; i++)
 		tsif_debugfs_exit(&device->tsif[i]);
-<<<<<<< HEAD
 
-=======
-err_iommu:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tspp_iommu_release_iomapping(device);
 err_irq:
 	iounmap(device->bam_props.virt_addr);
@@ -3320,10 +3211,6 @@ static int msm_tspp_remove(struct platform_device *pdev)
 		regulator_disable(device->tsif_vreg);
 
 	tspp_iommu_release_iomapping(device);
-<<<<<<< HEAD
-=======
-	arm_iommu_detach_device(&pdev->dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pm_runtime_disable(&pdev->dev);
 

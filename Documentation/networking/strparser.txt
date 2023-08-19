@@ -48,11 +48,7 @@ void strp_pause(struct strparser *strp)
      Temporarily pause a stream parser. Message parsing is suspended
      and no new messages are delivered to the upper layer.
 
-<<<<<<< HEAD
 void strp_unpause(struct strparser *strp)
-=======
-void strp_pause(struct strparser *strp)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
      Unpause a paused stream parser.
 

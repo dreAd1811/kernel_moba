@@ -45,7 +45,6 @@ static inline int hugepd_ok(hugepd_t hpd)
 {
 	return 0;
 }
-<<<<<<< HEAD
 
 #define is_hugepd(pdep)			0
 
@@ -57,10 +56,6 @@ static inline int get_hugepd_cache_index(int index)
 	BUG();
 }
 
-=======
-#define is_hugepd(pdep)			0
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else /* !CONFIG_HUGETLB_PAGE */
 static inline int pmd_huge(pmd_t pmd) { return 0; }
 static inline int pud_huge(pud_t pud) { return 0; }

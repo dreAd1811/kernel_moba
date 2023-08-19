@@ -26,11 +26,7 @@
 #include <linux/string.h>
 
 static DEFINE_MUTEX(crypto_default_null_skcipher_lock);
-<<<<<<< HEAD
 static struct crypto_sync_skcipher *crypto_default_null_skcipher;
-=======
-static struct crypto_skcipher *crypto_default_null_skcipher;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int crypto_default_null_skcipher_refcnt;
 
 static int null_compress(struct crypto_tfm *tfm, const u8 *src,
@@ -108,10 +104,6 @@ static struct shash_alg digest_null = {
 	.final  		=	null_final,
 	.base			=	{
 		.cra_name		=	"digest_null",
-<<<<<<< HEAD
-=======
-		.cra_flags		=	CRYPTO_ALG_TYPE_SHASH,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.cra_blocksize		=	NULL_BLOCK_SIZE,
 		.cra_module		=	THIS_MODULE,
 	}
@@ -160,26 +152,15 @@ MODULE_ALIAS_CRYPTO("compress_null");
 MODULE_ALIAS_CRYPTO("digest_null");
 MODULE_ALIAS_CRYPTO("cipher_null");
 
-<<<<<<< HEAD
 struct crypto_sync_skcipher *crypto_get_default_null_skcipher(void)
 {
 	struct crypto_sync_skcipher *tfm;
-=======
-struct crypto_skcipher *crypto_get_default_null_skcipher(void)
-{
-	struct crypto_skcipher *tfm;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&crypto_default_null_skcipher_lock);
 	tfm = crypto_default_null_skcipher;
 
 	if (!tfm) {
-<<<<<<< HEAD
 		tfm = crypto_alloc_sync_skcipher("ecb(cipher_null)", 0, 0);
-=======
-		tfm = crypto_alloc_skcipher("ecb(cipher_null)",
-					    0, CRYPTO_ALG_ASYNC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (IS_ERR(tfm))
 			goto unlock;
 
@@ -199,11 +180,7 @@ void crypto_put_default_null_skcipher(void)
 {
 	mutex_lock(&crypto_default_null_skcipher_lock);
 	if (!--crypto_default_null_skcipher_refcnt) {
-<<<<<<< HEAD
 		crypto_free_sync_skcipher(crypto_default_null_skcipher);
-=======
-		crypto_free_skcipher(crypto_default_null_skcipher);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		crypto_default_null_skcipher = NULL;
 	}
 	mutex_unlock(&crypto_default_null_skcipher_lock);

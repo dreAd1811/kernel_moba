@@ -290,13 +290,8 @@ static int sd_start(struct gspca_dev *gspca_dev)
 	set_par(gspca_dev, 0x01000000);
 	set_par(gspca_dev, 0x01000000);
 	if (gspca_dev->usb_err >= 0)
-<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_STREAM, "camera started alt: 0x%02x\n",
 			  gspca_dev->alt);
-=======
-		PDEBUG(D_STREAM, "camera started alt: 0x%02x",
-				gspca_dev->alt);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	return gspca_dev->usb_err;
 }
@@ -317,11 +312,7 @@ static void sd_stopN(struct gspca_dev *gspca_dev)
 	reg_w(gspca_dev, 0x0640, 0);
 	reg_w(gspca_dev, 0x0650, 0);
 	reg_w(gspca_dev, 0x0660, 0);
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_STREAM, "camera stopped\n");
-=======
-	PDEBUG(D_STREAM, "camera stopped");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void sd_pkt_scan(struct gspca_dev *gspca_dev,

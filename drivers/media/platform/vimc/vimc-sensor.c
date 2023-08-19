@@ -17,7 +17,6 @@
 
 #include <linux/component.h>
 #include <linux/module.h>
-<<<<<<< HEAD
 #include <linux/mod_devicetable.h>
 #include <linux/platform_device.h>
 #include <linux/v4l2-mediabus.h>
@@ -26,13 +25,6 @@
 #include <media/v4l2-event.h>
 #include <media/v4l2-subdev.h>
 #include <media/tpg/v4l2-tpg.h>
-=======
-#include <linux/platform_device.h>
-#include <linux/v4l2-mediabus.h>
-#include <linux/vmalloc.h>
-#include <media/v4l2-subdev.h>
-#include <media/v4l2-tpg.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "vimc-common.h"
 
@@ -47,10 +39,7 @@ struct vimc_sen_device {
 	u8 *frame;
 	/* The active format */
 	struct v4l2_mbus_framefmt mbus_format;
-<<<<<<< HEAD
 	struct v4l2_ctrl_handler hdl;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct v4l2_mbus_framefmt fmt_default = {
@@ -215,7 +204,6 @@ static void *vimc_sen_process_frame(struct vimc_ent_device *ved,
 {
 	struct vimc_sen_device *vsen = container_of(ved, struct vimc_sen_device,
 						    ved);
-<<<<<<< HEAD
 	const struct vimc_pix_map *vpix;
 	unsigned int frame_size;
 
@@ -223,8 +211,6 @@ static void *vimc_sen_process_frame(struct vimc_ent_device *ved,
 	vpix = vimc_pix_map_by_code(vsen->mbus_format.code);
 	frame_size = vsen->mbus_format.width * vpix->bpp *
 		     vsen->mbus_format.height;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tpg_fill_plane_buffer(&vsen->tpg, 0, 0, vsen->frame);
 	return vsen->frame;
@@ -269,29 +255,22 @@ static int vimc_sen_s_stream(struct v4l2_subdev *sd, int enable)
 	return 0;
 }
 
-<<<<<<< HEAD
 static struct v4l2_subdev_core_ops vimc_sen_core_ops = {
 	.log_status = v4l2_ctrl_subdev_log_status,
 	.subscribe_event = v4l2_ctrl_subdev_subscribe_event,
 	.unsubscribe_event = v4l2_event_subdev_unsubscribe,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct v4l2_subdev_video_ops vimc_sen_video_ops = {
 	.s_stream = vimc_sen_s_stream,
 };
 
 static const struct v4l2_subdev_ops vimc_sen_ops = {
-<<<<<<< HEAD
 	.core = &vimc_sen_core_ops,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.pad = &vimc_sen_pad_ops,
 	.video = &vimc_sen_video_ops,
 };
 
-<<<<<<< HEAD
 static int vimc_sen_s_ctrl(struct v4l2_ctrl *ctrl)
 {
 	struct vimc_sen_device *vsen =
@@ -317,8 +296,6 @@ static const struct v4l2_ctrl_ops vimc_sen_ctrl_ops = {
 	.s_ctrl = vimc_sen_s_ctrl,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void vimc_sen_comp_unbind(struct device *comp, struct device *master,
 				 void *master_data)
 {
@@ -327,15 +304,11 @@ static void vimc_sen_comp_unbind(struct device *comp, struct device *master,
 				container_of(ved, struct vimc_sen_device, ved);
 
 	vimc_ent_sd_unregister(ved, &vsen->sd);
-<<<<<<< HEAD
 	v4l2_ctrl_handler_free(&vsen->hdl);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tpg_free(&vsen->tpg);
 	kfree(vsen);
 }
 
-<<<<<<< HEAD
 /* Image Processing Controls */
 static const struct v4l2_ctrl_config vimc_sen_ctrl_class = {
 	.flags = V4L2_CTRL_FLAG_READ_ONLY | V4L2_CTRL_FLAG_WRITE_ONLY,
@@ -353,8 +326,6 @@ static const struct v4l2_ctrl_config vimc_sen_ctrl_test_pattern = {
 	.qmenu = tpg_pattern_strings,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int vimc_sen_comp_bind(struct device *comp, struct device *master,
 			      void *master_data)
 {
@@ -368,7 +339,6 @@ static int vimc_sen_comp_bind(struct device *comp, struct device *master,
 	if (!vsen)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	v4l2_ctrl_handler_init(&vsen->hdl, 4);
 
 	v4l2_ctrl_new_custom(&vsen->hdl, &vimc_sen_ctrl_class, NULL);
@@ -391,16 +361,6 @@ static int vimc_sen_comp_bind(struct device *comp, struct device *master,
 				   &vimc_sen_ops);
 	if (ret)
 		goto err_free_hdl;
-=======
-	/* Initialize ved and sd */
-	ret = vimc_ent_sd_register(&vsen->ved, &vsen->sd, v4l2_dev,
-				   pdata->entity_name,
-				   MEDIA_ENT_F_ATV_DECODER, 1,
-				   (const unsigned long[1]) {MEDIA_PAD_FL_SOURCE},
-				   &vimc_sen_ops);
-	if (ret)
-		goto err_free_vsen;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vsen->ved.process_frame = vimc_sen_process_frame;
 	dev_set_drvdata(comp, &vsen->ved);
@@ -420,11 +380,8 @@ static int vimc_sen_comp_bind(struct device *comp, struct device *master,
 
 err_unregister_ent_sd:
 	vimc_ent_sd_unregister(&vsen->ved,  &vsen->sd);
-<<<<<<< HEAD
 err_free_hdl:
 	v4l2_ctrl_handler_free(&vsen->hdl);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_free_vsen:
 	kfree(vsen);
 

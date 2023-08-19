@@ -251,22 +251,14 @@ static void c_can_pci_remove(struct pci_dev *pdev)
 	pci_disable_device(pdev);
 }
 
-<<<<<<< HEAD
 static const struct c_can_pci_data c_can_sta2x11= {
-=======
-static struct c_can_pci_data c_can_sta2x11= {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.type = BOSCH_C_CAN,
 	.reg_align = C_CAN_REG_ALIGN_32,
 	.freq = 52000000, /* 52 Mhz */
 	.bar = 0,
 };
 
-<<<<<<< HEAD
 static const struct c_can_pci_data c_can_pch = {
-=======
-static struct c_can_pci_data c_can_pch = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.type = BOSCH_C_CAN,
 	.reg_align = C_CAN_REG_32,
 	.freq = 50000000, /* 50 MHz */

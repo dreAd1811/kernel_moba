@@ -1,53 +1,7 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 /*
  * Copyright (C) 2016 Marvell Technology Group Ltd.
  *
-=======
-/*
- * Copyright (C) 2016 Marvell Technology Group Ltd.
- *
- * This file is dual-licensed: you can use it either under the terms
- * of the GPLv2 or the X11 license, at your option. Note that this dual
- * licensing only applies to this file, and not this project as a
- * whole.
- *
- *  a) This library is free software; you can redistribute it and/or
- *     modify it under the terms of the GNU General Public License as
- *     published by the Free Software Foundation; either version 2 of the
- *     License, or (at your option) any later version.
- *
- *     This library is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
- *
- * Or, alternatively,
- *
- *  b) Permission is hereby granted, free of charge, to any person
- *     obtaining a copy of this software and associated documentation
- *     files (the "Software"), to deal in the Software without
- *     restriction, including without limitation the rights to use,
- *     copy, modify, merge, publish, distribute, sublicense, and/or
- *     sell copies of the Software, and to permit persons to whom the
- *     Software is furnished to do so, subject to the following
- *     conditions:
- *
- *     The above copyright notice and this permission notice shall be
- *     included in all copies or substantial portions of the Software.
- *
- *     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- *     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
- *     OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
- *     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- *     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- *     OTHER DEALINGS IN THE SOFTWARE.
- */
-
-/*
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Device Tree file for Marvell Armada 7040 Development board platform
  */
 
@@ -63,31 +17,18 @@
 		stdout-path = "serial0:115200n8";
 	};
 
-<<<<<<< HEAD
 	memory@0 {
-=======
-	memory@00000000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		device_type = "memory";
 		reg = <0x0 0x0 0x0 0x80000000>;
 	};
 
 	aliases {
-<<<<<<< HEAD
 		ethernet0 = &cp0_eth0;
 		ethernet1 = &cp0_eth1;
 		ethernet2 = &cp0_eth2;
 	};
 
 	cp0_reg_usb3_0_vbus: cp0-usb3-0-vbus {
-=======
-		ethernet0 = &cpm_eth0;
-		ethernet1 = &cpm_eth1;
-		ethernet2 = &cpm_eth2;
-	};
-
-	cpm_reg_usb3_0_vbus: cpm-usb3-0-vbus {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "regulator-fixed";
 		regulator-name = "usb3h0-vbus";
 		regulator-min-microvolt = <5000000>;
@@ -96,11 +37,7 @@
 		gpio = <&expander0 0 GPIO_ACTIVE_HIGH>;
 	};
 
-<<<<<<< HEAD
 	cp0_reg_usb3_1_vbus: cp0-usb3-1-vbus {
-=======
-	cpm_reg_usb3_1_vbus: cpm-usb3-1-vbus {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "regulator-fixed";
 		regulator-name = "usb3h1-vbus";
 		regulator-min-microvolt = <5000000>;
@@ -109,7 +46,6 @@
 		gpio = <&expander0 1 GPIO_ACTIVE_HIGH>;
 	};
 
-<<<<<<< HEAD
 	cp0_usb3_0_phy: cp0-usb3-0-phy {
 		compatible = "usb-nop-xceiv";
 		vcc-supply = <&cp0_reg_usb3_0_vbus>;
@@ -118,16 +54,6 @@
 	cp0_usb3_1_phy: cp0-usb3-1-phy {
 		compatible = "usb-nop-xceiv";
 		vcc-supply = <&cp0_reg_usb3_1_vbus>;
-=======
-	cpm_usb3_0_phy: cpm-usb3-0-phy {
-		compatible = "usb-nop-xceiv";
-		vcc-supply = <&cpm_reg_usb3_0_vbus>;
-	};
-
-	cpm_usb3_1_phy: cpm-usb3-1-phy {
-		compatible = "usb-nop-xceiv";
-		vcc-supply = <&cpm_reg_usb3_1_vbus>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };
 
@@ -165,7 +91,6 @@
 
 &uart0 {
 	status = "okay";
-<<<<<<< HEAD
 	pinctrl-0 = <&uart0_pins>;
 	pinctrl-names = "default";
 };
@@ -176,16 +101,6 @@
 };
 
 &cp0_i2c0 {
-=======
-};
-
-
-&cpm_pcie2 {
-	status = "okay";
-};
-
-&cpm_i2c0 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 	clock-frequency = <100000>;
 
@@ -195,7 +110,6 @@
 		gpio-controller;
 		#gpio-cells = <2>;
 		reg = <0x21>;
-<<<<<<< HEAD
 		/*
 		 * IO0_0: USB3_PWR_EN0	IO1_0: USB_3_1_Dev_Detect
 		 * IO0_1: USB3_PWR_EN1	IO1_1: USB2_1_current_limit
@@ -252,12 +166,6 @@
 };
 
 &cp0_spi1 {
-=======
-	};
-};
-
-&cpm_spi1 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 
 	spi-flash@0 {
@@ -285,7 +193,6 @@
 	};
 };
 
-<<<<<<< HEAD
 &cp0_sata0 {
 	status = "okay";
 };
@@ -297,19 +204,6 @@
 
 &cp0_usb3_1 {
 	usb-phy = <&cp0_usb3_1_phy>;
-=======
-&cpm_sata0 {
-	status = "okay";
-};
-
-&cpm_usb3_0 {
-	usb-phy = <&cpm_usb3_0_phy>;
-	status = "okay";
-};
-
-&cpm_usb3_1 {
-	usb-phy = <&cpm_usb3_1_phy>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
@@ -320,7 +214,6 @@
 	non-removable;
 };
 
-<<<<<<< HEAD
 &cp0_sdhci0 {
 	status = "okay";
 	bus-width = <4>;
@@ -329,16 +222,6 @@
 };
 
 &cp0_mdio {
-=======
-&cpm_sdhci0 {
-	status = "okay";
-	bus-width = <4>;
-	no-1-8-v;
-	non-removable;
-};
-
-&cpm_mdio {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 
 	phy0: ethernet-phy@0 {
@@ -349,7 +232,6 @@
 	};
 };
 
-<<<<<<< HEAD
 &cp0_ethernet {
 	status = "okay";
 };
@@ -377,19 +259,6 @@
 };
 
 &cp0_eth2 {
-=======
-&cpm_ethernet {
-	status = "okay";
-};
-
-&cpm_eth1 {
-	status = "okay";
-	phy = <&phy0>;
-	phy-mode = "sgmii";
-};
-
-&cpm_eth2 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 	phy = <&phy1>;
 	phy-mode = "rgmii-id";

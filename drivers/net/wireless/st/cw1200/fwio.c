@@ -323,21 +323,12 @@ int cw1200_load_firmware(struct cw1200_common *priv)
 		goto out;
 	}
 
-<<<<<<< HEAD
 	priv->hw_type = cw1200_get_hw_type(val32, &major_revision);
 	if (priv->hw_type < 0) {
 		pr_err("Can't deduce hardware type.\n");
 		ret = -ENOTSUPP;
 		goto out;
 	}
-=======
-	ret = cw1200_get_hw_type(val32, &major_revision);
-	if (ret < 0) {
-		pr_err("Can't deduce hardware type.\n");
-		goto out;
-	}
-	priv->hw_type = ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Set DPLL Reg value, and read back to confirm writes work */
 	ret = cw1200_reg_write_32(priv, ST90TDS_TSET_GEN_R_W_REG_ID,

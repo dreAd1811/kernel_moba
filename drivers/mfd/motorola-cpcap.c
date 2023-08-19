@@ -173,15 +173,9 @@ static int cpcap_init_irq(struct cpcap_ddata *cpcap)
 	int ret;
 
 	cpcap->irqs = devm_kzalloc(&cpcap->spi->dev,
-<<<<<<< HEAD
 				   array3_size(sizeof(*cpcap->irqs),
 					       CPCAP_NR_IRQ_REG_BANKS,
 					       cpcap->regmap_conf->val_bits),
-=======
-				   sizeof(*cpcap->irqs) *
-				   CPCAP_NR_IRQ_REG_BANKS *
-				   cpcap->regmap_conf->val_bits,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   GFP_KERNEL);
 	if (!cpcap->irqs)
 		return -ENOMEM;

@@ -21,26 +21,18 @@
  *
  */
 
-<<<<<<< HEAD
 #include <linux/acpi.h>
 #include <linux/errno.h>
 #include <linux/gpio/consumer.h>
 #include <linux/kernel.h>
 #include <linux/mod_devicetable.h>
 #include <linux/serdev.h>
-=======
-#include <linux/kernel.h>
-#include <linux/errno.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/skbuff.h>
 
 #include <net/bluetooth/bluetooth.h>
 #include <net/bluetooth/hci_core.h>
 
-<<<<<<< HEAD
 #include "btrtl.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "hci_uart.h"
 
 #define HCI_3WIRE_ACK_PKT	0
@@ -78,12 +70,9 @@ enum {
 };
 
 struct h5 {
-<<<<<<< HEAD
 	/* Must be the first member, hci_serdev.c expects this. */
 	struct hci_uart		serdev_hu;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct sk_buff_head	unack;		/* Unack'ed packets queue */
 	struct sk_buff_head	rel;		/* Reliable packets queue */
 	struct sk_buff_head	unrel;		/* Unreliable packets queue */
@@ -97,10 +86,7 @@ struct h5 {
 	int			(*rx_func)(struct hci_uart *hu, u8 c);
 
 	struct timer_list	timer;		/* Retransmission timer */
-<<<<<<< HEAD
 	struct hci_uart		*hu;		/* Parent HCI UART */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	u8			tx_seq;		/* Next seq number to send */
 	u8			tx_ack;		/* Next ack number to send */
@@ -117,7 +103,6 @@ struct h5 {
 		H5_SLEEPING,
 		H5_WAKING_UP,
 	} sleep;
-<<<<<<< HEAD
 
 	const struct h5_vnd *vnd;
 	const char *id;
@@ -131,8 +116,6 @@ struct h5_vnd {
 	void (*open)(struct h5 *h5);
 	void (*close)(struct h5 *h5);
 	const struct acpi_gpio_mapping *acpi_gpio_map;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void h5_reset_rx(struct h5 *h5);
@@ -159,21 +142,12 @@ static u8 h5_cfg_field(struct h5 *h5)
 	return h5->tx_win & 0x07;
 }
 
-<<<<<<< HEAD
 static void h5_timed_event(struct timer_list *t)
 {
 	const unsigned char sync_req[] = { 0x01, 0x7e };
 	unsigned char conf_req[3] = { 0x03, 0xfc };
 	struct h5 *h5 = from_timer(h5, t, timer);
 	struct hci_uart *hu = h5->hu;
-=======
-static void h5_timed_event(unsigned long arg)
-{
-	const unsigned char sync_req[] = { 0x01, 0x7e };
-	unsigned char conf_req[3] = { 0x03, 0xfc };
-	struct hci_uart *hu = (struct hci_uart *)arg;
-	struct h5 *h5 = hu->priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct sk_buff *skb;
 	unsigned long flags;
 
@@ -240,7 +214,6 @@ static int h5_open(struct hci_uart *hu)
 
 	BT_DBG("hu %p", hu);
 
-<<<<<<< HEAD
 	if (hu->serdev) {
 		h5 = serdev_device_get_drvdata(hu->serdev);
 	} else {
@@ -251,13 +224,6 @@ static int h5_open(struct hci_uart *hu)
 
 	hu->priv = h5;
 	h5->hu = hu;
-=======
-	h5 = kzalloc(sizeof(*h5), GFP_KERNEL);
-	if (!h5)
-		return -ENOMEM;
-
-	hu->priv = h5;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	skb_queue_head_init(&h5->unack);
 	skb_queue_head_init(&h5->rel);
@@ -265,7 +231,6 @@ static int h5_open(struct hci_uart *hu)
 
 	h5_reset_rx(h5);
 
-<<<<<<< HEAD
 	timer_setup(&h5->timer, h5_timed_event, 0);
 
 	h5->tx_win = H5_TX_WIN_MAX;
@@ -273,12 +238,6 @@ static int h5_open(struct hci_uart *hu)
 	if (h5->vnd && h5->vnd->open)
 		h5->vnd->open(h5);
 
-=======
-	setup_timer(&h5->timer, h5_timed_event, (unsigned long)hu);
-
-	h5->tx_win = H5_TX_WIN_MAX;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	set_bit(HCI_UART_INIT_PENDING, &hu->hdev_flags);
 
 	/* Send initial sync request */
@@ -298,7 +257,6 @@ static int h5_close(struct hci_uart *hu)
 	skb_queue_purge(&h5->rel);
 	skb_queue_purge(&h5->unrel);
 
-<<<<<<< HEAD
 	if (h5->vnd && h5->vnd->close)
 		h5->vnd->close(h5);
 
@@ -314,9 +272,6 @@ static int h5_setup(struct hci_uart *hu)
 
 	if (h5->vnd && h5->vnd->setup)
 		return h5->vnd->setup(h5);
-=======
-	kfree(h5);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -831,17 +786,13 @@ static const struct hci_uart_proto h5p = {
 	.name		= "Three-wire (H5)",
 	.open		= h5_open,
 	.close		= h5_close,
-<<<<<<< HEAD
 	.setup		= h5_setup,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.recv		= h5_recv,
 	.enqueue	= h5_enqueue,
 	.dequeue	= h5_dequeue,
 	.flush		= h5_flush,
 };
 
-<<<<<<< HEAD
 static int h5_serdev_probe(struct serdev_device *serdev)
 {
 	const struct acpi_device_id *match;
@@ -996,18 +947,11 @@ static struct serdev_device_driver h5_serdev_driver = {
 int __init h5_init(void)
 {
 	serdev_device_driver_register(&h5_serdev_driver);
-=======
-int __init h5_init(void)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return hci_uart_register_proto(&h5p);
 }
 
 int __exit h5_deinit(void)
 {
-<<<<<<< HEAD
 	serdev_device_driver_unregister(&h5_serdev_driver);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return hci_uart_unregister_proto(&h5p);
 }

@@ -1,24 +1,6 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright 2017 Cisco Systems, Inc. and/or its affiliates. All rights reserved.
-=======
-/*
- * Copyright 2017 Cisco Systems, Inc. and/or its affiliates. All rights reserved.
- *
- * This program is free software; you may redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 2 of the License.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
- * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
- * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/delay.h>
@@ -26,10 +8,7 @@
 #include <linux/sched/types.h>
 
 #include <media/cec-pin.h>
-<<<<<<< HEAD
 #include "cec-pin-priv.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* All timings are in microseconds */
 
@@ -60,16 +39,11 @@
 #define CEC_TIM_IDLE_SAMPLE		1000
 /* when processing the start bit, sample twice per millisecond */
 #define CEC_TIM_START_BIT_SAMPLE	500
-<<<<<<< HEAD
 /* when polling for a state change, sample once every 50 microseconds */
-=======
-/* when polling for a state change, sample once every 50 micoseconds */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CEC_TIM_SAMPLE			50
 
 #define CEC_TIM_LOW_DRIVE_ERROR		(1.5 * CEC_TIM_DATA_BIT_TOTAL)
 
-<<<<<<< HEAD
 /*
  * Total data bit time that is too short/long for a valid bit,
  * used for error injection.
@@ -88,8 +62,6 @@
 #define EOM_BIT				8
 #define ACK_BIT				9
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct cec_state {
 	const char * const name;
 	unsigned int usecs;
@@ -102,7 +74,6 @@ static const struct cec_state states[CEC_PIN_STATES] = {
 	{ "Tx Wait for High",	   CEC_TIM_IDLE_SAMPLE },
 	{ "Tx Start Bit Low",	   CEC_TIM_START_BIT_LOW },
 	{ "Tx Start Bit High",	   CEC_TIM_START_BIT_TOTAL - CEC_TIM_START_BIT_LOW },
-<<<<<<< HEAD
 	{ "Tx Start Bit High Short", CEC_TIM_START_BIT_TOTAL_SHORT - CEC_TIM_START_BIT_LOW },
 	{ "Tx Start Bit High Long", CEC_TIM_START_BIT_TOTAL_LONG - CEC_TIM_START_BIT_LOW },
 	{ "Tx Start Bit Low Custom", 0 },
@@ -124,23 +95,11 @@ static const struct cec_state states[CEC_PIN_STATES] = {
 	{ "Tx Pulse Low Custom",   0 },
 	{ "Tx Pulse High Custom",  0 },
 	{ "Tx Low Drive",	   CEC_TIM_LOW_DRIVE_ERROR },
-=======
-	{ "Tx Data 0 Low",	   CEC_TIM_DATA_BIT_0_LOW },
-	{ "Tx Data 0 High",	   CEC_TIM_DATA_BIT_TOTAL - CEC_TIM_DATA_BIT_0_LOW },
-	{ "Tx Data 1 Low",	   CEC_TIM_DATA_BIT_1_LOW },
-	{ "Tx Data 1 High",	   CEC_TIM_DATA_BIT_TOTAL - CEC_TIM_DATA_BIT_1_LOW },
-	{ "Tx Data 1 Pre Sample",  CEC_TIM_DATA_BIT_SAMPLE - CEC_TIM_DATA_BIT_1_LOW },
-	{ "Tx Data 1 Post Sample", CEC_TIM_DATA_BIT_TOTAL - CEC_TIM_DATA_BIT_SAMPLE },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ "Rx Start Bit Low",	   CEC_TIM_SAMPLE },
 	{ "Rx Start Bit High",	   CEC_TIM_SAMPLE },
 	{ "Rx Data Sample",	   CEC_TIM_DATA_BIT_SAMPLE },
 	{ "Rx Data Post Sample",   CEC_TIM_DATA_BIT_HIGH - CEC_TIM_DATA_BIT_SAMPLE },
-<<<<<<< HEAD
 	{ "Rx Data Wait for Low",  CEC_TIM_SAMPLE },
-=======
-	{ "Rx Data High",	   CEC_TIM_SAMPLE },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ "Rx Ack Low",		   CEC_TIM_DATA_BIT_0_LOW },
 	{ "Rx Ack Low Post",	   CEC_TIM_DATA_BIT_HIGH - CEC_TIM_DATA_BIT_0_LOW },
 	{ "Rx Ack High Post",	   CEC_TIM_DATA_BIT_HIGH },
@@ -155,7 +114,6 @@ static void cec_pin_update(struct cec_pin *pin, bool v, bool force)
 		return;
 
 	pin->adap->cec_pin_is_high = v;
-<<<<<<< HEAD
 	if (atomic_read(&pin->work_pin_num_events) < CEC_NUM_PIN_EVENTS) {
 		u8 ev = v;
 
@@ -171,14 +129,6 @@ static void cec_pin_update(struct cec_pin *pin, bool v, bool force)
 	} else {
 		pin->work_pin_events_dropped = true;
 		pin->work_pin_events_dropped_cnt++;
-=======
-	if (atomic_read(&pin->work_pin_events) < CEC_NUM_PIN_EVENTS) {
-		pin->work_pin_is_high[pin->work_pin_events_wr] = v;
-		pin->work_pin_ts[pin->work_pin_events_wr] = ktime_get();
-		pin->work_pin_events_wr =
-			(pin->work_pin_events_wr + 1) % CEC_NUM_PIN_EVENTS;
-		atomic_inc(&pin->work_pin_events);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	wake_up_interruptible(&pin->kthread_waitq);
 }
@@ -203,7 +153,6 @@ static bool cec_pin_high(struct cec_pin *pin)
 	return cec_pin_read(pin);
 }
 
-<<<<<<< HEAD
 static bool rx_error_inj(struct cec_pin *pin, unsigned int mode_offset,
 			 int arg_idx, u8 *arg)
 {
@@ -371,8 +320,6 @@ static bool tx_low_drive(struct cec_pin *pin)
 			    CEC_ERROR_INJ_TX_LOW_DRIVE_ARG_IDX, NULL);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void cec_pin_to_idle(struct cec_pin *pin)
 {
 	/*
@@ -382,7 +329,6 @@ static void cec_pin_to_idle(struct cec_pin *pin)
 	pin->rx_bit = pin->tx_bit = 0;
 	pin->rx_msg.len = 0;
 	memset(pin->rx_msg.msg, 0, sizeof(pin->rx_msg.msg));
-<<<<<<< HEAD
 	pin->ts = ns_to_ktime(0);
 	pin->tx_generated_poll = false;
 	pin->tx_post_eom = false;
@@ -393,10 +339,6 @@ static void cec_pin_to_idle(struct cec_pin *pin)
 	    pin->state <= CEC_ST_RX_LOW_DRIVE)
 		pin->rx_toggle ^= 1;
 	pin->state = CEC_ST_IDLE;
-=======
-	pin->state = CEC_ST_IDLE;
-	pin->ts = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -437,7 +379,6 @@ static void cec_pin_tx_states(struct cec_pin *pin, ktime_t ts)
 		break;
 
 	case CEC_ST_TX_START_BIT_LOW:
-<<<<<<< HEAD
 		if (tx_short_start(pin)) {
 			/*
 			 * Error Injection: send an invalid (too short)
@@ -459,15 +400,11 @@ static void cec_pin_tx_states(struct cec_pin *pin, ktime_t ts)
 
 	case CEC_ST_TX_START_BIT_LOW_CUSTOM:
 		pin->state = CEC_ST_TX_START_BIT_HIGH_CUSTOM;
-=======
-		pin->state = CEC_ST_TX_START_BIT_HIGH;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Generate start bit */
 		cec_pin_high(pin);
 		break;
 
 	case CEC_ST_TX_DATA_BIT_1_HIGH_POST_SAMPLE:
-<<<<<<< HEAD
 	case CEC_ST_TX_DATA_BIT_1_HIGH_POST_SAMPLE_SHORT:
 	case CEC_ST_TX_DATA_BIT_1_HIGH_POST_SAMPLE_LONG:
 		if (pin->tx_nacked) {
@@ -475,24 +412,6 @@ static void cec_pin_tx_states(struct cec_pin *pin, ktime_t ts)
 			pin->tx_msg.len = 0;
 			if (pin->tx_generated_poll)
 				break;
-=======
-		/* If the read value is 1, then all is OK */
-		if (!cec_pin_read(pin)) {
-			/*
-			 * It's 0, so someone detected an error and pulled the
-			 * line low for 1.5 times the nominal bit period.
-			 */
-			pin->tx_msg.len = 0;
-			pin->work_tx_ts = ts;
-			pin->work_tx_status = CEC_TX_STATUS_LOW_DRIVE;
-			pin->state = CEC_ST_TX_WAIT_FOR_HIGH;
-			wake_up_interruptible(&pin->kthread_waitq);
-			break;
-		}
-		if (pin->tx_nacked) {
-			cec_pin_to_idle(pin);
-			pin->tx_msg.len = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pin->work_tx_ts = ts;
 			pin->work_tx_status = CEC_TX_STATUS_NACK;
 			wake_up_interruptible(&pin->kthread_waitq);
@@ -500,7 +419,6 @@ static void cec_pin_tx_states(struct cec_pin *pin, ktime_t ts)
 		}
 		/* fall through */
 	case CEC_ST_TX_DATA_BIT_0_HIGH:
-<<<<<<< HEAD
 	case CEC_ST_TX_DATA_BIT_0_HIGH_SHORT:
 	case CEC_ST_TX_DATA_BIT_0_HIGH_LONG:
 	case CEC_ST_TX_DATA_BIT_1_HIGH:
@@ -564,15 +482,6 @@ static void cec_pin_tx_states(struct cec_pin *pin, ktime_t ts)
 			pin->tx_msg.len = 0;
 			if (pin->tx_generated_poll)
 				break;
-=======
-	case CEC_ST_TX_DATA_BIT_1_HIGH:
-		pin->tx_bit++;
-		/* fall through */
-	case CEC_ST_TX_START_BIT_HIGH:
-		if (pin->tx_bit / 10 >= pin->tx_msg.len) {
-			cec_pin_to_idle(pin);
-			pin->tx_msg.len = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pin->work_tx_ts = ts;
 			pin->work_tx_status = CEC_TX_STATUS_OK;
 			wake_up_interruptible(&pin->kthread_waitq);
@@ -580,7 +489,6 @@ static void cec_pin_tx_states(struct cec_pin *pin, ktime_t ts)
 		}
 
 		switch (pin->tx_bit % 10) {
-<<<<<<< HEAD
 		default: {
 			/*
 			 * In the CEC_ERROR_INJ_TX_ADD_BYTES case we transmit
@@ -624,30 +532,12 @@ static void cec_pin_tx_states(struct cec_pin *pin, ktime_t ts)
 		}
 		if (tx_custom_bit(pin))
 			pin->state = CEC_ST_TX_DATA_BIT_LOW_CUSTOM;
-=======
-		default:
-			v = pin->tx_msg.msg[pin->tx_bit / 10] &
-				(1 << (7 - (pin->tx_bit % 10)));
-			pin->state = v ? CEC_ST_TX_DATA_BIT_1_LOW :
-				CEC_ST_TX_DATA_BIT_0_LOW;
-			break;
-		case 8:
-			v = pin->tx_bit / 10 == pin->tx_msg.len - 1;
-			pin->state = v ? CEC_ST_TX_DATA_BIT_1_LOW :
-				CEC_ST_TX_DATA_BIT_0_LOW;
-			break;
-		case 9:
-			pin->state = CEC_ST_TX_DATA_BIT_1_LOW;
-			break;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cec_pin_low(pin);
 		break;
 
 	case CEC_ST_TX_DATA_BIT_0_LOW:
 	case CEC_ST_TX_DATA_BIT_1_LOW:
 		v = pin->state == CEC_ST_TX_DATA_BIT_1_LOW;
-<<<<<<< HEAD
 		is_ack_bit = pin->tx_bit % 10 == ACK_BIT;
 		if (v && (pin->tx_bit < 4 || is_ack_bit)) {
 			pin->state = CEC_ST_TX_DATA_BIT_1_HIGH_PRE_SAMPLE;
@@ -668,24 +558,13 @@ static void cec_pin_tx_states(struct cec_pin *pin, ktime_t ts)
 
 	case CEC_ST_TX_DATA_BIT_LOW_CUSTOM:
 		pin->state = CEC_ST_TX_DATA_BIT_HIGH_CUSTOM;
-=======
-		pin->state = v ? CEC_ST_TX_DATA_BIT_1_HIGH :
-			CEC_ST_TX_DATA_BIT_0_HIGH;
-		is_ack_bit = pin->tx_bit % 10 == 9;
-		if (v && (pin->tx_bit < 4 || is_ack_bit))
-			pin->state = CEC_ST_TX_DATA_BIT_1_HIGH_PRE_SAMPLE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cec_pin_high(pin);
 		break;
 
 	case CEC_ST_TX_DATA_BIT_1_HIGH_PRE_SAMPLE:
 		/* Read the CEC value at the sample time */
 		v = cec_pin_read(pin);
-<<<<<<< HEAD
 		is_ack_bit = pin->tx_bit % 10 == ACK_BIT;
-=======
-		is_ack_bit = pin->tx_bit % 10 == 9;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * If v == 0 and we're within the first 4 bits
 		 * of the initiator, then someone else started
@@ -694,11 +573,7 @@ static void cec_pin_tx_states(struct cec_pin *pin, ktime_t ts)
 		 * transmitter has more leading 0 bits in the
 		 * initiator).
 		 */
-<<<<<<< HEAD
 		if (!v && !is_ack_bit && !pin->tx_generated_poll) {
-=======
-		if (!v && !is_ack_bit) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pin->tx_msg.len = 0;
 			pin->work_tx_ts = ts;
 			pin->work_tx_status = CEC_TX_STATUS_ARB_LOST;
@@ -707,20 +582,14 @@ static void cec_pin_tx_states(struct cec_pin *pin, ktime_t ts)
 			pin->tx_bit = 0;
 			memset(pin->rx_msg.msg, 0, sizeof(pin->rx_msg.msg));
 			pin->rx_msg.msg[0] = pin->tx_msg.msg[0];
-<<<<<<< HEAD
 			pin->rx_msg.msg[0] &= (0xff << (8 - pin->rx_bit));
 			pin->rx_msg.len = 0;
 			pin->ts = ktime_sub_us(ts, CEC_TIM_DATA_BIT_SAMPLE);
-=======
-			pin->rx_msg.msg[0] &= ~(1 << (7 - pin->rx_bit));
-			pin->rx_msg.len = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pin->state = CEC_ST_RX_DATA_POST_SAMPLE;
 			pin->rx_bit++;
 			break;
 		}
 		pin->state = CEC_ST_TX_DATA_BIT_1_HIGH_POST_SAMPLE;
-<<<<<<< HEAD
 		if (!is_ack_bit && tx_short_bit(pin)) {
 			/* Error Injection: send an invalid (too short) bit */
 			pin->state = CEC_ST_TX_DATA_BIT_1_HIGH_POST_SAMPLE_SHORT;
@@ -728,19 +597,13 @@ static void cec_pin_tx_states(struct cec_pin *pin, ktime_t ts)
 			/* Error Injection: send an invalid (too long) bit */
 			pin->state = CEC_ST_TX_DATA_BIT_1_HIGH_POST_SAMPLE_LONG;
 		}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!is_ack_bit)
 			break;
 		/* Was the message ACKed? */
 		ack = cec_msg_is_broadcast(&pin->tx_msg) ? v : !v;
-<<<<<<< HEAD
 		if (!ack && (!pin->tx_ignore_nack_until_eom ||
 		    pin->tx_bit / 10 == pin->tx_msg.len - 1) &&
 		    !pin->tx_post_eom) {
-=======
-		if (!ack) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/*
 			 * Note: the CEC spec is ambiguous regarding
 			 * what action to take when a NACK appears
@@ -757,7 +620,6 @@ static void cec_pin_tx_states(struct cec_pin *pin, ktime_t ts)
 		}
 		break;
 
-<<<<<<< HEAD
 	case CEC_ST_TX_PULSE_LOW_CUSTOM:
 		cec_pin_high(pin);
 		pin->state = CEC_ST_TX_PULSE_HIGH_CUSTOM;
@@ -767,8 +629,6 @@ static void cec_pin_tx_states(struct cec_pin *pin, ktime_t ts)
 		cec_pin_to_idle(pin);
 		break;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		break;
 	}
@@ -796,10 +656,7 @@ static void cec_pin_rx_states(struct cec_pin *pin, ktime_t ts)
 	bool ack;
 	bool bcast, for_us;
 	u8 dest;
-<<<<<<< HEAD
 	u8 poll;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (pin->state) {
 	/* Receive states */
@@ -809,7 +666,6 @@ static void cec_pin_rx_states(struct cec_pin *pin, ktime_t ts)
 			break;
 		pin->state = CEC_ST_RX_START_BIT_HIGH;
 		delta = ktime_us_delta(ts, pin->ts);
-<<<<<<< HEAD
 		/* Start bit low is too short, go back to idle */
 		if (delta < CEC_TIM_START_BIT_LOW_MIN - CEC_TIM_IDLE_SAMPLE) {
 			if (!pin->rx_start_bit_low_too_short_cnt++) {
@@ -825,36 +681,23 @@ static void cec_pin_rx_states(struct cec_pin *pin, ktime_t ts)
 			pin->tx_extra_bytes = 0;
 			pin->state = CEC_ST_TX_START_BIT_HIGH;
 			pin->ts = ts;
-=======
-		pin->ts = ts;
-		/* Start bit low is too short, go back to idle */
-		if (delta < CEC_TIM_START_BIT_LOW_MIN -
-			    CEC_TIM_IDLE_SAMPLE) {
-			cec_pin_to_idle(pin);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		break;
 
 	case CEC_ST_RX_START_BIT_HIGH:
 		v = cec_pin_read(pin);
 		delta = ktime_us_delta(ts, pin->ts);
-<<<<<<< HEAD
 		/*
 		 * Unfortunately the spec does not specify when to give up
 		 * and go to idle. We just pick TOTAL_LONG.
 		 */
 		if (v && delta > CEC_TIM_START_BIT_TOTAL_LONG) {
 			pin->rx_start_bit_too_long_cnt++;
-=======
-		if (v && delta > CEC_TIM_START_BIT_TOTAL_MAX -
-				 CEC_TIM_START_BIT_LOW_MIN) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			cec_pin_to_idle(pin);
 			break;
 		}
 		if (v)
 			break;
-<<<<<<< HEAD
 		/* Start bit is too short, go back to idle */
 		if (delta < CEC_TIM_START_BIT_TOTAL_MIN - CEC_TIM_IDLE_SAMPLE) {
 			if (!pin->rx_start_bit_too_short_cnt++) {
@@ -871,8 +714,6 @@ static void cec_pin_rx_states(struct cec_pin *pin, ktime_t ts)
 			pin->rx_low_drive_cnt++;
 			break;
 		}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pin->state = CEC_ST_RX_DATA_SAMPLE;
 		pin->ts = ts;
 		pin->rx_eom = false;
@@ -887,26 +728,17 @@ static void cec_pin_rx_states(struct cec_pin *pin, ktime_t ts)
 				pin->rx_msg.msg[pin->rx_bit / 10] |=
 					v << (7 - (pin->rx_bit % 10));
 			break;
-<<<<<<< HEAD
 		case EOM_BIT:
 			pin->rx_eom = v;
 			pin->rx_msg.len = pin->rx_bit / 10 + 1;
 			break;
 		case ACK_BIT:
-=======
-		case 8:
-			pin->rx_eom = v;
-			pin->rx_msg.len = pin->rx_bit / 10 + 1;
-			break;
-		case 9:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 		pin->rx_bit++;
 		break;
 
 	case CEC_ST_RX_DATA_POST_SAMPLE:
-<<<<<<< HEAD
 		pin->state = CEC_ST_RX_DATA_WAIT_FOR_LOW;
 		break;
 
@@ -919,21 +751,11 @@ static void cec_pin_rx_states(struct cec_pin *pin, ktime_t ts)
 		 */
 		if (v && delta > CEC_TIM_DATA_BIT_TOTAL_LONG) {
 			pin->rx_data_bit_too_long_cnt++;
-=======
-		pin->state = CEC_ST_RX_DATA_HIGH;
-		break;
-
-	case CEC_ST_RX_DATA_HIGH:
-		v = cec_pin_read(pin);
-		delta = ktime_us_delta(ts, pin->ts);
-		if (v && delta > CEC_TIM_DATA_BIT_TOTAL_MAX) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			cec_pin_to_idle(pin);
 			break;
 		}
 		if (v)
 			break;
-<<<<<<< HEAD
 
 		if (rx_low_drive(pin)) {
 			/* Error injection: go to low drive */
@@ -943,14 +765,11 @@ static void cec_pin_rx_states(struct cec_pin *pin, ktime_t ts)
 			break;
 		}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * Go to low drive state when the total bit time is
 		 * too short.
 		 */
 		if (delta < CEC_TIM_DATA_BIT_TOTAL_MIN) {
-<<<<<<< HEAD
 			if (!pin->rx_data_bit_too_short_cnt++) {
 				pin->rx_data_bit_too_short_ts = ktime_to_ns(pin->ts);
 				pin->rx_data_bit_too_short_delta = delta;
@@ -958,10 +777,6 @@ static void cec_pin_rx_states(struct cec_pin *pin, ktime_t ts)
 			cec_pin_low(pin);
 			pin->state = CEC_ST_RX_LOW_DRIVE;
 			pin->rx_low_drive_cnt++;
-=======
-			cec_pin_low(pin);
-			pin->state = CEC_ST_LOW_DRIVE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 		pin->ts = ts;
@@ -977,14 +792,11 @@ static void cec_pin_rx_states(struct cec_pin *pin, ktime_t ts)
 		/* ACK bit value */
 		ack = bcast ? 1 : !for_us;
 
-<<<<<<< HEAD
 		if (for_us && rx_nack(pin)) {
 			/* Error injection: toggle the ACK bit */
 			ack = !ack;
 		}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ack) {
 			/* No need to write to the bus, just wait */
 			pin->state = CEC_ST_RX_ACK_HIGH_POST;
@@ -1004,22 +816,14 @@ static void cec_pin_rx_states(struct cec_pin *pin, ktime_t ts)
 		v = cec_pin_read(pin);
 		if (v && pin->rx_eom) {
 			pin->work_rx_msg = pin->rx_msg;
-<<<<<<< HEAD
 			pin->work_rx_msg.rx_ts = ktime_to_ns(ts);
-=======
-			pin->work_rx_msg.rx_ts = ts;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			wake_up_interruptible(&pin->kthread_waitq);
 			pin->ts = ts;
 			pin->state = CEC_ST_RX_ACK_FINISH;
 			break;
 		}
 		pin->rx_bit++;
-<<<<<<< HEAD
 		pin->state = CEC_ST_RX_DATA_WAIT_FOR_LOW;
-=======
-		pin->state = CEC_ST_RX_DATA_HIGH;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case CEC_ST_RX_ACK_FINISH:
@@ -1041,16 +845,10 @@ static enum hrtimer_restart cec_pin_timer(struct hrtimer *timer)
 	struct cec_adapter *adap = pin->adap;
 	ktime_t ts;
 	s32 delta;
-<<<<<<< HEAD
 	u32 usecs;
 
 	ts = ktime_get();
 	if (ktime_to_ns(pin->timer_ts)) {
-=======
-
-	ts = ktime_get();
-	if (pin->timer_ts) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		delta = ktime_us_delta(ts, pin->timer_ts);
 		pin->timer_cnt++;
 		if (delta > 100 && pin->state != CEC_ST_IDLE) {
@@ -1074,17 +872,12 @@ static enum hrtimer_restart cec_pin_timer(struct hrtimer *timer)
 		if (pin->wait_usecs > 150) {
 			pin->wait_usecs -= 100;
 			pin->timer_ts = ktime_add_us(ts, 100);
-<<<<<<< HEAD
 			hrtimer_forward_now(timer, ns_to_ktime(100000));
-=======
-			hrtimer_forward_now(timer, 100000);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return HRTIMER_RESTART;
 		}
 		if (pin->wait_usecs > 100) {
 			pin->wait_usecs /= 2;
 			pin->timer_ts = ktime_add_us(ts, pin->wait_usecs);
-<<<<<<< HEAD
 			hrtimer_forward_now(timer,
 					ns_to_ktime(pin->wait_usecs * 1000));
 			return HRTIMER_RESTART;
@@ -1092,13 +885,6 @@ static enum hrtimer_restart cec_pin_timer(struct hrtimer *timer)
 		pin->timer_ts = ktime_add_us(ts, pin->wait_usecs);
 		hrtimer_forward_now(timer,
 				    ns_to_ktime(pin->wait_usecs * 1000));
-=======
-			hrtimer_forward_now(timer, pin->wait_usecs * 1000);
-			return HRTIMER_RESTART;
-		}
-		pin->timer_ts = ktime_add_us(ts, pin->wait_usecs);
-		hrtimer_forward_now(timer, pin->wait_usecs * 1000);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pin->wait_usecs = 0;
 		return HRTIMER_RESTART;
 	}
@@ -1107,7 +893,6 @@ static enum hrtimer_restart cec_pin_timer(struct hrtimer *timer)
 	/* Transmit states */
 	case CEC_ST_TX_WAIT_FOR_HIGH:
 	case CEC_ST_TX_START_BIT_LOW:
-<<<<<<< HEAD
 	case CEC_ST_TX_START_BIT_HIGH:
 	case CEC_ST_TX_START_BIT_HIGH_SHORT:
 	case CEC_ST_TX_START_BIT_HIGH_LONG:
@@ -1129,15 +914,6 @@ static enum hrtimer_restart cec_pin_timer(struct hrtimer *timer)
 	case CEC_ST_TX_DATA_BIT_HIGH_CUSTOM:
 	case CEC_ST_TX_PULSE_LOW_CUSTOM:
 	case CEC_ST_TX_PULSE_HIGH_CUSTOM:
-=======
-	case CEC_ST_TX_DATA_BIT_1_HIGH_POST_SAMPLE:
-	case CEC_ST_TX_DATA_BIT_0_HIGH:
-	case CEC_ST_TX_DATA_BIT_1_HIGH:
-	case CEC_ST_TX_START_BIT_HIGH:
-	case CEC_ST_TX_DATA_BIT_0_LOW:
-	case CEC_ST_TX_DATA_BIT_1_LOW:
-	case CEC_ST_TX_DATA_BIT_1_HIGH_PRE_SAMPLE:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cec_pin_tx_states(pin, ts);
 		break;
 
@@ -1146,11 +922,7 @@ static enum hrtimer_restart cec_pin_timer(struct hrtimer *timer)
 	case CEC_ST_RX_START_BIT_HIGH:
 	case CEC_ST_RX_DATA_SAMPLE:
 	case CEC_ST_RX_DATA_POST_SAMPLE:
-<<<<<<< HEAD
 	case CEC_ST_RX_DATA_WAIT_FOR_LOW:
-=======
-	case CEC_ST_RX_DATA_HIGH:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case CEC_ST_RX_ACK_LOW:
 	case CEC_ST_RX_ACK_LOW_POST:
 	case CEC_ST_RX_ACK_HIGH_POST:
@@ -1164,26 +936,9 @@ static enum hrtimer_restart cec_pin_timer(struct hrtimer *timer)
 			/* Start bit, switch to receive state */
 			pin->ts = ts;
 			pin->state = CEC_ST_RX_START_BIT_LOW;
-<<<<<<< HEAD
 			break;
 		}
 		if (ktime_to_ns(pin->ts) == 0)
-=======
-			/*
-			 * If a transmit is pending, then that transmit should
-			 * use a signal free time of no more than
-			 * CEC_SIGNAL_FREE_TIME_NEW_INITIATOR since it will
-			 * have a new initiator due to the receive that is now
-			 * starting.
-			 */
-			if (pin->tx_msg.len && pin->tx_signal_free_time >
-			    CEC_SIGNAL_FREE_TIME_NEW_INITIATOR)
-				pin->tx_signal_free_time =
-					CEC_SIGNAL_FREE_TIME_NEW_INITIATOR;
-			break;
-		}
-		if (pin->ts == 0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pin->ts = ts;
 		if (pin->tx_msg.len) {
 			/*
@@ -1194,14 +949,10 @@ static enum hrtimer_restart cec_pin_timer(struct hrtimer *timer)
 			if (delta / CEC_TIM_DATA_BIT_TOTAL >
 			    pin->tx_signal_free_time) {
 				pin->tx_nacked = false;
-<<<<<<< HEAD
 				if (tx_custom_start(pin))
 					pin->state = CEC_ST_TX_START_BIT_LOW_CUSTOM;
 				else
 					pin->state = CEC_ST_TX_START_BIT_LOW;
-=======
-				pin->state = CEC_ST_TX_START_BIT_LOW;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				/* Generate start bit */
 				cec_pin_low(pin);
 				break;
@@ -1211,7 +962,6 @@ static enum hrtimer_restart cec_pin_timer(struct hrtimer *timer)
 				pin->state = CEC_ST_TX_WAIT;
 			break;
 		}
-<<<<<<< HEAD
 		if (pin->tx_custom_pulse && pin->state == CEC_ST_IDLE) {
 			pin->tx_custom_pulse = false;
 			/* Generate custom pulse */
@@ -1219,8 +969,6 @@ static enum hrtimer_restart cec_pin_timer(struct hrtimer *timer)
 			pin->state = CEC_ST_TX_PULSE_LOW_CUSTOM;
 			break;
 		}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (pin->state != CEC_ST_IDLE || pin->ops->enable_irq == NULL ||
 		    pin->enable_irq_failed || adap->is_configuring ||
 		    adap->is_configured || adap->monitor_all_cnt)
@@ -1231,20 +979,15 @@ static enum hrtimer_restart cec_pin_timer(struct hrtimer *timer)
 		wake_up_interruptible(&pin->kthread_waitq);
 		return HRTIMER_NORESTART;
 
-<<<<<<< HEAD
 	case CEC_ST_TX_LOW_DRIVE:
 	case CEC_ST_RX_LOW_DRIVE:
 		cec_pin_high(pin);
-=======
-	case CEC_ST_LOW_DRIVE:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cec_pin_to_idle(pin);
 		break;
 
 	default:
 		break;
 	}
-<<<<<<< HEAD
 
 	switch (pin->state) {
 	case CEC_ST_TX_START_BIT_LOW_CUSTOM:
@@ -1272,17 +1015,6 @@ static enum hrtimer_restart cec_pin_timer(struct hrtimer *timer)
 	pin->wait_usecs = usecs - 100;
 	pin->timer_ts = ktime_add_us(ts, 100);
 	hrtimer_forward_now(timer, ns_to_ktime(100000));
-=======
-	if (!adap->monitor_pin_cnt || states[pin->state].usecs <= 150) {
-		pin->wait_usecs = 0;
-		pin->timer_ts = ktime_add_us(ts, states[pin->state].usecs);
-		hrtimer_forward_now(timer, states[pin->state].usecs * 1000);
-		return HRTIMER_RESTART;
-	}
-	pin->wait_usecs = states[pin->state].usecs - 100;
-	pin->timer_ts = ktime_add_us(ts, 100);
-	hrtimer_forward_now(timer, 100000);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return HRTIMER_RESTART;
 }
 
@@ -1297,7 +1029,6 @@ static int cec_pin_thread_func(void *_adap)
 			pin->work_rx_msg.len ||
 			pin->work_tx_status ||
 			atomic_read(&pin->work_irq_change) ||
-<<<<<<< HEAD
 			atomic_read(&pin->work_pin_num_events));
 
 		if (pin->work_rx_msg.len) {
@@ -1317,14 +1048,6 @@ static int cec_pin_thread_func(void *_adap)
 			cec_received_msg_ts(adap, msg,
 				ns_to_ktime(pin->work_rx_msg.rx_ts));
 			msg->len = 0;
-=======
-			atomic_read(&pin->work_pin_events));
-
-		if (pin->work_rx_msg.len) {
-			cec_received_msg_ts(adap, &pin->work_rx_msg,
-					    pin->work_rx_msg.rx_ts);
-			pin->work_rx_msg.len = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		if (pin->work_tx_status) {
 			unsigned int tx_status = pin->work_tx_status;
@@ -1334,7 +1057,6 @@ static int cec_pin_thread_func(void *_adap)
 						     pin->work_tx_ts);
 		}
 
-<<<<<<< HEAD
 		while (atomic_read(&pin->work_pin_num_events)) {
 			unsigned int idx = pin->work_pin_events_rd;
 			u8 v = pin->work_pin_events[idx];
@@ -1345,16 +1067,6 @@ static int cec_pin_thread_func(void *_adap)
 						pin->work_pin_ts[idx]);
 			pin->work_pin_events_rd = (idx + 1) % CEC_NUM_PIN_EVENTS;
 			atomic_dec(&pin->work_pin_num_events);
-=======
-		while (atomic_read(&pin->work_pin_events)) {
-			unsigned int idx = pin->work_pin_events_rd;
-
-			cec_queue_pin_cec_event(adap,
-						pin->work_pin_is_high[idx],
-						pin->work_pin_ts[idx]);
-			pin->work_pin_events_rd = (idx + 1) % CEC_NUM_PIN_EVENTS;
-			atomic_dec(&pin->work_pin_events);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		switch (atomic_xchg(&pin->work_irq_change,
@@ -1363,23 +1075,15 @@ static int cec_pin_thread_func(void *_adap)
 			pin->ops->disable_irq(adap);
 			cec_pin_high(pin);
 			cec_pin_to_idle(pin);
-<<<<<<< HEAD
 			hrtimer_start(&pin->timer, ns_to_ktime(0),
 				      HRTIMER_MODE_REL);
-=======
-			hrtimer_start(&pin->timer, 0, HRTIMER_MODE_REL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		case CEC_PIN_IRQ_ENABLE:
 			pin->enable_irq_failed = !pin->ops->enable_irq(adap);
 			if (pin->enable_irq_failed) {
 				cec_pin_to_idle(pin);
-<<<<<<< HEAD
 				hrtimer_start(&pin->timer, ns_to_ktime(0),
 					      HRTIMER_MODE_REL);
-=======
-				hrtimer_start(&pin->timer, 0, HRTIMER_MODE_REL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 			break;
 		default:
@@ -1398,7 +1102,6 @@ static int cec_pin_adap_enable(struct cec_adapter *adap, bool enable)
 
 	pin->enabled = enable;
 	if (enable) {
-<<<<<<< HEAD
 		atomic_set(&pin->work_pin_num_events, 0);
 		pin->work_pin_events_rd = pin->work_pin_events_wr = 0;
 		pin->work_pin_events_dropped = false;
@@ -1406,14 +1109,6 @@ static int cec_pin_adap_enable(struct cec_adapter *adap, bool enable)
 		cec_pin_to_idle(pin);
 		pin->tx_msg.len = 0;
 		pin->timer_ts = ns_to_ktime(0);
-=======
-		atomic_set(&pin->work_pin_events, 0);
-		pin->work_pin_events_rd = pin->work_pin_events_wr = 0;
-		cec_pin_read(pin);
-		cec_pin_to_idle(pin);
-		pin->tx_msg.len = 0;
-		pin->timer_ts = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		atomic_set(&pin->work_irq_change, CEC_PIN_IRQ_UNCHANGED);
 		pin->kthread = kthread_run(cec_pin_thread_func, adap,
 					   "cec-pin");
@@ -1421,12 +1116,8 @@ static int cec_pin_adap_enable(struct cec_adapter *adap, bool enable)
 			pr_err("cec-pin: kernel_thread() failed\n");
 			return PTR_ERR(pin->kthread);
 		}
-<<<<<<< HEAD
 		hrtimer_start(&pin->timer, ns_to_ktime(0),
 			      HRTIMER_MODE_REL);
-=======
-		hrtimer_start(&pin->timer, 0, HRTIMER_MODE_REL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		if (pin->ops->disable_irq)
 			pin->ops->disable_irq(adap);
@@ -1450,7 +1141,6 @@ static int cec_pin_adap_log_addr(struct cec_adapter *adap, u8 log_addr)
 	return 0;
 }
 
-<<<<<<< HEAD
 void cec_pin_start_timer(struct cec_pin *pin)
 {
 	if (pin->state != CEC_ST_RX_IRQ)
@@ -1463,14 +1153,11 @@ void cec_pin_start_timer(struct cec_pin *pin)
 	hrtimer_start(&pin->timer, ns_to_ktime(0), HRTIMER_MODE_REL);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int cec_pin_adap_transmit(struct cec_adapter *adap, u8 attempts,
 				      u32 signal_free_time, struct cec_msg *msg)
 {
 	struct cec_pin *pin = adap->pin;
 
-<<<<<<< HEAD
 	pin->tx_signal_free_time = signal_free_time;
 	pin->tx_extra_bytes = 0;
 	pin->tx_msg = *msg;
@@ -1485,28 +1172,6 @@ static int cec_pin_adap_transmit(struct cec_adapter *adap, u8 attempts,
 	pin->work_tx_status = 0;
 	pin->tx_bit = 0;
 	cec_pin_start_timer(pin);
-=======
-	/*
-	 * If a receive is in progress, then this transmit should use
-	 * a signal free time of max CEC_SIGNAL_FREE_TIME_NEW_INITIATOR
-	 * since when it starts transmitting it will have a new initiator.
-	 */
-	if (pin->state != CEC_ST_IDLE &&
-	    signal_free_time > CEC_SIGNAL_FREE_TIME_NEW_INITIATOR)
-		signal_free_time = CEC_SIGNAL_FREE_TIME_NEW_INITIATOR;
-
-	pin->tx_signal_free_time = signal_free_time;
-	pin->tx_msg = *msg;
-	pin->work_tx_status = 0;
-	pin->tx_bit = 0;
-	if (pin->state == CEC_ST_RX_IRQ) {
-		atomic_set(&pin->work_irq_change, CEC_PIN_IRQ_UNCHANGED);
-		pin->ops->disable_irq(adap);
-		cec_pin_high(pin);
-		cec_pin_to_idle(pin);
-		hrtimer_start(&pin->timer, 0, HRTIMER_MODE_REL);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1515,19 +1180,12 @@ static void cec_pin_adap_status(struct cec_adapter *adap,
 {
 	struct cec_pin *pin = adap->pin;
 
-<<<<<<< HEAD
 	seq_printf(file, "state: %s\n", states[pin->state].name);
 	seq_printf(file, "tx_bit: %d\n", pin->tx_bit);
 	seq_printf(file, "rx_bit: %d\n", pin->rx_bit);
 	seq_printf(file, "cec pin: %d\n", pin->ops->read(adap));
 	seq_printf(file, "cec pin events dropped: %u\n",
 		   pin->work_pin_events_dropped_cnt);
-=======
-	seq_printf(file, "state:   %s\n", states[pin->state].name);
-	seq_printf(file, "tx_bit:  %d\n", pin->tx_bit);
-	seq_printf(file, "rx_bit:  %d\n", pin->rx_bit);
-	seq_printf(file, "cec pin: %d\n", pin->ops->read(adap));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	seq_printf(file, "irq failed: %d\n", pin->enable_irq_failed);
 	if (pin->timer_100ms_overruns) {
 		seq_printf(file, "timer overruns > 100ms: %u of %u\n",
@@ -1539,7 +1197,6 @@ static void cec_pin_adap_status(struct cec_adapter *adap,
 		seq_printf(file, "avg timer overrun: %u usecs\n",
 			   pin->timer_sum_overrun / pin->timer_100ms_overruns);
 	}
-<<<<<<< HEAD
 	if (pin->rx_start_bit_low_too_short_cnt)
 		seq_printf(file,
 			   "rx start bit low too short: %u (delta %u, ts %llu)\n",
@@ -1567,14 +1224,11 @@ static void cec_pin_adap_status(struct cec_adapter *adap,
 	seq_printf(file, "rx initiated low drive: %u\n", pin->rx_low_drive_cnt);
 	seq_printf(file, "tx detected low drive: %u\n", pin->tx_low_drive_cnt);
 	pin->work_pin_events_dropped_cnt = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pin->timer_cnt = 0;
 	pin->timer_100ms_overruns = 0;
 	pin->timer_300ms_overruns = 0;
 	pin->timer_max_overrun = 0;
 	pin->timer_sum_overrun = 0;
-<<<<<<< HEAD
 	pin->rx_start_bit_low_too_short_cnt = 0;
 	pin->rx_start_bit_too_short_cnt = 0;
 	pin->rx_start_bit_too_long_cnt = 0;
@@ -1582,8 +1236,6 @@ static void cec_pin_adap_status(struct cec_adapter *adap,
 	pin->rx_data_bit_too_long_cnt = 0;
 	pin->rx_low_drive_cnt = 0;
 	pin->tx_low_drive_cnt = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (pin->ops->status)
 		pin->ops->status(adap, file);
 }
@@ -1625,13 +1277,10 @@ static const struct cec_adap_ops cec_pin_adap_ops = {
 	.adap_transmit = cec_pin_adap_transmit,
 	.adap_status = cec_pin_adap_status,
 	.adap_free = cec_pin_adap_free,
-<<<<<<< HEAD
 #ifdef CONFIG_CEC_PIN_ERROR_INJ
 	.error_inj_parse_line = cec_pin_error_inj_parse_line,
 	.error_inj_show = cec_pin_error_inj_show,
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct cec_adapter *cec_pin_allocate_adapter(const struct cec_pin_ops *pin_ops,
@@ -1646,21 +1295,14 @@ struct cec_adapter *cec_pin_allocate_adapter(const struct cec_pin_ops *pin_ops,
 	hrtimer_init(&pin->timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
 	pin->timer.function = cec_pin_timer;
 	init_waitqueue_head(&pin->kthread_waitq);
-<<<<<<< HEAD
 	pin->tx_custom_low_usecs = CEC_TIM_CUSTOM_DEFAULT;
 	pin->tx_custom_high_usecs = CEC_TIM_CUSTOM_DEFAULT;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	adap = cec_allocate_adapter(&cec_pin_adap_ops, priv, name,
 			    caps | CEC_CAP_MONITOR_ALL | CEC_CAP_MONITOR_PIN,
 			    CEC_MAX_LOG_ADDRS);
 
-<<<<<<< HEAD
 	if (IS_ERR(adap)) {
-=======
-	if (PTR_ERR_OR_ZERO(adap)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(pin);
 		return adap;
 	}

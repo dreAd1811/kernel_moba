@@ -167,14 +167,9 @@ static void enable_hpd_clocks(struct hdmi *hdmi, bool enable)
 	}
 }
 
-<<<<<<< HEAD
 int msm_hdmi_hpd_enable(struct drm_connector *connector)
 {
 	struct hdmi_connector *hdmi_connector = to_hdmi_connector(connector);
-=======
-static int hpd_enable(struct hdmi_connector *hdmi_connector)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct hdmi *hdmi = hdmi_connector->hdmi;
 	const struct hdmi_platform_config *config = hdmi->config;
 	struct device *dev = &hdmi->pdev->dev;
@@ -398,11 +393,7 @@ static int msm_hdmi_connector_get_modes(struct drm_connector *connector)
 	hdmi_write(hdmi, REG_HDMI_CTRL, hdmi_ctrl);
 
 	hdmi->hdmi_mode = drm_detect_hdmi_monitor(edid);
-<<<<<<< HEAD
 	drm_connector_update_edid_property(connector, edid);
-=======
-	drm_mode_connector_update_edid_property(connector, edid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (edid) {
 		ret = drm_add_edid_modes(connector, edid);
@@ -460,10 +451,6 @@ struct drm_connector *msm_hdmi_connector_init(struct hdmi *hdmi)
 {
 	struct drm_connector *connector = NULL;
 	struct hdmi_connector *hdmi_connector;
-<<<<<<< HEAD
-=======
-	int ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	hdmi_connector = kzalloc(sizeof(*hdmi_connector), GFP_KERNEL);
 	if (!hdmi_connector)
@@ -484,17 +471,7 @@ struct drm_connector *msm_hdmi_connector_init(struct hdmi *hdmi)
 	connector->interlace_allowed = 0;
 	connector->doublescan_allowed = 0;
 
-<<<<<<< HEAD
 	drm_connector_attach_encoder(connector, hdmi->encoder);
-=======
-	ret = hpd_enable(hdmi_connector);
-	if (ret) {
-		dev_err(&hdmi->pdev->dev, "failed to enable HPD: %d\n", ret);
-		return ERR_PTR(ret);
-	}
-
-	drm_mode_connector_attach_encoder(connector, hdmi->encoder);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return connector;
 }

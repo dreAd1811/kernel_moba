@@ -68,7 +68,6 @@ struct hisi_mux_clock {
 	const char		*alias;
 };
 
-<<<<<<< HEAD
 struct hisi_phase_clock {
 	unsigned int		id;
 	const char		*name;
@@ -82,8 +81,6 @@ struct hisi_phase_clock {
 	u8			phase_num;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct hisi_divider_clock {
 	unsigned int		id;
 	const char		*name;
@@ -136,15 +133,12 @@ int hisi_clk_register_fixed_factor(const struct hisi_fixed_factor_clock *,
 				int, struct hisi_clock_data *);
 int hisi_clk_register_mux(const struct hisi_mux_clock *, int,
 				struct hisi_clock_data *);
-<<<<<<< HEAD
 struct clk *clk_register_hisi_phase(struct device *dev,
 				const struct hisi_phase_clock *clks,
 				void __iomem *base, spinlock_t *lock);
 int hisi_clk_register_phase(struct device *dev,
 				const struct hisi_phase_clock *clks,
 				int nums, struct hisi_clock_data *data);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int hisi_clk_register_divider(const struct hisi_divider_clock *,
 				int, struct hisi_clock_data *);
 int hisi_clk_register_gate(const struct hisi_gate_clock *,

@@ -13,11 +13,7 @@ ifeq ($(CONFIG_COMPAT),y)
 endif
 obj-$(CONFIG_V4L2_FWNODE) += v4l2-fwnode.o
 ifeq ($(CONFIG_TRACEPOINTS),y)
-<<<<<<< HEAD
   videodev-objs += v4l2-trace.o
-=======
-  videodev-objs += vb2-trace.o v4l2-trace.o
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 endif
 videodev-$(CONFIG_MEDIA_CONTROLLER) += v4l2-mc.o
 
@@ -35,22 +31,6 @@ obj-$(CONFIG_VIDEOBUF_GEN) += videobuf-core.o
 obj-$(CONFIG_VIDEOBUF_DMA_SG) += videobuf-dma-sg.o
 obj-$(CONFIG_VIDEOBUF_DMA_CONTIG) += videobuf-dma-contig.o
 obj-$(CONFIG_VIDEOBUF_VMALLOC) += videobuf-vmalloc.o
-<<<<<<< HEAD
 
 ccflags-y += -I$(srctree)/drivers/media/dvb-frontends
 ccflags-y += -I$(srctree)/drivers/media/tuners
-=======
-obj-$(CONFIG_VIDEOBUF_DVB) += videobuf-dvb.o
-
-obj-$(CONFIG_VIDEOBUF2_CORE) += videobuf2-core.o videobuf2-v4l2.o
-obj-$(CONFIG_VIDEOBUF2_MEMOPS) += videobuf2-memops.o
-obj-$(CONFIG_VIDEOBUF2_VMALLOC) += videobuf2-vmalloc.o
-obj-$(CONFIG_VIDEOBUF2_DMA_CONTIG) += videobuf2-dma-contig.o
-obj-$(CONFIG_VIDEOBUF2_DMA_SG) += videobuf2-dma-sg.o
-obj-$(CONFIG_VIDEOBUF2_DVB) += videobuf2-dvb.o
-
-ccflags-y += -I$(srctree)/drivers/media/dvb-core
-ccflags-y += -I$(srctree)/drivers/media/dvb-frontends
-ccflags-y += -I$(srctree)/drivers/media/tuners
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

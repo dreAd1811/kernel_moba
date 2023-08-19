@@ -1,19 +1,5 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /* Copyright (c) 2018-2020, The Linux Foundation. All rights reserved.*/
-=======
-/* Copyright (c) 2018-2020, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/module.h>
 #include <linux/kernel.h>
@@ -169,11 +155,7 @@ static struct mhi_netbuf *mhi_netdev_alloc(struct device *dev,
 	struct mhi_buf *mhi_buf;
 	void *vaddr;
 
-<<<<<<< HEAD
 	page = __dev_alloc_pages(gfp | __GFP_NOMEMALLOC, order);
-=======
-	page = __dev_alloc_pages(gfp, order);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!page)
 		return NULL;
 
@@ -424,11 +406,8 @@ static void mhi_netdev_free_pool(struct mhi_netdev *mhi_netdev)
 		__free_pages(mhi_buf->page, mhi_netdev->order);
 		mhi_netdev->bg_pool_size--;
 	}
-<<<<<<< HEAD
 
 	kfree(mhi_netdev->bg_pool);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int mhi_netdev_alloc_thread(void *data)
@@ -494,11 +473,7 @@ static int mhi_netdev_poll(struct napi_struct *napi, int budget)
 	struct mhi_net_chain *chain = mhi_netdev->chain;
 	int rx_work = 0;
 
-<<<<<<< HEAD
 	MSG_VERB("Entr:%d\n", budget);
-=======
-	MSG_VERB("Entered\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rx_work = mhi_poll(mhi_dev, budget);
 
@@ -527,11 +502,7 @@ static int mhi_netdev_poll(struct napi_struct *napi, int budget)
 		mhi_netdev->napi_scheduled = false;
 	}
 
-<<<<<<< HEAD
 	MSG_VERB("polled %d\n", rx_work);
-=======
-	MSG_VERB("polled %d pkts\n", rx_work);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return rx_work;
 }
@@ -711,11 +682,7 @@ static int mhi_netdev_enable_iface(struct mhi_netdev *mhi_netdev)
 	struct device_node *of_node = mhi_dev->dev.of_node;
 	struct mhi_netdev_priv *mhi_netdev_priv;
 
-<<<<<<< HEAD
 	mhi_netdev->alias = of_alias_get_id(of_node, "mhi-netdev");
-=======
-	mhi_netdev->alias = of_alias_get_id(of_node, "mhi_netdev");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (mhi_netdev->alias < 0)
 		return -ENODEV;
 
@@ -950,11 +917,7 @@ static void mhi_netdev_create_debugfs_dir(void)
 
 #else
 
-<<<<<<< HEAD
 static void mhi_netdev_create_debugfs(struct mhi_netdev_private *mhi_netdev)
-=======
-static void mhi_netdev_create_debugfs(struct mhi_netdev *mhi_netdev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 }
 
@@ -982,10 +945,7 @@ static void mhi_netdev_remove(struct mhi_device *mhi_dev)
 	unregister_netdev(mhi_netdev->ndev);
 	netif_napi_del(mhi_netdev->napi);
 	free_netdev(mhi_netdev->ndev);
-<<<<<<< HEAD
 	mhi_netdev->ndev = NULL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!IS_ERR_OR_NULL(mhi_netdev->dentry))
 		debugfs_remove_recursive(mhi_netdev->dentry);
@@ -1146,14 +1106,8 @@ static int mhi_netdev_probe(struct mhi_device *mhi_dev,
 
 static const struct mhi_device_id mhi_netdev_match_table[] = {
 	{ .chan = "IP_HW0" },
-<<<<<<< HEAD
 	{ .chan = "IP_HW_ADPL" },
 	{ .chan = "IP_HW0_RSC" },
-=======
-	{ .chan = "IP_HW0_RSC" },
-	{ .chan = "IP_SW0" },
-	{ .chan = "IP_HW1" },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{},
 };
 

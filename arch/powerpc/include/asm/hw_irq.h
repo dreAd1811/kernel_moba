@@ -27,7 +27,6 @@
 #define PACA_IRQ_DEC		0x08 /* Or FIT */
 #define PACA_IRQ_EE_EDGE	0x10 /* BookE only */
 #define PACA_IRQ_HMI		0x20
-<<<<<<< HEAD
 #define PACA_IRQ_PMI		0x40
 
 /*
@@ -47,24 +46,16 @@
 #define IRQS_DISABLED		1 /* local_irq_disable() interrupts */
 #define IRQS_PMI_DISABLED	2
 #define IRQS_ALL_DISABLED	(IRQS_DISABLED | IRQS_PMI_DISABLED)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* CONFIG_PPC64 */
 
 #ifndef __ASSEMBLY__
 
-<<<<<<< HEAD
 extern void replay_system_reset(void);
 extern void __replay_interrupt(unsigned int vector);
 
 extern void timer_interrupt(struct pt_regs *);
 extern void timer_broadcast_interrupt(void);
-=======
-extern void __replay_interrupt(unsigned int vector);
-
-extern void timer_interrupt(struct pt_regs *);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern void performance_monitor_exception(struct pt_regs *regs);
 extern void WatchdogException(struct pt_regs *regs);
 extern void unknown_exception(struct pt_regs *regs);
@@ -72,27 +63,18 @@ extern void unknown_exception(struct pt_regs *regs);
 #ifdef CONFIG_PPC64
 #include <asm/paca.h>
 
-<<<<<<< HEAD
 static inline notrace unsigned long irq_soft_mask_return(void)
-=======
-static inline unsigned long arch_local_save_flags(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long flags;
 
 	asm volatile(
 		"lbz %0,%1(13)"
 		: "=r" (flags)
-<<<<<<< HEAD
 		: "i" (offsetof(struct paca_struct, irq_soft_mask)));
-=======
-		: "i" (offsetof(struct paca_struct, soft_enabled)));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return flags;
 }
 
-<<<<<<< HEAD
 /*
  * The "memory" clobber acts as both a compiler barrier
  * for the critical section and as a clobber because
@@ -139,22 +121,11 @@ static inline notrace unsigned long irq_soft_mask_set_return(unsigned long mask)
 		: "=&r" (flags)
 		: "i" (offsetof(struct paca_struct, irq_soft_mask)),
 		  "r" (mask)
-=======
-static inline unsigned long arch_local_irq_disable(void)
-{
-	unsigned long flags, zero;
-
-	asm volatile(
-		"li %1,0; lbz %0,%2(13); stb %1,%2(13)"
-		: "=r" (flags), "=&r" (zero)
-		: "i" (offsetof(struct paca_struct, soft_enabled))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		: "memory");
 
 	return flags;
 }
 
-<<<<<<< HEAD
 static inline notrace unsigned long irq_soft_mask_or_return(unsigned long mask)
 {
 	unsigned long flags, tmp;
@@ -183,35 +154,21 @@ static inline void arch_local_irq_disable(void)
 	irq_soft_mask_set(IRQS_DISABLED);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern void arch_local_irq_restore(unsigned long);
 
 static inline void arch_local_irq_enable(void)
 {
-<<<<<<< HEAD
 	arch_local_irq_restore(IRQS_ENABLED);
-=======
-	arch_local_irq_restore(1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline unsigned long arch_local_irq_save(void)
 {
-<<<<<<< HEAD
 	return irq_soft_mask_set_return(IRQS_DISABLED);
-=======
-	return arch_local_irq_disable();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline bool arch_irqs_disabled_flags(unsigned long flags)
 {
-<<<<<<< HEAD
 	return flags & IRQS_DISABLED;
-=======
-	return flags == 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline bool arch_irqs_disabled(void)
@@ -219,7 +176,6 @@ static inline bool arch_irqs_disabled(void)
 	return arch_irqs_disabled_flags(arch_local_save_flags());
 }
 
-<<<<<<< HEAD
 #ifdef CONFIG_PPC_BOOK3S
 /*
  * To support disabling and enabling of irq with PMI, set of
@@ -269,13 +225,10 @@ static inline bool arch_irqs_disabled(void)
 
 #endif /* CONFIG_PPC_BOOK3S */
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_PPC_BOOK3E
 #define __hard_irq_enable()	asm volatile("wrteei 1" : : : "memory")
 #define __hard_irq_disable()	asm volatile("wrteei 0" : : : "memory")
 #else
-<<<<<<< HEAD
 #define __hard_irq_enable()	__mtmsrd(MSR_EE|MSR_RI, 1)
 #define __hard_irq_disable()	__mtmsrd(MSR_RI, 1)
 #endif
@@ -291,20 +244,6 @@ static inline bool arch_irqs_disabled(void)
 		     : "b" (&local_paca->saved_r1));			\
 		trace_hardirqs_off();					\
 	}								\
-=======
-#define __hard_irq_enable()	__mtmsrd(local_paca->kernel_msr | MSR_EE, 1)
-#define __hard_irq_disable()	__mtmsrd(local_paca->kernel_msr, 1)
-#endif
-
-#define hard_irq_disable()	do {			\
-	u8 _was_enabled;				\
-	__hard_irq_disable();				\
-	_was_enabled = local_paca->soft_enabled;	\
-	local_paca->soft_enabled = 0;			\
-	local_paca->irq_happened |= PACA_IRQ_HARD_DIS;	\
-	if (_was_enabled)				\
-		trace_hardirqs_off();			\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } while(0)
 
 static inline bool lazy_irq_pending(void)
@@ -314,7 +253,6 @@ static inline bool lazy_irq_pending(void)
 
 /*
  * This is called by asynchronous interrupts to conditionally
-<<<<<<< HEAD
  * re-enable hard interrupts after having cleared the source
  * of the interrupt. They are kept disabled if there is a different
  * soft-masked interrupt pending that requires hard masking.
@@ -325,25 +263,11 @@ static inline void may_hard_irq_enable(void)
 		get_paca()->irq_happened &= ~PACA_IRQ_HARD_DIS;
 		__hard_irq_enable();
 	}
-=======
- * re-enable hard interrupts when soft-disabled after having
- * cleared the source of the interrupt
- */
-static inline void may_hard_irq_enable(void)
-{
-	get_paca()->irq_happened &= ~PACA_IRQ_HARD_DIS;
-	if (!(get_paca()->irq_happened & PACA_IRQ_EE))
-		__hard_irq_enable();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline bool arch_irq_disabled_regs(struct pt_regs *regs)
 {
-<<<<<<< HEAD
 	return (regs->softe & IRQS_DISABLED);
-=======
-	return !regs->softe;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 extern bool prep_irq_for_idle(void);

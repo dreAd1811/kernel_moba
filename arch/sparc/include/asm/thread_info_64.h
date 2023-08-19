@@ -120,12 +120,6 @@ struct thread_info {
 	.preempt_count	=	INIT_PREEMPT_COUNT,	\
 }
 
-<<<<<<< HEAD
-=======
-#define init_thread_info	(init_thread_union.thread_info)
-#define init_stack		(init_thread_union.stack)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* how to get the thread information struct from C */
 register struct thread_info *current_thread_info_reg asm("g6");
 #define current_thread_info()	(current_thread_info_reg)
@@ -194,11 +188,7 @@ register struct thread_info *current_thread_info_reg asm("g6");
  *       in using in assembly, else we can't use the mask as
  *       an immediate value in instructions such as andcc.
  */
-<<<<<<< HEAD
 #define TIF_MCDPER		12	/* Precise MCD exception */
-=======
-/* flag bit 12 is available */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define TIF_MEMDIE		13	/* is terminating due to OOM killer */
 #define TIF_POLLING_NRFLAG	14
 

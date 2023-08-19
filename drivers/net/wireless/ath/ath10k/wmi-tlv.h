@@ -1,11 +1,7 @@
 /*
  * Copyright (c) 2005-2011 Atheros Communications Inc.
  * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
-<<<<<<< HEAD
  * Copyright (c) 2018, The Linux Foundation. All rights reserved.
-=======
- * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -314,30 +310,17 @@ enum wmi_tlv_event_id {
 	WMI_TLV_VDEV_STOPPED_EVENTID,
 	WMI_TLV_VDEV_INSTALL_KEY_COMPLETE_EVENTID,
 	WMI_TLV_VDEV_MCC_BCN_INTERVAL_CHANGE_REQ_EVENTID,
-<<<<<<< HEAD
-=======
-	WMI_TLV_VDEV_TSF_REPORT_EVENTID,
-	WMI_TLV_VDEV_DELETE_RESP_EVENTID,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	WMI_TLV_PEER_STA_KICKOUT_EVENTID = WMI_TLV_EV(WMI_TLV_GRP_PEER),
 	WMI_TLV_PEER_INFO_EVENTID,
 	WMI_TLV_PEER_TX_FAIL_CNT_THR_EVENTID,
 	WMI_TLV_PEER_ESTIMATED_LINKSPEED_EVENTID,
 	WMI_TLV_PEER_STATE_EVENTID,
-<<<<<<< HEAD
-=======
-	WMI_TLV_PEER_ASSOC_CONF_EVENTID,
-	WMI_TLV_PEER_DELETE_RESP_EVENTID,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	WMI_TLV_MGMT_RX_EVENTID = WMI_TLV_EV(WMI_TLV_GRP_MGMT),
 	WMI_TLV_HOST_SWBA_EVENTID,
 	WMI_TLV_TBTTOFFSET_UPDATE_EVENTID,
 	WMI_TLV_OFFLOAD_BCN_TX_STATUS_EVENTID,
 	WMI_TLV_OFFLOAD_PROB_RESP_TX_STATUS_EVENTID,
-<<<<<<< HEAD
 	WMI_TLV_MGMT_TX_COMPLETION_EVENTID,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	WMI_TLV_TX_DELBA_COMPLETE_EVENTID = WMI_TLV_EV(WMI_TLV_GRP_BA_NEG),
 	WMI_TLV_TX_ADDBA_COMPLETE_EVENTID,
 	WMI_TLV_BA_RSP_SSN_EVENTID,
@@ -1573,13 +1556,6 @@ wmi_tlv_svc_map(const __le32 *in, unsigned long *out, size_t len)
 	       WMI_SERVICE_SAP_AUTH_OFFLOAD, len);
 	SVCMAP(WMI_TLV_SERVICE_MGMT_TX_WMI,
 	       WMI_SERVICE_MGMT_TX_WMI, len);
-<<<<<<< HEAD
-=======
-	SVCMAP(WMI_TLV_SERVICE_MESH_11S,
-	       WMI_SERVICE_MESH_11S, len);
-	SVCMAP(WMI_TLV_SERVICE_SYNC_DELETE_CMDS,
-	       WMI_SERVICE_SYNC_DELETE_CMDS, len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void
@@ -1598,7 +1574,6 @@ struct wmi_tlv {
 	u8 value[0];
 } __packed;
 
-<<<<<<< HEAD
 struct ath10k_mgmt_tx_pkt_addr {
 	void *vaddr;
 	dma_addr_t paddr;
@@ -1610,8 +1585,6 @@ struct wmi_tlv_mgmt_tx_compl_ev {
 	__le32 pdev_id;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define WMI_TLV_MGMT_RX_NUM_RSSI 4
 
 struct wmi_tlv_mgmt_rx_ev {
@@ -1721,7 +1694,6 @@ struct wmi_tlv_init_cmd {
 	__le32 num_host_mem_chunks;
 } __packed;
 
-<<<<<<< HEAD
 struct wmi_tlv_pdev_get_temp_cmd {
 	__le32 pdev_id; /* not used */
 } __packed;
@@ -1733,8 +1705,6 @@ struct wmi_tlv_pdev_temperature_event {
 	__le32 pdev_id;
 } __packed;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct wmi_tlv_pdev_set_param_cmd {
 	__le32 pdev_id; /* not used yet */
 	__le32 param_id;
@@ -1775,19 +1745,6 @@ struct wmi_tlv_start_scan_cmd {
 	struct wmi_mac_addr mac_mask;
 } __packed;
 
-<<<<<<< HEAD
-=======
-enum wmi_tlv_vdev_subtype {
-	WMI_TLV_VDEV_SUBTYPE_NONE	= 0,
-	WMI_TLV_VDEV_SUBTYPE_P2P_DEV	= 1,
-	WMI_TLV_VDEV_SUBTYPE_P2P_CLI	= 2,
-	WMI_TLV_VDEV_SUBTYPE_P2P_GO	= 3,
-	WMI_TLV_VDEV_SUBTYPE_PROXY_STA	= 4,
-	WMI_TLV_VDEV_SUBTYPE_MESH	= 5,
-	WMI_TLV_VDEV_SUBTYPE_MESH_11S	= 6,
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct wmi_tlv_vdev_start_cmd {
 	__le32 vdev_id;
 	__le32 requestor_id;
@@ -2013,7 +1970,6 @@ struct wmi_tlv_wow_add_del_event_cmd {
 	__le32 event_bitmap;
 } __packed;
 
-<<<<<<< HEAD
 /* Command to set/unset chip in quiet mode */
 struct wmi_tlv_set_quiet_cmd {
 	__le32 vdev_id;
@@ -2029,8 +1985,6 @@ struct wmi_tlv_set_quiet_cmd {
 	__le32 enabled;
 } __packed;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct wmi_tlv_wow_enable_cmd {
 	__le32 enable;
 } __packed;
@@ -2183,7 +2137,6 @@ struct wmi_tlv_tx_pause_ev {
 	__le32 tid_map;
 } __packed;
 
-<<<<<<< HEAD
 struct wmi_tlv_tdls_peer_event {
 	struct wmi_mac_addr    peer_macaddr;
 	__le32 peer_status;
@@ -2191,8 +2144,6 @@ struct wmi_tlv_tdls_peer_event {
 	__le32 vdev_id;
 } __packed;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void ath10k_wmi_tlv_attach(struct ath10k *ar);
 
 struct wmi_tlv_mgmt_tx_cmd {

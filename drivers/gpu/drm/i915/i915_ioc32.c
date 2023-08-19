@@ -1,17 +1,6 @@
-<<<<<<< HEAD
 /*
  * 32-bit ioctl compatibility routines for the i915 DRM.
  *
-=======
-/**
- * \file i915_ioc32.c
- *
- * 32-bit ioctl compatibility routines for the i915 DRM.
- *
- * \author Alan Hourihane <alanh@fairlite.demon.co.uk>
- *
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Copyright (C) Paul Mackerras 2005
  * Copyright (C) Alan Hourihane 2005
  * All Rights Reserved.
@@ -34,11 +23,8 @@
  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
-<<<<<<< HEAD
  *
  * Author: Alan Hourihane <alanh@fairlite.demon.co.uk>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #include <linux/compat.h>
 
@@ -66,17 +52,10 @@ static int compat_i915_getparam(struct file *file, unsigned int cmd,
 		return -EFAULT;
 
 	request = compat_alloc_user_space(sizeof(*request));
-<<<<<<< HEAD
 	if (!access_ok(VERIFY_WRITE, request, sizeof(*request)) ||
 	    __put_user(req32.param, &request->param) ||
 	    __put_user((void __user *)(unsigned long)req32.value,
 		       &request->value))
-=======
-	if (!access_ok(VERIFY_WRITE, request, sizeof(*request))
-	    || __put_user(req32.param, &request->param)
-	    || __put_user((void __user *)(unsigned long)req32.value,
-			  &request->value))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 
 	return drm_ioctl(file, DRM_IOCTL_I915_GETPARAM,
@@ -88,7 +67,6 @@ static drm_ioctl_compat_t *i915_compat_ioctls[] = {
 };
 
 /**
-<<<<<<< HEAD
  * i915_compat_ioctl - handle the mistakes of the past
  * @filp: the file pointer
  * @cmd: the ioctl command (and encoded flags)
@@ -96,15 +74,6 @@ static drm_ioctl_compat_t *i915_compat_ioctls[] = {
  *
  * Called whenever a 32-bit process running under a 64-bit kernel
  * performs an ioctl on /dev/dri/card<n>.
-=======
- * Called whenever a 32-bit process running under a 64-bit kernel
- * performs an ioctl on /dev/dri/card<n>.
- *
- * \param filp file pointer.
- * \param cmd command.
- * \param arg user argument.
- * \return zero on success or negative number on failure.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 long i915_compat_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 {

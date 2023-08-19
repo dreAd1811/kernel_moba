@@ -105,11 +105,7 @@ static int macvtap_newlink(struct net *src_net, struct net_device *dev,
 	/* Don't put anything that may fail after macvlan_common_newlink
 	 * because we can't undo what it does.
 	 */
-<<<<<<< HEAD
 	err = macvlan_common_newlink(src_net, dev, tb, data, extack);
-=======
-	err = macvlan_common_newlink(src_net, dev, tb, data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err) {
 		netdev_rx_handler_unregister(dev);
 		return err;

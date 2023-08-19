@@ -58,7 +58,6 @@ static struct ath_nf_limits *ath9k_hw_get_nf_limits(struct ath_hw *ah,
 }
 
 static s16 ath9k_hw_get_default_nf(struct ath_hw *ah,
-<<<<<<< HEAD
 				   struct ath9k_channel *chan,
 				   int chain)
 {
@@ -68,11 +67,6 @@ static s16 ath9k_hw_get_default_nf(struct ath_hw *ah,
 		return calib_nf;
 	else
 		return ath9k_hw_get_nf_limits(ah, chan)->nominal;
-=======
-				   struct ath9k_channel *chan)
-{
-	return ath9k_hw_get_nf_limits(ah, chan)->nominal;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 s16 ath9k_hw_getchan_noise(struct ath_hw *ah, struct ath9k_channel *chan,
@@ -82,11 +76,7 @@ s16 ath9k_hw_getchan_noise(struct ath_hw *ah, struct ath9k_channel *chan,
 
 	if (nf) {
 		s8 delta = nf - ATH9K_NF_CAL_NOISE_THRESH -
-<<<<<<< HEAD
 			   ath9k_hw_get_default_nf(ah, chan, 0);
-=======
-			   ath9k_hw_get_default_nf(ah, chan);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (delta > 0)
 			noise += delta;
 	}
@@ -256,11 +246,7 @@ int ath9k_hw_loadnf(struct ath_hw *ah, struct ath9k_channel *chan)
 	unsigned i, j;
 	u8 chainmask = (ah->rxchainmask << 3) | ah->rxchainmask;
 	struct ath_common *common = ath9k_hw_common(ah);
-<<<<<<< HEAD
 	s16 default_nf = ath9k_hw_get_nf_limits(ah, chan)->nominal;
-=======
-	s16 default_nf = ath9k_hw_get_default_nf(ah, chan);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 bb_agc_ctl = REG_READ(ah, AR_PHY_AGC_CONTROL);
 
 	if (ah->caldata)
@@ -278,7 +264,6 @@ int ath9k_hw_loadnf(struct ath_hw *ah, struct ath9k_channel *chan)
 				nfval = ah->nf_override;
 			else if (h)
 				nfval = h[i].privNF;
-<<<<<<< HEAD
 			else {
 				/* Try to get calibrated noise floor value */
 				nfval =
@@ -286,10 +271,6 @@ int ath9k_hw_loadnf(struct ath_hw *ah, struct ath9k_channel *chan)
 				if (nfval > -60 || nfval < -127)
 					nfval = default_nf;
 			}
-=======
-			else
-				nfval = default_nf;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			REG_RMW(ah, ah->nf_regs[i],
 				(((u32) nfval << 1) & 0x1ff), 0x1ff);
@@ -459,17 +440,11 @@ void ath9k_init_nfcal_hist_buffer(struct ath_hw *ah,
 				  struct ath9k_channel *chan)
 {
 	struct ath9k_nfcal_hist *h;
-<<<<<<< HEAD
 	int i, j, k = 0;
-=======
-	s16 default_nf;
-	int i, j;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ah->caldata->channel = chan->channel;
 	ah->caldata->channelFlags = chan->channelFlags;
 	h = ah->caldata->nfCalHist;
-<<<<<<< HEAD
 	for (i = 0; i < NUM_NF_READINGS; i++) {
 		h[i].currIndex = 0;
 		h[i].privNF = ath9k_hw_get_default_nf(ah, chan, k);
@@ -478,16 +453,6 @@ void ath9k_init_nfcal_hist_buffer(struct ath_hw *ah,
 			h[i].nfCalBuffer[j] = h[i].privNF;
 		if (++k >= AR5416_MAX_CHAINS)
 			k = 0;
-=======
-	default_nf = ath9k_hw_get_default_nf(ah, chan);
-	for (i = 0; i < NUM_NF_READINGS; i++) {
-		h[i].currIndex = 0;
-		h[i].privNF = default_nf;
-		h[i].invalidNFcount = AR_PHY_CCA_FILTERWINDOW_LENGTH;
-		for (j = 0; j < ATH9K_NF_CAL_HIST_MAX; j++) {
-			h[i].nfCalBuffer[j] = default_nf;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 

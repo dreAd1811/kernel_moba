@@ -25,7 +25,6 @@ config INTEL_TH_PCI
 
 	  Say Y here to enable PCI Intel TH support.
 
-<<<<<<< HEAD
 config INTEL_TH_ACPI
 	tristate "Intel(R) Trace Hub ACPI controller"
 	depends on ACPI
@@ -38,8 +37,6 @@ config INTEL_TH_ACPI
 
 	  Say Y here to enable ACPI Intel TH support.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config INTEL_TH_GTH
 	tristate "Intel(R) Trace Hub Global Trace Hub"
 	help

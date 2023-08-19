@@ -222,11 +222,7 @@ using debugfs:
  */
 static struct dentry *create_buf_file_handler(const char *filename,
                                               struct dentry *parent,
-<<<<<<< HEAD
                                               umode_t mode,
-=======
-                                              int mode,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
                                               struct rchan_buf *buf,
                                               int *is_global)
 {
@@ -379,11 +375,7 @@ would be very similar:
 static int subbuf_start(struct rchan_buf *buf,
                         void *subbuf,
 			void *prev_subbuf,
-<<<<<<< HEAD
 			size_t prev_padding)
-=======
-			unsigned int prev_padding)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (prev_subbuf)
 		*((unsigned *)prev_subbuf) = prev_padding;

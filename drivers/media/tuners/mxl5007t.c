@@ -59,11 +59,6 @@ MODULE_PARM_DESC(debug, "set debug level");
 
 /* ------------------------------------------------------------------------- */
 
-<<<<<<< HEAD
-=======
-#define MHz 1000000
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum mxl5007t_mode {
 	MxL_MODE_ISDBT     =    0,
 	MxL_MODE_DVBT      =    1,

@@ -20,26 +20,9 @@
 		stdout-path = &uart1;
 	};
 
-<<<<<<< HEAD
 	memory@8000000 {
 		reg = <0x08000000 0x04000000>;
 	};
-=======
-	memory {
-		reg = <0x08000000 0x04000000>;
-	};
-
-	clocks {
-		#address-cells = <1>;
-		#size-cells = <0>;
-
-		clk32 {
-			compatible = "fsl,imx-clk32", "fixed-clock";
-			#clock-cells = <0>;
-			clock-frequency = <32000>;
-		};
-	};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &cspi1 {

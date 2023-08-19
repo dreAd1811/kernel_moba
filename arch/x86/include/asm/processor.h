@@ -134,10 +134,7 @@ struct cpuinfo_x86 {
 	u32			microcode;
 	/* Address space bits used by the cache internally */
 	u8			x86_cache_bits;
-<<<<<<< HEAD
 	unsigned		initialized : 1;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } __randomize_layout;
 
 struct cpuid_regs {
@@ -196,18 +193,6 @@ extern void identify_boot_cpu(void);
 extern void identify_secondary_cpu(struct cpuinfo_x86 *);
 extern void print_cpu_info(struct cpuinfo_x86 *);
 void print_cpu_msr(struct cpuinfo_x86 *);
-<<<<<<< HEAD
-=======
-extern void init_scattered_cpuid_features(struct cpuinfo_x86 *c);
-extern u32 get_scattered_cpuid_leaf(unsigned int level,
-				    unsigned int sub_leaf,
-				    enum cpuid_regs_idx reg);
-extern unsigned int init_intel_cacheinfo(struct cpuinfo_x86 *c);
-extern void init_amd_cacheinfo(struct cpuinfo_x86 *c);
-
-extern void detect_extended_topology(struct cpuinfo_x86 *c);
-extern void detect_ht(struct cpuinfo_x86 *c);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_X86_32
 extern int have_cpuid_p(void);
@@ -351,11 +336,7 @@ struct x86_hw_tss {
 #define INVALID_IO_BITMAP_OFFSET	0x8000
 
 struct entry_stack {
-<<<<<<< HEAD
 	unsigned long		words[64];
-=======
-	char	stack[PAGE_SIZE];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct entry_stack_page {
@@ -424,7 +405,6 @@ union irq_stack_union {
 DECLARE_PER_CPU_FIRST(union irq_stack_union, irq_stack_union) __visible;
 DECLARE_INIT_PER_CPU(irq_stack_union);
 
-<<<<<<< HEAD
 static inline unsigned long cpu_kernelmode_gs_base(int cpu)
 {
 	return (unsigned long)per_cpu(irq_stack_union.gs_base, cpu);
@@ -440,13 +420,6 @@ void save_fsgs_for_kvm(void);
 #endif
 #else	/* X86_64 */
 #ifdef CONFIG_STACKPROTECTOR
-=======
-DECLARE_PER_CPU(char *, irq_stack_ptr);
-DECLARE_PER_CPU(unsigned int, irq_count);
-extern asmlinkage void ignore_sysret(void);
-#else	/* X86_64 */
-#ifdef CONFIG_CC_STACKPROTECTOR
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Make sure stack canary segment base is cached-aligned:
  *   "For Intel Atom processors, avoid non zero segment base address
@@ -540,7 +513,6 @@ struct thread_struct {
 	 */
 };
 
-<<<<<<< HEAD
 /* Whitelist the FPU state from the task_struct for hardened usercopy. */
 static inline void arch_thread_struct_whitelist(unsigned long *offset,
 						unsigned long *size)
@@ -549,8 +521,6 @@ static inline void arch_thread_struct_whitelist(unsigned long *offset,
 	*size = fpu_kernel_xstate_size;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Thread-synchronous status.
  *
@@ -777,19 +747,11 @@ enum idle_boot_override {IDLE_NO_OVERRIDE=0, IDLE_HALT, IDLE_NOMWAIT,
 extern void enable_sep_cpu(void);
 extern int sysenter_setup(void);
 
-<<<<<<< HEAD
-=======
-extern void early_trap_init(void);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void early_trap_pf_init(void);
 
 /* Defined in head.S */
 extern struct desc_ptr		early_gdt_descr;
 
-<<<<<<< HEAD
-=======
-extern void cpu_set_gdt(int);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern void switch_to_new_gdt(int);
 extern void load_direct_gdt(int);
 extern void load_fixmap_gdt(int);
@@ -1011,10 +973,7 @@ static inline uint32_t hypervisor_cpuid_base(const char *sig, uint32_t leaves)
 
 extern unsigned long arch_align_stack(unsigned long sp);
 extern void free_init_pages(char *what, unsigned long begin, unsigned long end);
-<<<<<<< HEAD
 extern void free_kernel_image_pages(void *begin, void *end);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void default_idle(void);
 #ifdef	CONFIG_XEN
@@ -1044,14 +1003,4 @@ enum mds_mitigations {
 	MDS_MITIGATION_VMWERV,
 };
 
-<<<<<<< HEAD
-=======
-enum taa_mitigations {
-	TAA_MITIGATION_OFF,
-	TAA_MITIGATION_UCODE_NEEDED,
-	TAA_MITIGATION_VERW,
-	TAA_MITIGATION_TSX_DISABLED,
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* _ASM_X86_PROCESSOR_H */

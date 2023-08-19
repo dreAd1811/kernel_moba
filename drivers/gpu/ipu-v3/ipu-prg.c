@@ -20,10 +20,7 @@
 #include <linux/module.h>
 #include <linux/of.h>
 #include <linux/platform_device.h>
-<<<<<<< HEAD
 #include <linux/pm_runtime.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/regmap.h>
 #include <video/imx-ipu-v3.h>
 
@@ -103,12 +100,8 @@ ipu_prg_lookup_by_phandle(struct device *dev, const char *name, int ipu_id)
 	list_for_each_entry(prg, &ipu_prg_list, list) {
 		if (prg_node == prg->dev->of_node) {
 			mutex_unlock(&ipu_prg_list_mutex);
-<<<<<<< HEAD
 			device_link_add(dev, prg->dev,
 					DL_FLAG_AUTOREMOVE_CONSUMER);
-=======
-			device_link_add(dev, prg->dev, DL_FLAG_AUTOREMOVE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			prg->id = ipu_id;
 			of_node_put(prg_node);
 			return prg;
@@ -144,7 +137,6 @@ bool ipu_prg_format_supported(struct ipu_soc *ipu, uint32_t format,
 	if (info->num_planes != 1)
 		return false;
 
-<<<<<<< HEAD
 	switch (modifier) {
 	case DRM_FORMAT_MOD_LINEAR:
 	case DRM_FORMAT_MOD_VIVANTE_TILED:
@@ -153,37 +145,17 @@ bool ipu_prg_format_supported(struct ipu_soc *ipu, uint32_t format,
 	default:
 		return false;
 	}
-=======
-	return true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(ipu_prg_format_supported);
 
 int ipu_prg_enable(struct ipu_soc *ipu)
 {
 	struct ipu_prg *prg = ipu->prg_priv;
-<<<<<<< HEAD
-=======
-	int ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!prg)
 		return 0;
 
-<<<<<<< HEAD
 	return pm_runtime_get_sync(prg->dev);
-=======
-	ret = clk_prepare_enable(prg->clk_axi);
-	if (ret)
-		goto fail_disable_ipg;
-
-	return 0;
-
-fail_disable_ipg:
-	clk_disable_unprepare(prg->clk_ipg);
-
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(ipu_prg_enable);
 
@@ -194,11 +166,7 @@ void ipu_prg_disable(struct ipu_soc *ipu)
 	if (!prg)
 		return;
 
-<<<<<<< HEAD
 	pm_runtime_put(prg->dev);
-=======
-	clk_disable_unprepare(prg->clk_axi);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(ipu_prg_disable);
 
@@ -293,11 +261,7 @@ void ipu_prg_channel_disable(struct ipuv3_channel *ipu_chan)
 	if (!chan->enabled)
 		return;
 
-<<<<<<< HEAD
 	pm_runtime_get_sync(prg->dev);
-=======
-	clk_prepare_enable(prg->clk_ipg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	val = readl(prg->regs + IPU_PRG_CTL);
 	val |= IPU_PRG_CTL_BYPASS(prg_chan);
@@ -306,11 +270,7 @@ void ipu_prg_channel_disable(struct ipuv3_channel *ipu_chan)
 	val = IPU_PRG_REG_UPDATE_REG_UPDATE;
 	writel(val, prg->regs + IPU_PRG_REG_UPDATE);
 
-<<<<<<< HEAD
 	pm_runtime_put(prg->dev);
-=======
-	clk_disable_unprepare(prg->clk_ipg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ipu_prg_put_pre(prg, prg_chan);
 
@@ -321,11 +281,7 @@ EXPORT_SYMBOL_GPL(ipu_prg_channel_disable);
 int ipu_prg_channel_configure(struct ipuv3_channel *ipu_chan,
 			      unsigned int axi_id, unsigned int width,
 			      unsigned int height, unsigned int stride,
-<<<<<<< HEAD
 			      u32 format, uint64_t modifier, unsigned long *eba)
-=======
-			      u32 format, unsigned long *eba)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int prg_chan = ipu_prg_ipu_to_prg_chan(ipu_chan->num);
 	struct ipu_prg *prg = ipu_chan->ipu->prg_priv;
@@ -348,21 +304,10 @@ int ipu_prg_channel_configure(struct ipuv3_channel *ipu_chan,
 		return ret;
 
 	ipu_pre_configure(prg->pres[chan->used_pre],
-<<<<<<< HEAD
 			  width, height, stride, format, modifier, *eba);
 
 
 	pm_runtime_get_sync(prg->dev);
-=======
-			  width, height, stride, format, *eba);
-
-
-	ret = clk_prepare_enable(prg->clk_ipg);
-	if (ret) {
-		ipu_prg_put_pre(prg, prg_chan);
-		return ret;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	val = (stride - 1) & IPU_PRG_STRIDE_STRIDE_MASK;
 	writel(val, prg->regs + IPU_PRG_STRIDE(prg_chan));
@@ -395,11 +340,7 @@ int ipu_prg_channel_configure(struct ipuv3_channel *ipu_chan,
 			   (val & IPU_PRG_STATUS_BUFFER1_READY(prg_chan)),
 			   5, 1000);
 
-<<<<<<< HEAD
 	pm_runtime_put(prg->dev);
-=======
-	clk_disable_unprepare(prg->clk_ipg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	chan->enabled = true;
 	return 0;
@@ -447,15 +388,12 @@ static int ipu_prg_probe(struct platform_device *pdev)
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	ret = clk_prepare_enable(prg->clk_axi);
 	if (ret) {
 		clk_disable_unprepare(prg->clk_ipg);
 		return ret;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* init to free running mode */
 	val = readl(prg->regs + IPU_PRG_CTL);
 	val |= IPU_PRG_CTL_SHADOW_EN;
@@ -464,12 +402,8 @@ static int ipu_prg_probe(struct platform_device *pdev)
 	/* disable address threshold */
 	writel(0xffffffff, prg->regs + IPU_PRG_THD);
 
-<<<<<<< HEAD
 	pm_runtime_set_active(dev);
 	pm_runtime_enable(dev);
-=======
-	clk_disable_unprepare(prg->clk_ipg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	prg->dev = dev;
 	platform_set_drvdata(pdev, prg);
@@ -491,7 +425,6 @@ static int ipu_prg_remove(struct platform_device *pdev)
 	return 0;
 }
 
-<<<<<<< HEAD
 #ifdef CONFIG_PM
 static int prg_suspend(struct device *dev)
 {
@@ -526,8 +459,6 @@ static const struct dev_pm_ops prg_pm_ops = {
 	SET_RUNTIME_PM_OPS(prg_suspend, prg_resume, NULL)
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct of_device_id ipu_prg_dt_ids[] = {
 	{ .compatible = "fsl,imx6qp-prg", },
 	{ /* sentinel */ },
@@ -538,10 +469,7 @@ struct platform_driver ipu_prg_drv = {
 	.remove		= ipu_prg_remove,
 	.driver		= {
 		.name	= "imx-ipu-prg",
-<<<<<<< HEAD
 		.pm	= &prg_pm_ops,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.of_match_table = ipu_prg_dt_ids,
 	},
 };

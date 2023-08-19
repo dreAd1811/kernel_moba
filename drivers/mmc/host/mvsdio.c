@@ -143,10 +143,7 @@ static void mvsd_request(struct mmc_host *mmc, struct mmc_request *mrq)
 	struct mmc_command *cmd = mrq->cmd;
 	u32 cmdreg = 0, xfer = 0, intr = 0;
 	unsigned long flags;
-<<<<<<< HEAD
 	unsigned int timeout;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	BUG_ON(host->mrq != NULL);
 	host->mrq = mrq;
@@ -238,12 +235,8 @@ static void mvsd_request(struct mmc_host *mmc, struct mmc_request *mrq)
 	mvsd_write(MVSD_NOR_INTR_EN, host->intr_en);
 	mvsd_write(MVSD_ERR_INTR_EN, 0xffff);
 
-<<<<<<< HEAD
 	timeout = cmd->busy_timeout ? cmd->busy_timeout : 5000;
 	mod_timer(&host->timer, jiffies + msecs_to_jiffies(timeout));
-=======
-	mod_timer(&host->timer, jiffies + 5 * HZ);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_unlock_irqrestore(&host->lock, flags);
 }
@@ -517,15 +510,9 @@ static irqreturn_t mvsd_irq(int irq, void *dev)
 	return IRQ_NONE;
 }
 
-<<<<<<< HEAD
 static void mvsd_timeout_timer(struct timer_list *t)
 {
 	struct mvsd_host *host = from_timer(host, t, timer);
-=======
-static void mvsd_timeout_timer(unsigned long data)
-{
-	struct mvsd_host *host = (struct mvsd_host *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void __iomem *iobase = host->base;
 	struct mmc_request *mrq;
 	unsigned long flags;
@@ -770,11 +757,8 @@ static int mvsd_probe(struct platform_device *pdev)
 	if (maxfreq)
 		mmc->f_max = maxfreq;
 
-<<<<<<< HEAD
 	mmc->caps |= MMC_CAP_ERASE;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_init(&host->lock);
 
 	host->base = devm_ioremap_resource(&pdev->dev, r);
@@ -796,11 +780,7 @@ static int mvsd_probe(struct platform_device *pdev)
 		goto out;
 	}
 
-<<<<<<< HEAD
 	timer_setup(&host->timer, mvsd_timeout_timer, 0);
-=======
-	setup_timer(&host->timer, mvsd_timeout_timer, (unsigned long)host);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	platform_set_drvdata(pdev, mmc);
 	ret = mmc_add_host(mmc);
 	if (ret)

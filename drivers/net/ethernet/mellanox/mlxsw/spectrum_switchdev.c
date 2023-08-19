@@ -1,43 +1,5 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: BSD-3-Clause OR GPL-2.0
 /* Copyright (c) 2015-2018 Mellanox Technologies. All rights reserved */
-=======
-/*
- * drivers/net/ethernet/mellanox/mlxsw/spectrum_switchdev.c
- * Copyright (c) 2015 Mellanox Technologies. All rights reserved.
- * Copyright (c) 2015 Jiri Pirko <jiri@mellanox.com>
- * Copyright (c) 2015 Ido Schimmel <idosch@mellanox.com>
- * Copyright (c) 2015 Elad Raz <eladr@mellanox.com>
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- * 3. Neither the names of the copyright holders nor the names of its
- *    contributors may be used to endorse or promote products derived from
- *    this software without specific prior written permission.
- *
- * Alternatively, this software may be distributed under the terms of the
- * GNU General Public License ("GPL") version 2 as published by the Free
- * Software Foundation.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/kernel.h>
 #include <linux/types.h>
@@ -51,17 +13,12 @@
 #include <linux/workqueue.h>
 #include <linux/jiffies.h>
 #include <linux/rtnetlink.h>
-<<<<<<< HEAD
 #include <linux/netlink.h>
 #include <net/switchdev.h>
 
 #include "spectrum_span.h"
 #include "spectrum_router.h"
 #include "spectrum_switchdev.h"
-=======
-#include <net/switchdev.h>
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "spectrum.h"
 #include "core.h"
 #include "reg.h"
@@ -81,10 +38,6 @@ struct mlxsw_sp_bridge {
 	u32 ageing_time;
 	bool vlan_enabled_exists;
 	struct list_head bridges_list;
-<<<<<<< HEAD
-=======
-	struct list_head mids_list;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DECLARE_BITMAP(mids_bitmap, MLXSW_SP_MID_MAX);
 	const struct mlxsw_sp_bridge_ops *bridge_8021q_ops;
 	const struct mlxsw_sp_bridge_ops *bridge_8021d_ops;
@@ -94,15 +47,10 @@ struct mlxsw_sp_bridge_device {
 	struct net_device *dev;
 	struct list_head list;
 	struct list_head ports_list;
-<<<<<<< HEAD
 	struct list_head mids_list;
 	u8 vlan_enabled:1,
 	   multicast_enabled:1,
 	   mrouter:1;
-=======
-	u8 vlan_enabled:1,
-	   multicast_enabled:1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const struct mlxsw_sp_bridge_ops *ops;
 };
 
@@ -131,12 +79,8 @@ struct mlxsw_sp_bridge_vlan {
 struct mlxsw_sp_bridge_ops {
 	int (*port_join)(struct mlxsw_sp_bridge_device *bridge_device,
 			 struct mlxsw_sp_bridge_port *bridge_port,
-<<<<<<< HEAD
 			 struct mlxsw_sp_port *mlxsw_sp_port,
 			 struct netlink_ext_ack *extack);
-=======
-			 struct mlxsw_sp_port *mlxsw_sp_port);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void (*port_leave)(struct mlxsw_sp_bridge_device *bridge_device,
 			   struct mlxsw_sp_bridge_port *bridge_port,
 			   struct mlxsw_sp_port *mlxsw_sp_port);
@@ -150,7 +94,6 @@ mlxsw_sp_bridge_port_fdb_flush(struct mlxsw_sp *mlxsw_sp,
 			       struct mlxsw_sp_bridge_port *bridge_port,
 			       u16 fid_index);
 
-<<<<<<< HEAD
 static void
 mlxsw_sp_bridge_port_mdb_flush(struct mlxsw_sp_port *mlxsw_sp_port,
 			       struct mlxsw_sp_bridge_port *bridge_port);
@@ -165,8 +108,6 @@ mlxsw_sp_port_mrouter_update_mdb(struct mlxsw_sp_port *mlxsw_sp_port,
 				 struct mlxsw_sp_bridge_port *bridge_port,
 				 bool add);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct mlxsw_sp_bridge_device *
 mlxsw_sp_bridge_device_find(const struct mlxsw_sp_bridge *bridge,
 			    const struct net_device *br_dev)
@@ -224,10 +165,7 @@ mlxsw_sp_bridge_device_create(struct mlxsw_sp_bridge *bridge,
 	bridge_device->dev = br_dev;
 	bridge_device->vlan_enabled = vlan_enabled;
 	bridge_device->multicast_enabled = br_multicast_enabled(br_dev);
-<<<<<<< HEAD
 	bridge_device->mrouter = br_multicast_router(br_dev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INIT_LIST_HEAD(&bridge_device->ports_list);
 	if (vlan_enabled) {
 		bridge->vlan_enabled_exists = true;
@@ -235,10 +173,7 @@ mlxsw_sp_bridge_device_create(struct mlxsw_sp_bridge *bridge,
 	} else {
 		bridge_device->ops = bridge->bridge_8021d_ops;
 	}
-<<<<<<< HEAD
 	INIT_LIST_HEAD(&bridge_device->mids_list);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_add(&bridge_device->list, &bridge->bridges_list);
 
 	return bridge_device;
@@ -254,10 +189,7 @@ mlxsw_sp_bridge_device_destroy(struct mlxsw_sp_bridge *bridge,
 	if (bridge_device->vlan_enabled)
 		bridge->vlan_enabled_exists = false;
 	WARN_ON(!list_empty(&bridge_device->ports_list));
-<<<<<<< HEAD
 	WARN_ON(!list_empty(&bridge_device->mids_list));
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(bridge_device);
 }
 
@@ -296,11 +228,7 @@ __mlxsw_sp_bridge_port_find(const struct mlxsw_sp_bridge_device *bridge_device,
 	return NULL;
 }
 
-<<<<<<< HEAD
 struct mlxsw_sp_bridge_port *
-=======
-static struct mlxsw_sp_bridge_port *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 mlxsw_sp_bridge_port_find(struct mlxsw_sp_bridge *bridge,
 			  struct net_device *brport_dev)
 {
@@ -337,12 +265,8 @@ mlxsw_sp_bridge_port_create(struct mlxsw_sp_bridge_device *bridge_device,
 	bridge_port->dev = brport_dev;
 	bridge_port->bridge_device = bridge_device;
 	bridge_port->stp_state = BR_STATE_DISABLED;
-<<<<<<< HEAD
 	bridge_port->flags = BR_LEARNING | BR_FLOOD | BR_LEARNING_SYNC |
 			     BR_MCAST_FLOOD;
-=======
-	bridge_port->flags = BR_LEARNING | BR_FLOOD | BR_LEARNING_SYNC;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INIT_LIST_HEAD(&bridge_port->vlans_list);
 	list_add(&bridge_port->list, &bridge_device->ports_list);
 	bridge_port->ref_count = 1;
@@ -529,12 +453,8 @@ static int mlxsw_sp_port_attr_get(struct net_device *dev,
 					       &attr->u.brport_flags);
 		break;
 	case SWITCHDEV_ATTR_ID_PORT_BRIDGE_FLAGS_SUPPORT:
-<<<<<<< HEAD
 		attr->u.brport_flags_support = BR_LEARNING | BR_FLOOD |
 					       BR_MCAST_FLOOD;
-=======
-		attr->u.brport_flags_support = BR_LEARNING | BR_FLOOD;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		return -EOPNOTSUPP;
@@ -719,7 +639,6 @@ static int mlxsw_sp_port_attr_br_flags_set(struct mlxsw_sp_port *mlxsw_sp_port,
 	if (err)
 		return err;
 
-<<<<<<< HEAD
 	if (bridge_port->bridge_device->multicast_enabled)
 		goto out;
 
@@ -732,10 +651,6 @@ static int mlxsw_sp_port_attr_br_flags_set(struct mlxsw_sp_port *mlxsw_sp_port,
 
 out:
 	memcpy(&bridge_port->flags, &brport_flags, sizeof(brport_flags));
-=======
-	memcpy(&bridge_port->flags, &brport_flags, sizeof(brport_flags));
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -793,17 +708,10 @@ static int mlxsw_sp_port_attr_br_vlan_set(struct mlxsw_sp_port *mlxsw_sp_port,
 	return -EINVAL;
 }
 
-<<<<<<< HEAD
 static int mlxsw_sp_port_attr_mrouter_set(struct mlxsw_sp_port *mlxsw_sp_port,
 					  struct switchdev_trans *trans,
 					  struct net_device *orig_dev,
 					  bool is_port_mrouter)
-=======
-static int mlxsw_sp_port_attr_mc_router_set(struct mlxsw_sp_port *mlxsw_sp_port,
-					    struct switchdev_trans *trans,
-					    struct net_device *orig_dev,
-					    bool is_port_mc_router)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlxsw_sp_bridge_port *bridge_port;
 	int err;
@@ -821,7 +729,6 @@ static int mlxsw_sp_port_attr_mc_router_set(struct mlxsw_sp_port *mlxsw_sp_port,
 
 	err = mlxsw_sp_bridge_port_flood_table_set(mlxsw_sp_port, bridge_port,
 						   MLXSW_SP_FLOOD_TYPE_MC,
-<<<<<<< HEAD
 						   is_port_mrouter);
 	if (err)
 		return err;
@@ -842,17 +749,6 @@ static bool mlxsw_sp_mc_flood(const struct mlxsw_sp_bridge_port *bridge_port)
 					bridge_port->flags & BR_MCAST_FLOOD;
 }
 
-=======
-						   is_port_mc_router);
-	if (err)
-		return err;
-
-out:
-	bridge_port->mrouter = is_port_mc_router;
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mlxsw_sp_port_mc_disabled_set(struct mlxsw_sp_port *mlxsw_sp_port,
 					 struct switchdev_trans *trans,
 					 struct net_device *orig_dev,
@@ -873,7 +769,6 @@ static int mlxsw_sp_port_mc_disabled_set(struct mlxsw_sp_port *mlxsw_sp_port,
 	if (!bridge_device)
 		return 0;
 
-<<<<<<< HEAD
 	if (bridge_device->multicast_enabled != !mc_disabled) {
 		bridge_device->multicast_enabled = !mc_disabled;
 		mlxsw_sp_bridge_mdb_mc_enable_sync(mlxsw_sp_port,
@@ -883,11 +778,6 @@ static int mlxsw_sp_port_mc_disabled_set(struct mlxsw_sp_port *mlxsw_sp_port,
 	list_for_each_entry(bridge_port, &bridge_device->ports_list, list) {
 		enum mlxsw_sp_flood_type packet_type = MLXSW_SP_FLOOD_TYPE_MC;
 		bool member = mlxsw_sp_mc_flood(bridge_port);
-=======
-	list_for_each_entry(bridge_port, &bridge_device->ports_list, list) {
-		enum mlxsw_sp_flood_type packet_type = MLXSW_SP_FLOOD_TYPE_MC;
-		bool member = mc_disabled ? true : bridge_port->mrouter;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		err = mlxsw_sp_bridge_port_flood_table_set(mlxsw_sp_port,
 							   bridge_port,
@@ -901,7 +791,6 @@ static int mlxsw_sp_port_mc_disabled_set(struct mlxsw_sp_port *mlxsw_sp_port,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int mlxsw_sp_smid_router_port_set(struct mlxsw_sp *mlxsw_sp,
 					 u16 mid_idx, bool add)
 {
@@ -956,8 +845,6 @@ mlxsw_sp_port_attr_br_mrouter_set(struct mlxsw_sp_port *mlxsw_sp_port,
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mlxsw_sp_port_attr_set(struct net_device *dev,
 				  const struct switchdev_attr *attr,
 				  struct switchdev_trans *trans)
@@ -986,54 +873,31 @@ static int mlxsw_sp_port_attr_set(struct net_device *dev,
 						     attr->u.vlan_filtering);
 		break;
 	case SWITCHDEV_ATTR_ID_PORT_MROUTER:
-<<<<<<< HEAD
 		err = mlxsw_sp_port_attr_mrouter_set(mlxsw_sp_port, trans,
 						     attr->orig_dev,
 						     attr->u.mrouter);
-=======
-		err = mlxsw_sp_port_attr_mc_router_set(mlxsw_sp_port, trans,
-						       attr->orig_dev,
-						       attr->u.mrouter);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case SWITCHDEV_ATTR_ID_BRIDGE_MC_DISABLED:
 		err = mlxsw_sp_port_mc_disabled_set(mlxsw_sp_port, trans,
 						    attr->orig_dev,
 						    attr->u.mc_disabled);
 		break;
-<<<<<<< HEAD
 	case SWITCHDEV_ATTR_ID_BRIDGE_MROUTER:
 		err = mlxsw_sp_port_attr_br_mrouter_set(mlxsw_sp_port, trans,
 							attr->orig_dev,
 							attr->u.mrouter);
 		break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		err = -EOPNOTSUPP;
 		break;
 	}
 
-<<<<<<< HEAD
 	if (switchdev_trans_ph_commit(trans))
 		mlxsw_sp_span_respin(mlxsw_sp_port->mlxsw_sp);
 
 	return err;
 }
 
-=======
-	return err;
-}
-
-static bool mlxsw_sp_mc_flood(const struct mlxsw_sp_bridge_port *bridge_port)
-{
-	const struct mlxsw_sp_bridge_device *bridge_device;
-
-	bridge_device = bridge_port->bridge_device;
-	return !bridge_device->multicast_enabled ? true : bridge_port->mrouter;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int
 mlxsw_sp_port_vlan_fid_join(struct mlxsw_sp_port_vlan *mlxsw_sp_port_vlan,
 			    struct mlxsw_sp_bridge_port *bridge_port)
@@ -1173,31 +1037,21 @@ mlxsw_sp_port_vlan_bridge_leave(struct mlxsw_sp_port_vlan *mlxsw_sp_port_vlan)
 	struct mlxsw_sp_bridge_vlan *bridge_vlan;
 	struct mlxsw_sp_bridge_port *bridge_port;
 	u16 vid = mlxsw_sp_port_vlan->vid;
-<<<<<<< HEAD
 	bool last_port, last_vlan;
-=======
-	bool last;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (WARN_ON(mlxsw_sp_fid_type(fid) != MLXSW_SP_FID_TYPE_8021Q &&
 		    mlxsw_sp_fid_type(fid) != MLXSW_SP_FID_TYPE_8021D))
 		return;
 
 	bridge_port = mlxsw_sp_port_vlan->bridge_port;
-<<<<<<< HEAD
 	last_vlan = list_is_singular(&bridge_port->vlans_list);
 	bridge_vlan = mlxsw_sp_bridge_vlan_find(bridge_port, vid);
 	last_port = list_is_singular(&bridge_vlan->port_vlan_list);
-=======
-	bridge_vlan = mlxsw_sp_bridge_vlan_find(bridge_port, vid);
-	last = list_is_singular(&bridge_vlan->port_vlan_list);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	list_del(&mlxsw_sp_port_vlan->bridge_vlan_node);
 	mlxsw_sp_bridge_vlan_put(bridge_vlan);
 	mlxsw_sp_port_vid_stp_set(mlxsw_sp_port, vid, BR_STATE_DISABLED);
 	mlxsw_sp_port_vid_learning_set(mlxsw_sp_port, vid, false);
-<<<<<<< HEAD
 	if (last_port)
 		mlxsw_sp_bridge_port_fdb_flush(mlxsw_sp_port->mlxsw_sp,
 					       bridge_port,
@@ -1205,12 +1059,6 @@ mlxsw_sp_port_vlan_bridge_leave(struct mlxsw_sp_port_vlan *mlxsw_sp_port_vlan)
 	if (last_vlan)
 		mlxsw_sp_bridge_port_mdb_flush(mlxsw_sp_port, bridge_port);
 
-=======
-	if (last)
-		mlxsw_sp_bridge_port_fdb_flush(mlxsw_sp_port->mlxsw_sp,
-					       bridge_port,
-					       mlxsw_sp_fid_index(fid));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlxsw_sp_port_vlan_fid_leave(mlxsw_sp_port_vlan);
 
 	mlxsw_sp_bridge_port_put(mlxsw_sp_port->mlxsw_sp->bridge, bridge_port);
@@ -1255,7 +1103,6 @@ err_port_vlan_set:
 	return err;
 }
 
-<<<<<<< HEAD
 static int
 mlxsw_sp_br_ban_rif_pvid_change(struct mlxsw_sp *mlxsw_sp,
 				const struct net_device *br_dev,
@@ -1289,8 +1136,6 @@ mlxsw_sp_br_ban_rif_pvid_change(struct mlxsw_sp *mlxsw_sp,
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mlxsw_sp_port_vlans_add(struct mlxsw_sp_port *mlxsw_sp_port,
 				   const struct switchdev_obj_port_vlan *vlan,
 				   struct switchdev_trans *trans)
@@ -1302,7 +1147,6 @@ static int mlxsw_sp_port_vlans_add(struct mlxsw_sp_port *mlxsw_sp_port,
 	struct mlxsw_sp_bridge_port *bridge_port;
 	u16 vid;
 
-<<<<<<< HEAD
 	if (netif_is_bridge_master(orig_dev)) {
 		int err = 0;
 
@@ -1316,8 +1160,6 @@ static int mlxsw_sp_port_vlans_add(struct mlxsw_sp_port *mlxsw_sp_port,
 		return err;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (switchdev_trans_ph_prepare(trans))
 		return 0;
 
@@ -1488,11 +1330,7 @@ mlxsw_sp_port_fdb_set(struct mlxsw_sp_port *mlxsw_sp_port,
 }
 
 static int mlxsw_sp_port_mdb_op(struct mlxsw_sp *mlxsw_sp, const char *addr,
-<<<<<<< HEAD
 				u16 fid, u16 mid_idx, bool adding)
-=======
-				u16 fid, u16 mid, bool adding)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	char *sfd_pl;
 	u8 num_rec;
@@ -1504,11 +1342,7 @@ static int mlxsw_sp_port_mdb_op(struct mlxsw_sp *mlxsw_sp, const char *addr,
 
 	mlxsw_reg_sfd_pack(sfd_pl, mlxsw_sp_sfd_op(adding), 0);
 	mlxsw_reg_sfd_mc_pack(sfd_pl, 0, addr, fid,
-<<<<<<< HEAD
 			      MLXSW_REG_SFD_REC_ACTION_NOP, mid_idx);
-=======
-			      MLXSW_REG_SFD_REC_ACTION_NOP, mid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	num_rec = mlxsw_reg_sfd_num_rec_get(sfd_pl);
 	err = mlxsw_reg_write(mlxsw_sp->core, MLXSW_REG(sfd), sfd_pl);
 	if (err)
@@ -1522,17 +1356,10 @@ out:
 	return err;
 }
 
-<<<<<<< HEAD
 static int mlxsw_sp_port_smid_full_entry(struct mlxsw_sp *mlxsw_sp, u16 mid_idx,
 					 long *ports_bitmap,
 					 bool set_router_port)
 {
-=======
-static int mlxsw_sp_port_smid_set(struct mlxsw_sp_port *mlxsw_sp_port, u16 mid,
-				  bool add, bool clear_all_ports)
-{
-	struct mlxsw_sp *mlxsw_sp = mlxsw_sp_port->mlxsw_sp;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	char *smid_pl;
 	int err, i;
 
@@ -1540,7 +1367,6 @@ static int mlxsw_sp_port_smid_set(struct mlxsw_sp_port *mlxsw_sp_port, u16 mid,
 	if (!smid_pl)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	mlxsw_reg_smid_pack(smid_pl, mid_idx, 0, false);
 	for (i = 1; i < mlxsw_core_max_ports(mlxsw_sp->core); i++) {
 		if (mlxsw_sp->ports[i])
@@ -1556,20 +1382,11 @@ static int mlxsw_sp_port_smid_set(struct mlxsw_sp_port *mlxsw_sp_port, u16 mid,
 	mlxsw_reg_smid_port_set(smid_pl, mlxsw_sp_router_port(mlxsw_sp),
 				set_router_port);
 
-=======
-	mlxsw_reg_smid_pack(smid_pl, mid, mlxsw_sp_port->local_port, add);
-	if (clear_all_ports) {
-		for (i = 1; i < mlxsw_core_max_ports(mlxsw_sp->core); i++)
-			if (mlxsw_sp->ports[i])
-				mlxsw_reg_smid_port_mask_set(smid_pl, i, 1);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = mlxsw_reg_write(mlxsw_sp->core, MLXSW_REG(smid), smid_pl);
 	kfree(smid_pl);
 	return err;
 }
 
-<<<<<<< HEAD
 static int mlxsw_sp_port_smid_set(struct mlxsw_sp_port *mlxsw_sp_port,
 				  u16 mid_idx, bool add)
 {
@@ -1595,22 +1412,12 @@ mlxsw_sp_mid *__mlxsw_sp_mc_get(struct mlxsw_sp_bridge_device *bridge_device,
 	struct mlxsw_sp_mid *mid;
 
 	list_for_each_entry(mid, &bridge_device->mids_list, list) {
-=======
-static struct mlxsw_sp_mid *__mlxsw_sp_mc_get(struct mlxsw_sp *mlxsw_sp,
-					      const unsigned char *addr,
-					      u16 fid)
-{
-	struct mlxsw_sp_mid *mid;
-
-	list_for_each_entry(mid, &mlxsw_sp->bridge->mids_list, list) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ether_addr_equal(mid->addr, addr) && mid->fid == fid)
 			return mid;
 	}
 	return NULL;
 }
 
-<<<<<<< HEAD
 static void
 mlxsw_sp_bridge_port_get_ports_bitmap(struct mlxsw_sp *mlxsw_sp,
 				      struct mlxsw_sp_bridge_port *bridge_port,
@@ -1662,19 +1469,10 @@ mlxsw_sp_mc_write_mdb_entry(struct mlxsw_sp *mlxsw_sp,
 	int alloc_size;
 	u16 mid_idx;
 	int err;
-=======
-static struct mlxsw_sp_mid *__mlxsw_sp_mc_alloc(struct mlxsw_sp *mlxsw_sp,
-						const unsigned char *addr,
-						u16 fid)
-{
-	struct mlxsw_sp_mid *mid;
-	u16 mid_idx;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mid_idx = find_first_zero_bit(mlxsw_sp->bridge->mids_bitmap,
 				      MLXSW_SP_MID_MAX);
 	if (mid_idx == MLXSW_SP_MID_MAX)
-<<<<<<< HEAD
 		return false;
 
 	num_of_ports = mlxsw_core_max_ports(mlxsw_sp->core);
@@ -1723,15 +1521,11 @@ mlxsw_sp_mid *__mlxsw_sp_mc_alloc(struct mlxsw_sp *mlxsw_sp,
 {
 	struct mlxsw_sp_mid *mid;
 	size_t alloc_size;
-=======
-		return NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mid = kzalloc(sizeof(*mid), GFP_KERNEL);
 	if (!mid)
 		return NULL;
 
-<<<<<<< HEAD
 	alloc_size = sizeof(unsigned long) *
 		     BITS_TO_LONGS(mlxsw_core_max_ports(mlxsw_sp->core));
 
@@ -1775,28 +1569,6 @@ static int mlxsw_sp_port_remove_from_mid(struct mlxsw_sp_port *mlxsw_sp_port,
 		kfree(mid);
 	}
 	return err;
-=======
-	set_bit(mid_idx, mlxsw_sp->bridge->mids_bitmap);
-	ether_addr_copy(mid->addr, addr);
-	mid->fid = fid;
-	mid->mid = mid_idx;
-	mid->ref_count = 0;
-	list_add_tail(&mid->list, &mlxsw_sp->bridge->mids_list);
-
-	return mid;
-}
-
-static int __mlxsw_sp_mc_dec_ref(struct mlxsw_sp *mlxsw_sp,
-				 struct mlxsw_sp_mid *mid)
-{
-	if (--mid->ref_count == 0) {
-		list_del(&mid->list);
-		clear_bit(mid->mid, mlxsw_sp->bridge->mids_bitmap);
-		kfree(mid);
-		return 1;
-	}
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int mlxsw_sp_port_mdb_add(struct mlxsw_sp_port *mlxsw_sp_port,
@@ -1829,22 +1601,15 @@ static int mlxsw_sp_port_mdb_add(struct mlxsw_sp_port *mlxsw_sp_port,
 
 	fid_index = mlxsw_sp_fid_index(mlxsw_sp_port_vlan->fid);
 
-<<<<<<< HEAD
 	mid = __mlxsw_sp_mc_get(bridge_device, mdb->addr, fid_index);
 	if (!mid) {
 		mid = __mlxsw_sp_mc_alloc(mlxsw_sp, bridge_device, mdb->addr,
 					  fid_index);
-=======
-	mid = __mlxsw_sp_mc_get(mlxsw_sp, mdb->addr, fid_index);
-	if (!mid) {
-		mid = __mlxsw_sp_mc_alloc(mlxsw_sp, mdb->addr, fid_index);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!mid) {
 			netdev_err(dev, "Unable to allocate MC group\n");
 			return -ENOMEM;
 		}
 	}
-<<<<<<< HEAD
 	set_bit(mlxsw_sp_port->local_port, mid->ports_in_mid);
 
 	if (!bridge_device->multicast_enabled)
@@ -1854,18 +1619,11 @@ static int mlxsw_sp_port_mdb_add(struct mlxsw_sp_port *mlxsw_sp_port,
 		return 0;
 
 	err = mlxsw_sp_port_smid_set(mlxsw_sp_port, mid->mid, true);
-=======
-	mid->ref_count++;
-
-	err = mlxsw_sp_port_smid_set(mlxsw_sp_port, mid->mid, true,
-				     mid->ref_count == 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err) {
 		netdev_err(dev, "Unable to set SMID\n");
 		goto err_out;
 	}
 
-<<<<<<< HEAD
 	return 0;
 
 err_out:
@@ -1939,38 +1697,16 @@ static void mlxsw_sp_span_respin_schedule(struct mlxsw_sp *mlxsw_sp)
 	mlxsw_core_schedule_work(&respin_work->work);
 }
 
-=======
-	if (mid->ref_count == 1) {
-		err = mlxsw_sp_port_mdb_op(mlxsw_sp, mdb->addr, fid_index,
-					   mid->mid, true);
-		if (err) {
-			netdev_err(dev, "Unable to set MC SFD\n");
-			goto err_out;
-		}
-	}
-
-	return 0;
-
-err_out:
-	__mlxsw_sp_mc_dec_ref(mlxsw_sp, mid);
-	return err;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mlxsw_sp_port_obj_add(struct net_device *dev,
 				 const struct switchdev_obj *obj,
 				 struct switchdev_trans *trans)
 {
 	struct mlxsw_sp_port *mlxsw_sp_port = netdev_priv(dev);
-<<<<<<< HEAD
 	const struct switchdev_obj_port_vlan *vlan;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err = 0;
 
 	switch (obj->id) {
 	case SWITCHDEV_OBJ_ID_PORT_VLAN:
-<<<<<<< HEAD
 		vlan = SWITCHDEV_OBJ_PORT_VLAN(obj);
 		err = mlxsw_sp_port_vlans_add(mlxsw_sp_port, vlan, trans);
 
@@ -1982,11 +1718,6 @@ static int mlxsw_sp_port_obj_add(struct net_device *dev,
 			 */
 			mlxsw_sp_span_respin_schedule(mlxsw_sp_port->mlxsw_sp);
 		}
-=======
-		err = mlxsw_sp_port_vlans_add(mlxsw_sp_port,
-					      SWITCHDEV_OBJ_PORT_VLAN(obj),
-					      trans);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case SWITCHDEV_OBJ_ID_PORT_MDB:
 		err = mlxsw_sp_port_mdb_add(mlxsw_sp_port,
@@ -2026,12 +1757,9 @@ static int mlxsw_sp_port_vlans_del(struct mlxsw_sp_port *mlxsw_sp_port,
 	struct mlxsw_sp_bridge_port *bridge_port;
 	u16 vid;
 
-<<<<<<< HEAD
 	if (netif_is_bridge_master(orig_dev))
 		return -EOPNOTSUPP;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bridge_port = mlxsw_sp_bridge_port_find(mlxsw_sp->bridge, orig_dev);
 	if (WARN_ON(!bridge_port))
 		return -EINVAL;
@@ -2045,7 +1773,6 @@ static int mlxsw_sp_port_vlans_del(struct mlxsw_sp_port *mlxsw_sp_port,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int
 __mlxsw_sp_port_mdb_del(struct mlxsw_sp_port *mlxsw_sp_port,
 			struct mlxsw_sp_bridge_port *bridge_port,
@@ -2068,8 +1795,6 @@ __mlxsw_sp_port_mdb_del(struct mlxsw_sp_port *mlxsw_sp_port,
 	return err;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mlxsw_sp_port_mdb_del(struct mlxsw_sp_port *mlxsw_sp_port,
 				 const struct switchdev_obj_port_mdb *mdb)
 {
@@ -2081,11 +1806,6 @@ static int mlxsw_sp_port_mdb_del(struct mlxsw_sp_port *mlxsw_sp_port,
 	struct mlxsw_sp_bridge_port *bridge_port;
 	struct mlxsw_sp_mid *mid;
 	u16 fid_index;
-<<<<<<< HEAD
-=======
-	u16 mid_idx;
-	int err = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	bridge_port = mlxsw_sp_bridge_port_find(mlxsw_sp->bridge, orig_dev);
 	if (!bridge_port)
@@ -2100,17 +1820,12 @@ static int mlxsw_sp_port_mdb_del(struct mlxsw_sp_port *mlxsw_sp_port,
 
 	fid_index = mlxsw_sp_fid_index(mlxsw_sp_port_vlan->fid);
 
-<<<<<<< HEAD
 	mid = __mlxsw_sp_mc_get(bridge_device, mdb->addr, fid_index);
-=======
-	mid = __mlxsw_sp_mc_get(mlxsw_sp, mdb->addr, fid_index);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!mid) {
 		netdev_err(dev, "Unable to remove port from MC DB\n");
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 	return __mlxsw_sp_port_mdb_del(mlxsw_sp_port, bridge_port, mid);
 }
 
@@ -2132,21 +1847,6 @@ mlxsw_sp_bridge_port_mdb_flush(struct mlxsw_sp_port *mlxsw_sp_port,
 			mlxsw_sp_port_smid_set(mlxsw_sp_port, mid->mid, false);
 		}
 	}
-=======
-	err = mlxsw_sp_port_smid_set(mlxsw_sp_port, mid->mid, false, false);
-	if (err)
-		netdev_err(dev, "Unable to remove port from SMID\n");
-
-	mid_idx = mid->mid;
-	if (__mlxsw_sp_mc_dec_ref(mlxsw_sp, mid)) {
-		err = mlxsw_sp_port_mdb_op(mlxsw_sp, mdb->addr, fid_index,
-					   mid_idx, false);
-		if (err)
-			netdev_err(dev, "Unable to remove MC SFD\n");
-	}
-
-	return err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int mlxsw_sp_port_obj_del(struct net_device *dev,
@@ -2169,11 +1869,8 @@ static int mlxsw_sp_port_obj_del(struct net_device *dev,
 		break;
 	}
 
-<<<<<<< HEAD
 	mlxsw_sp_span_respin_schedule(mlxsw_sp_port->mlxsw_sp);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -2204,7 +1901,6 @@ static const struct switchdev_ops mlxsw_sp_port_switchdev_ops = {
 static int
 mlxsw_sp_bridge_8021q_port_join(struct mlxsw_sp_bridge_device *bridge_device,
 				struct mlxsw_sp_bridge_port *bridge_port,
-<<<<<<< HEAD
 				struct mlxsw_sp_port *mlxsw_sp_port,
 				struct netlink_ext_ack *extack)
 {
@@ -2214,14 +1910,6 @@ mlxsw_sp_bridge_8021q_port_join(struct mlxsw_sp_bridge_device *bridge_device,
 		NL_SET_ERR_MSG_MOD(extack, "Can not enslave a VLAN device to a VLAN-aware bridge");
 		return -EINVAL;
 	}
-=======
-				struct mlxsw_sp_port *mlxsw_sp_port)
-{
-	struct mlxsw_sp_port_vlan *mlxsw_sp_port_vlan;
-
-	if (is_vlan_dev(bridge_port->dev))
-		return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mlxsw_sp_port_vlan = mlxsw_sp_port_vlan_find_by_vid(mlxsw_sp_port, 1);
 	if (WARN_ON(!mlxsw_sp_port_vlan))
@@ -2278,7 +1966,6 @@ mlxsw_sp_port_is_br_member(const struct mlxsw_sp_port *mlxsw_sp_port,
 static int
 mlxsw_sp_bridge_8021d_port_join(struct mlxsw_sp_bridge_device *bridge_device,
 				struct mlxsw_sp_bridge_port *bridge_port,
-<<<<<<< HEAD
 				struct mlxsw_sp_port *mlxsw_sp_port,
 				struct netlink_ext_ack *extack)
 {
@@ -2287,27 +1974,12 @@ mlxsw_sp_bridge_8021d_port_join(struct mlxsw_sp_bridge_device *bridge_device,
 	u16 vid;
 
 	vid = is_vlan_dev(dev) ? vlan_dev_vlan_id(dev) : 1;
-=======
-				struct mlxsw_sp_port *mlxsw_sp_port)
-{
-	struct mlxsw_sp_port_vlan *mlxsw_sp_port_vlan;
-	u16 vid;
-
-	if (!is_vlan_dev(bridge_port->dev))
-		return -EINVAL;
-	vid = vlan_dev_vlan_id(bridge_port->dev);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlxsw_sp_port_vlan = mlxsw_sp_port_vlan_find_by_vid(mlxsw_sp_port, vid);
 	if (WARN_ON(!mlxsw_sp_port_vlan))
 		return -EINVAL;
 
 	if (mlxsw_sp_port_is_br_member(mlxsw_sp_port, bridge_device->dev)) {
-<<<<<<< HEAD
 		NL_SET_ERR_MSG_MOD(extack, "Can not bridge VLAN uppers of the same port");
-=======
-		netdev_err(mlxsw_sp_port->dev, "Can't bridge VLAN uppers of the same port\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -2324,15 +1996,10 @@ mlxsw_sp_bridge_8021d_port_leave(struct mlxsw_sp_bridge_device *bridge_device,
 				 struct mlxsw_sp_port *mlxsw_sp_port)
 {
 	struct mlxsw_sp_port_vlan *mlxsw_sp_port_vlan;
-<<<<<<< HEAD
 	struct net_device *dev = bridge_port->dev;
 	u16 vid;
 
 	vid = is_vlan_dev(dev) ? vlan_dev_vlan_id(dev) : 1;
-=======
-	u16 vid = vlan_dev_vlan_id(bridge_port->dev);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlxsw_sp_port_vlan = mlxsw_sp_port_vlan_find_by_vid(mlxsw_sp_port, vid);
 	if (!mlxsw_sp_port_vlan)
 		return;
@@ -2357,12 +2024,8 @@ static const struct mlxsw_sp_bridge_ops mlxsw_sp_bridge_8021d_ops = {
 
 int mlxsw_sp_port_bridge_join(struct mlxsw_sp_port *mlxsw_sp_port,
 			      struct net_device *brport_dev,
-<<<<<<< HEAD
 			      struct net_device *br_dev,
 			      struct netlink_ext_ack *extack)
-=======
-			      struct net_device *br_dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlxsw_sp *mlxsw_sp = mlxsw_sp_port->mlxsw_sp;
 	struct mlxsw_sp_bridge_device *bridge_device;
@@ -2375,11 +2038,7 @@ int mlxsw_sp_port_bridge_join(struct mlxsw_sp_port *mlxsw_sp_port,
 	bridge_device = bridge_port->bridge_device;
 
 	err = bridge_device->ops->port_join(bridge_device, bridge_port,
-<<<<<<< HEAD
 					    mlxsw_sp_port, extack);
-=======
-					    mlxsw_sp_port);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		goto err_port_join;
 
@@ -2628,11 +2287,8 @@ static void mlxsw_sp_switchdev_event_work(struct work_struct *work)
 	switch (switchdev_work->event) {
 	case SWITCHDEV_FDB_ADD_TO_DEVICE:
 		fdb_info = &switchdev_work->fdb_info;
-<<<<<<< HEAD
 		if (!fdb_info->added_by_user)
 			break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = mlxsw_sp_port_fdb_set(mlxsw_sp_port, fdb_info, true);
 		if (err)
 			break;
@@ -2644,7 +2300,6 @@ static void mlxsw_sp_switchdev_event_work(struct work_struct *work)
 		fdb_info = &switchdev_work->fdb_info;
 		mlxsw_sp_port_fdb_set(mlxsw_sp_port, fdb_info, false);
 		break;
-<<<<<<< HEAD
 	case SWITCHDEV_FDB_ADD_TO_BRIDGE: /* fall through */
 	case SWITCHDEV_FDB_DEL_TO_BRIDGE:
 		/* These events are only used to potentially update an existing
@@ -2655,10 +2310,6 @@ static void mlxsw_sp_switchdev_event_work(struct work_struct *work)
 
 	mlxsw_sp_span_respin(mlxsw_sp_port->mlxsw_sp);
 
-=======
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	rtnl_unlock();
 	kfree(switchdev_work->fdb_info.addr);
@@ -2673,20 +2324,8 @@ static int mlxsw_sp_switchdev_event(struct notifier_block *unused,
 	struct net_device *dev = switchdev_notifier_info_to_dev(ptr);
 	struct mlxsw_sp_switchdev_event_work *switchdev_work;
 	struct switchdev_notifier_fdb_info *fdb_info = ptr;
-<<<<<<< HEAD
 
 	if (!mlxsw_sp_port_dev_lower_find_rcu(dev))
-=======
-	struct net_device *br_dev;
-
-	/* Tunnel devices are not our uppers, so check their master instead */
-	br_dev = netdev_master_upper_dev_get_rcu(dev);
-	if (!br_dev)
-		return NOTIFY_DONE;
-	if (!netif_is_bridge_master(br_dev))
-		return NOTIFY_DONE;
-	if (!mlxsw_sp_port_dev_lower_find_rcu(br_dev))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return NOTIFY_DONE;
 
 	switchdev_work = kzalloc(sizeof(*switchdev_work), GFP_ATOMIC);
@@ -2699,13 +2338,9 @@ static int mlxsw_sp_switchdev_event(struct notifier_block *unused,
 
 	switch (event) {
 	case SWITCHDEV_FDB_ADD_TO_DEVICE: /* fall through */
-<<<<<<< HEAD
 	case SWITCHDEV_FDB_DEL_TO_DEVICE: /* fall through */
 	case SWITCHDEV_FDB_ADD_TO_BRIDGE: /* fall through */
 	case SWITCHDEV_FDB_DEL_TO_BRIDGE:
-=======
-	case SWITCHDEV_FDB_DEL_TO_DEVICE:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		memcpy(&switchdev_work->fdb_info, ptr,
 		       sizeof(switchdev_work->fdb_info));
 		switchdev_work->fdb_info.addr = kzalloc(ETH_ALEN, GFP_ATOMIC);
@@ -2737,15 +2372,12 @@ static struct notifier_block mlxsw_sp_switchdev_notifier = {
 	.notifier_call = mlxsw_sp_switchdev_event,
 };
 
-<<<<<<< HEAD
 u8
 mlxsw_sp_bridge_port_stp_state(struct mlxsw_sp_bridge_port *bridge_port)
 {
 	return bridge_port->stp_state;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mlxsw_sp_fdb_init(struct mlxsw_sp *mlxsw_sp)
 {
 	struct mlxsw_sp_bridge *bridge = mlxsw_sp->bridge;
@@ -2776,20 +2408,6 @@ static void mlxsw_sp_fdb_fini(struct mlxsw_sp *mlxsw_sp)
 
 }
 
-<<<<<<< HEAD
-=======
-static void mlxsw_sp_mids_fini(struct mlxsw_sp *mlxsw_sp)
-{
-	struct mlxsw_sp_mid *mid, *tmp;
-
-	list_for_each_entry_safe(mid, tmp, &mlxsw_sp->bridge->mids_list, list) {
-		list_del(&mid->list);
-		clear_bit(mid->mid, mlxsw_sp->bridge->mids_bitmap);
-		kfree(mid);
-	}
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int mlxsw_sp_switchdev_init(struct mlxsw_sp *mlxsw_sp)
 {
 	struct mlxsw_sp_bridge *bridge;
@@ -2801,10 +2419,6 @@ int mlxsw_sp_switchdev_init(struct mlxsw_sp *mlxsw_sp)
 	bridge->mlxsw_sp = mlxsw_sp;
 
 	INIT_LIST_HEAD(&mlxsw_sp->bridge->bridges_list);
-<<<<<<< HEAD
-=======
-	INIT_LIST_HEAD(&mlxsw_sp->bridge->mids_list);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	bridge->bridge_8021q_ops = &mlxsw_sp_bridge_8021q_ops;
 	bridge->bridge_8021d_ops = &mlxsw_sp_bridge_8021d_ops;
@@ -2815,10 +2429,6 @@ int mlxsw_sp_switchdev_init(struct mlxsw_sp *mlxsw_sp)
 void mlxsw_sp_switchdev_fini(struct mlxsw_sp *mlxsw_sp)
 {
 	mlxsw_sp_fdb_fini(mlxsw_sp);
-<<<<<<< HEAD
-=======
-	mlxsw_sp_mids_fini(mlxsw_sp);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	WARN_ON(!list_empty(&mlxsw_sp->bridge->bridges_list));
 	kfree(mlxsw_sp->bridge);
 }

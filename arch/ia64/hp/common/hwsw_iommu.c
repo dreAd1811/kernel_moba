@@ -19,11 +19,7 @@
 #include <linux/export.h>
 #include <asm/machvec.h>
 
-<<<<<<< HEAD
 extern const struct dma_map_ops sba_dma_ops;
-=======
-extern const struct dma_map_ops sba_dma_ops, swiotlb_dma_ops;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* swiotlb declarations & definitions: */
 extern int swiotlb_late_init_with_default_size (size_t size);

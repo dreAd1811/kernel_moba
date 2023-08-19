@@ -30,7 +30,6 @@
 
 #include "smumgr.h"
 #include "iceland_smumgr.h"
-<<<<<<< HEAD
 
 #include "ppsmc.h"
 
@@ -109,66 +108,33 @@ static const struct iceland_pt_defaults defaults_icelandpro = {
 static int iceland_start_smc(struct pp_hwmgr *hwmgr)
 {
 	PHM_WRITE_INDIRECT_FIELD(hwmgr->device, CGS_IND_REG__SMC,
-=======
-#include "smu_ucode_xfer_vi.h"
-#include "ppsmc.h"
-#include "smu/smu_7_1_1_d.h"
-#include "smu/smu_7_1_1_sh_mask.h"
-#include "cgs_common.h"
-#include "iceland_smc.h"
-
-#define ICELAND_SMC_SIZE               0x20000
-
-static int iceland_start_smc(struct pp_smumgr *smumgr)
-{
-	SMUM_WRITE_INDIRECT_FIELD(smumgr->device, CGS_IND_REG__SMC,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  SMC_SYSCON_RESET_CNTL, rst_reg, 0);
 
 	return 0;
 }
 
-<<<<<<< HEAD
 static void iceland_reset_smc(struct pp_hwmgr *hwmgr)
 {
 	PHM_WRITE_INDIRECT_FIELD(hwmgr->device, CGS_IND_REG__SMC,
-=======
-static void iceland_reset_smc(struct pp_smumgr *smumgr)
-{
-	SMUM_WRITE_INDIRECT_FIELD(smumgr->device, CGS_IND_REG__SMC,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  SMC_SYSCON_RESET_CNTL,
 				  rst_reg, 1);
 }
 
 
-<<<<<<< HEAD
 static void iceland_stop_smc_clock(struct pp_hwmgr *hwmgr)
 {
 	PHM_WRITE_INDIRECT_FIELD(hwmgr->device, CGS_IND_REG__SMC,
-=======
-static void iceland_stop_smc_clock(struct pp_smumgr *smumgr)
-{
-	SMUM_WRITE_INDIRECT_FIELD(smumgr->device, CGS_IND_REG__SMC,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  SMC_SYSCON_CLOCK_CNTL_0,
 				  ck_disable, 1);
 }
 
-<<<<<<< HEAD
 static void iceland_start_smc_clock(struct pp_hwmgr *hwmgr)
 {
 	PHM_WRITE_INDIRECT_FIELD(hwmgr->device, CGS_IND_REG__SMC,
-=======
-static void iceland_start_smc_clock(struct pp_smumgr *smumgr)
-{
-	SMUM_WRITE_INDIRECT_FIELD(smumgr->device, CGS_IND_REG__SMC,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  SMC_SYSCON_CLOCK_CNTL_0,
 				  ck_disable, 0);
 }
 
-<<<<<<< HEAD
 static int iceland_smu_start_smc(struct pp_hwmgr *hwmgr)
 {
 	/* set smc instruct start point at 0x0 */
@@ -181,31 +147,13 @@ static int iceland_smu_start_smc(struct pp_hwmgr *hwmgr)
 	iceland_start_smc(hwmgr);
 
 	PHM_WAIT_INDIRECT_FIELD(hwmgr, SMC_IND, FIRMWARE_FLAGS,
-=======
-static int iceland_smu_start_smc(struct pp_smumgr *smumgr)
-{
-	/* set smc instruct start point at 0x0 */
-	smu7_program_jump_on_start(smumgr);
-
-	/* enable smc clock */
-	iceland_start_smc_clock(smumgr);
-
-	/* de-assert reset */
-	iceland_start_smc(smumgr);
-
-	SMUM_WAIT_INDIRECT_FIELD(smumgr, SMC_IND, FIRMWARE_FLAGS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 INTERRUPTS_ENABLED, 1);
 
 	return 0;
 }
 
 
-<<<<<<< HEAD
 static int iceland_upload_smc_firmware_data(struct pp_hwmgr *hwmgr,
-=======
-static int iceland_upload_smc_firmware_data(struct pp_smumgr *smumgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					uint32_t length, const uint8_t *src,
 					uint32_t limit, uint32_t start_addr)
 {
@@ -214,61 +162,34 @@ static int iceland_upload_smc_firmware_data(struct pp_smumgr *smumgr,
 
 	PP_ASSERT_WITH_CODE((limit >= byte_count), "SMC address is beyond the SMC RAM area.", return -EINVAL);
 
-<<<<<<< HEAD
 	cgs_write_register(hwmgr->device, mmSMC_IND_INDEX_0, start_addr);
 	PHM_WRITE_FIELD(hwmgr->device, SMC_IND_ACCESS_CNTL, AUTO_INCREMENT_IND_0, 1);
 
 	while (byte_count >= 4) {
 		data = src[0] * 0x1000000 + src[1] * 0x10000 + src[2] * 0x100 + src[3];
 		cgs_write_register(hwmgr->device, mmSMC_IND_DATA_0, data);
-=======
-	cgs_write_register(smumgr->device, mmSMC_IND_INDEX_0, start_addr);
-	SMUM_WRITE_FIELD(smumgr->device, SMC_IND_ACCESS_CNTL, AUTO_INCREMENT_IND_0, 1);
-
-	while (byte_count >= 4) {
-		data = src[0] * 0x1000000 + src[1] * 0x10000 + src[2] * 0x100 + src[3];
-		cgs_write_register(smumgr->device, mmSMC_IND_DATA_0, data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		src += 4;
 		byte_count -= 4;
 	}
 
-<<<<<<< HEAD
 	PHM_WRITE_FIELD(hwmgr->device, SMC_IND_ACCESS_CNTL, AUTO_INCREMENT_IND_0, 0);
 
 	PP_ASSERT_WITH_CODE((0 == byte_count), "SMC size must be divisible by 4.", return -EINVAL);
-=======
-	SMUM_WRITE_FIELD(smumgr->device, SMC_IND_ACCESS_CNTL, AUTO_INCREMENT_IND_0, 0);
-
-	PP_ASSERT_WITH_CODE((0 == byte_count), "SMC size must be dividable by 4.", return -EINVAL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
 
-<<<<<<< HEAD
 static int iceland_smu_upload_firmware_image(struct pp_hwmgr *hwmgr)
-=======
-static int iceland_smu_upload_firmware_image(struct pp_smumgr *smumgr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	uint32_t val;
 	struct cgs_firmware_info info = {0};
 
-<<<<<<< HEAD
 	if (hwmgr == NULL || hwmgr->device == NULL)
 		return -EINVAL;
 
 	/* load SMC firmware */
 	cgs_get_firmware_info(hwmgr->device,
-=======
-	if (smumgr == NULL || smumgr->device == NULL)
-		return -EINVAL;
-
-	/* load SMC firmware */
-	cgs_get_firmware_info(smumgr->device,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		smu7_convert_fw_type_to_cgs(UCODE_ID_SMU), &info);
 
 	if (info.image_size & 3) {
@@ -280,7 +201,6 @@ static int iceland_smu_upload_firmware_image(struct pp_smumgr *smumgr)
 		pr_err("[ powerplay ] SMC address is beyond the SMC RAM area\n");
 		return -EINVAL;
 	}
-<<<<<<< HEAD
 	hwmgr->smu_version = info.version;
 	/* wait for smc boot up */
 	PHM_WAIT_INDIRECT_FIELD_UNEQUAL(hwmgr, SMC_IND,
@@ -298,42 +218,18 @@ static int iceland_smu_upload_firmware_image(struct pp_smumgr *smumgr)
 	/* reset smc */
 	iceland_reset_smc(hwmgr);
 	iceland_upload_smc_firmware_data(hwmgr, info.image_size,
-=======
-
-	/* wait for smc boot up */
-	SMUM_WAIT_INDIRECT_FIELD_UNEQUAL(smumgr, SMC_IND,
-					 RCU_UC_EVENTS, boot_seq_done, 0);
-
-	/* clear firmware interrupt enable flag */
-	val = cgs_read_ind_register(smumgr->device, CGS_IND_REG__SMC,
-				    ixSMC_SYSCON_MISC_CNTL);
-	cgs_write_ind_register(smumgr->device, CGS_IND_REG__SMC,
-			       ixSMC_SYSCON_MISC_CNTL, val | 1);
-
-	/* stop smc clock */
-	iceland_stop_smc_clock(smumgr);
-
-	/* reset smc */
-	iceland_reset_smc(smumgr);
-	iceland_upload_smc_firmware_data(smumgr, info.image_size,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				(uint8_t *)info.kptr, ICELAND_SMC_SIZE,
 				info.ucode_start_address);
 
 	return 0;
 }
 
-<<<<<<< HEAD
 static int iceland_request_smu_load_specific_fw(struct pp_hwmgr *hwmgr,
-=======
-static int iceland_request_smu_load_specific_fw(struct pp_smumgr *smumgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						uint32_t firmwareType)
 {
 	return 0;
 }
 
-<<<<<<< HEAD
 static int iceland_start_smu(struct pp_hwmgr *hwmgr)
 {
 	int result;
@@ -352,54 +248,17 @@ static int iceland_start_smu(struct pp_hwmgr *hwmgr)
 			return result;
 
 		result = iceland_smu_start_smc(hwmgr);
-=======
-static int iceland_start_smu(struct pp_smumgr *smumgr)
-{
-	int result;
-
-	result = iceland_smu_upload_firmware_image(smumgr);
-	if (result)
-		return result;
-	result = iceland_smu_start_smc(smumgr);
-	if (result)
-		return result;
-
-	if (!smu7_is_smc_ram_running(smumgr)) {
-		pr_info("smu not running, upload firmware again \n");
-		result = iceland_smu_upload_firmware_image(smumgr);
-		if (result)
-			return result;
-
-		result = iceland_smu_start_smc(smumgr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (result)
 			return result;
 	}
 
-<<<<<<< HEAD
 	result = smu7_request_smu_load_fw(hwmgr);
-=======
-	result = smu7_request_smu_load_fw(smumgr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return result;
 }
 
-<<<<<<< HEAD
 static int iceland_smu_init(struct pp_hwmgr *hwmgr)
 {
-=======
-/**
- * Write a 32bit value to the SMC SRAM space.
- * ALL PARAMETERS ARE IN HOST BYTE ORDER.
- * @param    smumgr  the address of the powerplay hardware manager.
- * @param    smcAddress the address in the SMC RAM to access.
- * @param    value to write to the SMC SRAM.
- */
-static int iceland_smu_init(struct pp_smumgr *smumgr)
-{
-	int i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct iceland_smumgr *iceland_priv = NULL;
 
 	iceland_priv = kzalloc(sizeof(struct iceland_smumgr), GFP_KERNEL);
@@ -407,7 +266,6 @@ static int iceland_smu_init(struct pp_smumgr *smumgr)
 	if (iceland_priv == NULL)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	hwmgr->smu_backend = iceland_priv;
 
 	if (smu7_init(hwmgr)) {
@@ -665,20 +523,10 @@ static int iceland_get_dependency_volt_by_clk(struct pp_hwmgr *hwmgr,
 
 	/* sclk is bigger than max sclk in the dependence table */
 	*vol = allowed_clock_voltage_table->entries[i - 1].v;
-=======
-	smumgr->backend = iceland_priv;
-
-	if (smu7_init(smumgr))
-		return -EINVAL;
-
-	for (i = 0; i < SMU71_MAX_LEVELS_GRAPHICS; i++)
-		iceland_priv->activity_target[i] = 30;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
 static int iceland_get_std_voltage_value_sidd(struct pp_hwmgr *hwmgr,
 		pp_atomctrl_voltage_table_entry *tab, uint16_t *hi,
 		uint16_t *lo)
@@ -2810,8 +2658,6 @@ static bool iceland_is_dpm_running(struct pp_hwmgr *hwmgr)
 			? true : false;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 const struct pp_smumgr_func iceland_smu_funcs = {
 	.smu_init = &iceland_smu_init,
 	.smu_fini = &smu7_smu_fini,

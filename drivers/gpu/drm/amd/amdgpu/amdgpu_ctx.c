@@ -23,7 +23,6 @@
  */
 
 #include <drm/drmP.h>
-<<<<<<< HEAD
 #include <drm/drm_auth.h>
 #include "amdgpu.h"
 #include "amdgpu_sched.h"
@@ -48,16 +47,10 @@ static int amdgpu_ctx_init(struct amdgpu_device *adev,
 			   enum drm_sched_priority priority,
 			   struct drm_file *filp,
 			   struct amdgpu_ctx *ctx)
-=======
-#include "amdgpu.h"
-
-static int amdgpu_ctx_init(struct amdgpu_device *adev, struct amdgpu_ctx *ctx)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned i, j;
 	int r;
 
-<<<<<<< HEAD
 	if (priority < 0 || priority >= DRM_SCHED_PRIORITY_MAX)
 		return -EINVAL;
 
@@ -65,8 +58,6 @@ static int amdgpu_ctx_init(struct amdgpu_device *adev, struct amdgpu_ctx *ctx)
 	if (r)
 		return r;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memset(ctx, 0, sizeof(*ctx));
 	ctx->adev = adev;
 	kref_init(&ctx->refcount);
@@ -76,48 +67,31 @@ static int amdgpu_ctx_init(struct amdgpu_device *adev, struct amdgpu_ctx *ctx)
 	if (!ctx->fences)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	mutex_init(&ctx->lock);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < AMDGPU_MAX_RINGS; ++i) {
 		ctx->rings[i].sequence = 1;
 		ctx->rings[i].fences = &ctx->fences[amdgpu_sched_jobs * i];
 	}
 
 	ctx->reset_counter = atomic_read(&adev->gpu_reset_counter);
-<<<<<<< HEAD
 	ctx->reset_counter_query = ctx->reset_counter;
 	ctx->vram_lost_counter = atomic_read(&adev->vram_lost_counter);
 	ctx->init_priority = priority;
 	ctx->override_priority = DRM_SCHED_PRIORITY_UNSET;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* create context entity for each ring */
 	for (i = 0; i < adev->num_rings; i++) {
 		struct amdgpu_ring *ring = adev->rings[i];
-<<<<<<< HEAD
 		struct drm_sched_rq *rq;
 
 		rq = &ring->sched.sched_rq[priority];
-=======
-		struct amd_sched_rq *rq;
-
-		rq = &ring->sched.sched_rq[AMD_SCHED_PRIORITY_NORMAL];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (ring == &adev->gfx.kiq.ring)
 			continue;
 
-<<<<<<< HEAD
 		r = drm_sched_entity_init(&ctx->rings[i].entity,
 					  &rq, 1, &ctx->guilty);
-=======
-		r = amd_sched_entity_init(&ring->sched, &ctx->rings[i].entity,
-					  rq, amdgpu_sched_jobs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (r)
 			goto failed;
 	}
@@ -130,25 +104,15 @@ static int amdgpu_ctx_init(struct amdgpu_device *adev, struct amdgpu_ctx *ctx)
 
 failed:
 	for (j = 0; j < i; j++)
-<<<<<<< HEAD
 		drm_sched_entity_destroy(&ctx->rings[j].entity);
-=======
-		amd_sched_entity_fini(&adev->rings[j]->sched,
-				      &ctx->rings[j].entity);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(ctx->fences);
 	ctx->fences = NULL;
 	return r;
 }
 
-<<<<<<< HEAD
 static void amdgpu_ctx_fini(struct kref *ref)
 {
 	struct amdgpu_ctx *ctx = container_of(ref, struct amdgpu_ctx, refcount);
-=======
-static void amdgpu_ctx_fini(struct amdgpu_ctx *ctx)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct amdgpu_device *adev = ctx->adev;
 	unsigned i, j;
 
@@ -161,28 +125,17 @@ static void amdgpu_ctx_fini(struct amdgpu_ctx *ctx)
 	kfree(ctx->fences);
 	ctx->fences = NULL;
 
-<<<<<<< HEAD
 	amdgpu_queue_mgr_fini(adev, &ctx->queue_mgr);
 
 	mutex_destroy(&ctx->lock);
 
 	kfree(ctx);
-=======
-	for (i = 0; i < adev->num_rings; i++)
-		amd_sched_entity_fini(&adev->rings[i]->sched,
-				      &ctx->rings[i].entity);
-
-	amdgpu_queue_mgr_fini(adev, &ctx->queue_mgr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int amdgpu_ctx_alloc(struct amdgpu_device *adev,
 			    struct amdgpu_fpriv *fpriv,
-<<<<<<< HEAD
 			    struct drm_file *filp,
 			    enum drm_sched_priority priority,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    uint32_t *id)
 {
 	struct amdgpu_ctx_mgr *mgr = &fpriv->ctx_mgr;
@@ -200,14 +153,9 @@ static int amdgpu_ctx_alloc(struct amdgpu_device *adev,
 		kfree(ctx);
 		return r;
 	}
-<<<<<<< HEAD
 
 	*id = (uint32_t)r;
 	r = amdgpu_ctx_init(adev, priority, filp, ctx);
-=======
-	*id = (uint32_t)r;
-	r = amdgpu_ctx_init(adev, ctx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r) {
 		idr_remove(&mgr->ctx_handles, *id);
 		*id = 0;
@@ -220,7 +168,6 @@ static int amdgpu_ctx_alloc(struct amdgpu_device *adev,
 static void amdgpu_ctx_do_release(struct kref *ref)
 {
 	struct amdgpu_ctx *ctx;
-<<<<<<< HEAD
 	u32 i;
 
 	ctx = container_of(ref, struct amdgpu_ctx, refcount);
@@ -234,14 +181,6 @@ static void amdgpu_ctx_do_release(struct kref *ref)
 	}
 
 	amdgpu_ctx_fini(ref);
-=======
-
-	ctx = container_of(ref, struct amdgpu_ctx, refcount);
-
-	amdgpu_ctx_fini(ctx);
-
-	kfree(ctx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int amdgpu_ctx_free(struct amdgpu_fpriv *fpriv, uint32_t id)
@@ -283,7 +222,6 @@ static int amdgpu_ctx_query(struct amdgpu_device *adev,
 	/* determine if a GPU reset has occured since the last call */
 	reset_counter = atomic_read(&adev->gpu_reset_counter);
 	/* TODO: this should ideally return NO, GUILTY, or INNOCENT. */
-<<<<<<< HEAD
 	if (ctx->reset_counter_query == reset_counter)
 		out->state.reset_status = AMDGPU_CTX_NO_RESET;
 	else
@@ -323,13 +261,6 @@ static int amdgpu_ctx_query2(struct amdgpu_device *adev,
 
 	if (atomic_read(&ctx->guilty))
 		out->state.flags |= AMDGPU_CTX_QUERY2_FLAGS_GUILTY;
-=======
-	if (ctx->reset_counter == reset_counter)
-		out->state.reset_status = AMDGPU_CTX_NO_RESET;
-	else
-		out->state.reset_status = AMDGPU_CTX_UNKNOWN_RESET;
-	ctx->reset_counter = reset_counter;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_unlock(&mgr->lock);
 	return 0;
@@ -340,10 +271,7 @@ int amdgpu_ctx_ioctl(struct drm_device *dev, void *data,
 {
 	int r;
 	uint32_t id;
-<<<<<<< HEAD
 	enum drm_sched_priority priority;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	union drm_amdgpu_ctx *args = data;
 	struct amdgpu_device *adev = dev->dev_private;
@@ -351,7 +279,6 @@ int amdgpu_ctx_ioctl(struct drm_device *dev, void *data,
 
 	r = 0;
 	id = args->in.ctx_id;
-<<<<<<< HEAD
 	priority = amdgpu_to_sched_priority(args->in.priority);
 
 	/* For backwards compatibility reasons, we need to accept
@@ -362,12 +289,6 @@ int amdgpu_ctx_ioctl(struct drm_device *dev, void *data,
 	switch (args->in.op) {
 	case AMDGPU_CTX_OP_ALLOC_CTX:
 		r = amdgpu_ctx_alloc(adev, fpriv, filp, priority, &id);
-=======
-
-	switch (args->in.op) {
-	case AMDGPU_CTX_OP_ALLOC_CTX:
-		r = amdgpu_ctx_alloc(adev, fpriv, &id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		args->out.alloc.ctx_id = id;
 		break;
 	case AMDGPU_CTX_OP_FREE_CTX:
@@ -376,12 +297,9 @@ int amdgpu_ctx_ioctl(struct drm_device *dev, void *data,
 	case AMDGPU_CTX_OP_QUERY_STATE:
 		r = amdgpu_ctx_query(adev, fpriv, id, &args->out);
 		break;
-<<<<<<< HEAD
 	case AMDGPU_CTX_OP_QUERY_STATE2:
 		r = amdgpu_ctx_query2(adev, fpriv, id, &args->out);
 		break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		return -EINVAL;
 	}
@@ -416,13 +334,8 @@ int amdgpu_ctx_put(struct amdgpu_ctx *ctx)
 	return 0;
 }
 
-<<<<<<< HEAD
 int amdgpu_ctx_add_fence(struct amdgpu_ctx *ctx, struct amdgpu_ring *ring,
 			      struct dma_fence *fence, uint64_t* handler)
-=======
-uint64_t amdgpu_ctx_add_fence(struct amdgpu_ctx *ctx, struct amdgpu_ring *ring,
-			      struct dma_fence *fence)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct amdgpu_ctx_ring *cring = & ctx->rings[ring->idx];
 	uint64_t seq = cring->sequence;
@@ -431,17 +344,8 @@ uint64_t amdgpu_ctx_add_fence(struct amdgpu_ctx *ctx, struct amdgpu_ring *ring,
 
 	idx = seq & (amdgpu_sched_jobs - 1);
 	other = cring->fences[idx];
-<<<<<<< HEAD
 	if (other)
 		BUG_ON(!dma_fence_is_signaled(other));
-=======
-	if (other) {
-		signed long r;
-		r = dma_fence_wait_timeout(other, false, MAX_SCHEDULE_TIMEOUT);
-		if (r < 0)
-			DRM_ERROR("Error (%ld) waiting for fence!\n", r);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dma_fence_get(fence);
 
@@ -451,15 +355,10 @@ uint64_t amdgpu_ctx_add_fence(struct amdgpu_ctx *ctx, struct amdgpu_ring *ring,
 	spin_unlock(&ctx->ring_lock);
 
 	dma_fence_put(other);
-<<<<<<< HEAD
 	if (handler)
 		*handler = seq;
 
 	return 0;
-=======
-
-	return seq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 struct dma_fence *amdgpu_ctx_get_fence(struct amdgpu_ctx *ctx,
@@ -490,7 +389,6 @@ struct dma_fence *amdgpu_ctx_get_fence(struct amdgpu_ctx *ctx,
 	return fence;
 }
 
-<<<<<<< HEAD
 void amdgpu_ctx_priority_override(struct amdgpu_ctx *ctx,
 				  enum drm_sched_priority priority)
 {
@@ -538,15 +436,12 @@ int amdgpu_ctx_wait_prev_fence(struct amdgpu_ctx *ctx, unsigned ring_id)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void amdgpu_ctx_mgr_init(struct amdgpu_ctx_mgr *mgr)
 {
 	mutex_init(&mgr->lock);
 	idr_init(&mgr->ctx_handles);
 }
 
-<<<<<<< HEAD
 void amdgpu_ctx_mgr_entity_flush(struct amdgpu_ctx_mgr *mgr)
 {
 	struct amdgpu_ctx *ctx;
@@ -602,27 +497,18 @@ void amdgpu_ctx_mgr_entity_fini(struct amdgpu_ctx_mgr *mgr)
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void amdgpu_ctx_mgr_fini(struct amdgpu_ctx_mgr *mgr)
 {
 	struct amdgpu_ctx *ctx;
 	struct idr *idp;
 	uint32_t id;
 
-<<<<<<< HEAD
 	amdgpu_ctx_mgr_entity_fini(mgr);
 
 	idp = &mgr->ctx_handles;
 
 	idr_for_each_entry(idp, ctx, id) {
 		if (kref_put(&ctx->refcount, amdgpu_ctx_fini) != 1)
-=======
-	idp = &mgr->ctx_handles;
-
-	idr_for_each_entry(idp, ctx, id) {
-		if (kref_put(&ctx->refcount, amdgpu_ctx_do_release) != 1)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			DRM_ERROR("ctx %p is still alive\n", ctx);
 	}
 

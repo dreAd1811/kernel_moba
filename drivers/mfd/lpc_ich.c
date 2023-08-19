@@ -1143,14 +1143,6 @@ static int lpc_ich_init_spi(struct pci_dev *dev)
 			res->end = res->start + SPIBASE_APL_SZ - 1;
 
 			pci_bus_read_config_dword(bus, spi, BCR, &bcr);
-<<<<<<< HEAD
-=======
-			if (!(bcr & BCR_WPD)) {
-				bcr |= BCR_WPD;
-				pci_bus_write_config_dword(bus, spi, BCR, bcr);
-				pci_bus_read_config_dword(bus, spi, BCR, &bcr);
-			}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			info->writeable = !!(bcr & BCR_WPD);
 		}
 

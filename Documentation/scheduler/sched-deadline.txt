@@ -49,11 +49,7 @@ CONTENTS
 2.1 Main algorithm
 ------------------
 
-<<<<<<< HEAD
  SCHED_DEADLINE [18] uses three parameters, named "runtime", "period", and
-=======
- SCHED_DEADLINE uses three parameters, named "runtime", "period", and
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  "deadline", to schedule tasks. A SCHED_DEADLINE task should receive
  "runtime" microseconds of execution time every "period" microseconds, and
  these "runtime" microseconds are available within "deadline" microseconds
@@ -121,13 +117,10 @@ CONTENTS
          scheduling deadline = scheduling deadline + period
          remaining runtime = remaining runtime + runtime
 
-<<<<<<< HEAD
  The SCHED_FLAG_DL_OVERRUN flag in sched_attr's sched_flags field allows a task
  to get informed about runtime overruns through the delivery of SIGXCPU
  signals.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 2.2 Bandwidth reclaiming
 ------------------------
@@ -215,7 +208,6 @@ CONTENTS
  It does so by decrementing the runtime of the executing task Ti at a pace equal
  to
 
-<<<<<<< HEAD
            dq = -max{ Ui / Umax, (1 - Uinact - Uextra) } dt
 
  where:
@@ -227,12 +219,6 @@ CONTENTS
     (this_bq - running_bw);
   - Uextra is the (per runqueue) extra reclaimable utilization
     (subjected to RT throttling limits).
-=======
-           dq = -max{ Ui, (1 - Uinact) } dt
-
- where Uinact is the inactive utilization, computed as (this_bq - running_bw),
- and Ui is the bandwidth of task Ti.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
  Let's now see a trivial example of two deadline tasks with runtime equal
@@ -297,7 +283,6 @@ CONTENTS
     running_bw is incremented.
 
 
-<<<<<<< HEAD
 2.3 Energy-aware scheduling
 ------------------------
 
@@ -311,8 +296,6 @@ CONTENTS
  setting a fixed CPU frequency results in a lower amount of deadline misses.
 
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 3. Scheduling Real-Time Tasks
 =============================
 
@@ -539,15 +522,12 @@ CONTENTS
   17 - L. Abeni, G. Lipari, A. Parri, Y. Sun, Multicore CPU reclaiming: parallel
        or sequential?. In Proceedings of the 31st Annual ACM Symposium on Applied
        Computing, 2016.
-<<<<<<< HEAD
   18 - J. Lelli, C. Scordino, L. Abeni, D. Faggioli, Deadline scheduling in the
        Linux kernel, Software: Practice and Experience, 46(6): 821-839, June
        2016.
   19 - C. Scordino, L. Abeni, J. Lelli, Energy-Aware Real-Time Scheduling in
        the Linux Kernel, 33rd ACM/SIGAPP Symposium On Applied Computing (SAC
        2018), Pau, France, April 2018.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 4. Bandwidth management

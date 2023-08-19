@@ -34,17 +34,13 @@
 #ifndef __NFP_FLOWER_H__
 #define __NFP_FLOWER_H__ 1
 
-<<<<<<< HEAD
 #include "cmsg.h"
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/circ_buf.h>
 #include <linux/hashtable.h>
 #include <linux/time64.h>
 #include <linux/types.h>
 #include <net/pkt_cls.h>
-<<<<<<< HEAD
 #include <net/tcp.h>
 #include <linux/workqueue.h>
 #include <linux/idr.h>
@@ -54,13 +50,6 @@ struct net_device;
 struct nfp_app;
 
 #define NFP_FL_STATS_CTX_DONT_CARE	cpu_to_be32(0xffffffff)
-=======
-#include <linux/workqueue.h>
-
-struct net_device;
-struct nfp_app;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define NFP_FL_STATS_ENTRY_RS		BIT(20)
 #define NFP_FL_STATS_ELEM_RS		4
 #define NFP_FL_REPEATED_HASH_MAX	BIT(17)
@@ -74,7 +63,6 @@ struct nfp_app;
 #define NFP_FL_MASK_REUSE_TIME_NS	40000
 #define NFP_FL_MASK_ID_LOCATION		1
 
-<<<<<<< HEAD
 #define NFP_FL_VXLAN_PORT		4789
 #define NFP_FL_GENEVE_PORT		6081
 
@@ -88,11 +76,6 @@ struct nfp_app;
 struct nfp_fl_mask_id {
 	struct circ_buf mask_id_free_list;
 	ktime_t *last_used;
-=======
-struct nfp_fl_mask_id {
-	struct circ_buf mask_id_free_list;
-	struct timespec64 *last_used;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 init_unallocated;
 };
 
@@ -103,7 +86,6 @@ struct nfp_fl_stats_id {
 };
 
 /**
-<<<<<<< HEAD
  * struct nfp_mtu_conf - manage MTU setting
  * @portnum:		NFP port number of repr with requested MTU change
  * @requested_val:	MTU value requested for repr
@@ -147,23 +129,17 @@ struct nfp_fl_lag {
 };
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * struct nfp_flower_priv - Flower APP per-vNIC priv data
  * @app:		Back pointer to app
  * @nn:			Pointer to vNIC
  * @mask_id_seed:	Seed used for mask hash table
  * @flower_version:	HW version of flower
-<<<<<<< HEAD
  * @flower_ext_feats:	Bitmap of extra features the HW supports
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @stats_ids:		List of free stats ids
  * @mask_ids:		List of free mask ids
  * @mask_table:		Hash table used to store masks
  * @flow_table:		Hash table used to store flower rules
  * @cmsg_work:		Workqueue for control messages processing
-<<<<<<< HEAD
  * @cmsg_skbs_high:	List of higher priority skbs for control message
  *			processing
  * @cmsg_skbs_low:	List of lower priority skbs for control message
@@ -185,25 +161,18 @@ struct nfp_fl_lag {
  * @reify_wait_queue:	wait queue for repr reify response counting
  * @mtu_conf:		Configuration of repr MTU value
  * @nfp_lag:		Link aggregation data block
-=======
- * @cmsg_skbs:		List of skbs for control message processing
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct nfp_flower_priv {
 	struct nfp_app *app;
 	struct nfp_net *nn;
 	u32 mask_id_seed;
 	u64 flower_version;
-<<<<<<< HEAD
 	u64 flower_ext_feats;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct nfp_fl_stats_id stats_ids;
 	struct nfp_fl_mask_id mask_ids;
 	DECLARE_HASHTABLE(mask_table, NFP_FLOWER_MASK_HASH_BITS);
 	DECLARE_HASHTABLE(flow_table, NFP_FLOWER_HASH_BITS);
 	struct work_struct cmsg_work;
-<<<<<<< HEAD
 	struct sk_buff_head cmsg_skbs_high;
 	struct sk_buff_head cmsg_skbs_low;
 	struct list_head nfp_mac_off_list;
@@ -230,9 +199,6 @@ struct nfp_flower_priv {
  */
 struct nfp_flower_repr_priv {
 	unsigned long lag_port_flags;
-=======
-	struct sk_buff_head cmsg_skbs;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct nfp_fl_key_ls {
@@ -265,18 +231,12 @@ struct nfp_fl_payload {
 	struct rcu_head rcu;
 	spinlock_t lock; /* lock stats */
 	struct nfp_fl_stats stats;
-<<<<<<< HEAD
 	__be32 nfp_tun_ipv4_addr;
 	struct net_device *ingress_dev;
 	char *unmasked_data;
 	char *mask_data;
 	char *action_data;
 	bool ingress_offload;
-=======
-	char *unmasked_data;
-	char *mask_data;
-	char *action_data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct nfp_fl_stats_frame {
@@ -294,41 +254,27 @@ int nfp_flower_setup_tc(struct nfp_app *app, struct net_device *netdev,
 int nfp_flower_compile_flow_match(struct tc_cls_flower_offload *flow,
 				  struct nfp_fl_key_ls *key_ls,
 				  struct net_device *netdev,
-<<<<<<< HEAD
 				  struct nfp_fl_payload *nfp_flow,
 				  enum nfp_flower_tun_type tun_type);
 int nfp_flower_compile_action(struct nfp_app *app,
 			      struct tc_cls_flower_offload *flow,
-=======
-				  struct nfp_fl_payload *nfp_flow);
-int nfp_flower_compile_action(struct tc_cls_flower_offload *flow,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      struct net_device *netdev,
 			      struct nfp_fl_payload *nfp_flow);
 int nfp_compile_flow_metadata(struct nfp_app *app,
 			      struct tc_cls_flower_offload *flow,
-<<<<<<< HEAD
 			      struct nfp_fl_payload *nfp_flow,
 			      struct net_device *netdev);
-=======
-			      struct nfp_fl_payload *nfp_flow);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int nfp_modify_flow_metadata(struct nfp_app *app,
 			     struct nfp_fl_payload *nfp_flow);
 
 struct nfp_fl_payload *
-<<<<<<< HEAD
 nfp_flower_search_fl_table(struct nfp_app *app, unsigned long tc_flower_cookie,
 			   struct net_device *netdev, __be32 host_ctx);
-=======
-nfp_flower_search_fl_table(struct nfp_app *app, unsigned long tc_flower_cookie);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct nfp_fl_payload *
 nfp_flower_remove_fl_table(struct nfp_app *app, unsigned long tc_flower_cookie);
 
 void nfp_flower_rx_flow_stats(struct nfp_app *app, struct sk_buff *skb);
 
-<<<<<<< HEAD
 int nfp_tunnel_config_start(struct nfp_app *app);
 void nfp_tunnel_config_stop(struct nfp_app *app);
 void nfp_tunnel_write_macs(struct nfp_app *app);
@@ -348,6 +294,4 @@ int nfp_flower_lag_populate_pre_action(struct nfp_app *app,
 int nfp_flower_lag_get_output_id(struct nfp_app *app,
 				 struct net_device *master);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

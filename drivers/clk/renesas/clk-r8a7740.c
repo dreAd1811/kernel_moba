@@ -98,36 +98,20 @@ r8a7740_cpg_register_clock(struct device_node *np, struct r8a7740_cpg *cpg,
 		 * clock implementation and we currently have no need to change
 		 * the multiplier value.
 		 */
-<<<<<<< HEAD
 		u32 value = readl(cpg->reg + CPG_FRQCRC);
 		parent_name = "system";
 		mult = ((value >> 24) & 0x7f) + 1;
 	} else if (!strcmp(name, "pllc1")) {
 		u32 value = readl(cpg->reg + CPG_FRQCRA);
-=======
-		u32 value = clk_readl(cpg->reg + CPG_FRQCRC);
-		parent_name = "system";
-		mult = ((value >> 24) & 0x7f) + 1;
-	} else if (!strcmp(name, "pllc1")) {
-		u32 value = clk_readl(cpg->reg + CPG_FRQCRA);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		parent_name = "system";
 		mult = ((value >> 24) & 0x7f) + 1;
 		div = 2;
 	} else if (!strcmp(name, "pllc2")) {
-<<<<<<< HEAD
 		u32 value = readl(cpg->reg + CPG_PLLC2CR);
 		parent_name = "system";
 		mult = ((value >> 24) & 0x3f) + 1;
 	} else if (!strcmp(name, "usb24s")) {
 		u32 value = readl(cpg->reg + CPG_USBCKCR);
-=======
-		u32 value = clk_readl(cpg->reg + CPG_PLLC2CR);
-		parent_name = "system";
-		mult = ((value >> 24) & 0x3f) + 1;
-	} else if (!strcmp(name, "usb24s")) {
-		u32 value = clk_readl(cpg->reg + CPG_USBCKCR);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (value & BIT(7))
 			/* extal2 */
 			parent_name = of_clk_get_parent_name(np, 1);
@@ -177,11 +161,7 @@ static void __init r8a7740_cpg_clocks_init(struct device_node *np)
 	}
 
 	cpg = kzalloc(sizeof(*cpg), GFP_KERNEL);
-<<<<<<< HEAD
 	clks = kcalloc(num_clks, sizeof(*clks), GFP_KERNEL);
-=======
-	clks = kzalloc(num_clks * sizeof(*clks), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (cpg == NULL || clks == NULL) {
 		/* We're leaking memory on purpose, there's no point in cleaning
 		 * up as the system won't boot anyway.

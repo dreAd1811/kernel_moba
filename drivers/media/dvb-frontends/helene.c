@@ -23,11 +23,7 @@
 #include <linux/dvb/frontend.h>
 #include <linux/types.h>
 #include "helene.h"
-<<<<<<< HEAD
 #include <media/dvb_frontend.h>
-=======
-#include "dvb_frontend.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define MAX_WRITE_REGSIZE 20
 
@@ -670,11 +666,7 @@ static int helene_set_params_s(struct dvb_frontend *fe)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int helene_set_params_t(struct dvb_frontend *fe)
-=======
-static int helene_set_params(struct dvb_frontend *fe)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u8 data[MAX_WRITE_REGSIZE];
 	u32 frequency;
@@ -843,7 +835,6 @@ static int helene_set_params(struct dvb_frontend *fe)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int helene_set_params(struct dvb_frontend *fe)
 {
 	struct dtv_frontend_properties *p = &fe->dtv_property_cache;
@@ -857,8 +848,6 @@ static int helene_set_params(struct dvb_frontend *fe)
 	return helene_set_params_s(fe);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int helene_get_frequency(struct dvb_frontend *fe, u32 *frequency)
 {
 	struct helene_priv *priv = fe->tuner_priv;
@@ -867,45 +856,26 @@ static int helene_get_frequency(struct dvb_frontend *fe, u32 *frequency)
 	return 0;
 }
 
-<<<<<<< HEAD
 static const struct dvb_tuner_ops helene_tuner_ops_t = {
 	.info = {
 		.name = "Sony HELENE Ter tuner",
 		.frequency_min_hz  =    1 * MHz,
 		.frequency_max_hz  = 1200 * MHz,
 		.frequency_step_hz =   25 * kHz,
-=======
-static const struct dvb_tuner_ops helene_tuner_ops = {
-	.info = {
-		.name = "Sony HELENE Ter tuner",
-		.frequency_min = 1000000,
-		.frequency_max = 1200000000,
-		.frequency_step = 25000,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.init = helene_init,
 	.release = helene_release,
 	.sleep = helene_sleep,
-<<<<<<< HEAD
 	.set_params = helene_set_params_t,
-=======
-	.set_params = helene_set_params,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.get_frequency = helene_get_frequency,
 };
 
 static const struct dvb_tuner_ops helene_tuner_ops_s = {
 	.info = {
 		.name = "Sony HELENE Sat tuner",
-<<<<<<< HEAD
 		.frequency_min_hz  =  500 * MHz,
 		.frequency_max_hz  = 2500 * MHz,
 		.frequency_step_hz =    1 * MHz,
-=======
-		.frequency_min = 500000,
-		.frequency_max = 2500000,
-		.frequency_step = 1000,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.init = helene_init,
 	.release = helene_release,
@@ -914,7 +884,6 @@ static const struct dvb_tuner_ops helene_tuner_ops_s = {
 	.get_frequency = helene_get_frequency,
 };
 
-<<<<<<< HEAD
 static const struct dvb_tuner_ops helene_tuner_ops = {
 	.info = {
 		.name = "Sony HELENE Sat/Ter tuner",
@@ -929,8 +898,6 @@ static const struct dvb_tuner_ops helene_tuner_ops = {
 	.get_frequency = helene_get_frequency,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* power-on tuner
  * call once after reset
  */
@@ -1095,11 +1062,7 @@ struct dvb_frontend *helene_attach(struct dvb_frontend *fe,
 	if (fe->ops.i2c_gate_ctrl)
 		fe->ops.i2c_gate_ctrl(fe, 0);
 
-<<<<<<< HEAD
 	memcpy(&fe->ops.tuner_ops, &helene_tuner_ops_t,
-=======
-	memcpy(&fe->ops.tuner_ops, &helene_tuner_ops,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			sizeof(struct dvb_tuner_ops));
 	fe->tuner_priv = priv;
 	dev_info(&priv->i2c->dev,
@@ -1109,7 +1072,6 @@ struct dvb_frontend *helene_attach(struct dvb_frontend *fe,
 }
 EXPORT_SYMBOL(helene_attach);
 
-<<<<<<< HEAD
 static int helene_probe(struct i2c_client *client,
 			const struct i2c_device_id *id)
 {
@@ -1163,8 +1125,6 @@ static struct i2c_driver helene_driver = {
 };
 module_i2c_driver(helene_driver);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_DESCRIPTION("Sony HELENE Sat/Ter tuner driver");
 MODULE_AUTHOR("Abylay Ospan <aospan@netup.ru>");
 MODULE_LICENSE("GPL");

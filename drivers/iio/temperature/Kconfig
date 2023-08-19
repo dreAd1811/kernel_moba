@@ -43,7 +43,6 @@ config MLX90614
 	  This driver can also be built as a module. If so, the module will
 	  be called mlx90614.
 
-<<<<<<< HEAD
 config MLX90632
 	tristate "MLX90632 contact-less infrared sensor with medical accuracy"
 	depends on I2C
@@ -56,8 +55,6 @@ config MLX90632
 	  This driver can also be built as a module. If so, the module will
 	  be called mlx90632.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config TMP006
 	tristate "TMP006 infrared thermopile sensor"
 	depends on I2C

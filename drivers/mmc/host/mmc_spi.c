@@ -1154,35 +1154,17 @@ static void mmc_spi_initsequence(struct mmc_spi_host *host)
 	 * SPI protocol.  Another is that when chipselect is released while
 	 * the card returns BUSY status, the clock must issue several cycles
 	 * with chipselect high before the card will stop driving its output.
-<<<<<<< HEAD
 	 */
 	host->spi->mode |= SPI_CS_HIGH;
-=======
-	 *
-	 * SPI_CS_HIGH means "asserted" here. In some cases like when using
-	 * GPIOs for chip select, SPI_CS_HIGH is set but this will be logically
-	 * inverted by gpiolib, so if we want to ascertain to drive it high
-	 * we should toggle the default with an XOR as we do here.
-	 */
-	host->spi->mode ^= SPI_CS_HIGH;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (spi_setup(host->spi) != 0) {
 		/* Just warn; most cards work without it. */
 		dev_warn(&host->spi->dev,
 				"can't change chip-select polarity\n");
-<<<<<<< HEAD
 		host->spi->mode &= ~SPI_CS_HIGH;
 	} else {
 		mmc_spi_readbytes(host, 18);
 
 		host->spi->mode &= ~SPI_CS_HIGH;
-=======
-		host->spi->mode ^= SPI_CS_HIGH;
-	} else {
-		mmc_spi_readbytes(host, 18);
-
-		host->spi->mode ^= SPI_CS_HIGH;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (spi_setup(host->spi) != 0) {
 			/* Wot, we can't get the same setup we had before? */
 			dev_err(&host->spi->dev,

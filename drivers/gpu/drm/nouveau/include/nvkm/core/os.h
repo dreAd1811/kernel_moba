@@ -2,7 +2,6 @@
 #ifndef __NVKM_OS_H__
 #define __NVKM_OS_H__
 #include <nvif/os.h>
-<<<<<<< HEAD
 
 #ifdef __BIG_ENDIAN
 #define ioread16_native ioread16be
@@ -22,6 +21,4 @@
 	iowrite32_native(lower_32_bits(_v), &_p[0]);			       \
 	iowrite32_native(upper_32_bits(_v), &_p[1]);			       \
 } while(0)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

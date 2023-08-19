@@ -36,15 +36,12 @@
 #define DRV_NAME		"fsl_viu"
 #define VIU_VERSION		"0.5.1"
 
-<<<<<<< HEAD
 /* Allow building this driver with COMPILE_TEST */
 #if !defined(CONFIG_PPC) && !defined(CONFIG_MICROBLAZE)
 #define out_be32(v, a)	iowrite32be(a, (void __iomem *)v)
 #define in_be32(a)	ioread32be((void __iomem *)a)
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define BUFFER_TIMEOUT		msecs_to_jiffies(500)  /* 0.5 seconds */
 
 #define	VIU_VID_MEM_LIMIT	4	/* Video memory limit, in Mb */
@@ -137,11 +134,7 @@ struct viu_dev {
 	int			dma_done;
 
 	/* Hardware register area */
-<<<<<<< HEAD
 	struct viu_reg __iomem	*vr;
-=======
-	struct viu_reg		*vr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Interrupt vector */
 	int			irq;
@@ -242,11 +235,7 @@ enum status_config {
 
 static irqreturn_t viu_intr(int irq, void *dev_id);
 
-<<<<<<< HEAD
 static struct viu_fmt *format_by_fourcc(int fourcc)
-=======
-struct viu_fmt *format_by_fourcc(int fourcc)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i;
 
@@ -259,15 +248,9 @@ struct viu_fmt *format_by_fourcc(int fourcc)
 	return NULL;
 }
 
-<<<<<<< HEAD
 static void viu_start_dma(struct viu_dev *dev)
 {
 	struct viu_reg __iomem *vr = dev->vr;
-=======
-void viu_start_dma(struct viu_dev *dev)
-{
-	struct viu_reg *vr = dev->vr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev->field = 0;
 
@@ -276,15 +259,9 @@ void viu_start_dma(struct viu_dev *dev)
 	out_be32(&vr->status_cfg, INT_FIELD_EN);
 }
 
-<<<<<<< HEAD
 static void viu_stop_dma(struct viu_dev *dev)
 {
 	struct viu_reg __iomem *vr = dev->vr;
-=======
-void viu_stop_dma(struct viu_dev *dev)
-{
-	struct viu_reg *vr = dev->vr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int cnt = 100;
 	u32 status_cfg;
 
@@ -319,11 +296,7 @@ static int restart_video_queue(struct viu_dmaqueue *vidq)
 {
 	struct viu_buf *buf, *prev;
 
-<<<<<<< HEAD
 	dprintk(1, "%s vidq=%p\n", __func__, vidq);
-=======
-	dprintk(1, "%s vidq=0x%08lx\n", __func__, (unsigned long)vidq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!list_empty(&vidq->active)) {
 		buf = list_entry(vidq->active.next, struct viu_buf, vb.queue);
 		dprintk(2, "restart_queue [%p/%d]: restart dma\n",
@@ -372,15 +345,9 @@ static int restart_video_queue(struct viu_dmaqueue *vidq)
 	}
 }
 
-<<<<<<< HEAD
 static void viu_vid_timeout(struct timer_list *t)
 {
 	struct viu_dev *dev = from_timer(dev, t, vidq.timeout);
-=======
-static void viu_vid_timeout(unsigned long data)
-{
-	struct viu_dev *dev = (struct viu_dev *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct viu_buf *buf;
 	struct viu_dmaqueue *vidq = &dev->vidq;
 
@@ -434,11 +401,7 @@ static void free_buffer(struct videobuf_queue *vq, struct viu_buf *buf)
 
 inline int buffer_activate(struct viu_dev *dev, struct viu_buf *buf)
 {
-<<<<<<< HEAD
 	struct viu_reg __iomem *vr = dev->vr;
-=======
-	struct viu_reg *vr = dev->vr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int bpp;
 
 	/* setup the DMA base address */
@@ -540,12 +503,7 @@ static void buffer_queue(struct videobuf_queue *vq, struct videobuf_buffer *vb)
 	struct viu_buf       *prev;
 
 	if (!list_empty(&vidq->queued)) {
-<<<<<<< HEAD
 		dprintk(1, "adding vb queue=%p\n", &buf->vb.queue);
-=======
-		dprintk(1, "adding vb queue=0x%08lx\n",
-				(unsigned long)&buf->vb.queue);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dprintk(1, "vidq pointer 0x%p, queued 0x%p\n",
 				vidq, &vidq->queued);
 		dprintk(1, "dev %p, queued: self %p, next %p, head %p\n",
@@ -556,12 +514,7 @@ static void buffer_queue(struct videobuf_queue *vq, struct videobuf_buffer *vb)
 		dprintk(2, "[%p/%d] buffer_queue - append to queued\n",
 			buf, buf->vb.i);
 	} else if (list_empty(&vidq->active)) {
-<<<<<<< HEAD
 		dprintk(1, "adding vb active=%p\n", &buf->vb.queue);
-=======
-		dprintk(1, "adding vb active=0x%08lx\n",
-				(unsigned long)&buf->vb.queue);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		list_add_tail(&buf->vb.queue, &vidq->active);
 		buf->vb.state = VIDEOBUF_ACTIVE;
 		mod_timer(&vidq->timeout, jiffies+BUFFER_TIMEOUT);
@@ -570,12 +523,7 @@ static void buffer_queue(struct videobuf_queue *vq, struct videobuf_buffer *vb)
 
 		buffer_activate(dev, buf);
 	} else {
-<<<<<<< HEAD
 		dprintk(1, "adding vb queue2=%p\n", &buf->vb.queue);
-=======
-		dprintk(1, "adding vb queue2=0x%08lx\n",
-				(unsigned long)&buf->vb.queue);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		prev = list_entry(vidq->active.prev, struct viu_buf, vb.queue);
 		if (prev->vb.width  == buf->vb.width  &&
 		    prev->vb.height == buf->vb.height &&
@@ -758,15 +706,8 @@ static int verify_preview(struct viu_dev *dev, struct v4l2_window *win)
 	return 0;
 }
 
-<<<<<<< HEAD
 inline void viu_activate_overlay(struct viu_reg __iomem *vr)
 {
-=======
-inline void viu_activate_overlay(struct viu_reg *viu_reg)
-{
-	struct viu_reg *vr = viu_reg;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	out_be32(&vr->field_base_addr, reg_val.field_base_addr);
 	out_be32(&vr->dma_inc, reg_val.dma_inc);
 	out_be32(&vr->picture_count, reg_val.picture_count);
@@ -809,11 +750,7 @@ static int viu_setup_preview(struct viu_dev *dev, struct viu_fh *fh)
 	reg_val.status_cfg |= DMA_ACT | INT_DMA_END_EN | INT_FIELD_EN;
 
 	/* setup the base address of the overlay buffer */
-<<<<<<< HEAD
 	reg_val.field_base_addr = (u32)(long)dev->ovbuf.base;
-=======
-	reg_val.field_base_addr = (u32)dev->ovbuf.base;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -866,11 +803,7 @@ static int vidioc_overlay(struct file *file, void *priv, unsigned int on)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int vidioc_g_fbuf(struct file *file, void *priv, struct v4l2_framebuffer *arg)
-=======
-int vidioc_g_fbuf(struct file *file, void *priv, struct v4l2_framebuffer *arg)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct viu_fh  *fh = priv;
 	struct viu_dev *dev = fh->dev;
@@ -881,11 +814,7 @@ int vidioc_g_fbuf(struct file *file, void *priv, struct v4l2_framebuffer *arg)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int vidioc_s_fbuf(struct file *file, void *priv, const struct v4l2_framebuffer *arg)
-=======
-int vidioc_s_fbuf(struct file *file, void *priv, const struct v4l2_framebuffer *arg)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct viu_fh  *fh = priv;
 	struct viu_dev *dev = fh->dev;
@@ -1057,15 +986,8 @@ inline void viu_activate_next_buf(struct viu_dev *dev,
 	}
 }
 
-<<<<<<< HEAD
 inline void viu_default_settings(struct viu_reg __iomem *vr)
 {
-=======
-inline void viu_default_settings(struct viu_reg *viu_reg)
-{
-	struct viu_reg *vr = viu_reg;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	out_be32(&vr->luminance, 0x9512A254);
 	out_be32(&vr->chroma_r, 0x03310000);
 	out_be32(&vr->chroma_g, 0x06600F38);
@@ -1078,11 +1000,7 @@ inline void viu_default_settings(struct viu_reg *viu_reg)
 
 static void viu_overlay_intr(struct viu_dev *dev, u32 status)
 {
-<<<<<<< HEAD
 	struct viu_reg __iomem *vr = dev->vr;
-=======
-	struct viu_reg *vr = dev->vr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (status & INT_DMA_END_STATUS)
 		dev->dma_done = 1;
@@ -1113,11 +1031,7 @@ static void viu_overlay_intr(struct viu_dev *dev, u32 status)
 static void viu_capture_intr(struct viu_dev *dev, u32 status)
 {
 	struct viu_dmaqueue *vidq = &dev->vidq;
-<<<<<<< HEAD
 	struct viu_reg __iomem *vr = dev->vr;
-=======
-	struct viu_reg *vr = dev->vr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct viu_buf *buf;
 	int field_num;
 	int need_two;
@@ -1189,11 +1103,7 @@ static void viu_capture_intr(struct viu_dev *dev, u32 status)
 static irqreturn_t viu_intr(int irq, void *dev_id)
 {
 	struct viu_dev *dev  = (struct viu_dev *)dev_id;
-<<<<<<< HEAD
 	struct viu_reg __iomem *vr = dev->vr;
-=======
-	struct viu_reg *vr = dev->vr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 status;
 	u32 error;
 
@@ -1258,11 +1168,7 @@ static int viu_open(struct file *file)
 	struct video_device *vdev = video_devdata(file);
 	struct viu_dev *dev = video_get_drvdata(vdev);
 	struct viu_fh *fh;
-<<<<<<< HEAD
 	struct viu_reg __iomem *vr;
-=======
-	struct viu_reg *vr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int minor = vdev->minor;
 	u32 status_cfg;
 
@@ -1303,13 +1209,7 @@ static int viu_open(struct file *file)
 	dev->crop_current.width  = fh->width;
 	dev->crop_current.height = fh->height;
 
-<<<<<<< HEAD
 	dprintk(1, "Open: fh=%p, dev=%p, dev->vidq=%p\n", fh, dev, &dev->vidq);
-=======
-	dprintk(1, "Open: fh=0x%08lx, dev=0x%08lx, dev->vidq=0x%08lx\n",
-		(unsigned long)fh, (unsigned long)dev,
-		(unsigned long)&dev->vidq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dprintk(1, "Open: list_empty queued=%d\n",
 		list_empty(&dev->vidq.queued));
 	dprintk(1, "Open: list_empty active=%d\n",
@@ -1360,16 +1260,11 @@ static ssize_t viu_read(struct file *file, char __user *data, size_t count,
 	return 0;
 }
 
-<<<<<<< HEAD
 static __poll_t viu_poll(struct file *file, struct poll_table_struct *wait)
-=======
-static unsigned int viu_poll(struct file *file, struct poll_table_struct *wait)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct viu_fh *fh = file->private_data;
 	struct videobuf_queue *q = &fh->vb_vidq;
 	struct viu_dev *dev = fh->dev;
-<<<<<<< HEAD
 	__poll_t req_events = poll_requested_events(wait);
 	__poll_t res = v4l2_ctrl_poll(file, wait);
 
@@ -1377,15 +1272,6 @@ static unsigned int viu_poll(struct file *file, struct poll_table_struct *wait)
 		return EPOLLERR;
 
 	if (!(req_events & (EPOLLIN | EPOLLRDNORM)))
-=======
-	unsigned long req_events = poll_requested_events(wait);
-	unsigned int res = v4l2_ctrl_poll(file, wait);
-
-	if (V4L2_BUF_TYPE_VIDEO_CAPTURE != fh->type)
-		return POLLERR;
-
-	if (!(req_events & (POLLIN | POLLRDNORM)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return res;
 
 	mutex_lock(&dev->lock);
@@ -1416,11 +1302,7 @@ static int viu_release(struct file *file)
 	return 0;
 }
 
-<<<<<<< HEAD
 static void viu_reset(struct viu_reg __iomem *reg)
-=======
-void viu_reset(struct viu_reg *reg)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	out_be32(&reg->status_cfg, 0);
 	out_be32(&reg->luminance, 0x9512a254);
@@ -1440,11 +1322,7 @@ static int viu_mmap(struct file *file, struct vm_area_struct *vma)
 	struct viu_dev *dev = fh->dev;
 	int ret;
 
-<<<<<<< HEAD
 	dprintk(1, "mmap called, vma=%p\n", vma);
-=======
-	dprintk(1, "mmap called, vma=0x%08lx\n", (unsigned long)vma);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (mutex_lock_interruptible(&dev->lock))
 		return -ERESTARTSYS;
@@ -1526,11 +1404,7 @@ static int viu_of_probe(struct platform_device *op)
 	}
 
 	viu_irq = irq_of_parse_and_map(op->dev.of_node, 0);
-<<<<<<< HEAD
 	if (!viu_irq) {
-=======
-	if (viu_irq == NO_IRQ) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(&op->dev, "Error while mapping the irq\n");
 		return -EINVAL;
 	}
@@ -1594,12 +1468,7 @@ static int viu_of_probe(struct platform_device *op)
 	viu_dev->decoder = v4l2_i2c_new_subdev(&viu_dev->v4l2_dev, ad,
 			"saa7113", VIU_VIDEO_DECODER_ADDR, NULL);
 
-<<<<<<< HEAD
 	timer_setup(&viu_dev->vidq.timeout, viu_vid_timeout, 0);
-=======
-	setup_timer(&viu_dev->vidq.timeout, viu_vid_timeout,
-		    (unsigned long)viu_dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	viu_dev->std = V4L2_STD_NTSC_M;
 	viu_dev->first = 1;
 

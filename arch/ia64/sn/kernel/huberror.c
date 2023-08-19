@@ -50,11 +50,7 @@ static irqreturn_t hub_eint_handler(int irq, void *arg)
 			if ((int)ret_stuff.v0)
 				panic("%s: Fatal TIO Error", __func__);
 		} else
-<<<<<<< HEAD
 			bte_error_handler(NODEPDA(nasid_to_cnodeid(nasid)));
-=======
-			bte_error_handler((unsigned long)NODEPDA(nasid_to_cnodeid(nasid)));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return IRQ_HANDLED;
 }

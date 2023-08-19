@@ -13,11 +13,7 @@
  * anybody does please mail me.
  *
  * For the pdf file see:
-<<<<<<< HEAD
  * http://www.nxp.com/acrobat_download2/expired_datasheets/TEA5757_5759_3.pdf
-=======
- * http://www.nxp.com/acrobat_download2/expired_datasheets/TEA5757_5759_3.pdf 
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  *
  * CHANGES:
@@ -31,11 +27,7 @@
  * BUGS:
  *   - card unmutes if you change frequency
  *
-<<<<<<< HEAD
  * (c) 2006, 2007 by Mauro Carvalho Chehab <mchehab@kernel.org>:
-=======
- * (c) 2006, 2007 by Mauro Carvalho Chehab <mchehab@infradead.org>:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *	- Conversion to V4L2 API
  *      - Uses video_ioctl2 for parsing and to add debug support
  */

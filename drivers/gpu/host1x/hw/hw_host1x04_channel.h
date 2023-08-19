@@ -117,7 +117,6 @@ static inline u32 host1x_channel_dmactrl_dmainitget(void)
 }
 #define HOST1X_CHANNEL_DMACTRL_DMAINITGET \
 	host1x_channel_dmactrl_dmainitget()
-<<<<<<< HEAD
 static inline u32 host1x_channel_channelctrl_r(void)
 {
 	return 0x98;
@@ -130,7 +129,5 @@ static inline u32 host1x_channel_channelctrl_kernel_filter_gbuffer_f(u32 v)
 }
 #define HOST1X_CHANNEL_CHANNELCTRL_KERNEL_FILTER_GBUFFER(v) \
 	host1x_channel_channelctrl_kernel_filter_gbuffer_f(v)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif

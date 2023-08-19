@@ -23,12 +23,9 @@ bool blk_mq_has_free_tags(struct blk_mq_tags *tags)
 
 /*
  * If a previously inactive queue goes active, bump the active user count.
-<<<<<<< HEAD
  * We need to do this before try to allocate driver tag, then even if fail
  * to get tag when first time, the other shared-tag users could reserve
  * budget for it.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 bool __blk_mq_tag_busy(struct blk_mq_hw_ctx *hctx)
 {
@@ -140,15 +137,7 @@ unsigned int blk_mq_get_tag(struct blk_mq_alloc_data *data)
 	ws = bt_wait_ptr(bt, data->hctx);
 	drop_ctx = data->ctx == NULL;
 	do {
-<<<<<<< HEAD
 		struct sbitmap_queue *bt_prev;
-=======
-		prepare_to_wait(&ws->wait, &wait, TASK_UNINTERRUPTIBLE);
-
-		tag = __blk_mq_get_tag(data, bt);
-		if (tag != -1)
-			break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/*
 		 * We're out of tags on this hardware queue, kick any
@@ -165,7 +154,6 @@ unsigned int blk_mq_get_tag(struct blk_mq_alloc_data *data)
 		if (tag != -1)
 			break;
 
-<<<<<<< HEAD
 		prepare_to_wait_exclusive(&ws->wait, &wait,
 						TASK_UNINTERRUPTIBLE);
 
@@ -177,11 +165,6 @@ unsigned int blk_mq_get_tag(struct blk_mq_alloc_data *data)
 			blk_mq_put_ctx(data->ctx);
 
 		bt_prev = bt;
-=======
-		if (data->ctx)
-			blk_mq_put_ctx(data->ctx);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		io_schedule();
 
 		data->ctx = blk_mq_get_ctx(data->q);
@@ -193,7 +176,6 @@ unsigned int blk_mq_get_tag(struct blk_mq_alloc_data *data)
 			bt = &tags->bitmap_tags;
 
 		finish_wait(&ws->wait, &wait);
-<<<<<<< HEAD
 
 		/*
 		 * If destination hw queue is changed, fake wake up on
@@ -203,8 +185,6 @@ unsigned int blk_mq_get_tag(struct blk_mq_alloc_data *data)
 		if (bt != bt_prev)
 			sbitmap_queue_wake_up(bt_prev);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ws = bt_wait_ptr(bt, data->hctx);
 	} while (1);
 
@@ -294,11 +274,7 @@ static bool bt_tags_iter(struct sbitmap *bitmap, unsigned int bitnr, void *data)
 	 * test and set the bit before assining ->rqs[].
 	 */
 	rq = tags->rqs[bitnr];
-<<<<<<< HEAD
 	if (rq && blk_mq_request_started(rq))
-=======
-	if (rq)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		iter_data->fn(rq, iter_data->data, reserved);
 
 	return true;
@@ -338,39 +314,6 @@ void blk_mq_tagset_busy_iter(struct blk_mq_tag_set *tagset,
 }
 EXPORT_SYMBOL(blk_mq_tagset_busy_iter);
 
-<<<<<<< HEAD
-=======
-int blk_mq_reinit_tagset(struct blk_mq_tag_set *set,
-			 int (reinit_request)(void *, struct request *))
-{
-	int i, j, ret = 0;
-
-	if (WARN_ON_ONCE(!reinit_request))
-		goto out;
-
-	for (i = 0; i < set->nr_hw_queues; i++) {
-		struct blk_mq_tags *tags = set->tags[i];
-
-		if (!tags)
-			continue;
-
-		for (j = 0; j < tags->nr_tags; j++) {
-			if (!tags->static_rqs[j])
-				continue;
-
-			ret = reinit_request(set->driver_data,
-					     tags->static_rqs[j]);
-			if (ret)
-				goto out;
-		}
-	}
-
-out:
-	return ret;
-}
-EXPORT_SYMBOL_GPL(blk_mq_reinit_tagset);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void blk_mq_queue_tag_busy_iter(struct request_queue *q, busy_iter_fn *fn,
 		void *priv)
 {

@@ -32,10 +32,6 @@
 #include <linux/sched.h>
 #include <linux/slab.h>
 #include <linux/dmaengine.h>
-<<<<<<< HEAD
-=======
-#include <linux/dma-mapping.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/dma/pxa-dma.h>
 
 #include <media/v4l2-async.h>
@@ -238,10 +234,7 @@ enum pxa_mbus_layout {
  *			stored in memory in the following way:
  * @packing:		Type of sample-packing, that has to be used
  * @order:		Sample order when storing in memory
-<<<<<<< HEAD
  * @layout:		Planes layout in memory
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @bits_per_sample:	How many bits the bridge has to sample
  */
 struct pxa_mbus_pixelfmt {
@@ -653,28 +646,16 @@ static unsigned int pxa_mbus_config_compatible(const struct v4l2_mbus_config *cf
 }
 
 /**
-<<<<<<< HEAD
  * struct pxa_camera_format_xlate - match between host and sensor formats
-=======
- * struct soc_camera_format_xlate - match between host and sensor formats
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @code: code of a sensor provided format
  * @host_fmt: host format after host translation from code
  *
  * Host and sensor translation structure. Used in table of host and sensor
-<<<<<<< HEAD
  * formats matchings in pxa_camera_device. A host can override the generic list
  * generation by implementing get_formats(), and use it for format checks and
  * format setup.
  */
 struct pxa_camera_format_xlate {
-=======
- * formats matchings in soc_camera_device. A host can override the generic list
- * generation by implementing get_formats(), and use it for format checks and
- * format setup.
- */
-struct soc_camera_format_xlate {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 code;
 	const struct pxa_mbus_pixelfmt *host_fmt;
 };
@@ -711,13 +692,8 @@ struct pxa_camera_dev {
 	struct v4l2_async_notifier notifier;
 	struct vb2_queue	vb2_vq;
 	struct v4l2_subdev	*sensor;
-<<<<<<< HEAD
 	struct pxa_camera_format_xlate *user_formats;
 	const struct pxa_camera_format_xlate *current_fmt;
-=======
-	struct soc_camera_format_xlate *user_formats;
-	const struct soc_camera_format_xlate *current_fmt;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct v4l2_pix_format	current_pix;
 
 	struct v4l2_async_subdev asd;
@@ -766,13 +742,8 @@ static const char *pxa_cam_driver_description = "PXA_Camera";
 /*
  * Format translation functions
  */
-<<<<<<< HEAD
 static const struct pxa_camera_format_xlate
 *pxa_mbus_xlate_by_fourcc(struct pxa_camera_format_xlate *user_formats,
-=======
-static const struct soc_camera_format_xlate
-*pxa_mbus_xlate_by_fourcc(struct soc_camera_format_xlate *user_formats,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  unsigned int fourcc)
 {
 	unsigned int i;
@@ -783,28 +754,17 @@ static const struct soc_camera_format_xlate
 	return NULL;
 }
 
-<<<<<<< HEAD
 static struct pxa_camera_format_xlate *pxa_mbus_build_fmts_xlate(
 	struct v4l2_device *v4l2_dev, struct v4l2_subdev *subdev,
 	int (*get_formats)(struct v4l2_device *, unsigned int,
 			   struct pxa_camera_format_xlate *xlate))
-=======
-static struct soc_camera_format_xlate *pxa_mbus_build_fmts_xlate(
-	struct v4l2_device *v4l2_dev, struct v4l2_subdev *subdev,
-	int (*get_formats)(struct v4l2_device *, unsigned int,
-			   struct soc_camera_format_xlate *xlate))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned int i, fmts = 0, raw_fmts = 0;
 	int ret;
 	struct v4l2_subdev_mbus_code_enum code = {
 		.which = V4L2_SUBDEV_FORMAT_ACTIVE,
 	};
-<<<<<<< HEAD
 	struct pxa_camera_format_xlate *user_formats;
-=======
-	struct soc_camera_format_xlate *user_formats;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	while (!v4l2_subdev_call(subdev, pad, enum_mbus_code, NULL, &code)) {
 		raw_fmts++;
@@ -892,17 +852,10 @@ static void pxa_camera_dma_irq_v(void *data)
 /**
  * pxa_init_dma_channel - init dma descriptors
  * @pcdev: pxa camera device
-<<<<<<< HEAD
  * @buf: pxa camera buffer
  * @channel: dma channel (0 => 'Y', 1 => 'U', 2 => 'V')
  * @sg: dma scatter list
  * @sglen: dma scatter list length
-=======
- * @vb: videobuffer2 buffer
- * @dma: dma video buffer
- * @channel: dma channel (0 => 'Y', 1 => 'U', 2 => 'V')
- * @cibr: camera Receive Buffer Register
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Prepares the pxa dma descriptors to transfer one camera channel.
  *
@@ -1057,11 +1010,8 @@ static void pxa_camera_wakeup(struct pxa_camera_dev *pcdev,
 /**
  * pxa_camera_check_link_miss - check missed DMA linking
  * @pcdev: camera device
-<<<<<<< HEAD
  * @last_submitted: an opaque DMA cookie for last submitted
  * @last_issued: an opaque DMA cookie for last issued
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * The DMA chaining is done with DMA running. This means a tiny temporal window
  * remains, where a buffer is queued on the chain, while the chain is already
@@ -1071,11 +1021,7 @@ static void pxa_camera_wakeup(struct pxa_camera_dev *pcdev,
  *  - a videobuffer is queued on the pcdev->capture list
  *
  * Please check the "DMA hot chaining timeslice issue" in
-<<<<<<< HEAD
  *   Documentation/media/v4l-drivers/pxa_camera.rst
-=======
- *   Documentation/video4linux/pxa_camera.txt
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Context: should only be called within the dma irq handler
  */
@@ -1497,11 +1443,7 @@ static void pxac_vb2_queue(struct vb2_buffer *vb)
 
 /*
  * Please check the DMA prepared buffer structure in :
-<<<<<<< HEAD
  *   Documentation/media/v4l-drivers/pxa_camera.rst
-=======
- *   Documentation/video4linux/pxa_camera.txt
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Please check also in pxa_camera_check_link_miss() to understand why DMA chain
  * modification while DMA chain is running will work anyway.
  */
@@ -1779,11 +1721,7 @@ static bool pxa_camera_packing_supported(const struct pxa_mbus_pixelfmt *fmt)
 
 static int pxa_camera_get_formats(struct v4l2_device *v4l2_dev,
 				  unsigned int idx,
-<<<<<<< HEAD
 				  struct pxa_camera_format_xlate *xlate)
-=======
-				  struct soc_camera_format_xlate *xlate)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct pxa_camera_dev *pcdev = v4l2_dev_to_pcdev(v4l2_dev);
 	int formats = 0, ret;
@@ -1855,11 +1793,7 @@ static int pxa_camera_get_formats(struct v4l2_device *v4l2_dev,
 
 static int pxa_camera_build_formats(struct pxa_camera_dev *pcdev)
 {
-<<<<<<< HEAD
 	struct pxa_camera_format_xlate *xlate;
-=======
-	struct soc_camera_format_xlate *xlate;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	xlate = pxa_mbus_build_fmts_xlate(&pcdev->v4l2_dev, pcdev->sensor,
 					  pxa_camera_get_formats);
@@ -1948,11 +1882,7 @@ static int pxac_vidioc_try_fmt_vid_cap(struct file *filp, void *priv,
 				      struct v4l2_format *f)
 {
 	struct pxa_camera_dev *pcdev = video_drvdata(filp);
-<<<<<<< HEAD
 	const struct pxa_camera_format_xlate *xlate;
-=======
-	const struct soc_camera_format_xlate *xlate;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct v4l2_pix_format *pix = &f->fmt.pix;
 	struct v4l2_subdev_pad_config pad_cfg;
 	struct v4l2_subdev_format format = {
@@ -2016,11 +1946,7 @@ static int pxac_vidioc_s_fmt_vid_cap(struct file *filp, void *priv,
 				    struct v4l2_format *f)
 {
 	struct pxa_camera_dev *pcdev = video_drvdata(filp);
-<<<<<<< HEAD
 	const struct pxa_camera_format_xlate *xlate;
-=======
-	const struct soc_camera_format_xlate *xlate;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct v4l2_pix_format *pix = &f->fmt.pix;
 	struct v4l2_subdev_format format = {
 		.which = V4L2_SUBDEV_FORMAT_ACTIVE,
@@ -2104,7 +2030,6 @@ static int pxac_vidioc_s_input(struct file *file, void *priv, unsigned int i)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int pxac_sensor_set_power(struct pxa_camera_dev *pcdev, int on)
 {
 	int ret;
@@ -2121,8 +2046,6 @@ static int pxac_sensor_set_power(struct pxa_camera_dev *pcdev, int on)
 	return ret;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int pxac_fops_camera_open(struct file *filp)
 {
 	struct pxa_camera_dev *pcdev = video_drvdata(filp);
@@ -2133,14 +2056,10 @@ static int pxac_fops_camera_open(struct file *filp)
 	if (ret < 0)
 		goto out;
 
-<<<<<<< HEAD
 	if (!v4l2_fh_is_singular_file(filp))
 		goto out;
 
 	ret = pxac_sensor_set_power(pcdev, 1);
-=======
-	ret = sensor_call(pcdev, core, s_power, 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		v4l2_fh_release(filp);
 out:
@@ -2152,7 +2071,6 @@ static int pxac_fops_camera_release(struct file *filp)
 {
 	struct pxa_camera_dev *pcdev = video_drvdata(filp);
 	int ret;
-<<<<<<< HEAD
 	bool fh_singular;
 
 	mutex_lock(&pcdev->mlock);
@@ -2164,15 +2082,6 @@ static int pxac_fops_camera_release(struct file *filp)
 	if (fh_singular)
 		ret = pxac_sensor_set_power(pcdev, 0);
 
-=======
-
-	ret = vb2_fop_release(filp);
-	if (ret < 0)
-		return ret;
-
-	mutex_lock(&pcdev->mlock);
-	ret = sensor_call(pcdev, core, s_power, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&pcdev->mlock);
 
 	return ret;
@@ -2274,11 +2183,7 @@ static int pxa_camera_sensor_bound(struct v4l2_async_notifier *notifier,
 	pix->pixelformat = pcdev->current_fmt->host_fmt->fourcc;
 	v4l2_fill_mbus_format(mf, pix, pcdev->current_fmt->code);
 
-<<<<<<< HEAD
 	err = pxac_sensor_set_power(pcdev, 1);
-=======
-	err = sensor_call(pcdev, core, s_power, 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		goto out;
 
@@ -2305,11 +2210,7 @@ static int pxa_camera_sensor_bound(struct v4l2_async_notifier *notifier,
 	}
 
 out_sensor_poweroff:
-<<<<<<< HEAD
 	err = pxac_sensor_set_power(pcdev, 0);
-=======
-	err = sensor_call(pcdev, core, s_power, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	mutex_unlock(&pcdev->mlock);
 	return err;
@@ -2345,14 +2246,11 @@ static void pxa_camera_sensor_unbind(struct v4l2_async_notifier *notifier,
 	mutex_unlock(&pcdev->mlock);
 }
 
-<<<<<<< HEAD
 static const struct v4l2_async_notifier_operations pxa_camera_sensor_ops = {
 	.bound = pxa_camera_sensor_bound,
 	.unbind = pxa_camera_sensor_unbind,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Driver probe, remove, suspend and resume operations
  */
@@ -2367,16 +2265,8 @@ static int pxa_camera_suspend(struct device *dev)
 	pcdev->save_cicr[i++] = __raw_readl(pcdev->base + CICR3);
 	pcdev->save_cicr[i++] = __raw_readl(pcdev->base + CICR4);
 
-<<<<<<< HEAD
 	if (pcdev->sensor)
 		ret = pxac_sensor_set_power(pcdev, 0);
-=======
-	if (pcdev->sensor) {
-		ret = sensor_call(pcdev, core, s_power, 0);
-		if (ret == -ENOIOCTLCMD)
-			ret = 0;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -2393,13 +2283,7 @@ static int pxa_camera_resume(struct device *dev)
 	__raw_writel(pcdev->save_cicr[i++], pcdev->base + CICR4);
 
 	if (pcdev->sensor) {
-<<<<<<< HEAD
 		ret = pxac_sensor_set_power(pcdev, 1);
-=======
-		ret = sensor_call(pcdev, core, s_power, 1);
-		if (ret == -ENOIOCTLCMD)
-			ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Restart frame capture if active buffer exists */
@@ -2469,11 +2353,7 @@ static int pxa_camera_pdata_from_dt(struct device *dev,
 	asd->match_type = V4L2_ASYNC_MATCH_FWNODE;
 	remote = of_graph_get_remote_port(np);
 	if (remote) {
-<<<<<<< HEAD
 		asd->match.fwnode = of_fwnode_handle(remote);
-=======
-		asd->match.fwnode.fwnode = of_fwnode_handle(remote);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		of_node_put(remote);
 	} else {
 		dev_notice(dev, "no remote for %pOF\n", np);
@@ -2495,11 +2375,6 @@ static int pxa_camera_probe(struct platform_device *pdev)
 		.src_maxburst = 8,
 		.direction = DMA_DEV_TO_MEM,
 	};
-<<<<<<< HEAD
-=======
-	dma_cap_mask_t mask;
-	struct pxad_param params;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	char clk_name[V4L2_CLK_NAME_SIZE];
 	int irq;
 	int err = 0, i;
@@ -2522,11 +2397,7 @@ static int pxa_camera_probe(struct platform_device *pdev)
 	pcdev->res = res;
 
 	pcdev->pdata = pdev->dev.platform_data;
-<<<<<<< HEAD
 	if (&pdev->dev.of_node && !pcdev->pdata) {
-=======
-	if (pdev->dev.of_node && !pcdev->pdata) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = pxa_camera_pdata_from_dt(&pdev->dev, pcdev, &pcdev->asd);
 	} else {
 		pcdev->platform_flags = pcdev->pdata->flags;
@@ -2577,46 +2448,20 @@ static int pxa_camera_probe(struct platform_device *pdev)
 	pcdev->base = base;
 
 	/* request dma */
-<<<<<<< HEAD
 	pcdev->dma_chans[0] = dma_request_slave_channel(&pdev->dev, "CI_Y");
-=======
-	dma_cap_zero(mask);
-	dma_cap_set(DMA_SLAVE, mask);
-	dma_cap_set(DMA_PRIVATE, mask);
-
-	params.prio = 0;
-	params.drcmr = 68;
-	pcdev->dma_chans[0] =
-		dma_request_slave_channel_compat(mask, pxad_filter_fn,
-						 &params, &pdev->dev, "CI_Y");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!pcdev->dma_chans[0]) {
 		dev_err(&pdev->dev, "Can't request DMA for Y\n");
 		return -ENODEV;
 	}
 
-<<<<<<< HEAD
 	pcdev->dma_chans[1] = dma_request_slave_channel(&pdev->dev, "CI_U");
-=======
-	params.drcmr = 69;
-	pcdev->dma_chans[1] =
-		dma_request_slave_channel_compat(mask, pxad_filter_fn,
-						 &params, &pdev->dev, "CI_U");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!pcdev->dma_chans[1]) {
 		dev_err(&pdev->dev, "Can't request DMA for Y\n");
 		err = -ENODEV;
 		goto exit_free_dma_y;
 	}
 
-<<<<<<< HEAD
 	pcdev->dma_chans[2] = dma_request_slave_channel(&pdev->dev, "CI_V");
-=======
-	params.drcmr = 70;
-	pcdev->dma_chans[2] =
-		dma_request_slave_channel_compat(mask, pxad_filter_fn,
-						 &params, &pdev->dev, "CI_V");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!pcdev->dma_chans[2]) {
 		dev_err(&pdev->dev, "Can't request DMA for V\n");
 		err = -ENODEV;
@@ -2648,21 +2493,12 @@ static int pxa_camera_probe(struct platform_device *pdev)
 	dev_set_drvdata(&pdev->dev, pcdev);
 	err = v4l2_device_register(&pdev->dev, &pcdev->v4l2_dev);
 	if (err)
-<<<<<<< HEAD
 		goto exit_deactivate;
-=======
-		goto exit_free_dma;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pcdev->asds[0] = &pcdev->asd;
 	pcdev->notifier.subdevs = pcdev->asds;
 	pcdev->notifier.num_subdevs = 1;
-<<<<<<< HEAD
 	pcdev->notifier.ops = &pxa_camera_sensor_ops;
-=======
-	pcdev->notifier.bound = pxa_camera_sensor_bound;
-	pcdev->notifier.unbind = pxa_camera_sensor_unbind;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!of_have_populated_dt())
 		pcdev->asd.match_type = V4L2_ASYNC_MATCH_I2C;
@@ -2693,11 +2529,8 @@ exit_free_clk:
 	v4l2_clk_unregister(pcdev->mclk_clk);
 exit_free_v4l2dev:
 	v4l2_device_unregister(&pcdev->v4l2_dev);
-<<<<<<< HEAD
 exit_deactivate:
 	pxa_camera_deactivate(pcdev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 exit_free_dma:
 	dma_release_channel(pcdev->dma_chans[2]);
 exit_free_dma_u:

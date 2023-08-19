@@ -64,12 +64,8 @@ static unsigned int net_debug = NET_DEBUG;
 #define RX_AREA_END	0x0fc00
 
 static int ether1_open(struct net_device *dev);
-<<<<<<< HEAD
 static netdev_tx_t ether1_sendpacket(struct sk_buff *skb,
 				     struct net_device *dev);
-=======
-static int ether1_sendpacket(struct sk_buff *skb, struct net_device *dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static irqreturn_t ether1_interrupt(int irq, void *dev_id);
 static int ether1_close(struct net_device *dev);
 static void ether1_setmulticastlist(struct net_device *dev);
@@ -672,11 +668,7 @@ ether1_timeout(struct net_device *dev)
 	netif_wake_queue(dev);
 }
 
-<<<<<<< HEAD
 static netdev_tx_t
-=======
-static int
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 ether1_sendpacket (struct sk_buff *skb, struct net_device *dev)
 {
 	int tmp, tst, nopaddr, txaddr, tbdaddr, dataddr;

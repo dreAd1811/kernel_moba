@@ -21,13 +21,6 @@
 #include <linux/firmware.h>
 #include "firmware.h"
 
-<<<<<<< HEAD
-=======
-#define SDIO_FUNC_0		0
-#define SDIO_FUNC_1		1
-#define SDIO_FUNC_2		2
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SDIOD_FBR_SIZE		0x100
 
 /* io_en */
@@ -42,17 +35,10 @@
 #define INTR_STATUS_FUNC1	0x2
 #define INTR_STATUS_FUNC2	0x4
 
-<<<<<<< HEAD
-=======
-/* Maximum number of I/O funcs */
-#define SDIOD_MAX_IOFUNCS	7
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* mask of register map */
 #define REG_F0_REG_MASK		0x7FF
 #define REG_F1_MISC_MASK	0x1FFFF
 
-<<<<<<< HEAD
 /* function 0 vendor specific CCCR registers */
 
 #define SDIO_CCCR_BRCM_CARDCAP			0xf0
@@ -72,23 +58,6 @@
 #define SDIO_CCCR_BRCM_SEPINT_MASK		BIT(0)
 #define SDIO_CCCR_BRCM_SEPINT_OE		BIT(1)
 #define SDIO_CCCR_BRCM_SEPINT_ACT_HI		BIT(2)
-=======
-/* as of sdiod rev 0, supports 3 functions */
-#define SBSDIO_NUM_FUNCTION		3
-
-/* function 0 vendor specific CCCR registers */
-#define SDIO_CCCR_BRCM_CARDCAP			0xf0
-#define SDIO_CCCR_BRCM_CARDCAP_CMD14_SUPPORT	0x02
-#define SDIO_CCCR_BRCM_CARDCAP_CMD14_EXT	0x04
-#define SDIO_CCCR_BRCM_CARDCAP_CMD_NODEC	0x08
-#define SDIO_CCCR_BRCM_CARDCTRL		0xf1
-#define SDIO_CCCR_BRCM_CARDCTRL_WLANRESET	0x02
-#define SDIO_CCCR_BRCM_SEPINT			0xf2
-
-#define  SDIO_SEPINT_MASK		0x01
-#define  SDIO_SEPINT_OE			0x02
-#define  SDIO_SEPINT_ACT_HI		0x04
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* function 1 miscellaneous registers */
 
@@ -159,14 +128,6 @@
 /* with b15, maps to 32-bit SB access */
 #define SBSDIO_SB_ACCESS_2_4B_FLAG	0x08000
 
-<<<<<<< HEAD
-=======
-/* valid bits in SBSDIO_FUNC1_SBADDRxxx regs */
-
-#define SBSDIO_SBADDRLOW_MASK		0x80	/* Valid bits in SBADDRLOW */
-#define SBSDIO_SBADDRMID_MASK		0xff	/* Valid bits in SBADDRMID */
-#define SBSDIO_SBADDRHIGH_MASK		0xffU	/* Valid bits in SBADDRHIGH */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Address bits from SBADDR regs */
 #define SBSDIO_SBWINDOW_MASK		0xffff8000
 
@@ -209,16 +170,10 @@ struct brcmf_sdio;
 struct brcmf_sdiod_freezer;
 
 struct brcmf_sdio_dev {
-<<<<<<< HEAD
 	struct sdio_func *func1;
 	struct sdio_func *func2;
 	u32 sbwad;			/* Save backplane window address */
 	struct brcmf_core *cc_core;	/* chipcommon core info struct */
-=======
-	struct sdio_func *func[SDIO_MAX_FUNCS];
-	u8 num_funcs;			/* Supported funcs on client */
-	u32 sbwad;			/* Save backplane window address */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct brcmf_sdio *bus;
 	struct device *dev;
 	struct brcmf_bus *bus_if;
@@ -334,7 +289,6 @@ struct sdpcmd_regs {
 int brcmf_sdiod_intr_register(struct brcmf_sdio_dev *sdiodev);
 void brcmf_sdiod_intr_unregister(struct brcmf_sdio_dev *sdiodev);
 
-<<<<<<< HEAD
 /* SDIO device register access interface */
 /* Accessors for SDIO Function 0 */
 #define brcmf_sdiod_func0_rb(sdiodev, addr, r) \
@@ -353,15 +307,6 @@ void brcmf_sdiod_intr_unregister(struct brcmf_sdio_dev *sdiodev);
 u32 brcmf_sdiod_readl(struct brcmf_sdio_dev *sdiodev, u32 addr, int *ret);
 void brcmf_sdiod_writel(struct brcmf_sdio_dev *sdiodev, u32 addr, u32 data,
 			int *ret);
-=======
-/* sdio device register access interface */
-u8 brcmf_sdiod_regrb(struct brcmf_sdio_dev *sdiodev, u32 addr, int *ret);
-u32 brcmf_sdiod_regrl(struct brcmf_sdio_dev *sdiodev, u32 addr, int *ret);
-void brcmf_sdiod_regwb(struct brcmf_sdio_dev *sdiodev, u32 addr, u8 data,
-		       int *ret);
-void brcmf_sdiod_regwl(struct brcmf_sdio_dev *sdiodev, u32 addr, u32 data,
-		       int *ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Buffer transfer to/from device (client) core via cmd53.
  *   fn:       function number
@@ -401,12 +346,8 @@ int brcmf_sdiod_ramrw(struct brcmf_sdio_dev *sdiodev, bool write, u32 address,
 		      u8 *data, uint size);
 
 /* Issue an abort to the specified function */
-<<<<<<< HEAD
 int brcmf_sdiod_abort(struct brcmf_sdio_dev *sdiodev, struct sdio_func *func);
 
-=======
-int brcmf_sdiod_abort(struct brcmf_sdio_dev *sdiodev, uint fn);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void brcmf_sdiod_sgtable_alloc(struct brcmf_sdio_dev *sdiodev);
 void brcmf_sdiod_change_state(struct brcmf_sdio_dev *sdiodev,
 			      enum brcmf_sdiod_state state);

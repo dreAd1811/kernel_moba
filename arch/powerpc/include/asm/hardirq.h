@@ -8,10 +8,7 @@
 typedef struct {
 	unsigned int __softirq_pending;
 	unsigned int timer_irqs_event;
-<<<<<<< HEAD
 	unsigned int broadcast_irqs_event;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int timer_irqs_others;
 	unsigned int pmu_irqs;
 	unsigned int mce_exceptions;
@@ -29,17 +26,7 @@ typedef struct {
 DECLARE_PER_CPU_SHARED_ALIGNED(irq_cpustat_t, irq_stat);
 
 #define __ARCH_IRQ_STAT
-<<<<<<< HEAD
 #define __ARCH_IRQ_EXIT_IRQS_DISABLED
-=======
-
-#define local_softirq_pending()	__this_cpu_read(irq_stat.__softirq_pending)
-
-#define __ARCH_SET_SOFTIRQ_PENDING
-
-#define set_softirq_pending(x) __this_cpu_write(irq_stat.__softirq_pending, (x))
-#define or_softirq_pending(x) __this_cpu_or(irq_stat.__softirq_pending, (x))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline void ack_bad_irq(unsigned int irq)
 {

@@ -28,11 +28,7 @@ config MDIO_BCM_IPROC
 
 config MDIO_BCM_UNIMAC
 	tristate "Broadcom UniMAC MDIO bus controller"
-<<<<<<< HEAD
 	depends on HAS_IOMEM
-=======
-	depends on HAS_IOMEM && OF_MDIO
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  This module provides a driver for the Broadcom UniMAC MDIO busses.
 	  This hardware can be found in the Broadcom GENET Ethernet MAC
@@ -96,12 +92,8 @@ config MDIO_CAVIUM
 
 config MDIO_GPIO
 	tristate "GPIO lib-based bitbanged MDIO buses"
-<<<<<<< HEAD
 	depends on MDIO_BITBANG
 	depends on GPIOLIB || COMPILE_TEST
-=======
-	depends on MDIO_BITBANG && GPIOLIB
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	---help---
 	  Supports GPIO lib-based MDIO busses.
 
@@ -127,16 +119,11 @@ config MDIO_I2C
 
 config MDIO_MOXART
 	tristate "MOXA ART MDIO interface support"
-<<<<<<< HEAD
 	depends on ARCH_MOXART || COMPILE_TEST
-=======
-	depends on ARCH_MOXART
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  This driver supports the MDIO interface found in the network
 	  interface units of the MOXA ART SoC
 
-<<<<<<< HEAD
 config MDIO_MSCC_MIIM
 	tristate "Microsemi MIIM interface support"
 	depends on HAS_IOMEM
@@ -144,8 +131,6 @@ config MDIO_MSCC_MIIM
 	  This driver supports the MIIM (MDIO) interface found in the network
 	  switches of the Microsemi SoCs
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config MDIO_OCTEON
 	tristate "Octeon and some ThunderX SOCs MDIO buses"
 	depends on 64BIT
@@ -158,11 +143,7 @@ config MDIO_OCTEON
 
 config MDIO_SUN4I
 	tristate "Allwinner sun4i MDIO interface support"
-<<<<<<< HEAD
 	depends on ARCH_SUNXI || COMPILE_TEST
-=======
-	depends on ARCH_SUNXI
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  This driver supports the MDIO interface found in the network
 	  interface units of the Allwinner SoC that have an EMAC (A10,
@@ -218,7 +199,6 @@ config LED_TRIGGER_PHY
 	  Adds support for a set of LED trigger events per-PHY.  Link
 	  state change will trigger the events, for consumption by an
 	  LED class driver.  There are triggers for each link speed currently
-<<<<<<< HEAD
 	  supported by the PHY and also a one common "link" trigger as a
 	  logical-or of all the link speed ones.
 	  All these triggers are named according to the following pattern:
@@ -227,13 +207,6 @@ config LED_TRIGGER_PHY
 	  Where speed is in the form:
 		<Speed in megabits>Mbps OR <Speed in gigabits>Gbps OR link
 		for any speed known to the PHY.
-=======
-	  supported by the phy, and are of the form:
-	      <mii bus id>:<phy>:<speed>
-
-	  Where speed is in the form:
-		<Speed in megabits>Mbps or <Speed in gigabits>Gbps
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 comment "MII PHY device drivers"
@@ -241,10 +214,7 @@ comment "MII PHY device drivers"
 config SFP
 	tristate "SFP cage support"
 	depends on I2C && PHYLINK
-<<<<<<< HEAD
 	depends on HWMON || HWMON=n
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select MDIO_I2C
 
 config AMD_PHY
@@ -257,15 +227,12 @@ config AQUANTIA_PHY
 	---help---
 	  Currently supports the Aquantia AQ1202, AQ2104, AQR105, AQR405
 
-<<<<<<< HEAD
 config AX88796B_PHY
 	tristate "Asix PHYs"
 	help
 	  Currently supports the Asix Electronics PHY found in the X-Surf 100
 	  AX88796B package.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config AT803X_PHY
 	tristate "AT803X PHYs"
 	---help---
@@ -328,7 +295,6 @@ config DAVICOM_PHY
 	---help---
 	  Currently supports dm9161e and dm9131
 
-<<<<<<< HEAD
 config DP83822_PHY
 	tristate "Texas Instruments DP83822 PHY"
 	---help---
@@ -339,8 +305,6 @@ config DP83TC811_PHY
 	---help---
 	  Supports the DP83TC822 PHY.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config DP83848_PHY
 	tristate "Texas Instruments DP83848 PHY"
 	---help---
@@ -410,14 +374,11 @@ config MICROCHIP_PHY
 	help
 	  Supports the LAN88XX PHYs.
 
-<<<<<<< HEAD
 config MICROCHIP_T1_PHY
 	tristate "Microchip T1 PHYs"
 	---help---
 	  Supports the LAN87XX PHYs.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config MICROSEMI_PHY
 	tristate "Microsemi PHYs"
 	---help---
@@ -438,14 +399,11 @@ config REALTEK_PHY
 	---help---
 	  Supports the Realtek 821x PHY.
 
-<<<<<<< HEAD
 config RENESAS_PHY
 	tristate "Driver for Renesas PHYs"
 	---help---
 	  Supports the Renesas PHYs uPD60620 and uPD60620A.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config ROCKCHIP_PHY
         tristate "Driver for Rockchip Ethernet PHYs"
         ---help---

@@ -39,20 +39,12 @@
 #define MIN_GAP (128*1024*1024)
 #define MAX_GAP (TASK_SIZE/6*5)
 
-<<<<<<< HEAD
 static inline int mmap_is_legacy(struct rlimit *rlim_stack)
-=======
-static inline int mmap_is_legacy(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (current->personality & ADDR_COMPAT_LAYOUT)
 		return 1;
 
-<<<<<<< HEAD
 	if (rlim_stack->rlim_cur == RLIM_INFINITY)
-=======
-	if (rlimit(RLIMIT_STACK) == RLIM_INFINITY)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 1;
 
 	return sysctl_legacy_va_layout;
@@ -84,16 +76,10 @@ static inline unsigned long stack_maxrandom_size(void)
 		return (1<<30);
 }
 
-<<<<<<< HEAD
 static inline unsigned long mmap_base(unsigned long rnd,
 				      struct rlimit *rlim_stack)
 {
 	unsigned long gap = rlim_stack->rlim_cur;
-=======
-static inline unsigned long mmap_base(unsigned long rnd)
-{
-	unsigned long gap = rlimit(RLIMIT_STACK);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long pad = stack_maxrandom_size() + stack_guard_gap;
 
 	/* Values close to RLIM_INFINITY can overflow. */
@@ -131,7 +117,6 @@ radix__arch_get_unmapped_area(struct file *filp, unsigned long addr,
 
 	if (len > high_limit)
 		return -ENOMEM;
-<<<<<<< HEAD
 
 	if (fixed) {
 		if (addr > high_limit - len)
@@ -139,20 +124,6 @@ radix__arch_get_unmapped_area(struct file *filp, unsigned long addr,
 		return addr;
 	}
 
-=======
-	if (fixed) {
-		if (addr > high_limit - len)
-			return -ENOMEM;
-	}
-
-	if (unlikely(addr > mm->context.addr_limit &&
-		     mm->context.addr_limit != TASK_SIZE))
-		mm->context.addr_limit = TASK_SIZE;
-
-	if (fixed)
-		return addr;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (addr) {
 		addr = PAGE_ALIGN(addr);
 		vma = find_vma(mm, addr);
@@ -190,7 +161,6 @@ radix__arch_get_unmapped_area_topdown(struct file *filp,
 
 	if (len > high_limit)
 		return -ENOMEM;
-<<<<<<< HEAD
 
 	if (fixed) {
 		if (addr > high_limit - len)
@@ -198,20 +168,6 @@ radix__arch_get_unmapped_area_topdown(struct file *filp,
 		return addr;
 	}
 
-=======
-	if (fixed) {
-		if (addr > high_limit - len)
-			return -ENOMEM;
-	}
-
-	if (unlikely(addr > mm->context.addr_limit &&
-		     mm->context.addr_limit != TASK_SIZE))
-		mm->context.addr_limit = TASK_SIZE;
-
-	if (fixed)
-		return addr;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (addr) {
 		addr = PAGE_ALIGN(addr);
 		vma = find_vma(mm, addr);
@@ -241,7 +197,6 @@ radix__arch_get_unmapped_area_topdown(struct file *filp,
 }
 
 static void radix__arch_pick_mmap_layout(struct mm_struct *mm,
-<<<<<<< HEAD
 					unsigned long random_factor,
 					struct rlimit *rlim_stack)
 {
@@ -250,37 +205,20 @@ static void radix__arch_pick_mmap_layout(struct mm_struct *mm,
 		mm->get_unmapped_area = radix__arch_get_unmapped_area;
 	} else {
 		mm->mmap_base = mmap_base(random_factor, rlim_stack);
-=======
-					unsigned long random_factor)
-{
-	if (mmap_is_legacy()) {
-		mm->mmap_base = TASK_UNMAPPED_BASE;
-		mm->get_unmapped_area = radix__arch_get_unmapped_area;
-	} else {
-		mm->mmap_base = mmap_base(random_factor);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mm->get_unmapped_area = radix__arch_get_unmapped_area_topdown;
 	}
 }
 #else
 /* dummy */
 extern void radix__arch_pick_mmap_layout(struct mm_struct *mm,
-<<<<<<< HEAD
 					unsigned long random_factor,
 					struct rlimit *rlim_stack);
-=======
-					unsigned long random_factor);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 /*
  * This function, called very early during the creation of a new
  * process VM image, sets up which VM layout function to use:
  */
-<<<<<<< HEAD
 void arch_pick_mmap_layout(struct mm_struct *mm, struct rlimit *rlim_stack)
-=======
-void arch_pick_mmap_layout(struct mm_struct *mm)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long random_factor = 0UL;
 
@@ -288,29 +226,17 @@ void arch_pick_mmap_layout(struct mm_struct *mm)
 		random_factor = arch_mmap_rnd();
 
 	if (radix_enabled())
-<<<<<<< HEAD
 		return radix__arch_pick_mmap_layout(mm, random_factor,
 						    rlim_stack);
-=======
-		return radix__arch_pick_mmap_layout(mm, random_factor);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Fall back to the standard layout if the personality
 	 * bit is set, or if the expected stack growth is unlimited:
 	 */
-<<<<<<< HEAD
 	if (mmap_is_legacy(rlim_stack)) {
 		mm->mmap_base = TASK_UNMAPPED_BASE;
 		mm->get_unmapped_area = arch_get_unmapped_area;
 	} else {
 		mm->mmap_base = mmap_base(random_factor, rlim_stack);
-=======
-	if (mmap_is_legacy()) {
-		mm->mmap_base = TASK_UNMAPPED_BASE;
-		mm->get_unmapped_area = arch_get_unmapped_area;
-	} else {
-		mm->mmap_base = mmap_base(random_factor);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mm->get_unmapped_area = arch_get_unmapped_area_topdown;
 	}
 }

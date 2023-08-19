@@ -45,11 +45,7 @@ struct rdma_cqe_responder {
 	__le32 imm_data_or_inv_r_Key;
 	__le32 length;
 	__le32 imm_data_hi;
-<<<<<<< HEAD
 	__le16 rq_cons_or_srq_id;
-=======
-	__le16 rq_cons;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 flags;
 #define RDMA_CQE_RESPONDER_TOGGLE_BIT_MASK  0x1
 #define RDMA_CQE_RESPONDER_TOGGLE_BIT_SHIFT 0
@@ -119,11 +115,8 @@ enum rdma_cqe_requester_status_enum {
 	RDMA_CQE_REQ_STS_RNR_NAK_RETRY_CNT_ERR,
 	RDMA_CQE_REQ_STS_TRANSPORT_RETRY_CNT_ERR,
 	RDMA_CQE_REQ_STS_WORK_REQUEST_FLUSHED_ERR,
-<<<<<<< HEAD
 	RDMA_CQE_REQ_STS_XRC_VOILATION_ERR,
 	RDMA_CQE_REQ_STS_SIG_ERR,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MAX_RDMA_CQE_REQUESTER_STATUS_ENUM
 };
 
@@ -145,10 +138,7 @@ enum rdma_cqe_type {
 	RDMA_CQE_TYPE_REQUESTER,
 	RDMA_CQE_TYPE_RESPONDER_RQ,
 	RDMA_CQE_TYPE_RESPONDER_SRQ,
-<<<<<<< HEAD
 	RDMA_CQE_TYPE_RESPONDER_XRC_SRQ,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	RDMA_CQE_TYPE_INVALID,
 	MAX_RDMA_CQE_TYPE
 };
@@ -163,7 +153,6 @@ struct rdma_rq_sge {
 	struct regpair addr;
 	__le32 length;
 	__le32 flags;
-<<<<<<< HEAD
 #define RDMA_RQ_SGE_L_KEY_LO_MASK   0x3FFFFFF
 #define RDMA_RQ_SGE_L_KEY_LO_SHIFT  0
 #define RDMA_RQ_SGE_NUM_SGES_MASK   0x7
@@ -176,14 +165,6 @@ struct rdma_srq_wqe_header {
 	struct regpair wr_id;
 	u8 num_sges /* number of SGEs in WQE */;
 	u8 reserved2[7];
-=======
-#define RDMA_RQ_SGE_L_KEY_MASK      0x3FFFFFF
-#define RDMA_RQ_SGE_L_KEY_SHIFT     0
-#define RDMA_RQ_SGE_NUM_SGES_MASK   0x7
-#define RDMA_RQ_SGE_NUM_SGES_SHIFT  26
-#define RDMA_RQ_SGE_RESERVED0_MASK  0x7
-#define RDMA_RQ_SGE_RESERVED0_SHIFT 29
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct rdma_srq_sge {
@@ -192,7 +173,6 @@ struct rdma_srq_sge {
 	__le32 l_key;
 };
 
-<<<<<<< HEAD
 union rdma_srq_elm {
 	struct rdma_srq_wqe_header header;
 	struct rdma_srq_sge sge;
@@ -205,8 +185,6 @@ struct rdma_pwm_flags_data {
 	u8 reserved;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Rdma doorbell data for SQ and RQ */
 struct rdma_pwm_val16_data {
 	__le16 icid;
@@ -223,7 +201,6 @@ struct rdma_pwm_val32_data {
 	__le16 icid;
 	u8 agg_flags;
 	u8 params;
-<<<<<<< HEAD
 #define RDMA_PWM_VAL32_DATA_AGG_CMD_MASK		0x3
 #define RDMA_PWM_VAL32_DATA_AGG_CMD_SHIFT		0
 #define RDMA_PWM_VAL32_DATA_BYPASS_EN_MASK		0x1
@@ -234,14 +211,6 @@ struct rdma_pwm_val32_data {
 #define RDMA_PWM_VAL32_DATA_SET_16B_VAL_SHIFT		4
 #define RDMA_PWM_VAL32_DATA_RESERVED_MASK		0x7
 #define RDMA_PWM_VAL32_DATA_RESERVED_SHIFT		5
-=======
-#define RDMA_PWM_VAL32_DATA_AGG_CMD_MASK    0x3
-#define RDMA_PWM_VAL32_DATA_AGG_CMD_SHIFT   0
-#define RDMA_PWM_VAL32_DATA_BYPASS_EN_MASK  0x1
-#define RDMA_PWM_VAL32_DATA_BYPASS_EN_SHIFT 2
-#define RDMA_PWM_VAL32_DATA_RESERVED_MASK   0x1F
-#define RDMA_PWM_VAL32_DATA_RESERVED_SHIFT  3
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le32 value;
 };
 
@@ -284,7 +253,6 @@ enum rdma_dif_io_direction_flg {
 	MAX_RDMA_DIF_IO_DIRECTION_FLG
 };
 
-<<<<<<< HEAD
 struct rdma_dif_params {
 	__le32 base_ref_tag;
 	__le16 app_tag;
@@ -318,20 +286,6 @@ struct rdma_dif_params {
 	__le32 reserved5;
 };
 
-=======
-/* RDMA DIF Runt Result Structure */
-struct rdma_dif_runt_result {
-	__le16 guard_tag;
-	__le16 reserved[3];
-};
-
-/* Memory window type enumeration */
-enum rdma_mw_type {
-	RDMA_MW_TYPE_1,
-	RDMA_MW_TYPE_2A,
-	MAX_RDMA_MW_TYPE
-};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct rdma_sq_atomic_wqe {
 	__le32 reserved1;
@@ -413,29 +367,17 @@ struct rdma_sq_bind_wqe {
 #define RDMA_SQ_BIND_WQE_SE_FLG_SHIFT        3
 #define RDMA_SQ_BIND_WQE_INLINE_FLG_MASK     0x1
 #define RDMA_SQ_BIND_WQE_INLINE_FLG_SHIFT    4
-<<<<<<< HEAD
 #define RDMA_SQ_BIND_WQE_DIF_ON_HOST_FLG_MASK  0x1
 #define RDMA_SQ_BIND_WQE_DIF_ON_HOST_FLG_SHIFT 5
 #define RDMA_SQ_BIND_WQE_RESERVED0_MASK      0x3
 #define RDMA_SQ_BIND_WQE_RESERVED0_SHIFT     6
-=======
-#define RDMA_SQ_BIND_WQE_RESERVED0_MASK      0x7
-#define RDMA_SQ_BIND_WQE_RESERVED0_SHIFT     5
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 wqe_size;
 	u8 prev_wqe_size;
 	u8 bind_ctrl;
 #define RDMA_SQ_BIND_WQE_ZERO_BASED_MASK     0x1
 #define RDMA_SQ_BIND_WQE_ZERO_BASED_SHIFT    0
-<<<<<<< HEAD
 #define RDMA_SQ_BIND_WQE_RESERVED1_MASK        0x7F
 #define RDMA_SQ_BIND_WQE_RESERVED1_SHIFT       1
-=======
-#define RDMA_SQ_BIND_WQE_MW_TYPE_MASK        0x1
-#define RDMA_SQ_BIND_WQE_MW_TYPE_SHIFT       1
-#define RDMA_SQ_BIND_WQE_RESERVED1_MASK      0x3F
-#define RDMA_SQ_BIND_WQE_RESERVED1_SHIFT     2
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 access_ctrl;
 #define RDMA_SQ_BIND_WQE_REMOTE_READ_MASK    0x1
 #define RDMA_SQ_BIND_WQE_REMOTE_READ_SHIFT   0
@@ -454,10 +396,7 @@ struct rdma_sq_bind_wqe {
 	__le32 length_lo;
 	__le32 parent_l_key;
 	__le32 reserved4;
-<<<<<<< HEAD
 	struct rdma_dif_params dif_params;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* First element (16 bytes) of bind wqe */
@@ -487,15 +426,8 @@ struct rdma_sq_bind_wqe_2nd {
 	u8 bind_ctrl;
 #define RDMA_SQ_BIND_WQE_2ND_ZERO_BASED_MASK     0x1
 #define RDMA_SQ_BIND_WQE_2ND_ZERO_BASED_SHIFT    0
-<<<<<<< HEAD
 #define RDMA_SQ_BIND_WQE_2ND_RESERVED1_MASK      0x7F
 #define RDMA_SQ_BIND_WQE_2ND_RESERVED1_SHIFT     1
-=======
-#define RDMA_SQ_BIND_WQE_2ND_MW_TYPE_MASK        0x1
-#define RDMA_SQ_BIND_WQE_2ND_MW_TYPE_SHIFT       1
-#define RDMA_SQ_BIND_WQE_2ND_RESERVED1_MASK      0x3F
-#define RDMA_SQ_BIND_WQE_2ND_RESERVED1_SHIFT     2
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 access_ctrl;
 #define RDMA_SQ_BIND_WQE_2ND_REMOTE_READ_MASK    0x1
 #define RDMA_SQ_BIND_WQE_2ND_REMOTE_READ_SHIFT   0
@@ -516,14 +448,11 @@ struct rdma_sq_bind_wqe_2nd {
 	__le32 reserved4;
 };
 
-<<<<<<< HEAD
 /* Third element (16 bytes) of bind wqe */
 struct rdma_sq_bind_wqe_3rd {
 	struct rdma_dif_params dif_params;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Structure with only the SQ WQE common
  * fields. Size is of one SQ element (16B)
  */
@@ -594,31 +523,6 @@ struct rdma_sq_fmr_wqe {
 	u8 length_hi;
 	__le32 length_lo;
 	struct regpair pbl_addr;
-<<<<<<< HEAD
-=======
-	__le32 dif_base_ref_tag;
-	__le16 dif_app_tag;
-	__le16 dif_app_tag_mask;
-	__le16 dif_runt_crc_value;
-	__le16 dif_flags;
-#define RDMA_SQ_FMR_WQE_DIF_IO_DIRECTION_FLG_MASK    0x1
-#define RDMA_SQ_FMR_WQE_DIF_IO_DIRECTION_FLG_SHIFT   0
-#define RDMA_SQ_FMR_WQE_DIF_BLOCK_SIZE_MASK          0x1
-#define RDMA_SQ_FMR_WQE_DIF_BLOCK_SIZE_SHIFT         1
-#define RDMA_SQ_FMR_WQE_DIF_RUNT_VALID_FLG_MASK      0x1
-#define RDMA_SQ_FMR_WQE_DIF_RUNT_VALID_FLG_SHIFT     2
-#define RDMA_SQ_FMR_WQE_DIF_VALIDATE_CRC_GUARD_MASK  0x1
-#define RDMA_SQ_FMR_WQE_DIF_VALIDATE_CRC_GUARD_SHIFT 3
-#define RDMA_SQ_FMR_WQE_DIF_VALIDATE_REF_TAG_MASK    0x1
-#define RDMA_SQ_FMR_WQE_DIF_VALIDATE_REF_TAG_SHIFT   4
-#define RDMA_SQ_FMR_WQE_DIF_VALIDATE_APP_TAG_MASK    0x1
-#define RDMA_SQ_FMR_WQE_DIF_VALIDATE_APP_TAG_SHIFT   5
-#define RDMA_SQ_FMR_WQE_DIF_CRC_SEED_MASK            0x1
-#define RDMA_SQ_FMR_WQE_DIF_CRC_SEED_SHIFT           6
-#define RDMA_SQ_FMR_WQE_RESERVED4_MASK               0x1FF
-#define RDMA_SQ_FMR_WQE_RESERVED4_SHIFT              7
-	__le32 Reserved5;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* First element (16 bytes) of fmr wqe */
@@ -675,34 +579,6 @@ struct rdma_sq_fmr_wqe_2nd {
 	struct regpair pbl_addr;
 };
 
-<<<<<<< HEAD
-=======
-/* Third element (16 bytes) of fmr wqe */
-struct rdma_sq_fmr_wqe_3rd {
-	__le32 dif_base_ref_tag;
-	__le16 dif_app_tag;
-	__le16 dif_app_tag_mask;
-	__le16 dif_runt_crc_value;
-	__le16 dif_flags;
-#define RDMA_SQ_FMR_WQE_3RD_DIF_IO_DIRECTION_FLG_MASK    0x1
-#define RDMA_SQ_FMR_WQE_3RD_DIF_IO_DIRECTION_FLG_SHIFT   0
-#define RDMA_SQ_FMR_WQE_3RD_DIF_BLOCK_SIZE_MASK          0x1
-#define RDMA_SQ_FMR_WQE_3RD_DIF_BLOCK_SIZE_SHIFT         1
-#define RDMA_SQ_FMR_WQE_3RD_DIF_RUNT_VALID_FLG_MASK      0x1
-#define RDMA_SQ_FMR_WQE_3RD_DIF_RUNT_VALID_FLG_SHIFT     2
-#define RDMA_SQ_FMR_WQE_3RD_DIF_VALIDATE_CRC_GUARD_MASK  0x1
-#define RDMA_SQ_FMR_WQE_3RD_DIF_VALIDATE_CRC_GUARD_SHIFT 3
-#define RDMA_SQ_FMR_WQE_3RD_DIF_VALIDATE_REF_TAG_MASK    0x1
-#define RDMA_SQ_FMR_WQE_3RD_DIF_VALIDATE_REF_TAG_SHIFT   4
-#define RDMA_SQ_FMR_WQE_3RD_DIF_VALIDATE_APP_TAG_MASK    0x1
-#define RDMA_SQ_FMR_WQE_3RD_DIF_VALIDATE_APP_TAG_SHIFT   5
-#define RDMA_SQ_FMR_WQE_3RD_DIF_CRC_SEED_MASK            0x1
-#define RDMA_SQ_FMR_WQE_3RD_DIF_CRC_SEED_SHIFT           6
-#define RDMA_SQ_FMR_WQE_3RD_RESERVED4_MASK               0x1FF
-#define RDMA_SQ_FMR_WQE_3RD_RESERVED4_SHIFT              7
-	__le32 Reserved5;
-};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct rdma_sq_local_inv_wqe {
 	struct regpair reserved;
@@ -733,7 +609,6 @@ struct rdma_sq_rdma_wqe {
 	__le32 xrc_srq;
 	u8 req_type;
 	u8 flags;
-<<<<<<< HEAD
 #define RDMA_SQ_RDMA_WQE_COMP_FLG_MASK		0x1
 #define RDMA_SQ_RDMA_WQE_COMP_FLG_SHIFT		0
 #define RDMA_SQ_RDMA_WQE_RD_FENCE_FLG_MASK	0x1
@@ -750,22 +625,6 @@ struct rdma_sq_rdma_wqe {
 #define RDMA_SQ_RDMA_WQE_READ_INV_FLG_SHIFT	6
 #define RDMA_SQ_RDMA_WQE_RESERVED1_MASK        0x1
 #define RDMA_SQ_RDMA_WQE_RESERVED1_SHIFT       7
-=======
-#define RDMA_SQ_RDMA_WQE_COMP_FLG_MASK                  0x1
-#define RDMA_SQ_RDMA_WQE_COMP_FLG_SHIFT                 0
-#define RDMA_SQ_RDMA_WQE_RD_FENCE_FLG_MASK              0x1
-#define RDMA_SQ_RDMA_WQE_RD_FENCE_FLG_SHIFT             1
-#define RDMA_SQ_RDMA_WQE_INV_FENCE_FLG_MASK             0x1
-#define RDMA_SQ_RDMA_WQE_INV_FENCE_FLG_SHIFT            2
-#define RDMA_SQ_RDMA_WQE_SE_FLG_MASK                    0x1
-#define RDMA_SQ_RDMA_WQE_SE_FLG_SHIFT                   3
-#define RDMA_SQ_RDMA_WQE_INLINE_FLG_MASK                0x1
-#define RDMA_SQ_RDMA_WQE_INLINE_FLG_SHIFT               4
-#define RDMA_SQ_RDMA_WQE_DIF_ON_HOST_FLG_MASK           0x1
-#define RDMA_SQ_RDMA_WQE_DIF_ON_HOST_FLG_SHIFT          5
-#define RDMA_SQ_RDMA_WQE_RESERVED0_MASK                 0x3
-#define RDMA_SQ_RDMA_WQE_RESERVED0_SHIFT                6
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 wqe_size;
 	u8 prev_wqe_size;
 	struct regpair remote_va;
@@ -773,19 +632,9 @@ struct rdma_sq_rdma_wqe {
 	u8 dif_flags;
 #define RDMA_SQ_RDMA_WQE_DIF_BLOCK_SIZE_MASK            0x1
 #define RDMA_SQ_RDMA_WQE_DIF_BLOCK_SIZE_SHIFT           0
-<<<<<<< HEAD
 #define RDMA_SQ_RDMA_WQE_RESERVED2_MASK        0x7F
 #define RDMA_SQ_RDMA_WQE_RESERVED2_SHIFT       1
 	u8 reserved3[3];
-=======
-#define RDMA_SQ_RDMA_WQE_DIF_FIRST_RDMA_IN_IO_FLG_MASK  0x1
-#define RDMA_SQ_RDMA_WQE_DIF_FIRST_RDMA_IN_IO_FLG_SHIFT 1
-#define RDMA_SQ_RDMA_WQE_DIF_LAST_RDMA_IN_IO_FLG_MASK   0x1
-#define RDMA_SQ_RDMA_WQE_DIF_LAST_RDMA_IN_IO_FLG_SHIFT  2
-#define RDMA_SQ_RDMA_WQE_RESERVED1_MASK                 0x1F
-#define RDMA_SQ_RDMA_WQE_RESERVED1_SHIFT                3
-	u8 reserved2[3];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* First element (16 bytes) of rdma wqe */
@@ -807,15 +656,10 @@ struct rdma_sq_rdma_wqe_1st {
 #define RDMA_SQ_RDMA_WQE_1ST_INLINE_FLG_SHIFT      4
 #define RDMA_SQ_RDMA_WQE_1ST_DIF_ON_HOST_FLG_MASK  0x1
 #define RDMA_SQ_RDMA_WQE_1ST_DIF_ON_HOST_FLG_SHIFT 5
-<<<<<<< HEAD
 #define RDMA_SQ_RDMA_WQE_1ST_READ_INV_FLG_MASK     0x1
 #define RDMA_SQ_RDMA_WQE_1ST_READ_INV_FLG_SHIFT    6
 #define RDMA_SQ_RDMA_WQE_1ST_RESERVED0_MASK        0x1
 #define RDMA_SQ_RDMA_WQE_1ST_RESERVED0_SHIFT       7
-=======
-#define RDMA_SQ_RDMA_WQE_1ST_RESERVED0_MASK        0x3
-#define RDMA_SQ_RDMA_WQE_1ST_RESERVED0_SHIFT       6
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 wqe_size;
 	u8 prev_wqe_size;
 };

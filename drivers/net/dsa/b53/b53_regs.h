@@ -50,12 +50,9 @@
 /* Jumbo Frame Registers */
 #define B53_JUMBO_PAGE			0x40
 
-<<<<<<< HEAD
 /* EEE Control Registers Page */
 #define B53_EEE_PAGE			0x92
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* CFP Configuration Registers Page */
 #define B53_CFP_PAGE			0xa1
 
@@ -216,10 +213,7 @@
 #define B53_BRCM_HDR			0x03
 #define   BRCM_HDR_P8_EN		BIT(0) /* Enable tagging on port 8 */
 #define   BRCM_HDR_P5_EN		BIT(1) /* Enable tagging on port 5 */
-<<<<<<< HEAD
 #define   BRCM_HDR_P7_EN		BIT(2) /* Enable tagging on port 7 */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Mirror capture control register (16 bit) */
 #define B53_MIR_CAP_CTL			0x10
@@ -259,15 +253,12 @@
 /* Revision ID register (8 bit) */
 #define B53_REV_ID			0x40
 
-<<<<<<< HEAD
 /* Broadcom header RX control (16 bit) */
 #define B53_BRCM_HDR_RX_DIS		0x60
 
 /* Broadcom header TX control (16 bit)	*/
 #define B53_BRCM_HDR_TX_DIS		0x62
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*************************************************************************
  * ARL Access Page Registers
  *************************************************************************/
@@ -313,11 +304,7 @@
  *
  * BCM5325 and BCM5365 share most definitions below
  */
-<<<<<<< HEAD
 #define B53_ARLTBL_MAC_VID_ENTRY(n)	(0x10 * (n))
-=======
-#define B53_ARLTBL_MAC_VID_ENTRY(n)	((0x10 * (n)) + 0x10)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define   ARLTBL_MAC_MASK		0xffffffffffffULL
 #define   ARLTBL_VID_S			48
 #define   ARLTBL_VID_MASK_25		0xff
@@ -329,23 +316,13 @@
 #define   ARLTBL_VALID_25		BIT(63)
 
 /* ARL Table Data Entry N Registers (32 bit) */
-<<<<<<< HEAD
 #define B53_ARLTBL_DATA_ENTRY(n)	((0x10 * (n)) + 0x08)
-=======
-#define B53_ARLTBL_DATA_ENTRY(n)	((0x10 * (n)) + 0x18)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define   ARLTBL_DATA_PORT_ID_MASK	0x1ff
 #define   ARLTBL_TC(tc)			((3 & tc) << 11)
 #define   ARLTBL_AGE			BIT(14)
 #define   ARLTBL_STATIC			BIT(15)
 #define   ARLTBL_VALID			BIT(16)
 
-<<<<<<< HEAD
-=======
-/* Maximum number of bin entries in the ARL for all switches */
-#define B53_ARLTBL_MAX_BIN_ENTRIES	4
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* ARL Search Control Register (8 bit) */
 #define B53_ARL_SRCH_CTL		0x50
 #define B53_ARL_SRCH_CTL_25		0x20
@@ -498,7 +475,6 @@
 #define   JMS_MAX_SIZE			9724
 
 /*************************************************************************
-<<<<<<< HEAD
  * EEE Configuration Page Registers
  *************************************************************************/
 
@@ -537,8 +513,6 @@
 
 
 /*************************************************************************
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * CFP Configuration Page Registers
  *************************************************************************/
 

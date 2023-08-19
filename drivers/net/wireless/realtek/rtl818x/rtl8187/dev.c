@@ -444,22 +444,12 @@ static int rtl8187_init_urbs(struct ieee80211_hw *dev)
 		skb_queue_tail(&priv->rx_queue, skb);
 		usb_anchor_urb(entry, &priv->anchored);
 		ret = usb_submit_urb(entry, GFP_KERNEL);
-<<<<<<< HEAD
 		usb_put_urb(entry);
 		if (ret) {
 			skb_unlink(skb, &priv->rx_queue);
 			usb_unanchor_urb(entry);
 			goto err;
 		}
-=======
-		if (ret) {
-			skb_unlink(skb, &priv->rx_queue);
-			usb_unanchor_urb(entry);
-			usb_put_urb(entry);
-			goto err;
-		}
-		usb_put_urb(entry);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return ret;
 

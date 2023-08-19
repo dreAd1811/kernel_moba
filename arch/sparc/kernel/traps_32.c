@@ -93,11 +93,6 @@ void __noreturn die_if_kernel(char *str, struct pt_regs *regs)
 
 void do_hw_interrupt(struct pt_regs *regs, unsigned long type)
 {
-<<<<<<< HEAD
-=======
-	siginfo_t info;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if(type < 0x80) {
 		/* Sun OS's puke from bad traps, Linux survives! */
 		printk("Unimplemented Sparc TRAP, type = %02lx\n", type);
@@ -107,27 +102,13 @@ void do_hw_interrupt(struct pt_regs *regs, unsigned long type)
 	if(regs->psr & PSR_PS)
 		die_if_kernel("Kernel bad trap", regs);
 
-<<<<<<< HEAD
 	force_sig_fault(SIGILL, ILL_ILLTRP,
 			(void __user *)regs->pc, type - 0x80, current);
-=======
-	info.si_signo = SIGILL;
-	info.si_errno = 0;
-	info.si_code = ILL_ILLTRP;
-	info.si_addr = (void __user *)regs->pc;
-	info.si_trapno = type - 0x80;
-	force_sig_info(SIGILL, &info, current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void do_illegal_instruction(struct pt_regs *regs, unsigned long pc, unsigned long npc,
 			    unsigned long psr)
 {
-<<<<<<< HEAD
-=======
-	siginfo_t info;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if(psr & PSR_PS)
 		die_if_kernel("Kernel illegal instruction", regs);
 #ifdef TRAP_DEBUG
@@ -135,37 +116,15 @@ void do_illegal_instruction(struct pt_regs *regs, unsigned long pc, unsigned lon
 	       regs->pc, *(unsigned long *)regs->pc);
 #endif
 
-<<<<<<< HEAD
 	send_sig_fault(SIGILL, ILL_ILLOPC, (void __user *)pc, 0, current);
-=======
-	info.si_signo = SIGILL;
-	info.si_errno = 0;
-	info.si_code = ILL_ILLOPC;
-	info.si_addr = (void __user *)pc;
-	info.si_trapno = 0;
-	send_sig_info(SIGILL, &info, current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void do_priv_instruction(struct pt_regs *regs, unsigned long pc, unsigned long npc,
 			 unsigned long psr)
 {
-<<<<<<< HEAD
 	if(psr & PSR_PS)
 		die_if_kernel("Penguin instruction from Penguin mode??!?!", regs);
 	send_sig_fault(SIGILL, ILL_PRVOPC, (void __user *)pc, 0, current);
-=======
-	siginfo_t info;
-
-	if(psr & PSR_PS)
-		die_if_kernel("Penguin instruction from Penguin mode??!?!", regs);
-	info.si_signo = SIGILL;
-	info.si_errno = 0;
-	info.si_code = ILL_PRVOPC;
-	info.si_addr = (void __user *)pc;
-	info.si_trapno = 0;
-	send_sig_info(SIGILL, &info, current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* XXX User may want to be allowed to do this. XXX */
@@ -173,11 +132,6 @@ void do_priv_instruction(struct pt_regs *regs, unsigned long pc, unsigned long n
 void do_memaccess_unaligned(struct pt_regs *regs, unsigned long pc, unsigned long npc,
 			    unsigned long psr)
 {
-<<<<<<< HEAD
-=======
-	siginfo_t info;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if(regs->psr & PSR_PS) {
 		printk("KERNEL MNA at pc %08lx npc %08lx called by %08lx\n", pc, npc,
 		       regs->u_regs[UREG_RETPC]);
@@ -189,18 +143,9 @@ void do_memaccess_unaligned(struct pt_regs *regs, unsigned long pc, unsigned lon
 	instruction_dump ((unsigned long *) regs->pc);
 	printk ("do_MNA!\n");
 #endif
-<<<<<<< HEAD
 	send_sig_fault(SIGBUS, BUS_ADRALN,
 		       /* FIXME: Should dig out mna address */ (void *)0,
 		       0, current);
-=======
-	info.si_signo = SIGBUS;
-	info.si_errno = 0;
-	info.si_code = BUS_ADRALN;
-	info.si_addr = /* FIXME: Should dig out mna address */ (void *)0;
-	info.si_trapno = 0;
-	send_sig_info(SIGBUS, &info, current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static unsigned long init_fsr = 0x0UL;
@@ -256,15 +201,9 @@ void do_fpe_trap(struct pt_regs *regs, unsigned long pc, unsigned long npc,
 		 unsigned long psr)
 {
 	static int calls;
-<<<<<<< HEAD
 	unsigned long fsr;
 	int ret = 0;
 	int code;
-=======
-	siginfo_t info;
-	unsigned long fsr;
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifndef CONFIG_SMP
 	struct task_struct *fpt = last_task_used_math;
 #else
@@ -339,7 +278,6 @@ void do_fpe_trap(struct pt_regs *regs, unsigned long pc, unsigned long npc,
 	}
 
 	fsr = fpt->thread.fsr;
-<<<<<<< HEAD
 	code = FPE_FLTUNK;
 	if ((fsr & 0x1c000) == (1 << 14)) {
 		if (fsr & 0x10)
@@ -354,26 +292,6 @@ void do_fpe_trap(struct pt_regs *regs, unsigned long pc, unsigned long npc,
 			code = FPE_FLTRES;
 	}
 	send_sig_fault(SIGFPE, code, (void __user *)pc, 0, fpt);
-=======
-	info.si_signo = SIGFPE;
-	info.si_errno = 0;
-	info.si_addr = (void __user *)pc;
-	info.si_trapno = 0;
-	info.si_code = FPE_FIXME;
-	if ((fsr & 0x1c000) == (1 << 14)) {
-		if (fsr & 0x10)
-			info.si_code = FPE_FLTINV;
-		else if (fsr & 0x08)
-			info.si_code = FPE_FLTOVF;
-		else if (fsr & 0x04)
-			info.si_code = FPE_FLTUND;
-		else if (fsr & 0x02)
-			info.si_code = FPE_FLTDIV;
-		else if (fsr & 0x01)
-			info.si_code = FPE_FLTRES;
-	}
-	send_sig_info(SIGFPE, &info, fpt);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifndef CONFIG_SMP
 	last_task_used_math = NULL;
 #endif
@@ -385,22 +303,9 @@ void do_fpe_trap(struct pt_regs *regs, unsigned long pc, unsigned long npc,
 void handle_tag_overflow(struct pt_regs *regs, unsigned long pc, unsigned long npc,
 			 unsigned long psr)
 {
-<<<<<<< HEAD
 	if(psr & PSR_PS)
 		die_if_kernel("Penguin overflow trap from kernel mode", regs);
 	send_sig_fault(SIGEMT, EMT_TAGOVF, (void __user *)pc, 0, current);
-=======
-	siginfo_t info;
-
-	if(psr & PSR_PS)
-		die_if_kernel("Penguin overflow trap from kernel mode", regs);
-	info.si_signo = SIGEMT;
-	info.si_errno = 0;
-	info.si_code = EMT_TAGOVF;
-	info.si_addr = (void __user *)pc;
-	info.si_trapno = 0;
-	send_sig_info(SIGEMT, &info, current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void handle_watchpoint(struct pt_regs *regs, unsigned long pc, unsigned long npc,
@@ -418,83 +323,33 @@ void handle_watchpoint(struct pt_regs *regs, unsigned long pc, unsigned long npc
 void handle_reg_access(struct pt_regs *regs, unsigned long pc, unsigned long npc,
 		       unsigned long psr)
 {
-<<<<<<< HEAD
-=======
-	siginfo_t info;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef TRAP_DEBUG
 	printk("Register Access Exception at PC %08lx NPC %08lx PSR %08lx\n",
 	       pc, npc, psr);
 #endif
-<<<<<<< HEAD
 	force_sig_fault(SIGBUS, BUS_OBJERR, (void __user *)pc, 0, current);
-=======
-	info.si_signo = SIGBUS;
-	info.si_errno = 0;
-	info.si_code = BUS_OBJERR;
-	info.si_addr = (void __user *)pc;
-	info.si_trapno = 0;
-	force_sig_info(SIGBUS, &info, current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void handle_cp_disabled(struct pt_regs *regs, unsigned long pc, unsigned long npc,
 			unsigned long psr)
 {
-<<<<<<< HEAD
 	send_sig_fault(SIGILL, ILL_COPROC, (void __user *)pc, 0, current);
-=======
-	siginfo_t info;
-
-	info.si_signo = SIGILL;
-	info.si_errno = 0;
-	info.si_code = ILL_COPROC;
-	info.si_addr = (void __user *)pc;
-	info.si_trapno = 0;
-	send_sig_info(SIGILL, &info, current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void handle_cp_exception(struct pt_regs *regs, unsigned long pc, unsigned long npc,
 			 unsigned long psr)
 {
-<<<<<<< HEAD
-=======
-	siginfo_t info;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef TRAP_DEBUG
 	printk("Co-Processor Exception at PC %08lx NPC %08lx PSR %08lx\n",
 	       pc, npc, psr);
 #endif
-<<<<<<< HEAD
 	send_sig_fault(SIGILL, ILL_COPROC, (void __user *)pc, 0, current);
-=======
-	info.si_signo = SIGILL;
-	info.si_errno = 0;
-	info.si_code = ILL_COPROC;
-	info.si_addr = (void __user *)pc;
-	info.si_trapno = 0;
-	send_sig_info(SIGILL, &info, current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void handle_hw_divzero(struct pt_regs *regs, unsigned long pc, unsigned long npc,
 		       unsigned long psr)
 {
-<<<<<<< HEAD
 	send_sig_fault(SIGFPE, FPE_INTDIV, (void __user *)pc, 0, current);
-=======
-	siginfo_t info;
-
-	info.si_signo = SIGFPE;
-	info.si_errno = 0;
-	info.si_code = FPE_INTDIV;
-	info.si_addr = (void __user *)pc;
-	info.si_trapno = 0;
-	send_sig_info(SIGFPE, &info, current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #ifdef CONFIG_DEBUG_BUGVERBOSE

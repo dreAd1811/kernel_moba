@@ -652,11 +652,7 @@ static int it821x_init_one(struct pci_dev *dev, const struct pci_device_id *id)
 	struct it821x_dev *itdevs;
 	int rc;
 
-<<<<<<< HEAD
 	itdevs = kcalloc(2, sizeof(*itdevs), GFP_KERNEL);
-=======
-	itdevs = kzalloc(2 * sizeof(*itdevs), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (itdevs == NULL) {
 		printk(KERN_ERR DRV_NAME " %s: out of memory\n", pci_name(dev));
 		return -ENOMEM;

@@ -30,10 +30,7 @@ static inline void arch_spin_lock_flags(arch_spinlock_t *x,
 			} else
 				cpu_relax();
 }
-<<<<<<< HEAD
 #define arch_spin_lock_flags arch_spin_lock_flags
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline void arch_spin_unlock(arch_spinlock_t *x)
 {
@@ -169,28 +166,4 @@ static __inline__ int arch_write_trylock(arch_rwlock_t *rw)
 	return result;
 }
 
-<<<<<<< HEAD
-=======
-/*
- * read_can_lock - would read_trylock() succeed?
- * @lock: the rwlock in question.
- */
-static __inline__ int arch_read_can_lock(arch_rwlock_t *rw)
-{
-	return rw->counter >= 0;
-}
-
-/*
- * write_can_lock - would write_trylock() succeed?
- * @lock: the rwlock in question.
- */
-static __inline__ int arch_write_can_lock(arch_rwlock_t *rw)
-{
-	return !rw->counter;
-}
-
-#define arch_read_lock_flags(lock, flags) arch_read_lock(lock)
-#define arch_write_lock_flags(lock, flags) arch_write_lock(lock)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __ASM_SPINLOCK_H */

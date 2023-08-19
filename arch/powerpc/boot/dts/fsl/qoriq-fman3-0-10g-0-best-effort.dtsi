@@ -63,10 +63,6 @@ fman@400000 {
 		#size-cells = <0>;
 		compatible = "fsl,fman-memac-mdio", "fsl,fman-xmdio";
 		reg = <0xe1000 0x1000>;
-<<<<<<< HEAD
-=======
-		fsl,erratum-a011043; /* must ignore read errors */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		pcsphy0: ethernet-phy@0 {
 			reg = <0x0>;

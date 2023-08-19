@@ -31,11 +31,7 @@
 #include <linux/amba/serial.h>
 #include <linux/mtd/physmap.h>
 #include <linux/i2c.h>
-<<<<<<< HEAD
 #include <linux/gpio/machine.h>
-=======
-#include <linux/i2c-gpio.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/spi/spi.h>
 #include <linux/export.h>
 #include <linux/irqchip/arm-vic.h>
@@ -324,7 +320,6 @@ void __init ep93xx_register_eth(struct ep93xx_eth_data *data, int copy_addr)
 /*************************************************************************
  * EP93xx i2c peripheral handling
  *************************************************************************/
-<<<<<<< HEAD
 
 /* All EP93xx devices use the same two GPIO pins for I2C bit-banging */
 static struct gpiod_lookup_table ep93xx_i2c_gpiod_table = {
@@ -337,25 +332,17 @@ static struct gpiod_lookup_table ep93xx_i2c_gpiod_table = {
 				GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN),
 	},
 };
-=======
-static struct i2c_gpio_platform_data ep93xx_i2c_data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct platform_device ep93xx_i2c_device = {
 	.name		= "i2c-gpio",
 	.id		= 0,
 	.dev		= {
-<<<<<<< HEAD
 		.platform_data	= NULL,
-=======
-		.platform_data	= &ep93xx_i2c_data,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 };
 
 /**
  * ep93xx_register_i2c - Register the i2c platform device.
-<<<<<<< HEAD
  * @devices:	platform specific i2c bus device information (__initdata)
  * @num:	the number of devices on the i2c bus
  */
@@ -374,32 +361,6 @@ void __init ep93xx_register_i2c(struct i2c_board_info *devices, int num)
 
 	i2c_register_board_info(0, devices, num);
 	gpiod_add_lookup_table(&ep93xx_i2c_gpiod_table);
-=======
- * @data:	platform specific i2c-gpio configuration (__initdata)
- * @devices:	platform specific i2c bus device information (__initdata)
- * @num:	the number of devices on the i2c bus
- */
-void __init ep93xx_register_i2c(struct i2c_gpio_platform_data *data,
-				struct i2c_board_info *devices, int num)
-{
-	/*
-	 * Set the EEPROM interface pin drive type control.
-	 * Defines the driver type for the EECLK and EEDAT pins as either
-	 * open drain, which will require an external pull-up, or a normal
-	 * CMOS driver.
-	 */
-	if (data->sda_is_open_drain && data->sda_pin != EP93XX_GPIO_LINE_EEDAT)
-		pr_warning("sda != EEDAT, open drain has no effect\n");
-	if (data->scl_is_open_drain && data->scl_pin != EP93XX_GPIO_LINE_EECLK)
-		pr_warning("scl != EECLK, open drain has no effect\n");
-
-	__raw_writel((data->sda_is_open_drain << 1) |
-		     (data->scl_is_open_drain << 0),
-		     EP93XX_GPIO_EEDRIVE);
-
-	ep93xx_i2c_data = *data;
-	i2c_register_board_info(0, devices, num);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	platform_device_register(&ep93xx_i2c_device);
 }
 
@@ -674,10 +635,7 @@ EXPORT_SYMBOL(ep93xx_keypad_release_gpio);
  *************************************************************************/
 static struct resource ep93xx_i2s_resource[] = {
 	DEFINE_RES_MEM(EP93XX_I2S_PHYS_BASE, 0x100),
-<<<<<<< HEAD
 	DEFINE_RES_IRQ(IRQ_EP93XX_SAI),
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct platform_device ep93xx_i2s_device = {

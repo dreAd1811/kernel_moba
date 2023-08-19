@@ -16,12 +16,7 @@
 #include <drm/drm_crtc_helper.h>
 #include <drm/drm_fb_cma_helper.h>
 #include <drm/drm_gem_cma_helper.h>
-<<<<<<< HEAD
 #include <drm/drm_gem_framebuffer_helper.h>
-=======
-
-#include <video/sh_mobile_meram.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "shmob_drm_crtc.h"
 #include "shmob_drm_drv.h"
@@ -38,82 +33,46 @@ static const struct shmob_drm_format_info shmob_drm_format_infos[] = {
 		.bpp = 16,
 		.yuv = false,
 		.lddfr = LDDFR_PKF_RGB16,
-<<<<<<< HEAD
-=======
-		.meram = SH_MOBILE_MERAM_PF_RGB,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}, {
 		.fourcc = DRM_FORMAT_RGB888,
 		.bpp = 24,
 		.yuv = false,
 		.lddfr = LDDFR_PKF_RGB24,
-<<<<<<< HEAD
-=======
-		.meram = SH_MOBILE_MERAM_PF_RGB,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}, {
 		.fourcc = DRM_FORMAT_ARGB8888,
 		.bpp = 32,
 		.yuv = false,
 		.lddfr = LDDFR_PKF_ARGB32,
-<<<<<<< HEAD
-=======
-		.meram = SH_MOBILE_MERAM_PF_RGB,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}, {
 		.fourcc = DRM_FORMAT_NV12,
 		.bpp = 12,
 		.yuv = true,
 		.lddfr = LDDFR_CC | LDDFR_YF_420,
-<<<<<<< HEAD
-=======
-		.meram = SH_MOBILE_MERAM_PF_NV,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}, {
 		.fourcc = DRM_FORMAT_NV21,
 		.bpp = 12,
 		.yuv = true,
 		.lddfr = LDDFR_CC | LDDFR_YF_420,
-<<<<<<< HEAD
-=======
-		.meram = SH_MOBILE_MERAM_PF_NV,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}, {
 		.fourcc = DRM_FORMAT_NV16,
 		.bpp = 16,
 		.yuv = true,
 		.lddfr = LDDFR_CC | LDDFR_YF_422,
-<<<<<<< HEAD
-=======
-		.meram = SH_MOBILE_MERAM_PF_NV,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}, {
 		.fourcc = DRM_FORMAT_NV61,
 		.bpp = 16,
 		.yuv = true,
 		.lddfr = LDDFR_CC | LDDFR_YF_422,
-<<<<<<< HEAD
-=======
-		.meram = SH_MOBILE_MERAM_PF_NV,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}, {
 		.fourcc = DRM_FORMAT_NV24,
 		.bpp = 24,
 		.yuv = true,
 		.lddfr = LDDFR_CC | LDDFR_YF_444,
-<<<<<<< HEAD
-=======
-		.meram = SH_MOBILE_MERAM_PF_NV24,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}, {
 		.fourcc = DRM_FORMAT_NV42,
 		.bpp = 24,
 		.yuv = true,
 		.lddfr = LDDFR_CC | LDDFR_YF_444,
-<<<<<<< HEAD
-=======
-		.meram = SH_MOBILE_MERAM_PF_NV24,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 };
 
@@ -162,11 +121,7 @@ shmob_drm_fb_create(struct drm_device *dev, struct drm_file *file_priv,
 		}
 	}
 
-<<<<<<< HEAD
 	return drm_gem_fb_create(dev, file_priv, mode_cmd);
-=======
-	return drm_fb_cma_create(dev, file_priv, mode_cmd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct drm_mode_config_funcs shmob_drm_mode_config_funcs = {

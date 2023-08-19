@@ -629,7 +629,6 @@ static inline void debugfs_init(struct cfv_info *cfv)
 	if (IS_ERR(cfv->debugfs))
 		return;
 
-<<<<<<< HEAD
 	debugfs_create_u32("rx-napi-complete", 0400, cfv->debugfs,
 			   &cfv->stats.rx_napi_complete);
 	debugfs_create_u32("rx-napi-resched", 0400, cfv->debugfs,
@@ -645,23 +644,6 @@ static inline void debugfs_init(struct cfv_info *cfv)
 	debugfs_create_u32("tx-kicks", 0400, cfv->debugfs,
 			   &cfv->stats.tx_kicks);
 	debugfs_create_u32("tx-flow-on", 0400, cfv->debugfs,
-=======
-	debugfs_create_u32("rx-napi-complete", S_IRUSR, cfv->debugfs,
-			   &cfv->stats.rx_napi_complete);
-	debugfs_create_u32("rx-napi-resched", S_IRUSR, cfv->debugfs,
-			   &cfv->stats.rx_napi_resched);
-	debugfs_create_u32("rx-nomem", S_IRUSR, cfv->debugfs,
-			   &cfv->stats.rx_nomem);
-	debugfs_create_u32("rx-kicks", S_IRUSR, cfv->debugfs,
-			   &cfv->stats.rx_kicks);
-	debugfs_create_u32("tx-full-ring", S_IRUSR, cfv->debugfs,
-			   &cfv->stats.tx_full_ring);
-	debugfs_create_u32("tx-no-mem", S_IRUSR, cfv->debugfs,
-			   &cfv->stats.tx_no_mem);
-	debugfs_create_u32("tx-kicks", S_IRUSR, cfv->debugfs,
-			   &cfv->stats.tx_kicks);
-	debugfs_create_u32("tx-flow-on", S_IRUSR, cfv->debugfs,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   &cfv->stats.tx_flow_on);
 }
 

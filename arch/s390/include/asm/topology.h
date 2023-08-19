@@ -17,10 +17,7 @@ struct cpu_topology_s390 {
 	unsigned short book_id;
 	unsigned short drawer_id;
 	unsigned short node_id;
-<<<<<<< HEAD
 	unsigned short dedicated : 1;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cpumask_t thread_mask;
 	cpumask_t core_mask;
 	cpumask_t book_mask;
@@ -39,10 +36,7 @@ extern cpumask_t cpus_with_topology;
 #define topology_book_cpumask(cpu)	  (&cpu_topology[cpu].book_mask)
 #define topology_drawer_id(cpu)		  (cpu_topology[cpu].drawer_id)
 #define topology_drawer_cpumask(cpu)	  (&cpu_topology[cpu].drawer_mask)
-<<<<<<< HEAD
 #define topology_cpu_dedicated(cpu)	  (cpu_topology[cpu].dedicated)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define mc_capable() 1
 

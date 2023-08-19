@@ -145,11 +145,7 @@
 	};
 
 	/* The voltage to the MMC card is hardwired at 3.3V */
-<<<<<<< HEAD
 	vmmc: fixedregulator@0 {
-=======
-	vmmc: regulator-vmmc {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "regulator-fixed";
 		regulator-name = "vmmc";
 		regulator-min-microvolt = <3300000>;
@@ -157,11 +153,7 @@
 		regulator-boot-on;
         };
 
-<<<<<<< HEAD
 	veth: fixedregulator@0 {
-=======
-	veth: regulator-veth {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "regulator-fixed";
 		regulator-name = "veth";
 		regulator-min-microvolt = <3300000>;
@@ -250,7 +242,6 @@
 		bank-width = <4>;
 	};
 
-<<<<<<< HEAD
 	bridge {
 		compatible = "ti,ths8134a", "ti,ths8134";
 		#address-cells = <1>;
@@ -294,8 +285,6 @@
 		};
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	soc {
 		#address-cells = <1>;
 		#size-cells = <1>;
@@ -534,11 +523,7 @@
 			clock-names = "uartclk", "apb_pclk";
 		};
 
-<<<<<<< HEAD
 		ssp@1000d000 {
-=======
-		spi@1000d000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "arm,pl022", "arm,primecell";
 			reg = <0x1000d000 0x1000>;
 			interrupt-parent = <&intc_pb11mp>;
@@ -633,7 +618,6 @@
 			clock-names = "apb_pclk";
 		};
 
-<<<<<<< HEAD
 		i2c1: i2c@10016000 {
 			#address-cells = <1>;
 			#size-cells = <0>;
@@ -641,8 +625,6 @@
 			reg = <0x10016000 0x1000>;
 		};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rtc: rtc@10017000 {
 			compatible = "arm,pl031", "arm,primecell";
 			reg = <0x10017000 0x1000>;
@@ -677,7 +659,6 @@
 			interrupts = <0 23 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&oscclk4>, <&pclk>;
 			clock-names = "clcdclk", "apb_pclk";
-<<<<<<< HEAD
 			/* 1024x768 16bpp @65MHz works fine */
 			max-memory-bandwidth = <95000000>;
 
@@ -687,39 +668,6 @@
 					arm,pl11x,tft-r0g0b0-pads = <0 8 16>;
 				};
 			};
-=======
-			max-memory-bandwidth = <130000000>; /* 16bpp @ 63.5MHz */
-
-			port {
-				clcd_pads: endpoint {
-					remote-endpoint = <&clcd_panel>;
-					arm,pl11x,tft-r0g0b0-pads = <0 8 16>;
-				};
-			};
-
-			panel {
-				compatible = "panel-dpi";
-
-				port {
-					clcd_panel: endpoint {
-						remote-endpoint = <&clcd_pads>;
-					};
-				};
-
-				/* Standard 640x480 VGA timings */
-				panel-timing {
-					clock-frequency = <25175000>;
-					hactive = <640>;
-					hback-porch = <48>;
-					hfront-porch = <16>;
-					hsync-len = <96>;
-					vactive = <480>;
-					vback-porch = <33>;
-					vfront-porch = <10>;
-					vsync-len = <2>;
-				};
-			};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		/*

@@ -1,21 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * QTI Inline Crypto Engine (ICE) driver
  *
  * Copyright (c) 2014-2019, The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2014-2020,2021 The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/module.h>
@@ -26,20 +13,13 @@
 #include <linux/of.h>
 #include <linux/device-mapper.h>
 #include <linux/clk.h>
-<<<<<<< HEAD
-=======
-#include <linux/cdev.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/regulator/consumer.h>
 #include <linux/msm-bus.h>
 #include <crypto/ice.h>
 #include <soc/qcom/scm.h>
 #include <soc/qcom/qseecomi.h>
 #include "iceregs.h"
-<<<<<<< HEAD
 #include <linux/pfk.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/atomic.h>
 #include <linux/wait.h>
 
@@ -66,17 +46,9 @@
 
 #define ICE_REV(x, y) (((x) & ICE_CORE_##y##_REV_MASK) >> ICE_CORE_##y##_REV)
 #define QCOM_UFS_ICE_DEV	"iceufs"
-<<<<<<< HEAD
 #define QCOM_UFS_CARD_ICE_DEV	"iceufscard"
 #define QCOM_SDCC_ICE_DEV	"icesdcc"
 #define QCOM_ICE_MAX_BIST_CHECK_COUNT 100
-=======
-#define QCOM_SDCC_ICE_DEV	"icesdcc"
-#define QCOM_ICE_TYPE_NAME_LEN 8
-#define QCOM_ICE_MAX_BIST_CHECK_COUNT 100
-#define QCOM_ICE_UFS		10
-#define QCOM_ICE_SDCC		20
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define QCOM_ICE_ENCRYPT	0x1
 #define QCOM_ICE_DECRYPT	0x2
@@ -86,17 +58,10 @@
 
 #define ICE_CRYPTO_CXT_FDE 1
 #define ICE_CRYPTO_CXT_FBE 2
-<<<<<<< HEAD
 #define ICE_INSTANCE_TYPE_LENGTH 12
 
 static int ice_fde_flag;
 
-=======
-
-#define ICE_FDE_KEY_INDEX 31
-
-static int ice_fde_flag;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct ice_clk_info {
 	struct list_head list;
 	struct clk *clk;
@@ -107,7 +72,6 @@ struct ice_clk_info {
 	bool enabled;
 };
 
-<<<<<<< HEAD
 static LIST_HEAD(ice_devices);
 
 static int qti_ice_setting_config(struct request *req,
@@ -120,56 +84,6 @@ static int qti_ice_setting_config(struct request *req,
 		return -EPERM;
 	}
 
-=======
-struct qcom_ice_bus_vote {
-	uint32_t client_handle;
-	uint32_t curr_vote;
-	int min_bw_vote;
-	int max_bw_vote;
-	int saved_vote;
-	bool is_max_bw_needed;
-	struct device_attribute max_bus_bw;
-};
-
-static LIST_HEAD(ice_devices);
-/*
- * ICE HW device structure.
- */
-struct ice_device {
-	struct list_head	list;
-	struct device		*pdev;
-	struct cdev		cdev;
-	dev_t			device_no;
-	struct class		*driver_class;
-	void __iomem		*mmio;
-	struct resource		*res;
-	int			irq;
-	bool			is_ice_enabled;
-	bool			is_ice_disable_fuse_blown;
-	ice_error_cb		error_cb;
-	void			*host_controller_data; /* UFS/EMMC/other? */
-	struct list_head	clk_list_head;
-	u32			ice_hw_version;
-	bool			is_ice_clk_available;
-	char			ice_instance_type[QCOM_ICE_TYPE_NAME_LEN];
-	struct regulator	*reg;
-	bool			is_regulator_available;
-	struct qcom_ice_bus_vote bus_vote;
-	ktime_t			ice_reset_start_time;
-	ktime_t			ice_reset_complete_time;
-	atomic_t		is_ice_suspended;
-	atomic_t		is_ice_busy;
-	wait_queue_head_t	block_suspend_ice_queue;
-};
-
-static int qcom_ice_init(struct ice_device *ice_dev, void *host_controller_data,
-			 ice_error_cb error_cb);
-
-static int qti_ice_setting_config(struct request *req,
-		struct ice_crypto_setting *crypto_data,
-		struct ice_data_setting *setting, uint32_t cxt)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!setting)
 		return -EINVAL;
 
@@ -192,14 +106,6 @@ static int qti_ice_setting_config(struct request *req,
 			setting->encr_bypass = true;
 			setting->decr_bypass = true;
 		}
-<<<<<<< HEAD
-=======
-		/* Qseecom now sets the FDE key to slot 31 by default, instead
-		 * of slot 0, so use the same slot here during read/write
-		 */
-		if (cxt == ICE_CRYPTO_CXT_FDE)
-			setting->crypto_data.key_index = ICE_FDE_KEY_INDEX;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -337,7 +243,6 @@ static int qcom_ice_get_vreg(struct ice_device *ice_dev)
 	return ret;
 }
 
-<<<<<<< HEAD
 static void qcom_ice_config_proc_ignore(struct ice_device *ice_dev)
 {
 	u32 regval;
@@ -355,8 +260,6 @@ static void qcom_ice_config_proc_ignore(struct ice_device *ice_dev)
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void qcom_ice_low_power_mode_enable(struct ice_device *ice_dev)
 {
 	u32 regval;
@@ -511,11 +414,7 @@ static int qcom_ice_enable(struct ice_device *ice_dev)
 		 (ICE_REV(ice_dev->ice_hw_version, MINOR) >= 1))) {
 		reg = qcom_ice_readl(ice_dev, QCOM_ICE_REGS_BYPASS_STATUS);
 		if ((reg & 0x80000000) != 0x0) {
-<<<<<<< HEAD
 			pr_err("%s: Bypass failed for ice = %pK\n",
-=======
-			pr_err("%s: Bypass failed for ice = %pK",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				__func__, (void *)ice_dev);
 			WARN_ON(1);
 		}
@@ -523,7 +422,6 @@ static int qcom_ice_enable(struct ice_device *ice_dev)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int qcom_ice_verify_ice(struct ice_device *ice_dev)
 {
 	unsigned int rev;
@@ -563,8 +461,6 @@ static void qcom_ice_enable_intr(struct ice_device *ice_dev)
 	mb();
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void qcom_ice_disable_intr(struct ice_device *ice_dev)
 {
 	unsigned int reg;
@@ -677,17 +573,12 @@ out:
 }
 
 static int qcom_ice_get_device_tree_data(struct platform_device *pdev,
-<<<<<<< HEAD
 		struct ice_device *ice_dev)
-=======
-					 struct ice_device *ice_dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct device *dev = &pdev->dev;
 	int rc = -1;
 	int irq;
 
-<<<<<<< HEAD
 	ice_dev->res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 	if (!ice_dev->res) {
 		pr_err("%s: No memory available for IORESOURCE\n", __func__);
@@ -701,9 +592,6 @@ static int qcom_ice_get_device_tree_data(struct platform_device *pdev,
 		goto out;
 	}
 
-=======
-	ice_dev->mmio = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!of_parse_phandle(pdev->dev.of_node, "vdd-hba-supply", 0)) {
 		pr_err("%s: No vdd-hba-supply regulator, assuming not needed\n",
 								 __func__);
@@ -746,11 +634,7 @@ static int qcom_ice_get_device_tree_data(struct platform_device *pdev,
 err_dev:
 	if (rc && ice_dev->mmio)
 		devm_iounmap(dev, ice_dev->mmio);
-<<<<<<< HEAD
 out:
-=======
-//out:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 
@@ -772,7 +656,6 @@ static int register_ice_device(struct ice_device *ice_dev)
 	unsigned int baseminor = 0;
 	unsigned int count = 1;
 	struct device *class_dev;
-<<<<<<< HEAD
 	char ice_type[ICE_INSTANCE_TYPE_LENGTH];
 
 	if (!strcmp(ice_dev->ice_instance_type, "sdcc"))
@@ -800,32 +683,6 @@ static int register_ice_device(struct ice_device *ice_dev)
 
 	if (!class_dev) {
 		pr_err("class_device_create failed %d for %s\n", rc, ice_type);
-=======
-	int is_sdcc_ice = !strcmp(ice_dev->ice_instance_type, "sdcc");
-
-	rc = alloc_chrdev_region(&ice_dev->device_no, baseminor, count,
-			is_sdcc_ice ? QCOM_SDCC_ICE_DEV : QCOM_UFS_ICE_DEV);
-	if (rc < 0) {
-		pr_err("alloc_chrdev_region failed %d for %s\n", rc,
-			is_sdcc_ice ? QCOM_SDCC_ICE_DEV : QCOM_UFS_ICE_DEV);
-		return rc;
-	}
-	ice_dev->driver_class = class_create(THIS_MODULE,
-			is_sdcc_ice ? QCOM_SDCC_ICE_DEV : QCOM_UFS_ICE_DEV);
-	if (IS_ERR(ice_dev->driver_class)) {
-		rc = -ENOMEM;
-		pr_err("class_create failed %d for %s\n", rc,
-			is_sdcc_ice ? QCOM_SDCC_ICE_DEV : QCOM_UFS_ICE_DEV);
-		goto exit_unreg_chrdev_region;
-	}
-	class_dev = device_create(ice_dev->driver_class, NULL,
-					ice_dev->device_no, NULL,
-			is_sdcc_ice ? QCOM_SDCC_ICE_DEV : QCOM_UFS_ICE_DEV);
-
-	if (!class_dev) {
-		pr_err("class_device_create failed %d for %s\n", rc,
-			is_sdcc_ice ? QCOM_SDCC_ICE_DEV : QCOM_UFS_ICE_DEV);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rc = -ENOMEM;
 		goto exit_destroy_class;
 	}
@@ -835,12 +692,7 @@ static int register_ice_device(struct ice_device *ice_dev)
 
 	rc = cdev_add(&ice_dev->cdev, MKDEV(MAJOR(ice_dev->device_no), 0), 1);
 	if (rc < 0) {
-<<<<<<< HEAD
 		pr_err("cdev_add failed %d for %s\n", rc, ice_type);
-=======
-		pr_err("cdev_add failed %d for %s\n", rc,
-			is_sdcc_ice ? QCOM_SDCC_ICE_DEV : QCOM_UFS_ICE_DEV);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto exit_destroy_device;
 	}
 	return  0;
@@ -906,7 +758,6 @@ static int qcom_ice_probe(struct platform_device *pdev)
 	 * We would enable ICE when first request for crypto
 	 * operation arrives.
 	 */
-<<<<<<< HEAD
 	ice_dev->is_ice_enabled = false;
 
 	rc = pfk_initialize_key_table(ice_dev);
@@ -915,14 +766,6 @@ static int qcom_ice_probe(struct platform_device *pdev)
 		goto err_ice_dev;
 	}
 
-=======
-	rc = qcom_ice_init(ice_dev, NULL, NULL);
-	if (rc) {
-		pr_err("create character device failed.\n");
-		goto err_ice_dev;
-	}
-	ice_dev->is_ice_enabled = true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	platform_set_drvdata(pdev, ice_dev);
 	list_add_tail(&ice_dev->list, &ice_devices);
 
@@ -943,10 +786,7 @@ static int qcom_ice_remove(struct platform_device *pdev)
 	if (!ice_dev)
 		return 0;
 
-<<<<<<< HEAD
 	pfk_remove(ice_dev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	qcom_ice_disable_intr(ice_dev);
 
 	device_init_wakeup(&pdev->dev, false);
@@ -968,10 +808,6 @@ static int  qcom_ice_suspend(struct platform_device *pdev)
 
 	if (!ice_dev)
 		return -EINVAL;
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (atomic_read(&ice_dev->is_ice_busy) != 0) {
 		ret = wait_event_interruptible_timeout(
 			ice_dev->block_suspend_ice_queue,
@@ -980,21 +816,13 @@ static int  qcom_ice_suspend(struct platform_device *pdev)
 
 		if (!ret) {
 			pr_err("%s: Suspend ICE during an ongoing operation\n",
-<<<<<<< HEAD
 				__func__);
-=======
-				 __func__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			atomic_set(&ice_dev->is_ice_suspended, 0);
 			return -ETIME;
 		}
 	}
 
 	atomic_set(&ice_dev->is_ice_suspended, 1);
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1020,32 +848,6 @@ static int qcom_ice_restore_config(void)
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
-static int qcom_ice_restore_key_config(struct ice_device *ice_dev)
-{
-	struct scm_desc desc = {0};
-	int ret = -1;
-
-	/* For ice 3, key configuration needs to be restored in case of reset */
-
-	desc.arginfo = TZ_OS_KS_RESTORE_KEY_CONFIG_ID_PARAM_ID;
-
-	if (!strcmp(ice_dev->ice_instance_type, "sdcc"))
-		desc.args[0] = QCOM_ICE_SDCC;
-
-	if (!strcmp(ice_dev->ice_instance_type, "ufs"))
-		desc.args[0] = QCOM_ICE_UFS;
-
-	ret = scm_call2(TZ_OS_KS_RESTORE_KEY_CONFIG_ID, &desc);
-
-	if (ret)
-		pr_err("%s: Error:  0x%x\n", __func__, ret);
-
-	return ret;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int qcom_ice_init_clocks(struct ice_device *ice)
 {
 	int ret = -EINVAL;
@@ -1128,7 +930,6 @@ out:
 	return ret;
 }
 
-<<<<<<< HEAD
 static int qcom_ice_secure_ice_init(struct ice_device *ice_dev)
 {
 	/* We need to enable source for ICE secure interrupts */
@@ -1154,8 +955,6 @@ static int qcom_ice_secure_ice_init(struct ice_device *ice_dev)
 	return ret;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int qcom_ice_update_sec_cfg(struct ice_device *ice_dev)
 {
 	int ret = 0, scm_ret = 0;
@@ -1196,10 +995,7 @@ out:
 
 static int qcom_ice_finish_init(struct ice_device *ice_dev)
 {
-<<<<<<< HEAD
 	unsigned int reg;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err = 0;
 
 	if (!ice_dev) {
@@ -1225,7 +1021,6 @@ static int qcom_ice_finish_init(struct ice_device *ice_dev)
 	 * configurations of host & ice. It is prudent to restore the config
 	 */
 	err = qcom_ice_update_sec_cfg(ice_dev);
-<<<<<<< HEAD
 	if (err)
 		goto out;
 
@@ -1268,18 +1063,11 @@ static int qcom_ice_finish_init(struct ice_device *ice_dev)
 	qcom_ice_enable_intr(ice_dev);
 	atomic_set(&ice_dev->is_ice_suspended, 0);
 	atomic_set(&ice_dev->is_ice_busy, 0);
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	return err;
 }
 
-<<<<<<< HEAD
 static int qcom_ice_init(struct platform_device *pdev,
-=======
-static int qcom_ice_init(struct ice_device *ice_dev,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			void *host_controller_data,
 			ice_error_cb error_cb)
 {
@@ -1290,7 +1078,6 @@ static int qcom_ice_init(struct ice_device *ice_dev,
 	 * When any request for data transfer is received, it would enable
 	 * the ICE for that particular request
 	 */
-<<<<<<< HEAD
 	struct ice_device *ice_dev;
 
 	ice_dev = platform_get_drvdata(pdev);
@@ -1298,8 +1085,6 @@ static int qcom_ice_init(struct ice_device *ice_dev,
 		pr_err("%s: invalid device\n", __func__);
 		return -EINVAL;
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ice_dev->error_cb = error_cb;
 	ice_dev->host_controller_data = host_controller_data;
@@ -1343,19 +1128,12 @@ static int qcom_ice_finish_power_collapse(struct ice_device *ice_dev)
 		 * restore it
 		 */
 		} else if (ICE_REV(ice_dev->ice_hw_version, MAJOR) > 2) {
-<<<<<<< HEAD
 			/*
 			 * for PFE case, clear the cached ICE key table,
 			 * this will force keys to be reconfigured
 			 * per each next transaction
 			 */
 			pfk_clear_on_reset(ice_dev);
-=======
-			err = qcom_ice_restore_key_config(ice_dev);
-			if (err)
-				goto out;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -1377,10 +1155,7 @@ static int qcom_ice_resume(struct platform_device *pdev)
 	 * after receiving this event
 	 */
 	struct ice_device *ice_dev;
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ice_dev = platform_get_drvdata(pdev);
 
 	if (!ice_dev)
@@ -1596,11 +1371,7 @@ static void qcom_ice_debug(struct platform_device *pdev)
 
 	qcom_ice_dump_test_bus(ice_dev);
 	pr_err("%s: ICE reset start time: %llu ICE reset done time: %llu\n",
-<<<<<<< HEAD
 			ice_dev->ice_instance_type,
-=======
-		ice_dev->ice_instance_type,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		(unsigned long long)ice_dev->ice_reset_start_time,
 		(unsigned long long)ice_dev->ice_reset_complete_time);
 
@@ -1630,7 +1401,6 @@ static int qcom_ice_reset(struct  platform_device *pdev)
 	return qcom_ice_finish_power_collapse(ice_dev);
 }
 
-<<<<<<< HEAD
 static int qcom_ice_config_start(struct platform_device *pdev,
 		struct request *req,
 		struct ice_data_setting *setting, bool async)
@@ -1653,17 +1423,6 @@ static int qcom_ice_config_start(struct platform_device *pdev,
 		/* make the caller finish peacefully */
 		return 0;
 	}
-=======
-int qcom_ice_config_start(struct request *req, struct ice_data_setting *setting)
-{
-	struct ice_crypto_setting ice_data = {0};
-	unsigned long sec_end = 0;
-	sector_t data_size;
-	if (!req) {
-		pr_err("%s: Invalid params passed\n", __func__);
-		return -EINVAL;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * It is not an error to have a request with no  bio
@@ -1680,7 +1439,6 @@ int qcom_ice_config_start(struct request *req, struct ice_data_setting *setting)
 		return 0;
 	}
 
-<<<<<<< HEAD
 	if (atomic_read(&ice_dev->is_ice_suspended) == 1)
 		return -EINVAL;
 
@@ -1707,8 +1465,6 @@ int qcom_ice_config_start(struct request *req, struct ice_data_setting *setting)
 				&pfk_crypto_data, setting, ICE_CRYPTO_CXT_FBE);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ice_fde_flag && req->part && req->part->info
 				&& req->part->info->volname[0]) {
 		if (!strcmp(req->part->info->volname, "userdata")) {
@@ -1734,11 +1490,7 @@ int qcom_ice_config_start(struct request *req, struct ice_data_setting *setting)
 					return 0;
 				else
 					return qti_ice_setting_config(req,
-<<<<<<< HEAD
 						ice_dev, &ice_data, setting,
-=======
-						&ice_data, setting,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						ICE_CRYPTO_CXT_FDE);
 			}
 		}
@@ -1753,7 +1505,6 @@ int qcom_ice_config_start(struct request *req, struct ice_data_setting *setting)
 }
 EXPORT_SYMBOL(qcom_ice_config_start);
 
-<<<<<<< HEAD
 static int qcom_ice_config_end(struct platform_device *pdev,
 		struct request *req)
 {
@@ -1792,8 +1543,6 @@ static int qcom_ice_config_end(struct platform_device *pdev,
 EXPORT_SYMBOL(qcom_ice_config_end);
 
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int qcom_ice_status(struct platform_device *pdev)
 {
 	struct ice_device *ice_dev;
@@ -1819,7 +1568,6 @@ static int qcom_ice_status(struct platform_device *pdev)
 
 }
 
-<<<<<<< HEAD
 struct qcom_ice_variant_ops qcom_ice_ops = {
 	.name             = "qcom",
 	.init             = qcom_ice_init,
@@ -1832,19 +1580,13 @@ struct qcom_ice_variant_ops qcom_ice_ops = {
 	.debug            = qcom_ice_debug,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct platform_device *qcom_ice_get_pdevice(struct device_node *node)
 {
 	struct platform_device *ice_pdev = NULL;
 	struct ice_device *ice_dev = NULL;
 
 	if (!node) {
-<<<<<<< HEAD
 		pr_err("%s: invalid node %pK\n", __func__, node);
-=======
-		pr_err("%s: invalid node %pK", __func__, node);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out;
 	}
 
@@ -1896,11 +1638,7 @@ out:
 	return NULL;
 }
 
-<<<<<<< HEAD
 int enable_ice_setup(struct ice_device *ice_dev)
-=======
-static int enable_ice_setup(struct ice_device *ice_dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret = -1, vote;
 
@@ -1957,11 +1695,7 @@ out:
 	return ret;
 }
 
-<<<<<<< HEAD
 int disable_ice_setup(struct ice_device *ice_dev)
-=======
-static int disable_ice_setup(struct ice_device *ice_dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret = -1, vote;
 
@@ -2009,36 +1743,19 @@ int qcom_ice_setup_ice_hw(const char *storage_type, int enable)
 	if (ice_dev == ERR_PTR(-EPROBE_DEFER))
 		return -EPROBE_DEFER;
 
-<<<<<<< HEAD
 	if (!ice_dev || !(ice_dev->is_ice_enabled))
 		return ret;
 
-=======
-	if (!ice_dev || (ice_dev->is_ice_enabled == false))
-		return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (enable)
 		return enable_ice_setup(ice_dev);
 	else
 		return disable_ice_setup(ice_dev);
 }
 
-<<<<<<< HEAD
 struct list_head *get_ice_dev_list(void)
 {
 	return &ice_devices;
 }
-=======
-static struct qcom_ice_variant_ops qcom_ice_ops = {
-	.name             = "qcom",
-	.reset            = qcom_ice_reset,
-	.resume           = qcom_ice_resume,
-	.suspend          = qcom_ice_suspend,
-	.config_start     = qcom_ice_config_start,
-	.status           = qcom_ice_status,
-	.debug            = qcom_ice_debug,
-};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct qcom_ice_variant_ops *qcom_ice_get_variant_ops(struct device_node *node)
 {
@@ -2057,10 +1774,6 @@ static struct platform_driver qcom_ice_driver = {
 	.probe          = qcom_ice_probe,
 	.remove         = qcom_ice_remove,
 	.driver         = {
-<<<<<<< HEAD
-=======
-		.owner  = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.name   = "qcom_ice",
 		.of_match_table = qcom_ice_match,
 	},

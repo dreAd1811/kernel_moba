@@ -77,51 +77,17 @@
  */
 
 /**
-<<<<<<< HEAD
  * intel_hpd_pin_default - return default pin associated with certain port.
  * @dev_priv: private driver data pointer
  * @port: the hpd port to get associated pin
  *
  * It is only valid and used by digital port encoder.
-=======
- * intel_hpd_port - return port hard associated with certain pin.
- * @pin: the hpd pin to get associated port
- *
- * Return port that is associatade with @pin and PORT_NONE if no port is
- * hard associated with that @pin.
- */
-enum port intel_hpd_pin_to_port(enum hpd_pin pin)
-{
-	switch (pin) {
-	case HPD_PORT_A:
-		return PORT_A;
-	case HPD_PORT_B:
-		return PORT_B;
-	case HPD_PORT_C:
-		return PORT_C;
-	case HPD_PORT_D:
-		return PORT_D;
-	case HPD_PORT_E:
-		return PORT_E;
-	default:
-		return PORT_NONE; /* no port for this pin */
-	}
-}
-
-/**
- * intel_hpd_pin - return pin hard associated with certain port.
- * @port: the hpd port to get associated pin
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Return pin that is associatade with @port and HDP_NONE if no pin is
  * hard associated with that @port.
  */
-<<<<<<< HEAD
 enum hpd_pin intel_hpd_pin_default(struct drm_i915_private *dev_priv,
 				   enum port port)
-=======
-enum hpd_pin intel_hpd_pin(enum port port)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	switch (port) {
 	case PORT_A:
@@ -134,13 +100,10 @@ enum hpd_pin intel_hpd_pin(enum port port)
 		return HPD_PORT_D;
 	case PORT_E:
 		return HPD_PORT_E;
-<<<<<<< HEAD
 	case PORT_F:
 		if (IS_CNL_WITH_PORT_F(dev_priv))
 			return HPD_PORT_E;
 		return HPD_PORT_F;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		MISSING_CASE(port);
 		return HPD_NONE;
@@ -247,16 +210,11 @@ static void intel_hpd_irq_storm_reenable_work(struct work_struct *work)
 		container_of(work, typeof(*dev_priv),
 			     hotplug.reenable_work.work);
 	struct drm_device *dev = &dev_priv->drm;
-<<<<<<< HEAD
 	enum hpd_pin pin;
-=======
-	int i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	intel_runtime_pm_get(dev_priv);
 
 	spin_lock_irq(&dev_priv->irq_lock);
-<<<<<<< HEAD
 	for_each_hpd_pin(pin) {
 		struct drm_connector *connector;
 		struct drm_connector_list_iter conn_iter;
@@ -265,28 +223,14 @@ static void intel_hpd_irq_storm_reenable_work(struct work_struct *work)
 			continue;
 
 		dev_priv->hotplug.stats[pin].state = HPD_ENABLED;
-=======
-	for_each_hpd_pin(i) {
-		struct drm_connector *connector;
-		struct drm_connector_list_iter conn_iter;
-
-		if (dev_priv->hotplug.stats[i].state != HPD_DISABLED)
-			continue;
-
-		dev_priv->hotplug.stats[i].state = HPD_ENABLED;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		drm_connector_list_iter_begin(dev, &conn_iter);
 		drm_for_each_connector_iter(connector, &conn_iter) {
 			struct intel_connector *intel_connector = to_intel_connector(connector);
 
-<<<<<<< HEAD
 			/* Don't check MST ports, they don't have pins */
 			if (!intel_connector->mst_port &&
 			    intel_connector->encoder->hpd_pin == pin) {
-=======
-			if (intel_connector->encoder->hpd_pin == i) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				if (connector->polled != intel_connector->polled)
 					DRM_DEBUG_DRIVER("Reenabling HPD on connector %s\n",
 							 connector->name);
@@ -304,7 +248,6 @@ static void intel_hpd_irq_storm_reenable_work(struct work_struct *work)
 	intel_runtime_pm_put(dev_priv);
 }
 
-<<<<<<< HEAD
 bool intel_encoder_hotplug(struct intel_encoder *encoder,
 			   struct intel_connector *connector)
 {
@@ -325,50 +268,22 @@ bool intel_encoder_hotplug(struct intel_encoder *encoder,
 		      connector->base.name,
 		      drm_get_connector_status_name(old_status),
 		      drm_get_connector_status_name(connector->base.status));
-=======
-static bool intel_hpd_irq_event(struct drm_device *dev,
-				struct drm_connector *connector)
-{
-	enum drm_connector_status old_status;
-
-	WARN_ON(!mutex_is_locked(&dev->mode_config.mutex));
-	old_status = connector->status;
-
-	connector->status = drm_helper_probe_detect(connector, NULL, false);
-
-	if (old_status == connector->status)
-		return false;
-
-	DRM_DEBUG_KMS("[CONNECTOR:%d:%s] status updated from %s to %s\n",
-		      connector->base.id,
-		      connector->name,
-		      drm_get_connector_status_name(old_status),
-		      drm_get_connector_status_name(connector->status));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return true;
 }
 
-<<<<<<< HEAD
 static bool intel_encoder_has_hpd_pulse(struct intel_encoder *encoder)
 {
 	return intel_encoder_is_dig_port(encoder) &&
 		enc_to_dig_port(&encoder->base)->hpd_pulse != NULL;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void i915_digport_work_func(struct work_struct *work)
 {
 	struct drm_i915_private *dev_priv =
 		container_of(work, struct drm_i915_private, hotplug.dig_port_work);
 	u32 long_port_mask, short_port_mask;
-<<<<<<< HEAD
 	struct intel_encoder *encoder;
-=======
-	struct intel_digital_port *intel_dig_port;
-	int i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 old_bits = 0;
 
 	spin_lock_irq(&dev_priv->irq_lock);
@@ -378,7 +293,6 @@ static void i915_digport_work_func(struct work_struct *work)
 	dev_priv->hotplug.short_port_mask = 0;
 	spin_unlock_irq(&dev_priv->irq_lock);
 
-<<<<<<< HEAD
 	for_each_intel_encoder(&dev_priv->drm, encoder) {
 		struct intel_digital_port *dig_port;
 		enum port port = encoder->port;
@@ -400,29 +314,6 @@ static void i915_digport_work_func(struct work_struct *work)
 		if (ret == IRQ_NONE) {
 			/* fall back to old school hpd */
 			old_bits |= BIT(encoder->hpd_pin);
-=======
-	for (i = 0; i < I915_MAX_PORTS; i++) {
-		bool valid = false;
-		bool long_hpd = false;
-		intel_dig_port = dev_priv->hotplug.irq_port[i];
-		if (!intel_dig_port || !intel_dig_port->hpd_pulse)
-			continue;
-
-		if (long_port_mask & (1 << i))  {
-			valid = true;
-			long_hpd = true;
-		} else if (short_port_mask & (1 << i))
-			valid = true;
-
-		if (valid) {
-			enum irqreturn ret;
-
-			ret = intel_dig_port->hpd_pulse(intel_dig_port, long_hpd);
-			if (ret == IRQ_NONE) {
-				/* fall back to old school hpd */
-				old_bits |= (1 << intel_dig_port->base.hpd_pin);
-			}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -471,16 +362,9 @@ static void i915_hotplug_work_func(struct work_struct *work)
 		if (hpd_event_bits & (1 << intel_encoder->hpd_pin)) {
 			DRM_DEBUG_KMS("Connector %s (pin %i) received hotplug event.\n",
 				      connector->name, intel_encoder->hpd_pin);
-<<<<<<< HEAD
 
 			changed |= intel_encoder->hotplug(intel_encoder,
 							  intel_connector);
-=======
-			if (intel_encoder->hot_plug)
-				intel_encoder->hot_plug(intel_encoder);
-			if (intel_hpd_irq_event(dev, connector))
-				changed = true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 	drm_connector_list_iter_end(&conn_iter);
@@ -510,26 +394,17 @@ static void i915_hotplug_work_func(struct work_struct *work)
 void intel_hpd_irq_handler(struct drm_i915_private *dev_priv,
 			   u32 pin_mask, u32 long_mask)
 {
-<<<<<<< HEAD
 	struct intel_encoder *encoder;
 	bool storm_detected = false;
 	bool queue_dig = false, queue_hp = false;
 	u32 long_hpd_pulse_mask = 0;
 	u32 short_hpd_pulse_mask = 0;
 	enum hpd_pin pin;
-=======
-	int i;
-	enum port port;
-	bool storm_detected = false;
-	bool queue_dig = false, queue_hp = false;
-	bool is_dig_port;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!pin_mask)
 		return;
 
 	spin_lock(&dev_priv->irq_lock);
-<<<<<<< HEAD
 
 	/*
 	 * Determine whether ->hpd_pulse() exists for each pin, and
@@ -572,36 +447,6 @@ void intel_hpd_irq_handler(struct drm_i915_private *dev_priv,
 			continue;
 
 		if (dev_priv->hotplug.stats[pin].state == HPD_DISABLED) {
-=======
-	for_each_hpd_pin(i) {
-		if (!(BIT(i) & pin_mask))
-			continue;
-
-		port = intel_hpd_pin_to_port(i);
-		is_dig_port = port != PORT_NONE &&
-			dev_priv->hotplug.irq_port[port];
-
-		if (is_dig_port) {
-			bool long_hpd = long_mask & BIT(i);
-
-			DRM_DEBUG_DRIVER("digital hpd port %c - %s\n", port_name(port),
-					 long_hpd ? "long" : "short");
-			/*
-			 * For long HPD pulses we want to have the digital queue happen,
-			 * but we still want HPD storm detection to function.
-			 */
-			queue_dig = true;
-			if (long_hpd) {
-				dev_priv->hotplug.long_port_mask |= (1 << port);
-			} else {
-				/* for short HPD just trigger the digital queue */
-				dev_priv->hotplug.short_port_mask |= (1 << port);
-				continue;
-			}
-		}
-
-		if (dev_priv->hotplug.stats[i].state == HPD_DISABLED) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/*
 			 * On GMCH platforms the interrupt mask bits only
 			 * prevent irq generation, not the setting of the
@@ -609,7 +454,6 @@ void intel_hpd_irq_handler(struct drm_i915_private *dev_priv,
 			 * interrupts on saner platforms.
 			 */
 			WARN_ONCE(!HAS_GMCH_DISPLAY(dev_priv),
-<<<<<<< HEAD
 				  "Received HPD interrupt on pin %d although disabled\n", pin);
 			continue;
 		}
@@ -635,22 +479,6 @@ void intel_hpd_irq_handler(struct drm_i915_private *dev_priv,
 
 		if (intel_hpd_irq_storm_detect(dev_priv, pin)) {
 			dev_priv->hotplug.event_bits &= ~BIT(pin);
-=======
-				  "Received HPD interrupt on pin %d although disabled\n", i);
-			continue;
-		}
-
-		if (dev_priv->hotplug.stats[i].state != HPD_ENABLED)
-			continue;
-
-		if (!is_dig_port) {
-			dev_priv->hotplug.event_bits |= BIT(i);
-			queue_hp = true;
-		}
-
-		if (intel_hpd_irq_storm_detect(dev_priv, i)) {
-			dev_priv->hotplug.event_bits &= ~BIT(i);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			storm_detected = true;
 		}
 	}

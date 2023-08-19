@@ -32,19 +32,13 @@
 #include <subdev/fb.h>
 #include <subdev/mc.h>
 #include <subdev/pmu.h>
-<<<<<<< HEAD
 #include <subdev/therm.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <subdev/timer.h>
 #include <engine/fifo.h>
 
 #include <nvif/class.h>
 #include <nvif/cl9097.h>
-<<<<<<< HEAD
 #include <nvif/if900d.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <nvif/unpack.h>
 
 /*******************************************************************************
@@ -98,11 +92,7 @@ gf100_gr_zbc_color_get(struct gf100_gr *gr, int format,
 	memcpy(gr->zbc_color[zbc].l2, l2, sizeof(gr->zbc_color[zbc].l2));
 	gr->zbc_color[zbc].format = format;
 	nvkm_ltc_zbc_color_get(ltc, zbc, l2);
-<<<<<<< HEAD
 	gr->func->zbc->clear_color(gr, zbc);
-=======
-	gf100_gr_zbc_clear_color(gr, zbc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return zbc;
 }
 
@@ -147,7 +137,6 @@ gf100_gr_zbc_depth_get(struct gf100_gr *gr, int format,
 	gr->zbc_depth[zbc].ds = ds;
 	gr->zbc_depth[zbc].l2 = l2;
 	nvkm_ltc_zbc_depth_get(ltc, zbc, l2);
-<<<<<<< HEAD
 	gr->func->zbc->clear_depth(gr, zbc);
 	return zbc;
 }
@@ -158,12 +147,6 @@ gf100_gr_zbc = {
 	.clear_depth = gf100_gr_zbc_clear_depth,
 };
 
-=======
-	gf100_gr_zbc_clear_depth(gr, zbc);
-	return zbc;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*******************************************************************************
  * Graphics object classes
  ******************************************************************************/
@@ -352,22 +335,13 @@ gf100_gr_chan_bind(struct nvkm_object *object, struct nvkm_gpuobj *parent,
 
 	if (!gr->firmware) {
 		nvkm_wo32(*pgpuobj, 0x00, chan->mmio_nr / 2);
-<<<<<<< HEAD
 		nvkm_wo32(*pgpuobj, 0x04, chan->mmio_vma->addr >> 8);
-=======
-		nvkm_wo32(*pgpuobj, 0x04, chan->mmio_vma.offset >> 8);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		nvkm_wo32(*pgpuobj, 0xf4, 0);
 		nvkm_wo32(*pgpuobj, 0xf8, 0);
 		nvkm_wo32(*pgpuobj, 0x10, chan->mmio_nr / 2);
-<<<<<<< HEAD
 		nvkm_wo32(*pgpuobj, 0x14, lower_32_bits(chan->mmio_vma->addr));
 		nvkm_wo32(*pgpuobj, 0x18, upper_32_bits(chan->mmio_vma->addr));
-=======
-		nvkm_wo32(*pgpuobj, 0x14, lower_32_bits(chan->mmio_vma.offset));
-		nvkm_wo32(*pgpuobj, 0x18, upper_32_bits(chan->mmio_vma.offset));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		nvkm_wo32(*pgpuobj, 0x1c, 1);
 		nvkm_wo32(*pgpuobj, 0x20, 0);
 		nvkm_wo32(*pgpuobj, 0x28, 0);
@@ -384,7 +358,6 @@ gf100_gr_chan_dtor(struct nvkm_object *object)
 	int i;
 
 	for (i = 0; i < ARRAY_SIZE(chan->data); i++) {
-<<<<<<< HEAD
 		nvkm_vmm_put(chan->vmm, &chan->data[i].vma);
 		nvkm_memory_unref(&chan->data[i].mem);
 	}
@@ -392,20 +365,6 @@ gf100_gr_chan_dtor(struct nvkm_object *object)
 	nvkm_vmm_put(chan->vmm, &chan->mmio_vma);
 	nvkm_memory_unref(&chan->mmio);
 	nvkm_vmm_unref(&chan->vmm);
-=======
-		if (chan->data[i].vma.node) {
-			nvkm_vm_unmap(&chan->data[i].vma);
-			nvkm_vm_put(&chan->data[i].vma);
-		}
-		nvkm_memory_del(&chan->data[i].mem);
-	}
-
-	if (chan->mmio_vma.node) {
-		nvkm_vm_unmap(&chan->mmio_vma);
-		nvkm_vm_put(&chan->mmio_vma);
-	}
-	nvkm_memory_del(&chan->mmio);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return chan;
 }
 
@@ -424,10 +383,7 @@ gf100_gr_chan_new(struct nvkm_gr *base, struct nvkm_fifo_chan *fifoch,
 	struct gf100_gr_data *data = gr->mmio_data;
 	struct gf100_gr_mmio *mmio = gr->mmio_list;
 	struct gf100_gr_chan *chan;
-<<<<<<< HEAD
 	struct gf100_vmm_map_v0 args = { .priv = 1 };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct nvkm_device *device = gr->base.engine.subdev.device;
 	int ret, i;
 
@@ -435,10 +391,7 @@ gf100_gr_chan_new(struct nvkm_gr *base, struct nvkm_fifo_chan *fifoch,
 		return -ENOMEM;
 	nvkm_object_ctor(&gf100_gr_chan, oclass, &chan->object);
 	chan->gr = gr;
-<<<<<<< HEAD
 	chan->vmm = nvkm_vmm_ref(fifoch->vmm);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	*pobject = &chan->object;
 
 	/* allocate memory for a "mmio list" buffer that's used by the HUB
@@ -450,7 +403,6 @@ gf100_gr_chan_new(struct nvkm_gr *base, struct nvkm_fifo_chan *fifoch,
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	ret = nvkm_vmm_get(fifoch->vmm, 12, 0x1000, &chan->mmio_vma);
 	if (ret)
 		return ret;
@@ -459,14 +411,6 @@ gf100_gr_chan_new(struct nvkm_gr *base, struct nvkm_fifo_chan *fifoch,
 			      chan->mmio_vma, &args, sizeof(args));
 	if (ret)
 		return ret;
-=======
-	ret = nvkm_vm_get(fifoch->vm, 0x1000, 12, NV_MEM_ACCESS_RW |
-			  NV_MEM_ACCESS_SYS, &chan->mmio_vma);
-	if (ret)
-		return ret;
-
-	nvkm_memory_map(chan->mmio, &chan->mmio_vma, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* allocate buffers referenced by mmio list */
 	for (i = 0; data->size && i < ARRAY_SIZE(gr->mmio_data); i++) {
@@ -476,7 +420,6 @@ gf100_gr_chan_new(struct nvkm_gr *base, struct nvkm_fifo_chan *fifoch,
 		if (ret)
 			return ret;
 
-<<<<<<< HEAD
 		ret = nvkm_vmm_get(fifoch->vmm, 12,
 				   nvkm_memory_size(chan->data[i].mem),
 				   &chan->data[i].vma);
@@ -490,15 +433,6 @@ gf100_gr_chan_new(struct nvkm_gr *base, struct nvkm_fifo_chan *fifoch,
 		if (ret)
 			return ret;
 
-=======
-		ret = nvkm_vm_get(fifoch->vm,
-				  nvkm_memory_size(chan->data[i].mem), 12,
-				  data->access, &chan->data[i].vma);
-		if (ret)
-			return ret;
-
-		nvkm_memory_map(chan->data[i].mem, &chan->data[i].vma, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		data++;
 	}
 
@@ -509,11 +443,7 @@ gf100_gr_chan_new(struct nvkm_gr *base, struct nvkm_fifo_chan *fifoch,
 		u32 data = mmio->data;
 
 		if (mmio->buffer >= 0) {
-<<<<<<< HEAD
 			u64 info = chan->data[mmio->buffer].vma->addr;
-=======
-			u64 info = chan->data[mmio->buffer].vma.offset;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			data |= info >> mmio->shift;
 		}
 
@@ -820,7 +750,6 @@ gf100_gr_zbc_init(struct gf100_gr *gr)
 	const u32 f32_1[] = { 0x3f800000, 0x3f800000, 0x3f800000, 0x3f800000,
 			      0x3f800000, 0x3f800000, 0x3f800000, 0x3f800000 };
 	struct nvkm_ltc *ltc = gr->base.engine.subdev.device->ltc;
-<<<<<<< HEAD
 	int index, c = ltc->zbc_min, d = ltc->zbc_min, s = ltc->zbc_min;
 
 	if (!gr->zbc_color[0].format) {
@@ -846,23 +775,6 @@ gf100_gr_zbc_init(struct gf100_gr *gr)
 		for (index = s; index <= ltc->zbc_max; index++)
 			gr->func->zbc->clear_stencil(gr, index);
 	}
-=======
-	int index;
-
-	if (!gr->zbc_color[0].format) {
-		gf100_gr_zbc_color_get(gr, 1,  & zero[0],   &zero[4]);
-		gf100_gr_zbc_color_get(gr, 2,  &  one[0],    &one[4]);
-		gf100_gr_zbc_color_get(gr, 4,  &f32_0[0],  &f32_0[4]);
-		gf100_gr_zbc_color_get(gr, 4,  &f32_1[0],  &f32_1[4]);
-		gf100_gr_zbc_depth_get(gr, 1, 0x00000000, 0x00000000);
-		gf100_gr_zbc_depth_get(gr, 1, 0x3f800000, 0x3f800000);
-	}
-
-	for (index = ltc->zbc_min; index <= ltc->zbc_max; index++)
-		gf100_gr_zbc_clear_color(gr, index);
-	for (index = ltc->zbc_min; index <= ltc->zbc_max; index++)
-		gf100_gr_zbc_clear_depth(gr, index);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -1075,11 +987,7 @@ gf100_gr_trap_gpc_rop(struct gf100_gr *gr, int gpc)
 	nvkm_wr32(device, GPC_UNIT(gpc, 0x0420), 0xc0000000);
 }
 
-<<<<<<< HEAD
 const struct nvkm_enum gf100_mp_warp_error[] = {
-=======
-static const struct nvkm_enum gf100_mp_warp_error[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ 0x01, "STACK_ERROR" },
 	{ 0x02, "API_STACK_ERROR" },
 	{ 0x03, "RET_EMPTY_STACK_ERROR" },
@@ -1104,11 +1012,7 @@ static const struct nvkm_enum gf100_mp_warp_error[] = {
 	{}
 };
 
-<<<<<<< HEAD
 const struct nvkm_bitfield gf100_mp_global_error[] = {
-=======
-static const struct nvkm_bitfield gf100_mp_global_error[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ 0x00000001, "SM_TO_SM_FAULT" },
 	{ 0x00000002, "L1_ERROR" },
 	{ 0x00000004, "MULTIPLE_WARP_ERRORS" },
@@ -1122,11 +1026,7 @@ static const struct nvkm_bitfield gf100_mp_global_error[] = {
 	{}
 };
 
-<<<<<<< HEAD
 void
-=======
-static void
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 gf100_gr_trap_mp(struct gf100_gr *gr, int gpc, int tpc)
 {
 	struct nvkm_subdev *subdev = &gr->base.engine.subdev;
@@ -1162,11 +1062,7 @@ gf100_gr_trap_tpc(struct gf100_gr *gr, int gpc, int tpc)
 	}
 
 	if (stat & 0x00000002) {
-<<<<<<< HEAD
 		gr->func->trap_mp(gr, gpc, tpc);
-=======
-		gf100_gr_trap_mp(gr, gpc, tpc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		stat &= ~0x00000002;
 	}
 
@@ -1732,12 +1628,8 @@ gf100_gr_init_ctxctl_int(struct gf100_gr *gr)
 
 	/* load register lists */
 	gf100_gr_init_csdata(gr, grctx->hub, 0x409000, 0x000, 0x000000);
-<<<<<<< HEAD
 	gf100_gr_init_csdata(gr, grctx->gpc_0, 0x41a000, 0x000, 0x418000);
 	gf100_gr_init_csdata(gr, grctx->gpc_1, 0x41a000, 0x000, 0x418000);
-=======
-	gf100_gr_init_csdata(gr, grctx->gpc, 0x41a000, 0x000, 0x418000);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gf100_gr_init_csdata(gr, grctx->tpc, 0x41a000, 0x004, 0x419800);
 	gf100_gr_init_csdata(gr, grctx->ppc, 0x41a000, 0x008, 0x41be00);
 
@@ -1777,7 +1669,6 @@ gf100_gr_init_ctxctl(struct gf100_gr *gr)
 	return ret;
 }
 
-<<<<<<< HEAD
 void
 gf100_gr_oneinit_sm_id(struct gf100_gr *gr)
 {
@@ -1869,8 +1760,6 @@ gf100_gr_oneinit_tiles(struct gf100_gr *gr)
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int
 gf100_gr_oneinit(struct nvkm_gr *base)
 {
@@ -1894,7 +1783,6 @@ gf100_gr_oneinit(struct nvkm_gr *base)
 	gr->gpc_nr = nvkm_rd32(device, 0x409604) & 0x0000001f;
 	for (i = 0; i < gr->gpc_nr; i++) {
 		gr->tpc_nr[i]  = nvkm_rd32(device, GPC_UNIT(i, 0x2608));
-<<<<<<< HEAD
 		gr->tpc_max = max(gr->tpc_max, gr->tpc_nr[i]);
 		gr->tpc_total += gr->tpc_nr[i];
 		gr->ppc_nr[i]  = gr->func->ppc_nr;
@@ -1916,57 +1804,6 @@ gf100_gr_oneinit(struct nvkm_gr *base)
 	memset(gr->tile, 0xff, sizeof(gr->tile));
 	gr->func->oneinit_tiles(gr);
 	gr->func->oneinit_sm_id(gr);
-=======
-		gr->tpc_total += gr->tpc_nr[i];
-		gr->ppc_nr[i]  = gr->func->ppc_nr;
-		for (j = 0; j < gr->ppc_nr[i]; j++) {
-			u8 mask = nvkm_rd32(device, GPC_UNIT(i, 0x0c30 + (j * 4)));
-			if (mask)
-				gr->ppc_mask[i] |= (1 << j);
-			gr->ppc_tpc_nr[i][j] = hweight8(mask);
-		}
-	}
-
-	/*XXX: these need figuring out... though it might not even matter */
-	switch (device->chipset) {
-	case 0xc0:
-		if (gr->tpc_total == 11) { /* 465, 3/4/4/0, 4 */
-			gr->screen_tile_row_offset = 0x07;
-		} else
-		if (gr->tpc_total == 14) { /* 470, 3/3/4/4, 5 */
-			gr->screen_tile_row_offset = 0x05;
-		} else
-		if (gr->tpc_total == 15) { /* 480, 3/4/4/4, 6 */
-			gr->screen_tile_row_offset = 0x06;
-		}
-		break;
-	case 0xc3: /* 450, 4/0/0/0, 2 */
-		gr->screen_tile_row_offset = 0x03;
-		break;
-	case 0xc4: /* 460, 3/4/0/0, 4 */
-		gr->screen_tile_row_offset = 0x01;
-		break;
-	case 0xc1: /* 2/0/0/0, 1 */
-		gr->screen_tile_row_offset = 0x01;
-		break;
-	case 0xc8: /* 4/4/3/4, 5 */
-		gr->screen_tile_row_offset = 0x06;
-		break;
-	case 0xce: /* 4/4/0/0, 4 */
-		gr->screen_tile_row_offset = 0x03;
-		break;
-	case 0xcf: /* 4/0/0/0, 3 */
-		gr->screen_tile_row_offset = 0x03;
-		break;
-	case 0xd7:
-	case 0xd9: /* 1/0/0/0, 1 */
-	case 0xea: /* gk20a */
-	case 0x12b: /* gm20b */
-		gr->screen_tile_row_offset = 0x01;
-		break;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -2105,17 +1942,12 @@ gf100_gr_ctor_fw(struct gf100_gr *gr, const char *fwname,
 	int ret;
 
 	ret = nvkm_firmware_get(device, fwname, &fw);
-<<<<<<< HEAD
 	if (ret) {
 		ret = gf100_gr_ctor_fw_legacy(gr, fwname, fuc, ret);
 		if (ret)
 			return -ENODEV;
 		return 0;
 	}
-=======
-	if (ret)
-		return gf100_gr_ctor_fw_legacy(gr, fwname, fuc, ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	fuc->size = fw->size;
 	fuc->data = kmemdup(fw->data, fuc->size, GFP_KERNEL);
@@ -2162,7 +1994,6 @@ gf100_gr_new_(const struct gf100_gr_func *func, struct nvkm_device *device,
 	return 0;
 }
 
-<<<<<<< HEAD
 void
 gf100_gr_init_400054(struct gf100_gr *gr)
 {
@@ -2258,47 +2089,6 @@ gf100_gr_init_zcull(struct gf100_gr *gr)
 		nvkm_wr32(device, GPC_BCAST(0x0980 + ((i / 8) * 4)), data);
 	}
 
-=======
-int
-gf100_gr_init(struct gf100_gr *gr)
-{
-	struct nvkm_device *device = gr->base.engine.subdev.device;
-	struct nvkm_fb *fb = device->fb;
-	const u32 magicgpc918 = DIV_ROUND_UP(0x00800000, gr->tpc_total);
-	u32 data[TPC_MAX / 8] = {};
-	u8  tpcnr[GPC_MAX];
-	int gpc, tpc, rop;
-	int i;
-
-	nvkm_wr32(device, GPC_BCAST(0x0880), 0x00000000);
-	nvkm_wr32(device, GPC_BCAST(0x08a4), 0x00000000);
-	nvkm_wr32(device, GPC_BCAST(0x0888), 0x00000000);
-	nvkm_wr32(device, GPC_BCAST(0x088c), 0x00000000);
-	nvkm_wr32(device, GPC_BCAST(0x0890), 0x00000000);
-	nvkm_wr32(device, GPC_BCAST(0x0894), 0x00000000);
-	nvkm_wr32(device, GPC_BCAST(0x08b4), nvkm_memory_addr(fb->mmu_wr) >> 8);
-	nvkm_wr32(device, GPC_BCAST(0x08b8), nvkm_memory_addr(fb->mmu_rd) >> 8);
-
-	gf100_gr_mmio(gr, gr->func->mmio);
-
-	nvkm_mask(device, TPC_UNIT(0, 0, 0x05c), 0x00000001, 0x00000001);
-
-	memcpy(tpcnr, gr->tpc_nr, sizeof(gr->tpc_nr));
-	for (i = 0, gpc = -1; i < gr->tpc_total; i++) {
-		do {
-			gpc = (gpc + 1) % gr->gpc_nr;
-		} while (!tpcnr[gpc]);
-		tpc = gr->tpc_nr[gpc] - tpcnr[gpc]--;
-
-		data[i / 8] |= tpc << ((i % 8) * 4);
-	}
-
-	nvkm_wr32(device, GPC_BCAST(0x0980), data[0]);
-	nvkm_wr32(device, GPC_BCAST(0x0984), data[1]);
-	nvkm_wr32(device, GPC_BCAST(0x0988), data[2]);
-	nvkm_wr32(device, GPC_BCAST(0x098c), data[3]);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (gpc = 0; gpc < gr->gpc_nr; gpc++) {
 		nvkm_wr32(device, GPC_UNIT(gpc, 0x0914),
 			  gr->screen_tile_row_offset << 8 | gr->tpc_nr[gpc]);
@@ -2307,7 +2097,6 @@ gf100_gr_init(struct gf100_gr *gr)
 		nvkm_wr32(device, GPC_UNIT(gpc, 0x0918), magicgpc918);
 	}
 
-<<<<<<< HEAD
 	nvkm_wr32(device, GPC_BCAST(0x1bd4), magicgpc918);
 }
 
@@ -2354,20 +2143,11 @@ gf100_gr_init(struct gf100_gr *gr)
 		gr->func->init_bios_2(gr);
 	if (gr->func->init_swdx_pes_mask)
 		gr->func->init_swdx_pes_mask(gr);
-=======
-	if (device->chipset != 0xd7)
-		nvkm_wr32(device, GPC_BCAST(0x1bd4), magicgpc918);
-	else
-		nvkm_wr32(device, GPC_BCAST(0x3fd4), magicgpc918);
-
-	nvkm_wr32(device, GPC_BCAST(0x08ac), nvkm_rd32(device, 0x100800));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	nvkm_wr32(device, 0x400500, 0x00010001);
 
 	nvkm_wr32(device, 0x400100, 0xffffffff);
 	nvkm_wr32(device, 0x40013c, 0xffffffff);
-<<<<<<< HEAD
 	nvkm_wr32(device, 0x400124, 0x00000002);
 
 	gr->func->init_fecs_exceptions(gr);
@@ -2399,20 +2179,6 @@ gf100_gr_init(struct gf100_gr *gr)
 
 	if (gr->func->init_ppc_exceptions)
 		gr->func->init_ppc_exceptions(gr);
-=======
-
-	nvkm_wr32(device, 0x409c24, 0x000f0000);
-	nvkm_wr32(device, 0x404000, 0xc0000000);
-	nvkm_wr32(device, 0x404600, 0xc0000000);
-	nvkm_wr32(device, 0x408030, 0xc0000000);
-	nvkm_wr32(device, 0x40601c, 0xc0000000);
-	nvkm_wr32(device, 0x404490, 0xc0000000);
-	nvkm_wr32(device, 0x406018, 0xc0000000);
-	nvkm_wr32(device, 0x405840, 0xc0000000);
-	nvkm_wr32(device, 0x405844, 0x00ffffff);
-	nvkm_mask(device, 0x419cc0, 0x00000008, 0x00000008);
-	nvkm_mask(device, 0x419eb4, 0x00001000, 0x00001000);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (gpc = 0; gpc < gr->gpc_nr; gpc++) {
 		nvkm_wr32(device, GPC_UNIT(gpc, 0x0420), 0xc0000000);
@@ -2422,33 +2188,20 @@ gf100_gr_init(struct gf100_gr *gr)
 		for (tpc = 0; tpc < gr->tpc_nr[gpc]; tpc++) {
 			nvkm_wr32(device, TPC_UNIT(gpc, tpc, 0x508), 0xffffffff);
 			nvkm_wr32(device, TPC_UNIT(gpc, tpc, 0x50c), 0xffffffff);
-<<<<<<< HEAD
 			if (gr->func->init_tex_hww_esr)
 				gr->func->init_tex_hww_esr(gr, gpc, tpc);
 			nvkm_wr32(device, TPC_UNIT(gpc, tpc, 0x084), 0xc0000000);
 			if (gr->func->init_504430)
 				gr->func->init_504430(gr, gpc, tpc);
 			gr->func->init_shader_exceptions(gr, gpc, tpc);
-=======
-			nvkm_wr32(device, TPC_UNIT(gpc, tpc, 0x224), 0xc0000000);
-			nvkm_wr32(device, TPC_UNIT(gpc, tpc, 0x48c), 0xc0000000);
-			nvkm_wr32(device, TPC_UNIT(gpc, tpc, 0x084), 0xc0000000);
-			nvkm_wr32(device, TPC_UNIT(gpc, tpc, 0x644), 0x001ffffe);
-			nvkm_wr32(device, TPC_UNIT(gpc, tpc, 0x64c), 0x0000000f);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		nvkm_wr32(device, GPC_UNIT(gpc, 0x2c90), 0xffffffff);
 		nvkm_wr32(device, GPC_UNIT(gpc, 0x2c94), 0xffffffff);
 	}
 
 	for (rop = 0; rop < gr->rop_nr; rop++) {
-<<<<<<< HEAD
 		nvkm_wr32(device, ROP_UNIT(rop, 0x144), 0x40000000);
 		nvkm_wr32(device, ROP_UNIT(rop, 0x070), 0x40000000);
-=======
-		nvkm_wr32(device, ROP_UNIT(rop, 0x144), 0xc0000000);
-		nvkm_wr32(device, ROP_UNIT(rop, 0x070), 0xc0000000);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		nvkm_wr32(device, ROP_UNIT(rop, 0x204), 0xffffffff);
 		nvkm_wr32(device, ROP_UNIT(rop, 0x208), 0xffffffff);
 	}
@@ -2460,7 +2213,6 @@ gf100_gr_init(struct gf100_gr *gr)
 	nvkm_wr32(device, 0x40011c, 0xffffffff);
 	nvkm_wr32(device, 0x400134, 0xffffffff);
 
-<<<<<<< HEAD
 	if (gr->func->init_400054)
 		gr->func->init_400054(gr);
 
@@ -2469,12 +2221,6 @@ gf100_gr_init(struct gf100_gr *gr)
 	if (gr->func->init_4188a4)
 		gr->func->init_4188a4(gr);
 
-=======
-	nvkm_wr32(device, 0x400054, 0x34ce3464);
-
-	gf100_gr_zbc_init(gr);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return gf100_gr_init_ctxctl(gr);
 }
 
@@ -2500,7 +2246,6 @@ gf100_gr_gpccs_ucode = {
 
 static const struct gf100_gr_func
 gf100_gr = {
-<<<<<<< HEAD
 	.oneinit_tiles = gf100_gr_oneinit_tiles,
 	.oneinit_sm_id = gf100_gr_oneinit_sm_id,
 	.init = gf100_gr_init,
@@ -2516,18 +2261,12 @@ gf100_gr = {
 	.init_shader_exceptions = gf100_gr_init_shader_exceptions,
 	.init_400054 = gf100_gr_init_400054,
 	.trap_mp = gf100_gr_trap_mp,
-=======
-	.init = gf100_gr_init,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.mmio = gf100_gr_pack_mmio,
 	.fecs.ucode = &gf100_gr_fecs_ucode,
 	.gpccs.ucode = &gf100_gr_gpccs_ucode,
 	.rops = gf100_gr_rops,
 	.grctx = &gf100_grctx,
-<<<<<<< HEAD
 	.zbc = &gf100_gr_zbc,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.sclass = {
 		{ -1, -1, FERMI_TWOD_A },
 		{ -1, -1, FERMI_MEMORY_TO_MEMORY_FORMAT_A },

@@ -5,16 +5,11 @@
  * SPDX-License-Identifier: (GPL-2.0 OR MIT)
  */
 
-<<<<<<< HEAD
 #include <dt-bindings/clock/mt2712-clk.h>
 #include <dt-bindings/interrupt-controller/irq.h>
 #include <dt-bindings/interrupt-controller/arm-gic.h>
 #include <dt-bindings/power/mt2712-power.h>
 #include "mt2712-pinfunc.h"
-=======
-#include <dt-bindings/interrupt-controller/irq.h>
-#include <dt-bindings/interrupt-controller/arm-gic.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 / {
 	compatible = "mediatek,mt2712";
@@ -22,7 +17,6 @@
 	#address-cells = <2>;
 	#size-cells = <2>;
 
-<<<<<<< HEAD
 	cluster0_opp: opp_table0 {
 		compatible = "operating-points-v2";
 		opp-shared;
@@ -65,8 +59,6 @@
 		};
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cpus {
 		#address-cells = <1>;
 		#size-cells = <0>;
@@ -92,15 +84,12 @@
 			device_type = "cpu";
 			compatible = "arm,cortex-a35";
 			reg = <0x000>;
-<<<<<<< HEAD
 			clocks = <&mcucfg CLK_MCU_MP0_SEL>,
 				<&topckgen CLK_TOP_F_MP0_PLL1>;
 			clock-names = "cpu", "intermediate";
 			proc-supply = <&cpus_fixed_vproc0>;
 			operating-points-v2 = <&cluster0_opp>;
 			cpu-idle-states = <&CPU_SLEEP_0 &CLUSTER_SLEEP_0>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		cpu1: cpu@1 {
@@ -108,15 +97,12 @@
 			compatible = "arm,cortex-a35";
 			reg = <0x001>;
 			enable-method = "psci";
-<<<<<<< HEAD
 			clocks = <&mcucfg CLK_MCU_MP0_SEL>,
 				<&topckgen CLK_TOP_F_MP0_PLL1>;
 			clock-names = "cpu", "intermediate";
 			proc-supply = <&cpus_fixed_vproc0>;
 			operating-points-v2 = <&cluster0_opp>;
 			cpu-idle-states = <&CPU_SLEEP_0 &CLUSTER_SLEEP_0>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		cpu2: cpu@200 {
@@ -124,7 +110,6 @@
 			compatible = "arm,cortex-a72";
 			reg = <0x200>;
 			enable-method = "psci";
-<<<<<<< HEAD
 			clocks = <&mcucfg CLK_MCU_MP2_SEL>,
 				<&topckgen CLK_TOP_F_BIG_PLL1>;
 			clock-names = "cpu", "intermediate";
@@ -153,8 +138,6 @@
 				min-residency-us = <3000>;
 				arm,psci-suspend-param = <0x1010000>;
 			};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 	};
 
@@ -175,7 +158,6 @@
 		#clock-cells = <0>;
 	};
 
-<<<<<<< HEAD
 	clk26m: oscillator@0 {
 		compatible = "fixed-clock";
 		#clock-cells = <0>;
@@ -246,8 +228,6 @@
 		clock-output-names = "clktdmin_mclk_i";
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	timer {
 		compatible = "arm,armv8-timer";
 		interrupt-parent = <&gic>;
@@ -261,7 +241,6 @@
 			      (GIC_CPU_MASK_RAW(0x13) | IRQ_TYPE_LEVEL_LOW)>;
 	};
 
-<<<<<<< HEAD
 	topckgen: syscon@10000000 {
 		compatible = "mediatek,mt2712-topckgen", "syscon";
 		reg = <0 0x10000000 0 0x1000>;
@@ -312,8 +291,6 @@
 		infracfg = <&infracfg>;
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uart5: serial@1000f000 {
 		compatible = "mediatek,mt2712-uart",
 			     "mediatek,mt6577-uart";
@@ -324,7 +301,6 @@
 		status = "disabled";
 	};
 
-<<<<<<< HEAD
 	apmixedsys: syscon@10209000 {
 		compatible = "mediatek,mt2712-apmixedsys", "syscon";
 		reg = <0 0x10209000 0 0x1000>;
@@ -337,8 +313,6 @@
 		#clock-cells = <1>;
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sysirq: interrupt-controller@10220a80 {
 		compatible = "mediatek,mt2712-sysirq",
 			     "mediatek,mt6577-sysirq";
@@ -361,7 +335,6 @@
 			 (GIC_CPU_MASK_RAW(0x13) | IRQ_TYPE_LEVEL_HIGH)>;
 	};
 
-<<<<<<< HEAD
 	auxadc: adc@11001000 {
 		compatible = "mediatek,mt2712-auxadc";
 		reg = <0 0x11001000 0 0x1000>;
@@ -371,8 +344,6 @@
 		status = "disabled";
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uart0: serial@11002000 {
 		compatible = "mediatek,mt2712-uart",
 			     "mediatek,mt6577-uart";
@@ -422,7 +393,6 @@
 		clock-names = "baud", "bus";
 		status = "disabled";
 	};
-<<<<<<< HEAD
 
 	mfgcfg: syscon@13000000 {
 		compatible = "mediatek,mt2712-mfgcfg", "syscon";
@@ -465,7 +435,5 @@
 		reg = <0 0x19000000 0 0x1000>;
 		#clock-cells = <1>;
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 

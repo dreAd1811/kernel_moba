@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
@@ -13,34 +12,6 @@
 #include "kgsl_rgmu.h"
 #include "kgsl_trace.h"
 
-=======
-/* Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- */
-#include <linux/firmware.h>
-#include <linux/jiffies.h>
-#include <linux/interrupt.h>
-
-#include "kgsl_gmu_core.h"
-#include "kgsl_rgmu.h"
-#include "kgsl_trace.h"
-
-#include "adreno.h"
-#include "a6xx_reg.h"
-#include "adreno_a6xx.h"
-#include "adreno_trace.h"
-#include "adreno_snapshot.h"
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* RGMU timeouts */
 #define RGMU_IDLE_TIMEOUT		100	/* ms */
 #define RGMU_START_TIMEOUT		100	/* ms */
@@ -48,11 +19,6 @@
 #define GLM_SLEEP_TIMEOUT		10	/* ms */
 
 static const unsigned int a6xx_rgmu_registers[] = {
-<<<<<<< HEAD
-=======
-	/*GPUCX_TCM */
-	0x1B400, 0x1B7FF,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* GMU CX */
 	0x1F80F, 0x1F83D, 0x1F840, 0x1F8D8, 0x1F990, 0x1F99E, 0x1F9C0, 0x1F9CC,
 	/* GMU AO */
@@ -127,25 +93,12 @@ irqreturn_t oob_irq_handler(int irq, void *data)
  * @adreno_dev: Pointer to adreno device
  * @req: Which of the OOB bits to request
  */
-<<<<<<< HEAD
 static int a6xx_rgmu_oob_set(struct kgsl_device *device,
 		enum oob_request req)
 {
 	struct rgmu_device *rgmu = KGSL_RGMU_DEVICE(device);
 	int ret, set, check;
 
-=======
-static int a6xx_rgmu_oob_set(struct adreno_device *adreno_dev,
-		enum oob_request req)
-{
-	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
-	struct rgmu_device *rgmu = KGSL_RGMU_DEVICE(device);
-	int ret, set, check;
-
-	if (!gmu_core_gpmu_isenabled(device))
-		return 0;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	set = BIT(req + 16);
 	check = BIT(req + 16);
 
@@ -177,20 +130,9 @@ static int a6xx_rgmu_oob_set(struct adreno_device *adreno_dev,
  * @adreno_dev: Pointer to the adreno device that has the RGMU
  * @req: Which of the OOB bits to clear
  */
-<<<<<<< HEAD
 static inline void a6xx_rgmu_oob_clear(struct kgsl_device *device,
 		enum oob_request req)
 {
-=======
-static inline void a6xx_rgmu_oob_clear(struct adreno_device *adreno_dev,
-		enum oob_request req)
-{
-	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
-
-	if (!gmu_core_gpmu_isenabled(device))
-		return;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gmu_core_regwrite(device, A6XX_GMU_HOST2GMU_INTR_SET, BIT(req + 24));
 	trace_kgsl_gmu_oob_clear(BIT(req + 24));
 }
@@ -246,7 +188,6 @@ static void a6xx_rgmu_irq_disable(struct kgsl_device *device)
 	adreno_gmu_mask_and_clear_irqs(ADRENO_DEVICE(device));
 }
 
-<<<<<<< HEAD
 static int a6xx_rgmu_ifpc_store(struct kgsl_device *device,
 		unsigned int val)
 {
@@ -255,18 +196,6 @@ static int a6xx_rgmu_ifpc_store(struct kgsl_device *device,
 	unsigned int requested_idle_level;
 
 	if (!ADRENO_FEATURE(adreno_dev, ADRENO_IFPC))
-=======
-static int a6xx_rgmu_ifpc_store(struct adreno_device *adreno_dev,
-		unsigned int val)
-{
-	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
-	struct rgmu_device *rgmu = KGSL_RGMU_DEVICE(device);
-	unsigned int requested_idle_level;
-	int ret;
-
-	if (!gmu_core_gpmu_isenabled(device) ||
-		!ADRENO_FEATURE(adreno_dev, ADRENO_IFPC))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	if (val)
@@ -280,7 +209,6 @@ static int a6xx_rgmu_ifpc_store(struct adreno_device *adreno_dev,
 	mutex_lock(&device->mutex);
 
 	/* Power down the GPU before changing the idle level */
-<<<<<<< HEAD
 	kgsl_pwrctrl_change_state(device, KGSL_STATE_SUSPEND);
 	rgmu->idle_level = requested_idle_level;
 	kgsl_pwrctrl_change_state(device, KGSL_STATE_SLUMBER);
@@ -301,31 +229,6 @@ static unsigned int a6xx_rgmu_ifpc_show(struct kgsl_device *device)
 static void a6xx_rgmu_prepare_stop(struct kgsl_device *device)
 {
 	struct adreno_device *adreno_dev = ADRENO_DEVICE(device);
-=======
-	ret = kgsl_pwrctrl_change_state(device, KGSL_STATE_SUSPEND);
-	if (!ret) {
-		rgmu->idle_level = requested_idle_level;
-		kgsl_pwrctrl_change_state(device, KGSL_STATE_SLUMBER);
-	}
-
-	mutex_unlock(&device->mutex);
-
-	return ret;
-}
-
-static unsigned int a6xx_rgmu_ifpc_show(struct adreno_device *adreno_dev)
-{
-	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
-	struct rgmu_device *rgmu = KGSL_RGMU_DEVICE(device);
-
-	return gmu_core_gpmu_isenabled(device) &&
-			rgmu->idle_level == GPU_HW_IFPC;
-}
-
-
-static void a6xx_rgmu_prepare_stop(struct adreno_device *adreno_dev)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Turn off GX_MEM retention */
 	kgsl_regwrite(KGSL_DEVICE(adreno_dev),
 			A6XX_RBBM_BLOCK_GX_RETENTION_CNTL, 0);
@@ -338,39 +241,22 @@ static void a6xx_rgmu_prepare_stop(struct adreno_device *adreno_dev)
  * This check should only be performed if the keepalive bit is set or it
  * can be guaranteed that the power state of the GPU will remain unchanged
  */
-<<<<<<< HEAD
 static bool a6xx_rgmu_gx_is_on(struct kgsl_device *device)
 {
-=======
-static bool a6xx_rgmu_gx_is_on(struct adreno_device *adreno_dev)
-{
-	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int val;
 
 	gmu_core_regread(device, A6XX_GMU_SPTPRAC_PWR_CLK_STATUS, &val);
 	return !(val & GX_GDSC_POWER_OFF);
 }
 
-<<<<<<< HEAD
 static int a6xx_rgmu_wait_for_lowest_idle(struct kgsl_device *device)
 {
-=======
-static int a6xx_rgmu_wait_for_lowest_idle(struct adreno_device *adreno_dev)
-{
-	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct rgmu_device *rgmu = KGSL_RGMU_DEVICE(device);
 	unsigned int reg[10] = {0};
 	unsigned long t;
 	uint64_t ts1, ts2, ts3;
 
-<<<<<<< HEAD
 	if (rgmu->idle_level != GPU_HW_IFPC)
-=======
-	if (!gmu_core_gpmu_isenabled(device) ||
-			rgmu->idle_level != GPU_HW_IFPC)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	ts1 = a6xx_gmu_read_ao_counter(device);
@@ -454,13 +340,8 @@ static int a6xx_rgmu_fw_start(struct kgsl_device *device,
 		unsigned int boot_state)
 {
 	struct rgmu_device *rgmu = KGSL_RGMU_DEVICE(device);
-<<<<<<< HEAD
 	unsigned int status;
 	int i;
-=======
-	const struct firmware *fw = rgmu->fw_image;
-	unsigned int status;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (boot_state) {
 	case GMU_COLD_BOOT:
@@ -469,14 +350,9 @@ static int a6xx_rgmu_fw_start(struct kgsl_device *device,
 		gmu_core_regwrite(device, A6XX_GMU_GENERAL_7, 1);
 
 		/* Load RGMU FW image via AHB bus */
-<<<<<<< HEAD
 		for (i = 0; i < rgmu->fw_size; i++)
 			gmu_core_regwrite(device, A6XX_GMU_CM3_ITCM_START + i,
 					rgmu->fw_hostptr[i]);
-=======
-		gmu_core_blkwrite(device, A6XX_GMU_CM3_ITCM_START, fw->data,
-				fw->size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * Enable power counter because it was disabled before
 		 * slumber.
@@ -542,18 +418,10 @@ static int a6xx_rgmu_fw_start(struct kgsl_device *device,
 static int a6xx_rgmu_suspend(struct kgsl_device *device)
 {
 	struct rgmu_device *rgmu = KGSL_RGMU_DEVICE(device);
-<<<<<<< HEAD
 	int ret = 0;
 
 	/* Check GX GDSC is status */
 	if (a6xx_rgmu_gx_is_on(device)) {
-=======
-	struct adreno_device *adreno_dev = ADRENO_DEVICE(device);
-	int ret = 0;
-
-	/* Check GX GDSC is status */
-	if (a6xx_rgmu_gx_is_on(adreno_dev)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Switch gx gdsc control from RGMU to CPU
 		 * force non-zero reference count in clk driver
@@ -570,11 +438,7 @@ static int a6xx_rgmu_suspend(struct kgsl_device *device)
 			dev_err(&rgmu->pdev->dev,
 				"Fail to disable gx gdsc, error:%d\n", ret);
 
-<<<<<<< HEAD
 		if (a6xx_rgmu_gx_is_on(device))
-=======
-		if (a6xx_rgmu_gx_is_on(adreno_dev))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev_err(&rgmu->pdev->dev, "gx is stuck on\n");
 	}
 
@@ -588,23 +452,11 @@ static int a6xx_rgmu_suspend(struct kgsl_device *device)
  * @arg1: first argument for mode control
  * @arg2: second argument for mode control
  */
-<<<<<<< HEAD
 static int a6xx_rgmu_gpu_pwrctrl(struct kgsl_device *device,
 		unsigned int mode, unsigned int arg1, unsigned int arg2)
 {
 	int ret = 0;
 
-=======
-static int a6xx_rgmu_gpu_pwrctrl(struct adreno_device *adreno_dev,
-		unsigned int mode, unsigned int arg1, unsigned int arg2)
-{
-	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
-	int ret = 0;
-
-	if (!gmu_core_gpmu_isenabled(device))
-		return 0;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (mode) {
 	case GMU_FW_START:
 		ret = a6xx_rgmu_fw_start(device, arg1);
@@ -637,7 +489,6 @@ static int a6xx_rgmu_gpu_pwrctrl(struct adreno_device *adreno_dev,
 static int a6xx_rgmu_load_firmware(struct kgsl_device *device)
 {
 	const struct firmware *fw = NULL;
-<<<<<<< HEAD
 	struct adreno_device *adreno_dev = ADRENO_DEVICE(device);
 	struct rgmu_device *rgmu = KGSL_RGMU_DEVICE(device);
 	const struct adreno_a6xx_core *a6xx_core = to_a6xx_core(adreno_dev);
@@ -662,26 +513,6 @@ static int a6xx_rgmu_load_firmware(struct kgsl_device *device)
 
 	release_firmware(fw);
 	return rgmu->fw_hostptr ? 0 : -ENOMEM;
-=======
-	const struct adreno_device *adreno_dev = ADRENO_DEVICE(device);
-	struct rgmu_device *rgmu = KGSL_RGMU_DEVICE(device);
-	const struct adreno_gpu_core *gpucore = adreno_dev->gpucore;
-	int ret;
-
-	/* RGMU fw already saved and verified so do nothing new */
-	if (rgmu->fw_image)
-		return 0;
-
-	ret = request_firmware(&fw, gpucore->gpmufw_name, device->dev);
-	if (ret < 0) {
-		KGSL_CORE_ERR("request_firmware (%s) failed: %d\n",
-				gpucore->gpmufw_name, ret);
-		return ret;
-	}
-
-	rgmu->fw_image = fw;
-	return rgmu->fw_image ? 0 : -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Halt RGMU execution */
@@ -720,16 +551,9 @@ static void a6xx_rgmu_halt_execution(struct kgsl_device *device)
  * This is where all of the A6XX GMU specific bits and pieces are grabbed
  * into the snapshot memory
  */
-<<<<<<< HEAD
 static void a6xx_rgmu_snapshot(struct kgsl_device *device,
 		struct kgsl_snapshot *snapshot)
 {
-=======
-static void a6xx_rgmu_snapshot(struct adreno_device *adreno_dev,
-		struct kgsl_snapshot *snapshot)
-{
-	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	adreno_snapshot_registers(device, snapshot, a6xx_rgmu_registers,
 					ARRAY_SIZE(a6xx_rgmu_registers) / 2);

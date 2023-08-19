@@ -35,10 +35,7 @@
 #include <linux/interrupt.h>
 #include <linux/clk.h>
 #include <linux/module.h>
-<<<<<<< HEAD
 #include <linux/mod_devicetable.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/slab.h>
 #include <linux/platform_data/dma-s3c24xx.h>
 
@@ -736,11 +733,7 @@ static int s3c24xx_dma_terminate_all(struct dma_chan *chan)
 
 	/* Dequeue current job */
 	if (s3cchan->at) {
-<<<<<<< HEAD
 		vchan_terminate_vdesc(&s3cchan->at->vd);
-=======
-		s3c24xx_dma_desc_free(&s3cchan->at->vd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		s3cchan->at = NULL;
 	}
 
@@ -752,7 +745,6 @@ unlock:
 	return ret;
 }
 
-<<<<<<< HEAD
 static void s3c24xx_dma_synchronize(struct dma_chan *chan)
 {
 	struct s3c24xx_dma_chan *s3cchan = to_s3c24xx_dma_chan(chan);
@@ -760,8 +752,6 @@ static void s3c24xx_dma_synchronize(struct dma_chan *chan)
 	vchan_synchronize(&s3cchan->vc);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void s3c24xx_dma_free_chan_resources(struct dma_chan *chan)
 {
 	/* Ensure all queued descriptors are freed */
@@ -1234,15 +1224,9 @@ static int s3c24xx_dma_probe(struct platform_device *pdev)
 	if (IS_ERR(s3cdma->base))
 		return PTR_ERR(s3cdma->base);
 
-<<<<<<< HEAD
 	s3cdma->phy_chans = devm_kcalloc(&pdev->dev,
 					      pdata->num_phy_channels,
 					      sizeof(struct s3c24xx_dma_phy),
-=======
-	s3cdma->phy_chans = devm_kzalloc(&pdev->dev,
-					      sizeof(struct s3c24xx_dma_phy) *
-							pdata->num_phy_channels,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					      GFP_KERNEL);
 	if (!s3cdma->phy_chans)
 		return -ENOMEM;
@@ -1306,10 +1290,7 @@ static int s3c24xx_dma_probe(struct platform_device *pdev)
 	s3cdma->memcpy.device_issue_pending = s3c24xx_dma_issue_pending;
 	s3cdma->memcpy.device_config = s3c24xx_dma_set_runtime_config;
 	s3cdma->memcpy.device_terminate_all = s3c24xx_dma_terminate_all;
-<<<<<<< HEAD
 	s3cdma->memcpy.device_synchronize = s3c24xx_dma_synchronize;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Initialize slave engine for SoC internal dedicated peripherals */
 	dma_cap_set(DMA_SLAVE, s3cdma->slave.cap_mask);
@@ -1324,10 +1305,7 @@ static int s3c24xx_dma_probe(struct platform_device *pdev)
 	s3cdma->slave.device_prep_dma_cyclic = s3c24xx_dma_prep_dma_cyclic;
 	s3cdma->slave.device_config = s3c24xx_dma_set_runtime_config;
 	s3cdma->slave.device_terminate_all = s3c24xx_dma_terminate_all;
-<<<<<<< HEAD
 	s3cdma->slave.device_synchronize = s3c24xx_dma_synchronize;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	s3cdma->slave.filter.map = pdata->slave_map;
 	s3cdma->slave.filter.mapcnt = pdata->slavecnt;
 	s3cdma->slave.filter.fn = s3c24xx_dma_filter;

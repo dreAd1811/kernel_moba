@@ -100,10 +100,7 @@
 /* Base address */
 #define SH_ETH0_BASE 0xA7000000
 #define SH_ETH1_BASE 0xA7000400
-<<<<<<< HEAD
 #define SH_TSU_BASE  0xA7000800
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* PHY ID */
 #if defined(CONFIG_CPU_SUBTYPE_SH7710)
 # define PHY_ID 0x00

@@ -59,14 +59,11 @@ static u32 nfp_mutex_unlocked(u16 interface)
 	return (u32)interface << 16 | 0x0000;
 }
 
-<<<<<<< HEAD
 static u32 nfp_mutex_owner(u32 val)
 {
 	return val >> 16;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool nfp_mutex_is_locked(u32 val)
 {
 	return (val & 0xffff) == 0x000f;
@@ -219,16 +216,11 @@ int nfp_cpp_mutex_lock(struct nfp_cpp_mutex *mutex)
 			break;
 
 		err = msleep_interruptible(timeout_ms);
-<<<<<<< HEAD
 		if (err != 0) {
 			nfp_info(mutex->cpp,
 				 "interrupted waiting for NFP mutex\n");
 			return -ERESTARTSYS;
 		}
-=======
-		if (err != 0)
-			return -ERESTARTSYS;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (time_is_before_eq_jiffies(warn_at)) {
 			warn_at = jiffies + NFP_MUTEX_WAIT_NEXT_WARN * HZ;
@@ -364,7 +356,6 @@ int nfp_cpp_mutex_trylock(struct nfp_cpp_mutex *mutex)
 
 	return nfp_mutex_is_locked(tmp) ? -EBUSY : -EINVAL;
 }
-<<<<<<< HEAD
 
 /**
  * nfp_cpp_mutex_reclaim() - Unlock mutex if held by local endpoint
@@ -405,5 +396,3 @@ int nfp_cpp_mutex_reclaim(struct nfp_cpp *cpp, int target,
 
 	return 1;
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

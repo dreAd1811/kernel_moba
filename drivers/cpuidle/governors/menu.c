@@ -12,10 +12,6 @@
 
 #include <linux/kernel.h>
 #include <linux/cpuidle.h>
-<<<<<<< HEAD
-=======
-#include <linux/pm_qos.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/time.h>
 #include <linux/ktime.h>
 #include <linux/hrtimer.h>
@@ -24,10 +20,6 @@
 #include <linux/sched/loadavg.h>
 #include <linux/sched/stat.h>
 #include <linux/math64.h>
-<<<<<<< HEAD
-=======
-#include <linux/cpu.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Please note when changing the tuning values:
@@ -293,22 +285,13 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
 		       bool *stop_tick)
 {
 	struct menu_device *data = this_cpu_ptr(&menu_devices);
-<<<<<<< HEAD
 	int latency_req = cpuidle_governor_latency_req(dev->cpu);
-=======
-	struct device *device = get_cpu_device(dev->cpu);
-	int latency_req = pm_qos_request(PM_QOS_CPU_DMA_LATENCY);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 	int first_idx;
 	int idx;
 	unsigned int interactivity_req;
 	unsigned int expected_interval;
 	unsigned long nr_iowaiters, cpu_load;
-<<<<<<< HEAD
-=======
-	int resume_latency = dev_pm_qos_raw_read_value(device);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ktime_t delta_next;
 
 	if (data->needs_update) {
@@ -316,13 +299,6 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
 		data->needs_update = 0;
 	}
 
-<<<<<<< HEAD
-=======
-	/* resume_latency is 0 means no restriction */
-	if (resume_latency && resume_latency < latency_req)
-		latency_req = resume_latency;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Special case when user has set very strict latency requirement */
 	if (unlikely(latency_req == 0)) {
 		*stop_tick = false;
@@ -353,14 +329,8 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
 		unsigned int polling_threshold;
 
 		/*
-<<<<<<< HEAD
 		 * Default to a physical idle state, not to busy polling, unless
 		 * a timer is going to trigger really really soon.
-=======
-		 * We want to default to C1 (hlt), not to busy polling
-		 * unless the timer is happening really really soon, or
-		 * C1's exit latency exceeds the user configured limit.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 */
 		polling_threshold = max_t(unsigned int, 20, s->target_residency);
 		if (data->next_timer_us > polling_threshold &&
@@ -379,23 +349,12 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
 		 * If the tick is already stopped, the cost of possible short
 		 * idle duration misprediction is much higher, because the CPU
 		 * may be stuck in a shallow idle state for a long time as a
-<<<<<<< HEAD
 		 * result of it.  In that case say we might mispredict and use
 		 * the known time till the closest timer event for the idle
 		 * state selection.
 		 */
 		if (data->predicted_us < TICK_USEC)
 			data->predicted_us = ktime_to_us(delta_next);
-=======
-		 * result of it.  In that case say we might mispredict and try
-		 * to force the CPU into a state for which we would have stopped
-		 * the tick, unless a timer is going to expire really soon
-		 * anyway.
-		 */
-		if (data->predicted_us < TICK_USEC)
-			data->predicted_us = min_t(unsigned int, TICK_USEC,
-						   ktime_to_us(delta_next));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		/*
 		 * Use the performance multiplier and the user-configurable
@@ -420,7 +379,6 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
 			continue;
 		if (idx == -1)
 			idx = i; /* first enabled state */
-<<<<<<< HEAD
 		if (s->target_residency > data->predicted_us) {
 			if (data->predicted_us < TICK_USEC)
 				break;
@@ -448,10 +406,6 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
 
 			goto out;
 		}
-=======
-		if (s->target_residency > data->predicted_us)
-			break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (s->exit_latency > latency_req) {
 			/*
 			 * If we break out of the loop for latency reasons, use
@@ -472,23 +426,13 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
 	 * Don't stop the tick if the selected state is a polling one or if the
 	 * expected idle duration is shorter than the tick period length.
 	 */
-<<<<<<< HEAD
 	if (((drv->states[idx].flags & CPUIDLE_FLAG_POLLING) ||
 	     expected_interval < TICK_USEC) && !tick_nohz_tick_stopped()) {
-=======
-	if ((drv->states[idx].flags & CPUIDLE_FLAG_POLLING) ||
-	    expected_interval < TICK_USEC) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		unsigned int delta_next_us = ktime_to_us(delta_next);
 
 		*stop_tick = false;
 
-<<<<<<< HEAD
 		if (idx > 0 && drv->states[idx].target_residency > delta_next_us) {
-=======
-		if (!tick_nohz_tick_stopped() && idx > 0 &&
-		    drv->states[idx].target_residency > delta_next_us) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/*
 			 * The tick is not going to be stopped and the target
 			 * residency of the state to be returned is not within
@@ -496,13 +440,8 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
 			 * tick, so try to correct that.
 			 */
 			for (i = idx - 1; i >= 0; i--) {
-<<<<<<< HEAD
 				if (drv->states[i].disabled ||
 				    dev->states_usage[i].disable)
-=======
-			    if (drv->states[i].disabled ||
-			        dev->states_usage[i].disable)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					continue;
 
 				idx = i;
@@ -512,10 +451,7 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
 		}
 	}
 
-<<<<<<< HEAD
 out:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	data->last_state_idx = idx;
 
 	return data->last_state_idx;

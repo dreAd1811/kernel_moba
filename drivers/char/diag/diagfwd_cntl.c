@@ -1,18 +1,5 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /* Copyright (c) 2011-2020, The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2011-2020, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/slab.h>
@@ -121,11 +108,7 @@ void diag_notify_md_client(uint8_t proc, uint8_t peripheral, int data)
 	if (peripheral > NUM_PERIPHERALS)
 		return;
 
-<<<<<<< HEAD
 	if (driver->logging_mode[proc] != DIAG_MEMORY_DEVICE_MODE)
-=======
-	if (driver->logging_mode[DIAG_LOCAL_PROC] != DIAG_MEMORY_DEVICE_MODE)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	mutex_lock(&driver->md_session_lock);
@@ -437,15 +420,12 @@ static void process_incoming_feature_mask(uint8_t *buf, uint32_t len,
 			driver->feature[peripheral].diag_id_support = 1;
 		if (FEATURE_SUPPORTED(F_DIAG_PD_BUFFERING))
 			driver->feature[peripheral].pd_buffering = 1;
-<<<<<<< HEAD
 		if (FEATURE_SUPPORTED(F_DIAGID_FEATURE_MASK))
 			driver->feature[peripheral].diagid_v2_feature_mask = 1;
 		if (FEATURE_SUPPORTED(F_DIAG_MULTI_SIM_SUPPORT)) {
 			driver->feature[peripheral].multi_sim_support = 1;
 			driver->multisim_feature_rcvd = 1;
 		}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	process_socket_feature(peripheral);
@@ -621,12 +601,8 @@ static void process_ssid_range_report(uint8_t *buf, uint32_t len,
 		}
 		msg_mask.ptr = temp;
 		mask_ptr = (struct diag_msg_mask_t *)msg_mask.ptr;
-<<<<<<< HEAD
 		err = diag_create_msg_mask_table_entry(mask_ptr,
 				ssid_range, INVALID_INDEX);
-=======
-		err = diag_create_msg_mask_table_entry(mask_ptr, ssid_range);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (err) {
 			pr_err("diag: In %s, Unable to create a new msg mask table entry, first: %d last: %d err: %d\n",
 			       __func__, ssid_range->ssid_first,
@@ -702,12 +678,8 @@ static void diag_build_time_mask_update(uint8_t *buf,
 	}
 	driver->build_time_mask->ptr = temp;
 	build_mask = (struct diag_msg_mask_t *)driver->build_time_mask->ptr;
-<<<<<<< HEAD
 	err = diag_create_msg_mask_table_entry(build_mask, range,
 		INVALID_INDEX);
-=======
-	err = diag_create_msg_mask_table_entry(build_mask, range);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err) {
 		pr_err("diag: In %s, Unable to create a new msg mask table entry, err: %d\n",
 		       __func__, err);
@@ -780,7 +752,6 @@ int diag_add_diag_id_to_list(uint8_t diag_id, char *process_name,
 	return 0;
 }
 
-<<<<<<< HEAD
 static void diag_add_fmask_to_diagid_table(uint8_t diag_id,
 	uint32_t pd_feature_mask)
 {
@@ -809,8 +780,6 @@ static void diag_add_fmask_to_diagid_table(uint8_t diag_id,
 	mutex_unlock(&driver->diag_id_mutex);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int diag_query_diag_id(char *process_name, uint8_t *diag_id)
 {
 	struct list_head *start;
@@ -832,7 +801,6 @@ int diag_query_diag_id(char *process_name, uint8_t *diag_id)
 	mutex_unlock(&driver->diag_id_mutex);
 	return 0;
 }
-<<<<<<< HEAD
 
 void process_diagid_v2_feature_mask(uint32_t diag_id,
 		uint32_t pd_feature_mask)
@@ -873,25 +841,10 @@ static void process_diagid(uint8_t *buf, uint32_t len,
 	uint8_t new_request = 0, i = 0, ch_type = 0;
 	uint32_t version = 0, feature_len = 0;
 	uint32_t pd_feature_mask = 0;
-=======
-static void process_diagid(uint8_t *buf, uint32_t len,
-				      uint8_t peripheral)
-{
-	struct diag_ctrl_diagid *header = NULL;
-	struct diag_ctrl_diagid ctrl_pkt;
-	struct diagfwd_info *fwd_info = NULL;
-	char *process_name = NULL;
-	int err = 0;
-	int pd_val;
-	char *root_str = NULL;
-	uint8_t local_diag_id = 0;
-	uint8_t new_request = 0, i = 0, ch_type = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!buf || len == 0 || peripheral >= NUM_PERIPHERALS)
 		return;
 
-<<<<<<< HEAD
 	diagid_v2_feature_mask =
 		P_FMASK_DIAGID_V2(peripheral);
 
@@ -930,13 +883,6 @@ static void process_diagid(uint8_t *buf, uint32_t len,
 	if (diag_query_diag_id(process_name, &local_diag_id)) {
 		/* Do nothing in this if block */
 	} else {
-=======
-	header = (struct diag_ctrl_diagid *)buf;
-	process_name = (char *)&header->process_name;
-	if (diag_query_diag_id(process_name, &local_diag_id))
-		ctrl_pkt.diag_id = local_diag_id;
-	else {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		diag_id++;
 		new_request = 1;
 		pd_val = diag_query_pd(process_name);
@@ -944,7 +890,6 @@ static void process_diagid(uint8_t *buf, uint32_t len,
 			return;
 		diag_add_diag_id_to_list(diag_id, process_name,
 			pd_val, peripheral);
-<<<<<<< HEAD
 		if (diagid_v2_feature_mask) {
 			diag_add_fmask_to_diagid_table(diag_id,
 				pd_feature_mask);
@@ -954,10 +899,6 @@ static void process_diagid(uint8_t *buf, uint32_t len,
 		local_diag_id = diag_id;
 	}
 
-=======
-		ctrl_pkt.diag_id = diag_id;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	root_str = strnstr(process_name, DIAG_ID_ROOT_STRING,
 		strlen(process_name));
 
@@ -971,11 +912,7 @@ static void process_diagid(uint8_t *buf, uint32_t len,
 
 			if (root_str) {
 				fwd_info->root_diag_id.diagid_val =
-<<<<<<< HEAD
 					local_diag_id;
-=======
-					ctrl_pkt.diag_id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				fwd_info->root_diag_id.reg_str =
 					process_name;
 				fwd_info->root_diag_id.pd = pd_val;
@@ -983,11 +920,7 @@ static void process_diagid(uint8_t *buf, uint32_t len,
 				i = fwd_info->num_pd - 2;
 				if (i >= 0 && i < MAX_PERIPHERAL_UPD) {
 					fwd_info->upd_diag_id[i].diagid_val =
-<<<<<<< HEAD
 						local_diag_id;
-=======
-						ctrl_pkt.diag_id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					fwd_info->upd_diag_id[i].reg_str =
 						process_name;
 					fwd_info->upd_diag_id[i].pd = pd_val;
@@ -998,7 +931,6 @@ static void process_diagid(uint8_t *buf, uint32_t len,
 
 	DIAG_LOG(DIAG_DEBUG_PERIPHERALS,
 		"diag: peripheral = %d: diag_id string = %s,diag_id = %d\n",
-<<<<<<< HEAD
 		peripheral, process_name, local_diag_id);
 
 	ctrl_pkt.diag_id = local_diag_id;
@@ -1012,18 +944,6 @@ static void process_diagid(uint8_t *buf, uint32_t len,
 		sizeof(ctrl_pkt.header.len);
 	err = diagfwd_write(peripheral, TYPE_CNTL,
 				&ctrl_pkt, pkt_len);
-=======
-		peripheral, process_name, ctrl_pkt.diag_id);
-
-	ctrl_pkt.pkt_id = DIAG_CTRL_MSG_DIAGID;
-	ctrl_pkt.version = 1;
-	strlcpy((char *)&ctrl_pkt.process_name, process_name,
-		sizeof(ctrl_pkt.process_name));
-	ctrl_pkt.len = sizeof(ctrl_pkt.diag_id) + sizeof(ctrl_pkt.version) +
-			strlen(process_name) + 1;
-	err = diagfwd_write(peripheral, TYPE_CNTL, &ctrl_pkt, ctrl_pkt.len +
-				sizeof(ctrl_pkt.pkt_id) + sizeof(ctrl_pkt.len));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err && err != -ENODEV) {
 		pr_err("diag: Unable to send diag id ctrl packet to peripheral %d, err: %d\n",
 		       peripheral, err);
@@ -1046,11 +966,7 @@ static void process_diagid(uint8_t *buf, uint32_t len,
 		DIAG_LOG(DIAG_DEBUG_PERIPHERALS,
 		"diag: diag_id sent = %d to peripheral = %d with diag_id = %d for %s :\n",
 			driver->diag_id_sent[peripheral], peripheral,
-<<<<<<< HEAD
 			local_diag_id, process_name);
-=======
-			ctrl_pkt.diag_id, process_name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -1073,12 +989,7 @@ void diag_cntl_process_read_data(struct diagfwd_info *p_info, void *buf,
 
 	while (read_len + header_len < len) {
 		ctrl_pkt = (struct diag_ctrl_pkt_header_t *)ptr;
-<<<<<<< HEAD
 		if ((read_len + header_len + ctrl_pkt->len) > len)
-=======
-		if (((size_t)read_len + (size_t)ctrl_pkt->len +
-			header_len) > len)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return;
 		switch (ctrl_pkt->pkt_id) {
 		case DIAG_CTRL_MSG_REG:
@@ -1143,11 +1054,7 @@ static int diag_compute_real_time(int idx)
 		 * connection.
 		 */
 		real_time = MODE_REALTIME;
-<<<<<<< HEAD
 	} else if (driver->usb_connected) {
-=======
-	} else if (driver->usb_connected || driver->pcie_connected) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * If USB is connected, check individual process. If Memory
 		 * Device Mode is active, set the mode requested by Memory
@@ -1355,11 +1262,7 @@ void diag_real_time_work_fn(struct work_struct *work)
 	for (i = 0; i < DIAG_NUM_PROC; i++) {
 		temp_real_time = diag_compute_real_time(i);
 		if (temp_real_time == driver->real_time_mode[i]) {
-<<<<<<< HEAD
 			pr_debug("diag: did not update real time mode on proc %d, already in the req mode %d\n",
-=======
-			pr_debug("diag: did not update real time mode on proc %d, already in the req mode %d",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				i, temp_real_time);
 			continue;
 		}
@@ -1401,11 +1304,7 @@ void diag_real_time_work_fn(struct work_struct *work)
 			temp_real_time = MODE_NONREALTIME;
 		}
 		if (temp_real_time == driver->real_time_mode[i]) {
-<<<<<<< HEAD
 			pr_debug("diag: did not update real time mode on proc %d, already in the req mode %d\n",
-=======
-			pr_debug("diag: did not update real time mode on proc %d, already in the req mode %d",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				i, temp_real_time);
 			continue;
 		}
@@ -1608,7 +1507,6 @@ fail:
 	return err;
 }
 
-<<<<<<< HEAD
 void diag_send_hw_accel_status(uint8_t peripheral)
 {
 	struct diag_hw_accel_cmd_req_t req_params;
@@ -1674,8 +1572,6 @@ void diag_send_hw_accel_status(uint8_t peripheral)
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int diag_send_stm_state(uint8_t peripheral, uint8_t stm_control_data)
 {
 	struct diag_ctrl_msg_stm stm_msg;
@@ -1926,7 +1822,6 @@ int diag_send_buffering_wm_values(uint8_t peripheral,
 	return err;
 }
 
-<<<<<<< HEAD
 int diag_send_passthru_ctrl_pkt(struct diag_hw_accel_cmd_req_t *req_params)
 {
 	struct diag_ctrl_passthru ctrl_pkt;
@@ -2011,11 +1906,6 @@ int diagfwd_cntl_init(void)
 {
 	uint8_t peripheral = 0;
 	uint32_t diagid_mask = 0;
-=======
-int diagfwd_cntl_init(void)
-{
-	uint8_t peripheral = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	driver->polling_reg_flag = 0;
 	driver->log_on_demand_support = 1;
@@ -2036,12 +1926,9 @@ int diagfwd_cntl_init(void)
 	if (!driver->cntl_wq)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	diagid_mask = (BITMASK_DIAGID_FMASK | BITMASK_HW_ACCEL_STM_V1);
 	process_diagid_v2_feature_mask(DIAG_ID_APPS, diagid_mask);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

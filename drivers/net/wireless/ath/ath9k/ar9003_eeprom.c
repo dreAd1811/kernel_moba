@@ -15,10 +15,7 @@
  */
 
 #include <asm/unaligned.h>
-<<<<<<< HEAD
 #include <linux/kernel.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "hw.h"
 #include "ar9003_phy.h"
 #include "ar9003_eeprom.h"
@@ -2950,23 +2947,12 @@ static const struct ar9300_eeprom *ar9300_eep_templates[] = {
 
 static const struct ar9300_eeprom *ar9003_eeprom_struct_find_by_id(int id)
 {
-<<<<<<< HEAD
 	int it;
 
 	for (it = 0; it < ARRAY_SIZE(ar9300_eep_templates); it++)
 		if (ar9300_eep_templates[it]->templateVersion == id)
 			return ar9300_eep_templates[it];
 	return NULL;
-=======
-#define N_LOOP (sizeof(ar9300_eep_templates) / sizeof(ar9300_eep_templates[0]))
-	int it;
-
-	for (it = 0; it < N_LOOP; it++)
-		if (ar9300_eep_templates[it]->templateVersion == id)
-			return ar9300_eep_templates[it];
-	return NULL;
-#undef N_LOOP
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int ath9k_hw_ar9300_check_eeprom(struct ath_hw *ah)
@@ -3324,15 +3310,12 @@ static int ar9300_eeprom_restore_internal(struct ath_hw *ah,
 	if (ar9300_check_eeprom_header(ah, read, cptr))
 		goto found;
 
-<<<<<<< HEAD
 	cptr = AR9300_BASE_ADDR_4K;
 	ath_dbg(common, EEPROM, "Trying EEPROM access at Address 0x%04x\n",
 		cptr);
 	if (ar9300_check_eeprom_header(ah, read, cptr))
 		goto found;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cptr = AR9300_BASE_ADDR_512;
 	ath_dbg(common, EEPROM, "Trying EEPROM access at Address 0x%04x\n",
 		cptr);
@@ -3453,7 +3436,6 @@ static u32 ar9003_dump_modal_eeprom(char *buf, u32 len, u32 size,
 	return len;
 }
 
-<<<<<<< HEAD
 static u32 ar9003_dump_cal_data(struct ath_hw *ah, char *buf, u32 len, u32 size,
 				bool is_2g)
 {
@@ -3508,8 +3490,6 @@ static u32 ar9003_dump_cal_data(struct ath_hw *ah, char *buf, u32 len, u32 size,
 	return len;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static u32 ath9k_hw_ar9003_dump_eeprom(struct ath_hw *ah, bool dump_base_hdr,
 				       u8 *buf, u32 len, u32 size)
 {
@@ -3521,7 +3501,6 @@ static u32 ath9k_hw_ar9003_dump_eeprom(struct ath_hw *ah, bool dump_base_hdr,
 				 "%20s :\n", "2GHz modal Header");
 		len = ar9003_dump_modal_eeprom(buf, len, size,
 						&eep->modalHeader2G);
-<<<<<<< HEAD
 
 		len += scnprintf(buf + len, size - len, "Calibration data\n");
 		len = ar9003_dump_cal_data(ah, buf, len, size, true);
@@ -3534,12 +3513,6 @@ static u32 ath9k_hw_ar9003_dump_eeprom(struct ath_hw *ah, bool dump_base_hdr,
 		len += snprintf(buf + len, size - len, "Calibration data\n");
 		len = ar9003_dump_cal_data(ah, buf, len, size, false);
 
-=======
-		len += scnprintf(buf + len, size - len,
-				 "%20s :\n", "5GHz modal Header");
-		len = ar9003_dump_modal_eeprom(buf, len, size,
-						&eep->modalHeader5G);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out;
 	}
 
@@ -4210,11 +4183,7 @@ static void ar9003_hw_thermometer_apply(struct ath_hw *ah)
 
 static void ar9003_hw_thermo_cal_apply(struct ath_hw *ah)
 {
-<<<<<<< HEAD
 	u32 data, ko, kg;
-=======
-	u32 data = 0, ko, kg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!AR_SREV_9462_20_OR_LATER(ah))
 		return;
@@ -4782,12 +4751,8 @@ static int ar9003_hw_cal_pier_get(struct ath_hw *ah,
 				  int ichain,
 				  int *pfrequency,
 				  int *pcorrection,
-<<<<<<< HEAD
 				  int *ptemperature, int *pvoltage,
 				  int *pnf_cal, int *pnf_power)
-=======
-				  int *ptemperature, int *pvoltage)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u8 *pCalPier;
 	struct ar9300_cal_data_per_freq_op_loop *pCalPierStruct;
@@ -4829,13 +4794,10 @@ static int ar9003_hw_cal_pier_get(struct ath_hw *ah,
 	*pcorrection = pCalPierStruct->refPower;
 	*ptemperature = pCalPierStruct->tempMeas;
 	*pvoltage = pCalPierStruct->voltMeas;
-<<<<<<< HEAD
 	*pnf_cal = pCalPierStruct->rxTempMeas ?
 			N2DBM(pCalPierStruct->rxNoisefloorCal) : 0;
 	*pnf_power = pCalPierStruct->rxTempMeas ?
 			N2DBM(pCalPierStruct->rxNoisefloorPower) : 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -5000,7 +4962,6 @@ static int ar9003_hw_calibration_apply(struct ath_hw *ah, int frequency)
 	int mode;
 	int lfrequency[AR9300_MAX_CHAINS],
 	    lcorrection[AR9300_MAX_CHAINS],
-<<<<<<< HEAD
 	    ltemperature[AR9300_MAX_CHAINS], lvoltage[AR9300_MAX_CHAINS],
 	    lnf_cal[AR9300_MAX_CHAINS], lnf_pwr[AR9300_MAX_CHAINS];
 	int hfrequency[AR9300_MAX_CHAINS],
@@ -5013,16 +4974,6 @@ static int ar9003_hw_calibration_apply(struct ath_hw *ah, int frequency)
 	    nf_cal[AR9300_MAX_CHAINS], nf_pwr[AR9300_MAX_CHAINS];
 	int pfrequency, pcorrection, ptemperature, pvoltage,
 	    pnf_cal, pnf_pwr;
-=======
-	    ltemperature[AR9300_MAX_CHAINS], lvoltage[AR9300_MAX_CHAINS];
-	int hfrequency[AR9300_MAX_CHAINS],
-	    hcorrection[AR9300_MAX_CHAINS],
-	    htemperature[AR9300_MAX_CHAINS], hvoltage[AR9300_MAX_CHAINS];
-	int fdiff;
-	int correction[AR9300_MAX_CHAINS],
-	    voltage[AR9300_MAX_CHAINS], temperature[AR9300_MAX_CHAINS];
-	int pfrequency, pcorrection, ptemperature, pvoltage;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ath_common *common = ath9k_hw_common(ah);
 
 	mode = (frequency >= 4000);
@@ -5040,12 +4991,8 @@ static int ar9003_hw_calibration_apply(struct ath_hw *ah, int frequency)
 		for (ipier = 0; ipier < npier; ipier++) {
 			if (!ar9003_hw_cal_pier_get(ah, mode, ipier, ichain,
 						    &pfrequency, &pcorrection,
-<<<<<<< HEAD
 						    &ptemperature, &pvoltage,
 						    &pnf_cal, &pnf_pwr)) {
-=======
-						    &ptemperature, &pvoltage)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				fdiff = frequency - pfrequency;
 
 				/*
@@ -5067,11 +5014,8 @@ static int ar9003_hw_calibration_apply(struct ath_hw *ah, int frequency)
 						htemperature[ichain] =
 						    ptemperature;
 						hvoltage[ichain] = pvoltage;
-<<<<<<< HEAD
 						hnf_cal[ichain] = pnf_cal;
 						hnf_pwr[ichain] = pnf_pwr;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					}
 				}
 				if (fdiff >= 0) {
@@ -5088,11 +5032,8 @@ static int ar9003_hw_calibration_apply(struct ath_hw *ah, int frequency)
 						ltemperature[ichain] =
 						    ptemperature;
 						lvoltage[ichain] = pvoltage;
-<<<<<<< HEAD
 						lnf_cal[ichain] = pnf_cal;
 						lnf_pwr[ichain] = pnf_pwr;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					}
 				}
 			}
@@ -5101,7 +5042,6 @@ static int ar9003_hw_calibration_apply(struct ath_hw *ah, int frequency)
 
 	/* interpolate  */
 	for (ichain = 0; ichain < AR9300_MAX_CHAINS; ichain++) {
-<<<<<<< HEAD
 		ath_dbg(common, EEPROM,
 			"ch=%d f=%d low=%d %d h=%d %d n=%d %d p=%d %d\n",
 			ichain, frequency, lfrequency[ichain],
@@ -5109,22 +5049,13 @@ static int ar9003_hw_calibration_apply(struct ath_hw *ah, int frequency)
 			hcorrection[ichain], lnf_cal[ichain],
 			hnf_cal[ichain], lnf_pwr[ichain],
 			hnf_pwr[ichain]);
-=======
-		ath_dbg(common, EEPROM, "ch=%d f=%d low=%d %d h=%d %d\n",
-			ichain, frequency, lfrequency[ichain],
-			lcorrection[ichain], hfrequency[ichain],
-			hcorrection[ichain]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* they're the same, so just pick one */
 		if (hfrequency[ichain] == lfrequency[ichain]) {
 			correction[ichain] = lcorrection[ichain];
 			voltage[ichain] = lvoltage[ichain];
 			temperature[ichain] = ltemperature[ichain];
-<<<<<<< HEAD
 			nf_cal[ichain] = lnf_cal[ichain];
 			nf_pwr[ichain] = lnf_pwr[ichain];
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		/* the low frequency is good */
 		else if (frequency - lfrequency[ichain] < 1000) {
@@ -5148,7 +5079,6 @@ static int ar9003_hw_calibration_apply(struct ath_hw *ah, int frequency)
 						hfrequency[ichain],
 						lvoltage[ichain],
 						hvoltage[ichain]);
-<<<<<<< HEAD
 
 				nf_cal[ichain] = interpolate(frequency,
 						lfrequency[ichain],
@@ -5161,19 +5091,14 @@ static int ar9003_hw_calibration_apply(struct ath_hw *ah, int frequency)
 						hfrequency[ichain],
 						lnf_pwr[ichain],
 						hnf_pwr[ichain]);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 			/* only low is good, use it */
 			else {
 				correction[ichain] = lcorrection[ichain];
 				temperature[ichain] = ltemperature[ichain];
 				voltage[ichain] = lvoltage[ichain];
-<<<<<<< HEAD
 				nf_cal[ichain] = lnf_cal[ichain];
 				nf_pwr[ichain] = lnf_pwr[ichain];
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		}
 		/* only high is good, use it */
@@ -5181,20 +5106,14 @@ static int ar9003_hw_calibration_apply(struct ath_hw *ah, int frequency)
 			correction[ichain] = hcorrection[ichain];
 			temperature[ichain] = htemperature[ichain];
 			voltage[ichain] = hvoltage[ichain];
-<<<<<<< HEAD
 			nf_cal[ichain] = hnf_cal[ichain];
 			nf_pwr[ichain] = hnf_pwr[ichain];
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else {	/* nothing is good, presume 0???? */
 			correction[ichain] = 0;
 			temperature[ichain] = 0;
 			voltage[ichain] = 0;
-<<<<<<< HEAD
 			nf_cal[ichain] = 0;
 			nf_pwr[ichain] = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -5205,7 +5124,6 @@ static int ar9003_hw_calibration_apply(struct ath_hw *ah, int frequency)
 		"for frequency=%d, calibration correction = %d %d %d\n",
 		frequency, correction[0], correction[1], correction[2]);
 
-<<<<<<< HEAD
 	/* Store calibrated noise floor values */
 	for (ichain = 0; ichain < AR5416_MAX_CHAINS; ichain++)
 		if (mode) {
@@ -5216,8 +5134,6 @@ static int ar9003_hw_calibration_apply(struct ath_hw *ah, int frequency)
 			ah->nf_2g.pwr[ichain] = nf_pwr[ichain];
 		}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

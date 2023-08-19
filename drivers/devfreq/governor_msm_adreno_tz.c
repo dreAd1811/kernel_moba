@@ -1,20 +1,6 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2010-2020, The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2010-2019, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #include <linux/errno.h>
 #include <linux/module.h>
@@ -28,11 +14,8 @@
 #include <linux/msm_adreno_devfreq.h>
 #include <asm/cacheflush.h>
 #include <soc/qcom/scm.h>
-<<<<<<< HEAD
 #include <soc/qcom/qtee_shmbridge.h>
 #include <linux/of_platform.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "governor.h"
 
 static DEFINE_SPINLOCK(tz_lock);
@@ -73,7 +56,6 @@ static u64 suspend_time;
 static u64 suspend_start;
 static unsigned long acc_total, acc_relative_busy;
 
-<<<<<<< HEAD
 static struct msm_adreno_extended_profile *partner_gpu_profile;
 static void do_partner_start_event(struct work_struct *work);
 static void do_partner_stop_event(struct work_struct *work);
@@ -82,8 +64,6 @@ static void do_partner_resume_event(struct work_struct *work);
 
 static struct workqueue_struct *workqueue;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Returns GPU suspend time in millisecond.
  */
@@ -148,17 +128,9 @@ static ssize_t suspend_time_show(struct device *dev,
 	return snprintf(buf, PAGE_SIZE, "%llu\n", time_diff);
 }
 
-<<<<<<< HEAD
 static DEVICE_ATTR_RO(gpu_load);
 
 static DEVICE_ATTR_RO(suspend_time);
-=======
-static DEVICE_ATTR(gpu_load, 0444, gpu_load_show, NULL);
-
-static DEVICE_ATTR(suspend_time, 0444,
-		suspend_time_show,
-		NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static const struct device_attribute *adreno_tz_attr_list[] = {
 		&dev_attr_gpu_load,
@@ -263,16 +235,12 @@ static int tz_init_ca(struct devfreq_msm_adreno_tz_data *priv)
 	struct scm_desc desc = {0};
 	u8 *tz_buf;
 	int ret;
-<<<<<<< HEAD
 	struct qtee_shm shm;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Set data for TZ */
 	tz_ca_data[0] = priv->bin.ctxt_aware_target_pwrlevel;
 	tz_ca_data[1] = priv->bin.ctxt_aware_busy_penalty;
 
-<<<<<<< HEAD
 	if (!qtee_shmbridge_is_enabled()) {
 		tz_buf = kzalloc(PAGE_ALIGN(sizeof(tz_ca_data)), GFP_KERNEL);
 		if (!tz_buf)
@@ -286,11 +254,6 @@ static int tz_init_ca(struct devfreq_msm_adreno_tz_data *priv)
 		tz_buf = shm.vaddr;
 		desc.args[0] = shm.paddr;
 	}
-=======
-	tz_buf = kzalloc(PAGE_ALIGN(sizeof(tz_ca_data)), GFP_KERNEL);
-	if (!tz_buf)
-		return -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memcpy(tz_buf, tz_ca_data, sizeof(tz_ca_data));
 	/* Ensure memcpy completes execution */
@@ -298,25 +261,16 @@ static int tz_init_ca(struct devfreq_msm_adreno_tz_data *priv)
 	dmac_flush_range(tz_buf,
 		tz_buf + PAGE_ALIGN(sizeof(tz_ca_data)));
 
-<<<<<<< HEAD
-=======
-	desc.args[0] = virt_to_phys(tz_buf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	desc.args[1] = sizeof(tz_ca_data);
 	desc.arginfo = SCM_ARGS(2, SCM_RW, SCM_VAL);
 
 	ret = scm_call2(SCM_SIP_FNID(SCM_SVC_DCVS,
 			TZ_V2_INIT_CA_ID_64),
 			&desc);
-<<<<<<< HEAD
 	if (!qtee_shmbridge_is_enabled())
 		kzfree(tz_buf);
 	else
 		qtee_shmbridge_free_shm(&shm);
-=======
-
-	kzfree(tz_buf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -332,7 +286,6 @@ static int tz_init(struct devfreq_msm_adreno_tz_data *priv,
 			scm_is_call_available(SCM_SVC_DCVS, TZ_RESET_ID_64)) {
 		struct scm_desc desc = {0};
 		u8 *tz_buf;
-<<<<<<< HEAD
 		struct qtee_shm shm;
 
 		if (!qtee_shmbridge_is_enabled()) {
@@ -350,21 +303,11 @@ static int tz_init(struct devfreq_msm_adreno_tz_data *priv,
 			desc.args[0] = shm.paddr;
 		}
 
-=======
-
-		tz_buf = kzalloc(PAGE_ALIGN(size_pwrlevels), GFP_KERNEL);
-		if (!tz_buf)
-			return -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		memcpy(tz_buf, tz_pwrlevels, size_pwrlevels);
 		/* Ensure memcpy completes execution */
 		mb();
 		dmac_flush_range(tz_buf, tz_buf + PAGE_ALIGN(size_pwrlevels));
 
-<<<<<<< HEAD
-=======
-		desc.args[0] = virt_to_phys(tz_buf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		desc.args[1] = size_pwrlevels;
 		desc.arginfo = SCM_ARGS(2, SCM_RW, SCM_VAL);
 
@@ -373,14 +316,10 @@ static int tz_init(struct devfreq_msm_adreno_tz_data *priv,
 		*version = desc.ret[0];
 		if (!ret)
 			priv->is_64 = true;
-<<<<<<< HEAD
 		if (!qtee_shmbridge_is_enabled())
 			kzfree(tz_buf);
 		else
 			qtee_shmbridge_free_shm(&shm);
-=======
-		kzfree(tz_buf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else
 		ret = -EINVAL;
 
@@ -427,27 +366,18 @@ static int tz_get_target_freq(struct devfreq *devfreq, unsigned long *freq)
 {
 	int result = 0;
 	struct devfreq_msm_adreno_tz_data *priv = devfreq->data;
-<<<<<<< HEAD
 	struct devfreq_dev_status *stats = &devfreq->last_status;
-=======
-	struct devfreq_dev_status stats;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int val, level = 0;
 	unsigned int scm_data[4];
 	int context_count = 0;
 
 	/* keeps stats.private_data == NULL   */
-<<<<<<< HEAD
 	result = devfreq_update_stats(devfreq);
-=======
-	result = devfreq->profile->get_dev_status(devfreq->dev.parent, &stats);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (result) {
 		pr_err(TAG "get_status failed %d\n", result);
 		return result;
 	}
 
-<<<<<<< HEAD
 	*freq = stats->current_frequency;
 	priv->bin.total_time += stats->total_time;
 	priv->bin.busy_time += stats->busy_time;
@@ -457,42 +387,21 @@ static int tz_get_target_freq(struct devfreq *devfreq, unsigned long *freq)
 
 	/* Update the GPU load statistics */
 	compute_work_load(stats, priv, devfreq);
-=======
-	*freq = stats.current_frequency;
-	priv->bin.total_time += stats.total_time;
-	priv->bin.busy_time += stats.busy_time;
-
-	if (stats.private_data)
-		context_count =  *((int *)stats.private_data);
-
-	/* Update the GPU load statistics */
-	compute_work_load(&stats, priv, devfreq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Do not waste CPU cycles running this algorithm if
 	 * the GPU just started, or if less than FLOOR time
 	 * has passed since the last run or the gpu hasn't been
 	 * busier than MIN_BUSY.
 	 */
-<<<<<<< HEAD
 	if ((stats->total_time == 0) ||
-=======
-	if ((stats.total_time == 0) ||
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		(priv->bin.total_time < FLOOR) ||
 		(unsigned int) priv->bin.busy_time < MIN_BUSY) {
 		return 0;
 	}
 
-<<<<<<< HEAD
 	level = devfreq_get_freq_level(devfreq, stats->current_frequency);
 	if (level < 0) {
 		pr_err(TAG "bad freq %ld\n", stats->current_frequency);
-=======
-	level = devfreq_get_freq_level(devfreq, stats.current_frequency);
-	if (level < 0) {
-		pr_err(TAG "bad freq %ld\n", stats.current_frequency);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return level;
 	}
 
@@ -529,7 +438,6 @@ static int tz_get_target_freq(struct devfreq *devfreq, unsigned long *freq)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int tz_notify(struct notifier_block *nb, unsigned long type, void *devp)
 {
 	int result = 0;
@@ -556,15 +464,12 @@ static int tz_notify(struct notifier_block *nb, unsigned long type, void *devp)
 	return notifier_from_errno(result);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int tz_start(struct devfreq *devfreq)
 {
 	struct devfreq_msm_adreno_tz_data *priv;
 	unsigned int tz_pwrlevels[MSM_ADRENO_MAX_PWRLEVELS + 1];
 	int i, out, ret;
 	unsigned int version;
-<<<<<<< HEAD
 	struct msm_adreno_extended_profile *gpu_profile;
 
 	if (partner_gpu_profile)
@@ -573,13 +478,6 @@ static int tz_start(struct devfreq *devfreq)
 	gpu_profile = container_of(devfreq->profile,
 			struct msm_adreno_extended_profile,
 			profile);
-=======
-
-	struct msm_adreno_extended_profile *gpu_profile = container_of(
-					(devfreq->profile),
-					struct msm_adreno_extended_profile,
-					profile);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Assuming that we have only one instance of the adreno device
@@ -588,15 +486,10 @@ static int tz_start(struct devfreq *devfreq)
 	 * from the container of the device profile
 	 */
 	devfreq->data = gpu_profile->private_data;
-<<<<<<< HEAD
 	partner_gpu_profile = gpu_profile;
 
 	priv = devfreq->data;
 	priv->nb.notifier_call = tz_notify;
-=======
-
-	priv = devfreq->data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	out = 1;
 	if (devfreq->profile->max_state < MSM_ADRENO_MAX_PWRLEVELS) {
@@ -605,7 +498,6 @@ static int tz_start(struct devfreq *devfreq)
 		tz_pwrlevels[0] = i;
 	} else {
 		pr_err(TAG "tz_pwrlevels[] is too short\n");
-<<<<<<< HEAD
 		partner_gpu_profile = NULL;
 		return -EINVAL;
 	}
@@ -619,55 +511,35 @@ static int tz_start(struct devfreq *devfreq)
 	INIT_WORK(&gpu_profile->partner_resume_event_ws,
 					do_partner_resume_event);
 
-=======
-		return -EINVAL;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = tz_init(priv, tz_pwrlevels, sizeof(tz_pwrlevels), &version,
 				sizeof(version));
 	if (ret != 0 || version > MAX_TZ_VERSION) {
 		pr_err(TAG "tz_init failed\n");
-<<<<<<< HEAD
 		partner_gpu_profile = NULL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
 	for (i = 0; adreno_tz_attr_list[i] != NULL; i++)
 		device_create_file(&devfreq->dev, adreno_tz_attr_list[i]);
 
-<<<<<<< HEAD
 	return kgsl_devfreq_add_notifier(devfreq->dev.parent, &priv->nb);
-=======
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int tz_stop(struct devfreq *devfreq)
 {
 	int i;
-<<<<<<< HEAD
 	struct devfreq_msm_adreno_tz_data *priv = devfreq->data;
 
 	kgsl_devfreq_del_notifier(devfreq->dev.parent, &priv->nb);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; adreno_tz_attr_list[i] != NULL; i++)
 		device_remove_file(&devfreq->dev, adreno_tz_attr_list[i]);
 
-<<<<<<< HEAD
 	flush_workqueue(workqueue);
 
 	/* leaving the governor and cleaning the pointer to private data */
 	devfreq->data = NULL;
 	partner_gpu_profile = NULL;
-=======
-	/* leaving the governor and cleaning the pointer to private data */
-	devfreq->data = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -686,7 +558,6 @@ static int tz_suspend(struct devfreq *devfreq)
 static int tz_handler(struct devfreq *devfreq, unsigned int event, void *data)
 {
 	int result;
-<<<<<<< HEAD
 	struct msm_adreno_extended_profile *gpu_profile;
 	struct device_node *node = devfreq->dev.parent->of_node;
 
@@ -699,8 +570,6 @@ static int tz_handler(struct devfreq *devfreq, unsigned int event, void *data)
 
 	gpu_profile = container_of((devfreq->profile),
 		struct msm_adreno_extended_profile, profile);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (event) {
 	case DEVFREQ_GOV_START:
@@ -708,13 +577,10 @@ static int tz_handler(struct devfreq *devfreq, unsigned int event, void *data)
 		break;
 
 	case DEVFREQ_GOV_STOP:
-<<<<<<< HEAD
 		/* Queue the stop work before the TZ is stopped */
 		if (partner_gpu_profile && partner_gpu_profile->bus_devfreq)
 			queue_work(workqueue,
 				&gpu_profile->partner_stop_event_ws);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_lock(&suspend_lock);
 		suspend_start = 0;
 		spin_unlock(&suspend_lock);
@@ -745,7 +611,6 @@ static int tz_handler(struct devfreq *devfreq, unsigned int event, void *data)
 		break;
 	}
 
-<<<<<<< HEAD
 	if (!result && partner_gpu_profile && partner_gpu_profile->bus_devfreq)
 		switch (event) {
 		case DEVFREQ_GOV_START:
@@ -800,42 +665,6 @@ static void do_partner_resume_event(struct work_struct *work)
 	_do_partner_event(work, DEVFREQ_GOV_RESUME);
 }
 
-=======
-	return result;
-}
-
-int msm_adreno_devfreq_init_tz(struct devfreq *devfreq)
-{
-	struct devfreq_msm_adreno_tz_data *priv;
-	unsigned int tz_pwrlevels[MSM_ADRENO_MAX_PWRLEVELS + 1];
-	int i, out = 1, ret;
-	unsigned int version;
-
-	if (!devfreq)
-		return -EINVAL;
-
-	priv = devfreq->data;
-
-	if (devfreq->profile->max_state < MSM_ADRENO_MAX_PWRLEVELS) {
-		for (i = 0; i < devfreq->profile->max_state; i++)
-			tz_pwrlevels[out++] = devfreq->profile->freq_table[i];
-		tz_pwrlevels[0] = i;
-	} else {
-		pr_err(TAG "tz_pwrlevels[] is too short\n");
-		return -EINVAL;
-	}
-
-	ret = tz_init(priv, tz_pwrlevels, sizeof(tz_pwrlevels), &version,
-				sizeof(version));
-	if (ret != 0 || version > MAX_TZ_VERSION) {
-		pr_err(TAG "tz_init failed\n");
-		return ret ? ret : -EINVAL;
-	}
-
-	return 0;
-}
-EXPORT_SYMBOL(msm_adreno_devfreq_init_tz);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct devfreq_governor msm_adreno_tz = {
 	.name = "msm-adreno-tz",
@@ -845,14 +674,11 @@ static struct devfreq_governor msm_adreno_tz = {
 
 static int __init msm_adreno_tz_init(void)
 {
-<<<<<<< HEAD
 	workqueue = create_freezable_workqueue("governor_msm_adreno_tz_wq");
 
 	if (workqueue == NULL)
 		return -ENOMEM;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return devfreq_add_governor(&msm_adreno_tz);
 }
 subsys_initcall(msm_adreno_tz_init);
@@ -864,11 +690,8 @@ static void __exit msm_adreno_tz_exit(void)
 	if (ret)
 		pr_err(TAG "failed to remove governor %d\n", ret);
 
-<<<<<<< HEAD
 	if (workqueue != NULL)
 		destroy_workqueue(workqueue);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 module_exit(msm_adreno_tz_exit);

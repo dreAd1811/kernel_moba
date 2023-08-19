@@ -13,10 +13,7 @@
  */
 #include <linux/clkdev.h>
 #include <linux/gpio.h>
-<<<<<<< HEAD
 #include <linux/gpio/gpio-reg.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/gpio/machine.h>
 #include <linux/module.h>
 #include <linux/kernel.h>
@@ -114,32 +111,18 @@ static unsigned long lubbock_pin_config[] __initdata = {
 };
 
 #define LUB_HEXLED		__LUB_REG(LUBBOCK_FPGA_PHYS + 0x010)
-<<<<<<< HEAD
-=======
-#define LUB_MISC_WR		__LUB_REG(LUBBOCK_FPGA_PHYS + 0x080)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void lubbock_set_hexled(uint32_t value)
 {
 	LUB_HEXLED = value;
 }
 
-<<<<<<< HEAD
 static struct gpio_chip *lubbock_misc_wr_gc;
 
 void lubbock_set_misc_wr(unsigned int mask, unsigned int set)
 {
 	unsigned long m = mask, v = set;
 	lubbock_misc_wr_gc->set_multiple(lubbock_misc_wr_gc, &m, &v);
-=======
-void lubbock_set_misc_wr(unsigned int mask, unsigned int set)
-{
-	unsigned long flags;
-
-	local_irq_save(flags);
-	LUB_MISC_WR = (LUB_MISC_WR & ~mask) | (set & mask);
-	local_irq_restore(flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(lubbock_set_misc_wr);
 
@@ -397,22 +380,11 @@ static struct pxafb_mach_info sharp_lm8v31 = {
 
 #define	MMC_POLL_RATE		msecs_to_jiffies(1000)
 
-<<<<<<< HEAD
 static irq_handler_t mmc_detect_int;
 static void *mmc_detect_int_data;
 static struct timer_list mmc_timer;
 
 static void lubbock_mmc_poll(struct timer_list *unused)
-=======
-static void lubbock_mmc_poll(unsigned long);
-static irq_handler_t mmc_detect_int;
-
-static struct timer_list mmc_timer = {
-	.function	= lubbock_mmc_poll,
-};
-
-static void lubbock_mmc_poll(unsigned long data)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long flags;
 
@@ -425,11 +397,7 @@ static void lubbock_mmc_poll(unsigned long data)
 	if (LUB_IRQ_SET_CLR & (1 << 0))
 		mod_timer(&mmc_timer, jiffies + MMC_POLL_RATE);
 	else {
-<<<<<<< HEAD
 		(void) mmc_detect_int(LUBBOCK_SD_IRQ, mmc_detect_int_data);
-=======
-		(void) mmc_detect_int(LUBBOCK_SD_IRQ, (void *)data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		enable_irq(LUBBOCK_SD_IRQ);
 	}
 }
@@ -449,13 +417,8 @@ static int lubbock_mci_init(struct device *dev,
 {
 	/* detect card insert/eject */
 	mmc_detect_int = detect_int;
-<<<<<<< HEAD
 	mmc_detect_int_data = data;
 	timer_setup(&mmc_timer, lubbock_mmc_poll, 0);
-=======
-	init_timer(&mmc_timer);
-	mmc_timer.data = (unsigned long) data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return request_irq(LUBBOCK_SD_IRQ, lubbock_detect_int,
 			   0, "lubbock-sd-detect", data);
 }
@@ -488,15 +451,9 @@ static void lubbock_irda_transceiver_mode(struct device *dev, int mode)
 
 	local_irq_save(flags);
 	if (mode & IR_SIRMODE) {
-<<<<<<< HEAD
 		lubbock_set_misc_wr(BIT(4), 0);
 	} else if (mode & IR_FIRMODE) {
 		lubbock_set_misc_wr(BIT(4), BIT(4));
-=======
-		LUB_MISC_WR &= ~(1 << 4);
-	} else if (mode & IR_FIRMODE) {
-		LUB_MISC_WR |= 1 << 4;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	pxa2xx_transceiver_mode(dev, mode);
 	local_irq_restore(flags);
@@ -514,7 +471,6 @@ static void __init lubbock_init(void)
 
 	pxa2xx_mfp_config(ARRAY_AND_SIZE(lubbock_pin_config));
 
-<<<<<<< HEAD
 	lubbock_misc_wr_gc = gpio_reg_init(NULL, (void *)&LUB_MISC_WR,
 					   -1, 16, "lubbock", 0, LUB_MISC_WR,
 					   NULL, NULL, NULL);
@@ -524,8 +480,6 @@ static void __init lubbock_init(void)
 		lubbock_misc_wr_gc = NULL;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pxa_set_ffuart_info(NULL);
 	pxa_set_btuart_info(NULL);
 	pxa_set_stuart_info(NULL);

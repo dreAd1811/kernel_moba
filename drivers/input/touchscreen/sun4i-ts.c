@@ -246,10 +246,6 @@ static int sun4i_ts_probe(struct platform_device *pdev)
 	struct device *dev = &pdev->dev;
 	struct device_node *np = dev->of_node;
 	struct device *hwmon;
-<<<<<<< HEAD
-=======
-	struct thermal_zone_device *thermal;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int error;
 	u32 reg;
 	bool ts_attached;
@@ -369,14 +365,7 @@ static int sun4i_ts_probe(struct platform_device *pdev)
 	if (IS_ERR(hwmon))
 		return PTR_ERR(hwmon);
 
-<<<<<<< HEAD
 	devm_thermal_zone_of_sensor_register(ts->dev, 0, ts, &sun4i_ts_tz_ops);
-=======
-	thermal = devm_thermal_zone_of_sensor_register(ts->dev, 0, ts,
-						       &sun4i_ts_tz_ops);
-	if (IS_ERR(thermal))
-		return PTR_ERR(thermal);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	writel(TEMP_IRQ_EN(1), ts->base + TP_INT_FIFOC);
 

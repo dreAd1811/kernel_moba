@@ -46,10 +46,7 @@
 /* state transition timeouts */
 #define QTN_FW_DL_TIMEOUT_MS	3000
 #define QTN_FW_QLINK_TIMEOUT_MS	30000
-<<<<<<< HEAD
 #define QTN_EP_RESET_WAIT_MS	1000
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define PCIE_HDP_INT_RX_BITS (0		\
 	| PCIE_HDP_INT_EP_TXDMA		\

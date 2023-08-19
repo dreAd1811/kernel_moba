@@ -14,10 +14,7 @@
 #include <asm/ppc-opcode.h>
 #include <linux/string.h>
 #include <linux/kallsyms.h>
-<<<<<<< HEAD
 #include <asm/asm-compat.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Flags for create_branch:
  * "b"   == create_branch(addr, target, 0);

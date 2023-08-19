@@ -39,11 +39,7 @@ gm200_secboot_run_blob(struct nvkm_secboot *sb, struct nvkm_gpuobj *blob,
 {
 	struct gm200_secboot *gsb = gm200_secboot(sb);
 	struct nvkm_subdev *subdev = &gsb->base.subdev;
-<<<<<<< HEAD
 	struct nvkm_vma *vma = NULL;
-=======
-	struct nvkm_vma vma;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 start_address;
 	int ret;
 
@@ -52,23 +48,16 @@ gm200_secboot_run_blob(struct nvkm_secboot *sb, struct nvkm_gpuobj *blob,
 		return ret;
 
 	/* Map the HS firmware so the HS bootloader can see it */
-<<<<<<< HEAD
 	ret = nvkm_vmm_get(gsb->vmm, 12, blob->size, &vma);
-=======
-	ret = nvkm_gpuobj_map(blob, gsb->vm, NV_MEM_ACCESS_RW, &vma);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		nvkm_falcon_put(falcon, subdev);
 		return ret;
 	}
 
-<<<<<<< HEAD
 	ret = nvkm_memory_map(blob, 0, gsb->vmm, vma, NULL, 0);
 	if (ret)
 		goto end;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Reset and set the falcon up */
 	ret = nvkm_falcon_reset(falcon);
 	if (ret)
@@ -76,11 +65,7 @@ gm200_secboot_run_blob(struct nvkm_secboot *sb, struct nvkm_gpuobj *blob,
 	nvkm_falcon_bind_context(falcon, gsb->inst);
 
 	/* Load the HS bootloader into the falcon's IMEM/DMEM */
-<<<<<<< HEAD
 	ret = sb->acr->func->load(sb->acr, falcon, blob, vma->addr);
-=======
-	ret = sb->acr->func->load(sb->acr, falcon, blob, vma.offset);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		goto end;
 
@@ -110,11 +95,7 @@ end:
 	nvkm_mc_intr_mask(sb->subdev.device, falcon->owner->index, true);
 
 	/* We don't need the ACR firmware anymore */
-<<<<<<< HEAD
 	nvkm_vmm_put(gsb->vmm, &vma);
-=======
-	nvkm_gpuobj_unmap(&vma);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	nvkm_falcon_put(falcon, subdev);
 
 	return ret;
@@ -125,7 +106,6 @@ gm200_secboot_oneinit(struct nvkm_secboot *sb)
 {
 	struct gm200_secboot *gsb = gm200_secboot(sb);
 	struct nvkm_device *device = sb->subdev.device;
-<<<<<<< HEAD
 	int ret;
 
 	/* Allocate instance block and VM */
@@ -146,39 +126,6 @@ gm200_secboot_oneinit(struct nvkm_secboot *sb)
 	if (ret)
 		return ret;
 
-=======
-	struct nvkm_vm *vm;
-	const u64 vm_area_len = 600 * 1024;
-	int ret;
-
-	/* Allocate instance block and VM */
-	ret = nvkm_gpuobj_new(device, 0x1000, 0, true, NULL, &gsb->inst);
-	if (ret)
-		return ret;
-
-	ret = nvkm_gpuobj_new(device, 0x8000, 0, true, NULL, &gsb->pgd);
-	if (ret)
-		return ret;
-
-	ret = nvkm_vm_new(device, 0, vm_area_len, 0, NULL, &vm);
-	if (ret)
-		return ret;
-
-	atomic_inc(&vm->engref[NVKM_SUBDEV_PMU]);
-
-	ret = nvkm_vm_ref(vm, &gsb->vm, gsb->pgd);
-	nvkm_vm_ref(NULL, &vm, NULL);
-	if (ret)
-		return ret;
-
-	nvkm_kmap(gsb->inst);
-	nvkm_wo32(gsb->inst, 0x200, lower_32_bits(gsb->pgd->addr));
-	nvkm_wo32(gsb->inst, 0x204, upper_32_bits(gsb->pgd->addr));
-	nvkm_wo32(gsb->inst, 0x208, lower_32_bits(vm_area_len - 1));
-	nvkm_wo32(gsb->inst, 0x20c, upper_32_bits(vm_area_len - 1));
-	nvkm_done(gsb->inst);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (sb->acr->func->oneinit) {
 		ret = sb->acr->func->oneinit(sb->acr, sb);
 		if (ret)
@@ -206,15 +153,9 @@ gm200_secboot_dtor(struct nvkm_secboot *sb)
 
 	sb->acr->func->dtor(sb->acr);
 
-<<<<<<< HEAD
 	nvkm_vmm_part(gsb->vmm, gsb->inst);
 	nvkm_vmm_unref(&gsb->vmm);
 	nvkm_memory_unref(&gsb->inst);
-=======
-	nvkm_vm_ref(NULL, &gsb->vm, gsb->pgd);
-	nvkm_gpuobj_del(&gsb->pgd);
-	nvkm_gpuobj_del(&gsb->inst);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return gsb;
 }

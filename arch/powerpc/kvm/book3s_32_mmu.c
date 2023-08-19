@@ -23,10 +23,6 @@
 #include <linux/kvm_host.h>
 #include <linux/highmem.h>
 
-<<<<<<< HEAD
-=======
-#include <asm/tlbflush.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/kvm_ppc.h>
 #include <asm/kvm_book3s.h>
 
@@ -55,11 +51,7 @@
 static inline bool check_debug_ip(struct kvm_vcpu *vcpu)
 {
 #ifdef DEBUG_MMU_PTE_IP
-<<<<<<< HEAD
 	return vcpu->arch.regs.nip == DEBUG_MMU_PTE_IP;
-=======
-	return vcpu->arch.pc == DEBUG_MMU_PTE_IP;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 	return true;
 #endif

@@ -61,10 +61,7 @@ struct rk_priv_data {
 	struct clk *mac_clk_tx;
 	struct clk *clk_mac_ref;
 	struct clk *clk_mac_refout;
-<<<<<<< HEAD
 	struct clk *clk_mac_speed;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct clk *aclk_mac;
 	struct clk *pclk_mac;
 	struct clk *clk_phy;
@@ -87,7 +84,6 @@ struct rk_priv_data {
 	(((tx) ? soc##_GMAC_TXCLK_DLY_ENABLE : soc##_GMAC_TXCLK_DLY_DISABLE) | \
 	 ((rx) ? soc##_GMAC_RXCLK_DLY_ENABLE : soc##_GMAC_RXCLK_DLY_DISABLE))
 
-<<<<<<< HEAD
 #define PX30_GRF_GMAC_CON1		0x0904
 
 /* PX30_GRF_GMAC_CON1 */
@@ -146,8 +142,6 @@ static const struct rk_gmac_ops px30_ops = {
 	.set_rmii_speed = px30_set_rmii_speed,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define RK3128_GRF_MAC_CON0	0x0168
 #define RK3128_GRF_MAC_CON1	0x016c
 
@@ -1107,13 +1101,10 @@ static int rk_gmac_clk_init(struct plat_stmmacenet_data *plat)
 		}
 	}
 
-<<<<<<< HEAD
 	bsp_priv->clk_mac_speed = devm_clk_get(dev, "clk_mac_speed");
 	if (IS_ERR(bsp_priv->clk_mac_speed))
 		dev_err(dev, "cannot get clock %s\n", "clk_mac_speed");
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (bsp_priv->clock_input) {
 		dev_info(dev, "clock input from PHY\n");
 	} else {
@@ -1166,12 +1157,9 @@ static int gmac_clk_enable(struct rk_priv_data *bsp_priv, bool enable)
 			if (!IS_ERR(bsp_priv->mac_clk_tx))
 				clk_prepare_enable(bsp_priv->mac_clk_tx);
 
-<<<<<<< HEAD
 			if (!IS_ERR(bsp_priv->clk_mac_speed))
 				clk_prepare_enable(bsp_priv->clk_mac_speed);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/**
 			 * if (!IS_ERR(bsp_priv->clk_mac))
 			 *	clk_prepare_enable(bsp_priv->clk_mac);
@@ -1182,7 +1170,6 @@ static int gmac_clk_enable(struct rk_priv_data *bsp_priv, bool enable)
 	} else {
 		if (bsp_priv->clk_enabled) {
 			if (phy_iface == PHY_INTERFACE_MODE_RMII) {
-<<<<<<< HEAD
 				clk_disable_unprepare(bsp_priv->mac_clk_rx);
 
 				clk_disable_unprepare(bsp_priv->clk_mac_ref);
@@ -1199,32 +1186,6 @@ static int gmac_clk_enable(struct rk_priv_data *bsp_priv, bool enable)
 			clk_disable_unprepare(bsp_priv->mac_clk_tx);
 
 			clk_disable_unprepare(bsp_priv->clk_mac_speed);
-=======
-				if (!IS_ERR(bsp_priv->mac_clk_rx))
-					clk_disable_unprepare(
-						bsp_priv->mac_clk_rx);
-
-				if (!IS_ERR(bsp_priv->clk_mac_ref))
-					clk_disable_unprepare(
-						bsp_priv->clk_mac_ref);
-
-				if (!IS_ERR(bsp_priv->clk_mac_refout))
-					clk_disable_unprepare(
-						bsp_priv->clk_mac_refout);
-			}
-
-			if (!IS_ERR(bsp_priv->clk_phy))
-				clk_disable_unprepare(bsp_priv->clk_phy);
-
-			if (!IS_ERR(bsp_priv->aclk_mac))
-				clk_disable_unprepare(bsp_priv->aclk_mac);
-
-			if (!IS_ERR(bsp_priv->pclk_mac))
-				clk_disable_unprepare(bsp_priv->pclk_mac);
-
-			if (!IS_ERR(bsp_priv->mac_clk_tx))
-				clk_disable_unprepare(bsp_priv->mac_clk_tx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/**
 			 * if (!IS_ERR(bsp_priv->clk_mac))
 			 *	clk_disable_unprepare(bsp_priv->clk_mac);
@@ -1459,11 +1420,7 @@ static int rk_gmac_probe(struct platform_device *pdev)
 
 	ret = rk_gmac_clk_init(plat_dat);
 	if (ret)
-<<<<<<< HEAD
 		return ret;
-=======
-		goto err_remove_config_dt;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = rk_gmac_powerup(plat_dat->bsp_priv);
 	if (ret)
@@ -1525,10 +1482,7 @@ static int rk_gmac_resume(struct device *dev)
 static SIMPLE_DEV_PM_OPS(rk_gmac_pm_ops, rk_gmac_suspend, rk_gmac_resume);
 
 static const struct of_device_id rk_gmac_dwmac_match[] = {
-<<<<<<< HEAD
 	{ .compatible = "rockchip,px30-gmac",	.data = &px30_ops   },
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ .compatible = "rockchip,rk3128-gmac", .data = &rk3128_ops },
 	{ .compatible = "rockchip,rk3228-gmac", .data = &rk3228_ops },
 	{ .compatible = "rockchip,rk3288-gmac", .data = &rk3288_ops },

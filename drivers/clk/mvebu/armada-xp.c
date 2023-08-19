@@ -228,14 +228,7 @@ static void __init axp_clk_init(struct device_node *np)
 
 	mvebu_coreclk_setup(np, &axp_coreclks);
 
-<<<<<<< HEAD
 	if (cgnp)
 		mvebu_clk_gating_setup(cgnp, axp_gating_desc);
-=======
-	if (cgnp) {
-		mvebu_clk_gating_setup(cgnp, axp_gating_desc);
-		of_node_put(cgnp);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 CLK_OF_DECLARE(axp_clk, "marvell,armada-xp-core-clock", axp_clk_init);

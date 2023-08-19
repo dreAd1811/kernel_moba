@@ -1856,14 +1856,9 @@ static void ql_update_small_bufq_prod_index(struct ql3_adapter *qdev)
 			qdev->small_buf_release_cnt -= 8;
 		}
 		wmb();
-<<<<<<< HEAD
 		writel_relaxed(qdev->small_buf_q_producer_index,
 			       &port_regs->CommonRegs.rxSmallQProducerIndex);
 		mmiowb();
-=======
-		writel(qdev->small_buf_q_producer_index,
-			&port_regs->CommonRegs.rxSmallQProducerIndex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -2762,12 +2757,6 @@ static int ql_alloc_large_buffers(struct ql3_adapter *qdev)
 	int err;
 
 	for (i = 0; i < qdev->num_large_buffers; i++) {
-<<<<<<< HEAD
-=======
-		lrg_buf_cb = &qdev->lrg_buf[i];
-		memset(lrg_buf_cb, 0, sizeof(struct ql_rcv_buf_cb));
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		skb = netdev_alloc_skb(qdev->ndev,
 				       qdev->lrg_buffer_len);
 		if (unlikely(!skb)) {
@@ -2778,15 +2767,11 @@ static int ql_alloc_large_buffers(struct ql3_adapter *qdev)
 			ql_free_large_buffers(qdev);
 			return -ENOMEM;
 		} else {
-<<<<<<< HEAD
 
 			lrg_buf_cb = &qdev->lrg_buf[i];
 			memset(lrg_buf_cb, 0, sizeof(struct ql_rcv_buf_cb));
 			lrg_buf_cb->index = i;
 			lrg_buf_cb->skb = skb;
-=======
-			lrg_buf_cb->index = i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/*
 			 * We save some space to copy the ethhdr from first
 			 * buffer
@@ -2808,10 +2793,6 @@ static int ql_alloc_large_buffers(struct ql3_adapter *qdev)
 				return -ENOMEM;
 			}
 
-<<<<<<< HEAD
-=======
-			lrg_buf_cb->skb = skb;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dma_unmap_addr_set(lrg_buf_cb, mapaddr, map);
 			dma_unmap_len_set(lrg_buf_cb, maplen,
 					  qdev->lrg_buffer_len -
@@ -3768,15 +3749,9 @@ static void ql_get_board_info(struct ql3_adapter *qdev)
 	qdev->pci_slot = (u8) PCI_SLOT(qdev->pdev->devfn);
 }
 
-<<<<<<< HEAD
 static void ql3xxx_timer(struct timer_list *t)
 {
 	struct ql3_adapter *qdev = from_timer(qdev, t, adapter_timer);
-=======
-static void ql3xxx_timer(unsigned long ptr)
-{
-	struct ql3_adapter *qdev = (struct ql3_adapter *)ptr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	queue_delayed_work(qdev->workqueue, &qdev->link_state_work, 0);
 }
 
@@ -3916,15 +3891,8 @@ static int ql3xxx_probe(struct pci_dev *pdev,
 	INIT_DELAYED_WORK(&qdev->tx_timeout_work, ql_tx_timeout_work);
 	INIT_DELAYED_WORK(&qdev->link_state_work, ql_link_state_machine_work);
 
-<<<<<<< HEAD
 	timer_setup(&qdev->adapter_timer, ql3xxx_timer, 0);
 	qdev->adapter_timer.expires = jiffies + HZ * 2;	/* two second delay */
-=======
-	init_timer(&qdev->adapter_timer);
-	qdev->adapter_timer.function = ql3xxx_timer;
-	qdev->adapter_timer.expires = jiffies + HZ * 2;	/* two second delay */
-	qdev->adapter_timer.data = (unsigned long)qdev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!cards_found) {
 		pr_alert("%s\n", DRV_STRING);

@@ -342,7 +342,6 @@ static void am33xx_prm_global_warm_sw_reset(void)
 				  AM33XX_PRM_RSTCTRL_OFFSET);
 }
 
-<<<<<<< HEAD
 static void am33xx_pwrdm_save_context(struct powerdomain *pwrdm)
 {
 	pwrdm->context = am33xx_prm_read_reg(pwrdm->prcm_offs,
@@ -372,8 +371,6 @@ static void am33xx_pwrdm_restore_context(struct powerdomain *pwrdm)
 		am33xx_pwrdm_wait_transition(pwrdm);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct pwrdm_ops am33xx_pwrdm_operations = {
 	.pwrdm_set_next_pwrst		= am33xx_pwrdm_set_next_pwrst,
 	.pwrdm_read_next_pwrst		= am33xx_pwrdm_read_next_pwrst,
@@ -389,11 +386,8 @@ struct pwrdm_ops am33xx_pwrdm_operations = {
 	.pwrdm_set_mem_retst		= am33xx_pwrdm_set_mem_retst,
 	.pwrdm_wait_transition		= am33xx_pwrdm_wait_transition,
 	.pwrdm_has_voltdm		= am33xx_check_vcvp,
-<<<<<<< HEAD
 	.pwrdm_save_context		= am33xx_pwrdm_save_context,
 	.pwrdm_restore_context		= am33xx_pwrdm_restore_context,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct prm_ll_data am33xx_prm_ll_data = {

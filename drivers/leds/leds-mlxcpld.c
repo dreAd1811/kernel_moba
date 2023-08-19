@@ -329,15 +329,10 @@ static int mlxcpld_led_config(struct device *dev,
 	int i;
 	int err;
 
-<<<<<<< HEAD
 	cpld->pled = devm_kcalloc(dev,
 				  cpld->num_led_instances,
 				  sizeof(struct mlxcpld_led_priv),
 				  GFP_KERNEL);
-=======
-	cpld->pled = devm_kzalloc(dev, sizeof(struct mlxcpld_led_priv) *
-				  cpld->num_led_instances, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!cpld->pled)
 		return -ENOMEM;
 

@@ -1,23 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
 //
 // Copyright 2013 Greg Ungerer <gerg@uclinux.org>
 // Copyright 2011 Freescale Semiconductor, Inc.
 // Copyright 2011 Linaro Ltd.
-=======
-/*
- * Copyright 2013 Greg Ungerer <gerg@uclinux.org>
- * Copyright 2011 Freescale Semiconductor, Inc.
- * Copyright 2011 Linaro Ltd.
- *
- * The code contained herein is licensed under the GNU General Public
- * License. You may obtain a copy of the GNU General Public License
- * Version 2 or later at the following locations:
- *
- * http://www.opensource.org/licenses/gpl-license.html
- * http://www.gnu.org/copyleft/gpl.html
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /dts-v1/;
 #include "imx50.dtsi"
@@ -26,11 +11,7 @@
 	model = "Freescale i.MX50 Evaluation Kit";
 	compatible = "fsl,imx50-evk", "fsl,imx50";
 
-<<<<<<< HEAD
 	memory@70000000 {
-=======
-	memory {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x70000000 0x80000000>;
 	};
 };
@@ -117,17 +98,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
-=======
-&usbh2 {
-	status = "okay";
-};
-
-&usbh3 {
-	status = "okay";
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &usbotg {
 	status = "okay";
 };

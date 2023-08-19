@@ -110,11 +110,7 @@ void __init colibri_pxa3xx_init_lcd(int bl_pin)
 }
 #endif
 
-<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_MTD_NAND_MARVELL)
-=======
-#if defined(CONFIG_MTD_NAND_PXA3xx) || defined(CONFIG_MTD_NAND_PXA3xx_MODULE)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct mtd_partition colibri_nand_partitions[] = {
 	{
 		.name        = "bootloader",
@@ -142,17 +138,9 @@ static struct mtd_partition colibri_nand_partitions[] = {
 };
 
 static struct pxa3xx_nand_platform_data colibri_nand_info = {
-<<<<<<< HEAD
 	.keep_config	= 1,
 	.parts		= colibri_nand_partitions,
 	.nr_parts	= ARRAY_SIZE(colibri_nand_partitions),
-=======
-	.enable_arbiter	= 1,
-	.keep_config	= 1,
-	.num_cs		= 1,
-	.parts[0]	= colibri_nand_partitions,
-	.nr_parts[0]	= ARRAY_SIZE(colibri_nand_partitions),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 void __init colibri_pxa3xx_init_nand(void)

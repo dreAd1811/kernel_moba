@@ -420,11 +420,7 @@ static ssize_t ivtv_read_pos(struct ivtv_stream *s, char __user *ubuf, size_t co
 
 	IVTV_DEBUG_HI_FILE("read %zd from %s, got %zd\n", count, s->name, rc);
 	if (rc > 0)
-<<<<<<< HEAD
 		pos += rc;
-=======
-		*pos += rc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 
@@ -734,20 +730,12 @@ ssize_t ivtv_v4l2_write(struct file *filp, const char __user *user_buf, size_t c
 	return res;
 }
 
-<<<<<<< HEAD
 __poll_t ivtv_v4l2_dec_poll(struct file *filp, poll_table *wait)
-=======
-unsigned int ivtv_v4l2_dec_poll(struct file *filp, poll_table *wait)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ivtv_open_id *id = fh2id(filp->private_data);
 	struct ivtv *itv = id->itv;
 	struct ivtv_stream *s = &itv->streams[id->type];
-<<<<<<< HEAD
 	__poll_t res = 0;
-=======
-	int res = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* add stream's waitq to the poll list */
 	IVTV_DEBUG_HI_FILE("Decoder poll\n");
@@ -759,11 +747,7 @@ unsigned int ivtv_v4l2_dec_poll(struct file *filp, poll_table *wait)
 		/* Turn off the old-style vsync events */
 		clear_bit(IVTV_F_I_EV_VSYNC_ENABLED, &itv->i_flags);
 		if (v4l2_event_pending(&id->fh))
-<<<<<<< HEAD
 			res = EPOLLPRI;
-=======
-			res = POLLPRI;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		/* This is the old-style API which is here only for backwards
 		   compatibility. */
@@ -771,16 +755,11 @@ unsigned int ivtv_v4l2_dec_poll(struct file *filp, poll_table *wait)
 		set_bit(IVTV_F_I_EV_VSYNC_ENABLED, &itv->i_flags);
 		if (test_bit(IVTV_F_I_EV_VSYNC, &itv->i_flags) ||
 		    test_bit(IVTV_F_I_EV_DEC_STOPPED, &itv->i_flags))
-<<<<<<< HEAD
 			res = EPOLLPRI;
-=======
-			res = POLLPRI;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Allow write if buffers are available for writing */
 	if (s->q_free.buffers)
-<<<<<<< HEAD
 		res |= EPOLLOUT | EPOLLWRNORM;
 	return res;
 }
@@ -788,33 +767,16 @@ unsigned int ivtv_v4l2_dec_poll(struct file *filp, poll_table *wait)
 __poll_t ivtv_v4l2_enc_poll(struct file *filp, poll_table *wait)
 {
 	__poll_t req_events = poll_requested_events(wait);
-=======
-		res |= POLLOUT | POLLWRNORM;
-	return res;
-}
-
-unsigned int ivtv_v4l2_enc_poll(struct file *filp, poll_table *wait)
-{
-	unsigned long req_events = poll_requested_events(wait);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ivtv_open_id *id = fh2id(filp->private_data);
 	struct ivtv *itv = id->itv;
 	struct ivtv_stream *s = &itv->streams[id->type];
 	int eof = test_bit(IVTV_F_S_STREAMOFF, &s->s_flags);
-<<<<<<< HEAD
 	__poll_t res = 0;
-=======
-	unsigned res = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Start a capture if there is none */
 	if (!eof && !test_bit(IVTV_F_S_STREAMING, &s->s_flags) &&
 			s->type != IVTV_ENC_STREAM_TYPE_RAD &&
-<<<<<<< HEAD
 			(req_events & (EPOLLIN | EPOLLRDNORM))) {
-=======
-			(req_events & (POLLIN | POLLRDNORM))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		int rc;
 
 		mutex_lock(&itv->serialize_lock);
@@ -823,11 +785,7 @@ unsigned int ivtv_v4l2_enc_poll(struct file *filp, poll_table *wait)
 		if (rc) {
 			IVTV_DEBUG_INFO("Could not start capture for %s (%d)\n",
 					s->name, rc);
-<<<<<<< HEAD
 			return EPOLLERR;
-=======
-			return POLLERR;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		IVTV_DEBUG_FILE("Encoder poll started capture\n");
 	}
@@ -836,24 +794,14 @@ unsigned int ivtv_v4l2_enc_poll(struct file *filp, poll_table *wait)
 	IVTV_DEBUG_HI_FILE("Encoder poll\n");
 	poll_wait(filp, &s->waitq, wait);
 	if (v4l2_event_pending(&id->fh))
-<<<<<<< HEAD
 		res |= EPOLLPRI;
-=======
-		res |= POLLPRI;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		poll_wait(filp, &id->fh.wait, wait);
 
 	if (s->q_full.length || s->q_io.length)
-<<<<<<< HEAD
 		return res | EPOLLIN | EPOLLRDNORM;
 	if (eof)
 		return res | EPOLLHUP;
-=======
-		return res | POLLIN | POLLRDNORM;
-	if (eof)
-		return res | POLLHUP;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return res;
 }
 

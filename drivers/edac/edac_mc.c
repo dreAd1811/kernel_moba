@@ -53,11 +53,7 @@ static LIST_HEAD(mc_devices);
  * Used to lock EDAC MC to just one module, avoiding two drivers e. g.
  *	apei/ghes and i7core_edac to be used at the same time.
  */
-<<<<<<< HEAD
 static const char *edac_mc_owner;
-=======
-static void const *edac_mc_owner;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct bus_type mc_bus[EDAC_MAX_MCS];
 
@@ -199,7 +195,6 @@ static void edac_mc_dump_mci(struct mem_ctl_info *mci)
 #endif				/* CONFIG_EDAC_DEBUG */
 
 const char * const edac_mem_types[] = {
-<<<<<<< HEAD
 	[MEM_EMPTY]	= "Empty",
 	[MEM_RESERVED]	= "Reserved",
 	[MEM_UNKNOWN]	= "Unknown",
@@ -222,29 +217,6 @@ const char * const edac_mem_types[] = {
 	[MEM_RDDR4]	= "Registered-DDR4",
 	[MEM_LRDDR4]	= "Load-Reduced-DDR4-RAM",
 	[MEM_NVDIMM]	= "Non-volatile-RAM",
-=======
-	[MEM_EMPTY]	= "Empty csrow",
-	[MEM_RESERVED]	= "Reserved csrow type",
-	[MEM_UNKNOWN]	= "Unknown csrow type",
-	[MEM_FPM]	= "Fast page mode RAM",
-	[MEM_EDO]	= "Extended data out RAM",
-	[MEM_BEDO]	= "Burst Extended data out RAM",
-	[MEM_SDR]	= "Single data rate SDRAM",
-	[MEM_RDR]	= "Registered single data rate SDRAM",
-	[MEM_DDR]	= "Double data rate SDRAM",
-	[MEM_RDDR]	= "Registered Double data rate SDRAM",
-	[MEM_RMBS]	= "Rambus DRAM",
-	[MEM_DDR2]	= "Unbuffered DDR2 RAM",
-	[MEM_FB_DDR2]	= "Fully buffered DDR2",
-	[MEM_RDDR2]	= "Registered DDR2 RAM",
-	[MEM_XDR]	= "Rambus XDR",
-	[MEM_DDR3]	= "Unbuffered DDR3 RAM",
-	[MEM_RDDR3]	= "Registered DDR3 RAM",
-	[MEM_LRDDR3]	= "Load-Reduced DDR3 RAM",
-	[MEM_DDR4]	= "Unbuffered DDR4 RAM",
-	[MEM_RDDR4]	= "Registered DDR4 RAM",
-	[MEM_LRDDR4]	= "Load-Reduced-DDR4-RAM",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 EXPORT_SYMBOL_GPL(edac_mem_types);
 
@@ -709,18 +681,13 @@ static int del_mc_from_global_list(struct mem_ctl_info *mci)
 
 struct mem_ctl_info *edac_mc_find(int idx)
 {
-<<<<<<< HEAD
 	struct mem_ctl_info *mci = NULL;
-=======
-	struct mem_ctl_info *mci;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct list_head *item;
 
 	mutex_lock(&mem_ctls_mutex);
 
 	list_for_each(item, &mc_devices) {
 		mci = list_entry(item, struct mem_ctl_info, link);
-<<<<<<< HEAD
 
 		if (mci->mc_idx >= idx) {
 			if (mci->mc_idx == idx) {
@@ -730,27 +697,17 @@ struct mem_ctl_info *edac_mc_find(int idx)
 		}
 	}
 
-=======
-		if (mci->mc_idx == idx)
-			goto unlock;
-	}
-
-	mci = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 unlock:
 	mutex_unlock(&mem_ctls_mutex);
 	return mci;
 }
 EXPORT_SYMBOL(edac_mc_find);
 
-<<<<<<< HEAD
 const char *edac_get_owner(void)
 {
 	return edac_mc_owner;
 }
 EXPORT_SYMBOL_GPL(edac_get_owner);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* FIXME - should a warning be printed if no error detection? correction? */
 int edac_mc_add_mc_with_groups(struct mem_ctl_info *mci,

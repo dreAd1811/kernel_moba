@@ -71,11 +71,7 @@ void rxe_do_task(unsigned long data)
 
 	case TASK_STATE_BUSY:
 		task->state = TASK_STATE_ARMED;
-<<<<<<< HEAD
 		/* fall through */
-=======
-		/* fall through to */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case TASK_STATE_ARMED:
 		spin_unlock_irqrestore(&task->state_lock, flags);
 		return;

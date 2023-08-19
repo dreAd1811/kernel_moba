@@ -33,11 +33,7 @@ config WIL6210_TRACING
 	bool "wil6210 tracing support"
 	depends on WIL6210
 	depends on EVENT_TRACING
-<<<<<<< HEAD
 	default n
-=======
-	default y
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	---help---
 	  Say Y here to enable tracepoints for the wil6210 driver
 	  using the kernel tracing infrastructure.  Select this
@@ -50,11 +46,7 @@ config WIL6210_PLATFORM_MSM
 	depends on WIL6210
 	depends on ARCH_QCOM
 	default y
-<<<<<<< HEAD
 	help
-=======
-	---help---
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	  Say Y here to enable wil6210 driver support for MSM
 	  Platform driver used to handle msm specific platform
 	  requirement for 11ad chipset connected to msm platform
@@ -77,17 +69,12 @@ config WIL6210_WRITE_IOCTL
 	bool "wil6210 write ioctl to the device"
 	depends on WIL6210
 	default y
-<<<<<<< HEAD
 	help
-=======
-	---help---
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	  Say Y here to allow write-access from user-space to
 	  the device memory through ioctl. This is useful for
 	  debugging purposes only.
 
 	  If unsure, say N.
-<<<<<<< HEAD
 
 config WIL6210_IPA
 	bool "wil6210 IPA offload support"
@@ -97,5 +84,3 @@ config WIL6210_IPA
 	help
 	  Say Y here to enable wil6210 driver support for data path
 	  IPA offload
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

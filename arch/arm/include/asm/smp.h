@@ -60,11 +60,7 @@ asmlinkage void secondary_start_kernel(void);
  */
 struct secondary_data {
 	union {
-<<<<<<< HEAD
 		struct mpu_rgn_info *mpu_rgn_info;
-=======
-		unsigned long mpu_rgn_szr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u64 pgdir;
 	};
 	unsigned long swapper_pg_dir;

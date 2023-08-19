@@ -9,10 +9,7 @@
 /dts-v1/;
 
 #include "sc9860.dtsi"
-<<<<<<< HEAD
 #include "sc2731.dtsi"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 / {
 	model = "Spreadtrum SP9860G 3GFHD Board";
@@ -24,10 +21,7 @@
 		serial1 = &uart1; /* UART console */
 		serial2 = &uart2; /* Reserved */
 		serial3 = &uart3; /* for GPS */
-<<<<<<< HEAD
 		spi0 = &adi_bus;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	memory{

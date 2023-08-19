@@ -42,10 +42,7 @@
 #include <linux/hw_breakpoint.h>
 #include <linux/uaccess.h>
 #include <linux/elf-randomize.h>
-<<<<<<< HEAD
 #include <linux/pkeys.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/pgtable.h>
 #include <asm/io.h>
@@ -61,10 +58,7 @@
 #include <asm/debug.h>
 #ifdef CONFIG_PPC64
 #include <asm/firmware.h>
-<<<<<<< HEAD
 #include <asm/hw_irq.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 #include <asm/code-patching.h>
 #include <asm/exec.h>
@@ -85,7 +79,6 @@
 extern unsigned long _get_SP(void);
 
 #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
-<<<<<<< HEAD
 /*
  * Are we running in "Suspend disabled" mode? If so we have to block any
  * sigreturn that would get us into suspended state, and we also warn in some
@@ -93,8 +86,6 @@ extern unsigned long _get_SP(void);
  */
 bool tm_suspend_disabled __ro_after_init = false;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void check_if_tm_restore_required(struct task_struct *tsk)
 {
 	/*
@@ -111,16 +102,7 @@ static void check_if_tm_restore_required(struct task_struct *tsk)
 	}
 }
 
-<<<<<<< HEAD
 #else
-=======
-static inline bool msr_tm_active(unsigned long msr)
-{
-	return MSR_TM_ACTIVE(msr);
-}
-#else
-static inline bool msr_tm_active(unsigned long msr) { return false; }
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void check_if_tm_restore_required(struct task_struct *tsk) { }
 #endif /* CONFIG_PPC_TRANSACTIONAL_MEM */
 
@@ -153,10 +135,7 @@ unsigned long msr_check_and_set(unsigned long bits)
 
 	return newmsr;
 }
-<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(msr_check_and_set);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void __msr_check_and_clear(unsigned long bits)
 {
@@ -176,11 +155,7 @@ void __msr_check_and_clear(unsigned long bits)
 EXPORT_SYMBOL(__msr_check_and_clear);
 
 #ifdef CONFIG_PPC_FPU
-<<<<<<< HEAD
 static void __giveup_fpu(struct task_struct *tsk)
-=======
-void __giveup_fpu(struct task_struct *tsk)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long msr;
 
@@ -253,12 +228,8 @@ void enable_kernel_fp(void)
 		 * giveup as this would save  to the 'live' structure not the
 		 * checkpointed structure.
 		 */
-<<<<<<< HEAD
 		if (!MSR_TM_ACTIVE(cpumsr) &&
 		     MSR_TM_ACTIVE(current->thread.regs->msr))
-=======
-		if(!msr_tm_active(cpumsr) && msr_tm_active(current->thread.regs->msr))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return;
 		__giveup_fpu(current);
 	}
@@ -267,11 +238,7 @@ EXPORT_SYMBOL(enable_kernel_fp);
 
 static int restore_fp(struct task_struct *tsk)
 {
-<<<<<<< HEAD
 	if (tsk->thread.load_fp) {
-=======
-	if (tsk->thread.load_fp || msr_tm_active(tsk->thread.regs->msr)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		load_fp_state(&current->thread.fp_state);
 		current->thread.load_fp++;
 		return 1;
@@ -326,12 +293,8 @@ void enable_kernel_altivec(void)
 		 * giveup as this would save  to the 'live' structure not the
 		 * checkpointed structure.
 		 */
-<<<<<<< HEAD
 		if (!MSR_TM_ACTIVE(cpumsr) &&
 		     MSR_TM_ACTIVE(current->thread.regs->msr))
-=======
-		if(!msr_tm_active(cpumsr) && msr_tm_active(current->thread.regs->msr))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return;
 		__giveup_altivec(current);
 	}
@@ -357,12 +320,7 @@ EXPORT_SYMBOL_GPL(flush_altivec_to_thread);
 
 static int restore_altivec(struct task_struct *tsk)
 {
-<<<<<<< HEAD
 	if (cpu_has_feature(CPU_FTR_ALTIVEC) && (tsk->thread.load_vec)) {
-=======
-	if (cpu_has_feature(CPU_FTR_ALTIVEC) &&
-		(tsk->thread.load_vec || msr_tm_active(tsk->thread.regs->msr))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		load_vr_state(&tsk->thread.vr_state);
 		tsk->thread.used_vr = 1;
 		tsk->thread.load_vec++;
@@ -421,12 +379,8 @@ void enable_kernel_vsx(void)
 		 * giveup as this would save  to the 'live' structure not the
 		 * checkpointed structure.
 		 */
-<<<<<<< HEAD
 		if (!MSR_TM_ACTIVE(cpumsr) &&
 		     MSR_TM_ACTIVE(current->thread.regs->msr))
-=======
-		if(!msr_tm_active(cpumsr) && msr_tm_active(current->thread.regs->msr))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return;
 		__giveup_vsx(current);
 	}
@@ -560,11 +514,7 @@ void restore_math(struct pt_regs *regs)
 {
 	unsigned long msr;
 
-<<<<<<< HEAD
 	if (!MSR_TM_ACTIVE(regs->msr) &&
-=======
-	if (!msr_tm_active(regs->msr) &&
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		!current->thread.load_fp && !loadvec(current->thread))
 		return;
 
@@ -591,11 +541,7 @@ void restore_math(struct pt_regs *regs)
 	regs->msr = msr;
 }
 
-<<<<<<< HEAD
 static void save_all(struct task_struct *tsk)
-=======
-void save_all(struct task_struct *tsk)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long usermsr;
 
@@ -621,10 +567,7 @@ void save_all(struct task_struct *tsk)
 		__giveup_spe(tsk);
 
 	msr_check_and_clear(msr_all_available);
-<<<<<<< HEAD
 	thread_pkey_regs_save(&tsk->thread);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void flush_all_to_thread(struct task_struct *tsk)
@@ -632,19 +575,12 @@ void flush_all_to_thread(struct task_struct *tsk)
 	if (tsk->thread.regs) {
 		preempt_disable();
 		BUG_ON(tsk != current);
-<<<<<<< HEAD
 		save_all(tsk);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_SPE
 		if (tsk->thread.regs->msr & MSR_SPE)
 			tsk->thread.spefscr = mfspr(SPRN_SPEFSCR);
 #endif
-<<<<<<< HEAD
-=======
-		save_all(tsk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		preempt_enable();
 	}
@@ -653,32 +589,16 @@ EXPORT_SYMBOL(flush_all_to_thread);
 
 #ifdef CONFIG_PPC_ADV_DEBUG_REGS
 void do_send_trap(struct pt_regs *regs, unsigned long address,
-<<<<<<< HEAD
 		  unsigned long error_code, int breakpt)
 {
 	current->thread.trap_nr = TRAP_HWBKPT;
-=======
-		  unsigned long error_code, int signal_code, int breakpt)
-{
-	siginfo_t info;
-
-	current->thread.trap_nr = signal_code;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (notify_die(DIE_DABR_MATCH, "dabr_match", regs, error_code,
 			11, SIGSEGV) == NOTIFY_STOP)
 		return;
 
 	/* Deliver the signal to userspace */
-<<<<<<< HEAD
 	force_sig_ptrace_errno_trap(breakpt, /* breakpoint or watchpoint id */
 				    (void __user *)address);
-=======
-	info.si_signo = SIGTRAP;
-	info.si_errno = breakpt;	/* breakpoint or watchpoint id */
-	info.si_code = signal_code;
-	info.si_addr = (void __user *)address;
-	force_sig_info(SIGTRAP, &info, current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #else	/* !CONFIG_PPC_ADV_DEBUG_REGS */
 void do_break (struct pt_regs *regs, unsigned long address,
@@ -698,10 +618,7 @@ void do_break (struct pt_regs *regs, unsigned long address,
 	hw_breakpoint_disable();
 
 	/* Deliver the signal to userspace */
-<<<<<<< HEAD
 	clear_siginfo(&info);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	info.si_signo = SIGTRAP;
 	info.si_errno = 0;
 	info.si_code = TRAP_HWBKPT;
@@ -784,7 +701,6 @@ void switch_booke_debug_regs(struct debug_reg *new_debug)
 EXPORT_SYMBOL_GPL(switch_booke_debug_regs);
 #else	/* !CONFIG_PPC_ADV_DEBUG_REGS */
 #ifndef CONFIG_HAVE_HW_BREAKPOINT
-<<<<<<< HEAD
 static void set_breakpoint(struct arch_hw_breakpoint *brk)
 {
 	preempt_disable();
@@ -792,18 +708,12 @@ static void set_breakpoint(struct arch_hw_breakpoint *brk)
 	preempt_enable();
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void set_debug_reg_defaults(struct thread_struct *thread)
 {
 	thread->hw_brk.address = 0;
 	thread->hw_brk.type = 0;
-<<<<<<< HEAD
 	if (ppc_breakpoint_available())
 		set_breakpoint(&thread->hw_brk);
-=======
-	set_breakpoint(&thread->hw_brk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #endif /* !CONFIG_HAVE_HW_BREAKPOINT */
 #endif	/* CONFIG_PPC_ADV_DEBUG_REGS */
@@ -900,7 +810,6 @@ void __set_breakpoint(struct arch_hw_breakpoint *brk)
 	memcpy(this_cpu_ptr(&current_brk), brk, sizeof(*brk));
 
 	if (cpu_has_feature(CPU_FTR_DAWR))
-<<<<<<< HEAD
 		// Power8 or later
 		set_dawr(brk);
 	else if (!cpu_has_feature(CPU_FTR_ARCH_207S))
@@ -922,23 +831,6 @@ bool ppc_breakpoint_available(void)
 	return true;
 }
 EXPORT_SYMBOL_GPL(ppc_breakpoint_available);
-=======
-		set_dawr(brk);
-	else
-		set_dabr(brk);
-}
-
-void set_breakpoint(struct arch_hw_breakpoint *brk)
-{
-	preempt_disable();
-	__set_breakpoint(brk);
-	preempt_enable();
-}
-
-#ifdef CONFIG_PPC64
-DEFINE_PER_CPU(struct cpu_usage, cpu_usage_array);
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline bool hw_brk_match(struct arch_hw_breakpoint *a,
 			      struct arch_hw_breakpoint *b)
@@ -959,12 +851,7 @@ static inline bool tm_enabled(struct task_struct *tsk)
 	return tsk && tsk->thread.regs && (tsk->thread.regs->msr & MSR_TM);
 }
 
-<<<<<<< HEAD
 static void tm_reclaim_thread(struct thread_struct *thr, uint8_t cause)
-=======
-static void tm_reclaim_thread(struct thread_struct *thr,
-			      struct thread_info *ti, uint8_t cause)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/*
 	 * Use the current MSR TM suspended bit to track if we have
@@ -984,13 +871,10 @@ static void tm_reclaim_thread(struct thread_struct *thr,
 	if (!MSR_TM_SUSPENDED(mfmsr()))
 		return;
 
-<<<<<<< HEAD
 	giveup_all(container_of(thr, struct task_struct, thread));
 
 	tm_reclaim(thr, cause);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * If we are in a transaction and FP is off then we can't have
 	 * used FP inside that transaction. Hence the checkpointed
@@ -1009,23 +893,12 @@ static void tm_reclaim_thread(struct thread_struct *thr,
 	if ((thr->ckpt_regs.msr & MSR_VEC) == 0)
 		memcpy(&thr->ckvr_state, &thr->vr_state,
 		       sizeof(struct thread_vr_state));
-<<<<<<< HEAD
-=======
-
-	giveup_all(container_of(thr, struct task_struct, thread));
-
-	tm_reclaim(thr, thr->ckpt_regs.msr, cause);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void tm_reclaim_current(uint8_t cause)
 {
 	tm_enable();
-<<<<<<< HEAD
 	tm_reclaim_thread(&current->thread, cause);
-=======
-	tm_reclaim_thread(&current->thread, current_thread_info(), cause);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void tm_reclaim_task(struct task_struct *tsk)
@@ -1048,22 +921,15 @@ static inline void tm_reclaim_task(struct task_struct *tsk)
 	if (!MSR_TM_ACTIVE(thr->regs->msr))
 		goto out_and_saveregs;
 
-<<<<<<< HEAD
 	WARN_ON(tm_suspend_disabled);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	TM_DEBUG("--- tm_reclaim on pid %d (NIP=%lx, "
 		 "ccr=%lx, msr=%lx, trap=%lx)\n",
 		 tsk->pid, thr->regs->nip,
 		 thr->regs->ccr, thr->regs->msr,
 		 thr->regs->trap);
 
-<<<<<<< HEAD
 	tm_reclaim_thread(thr, TM_CAUSE_RESCHED);
-=======
-	tm_reclaim_thread(thr, task_thread_info(tsk), TM_CAUSE_RESCHED);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	TM_DEBUG("--- tm_reclaim on pid %d complete\n",
 		 tsk->pid);
@@ -1077,17 +943,9 @@ out_and_saveregs:
 	tm_save_sprs(thr);
 }
 
-<<<<<<< HEAD
 extern void __tm_recheckpoint(struct thread_struct *thread);
 
 void tm_recheckpoint(struct thread_struct *thread)
-=======
-extern void __tm_recheckpoint(struct thread_struct *thread,
-			      unsigned long orig_msr);
-
-void tm_recheckpoint(struct thread_struct *thread,
-		     unsigned long orig_msr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long flags;
 
@@ -1106,22 +964,13 @@ void tm_recheckpoint(struct thread_struct *thread,
 	 */
 	tm_restore_sprs(thread);
 
-<<<<<<< HEAD
 	__tm_recheckpoint(thread);
-=======
-	__tm_recheckpoint(thread, orig_msr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	local_irq_restore(flags);
 }
 
 static inline void tm_recheckpoint_new_task(struct task_struct *new)
 {
-<<<<<<< HEAD
-=======
-	unsigned long msr;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!cpu_has_feature(CPU_FTR_TM))
 		return;
 
@@ -1140,21 +989,11 @@ static inline void tm_recheckpoint_new_task(struct task_struct *new)
 		tm_restore_sprs(&new->thread);
 		return;
 	}
-<<<<<<< HEAD
 	/* Recheckpoint to restore original checkpointed register state. */
 	TM_DEBUG("*** tm_recheckpoint of pid %d (new->msr 0x%lx)\n",
 		 new->pid, new->thread.regs->msr);
 
 	tm_recheckpoint(&new->thread);
-=======
-	msr = new->thread.ckpt_regs.msr;
-	/* Recheckpoint to restore original checkpointed register state. */
-	TM_DEBUG("*** tm_recheckpoint of pid %d "
-		 "(new->msr 0x%lx, new->origmsr 0x%lx)\n",
-		 new->pid, new->thread.regs->msr, msr);
-
-	tm_recheckpoint(&new->thread, msr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * The checkpointed state has been restored but the live state has
@@ -1260,11 +1099,8 @@ static inline void save_sprs(struct thread_struct *t)
 		t->tar = mfspr(SPRN_TAR);
 	}
 #endif
-<<<<<<< HEAD
 
 	thread_pkey_regs_save(t);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void restore_sprs(struct thread_struct *old_thread,
@@ -1299,7 +1135,6 @@ static inline void restore_sprs(struct thread_struct *old_thread,
 		if (old_thread->tar != new_thread->tar)
 			mtspr(SPRN_TAR, new_thread->tar);
 	}
-<<<<<<< HEAD
 
 	if (cpu_has_feature(CPU_FTR_P9_TIDR) &&
 	    old_thread->tidr != new_thread->tidr)
@@ -1307,9 +1142,6 @@ static inline void restore_sprs(struct thread_struct *old_thread,
 #endif
 
 	thread_pkey_regs_restore(new_thread, old_thread);
-=======
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #ifdef CONFIG_PPC_BOOK3S_64
@@ -1331,25 +1163,7 @@ struct task_struct *__switch_to(struct task_struct *prev,
 
 	WARN_ON(!irqs_disabled());
 
-<<<<<<< HEAD
 #ifdef CONFIG_PPC_BOOK3S_64
-=======
-#ifdef CONFIG_PPC64
-	/*
-	 * Collect processor utilization data per process
-	 */
-	if (firmware_has_feature(FW_FEATURE_SPLPAR)) {
-		struct cpu_usage *cu = this_cpu_ptr(&cpu_usage_array);
-		long unsigned start_tb, current_tb;
-		start_tb = old_thread->start_tb;
-		cu->current_tb = current_tb = mfspr(SPRN_PURR);
-		old_thread->accum_tb += (current_tb - start_tb);
-		new_thread->start_tb = current_tb;
-	}
-#endif /* CONFIG_PPC64 */
-
-#ifdef CONFIG_PPC_STD_MMU_64
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	batch = this_cpu_ptr(&ppc64_tlb_batch);
 	if (batch->active) {
 		current_thread_info()->local_flags |= _TLF_LAZY_MMU;
@@ -1357,11 +1171,7 @@ struct task_struct *__switch_to(struct task_struct *prev,
 			__flush_tlb_pending(batch);
 		batch->active = 0;
 	}
-<<<<<<< HEAD
 #endif /* CONFIG_PPC_BOOK3S_64 */
-=======
-#endif /* CONFIG_PPC_STD_MMU_64 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_PPC_ADV_DEBUG_REGS
 	switch_booke_debug_regs(&new->thread.debug);
@@ -1407,11 +1217,7 @@ struct task_struct *__switch_to(struct task_struct *prev,
 
 	last = _switch(old_thread, new_thread);
 
-<<<<<<< HEAD
 #ifdef CONFIG_PPC_BOOK3S_64
-=======
-#ifdef CONFIG_PPC_STD_MMU_64
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (current_thread_info()->local_flags & _TLF_LAZY_MMU) {
 		current_thread_info()->local_flags &= ~_TLF_LAZY_MMU;
 		batch = this_cpu_ptr(&ppc64_tlb_batch);
@@ -1425,7 +1231,6 @@ struct task_struct *__switch_to(struct task_struct *prev,
 		 * The copy-paste buffer can only store into foreign real
 		 * addresses, so unprivileged processes can not see the
 		 * data or use it in any way unless they have foreign real
-<<<<<<< HEAD
 		 * mappings. If the new process has the foreign real address
 		 * mappings, we must issue a cp_abort to clear any state and
 		 * prevent snooping, corruption or a covert channel.
@@ -1434,24 +1239,6 @@ struct task_struct *__switch_to(struct task_struct *prev,
 			asm volatile(PPC_CP_ABORT);
 	}
 #endif /* CONFIG_PPC_BOOK3S_64 */
-=======
-		 * mappings. We don't have a VAS driver that allocates those
-		 * yet, so no cpabort is required.
-		 */
-		if (cpu_has_feature(CPU_FTR_POWER9_DD1)) {
-			/*
-			 * DD1 allows paste into normal system memory, so we
-			 * do an unpaired copy here to clear the buffer and
-			 * prevent a covert channel being set up.
-			 *
-			 * cpabort is not used because it is quite expensive.
-			 */
-			asm volatile(PPC_COPY(%0, %1)
-					: : "r"(dummy_copy_buffer), "r"(0));
-		}
-	}
-#endif /* CONFIG_PPC_STD_MMU_64 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return last;
 }
@@ -1496,7 +1283,6 @@ static void show_instructions(struct pt_regs *regs)
 	pr_cont("\n");
 }
 
-<<<<<<< HEAD
 void show_user_instructions(struct pt_regs *regs)
 {
 	unsigned long pc;
@@ -1539,8 +1325,6 @@ void show_user_instructions(struct pt_regs *regs)
 	pr_cont("\n");
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct regbit {
 	unsigned long bit;
 	const char *name;
@@ -1640,21 +1424,13 @@ void show_regs(struct pt_regs * regs)
 
 	printk("NIP:  "REG" LR: "REG" CTR: "REG"\n",
 	       regs->nip, regs->link, regs->ctr);
-<<<<<<< HEAD
 	printk("REGS: %px TRAP: %04lx   %s  (%s)\n",
-=======
-	printk("REGS: %p TRAP: %04lx   %s  (%s)\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	       regs, regs->trap, print_tainted(), init_utsname()->release);
 	printk("MSR:  "REG" ", regs->msr);
 	print_msr_bits(regs->msr);
 	pr_cont("  CR: %08lx  XER: %08lx\n", regs->ccr, regs->xer);
 	trap = TRAP(regs);
-<<<<<<< HEAD
 	if ((TRAP(regs) != 0xc00) && cpu_has_feature(CPU_FTR_CFAR))
-=======
-	if ((regs->trap != 0xc00) && cpu_has_feature(CPU_FTR_CFAR))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_cont("CFAR: "REG" ", regs->orig_gpr3);
 	if (trap == 0x200 || trap == 0x300 || trap == 0x600)
 #if defined(CONFIG_4xx) || defined(CONFIG_BOOKE)
@@ -1663,11 +1439,7 @@ void show_regs(struct pt_regs * regs)
 		pr_cont("DAR: "REG" DSISR: %08lx ", regs->dar, regs->dsisr);
 #endif
 #ifdef CONFIG_PPC64
-<<<<<<< HEAD
 	pr_cont("IRQMASK: %lx ", regs->softe);
-=======
-	pr_cont("SOFTE: %ld ", regs->softe);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
 	if (MSR_TM_ACTIVE(regs->msr))
@@ -1704,7 +1476,6 @@ void flush_thread(void)
 #endif /* CONFIG_HAVE_HW_BREAKPOINT */
 }
 
-<<<<<<< HEAD
 int set_thread_uses_vas(void)
 {
 #ifdef CONFIG_PPC_BOOK3S_64
@@ -1780,8 +1551,6 @@ EXPORT_SYMBOL_GPL(set_thread_tidr);
 
 #endif /* CONFIG_PPC64 */
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void
 release_thread(struct task_struct *t)
 {
@@ -1815,11 +1584,7 @@ int arch_dup_task_struct(struct task_struct *dst, struct task_struct *src)
 
 static void setup_ksp_vsid(struct task_struct *p, unsigned long sp)
 {
-<<<<<<< HEAD
 #ifdef CONFIG_PPC_BOOK3S_64
-=======
-#ifdef CONFIG_PPC_STD_MMU_64
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long sp_vsid;
 	unsigned long llp = mmu_psize_defs[mmu_linear_psize].sllp;
 
@@ -1868,11 +1633,7 @@ int copy_thread(unsigned long clone_flags, unsigned long usp,
 			childregs->gpr[14] = ppc_function_entry((void *)usp);
 #ifdef CONFIG_PPC64
 		clear_tsk_thread_flag(p, TIF_32BIT);
-<<<<<<< HEAD
 		childregs->softe = IRQS_ENABLED;
-=======
-		childregs->softe = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 		childregs->gpr[15] = kthread_arg;
 		p->thread.regs = NULL;	/* no user register state */
@@ -1936,11 +1697,8 @@ int copy_thread(unsigned long clone_flags, unsigned long usp,
 	}
 	if (cpu_has_feature(CPU_FTR_HAS_PPR))
 		p->thread.ppr = INIT_PPR;
-<<<<<<< HEAD
 
 	p->thread.tidr = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 	kregs->nip = ppc_function_entry(f);
 	return 0;
@@ -2066,11 +1824,8 @@ void start_thread(struct pt_regs *regs, unsigned long start, unsigned long sp)
 	current->thread.tm_tfiar = 0;
 	current->thread.load_tm = 0;
 #endif /* CONFIG_PPC_TRANSACTIONAL_MEM */
-<<<<<<< HEAD
 
 	thread_pkey_regs_init(&current->thread);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(start_thread);
 
@@ -2264,12 +2019,8 @@ unsigned long get_wchan(struct task_struct *p)
 
 	do {
 		sp = *(unsigned long *)sp;
-<<<<<<< HEAD
 		if (!validate_sp(sp, p, STACK_FRAME_OVERHEAD) ||
 		    p->state == TASK_RUNNING)
-=======
-		if (!validate_sp(sp, p, STACK_FRAME_OVERHEAD))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return 0;
 		if (count > 0) {
 			ip = ((unsigned long *)sp)[STACK_FRAME_LR_SAVE];
@@ -2417,11 +2168,7 @@ unsigned long arch_randomize_brk(struct mm_struct *mm)
 	unsigned long base = mm->brk;
 	unsigned long ret;
 
-<<<<<<< HEAD
 #ifdef CONFIG_PPC_BOOK3S_64
-=======
-#ifdef CONFIG_PPC_STD_MMU_64
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * If we are using 1TB segments and we are allowed to randomise
 	 * the heap, we can put it above 1TB so it is backed by a 1TB

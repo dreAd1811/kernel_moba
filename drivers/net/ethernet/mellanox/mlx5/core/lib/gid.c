@@ -121,11 +121,7 @@ EXPORT_SYMBOL_GPL(mlx5_core_reserved_gids_count);
 
 int mlx5_core_roce_gid_set(struct mlx5_core_dev *dev, unsigned int index,
 			   u8 roce_version, u8 roce_l3_type, const u8 *gid,
-<<<<<<< HEAD
 			   const u8 *mac, bool vlan, u16 vlan_id, u8 port_num)
-=======
-			   const u8 *mac, bool vlan, u16 vlan_id)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 #define MLX5_SET_RA(p, f, v) MLX5_SET(roce_addr_layout, p, f, v)
 	u32  in[MLX5_ST_SZ_DW(set_roce_address_in)] = {0};
@@ -152,12 +148,9 @@ int mlx5_core_roce_gid_set(struct mlx5_core_dev *dev, unsigned int index,
 		memcpy(addr_l3_addr, gid, gidsz);
 	}
 
-<<<<<<< HEAD
 	if (MLX5_CAP_GEN(dev, num_vhca_ports) > 0)
 		MLX5_SET(set_roce_address_in, in, vhca_port_num, port_num);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MLX5_SET(set_roce_address_in, in, roce_address_index, index);
 	MLX5_SET(set_roce_address_in, in, opcode, MLX5_CMD_OP_SET_ROCE_ADDRESS);
 	return mlx5_cmd_exec(dev, in, sizeof(in), out, sizeof(out));

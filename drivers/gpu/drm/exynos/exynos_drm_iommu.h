@@ -55,45 +55,12 @@ static inline void __exynos_iommu_detach(struct exynos_drm_private *priv,
 static inline int __exynos_iommu_create_mapping(struct exynos_drm_private *priv,
 					unsigned long start, unsigned long size)
 {
-<<<<<<< HEAD
 	priv->mapping = iommu_get_domain_for_dev(priv->dma_dev);
 	return 0;
-=======
-	struct iommu_domain *domain;
-	int ret;
-
-	domain = iommu_domain_alloc(priv->dma_dev->bus);
-	if (!domain)
-		return -ENOMEM;
-
-	ret = iommu_get_dma_cookie(domain);
-	if (ret)
-		goto free_domain;
-
-	ret = iommu_dma_init_domain(domain, start, size, NULL);
-	if (ret)
-		goto put_cookie;
-
-	priv->mapping = domain;
-	return 0;
-
-put_cookie:
-	iommu_put_dma_cookie(domain);
-free_domain:
-	iommu_domain_free(domain);
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void __exynos_iommu_release_mapping(struct exynos_drm_private *priv)
 {
-<<<<<<< HEAD
-=======
-	struct iommu_domain *domain = priv->mapping;
-
-	iommu_put_dma_cookie(domain);
-	iommu_domain_free(domain);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	priv->mapping = NULL;
 }
 
@@ -102,13 +69,9 @@ static inline int __exynos_iommu_attach(struct exynos_drm_private *priv,
 {
 	struct iommu_domain *domain = priv->mapping;
 
-<<<<<<< HEAD
 	if (dev != priv->dma_dev)
 		return iommu_attach_device(domain, dev);
 	return 0;
-=======
-	return iommu_attach_device(domain, dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void __exynos_iommu_detach(struct exynos_drm_private *priv,
@@ -116,12 +79,8 @@ static inline void __exynos_iommu_detach(struct exynos_drm_private *priv,
 {
 	struct iommu_domain *domain = priv->mapping;
 
-<<<<<<< HEAD
 	if (dev != priv->dma_dev)
 		iommu_detach_device(domain, dev);
-=======
-	iommu_detach_device(domain, dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #else
 #error Unsupported architecture and IOMMU/DMA-mapping glue code

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Copyright(C) 2016 Linaro Limited. All rights reserved.
@@ -14,74 +13,6 @@
 #include "coresight-priv.h"
 #include "coresight-tmc.h"
 
-=======
-/*
- * Copyright (c) 2017-2020, The Linux Foundation. All rights reserved.
- * Copyright(C) 2016 Linaro Limited. All rights reserved.
- * Author: Mathieu Poirier <mathieu.poirier@linaro.org>
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License version 2 as published by
- * the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
- * more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-#include <linux/atomic.h>
-#include <linux/coresight.h>
-#include <linux/dma-mapping.h>
-#include <linux/iommu.h>
-#include <linux/idr.h>
-#include <linux/mutex.h>
-#include <linux/refcount.h>
-#include <linux/slab.h>
-#include <linux/types.h>
-#include <linux/vmalloc.h>
-#include "coresight-catu.h"
-#include "coresight-etm-perf.h"
-#include "coresight-priv.h"
-#include "coresight-tmc.h"
-
-struct etr_flat_buf {
-	struct device	*dev;
-	dma_addr_t	daddr;
-	void		*vaddr;
-	size_t		size;
-};
-
-/*
- * etr_perf_buffer - Perf buffer used for ETR
- * @drvdata		- The ETR drvdaga this buffer has been allocated for.
- * @etr_buf		- Actual buffer used by the ETR
- * @pid			- The PID this etr_perf_buffer belongs to.
- * @snaphost		- Perf session mode
- * @head		- handle->head at the beginning of the session.
- * @nr_pages		- Number of pages in the ring buffer.
- * @pages		- Array of Pages in the ring buffer.
- */
-struct etr_perf_buffer {
-	struct tmc_drvdata	*drvdata;
-	struct etr_buf		*etr_buf;
-	pid_t			pid;
-	bool			snapshot;
-	unsigned long		head;
-	int			nr_pages;
-	void			**pages;
-};
-
-/* Convert the perf index to an offset within the ETR buffer */
-#define PERF_IDX2OFF(idx, buf)	((idx) % ((buf)->nr_pages << PAGE_SHIFT))
-
-/* Lower limit for ETR hardware buffer */
-#define TMC_ETR_PERF_MIN_BUF_SIZE	SZ_1M
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * The TMC ETR SG has a page size of 4K. The SG table contains pointers
  * to 4KB buffers. However, the OS may use a PAGE_SIZE different from
@@ -284,7 +215,6 @@ void tmc_free_sg_table(struct tmc_sg_table *sg_table)
 	tmc_free_data_pages(sg_table);
 }
 
-<<<<<<< HEAD
 long tmc_sg_get_rwp_offset(struct tmc_drvdata *drvdata)
 {
 	struct etr_buf *etr_buf = drvdata->etr_buf;
@@ -299,8 +229,6 @@ long tmc_sg_get_rwp_offset(struct tmc_drvdata *drvdata)
 	return w_offset;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Alloc pages for the table. Since this will be used by the device,
  * allocate the pages closer to the device (i.e, dev_to_node(dev)
@@ -444,10 +372,7 @@ ssize_t tmc_sg_table_get_data(struct tmc_sg_table *sg_table,
 	len = (len < (PAGE_SIZE - pg_offset)) ? len : (PAGE_SIZE - pg_offset);
 	if (len > 0)
 		*bufpp = page_address(data_pages->pages[pg_idx]) + pg_offset;
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return len;
 }
 
@@ -619,11 +544,7 @@ tmc_init_etr_sg_table(struct device *dev, int node,
 	sg_table = tmc_alloc_sg_table(dev, node, nr_tpages, nr_dpages, pages);
 	if (IS_ERR(sg_table)) {
 		kfree(etr_table);
-<<<<<<< HEAD
 		return ERR_PTR(PTR_ERR(sg_table));
-=======
-		return ERR_CAST(sg_table);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	etr_table->sg_table = sg_table;
@@ -815,22 +736,12 @@ tmc_etr_get_catu_device(struct tmc_drvdata *drvdata)
 	return NULL;
 }
 
-<<<<<<< HEAD
 static inline void tmc_etr_enable_catu(struct tmc_drvdata *drvdata)
-=======
-static inline int tmc_etr_enable_catu(struct tmc_drvdata *drvdata,
-				      struct etr_buf *etr_buf)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct coresight_device *catu = tmc_etr_get_catu_device(drvdata);
 
 	if (catu && helper_ops(catu)->enable)
-<<<<<<< HEAD
 		helper_ops(catu)->enable(catu, drvdata->etr_buf);
-=======
-		return helper_ops(catu)->enable(catu, etr_buf);
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void tmc_etr_disable_catu(struct tmc_drvdata *drvdata)
@@ -844,12 +755,7 @@ static inline void tmc_etr_disable_catu(struct tmc_drvdata *drvdata)
 static const struct etr_buf_operations *etr_buf_ops[] = {
 	[ETR_MODE_FLAT] = &etr_flat_buf_ops,
 	[ETR_MODE_ETR_SG] = &etr_sg_buf_ops,
-<<<<<<< HEAD
 	[ETR_MODE_CATU] = &etr_catu_buf_ops,
-=======
-	[ETR_MODE_CATU] = IS_ENABLED(CONFIG_CORESIGHT_CATU)
-						? &etr_catu_buf_ops : NULL,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static inline int tmc_etr_mode_alloc_buf(int mode,
@@ -863,11 +769,7 @@ static inline int tmc_etr_mode_alloc_buf(int mode,
 	case ETR_MODE_FLAT:
 	case ETR_MODE_ETR_SG:
 	case ETR_MODE_CATU:
-<<<<<<< HEAD
 		if (etr_buf_ops[mode]->alloc)
-=======
-		if (etr_buf_ops[mode] && etr_buf_ops[mode]->alloc)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rc = etr_buf_ops[mode]->alloc(drvdata, etr_buf,
 						      node, pages);
 		if (!rc)
@@ -894,7 +796,6 @@ static struct etr_buf *tmc_alloc_etr_buf(struct tmc_drvdata *drvdata,
 	bool has_etr_sg, has_iommu;
 	bool has_sg, has_catu;
 	struct etr_buf *etr_buf;
-<<<<<<< HEAD
 	int s1_bypass = 0;
 	struct iommu_domain *domain;
 
@@ -912,11 +813,6 @@ static struct etr_buf *tmc_alloc_etr_buf(struct tmc_drvdata *drvdata,
 		has_iommu = false;
 	}
 
-=======
-
-	has_etr_sg = tmc_etr_has_cap(drvdata, TMC_ETR_SG);
-	has_iommu = iommu_get_domain_for_dev(drvdata->dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	has_catu = !!tmc_etr_get_catu_device(drvdata);
 
 	has_sg = has_catu || has_etr_sg;
@@ -954,26 +850,14 @@ static struct etr_buf *tmc_alloc_etr_buf(struct tmc_drvdata *drvdata,
 		return ERR_PTR(rc);
 	}
 
-<<<<<<< HEAD
-=======
-	refcount_set(&etr_buf->refcount, 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_dbg(drvdata->dev, "allocated buffer of size %ldKB in mode %d\n",
 		(unsigned long)size >> 10, etr_buf->mode);
 	return etr_buf;
 }
 
-<<<<<<< HEAD
 void tmc_free_etr_buf(struct etr_buf *etr_buf)
 {
 	WARN_ON(!etr_buf->ops || !etr_buf->ops->free);
-=======
-static void tmc_free_etr_buf(struct etr_buf *etr_buf)
-{
-	if (WARN_ON(!etr_buf->ops || !etr_buf->ops->free))
-		return;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	etr_buf->ops->free(etr_buf);
 	kfree(etr_buf);
 }
@@ -1022,7 +906,6 @@ static void tmc_sync_etr_buf(struct tmc_drvdata *drvdata)
 	rrp = tmc_read_rrp(drvdata);
 	rwp = tmc_read_rwp(drvdata);
 	status = readl_relaxed(drvdata->base + TMC_STS);
-<<<<<<< HEAD
 	etr_buf->full = status & TMC_STS_FULL;
 
 	WARN_ON(!etr_buf->ops || !etr_buf->ops->sync);
@@ -1035,43 +918,16 @@ static void tmc_sync_etr_buf(struct tmc_drvdata *drvdata)
 }
 
 void tmc_etr_enable_hw(struct tmc_drvdata *drvdata)
-=======
-
-	/*
-	 * If there were memory errors in the session, truncate the
-	 * buffer.
-	 */
-	if (WARN_ON_ONCE(status & TMC_STS_MEMERR)) {
-		dev_dbg(&drvdata->csdev->dev,
-			"tmc memory error detected, truncating buffer\n");
-		etr_buf->len = 0;
-		etr_buf->full = 0;
-		return;
-	}
-
-	etr_buf->full = status & TMC_STS_FULL;
-
-	if (WARN_ON(!etr_buf->ops || !etr_buf->ops->sync))
-		return;
-
-	etr_buf->ops->sync(etr_buf, rrp, rwp);
-}
-
-static void __tmc_etr_enable_hw(struct tmc_drvdata *drvdata)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 axictl, sts;
 	struct etr_buf *etr_buf = drvdata->etr_buf;
 
-<<<<<<< HEAD
 	/*
 	 * If this ETR is connected to a CATU, enable it before we turn
 	 * this on
 	 */
 	tmc_etr_enable_catu(drvdata);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	CS_UNLOCK(drvdata->base);
 
 	/* Wait for TMCSReady bit to be set */
@@ -1090,26 +946,16 @@ static void __tmc_etr_enable_hw(struct tmc_drvdata *drvdata)
 		axictl |= TMC_AXICTL_ARCACHE_OS;
 	}
 
-<<<<<<< HEAD
 	if (etr_buf->mode == ETR_MODE_ETR_SG) {
 		if (WARN_ON(!tmc_etr_has_cap(drvdata, TMC_ETR_SG)))
 			return;
 		axictl |= TMC_AXICTL_SCT_GAT_MODE;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	axictl = (axictl &
 		  ~(TMC_AXICTL_CACHE_CTL_B0 | TMC_AXICTL_CACHE_CTL_B1 |
 		  TMC_AXICTL_CACHE_CTL_B2 | TMC_AXICTL_CACHE_CTL_B3)) |
 		  TMC_AXICTL_CACHE_CTL_B0;
-<<<<<<< HEAD
-=======
-
-	if (etr_buf->mode == ETR_MODE_ETR_SG)
-		axictl |= TMC_AXICTL_SCT_GAT_MODE;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	writel_relaxed(axictl, drvdata->base + TMC_AXICTL);
 	tmc_write_dba(drvdata, etr_buf->hwaddr);
 	/*
@@ -1124,7 +970,6 @@ static void __tmc_etr_enable_hw(struct tmc_drvdata *drvdata)
 		writel_relaxed(sts, drvdata->base + TMC_STS);
 	}
 
-<<<<<<< HEAD
 	writel_relaxed(etr_buf->hwaddr, drvdata->base + TMC_DBALO);
 	writel_relaxed(((u64)etr_buf->hwaddr >> 32) & 0xFF,
 		       drvdata->base + TMC_DBAHI);
@@ -1132,11 +977,6 @@ static void __tmc_etr_enable_hw(struct tmc_drvdata *drvdata)
 	writel_relaxed(TMC_FFCR_EN_FMT | TMC_FFCR_EN_TI |
 		       TMC_FFCR_FON_FLIN | TMC_FFCR_FON_TRIG_EVT |
 		       TMC_FFCR_TRIGON_TRIGIN | TMC_FFCR_STOP_ON_FLUSH,
-=======
-	writel_relaxed(TMC_FFCR_EN_FMT | TMC_FFCR_EN_TI |
-		       TMC_FFCR_FON_FLIN | TMC_FFCR_FON_TRIG_EVT |
-		       TMC_FFCR_TRIGON_TRIGIN,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		       drvdata->base + TMC_FFCR);
 	writel_relaxed(drvdata->trigger_cntr, drvdata->base + TMC_TRG);
 	tmc_enable_hw(drvdata);
@@ -1144,64 +984,19 @@ static void __tmc_etr_enable_hw(struct tmc_drvdata *drvdata)
 	CS_LOCK(drvdata->base);
 }
 
-<<<<<<< HEAD
-=======
-static int tmc_etr_enable_hw(struct tmc_drvdata *drvdata,
-			     struct etr_buf *etr_buf)
-{
-	int rc;
-
-	/* Callers should provide an appropriate buffer for use */
-	if (WARN_ON(!etr_buf))
-		return -EINVAL;
-
-	if ((etr_buf->mode == ETR_MODE_ETR_SG) &&
-	    WARN_ON(!tmc_etr_has_cap(drvdata, TMC_ETR_SG)))
-		return -EINVAL;
-
-	if (WARN_ON(drvdata->etr_buf))
-		return -EBUSY;
-
-	/*
-	 * If this ETR is connected to a CATU, enable it before we turn
-	 * this on.
-	 */
-	rc = tmc_etr_enable_catu(drvdata, etr_buf);
-	if (rc)
-		return rc;
-	rc = coresight_claim_device(drvdata->base);
-	if (!rc) {
-		drvdata->etr_buf = etr_buf;
-		__tmc_etr_enable_hw(drvdata);
-	}
-
-	return rc;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Return the available trace data in the buffer (starts at etr_buf->offset,
  * limited by etr_buf->len) from @pos, with a maximum limit of @len,
  * also updating the @bufpp on where to find it. Since the trace data
  * starts at anywhere in the buffer, depending on the RRP, we adjust the
  * @len returned to handle buffer wrapping around.
-<<<<<<< HEAD
-=======
- *
- * We are protected here by drvdata->reading != 0, which ensures the
- * sysfs_buf stays alive.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 ssize_t tmc_etr_get_sysfs_trace(struct tmc_drvdata *drvdata,
 				loff_t pos, size_t len, char **bufpp)
 {
 	s64 offset;
 	ssize_t actual = len;
-<<<<<<< HEAD
 	struct etr_buf *etr_buf = drvdata->etr_buf;
-=======
-	struct etr_buf *etr_buf = drvdata->sysfs_buf;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (pos + actual > etr_buf->len)
 		actual = etr_buf->len - pos;
@@ -1231,31 +1026,10 @@ tmc_etr_free_sysfs_buf(struct etr_buf *buf)
 
 static void tmc_etr_sync_sysfs_buf(struct tmc_drvdata *drvdata)
 {
-<<<<<<< HEAD
 	tmc_sync_etr_buf(drvdata);
 }
 
 void tmc_etr_disable_hw(struct tmc_drvdata *drvdata)
-=======
-	struct etr_buf *etr_buf = drvdata->etr_buf;
-
-	if (WARN_ON(drvdata->sysfs_buf != etr_buf)) {
-		tmc_etr_free_sysfs_buf(drvdata->sysfs_buf);
-		drvdata->sysfs_buf = NULL;
-	} else {
-		tmc_sync_etr_buf(drvdata);
-		/*
-		 * Insert barrier packets at the beginning, if there was
-		 * an overflow.
-		 */
-		if (etr_buf->full)
-			tmc_etr_buf_insert_barrier_packet(etr_buf,
-							  etr_buf->offset);
-	}
-}
-
-static void __tmc_etr_disable_hw(struct tmc_drvdata *drvdata)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	CS_UNLOCK(drvdata->base);
 
@@ -1271,21 +1045,8 @@ static void __tmc_etr_disable_hw(struct tmc_drvdata *drvdata)
 
 	CS_LOCK(drvdata->base);
 
-<<<<<<< HEAD
 	/* Disable CATU device if this ETR is connected to one */
 	tmc_etr_disable_catu(drvdata);
-=======
-}
-
-static void tmc_etr_disable_hw(struct tmc_drvdata *drvdata)
-{
-	__tmc_etr_disable_hw(drvdata);
-	/* Disable CATU device if this ETR is connected to one */
-	tmc_etr_disable_catu(drvdata);
-	coresight_disclaim_device(drvdata->base);
-	/* Reset the ETR buf used by hardware */
-	drvdata->etr_buf = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int tmc_etr_fill_usb_bam_data(struct tmc_drvdata *drvdata)
@@ -1323,21 +1084,13 @@ static int tmc_etr_fill_usb_bam_data(struct tmc_drvdata *drvdata)
 	return 0;
 }
 
-<<<<<<< HEAD
 static void __tmc_etr_enable_to_bam(struct tmc_drvdata *drvdata)
-=======
-static int __tmc_etr_enable_to_bam(struct tmc_drvdata *drvdata)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct tmc_etr_bam_data *bamdata = drvdata->bamdata;
 	uint32_t axictl;
 
 	if (drvdata->enable_to_bam)
-<<<<<<< HEAD
 		return;
-=======
-		return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Configure and enable required CSR registers */
 	msm_qdss_csr_enable_bam_to_usb(drvdata->csr);
@@ -1346,17 +1099,7 @@ static int __tmc_etr_enable_to_bam(struct tmc_drvdata *drvdata)
 
 	CS_UNLOCK(drvdata->base);
 
-<<<<<<< HEAD
 	writel_relaxed(bamdata->data_fifo.size / 4, drvdata->base + TMC_RSZ);
-=======
-	if (drvdata->out_mode == TMC_ETR_OUT_MODE_USB)
-		writel_relaxed(bamdata->data_fifo.size / 4,
-			drvdata->base + TMC_RSZ);
-	else if (drvdata->out_mode == TMC_ETR_OUT_MODE_PCIE)
-		writel_relaxed(bamdata->connect.data.size / 4,
-			drvdata->base + TMC_RSZ);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	writel_relaxed(TMC_MODE_CIRCULAR_BUFFER, drvdata->base + TMC_MODE);
 
 	axictl = readl_relaxed(drvdata->base + TMC_AXICTL);
@@ -1367,7 +1110,6 @@ static int __tmc_etr_enable_to_bam(struct tmc_drvdata *drvdata)
 	axictl = (axictl & ~0x3) | 0x2;
 	writel_relaxed(axictl, drvdata->base + TMC_AXICTL);
 
-<<<<<<< HEAD
 	if (bamdata->props.options & SPS_BAM_SMMU_EN) {
 		writel_relaxed((uint32_t)bamdata->data_fifo.iova,
 		       drvdata->base + TMC_DBALO);
@@ -1377,35 +1119,6 @@ static int __tmc_etr_enable_to_bam(struct tmc_drvdata *drvdata)
 		writel_relaxed((uint32_t)bamdata->data_fifo.phys_base,
 		       drvdata->base + TMC_DBALO);
 		writel_relaxed((((uint64_t)bamdata->data_fifo.phys_base) >> 32)
-=======
-	if (drvdata->out_mode == TMC_ETR_OUT_MODE_USB) {
-		if (bamdata->props.options & SPS_BAM_SMMU_EN) {
-			writel_relaxed((uint32_t)bamdata->data_fifo.iova,
-			       drvdata->base + TMC_DBALO);
-			writel_relaxed(
-				(((uint64_t)bamdata->data_fifo.iova) >> 32)
-				& 0xFF, drvdata->base + TMC_DBAHI);
-		} else {
-			writel_relaxed((uint32_t)bamdata->data_fifo.phys_base,
-			       drvdata->base + TMC_DBALO);
-			writel_relaxed(
-				(((uint64_t)bamdata->data_fifo.phys_base) >> 32)
-				& 0xFF, drvdata->base + TMC_DBAHI);
-		}
-	}
-
-	if (drvdata->out_mode == TMC_ETR_OUT_MODE_PCIE) {
-		if (bamdata->props.options & SPS_BAM_SMMU_EN) {
-			CS_LOCK(drvdata->base);
-			dev_err(drvdata->dev, "PCIE mode doesn't support smmu.\n");
-			return -EINVAL;
-		}
-
-		writel_relaxed((uint32_t)bamdata->connect.data.phys_base,
-			drvdata->base + TMC_DBALO);
-		writel_relaxed(
-			(((uint64_t)bamdata->connect.data.phys_base) >> 32)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			& 0xFF, drvdata->base + TMC_DBAHI);
 	}
 	/* Set FOnFlIn for periodic flush */
@@ -1417,10 +1130,6 @@ static int __tmc_etr_enable_to_bam(struct tmc_drvdata *drvdata)
 
 	msm_qdss_csr_enable_flush(drvdata->csr);
 	drvdata->enable_to_bam = true;
-<<<<<<< HEAD
-=======
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int get_usb_bam_iova(struct device *dev, unsigned long usb_bam_handle,
@@ -1470,7 +1179,6 @@ static int tmc_etr_bam_enable(struct tmc_drvdata *drvdata)
 	bamdata->connect.source = bamdata->handle;
 	bamdata->connect.event_thresh = 0x4;
 	bamdata->connect.src_pipe_index = TMC_ETR_BAM_PIPE_INDEX;
-<<<<<<< HEAD
 	bamdata->connect.options = SPS_O_AUTO_ENABLE;
 
 	bamdata->connect.destination = bamdata->dest;
@@ -1484,59 +1192,6 @@ static int tmc_etr_bam_enable(struct tmc_drvdata *drvdata)
 			goto err1;
 		bamdata->connect.dest_iova = iova;
 	}
-=======
-	if (drvdata->out_mode == TMC_ETR_OUT_MODE_USB) {
-		bamdata->connect.options = SPS_O_AUTO_ENABLE;
-
-		bamdata->connect.destination = bamdata->dest;
-		bamdata->connect.dest_pipe_index = bamdata->dest_pipe_idx;
-		bamdata->connect.desc = bamdata->desc_fifo;
-		bamdata->connect.data = bamdata->data_fifo;
-		if (bamdata->props.options & SPS_BAM_SMMU_EN) {
-			ret = get_usb_bam_iova(drvdata->dev,
-				bamdata->dest, &iova);
-			if (ret)
-				goto err1;
-			bamdata->connect.dest_iova = iova;
-		}
-	} else if (drvdata->out_mode == TMC_ETR_OUT_MODE_PCIE) {
-		if (bamdata->props.options & SPS_BAM_SMMU_EN) {
-			dev_err(drvdata->dev, "PCIE mode doesn't support smmu.\n");
-			ret = -EINVAL;
-			goto err1;
-		}
-
-		bamdata->connect.options = SPS_O_AUTO_ENABLE | SPS_O_DUMMY_PEER;
-
-		bamdata->connect.destination =
-			drvdata->ipa_data->ipa_qdss_out.ipa_rx_db_pa;
-		bamdata->connect.dest_pipe_index = 0;
-		bamdata->connect.desc.phys_base =
-			drvdata->ipa_data->ipa_qdss_in.desc_fifo_base_addr;
-		bamdata->connect.desc.size =
-			drvdata->ipa_data->ipa_qdss_in.desc_fifo_size;
-		bamdata->connect.desc.base =
-			ioremap(bamdata->connect.desc.phys_base,
-			bamdata->connect.desc.size);
-		if (!bamdata->connect.desc.base) {
-			ret = -ENOMEM;
-			goto err1;
-		}
-
-		bamdata->connect.data.phys_base =
-			drvdata->ipa_data->ipa_qdss_in.data_fifo_base_addr;
-		bamdata->connect.data.size =
-			drvdata->ipa_data->ipa_qdss_in.data_fifo_size;
-		bamdata->connect.data.base =
-			ioremap(bamdata->connect.data.phys_base,
-			bamdata->connect.data.size);
-		if (!bamdata->connect.data.base) {
-			ret = -ENOMEM;
-			goto err1;
-		}
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = sps_connect(bamdata->pipe, &bamdata->connect);
 	if (ret)
 		goto err1;
@@ -1602,17 +1257,6 @@ void usb_notifier(void *priv, unsigned int event, struct qdss_request *d_req,
 	int ret = 0;
 
 	mutex_lock(&drvdata->mem_lock);
-<<<<<<< HEAD
-=======
-	if (drvdata->out_mode != TMC_ETR_OUT_MODE_USB
-			|| drvdata->mode == CS_MODE_DISABLED) {
-		dev_err(&drvdata->csdev->dev,
-		"%s: ETR is not USB mode, or ETR is disabled.\n", __func__);
-		mutex_unlock(&drvdata->mem_lock);
-		return;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (event == USB_QDSS_CONNECT) {
 		ret = tmc_etr_fill_usb_bam_data(drvdata);
 		if (ret)
@@ -1640,11 +1284,8 @@ int tmc_etr_bam_init(struct amba_device *adev,
 	struct device *dev = &adev->dev;
 	struct resource res;
 	struct tmc_etr_bam_data *bamdata;
-<<<<<<< HEAD
 	int s1_bypass = 0;
 	struct iommu_domain *domain;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	bamdata = devm_kzalloc(dev, sizeof(*bamdata), GFP_KERNEL);
 	if (!bamdata)
@@ -1666,7 +1307,6 @@ int tmc_etr_bam_init(struct amba_device *adev,
 	bamdata->props.summing_threshold = 0x10; /* BAM event threshold */
 	bamdata->props.irq = 0;
 	bamdata->props.num_pipes = TMC_ETR_BAM_NR_PIPES;
-<<<<<<< HEAD
 	domain = iommu_get_domain_for_dev(drvdata->dev);
 	if (domain) {
 		iommu_domain_get_attr(domain, DOMAIN_ATTR_S1_BYPASS,
@@ -1676,103 +1316,17 @@ int tmc_etr_bam_init(struct amba_device *adev,
 			__func__, dev_name(dev));
 			bamdata->props.options |= SPS_BAM_SMMU_EN;
 		}
-=======
-	if (device_property_present(dev, "iommus")
-		&& !device_property_present(dev, "qcom,smmu-s1-bypass")) {
-		pr_info("%s: setting SPS_BAM_SMMU_EN flag with (%s)\n",
-		__func__, dev_name(dev));
-		bamdata->props.options |= SPS_BAM_SMMU_EN;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return sps_register_bam_device(&bamdata->props, &bamdata->handle);
 }
 
-<<<<<<< HEAD
-=======
-int tmc_etr_ipa_init(struct amba_device *adev,
-			struct tmc_drvdata *drvdata)
-{
-	int ret;
-	struct device *dev = &adev->dev;
-	struct device_node *node = adev->dev.of_node;
-	struct tmc_etr_ipa_data *ipa_data;
-	u32 value = 0;
-
-	ipa_data = devm_kzalloc(dev, sizeof(*ipa_data), GFP_KERNEL);
-	if (!ipa_data)
-		return -ENOMEM;
-
-	drvdata->ipa_data = ipa_data;
-
-	ret = of_property_read_u32(node, "ipa-conn-data-base-pa", &value);
-	if (ret) {
-		pr_err("%s: Invalid ipa data base address property\n",
-			__func__);
-		return -EINVAL;
-	}
-	ipa_data->ipa_qdss_in.data_fifo_base_addr = value;
-
-	ret = of_property_read_u32(node, "ipa-conn-data-size", &value);
-	if (ret) {
-		pr_err("%s: Invalid ipa data base size\n", __func__);
-		return  -EINVAL;
-	}
-	ipa_data->ipa_qdss_in.data_fifo_size = value;
-
-	ret = of_property_read_u32(node, "ipa-conn-desc-base-pa", &value);
-	if (ret) {
-		pr_err("%s: Invalid ipa desc base address property\n",
-			__func__);
-		return  -EINVAL;
-	}
-	ipa_data->ipa_qdss_in.desc_fifo_base_addr = value;
-
-	ret = of_property_read_u32(node, "ipa-conn-desc-size", &value);
-	if (ret) {
-		pr_err("%s: Invalid ipa desc size  property\n", __func__);
-		return -EINVAL;
-	}
-	ipa_data->ipa_qdss_in.desc_fifo_size = value;
-
-	ret = of_property_read_u32(node, "ipa-peer-evt-reg-pa", &value);
-	if (ret) {
-		pr_err("%s: Invalid ipa peer reg pa property\n", __func__);
-		return -EINVAL;
-	}
-	ipa_data->ipa_qdss_in.bam_p_evt_dest_addr = value;
-
-	ipa_data->ipa_qdss_in.bam_p_evt_threshold = 0x4;
-	ipa_data->ipa_qdss_in.override_eot = 0x1;
-	return 0;
-}
-
-static int tmc_etr_ipa_conn(struct tmc_drvdata *drvdata)
-{
-	if (!drvdata->ipa_data)
-		return -ENOMEM;
-
-	return ipa_qdss_conn_pipes(&drvdata->ipa_data->ipa_qdss_in,
-			&drvdata->ipa_data->ipa_qdss_out);
-}
-
-static int tmc_etr_ipa_disconn(void)
-{
-	return ipa_qdss_disconn_pipes();
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int tmc_enable_etr_sink_sysfs(struct coresight_device *csdev)
 {
 	int ret = 0;
 	unsigned long flags;
 	struct tmc_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
-<<<<<<< HEAD
 	struct etr_buf *new_buf = NULL, *free_buf = NULL;
-=======
-	struct etr_buf *sysfs_buf = NULL, *new_buf = NULL, *free_buf = NULL;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * If we are enabling the ETR from disabled state, we need to make
@@ -1782,24 +1336,11 @@ static int tmc_enable_etr_sink_sysfs(struct coresight_device *csdev)
 	 * buffer, provided the size matches. Any allocation has to be done
 	 * with the lock released.
 	 */
-<<<<<<< HEAD
 	spin_lock_irqsave(&drvdata->spinlock, flags);
 	if (!drvdata->etr_buf || (drvdata->etr_buf->size != drvdata->size)) {
 		spin_unlock_irqrestore(&drvdata->spinlock, flags);
 
 		if (drvdata->out_mode == TMC_ETR_OUT_MODE_MEM) {
-=======
-	mutex_lock(&drvdata->mem_lock);
-	spin_lock_irqsave(&drvdata->spinlock, flags);
-	sysfs_buf = READ_ONCE(drvdata->sysfs_buf);
-	if (!sysfs_buf || (sysfs_buf->size != drvdata->size)
-			|| !drvdata->usbch) {
-		spin_unlock_irqrestore(&drvdata->spinlock, flags);
-
-		if (drvdata->out_mode == TMC_ETR_OUT_MODE_MEM ||
-			(drvdata->out_mode == TMC_ETR_OUT_MODE_PCIE &&
-			drvdata->pcie_path == TMC_ETR_PCIE_SW_PATH)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/*
 			 * ETR DDR memory is not allocated until user enables
 			 * tmc at least once. If user specifies different ETR
@@ -1811,7 +1352,6 @@ static int tmc_enable_etr_sink_sysfs(struct coresight_device *csdev)
 			/* Allocate memory with the locks released */
 			free_buf = new_buf = tmc_etr_setup_sysfs_buf(drvdata);
 			if (IS_ERR(new_buf)) {
-<<<<<<< HEAD
 				return -ENOMEM;
 			}
 			coresight_cti_map_trigout(drvdata->cti_flush, 3, 0);
@@ -1842,54 +1382,6 @@ static int tmc_enable_etr_sink_sysfs(struct coresight_device *csdev)
 				return -ENODEV;
 			}
 		}
-=======
-				mutex_unlock(&drvdata->mem_lock);
-				return PTR_ERR(new_buf);
-			}
-
-			if (drvdata->out_mode != TMC_ETR_OUT_MODE_MEM) {
-				drvdata->size = TMC_ETR_PCIE_MEM_SIZE;
-			}
-
-			coresight_cti_map_trigout(drvdata->cti_flush, 3, 0);
-			coresight_cti_map_trigin(drvdata->cti_reset, 2, 0);
-		} else if (drvdata->out_mode == TMC_ETR_OUT_MODE_PCIE &&
-			drvdata->pcie_path == TMC_ETR_PCIE_HW_PATH) {
-			ret = tmc_etr_ipa_conn(drvdata);
-			if (ret) {
-				mutex_unlock(&drvdata->mem_lock);
-				return ret;
-			}
-
-			ret = tmc_etr_bam_enable(drvdata);
-			if (ret) {
-				tmc_etr_ipa_disconn();
-				mutex_unlock(&drvdata->mem_lock);
-				return ret;
-			}
-
-			spin_lock_irqsave(&drvdata->spinlock, flags);
-			ret = __tmc_etr_enable_to_bam(drvdata);
-			if (ret) {
-				spin_unlock_irqrestore(&drvdata->spinlock,
-					flags);
-				tmc_etr_ipa_disconn();
-				mutex_unlock(&drvdata->mem_lock);
-				return ret;
-			}
-			spin_unlock_irqrestore(&drvdata->spinlock, flags);
-
-		} else {
-			drvdata->usbch = usb_qdss_open("qdss", drvdata,
-								usb_notifier);
-			if (IS_ERR_OR_NULL(drvdata->usbch)) {
-				dev_err(drvdata->dev, "usb_qdss_open failed\n");
-				mutex_unlock(&drvdata->mem_lock);
-				return -ENODEV;
-			}
-		}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_lock_irqsave(&drvdata->spinlock, flags);
 	}
 
@@ -1903,21 +1395,13 @@ static int tmc_enable_etr_sink_sysfs(struct coresight_device *csdev)
 	 * sink is already enabled no memory is needed and the HW need not be
 	 * touched, even if the buffer size has changed.
 	 */
-<<<<<<< HEAD
 	if (drvdata->mode == CS_MODE_SYSFS)
 		goto out;
-=======
-	if (drvdata->mode == CS_MODE_SYSFS) {
-		atomic_inc(csdev->refcnt);
-		goto out;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * If we don't have a buffer or it doesn't match the requested size,
 	 * use the buffer allocated above. Otherwise reuse the existing buffer.
 	 */
-<<<<<<< HEAD
 	if (!drvdata->etr_buf ||
 	    (new_buf && drvdata->etr_buf->size != new_buf->size)) {
 		free_buf = drvdata->etr_buf;
@@ -1930,24 +1414,6 @@ static int tmc_enable_etr_sink_sysfs(struct coresight_device *csdev)
 	    (drvdata->out_mode == TMC_ETR_OUT_MODE_USB
 	     && drvdata->byte_cntr->sw_usb))
 		tmc_etr_enable_hw(drvdata);
-=======
-	sysfs_buf = READ_ONCE(drvdata->sysfs_buf);
-	if (!sysfs_buf || (new_buf && sysfs_buf->size != new_buf->size)) {
-		free_buf = sysfs_buf;
-		drvdata->sysfs_buf = new_buf;
-	}
-
-	if (drvdata->out_mode == TMC_ETR_OUT_MODE_MEM ||
-			(drvdata->out_mode == TMC_ETR_OUT_MODE_PCIE &&
-			drvdata->pcie_path == TMC_ETR_PCIE_SW_PATH)) {
-		ret = tmc_etr_enable_hw(drvdata, drvdata->sysfs_buf);
-		if (ret)
-			goto out;
-	}
-
-	drvdata->mode = CS_MODE_SYSFS;
-	atomic_inc(csdev->refcnt);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	drvdata->enable = true;
 out:
@@ -1957,7 +1423,6 @@ out:
 	if (free_buf)
 		tmc_etr_free_sysfs_buf(free_buf);
 
-<<<<<<< HEAD
 	if (drvdata->out_mode == TMC_ETR_OUT_MODE_MEM)
 		tmc_etr_byte_cntr_start(drvdata->byte_cntr);
 
@@ -1988,485 +1453,24 @@ static int tmc_enable_etr_sink(struct coresight_device *csdev, u32 mode)
 	case CS_MODE_PERF:
 		return tmc_enable_etr_sink_perf(csdev);
 	}
-=======
-	if (!ret) {
-		if (drvdata->out_mode == TMC_ETR_OUT_MODE_MEM)
-			tmc_etr_byte_cntr_start(drvdata->byte_cntr);
-
-		if (drvdata->out_mode == TMC_ETR_OUT_MODE_PCIE
-			&& drvdata->pcie_path == TMC_ETR_PCIE_SW_PATH)
-			etr_pcie_start(drvdata->byte_cntr);
-
-		dev_info(drvdata->dev, "TMC-ETR enabled\n");
-	}
-
-	mutex_unlock(&drvdata->mem_lock);
-	return ret;
-}
-
-/*
- * alloc_etr_buf: Allocate ETR buffer for use by perf.
- * The size of the hardware buffer is dependent on the size configured
- * via sysfs and the perf ring buffer size. We prefer to allocate the
- * largest possible size, scaling down the size by half until it
- * reaches a minimum limit (1M), beyond which we give up.
- */
-static struct etr_buf *
-alloc_etr_buf(struct tmc_drvdata *drvdata, struct perf_event *event,
-	      int nr_pages, void **pages, bool snapshot)
-{
-	int node;
-	struct etr_buf *etr_buf;
-	unsigned long size;
-
-	node = (event->cpu == -1) ? NUMA_NO_NODE : cpu_to_node(event->cpu);
-	/*
-	 * Try to match the perf ring buffer size if it is larger
-	 * than the size requested via sysfs.
-	 */
-	if ((nr_pages << PAGE_SHIFT) > drvdata->size) {
-		etr_buf = tmc_alloc_etr_buf(drvdata, (nr_pages << PAGE_SHIFT),
-					    0, node, NULL);
-		if (!IS_ERR(etr_buf))
-			goto done;
-	}
-
-	/*
-	 * Else switch to configured size for this ETR
-	 * and scale down until we hit the minimum limit.
-	 */
-	size = drvdata->size;
-	do {
-		etr_buf = tmc_alloc_etr_buf(drvdata, size, 0, node, NULL);
-		if (!IS_ERR(etr_buf))
-			goto done;
-		size /= 2;
-	} while (size >= TMC_ETR_PERF_MIN_BUF_SIZE);
-
-	return ERR_PTR(-ENOMEM);
-
-done:
-	return etr_buf;
-}
-
-static struct etr_buf *
-get_perf_etr_buf_cpu_wide(struct tmc_drvdata *drvdata,
-			  struct perf_event *event, int nr_pages,
-			  void **pages, bool snapshot)
-{
-	int ret;
-	pid_t pid = task_pid_nr(event->owner);
-	struct etr_buf *etr_buf;
-
-retry:
-	/*
-	 * An etr_perf_buffer is associated with an event and holds a reference
-	 * to the AUX ring buffer that was created for that event.  In CPU-wide
-	 * N:1 mode multiple events (one per CPU), each with its own AUX ring
-	 * buffer, share a sink.  As such an etr_perf_buffer is created for each
-	 * event but a single etr_buf associated with the ETR is shared between
-	 * them.  The last event in a trace session will copy the content of the
-	 * etr_buf to its AUX ring buffer.  Ring buffer associated to other
-	 * events are simply not used an freed as events are destoyed.  We still
-	 * need to allocate a ring buffer for each event since we don't know
-	 * which event will be last.
-	 */
-
-	/*
-	 * The first thing to do here is check if an etr_buf has already been
-	 * allocated for this session.  If so it is shared with this event,
-	 * otherwise it is created.
-	 */
-	mutex_lock(&drvdata->idr_mutex);
-	etr_buf = idr_find(&drvdata->idr, pid);
-	if (etr_buf) {
-		refcount_inc(&etr_buf->refcount);
-		mutex_unlock(&drvdata->idr_mutex);
-		return etr_buf;
-	}
-
-	/* If we made it here no buffer has been allocated, do so now. */
-	mutex_unlock(&drvdata->idr_mutex);
-
-	etr_buf = alloc_etr_buf(drvdata, event, nr_pages, pages, snapshot);
-	if (IS_ERR(etr_buf))
-		return etr_buf;
-
-	/* Now that we have a buffer, add it to the IDR. */
-	mutex_lock(&drvdata->idr_mutex);
-	ret = idr_alloc(&drvdata->idr, etr_buf, pid, pid + 1, GFP_KERNEL);
-	mutex_unlock(&drvdata->idr_mutex);
-
-	/* Another event with this session ID has allocated this buffer. */
-	if (ret == -ENOSPC) {
-		tmc_free_etr_buf(etr_buf);
-		goto retry;
-	}
-
-	/* The IDR can't allocate room for a new session, abandon ship. */
-	if (ret == -ENOMEM) {
-		tmc_free_etr_buf(etr_buf);
-		return ERR_PTR(ret);
-	}
-
-
-	return etr_buf;
-}
-
-static struct etr_buf *
-get_perf_etr_buf_per_thread(struct tmc_drvdata *drvdata,
-			    struct perf_event *event, int nr_pages,
-			    void **pages, bool snapshot)
-{
-	/*
-	 * In per-thread mode the etr_buf isn't shared, so just go ahead
-	 * with memory allocation.
-	 */
-	return alloc_etr_buf(drvdata, event, nr_pages, pages, snapshot);
-}
-
-static struct etr_buf *
-get_perf_etr_buf(struct tmc_drvdata *drvdata, struct perf_event *event,
-		 int nr_pages, void **pages, bool snapshot)
-{
-	if (event->cpu == -1)
-		return get_perf_etr_buf_per_thread(drvdata, event, nr_pages,
-						   pages, snapshot);
-
-	return get_perf_etr_buf_cpu_wide(drvdata, event, nr_pages,
-					 pages, snapshot);
-}
-
-static struct etr_perf_buffer *
-tmc_etr_setup_perf_buf(struct tmc_drvdata *drvdata, struct perf_event *event,
-		       int nr_pages, void **pages, bool snapshot)
-{
-	int node;
-	struct etr_buf *etr_buf;
-	struct etr_perf_buffer *etr_perf;
-
-	node = (event->cpu == -1) ? NUMA_NO_NODE : cpu_to_node(event->cpu);
-
-	etr_perf = kzalloc_node(sizeof(*etr_perf), GFP_KERNEL, node);
-	if (!etr_perf)
-		return ERR_PTR(-ENOMEM);
-
-	etr_buf = get_perf_etr_buf(drvdata, event, nr_pages, pages, snapshot);
-	if (!IS_ERR(etr_buf))
-		goto done;
-
-	kfree(etr_perf);
-	return ERR_PTR(-ENOMEM);
-
-done:
-	/*
-	 * Keep a reference to the ETR this buffer has been allocated for
-	 * in order to have access to the IDR in tmc_free_etr_buffer().
-	 */
-	etr_perf->drvdata = drvdata;
-	etr_perf->etr_buf = etr_buf;
-
-	return etr_perf;
-}
-
-
-static void *tmc_alloc_etr_buffer(struct coresight_device *csdev,
-				  struct perf_event *event, void **pages,
-				  int nr_pages, bool snapshot)
-{
-	struct etr_perf_buffer *etr_perf;
-	struct tmc_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
-
-	etr_perf = tmc_etr_setup_perf_buf(drvdata, event,
-					  nr_pages, pages, snapshot);
-	if (IS_ERR(etr_perf)) {
-		dev_dbg(drvdata->dev, "Unable to allocate ETR buffer\n");
-		return NULL;
-	}
-
-	etr_perf->pid = task_pid_nr(event->owner);
-	etr_perf->snapshot = snapshot;
-	etr_perf->nr_pages = nr_pages;
-	etr_perf->pages = pages;
-
-	return etr_perf;
-}
-
-static void tmc_free_etr_buffer(void *config)
-{
-	struct etr_perf_buffer *etr_perf = config;
-	struct tmc_drvdata *drvdata = etr_perf->drvdata;
-	struct etr_buf *buf, *etr_buf = etr_perf->etr_buf;
-
-	if (!etr_buf)
-		goto free_etr_perf_buffer;
-
-	mutex_lock(&drvdata->idr_mutex);
-	/* If we are not the last one to use the buffer, don't touch it. */
-	if (!refcount_dec_and_test(&etr_buf->refcount)) {
-		mutex_unlock(&drvdata->idr_mutex);
-		goto free_etr_perf_buffer;
-	}
-
-	/* We are the last one, remove from the IDR and free the buffer. */
-	buf = idr_remove(&drvdata->idr, etr_perf->pid);
-	mutex_unlock(&drvdata->idr_mutex);
-
-	/*
-	 * Something went very wrong if the buffer associated with this ID
-	 * is not the same in the IDR.  Leak to avoid use after free.
-	 */
-	if (buf && WARN_ON(buf != etr_buf))
-		goto free_etr_perf_buffer;
-
-	tmc_free_etr_buf(etr_perf->etr_buf);
-
-free_etr_perf_buffer:
-	kfree(etr_perf);
-}
-
-/*
- * tmc_etr_sync_perf_buffer: Copy the actual trace data from the hardware
- * buffer to the perf ring buffer.
- */
-static void tmc_etr_sync_perf_buffer(struct etr_perf_buffer *etr_perf,
-				     unsigned long src_offset,
-				     unsigned long to_copy)
-{
-	long bytes;
-	long pg_idx, pg_offset;
-	unsigned long head = etr_perf->head;
-	char **dst_pages, *src_buf;
-	struct etr_buf *etr_buf = etr_perf->etr_buf;
-
-	head = etr_perf->head;
-	pg_idx = head >> PAGE_SHIFT;
-	pg_offset = head & (PAGE_SIZE - 1);
-	dst_pages = (char **)etr_perf->pages;
-
-	while (to_copy > 0) {
-		/*
-		 * In one iteration, we can copy minimum of :
-		 *  1) what is available in the source buffer,
-		 *  2) what is available in the source buffer, before it
-		 *     wraps around.
-		 *  3) what is available in the destination page.
-		 * in one iteration.
-		 */
-		if (src_offset >= etr_buf->size)
-			src_offset -= etr_buf->size;
-		bytes = tmc_etr_buf_get_data(etr_buf, src_offset, to_copy,
-					     &src_buf);
-		if (WARN_ON_ONCE(bytes <= 0))
-			break;
-		bytes = min(bytes, (long)(PAGE_SIZE - pg_offset));
-
-		memcpy(dst_pages[pg_idx] + pg_offset, src_buf, bytes);
-
-		to_copy -= bytes;
-
-		/* Move destination pointers */
-		pg_offset += bytes;
-		if (pg_offset == PAGE_SIZE) {
-			pg_offset = 0;
-			if (++pg_idx == etr_perf->nr_pages)
-				pg_idx = 0;
-		}
-
-		/* Move source pointers */
-		src_offset += bytes;
-	}
-}
-
-/*
- * tmc_update_etr_buffer : Update the perf ring buffer with the
- * available trace data. We use software double buffering at the moment.
- *
- * TODO: Add support for reusing the perf ring buffer.
- */
-static unsigned long
-tmc_update_etr_buffer(struct coresight_device *csdev,
-		      struct perf_output_handle *handle,
-		      void *config)
-{
-	bool lost = false;
-	unsigned long flags, offset, size = 0;
-	struct tmc_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
-	struct etr_perf_buffer *etr_perf = config;
-	struct etr_buf *etr_buf = etr_perf->etr_buf;
-
-	spin_lock_irqsave(&drvdata->spinlock, flags);
-
-	/* Don't do anything if another tracer is using this sink */
-	if (atomic_read(csdev->refcnt) != 1) {
-		spin_unlock_irqrestore(&drvdata->spinlock, flags);
-		goto out;
-	}
-
-	if (WARN_ON(drvdata->perf_buf != etr_buf)) {
-		lost = true;
-		spin_unlock_irqrestore(&drvdata->spinlock, flags);
-		goto out;
-	}
-
-	CS_UNLOCK(drvdata->base);
-
-	tmc_flush_and_stop(drvdata);
-	tmc_sync_etr_buf(drvdata);
-
-	CS_LOCK(drvdata->base);
-	spin_unlock_irqrestore(&drvdata->spinlock, flags);
-
-	lost = etr_buf->full;
-	offset = etr_buf->offset;
-	size = etr_buf->len;
-
-	/*
-	 * The ETR buffer may be bigger than the space available in the
-	 * perf ring buffer (handle->size).  If so advance the offset so that we
-	 * get the latest trace data.  In snapshot mode none of that matters
-	 * since we are expected to clobber stale data in favour of the latest
-	 * traces.
-	 */
-	if (!etr_perf->snapshot && size > handle->size) {
-		u32 mask = tmc_get_memwidth_mask(drvdata);
-
-		/*
-		 * Make sure the new size is aligned in accordance with the
-		 * requirement explained in function tmc_get_memwidth_mask().
-		 */
-		size = handle->size & mask;
-		offset = etr_buf->offset + etr_buf->len - size;
-
-		if (offset >= etr_buf->size)
-			offset -= etr_buf->size;
-		lost = true;
-	}
-
-	/* Insert barrier packets at the beginning, if there was an overflow */
-	if (lost)
-		tmc_etr_buf_insert_barrier_packet(etr_buf, etr_buf->offset);
-	tmc_etr_sync_perf_buffer(etr_perf, offset, size);
-
-	/*
-	 * In snapshot mode we simply increment the head by the number of byte
-	 * that were written.  User space function  cs_etm_find_snapshot() will
-	 * figure out how many bytes to get from the AUX buffer based on the
-	 * position of the head.
-	 */
-	if (etr_perf->snapshot)
-		handle->head += size;
-out:
-	/*
-	 * Don't set the TRUNCATED flag in snapshot mode because 1) the
-	 * captured buffer is expected to be truncated and 2) a full buffer
-	 * prevents the event from being re-enabled by the perf core,
-	 * resulting in stale data being send to user space.
-	 */
-	if (!etr_perf->snapshot && lost)
-		perf_aux_output_flag(handle, PERF_AUX_FLAG_TRUNCATED);
-	return size;
-}
-
-static int tmc_enable_etr_sink_perf(struct coresight_device *csdev, void *data)
-{
-	int rc = 0;
-	pid_t pid;
-	unsigned long flags;
-	struct tmc_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
-	struct perf_output_handle *handle = data;
-	struct etr_perf_buffer *etr_perf = etm_perf_sink_config(handle);
-
-	spin_lock_irqsave(&drvdata->spinlock, flags);
-	 /* Don't use this sink if it is already claimed by sysFS */
-	if (drvdata->mode == CS_MODE_SYSFS) {
-		rc = -EBUSY;
-		goto unlock_out;
-	}
-
-	if (WARN_ON(!etr_perf || !etr_perf->etr_buf)) {
-		rc = -EINVAL;
-		goto unlock_out;
-	}
-
-	/* Get a handle on the pid of the process to monitor */
-	pid = etr_perf->pid;
-
-	/* Do not proceed if this device is associated with another session */
-	if (drvdata->pid != -1 && drvdata->pid != pid) {
-		rc = -EBUSY;
-		goto unlock_out;
-	}
-
-	etr_perf->head = PERF_IDX2OFF(handle->head, etr_perf);
-
-	/*
-	 * No HW configuration is needed if the sink is already in
-	 * use for this session.
-	 */
-	if (drvdata->pid == pid) {
-		atomic_inc(csdev->refcnt);
-		goto unlock_out;
-	}
-
-	rc = tmc_etr_enable_hw(drvdata, etr_perf->etr_buf);
-	if (!rc) {
-		/* Associate with monitored process. */
-		drvdata->pid = pid;
-		drvdata->mode = CS_MODE_PERF;
-		drvdata->perf_buf = etr_perf->etr_buf;
-		atomic_inc(csdev->refcnt);
-	}
-
-unlock_out:
-	spin_unlock_irqrestore(&drvdata->spinlock, flags);
-	return rc;
-}
-
-static int tmc_enable_etr_sink(struct coresight_device *csdev,
-			       u32 mode, void *data)
-{
-	switch (mode) {
-	case CS_MODE_SYSFS:
-		return tmc_enable_etr_sink_sysfs(csdev);
-	case CS_MODE_PERF:
-		return tmc_enable_etr_sink_perf(csdev, data);
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* We shouldn't be here */
 	return -EINVAL;
 }
 
-<<<<<<< HEAD
 static void _tmc_disable_etr_sink(struct coresight_device *csdev)
-=======
-static int tmc_disable_etr_sink(struct coresight_device *csdev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long flags;
 	struct tmc_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
 
-<<<<<<< HEAD
 	spin_lock_irqsave(&drvdata->spinlock, flags);
 	if (drvdata->reading) {
 		spin_unlock_irqrestore(&drvdata->spinlock, flags);
 		return;
-=======
-	mutex_lock(&drvdata->mem_lock);
-	spin_lock_irqsave(&drvdata->spinlock, flags);
-
-	if (drvdata->reading) {
-		spin_unlock_irqrestore(&drvdata->spinlock, flags);
-		mutex_unlock(&drvdata->mem_lock);
-		return -EBUSY;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Disable the TMC only if it needs to */
 	if (drvdata->mode != CS_MODE_DISABLED) {
 		if (drvdata->out_mode == TMC_ETR_OUT_MODE_USB) {
-<<<<<<< HEAD
 			if (!drvdata->byte_cntr->sw_usb) {
 				__tmc_etr_disable_to_bam(drvdata);
 				spin_unlock_irqrestore(&drvdata->spinlock,
@@ -2482,30 +1486,12 @@ static int tmc_disable_etr_sink(struct coresight_device *csdev)
 				spin_lock_irqsave(&drvdata->spinlock, flags);
 				tmc_etr_disable_hw(drvdata);
 			}
-=======
-			__tmc_etr_disable_to_bam(drvdata);
-			spin_unlock_irqrestore(&drvdata->spinlock, flags);
-			tmc_etr_bam_disable(drvdata);
-			usb_qdss_close(drvdata->usbch);
-			drvdata->usbch = NULL;
-			drvdata->mode = CS_MODE_DISABLED;
-			goto out;
-		} else if (drvdata->out_mode == TMC_ETR_OUT_MODE_PCIE
-			&& drvdata->pcie_path == TMC_ETR_PCIE_HW_PATH) {
-			__tmc_etr_disable_to_bam(drvdata);
-			spin_unlock_irqrestore(&drvdata->spinlock, flags);
-			tmc_etr_bam_disable(drvdata);
-			tmc_etr_ipa_disconn();
-			drvdata->mode = CS_MODE_DISABLED;
-			goto out;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else {
 			tmc_etr_disable_hw(drvdata);
 		}
 		drvdata->mode = CS_MODE_DISABLED;
 	}
 
-<<<<<<< HEAD
 	spin_unlock_irqrestore(&drvdata->spinlock, flags);
 
 	if (drvdata->out_mode == TMC_ETR_OUT_MODE_USB
@@ -2542,75 +1528,17 @@ static void tmc_disable_etr_sink(struct coresight_device *csdev)
 	mutex_lock(&drvdata->mem_lock);
 	_tmc_disable_etr_sink(csdev);
 	mutex_unlock(&drvdata->mem_lock);
-=======
-	if (atomic_dec_return(csdev->refcnt)) {
-		spin_unlock_irqrestore(&drvdata->spinlock, flags);
-		mutex_unlock(&drvdata->mem_lock);
-		return -EBUSY;
-	}
-
-	/* Dissociate from monitored process. */
-	drvdata->pid = -1;
-	drvdata->mode = CS_MODE_DISABLED;
-	/* Reset perf specific data */
-	drvdata->perf_buf = NULL;
-
-	spin_unlock_irqrestore(&drvdata->spinlock, flags);
-
-	if (drvdata->out_mode == TMC_ETR_OUT_MODE_MEM ||
-		(drvdata->out_mode == TMC_ETR_OUT_MODE_PCIE
-		&& drvdata->pcie_path == TMC_ETR_PCIE_SW_PATH)) {
-		if (drvdata->out_mode == TMC_ETR_OUT_MODE_PCIE) {
-			etr_pcie_stop(drvdata->byte_cntr);
-			flush_workqueue(drvdata->byte_cntr->pcie_wq);
-		} else
-			tmc_etr_byte_cntr_stop(drvdata->byte_cntr);
-
-		coresight_cti_unmap_trigin(drvdata->cti_reset, 2, 0);
-		coresight_cti_unmap_trigout(drvdata->cti_flush, 3, 0);
-	}
-out:
-	mutex_unlock(&drvdata->mem_lock);
-	dev_info(drvdata->dev, "TMC-ETR disabled\n");
-	return 0;
-}
-
-static void tmc_abort_etr_sink(struct coresight_device *csdev)
-{
-	struct tmc_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
-	unsigned long flags;
-
-	spin_lock_irqsave(&drvdata->spinlock, flags);
-	if (drvdata->reading)
-		goto out0;
-
-	if (drvdata->out_mode == TMC_ETR_OUT_MODE_MEM)
-		tmc_etr_disable_hw(drvdata);
-	else if (drvdata->out_mode == TMC_ETR_OUT_MODE_USB
-			|| (drvdata->out_mode == TMC_ETR_OUT_MODE_PCIE &&
-			drvdata->pcie_path == TMC_ETR_PCIE_HW_PATH))
-		__tmc_etr_disable_to_bam(drvdata);
-out0:
-	drvdata->enable = false;
-	spin_unlock_irqrestore(&drvdata->spinlock, flags);
-
-	dev_info(drvdata->dev, "TMC aborted\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int tmc_etr_switch_mode(struct tmc_drvdata *drvdata, const char *out_mode)
 {
 	enum tmc_etr_out_mode new_mode, old_mode;
 
-<<<<<<< HEAD
 	mutex_lock(&drvdata->mem_lock);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!strcmp(out_mode, str_tmc_etr_out_mode[TMC_ETR_OUT_MODE_MEM]))
 		new_mode = TMC_ETR_OUT_MODE_MEM;
 	else if (!strcmp(out_mode, str_tmc_etr_out_mode[TMC_ETR_OUT_MODE_USB]))
 		new_mode = TMC_ETR_OUT_MODE_USB;
-<<<<<<< HEAD
 	else {
 		mutex_unlock(&drvdata->mem_lock);
 		return -EINVAL;
@@ -2629,28 +1557,11 @@ int tmc_etr_switch_mode(struct tmc_drvdata *drvdata, const char *out_mode)
 
 	coresight_disable_all_source_link();
 	_tmc_disable_etr_sink(drvdata->csdev);
-=======
-	else if (!strcmp(out_mode, str_tmc_etr_out_mode[TMC_ETR_OUT_MODE_PCIE]))
-		new_mode = TMC_ETR_OUT_MODE_PCIE;
-	else
-		return -EINVAL;
-
-	if (new_mode == drvdata->out_mode)
-		return 0;
-
-	if (drvdata->mode == CS_MODE_DISABLED) {
-		drvdata->out_mode = new_mode;
-		return 0;
-	}
-
-	tmc_disable_etr_sink(drvdata->csdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	old_mode = drvdata->out_mode;
 	drvdata->out_mode = new_mode;
 	if (tmc_enable_etr_sink_sysfs(drvdata->csdev)) {
 		drvdata->out_mode = old_mode;
 		tmc_enable_etr_sink_sysfs(drvdata->csdev);
-<<<<<<< HEAD
 		coresight_enable_all_source_link();
 		dev_err(drvdata->dev, "Switch to %s failed. Fall back to %s.\n",
 			str_tmc_etr_out_mode[new_mode],
@@ -2661,27 +1572,12 @@ int tmc_etr_switch_mode(struct tmc_drvdata *drvdata, const char *out_mode)
 
 	coresight_enable_all_source_link();
 	mutex_unlock(&drvdata->mem_lock);
-=======
-		dev_err(drvdata->dev, "Switch to %s failed. Fall back to %s.\n",
-			str_tmc_etr_out_mode[new_mode],
-			str_tmc_etr_out_mode[old_mode]);
-		return -EINVAL;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 static const struct coresight_ops_sink tmc_etr_sink_ops = {
 	.enable		= tmc_enable_etr_sink,
 	.disable	= tmc_disable_etr_sink,
-<<<<<<< HEAD
-=======
-	.abort		= tmc_abort_etr_sink,
-	.alloc_buffer	= tmc_alloc_etr_buffer,
-	.update_buffer	= tmc_update_etr_buffer,
-	.free_buffer	= tmc_free_etr_buffer,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 const struct coresight_ops tmc_etr_cs_ops = {
@@ -2704,7 +1600,6 @@ int tmc_read_prepare_etr(struct tmc_drvdata *drvdata)
 		goto out;
 	}
 
-<<<<<<< HEAD
 	if (drvdata->out_mode == TMC_ETR_OUT_MODE_USB) {
 		ret = -EINVAL;
 		goto out;
@@ -2717,19 +1612,6 @@ int tmc_read_prepare_etr(struct tmc_drvdata *drvdata)
 
 	/* If drvdata::etr_buf is NULL the trace data has been read already */
 	if (drvdata->etr_buf == NULL) {
-=======
-	if (drvdata->out_mode == TMC_ETR_OUT_MODE_USB ||
-		drvdata->out_mode == TMC_ETR_OUT_MODE_PCIE) {
-		ret = -EINVAL;
-		goto out;
-	}
-	/*
-	 * We can safely allow reads even if the ETR is operating in PERF mode,
-	 * since the sysfs session is captured in mode specific data.
-	 * If drvdata::sysfs_data is NULL the trace data has been read already.
-	 */
-	if (!drvdata->sysfs_buf) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -EINVAL;
 		goto out;
 	}
@@ -2739,7 +1621,6 @@ int tmc_read_prepare_etr(struct tmc_drvdata *drvdata)
 		goto out;
 	}
 
-<<<<<<< HEAD
 	/* Disable the TMC if need be */
 	if (drvdata->mode == CS_MODE_SYSFS) {
 		spin_unlock_irqrestore(&drvdata->spinlock, flags);
@@ -2748,12 +1629,6 @@ int tmc_read_prepare_etr(struct tmc_drvdata *drvdata)
 
 		tmc_etr_disable_hw(drvdata);
 	}
-=======
-	/* Disable the TMC if we are trying to read from a running session. */
-	if (drvdata->mode == CS_MODE_SYSFS)
-		__tmc_etr_disable_hw(drvdata);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drvdata->reading = true;
 out:
 	spin_unlock_irqrestore(&drvdata->spinlock, flags);
@@ -2765,11 +1640,7 @@ out:
 int tmc_read_unprepare_etr(struct tmc_drvdata *drvdata)
 {
 	unsigned long flags;
-<<<<<<< HEAD
 	struct etr_buf *etr_buf = NULL;
-=======
-	struct etr_buf *sysfs_buf = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* config types are set a boot time and never change */
 	if (WARN_ON_ONCE(drvdata->config_type != TMC_CONFIG_TYPE_ETR))
@@ -2777,10 +1648,7 @@ int tmc_read_unprepare_etr(struct tmc_drvdata *drvdata)
 	mutex_lock(&drvdata->mem_lock);
 	spin_lock_irqsave(&drvdata->spinlock, flags);
 
-<<<<<<< HEAD
 	drvdata->reading = false;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* RE-enable the TMC if need be */
 	if (drvdata->mode == CS_MODE_SYSFS) {
 		/*
@@ -2788,21 +1656,16 @@ int tmc_read_unprepare_etr(struct tmc_drvdata *drvdata)
 		 * buffer. Since the tracer is still enabled drvdata::buf can't
 		 * be NULL.
 		 */
-<<<<<<< HEAD
 		tmc_etr_enable_hw(drvdata);
 
 		spin_unlock_irqrestore(&drvdata->spinlock, flags);
 		coresight_enable_all_source_link();
 		spin_lock_irqsave(&drvdata->spinlock, flags);
-=======
-		__tmc_etr_enable_hw(drvdata);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		/*
 		 * The ETR is not tracing and the buffer was just read.
 		 * As such prepare to free the trace buffer.
 		 */
-<<<<<<< HEAD
 		etr_buf =  drvdata->etr_buf;
 		drvdata->etr_buf = NULL;
 	}
@@ -2812,19 +1675,6 @@ int tmc_read_unprepare_etr(struct tmc_drvdata *drvdata)
 	/* Free allocated memory out side of the spinlock */
 	if (etr_buf)
 		tmc_free_etr_buf(etr_buf);
-=======
-		sysfs_buf = drvdata->sysfs_buf;
-		drvdata->sysfs_buf = NULL;
-	}
-
-	drvdata->reading = false;
-	spin_unlock_irqrestore(&drvdata->spinlock, flags);
-
-	/* Free allocated memory out side of the spinlock */
-	if (sysfs_buf)
-		tmc_etr_free_sysfs_buf(sysfs_buf);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_unlock(&drvdata->mem_lock);
 	return 0;

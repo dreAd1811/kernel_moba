@@ -67,11 +67,7 @@ struct kimage;
 
 /* Memory to backup during crash kdump */
 #define KEXEC_BACKUP_SRC_START	(0UL)
-<<<<<<< HEAD
 #define KEXEC_BACKUP_SRC_END	(640 * 1024UL)	/* 640K */
-=======
-#define KEXEC_BACKUP_SRC_END	(640 * 1024UL - 1)	/* 640K */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * CPU does not save ss and sp on stack if execution is already

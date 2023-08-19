@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
  * OPAL asynchronus Memory error handling support in PowerNV.
-=======
- * OPAL asynchronus Memory error handling support in PowreNV.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -64,11 +60,7 @@ static void handle_memory_error_event(struct OpalMemoryErrorData *merr_evt)
 	}
 
 	for (; paddr_start < paddr_end; paddr_start += PAGE_SIZE) {
-<<<<<<< HEAD
 		memory_failure(paddr_start >> PAGE_SHIFT, 0);
-=======
-		memory_failure(paddr_start >> PAGE_SHIFT, 0, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -120,11 +112,7 @@ static int opal_memory_err_event(struct notifier_block *nb,
 		       "handled\n");
 		return -ENOMEM;
 	}
-<<<<<<< HEAD
 	memcpy(&msg_node->msg, msg, sizeof(msg_node->msg));
-=======
-	memcpy(&msg_node->msg, msg, sizeof(struct opal_msg));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irqsave(&opal_mem_err_lock, flags);
 	list_add(&msg_node->list, &opal_memory_err_list);

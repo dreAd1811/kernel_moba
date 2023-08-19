@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
  *  ARM IOC/IOMD i2c driver.
-=======
- *  linux/drivers/acorn/char/i2c.c
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  *  Copyright (C) 2000 Russell King
  *
@@ -11,11 +7,6 @@
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation.
  *
-<<<<<<< HEAD
-=======
- *  ARM IOC/IOMD i2c driver.
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *  On Acorn machines, the following i2c devices are on the bus:
  *	- PCF8583 real time clock & static RAM
  */
@@ -102,10 +93,7 @@ static int __init i2c_ioc_init(void)
 }
 
 module_init(i2c_ioc_init);
-<<<<<<< HEAD
 
 MODULE_AUTHOR("Russell King <linux@armlinux.org.uk>");
 MODULE_DESCRIPTION("ARM IOC/IOMD i2c driver");
 MODULE_LICENSE("GPL v2");
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

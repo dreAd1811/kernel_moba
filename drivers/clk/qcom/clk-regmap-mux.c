@@ -35,12 +35,9 @@ static u8 mux_get_parent(struct clk_hw *hw)
 	val >>= mux->shift;
 	val &= mask;
 
-<<<<<<< HEAD
 	if (mux->parent_map)
 		return qcom_find_src_index(hw, mux->parent_map, val);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return val;
 }
 
@@ -51,12 +48,9 @@ static int mux_set_parent(struct clk_hw *hw, u8 index)
 	unsigned int mask = GENMASK(mux->width + mux->shift - 1, mux->shift);
 	unsigned int val;
 
-<<<<<<< HEAD
 	if (mux->parent_map)
 		index = mux->parent_map[index].cfg;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	val = index;
 	val <<= mux->shift;
 

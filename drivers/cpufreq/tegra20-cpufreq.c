@@ -16,7 +16,6 @@
  *
  */
 
-<<<<<<< HEAD
 #include <linux/clk.h>
 #include <linux/cpufreq.h>
 #include <linux/err.h>
@@ -24,18 +23,6 @@
 #include <linux/module.h>
 #include <linux/platform_device.h>
 #include <linux/types.h>
-=======
-#include <linux/kernel.h>
-#include <linux/module.h>
-#include <linux/types.h>
-#include <linux/sched.h>
-#include <linux/cpufreq.h>
-#include <linux/delay.h>
-#include <linux/init.h>
-#include <linux/err.h>
-#include <linux/clk.h>
-#include <linux/io.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct cpufreq_frequency_table freq_table[] = {
 	{ .frequency = 216000 },
@@ -49,7 +36,6 @@ static struct cpufreq_frequency_table freq_table[] = {
 	{ .frequency = CPUFREQ_TABLE_END },
 };
 
-<<<<<<< HEAD
 struct tegra20_cpufreq {
 	struct device *dev;
 	struct cpufreq_driver driver;
@@ -58,36 +44,19 @@ struct tegra20_cpufreq {
 	struct clk *pll_p_clk;
 	bool pll_x_prepared;
 };
-=======
-#define NUM_CPUS	2
-
-static struct clk *cpu_clk;
-static struct clk *pll_x_clk;
-static struct clk *pll_p_clk;
-static struct clk *emc_clk;
-static bool pll_x_prepared;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static unsigned int tegra_get_intermediate(struct cpufreq_policy *policy,
 					   unsigned int index)
 {
-<<<<<<< HEAD
 	struct tegra20_cpufreq *cpufreq = cpufreq_get_driver_data();
 	unsigned int ifreq = clk_get_rate(cpufreq->pll_p_clk) / 1000;
-=======
-	unsigned int ifreq = clk_get_rate(pll_p_clk) / 1000;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Don't switch to intermediate freq if:
 	 * - we are already at it, i.e. policy->cur == ifreq
 	 * - index corresponds to ifreq
 	 */
-<<<<<<< HEAD
 	if (freq_table[index].frequency == ifreq || policy->cur == ifreq)
-=======
-	if ((freq_table[index].frequency == ifreq) || (policy->cur == ifreq))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	return ifreq;
@@ -96,10 +65,7 @@ static unsigned int tegra_get_intermediate(struct cpufreq_policy *policy,
 static int tegra_target_intermediate(struct cpufreq_policy *policy,
 				     unsigned int index)
 {
-<<<<<<< HEAD
 	struct tegra20_cpufreq *cpufreq = cpufreq_get_driver_data();
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	/*
@@ -112,7 +78,6 @@ static int tegra_target_intermediate(struct cpufreq_policy *policy,
 	 * Also, we wouldn't be using pll_x anymore and must not take extra
 	 * reference to it, as it can be disabled now to save some power.
 	 */
-<<<<<<< HEAD
 	clk_prepare_enable(cpufreq->pll_x_clk);
 
 	ret = clk_set_parent(cpufreq->cpu_clk, cpufreq->pll_p_clk);
@@ -120,49 +85,22 @@ static int tegra_target_intermediate(struct cpufreq_policy *policy,
 		clk_disable_unprepare(cpufreq->pll_x_clk);
 	else
 		cpufreq->pll_x_prepared = true;
-=======
-	clk_prepare_enable(pll_x_clk);
-
-	ret = clk_set_parent(cpu_clk, pll_p_clk);
-	if (ret)
-		clk_disable_unprepare(pll_x_clk);
-	else
-		pll_x_prepared = true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
 
 static int tegra_target(struct cpufreq_policy *policy, unsigned int index)
 {
-<<<<<<< HEAD
 	struct tegra20_cpufreq *cpufreq = cpufreq_get_driver_data();
 	unsigned long rate = freq_table[index].frequency;
 	unsigned int ifreq = clk_get_rate(cpufreq->pll_p_clk) / 1000;
 	int ret;
-=======
-	unsigned long rate = freq_table[index].frequency;
-	unsigned int ifreq = clk_get_rate(pll_p_clk) / 1000;
-	int ret = 0;
-
-	/*
-	 * Vote on memory bus frequency based on cpu frequency
-	 * This sets the minimum frequency, display or avp may request higher
-	 */
-	if (rate >= 816000)
-		clk_set_rate(emc_clk, 600000000); /* cpu 816 MHz, emc max */
-	else if (rate >= 456000)
-		clk_set_rate(emc_clk, 300000000); /* cpu 456 MHz, emc 150Mhz */
-	else
-		clk_set_rate(emc_clk, 100000000);  /* emc 50Mhz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * target freq == pll_p, don't need to take extra reference to pll_x_clk
 	 * as it isn't used anymore.
 	 */
 	if (rate == ifreq)
-<<<<<<< HEAD
 		return clk_set_parent(cpufreq->cpu_clk, cpufreq->pll_p_clk);
 
 	ret = clk_set_rate(cpufreq->pll_x_clk, rate * 1000);
@@ -171,16 +109,6 @@ static int tegra_target(struct cpufreq_policy *policy, unsigned int index)
 		dev_err(cpufreq->dev, "Failed to change pll_x to %lu\n", rate);
 
 	ret = clk_set_parent(cpufreq->cpu_clk, cpufreq->pll_x_clk);
-=======
-		return clk_set_parent(cpu_clk, pll_p_clk);
-
-	ret = clk_set_rate(pll_x_clk, rate * 1000);
-	/* Restore to earlier frequency on error, i.e. pll_x */
-	if (ret)
-		pr_err("Failed to change pll_x to %lu\n", rate);
-
-	ret = clk_set_parent(cpu_clk, pll_x_clk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* This shouldn't fail while changing or restoring */
 	WARN_ON(ret);
 
@@ -188,15 +116,9 @@ static int tegra_target(struct cpufreq_policy *policy, unsigned int index)
 	 * Drop count to pll_x clock only if we switched to intermediate freq
 	 * earlier while transitioning to a target frequency.
 	 */
-<<<<<<< HEAD
 	if (cpufreq->pll_x_prepared) {
 		clk_disable_unprepare(cpufreq->pll_x_clk);
 		cpufreq->pll_x_prepared = false;
-=======
-	if (pll_x_prepared) {
-		clk_disable_unprepare(pll_x_clk);
-		pll_x_prepared = false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return ret;
@@ -204,45 +126,25 @@ static int tegra_target(struct cpufreq_policy *policy, unsigned int index)
 
 static int tegra_cpu_init(struct cpufreq_policy *policy)
 {
-<<<<<<< HEAD
 	struct tegra20_cpufreq *cpufreq = cpufreq_get_driver_data();
 	int ret;
 
 	clk_prepare_enable(cpufreq->cpu_clk);
-=======
-	int ret;
-
-	if (policy->cpu >= NUM_CPUS)
-		return -EINVAL;
-
-	clk_prepare_enable(emc_clk);
-	clk_prepare_enable(cpu_clk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* FIXME: what's the actual transition time? */
 	ret = cpufreq_generic_init(policy, freq_table, 300 * 1000);
 	if (ret) {
-<<<<<<< HEAD
 		clk_disable_unprepare(cpufreq->cpu_clk);
 		return ret;
 	}
 
 	policy->clk = cpufreq->cpu_clk;
-=======
-		clk_disable_unprepare(cpu_clk);
-		clk_disable_unprepare(emc_clk);
-		return ret;
-	}
-
-	policy->clk = cpu_clk;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	policy->suspend_freq = freq_table[0].frequency;
 	return 0;
 }
 
 static int tegra_cpu_exit(struct cpufreq_policy *policy)
 {
-<<<<<<< HEAD
 	struct tegra20_cpufreq *cpufreq = cpufreq_get_driver_data();
 
 	clk_disable_unprepare(cpufreq->cpu_clk);
@@ -332,60 +234,3 @@ MODULE_ALIAS("platform:tegra20-cpufreq");
 MODULE_AUTHOR("Colin Cross <ccross@android.com>");
 MODULE_DESCRIPTION("NVIDIA Tegra20 cpufreq driver");
 MODULE_LICENSE("GPL");
-=======
-	clk_disable_unprepare(cpu_clk);
-	clk_disable_unprepare(emc_clk);
-	return 0;
-}
-
-static struct cpufreq_driver tegra_cpufreq_driver = {
-	.flags			= CPUFREQ_NEED_INITIAL_FREQ_CHECK,
-	.verify			= cpufreq_generic_frequency_table_verify,
-	.get_intermediate	= tegra_get_intermediate,
-	.target_intermediate	= tegra_target_intermediate,
-	.target_index		= tegra_target,
-	.get			= cpufreq_generic_get,
-	.init			= tegra_cpu_init,
-	.exit			= tegra_cpu_exit,
-	.name			= "tegra",
-	.attr			= cpufreq_generic_attr,
-	.suspend		= cpufreq_generic_suspend,
-};
-
-static int __init tegra_cpufreq_init(void)
-{
-	cpu_clk = clk_get_sys(NULL, "cclk");
-	if (IS_ERR(cpu_clk))
-		return PTR_ERR(cpu_clk);
-
-	pll_x_clk = clk_get_sys(NULL, "pll_x");
-	if (IS_ERR(pll_x_clk))
-		return PTR_ERR(pll_x_clk);
-
-	pll_p_clk = clk_get_sys(NULL, "pll_p");
-	if (IS_ERR(pll_p_clk))
-		return PTR_ERR(pll_p_clk);
-
-	emc_clk = clk_get_sys("cpu", "emc");
-	if (IS_ERR(emc_clk)) {
-		clk_put(cpu_clk);
-		return PTR_ERR(emc_clk);
-	}
-
-	return cpufreq_register_driver(&tegra_cpufreq_driver);
-}
-
-static void __exit tegra_cpufreq_exit(void)
-{
-        cpufreq_unregister_driver(&tegra_cpufreq_driver);
-	clk_put(emc_clk);
-	clk_put(cpu_clk);
-}
-
-
-MODULE_AUTHOR("Colin Cross <ccross@android.com>");
-MODULE_DESCRIPTION("cpufreq driver for Nvidia Tegra2");
-MODULE_LICENSE("GPL");
-module_init(tegra_cpufreq_init);
-module_exit(tegra_cpufreq_exit);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

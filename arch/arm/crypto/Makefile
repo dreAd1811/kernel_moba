@@ -67,8 +67,4 @@ $(src)/sha512-core.S_shipped: $(src)/sha512-armv4.pl
 	$(call cmd,perl)
 endif
 
-<<<<<<< HEAD
 targets += sha256-core.S sha512-core.S
-=======
-.PRECIOUS: $(obj)/sha256-core.S $(obj)/sha512-core.S
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

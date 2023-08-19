@@ -64,15 +64,12 @@ V_FUNCTION_BEGIN(__kernel_clock_gettime)
 	cmpwi	cr0,r3,CLOCK_REALTIME
 	cmpwi	cr1,r3,CLOCK_MONOTONIC
 	cror	cr0*4+eq,cr0*4+eq,cr1*4+eq
-<<<<<<< HEAD
 
 	cmpwi	cr5,r3,CLOCK_REALTIME_COARSE
 	cmpwi	cr6,r3,CLOCK_MONOTONIC_COARSE
 	cror	cr5*4+eq,cr5*4+eq,cr6*4+eq
 
 	cror	cr0*4+eq,cr0*4+eq,cr5*4+eq
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bne	cr0,99f
 
 	mflr	r12			/* r12 saves lr */
@@ -81,10 +78,7 @@ V_FUNCTION_BEGIN(__kernel_clock_gettime)
 	bl	V_LOCAL_FUNC(__get_datapage)	/* get data page */
 	lis	r7,NSEC_PER_SEC@h	/* want nanoseconds */
 	ori	r7,r7,NSEC_PER_SEC@l
-<<<<<<< HEAD
 	beq	cr5,70f
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 50:	bl	V_LOCAL_FUNC(__do_get_tspec)	/* get time from tb & kernel */
 	bne	cr1,80f			/* if not monotonic, all done */
 
@@ -98,11 +92,7 @@ V_FUNCTION_BEGIN(__kernel_clock_gettime)
 	 * At this point, r4,r5 contain our sec/nsec values.
 	 */
 
-<<<<<<< HEAD
 	ld	r6,WTOM_CLOCK_SEC(r3)
-=======
-	lwa	r6,WTOM_CLOCK_SEC(r3)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	lwa	r9,WTOM_CLOCK_NSEC(r3)
 
 	/* We now have our result in r6,r9. We create a fake dependency
@@ -114,7 +104,6 @@ V_FUNCTION_BEGIN(__kernel_clock_gettime)
 	ld	r0,CFG_TB_UPDATE_COUNT(r3)
         cmpld   cr0,r0,r8		/* check if updated */
 	bne-	50b
-<<<<<<< HEAD
 	b	78f
 
 	/*
@@ -166,21 +155,6 @@ V_FUNCTION_BEGIN(__kernel_clock_gettime)
 79:	bge     cr1,80f
 	addi    r4,r4,-1
 	add     r5,r5,r7
-=======
-
-	/* Add wall->monotonic offset and check for overflow or underflow.
-	 */
-	add	r4,r4,r6
-	add	r5,r5,r9
-	cmpd	cr0,r5,r7
-	cmpdi	cr1,r5,0
-	blt	1f
-	subf	r5,r7,r5
-	addi	r4,r4,1
-1:	bge	cr1,80f
-	addi	r4,r4,-1
-	add	r5,r5,r7
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 80:	std	r4,TSPC64_TV_SEC(r11)
 	std	r5,TSPC64_TV_NSEC(r11)
@@ -195,10 +169,6 @@ V_FUNCTION_BEGIN(__kernel_clock_gettime)
 	 */
 99:
 	li	r0,__NR_clock_gettime
-<<<<<<< HEAD
-=======
-  .cfi_restore lr
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sc
 	blr
   .cfi_endproc
@@ -219,23 +189,12 @@ V_FUNCTION_BEGIN(__kernel_clock_getres)
 	cror	cr0*4+eq,cr0*4+eq,cr1*4+eq
 	bne	cr0,99f
 
-<<<<<<< HEAD
-=======
-	mflr	r12
-  .cfi_register lr,r12
-	bl	V_LOCAL_FUNC(__get_datapage)
-	lwz	r5, CLOCK_HRTIMER_RES(r3)
-	mtlr	r12
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	li	r3,0
 	cmpldi	cr0,r4,0
 	crclr	cr0*4+so
 	beqlr
-<<<<<<< HEAD
 	lis	r5,CLOCK_REALTIME_RES@h
 	ori	r5,r5,CLOCK_REALTIME_RES@l
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	std	r3,TSPC64_TV_SEC(r4)
 	std	r5,TSPC64_TV_NSEC(r4)
 	blr

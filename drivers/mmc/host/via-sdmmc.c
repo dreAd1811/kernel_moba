@@ -323,11 +323,6 @@ struct via_crdr_mmc_host {
 /* some devices need a very long delay for power to stabilize */
 #define VIA_CRDR_QUIRK_300MS_PWRDELAY	0x0001
 
-<<<<<<< HEAD
-=======
-#define VIA_CMD_TIMEOUT_MS		1000
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct pci_device_id via_ids[] = {
 	{PCI_VENDOR_ID_VIA, PCI_DEVICE_ID_VIA_9530,
 	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0,},
@@ -560,26 +555,14 @@ static void via_sdc_send_command(struct via_crdr_mmc_host *host,
 {
 	void __iomem *addrbase;
 	struct mmc_data *data;
-<<<<<<< HEAD
-=======
-	unsigned int timeout_ms;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 cmdctrl = 0;
 
 	WARN_ON(host->cmd);
 
 	data = cmd->data;
-<<<<<<< HEAD
 	mod_timer(&host->timer, jiffies + HZ);
 	host->cmd = cmd;
 
-=======
-	host->cmd = cmd;
-
-	timeout_ms = cmd->busy_timeout ? cmd->busy_timeout : VIA_CMD_TIMEOUT_MS;
-	mod_timer(&host->timer, jiffies + msecs_to_jiffies(timeout_ms));
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*Command index*/
 	cmdctrl = cmd->opcode << 8;
 
@@ -949,20 +932,12 @@ out:
 	return result;
 }
 
-<<<<<<< HEAD
 static void via_sdc_timeout(struct timer_list *t)
-=======
-static void via_sdc_timeout(unsigned long ulongdata)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct via_crdr_mmc_host *sdhost;
 	unsigned long flags;
 
-<<<<<<< HEAD
 	sdhost = from_timer(sdhost, t, timer);
-=======
-	sdhost = (struct via_crdr_mmc_host *)ulongdata;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irqsave(&sdhost->lock, flags);
 
@@ -1061,13 +1036,7 @@ static void via_init_mmc_host(struct via_crdr_mmc_host *host)
 	u32 lenreg;
 	u32 status;
 
-<<<<<<< HEAD
 	timer_setup(&host->timer, via_sdc_timeout, 0);
-=======
-	init_timer(&host->timer);
-	host->timer.data = (unsigned long)host;
-	host->timer.function = via_sdc_timeout;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_init(&host->lock);
 

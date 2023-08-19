@@ -29,12 +29,6 @@
 
 int wl1271_ps_set_mode(struct wl1271 *wl, struct wl12xx_vif *wlvif,
 		       enum wl1271_cmd_ps_mode mode);
-<<<<<<< HEAD
-=======
-void wl1271_ps_elp_sleep(struct wl1271 *wl);
-int wl1271_ps_elp_wakeup(struct wl1271 *wl);
-void wl1271_elp_work(struct work_struct *work);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void wl12xx_ps_link_start(struct wl1271 *wl, struct wl12xx_vif *wlvif,
 			  u8 hlid, bool clean_queues);
 void wl12xx_ps_link_end(struct wl1271 *wl, struct wl12xx_vif *wlvif, u8 hlid);

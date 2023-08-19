@@ -203,15 +203,12 @@ static const struct usb_device_id ath3k_blist_tbl[] = {
 	{ }	/* Terminating entry */
 };
 
-<<<<<<< HEAD
 static inline void ath3k_log_failed_loading(int err, int len, int size)
 {
 	BT_ERR("Error in firmware loading err = %d, len = %d, size = %d",
 			err, len, size);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define USB_REQ_DFU_DNLOAD	1
 #define BULK_SIZE		4096
 #define FW_HDR_SIZE		20
@@ -236,27 +233,16 @@ static int ath3k_load_firmware(struct usb_device *udev,
 		return -ENOMEM;
 	}
 
-<<<<<<< HEAD
 	memcpy(send_buf, firmware->data, FW_HDR_SIZE);
 	err = usb_control_msg(udev, pipe, USB_REQ_DFU_DNLOAD, USB_TYPE_VENDOR,
 			      0, 0, send_buf, FW_HDR_SIZE,
 			      USB_CTRL_SET_TIMEOUT);
-=======
-	memcpy(send_buf, firmware->data, 20);
-	err = usb_control_msg(udev, pipe, USB_REQ_DFU_DNLOAD, USB_TYPE_VENDOR,
-			      0, 0, send_buf, 20, USB_CTRL_SET_TIMEOUT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err < 0) {
 		BT_ERR("Can't change to loading configuration err");
 		goto error;
 	}
-<<<<<<< HEAD
 	sent += FW_HDR_SIZE;
 	count -= FW_HDR_SIZE;
-=======
-	sent += 20;
-	count -= 20;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pipe = usb_sndbulkpipe(udev, 0x02);
 
@@ -271,12 +257,7 @@ static int ath3k_load_firmware(struct usb_device *udev,
 					&len, 3000);
 
 		if (err || (len != size)) {
-<<<<<<< HEAD
 			ath3k_log_failed_loading(err, len, size);
-=======
-			BT_ERR("Error in firmware loading err = %d,"
-				"len = %d, size = %d", err, len, size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto error;
 		}
 
@@ -375,12 +356,7 @@ static int ath3k_load_fwfile(struct usb_device *udev,
 		err = usb_bulk_msg(udev, pipe, send_buf, size,
 					&len, 3000);
 		if (err || (len != size)) {
-<<<<<<< HEAD
 			ath3k_log_failed_loading(err, len, size);
-=======
-			BT_ERR("Error in firmware loading err = %d,"
-				"len = %d, size = %d", err, len, size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			kfree(send_buf);
 			return err;
 		}
@@ -427,11 +403,7 @@ static int ath3k_set_normal_mode(struct usb_device *udev)
 static int ath3k_load_patch(struct usb_device *udev)
 {
 	unsigned char fw_state;
-<<<<<<< HEAD
 	char filename[ATH3K_NAME_LEN];
-=======
-	char filename[ATH3K_NAME_LEN] = {0};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const struct firmware *firmware;
 	struct ath3k_version fw_version;
 	__u32 pt_rom_version, pt_build_version;
@@ -484,11 +456,7 @@ static int ath3k_load_patch(struct usb_device *udev)
 static int ath3k_load_syscfg(struct usb_device *udev)
 {
 	unsigned char fw_state;
-<<<<<<< HEAD
 	char filename[ATH3K_NAME_LEN];
-=======
-	char filename[ATH3K_NAME_LEN] = {0};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const struct firmware *firmware;
 	struct ath3k_version fw_version;
 	int clk_value, ret;
@@ -559,10 +527,6 @@ static int ath3k_probe(struct usb_interface *intf,
 
 	/* load patch and sysconfig files for AR3012 */
 	if (id->driver_info & BTUSB_ATH3012) {
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* New firmware with patch and sysconfig files already loaded */
 		if (le16_to_cpu(udev->descriptor.bcdDevice) > 0x0001)
 			return -ENODEV;
@@ -605,11 +569,7 @@ static int ath3k_probe(struct usb_interface *intf,
 
 static void ath3k_disconnect(struct usb_interface *intf)
 {
-<<<<<<< HEAD
 	BT_DBG("%s intf %p", __func__, intf);
-=======
-	BT_DBG("ath3k_disconnect intf %p", intf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct usb_driver ath3k_driver = {

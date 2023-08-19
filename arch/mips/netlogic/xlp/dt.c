@@ -93,20 +93,3 @@ void __init device_tree_init(void)
 {
 	unflatten_and_copy_device_tree();
 }
-<<<<<<< HEAD
-=======
-
-static struct of_device_id __initdata xlp_ids[] = {
-	{ .compatible = "simple-bus", },
-	{},
-};
-
-int __init xlp8xx_ds_publish_devices(void)
-{
-	if (!of_have_populated_dt())
-		return 0;
-	return of_platform_bus_probe(NULL, xlp_ids, NULL);
-}
-
-device_initcall(xlp8xx_ds_publish_devices);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

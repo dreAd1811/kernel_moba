@@ -62,13 +62,10 @@
 		rtc1 = &snvs_rtc;
 	};
 
-<<<<<<< HEAD
 	chosen {
 		stdout-path = "serial0:115200n8";
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gpio-keys {
 		compatible = "gpio-keys";
 		pinctrl-names = "default";
@@ -83,11 +80,7 @@
 		};
 	};
 
-<<<<<<< HEAD
 	lcd_display: disp0 {
-=======
-	lcd_display: display@di0 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "fsl,imx-parallel-display";
 		#address-cells = <1>;
 		#size-cells = <0>;
@@ -185,11 +178,7 @@
 
 	/* M41T0M6 real time clock on carrier board */
 	rtc_i2c: rtc@68 {
-<<<<<<< HEAD
 		compatible = "st,m41t0";
-=======
-		compatible = "st,m41t00";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x68>;
 	};
 };

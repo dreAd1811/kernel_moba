@@ -156,12 +156,6 @@ static inline void timer_ack(void)
 static irqreturn_t timer_interrupt(int irq, void *dev_id)
 {
 	struct clock_event_device *evt = &clockevent_xilinx_timer;
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_HEART_BEAT
-	microblaze_heartbeat();
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	timer_ack();
 	evt->event_handler(evt);
 	return IRQ_HANDLED;
@@ -321,13 +315,6 @@ static int __init xilinx_timer_init(struct device_node *timer)
 		return ret;
 	}
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_HEART_BEAT
-	microblaze_setup_heartbeat();
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = xilinx_clocksource_init();
 	if (ret)
 		return ret;

@@ -1,25 +1,14 @@
-<<<<<<< HEAD
 /*
  * SPDX-License-Identifier: GPL-2.0
  * tuner-xc2028
  *
  * Copyright (c) 2007-2008 Mauro Carvalho Chehab <mchehab@kernel.org>
-=======
-/* tuner-xc2028
- *
- * Copyright (c) 2007-2008 Mauro Carvalho Chehab (mchehab@infradead.org)
- * This code is placed under the terms of the GNU General Public License v2
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #ifndef __TUNER_XC2028_H__
 #define __TUNER_XC2028_H__
 
-<<<<<<< HEAD
 #include <media/dvb_frontend.h>
-=======
-#include "dvb_frontend.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define XC2028_DEFAULT_FIRMWARE "xc3028-v27.fw"
 #define XC3028L_DEFAULT_FIRMWARE "xc3028L-v36.fw"
@@ -59,11 +48,7 @@ struct xc2028_ctrl {
 
 struct xc2028_config {
 	struct i2c_adapter *i2c_adap;
-<<<<<<< HEAD
 	u8		   i2c_addr;
-=======
-	u8 		   i2c_addr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct xc2028_ctrl *ctrl;
 };
 

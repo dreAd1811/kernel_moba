@@ -144,14 +144,8 @@ static const struct file_operations fops_dfs_stats = {
 
 void ath9k_dfs_init_debug(struct ath_softc *sc)
 {
-<<<<<<< HEAD
 	debugfs_create_file("dfs_stats", 0400,
 			    sc->debug.debugfs_phy, sc, &fops_dfs_stats);
 	debugfs_create_file("dfs_simulate_radar", 0200,
-=======
-	debugfs_create_file("dfs_stats", S_IRUSR,
-			    sc->debug.debugfs_phy, sc, &fops_dfs_stats);
-	debugfs_create_file("dfs_simulate_radar", S_IWUSR,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    sc->debug.debugfs_phy, sc, &fops_simulate_radar);
 }

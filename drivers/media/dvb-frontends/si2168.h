@@ -38,10 +38,7 @@ struct si2168_config {
 	/* TS mode */
 #define SI2168_TS_PARALLEL	0x06
 #define SI2168_TS_SERIAL	0x03
-<<<<<<< HEAD
 #define SI2168_TS_TRISTATE	0x00
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 ts_mode;
 
 	/* TS clock inverted */
@@ -49,12 +46,9 @@ struct si2168_config {
 
 	/* TS clock gapped */
 	bool ts_clock_gapped;
-<<<<<<< HEAD
 
 	/* Inverted spectrum */
 	bool spectral_inversion;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #endif

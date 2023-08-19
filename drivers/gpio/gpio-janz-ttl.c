@@ -16,14 +16,9 @@
 #include <linux/delay.h>
 #include <linux/platform_device.h>
 #include <linux/io.h>
-<<<<<<< HEAD
 #include <linux/gpio/driver.h>
 #include <linux/slab.h>
 #include <linux/bitops.h>
-=======
-#include <linux/gpio.h>
-#include <linux/slab.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/mfd/janz.h>
 
@@ -39,15 +34,9 @@
 #define MASTER_INT_CTL		0x00
 #define MASTER_CONF_CTL		0x01
 
-<<<<<<< HEAD
 #define CONF_PAE		BIT(2)
 #define CONF_PBE		BIT(7)
 #define CONF_PCE		BIT(4)
-=======
-#define CONF_PAE		(1 << 2)
-#define CONF_PBE		(1 << 7)
-#define CONF_PCE		(1 << 4)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct ttl_control_regs {
 	__be16 portc;
@@ -86,11 +75,7 @@ static int ttl_get_value(struct gpio_chip *gpio, unsigned offset)
 	}
 
 	spin_lock(&mod->lock);
-<<<<<<< HEAD
 	ret = *shadow & BIT(offset);
-=======
-	ret = *shadow & (1 << offset);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock(&mod->lock);
 	return !!ret;
 }
@@ -116,15 +101,9 @@ static void ttl_set_value(struct gpio_chip *gpio, unsigned offset, int value)
 
 	spin_lock(&mod->lock);
 	if (value)
-<<<<<<< HEAD
 		*shadow |= BIT(offset);
 	else
 		*shadow &= ~BIT(offset);
-=======
-		*shadow |= (1 << offset);
-	else
-		*shadow &= ~(1 << offset);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	iowrite16be(*shadow, port);
 	spin_unlock(&mod->lock);

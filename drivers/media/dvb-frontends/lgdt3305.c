@@ -20,11 +20,7 @@
 #include <asm/div64.h>
 #include <linux/dvb/frontend.h>
 #include <linux/slab.h>
-<<<<<<< HEAD
 #include <media/dvb_math.h>
-=======
-#include "dvb_math.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "lgdt3305.h"
 
 static int debug;
@@ -1168,15 +1164,9 @@ static const struct dvb_frontend_ops lgdt3304_ops = {
 	.delsys = { SYS_ATSC, SYS_DVBC_ANNEX_B },
 	.info = {
 		.name = "LG Electronics LGDT3304 VSB/QAM Frontend",
-<<<<<<< HEAD
 		.frequency_min_hz      =  54 * MHz,
 		.frequency_max_hz      = 858 * MHz,
 		.frequency_stepsize_hz = 62500,
-=======
-		.frequency_min      = 54000000,
-		.frequency_max      = 858000000,
-		.frequency_stepsize = 62500,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.caps = FE_CAN_QAM_64 | FE_CAN_QAM_256 | FE_CAN_8VSB
 	},
 	.i2c_gate_ctrl        = lgdt3305_i2c_gate_ctrl,
@@ -1197,15 +1187,9 @@ static const struct dvb_frontend_ops lgdt3305_ops = {
 	.delsys = { SYS_ATSC, SYS_DVBC_ANNEX_B },
 	.info = {
 		.name = "LG Electronics LGDT3305 VSB/QAM Frontend",
-<<<<<<< HEAD
 		.frequency_min_hz      =  54 * MHz,
 		.frequency_max_hz      = 858 * MHz,
 		.frequency_stepsize_hz = 62500,
-=======
-		.frequency_min      = 54000000,
-		.frequency_max      = 858000000,
-		.frequency_stepsize = 62500,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.caps = FE_CAN_QAM_64 | FE_CAN_QAM_256 | FE_CAN_8VSB
 	},
 	.i2c_gate_ctrl        = lgdt3305_i2c_gate_ctrl,

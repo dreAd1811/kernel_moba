@@ -76,13 +76,10 @@
 #define HV_ETOOMANY			15 /* Too many items specified     */
 #define HV_ECHANNEL			16 /* Invalid LDC channel          */
 #define HV_EBUSY			17 /* Resource busy                */
-<<<<<<< HEAD
 #define HV_EUNAVAILABLE			23 /* Resource or operation not
 					    * currently available, but may
 					    * become available in the future
 					    */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* mach_exit()
  * TRAP:	HV_FAST_TRAP
@@ -573,11 +570,8 @@ struct hv_fault_status {
 #define HV_FAULT_TYPE_RESV1	13
 #define HV_FAULT_TYPE_UNALIGNED	14
 #define HV_FAULT_TYPE_INV_PGSZ	15
-<<<<<<< HEAD
 #define HV_FAULT_TYPE_MCD	17
 #define HV_FAULT_TYPE_MCD_DIS	18
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Values 16 --> -2 are reserved.  */
 #define HV_FAULT_TYPE_MULTIPLE	-1
 
@@ -953,7 +947,6 @@ unsigned long sun4v_mmu_map_perm_addr(unsigned long vaddr,
  */
 #define HV_FAST_MEM_SYNC		0x32
 
-<<<<<<< HEAD
 /* Coprocessor services
  *
  * M7 and later processors provide an on-chip coprocessor which
@@ -1087,8 +1080,6 @@ unsigned long sun4v_ccb_kill(unsigned long ca,
 #define HV_CCB_KILL_KILLED          2
 #define HV_CCB_KILL_NOTFOUND        3
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Time of day services.
  *
  * The hypervisor maintains the time of day on a per-domain basis.
@@ -3503,10 +3494,7 @@ unsigned long sun4v_m7_set_perfreg(unsigned long reg_num,
 #define HV_GRP_SDIO_ERR			0x0109
 #define HV_GRP_REBOOT_DATA		0x0110
 #define HV_GRP_ATU			0x0111
-<<<<<<< HEAD
 #define HV_GRP_DAX			0x0113
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define HV_GRP_M7_PERF			0x0114
 #define HV_GRP_NIAG_PERF		0x0200
 #define HV_GRP_FIRE_PERF		0x0201

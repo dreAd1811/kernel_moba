@@ -71,11 +71,7 @@ static irqreturn_t bcm2835_time_interrupt(int irq, void *dev_id)
 	if (readl_relaxed(timer->control) & timer->match_mask) {
 		writel_relaxed(timer->match_mask, timer->control);
 
-<<<<<<< HEAD
 		event_handler = READ_ONCE(timer->evt.event_handler);
-=======
-		event_handler = ACCESS_ONCE(timer->evt.event_handler);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (event_handler)
 			event_handler(&timer->evt);
 		return IRQ_HANDLED;
@@ -138,11 +134,7 @@ static int __init bcm2835_timer_init(struct device_node *node)
 	ret = setup_irq(irq, &timer->act);
 	if (ret) {
 		pr_err("Can't set up timer IRQ\n");
-<<<<<<< HEAD
 		goto err_iounmap;
-=======
-		goto err_timer_free;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	clockevents_config_and_register(&timer->evt, freq, 0xf, 0xffffffff);
@@ -151,12 +143,6 @@ static int __init bcm2835_timer_init(struct device_node *node)
 
 	return 0;
 
-<<<<<<< HEAD
-=======
-err_timer_free:
-	kfree(timer);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_iounmap:
 	iounmap(base);
 	return ret;

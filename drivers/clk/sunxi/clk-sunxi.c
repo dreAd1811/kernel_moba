@@ -98,11 +98,7 @@ static void sun6i_a31_get_pll1_factors(struct factors_request *req)
 	 * Round down the frequency to the closest multiple of either
 	 * 6 or 16
 	 */
-<<<<<<< HEAD
 	u32 round_freq_6 = round_down(freq_mhz, 6);
-=======
-	u32 round_freq_6 = rounddown(freq_mhz, 6);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 round_freq_16 = round_down(freq_mhz, 16);
 
 	if (round_freq_6 > round_freq_16)
@@ -660,12 +656,8 @@ static const struct mux_data sun8i_h3_ahb2_mux_data __initconst = {
 };
 
 static struct clk * __init sunxi_mux_clk_setup(struct device_node *node,
-<<<<<<< HEAD
 					       const struct mux_data *data,
 					       unsigned long flags)
-=======
-					       const struct mux_data *data)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct clk *clk;
 	const char *clk_name = node->name;
@@ -687,11 +679,7 @@ static struct clk * __init sunxi_mux_clk_setup(struct device_node *node,
 	}
 
 	clk = clk_register_mux(NULL, clk_name, parents, i,
-<<<<<<< HEAD
 			       CLK_SET_RATE_PARENT | flags, reg,
-=======
-			       CLK_SET_RATE_PARENT, reg,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       data->shift, SUNXI_MUX_GATE_WIDTH,
 			       0, &clk_lock);
 
@@ -716,42 +704,22 @@ out_unmap:
 
 static void __init sun4i_cpu_clk_setup(struct device_node *node)
 {
-<<<<<<< HEAD
 	/* Protect CPU clock */
 	sunxi_mux_clk_setup(node, &sun4i_cpu_mux_data, CLK_IS_CRITICAL);
-=======
-	struct clk *clk;
-
-	clk = sunxi_mux_clk_setup(node, &sun4i_cpu_mux_data);
-	if (!clk)
-		return;
-
-	/* Protect CPU clock */
-	__clk_get(clk);
-	clk_prepare_enable(clk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 CLK_OF_DECLARE(sun4i_cpu, "allwinner,sun4i-a10-cpu-clk",
 	       sun4i_cpu_clk_setup);
 
 static void __init sun6i_ahb1_mux_clk_setup(struct device_node *node)
 {
-<<<<<<< HEAD
 	sunxi_mux_clk_setup(node, &sun6i_a31_ahb1_mux_data, 0);
-=======
-	sunxi_mux_clk_setup(node, &sun6i_a31_ahb1_mux_data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 CLK_OF_DECLARE(sun6i_ahb1_mux, "allwinner,sun6i-a31-ahb1-mux-clk",
 	       sun6i_ahb1_mux_clk_setup);
 
 static void __init sun8i_ahb2_clk_setup(struct device_node *node)
 {
-<<<<<<< HEAD
 	sunxi_mux_clk_setup(node, &sun8i_h3_ahb2_mux_data, 0);
-=======
-	sunxi_mux_clk_setup(node, &sun8i_h3_ahb2_mux_data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 CLK_OF_DECLARE(sun8i_ahb2, "allwinner,sun8i-h3-ahb2-clk",
 	       sun8i_ahb2_clk_setup);
@@ -926,10 +894,7 @@ struct divs_data {
 		u8 shift; /* otherwise it's a normal divisor with this shift */
 		u8 pow;   /* is it power-of-two based? */
 		u8 gate;  /* is it independently gateable? */
-<<<<<<< HEAD
 		bool critical;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} div[SUNXI_DIVS_MAX_QTY];
 };
 
@@ -945,12 +910,8 @@ static const struct divs_data pll5_divs_data __initconst = {
 	.factors = &sun4i_pll5_data,
 	.ndivs = 2,
 	.div = {
-<<<<<<< HEAD
 		/* Protect PLL5_DDR */
 		{ .shift = 0, .pow = 0, .critical = true }, /* M, DDR */
-=======
-		{ .shift = 0, .pow = 0, }, /* M, DDR */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		{ .shift = 16, .pow = 1, }, /* P, other */
 		/* No output for the base factor clock */
 	}
@@ -1124,13 +1085,9 @@ static struct clk ** __init sunxi_divs_clk_setup(struct device_node *node,
 						 NULL, NULL,
 						 rate_hw, rate_ops,
 						 gate_hw, &clk_gate_ops,
-<<<<<<< HEAD
 						 clkflags |
 						 data->div[i].critical ?
 							CLK_IS_CRITICAL : 0);
-=======
-						 clkflags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		WARN_ON(IS_ERR(clk_data->clks[i]));
 	}
@@ -1158,19 +1115,7 @@ out_unmap:
 
 static void __init sun4i_pll5_clk_setup(struct device_node *node)
 {
-<<<<<<< HEAD
 	sunxi_divs_clk_setup(node, &pll5_divs_data);
-=======
-	struct clk **clks;
-
-	clks = sunxi_divs_clk_setup(node, &pll5_divs_data);
-	if (!clks)
-		return;
-
-	/* Protect PLL5_DDR */
-	__clk_get(clks[0]);
-	clk_prepare_enable(clks[0]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 CLK_OF_DECLARE(sun4i_pll5, "allwinner,sun4i-a10-pll5-clk",
 	       sun4i_pll5_clk_setup);

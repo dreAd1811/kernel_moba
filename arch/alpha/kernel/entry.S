@@ -785,10 +785,6 @@ ret_from_kernel_thread:
 	mov	$9, $27
 	mov	$10, $16
 	jsr	$26, ($9)
-<<<<<<< HEAD
-=======
-	mov	$31, $19		/* to disable syscall restarts */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	br	$31, ret_to_user
 .end ret_from_kernel_thread
 

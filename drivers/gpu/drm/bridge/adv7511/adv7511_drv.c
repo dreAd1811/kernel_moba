@@ -11,21 +11,15 @@
 #include <linux/module.h>
 #include <linux/of_device.h>
 #include <linux/slab.h>
-<<<<<<< HEAD
 #include <linux/clk.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <drm/drmP.h>
 #include <drm/drm_atomic.h>
 #include <drm/drm_atomic_helper.h>
 #include <drm/drm_edid.h>
 
-<<<<<<< HEAD
 #include <media/cec.h>
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "adv7511.h"
 
 /* ADI recommended values for proper operation. */
@@ -208,25 +202,14 @@ static const uint16_t adv7511_csc_ycbcr_to_rgb[] = {
 
 static void adv7511_set_config_csc(struct adv7511 *adv7511,
 				   struct drm_connector *connector,
-<<<<<<< HEAD
 				   bool rgb, bool hdmi_mode)
-=======
-				   bool rgb)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct adv7511_video_config config;
 	bool output_format_422, output_format_ycbcr;
 	unsigned int mode;
 	uint8_t infoframe[17];
 
-<<<<<<< HEAD
 	config.hdmi_mode = hdmi_mode;
-=======
-	if (adv7511->edid)
-		config.hdmi_mode = drm_detect_hdmi_monitor(adv7511->edid);
-	else
-		config.hdmi_mode = false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	hdmi_avi_infoframe_init(&config.avi_infoframe);
 
@@ -356,15 +339,10 @@ static void __adv7511_power_on(struct adv7511 *adv7511)
 		 */
 		regmap_write(adv7511->regmap, ADV7511_REG_INT_ENABLE(0),
 			     ADV7511_INT0_EDID_READY | ADV7511_INT0_HPD);
-<<<<<<< HEAD
 		regmap_update_bits(adv7511->regmap,
 				   ADV7511_REG_INT_ENABLE(1),
 				   ADV7511_INT1_DDC_ERROR,
 				   ADV7511_INT1_DDC_ERROR);
-=======
-		regmap_write(adv7511->regmap, ADV7511_REG_INT_ENABLE(1),
-			     ADV7511_INT1_DDC_ERROR);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/*
@@ -400,12 +378,9 @@ static void __adv7511_power_off(struct adv7511 *adv7511)
 	regmap_update_bits(adv7511->regmap, ADV7511_REG_POWER,
 			   ADV7511_POWER_POWER_DOWN,
 			   ADV7511_POWER_POWER_DOWN);
-<<<<<<< HEAD
 	regmap_update_bits(adv7511->regmap,
 			   ADV7511_REG_INT_ENABLE(1),
 			   ADV7511_INT1_DDC_ERROR, 0);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	regcache_mark_dirty(adv7511->regmap);
 }
 
@@ -468,11 +443,8 @@ static void adv7511_hpd_work(struct work_struct *work)
 
 	if (adv7511->connector.status != status) {
 		adv7511->connector.status = status;
-<<<<<<< HEAD
 		if (status == connector_status_disconnected)
 			cec_phys_addr_invalidate(adv7511->cec_adap);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		drm_kms_helper_hotplug_event(adv7511->connector.dev);
 	}
 }
@@ -503,13 +475,10 @@ static int adv7511_irq_process(struct adv7511 *adv7511, bool process_hpd)
 			wake_up_all(&adv7511->wq);
 	}
 
-<<<<<<< HEAD
 #ifdef CONFIG_DRM_I2C_ADV7511_CEC
 	adv7511_cec_irq_process(adv7511, irq1);
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -629,11 +598,7 @@ static int adv7511_get_modes(struct adv7511 *adv7511,
 	/* Reading the EDID only works if the device is powered */
 	if (!adv7511->powered) {
 		unsigned int edid_i2c_addr =
-<<<<<<< HEAD
 					(adv7511->i2c_edid->addr << 1);
-=======
-					(adv7511->i2c_main->addr << 1) + 4;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		__adv7511_power_on(adv7511);
 
@@ -647,7 +612,6 @@ static int adv7511_get_modes(struct adv7511 *adv7511,
 	if (!adv7511->powered)
 		__adv7511_power_off(adv7511);
 
-<<<<<<< HEAD
 
 	drm_connector_update_edid_property(connector, edid);
 	count = drm_add_edid_modes(connector, edid);
@@ -658,17 +622,6 @@ static int adv7511_get_modes(struct adv7511 *adv7511,
 	cec_s_phys_addr_from_edid(adv7511->cec_adap, edid);
 
 	kfree(edid);
-=======
-	kfree(adv7511->edid);
-	adv7511->edid = edid;
-	if (!edid)
-		return 0;
-
-	drm_mode_connector_update_edid_property(connector, edid);
-	count = drm_add_edid_modes(connector, edid);
-
-	adv7511_set_config_csc(adv7511, connector, adv7511->rgb);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return count;
 }
@@ -713,11 +666,7 @@ adv7511_detect(struct adv7511 *adv7511, struct drm_connector *connector)
 	return status;
 }
 
-<<<<<<< HEAD
 static enum drm_mode_status adv7511_mode_valid(struct adv7511 *adv7511,
-=======
-static int adv7511_mode_valid(struct adv7511 *adv7511,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      struct drm_display_mode *mode)
 {
 	if (mode->clock > 165000)
@@ -908,15 +857,11 @@ static int adv7511_bridge_attach(struct drm_bridge *bridge)
 		return -ENODEV;
 	}
 
-<<<<<<< HEAD
 	if (adv->i2c_main->irq)
 		adv->connector.polled = DRM_CONNECTOR_POLL_HPD;
 	else
 		adv->connector.polled = DRM_CONNECTOR_POLL_CONNECT |
 				DRM_CONNECTOR_POLL_DISCONNECT;
-=======
-	adv->connector.polled = DRM_CONNECTOR_POLL_HPD;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = drm_connector_init(bridge->dev, &adv->connector,
 				 &adv7511_connector_funcs,
@@ -927,11 +872,7 @@ static int adv7511_bridge_attach(struct drm_bridge *bridge)
 	}
 	drm_connector_helper_add(&adv->connector,
 				 &adv7511_connector_helper_funcs);
-<<<<<<< HEAD
 	drm_connector_attach_encoder(&adv->connector, bridge->encoder);
-=======
-	drm_mode_connector_attach_encoder(&adv->connector, bridge->encoder);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (adv->type == ADV7533)
 		ret = adv7533_attach_dsi(adv);
@@ -1006,7 +947,6 @@ static void adv7511_uninit_regulators(struct adv7511 *adv)
 	regulator_bulk_disable(adv->num_supplies, adv->supplies);
 }
 
-<<<<<<< HEAD
 static bool adv7511_cec_register_volatile(struct device *dev, unsigned int reg)
 {
 	struct i2c_client *i2c = to_i2c_client(dev);
@@ -1066,8 +1006,6 @@ err:
 	return ret;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int adv7511_parse_dt(struct device_node *np,
 			    struct adv7511_link_config *config)
 {
@@ -1156,11 +1094,6 @@ static int adv7511_probe(struct i2c_client *i2c, const struct i2c_device_id *id)
 	struct adv7511_link_config link_config;
 	struct adv7511 *adv7511;
 	struct device *dev = &i2c->dev;
-<<<<<<< HEAD
-=======
-	unsigned int main_i2c_addr = i2c->addr << 1;
-	unsigned int edid_i2c_addr = main_i2c_addr + 4;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int val;
 	int ret;
 
@@ -1206,11 +1139,7 @@ static int adv7511_probe(struct i2c_client *i2c, const struct i2c_device_id *id)
 	}
 
 	if (adv7511->gpio_pd) {
-<<<<<<< HEAD
 		usleep_range(5000, 6000);
-=======
-		mdelay(5);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		gpiod_set_value_cansleep(adv7511->gpio_pd, 0);
 	}
 
@@ -1234,7 +1163,6 @@ static int adv7511_probe(struct i2c_client *i2c, const struct i2c_device_id *id)
 	if (ret)
 		goto uninit_regulators;
 
-<<<<<<< HEAD
 	adv7511_packet_disable(adv7511, 0xffff);
 
 	adv7511->i2c_edid = i2c_new_secondary_device(i2c, "edid",
@@ -1264,28 +1192,6 @@ static int adv7511_probe(struct i2c_client *i2c, const struct i2c_device_id *id)
 	regmap_write(adv7511->regmap, ADV7511_REG_CEC_I2C_ADDR,
 		     adv7511->i2c_cec->addr << 1);
 
-=======
-	regmap_write(adv7511->regmap, ADV7511_REG_EDID_I2C_ADDR, edid_i2c_addr);
-	regmap_write(adv7511->regmap, ADV7511_REG_PACKET_I2C_ADDR,
-		     main_i2c_addr - 0xa);
-	regmap_write(adv7511->regmap, ADV7511_REG_CEC_I2C_ADDR,
-		     main_i2c_addr - 2);
-
-	adv7511_packet_disable(adv7511, 0xffff);
-
-	adv7511->i2c_edid = i2c_new_dummy(i2c->adapter, edid_i2c_addr >> 1);
-	if (!adv7511->i2c_edid) {
-		ret = -ENOMEM;
-		goto uninit_regulators;
-	}
-
-	if (adv7511->type == ADV7533) {
-		ret = adv7533_init_cec(adv7511);
-		if (ret)
-			goto err_i2c_unregister_edid;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INIT_WORK(&adv7511->hpd_work, adv7511_hpd_work);
 
 	if (i2c->irq) {
@@ -1299,13 +1205,6 @@ static int adv7511_probe(struct i2c_client *i2c, const struct i2c_device_id *id)
 			goto err_unregister_cec;
 	}
 
-<<<<<<< HEAD
-=======
-	/* CEC is unused for now */
-	regmap_write(adv7511->regmap, ADV7511_REG_CEC_CTRL,
-		     ADV7511_CEC_CTRL_POWER_DOWN);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adv7511_power_off(adv7511);
 
 	i2c_set_clientdata(i2c, adv7511);
@@ -1313,20 +1212,16 @@ static int adv7511_probe(struct i2c_client *i2c, const struct i2c_device_id *id)
 	if (adv7511->type == ADV7511)
 		adv7511_set_link_config(adv7511, &link_config);
 
-<<<<<<< HEAD
 	ret = adv7511_cec_init(dev, adv7511);
 	if (ret)
 		goto err_unregister_cec;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adv7511->bridge.funcs = &adv7511_bridge_funcs;
 	adv7511->bridge.of_node = dev->of_node;
 
 	drm_bridge_add(&adv7511->bridge);
 
 	adv7511_audio_init(dev, adv7511);
-<<<<<<< HEAD
 	return 0;
 
 err_unregister_cec:
@@ -1335,13 +1230,6 @@ err_unregister_cec:
 		clk_disable_unprepare(adv7511->cec_clk);
 err_i2c_unregister_packet:
 	i2c_unregister_device(adv7511->i2c_packet);
-=======
-
-	return 0;
-
-err_unregister_cec:
-	adv7533_uninit_cec(adv7511);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_i2c_unregister_edid:
 	i2c_unregister_device(adv7511->i2c_edid);
 uninit_regulators:
@@ -1354,18 +1242,11 @@ static int adv7511_remove(struct i2c_client *i2c)
 {
 	struct adv7511 *adv7511 = i2c_get_clientdata(i2c);
 
-<<<<<<< HEAD
 	if (adv7511->type == ADV7533)
 		adv7533_detach_dsi(adv7511);
 	i2c_unregister_device(adv7511->i2c_cec);
 	if (adv7511->cec_clk)
 		clk_disable_unprepare(adv7511->cec_clk);
-=======
-	if (adv7511->type == ADV7533) {
-		adv7533_detach_dsi(adv7511);
-		adv7533_uninit_cec(adv7511);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	adv7511_uninit_regulators(adv7511);
 
@@ -1373,18 +1254,11 @@ static int adv7511_remove(struct i2c_client *i2c)
 
 	adv7511_audio_exit(adv7511);
 
-<<<<<<< HEAD
 	cec_unregister_adapter(adv7511->cec_adap);
 
 	i2c_unregister_device(adv7511->i2c_packet);
 	i2c_unregister_device(adv7511->i2c_edid);
 
-=======
-	i2c_unregister_device(adv7511->i2c_edid);
-
-	kfree(adv7511->edid);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

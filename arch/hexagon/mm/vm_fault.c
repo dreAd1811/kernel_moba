@@ -50,15 +50,9 @@ void do_page_fault(unsigned long address, long cause, struct pt_regs *regs)
 {
 	struct vm_area_struct *vma;
 	struct mm_struct *mm = current->mm;
-<<<<<<< HEAD
 	int si_signo;
 	int si_code = SEGV_MAPERR;
 	vm_fault_t fault;
-=======
-	siginfo_t info;
-	int si_code = SEGV_MAPERR;
-	int fault;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const struct exception_table_entry *fixup;
 	unsigned int flags = FAULT_FLAG_ALLOW_RETRY | FAULT_FLAG_KILLABLE;
 
@@ -146,7 +140,6 @@ good_area:
 	 * unable to fix up the page fault.
 	 */
 	if (fault & VM_FAULT_SIGBUS) {
-<<<<<<< HEAD
 		si_signo = SIGBUS;
 		si_code = BUS_ADRERR;
 	}
@@ -156,34 +149,13 @@ good_area:
 		si_code  = SEGV_ACCERR;
 	}
 	force_sig_fault(si_signo, si_code, (void __user *)address, current);
-=======
-		info.si_signo = SIGBUS;
-		info.si_code = BUS_ADRERR;
-	}
-	/* Address is not in the memory map */
-	else {
-		info.si_signo = SIGSEGV;
-		info.si_code = SEGV_ACCERR;
-	}
-	info.si_errno = 0;
-	info.si_addr = (void __user *)address;
-	force_sig_info(info.si_signo, &info, current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return;
 
 bad_area:
 	up_read(&mm->mmap_sem);
 
 	if (user_mode(regs)) {
-<<<<<<< HEAD
 		force_sig_fault(SIGSEGV, si_code, (void __user *)address, current);
-=======
-		info.si_signo = SIGSEGV;
-		info.si_errno = 0;
-		info.si_code = si_code;
-		info.si_addr = (void *)address;
-		force_sig_info(info.si_signo, &info, current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 	/* Kernel-mode fault falls through */

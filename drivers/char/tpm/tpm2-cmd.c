@@ -27,54 +27,6 @@ enum tpm2_session_attributes {
 	TPM2_SA_CONTINUE_SESSION	= BIT(0),
 };
 
-<<<<<<< HEAD
-=======
-struct tpm2_startup_in {
-	__be16	startup_type;
-} __packed;
-
-struct tpm2_self_test_in {
-	u8	full_test;
-} __packed;
-
-struct tpm2_get_tpm_pt_in {
-	__be32	cap_id;
-	__be32	property_id;
-	__be32	property_cnt;
-} __packed;
-
-struct tpm2_get_tpm_pt_out {
-	u8	more_data;
-	__be32	subcap_id;
-	__be32	property_cnt;
-	__be32	property_id;
-	__be32	value;
-} __packed;
-
-struct tpm2_get_random_in {
-	__be16	size;
-} __packed;
-
-struct tpm2_get_random_out {
-	__be16	size;
-	u8	buffer[TPM_MAX_RNG_DATA];
-} __packed;
-
-union tpm2_cmd_params {
-	struct	tpm2_startup_in		startup_in;
-	struct	tpm2_self_test_in	selftest_in;
-	struct	tpm2_get_tpm_pt_in	get_tpm_pt_in;
-	struct	tpm2_get_tpm_pt_out	get_tpm_pt_out;
-	struct	tpm2_get_random_in	getrandom_in;
-	struct	tpm2_get_random_out	getrandom_out;
-};
-
-struct tpm2_cmd {
-	tpm_cmd_header		header;
-	union tpm2_cmd_params	params;
-} __packed;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct tpm2_hash {
 	unsigned int crypto_id;
 	unsigned int tpm_id;
@@ -93,11 +45,8 @@ static struct tpm2_hash tpm2_hash_map[] = {
  * of time the chip could take to return the result. The values
  * of the SHORT, MEDIUM, and LONG durations are taken from the
  * PC Client Profile (PTP) specification.
-<<<<<<< HEAD
  * LONG_LONG is for commands that generates keys which empirically
  * takes longer time on some systems.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static const u8 tpm2_ordinal_duration[TPM2_CC_LAST - TPM2_CC_FIRST + 1] = {
 	TPM_UNDEFINED,		/* 11F */
@@ -118,11 +67,7 @@ static const u8 tpm2_ordinal_duration[TPM2_CC_LAST - TPM2_CC_FIRST + 1] = {
 	TPM_UNDEFINED,		/* 12e */
 	TPM_UNDEFINED,		/* 12f */
 	TPM_UNDEFINED,		/* 130 */
-<<<<<<< HEAD
 	TPM_LONG_LONG,		/* 131 */
-=======
-	TPM_UNDEFINED,		/* 131 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	TPM_UNDEFINED,		/* 132 */
 	TPM_UNDEFINED,		/* 133 */
 	TPM_UNDEFINED,		/* 134 */
@@ -156,11 +101,7 @@ static const u8 tpm2_ordinal_duration[TPM2_CC_LAST - TPM2_CC_FIRST + 1] = {
 	TPM_UNDEFINED,		/* 150 */
 	TPM_UNDEFINED,		/* 151 */
 	TPM_UNDEFINED,		/* 152 */
-<<<<<<< HEAD
 	TPM_LONG_LONG,		/* 153 */
-=======
-	TPM_UNDEFINED,		/* 153 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	TPM_UNDEFINED,		/* 154 */
 	TPM_UNDEFINED,		/* 155 */
 	TPM_UNDEFINED,		/* 156 */
@@ -340,27 +281,14 @@ int tpm2_pcr_extend(struct tpm_chip *chip, int pcr_idx, u32 count,
 }
 
 
-<<<<<<< HEAD
 struct tpm2_get_random_out {
 	__be16 size;
 	u8 buffer[TPM_MAX_RNG_DATA];
 } __packed;
-=======
-#define TPM2_GETRANDOM_IN_SIZE \
-	(sizeof(struct tpm_input_header) + \
-	 sizeof(struct tpm2_get_random_in))
-
-static const struct tpm_input_header tpm2_getrandom_header = {
-	.tag = cpu_to_be16(TPM2_ST_NO_SESSIONS),
-	.length = cpu_to_be32(TPM2_GETRANDOM_IN_SIZE),
-	.ordinal = cpu_to_be32(TPM2_CC_GET_RANDOM)
-};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * tpm2_get_random() - get random bytes from the TPM RNG
  *
-<<<<<<< HEAD
  * @chip:	a &tpm_chip instance
  * @dest:	destination buffer
  * @max:	the max number of random bytes to pull
@@ -391,41 +319,10 @@ int tpm2_get_random(struct tpm_chip *chip, u8 *dest, size_t max)
 		tpm_buf_reset(&buf, TPM2_ST_NO_SESSIONS, TPM2_CC_GET_RANDOM);
 		tpm_buf_append_u16(&buf, num_bytes);
 		err = tpm_transmit_cmd(chip, NULL, buf.data, PAGE_SIZE,
-=======
- * @chip: TPM chip to use
- * @out: destination buffer for the random bytes
- * @max: the max number of bytes to write to @out
- *
- * Return:
- *    Size of the output buffer, or -EIO on error.
- */
-int tpm2_get_random(struct tpm_chip *chip, u8 *out, size_t max)
-{
-	struct tpm2_cmd cmd;
-	u32 recd, rlength;
-	u32 num_bytes;
-	int err;
-	int total = 0;
-	int retries = 5;
-	u8 *dest = out;
-
-	num_bytes = min_t(u32, max, sizeof(cmd.params.getrandom_out.buffer));
-
-	if (!out || !num_bytes ||
-	    max > sizeof(cmd.params.getrandom_out.buffer))
-		return -EINVAL;
-
-	do {
-		cmd.header.in = tpm2_getrandom_header;
-		cmd.params.getrandom_in.size = cpu_to_be16(num_bytes);
-
-		err = tpm_transmit_cmd(chip, NULL, &cmd, sizeof(cmd),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       offsetof(struct tpm2_get_random_out,
 						buffer),
 				       0, "attempting get random");
 		if (err)
-<<<<<<< HEAD
 			goto out;
 
 		out = (struct tpm2_get_random_out *)
@@ -441,24 +338,10 @@ int tpm2_get_random(struct tpm_chip *chip, u8 *out, size_t max)
 		memcpy(dest_ptr, out->buffer, recd);
 
 		dest_ptr += recd;
-=======
-			break;
-
-		recd = min_t(u32, be16_to_cpu(cmd.params.getrandom_out.size),
-			     num_bytes);
-		rlength = be32_to_cpu(cmd.header.out.length);
-		if (rlength < offsetof(struct tpm2_get_random_out, buffer) +
-			      recd)
-			return -EFAULT;
-		memcpy(dest, cmd.params.getrandom_out.buffer, recd);
-
-		dest += recd;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		total += recd;
 		num_bytes -= recd;
 	} while (retries-- && total < max);
 
-<<<<<<< HEAD
 	tpm_buf_destroy(&buf);
 	return total ? total : -EIO;
 out:
@@ -466,24 +349,6 @@ out:
 	return err;
 }
 
-=======
-	return total ? total : -EIO;
-}
-
-#define TPM2_GET_TPM_PT_IN_SIZE \
-	(sizeof(struct tpm_input_header) + \
-	 sizeof(struct tpm2_get_tpm_pt_in))
-
-#define TPM2_GET_TPM_PT_OUT_BODY_SIZE \
-	 sizeof(struct tpm2_get_tpm_pt_out)
-
-static const struct tpm_input_header tpm2_get_tpm_pt_header = {
-	.tag = cpu_to_be16(TPM2_ST_NO_SESSIONS),
-	.length = cpu_to_be32(TPM2_GET_TPM_PT_IN_SIZE),
-	.ordinal = cpu_to_be32(TPM2_CC_GET_CAPABILITY)
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * tpm2_flush_context_cmd() - execute a TPM2_FlushContext command
  * @chip: TPM chip to use
@@ -558,11 +423,7 @@ int tpm2_seal_trusted(struct tpm_chip *chip,
 {
 	unsigned int blob_len;
 	struct tpm_buf buf;
-<<<<<<< HEAD
 	u32 hash;
-=======
-	u32 hash, rlength;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 	int rc;
 
@@ -637,12 +498,7 @@ int tpm2_seal_trusted(struct tpm_chip *chip,
 		rc = -E2BIG;
 		goto out;
 	}
-<<<<<<< HEAD
 	if (tpm_buf_length(&buf) < TPM_HEADER_SIZE + 4 + blob_len) {
-=======
-	rlength = be32_to_cpu(((struct tpm2_cmd *)&buf)->header.out.length);
-	if (rlength < TPM_HEADER_SIZE + 4 + blob_len) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rc = -EFAULT;
 		goto out;
 	}
@@ -752,10 +608,6 @@ static int tpm2_unseal_cmd(struct tpm_chip *chip,
 	u16 data_len;
 	u8 *data;
 	int rc;
-<<<<<<< HEAD
-=======
-	u32 rlength;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rc = tpm_buf_init(&buf, TPM2_ST_SESSIONS, TPM2_CC_UNSEAL);
 	if (rc)
@@ -783,13 +635,7 @@ static int tpm2_unseal_cmd(struct tpm_chip *chip,
 			goto out;
 		}
 
-<<<<<<< HEAD
 		if (tpm_buf_length(&buf) < TPM_HEADER_SIZE + 6 + data_len) {
-=======
-		rlength = be32_to_cpu(((struct tpm2_cmd *)&buf)
-					->header.out.length);
-		if (rlength < TPM_HEADER_SIZE + 6 + data_len) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rc = -EFAULT;
 			goto out;
 		}
@@ -835,7 +681,6 @@ out:
 	return rc;
 }
 
-<<<<<<< HEAD
 struct tpm2_get_cap_out {
 	u8 more_data;
 	__be32 subcap_id;
@@ -847,27 +692,17 @@ struct tpm2_get_cap_out {
 /**
  * tpm2_get_tpm_pt() - get value of a TPM_CAP_TPM_PROPERTIES type property
  * @chip:		a &tpm_chip instance
-=======
-/**
- * tpm2_get_tpm_pt() - get value of a TPM_CAP_TPM_PROPERTIES type property
- * @chip:		TPM chip to use.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @property_id:	property ID.
  * @value:		output variable.
  * @desc:		passed to tpm_transmit_cmd()
  *
-<<<<<<< HEAD
  * Return:
  *   0 on success,
  *   -errno or a TPM return code otherwise
-=======
- * Return: Same as with tpm_transmit_cmd.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 ssize_t tpm2_get_tpm_pt(struct tpm_chip *chip, u32 property_id,  u32 *value,
 			const char *desc)
 {
-<<<<<<< HEAD
 	struct tpm2_get_cap_out *out;
 	struct tpm_buf buf;
 	int rc;
@@ -885,26 +720,10 @@ ssize_t tpm2_get_tpm_pt(struct tpm_chip *chip, u32 property_id,  u32 *value,
 		*value = be32_to_cpu(out->value);
 	}
 	tpm_buf_destroy(&buf);
-=======
-	struct tpm2_cmd cmd;
-	int rc;
-
-	cmd.header.in = tpm2_get_tpm_pt_header;
-	cmd.params.get_tpm_pt_in.cap_id = cpu_to_be32(TPM2_CAP_TPM_PROPERTIES);
-	cmd.params.get_tpm_pt_in.property_id = cpu_to_be32(property_id);
-	cmd.params.get_tpm_pt_in.property_cnt = cpu_to_be32(1);
-
-	rc = tpm_transmit_cmd(chip, NULL, &cmd, sizeof(cmd),
-			      TPM2_GET_TPM_PT_OUT_BODY_SIZE, 0, desc);
-	if (!rc)
-		*value = be32_to_cpu(cmd.params.get_tpm_pt_out.value);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 EXPORT_SYMBOL_GPL(tpm2_get_tpm_pt);
 
-<<<<<<< HEAD
 /**
  * tpm2_shutdown() - send a TPM shutdown command
  *
@@ -927,42 +746,6 @@ void tpm2_shutdown(struct tpm_chip *chip, u16 shutdown_type)
 	tpm_transmit_cmd(chip, NULL, buf.data, PAGE_SIZE, 0, 0,
 			 "stopping the TPM");
 	tpm_buf_destroy(&buf);
-=======
-#define TPM2_SHUTDOWN_IN_SIZE \
-	(sizeof(struct tpm_input_header) + \
-	 sizeof(struct tpm2_startup_in))
-
-static const struct tpm_input_header tpm2_shutdown_header = {
-	.tag = cpu_to_be16(TPM2_ST_NO_SESSIONS),
-	.length = cpu_to_be32(TPM2_SHUTDOWN_IN_SIZE),
-	.ordinal = cpu_to_be32(TPM2_CC_SHUTDOWN)
-};
-
-/**
- * tpm2_shutdown() - send shutdown command to the TPM chip
- *
- * @chip:		TPM chip to use.
- * @shutdown_type:	shutdown type. The value is either
- *			TPM_SU_CLEAR or TPM_SU_STATE.
- */
-void tpm2_shutdown(struct tpm_chip *chip, u16 shutdown_type)
-{
-	struct tpm2_cmd cmd;
-	int rc;
-
-	cmd.header.in = tpm2_shutdown_header;
-	cmd.params.startup_in.startup_type = cpu_to_be16(shutdown_type);
-
-	rc = tpm_transmit_cmd(chip, NULL, &cmd, sizeof(cmd), 0, 0,
-			      "stopping the TPM");
-
-	/* In places where shutdown command is sent there's no much we can do
-	 * except print the error code on a system failure.
-	 */
-	if (rc < 0 && rc != -EPIPE)
-		dev_warn(&chip->dev, "transmit returned %d while stopping the TPM",
-			 rc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -985,17 +768,12 @@ unsigned long tpm2_calc_ordinal_duration(struct tpm_chip *chip, u32 ordinal)
 		duration = chip->duration[index];
 
 	if (duration <= 0)
-<<<<<<< HEAD
 		duration = msecs_to_jiffies(TPM2_DURATION_DEFAULT);
-=======
-		duration = 2 * 60 * HZ;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return duration;
 }
 EXPORT_SYMBOL_GPL(tpm2_calc_ordinal_duration);
 
-<<<<<<< HEAD
 /**
  * tpm2_do_selftest() - ensure that all self tests have passed
  *
@@ -1029,51 +807,12 @@ static int tpm2_do_selftest(struct tpm_chip *chip)
 			rc = TPM2_RC_SUCCESS;
 		if (rc == TPM2_RC_INITIALIZE || rc == TPM2_RC_SUCCESS)
 			return rc;
-=======
-#define TPM2_SELF_TEST_IN_SIZE \
-	(sizeof(struct tpm_input_header) + \
-	 sizeof(struct tpm2_self_test_in))
-
-static const struct tpm_input_header tpm2_selftest_header = {
-	.tag = cpu_to_be16(TPM2_ST_NO_SESSIONS),
-	.length = cpu_to_be32(TPM2_SELF_TEST_IN_SIZE),
-	.ordinal = cpu_to_be32(TPM2_CC_SELF_TEST)
-};
-
-/**
- * tpm2_continue_selftest() - start a self test
- *
- * @chip: TPM chip to use
- * @full: test all commands instead of testing only those that were not
- *        previously tested.
- *
- * Return: Same as with tpm_transmit_cmd with exception of RC_TESTING.
- */
-static int tpm2_start_selftest(struct tpm_chip *chip, bool full)
-{
-	int rc;
-	struct tpm2_cmd cmd;
-
-	cmd.header.in = tpm2_selftest_header;
-	cmd.params.selftest_in.full_test = full;
-
-	rc = tpm_transmit_cmd(chip, NULL, &cmd, TPM2_SELF_TEST_IN_SIZE, 0, 0,
-			      "continue selftest");
-
-	/* At least some prototype chips seem to give RC_TESTING error
-	 * immediately. This is a workaround for that.
-	 */
-	if (rc == TPM2_RC_TESTING) {
-		dev_warn(&chip->dev, "Got RC_TESTING, ignoring\n");
-		rc = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return rc;
 }
 
 /**
-<<<<<<< HEAD
  * tpm2_probe() - probe for the TPM 2.0 protocol
  * @chip:	a &tpm_chip instance
  *
@@ -1105,74 +844,6 @@ int tpm2_probe(struct tpm_chip *chip)
 			chip->flags |= TPM_CHIP_FLAG_TPM2;
 	}
 	tpm_buf_destroy(&buf);
-=======
- * tpm2_do_selftest() - run a full self test
- *
- * @chip: TPM chip to use
- *
- * Return: Same as with tpm_transmit_cmd.
- *
- * During the self test TPM2 commands return with the error code RC_TESTING.
- * Waiting is done by issuing PCR read until it executes successfully.
- */
-static int tpm2_do_selftest(struct tpm_chip *chip)
-{
-	int rc;
-	unsigned int loops;
-	unsigned int delay_msec = 100;
-	unsigned long duration;
-	int i;
-
-	duration = tpm2_calc_ordinal_duration(chip, TPM2_CC_SELF_TEST);
-
-	loops = jiffies_to_msecs(duration) / delay_msec;
-
-	rc = tpm2_start_selftest(chip, true);
-	if (rc)
-		return rc;
-
-	for (i = 0; i < loops; i++) {
-		/* Attempt to read a PCR value */
-		rc = tpm2_pcr_read(chip, 0, NULL);
-		if (rc < 0)
-			break;
-
-		if (rc != TPM2_RC_TESTING)
-			break;
-
-		tpm_msleep(delay_msec);
-	}
-
-	return rc;
-}
-
-/**
- * tpm2_probe() - probe TPM 2.0
- * @chip: TPM chip to use
- *
- * Return: < 0 error and 0 on success.
- *
- * Send idempotent TPM 2.0 command and see whether TPM 2.0 chip replied based on
- * the reply tag.
- */
-int tpm2_probe(struct tpm_chip *chip)
-{
-	struct tpm2_cmd cmd;
-	int rc;
-
-	cmd.header.in = tpm2_get_tpm_pt_header;
-	cmd.params.get_tpm_pt_in.cap_id = cpu_to_be32(TPM2_CAP_TPM_PROPERTIES);
-	cmd.params.get_tpm_pt_in.property_id = cpu_to_be32(0x100);
-	cmd.params.get_tpm_pt_in.property_cnt = cpu_to_be32(1);
-
-	rc = tpm_transmit_cmd(chip, NULL, &cmd, sizeof(cmd), 0, 0, NULL);
-	if (rc <  0)
-		return rc;
-
-	if (be16_to_cpu(cmd.header.out.tag) == TPM2_ST_NO_SESSIONS)
-		chip->flags |= TPM_CHIP_FLAG_TPM2;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 EXPORT_SYMBOL_GPL(tpm2_probe);
@@ -1251,11 +922,7 @@ static int tpm2_get_cc_attrs_tbl(struct tpm_chip *chip)
 {
 	struct tpm_buf buf;
 	u32 nr_commands;
-<<<<<<< HEAD
 	__be32 *attrs;
-=======
-	u32 *attrs;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 cc;
 	int i;
 	int rc;
@@ -1269,17 +936,8 @@ static int tpm2_get_cc_attrs_tbl(struct tpm_chip *chip)
 		goto out;
 	}
 
-<<<<<<< HEAD
 	chip->cc_attrs_tbl = devm_kcalloc(&chip->dev, 4, nr_commands,
 					  GFP_KERNEL);
-=======
-	chip->cc_attrs_tbl = devm_kzalloc(&chip->dev, 4 * nr_commands,
-					  GFP_KERNEL);
-	if (!chip->cc_attrs_tbl) {
-		rc = -ENOMEM;
-		goto out;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rc = tpm_buf_init(&buf, TPM2_ST_NO_SESSIONS, TPM2_CC_GET_CAPABILITY);
 	if (rc)
@@ -1304,11 +962,7 @@ static int tpm2_get_cc_attrs_tbl(struct tpm_chip *chip)
 
 	chip->nr_commands = nr_commands;
 
-<<<<<<< HEAD
 	attrs = (__be32 *)&buf.data[TPM_HEADER_SIZE + 9];
-=======
-	attrs = (u32 *)&buf.data[TPM_HEADER_SIZE + 9];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < nr_commands; i++, attrs++) {
 		chip->cc_attrs_tbl[i] = be32_to_cpup(attrs);
 		cc = chip->cc_attrs_tbl[i] & 0xFFFF;
@@ -1344,15 +998,8 @@ int tpm2_auto_startup(struct tpm_chip *chip)
 		goto out;
 
 	rc = tpm2_do_selftest(chip);
-<<<<<<< HEAD
 	if (rc && rc != TPM2_RC_INITIALIZE)
 		goto out;
-=======
-	if (rc != 0 && rc != TPM2_RC_INITIALIZE) {
-		dev_err(&chip->dev, "TPM self test failed\n");
-		goto out;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (rc == TPM2_RC_INITIALIZE) {
 		rc = tpm_startup(chip);
@@ -1360,15 +1007,8 @@ int tpm2_auto_startup(struct tpm_chip *chip)
 			goto out;
 
 		rc = tpm2_do_selftest(chip);
-<<<<<<< HEAD
 		if (rc)
 			goto out;
-=======
-		if (rc) {
-			dev_err(&chip->dev, "TPM self test failed\n");
-			goto out;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	rc = tpm2_get_pcr_allocation(chip);

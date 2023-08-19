@@ -203,17 +203,7 @@ static void __rebalance2(struct dm_btree_info *info, struct btree_node *parent,
 	struct btree_node *right = r->n;
 	uint32_t nr_left = le32_to_cpu(left->header.nr_entries);
 	uint32_t nr_right = le32_to_cpu(right->header.nr_entries);
-<<<<<<< HEAD
 	unsigned threshold = 2 * merge_threshold(left) + 1;
-=======
-	/*
-	 * Ensure the number of entries in each child will be greater
-	 * than or equal to (max_entries / 3 + 1), so no matter which
-	 * child is used for removal, the number will still be not
-	 * less than (max_entries / 3).
-	 */
-	unsigned int threshold = 2 * (merge_threshold(left) + 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (nr_left + nr_right < threshold) {
 		/*

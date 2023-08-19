@@ -299,26 +299,16 @@ static ssize_t vhci_write(struct kiocb *iocb, struct iov_iter *from)
 	return vhci_get_user(data, from);
 }
 
-<<<<<<< HEAD
 static __poll_t vhci_poll(struct file *file, poll_table *wait)
-=======
-static unsigned int vhci_poll(struct file *file, poll_table *wait)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct vhci_data *data = file->private_data;
 
 	poll_wait(file, &data->read_wait, wait);
 
 	if (!skb_queue_empty(&data->readq))
-<<<<<<< HEAD
 		return EPOLLIN | EPOLLRDNORM;
 
 	return EPOLLOUT | EPOLLWRNORM;
-=======
-		return POLLIN | POLLRDNORM;
-
-	return POLLOUT | POLLWRNORM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void vhci_open_timeout(struct work_struct *work)

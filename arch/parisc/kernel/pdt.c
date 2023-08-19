@@ -325,11 +325,7 @@ static int pdt_mainloop(void *unused)
 #ifdef CONFIG_MEMORY_FAILURE
 			if ((pde & PDT_ADDR_PERM_ERR) ||
 			    ((pde & PDT_ADDR_SINGLE_ERR) == 0))
-<<<<<<< HEAD
 				memory_failure(pde >> PAGE_SHIFT, 0);
-=======
-				memory_failure(pde >> PAGE_SHIFT, 0, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			else
 				soft_offline_page(
 					pfn_to_page(pde >> PAGE_SHIFT), 0);

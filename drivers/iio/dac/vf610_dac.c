@@ -167,10 +167,6 @@ static int vf610_write_raw(struct iio_dev *indio_dev,
 }
 
 static const struct iio_info vf610_dac_iio_info = {
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read_raw = &vf610_read_raw,
 	.write_raw = &vf610_write_raw,
 };
@@ -238,10 +234,6 @@ static int vf610_dac_probe(struct platform_device *pdev)
 	return 0;
 
 error_iio_device_register:
-<<<<<<< HEAD
-=======
-	vf610_dac_exit(info);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clk_disable_unprepare(info->clk);
 
 	return ret;

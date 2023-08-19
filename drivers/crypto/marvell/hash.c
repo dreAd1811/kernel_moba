@@ -1183,12 +1183,7 @@ static int mv_cesa_ahmac_setkey(const char *hash_alg_name,
 	u8 *opad;
 	int ret;
 
-<<<<<<< HEAD
 	tfm = crypto_alloc_ahash(hash_alg_name, 0, 0);
-=======
-	tfm = crypto_alloc_ahash(hash_alg_name, CRYPTO_ALG_TYPE_AHASH,
-				 CRYPTO_ALG_TYPE_AHASH_MASK);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(tfm))
 		return PTR_ERR(tfm);
 
@@ -1202,11 +1197,7 @@ static int mv_cesa_ahmac_setkey(const char *hash_alg_name,
 
 	blocksize = crypto_tfm_alg_blocksize(crypto_ahash_tfm(tfm));
 
-<<<<<<< HEAD
 	ipad = kcalloc(2, blocksize, GFP_KERNEL);
-=======
-	ipad = kzalloc(2 * blocksize, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ipad) {
 		ret = -ENOMEM;
 		goto free_req;

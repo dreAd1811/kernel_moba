@@ -1,27 +1,13 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Character LCD driver for Linux
  *
  * Copyright (C) 2000-2008, Willy Tarreau <w@1wt.eu>
  * Copyright (C) 2016-2017 Glider bvba
-<<<<<<< HEAD
  */
 
 #include <linux/atomic.h>
 #include <linux/ctype.h>
-=======
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version
- * 2 of the License, or (at your option) any later version.
- */
-
-#include <linux/atomic.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/delay.h>
 #include <linux/fs.h>
 #include <linux/miscdevice.h>
@@ -113,14 +99,7 @@ static atomic_t charlcd_available = ATOMIC_INIT(1);
 /* sleeps that many milliseconds with a reschedule */
 static void long_sleep(int ms)
 {
-<<<<<<< HEAD
 	schedule_timeout_interruptible(msecs_to_jiffies(ms));
-=======
-	if (in_interrupt())
-		mdelay(ms);
-	else
-		schedule_timeout_interruptible(msecs_to_jiffies(ms));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* turn the backlight on or off */
@@ -207,18 +186,11 @@ static void charlcd_print(struct charlcd *lcd, char c)
 			c = lcd->char_conv[(unsigned char)c];
 		lcd->ops->write_data(lcd, c);
 		priv->addr.x++;
-<<<<<<< HEAD
 
 		/* prevents the cursor from wrapping onto the next line */
 		if (priv->addr.x == lcd->bwidth)
 			charlcd_gotoxy(lcd);
 	}
-=======
-	}
-	/* prevents the cursor from wrapping onto the next line */
-	if (priv->addr.x == lcd->bwidth)
-		charlcd_gotoxy(lcd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void charlcd_clear_fast(struct charlcd *lcd)
@@ -316,7 +288,6 @@ static int charlcd_init_display(struct charlcd *lcd)
 }
 
 /*
-<<<<<<< HEAD
  * Parses an unsigned integer from a string, until a non-digit character
  * is found. The empty string is not accepted. No overflow checks are done.
  *
@@ -390,8 +361,6 @@ static bool parse_xy(const char *s, unsigned long *x, unsigned long *y)
 }
 
 /*
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * These are the file operation function for user access to /dev/lcd
  * This function can also be called from inside the kernel, by
  * setting file and ppos to NULL.
@@ -461,10 +430,7 @@ static inline int handle_lcd_special_code(struct charlcd *lcd)
 		break;
 	case 'N':	/* Two Lines */
 		priv->flags |= LCD_FLAG_N;
-<<<<<<< HEAD
 		processed = 1;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case 'l':	/* Shift Cursor Left */
 		if (priv->addr.x > 0) {
@@ -544,15 +510,9 @@ static inline int handle_lcd_special_code(struct charlcd *lcd)
 			shift ^= 4;
 			if (*esc >= '0' && *esc <= '9') {
 				value |= (*esc - '0') << shift;
-<<<<<<< HEAD
 			} else if (*esc >= 'A' && *esc <= 'F') {
 				value |= (*esc - 'A' + 10) << shift;
 			} else if (*esc >= 'a' && *esc <= 'f') {
-=======
-			} else if (*esc >= 'A' && *esc <= 'Z') {
-				value |= (*esc - 'A' + 10) << shift;
-			} else if (*esc >= 'a' && *esc <= 'z') {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				value |= (*esc - 'a' + 10) << shift;
 			} else {
 				esc++;
@@ -578,7 +538,6 @@ static inline int handle_lcd_special_code(struct charlcd *lcd)
 	}
 	case 'x':	/* gotoxy : LxXXX[yYYY]; */
 	case 'y':	/* gotoxy : LyYYY[xXXX]; */
-<<<<<<< HEAD
 		if (priv->esc_seq.buf[priv->esc_seq.len - 1] != ';')
 			break;
 
@@ -587,26 +546,6 @@ static inline int handle_lcd_special_code(struct charlcd *lcd)
 			charlcd_gotoxy(lcd);
 
 		/* Regardless of its validity, mark as processed */
-=======
-		if (!strchr(esc, ';'))
-			break;
-
-		while (*esc) {
-			if (*esc == 'x') {
-				esc++;
-				if (kstrtoul(esc, 10, &priv->addr.x) < 0)
-					break;
-			} else if (*esc == 'y') {
-				esc++;
-				if (kstrtoul(esc, 10, &priv->addr.y) < 0)
-					break;
-			} else {
-				break;
-			}
-		}
-
-		charlcd_gotoxy(lcd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		processed = 1;
 		break;
 	}
@@ -647,11 +586,7 @@ static void charlcd_write_char(struct charlcd *lcd, char c)
 	if ((c != '\n') && priv->esc_seq.len >= 0) {
 		/* yes, let's add this char to the buffer */
 		priv->esc_seq.buf[priv->esc_seq.len++] = c;
-<<<<<<< HEAD
 		priv->esc_seq.buf[priv->esc_seq.len] = '\0';
-=======
-		priv->esc_seq.buf[priv->esc_seq.len] = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		/* aborts any previous escape sequence */
 		priv->esc_seq.len = -1;
@@ -660,11 +595,7 @@ static void charlcd_write_char(struct charlcd *lcd, char c)
 		case LCD_ESCAPE_CHAR:
 			/* start of an escape sequence */
 			priv->esc_seq.len = 0;
-<<<<<<< HEAD
 			priv->esc_seq.buf[priv->esc_seq.len] = '\0';
-=======
-			priv->esc_seq.buf[priv->esc_seq.len] = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		case '\b':
 			/* go back one char and clear it */
@@ -683,11 +614,7 @@ static void charlcd_write_char(struct charlcd *lcd, char c)
 			/* back one char again */
 			lcd->ops->write_cmd(lcd, LCD_CMD_SHIFT);
 			break;
-<<<<<<< HEAD
 		case '\f':
-=======
-		case '\014':
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* quickly clear the display */
 			charlcd_clear_fast(lcd);
 			break;

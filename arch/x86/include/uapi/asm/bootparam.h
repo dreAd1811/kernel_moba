@@ -9,10 +9,7 @@
 #define SETUP_PCI			3
 #define SETUP_EFI			4
 #define SETUP_APPLE_PROPERTIES		5
-<<<<<<< HEAD
 #define SETUP_JAILHOUSE			6
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* ram_size flags */
 #define RAMDISK_IMAGE_START_MASK	0x07FF
@@ -130,7 +127,6 @@ struct boot_e820_entry {
 	__u32 type;
 } __attribute__((packed));
 
-<<<<<<< HEAD
 /*
  * Smallest compatible version of jailhouse_setup_data required by this kernel.
  */
@@ -152,8 +148,6 @@ struct jailhouse_setup_data {
 	__u8	cpu_ids[255];
 } __attribute__((packed));
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* The so-called "zeropage" */
 struct boot_params {
 	struct screen_info screen_info;			/* 0x000 */

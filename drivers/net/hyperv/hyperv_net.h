@@ -110,11 +110,7 @@ struct ndis_recv_scale_param { /* NDIS_RECEIVE_SCALE_PARAMETERS */
 	u16 hashkey_size;
 
 	/* The offset of the secret key from the beginning of this structure */
-<<<<<<< HEAD
 	u32 hashkey_offset;
-=======
-	u32 kashkey_offset;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	u32 processor_masks_offset;
 	u32 num_processor_masks;
@@ -148,26 +144,17 @@ struct hv_netvsc_packet {
 	u32 total_data_buflen;
 };
 
-<<<<<<< HEAD
 #define NETVSC_HASH_KEYLEN 40
 
 struct netvsc_device_info {
 	unsigned char mac_adr[ETH_ALEN];
-=======
-struct netvsc_device_info {
-	unsigned char mac_adr[ETH_ALEN];
-	int  ring_size;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32  num_chn;
 	u32  send_sections;
 	u32  recv_sections;
 	u32  send_section_size;
 	u32  recv_section_size;
-<<<<<<< HEAD
 
 	u8 rss_key[NETVSC_HASH_KEYLEN];
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum rndis_device_state {
@@ -177,11 +164,6 @@ enum rndis_device_state {
 	RNDIS_DEV_DATAINITIALIZED,
 };
 
-<<<<<<< HEAD
-=======
-#define NETVSC_HASH_KEYLEN 40
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct rndis_device {
 	struct net_device *ndev;
 
@@ -193,19 +175,13 @@ struct rndis_device {
 	struct list_head req_list;
 
 	struct work_struct mcast_work;
-<<<<<<< HEAD
 	u32 filter;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	bool link_state;        /* 0 - link up, 1 - link down */
 
 	u8 hw_mac_adr[ETH_ALEN];
 	u8 rss_key[NETVSC_HASH_KEYLEN];
-<<<<<<< HEAD
 	u16 rx_table[ITAB_NUM];
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 
@@ -214,11 +190,8 @@ struct rndis_message;
 struct netvsc_device;
 struct net_device_context;
 
-<<<<<<< HEAD
 extern u32 netvsc_ring_bytes;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct netvsc_device *netvsc_device_add(struct hv_device *device,
 					const struct netvsc_device_info *info);
 int netvsc_alloc_recv_comp_ring(struct netvsc_device *net_device, u32 q_idx);
@@ -228,16 +201,10 @@ int netvsc_send(struct net_device *net,
 		struct rndis_message *rndis_msg,
 		struct hv_page_buffer *page_buffer,
 		struct sk_buff *skb);
-<<<<<<< HEAD
 void netvsc_linkstatus_callback(struct net_device *net,
 				struct rndis_message *resp);
 int netvsc_recv_callback(struct net_device *net,
 			 struct netvsc_device *nvdev,
-=======
-void netvsc_linkstatus_callback(struct hv_device *device_obj,
-				struct rndis_message *resp);
-int netvsc_recv_callback(struct net_device *net,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 struct vmbus_channel *channel,
 			 void  *data, u32 len,
 			 const struct ndis_tcp_ip_checksum_info *csum_info,
@@ -245,13 +212,9 @@ int netvsc_recv_callback(struct net_device *net,
 void netvsc_channel_cb(void *context);
 int netvsc_poll(struct napi_struct *napi, int budget);
 
-<<<<<<< HEAD
 int rndis_set_subchannel(struct net_device *ndev,
 			 struct netvsc_device *nvdev,
 			 struct netvsc_device_info *dev_info);
-=======
-int rndis_set_subchannel(struct net_device *ndev, struct netvsc_device *nvdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int rndis_filter_open(struct netvsc_device *nvdev);
 int rndis_filter_close(struct netvsc_device *nvdev);
 struct netvsc_device *rndis_filter_device_add(struct hv_device *dev,
@@ -263,10 +226,6 @@ int rndis_filter_set_rss_param(struct rndis_device *rdev,
 			       const u8 *key);
 int rndis_filter_receive(struct net_device *ndev,
 			 struct netvsc_device *net_dev,
-<<<<<<< HEAD
-=======
-			 struct hv_device *dev,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 struct vmbus_channel *channel,
 			 void *data, u32 buflen);
 
@@ -281,11 +240,8 @@ void netvsc_switch_datapath(struct net_device *nv_dev, bool vf);
 #define NVSP_PROTOCOL_VERSION_2		0x30002
 #define NVSP_PROTOCOL_VERSION_4		0x40000
 #define NVSP_PROTOCOL_VERSION_5		0x50000
-<<<<<<< HEAD
 #define NVSP_PROTOCOL_VERSION_6		0x60000
 #define NVSP_PROTOCOL_VERSION_61	0x60001
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum {
 	NVSP_MSG_TYPE_NONE = 0,
@@ -357,15 +313,12 @@ enum {
 	NVSP_MSG5_TYPE_SEND_INDIRECTION_TABLE,
 
 	NVSP_MSG5_MAX = NVSP_MSG5_TYPE_SEND_INDIRECTION_TABLE,
-<<<<<<< HEAD
 
 	/* Version 6 messages */
 	NVSP_MSG6_TYPE_PD_API,
 	NVSP_MSG6_TYPE_PD_POST_BATCH,
 
 	NVSP_MSG6_MAX = NVSP_MSG6_TYPE_PD_POST_BATCH
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum {
@@ -677,7 +630,6 @@ union nvsp_5_message_uber {
 	struct nvsp_5_send_indirect_table send_table;
 } __packed;
 
-<<<<<<< HEAD
 enum nvsp_6_pd_api_op {
 	PD_API_OP_CONFIG = 1,
 	PD_API_OP_SW_DATAPATH, /* Switch Datapath */
@@ -833,18 +785,13 @@ union nvsp_6_message_uber {
 	struct nvsp_6_pd_api_comp pd_comp;
 } __packed;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 union nvsp_all_messages {
 	union nvsp_message_init_uber init_msg;
 	union nvsp_1_message_uber v1_msg;
 	union nvsp_2_message_uber v2_msg;
 	union nvsp_4_message_uber v4_msg;
 	union nvsp_5_message_uber v5_msg;
-<<<<<<< HEAD
 	union nvsp_6_message_uber v6_msg;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } __packed;
 
 /* ALL Messages */
@@ -925,7 +872,6 @@ struct netvsc_ethtool_stats {
 	unsigned long tx_busy;
 	unsigned long tx_send_full;
 	unsigned long rx_comp_busy;
-<<<<<<< HEAD
 	unsigned long rx_no_memory;
 	unsigned long stop_queue;
 	unsigned long wake_queue;
@@ -940,8 +886,6 @@ struct netvsc_ethtool_pcpu_stats {
 	u64     vf_rx_bytes;
 	u64     vf_tx_packets;
 	u64     vf_tx_bytes;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct netvsc_vf_pcpu_stats {
@@ -958,7 +902,6 @@ struct netvsc_reconfig {
 	u32 event;
 };
 
-<<<<<<< HEAD
 /* L4 hash bits for different protocols */
 #define HV_TCP4_L4HASH 1
 #define HV_TCP6_L4HASH 2
@@ -967,8 +910,6 @@ struct netvsc_reconfig {
 #define HV_DEFAULT_L4HASH (HV_TCP4_L4HASH | HV_TCP6_L4HASH | HV_UDP4_L4HASH | \
 			   HV_UDP6_L4HASH)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* The context of the netvsc device  */
 struct net_device_context {
 	/* point back to our device context */
@@ -992,20 +933,10 @@ struct net_device_context {
 
 	u32 tx_table[VRSS_SEND_TAB_SIZE];
 
-<<<<<<< HEAD
 	/* Ethtool settings */
 	u8 duplex;
 	u32 speed;
 	u32 l4_hash; /* L4 hash settings */
-=======
-	u16 rx_table[ITAB_NUM];
-
-	/* Ethtool settings */
-	bool udp4_l4_hash;
-	bool udp6_l4_hash;
-	u8 duplex;
-	u32 speed;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct netvsc_ethtool_stats eth_stats;
 
 	/* State to manage the associated VF interface. */
@@ -1043,10 +974,7 @@ struct netvsc_device {
 
 	/* Receive buffer allocated by us but manages by NetVSP */
 	void *recv_buf;
-<<<<<<< HEAD
 	u32 recv_buf_size; /* allocated bytes */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 recv_buf_gpadl_handle;
 	u32 recv_section_cnt;
 	u32 recv_section_size;
@@ -1074,19 +1002,9 @@ struct netvsc_device {
 
 	struct rndis_device *extension;
 
-<<<<<<< HEAD
 	u32 max_pkt; /* max number of pkt in one send, e.g. 8 */
 	u32 pkt_align; /* alignment bytes, e.g. 8 */
 
-=======
-	int ring_size;
-
-	u32 max_pkt; /* max number of pkt in one send, e.g. 8 */
-	u32 pkt_align; /* alignment bytes, e.g. 8 */
-
-	atomic_t open_cnt;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct netvsc_channel chan_table[VRSS_CHANNEL_MAX];
 
 	struct rcu_head rcu;
@@ -1375,7 +1293,6 @@ struct ndis_lsov2_offload {
 
 struct ndis_ipsecv2_offload {
 	u32	encap;
-<<<<<<< HEAD
 	u8	ip6;
 	u8	ip4opt;
 	u8	ip6ext;
@@ -1387,19 +1304,6 @@ struct ndis_ipsecv2_offload {
 	u8	xport_tun;
 	u8	lso;
 	u8	extseq;
-=======
-	u16	ip6;
-	u16	ip4opt;
-	u16	ip6ext;
-	u16	ah;
-	u16	esp;
-	u16	ah_esp;
-	u16	xport;
-	u16	tun;
-	u16	xport_tun;
-	u16	lso;
-	u16	extseq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32	udp_esp;
 	u32	auth;
 	u32	crypto;
@@ -1407,13 +1311,8 @@ struct ndis_ipsecv2_offload {
 };
 
 struct ndis_rsc_offload {
-<<<<<<< HEAD
 	u8	ip4;
 	u8	ip6;
-=======
-	u16	ip4;
-	u16	ip6;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct ndis_encap_offload {
@@ -1720,35 +1619,6 @@ struct rndis_message {
 	(sizeof(msg) + (sizeof(struct rndis_message) -	\
 	 sizeof(union rndis_message_container)))
 
-<<<<<<< HEAD
-=======
-/* get pointer to info buffer with message pointer */
-#define MESSAGE_TO_INFO_BUFFER(msg)				\
-	(((unsigned char *)(msg)) + msg->info_buf_offset)
-
-/* get pointer to status buffer with message pointer */
-#define MESSAGE_TO_STATUS_BUFFER(msg)			\
-	(((unsigned char *)(msg)) + msg->status_buf_offset)
-
-/* get pointer to OOBD buffer with message pointer */
-#define MESSAGE_TO_OOBD_BUFFER(msg)				\
-	(((unsigned char *)(msg)) + msg->oob_data_offset)
-
-/* get pointer to data buffer with message pointer */
-#define MESSAGE_TO_DATA_BUFFER(msg)				\
-	(((unsigned char *)(msg)) + msg->per_pkt_info_offset)
-
-/* get pointer to contained message from NDIS_MESSAGE pointer */
-#define RNDIS_MESSAGE_PTR_TO_MESSAGE_PTR(rndis_msg)		\
-	((void *) &rndis_msg->msg)
-
-/* get pointer to contained message from NDIS_MESSAGE pointer */
-#define RNDIS_MESSAGE_RAW_PTR_TO_MESSAGE_PTR(rndis_msg)	\
-	((void *) rndis_msg)
-
-
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define RNDIS_HEADER_SIZE	(sizeof(struct rndis_message) - \
 				 sizeof(union rndis_message_container))
 

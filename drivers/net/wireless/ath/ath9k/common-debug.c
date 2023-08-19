@@ -47,11 +47,7 @@ static const struct file_operations fops_modal_eeprom = {
 void ath9k_cmn_debug_modal_eeprom(struct dentry *debugfs_phy,
 				  struct ath_hw *ah)
 {
-<<<<<<< HEAD
 	debugfs_create_file("modal_eeprom", 0400, debugfs_phy, ah,
-=======
-	debugfs_create_file("modal_eeprom", S_IRUSR, debugfs_phy, ah,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    &fops_modal_eeprom);
 }
 EXPORT_SYMBOL(ath9k_cmn_debug_modal_eeprom);
@@ -86,11 +82,7 @@ static const struct file_operations fops_base_eeprom = {
 void ath9k_cmn_debug_base_eeprom(struct dentry *debugfs_phy,
 				 struct ath_hw *ah)
 {
-<<<<<<< HEAD
 	debugfs_create_file("base_eeprom", 0400, debugfs_phy, ah,
-=======
-	debugfs_create_file("base_eeprom", S_IRUSR, debugfs_phy, ah,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    &fops_base_eeprom);
 }
 EXPORT_SYMBOL(ath9k_cmn_debug_base_eeprom);
@@ -186,12 +178,7 @@ static const struct file_operations fops_recv = {
 void ath9k_cmn_debug_recv(struct dentry *debugfs_phy,
 			  struct ath_rx_stats *rxstats)
 {
-<<<<<<< HEAD
 	debugfs_create_file("recv", 0400, debugfs_phy, rxstats, &fops_recv);
-=======
-	debugfs_create_file("recv", S_IRUSR, debugfs_phy, rxstats,
-			    &fops_recv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(ath9k_cmn_debug_recv);
 
@@ -267,11 +254,7 @@ static const struct file_operations fops_phy_err = {
 void ath9k_cmn_debug_phy_err(struct dentry *debugfs_phy,
 			     struct ath_rx_stats *rxstats)
 {
-<<<<<<< HEAD
 	debugfs_create_file("phy_err", 0400, debugfs_phy, rxstats,
-=======
-	debugfs_create_file("phy_err", S_IRUSR, debugfs_phy, rxstats,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    &fops_phy_err);
 }
 EXPORT_SYMBOL(ath9k_cmn_debug_phy_err);

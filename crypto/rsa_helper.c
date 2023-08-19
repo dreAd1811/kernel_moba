@@ -15,13 +15,8 @@
 #include <linux/err.h>
 #include <linux/fips.h>
 #include <crypto/internal/rsa.h>
-<<<<<<< HEAD
 #include "rsapubkey.asn1.h"
 #include "rsaprivkey.asn1.h"
-=======
-#include "rsapubkey-asn1.h"
-#include "rsaprivkey-asn1.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int rsa_get_n(void *context, size_t hdrlen, unsigned char tag,
 	      const void *value, size_t vlen)

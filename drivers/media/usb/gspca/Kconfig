@@ -2,20 +2,13 @@ menuconfig USB_GSPCA
 	tristate "GSPCA based webcams"
 	depends on VIDEO_V4L2
 	depends on INPUT || INPUT=n
-<<<<<<< HEAD
 	select VIDEOBUF2_VMALLOC
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default m
 	---help---
 	  Say Y here if you want to enable selecting webcams based
 	  on the GSPCA framework.
 
-<<<<<<< HEAD
 	  See <file:Documentation/media/v4l-drivers/gspca-cardlist.rst> for more info.
-=======
-	  See <file:Documentation/video4linux/gspca.txt> for more info.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	  This driver uses the Video For Linux API. You must say Y or M to
 	  "Video For Linux" to use this driver.
@@ -212,19 +205,11 @@ config USB_GSPCA_SE401
 	tristate "SE401 USB Camera Driver"
 	depends on VIDEO_V4L2 && USB_GSPCA
 	help
-<<<<<<< HEAD
 	  Say Y here if you want support for cameras based on the
 	  Endpoints (formerly known as AOX) se401 chip.
 
 	  To compile this driver as a module, choose M here: the
 	  module will be called gspca_se401.
-=======
-	 Say Y here if you want support for cameras based on the
-	 Endpoints (formerly known as AOX) se401 chip.
-
-	 To compile this driver as a module, choose M here: the
-	 module will be called gspca_se401.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config USB_GSPCA_SN9C2028
 	tristate "SONIX Dual-Mode USB Camera Driver"
@@ -240,19 +225,11 @@ config USB_GSPCA_SN9C20X
 	tristate "SN9C20X USB Camera Driver"
 	depends on VIDEO_V4L2 && USB_GSPCA
 	help
-<<<<<<< HEAD
 	  Say Y here if you want support for cameras based on the
 	  sn9c20x chips (SN9C201 and SN9C202).
 
 	  To compile this driver as a module, choose M here: the
 	  module will be called gspca_sn9c20x.
-=======
-	 Say Y here if you want support for cameras based on the
-	 sn9c20x chips (SN9C201 and SN9C202).
-
-	 To compile this driver as a module, choose M here: the
-	 module will be called gspca_sn9c20x.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config USB_GSPCA_SONIXB
 	tristate "SONIX Bayer USB Camera Driver"

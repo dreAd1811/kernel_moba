@@ -1,9 +1,5 @@
 config DRM_I2C_ADV7511
-<<<<<<< HEAD
 	tristate "ADV7511 encoder"
-=======
-	tristate "AV7511 encoder"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on OF
 	select DRM_KMS_HELPER
 	select REGMAP_I2C
@@ -25,7 +21,6 @@ config DRM_I2C_ADV7533
 	default y
 	help
 	  Support for the Analog Devices ADV7533 DSI to HDMI encoder.
-<<<<<<< HEAD
 
 config DRM_I2C_ADV7511_CEC
 	bool "ADV7511/33 HDMI CEC driver"
@@ -34,5 +29,3 @@ config DRM_I2C_ADV7511_CEC
 	default y
 	help
 	  When selected the HDMI transmitter will support the CEC feature.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

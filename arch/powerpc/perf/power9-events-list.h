@@ -69,7 +69,6 @@ EVENT(PM_BR_CMPL_ALT,				0x10012)
 EVENT(PM_BR_2PATH,				0x20036)
 /* ALternate branch event that are not strongly biased */
 EVENT(PM_BR_2PATH_ALT,				0x40036)
-<<<<<<< HEAD
 
 /* Blacklisted events */
 EVENT(PM_MRK_ST_DONE_L2,			0x10134)
@@ -98,5 +97,3 @@ EVENT(PM_MRK_DTLB_MISS_64K,			0x3d156)
 EVENT(PM_DTLB_MISS_16M,				0x4c056)
 EVENT(PM_DTLB_MISS_1G,				0x4c05a)
 EVENT(PM_MRK_DTLB_MISS_16M,			0x4c15e)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

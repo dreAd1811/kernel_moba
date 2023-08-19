@@ -45,10 +45,6 @@
 #include <linux/moduleparam.h>
 #include <linux/firmware.h>
 #include <linux/dma-mapping.h>
-<<<<<<< HEAD
-=======
-#include <asm/set_memory.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 MODULE_AUTHOR("Abhay Salunke <abhay_salunke@dell.com>");
 MODULE_DESCRIPTION("Driver for updating BIOS image on DELL systems");
@@ -150,11 +146,7 @@ static int create_packet(void *data, size_t length)
 	packet_array_size = max(
 	       		(unsigned int)(allocation_floor / rbu_data.packetsize),
 			(unsigned int)1);
-<<<<<<< HEAD
 	invalid_addr_packet_array = kcalloc(packet_array_size, sizeof(void *),
-=======
-	invalid_addr_packet_array = kzalloc(packet_array_size * sizeof(void*),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						GFP_KERNEL);
 
 	if (!invalid_addr_packet_array) {
@@ -189,14 +181,6 @@ static int create_packet(void *data, size_t length)
 			packet_data_temp_buf = NULL;
 		}
 	}
-<<<<<<< HEAD
-=======
-	/*
-	 * set to uncachable or it may never get written back before reboot
-	 */
-	set_memory_uc((unsigned long)packet_data_temp_buf, 1 << ordernum);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock(&rbu_data.lock);
 
 	newpacket->data = packet_data_temp_buf;
@@ -365,11 +349,6 @@ static void packet_empty_list(void)
 		 * to make sure there are no stale RBU packets left in memory
 		 */
 		memset(newpacket->data, 0, rbu_data.packetsize);
-<<<<<<< HEAD
-=======
-		set_memory_wb((unsigned long)newpacket->data,
-			1 << newpacket->ordernum);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		free_pages((unsigned long) newpacket->data,
 			newpacket->ordernum);
 		kfree(newpacket);

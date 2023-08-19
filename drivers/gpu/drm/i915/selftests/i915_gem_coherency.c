@@ -33,11 +33,7 @@ static int cpu_set(struct drm_i915_gem_object *obj,
 {
 	unsigned int needs_clflush;
 	struct page *page;
-<<<<<<< HEAD
 	u32 *map;
-=======
-	typeof(v) *map;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	err = i915_gem_obj_prepare_shmem_write(obj, &needs_clflush);
@@ -46,7 +42,6 @@ static int cpu_set(struct drm_i915_gem_object *obj,
 
 	page = i915_gem_object_get_page(obj, offset >> PAGE_SHIFT);
 	map = kmap_atomic(page);
-<<<<<<< HEAD
 
 	if (needs_clflush & CLFLUSH_BEFORE) {
 		mb();
@@ -62,13 +57,6 @@ static int cpu_set(struct drm_i915_gem_object *obj,
 		mb();
 	}
 
-=======
-	if (needs_clflush & CLFLUSH_BEFORE)
-		clflush(map+offset_in_page(offset) / sizeof(*map));
-	map[offset_in_page(offset) / sizeof(*map)] = v;
-	if (needs_clflush & CLFLUSH_AFTER)
-		clflush(map+offset_in_page(offset) / sizeof(*map));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kunmap_atomic(map);
 
 	i915_gem_obj_finish_shmem_access(obj);
@@ -81,11 +69,7 @@ static int cpu_get(struct drm_i915_gem_object *obj,
 {
 	unsigned int needs_clflush;
 	struct page *page;
-<<<<<<< HEAD
 	u32 *map;
-=======
-	typeof(v) map;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	err = i915_gem_obj_prepare_shmem_read(obj, &needs_clflush);
@@ -94,7 +78,6 @@ static int cpu_get(struct drm_i915_gem_object *obj,
 
 	page = i915_gem_object_get_page(obj, offset >> PAGE_SHIFT);
 	map = kmap_atomic(page);
-<<<<<<< HEAD
 
 	if (needs_clflush & CLFLUSH_BEFORE) {
 		mb();
@@ -102,10 +85,6 @@ static int cpu_get(struct drm_i915_gem_object *obj,
 		mb();
 	}
 
-=======
-	if (needs_clflush & CLFLUSH_BEFORE)
-		clflush(map+offset_in_page(offset) / sizeof(*map));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	*v = map[offset_in_page(offset) / sizeof(*map)];
 	kunmap_atomic(map);
 
@@ -118,11 +97,7 @@ static int gtt_set(struct drm_i915_gem_object *obj,
 		   u32 v)
 {
 	struct i915_vma *vma;
-<<<<<<< HEAD
 	u32 __iomem *map;
-=======
-	typeof(v) *map;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	err = i915_gem_object_set_to_gtt_domain(obj, true);
@@ -138,11 +113,7 @@ static int gtt_set(struct drm_i915_gem_object *obj,
 	if (IS_ERR(map))
 		return PTR_ERR(map);
 
-<<<<<<< HEAD
 	iowrite32(v, &map[offset / sizeof(*map)]);
-=======
-	map[offset / sizeof(*map)] = v;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i915_vma_unpin_iomap(vma);
 
 	return 0;
@@ -153,11 +124,7 @@ static int gtt_get(struct drm_i915_gem_object *obj,
 		   u32 *v)
 {
 	struct i915_vma *vma;
-<<<<<<< HEAD
 	u32 __iomem *map;
-=======
-	typeof(v) map;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	err = i915_gem_object_set_to_gtt_domain(obj, false);
@@ -173,11 +140,7 @@ static int gtt_get(struct drm_i915_gem_object *obj,
 	if (IS_ERR(map))
 		return PTR_ERR(map);
 
-<<<<<<< HEAD
 	*v = ioread32(&map[offset / sizeof(*map)]);
-=======
-	*v = map[offset / sizeof(*map)];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i915_vma_unpin_iomap(vma);
 
 	return 0;
@@ -187,11 +150,7 @@ static int wc_set(struct drm_i915_gem_object *obj,
 		  unsigned long offset,
 		  u32 v)
 {
-<<<<<<< HEAD
 	u32 *map;
-=======
-	typeof(v) *map;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	err = i915_gem_object_set_to_wc_domain(obj, true);
@@ -212,11 +171,7 @@ static int wc_get(struct drm_i915_gem_object *obj,
 		  unsigned long offset,
 		  u32 *v)
 {
-<<<<<<< HEAD
 	u32 *map;
-=======
-	typeof(v) map;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	err = i915_gem_object_set_to_wc_domain(obj, false);
@@ -238,11 +193,7 @@ static int gpu_set(struct drm_i915_gem_object *obj,
 		   u32 v)
 {
 	struct drm_i915_private *i915 = to_i915(obj->base.dev);
-<<<<<<< HEAD
 	struct i915_request *rq;
-=======
-	struct drm_i915_gem_request *rq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct i915_vma *vma;
 	u32 *cs;
 	int err;
@@ -255,11 +206,7 @@ static int gpu_set(struct drm_i915_gem_object *obj,
 	if (IS_ERR(vma))
 		return PTR_ERR(vma);
 
-<<<<<<< HEAD
 	rq = i915_request_alloc(i915->engine[RCS], i915->kernel_context);
-=======
-	rq = i915_gem_request_alloc(i915->engine[RCS], i915->kernel_context);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(rq)) {
 		i915_vma_unpin(vma);
 		return PTR_ERR(rq);
@@ -267,11 +214,7 @@ static int gpu_set(struct drm_i915_gem_object *obj,
 
 	cs = intel_ring_begin(rq, 4);
 	if (IS_ERR(cs)) {
-<<<<<<< HEAD
 		i915_request_add(rq);
-=======
-		__i915_add_request(rq, false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		i915_vma_unpin(vma);
 		return PTR_ERR(cs);
 	}
@@ -282,45 +225,24 @@ static int gpu_set(struct drm_i915_gem_object *obj,
 		*cs++ = upper_32_bits(i915_ggtt_offset(vma) + offset);
 		*cs++ = v;
 	} else if (INTEL_GEN(i915) >= 4) {
-<<<<<<< HEAD
 		*cs++ = MI_STORE_DWORD_IMM_GEN4 | MI_USE_GGTT;
-=======
-		*cs++ = MI_STORE_DWORD_IMM_GEN4 | 1 << 22;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*cs++ = 0;
 		*cs++ = i915_ggtt_offset(vma) + offset;
 		*cs++ = v;
 	} else {
-<<<<<<< HEAD
 		*cs++ = MI_STORE_DWORD_IMM | MI_MEM_VIRTUAL;
-=======
-		*cs++ = MI_STORE_DWORD_IMM | 1 << 22;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*cs++ = i915_ggtt_offset(vma) + offset;
 		*cs++ = v;
 		*cs++ = MI_NOOP;
 	}
 	intel_ring_advance(rq, cs);
 
-<<<<<<< HEAD
 	err = i915_vma_move_to_active(vma, rq, EXEC_OBJECT_WRITE);
 	i915_vma_unpin(vma);
 
 	i915_request_add(rq);
 
 	return err;
-=======
-	i915_vma_move_to_active(vma, rq, EXEC_OBJECT_WRITE);
-	i915_vma_unpin(vma);
-
-	reservation_object_lock(obj->resv, NULL);
-	reservation_object_add_excl_fence(obj->resv, &rq->fence);
-	reservation_object_unlock(obj->resv);
-
-	__i915_add_request(rq, true);
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool always_valid(struct drm_i915_private *i915)
@@ -328,7 +250,6 @@ static bool always_valid(struct drm_i915_private *i915)
 	return true;
 }
 
-<<<<<<< HEAD
 static bool needs_fence_registers(struct drm_i915_private *i915)
 {
 	return !i915_terminally_wedged(&i915->gpu_error);
@@ -339,10 +260,6 @@ static bool needs_mi_store_dword(struct drm_i915_private *i915)
 	if (i915_terminally_wedged(&i915->gpu_error))
 		return false;
 
-=======
-static bool needs_mi_store_dword(struct drm_i915_private *i915)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return intel_engine_can_store_dword(i915->engine[RCS]);
 }
 
@@ -353,11 +270,7 @@ static const struct igt_coherency_mode {
 	bool (*valid)(struct drm_i915_private *i915);
 } igt_coherency_mode[] = {
 	{ "cpu", cpu_set, cpu_get, always_valid },
-<<<<<<< HEAD
 	{ "gtt", gtt_set, gtt_get, needs_fence_registers },
-=======
-	{ "gtt", gtt_set, gtt_get, always_valid },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ "wc", wc_set, wc_get, always_valid },
 	{ "gpu", gpu_set, NULL, needs_mi_store_dword },
 	{ },

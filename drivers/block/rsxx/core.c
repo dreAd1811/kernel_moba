@@ -58,10 +58,6 @@ MODULE_PARM_DESC(sync_start, "On by Default: Driver load will not complete "
 			     "until the card startup has completed.");
 
 static DEFINE_IDA(rsxx_disk_ida);
-<<<<<<< HEAD
-=======
-static DEFINE_SPINLOCK(rsxx_ida_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* --------------------Debugfs Setup ------------------- */
 
@@ -250,31 +246,19 @@ static void rsxx_debugfs_dev_new(struct rsxx_cardinfo *card)
 	if (IS_ERR_OR_NULL(card->debugfs_dir))
 		goto failed_debugfs_dir;
 
-<<<<<<< HEAD
 	debugfs_stats = debugfs_create_file("stats", 0444,
-=======
-	debugfs_stats = debugfs_create_file("stats", S_IRUGO,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    card->debugfs_dir, card,
 					    &debugfs_stats_fops);
 	if (IS_ERR_OR_NULL(debugfs_stats))
 		goto failed_debugfs_stats;
 
-<<<<<<< HEAD
 	debugfs_pci_regs = debugfs_create_file("pci_regs", 0444,
-=======
-	debugfs_pci_regs = debugfs_create_file("pci_regs", S_IRUGO,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					       card->debugfs_dir, card,
 					       &debugfs_pci_regs_fops);
 	if (IS_ERR_OR_NULL(debugfs_pci_regs))
 		goto failed_debugfs_pci_regs;
 
-<<<<<<< HEAD
 	debugfs_cram = debugfs_create_file("cram", 0644,
-=======
-	debugfs_cram = debugfs_create_file("cram", S_IRUGO | S_IWUSR,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   card->debugfs_dir, card,
 					   &debugfs_cram_fops);
 	if (IS_ERR_OR_NULL(debugfs_cram))
@@ -786,26 +770,10 @@ static int rsxx_pci_probe(struct pci_dev *dev,
 	card->dev = dev;
 	pci_set_drvdata(dev, card);
 
-<<<<<<< HEAD
 	st = ida_alloc(&rsxx_disk_ida, GFP_KERNEL);
 	if (st < 0)
 		goto failed_ida_get;
 	card->disk_id = st;
-=======
-	do {
-		if (!ida_pre_get(&rsxx_disk_ida, GFP_KERNEL)) {
-			st = -ENOMEM;
-			goto failed_ida_get;
-		}
-
-		spin_lock(&rsxx_ida_lock);
-		st = ida_get_new(&rsxx_disk_ida, &card->disk_id);
-		spin_unlock(&rsxx_ida_lock);
-	} while (st == -EAGAIN);
-
-	if (st)
-		goto failed_ida_get;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	st = pci_enable_device(dev);
 	if (st)
@@ -895,12 +863,8 @@ static int rsxx_pci_probe(struct pci_dev *dev,
 		dev_info(CARD_TO_DEV(card),
 			"Failed reading the number of DMA targets\n");
 
-<<<<<<< HEAD
 	card->ctrl = kcalloc(card->n_targets, sizeof(*card->ctrl),
 			     GFP_KERNEL);
-=======
-	card->ctrl = kzalloc(card->n_targets * sizeof(*card->ctrl), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!card->ctrl) {
 		st = -ENOMEM;
 		goto failed_dma_setup;
@@ -1011,13 +975,7 @@ failed_request_regions:
 failed_dma_mask:
 	pci_disable_device(dev);
 failed_enable:
-<<<<<<< HEAD
 	ida_free(&rsxx_disk_ida, card->disk_id);
-=======
-	spin_lock(&rsxx_ida_lock);
-	ida_remove(&rsxx_disk_ida, card->disk_id);
-	spin_unlock(&rsxx_ida_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 failed_ida_get:
 	kfree(card);
 
@@ -1056,15 +1014,8 @@ static void rsxx_pci_remove(struct pci_dev *dev)
 
 	cancel_work_sync(&card->event_work);
 
-<<<<<<< HEAD
 	rsxx_destroy_dev(card);
 	rsxx_dma_destroy(card);
-=======
-	destroy_workqueue(card->event_wq);
-	rsxx_destroy_dev(card);
-	rsxx_dma_destroy(card);
-	destroy_workqueue(card->creg_ctrl.creg_wq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irqsave(&card->irq_lock, flags);
 	rsxx_disable_ier_and_isr(card, CR_INTR_ALL);
@@ -1087,10 +1038,7 @@ static void rsxx_pci_remove(struct pci_dev *dev)
 	pci_disable_device(dev);
 	pci_release_regions(dev);
 
-<<<<<<< HEAD
 	ida_free(&rsxx_disk_ida, card->disk_id);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(card);
 }
 

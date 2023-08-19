@@ -44,10 +44,7 @@
 #include <asm/cputhreads.h>
 #include <asm/ppc-opcode.h>
 #include <asm/export.h>
-<<<<<<< HEAD
 #include <asm/feature-fixups.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* The physical memory is laid out such that the secondary processor
  * spin code sits at 0x0000...0x00ff. On server, the vectors follow
@@ -59,7 +56,6 @@
  *
  *  For pSeries or server processors:
  *   1. The MMU is off & open firmware is running in real mode.
-<<<<<<< HEAD
  *   2. The primary CPU enters at __start.
  *   3. If the RTAS supports "query-cpu-stopped-state", then secondary
  *      CPUs will enter as directed by "start-cpu" RTAS call, which is
@@ -72,14 +68,6 @@
  *      in r8, and entry in r9 for debugging purposes.
  *   3. Secondary CPUs enter as directed by OPAL_START_CPU call, which
  *      is at generic_secondary_smp_init, with PIR in r3.
-=======
- *   2. The kernel is entered at __start
- * -or- For OPAL entry:
- *   1. The MMU is off, processor in HV mode, primary CPU enters at 0
- *      with device-tree in gpr3. We also get OPAL base in r8 and
- *	entry in r9 for debugging purposes
- *   2. Secondary processors enter at 0x60 with PIR in gpr3
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  *  For Book3E processors:
  *   1. The MMU is on running in AS0 in a state defined in ePAPR
@@ -405,7 +393,6 @@ generic_secondary_common_init:
 	 * physical cpu id in r24, we need to search the pacas to find
 	 * which logical id maps to our physical one.
 	 */
-<<<<<<< HEAD
 #ifndef CONFIG_SMP
 	b	kexec_wait		/* wait for next kernel if !SMP	 */
 #else
@@ -420,21 +407,6 @@ generic_secondary_common_init:
 	lhz	r6,PACAHWCPUID(r13)	/* Load HW procid from paca      */
 	cmpw	r6,r24			/* Compare to our id             */
 	beq	2f
-=======
-	LOAD_REG_ADDR(r13, paca)	/* Load paca pointer		 */
-	ld	r13,0(r13)		/* Get base vaddr of paca array	 */
-#ifndef CONFIG_SMP
-	addi	r13,r13,PACA_SIZE	/* know r13 if used accidentally */
-	b	kexec_wait		/* wait for next kernel if !SMP	 */
-#else
-	LOAD_REG_ADDR(r7, nr_cpu_ids)	/* Load nr_cpu_ids address       */
-	lwz	r7,0(r7)		/* also the max paca allocated 	 */
-	li	r5,0			/* logical cpu id                */
-1:	lhz	r6,PACAHWCPUID(r13)	/* Load HW procid from paca      */
-	cmpw	r6,r24			/* Compare to our id             */
-	beq	2f
-	addi	r13,r13,PACA_SIZE	/* Loop to next PACA on miss     */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	addi	r5,r5,1
 	cmpw	r5,r7			/* Check if more pacas exist     */
 	blt	1b
@@ -786,29 +758,17 @@ _GLOBAL(pmac_secondary_start)
 	mtmsrd	r3			/* RI on */
 
 	/* Set up a paca value for this processor. */
-<<<<<<< HEAD
 	LOAD_REG_ADDR(r4,paca_ptrs)	/* Load paca pointer		*/
 	ld	r4,0(r4)		/* Get base vaddr of paca_ptrs array */
 	sldi	r5,r24,3		/* get paca_ptrs[] index from cpu id */
 	ldx	r13,r5,r4		/* r13 = paca_ptrs[cpu id]       */
-=======
-	LOAD_REG_ADDR(r4,paca)		/* Load paca pointer		*/
-	ld	r4,0(r4)		/* Get base vaddr of paca array	*/
-	mulli	r13,r24,PACA_SIZE	/* Calculate vaddr of right paca */
-	add	r13,r13,r4		/* for this processor.		*/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	SET_PACA(r13)			/* Save vaddr of paca in an SPRG*/
 
 	/* Mark interrupts soft and hard disabled (they might be enabled
 	 * in the PACA when doing hotplug)
 	 */
-<<<<<<< HEAD
 	li	r0,IRQS_DISABLED
 	stb	r0,PACAIRQSOFTMASK(r13)
-=======
-	li	r0,0
-	stb	r0,PACASOFTIRQEN(r13)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	li	r0,PACA_IRQ_HARD_DIS
 	stb	r0,PACAIRQHAPPENED(r13)
 
@@ -864,12 +824,8 @@ __secondary_start:
 	/* Mark interrupts soft and hard disabled (they might be enabled
 	 * in the PACA when doing hotplug)
 	 */
-<<<<<<< HEAD
 	li	r7,IRQS_DISABLED
 	stb	r7,PACAIRQSOFTMASK(r13)
-=======
-	stb	r7,PACASOFTIRQEN(r13)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	li	r0,PACA_IRQ_HARD_DIS
 	stb	r0,PACAIRQHAPPENED(r13)
 
@@ -1039,13 +995,8 @@ start_here_common:
 	/* Mark interrupts soft and hard disabled (they might be enabled
 	 * in the PACA when doing hotplug)
 	 */
-<<<<<<< HEAD
 	li	r0,IRQS_DISABLED
 	stb	r0,PACAIRQSOFTMASK(r13)
-=======
-	li	r0,0
-	stb	r0,PACASOFTIRQEN(r13)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	li	r0,PACA_IRQ_HARD_DIS
 	stb	r0,PACAIRQHAPPENED(r13)
 

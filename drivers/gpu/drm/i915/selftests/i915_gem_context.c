@@ -23,16 +23,11 @@
  */
 
 #include "../i915_selftest.h"
-<<<<<<< HEAD
 #include "i915_random.h"
 #include "igt_flush_test.h"
 
 #include "mock_drm.h"
 #include "mock_gem_device.h"
-=======
-
-#include "mock_drm.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "huge_gem_object.h"
 
 #define DW_PER_PAGE (PAGE_SIZE / sizeof(u32))
@@ -69,20 +64,12 @@ gpu_fill_dw(struct i915_vma *vma, u64 offset, unsigned long count, u32 value)
 			*cmd++ = value;
 		} else if (gen >= 4) {
 			*cmd++ = MI_STORE_DWORD_IMM_GEN4 |
-<<<<<<< HEAD
 				(gen < 6 ? MI_USE_GGTT : 0);
-=======
-				(gen < 6 ? 1 << 22 : 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			*cmd++ = 0;
 			*cmd++ = offset;
 			*cmd++ = value;
 		} else {
-<<<<<<< HEAD
 			*cmd++ = MI_STORE_DWORD_IMM | MI_MEM_VIRTUAL;
-=======
-			*cmd++ = MI_STORE_DWORD_IMM | 1 << 22;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			*cmd++ = offset;
 			*cmd++ = value;
 		}
@@ -129,13 +116,8 @@ static int gpu_fill(struct drm_i915_gem_object *obj,
 {
 	struct drm_i915_private *i915 = to_i915(obj->base.dev);
 	struct i915_address_space *vm =
-<<<<<<< HEAD
 		ctx->ppgtt ? &ctx->ppgtt->vm : &i915->ggtt.vm;
 	struct i915_request *rq;
-=======
-		ctx->ppgtt ? &ctx->ppgtt->base : &i915->ggtt.base;
-	struct drm_i915_gem_request *rq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct i915_vma *vma;
 	struct i915_vma *batch;
 	unsigned int flags;
@@ -173,27 +155,12 @@ static int gpu_fill(struct drm_i915_gem_object *obj,
 		goto err_vma;
 	}
 
-<<<<<<< HEAD
 	rq = i915_request_alloc(engine, ctx);
-=======
-	rq = i915_gem_request_alloc(engine, ctx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(rq)) {
 		err = PTR_ERR(rq);
 		goto err_batch;
 	}
 
-<<<<<<< HEAD
-=======
-	err = engine->emit_flush(rq, EMIT_INVALIDATE);
-	if (err)
-		goto err_request;
-
-	err = i915_switch_context(rq);
-	if (err)
-		goto err_request;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	flags = 0;
 	if (INTEL_GEN(vm->i915) <= 5)
 		flags |= I915_DISPATCH_SECURE;
@@ -204,7 +171,6 @@ static int gpu_fill(struct drm_i915_gem_object *obj,
 	if (err)
 		goto err_request;
 
-<<<<<<< HEAD
 	err = i915_vma_move_to_active(batch, rq, 0);
 	if (err)
 		goto skip_request;
@@ -213,14 +179,10 @@ static int gpu_fill(struct drm_i915_gem_object *obj,
 	if (err)
 		goto skip_request;
 
-=======
-	i915_vma_move_to_active(batch, rq, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i915_gem_object_set_active_reference(batch->obj);
 	i915_vma_unpin(batch);
 	i915_vma_close(batch);
 
-<<<<<<< HEAD
 	i915_vma_unpin(vma);
 
 	i915_request_add(rq);
@@ -231,21 +193,6 @@ skip_request:
 	i915_request_skip(rq, err);
 err_request:
 	i915_request_add(rq);
-=======
-	i915_vma_move_to_active(vma, rq, 0);
-	i915_vma_unpin(vma);
-
-	reservation_object_lock(obj->resv, NULL);
-	reservation_object_add_excl_fence(obj->resv, &rq->fence);
-	reservation_object_unlock(obj->resv);
-
-	__i915_add_request(rq, true);
-
-	return 0;
-
-err_request:
-	__i915_add_request(rq, false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_batch:
 	i915_vma_unpin(batch);
 err_vma:
@@ -275,13 +222,8 @@ static int cpu_fill(struct drm_i915_gem_object *obj, u32 value)
 	}
 
 	i915_gem_obj_finish_shmem_access(obj);
-<<<<<<< HEAD
 	obj->read_domains = I915_GEM_DOMAIN_GTT | I915_GEM_DOMAIN_CPU;
 	obj->write_domain = 0;
-=======
-	obj->base.read_domains = I915_GEM_DOMAIN_GTT | I915_GEM_DOMAIN_CPU;
-	obj->base.write_domain = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -311,15 +253,9 @@ static int cpu_check(struct drm_i915_gem_object *obj, unsigned int max)
 		}
 
 		for (; m < DW_PER_PAGE; m++) {
-<<<<<<< HEAD
 			if (map[m] != STACK_MAGIC) {
 				pr_err("Invalid value at page %d, offset %d: found %x expected %x\n",
 				       n, m, map[m], STACK_MAGIC);
-=======
-			if (map[m] != 0xdeadbeef) {
-				pr_err("Invalid value at page %d, offset %d: found %x expected %x\n",
-				       n, m, map[m], 0xdeadbeef);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				err = -EINVAL;
 				goto out_unmap;
 			}
@@ -335,7 +271,6 @@ out_unmap:
 	return err;
 }
 
-<<<<<<< HEAD
 static int file_add_object(struct drm_file *file,
 			    struct drm_i915_gem_object *obj)
 {
@@ -353,8 +288,6 @@ static int file_add_object(struct drm_file *file,
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct drm_i915_gem_object *
 create_test_object(struct i915_gem_context *ctx,
 		   struct drm_file *file,
@@ -362,14 +295,8 @@ create_test_object(struct i915_gem_context *ctx,
 {
 	struct drm_i915_gem_object *obj;
 	struct i915_address_space *vm =
-<<<<<<< HEAD
 		ctx->ppgtt ? &ctx->ppgtt->vm : &ctx->i915->ggtt.vm;
 	u64 size;
-=======
-		ctx->ppgtt ? &ctx->ppgtt->base : &ctx->i915->ggtt.base;
-	u64 size;
-	u32 handle;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	size = min(vm->total / 2, 1024ull * DW_PER_PAGE * PAGE_SIZE);
@@ -379,21 +306,12 @@ create_test_object(struct i915_gem_context *ctx,
 	if (IS_ERR(obj))
 		return obj;
 
-<<<<<<< HEAD
 	err = file_add_object(file, obj);
-=======
-	/* tie the handle to the drm_file for easy reaping */
-	err = drm_gem_handle_create(file, &obj->base, &handle);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i915_gem_object_put(obj);
 	if (err)
 		return ERR_PTR(err);
 
-<<<<<<< HEAD
 	err = cpu_fill(obj, STACK_MAGIC);
-=======
-	err = cpu_fill(obj, 0xdeadbeef);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err) {
 		pr_err("Failed to fill object with cpu, err=%d\n",
 		       err);
@@ -421,26 +339,17 @@ static int igt_ctx_exec(void *arg)
 	LIST_HEAD(objects);
 	unsigned long ncontexts, ndwords, dw;
 	bool first_shared_gtt = true;
-<<<<<<< HEAD
 	int err = -ENODEV;
 
 	/*
 	 * Create a few different contexts (with different mm) and write
-=======
-	int err;
-
-	/* Create a few different contexts (with different mm) and write
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * through each ctx/mm using the GPU making sure those writes end
 	 * up in the expected pages of our obj.
 	 */
 
-<<<<<<< HEAD
 	if (!DRIVER_CAPS(i915)->has_logical_contexts)
 		return 0;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	file = mock_file(i915);
 	if (IS_ERR(file))
 		return PTR_ERR(file);
@@ -467,12 +376,9 @@ static int igt_ctx_exec(void *arg)
 		}
 
 		for_each_engine(engine, i915, id) {
-<<<<<<< HEAD
 			if (!engine->context_size)
 				continue; /* No logical context support in HW */
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (!intel_engine_can_store_dword(engine))
 				continue;
 
@@ -484,13 +390,9 @@ static int igt_ctx_exec(void *arg)
 				}
 			}
 
-<<<<<<< HEAD
 			intel_runtime_pm_get(i915);
 			err = gpu_fill(obj, ctx, engine, dw);
 			intel_runtime_pm_put(i915);
-=======
-			err = gpu_fill(obj, ctx, engine, dw);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (err) {
 				pr_err("Failed to fill dword %lu [%lu/%lu] with gpu (%s) in ctx %u [full-ppgtt? %s], err=%d\n",
 				       ndwords, dw, max_dwords(obj),
@@ -523,18 +425,14 @@ static int igt_ctx_exec(void *arg)
 	}
 
 out_unlock:
-<<<<<<< HEAD
 	if (igt_flush_test(i915, I915_WAIT_LOCKED))
 		err = -EIO;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&i915->drm.struct_mutex);
 
 	mock_file_free(i915, file);
 	return err;
 }
 
-<<<<<<< HEAD
 static int igt_ctx_readonly(void *arg)
 {
 	struct drm_i915_private *i915 = arg;
@@ -766,8 +664,6 @@ out_unlock:
 	return err;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int fake_aliasing_ppgtt_enable(struct drm_i915_private *i915)
 {
 	struct drm_i915_gem_object *obj;
@@ -777,17 +673,10 @@ static int fake_aliasing_ppgtt_enable(struct drm_i915_private *i915)
 	if (err)
 		return err;
 
-<<<<<<< HEAD
 	list_for_each_entry(obj, &i915->mm.bound_list, mm.link) {
 		struct i915_vma *vma;
 
 		vma = i915_vma_instance(obj, &i915->ggtt.vm, NULL);
-=======
-	list_for_each_entry(obj, &i915->mm.bound_list, global_link) {
-		struct i915_vma *vma;
-
-		vma = i915_vma_instance(obj, &i915->ggtt.base, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (IS_ERR(vma))
 			continue;
 
@@ -802,7 +691,6 @@ static void fake_aliasing_ppgtt_disable(struct drm_i915_private *i915)
 	i915_gem_fini_aliasing_ppgtt(i915);
 }
 
-<<<<<<< HEAD
 int i915_gem_context_mock_selftests(void)
 {
 	static const struct i915_subtest tests[] = {
@@ -827,22 +715,13 @@ int i915_gem_context_live_selftests(struct drm_i915_private *dev_priv)
 		SUBTEST(igt_switch_to_kernel_context),
 		SUBTEST(igt_ctx_exec),
 		SUBTEST(igt_ctx_readonly),
-=======
-int i915_gem_context_live_selftests(struct drm_i915_private *dev_priv)
-{
-	static const struct i915_subtest tests[] = {
-		SUBTEST(igt_ctx_exec),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 	bool fake_alias = false;
 	int err;
 
-<<<<<<< HEAD
 	if (i915_terminally_wedged(&dev_priv->gpu_error))
 		return 0;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Install a fake aliasing gtt for exercise */
 	if (USES_PPGTT(dev_priv) && !dev_priv->mm.aliasing_ppgtt) {
 		mutex_lock(&dev_priv->drm.struct_mutex);

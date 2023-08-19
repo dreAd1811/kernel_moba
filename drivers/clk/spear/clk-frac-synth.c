@@ -116,11 +116,7 @@ static int clk_frac_set_rate(struct clk_hw *hw, unsigned long drate,
 	return 0;
 }
 
-<<<<<<< HEAD
 static const struct clk_ops clk_frac_ops = {
-=======
-static struct clk_ops clk_frac_ops = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.recalc_rate = clk_frac_recalc_rate,
 	.round_rate = clk_frac_round_rate,
 	.set_rate = clk_frac_set_rate,
@@ -135,24 +131,13 @@ struct clk *clk_register_frac(const char *name, const char *parent_name,
 	struct clk *clk;
 
 	if (!name || !parent_name || !reg || !rtbl || !rtbl_cnt) {
-<<<<<<< HEAD
 		pr_err("Invalid arguments passed\n");
-=======
-		pr_err("Invalid arguments passed");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ERR_PTR(-EINVAL);
 	}
 
 	frac = kzalloc(sizeof(*frac), GFP_KERNEL);
-<<<<<<< HEAD
 	if (!frac)
 		return ERR_PTR(-ENOMEM);
-=======
-	if (!frac) {
-		pr_err("could not allocate frac clk\n");
-		return ERR_PTR(-ENOMEM);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* struct clk_frac assignments */
 	frac->reg = reg;

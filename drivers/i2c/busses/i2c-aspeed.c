@@ -27,10 +27,7 @@
 #include <linux/of_irq.h>
 #include <linux/of_platform.h>
 #include <linux/platform_device.h>
-<<<<<<< HEAD
 #include <linux/reset.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/slab.h>
 
 /* I2C Register */
@@ -136,19 +133,11 @@ struct aspeed_i2c_bus {
 	struct i2c_adapter		adap;
 	struct device			*dev;
 	void __iomem			*base;
-<<<<<<< HEAD
 	struct reset_control		*rst;
 	/* Synchronizes I/O mem access to base. */
 	spinlock_t			lock;
 	struct completion		cmd_complete;
 	u32				(*get_clk_reg_val)(u32 divisor);
-=======
-	/* Synchronizes I/O mem access to base. */
-	spinlock_t			lock;
-	struct completion		cmd_complete;
-	u32				(*get_clk_reg_val)(struct device *dev,
-							   u32 divisor);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long			parent_clk_frequency;
 	u32				bus_frequency;
 	/* Transaction state. */
@@ -245,10 +234,6 @@ static bool aspeed_i2c_slave_irq(struct aspeed_i2c_bus *bus)
 	bool irq_handled = true;
 	u8 value;
 
-<<<<<<< HEAD
-=======
-	spin_lock(&bus->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!slave) {
 		irq_handled = false;
 		goto out;
@@ -339,10 +324,6 @@ static bool aspeed_i2c_slave_irq(struct aspeed_i2c_bus *bus)
 	writel(status_ack, bus->base + ASPEED_I2C_INTR_STS_REG);
 
 out:
-<<<<<<< HEAD
-=======
-	spin_unlock(&bus->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return irq_handled;
 }
 #endif /* CONFIG_I2C_SLAVE */
@@ -352,20 +333,12 @@ static void aspeed_i2c_do_start(struct aspeed_i2c_bus *bus)
 {
 	u32 command = ASPEED_I2CD_M_START_CMD | ASPEED_I2CD_M_TX_CMD;
 	struct i2c_msg *msg = &bus->msgs[bus->msgs_index];
-<<<<<<< HEAD
 	u8 slave_addr = i2c_8bit_addr_from_msg(msg);
-=======
-	u8 slave_addr = msg->addr << 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	bus->master_state = ASPEED_I2C_MASTER_START;
 	bus->buf_index = 0;
 
 	if (msg->flags & I2C_M_RD) {
-<<<<<<< HEAD
-=======
-		slave_addr |= 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		command |= ASPEED_I2CD_M_RX_CMD;
 		/* Need to let the hardware know to NACK after RX. */
 		if (msg->len == 1 && !(msg->flags & I2C_M_RECV_LEN))
@@ -414,10 +387,6 @@ static bool aspeed_i2c_master_irq(struct aspeed_i2c_bus *bus)
 	u8 recv_byte;
 	int ret;
 
-<<<<<<< HEAD
-=======
-	spin_lock(&bus->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	irq_status = readl(bus->base + ASPEED_I2C_INTR_STS_REG);
 	/* Ack all interrupt bits. */
 	writel(irq_status, bus->base + ASPEED_I2C_INTR_STS_REG);
@@ -435,11 +404,7 @@ static bool aspeed_i2c_master_irq(struct aspeed_i2c_bus *bus)
 	 */
 	ret = aspeed_i2c_is_irq_error(irq_status);
 	if (ret < 0) {
-<<<<<<< HEAD
 		dev_dbg(bus->dev, "received error interrupt: 0x%08x\n",
-=======
-		dev_dbg(bus->dev, "received error interrupt: 0x%08x",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			irq_status);
 		bus->cmd_err = ret;
 		bus->master_state = ASPEED_I2C_MASTER_INACTIVE;
@@ -448,11 +413,7 @@ static bool aspeed_i2c_master_irq(struct aspeed_i2c_bus *bus)
 
 	/* We are in an invalid state; reset bus to a known state. */
 	if (!bus->msgs) {
-<<<<<<< HEAD
 		dev_err(bus->dev, "bus in unknown state\n");
-=======
-		dev_err(bus->dev, "bus in unknown state");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bus->cmd_err = -EIO;
 		if (bus->master_state != ASPEED_I2C_MASTER_STOP)
 			aspeed_i2c_do_stop(bus);
@@ -467,11 +428,7 @@ static bool aspeed_i2c_master_irq(struct aspeed_i2c_bus *bus)
 	 */
 	if (bus->master_state == ASPEED_I2C_MASTER_START) {
 		if (unlikely(!(irq_status & ASPEED_I2CD_INTR_TX_ACK))) {
-<<<<<<< HEAD
 			pr_devel("no slave present at %02x\n", msg->addr);
-=======
-			pr_devel("no slave present at %02x", msg->addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status_ack |= ASPEED_I2CD_INTR_TX_NAK;
 			bus->cmd_err = -ENXIO;
 			aspeed_i2c_do_stop(bus);
@@ -491,19 +448,11 @@ static bool aspeed_i2c_master_irq(struct aspeed_i2c_bus *bus)
 	switch (bus->master_state) {
 	case ASPEED_I2C_MASTER_TX:
 		if (unlikely(irq_status & ASPEED_I2CD_INTR_TX_NAK)) {
-<<<<<<< HEAD
 			dev_dbg(bus->dev, "slave NACKed TX\n");
 			status_ack |= ASPEED_I2CD_INTR_TX_NAK;
 			goto error_and_stop;
 		} else if (unlikely(!(irq_status & ASPEED_I2CD_INTR_TX_ACK))) {
 			dev_err(bus->dev, "slave failed to ACK TX\n");
-=======
-			dev_dbg(bus->dev, "slave NACKed TX");
-			status_ack |= ASPEED_I2CD_INTR_TX_NAK;
-			goto error_and_stop;
-		} else if (unlikely(!(irq_status & ASPEED_I2CD_INTR_TX_ACK))) {
-			dev_err(bus->dev, "slave failed to ACK TX");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto error_and_stop;
 		}
 		status_ack |= ASPEED_I2CD_INTR_TX_ACK;
@@ -526,11 +475,7 @@ static bool aspeed_i2c_master_irq(struct aspeed_i2c_bus *bus)
 		/* fallthrough intended */
 	case ASPEED_I2C_MASTER_RX:
 		if (unlikely(!(irq_status & ASPEED_I2CD_INTR_RX_DONE))) {
-<<<<<<< HEAD
 			dev_err(bus->dev, "master failed to RX\n");
-=======
-			dev_err(bus->dev, "master failed to RX");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto error_and_stop;
 		}
 		status_ack |= ASPEED_I2CD_INTR_RX_DONE;
@@ -561,11 +506,7 @@ static bool aspeed_i2c_master_irq(struct aspeed_i2c_bus *bus)
 		goto out_no_complete;
 	case ASPEED_I2C_MASTER_STOP:
 		if (unlikely(!(irq_status & ASPEED_I2CD_INTR_NORMAL_STOP))) {
-<<<<<<< HEAD
 			dev_err(bus->dev, "master failed to STOP\n");
-=======
-			dev_err(bus->dev, "master failed to STOP");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			bus->cmd_err = -EIO;
 			/* Do not STOP as we have already tried. */
 		} else {
@@ -576,11 +517,7 @@ static bool aspeed_i2c_master_irq(struct aspeed_i2c_bus *bus)
 		goto out_complete;
 	case ASPEED_I2C_MASTER_INACTIVE:
 		dev_err(bus->dev,
-<<<<<<< HEAD
 			"master received interrupt 0x%08x, but is inactive\n",
-=======
-			"master received interrupt 0x%08x, but is inactive",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			irq_status);
 		bus->cmd_err = -EIO;
 		/* Do not STOP as we should be inactive. */
@@ -607,17 +544,12 @@ out_no_complete:
 		dev_err(bus->dev,
 			"irq handled != irq. expected 0x%08x, but was 0x%08x\n",
 			irq_status, status_ack);
-<<<<<<< HEAD
-=======
-	spin_unlock(&bus->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return !!irq_status;
 }
 
 static irqreturn_t aspeed_i2c_bus_irq(int irq, void *dev_id)
 {
 	struct aspeed_i2c_bus *bus = dev_id;
-<<<<<<< HEAD
 	bool ret;
 
 	spin_lock(&bus->lock);
@@ -637,17 +569,6 @@ out:
 #endif
 	spin_unlock(&bus->lock);
 	return ret ? IRQ_HANDLED : IRQ_NONE;
-=======
-
-#if IS_ENABLED(CONFIG_I2C_SLAVE)
-	if (aspeed_i2c_slave_irq(bus)) {
-		dev_dbg(bus->dev, "irq handled by slave.\n");
-		return IRQ_HANDLED;
-	}
-#endif /* CONFIG_I2C_SLAVE */
-
-	return aspeed_i2c_master_irq(bus) ? IRQ_HANDLED : IRQ_NONE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int aspeed_i2c_master_xfer(struct i2c_adapter *adap,
@@ -765,37 +686,16 @@ static const struct i2c_algorithm aspeed_i2c_algo = {
 #endif /* CONFIG_I2C_SLAVE */
 };
 
-<<<<<<< HEAD
 static u32 aspeed_i2c_get_clk_reg_val(u32 clk_high_low_max, u32 divisor)
 {
 	u32 base_clk, clk_high, clk_low, tmp;
-=======
-static u32 aspeed_i2c_get_clk_reg_val(struct device *dev,
-				      u32 clk_high_low_mask,
-				      u32 divisor)
-{
-	u32 base_clk_divisor, clk_high_low_max, clk_high, clk_low, tmp;
-
-	/*
-	 * SCL_high and SCL_low represent a value 1 greater than what is stored
-	 * since a zero divider is meaningless. Thus, the max value each can
-	 * store is every bit set + 1. Since SCL_high and SCL_low are added
-	 * together (see below), the max value of both is the max value of one
-	 * them times two.
-	 */
-	clk_high_low_max = (clk_high_low_mask + 1) * 2;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * The actual clock frequency of SCL is:
 	 *	SCL_freq = APB_freq / (base_freq * (SCL_high + SCL_low))
 	 *		 = APB_freq / divisor
 	 * where base_freq is a programmable clock divider; its value is
-<<<<<<< HEAD
 	 *	base_freq = 1 << base_clk
-=======
-	 *	base_freq = 1 << base_clk_divisor
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * SCL_high is the number of base_freq clock cycles that SCL stays high
 	 * and SCL_low is the number of base_freq clock cycles that SCL stays
 	 * low for a period of SCL.
@@ -805,16 +705,11 @@ static u32 aspeed_i2c_get_clk_reg_val(struct device *dev,
 	 *	SCL_low	 = clk_low + 1
 	 * Thus,
 	 *	SCL_freq = APB_freq /
-<<<<<<< HEAD
 	 *		((1 << base_clk) * (clk_high + 1 + clk_low + 1))
-=======
-	 *		((1 << base_clk_divisor) * (clk_high + 1 + clk_low + 1))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * The documentation recommends clk_high >= clk_high_max / 2 and
 	 * clk_low >= clk_low_max / 2 - 1 when possible; this last constraint
 	 * gives us the following solution:
 	 */
-<<<<<<< HEAD
 	base_clk = divisor > clk_high_low_max ?
 			ilog2((divisor - 1) / clk_high_low_max) + 1 : 0;
 	tmp = (divisor + (1 << base_clk) - 1) >> base_clk;
@@ -826,74 +721,31 @@ static u32 aspeed_i2c_get_clk_reg_val(struct device *dev,
 
 	if (clk_low)
 		clk_low--;
-=======
-	base_clk_divisor = divisor > clk_high_low_max ?
-			ilog2((divisor - 1) / clk_high_low_max) + 1 : 0;
-
-	if (base_clk_divisor > ASPEED_I2CD_TIME_BASE_DIVISOR_MASK) {
-		base_clk_divisor = ASPEED_I2CD_TIME_BASE_DIVISOR_MASK;
-		clk_low = clk_high_low_mask;
-		clk_high = clk_high_low_mask;
-		dev_err(dev,
-			"clamping clock divider: divider requested, %u, is greater than largest possible divider, %u.\n",
-			divisor, (1 << base_clk_divisor) * clk_high_low_max);
-	} else {
-		tmp = (divisor + (1 << base_clk_divisor) - 1)
-				>> base_clk_divisor;
-		clk_low = tmp / 2;
-		clk_high = tmp - clk_low;
-
-		if (clk_high)
-			clk_high--;
-
-		if (clk_low)
-			clk_low--;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 	return ((clk_high << ASPEED_I2CD_TIME_SCL_HIGH_SHIFT)
 		& ASPEED_I2CD_TIME_SCL_HIGH_MASK)
 			| ((clk_low << ASPEED_I2CD_TIME_SCL_LOW_SHIFT)
 			   & ASPEED_I2CD_TIME_SCL_LOW_MASK)
-<<<<<<< HEAD
 			| (base_clk & ASPEED_I2CD_TIME_BASE_DIVISOR_MASK);
 }
 
 static u32 aspeed_i2c_24xx_get_clk_reg_val(u32 divisor)
-=======
-			| (base_clk_divisor
-			   & ASPEED_I2CD_TIME_BASE_DIVISOR_MASK);
-}
-
-static u32 aspeed_i2c_24xx_get_clk_reg_val(struct device *dev, u32 divisor)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/*
 	 * clk_high and clk_low are each 3 bits wide, so each can hold a max
 	 * value of 8 giving a clk_high_low_max of 16.
 	 */
-<<<<<<< HEAD
 	return aspeed_i2c_get_clk_reg_val(16, divisor);
 }
 
 static u32 aspeed_i2c_25xx_get_clk_reg_val(u32 divisor)
-=======
-	return aspeed_i2c_get_clk_reg_val(dev, GENMASK(2, 0), divisor);
-}
-
-static u32 aspeed_i2c_25xx_get_clk_reg_val(struct device *dev, u32 divisor)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/*
 	 * clk_high and clk_low are each 4 bits wide, so each can hold a max
 	 * value of 16 giving a clk_high_low_max of 32.
 	 */
-<<<<<<< HEAD
 	return aspeed_i2c_get_clk_reg_val(32, divisor);
-=======
-	return aspeed_i2c_get_clk_reg_val(dev, GENMASK(3, 0), divisor);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* precondition: bus.lock has been acquired. */
@@ -906,11 +758,7 @@ static int aspeed_i2c_init_clk(struct aspeed_i2c_bus *bus)
 	clk_reg_val &= (ASPEED_I2CD_TIME_TBUF_MASK |
 			ASPEED_I2CD_TIME_THDSTA_MASK |
 			ASPEED_I2CD_TIME_TACST_MASK);
-<<<<<<< HEAD
 	clk_reg_val |= bus->get_clk_reg_val(divisor);
-=======
-	clk_reg_val |= bus->get_clk_reg_val(bus->dev, divisor);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	writel(clk_reg_val, bus->base + ASPEED_I2C_AC_TIMING_REG1);
 	writel(ASPEED_NO_TIMEOUT_CTRL, bus->base + ASPEED_I2C_AC_TIMING_REG2);
 
@@ -1006,7 +854,6 @@ static int aspeed_i2c_probe_bus(struct platform_device *pdev)
 	/* We just need the clock rate, we don't actually use the clk object. */
 	devm_clk_put(&pdev->dev, parent_clk);
 
-<<<<<<< HEAD
 	bus->rst = devm_reset_control_get_shared(&pdev->dev, NULL);
 	if (IS_ERR(bus->rst)) {
 		dev_err(&pdev->dev,
@@ -1015,8 +862,6 @@ static int aspeed_i2c_probe_bus(struct platform_device *pdev)
 	}
 	reset_control_deassert(bus->rst);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = of_property_read_u32(pdev->dev.of_node,
 				   "bus-frequency", &bus->bus_frequency);
 	if (ret < 0) {
@@ -1029,12 +874,7 @@ static int aspeed_i2c_probe_bus(struct platform_device *pdev)
 	if (!match)
 		bus->get_clk_reg_val = aspeed_i2c_24xx_get_clk_reg_val;
 	else
-<<<<<<< HEAD
 		bus->get_clk_reg_val = (u32 (*)(u32))match->data;
-=======
-		bus->get_clk_reg_val = (u32 (*)(struct device *, u32))
-				match->data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Initialize the I2C adapter */
 	spin_lock_init(&bus->lock);
@@ -1092,11 +932,8 @@ static int aspeed_i2c_remove_bus(struct platform_device *pdev)
 
 	spin_unlock_irqrestore(&bus->lock, flags);
 
-<<<<<<< HEAD
 	reset_control_assert(bus->rst);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i2c_del_adapter(&bus->adap);
 
 	return 0;

@@ -221,15 +221,8 @@ static int wl1251_tx_send_packet(struct wl1251 *wl, struct sk_buff *skb,
 			struct sk_buff *newskb = skb_copy_expand(skb, 0, 3,
 								 GFP_KERNEL);
 
-<<<<<<< HEAD
 			if (unlikely(newskb == NULL))
 				return -EINVAL;
-=======
-			if (unlikely(newskb == NULL)) {
-				wl1251_error("Can't allocate skb!");
-				return -EINVAL;
-			}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			tx_hdr = (struct tx_double_buffer_desc *) newskb->data;
 

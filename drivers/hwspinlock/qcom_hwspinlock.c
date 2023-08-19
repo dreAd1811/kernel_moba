@@ -1,22 +1,7 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Copyright (c) 2013, The Linux Foundation. All rights reserved.
  * Copyright (c) 2015, Sony Mobile Communications AB
-=======
-/*
- * Copyright (c) 2013,2020, The Linux Foundation. All rights reserved.
- * Copyright (c) 2015, Sony Mobile Communications AB
- *
- * This software is licensed under the terms of the GNU General Public
- * License version 2, as published by the Free Software Foundation, and
- * may be copied, distributed, and modified under those terms.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/hwspinlock.h>
@@ -35,26 +20,13 @@
 #define QCOM_MUTEX_APPS_PROC_ID	1
 #define QCOM_MUTEX_NUM_LOCKS	32
 
-<<<<<<< HEAD
-=======
-/**
- * setting default mutex id as QCOM_MUTEX_APPS_PROC_ID
- * and will override this value if dt entry is found
- */
-static u32 qcom_mutex_lock_id = QCOM_MUTEX_APPS_PROC_ID;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int qcom_hwspinlock_trylock(struct hwspinlock *lock)
 {
 	struct regmap_field *field = lock->priv;
 	u32 lock_owner;
 	int ret;
 
-<<<<<<< HEAD
 	ret = regmap_field_write(field, QCOM_MUTEX_APPS_PROC_ID);
-=======
-	ret = regmap_field_write(field, qcom_mutex_lock_id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -62,11 +34,7 @@ static int qcom_hwspinlock_trylock(struct hwspinlock *lock)
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	return lock_owner == QCOM_MUTEX_APPS_PROC_ID;
-=======
-	return lock_owner == qcom_mutex_lock_id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void qcom_hwspinlock_unlock(struct hwspinlock *lock)
@@ -81,11 +49,7 @@ static void qcom_hwspinlock_unlock(struct hwspinlock *lock)
 		return;
 	}
 
-<<<<<<< HEAD
 	if (lock_owner != QCOM_MUTEX_APPS_PROC_ID) {
-=======
-	if (lock_owner != qcom_mutex_lock_id) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_err("%s: spinlock not owned by us (actual owner is %d)\n",
 				__func__, lock_owner);
 	}
@@ -116,10 +80,6 @@ static int qcom_hwspinlock_probe(struct platform_device *pdev)
 	size_t array_size;
 	u32 stride;
 	u32 base;
-<<<<<<< HEAD
-=======
-	u32 mutex_id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 	int i;
 
@@ -146,13 +106,6 @@ static int qcom_hwspinlock_probe(struct platform_device *pdev)
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
-=======
-	ret = of_property_read_u32(pdev->dev.of_node, "mutex-id", &mutex_id);
-	if (!ret)
-		qcom_mutex_lock_id = mutex_id;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	array_size = QCOM_MUTEX_NUM_LOCKS * sizeof(struct hwspinlock);
 	bank = devm_kzalloc(&pdev->dev, sizeof(*bank) + array_size, GFP_KERNEL);
 	if (!bank)

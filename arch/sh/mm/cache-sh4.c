@@ -112,11 +112,7 @@ static void sh4_flush_dcache_page(void *arg)
 	struct page *page = arg;
 	unsigned long addr = (unsigned long)page_address(page);
 #ifndef CONFIG_SMP
-<<<<<<< HEAD
 	struct address_space *mapping = page_mapping_file(page);
-=======
-	struct address_space *mapping = page_mapping(page);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (mapping && !mapping_mapped(mapping))
 		clear_bit(PG_dcache_clean, &page->flags);

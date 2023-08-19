@@ -551,13 +551,8 @@ static int reg_write(struct gspca_dev *gspca_dev,
 			req,
 			USB_TYPE_VENDOR | USB_RECIP_DEVICE,
 			value, index, NULL, 0, 500);
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_USBO, "reg write: 0x%02x,0x%02x:0x%02x, %d\n",
 		  req, index, value, ret);
-=======
-	PDEBUG(D_USBO, "reg write: 0x%02x,0x%02x:0x%02x, %d",
-		req, index, value, ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		pr_err("reg write: error %d\n", ret);
 	return ret;
@@ -655,11 +650,7 @@ static int sd_start(struct gspca_dev *gspca_dev)
 	ret = reg_read(gspca_dev, 0x06, 0x16);
 
 	if (ret < 0) {
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "register read failed err: %d\n", ret);
-=======
-		PERR("register read failed err: %d", ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 	if (ret != 0x0101) {

@@ -53,11 +53,6 @@ mcp77_ram_init(struct nvkm_ram *base)
 static const struct nvkm_ram_func
 mcp77_ram_func = {
 	.init = mcp77_ram_init,
-<<<<<<< HEAD
-=======
-	.get = nv50_ram_get,
-	.put = nv50_ram_put,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int
@@ -76,11 +71,7 @@ mcp77_ram_new(struct nvkm_fb *fb, struct nvkm_ram **pram)
 	*pram = &ram->base;
 
 	ret = nvkm_ram_ctor(&mcp77_ram_func, fb, NVKM_RAM_TYPE_STOLEN,
-<<<<<<< HEAD
 			    size, &ram->base);
-=======
-			    size, 0, &ram->base);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -88,12 +79,8 @@ mcp77_ram_new(struct nvkm_fb *fb, struct nvkm_ram **pram)
 	ram->base.stolen = base;
 	nvkm_mm_fini(&ram->base.vram);
 
-<<<<<<< HEAD
 	return nvkm_mm_init(&ram->base.vram, NVKM_RAM_MM_NORMAL,
 			    rsvd_head >> NVKM_RAM_MM_SHIFT,
-=======
-	return nvkm_mm_init(&ram->base.vram, rsvd_head >> NVKM_RAM_MM_SHIFT,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    (size - rsvd_head - rsvd_tail) >>
 			    NVKM_RAM_MM_SHIFT, 1);
 }

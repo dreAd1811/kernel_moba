@@ -110,11 +110,7 @@ The actual steps taken by a platform to recover from a PCI error
 event will be platform-dependent, but will follow the general
 sequence described below.
 
-<<<<<<< HEAD
 STEP 0: Error Event: ERR_NONFATAL
-=======
-STEP 0: Error Event
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 -------------------
 A PCI bus error is detected by the PCI hardware.  On powerpc, the slot
 is isolated, in that all I/O is blocked: all reads return 0xffffffff,
@@ -232,17 +228,7 @@ proceeds to either STEP3 (Link Reset) or to STEP 5 (Resume Operations).
 If any driver returned PCI_ERS_RESULT_NEED_RESET, then the platform
 proceeds to STEP 4 (Slot Reset)
 
-<<<<<<< HEAD
 STEP 3: Slot Reset
-=======
-STEP 3: Link Reset
-------------------
-The platform resets the link.  This is a PCI-Express specific step
-and is done whenever a fatal error has been detected that can be
-"solved" by resetting the link.
-
-STEP 4: Slot Reset
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 ------------------
 
 In response to a return value of PCI_ERS_RESULT_NEED_RESET, the
@@ -328,11 +314,7 @@ Failure).
 >>> However, it probably should.
 
 
-<<<<<<< HEAD
 STEP 4: Resume Operations
-=======
-STEP 5: Resume Operations
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 -------------------------
 The platform will call the resume() callback on all affected device
 drivers if all drivers on the segment have returned
@@ -344,11 +326,7 @@ a result code.
 At this point, if a new error happens, the platform will restart
 a new error recovery sequence.
 
-<<<<<<< HEAD
 STEP 5: Permanent Failure
-=======
-STEP 6: Permanent Failure
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 -------------------------
 A "permanent failure" has occurred, and the platform cannot recover
 the device.  The platform will call error_detected() with a
@@ -371,7 +349,6 @@ errors. See the discussion in powerpc/eeh-pci-error-recovery.txt
 for additional detail on real-life experience of the causes of
 software errors.
 
-<<<<<<< HEAD
 STEP 0: Error Event: ERR_FATAL
 -------------------
 PCI bus error is detected by the PCI hardware. On powerpc, the slot is
@@ -393,8 +370,6 @@ resetting the link.
 STEP 3: Re-enumerate the devices
 --------------------
 Initiates the re-enumeration.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Conclusion; General Remarks
 ---------------------------

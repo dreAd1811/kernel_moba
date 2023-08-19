@@ -195,10 +195,6 @@ static int adc0832_read_raw(struct iio_dev *iio,
 
 static const struct iio_info adc0832_info = {
 	.read_raw = adc0832_read_raw,
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static irqreturn_t adc0832_trigger_handler(int irq, void *p)

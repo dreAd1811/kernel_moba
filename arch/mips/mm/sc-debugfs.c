@@ -31,24 +31,10 @@ static ssize_t sc_prefetch_write(struct file *file,
 				 const char __user *user_buf,
 				 size_t count, loff_t *ppos)
 {
-<<<<<<< HEAD
 	bool enabled;
 	int err;
 
 	err = kstrtobool_from_user(user_buf, count, &enabled);
-=======
-	char buf[32];
-	ssize_t buf_size;
-	bool enabled;
-	int err;
-
-	buf_size = min(count, sizeof(buf) - 1);
-	if (copy_from_user(buf, user_buf, buf_size))
-		return -EFAULT;
-
-	buf[buf_size] = '\0';
-	err = strtobool(buf, &enabled);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		return err;
 

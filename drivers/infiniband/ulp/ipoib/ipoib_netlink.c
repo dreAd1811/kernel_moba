@@ -122,18 +122,6 @@ static int ipoib_new_child_link(struct net *src_net, struct net_device *dev,
 	} else
 		child_pkey  = nla_get_u16(data[IFLA_IPOIB_PKEY]);
 
-<<<<<<< HEAD
-=======
-	if (child_pkey == 0 || child_pkey == 0x8000)
-		return -EINVAL;
-
-	/*
-	 * Set the full membership bit, so that we join the right
-	 * broadcast group, etc.
-	 */
-	child_pkey |= 0x8000;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = __ipoib_vlan_add(ppriv, ipoib_priv(dev),
 			       child_pkey, IPOIB_RTNL_CHILD);
 
@@ -142,22 +130,6 @@ static int ipoib_new_child_link(struct net *src_net, struct net_device *dev,
 	return err;
 }
 
-<<<<<<< HEAD
-=======
-static void ipoib_unregister_child_dev(struct net_device *dev, struct list_head *head)
-{
-	struct ipoib_dev_priv *priv, *ppriv;
-
-	priv = ipoib_priv(dev);
-	ppriv = ipoib_priv(priv->parent);
-
-	down_write(&ppriv->vlan_rwsem);
-	unregister_netdevice_queue(dev, head);
-	list_del(&priv->list);
-	up_write(&ppriv->vlan_rwsem);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static size_t ipoib_get_size(const struct net_device *dev)
 {
 	return nla_total_size(2) +	/* IFLA_IPOIB_PKEY   */
@@ -173,10 +145,6 @@ static struct rtnl_link_ops ipoib_link_ops __read_mostly = {
 	.setup		= ipoib_setup_common,
 	.newlink	= ipoib_new_child_link,
 	.changelink	= ipoib_changelink,
-<<<<<<< HEAD
-=======
-	.dellink	= ipoib_unregister_child_dev,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.get_size	= ipoib_get_size,
 	.fill_info	= ipoib_fill_info,
 };

@@ -720,10 +720,6 @@ static bool atmel_tdes_filter(struct dma_chan *chan, void *slave)
 static int atmel_tdes_dma_init(struct atmel_tdes_dev *dd,
 			struct crypto_platform_data *pdata)
 {
-<<<<<<< HEAD
-=======
-	int err = -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dma_cap_mask_t mask;
 
 	dma_cap_zero(mask);
@@ -768,11 +764,7 @@ err_dma_out:
 	dma_release_channel(dd->dma_lch_in.chan);
 err_dma_in:
 	dev_warn(dd->dev, "no DMA channel available\n");
-<<<<<<< HEAD
 	return -ENODEV;
-=======
-	return err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void atmel_tdes_dma_cleanup(struct atmel_tdes_dev *dd)
@@ -919,13 +911,6 @@ static int atmel_tdes_cra_init(struct crypto_tfm *tfm)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-static void atmel_tdes_cra_exit(struct crypto_tfm *tfm)
-{
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct crypto_alg tdes_algs[] = {
 {
 	.cra_name		= "ecb(des)",
@@ -938,10 +923,6 @@ static struct crypto_alg tdes_algs[] = {
 	.cra_type		= &crypto_ablkcipher_type,
 	.cra_module		= THIS_MODULE,
 	.cra_init		= atmel_tdes_cra_init,
-<<<<<<< HEAD
-=======
-	.cra_exit		= atmel_tdes_cra_exit,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.cra_u.ablkcipher = {
 		.min_keysize	= DES_KEY_SIZE,
 		.max_keysize	= DES_KEY_SIZE,
@@ -961,10 +942,6 @@ static struct crypto_alg tdes_algs[] = {
 	.cra_type		= &crypto_ablkcipher_type,
 	.cra_module		= THIS_MODULE,
 	.cra_init		= atmel_tdes_cra_init,
-<<<<<<< HEAD
-=======
-	.cra_exit		= atmel_tdes_cra_exit,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.cra_u.ablkcipher = {
 		.min_keysize	= DES_KEY_SIZE,
 		.max_keysize	= DES_KEY_SIZE,
@@ -985,10 +962,6 @@ static struct crypto_alg tdes_algs[] = {
 	.cra_type		= &crypto_ablkcipher_type,
 	.cra_module		= THIS_MODULE,
 	.cra_init		= atmel_tdes_cra_init,
-<<<<<<< HEAD
-=======
-	.cra_exit		= atmel_tdes_cra_exit,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.cra_u.ablkcipher = {
 		.min_keysize	= DES_KEY_SIZE,
 		.max_keysize	= DES_KEY_SIZE,
@@ -1009,10 +982,6 @@ static struct crypto_alg tdes_algs[] = {
 	.cra_type		= &crypto_ablkcipher_type,
 	.cra_module		= THIS_MODULE,
 	.cra_init		= atmel_tdes_cra_init,
-<<<<<<< HEAD
-=======
-	.cra_exit		= atmel_tdes_cra_exit,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.cra_u.ablkcipher = {
 		.min_keysize	= DES_KEY_SIZE,
 		.max_keysize	= DES_KEY_SIZE,
@@ -1033,10 +1002,6 @@ static struct crypto_alg tdes_algs[] = {
 	.cra_type		= &crypto_ablkcipher_type,
 	.cra_module		= THIS_MODULE,
 	.cra_init		= atmel_tdes_cra_init,
-<<<<<<< HEAD
-=======
-	.cra_exit		= atmel_tdes_cra_exit,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.cra_u.ablkcipher = {
 		.min_keysize	= DES_KEY_SIZE,
 		.max_keysize	= DES_KEY_SIZE,
@@ -1057,10 +1022,6 @@ static struct crypto_alg tdes_algs[] = {
 	.cra_type		= &crypto_ablkcipher_type,
 	.cra_module		= THIS_MODULE,
 	.cra_init		= atmel_tdes_cra_init,
-<<<<<<< HEAD
-=======
-	.cra_exit		= atmel_tdes_cra_exit,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.cra_u.ablkcipher = {
 		.min_keysize	= DES_KEY_SIZE,
 		.max_keysize	= DES_KEY_SIZE,
@@ -1081,10 +1042,6 @@ static struct crypto_alg tdes_algs[] = {
 	.cra_type		= &crypto_ablkcipher_type,
 	.cra_module		= THIS_MODULE,
 	.cra_init		= atmel_tdes_cra_init,
-<<<<<<< HEAD
-=======
-	.cra_exit		= atmel_tdes_cra_exit,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.cra_u.ablkcipher = {
 		.min_keysize	= DES_KEY_SIZE,
 		.max_keysize	= DES_KEY_SIZE,
@@ -1105,10 +1062,6 @@ static struct crypto_alg tdes_algs[] = {
 	.cra_type		= &crypto_ablkcipher_type,
 	.cra_module		= THIS_MODULE,
 	.cra_init		= atmel_tdes_cra_init,
-<<<<<<< HEAD
-=======
-	.cra_exit		= atmel_tdes_cra_exit,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.cra_u.ablkcipher = {
 		.min_keysize	= 2 * DES_KEY_SIZE,
 		.max_keysize	= 3 * DES_KEY_SIZE,
@@ -1128,10 +1081,6 @@ static struct crypto_alg tdes_algs[] = {
 	.cra_type		= &crypto_ablkcipher_type,
 	.cra_module		= THIS_MODULE,
 	.cra_init		= atmel_tdes_cra_init,
-<<<<<<< HEAD
-=======
-	.cra_exit		= atmel_tdes_cra_exit,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.cra_u.ablkcipher = {
 		.min_keysize	= 2*DES_KEY_SIZE,
 		.max_keysize	= 3*DES_KEY_SIZE,
@@ -1152,10 +1101,6 @@ static struct crypto_alg tdes_algs[] = {
 	.cra_type		= &crypto_ablkcipher_type,
 	.cra_module		= THIS_MODULE,
 	.cra_init		= atmel_tdes_cra_init,
-<<<<<<< HEAD
-=======
-	.cra_exit		= atmel_tdes_cra_exit,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.cra_u.ablkcipher = {
 		.min_keysize	= 2*DES_KEY_SIZE,
 		.max_keysize	= 2*DES_KEY_SIZE,
@@ -1176,10 +1121,6 @@ static struct crypto_alg tdes_algs[] = {
 	.cra_type		= &crypto_ablkcipher_type,
 	.cra_module		= THIS_MODULE,
 	.cra_init		= atmel_tdes_cra_init,
-<<<<<<< HEAD
-=======
-	.cra_exit		= atmel_tdes_cra_exit,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.cra_u.ablkcipher = {
 		.min_keysize	= 2*DES_KEY_SIZE,
 		.max_keysize	= 2*DES_KEY_SIZE,
@@ -1200,10 +1141,6 @@ static struct crypto_alg tdes_algs[] = {
 	.cra_type		= &crypto_ablkcipher_type,
 	.cra_module		= THIS_MODULE,
 	.cra_init		= atmel_tdes_cra_init,
-<<<<<<< HEAD
-=======
-	.cra_exit		= atmel_tdes_cra_exit,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.cra_u.ablkcipher = {
 		.min_keysize	= 2*DES_KEY_SIZE,
 		.max_keysize	= 2*DES_KEY_SIZE,
@@ -1224,10 +1161,6 @@ static struct crypto_alg tdes_algs[] = {
 	.cra_type		= &crypto_ablkcipher_type,
 	.cra_module		= THIS_MODULE,
 	.cra_init		= atmel_tdes_cra_init,
-<<<<<<< HEAD
-=======
-	.cra_exit		= atmel_tdes_cra_exit,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.cra_u.ablkcipher = {
 		.min_keysize	= 2*DES_KEY_SIZE,
 		.max_keysize	= 2*DES_KEY_SIZE,
@@ -1248,10 +1181,6 @@ static struct crypto_alg tdes_algs[] = {
 	.cra_type		= &crypto_ablkcipher_type,
 	.cra_module		= THIS_MODULE,
 	.cra_init		= atmel_tdes_cra_init,
-<<<<<<< HEAD
-=======
-	.cra_exit		= atmel_tdes_cra_exit,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.cra_u.ablkcipher = {
 		.min_keysize	= 2*DES_KEY_SIZE,
 		.max_keysize	= 3*DES_KEY_SIZE,
@@ -1383,28 +1312,14 @@ static struct crypto_platform_data *atmel_tdes_of_init(struct platform_device *p
 	}
 
 	pdata = devm_kzalloc(&pdev->dev, sizeof(*pdata), GFP_KERNEL);
-<<<<<<< HEAD
 	if (!pdata)
 		return ERR_PTR(-ENOMEM);
-=======
-	if (!pdata) {
-		dev_err(&pdev->dev, "could not allocate memory for pdata\n");
-		return ERR_PTR(-ENOMEM);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pdata->dma_slave = devm_kzalloc(&pdev->dev,
 					sizeof(*(pdata->dma_slave)),
 					GFP_KERNEL);
-<<<<<<< HEAD
 	if (!pdata->dma_slave)
 		return ERR_PTR(-ENOMEM);
-=======
-	if (!pdata->dma_slave) {
-		dev_err(&pdev->dev, "could not allocate memory for dma_slave\n");
-		return ERR_PTR(-ENOMEM);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return pdata;
 }
@@ -1425,10 +1340,6 @@ static int atmel_tdes_probe(struct platform_device *pdev)
 
 	tdes_dd = devm_kmalloc(&pdev->dev, sizeof(*tdes_dd), GFP_KERNEL);
 	if (tdes_dd == NULL) {
-<<<<<<< HEAD
-=======
-		dev_err(dev, "unable to alloc data struct.\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = -ENOMEM;
 		goto tdes_dd_err;
 	}
@@ -1447,11 +1358,6 @@ static int atmel_tdes_probe(struct platform_device *pdev)
 
 	crypto_init_queue(&tdes_dd->queue, ATMEL_TDES_QUEUE_LENGTH);
 
-<<<<<<< HEAD
-=======
-	tdes_dd->irq = -1;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Get the base address */
 	tdes_res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 	if (!tdes_res) {

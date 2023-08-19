@@ -17,15 +17,9 @@
 #ifndef M88DS3103_PRIV_H
 #define M88DS3103_PRIV_H
 
-<<<<<<< HEAD
 #include <media/dvb_frontend.h>
 #include "m88ds3103.h"
 #include <media/dvb_math.h>
-=======
-#include "dvb_frontend.h"
-#include "m88ds3103.h"
-#include "dvb_math.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/firmware.h>
 #include <linux/i2c-mux.h>
 #include <linux/regmap.h>

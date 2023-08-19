@@ -10,10 +10,7 @@
 #include <linux/errno.h>
 #include <linux/err.h>
 #include <linux/interrupt.h>
-<<<<<<< HEAD
 #include <linux/freezer.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <xen/xen.h>
 #include <xen/events.h>
 #include <xen/interface/io/tpmif.h>
@@ -43,7 +40,6 @@ enum status_bits {
 	VTPM_STATUS_CANCELED = 0x8,
 };
 
-<<<<<<< HEAD
 static bool wait_for_tpm_stat_cond(struct tpm_chip *chip, u8 mask,
 					bool check_cancel, bool *canceled)
 {
@@ -104,8 +100,6 @@ again:
 	return -ETIME;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static u8 vtpm_status(struct tpm_chip *chip)
 {
 	struct tpm_private *priv = dev_get_drvdata(&chip->dev);

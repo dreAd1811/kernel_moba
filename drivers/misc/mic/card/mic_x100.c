@@ -249,12 +249,6 @@ static int __init mic_probe(struct platform_device *pdev)
 	mdrv->dev = &pdev->dev;
 	snprintf(mdrv->name, sizeof(mic_driver_name), mic_driver_name);
 
-<<<<<<< HEAD
-=======
-	/* FIXME: use dma_set_mask_and_coherent() and check result */
-	dma_coerce_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64));
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mdev->mmio.pa = MIC_X100_MMIO_BASE;
 	mdev->mmio.len = MIC_X100_MMIO_LEN;
 	mdev->mmio.va = devm_ioremap(&pdev->dev, MIC_X100_MMIO_BASE,
@@ -300,7 +294,6 @@ static void mic_platform_shutdown(struct platform_device *pdev)
 	mic_remove(pdev);
 }
 
-<<<<<<< HEAD
 static u64 mic_dma_mask = DMA_BIT_MASK(64);
 
 static struct platform_device mic_platform_dev = {
@@ -313,8 +306,6 @@ static struct platform_device mic_platform_dev = {
 	},
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct platform_driver __refdata mic_platform_driver = {
 	.probe = mic_probe,
 	.remove = mic_remove,
@@ -324,11 +315,6 @@ static struct platform_driver __refdata mic_platform_driver = {
 	},
 };
 
-<<<<<<< HEAD
-=======
-static struct platform_device *mic_platform_dev;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __init mic_init(void)
 {
 	int ret;
@@ -342,18 +328,9 @@ static int __init mic_init(void)
 
 	request_module("mic_x100_dma");
 	mic_init_card_debugfs();
-<<<<<<< HEAD
 	ret = platform_device_register(&mic_platform_dev);
 	if (ret) {
 		pr_err("platform_device_register ret %d\n", ret);
-=======
-
-	mic_platform_dev = platform_device_register_simple(mic_driver_name,
-							   0, NULL, 0);
-	ret = PTR_ERR_OR_ZERO(mic_platform_dev);
-	if (ret) {
-		pr_err("platform_device_register_full ret %d\n", ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto cleanup_debugfs;
 	}
 	ret = platform_driver_register(&mic_platform_driver);
@@ -364,11 +341,7 @@ static int __init mic_init(void)
 	return ret;
 
 device_unregister:
-<<<<<<< HEAD
 	platform_device_unregister(&mic_platform_dev);
-=======
-	platform_device_unregister(mic_platform_dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 cleanup_debugfs:
 	mic_exit_card_debugfs();
 done:
@@ -378,11 +351,7 @@ done:
 static void __exit mic_exit(void)
 {
 	platform_driver_unregister(&mic_platform_driver);
-<<<<<<< HEAD
 	platform_device_unregister(&mic_platform_dev);
-=======
-	platform_device_unregister(mic_platform_dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mic_exit_card_debugfs();
 }
 

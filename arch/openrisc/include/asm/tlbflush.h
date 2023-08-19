@@ -33,7 +33,6 @@
  *  - flush_tlb_page(vma, vmaddr) flushes one page
  *  - flush_tlb_range(mm, start, end) flushes a range of pages
  */
-<<<<<<< HEAD
 extern void local_flush_tlb_all(void);
 extern void local_flush_tlb_mm(struct mm_struct *mm);
 extern void local_flush_tlb_page(struct vm_area_struct *vma,
@@ -54,15 +53,6 @@ extern void flush_tlb_page(struct vm_area_struct *vma, unsigned long addr);
 extern void flush_tlb_range(struct vm_area_struct *vma, unsigned long start,
 			    unsigned long end);
 #endif
-=======
-
-void flush_tlb_all(void);
-void flush_tlb_mm(struct mm_struct *mm);
-void flush_tlb_page(struct vm_area_struct *vma, unsigned long addr);
-void flush_tlb_range(struct vm_area_struct *vma,
-		     unsigned long start,
-		     unsigned long end);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline void flush_tlb(void)
 {

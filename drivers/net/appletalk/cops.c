@@ -155,10 +155,7 @@ static int cops_irqlist[] = {
 };
 
 static struct timer_list cops_timer;
-<<<<<<< HEAD
 static struct net_device *cops_timer_dev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* use 0 for production, 1 for verification, 2 for debug, 3 for verbose debug */
 #ifndef COPS_DEBUG
@@ -191,11 +188,7 @@ static void cops_load (struct net_device *dev);
 static int  cops_nodeid (struct net_device *dev, int nodeid);
 
 static irqreturn_t cops_interrupt (int irq, void *dev_id);
-<<<<<<< HEAD
 static void cops_poll(struct timer_list *t);
-=======
-static void cops_poll (unsigned long ltdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void cops_timeout(struct net_device *dev);
 static void cops_rx (struct net_device *dev);
 static netdev_tx_t  cops_send_packet (struct sk_buff *skb,
@@ -432,14 +425,8 @@ static int cops_open(struct net_device *dev)
 		 */
 		if(lp->board==TANGENT)	/* Poll 20 times per second */
 		{
-<<<<<<< HEAD
 		    cops_timer_dev = dev;
 		    timer_setup(&cops_timer, cops_poll, 0);
-=======
-		    init_timer(&cops_timer);
-		    cops_timer.function = cops_poll;
-		    cops_timer.data 	= (unsigned long)dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    cops_timer.expires 	= jiffies + HZ/20;
 		    add_timer(&cops_timer);
 		} 
@@ -686,20 +673,11 @@ static int cops_nodeid (struct net_device *dev, int nodeid)
  *	Poll the Tangent type cards to see if we have work.
  */
  
-<<<<<<< HEAD
 static void cops_poll(struct timer_list *unused)
 {
 	int ioaddr, status;
 	int boguscount = 0;
 	struct net_device *dev = cops_timer_dev;
-=======
-static void cops_poll(unsigned long ltdev)
-{
-	int ioaddr, status;
-	int boguscount = 0;
-
-	struct net_device *dev = (struct net_device *)ltdev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	del_timer(&cops_timer);
 

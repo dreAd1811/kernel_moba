@@ -697,16 +697,9 @@ static int hsc_probe(struct device *dev)
 	int i;
 
 	cl_data = kzalloc(sizeof(*cl_data), GFP_KERNEL);
-<<<<<<< HEAD
 	if (!cl_data)
 		return -ENOMEM;
 
-=======
-	if (!cl_data) {
-		dev_err(dev, "Could not allocate hsc_client_data\n");
-		return -ENOMEM;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hsc_baseminor = HSC_BASEMINOR(hsi_id(cl), hsi_port_id(cl));
 	if (!hsc_major) {
 		ret = alloc_chrdev_region(&hsc_dev, hsc_baseminor,
@@ -779,21 +772,13 @@ static int __init hsc_init(void)
 
 	if ((max_data_size < 4) || (max_data_size > 0x10000) ||
 		(max_data_size & (max_data_size - 1))) {
-<<<<<<< HEAD
 		pr_err("Invalid max read/write data size\n");
-=======
-		pr_err("Invalid max read/write data size");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
 	ret = hsi_register_client_driver(&hsc_driver);
 	if (ret) {
-<<<<<<< HEAD
 		pr_err("Error while registering HSI/SSI driver %d\n", ret);
-=======
-		pr_err("Error while registering HSI/SSI driver %d", ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 

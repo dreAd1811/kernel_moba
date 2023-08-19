@@ -1882,17 +1882,10 @@ send:
 /*
  * Callback for the Tx buffer reclaim timer.  Runs with softirqs disabled.
  */
-<<<<<<< HEAD
 static void sge_tx_reclaim_cb(struct timer_list *t)
 {
 	int i;
 	struct sge *sge = from_timer(sge, t, tx_reclaim_timer);
-=======
-static void sge_tx_reclaim_cb(unsigned long data)
-{
-	int i;
-	struct sge *sge = (struct sge *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < SGE_CMDQ_N; ++i) {
 		struct cmdQ *q = &sge->cmdQ[i];
@@ -1985,17 +1978,10 @@ void t1_sge_start(struct sge *sge)
 /*
  * Callback for the T2 ESPI 'stuck packet feature' workaorund
  */
-<<<<<<< HEAD
 static void espibug_workaround_t204(struct timer_list *t)
 {
 	struct sge *sge = from_timer(sge, t, espibug_timer);
 	struct adapter *adapter = sge->adapter;
-=======
-static void espibug_workaround_t204(unsigned long data)
-{
-	struct adapter *adapter = (struct adapter *)data;
-	struct sge *sge = adapter->sge;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int nports = adapter->params.nports;
 	u32 seop[MAX_NPORTS];
 
@@ -2035,17 +2021,10 @@ static void espibug_workaround_t204(unsigned long data)
 	mod_timer(&sge->espibug_timer, jiffies + sge->espibug_timeout);
 }
 
-<<<<<<< HEAD
 static void espibug_workaround(struct timer_list *t)
 {
 	struct sge *sge = from_timer(sge, t, espibug_timer);
 	struct adapter *adapter = sge->adapter;
-=======
-static void espibug_workaround(unsigned long data)
-{
-	struct adapter *adapter = (struct adapter *)data;
-	struct sge *sge = adapter->sge;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (netif_running(adapter->port[0].dev)) {
 	        struct sk_buff *skb = sge->espibug_skb[0];
@@ -2096,7 +2075,6 @@ struct sge *t1_sge_create(struct adapter *adapter, struct sge_params *p)
 			goto nomem_port;
 	}
 
-<<<<<<< HEAD
 	timer_setup(&sge->tx_reclaim_timer, sge_tx_reclaim_cb, 0);
 
 	if (is_T2(sge->adapter)) {
@@ -2106,21 +2084,6 @@ struct sge *t1_sge_create(struct adapter *adapter, struct sge_params *p)
 
 		if (adapter->params.nports > 1)
 			tx_sched_init(sge);
-=======
-	init_timer(&sge->tx_reclaim_timer);
-	sge->tx_reclaim_timer.data = (unsigned long)sge;
-	sge->tx_reclaim_timer.function = sge_tx_reclaim_cb;
-
-	if (is_T2(sge->adapter)) {
-		init_timer(&sge->espibug_timer);
-
-		if (adapter->params.nports > 1) {
-			tx_sched_init(sge);
-			sge->espibug_timer.function = espibug_workaround_t204;
-		} else
-			sge->espibug_timer.function = espibug_workaround;
-		sge->espibug_timer.data = (unsigned long)sge->adapter;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		sge->espibug_timeout = 1;
 		/* for T204, every 10ms */

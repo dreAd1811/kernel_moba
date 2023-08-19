@@ -52,7 +52,6 @@ void nv50_head_rgpos(struct nvkm_head *, u16 *, u16 *);
 #define HEAD_DBG(h,f,a...) HEAD_MSG((h), debug, f, ##a)
 
 int nv04_head_new(struct nvkm_disp *, int id);
-<<<<<<< HEAD
 
 int nv50_head_cnt(struct nvkm_disp *, unsigned long *);
 int nv50_head_new(struct nvkm_disp *, int id);
@@ -63,8 +62,4 @@ void gf119_head_rgclk(struct nvkm_head *, int);
 
 int gv100_head_cnt(struct nvkm_disp *, unsigned long *);
 int gv100_head_new(struct nvkm_disp *, int id);
-=======
-int nv50_head_new(struct nvkm_disp *, int id);
-int gf119_head_new(struct nvkm_disp *, int id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

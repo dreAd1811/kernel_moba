@@ -9,11 +9,7 @@ variable block sizes, is extent based, and makes extensive use of
 Btrees (directories, extents, free space) to aid both performance
 and scalability.
 
-<<<<<<< HEAD
 Refer to the documentation at https://xfs.wiki.kernel.org/
-=======
-Refer to the documentation at http://oss.sgi.com/projects/xfs/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 for further details.  This implementation is on-disk compatible
 with the IRIX version of XFS.
 
@@ -227,11 +223,6 @@ Deprecated Mount Options
 
   Name				Removal Schedule
   ----				----------------
-<<<<<<< HEAD
-=======
-  barrier			no earlier than v4.15
-  nobarrier			no earlier than v4.15
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 Removed Mount Options
@@ -243,11 +234,8 @@ Removed Mount Options
   ihashsize			v4.0
   irixsgid			v4.0
   osyncisdsync/osyncisosync	v4.0
-<<<<<<< HEAD
   barrier			v4.19
   nobarrier			v4.19
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 sysctls

@@ -614,19 +614,11 @@ err:
 	return ret;
 }
 
-<<<<<<< HEAD
 static __poll_t fops_poll(struct file *file, poll_table *wait)
 {
 	struct saa7164_vbi_fh *fh = (struct saa7164_vbi_fh *)file->private_data;
 	struct saa7164_port *port = fh->port;
 	__poll_t mask = 0;
-=======
-static unsigned int fops_poll(struct file *file, poll_table *wait)
-{
-	struct saa7164_vbi_fh *fh = (struct saa7164_vbi_fh *)file->private_data;
-	struct saa7164_port *port = fh->port;
-	unsigned int mask = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	port->last_poll_msecs_diff = port->last_poll_msecs;
 	port->last_poll_msecs = jiffies_to_msecs(jiffies);
@@ -637,20 +629,12 @@ static unsigned int fops_poll(struct file *file, poll_table *wait)
 		port->last_poll_msecs_diff);
 
 	if (!video_is_registered(port->v4l_device))
-<<<<<<< HEAD
 		return EPOLLERR;
-=======
-		return -EIO;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (atomic_cmpxchg(&fh->v4l_reading, 0, 1) == 0) {
 		if (atomic_inc_return(&port->v4l_reader_count) == 1) {
 			if (saa7164_vbi_initialize(port) < 0)
-<<<<<<< HEAD
 				return EPOLLERR;
-=======
-				return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			saa7164_vbi_start_streaming(port);
 			msleep(200);
 		}
@@ -660,21 +644,13 @@ static unsigned int fops_poll(struct file *file, poll_table *wait)
 	if ((file->f_flags & O_NONBLOCK) == 0) {
 		if (wait_event_interruptible(port->wait_read,
 			saa7164_vbi_next_buf(port))) {
-<<<<<<< HEAD
 				return EPOLLERR;
-=======
-				return -ERESTARTSYS;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
 	/* Pull the first buffer from the used list */
 	if (!list_empty(&port->list_buf_used.list))
-<<<<<<< HEAD
 		mask |= EPOLLIN | EPOLLRDNORM;
-=======
-		mask |= POLLIN | POLLRDNORM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return mask;
 }

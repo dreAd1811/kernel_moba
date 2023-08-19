@@ -542,7 +542,6 @@ static int acpi_data_get_property_array(const struct acpi_device_data *data,
 	return 0;
 }
 
-<<<<<<< HEAD
 static struct fwnode_handle *
 acpi_fwnode_get_named_child_node(const struct fwnode_handle *fwnode,
 				 const char *childname)
@@ -560,8 +559,6 @@ acpi_fwnode_get_named_child_node(const struct fwnode_handle *fwnode,
 	return NULL;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * __acpi_node_get_property_reference - returns handle to the referenced object
  * @fwnode: Firmware node to get the property from
@@ -599,11 +596,7 @@ acpi_fwnode_get_named_child_node(const struct fwnode_handle *fwnode,
  */
 int __acpi_node_get_property_reference(const struct fwnode_handle *fwnode,
 	const char *propname, size_t index, size_t num_args,
-<<<<<<< HEAD
 	struct fwnode_reference_args *args)
-=======
-	struct acpi_reference_args *args)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	const union acpi_object *element, *end;
 	const union acpi_object *obj;
@@ -631,11 +624,7 @@ int __acpi_node_get_property_reference(const struct fwnode_handle *fwnode,
 		if (ret)
 			return ret == -ENODEV ? -EINVAL : ret;
 
-<<<<<<< HEAD
 		args->fwnode = acpi_fwnode_handle(device);
-=======
-		args->adev = device;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		args->nargs = 0;
 		return 0;
 	}
@@ -661,11 +650,8 @@ int __acpi_node_get_property_reference(const struct fwnode_handle *fwnode,
 		u32 nargs, i;
 
 		if (element->type == ACPI_TYPE_LOCAL_REFERENCE) {
-<<<<<<< HEAD
 			struct fwnode_handle *ref_fwnode;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ret = acpi_bus_get_device(element->reference.handle,
 						  &device);
 			if (ret)
@@ -674,7 +660,6 @@ int __acpi_node_get_property_reference(const struct fwnode_handle *fwnode,
 			nargs = 0;
 			element++;
 
-<<<<<<< HEAD
 			/*
 			 * Find the referred data extension node under the
 			 * referred device node.
@@ -688,8 +673,6 @@ int __acpi_node_get_property_reference(const struct fwnode_handle *fwnode,
 					return -EINVAL;
 			}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* assume following integer elements are all args */
 			for (i = 0; element + i < end && i < num_args; i++) {
 				int type = element[i].type;
@@ -702,19 +685,11 @@ int __acpi_node_get_property_reference(const struct fwnode_handle *fwnode,
 					return -EINVAL;
 			}
 
-<<<<<<< HEAD
 			if (nargs > NR_FWNODE_REFERENCE_ARGS)
 				return -EINVAL;
 
 			if (idx == index) {
 				args->fwnode = ref_fwnode;
-=======
-			if (nargs > MAX_ACPI_REFERENCE_ARGS)
-				return -EINVAL;
-
-			if (idx == index) {
-				args->adev = device;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				args->nargs = nargs;
 				for (i = 0; i < nargs; i++)
 					args->args[i] = element[i].integer.value;
@@ -1060,7 +1035,6 @@ struct fwnode_handle *acpi_node_get_parent(const struct fwnode_handle *fwnode)
 	return NULL;
 }
 
-<<<<<<< HEAD
 /*
  * Return true if the node is an ACPI graph node. Called on either ports
  * or endpoints.
@@ -1081,25 +1055,16 @@ static bool is_acpi_graph_node(struct fwnode_handle *fwnode,
 		fwnode_property_present(fwnode, str);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * acpi_graph_get_next_endpoint - Get next endpoint ACPI firmware node
  * @fwnode: Pointer to the parent firmware node
  * @prev: Previous endpoint node or %NULL to get the first
  *
  * Looks up next endpoint ACPI firmware node below a given @fwnode. Returns
-<<<<<<< HEAD
  * %NULL if there is no next endpoint or in case of error. In case of success
  * the next endpoint is returned.
  */
 static struct fwnode_handle *acpi_graph_get_next_endpoint(
-=======
- * %NULL if there is no next endpoint, ERR_PTR() in case of error. In case
- * of success the next endpoint is returned.
- */
-struct fwnode_handle *acpi_graph_get_next_endpoint(
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const struct fwnode_handle *fwnode, struct fwnode_handle *prev)
 {
 	struct fwnode_handle *port = NULL;
@@ -1108,7 +1073,6 @@ struct fwnode_handle *acpi_graph_get_next_endpoint(
 	if (!prev) {
 		do {
 			port = fwnode_get_next_child_node(fwnode, port);
-<<<<<<< HEAD
 			/*
 			 * The names of the port nodes begin with "port@"
 			 * followed by the number of the port node and they also
@@ -1117,10 +1081,6 @@ struct fwnode_handle *acpi_graph_get_next_endpoint(
 			 * recognised as a port node from the "port" property.
 			 */
 			if (is_acpi_graph_node(port, "port"))
-=======
-			/* Ports must have port property */
-			if (fwnode_property_present(port, "port"))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				break;
 		} while (port);
 	} else {
@@ -1135,7 +1095,6 @@ struct fwnode_handle *acpi_graph_get_next_endpoint(
 		port = fwnode_get_next_child_node(fwnode, port);
 		if (!port)
 			break;
-<<<<<<< HEAD
 		if (is_acpi_graph_node(port, "port"))
 			endpoint = fwnode_get_next_child_node(port, NULL);
 	}
@@ -1149,17 +1108,6 @@ struct fwnode_handle *acpi_graph_get_next_endpoint(
 	 */
 	if (!is_acpi_graph_node(endpoint, "endpoint"))
 		return NULL;
-=======
-		if (fwnode_property_present(port, "port"))
-			endpoint = fwnode_get_next_child_node(port, NULL);
-	}
-
-	if (endpoint) {
-		/* Endpoints must have "endpoint" property */
-		if (!fwnode_property_present(endpoint, "endpoint"))
-			return ERR_PTR(-EPROTO);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return endpoint;
 }
@@ -1196,7 +1144,6 @@ static struct fwnode_handle *acpi_graph_get_child_prop_value(
 /**
  * acpi_graph_get_remote_enpoint - Parses and returns remote end of an endpoint
  * @fwnode: Endpoint firmware node pointing to a remote device
-<<<<<<< HEAD
  * @endpoint: Firmware node of remote endpoint is filled here if not %NULL
  *
  * Returns the remote endpoint corresponding to @__fwnode. NULL on error.
@@ -1207,46 +1154,23 @@ acpi_graph_get_remote_endpoint(const struct fwnode_handle *__fwnode)
 	struct fwnode_handle *fwnode;
 	unsigned int port_nr, endpoint_nr;
 	struct fwnode_reference_args args;
-=======
- * @parent: Firmware node of remote port parent is filled here if not %NULL
- * @port: Firmware node of remote port is filled here if not %NULL
- * @endpoint: Firmware node of remote endpoint is filled here if not %NULL
- *
- * Function parses remote end of ACPI firmware remote endpoint and fills in
- * fields requested by the caller. Returns %0 in case of success and
- * negative errno otherwise.
- */
-int acpi_graph_get_remote_endpoint(const struct fwnode_handle *__fwnode,
-				   struct fwnode_handle **parent,
-				   struct fwnode_handle **port,
-				   struct fwnode_handle **endpoint)
-{
-	struct fwnode_handle *fwnode;
-	unsigned int port_nr, endpoint_nr;
-	struct acpi_reference_args args;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	memset(&args, 0, sizeof(args));
 	ret = acpi_node_get_property_reference(__fwnode, "remote-endpoint", 0,
 					       &args);
 	if (ret)
-<<<<<<< HEAD
 		return NULL;
 
 	/* Direct endpoint reference? */
 	if (!is_acpi_device_node(args.fwnode))
 		return args.nargs ? NULL : args.fwnode;
-=======
-		return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Always require two arguments with the reference: port and
 	 * endpoint indices.
 	 */
 	if (args.nargs != 2)
-<<<<<<< HEAD
 		return NULL;
 
 	fwnode = args.fwnode;
@@ -1256,38 +1180,6 @@ int acpi_graph_get_remote_endpoint(const struct fwnode_handle *__fwnode,
 	fwnode = acpi_graph_get_child_prop_value(fwnode, "port", port_nr);
 
 	return acpi_graph_get_child_prop_value(fwnode, "endpoint", endpoint_nr);
-=======
-		return -EPROTO;
-
-	fwnode = acpi_fwnode_handle(args.adev);
-	port_nr = args.args[0];
-	endpoint_nr = args.args[1];
-
-	if (parent)
-		*parent = fwnode;
-
-	if (!port && !endpoint)
-		return 0;
-
-	fwnode = acpi_graph_get_child_prop_value(fwnode, "port", port_nr);
-	if (!fwnode)
-		return -EPROTO;
-
-	if (port)
-		*port = fwnode;
-
-	if (!endpoint)
-		return 0;
-
-	fwnode = acpi_graph_get_child_prop_value(fwnode, "endpoint",
-						 endpoint_nr);
-	if (!fwnode)
-		return -EPROTO;
-
-	*endpoint = fwnode;
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool acpi_fwnode_device_is_available(const struct fwnode_handle *fwnode)
@@ -1341,78 +1233,14 @@ acpi_fwnode_property_read_string_array(const struct fwnode_handle *fwnode,
 				   val, nval);
 }
 
-<<<<<<< HEAD
-=======
-static struct fwnode_handle *
-acpi_fwnode_get_named_child_node(const struct fwnode_handle *fwnode,
-				 const char *childname)
-{
-	struct fwnode_handle *child;
-
-	/*
-	 * Find first matching named child node of this fwnode.
-	 * For ACPI this will be a data only sub-node.
-	 */
-	fwnode_for_each_child_node(fwnode, child)
-		if (acpi_data_node_match(child, childname))
-			return child;
-
-	return NULL;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int
 acpi_fwnode_get_reference_args(const struct fwnode_handle *fwnode,
 			       const char *prop, const char *nargs_prop,
 			       unsigned int args_count, unsigned int index,
 			       struct fwnode_reference_args *args)
 {
-<<<<<<< HEAD
 	return __acpi_node_get_property_reference(fwnode, prop, index,
 						  args_count, args);
-=======
-	struct acpi_reference_args acpi_args;
-	unsigned int i;
-	int ret;
-
-	ret = __acpi_node_get_property_reference(fwnode, prop, index,
-						 args_count, &acpi_args);
-	if (ret < 0)
-		return ret;
-	if (!args)
-		return 0;
-
-	args->nargs = acpi_args.nargs;
-	args->fwnode = acpi_fwnode_handle(acpi_args.adev);
-
-	for (i = 0; i < NR_FWNODE_REFERENCE_ARGS; i++)
-		args->args[i] = i < acpi_args.nargs ? acpi_args.args[i] : 0;
-
-	return 0;
-}
-
-static struct fwnode_handle *
-acpi_fwnode_graph_get_next_endpoint(const struct fwnode_handle *fwnode,
-				    struct fwnode_handle *prev)
-{
-	struct fwnode_handle *endpoint;
-
-	endpoint = acpi_graph_get_next_endpoint(fwnode, prev);
-	if (IS_ERR(endpoint))
-		return NULL;
-
-	return endpoint;
-}
-
-static struct fwnode_handle *
-acpi_fwnode_graph_get_remote_endpoint(const struct fwnode_handle *fwnode)
-{
-	struct fwnode_handle *endpoint = NULL;
-
-	acpi_graph_get_remote_endpoint(fwnode, NULL, NULL, &endpoint);
-
-	return endpoint;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct fwnode_handle *
@@ -1428,20 +1256,14 @@ static int acpi_fwnode_graph_parse_endpoint(const struct fwnode_handle *fwnode,
 
 	endpoint->local_fwnode = fwnode;
 
-<<<<<<< HEAD
 	if (fwnode_property_read_u32(port_fwnode, "reg", &endpoint->port))
 		fwnode_property_read_u32(port_fwnode, "port", &endpoint->port);
 	if (fwnode_property_read_u32(fwnode, "reg", &endpoint->id))
 		fwnode_property_read_u32(fwnode, "endpoint", &endpoint->id);
-=======
-	fwnode_property_read_u32(port_fwnode, "port", &endpoint->port);
-	fwnode_property_read_u32(fwnode, "endpoint", &endpoint->id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
 static const void *
 acpi_fwnode_device_get_match_data(const struct fwnode_handle *fwnode,
 				  const struct device *dev)
@@ -1453,11 +1275,6 @@ acpi_fwnode_device_get_match_data(const struct fwnode_handle *fwnode,
 	const struct fwnode_operations ops = {				\
 		.device_is_available = acpi_fwnode_device_is_available, \
 		.device_get_match_data = acpi_fwnode_device_get_match_data, \
-=======
-#define DECLARE_ACPI_FWNODE_OPS(ops) \
-	const struct fwnode_operations ops = {				\
-		.device_is_available = acpi_fwnode_device_is_available, \
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.property_present = acpi_fwnode_property_present,	\
 		.property_read_int_array =				\
 			acpi_fwnode_property_read_int_array,		\
@@ -1468,15 +1285,9 @@ acpi_fwnode_device_get_match_data(const struct fwnode_handle *fwnode,
 		.get_named_child_node = acpi_fwnode_get_named_child_node, \
 		.get_reference_args = acpi_fwnode_get_reference_args,	\
 		.graph_get_next_endpoint =				\
-<<<<<<< HEAD
 			acpi_graph_get_next_endpoint,			\
 		.graph_get_remote_endpoint =				\
 			acpi_graph_get_remote_endpoint,			\
-=======
-			acpi_fwnode_graph_get_next_endpoint,		\
-		.graph_get_remote_endpoint =				\
-			acpi_fwnode_graph_get_remote_endpoint,		\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.graph_get_port_parent = acpi_fwnode_get_parent,	\
 		.graph_parse_endpoint = acpi_fwnode_graph_parse_endpoint, \
 	};								\

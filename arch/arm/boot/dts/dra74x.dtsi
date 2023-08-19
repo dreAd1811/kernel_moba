@@ -18,7 +18,6 @@
 			compatible = "arm,cortex-a15";
 			reg = <1>;
 			operating-points-v2 = <&cpu0_opp_table>;
-<<<<<<< HEAD
 
 			clocks = <&dpll_mpu_ck>;
 			clock-names = "cpu";
@@ -29,8 +28,6 @@
 			#cooling-cells = <2>; /* min followed by max */
 
 			vbb-supply = <&abb_mpu>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 	};
 
@@ -106,15 +103,9 @@
 	reg-names = "dss", "pll1_clkctrl", "pll1",
 		    "pll2_clkctrl", "pll2";
 
-<<<<<<< HEAD
 	clocks = <&dss_clkctrl DRA7_DSS_CORE_CLKCTRL 8>,
 		 <&dss_clkctrl DRA7_DSS_CORE_CLKCTRL 12>,
 		 <&dss_clkctrl DRA7_DSS_CORE_CLKCTRL 13>;
-=======
-	clocks = <&dss_dss_clk>,
-		 <&dss_video1_clk>,
-		 <&dss_video2_clk>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clock-names = "fck", "video1_clk", "video2_clk";
 };
 
@@ -143,7 +134,6 @@
 		status = "disabled";
 	};
 };
-<<<<<<< HEAD
 
 &pcie1_rc {
 	compatible = "ti,dra746-pcie-rc", "ti,dra7-pcie";
@@ -156,5 +146,3 @@
 &pcie2_rc {
 	compatible = "ti,dra746-pcie-rc", "ti,dra7-pcie";
 };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

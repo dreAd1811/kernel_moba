@@ -17,10 +17,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-<<<<<<< HEAD
 #include <linux/cpu.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/errno.h>
 #include <linux/init.h>
 #include <linux/ioport.h>
@@ -50,11 +47,7 @@ static void __iomem *pmu_base;
 #define pmu_read(offset)		readw(pmu_base + (offset))
 #define pmu_write(offset, value)	writew((value), pmu_base + (offset))
 
-<<<<<<< HEAD
 static void __cpuidle vr41xx_cpu_wait(void)
-=======
-static void vr41xx_cpu_wait(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	local_irq_disable();
 	if (!need_resched())

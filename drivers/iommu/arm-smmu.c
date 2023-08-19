@@ -33,10 +33,7 @@
 #include <linux/acpi_iort.h>
 #include <linux/atomic.h>
 #include <linux/delay.h>
-<<<<<<< HEAD
 #include <linux/device.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/dma-iommu.h>
 #include <linux/dma-mapping.h>
 #include <linux/err.h>
@@ -66,17 +63,11 @@
 
 #include <soc/qcom/msm_tz_smmu.h>
 #include <soc/qcom/scm.h>
-<<<<<<< HEAD
 #include <asm/dma-iommu.h>
 #include "io-pgtable.h"
 #include "arm-smmu-regs.h"
 #include "arm-smmu-debug.h"
 #include "iommu-logger.h"
-=======
-#include "io-pgtable.h"
-#include "arm-smmu-regs.h"
-#include "arm-smmu-debug.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/debugfs.h>
 #include <linux/uaccess.h>
 
@@ -92,10 +83,7 @@
 #define ARM_MMU500_ACTLR_CPRE		(1 << 1)
 
 #define ARM_MMU500_ACR_CACHE_LOCK	(1 << 26)
-<<<<<<< HEAD
 #define ARM_MMU500_ACR_S2CRB_TLBEN	(1 << 10)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ARM_MMU500_ACR_SMTNMB_TLBEN	(1 << 8)
 
 #define TLB_LOOP_TIMEOUT		500000	/* 500ms */
@@ -159,13 +147,8 @@ enum arm_smmu_implementation {
 	GENERIC_SMMU,
 	ARM_MMU500,
 	CAVIUM_SMMUV2,
-<<<<<<< HEAD
 	QCOM_SMMUV500,
 	QCOM_SMMUV2,
-=======
-	QCOM_SMMUV2,
-	QCOM_SMMUV500,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct arm_smmu_impl_def_reg {
@@ -173,16 +156,6 @@ struct arm_smmu_impl_def_reg {
 	u32 value;
 };
 
-<<<<<<< HEAD
-=======
-/* Until ACPICA headers cover IORT rev. C */
-#ifndef ACPI_IORT_SMMU_CORELINK_MMU401
-#define ACPI_IORT_SMMU_CORELINK_MMU401	0x4
-#endif
-#ifndef ACPI_IORT_SMMU_CAVIUM_THUNDERX
-#define ACPI_IORT_SMMU_CAVIUM_THUNDERX	0x5
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * attach_count
@@ -217,11 +190,7 @@ struct arm_smmu_cb {
 	u32				tcr[2];
 	u32				mair[2];
 	struct arm_smmu_cfg		*cfg;
-<<<<<<< HEAD
 	u32                             actlr;
-=======
-	u32				actlr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct arm_smmu_master_cfg {
@@ -292,20 +261,11 @@ struct arm_smmu_device {
 #define ARM_SMMU_OPT_SECURE_CFG_ACCESS (1 << 0)
 #define ARM_SMMU_OPT_FATAL_ASF		(1 << 1)
 #define ARM_SMMU_OPT_SKIP_INIT		(1 << 2)
-<<<<<<< HEAD
-=======
-#define ARM_SMMU_OPT_DYNAMIC		(1 << 3)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ARM_SMMU_OPT_3LVL_TABLES	(1 << 4)
 #define ARM_SMMU_OPT_NO_ASID_RETENTION	(1 << 5)
 #define ARM_SMMU_OPT_STATIC_CB		(1 << 6)
 #define ARM_SMMU_OPT_DISABLE_ATOS	(1 << 7)
-<<<<<<< HEAD
 #define ARM_SMMU_OPT_NO_DYNAMIC_ASID	(1 << 8)
-=======
-#define ARM_SMMU_OPT_MIN_IOVA_ALIGN	(1 << 8)
-#define ARM_SMMU_OPT_NO_DYNAMIC_ASID	(1 << 9)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32				options;
 	enum arm_smmu_arch_version	version;
 	enum arm_smmu_implementation	model;
@@ -313,10 +273,6 @@ struct arm_smmu_device {
 	u32				num_context_banks;
 	u32				num_s2_context_banks;
 	DECLARE_BITMAP(context_map, ARM_SMMU_MAX_CBS);
-<<<<<<< HEAD
-=======
-	DECLARE_BITMAP(secure_context_map, ARM_SMMU_MAX_CBS);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct arm_smmu_cb		*cbs;
 	atomic_t			irptndx;
 
@@ -359,11 +315,7 @@ struct arm_smmu_device {
 
 	struct arm_smmu_arch_ops	*arch_ops;
 	void				*archdata;
-<<<<<<< HEAD
 
-=======
-	bool				smmu_restore;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	enum tz_smmu_device_id		sec_id;
 };
 
@@ -427,21 +379,13 @@ struct arm_smmu_domain {
 	struct arm_smmu_device		*smmu;
 	struct device			*dev;
 	struct io_pgtable_ops		*pgtbl_ops;
-<<<<<<< HEAD
 	const struct iommu_gather_ops	*tlb_ops;
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct arm_smmu_cfg		cfg;
 	enum arm_smmu_domain_stage	stage;
 	struct mutex			init_mutex; /* Protects smmu pointer */
 	spinlock_t			cb_lock; /* Serialises ATS1* ops */
 	spinlock_t			sync_lock; /* Serialises TLB syncs */
 	struct io_pgtable_cfg		pgtbl_cfg;
-<<<<<<< HEAD
-=======
-	enum io_pgtable_fmt		pgtbl_fmt;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 attributes;
 	bool				slave_side_secure;
 	u32				secure_vmid;
@@ -451,13 +395,8 @@ struct arm_smmu_domain {
 	struct list_head		secure_pool_list;
 	/* nonsecure pool protected by pgtbl_lock */
 	struct list_head		nonsecure_pool;
-<<<<<<< HEAD
 	struct iommu_debug_attachment	*logger;
 	struct iommu_domain		domain;
-=======
-	struct iommu_domain		domain;
-	bool				qsmmuv500_errata1_min_iova_align;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct arm_smmu_option_prop {
@@ -507,18 +446,10 @@ static struct arm_smmu_option_prop arm_smmu_options[] = {
 	{ ARM_SMMU_OPT_SECURE_CFG_ACCESS, "calxeda,smmu-secure-config-access" },
 	{ ARM_SMMU_OPT_FATAL_ASF, "qcom,fatal-asf" },
 	{ ARM_SMMU_OPT_SKIP_INIT, "qcom,skip-init" },
-<<<<<<< HEAD
-=======
-	{ ARM_SMMU_OPT_DYNAMIC, "qcom,dynamic" },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ ARM_SMMU_OPT_3LVL_TABLES, "qcom,use-3-lvl-tables" },
 	{ ARM_SMMU_OPT_NO_ASID_RETENTION, "qcom,no-asid-retention" },
 	{ ARM_SMMU_OPT_STATIC_CB, "qcom,enable-static-cb"},
 	{ ARM_SMMU_OPT_DISABLE_ATOS, "qcom,disable-atos" },
-<<<<<<< HEAD
-=======
-	{ ARM_SMMU_OPT_MIN_IOVA_ALIGN, "qcom,min-iova-align" },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ ARM_SMMU_OPT_NO_DYNAMIC_ASID, "qcom,no-dynamic-asid" },
 	{ 0, NULL},
 };
@@ -556,25 +487,18 @@ static size_t msm_secure_smmu_map_sg(struct iommu_domain *domain,
 				     unsigned long iova,
 				     struct scatterlist *sg,
 				     unsigned int nents, int prot);
-<<<<<<< HEAD
 static int arm_smmu_setup_default_domain(struct device *dev,
 				struct iommu_domain *domain);
 static int __arm_smmu_domain_set_attr(struct iommu_domain *domain,
 				    enum iommu_attr attr, void *data);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct arm_smmu_domain *to_smmu_domain(struct iommu_domain *dom)
 {
 	return container_of(dom, struct arm_smmu_domain, domain);
 }
 
-<<<<<<< HEAD
 static struct arm_smmu_domain*
 cb_cfg_to_smmu_domain(struct arm_smmu_cfg *cfg)
-=======
-static struct arm_smmu_domain *cb_cfg_to_smmu_domain(struct arm_smmu_cfg *cfg)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return container_of(cfg, struct arm_smmu_domain, cfg);
 }
@@ -1271,7 +1195,6 @@ static void arm_smmu_testbus_dump(struct arm_smmu_device *smmu, u16 sid)
 	}
 }
 
-<<<<<<< HEAD
 static void __arm_smmu_tlb_sync_timeout_SMMUV2(struct arm_smmu_device *smmu)
 {
 
@@ -1284,9 +1207,6 @@ static void __arm_smmu_tlb_sync_timeout_SMMUV2(struct arm_smmu_device *smmu)
 }
 
 static void __arm_smmu_tlb_sync_timeout_SMMUV500(struct arm_smmu_device *smmu)
-=======
-static void __arm_smmu_tlb_sync_timeout(struct arm_smmu_device *smmu)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 sync_inv_ack, tbu_pwr_status, sync_inv_progress;
 	u32 tbu_inv_pending = 0, tbu_sync_pending = 0;
@@ -1332,11 +1252,7 @@ static void __arm_smmu_tlb_sync_timeout(struct arm_smmu_device *smmu)
 		unsigned long tbu_id, tbus_t = tbu_ids;
 
 		dev_err(smmu->dev,
-<<<<<<< HEAD
 			"TLB sync timed out -- SMMUV500 may be deadlocked\n"
-=======
-			"TLB sync timed out -- SMMU may be deadlocked\n"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			"TBU ACK 0x%x TBU PWR 0x%x TCU sync_inv 0x%x\n",
 			sync_inv_ack, tbu_pwr_status, sync_inv_progress);
 		dev_err(smmu->dev,
@@ -1369,11 +1285,6 @@ static void __arm_smmu_tlb_sync_timeout(struct arm_smmu_device *smmu)
 		/*dump TCU testbus*/
 		arm_smmu_testbus_dump(smmu, U16_MAX);
 	}
-<<<<<<< HEAD
-=======
-
-	BUG_ON(IS_ENABLED(CONFIG_IOMMU_TLBSYNC_DEBUG));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Wait for any pending TLB invalidations to complete */
@@ -1393,16 +1304,12 @@ static int __arm_smmu_tlb_sync(struct arm_smmu_device *smmu,
 			inc *= 2;
 	}
 	trace_tlbsync_timeout(smmu->dev, 0);
-<<<<<<< HEAD
 	if (smmu->model == QCOM_SMMUV500)
 		__arm_smmu_tlb_sync_timeout_SMMUV500(smmu);
 	else if (smmu->model == QCOM_SMMUV2)
 		__arm_smmu_tlb_sync_timeout_SMMUV2(smmu);
 
 	BUG_ON(IS_ENABLED(CONFIG_IOMMU_TLBSYNC_DEBUG));
-=======
-	__arm_smmu_tlb_sync_timeout(smmu);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return -EINVAL;
 }
 
@@ -1431,15 +1338,9 @@ static void arm_smmu_tlb_sync_context(void *cookie)
 	if (__arm_smmu_tlb_sync(smmu, base + ARM_SMMU_CB_TLBSYNC,
 				base + ARM_SMMU_CB_TLBSTATUS)) {
 		dev_err_ratelimited(smmu->dev,
-<<<<<<< HEAD
 				"TLB sync on cb%d failed for device %s\n",
 				smmu_domain->cfg.cbndx,
 				dev_name(smmu_domain->dev));
-=======
-				    "TLB sync on cb%d failed for device %s\n",
-				    smmu_domain->cfg.cbndx,
-				    dev_name(smmu_domain->dev));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	spin_unlock_irqrestore(&smmu_domain->sync_lock, flags);
 }
@@ -1706,13 +1607,8 @@ static void print_ctx_regs(struct arm_smmu_device *smmu, struct arm_smmu_cfg
 
 	dev_err(smmu->dev, "FAR    = 0x%016llx\n",
 		readq_relaxed(cb_base + ARM_SMMU_CB_FAR));
-<<<<<<< HEAD
 	dev_err(smmu->dev, "PAR    = 0x%pK\n",
 		(void *) readq_relaxed(cb_base + ARM_SMMU_CB_PAR));
-=======
-	dev_err(smmu->dev, "PAR    = 0x%016llx\n",
-		readq_relaxed(cb_base + ARM_SMMU_CB_PAR));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_err(smmu->dev,
 		"FSR    = 0x%08x [%s%s%s%s%s%s%s%s%s%s]\n",
@@ -1731,7 +1627,6 @@ static void print_ctx_regs(struct arm_smmu_device *smmu, struct arm_smmu_cfg
 		(fsr & 0x80000000) ? "MULTI " : "");
 
 	if (cfg->fmt == ARM_SMMU_CTX_FMT_AARCH32_S) {
-<<<<<<< HEAD
 		dev_err(smmu->dev, "TTBR0  = 0x%pK\n",
 			(void *) (unsigned long)
 			readl_relaxed(cb_base + ARM_SMMU_CB_TTBR0));
@@ -1745,18 +1640,6 @@ static void print_ctx_regs(struct arm_smmu_device *smmu, struct arm_smmu_cfg
 			dev_err(smmu->dev, "TTBR1  = 0x%pK\n",
 				(void *) readq_relaxed(cb_base +
 					ARM_SMMU_CB_TTBR1));
-=======
-		dev_err(smmu->dev, "TTBR0  = 0x%08x\n",
-			readl_relaxed(cb_base + ARM_SMMU_CB_TTBR0));
-		dev_err(smmu->dev, "TTBR1  = 0x%08x\n",
-			readl_relaxed(cb_base + ARM_SMMU_CB_TTBR1));
-	} else {
-		dev_err(smmu->dev, "TTBR0  = 0x%016llx\n",
-			readq_relaxed(cb_base + ARM_SMMU_CB_TTBR0));
-		if (stage1)
-			dev_err(smmu->dev, "TTBR1  = 0x%016llx\n",
-				readq_relaxed(cb_base + ARM_SMMU_CB_TTBR1));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 
@@ -1885,11 +1768,7 @@ static irqreturn_t arm_smmu_context_fault(int irq, void *dev)
 				dev_err(smmu->dev, "hard iova-to-phys (ATOS) failed\n");
 			dev_err(smmu->dev, "SID=0x%x\n", frsynra);
 		}
-<<<<<<< HEAD
 		ret = IRQ_HANDLED;
-=======
-		ret = IRQ_NONE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		resume = RESUME_TERMINATE;
 		if (!non_fatal_fault) {
 			dev_err(smmu->dev,
@@ -2050,13 +1929,8 @@ static void arm_smmu_write_context_bank(struct arm_smmu_device *smmu, int idx,
 	bool stage1;
 	struct arm_smmu_cb *cb = &smmu->cbs[idx];
 	struct arm_smmu_cfg *cfg = cb->cfg;
-<<<<<<< HEAD
 	struct arm_smmu_domain *smmu_domain = NULL;
 	void __iomem *cb_base, *gr1_base;
-=======
-	void __iomem *cb_base, *gr1_base;
-	struct arm_smmu_domain *smmu_domain;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cb_base = ARM_SMMU_CB(smmu, idx);
 
@@ -2126,7 +2000,6 @@ static void arm_smmu_write_context_bank(struct arm_smmu_device *smmu, int idx,
 		writel_relaxed(cb->mair[1], cb_base + ARM_SMMU_CB_S1_MAIR1);
 	}
 
-<<<<<<< HEAD
 	/* SCTLR */
 	reg = SCTLR_CFCFG | SCTLR_CFIE | SCTLR_CFRE | SCTLR_AFE | SCTLR_TRE;
 
@@ -2157,27 +2030,6 @@ static void arm_smmu_write_context_bank(struct arm_smmu_device *smmu, int idx,
 
 	if (attributes & (1 << DOMAIN_ATTR_FAULT_MODEL_HUPCF))
 		reg |= SCTLR_HUPCF;
-=======
-	/* ACTLR (implementation defined) */
-	writel_relaxed(cb->actlr, cb_base + ARM_SMMU_CB_ACTLR);
-
-	/* SCTLR */
-	reg = SCTLR_CFCFG | SCTLR_CFIE | SCTLR_CFRE | SCTLR_AFE | SCTLR_TRE;
-
-	/* Ensure bypass transactions are Non-shareable */
-	reg |= SCTLR_SHCFG_NSH << SCTLR_SHCFG_SHIFT;
-	if (smmu->smmu_restore) {
-		smmu_domain = container_of(cfg, struct arm_smmu_domain, cfg);
-		attributes = smmu_domain->attributes;
-	}
-	if (attributes & (1 << DOMAIN_ATTR_CB_STALL_DISABLE)) {
-		reg &= ~SCTLR_CFCFG;
-		reg |= SCTLR_HUPCF;
-	}
-
-	if (attributes & (1 << DOMAIN_ATTR_NO_CFRE))
-		reg &= ~SCTLR_CFRE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if ((!(attributes & (1 << DOMAIN_ATTR_S1_BYPASS)) &&
 	     !(attributes & (1 << DOMAIN_ATTR_EARLY_MAP))) || !stage1)
@@ -2242,22 +2094,14 @@ static int arm_smmu_init_domain_context(struct iommu_domain *domain,
 	enum io_pgtable_fmt fmt;
 	struct arm_smmu_domain *smmu_domain = to_smmu_domain(domain);
 	struct arm_smmu_cfg *cfg = &smmu_domain->cfg;
-<<<<<<< HEAD
 	unsigned long quirks = 0;
 	bool dynamic;
 	struct iommu_group *group;
-=======
-	const struct iommu_gather_ops *tlb_ops;
-	bool is_fast = smmu_domain->attributes & (1 << DOMAIN_ATTR_FAST);
-	unsigned long quirks = 0;
-	bool dynamic;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&smmu_domain->init_mutex);
 	if (smmu_domain->smmu)
 		goto out_unlock;
 
-<<<<<<< HEAD
 	group = iommu_group_get(dev);
 	ret = iommu_logger_register(&smmu_domain->logger, domain, group);
 	iommu_group_put(group);
@@ -2273,8 +2117,6 @@ static int arm_smmu_init_domain_context(struct iommu_domain *domain,
 		}
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (domain->type == IOMMU_DOMAIN_IDENTITY) {
 		smmu_domain->stage = ARM_SMMU_DOMAIN_BYPASS;
 		smmu_domain->smmu = smmu;
@@ -2283,16 +2125,6 @@ static int arm_smmu_init_domain_context(struct iommu_domain *domain,
 	}
 
 	dynamic = is_dynamic_domain(domain);
-<<<<<<< HEAD
-=======
-	if (dynamic && !(smmu->options & ARM_SMMU_OPT_DYNAMIC)) {
-		dev_err(smmu->dev, "dynamic domains not supported\n");
-		ret = -EPERM;
-
-		goto out_unlock;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Mapping the requested stage onto what we support is surprisingly
 	 * complicated, mainly because the spec allows S1+S2 SMMUs without
@@ -2339,11 +2171,7 @@ static int arm_smmu_init_domain_context(struct iommu_domain *domain,
 
 	if (cfg->fmt == ARM_SMMU_CTX_FMT_NONE) {
 		ret = -EINVAL;
-<<<<<<< HEAD
 		goto out_logger;
-=======
-		goto out_unlock;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	switch (smmu_domain->stage) {
@@ -2365,11 +2193,7 @@ static int arm_smmu_init_domain_context(struct iommu_domain *domain,
 			ias = min(ias, 32UL);
 			oas = min(oas, 32UL);
 		}
-<<<<<<< HEAD
 		smmu_domain->tlb_ops = &arm_smmu_s1_tlb_ops;
-=======
-		tlb_ops = &arm_smmu_s1_tlb_ops;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case ARM_SMMU_DOMAIN_NESTED:
 		/*
@@ -2389,7 +2213,6 @@ static int arm_smmu_init_domain_context(struct iommu_domain *domain,
 			oas = min(oas, 40UL);
 		}
 		if (smmu->version == ARM_SMMU_V2)
-<<<<<<< HEAD
 			smmu_domain->tlb_ops = &arm_smmu_s2_tlb_ops_v2;
 		else
 			smmu_domain->tlb_ops = &arm_smmu_s2_tlb_ops_v1;
@@ -2400,18 +2223,6 @@ static int arm_smmu_init_domain_context(struct iommu_domain *domain,
 	}
 
 	if (smmu_domain->attributes & (1 << DOMAIN_ATTR_FAST))
-=======
-			tlb_ops = &arm_smmu_s2_tlb_ops_v2;
-		else
-			tlb_ops = &arm_smmu_s2_tlb_ops_v1;
-		break;
-	default:
-		ret = -EINVAL;
-		goto out_unlock;
-	}
-
-	if (is_fast)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		fmt = ARM_V8L_FAST;
 
 	if (smmu_domain->attributes & (1 << DOMAIN_ATTR_USE_UPSTREAM_HINT))
@@ -2426,7 +2237,6 @@ static int arm_smmu_init_domain_context(struct iommu_domain *domain,
 		quirks |= IO_PGTABLE_QUIRK_QSMMUV500_NON_SHAREABLE;
 
 	if (arm_smmu_is_slave_side_secure(smmu_domain))
-<<<<<<< HEAD
 		smmu_domain->tlb_ops = &msm_smmu_gather_ops;
 
 	ret = arm_smmu_alloc_cb(domain, smmu, dev);
@@ -2435,24 +2245,6 @@ static int arm_smmu_init_domain_context(struct iommu_domain *domain,
 
 	cfg->cbndx = ret;
 
-=======
-		tlb_ops = &msm_smmu_gather_ops;
-
-	ret = arm_smmu_alloc_cb(domain, smmu, dev);
-	if (ret < 0)
-		goto out_unlock;
-
-	cfg->cbndx = ret;
-
-	if (!(smmu_domain->attributes & (1 << DOMAIN_ATTR_GEOMETRY))) {
-		/* Geometry is not set use the default geometry */
-		domain->geometry.aperture_start = 0;
-		domain->geometry.aperture_end = (1UL << ias) - 1;
-		if (domain->geometry.aperture_end >= SZ_1G * 4ULL)
-			domain->geometry.aperture_end = (SZ_1G * 4ULL) - 1;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (arm_smmu_is_slave_side_secure(smmu_domain)) {
 		smmu_domain->pgtbl_cfg = (struct io_pgtable_cfg) {
 			.quirks         = quirks,
@@ -2461,15 +2253,8 @@ static int arm_smmu_init_domain_context(struct iommu_domain *domain,
 				.sec_id = smmu->sec_id,
 				.cbndx = cfg->cbndx,
 			},
-<<<<<<< HEAD
 			.tlb		= smmu_domain->tlb_ops,
 			.iommu_dev      = smmu->dev,
-=======
-			.tlb		= tlb_ops,
-			.iommu_dev      = smmu->dev,
-			.iova_base	= domain->geometry.aperture_start,
-			.iova_end	= domain->geometry.aperture_end,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 		fmt = ARM_MSM_SECURE;
 	} else  {
@@ -2478,15 +2263,8 @@ static int arm_smmu_init_domain_context(struct iommu_domain *domain,
 			.pgsize_bitmap	= smmu->pgsize_bitmap,
 			.ias		= ias,
 			.oas		= oas,
-<<<<<<< HEAD
 			.tlb		= smmu_domain->tlb_ops,
 			.iommu_dev	= smmu->dev,
-=======
-			.tlb		= tlb_ops,
-			.iommu_dev	= smmu->dev,
-			.iova_base	= domain->geometry.aperture_start,
-			.iova_end	= domain->geometry.aperture_end,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 	}
 
@@ -2521,17 +2299,11 @@ static int arm_smmu_init_domain_context(struct iommu_domain *domain,
 		/* Initialise the context bank with our page table cfg */
 		arm_smmu_init_context_bank(smmu_domain,
 						&smmu_domain->pgtbl_cfg);
-<<<<<<< HEAD
 		arm_smmu_write_context_bank(smmu, cfg->cbndx,
 					    smmu_domain->attributes);
 
 		arm_smmu_arch_init_context_bank(smmu_domain, dev);
 
-=======
-		arm_smmu_arch_init_context_bank(smmu_domain, dev);
-		arm_smmu_write_context_bank(smmu, cfg->cbndx,
-						smmu_domain->attributes );
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* for slave side secure, we may have to force the pagetable
 		 * format to V8L.
 		 */
@@ -2566,10 +2338,6 @@ static int arm_smmu_init_domain_context(struct iommu_domain *domain,
 	}
 	mutex_unlock(&smmu_domain->init_mutex);
 
-<<<<<<< HEAD
-=======
-	smmu_domain->pgtbl_fmt = fmt;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Publish page table ops for map/unmap */
 	smmu_domain->pgtbl_ops = pgtbl_ops;
 	if (arm_smmu_is_slave_side_secure(smmu_domain) &&
@@ -2581,12 +2349,9 @@ static int arm_smmu_init_domain_context(struct iommu_domain *domain,
 out_clear_smmu:
 	arm_smmu_destroy_domain_context(domain);
 	smmu_domain->smmu = NULL;
-<<<<<<< HEAD
 out_logger:
 	iommu_logger_unregister(smmu_domain->logger);
 	smmu_domain->logger = NULL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out_unlock:
 	mutex_unlock(&smmu_domain->init_mutex);
 	return ret;
@@ -2651,14 +2416,6 @@ static void arm_smmu_destroy_domain_context(struct iommu_domain *domain)
 	arm_smmu_unassign_table(smmu_domain);
 	arm_smmu_secure_domain_unlock(smmu_domain);
 	__arm_smmu_free_bitmap(smmu->context_map, cfg->cbndx);
-<<<<<<< HEAD
-=======
-	/* As the nonsecure context bank index is any way set to zero,
-	 * so, directly clearing up the secure cb bitmap.
-	 */
-	if (arm_smmu_is_slave_side_secure(smmu_domain))
-		__arm_smmu_free_bitmap(smmu->secure_context_map, cfg->cbndx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	arm_smmu_power_off(smmu->pwr);
 	arm_smmu_domain_reinit(smmu_domain);
@@ -2668,15 +2425,9 @@ static struct iommu_domain *arm_smmu_domain_alloc(unsigned type)
 {
 	struct arm_smmu_domain *smmu_domain;
 
-<<<<<<< HEAD
 	if (type != IOMMU_DOMAIN_UNMANAGED &&
 	    type != IOMMU_DOMAIN_IDENTITY &&
 	    type != IOMMU_DOMAIN_DMA)
-=======
-	/* Do not support DOMAIN_DMA for now */
-	if (type != IOMMU_DOMAIN_UNMANAGED &&
-	    type != IOMMU_DOMAIN_IDENTITY)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return NULL;
 	/*
 	 * Allocate the domain and initialise some of its data structures.
@@ -2687,15 +2438,6 @@ static struct iommu_domain *arm_smmu_domain_alloc(unsigned type)
 	if (!smmu_domain)
 		return NULL;
 
-<<<<<<< HEAD
-=======
-	if (type == IOMMU_DOMAIN_DMA && (using_legacy_binding ||
-	    iommu_get_dma_cookie(&smmu_domain->domain))) {
-		kfree(smmu_domain);
-		return NULL;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_init(&smmu_domain->init_mutex);
 	spin_lock_init(&smmu_domain->cb_lock);
 	spin_lock_init(&smmu_domain->sync_lock);
@@ -2709,7 +2451,6 @@ static struct iommu_domain *arm_smmu_domain_alloc(unsigned type)
 	return &smmu_domain->domain;
 }
 
-<<<<<<< HEAD
 static void arm_smmu_put_dma_cookie(struct iommu_domain *domain)
 {
 	int s1_bypass = 0, is_fast = 0;
@@ -2724,8 +2465,6 @@ static void arm_smmu_put_dma_cookie(struct iommu_domain *domain)
 		iommu_put_dma_cookie(domain);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void arm_smmu_domain_free(struct iommu_domain *domain)
 {
 	struct arm_smmu_domain *smmu_domain = to_smmu_domain(domain);
@@ -2734,14 +2473,9 @@ static void arm_smmu_domain_free(struct iommu_domain *domain)
 	 * Free the domain resources. We assume that all devices have
 	 * already been detached.
 	 */
-<<<<<<< HEAD
 	arm_smmu_put_dma_cookie(domain);
 	arm_smmu_destroy_domain_context(domain);
 	iommu_logger_unregister(smmu_domain->logger);
-=======
-	iommu_put_dma_cookie(domain);
-	arm_smmu_destroy_domain_context(domain);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(smmu_domain);
 }
 
@@ -3179,27 +2913,6 @@ static void arm_smmu_prealloc_memory(struct arm_smmu_domain *smmu_domain,
 	}
 }
 
-<<<<<<< HEAD
-=======
-static void arm_smmu_prealloc_memory_sg(struct arm_smmu_domain *smmu_domain,
-					struct scatterlist *sgl, int nents,
-					struct list_head *pool)
-{
-	int i;
-	size_t size = 0;
-	struct scatterlist *sg;
-
-	if ((smmu_domain->attributes & (1 << DOMAIN_ATTR_ATOMIC)) ||
-			arm_smmu_has_secure_vmid(smmu_domain))
-		return;
-
-	for_each_sg(sgl, sg, nents, i)
-		size += sg->length;
-
-	arm_smmu_prealloc_memory(smmu_domain, size, pool);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void arm_smmu_release_prealloc_memory(
 		struct arm_smmu_domain *smmu_domain, struct list_head *list)
 {
@@ -3211,7 +2924,6 @@ static void arm_smmu_release_prealloc_memory(
 	}
 }
 
-<<<<<<< HEAD
 static struct device_node *arm_iommu_get_of_node(struct device *dev)
 {
 	struct device_node *np;
@@ -3367,8 +3079,6 @@ static struct iommu_group *of_get_device_group(struct device *dev)
 	return group;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int arm_smmu_attach_dev(struct iommu_domain *domain, struct device *dev)
 {
 	int ret;
@@ -3455,7 +3165,6 @@ static int arm_smmu_map(struct iommu_domain *domain, unsigned long iova,
 	if (arm_smmu_is_slave_side_secure(smmu_domain))
 		return msm_secure_smmu_map(domain, iova, paddr, size, prot);
 
-<<<<<<< HEAD
 	arm_smmu_secure_domain_lock(smmu_domain);
 	spin_lock_irqsave(&smmu_domain->cb_lock, flags);
 	ret = ops->map(ops, iova, paddr, size, prot);
@@ -3479,21 +3188,6 @@ static int arm_smmu_map(struct iommu_domain *domain, unsigned long iova,
 	arm_smmu_assign_table(smmu_domain);
 	arm_smmu_secure_domain_unlock(smmu_domain);
 
-=======
-	arm_smmu_prealloc_memory(smmu_domain, size, &nonsecure_pool);
-	arm_smmu_secure_domain_lock(smmu_domain);
-
-	spin_lock_irqsave(&smmu_domain->cb_lock, flags);
-	list_splice_init(&nonsecure_pool, &smmu_domain->nonsecure_pool);
-	ret = ops->map(ops, iova, paddr, size, prot);
-	list_splice_init(&smmu_domain->nonsecure_pool, &nonsecure_pool);
-	spin_unlock_irqrestore(&smmu_domain->cb_lock, flags);
-
-	arm_smmu_assign_table(smmu_domain);
-	arm_smmu_secure_domain_unlock(smmu_domain);
-
-	arm_smmu_release_prealloc_memory(smmu_domain, &nonsecure_pool);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -3571,11 +3265,7 @@ static size_t arm_smmu_map_sg(struct iommu_domain *domain, unsigned long iova,
 	if (arm_smmu_is_slave_side_secure(smmu_domain))
 		return msm_secure_smmu_map_sg(domain, iova, sg, nents, prot);
 
-<<<<<<< HEAD
 
-=======
-	arm_smmu_prealloc_memory_sg(smmu_domain, sg, nents, &nonsecure_pool);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	arm_smmu_secure_domain_lock(smmu_domain);
 
 	__saved_iova_start = iova;
@@ -3594,7 +3284,6 @@ static size_t arm_smmu_map_sg(struct iommu_domain *domain, unsigned long iova,
 		}
 
 		spin_lock_irqsave(&smmu_domain->cb_lock, flags);
-<<<<<<< HEAD
 		ret = ops->map_sg(ops, iova, sg_start, idx_end - idx_start,
 				  prot, &size);
 		spin_unlock_irqrestore(&smmu_domain->cb_lock, flags);
@@ -3622,16 +3311,6 @@ static size_t arm_smmu_map_sg(struct iommu_domain *domain, unsigned long iova,
 
 		/* Returns -ve val on error */
 		if (ret < 0) {
-=======
-		list_splice_init(&nonsecure_pool, &smmu_domain->nonsecure_pool);
-		ret = ops->map_sg(ops, iova, sg_start, idx_end - idx_start,
-				  prot, &size);
-		list_splice_init(&smmu_domain->nonsecure_pool, &nonsecure_pool);
-		spin_unlock_irqrestore(&smmu_domain->cb_lock, flags);
-
-		/* Returns 0 on error */
-		if (!ret) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			size_to_unmap = iova + size - __saved_iova_start;
 			goto out;
 		}
@@ -3639,10 +3318,7 @@ static size_t arm_smmu_map_sg(struct iommu_domain *domain, unsigned long iova,
 		iova += batch_size;
 		idx_start = idx_end;
 		sg_start = sg_end;
-<<<<<<< HEAD
 		size = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 out:
@@ -3653,10 +3329,6 @@ out:
 		arm_smmu_unmap(domain, __saved_iova_start, size_to_unmap);
 		iova = __saved_iova_start;
 	}
-<<<<<<< HEAD
-=======
-	arm_smmu_release_prealloc_memory(smmu_domain, &nonsecure_pool);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return iova - __saved_iova_start;
 }
 
@@ -3844,49 +3516,6 @@ static size_t msm_secure_smmu_map_sg(struct iommu_domain *domain,
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
-void *get_smmu_from_addr(struct iommu_device *iommu, void __iomem *addr)
-{
-	struct arm_smmu_device *smmu = NULL;
-	unsigned long base, mask;
-
-	smmu = arm_smmu_get_by_fwnode(iommu->fwnode);
-	if (!smmu)
-		return NULL;
-
-	base = (unsigned long)smmu->base;
-	mask = ~(smmu->size - 1);
-
-	if ((base & mask) == ((unsigned long)addr & mask))
-		return (void *)smmu;
-
-	return NULL;
-}
-
-bool arm_smmu_skip_write(void __iomem *addr)
-{
-	struct arm_smmu_device *smmu;
-	int cb;
-
-	smmu = arm_smmu_get_by_addr(addr);
-
-	/* Skip write if smmu not available by now */
-	if (!smmu)
-		return true;
-
-	/* Do not write to global space */
-	if (((unsigned long)addr & (smmu->size - 1)) < (smmu->size >> 1))
-		return true;
-
-	/* Finally skip writing to secure CB */
-	cb = ((unsigned long)addr & ((smmu->size >> 1) - 1)) >> PAGE_SHIFT;
-	if (test_bit(cb, smmu->secure_context_map))
-		return true;
-
-	return false;
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 static int arm_smmu_add_device(struct device *dev)
@@ -3894,10 +3523,7 @@ static int arm_smmu_add_device(struct device *dev)
 	struct arm_smmu_device *smmu;
 	struct arm_smmu_master_cfg *cfg;
 	struct iommu_fwspec *fwspec = dev->iommu_fwspec;
-<<<<<<< HEAD
 	struct device_link *link;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i, ret;
 
 	if (using_legacy_binding) {
@@ -3951,7 +3577,6 @@ static int arm_smmu_add_device(struct device *dev)
 	while (i--)
 		cfg->smendx[i] = INVALID_SMENDX;
 
-<<<<<<< HEAD
 	link = device_link_add(dev, smmu->dev, DL_FLAG_STATELESS);
 	if (!link) {
 		dev_err(dev, "error in device link creation between %s & %s\n",
@@ -3968,15 +3593,6 @@ static int arm_smmu_add_device(struct device *dev)
 
 out_dev_link_free:
 	device_link_del(link);
-=======
-	ret = arm_smmu_master_alloc_smes(dev);
-	if (ret)
-		goto out_cfg_free;
-
-	arm_smmu_power_off(smmu->pwr);
-	return 0;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out_cfg_free:
 	kfree(cfg);
 out_pwr_off:
@@ -3990,10 +3606,7 @@ static void arm_smmu_remove_device(struct device *dev)
 {
 	struct iommu_fwspec *fwspec = dev->iommu_fwspec;
 	struct arm_smmu_device *smmu;
-<<<<<<< HEAD
 	struct device_link *link;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!fwspec || fwspec->ops != &arm_smmu_ops)
 		return;
@@ -4004,15 +3617,12 @@ static void arm_smmu_remove_device(struct device *dev)
 		return;
 	}
 
-<<<<<<< HEAD
 	/* Remove the device link between dev and the smmu if any */
 	list_for_each_entry(link, &smmu->dev->links.consumers, s_node) {
 		if (link->consumer == dev)
 			device_link_del(link);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	arm_smmu_master_free_smes(fwspec);
 	iommu_group_remove_device(dev);
 	kfree(fwspec->iommu_priv);
@@ -4027,7 +3637,6 @@ static struct iommu_group *arm_smmu_device_group(struct device *dev)
 	struct iommu_group *group = NULL;
 	int i, idx;
 
-<<<<<<< HEAD
 	group = of_get_device_group(dev);
 	for_each_cfg_sme(fwspec, i, idx) {
 		if (group && smmu->s2crs[idx].group &&
@@ -4039,14 +3648,6 @@ static struct iommu_group *arm_smmu_device_group(struct device *dev)
 
 		if (!group)
 			group = smmu->s2crs[idx].group;
-=======
-	for_each_cfg_sme(fwspec, i, idx) {
-		if (group && smmu->s2crs[idx].group &&
-		    group != smmu->s2crs[idx].group)
-			return ERR_PTR(-EINVAL);
-
-		group = smmu->s2crs[idx].group;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (group)
@@ -4075,12 +3676,6 @@ static int arm_smmu_domain_get_attr(struct iommu_domain *domain,
 	struct arm_smmu_domain *smmu_domain = to_smmu_domain(domain);
 	int ret = 0;
 
-<<<<<<< HEAD
-=======
-	if (domain->type != IOMMU_DOMAIN_UNMANAGED)
-		return -EINVAL;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&smmu_domain->init_mutex);
 	switch (attr) {
 	case DOMAIN_ATTR_NESTING:
@@ -4198,25 +3793,10 @@ static int arm_smmu_domain_get_attr(struct iommu_domain *domain,
 			& (1 << DOMAIN_ATTR_PAGE_TABLE_FORCE_COHERENT));
 		ret = 0;
 		break;
-<<<<<<< HEAD
 	case DOMAIN_ATTR_FAULT_MODEL_NO_CFRE:
 	case DOMAIN_ATTR_FAULT_MODEL_NO_STALL:
 	case DOMAIN_ATTR_FAULT_MODEL_HUPCF:
 		*((int *)data) = !!(smmu_domain->attributes & (1U << attr));
-=======
-	case DOMAIN_ATTR_CB_STALL_DISABLE:
-		*((int *)data) = !!(smmu_domain->attributes
-			& (1 << DOMAIN_ATTR_CB_STALL_DISABLE));
-		ret = 0;
-		break;
-	case DOMAIN_ATTR_NO_CFRE:
-		*((int *)data) = !!(smmu_domain->attributes
-			& (1 << DOMAIN_ATTR_NO_CFRE));
-		ret = 0;
-		break;
-	case DOMAIN_ATTR_QCOM_MMU500_ERRATA_MIN_IOVA_ALIGN:
-		*((int *)data) = smmu_domain->qsmmuv500_errata1_min_iova_align;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = 0;
 		break;
 	default:
@@ -4227,35 +3807,19 @@ static int arm_smmu_domain_get_attr(struct iommu_domain *domain,
 	return ret;
 }
 
-<<<<<<< HEAD
 static int __arm_smmu_domain_set_attr2(struct iommu_domain *domain,
 				    enum iommu_attr attr, void *data);
 static int __arm_smmu_domain_set_attr(struct iommu_domain *domain,
-=======
-static int arm_smmu_domain_set_attr(struct iommu_domain *domain,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    enum iommu_attr attr, void *data)
 {
 	int ret = 0;
 	struct arm_smmu_domain *smmu_domain = to_smmu_domain(domain);
 
-<<<<<<< HEAD
-=======
-	if (domain->type != IOMMU_DOMAIN_UNMANAGED)
-		return -EINVAL;
-
-	mutex_lock(&smmu_domain->init_mutex);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (attr) {
 	case DOMAIN_ATTR_NESTING:
 		if (smmu_domain->smmu) {
 			ret = -EPERM;
-<<<<<<< HEAD
 			goto out;
-=======
-			goto out_unlock;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		if (*(int *)data)
@@ -4352,15 +3916,12 @@ static int arm_smmu_domain_set_attr(struct iommu_domain *domain,
 		break;
 	}
 	case DOMAIN_ATTR_SECURE_VMID:
-<<<<<<< HEAD
 		/* can't be changed while attached */
 		if (smmu_domain->smmu != NULL) {
 			ret = -EBUSY;
 			break;
 		}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (smmu_domain->secure_vmid != VMID_INVAL) {
 			ret = -ENODEV;
 			WARN(1, "secure vmid already set!");
@@ -4374,22 +3935,18 @@ static int arm_smmu_domain_set_attr(struct iommu_domain *domain,
 		 * force DOMAIN_ATTR_ATOMIC to bet set.
 		 */
 	case DOMAIN_ATTR_FAST:
-<<<<<<< HEAD
 		/* can't be changed while attached */
 		if (smmu_domain->smmu != NULL) {
 			ret = -EBUSY;
 			break;
 		}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (*((int *)data)) {
 			smmu_domain->attributes |= 1 << DOMAIN_ATTR_FAST;
 			smmu_domain->attributes |= 1 << DOMAIN_ATTR_ATOMIC;
 		}
 		ret = 0;
 		break;
-<<<<<<< HEAD
 	default:
 		ret = __arm_smmu_domain_set_attr2(domain, attr, data);
 	}
@@ -4406,19 +3963,6 @@ static int __arm_smmu_domain_set_attr2(struct iommu_domain *domain,
 
 	switch (attr) {
 	case DOMAIN_ATTR_USE_UPSTREAM_HINT:
-=======
-	case DOMAIN_ATTR_USE_UPSTREAM_HINT:
-		/* can't be changed while attached */
-		if (smmu_domain->smmu != NULL) {
-			ret = -EBUSY;
-			break;
-		}
-		if (*((int *)data))
-			smmu_domain->attributes |=
-				1 << DOMAIN_ATTR_USE_UPSTREAM_HINT;
-		ret = 0;
-		break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case DOMAIN_ATTR_USE_LLC_NWA:
 		/* can't be changed while attached */
 		if (smmu_domain->smmu != NULL) {
@@ -4427,11 +3971,7 @@ static int __arm_smmu_domain_set_attr2(struct iommu_domain *domain,
 		}
 		if (*((int *)data))
 			smmu_domain->attributes |=
-<<<<<<< HEAD
 				1 << attr;
-=======
-				1 << DOMAIN_ATTR_USE_LLC_NWA;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = 0;
 		break;
 	case DOMAIN_ATTR_EARLY_MAP: {
@@ -4453,18 +3993,12 @@ static int __arm_smmu_domain_set_attr2(struct iommu_domain *domain,
 		break;
 	}
 	case DOMAIN_ATTR_BITMAP_IOVA_ALLOCATOR:
-<<<<<<< HEAD
 	case DOMAIN_ATTR_FAULT_MODEL_NO_CFRE:
 	case DOMAIN_ATTR_FAULT_MODEL_NO_STALL:
 	case DOMAIN_ATTR_FAULT_MODEL_HUPCF:
 		if (*((int *)data))
 			smmu_domain->attributes |=
 				1 << attr;
-=======
-		if (*((int *)data))
-			smmu_domain->attributes |=
-				1 << DOMAIN_ATTR_BITMAP_IOVA_ALLOCATOR;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = 0;
 		break;
 	case DOMAIN_ATTR_PAGE_TABLE_FORCE_COHERENT: {
@@ -4487,64 +4021,10 @@ static int __arm_smmu_domain_set_attr2(struct iommu_domain *domain,
 		ret = 0;
 		break;
 	}
-<<<<<<< HEAD
-=======
-	case DOMAIN_ATTR_CB_STALL_DISABLE:
-		if (*((int *)data))
-			smmu_domain->attributes |=
-				1 << DOMAIN_ATTR_CB_STALL_DISABLE;
-		ret = 0;
-		break;
-	case DOMAIN_ATTR_NO_CFRE:
-		if (*((int *)data))
-			smmu_domain->attributes |=
-				1 << DOMAIN_ATTR_NO_CFRE;
-		ret = 0;
-		break;
-	case DOMAIN_ATTR_GEOMETRY: {
-		struct iommu_domain_geometry *geometry =
-				(struct iommu_domain_geometry *)data;
-
-		if (smmu_domain->smmu != NULL) {
-			dev_err(smmu_domain->smmu->dev,
-			  "cannot set geometry attribute while attached\n");
-			ret = -EBUSY;
-			break;
-		}
-
-		if (geometry->aperture_start >= SZ_1G * 4ULL ||
-		    geometry->aperture_end >= SZ_1G * 4ULL) {
-			pr_err("fastmap does not support IOVAs >= 4GB\n");
-			ret = -EINVAL;
-			break;
-		}
-		if (smmu_domain->attributes
-			  & (1 << DOMAIN_ATTR_GEOMETRY)) {
-			if (geometry->aperture_start
-					< domain->geometry.aperture_start)
-				domain->geometry.aperture_start =
-					geometry->aperture_start;
-
-			if (geometry->aperture_end
-					> domain->geometry.aperture_end)
-				domain->geometry.aperture_end =
-					geometry->aperture_end;
-		} else {
-			smmu_domain->attributes |= 1 << DOMAIN_ATTR_GEOMETRY;
-			domain->geometry.aperture_start =
-						geometry->aperture_start;
-			domain->geometry.aperture_end = geometry->aperture_end;
-		}
-		ret = 0;
-		break;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		ret = -ENODEV;
 	}
 
-<<<<<<< HEAD
 	return ret;
 }
 
@@ -4560,13 +4040,6 @@ static int arm_smmu_domain_set_attr(struct iommu_domain *domain,
 
 	return ret;
 }
-=======
-out_unlock:
-	mutex_unlock(&smmu_domain->init_mutex);
-	return ret;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int arm_smmu_of_xlate(struct device *dev, struct of_phandle_args *args)
 {
 	u32 mask, fwid = 0;
@@ -4621,13 +4094,7 @@ static int arm_smmu_enable_s1_translations(struct arm_smmu_domain *smmu_domain)
 
 	reg = readl_relaxed(cb_base + ARM_SMMU_CB_SCTLR);
 	reg |= SCTLR_M;
-<<<<<<< HEAD
 
-=======
-#ifdef CONFIG_HIBERNATION
-	smmu_domain->attributes &= ~(1 << DOMAIN_ATTR_S1_BYPASS);
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	writel_relaxed(reg, cb_base + ARM_SMMU_CB_SCTLR);
 	arm_smmu_power_off(smmu->pwr);
 	return ret;
@@ -4677,68 +4144,6 @@ static void arm_smmu_trigger_fault(struct iommu_domain *domain,
 	arm_smmu_power_off(smmu->pwr);
 }
 
-<<<<<<< HEAD
-=======
-static unsigned long arm_smmu_reg_read(struct iommu_domain *domain,
-				       unsigned long offset)
-{
-	struct arm_smmu_domain *smmu_domain = to_smmu_domain(domain);
-	struct arm_smmu_device *smmu;
-	struct arm_smmu_cfg *cfg = &smmu_domain->cfg;
-	void __iomem *cb_base;
-	unsigned long val;
-
-	if (offset >= SZ_4K) {
-		pr_err("Invalid offset: 0x%lx\n", offset);
-		return 0;
-	}
-
-	smmu = smmu_domain->smmu;
-	if (!smmu) {
-		WARN(1, "Can't read registers of a detached domain\n");
-		val = 0;
-		return val;
-	}
-
-	if (arm_smmu_power_on(smmu->pwr))
-		return 0;
-
-	cb_base = ARM_SMMU_CB(smmu, cfg->cbndx);
-	val = readl_relaxed(cb_base + offset);
-
-	arm_smmu_power_off(smmu->pwr);
-	return val;
-}
-
-static void arm_smmu_reg_write(struct iommu_domain *domain,
-			       unsigned long offset, unsigned long val)
-{
-	struct arm_smmu_domain *smmu_domain = to_smmu_domain(domain);
-	struct arm_smmu_device *smmu;
-	struct arm_smmu_cfg *cfg = &smmu_domain->cfg;
-	void __iomem *cb_base;
-
-	if (offset >= SZ_4K) {
-		pr_err("Invalid offset: 0x%lx\n", offset);
-		return;
-	}
-
-	smmu = smmu_domain->smmu;
-	if (!smmu) {
-		WARN(1, "Can't read registers of a detached domain\n");
-		return;
-	}
-
-	if (arm_smmu_power_on(smmu->pwr))
-		return;
-
-	cb_base = ARM_SMMU_CB(smmu, cfg->cbndx);
-	writel_relaxed(val, cb_base + offset);
-
-	arm_smmu_power_off(smmu->pwr);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void arm_smmu_tlbi_domain(struct iommu_domain *domain)
 {
 	arm_smmu_tlb_inv_context_s1(to_smmu_domain(domain));
@@ -4779,11 +4184,6 @@ static struct iommu_ops arm_smmu_ops = {
 	.put_resv_regions	= arm_smmu_put_resv_regions,
 	.pgsize_bitmap		= -1UL, /* Restricted during device attach */
 	.trigger_fault		= arm_smmu_trigger_fault,
-<<<<<<< HEAD
-=======
-	.reg_read		= arm_smmu_reg_read,
-	.reg_write		= arm_smmu_reg_write,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.tlbi_domain		= arm_smmu_tlbi_domain,
 	.enable_config_clocks	= arm_smmu_enable_config_clocks,
 	.disable_config_clocks	= arm_smmu_disable_config_clocks,
@@ -4791,23 +4191,6 @@ static struct iommu_ops arm_smmu_ops = {
 	.iova_to_pte = arm_smmu_iova_to_pte,
 };
 
-<<<<<<< HEAD
-=======
-#define IMPL_DEF1_MICRO_MMU_CTRL	0
-#define MICRO_MMU_CTRL_LOCAL_HALT_REQ	(1 << 2)
-#define MICRO_MMU_CTRL_IDLE		(1 << 3)
-
-/* Definitions for implementation-defined registers */
-#define ACTLR_QCOM_OSH_SHIFT		28
-#define ACTLR_QCOM_OSH			1
-
-#define ACTLR_QCOM_ISH_SHIFT		29
-#define ACTLR_QCOM_ISH			1
-
-#define ACTLR_QCOM_NSH_SHIFT		30
-#define ACTLR_QCOM_NSH			1
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int qsmmuv2_wait_for_halt(struct arm_smmu_device *smmu)
 {
 	void __iomem *impl_def1_base = ARM_SMMU_IMPL_DEF1(smmu);
@@ -4831,23 +4214,7 @@ static int __qsmmuv2_halt(struct arm_smmu_device *smmu, bool wait)
 	reg = readl_relaxed(impl_def1_base + IMPL_DEF1_MICRO_MMU_CTRL);
 	reg |= MICRO_MMU_CTRL_LOCAL_HALT_REQ;
 
-<<<<<<< HEAD
 	writel_relaxed(reg, impl_def1_base + IMPL_DEF1_MICRO_MMU_CTRL);
-=======
-	if (arm_smmu_is_static_cb(smmu)) {
-		phys_addr_t impl_def1_base_phys = impl_def1_base - smmu->base +
-							smmu->phys_addr;
-
-		if (scm_io_write(impl_def1_base_phys +
-					IMPL_DEF1_MICRO_MMU_CTRL, reg)) {
-			dev_err(smmu->dev,
-				"scm_io_write fail. SMMU might not be halted");
-			return -EINVAL;
-		}
-	} else {
-		writel_relaxed(reg, impl_def1_base + IMPL_DEF1_MICRO_MMU_CTRL);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return wait ? qsmmuv2_wait_for_halt(smmu) : 0;
 }
@@ -4870,21 +4237,7 @@ static void qsmmuv2_resume(struct arm_smmu_device *smmu)
 	reg = readl_relaxed(impl_def1_base + IMPL_DEF1_MICRO_MMU_CTRL);
 	reg &= ~MICRO_MMU_CTRL_LOCAL_HALT_REQ;
 
-<<<<<<< HEAD
 	writel_relaxed(reg, impl_def1_base + IMPL_DEF1_MICRO_MMU_CTRL);
-=======
-	if (arm_smmu_is_static_cb(smmu)) {
-		phys_addr_t impl_def1_base_phys = impl_def1_base - smmu->base +
-							smmu->phys_addr;
-
-		if (scm_io_write(impl_def1_base_phys +
-				IMPL_DEF1_MICRO_MMU_CTRL, reg))
-			dev_err(smmu->dev,
-				"scm_io_write fail. SMMU might not be resumed");
-	} else {
-		writel_relaxed(reg, impl_def1_base + IMPL_DEF1_MICRO_MMU_CTRL);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void qsmmuv2_device_reset(struct arm_smmu_device *smmu)
@@ -4956,7 +4309,6 @@ static phys_addr_t qsmmuv2_iova_to_phys_hard(struct iommu_domain *domain,
 	return phys;
 }
 
-<<<<<<< HEAD
 static void qsmmuv2_init_cb(struct arm_smmu_domain *smmu_domain,
 				struct device *dev)
 {
@@ -4985,13 +4337,6 @@ struct arm_smmu_arch_ops qsmmuv2_arch_ops = {
 };
 
 
-=======
-struct arm_smmu_arch_ops qsmmuv2_arch_ops = {
-	.device_reset = qsmmuv2_device_reset,
-	.iova_to_phys_hard = qsmmuv2_iova_to_phys_hard,
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void arm_smmu_context_bank_reset(struct arm_smmu_device *smmu)
 {
 	int i;
@@ -5041,45 +4386,16 @@ static void arm_smmu_device_reset(struct arm_smmu_device *smmu)
 	void __iomem *gr0_base = ARM_SMMU_GR0(smmu);
 	int i;
 	u32 reg;
-<<<<<<< HEAD
-=======
-	void __iomem *cb_base;
-	u32 fsr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* clear global FSR */
 	reg = readl_relaxed(ARM_SMMU_GR0_NS(smmu) + ARM_SMMU_GR0_sGFSR);
 	writel_relaxed(reg, ARM_SMMU_GR0_NS(smmu) + ARM_SMMU_GR0_sGFSR);
 
-<<<<<<< HEAD
-=======
-	for (i = 0; i < smmu->num_context_banks; ++i) {
-		cb_base = ARM_SMMU_CB(smmu, i);
-
-		fsr = readl_relaxed(cb_base + ARM_SMMU_CB_FSR);
-		if (fsr & FSR_FAULT) {
-			writel_relaxed(fsr & FSR_FAULT, cb_base +
-				       ARM_SMMU_CB_FSR);
-			pr_err("CB %d, FSR 0x%x reset\n", i, fsr);
-		}
-	}
-
-	/*
-	 * Barrier required to ensure fault registers are cleared.
-	 */
-	wmb();
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Reset stream mapping groups: Initial values mark all SMRn as
 	 * invalid and all S2CRn as bypass unless overridden.
 	 */
-<<<<<<< HEAD
 	if (!(smmu->options & ARM_SMMU_OPT_SKIP_INIT)) {
-=======
-	if (!(smmu->options & ARM_SMMU_OPT_SKIP_INIT) ||
-		 (IS_ENABLED(CONFIG_HIBERNATION) && smmu->smmu_restore)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		for (i = 0; i < smmu->num_mapping_groups; ++i)
 			arm_smmu_write_sme(smmu, i);
 
@@ -5185,19 +4501,9 @@ static int arm_smmu_alloc_cb(struct iommu_domain *domain,
 			cb = smmu->s2crs[idx].cbndx;
 	}
 
-<<<<<<< HEAD
 	if (cb >= 0 && arm_smmu_is_static_cb(smmu))
 		smmu_domain->slave_side_secure = true;
 
-=======
-	if (cb >= 0 && arm_smmu_is_static_cb(smmu)) {
-		smmu_domain->slave_side_secure = true;
-
-		if (arm_smmu_is_slave_side_secure(smmu_domain))
-			bitmap_set(smmu->secure_context_map, cb, 1);
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (cb < 0 && !arm_smmu_is_static_cb(smmu)) {
 		mutex_unlock(&smmu->stream_map_mutex);
 		return __arm_smmu_alloc_bitmap(smmu->context_map,
@@ -5568,24 +4874,16 @@ static int arm_smmu_device_cfg_probe(struct arm_smmu_device *smmu)
 	smmu->pgshift = (id & ID1_PAGESIZE) ? 16 : 12;
 
 	/* Check for size mismatch of SMMU address space from mapped region */
-<<<<<<< HEAD
 	size = 1 << (((id >> ID1_NUMPAGENDXB_SHIFT) &
 				ID1_NUMPAGENDXB_MASK) + 1);
-=======
-	size = 1 << (((id >> ID1_NUMPAGENDXB_SHIFT) & ID1_NUMPAGENDXB_MASK) + 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	size <<= smmu->pgshift;
 	if (smmu->cb_base != gr0_base + size)
 		dev_warn(smmu->dev,
 			"SMMU address space size (0x%lx) differs from mapped region size (0x%tx)!\n",
 			size * 2, (smmu->cb_base - gr0_base) * 2);
 
-<<<<<<< HEAD
 	smmu->num_s2_context_banks = (id >> ID1_NUMS2CB_SHIFT)
 					& ID1_NUMS2CB_MASK;
-=======
-	smmu->num_s2_context_banks = (id >> ID1_NUMS2CB_SHIFT) & ID1_NUMS2CB_MASK;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	smmu->num_context_banks = (id >> ID1_NUMCB_SHIFT) & ID1_NUMCB_MASK;
 	if (smmu->num_s2_context_banks > smmu->num_context_banks) {
 		dev_err(smmu->dev, "impossible number of S2 context banks!\n");
@@ -5696,15 +4994,9 @@ ARM_SMMU_MATCH_DATA(smmu_generic_v2, ARM_SMMU_V2, GENERIC_SMMU, NULL);
 ARM_SMMU_MATCH_DATA(arm_mmu401, ARM_SMMU_V1_64K, GENERIC_SMMU, NULL);
 ARM_SMMU_MATCH_DATA(arm_mmu500, ARM_SMMU_V2, ARM_MMU500, NULL);
 ARM_SMMU_MATCH_DATA(cavium_smmuv2, ARM_SMMU_V2, CAVIUM_SMMUV2, NULL);
-<<<<<<< HEAD
 ARM_SMMU_MATCH_DATA(qcom_smmuv500, ARM_SMMU_V2, QCOM_SMMUV500,
 		    &qsmmuv500_arch_ops);
 ARM_SMMU_MATCH_DATA(qcom_smmuv2, ARM_SMMU_V2, QCOM_SMMUV2, &qsmmuv2_arch_ops);
-=======
-ARM_SMMU_MATCH_DATA(qcom_smmuv2, ARM_SMMU_V2, QCOM_SMMUV2, &qsmmuv2_arch_ops);
-ARM_SMMU_MATCH_DATA(qcom_smmuv500, ARM_SMMU_V2, QCOM_SMMUV500,
-		    &qsmmuv500_arch_ops);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static const struct of_device_id arm_smmu_of_match[] = {
 	{ .compatible = "arm,smmu-v1", .data = &smmu_generic_v1 },
@@ -5713,13 +5005,8 @@ static const struct of_device_id arm_smmu_of_match[] = {
 	{ .compatible = "arm,mmu-401", .data = &arm_mmu401 },
 	{ .compatible = "arm,mmu-500", .data = &arm_mmu500 },
 	{ .compatible = "cavium,smmu-v2", .data = &cavium_smmuv2 },
-<<<<<<< HEAD
 	{ .compatible = "qcom,qsmmu-v500", .data = &qcom_smmuv500 },
 	{ .compatible = "qcom,smmu-v2", .data = &qcom_smmuv2 },
-=======
-	{ .compatible = "qcom,smmu-v2", .data = &qcom_smmuv2 },
-	{ .compatible = "qcom,qsmmu-v500", .data = &qcom_smmuv500 },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ },
 };
 MODULE_DEVICE_TABLE(of, arm_smmu_of_match);
@@ -5848,16 +5135,9 @@ static int arm_smmu_device_dt_probe(struct platform_device *pdev)
 	}
 
 	smmu = devm_kzalloc(dev, sizeof(*smmu), GFP_KERNEL);
-<<<<<<< HEAD
 	if (!smmu)
 		return -ENOMEM;
 
-=======
-	if (!smmu) {
-		dev_err(dev, "failed to allocate arm_smmu_device\n");
-		return -ENOMEM;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	smmu->dev = dev;
 	spin_lock_init(&smmu->atos_lock);
 	idr_init(&smmu->asid_idr);
@@ -5903,19 +5183,10 @@ static int arm_smmu_device_dt_probe(struct platform_device *pdev)
 		return -ENODEV;
 	}
 
-<<<<<<< HEAD
 	smmu->irqs = devm_kcalloc(dev, num_irqs, sizeof(*smmu->irqs),
 				  GFP_KERNEL);
 	if (!smmu->irqs)
 		return -ENOMEM;
-=======
-	smmu->irqs = devm_kzalloc(dev, sizeof(*smmu->irqs) * num_irqs,
-				  GFP_KERNEL);
-	if (!smmu->irqs) {
-		dev_err(dev, "failed to allocate %d irqs\n", num_irqs);
-		return -ENOMEM;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < num_irqs; ++i) {
 		int irq = platform_get_irq(pdev, i);
@@ -5952,21 +5223,12 @@ static int arm_smmu_device_dt_probe(struct platform_device *pdev)
 
 	if (smmu->version == ARM_SMMU_V2) {
 		if (smmu->num_context_banks > smmu->num_context_irqs) {
-<<<<<<< HEAD
 		dev_err(dev,
 			"found %d context interrupt(s) but have %d context banks. assuming %d context interrupts.\n",
 			smmu->num_context_irqs, smmu->num_context_banks,
 			smmu->num_context_banks);
 			return -ENODEV;	
 		}
-=======
-			dev_err(dev,
-				"found %d context irq(s) but have %d context banks. assuming %d context interrupts.\n",
-				smmu->num_context_irqs, smmu->num_context_banks,
-				smmu->num_context_banks);
-		}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Ignore superfluous interrupts */
 		smmu->num_context_irqs = smmu->num_context_banks;
 	}
@@ -6045,23 +5307,14 @@ static int arm_smmu_device_remove(struct platform_device *pdev)
 	if (arm_smmu_power_on(smmu->pwr))
 		return -EINVAL;
 
-<<<<<<< HEAD
 	if (!bitmap_empty(smmu->context_map, ARM_SMMU_MAX_CBS))
-=======
-	if (!bitmap_empty(smmu->context_map, ARM_SMMU_MAX_CBS) ||
-	    !bitmap_empty(smmu->secure_context_map, ARM_SMMU_MAX_CBS))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(&pdev->dev, "removing device with active domains!\n");
 
 	idr_destroy(&smmu->asid_idr);
 
 	/* Turn the thing off */
-<<<<<<< HEAD
 	writel_relaxed(sCR0_CLIENTPD,
 			ARM_SMMU_GR0_NS(smmu) + ARM_SMMU_GR0_sCR0);
-=======
-	writel(sCR0_CLIENTPD, ARM_SMMU_GR0_NS(smmu) + ARM_SMMU_GR0_sCR0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	arm_smmu_power_off(smmu->pwr);
 
 	arm_smmu_exit_power_resources(smmu->pwr);
@@ -6080,94 +5333,11 @@ static int __maybe_unused arm_smmu_pm_resume(struct device *dev)
 
 	arm_smmu_device_reset(smmu);
 	arm_smmu_power_off(smmu->pwr);
-<<<<<<< HEAD
 
 	return 0;
 }
 
 static SIMPLE_DEV_PM_OPS(arm_smmu_pm_ops, NULL, arm_smmu_pm_resume);
-=======
-	return 0;
-}
-
-static int __maybe_unused arm_smmu_pm_restore_early(struct device *dev)
-{
-	struct arm_smmu_device *smmu = dev_get_drvdata(dev);
-	struct arm_smmu_domain *smmu_domain;
-	struct io_pgtable_ops *pgtbl_ops;
-	struct arm_smmu_cb *cb;
-	int idx, ret;
-
-	/* restore the secure pools */
-	for (idx = 0; idx < smmu->num_context_banks; idx++) {
-		cb = &smmu->cbs[idx];
-		if (!cb->cfg)
-			continue;
-
-		smmu_domain = cb_cfg_to_smmu_domain(cb->cfg);
-		if (!arm_smmu_has_secure_vmid(smmu_domain))
-			continue;
-
-		pgtbl_ops = alloc_io_pgtable_ops(smmu_domain->pgtbl_fmt,
-					  &smmu_domain->pgtbl_cfg,
-					  smmu_domain);
-		if (!pgtbl_ops) {
-			dev_err(smmu->dev, "failed to allocate page tables during pm restore for cxt %d\n",
-				idx);
-			return -ENOMEM;
-		}
-		smmu_domain->pgtbl_ops = pgtbl_ops;
-		arm_smmu_secure_domain_lock(smmu_domain);
-		arm_smmu_assign_table(smmu_domain);
-		arm_smmu_secure_domain_unlock(smmu_domain);
-		arm_smmu_init_context_bank(smmu_domain,
-					&smmu_domain->pgtbl_cfg);
-	}
-	smmu->smmu_restore = true;
-	ret = arm_smmu_pm_resume(dev);
-	smmu->smmu_restore = false;
-	return ret;
-}
-
-static int __maybe_unused arm_smmu_pm_freeze_late(struct device *dev)
-{
-	struct arm_smmu_device *smmu = dev_get_drvdata(dev);
-	struct arm_smmu_domain *smmu_domain;
-	struct arm_smmu_cb *cb;
-	int idx, ret;
-
-	ret = arm_smmu_power_on(smmu->pwr);
-	if (ret) {
-		dev_err(smmu->dev, "Whoops! Couldn't power on the smmu during pm freeze !!\n");
-		return ret;
-	}
-
-	/* destroy the secure pools */
-	for (idx = 0; idx < smmu->num_context_banks; idx++) {
-		cb = &smmu->cbs[idx];
-		if (cb && cb->cfg) {
-			smmu_domain = cb_cfg_to_smmu_domain(cb->cfg);
-			if (smmu_domain &&
-			    arm_smmu_has_secure_vmid(smmu_domain)) {
-				free_io_pgtable_ops(smmu_domain->pgtbl_ops);
-				arm_smmu_secure_domain_lock(smmu_domain);
-				arm_smmu_secure_pool_destroy(smmu_domain);
-				arm_smmu_unassign_table(smmu_domain);
-				arm_smmu_secure_domain_unlock(smmu_domain);
-			}
-		}
-	}
-	arm_smmu_power_off(smmu->pwr);
-	return 0;
-}
-
-static const struct dev_pm_ops arm_smmu_pm_ops = {
-	.resume = arm_smmu_pm_resume,
-	.thaw_early = arm_smmu_pm_restore_early,
-	.freeze_late = arm_smmu_pm_freeze_late,
-	.restore_early = arm_smmu_pm_restore_early,
-};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct platform_driver arm_smmu_driver = {
 	.driver	= {
@@ -6213,28 +5383,6 @@ static void __exit arm_smmu_exit(void)
 subsys_initcall(arm_smmu_init);
 module_exit(arm_smmu_exit);
 
-<<<<<<< HEAD
-=======
-static int __init arm_smmu_of_init(struct device_node *np)
-{
-	int ret = arm_smmu_init();
-
-	if (ret)
-		return ret;
-
-	if (!of_platform_device_create(np, NULL, platform_bus_type.dev_root))
-		return -ENODEV;
-
-	return 0;
-}
-IOMMU_OF_DECLARE(arm_smmuv1, "arm,smmu-v1", arm_smmu_of_init);
-IOMMU_OF_DECLARE(arm_smmuv2, "arm,smmu-v2", arm_smmu_of_init);
-IOMMU_OF_DECLARE(arm_mmu400, "arm,mmu-400", arm_smmu_of_init);
-IOMMU_OF_DECLARE(arm_mmu401, "arm,mmu-401", arm_smmu_of_init);
-IOMMU_OF_DECLARE(arm_mmu500, "arm,mmu-500", arm_smmu_of_init);
-IOMMU_OF_DECLARE(cavium_smmuv2, "cavium,smmu-v2", arm_smmu_of_init);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define TCU_HW_VERSION_HLOS1		(0x18)
 
 #define DEBUG_SID_HALT_REG		0x0
@@ -6266,12 +5414,6 @@ IOMMU_OF_DECLARE(cavium_smmuv2, "cavium,smmu-v2", arm_smmu_of_init);
 
 #define TBU_DBG_TIMEOUT_US		100
 
-<<<<<<< HEAD
-=======
-#define QSMMUV500_ACTLR_DEEP_PREFETCH_MASK	0x3
-#define QSMMUV500_ACTLR_DEEP_PREFETCH_SHIFT	0x8
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct qsmmuv500_group_iommudata {
 	bool has_actlr;
 	u32 actlr;
@@ -6467,22 +5609,10 @@ static phys_addr_t qsmmuv500_iova_to_phys(
 	if (ret)
 		return 0;
 
-<<<<<<< HEAD
 	ret = qsmmuv500_tbu_halt(tbu, smmu_domain);
 	if (ret)
 		goto out_power_off;
 
-=======
-	/* Only one concurrent atos operation */
-	ret = qsmmuv500_ecats_lock(smmu_domain, tbu, &flags);
-	if (ret)
-		goto out_power_off;
-
-	ret = qsmmuv500_tbu_halt(tbu, smmu_domain);
-	if (ret)
-		goto out_ecats_unlock;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * ECATS can trigger the fault interrupt, so disable it temporarily
 	 * and check for an interrupt manually.
@@ -6510,14 +5640,11 @@ static phys_addr_t qsmmuv500_iova_to_phys(
 				       ARM_SMMU_CB_RESUME);
 	}
 
-<<<<<<< HEAD
 	/* Only one concurrent atos operation */
 	ret = qsmmuv500_ecats_lock(smmu_domain, tbu, &flags);
 	if (ret)
 		goto out_resume;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 redo:
 	/* Set address and stream-id */
 	val = readq_relaxed(tbu->base + DEBUG_SID_HALT_REG);
@@ -6597,19 +5724,11 @@ redo:
 		goto redo;
 
 	writel_relaxed(sctlr_orig, cb_base + ARM_SMMU_CB_SCTLR);
-<<<<<<< HEAD
 	qsmmuv500_ecats_unlock(smmu_domain, tbu, &flags);
 
 out_resume:
 	qsmmuv500_tbu_resume(tbu);
 
-=======
-	qsmmuv500_tbu_resume(tbu);
-
-out_ecats_unlock:
-	qsmmuv500_ecats_unlock(smmu_domain, tbu, &flags);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out_power_off:
 	/* Read to complete prior write transcations */
 	val = readl_relaxed(tbu->base + DEBUG_SR_HALT_ACK_REG);
@@ -6703,21 +5822,14 @@ static void qsmmuv500_init_cb(struct arm_smmu_domain *smmu_domain,
 				struct device *dev)
 {
 	struct arm_smmu_device *smmu = smmu_domain->smmu;
-<<<<<<< HEAD
 	struct qsmmuv500_group_iommudata *iommudata =
 		to_qsmmuv500_group_iommudata(dev->iommu_group);
 	void __iomem *cb_base;
 	const struct iommu_gather_ops *tlb;
-=======
-	struct arm_smmu_cb *cb = &smmu->cbs[smmu_domain->cfg.cbndx];
-	struct qsmmuv500_group_iommudata *iommudata =
-		to_qsmmuv500_group_iommudata(dev->iommu_group);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!iommudata->has_actlr)
 		return;
 
-<<<<<<< HEAD
 	tlb = smmu_domain->pgtbl_cfg.tlb;
 	cb_base = ARM_SMMU_CB(smmu, smmu_domain->cfg.cbndx);
 
@@ -6728,17 +5840,6 @@ static void qsmmuv500_init_cb(struct arm_smmu_domain *smmu_domain,
 	 * are no cache entries with stale state
 	 */
 	tlb->tlb_flush_all(smmu_domain);
-=======
-	cb->actlr = iommudata->actlr;
-	/*
-	 * Prefetch only works properly if the start and end of all
-	 * buffers in the page table are aligned to ARM_SMMU_MIN_IOVA_ALIGN.
-	 */
-	if (((iommudata->actlr >> QSMMUV500_ACTLR_DEEP_PREFETCH_SHIFT) &
-			QSMMUV500_ACTLR_DEEP_PREFETCH_MASK) &&
-				  (smmu->options & ARM_SMMU_OPT_MIN_IOVA_ALIGN))
-		smmu_domain->qsmmuv500_errata1_min_iova_align = true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int qsmmuv500_tbu_register(struct device *dev, void *cookie)
@@ -6848,11 +5949,7 @@ static ssize_t arm_smmu_debug_testbus_read(struct file *file,
 							testbus_version);
 		arm_smmu_power_off(pwr);
 
-<<<<<<< HEAD
 		snprintf(buf, buf_len, "0x%0x\n", val);
-=======
-		snprintf(buf, buf_len, "0x%0lx\n", val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 
 		struct arm_smmu_device *smmu = file->private_data;
@@ -6975,12 +6072,9 @@ static int qsmmuv500_tcu_testbus_init(struct arm_smmu_device *smmu)
 {
 	struct dentry *testbus_dir;
 
-<<<<<<< HEAD
 	if (!iommu_debugfs_top)
 		return 0;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!debugfs_testbus_dir) {
 		debugfs_testbus_dir = debugfs_create_dir("testbus",
 						       iommu_debugfs_top);
@@ -7079,12 +6173,9 @@ static int qsmmuv500_tbu_testbus_init(struct qsmmuv500_tbu_device *tbu)
 {
 	struct dentry *testbus_dir;
 
-<<<<<<< HEAD
 	if (!iommu_debugfs_top)
 		return 0;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!debugfs_testbus_dir) {
 		debugfs_testbus_dir = debugfs_create_dir("testbus",
 						       iommu_debugfs_top);
@@ -7278,11 +6369,7 @@ static ssize_t arm_smmu_debug_capturebus_config_read(struct file *file,
 		snprintf(buf + strlen(buf), buf_len - strlen(buf),
 				"Match_%d : 0x%0llx\n", i+1, match[i]);
 	}
-<<<<<<< HEAD
 	snprintf(buf + strlen(buf), buf_len - strlen(buf), "0x%0x\n", val);
-=======
-	snprintf(buf + strlen(buf), buf_len - strlen(buf), "0x%0lx\n", val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	buflen = min(count, strlen(buf));
 	if (copy_to_user(ubuf, buf, buflen)) {
@@ -7306,12 +6393,9 @@ static int qsmmuv500_capturebus_init(struct qsmmuv500_tbu_device *tbu)
 {
 	struct dentry *capturebus_dir;
 
-<<<<<<< HEAD
 	if (!iommu_debugfs_top)
 		return 0;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!debugfs_capturebus_dir) {
 		debugfs_capturebus_dir = debugfs_create_dir(
 					 "capturebus", iommu_debugfs_top);
@@ -7368,11 +6452,7 @@ static irqreturn_t arm_smmu_debug_capture_bus_match(int irq, void *dev)
 	arm_smmu_power_off(tbu->pwr);
 	arm_smmu_power_off(smmu->pwr);
 
-<<<<<<< HEAD
 	dev_info(tbu->dev, "TNX_TCR_CNTL : 0x%0llx\n", val);
-=======
-	dev_info(tbu->dev, "TNX_TCR_CNTL : 0x%0x\n", val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < NO_OF_MASK_AND_MATCH; ++i) {
 		dev_info(tbu->dev,

@@ -49,10 +49,6 @@ void txx9_spi_init(int busid, unsigned long base, int irq);
 void txx9_ethaddr_init(unsigned int id, unsigned char *ethaddr);
 void txx9_sio_init(unsigned long baseaddr, int irq,
 		   unsigned int line, unsigned int sclk, int nocts);
-<<<<<<< HEAD
-=======
-void prom_putchar(char c);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_EARLY_PRINTK
 extern void (*txx9_prom_putchar)(char c);
 void txx9_sio_putchar_init(unsigned long baseaddr);

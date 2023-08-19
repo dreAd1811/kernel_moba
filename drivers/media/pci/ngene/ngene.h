@@ -29,7 +29,6 @@
 
 #include <linux/dvb/frontend.h>
 
-<<<<<<< HEAD
 #include <media/dmxdev.h>
 #include <media/dvbdev.h>
 #include <media/dvb_demux.h>
@@ -37,15 +36,6 @@
 #include <media/dvb_frontend.h>
 #include <media/dvb_ringbuffer.h>
 #include <media/dvb_net.h>
-=======
-#include "dmxdev.h"
-#include "dvbdev.h"
-#include "dvb_demux.h"
-#include "dvb_ca_en50221.h"
-#include "dvb_frontend.h"
-#include "dvb_ringbuffer.h"
-#include "dvb_net.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "cxd2099.h"
 
 #define DEVICE_NAME "ngene"
@@ -61,7 +51,6 @@
 #define VIDEO_CAP_MPEG4 512
 #endif
 
-<<<<<<< HEAD
 #define DEMOD_TYPE_STV090X	0
 #define DEMOD_TYPE_DRXK		1
 #define DEMOD_TYPE_STV0367	2
@@ -78,8 +67,6 @@
 #define NGENE_XO2_TYPE_DUOFLEX	1
 #define NGENE_XO2_TYPE_CI	2
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum STREAM {
 	STREAM_VIDEOIN1 = 0,        /* ITU656 or TS Input */
 	STREAM_VIDEOIN2,
@@ -659,11 +646,8 @@ struct ngene_vopen {
 struct ngene_channel {
 	struct device         device;
 	struct i2c_adapter    i2c_adapter;
-<<<<<<< HEAD
 	struct i2c_client    *i2c_client[1];
 	int                   i2c_client_fe;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct ngene         *dev;
 	int                   number;
@@ -748,12 +732,9 @@ struct ngene_channel {
 #endif
 
 	int running;
-<<<<<<< HEAD
 
 	int tsin_offset;
 	u8  tsin_buffer[188];
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 
@@ -931,12 +912,9 @@ int ngene_command_gpio_set(struct ngene *dev, u8 select, u8 level);
 void set_transfer(struct ngene_channel *chan, int state);
 void FillTSBuffer(void *Buffer, int Length, u32 Flags);
 
-<<<<<<< HEAD
 /* Provided by ngene-cards.c */
 int ngene_port_has_cxd2099(struct i2c_adapter *i2c, u8 *type);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Provided by ngene-i2c.c */
 int ngene_i2c_init(struct ngene *dev, int dev_nr);
 

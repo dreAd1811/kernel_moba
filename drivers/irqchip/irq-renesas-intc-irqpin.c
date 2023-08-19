@@ -17,10 +17,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-<<<<<<< HEAD
-=======
-#include <linux/clk.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/init.h>
 #include <linux/of.h>
 #include <linux/platform_device.h>
@@ -81,24 +77,14 @@ struct intc_irqpin_priv {
 	struct platform_device *pdev;
 	struct irq_chip irq_chip;
 	struct irq_domain *irq_domain;
-<<<<<<< HEAD
 	atomic_t wakeup_path;
 	unsigned shared_irqs:1;
-=======
-	struct clk *clk;
-	unsigned shared_irqs:1;
-	unsigned needs_clk:1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 shared_irq_mask;
 };
 
 struct intc_irqpin_config {
 	unsigned int irlm_bit;
 	unsigned needs_irlm:1;
-<<<<<<< HEAD
-=======
-	unsigned needs_clk:1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static unsigned long intc_irqpin_read32(void __iomem *iomem)
@@ -298,21 +284,10 @@ static int intc_irqpin_irq_set_wake(struct irq_data *d, unsigned int on)
 	int hw_irq = irqd_to_hwirq(d);
 
 	irq_set_irq_wake(p->irq[hw_irq].requested_irq, on);
-<<<<<<< HEAD
 	if (on)
 		atomic_inc(&p->wakeup_path);
 	else
 		atomic_dec(&p->wakeup_path);
-=======
-
-	if (!p->clk)
-		return 0;
-
-	if (on)
-		clk_enable(p->clk);
-	else
-		clk_disable(p->clk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -360,12 +335,9 @@ static irqreturn_t intc_irqpin_shared_irq_handler(int irq, void *dev_id)
  */
 static struct lock_class_key intc_irqpin_irq_lock_class;
 
-<<<<<<< HEAD
 /* And this is for the request mutex */
 static struct lock_class_key intc_irqpin_irq_request_class;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int intc_irqpin_irq_domain_map(struct irq_domain *h, unsigned int virq,
 				      irq_hw_number_t hw)
 {
@@ -376,12 +348,8 @@ static int intc_irqpin_irq_domain_map(struct irq_domain *h, unsigned int virq,
 
 	intc_irqpin_dbg(&p->irq[hw], "map");
 	irq_set_chip_data(virq, h->host_data);
-<<<<<<< HEAD
 	irq_set_lockdep_class(virq, &intc_irqpin_irq_lock_class,
 			      &intc_irqpin_irq_request_class);
-=======
-	irq_set_lockdep_class(virq, &intc_irqpin_irq_lock_class);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	irq_set_chip_and_handler(virq, &p->irq_chip, handle_level_irq);
 	return 0;
 }
@@ -394,18 +362,10 @@ static const struct irq_domain_ops intc_irqpin_irq_domain_ops = {
 static const struct intc_irqpin_config intc_irqpin_irlm_r8a777x = {
 	.irlm_bit = 23, /* ICR0.IRLM0 */
 	.needs_irlm = 1,
-<<<<<<< HEAD
-=======
-	.needs_clk = 0,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct intc_irqpin_config intc_irqpin_rmobile = {
 	.needs_irlm = 0,
-<<<<<<< HEAD
-=======
-	.needs_clk = 1,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct of_device_id intc_irqpin_dt_ids[] = {
@@ -424,14 +384,8 @@ MODULE_DEVICE_TABLE(of, intc_irqpin_dt_ids);
 
 static int intc_irqpin_probe(struct platform_device *pdev)
 {
-<<<<<<< HEAD
 	const struct intc_irqpin_config *config;
 	struct device *dev = &pdev->dev;
-=======
-	const struct intc_irqpin_config *config = NULL;
-	struct device *dev = &pdev->dev;
-	const struct of_device_id *of_id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct intc_irqpin_priv *p;
 	struct intc_irqpin_iomem *i;
 	struct resource *io[INTC_IRQPIN_REG_NR];
@@ -462,25 +416,7 @@ static int intc_irqpin_probe(struct platform_device *pdev)
 	p->pdev = pdev;
 	platform_set_drvdata(pdev, p);
 
-<<<<<<< HEAD
 	config = of_device_get_match_data(dev);
-=======
-	of_id = of_match_device(intc_irqpin_dt_ids, dev);
-	if (of_id && of_id->data) {
-		config = of_id->data;
-		p->needs_clk = config->needs_clk;
-	}
-
-	p->clk = devm_clk_get(dev, NULL);
-	if (IS_ERR(p->clk)) {
-		if (p->needs_clk) {
-			dev_err(dev, "unable to get clock\n");
-			ret = PTR_ERR(p->clk);
-			goto err0;
-		}
-		p->clk = NULL;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pm_runtime_enable(dev);
 	pm_runtime_get_sync(dev);
@@ -649,7 +585,6 @@ static int intc_irqpin_remove(struct platform_device *pdev)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int __maybe_unused intc_irqpin_suspend(struct device *dev)
 {
 	struct intc_irqpin_priv *p = dev_get_drvdata(dev);
@@ -662,18 +597,13 @@ static int __maybe_unused intc_irqpin_suspend(struct device *dev)
 
 static SIMPLE_DEV_PM_OPS(intc_irqpin_pm_ops, intc_irqpin_suspend, NULL);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct platform_driver intc_irqpin_device_driver = {
 	.probe		= intc_irqpin_probe,
 	.remove		= intc_irqpin_remove,
 	.driver		= {
 		.name	= "renesas_intc_irqpin",
 		.of_match_table = intc_irqpin_dt_ids,
-<<<<<<< HEAD
 		.pm	= &intc_irqpin_pm_ops,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 };
 

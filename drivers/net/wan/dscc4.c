@@ -223,11 +223,6 @@ struct dscc4_dev_priv {
 
 	u32 scc_regs[SCC_REGISTERS_MAX]; /* Cf errata DS5 p.4 */
 
-<<<<<<< HEAD
-=======
-	struct timer_list timer;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
         struct dscc4_pci_priv *pci_priv;
         spinlock_t lock;
 
@@ -372,10 +367,6 @@ static int dscc4_close(struct net_device *);
 static int dscc4_ioctl(struct net_device *dev, struct ifreq *rq, int cmd);
 static int dscc4_init_ring(struct net_device *);
 static void dscc4_release_ring(struct dscc4_dev_priv *);
-<<<<<<< HEAD
-=======
-static void dscc4_timer(unsigned long);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void dscc4_tx_timeout(struct net_device *);
 static irqreturn_t dscc4_irq(int irq, void *dev_id);
 static int dscc4_hdlc_attach(struct net_device *, unsigned short, unsigned short);
@@ -989,22 +980,6 @@ err_out:
 	return ret;
 };
 
-<<<<<<< HEAD
-=======
-/* FIXME: get rid of the unneeded code */
-static void dscc4_timer(unsigned long data)
-{
-	struct net_device *dev = (struct net_device *)data;
-	struct dscc4_dev_priv *dpriv = dscc4_priv(dev);
-//	struct dscc4_pci_priv *ppriv;
-
-	goto done;
-done:
-        dpriv->timer.expires = jiffies + TX_TIMEOUT;
-        add_timer(&dpriv->timer);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void dscc4_tx_timeout(struct net_device *dev)
 {
 	/* FIXME: something is missing there */
@@ -1136,14 +1111,6 @@ static int dscc4_open(struct net_device *dev)
 done:
 	netif_start_queue(dev);
 
-<<<<<<< HEAD
-=======
-        init_timer(&dpriv->timer);
-        dpriv->timer.expires = jiffies + 10*HZ;
-        dpriv->timer.data = (unsigned long)dev;
-	dpriv->timer.function = dscc4_timer;
-        add_timer(&dpriv->timer);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	netif_carrier_on(dev);
 
 	return 0;
@@ -1211,10 +1178,6 @@ static int dscc4_close(struct net_device *dev)
 {
 	struct dscc4_dev_priv *dpriv = dscc4_priv(dev);
 
-<<<<<<< HEAD
-=======
-	del_timer_sync(&dpriv->timer);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	netif_stop_queue(dev);
 
 	scc_patchl(PowerUp | Vis, 0, dpriv, dev, CCR0);

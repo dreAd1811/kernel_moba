@@ -1,18 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * SAMSUNG SMDK2416 board device tree source
  *
  * Copyright (c) 2013 Heiko Stuebner <heiko@sntech.de>
-<<<<<<< HEAD
-=======
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /dts-v1/;
@@ -22,22 +12,13 @@
 	model = "SMDK2416";
 	compatible = "samsung,s3c2416";
 
-<<<<<<< HEAD
 	memory@30000000 {
 		device_type = "memory";
-=======
-	memory {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg =  <0x30000000 0x4000000>;
 	};
 
 	clocks {
 		compatible = "simple-bus";
-<<<<<<< HEAD
-=======
-		#address-cells = <1>;
-		#size-cells = <1>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		xti: xti {
 			compatible = "fixed-clock";

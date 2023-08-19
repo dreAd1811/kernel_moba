@@ -41,11 +41,7 @@
 
 /* Allow hardware encryption to be disabled. */
 static bool modparam_nohwcrypt;
-<<<<<<< HEAD
 module_param_named(nohwcrypt, modparam_nohwcrypt, bool, 0444);
-=======
-module_param_named(nohwcrypt, modparam_nohwcrypt, bool, S_IRUGO);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_PARM_DESC(nohwcrypt, "Disable hardware encryption.");
 
 static bool rt2800soc_hwcrypt_disabled(struct rt2x00_dev *rt2x00dev)
@@ -154,13 +150,8 @@ static const struct ieee80211_ops rt2800soc_mac80211_ops = {
 	.get_stats		= rt2x00mac_get_stats,
 	.get_key_seq		= rt2800_get_key_seq,
 	.set_rts_threshold	= rt2800_set_rts_threshold,
-<<<<<<< HEAD
 	.sta_add		= rt2800_sta_add,
 	.sta_remove		= rt2800_sta_remove,
-=======
-	.sta_add		= rt2x00mac_sta_add,
-	.sta_remove		= rt2x00mac_sta_remove,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.bss_info_changed	= rt2x00mac_bss_info_changed,
 	.conf_tx		= rt2800_conf_tx,
 	.get_tsf		= rt2800_get_tsf,
@@ -225,11 +216,6 @@ static const struct rt2x00lib_ops rt2800soc_rt2x00_ops = {
 	.config_erp		= rt2800_config_erp,
 	.config_ant		= rt2800_config_ant,
 	.config			= rt2800_config,
-<<<<<<< HEAD
-=======
-	.sta_add		= rt2800_sta_add,
-	.sta_remove		= rt2800_sta_remove,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct rt2x00_ops rt2800soc_ops = {

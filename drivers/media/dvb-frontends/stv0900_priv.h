@@ -24,10 +24,6 @@
 
 #include <linux/i2c.h>
 
-<<<<<<< HEAD
-=======
-#define ABS(X) ((X) < 0 ? (-1 * (X)) : (X))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define INRANGE(X, Y, Z) ((((X) <= (Y)) && ((Y) <= (Z))) \
 		|| (((Z) <= (Y)) && ((Y) <= (X))) ? 1 : 0)
 
@@ -246,11 +242,7 @@ struct stv0900_init_params{
 
 	u8	tun1_maddress;
 	int	tuner1_adc;
-<<<<<<< HEAD
 	int	tuner1_type;
-=======
-	int 	tuner1_type;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* IQ from the tuner1 to the demod */
 	enum stv0900_iq_inversion	tun1_iq_inv;

@@ -9,10 +9,7 @@
 #define _CORESIGHT_CATU_H
 
 #include "coresight-priv.h"
-<<<<<<< HEAD
 #include "coresight-tmc.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Register offset from base */
 #define CATU_CONTROL		0x000
@@ -113,15 +110,11 @@ static inline bool coresight_is_catu_device(struct coresight_device *csdev)
 	return true;
 }
 
-<<<<<<< HEAD
 #ifdef CONFIG_CORESIGHT_CATU
 extern const struct etr_buf_operations etr_catu_buf_ops;
 #else
 /* Dummy declaration for the CATU ops */
 static const struct etr_buf_operations etr_catu_buf_ops;
 #endif
-=======
-extern const struct etr_buf_operations etr_catu_buf_ops;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif

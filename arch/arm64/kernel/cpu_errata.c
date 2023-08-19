@@ -23,16 +23,12 @@
 #include <asm/cpu.h>
 #include <asm/cputype.h>
 #include <asm/cpufeature.h>
-<<<<<<< HEAD
 #include <asm/mmu_context.h>
 #include <asm/smp_plat.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static bool __maybe_unused
 is_affected_midr_range(const struct arm64_cpu_capabilities *entry, int scope)
 {
-<<<<<<< HEAD
 	const struct arm64_midr_revidr *fix;
 	u32 midr = read_cpuid_id(), revidr;
 
@@ -47,12 +43,6 @@ is_affected_midr_range(const struct arm64_cpu_capabilities *entry, int scope)
 			return false;
 
 	return true;
-=======
-	u32 midr = read_cpuid_id();
-
-	WARN_ON(scope != SCOPE_LOCAL_CPU || preemptible());
-	return is_midr_in_range(midr, &entry->midr_range);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool __maybe_unused
@@ -95,28 +85,17 @@ has_mismatched_cache_type(const struct arm64_cpu_capabilities *entry,
 static void
 cpu_enable_trap_ctr_access(const struct arm64_cpu_capabilities *__unused)
 {
-<<<<<<< HEAD
 	sysreg_clear_set(sctlr_el1, SCTLR_EL1_UCT, 0);
 }
 
 atomic_t arm64_el2_vector_last_slot = ATOMIC_INIT(-1);
 
-=======
-	/* Clear SCTLR_EL1.UCT */
-	config_sctlr_el1(SCTLR_EL1_UCT, 0);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/mmu_context.h>
 #include <asm/cacheflush.h>
 
 DEFINE_PER_CPU_READ_MOSTLY(struct bp_hardening_data, bp_hardening_data);
 
-<<<<<<< HEAD
 #ifdef CONFIG_KVM_INDIRECT_VECTORS
-=======
-#ifdef CONFIG_KVM
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern char __smccc_workaround_1_smc_start[];
 extern char __smccc_workaround_1_smc_end[];
 
@@ -129,21 +108,13 @@ static void __copy_hyp_vect_bpi(int slot, const char *hyp_vecs_start,
 	for (i = 0; i < SZ_2K; i += 0x80)
 		memcpy(dst + i, hyp_vecs_start, hyp_vecs_end - hyp_vecs_start);
 
-<<<<<<< HEAD
 	__flush_icache_range((uintptr_t)dst, (uintptr_t)dst + SZ_2K);
-=======
-	flush_icache_range((uintptr_t)dst, (uintptr_t)dst + SZ_2K);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void install_bp_hardening_cb(bp_hardening_cb_t fn,
 				    const char *hyp_vecs_start,
 				    const char *hyp_vecs_end)
 {
-<<<<<<< HEAD
-=======
-	static int last_slot = -1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	static DEFINE_SPINLOCK(bp_lock);
 	int cpu, slot = -1;
 
@@ -156,15 +127,8 @@ static void install_bp_hardening_cb(bp_hardening_cb_t fn,
 	}
 
 	if (slot == -1) {
-<<<<<<< HEAD
 		slot = atomic_inc_return(&arm64_el2_vector_last_slot);
 		BUG_ON(slot >= BP_HARDEN_EL2_SLOTS);
-=======
-		last_slot++;
-		BUG_ON(((__bp_harden_hyp_vecs_end - __bp_harden_hyp_vecs_start)
-			/ SZ_2K) <= last_slot);
-		slot = last_slot;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__copy_hyp_vect_bpi(slot, hyp_vecs_start, hyp_vecs_end);
 	}
 
@@ -182,17 +146,11 @@ static void install_bp_hardening_cb(bp_hardening_cb_t fn,
 {
 	__this_cpu_write(bp_hardening_data.fn, fn);
 }
-<<<<<<< HEAD
 #endif	/* CONFIG_KVM_INDIRECT_VECTORS */
 
 #include <uapi/linux/psci.h>
 #include <linux/arm-smccc.h>
 #include <linux/psci.h>
-=======
-#endif	/* CONFIG_KVM */
-
-#include <uapi/linux/psci.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void call_smc_arch_workaround_1(void)
 {
@@ -324,7 +282,6 @@ static int __init ssbd_cfg(char *buf)
 }
 early_param("ssbd", ssbd_cfg);
 
-<<<<<<< HEAD
 void __init arm64_update_smccc_conduit(struct alt_instr *alt,
 				       __le32 *origptr, __le32 *updptr,
 				       int nr_inst)
@@ -361,8 +318,6 @@ void __init arm64_enable_wa2_handling(struct alt_instr *alt,
 		*updptr = cpu_to_le32(aarch64_insn_gen_nop());
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void arm64_set_ssbd_mitigation(bool state)
 {
 	if (!IS_ENABLED(CONFIG_ARM64_SSBD)) {
@@ -518,7 +473,6 @@ static const struct midr_range arm64_ssb_cpus[] = {
 	{},
 };
 
-<<<<<<< HEAD
 #ifdef CONFIG_ARM64_ERRATUM_1463225
 DEFINE_PER_CPU(int, __in_cortex_a76_erratum_1463225_wa);
 
@@ -535,8 +489,6 @@ has_cortex_a76_erratum_1463225(const struct arm64_cpu_capabilities *entry,
 }
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CAP_MIDR_RANGE(model, v_min, r_min, v_max, r_max)	\
 	.matches = is_affected_midr_range,			\
 	.midr_range = MIDR_RANGE(model, v_min, r_min, v_max, r_max)
@@ -579,7 +531,6 @@ static bool __hardenbp_enab = true;
 static bool __spectrev2_safe = true;
 
 /*
-<<<<<<< HEAD
  * Generic helper for handling capabilties with multiple (match,enable) pairs
  * of call backs, sharing the same capability bit.
  * Iterate over each entry to see if at least one matches.
@@ -612,24 +563,12 @@ multi_entry_cap_cpu_enable(const struct arm64_cpu_capabilities *entry)
 }
 
 /*
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * List of CPUs that do not need any Spectre-v2 mitigation at all.
  */
 static const struct midr_range spectre_v2_safe_list[] = {
 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A35),
 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A53),
 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A55),
-<<<<<<< HEAD
-=======
-	MIDR_ALL_VERSIONS(MIDR_KRYO3S),
-	MIDR_ALL_VERSIONS(MIDR_KRYO4S),
-	MIDR_ALL_VERSIONS(MIDR_KRYO2XX_SILVER),
-	MIDR_RANGE(MIDR_KRYO4G, 0, 0, 12, 13),
-	MIDR_RANGE(MIDR_KRYO4G, 13, 15,
-		   (MIDR_VARIANT_MASK >> MIDR_VARIANT_SHIFT),
-		   MIDR_REVISION_MASK),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ /* sentinel */ }
 };
 
@@ -681,7 +620,6 @@ check_branch_predictor(const struct arm64_cpu_capabilities *entry, int scope)
 	return (need_wa > 0);
 }
 
-<<<<<<< HEAD
 static const __maybe_unused struct midr_range tx2_family_cpus[] = {
 	MIDR_ALL_VERSIONS(MIDR_BRCM_VULCAN),
 	MIDR_ALL_VERSIONS(MIDR_CAVIUM_THUNDERX2),
@@ -764,8 +702,6 @@ static const struct midr_range arm64_workaround_845719_cpus[] = {
 
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 const struct arm64_cpu_capabilities arm64_errata[] = {
 #if	defined(CONFIG_ARM64_ERRATUM_826319) || \
 	defined(CONFIG_ARM64_ERRATUM_827319) || \
@@ -807,7 +743,6 @@ const struct arm64_cpu_capabilities arm64_errata[] = {
 				  1, 2),
 	},
 #endif
-<<<<<<< HEAD
 #ifdef CONFIG_ARM64_ERRATUM_843419
 	{
 	/* Cortex-A53 r0p[01234] */
@@ -822,20 +757,6 @@ const struct arm64_cpu_capabilities arm64_errata[] = {
 		.desc = "ARM erratum 845719",
 		.capability = ARM64_WORKAROUND_845719,
 		ERRATA_MIDR_RANGE_LIST(arm64_workaround_845719_cpus),
-=======
-#ifdef CONFIG_ARM64_ERRATUM_845719
-	{
-	/* Cortex-A53 r0p[01234] */
-		.desc = "ARM erratum 845719",
-		.capability = ARM64_WORKAROUND_845719,
-		ERRATA_MIDR_REV_RANGE(MIDR_CORTEX_A53, 0, 0, 4),
-	},
-	{
-	/* Kryo2xx Silver rAp4 */
-		.desc = "Kryo2xx Silver erratum 845719",
-		.capability = ARM64_WORKAROUND_845719,
-		ERRATA_MIDR_REV_RANGE(MIDR_KRYO2XX_SILVER, 0xA, 4, 4),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 #endif
 #ifdef CONFIG_CAVIUM_ERRATUM_23154
@@ -919,42 +840,11 @@ const struct arm64_cpu_capabilities arm64_errata[] = {
 		ERRATA_MIDR_REV(MIDR_QCOM_FALKOR_V1, 0, 0),
 	},
 #endif
-<<<<<<< HEAD
 #ifdef CONFIG_ARM64_ERRATUM_858921
 	{
 		.desc = "ARM erratum 858921",
 		.capability = ARM64_WORKAROUND_858921,
 		ERRATA_MIDR_RANGE_LIST(arm64_workaround_858921_cpus),
-=======
-#ifdef CONFIG_ARM64_ERRATUM_1286807
-	{
-	/* Cortex-A76 r0p0 to r3p0 */
-		.desc = "ARM erratum 1286807",
-		.capability = ARM64_WORKAROUND_REPEAT_TLBI,
-		ERRATA_MIDR_RANGE(MIDR_CORTEX_A76,
-				  0, 0,
-				  3, 0),
-	},
-	{
-		.capability = ARM64_WORKAROUND_REPEAT_TLBI,
-		ERRATA_MIDR_RANGE(MIDR_KRYO4G,
-				  12, 14,
-				  13, 14),
-	},
-#endif
-#ifdef CONFIG_ARM64_ERRATUM_858921
-	{
-	/* Cortex-A73 all versions */
-		.desc = "ARM erratum 858921",
-		.capability = ARM64_WORKAROUND_858921,
-		ERRATA_MIDR_ALL_VERSIONS(MIDR_CORTEX_A73),
-	},
-	{
-	/* KRYO2XX all versions */
-		.desc = "ARM erratum 858921",
-		.capability = ARM64_WORKAROUND_858921,
-		ERRATA_MIDR_ALL_VERSIONS(MIDR_KRYO2XX_GOLD),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 #endif
 	{
@@ -962,7 +852,6 @@ const struct arm64_cpu_capabilities arm64_errata[] = {
 		.type = ARM64_CPUCAP_LOCAL_CPU_ERRATUM,
 		.matches = check_branch_predictor,
 	},
-<<<<<<< HEAD
 #ifdef CONFIG_HARDEN_EL2_VECTORS
 	{
 		.desc = "EL2 vector hardening",
@@ -974,12 +863,6 @@ const struct arm64_cpu_capabilities arm64_errata[] = {
 		.desc = "Speculative Store Bypass Disable",
 		.capability = ARM64_SSBD,
 		.type = ARM64_CPUCAP_LOCAL_CPU_ERRATUM,
-=======
-	{
-		.desc = "Speculative Store Bypass Disable",
-		.type = ARM64_CPUCAP_LOCAL_CPU_ERRATUM,
-		.capability = ARM64_SSBD,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.matches = has_ssbd_mitigation,
 		.midr_range_list = arm64_ssb_cpus,
 	},
@@ -987,7 +870,6 @@ const struct arm64_cpu_capabilities arm64_errata[] = {
 	{
 		.desc = "ARM erratum 1188873",
 		.capability = ARM64_WORKAROUND_1188873,
-<<<<<<< HEAD
 		ERRATA_MIDR_RANGE_LIST(arm64_workaround_1188873_cpus),
 	},
 #endif
@@ -1013,21 +895,6 @@ const struct arm64_cpu_capabilities arm64_errata[] = {
 		.capability = ARM64_WORKAROUND_1542418,
 		ERRATA_MIDR_RANGE(MIDR_CORTEX_A77, 0, 0, 1, 0),
 		.cpu_enable = run_workaround_1542418_asid_rollover,
-=======
-		/* Cortex-A76 r0p0 to r2p0 */
-		ERRATA_MIDR_RANGE(MIDR_CORTEX_A76,
-				  0, 0,
-				  2, 0),
-
-	},
-	{
-		.desc = "ARM erratum 1188873",
-		.capability = ARM64_WORKAROUND_1188873,
-		/* Kryo-4G r15p14 */
-		ERRATA_MIDR_RANGE(MIDR_KRYO4G,
-				  15, 14,
-				  15, 15),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 #endif
 	{

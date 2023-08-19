@@ -109,13 +109,6 @@ static int disable_msi = 0;
 module_param(disable_msi, int, 0);
 MODULE_PARM_DESC(disable_msi, "Disable Message Signaled Interrupt (MSI)");
 
-<<<<<<< HEAD
-=======
-static const char pci_speed[][4] = {
-	"33", "66", "100", "133"
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Setup MAC to receive the types of packets we want.
  */

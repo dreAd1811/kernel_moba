@@ -43,11 +43,7 @@ ssize_t opal_msglog_copy(char *to, loff_t pos, size_t count)
 	if (!opal_memcons)
 		return -ENODEV;
 
-<<<<<<< HEAD
 	out_pos = be32_to_cpu(READ_ONCE(opal_memcons->out_pos));
-=======
-	out_pos = be32_to_cpu(ACCESS_ONCE(opal_memcons->out_pos));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Now we've read out_pos, put a barrier in before reading the new
 	 * data it points to in conbuf. */

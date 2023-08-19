@@ -19,19 +19,12 @@
 #include <linux/bitops.h>
 #include <linux/module.h>
 #include <linux/interrupt.h>
-<<<<<<< HEAD
 #include <linux/dma-noncoherent.h>
 #include <linux/memblock.h>
 
 #include <asm/cacheflush.h>
 #include <asm/page.h>
 #include <asm/setup.h>
-=======
-#include <linux/dma-mapping.h>
-#include <linux/memblock.h>
-
-#include <asm/page.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * DMA coherent memory management, can be redefined using the memdma=
@@ -82,11 +75,7 @@ static void __free_dma_pages(u32 addr, int order)
  * Allocate DMA coherent memory space and return both the kernel
  * virtual and DMA address for that space.
  */
-<<<<<<< HEAD
 void *arch_dma_alloc(struct device *dev, size_t size, dma_addr_t *handle,
-=======
-void *c6x_dma_alloc(struct device *dev, size_t size, dma_addr_t *handle,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		gfp_t gfp, unsigned long attrs)
 {
 	u32 paddr;
@@ -111,11 +100,7 @@ void *c6x_dma_alloc(struct device *dev, size_t size, dma_addr_t *handle,
 /*
  * Free DMA coherent memory as defined by the above mapping.
  */
-<<<<<<< HEAD
 void arch_dma_free(struct device *dev, size_t size, void *vaddr,
-=======
-void c6x_dma_free(struct device *dev, size_t size, void *vaddr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dma_addr_t dma_handle, unsigned long attrs)
 {
 	int order;
@@ -156,7 +141,6 @@ void __init coherent_mem_init(phys_addr_t start, u32 size)
 	dma_bitmap = phys_to_virt(bitmap_phys);
 	memset(dma_bitmap, 0, dma_pages * PAGE_SIZE);
 }
-<<<<<<< HEAD
 
 static void c6x_dma_sync(struct device *dev, phys_addr_t paddr, size_t size,
 		enum dma_data_direction dir)
@@ -189,5 +173,3 @@ void arch_sync_dma_for_cpu(struct device *dev, phys_addr_t paddr,
 {
 	return c6x_dma_sync(dev, paddr, size, dir);
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

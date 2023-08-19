@@ -18,10 +18,7 @@
  */
 
 #include <linux/acpi.h>
-<<<<<<< HEAD
 #include <linux/arm_sdei.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/delay.h>
 #include <linux/init.h>
 #include <linux/spinlock.h>
@@ -51,19 +48,12 @@
 #include <asm/cpu.h>
 #include <asm/cputype.h>
 #include <asm/cpu_ops.h>
-<<<<<<< HEAD
 #include <asm/daifflags.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/mmu_context.h>
 #include <asm/numa.h>
 #include <asm/pgtable.h>
 #include <asm/pgalloc.h>
 #include <asm/processor.h>
-<<<<<<< HEAD
-=======
-#include <asm/scs.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/smp_plat.h>
 #include <asm/sections.h>
 #include <asm/tlbflush.h>
@@ -72,10 +62,6 @@
 #include <asm/system_misc.h>
 #include <soc/qcom/minidump.h>
 
-<<<<<<< HEAD
-=======
-#include <soc/qcom/scm.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <soc/qcom/lpm_levels.h>
 
 #define CREATE_TRACE_POINTS
@@ -126,10 +112,6 @@ static int boot_secondary(unsigned int cpu, struct task_struct *idle)
 }
 
 static DECLARE_COMPLETION(cpu_running);
-<<<<<<< HEAD
-=======
-bool va52mismatch __ro_after_init;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int __cpu_up(unsigned int cpu, struct task_struct *idle)
 {
@@ -159,21 +141,10 @@ int __cpu_up(unsigned int cpu, struct task_struct *idle)
 
 		if (!cpu_online(cpu)) {
 			pr_crit("CPU%u: failed to come online\n", cpu);
-<<<<<<< HEAD
-=======
-
-			if (IS_ENABLED(CONFIG_ARM64_52BIT_VA) && va52mismatch)
-				pr_crit("CPU%u: does not support 52-bit VAs\n", cpu);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ret = -EIO;
 		}
 	} else {
 		pr_err("CPU%u: failed to boot: %d\n", cpu, ret);
-<<<<<<< HEAD
-=======
-		return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	secondary_data.task = NULL;
@@ -214,10 +185,7 @@ int __cpu_up(unsigned int cpu, struct task_struct *idle)
  */
 asmlinkage notrace void secondary_start_kernel(void)
 {
-<<<<<<< HEAD
 	u64 mpidr = read_cpuid_mpidr() & MPIDR_HWID_BITMASK;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mm_struct *mm = &init_mm;
 	unsigned int cpu;
 
@@ -261,34 +229,21 @@ asmlinkage notrace void secondary_start_kernel(void)
 	notify_cpu_starting(cpu);
 
 	store_cpu_topology(cpu);
-<<<<<<< HEAD
 	numa_add_cpu(cpu);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * OK, now it's safe to let the boot CPU continue.  Wait for
 	 * the CPU migration code to notice that the CPU is online
 	 * before we continue.
 	 */
-<<<<<<< HEAD
 	pr_info("CPU%u: Booted secondary processor 0x%010lx [0x%08x]\n",
 					 cpu, (unsigned long)mpidr,
 					 read_cpuid_id());
-=======
-	pr_info("CPU%u: Booted secondary processor [%08x]\n",
-					 cpu, read_cpuid_id());
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	update_cpu_boot_status(CPU_BOOT_SUCCESS);
 	set_cpu_online(cpu, true);
 	complete(&cpu_running);
 
-<<<<<<< HEAD
 	local_daif_restore(DAIF_PROCCTX);
-=======
-	local_irq_enable();
-	local_async_enable();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * OK, it's off to the idle thread for us
@@ -328,12 +283,9 @@ int __cpu_disable(void)
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	remove_cpu_topology(cpu);
 	numa_remove_cpu(cpu);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Take this CPU offline.  Once we clear this, we can't return,
 	 * and we must not schedule until we're ready to give up the cpu.
@@ -390,30 +342,14 @@ void __cpu_die(unsigned int cpu)
 /*
  * Called from the idle thread for the CPU which has been shutdown.
  *
-<<<<<<< HEAD
-=======
- * Note that we disable IRQs here, but do not re-enable them
- * before returning to the caller. This is also the behaviour
- * of the other hotplug-cpu capable cores, so presumably coming
- * out of idle fixes this.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 void cpu_die(void)
 {
 	unsigned int cpu = smp_processor_id();
 
-<<<<<<< HEAD
 	idle_task_exit();
 
 	local_daif_mask();
-=======
-	/* Save the shadow stack pointer before exiting the idle task */
-	scs_save(current);
-
-	idle_task_exit();
-
-	local_irq_disable();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Tell __cpu_die() that this CPU is now safe to dispose of */
 	(void)cpu_report_death();
@@ -470,24 +406,17 @@ void __init smp_cpus_done(unsigned int max_cpus)
 	setup_cpu_features();
 	hyp_mode_check();
 	apply_alternatives_all();
-<<<<<<< HEAD
-=======
-	scm_enable_mem_protection();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mark_linear_text_alias_ro();
 }
 
 void __init smp_prepare_boot_cpu(void)
 {
 	set_my_cpu_offset(per_cpu_offset(smp_processor_id()));
-<<<<<<< HEAD
 	/*
 	 * Initialise the static keys early as they may be enabled by the
 	 * cpufeature code.
 	 */
 	jump_label_init();
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cpuinfo_store_boot_cpu();
 }
 
@@ -528,18 +457,9 @@ static bool __init is_mpidr_duplicate(unsigned int cpu, u64 hwid)
 {
 	unsigned int i;
 
-<<<<<<< HEAD
 	for (i = 1; (i < cpu) && (i < NR_CPUS); i++)
 		if (cpu_logical_map(i) == hwid)
 			return true;
-=======
-	for (i = 0; (i <= cpu) && (i < NR_CPUS); i++) {
-		if (i == logical_bootcpu_id)
-			continue;
-		if (cpu_logical_map(i) == hwid)
-			return true;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return false;
 }
 
@@ -561,11 +481,7 @@ static int __init smp_cpu_setup(int cpu)
 }
 
 static bool bootcpu_valid __initdata;
-<<<<<<< HEAD
 static unsigned int cpu_count = 1;
-=======
-static unsigned int cpu_count;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_ACPI
 static struct acpi_madt_generic_interrupt cpu_madt_gicc[NR_CPUS];
@@ -602,11 +518,7 @@ acpi_map_gic_cpu_interface(struct acpi_madt_generic_interrupt *processor)
 	}
 
 	/* Check if GICC structure of boot CPU is available in the MADT */
-<<<<<<< HEAD
 	if (cpu_logical_map(0) == hwid) {
-=======
-	if (cpu_logical_map(logical_bootcpu_id) == hwid) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (bootcpu_valid) {
 			pr_err("duplicate boot CPU MPIDR: 0x%llx in MADT\n",
 			       hwid);
@@ -614,11 +526,6 @@ acpi_map_gic_cpu_interface(struct acpi_madt_generic_interrupt *processor)
 		}
 		bootcpu_valid = true;
 		cpu_madt_gicc[0] = *processor;
-<<<<<<< HEAD
-=======
-		early_map_cpu_to_node(logical_bootcpu_id,
-					acpi_numa_get_nid(0, hwid));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -641,11 +548,6 @@ acpi_map_gic_cpu_interface(struct acpi_madt_generic_interrupt *processor)
 	 */
 	acpi_set_mailbox_entry(cpu_count, processor);
 
-<<<<<<< HEAD
-=======
-	early_map_cpu_to_node(cpu_count, acpi_numa_get_nid(cpu_count, hwid));
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cpu_count++;
 }
 
@@ -665,7 +567,6 @@ acpi_parse_gic_cpu_interface(struct acpi_subtable_header *header,
 
 	return 0;
 }
-<<<<<<< HEAD
 
 static void __init acpi_parse_and_init_cpus(void)
 {
@@ -694,10 +595,6 @@ static void __init acpi_parse_and_init_cpus(void)
 }
 #else
 #define acpi_parse_and_init_cpus(...)	do { } while (0)
-=======
-#else
-#define acpi_table_parse_madt(...)	do { } while (0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 void (*__smp_cross_call)(const struct cpumask *, unsigned int);
 DEFINE_PER_CPU(bool, pending_ipi);
@@ -705,12 +602,7 @@ DEFINE_PER_CPU(bool, pending_ipi);
 /*
  * Enumerate the possible CPU set from the device tree and build the
  * cpu logical map array containing MPIDR values related to logical
-<<<<<<< HEAD
  * cpus. Assumes that cpu_logical_map(0) has already been initialized.
-=======
- * cpus. Assumes that cpu_logical_map(logical_bootcpu_id) has already
- * been initialized.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static void __init of_parse_and_init_cpus(void)
 {
@@ -728,7 +620,6 @@ static void __init of_parse_and_init_cpus(void)
 			goto next;
 		}
 
-<<<<<<< HEAD
 		/*
 		 * The numbering scheme requires that the boot CPU
 		 * must be assigned logical id 0. Record it so that
@@ -736,9 +627,6 @@ static void __init of_parse_and_init_cpus(void)
 		 * be used.
 		 */
 		if (hwid == cpu_logical_map(0)) {
-=======
-		if (hwid == cpu_logical_map(logical_bootcpu_id)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (bootcpu_valid) {
 				pr_err("%pOF: duplicate boot cpu reg property in DT\n",
 					dn);
@@ -746,7 +634,6 @@ static void __init of_parse_and_init_cpus(void)
 			}
 
 			bootcpu_valid = true;
-<<<<<<< HEAD
 			early_map_cpu_to_node(0, of_node_to_nid(dn));
 
 			/*
@@ -756,19 +643,6 @@ static void __init of_parse_and_init_cpus(void)
 			 * incrementing cpu.
 			 */
 			continue;
-=======
-			early_map_cpu_to_node(logical_bootcpu_id,
-						of_node_to_nid(dn));
-
-			/*
-			 * boot cpu's cpu_logical_map is already
-			 * initialized and the boot cpu doesn't need the
-			 * enable-method like secondary cpu's. Now, as we
-			 * can't assume logical boot cpu to be 0, we need
-			 * to loop through entire logical cpu map.
-			 */
-			goto next;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		if (cpu_count >= NR_CPUS)
@@ -795,17 +669,7 @@ void __init smp_init_cpus(void)
 	if (acpi_disabled)
 		of_parse_and_init_cpus();
 	else
-<<<<<<< HEAD
 		acpi_parse_and_init_cpus();
-=======
-		/*
-		 * do a walk of MADT to determine how many CPUs
-		 * we have including disabled CPUs, and get information
-		 * we need for SMP init
-		 */
-		acpi_table_parse_madt(ACPI_MADT_TYPE_GENERIC_INTERRUPT,
-				      acpi_parse_gic_cpu_interface, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (cpu_count > nr_cpu_ids)
 		pr_warn("Number of cores (%d) exceeds configured maximum of %u - clipping\n",
@@ -823,17 +687,8 @@ void __init smp_init_cpus(void)
 	 * with entries in cpu_logical_map while initializing the cpus.
 	 * If the cpu set-up fails, invalidate the cpu_logical_map entry.
 	 */
-<<<<<<< HEAD
 	for (i = 1; i < nr_cpu_ids; i++) {
 		if (cpu_logical_map(i) != INVALID_HWID) {
-=======
-	for (i = 0; i < nr_cpu_ids; i++) {
-		if (cpu_logical_map(i) != INVALID_HWID) {
-			if (cpu_logical_map(i) ==
-					cpu_logical_map(logical_bootcpu_id))
-				continue;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (smp_cpu_setup(i))
 				cpu_logical_map(i) = INVALID_HWID;
 		}
@@ -851,10 +706,7 @@ void __init smp_prepare_cpus(unsigned int max_cpus)
 	this_cpu = smp_processor_id();
 	store_cpu_topology(this_cpu);
 	numa_store_cpu_info(this_cpu);
-<<<<<<< HEAD
 	numa_add_cpu(this_cpu);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * If UP is mandated by "nosmp" (which implies "maxcpus=0"), don't set
@@ -994,12 +846,8 @@ static void ipi_cpu_stop(unsigned int cpu, struct pt_regs *regs)
 	set_cpu_active(cpu, false);
 
 	flush_cache_all();
-<<<<<<< HEAD
 	local_daif_mask();
 	sdei_mask_local_cpu();
-=======
-	local_irq_disable();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	while (1)
 		cpu_relax();
@@ -1017,10 +865,7 @@ static void ipi_cpu_crash_stop(unsigned int cpu, struct pt_regs *regs)
 	atomic_dec(&waiting_for_crash_ipi);
 
 	local_irq_disable();
-<<<<<<< HEAD
 	sdei_mask_local_cpu();
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_HOTPLUG_CPU
 	if (cpu_ops[cpu]->cpu_die)
@@ -1120,29 +965,11 @@ void tick_broadcast(const struct cpumask *mask)
 }
 #endif
 
-<<<<<<< HEAD
-=======
-/*
- * The number of CPUs online, not counting this CPU (which may not be
- * fully online and so not counted in num_online_cpus()).
- */
-static inline unsigned int num_other_online_cpus(void)
-{
-	unsigned int this_cpu_online = cpu_online(smp_processor_id());
-
-	return num_online_cpus() - this_cpu_online;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void smp_send_stop(void)
 {
 	unsigned long timeout;
 
-<<<<<<< HEAD
 	if (num_online_cpus() > 1) {
-=======
-	if (num_other_online_cpus()) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cpumask_t mask;
 
 		cpumask_copy(&mask, cpu_online_mask);
@@ -1161,11 +988,8 @@ void smp_send_stop(void)
 	if (num_active_cpus() > 1)
 		pr_warning("SMP: failed to stop secondary CPUs %*pbl\n",
 			   cpumask_pr_args(cpu_online_mask));
-<<<<<<< HEAD
 
 	sdei_mask_local_cpu();
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #ifdef CONFIG_KEXEC_CORE
@@ -1184,28 +1008,15 @@ void crash_smp_send_stop(void)
 
 	cpus_stopped = 1;
 
-<<<<<<< HEAD
 	if (num_online_cpus() == 1) {
 		sdei_mask_local_cpu();
 		return;
 	}
-=======
-	/*
-	 * If this cpu is the only one alive at this point in time, online or
-	 * not, there are no stop messages to be sent around, so just back out.
-	 */
-	if (num_other_online_cpus() == 0)
-		return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cpumask_copy(&mask, cpu_online_mask);
 	cpumask_clear_cpu(smp_processor_id(), &mask);
 
-<<<<<<< HEAD
 	atomic_set(&waiting_for_crash_ipi, num_online_cpus() - 1);
-=======
-	atomic_set(&waiting_for_crash_ipi, num_other_online_cpus());
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pr_crit("SMP: stopping secondary CPUs\n");
 	smp_cross_call(&mask, IPI_CPU_CRASH_STOP);
@@ -1218,11 +1029,8 @@ void crash_smp_send_stop(void)
 	if (atomic_read(&waiting_for_crash_ipi) > 0)
 		pr_warning("SMP: failed to stop secondary CPUs %*pbl\n",
 			   cpumask_pr_args(&mask));
-<<<<<<< HEAD
 
 	sdei_mask_local_cpu();
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 bool smp_crash_stop_failed(void)

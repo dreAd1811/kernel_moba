@@ -45,11 +45,7 @@ cn_queue_alloc_callback_entry(struct cn_queue_dev *dev, const char *name,
 		return NULL;
 	}
 
-<<<<<<< HEAD
 	refcount_set(&cbq->refcnt, 1);
-=======
-	atomic_set(&cbq->refcnt, 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	atomic_inc(&dev->refcnt);
 	cbq->pdev = dev;
@@ -62,11 +58,7 @@ cn_queue_alloc_callback_entry(struct cn_queue_dev *dev, const char *name,
 
 void cn_queue_release_callback(struct cn_callback_entry *cbq)
 {
-<<<<<<< HEAD
 	if (!refcount_dec_and_test(&cbq->refcnt))
-=======
-	if (!atomic_dec_and_test(&cbq->refcnt))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	atomic_dec(&cbq->pdev->refcnt);

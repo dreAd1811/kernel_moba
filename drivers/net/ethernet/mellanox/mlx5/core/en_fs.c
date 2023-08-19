@@ -118,11 +118,7 @@ static int mlx5e_vport_context_update_vlans(struct mlx5e_priv *priv)
 	int i;
 
 	list_size = 0;
-<<<<<<< HEAD
 	for_each_set_bit(vlan, priv->fs.vlan.active_cvlans, VLAN_N_VID)
-=======
-	for_each_set_bit(vlan, priv->fs.vlan.active_vlans, VLAN_N_VID)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		list_size++;
 
 	max_list_size = 1 << MLX5_CAP_GEN(priv->mdev, log_max_vlan_list);
@@ -139,11 +135,7 @@ static int mlx5e_vport_context_update_vlans(struct mlx5e_priv *priv)
 		return -ENOMEM;
 
 	i = 0;
-<<<<<<< HEAD
 	for_each_set_bit(vlan, priv->fs.vlan.active_cvlans, VLAN_N_VID) {
-=======
-	for_each_set_bit(vlan, priv->fs.vlan.active_vlans, VLAN_N_VID) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (i >= list_size)
 			break;
 		vlans[i++] = vlan;
@@ -162,12 +154,8 @@ enum mlx5e_vlan_rule_type {
 	MLX5E_VLAN_RULE_TYPE_UNTAGGED,
 	MLX5E_VLAN_RULE_TYPE_ANY_CTAG_VID,
 	MLX5E_VLAN_RULE_TYPE_ANY_STAG_VID,
-<<<<<<< HEAD
 	MLX5E_VLAN_RULE_TYPE_MATCH_CTAG_VID,
 	MLX5E_VLAN_RULE_TYPE_MATCH_STAG_VID,
-=======
-	MLX5E_VLAN_RULE_TYPE_MATCH_VID,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int __mlx5e_add_vlan_rule(struct mlx5e_priv *priv,
@@ -175,11 +163,7 @@ static int __mlx5e_add_vlan_rule(struct mlx5e_priv *priv,
 				 u16 vid, struct mlx5_flow_spec *spec)
 {
 	struct mlx5_flow_table *ft = priv->fs.vlan.ft.t;
-<<<<<<< HEAD
 	struct mlx5_flow_destination dest = {};
-=======
-	struct mlx5_flow_destination dest;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mlx5_flow_handle **rule_p;
 	MLX5_DECLARE_FLOW_ACT(flow_act);
 	int err = 0;
@@ -191,13 +175,10 @@ static int __mlx5e_add_vlan_rule(struct mlx5e_priv *priv,
 
 	switch (rule_type) {
 	case MLX5E_VLAN_RULE_TYPE_UNTAGGED:
-<<<<<<< HEAD
 		/* cvlan_tag enabled in match criteria and
 		 * disabled in match value means both S & C tags
 		 * don't exist (untagged of both)
 		 */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rule_p = &priv->fs.vlan.untagged_rule;
 		MLX5_SET_TO_ONES(fte_match_param, spec->match_criteria,
 				 outer_headers.cvlan_tag);
@@ -214,7 +195,6 @@ static int __mlx5e_add_vlan_rule(struct mlx5e_priv *priv,
 				 outer_headers.svlan_tag);
 		MLX5_SET(fte_match_param, spec->match_value, outer_headers.svlan_tag, 1);
 		break;
-<<<<<<< HEAD
 	case MLX5E_VLAN_RULE_TYPE_MATCH_STAG_VID:
 		rule_p = &priv->fs.vlan.active_svlans_rule[vid];
 		MLX5_SET_TO_ONES(fte_match_param, spec->match_criteria,
@@ -227,10 +207,6 @@ static int __mlx5e_add_vlan_rule(struct mlx5e_priv *priv,
 		break;
 	default: /* MLX5E_VLAN_RULE_TYPE_MATCH_CTAG_VID */
 		rule_p = &priv->fs.vlan.active_cvlans_rule[vid];
-=======
-	default: /* MLX5E_VLAN_RULE_TYPE_MATCH_VID */
-		rule_p = &priv->fs.vlan.active_vlans_rule[vid];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		MLX5_SET_TO_ONES(fte_match_param, spec->match_criteria,
 				 outer_headers.cvlan_tag);
 		MLX5_SET(fte_match_param, spec->match_value, outer_headers.cvlan_tag, 1);
@@ -262,11 +238,7 @@ static int mlx5e_add_vlan_rule(struct mlx5e_priv *priv,
 	if (!spec)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	if (rule_type == MLX5E_VLAN_RULE_TYPE_MATCH_CTAG_VID)
-=======
-	if (rule_type == MLX5E_VLAN_RULE_TYPE_MATCH_VID)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mlx5e_vport_context_update_vlans(priv);
 
 	err = __mlx5e_add_vlan_rule(priv, rule_type, vid, spec);
@@ -298,7 +270,6 @@ static void mlx5e_del_vlan_rule(struct mlx5e_priv *priv,
 			priv->fs.vlan.any_svlan_rule = NULL;
 		}
 		break;
-<<<<<<< HEAD
 	case MLX5E_VLAN_RULE_TYPE_MATCH_STAG_VID:
 		if (priv->fs.vlan.active_svlans_rule[vid]) {
 			mlx5_del_flow_rules(priv->fs.vlan.active_svlans_rule[vid]);
@@ -309,13 +280,6 @@ static void mlx5e_del_vlan_rule(struct mlx5e_priv *priv,
 		if (priv->fs.vlan.active_cvlans_rule[vid]) {
 			mlx5_del_flow_rules(priv->fs.vlan.active_cvlans_rule[vid]);
 			priv->fs.vlan.active_cvlans_rule[vid] = NULL;
-=======
-	case MLX5E_VLAN_RULE_TYPE_MATCH_VID:
-		mlx5e_vport_context_update_vlans(priv);
-		if (priv->fs.vlan.active_vlans_rule[vid]) {
-			mlx5_del_flow_rules(priv->fs.vlan.active_vlans_rule[vid]);
-			priv->fs.vlan.active_vlans_rule[vid] = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		mlx5e_vport_context_update_vlans(priv);
 		break;
@@ -339,47 +303,28 @@ static int mlx5e_add_any_vid_rules(struct mlx5e_priv *priv)
 	return mlx5e_add_vlan_rule(priv, MLX5E_VLAN_RULE_TYPE_ANY_STAG_VID, 0);
 }
 
-<<<<<<< HEAD
 void mlx5e_enable_cvlan_filter(struct mlx5e_priv *priv)
 {
 	if (!priv->fs.vlan.cvlan_filter_disabled)
 		return;
 
 	priv->fs.vlan.cvlan_filter_disabled = false;
-=======
-void mlx5e_enable_vlan_filter(struct mlx5e_priv *priv)
-{
-	if (!priv->fs.vlan.filter_disabled)
-		return;
-
-	priv->fs.vlan.filter_disabled = false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (priv->netdev->flags & IFF_PROMISC)
 		return;
 	mlx5e_del_vlan_rule(priv, MLX5E_VLAN_RULE_TYPE_ANY_CTAG_VID, 0);
 }
 
-<<<<<<< HEAD
 void mlx5e_disable_cvlan_filter(struct mlx5e_priv *priv)
 {
 	if (priv->fs.vlan.cvlan_filter_disabled)
 		return;
 
 	priv->fs.vlan.cvlan_filter_disabled = true;
-=======
-void mlx5e_disable_vlan_filter(struct mlx5e_priv *priv)
-{
-	if (priv->fs.vlan.filter_disabled)
-		return;
-
-	priv->fs.vlan.filter_disabled = true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (priv->netdev->flags & IFF_PROMISC)
 		return;
 	mlx5e_add_vlan_rule(priv, MLX5E_VLAN_RULE_TYPE_ANY_CTAG_VID, 0);
 }
 
-<<<<<<< HEAD
 static int mlx5e_vlan_rx_add_cvid(struct mlx5e_priv *priv, u16 vid)
 {
 	int err;
@@ -435,26 +380,6 @@ int mlx5e_vlan_rx_kill_vid(struct net_device *dev, __be16 proto, u16 vid)
 		mlx5e_del_vlan_rule(priv, MLX5E_VLAN_RULE_TYPE_MATCH_STAG_VID, vid);
 		netdev_update_features(dev);
 	}
-=======
-int mlx5e_vlan_rx_add_vid(struct net_device *dev, __always_unused __be16 proto,
-			  u16 vid)
-{
-	struct mlx5e_priv *priv = netdev_priv(dev);
-
-	set_bit(vid, priv->fs.vlan.active_vlans);
-
-	return mlx5e_add_vlan_rule(priv, MLX5E_VLAN_RULE_TYPE_MATCH_VID, vid);
-}
-
-int mlx5e_vlan_rx_kill_vid(struct net_device *dev, __always_unused __be16 proto,
-			   u16 vid)
-{
-	struct mlx5e_priv *priv = netdev_priv(dev);
-
-	clear_bit(vid, priv->fs.vlan.active_vlans);
-
-	mlx5e_del_vlan_rule(priv, MLX5E_VLAN_RULE_TYPE_MATCH_VID, vid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -465,7 +390,6 @@ static void mlx5e_add_vlan_rules(struct mlx5e_priv *priv)
 
 	mlx5e_add_vlan_rule(priv, MLX5E_VLAN_RULE_TYPE_UNTAGGED, 0);
 
-<<<<<<< HEAD
 	for_each_set_bit(i, priv->fs.vlan.active_cvlans, VLAN_N_VID) {
 		mlx5e_add_vlan_rule(priv, MLX5E_VLAN_RULE_TYPE_MATCH_CTAG_VID, i);
 	}
@@ -474,13 +398,6 @@ static void mlx5e_add_vlan_rules(struct mlx5e_priv *priv)
 		mlx5e_add_vlan_rule(priv, MLX5E_VLAN_RULE_TYPE_MATCH_STAG_VID, i);
 
 	if (priv->fs.vlan.cvlan_filter_disabled &&
-=======
-	for_each_set_bit(i, priv->fs.vlan.active_vlans, VLAN_N_VID) {
-		mlx5e_add_vlan_rule(priv, MLX5E_VLAN_RULE_TYPE_MATCH_VID, i);
-	}
-
-	if (priv->fs.vlan.filter_disabled &&
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    !(priv->netdev->flags & IFF_PROMISC))
 		mlx5e_add_any_vid_rules(priv);
 }
@@ -491,7 +408,6 @@ static void mlx5e_del_vlan_rules(struct mlx5e_priv *priv)
 
 	mlx5e_del_vlan_rule(priv, MLX5E_VLAN_RULE_TYPE_UNTAGGED, 0);
 
-<<<<<<< HEAD
 	for_each_set_bit(i, priv->fs.vlan.active_cvlans, VLAN_N_VID) {
 		mlx5e_del_vlan_rule(priv, MLX5E_VLAN_RULE_TYPE_MATCH_CTAG_VID, i);
 	}
@@ -500,13 +416,6 @@ static void mlx5e_del_vlan_rules(struct mlx5e_priv *priv)
 		mlx5e_del_vlan_rule(priv, MLX5E_VLAN_RULE_TYPE_MATCH_STAG_VID, i);
 
 	if (priv->fs.vlan.cvlan_filter_disabled &&
-=======
-	for_each_set_bit(i, priv->fs.vlan.active_vlans, VLAN_N_VID) {
-		mlx5e_del_vlan_rule(priv, MLX5E_VLAN_RULE_TYPE_MATCH_VID, i);
-	}
-
-	if (priv->fs.vlan.filter_disabled &&
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    !(priv->netdev->flags & IFF_PROMISC))
 		mlx5e_del_any_vid_rules(priv);
 }
@@ -702,16 +611,11 @@ void mlx5e_set_rx_mode_work(struct work_struct *work)
 	bool disable_broadcast =  ea->broadcast_enabled && !broadcast_enabled;
 
 	if (enable_promisc) {
-<<<<<<< HEAD
 		if (!priv->channels.params.vlan_strip_disable)
 			netdev_warn_once(ndev,
 					 "S-tagged traffic will be dropped while C-tag vlan stripping is enabled\n");
 		mlx5e_add_l2_flow_rule(priv, &ea->promisc, MLX5E_PROMISC);
 		if (!priv->fs.vlan.cvlan_filter_disabled)
-=======
-		mlx5e_add_l2_flow_rule(priv, &ea->promisc, MLX5E_PROMISC);
-		if (!priv->fs.vlan.filter_disabled)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			mlx5e_add_any_vid_rules(priv);
 	}
 	if (enable_allmulti)
@@ -726,11 +630,7 @@ void mlx5e_set_rx_mode_work(struct work_struct *work)
 	if (disable_allmulti)
 		mlx5e_del_l2_flow_rule(priv, &ea->allmulti);
 	if (disable_promisc) {
-<<<<<<< HEAD
 		if (!priv->fs.vlan.cvlan_filter_disabled)
-=======
-		if (!priv->fs.vlan.filter_disabled)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			mlx5e_del_any_vid_rules(priv);
 		mlx5e_del_l2_flow_rule(priv, &ea->promisc);
 	}
@@ -905,42 +805,25 @@ mlx5e_generate_ttc_rule(struct mlx5e_priv *priv,
 	return err ? ERR_PTR(err) : rule;
 }
 
-<<<<<<< HEAD
 static int mlx5e_generate_ttc_table_rules(struct mlx5e_priv *priv,
 					  struct ttc_params *params,
 					  struct mlx5e_ttc_table *ttc)
 {
 	struct mlx5_flow_destination dest = {};
-=======
-static int mlx5e_generate_ttc_table_rules(struct mlx5e_priv *priv)
-{
-	struct mlx5_flow_destination dest;
-	struct mlx5e_ttc_table *ttc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mlx5_flow_handle **rules;
 	struct mlx5_flow_table *ft;
 	int tt;
 	int err;
 
-<<<<<<< HEAD
-=======
-	ttc = &priv->fs.ttc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ft = ttc->ft.t;
 	rules = ttc->rules;
 
 	dest.type = MLX5_FLOW_DESTINATION_TYPE_TIR;
 	for (tt = 0; tt < MLX5E_NUM_TT; tt++) {
 		if (tt == MLX5E_TT_ANY)
-<<<<<<< HEAD
 			dest.tir_num = params->any_tt_tirn;
 		else
 			dest.tir_num = params->indir_tirn[tt];
-=======
-			dest.tir_num = priv->direct_tir[0].tirn;
-		else
-			dest.tir_num = priv->indir_tir[tt].tirn;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rules[tt] = mlx5e_generate_ttc_rule(priv, ft, &dest,
 						    ttc_rules[tt].etype,
 						    ttc_rules[tt].proto);
@@ -948,20 +831,12 @@ static int mlx5e_generate_ttc_table_rules(struct mlx5e_priv *priv)
 			goto del_rules;
 	}
 
-<<<<<<< HEAD
 	if (!params->inner_ttc || !mlx5e_tunnel_inner_ft_supported(priv->mdev))
-=======
-	if (!mlx5e_tunnel_inner_ft_supported(priv->mdev))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	rules     = ttc->tunnel_rules;
 	dest.type = MLX5_FLOW_DESTINATION_TYPE_FLOW_TABLE;
-<<<<<<< HEAD
 	dest.ft   = params->inner_ttc->ft.t;
-=======
-	dest.ft   = priv->fs.inner_ttc.ft.t;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (tt = 0; tt < MLX5E_NUM_TUNNEL_TT; tt++) {
 		rules[tt] = mlx5e_generate_ttc_rule(priv, ft, &dest,
 						    ttc_tunnel_rules[tt].etype,
@@ -1101,43 +976,25 @@ mlx5e_generate_inner_ttc_rule(struct mlx5e_priv *priv,
 	return err ? ERR_PTR(err) : rule;
 }
 
-<<<<<<< HEAD
 static int mlx5e_generate_inner_ttc_table_rules(struct mlx5e_priv *priv,
 						struct ttc_params *params,
 						struct mlx5e_ttc_table *ttc)
 {
 	struct mlx5_flow_destination dest = {};
 	struct mlx5_flow_handle **rules;
-=======
-static int mlx5e_generate_inner_ttc_table_rules(struct mlx5e_priv *priv)
-{
-	struct mlx5_flow_destination dest;
-	struct mlx5_flow_handle **rules;
-	struct mlx5e_ttc_table *ttc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mlx5_flow_table *ft;
 	int err;
 	int tt;
 
-<<<<<<< HEAD
-=======
-	ttc =  &priv->fs.inner_ttc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ft = ttc->ft.t;
 	rules = ttc->rules;
 
 	dest.type = MLX5_FLOW_DESTINATION_TYPE_TIR;
 	for (tt = 0; tt < MLX5E_NUM_TT; tt++) {
 		if (tt == MLX5E_TT_ANY)
-<<<<<<< HEAD
 			dest.tir_num = params->any_tt_tirn;
 		else
 			dest.tir_num = params->indir_tirn[tt];
-=======
-			dest.tir_num = priv->direct_tir[0].tirn;
-		else
-			dest.tir_num = priv->inner_indir_tir[tt].tirn;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		rules[tt] = mlx5e_generate_inner_ttc_rule(priv, ft, &dest,
 							  ttc_rules[tt].etype,
@@ -1217,7 +1074,6 @@ err:
 	return err;
 }
 
-<<<<<<< HEAD
 void mlx5e_set_ttc_basic_params(struct mlx5e_priv *priv,
 				struct ttc_params *ttc_params)
 {
@@ -1247,27 +1103,13 @@ void mlx5e_set_ttc_ft_params(struct ttc_params *ttc_params)
 int mlx5e_create_inner_ttc_table(struct mlx5e_priv *priv, struct ttc_params *params,
 				 struct mlx5e_ttc_table *ttc)
 {
-=======
-static int mlx5e_create_inner_ttc_table(struct mlx5e_priv *priv)
-{
-	struct mlx5e_ttc_table *ttc = &priv->fs.inner_ttc;
-	struct mlx5_flow_table_attr ft_attr = {};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mlx5e_flow_table *ft = &ttc->ft;
 	int err;
 
 	if (!mlx5e_tunnel_inner_ft_supported(priv->mdev))
 		return 0;
 
-<<<<<<< HEAD
 	ft->t = mlx5_create_flow_table(priv->fs.ns, &params->ft_attr);
-=======
-	ft_attr.max_fte = MLX5E_INNER_TTC_TABLE_SIZE;
-	ft_attr.level   = MLX5E_INNER_TTC_FT_LEVEL;
-	ft_attr.prio    = MLX5E_NIC_PRIO;
-
-	ft->t = mlx5_create_flow_table(priv->fs.ns, &ft_attr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(ft->t)) {
 		err = PTR_ERR(ft->t);
 		ft->t = NULL;
@@ -1278,11 +1120,7 @@ static int mlx5e_create_inner_ttc_table(struct mlx5e_priv *priv)
 	if (err)
 		goto err;
 
-<<<<<<< HEAD
 	err = mlx5e_generate_inner_ttc_table_rules(priv, params, ttc);
-=======
-	err = mlx5e_generate_inner_ttc_table_rules(priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		goto err;
 
@@ -1293,16 +1131,9 @@ err:
 	return err;
 }
 
-<<<<<<< HEAD
 void mlx5e_destroy_inner_ttc_table(struct mlx5e_priv *priv,
 				   struct mlx5e_ttc_table *ttc)
 {
-=======
-static void mlx5e_destroy_inner_ttc_table(struct mlx5e_priv *priv)
-{
-	struct mlx5e_ttc_table *ttc = &priv->fs.inner_ttc;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!mlx5e_tunnel_inner_ft_supported(priv->mdev))
 		return;
 
@@ -1310,21 +1141,13 @@ static void mlx5e_destroy_inner_ttc_table(struct mlx5e_priv *priv)
 	mlx5e_destroy_flow_table(&ttc->ft);
 }
 
-<<<<<<< HEAD
 void mlx5e_destroy_ttc_table(struct mlx5e_priv *priv,
 			     struct mlx5e_ttc_table *ttc)
 {
-=======
-void mlx5e_destroy_ttc_table(struct mlx5e_priv *priv)
-{
-	struct mlx5e_ttc_table *ttc = &priv->fs.ttc;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlx5e_cleanup_ttc_rules(ttc);
 	mlx5e_destroy_flow_table(&ttc->ft);
 }
 
-<<<<<<< HEAD
 int mlx5e_create_ttc_table(struct mlx5e_priv *priv, struct ttc_params *params,
 			   struct mlx5e_ttc_table *ttc)
 {
@@ -1333,21 +1156,6 @@ int mlx5e_create_ttc_table(struct mlx5e_priv *priv, struct ttc_params *params,
 	int err;
 
 	ft->t = mlx5_create_flow_table(priv->fs.ns, &params->ft_attr);
-=======
-int mlx5e_create_ttc_table(struct mlx5e_priv *priv)
-{
-	bool match_ipv_outer = MLX5_CAP_FLOWTABLE_NIC_RX(priv->mdev, ft_field_support.outer_ip_version);
-	struct mlx5e_ttc_table *ttc = &priv->fs.ttc;
-	struct mlx5_flow_table_attr ft_attr = {};
-	struct mlx5e_flow_table *ft = &ttc->ft;
-	int err;
-
-	ft_attr.max_fte = MLX5E_TTC_TABLE_SIZE;
-	ft_attr.level = MLX5E_TTC_FT_LEVEL;
-	ft_attr.prio = MLX5E_NIC_PRIO;
-
-	ft->t = mlx5_create_flow_table(priv->fs.ns, &ft_attr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(ft->t)) {
 		err = PTR_ERR(ft->t);
 		ft->t = NULL;
@@ -1358,11 +1166,7 @@ int mlx5e_create_ttc_table(struct mlx5e_priv *priv)
 	if (err)
 		goto err;
 
-<<<<<<< HEAD
 	err = mlx5e_generate_ttc_table_rules(priv, params, ttc);
-=======
-	err = mlx5e_generate_ttc_table_rules(priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		goto err;
 
@@ -1385,11 +1189,7 @@ static int mlx5e_add_l2_flow_rule(struct mlx5e_priv *priv,
 				  struct mlx5e_l2_rule *ai, int type)
 {
 	struct mlx5_flow_table *ft = priv->fs.l2.ft.t;
-<<<<<<< HEAD
 	struct mlx5_flow_destination dest = {};
-=======
-	struct mlx5_flow_destination dest;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MLX5_DECLARE_FLOW_ACT(flow_act);
 	struct mlx5_flow_spec *spec;
 	int err = 0;
@@ -1548,7 +1348,6 @@ err_destroy_flow_table:
 	return err;
 }
 
-<<<<<<< HEAD
 #define MLX5E_NUM_VLAN_GROUPS	4
 #define MLX5E_VLAN_GROUP0_SIZE	BIT(12)
 #define MLX5E_VLAN_GROUP1_SIZE	BIT(12)
@@ -1558,15 +1357,6 @@ err_destroy_flow_table:
 				 MLX5E_VLAN_GROUP1_SIZE +\
 				 MLX5E_VLAN_GROUP2_SIZE +\
 				 MLX5E_VLAN_GROUP3_SIZE)
-=======
-#define MLX5E_NUM_VLAN_GROUPS	3
-#define MLX5E_VLAN_GROUP0_SIZE	BIT(12)
-#define MLX5E_VLAN_GROUP1_SIZE	BIT(1)
-#define MLX5E_VLAN_GROUP2_SIZE	BIT(0)
-#define MLX5E_VLAN_TABLE_SIZE	(MLX5E_VLAN_GROUP0_SIZE +\
-				 MLX5E_VLAN_GROUP1_SIZE +\
-				 MLX5E_VLAN_GROUP2_SIZE)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int __mlx5e_create_vlan_table_groups(struct mlx5e_flow_table *ft, u32 *in,
 					    int inlen)
@@ -1589,12 +1379,8 @@ static int __mlx5e_create_vlan_table_groups(struct mlx5e_flow_table *ft, u32 *in
 
 	memset(in, 0, inlen);
 	MLX5_SET_CFG(in, match_criteria_enable, MLX5_MATCH_OUTER_HEADERS);
-<<<<<<< HEAD
 	MLX5_SET_TO_ONES(fte_match_param, mc, outer_headers.svlan_tag);
 	MLX5_SET_TO_ONES(fte_match_param, mc, outer_headers.first_vid);
-=======
-	MLX5_SET_TO_ONES(fte_match_param, mc, outer_headers.cvlan_tag);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MLX5_SET_CFG(in, start_flow_index, ix);
 	ix += MLX5E_VLAN_GROUP1_SIZE;
 	MLX5_SET_CFG(in, end_flow_index, ix - 1);
@@ -1605,7 +1391,6 @@ static int __mlx5e_create_vlan_table_groups(struct mlx5e_flow_table *ft, u32 *in
 
 	memset(in, 0, inlen);
 	MLX5_SET_CFG(in, match_criteria_enable, MLX5_MATCH_OUTER_HEADERS);
-<<<<<<< HEAD
 	MLX5_SET_TO_ONES(fte_match_param, mc, outer_headers.cvlan_tag);
 	MLX5_SET_CFG(in, start_flow_index, ix);
 	ix += MLX5E_VLAN_GROUP2_SIZE;
@@ -1620,11 +1405,6 @@ static int __mlx5e_create_vlan_table_groups(struct mlx5e_flow_table *ft, u32 *in
 	MLX5_SET_TO_ONES(fte_match_param, mc, outer_headers.svlan_tag);
 	MLX5_SET_CFG(in, start_flow_index, ix);
 	ix += MLX5E_VLAN_GROUP3_SIZE;
-=======
-	MLX5_SET_TO_ONES(fte_match_param, mc, outer_headers.svlan_tag);
-	MLX5_SET_CFG(in, start_flow_index, ix);
-	ix += MLX5E_VLAN_GROUP2_SIZE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MLX5_SET_CFG(in, end_flow_index, ix - 1);
 	ft->g[ft->num_groups] = mlx5_create_flow_group(ft->t, in);
 	if (IS_ERR(ft->g[ft->num_groups]))
@@ -1707,12 +1487,8 @@ static void mlx5e_destroy_vlan_table(struct mlx5e_priv *priv)
 
 int mlx5e_create_flow_steering(struct mlx5e_priv *priv)
 {
-<<<<<<< HEAD
 	struct ttc_params ttc_params = {};
 	int tt, err;
-=======
-	int err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	priv->fs.ns = mlx5_get_flow_namespace(priv->mdev,
 					       MLX5_FLOW_NAMESPACE_KERNEL);
@@ -1727,31 +1503,23 @@ int mlx5e_create_flow_steering(struct mlx5e_priv *priv)
 		priv->netdev->hw_features &= ~NETIF_F_NTUPLE;
 	}
 
-<<<<<<< HEAD
 	mlx5e_set_ttc_basic_params(priv, &ttc_params);
 	mlx5e_set_inner_ttc_ft_params(&ttc_params);
 	for (tt = 0; tt < MLX5E_NUM_INDIR_TIRS; tt++)
 		ttc_params.indir_tirn[tt] = priv->inner_indir_tir[tt].tirn;
 
 	err = mlx5e_create_inner_ttc_table(priv, &ttc_params, &priv->fs.inner_ttc);
-=======
-	err = mlx5e_create_inner_ttc_table(priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err) {
 		netdev_err(priv->netdev, "Failed to create inner ttc table, err=%d\n",
 			   err);
 		goto err_destroy_arfs_tables;
 	}
 
-<<<<<<< HEAD
 	mlx5e_set_ttc_ft_params(&ttc_params);
 	for (tt = 0; tt < MLX5E_NUM_INDIR_TIRS; tt++)
 		ttc_params.indir_tirn[tt] = priv->indir_tir[tt].tirn;
 
 	err = mlx5e_create_ttc_table(priv, &ttc_params, &priv->fs.ttc);
-=======
-	err = mlx5e_create_ttc_table(priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err) {
 		netdev_err(priv->netdev, "Failed to create ttc table, err=%d\n",
 			   err);
@@ -1779,15 +1547,9 @@ int mlx5e_create_flow_steering(struct mlx5e_priv *priv)
 err_destroy_l2_table:
 	mlx5e_destroy_l2_table(priv);
 err_destroy_ttc_table:
-<<<<<<< HEAD
 	mlx5e_destroy_ttc_table(priv, &priv->fs.ttc);
 err_destroy_inner_ttc_table:
 	mlx5e_destroy_inner_ttc_table(priv, &priv->fs.inner_ttc);
-=======
-	mlx5e_destroy_ttc_table(priv);
-err_destroy_inner_ttc_table:
-	mlx5e_destroy_inner_ttc_table(priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_destroy_arfs_tables:
 	mlx5e_arfs_destroy_tables(priv);
 
@@ -1798,13 +1560,8 @@ void mlx5e_destroy_flow_steering(struct mlx5e_priv *priv)
 {
 	mlx5e_destroy_vlan_table(priv);
 	mlx5e_destroy_l2_table(priv);
-<<<<<<< HEAD
 	mlx5e_destroy_ttc_table(priv, &priv->fs.ttc);
 	mlx5e_destroy_inner_ttc_table(priv, &priv->fs.inner_ttc);
-=======
-	mlx5e_destroy_ttc_table(priv);
-	mlx5e_destroy_inner_ttc_table(priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlx5e_arfs_destroy_tables(priv);
 	mlx5e_ethtool_cleanup_steering(priv);
 }

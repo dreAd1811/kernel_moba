@@ -925,11 +925,7 @@ int ar9003_paprd_create_curve(struct ath_hw *ah,
 
 	memset(caldata->pa_table[chain], 0, sizeof(caldata->pa_table[chain]));
 
-<<<<<<< HEAD
 	buf = kmalloc_array(2 * 48, sizeof(u32), GFP_KERNEL);
-=======
-	buf = kmalloc(2 * 48 * sizeof(u32), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!buf)
 		return -ENOMEM;
 

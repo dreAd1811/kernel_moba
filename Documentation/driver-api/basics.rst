@@ -13,15 +13,6 @@ Driver device table
 .. kernel-doc:: include/linux/mod_devicetable.h
    :internal:
 
-<<<<<<< HEAD
-=======
-Atomic and pointer manipulation
--------------------------------
-
-.. kernel-doc:: arch/x86/include/asm/atomic.h
-   :internal:
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Delaying, scheduling, and timer routines
 ----------------------------------------
 
@@ -88,7 +79,6 @@ Internal Functions
 .. kernel-doc:: kernel/kthread.c
    :export:
 
-<<<<<<< HEAD
 Reference counting
 ------------------
 
@@ -104,8 +94,6 @@ Atomics
 .. kernel-doc:: arch/x86/include/asm/atomic.h
    :internal:
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Kernel objects manipulation
 ---------------------------
 

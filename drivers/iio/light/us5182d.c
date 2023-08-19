@@ -714,10 +714,6 @@ err:
 }
 
 static const struct iio_info us5182d_info = {
-<<<<<<< HEAD
-=======
-	.driver_module	= THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read_raw = us5182d_read_raw,
 	.write_raw = us5182d_write_raw,
 	.attrs = &us5182d_attr_group,

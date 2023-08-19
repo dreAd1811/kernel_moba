@@ -319,10 +319,7 @@ static int sxgbe_get_rss_hash_opts(struct sxgbe_priv_data *priv,
 	case TCP_V4_FLOW:
 	case UDP_V4_FLOW:
 		cmd->data |= RXH_L4_B_0_1 | RXH_L4_B_2_3;
-<<<<<<< HEAD
 		/* Fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case SCTP_V4_FLOW:
 	case AH_ESP_V4_FLOW:
 	case AH_V4_FLOW:
@@ -333,10 +330,7 @@ static int sxgbe_get_rss_hash_opts(struct sxgbe_priv_data *priv,
 	case TCP_V6_FLOW:
 	case UDP_V6_FLOW:
 		cmd->data |= RXH_L4_B_0_1 | RXH_L4_B_2_3;
-<<<<<<< HEAD
 		/* Fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case SCTP_V6_FLOW:
 	case AH_ESP_V6_FLOW:
 	case AH_V6_FLOW:

@@ -50,19 +50,11 @@
 	compatible = "fsl,vf610m4";
 
 	chosen {
-<<<<<<< HEAD
 		bootargs = "clk_ignore_unused init=/linuxrc rw";
 		stdout-path = "serial2:115200";
 	};
 
 	memory@8c000000 {
-=======
-		bootargs = "console=ttyLP2,115200 clk_ignore_unused init=/linuxrc rw";
-		linux,stdout-path = "&uart2";
-	};
-
-	memory {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x8c000000 0x3000000>;
 	};
 };

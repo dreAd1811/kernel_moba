@@ -21,7 +21,6 @@ size_t strnlen(const char * s, size_t count)
 	return sc - s;
 }
 
-<<<<<<< HEAD
 char *strrchr(const char *s, int c)
 {
 	const char *last = NULL;
@@ -32,8 +31,6 @@ char *strrchr(const char *s, int c)
 	return (char *)last;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef __powerpc64__
 
 # define do_div(n, base) ({						\

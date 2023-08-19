@@ -19,10 +19,6 @@
 
 KBUILD_DEFCONFIG := or1ksim_defconfig
 
-<<<<<<< HEAD
-=======
-LDFLAGS         :=
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 OBJCOPYFLAGS    := -O binary -R .note -R .comment -S
 LDFLAGS_vmlinux :=
 LIBGCC 		:= $(shell $(CC) $(KBUILD_CFLAGS) -print-libgcc-file-name)

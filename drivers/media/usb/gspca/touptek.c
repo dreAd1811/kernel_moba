@@ -195,7 +195,6 @@ static const struct v4l2_pix_format vga_mode[] = {
 static int val_reply(struct gspca_dev *gspca_dev, const char *reply, int rc)
 {
 	if (rc < 0) {
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "reply has error %d\n", rc);
 		return -EIO;
 	}
@@ -205,17 +204,6 @@ static int val_reply(struct gspca_dev *gspca_dev, const char *reply, int rc)
 	}
 	if (reply[0] != 0x08) {
 		gspca_err(gspca_dev, "Bad reply 0x%02x\n", (int)reply[0]);
-=======
-		PERR("reply has error %d", rc);
-		return -EIO;
-	}
-	if (rc != 1) {
-		PERR("Bad reply size %d", rc);
-		return -EIO;
-	}
-	if (reply[0] != 0x08) {
-		PERR("Bad reply 0x%02x", (int)reply[0]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EIO;
 	}
 	return 0;
@@ -226,7 +214,6 @@ static void reg_w(struct gspca_dev *gspca_dev, u16 value, u16 index)
 	char *buff = gspca_dev->usb_buf;
 	int rc;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_USBO,
 		  "reg_w bReq=0x0B, bReqT=0xC0, wVal=0x%04X, wInd=0x%04X\n\n",
 		  value, index);
@@ -236,28 +223,12 @@ static void reg_w(struct gspca_dev *gspca_dev, u16 value, u16 index)
 	if (rc < 0) {
 		gspca_err(gspca_dev, "Failed reg_w(0x0B, 0xC0, 0x%04X, 0x%04X) w/ rc %d\n",
 			  value, index, rc);
-=======
-	PDEBUG(D_USBO,
-		"reg_w bReq=0x0B, bReqT=0xC0, wVal=0x%04X, wInd=0x%04X\n",
-		value, index);
-	rc = usb_control_msg(gspca_dev->dev, usb_rcvctrlpipe(gspca_dev->dev, 0),
-		0x0B, 0xC0, value, index, buff, 1, 500);
-	PDEBUG(D_USBO, "rc=%d, ret={0x%02x}", rc, (int)buff[0]);
-	if (rc < 0) {
-		PERR("Failed reg_w(0x0B, 0xC0, 0x%04X, 0x%04X) w/ rc %d\n",
-			value, index, rc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		gspca_dev->usb_err = rc;
 		return;
 	}
 	if (val_reply(gspca_dev, buff, rc)) {
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "Bad reply to reg_w(0x0B, 0xC0, 0x%04X, 0x%04X\n",
 			  value, index);
-=======
-		PERR("Bad reply to reg_w(0x0B, 0xC0, 0x%04X, 0x%04X\n",
-			value, index);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		gspca_dev->usb_err = -EIO;
 	}
 }
@@ -283,19 +254,11 @@ static void setexposure(struct gspca_dev *gspca_dev, s32 val)
 	else if (w == 3264)
 		value = val * 3 / 2;
 	else {
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "Invalid width %u\n", w);
 		gspca_dev->usb_err = -EINVAL;
 		return;
 	}
 	gspca_dbg(gspca_dev, D_STREAM, "exposure: 0x%04X ms\n\n", value);
-=======
-		PERR("Invalid width %u\n", w);
-		gspca_dev->usb_err = -EINVAL;
-		return;
-	}
-	PDEBUG(D_STREAM, "exposure: 0x%04X ms\n", value);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Wonder if theres a good reason for sending it twice */
 	/* probably not but leave it in because...why not */
 	reg_w(gspca_dev, value, REG_COARSE_INTEGRATION_TIME_);
@@ -323,15 +286,9 @@ static void setggain(struct gspca_dev *gspca_dev, u16 global_gain)
 	u16 normalized;
 
 	normalized = gainify(global_gain);
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_STREAM, "gain G1/G2 (0x%04X): 0x%04X (src 0x%04X)\n\n",
 		  REG_GREEN1_GAIN,
 		  normalized, global_gain);
-=======
-	PDEBUG(D_STREAM, "gain G1/G2 (0x%04X): 0x%04X (src 0x%04X)\n",
-		 REG_GREEN1_GAIN,
-		 normalized, global_gain);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	reg_w(gspca_dev, normalized, REG_GREEN1_GAIN);
 	reg_w(gspca_dev, normalized, REG_GREEN2_GAIN);
@@ -345,7 +302,6 @@ static void setbgain(struct gspca_dev *gspca_dev,
 	normalized = global_gain +
 		((u32)global_gain) * gain / GAIN_MAX;
 	if (normalized > GAIN_MAX) {
-<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_STREAM, "Truncating blue 0x%04X w/ value 0x%04X\n\n",
 			  GAIN_MAX, normalized);
 		normalized = GAIN_MAX;
@@ -353,15 +309,6 @@ static void setbgain(struct gspca_dev *gspca_dev,
 	normalized = gainify(normalized);
 	gspca_dbg(gspca_dev, D_STREAM, "gain B (0x%04X): 0x%04X w/ source 0x%04X\n\n",
 		  REG_BLUE_GAIN, normalized, gain);
-=======
-		PDEBUG(D_STREAM, "Truncating blue 0x%04X w/ value 0x%04X\n",
-			 GAIN_MAX, normalized);
-		normalized = GAIN_MAX;
-	}
-	normalized = gainify(normalized);
-	PDEBUG(D_STREAM, "gain B (0x%04X): 0x%04X w/ source 0x%04X\n",
-		 REG_BLUE_GAIN, normalized, gain);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	reg_w(gspca_dev, normalized, REG_BLUE_GAIN);
 }
@@ -374,7 +321,6 @@ static void setrgain(struct gspca_dev *gspca_dev,
 	normalized = global_gain +
 		((u32)global_gain) * gain / GAIN_MAX;
 	if (normalized > GAIN_MAX) {
-<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_STREAM, "Truncating gain 0x%04X w/ value 0x%04X\n\n",
 			  GAIN_MAX, normalized);
 		normalized = GAIN_MAX;
@@ -382,15 +328,6 @@ static void setrgain(struct gspca_dev *gspca_dev,
 	normalized = gainify(normalized);
 	gspca_dbg(gspca_dev, D_STREAM, "gain R (0x%04X): 0x%04X w / source 0x%04X\n\n",
 		  REG_RED_GAIN, normalized, gain);
-=======
-		PDEBUG(D_STREAM, "Truncating gain 0x%04X w/ value 0x%04X\n",
-			 GAIN_MAX, normalized);
-		normalized = GAIN_MAX;
-	}
-	normalized = gainify(normalized);
-	PDEBUG(D_STREAM, "gain R (0x%04X): 0x%04X w / source 0x%04X\n",
-		 REG_RED_GAIN, normalized, gain);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	reg_w(gspca_dev, normalized, REG_RED_GAIN);
 }
@@ -399,11 +336,7 @@ static void configure_wh(struct gspca_dev *gspca_dev)
 {
 	unsigned int w = gspca_dev->pixfmt.width;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_STREAM, "configure_wh\n\n");
-=======
-	PDEBUG(D_STREAM, "configure_wh\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (w == 800) {
 		static const struct cmd reg_init_res[] = {
@@ -439,11 +372,7 @@ static void configure_wh(struct gspca_dev *gspca_dev)
 		reg_w_buf(gspca_dev,
 			       reg_init_res, ARRAY_SIZE(reg_init_res));
 	} else {
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "bad width %u\n", w);
-=======
-		PERR("bad width %u\n", w);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		gspca_dev->usb_err = -EINVAL;
 		return;
 	}
@@ -463,11 +392,7 @@ static void configure_wh(struct gspca_dev *gspca_dev)
 		reg_w(gspca_dev, 0x0B4B, REG_FRAME_LENGTH_LINES_);
 		reg_w(gspca_dev, 0x1F40, REG_LINE_LENGTH_PCK_);
 	} else {
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "bad width %u\n", w);
-=======
-		PERR("bad width %u\n", w);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		gspca_dev->usb_err = -EINVAL;
 		return;
 	}
@@ -500,23 +425,15 @@ static void configure_encrypted(struct gspca_dev *gspca_dev)
 		{0x0100, REG_MODE_SELECT},
 	};
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_STREAM, "Encrypted begin, w = %u\n\n",
 		  gspca_dev->pixfmt.width);
-=======
-	PDEBUG(D_STREAM, "Encrypted begin, w = %u\n", gspca_dev->pixfmt.width);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	reg_w_buf(gspca_dev, reg_init_begin, ARRAY_SIZE(reg_init_begin));
 	configure_wh(gspca_dev);
 	reg_w_buf(gspca_dev, reg_init_end, ARRAY_SIZE(reg_init_end));
 	reg_w(gspca_dev, 0x0100, REG_GROUPED_PARAMETER_HOLD);
 	reg_w(gspca_dev, 0x0000, REG_GROUPED_PARAMETER_HOLD);
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_STREAM, "Encrypted end\n\n");
-=======
-	PDEBUG(D_STREAM, "Encrypted end\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int configure(struct gspca_dev *gspca_dev)
@@ -524,11 +441,7 @@ static int configure(struct gspca_dev *gspca_dev)
 	int rc;
 	char *buff = gspca_dev->usb_buf;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_STREAM, "configure()\n\n");
-=======
-	PDEBUG(D_STREAM, "configure()\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * First driver sets a sort of encryption key
@@ -546,11 +459,7 @@ static int configure(struct gspca_dev *gspca_dev)
 	rc = usb_control_msg(gspca_dev->dev, usb_rcvctrlpipe(gspca_dev->dev, 0),
 			     0x16, 0xC0, 0x0000, 0x0000, buff, 2, 500);
 	if (val_reply(gspca_dev, buff, rc)) {
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "failed key req\n");
-=======
-		PERR("failed key req");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EIO;
 	}
 
@@ -567,36 +476,24 @@ static int configure(struct gspca_dev *gspca_dev)
 	rc = usb_control_msg(gspca_dev->dev, usb_sndctrlpipe(gspca_dev->dev, 0),
 			     0x01, 0x40, 0x0001, 0x000F, NULL, 0, 500);
 	if (rc < 0) {
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "failed to replay packet 176 w/ rc %d\n",
 			  rc);
-=======
-		PERR("failed to replay packet 176 w/ rc %d\n", rc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return rc;
 	}
 
 	rc = usb_control_msg(gspca_dev->dev, usb_sndctrlpipe(gspca_dev->dev, 0),
 			     0x01, 0x40, 0x0000, 0x000F, NULL, 0, 500);
 	if (rc < 0) {
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "failed to replay packet 178 w/ rc %d\n",
 			  rc);
-=======
-		PERR("failed to replay packet 178 w/ rc %d\n", rc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return rc;
 	}
 
 	rc = usb_control_msg(gspca_dev->dev, usb_sndctrlpipe(gspca_dev->dev, 0),
 			     0x01, 0x40, 0x0001, 0x000F, NULL, 0, 500);
 	if (rc < 0) {
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "failed to replay packet 180 w/ rc %d\n",
 			  rc);
-=======
-		PERR("failed to replay packet 180 w/ rc %d\n", rc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return rc;
 	}
 
@@ -618,20 +515,12 @@ static int configure(struct gspca_dev *gspca_dev)
 	rc = usb_control_msg(gspca_dev->dev, usb_sndctrlpipe(gspca_dev->dev, 0),
 			     0x01, 0x40, 0x0003, 0x000F, NULL, 0, 500);
 	if (rc < 0) {
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "failed to replay final packet w/ rc %d\n",
 			  rc);
 		return rc;
 	}
 
 	gspca_dbg(gspca_dev, D_STREAM, "Configure complete\n\n");
-=======
-		PERR("failed to replay final packet w/ rc %d\n", rc);
-		return rc;
-	}
-
-	PDEBUG(D_STREAM, "Configure complete\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -661,11 +550,7 @@ static int sd_start(struct gspca_dev *gspca_dev)
 
 	rc = configure(gspca_dev);
 	if (rc < 0) {
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "Failed configure\n");
-=======
-		PERR("Failed configure");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return rc;
 	}
 	/* First two frames have messed up gains
@@ -683,7 +568,6 @@ static void sd_pkt_scan(struct gspca_dev *gspca_dev,
 		/* can we finish a frame? */
 		if (sd->this_f + len == gspca_dev->pixfmt.sizeimage) {
 			gspca_frame_add(gspca_dev, LAST_PACKET, data, len);
-<<<<<<< HEAD
 			gspca_dbg(gspca_dev, D_FRAM, "finish frame sz %u/%u w/ len %u\n\n",
 				  sd->this_f, gspca_dev->pixfmt.sizeimage, len);
 		/* lost some data, discard the frame */
@@ -691,15 +575,6 @@ static void sd_pkt_scan(struct gspca_dev *gspca_dev,
 			gspca_frame_add(gspca_dev, DISCARD_PACKET, NULL, 0);
 			gspca_dbg(gspca_dev, D_FRAM, "abort frame sz %u/%u w/ len %u\n\n",
 				  sd->this_f, gspca_dev->pixfmt.sizeimage, len);
-=======
-			PDEBUG(D_FRAM, "finish frame sz %u/%u w/ len %u\n",
-				 sd->this_f, gspca_dev->pixfmt.sizeimage, len);
-		/* lost some data, discard the frame */
-		} else {
-			gspca_frame_add(gspca_dev, DISCARD_PACKET, NULL, 0);
-			PDEBUG(D_FRAM, "abort frame sz %u/%u w/ len %u\n",
-				 sd->this_f, gspca_dev->pixfmt.sizeimage, len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		sd->this_f = 0;
 	} else {
@@ -771,11 +646,7 @@ static int sd_init_controls(struct gspca_dev *gspca_dev)
 			V4L2_CID_RED_BALANCE, 0, 1023, 1, 295);
 
 	if (hdl->error) {
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "Could not initialize controls\n");
-=======
-		PERR("Could not initialize controls\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return hdl->error;
 	}
 	return 0;

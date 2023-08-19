@@ -45,19 +45,11 @@ static inline int debugger_break_match(struct pt_regs *regs) { return 0; }
 static inline int debugger_fault_handler(struct pt_regs *regs) { return 0; }
 #endif
 
-<<<<<<< HEAD
 void __set_breakpoint(struct arch_hw_breakpoint *brk);
 bool ppc_breakpoint_available(void);
 #ifdef CONFIG_PPC_ADV_DEBUG_REGS
 extern void do_send_trap(struct pt_regs *regs, unsigned long address,
 			 unsigned long error_code, int brkpt);
-=======
-void set_breakpoint(struct arch_hw_breakpoint *brk);
-void __set_breakpoint(struct arch_hw_breakpoint *brk);
-#ifdef CONFIG_PPC_ADV_DEBUG_REGS
-extern void do_send_trap(struct pt_regs *regs, unsigned long address,
-			 unsigned long error_code, int signal_code, int brkpt);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 
 extern void do_break(struct pt_regs *regs, unsigned long address,

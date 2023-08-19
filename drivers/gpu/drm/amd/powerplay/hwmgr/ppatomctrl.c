@@ -23,12 +23,8 @@
 #include "pp_debug.h"
 #include <linux/module.h>
 #include <linux/slab.h>
-<<<<<<< HEAD
 #include <linux/delay.h>
 #include "atom.h"
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "ppatomctrl.h"
 #include "atombios.h"
 #include "cgs_common.h"
@@ -133,10 +129,6 @@ static int atomctrl_set_mc_reg_address_table(
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int atomctrl_initialize_mc_reg_table(
 		struct pp_hwmgr *hwmgr,
 		uint8_t module_index,
@@ -149,11 +141,7 @@ int atomctrl_initialize_mc_reg_table(
 	u16 size;
 
 	vram_info = (ATOM_VRAM_INFO_HEADER_V2_1 *)
-<<<<<<< HEAD
 		smu_atom_get_data_table(hwmgr->adev,
-=======
-		cgs_atom_get_data_table(hwmgr->device,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				GetIndexIntoMasterTable(DATA, VRAM_Info), &size, &frev, &crev);
 
 	if (module_index >= vram_info->ucNumOfVRAMModule) {
@@ -186,11 +174,8 @@ int atomctrl_set_engine_dram_timings_rv770(
 		uint32_t engine_clock,
 		uint32_t memory_clock)
 {
-<<<<<<< HEAD
 	struct amdgpu_device *adev = hwmgr->adev;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	SET_ENGINE_CLOCK_PS_ALLOCATION engine_clock_parameters;
 
 	/* They are both in 10KHz Units. */
@@ -201,16 +186,10 @@ int atomctrl_set_engine_dram_timings_rv770(
 	/* in 10 khz units.*/
 	engine_clock_parameters.sReserved.ulClock =
 		cpu_to_le32(memory_clock & SET_CLOCK_FREQ_MASK);
-<<<<<<< HEAD
 
 	return amdgpu_atom_execute_table(adev->mode_info.atom_context,
 			GetIndexIntoMasterTable(COMMAND, DynamicMemorySettings),
 			(uint32_t *)&engine_clock_parameters);
-=======
-	return cgs_atom_exec_cmd_table(hwmgr->device,
-			GetIndexIntoMasterTable(COMMAND, DynamicMemorySettings),
-			&engine_clock_parameters);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -227,11 +206,7 @@ static ATOM_VOLTAGE_OBJECT_INFO *get_voltage_info_table(void *device)
 	union voltage_object_info *voltage_info;
 
 	voltage_info = (union voltage_object_info *)
-<<<<<<< HEAD
 		smu_atom_get_data_table(device, index,
-=======
-		cgs_atom_get_data_table(device, index,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			&size, &frev, &crev);
 
 	if (voltage_info != NULL)
@@ -275,26 +250,16 @@ int atomctrl_get_memory_pll_dividers_si(
 		pp_atomctrl_memory_clock_param *mpll_param,
 		bool strobe_mode)
 {
-<<<<<<< HEAD
 	struct amdgpu_device *adev = hwmgr->adev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	COMPUTE_MEMORY_CLOCK_PARAM_PARAMETERS_V2_1 mpll_parameters;
 	int result;
 
 	mpll_parameters.ulClock = cpu_to_le32(clock_value);
 	mpll_parameters.ucInputFlag = (uint8_t)((strobe_mode) ? 1 : 0);
 
-<<<<<<< HEAD
 	result = amdgpu_atom_execute_table(adev->mode_info.atom_context,
 		 GetIndexIntoMasterTable(COMMAND, ComputeMemoryClockParam),
 		(uint32_t *)&mpll_parameters);
-=======
-	result = cgs_atom_exec_cmd_table
-		(hwmgr->device,
-		 GetIndexIntoMasterTable(COMMAND, ComputeMemoryClockParam),
-		 &mpll_parameters);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (0 == result) {
 		mpll_param->mpll_fb_divider.clk_frac =
@@ -333,24 +298,15 @@ int atomctrl_get_memory_pll_dividers_si(
 int atomctrl_get_memory_pll_dividers_vi(struct pp_hwmgr *hwmgr,
 		uint32_t clock_value, pp_atomctrl_memory_clock_param *mpll_param)
 {
-<<<<<<< HEAD
 	struct amdgpu_device *adev = hwmgr->adev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	COMPUTE_MEMORY_CLOCK_PARAM_PARAMETERS_V2_2 mpll_parameters;
 	int result;
 
 	mpll_parameters.ulClock.ulClock = cpu_to_le32(clock_value);
 
-<<<<<<< HEAD
 	result = amdgpu_atom_execute_table(adev->mode_info.atom_context,
 			GetIndexIntoMasterTable(COMMAND, ComputeMemoryClockParam),
 			(uint32_t *)&mpll_parameters);
-=======
-	result = cgs_atom_exec_cmd_table(hwmgr->device,
-			GetIndexIntoMasterTable(COMMAND, ComputeMemoryClockParam),
-			&mpll_parameters);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!result)
 		mpll_param->mpll_post_divider =
@@ -359,7 +315,6 @@ int atomctrl_get_memory_pll_dividers_vi(struct pp_hwmgr *hwmgr,
 	return result;
 }
 
-<<<<<<< HEAD
 int atomctrl_get_memory_pll_dividers_ai(struct pp_hwmgr *hwmgr,
 					uint32_t clock_value,
 					pp_atomctrl_memory_clock_param_ai *mpll_param)
@@ -390,31 +345,19 @@ int atomctrl_get_memory_pll_dividers_ai(struct pp_hwmgr *hwmgr,
 	return result;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int atomctrl_get_engine_pll_dividers_kong(struct pp_hwmgr *hwmgr,
 					  uint32_t clock_value,
 					  pp_atomctrl_clock_dividers_kong *dividers)
 {
-<<<<<<< HEAD
 	struct amdgpu_device *adev = hwmgr->adev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	COMPUTE_MEMORY_ENGINE_PLL_PARAMETERS_V4 pll_parameters;
 	int result;
 
 	pll_parameters.ulClock = cpu_to_le32(clock_value);
 
-<<<<<<< HEAD
 	result = amdgpu_atom_execute_table(adev->mode_info.atom_context,
 		 GetIndexIntoMasterTable(COMMAND, ComputeMemoryEnginePLL),
 		(uint32_t *)&pll_parameters);
-=======
-	result = cgs_atom_exec_cmd_table
-		(hwmgr->device,
-		 GetIndexIntoMasterTable(COMMAND, ComputeMemoryEnginePLL),
-		 &pll_parameters);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (0 == result) {
 		dividers->pll_post_divider = pll_parameters.ucPostDiv;
@@ -429,26 +372,16 @@ int atomctrl_get_engine_pll_dividers_vi(
 		uint32_t clock_value,
 		pp_atomctrl_clock_dividers_vi *dividers)
 {
-<<<<<<< HEAD
 	struct amdgpu_device *adev = hwmgr->adev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	COMPUTE_GPU_CLOCK_OUTPUT_PARAMETERS_V1_6 pll_patameters;
 	int result;
 
 	pll_patameters.ulClock.ulClock = cpu_to_le32(clock_value);
 	pll_patameters.ulClock.ucPostDiv = COMPUTE_GPUCLK_INPUT_FLAG_SCLK;
 
-<<<<<<< HEAD
 	result = amdgpu_atom_execute_table(adev->mode_info.atom_context,
 		 GetIndexIntoMasterTable(COMMAND, ComputeMemoryEnginePLL),
 		(uint32_t *)&pll_patameters);
-=======
-	result = cgs_atom_exec_cmd_table
-		(hwmgr->device,
-		 GetIndexIntoMasterTable(COMMAND, ComputeMemoryEnginePLL),
-		 &pll_patameters);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (0 == result) {
 		dividers->pll_post_divider =
@@ -476,26 +409,16 @@ int atomctrl_get_engine_pll_dividers_ai(struct pp_hwmgr *hwmgr,
 		uint32_t clock_value,
 		pp_atomctrl_clock_dividers_ai *dividers)
 {
-<<<<<<< HEAD
 	struct amdgpu_device *adev = hwmgr->adev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	COMPUTE_GPU_CLOCK_OUTPUT_PARAMETERS_V1_7 pll_patameters;
 	int result;
 
 	pll_patameters.ulClock.ulClock = cpu_to_le32(clock_value);
 	pll_patameters.ulClock.ucPostDiv = COMPUTE_GPUCLK_INPUT_FLAG_SCLK;
 
-<<<<<<< HEAD
 	result = amdgpu_atom_execute_table(adev->mode_info.atom_context,
 		 GetIndexIntoMasterTable(COMMAND, ComputeMemoryEnginePLL),
 		(uint32_t *)&pll_patameters);
-=======
-	result = cgs_atom_exec_cmd_table
-		(hwmgr->device,
-		 GetIndexIntoMasterTable(COMMAND, ComputeMemoryEnginePLL),
-		 &pll_patameters);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (0 == result) {
 		dividers->usSclk_fcw_frac     = le16_to_cpu(pll_patameters.usSclk_fcw_frac);
@@ -518,10 +441,7 @@ int atomctrl_get_dfs_pll_dividers_vi(
 		uint32_t clock_value,
 		pp_atomctrl_clock_dividers_vi *dividers)
 {
-<<<<<<< HEAD
 	struct amdgpu_device *adev = hwmgr->adev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	COMPUTE_GPU_CLOCK_OUTPUT_PARAMETERS_V1_6 pll_patameters;
 	int result;
 
@@ -529,16 +449,9 @@ int atomctrl_get_dfs_pll_dividers_vi(
 	pll_patameters.ulClock.ucPostDiv =
 		COMPUTE_GPUCLK_INPUT_FLAG_DEFAULT_GPUCLK;
 
-<<<<<<< HEAD
 	result = amdgpu_atom_execute_table(adev->mode_info.atom_context,
 		 GetIndexIntoMasterTable(COMMAND, ComputeMemoryEnginePLL),
 		(uint32_t *)&pll_patameters);
-=======
-	result = cgs_atom_exec_cmd_table
-		(hwmgr->device,
-		 GetIndexIntoMasterTable(COMMAND, ComputeMemoryEnginePLL),
-		 &pll_patameters);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (0 == result) {
 		dividers->pll_post_divider =
@@ -573,11 +486,7 @@ uint32_t atomctrl_get_reference_clock(struct pp_hwmgr *hwmgr)
 	uint32_t clock;
 
 	fw_info = (ATOM_FIRMWARE_INFO *)
-<<<<<<< HEAD
 		smu_atom_get_data_table(hwmgr->adev,
-=======
-		cgs_atom_get_data_table(hwmgr->device,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			GetIndexIntoMasterTable(DATA, FirmwareInfo),
 			&size, &frev, &crev);
 
@@ -595,21 +504,13 @@ uint32_t atomctrl_get_reference_clock(struct pp_hwmgr *hwmgr)
  * SET_VOLTAGE_TYPE_ASIC_MVDDC, SET_VOLTAGE_TYPE_ASIC_MVDDQ.
  * voltage_mode is one of ATOM_SET_VOLTAGE, ATOM_SET_VOLTAGE_PHASE
  */
-<<<<<<< HEAD
 bool atomctrl_is_voltage_controlled_by_gpio_v3(
-=======
-bool atomctrl_is_voltage_controled_by_gpio_v3(
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct pp_hwmgr *hwmgr,
 		uint8_t voltage_type,
 		uint8_t voltage_mode)
 {
 	ATOM_VOLTAGE_OBJECT_INFO_V3_1 *voltage_info =
-<<<<<<< HEAD
 		(ATOM_VOLTAGE_OBJECT_INFO_V3_1 *)get_voltage_info_table(hwmgr->adev);
-=======
-		(ATOM_VOLTAGE_OBJECT_INFO_V3_1 *)get_voltage_info_table(hwmgr->device);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool ret;
 
 	PP_ASSERT_WITH_CODE((NULL != voltage_info),
@@ -628,11 +529,7 @@ int atomctrl_get_voltage_table_v3(
 		pp_atomctrl_voltage_table *voltage_table)
 {
 	ATOM_VOLTAGE_OBJECT_INFO_V3_1 *voltage_info =
-<<<<<<< HEAD
 		(ATOM_VOLTAGE_OBJECT_INFO_V3_1 *)get_voltage_info_table(hwmgr->adev);
-=======
-		(ATOM_VOLTAGE_OBJECT_INFO_V3_1 *)get_voltage_info_table(hwmgr->device);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const ATOM_VOLTAGE_OBJECT_V3 *voltage_object;
 	unsigned int i;
 
@@ -709,11 +606,7 @@ static ATOM_GPIO_PIN_LUT *get_gpio_lookup_table(void *device)
 	void *table_address;
 
 	table_address = (ATOM_GPIO_PIN_LUT *)
-<<<<<<< HEAD
 		smu_atom_get_data_table(device,
-=======
-		cgs_atom_get_data_table(device,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				GetIndexIntoMasterTable(DATA, GPIO_Pin_LUT),
 				&size, &frev, &crev);
 
@@ -733,11 +626,7 @@ bool atomctrl_get_pp_assign_pin(
 {
 	bool bRet = false;
 	ATOM_GPIO_PIN_LUT *gpio_lookup_table =
-<<<<<<< HEAD
 		get_gpio_lookup_table(hwmgr->adev);
-=======
-		get_gpio_lookup_table(hwmgr->device);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	PP_ASSERT_WITH_CODE((NULL != gpio_lookup_table),
 			"Could not find GPIO lookup Table in BIOS.", return false);
@@ -758,11 +647,7 @@ int atomctrl_calculate_voltage_evv_on_sclk(
 		bool debug)
 {
 	ATOM_ASIC_PROFILING_INFO_V3_4 *getASICProfilingInfo;
-<<<<<<< HEAD
 	struct amdgpu_device *adev = hwmgr->adev;
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	EFUSE_LINEAR_FUNC_PARAM sRO_fuse;
 	EFUSE_LINEAR_FUNC_PARAM sCACm_fuse;
 	EFUSE_LINEAR_FUNC_PARAM sCACb_fuse;
@@ -789,11 +674,7 @@ int atomctrl_calculate_voltage_evv_on_sclk(
 	int result;
 
 	getASICProfilingInfo = (ATOM_ASIC_PROFILING_INFO_V3_4 *)
-<<<<<<< HEAD
 			smu_atom_get_data_table(hwmgr->adev,
-=======
-			cgs_atom_get_data_table(hwmgr->device,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					GetIndexIntoMasterTable(DATA, ASIC_ProfilingInfo),
 					NULL, NULL, NULL);
 
@@ -859,15 +740,9 @@ int atomctrl_calculate_voltage_evv_on_sclk(
 
 	sOutput_FuseValues.sEfuse = sInput_FuseValues;
 
-<<<<<<< HEAD
 	result = amdgpu_atom_execute_table(adev->mode_info.atom_context,
 			GetIndexIntoMasterTable(COMMAND, ReadEfuseValue),
 			(uint32_t *)&sOutput_FuseValues);
-=======
-	result = cgs_atom_exec_cmd_table(hwmgr->device,
-			GetIndexIntoMasterTable(COMMAND, ReadEfuseValue),
-			&sOutput_FuseValues);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (result)
 		return result;
@@ -886,15 +761,9 @@ int atomctrl_calculate_voltage_evv_on_sclk(
 
 	sOutput_FuseValues.sEfuse = sInput_FuseValues;
 
-<<<<<<< HEAD
 	result = amdgpu_atom_execute_table(adev->mode_info.atom_context,
 			GetIndexIntoMasterTable(COMMAND, ReadEfuseValue),
 			(uint32_t *)&sOutput_FuseValues);
-=======
-	result = cgs_atom_exec_cmd_table(hwmgr->device,
-			GetIndexIntoMasterTable(COMMAND, ReadEfuseValue),
-			&sOutput_FuseValues);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (result)
 		return result;
@@ -912,15 +781,9 @@ int atomctrl_calculate_voltage_evv_on_sclk(
 	sInput_FuseValues.ucBitLength = sCACb_fuse.ucEfuseLength;
 	sOutput_FuseValues.sEfuse = sInput_FuseValues;
 
-<<<<<<< HEAD
 	result = amdgpu_atom_execute_table(adev->mode_info.atom_context,
 			GetIndexIntoMasterTable(COMMAND, ReadEfuseValue),
 			(uint32_t *)&sOutput_FuseValues);
-=======
-	result = cgs_atom_exec_cmd_table(hwmgr->device,
-			GetIndexIntoMasterTable(COMMAND, ReadEfuseValue),
-			&sOutput_FuseValues);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (result)
 		return result;
@@ -939,15 +802,9 @@ int atomctrl_calculate_voltage_evv_on_sclk(
 
 	sOutput_FuseValues.sEfuse = sInput_FuseValues;
 
-<<<<<<< HEAD
 	result = amdgpu_atom_execute_table(adev->mode_info.atom_context,
 			GetIndexIntoMasterTable(COMMAND, ReadEfuseValue),
 			(uint32_t *)&sOutput_FuseValues);
-=======
-	result = cgs_atom_exec_cmd_table(hwmgr->device,
-			GetIndexIntoMasterTable(COMMAND, ReadEfuseValue),
-			&sOutput_FuseValues);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (result)
 		return result;
@@ -967,15 +824,9 @@ int atomctrl_calculate_voltage_evv_on_sclk(
 
 	sOutput_FuseValues.sEfuse = sInput_FuseValues;
 
-<<<<<<< HEAD
 	result = amdgpu_atom_execute_table(adev->mode_info.atom_context,
 			GetIndexIntoMasterTable(COMMAND, ReadEfuseValue),
 			(uint32_t *)&sOutput_FuseValues);
-=======
-	result = cgs_atom_exec_cmd_table(hwmgr->device,
-			GetIndexIntoMasterTable(COMMAND, ReadEfuseValue),
-			&sOutput_FuseValues);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (result)
 		return result;
 
@@ -994,15 +845,9 @@ int atomctrl_calculate_voltage_evv_on_sclk(
 	sInput_FuseValues.ucBitLength = sKv_b_fuse.ucEfuseLength;
 	sOutput_FuseValues.sEfuse = sInput_FuseValues;
 
-<<<<<<< HEAD
 	result = amdgpu_atom_execute_table(adev->mode_info.atom_context,
 			GetIndexIntoMasterTable(COMMAND, ReadEfuseValue),
 			(uint32_t *)&sOutput_FuseValues);
-=======
-	result = cgs_atom_exec_cmd_table(hwmgr->device,
-			GetIndexIntoMasterTable(COMMAND, ReadEfuseValue),
-			&sOutput_FuseValues);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (result)
 		return result;
@@ -1031,15 +876,9 @@ int atomctrl_calculate_voltage_evv_on_sclk(
 
 	sOutput_FuseValues.sEfuse = sInput_FuseValues;
 
-<<<<<<< HEAD
 	result = amdgpu_atom_execute_table(adev->mode_info.atom_context,
 			GetIndexIntoMasterTable(COMMAND, ReadEfuseValue),
 			(uint32_t *)&sOutput_FuseValues);
-=======
-	result = cgs_atom_exec_cmd_table(hwmgr->device,
-			GetIndexIntoMasterTable(COMMAND, ReadEfuseValue),
-			&sOutput_FuseValues);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (result)
 		return result;
@@ -1248,14 +1087,9 @@ int atomctrl_get_voltage_evv_on_sclk(
 		uint32_t sclk, uint16_t virtual_voltage_Id,
 		uint16_t *voltage)
 {
-<<<<<<< HEAD
 	struct amdgpu_device *adev = hwmgr->adev;
 	GET_VOLTAGE_INFO_INPUT_PARAMETER_V1_2 get_voltage_info_param_space;
 	int result;
-=======
-	int result;
-	GET_VOLTAGE_INFO_INPUT_PARAMETER_V1_2 get_voltage_info_param_space;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	get_voltage_info_param_space.ucVoltageType   =
 		voltage_type;
@@ -1266,23 +1100,12 @@ int atomctrl_get_voltage_evv_on_sclk(
 	get_voltage_info_param_space.ulSCLKFreq      =
 		cpu_to_le32(sclk);
 
-<<<<<<< HEAD
 	result = amdgpu_atom_execute_table(adev->mode_info.atom_context,
 			GetIndexIntoMasterTable(COMMAND, GetVoltageInfo),
 			(uint32_t *)&get_voltage_info_param_space);
 
 	*voltage = result ? 0 :
 			le16_to_cpu(((GET_EVV_VOLTAGE_INFO_OUTPUT_PARAMETER_V1_2 *)
-=======
-	result = cgs_atom_exec_cmd_table(hwmgr->device,
-			GetIndexIntoMasterTable(COMMAND, GetVoltageInfo),
-			&get_voltage_info_param_space);
-
-	if (0 != result)
-		return result;
-
-	*voltage = le16_to_cpu(((GET_EVV_VOLTAGE_INFO_OUTPUT_PARAMETER_V1_2 *)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				(&get_voltage_info_param_space))->usVoltageLevel);
 
 	return result;
@@ -1298,16 +1121,10 @@ int atomctrl_get_voltage_evv(struct pp_hwmgr *hwmgr,
 			     uint16_t virtual_voltage_id,
 			     uint16_t *voltage)
 {
-<<<<<<< HEAD
 	struct amdgpu_device *adev = hwmgr->adev;
 	GET_VOLTAGE_INFO_INPUT_PARAMETER_V1_2 get_voltage_info_param_space;
 	int result;
 	int entry_id;
-=======
-	int result;
-	int entry_id;
-	GET_VOLTAGE_INFO_INPUT_PARAMETER_V1_2 get_voltage_info_param_space;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* search for leakage voltage ID 0xff01 ~ 0xff08 and sckl */
 	for (entry_id = 0; entry_id < hwmgr->dyn_state.vddc_dependency_on_sclk->count; entry_id++) {
@@ -1317,17 +1134,10 @@ int atomctrl_get_voltage_evv(struct pp_hwmgr *hwmgr,
 		}
 	}
 
-<<<<<<< HEAD
 	if (entry_id >= hwmgr->dyn_state.vddc_dependency_on_sclk->count) {
 	        pr_debug("Can't find requested voltage id in vddc_dependency_on_sclk table!\n");
 	        return -EINVAL;
 	}
-=======
-	PP_ASSERT_WITH_CODE(entry_id < hwmgr->dyn_state.vddc_dependency_on_sclk->count,
-	        "Can't find requested voltage id in vddc_dependency_on_sclk table!",
-	        return -EINVAL;
-	);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	get_voltage_info_param_space.ucVoltageType = VOLTAGE_TYPE_VDDC;
 	get_voltage_info_param_space.ucVoltageMode = ATOM_GET_VOLTAGE_EVV_VOLTAGE;
@@ -1335,15 +1145,9 @@ int atomctrl_get_voltage_evv(struct pp_hwmgr *hwmgr,
 	get_voltage_info_param_space.ulSCLKFreq =
 		cpu_to_le32(hwmgr->dyn_state.vddc_dependency_on_sclk->entries[entry_id].clk);
 
-<<<<<<< HEAD
 	result = amdgpu_atom_execute_table(adev->mode_info.atom_context,
 			GetIndexIntoMasterTable(COMMAND, GetVoltageInfo),
 			(uint32_t *)&get_voltage_info_param_space);
-=======
-	result = cgs_atom_exec_cmd_table(hwmgr->device,
-			GetIndexIntoMasterTable(COMMAND, GetVoltageInfo),
-			&get_voltage_info_param_space);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (0 != result)
 		return result;
@@ -1365,11 +1169,7 @@ uint32_t atomctrl_get_mpll_reference_clock(struct pp_hwmgr *hwmgr)
 	u16 size;
 
 	fw_info = (ATOM_COMMON_TABLE_HEADER *)
-<<<<<<< HEAD
 		smu_atom_get_data_table(hwmgr->adev,
-=======
-		cgs_atom_get_data_table(hwmgr->device,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				GetIndexIntoMasterTable(DATA, FirmwareInfo),
 				&size, &frev, &crev);
 
@@ -1401,11 +1201,7 @@ static ATOM_ASIC_INTERNAL_SS_INFO *asic_internal_ss_get_ss_table(void *device)
 	u16 size;
 
 	table = (ATOM_ASIC_INTERNAL_SS_INFO *)
-<<<<<<< HEAD
 		smu_atom_get_data_table(device,
-=======
-		cgs_atom_get_data_table(device,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			GetIndexIntoMasterTable(DATA, ASIC_InternalSS_Info),
 			&size, &frev, &crev);
 
@@ -1426,11 +1222,7 @@ static int asic_internal_ss_get_ss_asignment(struct pp_hwmgr *hwmgr,
 
 	memset(ssEntry, 0x00, sizeof(pp_atomctrl_internal_ss_info));
 
-<<<<<<< HEAD
 	table = asic_internal_ss_get_ss_table(hwmgr->adev);
-=======
-	table = asic_internal_ss_get_ss_table(hwmgr->device);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (NULL == table)
 		return -1;
@@ -1502,16 +1294,10 @@ int atomctrl_get_engine_clock_spread_spectrum(
 			ASIC_INTERNAL_ENGINE_SS, engine_clock, ssInfo);
 }
 
-<<<<<<< HEAD
 int atomctrl_read_efuse(struct pp_hwmgr *hwmgr, uint16_t start_index,
 		uint16_t end_index, uint32_t mask, uint32_t *efuse)
 {
 	struct amdgpu_device *adev = hwmgr->adev;
-=======
-int atomctrl_read_efuse(void *device, uint16_t start_index,
-		uint16_t end_index, uint32_t mask, uint32_t *efuse)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int result;
 	READ_EFUSE_VALUE_PARAMETER efuse_param;
 
@@ -1521,18 +1307,10 @@ int atomctrl_read_efuse(void *device, uint16_t start_index,
 	efuse_param.sEfuse.ucBitLength  = (uint8_t)
 			((end_index - start_index) + 1);
 
-<<<<<<< HEAD
 	result = amdgpu_atom_execute_table(adev->mode_info.atom_context,
 			GetIndexIntoMasterTable(COMMAND, ReadEfuseValue),
 			(uint32_t *)&efuse_param);
 	*efuse = result ? 0 : le32_to_cpu(efuse_param.ulEfuseValue) & mask;
-=======
-	result = cgs_atom_exec_cmd_table(device,
-			GetIndexIntoMasterTable(COMMAND, ReadEfuseValue),
-			&efuse_param);
-	if (!result)
-		*efuse = le32_to_cpu(efuse_param.ulEfuseValue) & mask;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return result;
 }
@@ -1540,10 +1318,7 @@ int atomctrl_read_efuse(void *device, uint16_t start_index,
 int atomctrl_set_ac_timing_ai(struct pp_hwmgr *hwmgr, uint32_t memory_clock,
 			      uint8_t level)
 {
-<<<<<<< HEAD
 	struct amdgpu_device *adev = hwmgr->adev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DYNAMICE_MEMORY_SETTINGS_PARAMETER_V2_1 memory_clock_parameters;
 	int result;
 
@@ -1553,16 +1328,9 @@ int atomctrl_set_ac_timing_ai(struct pp_hwmgr *hwmgr, uint32_t memory_clock,
 		ADJUST_MC_SETTING_PARAM;
 	memory_clock_parameters.asDPMMCReg.ucMclkDPMState = level;
 
-<<<<<<< HEAD
 	result = amdgpu_atom_execute_table(adev->mode_info.atom_context,
 		 GetIndexIntoMasterTable(COMMAND, DynamicMemorySettings),
 		(uint32_t *)&memory_clock_parameters);
-=======
-	result = cgs_atom_exec_cmd_table
-		(hwmgr->device,
-		 GetIndexIntoMasterTable(COMMAND, DynamicMemorySettings),
-		 &memory_clock_parameters);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return result;
 }
@@ -1570,11 +1338,7 @@ int atomctrl_set_ac_timing_ai(struct pp_hwmgr *hwmgr, uint32_t memory_clock,
 int atomctrl_get_voltage_evv_on_sclk_ai(struct pp_hwmgr *hwmgr, uint8_t voltage_type,
 				uint32_t sclk, uint16_t virtual_voltage_Id, uint32_t *voltage)
 {
-<<<<<<< HEAD
 	struct amdgpu_device *adev = hwmgr->adev;
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int result;
 	GET_VOLTAGE_INFO_INPUT_PARAMETER_V1_3 get_voltage_info_param_space;
 
@@ -1583,24 +1347,12 @@ int atomctrl_get_voltage_evv_on_sclk_ai(struct pp_hwmgr *hwmgr, uint8_t voltage_
 	get_voltage_info_param_space.usVoltageLevel = cpu_to_le16(virtual_voltage_Id);
 	get_voltage_info_param_space.ulSCLKFreq = cpu_to_le32(sclk);
 
-<<<<<<< HEAD
 	result = amdgpu_atom_execute_table(adev->mode_info.atom_context,
 			GetIndexIntoMasterTable(COMMAND, GetVoltageInfo),
 			(uint32_t *)&get_voltage_info_param_space);
 
 	*voltage = result ? 0 :
 		le32_to_cpu(((GET_EVV_VOLTAGE_INFO_OUTPUT_PARAMETER_V1_3 *)(&get_voltage_info_param_space))->ulVoltageLevel);
-=======
-	result = cgs_atom_exec_cmd_table(hwmgr->device,
-			GetIndexIntoMasterTable(COMMAND, GetVoltageInfo),
-			&get_voltage_info_param_space);
-
-	if (0 != result)
-		return result;
-
-	*voltage = le32_to_cpu(((GET_EVV_VOLTAGE_INFO_OUTPUT_PARAMETER_V1_3 *)
-				(&get_voltage_info_param_space))->ulVoltageLevel);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return result;
 }
@@ -1613,11 +1365,7 @@ int atomctrl_get_smc_sclk_range_table(struct pp_hwmgr *hwmgr, struct pp_atom_ctr
 	u16 size;
 
 	ATOM_SMU_INFO_V2_1 *psmu_info =
-<<<<<<< HEAD
 		(ATOM_SMU_INFO_V2_1 *)smu_atom_get_data_table(hwmgr->adev,
-=======
-		(ATOM_SMU_INFO_V2_1 *)cgs_atom_get_data_table(hwmgr->device,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			GetIndexIntoMasterTable(DATA, SMU_Info),
 			&size, &frev, &crev);
 
@@ -1645,11 +1393,7 @@ int atomctrl_get_avfs_information(struct pp_hwmgr *hwmgr,
 		return -EINVAL;
 
 	profile = (ATOM_ASIC_PROFILING_INFO_V3_6 *)
-<<<<<<< HEAD
 			smu_atom_get_data_table(hwmgr->adev,
-=======
-			cgs_atom_get_data_table(hwmgr->device,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					GetIndexIntoMasterTable(DATA, ASIC_ProfilingInfo),
 					NULL, NULL, NULL);
 	if (!profile)
@@ -1689,11 +1433,7 @@ int  atomctrl_get_svi2_info(struct pp_hwmgr *hwmgr, uint8_t voltage_type,
 				uint16_t *load_line)
 {
 	ATOM_VOLTAGE_OBJECT_INFO_V3_1 *voltage_info =
-<<<<<<< HEAD
 		(ATOM_VOLTAGE_OBJECT_INFO_V3_1 *)get_voltage_info_table(hwmgr->adev);
-=======
-		(ATOM_VOLTAGE_OBJECT_INFO_V3_1 *)get_voltage_info_table(hwmgr->device);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	const ATOM_VOLTAGE_OBJECT_V3 *voltage_object;
 
@@ -1709,7 +1449,6 @@ int  atomctrl_get_svi2_info(struct pp_hwmgr *hwmgr, uint8_t voltage_type,
 
 	return 0;
 }
-<<<<<<< HEAD
 
 int atomctrl_get_leakage_id_from_efuse(struct pp_hwmgr *hwmgr, uint16_t *virtual_voltage_id)
 {
@@ -1821,5 +1560,3 @@ void atomctrl_get_voltage_range(struct pp_hwmgr *hwmgr, uint32_t *max_vddc,
 	*max_vddc = 0;
 	*min_vddc = 0;
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

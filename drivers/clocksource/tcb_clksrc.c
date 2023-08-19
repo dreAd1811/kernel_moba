@@ -384,11 +384,7 @@ static int __init tcb_clksrc_init(void)
 
 	printk(bootinfo, clksrc.name, CONFIG_ATMEL_TCB_CLKSRC_BLOCK,
 			divided_rate / 1000000,
-<<<<<<< HEAD
 			((divided_rate % 1000000) + 500) / 1000);
-=======
-			((divided_rate + 500000) % 1000000) / 1000);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (tc->tcb_config && tc->tcb_config->counter_width == 32) {
 		/* use apropriate function to read 32 bit counter */

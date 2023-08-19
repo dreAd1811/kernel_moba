@@ -940,11 +940,8 @@ static int fcpnp_probe(struct pnp_dev *pdev, const struct pnp_device_id *dev_id)
 	}
 	adapter->io = pnp_port_start(pdev, 0);
 	adapter->irq = pnp_irq(pdev, 0);
-<<<<<<< HEAD
 	if (!adapter->io || adapter->irq == -1)
 		goto err_free;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	printk(KERN_INFO "hisax_fcpcipnp: found adapter %s at IO %#x irq %d\n",
 	       (char *) dev_id->driver_data, adapter->io, adapter->irq);

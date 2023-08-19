@@ -55,7 +55,6 @@ struct bmp180_calib {
 	s16 MD;
 };
 
-<<<<<<< HEAD
 /* See datasheet Section 4.2.2. */
 struct bmp280_calib {
 	u16 T1;
@@ -78,8 +77,6 @@ struct bmp280_calib {
 	s8  H6;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct bmp280_data {
 	struct device *dev;
 	struct mutex lock;
@@ -87,14 +84,10 @@ struct bmp280_data {
 	struct completion done;
 	bool use_eoc;
 	const struct bmp280_chip_info *chip_info;
-<<<<<<< HEAD
 	union {
 		struct bmp180_calib bmp180;
 		struct bmp280_calib bmp280;
 	} calib;
-=======
-	struct bmp180_calib calib;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct regulator *vddd;
 	struct regulator *vdda;
 	unsigned int start_up_time; /* in microseconds */
@@ -152,7 +145,6 @@ static const struct iio_chan_spec bmp280_channels[] = {
 	},
 };
 
-<<<<<<< HEAD
 static int bmp280_read_calib(struct bmp280_data *data,
 			     struct bmp280_calib *calib,
 			     unsigned int chip)
@@ -250,15 +242,12 @@ static int bmp280_read_calib(struct bmp280_data *data,
 
 	return 0;
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Returns humidity in percent, resolution is 0.01 percent. Output value of
  * "47445" represents 47445/1024 = 46.333 %RH.
  *
  * Taken from BME280 datasheet, Section 4.2.3, "Compensation formula".
  */
-<<<<<<< HEAD
 static u32 bmp280_compensate_humidity(struct bmp280_data *data,
 				      s32 adc_humidity)
 {
@@ -271,65 +260,6 @@ static u32 bmp280_compensate_humidity(struct bmp280_data *data,
 		* (((var * (s32)calib->H3) >> 11) + (s32)32768)) >> 10)
 		+ (s32)2097152) * calib->H2 + 8192) >> 14);
 	var -= ((((var >> 15) * (var >> 15)) >> 7) * (s32)calib->H1) >> 4;
-=======
-
-static u32 bmp280_compensate_humidity(struct bmp280_data *data,
-				      s32 adc_humidity)
-{
-	struct device *dev = data->dev;
-	unsigned int H1, H3, tmp;
-	int H2, H4, H5, H6, ret, var;
-
-	ret = regmap_read(data->regmap, BMP280_REG_COMP_H1, &H1);
-	if (ret < 0) {
-		dev_err(dev, "failed to read H1 comp value\n");
-		return ret;
-	}
-
-	ret = regmap_bulk_read(data->regmap, BMP280_REG_COMP_H2, &tmp, 2);
-	if (ret < 0) {
-		dev_err(dev, "failed to read H2 comp value\n");
-		return ret;
-	}
-	H2 = sign_extend32(le16_to_cpu(tmp), 15);
-
-	ret = regmap_read(data->regmap, BMP280_REG_COMP_H3, &H3);
-	if (ret < 0) {
-		dev_err(dev, "failed to read H3 comp value\n");
-		return ret;
-	}
-
-	ret = regmap_bulk_read(data->regmap, BMP280_REG_COMP_H4, &tmp, 2);
-	if (ret < 0) {
-		dev_err(dev, "failed to read H4 comp value\n");
-		return ret;
-	}
-	H4 = sign_extend32(((be16_to_cpu(tmp) >> 4) & 0xff0) |
-			  (be16_to_cpu(tmp) & 0xf), 11);
-
-	ret = regmap_bulk_read(data->regmap, BMP280_REG_COMP_H5, &tmp, 2);
-	if (ret < 0) {
-		dev_err(dev, "failed to read H5 comp value\n");
-		return ret;
-	}
-	H5 = sign_extend32(((le16_to_cpu(tmp) >> 4) & 0xfff), 11);
-
-	ret = regmap_read(data->regmap, BMP280_REG_COMP_H6, &tmp);
-	if (ret < 0) {
-		dev_err(dev, "failed to read H6 comp value\n");
-		return ret;
-	}
-	H6 = sign_extend32(tmp, 7);
-
-	var = ((s32)data->t_fine) - (s32)76800;
-	var = ((((adc_humidity << 14) - (H4 << 20) - (H5 * var))
-		+ (s32)16384) >> 15) * (((((((var * H6) >> 10)
-		* (((var * (s32)H3) >> 11) + (s32)32768)) >> 10)
-		+ (s32)2097152) * H2 + 8192) >> 14);
-	var -= ((((var >> 15) * (var >> 15)) >> 7) * (s32)H1) >> 4;
-
-	var = clamp_val(var, 0, 419430400);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return var >> 12;
 };
@@ -344,7 +274,6 @@ static u32 bmp280_compensate_humidity(struct bmp280_data *data,
 static s32 bmp280_compensate_temp(struct bmp280_data *data,
 				  s32 adc_temp)
 {
-<<<<<<< HEAD
 	s32 var1, var2;
 	struct bmp280_calib *calib = &data->calib.bmp280;
 
@@ -353,33 +282,6 @@ static s32 bmp280_compensate_temp(struct bmp280_data *data,
 	var2 = (((((adc_temp >> 4) - ((s32)calib->T1)) *
 		  ((adc_temp >> 4) - ((s32)calib->T1))) >> 12) *
 		((s32)calib->T3)) >> 14;
-=======
-	int ret;
-	s32 var1, var2;
-	__le16 buf[BMP280_COMP_TEMP_REG_COUNT / 2];
-
-	ret = regmap_bulk_read(data->regmap, BMP280_REG_COMP_TEMP_START,
-			       buf, BMP280_COMP_TEMP_REG_COUNT);
-	if (ret < 0) {
-		dev_err(data->dev,
-			"failed to read temperature calibration parameters\n");
-		return ret;
-	}
-
-	/*
-	 * The double casts are necessary because le16_to_cpu returns an
-	 * unsigned 16-bit value.  Casting that value directly to a
-	 * signed 32-bit will not do proper sign extension.
-	 *
-	 * Conversely, T1 and P1 are unsigned values, so they can be
-	 * cast straight to the larger type.
-	 */
-	var1 = (((adc_temp >> 3) - ((s32)le16_to_cpu(buf[T1]) << 1)) *
-		((s32)(s16)le16_to_cpu(buf[T2]))) >> 11;
-	var2 = (((((adc_temp >> 4) - ((s32)le16_to_cpu(buf[T1]))) *
-		  ((adc_temp >> 4) - ((s32)le16_to_cpu(buf[T1])))) >> 12) *
-		((s32)(s16)le16_to_cpu(buf[T3]))) >> 14;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	data->t_fine = var1 + var2;
 
 	return (data->t_fine * 5 + 128) >> 8;
@@ -395,7 +297,6 @@ static s32 bmp280_compensate_temp(struct bmp280_data *data,
 static u32 bmp280_compensate_press(struct bmp280_data *data,
 				   s32 adc_press)
 {
-<<<<<<< HEAD
 	s64 var1, var2, p;
 	struct bmp280_calib *calib = &data->calib.bmp280;
 
@@ -406,42 +307,15 @@ static u32 bmp280_compensate_press(struct bmp280_data *data,
 	var1 = ((var1 * var1 * (s64)calib->P3) >> 8) +
 		((var1 * (s64)calib->P2) << 12);
 	var1 = ((((s64)1) << 47) + var1) * ((s64)calib->P1) >> 33;
-=======
-	int ret;
-	s64 var1, var2, p;
-	__le16 buf[BMP280_COMP_PRESS_REG_COUNT / 2];
-
-	ret = regmap_bulk_read(data->regmap, BMP280_REG_COMP_PRESS_START,
-			       buf, BMP280_COMP_PRESS_REG_COUNT);
-	if (ret < 0) {
-		dev_err(data->dev,
-			"failed to read pressure calibration parameters\n");
-		return ret;
-	}
-
-	var1 = ((s64)data->t_fine) - 128000;
-	var2 = var1 * var1 * (s64)(s16)le16_to_cpu(buf[P6]);
-	var2 += (var1 * (s64)(s16)le16_to_cpu(buf[P5])) << 17;
-	var2 += ((s64)(s16)le16_to_cpu(buf[P4])) << 35;
-	var1 = ((var1 * var1 * (s64)(s16)le16_to_cpu(buf[P3])) >> 8) +
-		((var1 * (s64)(s16)le16_to_cpu(buf[P2])) << 12);
-	var1 = ((((s64)1) << 47) + var1) * ((s64)le16_to_cpu(buf[P1])) >> 33;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (var1 == 0)
 		return 0;
 
 	p = ((((s64)1048576 - adc_press) << 31) - var2) * 3125;
 	p = div64_s64(p, var1);
-<<<<<<< HEAD
 	var1 = (((s64)calib->P9) * (p >> 13) * (p >> 13)) >> 25;
 	var2 = ((s64)(calib->P8) * p) >> 19;
 	p = ((p + var1 + var2) >> 8) + (((s64)calib->P7) << 4);
-=======
-	var1 = (((s64)(s16)le16_to_cpu(buf[P9])) * (p >> 13) * (p >> 13)) >> 25;
-	var2 = (((s64)(s16)le16_to_cpu(buf[P8])) * p) >> 19;
-	p = ((p + var1 + var2) >> 8) + (((s64)(s16)le16_to_cpu(buf[P7])) << 4);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return (u32)p;
 }
@@ -739,10 +613,6 @@ static const struct attribute_group bmp280_attrs_group = {
 };
 
 static const struct iio_info bmp280_info = {
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read_raw = &bmp280_read_raw,
 	.write_raw = &bmp280_write_raw,
 	.attrs = &bmp280_attrs_group,
@@ -833,11 +703,7 @@ static int bmp180_measure(struct bmp280_data *data, u8 ctrl_meas)
 	unsigned int ctrl;
 
 	if (data->use_eoc)
-<<<<<<< HEAD
 		init_completion(&data->done);
-=======
-		reinit_completion(&data->done);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = regmap_write(data->regmap, BMP280_REG_CTRL_MEAS, ctrl_meas);
 	if (ret)
@@ -938,11 +804,7 @@ static int bmp180_read_calib(struct bmp280_data *data,
 static s32 bmp180_compensate_temp(struct bmp280_data *data, s32 adc_temp)
 {
 	s32 x1, x2;
-<<<<<<< HEAD
 	struct bmp180_calib *calib = &data->calib.bmp180;
-=======
-	struct bmp180_calib *calib = &data->calib;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	x1 = ((adc_temp - calib->AC6) * calib->AC5) >> 15;
 	x2 = (calib->MC << 11) / (x1 + calib->MD);
@@ -1004,11 +866,7 @@ static u32 bmp180_compensate_press(struct bmp280_data *data, s32 adc_press)
 	s32 b3, b6;
 	u32 b4, b7;
 	s32 oss = data->oversampling_press;
-<<<<<<< HEAD
 	struct bmp180_calib *calib = &data->calib.bmp180;
-=======
-	struct bmp180_calib *calib = &data->calib;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	b6 = data->t_fine - 4000;
 	x1 = (calib->B2 * (b6 * b6 >> 12)) >> 11;
@@ -1101,12 +959,6 @@ static int bmp085_fetch_eoc_irq(struct device *dev,
 			"trying to enforce it\n");
 		irq_trig = IRQF_TRIGGER_RISING;
 	}
-<<<<<<< HEAD
-=======
-
-	init_completion(&data->done);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = devm_request_threaded_irq(dev,
 			irq,
 			bmp085_eoc_irq,
@@ -1228,7 +1080,6 @@ int bmp280_common_probe(struct device *dev,
 	dev_set_drvdata(dev, indio_dev);
 
 	/*
-<<<<<<< HEAD
 	 * Some chips have calibration parameters "programmed into the devices'
 	 * non-volatile memory during production". Let's read them out at probe
 	 * time once. They will not change.
@@ -1242,13 +1093,6 @@ int bmp280_common_probe(struct device *dev,
 		}
 	} else if (chip_id == BMP280_CHIP_ID || chip_id == BME280_CHIP_ID) {
 		ret = bmp280_read_calib(data, &data->calib.bmp280, chip_id);
-=======
-	 * The BMP085 and BMP180 has calibration in an E2PROM, read it out
-	 * at probe time. It will not change.
-	 */
-	if (chip_id  == BMP180_CHIP_ID) {
-		ret = bmp180_read_calib(data, &data->calib);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret < 0) {
 			dev_err(data->dev,
 				"failed to read calibration coefficients\n");

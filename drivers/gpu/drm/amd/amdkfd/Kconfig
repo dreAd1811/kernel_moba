@@ -4,12 +4,8 @@
 
 config HSA_AMD
 	tristate "HSA kernel driver for AMD GPU devices"
-<<<<<<< HEAD
 	depends on DRM_AMDGPU && X86_64
 	imply AMD_IOMMU_V2
 	select MMU_NOTIFIER
-=======
-	depends on (DRM_RADEON || DRM_AMDGPU) && AMD_IOMMU_V2 && X86_64
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Enable this if you want to use HSA features on AMD GPU devices.

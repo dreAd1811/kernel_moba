@@ -833,11 +833,7 @@ static void __exit nx_fini(void)
 	vio_unregister_driver(&nx_driver.viodriver);
 }
 
-<<<<<<< HEAD
 static const struct vio_device_id nx_crypto_driver_ids[] = {
-=======
-static struct vio_device_id nx_crypto_driver_ids[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ "ibm,sym-encryption-v1", "ibm,sym-encryption" },
 	{ "", "" }
 };

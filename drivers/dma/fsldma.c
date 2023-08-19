@@ -1328,12 +1328,7 @@ static int fsldma_of_remove(struct platform_device *op)
 #ifdef CONFIG_PM
 static int fsldma_suspend_late(struct device *dev)
 {
-<<<<<<< HEAD
 	struct fsldma_device *fdev = dev_get_drvdata(dev);
-=======
-	struct platform_device *pdev = to_platform_device(dev);
-	struct fsldma_device *fdev = platform_get_drvdata(pdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct fsldma_chan *chan;
 	int i;
 
@@ -1364,12 +1359,7 @@ out:
 
 static int fsldma_resume_early(struct device *dev)
 {
-<<<<<<< HEAD
 	struct fsldma_device *fdev = dev_get_drvdata(dev);
-=======
-	struct platform_device *pdev = to_platform_device(dev);
-	struct fsldma_device *fdev = platform_get_drvdata(pdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct fsldma_chan *chan;
 	u32 mode;
 	int i;

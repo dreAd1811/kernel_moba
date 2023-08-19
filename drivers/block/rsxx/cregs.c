@@ -203,15 +203,9 @@ static int creg_queue_cmd(struct rsxx_cardinfo *card,
 	return 0;
 }
 
-<<<<<<< HEAD
 static void creg_cmd_timed_out(struct timer_list *t)
 {
 	struct rsxx_cardinfo *card = from_timer(card, t, creg_ctrl.cmd_timer);
-=======
-static void creg_cmd_timed_out(unsigned long data)
-{
-	struct rsxx_cardinfo *card = (struct rsxx_cardinfo *) data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct creg_cmd *cmd;
 
 	spin_lock(&card->creg_ctrl.lock);
@@ -751,12 +745,7 @@ int rsxx_creg_setup(struct rsxx_cardinfo *card)
 	mutex_init(&card->creg_ctrl.reset_lock);
 	INIT_LIST_HEAD(&card->creg_ctrl.queue);
 	spin_lock_init(&card->creg_ctrl.lock);
-<<<<<<< HEAD
 	timer_setup(&card->creg_ctrl.cmd_timer, creg_cmd_timed_out, 0);
-=======
-	setup_timer(&card->creg_ctrl.cmd_timer, creg_cmd_timed_out,
-		    (unsigned long) card);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

@@ -35,19 +35,12 @@
 #include <linux/sizes.h>
 #include <linux/syscalls.h>
 #include <linux/mm_types.h>
-<<<<<<< HEAD
-=======
-#include <linux/kasan.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/atomic.h>
 #include <asm/barrier.h>
 #include <asm/bug.h>
 #include <asm/cpufeature.h>
-<<<<<<< HEAD
 #include <asm/daifflags.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/debug-monitors.h>
 #include <asm/esr.h>
 #include <asm/insn.h>
@@ -58,10 +51,6 @@
 #include <asm/exception.h>
 #include <asm/system_misc.h>
 #include <asm/sysreg.h>
-<<<<<<< HEAD
-=======
-#include <trace/events/exception.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static const char *handler[]= {
 	"Synchronous Abort",
@@ -114,12 +103,6 @@ void dump_backtrace(struct pt_regs *regs, struct task_struct *tsk)
 {
 	struct stackframe frame;
 	int skip = 0;
-<<<<<<< HEAD
-=======
-	long cur_state = 0;
-	unsigned long cur_sp = 0;
-	unsigned long cur_fp = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pr_debug("%s(regs = %p tsk = %p)\n", __func__, regs, tsk);
 
@@ -144,12 +127,6 @@ void dump_backtrace(struct pt_regs *regs, struct task_struct *tsk)
 		 */
 		frame.fp = thread_saved_fp(tsk);
 		frame.pc = thread_saved_pc(tsk);
-<<<<<<< HEAD
-=======
-		cur_state = tsk->state;
-		cur_sp = thread_saved_sp(tsk);
-		cur_fp = frame.fp;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 #ifdef CONFIG_FUNCTION_GRAPH_TRACER
 	frame.graph = tsk->curr_ret_stack;
@@ -157,26 +134,6 @@ void dump_backtrace(struct pt_regs *regs, struct task_struct *tsk)
 
 	printk("Call trace:\n");
 	do {
-<<<<<<< HEAD
-=======
-		if (tsk != current && (cur_state != tsk->state
-			/*
-			 * We would not be printing backtrace for the task
-			 * that has changed state from uninterruptible to
-			 * running before hitting the do-while loop but after
-			 * saving the current state. If task is in running
-			 * state before saving the state, then we may print
-			 * wrong call trace or end up in infinite while loop
-			 * if *(fp) and *(fp+8) are same. While the situation
-			 * will stop print when that task schedule out.
-			 */
-			|| cur_sp != thread_saved_sp(tsk)
-			|| cur_fp != thread_saved_fp(tsk))) {
-			printk("The task:%s had been rescheduled!\n",
-				tsk->comm);
-			break;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* skip until specified stack frame */
 		if (!skip) {
 			dump_backtrace_entry(frame.pc);
@@ -271,7 +228,6 @@ void die(const char *str, struct pt_regs *regs, int err)
 		do_exit(SIGSEGV);
 }
 
-<<<<<<< HEAD
 static bool show_unhandled_signals_ratelimited(void)
 {
 	static DEFINE_RATELIMIT_STATE(rs, DEFAULT_RATELIMIT_INTERVAL,
@@ -304,22 +260,14 @@ send_sig:
 	force_sig_info(info->si_signo, info, tsk);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void arm64_notify_die(const char *str, struct pt_regs *regs,
 		      struct siginfo *info, int err)
 {
 	if (user_mode(regs)) {
-<<<<<<< HEAD
 		WARN_ON(regs != current_pt_regs());
 		current->thread.fault_address = 0;
 		current->thread.fault_code = err;
 		arm64_force_sig_info(info, str, current);
-=======
-		current->thread.fault_address = 0;
-		current->thread.fault_code = err;
-		force_sig_info(info->si_signo, info, current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		die(str, regs, err);
 	}
@@ -404,7 +352,6 @@ exit:
 	return fn ? fn(regs, instr) : 1;
 }
 
-<<<<<<< HEAD
 void force_signal_inject(int signal, int code, unsigned long address)
 {
 	siginfo_t info;
@@ -412,14 +359,6 @@ void force_signal_inject(int signal, int code, unsigned long address)
 	struct pt_regs *regs = current_pt_regs();
 
 	clear_siginfo(&info);
-=======
-static void force_signal_inject(int signal, int code, struct pt_regs *regs,
-				unsigned long address)
-{
-	siginfo_t info;
-	void __user *pc = (void __user *)instruction_pointer(regs);
-	const char *desc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (signal) {
 	case SIGILL:
@@ -429,7 +368,6 @@ static void force_signal_inject(int signal, int code, struct pt_regs *regs,
 		desc = "illegal memory access";
 		break;
 	default:
-<<<<<<< HEAD
 		desc = "unknown or unrecoverable error";
 		break;
 	}
@@ -438,27 +376,12 @@ static void force_signal_inject(int signal, int code, struct pt_regs *regs,
 	if (WARN_ON(signal != SIGKILL &&
 		    siginfo_layout(signal, code) != SIL_FAULT)) {
 		signal = SIGKILL;
-=======
-		desc = "bad mode";
-		break;
-	}
-
-	if (unhandled_signal(current, signal) &&
-	    show_unhandled_signals_ratelimited()) {
-		pr_info("%s[%d]: %s: pc=%p\n",
-			current->comm, task_pid_nr(current), desc, pc);
-		dump_instr(KERN_INFO, regs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	info.si_signo = signal;
 	info.si_errno = 0;
 	info.si_code  = code;
-<<<<<<< HEAD
 	info.si_addr  = (void __user *)address;
-=======
-	info.si_addr  = pc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	arm64_notify_die(desc, regs, &info, 0);
 }
@@ -466,11 +389,7 @@ static void force_signal_inject(int signal, int code, struct pt_regs *regs,
 /*
  * Set up process info to signal segmentation fault - called on access error.
  */
-<<<<<<< HEAD
 void arm64_notify_segfault(unsigned long addr)
-=======
-void arm64_notify_segfault(struct pt_regs *regs, unsigned long addr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int code;
 
@@ -481,20 +400,11 @@ void arm64_notify_segfault(struct pt_regs *regs, unsigned long addr)
 		code = SEGV_ACCERR;
 	up_read(&current->mm->mmap_sem);
 
-<<<<<<< HEAD
 	force_signal_inject(SIGSEGV, code, addr);
-=======
-	force_signal_inject(SIGSEGV, code, regs, addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 asmlinkage void __exception do_undefinstr(struct pt_regs *regs)
 {
-<<<<<<< HEAD
-=======
-	void __user *pc = (void __user *)instruction_pointer(regs);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* check for AArch32 breakpoint instructions */
 	if (!aarch32_break_handler(regs))
 		return;
@@ -502,23 +412,13 @@ asmlinkage void __exception do_undefinstr(struct pt_regs *regs)
 	if (call_undef_hook(regs) == 0)
 		return;
 
-<<<<<<< HEAD
 	force_signal_inject(SIGILL, ILL_ILLOPC, regs->pc);
-=======
-	trace_undef_instr(regs, pc);
-
-	force_signal_inject(SIGILL, ILL_ILLOPC, regs, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	BUG_ON(!user_mode(regs));
 }
 
 void cpu_enable_cache_maint_trap(const struct arm64_cpu_capabilities *__unused)
 {
-<<<<<<< HEAD
 	sysreg_clear_set(sctlr_el1, SCTLR_EL1_UCI, 0);
-=======
-	config_sctlr_el1(SCTLR_EL1_UCI, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #define __user_cache_maint(insn, address, res)			\
@@ -567,20 +467,12 @@ static void user_cache_maint_handler(unsigned int esr, struct pt_regs *regs)
 		__user_cache_maint("ic ivau", address, ret);
 		break;
 	default:
-<<<<<<< HEAD
 		force_signal_inject(SIGILL, ILL_ILLOPC, regs->pc);
-=======
-		force_signal_inject(SIGILL, ILL_ILLOPC, regs, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
 	if (ret)
-<<<<<<< HEAD
 		arm64_notify_segfault(address);
-=======
-		arm64_notify_segfault(regs, address);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		arm64_skip_faulting_instruction(regs, AARCH64_INSN_SIZE);
 }
@@ -645,7 +537,6 @@ static struct sys64_hook sys64_hooks[] = {
 	{},
 };
 
-<<<<<<< HEAD
 
 #ifdef CONFIG_COMPAT
 #define PSTATE_IT_1_0_SHIFT	25
@@ -801,8 +692,6 @@ asmlinkage void __exception do_cp15instr(unsigned int esr, struct pt_regs *regs)
 }
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 asmlinkage void __exception do_sysinstr(unsigned int esr, struct pt_regs *regs)
 {
 	struct sys64_hook *hook;
@@ -821,143 +710,6 @@ asmlinkage void __exception do_sysinstr(unsigned int esr, struct pt_regs *regs)
 	do_undefinstr(regs);
 }
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_COMPAT
-static void cntfrq_cp15_32_read_handler(unsigned int esr, struct pt_regs *regs)
-{
-	int rt =
-	  (esr & ESR_ELx_CP15_32_ISS_RT_MASK) >> ESR_ELx_CP15_32_ISS_RT_SHIFT;
-	int cv =
-	  (esr & ESR_ELx_CP15_32_ISS_CV_MASK) >> ESR_ELx_CP15_32_ISS_CV_SHIFT;
-	int cond =
-	  (esr & ESR_ELx_CP15_32_ISS_COND_MASK) >>
-		ESR_ELx_CP15_32_ISS_COND_SHIFT;
-	bool read_reg = 1;
-
-	if (rt == 13 && !compat_arm_instr_set(regs))
-		read_reg = 0;
-
-	if (cv && cond != 0xf &&
-	    !(*aarch32_opcode_cond_checks[cond])(regs->pstate & 0xffffffff))
-		read_reg = 0;
-
-	if (read_reg)
-		regs->regs[rt] = read_sysreg(cntfrq_el0);
-	regs->pc += 4;
-}
-
-struct cp15_32_hook {
-	unsigned int esr_mask;
-	unsigned int esr_val;
-	void (*handler)(unsigned int esr, struct pt_regs *regs);
-};
-
-static struct cp15_32_hook cp15_32_hooks[] = {
-	{
-		/* Trap CP15 AArch32 read access to CNTFRQ_EL0 */
-		.esr_mask = ESR_ELx_CP15_32_ISS_SYS_OP_MASK,
-		.esr_val = ESR_ELx_CP15_32_ISS_SYS_CNTFRQ,
-		.handler = cntfrq_cp15_32_read_handler,
-	},
-	{},
-};
-
-asmlinkage void __exception do_cp15_32_instr_compat(unsigned int esr,
-						    struct pt_regs *regs)
-{
-	struct cp15_32_hook *hook;
-
-	for (hook = cp15_32_hooks; hook->handler; hook++)
-		if ((hook->esr_mask & esr) == hook->esr_val) {
-			hook->handler(esr, regs);
-			return;
-		}
-
-	force_signal_inject(SIGILL, ILL_ILLOPC, regs, 0);
-}
-
-static void cntvct_cp15_64_read_handler(unsigned int esr, struct pt_regs *regs)
-{
-	int rt =
-	  (esr & ESR_ELx_CP15_64_ISS_RT_MASK) >> ESR_ELx_CP15_64_ISS_RT_SHIFT;
-	int rt2 =
-	  (esr & ESR_ELx_CP15_64_ISS_RT2_MASK) >> ESR_ELx_CP15_64_ISS_RT2_SHIFT;
-	int cv =
-	  (esr & ESR_ELx_CP15_64_ISS_CV_MASK) >> ESR_ELx_CP15_64_ISS_CV_SHIFT;
-	int cond =
-	  (esr & ESR_ELx_CP15_64_ISS_COND_MASK) >>
-		ESR_ELx_CP15_64_ISS_COND_SHIFT;
-	bool read_reg = 1;
-
-	if (rt == 15 || rt2 == 15 || rt == rt2)
-		read_reg = 0;
-
-	if ((rt == 13 || rt2 == 13) && !compat_arm_instr_set(regs))
-		read_reg = 0;
-
-	if (cv && cond != 0xf &&
-	    !(*aarch32_opcode_cond_checks[cond])(regs->pstate & 0xffffffff))
-		read_reg = 0;
-
-	if (read_reg) {
-		u64 cval =  arch_counter_get_cntvct();
-
-		regs->regs[rt] = cval & 0xffffffff;
-		regs->regs[rt2] = cval >> 32;
-	}
-	regs->pc += 4;
-}
-
-struct cp15_64_hook {
-	unsigned int esr_mask;
-	unsigned int esr_val;
-	void (*handler)(unsigned int esr, struct pt_regs *regs);
-};
-
-static struct cp15_64_hook cp15_64_hooks[] = {
-	{
-		/* Trap CP15 AArch32 read access to CNTVCT_EL0 */
-		.esr_mask = ESR_ELx_CP15_64_ISS_SYS_OP_MASK,
-		.esr_val = ESR_ELx_CP15_64_ISS_SYS_CNTVCT,
-		.handler = cntvct_cp15_64_read_handler,
-	},
-	{},
-};
-
-asmlinkage void __exception do_cp15_64_instr_compat(unsigned int esr,
-						    struct pt_regs *regs)
-{
-	struct cp15_64_hook *hook;
-
-	for (hook = cp15_64_hooks; hook->handler; hook++)
-		if ((hook->esr_mask & esr) == hook->esr_val) {
-			hook->handler(esr, regs);
-			return;
-		}
-
-	force_signal_inject(SIGILL, ILL_ILLOPC, regs, 0);
-}
-
-#endif
-
-long compat_arm_syscall(struct pt_regs *regs);
-
-asmlinkage long do_ni_syscall(struct pt_regs *regs)
-{
-#ifdef CONFIG_COMPAT
-	long ret;
-	if (is_compat_task()) {
-		ret = compat_arm_syscall(regs);
-		if (ret != -ENOSYS)
-			return ret;
-	}
-#endif
-
-	return sys_ni_syscall();
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const char *esr_class_str[] = {
 	[0 ... ESR_ELx_EC_MAX]		= "UNRECOGNIZED EC",
 	[ESR_ELx_EC_UNKNOWN]		= "Unknown/Uncategorized",
@@ -1016,12 +768,8 @@ asmlinkage void bad_mode(struct pt_regs *regs, int reason, unsigned int esr)
 		handler[reason], smp_processor_id(), esr,
 		esr_get_class_string(esr));
 
-<<<<<<< HEAD
 	die("Oops - bad mode", regs, 0);
 	local_daif_mask();
-=======
-	local_irq_disable();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	panic("bad mode");
 }
 
@@ -1033,32 +781,17 @@ asmlinkage void bad_el0_sync(struct pt_regs *regs, int reason, unsigned int esr)
 {
 	siginfo_t info;
 	void __user *pc = (void __user *)instruction_pointer(regs);
-<<<<<<< HEAD
 
 	clear_siginfo(&info);
-=======
-	console_verbose();
-
-	pr_crit("Bad EL0 synchronous exception detected on CPU%d, code 0x%08x -- %s\n",
-		smp_processor_id(), esr, esr_get_class_string(esr));
-	__show_regs(regs);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	info.si_signo = SIGILL;
 	info.si_errno = 0;
 	info.si_code  = ILL_ILLOPC;
 	info.si_addr  = pc;
 
 	current->thread.fault_address = 0;
-<<<<<<< HEAD
 	current->thread.fault_code = esr;
 
 	arm64_force_sig_info(&info, "Bad EL0 synchronous exception", current);
-=======
-	current->thread.fault_code = 0;
-
-	force_sig_info(info.si_signo, &info, current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #ifdef CONFIG_VMAP_STACK
@@ -1098,7 +831,6 @@ asmlinkage void handle_bad_stack(struct pt_regs *regs)
 }
 #endif
 
-<<<<<<< HEAD
 void __noreturn arm64_serror_panic(struct pt_regs *regs, u32 esr)
 {
 	console_verbose();
@@ -1153,8 +885,6 @@ asmlinkage void do_serror(struct pt_regs *regs, unsigned int esr)
 	nmi_exit();
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void __pte_error(const char *file, int line, unsigned long val)
 {
 	pr_err("%s:%d: bad pte %016lx.\n", file, line, val);
@@ -1218,61 +948,6 @@ static struct break_hook bug_break_hook = {
 	.fn = bug_handler,
 };
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_KASAN_SW_TAGS
-
-#define KASAN_ESR_RECOVER	0x20
-#define KASAN_ESR_WRITE	0x10
-#define KASAN_ESR_SIZE_MASK	0x0f
-#define KASAN_ESR_SIZE(esr)	(1 << ((esr) & KASAN_ESR_SIZE_MASK))
-
-static int kasan_handler(struct pt_regs *regs, unsigned int esr)
-{
-	bool recover = esr & KASAN_ESR_RECOVER;
-	bool write = esr & KASAN_ESR_WRITE;
-	size_t size = KASAN_ESR_SIZE(esr);
-	u64 addr = regs->regs[0];
-	u64 pc = regs->pc;
-
-	if (user_mode(regs))
-		return DBG_HOOK_ERROR;
-
-	kasan_report(addr, size, write, pc);
-
-	/*
-	 * The instrumentation allows to control whether we can proceed after
-	 * a crash was detected. This is done by passing the -recover flag to
-	 * the compiler. Disabling recovery allows to generate more compact
-	 * code.
-	 *
-	 * Unfortunately disabling recovery doesn't work for the kernel right
-	 * now. KASAN reporting is disabled in some contexts (for example when
-	 * the allocator accesses slab object metadata; this is controlled by
-	 * current->kasan_depth). All these accesses are detected by the tool,
-	 * even though the reports for them are not printed.
-	 *
-	 * This is something that might be fixed at some point in the future.
-	 */
-	if (!recover)
-		die("Oops - KASAN", regs, 0);
-
-	/* If thread survives, skip over the brk instruction and continue: */
-	arm64_skip_faulting_instruction(regs, AARCH64_INSN_SIZE);
-	return DBG_HOOK_HANDLED;
-}
-
-#define KASAN_ESR_VAL (0xf2000000 | KASAN_BRK_IMM)
-#define KASAN_ESR_MASK 0xffffff00
-
-static struct break_hook kasan_break_hook = {
-	.esr_val = KASAN_ESR_VAL,
-	.esr_mask = KASAN_ESR_MASK,
-	.fn = kasan_handler,
-};
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Initial handler for AArch64 BRK exceptions
  * This handler only used until debug_traps_init().
@@ -1280,13 +955,6 @@ static struct break_hook kasan_break_hook = {
 int __init early_brk64(unsigned long addr, unsigned int esr,
 		struct pt_regs *regs)
 {
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_KASAN_SW_TAGS
-	if ((esr & KASAN_ESR_MASK) == KASAN_ESR_VAL)
-		return kasan_handler(regs, esr) != DBG_HOOK_HANDLED;
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return bug_handler(regs, esr) != DBG_HOOK_HANDLED;
 }
 
@@ -1294,10 +962,4 @@ int __init early_brk64(unsigned long addr, unsigned int esr,
 void __init trap_init(void)
 {
 	register_break_hook(&bug_break_hook);
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_KASAN_SW_TAGS
-	register_break_hook(&kasan_break_hook);
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

@@ -36,56 +36,32 @@
 
 static inline void kvmppc_set_gpr(struct kvm_vcpu *vcpu, int num, ulong val)
 {
-<<<<<<< HEAD
 	vcpu->arch.regs.gpr[num] = val;
-=======
-	vcpu->arch.gpr[num] = val;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline ulong kvmppc_get_gpr(struct kvm_vcpu *vcpu, int num)
 {
-<<<<<<< HEAD
 	return vcpu->arch.regs.gpr[num];
-=======
-	return vcpu->arch.gpr[num];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void kvmppc_set_cr(struct kvm_vcpu *vcpu, u32 val)
 {
-<<<<<<< HEAD
 	vcpu->arch.regs.ccr = val;
-=======
-	vcpu->arch.cr = val;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline u32 kvmppc_get_cr(struct kvm_vcpu *vcpu)
 {
-<<<<<<< HEAD
 	return vcpu->arch.regs.ccr;
-=======
-	return vcpu->arch.cr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void kvmppc_set_xer(struct kvm_vcpu *vcpu, ulong val)
 {
-<<<<<<< HEAD
 	vcpu->arch.regs.xer = val;
-=======
-	vcpu->arch.xer = val;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline ulong kvmppc_get_xer(struct kvm_vcpu *vcpu)
 {
-<<<<<<< HEAD
 	return vcpu->arch.regs.xer;
-=======
-	return vcpu->arch.xer;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline bool kvmppc_need_byteswap(struct kvm_vcpu *vcpu)
@@ -96,56 +72,32 @@ static inline bool kvmppc_need_byteswap(struct kvm_vcpu *vcpu)
 
 static inline void kvmppc_set_ctr(struct kvm_vcpu *vcpu, ulong val)
 {
-<<<<<<< HEAD
 	vcpu->arch.regs.ctr = val;
-=======
-	vcpu->arch.ctr = val;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline ulong kvmppc_get_ctr(struct kvm_vcpu *vcpu)
 {
-<<<<<<< HEAD
 	return vcpu->arch.regs.ctr;
-=======
-	return vcpu->arch.ctr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void kvmppc_set_lr(struct kvm_vcpu *vcpu, ulong val)
 {
-<<<<<<< HEAD
 	vcpu->arch.regs.link = val;
-=======
-	vcpu->arch.lr = val;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline ulong kvmppc_get_lr(struct kvm_vcpu *vcpu)
 {
-<<<<<<< HEAD
 	return vcpu->arch.regs.link;
-=======
-	return vcpu->arch.lr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void kvmppc_set_pc(struct kvm_vcpu *vcpu, ulong val)
 {
-<<<<<<< HEAD
 	vcpu->arch.regs.nip = val;
-=======
-	vcpu->arch.pc = val;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline ulong kvmppc_get_pc(struct kvm_vcpu *vcpu)
 {
-<<<<<<< HEAD
 	return vcpu->arch.regs.nip;
-=======
-	return vcpu->arch.pc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline ulong kvmppc_get_fault_dar(struct kvm_vcpu *vcpu)

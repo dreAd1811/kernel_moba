@@ -1246,15 +1246,8 @@ w83781d_probe(struct i2c_client *client, const struct i2c_device_id *id)
 
  exit_remove_files:
 	w83781d_remove_files(dev);
-<<<<<<< HEAD
 	i2c_unregister_device(data->lm75[0]);
 	i2c_unregister_device(data->lm75[1]);
-=======
-	if (data->lm75[0])
-		i2c_unregister_device(data->lm75[0]);
-	if (data->lm75[1])
-		i2c_unregister_device(data->lm75[1]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -1267,15 +1260,8 @@ w83781d_remove(struct i2c_client *client)
 	hwmon_device_unregister(data->hwmon_dev);
 	w83781d_remove_files(dev);
 
-<<<<<<< HEAD
 	i2c_unregister_device(data->lm75[0]);
 	i2c_unregister_device(data->lm75[1]);
-=======
-	if (data->lm75[0])
-		i2c_unregister_device(data->lm75[0]);
-	if (data->lm75[1])
-		i2c_unregister_device(data->lm75[1]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

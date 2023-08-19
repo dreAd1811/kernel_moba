@@ -170,11 +170,7 @@ static int sii902x_get_modes(struct drm_connector *connector)
 		return ret;
 
 	edid = drm_get_edid(connector, sii902x->i2c->adapter);
-<<<<<<< HEAD
 	drm_connector_update_edid_property(connector, edid);
-=======
-	drm_mode_connector_update_edid_property(connector, edid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (edid) {
 		num = drm_add_edid_modes(connector, edid);
 		kfree(edid);
@@ -329,11 +325,7 @@ static int sii902x_bridge_attach(struct drm_bridge *bridge)
 	else
 		sii902x->connector.polled = DRM_CONNECTOR_POLL_CONNECT;
 
-<<<<<<< HEAD
 	drm_connector_attach_encoder(&sii902x->connector, bridge->encoder);
-=======
-	drm_mode_connector_attach_encoder(&sii902x->connector, bridge->encoder);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

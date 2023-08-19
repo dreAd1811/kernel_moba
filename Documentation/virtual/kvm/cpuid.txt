@@ -23,13 +23,8 @@ This function queries the presence of KVM cpuid leafs.
 
 
 function: define KVM_CPUID_FEATURES (0x40000001)
-<<<<<<< HEAD
 returns : ebx, ecx
           eax = an OR'ed group of (1 << flag), where each flags is:
-=======
-returns : ebx, ecx, edx = 0
-          eax = and OR'ed group of (1 << flag), where each flags is:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 flag                               || value || meaning
@@ -59,29 +54,22 @@ KVM_FEATURE_PV_UNHALT              ||     7 || guest checks this feature bit
                                    ||       || before enabling paravirtualized
                                    ||       || spinlock support.
 ------------------------------------------------------------------------------
-<<<<<<< HEAD
 KVM_FEATURE_PV_TLB_FLUSH           ||     9 || guest checks this feature bit
                                    ||       || before enabling paravirtualized
                                    ||       || tlb flush.
 ------------------------------------------------------------------------------
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 KVM_FEATURE_ASYNC_PF_VMEXIT        ||    10 || paravirtualized async PF VM exit
                                    ||       || can be enabled by setting bit 2
                                    ||       || when writing to msr 0x4b564d02
 ------------------------------------------------------------------------------
-<<<<<<< HEAD
 KVM_FEATURE_PV_SEND_IPI            ||    11 || guest checks this feature bit
                                    ||       || before using paravirtualized
                                    ||       || send IPIs.
 ------------------------------------------------------------------------------
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 KVM_FEATURE_CLOCKSOURCE_STABLE_BIT ||    24 || host will warn if no guest-side
                                    ||       || per-cpu warps are expected in
                                    ||       || kvmclock.
 ------------------------------------------------------------------------------
-<<<<<<< HEAD
 
           edx = an OR'ed group of (1 << flag), where each flags is:
 
@@ -93,5 +81,3 @@ KVM_HINTS_REALTIME                 ||     0 || guest checks this feature bit to
                                    ||       || preempted for an unlimited time,
                                    ||       || allowing optimizations
 ----------------------------------------------------------------------------------
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

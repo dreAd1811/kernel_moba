@@ -10,7 +10,6 @@ union-filesystems).  An overlay-filesystem tries to present a
 filesystem which is the result over overlaying one filesystem on top
 of the other.
 
-<<<<<<< HEAD
 
 Overlay objects
 ---------------
@@ -18,15 +17,6 @@ Overlay objects
 The overlay filesystem approach is 'hybrid', because the objects that
 appear in the filesystem do not always appear to belong to that filesystem.
 In many cases, an object accessed in the union will be indistinguishable
-=======
-The result will inevitably fail to look exactly like a normal
-filesystem for various technical reasons.  The expectation is that
-many use cases will be able to ignore these differences.
-
-This approach is 'hybrid' because the objects that appear in the
-filesystem do not all appear to belong to that filesystem.  In many
-cases an object accessed in the union will be indistinguishable
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 from accessing the corresponding object from the original filesystem.
 This is most obvious from the 'st_dev' field returned by stat(2).
 
@@ -44,7 +34,6 @@ make the overlay mount more compliant with filesystem scanners and
 overlay objects will be distinguishable from the corresponding
 objects in the original filesystem.
 
-<<<<<<< HEAD
 On 64bit systems, even if all overlay layers are not on the same
 underlying filesystem, the same compliant behavior could be achieved
 with the "xino" feature.  The "xino" feature composes a unique object
@@ -58,8 +47,6 @@ case of underlying filesystems like xfs and tmpfs, which use 64bit inode
 numbers, but are very unlikely to use the high inode number bit.
 
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Upper and Lower
 ---------------
 
@@ -205,7 +192,6 @@ handle it in two different ways:
    root of the overlay.  Finally the directory is moved to the new
    location.
 
-<<<<<<< HEAD
 There are several ways to tune the "redirect_dir" feature.
 
 Kernel config options:
@@ -254,8 +240,6 @@ NFS export support on an overlay filesystem with no upper layer requires
 turning off redirect follow (e.g. "redirect_dir=nofollow").
 
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Non-directories
 ---------------
 
@@ -301,7 +285,6 @@ rightmost one and going left.  In the above example lower1 will be the
 top, lower2 the middle and lower3 the bottom layer.
 
 
-<<<<<<< HEAD
 Metadata only copy up
 --------------------
 
@@ -332,8 +315,6 @@ results in an error.
 (*) redirect_dir=follow only conflicts with metacopy=on if upperdir=... is
 given.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Sharing and copying layers
 --------------------------
 
@@ -344,11 +325,7 @@ beneath or above the path of another overlay lower layer path.
 
 Using an upper layer path and/or a workdir path that are already used by
 another overlay mount is not allowed and may fail with EBUSY.  Using
-<<<<<<< HEAD
 partially overlapping paths is not allowed and may fail with EBUSY.
-=======
-partially overlapping paths is not allowed but will not fail with EBUSY.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 If files are accessed from two overlayfs mounts which share or overlap the
 upper layer and/or workdir path the behavior of the overlay is undefined,
 though it will not result in a crash or deadlock.
@@ -356,11 +333,7 @@ though it will not result in a crash or deadlock.
 Mounting an overlay using an upper layer path, where the upper layer path
 was previously used by another mounted overlay in combination with a
 different lower layer path, is allowed, unless the "inodes index" feature
-<<<<<<< HEAD
 or "metadata only copy up" feature is enabled.
-=======
-is enabled.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 With the "inodes index" feature, on the first time mount, an NFS file
 handle of the lower layer root directory, along with the UUID of the lower
@@ -373,13 +346,10 @@ lower root origin, mount will fail with ESTALE.  An overlayfs mount with
 does not support NFS export, lower filesystem does not have a valid UUID or
 if the upper filesystem does not support extended attributes.
 
-<<<<<<< HEAD
 For "metadata only copy up" feature there is no verification mechanism at
 mount time. So if same upper is mounted with different set of lower, mount
 probably will succeed but expect the unexpected later on. So don't do it.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 It is quite a common practice to copy overlay layers to a different
 directory tree on the same or different underlying filesystem, and even
 to a different machine.  With the "inodes index" feature, trying to mount
@@ -389,7 +359,6 @@ the copied layers will fail the verification of the lower root file handle.
 Non-standard behavior
 ---------------------
 
-<<<<<<< HEAD
 Overlayfs can now act as a POSIX compliant filesystem with the following
 features turned on:
 
@@ -425,20 +394,6 @@ E.g. the value of st_dev may be different for two objects in the same
 overlay filesystem and the value of st_ino for directory objects may not be
 persistent and could change even while the overlay filesystem is mounted.
 
-=======
-The copy_up operation essentially creates a new, identical file and
-moves it over to the old name.  The new file may be on a different
-filesystem, so both st_dev and st_ino of the file may change.
-
-Any open files referring to this inode will access the old data.
-
-If a file with multiple hard links is copied up, then this will
-"break" the link.  Changes will not be propagated to other names
-referring to the same inode.
-
-Unless "redirect_dir" feature is enabled, rename(2) on a lower or merged
-directory will fail with EXDEV.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Changes to underlying filesystems
 ---------------------------------
@@ -451,7 +406,6 @@ filesystem are not allowed.  If the underlying filesystem is changed,
 the behavior of the overlay is undefined, though it will not result in
 a crash or deadlock.
 
-<<<<<<< HEAD
 When the overlay NFS export feature is enabled, overlay filesystems
 behavior on offline changes of the underlying lower layer is different
 than the behavior when NFS export is disabled.
@@ -545,20 +499,8 @@ There's a testsuite originally developed by David Howells and currently
 maintained by Amir Goldstein at:
 
   https://github.com/amir73il/unionmount-testsuite.git
-=======
-Testsuite
----------
-
-There's testsuite developed by David Howells at:
-
-  git://git.infradead.org/users/dhowells/unionmount-testsuite.git
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Run as root:
 
   # cd unionmount-testsuite
-<<<<<<< HEAD
   # ./run --ov --verify
-=======
-  # ./run --ov
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

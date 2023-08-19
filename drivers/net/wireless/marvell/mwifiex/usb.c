@@ -181,12 +181,8 @@ static void mwifiex_usb_rx_complete(struct urb *urb)
 		atomic_dec(&card->rx_data_urb_pending);
 
 	if (recv_length) {
-<<<<<<< HEAD
 		if (urb->status ||
 		    test_bit(MWIFIEX_SURPRISE_REMOVED, &adapter->work_flags)) {
-=======
-		if (urb->status || (adapter->surprise_removed)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			mwifiex_dbg(adapter, ERROR,
 				    "URB status is failed: %d\n", urb->status);
 			/* Do not free skb in case of command ep */
@@ -223,17 +219,10 @@ static void mwifiex_usb_rx_complete(struct urb *urb)
 				dev_kfree_skb_any(skb);
 		}
 	} else if (urb->status) {
-<<<<<<< HEAD
 		if (!test_bit(MWIFIEX_IS_SUSPENDED, &adapter->work_flags)) {
 			mwifiex_dbg(adapter, FATAL,
 				    "Card is removed: %d\n", urb->status);
 			set_bit(MWIFIEX_SURPRISE_REMOVED, &adapter->work_flags);
-=======
-		if (!adapter->is_suspended) {
-			mwifiex_dbg(adapter, FATAL,
-				    "Card is removed: %d\n", urb->status);
-			adapter->surprise_removed = true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		dev_kfree_skb_any(skb);
 		return;
@@ -541,11 +530,7 @@ static int mwifiex_usb_suspend(struct usb_interface *intf, pm_message_t message)
 		return 0;
 	}
 
-<<<<<<< HEAD
 	if (unlikely(test_bit(MWIFIEX_IS_SUSPENDED, &adapter->work_flags)))
-=======
-	if (unlikely(adapter->is_suspended))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mwifiex_dbg(adapter, WARN,
 			    "Device already suspended\n");
 
@@ -553,32 +538,19 @@ static int mwifiex_usb_suspend(struct usb_interface *intf, pm_message_t message)
 	if (!mwifiex_enable_hs(adapter)) {
 		mwifiex_dbg(adapter, ERROR,
 			    "cmd: failed to suspend\n");
-<<<<<<< HEAD
 		clear_bit(MWIFIEX_IS_HS_ENABLING, &adapter->work_flags);
-=======
-		adapter->hs_enabling = false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 	}
 
 
-<<<<<<< HEAD
 	/* 'MWIFIEX_IS_SUSPENDED' bit indicates device is suspended.
-=======
-	/* 'is_suspended' flag indicates device is suspended.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * It must be set here before the usb_kill_urb() calls. Reason
 	 * is in the complete handlers, urb->status(= -ENOENT) and
 	 * this flag is used in combination to distinguish between a
 	 * 'suspended' state and a 'disconnect' one.
 	 */
-<<<<<<< HEAD
 	set_bit(MWIFIEX_IS_SUSPENDED, &adapter->work_flags);
 	clear_bit(MWIFIEX_IS_HS_ENABLING, &adapter->work_flags);
-=======
-	adapter->is_suspended = true;
-	adapter->hs_enabling = false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (atomic_read(&card->rx_cmd_urb_pending) && card->rx_cmd.urb)
 		usb_kill_urb(card->rx_cmd.urb);
@@ -622,11 +594,7 @@ static int mwifiex_usb_resume(struct usb_interface *intf)
 	}
 	adapter = card->adapter;
 
-<<<<<<< HEAD
 	if (unlikely(!test_bit(MWIFIEX_IS_SUSPENDED, &adapter->work_flags))) {
-=======
-	if (unlikely(!adapter->is_suspended)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mwifiex_dbg(adapter, WARN,
 			    "Device already resumed\n");
 		return 0;
@@ -635,11 +603,7 @@ static int mwifiex_usb_resume(struct usb_interface *intf)
 	/* Indicate device resumed. The netdev queue will be resumed only
 	 * after the urbs have been re-submitted
 	 */
-<<<<<<< HEAD
 	clear_bit(MWIFIEX_IS_SUSPENDED, &adapter->work_flags);
-=======
-	adapter->is_suspended = false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!atomic_read(&card->rx_data_urb_pending))
 		for (i = 0; i < MWIFIEX_RX_DATA_URB; i++)
@@ -681,14 +645,6 @@ static void mwifiex_usb_disconnect(struct usb_interface *intf)
 					 MWIFIEX_FUNC_SHUTDOWN);
 	}
 
-<<<<<<< HEAD
-=======
-	if (adapter->workqueue)
-		flush_workqueue(adapter->workqueue);
-
-	mwifiex_usb_free(card);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mwifiex_dbg(adapter, FATAL,
 		    "%s: removing card\n", __func__);
 	mwifiex_remove_card(adapter);
@@ -696,7 +652,6 @@ static void mwifiex_usb_disconnect(struct usb_interface *intf)
 	usb_put_dev(interface_to_usbdev(intf));
 }
 
-<<<<<<< HEAD
 static void mwifiex_usb_coredump(struct device *dev)
 {
 	struct usb_interface *intf = to_usb_interface(dev);
@@ -706,8 +661,6 @@ static void mwifiex_usb_coredump(struct device *dev)
 					       MWIFIEX_BSS_ROLE_ANY));
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct usb_driver mwifiex_usb_driver = {
 	.name = "mwifiex_usb",
 	.probe = mwifiex_usb_probe,
@@ -716,12 +669,9 @@ static struct usb_driver mwifiex_usb_driver = {
 	.suspend = mwifiex_usb_suspend,
 	.resume = mwifiex_usb_resume,
 	.soft_unbind = 1,
-<<<<<<< HEAD
 	.drvwrap.driver = {
 		.coredump = mwifiex_usb_coredump,
 	},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int mwifiex_write_data_sync(struct mwifiex_adapter *adapter, u8 *pbuf,
@@ -1157,20 +1107,12 @@ postcopy_cur_buf:
 	return -EINPROGRESS;
 }
 
-<<<<<<< HEAD
 static void mwifiex_usb_tx_aggr_tmo(struct timer_list *t)
-=======
-static void mwifiex_usb_tx_aggr_tmo(unsigned long context)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct urb_context *urb_cnxt = NULL;
 	struct sk_buff *skb_send = NULL;
 	struct tx_aggr_tmr_cnxt *timer_context =
-<<<<<<< HEAD
 		from_timer(timer_context, t, hold_timer);
-=======
-		(struct tx_aggr_tmr_cnxt *)context;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mwifiex_adapter *adapter = timer_context->adapter;
 	struct usb_tx_data_port *port = timer_context->port;
 	unsigned long flags;
@@ -1217,21 +1159,13 @@ static int mwifiex_usb_host_to_card(struct mwifiex_adapter *adapter, u8 ep,
 	unsigned long flags;
 	int idx, ret;
 
-<<<<<<< HEAD
 	if (test_bit(MWIFIEX_IS_SUSPENDED, &adapter->work_flags)) {
-=======
-	if (adapter->is_suspended) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mwifiex_dbg(adapter, ERROR,
 			    "%s: not allowed while suspended\n", __func__);
 		return -1;
 	}
 
-<<<<<<< HEAD
 	if (test_bit(MWIFIEX_SURPRISE_REMOVED, &adapter->work_flags)) {
-=======
-	if (adapter->surprise_removed) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mwifiex_dbg(adapter, ERROR, "%s: device removed\n", __func__);
 		return -1;
 	}
@@ -1313,14 +1247,8 @@ static int mwifiex_usb_tx_init(struct mwifiex_adapter *adapter)
 		port->tx_aggr.timer_cnxt.port = port;
 		port->tx_aggr.timer_cnxt.is_hold_timer_set = false;
 		port->tx_aggr.timer_cnxt.hold_tmo_msecs = 0;
-<<<<<<< HEAD
 		timer_setup(&port->tx_aggr.timer_cnxt.hold_timer,
 			    mwifiex_usb_tx_aggr_tmo, 0);
-=======
-		setup_timer(&port->tx_aggr.timer_cnxt.hold_timer,
-			    mwifiex_usb_tx_aggr_tmo,
-			    (unsigned long)&port->tx_aggr.timer_cnxt);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -1424,11 +1352,8 @@ static void mwifiex_unregister_dev(struct mwifiex_adapter *adapter)
 {
 	struct usb_card_rec *card = (struct usb_card_rec *)adapter->card;
 
-<<<<<<< HEAD
 	mwifiex_usb_free(card);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mwifiex_usb_cleanup_tx_aggr(adapter);
 
 	card->adapter = NULL;

@@ -443,15 +443,10 @@ static int emc1403_probe(struct i2c_client *client,
 	switch (id->driver_data) {
 	case emc1404:
 		data->groups[2] = &emc1404_group;
-<<<<<<< HEAD
 		/* fall through */
 	case emc1403:
 		data->groups[1] = &emc1403_group;
 		/* fall through */
-=======
-	case emc1403:
-		data->groups[1] = &emc1403_group;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case emc1402:
 		data->groups[0] = &emc1402_group;
 	}

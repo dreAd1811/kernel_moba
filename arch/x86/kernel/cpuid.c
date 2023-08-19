@@ -40,10 +40,7 @@
 #include <linux/notifier.h>
 #include <linux/uaccess.h>
 #include <linux/gfp.h>
-<<<<<<< HEAD
 #include <linux/completion.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/processor.h>
 #include <asm/msr.h>
@@ -51,7 +48,6 @@
 static struct class *cpuid_class;
 static enum cpuhp_state cpuhp_cpuid_state;
 
-<<<<<<< HEAD
 struct cpuid_regs_done {
 	struct cpuid_regs regs;
 	struct completion done;
@@ -66,25 +62,13 @@ static void cpuid_smp_cpuid(void *cmd_block)
 		    &cmd->regs.ecx, &cmd->regs.edx);
 
 	complete(&cmd->done);
-=======
-static void cpuid_smp_cpuid(void *cmd_block)
-{
-	struct cpuid_regs *cmd = (struct cpuid_regs *)cmd_block;
-
-	cpuid_count(cmd->eax, cmd->ecx,
-		    &cmd->eax, &cmd->ebx, &cmd->ecx, &cmd->edx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static ssize_t cpuid_read(struct file *file, char __user *buf,
 			  size_t count, loff_t *ppos)
 {
 	char __user *tmp = buf;
-<<<<<<< HEAD
 	struct cpuid_regs_done cmd;
-=======
-	struct cpuid_regs cmd;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int cpu = iminor(file_inode(file));
 	u64 pos = *ppos;
 	ssize_t bytes = 0;
@@ -93,7 +77,6 @@ static ssize_t cpuid_read(struct file *file, char __user *buf,
 	if (count % 16)
 		return -EINVAL;	/* Invalid chunk size */
 
-<<<<<<< HEAD
 	init_completion(&cmd.done);
 	for (; count; count -= 16) {
 		call_single_data_t csd = {
@@ -109,25 +92,13 @@ static ssize_t cpuid_read(struct file *file, char __user *buf,
 			break;
 		wait_for_completion(&cmd.done);
 		if (copy_to_user(tmp, &cmd.regs, 16)) {
-=======
-	for (; count; count -= 16) {
-		cmd.eax = pos;
-		cmd.ecx = pos >> 32;
-		err = smp_call_function_single(cpu, cpuid_smp_cpuid, &cmd, 1);
-		if (err)
-			break;
-		if (copy_to_user(tmp, &cmd, 16)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			err = -EFAULT;
 			break;
 		}
 		tmp += 16;
 		bytes += 16;
 		*ppos = ++pos;
-<<<<<<< HEAD
 		reinit_completion(&cmd.done);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return bytes ? bytes : err;

@@ -47,7 +47,6 @@
 #define GENWQE_CARD_NO_MAX		(16 * GENWQE_MAX_FUNCS)
 
 /* Compile parameters, some of them appear in debugfs for later adjustment */
-<<<<<<< HEAD
 #define GENWQE_DDCB_MAX			32 /* DDCBs on the work-queue */
 #define GENWQE_POLLING_ENABLED		0  /* in case of irqs not working */
 #define GENWQE_DDCB_SOFTWARE_TIMEOUT	10 /* timeout per DDCB in seconds */
@@ -55,15 +54,6 @@
 #define GENWQE_VF_JOBTIMEOUT_MSEC	250  /* 250 msec */
 #define GENWQE_PF_JOBTIMEOUT_MSEC	8000 /* 8 sec should be ok */
 #define GENWQE_HEALTH_CHECK_INTERVAL	4 /* <= 0: disabled */
-=======
-#define genwqe_ddcb_max			32 /* DDCBs on the work-queue */
-#define genwqe_polling_enabled		0  /* in case of irqs not working */
-#define genwqe_ddcb_software_timeout	10 /* timeout per DDCB in seconds */
-#define genwqe_kill_timeout		8  /* time until process gets killed */
-#define genwqe_vf_jobtimeout_msec	250  /* 250 msec */
-#define genwqe_pf_jobtimeout_msec	8000 /* 8 sec should be ok */
-#define genwqe_health_check_interval	4 /* <= 0: disabled */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Sysfs attribute groups used when we create the genwqe device */
 extern const struct attribute_group *genwqe_attribute_groups[];
@@ -192,10 +182,7 @@ struct dma_mapping {
 
 	struct list_head card_list;	/* list of usr_maps for card */
 	struct list_head pin_list;	/* list of pinned memory for dev */
-<<<<<<< HEAD
 	int write;			/* writable map? useful in unmapping */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static inline void genwqe_mapping_init(struct dma_mapping *m,
@@ -203,10 +190,7 @@ static inline void genwqe_mapping_init(struct dma_mapping *m,
 {
 	memset(m, 0, sizeof(*m));
 	m->type = type;
-<<<<<<< HEAD
 	m->write = 1; /* Assume the maps we create are R/W */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -365,10 +349,7 @@ enum genwqe_requ_state {
  * @user_size:      size of user-space memory area
  * @page:           buffer for partial pages if needed
  * @page_dma_addr:  dma address partial pages
-<<<<<<< HEAD
  * @write:          should we write it back to userspace?
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct genwqe_sgl {
 	dma_addr_t sgl_dma_addr;
@@ -378,11 +359,8 @@ struct genwqe_sgl {
 	void __user *user_addr; /* user-space base-address */
 	size_t user_size;       /* size of memory area */
 
-<<<<<<< HEAD
 	int write;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long nr_pages;
 	unsigned long fpage_offs;
 	size_t fpage_size;
@@ -396,11 +374,7 @@ struct genwqe_sgl {
 };
 
 int genwqe_alloc_sync_sgl(struct genwqe_dev *cd, struct genwqe_sgl *sgl,
-<<<<<<< HEAD
 			  void __user *user_addr, size_t user_size, int write);
-=======
-			  void __user *user_addr, size_t user_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int genwqe_setup_sgl(struct genwqe_dev *cd, struct genwqe_sgl *sgl,
 		     dma_addr_t *dma_list);
@@ -516,26 +490,14 @@ int  genwqe_read_app_id(struct genwqe_dev *cd, char *app_name, int len);
 
 /* Memory allocation/deallocation; dma address handling */
 int  genwqe_user_vmap(struct genwqe_dev *cd, struct dma_mapping *m,
-<<<<<<< HEAD
 		      void *uaddr, unsigned long size);
 
 int  genwqe_user_vunmap(struct genwqe_dev *cd, struct dma_mapping *m);
-=======
-		      void *uaddr, unsigned long size,
-		      struct ddcb_requ *req);
-
-int  genwqe_user_vunmap(struct genwqe_dev *cd, struct dma_mapping *m,
-			struct ddcb_requ *req);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline bool dma_mapping_used(struct dma_mapping *m)
 {
 	if (!m)
-<<<<<<< HEAD
 		return false;
-=======
-		return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return m->size != 0;
 }
 

@@ -436,12 +436,8 @@ static int exynos_bus_probe(struct platform_device *pdev)
 	ondemand_data->downdifferential = 5;
 
 	/* Add devfreq device to monitor and handle the exynos bus */
-<<<<<<< HEAD
 	bus->devfreq = devm_devfreq_add_device(dev, profile,
 						DEVFREQ_GOV_SIMPLE_ONDEMAND,
-=======
-	bus->devfreq = devm_devfreq_add_device(dev, profile, "simple_ondemand",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						ondemand_data);
 	if (IS_ERR(bus->devfreq)) {
 		dev_err(dev, "failed to add devfreq device\n");
@@ -493,11 +489,7 @@ passive:
 	passive_data->parent = parent_devfreq;
 
 	/* Add devfreq device for exynos bus with passive governor */
-<<<<<<< HEAD
 	bus->devfreq = devm_devfreq_add_device(dev, profile, DEVFREQ_GOV_PASSIVE,
-=======
-	bus->devfreq = devm_devfreq_add_device(dev, profile, "passive",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						passive_data);
 	if (IS_ERR(bus->devfreq)) {
 		dev_err(dev,

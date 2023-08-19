@@ -530,10 +530,7 @@ static bool xenon_emmc_phy_slow_mode(struct sdhci_host *host,
 			ret = true;
 			break;
 		}
-<<<<<<< HEAD
 		/* else: fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		reg &= ~XENON_TIMING_ADJUST_SLOW_MODE;
 		ret = false;
@@ -822,22 +819,10 @@ static int xenon_add_phy(struct device_node *np, struct sdhci_host *host,
 {
 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
 	struct xenon_priv *priv = sdhci_pltfm_priv(pltfm_host);
-<<<<<<< HEAD
 	int ret;
 
 	priv->phy_type = match_string(phy_types, NR_PHY_TYPES, phy_name);
 	if (priv->phy_type < 0) {
-=======
-	int i, ret;
-
-	for (i = 0; i < NR_PHY_TYPES; i++) {
-		if (!strcmp(phy_name, phy_types[i])) {
-			priv->phy_type = i;
-			break;
-		}
-	}
-	if (i == NR_PHY_TYPES) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(mmc_dev(host->mmc),
 			"Unable to determine PHY name %s. Use default eMMC 5.1 PHY\n",
 			phy_name);

@@ -58,7 +58,6 @@ gf119_dac = {
 int
 gf119_dac_new(struct nvkm_disp *disp, int id)
 {
-<<<<<<< HEAD
 	return nvkm_ior_new_(&gf119_dac, disp, DAC, id);
 }
 
@@ -69,10 +68,3 @@ gf119_dac_cnt(struct nvkm_disp *disp, unsigned long *pmask)
 	*pmask = (nvkm_rd32(device, 0x612004) & 0x000000f0) >> 4;
 	return 4;
 }
-=======
-	struct nvkm_device *device = disp->engine.subdev.device;
-	if (!(nvkm_rd32(device, 0x612004) & (0x00000010 << id)))
-		return 0;
-	return nvkm_ior_new_(&gf119_dac, disp, DAC, id);
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

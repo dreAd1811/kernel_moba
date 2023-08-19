@@ -173,7 +173,6 @@ void __init plat_mem_setup(void)
 	pm_power_off = bcm47xx_machine_halt;
 }
 
-<<<<<<< HEAD
 #ifdef CONFIG_BCM47XX_BCMA
 static struct device * __init bcm47xx_setup_device(void)
 {
@@ -199,8 +198,6 @@ static struct device * __init bcm47xx_setup_device(void)
 }
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * This finishes bus initialization doing things that were not possible without
  * kmalloc. Make sure to call it late enough (after mm_init).
@@ -211,13 +208,10 @@ void __init bcm47xx_bus_setup(void)
 	if (bcm47xx_bus_type == BCM47XX_BUS_TYPE_BCMA) {
 		int err;
 
-<<<<<<< HEAD
 		bcm47xx_bus.bcma.dev = bcm47xx_setup_device();
 		if (!bcm47xx_bus.bcma.dev)
 			panic("Failed to setup SoC device\n");
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = bcma_host_soc_init(&bcm47xx_bus.bcma);
 		if (err)
 			panic("Failed to initialize BCMA bus (err %d)", err);
@@ -270,11 +264,8 @@ static int __init bcm47xx_register_bus_complete(void)
 #endif
 #ifdef CONFIG_BCM47XX_BCMA
 	case BCM47XX_BUS_TYPE_BCMA:
-<<<<<<< HEAD
 		if (device_register(bcm47xx_bus.bcma.dev))
 			pr_err("Failed to register SoC device\n");
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bcma_bus_register(&bcm47xx_bus.bcma.bus);
 		break;
 #endif

@@ -19,15 +19,9 @@
 #include <linux/configfs.h>
 
 static struct config_group *iio_triggers_group;
-<<<<<<< HEAD
 static const struct config_item_type iio_trigger_type_group_type;
 
 static const struct config_item_type iio_triggers_group_type = {
-=======
-static struct config_item_type iio_trigger_type_group_type;
-
-static struct config_item_type iio_triggers_group_type = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ct_owner = THIS_MODULE,
 };
 
@@ -162,11 +156,7 @@ static struct configfs_group_operations trigger_ops = {
 	.drop_item	= &trigger_drop_group,
 };
 
-<<<<<<< HEAD
 static const struct config_item_type iio_trigger_type_group_type = {
-=======
-static struct config_item_type iio_trigger_type_group_type = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ct_group_ops = &trigger_ops,
 	.ct_owner       = THIS_MODULE,
 };

@@ -18,7 +18,6 @@
 #ifdef __ASSEMBLY__
 
 #define ENTRY(name) \
-<<<<<<< HEAD
 	ALIGN	!\
 name:		ASM_NL\
 	.export name
@@ -35,28 +34,6 @@ name:		ASM_NL\
 	.exit		ASM_NL\
 	.procend	ASM_NL\
 	ENDPROC(name)
-=======
-	.export name !\
-	ALIGN !\
-name:
-
-#ifdef CONFIG_64BIT
-#define ENDPROC(name) \
-	END(name)
-#else
-#define ENDPROC(name) \
-	.type name, @function !\
-	END(name)
-#endif
-
-#define ENTRY_CFI(name) \
-	ENTRY(name)	ASM_NL\
-	CFI_STARTPROC
-
-#define ENDPROC_CFI(name) \
-	ENDPROC(name)	ASM_NL\
-	CFI_ENDPROC
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* __ASSEMBLY__ */
 

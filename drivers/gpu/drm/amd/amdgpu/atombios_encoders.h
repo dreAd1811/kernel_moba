@@ -25,14 +25,11 @@
 #define __ATOMBIOS_ENCODER_H__
 
 u8
-<<<<<<< HEAD
 amdgpu_atombios_encoder_get_backlight_level_from_reg(struct amdgpu_device *adev);
 void
 amdgpu_atombios_encoder_set_backlight_level_to_reg(struct amdgpu_device *adev,
 						   u8 backlight_level);
 u8
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 amdgpu_atombios_encoder_get_backlight_level(struct amdgpu_encoder *amdgpu_encoder);
 void
 amdgpu_atombios_encoder_set_backlight_level(struct amdgpu_encoder *amdgpu_encoder,

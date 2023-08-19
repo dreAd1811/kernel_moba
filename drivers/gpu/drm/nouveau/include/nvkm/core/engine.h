@@ -16,13 +16,9 @@ struct nvkm_engine {
 
 struct nvkm_engine_func {
 	void *(*dtor)(struct nvkm_engine *);
-<<<<<<< HEAD
 	void (*preinit)(struct nvkm_engine *);
 	int (*oneinit)(struct nvkm_engine *);
 	int (*info)(struct nvkm_engine *, u64 mthd, u64 *data);
-=======
-	int (*oneinit)(struct nvkm_engine *);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int (*init)(struct nvkm_engine *);
 	int (*fini)(struct nvkm_engine *, bool suspend);
 	void (*intr)(struct nvkm_engine *);

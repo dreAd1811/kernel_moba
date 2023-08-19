@@ -99,12 +99,8 @@ config R8169
 	depends on PCI
 	select FW_LOADER
 	select CRC32
-<<<<<<< HEAD
 	select PHYLIB
 	select REALTEK_PHY
-=======
-	select MII
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	---help---
 	  Say Y here if you have a Realtek 8169 PCI Gigabit Ethernet adapter.
 

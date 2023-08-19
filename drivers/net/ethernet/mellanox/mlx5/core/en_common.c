@@ -74,11 +74,7 @@ static int mlx5e_create_mkey(struct mlx5_core_dev *mdev, u32 pdn,
 		return -ENOMEM;
 
 	mkc = MLX5_ADDR_OF(create_mkey_in, in, memory_key_mkey_entry);
-<<<<<<< HEAD
 	MLX5_SET(mkc, mkc, access_mode_1_0, MLX5_MKC_ACCESS_MODE_PA);
-=======
-	MLX5_SET(mkc, mkc, access_mode, MLX5_MKC_ACCESS_MODE_PA);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MLX5_SET(mkc, mkc, lw, 1);
 	MLX5_SET(mkc, mkc, lr, 1);
 
@@ -143,10 +139,7 @@ void mlx5e_destroy_mdev_resources(struct mlx5_core_dev *mdev)
 	mlx5_core_destroy_mkey(mdev, &res->mkey);
 	mlx5_core_dealloc_transport_domain(mdev, res->td.tdn);
 	mlx5_core_dealloc_pd(mdev, res->pdn);
-<<<<<<< HEAD
 	memset(res, 0, sizeof(*res));
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int mlx5e_refresh_tirs(struct mlx5e_priv *priv, bool enable_uc_lb)
@@ -187,7 +180,6 @@ out:
 
 	return err;
 }
-<<<<<<< HEAD
 
 u8 mlx5e_params_calculate_tx_min_inline(struct mlx5_core_dev *mdev)
 {
@@ -200,5 +192,3 @@ u8 mlx5e_params_calculate_tx_min_inline(struct mlx5_core_dev *mdev)
 
 	return min_inline_mode;
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

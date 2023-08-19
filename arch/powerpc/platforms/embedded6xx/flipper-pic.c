@@ -108,21 +108,8 @@ static int flipper_pic_map(struct irq_domain *h, unsigned int virq,
 	return 0;
 }
 
-<<<<<<< HEAD
 static const struct irq_domain_ops flipper_irq_domain_ops = {
 	.map = flipper_pic_map,
-=======
-static int flipper_pic_match(struct irq_domain *h, struct device_node *np,
-			     enum irq_domain_bus_token bus_token)
-{
-	return 1;
-}
-
-
-static const struct irq_domain_ops flipper_irq_domain_ops = {
-	.map = flipper_pic_map,
-	.match = flipper_pic_match,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /*
@@ -137,11 +124,7 @@ static void __flipper_quiesce(void __iomem *io_base)
 	out_be32(io_base + FLIPPER_ICR, 0xffffffff);
 }
 
-<<<<<<< HEAD
 static struct irq_domain * __init flipper_pic_init(struct device_node *np)
-=======
-struct irq_domain * __init flipper_pic_init(struct device_node *np)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct device_node *pi;
 	struct irq_domain *irq_domain = NULL;

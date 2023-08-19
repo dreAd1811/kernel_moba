@@ -1,11 +1,7 @@
 /*
  *
  * Intel Management Engine Interface (Intel MEI) Linux driver
-<<<<<<< HEAD
  * Copyright (c) 2003-2018, Intel Corporation.
-=======
- * Copyright (c) 2003-2013, Intel Corporation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU General Public License,
@@ -100,7 +96,6 @@ struct mkhi_fwcaps {
 	u8 data[0];
 } __packed;
 
-<<<<<<< HEAD
 struct mkhi_fw_ver_block {
 	u16 minor;
 	u8 major;
@@ -117,10 +112,6 @@ struct mkhi_fw_ver {
 #define MKHI_FWCAPS_SET_OS_VER_APP_RULE_CMD 6
 #define MKHI_GEN_GROUP_ID 0xFF
 #define MKHI_GEN_GET_FW_VERSION_CMD 0x2
-=======
-#define MKHI_FWCAPS_GROUP_ID 0x3
-#define MKHI_FWCAPS_SET_OS_VER_APP_RULE_CMD 6
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct mkhi_msg_hdr {
 	u8  group_id;
 	u8  command;
@@ -162,7 +153,6 @@ static int mei_osver(struct mei_cl_device *cldev)
 	return __mei_cl_send(cldev->cl, buf, size, mode);
 }
 
-<<<<<<< HEAD
 #define MKHI_FWVER_BUF_LEN (sizeof(struct mkhi_msg_hdr) + \
 			    sizeof(struct mkhi_fw_ver))
 #define MKHI_FWVER_LEN(__num) (sizeof(struct mkhi_msg_hdr) + \
@@ -220,26 +210,19 @@ static int mei_fwver(struct mei_cl_device *cldev)
 	return ret;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void mei_mkhi_fix(struct mei_cl_device *cldev)
 {
 	int ret;
 
-<<<<<<< HEAD
 	/* No need to enable the client if nothing is needed from it */
 	if (!cldev->bus->fw_f_fw_ver_supported &&
 	    !cldev->bus->hbm_f_os_supported)
-=======
-	if (!cldev->bus->hbm_f_os_supported)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	ret = mei_cldev_enable(cldev);
 	if (ret)
 		return;
 
-<<<<<<< HEAD
 	if (cldev->bus->fw_f_fw_ver_supported) {
 		ret = mei_fwver(cldev);
 		if (ret < 0)
@@ -253,12 +236,6 @@ static void mei_mkhi_fix(struct mei_cl_device *cldev)
 			dev_err(&cldev->dev, "OS version command failed %d\n",
 				ret);
 	}
-=======
-	ret = mei_osver(cldev);
-	if (ret < 0)
-		dev_err(&cldev->dev, "OS version command failed %d\n", ret);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mei_cldev_disable(cldev);
 }
 
@@ -371,13 +348,8 @@ static int mei_nfc_if_version(struct mei_cl *cl,
 		return -ENOMEM;
 
 	ret = 0;
-<<<<<<< HEAD
 	bytes_recv = __mei_cl_recv(cl, (u8 *)reply, if_version_length, 0, 0);
 	if (bytes_recv < 0 || (size_t)bytes_recv < if_version_length) {
-=======
-	bytes_recv = __mei_cl_recv(cl, (u8 *)reply, if_version_length, 0);
-	if (bytes_recv < 0 || bytes_recv < if_version_length) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(bus->dev, "Could not read IF version\n");
 		ret = -EIO;
 		goto err;
@@ -520,11 +492,7 @@ void mei_cl_bus_dev_fixup(struct mei_cl_device *cldev)
 {
 	struct mei_fixup *f;
 	const uuid_le *uuid = mei_me_cl_uuid(cldev->me_cl);
-<<<<<<< HEAD
 	size_t i;
-=======
-	int i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < ARRAY_SIZE(mei_fixups); i++) {
 

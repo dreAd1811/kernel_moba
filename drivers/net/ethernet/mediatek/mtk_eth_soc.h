@@ -15,11 +15,8 @@
 #ifndef MTK_ETH_H
 #define MTK_ETH_H
 
-<<<<<<< HEAD
 #include <linux/refcount.h>
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MTK_QDMA_PAGE_SIZE	2048
 #define	MTK_MAX_RX_LENGTH	1536
 #define MTK_TX_DMA_BUF_LEN	0x3fff
@@ -569,10 +566,7 @@ struct mtk_rx_ring {
 #define MTK_GMAC2_SGMII			(BIT(10) | MTK_SGMII)
 #define MTK_DUAL_GMAC_SHARED_SGMII	(BIT(11) | MTK_GMAC1_SGMII | \
 					 MTK_GMAC2_SGMII)
-<<<<<<< HEAD
 #define MTK_HWLRO			BIT(12)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MTK_HAS_CAPS(caps, _x)		(((caps) & (_x)) == (_x))
 
 /* struct mtk_eth_data -	This is the structure holding all differences
@@ -580,19 +574,13 @@ struct mtk_rx_ring {
  * @caps			Flags shown the extra capability for the SoC
  * @required_clks		Flags shown the bitmap for required clocks on
  *				the target SoC
-<<<<<<< HEAD
  * @required_pctl		A bool value to show whether the SoC requires
  *				the extra setup for those pins used by GMAC.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct mtk_soc_data {
 	u32		caps;
 	u32		required_clks;
-<<<<<<< HEAD
 	bool		required_pctl;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* currently no SoC has more than 2 macs */
@@ -648,14 +636,8 @@ struct mtk_eth {
 	struct regmap			*ethsys;
 	struct regmap			*sgmiisys;
 	struct regmap			*pctl;
-<<<<<<< HEAD
 	bool				hwlro;
 	refcount_t			dma_refcnt;
-=======
-	u32				chip_id;
-	bool				hwlro;
-	atomic_t			dma_refcnt;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mtk_tx_ring		tx_ring;
 	struct mtk_rx_ring		rx_ring[MTK_MAX_RX_RING_NUM];
 	struct mtk_rx_ring		rx_ring_qdma;

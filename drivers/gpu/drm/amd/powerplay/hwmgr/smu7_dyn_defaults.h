@@ -50,10 +50,6 @@
 #define SMU7_CGULVCONTROL_DFLT                      0x00007450
 #define SMU7_TARGETACTIVITY_DFLT                     50
 #define SMU7_MCLK_TARGETACTIVITY_DFLT                10
-<<<<<<< HEAD
 #define SMU7_SCLK_TARGETACTIVITY_DFLT                30
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 

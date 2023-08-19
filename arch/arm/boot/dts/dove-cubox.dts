@@ -87,11 +87,7 @@
 	status = "okay";
 	clock-frequency = <100000>;
 
-<<<<<<< HEAD
 	si5351: clock-generator {
-=======
-	si5351: clock-generator@60 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "silabs,si5351a-msop";
 		reg = <0x60>;
 		#address-cells = <1>;

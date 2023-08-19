@@ -13,10 +13,7 @@
 #include <linux/phy.h>
 #include <linux/ptp_clock_kernel.h>
 #include <linux/net_tstamp.h>
-<<<<<<< HEAD
 #include <linux/interrupt.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #if defined(CONFIG_ARCH_DMA_ADDR_T_64BIT) || defined(CONFIG_MACB_USE_HWSTAMP)
 #define MACB_EXT_DESC
@@ -168,16 +165,12 @@
 #define GEM_DCFG5		0x0290 /* Design Config 5 */
 #define GEM_DCFG6		0x0294 /* Design Config 6 */
 #define GEM_DCFG7		0x0298 /* Design Config 7 */
-<<<<<<< HEAD
 #define GEM_DCFG8		0x029C /* Design Config 8 */
 #define GEM_DCFG10		0x02A4 /* Design Config 10 */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define GEM_TXBDCTRL	0x04cc /* TX Buffer Descriptor control register */
 #define GEM_RXBDCTRL	0x04d0 /* RX Buffer Descriptor control register */
 
-<<<<<<< HEAD
 /* Screener Type 2 match registers */
 #define GEM_SCRT2		0x540
 
@@ -199,17 +192,12 @@
 /* Which screening type 2 EtherType register will be used (0 - 7) */
 #define SCRT2_ETHT		0
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define GEM_ISR(hw_q)		(0x0400 + ((hw_q) << 2))
 #define GEM_TBQP(hw_q)		(0x0440 + ((hw_q) << 2))
 #define GEM_TBQPH(hw_q)		(0x04C8)
 #define GEM_RBQP(hw_q)		(0x0480 + ((hw_q) << 2))
-<<<<<<< HEAD
 #define GEM_RBQS(hw_q)		(0x04A0 + ((hw_q) << 2))
 #define GEM_RBQPH(hw_q)		(0x04D4)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define GEM_IER(hw_q)		(0x0600 + ((hw_q) << 2))
 #define GEM_IDR(hw_q)		(0x0620 + ((hw_q) << 2))
 #define GEM_IMR(hw_q)		(0x0640 + ((hw_q) << 2))
@@ -493,7 +481,6 @@
 #define GEM_DAW64_OFFSET			23
 #define GEM_DAW64_SIZE				1
 
-<<<<<<< HEAD
 /* Bitfields in DCFG8. */
 #define GEM_T1SCR_OFFSET			24
 #define GEM_T1SCR_SIZE				8
@@ -513,15 +500,6 @@
 /* Bitfields in TISUBN */
 #define GEM_SUBNSINCR_OFFSET			0
 #define GEM_SUBNSINCR_SIZE			16
-=======
-/* Bitfields in TISUBN */
-#define GEM_SUBNSINCR_OFFSET			0
-#define GEM_SUBNSINCRL_OFFSET			24
-#define GEM_SUBNSINCRL_SIZE			8
-#define GEM_SUBNSINCRH_OFFSET			0
-#define GEM_SUBNSINCRH_SIZE			16
-#define GEM_SUBNSINCR_SIZE			24
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Bitfields in TI */
 #define GEM_NSINCR_OFFSET			0
@@ -547,7 +525,6 @@
 #define GEM_RXTSMODE_OFFSET			4 /* RX Descriptor Timestamp Insertion mode */
 #define GEM_RXTSMODE_SIZE			2
 
-<<<<<<< HEAD
 /* Bitfields in SCRT2 */
 #define GEM_QUEUE_OFFSET			0 /* Queue Number */
 #define GEM_QUEUE_SIZE				4
@@ -608,8 +585,6 @@
 #define IPHDR_SRCPORT_OFFSET		0
 #define IPHDR_DSTPORT_OFFSET		2
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Transmit DMA buffer descriptor Word 1 */
 #define GEM_DMA_TXVALID_OFFSET		23 /* timestamp has been captured in the Buffer Descriptor */
 #define GEM_DMA_TXVALID_SIZE		1
@@ -667,11 +642,8 @@
 #define MACB_CAPS_USRIO_DISABLED		0x00000010
 #define MACB_CAPS_JUMBO				0x00000020
 #define MACB_CAPS_GEM_HAS_PTP			0x00000040
-<<<<<<< HEAD
 #define MACB_CAPS_BD_RD_PREFETCH		0x00000080
 #define MACB_CAPS_NEEDS_RSTONUBR		0x00000100
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MACB_CAPS_FIFO_MODE			0x10000000
 #define MACB_CAPS_GIGABIT_MODE_AVAILABLE	0x20000000
 #define MACB_CAPS_SG_DISABLED			0x40000000
@@ -715,11 +687,8 @@
 #define gem_writel(port, reg, value)	(port)->macb_reg_writel((port), GEM_##reg, (value))
 #define queue_readl(queue, reg)		(queue)->bp->macb_reg_readl((queue)->bp, (queue)->reg)
 #define queue_writel(queue, reg, value)	(queue)->bp->macb_reg_writel((queue)->bp, (queue)->reg, (value))
-<<<<<<< HEAD
 #define gem_readl_n(port, reg, idx)		(port)->macb_reg_readl((port), GEM_##reg + idx * 4)
 #define gem_writel_n(port, reg, idx, value)	(port)->macb_reg_writel((port), GEM_##reg + idx * 4, (value))
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define PTP_TS_BUFFER_SIZE		128 /* must be power of 2 */
 
@@ -1057,7 +1026,6 @@ static const struct gem_statistic gem_statistics[] = {
 
 #define GEM_STATS_LEN ARRAY_SIZE(gem_statistics)
 
-<<<<<<< HEAD
 #define QUEUE_STAT_TITLE(title) {	\
 	.stat_string = title,			\
 }
@@ -1088,19 +1056,12 @@ static const struct gem_statistic queue_statistics[] = {
 
 struct macb;
 struct macb_queue;
-=======
-struct macb;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct macb_or_gem_ops {
 	int	(*mog_alloc_rx_buffers)(struct macb *bp);
 	void	(*mog_free_rx_buffers)(struct macb *bp);
 	void	(*mog_init_rings)(struct macb *bp);
-<<<<<<< HEAD
 	int	(*mog_rx)(struct macb_queue *queue, int budget);
-=======
-	int	(*mog_rx)(struct macb *bp, int budget);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* MACB-PTP interface: adapt to platform needs. */
@@ -1142,12 +1103,9 @@ struct macb_queue {
 	unsigned int		IMR;
 	unsigned int		TBQP;
 	unsigned int		TBQPH;
-<<<<<<< HEAD
 	unsigned int		RBQS;
 	unsigned int		RBQP;
 	unsigned int		RBQPH;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	unsigned int		tx_head, tx_tail;
 	struct macb_dma_desc	*tx_ring;
@@ -1155,7 +1113,6 @@ struct macb_queue {
 	dma_addr_t		tx_ring_dma;
 	struct work_struct	tx_error_task;
 
-<<<<<<< HEAD
 	dma_addr_t		rx_ring_dma;
 	dma_addr_t		rx_buffers_dma;
 	unsigned int		rx_tail;
@@ -1166,8 +1123,6 @@ struct macb_queue {
 	struct napi_struct	napi;
 	struct queue_stats stats;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_MACB_USE_HWSTAMP
 	struct work_struct	tx_ts_task;
 	unsigned int		tx_ts_head, tx_ts_tail;
@@ -1175,7 +1130,6 @@ struct macb_queue {
 #endif
 };
 
-<<<<<<< HEAD
 struct ethtool_rx_fs_item {
 	struct ethtool_rx_flow_spec fs;
 	struct list_head list;
@@ -1186,8 +1140,6 @@ struct ethtool_rx_fs_list {
 	unsigned int count;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct macb {
 	void __iomem		*regs;
 	bool			native_io;
@@ -1196,14 +1148,6 @@ struct macb {
 	u32	(*macb_reg_readl)(struct macb *bp, int offset);
 	void	(*macb_reg_writel)(struct macb *bp, int offset, u32 value);
 
-<<<<<<< HEAD
-=======
-	unsigned int		rx_tail;
-	unsigned int		rx_prepared_head;
-	struct macb_dma_desc	*rx_ring;
-	struct sk_buff		**rx_skbuff;
-	void			*rx_buffers;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	size_t			rx_buffer_size;
 
 	unsigned int		rx_ring_size;
@@ -1220,21 +1164,11 @@ struct macb {
 	struct clk		*tx_clk;
 	struct clk		*rx_clk;
 	struct net_device	*dev;
-<<<<<<< HEAD
-=======
-	struct napi_struct	napi;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	union {
 		struct macb_stats	macb;
 		struct gem_stats	gem;
 	}			hw_stats;
 
-<<<<<<< HEAD
-=======
-	dma_addr_t		rx_ring_dma;
-	dma_addr_t		rx_buffers_dma;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct macb_or_gem_ops	macbgem_ops;
 
 	struct mii_bus		*mii_bus;
@@ -1247,10 +1181,6 @@ struct macb {
 	unsigned int		dma_burst_length;
 
 	phy_interface_t		phy_interface;
-<<<<<<< HEAD
-=======
-	struct gpio_desc	*reset_gpio;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* AT91RM9200 transmit */
 	struct sk_buff *skb;			/* holds skb until xmit interrupt completes */
@@ -1258,11 +1188,7 @@ struct macb {
 	int skb_length;				/* saved skb length for pci_unmap_single */
 	unsigned int		max_tx_length;
 
-<<<<<<< HEAD
 	u64			ethtool_stats[GEM_STATS_LEN + QUEUE_STATS_LEN * MACB_MAX_QUEUES];
-=======
-	u64			ethtool_stats[GEM_STATS_LEN];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	unsigned int		rx_frm_len_mask;
 	unsigned int		jumbo_max_len;
@@ -1279,7 +1205,6 @@ struct macb {
 	struct ptp_clock_info ptp_clock_info;
 	struct tsu_incr tsu_incr;
 	struct hwtstamp_config tstamp_config;
-<<<<<<< HEAD
 
 	/* RX queue filer rule set*/
 	struct ethtool_rx_fs_list rx_fs_list;
@@ -1292,8 +1217,6 @@ struct macb {
 	int	tx_bd_rd_prefetch;
 
 	u32	rx_intr_mask;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #ifdef CONFIG_MACB_USE_HWSTAMP

@@ -38,12 +38,9 @@
 
 #include "ngene.h"
 
-<<<<<<< HEAD
 static int ci_tsfix = 1;
 module_param(ci_tsfix, int, 0444);
 MODULE_PARM_DESC(ci_tsfix, "Detect and fix TS buffer offset shifts in conjunction with CI expansions (default: 1/enabled)");
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /****************************************************************************/
 /* COMMAND API interface ****************************************************/
@@ -90,7 +87,6 @@ static ssize_t ts_read(struct file *file, char __user *buf,
 	return count;
 }
 
-<<<<<<< HEAD
 static __poll_t ts_poll(struct file *file, poll_table *wait)
 {
 	struct dvb_device *dvbdev = file->private_data;
@@ -111,15 +107,12 @@ static __poll_t ts_poll(struct file *file, poll_table *wait)
 	return mask;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct file_operations ci_fops = {
 	.owner   = THIS_MODULE,
 	.read    = ts_read,
 	.write   = ts_write,
 	.open    = dvb_generic_open,
 	.release = dvb_generic_release,
-<<<<<<< HEAD
 	.poll    = ts_poll,
 	.mmap    = NULL,
 };
@@ -129,14 +122,6 @@ struct dvb_device ngene_dvbdev_ci = {
 	.readers = 1,
 	.writers = 1,
 	.users   = 2,
-=======
-};
-
-struct dvb_device ngene_dvbdev_ci = {
-	.readers = -1,
-	.writers = -1,
-	.users   = -1,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.fops    = &ci_fops,
 };
 
@@ -157,7 +142,6 @@ static void swap_buffer(u32 *p, u32 len)
 /* start of filler packet */
 static u8 fill_ts[] = { 0x47, 0x1f, 0xff, 0x10, TS_FILLER };
 
-<<<<<<< HEAD
 static int tsin_find_offset(void *buf, u32 len)
 {
 	int i, l;
@@ -185,30 +169,17 @@ static inline void tsin_copy_stripped(struct ngene *dev, void *buf)
 		}
 	}
 }
-=======
-/* #define DEBUG_CI_XFER */
-#ifdef DEBUG_CI_XFER
-static u32 ok;
-static u32 overflow;
-static u32 stripped;
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void *tsin_exchange(void *priv, void *buf, u32 len, u32 clock, u32 flags)
 {
 	struct ngene_channel *chan = priv;
 	struct ngene *dev = chan->dev;
-<<<<<<< HEAD
 	int tsoff;
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (flags & DF_SWAP32)
 		swap_buffer(buf, len);
 
 	if (dev->ci.en && chan->number == 2) {
-<<<<<<< HEAD
 		/* blindly copy buffers if ci_tsfix is disabled */
 		if (!ci_tsfix) {
 			while (len >= 188) {
@@ -283,32 +254,6 @@ void *tsin_exchange(void *priv, void *buf, u32 len, u32 clock, u32 flags)
 		if (len > 0 && len < 188)
 			memcpy(&chan->tsin_buffer, buf, len);
 
-=======
-		while (len >= 188) {
-			if (memcmp(buf, fill_ts, sizeof fill_ts) != 0) {
-				if (dvb_ringbuffer_free(&dev->tsin_rbuf) >= 188) {
-					dvb_ringbuffer_write(&dev->tsin_rbuf, buf, 188);
-					wake_up(&dev->tsin_rbuf.queue);
-#ifdef DEBUG_CI_XFER
-					ok++;
-#endif
-				}
-#ifdef DEBUG_CI_XFER
-				else
-					overflow++;
-#endif
-			}
-#ifdef DEBUG_CI_XFER
-			else
-				stripped++;
-
-			if (ok % 100 == 0 && overflow)
-				printk(KERN_WARNING "%s: ok %u overflow %u dropped %u\n", __func__, ok, overflow, stripped);
-#endif
-			buf += 188;
-			len -= 188;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return NULL;
 	}
 

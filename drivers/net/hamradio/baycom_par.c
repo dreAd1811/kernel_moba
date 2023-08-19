@@ -311,13 +311,9 @@ static void par96_wakeup(void *handle)
 static int par96_open(struct net_device *dev)
 {
 	struct baycom_state *bc = netdev_priv(dev);
-<<<<<<< HEAD
 	struct pardev_cb par_cb;
 	struct parport *pp;
 	int i;
-=======
-	struct parport *pp;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!dev || !bc)
 		return -ENXIO;
@@ -338,7 +334,6 @@ static int par96_open(struct net_device *dev)
 	}
 	memset(&bc->modem, 0, sizeof(bc->modem));
 	bc->hdrv.par.bitrate = 9600;
-<<<<<<< HEAD
 	memset(&par_cb, 0, sizeof(par_cb));
 	par_cb.wakeup = par96_wakeup;
 	par_cb.irq_func = par96_interrupt;
@@ -354,10 +349,6 @@ static int par96_open(struct net_device *dev)
 		return -ENODEV;
 	}
 	bc->pdev = parport_register_dev_model(pp, dev->name, &par_cb, i);
-=======
-	bc->pdev = parport_register_device(pp, dev->name, NULL, par96_wakeup, 
-				 par96_interrupt, PARPORT_DEV_EXCL, dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	parport_put_port(pp);
 	if (!bc->pdev) {
 		printk(KERN_ERR "baycom_par: cannot register parport at 0x%lx\n", dev->base_addr);
@@ -514,7 +505,6 @@ MODULE_LICENSE("GPL");
 
 /* --------------------------------------------------------------------- */
 
-<<<<<<< HEAD
 static int baycom_par_probe(struct pardevice *par_dev)
 {
 	struct device_driver *drv = par_dev->dev.driver;
@@ -543,14 +533,6 @@ static int __init init_baycompar(void)
 	if (ret)
 		return ret;
 
-=======
-static int __init init_baycompar(void)
-{
-	int i, found = 0;
-	char set_hw = 1;
-
-	printk(bc_drvinfo);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * register net devices
 	 */
@@ -579,15 +561,10 @@ static int __init init_baycompar(void)
 		baycom_device[i] = dev;
 	}
 
-<<<<<<< HEAD
 	if (!found) {
 		parport_unregister_driver(&baycom_par_driver);
 		return -ENXIO;
 	}
-=======
-	if (!found)
-		return -ENXIO;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -601,10 +578,7 @@ static void __exit cleanup_baycompar(void)
 		if (dev)
 			hdlcdrv_unregister(dev);
 	}
-<<<<<<< HEAD
 	parport_unregister_driver(&baycom_par_driver);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 module_init(init_baycompar);

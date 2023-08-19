@@ -31,11 +31,7 @@ static int set_audclk_freq(struct cx18 *cx, u32 freq)
 	 * would ideally be:
 	 *
 	 * NTSC Color subcarrier freq * 8 =
-<<<<<<< HEAD
 	 *	4.5 MHz/286 * 455/2 * 8 = 28.63636363... MHz
-=======
-	 * 	4.5 MHz/286 * 455/2 * 8 = 28.63636363... MHz
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 *
 	 * The accidents of history and rationale that explain from where this
 	 * combination of magic numbers originate can be found in:

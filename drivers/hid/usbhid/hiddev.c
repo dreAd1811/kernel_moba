@@ -254,58 +254,12 @@ static int hiddev_release(struct inode * inode, struct file * file)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-static int __hiddev_open(struct hiddev *hiddev, struct file *file)
-{
-	struct hiddev_list *list;
-	int error;
-
-	lockdep_assert_held(&hiddev->existancelock);
-
-	list = vzalloc(sizeof(*list));
-	if (!list)
-		return -ENOMEM;
-
-	mutex_init(&list->thread_lock);
-	list->hiddev = hiddev;
-
-	if (!hiddev->open++) {
-		error = hid_hw_power(hiddev->hid, PM_HINT_FULLON);
-		if (error < 0)
-			goto err_drop_count;
-
-		error = hid_hw_open(hiddev->hid);
-		if (error < 0)
-			goto err_normal_power;
-	}
-
-	spin_lock_irq(&hiddev->list_lock);
-	list_add_tail(&list->node, &hiddev->list);
-	spin_unlock_irq(&hiddev->list_lock);
-
-	file->private_data = list;
-
-	return 0;
-
-err_normal_power:
-	hid_hw_power(hiddev->hid, PM_HINT_NORMAL);
-err_drop_count:
-	hiddev->open--;
-	vfree(list);
-	return error;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * open file op
  */
 static int hiddev_open(struct inode *inode, struct file *file)
 {
-<<<<<<< HEAD
 	struct hiddev_list *list;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct usb_interface *intf;
 	struct hid_device *hid;
 	struct hiddev *hiddev;
@@ -314,7 +268,6 @@ static int hiddev_open(struct inode *inode, struct file *file)
 	intf = usbhid_find_interface(iminor(inode));
 	if (!intf)
 		return -ENODEV;
-<<<<<<< HEAD
 	hid = usb_get_intfdata(intf);
 	hiddev = hid->hiddev;
 
@@ -375,16 +328,6 @@ bail_unlock:
 bail:
 	file->private_data = NULL;
 	vfree(list);
-=======
-
-	hid = usb_get_intfdata(intf);
-	hiddev = hid->hiddev;
-
-	mutex_lock(&hiddev->existancelock);
-	res = hiddev->exist ? __hiddev_open(hiddev, file) : -ENODEV;
-	mutex_unlock(&hiddev->existancelock);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return res;
 }
 
@@ -492,25 +435,15 @@ static ssize_t hiddev_read(struct file * file, char __user * buffer, size_t coun
  * "poll" file op
  * No kernel lock - fine
  */
-<<<<<<< HEAD
 static __poll_t hiddev_poll(struct file *file, poll_table *wait)
-=======
-static unsigned int hiddev_poll(struct file *file, poll_table *wait)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct hiddev_list *list = file->private_data;
 
 	poll_wait(file, &list->hiddev->wait, wait);
 	if (list->head != list->tail)
-<<<<<<< HEAD
 		return EPOLLIN | EPOLLRDNORM;
 	if (!list->hiddev->exist)
 		return EPOLLERR | EPOLLHUP;
-=======
-		return POLLIN | POLLRDNORM;
-	if (!list->hiddev->exist)
-		return POLLERR | POLLHUP;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1034,15 +967,9 @@ void hiddev_disconnect(struct hid_device *hid)
 	hiddev->exist = 0;
 
 	if (hiddev->open) {
-<<<<<<< HEAD
 		mutex_unlock(&hiddev->existancelock);
 		hid_hw_close(hiddev->hid);
 		wake_up_interruptible(&hiddev->wait);
-=======
-		hid_hw_close(hiddev->hid);
-		wake_up_interruptible(&hiddev->wait);
-		mutex_unlock(&hiddev->existancelock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		mutex_unlock(&hiddev->existancelock);
 		kfree(hiddev);

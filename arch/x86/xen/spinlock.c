@@ -12,10 +12,7 @@
 #include <linux/atomic.h>
 
 #include <asm/paravirt.h>
-<<<<<<< HEAD
 #include <asm/qspinlock.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <xen/interface/xen.h>
 #include <xen/events.h>
@@ -28,11 +25,6 @@ static DEFINE_PER_CPU(char *, irq_name);
 static DEFINE_PER_CPU(atomic_t, xen_qlock_wait_nest);
 static bool xen_pvspin = true;
 
-<<<<<<< HEAD
-=======
-#include <asm/qspinlock.h>
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void xen_qlock_kick(int cpu)
 {
 	int irq = per_cpu(lock_kicker_irq, cpu);
@@ -81,16 +73,11 @@ void xen_init_lock_cpu(int cpu)
 	int irq;
 	char *name;
 
-<<<<<<< HEAD
 	if (!xen_pvspin) {
 		if (cpu == 0)
 			static_branch_disable(&virt_spin_lock_key);
 		return;
 	}
-=======
-	if (!xen_pvspin)
-		return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	WARN(per_cpu(lock_kicker_irq, cpu) >= 0, "spinlock on CPU%d exists on IRQ%d!\n",
 	     cpu, per_cpu(lock_kicker_irq, cpu));
@@ -136,13 +123,10 @@ PV_CALLEE_SAVE_REGS_THUNK(xen_vcpu_stolen);
 void __init xen_init_spinlocks(void)
 {
 
-<<<<<<< HEAD
 	/*  Don't need to use pvqspinlock code if there is only 1 vCPU. */
 	if (num_possible_cpus() == 1)
 		xen_pvspin = false;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!xen_pvspin) {
 		printk(KERN_DEBUG "xen: PV spinlocks disabled\n");
 		return;

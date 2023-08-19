@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Samsung's Exynos54xx SoC series common device tree source
  *
@@ -12,13 +9,6 @@
  * Device nodes common for Samsung Exynos5410/5420/5422/5800. Specific
  * Exynos 54xx SoCs should include this file and customize it further
  * (e.g. with clocks).
-<<<<<<< HEAD
-=======
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include "exynos5.dtsi"
@@ -36,7 +26,6 @@
 	};
 
 	soc: soc {
-<<<<<<< HEAD
 		arm_a7_pmu: arm-a7-pmu {
 			compatible = "arm,cortex-a7-pmu";
 			interrupt-parent = <&gic>;
@@ -58,9 +47,6 @@
 		};
 
 		sysram@2020000 {
-=======
-		sysram@02020000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "mmio-sram";
 			reg = <0x02020000 0x54000>;
 			#address-cells = <1>;
@@ -110,15 +96,6 @@
 			interrupts = <GIC_SPI 42 IRQ_TYPE_LEVEL_HIGH>;
 		};
 
-<<<<<<< HEAD
-=======
-		sss: sss@10830000 {
-			compatible = "samsung,exynos4210-secss";
-			reg = <0x10830000 0x300>;
-			interrupts = <GIC_SPI 112 IRQ_TYPE_LEVEL_HIGH>;
-		};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* i2c_0-3 are defined in exynos5.dtsi */
 		hsi2c_4: i2c@12ca0000 {
 			compatible = "samsung,exynos5250-hsi2c";
@@ -168,10 +145,7 @@
 				interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>;
 				phys = <&usbdrd_phy0 0>, <&usbdrd_phy0 1>;
 				phy-names = "usb2-phy", "usb3-phy";
-<<<<<<< HEAD
 				snps,dis_u3_susphy_quirk;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 		};
 
@@ -192,10 +166,7 @@
 				reg = <0x12400000 0x10000>;
 				phys = <&usbdrd_phy1 0>, <&usbdrd_phy1 1>;
 				phy-names = "usb2-phy", "usb3-phy";
-<<<<<<< HEAD
 				snps,dis_u3_susphy_quirk;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 		};
 

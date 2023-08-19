@@ -49,15 +49,11 @@
 #include "qedr.h"
 #include "verbs.h"
 #include <rdma/qedr-abi.h>
-<<<<<<< HEAD
 #include "qedr_roce_cm.h"
 
 #define QEDR_SRQ_WQE_ELEM_SIZE	sizeof(union rdma_srq_elm)
 #define	RDMA_MAX_SGE_PER_SRQ	(4)
 #define RDMA_MAX_SRQ_WQE_SIZE	(RDMA_MAX_SGE_PER_SRQ + 1)
-=======
-#include "qedr_cm.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DB_ADDR_SHIFT(addr)		((addr) << DB_PWM_ADDR_OFFSET_SHIFT)
 
@@ -71,18 +67,13 @@ static inline int qedr_ib_copy_to_udata(struct ib_udata *udata, void *src,
 
 int qedr_query_pkey(struct ib_device *ibdev, u8 port, u16 index, u16 *pkey)
 {
-<<<<<<< HEAD
 	if (index > QEDR_ROCE_PKEY_TABLE_LEN)
-=======
-	if (index >= QEDR_ROCE_PKEY_TABLE_LEN)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	*pkey = QEDR_ROCE_PKEY_DEFAULT;
 	return 0;
 }
 
-<<<<<<< HEAD
 int qedr_iw_query_gid(struct ib_device *ibdev, u8 port,
 		      int index, union ib_gid *sgid)
 {
@@ -106,56 +97,6 @@ int qedr_query_srq(struct ib_srq *ibsrq, struct ib_srq_attr *srq_attr)
 	srq_attr->srq_limit = srq->srq_limit;
 	srq_attr->max_wr = qattr->max_srq_wr;
 	srq_attr->max_sge = qattr->max_sge;
-=======
-int qedr_query_gid(struct ib_device *ibdev, u8 port, int index,
-		   union ib_gid *sgid)
-{
-	struct qedr_dev *dev = get_qedr_dev(ibdev);
-	int rc = 0;
-
-	if (!rdma_cap_roce_gid_table(ibdev, port))
-		return -ENODEV;
-
-	rc = ib_get_cached_gid(ibdev, port, index, sgid, NULL);
-	if (rc == -EAGAIN) {
-		memcpy(sgid, &zgid, sizeof(*sgid));
-		return 0;
-	}
-
-	DP_DEBUG(dev, QEDR_MSG_INIT, "query gid: index=%d %llx:%llx\n", index,
-		 sgid->global.interface_id, sgid->global.subnet_prefix);
-
-	return rc;
-}
-
-int qedr_add_gid(struct ib_device *device, u8 port_num,
-		 unsigned int index, const union ib_gid *gid,
-		 const struct ib_gid_attr *attr, void **context)
-{
-	if (!rdma_cap_roce_gid_table(device, port_num))
-		return -EINVAL;
-
-	if (port_num > QEDR_MAX_PORT)
-		return -EINVAL;
-
-	if (!context)
-		return -EINVAL;
-
-	return 0;
-}
-
-int qedr_del_gid(struct ib_device *device, u8 port_num,
-		 unsigned int index, void **context)
-{
-	if (!rdma_cap_roce_gid_table(device, port_num))
-		return -EINVAL;
-
-	if (port_num > QEDR_MAX_PORT)
-		return -EINVAL;
-
-	if (!context)
-		return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -188,12 +129,8 @@ int qedr_query_device(struct ib_device *ibdev,
 	    IB_DEVICE_RC_RNR_NAK_GEN |
 	    IB_DEVICE_LOCAL_DMA_LKEY | IB_DEVICE_MEM_MGT_EXTENSIONS;
 
-<<<<<<< HEAD
 	attr->max_send_sge = qattr->max_sge;
 	attr->max_recv_sge = qattr->max_sge;
-=======
-	attr->max_sge = qattr->max_sge;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	attr->max_sge_rd = qattr->max_sge;
 	attr->max_cq = qattr->max_cq;
 	attr->max_cqe = qattr->max_cqe;
@@ -221,7 +158,6 @@ int qedr_query_device(struct ib_device *ibdev,
 	return 0;
 }
 
-<<<<<<< HEAD
 #define QEDR_SPEED_SDR		(1)
 #define QEDR_SPEED_DDR		(2)
 #define QEDR_SPEED_QDR		(4)
@@ -229,82 +165,47 @@ int qedr_query_device(struct ib_device *ibdev,
 #define QEDR_SPEED_FDR		(16)
 #define QEDR_SPEED_EDR		(32)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void get_link_speed_and_width(int speed, u8 *ib_speed,
 					    u8 *ib_width)
 {
 	switch (speed) {
 	case 1000:
-<<<<<<< HEAD
 		*ib_speed = QEDR_SPEED_SDR;
 		*ib_width = IB_WIDTH_1X;
 		break;
 	case 10000:
 		*ib_speed = QEDR_SPEED_QDR;
-=======
-		*ib_speed = IB_SPEED_SDR;
-		*ib_width = IB_WIDTH_1X;
-		break;
-	case 10000:
-		*ib_speed = IB_SPEED_QDR;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*ib_width = IB_WIDTH_1X;
 		break;
 
 	case 20000:
-<<<<<<< HEAD
 		*ib_speed = QEDR_SPEED_DDR;
-=======
-		*ib_speed = IB_SPEED_DDR;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*ib_width = IB_WIDTH_4X;
 		break;
 
 	case 25000:
-<<<<<<< HEAD
 		*ib_speed = QEDR_SPEED_EDR;
-=======
-		*ib_speed = IB_SPEED_EDR;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*ib_width = IB_WIDTH_1X;
 		break;
 
 	case 40000:
-<<<<<<< HEAD
 		*ib_speed = QEDR_SPEED_QDR;
-=======
-		*ib_speed = IB_SPEED_QDR;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*ib_width = IB_WIDTH_4X;
 		break;
 
 	case 50000:
-<<<<<<< HEAD
 		*ib_speed = QEDR_SPEED_QDR;
 		*ib_width = IB_WIDTH_4X;
 		break;
 
 	case 100000:
 		*ib_speed = QEDR_SPEED_EDR;
-=======
-		*ib_speed = IB_SPEED_HDR;
-		*ib_width = IB_WIDTH_1X;
-		break;
-
-	case 100000:
-		*ib_speed = IB_SPEED_EDR;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*ib_width = IB_WIDTH_4X;
 		break;
 
 	default:
 		/* Unsupported */
-<<<<<<< HEAD
 		*ib_speed = QEDR_SPEED_SDR;
-=======
-		*ib_speed = IB_SPEED_SDR;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*ib_width = IB_WIDTH_1X;
 	}
 }
@@ -341,7 +242,6 @@ int qedr_query_port(struct ib_device *ibdev, u8 port, struct ib_port_attr *attr)
 	attr->lmc = 0;
 	attr->sm_lid = 0;
 	attr->sm_sl = 0;
-<<<<<<< HEAD
 	attr->ip_gids = true;
 	if (rdma_protocol_iwarp(&dev->ibdev, 1)) {
 		attr->gid_tbl_len = 1;
@@ -350,11 +250,6 @@ int qedr_query_port(struct ib_device *ibdev, u8 port, struct ib_port_attr *attr)
 		attr->gid_tbl_len = QEDR_MAX_SGID;
 		attr->pkey_tbl_len = QEDR_ROCE_PKEY_TABLE_LEN;
 	}
-=======
-	attr->port_cap_flags = IB_PORT_IP_BASED_GIDS;
-	attr->gid_tbl_len = QEDR_MAX_SGID;
-	attr->pkey_tbl_len = QEDR_ROCE_PKEY_TABLE_LEN;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	attr->bad_pkey_cntr = rdma_port->pkey_bad_counter;
 	attr->qkey_viol_cntr = 0;
 	get_link_speed_and_width(rdma_port->link_speed,
@@ -524,7 +419,6 @@ int qedr_mmap(struct ib_ucontext *context, struct vm_area_struct *vma)
 {
 	struct qedr_ucontext *ucontext = get_qedr_ucontext(context);
 	struct qedr_dev *dev = get_qedr_dev(context->device);
-<<<<<<< HEAD
 	unsigned long phys_addr = vma->vm_pgoff << PAGE_SHIFT;
 	unsigned long len = (vma->vm_end - vma->vm_start);
 	unsigned long dpi_start;
@@ -545,31 +439,10 @@ int qedr_mmap(struct ib_ucontext *context, struct vm_area_struct *vma)
 
 	if (!qedr_search_mmap(ucontext, phys_addr, len)) {
 		DP_ERR(dev, "failed mmap, vm_pgoff=0x%lx is not authorized\n",
-=======
-	unsigned long vm_page = vma->vm_pgoff << PAGE_SHIFT;
-	u64 unmapped_db = dev->db_phys_addr;
-	unsigned long len = (vma->vm_end - vma->vm_start);
-	int rc = 0;
-	bool found;
-
-	DP_DEBUG(dev, QEDR_MSG_INIT,
-		 "qedr_mmap called vm_page=0x%lx vm_pgoff=0x%lx unmapped_db=0x%llx db_size=%x, len=%lx\n",
-		 vm_page, vma->vm_pgoff, unmapped_db, dev->db_size, len);
-	if (vma->vm_start & (PAGE_SIZE - 1)) {
-		DP_ERR(dev, "Vma_start not page aligned = %ld\n",
-		       vma->vm_start);
-		return -EINVAL;
-	}
-
-	found = qedr_search_mmap(ucontext, vm_page, len);
-	if (!found) {
-		DP_ERR(dev, "Vma_pgoff not found in mapped array = %ld\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		       vma->vm_pgoff);
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 	if (phys_addr < dpi_start ||
 	    ((phys_addr + len) > (dpi_start + ucontext->dpi_size))) {
 		DP_ERR(dev,
@@ -587,29 +460,6 @@ int qedr_mmap(struct ib_ucontext *context, struct vm_area_struct *vma)
 	vma->vm_page_prot = pgprot_writecombine(vma->vm_page_prot);
 	return io_remap_pfn_range(vma, vma->vm_start, vma->vm_pgoff, len,
 				  vma->vm_page_prot);
-=======
-	DP_DEBUG(dev, QEDR_MSG_INIT, "Mapping doorbell bar\n");
-
-	if ((vm_page >= unmapped_db) && (vm_page <= (unmapped_db +
-						     dev->db_size))) {
-		DP_DEBUG(dev, QEDR_MSG_INIT, "Mapping doorbell bar\n");
-		if (vma->vm_flags & VM_READ) {
-			DP_ERR(dev, "Trying to map doorbell bar for read\n");
-			return -EPERM;
-		}
-
-		vma->vm_page_prot = pgprot_writecombine(vma->vm_page_prot);
-
-		rc = io_remap_pfn_range(vma, vma->vm_start, vma->vm_pgoff,
-					PAGE_SIZE, vma->vm_page_prot);
-	} else {
-		DP_DEBUG(dev, QEDR_MSG_INIT, "Mapping chains\n");
-		rc = remap_pfn_range(vma, vma->vm_start,
-				     vma->vm_pgoff, len, vma->vm_page_prot);
-	}
-	DP_DEBUG(dev, QEDR_MSG_INIT, "qedr_mmap return code: %d\n", rc);
-	return rc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 struct ib_pd *qedr_alloc_pd(struct ib_device *ibdev,
@@ -639,15 +489,9 @@ struct ib_pd *qedr_alloc_pd(struct ib_device *ibdev,
 	pd->pd_id = pd_id;
 
 	if (udata && context) {
-<<<<<<< HEAD
 		struct qedr_alloc_pd_uresp uresp = {
 			.pd_id = pd_id,
 		};
-=======
-		struct qedr_alloc_pd_uresp uresp;
-
-		uresp.pd_id = pd_id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		rc = qedr_ib_copy_to_udata(udata, &uresp, sizeof(uresp));
 		if (rc) {
@@ -724,20 +568,11 @@ static struct qedr_pbl *qedr_alloc_pbl_tbl(struct qedr_dev *dev,
 		return ERR_PTR(-ENOMEM);
 
 	for (i = 0; i < pbl_info->num_pbls; i++) {
-<<<<<<< HEAD
 		va = dma_zalloc_coherent(&pdev->dev, pbl_info->pbl_size,
 					 &pa, flags);
 		if (!va)
 			goto err;
 
-=======
-		va = dma_alloc_coherent(&pdev->dev, pbl_info->pbl_size,
-					&pa, flags);
-		if (!va)
-			goto err;
-
-		memset(va, 0, pbl_info->pbl_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pbl_table[i].va = va;
 		pbl_table[i].pa = pa;
 	}
@@ -917,12 +752,8 @@ static inline int qedr_init_user_queue(struct ib_ucontext *ib_ctx,
 				       struct qedr_dev *dev,
 				       struct qedr_userq *q,
 				       u64 buf_addr, size_t buf_len,
-<<<<<<< HEAD
 				       int access, int dmasync,
 				       int alloc_and_init)
-=======
-				       int access, int dmasync)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 fw_pages;
 	int rc;
@@ -943,7 +774,6 @@ static inline int qedr_init_user_queue(struct ib_ucontext *ib_ctx,
 	if (rc)
 		goto err0;
 
-<<<<<<< HEAD
 	if (alloc_and_init) {
 		q->pbl_tbl = qedr_alloc_pbl_tbl(dev, &q->pbl_info, GFP_KERNEL);
 		if (IS_ERR(q->pbl_tbl)) {
@@ -959,25 +789,12 @@ static inline int qedr_init_user_queue(struct ib_ucontext *ib_ctx,
 			goto err0;
 		}
 	}
-=======
-	q->pbl_tbl = qedr_alloc_pbl_tbl(dev, &q->pbl_info, GFP_KERNEL);
-	if (IS_ERR(q->pbl_tbl)) {
-		rc = PTR_ERR(q->pbl_tbl);
-		goto err0;
-	}
-
-		qedr_populate_pbls(dev, q->umem, q->pbl_tbl, &q->pbl_info,
-				   FW_PAGE_SHIFT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 
 err0:
 	ib_umem_release(q->umem);
-<<<<<<< HEAD
 	q->umem = NULL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return rc;
 }
@@ -1003,11 +820,6 @@ static inline void qedr_init_cq_params(struct qedr_cq *cq,
 
 static void doorbell_cq(struct qedr_cq *cq, u32 cons, u8 flags)
 {
-<<<<<<< HEAD
-=======
-	/* Flush data before signalling doorbell */
-	wmb();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cq->db.data.agg_flags = flags;
 	cq->db.data.value = cpu_to_le32(cons);
 	writeq(cq->db.raw, cq->db_addr);
@@ -1106,12 +918,8 @@ struct ib_cq *qedr_create_cq(struct ib_device *ibdev,
 		cq->cq_type = QEDR_CQ_TYPE_USER;
 
 		rc = qedr_init_user_queue(ib_ctx, dev, &cq->q, ureq.addr,
-<<<<<<< HEAD
 					  ureq.len, IB_ACCESS_LOCAL_WRITE,
 					  1, 1);
-=======
-					  ureq.len, IB_ACCESS_LOCAL_WRITE, 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (rc)
 			goto err0;
 
@@ -1285,7 +1093,6 @@ static inline int get_gid_info_from_table(struct ib_qp *ibqp,
 					  struct qed_rdma_modify_qp_in_params
 					  *qp_params)
 {
-<<<<<<< HEAD
 	const struct ib_gid_attr *gid_attr;
 	enum rdma_network_type nw_type;
 	const struct ib_global_route *grh = rdma_ah_read_grh(&attr->ah_attr);
@@ -1327,62 +1134,6 @@ static inline int get_gid_info_from_table(struct ib_qp *ibqp,
 			  QED_ROCE_MODIFY_QP_VALID_ROCE_MODE, 1);
 		qp_params->roce_mode = ROCE_V2_IPV4;
 		break;
-=======
-	enum rdma_network_type nw_type;
-	struct ib_gid_attr gid_attr;
-	const struct ib_global_route *grh = rdma_ah_read_grh(&attr->ah_attr);
-	union ib_gid gid;
-	u32 ipv4_addr;
-	int rc = 0;
-	int i;
-
-	rc = ib_get_cached_gid(ibqp->device,
-			       rdma_ah_get_port_num(&attr->ah_attr),
-			       grh->sgid_index, &gid, &gid_attr);
-	if (rc)
-		return rc;
-
-	if (!memcmp(&gid, &zgid, sizeof(gid)))
-		return -ENOENT;
-
-	if (gid_attr.ndev) {
-		qp_params->vlan_id = rdma_vlan_dev_vlan_id(gid_attr.ndev);
-
-		dev_put(gid_attr.ndev);
-		nw_type = ib_gid_to_network_type(gid_attr.gid_type, &gid);
-		switch (nw_type) {
-		case RDMA_NETWORK_IPV6:
-			memcpy(&qp_params->sgid.bytes[0], &gid.raw[0],
-			       sizeof(qp_params->sgid));
-			memcpy(&qp_params->dgid.bytes[0],
-			       &grh->dgid,
-			       sizeof(qp_params->dgid));
-			qp_params->roce_mode = ROCE_V2_IPV6;
-			SET_FIELD(qp_params->modify_flags,
-				  QED_ROCE_MODIFY_QP_VALID_ROCE_MODE, 1);
-			break;
-		case RDMA_NETWORK_IB:
-			memcpy(&qp_params->sgid.bytes[0], &gid.raw[0],
-			       sizeof(qp_params->sgid));
-			memcpy(&qp_params->dgid.bytes[0],
-			       &grh->dgid,
-			       sizeof(qp_params->dgid));
-			qp_params->roce_mode = ROCE_V1;
-			break;
-		case RDMA_NETWORK_IPV4:
-			memset(&qp_params->sgid, 0, sizeof(qp_params->sgid));
-			memset(&qp_params->dgid, 0, sizeof(qp_params->dgid));
-			ipv4_addr = qedr_get_ipv4_from_gid(gid.raw);
-			qp_params->sgid.ipv4_addr = ipv4_addr;
-			ipv4_addr =
-			    qedr_get_ipv4_from_gid(grh->dgid.raw);
-			qp_params->dgid.ipv4_addr = ipv4_addr;
-			SET_FIELD(qp_params->modify_flags,
-				  QED_ROCE_MODIFY_QP_VALID_ROCE_MODE, 1);
-			qp_params->roce_mode = ROCE_V2_IPV4;
-			break;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	for (i = 0; i < 4; i++) {
@@ -1448,7 +1199,6 @@ static int qedr_check_qp_attrs(struct ib_pd *ibpd, struct qedr_dev *dev,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int qedr_copy_srq_uresp(struct qedr_dev *dev,
 			       struct qedr_srq *srq, struct ib_udata *udata)
 {
@@ -1492,20 +1242,6 @@ static void qedr_copy_sq_uresp(struct qedr_dev *dev,
 		uresp->sq_icid = qp->icid;
 	else
 		uresp->sq_icid = qp->icid + 1;
-=======
-static void qedr_copy_rq_uresp(struct qedr_create_qp_uresp *uresp,
-			       struct qedr_qp *qp)
-{
-	uresp->rq_db_offset = DB_ADDR_SHIFT(DQ_PWM_OFFSET_TCM_ROCE_RQ_PROD);
-	uresp->rq_icid = qp->icid;
-}
-
-static void qedr_copy_sq_uresp(struct qedr_create_qp_uresp *uresp,
-			       struct qedr_qp *qp)
-{
-	uresp->sq_db_offset = DB_ADDR_SHIFT(DQ_PWM_OFFSET_XCM_RDMA_SQ_PROD);
-	uresp->sq_icid = qp->icid + 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int qedr_copy_qp_uresp(struct qedr_dev *dev,
@@ -1515,13 +1251,8 @@ static int qedr_copy_qp_uresp(struct qedr_dev *dev,
 	int rc;
 
 	memset(&uresp, 0, sizeof(uresp));
-<<<<<<< HEAD
 	qedr_copy_sq_uresp(dev, &uresp, qp);
 	qedr_copy_rq_uresp(dev, &uresp, qp);
-=======
-	qedr_copy_sq_uresp(&uresp, qp);
-	qedr_copy_rq_uresp(&uresp, qp);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	uresp.atomic_supported = dev->atomic_cap != IB_ATOMIC_NONE;
 	uresp.qp_id = qp->qp_id;
@@ -1541,10 +1272,7 @@ static void qedr_set_common_qp_params(struct qedr_dev *dev,
 				      struct ib_qp_init_attr *attrs)
 {
 	spin_lock_init(&qp->q_lock);
-<<<<<<< HEAD
 	atomic_set(&qp->refcnt, 1);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	qp->pd = pd;
 	qp->qp_type = attrs->qp_type;
 	qp->max_inline_data = attrs->cap.max_inline_data;
@@ -1552,7 +1280,6 @@ static void qedr_set_common_qp_params(struct qedr_dev *dev,
 	qp->state = QED_ROCE_QP_STATE_RESET;
 	qp->signaled = (attrs->sq_sig_type == IB_SIGNAL_ALL_WR) ? true : false;
 	qp->sq_cq = get_qedr_cq(attrs->send_cq);
-<<<<<<< HEAD
 	qp->dev = dev;
 
 	if (attrs->srq) {
@@ -1565,15 +1292,6 @@ static void qedr_set_common_qp_params(struct qedr_dev *dev,
 			 qp->rq.max_sges, qp->rq_cq->icid);
 	}
 
-=======
-	qp->rq_cq = get_qedr_cq(attrs->recv_cq);
-	qp->dev = dev;
-	qp->rq.max_sges = attrs->cap.max_recv_sge;
-
-	DP_DEBUG(dev, QEDR_MSG_QP,
-		 "RQ params:\trq_max_sges = %d, rq_cq_id = %d\n",
-		 qp->rq.max_sges, qp->rq_cq->icid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DP_DEBUG(dev, QEDR_MSG_QP,
 		 "QP params:\tpd = %d, qp_type = %d, max_inline_data = %d, state = %d, signaled = %d, use_srq=%d\n",
 		 pd->pd_id, qp->qp_type, qp->max_inline_data,
@@ -1588,7 +1306,6 @@ static void qedr_set_roce_db_info(struct qedr_dev *dev, struct qedr_qp *qp)
 	qp->sq.db = dev->db_addr +
 		    DB_ADDR_SHIFT(DQ_PWM_OFFSET_XCM_RDMA_SQ_PROD);
 	qp->sq.db_data.data.icid = qp->icid + 1;
-<<<<<<< HEAD
 	if (!qp->srq) {
 		qp->rq.db = dev->db_addr +
 			    DB_ADDR_SHIFT(DQ_PWM_OFFSET_TCM_ROCE_RQ_PROD);
@@ -1886,11 +1603,6 @@ int qedr_modify_srq(struct ib_srq *ibsrq, struct ib_srq_attr *attr,
 		 "modify srq: modified srq with srq_id=0x%0x\n", srq->srq_id);
 
 	return 0;
-=======
-	qp->rq.db = dev->db_addr +
-		    DB_ADDR_SHIFT(DQ_PWM_OFFSET_TCM_ROCE_RQ_PROD);
-	qp->rq.db_data.data.icid = qp->icid;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void
@@ -1911,7 +1623,6 @@ qedr_init_common_qp_in_params(struct qedr_dev *dev,
 	params->dpi = pd->uctx ? pd->uctx->dpi : dev->dpi;
 	params->sq_cq_id = get_qedr_cq(attrs->send_cq)->icid;
 	params->stats_queue = 0;
-<<<<<<< HEAD
 	params->srq_id = 0;
 	params->use_srq = false;
 
@@ -1923,11 +1634,6 @@ qedr_init_common_qp_in_params(struct qedr_dev *dev,
 		params->srq_id = qp->srq->srq_id;
 		params->use_srq = true;
 	}
-=======
-	params->rq_cq_id = get_qedr_cq(attrs->recv_cq)->icid;
-	params->srq_id = 0;
-	params->use_srq = false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void qedr_qp_user_print(struct qedr_dev *dev, struct qedr_qp *qp)
@@ -1944,7 +1650,6 @@ static inline void qedr_qp_user_print(struct qedr_dev *dev, struct qedr_qp *qp)
 		 qp->usq.buf_len, qp->urq.buf_addr, qp->urq.buf_len);
 }
 
-<<<<<<< HEAD
 static int qedr_idr_add(struct qedr_dev *dev, struct qedr_idr *qidr,
 			void *ptr, u32 id)
 {
@@ -1987,8 +1692,6 @@ qedr_iwarp_populate_user_qp(struct qedr_dev *dev,
 			   &qp->urq.pbl_info, FW_PAGE_SHIFT);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void qedr_cleanup_user(struct qedr_dev *dev, struct qedr_qp *qp)
 {
 	if (qp->usq.umem)
@@ -1998,17 +1701,6 @@ static void qedr_cleanup_user(struct qedr_dev *dev, struct qedr_qp *qp)
 	if (qp->urq.umem)
 		ib_umem_release(qp->urq.umem);
 	qp->urq.umem = NULL;
-<<<<<<< HEAD
-=======
-
-	if (rdma_protocol_roce(&dev->ibdev, 1)) {
-		qedr_free_pbl(dev, &qp->usq.pbl_info, qp->usq.pbl_tbl);
-		qedr_free_pbl(dev, &qp->urq.pbl_info, qp->urq.pbl_tbl);
-	} else {
-		kfree(qp->usq.pbl_tbl);
-		kfree(qp->urq.pbl_tbl);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int qedr_create_user_qp(struct qedr_dev *dev,
@@ -2021,20 +1713,11 @@ static int qedr_create_user_qp(struct qedr_dev *dev,
 	struct qed_rdma_create_qp_out_params out_params;
 	struct qedr_pd *pd = get_qedr_pd(ibpd);
 	struct ib_ucontext *ib_ctx = NULL;
-<<<<<<< HEAD
 	struct qedr_create_qp_ureq ureq;
 	int alloc_and_init = rdma_protocol_roce(&dev->ibdev, 1);
 	int rc = -EINVAL;
 
 	ib_ctx = ibpd->uobject->context;
-=======
-	struct qedr_ucontext *ctx = NULL;
-	struct qedr_create_qp_ureq ureq;
-	int rc = -EINVAL;
-
-	ib_ctx = ibpd->uobject->context;
-	ctx = get_qedr_ucontext(ib_ctx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memset(&ureq, 0, sizeof(ureq));
 	rc = ib_copy_from_udata(&ureq, udata, sizeof(ureq));
@@ -2045,7 +1728,6 @@ static int qedr_create_user_qp(struct qedr_dev *dev,
 
 	/* SQ - read access only (0), dma sync not required (0) */
 	rc = qedr_init_user_queue(ib_ctx, dev, &qp->usq, ureq.sq_addr,
-<<<<<<< HEAD
 				  ureq.sq_len, 0, 0, alloc_and_init);
 	if (rc)
 		return rc;
@@ -2057,18 +1739,6 @@ static int qedr_create_user_qp(struct qedr_dev *dev,
 		if (rc)
 			return rc;
 	}
-=======
-				  ureq.sq_len, 0, 0);
-	if (rc)
-		return rc;
-
-	/* RQ - read access only (0), dma sync not required (0) */
-	rc = qedr_init_user_queue(ib_ctx, dev, &qp->urq, ureq.rq_addr,
-				  ureq.rq_len, 0, 0);
-
-	if (rc)
-		return rc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memset(&in_params, 0, sizeof(in_params));
 	qedr_init_common_qp_in_params(dev, pd, qp, attrs, false, &in_params);
@@ -2076,15 +1746,10 @@ static int qedr_create_user_qp(struct qedr_dev *dev,
 	in_params.qp_handle_hi = ureq.qp_handle_hi;
 	in_params.sq_num_pages = qp->usq.pbl_info.num_pbes;
 	in_params.sq_pbl_ptr = qp->usq.pbl_tbl->pa;
-<<<<<<< HEAD
 	if (!qp->srq) {
 		in_params.rq_num_pages = qp->urq.pbl_info.num_pbes;
 		in_params.rq_pbl_ptr = qp->urq.pbl_tbl->pa;
 	}
-=======
-	in_params.rq_num_pages = qp->urq.pbl_info.num_pbes;
-	in_params.rq_pbl_ptr = qp->urq.pbl_tbl->pa;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	qp->qed_qp = dev->ops->rdma_create_qp(dev->rdma_ctx,
 					      &in_params, &out_params);
@@ -2094,12 +1759,9 @@ static int qedr_create_user_qp(struct qedr_dev *dev,
 		goto err1;
 	}
 
-<<<<<<< HEAD
 	if (rdma_protocol_iwarp(&dev->ibdev, 1))
 		qedr_iwarp_populate_user_qp(dev, qp, &out_params);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	qp->qp_id = out_params.qp_id;
 	qp->icid = out_params.icid;
 
@@ -2120,7 +1782,6 @@ err1:
 	return rc;
 }
 
-<<<<<<< HEAD
 static void qedr_set_iwarp_db_info(struct qedr_dev *dev, struct qedr_qp *qp)
 {
 	qp->sq.db = dev->db_addr +
@@ -2136,8 +1797,6 @@ static void qedr_set_iwarp_db_info(struct qedr_dev *dev, struct qedr_qp *qp)
 	qp->rq.iwarp_db2_data.data.value = DQ_TCM_IWARP_POST_RQ_CF_CMD;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int
 qedr_roce_create_kernel_qp(struct qedr_dev *dev,
 			   struct qedr_qp *qp,
@@ -2184,7 +1843,6 @@ qedr_roce_create_kernel_qp(struct qedr_dev *dev,
 	qp->icid = out_params.icid;
 
 	qedr_set_roce_db_info(dev, qp);
-<<<<<<< HEAD
 	return rc;
 }
 
@@ -2250,10 +1908,6 @@ err:
 	dev->ops->rdma_destroy_qp(dev->rdma_ctx, qp->qed_qp);
 
 	return rc;
-=======
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void qedr_cleanup_kernel(struct qedr_dev *dev, struct qedr_qp *qp)
@@ -2292,11 +1946,7 @@ static int qedr_create_kernel_qp(struct qedr_dev *dev,
 	qp->sq.max_wr = min_t(u32, attrs->cap.max_send_wr * dev->wq_multiplier,
 			      dev->attr.max_sqe);
 
-<<<<<<< HEAD
 	qp->wqe_wr_id = kcalloc(qp->sq.max_wr, sizeof(*qp->wqe_wr_id),
-=======
-	qp->wqe_wr_id = kzalloc(qp->sq.max_wr * sizeof(*qp->wqe_wr_id),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				GFP_KERNEL);
 	if (!qp->wqe_wr_id) {
 		DP_ERR(dev, "create qp: failed SQ shadow memory allocation\n");
@@ -2314,11 +1964,7 @@ static int qedr_create_kernel_qp(struct qedr_dev *dev,
 	qp->rq.max_wr = (u16) max_t(u32, attrs->cap.max_recv_wr, 1);
 
 	/* Allocate driver internal RQ array */
-<<<<<<< HEAD
 	qp->rqe_wr_id = kcalloc(qp->rq.max_wr, sizeof(*qp->rqe_wr_id),
-=======
-	qp->rqe_wr_id = kzalloc(qp->rq.max_wr * sizeof(*qp->rqe_wr_id),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				GFP_KERNEL);
 	if (!qp->rqe_wr_id) {
 		DP_ERR(dev,
@@ -2336,17 +1982,12 @@ static int qedr_create_kernel_qp(struct qedr_dev *dev,
 
 	n_rq_elems = qp->rq.max_wr * QEDR_MAX_RQE_ELEMENTS_PER_RQE;
 
-<<<<<<< HEAD
 	if (rdma_protocol_iwarp(&dev->ibdev, 1))
 		rc = qedr_iwarp_create_kernel_qp(dev, qp, &in_params,
 						 n_sq_elems, n_rq_elems);
 	else
 		rc = qedr_roce_create_kernel_qp(dev, qp, &in_params,
 						n_sq_elems, n_rq_elems);
-=======
-	rc = qedr_roce_create_kernel_qp(dev, qp, &in_params,
-					n_sq_elems, n_rq_elems);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc)
 		qedr_cleanup_kernel(dev, qp);
 
@@ -2370,23 +2011,13 @@ struct ib_qp *qedr_create_qp(struct ib_pd *ibpd,
 	if (rc)
 		return ERR_PTR(rc);
 
-<<<<<<< HEAD
-=======
-	if (attrs->srq)
-		return ERR_PTR(-EINVAL);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DP_DEBUG(dev, QEDR_MSG_QP,
 		 "create qp: called from %s, event_handler=%p, eepd=%p sq_cq=%p, sq_icid=%d, rq_cq=%p, rq_icid=%d\n",
 		 udata ? "user library" : "kernel", attrs->event_handler, pd,
 		 get_qedr_cq(attrs->send_cq),
 		 get_qedr_cq(attrs->send_cq)->icid,
 		 get_qedr_cq(attrs->recv_cq),
-<<<<<<< HEAD
 		 attrs->recv_cq ? get_qedr_cq(attrs->recv_cq)->icid : 0);
-=======
-		 get_qedr_cq(attrs->recv_cq)->icid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	qp = kzalloc(sizeof(*qp), GFP_KERNEL);
 	if (!qp) {
@@ -2413,15 +2044,12 @@ struct ib_qp *qedr_create_qp(struct ib_pd *ibpd,
 
 	qp->ibqp.qp_num = qp->qp_id;
 
-<<<<<<< HEAD
 	if (rdma_protocol_iwarp(&dev->ibdev, 1)) {
 		rc = qedr_idr_add(dev, &dev->qpidr, qp, qp->qp_id);
 		if (rc)
 			goto err;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return &qp->ibqp;
 
 err:
@@ -2510,19 +2138,12 @@ static int qedr_update_qp_state(struct qedr_dev *dev,
 			/* Update doorbell (in case post_recv was
 			 * done before move to RTR)
 			 */
-<<<<<<< HEAD
 
 			if (rdma_protocol_roce(&dev->ibdev, 1)) {
 				writel(qp->rq.db_data.raw, qp->rq.db);
 				/* Make sure write takes effect */
 				mmiowb();
 			}
-=======
-			wmb();
-			writel(qp->rq.db_data.raw, qp->rq.db);
-			/* Make sure write takes effect */
-			mmiowb();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		case QED_ROCE_QP_STATE_ERR:
 			break;
@@ -2617,7 +2238,6 @@ int qedr_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
 	else
 		new_qp_state = old_qp_state;
 
-<<<<<<< HEAD
 	if (rdma_protocol_roce(&dev->ibdev, 1)) {
 		if (!ib_modify_qp_is_ok(old_qp_state, new_qp_state,
 					ibqp->qp_type, attr_mask,
@@ -2630,18 +2250,6 @@ int qedr_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
 			rc = -EINVAL;
 			goto err;
 		}
-=======
-	if (!ib_modify_qp_is_ok
-	    (old_qp_state, new_qp_state, ibqp->qp_type, attr_mask,
-	     IB_LINK_LAYER_ETHERNET)) {
-		DP_ERR(dev,
-		       "modify qp: invalid attribute mask=0x%x specified for\n"
-		       "qpn=0x%x of type=0x%x old_qp_state=0x%x, new_qp_state=0x%x\n",
-		       attr_mask, qp->qp_id, ibqp->qp_type, old_qp_state,
-		       new_qp_state);
-		rc = -EINVAL;
-		goto err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Translate the masks... */
@@ -2680,12 +2288,9 @@ int qedr_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
 	}
 
 	if (attr_mask & (IB_QP_AV | IB_QP_PATH_MTU)) {
-<<<<<<< HEAD
 		if (rdma_protocol_iwarp(&dev->ibdev, 1))
 			return -EINVAL;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (attr_mask & IB_QP_PATH_MTU) {
 			if (attr->path_mtu < IB_MTU_256 ||
 			    attr->path_mtu > IB_MTU_4096) {
@@ -2951,11 +2556,7 @@ err:
 	return rc;
 }
 
-<<<<<<< HEAD
 static int qedr_free_qp_resources(struct qedr_dev *dev, struct qedr_qp *qp)
-=======
-int qedr_free_qp_resources(struct qedr_dev *dev, struct qedr_qp *qp)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int rc = 0;
 
@@ -2984,7 +2585,6 @@ int qedr_destroy_qp(struct ib_qp *ibqp)
 	DP_DEBUG(dev, QEDR_MSG_QP, "destroy qp: destroying %p, qp type=%d\n",
 		 qp, qp->qp_type);
 
-<<<<<<< HEAD
 	if (rdma_protocol_roce(&dev->ibdev, 1)) {
 		if ((qp->state != QED_ROCE_QP_STATE_RESET) &&
 		    (qp->state != QED_ROCE_QP_STATE_ERR) &&
@@ -3013,17 +2613,6 @@ int qedr_destroy_qp(struct ib_qp *ibqp)
 				}
 			}
 		}
-=======
-	if ((qp->state != QED_ROCE_QP_STATE_RESET) &&
-	    (qp->state != QED_ROCE_QP_STATE_ERR) &&
-	    (qp->state != QED_ROCE_QP_STATE_INIT)) {
-
-		attr.qp_state = IB_QPS_ERR;
-		attr_mask |= IB_QP_STATE;
-
-		/* Change the QP state to ERROR */
-		qedr_modify_qp(ibqp, &attr, attr_mask, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (qp->qp_type == IB_QPT_GSI)
@@ -3031,16 +2620,11 @@ int qedr_destroy_qp(struct ib_qp *ibqp)
 
 	qedr_free_qp_resources(dev, qp);
 
-<<<<<<< HEAD
 	if (atomic_dec_and_test(&qp->refcnt) &&
 	    rdma_protocol_iwarp(&dev->ibdev, 1)) {
 		qedr_idr_remove(dev, &dev->qpidr, qp->qp_id);
 		kfree(qp);
 	}
-=======
-	kfree(qp);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 
@@ -3053,11 +2637,7 @@ struct ib_ah *qedr_create_ah(struct ib_pd *ibpd, struct rdma_ah_attr *attr,
 	if (!ah)
 		return ERR_PTR(-ENOMEM);
 
-<<<<<<< HEAD
 	rdma_copy_ah_attr(&ah->attr, attr);
-=======
-	ah->attr = *attr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return &ah->ibah;
 }
@@ -3066,10 +2646,7 @@ int qedr_destroy_ah(struct ib_ah *ibah)
 {
 	struct qedr_ah *ah = get_qedr_ah(ibah);
 
-<<<<<<< HEAD
 	rdma_destroy_ah_attr(&ah->attr);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(ah);
 	return 0;
 }
@@ -3232,13 +2809,8 @@ int qedr_dereg_mr(struct ib_mr *ib_mr)
 
 	dev->ops->rdma_free_tid(dev->rdma_ctx, mr->hw_mr.itid);
 
-<<<<<<< HEAD
 	if ((mr->type != QEDR_MR_DMA) && (mr->type != QEDR_MR_FRMR))
 		qedr_free_pbl(dev, &mr->info.pbl_info, mr->info.pbl_table);
-=======
-	if (mr->type != QEDR_MR_DMA)
-		free_mr_info(dev, &mr->info);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* it could be user registered memory. */
 	if (mr->umem)
@@ -3320,10 +2892,6 @@ err0:
 struct ib_mr *qedr_alloc_mr(struct ib_pd *ibpd,
 			    enum ib_mr_type mr_type, u32 max_num_sg)
 {
-<<<<<<< HEAD
-=======
-	struct qedr_dev *dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct qedr_mr *mr;
 
 	if (mr_type != IB_MR_TYPE_MEM_REG)
@@ -3334,11 +2902,6 @@ struct ib_mr *qedr_alloc_mr(struct ib_pd *ibpd,
 	if (IS_ERR(mr))
 		return ERR_PTR(-EINVAL);
 
-<<<<<<< HEAD
-=======
-	dev = mr->dev;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return &mr->ibmr;
 }
 
@@ -3350,11 +2913,7 @@ static int qedr_set_page(struct ib_mr *ibmr, u64 addr)
 	u32 pbes_in_page;
 
 	if (unlikely(mr->npages == mr->info.pbl_info.num_pbes)) {
-<<<<<<< HEAD
 		DP_ERR(mr->dev, "qedr_set_page fails when %d\n", mr->npages);
-=======
-		DP_ERR(mr->dev, "qedr_set_page failes when %d\n", mr->npages);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOMEM;
 	}
 
@@ -3479,15 +3038,9 @@ static void swap_wqe_data64(u64 *p)
 
 static u32 qedr_prepare_sq_inline_data(struct qedr_dev *dev,
 				       struct qedr_qp *qp, u8 *wqe_size,
-<<<<<<< HEAD
 				       const struct ib_send_wr *wr,
 				       const struct ib_send_wr **bad_wr,
 				       u8 *bits, u8 bit)
-=======
-				       struct ib_send_wr *wr,
-				       struct ib_send_wr **bad_wr, u8 *bits,
-				       u8 bit)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 data_size = sge_data_len(wr->sg_list, wr->num_sge);
 	char *seg_prt, *wqe;
@@ -3570,11 +3123,7 @@ static u32 qedr_prepare_sq_inline_data(struct qedr_dev *dev,
 	} while (0)
 
 static u32 qedr_prepare_sq_sges(struct qedr_qp *qp, u8 *wqe_size,
-<<<<<<< HEAD
 				const struct ib_send_wr *wr)
-=======
-				struct ib_send_wr *wr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 data_size = 0;
 	int i;
@@ -3598,13 +3147,8 @@ static u32 qedr_prepare_sq_rdma_data(struct qedr_dev *dev,
 				     struct qedr_qp *qp,
 				     struct rdma_sq_rdma_wqe_1st *rwqe,
 				     struct rdma_sq_rdma_wqe_2nd *rwqe2,
-<<<<<<< HEAD
 				     const struct ib_send_wr *wr,
 				     const struct ib_send_wr **bad_wr)
-=======
-				     struct ib_send_wr *wr,
-				     struct ib_send_wr **bad_wr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	rwqe2->r_key = cpu_to_le32(rdma_wr(wr)->rkey);
 	DMA_REGPAIR_LE(rwqe2->remote_va, rdma_wr(wr)->remote_addr);
@@ -3626,13 +3170,8 @@ static u32 qedr_prepare_sq_send_data(struct qedr_dev *dev,
 				     struct qedr_qp *qp,
 				     struct rdma_sq_send_wqe_1st *swqe,
 				     struct rdma_sq_send_wqe_2st *swqe2,
-<<<<<<< HEAD
 				     const struct ib_send_wr *wr,
 				     const struct ib_send_wr **bad_wr)
-=======
-				     struct ib_send_wr *wr,
-				     struct ib_send_wr **bad_wr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	memset(swqe2, 0, sizeof(*swqe2));
 	if (wr->send_flags & IB_SEND_INLINE) {
@@ -3648,11 +3187,7 @@ static u32 qedr_prepare_sq_send_data(struct qedr_dev *dev,
 
 static int qedr_prepare_reg(struct qedr_qp *qp,
 			    struct rdma_sq_fmr_wqe_1st *fwqe1,
-<<<<<<< HEAD
 			    const struct ib_reg_wr *wr)
-=======
-			    struct ib_reg_wr *wr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct qedr_mr *mr = get_qedr_mr(wr->mr);
 	struct rdma_sq_fmr_wqe_2nd *fwqe2;
@@ -3699,10 +3234,7 @@ static enum ib_wc_opcode qedr_ib_to_wc_opcode(enum ib_wr_opcode opcode)
 	case IB_WR_SEND_WITH_INV:
 		return IB_WC_SEND;
 	case IB_WR_RDMA_READ:
-<<<<<<< HEAD
 	case IB_WR_RDMA_READ_WITH_INV:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return IB_WC_RDMA_READ;
 	case IB_WR_ATOMIC_CMP_AND_SWP:
 		return IB_WC_COMP_SWAP;
@@ -3717,12 +3249,8 @@ static enum ib_wc_opcode qedr_ib_to_wc_opcode(enum ib_wr_opcode opcode)
 	}
 }
 
-<<<<<<< HEAD
 static inline bool qedr_can_post_send(struct qedr_qp *qp,
 				      const struct ib_send_wr *wr)
-=======
-static inline bool qedr_can_post_send(struct qedr_qp *qp, struct ib_send_wr *wr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int wq_is_full, err_wr, pbl_is_full;
 	struct qedr_dev *dev = qp->dev;
@@ -3759,13 +3287,8 @@ static inline bool qedr_can_post_send(struct qedr_qp *qp, struct ib_send_wr *wr)
 	return true;
 }
 
-<<<<<<< HEAD
 static int __qedr_post_send(struct ib_qp *ibqp, const struct ib_send_wr *wr,
 			    const struct ib_send_wr **bad_wr)
-=======
-static int __qedr_post_send(struct ib_qp *ibqp, struct ib_send_wr *wr,
-		     struct ib_send_wr **bad_wr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct qedr_dev *dev = get_qedr_dev(ibqp->device);
 	struct qedr_qp *qp = get_qedr_qp(ibqp);
@@ -3815,11 +3338,7 @@ static int __qedr_post_send(struct ib_qp *ibqp, struct ib_send_wr *wr,
 		swqe->wqe_size = 2;
 		swqe2 = qed_chain_produce(&qp->sq.pbl);
 
-<<<<<<< HEAD
 		swqe->inv_key_or_imm_data = cpu_to_le32(be32_to_cpu(wr->ex.imm_data));
-=======
-		swqe->inv_key_or_imm_data = cpu_to_le32(wr->ex.imm_data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		length = qedr_prepare_sq_send_data(dev, qp, swqe, swqe2,
 						   wr, bad_wr);
 		swqe->length = cpu_to_le32(length);
@@ -3887,16 +3406,8 @@ static int __qedr_post_send(struct ib_qp *ibqp, struct ib_send_wr *wr,
 		qp->wqe_wr_id[qp->sq.prod].bytes_len = rwqe->length;
 		break;
 	case IB_WR_RDMA_READ_WITH_INV:
-<<<<<<< HEAD
 		SET_FIELD2(wqe->flags, RDMA_SQ_RDMA_WQE_1ST_READ_INV_FLG, 1);
 		/* fallthrough -- same is identical to RDMA READ */
-=======
-		DP_ERR(dev,
-		       "RDMA READ WITH INVALIDATE not supported\n");
-		*bad_wr = wr;
-		rc = -EINVAL;
-		break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	case IB_WR_RDMA_READ:
 		wqe->req_type = RDMA_SQ_REQ_TYPE_RDMA_RD;
@@ -3991,13 +3502,8 @@ static int __qedr_post_send(struct ib_qp *ibqp, struct ib_send_wr *wr,
 	return rc;
 }
 
-<<<<<<< HEAD
 int qedr_post_send(struct ib_qp *ibqp, const struct ib_send_wr *wr,
 		   const struct ib_send_wr **bad_wr)
-=======
-int qedr_post_send(struct ib_qp *ibqp, struct ib_send_wr *wr,
-		   struct ib_send_wr **bad_wr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct qedr_dev *dev = get_qedr_dev(ibqp->device);
 	struct qedr_qp *qp = get_qedr_qp(ibqp);
@@ -4011,7 +3517,6 @@ int qedr_post_send(struct ib_qp *ibqp, struct ib_send_wr *wr,
 
 	spin_lock_irqsave(&qp->q_lock, flags);
 
-<<<<<<< HEAD
 	if (rdma_protocol_roce(&dev->ibdev, 1)) {
 		if ((qp->state != QED_ROCE_QP_STATE_RTS) &&
 		    (qp->state != QED_ROCE_QP_STATE_ERR) &&
@@ -4023,17 +3528,6 @@ int qedr_post_send(struct ib_qp *ibqp, struct ib_send_wr *wr,
 				 qp->icid, qp->state);
 			return -EINVAL;
 		}
-=======
-	if ((qp->state != QED_ROCE_QP_STATE_RTS) &&
-	    (qp->state != QED_ROCE_QP_STATE_ERR) &&
-	    (qp->state != QED_ROCE_QP_STATE_SQD)) {
-		spin_unlock_irqrestore(&qp->q_lock, flags);
-		*bad_wr = wr;
-		DP_DEBUG(dev, QEDR_MSG_CQ,
-			 "QP in wrong state! QP icid=0x%x state %d\n",
-			 qp->icid, qp->state);
-		return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	while (wr) {
@@ -4055,7 +3549,6 @@ int qedr_post_send(struct ib_qp *ibqp, struct ib_send_wr *wr,
 	 * vane. However this is not harmful (as long as the producer value is
 	 * unchanged). For performance reasons we avoid checking for this
 	 * redundant doorbell.
-<<<<<<< HEAD
 	 *
 	 * qp->wqe_wr_id is accessed during qedr_poll_cq, as
 	 * soon as we give the doorbell, we could get a completion
@@ -4065,10 +3558,6 @@ int qedr_post_send(struct ib_qp *ibqp, struct ib_send_wr *wr,
 	 * cqe. This covers for the smp_rmb as well.
 	 */
 	smp_wmb();
-=======
-	 */
-	wmb();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	writel(qp->sq.db_data.raw, qp->sq.db);
 
 	/* Make sure write sticks */
@@ -4079,7 +3568,6 @@ int qedr_post_send(struct ib_qp *ibqp, struct ib_send_wr *wr,
 	return rc;
 }
 
-<<<<<<< HEAD
 static u32 qedr_srq_elem_left(struct qedr_srq_hwq_info *hw_srq)
 {
 	u32 used;
@@ -4178,10 +3666,6 @@ int qedr_post_srq_recv(struct ib_srq *ibsrq, const struct ib_recv_wr *wr,
 
 int qedr_post_recv(struct ib_qp *ibqp, const struct ib_recv_wr *wr,
 		   const struct ib_recv_wr **bad_wr)
-=======
-int qedr_post_recv(struct ib_qp *ibqp, struct ib_recv_wr *wr,
-		   struct ib_recv_wr **bad_wr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct qedr_qp *qp = get_qedr_qp(ibqp);
 	struct qedr_dev *dev = qp->dev;
@@ -4225,11 +3709,7 @@ int qedr_post_recv(struct ib_qp *ibqp, struct ib_recv_wr *wr,
 				SET_FIELD(flags, RDMA_RQ_SGE_NUM_SGES,
 					  wr->num_sge);
 
-<<<<<<< HEAD
 			SET_FIELD(flags, RDMA_RQ_SGE_L_KEY_LO,
-=======
-			SET_FIELD(flags, RDMA_RQ_SGE_L_KEY,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  wr->sg_list[i].lkey);
 
 			RQ_SGE_SET(rqe, wr->sg_list[i].addr,
@@ -4248,11 +3728,7 @@ int qedr_post_recv(struct ib_qp *ibqp, struct ib_recv_wr *wr,
 			/* First one must include the number
 			 * of SGE in the list
 			 */
-<<<<<<< HEAD
 			SET_FIELD(flags, RDMA_RQ_SGE_L_KEY_LO, 0);
-=======
-			SET_FIELD(flags, RDMA_RQ_SGE_L_KEY, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			SET_FIELD(flags, RDMA_RQ_SGE_NUM_SGES, 1);
 
 			RQ_SGE_SET(rqe, 0, 0, flags);
@@ -4264,7 +3740,6 @@ int qedr_post_recv(struct ib_qp *ibqp, struct ib_recv_wr *wr,
 
 		qedr_inc_sw_prod(&qp->rq);
 
-<<<<<<< HEAD
 		/* qp->rqe_wr_id is accessed during qedr_poll_cq, as
 		 * soon as we give the doorbell, we could get a completion
 		 * for this wr, therefore we need to make sure that the
@@ -4273,10 +3748,6 @@ int qedr_post_recv(struct ib_qp *ibqp, struct ib_recv_wr *wr,
 		 * cqe. This covers for the smp_rmb as well.
 		 */
 		smp_wmb();
-=======
-		/* Flush all the writes before signalling doorbell */
-		wmb();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		qp->rq.db_data.data.value++;
 
@@ -4285,14 +3756,11 @@ int qedr_post_recv(struct ib_qp *ibqp, struct ib_recv_wr *wr,
 		/* Make sure write sticks */
 		mmiowb();
 
-<<<<<<< HEAD
 		if (rdma_protocol_iwarp(&dev->ibdev, 1)) {
 			writel(qp->rq.iwarp_db2_data.raw, qp->rq.iwarp_db2);
 			mmiowb();	/* for second doorbell */
 		}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		wr = wr->next;
 	}
 
@@ -4415,15 +3883,9 @@ static int qedr_poll_cq_req(struct qedr_dev *dev,
 		break;
 	case RDMA_CQE_REQ_STS_WORK_REQUEST_FLUSHED_ERR:
 		if (qp->state != QED_ROCE_QP_STATE_ERR)
-<<<<<<< HEAD
 			DP_DEBUG(dev, QEDR_MSG_CQ,
 				 "Error: POLL CQ with RDMA_CQE_REQ_STS_WORK_REQUEST_FLUSHED_ERR. CQ icid=0x%x, QP icid=0x%x\n",
 				 cq->icid, qp->icid);
-=======
-			DP_ERR(dev,
-			       "Error: POLL CQ with RDMA_CQE_REQ_STS_WORK_REQUEST_FLUSHED_ERR. CQ icid=0x%x, QP icid=0x%x\n",
-			       cq->icid, qp->icid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cnt = process_req(dev, qp, cq, num_entries, wc, req->sq_cons,
 				  IB_WC_WR_FLUSH_ERR, 1);
 		break;
@@ -4541,11 +4003,7 @@ static inline int qedr_set_ok_cqe_resp_wc(struct rdma_cqe_responder *resp,
 	wc->byte_len = le32_to_cpu(resp->length);
 
 	if (resp->flags & QEDR_RESP_IMM) {
-<<<<<<< HEAD
 		wc->ex.imm_data = cpu_to_be32(le32_to_cpu(resp->imm_data_or_inv_r_Key));
-=======
-		wc->ex.imm_data = le32_to_cpu(resp->imm_data_or_inv_r_Key);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		wc->wc_flags |= IB_WC_WITH_IMM;
 
 		if (resp->flags & QEDR_RESP_RDMA)
@@ -4597,7 +4055,6 @@ static void __process_resp_one(struct qedr_dev *dev, struct qedr_qp *qp,
 	wc->wr_id = wr_id;
 }
 
-<<<<<<< HEAD
 static int process_resp_one_srq(struct qedr_dev *dev, struct qedr_qp *qp,
 				struct qedr_cq *cq, struct ib_wc *wc,
 				struct rdma_cqe_responder *resp)
@@ -4623,8 +4080,6 @@ static int process_resp_one_srq(struct qedr_dev *dev, struct qedr_qp *qp,
 
 	return 1;
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int process_resp_one(struct qedr_dev *dev, struct qedr_qp *qp,
 			    struct qedr_cq *cq, struct ib_wc *wc,
 			    struct rdma_cqe_responder *resp)
@@ -4668,17 +4123,12 @@ static int process_resp_flush(struct qedr_qp *qp, struct qedr_cq *cq,
 static void try_consume_resp_cqe(struct qedr_cq *cq, struct qedr_qp *qp,
 				 struct rdma_cqe_responder *resp, int *update)
 {
-<<<<<<< HEAD
 	if (le16_to_cpu(resp->rq_cons_or_srq_id) == qp->rq.wqe_cons) {
-=======
-	if (le16_to_cpu(resp->rq_cons) == qp->rq.wqe_cons) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		consume_cqe(cq);
 		*update |= 1;
 	}
 }
 
-<<<<<<< HEAD
 static int qedr_poll_cq_resp_srq(struct qedr_dev *dev, struct qedr_qp *qp,
 				 struct qedr_cq *cq, int num_entries,
 				 struct ib_wc *wc,
@@ -4692,8 +4142,6 @@ static int qedr_poll_cq_resp_srq(struct qedr_dev *dev, struct qedr_qp *qp,
 	return cnt;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int qedr_poll_cq_resp(struct qedr_dev *dev, struct qedr_qp *qp,
 			     struct qedr_cq *cq, int num_entries,
 			     struct ib_wc *wc, struct rdma_cqe_responder *resp,
@@ -4703,11 +4151,7 @@ static int qedr_poll_cq_resp(struct qedr_dev *dev, struct qedr_qp *qp,
 
 	if (resp->status == RDMA_CQE_RESP_STS_WORK_REQUEST_FLUSHED_ERR) {
 		cnt = process_resp_flush(qp, cq, num_entries, wc,
-<<<<<<< HEAD
 					 resp->rq_cons_or_srq_id);
-=======
-					 resp->rq_cons);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		try_consume_resp_cqe(cq, qp, resp, update);
 	} else {
 		cnt = process_resp_one(dev, qp, cq, wc, resp);
@@ -4775,14 +4219,11 @@ int qedr_poll_cq(struct ib_cq *ibcq, int num_entries, struct ib_wc *wc)
 			cnt = qedr_poll_cq_resp(dev, qp, cq, num_entries, wc,
 						&cqe->resp, &update);
 			break;
-<<<<<<< HEAD
 		case RDMA_CQE_TYPE_RESPONDER_SRQ:
 			cnt = qedr_poll_cq_resp_srq(dev, qp, cq, num_entries,
 						    wc, &cqe->resp);
 			update = 1;
 			break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case RDMA_CQE_TYPE_INVALID:
 		default:
 			DP_ERR(dev, "Error: invalid CQE type = %d\n",
@@ -4825,26 +4266,3 @@ int qedr_process_mad(struct ib_device *ibdev, int process_mad_flags,
 		 mad_hdr->method, mad_hdr->mgmt_class, mad_hdr->status);
 	return IB_MAD_RESULT_SUCCESS;
 }
-<<<<<<< HEAD
-=======
-
-int qedr_port_immutable(struct ib_device *ibdev, u8 port_num,
-			struct ib_port_immutable *immutable)
-{
-	struct ib_port_attr attr;
-	int err;
-
-	immutable->core_cap_flags = RDMA_CORE_PORT_IBA_ROCE |
-				    RDMA_CORE_PORT_IBA_ROCE_UDP_ENCAP;
-
-	err = ib_query_port(ibdev, port_num, &attr);
-	if (err)
-		return err;
-
-	immutable->pkey_tbl_len = attr.pkey_tbl_len;
-	immutable->gid_tbl_len = attr.gid_tbl_len;
-	immutable->max_mad_size = IB_MGMT_MAD_SIZE;
-
-	return 0;
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

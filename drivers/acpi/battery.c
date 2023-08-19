@@ -21,7 +21,6 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 
-<<<<<<< HEAD
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
 #include <linux/async.h>
@@ -36,18 +35,6 @@
 #include <linux/suspend.h>
 #include <linux/types.h>
 
-=======
-#include <linux/kernel.h>
-#include <linux/module.h>
-#include <linux/init.h>
-#include <linux/types.h>
-#include <linux/jiffies.h>
-#include <linux/async.h>
-#include <linux/dmi.h>
-#include <linux/delay.h>
-#include <linux/slab.h>
-#include <linux/suspend.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/unaligned.h>
 
 #ifdef CONFIG_ACPI_PROCFS_POWER
@@ -59,11 +46,7 @@
 #include <linux/acpi.h>
 #include <linux/power_supply.h>
 
-<<<<<<< HEAD
 #include <acpi/battery.h>
-=======
-#include "battery.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define PREFIX "ACPI: "
 
@@ -91,11 +74,8 @@ static async_cookie_t async_cookie;
 static bool battery_driver_registered;
 static int battery_bix_broken_package;
 static int battery_notification_delay_ms;
-<<<<<<< HEAD
 static int battery_ac_is_broken;
 static int battery_check_pmic = 1;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static unsigned int cache_time = 1000;
 module_param(cache_time, uint, 0644);
 MODULE_PARM_DESC(cache_time, "cache time in milliseconds");
@@ -103,17 +83,6 @@ MODULE_PARM_DESC(cache_time, "cache time in milliseconds");
 #ifdef CONFIG_ACPI_PROCFS_POWER
 extern struct proc_dir_entry *acpi_lock_battery_dir(void);
 extern void *acpi_unlock_battery_dir(struct proc_dir_entry *acpi_battery_dir);
-<<<<<<< HEAD
-=======
-
-enum acpi_battery_files {
-	info_tag = 0,
-	state_tag,
-	alarm_tag,
-	ACPI_BATTERY_NUMFILES,
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 static const struct acpi_device_id battery_device_ids[] = {
@@ -144,13 +113,10 @@ enum {
 	   post-1.29 BIOS), but as of Nov. 2012, no such update is
 	   available for the 2010 models.  */
 	ACPI_BATTERY_QUIRK_THINKPAD_MAH,
-<<<<<<< HEAD
 	/* for batteries reporting current capacity with design capacity
 	 * on a full charge, but showing degradation in full charge cap.
 	 */
 	ACPI_BATTERY_QUIRK_DEGRADED_FULL_CHARGE,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct acpi_battery {
@@ -160,10 +126,7 @@ struct acpi_battery {
 	struct power_supply_desc bat_desc;
 	struct acpi_device *device;
 	struct notifier_block pm_nb;
-<<<<<<< HEAD
 	struct list_head list;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long update_time;
 	int revision;
 	int rate_now;
@@ -240,7 +203,6 @@ static int acpi_battery_is_charged(struct acpi_battery *battery)
 	return 0;
 }
 
-<<<<<<< HEAD
 static bool acpi_battery_is_degraded(struct acpi_battery *battery)
 {
 	return battery->full_charge_capacity && battery->design_capacity &&
@@ -261,8 +223,6 @@ static int acpi_battery_handle_discharging(struct acpi_battery *battery)
 	return POWER_SUPPLY_STATUS_DISCHARGING;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int acpi_battery_get_property(struct power_supply *psy,
 				     enum power_supply_property psp,
 				     union power_supply_propval *val)
@@ -278,11 +238,7 @@ static int acpi_battery_get_property(struct power_supply *psy,
 	switch (psp) {
 	case POWER_SUPPLY_PROP_STATUS:
 		if (battery->state & ACPI_BATTERY_STATE_DISCHARGING)
-<<<<<<< HEAD
 			val->intval = acpi_battery_handle_discharging(battery);
-=======
-			val->intval = POWER_SUPPLY_STATUS_DISCHARGING;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		else if (battery->state & ACPI_BATTERY_STATE_CHARGING)
 			val->intval = POWER_SUPPLY_STATUS_CHARGING;
 		else if (acpi_battery_is_charged(battery))
@@ -408,7 +364,6 @@ static enum power_supply_property energy_battery_props[] = {
 	POWER_SUPPLY_PROP_SERIAL_NUMBER,
 };
 
-<<<<<<< HEAD
 static enum power_supply_property energy_battery_full_cap_broken_props[] = {
 	POWER_SUPPLY_PROP_STATUS,
 	POWER_SUPPLY_PROP_PRESENT,
@@ -423,8 +378,6 @@ static enum power_supply_property energy_battery_full_cap_broken_props[] = {
 	POWER_SUPPLY_PROP_SERIAL_NUMBER,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* --------------------------------------------------------------------------
                                Battery Management
    -------------------------------------------------------------------------- */
@@ -555,13 +508,10 @@ static int extract_battery_info(const int use_bix,
 		   it's impossible to tell if they would need an adjustment
 		   or not if their values were higher.  */
 	}
-<<<<<<< HEAD
 	if (test_bit(ACPI_BATTERY_QUIRK_DEGRADED_FULL_CHARGE, &battery->flags) &&
 	    battery->capacity_now > battery->full_charge_capacity)
 		battery->capacity_now = battery->full_charge_capacity;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return result;
 }
 
@@ -641,12 +591,7 @@ static int acpi_battery_get_state(struct acpi_battery *battery)
 		battery->rate_now != ACPI_BATTERY_VALUE_UNKNOWN &&
 		(s16)(battery->rate_now) < 0) {
 		battery->rate_now = abs((s16)battery->rate_now);
-<<<<<<< HEAD
 		pr_warn_once(FW_BUG "battery: (dis)charge rate invalid.\n");
-=======
-		printk_once(KERN_WARNING FW_BUG
-			    "battery: (dis)charge rate invalid.\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (test_bit(ACPI_BATTERY_QUIRK_PERCENTAGE_CAPACITY, &battery->flags)
@@ -658,13 +603,10 @@ static int acpi_battery_get_state(struct acpi_battery *battery)
 		battery->capacity_now = battery->capacity_now *
 		    10000 / battery->design_voltage;
 	}
-<<<<<<< HEAD
 	if (test_bit(ACPI_BATTERY_QUIRK_DEGRADED_FULL_CHARGE, &battery->flags) &&
 	    battery->capacity_now > battery->full_charge_capacity)
 		battery->capacity_now = battery->full_charge_capacity;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return result;
 }
 
@@ -728,7 +670,6 @@ static const struct device_attribute alarm_attr = {
 	.store = acpi_battery_alarm_store,
 };
 
-<<<<<<< HEAD
 /*
  * The Battery Hooking API
  *
@@ -863,8 +804,6 @@ static void __exit battery_hook_exit(void)
 	mutex_destroy(&hook_mutex);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int sysfs_add_battery(struct acpi_battery *battery)
 {
 	struct power_supply_config psy_cfg = { .drv_data = battery, };
@@ -873,14 +812,11 @@ static int sysfs_add_battery(struct acpi_battery *battery)
 		battery->bat_desc.properties = charge_battery_props;
 		battery->bat_desc.num_properties =
 			ARRAY_SIZE(charge_battery_props);
-<<<<<<< HEAD
 	} else if (battery->full_charge_capacity == 0) {
 		battery->bat_desc.properties =
 			energy_battery_full_cap_broken_props;
 		battery->bat_desc.num_properties =
 			ARRAY_SIZE(energy_battery_full_cap_broken_props);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		battery->bat_desc.properties = energy_battery_props;
 		battery->bat_desc.num_properties =
@@ -900,10 +836,7 @@ static int sysfs_add_battery(struct acpi_battery *battery)
 		battery->bat = NULL;
 		return result;
 	}
-<<<<<<< HEAD
 	battery_hook_add_battery(battery);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return device_create_file(&battery->bat->dev, &alarm_attr);
 }
 
@@ -914,11 +847,7 @@ static void sysfs_remove_battery(struct acpi_battery *battery)
 		mutex_unlock(&battery->sysfs_lock);
 		return;
 	}
-<<<<<<< HEAD
 	battery_hook_remove_battery(battery);
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	device_remove_file(&battery->bat->dev, &alarm_attr);
 	power_supply_unregister(battery->bat);
 	battery->bat = NULL;
@@ -994,7 +923,6 @@ static void acpi_battery_quirks(struct acpi_battery *battery)
 			}
 		}
 	}
-<<<<<<< HEAD
 
 	if (test_bit(ACPI_BATTERY_QUIRK_DEGRADED_FULL_CHARGE, &battery->flags))
 		return;
@@ -1004,24 +932,15 @@ static void acpi_battery_quirks(struct acpi_battery *battery)
 		set_bit(ACPI_BATTERY_QUIRK_DEGRADED_FULL_CHARGE, &battery->flags);
 		battery->capacity_now = battery->full_charge_capacity;
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int acpi_battery_update(struct acpi_battery *battery, bool resume)
 {
-<<<<<<< HEAD
 	int result = acpi_battery_get_status(battery);
 
 	if (result)
 		return result;
 
-=======
-	int result, old_present = acpi_battery_present(battery);
-	result = acpi_battery_get_status(battery);
-	if (result)
-		return result;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!acpi_battery_present(battery)) {
 		sysfs_remove_battery(battery);
 		battery->update_time = 0;
@@ -1031,12 +950,7 @@ static int acpi_battery_update(struct acpi_battery *battery, bool resume)
 	if (resume)
 		return 0;
 
-<<<<<<< HEAD
 	if (!battery->update_time) {
-=======
-	if (!battery->update_time ||
-	    old_present != acpi_battery_present(battery)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		result = acpi_battery_get_info(battery);
 		if (result)
 			return result;
@@ -1098,16 +1012,10 @@ static const char *acpi_battery_units(const struct acpi_battery *battery)
 		"mA" : "mW";
 }
 
-<<<<<<< HEAD
 static int acpi_battery_info_proc_show(struct seq_file *seq, void *offset)
 {
 	struct acpi_battery *battery = seq->private;
 	int result = acpi_battery_update(battery, false);
-=======
-static int acpi_battery_print_info(struct seq_file *seq, int result)
-{
-	struct acpi_battery *battery = seq->private;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (result)
 		goto end;
@@ -1131,11 +1039,7 @@ static int acpi_battery_print_info(struct seq_file *seq, int result)
 			   acpi_battery_units(battery));
 
 	seq_printf(seq, "battery technology:      %srechargeable\n",
-<<<<<<< HEAD
 		   battery->technology ? "" : "non-");
-=======
-		   (!battery->technology)?"non-":"");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (battery->design_voltage == ACPI_BATTERY_VALUE_UNKNOWN)
 		seq_printf(seq, "design voltage:          unknown\n");
@@ -1165,16 +1069,10 @@ static int acpi_battery_print_info(struct seq_file *seq, int result)
 	return result;
 }
 
-<<<<<<< HEAD
 static int acpi_battery_state_proc_show(struct seq_file *seq, void *offset)
 {
 	struct acpi_battery *battery = seq->private;
 	int result = acpi_battery_update(battery, false);
-=======
-static int acpi_battery_print_state(struct seq_file *seq, int result)
-{
-	struct acpi_battery *battery = seq->private;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (result)
 		goto end;
@@ -1219,16 +1117,10 @@ static int acpi_battery_print_state(struct seq_file *seq, int result)
 	return result;
 }
 
-<<<<<<< HEAD
 static int acpi_battery_alarm_proc_show(struct seq_file *seq, void *offset)
 {
 	struct acpi_battery *battery = seq->private;
 	int result = acpi_battery_update(battery, false);
-=======
-static int acpi_battery_print_alarm(struct seq_file *seq, int result)
-{
-	struct acpi_battery *battery = seq->private;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (result)
 		goto end;
@@ -1238,20 +1130,12 @@ static int acpi_battery_print_alarm(struct seq_file *seq, int result)
 		goto end;
 	}
 	seq_printf(seq, "alarm:                   ");
-<<<<<<< HEAD
 	if (battery->alarm) {
 		seq_printf(seq, "%u %sh\n", battery->alarm,
 				acpi_battery_units(battery));
 	} else {
 		seq_printf(seq, "unsupported\n");
 	}
-=======
-	if (!battery->alarm)
-		seq_printf(seq, "unsupported\n");
-	else
-		seq_printf(seq, "%u %sh\n", battery->alarm,
-				acpi_battery_units(battery));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
       end:
 	if (result)
 		seq_printf(seq, "ERROR: Unable to read battery alarm\n");
@@ -1284,7 +1168,6 @@ static ssize_t acpi_battery_write_alarm(struct file *file,
 	}
 	result = acpi_battery_set_alarm(battery);
       end:
-<<<<<<< HEAD
 	if (result)
 		return result;
 	return count;
@@ -1307,91 +1190,6 @@ static const struct file_operations acpi_battery_alarm_fops = {
 static int acpi_battery_add_fs(struct acpi_device *device)
 {
 	pr_warning(PREFIX "Deprecated procfs I/F for battery is loaded, please retry with CONFIG_ACPI_PROCFS_POWER cleared\n");
-=======
-	if (!result)
-		return count;
-	return result;
-}
-
-typedef int(*print_func)(struct seq_file *seq, int result);
-
-static print_func acpi_print_funcs[ACPI_BATTERY_NUMFILES] = {
-	acpi_battery_print_info,
-	acpi_battery_print_state,
-	acpi_battery_print_alarm,
-};
-
-static int acpi_battery_read(int fid, struct seq_file *seq)
-{
-	struct acpi_battery *battery = seq->private;
-	int result = acpi_battery_update(battery, false);
-	return acpi_print_funcs[fid](seq, result);
-}
-
-#define DECLARE_FILE_FUNCTIONS(_name) \
-static int acpi_battery_read_##_name(struct seq_file *seq, void *offset) \
-{ \
-	return acpi_battery_read(_name##_tag, seq); \
-} \
-static int acpi_battery_##_name##_open_fs(struct inode *inode, struct file *file) \
-{ \
-	return single_open(file, acpi_battery_read_##_name, PDE_DATA(inode)); \
-}
-
-DECLARE_FILE_FUNCTIONS(info);
-DECLARE_FILE_FUNCTIONS(state);
-DECLARE_FILE_FUNCTIONS(alarm);
-
-#undef DECLARE_FILE_FUNCTIONS
-
-#define FILE_DESCRIPTION_RO(_name) \
-	{ \
-	.name = __stringify(_name), \
-	.mode = S_IRUGO, \
-	.ops = { \
-		.open = acpi_battery_##_name##_open_fs, \
-		.read = seq_read, \
-		.llseek = seq_lseek, \
-		.release = single_release, \
-		.owner = THIS_MODULE, \
-		}, \
-	}
-
-#define FILE_DESCRIPTION_RW(_name) \
-	{ \
-	.name = __stringify(_name), \
-	.mode = S_IFREG | S_IRUGO | S_IWUSR, \
-	.ops = { \
-		.open = acpi_battery_##_name##_open_fs, \
-		.read = seq_read, \
-		.llseek = seq_lseek, \
-		.write = acpi_battery_write_##_name, \
-		.release = single_release, \
-		.owner = THIS_MODULE, \
-		}, \
-	}
-
-static const struct battery_file {
-	struct file_operations ops;
-	umode_t mode;
-	const char *name;
-} acpi_battery_file[] = {
-	FILE_DESCRIPTION_RO(info),
-	FILE_DESCRIPTION_RO(state),
-	FILE_DESCRIPTION_RW(alarm),
-};
-
-#undef FILE_DESCRIPTION_RO
-#undef FILE_DESCRIPTION_RW
-
-static int acpi_battery_add_fs(struct acpi_device *device)
-{
-	struct proc_dir_entry *entry = NULL;
-	int i;
-
-	printk(KERN_WARNING PREFIX "Deprecated procfs I/F for battery is loaded,"
-			" please retry with CONFIG_ACPI_PROCFS_POWER cleared\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!acpi_device_dir(device)) {
 		acpi_device_dir(device) = proc_mkdir(acpi_device_bid(device),
 						     acpi_battery_dir);
@@ -1399,7 +1197,6 @@ static int acpi_battery_add_fs(struct acpi_device *device)
 			return -ENODEV;
 	}
 
-<<<<<<< HEAD
 	if (!proc_create_single_data("info", S_IRUGO, acpi_device_dir(device),
 			acpi_battery_info_proc_show, acpi_driver_data(device)))
 		return -ENODEV;
@@ -1410,36 +1207,14 @@ static int acpi_battery_add_fs(struct acpi_device *device)
 			acpi_device_dir(device), &acpi_battery_alarm_fops,
 			acpi_driver_data(device)))
 		return -ENODEV;
-=======
-	for (i = 0; i < ACPI_BATTERY_NUMFILES; ++i) {
-		entry = proc_create_data(acpi_battery_file[i].name,
-					 acpi_battery_file[i].mode,
-					 acpi_device_dir(device),
-					 &acpi_battery_file[i].ops,
-					 acpi_driver_data(device));
-		if (!entry)
-			return -ENODEV;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 static void acpi_battery_remove_fs(struct acpi_device *device)
 {
-<<<<<<< HEAD
 	if (!acpi_device_dir(device))
 		return;
 	remove_proc_subtree(acpi_device_bid(device), acpi_battery_dir);
-=======
-	int i;
-	if (!acpi_device_dir(device))
-		return;
-	for (i = 0; i < ACPI_BATTERY_NUMFILES; ++i)
-		remove_proc_entry(acpi_battery_file[i].name,
-				  acpi_device_dir(device));
-
-	remove_proc_entry(acpi_device_bid(device), acpi_battery_dir);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	acpi_device_dir(device) = NULL;
 }
 
@@ -1490,13 +1265,9 @@ static int battery_notify(struct notifier_block *nb,
 		if (!acpi_battery_present(battery))
 			return 0;
 
-<<<<<<< HEAD
 		if (battery->bat) {
 			acpi_battery_refresh(battery);
 		} else {
-=======
-		if (!battery->bat) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			result = acpi_battery_get_info(battery);
 			if (result)
 				return result;
@@ -1504,12 +1275,7 @@ static int battery_notify(struct notifier_block *nb,
 			result = sysfs_add_battery(battery);
 			if (result)
 				return result;
-<<<<<<< HEAD
 		}
-=======
-		} else
-			acpi_battery_refresh(battery);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		acpi_battery_init_alarm(battery);
 		acpi_battery_get_state(battery);
@@ -1533,7 +1299,6 @@ battery_notification_delay_quirk(const struct dmi_system_id *d)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int __init
 battery_ac_is_broken_quirk(const struct dmi_system_id *d)
 {
@@ -1552,31 +1317,19 @@ static const struct dmi_system_id bat_dmi_table[] __initconst = {
 	{
 		/* NEC LZ750/LS */
 		.callback = battery_bix_broken_package_quirk,
-=======
-static const struct dmi_system_id bat_dmi_table[] __initconst = {
-	{
-		.callback = battery_bix_broken_package_quirk,
-		.ident = "NEC LZ750/LS",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.matches = {
 			DMI_MATCH(DMI_SYS_VENDOR, "NEC"),
 			DMI_MATCH(DMI_PRODUCT_NAME, "PC-LZ750LS"),
 		},
 	},
 	{
-<<<<<<< HEAD
 		/* Acer Aspire V5-573G */
 		.callback = battery_notification_delay_quirk,
-=======
-		.callback = battery_notification_delay_quirk,
-		.ident = "Acer Aspire V5-573G",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.matches = {
 			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
 			DMI_MATCH(DMI_PRODUCT_NAME, "Aspire V5-573G"),
 		},
 	},
-<<<<<<< HEAD
 	{
 		/* Point of View mobii wintab p800w */
 		.callback = battery_ac_is_broken_quirk,
@@ -1604,8 +1357,6 @@ static const struct dmi_system_id bat_dmi_table[] __initconst = {
 		  DMI_EXACT_MATCH(DMI_PRODUCT_VERSION, "Lenovo MIIX 320-10ICR"),
 		},
 	},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{},
 };
 
@@ -1660,7 +1411,6 @@ static int acpi_battery_add(struct acpi_device *device)
 
 #ifdef CONFIG_ACPI_PROCFS_POWER
 	result = acpi_battery_add_fs(device);
-<<<<<<< HEAD
 	if (result) {
 		acpi_battery_remove_fs(device);
 		goto fail;
@@ -1668,17 +1418,6 @@ static int acpi_battery_add(struct acpi_device *device)
 #endif
 
 	pr_info(PREFIX "%s Slot [%s] (battery %s)\n",
-=======
-#endif
-	if (result) {
-#ifdef CONFIG_ACPI_PROCFS_POWER
-		acpi_battery_remove_fs(device);
-#endif
-		goto fail;
-	}
-
-	printk(KERN_INFO PREFIX "%s Slot [%s] (battery %s)\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ACPI_BATTERY_DEVICE_NAME, acpi_device_bid(device),
 		device->status.battery_present ? "present" : "absent");
 
@@ -1757,7 +1496,6 @@ static void __init acpi_battery_init_async(void *unused, async_cookie_t cookie)
 	unsigned int i;
 	int result;
 
-<<<<<<< HEAD
 	dmi_check_system(bat_dmi_table);
 
 	if (battery_check_pmic) {
@@ -1769,17 +1507,6 @@ static void __init acpi_battery_init_async(void *unused, async_cookie_t cookie)
 				return;
 			}
 	}
-=======
-	for (i = 0; i < ARRAY_SIZE(acpi_battery_blacklist); i++)
-		if (acpi_dev_present(acpi_battery_blacklist[i], "1", -1)) {
-			pr_info(PREFIX ACPI_BATTERY_DEVICE_NAME
-				": found native %s PMIC, not loading\n",
-				acpi_battery_blacklist[i]);
-			return;
-		}
-
-	dmi_check_system(bat_dmi_table);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_ACPI_PROCFS_POWER
 	acpi_battery_dir = acpi_lock_battery_dir();
@@ -1806,15 +1533,10 @@ static int __init acpi_battery_init(void)
 static void __exit acpi_battery_exit(void)
 {
 	async_synchronize_cookie(async_cookie + 1);
-<<<<<<< HEAD
 	if (battery_driver_registered) {
 		acpi_bus_unregister_driver(&acpi_battery_driver);
 		battery_hook_exit();
 	}
-=======
-	if (battery_driver_registered)
-		acpi_bus_unregister_driver(&acpi_battery_driver);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_ACPI_PROCFS_POWER
 	if (acpi_battery_dir)
 		acpi_unlock_battery_dir(acpi_battery_dir);

@@ -44,7 +44,6 @@ struct alt_region {
  */
 static bool branch_insn_requires_update(struct alt_instr *alt, unsigned long pc)
 {
-<<<<<<< HEAD
 	unsigned long replptr;
 
 	if (kernel_text_address(pc))
@@ -59,10 +58,6 @@ static bool branch_insn_requires_update(struct alt_instr *alt, unsigned long pc)
 	 * we're not even trying to fix it up.
 	 */
 	BUG();
-=======
-	unsigned long replptr = (unsigned long)ALT_REPL_PTR(alt);
-	return !(pc >= replptr && pc <= (replptr + alt->alt_len));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #define align_down(x, a)	((unsigned long)(x) & ~(((unsigned long)(a)) - 1))
@@ -127,7 +122,6 @@ static void patch_alternative(struct alt_instr *alt,
 	}
 }
 
-<<<<<<< HEAD
 /*
  * We provide our own, private D-cache cleaning function so that we don't
  * accidentally call into the cache.S code, which is patched by us at
@@ -152,9 +146,6 @@ static void clean_dcache_range_nopatch(u64 start, u64 end)
 }
 
 static void __apply_alternatives(void *alt_region, bool is_module)
-=======
-static void __nocfi __apply_alternatives(void *alt_region, bool use_linear_alias)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct alt_instr *alt;
 	struct alt_region *region = alt_region;
@@ -177,11 +168,7 @@ static void __nocfi __apply_alternatives(void *alt_region, bool use_linear_alias
 		pr_info_once("patching kernel code\n");
 
 		origptr = ALT_ORIG_PTR(alt);
-<<<<<<< HEAD
 		updptr = is_module ? origptr : lm_alias(origptr);
-=======
-		updptr = use_linear_alias ? lm_alias(origptr) : origptr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		nr_inst = alt->orig_len / AARCH64_INSN_SIZE;
 
 		if (alt->cpufeature < ARM64_CB_PATCH)
@@ -191,7 +178,6 @@ static void __nocfi __apply_alternatives(void *alt_region, bool use_linear_alias
 
 		alt_cb(alt, origptr, updptr, nr_inst);
 
-<<<<<<< HEAD
 		if (!is_module) {
 			clean_dcache_range_nopatch((u64)origptr,
 						   (u64)(origptr + nr_inst));
@@ -206,10 +192,6 @@ static void __nocfi __apply_alternatives(void *alt_region, bool use_linear_alias
 		dsb(ish);
 		__flush_icache_all();
 		isb();
-=======
-		flush_icache_range((uintptr_t)origptr,
-				   (uintptr_t)(origptr + nr_inst));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -231,11 +213,7 @@ static int __apply_alternatives_multi_stop(void *unused)
 		isb();
 	} else {
 		BUG_ON(alternatives_applied);
-<<<<<<< HEAD
 		__apply_alternatives(&region, false);
-=======
-		__apply_alternatives(&region, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Barriers provided by the cache flushing */
 		WRITE_ONCE(alternatives_applied, 1);
 	}
@@ -249,23 +227,14 @@ void __init apply_alternatives_all(void)
 	stop_machine(__apply_alternatives_multi_stop, NULL, cpu_online_mask);
 }
 
-<<<<<<< HEAD
 #ifdef CONFIG_MODULES
 void apply_alternatives_module(void *start, size_t length)
-=======
-void apply_alternatives(void *start, size_t length)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct alt_region region = {
 		.begin	= start,
 		.end	= start + length,
 	};
 
-<<<<<<< HEAD
 	__apply_alternatives(&region, true);
 }
 #endif
-=======
-	__apply_alternatives(&region, false);
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

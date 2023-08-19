@@ -1,66 +1,18 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: BSD-3-Clause OR GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /******************************************************************************
  *
  * Module Name: psobject - Support for parse objects
  *
-<<<<<<< HEAD
  * Copyright (C) 2000 - 2018, Intel Corp.
  *
  *****************************************************************************/
 
-=======
- *****************************************************************************/
-
-/*
- * Copyright (C) 2000 - 2017, Intel Corp.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions, and the following disclaimer,
- *    without modification.
- * 2. Redistributions in binary form must reproduce at minimum a disclaimer
- *    substantially similar to the "NO WARRANTY" disclaimer below
- *    ("Disclaimer") and any redistribution must be conditioned upon
- *    including a substantially similar Disclaimer requirement for further
- *    binary redistribution.
- * 3. Neither the names of the above-listed copyright holders nor the names
- *    of any contributors may be used to endorse or promote products derived
- *    from this software without specific prior written permission.
- *
- * Alternatively, this software may be distributed under the terms of the
- * GNU General Public License ("GPL") version 2 as published by the Free
- * Software Foundation.
- *
- * NO WARRANTY
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
- * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
- * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGES.
- */
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <acpi/acpi.h>
 #include "accommon.h"
 #include "acparser.h"
 #include "amlcode.h"
 #include "acconvert.h"
-<<<<<<< HEAD
 #include "acnamesp.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define _COMPONENT          ACPI_PARSER
 ACPI_MODULE_NAME("psobject")
@@ -82,11 +34,7 @@ static acpi_status acpi_ps_get_aml_opcode(struct acpi_walk_state *walk_state);
 
 static acpi_status acpi_ps_get_aml_opcode(struct acpi_walk_state *walk_state)
 {
-<<<<<<< HEAD
 	ACPI_ERROR_ONLY(u32 aml_offset);
-=======
-	u32 aml_offset;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ACPI_FUNCTION_TRACE_PTR(ps_get_aml_opcode, walk_state);
 
@@ -117,17 +65,11 @@ static acpi_status acpi_ps_get_aml_opcode(struct acpi_walk_state *walk_state)
 		/* The opcode is unrecognized. Complain and skip unknown opcodes */
 
 		if (walk_state->pass_number == 2) {
-<<<<<<< HEAD
 			ACPI_ERROR_ONLY(aml_offset =
 					(u32)ACPI_PTR_DIFF(walk_state->aml,
 							   walk_state->
 							   parser_state.
 							   aml_start));
-=======
-			aml_offset = (u32)ACPI_PTR_DIFF(walk_state->aml,
-							walk_state->
-							parser_state.aml_start);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			ACPI_ERROR((AE_INFO,
 				    "Unknown opcode 0x%.2X at table offset 0x%.4X, ignoring",
@@ -399,23 +341,10 @@ acpi_ps_create_op(struct acpi_walk_state *walk_state,
 			 * external declaration opcode. Setting walk_state->Aml to
 			 * walk_state->parser_state.Aml + 2 moves increments the
 			 * walk_state->Aml past the object type and the paramcount of the
-<<<<<<< HEAD
 			 * external opcode.
 			 */
 			walk_state->aml = walk_state->parser_state.aml + 2;
 			walk_state->parser_state.aml = walk_state->aml;
-=======
-			 * external opcode. For the error message, only print the AML
-			 * offset. We could attempt to print the name but this may cause
-			 * a segmentation fault when printing the namepath because the
-			 * AML may be incorrect.
-			 */
-			acpi_os_printf
-			    ("// Invalid external declaration at AML offset 0x%x.\n",
-			     walk_state->aml -
-			     walk_state->parser_state.aml_start);
-			walk_state->aml = walk_state->parser_state.aml + 2;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return_ACPI_STATUS(AE_CTRL_PARSE_CONTINUE);
 		}
 #endif
@@ -621,7 +550,6 @@ acpi_ps_complete_op(struct acpi_walk_state *walk_state,
 
 		do {
 			if (*op) {
-<<<<<<< HEAD
 				/*
 				 * These Opcodes need to be removed from the namespace because they
 				 * get created even if these opcodes cannot be created due to
@@ -637,8 +565,6 @@ acpi_ps_complete_op(struct acpi_walk_state *walk_state,
 					acpi_ps_delete_parse_tree(*op);
 				}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				status2 =
 				    acpi_ps_complete_this_op(walk_state, *op);
 				if (ACPI_FAILURE(status2)) {
@@ -664,7 +590,6 @@ acpi_ps_complete_op(struct acpi_walk_state *walk_state,
 #endif
 		walk_state->prev_op = NULL;
 		walk_state->prev_arg_types = walk_state->arg_types;
-<<<<<<< HEAD
 
 		if (walk_state->parse_flags & ACPI_PARSE_MODULE_LEVEL) {
 			/*
@@ -679,8 +604,6 @@ acpi_ps_complete_op(struct acpi_walk_state *walk_state,
 				    "Ignore error and continue table load"));
 			return_ACPI_STATUS(AE_OK);
 		}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return_ACPI_STATUS(status);
 	}
 

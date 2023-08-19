@@ -59,19 +59,14 @@ static ssize_t ds1682_show(struct device *dev, struct device_attribute *attr,
 {
 	struct sensor_device_attribute_2 *sattr = to_sensor_dev_attr_2(attr);
 	struct i2c_client *client = to_i2c_client(dev);
-<<<<<<< HEAD
 	unsigned long long val, check;
 	__le32 val_le = 0;
-=======
-	__le32 val = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc;
 
 	dev_dbg(dev, "ds1682_show() called on %s\n", attr->attr.name);
 
 	/* Read the register */
 	rc = i2c_smbus_read_i2c_block_data(client, sattr->index, sattr->nr,
-<<<<<<< HEAD
 					   (u8 *)&val_le);
 	if (rc < 0)
 		return -EIO;
@@ -100,20 +95,6 @@ static ssize_t ds1682_show(struct device *dev, struct device_attribute *attr,
 	 * resolution, scale them up to milliseconds
 	 */
 	return sprintf(buf, "%llu\n", (sattr->nr == 4) ? (val * 250) : val);
-=======
-					   (u8 *) & val);
-	if (rc < 0)
-		return -EIO;
-
-	/* Special case: the 32 bit regs are time values with 1/4s
-	 * resolution, scale them up to milliseconds */
-	if (sattr->nr == 4)
-		return sprintf(buf, "%llu\n",
-			((unsigned long long)le32_to_cpu(val)) * 250);
-
-	/* Format the output string and return # of bytes */
-	return sprintf(buf, "%li\n", (long)le32_to_cpu(val));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static ssize_t ds1682_store(struct device *dev, struct device_attribute *attr,

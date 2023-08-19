@@ -6,7 +6,6 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-<<<<<<< HEAD
    netdev-FAQ
    af_xdp
    batman-adv
@@ -22,11 +21,6 @@ Contents:
    net_failover
    alias
    bridge
-=======
-   batman-adv
-   kapi
-   z8530book
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 .. only::  subproject
 
@@ -34,7 +28,3 @@ Contents:
    =======
 
    * :ref:`genindex`
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

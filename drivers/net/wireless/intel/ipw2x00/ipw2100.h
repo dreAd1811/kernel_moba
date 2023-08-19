@@ -491,11 +491,7 @@ struct ipw2100_priv {
 
 	/* Statistics */
 	int resets;
-<<<<<<< HEAD
 	time64_t reset_backoff;
-=======
-	int reset_backoff;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Context */
 	u8 essid[IW_ESSID_MAX_SIZE];
@@ -504,13 +500,8 @@ struct ipw2100_priv {
 	u8 channel;
 	int last_mode;
 
-<<<<<<< HEAD
 	time64_t connect_start;
 	time64_t last_reset;
-=======
-	unsigned long connect_start;
-	unsigned long last_reset;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	u32 channel_mask;
 	u32 fatal_error;
@@ -590,15 +581,9 @@ struct ipw2100_priv {
 
 	int user_requested_scan;
 
-<<<<<<< HEAD
 	/* Track time in suspend, using CLOCK_BOOTTIME */
 	time64_t suspend_at;
 	time64_t suspend_time;
-=======
-	/* Track time in suspend */
-	unsigned long suspend_at;
-	unsigned long suspend_time;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	u32 interrupts;
 	int tx_interrupts;
@@ -1024,11 +1009,7 @@ typedef enum _ORDINAL_TABLE_1 {	// NS - means Not Supported by FW
 	IPW_ORD_STAT_PERCENT_RETRIES,	// current calculation of % missed tx retries
 	IPW_ORD_ASSOCIATED_AP_PTR,	// If associated, this is ptr to the associated
 	// AP table entry. set to 0 if not associated
-<<<<<<< HEAD
 	IPW_ORD_AVAILABLE_AP_CNT,	// # of AP's described in the AP table
-=======
-	IPW_ORD_AVAILABLE_AP_CNT,	// # of AP's decsribed in the AP table
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	IPW_ORD_AP_LIST_PTR,	// Ptr to list of available APs
 	IPW_ORD_STAT_AP_ASSNS,	// # of associations
 	IPW_ORD_STAT_ASSN_FAIL,	// # of association failures

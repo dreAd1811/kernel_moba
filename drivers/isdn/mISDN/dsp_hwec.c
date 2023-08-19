@@ -68,21 +68,12 @@ void dsp_hwec_enable(struct dsp *dsp, const char *arg)
 		goto _do;
 
 	{
-<<<<<<< HEAD
 		char *dup, *tok, *name, *val;
 		int tmp;
 
 		dup = kstrdup(arg, GFP_ATOMIC);
 		if (!dup)
 			return;
-=======
-		char _dup[len + 1];
-		char *dup, *tok, *name, *val;
-		int tmp;
-
-		strcpy(_dup, arg);
-		dup = _dup;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		while ((tok = strsep(&dup, ","))) {
 			if (!strlen(tok))
@@ -98,11 +89,8 @@ void dsp_hwec_enable(struct dsp *dsp, const char *arg)
 					deftaps = tmp;
 			}
 		}
-<<<<<<< HEAD
 
 		kfree(dup);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 _do:

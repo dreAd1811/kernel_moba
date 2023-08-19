@@ -19,10 +19,7 @@ struct nvkm_ltc_func {
 	int zbc;
 	void (*zbc_clear_color)(struct nvkm_ltc *, int, const u32[4]);
 	void (*zbc_clear_depth)(struct nvkm_ltc *, int, const u32);
-<<<<<<< HEAD
 	void (*zbc_clear_stencil)(struct nvkm_ltc *, int, const u32);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	void (*invalidate)(struct nvkm_ltc *);
 	void (*flush)(struct nvkm_ltc *);
@@ -45,11 +42,8 @@ void gm107_ltc_cbc_clear(struct nvkm_ltc *, u32, u32);
 void gm107_ltc_cbc_wait(struct nvkm_ltc *);
 void gm107_ltc_zbc_clear_color(struct nvkm_ltc *, int, const u32[4]);
 void gm107_ltc_zbc_clear_depth(struct nvkm_ltc *, int, const u32);
-<<<<<<< HEAD
 
 int gp100_ltc_oneinit(struct nvkm_ltc *);
 void gp100_ltc_init(struct nvkm_ltc *);
 void gp100_ltc_intr(struct nvkm_ltc *);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

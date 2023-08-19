@@ -277,11 +277,7 @@ static int st6422_stop(struct sd *sd)
 {
 	struct gspca_dev *gspca_dev = (struct gspca_dev *)sd;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_STREAM, "Halting stream\n");
-=======
-	PDEBUG(D_STREAM, "Halting stream");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
  * Copyright(c) 2015 - 2018 Intel Corporation.
-=======
- * Copyright(c) 2015 - 2017 Intel Corporation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This file is provided under a dual BSD/GPLv2 license.  When using or
  * redistributing this file, you may do so under either license.
@@ -69,10 +65,7 @@
 #include "aspm.h"
 #include "affinity.h"
 #include "debugfs.h"
-<<<<<<< HEAD
 #include "fault.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define NUM_IB_PORTS 1
 
@@ -1040,18 +1033,10 @@ static void read_vc_remote_fabric(struct hfi1_devdata *dd, u8 *vau, u8 *z,
 				  u8 *vcu, u16 *vl15buf, u8 *crc_sizes);
 static void read_vc_remote_link_width(struct hfi1_devdata *dd,
 				      u8 *remote_tx_rate, u16 *link_widths);
-<<<<<<< HEAD
 static void read_vc_local_link_mode(struct hfi1_devdata *dd, u8 *misc_bits,
 				    u8 *flag_bits, u16 *link_widths);
 static void read_remote_device_id(struct hfi1_devdata *dd, u16 *device_id,
 				  u8 *device_rev);
-=======
-static void read_vc_local_link_width(struct hfi1_devdata *dd, u8 *misc_bits,
-				     u8 *flag_bits, u16 *link_widths);
-static void read_remote_device_id(struct hfi1_devdata *dd, u16 *device_id,
-				  u8 *device_rev);
-static void read_mgmt_allowed(struct hfi1_devdata *dd, u8 *mgmt_allowed);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void read_local_lni(struct hfi1_devdata *dd, u8 *enable_lane_rx);
 static int read_tx_settings(struct hfi1_devdata *dd, u8 *enable_lane_tx,
 			    u8 *tx_polarity_inversion,
@@ -1089,11 +1074,6 @@ static void log_state_transition(struct hfi1_pportdata *ppd, u32 state);
 static void log_physical_state(struct hfi1_pportdata *ppd, u32 state);
 static int wait_physical_linkstate(struct hfi1_pportdata *ppd, u32 state,
 				   int msecs);
-<<<<<<< HEAD
-=======
-static int wait_phys_link_out_of_offline(struct hfi1_pportdata *ppd,
-					 int msecs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void read_planned_down_reason_code(struct hfi1_devdata *dd, u8 *pdrrc);
 static void read_link_down_reason(struct hfi1_devdata *dd, u8 *ldr);
 static void handle_temp_err(struct hfi1_devdata *dd);
@@ -1104,10 +1084,7 @@ static int qos_rmt_entries(struct hfi1_devdata *dd, unsigned int *mp,
 static void clear_full_mgmt_pkey(struct hfi1_pportdata *ppd);
 static int wait_link_transfer_active(struct hfi1_devdata *dd, int wait_ms);
 static void clear_rsm_rule(struct hfi1_devdata *dd, u8 rule_index);
-<<<<<<< HEAD
 static void update_xmit_counters(struct hfi1_pportdata *ppd, u16 link_width);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Error interrupt table entry.  This is used as input to the interrupt
@@ -1708,17 +1685,6 @@ static u64 access_sw_pio_drain(const struct cntr_entry *entry,
 	return dd->verbs_dev.n_piodrain;
 }
 
-<<<<<<< HEAD
-=======
-static u64 access_sw_ctx0_seq_drop(const struct cntr_entry *entry,
-				   void *context, int vl, int mode, u64 data)
-{
-	struct hfi1_devdata *dd = context;
-
-	return dd->ctx0_seq_drop;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static u64 access_sw_vtx_wait(const struct cntr_entry *entry,
 			      void *context, int vl, int mode, u64 data)
 {
@@ -4279,11 +4245,6 @@ static struct cntr_entry dev_cntrs[DEV_CNTR_LAST] = {
 			    access_sw_cpu_intr),
 [C_SW_CPU_RCV_LIM] = CNTR_ELEM("RcvLimit", 0, 0, CNTR_NORMAL,
 			    access_sw_cpu_rcv_limit),
-<<<<<<< HEAD
-=======
-[C_SW_CTX0_SEQ_DROP] = CNTR_ELEM("SeqDrop0", 0, 0, CNTR_NORMAL,
-			    access_sw_ctx0_seq_drop),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 [C_SW_VTX_WAIT] = CNTR_ELEM("vTxWait", 0, 0, CNTR_NORMAL,
 			    access_sw_vtx_wait),
 [C_SW_PIO_WAIT] = CNTR_ELEM("PioWait", 0, 0, CNTR_NORMAL,
@@ -5578,15 +5539,9 @@ static void handle_cce_err(struct hfi1_devdata *dd, u32 unused, u64 reg)
  * associated with them.
  */
 #define RCVERR_CHECK_TIME 10
-<<<<<<< HEAD
 static void update_rcverr_timer(struct timer_list *t)
 {
 	struct hfi1_devdata *dd = from_timer(dd, t, rcverr_timer);
-=======
-static void update_rcverr_timer(unsigned long opaque)
-{
-	struct hfi1_devdata *dd = (struct hfi1_devdata *)opaque;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct hfi1_pportdata *ppd = dd->pport;
 	u32 cur_ovfl_cnt = read_dev_cntr(dd, C_RCV_OVF, CNTR_INVALID_VL);
 
@@ -5605,11 +5560,7 @@ static void update_rcverr_timer(unsigned long opaque)
 
 static int init_rcverr(struct hfi1_devdata *dd)
 {
-<<<<<<< HEAD
 	timer_setup(&dd->rcverr_timer, update_rcverr_timer, 0);
-=======
-	setup_timer(&dd->rcverr_timer, update_rcverr_timer, (unsigned long)dd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Assume the hardware counter has been reset */
 	dd->rcv_ovfl_cnt = 0;
 	return mod_timer(&dd->rcverr_timer, jiffies + HZ * RCVERR_CHECK_TIME);
@@ -5617,14 +5568,8 @@ static int init_rcverr(struct hfi1_devdata *dd)
 
 static void free_rcverr(struct hfi1_devdata *dd)
 {
-<<<<<<< HEAD
 	if (dd->rcverr_timer.function)
 		del_timer_sync(&dd->rcverr_timer);
-=======
-	if (dd->rcverr_timer.data)
-		del_timer_sync(&dd->rcverr_timer);
-	dd->rcverr_timer.data = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void handle_rxe_err(struct hfi1_devdata *dd, u32 unused, u64 reg)
@@ -6411,7 +6356,6 @@ static void handle_8051_request(struct hfi1_pportdata *ppd)
 			    type);
 		hreq_response(dd, HREQ_NOT_SUPPORTED, 0);
 		break;
-<<<<<<< HEAD
 	case HREQ_LCB_RESET:
 		/* Put the LCB, RX FPE and TX FPE into reset */
 		write_csr(dd, DCC_CFG_RESET, LCB_RX_FPE_TX_FPE_INTO_RESET);
@@ -6424,8 +6368,6 @@ static void handle_8051_request(struct hfi1_pportdata *ppd)
 		hreq_response(dd, HREQ_SUCCESS, 0);
 
 		break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case HREQ_CONFIG_DONE:
 		hreq_response(dd, HREQ_SUCCESS, 0);
 		break;
@@ -6536,12 +6478,7 @@ static void lcb_shutdown(struct hfi1_devdata *dd, int abort)
 	dd->lcb_err_en = read_csr(dd, DC_LCB_ERR_EN);
 	reg = read_csr(dd, DCC_CFG_RESET);
 	write_csr(dd, DCC_CFG_RESET, reg |
-<<<<<<< HEAD
 		  DCC_CFG_RESET_RESET_LCB | DCC_CFG_RESET_RESET_RX_FPE);
-=======
-		  (1ull << DCC_CFG_RESET_RESET_LCB_SHIFT) |
-		  (1ull << DCC_CFG_RESET_RESET_RX_FPE_SHIFT));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	(void)read_csr(dd, DCC_CFG_RESET); /* make sure the write completed */
 	if (!abort) {
 		udelay(1);    /* must hold for the longer of 16cclks or 20ns */
@@ -6606,11 +6543,7 @@ static void _dc_start(struct hfi1_devdata *dd)
 			   __func__);
 
 	/* Take away reset for LCB and RX FPE (set in lcb_shutdown). */
-<<<<<<< HEAD
 	write_csr(dd, DCC_CFG_RESET, LCB_RX_FPE_TX_FPE_OUT_OF_RESET);
-=======
-	write_csr(dd, DCC_CFG_RESET, 0x10);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* lcb_shutdown() with abort=1 does not restore these */
 	write_csr(dd, DC_LCB_ERR_EN, dd->lcb_err_en);
 	dd->dc_shutdown = 0;
@@ -6904,12 +6837,8 @@ static void rxe_kernel_unfreeze(struct hfi1_devdata *dd)
 		rcd = hfi1_rcd_get_by_index(dd, i);
 
 		/* Ensure all non-user contexts(including vnic) are enabled */
-<<<<<<< HEAD
 		if (!rcd ||
 		    (i >= dd->first_dyn_alloc_ctxt && !rcd->is_vnic)) {
-=======
-		if (!rcd || !rcd->sc || (rcd->sc->type == SC_USER)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			hfi1_rcd_put(rcd);
 			continue;
 		}
@@ -6996,7 +6925,6 @@ void handle_freeze(struct work_struct *work)
 	/* no longer frozen */
 }
 
-<<<<<<< HEAD
 /**
  * update_xmit_counters - update PortXmitWait/PortVlXmitWait
  * counters.
@@ -7023,8 +6951,6 @@ static void update_xmit_counters(struct hfi1_pportdata *ppd, u16 link_width)
 		get_xmit_wait_counters(ppd, tx_width, link_speed, i);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Handle a link up interrupt from the 8051.
  *
@@ -7318,30 +7244,6 @@ static int lcb_to_port_ltp(int lcb_crc)
 	return port_ltp;
 }
 
-<<<<<<< HEAD
-=======
-/*
- * Our neighbor has indicated that we are allowed to act as a fabric
- * manager, so place the full management partition key in the second
- * (0-based) pkey array position (see OPAv1, section 20.2.2.6.8). Note
- * that we should already have the limited management partition key in
- * array element 1, and also that the port is not yet up when
- * add_full_mgmt_pkey() is invoked.
- */
-static void add_full_mgmt_pkey(struct hfi1_pportdata *ppd)
-{
-	struct hfi1_devdata *dd = ppd->dd;
-
-	/* Sanity check - ppd->pkeys[2] should be 0, or already initialized */
-	if (!((ppd->pkeys[2] == 0) || (ppd->pkeys[2] == FULL_MGMT_P_KEY)))
-		dd_dev_warn(dd, "%s pkey[2] already set to 0x%x, resetting it to 0x%x\n",
-			    __func__, ppd->pkeys[2], FULL_MGMT_P_KEY);
-	ppd->pkeys[2] = FULL_MGMT_P_KEY;
-	(void)hfi1_set_ib_cfg(ppd, HFI1_IB_CFG_PKEYS, 0);
-	hfi1_event_pkey_change(ppd->dd, ppd->port);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void clear_full_mgmt_pkey(struct hfi1_pportdata *ppd)
 {
 	if (ppd->pkeys[2] != 0) {
@@ -7465,11 +7367,7 @@ static void get_linkup_widths(struct hfi1_devdata *dd, u16 *tx_width,
 	u8 misc_bits, local_flags;
 	u16 active_tx, active_rx;
 
-<<<<<<< HEAD
 	read_vc_local_link_mode(dd, &misc_bits, &local_flags, &widths);
-=======
-	read_vc_local_link_width(dd, &misc_bits, &local_flags, &widths);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tx = widths >> 12;
 	rx = (widths >> 8) & 0xf;
 
@@ -7542,15 +7440,7 @@ void handle_verify_cap(struct work_struct *work)
 			      &partner_supported_crc);
 	read_vc_remote_link_width(dd, &remote_tx_rate, &link_widths);
 	read_remote_device_id(dd, &device_id, &device_rev);
-<<<<<<< HEAD
 
-=======
-	/*
-	 * And the 'MgmtAllowed' information, which is exchanged during
-	 * LNI, is also be available at this point.
-	 */
-	read_mgmt_allowed(dd, &ppd->mgmt_allowed);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* print the active widths */
 	get_link_widths(dd, &active_tx, &active_rx);
 	dd_dev_info(dd,
@@ -7678,17 +7568,10 @@ void handle_verify_cap(struct work_struct *work)
 	write_csr(dd, DC_LCB_ERR_EN, 0); /* mask LCB errors */
 	set_8051_lcb_access(dd);
 
-<<<<<<< HEAD
-=======
-	if (ppd->mgmt_allowed)
-		add_full_mgmt_pkey(ppd);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* tell the 8051 to go to LinkUp */
 	set_link_state(ppd, HLS_GOING_UP);
 }
 
-<<<<<<< HEAD
 /**
  * apply_link_downgrade_policy - Apply the link width downgrade enabled
  * policy against the current active link widths.
@@ -7706,24 +7589,12 @@ void handle_verify_cap(struct work_struct *work)
  */
 bool apply_link_downgrade_policy(struct hfi1_pportdata *ppd,
 				 bool refresh_widths)
-=======
-/*
- * Apply the link width downgrade enabled policy against the current active
- * link widths.
- *
- * Called when the enabled policy changes or the active link widths change.
- */
-void apply_link_downgrade_policy(struct hfi1_pportdata *ppd, int refresh_widths)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int do_bounce = 0;
 	int tries;
 	u16 lwde;
 	u16 tx, rx;
-<<<<<<< HEAD
 	bool link_downgraded = refresh_widths;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* use the hls lock to avoid a race with actual link up */
 	tries = 0;
@@ -7757,10 +7628,7 @@ retry:
 	    ppd->link_width_downgrade_rx_active == 0) {
 		/* the 8051 reported a dead link as a downgrade */
 		dd_dev_err(ppd->dd, "Link downgrade is really a link down, ignoring\n");
-<<<<<<< HEAD
 		link_downgraded = false;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (lwde == 0) {
 		/* downgrade is disabled */
 
@@ -7777,10 +7645,7 @@ retry:
 				   ppd->link_width_downgrade_tx_active,
 				   ppd->link_width_downgrade_rx_active);
 			do_bounce = 1;
-<<<<<<< HEAD
 			link_downgraded = false;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	} else if ((lwde & ppd->link_width_downgrade_tx_active) == 0 ||
 		   (lwde & ppd->link_width_downgrade_rx_active) == 0) {
@@ -7792,10 +7657,7 @@ retry:
 			   lwde, ppd->link_width_downgrade_tx_active,
 			   ppd->link_width_downgrade_rx_active);
 		do_bounce = 1;
-<<<<<<< HEAD
 		link_downgraded = false;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 done:
@@ -7807,11 +7669,8 @@ done:
 		set_link_state(ppd, HLS_DN_OFFLINE);
 		start_link(ppd);
 	}
-<<<<<<< HEAD
 
 	return link_downgraded;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -7825,12 +7684,8 @@ void handle_link_downgrade(struct work_struct *work)
 							link_downgrade_work);
 
 	dd_dev_info(ppd->dd, "8051: Link width downgrade\n");
-<<<<<<< HEAD
 	if (apply_link_downgrade_policy(ppd, true))
 		update_xmit_counters(ppd, ppd->link_width_downgrade_tx_active);
-=======
-	apply_link_downgrade_policy(ppd, 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static char *dcc_err_string(char *buf, int buf_len, u64 flags)
@@ -8291,7 +8146,6 @@ static void is_sdma_eng_int(struct hfi1_devdata *dd, unsigned int source)
 	}
 }
 
-<<<<<<< HEAD
 /**
  * is_rcv_avail_int() - User receive context available IRQ handler
  * @dd: valid dd
@@ -8301,10 +8155,6 @@ static void is_sdma_eng_int(struct hfi1_devdata *dd, unsigned int source)
  *
  * This is the general interrupt handler for user (PSM) receive contexts,
  * and can only be used for non-threaded IRQs.
-=======
-/*
- * RX block receive available interrupt.  Source is < 160.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static void is_rcv_avail_int(struct hfi1_devdata *dd, unsigned int source)
 {
@@ -8314,17 +8164,7 @@ static void is_rcv_avail_int(struct hfi1_devdata *dd, unsigned int source)
 	if (likely(source < dd->num_rcv_contexts)) {
 		rcd = hfi1_rcd_get_by_index(dd, source);
 		if (rcd) {
-<<<<<<< HEAD
 			handle_user_interrupt(rcd);
-=======
-			/* Check for non-user contexts, including vnic */
-			if ((source < dd->first_dyn_alloc_ctxt) ||
-			    (rcd->sc && (rcd->sc->type == SC_KERNEL)))
-				rcd->do_interrupt(rcd, 0);
-			else
-				handle_user_interrupt(rcd);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			hfi1_rcd_put(rcd);
 			return;	/* OK */
 		}
@@ -8338,7 +8178,6 @@ static void is_rcv_avail_int(struct hfi1_devdata *dd, unsigned int source)
 		   err_detail, source);
 }
 
-<<<<<<< HEAD
 /**
  * is_rcv_urgent_int() - User receive context urgent IRQ handler
  * @dd: valid dd
@@ -8347,10 +8186,6 @@ static void is_rcv_avail_int(struct hfi1_devdata *dd, unsigned int source)
  * RX block receive urgent interrupt.  Source is < 160.
  *
  * NOTE: kernel receive contexts specifically do NOT enable this IRQ.
-=======
-/*
- * RX block receive urgent interrupt.  Source is < 160.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static void is_rcv_urgent_int(struct hfi1_devdata *dd, unsigned int source)
 {
@@ -8360,15 +8195,7 @@ static void is_rcv_urgent_int(struct hfi1_devdata *dd, unsigned int source)
 	if (likely(source < dd->num_rcv_contexts)) {
 		rcd = hfi1_rcd_get_by_index(dd, source);
 		if (rcd) {
-<<<<<<< HEAD
 			handle_user_interrupt(rcd);
-=======
-			/* only pay attention to user urgent interrupts */
-			if ((source >= dd->first_dyn_alloc_ctxt) &&
-			    (!rcd->sc || (rcd->sc->type == SC_USER)))
-				handle_user_interrupt(rcd);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			hfi1_rcd_put(rcd);
 			return;	/* OK */
 		}
@@ -8440,7 +8267,6 @@ static void is_interrupt(struct hfi1_devdata *dd, unsigned int source)
 	dd_dev_err(dd, "invalid interrupt source %u\n", source);
 }
 
-<<<<<<< HEAD
 /**
  * gerneral_interrupt() -  General interrupt handler
  * @irq: MSIx IRQ vector
@@ -8449,11 +8275,6 @@ static void is_interrupt(struct hfi1_devdata *dd, unsigned int source)
  * This is able to correctly handle all non-threaded interrupts.  Receive
  * context DATA IRQs are threaded and are not supported by this handler.
  *
-=======
-/*
- * General interrupt handler.  This is able to correctly handle
- * all interrupts in case INTx is used.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static irqreturn_t general_interrupt(int irq, void *data)
 {
@@ -8820,16 +8641,8 @@ int write_lcb_csr(struct hfi1_devdata *dd, u32 addr, u64 data)
  *	< 0 = Linux error, not able to get access
  *	> 0 = 8051 command RETURN_CODE
  */
-<<<<<<< HEAD
 static int do_8051_command(struct hfi1_devdata *dd, u32 type, u64 in_data,
 			   u64 *out_data)
-=======
-static int do_8051_command(
-	struct hfi1_devdata *dd,
-	u32 type,
-	u64 in_data,
-	u64 *out_data)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u64 reg, completed;
 	int return_code;
@@ -9035,49 +8848,29 @@ static int write_vc_local_fabric(struct hfi1_devdata *dd, u8 vau, u8 z, u8 vcu,
 				GENERAL_CONFIG, frame);
 }
 
-<<<<<<< HEAD
 static void read_vc_local_link_mode(struct hfi1_devdata *dd, u8 *misc_bits,
 				    u8 *flag_bits, u16 *link_widths)
 {
 	u32 frame;
 
 	read_8051_config(dd, VERIFY_CAP_LOCAL_LINK_MODE, GENERAL_CONFIG,
-=======
-static void read_vc_local_link_width(struct hfi1_devdata *dd, u8 *misc_bits,
-				     u8 *flag_bits, u16 *link_widths)
-{
-	u32 frame;
-
-	read_8051_config(dd, VERIFY_CAP_LOCAL_LINK_WIDTH, GENERAL_CONFIG,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 &frame);
 	*misc_bits = (frame >> MISC_CONFIG_BITS_SHIFT) & MISC_CONFIG_BITS_MASK;
 	*flag_bits = (frame >> LOCAL_FLAG_BITS_SHIFT) & LOCAL_FLAG_BITS_MASK;
 	*link_widths = (frame >> LINK_WIDTH_SHIFT) & LINK_WIDTH_MASK;
 }
 
-<<<<<<< HEAD
 static int write_vc_local_link_mode(struct hfi1_devdata *dd,
 				    u8 misc_bits,
 				    u8 flag_bits,
 				    u16 link_widths)
-=======
-static int write_vc_local_link_width(struct hfi1_devdata *dd,
-				     u8 misc_bits,
-				     u8 flag_bits,
-				     u16 link_widths)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 frame;
 
 	frame = (u32)misc_bits << MISC_CONFIG_BITS_SHIFT
 		| (u32)flag_bits << LOCAL_FLAG_BITS_SHIFT
 		| (u32)link_widths << LINK_WIDTH_SHIFT;
-<<<<<<< HEAD
 	return load_8051_config(dd, VERIFY_CAP_LOCAL_LINK_MODE, GENERAL_CONFIG,
-=======
-	return load_8051_config(dd, VERIFY_CAP_LOCAL_LINK_WIDTH, GENERAL_CONFIG,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		     frame);
 }
 
@@ -9178,17 +8971,6 @@ static void read_local_lni(struct hfi1_devdata *dd, u8 *enable_lane_rx)
 	*enable_lane_rx = (frame >> ENABLE_LANE_RX_SHIFT) & ENABLE_LANE_RX_MASK;
 }
 
-<<<<<<< HEAD
-=======
-static void read_mgmt_allowed(struct hfi1_devdata *dd, u8 *mgmt_allowed)
-{
-	u32 frame;
-
-	read_8051_config(dd, REMOTE_LNI_INFO, GENERAL_CONFIG, &frame);
-	*mgmt_allowed = (frame >> MGMT_ALLOWED_SHIFT) & MGMT_ALLOWED_MASK;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void read_last_local_state(struct hfi1_devdata *dd, u32 *lls)
 {
 	read_8051_config(dd, LAST_LOCAL_STATE_COMPLETE, GENERAL_CONFIG, lls);
@@ -9410,28 +9192,6 @@ static int do_quick_linkup(struct hfi1_devdata *dd)
 }
 
 /*
-<<<<<<< HEAD
-=======
- * Set the SerDes to internal loopback mode.
- * Returns 0 on success, -errno on error.
- */
-static int set_serdes_loopback_mode(struct hfi1_devdata *dd)
-{
-	int ret;
-
-	ret = set_physical_link_state(dd, PLS_INTERNAL_SERDES_LOOPBACK);
-	if (ret == HCMD_SUCCESS)
-		return 0;
-	dd_dev_err(dd,
-		   "Set physical link state to SerDes Loopback failed with return %d\n",
-		   ret);
-	if (ret >= 0)
-		ret = -EINVAL;
-	return ret;
-}
-
-/*
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Do all special steps to set up loopback.
  */
 static int init_loopback(struct hfi1_devdata *dd)
@@ -9456,21 +9216,11 @@ static int init_loopback(struct hfi1_devdata *dd)
 		return 0;
 	}
 
-<<<<<<< HEAD
 	/*
 	 * SerDes loopback init sequence is handled in set_local_link_attributes
 	 */
 	if (loopback == LOOPBACK_SERDES)
 		return 0;
-=======
-	/* handle serdes loopback */
-	if (loopback == LOOPBACK_SERDES) {
-		/* internal serdes loopack needs quick linkup on RTL */
-		if (dd->icode == ICODE_RTL_SILICON)
-			quick_linkup = 1;
-		return set_serdes_loopback_mode(dd);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* LCB loopback - handled at poll time */
 	if (loopback == LOOPBACK_LCB) {
@@ -9529,11 +9279,7 @@ static int set_local_link_attributes(struct hfi1_pportdata *ppd)
 	u8 tx_polarity_inversion;
 	u8 rx_polarity_inversion;
 	int ret;
-<<<<<<< HEAD
 	u32 misc_bits = 0;
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* reset our fabric serdes to clear any lingering problems */
 	fabric_serdes_reset(dd);
 
@@ -9564,7 +9310,6 @@ static int set_local_link_attributes(struct hfi1_pportdata *ppd)
 	if (ret != HCMD_SUCCESS)
 		goto set_local_link_attributes_fail;
 
-<<<<<<< HEAD
 	ret = write_host_interface_version(dd, HOST_INTERFACE_VERSION);
 	if (ret != HCMD_SUCCESS) {
 		dd_dev_err(dd,
@@ -9573,8 +9318,6 @@ static int set_local_link_attributes(struct hfi1_pportdata *ppd)
 		goto set_local_link_attributes_fail;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * DC supports continuous updates.
 	 */
@@ -9590,7 +9333,6 @@ static int set_local_link_attributes(struct hfi1_pportdata *ppd)
 	if (ret != HCMD_SUCCESS)
 		goto set_local_link_attributes_fail;
 
-<<<<<<< HEAD
 	/*
 	 * SerDes loopback init sequence requires
 	 * setting bit 0 of MISC_CONFIG_BITS
@@ -9608,10 +9350,6 @@ static int set_local_link_attributes(struct hfi1_pportdata *ppd)
 
 	ret = write_vc_local_link_mode(dd, misc_bits, 0,
 				       opa_to_vc_link_widths(
-=======
-	ret = write_vc_local_link_width(dd, 0, 0,
-					opa_to_vc_link_widths(
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						ppd->link_width_enabled));
 	if (ret != HCMD_SUCCESS)
 		goto set_local_link_attributes_fail;
@@ -10104,15 +9842,9 @@ void hfi1_quiet_serdes(struct hfi1_pportdata *ppd)
 	cancel_delayed_work_sync(&ppd->start_link_work);
 
 	ppd->offline_disabled_reason =
-<<<<<<< HEAD
 			HFI1_ODR_MASK(OPA_LINKDOWN_REASON_REBOOT);
 	set_link_down_reason(ppd, OPA_LINKDOWN_REASON_REBOOT, 0,
 			     OPA_LINKDOWN_REASON_REBOOT);
-=======
-			HFI1_ODR_MASK(OPA_LINKDOWN_REASON_SMA_DISABLED);
-	set_link_down_reason(ppd, OPA_LINKDOWN_REASON_SMA_DISABLED, 0,
-			     OPA_LINKDOWN_REASON_SMA_DISABLED);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	set_link_state(ppd, HLS_DN_OFFLINE);
 
 	/* disable the port */
@@ -10269,11 +10001,7 @@ int hfi1_get_ib_cfg(struct hfi1_pportdata *ppd, int which)
 		val = ppd->phy_error_threshold;
 		break;
 	case HFI1_IB_CFG_LINKDEFAULT: /* IB link default (sleep/poll) */
-<<<<<<< HEAD
 		val = HLS_DEFAULT;
-=======
-		val = dd->link_default;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case HFI1_IB_CFG_HRTBT: /* Heartbeat off/enable/auto */
@@ -10415,11 +10143,7 @@ static void set_lidlmc(struct hfi1_pportdata *ppd)
 	       (((lid & mask) & SEND_CTXT_CHECK_SLID_VALUE_MASK) <<
 			SEND_CTXT_CHECK_SLID_VALUE_SHIFT);
 
-<<<<<<< HEAD
 	for (i = 0; i < chip_send_contexts(dd); i++) {
-=======
-	for (i = 0; i < dd->chip_send_contexts; i++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		hfi1_cdbg(LINKVERB, "SendContext[%d].SLID_CHECK = 0x%x",
 			  i, (u32)sreg);
 		write_kctxt_csr(dd, i, SEND_CTXT_CHECK_SLID, sreg);
@@ -10480,13 +10204,10 @@ static const char * const state_complete_reasons[] = {
 	[0x33] =
 	  "Link partner completed the VerifyCap state, but the passing lanes do not meet the local link width policy",
 	[0x34] = tx_out_of_policy,
-<<<<<<< HEAD
 	[0x35] = "Negotiated link width is mutually exclusive",
 	[0x36] =
 	  "Timed out before receiving verifycap frames in VerifyCap.Exchange",
 	[0x37] = "Unable to resolve secure data exchange",
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const char *state_complete_reason_code_string(struct hfi1_pportdata *ppd,
@@ -10615,12 +10336,6 @@ static void force_logical_link_state_down(struct hfi1_pportdata *ppd)
 	write_csr(dd, DC_LCB_CFG_ALLOW_LINK_UP, 0);
 	write_csr(dd, DC_LCB_CFG_IGNORE_LOST_RCLK, 0);
 
-<<<<<<< HEAD
-=======
-	/* adjust ppd->statusp, if needed */
-	update_statusp(ppd, IB_PORT_DOWN);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dd_dev_info(ppd->dd, "logical state forced to LINK_DOWN\n");
 }
 
@@ -10702,10 +10417,7 @@ static int goto_offline(struct hfi1_pportdata *ppd, u8 rem_reason)
 		force_logical_link_state_down(ppd);
 
 	ppd->host_link_state = HLS_LINK_COOLDOWN; /* LCB access allowed */
-<<<<<<< HEAD
 	update_statusp(ppd, IB_PORT_DOWN);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * The LNI has a mandatory wait time after the physical state
@@ -10816,15 +10528,9 @@ u32 driver_pstate(struct hfi1_pportdata *ppd)
 	case HLS_DN_OFFLINE:
 		return OPA_PORTPHYSSTATE_OFFLINE;
 	case HLS_VERIFY_CAP:
-<<<<<<< HEAD
 		return IB_PORTPHYSSTATE_TRAINING;
 	case HLS_GOING_UP:
 		return IB_PORTPHYSSTATE_TRAINING;
-=======
-		return IB_PORTPHYSSTATE_POLLING;
-	case HLS_GOING_UP:
-		return IB_PORTPHYSSTATE_POLLING;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case HLS_GOING_OFFLINE:
 		return OPA_PORTPHYSSTATE_OFFLINE;
 	case HLS_LINK_COOLDOWN:
@@ -10872,38 +10578,12 @@ void set_link_down_reason(struct hfi1_pportdata *ppd, u8 lcl_reason,
 	}
 }
 
-<<<<<<< HEAD
 /*
  * Verify if BCT for data VLs is non-zero.
  */
 static inline bool data_vls_operational(struct hfi1_pportdata *ppd)
 {
 	return !!ppd->actual_vls_operational;
-=======
-/**
- * data_vls_operational() - Verify if data VL BCT credits and MTU
- *			    are both set.
- * @ppd: pointer to hfi1_pportdata structure
- *
- * Return: true - Ok, false -otherwise.
- */
-static inline bool data_vls_operational(struct hfi1_pportdata *ppd)
-{
-	int i;
-	u64 reg;
-
-	if (!ppd->actual_vls_operational)
-		return false;
-
-	for (i = 0; i < ppd->vls_supported; i++) {
-		reg = read_csr(ppd->dd, SEND_CM_CREDIT_VL + (8 * i));
-		if ((reg && !ppd->dd->vld[i].mtu) ||
-		    (!reg && ppd->dd->vld[i].mtu))
-			return false;
-	}
-
-	return true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -10925,11 +10605,7 @@ int set_link_state(struct hfi1_pportdata *ppd, u32 state)
 
 	orig_new_state = state;
 	if (state == HLS_DN_DOWNDEF)
-<<<<<<< HEAD
 		state = HLS_DEFAULT;
-=======
-		state = dd->link_default;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* interpret poll -> poll as a link bounce */
 	poll_bounce = ppd->host_link_state == HLS_DN_POLL &&
@@ -11004,7 +10680,6 @@ int set_link_state(struct hfi1_pportdata *ppd, u32 state)
 		handle_linkup_change(dd, 1);
 		pio_kernel_linkup(dd);
 
-<<<<<<< HEAD
 		/*
 		 * After link up, a new link width will have been set.
 		 * Update the xmit counters with regards to the new
@@ -11014,9 +10689,6 @@ int set_link_state(struct hfi1_pportdata *ppd, u32 state)
 
 		ppd->host_link_state = HLS_UP_INIT;
 		update_statusp(ppd, IB_PORT_INIT);
-=======
-		ppd->host_link_state = HLS_UP_INIT;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case HLS_UP_ARMED:
 		if (ppd->host_link_state != HLS_UP_INIT)
@@ -11024,12 +10696,7 @@ int set_link_state(struct hfi1_pportdata *ppd, u32 state)
 
 		if (!data_vls_operational(ppd)) {
 			dd_dev_err(dd,
-<<<<<<< HEAD
 				   "%s: data VLs not operational\n", __func__);
-=======
-				   "%s: Invalid data VL credits or mtu\n",
-				   __func__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ret = -EINVAL;
 			break;
 		}
@@ -11043,10 +10710,7 @@ int set_link_state(struct hfi1_pportdata *ppd, u32 state)
 			break;
 		}
 		ppd->host_link_state = HLS_UP_ARMED;
-<<<<<<< HEAD
 		update_statusp(ppd, IB_PORT_ARMED);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * The simulator does not currently implement SMA messages,
 		 * so neighbor_normal is not set.  Set it here when we first
@@ -11069,10 +10733,7 @@ int set_link_state(struct hfi1_pportdata *ppd, u32 state)
 			/* tell all engines to go running */
 			sdma_all_running(dd);
 			ppd->host_link_state = HLS_UP_ACTIVE;
-<<<<<<< HEAD
 			update_statusp(ppd, IB_PORT_ACTIVE);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			/* Signal the IB layer that the port has went active */
 			event.device = &dd->verbs_dev.rdi.ibdev;
@@ -11108,22 +10769,13 @@ int set_link_state(struct hfi1_pportdata *ppd, u32 state)
 			break;
 
 		ppd->port_error_action = 0;
-<<<<<<< HEAD
 		ppd->host_link_state = HLS_DN_POLL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (quick_linkup) {
 			/* quick linkup does not go into polling */
 			ret = do_quick_linkup(dd);
 		} else {
 			ret1 = set_physical_link_state(dd, PLS_POLLING);
-<<<<<<< HEAD
-=======
-			if (!ret1)
-				ret1 = wait_phys_link_out_of_offline(ppd,
-								     3000);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (ret1 != HCMD_SUCCESS) {
 				dd_dev_err(dd,
 					   "Failed to transition to Polling link state, return 0x%x\n",
@@ -11131,17 +10783,6 @@ int set_link_state(struct hfi1_pportdata *ppd, u32 state)
 				ret = -EINVAL;
 			}
 		}
-<<<<<<< HEAD
-=======
-
-		/*
-		 * Change the host link state after requesting DC8051 to
-		 * change its physical state so that we can ignore any
-		 * interrupt with stale LNI(XX) error, which will not be
-		 * cleared until DC8051 transitions to Polling state.
-		 */
-		ppd->host_link_state = HLS_DN_POLL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ppd->offline_disabled_reason =
 			HFI1_ODR_MASK(OPA_LINKDOWN_REASON_NONE);
 		/*
@@ -12230,11 +11871,7 @@ void hfi1_rcvctrl(struct hfi1_devdata *dd, unsigned int op,
 		 * sequence numbers could land exactly on the same spot.
 		 * E.g. a rcd restart before the receive header wrapped.
 		 */
-<<<<<<< HEAD
 		memset(rcd->rcvhdrq, 0, rcvhdrq_size(rcd));
-=======
-		memset(rcd->rcvhdrq, 0, rcd->rcvhdrq_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* starting timeout */
 		rcd->rcvavail_timeout = dd->rcv_intr_timeout_csr;
@@ -12329,14 +11966,8 @@ void hfi1_rcvctrl(struct hfi1_devdata *dd, unsigned int op,
 		rcvctrl |= RCV_CTXT_CTRL_DONT_DROP_EGR_FULL_SMASK;
 	if (op & HFI1_RCVCTRL_NO_EGR_DROP_DIS)
 		rcvctrl &= ~RCV_CTXT_CTRL_DONT_DROP_EGR_FULL_SMASK;
-<<<<<<< HEAD
 	hfi1_cdbg(RCVCTRL, "ctxt %d rcvctrl 0x%llx\n", ctxt, rcvctrl);
 	write_kctxt_csr(dd, ctxt, RCV_CTXT_CTRL, rcvctrl);
-=======
-	rcd->rcvctrl = rcvctrl;
-	hfi1_cdbg(RCVCTRL, "ctxt %d rcvctrl 0x%llx\n", ctxt, rcvctrl);
-	write_kctxt_csr(dd, ctxt, RCV_CTXT_CTRL, rcd->rcvctrl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* work around sticky RcvCtxtStatus.BlockedRHQFull */
 	if (did_enable &&
@@ -12424,11 +12055,7 @@ u32 hfi1_read_cntrs(struct hfi1_devdata *dd, char **namep, u64 **cntrp)
 				} else if (entry->flags & CNTR_SDMA) {
 					hfi1_cdbg(CNTR,
 						  "\t Per SDMA Engine\n");
-<<<<<<< HEAD
 					for (j = 0; j < chip_sdma_engines(dd);
-=======
-					for (j = 0; j < dd->chip_sdma_engines;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					     j++) {
 						val =
 						entry->rw_cntr(entry, dd, j,
@@ -12509,14 +12136,8 @@ static void free_cntrs(struct hfi1_devdata *dd)
 	struct hfi1_pportdata *ppd;
 	int i;
 
-<<<<<<< HEAD
 	if (dd->synth_stats_timer.function)
 		del_timer_sync(&dd->synth_stats_timer);
-=======
-	if (dd->synth_stats_timer.data)
-		del_timer_sync(&dd->synth_stats_timer);
-	dd->synth_stats_timer.data = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ppd = (struct hfi1_pportdata *)(dd + 1);
 	for (i = 0; i < dd->num_pports; i++, ppd++) {
 		kfree(ppd->cntrs);
@@ -12792,15 +12413,9 @@ static void do_update_synth_timer(struct work_struct *work)
 	}
 }
 
-<<<<<<< HEAD
 static void update_synth_timer(struct timer_list *t)
 {
 	struct hfi1_devdata *dd = from_timer(dd, t, synth_stats_timer);
-=======
-static void update_synth_timer(unsigned long opaque)
-{
-	struct hfi1_devdata *dd = (struct hfi1_devdata *)opaque;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	queue_work(dd->update_cntr_wq, &dd->update_cntr_work);
 	mod_timer(&dd->synth_stats_timer, jiffies + HZ * SYNTH_CNT_TIME);
@@ -12816,17 +12431,10 @@ static int init_cntrs(struct hfi1_devdata *dd)
 	struct hfi1_pportdata *ppd;
 	const char *bit_type_32 = ",32";
 	const int bit_type_32_sz = strlen(bit_type_32);
-<<<<<<< HEAD
 	u32 sdma_engines = chip_sdma_engines(dd);
 
 	/* set up the stats timer; the add_timer is done at the end */
 	timer_setup(&dd->synth_stats_timer, update_synth_timer, 0);
-=======
-
-	/* set up the stats timer; the add_timer is done at the end */
-	setup_timer(&dd->synth_stats_timer, update_synth_timer,
-		    (unsigned long)dd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/***********************/
 	/* per device counters */
@@ -12856,11 +12464,7 @@ static int init_cntrs(struct hfi1_devdata *dd)
 			}
 		} else if (dev_cntrs[i].flags & CNTR_SDMA) {
 			dev_cntrs[i].offset = dd->ndevcntrs;
-<<<<<<< HEAD
 			for (j = 0; j < sdma_engines; j++) {
-=======
-			for (j = 0; j < dd->chip_sdma_engines; j++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				snprintf(name, C_MAX_NAME, "%s%d",
 					 dev_cntrs[i].name, j);
 				sz += strlen(name);
@@ -12918,11 +12522,7 @@ static int init_cntrs(struct hfi1_devdata *dd)
 				*p++ = '\n';
 			}
 		} else if (dev_cntrs[i].flags & CNTR_SDMA) {
-<<<<<<< HEAD
 			for (j = 0; j < sdma_engines; j++) {
-=======
-			for (j = 0; j < dd->chip_sdma_engines; j++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				snprintf(name, C_MAX_NAME, "%s%d",
 					 dev_cntrs[i].name, j);
 				memcpy(p, name, strlen(name));
@@ -13148,7 +12748,6 @@ const char *opa_pstate_name(u32 pstate)
 	return "unknown";
 }
 
-<<<<<<< HEAD
 /**
  * update_statusp - Update userspace status flag
  * @ppd: Port data structure
@@ -13160,8 +12759,6 @@ const char *opa_pstate_name(u32 pstate)
  * host_link_state MUST be updated before updating the user space
  * statusp.
  */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void update_statusp(struct hfi1_pportdata *ppd, u32 state)
 {
 	/*
@@ -13187,17 +12784,11 @@ static void update_statusp(struct hfi1_pportdata *ppd, u32 state)
 			break;
 		}
 	}
-<<<<<<< HEAD
 	dd_dev_info(ppd->dd, "logical state changed to %s (0x%x)\n",
 		    opa_lstate_name(state), state);
 }
 
 /**
-=======
-}
-
-/*
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * wait_logical_linkstate - wait for an IB link state change to occur
  * @ppd: port device
  * @state: the state to wait for
@@ -13228,14 +12819,6 @@ static int wait_logical_linkstate(struct hfi1_pportdata *ppd, u32 state,
 		msleep(20);
 	}
 
-<<<<<<< HEAD
-=======
-	update_statusp(ppd, state);
-	dd_dev_info(ppd->dd,
-		    "logical state changed to %s (0x%x)\n",
-		    opa_lstate_name(state),
-		    state);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -13331,42 +12914,6 @@ static int wait_phys_link_offline_substates(struct hfi1_pportdata *ppd,
 	return read_state;
 }
 
-<<<<<<< HEAD
-=======
-/*
- * wait_phys_link_out_of_offline - wait for any out of offline state
- * @ppd: port device
- * @msecs: the number of milliseconds to wait
- *
- * Wait up to msecs milliseconds for any out of offline physical link
- * state change to occur.
- * Returns 0 if at least one state is reached, otherwise -ETIMEDOUT.
- */
-static int wait_phys_link_out_of_offline(struct hfi1_pportdata *ppd,
-					 int msecs)
-{
-	u32 read_state;
-	unsigned long timeout;
-
-	timeout = jiffies + msecs_to_jiffies(msecs);
-	while (1) {
-		read_state = read_physical_state(ppd->dd);
-		if ((read_state & 0xF0) != PLS_OFFLINE)
-			break;
-		if (time_after(jiffies, timeout)) {
-			dd_dev_err(ppd->dd,
-				   "timeout waiting for phy link out of offline. Read state 0x%x, %dms\n",
-				   read_state, msecs);
-			return -ETIMEDOUT;
-		}
-		usleep_range(1950, 2050); /* sleep 2ms-ish */
-	}
-
-	log_state_transition(ppd, read_state);
-	return read_state;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CLEAR_STATIC_RATE_CONTROL_SMASK(r) \
 (r &= ~SEND_CTXT_CHECK_ENABLE_DISALLOW_PBC_STATIC_RATE_CONTROL_SMASK)
 
@@ -13418,7 +12965,6 @@ int hfi1_tempsense_rd(struct hfi1_devdata *dd, struct hfi1_temp *temp)
 	return ret;
 }
 
-<<<<<<< HEAD
 /**
  * get_int_mask - get 64 bit int mask
  * @dd - the devdata
@@ -13445,8 +12991,6 @@ static u64 get_int_mask(struct hfi1_devdata *dd, u32 i)
 	return mask;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* ========================================================================= */
 
 /*
@@ -13460,18 +13004,12 @@ void set_intr_state(struct hfi1_devdata *dd, u32 enable)
 	 * In HFI, the mask needs to be 1 to allow interrupts.
 	 */
 	if (enable) {
-<<<<<<< HEAD
 		/* enable all interrupts but urgent on kernel contexts */
 		for (i = 0; i < CCE_NUM_INT_CSRS; i++) {
 			u64 mask = get_int_mask(dd, i);
 
 			write_csr(dd, CCE_INT_MASK + (8 * i), mask);
 		}
-=======
-		/* enable all interrupts */
-		for (i = 0; i < CCE_NUM_INT_CSRS; i++)
-			write_csr(dd, CCE_INT_MASK + (8 * i), ~(u64)0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		init_qsfp_int(dd);
 	} else {
@@ -13497,15 +13035,9 @@ static void clear_all_interrupts(struct hfi1_devdata *dd)
 	write_csr(dd, SEND_PIO_ERR_CLEAR, ~(u64)0);
 	write_csr(dd, SEND_DMA_ERR_CLEAR, ~(u64)0);
 	write_csr(dd, SEND_EGRESS_ERR_CLEAR, ~(u64)0);
-<<<<<<< HEAD
 	for (i = 0; i < chip_send_contexts(dd); i++)
 		write_kctxt_csr(dd, i, SEND_CTXT_ERR_CLEAR, ~(u64)0);
 	for (i = 0; i < chip_sdma_engines(dd); i++)
-=======
-	for (i = 0; i < dd->chip_send_contexts; i++)
-		write_kctxt_csr(dd, i, SEND_CTXT_ERR_CLEAR, ~(u64)0);
-	for (i = 0; i < dd->chip_sdma_engines; i++)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		write_kctxt_csr(dd, i, SEND_DMA_ENG_ERR_CLEAR, ~(u64)0);
 
 	write_csr(dd, DCC_ERR_FLG_CLR, ~(u64)0);
@@ -13513,30 +13045,15 @@ static void clear_all_interrupts(struct hfi1_devdata *dd)
 	write_csr(dd, DC_DC8051_ERR_CLR, ~(u64)0);
 }
 
-<<<<<<< HEAD
-=======
-/* Move to pcie.c? */
-static void disable_intx(struct pci_dev *pdev)
-{
-	pci_intx(pdev, 0);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * hfi1_clean_up_interrupts() - Free all IRQ resources
  * @dd: valid device data data structure
  *
-<<<<<<< HEAD
  * Free the MSIx and assoicated PCI resources, if they have been allocated.
-=======
- * Free the MSI or INTx IRQs and assoicated PCI resources,
- * if they have been allocated.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 void hfi1_clean_up_interrupts(struct hfi1_devdata *dd)
 {
 	int i;
-<<<<<<< HEAD
 	struct hfi1_msix_entry *me = dd->msix_entries;
 
 	/* remove irqs - must happen before disabling/turning off */
@@ -13551,33 +13068,6 @@ void hfi1_clean_up_interrupts(struct hfi1_devdata *dd)
 	kfree(dd->msix_entries);
 	dd->msix_entries = NULL;
 	dd->num_msix_entries = 0;
-=======
-
-	/* remove irqs - must happen before disabling/turning off */
-	if (dd->num_msix_entries) {
-		/* MSI-X */
-		struct hfi1_msix_entry *me = dd->msix_entries;
-
-		for (i = 0; i < dd->num_msix_entries; i++, me++) {
-			if (!me->arg) /* => no irq, no affinity */
-				continue;
-			hfi1_put_irq_affinity(dd, me);
-			free_irq(me->irq, me->arg);
-		}
-
-		/* clean structures */
-		kfree(dd->msix_entries);
-		dd->msix_entries = NULL;
-		dd->num_msix_entries = 0;
-	} else {
-		/* INTx */
-		if (dd->requested_intx_irq) {
-			free_irq(dd->pcidev->irq, dd);
-			dd->requested_intx_irq = 0;
-		}
-		disable_intx(dd->pcidev);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pci_free_irq_vectors(dd->pcidev);
 }
@@ -13628,25 +13118,6 @@ static void remap_sdma_interrupts(struct hfi1_devdata *dd,
 		   msix_intr);
 }
 
-<<<<<<< HEAD
-=======
-static int request_intx_irq(struct hfi1_devdata *dd)
-{
-	int ret;
-
-	snprintf(dd->intx_name, sizeof(dd->intx_name), DRIVER_NAME "_%d",
-		 dd->unit);
-	ret = request_irq(dd->pcidev->irq, general_interrupt,
-			  IRQF_SHARED, dd->intx_name, dd);
-	if (ret)
-		dd_dev_err(dd, "unable to request INTx interrupt, err %d\n",
-			   ret);
-	else
-		dd->requested_intx_irq = 1;
-	return ret;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int request_msix_irqs(struct hfi1_devdata *dd)
 {
 	int first_general, last_general;
@@ -13681,23 +13152,14 @@ static int request_msix_irqs(struct hfi1_devdata *dd)
 		int idx;
 		struct hfi1_ctxtdata *rcd = NULL;
 		struct sdma_engine *sde = NULL;
-<<<<<<< HEAD
 		char name[MAX_NAME_SIZE];
 
 		/* obtain the arguments to pci_request_irq */
-=======
-
-		/* obtain the arguments to request_irq */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (first_general <= i && i < last_general) {
 			idx = i - first_general;
 			handler = general_interrupt;
 			arg = dd;
-<<<<<<< HEAD
 			snprintf(name, sizeof(name),
-=======
-			snprintf(me->name, sizeof(me->name),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 DRIVER_NAME "_%d", dd->unit);
 			err_info = "general";
 			me->type = IRQ_GENERAL;
@@ -13706,22 +13168,14 @@ static int request_msix_irqs(struct hfi1_devdata *dd)
 			sde = &dd->per_sdma[idx];
 			handler = sdma_interrupt;
 			arg = sde;
-<<<<<<< HEAD
 			snprintf(name, sizeof(name),
-=======
-			snprintf(me->name, sizeof(me->name),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 DRIVER_NAME "_%d sdma%d", dd->unit, idx);
 			err_info = "sdma";
 			remap_sdma_interrupts(dd, idx, i);
 			me->type = IRQ_SDMA;
 		} else if (first_rx <= i && i < last_rx) {
 			idx = i - first_rx;
-<<<<<<< HEAD
 			rcd = hfi1_rcd_get_by_index_safe(dd, idx);
-=======
-			rcd = hfi1_rcd_get_by_index(dd, idx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (rcd) {
 				/*
 				 * Set the interrupt register and mask for this
@@ -13733,11 +13187,7 @@ static int request_msix_irqs(struct hfi1_devdata *dd)
 				handler = receive_context_interrupt;
 				thread = receive_context_thread;
 				arg = rcd;
-<<<<<<< HEAD
 				snprintf(name, sizeof(name),
-=======
-				snprintf(me->name, sizeof(me->name),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 DRIVER_NAME "_%d kctxt%d",
 					 dd->unit, idx);
 				err_info = "receive context";
@@ -13758,25 +13208,10 @@ static int request_msix_irqs(struct hfi1_devdata *dd)
 		if (!arg)
 			continue;
 		/* make sure the name is terminated */
-<<<<<<< HEAD
 		name[sizeof(name) - 1] = 0;
 		me->irq = pci_irq_vector(dd->pcidev, i);
 		ret = pci_request_irq(dd->pcidev, i, handler, thread, arg,
 				      name);
-=======
-		me->name[sizeof(me->name) - 1] = 0;
-		me->irq = pci_irq_vector(dd->pcidev, i);
-		/*
-		 * On err return me->irq.  Don't need to clear this
-		 * because 'arg' has not been set, and cleanup will
-		 * do the right thing.
-		 */
-		if (me->irq < 0)
-			return me->irq;
-
-		ret = request_threaded_irq(me->irq, handler, thread, 0,
-					   me->name, arg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret) {
 			dd_dev_err(dd,
 				   "unable to allocate %s interrupt, irq %d, index %d, err %d\n",
@@ -13784,11 +13219,7 @@ static int request_msix_irqs(struct hfi1_devdata *dd)
 			return ret;
 		}
 		/*
-<<<<<<< HEAD
 		 * assign arg after pci_request_irq call, so it will be
-=======
-		 * assign arg after request_irq call, so it will be
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 * cleaned up
 		 */
 		me->arg = arg;
@@ -13805,14 +13236,6 @@ void hfi1_vnic_synchronize_irq(struct hfi1_devdata *dd)
 {
 	int i;
 
-<<<<<<< HEAD
-=======
-	if (!dd->num_msix_entries) {
-		synchronize_irq(dd->pcidev->irq);
-		return;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < dd->vnic.num_ctxt; i++) {
 		struct hfi1_ctxtdata *rcd = dd->vnic.ctxt[i];
 		struct hfi1_msix_entry *me = &dd->msix_entries[rcd->msix_intr];
@@ -13830,11 +13253,7 @@ void hfi1_reset_vnic_msix_info(struct hfi1_ctxtdata *rcd)
 		return;
 
 	hfi1_put_irq_affinity(dd, me);
-<<<<<<< HEAD
 	pci_free_irq(dd->pcidev, rcd->msix_intr, me->arg);
-=======
-	free_irq(me->irq, me->arg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	me->arg = NULL;
 }
@@ -13857,7 +13276,6 @@ void hfi1_set_vnic_msix_info(struct hfi1_ctxtdata *rcd)
 	rcd->ireg = (IS_RCVAVAIL_START + idx) / 64;
 	rcd->imask = ((u64)1) <<
 		  ((IS_RCVAVAIL_START + idx) % 64);
-<<<<<<< HEAD
 	me->type = IRQ_RCVCTXT;
 	me->irq = pci_irq_vector(dd->pcidev, rcd->msix_intr);
 	remap_intr(dd, IS_RCVAVAIL_START + idx, rcd->msix_intr);
@@ -13866,34 +13284,13 @@ void hfi1_set_vnic_msix_info(struct hfi1_ctxtdata *rcd)
 			      receive_context_interrupt,
 			      receive_context_thread, arg,
 			      DRIVER_NAME "_%d kctxt%d", dd->unit, idx);
-=======
-
-	snprintf(me->name, sizeof(me->name),
-		 DRIVER_NAME "_%d kctxt%d", dd->unit, idx);
-	me->name[sizeof(me->name) - 1] = 0;
-	me->type = IRQ_RCVCTXT;
-	me->irq = pci_irq_vector(dd->pcidev, rcd->msix_intr);
-	if (me->irq < 0) {
-		dd_dev_err(dd, "vnic irq vector request (idx %d) fail %d\n",
-			   idx, me->irq);
-		return;
-	}
-	remap_intr(dd, IS_RCVAVAIL_START + idx, rcd->msix_intr);
-
-	ret = request_threaded_irq(me->irq, receive_context_interrupt,
-				   receive_context_thread, 0, me->name, arg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		dd_dev_err(dd, "vnic irq request (irq %d, idx %d) fail %d\n",
 			   me->irq, idx, ret);
 		return;
 	}
 	/*
-<<<<<<< HEAD
 	 * assign arg after pci_request_irq call, so it will be
-=======
-	 * assign arg after request_irq call, so it will be
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * cleaned up
 	 */
 	me->arg = arg;
@@ -13902,11 +13299,7 @@ void hfi1_set_vnic_msix_info(struct hfi1_ctxtdata *rcd)
 	if (ret) {
 		dd_dev_err(dd,
 			   "unable to pin IRQ %d\n", ret);
-<<<<<<< HEAD
 		pci_free_irq(dd->pcidev, rcd->msix_intr, me->arg);
-=======
-		free_irq(me->irq, me->arg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -13931,10 +13324,6 @@ static int set_up_interrupts(struct hfi1_devdata *dd)
 {
 	u32 total;
 	int ret, request;
-<<<<<<< HEAD
-=======
-	int single_interrupt = 0; /* we expect to have all the interrupts */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Interrupt count:
@@ -13951,20 +13340,6 @@ static int set_up_interrupts(struct hfi1_devdata *dd)
 	if (request < 0) {
 		ret = request;
 		goto fail;
-<<<<<<< HEAD
-=======
-	} else if (request == 0) {
-		/* using INTx */
-		/* dd->num_msix_entries already zero */
-		single_interrupt = 1;
-		dd_dev_err(dd, "MSI-X failed, using INTx interrupts\n");
-	} else if (request < total) {
-		/* using MSI-X, with reduced interrupts */
-		dd_dev_err(dd, "reduced interrupt found, wanted %u, got %u\n",
-			   total, request);
-		ret = -EINVAL;
-		goto fail;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		dd->msix_entries = kcalloc(total, sizeof(*dd->msix_entries),
 					   GFP_KERNEL);
@@ -13985,14 +13360,7 @@ static int set_up_interrupts(struct hfi1_devdata *dd)
 	/* reset general handler mask, chip MSI-X mappings */
 	reset_interrupts(dd);
 
-<<<<<<< HEAD
 	ret = request_msix_irqs(dd);
-=======
-	if (single_interrupt)
-		ret = request_intx_irq(dd);
-	else
-		ret = request_msix_irqs(dd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto fail;
 
@@ -14021,16 +13389,11 @@ static int set_up_context_variables(struct hfi1_devdata *dd)
 	int total_contexts;
 	int ret;
 	unsigned ngroups;
-<<<<<<< HEAD
 	int rmt_count;
 	int user_rmt_reduced;
 	u32 n_usr_ctxts;
 	u32 send_contexts = chip_send_contexts(dd);
 	u32 rcv_contexts = chip_rcv_contexts(dd);
-=======
-	int qos_rmt_count;
-	int user_rmt_reduced;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Kernel receive contexts:
@@ -14052,7 +13415,6 @@ static int set_up_context_variables(struct hfi1_devdata *dd)
 	 * Every kernel receive context needs an ACK send context.
 	 * one send context is allocated for each VL{0-7} and VL15
 	 */
-<<<<<<< HEAD
 	if (num_kernel_contexts > (send_contexts - num_vls - 1)) {
 		dd_dev_err(dd,
 			   "Reducing # kernel rcv contexts to: %d, from %lu\n",
@@ -14063,18 +13425,6 @@ static int set_up_context_variables(struct hfi1_devdata *dd)
 
 	/* Accommodate VNIC contexts if possible */
 	if ((num_kernel_contexts + num_vnic_contexts) > rcv_contexts) {
-=======
-	if (num_kernel_contexts > (dd->chip_send_contexts - num_vls - 1)) {
-		dd_dev_err(dd,
-			   "Reducing # kernel rcv contexts to: %d, from %lu\n",
-			   (int)(dd->chip_send_contexts - num_vls - 1),
-			   num_kernel_contexts);
-		num_kernel_contexts = dd->chip_send_contexts - num_vls - 1;
-	}
-
-	/* Accommodate VNIC contexts if possible */
-	if ((num_kernel_contexts + num_vnic_contexts) > dd->chip_rcv_contexts) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dd_dev_err(dd, "No receive contexts available for VNIC\n");
 		num_vnic_contexts = 0;
 	}
@@ -14086,7 +13436,6 @@ static int set_up_context_variables(struct hfi1_devdata *dd)
 	 *	  num_user_contexts is negative
 	 */
 	if (num_user_contexts < 0)
-<<<<<<< HEAD
 		n_usr_ctxts = cpumask_weight(&node_affinity.real_cpu_mask);
 	else
 		n_usr_ctxts = num_user_contexts;
@@ -14125,55 +13474,17 @@ static int set_up_context_variables(struct hfi1_devdata *dd)
 	}
 
 	total_contexts += n_usr_ctxts;
-=======
-		num_user_contexts =
-			cpumask_weight(&node_affinity.real_cpu_mask);
-
-	/*
-	 * Adjust the counts given a global max.
-	 */
-	if (total_contexts + num_user_contexts > dd->chip_rcv_contexts) {
-		dd_dev_err(dd,
-			   "Reducing # user receive contexts to: %d, from %d\n",
-			   (int)(dd->chip_rcv_contexts - total_contexts),
-			   (int)num_user_contexts);
-		/* recalculate */
-		num_user_contexts = dd->chip_rcv_contexts - total_contexts;
-	}
-
-	/* each user context requires an entry in the RMT */
-	qos_rmt_count = qos_rmt_entries(dd, NULL, NULL);
-	if (qos_rmt_count + num_user_contexts > NUM_MAP_ENTRIES) {
-		user_rmt_reduced = NUM_MAP_ENTRIES - qos_rmt_count;
-		dd_dev_err(dd,
-			   "RMT size is reducing the number of user receive contexts from %d to %d\n",
-			   (int)num_user_contexts,
-			   user_rmt_reduced);
-		/* recalculate */
-		num_user_contexts = user_rmt_reduced;
-	}
-
-	total_contexts += num_user_contexts;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* the first N are kernel contexts, the rest are user/vnic contexts */
 	dd->num_rcv_contexts = total_contexts;
 	dd->n_krcv_queues = num_kernel_contexts;
 	dd->first_dyn_alloc_ctxt = num_kernel_contexts;
 	dd->num_vnic_contexts = num_vnic_contexts;
-<<<<<<< HEAD
 	dd->num_user_contexts = n_usr_ctxts;
 	dd->freectxts = n_usr_ctxts;
 	dd_dev_info(dd,
 		    "rcv contexts: chip %d, used %d (kernel %d, vnic %u, user %u)\n",
 		    rcv_contexts,
-=======
-	dd->num_user_contexts = num_user_contexts;
-	dd->freectxts = num_user_contexts;
-	dd_dev_info(dd,
-		    "rcv contexts: chip %d, used %d (kernel %d, vnic %u, user %u)\n",
-		    (int)dd->chip_rcv_contexts,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    (int)dd->num_rcv_contexts,
 		    (int)dd->n_krcv_queues,
 		    dd->num_vnic_contexts,
@@ -14191,11 +13502,7 @@ static int set_up_context_variables(struct hfi1_devdata *dd)
 	 *   contexts.
 	 */
 	dd->rcv_entries.group_size = RCV_INCREMENT;
-<<<<<<< HEAD
 	ngroups = chip_rcv_array_count(dd) / dd->rcv_entries.group_size;
-=======
-	ngroups = dd->chip_rcv_array_count / dd->rcv_entries.group_size;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dd->rcv_entries.ngroups = ngroups / dd->num_rcv_contexts;
 	dd->rcv_entries.nctxt_extra = ngroups -
 		(dd->num_rcv_contexts * dd->rcv_entries.ngroups);
@@ -14220,11 +13527,7 @@ static int set_up_context_variables(struct hfi1_devdata *dd)
 		dd_dev_info(
 			dd,
 			"send contexts: chip %d, used %d (kernel %d, ack %d, user %d, vl15 %d)\n",
-<<<<<<< HEAD
 			send_contexts,
-=======
-			dd->chip_send_contexts,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dd->num_send_contexts,
 			dd->sc_sizes[SC_KERNEL].count,
 			dd->sc_sizes[SC_ACK].count,
@@ -14282,11 +13585,7 @@ static void write_uninitialized_csrs_and_memories(struct hfi1_devdata *dd)
 		write_csr(dd, CCE_INT_MAP + (8 * i), 0);
 
 	/* SendCtxtCreditReturnAddr */
-<<<<<<< HEAD
 	for (i = 0; i < chip_send_contexts(dd); i++)
-=======
-	for (i = 0; i < dd->chip_send_contexts; i++)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		write_kctxt_csr(dd, i, SEND_CTXT_CREDIT_RETURN_ADDR, 0);
 
 	/* PIO Send buffers */
@@ -14299,11 +13598,7 @@ static void write_uninitialized_csrs_and_memories(struct hfi1_devdata *dd)
 	/* RcvHdrAddr */
 	/* RcvHdrTailAddr */
 	/* RcvTidFlowTable */
-<<<<<<< HEAD
 	for (i = 0; i < chip_rcv_contexts(dd); i++) {
-=======
-	for (i = 0; i < dd->chip_rcv_contexts; i++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		write_kctxt_csr(dd, i, RCV_HDR_ADDR, 0);
 		write_kctxt_csr(dd, i, RCV_HDR_TAIL_ADDR, 0);
 		for (j = 0; j < RXE_NUM_TID_FLOWS; j++)
@@ -14311,11 +13606,7 @@ static void write_uninitialized_csrs_and_memories(struct hfi1_devdata *dd)
 	}
 
 	/* RcvArray */
-<<<<<<< HEAD
 	for (i = 0; i < chip_rcv_array_count(dd); i++)
-=======
-	for (i = 0; i < dd->chip_rcv_array_count; i++)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		hfi1_put_tid(dd, i, PT_INVALID_FLUSH, 0, 0);
 
 	/* RcvQPMapTable */
@@ -14473,11 +13764,7 @@ static void reset_txe_csrs(struct hfi1_devdata *dd)
 		write_csr(dd, SEND_LOW_PRIORITY_LIST + (8 * i), 0);
 	for (i = 0; i < VL_ARB_HIGH_PRIO_TABLE_SIZE; i++)
 		write_csr(dd, SEND_HIGH_PRIORITY_LIST + (8 * i), 0);
-<<<<<<< HEAD
 	for (i = 0; i < chip_send_contexts(dd) / NUM_CONTEXTS_PER_SET; i++)
-=======
-	for (i = 0; i < dd->chip_send_contexts / NUM_CONTEXTS_PER_SET; i++)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		write_csr(dd, SEND_CONTEXT_SET_CTRL + (8 * i), 0);
 	for (i = 0; i < TXE_NUM_32_BIT_COUNTER; i++)
 		write_csr(dd, SEND_COUNTER_ARRAY32 + (8 * i), 0);
@@ -14505,11 +13792,7 @@ static void reset_txe_csrs(struct hfi1_devdata *dd)
 	/*
 	 * TXE Per-Context CSRs
 	 */
-<<<<<<< HEAD
 	for (i = 0; i < chip_send_contexts(dd); i++) {
-=======
-	for (i = 0; i < dd->chip_send_contexts; i++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		write_kctxt_csr(dd, i, SEND_CTXT_CTRL, 0);
 		write_kctxt_csr(dd, i, SEND_CTXT_CREDIT_CTRL, 0);
 		write_kctxt_csr(dd, i, SEND_CTXT_CREDIT_RETURN_ADDR, 0);
@@ -14527,11 +13810,7 @@ static void reset_txe_csrs(struct hfi1_devdata *dd)
 	/*
 	 * TXE Per-SDMA CSRs
 	 */
-<<<<<<< HEAD
 	for (i = 0; i < chip_sdma_engines(dd); i++) {
-=======
-	for (i = 0; i < dd->chip_sdma_engines; i++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		write_kctxt_csr(dd, i, SEND_DMA_CTRL, 0);
 		/* SEND_DMA_STATUS read-only */
 		write_kctxt_csr(dd, i, SEND_DMA_BASE_ADDR, 0);
@@ -14664,11 +13943,7 @@ static void reset_rxe_csrs(struct hfi1_devdata *dd)
 	/*
 	 * RXE Kernel and User Per-Context CSRs
 	 */
-<<<<<<< HEAD
 	for (i = 0; i < chip_rcv_contexts(dd); i++) {
-=======
-	for (i = 0; i < dd->chip_rcv_contexts; i++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* kernel */
 		write_kctxt_csr(dd, i, RCV_CTXT_CTRL, 0);
 		/* RCV_CTXT_STATUS read-only */
@@ -14784,7 +14059,6 @@ static int init_chip(struct hfi1_devdata *dd)
 
 	/* disable send contexts and SDMA engines */
 	write_csr(dd, SEND_CTRL, 0);
-<<<<<<< HEAD
 	for (i = 0; i < chip_send_contexts(dd); i++)
 		write_kctxt_csr(dd, i, SEND_CTXT_CTRL, 0);
 	for (i = 0; i < chip_sdma_engines(dd); i++)
@@ -14792,15 +14066,6 @@ static int init_chip(struct hfi1_devdata *dd)
 	/* disable port (turn off RXE inbound traffic) and contexts */
 	write_csr(dd, RCV_CTRL, 0);
 	for (i = 0; i < chip_rcv_contexts(dd); i++)
-=======
-	for (i = 0; i < dd->chip_send_contexts; i++)
-		write_kctxt_csr(dd, i, SEND_CTXT_CTRL, 0);
-	for (i = 0; i < dd->chip_sdma_engines; i++)
-		write_kctxt_csr(dd, i, SEND_DMA_CTRL, 0);
-	/* disable port (turn off RXE inbound traffic) and contexts */
-	write_csr(dd, RCV_CTRL, 0);
-	for (i = 0; i < dd->chip_rcv_contexts; i++)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		write_csr(dd, RCV_CTXT_CTRL, 0);
 	/* mask all interrupt sources */
 	for (i = 0; i < CCE_NUM_INT_CSRS; i++)
@@ -15187,17 +14452,11 @@ static void init_user_fecn_handling(struct hfi1_devdata *dd,
 	u64 reg;
 	int i, idx, regoff, regidx;
 	u8 offset;
-<<<<<<< HEAD
 	u32 total_cnt;
 
 	/* there needs to be enough room in the map table */
 	total_cnt = dd->num_rcv_contexts - dd->first_dyn_alloc_ctxt;
 	if (rmt->used + total_cnt >= NUM_MAP_ENTRIES) {
-=======
-
-	/* there needs to be enough room in the map table */
-	if (rmt->used + dd->num_user_contexts >= NUM_MAP_ENTRIES) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dd_dev_err(dd, "User FECN handling disabled - too many user contexts allocated\n");
 		return;
 	}
@@ -15251,11 +14510,7 @@ static void init_user_fecn_handling(struct hfi1_devdata *dd,
 	/* add rule 1 */
 	add_rsm_rule(dd, RSM_INS_FECN, &rrd);
 
-<<<<<<< HEAD
 	rmt->used += total_cnt;
-=======
-	rmt->used += dd->num_user_contexts;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Initialize RSM for VNIC */
@@ -15365,13 +14620,9 @@ static int init_rxe(struct hfi1_devdata *dd)
 
 	/* Have 16 bytes (4DW) of bypass header available in header queue */
 	val = read_csr(dd, RCV_BYPASS);
-<<<<<<< HEAD
 	val &= ~RCV_BYPASS_HDR_SIZE_SMASK;
 	val |= ((4ull & RCV_BYPASS_HDR_SIZE_MASK) <<
 		RCV_BYPASS_HDR_SIZE_SHIFT);
-=======
-	val |= (4ull << 16);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	write_csr(dd, RCV_BYPASS, val);
 	return 0;
 }
@@ -15439,15 +14690,9 @@ static void init_txe(struct hfi1_devdata *dd)
 	write_csr(dd, SEND_EGRESS_ERR_MASK, ~0ull);
 
 	/* enable all per-context and per-SDMA engine errors */
-<<<<<<< HEAD
 	for (i = 0; i < chip_send_contexts(dd); i++)
 		write_kctxt_csr(dd, i, SEND_CTXT_ERR_MASK, ~0ull);
 	for (i = 0; i < chip_sdma_engines(dd); i++)
-=======
-	for (i = 0; i < dd->chip_send_contexts; i++)
-		write_kctxt_csr(dd, i, SEND_CTXT_ERR_MASK, ~0ull);
-	for (i = 0; i < dd->chip_sdma_engines; i++)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		write_kctxt_csr(dd, i, SEND_DMA_ENG_ERR_MASK, ~0ull);
 
 	/* set the local CU to AU mapping */
@@ -15715,19 +14960,13 @@ struct hfi1_devdata *hfi1_init_dd(struct pci_dev *pdev,
 		"Functional simulator"
 	};
 	struct pci_dev *parent = pdev->bus->self;
-<<<<<<< HEAD
 	u32 sdma_engines;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dd = hfi1_alloc_devdata(pdev, NUM_IB_PORTS *
 				sizeof(struct hfi1_pportdata));
 	if (IS_ERR(dd))
 		goto bail;
-<<<<<<< HEAD
 	sdma_engines = chip_sdma_engines(dd);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ppd = dd->pport;
 	for (i = 0; i < dd->num_pports; i++, ppd++) {
 		int vl;
@@ -15748,14 +14987,8 @@ struct hfi1_devdata *hfi1_init_dd(struct pci_dev *pdev,
 
 		if (num_vls < HFI1_MIN_VLS_SUPPORTED ||
 		    num_vls > HFI1_MAX_VLS_SUPPORTED) {
-<<<<<<< HEAD
 			dd_dev_err(dd, "Invalid num_vls %u, using %u VLs\n",
 				   num_vls, HFI1_MAX_VLS_SUPPORTED);
-=======
-			hfi1_early_err(&pdev->dev,
-				       "Invalid num_vls %u, using %u VLs\n",
-				    num_vls, HFI1_MAX_VLS_SUPPORTED);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			num_vls = HFI1_MAX_VLS_SUPPORTED;
 		}
 		ppd->vls_supported = num_vls;
@@ -15780,11 +15013,6 @@ struct hfi1_devdata *hfi1_init_dd(struct pci_dev *pdev,
 		init_vl_arb_caches(ppd);
 	}
 
-<<<<<<< HEAD
-=======
-	dd->link_default = HLS_DN_POLL;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Do remaining PCIe setup and save PCIe values in dd.
 	 * Any error printing is already done by the init code.
@@ -15799,16 +15027,6 @@ struct hfi1_devdata *hfi1_init_dd(struct pci_dev *pdev,
 	if (ret < 0)
 		goto bail_cleanup;
 
-<<<<<<< HEAD
-=======
-	/* verify that reads actually work, save revision for reset check */
-	dd->revision = read_csr(dd, CCE_REVISION);
-	if (dd->revision == ~(u64)0) {
-		dd_dev_err(dd, "cannot read chip CSRs\n");
-		ret = -EINVAL;
-		goto bail_cleanup;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dd->majrev = (dd->revision >> CCE_REVISION_CHIP_REV_MAJOR_SHIFT)
 			& CCE_REVISION_CHIP_REV_MAJOR_MASK;
 	dd->minrev = (dd->revision >> CCE_REVISION_CHIP_REV_MINOR_SHIFT)
@@ -15846,14 +15064,6 @@ struct hfi1_devdata *hfi1_init_dd(struct pci_dev *pdev,
 	/* give a reasonable active value, will be set on link up */
 	dd->pport->link_speed_active = OPA_LINK_SPEED_25G;
 
-<<<<<<< HEAD
-=======
-	dd->chip_rcv_contexts = read_csr(dd, RCV_CONTEXTS);
-	dd->chip_send_contexts = read_csr(dd, SEND_CONTEXTS);
-	dd->chip_sdma_engines = read_csr(dd, SEND_DMA_ENGINES);
-	dd->chip_pio_mem_size = read_csr(dd, SEND_PIO_MEM_SIZE);
-	dd->chip_sdma_mem_size = read_csr(dd, SEND_DMA_MEM_SIZE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* fix up link widths for emulation _p */
 	ppd = dd->pport;
 	if (dd->icode == ICODE_FPGA_EMULATION && is_emulator_p(dd)) {
@@ -15864,19 +15074,11 @@ struct hfi1_devdata *hfi1_init_dd(struct pci_dev *pdev,
 				OPA_LINK_WIDTH_1X;
 	}
 	/* insure num_vls isn't larger than number of sdma engines */
-<<<<<<< HEAD
 	if (HFI1_CAP_IS_KSET(SDMA) && num_vls > sdma_engines) {
 		dd_dev_err(dd, "num_vls %u too large, using %u VLs\n",
 			   num_vls, sdma_engines);
 		num_vls = sdma_engines;
 		ppd->vls_supported = sdma_engines;
-=======
-	if (HFI1_CAP_IS_KSET(SDMA) && num_vls > dd->chip_sdma_engines) {
-		dd_dev_err(dd, "num_vls %u too large, using %u VLs\n",
-			   num_vls, dd->chip_sdma_engines);
-		num_vls = dd->chip_sdma_engines;
-		ppd->vls_supported = dd->chip_sdma_engines;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ppd->vls_operational = ppd->vls_supported;
 	}
 
@@ -15995,16 +15197,6 @@ struct hfi1_devdata *hfi1_init_dd(struct pci_dev *pdev,
 	 */
 	aspm_init(dd);
 
-<<<<<<< HEAD
-=======
-	dd->rcvhdrsize = DEFAULT_RCVHDRSIZE;
-	/*
-	 * rcd[0] is guaranteed to be valid by this point. Also, all
-	 * context are using the same value, as per the module parameter.
-	 */
-	dd->rhf_offset = dd->rcd[0]->rcvhdrqentsize - sizeof(u64) / sizeof(u32);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = init_pervl_scs(dd);
 	if (ret)
 		goto bail_cleanup;
@@ -16021,13 +15213,10 @@ struct hfi1_devdata *hfi1_init_dd(struct pci_dev *pdev,
 	if (ret)
 		goto bail_cleanup;
 
-<<<<<<< HEAD
 	ret = hfi1_comp_vectors_set_up(dd);
 	if (ret)
 		goto bail_clear_intr;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* set up LCB access - must be after set_up_interrupts() */
 	init_lcb_access(dd);
 
@@ -16070,10 +15259,7 @@ bail_free_rcverr:
 bail_free_cntrs:
 	free_cntrs(dd);
 bail_clear_intr:
-<<<<<<< HEAD
 	hfi1_comp_vectors_clean_up(dd);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hfi1_clean_up_interrupts(dd);
 bail_cleanup:
 	hfi1_pcie_ddcleanup(dd);

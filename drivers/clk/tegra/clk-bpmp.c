@@ -55,10 +55,7 @@ struct tegra_bpmp_clk_message {
 	struct {
 		void *data;
 		size_t size;
-<<<<<<< HEAD
 		int ret;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} rx;
 };
 
@@ -68,10 +65,7 @@ static int tegra_bpmp_clk_transfer(struct tegra_bpmp *bpmp,
 	struct mrq_clk_request request;
 	struct tegra_bpmp_message msg;
 	void *req = &request;
-<<<<<<< HEAD
 	int err;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memset(&request, 0, sizeof(request));
 	request.cmd_and_id = (clk->cmd << 24) | clk->id;
@@ -92,7 +86,6 @@ static int tegra_bpmp_clk_transfer(struct tegra_bpmp *bpmp,
 	msg.rx.data = clk->rx.data;
 	msg.rx.size = clk->rx.size;
 
-<<<<<<< HEAD
 	err = tegra_bpmp_transfer(bpmp, &msg);
 	if (err < 0)
 		return err;
@@ -100,9 +93,6 @@ static int tegra_bpmp_clk_transfer(struct tegra_bpmp *bpmp,
 		return -EINVAL;
 
 	return 0;
-=======
-	return tegra_bpmp_transfer(bpmp, &msg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int tegra_bpmp_clk_prepare(struct clk_hw *hw)
@@ -432,16 +422,8 @@ static int tegra_bpmp_probe_clocks(struct tegra_bpmp *bpmp,
 		struct tegra_bpmp_clk_info *info = &clocks[count];
 
 		err = tegra_bpmp_clk_get_info(bpmp, id, info);
-<<<<<<< HEAD
 		if (err < 0)
 			continue;
-=======
-		if (err < 0) {
-			dev_err(bpmp->dev, "failed to query clock %u: %d\n",
-				id, err);
-			continue;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (info->num_parents >= U8_MAX) {
 			dev_err(bpmp->dev,

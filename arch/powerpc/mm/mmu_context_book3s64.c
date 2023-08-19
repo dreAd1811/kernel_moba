@@ -16,10 +16,7 @@
 #include <linux/string.h>
 #include <linux/types.h>
 #include <linux/mm.h>
-<<<<<<< HEAD
 #include <linux/pkeys.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/spinlock.h>
 #include <linux/idr.h>
 #include <linux/export.h>
@@ -29,59 +26,16 @@
 #include <asm/mmu_context.h>
 #include <asm/pgalloc.h>
 
-<<<<<<< HEAD
-=======
-static DEFINE_SPINLOCK(mmu_context_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static DEFINE_IDA(mmu_context_ida);
 
 static int alloc_context_id(int min_id, int max_id)
 {
-<<<<<<< HEAD
 	return ida_alloc_range(&mmu_context_ida, min_id, max_id, GFP_KERNEL);
-=======
-	int index, err;
-
-again:
-	if (!ida_pre_get(&mmu_context_ida, GFP_KERNEL))
-		return -ENOMEM;
-
-	spin_lock(&mmu_context_lock);
-	err = ida_get_new_above(&mmu_context_ida, min_id, &index);
-	spin_unlock(&mmu_context_lock);
-
-	if (err == -EAGAIN)
-		goto again;
-	else if (err)
-		return err;
-
-	if (index > max_id) {
-		spin_lock(&mmu_context_lock);
-		ida_remove(&mmu_context_ida, index);
-		spin_unlock(&mmu_context_lock);
-		return -ENOMEM;
-	}
-
-	return index;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void hash__reserve_context_id(int id)
 {
-<<<<<<< HEAD
 	int result = ida_alloc_range(&mmu_context_ida, id, id, GFP_KERNEL);
-=======
-	int rc, result = 0;
-
-	do {
-		if (!ida_pre_get(&mmu_context_ida, GFP_KERNEL))
-			break;
-
-		spin_lock(&mmu_context_lock);
-		rc = ida_get_new_above(&mmu_context_ida, id, &result);
-		spin_unlock(&mmu_context_lock);
-	} while (rc == -EAGAIN);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	WARN(result != id, "mmu: Failed to reserve context id %d (rc %d)\n", id, result);
 }
@@ -99,7 +53,6 @@ int hash__alloc_context_id(void)
 }
 EXPORT_SYMBOL_GPL(hash__alloc_context_id);
 
-<<<<<<< HEAD
 static int realloc_context_ids(mm_context_t *ctx)
 {
 	int i, id;
@@ -138,26 +91,10 @@ error:
 	return id;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int hash__init_new_context(struct mm_struct *mm)
 {
 	int index;
 
-<<<<<<< HEAD
-=======
-	index = hash__alloc_context_id();
-	if (index < 0)
-		return index;
-
-	/*
-	 * In the case of exec, use the default limit,
-	 * otherwise inherit it from the mm we are duplicating.
-	 */
-	if (!mm->context.addr_limit)
-		mm->context.addr_limit = DEFAULT_MAP_WINDOW_USER64;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * The old code would re-promote on fork, we don't do that when using
 	 * slices as it could cause problem promoting slices that have been
@@ -173,7 +110,6 @@ static int hash__init_new_context(struct mm_struct *mm)
 	 * check against 0 is OK.
 	 */
 	if (mm->context.id == 0)
-<<<<<<< HEAD
 		slice_init_new_context_exec(mm);
 
 	index = realloc_context_ids(&mm->context);
@@ -183,12 +119,6 @@ static int hash__init_new_context(struct mm_struct *mm)
 	subpage_prot_init_new_context(mm);
 
 	pkey_mm_init(mm);
-=======
-		slice_set_user_psize(mm, mmu_virtual_psize);
-
-	subpage_prot_init_new_context(mm);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return index;
 }
 
@@ -235,29 +165,19 @@ int init_new_context(struct task_struct *tsk, struct mm_struct *mm)
 
 	mm->context.id = index;
 
-<<<<<<< HEAD
 	mm->context.pte_frag = NULL;
 	mm->context.pmd_frag = NULL;
-=======
-#ifdef CONFIG_PPC_64K_PAGES
-	mm->context.pte_frag = NULL;
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_SPAPR_TCE_IOMMU
 	mm_iommu_init(mm);
 #endif
 	atomic_set(&mm->context.active_cpus, 0);
-<<<<<<< HEAD
 	atomic_set(&mm->context.copros, 0);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
 void __destroy_context(int context_id)
 {
-<<<<<<< HEAD
 	ida_free(&mmu_context_ida, context_id);
 }
 EXPORT_SYMBOL_GPL(__destroy_context);
@@ -278,30 +198,10 @@ static void pte_frag_destroy(void *pte_frag)
 	int count;
 	struct page *page;
 
-=======
-	spin_lock(&mmu_context_lock);
-	ida_remove(&mmu_context_ida, context_id);
-	spin_unlock(&mmu_context_lock);
-}
-EXPORT_SYMBOL_GPL(__destroy_context);
-
-#ifdef CONFIG_PPC_64K_PAGES
-static void destroy_pagetable_page(struct mm_struct *mm)
-{
-	int count;
-	void *pte_frag;
-	struct page *page;
-
-	pte_frag = mm->context.pte_frag;
-	if (!pte_frag)
-		return;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	page = virt_to_page(pte_frag);
 	/* drop all the pending references */
 	count = ((unsigned long)pte_frag & ~PAGE_MASK) >> PTE_FRAG_SIZE_SHIFT;
 	/* We allow PTE_FRAG_NR fragments from a PTE page */
-<<<<<<< HEAD
 	if (atomic_sub_and_test(PTE_FRAG_NR - count, &page->pt_frag_refcount)) {
 		pgtable_page_dtor(page);
 		__free_page(page);
@@ -336,27 +236,12 @@ static void destroy_pagetable_cache(struct mm_struct *mm)
 		pmd_frag_destroy(frag);
 	return;
 }
-=======
-	if (page_ref_sub_and_test(page, PTE_FRAG_NR - count)) {
-		pgtable_page_dtor(page);
-		free_hot_cold_page(page, 0);
-	}
-}
-
-#else
-static inline void destroy_pagetable_page(struct mm_struct *mm)
-{
-	return;
-}
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void destroy_context(struct mm_struct *mm)
 {
 #ifdef CONFIG_SPAPR_TCE_IOMMU
 	WARN_ON_ONCE(!list_empty(&mm->context.iommu_group_mem_list));
 #endif
-<<<<<<< HEAD
 	if (radix_enabled())
 		WARN_ON(process_tb[mm->context.id].prtb0 != 0);
 	else
@@ -369,15 +254,12 @@ void arch_exit_mmap(struct mm_struct *mm)
 {
 	destroy_pagetable_cache(mm);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (radix_enabled()) {
 		/*
 		 * Radix doesn't have a valid bit in the process table
 		 * entries. However we know that at least P9 implementation
 		 * will avoid caching an entry with an invalid RTS field,
 		 * and 0 is invalid. So this will do.
-<<<<<<< HEAD
 		 *
 		 * This runs before the "fullmm" tlb flush in exit_mmap,
 		 * which does a RIC=2 tlbie to clear the process table
@@ -389,34 +271,12 @@ void arch_exit_mmap(struct mm_struct *mm)
 		 */
 		process_tb[mm->context.id].prtb0 = 0;
 	}
-=======
-		 */
-		process_tb[mm->context.id].prtb0 = 0;
-	} else
-		subpage_prot_free(mm);
-	destroy_pagetable_page(mm);
-	__destroy_context(mm->context.id);
-	mm->context.id = MMU_NO_CONTEXT;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #ifdef CONFIG_PPC_RADIX_MMU
 void radix__switch_mmu_context(struct mm_struct *prev, struct mm_struct *next)
 {
-<<<<<<< HEAD
 	mtspr(SPRN_PID, next->context.id);
 	isync();
-=======
-
-	if (cpu_has_feature(CPU_FTR_POWER9_DD1)) {
-		isync();
-		mtspr(SPRN_PID, next->context.id);
-		isync();
-		asm volatile(PPC_INVALIDATE_ERAT : : :"memory");
-	} else {
-		mtspr(SPRN_PID, next->context.id);
-		isync();
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #endif

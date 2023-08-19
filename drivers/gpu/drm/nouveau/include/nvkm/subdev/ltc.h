@@ -15,18 +15,12 @@ struct nvkm_ltc {
 
 	u32 num_tags;
 	u32 tag_base;
-<<<<<<< HEAD
 	struct nvkm_memory *tag_ram;
-=======
-	struct nvkm_mm tags;
-	struct nvkm_mm_node *tag_ram;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	int zbc_min;
 	int zbc_max;
 	u32 zbc_color[NVKM_LTC_MAX_ZBC_CNT][4];
 	u32 zbc_depth[NVKM_LTC_MAX_ZBC_CNT];
-<<<<<<< HEAD
 	u32 zbc_stencil[NVKM_LTC_MAX_ZBC_CNT];
 };
 
@@ -35,16 +29,6 @@ void nvkm_ltc_tags_clear(struct nvkm_device *, u32 first, u32 count);
 int nvkm_ltc_zbc_color_get(struct nvkm_ltc *, int index, const u32[4]);
 int nvkm_ltc_zbc_depth_get(struct nvkm_ltc *, int index, const u32);
 int nvkm_ltc_zbc_stencil_get(struct nvkm_ltc *, int index, const u32);
-=======
-};
-
-int nvkm_ltc_tags_alloc(struct nvkm_ltc *, u32 count, struct nvkm_mm_node **);
-void nvkm_ltc_tags_free(struct nvkm_ltc *, struct nvkm_mm_node **);
-void nvkm_ltc_tags_clear(struct nvkm_ltc *, u32 first, u32 count);
-
-int nvkm_ltc_zbc_color_get(struct nvkm_ltc *, int index, const u32[4]);
-int nvkm_ltc_zbc_depth_get(struct nvkm_ltc *, int index, const u32);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void nvkm_ltc_invalidate(struct nvkm_ltc *);
 void nvkm_ltc_flush(struct nvkm_ltc *);
@@ -55,8 +39,5 @@ int gk20a_ltc_new(struct nvkm_device *, int, struct nvkm_ltc **);
 int gm107_ltc_new(struct nvkm_device *, int, struct nvkm_ltc **);
 int gm200_ltc_new(struct nvkm_device *, int, struct nvkm_ltc **);
 int gp100_ltc_new(struct nvkm_device *, int, struct nvkm_ltc **);
-<<<<<<< HEAD
 int gp102_ltc_new(struct nvkm_device *, int, struct nvkm_ltc **);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

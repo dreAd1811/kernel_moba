@@ -69,10 +69,6 @@
 
 #include "mailbox.h"
 
-<<<<<<< HEAD
-=======
-#define MAX_PCC_SUBSPACES	256
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MBOX_IRQ_NAME		"pcc-mbox"
 
 static struct mbox_chan *pcc_mbox_channels;
@@ -377,51 +373,24 @@ static const struct mbox_chan_ops pcc_chan_ops = {
 };
 
 /**
-<<<<<<< HEAD
  * parse_pcc_subspaces -- Count PCC subspaces defined
  * @header: Pointer to the ACPI subtable header under the PCCT.
  * @end: End of subtable entry.
  *
  * Return: If we find a PCC subspace entry of a valid type, return 0.
  *	Otherwise, return -EINVAL.
-=======
- * parse_pcc_subspace - Parse the PCC table and verify PCC subspace
- *		entries. There should be one entry per PCC client.
- * @header: Pointer to the ACPI subtable header under the PCCT.
- * @end: End of subtable entry.
- *
- * Return: 0 for Success, else errno.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This gets called for each entry in the PCC table.
  */
 static int parse_pcc_subspace(struct acpi_subtable_header *header,
 		const unsigned long end)
 {
-<<<<<<< HEAD
 	struct acpi_pcct_subspace *ss = (struct acpi_pcct_subspace *) header;
 
 	if (ss->header.type < ACPI_PCCT_TYPE_RESERVED)
 		return 0;
 
 	return -EINVAL;
-=======
-	struct acpi_pcct_hw_reduced *pcct_ss;
-
-	if (pcc_mbox_ctrl.num_chans <= MAX_PCC_SUBSPACES) {
-		pcct_ss = (struct acpi_pcct_hw_reduced *) header;
-
-		if ((pcct_ss->header.type !=
-				ACPI_PCCT_TYPE_HW_REDUCED_SUBSPACE)
-		    && (pcct_ss->header.type !=
-				ACPI_PCCT_TYPE_HW_REDUCED_SUBSPACE_TYPE2)) {
-			pr_err("Incorrect PCC Subspace type detected\n");
-			return -EINVAL;
-		}
-	}
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -471,13 +440,8 @@ static int __init acpi_pcc_probe(void)
 	struct acpi_table_header *pcct_tbl;
 	struct acpi_subtable_header *pcct_entry;
 	struct acpi_table_pcct *acpi_pcct_tbl;
-<<<<<<< HEAD
 	struct acpi_subtable_proc proc[ACPI_PCCT_TYPE_RESERVED];
 	int count, i, rc;
-=======
-	int count, i, rc;
-	int sum = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	acpi_status status = AE_OK;
 
 	/* Search for PCCT */
@@ -486,7 +450,6 @@ static int __init acpi_pcc_probe(void)
 	if (ACPI_FAILURE(status) || !pcct_tbl)
 		return -ENODEV;
 
-<<<<<<< HEAD
 	/* Set up the subtable handlers */
 	for (i = ACPI_PCCT_TYPE_GENERIC_SUBSPACE;
 	     i < ACPI_PCCT_TYPE_RESERVED; i++) {
@@ -508,57 +471,24 @@ static int __init acpi_pcc_probe(void)
 
 	pcc_mbox_channels = kcalloc(count, sizeof(struct mbox_chan),
 				    GFP_KERNEL);
-=======
-	count = acpi_table_parse_entries(ACPI_SIG_PCCT,
-			sizeof(struct acpi_table_pcct),
-			ACPI_PCCT_TYPE_HW_REDUCED_SUBSPACE,
-			parse_pcc_subspace, MAX_PCC_SUBSPACES);
-	sum += (count > 0) ? count : 0;
-
-	count = acpi_table_parse_entries(ACPI_SIG_PCCT,
-			sizeof(struct acpi_table_pcct),
-			ACPI_PCCT_TYPE_HW_REDUCED_SUBSPACE_TYPE2,
-			parse_pcc_subspace, MAX_PCC_SUBSPACES);
-	sum += (count > 0) ? count : 0;
-
-	if (sum == 0 || sum >= MAX_PCC_SUBSPACES) {
-		pr_err("Error parsing PCC subspaces from PCCT\n");
-		return -EINVAL;
-	}
-
-	pcc_mbox_channels = kzalloc(sizeof(struct mbox_chan) *
-			sum, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!pcc_mbox_channels) {
 		pr_err("Could not allocate space for PCC mbox channels\n");
 		return -ENOMEM;
 	}
 
-<<<<<<< HEAD
 	pcc_doorbell_vaddr = kcalloc(count, sizeof(void *), GFP_KERNEL);
-=======
-	pcc_doorbell_vaddr = kcalloc(sum, sizeof(void *), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!pcc_doorbell_vaddr) {
 		rc = -ENOMEM;
 		goto err_free_mbox;
 	}
 
-<<<<<<< HEAD
 	pcc_doorbell_ack_vaddr = kcalloc(count, sizeof(void *), GFP_KERNEL);
-=======
-	pcc_doorbell_ack_vaddr = kcalloc(sum, sizeof(void *), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!pcc_doorbell_ack_vaddr) {
 		rc = -ENOMEM;
 		goto err_free_db_vaddr;
 	}
 
-<<<<<<< HEAD
 	pcc_doorbell_irq = kcalloc(count, sizeof(int), GFP_KERNEL);
-=======
-	pcc_doorbell_irq = kcalloc(sum, sizeof(int), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!pcc_doorbell_irq) {
 		rc = -ENOMEM;
 		goto err_free_db_ack_vaddr;
@@ -572,7 +502,6 @@ static int __init acpi_pcc_probe(void)
 	if (acpi_pcct_tbl->flags & ACPI_PCCT_DOORBELL)
 		pcc_mbox_ctrl.txdone_irq = true;
 
-<<<<<<< HEAD
 	for (i = 0; i < count; i++) {
 		struct acpi_generic_address *db_reg;
 		struct acpi_pcct_subspace *pcct_ss;
@@ -591,20 +520,6 @@ static int __init acpi_pcc_probe(void)
 			}
 		}
 		pcct_ss = (struct acpi_pcct_subspace *) pcct_entry;
-=======
-	for (i = 0; i < sum; i++) {
-		struct acpi_generic_address *db_reg;
-		struct acpi_pcct_hw_reduced *pcct_ss;
-		pcc_mbox_channels[i].con_priv = pcct_entry;
-
-		pcct_ss = (struct acpi_pcct_hw_reduced *) pcct_entry;
-
-		if (pcc_mbox_ctrl.txdone_irq) {
-			rc = pcc_parse_subspace_irq(i, pcct_ss);
-			if (rc < 0)
-				goto err;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* If doorbell is in system memory cache the virt address */
 		db_reg = &pcct_ss->doorbell_register;
@@ -615,11 +530,7 @@ static int __init acpi_pcc_probe(void)
 			((unsigned long) pcct_entry + pcct_entry->length);
 	}
 
-<<<<<<< HEAD
 	pcc_mbox_ctrl.num_chans = count;
-=======
-	pcc_mbox_ctrl.num_chans = sum;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pr_info("Detected %d PCC Subspaces\n", pcc_mbox_ctrl.num_chans);
 

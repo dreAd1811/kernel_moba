@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
 //
 // MXC GPIO support. (c) 2008 Daniel Mack <daniel@caiaq.de>
@@ -9,30 +8,6 @@
 // Copyright (C) 2004-2010 Freescale Semiconductor, Inc. All Rights Reserved.
 
 #include <linux/clk.h>
-=======
-/*
- * MXC GPIO support. (c) 2008 Daniel Mack <daniel@caiaq.de>
- * Copyright 2008 Juergen Beisert, kernel@pengutronix.de
- *
- * Based on code from Freescale Semiconductor,
- * Authors: Daniel Mack, Juergen Beisert.
- * Copyright (C) 2004-2010 Freescale Semiconductor, Inc. All Rights Reserved.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/err.h>
 #include <linux/init.h>
 #include <linux/interrupt.h>
@@ -42,14 +17,8 @@
 #include <linux/irqchip/chained_irq.h>
 #include <linux/platform_device.h>
 #include <linux/slab.h>
-<<<<<<< HEAD
 #include <linux/syscore_ops.h>
 #include <linux/gpio/driver.h>
-=======
-#include <linux/gpio/driver.h>
-/* FIXME: for gpio_get_value() replace this with direct register read */
-#include <linux/gpio.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/of.h>
 #include <linux/of_device.h>
 #include <linux/bug.h>
@@ -77,7 +46,6 @@ struct mxc_gpio_hwdata {
 	unsigned fall_edge;
 };
 
-<<<<<<< HEAD
 struct mxc_gpio_reg_saved {
 	u32 icr1;
 	u32 icr2;
@@ -91,22 +59,14 @@ struct mxc_gpio_port {
 	struct list_head node;
 	void __iomem *base;
 	struct clk *clk;
-=======
-struct mxc_gpio_port {
-	struct list_head node;
-	void __iomem *base;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int irq;
 	int irq_high;
 	struct irq_domain *domain;
 	struct gpio_chip gc;
 	struct device *dev;
 	u32 both_edges;
-<<<<<<< HEAD
 	struct mxc_gpio_reg_saved gpio_saved_reg;
 	bool power_off;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct mxc_gpio_hwdata imx1_imx21_gpio_hwdata = {
@@ -195,10 +155,7 @@ static const struct of_device_id mxc_gpio_dt_ids[] = {
 	{ .compatible = "fsl,imx21-gpio", .data = &mxc_gpio_devtype[IMX21_GPIO], },
 	{ .compatible = "fsl,imx31-gpio", .data = &mxc_gpio_devtype[IMX31_GPIO], },
 	{ .compatible = "fsl,imx35-gpio", .data = &mxc_gpio_devtype[IMX35_GPIO], },
-<<<<<<< HEAD
 	{ .compatible = "fsl,imx7d-gpio", .data = &mxc_gpio_devtype[IMX35_GPIO], },
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ /* sentinel */ }
 };
 
@@ -217,10 +174,6 @@ static int gpio_set_irq_type(struct irq_data *d, u32 type)
 	struct mxc_gpio_port *port = gc->private;
 	u32 bit, val;
 	u32 gpio_idx = d->hwirq;
-<<<<<<< HEAD
-=======
-	u32 gpio = port->gc.base + gpio_idx;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int edge;
 	void __iomem *reg = port->base;
 
@@ -236,7 +189,6 @@ static int gpio_set_irq_type(struct irq_data *d, u32 type)
 		if (GPIO_EDGE_SEL >= 0) {
 			edge = GPIO_INT_BOTH_EDGES;
 		} else {
-<<<<<<< HEAD
 			val = port->gc.get(&port->gc, gpio_idx);
 			if (val) {
 				edge = GPIO_INT_LOW_LEV;
@@ -244,15 +196,6 @@ static int gpio_set_irq_type(struct irq_data *d, u32 type)
 			} else {
 				edge = GPIO_INT_HIGH_LEV;
 				pr_debug("mxc: set GPIO %d to high trigger\n", gpio_idx);
-=======
-			val = gpio_get_value(gpio);
-			if (val) {
-				edge = GPIO_INT_LOW_LEV;
-				pr_debug("mxc: set GPIO %d to low trigger\n", gpio);
-			} else {
-				edge = GPIO_INT_HIGH_LEV;
-				pr_debug("mxc: set GPIO %d to high trigger\n", gpio);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 			port->both_edges |= 1 << gpio_idx;
 		}
@@ -493,7 +436,6 @@ static int mxc_gpio_probe(struct platform_device *pdev)
 	if (port->irq < 0)
 		return port->irq;
 
-<<<<<<< HEAD
 	/* the controller clock is optional */
 	port->clk = devm_clk_get(&pdev->dev, NULL);
 	if (IS_ERR(port->clk)) {
@@ -511,8 +453,6 @@ static int mxc_gpio_probe(struct platform_device *pdev)
 	if (of_device_is_compatible(np, "fsl,imx7d-gpio"))
 		port->power_off = true;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* disable the interrupt and clear the status */
 	writel(0, port->base + GPIO_IMR);
 	writel(~0, port->base + GPIO_ISR);
@@ -576,25 +516,18 @@ static int mxc_gpio_probe(struct platform_device *pdev)
 
 	list_add_tail(&port->node, &mxc_gpio_ports);
 
-<<<<<<< HEAD
 	platform_set_drvdata(pdev, port);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 out_irqdomain_remove:
 	irq_domain_remove(port->domain);
 out_bgio:
-<<<<<<< HEAD
 	clk_disable_unprepare(port->clk);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_info(&pdev->dev, "%s failed with errno %d\n", __func__, err);
 	return err;
 }
 
-<<<<<<< HEAD
 static void mxc_gpio_save_regs(struct mxc_gpio_port *port)
 {
 	if (!port->power_off)
@@ -655,8 +588,6 @@ static struct syscore_ops mxc_gpio_syscore_ops = {
 	.resume = mxc_gpio_syscore_resume,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct platform_driver mxc_gpio_driver = {
 	.driver		= {
 		.name	= "gpio-mxc",
@@ -669,11 +600,8 @@ static struct platform_driver mxc_gpio_driver = {
 
 static int __init gpio_mxc_init(void)
 {
-<<<<<<< HEAD
 	register_syscore_ops(&mxc_gpio_syscore_ops);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return platform_driver_register(&mxc_gpio_driver);
 }
 subsys_initcall(gpio_mxc_init);

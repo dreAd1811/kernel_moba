@@ -29,11 +29,7 @@
  * it needs to be correct to get the early console working.
  */
 
-<<<<<<< HEAD
 #define BASE_BAUD (cpuinfo_or1k[smp_processor_id()].clock_frequency/16)
-=======
-#define BASE_BAUD (cpuinfo.clock_frequency/16)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* __KERNEL__ */
 

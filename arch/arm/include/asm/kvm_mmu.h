@@ -44,7 +44,6 @@
 
 #include <linux/highmem.h>
 #include <asm/cacheflush.h>
-<<<<<<< HEAD
 #include <asm/cputype.h>
 #include <asm/kvm_hyp.h>
 #include <asm/pgalloc.h>
@@ -59,13 +58,6 @@ int create_hyp_io_mappings(phys_addr_t phys_addr, size_t size,
 			   void __iomem **haddr);
 int create_hyp_exec_mappings(phys_addr_t phys_addr, size_t size,
 			     void **haddr);
-=======
-#include <asm/pgalloc.h>
-#include <asm/stage2_pgtable.h>
-
-int create_hyp_mappings(void *from, void *to, pgprot_t prot);
-int create_hyp_io_mappings(void *from, void *to, phys_addr_t);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void free_hyp_pgds(void);
 
 void stage2_unmap_vm(struct kvm *kvm);
@@ -83,23 +75,9 @@ phys_addr_t kvm_get_idmap_vector(void);
 int kvm_mmu_init(void);
 void kvm_clear_hyp_idmap(void);
 
-<<<<<<< HEAD
 #define kvm_mk_pmd(ptep)	__pmd(__pa(ptep) | PMD_TYPE_TABLE)
 #define kvm_mk_pud(pmdp)	__pud(__pa(pmdp) | PMD_TYPE_TABLE)
 #define kvm_mk_pgd(pudp)	({ BUILD_BUG(); 0; })
-=======
-static inline void kvm_set_pmd(pmd_t *pmd, pmd_t new_pmd)
-{
-	*pmd = new_pmd;
-	dsb(ishst);
-}
-
-static inline void kvm_set_pte(pte_t *pte, pte_t new_pte)
-{
-	*pte = new_pte;
-	dsb(ishst);
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline pte_t kvm_s2pte_mkwrite(pte_t pte)
 {
@@ -113,7 +91,6 @@ static inline pmd_t kvm_s2pmd_mkwrite(pmd_t pmd)
 	return pmd;
 }
 
-<<<<<<< HEAD
 static inline pte_t kvm_s2pte_mkexec(pte_t pte)
 {
 	pte_val(pte) &= ~L_PTE_XN;
@@ -126,8 +103,6 @@ static inline pmd_t kvm_s2pmd_mkexec(pmd_t pmd)
 	return pmd;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void kvm_set_s2pte_readonly(pte_t *pte)
 {
 	pte_val(*pte) = (pte_val(*pte) & ~L_PTE_S2_RDWR) | L_PTE_S2_RDONLY;
@@ -138,14 +113,11 @@ static inline bool kvm_s2pte_readonly(pte_t *pte)
 	return (pte_val(*pte) & L_PTE_S2_RDWR) == L_PTE_S2_RDONLY;
 }
 
-<<<<<<< HEAD
 static inline bool kvm_s2pte_exec(pte_t *pte)
 {
 	return !(pte_val(*pte) & L_PTE_XN);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void kvm_set_s2pmd_readonly(pmd_t *pmd)
 {
 	pmd_val(*pmd) = (pmd_val(*pmd) & ~L_PMD_S2_RDWR) | L_PMD_S2_RDONLY;
@@ -156,14 +128,11 @@ static inline bool kvm_s2pmd_readonly(pmd_t *pmd)
 	return (pmd_val(*pmd) & L_PMD_S2_RDWR) == L_PMD_S2_RDONLY;
 }
 
-<<<<<<< HEAD
 static inline bool kvm_s2pmd_exec(pmd_t *pmd)
 {
 	return !(pmd_val(*pmd) & PMD_SECT_XN);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline bool kvm_page_empty(void *ptr)
 {
 	struct page *ptr_page = virt_to_page(ptr);
@@ -187,28 +156,10 @@ static inline bool vcpu_has_cache_enabled(struct kvm_vcpu *vcpu)
 	return (vcpu_cp15(vcpu, c1_SCTLR) & 0b101) == 0b101;
 }
 
-<<<<<<< HEAD
 static inline void __clean_dcache_guest_page(kvm_pfn_t pfn, unsigned long size)
 {
 	/*
 	 * Clean the dcache to the Point of Coherency.
-=======
-static inline void __coherent_cache_guest_page(struct kvm_vcpu *vcpu,
-					       kvm_pfn_t pfn,
-					       unsigned long size)
-{
-	/*
-	 * If we are going to insert an instruction page and the icache is
-	 * either VIPT or PIPT, there is a potential problem where the host
-	 * (or another VM) may have used the same page as this guest, and we
-	 * read incorrect data from the icache.  If we're using a PIPT cache,
-	 * we can invalidate just that page, but if we are using a VIPT cache
-	 * we need to invalidate the entire icache - damn shame - as written
-	 * in the ARM ARM (DDI 0406C.b - Page B3-1393).
-	 *
-	 * VIVT caches are tagged using both the ASID and the VMID and doesn't
-	 * need any kind of flushing (DDI 0406C.b - Page B3-1392).
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 *
 	 * We need to do this through a kernel mapping (using the
 	 * user-space mapping has proved to be the wrong
@@ -223,19 +174,11 @@ static inline void __coherent_cache_guest_page(struct kvm_vcpu *vcpu,
 
 		kvm_flush_dcache_to_poc(va, PAGE_SIZE);
 
-<<<<<<< HEAD
-=======
-		if (icache_is_pipt())
-			__cpuc_coherent_user_range((unsigned long)va,
-						   (unsigned long)va + PAGE_SIZE);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		size -= PAGE_SIZE;
 		pfn++;
 
 		kunmap_atomic(va);
 	}
-<<<<<<< HEAD
 }
 
 static inline void __invalidate_icache_guest_page(kvm_pfn_t pfn,
@@ -300,12 +243,6 @@ static inline void __invalidate_icache_guest_page(kvm_pfn_t pfn,
 		write_sysreg(0, BPIALLIS);
 		dsb(ishst);
 		isb();
-=======
-
-	if (!icache_is_pipt() && !icache_is_vivt_asid_tagged()) {
-		/* any kind of VIPT cache */
-		__flush_icache_all();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -349,14 +286,11 @@ static inline bool __kvm_cpu_uses_extended_idmap(void)
 	return false;
 }
 
-<<<<<<< HEAD
 static inline unsigned long __kvm_idmap_ptrs_per_pgd(void)
 {
 	return PTRS_PER_PGD;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void __kvm_extend_hypmap(pgd_t *boot_hyp_pgd,
 				       pgd_t *hyp_pgd,
 				       pgd_t *merged_hyp_pgd,
@@ -383,7 +317,6 @@ static inline int kvm_read_guest_lock(struct kvm *kvm,
 	return ret;
 }
 
-<<<<<<< HEAD
 static inline int kvm_write_guest_lock(struct kvm *kvm, gpa_t gpa,
 				       const void *data, unsigned long len)
 {
@@ -395,8 +328,6 @@ static inline int kvm_write_guest_lock(struct kvm *kvm, gpa_t gpa,
 	return ret;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void *kvm_get_hyp_vector(void)
 {
 	switch(read_cpuid_part()) {
@@ -433,7 +364,6 @@ static inline int hyp_map_aux_data(void)
 	return 0;
 }
 
-<<<<<<< HEAD
 #define kvm_phys_to_vttbr(addr)		(addr)
 
 static inline void kvm_workaround_1542418_vmid_rollover(void)
@@ -441,8 +371,6 @@ static inline void kvm_workaround_1542418_vmid_rollover(void)
 	/* not affected */
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif	/* !__ASSEMBLY__ */
 
 #endif /* __ARM_KVM_MMU_H__ */

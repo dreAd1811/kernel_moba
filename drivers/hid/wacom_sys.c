@@ -56,7 +56,6 @@ static int wacom_set_report(struct hid_device *hdev, u8 type, u8 *buf,
 	return retval;
 }
 
-<<<<<<< HEAD
 static void wacom_wac_queue_insert(struct hid_device *hdev,
 				   struct kfifo_rec_ptr_2 *fifo,
 				   u8 *raw_data, int size)
@@ -159,8 +158,6 @@ static int wacom_wac_pen_serial_enforce(struct hid_device *hdev,
 	return insert && !flush;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int wacom_raw_event(struct hid_device *hdev, struct hid_report *report,
 		u8 *raw_data, int size)
 {
@@ -169,12 +166,9 @@ static int wacom_raw_event(struct hid_device *hdev, struct hid_report *report,
 	if (size > WACOM_PKGLEN_MAX)
 		return 1;
 
-<<<<<<< HEAD
 	if (wacom_wac_pen_serial_enforce(hdev, report, raw_data, size))
 		return -1;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memcpy(wacom->wacom_wac.data, raw_data, size);
 
 	wacom_wac_irq(&wacom->wacom_wac, size);
@@ -217,7 +211,6 @@ static int wacom_calc_hid_res(int logical_extents, int physical_extents,
 	return hidinput_calc_abs_res(&field, ABS_X);
 }
 
-<<<<<<< HEAD
 static void wacom_hid_usage_quirk(struct hid_device *hdev,
 		struct hid_field *field, struct hid_usage *usage)
 {
@@ -269,8 +262,6 @@ static void wacom_hid_usage_quirk(struct hid_device *hdev,
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void wacom_feature_mapping(struct hid_device *hdev,
 		struct hid_field *field, struct hid_usage *usage)
 {
@@ -282,11 +273,8 @@ static void wacom_feature_mapping(struct hid_device *hdev,
 	int ret;
 	u32 n;
 
-<<<<<<< HEAD
 	wacom_hid_usage_quirk(hdev, field, usage);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (equivalent_usage) {
 	case WACOM_HID_WD_TOUCH_RING_SETTING:
 		wacom->generic_has_leds = true;
@@ -302,17 +290,9 @@ static void wacom_feature_mapping(struct hid_device *hdev,
 			data[0] = field->report->id;
 			ret = wacom_get_report(hdev, HID_FEATURE_REPORT,
 					       data, n, WAC_CMD_RETRIES);
-<<<<<<< HEAD
 			if (ret == n) {
 				ret = hid_report_raw_event(hdev,
 					HID_FEATURE_REPORT, data, n, 0);
-=======
-			if (ret == n && features->type == HID_GENERIC) {
-				ret = hid_report_raw_event(hdev,
-					HID_FEATURE_REPORT, data, n, 0);
-			} else if (ret == 2 && features->type != HID_GENERIC) {
-				features->touch_max = data[1];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			} else {
 				features->touch_max = 16;
 				hid_warn(hdev, "wacom_feature_mapping: "
@@ -420,10 +400,7 @@ static void wacom_usage_mapping(struct hid_device *hdev,
 	struct wacom_features *features = &wacom->wacom_wac.features;
 	bool finger = WACOM_FINGER_FIELD(field);
 	bool pen = WACOM_PEN_FIELD(field);
-<<<<<<< HEAD
 	unsigned equivalent_usage = wacom_equivalent_usage(usage->hid);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	* Requiring Stylus Usage will ignore boot mouse
@@ -437,55 +414,9 @@ static void wacom_usage_mapping(struct hid_device *hdev,
 	else
 		return;
 
-<<<<<<< HEAD
 	wacom_hid_usage_quirk(hdev, field, usage);
 
 	switch (equivalent_usage) {
-=======
-	/*
-	 * Bamboo models do not support HID_DG_CONTACTMAX.
-	 * And, Bamboo Pen only descriptor contains touch.
-	 */
-	if (features->type > BAMBOO_PT) {
-		/* ISDv4 touch devices at least supports one touch point */
-		if (finger && !features->touch_max)
-			features->touch_max = 1;
-	}
-
-	/*
-	 * ISDv4 devices which predate HID's adoption of the
-	 * HID_DG_BARELSWITCH2 usage use 0x000D0000 in its
-	 * position instead. We can accurately detect if a
-	 * usage with that value should be HID_DG_BARRELSWITCH2
-	 * based on the surrounding usages, which have remained
-	 * constant across generations.
-	 */
-	if (features->type == HID_GENERIC &&
-	    usage->hid == 0x000D0000 &&
-	    field->application == HID_DG_PEN &&
-	    field->physical == HID_DG_STYLUS) {
-		int i = usage->usage_index;
-
-		if (i-4 >= 0 && i+1 < field->maxusage &&
-		    field->usage[i-4].hid == HID_DG_TIPSWITCH &&
-		    field->usage[i-3].hid == HID_DG_BARRELSWITCH &&
-		    field->usage[i-2].hid == HID_DG_ERASER &&
-		    field->usage[i-1].hid == HID_DG_INVERT &&
-		    field->usage[i+1].hid == HID_DG_INRANGE) {
-			usage->hid = HID_DG_BARRELSWITCH2;
-		}
-	}
-
-	/* 2nd-generation Intuos Pro Large has incorrect Y maximum */
-	if (hdev->vendor == USB_VENDOR_ID_WACOM &&
-	    hdev->product == 0x0358 &&
-	    WACOM_PEN_FIELD(field) &&
-	    wacom_equivalent_usage(usage->hid) == HID_GD_Y) {
-		field->logical_maximum = 43200;
-	}
-
-	switch (usage->hid) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case HID_GD_X:
 		features->x_max = field->logical_maximum;
 		if (finger) {
@@ -785,21 +716,6 @@ struct wacom_hdev_data {
 static LIST_HEAD(wacom_udev_list);
 static DEFINE_MUTEX(wacom_udev_list_lock);
 
-<<<<<<< HEAD
-=======
-static bool compare_device_paths(struct hid_device *hdev_a,
-		struct hid_device *hdev_b, char separator)
-{
-	int n1 = strrchr(hdev_a->phys, separator) - hdev_a->phys;
-	int n2 = strrchr(hdev_b->phys, separator) - hdev_b->phys;
-
-	if (n1 != n2 || n1 <= 0 || n2 <= 0)
-		return false;
-
-	return !strncmp(hdev_a->phys, hdev_b->phys, n1);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool wacom_are_sibling(struct hid_device *hdev,
 		struct hid_device *sibling)
 {
@@ -822,17 +738,10 @@ static bool wacom_are_sibling(struct hid_device *hdev,
 	 * the same physical parent device path.
 	 */
 	if (hdev->vendor == sibling->vendor && hdev->product == sibling->product) {
-<<<<<<< HEAD
 		if (!hid_compare_device_paths(hdev, sibling, '/'))
 			return false;
 	} else {
 		if (!hid_compare_device_paths(hdev, sibling, '.'))
-=======
-		if (!compare_device_paths(hdev, sibling, '/'))
-			return false;
-	} else {
-		if (!compare_device_paths(hdev, sibling, '.'))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return false;
 	}
 
@@ -879,11 +788,7 @@ static struct wacom_hdev_data *wacom_get_hdev_data(struct hid_device *hdev)
 
 	/* Try to find an already-probed interface from the same device */
 	list_for_each_entry(data, &wacom_udev_list, list) {
-<<<<<<< HEAD
 		if (hid_compare_device_paths(hdev, data->dev, '/')) {
-=======
-		if (compare_device_paths(hdev, data->dev, '/')) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			kref_get(&data->kref);
 			return data;
 		}
@@ -1467,11 +1372,7 @@ static int wacom_led_groups_alloc_and_register_one(struct device *dev,
 	if (!devres_open_group(dev, &wacom->led.groups[group_id], GFP_KERNEL))
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	leds = devm_kcalloc(dev, count, sizeof(struct wacom_led), GFP_KERNEL);
-=======
-	leds = devm_kzalloc(dev, sizeof(struct wacom_led) * count, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!leds) {
 		error = -ENOMEM;
 		goto err;
@@ -1571,11 +1472,7 @@ static int wacom_led_groups_allocate(struct wacom *wacom, int count)
 	struct wacom_group_leds *groups;
 	int error;
 
-<<<<<<< HEAD
 	groups = devm_kcalloc(dev, count, sizeof(struct wacom_group_leds),
-=======
-	groups = devm_kzalloc(dev, sizeof(struct wacom_group_leds) * count,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      GFP_KERNEL);
 	if (!groups)
 		return -ENOMEM;
@@ -2251,11 +2148,7 @@ static void wacom_update_name(struct wacom *wacom, const char *suffix)
 {
 	struct wacom_wac *wacom_wac = &wacom->wacom_wac;
 	struct wacom_features *features = &wacom_wac->features;
-<<<<<<< HEAD
 	char name[WACOM_NAME_MAX - 20]; /* Leave some room for suffixes */
-=======
-	char name[WACOM_NAME_MAX];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Generic devices name unspecified */
 	if ((features->type == HID_GENERIC) && !strcmp("Wacom HID", features->name)) {
@@ -2802,13 +2695,10 @@ static int wacom_probe(struct hid_device *hdev,
 		goto fail;
 	}
 
-<<<<<<< HEAD
 	error = kfifo_alloc(&wacom_wac->pen_fifo, WACOM_PKGLEN_MAX, GFP_KERNEL);
 	if (error)
 		goto fail;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wacom_wac->hid_data.inputmode = -1;
 	wacom_wac->mode_report = -1;
 
@@ -2872,11 +2762,8 @@ static void wacom_remove(struct hid_device *hdev)
 	if (wacom->wacom_wac.features.type != REMOTE)
 		wacom_release_resources(wacom);
 
-<<<<<<< HEAD
 	kfifo_free(&wacom_wac->pen_fifo);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hid_set_drvdata(hdev, NULL);
 }
 

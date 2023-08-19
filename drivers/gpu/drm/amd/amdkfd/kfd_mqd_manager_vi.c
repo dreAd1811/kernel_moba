@@ -30,11 +30,7 @@
 #include "vi_structs.h"
 #include "gca/gfx_8_0_sh_mask.h"
 #include "gca/gfx_8_0_enum.h"
-<<<<<<< HEAD
 #include "oss/oss_3_0_sh_mask.h"
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CP_MQD_CONTROL__PRIV_STATE__SHIFT 0x8
 
 static inline struct vi_mqd *get_mqd(void *mqd)
@@ -42,7 +38,6 @@ static inline struct vi_mqd *get_mqd(void *mqd)
 	return (struct vi_mqd *)mqd;
 }
 
-<<<<<<< HEAD
 static inline struct vi_sdma_mqd *get_sdma_mqd(void *mqd)
 {
 	return (struct vi_sdma_mqd *)mqd;
@@ -73,8 +68,6 @@ static void update_cu_mask(struct mqd_manager *mm, void *mqd,
 		m->compute_static_thread_mgmt_se3);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int init_mqd(struct mqd_manager *mm, void **mqd,
 			struct kfd_mem_obj **mqd_mem_obj, uint64_t *gart_addr,
 			struct queue_properties *q)
@@ -121,7 +114,6 @@ static int init_mqd(struct mqd_manager *mm, void **mqd,
 	if (q->format == KFD_QUEUE_FORMAT_AQL)
 		m->cp_hqd_iq_rptr = 1;
 
-<<<<<<< HEAD
 	if (q->tba_addr) {
 		m->compute_tba_lo = lower_32_bits(q->tba_addr >> 8);
 		m->compute_tba_hi = upper_32_bits(q->tba_addr >> 8);
@@ -144,8 +136,6 @@ static int init_mqd(struct mqd_manager *mm, void **mqd,
 		m->cp_hqd_wg_state_offset = q->ctl_stack_size;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	*mqd = m;
 	if (gart_addr)
 		*gart_addr = addr;
@@ -160,11 +150,7 @@ static int load_mqd(struct mqd_manager *mm, void *mqd,
 {
 	/* AQL write pointer counts in 64B packets, PM4/CP counts in dwords. */
 	uint32_t wptr_shift = (p->format == KFD_QUEUE_FORMAT_AQL ? 4 : 0);
-<<<<<<< HEAD
 	uint32_t wptr_mask = (uint32_t)((p->queue_size / 4) - 1);
-=======
-	uint32_t wptr_mask = (uint32_t)((p->queue_size / sizeof(uint32_t)) - 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return mm->dev->kfd2kgd->hqd_load(mm->dev->kgd, mqd, pipe_id, queue_id,
 					  (uint32_t __user *)p->write_ptr,
@@ -182,12 +168,7 @@ static int __update_mqd(struct mqd_manager *mm, void *mqd,
 	m->cp_hqd_pq_control = 5 << CP_HQD_PQ_CONTROL__RPTR_BLOCK_SIZE__SHIFT |
 			atc_bit << CP_HQD_PQ_CONTROL__PQ_ATC__SHIFT |
 			mtype << CP_HQD_PQ_CONTROL__MTYPE__SHIFT;
-<<<<<<< HEAD
 	m->cp_hqd_pq_control |=	order_base_2(q->queue_size / 4) - 1;
-=======
-	m->cp_hqd_pq_control |=
-			ffs(q->queue_size / sizeof(unsigned int)) - 1 - 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pr_debug("cp_hqd_pq_control 0x%x\n", m->cp_hqd_pq_control);
 
 	m->cp_hqd_pq_base_lo = lower_32_bits((uint64_t)q->queue_address >> 8);
@@ -195,11 +176,8 @@ static int __update_mqd(struct mqd_manager *mm, void *mqd,
 
 	m->cp_hqd_pq_rptr_report_addr_lo = lower_32_bits((uint64_t)q->read_ptr);
 	m->cp_hqd_pq_rptr_report_addr_hi = upper_32_bits((uint64_t)q->read_ptr);
-<<<<<<< HEAD
 	m->cp_hqd_pq_wptr_poll_addr_lo = lower_32_bits((uint64_t)q->write_ptr);
 	m->cp_hqd_pq_wptr_poll_addr_hi = upper_32_bits((uint64_t)q->write_ptr);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	m->cp_hqd_pq_doorbell_control =
 		q->doorbell_off <<
@@ -222,11 +200,7 @@ static int __update_mqd(struct mqd_manager *mm, void *mqd,
 	 * is safe, giving a maximum field value of 0xA.
 	 */
 	m->cp_hqd_eop_control |= min(0xA,
-<<<<<<< HEAD
 		order_base_2(q->eop_ring_buffer_size / 4) - 1);
-=======
-		ffs(q->eop_ring_buffer_size / sizeof(unsigned int)) - 1 - 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	m->cp_hqd_eop_base_addr_lo =
 			lower_32_bits(q->eop_ring_buffer_address >> 8);
 	m->cp_hqd_eop_base_addr_hi =
@@ -242,7 +216,6 @@ static int __update_mqd(struct mqd_manager *mm, void *mqd,
 				2 << CP_HQD_PQ_CONTROL__SLOT_BASED_WPTR__SHIFT;
 	}
 
-<<<<<<< HEAD
 	if (mm->dev->cwsr_enabled && q->ctx_save_restore_area_address)
 		m->cp_hqd_ctx_save_control =
 			atc_bit << CP_HQD_CTX_SAVE_CONTROL__ATC__SHIFT |
@@ -254,14 +227,6 @@ static int __update_mqd(struct mqd_manager *mm, void *mqd,
 			q->queue_address != 0 &&
 			q->queue_percent > 0 &&
 			!q->is_evicted);
-=======
-	q->is_active = false;
-	if (q->queue_size > 0 &&
-			q->queue_address != 0 &&
-			q->queue_percent > 0) {
-		q->is_active = true;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -273,15 +238,12 @@ static int update_mqd(struct mqd_manager *mm, void *mqd,
 	return __update_mqd(mm, mqd, q, MTYPE_CC, 1);
 }
 
-<<<<<<< HEAD
 static int update_mqd_tonga(struct mqd_manager *mm, void *mqd,
 			struct queue_properties *q)
 {
 	return __update_mqd(mm, mqd, q, MTYPE_UC, 0);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int destroy_mqd(struct mqd_manager *mm, void *mqd,
 			enum kfd_preempt_type type,
 			unsigned int timeout, uint32_t pipe_id,
@@ -339,7 +301,6 @@ static int update_mqd_hiq(struct mqd_manager *mm, void *mqd,
 	return retval;
 }
 
-<<<<<<< HEAD
 static int init_mqd_sdma(struct mqd_manager *mm, void **mqd,
 		struct kfd_mem_obj **mqd_mem_obj, uint64_t *gart_addr,
 		struct queue_properties *q)
@@ -452,8 +413,6 @@ static int debugfs_show_mqd_sdma(struct seq_file *m, void *data)
 
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct mqd_manager *mqd_manager_init_vi(enum KFD_MQD_TYPE type,
 		struct kfd_dev *dev)
 {
@@ -477,12 +436,9 @@ struct mqd_manager *mqd_manager_init_vi(enum KFD_MQD_TYPE type,
 		mqd->update_mqd = update_mqd;
 		mqd->destroy_mqd = destroy_mqd;
 		mqd->is_occupied = is_occupied;
-<<<<<<< HEAD
 #if defined(CONFIG_DEBUG_FS)
 		mqd->debugfs_show_mqd = debugfs_show_mqd;
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case KFD_MQD_TYPE_HIQ:
 		mqd->init_mqd = init_mqd_hiq;
@@ -491,7 +447,6 @@ struct mqd_manager *mqd_manager_init_vi(enum KFD_MQD_TYPE type,
 		mqd->update_mqd = update_mqd_hiq;
 		mqd->destroy_mqd = destroy_mqd;
 		mqd->is_occupied = is_occupied;
-<<<<<<< HEAD
 #if defined(CONFIG_DEBUG_FS)
 		mqd->debugfs_show_mqd = debugfs_show_mqd;
 #endif
@@ -506,10 +461,6 @@ struct mqd_manager *mqd_manager_init_vi(enum KFD_MQD_TYPE type,
 #if defined(CONFIG_DEBUG_FS)
 		mqd->debugfs_show_mqd = debugfs_show_mqd_sdma;
 #endif
-=======
-		break;
-	case KFD_MQD_TYPE_SDMA:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		kfree(mqd);
@@ -518,7 +469,6 @@ struct mqd_manager *mqd_manager_init_vi(enum KFD_MQD_TYPE type,
 
 	return mqd;
 }
-<<<<<<< HEAD
 
 struct mqd_manager *mqd_manager_init_vi_tonga(enum KFD_MQD_TYPE type,
 			struct kfd_dev *dev)
@@ -532,5 +482,3 @@ struct mqd_manager *mqd_manager_init_vi_tonga(enum KFD_MQD_TYPE type,
 		mqd->update_mqd = update_mqd_tonga;
 	return mqd;
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

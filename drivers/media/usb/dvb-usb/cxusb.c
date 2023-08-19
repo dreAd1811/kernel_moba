@@ -21,19 +21,12 @@
  *   under the terms of the GNU General Public License as published by the Free
  *   Software Foundation, version 2.
  *
-<<<<<<< HEAD
  * see Documentation/media/dvb-drivers/dvb-usb.rst for more information
-=======
- * see Documentation/dvb/README.dvb-usb for more information
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #include <media/tuner.h>
 #include <linux/vmalloc.h>
 #include <linux/slab.h>
-<<<<<<< HEAD
 #include <linux/kernel.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "cxusb.h"
 
@@ -64,11 +57,7 @@ DVB_DEFINE_MOD_OPT_ADAPTER_NR(adapter_nr);
 #define deb_i2c(args...)    dprintk(dvb_usb_cxusb_debug, 0x02, args)
 
 static int cxusb_ctrl_msg(struct dvb_usb_device *d,
-<<<<<<< HEAD
 			  u8 cmd, const u8 *wbuf, int wlen, u8 *rbuf, int rlen)
-=======
-			  u8 cmd, u8 *wbuf, int wlen, u8 *rbuf, int rlen)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct cxusb_state *st = d->priv;
 	int ret;
@@ -302,12 +291,8 @@ static int cxusb_aver_power_ctrl(struct dvb_usb_device *d, int onoff)
 		/* FIXME: We don't know why, but we need to configure the
 		 * lgdt3303 with the register settings below on resume */
 		int i;
-<<<<<<< HEAD
 		u8 buf;
 		static const u8 bufs[] = {
-=======
-		u8 buf, bufs[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			0x0e, 0x2, 0x00, 0x7f,
 			0x0e, 0x2, 0x02, 0xfe,
 			0x0e, 0x2, 0x02, 0x01,
@@ -320,11 +305,7 @@ static int cxusb_aver_power_ctrl(struct dvb_usb_device *d, int onoff)
 			0x0e, 0x2, 0x47, 0x88,
 		};
 		msleep(20);
-<<<<<<< HEAD
 		for (i = 0; i < ARRAY_SIZE(bufs); i += 4 / sizeof(u8)) {
-=======
-		for (i = 0; i < sizeof(bufs)/sizeof(u8); i += 4/sizeof(u8)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ret = cxusb_ctrl_msg(d, CMD_I2C_WRITE,
 					     bufs+i, 4, &buf, 1);
 			if (ret)
@@ -476,12 +457,7 @@ static int cxusb_rc_query(struct dvb_usb_device *d)
 {
 	u8 ircode[4];
 
-<<<<<<< HEAD
 	cxusb_ctrl_msg(d, CMD_GET_IR_CODE, NULL, 0, ircode, 4);
-=======
-	if (cxusb_ctrl_msg(d, CMD_GET_IR_CODE, NULL, 0, ircode, 4) < 0)
-		return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ircode[2] || ircode[3])
 		rc_keydown(d->rc_dev, RC_PROTO_NEC,
@@ -564,18 +540,10 @@ static struct cx22702_config cxusb_cx22702_config = {
 };
 
 static struct lgdt330x_config cxusb_lgdt3303_config = {
-<<<<<<< HEAD
-=======
-	.demod_address = 0x0e,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.demod_chip    = LGDT3303,
 };
 
 static struct lgdt330x_config cxusb_aver_lgdt3303_config = {
-<<<<<<< HEAD
-=======
-	.demod_address       = 0x0e,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.demod_chip          = LGDT3303,
 	.clock_polarity_flip = 2,
 };
@@ -793,10 +761,7 @@ static int cxusb_lgdt3303_frontend_attach(struct dvb_usb_adapter *adap)
 
 	adap->fe_adap[0].fe = dvb_attach(lgdt330x_attach,
 					 &cxusb_lgdt3303_config,
-<<<<<<< HEAD
 					 0x0e,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 &adap->dev->i2c_adap);
 	if ((adap->fe_adap[0].fe) != NULL)
 		return 0;
@@ -806,15 +771,10 @@ static int cxusb_lgdt3303_frontend_attach(struct dvb_usb_adapter *adap)
 
 static int cxusb_aver_lgdt3303_frontend_attach(struct dvb_usb_adapter *adap)
 {
-<<<<<<< HEAD
 	adap->fe_adap[0].fe = dvb_attach(lgdt330x_attach,
 					 &cxusb_aver_lgdt3303_config,
 					 0x0e,
 					 &adap->dev->i2c_adap);
-=======
-	adap->fe_adap[0].fe = dvb_attach(lgdt330x_attach, &cxusb_aver_lgdt3303_config,
-			      &adap->dev->i2c_adap);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (adap->fe_adap[0].fe != NULL)
 		return 0;
 
@@ -1284,85 +1244,6 @@ static int cxusb_mygica_t230_frontend_attach(struct dvb_usb_adapter *adap)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-static int cxusb_mygica_t230c_frontend_attach(struct dvb_usb_adapter *adap)
-{
-	struct dvb_usb_device *d = adap->dev;
-	struct cxusb_state *st = d->priv;
-	struct i2c_adapter *adapter;
-	struct i2c_client *client_demod;
-	struct i2c_client *client_tuner;
-	struct i2c_board_info info;
-	struct si2168_config si2168_config;
-	struct si2157_config si2157_config;
-
-	/* Select required USB configuration */
-	if (usb_set_interface(d->udev, 0, 0) < 0)
-		err("set interface failed");
-
-	/* Unblock all USB pipes */
-	usb_clear_halt(d->udev,
-		usb_sndbulkpipe(d->udev, d->props.generic_bulk_ctrl_endpoint));
-	usb_clear_halt(d->udev,
-		usb_rcvbulkpipe(d->udev, d->props.generic_bulk_ctrl_endpoint));
-	usb_clear_halt(d->udev,
-		usb_rcvbulkpipe(d->udev, d->props.adapter[0].fe[0].stream.endpoint));
-
-	/* attach frontend */
-	memset(&si2168_config, 0, sizeof(si2168_config));
-	si2168_config.i2c_adapter = &adapter;
-	si2168_config.fe = &adap->fe_adap[0].fe;
-	si2168_config.ts_mode = SI2168_TS_PARALLEL;
-	si2168_config.ts_clock_inv = 1;
-	memset(&info, 0, sizeof(struct i2c_board_info));
-	strlcpy(info.type, "si2168", I2C_NAME_SIZE);
-	info.addr = 0x64;
-	info.platform_data = &si2168_config;
-	request_module(info.type);
-	client_demod = i2c_new_device(&d->i2c_adap, &info);
-	if (client_demod == NULL || client_demod->dev.driver == NULL)
-		return -ENODEV;
-
-	if (!try_module_get(client_demod->dev.driver->owner)) {
-		i2c_unregister_device(client_demod);
-		return -ENODEV;
-	}
-
-	/* attach tuner */
-	memset(&si2157_config, 0, sizeof(si2157_config));
-	si2157_config.fe = adap->fe_adap[0].fe;
-	memset(&info, 0, sizeof(struct i2c_board_info));
-	strlcpy(info.type, "si2141", I2C_NAME_SIZE);
-	info.addr = 0x60;
-	info.platform_data = &si2157_config;
-	request_module("si2157");
-	client_tuner = i2c_new_device(adapter, &info);
-	if (client_tuner == NULL || client_tuner->dev.driver == NULL) {
-		module_put(client_demod->dev.driver->owner);
-		i2c_unregister_device(client_demod);
-		return -ENODEV;
-	}
-	if (!try_module_get(client_tuner->dev.driver->owner)) {
-		i2c_unregister_device(client_tuner);
-		module_put(client_demod->dev.driver->owner);
-		i2c_unregister_device(client_demod);
-		return -ENODEV;
-	}
-
-	st->i2c_client_demod = client_demod;
-	st->i2c_client_tuner = client_tuner;
-
-	/* hook fe: need to resync the slave fifo when signal locks. */
-	mutex_init(&st->stream_mutex);
-	st->last_lock = 0;
-	st->fe_read_status = adap->fe_adap[0].fe->ops.read_status;
-	adap->fe_adap[0].fe->ops.read_status = cxusb_read_status;
-
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * DViCO has shipped two devices with the same USB ID, but only one of them
  * needs a firmware download.  Check the device class details to see if they
@@ -1445,10 +1326,6 @@ static struct dvb_usb_device_properties cxusb_aver_a868r_properties;
 static struct dvb_usb_device_properties cxusb_d680_dmb_properties;
 static struct dvb_usb_device_properties cxusb_mygica_d689_properties;
 static struct dvb_usb_device_properties cxusb_mygica_t230_properties;
-<<<<<<< HEAD
-=======
-static struct dvb_usb_device_properties cxusb_mygica_t230c_properties;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int cxusb_probe(struct usb_interface *intf,
 		       const struct usb_device_id *id)
@@ -1481,11 +1358,6 @@ static int cxusb_probe(struct usb_interface *intf,
 				     THIS_MODULE, NULL, adapter_nr) ||
 	    0 == dvb_usb_device_init(intf, &cxusb_mygica_t230_properties,
 				     THIS_MODULE, NULL, adapter_nr) ||
-<<<<<<< HEAD
-=======
-	    0 == dvb_usb_device_init(intf, &cxusb_mygica_t230c_properties,
-				     THIS_MODULE, NULL, adapter_nr) ||
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    0)
 		return 0;
 
@@ -1537,10 +1409,6 @@ enum cxusb_table_index {
 	CONEXANT_D680_DMB,
 	MYGICA_D689,
 	MYGICA_T230,
-<<<<<<< HEAD
-=======
-	MYGICA_T230C,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	NR__cxusb_table_index
 };
 
@@ -1608,12 +1476,6 @@ static struct usb_device_id cxusb_table[NR__cxusb_table_index + 1] = {
 	[MYGICA_T230] = {
 		USB_DEVICE(USB_VID_CONEXANT, USB_PID_MYGICA_T230)
 	},
-<<<<<<< HEAD
-=======
-	[MYGICA_T230C] = {
-		USB_DEVICE(USB_VID_CONEXANT, USB_PID_MYGICA_T230+1)
-	},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{}		/* Terminating entry */
 };
 MODULE_DEVICE_TABLE (usb, cxusb_table);
@@ -2199,11 +2061,7 @@ static struct dvb_usb_device_properties cxusb_d680_dmb_properties = {
 
 	.rc.core = {
 		.rc_interval	= 100,
-<<<<<<< HEAD
 		.rc_codes	= RC_MAP_TOTAL_MEDIA_IN_HAND_02,
-=======
-		.rc_codes	= RC_MAP_D680_DMB,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.module_name	= KBUILD_MODNAME,
 		.rc_query       = cxusb_d680_dmb_rc_query,
 		.allowed_protos = RC_PROTO_BIT_UNKNOWN,
@@ -2312,11 +2170,7 @@ static struct dvb_usb_device_properties cxusb_mygica_t230_properties = {
 
 	.rc.core = {
 		.rc_interval	= 100,
-<<<<<<< HEAD
 		.rc_codes	= RC_MAP_D680_DMB,
-=======
-		.rc_codes	= RC_MAP_TOTAL_MEDIA_IN_HAND_02,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.module_name	= KBUILD_MODNAME,
 		.rc_query       = cxusb_d680_dmb_rc_query,
 		.allowed_protos = RC_PROTO_BIT_UNKNOWN,
@@ -2332,63 +2186,6 @@ static struct dvb_usb_device_properties cxusb_mygica_t230_properties = {
 	}
 };
 
-<<<<<<< HEAD
-=======
-static struct dvb_usb_device_properties cxusb_mygica_t230c_properties = {
-	.caps = DVB_USB_IS_AN_I2C_ADAPTER,
-
-	.usb_ctrl         = CYPRESS_FX2,
-
-	.size_of_priv     = sizeof(struct cxusb_state),
-
-	.num_adapters = 1,
-	.adapter = {
-		{
-		.num_frontends = 1,
-		.fe = {{
-			.streaming_ctrl   = cxusb_streaming_ctrl,
-			.frontend_attach  = cxusb_mygica_t230c_frontend_attach,
-
-			/* parameter for the MPEG2-data transfer */
-			.stream = {
-				.type = USB_BULK,
-				.count = 5,
-				.endpoint = 0x02,
-				.u = {
-					.bulk = {
-						.buffersize = 8192,
-					}
-				}
-			},
-		} },
-		},
-	},
-
-	.power_ctrl       = cxusb_d680_dmb_power_ctrl,
-
-	.i2c_algo         = &cxusb_i2c_algo,
-
-	.generic_bulk_ctrl_endpoint = 0x01,
-
-	.rc.core = {
-		.rc_interval	= 100,
-		.rc_codes	= RC_MAP_TOTAL_MEDIA_IN_HAND_02,
-		.module_name	= KBUILD_MODNAME,
-		.rc_query       = cxusb_d680_dmb_rc_query,
-		.allowed_protos = RC_PROTO_BIT_UNKNOWN,
-	},
-
-	.num_device_descs = 1,
-	.devices = {
-		{
-			"Mygica T230C DVB-T/T2/C",
-			{ NULL },
-			{ &cxusb_table[MYGICA_T230C], NULL },
-		},
-	}
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct usb_driver cxusb_driver = {
 	.name		= "dvb_usb_cxusb",
 	.probe		= cxusb_probe,

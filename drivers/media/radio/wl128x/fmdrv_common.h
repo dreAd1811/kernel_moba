@@ -311,19 +311,11 @@ struct fm_event_msg_hdr {
 #define FM_RDS_GROUP_TYPE_MASK_15B	    ((unsigned long)1<<31)
 
 /* RX Alternate Frequency info */
-<<<<<<< HEAD
 #define FM_RDS_MIN_AF			  1
 #define FM_RDS_MAX_AF			204
 #define FM_RDS_MAX_AF_JAPAN		140
 #define FM_RDS_1_AF_FOLLOWS		225
 #define FM_RDS_25_AF_FOLLOWS		249
-=======
-#define FM_RDS_MIN_AF		          1
-#define FM_RDS_MAX_AF		        204
-#define FM_RDS_MAX_AF_JAPAN	        140
-#define FM_RDS_1_AF_FOLLOWS	        225
-#define FM_RDS_25_AF_FOLLOWS	        249
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* RDS system type (RDS/RBDS) */
 #define FM_RDS_SYSTEM_RDS		0

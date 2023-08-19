@@ -28,11 +28,7 @@ static inline const u8 *ecdh_unpack_data(void *dst, const void *src, size_t sz)
 	return src + sz;
 }
 
-<<<<<<< HEAD
 unsigned int crypto_ecdh_key_len(const struct ecdh *params)
-=======
-int crypto_ecdh_key_len(const struct ecdh *params)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return ECDH_KPP_SECRET_MIN_SIZE + params->key_size;
 }

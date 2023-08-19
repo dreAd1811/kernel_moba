@@ -94,11 +94,7 @@ void ppc4xx_trng_probe(struct crypto4xx_core_device *core_dev)
 	if (!rng)
 		goto err_out;
 
-<<<<<<< HEAD
 	rng->name = KBUILD_MODNAME;
-=======
-	rng->name = MODULE_NAME;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rng->data_present = ppc4xx_trng_data_present;
 	rng->data_read = ppc4xx_trng_data_read;
 	rng->priv = (unsigned long) dev;

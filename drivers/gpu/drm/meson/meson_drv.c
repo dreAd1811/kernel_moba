@@ -34,10 +34,7 @@
 #include <drm/drm_crtc_helper.h>
 #include <drm/drm_plane_helper.h>
 #include <drm/drm_gem_cma_helper.h>
-<<<<<<< HEAD
 #include <drm/drm_gem_framebuffer_helper.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <drm/drm_fb_cma_helper.h>
 #include <drm/drm_rect.h>
 #include <drm/drm_fb_helper.h>
@@ -82,15 +79,11 @@ static const struct drm_mode_config_funcs meson_mode_config_funcs = {
 	.output_poll_changed = meson_fb_output_poll_changed,
 	.atomic_check        = drm_atomic_helper_check,
 	.atomic_commit       = drm_atomic_helper_commit,
-<<<<<<< HEAD
 	.fb_create           = drm_gem_fb_create,
 };
 
 static const struct drm_mode_config_helper_funcs meson_mode_config_helpers = {
 	.atomic_commit_tail = drm_atomic_helper_commit_tail_rpm,
-=======
-	.fb_create           = drm_fb_cma_create,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static irqreturn_t meson_irq(int irq, void *arg)
@@ -162,7 +155,6 @@ static struct regmap_config meson_regmap_config = {
 	.max_register   = 0x1000,
 };
 
-<<<<<<< HEAD
 static void meson_vpu_init(struct meson_drm *priv)
 {
 	writel_relaxed(0x210000, priv->io_base + _REG(VPU_RDARB_MODE_L1C1));
@@ -171,8 +163,6 @@ static void meson_vpu_init(struct meson_drm *priv)
 	writel_relaxed(0x20000, priv->io_base + _REG(VPU_WRARB_MODE_L2C1));
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int meson_drv_bind_master(struct device *dev, bool has_components)
 {
 	struct platform_device *pdev = to_platform_device(dev);
@@ -211,13 +201,10 @@ static int meson_drv_bind_master(struct device *dev, bool has_components)
 	priv->io_base = regs;
 
 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "hhi");
-<<<<<<< HEAD
 	if (!res) {
 		ret = -EINVAL;
 		goto free_drm;
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Simply ioremap since it may be a shared register zone */
 	regs = devm_ioremap(dev, res->start, resource_size(res));
 	if (!regs) {
@@ -234,13 +221,10 @@ static int meson_drv_bind_master(struct device *dev, bool has_components)
 	}
 
 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "dmc");
-<<<<<<< HEAD
 	if (!res) {
 		ret = -EINVAL;
 		goto free_drm;
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Simply ioremap since it may be a shared register zone */
 	regs = devm_ioremap(dev, res->start, resource_size(res));
 	if (!regs) {
@@ -266,17 +250,11 @@ static int meson_drv_bind_master(struct device *dev, bool has_components)
 	drm->mode_config.max_width = 3840;
 	drm->mode_config.max_height = 2160;
 	drm->mode_config.funcs = &meson_mode_config_funcs;
-<<<<<<< HEAD
 	drm->mode_config.helper_private	= &meson_mode_config_helpers;
 
 	/* Hardware Initialization */
 
 	meson_vpu_init(priv);
-=======
-
-	/* Hardware Initialization */
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	meson_venc_init(priv);
 	meson_vpp_init(priv);
 	meson_viu_init(priv);
@@ -329,11 +307,7 @@ static int meson_drv_bind_master(struct device *dev, bool has_components)
 uninstall_irq:
 	drm_irq_uninstall(drm);
 free_drm:
-<<<<<<< HEAD
 	drm_dev_put(drm);
-=======
-	drm_dev_unref(drm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -353,11 +327,7 @@ static void meson_drv_unbind(struct device *dev)
 	drm_kms_helper_poll_fini(drm);
 	drm_fbdev_cma_fini(priv->fbdev);
 	drm_mode_config_cleanup(drm);
-<<<<<<< HEAD
 	drm_dev_put(drm);
-=======
-	drm_dev_unref(drm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 }
 

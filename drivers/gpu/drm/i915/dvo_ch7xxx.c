@@ -85,11 +85,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 static struct ch7xxx_id_struct {
-<<<<<<< HEAD
 	u8 vid;
-=======
-	uint8_t vid;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	char *name;
 } ch7xxx_ids[] = {
 	{ CH7011_VID, "CH7011" },
@@ -100,11 +96,7 @@ static struct ch7xxx_id_struct {
 };
 
 static struct ch7xxx_did_struct {
-<<<<<<< HEAD
 	u8 did;
-=======
-	uint8_t did;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	char *name;
 } ch7xxx_dids[] = {
 	{ CH7xxx_DID, "CH7XXX" },
@@ -115,11 +107,7 @@ struct ch7xxx_priv {
 	bool quiet;
 };
 
-<<<<<<< HEAD
 static char *ch7xxx_get_id(u8 vid)
-=======
-static char *ch7xxx_get_id(uint8_t vid)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i;
 
@@ -131,11 +119,7 @@ static char *ch7xxx_get_id(uint8_t vid)
 	return NULL;
 }
 
-<<<<<<< HEAD
 static char *ch7xxx_get_did(u8 did)
-=======
-static char *ch7xxx_get_did(uint8_t did)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i;
 
@@ -148,11 +132,7 @@ static char *ch7xxx_get_did(uint8_t did)
 }
 
 /** Reads an 8 bit register */
-<<<<<<< HEAD
 static bool ch7xxx_readb(struct intel_dvo_device *dvo, int addr, u8 *ch)
-=======
-static bool ch7xxx_readb(struct intel_dvo_device *dvo, int addr, uint8_t *ch)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ch7xxx_priv *ch7xxx = dvo->dev_priv;
 	struct i2c_adapter *adapter = dvo->i2c_bus;
@@ -190,19 +170,11 @@ static bool ch7xxx_readb(struct intel_dvo_device *dvo, int addr, uint8_t *ch)
 }
 
 /** Writes an 8 bit register */
-<<<<<<< HEAD
 static bool ch7xxx_writeb(struct intel_dvo_device *dvo, int addr, u8 ch)
 {
 	struct ch7xxx_priv *ch7xxx = dvo->dev_priv;
 	struct i2c_adapter *adapter = dvo->i2c_bus;
 	u8 out_buf[2];
-=======
-static bool ch7xxx_writeb(struct intel_dvo_device *dvo, int addr, uint8_t ch)
-{
-	struct ch7xxx_priv *ch7xxx = dvo->dev_priv;
-	struct i2c_adapter *adapter = dvo->i2c_bus;
-	uint8_t out_buf[2];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct i2c_msg msg = {
 		.addr = dvo->slave_addr,
 		.flags = 0,
@@ -229,11 +201,7 @@ static bool ch7xxx_init(struct intel_dvo_device *dvo,
 {
 	/* this will detect the CH7xxx chip on the specified i2c bus */
 	struct ch7xxx_priv *ch7xxx;
-<<<<<<< HEAD
 	u8 vendor, device;
-=======
-	uint8_t vendor, device;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	char *name, *devid;
 
 	ch7xxx = kzalloc(sizeof(struct ch7xxx_priv), GFP_KERNEL);
@@ -276,11 +244,7 @@ out:
 
 static enum drm_connector_status ch7xxx_detect(struct intel_dvo_device *dvo)
 {
-<<<<<<< HEAD
 	u8 cdet, orig_pm, pm;
-=======
-	uint8_t cdet, orig_pm, pm;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ch7xxx_readb(dvo, CH7xxx_PM, &orig_pm);
 
@@ -312,11 +276,7 @@ static void ch7xxx_mode_set(struct intel_dvo_device *dvo,
 			    const struct drm_display_mode *mode,
 			    const struct drm_display_mode *adjusted_mode)
 {
-<<<<<<< HEAD
 	u8 tvco, tpcp, tpd, tlpf, idf;
-=======
-	uint8_t tvco, tpcp, tpd, tlpf, idf;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (mode->clock <= 65000) {
 		tvco = 0x23;
@@ -376,11 +336,7 @@ static void ch7xxx_dump_regs(struct intel_dvo_device *dvo)
 	int i;
 
 	for (i = 0; i < CH7xxx_NUM_REGS; i++) {
-<<<<<<< HEAD
 		u8 val;
-=======
-		uint8_t val;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if ((i % 8) == 0)
 			DRM_DEBUG_KMS("\n %02X: ", i);
 		ch7xxx_readb(dvo, i, &val);

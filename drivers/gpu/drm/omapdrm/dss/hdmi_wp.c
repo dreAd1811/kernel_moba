@@ -1,11 +1,7 @@
 /*
  * HDMI wrapper
  *
-<<<<<<< HEAD
  * Copyright (C) 2013 Texas Instruments Incorporated - http://www.ti.com/
-=======
- * Copyright (C) 2013 Texas Instruments Incorporated
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 as published by
@@ -172,11 +168,7 @@ void hdmi_wp_video_config_timing(struct hdmi_wp_data *wp,
 {
 	u32 timing_h = 0;
 	u32 timing_v = 0;
-<<<<<<< HEAD
 	unsigned int hsync_len_offset = 1;
-=======
-	unsigned hsync_len_offset = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	DSSDBG("Enter hdmi_wp_video_config_timing\n");
 

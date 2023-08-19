@@ -360,16 +360,12 @@ static int mwifiex_uap_parse_tail_ies(struct mwifiex_private *priv,
 		case WLAN_EID_SUPP_RATES:
 		case WLAN_EID_COUNTRY:
 		case WLAN_EID_PWR_CONSTRAINT:
-<<<<<<< HEAD
 		case WLAN_EID_ERP_INFO:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case WLAN_EID_EXT_SUPP_RATES:
 		case WLAN_EID_HT_CAPABILITY:
 		case WLAN_EID_HT_OPERATION:
 		case WLAN_EID_VHT_CAPABILITY:
 		case WLAN_EID_VHT_OPERATION:
-<<<<<<< HEAD
 			break;
 		case WLAN_EID_VENDOR_SPECIFIC:
 			/* Skip only Microsoft WMM IE */
@@ -378,10 +374,6 @@ static int mwifiex_uap_parse_tail_ies(struct mwifiex_private *priv,
 						    (const u8 *)hdr,
 						    token_len))
 				break;
-=======
-		case WLAN_EID_VENDOR_SPECIFIC:
-			break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		default:
 			if (ie_len + token_len > IEEE_MAX_IE_SIZE) {
 				err = -EINVAL;

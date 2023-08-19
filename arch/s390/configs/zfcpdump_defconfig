@@ -26,10 +26,6 @@ CONFIG_NET=y
 # CONFIG_IUCV is not set
 CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
 CONFIG_DEVTMPFS=y
-<<<<<<< HEAD
-=======
-# CONFIG_FIRMWARE_IN_KERNEL is not set
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 CONFIG_BLK_DEV_RAM=y
 # CONFIG_BLK_DEV_XPRAM is not set
 # CONFIG_DCSSBLK is not set

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2002,2007-2020, The Linux Foundation. All rights reserved.
@@ -28,71 +27,6 @@
 
 /* Include the master list of GPU cores that are supported */
 #include "adreno-gpulist.h"
-=======
-/* Copyright (c) 2002,2007-2020, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- */
-#include <linux/module.h>
-#include <linux/uaccess.h>
-#include <linux/sched.h>
-#include <linux/of.h>
-#include <linux/of_device.h>
-#include <linux/delay.h>
-#include <linux/input.h>
-#include <linux/io.h>
-#include <soc/qcom/scm.h>
-#include <soc/qcom/boot_stats.h>
-
-#include <linux/msm-bus-board.h>
-#include <linux/msm-bus.h>
-
-#include "kgsl.h"
-#include "kgsl_gmu_core.h"
-#include "kgsl_pwrscale.h"
-#include "kgsl_sharedmem.h"
-#include "kgsl_iommu.h"
-#include "kgsl_trace.h"
-#include "adreno_llc.h"
-
-#include "adreno.h"
-#include "adreno_iommu.h"
-#include "adreno_compat.h"
-#include "adreno_pm4types.h"
-#include "adreno_trace.h"
-
-#include "a3xx_reg.h"
-#include "a6xx_reg.h"
-#include "adreno_snapshot.h"
-
-/* Include the master list of GPU cores that are supported */
-#include "adreno-gpulist.h"
-#include "adreno_dispatch.h"
-
-#undef MODULE_PARAM_PREFIX
-#define MODULE_PARAM_PREFIX "adreno."
-
-static bool nopreempt;
-module_param(nopreempt, bool, 0444);
-MODULE_PARM_DESC(nopreempt, "Disable GPU preemption");
-
-static bool swfdetect;
-module_param(swfdetect, bool, 0444);
-MODULE_PARM_DESC(swfdetect, "Enable soft fault detection");
-
-#define DRIVER_VERSION_MAJOR   3
-#define DRIVER_VERSION_MINOR   1
-
-#define KGSL_LOG_LEVEL_DEFAULT 3
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void adreno_input_work(struct work_struct *work);
 static unsigned int counter_delta(struct kgsl_device *device,
@@ -101,10 +35,7 @@ static unsigned int counter_delta(struct kgsl_device *device,
 static struct devfreq_msm_adreno_tz_data adreno_tz_data = {
 	.bus = {
 		.max = 350,
-<<<<<<< HEAD
 		.floating = true,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.device_id = KGSL_DEVICE_3D0,
 };
@@ -121,37 +52,15 @@ static struct adreno_device device_3d0 = {
 			.irq_name = "kgsl_3d0_irq",
 		},
 		.iomemname = "kgsl_3d0_reg_memory",
-<<<<<<< HEAD
 		.ftbl = &adreno_functable,
 	},
-=======
-		.shadermemname = "kgsl_3d0_shader_memory",
-		.ftbl = &adreno_functable,
-		.cmd_log = KGSL_LOG_LEVEL_DEFAULT,
-		.ctxt_log = KGSL_LOG_LEVEL_DEFAULT,
-		.drv_log = KGSL_LOG_LEVEL_DEFAULT,
-		.mem_log = KGSL_LOG_LEVEL_DEFAULT,
-		.pwr_log = KGSL_LOG_LEVEL_DEFAULT,
-	},
-	.fw[0] = {
-		.fwvirt = NULL
-	},
-	.fw[1] = {
-		.fwvirt = NULL
-	},
-	.gmem_size = SZ_256K,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ft_policy = KGSL_FT_DEFAULT_POLICY,
 	.ft_pf_policy = KGSL_FT_PAGEFAULT_DEFAULT_POLICY,
 	.long_ib_detect = 1,
 	.input_work = __WORK_INITIALIZER(device_3d0.input_work,
 		adreno_input_work),
-<<<<<<< HEAD
 	.pwrctrl_flag = BIT(ADRENO_SPTP_PC_CTRL) |
 		BIT(ADRENO_THROTTLING_CTRL) | BIT(ADRENO_HWCG_CTRL),
-=======
-	.pwrctrl_flag = BIT(ADRENO_HWCG_CTRL) | BIT(ADRENO_THROTTLING_CTRL),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.profile.enabled = false,
 	.active_list = LIST_HEAD_INIT(device_3d0.active_list),
 	.active_list_lock = __SPIN_LOCK_UNLOCKED(device_3d0.active_list_lock),
@@ -177,11 +86,7 @@ static unsigned int adreno_ft_regs_default[] = {
 	ADRENO_REG_CP_IB1_BASE,
 	ADRENO_REG_CP_IB1_BUFSZ,
 	ADRENO_REG_CP_IB2_BASE,
-<<<<<<< HEAD
 	ADRENO_REG_CP_IB2_BUFSZ,
-=======
-	ADRENO_REG_CP_IB2_BUFSZ
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Nice level for the higher priority GPU start thread */
@@ -190,7 +95,6 @@ int adreno_wake_nice = -7;
 /* Number of milliseconds to stay active active after a wake on touch */
 unsigned int adreno_wake_timeout = 100;
 
-<<<<<<< HEAD
 void adreno_reglist_write(struct adreno_device *adreno_dev,
 		const struct adreno_reglist *list, u32 count)
 {
@@ -201,8 +105,6 @@ void adreno_reglist_write(struct adreno_device *adreno_dev,
 			list[i].offset, list[i].value);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * adreno_readreg64() - Read a 64bit register by getting its offset from the
  * offset array defined in gpudev node
@@ -277,22 +179,13 @@ unsigned int adreno_get_rptr(struct adreno_ringbuffer *rb)
  *
  * Read a u32 property.
  */
-<<<<<<< HEAD
 static inline int adreno_of_read_property(struct device *dev,
 		struct device_node *node, const char *prop, unsigned int *ptr)
-=======
-static inline int adreno_of_read_property(struct device_node *node,
-	const char *prop, unsigned int *ptr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret = of_property_read_u32(node, prop, ptr);
 
 	if (ret)
-<<<<<<< HEAD
 		dev_err(dev, "%pOF: Unable to read '%s'\n", node, prop);
-=======
-		KGSL_CORE_ERR("Unable to read '%s'\n", prop);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -360,19 +253,11 @@ static int _get_counter(struct adreno_device *adreno_dev,
 			lo, hi, PERFCOUNTER_FLAG_KERNEL);
 
 		if (ret) {
-<<<<<<< HEAD
 			dev_err(KGSL_DEVICE(adreno_dev)->dev,
 				     "Unable to allocate fault detect performance counter %d/%d\n",
 				     group, countable);
 			dev_err(KGSL_DEVICE(adreno_dev)->dev,
 				     "GPU fault detect will be less reliable\n");
-=======
-			KGSL_DRV_ERR(KGSL_DEVICE(adreno_dev),
-				"Unable to allocate fault detect performance counter %d/%d\n",
-				group, countable);
-			KGSL_DRV_ERR(KGSL_DEVICE(adreno_dev),
-				"GPU fault detect will be less reliable\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -449,7 +334,6 @@ void adreno_fault_detect_stop(struct adreno_device *adreno_dev)
 	adreno_dev->fast_hang_detect = 0;
 }
 
-<<<<<<< HEAD
 #define GMU_CM3_CFG_NONMASKINTR_SHIFT	9
 
 /* Send an NMI to the GMU */
@@ -474,8 +358,6 @@ void adreno_gmu_send_nmi(struct adreno_device *adreno_dev)
 	wmb();
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * A workqueue callback responsible for actually turning on the GPU after a
  * touch event. kgsl_pwrctrl_change_state(ACTIVE) is used without any
@@ -637,7 +519,6 @@ static int _soft_reset(struct adreno_device *adreno_dev)
 	struct adreno_gpudev *gpudev  = ADRENO_GPU_DEVICE(adreno_dev);
 	unsigned int reg;
 
-<<<<<<< HEAD
 	adreno_writereg(adreno_dev, ADRENO_REG_RBBM_SW_RESET_CMD, 1);
 	/*
 	 * Do a dummy read to get a brief read cycle delay for the
@@ -645,27 +526,6 @@ static int _soft_reset(struct adreno_device *adreno_dev)
 	 */
 	adreno_readreg(adreno_dev, ADRENO_REG_RBBM_SW_RESET_CMD, &reg);
 	adreno_writereg(adreno_dev, ADRENO_REG_RBBM_SW_RESET_CMD, 0);
-=======
-	/*
-	 * On a530 v1 RBBM cannot be reset in soft reset.
-	 * Reset all blocks except RBBM for a530v1.
-	 */
-	if (adreno_is_a530v1(adreno_dev)) {
-		adreno_writereg(adreno_dev, ADRENO_REG_RBBM_BLOCK_SW_RESET_CMD,
-						 0xFFDFFC0);
-		adreno_writereg(adreno_dev, ADRENO_REG_RBBM_BLOCK_SW_RESET_CMD2,
-						0x1FFFFFFF);
-	} else {
-
-		adreno_writereg(adreno_dev, ADRENO_REG_RBBM_SW_RESET_CMD, 1);
-		/*
-		 * Do a dummy read to get a brief read cycle delay for the
-		 * reset to take effect
-		 */
-		adreno_readreg(adreno_dev, ADRENO_REG_RBBM_SW_RESET_CMD, &reg);
-		adreno_writereg(adreno_dev, ADRENO_REG_RBBM_SW_RESET_CMD, 0);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* The SP/TP regulator gets turned off after a soft reset */
 
@@ -697,13 +557,8 @@ void adreno_irqctrl(struct adreno_device *adreno_dev, int state)
  */
 void adreno_hang_int_callback(struct adreno_device *adreno_dev, int bit)
 {
-<<<<<<< HEAD
 	dev_crit_ratelimited(KGSL_DEVICE(adreno_dev)->dev,
 				"MISC: GPU hang detected\n");
-=======
-	KGSL_DRV_CRIT_RATELIMIT(KGSL_DEVICE(adreno_dev),
-			"MISC: GPU hang detected\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adreno_irqctrl(adreno_dev, 0);
 
 	/* Trigger a fault in the dispatcher - this will effect a restart */
@@ -757,11 +612,7 @@ static irqreturn_t adreno_irq_handler(struct kgsl_device *device)
 	 * This is usually harmless because the GMU will abort power collapse
 	 * and change the fence back to ALLOW. Poll so that this can happen.
 	 */
-<<<<<<< HEAD
 	if (gmu_core_isenabled(device)) {
-=======
-	if (gmu_core_gpmu_isenabled(device)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		adreno_readreg(adreno_dev,
 				ADRENO_REG_GMU_AO_AHB_FENCE_CTRL,
 				&fence);
@@ -782,7 +633,6 @@ static irqreturn_t adreno_irq_handler(struct kgsl_device *device)
 					ADRENO_REG_GMU_RBBM_INT_UNMASKED_STATUS,
 					&shadow_status);
 
-<<<<<<< HEAD
 				dev_crit_ratelimited(device->dev,
 					"Status=0x%x Unmasked status=0x%x Timestamps:%llx %llx %llx\n",
 					shadow_status & irq_params->mask,
@@ -792,15 +642,6 @@ static irqreturn_t adreno_irq_handler(struct kgsl_device *device)
 						ADRENO_GMU_FAULT);
 				adreno_dispatcher_schedule(KGSL_DEVICE
 						(adreno_dev));
-=======
-				KGSL_DRV_CRIT_RATELIMIT(device,
-					"Status=0x%x Unmasked status=0x%x Timestamps:%llx %llx %llx\n",
-					shadow_status & irq_params->mask,
-					shadow_status, ts, ts1, ts2);
-				adreno_set_gpu_fault(adreno_dev,
-						ADRENO_GMU_FAULT);
-				adreno_dispatcher_schedule(device);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				goto done;
 			}
 			fence_retries++;
@@ -827,14 +668,9 @@ static irqreturn_t adreno_irq_handler(struct kgsl_device *device)
 			if (irq_params->mask & BIT(i))
 				irq_params->funcs[i].func(adreno_dev, i);
 		} else
-<<<<<<< HEAD
 			dev_crit_ratelimited(device->dev,
 						"Unhandled interrupt bit %x\n",
 						i);
-=======
-			KGSL_DRV_CRIT_RATELIMIT(device,
-					"Unhandled interrupt bit %x\n", i);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		ret = IRQ_HANDLED;
 
@@ -883,19 +719,11 @@ static inline const struct adreno_gpu_core *_get_gpu_core(unsigned int chipid)
 	int i;
 
 	for (i = 0; i < ARRAY_SIZE(adreno_gpulist); i++) {
-<<<<<<< HEAD
 		if (core == adreno_gpulist[i]->core &&
 		    _rev_match(major, adreno_gpulist[i]->major) &&
 		    _rev_match(minor, adreno_gpulist[i]->minor) &&
 		    _rev_match(patchid, adreno_gpulist[i]->patchid))
 			return adreno_gpulist[i];
-=======
-		if (core == adreno_gpulist[i].core &&
-		    _rev_match(major, adreno_gpulist[i].major) &&
-		    _rev_match(minor, adreno_gpulist[i].minor) &&
-		    _rev_match(patchid, adreno_gpulist[i].patchid))
-			return &adreno_gpulist[i];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return NULL;
@@ -940,7 +768,6 @@ adreno_get_soc_hw_revision_node(struct adreno_device *adreno_dev,
 			return child;
 	}
 
-<<<<<<< HEAD
 	dev_warn(KGSL_DEVICE(adreno_dev)->dev,
 		      "No matching SOC HW revision found for efused HW rev=%u\n",
 		      adreno_dev->soc_hw_rev);
@@ -948,15 +775,6 @@ adreno_get_soc_hw_revision_node(struct adreno_device *adreno_dev,
 }
 
 static void adreno_update_soc_hw_revision_quirks(
-=======
-	KGSL_DRV_WARN(KGSL_DEVICE(adreno_dev),
-		"No matching SOC HW revision found for efused HW rev=%u\n",
-		adreno_dev->soc_hw_rev);
-	return NULL;
-}
-
-static int adreno_update_soc_hw_revision_quirks(
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct adreno_device *adreno_dev, struct platform_device *pdev)
 {
 	struct device_node *node;
@@ -967,7 +785,6 @@ static int adreno_update_soc_hw_revision_quirks(
 		node = pdev->dev.of_node;
 
 	/* get chip id, fall back to parent if revision node does not have it */
-<<<<<<< HEAD
 	if (of_property_read_u32(node, "qcom,chipid", &adreno_dev->chipid)) {
 		if (of_property_read_u32(pdev->dev.of_node,
 				"qcom,chipid", &adreno_dev->chipid)) {
@@ -977,41 +794,23 @@ static int adreno_update_soc_hw_revision_quirks(
 			return;
 		}
 	}
-=======
-	if (of_property_read_u32(node, "qcom,chipid", &adreno_dev->chipid))
-		if (of_property_read_u32(pdev->dev.of_node,
-				"qcom,chipid", &adreno_dev->chipid))
-			KGSL_DRV_FATAL(KGSL_DEVICE(adreno_dev),
-			"No GPU chip ID was specified\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* update quirk */
 	for (i = 0; i < ARRAY_SIZE(adreno_quirks); i++) {
 		if (of_property_read_bool(node, adreno_quirks[i].prop))
 			adreno_dev->quirks |= adreno_quirks[i].quirk;
 	}
-<<<<<<< HEAD
 }
 
 static int adreno_identify_gpu(struct adreno_device *adreno_dev)
 {
 	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
-=======
-
-	return 0;
-}
-
-static void
-adreno_identify_gpu(struct adreno_device *adreno_dev)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const struct adreno_reg_offsets *reg_offsets;
 	struct adreno_gpudev *gpudev;
 	int i;
 
 	adreno_dev->gpucore = _get_gpu_core(adreno_dev->chipid);
 
-<<<<<<< HEAD
 	if (adreno_dev->gpucore == NULL) {
 		dev_crit(&device->pdev->dev,
 			"Unknown GPU chip ID %8.8X\n", adreno_dev->chipid);
@@ -1031,21 +830,6 @@ adreno_identify_gpu(struct adreno_device *adreno_dev)
 			adreno_dev->gpucore->patchid);
 		return -ENODEV;
 	}
-=======
-	if (adreno_dev->gpucore == NULL)
-		KGSL_DRV_FATAL(KGSL_DEVICE(adreno_dev),
-			"Unknown GPU chip ID %8.8X\n", adreno_dev->chipid);
-
-	/*
-	 * The gmem size might be dynamic when ocmem is involved so copy it out
-	 * of the gpu device
-	 */
-
-	adreno_dev->gmem_size = adreno_dev->gpucore->gmem_size;
-
-	/* UCHE to GMEM base address requires 1MB alignment */
-	adreno_dev->uche_gmem_base = ALIGN(adreno_dev->gmem_size, SZ_1M);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Initialize uninitialzed gpu registers, only needs to be done once
@@ -1063,11 +847,8 @@ adreno_identify_gpu(struct adreno_device *adreno_dev)
 	/* Do target specific identification */
 	if (gpudev->platform_setup != NULL)
 		gpudev->platform_setup(adreno_dev);
-<<<<<<< HEAD
 
 	return 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct platform_device_id adreno_id_table[] = {
@@ -1147,13 +928,8 @@ static int adreno_of_parse_pwrlevels(struct adreno_device *adreno_dev,
 			"operating-points-v2", NULL)) {
 		ret = dev_pm_opp_of_add_table(&device->pdev->dev);
 		if (ret) {
-<<<<<<< HEAD
 			dev_err(device->dev,
 				"Unable to set the GPU OPP table: %d\n", ret);
-=======
-			KGSL_CORE_ERR("Unable to set the GPU OPP table: %d\n",
-					ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return ret;
 		}
 	}
@@ -1164,7 +940,6 @@ static int adreno_of_parse_pwrlevels(struct adreno_device *adreno_dev,
 		unsigned int index;
 		struct kgsl_pwrlevel *level;
 
-<<<<<<< HEAD
 		if (adreno_of_read_property(device->dev, child, "reg", &index))
 			return -EINVAL;
 
@@ -1172,14 +947,6 @@ static int adreno_of_parse_pwrlevels(struct adreno_device *adreno_dev,
 			dev_err(device->dev,
 				"%pOF: Pwrlevel index %d is out of range\n",
 					child, index);
-=======
-		if (adreno_of_read_property(child, "reg", &index))
-			return -EINVAL;
-
-		if (index >= KGSL_MAX_PWRLEVELS) {
-			KGSL_CORE_ERR("Pwrlevel index %d is out of range\n",
-				index);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 		}
 
@@ -1188,7 +955,6 @@ static int adreno_of_parse_pwrlevels(struct adreno_device *adreno_dev,
 
 		level = &pwr->pwrlevels[index];
 
-<<<<<<< HEAD
 		if (adreno_of_read_property(device->dev, child, "qcom,gpu-freq",
 			&level->gpu_freq))
 			return -EINVAL;
@@ -1212,32 +978,11 @@ static int adreno_of_parse_pwrlevels(struct adreno_device *adreno_dev,
 		level->bus_max = level->bus_freq;
 		kgsl_of_property_read_ddrtype(child,
 			"qcom,bus-max", &level->bus_max);
-=======
-		if (adreno_of_read_property(child, "qcom,gpu-freq",
-			&level->gpu_freq))
-			return -EINVAL;
-
-		if (adreno_of_read_property(child, "qcom,bus-freq",
-			&level->bus_freq))
-			return -EINVAL;
-
-		if (of_property_read_u32(child, "qcom,bus-min",
-			&level->bus_min))
-			level->bus_min = level->bus_freq;
-
-		if (of_property_read_u32(child, "qcom,bus-max",
-			&level->bus_max))
-			level->bus_max = level->bus_freq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void adreno_of_get_initial_pwrlevel(struct adreno_device *adreno_dev,
 		struct device_node *node)
 {
@@ -1254,7 +999,6 @@ static void adreno_of_get_initial_pwrlevel(struct adreno_device *adreno_dev,
 	pwr->default_pwrlevel = init_level;
 }
 
-<<<<<<< HEAD
 static void adreno_of_get_limits(struct adreno_device *adreno_dev,
 		struct device_node *node)
 {
@@ -1274,8 +1018,6 @@ static void adreno_of_get_limits(struct adreno_device *adreno_dev,
 	set_bit(ADRENO_LM_CTRL, &adreno_dev->pwrctrl_flag);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int adreno_of_get_legacy_pwrlevels(struct adreno_device *adreno_dev,
 		struct device_node *parent)
 {
@@ -1285,17 +1027,12 @@ static int adreno_of_get_legacy_pwrlevels(struct adreno_device *adreno_dev,
 	node = of_find_node_by_name(parent, "qcom,gpu-pwrlevels");
 
 	if (node == NULL) {
-<<<<<<< HEAD
 		dev_err(KGSL_DEVICE(adreno_dev)->dev,
 			"Unable to find 'qcom,gpu-pwrlevels'\n");
-=======
-		KGSL_CORE_ERR("Unable to find 'qcom,gpu-pwrlevels'\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
 	ret = adreno_of_parse_pwrlevels(adreno_dev, node);
-<<<<<<< HEAD
 	if (ret)
 		return ret;
 
@@ -1304,11 +1041,6 @@ static int adreno_of_get_legacy_pwrlevels(struct adreno_device *adreno_dev,
 	adreno_of_get_limits(adreno_dev, parent);
 
 	return 0;
-=======
-	if (ret == 0)
-		adreno_of_get_initial_pwrlevel(adreno_dev, parent);
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int adreno_of_get_pwrlevels(struct adreno_device *adreno_dev,
@@ -1330,7 +1062,6 @@ static int adreno_of_get_pwrlevels(struct adreno_device *adreno_dev,
 			int ret;
 
 			ret = adreno_of_parse_pwrlevels(adreno_dev, child);
-<<<<<<< HEAD
 			if (ret)
 				return ret;
 
@@ -1350,17 +1081,6 @@ static int adreno_of_get_pwrlevels(struct adreno_device *adreno_dev,
 	dev_err(KGSL_DEVICE(adreno_dev)->dev,
 		"GPU speed_bin:%d mismatch for efused bin:%d\n",
 		adreno_dev->speed_bin, bin);
-=======
-			if (ret == 0)
-				adreno_of_get_initial_pwrlevel(adreno_dev,
-								child);
-			return ret;
-		}
-	}
-
-	KGSL_CORE_ERR("GPU speed_bin:%d mismatch for efused bin:%d\n",
-			adreno_dev->speed_bin, bin);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return -ENODEV;
 }
 
@@ -1399,17 +1119,6 @@ l3_pwrlevel_probe(struct kgsl_device *device, struct device_node *node)
 	}
 }
 
-<<<<<<< HEAD
-=======
-static inline struct adreno_device *adreno_get_dev(struct platform_device *pdev)
-{
-	const struct of_device_id *of_id =
-		of_match_device(adreno_match_table, &pdev->dev);
-
-	return of_id ? (struct adreno_device *) of_id->data : NULL;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int adreno_of_get_power(struct adreno_device *adreno_dev,
 		struct platform_device *pdev)
 {
@@ -1417,7 +1126,6 @@ static int adreno_of_get_power(struct adreno_device *adreno_dev,
 	struct device_node *node = pdev->dev.of_node;
 	struct resource *res;
 	unsigned int timeout;
-<<<<<<< HEAD
 
 	if (of_property_read_string(node, "label", &pdev->name)) {
 		dev_err(device->dev, "Unable to read 'label'\n");
@@ -1425,23 +1133,12 @@ static int adreno_of_get_power(struct adreno_device *adreno_dev,
 	}
 
 	if (adreno_of_read_property(device->dev, node, "qcom,id", &pdev->id))
-=======
-	unsigned int throt = 4;
-
-	if (of_property_read_string(node, "label", &pdev->name)) {
-		KGSL_CORE_ERR("Unable to read 'label'\n");
-		return -EINVAL;
-	}
-
-	if (adreno_of_read_property(node, "qcom,id", &pdev->id))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	/* Get starting physical address of device registers */
 	res = platform_get_resource_byname(device->pdev, IORESOURCE_MEM,
 					   device->iomemname);
 	if (res == NULL) {
-<<<<<<< HEAD
 		dev_err(device->dev,
 			     "platform_get_resource_byname failed\n");
 		return -EINVAL;
@@ -1449,14 +1146,6 @@ static int adreno_of_get_power(struct adreno_device *adreno_dev,
 	if (res->start == 0 || resource_size(res) == 0) {
 		dev_err(device->dev, "dev %d invalid register region\n",
 			     device->id);
-=======
-		KGSL_DRV_ERR(device, "platform_get_resource_byname failed\n");
-		return -EINVAL;
-	}
-	if (res->start == 0 || resource_size(res) == 0) {
-		KGSL_DRV_ERR(device, "dev %d invalid register region\n",
-			device->id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -1466,17 +1155,6 @@ static int adreno_of_get_power(struct adreno_device *adreno_dev,
 	if (adreno_of_get_pwrlevels(adreno_dev, node))
 		return -EINVAL;
 
-<<<<<<< HEAD
-=======
-	/* Get throttle power level */
-	of_property_read_u32(node, "qcom,throttle-pwrlevel", &throt);
-
-	if (throt < device->pwrctrl.num_pwrlevels)
-		device->pwrctrl.throttle_mask =
-			GENMASK(device->pwrctrl.num_pwrlevels - 1,
-				device->pwrctrl.num_pwrlevels - 1 - throt);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Get context aware DCVS properties */
 	adreno_of_get_ca_aware_properties(adreno_dev, node);
 
@@ -1511,52 +1189,6 @@ static int adreno_of_get_power(struct adreno_device *adreno_dev,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_QCOM_OCMEM
-static int
-adreno_ocmem_malloc(struct adreno_device *adreno_dev)
-{
-	if (!ADRENO_FEATURE(adreno_dev, ADRENO_USES_OCMEM))
-		return 0;
-
-	if (adreno_dev->ocmem_hdl == NULL) {
-		adreno_dev->ocmem_hdl =
-			ocmem_allocate(OCMEM_GRAPHICS, adreno_dev->gmem_size);
-		if (IS_ERR_OR_NULL(adreno_dev->ocmem_hdl)) {
-			adreno_dev->ocmem_hdl = NULL;
-			return -ENOMEM;
-		}
-
-		adreno_dev->gmem_size = adreno_dev->ocmem_hdl->len;
-		adreno_dev->gmem_base = adreno_dev->ocmem_hdl->addr;
-	}
-
-	return 0;
-}
-
-static void
-adreno_ocmem_free(struct adreno_device *adreno_dev)
-{
-	if (adreno_dev->ocmem_hdl != NULL) {
-		ocmem_free(OCMEM_GRAPHICS, adreno_dev->ocmem_hdl);
-		adreno_dev->ocmem_hdl = NULL;
-	}
-}
-#else
-static int
-adreno_ocmem_malloc(struct adreno_device *adreno_dev)
-{
-	return 0;
-}
-
-static void
-adreno_ocmem_free(struct adreno_device *adreno_dev)
-{
-}
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void adreno_cx_dbgc_probe(struct kgsl_device *device)
 {
 	struct adreno_device *adreno_dev = ADRENO_DEVICE(device);
@@ -1576,11 +1208,7 @@ static void adreno_cx_dbgc_probe(struct kgsl_device *device)
 					adreno_dev->cx_dbgc_len);
 
 	if (adreno_dev->cx_dbgc_virt == NULL)
-<<<<<<< HEAD
 		dev_warn(device->dev, "cx_dbgc ioremap failed\n");
-=======
-		KGSL_DRV_WARN(device, "cx_dbgc ioremap failed\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void adreno_cx_misc_probe(struct kgsl_device *device)
@@ -1599,26 +1227,17 @@ static void adreno_cx_misc_probe(struct kgsl_device *device)
 					res->start, adreno_dev->cx_misc_len);
 }
 
-<<<<<<< HEAD
 static void adreno_rscc_probe(struct kgsl_device *device)
-=======
-static void adreno_qdss_dbg_probe(struct kgsl_device *device)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct adreno_device *adreno_dev = ADRENO_DEVICE(device);
 	struct resource *res;
 
 	res = platform_get_resource_byname(device->pdev, IORESOURCE_MEM,
-<<<<<<< HEAD
 						"rscc");
-=======
-					   "qdss_gfx");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (res == NULL)
 		return;
 
-<<<<<<< HEAD
 	adreno_dev->rscc_base = res->start - device->reg_phys;
 	adreno_dev->rscc_len = resource_size(res);
 	adreno_dev->rscc_virt = devm_ioremap(device->dev, res->start,
@@ -1643,15 +1262,6 @@ static void adreno_isense_probe(struct kgsl_device *device)
 					adreno_dev->isense_len);
 	if (adreno_dev->isense_virt == NULL)
 		dev_warn(device->dev, "isense ioremap failed\n");
-=======
-	adreno_dev->qdss_gfx_base = res->start - device->reg_phys;
-	adreno_dev->qdss_gfx_len = resource_size(res);
-	adreno_dev->qdss_gfx_virt = devm_ioremap(device->dev, res->start,
-						resource_size(res));
-
-	if (adreno_dev->qdss_gfx_virt == NULL)
-		KGSL_DRV_WARN(device, "qdss_gfx ioremap failed\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void adreno_efuse_read_soc_hw_rev(struct adreno_device *adreno_dev)
@@ -1667,11 +1277,7 @@ static void adreno_efuse_read_soc_hw_rev(struct adreno_device *adreno_dev)
 
 	ret = adreno_efuse_map(adreno_dev);
 	if (ret) {
-<<<<<<< HEAD
 		dev_err(KGSL_DEVICE(adreno_dev)->dev,
-=======
-		KGSL_CORE_ERR(
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			"Unable to map hardware revision fuse: ret=%d\n", ret);
 		return;
 	}
@@ -1680,11 +1286,7 @@ static void adreno_efuse_read_soc_hw_rev(struct adreno_device *adreno_dev)
 	adreno_efuse_unmap(adreno_dev);
 
 	if (ret) {
-<<<<<<< HEAD
 		dev_err(KGSL_DEVICE(adreno_dev)->dev,
-=======
-		KGSL_CORE_ERR(
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			"Unable to read hardware revision fuse: ret=%d\n", ret);
 		return;
 	}
@@ -1719,7 +1321,6 @@ static bool adreno_is_gpu_disabled(struct adreno_device *adreno_dev)
 			pte_row0_msb[1] ? true : false;
 }
 
-<<<<<<< HEAD
 static int adreno_read_speed_bin(struct platform_device *pdev,
 		struct adreno_device *adreno_dev)
 {
@@ -1787,28 +1388,6 @@ static int adreno_probe(struct platform_device *pdev)
 
 	if (adreno_is_gpu_disabled(adreno_dev)) {
 		dev_err(&pdev->dev, "adreno: GPU is disabled on this device\n");
-=======
-static int adreno_probe(struct platform_device *pdev)
-{
-	struct kgsl_device *device;
-	struct adreno_device *adreno_dev;
-	int status;
-
-	place_marker("M - DRIVER GPU Init");
-
-	adreno_dev = adreno_get_dev(pdev);
-
-	if (adreno_dev == NULL) {
-		pr_err("adreno: qcom,kgsl-3d0 does not exist in the device tree");
-		return -ENODEV;
-	}
-
-	device = KGSL_DEVICE(adreno_dev);
-	device->pdev = pdev;
-
-	if (adreno_is_gpu_disabled(adreno_dev)) {
-		pr_err("adreno: GPU is disabled on this device\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 	}
 
@@ -1817,7 +1396,6 @@ static int adreno_probe(struct platform_device *pdev)
 
 	adreno_update_soc_hw_revision_quirks(adreno_dev, pdev);
 
-<<<<<<< HEAD
 	status = adreno_probe_efuse(pdev, adreno_dev);
 	if (status)
 		return status;
@@ -1825,10 +1403,6 @@ static int adreno_probe(struct platform_device *pdev)
 	/* Get the chip ID from the DT and set up target specific parameters */
 	if (adreno_identify_gpu(adreno_dev))
 		return -ENODEV;
-=======
-	/* Get the chip ID from the DT and set up target specific parameters */
-	adreno_identify_gpu(adreno_dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	status = adreno_of_get_power(adreno_dev, pdev);
 	if (status) {
@@ -1855,31 +1429,10 @@ static int adreno_probe(struct platform_device *pdev)
 	if (adreno_support_64bit(adreno_dev))
 		device->mmu.features |= KGSL_MMU_64BIT;
 
-<<<<<<< HEAD
 	if (adreno_is_a6xx(adreno_dev))
 		device->mmu.features |= KGSL_MMU_SMMU_APERTURE;
 
 	device->pwrctrl.bus_width = adreno_dev->gpucore->bus_width;
-=======
-	/* Default to 4K alignment (in other words, no additional padding) */
-	device->mmu.va_padding = PAGE_SIZE;
-
-	/*
-	 * SVM start va can be calculated based on UCHE GMEM size.
-	 * UCHE_GMEM_MAX < (SP LOCAL & PRIVATE) < MMU SVA
-	 */
-	device->mmu.svm_base32 = KGSL_IOMMU_SVM_BASE32 +
-		((ALIGN(adreno_dev->gmem_size, SZ_1M) - SZ_1M) << 1);
-
-	if (adreno_dev->gpucore->va_padding) {
-		device->mmu.features |= KGSL_MMU_PAD_VA;
-		device->mmu.va_padding = adreno_dev->gpucore->va_padding;
-	}
-
-	if (adreno_dev->gpucore->cx_ipeak_gpu_freq)
-		device->pwrctrl.cx_ipeak_gpu_freq =
-				adreno_dev->gpucore->cx_ipeak_gpu_freq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	status = kgsl_device_platform_probe(device);
 	if (status) {
@@ -1893,15 +1446,9 @@ static int adreno_probe(struct platform_device *pdev)
 	/* Probe for the optional CX_MISC block */
 	adreno_cx_misc_probe(device);
 
-<<<<<<< HEAD
 	adreno_rscc_probe(device);
 
 	adreno_isense_probe(device);
-=======
-	/*Probe for the optional QDSS_GFX_DBG block*/
-	adreno_qdss_dbg_probe(device);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * qcom,iommu-secure-id is used to identify MMUs that can handle secure
 	 * content but that is only part of the story - the GPU also has to be
@@ -1916,7 +1463,6 @@ static int adreno_probe(struct platform_device *pdev)
 	if (ADRENO_FEATURE(adreno_dev, ADRENO_IOCOHERENT))
 		device->mmu.features |= KGSL_MMU_IO_COHERENT;
 
-<<<<<<< HEAD
 	/* Allocate the memstore for storing timestamps and other useful info */
 	priv = KGSL_MEMDESC_CONTIG;
 
@@ -1930,9 +1476,6 @@ static int adreno_probe(struct platform_device *pdev)
 		goto out;
 
 	status = adreno_ringbuffer_probe(adreno_dev);
-=======
-	status = adreno_ringbuffer_probe(adreno_dev, nopreempt);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (status)
 		goto out;
 
@@ -1951,32 +1494,18 @@ static int adreno_probe(struct platform_device *pdev)
 	adreno_coresight_init(adreno_dev);
 
 	/* Get the system cache slice descriptor for GPU */
-<<<<<<< HEAD
 	adreno_dev->gpu_llc_slice = adreno_llc_getd(LLCC_GPU);
 	if (IS_ERR(adreno_dev->gpu_llc_slice) &&
 			PTR_ERR(adreno_dev->gpu_llc_slice) != -ENOENT)
 		dev_warn(device->dev,
-=======
-	adreno_dev->gpu_llc_slice = adreno_llc_getd(&pdev->dev, "gpu");
-	if (IS_ERR(adreno_dev->gpu_llc_slice) &&
-			PTR_ERR(adreno_dev->gpu_llc_slice) != -ENOENT)
-		KGSL_DRV_WARN(device,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			"Failed to get GPU LLC slice descriptor %ld\n",
 			PTR_ERR(adreno_dev->gpu_llc_slice));
 
 	/* Get the system cache slice descriptor for GPU pagetables */
-<<<<<<< HEAD
 	adreno_dev->gpuhtw_llc_slice = adreno_llc_getd(LLCC_GPUHTW);
 	if (IS_ERR(adreno_dev->gpuhtw_llc_slice) &&
 			PTR_ERR(adreno_dev->gpuhtw_llc_slice) != -ENOENT)
 		dev_warn(device->dev,
-=======
-	adreno_dev->gpuhtw_llc_slice = adreno_llc_getd(&pdev->dev, "gpuhtw");
-	if (IS_ERR(adreno_dev->gpuhtw_llc_slice) &&
-			PTR_ERR(adreno_dev->gpuhtw_llc_slice) != -ENOENT)
-		KGSL_DRV_WARN(device,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			"Failed to get gpuhtw LLC slice descriptor %ld\n",
 			PTR_ERR(adreno_dev->gpuhtw_llc_slice));
 
@@ -1989,7 +1518,6 @@ static int adreno_probe(struct platform_device *pdev)
 		 */
 		if (input_register_handler(&adreno_input_handler)) {
 			adreno_input_handler.private = NULL;
-<<<<<<< HEAD
 			dev_err(device->dev,
 				     "Unable to register the input handler\n");
 		}
@@ -1999,18 +1527,6 @@ out:
 	if (status) {
 		adreno_ringbuffer_close(adreno_dev);
 		kgsl_free_global(device, &device->memstore);
-=======
-			KGSL_DRV_ERR(device,
-				"Unable to register the input handler\n");
-		}
-	}
-#endif
-
-	place_marker("M - DRIVER GPU Ready");
-out:
-	if (status) {
-		adreno_ringbuffer_close(adreno_dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kgsl_device_platform_remove(device);
 		device->pdev = NULL;
 	}
@@ -2043,7 +1559,6 @@ static void _adreno_free_memories(struct adreno_device *adreno_dev)
 
 static int adreno_remove(struct platform_device *pdev)
 {
-<<<<<<< HEAD
 	const struct of_device_id *of_id;
 	struct adreno_device *adreno_dev;
 	struct kgsl_device *device;
@@ -2054,15 +1569,6 @@ static int adreno_remove(struct platform_device *pdev)
 		return -EINVAL;
 
 	adreno_dev = (struct adreno_device *) of_id->data;
-=======
-	struct adreno_device *adreno_dev = adreno_get_dev(pdev);
-	struct adreno_gpudev *gpudev;
-	struct kgsl_device *device;
-
-	if (adreno_dev == NULL)
-		return 0;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	device = KGSL_DEVICE(adreno_dev);
 	gpudev = ADRENO_GPU_DEVICE(adreno_dev);
 
@@ -2101,12 +1607,8 @@ static int adreno_remove(struct platform_device *pdev)
 	if (efuse_base != NULL)
 		iounmap(efuse_base);
 
-<<<<<<< HEAD
 	kgsl_free_global(device, &device->memstore);
 
-=======
-	adreno_perfcounter_close(adreno_dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kgsl_device_platform_remove(device);
 
 	gmu_core_remove(device);
@@ -2125,12 +1627,7 @@ static void adreno_fault_detect_init(struct adreno_device *adreno_dev)
 	struct adreno_gpudev *gpudev = ADRENO_GPU_DEVICE(adreno_dev);
 	int i;
 
-<<<<<<< HEAD
 	if (!ADRENO_FEATURE(adreno_dev, ADRENO_SOFT_FAULT_DETECT))
-=======
-	if (!(swfdetect ||
-			ADRENO_FEATURE(adreno_dev, ADRENO_SOFT_FAULT_DETECT)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	/* Disable the fast hang detect bit until we know its a go */
@@ -2163,7 +1660,6 @@ static void adreno_fault_detect_init(struct adreno_device *adreno_dev)
 	adreno_fault_detect_start(adreno_dev);
 }
 
-<<<<<<< HEAD
 static void do_gbif_halt(struct adreno_device *adreno_dev,
 	u32 halt_reg, u32 ack_reg, u32 mask, const char *client)
 {
@@ -2218,8 +1714,6 @@ void adreno_smmu_resume(struct adreno_device *adreno_dev)
 		ADRENO_REG_GBIF_HALT_ACK, gpudev->gbif_arb_halt_mask, "CX");
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * adreno_clear_pending_transactions() - Clear transactions in GBIF/VBIF pipe
  * @device: Pointer to the device whose GBIF/VBIF pipe is to be cleared
@@ -2300,11 +1794,6 @@ static int adreno_init(struct kgsl_device *device)
 	if (test_bit(ADRENO_DEVICE_INITIALIZED, &adreno_dev->priv))
 		return 0;
 
-<<<<<<< HEAD
-=======
-	place_marker("M - DRIVER ADRENO Init");
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Either the microcode read failed because the usermodehelper isn't
 	 * available or the microcode was corrupted. Fail the init and force
@@ -2315,13 +1804,10 @@ static int adreno_init(struct kgsl_device *device)
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	ret = gmu_core_init(device);
 	if (ret)
 		return ret;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Put the GPU in a responsive state */
 	if (ADRENO_GPUREV(adreno_dev) < 600) {
 		/* No need for newer generation architectures */
@@ -2330,23 +1816,14 @@ static int adreno_init(struct kgsl_device *device)
 			return ret;
 	}
 
-<<<<<<< HEAD
 	 adreno_iommu_init(adreno_dev);
-=======
-	ret = adreno_iommu_init(adreno_dev);
-	if (ret)
-		return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	adreno_perfcounter_init(adreno_dev);
 	adreno_fault_detect_init(adreno_dev);
 
-<<<<<<< HEAD
 	adreno_dev->cooperative_reset = ADRENO_FEATURE(adreno_dev,
 							ADRENO_COOP_RESET);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Power down the device */
 	if (ADRENO_GPUREV(adreno_dev) < 600)
 		kgsl_pwrctrl_change_state(device, KGSL_STATE_SLUMBER);
@@ -2356,33 +1833,12 @@ static int adreno_init(struct kgsl_device *device)
 
 	set_bit(ADRENO_DEVICE_INITIALIZED, &adreno_dev->priv);
 
-<<<<<<< HEAD
-=======
-	/* Use shader offset and length defined in gpudev */
-	if (adreno_dev->gpucore->shader_offset &&
-					adreno_dev->gpucore->shader_size) {
-
-		if (device->shader_mem_phys || device->shader_mem_virt)
-			KGSL_DRV_ERR(device,
-			"Shader memory already specified in device tree\n");
-		else {
-			device->shader_mem_phys = device->reg_phys +
-					adreno_dev->gpucore->shader_offset;
-			device->shader_mem_virt = device->reg_virt +
-					adreno_dev->gpucore->shader_offset;
-			device->shader_mem_len =
-					adreno_dev->gpucore->shader_size;
-		}
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Allocate a small chunk of memory for precise drawobj profiling for
 	 * those targets that have the always on timer
 	 */
 
 	if (!adreno_is_a3xx(adreno_dev)) {
-<<<<<<< HEAD
 		unsigned int priv = 0;
 		int r;
 
@@ -2392,11 +1848,6 @@ static int adreno_init(struct kgsl_device *device)
 		r = kgsl_allocate_global(device,
 			&adreno_dev->profile_buffer, PAGE_SIZE,
 			0, priv, "alwayson");
-=======
-		int r = kgsl_allocate_global(device,
-			&adreno_dev->profile_buffer, PAGE_SIZE,
-			0, 0, "alwayson");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		adreno_dev->profile_index = 0;
 
@@ -2410,11 +1861,6 @@ static int adreno_init(struct kgsl_device *device)
 
 	}
 
-<<<<<<< HEAD
-=======
-	place_marker("M - DRIVER ADRENO Ready");
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -2446,29 +1892,16 @@ static void _set_secvid(struct kgsl_device *device)
 
 	/* Program GPU contect protection init values */
 	if (device->mmu.secured && !set) {
-<<<<<<< HEAD
-=======
-		if (adreno_is_a4xx(adreno_dev))
-			adreno_writereg(adreno_dev,
-				ADRENO_REG_RBBM_SECVID_TRUST_CONFIG, 0x2);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		adreno_writereg(adreno_dev,
 				ADRENO_REG_RBBM_SECVID_TSB_CONTROL, 0x0);
 
 		adreno_writereg64(adreno_dev,
 			ADRENO_REG_RBBM_SECVID_TSB_TRUSTED_BASE,
 			ADRENO_REG_RBBM_SECVID_TSB_TRUSTED_BASE_HI,
-<<<<<<< HEAD
 			KGSL_IOMMU_SECURE_BASE(&device->mmu));
 		adreno_writereg(adreno_dev,
 			ADRENO_REG_RBBM_SECVID_TSB_TRUSTED_SIZE,
 			KGSL_IOMMU_SECURE_SIZE);
-=======
-			device->mmu.secure_base);
-		adreno_writereg(adreno_dev,
-			ADRENO_REG_RBBM_SECVID_TSB_TRUSTED_SIZE,
-			device->mmu.secure_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ADRENO_QUIRK(adreno_dev, ADRENO_QUIRK_SECVID_SET_ONCE))
 			set = true;
 	}
@@ -2512,11 +1945,7 @@ int adreno_set_unsecured_mode(struct adreno_device *adreno_dev,
 	}
 
 	/* GPU comes up in secured mode, make it unsecured by default */
-<<<<<<< HEAD
 	if (adreno_dev->zap_loaded)
-=======
-	if (adreno_dev->zap_handle_ptr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = adreno_switch_to_unsecure_mode(adreno_dev, rb);
 	else
 		adreno_writereg(adreno_dev,
@@ -2541,29 +1970,6 @@ static void adreno_set_active_ctxs_null(struct adreno_device *adreno_dev)
 	}
 }
 
-<<<<<<< HEAD
-=======
-static int adreno_program_smmu_aperture(struct kgsl_device *device)
-{
-	unsigned long start = jiffies;
-	int ret;
-
-	if (!scm_is_call_available(SCM_SVC_MP, CP_SMMU_APERTURE_ID))
-		return 0;
-
-	ret = kgsl_program_smmu_aperture();
-	if (ret)
-		dev_err(device->dev,
-		    "SMMU aperture programming call failed error %d\n",
-		    ret);
-	else if (jiffies_to_msecs(jiffies - start) > 2000)
-		dev_err(device->dev,
-		    "scm call took a long time to finish: %u ms\n",
-		    jiffies_to_msecs(jiffies - start));
-
-	return ret;
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * _adreno_start - Power up the GPU and prepare to accept commands
  * @adreno_dev: Pointer to an adreno_device structure
@@ -2575,10 +1981,6 @@ static int _adreno_start(struct adreno_device *adreno_dev)
 {
 	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
 	struct adreno_gpudev *gpudev = ADRENO_GPU_DEVICE(adreno_dev);
-<<<<<<< HEAD
-=======
-	struct gmu_dev_ops *gmu_dev_ops = GMU_DEVICE_OPS(device);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int status = -EINVAL, ret;
 	unsigned int state = device->state;
 	bool regulator_left_on;
@@ -2604,15 +2006,9 @@ static int _adreno_start(struct adreno_device *adreno_dev)
 	 * Keep high bus vote to reduce AHB latency
 	 * during FW loading and wakeup.
 	 */
-<<<<<<< HEAD
 	if (device->pwrctrl.gpu_cfg)
 		msm_bus_scale_client_update_request(device->pwrctrl.gpu_cfg,
 			KGSL_GPU_CFG_PATH_HIGH);
-=======
-	if (device->pwrctrl.ahbpath_pcl)
-		msm_bus_scale_client_update_request(device->pwrctrl.ahbpath_pcl,
-			KGSL_AHB_PATH_HIGH);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Put the GPU in a responsive state */
 	status = kgsl_pwrctrl_change_state(device, KGSL_STATE_AWARE);
@@ -2641,22 +2037,12 @@ static int _adreno_start(struct adreno_device *adreno_dev)
 	 */
 	adreno_deassert_gbif_halt(adreno_dev);
 
-<<<<<<< HEAD
-=======
-	if (adreno_is_a640v1(adreno_dev)) {
-		ret = adreno_program_smmu_aperture(device);
-		if (ret)
-			goto error_pwr_off;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adreno_ringbuffer_set_global(adreno_dev, 0);
 
 	status = kgsl_mmu_start(device);
 	if (status)
 		goto error_boot_oob_clear;
 
-<<<<<<< HEAD
 	/* Send OOB request to turn on the GX */
 	status = gmu_core_dev_oob_set(device, oob_gpu);
 	if (status) {
@@ -2668,25 +2054,6 @@ static int _adreno_start(struct adreno_device *adreno_dev)
 	if (status) {
 		gmu_core_snapshot(device);
 		goto error_oob_clear;
-=======
-	status = adreno_ocmem_malloc(adreno_dev);
-	if (status) {
-		KGSL_DRV_ERR(device, "OCMEM malloc failed\n");
-		goto error_mmu_off;
-	}
-
-	/* Send OOB request to turn on the GX */
-	if (GMU_DEV_OP_VALID(gmu_dev_ops, oob_set)) {
-		status = gmu_dev_ops->oob_set(adreno_dev, oob_gpu);
-		if (status)
-			goto error_mmu_off;
-	}
-
-	if (GMU_DEV_OP_VALID(gmu_dev_ops, hfi_start_msg)) {
-		status = gmu_dev_ops->hfi_start_msg(adreno_dev);
-		if (status)
-			goto error_oob_clear;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	_set_secvid(device);
@@ -2696,22 +2063,6 @@ static int _adreno_start(struct adreno_device *adreno_dev)
 			adreno_support_64bit(adreno_dev))
 		gpudev->enable_64bit(adreno_dev);
 
-<<<<<<< HEAD
-=======
-	if (adreno_dev->perfctr_pwr_lo == 0) {
-		ret = adreno_perfcounter_get(adreno_dev,
-			KGSL_PERFCOUNTER_GROUP_PWR, 1,
-			&adreno_dev->perfctr_pwr_lo, NULL,
-			PERFCOUNTER_FLAG_KERNEL);
-
-		if (ret) {
-			WARN_ONCE(1, "Unable to get perf counters for DCVS\n");
-			adreno_dev->perfctr_pwr_lo = 0;
-		}
-	}
-
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (device->pwrctrl.bus_control) {
 		/* VBIF waiting for RAM */
 		if (adreno_dev->starved_ram_lo == 0) {
@@ -2721,13 +2072,8 @@ static int _adreno_start(struct adreno_device *adreno_dev)
 				PERFCOUNTER_FLAG_KERNEL);
 
 			if (ret) {
-<<<<<<< HEAD
 				dev_err(device->dev,
 					     "Unable to get perf counters for bus DCVS\n");
-=======
-				KGSL_DRV_ERR(device,
-					"Unable to get perf counters for bus DCVS\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				adreno_dev->starved_ram_lo = 0;
 			}
 		}
@@ -2740,13 +2086,8 @@ static int _adreno_start(struct adreno_device *adreno_dev)
 					PERFCOUNTER_FLAG_KERNEL);
 
 				if (ret) {
-<<<<<<< HEAD
 					dev_err(device->dev,
 						     "Unable to get perf counters for bus DCVS\n");
-=======
-					KGSL_DRV_ERR(device,
-						"Unable to get perf counters for bus DCVS\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					adreno_dev->starved_ram_lo_ch1 = 0;
 				}
 			}
@@ -2759,13 +2100,8 @@ static int _adreno_start(struct adreno_device *adreno_dev)
 					PERFCOUNTER_FLAG_KERNEL);
 
 				if (ret) {
-<<<<<<< HEAD
 					dev_err(device->dev,
 						     "Unable to get perf counters for bus DCVS\n");
-=======
-					KGSL_DRV_ERR(device,
-						"Unable to get perf counters for bus DCVS\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					adreno_dev->ram_cycles_lo = 0;
 				}
 			}
@@ -2779,13 +2115,8 @@ static int _adreno_start(struct adreno_device *adreno_dev)
 					PERFCOUNTER_FLAG_KERNEL);
 
 				if (ret) {
-<<<<<<< HEAD
 					dev_err(device->dev,
 						     "Unable to get perf counters for bus DCVS\n");
-=======
-					KGSL_DRV_ERR(device,
-						"Unable to get perf counters for bus DCVS\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					adreno_dev->ram_cycles_lo_ch1_read = 0;
 				}
 			}
@@ -2799,13 +2130,8 @@ static int _adreno_start(struct adreno_device *adreno_dev)
 					PERFCOUNTER_FLAG_KERNEL);
 
 				if (ret) {
-<<<<<<< HEAD
 					dev_err(device->dev,
 						     "Unable to get perf counters for bus DCVS\n");
-=======
-					KGSL_DRV_ERR(device,
-						"Unable to get perf counters for bus DCVS\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					adreno_dev->ram_cycles_lo_ch0_write = 0;
 				}
 			}
@@ -2819,13 +2145,8 @@ static int _adreno_start(struct adreno_device *adreno_dev)
 					PERFCOUNTER_FLAG_KERNEL);
 
 				if (ret) {
-<<<<<<< HEAD
 					dev_err(device->dev,
 						     "Unable to get perf counters for bus DCVS\n");
-=======
-					KGSL_DRV_ERR(device,
-						"Unable to get perf counters for bus DCVS\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					adreno_dev->ram_cycles_lo_ch1_write = 0;
 				}
 			}
@@ -2839,34 +2160,14 @@ static int _adreno_start(struct adreno_device *adreno_dev)
 					PERFCOUNTER_FLAG_KERNEL);
 
 				if (ret) {
-<<<<<<< HEAD
 					dev_err(device->dev,
 						     "Unable to get perf counters for bus DCVS\n");
-=======
-					KGSL_DRV_ERR(device,
-						"Unable to get perf counters for bus DCVS\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					adreno_dev->ram_cycles_lo = 0;
 				}
 			}
 		}
 	}
 
-<<<<<<< HEAD
-=======
-	if (gmu_core_gpmu_isenabled(device) &&
-			adreno_dev->perfctr_ifpc_lo == 0) {
-		ret = adreno_perfcounter_get(adreno_dev,
-				KGSL_PERFCOUNTER_GROUP_GPMU_PWR, 4,
-				&adreno_dev->perfctr_ifpc_lo, NULL,
-				PERFCOUNTER_FLAG_KERNEL);
-		if (ret) {
-			WARN_ONCE(1, "Unable to get perf counter for IFPC\n");
-			adreno_dev->perfctr_ifpc_lo = 0;
-		}
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Clear the busy_data stats - we're starting over from scratch */
 	adreno_dev->busy_data.gpu_busy = 0;
 	adreno_dev->busy_data.bif_ram_cycles = 0;
@@ -2901,11 +2202,7 @@ static int _adreno_start(struct adreno_device *adreno_dev)
 	/* Clear FSR here in case it is set from a previous pagefault */
 	kgsl_mmu_clear_fsr(&device->mmu);
 
-<<<<<<< HEAD
 	status = adreno_ringbuffer_start(adreno_dev);
-=======
-	status = adreno_ringbuffer_start(adreno_dev, ADRENO_START_COLD);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (status)
 		goto error_oob_clear;
 
@@ -2929,59 +2226,32 @@ static int _adreno_start(struct adreno_device *adreno_dev)
 				pmqos_active_vote);
 
 	/* Send OOB request to allow IFPC */
-<<<<<<< HEAD
 	gmu_core_dev_oob_clear(device, oob_gpu);
 
 	/* If we made it this far, the BOOT OOB was sent to the GMU */
 	if (ADRENO_QUIRK(adreno_dev, ADRENO_QUIRK_HFI_USE_REG))
 		gmu_core_dev_oob_clear(device, oob_boot_slumber);
-=======
-	if (GMU_DEV_OP_VALID(gmu_dev_ops, oob_clear)) {
-		gmu_dev_ops->oob_clear(adreno_dev, oob_gpu);
-
-		/* If we made it this far, the BOOT OOB was sent to the GMU */
-		if (ADRENO_QUIRK(adreno_dev, ADRENO_QUIRK_HFI_USE_REG))
-			gmu_dev_ops->oob_clear(adreno_dev, oob_boot_slumber);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Low vote is enough after wakeup completes, this will make
 	 * sure CPU to GPU AHB infrastructure clocks are running at-least
 	 * at minimum frequency.
 	 */
-<<<<<<< HEAD
 	if (device->pwrctrl.gpu_cfg)
 		msm_bus_scale_client_update_request(device->pwrctrl.gpu_cfg,
 			KGSL_GPU_CFG_PATH_LOW);
-=======
-	if (device->pwrctrl.ahbpath_pcl)
-		msm_bus_scale_client_update_request(device->pwrctrl.ahbpath_pcl,
-			KGSL_AHB_PATH_LOW);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 
 error_oob_clear:
-<<<<<<< HEAD
 	gmu_core_dev_oob_clear(device, oob_gpu);
-=======
-	if (GMU_DEV_OP_VALID(gmu_dev_ops, oob_clear))
-		gmu_dev_ops->oob_clear(adreno_dev, oob_gpu);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 error_mmu_off:
 	kgsl_mmu_stop(&device->mmu);
 
 error_boot_oob_clear:
-<<<<<<< HEAD
 	if (ADRENO_QUIRK(adreno_dev, ADRENO_QUIRK_HFI_USE_REG))
 		gmu_core_dev_oob_clear(device, oob_boot_slumber);
-=======
-	if (GMU_DEV_OP_VALID(gmu_dev_ops, oob_clear) &&
-		ADRENO_QUIRK(adreno_dev, ADRENO_QUIRK_HFI_USE_REG))
-		gmu_dev_ops->oob_clear(adreno_dev, oob_boot_slumber);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 error_pwr_off:
 	/* set the state back to original state */
@@ -2991,15 +2261,9 @@ error_pwr_off:
 		pm_qos_update_request(&device->pwrctrl.pm_qos_req_dma,
 				pmqos_active_vote);
 
-<<<<<<< HEAD
 	if (device->pwrctrl.gpu_cfg)
 		msm_bus_scale_client_update_request(device->pwrctrl.gpu_cfg,
 			KGSL_GPU_CFG_PATH_OFF);
-=======
-	if (device->pwrctrl.ahbpath_pcl)
-		msm_bus_scale_client_update_request(device->pwrctrl.ahbpath_pcl,
-			KGSL_AHB_PATH_OFF);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return status;
 }
 
@@ -3032,16 +2296,11 @@ int adreno_start(struct kgsl_device *device, int priority)
 static int adreno_stop(struct kgsl_device *device)
 {
 	struct adreno_device *adreno_dev = ADRENO_DEVICE(device);
-<<<<<<< HEAD
-=======
-	struct gmu_dev_ops *gmu_dev_ops = GMU_DEVICE_OPS(device);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int error = 0;
 
 	if (!test_bit(ADRENO_DEVICE_STARTED, &adreno_dev->priv))
 		return 0;
 
-<<<<<<< HEAD
 	error = gmu_core_dev_oob_set(device, oob_gpu);
 	if (error) {
 		gmu_core_dev_oob_clear(device, oob_gpu);
@@ -3050,56 +2309,18 @@ static int adreno_stop(struct kgsl_device *device)
 			goto no_gx_power;
 	}
 
-=======
-	/* Turn the power on one last time before stopping */
-	if (GMU_DEV_OP_VALID(gmu_dev_ops, oob_set)) {
-		error = gmu_dev_ops->oob_set(adreno_dev, oob_gpu);
-		if (error && GMU_DEV_OP_VALID(gmu_dev_ops, oob_clear)) {
-			gmu_dev_ops->oob_clear(adreno_dev, oob_gpu);
-			if (gmu_core_regulator_isenabled(device)) {
-				/* GPU is on. Try recovery */
-				set_bit(GMU_FAULT, &device->gmu_core.flags);
-				gmu_core_snapshot(device);
-				error = -EINVAL;
-			} else {
-				return error;
-			}
-		}
-	}
-
-	adreno_dispatcher_stop(adreno_dev);
-
-	adreno_ringbuffer_stop(adreno_dev);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kgsl_pwrscale_update_stats(device);
 
 	adreno_irqctrl(adreno_dev, 0);
 
-<<<<<<< HEAD
-=======
-	adreno_ocmem_free(adreno_dev);
-
-	adreno_llc_deactivate_slice(adreno_dev->gpu_llc_slice);
-	adreno_llc_deactivate_slice(adreno_dev->gpuhtw_llc_slice);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Save active coresight registers if applicable */
 	adreno_coresight_stop(adreno_dev);
 
 	/* Save physical performance counter values before GPU power down*/
 	adreno_perfcounter_save(adreno_dev);
 
-<<<<<<< HEAD
 	gmu_core_dev_prepare_stop(device);
 	gmu_core_dev_oob_clear(device, oob_gpu);
-=======
-	if (GMU_DEV_OP_VALID(gmu_dev_ops, prepare_stop))
-		gmu_dev_ops->prepare_stop(adreno_dev);
-
-	if (GMU_DEV_OP_VALID(gmu_dev_ops, oob_clear))
-		gmu_dev_ops->oob_clear(adreno_dev, oob_gpu);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Saving perfcounters will use an OOB to put the GMU into
@@ -3107,15 +2328,8 @@ static int adreno_stop(struct kgsl_device *device)
 	 * GMU to return to the lowest idle level. This is
 	 * because some idle level transitions require VBIF and MMU.
 	 */
-<<<<<<< HEAD
 
 	if (!error && gmu_core_dev_wait_for_lowest_idle(device)) {
-=======
-	if (!error && GMU_DEV_OP_VALID(gmu_dev_ops, wait_for_lowest_idle) &&
-			gmu_dev_ops->wait_for_lowest_idle(adreno_dev)) {
-
-		set_bit(GMU_FAULT, &device->gmu_core.flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		gmu_core_snapshot(device);
 		/*
 		 * Assume GMU hang after 10ms without responding.
@@ -3128,7 +2342,6 @@ static int adreno_stop(struct kgsl_device *device)
 
 	adreno_clear_pending_transactions(device);
 
-<<<<<<< HEAD
 no_gx_power:
 	adreno_dispatcher_stop(adreno_dev);
 
@@ -3140,8 +2353,6 @@ no_gx_power:
 	if (!IS_ERR_OR_NULL(adreno_dev->gpuhtw_llc_slice))
 		llcc_slice_deactivate(adreno_dev->gpuhtw_llc_slice);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * The halt is not cleared in the above function if we have GBIF.
 	 * Clear it here if GMU is enabled as GMU stop needs access to
@@ -3160,15 +2371,9 @@ no_gx_power:
 	 */
 	adreno_set_active_ctxs_null(adreno_dev);
 
-<<<<<<< HEAD
 	if (device->pwrctrl.gpu_cfg)
 		msm_bus_scale_client_update_request(device->pwrctrl.gpu_cfg,
 			KGSL_GPU_CFG_PATH_OFF);
-=======
-	if (device->pwrctrl.ahbpath_pcl)
-		msm_bus_scale_client_update_request(device->pwrctrl.ahbpath_pcl,
-			KGSL_AHB_PATH_OFF);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	clear_bit(ADRENO_DEVICE_STARTED, &adreno_dev->priv);
 
@@ -3185,11 +2390,7 @@ static inline bool adreno_try_soft_reset(struct kgsl_device *device, int fault)
 	 * A304: It can't do SMMU programming of any kind after a soft reset
 	 * A612: IPC protocol between RGMU and CP will not restart after reset
 	 * A610: An across chip issue with reset line in all 11nm chips,
-<<<<<<< HEAD
 	 * resulting in recommendation to not use soft reset
-=======
-	 * resulting in recommendation to not use soft reset.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 
 	if ((fault & ADRENO_IOMMU_PAGE_FAULT) || adreno_is_a304(adreno_dev) ||
@@ -3223,27 +2424,12 @@ int adreno_reset(struct kgsl_device *device, int fault)
 		if (ret == 0) {
 			ret = adreno_soft_reset(device);
 			if (ret)
-<<<<<<< HEAD
 				dev_err(device->dev,
-=======
-				KGSL_DRV_ERR(device,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					"Device soft reset failed: ret=%d\n",
 					ret);
 		}
 	}
 	if (ret) {
-<<<<<<< HEAD
-=======
-		unsigned long flags = device->pwrctrl.ctrl_flags;
-
-		/*
-		 * Clear ctrl_flags to ensure clocks and regulators are
-		 * turned off
-		 */
-		device->pwrctrl.ctrl_flags = 0;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* If soft reset failed/skipped, then pull the power */
 		kgsl_pwrctrl_change_state(device, KGSL_STATE_INIT);
 		/* since device is officially off now clear start bit */
@@ -3261,22 +2447,13 @@ int adreno_reset(struct kgsl_device *device, int fault)
 					break;
 			}
 		}
-<<<<<<< HEAD
-=======
-
-		device->pwrctrl.ctrl_flags = flags;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	if (ret)
 		return ret;
 
 	if (i != 0)
-<<<<<<< HEAD
 		dev_warn(device->dev,
 			      "Device hard reset tried %d tries\n", i);
-=======
-		KGSL_DRV_WARN(device, "Device hard reset tried %d tries\n", i);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * If active_cnt is non-zero then the system was active before
@@ -3291,7 +2468,6 @@ int adreno_reset(struct kgsl_device *device, int fault)
 	return ret;
 }
 
-<<<<<<< HEAD
 static int copy_prop(struct kgsl_device_getproperty *param,
 		void *src, size_t size)
 {
@@ -3494,398 +2670,6 @@ static int adreno_query_property_list(struct kgsl_device *device, u32 *list,
 		list[i] = adreno_property_funcs[i].type;
 
 	return i;
-=======
-static int adreno_getproperty(struct kgsl_device *device,
-				unsigned int type,
-				void __user *value,
-				size_t sizebytes)
-{
-	int status = -EINVAL;
-	struct adreno_device *adreno_dev = ADRENO_DEVICE(device);
-
-	switch (type) {
-	case KGSL_PROP_DEVICE_INFO:
-		{
-			struct kgsl_devinfo devinfo;
-
-			if (sizebytes != sizeof(devinfo)) {
-				status = -EINVAL;
-				break;
-			}
-
-			memset(&devinfo, 0, sizeof(devinfo));
-			devinfo.device_id = device->id+1;
-			devinfo.chip_id = adreno_dev->chipid;
-			devinfo.mmu_enabled =
-				MMU_FEATURE(&device->mmu, KGSL_MMU_PAGED);
-			devinfo.gmem_gpubaseaddr = adreno_dev->gmem_base;
-			devinfo.gmem_sizebytes = adreno_dev->gmem_size;
-
-			if (copy_to_user(value, &devinfo, sizeof(devinfo)) !=
-					0) {
-				status = -EFAULT;
-				break;
-			}
-			status = 0;
-		}
-		break;
-	case KGSL_PROP_DEVICE_SHADOW:
-		{
-			struct kgsl_shadowprop shadowprop;
-
-			if (sizebytes != sizeof(shadowprop)) {
-				status = -EINVAL;
-				break;
-			}
-			memset(&shadowprop, 0, sizeof(shadowprop));
-			if (device->memstore.hostptr) {
-				/*NOTE: with mmu enabled, gpuaddr doesn't mean
-				 * anything to mmap().
-				 */
-				shadowprop.gpuaddr =
-					(unsigned long)device->memstore.gpuaddr;
-				shadowprop.size = device->memstore.size;
-				/* GSL needs this to be set, even if it
-				 * appears to be meaningless
-				 */
-				shadowprop.flags = KGSL_FLAGS_INITIALIZED |
-					KGSL_FLAGS_PER_CONTEXT_TIMESTAMPS;
-			}
-			if (copy_to_user(value, &shadowprop,
-				sizeof(shadowprop))) {
-				status = -EFAULT;
-				break;
-			}
-			status = 0;
-		}
-		break;
-	case KGSL_PROP_DEVICE_QDSS_STM:
-		{
-			struct kgsl_qdss_stm_prop qdssprop = {0};
-			struct kgsl_memdesc *qdss_desc =
-				kgsl_mmu_get_qdss_global_entry(device);
-
-			if (sizebytes != sizeof(qdssprop)) {
-				status = -EINVAL;
-				break;
-			}
-
-			if (qdss_desc) {
-				qdssprop.gpuaddr = qdss_desc->gpuaddr;
-				qdssprop.size = qdss_desc->size;
-			}
-
-			if (copy_to_user(value, &qdssprop,
-						sizeof(qdssprop))) {
-				status = -EFAULT;
-				break;
-			}
-			status = 0;
-		}
-		break;
-	case KGSL_PROP_DEVICE_QTIMER:
-		{
-			struct kgsl_qtimer_prop qtimerprop = {0};
-			struct kgsl_memdesc *qtimer_desc =
-				kgsl_mmu_get_qtimer_global_entry(device);
-
-			if (sizebytes != sizeof(qtimerprop)) {
-				status = -EINVAL;
-				break;
-			}
-
-			if (qtimer_desc) {
-				qtimerprop.gpuaddr = qtimer_desc->gpuaddr;
-				qtimerprop.size = qtimer_desc->size;
-			}
-
-			if (copy_to_user(value, &qtimerprop,
-						sizeof(qtimerprop))) {
-				status = -EFAULT;
-				break;
-			}
-			status = 0;
-		}
-		break;
-	case KGSL_PROP_MMU_ENABLE:
-		{
-			/* Report MMU only if we can handle paged memory */
-			int mmu_prop = MMU_FEATURE(&device->mmu,
-				KGSL_MMU_PAGED);
-
-			if (sizebytes < sizeof(mmu_prop)) {
-				status = -EINVAL;
-				break;
-			}
-			if (copy_to_user(value, &mmu_prop, sizeof(mmu_prop))) {
-				status = -EFAULT;
-				break;
-			}
-			status = 0;
-		}
-		break;
-	case KGSL_PROP_INTERRUPT_WAITS:
-		{
-			int int_waits = 1;
-
-			if (sizebytes != sizeof(int)) {
-				status = -EINVAL;
-				break;
-			}
-			if (copy_to_user(value, &int_waits, sizeof(int))) {
-				status = -EFAULT;
-				break;
-			}
-			status = 0;
-		}
-		break;
-	case KGSL_PROP_UCHE_GMEM_VADDR:
-		{
-			uint64_t gmem_vaddr = 0;
-
-			if (adreno_is_a5xx(adreno_dev) ||
-					adreno_is_a6xx(adreno_dev))
-				gmem_vaddr = adreno_dev->uche_gmem_base;
-			if (sizebytes != sizeof(uint64_t)) {
-				status = -EINVAL;
-				break;
-			}
-			if (copy_to_user(value, &gmem_vaddr,
-					sizeof(uint64_t))) {
-				status = -EFAULT;
-				break;
-			}
-			status = 0;
-		}
-		break;
-	case KGSL_PROP_SP_GENERIC_MEM:
-		{
-			struct kgsl_sp_generic_mem sp_mem;
-
-			if (sizebytes != sizeof(sp_mem)) {
-				status = -EINVAL;
-				break;
-			}
-			memset(&sp_mem, 0, sizeof(sp_mem));
-
-			sp_mem.local = adreno_dev->sp_local_gpuaddr;
-			sp_mem.pvt = adreno_dev->sp_pvt_gpuaddr;
-
-			if (copy_to_user(value, &sp_mem, sizeof(sp_mem))) {
-				status = -EFAULT;
-				break;
-			}
-			status = 0;
-		}
-		break;
-	case KGSL_PROP_UCODE_VERSION:
-		{
-			struct kgsl_ucode_version ucode;
-
-			if (sizebytes != sizeof(ucode)) {
-				status = -EINVAL;
-				break;
-			}
-			memset(&ucode, 0, sizeof(ucode));
-
-			ucode.pfp = adreno_dev->fw[ADRENO_FW_PFP].version;
-			ucode.pm4 = adreno_dev->fw[ADRENO_FW_PM4].version;
-
-			if (copy_to_user(value, &ucode, sizeof(ucode))) {
-				status = -EFAULT;
-				break;
-			}
-			status = 0;
-		}
-		break;
-	case KGSL_PROP_GPMU_VERSION:
-		{
-			struct kgsl_gpmu_version gpmu;
-
-			if (adreno_dev->gpucore == NULL) {
-				status = -EINVAL;
-				break;
-			}
-
-			if (!ADRENO_FEATURE(adreno_dev, ADRENO_GPMU)) {
-				status = -EOPNOTSUPP;
-				break;
-			}
-
-			if (sizebytes != sizeof(gpmu)) {
-				status = -EINVAL;
-				break;
-			}
-			memset(&gpmu, 0, sizeof(gpmu));
-
-			gpmu.major = adreno_dev->gpucore->gpmu_major;
-			gpmu.minor = adreno_dev->gpucore->gpmu_minor;
-			gpmu.features = adreno_dev->gpucore->gpmu_features;
-
-			if (copy_to_user(value, &gpmu, sizeof(gpmu))) {
-				status = -EFAULT;
-				break;
-			}
-			status = 0;
-		}
-		break;
-	case KGSL_PROP_HIGHEST_BANK_BIT:
-		{
-			unsigned int bit;
-
-			if (sizebytes < sizeof(unsigned int)) {
-				status = -EINVAL;
-				break;
-			}
-
-			if (of_property_read_u32(device->pdev->dev.of_node,
-				"qcom,highest-bank-bit", &bit)) {
-				status = -EINVAL;
-				break;
-			}
-
-			if (copy_to_user(value, &bit, sizeof(bit))) {
-				status = -EFAULT;
-				break;
-			}
-		}
-		status = 0;
-		break;
-	case KGSL_PROP_MIN_ACCESS_LENGTH:
-		{
-			unsigned int mal;
-
-			if (sizebytes < sizeof(unsigned int)) {
-				status = -EINVAL;
-				break;
-			}
-
-			if (of_property_read_u32(device->pdev->dev.of_node,
-				"qcom,min-access-length", &mal)) {
-				mal = 0;
-			}
-
-			if (copy_to_user(value, &mal, sizeof(mal))) {
-				status = -EFAULT;
-				break;
-			}
-		}
-		status = 0;
-		break;
-	case KGSL_PROP_UBWC_MODE:
-		{
-			unsigned int mode;
-
-			if (sizebytes < sizeof(unsigned int)) {
-				status = -EINVAL;
-				break;
-			}
-
-			if (of_property_read_u32(device->pdev->dev.of_node,
-				"qcom,ubwc-mode", &mode))
-				mode = 0;
-
-			if (copy_to_user(value, &mode, sizeof(mode))) {
-				status = -EFAULT;
-				break;
-			}
-		}
-		status = 0;
-		break;
-
-	case KGSL_PROP_DEVICE_BITNESS:
-	{
-		unsigned int bitness = 32;
-
-		if (sizebytes != sizeof(unsigned int)) {
-			status = -EINVAL;
-			break;
-		}
-		/* No of bits used by the GPU */
-		if (adreno_support_64bit(adreno_dev))
-			bitness = 48;
-
-		if (copy_to_user(value, &bitness,
-				sizeof(unsigned int))) {
-			status = -EFAULT;
-			break;
-		}
-		status = 0;
-	}
-	break;
-
-	case KGSL_PROP_SPEED_BIN:
-		{
-			unsigned int speed_bin;
-
-			if (sizebytes != sizeof(unsigned int)) {
-				status = -EINVAL;
-				break;
-			}
-
-			speed_bin = adreno_dev->speed_bin;
-
-			if (copy_to_user(value, &speed_bin,
-						sizeof(unsigned int))) {
-				status = -EFAULT;
-				break;
-			}
-			status = 0;
-		}
-		break;
-
-	case KGSL_PROP_GAMING_BIN:
-	{
-		unsigned int gaming_bin;
-
-		if (sizebytes != sizeof(unsigned int)) {
-			status = -EINVAL;
-			break;
-		}
-
-		gaming_bin = adreno_dev->gaming_bin ? 1 : 0;
-
-		if (copy_to_user(value, &gaming_bin,
-					sizeof(unsigned int))) {
-			status = -EFAULT;
-			break;
-		}
-		status = 0;
-	}
-	break;
-
-	case KGSL_PROP_MACROTILING_CHANNELS:
-	{
-		unsigned int channel;
-
-		if (sizebytes < sizeof(unsigned int)) {
-			status = -EINVAL;
-			break;
-		}
-
-		if (of_property_read_u32(device->pdev->dev.of_node,
-			"qcom,macrotiling-channels", &channel)) {
-			/* return error when not set in device tree
-			 * and let user decide.
-			 */
-			status = -EINVAL;
-			break;
-		}
-
-		if (copy_to_user(value, &channel, sizeof(channel))) {
-			status = -EFAULT;
-			break;
-		}
-		status = 0;
-	}
-	break;
-
-	default:
-		status = -EINVAL;
-	}
-
-	return status;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int adreno_set_constraint(struct kgsl_device *device,
@@ -4050,10 +2834,7 @@ static int adreno_setproperty(struct kgsl_device_private *dev_priv,
 		}
 		break;
 	default:
-<<<<<<< HEAD
 		status = -ENODEV;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 
@@ -4138,22 +2919,11 @@ int adreno_soft_reset(struct kgsl_device *device)
 {
 	struct adreno_device *adreno_dev = ADRENO_DEVICE(device);
 	struct adreno_gpudev *gpudev = ADRENO_GPU_DEVICE(adreno_dev);
-<<<<<<< HEAD
 	int ret;
 
 	ret = gmu_core_dev_oob_set(device, oob_gpu);
 	if (ret)
 		return ret;
-=======
-	struct gmu_dev_ops *gmu_dev_ops = GMU_DEVICE_OPS(device);
-	int ret;
-
-	if (GMU_DEV_OP_VALID(gmu_dev_ops, oob_set)) {
-		ret = gmu_dev_ops->oob_set(adreno_dev, oob_gpu);
-		if (ret)
-			return ret;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kgsl_pwrctrl_change_state(device, KGSL_STATE_AWARE);
 	adreno_set_active_ctxs_null(adreno_dev);
@@ -4173,12 +2943,7 @@ int adreno_soft_reset(struct kgsl_device *device)
 	else
 		ret = _soft_reset(adreno_dev);
 	if (ret) {
-<<<<<<< HEAD
 		gmu_core_dev_oob_clear(device, oob_gpu);
-=======
-		if (GMU_DEV_OP_VALID(gmu_dev_ops, oob_clear))
-			gmu_dev_ops->oob_clear(adreno_dev, oob_gpu);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
@@ -4219,14 +2984,7 @@ int adreno_soft_reset(struct kgsl_device *device)
 	 * otherwise do a full ringbuffer restart
 	 */
 
-<<<<<<< HEAD
 	ret = adreno_ringbuffer_start(adreno_dev);
-=======
-	if (ADRENO_FEATURE(adreno_dev, ADRENO_WARM_START))
-		ret = adreno_ringbuffer_start(adreno_dev, ADRENO_START_WARM);
-	else
-		ret = adreno_ringbuffer_start(adreno_dev, ADRENO_START_COLD);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret == 0) {
 		device->reset_counter++;
 		set_bit(ADRENO_DEVICE_STARTED, &adreno_dev->priv);
@@ -4235,12 +2993,7 @@ int adreno_soft_reset(struct kgsl_device *device)
 	/* Restore physical performance counter values after soft reset */
 	adreno_perfcounter_restore(adreno_dev);
 
-<<<<<<< HEAD
 	gmu_core_dev_oob_clear(device, oob_gpu);
-=======
-	if (GMU_DEV_OP_VALID(gmu_dev_ops, oob_clear))
-		gmu_dev_ops->oob_clear(adreno_dev, oob_gpu);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -4305,7 +3058,6 @@ void adreno_spin_idle_debug(struct adreno_device *adreno_dev,
 
 	dev_err(device->dev, " hwfault=%8.8X\n", hwfault);
 
-<<<<<<< HEAD
 	/*
 	 * If CP is stuck, gmu may not perform as expected. So force a gmu
 	 * snapshot which captures entire state as well as sets the gmu fault
@@ -4315,9 +3067,6 @@ void adreno_spin_idle_debug(struct adreno_device *adreno_dev,
 		gmu_core_snapshot(device);
 	else
 		kgsl_device_snapshot(device, NULL, false);
-=======
-	kgsl_device_snapshot(device, NULL, adreno_gmu_gpu_fault(adreno_dev));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -4345,12 +3094,6 @@ int adreno_spin_idle(struct adreno_device *adreno_dev, unsigned int timeout)
 		if (adreno_isidle(KGSL_DEVICE(adreno_dev)))
 			return 0;
 
-<<<<<<< HEAD
-=======
-		/* relax tight loop */
-		cond_resched();
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} while (time_before(jiffies, wait));
 
 	/*
@@ -4426,7 +3169,6 @@ static int adreno_suspend_context(struct kgsl_device *device)
 	return adreno_idle(device);
 }
 
-<<<<<<< HEAD
 static void adreno_retry_rbbm_read(struct kgsl_device *device,
 		unsigned int offsetwords, unsigned int *value)
 {
@@ -4464,41 +3206,6 @@ static bool adreno_is_rbbm_batch_reg(struct adreno_device *adreno_dev,
 	}
 
 	return false;
-=======
-/**
- * adreno_read - General read function to read adreno device memory
- * @device - Pointer to the GPU device struct (for adreno device)
- * @base - Base address (kernel virtual) where the device memory is mapped
- * @offsetwords - Offset in words from the base address, of the memory that
- * is to be read
- * @value - Value read from the device memory
- * @mem_len - Length of the device memory mapped to the kernel
- */
-static void adreno_read(struct kgsl_device *device, void __iomem *base,
-		unsigned int offsetwords, unsigned int *value,
-		unsigned int mem_len)
-{
-
-	void __iomem *reg;
-
-	/* Make sure we're not reading from invalid memory */
-	if (WARN(offsetwords * sizeof(uint32_t) >= mem_len,
-		"Out of bounds register read: 0x%x/0x%x\n",
-			offsetwords, mem_len >> 2))
-		return;
-
-	reg = (base + (offsetwords << 2));
-
-	if (!in_interrupt())
-		kgsl_pre_hwaccess(device);
-
-	*value = __raw_readl(reg);
-	/*
-	 * ensure this read finishes before the next one.
-	 * i.e. act like normal readl()
-	 */
-	rmb();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -4509,7 +3216,6 @@ static void adreno_read(struct kgsl_device *device, void __iomem *base,
 static void adreno_regread(struct kgsl_device *device, unsigned int offsetwords,
 	unsigned int *value)
 {
-<<<<<<< HEAD
 	/* Make sure we're not reading from invalid memory */
 	if (WARN(offsetwords * sizeof(uint32_t) >= device->reg_len,
 		"Out of bounds register read: 0x%x/0x%x\n",
@@ -4526,23 +3232,6 @@ static void adreno_regread(struct kgsl_device *device, unsigned int offsetwords,
 	if ((*value == 0xdeafbead) &&
 		adreno_is_rbbm_batch_reg(ADRENO_DEVICE(device), offsetwords))
 		adreno_retry_rbbm_read(device, offsetwords, value);
-=======
-	adreno_read(device, device->reg_virt, offsetwords, value,
-						device->reg_len);
-}
-
-/**
- * adreno_shadermem_regread - Used to read GPU (adreno) shader memory
- * @device - GPU device whose shader memory is to be read
- * @offsetwords - Offset in words, of the shader memory address to be read
- * @value - Pointer to where the read shader mem value is to be stored
- */
-void adreno_shadermem_regread(struct kgsl_device *device,
-	unsigned int offsetwords, unsigned int *value)
-{
-	adreno_read(device, device->shader_mem_virt, offsetwords, value,
-					device->shader_mem_len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void adreno_regwrite(struct kgsl_device *device,
@@ -4631,7 +3320,6 @@ int adreno_gmu_fenced_write(struct adreno_device *adreno_dev,
 	unsigned int status, i;
 	struct adreno_gpudev *gpudev = ADRENO_GPU_DEVICE(adreno_dev);
 	unsigned int reg_offset = gpudev->reg_offsets->offsets[offset];
-<<<<<<< HEAD
 	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
 	u64 ts1, ts2;
 
@@ -4641,14 +3329,6 @@ int adreno_gmu_fenced_write(struct adreno_device *adreno_dev,
 		return 0;
 
 	ts1 = gmu_core_dev_read_ao_counter(device);
-=======
-
-	adreno_writereg(adreno_dev, offset, val);
-
-	if (!gmu_core_gpmu_isenabled(KGSL_DEVICE(adreno_dev)))
-		return 0;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < GMU_CORE_LONG_WAKEUP_RETRY_LIMIT; i++) {
 		/*
 		 * Make sure the previous register write is posted before
@@ -4672,7 +3352,6 @@ int adreno_gmu_fenced_write(struct adreno_device *adreno_dev,
 		adreno_writereg(adreno_dev, offset, val);
 
 		if (i == GMU_CORE_SHORT_WAKEUP_RETRY_LIMIT)
-<<<<<<< HEAD
 			dev_err(device->dev,
 				"Waited %d usecs to write fenced register 0x%x, status 0x%x. Continuing to wait...\n",
 				(GMU_CORE_SHORT_WAKEUP_RETRY_LIMIT *
@@ -4690,44 +3369,6 @@ int adreno_gmu_fenced_write(struct adreno_device *adreno_dev,
 	return -ETIMEDOUT;
 }
 
-=======
-			dev_err(adreno_dev->dev.dev,
-				"Waited %d usecs to write fenced register 0x%x. Continuing to wait...\n",
-				(GMU_CORE_SHORT_WAKEUP_RETRY_LIMIT *
-				GMU_CORE_WAKEUP_DELAY_US),
-				reg_offset);
-	}
-
-	dev_err(adreno_dev->dev.dev,
-		"Timed out waiting %d usecs to write fenced register 0x%x\n",
-		GMU_CORE_LONG_WAKEUP_RETRY_LIMIT * GMU_CORE_WAKEUP_DELAY_US,
-		reg_offset);
-	return -ETIMEDOUT;
-}
-
-unsigned int adreno_gmu_ifpc_show(struct adreno_device *adreno_dev)
-{
-	struct gmu_dev_ops *gmu_dev_ops = GMU_DEVICE_OPS(
-			KGSL_DEVICE(adreno_dev));
-
-	if (GMU_DEV_OP_VALID(gmu_dev_ops, ifpc_show))
-		return gmu_dev_ops->ifpc_show(adreno_dev);
-
-	return 0;
-}
-
-int adreno_gmu_ifpc_store(struct adreno_device *adreno_dev, unsigned int val)
-{
-	struct gmu_dev_ops *gmu_dev_ops = GMU_DEVICE_OPS(
-			KGSL_DEVICE(adreno_dev));
-
-	if (GMU_DEV_OP_VALID(gmu_dev_ops, ifpc_store))
-		return gmu_dev_ops->ifpc_store(adreno_dev, val);
-
-	return -EINVAL;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 bool adreno_is_cx_dbgc_register(struct kgsl_device *device,
 		unsigned int offsetwords)
 {
@@ -4796,7 +3437,6 @@ void adreno_cx_misc_regread(struct adreno_device *adreno_dev,
 	 */
 	rmb();
 }
-<<<<<<< HEAD
 void adreno_rscc_regread(struct adreno_device *adreno_dev,
 	unsigned int offsetwords, unsigned int *value)
 {
@@ -4834,8 +3474,6 @@ void adreno_isense_regread(struct adreno_device *adreno_dev,
 	 */
 	rmb();
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void adreno_cx_misc_regwrite(struct adreno_device *adreno_dev,
 	unsigned int offsetwords, unsigned int value)
@@ -5068,7 +3706,6 @@ static void adreno_power_stats(struct kgsl_device *device,
 	struct kgsl_pwrctrl *pwr = &device->pwrctrl;
 	struct adreno_busy_data *busy = &adreno_dev->busy_data;
 	int64_t adj = 0;
-<<<<<<< HEAD
 	u64 gpu_busy;
 
 	memset(stats, 0, sizeof(*stats));
@@ -5092,35 +3729,6 @@ static void adreno_power_stats(struct kgsl_device *device,
 		/* clock sourced from GFX3D */
 		stats->busy_time = adreno_ticks_to_us(gpu_busy,
 			kgsl_pwrctrl_active_freq(pwr));
-=======
-
-	memset(stats, 0, sizeof(*stats));
-
-	/* Get the busy cycles counted since the counter was last reset */
-	if (adreno_dev->perfctr_pwr_lo != 0) {
-		uint64_t gpu_busy;
-
-		gpu_busy = counter_delta(device, adreno_dev->perfctr_pwr_lo,
-			&busy->gpu_busy);
-
-		if (gpudev->read_throttling_counters) {
-			adj = gpudev->read_throttling_counters(adreno_dev);
-			if (adj < 0 && -adj > gpu_busy)
-				adj = 0;
-
-			gpu_busy += adj;
-		}
-
-		if (adreno_is_a6xx(adreno_dev)) {
-			/* clock sourced from XO */
-			stats->busy_time = gpu_busy * 10;
-			do_div(stats->busy_time, 192);
-		} else {
-			/* clock sourced from GFX3D */
-			stats->busy_time = adreno_ticks_to_us(gpu_busy,
-				kgsl_pwrctrl_active_freq(pwr));
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (device->pwrctrl.bus_control) {
@@ -5277,23 +3885,14 @@ static void adreno_iommu_sync(struct kgsl_device *device, bool sync)
 	if (!ADRENO_QUIRK(ADRENO_DEVICE(device), ADRENO_QUIRK_IOMMU_SYNC))
 		return;
 
-<<<<<<< HEAD
 	if (sync) {
-=======
-	if (sync == true) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_lock(&kgsl_mmu_sync);
 		desc.args[0] = true;
 		desc.arginfo = SCM_ARGS(1);
 		ret = scm_call2_atomic(SCM_SIP_FNID(SCM_SVC_PWR, 0x8), &desc);
 		if (ret)
-<<<<<<< HEAD
 			dev_err(device->dev,
 				     "MMU sync with Hypervisor off %x\n", ret);
-=======
-			KGSL_DRV_ERR(device,
-				"MMU sync with Hypervisor off %x\n", ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		desc.args[0] = false;
 		desc.arginfo = SCM_ARGS(1);
@@ -5302,13 +3901,8 @@ static void adreno_iommu_sync(struct kgsl_device *device, bool sync)
 	}
 }
 
-<<<<<<< HEAD
 static void _regulator_disable(struct device *dev,
 		struct kgsl_regulator *regulator, unsigned int timeout)
-=======
-static void
-_regulator_disable(struct kgsl_regulator *regulator, unsigned int timeout)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long wait_time;
 
@@ -5329,11 +3923,7 @@ _regulator_disable(struct kgsl_regulator *regulator, unsigned int timeout)
 	if (!regulator_is_enabled(regulator->reg))
 		return;
 
-<<<<<<< HEAD
 	dev_err(dev, "regulator '%s' disable timed out\n", regulator->name);
-=======
-	KGSL_CORE_ERR("regulator '%s' disable timed out\n", regulator->name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void adreno_regulator_disable_poll(struct kgsl_device *device)
@@ -5347,11 +3937,7 @@ static void adreno_regulator_disable_poll(struct kgsl_device *device)
 	adreno_iommu_sync(device, true);
 
 	for (i = KGSL_MAX_REGULATORS - 1; i >= 0; i--)
-<<<<<<< HEAD
 		_regulator_disable(device->dev, &pwr->regulators[i], timeout);
-=======
-		_regulator_disable(&pwr->regulators[i], timeout);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	adreno_iommu_sync(device, false);
 }
@@ -5368,92 +3954,11 @@ static void adreno_gpu_model(struct kgsl_device *device, char *str,
 			 ADRENO_CHIPID_PATCH(adreno_dev->chipid) + 1);
 }
 
-<<<<<<< HEAD
 static bool adreno_is_hwcg_on(struct kgsl_device *device)
 {
 	struct adreno_device *adreno_dev = ADRENO_DEVICE(device);
 
 	return test_bit(ADRENO_HWCG_CTRL, &adreno_dev->pwrctrl_flag);
-=======
-static int adreno_suspend_device(struct kgsl_device *device,
-				pm_message_t pm_state)
-{
-	struct adreno_device *adreno_dev = ADRENO_DEVICE(device);
-	struct adreno_gpudev *gpudev = ADRENO_GPU_DEVICE(adreno_dev);
-	int pm_event = pm_state.event;
-	int ret = 0;
-
-	if (device->state == KGSL_STATE_SUSPEND)
-		adreno_dispatcher_halt(device);
-
-	if (pm_event != PM_EVENT_SUSPEND) {
-		if (gpudev->zap_shader_unload != NULL)
-			gpudev->zap_shader_unload(adreno_dev);
-
-		if (gpudev->secure_pt_hibernate != NULL)
-			ret = gpudev->secure_pt_hibernate(adreno_dev);
-	}
-
-	return ret;
-}
-
-static int adreno_resume_device(struct kgsl_device *device,
-				pm_message_t pm_state)
-{
-	struct adreno_device *adreno_dev = ADRENO_DEVICE(device);
-	struct adreno_gpudev *gpudev = ADRENO_GPU_DEVICE(adreno_dev);
-	int pm_event = pm_state.event;
-	int ret;
-
-	if (pm_event != PM_EVENT_RESUME) {
-		if (gpudev->secure_pt_restore != NULL) {
-			ret = gpudev->secure_pt_restore(adreno_dev);
-			if (ret)
-				return ret;
-		}
-
-		if (!adreno_is_a640v1(adreno_dev) &&
-			kgsl_mmu_is_perprocess(&device->mmu)) {
-			ret = adreno_program_smmu_aperture(device);
-			if (ret)
-				return ret;
-		}
-
-		if (gmu_core_isenabled(device)) {
-			if (!gmu_core_is_initialized(device)) {
-				clear_bit(GMU_BOOT_INIT_DONE,
-						&device->gmu_core.flags);
-				clear_bit(GMU_RSCC_SLEEP_SEQ_DONE,
-						&device->gmu_core.flags);
-			}
-		}
-
-		if (device->pwrscale.devfreqptr) {
-			ret = msm_adreno_devfreq_init_tz(
-					device->pwrscale.devfreqptr);
-			if (ret)
-				return ret;
-		}
-	}
-
-	if (device->state == KGSL_STATE_SUSPEND)
-		adreno_dispatcher_unhalt(device);
-
-	return 0;
-}
-
-u32 adreno_get_ucode_version(const u32 *data)
-{
-	u32 version;
-
-	version = data[1];
-
-	if ((version & 0xf) != 0xa)
-		return version;
-
-	version &= ~0xfff;
-	return  version | ((data[3] & 0xfff000) >> 12);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct kgsl_functable adreno_functable = {
@@ -5497,15 +4002,10 @@ static const struct kgsl_functable adreno_functable = {
 	.clk_set_options = adreno_clk_set_options,
 	.gpu_model = adreno_gpu_model,
 	.stop_fault_timer = adreno_dispatcher_stop_fault_timer,
-<<<<<<< HEAD
 	.dispatcher_halt = adreno_dispatcher_halt,
 	.dispatcher_unhalt = adreno_dispatcher_unhalt,
 	.query_property_list = adreno_query_property_list,
 	.is_hwcg_on = adreno_is_hwcg_on,
-=======
-	.suspend_device = adreno_suspend_device,
-	.resume_device = adreno_resume_device,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct platform_driver adreno_platform_driver = {
@@ -5515,10 +4015,6 @@ static struct platform_driver adreno_platform_driver = {
 	.resume = kgsl_resume_driver,
 	.id_table = adreno_id_table,
 	.driver = {
-<<<<<<< HEAD
-=======
-		.owner = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.name = DEVICE_3D_NAME,
 		.pm = &kgsl_pm_ops,
 		.of_match_table = adreno_match_table,
@@ -5549,20 +4045,12 @@ static int adreno_busmon_probe(struct platform_device *pdev)
 static struct platform_driver kgsl_bus_platform_driver = {
 	.probe = adreno_busmon_probe,
 	.driver = {
-<<<<<<< HEAD
-=======
-		.owner = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.name = "kgsl-busmon",
 		.of_match_table = busmon_match_table,
 	}
 };
 
-<<<<<<< HEAD
 static int __init kgsl_3d_init(void)
-=======
-static int __kgsl_3d_init(void *arg)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret;
 
@@ -5577,24 +4065,6 @@ static int __kgsl_3d_init(void *arg)
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
-static int __init kgsl_3d_init(void)
-{
-#ifdef CONFIG_PLATFORM_AUTO
-	struct task_struct *kgsl_3d_init_task =
-		kthread_run(__kgsl_3d_init, NULL, "kgsl_3d_init");
-	if (IS_ERR(kgsl_3d_init_task))
-		return PTR_ERR(kgsl_3d_init_task);
-	else
-		return 0;
-#else
-	__kgsl_3d_init(NULL);
-	return 0;
-#endif
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void __exit kgsl_3d_exit(void)
 {
 	platform_driver_unregister(&adreno_platform_driver);

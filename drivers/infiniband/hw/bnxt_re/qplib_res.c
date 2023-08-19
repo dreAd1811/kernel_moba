@@ -104,22 +104,12 @@ static int __alloc_pbl(struct pci_dev *pdev, struct bnxt_qplib_pbl *pbl,
 
 	if (!sghead) {
 		for (i = 0; i < pages; i++) {
-<<<<<<< HEAD
 			pbl->pg_arr[i] = dma_zalloc_coherent(&pdev->dev,
 							     pbl->pg_size,
 							     &pbl->pg_map_arr[i],
 							     GFP_KERNEL);
 			if (!pbl->pg_arr[i])
 				goto fail;
-=======
-			pbl->pg_arr[i] = dma_alloc_coherent(&pdev->dev,
-							    pbl->pg_size,
-							    &pbl->pg_map_arr[i],
-							    GFP_KERNEL);
-			if (!pbl->pg_arr[i])
-				goto fail;
-			memset(pbl->pg_arr[i], 0, pbl->pg_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pbl->pg_count++;
 		}
 	} else {
@@ -715,17 +705,8 @@ static int bnxt_qplib_alloc_dpi_tbl(struct bnxt_qplib_res     *res,
 	dpit->max = dbr_len / PAGE_SIZE;
 
 	dpit->app_tbl = kcalloc(dpit->max, sizeof(void *), GFP_KERNEL);
-<<<<<<< HEAD
 	if (!dpit->app_tbl)
 		goto unmap_io;
-=======
-	if (!dpit->app_tbl) {
-		pci_iounmap(res->pdev, dpit->dbr_bar_reg_iomem);
-		dev_err(&res->pdev->dev,
-			"QPLIB: DPI app tbl allocation failed");
-		return -ENOMEM;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	bytes = dpit->max >> 3;
 	if (!bytes)
@@ -733,31 +714,18 @@ static int bnxt_qplib_alloc_dpi_tbl(struct bnxt_qplib_res     *res,
 
 	dpit->tbl = kmalloc(bytes, GFP_KERNEL);
 	if (!dpit->tbl) {
-<<<<<<< HEAD
 		kfree(dpit->app_tbl);
 		dpit->app_tbl = NULL;
 		goto unmap_io;
-=======
-		pci_iounmap(res->pdev, dpit->dbr_bar_reg_iomem);
-		kfree(dpit->app_tbl);
-		dpit->app_tbl = NULL;
-		dev_err(&res->pdev->dev,
-			"QPLIB: DPI tbl allocation failed for size = %d",
-			bytes);
-		return -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	memset((u8 *)dpit->tbl, 0xFF, bytes);
 
 	return 0;
-<<<<<<< HEAD
 
 unmap_io:
 	pci_iounmap(res->pdev, dpit->dbr_bar_reg_iomem);
 	return -ENOMEM;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* PKEYs */

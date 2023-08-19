@@ -372,11 +372,7 @@ int drm_legacy_addctx(struct drm_device *dev, void *data,
 		ctx->handle = drm_legacy_ctxbitmap_next(dev);
 	}
 	DRM_DEBUG("%d\n", ctx->handle);
-<<<<<<< HEAD
 	if (ctx->handle < 0) {
-=======
-	if (ctx->handle == -1) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		DRM_DEBUG("Not enough free contexts.\n");
 		/* Should this return -EBUSY instead? */
 		return -ENOMEM;

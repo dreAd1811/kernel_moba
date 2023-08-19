@@ -136,11 +136,7 @@ isert_create_qp(struct isert_conn *isert_conn,
 	attr.cap.max_send_wr = ISERT_QP_MAX_REQ_DTOS + 1;
 	attr.cap.max_recv_wr = ISERT_QP_MAX_RECV_DTOS + 1;
 	attr.cap.max_rdma_ctxs = ISCSI_DEF_XMIT_CMDS_MAX;
-<<<<<<< HEAD
 	attr.cap.max_send_sge = device->ib_device->attrs.max_send_sge;
-=======
-	attr.cap.max_send_sge = device->ib_device->attrs.max_sge;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	attr.cap.max_recv_sge = 1;
 	attr.sq_sig_type = IB_SIGNAL_REQ_WR;
 	attr.qp_type = IB_QPT_RC;
@@ -185,14 +181,9 @@ isert_alloc_rx_descriptors(struct isert_conn *isert_conn)
 	u64 dma_addr;
 	int i, j;
 
-<<<<<<< HEAD
 	isert_conn->rx_descs = kcalloc(ISERT_QP_MAX_RECV_DTOS,
 				       sizeof(struct iser_rx_desc),
 				       GFP_KERNEL);
-=======
-	isert_conn->rx_descs = kzalloc(ISERT_QP_MAX_RECV_DTOS *
-				sizeof(struct iser_rx_desc), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!isert_conn->rx_descs)
 		return -ENOMEM;
 
@@ -308,12 +299,8 @@ isert_create_device_ib_res(struct isert_device *device)
 	struct ib_device *ib_dev = device->ib_device;
 	int ret;
 
-<<<<<<< HEAD
 	isert_dbg("devattr->max_send_sge: %d devattr->max_recv_sge %d\n",
 		  ib_dev->attrs.max_send_sge, ib_dev->attrs.max_recv_sge);
-=======
-	isert_dbg("devattr->max_sge: %d\n", ib_dev->attrs.max_sge);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	isert_dbg("devattr->max_sge_rd: %d\n", ib_dev->attrs.max_sge_rd);
 
 	ret = isert_alloc_comps(device);
@@ -804,18 +791,11 @@ isert_cma_handler(struct rdma_cm_id *cma_id, struct rdma_cm_event *event)
 		 * the rdma cm id
 		 */
 		return 1;
-<<<<<<< HEAD
 	case RDMA_CM_EVENT_REJECTED:
 		isert_info("Connection rejected: %s\n",
 			   rdma_reject_msg(cma_id, event->status));
 		/* fall through */
 	case RDMA_CM_EVENT_UNREACHABLE:
-=======
-	case RDMA_CM_EVENT_REJECTED:       /* FALLTHRU */
-		isert_info("Connection rejected: %s\n",
-			   rdma_reject_msg(cma_id, event->status));
-	case RDMA_CM_EVENT_UNREACHABLE:    /* FALLTHRU */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case RDMA_CM_EVENT_CONNECT_ERROR:
 		ret = isert_connect_error(cma_id);
 		break;
@@ -830,11 +810,7 @@ isert_cma_handler(struct rdma_cm_id *cma_id, struct rdma_cm_event *event)
 static int
 isert_post_recvm(struct isert_conn *isert_conn, u32 count)
 {
-<<<<<<< HEAD
 	struct ib_recv_wr *rx_wr;
-=======
-	struct ib_recv_wr *rx_wr, *rx_wr_failed;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i, ret;
 	struct iser_rx_desc *rx_desc;
 
@@ -850,12 +826,7 @@ isert_post_recvm(struct isert_conn *isert_conn, u32 count)
 	rx_wr--;
 	rx_wr->next = NULL; /* mark end of work requests list */
 
-<<<<<<< HEAD
 	ret = ib_post_recv(isert_conn->qp, isert_conn->rx_wr, NULL);
-=======
-	ret = ib_post_recv(isert_conn->qp, isert_conn->rx_wr,
-			   &rx_wr_failed);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		isert_err("ib_post_recv() failed with ret: %d\n", ret);
 
@@ -865,11 +836,7 @@ isert_post_recvm(struct isert_conn *isert_conn, u32 count)
 static int
 isert_post_recv(struct isert_conn *isert_conn, struct iser_rx_desc *rx_desc)
 {
-<<<<<<< HEAD
 	struct ib_recv_wr rx_wr;
-=======
-	struct ib_recv_wr *rx_wr_failed, rx_wr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	if (!rx_desc->in_use) {
@@ -886,11 +853,7 @@ isert_post_recv(struct isert_conn *isert_conn, struct iser_rx_desc *rx_desc)
 	rx_wr.num_sge = 1;
 	rx_wr.next = NULL;
 
-<<<<<<< HEAD
 	ret = ib_post_recv(isert_conn->qp, &rx_wr, NULL);
-=======
-	ret = ib_post_recv(isert_conn->qp, &rx_wr, &rx_wr_failed);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		isert_err("ib_post_recv() failed with ret: %d\n", ret);
 
@@ -901,11 +864,7 @@ static int
 isert_login_post_send(struct isert_conn *isert_conn, struct iser_tx_desc *tx_desc)
 {
 	struct ib_device *ib_dev = isert_conn->cm_id->device;
-<<<<<<< HEAD
 	struct ib_send_wr send_wr;
-=======
-	struct ib_send_wr send_wr, *send_wr_failed;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	ib_dma_sync_single_for_device(ib_dev, tx_desc->dma_addr,
@@ -920,11 +879,7 @@ isert_login_post_send(struct isert_conn *isert_conn, struct iser_tx_desc *tx_des
 	send_wr.opcode	= IB_WR_SEND;
 	send_wr.send_flags = IB_SEND_SIGNALED;
 
-<<<<<<< HEAD
 	ret = ib_post_send(isert_conn->qp, &send_wr, NULL);
-=======
-	ret = ib_post_send(isert_conn->qp, &send_wr, &send_wr_failed);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		isert_err("ib_post_send() failed, ret: %d\n", ret);
 
@@ -1012,11 +967,7 @@ isert_init_send_wr(struct isert_conn *isert_conn, struct isert_cmd *isert_cmd,
 static int
 isert_login_post_recv(struct isert_conn *isert_conn)
 {
-<<<<<<< HEAD
 	struct ib_recv_wr rx_wr;
-=======
-	struct ib_recv_wr rx_wr, *rx_wr_fail;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ib_sge sge;
 	int ret;
 
@@ -1035,11 +986,7 @@ isert_login_post_recv(struct isert_conn *isert_conn)
 	rx_wr.sg_list = &sge;
 	rx_wr.num_sge = 1;
 
-<<<<<<< HEAD
 	ret = ib_post_recv(isert_conn->qp, &rx_wr, NULL);
-=======
-	ret = ib_post_recv(isert_conn->qp, &rx_wr, &rx_wr_fail);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		isert_err("ib_post_recv() failed: %d\n", ret);
 
@@ -1633,13 +1580,7 @@ isert_put_cmd(struct isert_cmd *isert_cmd, bool comp_err)
 			transport_generic_free_cmd(&cmd->se_cmd, 0);
 			break;
 		}
-<<<<<<< HEAD
 		/* fall through */
-=======
-		/*
-		 * Fall-through
-		 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		iscsit_release_cmd(cmd);
 		break;
@@ -1817,14 +1758,9 @@ isert_do_control_comp(struct work_struct *work)
 	switch (cmd->i_state) {
 	case ISTATE_SEND_TASKMGTRSP:
 		iscsit_tmr_post_handler(cmd, cmd->conn);
-<<<<<<< HEAD
 		/* fall through */
 	case ISTATE_SEND_REJECT:
 	case ISTATE_SEND_TEXTRSP:
-=======
-	case ISTATE_SEND_REJECT:   /* FALLTHRU */
-	case ISTATE_SEND_TEXTRSP:  /* FALLTHRU */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cmd->i_state = ISTATE_SENT_STATUS;
 		isert_completion_put(&isert_cmd->tx_desc, isert_cmd,
 				     ib_dev, false);
@@ -1893,10 +1829,6 @@ isert_send_done(struct ib_cq *cq, struct ib_wc *wc)
 static int
 isert_post_response(struct isert_conn *isert_conn, struct isert_cmd *isert_cmd)
 {
-<<<<<<< HEAD
-=======
-	struct ib_send_wr *wr_failed;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	ret = isert_post_recv(isert_conn, isert_cmd->rx_desc);
@@ -1905,12 +1837,7 @@ isert_post_response(struct isert_conn *isert_conn, struct isert_cmd *isert_cmd)
 		return ret;
 	}
 
-<<<<<<< HEAD
 	ret = ib_post_send(isert_conn->qp, &isert_cmd->tx_desc.send_wr, NULL);
-=======
-	ret = ib_post_send(isert_conn->qp, &isert_cmd->tx_desc.send_wr,
-			   &wr_failed);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		isert_err("ib_post_send failed with %d\n", ret);
 		return ret;
@@ -2186,7 +2113,6 @@ isert_set_sig_attrs(struct se_cmd *se_cmd, struct ib_sig_attrs *sig_attrs)
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 	if (se_cmd->prot_checks & TARGET_DIF_CHECK_GUARD)
 		sig_attrs->check_mask |= IB_SIG_CHECK_GUARD;
 	if (se_cmd->prot_checks & TARGET_DIF_CHECK_APPTAG)
@@ -2194,12 +2120,6 @@ isert_set_sig_attrs(struct se_cmd *se_cmd, struct ib_sig_attrs *sig_attrs)
 	if (se_cmd->prot_checks & TARGET_DIF_CHECK_REFTAG)
 		sig_attrs->check_mask |= IB_SIG_CHECK_REFTAG;
 
-=======
-	sig_attrs->check_mask =
-	       (se_cmd->prot_checks & TARGET_DIF_CHECK_GUARD  ? 0xc0 : 0) |
-	       (se_cmd->prot_checks & TARGET_DIF_CHECK_APPTAG ? 0x30 : 0) |
-	       (se_cmd->prot_checks & TARGET_DIF_CHECK_REFTAG ? 0x0f : 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

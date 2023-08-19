@@ -262,11 +262,7 @@ void do_page_fault(struct pt_regs *regs, unsigned long code,
 	struct task_struct *tsk;
 	struct mm_struct *mm;
 	unsigned long acc_type;
-<<<<<<< HEAD
 	vm_fault_t fault = 0;
-=======
-	int fault = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int flags;
 
 	if (faulthandler_disabled())
@@ -357,37 +353,22 @@ bad_area:
 	up_read(&mm->mmap_sem);
 
 	if (user_mode(regs)) {
-<<<<<<< HEAD
 		int signo, si_code;
-=======
-		struct siginfo si;
-		unsigned int lsb = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		switch (code) {
 		case 15:	/* Data TLB miss fault/Data page fault */
 			/* send SIGSEGV when outside of vma */
 			if (!vma ||
 			    address < vma->vm_start || address >= vma->vm_end) {
-<<<<<<< HEAD
 				signo = SIGSEGV;
 				si_code = SEGV_MAPERR;
-=======
-				si.si_signo = SIGSEGV;
-				si.si_code = SEGV_MAPERR;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				break;
 			}
 
 			/* send SIGSEGV for wrong permissions */
 			if ((vma->vm_flags & acc_type) != acc_type) {
-<<<<<<< HEAD
 				signo = SIGSEGV;
 				si_code = SEGV_ACCERR;
-=======
-				si.si_signo = SIGSEGV;
-				si.si_code = SEGV_ACCERR;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				break;
 			}
 
@@ -395,18 +376,12 @@ bad_area:
 			/* fall through */
 		case 17:	/* NA data TLB miss / page fault */
 		case 18:	/* Unaligned access - PCXS only */
-<<<<<<< HEAD
 			signo = SIGBUS;
 			si_code = (code == 18) ? BUS_ADRALN : BUS_ADRERR;
-=======
-			si.si_signo = SIGBUS;
-			si.si_code = (code == 18) ? BUS_ADRALN : BUS_ADRERR;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		case 16:	/* Non-access instruction TLB miss fault */
 		case 26:	/* PCXL: Data memory access rights trap */
 		default:
-<<<<<<< HEAD
 			signo = SIGSEGV;
 			si_code = (code == 26) ? SEGV_ACCERR : SEGV_MAPERR;
 			break;
@@ -435,39 +410,6 @@ bad_area:
 		show_signal_msg(regs, code, address, tsk, vma);
 
 		force_sig_fault(signo, si_code, (void __user *) address, current);
-=======
-			si.si_signo = SIGSEGV;
-			si.si_code = (code == 26) ? SEGV_ACCERR : SEGV_MAPERR;
-			break;
-		}
-
-#ifdef CONFIG_MEMORY_FAILURE
-		if (fault & (VM_FAULT_HWPOISON|VM_FAULT_HWPOISON_LARGE)) {
-			printk(KERN_ERR
-	"MCE: Killing %s:%d due to hardware memory corruption fault at %08lx\n",
-			tsk->comm, tsk->pid, address);
-			si.si_signo = SIGBUS;
-			si.si_code = BUS_MCEERR_AR;
-		}
-#endif
-
-		/*
-		 * Either small page or large page may be poisoned.
-		 * In other words, VM_FAULT_HWPOISON_LARGE and
-		 * VM_FAULT_HWPOISON are mutually exclusive.
-		 */
-		if (fault & VM_FAULT_HWPOISON_LARGE)
-			lsb = hstate_index_to_shift(VM_FAULT_GET_HINDEX(fault));
-		else if (fault & VM_FAULT_HWPOISON)
-			lsb = PAGE_SHIFT;
-		else
-			show_signal_msg(regs, code, address, tsk, vma);
-		si.si_addr_lsb = lsb;
-
-		si.si_errno = 0;
-		si.si_addr = (void __user *) address;
-		force_sig_info(si.si_signo, &si, current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 

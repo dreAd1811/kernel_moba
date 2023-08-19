@@ -8,13 +8,8 @@ void acpi_reboot(void)
 {
 	struct acpi_generic_address *rr;
 	struct pci_bus *bus0;
-<<<<<<< HEAD
 	unsigned int devfn;
 	u8 reset_value;
-=======
-	u8 reset_value;
-	unsigned int devfn;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (acpi_disabled)
 		return;
@@ -45,11 +40,7 @@ void acpi_reboot(void)
 		/* Form PCI device/function pair. */
 		devfn = PCI_DEVFN((rr->address >> 32) & 0xffff,
 				  (rr->address >> 16) & 0xffff);
-<<<<<<< HEAD
 		printk(KERN_DEBUG "Resetting with ACPI PCI RESET_REG.\n");
-=======
-		printk(KERN_DEBUG "Resetting with ACPI PCI RESET_REG.");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Write the value that resets us. */
 		pci_bus_write_config_byte(bus0, devfn,
 				(rr->address & 0xffff), reset_value);

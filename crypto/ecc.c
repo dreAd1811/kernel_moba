@@ -515,11 +515,7 @@ static void vli_mmod_fast_256(u64 *result, const u64 *product,
 static bool vli_mmod_fast(u64 *result, u64 *product,
 			  const u64 *curve_prime, unsigned int ndigits)
 {
-<<<<<<< HEAD
 	u64 tmp[2 * ECC_MAX_DIGITS];
-=======
-	u64 tmp[2 * ndigits];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (ndigits) {
 	case 3:
@@ -540,11 +536,7 @@ static bool vli_mmod_fast(u64 *result, u64 *product,
 static void vli_mod_mult_fast(u64 *result, const u64 *left, const u64 *right,
 			      const u64 *curve_prime, unsigned int ndigits)
 {
-<<<<<<< HEAD
 	u64 product[2 * ECC_MAX_DIGITS];
-=======
-	u64 product[2 * ndigits];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vli_mult(product, left, right, ndigits);
 	vli_mmod_fast(result, product, curve_prime, ndigits);
@@ -554,11 +546,7 @@ static void vli_mod_mult_fast(u64 *result, const u64 *left, const u64 *right,
 static void vli_mod_square_fast(u64 *result, const u64 *left,
 				const u64 *curve_prime, unsigned int ndigits)
 {
-<<<<<<< HEAD
 	u64 product[2 * ECC_MAX_DIGITS];
-=======
-	u64 product[2 * ndigits];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vli_square(product, left, ndigits);
 	vli_mmod_fast(result, product, curve_prime, ndigits);
@@ -572,13 +560,8 @@ static void vli_mod_square_fast(u64 *result, const u64 *left,
 static void vli_mod_inv(u64 *result, const u64 *input, const u64 *mod,
 			unsigned int ndigits)
 {
-<<<<<<< HEAD
 	u64 a[ECC_MAX_DIGITS], b[ECC_MAX_DIGITS];
 	u64 u[ECC_MAX_DIGITS], v[ECC_MAX_DIGITS];
-=======
-	u64 a[ndigits], b[ndigits];
-	u64 u[ndigits], v[ndigits];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 carry;
 	int cmp_result;
 
@@ -666,13 +649,8 @@ static void ecc_point_double_jacobian(u64 *x1, u64 *y1, u64 *z1,
 				      u64 *curve_prime, unsigned int ndigits)
 {
 	/* t1 = x, t2 = y, t3 = z */
-<<<<<<< HEAD
 	u64 t4[ECC_MAX_DIGITS];
 	u64 t5[ECC_MAX_DIGITS];
-=======
-	u64 t4[ndigits];
-	u64 t5[ndigits];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (vli_is_zero(z1, ndigits))
 		return;
@@ -733,11 +711,7 @@ static void ecc_point_double_jacobian(u64 *x1, u64 *y1, u64 *z1,
 static void apply_z(u64 *x1, u64 *y1, u64 *z, u64 *curve_prime,
 		    unsigned int ndigits)
 {
-<<<<<<< HEAD
 	u64 t1[ECC_MAX_DIGITS];
-=======
-	u64 t1[ndigits];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vli_mod_square_fast(t1, z, curve_prime, ndigits);    /* z^2 */
 	vli_mod_mult_fast(x1, x1, t1, curve_prime, ndigits); /* x1 * z^2 */
@@ -750,11 +724,7 @@ static void xycz_initial_double(u64 *x1, u64 *y1, u64 *x2, u64 *y2,
 				u64 *p_initial_z, u64 *curve_prime,
 				unsigned int ndigits)
 {
-<<<<<<< HEAD
 	u64 z[ECC_MAX_DIGITS];
-=======
-	u64 z[ndigits];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vli_set(x2, x1, ndigits);
 	vli_set(y2, y1, ndigits);
@@ -780,11 +750,7 @@ static void xycz_add(u64 *x1, u64 *y1, u64 *x2, u64 *y2, u64 *curve_prime,
 		     unsigned int ndigits)
 {
 	/* t1 = X1, t2 = Y1, t3 = X2, t4 = Y2 */
-<<<<<<< HEAD
 	u64 t5[ECC_MAX_DIGITS];
-=======
-	u64 t5[ndigits];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* t5 = x2 - x1 */
 	vli_mod_sub(t5, x2, x1, curve_prime, ndigits);
@@ -825,15 +791,9 @@ static void xycz_add_c(u64 *x1, u64 *y1, u64 *x2, u64 *y2, u64 *curve_prime,
 		       unsigned int ndigits)
 {
 	/* t1 = X1, t2 = Y1, t3 = X2, t4 = Y2 */
-<<<<<<< HEAD
 	u64 t5[ECC_MAX_DIGITS];
 	u64 t6[ECC_MAX_DIGITS];
 	u64 t7[ECC_MAX_DIGITS];
-=======
-	u64 t5[ndigits];
-	u64 t6[ndigits];
-	u64 t7[ndigits];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* t5 = x2 - x1 */
 	vli_mod_sub(t5, x2, x1, curve_prime, ndigits);
@@ -882,7 +842,6 @@ static void xycz_add_c(u64 *x1, u64 *y1, u64 *x2, u64 *y2, u64 *curve_prime,
 
 static void ecc_point_mult(struct ecc_point *result,
 			   const struct ecc_point *point, const u64 *scalar,
-<<<<<<< HEAD
 			   u64 *initial_z, const struct ecc_curve *curve,
 			   unsigned int ndigits)
 {
@@ -900,17 +859,6 @@ static void ecc_point_mult(struct ecc_point *result,
 	vli_add(sk[1], sk[0], curve->n, ndigits);
 	scalar = sk[!carry];
 	num_bits = sizeof(u64) * ndigits * 8 + 1;
-=======
-			   u64 *initial_z, u64 *curve_prime,
-			   unsigned int ndigits)
-{
-	/* R0 and R1 */
-	u64 rx[2][ndigits];
-	u64 ry[2][ndigits];
-	u64 z[ndigits];
-	int i, nb;
-	int num_bits = vli_num_bits(scalar, ndigits);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vli_set(rx[1], point->x, ndigits);
 	vli_set(ry[1], point->y, ndigits);
@@ -958,41 +906,10 @@ static void ecc_point_mult(struct ecc_point *result,
 static inline void ecc_swap_digits(const u64 *in, u64 *out,
 				   unsigned int ndigits)
 {
-<<<<<<< HEAD
 	int i;
 
 	for (i = 0; i < ndigits; i++)
 		out[i] = __swab64(in[ndigits - 1 - i]);
-=======
-	const __be64 *src = (__force __be64 *)in;
-	int i;
-
-	for (i = 0; i < ndigits; i++)
-		out[i] = be64_to_cpu(src[ndigits - 1 - i]);
-}
-
-static int __ecc_is_key_valid(const struct ecc_curve *curve,
-			      const u64 *private_key, unsigned int ndigits)
-{
-	u64 one[ECC_MAX_DIGITS] = { 1, };
-	u64 res[ECC_MAX_DIGITS];
-
-	if (!private_key)
-		return -EINVAL;
-
-	if (curve->g.ndigits != ndigits)
-		return -EINVAL;
-
-	/* Make sure the private key is in the range [2, n-3]. */
-	if (vli_cmp(one, private_key, ndigits) != -1)
-		return -EINVAL;
-	vli_sub(res, curve->n, one, ndigits);
-	vli_sub(res, res, one, ndigits);
-	if (vli_cmp(res, private_key, ndigits) != 1)
-		return -EINVAL;
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int ecc_is_key_valid(unsigned int curve_id, unsigned int ndigits,
@@ -1001,18 +918,14 @@ int ecc_is_key_valid(unsigned int curve_id, unsigned int ndigits,
 	int nbytes;
 	const struct ecc_curve *curve = ecc_get_curve(curve_id);
 
-<<<<<<< HEAD
 	if (!private_key)
 		return -EINVAL;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	nbytes = ndigits << ECC_DIGITS_TO_BYTES_SHIFT;
 
 	if (private_key_len != nbytes)
 		return -EINVAL;
 
-<<<<<<< HEAD
 	if (vli_is_zero(private_key, ndigits))
 		return -EINVAL;
 
@@ -1021,9 +934,6 @@ int ecc_is_key_valid(unsigned int curve_id, unsigned int ndigits,
 		return -EINVAL;
 
 	return 0;
-=======
-	return __ecc_is_key_valid(curve, private_key, ndigits);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -1041,21 +951,13 @@ int ecc_is_key_valid(unsigned int curve_id, unsigned int ndigits,
 int ecc_gen_privkey(unsigned int curve_id, unsigned int ndigits, u64 *privkey)
 {
 	const struct ecc_curve *curve = ecc_get_curve(curve_id);
-<<<<<<< HEAD
 	u64 priv[ECC_MAX_DIGITS];
-=======
-	u64 priv[ndigits];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int nbytes = ndigits << ECC_DIGITS_TO_BYTES_SHIFT;
 	unsigned int nbits = vli_num_bits(curve->n, ndigits);
 	int err;
 
 	/* Check that N is included in Table 1 of FIPS 186-4, section 6.1.1 */
-<<<<<<< HEAD
 	if (nbits < 160 || ndigits > ARRAY_SIZE(priv))
-=======
-	if (nbits < 160)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	/*
@@ -1077,16 +979,11 @@ int ecc_gen_privkey(unsigned int curve_id, unsigned int ndigits, u64 *privkey)
 	if (err)
 		return err;
 
-<<<<<<< HEAD
 	if (vli_is_zero(priv, ndigits))
 		return -EINVAL;
 
 	/* Make sure the private key is in the range [1, n-1]. */
 	if (vli_cmp(curve->n, priv, ndigits) != 1)
-=======
-	/* Make sure the private key is in the valid range. */
-	if (__ecc_is_key_valid(curve, priv, ndigits))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	ecc_swap_digits(priv, privkey, ndigits);
@@ -1099,17 +996,10 @@ int ecc_make_pub_key(unsigned int curve_id, unsigned int ndigits,
 {
 	int ret = 0;
 	struct ecc_point *pk;
-<<<<<<< HEAD
 	u64 priv[ECC_MAX_DIGITS];
 	const struct ecc_curve *curve = ecc_get_curve(curve_id);
 
 	if (!private_key || !curve || ndigits > ARRAY_SIZE(priv)) {
-=======
-	u64 priv[ndigits];
-	const struct ecc_curve *curve = ecc_get_curve(curve_id);
-
-	if (!private_key || !curve) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -EINVAL;
 		goto out;
 	}
@@ -1122,11 +1012,7 @@ int ecc_make_pub_key(unsigned int curve_id, unsigned int ndigits,
 		goto out;
 	}
 
-<<<<<<< HEAD
 	ecc_point_mult(pk, &curve->g, priv, NULL, curve, ndigits);
-=======
-	ecc_point_mult(pk, &curve->g, priv, NULL, curve->p, ndigits);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ecc_point_is_zero(pk)) {
 		ret = -EAGAIN;
 		goto err_free_point;
@@ -1141,7 +1027,6 @@ out:
 	return ret;
 }
 
-<<<<<<< HEAD
 /* SP800-56A section 5.6.2.3.4 partial verification: ephemeral keys only */
 static int ecc_is_pubkey_valid_partial(const struct ecc_curve *curve,
 				       struct ecc_point *pk)
@@ -1172,15 +1057,12 @@ static int ecc_is_pubkey_valid_partial(const struct ecc_curve *curve,
 
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int crypto_ecdh_shared_secret(unsigned int curve_id, unsigned int ndigits,
 			      const u64 *private_key, const u64 *public_key,
 			      u64 *secret)
 {
 	int ret = 0;
 	struct ecc_point *product, *pk;
-<<<<<<< HEAD
 	u64 priv[ECC_MAX_DIGITS];
 	u64 rand_z[ECC_MAX_DIGITS];
 	unsigned int nbytes;
@@ -1188,14 +1070,6 @@ int crypto_ecdh_shared_secret(unsigned int curve_id, unsigned int ndigits,
 
 	if (!private_key || !public_key || !curve ||
 	    ndigits > ARRAY_SIZE(priv) || ndigits > ARRAY_SIZE(rand_z)) {
-=======
-	u64 priv[ndigits];
-	u64 rand_z[ndigits];
-	unsigned int nbytes;
-	const struct ecc_curve *curve = ecc_get_curve(curve_id);
-
-	if (!private_key || !public_key || !curve) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -EINVAL;
 		goto out;
 	}
@@ -1210,7 +1084,6 @@ int crypto_ecdh_shared_secret(unsigned int curve_id, unsigned int ndigits,
 		goto out;
 	}
 
-<<<<<<< HEAD
 	ecc_swap_digits(public_key, pk->x, ndigits);
 	ecc_swap_digits(&public_key[ndigits], pk->y, ndigits);
 	ret = ecc_is_pubkey_valid_partial(curve, pk);
@@ -1219,23 +1092,13 @@ int crypto_ecdh_shared_secret(unsigned int curve_id, unsigned int ndigits,
 
 	ecc_swap_digits(private_key, priv, ndigits);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	product = ecc_alloc_point(ndigits);
 	if (!product) {
 		ret = -ENOMEM;
 		goto err_alloc_product;
 	}
 
-<<<<<<< HEAD
 	ecc_point_mult(product, pk, priv, rand_z, curve, ndigits);
-=======
-	ecc_swap_digits(public_key, pk->x, ndigits);
-	ecc_swap_digits(&public_key[ndigits], pk->y, ndigits);
-	ecc_swap_digits(private_key, priv, ndigits);
-
-	ecc_point_mult(product, pk, priv, rand_z, curve->p, ndigits);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ecc_swap_digits(product->x, secret, ndigits);
 

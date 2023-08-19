@@ -79,16 +79,6 @@
 #include <asm/unaligned.h>
 
 /*
-<<<<<<< HEAD
-=======
- * Version Information
- */
-#define DRIVER_VERSION "v2.3 (May 2, 2007)"
-#define DRIVER_AUTHOR  "Bryan W. Headley/Chris Atenasio/Cedric Brun/Rene van Paassen"
-#define DRIVER_DESC    "Aiptek HyperPen USB Tablet Driver (Linux 2.6.x)"
-
-/*
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Aiptek status packet:
  *
  * (returned as Report 1 - relative coordinates from mouse and stylus)
@@ -1722,11 +1712,7 @@ aiptek_probe(struct usb_interface *intf, const struct usb_device_id *id)
         }
 
 	aiptek->data = usb_alloc_coherent(usbdev, AIPTEK_PACKET_LENGTH,
-<<<<<<< HEAD
 					  GFP_KERNEL, &aiptek->data_dma);
-=======
-					  GFP_ATOMIC, &aiptek->data_dma);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
         if (!aiptek->data) {
 		dev_warn(&intf->dev, "cannot allocate usb buffer\n");
 		goto fail1;
@@ -1829,7 +1815,6 @@ aiptek_probe(struct usb_interface *intf, const struct usb_device_id *id)
 	input_set_abs_params(inputdev, ABS_WHEEL, AIPTEK_WHEEL_MIN, AIPTEK_WHEEL_MAX - 1, 0, 0);
 
 	/* Verify that a device really has an endpoint */
-<<<<<<< HEAD
 	if (intf->altsetting[0].desc.bNumEndpoints < 1) {
 		dev_err(&intf->dev,
 			"interface has %d endpoints, but must have minimum 1\n",
@@ -1838,16 +1823,6 @@ aiptek_probe(struct usb_interface *intf, const struct usb_device_id *id)
 		goto fail3;
 	}
 	endpoint = &intf->altsetting[0].endpoint[0].desc;
-=======
-	if (intf->cur_altsetting->desc.bNumEndpoints < 1) {
-		dev_err(&intf->dev,
-			"interface has %d endpoints, but must have minimum 1\n",
-			intf->cur_altsetting->desc.bNumEndpoints);
-		err = -EINVAL;
-		goto fail3;
-	}
-	endpoint = &intf->cur_altsetting->endpoint[0].desc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Go set up our URB, which is called when the tablet receives
 	 * input.
@@ -1959,13 +1934,8 @@ static struct usb_driver aiptek_driver = {
 
 module_usb_driver(aiptek_driver);
 
-<<<<<<< HEAD
 MODULE_AUTHOR("Bryan W. Headley/Chris Atenasio/Cedric Brun/Rene van Paassen");
 MODULE_DESCRIPTION("Aiptek HyperPen USB Tablet Driver");
-=======
-MODULE_AUTHOR(DRIVER_AUTHOR);
-MODULE_DESCRIPTION(DRIVER_DESC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_LICENSE("GPL");
 
 module_param(programmableDelay, int, 0);

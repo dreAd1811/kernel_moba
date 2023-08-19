@@ -7,25 +7,17 @@
  */
 
 #include <linux/acpi.h>
-<<<<<<< HEAD
 #include <linux/clk.h>
 #include <linux/completion.h>
 #include <linux/i2c.h>
 #include <linux/i2c-smbus.h>
-=======
-#include <linux/completion.h>
-#include <linux/i2c.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/init.h>
 #include <linux/interrupt.h>
 #include <linux/io.h>
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/platform_device.h>
-<<<<<<< HEAD
 #include <linux/delay.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define XLP9XX_I2C_DIV			0x0
 #define XLP9XX_I2C_CTRL			0x1
@@ -46,11 +38,8 @@
 #define XLP9XX_I2C_TIMEOUT		0X10
 #define XLP9XX_I2C_GENCALLADDR		0x11
 
-<<<<<<< HEAD
 #define XLP9XX_I2C_STATUS_BUSY		BIT(0)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define XLP9XX_I2C_CMD_START		BIT(7)
 #define XLP9XX_I2C_CMD_STOP		BIT(6)
 #define XLP9XX_I2C_CMD_READ		BIT(5)
@@ -86,10 +75,7 @@
 #define XLP9XX_I2C_HIGH_FREQ		400000
 #define XLP9XX_I2C_FIFO_SIZE		0x80U
 #define XLP9XX_I2C_TIMEOUT_MS		1000
-<<<<<<< HEAD
 #define XLP9XX_I2C_BUSY_TIMEOUT		50
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define XLP9XX_I2C_FIFO_WCNT_MASK	0xff
 #define XLP9XX_I2C_STATUS_ERRMASK	(XLP9XX_I2C_INTEN_ARLOST | \
@@ -99,7 +85,6 @@ struct xlp9xx_i2c_dev {
 	struct device *dev;
 	struct i2c_adapter adapter;
 	struct completion msg_complete;
-<<<<<<< HEAD
 	struct i2c_smbus_alert_setup alert_data;
 	struct i2c_client *ara;
 	int irq;
@@ -110,13 +95,6 @@ struct xlp9xx_i2c_dev {
 	u32 msg_buf_remaining;
 	u32 msg_len;
 	u32 ip_clk_hz;
-=======
-	int irq;
-	bool msg_read;
-	u32 __iomem *base;
-	u32 msg_buf_remaining;
-	u32 msg_len;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 clk_hz;
 	u32 msg_err;
 	u8 *msg_buf;
@@ -154,7 +132,6 @@ static void xlp9xx_i2c_update_rx_fifo_thres(struct xlp9xx_i2c_dev *priv)
 {
 	u32 thres;
 
-<<<<<<< HEAD
 	if (priv->len_recv)
 		/* interrupt after the first read to examine
 		 * the length byte before proceeding further
@@ -165,9 +142,6 @@ static void xlp9xx_i2c_update_rx_fifo_thres(struct xlp9xx_i2c_dev *priv)
 	else
 		thres = priv->msg_buf_remaining;
 
-=======
-	thres = min(priv->msg_buf_remaining, XLP9XX_I2C_FIFO_SIZE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	xlp9xx_write_i2c_reg(priv, XLP9XX_I2C_MFIFOCTRL,
 			     thres << XLP9XX_I2C_MFIFOCTRL_HITH_SHIFT);
 }
@@ -184,7 +158,6 @@ static void xlp9xx_i2c_fill_tx_fifo(struct xlp9xx_i2c_dev *priv)
 	priv->msg_buf += len;
 }
 
-<<<<<<< HEAD
 static void xlp9xx_i2c_update_rlen(struct xlp9xx_i2c_dev *priv)
 {
 	u32 val, len;
@@ -250,15 +223,6 @@ static void xlp9xx_i2c_drain_rx_fifo(struct xlp9xx_i2c_dev *priv)
 		priv->len_recv = false;
 	}
 
-=======
-static void xlp9xx_i2c_drain_rx_fifo(struct xlp9xx_i2c_dev *priv)
-{
-	u32 len, i;
-	u8 *buf = priv->msg_buf;
-
-	len = xlp9xx_read_i2c_reg(priv, XLP9XX_I2C_FIFOWCNT) &
-				  XLP9XX_I2C_FIFO_WCNT_MASK;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	len = min(priv->msg_buf_remaining, len);
 	for (i = 0; i < len; i++, buf++)
 		*buf = xlp9xx_read_i2c_reg(priv, XLP9XX_I2C_MRXFIFO);
@@ -319,7 +283,6 @@ xfer_done:
 	return IRQ_HANDLED;
 }
 
-<<<<<<< HEAD
 static int xlp9xx_i2c_check_bus_status(struct xlp9xx_i2c_dev *priv)
 {
 	u32 status;
@@ -340,8 +303,6 @@ static int xlp9xx_i2c_check_bus_status(struct xlp9xx_i2c_dev *priv)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int xlp9xx_i2c_init(struct xlp9xx_i2c_dev *priv)
 {
 	u32 prescale;
@@ -350,11 +311,7 @@ static int xlp9xx_i2c_init(struct xlp9xx_i2c_dev *priv)
 	 * The controller uses 5 * SCL clock internally.
 	 * So prescale value should be divided by 5.
 	 */
-<<<<<<< HEAD
 	prescale = DIV_ROUND_UP(priv->ip_clk_hz, priv->clk_hz);
-=======
-	prescale = DIV_ROUND_UP(XLP9XX_I2C_IP_CLK_FREQ, priv->clk_hz);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	prescale = ((prescale - 8) / 5) - 1;
 	xlp9xx_write_i2c_reg(priv, XLP9XX_I2C_CTRL, XLP9XX_I2C_CTRL_RST);
 	xlp9xx_write_i2c_reg(priv, XLP9XX_I2C_CTRL, XLP9XX_I2C_CTRL_EN |
@@ -369,11 +326,7 @@ static int xlp9xx_i2c_xfer_msg(struct xlp9xx_i2c_dev *priv, struct i2c_msg *msg,
 			       int last_msg)
 {
 	unsigned long timeleft;
-<<<<<<< HEAD
 	u32 intr_mask, cmd, val, len;
-=======
-	u32 intr_mask, cmd, val;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	priv->msg_buf = msg->buf;
 	priv->msg_buf_remaining = priv->msg_len = msg->len;
@@ -385,13 +338,6 @@ static int xlp9xx_i2c_xfer_msg(struct xlp9xx_i2c_dev *priv, struct i2c_msg *msg,
 	xlp9xx_write_i2c_reg(priv, XLP9XX_I2C_MFIFOCTRL,
 			     XLP9XX_I2C_MFIFOCTRL_RST);
 
-<<<<<<< HEAD
-=======
-	/* set FIFO threshold if reading */
-	if (priv->msg_read)
-		xlp9xx_i2c_update_rx_fifo_thres(priv);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* set slave addr */
 	xlp9xx_write_i2c_reg(priv, XLP9XX_I2C_SLAVEADDR,
 			     (msg->addr << XLP9XX_I2C_SLAVEADDR_ADDR_SHIFT) |
@@ -409,7 +355,6 @@ static int xlp9xx_i2c_xfer_msg(struct xlp9xx_i2c_dev *priv, struct i2c_msg *msg,
 	else
 		val &= ~XLP9XX_I2C_CTRL_ADDMODE;
 
-<<<<<<< HEAD
 	priv->len_recv = msg->flags & I2C_M_RECV_LEN;
 	len = priv->len_recv ? I2C_SMBUS_BLOCK_MAX + 2 : msg->len;
 	priv->client_pec = msg->flags & I2C_CLIENT_PEC;
@@ -421,11 +366,6 @@ static int xlp9xx_i2c_xfer_msg(struct xlp9xx_i2c_dev *priv, struct i2c_msg *msg,
 	/* set data length to be transferred */
 	val = (val & ~XLP9XX_I2C_CTRL_MCTLEN_MASK) |
 	      (len << XLP9XX_I2C_CTRL_MCTLEN_SHIFT);
-=======
-	/* set data length to be transferred */
-	val = (val & ~XLP9XX_I2C_CTRL_MCTLEN_MASK) |
-	      (msg->len << XLP9XX_I2C_CTRL_MCTLEN_SHIFT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	xlp9xx_write_i2c_reg(priv, XLP9XX_I2C_CTRL, val);
 
 	/* fill fifo during tx */
@@ -450,13 +390,9 @@ static int xlp9xx_i2c_xfer_msg(struct xlp9xx_i2c_dev *priv, struct i2c_msg *msg,
 
 	/* set cmd reg */
 	cmd = XLP9XX_I2C_CMD_START;
-<<<<<<< HEAD
 	if (msg->len)
 		cmd |= (priv->msg_read ?
 			XLP9XX_I2C_CMD_READ : XLP9XX_I2C_CMD_WRITE);
-=======
-	cmd |= (priv->msg_read ? XLP9XX_I2C_CMD_READ : XLP9XX_I2C_CMD_WRITE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (last_msg)
 		cmd |= XLP9XX_I2C_CMD_STOP;
 
@@ -465,20 +401,12 @@ static int xlp9xx_i2c_xfer_msg(struct xlp9xx_i2c_dev *priv, struct i2c_msg *msg,
 	timeleft = msecs_to_jiffies(XLP9XX_I2C_TIMEOUT_MS);
 	timeleft = wait_for_completion_timeout(&priv->msg_complete, timeleft);
 
-<<<<<<< HEAD
 	if (priv->msg_err & XLP9XX_I2C_INTEN_BUSERR) {
 		dev_dbg(priv->dev, "transfer error %x!\n", priv->msg_err);
 		xlp9xx_write_i2c_reg(priv, XLP9XX_I2C_CMD, XLP9XX_I2C_CMD_STOP);
 		return -EIO;
 	} else if (priv->msg_err & XLP9XX_I2C_INTEN_NACKADDR) {
 		return -ENXIO;
-=======
-	if (priv->msg_err) {
-		dev_dbg(priv->dev, "transfer error %x!\n", priv->msg_err);
-		if (priv->msg_err & XLP9XX_I2C_INTEN_BUSERR)
-			xlp9xx_i2c_init(priv);
-		return -EIO;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (timeleft == 0) {
@@ -487,15 +415,12 @@ static int xlp9xx_i2c_xfer_msg(struct xlp9xx_i2c_dev *priv, struct i2c_msg *msg,
 		return -ETIMEDOUT;
 	}
 
-<<<<<<< HEAD
 	/* update msg->len with actual received length */
 	if (msg->flags & I2C_M_RECV_LEN) {
 		if (!priv->msg_len)
 			return -EPROTO;
 		msg->len = priv->msg_len;
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -505,7 +430,6 @@ static int xlp9xx_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs,
 	int i, ret;
 	struct xlp9xx_i2c_dev *priv = i2c_get_adapdata(adap);
 
-<<<<<<< HEAD
 	ret = xlp9xx_i2c_check_bus_status(priv);
 	if (ret) {
 		xlp9xx_i2c_init(priv);
@@ -514,8 +438,6 @@ static int xlp9xx_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs,
 			return ret;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < num; i++) {
 		ret = xlp9xx_i2c_xfer_msg(priv, &msgs[i], i == num - 1);
 		if (ret != 0)
@@ -527,13 +449,8 @@ static int xlp9xx_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs,
 
 static u32 xlp9xx_i2c_functionality(struct i2c_adapter *adapter)
 {
-<<<<<<< HEAD
 	return I2C_FUNC_SMBUS_EMUL | I2C_FUNC_SMBUS_READ_BLOCK_DATA |
 			I2C_FUNC_I2C | I2C_FUNC_10BIT_ADDR;
-=======
-	return I2C_FUNC_SMBUS_EMUL | I2C_FUNC_I2C |
-		I2C_FUNC_10BIT_ADDR;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct i2c_algorithm xlp9xx_i2c_algo = {
@@ -544,7 +461,6 @@ static const struct i2c_algorithm xlp9xx_i2c_algo = {
 static int xlp9xx_i2c_get_frequency(struct platform_device *pdev,
 				    struct xlp9xx_i2c_dev *priv)
 {
-<<<<<<< HEAD
 	struct clk *clk;
 	u32 freq;
 	int err;
@@ -558,11 +474,6 @@ static int xlp9xx_i2c_get_frequency(struct platform_device *pdev,
 		priv->ip_clk_hz = clk_get_rate(clk);
 	}
 
-=======
-	u32 freq;
-	int err;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = device_property_read_u32(&pdev->dev, "clock-frequency", &freq);
 	if (err) {
 		freq = XLP9XX_I2C_DEFAULT_FREQ;
@@ -577,7 +488,6 @@ static int xlp9xx_i2c_get_frequency(struct platform_device *pdev,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int xlp9xx_i2c_smbus_setup(struct xlp9xx_i2c_dev *priv,
 				  struct platform_device *pdev)
 {
@@ -591,8 +501,6 @@ static int xlp9xx_i2c_smbus_setup(struct xlp9xx_i2c_dev *priv,
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int xlp9xx_i2c_probe(struct platform_device *pdev)
 {
 	struct xlp9xx_i2c_dev *priv;
@@ -613,13 +521,10 @@ static int xlp9xx_i2c_probe(struct platform_device *pdev)
 		dev_err(&pdev->dev, "invalid irq!\n");
 		return priv->irq;
 	}
-<<<<<<< HEAD
 	/* SMBAlert irq */
 	priv->alert_data.irq = platform_get_irq(pdev, 1);
 	if (priv->alert_data.irq <= 0)
 		priv->alert_data.irq = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	xlp9xx_i2c_get_frequency(pdev, priv);
 	xlp9xx_i2c_init(priv);
@@ -646,13 +551,10 @@ static int xlp9xx_i2c_probe(struct platform_device *pdev)
 	if (err)
 		return err;
 
-<<<<<<< HEAD
 	err = xlp9xx_i2c_smbus_setup(priv, pdev);
 	if (err)
 		dev_dbg(&pdev->dev, "No active SMBus alert %d\n", err);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	platform_set_drvdata(pdev, priv);
 	dev_dbg(&pdev->dev, "I2C bus:%d added\n", priv->adapter.nr);
 

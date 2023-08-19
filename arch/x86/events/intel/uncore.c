@@ -203,11 +203,7 @@ static void uncore_assign_hw_event(struct intel_uncore_box *box,
 	hwc->idx = idx;
 	hwc->last_tag = ++box->tags[idx];
 
-<<<<<<< HEAD
 	if (uncore_pmc_fixed(hwc->idx)) {
-=======
-	if (hwc->idx == UNCORE_PMC_IDX_FIXED) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		hwc->event_base = uncore_fixed_ctr(box);
 		hwc->config_base = uncore_fixed_ctl(box);
 		return;
@@ -222,13 +218,9 @@ void uncore_perf_event_update(struct intel_uncore_box *box, struct perf_event *e
 	u64 prev_count, new_count, delta;
 	int shift;
 
-<<<<<<< HEAD
 	if (uncore_pmc_freerunning(event->hw.idx))
 		shift = 64 - uncore_freerunning_bits(box, event);
 	else if (uncore_pmc_fixed(event->hw.idx))
-=======
-	if (event->hw.idx == UNCORE_PMC_IDX_FIXED)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		shift = 64 - uncore_fixed_ctr_bits(box);
 	else
 		shift = 64 - uncore_perf_ctr_bits(box);
@@ -364,11 +356,7 @@ uncore_collect_events(struct intel_uncore_box *box, struct perf_event *leader,
 	if (!dogrp)
 		return n;
 
-<<<<<<< HEAD
 	for_each_sibling_event(event, leader) {
-=======
-	list_for_each_entry(event, &leader->sibling_list, group_entry) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!is_box_event(box, event) ||
 		    event->state <= PERF_EVENT_STATE_OFF)
 			continue;
@@ -463,16 +451,11 @@ static int uncore_assign_events(struct intel_uncore_box *box, int assign[], int 
 	return ret ? -EINVAL : 0;
 }
 
-<<<<<<< HEAD
 void uncore_pmu_event_start(struct perf_event *event, int flags)
-=======
-static void uncore_pmu_event_start(struct perf_event *event, int flags)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct intel_uncore_box *box = uncore_event_to_box(event);
 	int idx = event->hw.idx;
 
-<<<<<<< HEAD
 	if (WARN_ON_ONCE(idx == -1 || idx >= UNCORE_PMC_IDX_MAX))
 		return;
 
@@ -494,14 +477,6 @@ static void uncore_pmu_event_start(struct perf_event *event, int flags)
 	if (WARN_ON_ONCE(!(event->hw.state & PERF_HES_STOPPED)))
 		return;
 
-=======
-	if (WARN_ON_ONCE(!(event->hw.state & PERF_HES_STOPPED)))
-		return;
-
-	if (WARN_ON_ONCE(idx == -1 || idx >= UNCORE_PMC_IDX_MAX))
-		return;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	event->hw.state = 0;
 	box->events[idx] = event;
 	box->n_active++;
@@ -516,16 +491,11 @@ static void uncore_pmu_event_start(struct perf_event *event, int flags)
 	}
 }
 
-<<<<<<< HEAD
 void uncore_pmu_event_stop(struct perf_event *event, int flags)
-=======
-static void uncore_pmu_event_stop(struct perf_event *event, int flags)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct intel_uncore_box *box = uncore_event_to_box(event);
 	struct hw_perf_event *hwc = &event->hw;
 
-<<<<<<< HEAD
 	/* Cannot disable free running counter which is read-only */
 	if (uncore_pmc_freerunning(hwc->idx)) {
 		list_del(&event->active_entry);
@@ -535,8 +505,6 @@ static void uncore_pmu_event_stop(struct perf_event *event, int flags)
 		return;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (__test_and_clear_bit(hwc->idx, box->active_mask)) {
 		uncore_disable_event(box, event);
 		box->n_active--;
@@ -560,11 +528,7 @@ static void uncore_pmu_event_stop(struct perf_event *event, int flags)
 	}
 }
 
-<<<<<<< HEAD
 int uncore_pmu_event_add(struct perf_event *event, int flags)
-=======
-static int uncore_pmu_event_add(struct perf_event *event, int flags)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct intel_uncore_box *box = uncore_event_to_box(event);
 	struct hw_perf_event *hwc = &event->hw;
@@ -574,7 +538,6 @@ static int uncore_pmu_event_add(struct perf_event *event, int flags)
 	if (!box)
 		return -ENODEV;
 
-<<<<<<< HEAD
 	/*
 	 * The free funning counter is assigned in event_init().
 	 * The free running counter event and free running counter
@@ -586,8 +549,6 @@ static int uncore_pmu_event_add(struct perf_event *event, int flags)
 		return 0;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = n = uncore_collect_events(box, event, false);
 	if (ret < 0)
 		return ret;
@@ -639,18 +600,13 @@ static int uncore_pmu_event_add(struct perf_event *event, int flags)
 	return 0;
 }
 
-<<<<<<< HEAD
 void uncore_pmu_event_del(struct perf_event *event, int flags)
-=======
-static void uncore_pmu_event_del(struct perf_event *event, int flags)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct intel_uncore_box *box = uncore_event_to_box(event);
 	int i;
 
 	uncore_pmu_event_stop(event, PERF_EF_UPDATE);
 
-<<<<<<< HEAD
 	/*
 	 * The event for free running counter is not tracked by event_list.
 	 * It doesn't need to force event->hw.idx = -1 to reassign the counter.
@@ -659,8 +615,6 @@ static void uncore_pmu_event_del(struct perf_event *event, int flags)
 	if (uncore_pmc_freerunning(event->hw.idx))
 		return;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < box->n_events; i++) {
 		if (event == box->event_list[i]) {
 			uncore_put_event_constraint(box, event);
@@ -694,13 +648,10 @@ static int uncore_validate_group(struct intel_uncore_pmu *pmu,
 	struct intel_uncore_box *fake_box;
 	int ret = -EINVAL, n;
 
-<<<<<<< HEAD
 	/* The free running counter is always active. */
 	if (uncore_pmc_freerunning(event->hw.idx))
 		return 0;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	fake_box = uncore_alloc_box(pmu->type, NUMA_NO_NODE);
 	if (!fake_box)
 		return -ENOMEM;
@@ -788,7 +739,6 @@ static int uncore_pmu_event_init(struct perf_event *event)
 
 		/* fixed counters have event field hardcoded to zero */
 		hwc->config = 0ULL;
-<<<<<<< HEAD
 	} else if (is_freerunning_event(event)) {
 		hwc->config = event->attr.config;
 		if (!check_valid_freerunning_event(box, event))
@@ -801,8 +751,6 @@ static int uncore_pmu_event_init(struct perf_event *event)
 		 * Assign the free running counter here.
 		 */
 		event->hw.event_base = uncore_freerunning_counter(box, event);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		hwc->config = event->attr.config &
 			      (pmu->type->event_mask | ((u64)pmu->type->event_mask_ext << 32));
@@ -918,19 +866,10 @@ static void uncore_types_exit(struct intel_uncore_type **types)
 static int __init uncore_type_init(struct intel_uncore_type *type, bool setid)
 {
 	struct intel_uncore_pmu *pmus;
-<<<<<<< HEAD
 	size_t size;
 	int i, j;
 
 	pmus = kcalloc(type->num_boxes, sizeof(*pmus), GFP_KERNEL);
-=======
-	struct attribute_group *attr_group;
-	struct attribute **attrs;
-	size_t size;
-	int i, j;
-
-	pmus = kzalloc(sizeof(*pmus) * type->num_boxes, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!pmus)
 		return -ENOMEM;
 
@@ -951,7 +890,6 @@ static int __init uncore_type_init(struct intel_uncore_type *type, bool setid)
 				0, type->num_counters, 0, 0);
 
 	if (type->event_descs) {
-<<<<<<< HEAD
 		struct {
 			struct attribute_group group;
 			struct attribute *attrs[];
@@ -970,23 +908,6 @@ static int __init uncore_type_init(struct intel_uncore_type *type, bool setid)
 			attr_group->attrs[j] = &type->event_descs[j].attr.attr;
 
 		type->events_group = &attr_group->group;
-=======
-		for (i = 0; type->event_descs[i].attr.attr.name; i++);
-
-		attr_group = kzalloc(sizeof(struct attribute *) * (i + 1) +
-					sizeof(*attr_group), GFP_KERNEL);
-		if (!attr_group)
-			goto err;
-
-		attrs = (struct attribute **)(attr_group + 1);
-		attr_group->name = "events";
-		attr_group->attrs = attrs;
-
-		for (j = 0; j < i; j++)
-			attrs[j] = &type->event_descs[j].attr.attr;
-
-		type->events_group = attr_group;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	type->pmu_group = &uncore_pmu_attr_group;
@@ -1116,17 +1037,10 @@ static void uncore_pci_remove(struct pci_dev *pdev)
 	int i, phys_id, pkg;
 
 	phys_id = uncore_pcibus_to_physid(pdev->bus);
-<<<<<<< HEAD
 
 	box = pci_get_drvdata(pdev);
 	if (!box) {
 		pkg = topology_phys_to_logical_pkg(phys_id);
-=======
-	pkg = topology_phys_to_logical_pkg(phys_id);
-
-	box = pci_get_drvdata(pdev);
-	if (!box) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		for (i = 0; i < UNCORE_EXTRA_PCI_DEV_MAX; i++) {
 			if (uncore_extra_pci_dev[pkg].dev[i] == pdev) {
 				uncore_extra_pci_dev[pkg].dev[i] = NULL;
@@ -1142,11 +1056,7 @@ static void uncore_pci_remove(struct pci_dev *pdev)
 		return;
 
 	pci_set_drvdata(pdev, NULL);
-<<<<<<< HEAD
 	pmu->boxes[box->pkgid] = NULL;
-=======
-	pmu->boxes[pkg] = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (atomic_dec_return(&pmu->activeboxes) == 0)
 		uncore_pmu_unregister(pmu);
 	uncore_box_exit(box);

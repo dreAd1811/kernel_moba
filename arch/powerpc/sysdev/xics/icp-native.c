@@ -164,11 +164,7 @@ void icp_native_cause_ipi_rm(int cpu)
 	 * Just like the cause_ipi functions, it is required to
 	 * include a full barrier before causing the IPI.
 	 */
-<<<<<<< HEAD
 	xics_phys = paca_ptrs[cpu]->kvm_hstate.xics_phys;
-=======
-	xics_phys = paca[cpu].kvm_hstate.xics_phys;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mb();
 	__raw_rm_writeb(IPI_PRIORITY, xics_phys + XICS_MFRR);
 }
@@ -245,28 +241,16 @@ static int __init icp_native_map_one_cpu(int hw_id, unsigned long addr,
 			  cpu, hw_id);
 
 	if (!request_mem_region(addr, size, rname)) {
-<<<<<<< HEAD
 		pr_warn("icp_native: Could not reserve ICP MMIO for CPU %d, interrupt server #0x%x\n",
 			cpu, hw_id);
-=======
-		pr_warning("icp_native: Could not reserve ICP MMIO"
-			   " for CPU %d, interrupt server #0x%x\n",
-			   cpu, hw_id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EBUSY;
 	}
 
 	icp_native_regs[cpu] = ioremap(addr, size);
 	kvmppc_set_xics_phys(cpu, addr);
 	if (!icp_native_regs[cpu]) {
-<<<<<<< HEAD
 		pr_warn("icp_native: Failed ioremap for CPU %d, interrupt server #0x%x, addr %#lx\n",
 			cpu, hw_id, addr);
-=======
-		pr_warning("icp_native: Failed ioremap for CPU %d, "
-			   "interrupt server #0x%x, addr %#lx\n",
-			   cpu, hw_id, addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		release_mem_region(addr, size);
 		return -ENOMEM;
 	}

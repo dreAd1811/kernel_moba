@@ -152,11 +152,7 @@ static int ge_b850v3_lvds_get_modes(struct drm_connector *connector)
 	ge_b850v3_lvds_ptr->edid = (struct edid *)stdp2690_get_edid(client);
 
 	if (ge_b850v3_lvds_ptr->edid) {
-<<<<<<< HEAD
 		drm_connector_update_edid_property(connector,
-=======
-		drm_mode_connector_update_edid_property(connector,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						      ge_b850v3_lvds_ptr->edid);
 		num_modes = drm_add_edid_modes(connector,
 					       ge_b850v3_lvds_ptr->edid);
@@ -245,11 +241,7 @@ static int ge_b850v3_lvds_attach(struct drm_bridge *bridge)
 		return ret;
 	}
 
-<<<<<<< HEAD
 	ret = drm_connector_attach_encoder(connector, bridge->encoder);
-=======
-	ret = drm_mode_connector_attach_encoder(connector, bridge->encoder);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 

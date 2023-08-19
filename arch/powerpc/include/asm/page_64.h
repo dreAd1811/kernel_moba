@@ -10,11 +10,8 @@
  * 2 of the License, or (at your option) any later version.
  */
 
-<<<<<<< HEAD
 #include <asm/asm-const.h>
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * We always define HW_PAGE_SHIFT to 12 as use of 64K pages remains Linux
  * specific, every notion of page number shared with the firmware, TCEs,

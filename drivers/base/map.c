@@ -1,15 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  *  linux/drivers/base/map.c
  *
  * (C) Copyright Al Viro 2002,2003
-<<<<<<< HEAD
-=======
- *	Released under GPL v2.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * NOTE: data structure needs to be changed.  It works, but for large dev_t
  * it will be too slow.  It is isolated, though, so these changes will be

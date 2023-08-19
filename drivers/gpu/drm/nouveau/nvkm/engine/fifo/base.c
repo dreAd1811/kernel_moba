@@ -27,15 +27,10 @@
 #include <core/client.h>
 #include <core/gpuobj.h>
 #include <core/notify.h>
-<<<<<<< HEAD
 #include <subdev/mc.h>
 
 #include <nvif/event.h>
 #include <nvif/cl0080.h>
-=======
-
-#include <nvif/event.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <nvif/unpack.h>
 
 void
@@ -62,15 +57,12 @@ nvkm_fifo_start(struct nvkm_fifo *fifo, unsigned long *flags)
 }
 
 void
-<<<<<<< HEAD
 nvkm_fifo_fault(struct nvkm_fifo *fifo, struct nvkm_fault_data *info)
 {
 	return fifo->func->fault(fifo, info);
 }
 
 void
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 nvkm_fifo_chan_put(struct nvkm_fifo *fifo, unsigned long flags,
 		   struct nvkm_fifo_chan **pchan)
 {
@@ -224,7 +216,6 @@ nvkm_fifo_uevent(struct nvkm_fifo *fifo)
 }
 
 static int
-<<<<<<< HEAD
 nvkm_fifo_class_new_(struct nvkm_device *device,
 		     const struct nvkm_oclass *oclass, void *data, u32 size,
 		     struct nvkm_object **pobject)
@@ -239,8 +230,6 @@ nvkm_fifo_class_ = {
 };
 
 static int
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 nvkm_fifo_class_new(struct nvkm_device *device,
 		    const struct nvkm_oclass *oclass, void *data, u32 size,
 		    struct nvkm_object **pobject)
@@ -264,19 +253,9 @@ nvkm_fifo_class_get(struct nvkm_oclass *oclass, int index,
 	int c = 0;
 
 	if (fifo->func->class_get) {
-<<<<<<< HEAD
 		int ret = fifo->func->class_get(fifo, index, oclass);
 		if (ret == 0)
 			*class = &nvkm_fifo_class_;
-=======
-		int ret = fifo->func->class_get(fifo, index, &sclass);
-		if (ret == 0) {
-			oclass->base = sclass->base;
-			oclass->engn = sclass;
-			*class = &nvkm_fifo_class;
-			return 0;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
@@ -309,7 +288,6 @@ nvkm_fifo_fini(struct nvkm_engine *engine, bool suspend)
 }
 
 static int
-<<<<<<< HEAD
 nvkm_fifo_info(struct nvkm_engine *engine, u64 mthd, u64 *data)
 {
 	struct nvkm_fifo *fifo = nvkm_fifo(engine);
@@ -324,8 +302,6 @@ nvkm_fifo_info(struct nvkm_engine *engine, u64 mthd, u64 *data)
 }
 
 static int
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 nvkm_fifo_oneinit(struct nvkm_engine *engine)
 {
 	struct nvkm_fifo *fifo = nvkm_fifo(engine);
@@ -334,15 +310,12 @@ nvkm_fifo_oneinit(struct nvkm_engine *engine)
 	return 0;
 }
 
-<<<<<<< HEAD
 static void
 nvkm_fifo_preinit(struct nvkm_engine *engine)
 {
 	nvkm_mc_reset(engine->subdev.device, NVKM_ENGINE_FIFO);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int
 nvkm_fifo_init(struct nvkm_engine *engine)
 {
@@ -367,13 +340,9 @@ nvkm_fifo_dtor(struct nvkm_engine *engine)
 static const struct nvkm_engine_func
 nvkm_fifo = {
 	.dtor = nvkm_fifo_dtor,
-<<<<<<< HEAD
 	.preinit = nvkm_fifo_preinit,
 	.oneinit = nvkm_fifo_oneinit,
 	.info = nvkm_fifo_info,
-=======
-	.oneinit = nvkm_fifo_oneinit,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.init = nvkm_fifo_init,
 	.fini = nvkm_fifo_fini,
 	.intr = nvkm_fifo_intr,

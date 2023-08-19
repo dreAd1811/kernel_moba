@@ -12,11 +12,8 @@
 #ifndef _ASM_IO_H
 #define _ASM_IO_H
 
-<<<<<<< HEAD
 #define ARCH_HAS_IOREMAP_WC
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/compiler.h>
 #include <linux/kernel.h>
 #include <linux/types.h>
@@ -65,7 +62,6 @@
  * instruction, so the lower 16 bits must be zero.  Should be true on
  * on any sane architecture; generic code does not use this assumption.
  */
-<<<<<<< HEAD
 extern const unsigned long mips_io_port_base;
 
 /*
@@ -81,13 +77,6 @@ static inline void set_io_port_base(unsigned long base)
 {
 	* (unsigned long *) &mips_io_port_base = base;
 	barrier();
-=======
-extern unsigned long mips_io_port_base;
-
-static inline void set_io_port_base(unsigned long base)
-{
-	mips_io_port_base = base;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -291,7 +280,6 @@ static inline void __iomem * __ioremap_mode(phys_addr_t offset, unsigned long si
 #define ioremap_cache ioremap_cachable
 
 /*
-<<<<<<< HEAD
  * ioremap_wc     -   map bus memory into CPU space
  * @offset:    bus address of the memory
  * @size:      size of the resource to map
@@ -311,17 +299,6 @@ static inline void __iomem * __ioremap_mode(phys_addr_t offset, unsigned long si
  */
 #define ioremap_wc(offset, size)					\
 	__ioremap_mode((offset), (size), boot_cpu_data.writecombine)
-=======
- * These two are MIPS specific ioremap variant.	 ioremap_cacheable_cow
- * requests a cachable mapping, ioremap_uncached_accelerated requests a
- * mapping using the uncached accelerated mode which isn't supported on
- * all processors.
- */
-#define ioremap_cacheable_cow(offset, size)				\
-	__ioremap_mode((offset), (size), _CACHE_CACHABLE_COW)
-#define ioremap_uncached_accelerated(offset, size)			\
-	__ioremap_mode((offset), (size), _CACHE_UNCACHED_ACCELERATED)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline void iounmap(const volatile void __iomem *addr)
 {
@@ -625,11 +602,7 @@ static inline void memcpy_toio(volatile void __iomem *dst, const void *src, int 
  *
  * This API used to be exported; it now is for arch code internal use only.
  */
-<<<<<<< HEAD
 #ifdef CONFIG_DMA_NONCOHERENT
-=======
-#if defined(CONFIG_DMA_NONCOHERENT) || defined(CONFIG_DMA_MAYBE_COHERENT)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 extern void (*_dma_cache_wback_inv)(unsigned long start, unsigned long size);
 extern void (*_dma_cache_wback)(unsigned long start, unsigned long size);
@@ -648,11 +621,7 @@ extern void (*_dma_cache_inv)(unsigned long start, unsigned long size);
 #define dma_cache_inv(start,size)	\
 	do { (void) (start); (void) (size); } while (0)
 
-<<<<<<< HEAD
 #endif /* CONFIG_DMA_NONCOHERENT */
-=======
-#endif /* CONFIG_DMA_NONCOHERENT || CONFIG_DMA_MAYBE_COHERENT */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Read a 32-bit register that requires a 64-bit read cycle on the bus.

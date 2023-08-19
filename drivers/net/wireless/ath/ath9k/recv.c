@@ -826,15 +826,9 @@ static int ath9k_rx_skb_preprocess(struct ath_softc *sc,
 	sc->rx.discard_next = false;
 
 	/*
-<<<<<<< HEAD
 	 * Discard zero-length packets and packets smaller than an ACK
 	 */
 	if (rx_stats->rs_datalen < 10) {
-=======
-	 * Discard zero-length packets.
-	 */
-	if (!rx_stats->rs_datalen) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		RX_STAT_INC(rx_len_err);
 		goto corrupt;
 	}

@@ -58,13 +58,8 @@ extern __visible kprobe_opcode_t optprobe_template_call[];
 extern __visible kprobe_opcode_t optprobe_template_end[];
 #define MAX_OPTIMIZED_LENGTH (MAX_INSN_SIZE + RELATIVE_ADDR_SIZE)
 #define MAX_OPTINSN_SIZE 				\
-<<<<<<< HEAD
 	(((unsigned long)optprobe_template_end -	\
 	  (unsigned long)optprobe_template_entry) +	\
-=======
-	(((unsigned long)&optprobe_template_end -	\
-	  (unsigned long)&optprobe_template_entry) +	\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 MAX_OPTIMIZED_LENGTH + RELATIVEJUMP_SIZE)
 
 extern const int kretprobe_blacklist_size;
@@ -72,11 +67,8 @@ extern const int kretprobe_blacklist_size;
 void arch_remove_kprobe(struct kprobe *p);
 asmlinkage void kretprobe_trampoline(void);
 
-<<<<<<< HEAD
 extern void arch_kprobe_override_function(struct pt_regs *regs);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Architecture specific copy of original instruction*/
 struct arch_specific_insn {
 	/* copy of the original instruction */
@@ -86,11 +78,7 @@ struct arch_specific_insn {
 	 * boostable = true: This instruction has been boosted: we have
 	 * added a relative jump after the instruction copy in insn,
 	 * so no single-step and fixup are needed (unless there's
-<<<<<<< HEAD
 	 * a post_handler).
-=======
-	 * a post_handler or break_handler).
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	bool boostable;
 	bool if_modifier;
@@ -123,12 +111,6 @@ struct kprobe_ctlblk {
 	unsigned long kprobe_status;
 	unsigned long kprobe_old_flags;
 	unsigned long kprobe_saved_flags;
-<<<<<<< HEAD
-=======
-	unsigned long *jprobe_saved_sp;
-	struct pt_regs jprobe_saved_regs;
-	kprobe_opcode_t jprobes_stack[MAX_STACK_SIZE];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct prev_kprobe prev_kprobe;
 };
 

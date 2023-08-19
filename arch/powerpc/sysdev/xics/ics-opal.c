@@ -131,13 +131,8 @@ static int ics_opal_set_affinity(struct irq_data *d,
 
 	wanted_server = xics_get_irq_server(d->irq, cpumask, 1);
 	if (wanted_server < 0) {
-<<<<<<< HEAD
 		pr_warn("%s: No online cpus in the mask %*pb for irq %d\n",
 			__func__, cpumask_pr_args(cpumask), d->irq);
-=======
-		pr_warning("%s: No online cpus in the mask %*pb for irq %d\n",
-			   __func__, cpumask_pr_args(cpumask), d->irq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -1;
 	}
 	server = ics_opal_mangle_server(wanted_server);

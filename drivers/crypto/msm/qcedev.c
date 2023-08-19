@@ -1,26 +1,10 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * QTI CE device driver.
  *
  * Copyright (c) 2010-2020, The Linux Foundation. All rights reserved.
-<<<<<<< HEAD
  */
 
-=======
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/mman.h>
 #include <linux/module.h>
 #include <linux/device.h>
@@ -74,22 +58,14 @@ static dev_t qcedev_device_no;
 static struct class *driver_class;
 static struct device *class_dev;
 
-<<<<<<< HEAD
 MODULE_DEVICE_TABLE(of, qcedev_match);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct of_device_id qcedev_match[] = {
 	{	.compatible = "qcom,qcedev"},
 	{	.compatible = "qcom,qcedev,context-bank"},
 	{}
 };
 
-<<<<<<< HEAD
-=======
-MODULE_DEVICE_TABLE(of, qcedev_match);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int qcedev_control_clocks(struct qcedev_control *podev, bool enable)
 {
 	unsigned int control_flag;
@@ -302,13 +278,10 @@ static int qcedev_release(struct inode *inode, struct file *file)
 		pr_err("%s: invalid handle %pK\n",
 					__func__, podev);
 	}
-<<<<<<< HEAD
 
 	if (qcedev_unmap_all_buffers(handle))
 		pr_err("%s: failed to unmap all ion buffers\n", __func__);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kzfree(handle);
 	file->private_data = NULL;
 	if (podev != NULL && podev->platform_support.bus_scale_table != NULL)
@@ -427,11 +400,7 @@ static int start_cipher_req(struct qcedev_control *podev)
 		break;
 	default:
 		return -EINVAL;
-<<<<<<< HEAD
 	}
-=======
-	};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (qcedev_areq->cipher_op_req.mode) {
 	case QCEDEV_AES_MODE_CBC:
@@ -450,11 +419,7 @@ static int start_cipher_req(struct qcedev_control *podev)
 		break;
 	default:
 		return -EINVAL;
-<<<<<<< HEAD
 	}
-=======
-	};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if ((creq.alg == CIPHER_ALG_AES) &&
 		(creq.mode == QCE_MODE_CTR)) {
@@ -559,11 +524,7 @@ static int start_sha_req(struct qcedev_control *podev)
 		pr_err("Algorithm %d not supported, exiting\n",
 			qcedev_areq->sha_op_req.alg);
 		return -EINVAL;
-<<<<<<< HEAD
 	}
-=======
-	};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	qcedev_areq->sha_req.cookie = handle;
 
@@ -642,11 +603,7 @@ static int submit_req(struct qcedev_async_req *qcedev_areq,
 			break;
 		default:
 			break;
-<<<<<<< HEAD
 		}
-=======
-		};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		if (qcedev_areq->err)
 			pstat->qcedev_sha_fail++;
@@ -756,12 +713,8 @@ static int qcedev_sha_update_max_xfer(struct qcedev_async_req *qcedev_areq,
 	if (user_src && copy_from_user(k_src,
 				(void __user *)user_src,
 				qcedev_areq->sha_op_req.data[0].len)) {
-<<<<<<< HEAD
 		memset(k_buf_src, 0, ksize((void *)k_buf_src));
 		kfree(k_buf_src);
-=======
-		kzfree(k_buf_src);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 	}
 	k_src += qcedev_areq->sha_op_req.data[0].len;
@@ -770,12 +723,8 @@ static int qcedev_sha_update_max_xfer(struct qcedev_async_req *qcedev_areq,
 		if (user_src && copy_from_user(k_src,
 					(void __user *)user_src,
 					qcedev_areq->sha_op_req.data[i].len)) {
-<<<<<<< HEAD
 			memset(k_buf_src, 0, ksize((void *)k_buf_src));
 			kfree(k_buf_src);
-=======
-			kzfree(k_buf_src);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EFAULT;
 		}
 		k_src += qcedev_areq->sha_op_req.data[i].len;
@@ -805,12 +754,8 @@ static int qcedev_sha_update_max_xfer(struct qcedev_async_req *qcedev_areq,
 	handle->sha_ctxt.last_blk = 0;
 	handle->sha_ctxt.first_blk = 0;
 
-<<<<<<< HEAD
 	memset(k_buf_src, 0, ksize((void *)k_buf_src));
 	kfree(k_buf_src);
-=======
-	kzfree(k_buf_src);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -825,11 +770,7 @@ static int qcedev_sha_update(struct qcedev_async_req *qcedev_areq,
 	int num_entries = 0;
 	uint32_t total = 0;
 
-<<<<<<< HEAD
 	if (!handle->sha_ctxt.init_done) {
-=======
-	if (handle->sha_ctxt.init_done == false) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_err("%s Init was not called\n", __func__);
 		return -EINVAL;
 	}
@@ -921,12 +862,8 @@ static int qcedev_sha_update(struct qcedev_async_req *qcedev_areq,
 		}
 		sreq->entries = saved_req->entries;
 		sreq->data_len = saved_req->data_len;
-<<<<<<< HEAD
 		memset(saved_req, 0, ksize((void *)saved_req));
 		kfree(saved_req);
-=======
-		kzfree(saved_req);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else
 		err = qcedev_sha_update_max_xfer(qcedev_areq, handle, sg_src);
 
@@ -942,11 +879,7 @@ static int qcedev_sha_final(struct qcedev_async_req *qcedev_areq,
 	uint8_t *k_buf_src = NULL;
 	uint8_t *k_align_src = NULL;
 
-<<<<<<< HEAD
 	if (!handle->sha_ctxt.init_done) {
-=======
-	if (handle->sha_ctxt.init_done == false) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_err("%s Init was not called\n", __func__);
 		return -EINVAL;
 	}
@@ -979,13 +912,8 @@ static int qcedev_sha_final(struct qcedev_async_req *qcedev_areq,
 	handle->sha_ctxt.trailing_buf_len = 0;
 	handle->sha_ctxt.init_done = false;
 	memset(&handle->sha_ctxt.trailing_buf[0], 0, 64);
-<<<<<<< HEAD
 	memset(k_buf_src, 0, ksize((void *)k_buf_src));
 	kfree(k_buf_src);
-=======
-
-	kzfree(k_buf_src);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	qcedev_areq->sha_req.sreq.src = NULL;
 	return err;
 }
@@ -1004,25 +932,19 @@ static int qcedev_hash_cmac(struct qcedev_async_req *qcedev_areq,
 
 	total = qcedev_areq->sha_op_req.data_len;
 
-<<<<<<< HEAD
 	if ((qcedev_areq->sha_op_req.authklen != QCEDEV_AES_KEY_128) &&
 		(qcedev_areq->sha_op_req.authklen != QCEDEV_AES_KEY_256)) {
 		pr_err("%s: unsupported key length\n", __func__);
 		return -EINVAL;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (copy_from_user(&handle->sha_ctxt.authkey[0],
 				(void __user *)qcedev_areq->sha_op_req.authkey,
 				qcedev_areq->sha_op_req.authklen))
 		return -EFAULT;
 
-<<<<<<< HEAD
 	if (total > U32_MAX - CACHE_LINE_SIZE * 2)
 		return -EINVAL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	k_buf_src = kmalloc(total + CACHE_LINE_SIZE * 2, GFP_KERNEL);
 	if (k_buf_src == NULL)
@@ -1037,12 +959,8 @@ static int qcedev_hash_cmac(struct qcedev_async_req *qcedev_areq,
 			(void __user *)qcedev_areq->sha_op_req.data[i].vaddr;
 		if (user_src && copy_from_user(k_src, (void __user *)user_src,
 				qcedev_areq->sha_op_req.data[i].len)) {
-<<<<<<< HEAD
 			memset(k_buf_src, 0, ksize((void *)k_buf_src));
 			kfree(k_buf_src);
-=======
-			kzfree(k_buf_src);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EFAULT;
 		}
 		k_src += qcedev_areq->sha_op_req.data[i].len;
@@ -1055,12 +973,8 @@ static int qcedev_hash_cmac(struct qcedev_async_req *qcedev_areq,
 	handle->sha_ctxt.diglen = qcedev_areq->sha_op_req.diglen;
 	err = submit_req(qcedev_areq, handle);
 
-<<<<<<< HEAD
 	memset(k_buf_src, 0, ksize((void *)k_buf_src));
 	kfree(k_buf_src);
-=======
-	kzfree(k_buf_src);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -1170,13 +1084,8 @@ static int qcedev_hmac_get_ohash(struct qcedev_async_req *qcedev_areq,
 
 	handle->sha_ctxt.last_blk = 0;
 	handle->sha_ctxt.first_blk = 0;
-<<<<<<< HEAD
 	memset(k_src, 0, ksize((void *)k_src));
 	kfree(k_src);
-=======
-
-	kzfree(k_src);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	qcedev_areq->sha_req.sreq.src = NULL;
 	return err;
 }
@@ -1391,7 +1300,6 @@ static int qcedev_vbuf_ablk_cipher(struct qcedev_async_req *areq,
 							CACHE_LINE_SIZE);
 	max_data_xfer = QCE_MAX_OPER_DATA - byteoffset;
 
-<<<<<<< HEAD
 	saved_req = kmemdup(creq, sizeof(struct qcedev_cipher_op_req),
 				GFP_KERNEL);
 	if (saved_req == NULL) {
@@ -1400,15 +1308,6 @@ static int qcedev_vbuf_ablk_cipher(struct qcedev_async_req *areq,
 		return -ENOMEM;
 
 	}
-=======
-	saved_req = kmalloc(sizeof(struct qcedev_cipher_op_req), GFP_KERNEL);
-	if (saved_req == NULL) {
-		kzfree(k_buf_src);
-		return -ENOMEM;
-
-	}
-	memcpy(saved_req, creq, sizeof(struct qcedev_cipher_op_req));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (areq->cipher_op_req.data_len > max_data_xfer) {
 		struct qcedev_cipher_op_req req;
@@ -1432,17 +1331,12 @@ static int qcedev_vbuf_ablk_cipher(struct qcedev_async_req *areq,
 				err = qcedev_vbuf_ablk_cipher_max_xfer(areq,
 						&di, handle, k_align_src);
 				if (err < 0) {
-<<<<<<< HEAD
 					memset(saved_req, 0,
 						ksize((void *)saved_req));
 					memset(k_buf_src, 0,
 						ksize((void *)k_buf_src));
 					kfree(k_buf_src);
 					kfree(saved_req);
-=======
-					kzfree(k_buf_src);
-					kzfree(saved_req);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					return err;
 				}
 
@@ -1483,17 +1377,12 @@ static int qcedev_vbuf_ablk_cipher(struct qcedev_async_req *areq,
 				err = qcedev_vbuf_ablk_cipher_max_xfer(areq,
 						&di, handle, k_align_src);
 				if (err < 0) {
-<<<<<<< HEAD
 					memset(saved_req, 0,
 						ksize((void *)saved_req));
 					memset(k_buf_src, 0,
 						ksize((void *)k_buf_src));
 					kfree(k_buf_src);
 					kfree(saved_req);
-=======
-					kzfree(k_buf_src);
-					kzfree(saved_req);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					return err;
 				}
 
@@ -1536,15 +1425,10 @@ static int qcedev_vbuf_ablk_cipher(struct qcedev_async_req *areq,
 	creq->data_len = saved_req->data_len;
 	creq->byteoffset = saved_req->byteoffset;
 
-<<<<<<< HEAD
 	memset(saved_req, 0, ksize((void *)saved_req));
 	memset(k_buf_src, 0, ksize((void *)k_buf_src));
 	kfree(saved_req);
 	kfree(k_buf_src);
-=======
-	kzfree(saved_req);
-	kzfree(k_buf_src);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 
 }
@@ -1755,11 +1639,7 @@ static int qcedev_check_sha_params(struct qcedev_sha_op_req *req,
 		goto sha_error;
 	}
 	if ((req->alg == QCEDEV_ALG_SHA1_HMAC) ||
-<<<<<<< HEAD
 			(req->alg == QCEDEV_ALG_SHA256_HMAC)) {
-=======
-			(req->alg == QCEDEV_ALG_SHA1_HMAC)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (req->authkey == NULL) {
 			pr_err("%s: Invalid authkey pointer\n", __func__);
 			goto sha_error;
@@ -1920,11 +1800,7 @@ static inline long qcedev_ioctl(struct file *file,
 				goto exit_free_qcedev_areq;
 			}
 		} else {
-<<<<<<< HEAD
 			if (!handle->sha_ctxt.init_done) {
-=======
-			if (handle->sha_ctxt.init_done == false) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				pr_err("%s Init was not called\n", __func__);
 				mutex_unlock(&hash_access_lock);
 				err = -EINVAL;
@@ -1949,27 +1825,15 @@ static inline long qcedev_ioctl(struct file *file,
 				handle->sha_ctxt.diglen);
 		mutex_unlock(&hash_access_lock);
 		if (copy_to_user((void __user *)arg, &qcedev_areq->sha_op_req,
-<<<<<<< HEAD
 					sizeof(struct qcedev_sha_op_req)))
 			err = -EFAULT;
 			goto exit_free_qcedev_areq;
 		}
-=======
-					sizeof(struct qcedev_sha_op_req))) {
-			err = -EFAULT;
-			goto exit_free_qcedev_areq;
-		}
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case QCEDEV_IOCTL_SHA_FINAL_REQ:
 
-<<<<<<< HEAD
 		if (!handle->sha_ctxt.init_done) {
-=======
-		if (handle->sha_ctxt.init_done == false) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pr_err("%s Init was not called\n", __func__);
 			err = -EINVAL;
 			goto exit_free_qcedev_areq;
@@ -2053,18 +1917,10 @@ static inline long qcedev_ioctl(struct file *file,
 				handle->sha_ctxt.diglen);
 		mutex_unlock(&hash_access_lock);
 		if (copy_to_user((void __user *)arg, &qcedev_areq->sha_op_req,
-<<<<<<< HEAD
 					sizeof(struct qcedev_sha_op_req)))
 			err = -EFAULT;
 			goto exit_free_qcedev_areq;
 		}
-=======
-					sizeof(struct qcedev_sha_op_req))) {
-			err = -EFAULT;
-			goto exit_free_qcedev_areq;
-		}
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case QCEDEV_IOCTL_MAP_BUF_REQ:
@@ -2251,11 +2107,7 @@ static int qcedev_probe_device(struct platform_device *pdev)
 	podev->mem_client = qcedev_mem_new_client(MEM_ION);
 	if (!podev->mem_client) {
 		pr_err("%s: err: qcedev_mem_new_client failed\n", __func__);
-<<<<<<< HEAD
 		goto exit_qce_close;
-=======
-		goto exit_qce_req_bw;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	rc = of_platform_populate(pdev->dev.of_node, qcedev_match,
@@ -2272,23 +2124,12 @@ exit_mem_new_client:
 	if (podev->mem_client)
 		qcedev_mem_delete_client(podev->mem_client);
 	podev->mem_client = NULL;
-<<<<<<< HEAD
 
-=======
-exit_qce_req_bw:
-	if (msm_bus_scale_client_update_request(podev->bus_scale_handle, 1))
-		pr_err("%s Unable to set high bandwidth\n", __func__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 exit_qce_close:
 	if (handle)
 		qce_close(handle);
 exit_scale_busbandwidth:
-<<<<<<< HEAD
 	msm_bus_scale_client_update_request(podev->bus_scale_handle, 0);
-=======
-	if (msm_bus_scale_client_update_request(podev->bus_scale_handle, 0))
-		pr_err("%s Unable to set low bandwidth\n", __func__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 exit_unregister_bus_scale:
 	if (podev->platform_support.bus_scale_table != NULL)
 		msm_bus_scale_unregister_client(podev->bus_scale_handle);
@@ -2327,21 +2168,9 @@ static int qcedev_remove(struct platform_device *pdev)
 	podev = platform_get_drvdata(pdev);
 	if (!podev)
 		return 0;
-<<<<<<< HEAD
 	if (podev->qce)
 		qce_close(podev->qce);
 
-=======
-	if (msm_bus_scale_client_update_request(podev->bus_scale_handle, 1))
-		pr_err("%s Unable to set high bandwidth\n", __func__);
-
-	if (podev->qce)
-		qce_close(podev->qce);
-
-	if (msm_bus_scale_client_update_request(podev->bus_scale_handle, 0))
-		pr_err("%s Unable to set low bandwidth\n", __func__);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (podev->platform_support.bus_scale_table != NULL)
 		msm_bus_scale_unregister_client(podev->bus_scale_handle);
 	tasklet_kill(&podev->done_tasklet);
@@ -2407,10 +2236,6 @@ static struct platform_driver qcedev_plat_driver = {
 	.resume = qcedev_resume,
 	.driver = {
 		.name = "qce",
-<<<<<<< HEAD
-=======
-		.owner = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.of_match_table = qcedev_match,
 	},
 };
@@ -2442,15 +2267,6 @@ static int _disp_stats(int id)
 	return len;
 }
 
-<<<<<<< HEAD
-=======
-static int _debug_stats_open(struct inode *inode, struct file *file)
-{
-	file->private_data = inode->i_private;
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static ssize_t _debug_stats_read(struct file *file, char __user *buf,
 			size_t count, loff_t *ppos)
 {
@@ -2474,11 +2290,7 @@ static ssize_t _debug_stats_write(struct file *file, const char __user *buf,
 };
 
 static const struct file_operations _debug_stats_ops = {
-<<<<<<< HEAD
 	.open =         simple_open,
-=======
-	.open =         _debug_stats_open,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read =         _debug_stats_read,
 	.write =        _debug_stats_write,
 };
@@ -2491,11 +2303,7 @@ static int _qcedev_debug_init(void)
 
 	_debug_dent = debugfs_create_dir("qcedev", NULL);
 	if (IS_ERR(_debug_dent)) {
-<<<<<<< HEAD
 		pr_err("qcedev debugfs_create_dir fail, error %ld\n",
-=======
-		pr_debug("qcedev debugfs_create_dir fail, error %ld\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				PTR_ERR(_debug_dent));
 		return PTR_ERR(_debug_dent);
 	}
@@ -2505,11 +2313,7 @@ static int _qcedev_debug_init(void)
 	dent = debugfs_create_file(name, 0644, _debug_dent,
 			&_debug_qcedev, &_debug_stats_ops);
 	if (dent == NULL) {
-<<<<<<< HEAD
 		pr_err("qcedev debugfs_create_file fail, error %ld\n",
-=======
-		pr_debug("qcedev debugfs_create_file fail, error %ld\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				PTR_ERR(dent));
 		rc = PTR_ERR(dent);
 		goto err;
@@ -2522,15 +2326,11 @@ err:
 
 static int qcedev_init(void)
 {
-<<<<<<< HEAD
 	int rc;
 
 	rc = _qcedev_debug_init();
 	if (rc)
 		return rc;
-=======
-	_qcedev_debug_init();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return platform_driver_register(&qcedev_plat_driver);
 }
 

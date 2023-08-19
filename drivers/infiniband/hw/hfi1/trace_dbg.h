@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
 * Copyright(c) 2015 - 2018 Intel Corporation.
-=======
-* Copyright(c) 2015, 2016 Intel Corporation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 *
 * This file is provided under a dual BSD/GPLv2 license.  When using or
 * redistributing this file, you may do so under either license.
@@ -117,10 +113,7 @@ void __hfi1_trace_##lvl(const char *func, char *fmt, ...)		\
  * hfi1_cdbg(LVL, fmt, ...); as well as take care of all
  * the debugfs stuff.
  */
-<<<<<<< HEAD
 __hfi1_trace_def(AFFINITY);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 __hfi1_trace_def(PKT);
 __hfi1_trace_def(PROC);
 __hfi1_trace_def(SDMA);

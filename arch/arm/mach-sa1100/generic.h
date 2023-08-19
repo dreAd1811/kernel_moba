@@ -47,7 +47,6 @@ static inline int sa11x0_pm_init(void) { return 0; }
 #endif
 
 int sa11xx_clk_init(void);
-<<<<<<< HEAD
 
 struct gpiod_lookup_table;
 void sa11x0_register_pcmcia(int socket, struct gpiod_lookup_table *);
@@ -56,5 +55,3 @@ struct fixed_voltage_config;
 struct regulator_consumer_supply;
 int sa11x0_register_fixed_regulator(int n, struct fixed_voltage_config *cfg,
 	struct regulator_consumer_supply *supplies, unsigned num_supplies);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

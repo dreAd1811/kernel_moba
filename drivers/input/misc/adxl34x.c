@@ -796,11 +796,7 @@ struct adxl34x *adxl34x_probe(struct device *dev, int irq,
 
 	if (pdata->watermark) {
 		ac->int_mask |= WATERMARK;
-<<<<<<< HEAD
 		if (FIFO_MODE(pdata->fifo_mode) == FIFO_BYPASS)
-=======
-		if (!FIFO_MODE(pdata->fifo_mode))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ac->pdata.fifo_mode |= FIFO_STREAM;
 	} else {
 		ac->int_mask |= DATA_READY;

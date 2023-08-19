@@ -13,17 +13,12 @@
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/errno.h>
-<<<<<<< HEAD
 #include <linux/gpio/gpio-reg.h>
 #include <linux/gpio/machine.h>
 #include <linux/ioport.h>
 #include <linux/platform_data/sa11x0-serial.h>
 #include <linux/regulator/fixed.h>
 #include <linux/regulator/machine.h>
-=======
-#include <linux/ioport.h>
-#include <linux/platform_data/sa11x0-serial.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/serial_core.h>
 #include <linux/platform_device.h>
 #include <linux/mfd/ucb1x00.h>
@@ -70,7 +65,6 @@
 unsigned long SCR_value = ASSABET_SCR_INIT;
 EXPORT_SYMBOL(SCR_value);
 
-<<<<<<< HEAD
 static struct gpio_chip *assabet_bcr_gc;
 
 static const char *assabet_names[] = {
@@ -110,22 +104,6 @@ static int __init assabet_init_gpio(void __iomem *reg, u32 def_val)
 	return gc->base;
 }
 
-=======
-static unsigned long BCR_value = ASSABET_BCR_DB1110;
-
-void ASSABET_BCR_frob(unsigned int mask, unsigned int val)
-{
-	unsigned long flags;
-
-	local_irq_save(flags);
-	BCR_value = (BCR_value & ~mask) | val;
-	ASSABET_BCR = BCR_value;
-	local_irq_restore(flags);
-}
-
-EXPORT_SYMBOL(ASSABET_BCR_frob);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * The codec reset goes to three devices, so we need to release
  * the rest when any one of these requests it.  However, that
@@ -197,11 +175,7 @@ static void adv7171_write(unsigned reg, unsigned val)
 	unsigned gpdr = GPDR;
 	unsigned gplr = GPLR;
 
-<<<<<<< HEAD
 	ASSABET_BCR_frob(ASSABET_BCR_AUDIO_ON, ASSABET_BCR_AUDIO_ON);
-=======
-	ASSABET_BCR = BCR_value | ASSABET_BCR_AUDIO_ON;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	udelay(100);
 
 	GPCR = SDA | SCK | MOD; /* clear L3 mode to ensure UDA1341 doesn't respond */
@@ -474,7 +448,6 @@ static struct resource neponset_resources[] = {
 };
 #endif
 
-<<<<<<< HEAD
 static struct gpiod_lookup_table assabet_cf_gpio_table = {
 	.dev_id = "sa11x0-pcmcia.1",
 	.table = {
@@ -498,8 +471,6 @@ static struct fixed_voltage_config assabet_cf_vcc_pdata __initdata = {
 	.enable_high = 1,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void __init assabet_init(void)
 {
 	/*
@@ -538,17 +509,6 @@ static void __init assabet_init(void)
 	sa11x0_ppc_configure_mcp();
 
 	if (machine_has_neponset()) {
-<<<<<<< HEAD
-=======
-		/*
-		 * Angel sets this, but other bootloaders may not.
-		 *
-		 * This must precede any driver calls to BCR_set()
-		 * or BCR_clear().
-		 */
-		ASSABET_BCR = BCR_value = ASSABET_BCR_DB1111;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifndef CONFIG_ASSABET_NEPONSET
 		printk( "Warning: Neponset detected but full support "
 			"hasn't been configured in the kernel\n" );
@@ -556,14 +516,11 @@ static void __init assabet_init(void)
 		platform_device_register_simple("neponset", 0,
 			neponset_resources, ARRAY_SIZE(neponset_resources));
 #endif
-<<<<<<< HEAD
 	} else {
 		sa11x0_register_fixed_regulator(0, &assabet_cf_vcc_pdata,
 					 assabet_cf_vcc_consumers,
 					 ARRAY_SIZE(assabet_cf_vcc_consumers));
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 #ifndef ASSABET_PAL_VIDEO
@@ -575,12 +532,9 @@ static void __init assabet_init(void)
 			    ARRAY_SIZE(assabet_flash_resources));
 	sa11x0_register_irda(&assabet_irda_data);
 	sa11x0_register_mcp(&assabet_mcp_data);
-<<<<<<< HEAD
 
 	if (!machine_has_neponset())
 		sa11x0_register_pcmcia(1, &assabet_cf_gpio_table);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -846,7 +800,6 @@ static int __init assabet_leds_init(void)
 fs_initcall(assabet_leds_init);
 #endif
 
-<<<<<<< HEAD
 void __init assabet_init_irq(void)
 {
 	unsigned int assabet_gpio_base;
@@ -869,18 +822,12 @@ void __init assabet_init_irq(void)
 	assabet_cf_vcc_pdata.gpio = assabet_gpio_base + 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MACHINE_START(ASSABET, "Intel-Assabet")
 	.atag_offset	= 0x100,
 	.fixup		= fixup_assabet,
 	.map_io		= assabet_map_io,
 	.nr_irqs	= SA1100_NR_IRQS,
-<<<<<<< HEAD
 	.init_irq	= assabet_init_irq,
-=======
-	.init_irq	= sa1100_init_irq,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.init_time	= sa1100_timer_init,
 	.init_machine	= assabet_init,
 	.init_late	= sa11x0_init_late,

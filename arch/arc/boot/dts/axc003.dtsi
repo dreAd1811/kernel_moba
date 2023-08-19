@@ -35,7 +35,6 @@
 			reg = <0x80 0x10>, <0x100 0x10>;
 			#clock-cells = <0>;
 			clocks = <&input_clk>;
-<<<<<<< HEAD
 
 			/*
 			 * Set initial core pll output frequency to 90MHz.
@@ -44,8 +43,6 @@
 			 */
 			assigned-clocks = <&core_clk>;
 			assigned-clock-rates = <90000000>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		core_intc: archs-intc@cpu {
@@ -97,7 +94,6 @@
 	};
 
 	/*
-<<<<<<< HEAD
 	 * Mark DMA peripherals connected via IOC port as dma-coherent. We do
 	 * it via overlay because peripherals defined in axs10x_mb.dtsi are
 	 * used for both AXS101 and AXS103 boards and only AXS103 has IOC (so
@@ -124,8 +120,6 @@
 	};
 
 	/*
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * The DW APB ICTL intc on MB is connected to CPU intc via a
 	 * DT "invisible" DW APB GPIO block, configured to simply pass thru
 	 * interrupts - setup accordinly in platform init (plat-axs10x/ax10x.c)

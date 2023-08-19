@@ -11,10 +11,7 @@
 
 #include <dt-bindings/gpio/gpio.h>
 #include "hi3798cv200.dtsi"
-<<<<<<< HEAD
 #include "poplar-pinctrl.dtsi"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 / {
 	model = "HiSilicon Poplar Development Board";
@@ -65,7 +62,6 @@
 			default-state = "off";
 		};
 	};
-<<<<<<< HEAD
 
 	reg_pcie: regulator-pcie {
 		compatible = "regulator-fixed";
@@ -93,8 +89,6 @@
 	non-removable;
 	bus-width = <8>;
 	status = "okay";
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &gmac1 {
@@ -112,30 +106,17 @@
 
 &gpio1 {
 	status = "okay";
-<<<<<<< HEAD
 	gpio-line-names = "GPIO-E",	"",
 			  "",		"",
 			  "",		"GPIO-F",
 			  "",		"GPIO-J";
-=======
-	gpio-line-names = "LS-GPIO-E",	"",
-			  "",		"",
-			  "",		"LS-GPIO-F",
-			  "",		"LS-GPIO-J";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &gpio2 {
 	status = "okay";
-<<<<<<< HEAD
 	gpio-line-names = "GPIO-H",	"GPIO-I",
 			  "GPIO-L",	"GPIO-G",
 			  "GPIO-K",	"",
-=======
-	gpio-line-names = "LS-GPIO-H",	"LS-GPIO-I",
-			  "LS-GPIO-L",	"LS-GPIO-G",
-			  "LS-GPIO-K",	"",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  "",		"";
 };
 
@@ -143,24 +124,15 @@
 	status = "okay";
 	gpio-line-names = "",		"",
 			  "",		"",
-<<<<<<< HEAD
 			  "GPIO-C",	"",
 			  "",		"GPIO-B";
-=======
-			  "LS-GPIO-C",	"",
-			  "",		"LS-GPIO-B";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &gpio4 {
 	status = "okay";
 	gpio-line-names = "",		"",
 			  "",		"",
-<<<<<<< HEAD
 			  "",		"GPIO-D",
-=======
-			  "",		"LS-GPIO-D",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  "",		"";
 };
 
@@ -168,11 +140,7 @@
 	status = "okay";
 	gpio-line-names = "",		"USER-LED-1",
 			  "USER-LED-2",	"",
-<<<<<<< HEAD
 			  "",		"GPIO-A",
-=======
-			  "",		"LS-GPIO-A",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  "",		"";
 };
 
@@ -206,7 +174,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
 &ohci {
 	status = "okay";
 };
@@ -223,8 +190,6 @@
 	status = "okay";
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &spi0 {
 	status = "okay";
 	label = "LS-SPI0";

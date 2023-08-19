@@ -122,44 +122,9 @@
 #define V3D_VPMBASE  0x00504
 #define V3D_PCTRC    0x00670
 #define V3D_PCTRE    0x00674
-<<<<<<< HEAD
 # define V3D_PCTRE_EN	BIT(31)
 #define V3D_PCTR(x)  (0x00680 + ((x) * 8))
 #define V3D_PCTRS(x) (0x00684 + ((x) * 8))
-=======
-#define V3D_PCTR0    0x00680
-#define V3D_PCTRS0   0x00684
-#define V3D_PCTR1    0x00688
-#define V3D_PCTRS1   0x0068c
-#define V3D_PCTR2    0x00690
-#define V3D_PCTRS2   0x00694
-#define V3D_PCTR3    0x00698
-#define V3D_PCTRS3   0x0069c
-#define V3D_PCTR4    0x006a0
-#define V3D_PCTRS4   0x006a4
-#define V3D_PCTR5    0x006a8
-#define V3D_PCTRS5   0x006ac
-#define V3D_PCTR6    0x006b0
-#define V3D_PCTRS6   0x006b4
-#define V3D_PCTR7    0x006b8
-#define V3D_PCTRS7   0x006bc
-#define V3D_PCTR8    0x006c0
-#define V3D_PCTRS8   0x006c4
-#define V3D_PCTR9    0x006c8
-#define V3D_PCTRS9   0x006cc
-#define V3D_PCTR10   0x006d0
-#define V3D_PCTRS10  0x006d4
-#define V3D_PCTR11   0x006d8
-#define V3D_PCTRS11  0x006dc
-#define V3D_PCTR12   0x006e0
-#define V3D_PCTRS12  0x006e4
-#define V3D_PCTR13   0x006e8
-#define V3D_PCTRS13  0x006ec
-#define V3D_PCTR14   0x006f0
-#define V3D_PCTRS14  0x006f4
-#define V3D_PCTR15   0x006f8
-#define V3D_PCTRS15  0x006fc
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define V3D_DBGE     0x00f00
 #define V3D_FDBGO    0x00f04
 #define V3D_FDBGB    0x00f08
@@ -365,7 +330,6 @@
 #define SCALER_DISPCTRL0                        0x00000040
 # define SCALER_DISPCTRLX_ENABLE		BIT(31)
 # define SCALER_DISPCTRLX_RESET			BIT(30)
-<<<<<<< HEAD
 /* Generates a single frame when VSTART is seen and stops at the last
  * pixel read from the FIFO.
  */
@@ -381,8 +345,6 @@
  */
 # define SCALER_DISPCTRLX_FIFOREG		BIT(26)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 # define SCALER_DISPCTRLX_WIDTH_MASK		VC4_MASK(23, 12)
 # define SCALER_DISPCTRLX_WIDTH_SHIFT		12
 # define SCALER_DISPCTRLX_HEIGHT_MASK		VC4_MASK(11, 0)
@@ -455,7 +417,6 @@
  */
 # define SCALER_GAMADDR_SRAMENB			BIT(30)
 
-<<<<<<< HEAD
 #define SCALER_OLEDOFFS                         0x00000080
 /* Clamps R to [16,235] and G/B to [16,240]. */
 # define SCALER_OLEDOFFS_YUVCLAMP               BIT(31)
@@ -518,8 +479,6 @@
 # define SCALER_DISPSLAVE_RGB_MASK              VC4_MASK(23, 0)
 # define SCALER_DISPSLAVE_RGB_SHIFT             0
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SCALER_GAMDATA                          0x000000e0
 #define SCALER_DLIST_START                      0x00002000
 #define SCALER_DLIST_SIZE                       0x00004000
@@ -885,13 +844,10 @@ enum hvs_pixel_format {
 	HVS_PIXEL_FORMAT_YCBCR_YUV420_2PLANE = 9,
 	HVS_PIXEL_FORMAT_YCBCR_YUV422_3PLANE = 10,
 	HVS_PIXEL_FORMAT_YCBCR_YUV422_2PLANE = 11,
-<<<<<<< HEAD
 	HVS_PIXEL_FORMAT_H264 = 12,
 	HVS_PIXEL_FORMAT_PALETTE = 13,
 	HVS_PIXEL_FORMAT_YUV444_RGB = 14,
 	HVS_PIXEL_FORMAT_AYUV444_RGB = 15,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Note: the LSB is the rightmost character shown.  Only valid for
@@ -925,7 +881,6 @@ enum hvs_pixel_format {
 #define SCALER_CTL0_TILING_128B			2
 #define SCALER_CTL0_TILING_256B_OR_T		3
 
-<<<<<<< HEAD
 #define SCALER_CTL0_ALPHA_MASK                  BIT(19)
 #define SCALER_CTL0_HFLIP                       BIT(16)
 #define SCALER_CTL0_VFLIP                       BIT(15)
@@ -947,14 +902,6 @@ enum hvs_pixel_format {
 #define SCALER_CTL0_RGBA_EXPAND_MSB		2
 #define SCALER_CTL0_RGBA_EXPAND_ROUND		3
 
-=======
-#define SCALER_CTL0_HFLIP                       BIT(16)
-#define SCALER_CTL0_VFLIP                       BIT(15)
-
-#define SCALER_CTL0_ORDER_MASK			VC4_MASK(14, 13)
-#define SCALER_CTL0_ORDER_SHIFT			13
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SCALER_CTL0_SCL1_MASK			VC4_MASK(10, 8)
 #define SCALER_CTL0_SCL1_SHIFT			8
 
@@ -997,11 +944,8 @@ enum hvs_pixel_format {
 #define SCALER_POS2_ALPHA_MODE_FIXED		1
 #define SCALER_POS2_ALPHA_MODE_FIXED_NONZERO	2
 #define SCALER_POS2_ALPHA_MODE_FIXED_OVER_0x07	3
-<<<<<<< HEAD
 #define SCALER_POS2_ALPHA_PREMULT		BIT(29)
 #define SCALER_POS2_ALPHA_MIX			BIT(28)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define SCALER_POS2_HEIGHT_MASK			VC4_MASK(27, 16)
 #define SCALER_POS2_HEIGHT_SHIFT		16
@@ -1087,15 +1031,12 @@ enum hvs_pixel_format {
 #define SCALER_SRC_PITCH_MASK			VC4_MASK(15, 0)
 #define SCALER_SRC_PITCH_SHIFT			0
 
-<<<<<<< HEAD
 /* PITCH0/1/2 fields for tiled (SAND). */
 #define SCALER_TILE_SKIP_0_MASK			VC4_MASK(18, 16)
 #define SCALER_TILE_SKIP_0_SHIFT		16
 #define SCALER_TILE_HEIGHT_MASK			VC4_MASK(15, 0)
 #define SCALER_TILE_HEIGHT_SHIFT		0
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* PITCH0 fields for T-tiled. */
 #define SCALER_PITCH0_TILE_WIDTH_L_MASK		VC4_MASK(22, 16)
 #define SCALER_PITCH0_TILE_WIDTH_L_SHIFT	16

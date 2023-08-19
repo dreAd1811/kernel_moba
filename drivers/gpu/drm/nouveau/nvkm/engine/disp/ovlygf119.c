@@ -21,14 +21,7 @@
  *
  * Authors: Ben Skeggs
  */
-<<<<<<< HEAD
 #include "channv50.h"
-=======
-#include "dmacnv50.h"
-#include "rootnv50.h"
-
-#include <nvif/class.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static const struct nv50_disp_mthd_list
 gf119_disp_ovly_mthd_base = {
@@ -83,11 +76,7 @@ gf119_disp_ovly_mthd_base = {
 };
 
 static const struct nv50_disp_chan_mthd
-<<<<<<< HEAD
 gf119_disp_ovly_mthd = {
-=======
-gf119_disp_ovly_chan_mthd = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.name = "Overlay",
 	.addr = 0x001000,
 	.prev = -0x020000,
@@ -97,7 +86,6 @@ gf119_disp_ovly_chan_mthd = {
 	}
 };
 
-<<<<<<< HEAD
 int
 gf119_disp_ovly_new(const struct nvkm_oclass *oclass, void *argv, u32 argc,
 		    struct nv50_disp *disp, struct nvkm_object **pobject)
@@ -105,15 +93,3 @@ gf119_disp_ovly_new(const struct nvkm_oclass *oclass, void *argv, u32 argc,
 	return nv50_disp_ovly_new_(&gf119_disp_dmac_func, &gf119_disp_ovly_mthd,
 				   disp, 5, oclass, argv, argc, pobject);
 }
-=======
-const struct nv50_disp_dmac_oclass
-gf119_disp_ovly_oclass = {
-	.base.oclass = GF110_DISP_OVERLAY_CONTROL_DMA,
-	.base.minver = 0,
-	.base.maxver = 0,
-	.ctor = nv50_disp_ovly_new,
-	.func = &gf119_disp_dmac_func,
-	.mthd = &gf119_disp_ovly_chan_mthd,
-	.chid = 5,
-};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

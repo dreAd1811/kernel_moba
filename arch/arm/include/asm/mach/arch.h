@@ -59,11 +59,7 @@ struct machine_desc {
 	void			(*init_time)(void);
 	void			(*init_machine)(void);
 	void			(*init_late)(void);
-<<<<<<< HEAD
 #ifdef CONFIG_GENERIC_IRQ_MULTI_HANDLER
-=======
-#ifdef CONFIG_MULTI_IRQ_HANDLER
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void			(*handle_irq)(struct pt_regs *);
 #endif
 	void			(*restart)(enum reboot_mode, const char *);

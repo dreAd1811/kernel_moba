@@ -83,10 +83,6 @@ static int max5487_write_raw(struct iio_dev *indio_dev,
 static const struct iio_info max5487_info = {
 	.read_raw = max5487_read_raw,
 	.write_raw = max5487_write_raw,
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int max5487_spi_probe(struct spi_device *spi)
@@ -150,10 +146,6 @@ MODULE_DEVICE_TABLE(acpi, max5487_acpi_match);
 static struct spi_driver max5487_driver = {
 	.driver = {
 		.name = "max5487",
-<<<<<<< HEAD
-=======
-		.owner = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.acpi_match_table = ACPI_PTR(max5487_acpi_match),
 	},
 	.id_table = max5487_id,

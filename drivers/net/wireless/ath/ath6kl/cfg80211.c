@@ -939,11 +939,7 @@ static int ath6kl_set_probed_ssids(struct ath6kl *ar,
 		else
 			ssid_list[i].flag = ANY_SSID_FLAG;
 
-<<<<<<< HEAD
 		if (n_match_ssid == 0)
-=======
-		if (ar->wiphy->max_match_sets != 0 && n_match_ssid == 0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ssid_list[i].flag |= MATCH_SSID_FLAG;
 	}
 
@@ -1045,11 +1041,7 @@ static int ath6kl_cfg80211_scan(struct wiphy *wiphy,
 
 		n_channels = request->n_channels;
 
-<<<<<<< HEAD
 		channels = kcalloc(n_channels, sizeof(u16), GFP_KERNEL);
-=======
-		channels = kzalloc(n_channels * sizeof(u16), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (channels == NULL) {
 			ath6kl_warn("failed to set scan channels, scan all channels");
 			n_channels = 0;
@@ -1101,11 +1093,7 @@ void ath6kl_cfg80211_scan_complete_event(struct ath6kl_vif *vif, bool aborted)
 	if (vif->scan_req->n_ssids && vif->scan_req->ssids[0].ssid_len) {
 		for (i = 0; i < vif->scan_req->n_ssids; i++) {
 			ath6kl_wmi_probedssid_cmd(ar->wmi, vif->fw_vif_idx,
-<<<<<<< HEAD
 						  i + 1, DISABLE_SSID_FLAG,
-=======
-						  i, DISABLE_SSID_FLAG,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						  0, NULL);
 		}
 	}
@@ -1823,20 +1811,13 @@ static int ath6kl_get_station(struct wiphy *wiphy, struct net_device *dev,
 
 	if (vif->target_stats.rx_byte) {
 		sinfo->rx_bytes = vif->target_stats.rx_byte;
-<<<<<<< HEAD
 		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_RX_BYTES64);
 		sinfo->rx_packets = vif->target_stats.rx_pkt;
 		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_RX_PACKETS);
-=======
-		sinfo->filled |= BIT(NL80211_STA_INFO_RX_BYTES64);
-		sinfo->rx_packets = vif->target_stats.rx_pkt;
-		sinfo->filled |= BIT(NL80211_STA_INFO_RX_PACKETS);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (vif->target_stats.tx_byte) {
 		sinfo->tx_bytes = vif->target_stats.tx_byte;
-<<<<<<< HEAD
 		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_BYTES64);
 		sinfo->tx_packets = vif->target_stats.tx_pkt;
 		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_PACKETS);
@@ -1844,15 +1825,6 @@ static int ath6kl_get_station(struct wiphy *wiphy, struct net_device *dev,
 
 	sinfo->signal = vif->target_stats.cs_rssi;
 	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_SIGNAL);
-=======
-		sinfo->filled |= BIT(NL80211_STA_INFO_TX_BYTES64);
-		sinfo->tx_packets = vif->target_stats.tx_pkt;
-		sinfo->filled |= BIT(NL80211_STA_INFO_TX_PACKETS);
-	}
-
-	sinfo->signal = vif->target_stats.cs_rssi;
-	sinfo->filled |= BIT(NL80211_STA_INFO_SIGNAL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rate = vif->target_stats.tx_ucast_rate;
 
@@ -1885,20 +1857,12 @@ static int ath6kl_get_station(struct wiphy *wiphy, struct net_device *dev,
 		return 0;
 	}
 
-<<<<<<< HEAD
 	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_BITRATE);
-=======
-	sinfo->filled |= BIT(NL80211_STA_INFO_TX_BITRATE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (test_bit(CONNECTED, &vif->flags) &&
 	    test_bit(DTIM_PERIOD_AVAIL, &vif->flags) &&
 	    vif->nw_type == INFRA_NETWORK) {
-<<<<<<< HEAD
 		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_BSS_PARAM);
-=======
-		sinfo->filled |= BIT(NL80211_STA_INFO_BSS_PARAM);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sinfo->bss_param.flags = 0;
 		sinfo->bss_param.dtim_period = vif->assoc_bss_dtim_period;
 		sinfo->bss_param.beacon_interval = vif->assoc_bss_beacon_int;
@@ -2802,10 +2766,6 @@ static int ath6kl_start_ap(struct wiphy *wiphy, struct net_device *dev,
 	struct ieee80211_mgmt *mgmt;
 	bool hidden = false;
 	u8 *ies;
-<<<<<<< HEAD
-=======
-	int ies_len;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct wmi_connect_cmd p;
 	int res;
 	int i, ret;
@@ -2843,10 +2803,6 @@ static int ath6kl_start_ap(struct wiphy *wiphy, struct net_device *dev,
 	ies = mgmt->u.beacon.variable;
 	if (ies > info->beacon.head + info->beacon.head_len)
 		return -EINVAL;
-<<<<<<< HEAD
-=======
-	ies_len = info->beacon.head + info->beacon.head_len - ies;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (info->ssid == NULL)
 		return -EINVAL;
@@ -3631,15 +3587,8 @@ static int ath6kl_cfg80211_vif_init(struct ath6kl_vif *vif)
 		return -ENOMEM;
 	}
 
-<<<<<<< HEAD
 	timer_setup(&vif->disconnect_timer, disconnect_timer_handler, 0);
 	timer_setup(&vif->sched_scan_timer, ath6kl_wmi_sscan_timer, 0);
-=======
-	setup_timer(&vif->disconnect_timer, disconnect_timer_handler,
-		    (unsigned long) vif->ndev);
-	setup_timer(&vif->sched_scan_timer, ath6kl_wmi_sscan_timer,
-		    (unsigned long) vif);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	set_bit(WMM_ENABLED, &vif->flags);
 	spin_lock_init(&vif->if_lock);
@@ -3950,28 +3899,19 @@ int ath6kl_cfg80211_init(struct ath6kl *ar)
 	switch (ar->hw.cap) {
 	case WMI_11AN_CAP:
 		ht = true;
-<<<<<<< HEAD
 		/* fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case WMI_11A_CAP:
 		band_5gig = true;
 		break;
 	case WMI_11GN_CAP:
 		ht = true;
-<<<<<<< HEAD
 		/* fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case WMI_11G_CAP:
 		band_2gig = true;
 		break;
 	case WMI_11AGN_CAP:
 		ht = true;
-<<<<<<< HEAD
 		/* fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case WMI_11AG_CAP:
 		band_2gig = true;
 		band_5gig = true;

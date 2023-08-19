@@ -156,12 +156,8 @@ static int hsta_msi_probe(struct platform_device *pdev)
 	if (ret)
 		goto out;
 
-<<<<<<< HEAD
 	ppc4xx_hsta_msi.irq_map = kmalloc_array(irq_count, sizeof(int),
 						GFP_KERNEL);
-=======
-	ppc4xx_hsta_msi.irq_map = kmalloc(sizeof(int) * irq_count, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ppc4xx_hsta_msi.irq_map) {
 		ret = -ENOMEM;
 		goto out1;

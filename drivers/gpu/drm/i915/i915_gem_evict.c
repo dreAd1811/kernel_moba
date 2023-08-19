@@ -33,13 +33,10 @@
 #include "intel_drv.h"
 #include "i915_trace.h"
 
-<<<<<<< HEAD
 I915_SELFTEST_DECLARE(static struct igt_evict_ctl {
 	bool fail_if_busy:1;
 } igt_evict_ctl;)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool ggtt_is_idle(struct drm_i915_private *i915)
 {
        struct intel_engine_cs *engine;
@@ -49,11 +46,7 @@ static bool ggtt_is_idle(struct drm_i915_private *i915)
 	       return false;
 
        for_each_engine(engine, i915, id) {
-<<<<<<< HEAD
 	       if (!intel_engine_has_kernel_context(engine))
-=======
-	       if (engine->last_retired_context != i915->kernel_context)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		       return false;
        }
 
@@ -76,19 +69,12 @@ static int ggtt_flush(struct drm_i915_private *i915)
 
 	err = i915_gem_wait_for_idle(i915,
 				     I915_WAIT_INTERRUPTIBLE |
-<<<<<<< HEAD
 				     I915_WAIT_LOCKED,
 				     MAX_SCHEDULE_TIMEOUT);
 	if (err)
 		return err;
 
 	GEM_BUG_ON(!ggtt_is_idle(i915));
-=======
-				     I915_WAIT_LOCKED);
-	if (err)
-		return err;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -101,11 +87,7 @@ mark_free(struct drm_mm_scan *scan,
 	if (i915_vma_is_pinned(vma))
 		return false;
 
-<<<<<<< HEAD
 	if (flags & PIN_NONFAULT && i915_vma_has_userfault(vma))
-=======
-	if (flags & PIN_NONFAULT && !list_empty(&vma->obj->userfault_link))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return false;
 
 	list_add(&vma->evict_link, unwind);
@@ -187,11 +169,7 @@ i915_gem_evict_something(struct i915_address_space *vm,
 	 * retiring.
 	 */
 	if (!(flags & PIN_NONBLOCK))
-<<<<<<< HEAD
 		i915_retire_requests(dev_priv);
-=======
-		i915_gem_retire_requests(dev_priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		phases[1] = NULL;
 
@@ -233,20 +211,14 @@ search_again:
 	 * the kernel's there is no more we can evict.
 	 */
 	if (!ggtt_is_idle(dev_priv)) {
-<<<<<<< HEAD
 		if (I915_SELFTEST_ONLY(igt_evict_ctl.fail_if_busy))
 			return -EBUSY;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = ggtt_flush(dev_priv);
 		if (ret)
 			return ret;
 
-<<<<<<< HEAD
 		cond_resched();
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto search_again;
 	}
 
@@ -322,11 +294,7 @@ int i915_gem_evict_for_node(struct i915_address_space *vm,
 	 * retiring.
 	 */
 	if (!(flags & PIN_NONBLOCK))
-<<<<<<< HEAD
 		i915_retire_requests(vm->i915);
-=======
-		i915_gem_retire_requests(vm->i915);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	check_color = vm->mm.color_adjust;
 	if (check_color) {
@@ -372,14 +340,11 @@ int i915_gem_evict_for_node(struct i915_address_space *vm,
 			break;
 		}
 
-<<<<<<< HEAD
 		if (flags & PIN_NONFAULT && i915_vma_has_userfault(vma)) {
 			ret = -ENOSPC;
 			break;
 		}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Overlap of objects in the same batch? */
 		if (i915_vma_is_pinned(vma)) {
 			ret = -ENOSPC;

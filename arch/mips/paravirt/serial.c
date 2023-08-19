@@ -9,27 +9,15 @@
 #include <linux/kernel.h>
 #include <linux/virtio_console.h>
 #include <linux/kvm_para.h>
-<<<<<<< HEAD
 #include <asm/setup.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Emit one character to the boot console.
  */
-<<<<<<< HEAD
 void prom_putchar(char c)
 {
 	kvm_hypercall3(KVM_HC_MIPS_CONSOLE_OUTPUT, 0 /*  port 0 */,
 		(unsigned long)&c, 1 /* len == 1 */);
-=======
-int prom_putchar(char c)
-{
-	kvm_hypercall3(KVM_HC_MIPS_CONSOLE_OUTPUT, 0 /*  port 0 */,
-		(unsigned long)&c, 1 /* len == 1 */);
-
-	return 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #ifdef CONFIG_VIRTIO_CONSOLE

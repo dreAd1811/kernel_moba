@@ -373,11 +373,7 @@ static int s5k5baf_fw_parse(struct device *dev, struct s5k5baf_fw **fw,
 	data += S5K5BAG_FW_TAG_LEN;
 	count -= S5K5BAG_FW_TAG_LEN;
 
-<<<<<<< HEAD
 	d = devm_kcalloc(dev, count, sizeof(u16), GFP_KERNEL);
-=======
-	d = devm_kzalloc(dev, count * sizeof(u16), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!d)
 		return -ENOMEM;
 

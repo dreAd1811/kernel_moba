@@ -35,11 +35,7 @@ static notrace u32 __vdso_read_begin(const struct vdso_data *vdata)
 {
 	u32 seq;
 repeat:
-<<<<<<< HEAD
 	seq = READ_ONCE(vdata->seq_count);
-=======
-	seq = ACCESS_ONCE(vdata->seq_count);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (seq & 1) {
 		cpu_relax();
 		goto repeat;

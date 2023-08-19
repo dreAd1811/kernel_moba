@@ -78,13 +78,7 @@ struct amdgpu_irq {
 	uint32_t                        srbm_soft_reset;
 };
 
-<<<<<<< HEAD
 void amdgpu_irq_disable_all(struct amdgpu_device *adev);
-=======
-void amdgpu_irq_preinstall(struct drm_device *dev);
-int amdgpu_irq_postinstall(struct drm_device *dev);
-void amdgpu_irq_uninstall(struct drm_device *dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 irqreturn_t amdgpu_irq_handler(int irq, void *arg);
 
 int amdgpu_irq_init(struct amdgpu_device *adev);

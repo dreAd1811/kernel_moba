@@ -12,11 +12,7 @@
 	model = "MicroSys sbc6x board";
 	compatible = "microsys,sbc6x", "fsl,imx6q";
 
-<<<<<<< HEAD
 	memory@10000000 {
-=======
-	memory {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x10000000 0x80000000>;
 	};
 };

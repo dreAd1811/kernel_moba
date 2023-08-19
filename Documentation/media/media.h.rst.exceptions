@@ -6,17 +6,10 @@ ignore define MEDIA_API_VERSION
 ignore define MEDIA_ENT_F_BASE
 ignore define MEDIA_ENT_F_OLD_BASE
 ignore define MEDIA_ENT_F_OLD_SUBDEV_BASE
-<<<<<<< HEAD
 ignore define MEDIA_ENT_F_DTV_DECODER
 ignore define MEDIA_INTF_T_DVB_BASE
 ignore define MEDIA_INTF_T_V4L_BASE
 ignore define MEDIA_INTF_T_ALSA_BASE
-=======
-ignore define MEDIA_INTF_T_DVB_BASE
-ignore define MEDIA_INTF_T_V4L_BASE
-ignore define MEDIA_INTF_T_ALSA_BASE
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ignore legacy entity type macros
 ignore define MEDIA_ENT_TYPE_SHIFT
 ignore define MEDIA_ENT_TYPE_MASK

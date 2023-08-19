@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
  * Copyright(c) 2016 - 2018 Intel Corporation.
-=======
- * Copyright(c) 2016 Intel Corporation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This file is provided under a dual BSD/GPLv2 license.  When using or
  * redistributing this file, you may do so under either license.
@@ -75,7 +71,6 @@ __print_symbolic(opcode,                                      \
 	wc_opcode_name(RECV),                                 \
 	wc_opcode_name(RECV_RDMA_WITH_IMM))
 
-<<<<<<< HEAD
 #define CQ_ATTR_PRINT \
 "[%s] user cq %s cqe %u comp_vector %d comp_vector_cpu %d flags %x"
 
@@ -109,8 +104,6 @@ DEFINE_EVENT(rvt_cq_template, rvt_create_cq,
 	     TP_PROTO(struct rvt_cq *cq, const struct ib_cq_init_attr *attr),
 	     TP_ARGS(cq, attr));
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CQ_PRN \
 "[%s] idx %u wr_id %llx status %u opcode %u,%s length %u qpn %x"
 

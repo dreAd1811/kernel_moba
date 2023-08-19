@@ -49,27 +49,19 @@ static int inv_mpu6050_set_enable(struct iio_dev *indio_dev, bool enable)
 		if (result)
 			return result;
 		inv_scan_query(indio_dev);
-<<<<<<< HEAD
 		st->skip_samples = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (st->chip_config.gyro_fifo_enable) {
 			result = inv_mpu6050_switch_engine(st, true,
 					INV_MPU6050_BIT_PWR_GYRO_STBY);
 			if (result)
-<<<<<<< HEAD
 				goto error_power_off;
 			/* gyro first sample is out of specs, skip it */
 			st->skip_samples = 1;
-=======
-				return result;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		if (st->chip_config.accl_fifo_enable) {
 			result = inv_mpu6050_switch_engine(st, true,
 					INV_MPU6050_BIT_PWR_ACCL_STBY);
 			if (result)
-<<<<<<< HEAD
 				goto error_gyro_off;
 		}
 		result = inv_reset_fifo(indio_dev);
@@ -93,30 +85,10 @@ static int inv_mpu6050_set_enable(struct iio_dev *indio_dev, bool enable)
 					INV_MPU6050_BIT_PWR_ACCL_STBY);
 		if (result)
 			goto error_accl_off;
-=======
-				return result;
-		}
-		result = inv_reset_fifo(indio_dev);
-		if (result)
-			return result;
-	} else {
-		result = regmap_write(st->map, st->reg->fifo_en, 0);
-		if (result)
-			return result;
-
-		result = regmap_write(st->map, st->reg->int_enable, 0);
-		if (result)
-			return result;
-
-		result = regmap_write(st->map, st->reg->user_ctrl, 0);
-		if (result)
-			return result;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		result = inv_mpu6050_switch_engine(st, false,
 					INV_MPU6050_BIT_PWR_GYRO_STBY);
 		if (result)
-<<<<<<< HEAD
 			goto error_gyro_off;
 
 		result = inv_mpu6050_set_power_itg(st, false);
@@ -137,20 +109,6 @@ error_gyro_off:
 error_power_off:
 	inv_mpu6050_set_power_itg(st, false);
 	return result;
-=======
-			return result;
-
-		result = inv_mpu6050_switch_engine(st, false,
-					INV_MPU6050_BIT_PWR_ACCL_STBY);
-		if (result)
-			return result;
-		result = inv_mpu6050_set_power_itg(st, false);
-		if (result)
-			return result;
-	}
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -173,18 +131,10 @@ static int inv_mpu_data_rdy_trigger_set_state(struct iio_trigger *trig,
 }
 
 static const struct iio_trigger_ops inv_mpu_trigger_ops = {
-<<<<<<< HEAD
 	.set_trigger_state = &inv_mpu_data_rdy_trigger_set_state,
 };
 
 int inv_mpu6050_probe_trigger(struct iio_dev *indio_dev, int irq_type)
-=======
-	.owner = THIS_MODULE,
-	.set_trigger_state = &inv_mpu_data_rdy_trigger_set_state,
-};
-
-int inv_mpu6050_probe_trigger(struct iio_dev *indio_dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret;
 	struct inv_mpu6050_state *st = iio_priv(indio_dev);
@@ -198,11 +148,7 @@ int inv_mpu6050_probe_trigger(struct iio_dev *indio_dev)
 
 	ret = devm_request_irq(&indio_dev->dev, st->irq,
 			       &iio_trigger_generic_data_rdy_poll,
-<<<<<<< HEAD
 			       irq_type,
-=======
-			       IRQF_TRIGGER_RISING,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       "inv_mpu",
 			       st->trig);
 	if (ret)
@@ -212,11 +158,7 @@ int inv_mpu6050_probe_trigger(struct iio_dev *indio_dev)
 	st->trig->ops = &inv_mpu_trigger_ops;
 	iio_trigger_set_drvdata(st->trig, indio_dev);
 
-<<<<<<< HEAD
 	ret = devm_iio_trigger_register(&indio_dev->dev, st->trig);
-=======
-	ret = iio_trigger_register(st->trig);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -224,11 +166,3 @@ int inv_mpu6050_probe_trigger(struct iio_dev *indio_dev)
 
 	return 0;
 }
-<<<<<<< HEAD
-=======
-
-void inv_mpu6050_remove_trigger(struct inv_mpu6050_state *st)
-{
-	iio_trigger_unregister(st->trig);
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

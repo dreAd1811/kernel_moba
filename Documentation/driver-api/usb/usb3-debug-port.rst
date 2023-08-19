@@ -98,7 +98,6 @@ you to check the sanity of the setup.
 	cat /dev/ttyUSB0
 	done
 	===== end of bash scripts ===============
-<<<<<<< HEAD
 
 Serial TTY
 ==========
@@ -151,5 +150,3 @@ You will see below kernel message lines::
 
 The debug device works now. You can use any communication or debugging
 program to talk between the host and the target.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

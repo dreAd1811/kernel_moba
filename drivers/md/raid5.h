@@ -257,10 +257,7 @@ struct stripe_head {
 		sector_t	sector;			/* sector of this page */
 		unsigned long	flags;
 		u32		log_checksum;
-<<<<<<< HEAD
 		unsigned short	write_hint;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} dev[1]; /* allocated with extra space depending of RAID geometry */
 };
 
@@ -454,7 +451,6 @@ enum {
  * HANDLE gets cleared if stripe_handle leaves nothing locked.
  */
 
-<<<<<<< HEAD
 /* Note: disk_info.rdev can be set to NULL asynchronously by raid5_remove_disk.
  * There are three safe ways to access disk_info.rdev.
  * 1/ when holding mddev->reconfig_mutex
@@ -467,8 +463,6 @@ enum {
  * it has been incremented, the pointer is put back in .rdev.
  */
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct disk_info {
 	struct md_rdev	*rdev, *replacement;
 	struct page	*extra_page; /* extra page to use in prexor */
@@ -676,11 +670,7 @@ struct r5conf {
 	int			pool_size; /* number of disks in stripeheads in pool */
 	spinlock_t		device_lock;
 	struct disk_info	*disks;
-<<<<<<< HEAD
 	struct bio_set		bio_split;
-=======
-	struct bio_set		*bio_split;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* When taking over an array from a different personality, we store
 	 * the new thread here until we fully activate the array.

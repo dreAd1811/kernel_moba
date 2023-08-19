@@ -29,11 +29,7 @@ void __init plat_time_init(void)
 #endif
 }
 
-<<<<<<< HEAD
 void read_persistent_clock64(struct timespec64 *ts)
-=======
-void read_persistent_clock(struct timespec *ts)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	ts->tv_sec = mc146818_get_cmos_time();
 	ts->tv_nsec = 0;

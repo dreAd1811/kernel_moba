@@ -96,14 +96,7 @@ static int sharp_panel_disable(struct drm_panel *panel)
 	if (!sharp->enabled)
 		return 0;
 
-<<<<<<< HEAD
 	backlight_disable(sharp->backlight);
-=======
-	if (sharp->backlight) {
-		sharp->backlight->props.power = FB_BLANK_POWERDOWN;
-		backlight_update_status(sharp->backlight);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sharp->enabled = false;
 
@@ -267,14 +260,7 @@ static int sharp_panel_enable(struct drm_panel *panel)
 	if (sharp->enabled)
 		return 0;
 
-<<<<<<< HEAD
 	backlight_enable(sharp->backlight);
-=======
-	if (sharp->backlight) {
-		sharp->backlight->props.power = FB_BLANK_UNBLANK;
-		backlight_update_status(sharp->backlight);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sharp->enabled = true;
 
@@ -332,12 +318,7 @@ MODULE_DEVICE_TABLE(of, sharp_of_match);
 
 static int sharp_panel_add(struct sharp_panel *sharp)
 {
-<<<<<<< HEAD
 	struct device *dev = &sharp->link1->dev;
-=======
-	struct device_node *np;
-	int err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sharp->mode = &default_mode;
 
@@ -345,41 +326,16 @@ static int sharp_panel_add(struct sharp_panel *sharp)
 	if (IS_ERR(sharp->supply))
 		return PTR_ERR(sharp->supply);
 
-<<<<<<< HEAD
 	sharp->backlight = devm_of_find_backlight(dev);
 
 	if (IS_ERR(sharp->backlight))
 		return PTR_ERR(sharp->backlight);
-=======
-	np = of_parse_phandle(sharp->link1->dev.of_node, "backlight", 0);
-	if (np) {
-		sharp->backlight = of_find_backlight_by_node(np);
-		of_node_put(np);
-
-		if (!sharp->backlight)
-			return -EPROBE_DEFER;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	drm_panel_init(&sharp->base);
 	sharp->base.funcs = &sharp_panel_funcs;
 	sharp->base.dev = &sharp->link1->dev;
 
-<<<<<<< HEAD
 	return drm_panel_add(&sharp->base);
-=======
-	err = drm_panel_add(&sharp->base);
-	if (err < 0)
-		goto put_backlight;
-
-	return 0;
-
-put_backlight:
-	if (sharp->backlight)
-		put_device(&sharp->backlight->dev);
-
-	return err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void sharp_panel_del(struct sharp_panel *sharp)
@@ -387,12 +343,6 @@ static void sharp_panel_del(struct sharp_panel *sharp)
 	if (sharp->base.dev)
 		drm_panel_remove(&sharp->base);
 
-<<<<<<< HEAD
-=======
-	if (sharp->backlight)
-		put_device(&sharp->backlight->dev);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (sharp->link2)
 		put_device(&sharp->link2->dev);
 }
@@ -468,10 +418,6 @@ static int sharp_panel_remove(struct mipi_dsi_device *dsi)
 	if (err < 0)
 		dev_err(&dsi->dev, "failed to detach from DSI host: %d\n", err);
 
-<<<<<<< HEAD
-=======
-	drm_panel_detach(&sharp->base);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sharp_panel_del(sharp);
 
 	return 0;

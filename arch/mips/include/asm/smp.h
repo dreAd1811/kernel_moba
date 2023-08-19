@@ -39,11 +39,7 @@ static inline int raw_smp_processor_id(void)
 
 /* Map from cpu id to sequential logical cpu number.  This will only
    not be idempotent when cpus failed to come on-line.	*/
-<<<<<<< HEAD
 extern int __cpu_number_map[CONFIG_MIPS_NR_CPU_NR_MAP];
-=======
-extern int __cpu_number_map[NR_CPUS];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define cpu_number_map(cpu)  __cpu_number_map[cpu]
 
 /* The reverse map from sequential logical cpu number to cpu id.  */

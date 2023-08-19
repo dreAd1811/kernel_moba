@@ -392,11 +392,7 @@ static const char * const pll_clk_parents[] = {
 	"xin",
 };
 
-<<<<<<< HEAD
 static const struct clk_init_data clk_cpupll_init = {
-=======
-static struct clk_init_data clk_cpupll_init = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.name = "cpupll_vco",
 	.ops = &ab_pll_ops,
 	.parent_names = pll_clk_parents,
@@ -410,11 +406,7 @@ static struct clk_pll clk_cpupll = {
 	},
 };
 
-<<<<<<< HEAD
 static const struct clk_init_data clk_mempll_init = {
-=======
-static struct clk_init_data clk_mempll_init = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.name = "mempll_vco",
 	.ops = &ab_pll_ops,
 	.parent_names = pll_clk_parents,
@@ -428,11 +420,7 @@ static struct clk_pll clk_mempll = {
 	},
 };
 
-<<<<<<< HEAD
 static const struct clk_init_data clk_sys0pll_init = {
-=======
-static struct clk_init_data clk_sys0pll_init = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.name = "sys0pll_vco",
 	.ops = &ab_pll_ops,
 	.parent_names = pll_clk_parents,
@@ -446,11 +434,7 @@ static struct clk_pll clk_sys0pll = {
 	},
 };
 
-<<<<<<< HEAD
 static const struct clk_init_data clk_sys1pll_init = {
-=======
-static struct clk_init_data clk_sys1pll_init = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.name = "sys1pll_vco",
 	.ops = &ab_pll_ops,
 	.parent_names = pll_clk_parents,
@@ -464,11 +448,7 @@ static struct clk_pll clk_sys1pll = {
 	},
 };
 
-<<<<<<< HEAD
 static const struct clk_init_data clk_sys2pll_init = {
-=======
-static struct clk_init_data clk_sys2pll_init = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.name = "sys2pll_vco",
 	.ops = &ab_pll_ops,
 	.parent_names = pll_clk_parents,
@@ -482,11 +462,7 @@ static struct clk_pll clk_sys2pll = {
 	},
 };
 
-<<<<<<< HEAD
 static const struct clk_init_data clk_sys3pll_init = {
-=======
-static struct clk_init_data clk_sys3pll_init = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.name = "sys3pll_vco",
 	.ops = &ab_pll_ops,
 	.parent_names = pll_clk_parents,
@@ -620,11 +596,7 @@ static const char * const audiodto_clk_parents[] = {
 	"sys3pll_clk1",
 };
 
-<<<<<<< HEAD
 static const struct clk_init_data clk_audiodto_init = {
-=======
-static struct clk_init_data clk_audiodto_init = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.name = "audio_dto",
 	.ops = &dto_ops,
 	.parent_names = audiodto_clk_parents,
@@ -645,11 +617,7 @@ static const char * const disp0dto_clk_parents[] = {
 	"sys3pll_clk1",
 };
 
-<<<<<<< HEAD
 static const struct clk_init_data clk_disp0dto_init = {
-=======
-static struct clk_init_data clk_disp0dto_init = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.name = "disp0_dto",
 	.ops = &dto_ops,
 	.parent_names = disp0dto_clk_parents,
@@ -670,11 +638,7 @@ static const char * const disp1dto_clk_parents[] = {
 	"sys3pll_clk1",
 };
 
-<<<<<<< HEAD
 static const struct clk_init_data clk_disp1dto_init = {
-=======
-static struct clk_init_data clk_disp1dto_init = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.name = "disp1_dto",
 	.ops = &dto_ops,
 	.parent_names = disp1dto_clk_parents,

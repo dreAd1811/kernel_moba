@@ -32,10 +32,7 @@ do {									\
 } while (0)
 
 extern void tlbmiss_handler_setup_pgd(unsigned long);
-<<<<<<< HEAD
 extern char tlbmiss_handler_setup_pgd_end[];
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Note: This is also implemented with uasm in arch/mips/kvm/entry.c */
 #define TLBMISS_HANDLER_SETUP_PGD(pgd)					\
@@ -128,11 +125,6 @@ init_new_context(struct task_struct *tsk, struct mm_struct *mm)
 	for_each_possible_cpu(i)
 		cpu_context(i, mm) = 0;
 
-<<<<<<< HEAD
-=======
-	atomic_set(&mm->context.fp_mode_switching, 0);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mm->context.bd_emupage_allocmap = NULL;
 	spin_lock_init(&mm->context.bd_emupage_lock);
 	init_waitqueue_head(&mm->context.bd_emupage_queue);

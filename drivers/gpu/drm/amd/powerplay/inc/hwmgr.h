@@ -25,36 +25,20 @@
 
 #include <linux/seq_file.h>
 #include "amd_powerplay.h"
-<<<<<<< HEAD
 #include "hardwaremanager.h"
-=======
-#include "pp_instance.h"
-#include "hardwaremanager.h"
-#include "pp_power_source.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "hwmgr_ppt.h"
 #include "ppatomctrl.h"
 #include "hwmgr_ppt.h"
 #include "power_state.h"
-<<<<<<< HEAD
 #include "smu_helper.h"
 
-=======
-
-struct pp_instance;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct pp_hwmgr;
 struct phm_fan_speed_info;
 struct pp_atomctrl_voltage_table;
 
 #define VOLTAGE_SCALE 4
-<<<<<<< HEAD
 #define VOLTAGE_VID_OFFSET_SCALE1   625
 #define VOLTAGE_VID_OFFSET_SCALE2   100
-=======
-
-uint8_t convert_to_vid(uint16_t vddc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum DISPLAY_GAP {
 	DISPLAY_GAP_VBLANK_OR_WM = 0,   /* Wait for vblank or MCHG watermark. */
@@ -75,39 +59,12 @@ struct vi_dpm_table {
 	struct vi_dpm_level dpm_level[1];
 };
 
-<<<<<<< HEAD
-=======
-enum PP_Result {
-	PP_Result_TableImmediateExit = 0x13,
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define PCIE_PERF_REQ_REMOVE_REGISTRY   0
 #define PCIE_PERF_REQ_FORCE_LOWPOWER    1
 #define PCIE_PERF_REQ_GEN1         2
 #define PCIE_PERF_REQ_GEN2         3
 #define PCIE_PERF_REQ_GEN3         4
 
-<<<<<<< HEAD
-=======
-enum PP_FEATURE_MASK {
-	PP_SCLK_DPM_MASK = 0x1,
-	PP_MCLK_DPM_MASK = 0x2,
-	PP_PCIE_DPM_MASK = 0x4,
-	PP_SCLK_DEEP_SLEEP_MASK = 0x8,
-	PP_POWER_CONTAINMENT_MASK = 0x10,
-	PP_UVD_HANDSHAKE_MASK = 0x20,
-	PP_SMC_VOLTAGE_CONTROL_MASK = 0x40,
-	PP_VBI_TIME_SUPPORT_MASK = 0x80,
-	PP_ULV_MASK = 0x100,
-	PP_ENABLE_GFX_CG_THRU_SMU = 0x200,
-	PP_CLOCK_STRETCH_MASK = 0x400,
-	PP_OD_FUZZY_FAN_CONTROL_MASK = 0x800,
-	PP_SOCCLK_DPM_MASK = 0x1000,
-	PP_DCEFCLK_DPM_MASK = 0x2000,
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum PHM_BackEnd_Magic {
 	PHM_Dummy_Magic       = 0xAA5555AA,
 	PHM_RV770_Magic       = 0xDCBAABCD,
@@ -123,82 +80,11 @@ enum PHM_BackEnd_Magic {
 	PHM_Rv_Magic          = 0x20161121
 };
 
-<<<<<<< HEAD
-=======
-
-#define PHM_PCIE_POWERGATING_TARGET_GFX            0
-#define PHM_PCIE_POWERGATING_TARGET_DDI            1
-#define PHM_PCIE_POWERGATING_TARGET_PLLCASCADE     2
-#define PHM_PCIE_POWERGATING_TARGET_PHY            3
-
-typedef int (*phm_table_function)(struct pp_hwmgr *hwmgr, void *input,
-				  void *output, void *storage, int result);
-
-typedef bool (*phm_check_function)(struct pp_hwmgr *hwmgr);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct phm_set_power_state_input {
 	const struct pp_hw_power_state *pcurrent_state;
 	const struct pp_hw_power_state *pnew_state;
 };
 
-<<<<<<< HEAD
-=======
-struct phm_acp_arbiter {
-	uint32_t acpclk;
-};
-
-struct phm_uvd_arbiter {
-	uint32_t vclk;
-	uint32_t dclk;
-	uint32_t vclk_ceiling;
-	uint32_t dclk_ceiling;
-	uint32_t vclk_soft_min;
-	uint32_t dclk_soft_min;
-};
-
-struct phm_vce_arbiter {
-	uint32_t   evclk;
-	uint32_t   ecclk;
-};
-
-struct phm_gfx_arbiter {
-	uint32_t sclk;
-	uint32_t sclk_hard_min;
-	uint32_t mclk;
-	uint32_t sclk_over_drive;
-	uint32_t mclk_over_drive;
-	uint32_t sclk_threshold;
-	uint32_t num_cus;
-	uint32_t gfxclk;
-	uint32_t fclk;
-};
-
-/* Entries in the master tables */
-struct phm_master_table_item {
-	phm_check_function isFunctionNeededInRuntimeTable;
-	phm_table_function tableFunction;
-};
-
-enum phm_master_table_flag {
-	PHM_MasterTableFlag_None         = 0,
-	PHM_MasterTableFlag_ExitOnError  = 1,
-};
-
-/* The header of the master tables */
-struct phm_master_table_header {
-	uint32_t storage_size;
-	uint32_t flags;
-	const struct phm_master_table_item *master_list;
-};
-
-struct phm_runtime_table_header {
-	uint32_t storage_size;
-	bool exit_error;
-	phm_table_function *function_list;
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct phm_clock_array {
 	uint32_t count;
 	uint32_t values[1];
@@ -242,22 +128,6 @@ struct phm_phase_shedding_limits_record {
 	uint32_t    Mclk;
 };
 
-<<<<<<< HEAD
-=======
-
-extern int phm_dispatch_table(struct pp_hwmgr *hwmgr,
-			      struct phm_runtime_table_header *rt_table,
-			      void *input, void *output);
-
-extern int phm_construct_table(struct pp_hwmgr *hwmgr,
-			       const struct phm_master_table_header *master_table,
-			       struct phm_runtime_table_header *rt_table);
-
-extern int phm_destroy_table(struct pp_hwmgr *hwmgr,
-			     struct phm_runtime_table_header *rt_table);
-
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct phm_uvd_clock_voltage_dependency_record {
 	uint32_t vclk;
 	uint32_t dclk;
@@ -315,7 +185,6 @@ struct phm_vce_clock_voltage_dependency_table {
 	struct phm_vce_clock_voltage_dependency_record entries[1];
 };
 
-<<<<<<< HEAD
 struct pp_smumgr_func {
 	int (*smu_init)(struct pp_hwmgr  *hwmgr);
 	int (*smu_fini)(struct pp_hwmgr  *hwmgr);
@@ -349,8 +218,6 @@ struct pp_smumgr_func {
 	int (*smc_table_manager)(struct pp_hwmgr *hwmgr, uint8_t *table, uint16_t table_id, bool rw); /*rw: true for read, false for write */
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct pp_hwmgr_func {
 	int (*backend_init)(struct pp_hwmgr *hw_mgr);
 	int (*backend_fini)(struct pp_hwmgr *hw_mgr);
@@ -361,11 +228,8 @@ struct pp_hwmgr_func {
 				struct pp_power_state  *prequest_ps,
 			const struct pp_power_state *pcurrent_ps);
 
-<<<<<<< HEAD
 	int (*apply_clocks_adjust_rules)(struct pp_hwmgr *hwmgr);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int (*force_dpm_level)(struct pp_hwmgr *hw_mgr,
 					enum amd_dpm_forced_level level);
 
@@ -381,55 +245,32 @@ struct pp_hwmgr_func {
 			    unsigned long, struct pp_power_state *);
 	int (*get_num_of_pp_table_entries)(struct pp_hwmgr *hwmgr);
 	int (*powerdown_uvd)(struct pp_hwmgr *hwmgr);
-<<<<<<< HEAD
 	void (*powergate_vce)(struct pp_hwmgr *hwmgr, bool bgate);
 	void (*powergate_uvd)(struct pp_hwmgr *hwmgr, bool bgate);
 	uint32_t (*get_mclk)(struct pp_hwmgr *hwmgr, bool low);
 	uint32_t (*get_sclk)(struct pp_hwmgr *hwmgr, bool low);
-=======
-	int (*powergate_vce)(struct pp_hwmgr *hwmgr, bool bgate);
-	int (*powergate_uvd)(struct pp_hwmgr *hwmgr, bool bgate);
-	int (*get_mclk)(struct pp_hwmgr *hwmgr, bool low);
-	int (*get_sclk)(struct pp_hwmgr *hwmgr, bool low);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int (*power_state_set)(struct pp_hwmgr *hwmgr,
 						const void *state);
 	int (*enable_clock_power_gating)(struct pp_hwmgr *hwmgr);
 	int (*notify_smc_display_config_after_ps_adjustment)(struct pp_hwmgr *hwmgr);
-<<<<<<< HEAD
 	int (*pre_display_config_changed)(struct pp_hwmgr *hwmgr);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int (*display_config_changed)(struct pp_hwmgr *hwmgr);
 	int (*disable_clock_power_gating)(struct pp_hwmgr *hwmgr);
 	int (*update_clock_gatings)(struct pp_hwmgr *hwmgr,
 						const uint32_t *msg_id);
 	int (*set_max_fan_rpm_output)(struct pp_hwmgr *hwmgr, uint16_t us_max_fan_pwm);
 	int (*set_max_fan_pwm_output)(struct pp_hwmgr *hwmgr, uint16_t us_max_fan_pwm);
-<<<<<<< HEAD
 	int (*stop_thermal_controller)(struct pp_hwmgr *hwmgr);
 	int (*get_fan_speed_info)(struct pp_hwmgr *hwmgr, struct phm_fan_speed_info *fan_speed_info);
 	void (*set_fan_control_mode)(struct pp_hwmgr *hwmgr, uint32_t mode);
 	uint32_t (*get_fan_control_mode)(struct pp_hwmgr *hwmgr);
-=======
-	int (*get_temperature)(struct pp_hwmgr *hwmgr);
-	int (*stop_thermal_controller)(struct pp_hwmgr *hwmgr);
-	int (*get_fan_speed_info)(struct pp_hwmgr *hwmgr, struct phm_fan_speed_info *fan_speed_info);
-	int (*set_fan_control_mode)(struct pp_hwmgr *hwmgr, uint32_t mode);
-	int (*get_fan_control_mode)(struct pp_hwmgr *hwmgr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int (*set_fan_speed_percent)(struct pp_hwmgr *hwmgr, uint32_t percent);
 	int (*get_fan_speed_percent)(struct pp_hwmgr *hwmgr, uint32_t *speed);
 	int (*set_fan_speed_rpm)(struct pp_hwmgr *hwmgr, uint32_t percent);
 	int (*get_fan_speed_rpm)(struct pp_hwmgr *hwmgr, uint32_t *speed);
 	int (*reset_fan_speed_to_default)(struct pp_hwmgr *hwmgr);
 	int (*uninitialize_thermal_controller)(struct pp_hwmgr *hwmgr);
-<<<<<<< HEAD
 	int (*register_irq_handlers)(struct pp_hwmgr *hwmgr);
-=======
-	int (*register_internal_thermal_interrupt)(struct pp_hwmgr *hwmgr,
-					const void *thermal_interrupt_info);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool (*check_smc_update_required_for_display_configuration)(struct pp_hwmgr *hwmgr);
 	int (*check_states_equal)(struct pp_hwmgr *hwmgr,
 					const struct pp_hw_power_state *pstate1,
@@ -452,7 +293,6 @@ struct pp_hwmgr_func {
 	int (*get_clock_by_type_with_voltage)(struct pp_hwmgr *hwmgr,
 			enum amd_pp_clock_type type,
 			struct pp_clock_levels_with_voltage *clocks);
-<<<<<<< HEAD
 	int (*set_watermarks_for_clocks_ranges)(struct pp_hwmgr *hwmgr, void *clock_ranges);
 	int (*display_clock_voltage_request)(struct pp_hwmgr *hwmgr,
 			struct pp_display_clock_request *clock);
@@ -462,23 +302,11 @@ struct pp_hwmgr_func {
 	int (*force_clock_level)(struct pp_hwmgr *hwmgr, enum pp_clock_type type, uint32_t mask);
 	int (*print_clock_levels)(struct pp_hwmgr *hwmgr, enum pp_clock_type type, char *buf);
 	int (*powergate_gfx)(struct pp_hwmgr *hwmgr, bool enable);
-=======
-	int (*set_watermarks_for_clocks_ranges)(struct pp_hwmgr *hwmgr,
-			struct pp_wm_sets_with_clock_ranges_soc15 *wm_with_clock_ranges);
-	int (*display_clock_voltage_request)(struct pp_hwmgr *hwmgr,
-			struct pp_display_clock_request *clock);
-	int (*get_max_high_clocks)(struct pp_hwmgr *hwmgr, struct amd_pp_simple_clock_info *clocks);
-	int (*power_off_asic)(struct pp_hwmgr *hwmgr);
-	int (*force_clock_level)(struct pp_hwmgr *hwmgr, enum pp_clock_type type, uint32_t mask);
-	int (*print_clock_levels)(struct pp_hwmgr *hwmgr, enum pp_clock_type type, char *buf);
-	int (*enable_per_cu_power_gating)(struct pp_hwmgr *hwmgr, bool enable);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int (*get_sclk_od)(struct pp_hwmgr *hwmgr);
 	int (*set_sclk_od)(struct pp_hwmgr *hwmgr, uint32_t value);
 	int (*get_mclk_od)(struct pp_hwmgr *hwmgr);
 	int (*set_mclk_od)(struct pp_hwmgr *hwmgr, uint32_t value);
 	int (*read_sensor)(struct pp_hwmgr *hwmgr, int idx, void *value, int *size);
-<<<<<<< HEAD
 	int (*avfs_control)(struct pp_hwmgr *hwmgr, bool enable);
 	int (*disable_smc_firmware_ctf)(struct pp_hwmgr *hwmgr);
 	int (*set_active_display_count)(struct pp_hwmgr *hwmgr, uint32_t count);
@@ -500,12 +328,6 @@ struct pp_hwmgr_func {
 	int (*set_power_limit)(struct pp_hwmgr *hwmgr, uint32_t n);
 	int (*powergate_mmhub)(struct pp_hwmgr *hwmgr);
 	int (*smus_notify_pwe)(struct pp_hwmgr *hwmgr);
-=======
-	int (*set_power_profile_state)(struct pp_hwmgr *hwmgr,
-			struct amd_pp_profile *request);
-	int (*avfs_control)(struct pp_hwmgr *hwmgr, bool enable);
-	int (*disable_smc_firmware_ctf)(struct pp_hwmgr *hwmgr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct pp_table_func {
@@ -746,7 +568,6 @@ struct phm_ppt_v2_information {
 	uint8_t  uc_dcef_dpm_voltage_mode;
 };
 
-<<<<<<< HEAD
 struct phm_ppt_v3_information
 {
 	uint8_t uc_thermal_controller_type;
@@ -768,8 +589,6 @@ struct phm_ppt_v3_information
 	void *smc_pptable;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct phm_dynamic_state_info {
 	struct phm_clock_voltage_dependency_table *vddc_dependency_on_sclk;
 	struct phm_clock_voltage_dependency_table *vddci_dependency_on_mclk;
@@ -799,10 +618,6 @@ struct phm_dynamic_state_info {
 	struct phm_ppm_table                          *ppm_parameter_table;
 	struct phm_cac_tdp_table                      *cac_dtp_table;
 	struct phm_clock_voltage_dependency_table	*vdd_gfx_dependency_on_sclk;
-<<<<<<< HEAD
-=======
-	struct phm_vq_budgeting_table				*vq_budgeting_table;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct pp_fan_info {
@@ -862,10 +677,7 @@ struct pp_thermal_controller_info {
 	uint8_t ucType;
 	uint8_t ucI2cLine;
 	uint8_t ucI2cAddress;
-<<<<<<< HEAD
 	uint8_t use_hw_fan_control;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct pp_fan_info fanInfo;
 	struct pp_advance_fan_control_parameters advanceFanControlParameters;
 };
@@ -887,7 +699,6 @@ enum PP_TABLE_VERSION {
 /**
  * The main hardware manager structure.
  */
-<<<<<<< HEAD
 #define Workload_Policy_Max 5
 
 struct pp_hwmgr {
@@ -898,11 +709,6 @@ struct pp_hwmgr {
 	bool not_vf;
 	bool pm_en;
 	struct mutex smu_lock;
-=======
-struct pp_hwmgr {
-	uint32_t chip_family;
-	uint32_t chip_id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	uint32_t pp_table_version;
 	void *device;
@@ -917,20 +723,11 @@ struct pp_hwmgr {
 
 	enum amd_dpm_forced_level dpm_level;
 	enum amd_dpm_forced_level saved_dpm_level;
-<<<<<<< HEAD
 	enum amd_dpm_forced_level request_dpm_level;
-=======
-	bool block_hw_access;
-	struct phm_gfx_arbiter gfx_arbiter;
-	struct phm_acp_arbiter acp_arbiter;
-	struct phm_uvd_arbiter uvd_arbiter;
-	struct phm_vce_arbiter vce_arbiter;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t usec_timeout;
 	void *pptable;
 	struct phm_platform_descriptor platform_descriptor;
 	void *backend;
-<<<<<<< HEAD
 
 	void *smu_backend;
 	const struct pp_smumgr_func *smumgr_funcs;
@@ -943,23 +740,6 @@ struct pp_hwmgr {
 	const struct pp_table_func *pptable_func;
 
 	struct pp_power_state    *ps;
-=======
-	enum PP_DAL_POWERLEVEL dal_power_level;
-	struct phm_dynamic_state_info dyn_state;
-	struct phm_runtime_table_header setup_asic;
-	struct phm_runtime_table_header power_down_asic;
-	struct phm_runtime_table_header disable_dynamic_state_management;
-	struct phm_runtime_table_header enable_dynamic_state_management;
-	struct phm_runtime_table_header set_power_state;
-	struct phm_runtime_table_header enable_clock_power_gatings;
-	struct phm_runtime_table_header display_configuration_changed;
-	struct phm_runtime_table_header start_thermal_controller;
-	struct phm_runtime_table_header set_temperature_range;
-	const struct pp_hwmgr_func *hwmgr_func;
-	const struct pp_table_func *pptable_func;
-	struct pp_power_state    *ps;
-	enum pp_power_source  power_source;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t num_ps;
 	struct pp_thermal_controller_info thermal_controller;
 	bool fan_ctrl_is_in_default_mode;
@@ -972,7 +752,6 @@ struct pp_hwmgr {
 	struct pp_power_state    *request_ps;
 	struct pp_power_state    *boot_ps;
 	struct pp_power_state    *uvd_ps;
-<<<<<<< HEAD
 	const struct amd_pp_display_configuration *display_config;
 	uint32_t feature_mask;
 	bool avfs_supported;
@@ -1005,114 +784,5 @@ int hwmgr_handle_task(struct pp_hwmgr *hwmgr,
 
 #define PHM_ENTIRE_REGISTER_MASK 0xFFFFFFFFU
 
-=======
-	struct amd_pp_display_configuration display_config;
-	uint32_t feature_mask;
-
-	/* power profile */
-	struct amd_pp_profile gfx_power_profile;
-	struct amd_pp_profile compute_power_profile;
-	struct amd_pp_profile default_gfx_power_profile;
-	struct amd_pp_profile default_compute_power_profile;
-	enum amd_pp_profile_type current_power_profile;
-};
-
-extern int hwmgr_early_init(struct pp_instance *handle);
-extern int hwmgr_hw_init(struct pp_instance *handle);
-extern int hwmgr_hw_fini(struct pp_instance *handle);
-extern int phm_wait_on_register(struct pp_hwmgr *hwmgr, uint32_t index,
-				uint32_t value, uint32_t mask);
-
-extern void phm_wait_on_indirect_register(struct pp_hwmgr *hwmgr,
-				uint32_t indirect_port,
-				uint32_t index,
-				uint32_t value,
-				uint32_t mask);
-
-
-
-extern bool phm_cf_want_uvd_power_gating(struct pp_hwmgr *hwmgr);
-extern bool phm_cf_want_vce_power_gating(struct pp_hwmgr *hwmgr);
-extern bool phm_cf_want_microcode_fan_ctrl(struct pp_hwmgr *hwmgr);
-
-extern int phm_trim_voltage_table(struct pp_atomctrl_voltage_table *vol_table);
-extern int phm_get_svi2_mvdd_voltage_table(struct pp_atomctrl_voltage_table *vol_table, phm_ppt_v1_clock_voltage_dependency_table *dep_table);
-extern int phm_get_svi2_vddci_voltage_table(struct pp_atomctrl_voltage_table *vol_table, phm_ppt_v1_clock_voltage_dependency_table *dep_table);
-extern int phm_get_svi2_vdd_voltage_table(struct pp_atomctrl_voltage_table *vol_table, phm_ppt_v1_voltage_lookup_table *lookup_table);
-extern void phm_trim_voltage_table_to_fit_state_table(uint32_t max_vol_steps, struct pp_atomctrl_voltage_table *vol_table);
-extern int phm_reset_single_dpm_table(void *table, uint32_t count, int max);
-extern void phm_setup_pcie_table_entry(void *table, uint32_t index, uint32_t pcie_gen, uint32_t pcie_lanes);
-extern int32_t phm_get_dpm_level_enable_mask_value(void *table);
-extern uint8_t phm_get_voltage_id(struct pp_atomctrl_voltage_table *voltage_table,
-		uint32_t voltage);
-extern uint8_t phm_get_voltage_index(struct phm_ppt_v1_voltage_lookup_table *lookup_table, uint16_t voltage);
-extern uint16_t phm_find_closest_vddci(struct pp_atomctrl_voltage_table *vddci_table, uint16_t vddci);
-extern int phm_find_boot_level(void *table, uint32_t value, uint32_t *boot_level);
-extern int phm_get_sclk_for_voltage_evv(struct pp_hwmgr *hwmgr, phm_ppt_v1_voltage_lookup_table *lookup_table,
-								uint16_t virtual_voltage_id, int32_t *sclk);
-extern int phm_initializa_dynamic_state_adjustment_rule_settings(struct pp_hwmgr *hwmgr);
-extern uint32_t phm_get_lowest_enabled_level(struct pp_hwmgr *hwmgr, uint32_t mask);
-extern void phm_apply_dal_min_voltage_request(struct pp_hwmgr *hwmgr);
-
-extern int smu7_init_function_pointers(struct pp_hwmgr *hwmgr);
-extern int vega10_hwmgr_init(struct pp_hwmgr *hwmgr);
-extern int rv_init_function_pointers(struct pp_hwmgr *hwmgr);
-
-extern int phm_get_voltage_evv_on_sclk(struct pp_hwmgr *hwmgr, uint8_t voltage_type,
-				uint32_t sclk, uint16_t id, uint16_t *voltage);
-
-#define PHM_ENTIRE_REGISTER_MASK 0xFFFFFFFFU
-
-#define PHM_FIELD_SHIFT(reg, field) reg##__##field##__SHIFT
-#define PHM_FIELD_MASK(reg, field) reg##__##field##_MASK
-
-#define PHM_SET_FIELD(origval, reg, field, fieldval)	\
-	(((origval) & ~PHM_FIELD_MASK(reg, field)) |	\
-	 (PHM_FIELD_MASK(reg, field) & ((fieldval) << PHM_FIELD_SHIFT(reg, field))))
-
-#define PHM_GET_FIELD(value, reg, field)	\
-	(((value) & PHM_FIELD_MASK(reg, field)) >>	\
-	 PHM_FIELD_SHIFT(reg, field))
-
-
-/* Operations on named fields. */
-
-#define PHM_READ_FIELD(device, reg, field)	\
-	PHM_GET_FIELD(cgs_read_register(device, mm##reg), reg, field)
-
-#define PHM_READ_INDIRECT_FIELD(device, port, reg, field)	\
-	PHM_GET_FIELD(cgs_read_ind_register(device, port, ix##reg),	\
-			reg, field)
-
-#define PHM_READ_VFPF_INDIRECT_FIELD(device, port, reg, field)	\
-	PHM_GET_FIELD(cgs_read_ind_register(device, port, ix##reg),	\
-			reg, field)
-
-#define PHM_WRITE_FIELD(device, reg, field, fieldval)	\
-	cgs_write_register(device, mm##reg, PHM_SET_FIELD(	\
-				cgs_read_register(device, mm##reg), reg, field, fieldval))
-
-#define PHM_WRITE_INDIRECT_FIELD(device, port, reg, field, fieldval)	\
-	cgs_write_ind_register(device, port, ix##reg,	\
-			PHM_SET_FIELD(cgs_read_ind_register(device, port, ix##reg),	\
-				reg, field, fieldval))
-
-#define PHM_WRITE_VFPF_INDIRECT_FIELD(device, port, reg, field, fieldval)	\
-	cgs_write_ind_register(device, port, ix##reg,	\
-			PHM_SET_FIELD(cgs_read_ind_register(device, port, ix##reg),	\
-				reg, field, fieldval))
-
-#define PHM_WAIT_INDIRECT_REGISTER_GIVEN_INDEX(hwmgr, port, index, value, mask)        \
-       phm_wait_on_indirect_register(hwmgr, mm##port##_INDEX, index, value, mask)
-
-
-#define PHM_WAIT_INDIRECT_REGISTER(hwmgr, port, reg, value, mask)      \
-       PHM_WAIT_INDIRECT_REGISTER_GIVEN_INDEX(hwmgr, port, ix##reg, value, mask)
-
-#define PHM_WAIT_INDIRECT_FIELD(hwmgr, port, reg, field, fieldval)	\
-	PHM_WAIT_INDIRECT_REGISTER(hwmgr, port, reg, (fieldval)	\
-			<< PHM_FIELD_SHIFT(reg, field), PHM_FIELD_MASK(reg, field))
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* _HWMGR_H_ */

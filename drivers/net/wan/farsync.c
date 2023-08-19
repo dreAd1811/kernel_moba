@@ -2134,10 +2134,6 @@ static void
 fst_openport(struct fst_port_info *port)
 {
 	int signals;
-<<<<<<< HEAD
-=======
-	int txq_length;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Only init things if card is actually running. This allows open to
 	 * succeed for downloads etc.
@@ -2164,10 +2160,6 @@ fst_openport(struct fst_port_info *port)
 		else
 			netif_carrier_off(port_to_dev(port));
 
-<<<<<<< HEAD
-=======
-		txq_length = port->txqe - port->txqs;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		port->txqe = 0;
 		port->txqs = 0;
 	}

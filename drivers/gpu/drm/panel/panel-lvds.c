@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
  * Generic LVDS panel driver
-=======
- * rcar_du_crtc.c  --  R-Car Display Unit CRTCs
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Copyright (C) 2016 Laurent Pinchart
  * Copyright (C) 2016 Renesas Electronics Corporation
@@ -21,10 +17,7 @@
 #include <linux/module.h>
 #include <linux/of_platform.h>
 #include <linux/platform_device.h>
-<<<<<<< HEAD
 #include <linux/regulator/consumer.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/slab.h>
 
 #include <drm/drmP.h>
@@ -47,10 +40,7 @@ struct panel_lvds {
 	bool data_mirror;
 
 	struct backlight_device *backlight;
-<<<<<<< HEAD
 	struct regulator *supply;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct gpio_desc *enable_gpio;
 	struct gpio_desc *reset_gpio;
@@ -81,12 +71,9 @@ static int panel_lvds_unprepare(struct drm_panel *panel)
 	if (lvds->enable_gpio)
 		gpiod_set_value_cansleep(lvds->enable_gpio, 0);
 
-<<<<<<< HEAD
 	if (lvds->supply)
 		regulator_disable(lvds->supply);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -94,7 +81,6 @@ static int panel_lvds_prepare(struct drm_panel *panel)
 {
 	struct panel_lvds *lvds = to_panel_lvds(panel);
 
-<<<<<<< HEAD
 	if (lvds->supply) {
 		int err;
 
@@ -106,8 +92,6 @@ static int panel_lvds_prepare(struct drm_panel *panel)
 		}
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (lvds->enable_gpio)
 		gpiod_set_value_cansleep(lvds->enable_gpio, 1);
 
@@ -228,7 +212,6 @@ static int panel_lvds_probe(struct platform_device *pdev)
 	if (ret < 0)
 		return ret;
 
-<<<<<<< HEAD
 	lvds->supply = devm_regulator_get_optional(lvds->dev, "power");
 	if (IS_ERR(lvds->supply)) {
 		ret = PTR_ERR(lvds->supply);
@@ -243,8 +226,6 @@ static int panel_lvds_probe(struct platform_device *pdev)
 		lvds->supply = NULL;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Get GPIOs and backlight controller. */
 	lvds->enable_gpio = devm_gpiod_get_optional(lvds->dev, "enable",
 						     GPIOD_OUT_LOW);
@@ -301,10 +282,6 @@ static int panel_lvds_remove(struct platform_device *pdev)
 {
 	struct panel_lvds *lvds = dev_get_drvdata(&pdev->dev);
 
-<<<<<<< HEAD
-=======
-	drm_panel_detach(&lvds->panel);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drm_panel_remove(&lvds->panel);
 
 	panel_lvds_disable(&lvds->panel);

@@ -1,24 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2019, The Linux Foundation. All rights reserved.
  */
 
-=======
-/*
- * Copyright (c) 2019-2020, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/kernel.h>
 #include <linux/io.h>
 #include <linux/device.h>
@@ -101,11 +85,7 @@ static void arm_smmu_debug_dump_tbu_qns4_testbus(struct device *dev,
 		reg = (reg & ~GENMASK(4, 0)) | i << 0;
 		arm_smmu_debug_tbu_testbus_select(tbu_base, tcu_base,
 				testbus_version, WRITE, reg);
-<<<<<<< HEAD
 		dev_info(dev, "testbus_sel: 0x%lx Index: %d val: 0x%llx\n",
-=======
-		dev_info(dev, "testbus_sel: 0x%x Index: %d val: 0x%x\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			arm_smmu_debug_tbu_testbus_select(tbu_base, tcu_base,
 				testbus_version, READ, 0), i,
 			arm_smmu_debug_tbu_testbus_output(tbu_base,
@@ -136,11 +116,7 @@ void arm_smmu_debug_dump_tbu_testbus(struct device *dev, void __iomem *tbu_base,
 		u32 testbus_version)
 {
 	if (tbu_testbus_sel & TBU_CLK_GATE_CONTROLLER_TESTBUS_SEL) {
-<<<<<<< HEAD
 		dev_info(dev, "Dumping TBU clk gate controller:\n");
-=======
-		dev_info(dev, "Dumping TBU clk gate controller:");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		arm_smmu_debug_program_tbu_testbus(tbu_base, tcu_base,
 				testbus_version,
 				TBU_CLK_GATE_CONTROLLER_TESTBUS);
@@ -152,11 +128,7 @@ void arm_smmu_debug_dump_tbu_testbus(struct device *dev, void __iomem *tbu_base,
 	}
 
 	if (tbu_testbus_sel & TBU_QNS4_A2Q_TESTBUS_SEL) {
-<<<<<<< HEAD
 		dev_info(dev, "Dumping TBU qns4 a2q test bus:\n");
-=======
-		dev_info(dev, "Dumping TBU qns4 a2q test bus");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		arm_smmu_debug_program_tbu_testbus(tbu_base, tcu_base,
 				testbus_version, TBU_QNS4_A2Q_TESTBUS);
 		arm_smmu_debug_dump_tbu_qns4_testbus(dev, tbu_base,
@@ -164,11 +136,7 @@ void arm_smmu_debug_dump_tbu_testbus(struct device *dev, void __iomem *tbu_base,
 	}
 
 	if (tbu_testbus_sel & TBU_QNS4_Q2A_TESTBUS_SEL) {
-<<<<<<< HEAD
 		dev_info(dev, "Dumping qns4 q2a test bus:\n");
-=======
-		dev_info(dev, "Dumping qns4 q2a test bus");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		arm_smmu_debug_program_tbu_testbus(tbu_base, tcu_base,
 				testbus_version, TBU_QNS4_Q2A_TESTBUS);
 		arm_smmu_debug_dump_tbu_qns4_testbus(dev, tbu_base,
@@ -176,19 +144,11 @@ void arm_smmu_debug_dump_tbu_testbus(struct device *dev, void __iomem *tbu_base,
 	}
 
 	if (tbu_testbus_sel & TBU_MULTIMASTER_QCHANNEL_TESTBUS_SEL) {
-<<<<<<< HEAD
 		dev_info(dev, "Dumping multi master qchannel:\n");
 		arm_smmu_debug_program_tbu_testbus(tbu_base, tcu_base,
 				testbus_version,
 				TBU_MULTIMASTER_QCHANNEL_TESTBUS);
 		dev_info(dev, "testbus_sel: 0x%lx val: 0x%llx\n",
-=======
-		dev_info(dev, "Dumping multi master qchannel:");
-		arm_smmu_debug_program_tbu_testbus(tbu_base, tcu_base,
-				testbus_version,
-				TBU_MULTIMASTER_QCHANNEL_TESTBUS);
-		dev_info(dev, "testbus_sel: 0x%x val: 0x%x\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			arm_smmu_debug_tbu_testbus_select(tbu_base,
 				tcu_base, testbus_version, READ, 0),
 			arm_smmu_debug_tbu_testbus_output(tbu_base,
@@ -212,11 +172,7 @@ static void arm_smmu_debug_program_tcu_testbus(struct device *dev,
 		arm_smmu_debug_tcu_testbus_select(base, tcu_base,
 				PTW_AND_CACHE_TESTBUS, WRITE, reg);
 		if (print)
-<<<<<<< HEAD
 			dev_info(dev, "testbus_sel: 0x%lx Index: %d val: 0x%lx\n",
-=======
-			dev_info(dev, "testbus_sel: 0x%x Index: %d val: 0x%x\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 arm_smmu_debug_tcu_testbus_select(base,
 				 tcu_base, PTW_AND_CACHE_TESTBUS, READ, 0),
 				 i, arm_smmu_debug_tcu_testbus_output(base));
@@ -253,11 +209,7 @@ void arm_smmu_debug_dump_tcu_testbus(struct device *dev, void __iomem *base,
 			arm_smmu_debug_program_tcu_testbus(dev, base, tcu_base,
 					~GENMASK(1, 0), TCU_PTW_TESTBUS_SEL2,
 					TCU_PTW_TESTBUS_SEL2 + 1, 0, false);
-<<<<<<< HEAD
 			dev_info(dev, "testbus_sel: 0x%lx Index: %d val: 0x%lx\n",
-=======
-			dev_info(dev, "testbus_sel: 0x%x Index: %d val: 0x%x\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 arm_smmu_debug_tcu_testbus_select(base,
 				 tcu_base, PTW_AND_CACHE_TESTBUS, READ, 0),
 				 i, arm_smmu_debug_tcu_testbus_output(base));

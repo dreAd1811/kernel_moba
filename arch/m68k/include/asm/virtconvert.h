@@ -16,19 +16,13 @@
 /*
  * Change virtual addresses to physical addresses and vv.
  */
-<<<<<<< HEAD
 #define virt_to_phys virt_to_phys
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline unsigned long virt_to_phys(void *address)
 {
 	return __pa(address);
 }
 
-<<<<<<< HEAD
 #define phys_to_virt phys_to_virt
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void *phys_to_virt(unsigned long address)
 {
 	return __va(address);

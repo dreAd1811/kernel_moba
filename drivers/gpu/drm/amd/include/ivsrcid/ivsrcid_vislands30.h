@@ -198,7 +198,6 @@
 #define VISLANDS30_IV_SRCID_HPD_RX_F		                    42	    // 0x2a		
 #define VISLANDS30_IV_EXTID_HPD_RX_F                         11
 
-<<<<<<< HEAD
 #define VISLANDS30_IV_SRCID_GPIO_19                            0x00000053  /* 83 */
 
 #define VISLANDS30_IV_SRCID_SRBM_READ_TIMEOUT_ERR              0x00000060  /* 96 */
@@ -297,6 +296,4 @@
 #define VISLANDS30_IV_EXTID_NONE                               0x00000000
 #define VISLANDS30_IV_EXTID_INVALID                            0xffffffff
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif // _IVSRCID_VISLANDS30_H_

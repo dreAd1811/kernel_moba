@@ -172,13 +172,8 @@ comp_algorithm    	RW	show and change the compression algorithm
 compact           	WO	trigger memory compaction
 debug_stat        	RO	this file is used for zram debugging purposes
 backing_dev	  	RW	set up backend storage for zram to write out
-<<<<<<< HEAD
 idle		  	WO	mark allocated slot as idle
 use_dedup		RW	show and set deduplication feature
-=======
-use_dedup		RW	show and set deduplication feature
-idle		  	WO	mark allocated slot as idle
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 User space is advised to use the following files to read the device statistics.
 
@@ -227,15 +222,9 @@ line of text and contains the following stats separated by whitespace:
  same_pages       the number of same element filled pages written to this disk.
                   No memory is allocated for such pages.
  pages_compacted  the number of pages freed during compaction
-<<<<<<< HEAD
  huge_pages	  the number of incompressible pages
  dup_data_size	  deduplicated data size
  meta_data_size	  the amount of metadata allocated for deduplication feature
-=======
- dup_data_size	  deduplicated data size
- meta_data_size	  the amount of metadata allocated for deduplication feature
- huge_pages	  the number of incompressible pages
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 File /sys/block/zram<id>/bd_stat
 

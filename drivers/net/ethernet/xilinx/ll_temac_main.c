@@ -674,12 +674,7 @@ static inline int temac_check_tx_bd_space(struct temac_local *lp, int num_frag)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int temac_start_xmit(struct sk_buff *skb, struct net_device *ndev)
-=======
-static netdev_tx_t
-temac_start_xmit(struct sk_buff *skb, struct net_device *ndev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct temac_local *lp = netdev_priv(ndev);
 	struct cdmac_bd *cur_p;

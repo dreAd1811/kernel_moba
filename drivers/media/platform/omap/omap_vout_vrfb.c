@@ -54,13 +54,8 @@ static int omap_vout_allocate_vrfb_buffers(struct omap_vout_device *vout,
 			*count = 0;
 			return -ENOMEM;
 		}
-<<<<<<< HEAD
 		memset((void *)(long)vout->smsshado_virt_addr[i], 0,
 		       vout->smsshado_size);
-=======
-		memset((void *) vout->smsshado_virt_addr[i], 0,
-				vout->smsshado_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return 0;
 }
@@ -241,10 +236,6 @@ int omap_vout_prepare_vrfb(struct omap_vout_device *vout,
 	struct dma_async_tx_descriptor *tx;
 	enum dma_ctrl_flags flags = DMA_PREP_INTERRUPT | DMA_CTRL_ACK;
 	struct dma_chan *chan = vout->vrfb_dma_tx.chan;
-<<<<<<< HEAD
-=======
-	struct dma_device *dmadev = chan->device;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct dma_interleaved_template *xt = vout->vrfb_dma_tx.xt;
 	dma_cookie_t cookie;
 	enum dma_status status;
@@ -262,12 +253,7 @@ int omap_vout_prepare_vrfb(struct omap_vout_device *vout,
 	 */
 
 	pixsize = vout->bpp * vout->vrfb_bpp;
-<<<<<<< HEAD
 	dst_icg = MAX_PIXELS_PER_LINE * pixsize - vout->pix.width * vout->bpp;
-=======
-	dst_icg = ((MAX_PIXELS_PER_LINE * pixsize) -
-		  (vout->pix.width * vout->bpp)) + 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	xt->src_start = vout->buf_phy_addr[vb->i];
 	xt->dst_start = vout->vrfb_context[vb->i].paddr[0];
@@ -283,11 +269,7 @@ int omap_vout_prepare_vrfb(struct omap_vout_device *vout,
 	xt->dst_sgl = true;
 	xt->dst_inc = true;
 
-<<<<<<< HEAD
 	tx = dmaengine_prep_interleaved_dma(chan, xt, flags);
-=======
-	tx = dmadev->device_prep_interleaved_dma(chan, xt, flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (tx == NULL) {
 		pr_err("%s: DMA interleaved prep error\n", __func__);
 		return -EINVAL;

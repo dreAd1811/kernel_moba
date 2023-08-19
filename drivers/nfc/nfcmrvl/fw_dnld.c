@@ -130,15 +130,9 @@ static void fw_dnld_over(struct nfcmrvl_private *priv, u32 error)
 	nfc_fw_download_done(priv->ndev->nfc_dev, priv->fw_dnld.name, error);
 }
 
-<<<<<<< HEAD
 static void fw_dnld_timeout(struct timer_list *t)
 {
 	struct nfcmrvl_private *priv = from_timer(priv, t, fw_dnld.timer);
-=======
-static void fw_dnld_timeout(unsigned long arg)
-{
-	struct nfcmrvl_private *priv = (struct nfcmrvl_private *) arg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	nfc_err(priv->dev, "FW loading timeout");
 	priv->fw_dnld.state = STATE_RESET;
@@ -544,12 +538,7 @@ int nfcmrvl_fw_dnld_start(struct nci_dev *ndev, const char *firmware_name)
 	}
 
 	/* Configure a timer for timeout */
-<<<<<<< HEAD
 	timer_setup(&priv->fw_dnld.timer, fw_dnld_timeout, 0);
-=======
-	setup_timer(&priv->fw_dnld.timer, fw_dnld_timeout,
-		    (unsigned long) priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mod_timer(&priv->fw_dnld.timer,
 		  jiffies + msecs_to_jiffies(FW_DNLD_TIMEOUT));
 

@@ -186,11 +186,7 @@ struct redrat3_error {
 } __packed;
 
 /* table of devices that work with this driver */
-<<<<<<< HEAD
 static const struct usb_device_id redrat3_dev_table[] = {
-=======
-static struct usb_device_id redrat3_dev_table[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Original version of the RedRat3 */
 	{USB_DEVICE(USB_RR3USB_VENDOR_ID, USB_RR3USB_PRODUCT_ID)},
 	/* Second Version/release of the RedRat3 - RetRat3-II */

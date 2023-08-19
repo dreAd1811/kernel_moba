@@ -106,10 +106,7 @@ config CRYPTO_KPP
 config CRYPTO_ACOMP2
 	tristate
 	select CRYPTO_ALGAPI2
-<<<<<<< HEAD
 	select SGL_ALLOC
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config CRYPTO_ACOMP
 	tristate
@@ -248,13 +245,6 @@ config CRYPTO_TEST
 	help
 	  Quick & dirty crypto test module.
 
-<<<<<<< HEAD
-=======
-config CRYPTO_ABLK_HELPER
-	tristate
-	select CRYPTO_CRYPTD
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config CRYPTO_SIMD
 	tristate
 	select CRYPTO_CRYPTD
@@ -299,7 +289,6 @@ config CRYPTO_CHACHA20POLY1305
 	  with the Poly1305 authenticator. It is defined in RFC7539 for use in
 	  IETF protocols.
 
-<<<<<<< HEAD
 config CRYPTO_AEGIS128
 	tristate "AEGIS-128 AEAD algorithm"
 	select CRYPTO_AEAD
@@ -401,8 +390,6 @@ config CRYPTO_MORUS1280_AVX2
 	  AVX2 optimized implementation of the MORUS-1280 dedicated AEAD
 	  algorithm.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config CRYPTO_SEQIV
 	tristate "Sequence Number IV Generator"
 	select CRYPTO_AEAD
@@ -434,7 +421,6 @@ config CRYPTO_CBC
 	  CBC: Cipher Block Chaining mode
 	  This block cipher algorithm is required for IPSec.
 
-<<<<<<< HEAD
 config CRYPTO_CFB
 	tristate "CFB support"
 	select CRYPTO_BLKCIPHER
@@ -443,8 +429,6 @@ config CRYPTO_CFB
 	  CFB: Cipher FeedBack mode
 	  This block cipher algorithm is required for TPM2 Cryptography.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config CRYPTO_CTR
 	tristate "CTR support"
 	select CRYPTO_BLKCIPHER
@@ -645,7 +629,6 @@ config CRYPTO_CRC32_PCLMUL
 	  which will enable any routine to use the CRC-32-IEEE 802.3 checksum
 	  and gain better performance as compared with the table implementation.
 
-<<<<<<< HEAD
 config CRYPTO_CRC32_MIPS
 	tristate "CRC32c and CRC32 CRC algorithm (MIPS)"
 	depends on MIPS_CRC_SUPPORT
@@ -655,8 +638,6 @@ config CRYPTO_CRC32_MIPS
 	  instructions, when available.
 
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config CRYPTO_CRCT10DIF
 	tristate "CRCT10DIF algorithm"
 	select CRYPTO_HASH
@@ -1022,7 +1003,6 @@ config CRYPTO_SHA3
 	  References:
 	  http://keccak.noekeon.org/
 
-<<<<<<< HEAD
 config CRYPTO_SM3
 	tristate "SM3 digest algorithm"
 	select CRYPTO_HASH
@@ -1034,8 +1014,6 @@ config CRYPTO_SM3
 	  http://www.oscca.gov.cn/UpFile/20101222141857786.pdf
 	  https://datatracker.ietf.org/doc/html/draft-shen-sm3-hash
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config CRYPTO_TGR192
 	tristate "Tiger digest algorithms"
 	select CRYPTO_HASH
@@ -1279,11 +1257,7 @@ config CRYPTO_BLOWFISH_COMMON
 config CRYPTO_BLOWFISH_X86_64
 	tristate "Blowfish cipher algorithm (x86_64)"
 	depends on X86 && 64BIT
-<<<<<<< HEAD
 	select CRYPTO_BLKCIPHER
-=======
-	select CRYPTO_ALGAPI
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select CRYPTO_BLOWFISH_COMMON
 	help
 	  Blowfish cipher algorithm (x86_64), by Bruce Schneier.
@@ -1314,15 +1288,8 @@ config CRYPTO_CAMELLIA_X86_64
 	tristate "Camellia cipher algorithm (x86_64)"
 	depends on X86 && 64BIT
 	depends on CRYPTO
-<<<<<<< HEAD
 	select CRYPTO_BLKCIPHER
 	select CRYPTO_GLUE_HELPER_X86
-=======
-	select CRYPTO_ALGAPI
-	select CRYPTO_GLUE_HELPER_X86
-	select CRYPTO_LRW
-	select CRYPTO_XTS
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Camellia cipher algorithm module (x86_64).
 
@@ -1338,19 +1305,10 @@ config CRYPTO_CAMELLIA_AESNI_AVX_X86_64
 	tristate "Camellia cipher algorithm (x86_64/AES-NI/AVX)"
 	depends on X86 && 64BIT
 	depends on CRYPTO
-<<<<<<< HEAD
 	select CRYPTO_BLKCIPHER
 	select CRYPTO_CAMELLIA_X86_64
 	select CRYPTO_GLUE_HELPER_X86
 	select CRYPTO_SIMD
-=======
-	select CRYPTO_ALGAPI
-	select CRYPTO_CRYPTD
-	select CRYPTO_ABLK_HELPER
-	select CRYPTO_GLUE_HELPER_X86
-	select CRYPTO_CAMELLIA_X86_64
-	select CRYPTO_LRW
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select CRYPTO_XTS
 	help
 	  Camellia cipher algorithm module (x86_64/AES-NI/AVX).
@@ -1367,18 +1325,7 @@ config CRYPTO_CAMELLIA_AESNI_AVX2_X86_64
 	tristate "Camellia cipher algorithm (x86_64/AES-NI/AVX2)"
 	depends on X86 && 64BIT
 	depends on CRYPTO
-<<<<<<< HEAD
 	select CRYPTO_CAMELLIA_AESNI_AVX_X86_64
-=======
-	select CRYPTO_ALGAPI
-	select CRYPTO_CRYPTD
-	select CRYPTO_ABLK_HELPER
-	select CRYPTO_GLUE_HELPER_X86
-	select CRYPTO_CAMELLIA_X86_64
-	select CRYPTO_CAMELLIA_AESNI_AVX_X86_64
-	select CRYPTO_LRW
-	select CRYPTO_XTS
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Camellia cipher algorithm module (x86_64/AES-NI/AVX2).
 
@@ -1423,18 +1370,10 @@ config CRYPTO_CAST5
 config CRYPTO_CAST5_AVX_X86_64
 	tristate "CAST5 (CAST-128) cipher algorithm (x86_64/AVX)"
 	depends on X86 && 64BIT
-<<<<<<< HEAD
 	select CRYPTO_BLKCIPHER
 	select CRYPTO_CAST5
 	select CRYPTO_CAST_COMMON
 	select CRYPTO_SIMD
-=======
-	select CRYPTO_ALGAPI
-	select CRYPTO_CRYPTD
-	select CRYPTO_ABLK_HELPER
-	select CRYPTO_CAST_COMMON
-	select CRYPTO_CAST5
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  The CAST5 encryption algorithm (synonymous with CAST-128) is
 	  described in RFC2144.
@@ -1453,21 +1392,11 @@ config CRYPTO_CAST6
 config CRYPTO_CAST6_AVX_X86_64
 	tristate "CAST6 (CAST-256) cipher algorithm (x86_64/AVX)"
 	depends on X86 && 64BIT
-<<<<<<< HEAD
 	select CRYPTO_BLKCIPHER
 	select CRYPTO_CAST6
 	select CRYPTO_CAST_COMMON
 	select CRYPTO_GLUE_HELPER_X86
 	select CRYPTO_SIMD
-=======
-	select CRYPTO_ALGAPI
-	select CRYPTO_CRYPTD
-	select CRYPTO_ABLK_HELPER
-	select CRYPTO_GLUE_HELPER_X86
-	select CRYPTO_CAST_COMMON
-	select CRYPTO_CAST6
-	select CRYPTO_LRW
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select CRYPTO_XTS
 	help
 	  The CAST6 encryption algorithm (synonymous with CAST-256) is
@@ -1494,11 +1423,7 @@ config CRYPTO_DES_SPARC64
 config CRYPTO_DES3_EDE_X86_64
 	tristate "Triple DES EDE cipher algorithm (x86-64)"
 	depends on X86 && 64BIT
-<<<<<<< HEAD
 	select CRYPTO_BLKCIPHER
-=======
-	select CRYPTO_ALGAPI
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select CRYPTO_DES
 	help
 	  Triple DES EDE (FIPS 46-3) algorithm.
@@ -1606,20 +1531,10 @@ config CRYPTO_SERPENT
 config CRYPTO_SERPENT_SSE2_X86_64
 	tristate "Serpent cipher algorithm (x86_64/SSE2)"
 	depends on X86 && 64BIT
-<<<<<<< HEAD
 	select CRYPTO_BLKCIPHER
 	select CRYPTO_GLUE_HELPER_X86
 	select CRYPTO_SERPENT
 	select CRYPTO_SIMD
-=======
-	select CRYPTO_ALGAPI
-	select CRYPTO_CRYPTD
-	select CRYPTO_ABLK_HELPER
-	select CRYPTO_GLUE_HELPER_X86
-	select CRYPTO_SERPENT
-	select CRYPTO_LRW
-	select CRYPTO_XTS
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Serpent cipher algorithm, by Anderson, Biham & Knudsen.
 
@@ -1635,20 +1550,10 @@ config CRYPTO_SERPENT_SSE2_X86_64
 config CRYPTO_SERPENT_SSE2_586
 	tristate "Serpent cipher algorithm (i586/SSE2)"
 	depends on X86 && !64BIT
-<<<<<<< HEAD
 	select CRYPTO_BLKCIPHER
 	select CRYPTO_GLUE_HELPER_X86
 	select CRYPTO_SERPENT
 	select CRYPTO_SIMD
-=======
-	select CRYPTO_ALGAPI
-	select CRYPTO_CRYPTD
-	select CRYPTO_ABLK_HELPER
-	select CRYPTO_GLUE_HELPER_X86
-	select CRYPTO_SERPENT
-	select CRYPTO_LRW
-	select CRYPTO_XTS
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Serpent cipher algorithm, by Anderson, Biham & Knudsen.
 
@@ -1664,19 +1569,10 @@ config CRYPTO_SERPENT_SSE2_586
 config CRYPTO_SERPENT_AVX_X86_64
 	tristate "Serpent cipher algorithm (x86_64/AVX)"
 	depends on X86 && 64BIT
-<<<<<<< HEAD
 	select CRYPTO_BLKCIPHER
 	select CRYPTO_GLUE_HELPER_X86
 	select CRYPTO_SERPENT
 	select CRYPTO_SIMD
-=======
-	select CRYPTO_ALGAPI
-	select CRYPTO_CRYPTD
-	select CRYPTO_ABLK_HELPER
-	select CRYPTO_GLUE_HELPER_X86
-	select CRYPTO_SERPENT
-	select CRYPTO_LRW
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select CRYPTO_XTS
 	help
 	  Serpent cipher algorithm, by Anderson, Biham & Knudsen.
@@ -1693,18 +1589,7 @@ config CRYPTO_SERPENT_AVX_X86_64
 config CRYPTO_SERPENT_AVX2_X86_64
 	tristate "Serpent cipher algorithm (x86_64/AVX2)"
 	depends on X86 && 64BIT
-<<<<<<< HEAD
 	select CRYPTO_SERPENT_AVX_X86_64
-=======
-	select CRYPTO_ALGAPI
-	select CRYPTO_CRYPTD
-	select CRYPTO_ABLK_HELPER
-	select CRYPTO_GLUE_HELPER_X86
-	select CRYPTO_SERPENT
-	select CRYPTO_SERPENT_AVX_X86_64
-	select CRYPTO_LRW
-	select CRYPTO_XTS
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Serpent cipher algorithm, by Anderson, Biham & Knudsen.
 
@@ -1717,7 +1602,6 @@ config CRYPTO_SERPENT_AVX2_X86_64
 	  See also:
 	  <http://www.cl.cam.ac.uk/~rja14/serpent.html>
 
-<<<<<<< HEAD
 config CRYPTO_SM4
 	tristate "SM4 cipher algorithm"
 	select CRYPTO_ALGAPI
@@ -1743,8 +1627,6 @@ config CRYPTO_SM4
 
 	  If unsure, say N.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config CRYPTO_TEA
 	tristate "TEA, XTEA and XETA cipher algorithms"
 	select CRYPTO_ALGAPI
@@ -1818,19 +1700,10 @@ config CRYPTO_TWOFISH_X86_64
 config CRYPTO_TWOFISH_X86_64_3WAY
 	tristate "Twofish cipher algorithm (x86_64, 3-way parallel)"
 	depends on X86 && 64BIT
-<<<<<<< HEAD
 	select CRYPTO_BLKCIPHER
 	select CRYPTO_TWOFISH_COMMON
 	select CRYPTO_TWOFISH_X86_64
 	select CRYPTO_GLUE_HELPER_X86
-=======
-	select CRYPTO_ALGAPI
-	select CRYPTO_TWOFISH_COMMON
-	select CRYPTO_TWOFISH_X86_64
-	select CRYPTO_GLUE_HELPER_X86
-	select CRYPTO_LRW
-	select CRYPTO_XTS
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Twofish cipher algorithm (x86_64, 3-way parallel).
 
@@ -1848,24 +1721,12 @@ config CRYPTO_TWOFISH_X86_64_3WAY
 config CRYPTO_TWOFISH_AVX_X86_64
 	tristate "Twofish cipher algorithm (x86_64/AVX)"
 	depends on X86 && 64BIT
-<<<<<<< HEAD
 	select CRYPTO_BLKCIPHER
 	select CRYPTO_GLUE_HELPER_X86
 	select CRYPTO_SIMD
 	select CRYPTO_TWOFISH_COMMON
 	select CRYPTO_TWOFISH_X86_64
 	select CRYPTO_TWOFISH_X86_64_3WAY
-=======
-	select CRYPTO_ALGAPI
-	select CRYPTO_CRYPTD
-	select CRYPTO_ABLK_HELPER
-	select CRYPTO_GLUE_HELPER_X86
-	select CRYPTO_TWOFISH_COMMON
-	select CRYPTO_TWOFISH_X86_64
-	select CRYPTO_TWOFISH_X86_64_3WAY
-	select CRYPTO_LRW
-	select CRYPTO_XTS
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Twofish cipher algorithm (x86_64/AVX).
 

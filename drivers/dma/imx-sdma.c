@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
 //
 // drivers/dma/imx-sdma.c
@@ -10,26 +9,6 @@
 // Based on code from Freescale:
 //
 // Copyright 2004-2009 Freescale Semiconductor, Inc. All Rights Reserved.
-=======
-/*
- * drivers/dma/imx-sdma.c
- *
- * This file contains a driver for the Freescale Smart DMA engine
- *
- * Copyright 2010 Sascha Hauer, Pengutronix <s.hauer@pengutronix.de>
- *
- * Based on code from Freescale:
- *
- * Copyright 2004-2009 Freescale Semiconductor, Inc. All Rights Reserved.
- *
- * The code contained herein is licensed under the GNU General Public
- * License. You may obtain a copy of the GNU General Public License
- * Version 2 or later at the following locations:
- *
- * http://www.opensource.org/licenses/gpl-license.html
- * http://www.gnu.org/copyleft/gpl.html
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/init.h>
 #include <linux/iopoll.h>
@@ -53,10 +32,7 @@
 #include <linux/of_address.h>
 #include <linux/of_device.h>
 #include <linux/of_dma.h>
-<<<<<<< HEAD
 #include <linux/workqueue.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/irq.h>
 #include <linux/platform_data/dma-imx-sdma.h>
@@ -66,10 +42,7 @@
 #include <linux/mfd/syscon/imx6q-iomuxc-gpr.h>
 
 #include "dmaengine.h"
-<<<<<<< HEAD
 #include "virt-dma.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* SDMA registers */
 #define SDMA_H_C0PTR		0x000
@@ -200,7 +173,6 @@
 #define SDMA_WATERMARK_LEVEL_HWE	BIT(29)
 #define SDMA_WATERMARK_LEVEL_CONT	BIT(31)
 
-<<<<<<< HEAD
 #define SDMA_DMA_BUSWIDTHS	(BIT(DMA_SLAVE_BUSWIDTH_1_BYTE) | \
 				 BIT(DMA_SLAVE_BUSWIDTH_2_BYTES) | \
 				 BIT(DMA_SLAVE_BUSWIDTH_4_BYTES))
@@ -209,16 +181,11 @@
 				 BIT(DMA_MEM_TO_DEV) | \
 				 BIT(DMA_DEV_TO_DEV))
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Mode/Count of data node descriptors - IPCv2
  */
 struct sdma_mode_count {
-<<<<<<< HEAD
 #define SDMA_BD_MAX_CNT	0xffff
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 count   : 16; /* size of the buffer pointed by this BD */
 	u32 status  :  8; /* E,R,I,C,W,D status bits stored here */
 	u32 command :  8; /* command mostly used for channel 0 */
@@ -236,15 +203,9 @@ struct sdma_buffer_descriptor {
 /**
  * struct sdma_channel_control - Channel control Block
  *
-<<<<<<< HEAD
  * @current_bd_ptr:	current buffer descriptor processed
  * @base_bd_ptr:	first element of buffer descriptor array
  * @unused:		padding. The SDMA engine expects an array of 128 byte
-=======
- * @current_bd_ptr	current buffer descriptor processed
- * @base_bd_ptr		first element of buffer descriptor array
- * @unused		padding. The SDMA engine expects an array of 128 byte
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *			control blocks
  */
 struct sdma_channel_control {
@@ -257,7 +218,6 @@ struct sdma_channel_control {
  * struct sdma_state_registers - SDMA context for a channel
  *
  * @pc:		program counter
-<<<<<<< HEAD
  * @unused1:	unused
  * @t:		test bit: status of arithmetic & test instruction
  * @rpc:	return program counter
@@ -265,12 +225,6 @@ struct sdma_channel_control {
  * @sf:		source fault while loading data
  * @spc:	loop start program counter
  * @unused2:	unused
-=======
- * @t:		test bit: status of arithmetic & test instruction
- * @rpc:	return program counter
- * @sf:		source fault while loading data
- * @spc:	loop start program counter
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @df:		destination fault while storing data
  * @epc:	loop end program counter
  * @lm:		loop mode
@@ -308,7 +262,6 @@ struct sdma_state_registers {
  * @dsa:		dedicated core source address register
  * @ds:			dedicated core status register
  * @dd:			dedicated core data register
-<<<<<<< HEAD
  * @scratch0:		1st word of dedicated ram for context switch
  * @scratch1:		2nd word of dedicated ram for context switch
  * @scratch2:		3rd word of dedicated ram for context switch
@@ -317,8 +270,6 @@ struct sdma_state_registers {
  * @scratch5:		6th word of dedicated ram for context switch
  * @scratch6:		7th word of dedicated ram for context switch
  * @scratch7:		8th word of dedicated ram for context switch
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct sdma_context_data {
 	struct sdma_state_registers  channel_state;
@@ -347,15 +298,10 @@ struct sdma_context_data {
 	u32  scratch7;
 } __attribute__ ((packed));
 
-<<<<<<< HEAD
-=======
-#define NUM_BD (int)(PAGE_SIZE / sizeof(struct sdma_buffer_descriptor))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct sdma_engine;
 
 /**
-<<<<<<< HEAD
  * struct sdma_desc - descriptor structor for one transfer
  * @vd:			descriptor for virt dma
  * @num_bd:		number of descriptors currently handling
@@ -413,22 +359,6 @@ struct sdma_desc {
 struct sdma_channel {
 	struct virt_dma_chan		vc;
 	struct sdma_desc		*desc;
-=======
- * struct sdma_channel - housekeeping for a SDMA channel
- *
- * @sdma		pointer to the SDMA engine for this channel
- * @channel		the channel number, matches dmaengine chan_id + 1
- * @direction		transfer type. Needed for setting SDMA script
- * @peripheral_type	Peripheral type. Needed for setting SDMA script
- * @event_id0		aka dma request line
- * @event_id1		for channels that use 2 events
- * @word_size		peripheral access size
- * @buf_tail		ID of the buffer that was processed
- * @buf_ptail		ID of the previous buffer that was processed
- * @num_bd		max NUM_BD. number of descriptors currently handling
- */
-struct sdma_channel {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct sdma_engine		*sdma;
 	unsigned int			channel;
 	enum dma_transfer_direction		direction;
@@ -436,39 +366,17 @@ struct sdma_channel {
 	unsigned int			event_id0;
 	unsigned int			event_id1;
 	enum dma_slave_buswidth		word_size;
-<<<<<<< HEAD
 	unsigned int			pc_from_device, pc_to_device;
 	unsigned int			device_to_device;
 	unsigned int                    pc_to_pc;
-=======
-	unsigned int			buf_tail;
-	unsigned int			buf_ptail;
-	unsigned int			num_bd;
-	unsigned int			period_len;
-	struct sdma_buffer_descriptor	*bd;
-	dma_addr_t			bd_phys;
-	unsigned int			pc_from_device, pc_to_device;
-	unsigned int			device_to_device;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long			flags;
 	dma_addr_t			per_address, per_address2;
 	unsigned long			event_mask[2];
 	unsigned long			watermark_level;
 	u32				shp_addr, per_addr;
-<<<<<<< HEAD
 	enum dma_status			status;
 	struct imx_dma_data		data;
 	struct work_struct		terminate_worker;
-=======
-	struct dma_chan			chan;
-	spinlock_t			lock;
-	struct dma_async_tx_descriptor	desc;
-	enum dma_status			status;
-	unsigned int			chn_count;
-	unsigned int			chn_real_count;
-	struct tasklet_struct		tasklet;
-	struct imx_dma_data		data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define IMX_DMA_SG_LOOP		BIT(0)
@@ -483,7 +391,6 @@ struct sdma_channel {
 /**
  * struct sdma_firmware_header - Layout of the firmware image
  *
-<<<<<<< HEAD
  * @magic:		"SDMA"
  * @version_major:	increased whenever layout of struct
  *			sdma_script_start_addrs changes.
@@ -493,17 +400,6 @@ struct sdma_channel {
  * @ram_code_start:	offset of SDMA ram image in this firmware image
  * @ram_code_size:	size of SDMA ram image
  * @script_addrs:	Stores the start address of the SDMA scripts
-=======
- * @magic		"SDMA"
- * @version_major	increased whenever layout of struct sdma_script_start_addrs
- *			changes.
- * @version_minor	firmware minor version (for binary compatible changes)
- * @script_addrs_start	offset of struct sdma_script_start_addrs in this image
- * @num_script_addrs	Number of script addresses in this image
- * @ram_code_start	offset of SDMA ram image in this firmware image
- * @ram_code_size	size of SDMA ram image
- * @script_addrs	Stores the start address of the SDMA scripts
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *			(in SDMA memory space)
  */
 struct sdma_firmware_header {
@@ -540,11 +436,8 @@ struct sdma_engine {
 	u32				spba_start_addr;
 	u32				spba_end_addr;
 	unsigned int			irq;
-<<<<<<< HEAD
 	dma_addr_t			bd0_phys;
 	struct sdma_buffer_descriptor	*bd0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct sdma_driver_data sdma_imx31 = {
@@ -772,11 +665,7 @@ static int sdma_run_channel0(struct sdma_engine *sdma)
 static int sdma_load_script(struct sdma_engine *sdma, void *buf, int size,
 		u32 address)
 {
-<<<<<<< HEAD
 	struct sdma_buffer_descriptor *bd0 = sdma->bd0;
-=======
-	struct sdma_buffer_descriptor *bd0 = sdma->channel[0].bd;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void *buf_virt;
 	dma_addr_t buf_phys;
 	int ret;
@@ -832,7 +721,6 @@ static void sdma_event_disable(struct sdma_channel *sdmac, unsigned int event)
 	writel_relaxed(val, sdma->regs + chnenbl);
 }
 
-<<<<<<< HEAD
 static struct sdma_desc *to_sdma_desc(struct dma_async_tx_descriptor *t)
 {
 	return container_of(t, struct sdma_desc, vd.tx);
@@ -862,8 +750,6 @@ static void sdma_start_desc(struct sdma_channel *sdmac)
 	sdma_enable_channel(sdma, sdmac->channel);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void sdma_update_channel_loop(struct sdma_channel *sdmac)
 {
 	struct sdma_buffer_descriptor *bd;
@@ -874,15 +760,10 @@ static void sdma_update_channel_loop(struct sdma_channel *sdmac)
 	 * loop mode. Iterate over descriptors, re-setup them and
 	 * call callback function.
 	 */
-<<<<<<< HEAD
 	while (sdmac->desc) {
 		struct sdma_desc *desc = sdmac->desc;
 
 		bd = &desc->bd[desc->buf_tail];
-=======
-	while (1) {
-		bd = &sdmac->bd[sdmac->buf_tail];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (bd->mode.status & BD_DONE)
 			break;
@@ -898,19 +779,11 @@ static void sdma_update_channel_loop(struct sdma_channel *sdmac)
 		* the number of bytes present in the current buffer descriptor.
 		*/
 
-<<<<<<< HEAD
 		desc->chn_real_count = bd->mode.count;
 		bd->mode.status |= BD_DONE;
 		bd->mode.count = desc->period_len;
 		desc->buf_ptail = desc->buf_tail;
 		desc->buf_tail = (desc->buf_tail + 1) % desc->num_bd;
-=======
-		sdmac->chn_real_count = bd->mode.count;
-		bd->mode.status |= BD_DONE;
-		bd->mode.count = sdmac->period_len;
-		sdmac->buf_ptail = sdmac->buf_tail;
-		sdmac->buf_tail = (sdmac->buf_tail + 1) % sdmac->num_bd;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/*
 		 * The callback is called from the interrupt context in order
@@ -918,67 +791,38 @@ static void sdma_update_channel_loop(struct sdma_channel *sdmac)
 		 * SDMA transaction status by the time the client tasklet is
 		 * executed.
 		 */
-<<<<<<< HEAD
 		spin_unlock(&sdmac->vc.lock);
 		dmaengine_desc_get_callback_invoke(&desc->vd.tx, NULL);
 		spin_lock(&sdmac->vc.lock);
-=======
-
-		dmaengine_desc_get_callback_invoke(&sdmac->desc, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (error)
 			sdmac->status = old_status;
 	}
 }
 
-<<<<<<< HEAD
 static void mxc_sdma_handle_channel_normal(struct sdma_channel *data)
-=======
-static void mxc_sdma_handle_channel_normal(unsigned long data)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct sdma_channel *sdmac = (struct sdma_channel *) data;
 	struct sdma_buffer_descriptor *bd;
 	int i, error = 0;
 
-<<<<<<< HEAD
 	sdmac->desc->chn_real_count = 0;
-=======
-	sdmac->chn_real_count = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * non loop mode. Iterate over all descriptors, collect
 	 * errors and call callback function
 	 */
-<<<<<<< HEAD
 	for (i = 0; i < sdmac->desc->num_bd; i++) {
 		bd = &sdmac->desc->bd[i];
 
 		 if (bd->mode.status & (BD_DONE | BD_RROR))
 			error = -EIO;
 		 sdmac->desc->chn_real_count += bd->mode.count;
-=======
-	for (i = 0; i < sdmac->num_bd; i++) {
-		bd = &sdmac->bd[i];
-
-		 if (bd->mode.status & (BD_DONE | BD_RROR))
-			error = -EIO;
-		 sdmac->chn_real_count += bd->mode.count;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (error)
 		sdmac->status = DMA_ERROR;
 	else
 		sdmac->status = DMA_COMPLETE;
-<<<<<<< HEAD
-=======
-
-	dma_cookie_complete(&sdmac->desc);
-
-	dmaengine_desc_get_callback_invoke(&sdmac->desc, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static irqreturn_t sdma_int_handler(int irq, void *dev_id)
@@ -994,7 +838,6 @@ static irqreturn_t sdma_int_handler(int irq, void *dev_id)
 	while (stat) {
 		int channel = fls(stat) - 1;
 		struct sdma_channel *sdmac = &sdma->channel[channel];
-<<<<<<< HEAD
 		struct sdma_desc *desc;
 
 		spin_lock(&sdmac->vc.lock);
@@ -1010,14 +853,6 @@ static irqreturn_t sdma_int_handler(int irq, void *dev_id)
 		}
 
 		spin_unlock(&sdmac->vc.lock);
-=======
-
-		if (sdmac->flags & IMX_DMA_SG_LOOP)
-			sdma_update_channel_loop(sdmac);
-		else
-			tasklet_schedule(&sdmac->tasklet);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__clear_bit(channel, &stat);
 	}
 
@@ -1036,26 +871,16 @@ static void sdma_get_pc(struct sdma_channel *sdmac,
 	 * These are needed once we start to support transfers between
 	 * two peripherals or memory-to-memory transfers
 	 */
-<<<<<<< HEAD
 	int per_2_per = 0, emi_2_emi = 0;
-=======
-	int per_2_per = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sdmac->pc_from_device = 0;
 	sdmac->pc_to_device = 0;
 	sdmac->device_to_device = 0;
-<<<<<<< HEAD
 	sdmac->pc_to_pc = 0;
 
 	switch (peripheral_type) {
 	case IMX_DMATYPE_MEMORY:
 		emi_2_emi = sdma->script_addrs->ap_2_ap_addr;
-=======
-
-	switch (peripheral_type) {
-	case IMX_DMATYPE_MEMORY:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case IMX_DMATYPE_DSP:
 		emi_2_per = sdma->script_addrs->bp_2_ap_addr;
@@ -1128,10 +953,7 @@ static void sdma_get_pc(struct sdma_channel *sdmac,
 	sdmac->pc_from_device = per_2_emi;
 	sdmac->pc_to_device = emi_2_per;
 	sdmac->device_to_device = per_2_per;
-<<<<<<< HEAD
 	sdmac->pc_to_pc = emi_2_emi;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int sdma_load_context(struct sdma_channel *sdmac)
@@ -1140,11 +962,7 @@ static int sdma_load_context(struct sdma_channel *sdmac)
 	int channel = sdmac->channel;
 	int load_address;
 	struct sdma_context_data *context = sdma->context;
-<<<<<<< HEAD
 	struct sdma_buffer_descriptor *bd0 = sdma->bd0;
-=======
-	struct sdma_buffer_descriptor *bd0 = sdma->channel[0].bd;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 	unsigned long flags;
 
@@ -1152,11 +970,8 @@ static int sdma_load_context(struct sdma_channel *sdmac)
 		load_address = sdmac->pc_from_device;
 	else if (sdmac->direction == DMA_DEV_TO_DEV)
 		load_address = sdmac->device_to_device;
-<<<<<<< HEAD
 	else if (sdmac->direction == DMA_MEM_TO_MEM)
 		load_address = sdmac->pc_to_pc;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		load_address = sdmac->pc_to_device;
 
@@ -1198,11 +1013,7 @@ static int sdma_load_context(struct sdma_channel *sdmac)
 
 static struct sdma_channel *to_sdma_chan(struct dma_chan *chan)
 {
-<<<<<<< HEAD
 	return container_of(chan, struct sdma_channel, vc.chan);
-=======
-	return container_of(chan, struct sdma_channel, chan);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int sdma_disable_channel(struct dma_chan *chan)
@@ -1216,19 +1027,12 @@ static int sdma_disable_channel(struct dma_chan *chan)
 
 	return 0;
 }
-<<<<<<< HEAD
 static void sdma_channel_terminate_work(struct work_struct *work)
 {
 	struct sdma_channel *sdmac = container_of(work, struct sdma_channel,
 						  terminate_worker);
 	unsigned long flags;
 	LIST_HEAD(head);
-=======
-
-static int sdma_disable_channel_with_delay(struct dma_chan *chan)
-{
-	sdma_disable_channel(chan);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * According to NXP R&D team a delay of one BD SDMA cost time
@@ -1236,7 +1040,6 @@ static int sdma_disable_channel_with_delay(struct dma_chan *chan)
 	 * bit, to ensure SDMA core has really been stopped after SDMA
 	 * clients call .device_terminate_all.
 	 */
-<<<<<<< HEAD
 	usleep_range(1000, 2000);
 
 	spin_lock_irqsave(&sdmac->vc.lock, flags);
@@ -1254,14 +1057,10 @@ static int sdma_disable_channel_async(struct dma_chan *chan)
 
 	if (sdmac->desc)
 		schedule_work(&sdmac->terminate_worker);
-=======
-	mdelay(1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
 static void sdma_channel_synchronize(struct dma_chan *chan)
 {
 	struct sdma_channel *sdmac = to_sdma_chan(chan);
@@ -1271,8 +1070,6 @@ static void sdma_channel_synchronize(struct dma_chan *chan)
 	flush_work(&sdmac->terminate_worker);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void sdma_set_watermarklevel_for_p2p(struct sdma_channel *sdmac)
 {
 	struct sdma_engine *sdma = sdmac->sdma;
@@ -1389,7 +1186,6 @@ static int sdma_set_channel_priority(struct sdma_channel *sdmac,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int sdma_request_channel0(struct sdma_engine *sdma)
 {
 	int ret = -EBUSY;
@@ -1397,39 +1193,20 @@ static int sdma_request_channel0(struct sdma_engine *sdma)
 	sdma->bd0 = dma_zalloc_coherent(NULL, PAGE_SIZE, &sdma->bd0_phys,
 					GFP_NOWAIT);
 	if (!sdma->bd0) {
-=======
-static int sdma_request_channel(struct sdma_channel *sdmac)
-{
-	struct sdma_engine *sdma = sdmac->sdma;
-	int channel = sdmac->channel;
-	int ret = -EBUSY;
-
-	sdmac->bd = dma_zalloc_coherent(NULL, PAGE_SIZE, &sdmac->bd_phys,
-					GFP_KERNEL);
-	if (!sdmac->bd) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -ENOMEM;
 		goto out;
 	}
 
-<<<<<<< HEAD
 	sdma->channel_control[0].base_bd_ptr = sdma->bd0_phys;
 	sdma->channel_control[0].current_bd_ptr = sdma->bd0_phys;
 
 	sdma_set_channel_priority(&sdma->channel[0], MXC_SDMA_DEFAULT_PRIORITY);
-=======
-	sdma->channel_control[channel].base_bd_ptr = sdmac->bd_phys;
-	sdma->channel_control[channel].current_bd_ptr = sdmac->bd_phys;
-
-	sdma_set_channel_priority(sdmac, MXC_SDMA_DEFAULT_PRIORITY);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 out:
 
 	return ret;
 }
 
-<<<<<<< HEAD
 
 static int sdma_alloc_bd(struct sdma_desc *desc)
 {
@@ -1459,28 +1236,12 @@ static void sdma_desc_free(struct virt_dma_desc *vd)
 
 	sdma_free_bd(desc);
 	kfree(desc);
-=======
-static dma_cookie_t sdma_tx_submit(struct dma_async_tx_descriptor *tx)
-{
-	unsigned long flags;
-	struct sdma_channel *sdmac = to_sdma_chan(tx->chan);
-	dma_cookie_t cookie;
-
-	spin_lock_irqsave(&sdmac->lock, flags);
-
-	cookie = dma_cookie_assign(tx);
-
-	spin_unlock_irqrestore(&sdmac->lock, flags);
-
-	return cookie;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int sdma_alloc_chan_resources(struct dma_chan *chan)
 {
 	struct sdma_channel *sdmac = to_sdma_chan(chan);
 	struct imx_dma_data *data = chan->private;
-<<<<<<< HEAD
 	struct imx_dma_data mem_data;
 	int prio, ret;
 
@@ -1503,12 +1264,6 @@ static int sdma_alloc_chan_resources(struct dma_chan *chan)
 
 		sdma_get_pc(sdmac, IMX_DMATYPE_MEMORY);
 	}
-=======
-	int prio, ret;
-
-	if (!data)
-		return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (data->priority) {
 	case DMA_PRIO_HIGH:
@@ -1534,25 +1289,10 @@ static int sdma_alloc_chan_resources(struct dma_chan *chan)
 	if (ret)
 		goto disable_clk_ipg;
 
-<<<<<<< HEAD
-=======
-	ret = sdma_request_channel(sdmac);
-	if (ret)
-		goto disable_clk_ahb;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = sdma_set_channel_priority(sdmac, prio);
 	if (ret)
 		goto disable_clk_ahb;
 
-<<<<<<< HEAD
-=======
-	dma_async_tx_descriptor_init(&sdmac->desc, chan);
-	sdmac->desc.tx_submit = sdma_tx_submit;
-	/* txd.flags will be overwritten in prep funcs */
-	sdmac->desc.flags = DMA_CTRL_ACK;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 disable_clk_ahb:
@@ -1567,13 +1307,9 @@ static void sdma_free_chan_resources(struct dma_chan *chan)
 	struct sdma_channel *sdmac = to_sdma_chan(chan);
 	struct sdma_engine *sdma = sdmac->sdma;
 
-<<<<<<< HEAD
 	sdma_disable_channel_async(chan);
 
 	sdma_channel_synchronize(chan);
-=======
-	sdma_disable_channel(chan);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (sdmac->event_id0)
 		sdma_event_disable(sdmac, sdmac->event_id0);
@@ -1585,16 +1321,10 @@ static void sdma_free_chan_resources(struct dma_chan *chan)
 
 	sdma_set_channel_priority(sdmac, 0);
 
-<<<<<<< HEAD
-=======
-	dma_free_coherent(NULL, PAGE_SIZE, sdmac->bd, sdmac->bd_phys);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clk_disable(sdma->clk_ipg);
 	clk_disable(sdma->clk_ahb);
 }
 
-<<<<<<< HEAD
 static struct sdma_desc *sdma_transfer_init(struct sdma_channel *sdmac,
 				enum dma_transfer_direction direction, u32 bds)
 {
@@ -1689,8 +1419,6 @@ static struct dma_async_tx_descriptor *sdma_prep_memcpy(
 	return vchan_tx_prep(&sdmac->vc, &desc->vd, flags);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct dma_async_tx_descriptor *sdma_prep_slave_sg(
 		struct dma_chan *chan, struct scatterlist *sgl,
 		unsigned int sg_len, enum dma_transfer_direction direction,
@@ -1698,7 +1426,6 @@ static struct dma_async_tx_descriptor *sdma_prep_slave_sg(
 {
 	struct sdma_channel *sdmac = to_sdma_chan(chan);
 	struct sdma_engine *sdma = sdmac->sdma;
-<<<<<<< HEAD
 	int i, count;
 	int channel = sdmac->channel;
 	struct scatterlist *sg;
@@ -1707,52 +1434,18 @@ static struct dma_async_tx_descriptor *sdma_prep_slave_sg(
 	desc = sdma_transfer_init(sdmac, direction, sg_len);
 	if (!desc)
 		goto err_out;
-=======
-	int ret, i, count;
-	int channel = sdmac->channel;
-	struct scatterlist *sg;
-
-	if (sdmac->status == DMA_IN_PROGRESS)
-		return NULL;
-	sdmac->status = DMA_IN_PROGRESS;
-
-	sdmac->flags = 0;
-
-	sdmac->buf_tail = 0;
-	sdmac->buf_ptail = 0;
-	sdmac->chn_real_count = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_dbg(sdma->dev, "setting up %d entries for channel %d.\n",
 			sg_len, channel);
 
-<<<<<<< HEAD
 	for_each_sg(sgl, sg, sg_len, i) {
 		struct sdma_buffer_descriptor *bd = &desc->bd[i];
-=======
-	sdmac->direction = direction;
-	ret = sdma_load_context(sdmac);
-	if (ret)
-		goto err_out;
-
-	if (sg_len > NUM_BD) {
-		dev_err(sdma->dev, "SDMA channel %d: maximum number of sg exceeded: %d > %d\n",
-				channel, sg_len, NUM_BD);
-		ret = -EINVAL;
-		goto err_out;
-	}
-
-	sdmac->chn_count = 0;
-	for_each_sg(sgl, sg, sg_len, i) {
-		struct sdma_buffer_descriptor *bd = &sdmac->bd[i];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		int param;
 
 		bd->buffer_addr = sg->dma_address;
 
 		count = sg_dma_len(sg);
 
-<<<<<<< HEAD
 		if (count > SDMA_BD_MAX_CNT) {
 			dev_err(sdma->dev, "SDMA channel %d: maximum bytes for sg entry exceeded: %d > %d\n",
 					channel, count, SDMA_BD_MAX_CNT);
@@ -1764,51 +1457,23 @@ static struct dma_async_tx_descriptor *sdma_prep_slave_sg(
 
 		if (sdmac->word_size > DMA_SLAVE_BUSWIDTH_4_BYTES)
 			goto err_bd_out;
-=======
-		if (count > 0xffff) {
-			dev_err(sdma->dev, "SDMA channel %d: maximum bytes for sg entry exceeded: %d > %d\n",
-					channel, count, 0xffff);
-			ret = -EINVAL;
-			goto err_out;
-		}
-
-		bd->mode.count = count;
-		sdmac->chn_count += count;
-
-		if (sdmac->word_size > DMA_SLAVE_BUSWIDTH_4_BYTES) {
-			ret =  -EINVAL;
-			goto err_out;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		switch (sdmac->word_size) {
 		case DMA_SLAVE_BUSWIDTH_4_BYTES:
 			bd->mode.command = 0;
 			if (count & 3 || sg->dma_address & 3)
-<<<<<<< HEAD
 				goto err_bd_out;
-=======
-				return NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		case DMA_SLAVE_BUSWIDTH_2_BYTES:
 			bd->mode.command = 2;
 			if (count & 1 || sg->dma_address & 1)
-<<<<<<< HEAD
 				goto err_bd_out;
-=======
-				return NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		case DMA_SLAVE_BUSWIDTH_1_BYTE:
 			bd->mode.command = 1;
 			break;
 		default:
-<<<<<<< HEAD
 			goto err_bd_out;
-=======
-			return NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		param = BD_DONE | BD_EXTD | BD_CONT;
@@ -1827,17 +1492,10 @@ static struct dma_async_tx_descriptor *sdma_prep_slave_sg(
 		bd->mode.status = param;
 	}
 
-<<<<<<< HEAD
 	return vchan_tx_prep(&sdmac->vc, &desc->vd, flags);
 err_bd_out:
 	sdma_free_bd(desc);
 	kfree(desc);
-=======
-	sdmac->num_bd = sg_len;
-	sdma->channel_control[channel].current_bd_ptr = sdmac->bd_phys;
-
-	return &sdmac->desc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_out:
 	sdmac->status = DMA_ERROR;
 	return NULL;
@@ -1852,7 +1510,6 @@ static struct dma_async_tx_descriptor *sdma_prep_dma_cyclic(
 	struct sdma_engine *sdma = sdmac->sdma;
 	int num_periods = buf_len / period_len;
 	int channel = sdmac->channel;
-<<<<<<< HEAD
 	int i = 0, buf = 0;
 	struct sdma_desc *desc;
 
@@ -1874,42 +1531,6 @@ static struct dma_async_tx_descriptor *sdma_prep_dma_cyclic(
 
 	while (buf < buf_len) {
 		struct sdma_buffer_descriptor *bd = &desc->bd[i];
-=======
-	int ret, i = 0, buf = 0;
-
-	dev_dbg(sdma->dev, "%s channel: %d\n", __func__, channel);
-
-	if (sdmac->status == DMA_IN_PROGRESS)
-		return NULL;
-
-	sdmac->status = DMA_IN_PROGRESS;
-
-	sdmac->buf_tail = 0;
-	sdmac->buf_ptail = 0;
-	sdmac->chn_real_count = 0;
-	sdmac->period_len = period_len;
-
-	sdmac->flags |= IMX_DMA_SG_LOOP;
-	sdmac->direction = direction;
-	ret = sdma_load_context(sdmac);
-	if (ret)
-		goto err_out;
-
-	if (num_periods > NUM_BD) {
-		dev_err(sdma->dev, "SDMA channel %d: maximum number of sg exceeded: %d > %d\n",
-				channel, num_periods, NUM_BD);
-		goto err_out;
-	}
-
-	if (period_len > 0xffff) {
-		dev_err(sdma->dev, "SDMA channel %d: maximum period size exceeded: %zu > %d\n",
-				channel, period_len, 0xffff);
-		goto err_out;
-	}
-
-	while (buf < buf_len) {
-		struct sdma_buffer_descriptor *bd = &sdmac->bd[i];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		int param;
 
 		bd->buffer_addr = dma_addr;
@@ -1917,11 +1538,7 @@ static struct dma_async_tx_descriptor *sdma_prep_dma_cyclic(
 		bd->mode.count = period_len;
 
 		if (sdmac->word_size > DMA_SLAVE_BUSWIDTH_4_BYTES)
-<<<<<<< HEAD
 			goto err_bd_out;
-=======
-			goto err_out;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (sdmac->word_size == DMA_SLAVE_BUSWIDTH_4_BYTES)
 			bd->mode.command = 0;
 		else
@@ -1944,17 +1561,10 @@ static struct dma_async_tx_descriptor *sdma_prep_dma_cyclic(
 		i++;
 	}
 
-<<<<<<< HEAD
 	return vchan_tx_prep(&sdmac->vc, &desc->vd, flags);
 err_bd_out:
 	sdma_free_bd(desc);
 	kfree(desc);
-=======
-	sdmac->num_bd = num_periods;
-	sdma->channel_control[channel].current_bd_ptr = sdmac->bd_phys;
-
-	return &sdmac->desc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_out:
 	sdmac->status = DMA_ERROR;
 	return NULL;
@@ -1993,7 +1603,6 @@ static enum dma_status sdma_tx_status(struct dma_chan *chan,
 				      struct dma_tx_state *txstate)
 {
 	struct sdma_channel *sdmac = to_sdma_chan(chan);
-<<<<<<< HEAD
 	struct sdma_desc *desc;
 	u32 residue;
 	struct virt_dma_desc *vd;
@@ -2019,15 +1628,6 @@ static enum dma_status sdma_tx_status(struct dma_chan *chan,
 		residue = 0;
 	}
 	spin_unlock_irqrestore(&sdmac->vc.lock, flags);
-=======
-	u32 residue;
-
-	if (sdmac->flags & IMX_DMA_SG_LOOP)
-		residue = (sdmac->num_bd - sdmac->buf_ptail) *
-			   sdmac->period_len - sdmac->chn_real_count;
-	else
-		residue = sdmac->chn_count - sdmac->chn_real_count;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dma_set_tx_state(txstate, chan->completed_cookie, chan->cookie,
 			 residue);
@@ -2038,19 +1638,12 @@ static enum dma_status sdma_tx_status(struct dma_chan *chan,
 static void sdma_issue_pending(struct dma_chan *chan)
 {
 	struct sdma_channel *sdmac = to_sdma_chan(chan);
-<<<<<<< HEAD
 	unsigned long flags;
 
 	spin_lock_irqsave(&sdmac->vc.lock, flags);
 	if (vchan_issue_pending(&sdmac->vc) && !sdmac->desc)
 		sdma_start_desc(sdmac);
 	spin_unlock_irqrestore(&sdmac->vc.lock, flags);
-=======
-	struct sdma_engine *sdma = sdmac->sdma;
-
-	if (sdmac->status == DMA_IN_PROGRESS)
-		sdma_enable_channel(sdma, sdmac->channel);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #define SDMA_SCRIPT_ADDRS_ARRAY_SIZE_V1	34
@@ -2069,17 +1662,6 @@ static void sdma_add_scripts(struct sdma_engine *sdma,
 	if (!sdma->script_number)
 		sdma->script_number = SDMA_SCRIPT_ADDRS_ARRAY_SIZE_V1;
 
-<<<<<<< HEAD
-=======
-	if (sdma->script_number > sizeof(struct sdma_script_start_addrs)
-				  / sizeof(s32)) {
-		dev_err(sdma->dev,
-			"SDMA script number %d not match with firmware.\n",
-			sdma->script_number);
-		return;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < sdma->script_number; i++)
 		if (addr_arr[i] > 0)
 			saddr_arr[i] = addr_arr[i];
@@ -2267,11 +1849,7 @@ static int sdma_init(struct sdma_engine *sdma)
 	for (i = 0; i < MAX_DMA_CHANNELS; i++)
 		writel_relaxed(0, sdma->regs + SDMA_CHNPRI_0 + i * 4);
 
-<<<<<<< HEAD
 	ret = sdma_request_channel0(sdma);
-=======
-	ret = sdma_request_channel(&sdma->channel[0]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto err_dma_alloc;
 
@@ -2426,10 +2004,7 @@ static int sdma_probe(struct platform_device *pdev)
 
 	dma_cap_set(DMA_SLAVE, sdma->dma_device.cap_mask);
 	dma_cap_set(DMA_CYCLIC, sdma->dma_device.cap_mask);
-<<<<<<< HEAD
 	dma_cap_set(DMA_MEMCPY, sdma->dma_device.cap_mask);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	INIT_LIST_HEAD(&sdma->dma_device.channels);
 	/* Initialize channel parameters */
@@ -2437,34 +2012,18 @@ static int sdma_probe(struct platform_device *pdev)
 		struct sdma_channel *sdmac = &sdma->channel[i];
 
 		sdmac->sdma = sdma;
-<<<<<<< HEAD
 
 		sdmac->channel = i;
 		sdmac->vc.desc_free = sdma_desc_free;
 		INIT_WORK(&sdmac->terminate_worker,
 				sdma_channel_terminate_work);
-=======
-		spin_lock_init(&sdmac->lock);
-
-		sdmac->chan.device = &sdma->dma_device;
-		dma_cookie_init(&sdmac->chan);
-		sdmac->channel = i;
-
-		tasklet_init(&sdmac->tasklet, mxc_sdma_handle_channel_normal,
-			     (unsigned long) sdmac);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * Add the channel to the DMAC list. Do not add channel 0 though
 		 * because we need it internally in the SDMA driver. This also means
 		 * that channel 0 in dmaengine counting matches sdma channel 1.
 		 */
 		if (i)
-<<<<<<< HEAD
 			vchan_init(&sdmac->vc, &sdma->dma_device);
-=======
-			list_add_tail(&sdmac->chan.device_node,
-					&sdma->dma_device.channels);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ret = sdma_init(sdma);
@@ -2488,7 +2047,6 @@ static int sdma_probe(struct platform_device *pdev)
 	sdma->dma_device.device_prep_slave_sg = sdma_prep_slave_sg;
 	sdma->dma_device.device_prep_dma_cyclic = sdma_prep_dma_cyclic;
 	sdma->dma_device.device_config = sdma_config;
-<<<<<<< HEAD
 	sdma->dma_device.device_terminate_all = sdma_disable_channel_async;
 	sdma->dma_device.device_synchronize = sdma_channel_synchronize;
 	sdma->dma_device.src_addr_widths = SDMA_DMA_BUSWIDTHS;
@@ -2499,16 +2057,6 @@ static int sdma_probe(struct platform_device *pdev)
 	sdma->dma_device.device_issue_pending = sdma_issue_pending;
 	sdma->dma_device.dev->dma_parms = &sdma->dma_parms;
 	dma_set_max_seg_size(sdma->dma_device.dev, SDMA_BD_MAX_CNT);
-=======
-	sdma->dma_device.device_terminate_all = sdma_disable_channel_with_delay;
-	sdma->dma_device.src_addr_widths = BIT(DMA_SLAVE_BUSWIDTH_4_BYTES);
-	sdma->dma_device.dst_addr_widths = BIT(DMA_SLAVE_BUSWIDTH_4_BYTES);
-	sdma->dma_device.directions = BIT(DMA_DEV_TO_MEM) | BIT(DMA_MEM_TO_DEV);
-	sdma->dma_device.residue_granularity = DMA_RESIDUE_GRANULARITY_SEGMENT;
-	sdma->dma_device.device_issue_pending = sdma_issue_pending;
-	sdma->dma_device.dev->dma_parms = &sdma->dma_parms;
-	dma_set_max_seg_size(sdma->dma_device.dev, 65535);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	platform_set_drvdata(pdev, sdma);
 
@@ -2588,12 +2136,8 @@ static int sdma_remove(struct platform_device *pdev)
 	for (i = 0; i < MAX_DMA_CHANNELS; i++) {
 		struct sdma_channel *sdmac = &sdma->channel[i];
 
-<<<<<<< HEAD
 		tasklet_kill(&sdmac->vc.task);
 		sdma_free_chan_resources(&sdmac->vc.chan);
-=======
-		tasklet_kill(&sdmac->tasklet);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	platform_set_drvdata(pdev, NULL);
@@ -2614,13 +2158,10 @@ module_platform_driver(sdma_driver);
 
 MODULE_AUTHOR("Sascha Hauer, Pengutronix <s.hauer@pengutronix.de>");
 MODULE_DESCRIPTION("i.MX SDMA driver");
-<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_SOC_IMX6Q)
 MODULE_FIRMWARE("imx/sdma/sdma-imx6q.bin");
 #endif
 #if IS_ENABLED(CONFIG_SOC_IMX7D)
 MODULE_FIRMWARE("imx/sdma/sdma-imx7d.bin");
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_LICENSE("GPL");

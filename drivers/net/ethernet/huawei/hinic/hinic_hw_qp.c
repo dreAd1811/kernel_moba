@@ -635,31 +635,18 @@ void hinic_sq_write_wqe(struct hinic_sq *sq, u16 prod_idx,
 }
 
 /**
-<<<<<<< HEAD
  * hinic_sq_read_wqebb - read wqe ptr in the current ci and update the ci, the
  * wqe only have one wqebb
  * @sq: send queue
  * @skb: return skb that was saved
  * @wqe_size: the wqe size ptr
-=======
- * hinic_sq_read_wqe - read wqe ptr in the current ci and update the ci
- * @sq: send queue
- * @skb: return skb that was saved
- * @wqe_size: the size of the wqe
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @cons_idx: consumer index of the wqe
  *
  * Return wqe in ci position
  **/
-<<<<<<< HEAD
 struct hinic_sq_wqe *hinic_sq_read_wqebb(struct hinic_sq *sq,
 					 struct sk_buff **skb,
 					 unsigned int *wqe_size, u16 *cons_idx)
-=======
-struct hinic_sq_wqe *hinic_sq_read_wqe(struct hinic_sq *sq,
-				       struct sk_buff **skb,
-				       unsigned int *wqe_size, u16 *cons_idx)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct hinic_hw_wqe *hw_wqe;
 	struct hinic_sq_wqe *sq_wqe;
@@ -672,11 +659,8 @@ struct hinic_sq_wqe *hinic_sq_read_wqe(struct hinic_sq *sq,
 	if (IS_ERR(hw_wqe))
 		return NULL;
 
-<<<<<<< HEAD
 	*skb = sq->saved_skb[*cons_idx];
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sq_wqe = &hw_wqe->sq_wqe;
 	ctrl = &sq_wqe->ctrl;
 	ctrl_info = be32_to_cpu(ctrl->ctrl_info);
@@ -684,7 +668,6 @@ struct hinic_sq_wqe *hinic_sq_read_wqe(struct hinic_sq *sq,
 
 	*wqe_size = sizeof(*ctrl) + sizeof(sq_wqe->task);
 	*wqe_size += SECT_SIZE_FROM_8BYTES(buf_sect_len);
-<<<<<<< HEAD
 	*wqe_size = ALIGN(*wqe_size, sq->wq->wqebb_size);
 
 	return &hw_wqe->sq_wqe;
@@ -708,14 +691,6 @@ struct hinic_sq_wqe *hinic_sq_read_wqe(struct hinic_sq *sq,
 	hw_wqe = hinic_read_wqe(sq->wq, wqe_size, cons_idx);
 	*skb = sq->saved_skb[*cons_idx];
 
-=======
-
-	*skb = sq->saved_skb[*cons_idx];
-
-	/* using the real wqe size to read wqe again */
-	hw_wqe = hinic_read_wqe(sq->wq, *wqe_size, cons_idx);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return &hw_wqe->sq_wqe;
 }
 

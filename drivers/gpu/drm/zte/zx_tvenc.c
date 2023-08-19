@@ -297,11 +297,7 @@ static int zx_tvenc_register(struct drm_device *drm, struct zx_tvenc *tvenc)
 			   DRM_MODE_CONNECTOR_Composite);
 	drm_connector_helper_add(connector, &zx_tvenc_connector_helper_funcs);
 
-<<<<<<< HEAD
 	drm_connector_attach_encoder(connector, encoder);
-=======
-	drm_mode_connector_attach_encoder(connector, encoder);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

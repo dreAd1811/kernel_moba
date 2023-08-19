@@ -339,11 +339,7 @@ void *ppc4xx_ocm_alloc(phys_addr_t *phys, int size, int align,
 		if (IS_ERR_VALUE(offset))
 			continue;
 
-<<<<<<< HEAD
 		ocm_blk = kzalloc(sizeof(*ocm_blk), GFP_KERNEL);
-=======
-		ocm_blk = kzalloc(sizeof(struct ocm_block), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!ocm_blk) {
 			printk(KERN_ERR "PPC4XX OCM: could not allocate ocm block");
 			rh_free(ocm_reg->rh, offset);

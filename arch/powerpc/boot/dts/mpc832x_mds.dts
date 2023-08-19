@@ -186,11 +186,7 @@
 			device_type = "par_io";
 			num-ports = <7>;
 
-<<<<<<< HEAD
 			pio3: ucc_pin@3 {
-=======
-			pio3: ucc_pin@03 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				pio-map = <
 			/* port  pin  dir  open_drain  assignment  has_irq */
 					3  4  3  0  2  0  /* MDIO */
@@ -212,11 +208,7 @@
 					1 12  1  0  1  0 	/* TX_EN */
 					1 13  2  0  1  0>;	/* CRS */
 			};
-<<<<<<< HEAD
 			pio4: ucc_pin@4 {
-=======
-			pio4: ucc_pin@04 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				pio-map = <
 			/* port  pin  dir  open_drain  assignment  has_irq */
 					3 31  2  0  1  0 	/* RX_CLK (CLK7) */
@@ -236,11 +228,7 @@
 					1 30  1  0  1  0 	/* TX_EN */
 					1 31  2  0  1  0>;	/* CRS */
 			};
-<<<<<<< HEAD
 			pio5: ucc_pin@5 {
-=======
-			pio5: ucc_pin@05 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				pio-map = <
 				/*
 				 *    		      open       has
@@ -364,20 +352,12 @@
 			reg = <0x2320 0x18>;
 			compatible = "fsl,ucc-mdio";
 
-<<<<<<< HEAD
 			phy3: ethernet-phy@3 {
-=======
-			phy3: ethernet-phy@03 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				interrupt-parent = <&ipic>;
 				interrupts = <17 0x8>;
 				reg = <0x3>;
 			};
-<<<<<<< HEAD
 			phy4: ethernet-phy@4 {
-=======
-			phy4: ethernet-phy@04 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				interrupt-parent = <&ipic>;
 				interrupts = <18 0x8>;
 				reg = <0x4>;

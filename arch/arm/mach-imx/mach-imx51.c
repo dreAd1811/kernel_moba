@@ -12,10 +12,7 @@
 
 #include <linux/io.h>
 #include <linux/irq.h>
-<<<<<<< HEAD
 #include <linux/of_address.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/of_irq.h>
 #include <linux/of_platform.h>
 #include <asm/mach/arch.h>
@@ -52,7 +49,6 @@ static void __init imx51_ipu_mipi_setup(void)
 	iounmap(hsc_addr);
 }
 
-<<<<<<< HEAD
 static void __init imx51_m4if_setup(void)
 {
 	void __iomem *m4if_base;
@@ -80,18 +76,12 @@ static void __init imx51_m4if_setup(void)
 	iounmap(m4if_base);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void __init imx51_dt_init(void)
 {
 	imx51_ipu_mipi_setup();
 	imx_src_init();
-<<<<<<< HEAD
 	imx51_m4if_setup();
 	imx5_pmu_init();
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	imx_aips_allow_unprivileged_access("fsl,imx51-aipstz");
 }
 

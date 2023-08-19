@@ -27,19 +27,13 @@
 
 #include <linux/list.h>
 #include <asm/sync_bitops.h>
-<<<<<<< HEAD
 #include <asm/hyperv-tlfs.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/atomic.h>
 #include <linux/hyperv.h>
 #include <linux/interrupt.h>
 
-<<<<<<< HEAD
 #include "hv_trace.h"
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Timeout for services such as KVP and fcopy.
  */
@@ -64,13 +58,9 @@ union hv_timer_config {
 		u64 periodic:1;
 		u64 lazy:1;
 		u64 auto_enable:1;
-<<<<<<< HEAD
 		u64 apic_vector:8;
 		u64 direct_mode:1;
 		u64 reserved_z0:3;
-=======
-		u64 reserved_z0:12;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u64 sintx:4;
 		u64 reserved_z1:44;
 	};
@@ -197,10 +187,7 @@ struct hv_input_post_message {
 
 enum {
 	VMBUS_MESSAGE_CONNECTION_ID	= 1,
-<<<<<<< HEAD
 	VMBUS_MESSAGE_CONNECTION_ID_4	= 4,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	VMBUS_MESSAGE_PORT_ID		= 1,
 	VMBUS_EVENT_CONNECTION_ID	= 2,
 	VMBUS_EVENT_PORT_ID		= 2,
@@ -316,11 +303,8 @@ struct vmbus_connection {
 	 */
 	int connect_cpu;
 
-<<<<<<< HEAD
 	u32 msg_conn_id;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	atomic_t offer_in_progress;
 
 	enum vmbus_connect_state conn_state;
@@ -404,11 +388,8 @@ struct hv_device *vmbus_device_create(const uuid_le *type,
 
 int vmbus_device_register(struct hv_device *child_device_obj);
 void vmbus_device_unregister(struct hv_device *device_obj);
-<<<<<<< HEAD
 int vmbus_add_channel_kobj(struct hv_device *device_obj,
 			   struct vmbus_channel *channel);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct vmbus_channel *relid2channel(u32 relid);
 

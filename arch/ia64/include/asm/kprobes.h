@@ -82,11 +82,6 @@ struct prev_kprobe {
 #define ARCH_PREV_KPROBE_SZ 2
 struct kprobe_ctlblk {
 	unsigned long kprobe_status;
-<<<<<<< HEAD
-=======
-	struct pt_regs jprobe_saved_regs;
-	unsigned long jprobes_saved_stacked_regs[MAX_PARAM_RSE_SIZE];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long *bsp;
 	unsigned long cfm;
 	atomic_t prev_kprobe_index;

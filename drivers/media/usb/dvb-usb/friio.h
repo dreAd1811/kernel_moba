@@ -8,11 +8,7 @@
  * under the terms of the GNU General Public License as published by the Free
  * Software Foundation, version 2.
  *
-<<<<<<< HEAD
  * see Documentation/media/dvb-drivers/dvb-usb.rst for more information
-=======
- * see Documentation/dvb/README.dvb-usb for more information
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #ifndef _DVB_USB_FRIIO_H_
 #define _DVB_USB_FRIIO_H_

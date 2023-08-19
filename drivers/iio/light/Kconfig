@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #
 # Light sensors
 #
@@ -279,7 +276,6 @@ config LTR501
 	 This driver can also be built as a module.  If so, the module
          will be called ltr501.
 
-<<<<<<< HEAD
 config LV0104CS
 	tristate "LV0104CS Ambient Light Sensor"
 	depends on I2C
@@ -290,8 +286,6 @@ config LV0104CS
 	 To compile this driver as a module, choose M here:
 	 the module will be called lv0104cs.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config MAX44000
 	tristate "MAX44000 Ambient and Infrared Proximity Sensor"
 	depends on I2C
@@ -326,7 +320,6 @@ config PA12203001
          This driver can also be built as a module.  If so, the module
          will be called pa12203001.
 
-<<<<<<< HEAD
 config SI1133
 	tristate "SI1133 UV Index Sensor and Ambient Light Sensor"
 	depends on I2C
@@ -338,8 +331,6 @@ config SI1133
 	  To compile this driver as a module, choose M here: the module will be
 	  called si1133.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config SI1145
 	tristate "SI1132 and SI1141/2/3/5/6/7 combined ALS, UV index and proximity sensor"
 	depends on I2C
@@ -365,7 +356,6 @@ config STK3310
 	 Choosing M will build the driver as a module. If so, the module
 	 will be called stk3310.
 
-<<<<<<< HEAD
 config ST_UVIS25
 	tristate "STMicroelectronics UVIS25 sensor driver"
 	depends on (I2C || SPI)
@@ -390,8 +380,6 @@ config ST_UVIS25_SPI
 	depends on ST_UVIS25
 	select REGMAP_SPI
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config TCS3414
 	tristate "TAOS TCS3414 digital color sensor"
 	depends on I2C
@@ -433,7 +421,6 @@ config TSL2583
 	 Provides support for the TAOS tsl2580, tsl2581 and tsl2583 devices.
 	 Access ALS data via iio, sysfs.
 
-<<<<<<< HEAD
 config TSL2772
 	tristate "TAOS TSL/TMD2x71 and TSL/TMD2x72 Family of light and proximity sensors"
 	depends on I2C
@@ -442,8 +429,6 @@ config TSL2772
 	 tmd2672, tsl2772, tmd2772 devices.
 	 Provides iio_events and direct access via sysfs.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config TSL4531
 	tristate "TAOS TSL4531 ambient light sensors"
 	depends on I2C
@@ -465,20 +450,12 @@ config US5182D
 	 will be called us5182d.
 
 config VCNL4000
-<<<<<<< HEAD
 	tristate "VCNL4000/4010/4020/4200 combined ALS and proximity sensor"
 	depends on I2C
 	help
 	 Say Y here if you want to build a driver for the Vishay VCNL4000,
 	 VCNL4010, VCNL4020, VCNL4200 combined ambient light and proximity
 	 sensor.
-=======
-	tristate "VCNL4000/4010/4020 combined ALS and proximity sensor"
-	depends on I2C
-	help
-	 Say Y here if you want to build a driver for the Vishay VCNL4000,
-	 VCNL4010, VCNL4020 combined ambient light and proximity sensor.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	 To compile this driver as a module, choose M here: the
 	 module will be called vcnl4000.
@@ -503,7 +480,6 @@ config VL6180
 	 To compile this driver as a module, choose M here: the
 	 module will be called vl6180.
 
-<<<<<<< HEAD
 config ZOPT2201
 	tristate "ZOPT2201 ALS and UV B sensor"
 	depends on I2C
@@ -514,6 +490,4 @@ config ZOPT2201
 	 To compile this driver as a module, choose M here: the
 	 module will be called zopt2201.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 endmenu

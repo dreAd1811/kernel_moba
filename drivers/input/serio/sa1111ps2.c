@@ -47,11 +47,8 @@ struct ps2if {
 	struct serio		*io;
 	struct sa1111_dev	*dev;
 	void __iomem		*base;
-<<<<<<< HEAD
 	int			rx_irq;
 	int			tx_irq;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int		open;
 	spinlock_t		lock;
 	unsigned int		head;
@@ -69,37 +66,22 @@ static irqreturn_t ps2_rxint(int irq, void *dev_id)
 	struct ps2if *ps2if = dev_id;
 	unsigned int scancode, flag, status;
 
-<<<<<<< HEAD
 	status = readl_relaxed(ps2if->base + PS2STAT);
 	while (status & PS2STAT_RXF) {
 		if (status & PS2STAT_STP)
 			writel_relaxed(PS2STAT_STP, ps2if->base + PS2STAT);
-=======
-	status = sa1111_readl(ps2if->base + PS2STAT);
-	while (status & PS2STAT_RXF) {
-		if (status & PS2STAT_STP)
-			sa1111_writel(PS2STAT_STP, ps2if->base + PS2STAT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		flag = (status & PS2STAT_STP ? SERIO_FRAME : 0) |
 		       (status & PS2STAT_RXP ? 0 : SERIO_PARITY);
 
-<<<<<<< HEAD
 		scancode = readl_relaxed(ps2if->base + PS2DATA) & 0xff;
-=======
-		scancode = sa1111_readl(ps2if->base + PS2DATA) & 0xff;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (hweight8(scancode) & 1)
 			flag ^= SERIO_PARITY;
 
 		serio_interrupt(ps2if->io, scancode, flag);
 
-<<<<<<< HEAD
 		status = readl_relaxed(ps2if->base + PS2STAT);
-=======
-		status = sa1111_readl(ps2if->base + PS2STAT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
         }
 
         return IRQ_HANDLED;
@@ -114,20 +96,12 @@ static irqreturn_t ps2_txint(int irq, void *dev_id)
 	unsigned int status;
 
 	spin_lock(&ps2if->lock);
-<<<<<<< HEAD
 	status = readl_relaxed(ps2if->base + PS2STAT);
-=======
-	status = sa1111_readl(ps2if->base + PS2STAT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ps2if->head == ps2if->tail) {
 		disable_irq_nosync(irq);
 		/* done */
 	} else if (status & PS2STAT_TXE) {
-<<<<<<< HEAD
 		writel_relaxed(ps2if->buf[ps2if->tail], ps2if->base + PS2DATA);
-=======
-		sa1111_writel(ps2if->buf[ps2if->tail], ps2if->base + PS2DATA);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ps2if->tail = (ps2if->tail + 1) & (sizeof(ps2if->buf) - 1);
 	}
 	spin_unlock(&ps2if->lock);
@@ -150,19 +124,11 @@ static int ps2_write(struct serio *io, unsigned char val)
 	/*
 	 * If the TX register is empty, we can go straight out.
 	 */
-<<<<<<< HEAD
 	if (readl_relaxed(ps2if->base + PS2STAT) & PS2STAT_TXE) {
 		writel_relaxed(val, ps2if->base + PS2DATA);
 	} else {
 		if (ps2if->head == ps2if->tail)
 			enable_irq(ps2if->tx_irq);
-=======
-	if (sa1111_readl(ps2if->base + PS2STAT) & PS2STAT_TXE) {
-		sa1111_writel(val, ps2if->base + PS2DATA);
-	} else {
-		if (ps2if->head == ps2if->tail)
-			enable_irq(ps2if->dev->irq[1]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		head = (ps2if->head + 1) & (sizeof(ps2if->buf) - 1);
 		if (head != ps2if->tail) {
 			ps2if->buf[ps2if->head] = val;
@@ -183,53 +149,30 @@ static int ps2_open(struct serio *io)
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	ret = request_irq(ps2if->rx_irq, ps2_rxint, 0,
 			  SA1111_DRIVER_NAME(ps2if->dev), ps2if);
 	if (ret) {
 		printk(KERN_ERR "sa1111ps2: could not allocate IRQ%d: %d\n",
 			ps2if->rx_irq, ret);
-=======
-	ret = request_irq(ps2if->dev->irq[0], ps2_rxint, 0,
-			  SA1111_DRIVER_NAME(ps2if->dev), ps2if);
-	if (ret) {
-		printk(KERN_ERR "sa1111ps2: could not allocate IRQ%d: %d\n",
-			ps2if->dev->irq[0], ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sa1111_disable_device(ps2if->dev);
 		return ret;
 	}
 
-<<<<<<< HEAD
 	ret = request_irq(ps2if->tx_irq, ps2_txint, 0,
 			  SA1111_DRIVER_NAME(ps2if->dev), ps2if);
 	if (ret) {
 		printk(KERN_ERR "sa1111ps2: could not allocate IRQ%d: %d\n",
 			ps2if->tx_irq, ret);
 		free_irq(ps2if->rx_irq, ps2if);
-=======
-	ret = request_irq(ps2if->dev->irq[1], ps2_txint, 0,
-			  SA1111_DRIVER_NAME(ps2if->dev), ps2if);
-	if (ret) {
-		printk(KERN_ERR "sa1111ps2: could not allocate IRQ%d: %d\n",
-			ps2if->dev->irq[1], ret);
-		free_irq(ps2if->dev->irq[0], ps2if);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sa1111_disable_device(ps2if->dev);
 		return ret;
 	}
 
 	ps2if->open = 1;
 
-<<<<<<< HEAD
 	enable_irq_wake(ps2if->rx_irq);
 
 	writel_relaxed(PS2CR_ENA, ps2if->base + PS2CR);
-=======
-	enable_irq_wake(ps2if->dev->irq[0]);
-
-	sa1111_writel(PS2CR_ENA, ps2if->base + PS2CR);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -237,7 +180,6 @@ static void ps2_close(struct serio *io)
 {
 	struct ps2if *ps2if = io->port_data;
 
-<<<<<<< HEAD
 	writel_relaxed(0, ps2if->base + PS2CR);
 
 	disable_irq_wake(ps2if->rx_irq);
@@ -246,16 +188,6 @@ static void ps2_close(struct serio *io)
 
 	free_irq(ps2if->tx_irq, ps2if);
 	free_irq(ps2if->rx_irq, ps2if);
-=======
-	sa1111_writel(0, ps2if->base + PS2CR);
-
-	disable_irq_wake(ps2if->dev->irq[0]);
-
-	ps2if->open = 0;
-
-	free_irq(ps2if->dev->irq[1], ps2if);
-	free_irq(ps2if->dev->irq[0], ps2if);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sa1111_disable_device(ps2if->dev);
 }
@@ -268,11 +200,7 @@ static void ps2_clear_input(struct ps2if *ps2if)
 	int maxread = 100;
 
 	while (maxread--) {
-<<<<<<< HEAD
 		if ((readl_relaxed(ps2if->base + PS2DATA) & 0xff) == 0xff)
-=======
-		if ((sa1111_readl(ps2if->base + PS2DATA) & 0xff) == 0xff)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 	}
 }
@@ -282,19 +210,11 @@ static unsigned int ps2_test_one(struct ps2if *ps2if,
 {
 	unsigned int val;
 
-<<<<<<< HEAD
 	writel_relaxed(PS2CR_ENA | mask, ps2if->base + PS2CR);
 
 	udelay(10);
 
 	val = readl_relaxed(ps2if->base + PS2STAT);
-=======
-	sa1111_writel(PS2CR_ENA | mask, ps2if->base + PS2CR);
-
-	udelay(2);
-
-	val = sa1111_readl(ps2if->base + PS2STAT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return val & (PS2STAT_KBC | PS2STAT_KBD);
 }
 
@@ -325,11 +245,7 @@ static int ps2_test(struct ps2if *ps2if)
 		ret = -ENODEV;
 	}
 
-<<<<<<< HEAD
 	writel_relaxed(0, ps2if->base + PS2CR);
-=======
-	sa1111_writel(0, ps2if->base + PS2CR);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -350,10 +266,6 @@ static int ps2_probe(struct sa1111_dev *dev)
 		goto free;
 	}
 
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	serio->id.type		= SERIO_8042;
 	serio->write		= ps2_write;
 	serio->open		= ps2_open;
@@ -368,7 +280,6 @@ static int ps2_probe(struct sa1111_dev *dev)
 
 	spin_lock_init(&ps2if->lock);
 
-<<<<<<< HEAD
 	ps2if->rx_irq = sa1111_get_irq(dev, 0);
 	if (ps2if->rx_irq <= 0) {
 		ret = ps2if->rx_irq ? : -ENXIO;
@@ -381,8 +292,6 @@ static int ps2_probe(struct sa1111_dev *dev)
 		goto free;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Request the physical region for this PS2 port.
 	 */
@@ -401,13 +310,8 @@ static int ps2_probe(struct sa1111_dev *dev)
 	sa1111_enable_device(ps2if->dev);
 
 	/* Incoming clock is 8MHz */
-<<<<<<< HEAD
 	writel_relaxed(0, ps2if->base + PS2CLKDIV);
 	writel_relaxed(127, ps2if->base + PS2PRECNT);
-=======
-	sa1111_writel(0, ps2if->base + PS2CLKDIV);
-	sa1111_writel(127, ps2if->base + PS2PRECNT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Flush any pending input.

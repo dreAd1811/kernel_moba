@@ -933,10 +933,6 @@ static int nfp6000_area_read(struct nfp_cpp_area *area, void *kernel_vaddr,
 	u32 *wrptr32 = kernel_vaddr;
 	const u32 __iomem *rdptr32;
 	int n, width;
-<<<<<<< HEAD
-=======
-	bool is_64;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	priv = nfp_cpp_area_priv(area);
 	rdptr64 = priv->iomem + offset;
@@ -946,7 +942,6 @@ static int nfp6000_area_read(struct nfp_cpp_area *area, void *kernel_vaddr,
 		return -EFAULT;
 
 	width = priv->width.read;
-<<<<<<< HEAD
 	if (width <= 0)
 		return -EINVAL;
 
@@ -956,12 +951,6 @@ static int nfp6000_area_read(struct nfp_cpp_area *area, void *kernel_vaddr,
 	    (offset % sizeof(u64) == 4 || length % sizeof(u64) == 4))
 		width = TARGET_WIDTH_32;
 
-=======
-
-	if (width <= 0)
-		return -EINVAL;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Unaligned? Translate to an explicit access */
 	if ((priv->offset + offset) & (width - 1))
 		return nfp_cpp_explicit_read(nfp_cpp_area_cpp(area),
@@ -971,7 +960,6 @@ static int nfp6000_area_read(struct nfp_cpp_area *area, void *kernel_vaddr,
 					     priv->offset + offset,
 					     kernel_vaddr, length, width);
 
-<<<<<<< HEAD
 	if (WARN_ON(!priv->bar))
 		return -EFAULT;
 
@@ -995,38 +983,6 @@ static int nfp6000_area_read(struct nfp_cpp_area *area, void *kernel_vaddr,
 	default:
 		return -EINVAL;
 	}
-=======
-	is_64 = width == TARGET_WIDTH_64;
-
-	/* MU reads via a PCIe2CPP BAR supports 32bit (and other) lengths */
-	if (priv->target == (NFP_CPP_TARGET_ID_MASK & NFP_CPP_TARGET_MU) &&
-	    priv->action == NFP_CPP_ACTION_RW)
-		is_64 = false;
-
-	if (is_64) {
-		if (offset % sizeof(u64) != 0 || length % sizeof(u64) != 0)
-			return -EINVAL;
-	} else {
-		if (offset % sizeof(u32) != 0 || length % sizeof(u32) != 0)
-			return -EINVAL;
-	}
-
-	if (WARN_ON(!priv->bar))
-		return -EFAULT;
-
-	if (is_64)
-#ifndef __raw_readq
-		return -EINVAL;
-#else
-		for (n = 0; n < length; n += sizeof(u64))
-			*wrptr64++ = __raw_readq(rdptr64++);
-#endif
-	else
-		for (n = 0; n < length; n += sizeof(u32))
-			*wrptr32++ = __raw_readl(rdptr32++);
-
-	return n;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int
@@ -1040,10 +996,6 @@ nfp6000_area_write(struct nfp_cpp_area *area,
 	struct nfp6000_area_priv *priv;
 	u32 __iomem *wrptr32;
 	int n, width;
-<<<<<<< HEAD
-=======
-	bool is_64;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	priv = nfp_cpp_area_priv(area);
 	wrptr64 = priv->iomem + offset;
@@ -1053,7 +1005,6 @@ nfp6000_area_write(struct nfp_cpp_area *area,
 		return -EFAULT;
 
 	width = priv->width.write;
-<<<<<<< HEAD
 	if (width <= 0)
 		return -EINVAL;
 
@@ -1063,12 +1014,6 @@ nfp6000_area_write(struct nfp_cpp_area *area,
 	    (offset % sizeof(u64) == 4 || length % sizeof(u64) == 4))
 		width = TARGET_WIDTH_32;
 
-=======
-
-	if (width <= 0)
-		return -EINVAL;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Unaligned? Translate to an explicit access */
 	if ((priv->offset + offset) & (width - 1))
 		return nfp_cpp_explicit_write(nfp_cpp_area_cpp(area),
@@ -1078,7 +1023,6 @@ nfp6000_area_write(struct nfp_cpp_area *area,
 					      priv->offset + offset,
 					      kernel_vaddr, length, width);
 
-<<<<<<< HEAD
 	if (WARN_ON(!priv->bar))
 		return -EFAULT;
 
@@ -1097,50 +1041,15 @@ nfp6000_area_write(struct nfp_cpp_area *area,
 		if (offset % sizeof(u64) != 0 || length % sizeof(u64) != 0)
 			return -EINVAL;
 
-=======
-	is_64 = width == TARGET_WIDTH_64;
-
-	/* MU writes via a PCIe2CPP BAR supports 32bit (and other) lengths */
-	if (priv->target == (NFP_CPP_TARGET_ID_MASK & NFP_CPP_TARGET_MU) &&
-	    priv->action == NFP_CPP_ACTION_RW)
-		is_64 = false;
-
-	if (is_64) {
-		if (offset % sizeof(u64) != 0 || length % sizeof(u64) != 0)
-			return -EINVAL;
-	} else {
-		if (offset % sizeof(u32) != 0 || length % sizeof(u32) != 0)
-			return -EINVAL;
-	}
-
-	if (WARN_ON(!priv->bar))
-		return -EFAULT;
-
-	if (is_64)
-#ifndef __raw_writeq
-		return -EINVAL;
-#else
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		for (n = 0; n < length; n += sizeof(u64)) {
 			__raw_writeq(*rdptr64++, wrptr64++);
 			wmb();
 		}
-<<<<<<< HEAD
 		return n;
 #endif
 	default:
 		return -EINVAL;
 	}
-=======
-#endif
-	else
-		for (n = 0; n < length; n += sizeof(u32)) {
-			__raw_writel(*rdptr32++, wrptr32++);
-			wmb();
-		}
-
-	return n;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 struct nfp6000_explicit_priv {
@@ -1339,11 +1248,7 @@ static void nfp6000_free(struct nfp_cpp *cpp)
 	kfree(nfp);
 }
 
-<<<<<<< HEAD
 static int nfp6000_read_serial(struct device *dev, u8 *serial)
-=======
-static void nfp6000_read_serial(struct device *dev, u8 *serial)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct pci_dev *pdev = to_pci_dev(dev);
 	int pos;
@@ -1351,45 +1256,29 @@ static void nfp6000_read_serial(struct device *dev, u8 *serial)
 
 	pos = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_DSN);
 	if (!pos) {
-<<<<<<< HEAD
 		dev_err(dev, "can't find PCIe Serial Number Capability\n");
 		return -EINVAL;
-=======
-		memset(serial, 0, NFP_SERIAL_LEN);
-		return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	pci_read_config_dword(pdev, pos + 4, &reg);
 	put_unaligned_be16(reg >> 16, serial + 4);
 	pci_read_config_dword(pdev, pos + 8, &reg);
 	put_unaligned_be32(reg, serial);
-<<<<<<< HEAD
 
 	return 0;
 }
 
 static int nfp6000_get_interface(struct device *dev)
-=======
-}
-
-static u16 nfp6000_get_interface(struct device *dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct pci_dev *pdev = to_pci_dev(dev);
 	int pos;
 	u32 reg;
 
 	pos = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_DSN);
-<<<<<<< HEAD
 	if (!pos) {
 		dev_err(dev, "can't find PCIe Serial Number Capability\n");
 		return -EINVAL;
 	}
-=======
-	if (!pos)
-		return NFP_CPP_INTERFACE(NFP_CPP_INTERFACE_TYPE_PCI, 0, 0xff);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pci_read_config_dword(pdev, pos + 4, &reg);
 
@@ -1439,10 +1328,7 @@ struct nfp_cpp *nfp_cpp_from_nfp6000_pcie(struct pci_dev *pdev)
 	/*  Finished with card initialization. */
 	dev_info(&pdev->dev,
 		 "Netronome Flow Processor NFP4000/NFP6000 PCIe Card Probe\n");
-<<<<<<< HEAD
 	pcie_print_link_status(pdev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	nfp = kzalloc(sizeof(*nfp), GFP_KERNEL);
 	if (!nfp) {

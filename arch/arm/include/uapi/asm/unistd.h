@@ -36,9 +36,6 @@
 #define __ARM_NR_usr26			(__ARM_NR_BASE+3)
 #define __ARM_NR_usr32			(__ARM_NR_BASE+4)
 #define __ARM_NR_set_tls		(__ARM_NR_BASE+5)
-<<<<<<< HEAD
 #define __ARM_NR_get_tls		(__ARM_NR_BASE+6)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* _UAPI__ASM_ARM_UNISTD_H */

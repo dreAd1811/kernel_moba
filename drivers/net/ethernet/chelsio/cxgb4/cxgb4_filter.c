@@ -31,7 +31,6 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-<<<<<<< HEAD
 #include <net/ipv6.h>
 
 #include "cxgb4.h"
@@ -41,12 +40,6 @@
 #include "clip_tbl.h"
 #include "l2t.h"
 #include "smt.h"
-=======
-
-#include "cxgb4.h"
-#include "t4_regs.h"
-#include "l2t.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "t4fw_api.h"
 #include "cxgb4_filter.h"
 
@@ -60,7 +53,6 @@ static inline bool unsupported(u32 conf, u32 conf_mask, u32 val, u32 mask)
 	return !(conf & conf_mask) && is_field_set(val, mask);
 }
 
-<<<<<<< HEAD
 static int set_tcb_field(struct adapter *adap, struct filter_entry *f,
 			 unsigned int ftid,  u16 word, u64 mask, u64 val,
 			 int no_reply)
@@ -248,8 +240,6 @@ static void set_nat_params(struct adapter *adap, struct filter_entry *f,
 		      (sp ? f->fs.nat_fport << 16 : 0), 1);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Validate filter spec against configuration done on the card. */
 static int validate_filter(struct net_device *dev,
 			   struct ch_filter_specification *fs)
@@ -275,11 +265,8 @@ static int validate_filter(struct net_device *dev,
 			fs->mask.pfvf_vld) ||
 	    unsupported(fconf, VNIC_ID_F, fs->val.ovlan_vld,
 			fs->mask.ovlan_vld) ||
-<<<<<<< HEAD
 	    unsupported(fconf, VNIC_ID_F, fs->val.encap_vld,
 			fs->mask.encap_vld) ||
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    unsupported(fconf, VLAN_F, fs->val.ivlan_vld, fs->mask.ivlan_vld))
 		return -EOPNOTSUPP;
 
@@ -290,17 +277,12 @@ static int validate_filter(struct net_device *dev,
 	 * carries that overlap, we need to translate any PF/VF
 	 * specification into that internal format below.
 	 */
-<<<<<<< HEAD
 	if ((is_field_set(fs->val.pfvf_vld, fs->mask.pfvf_vld) &&
 	     is_field_set(fs->val.ovlan_vld, fs->mask.ovlan_vld)) ||
 	    (is_field_set(fs->val.pfvf_vld, fs->mask.pfvf_vld) &&
 	     is_field_set(fs->val.encap_vld, fs->mask.encap_vld)) ||
 	    (is_field_set(fs->val.ovlan_vld, fs->mask.ovlan_vld) &&
 	     is_field_set(fs->val.encap_vld, fs->mask.encap_vld)))
-=======
-	if (is_field_set(fs->val.pfvf_vld, fs->mask.pfvf_vld) &&
-	    is_field_set(fs->val.ovlan_vld, fs->mask.ovlan_vld))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EOPNOTSUPP;
 	if (unsupported(iconf, VNIC_F, fs->val.pfvf_vld, fs->mask.pfvf_vld) ||
 	    (is_field_set(fs->val.ovlan_vld, fs->mask.ovlan_vld) &&
@@ -330,12 +312,9 @@ static int validate_filter(struct net_device *dev,
 	     fs->newvlan == VLAN_REWRITE))
 		return -EOPNOTSUPP;
 
-<<<<<<< HEAD
 	if (fs->val.encap_vld &&
 	    CHELSIO_CHIP_VERSION(adapter->params.chip) < CHELSIO_T6)
 		return -EOPNOTSUPP;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -370,7 +349,6 @@ static int get_filter_steerq(struct net_device *dev,
 	return iq;
 }
 
-<<<<<<< HEAD
 static int get_filter_count(struct adapter *adapter, unsigned int fidx,
 			    u64 *pkts, u64 *bytes, bool hash)
 {
@@ -495,9 +473,6 @@ out_unlock:
 
 static int cxgb4_set_ftid(struct tid_info *t, int fidx, int family,
 			  unsigned int chip_ver)
-=======
-static int cxgb4_set_ftid(struct tid_info *t, int fidx, int family)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	spin_lock_bh(&t->ftid_lock);
 
@@ -506,7 +481,6 @@ static int cxgb4_set_ftid(struct tid_info *t, int fidx, int family)
 		return -EBUSY;
 	}
 
-<<<<<<< HEAD
 	if (family == PF_INET) {
 		__set_bit(fidx, t->ftid_bmap);
 	} else {
@@ -515,18 +489,11 @@ static int cxgb4_set_ftid(struct tid_info *t, int fidx, int family)
 		else
 			bitmap_allocate_region(t->ftid_bmap, fidx, 1);
 	}
-=======
-	if (family == PF_INET)
-		__set_bit(fidx, t->ftid_bmap);
-	else
-		bitmap_allocate_region(t->ftid_bmap, fidx, 2);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_unlock_bh(&t->ftid_lock);
 	return 0;
 }
 
-<<<<<<< HEAD
 static void cxgb4_clear_ftid(struct tid_info *t, int fidx, int family,
 			     unsigned int chip_ver)
 {
@@ -539,15 +506,6 @@ static void cxgb4_clear_ftid(struct tid_info *t, int fidx, int family,
 		else
 			bitmap_release_region(t->ftid_bmap, fidx, 1);
 	}
-=======
-static void cxgb4_clear_ftid(struct tid_info *t, int fidx, int family)
-{
-	spin_lock_bh(&t->ftid_lock);
-	if (family == PF_INET)
-		__clear_bit(fidx, t->ftid_bmap);
-	else
-		bitmap_release_region(t->ftid_bmap, fidx, 2);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_bh(&t->ftid_lock);
 }
 
@@ -566,12 +524,8 @@ static int del_filter_wr(struct adapter *adapter, int fidx)
 		return -ENOMEM;
 
 	fwr = __skb_put(skb, len);
-<<<<<<< HEAD
 	t4_mk_filtdelwr(f->tid, fwr, (adapter->flags & SHUTTING_DOWN) ? -1
 			: adapter->sge.fw_evtq.abs_id);
-=======
-	t4_mk_filtdelwr(f->tid, fwr, adapter->sge.fw_evtq.abs_id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Mark the filter as "pending" and ship off the Filter Work Request.
 	 * When we get the Work Request Reply we'll clear the pending status.
@@ -590,11 +544,7 @@ static int del_filter_wr(struct adapter *adapter, int fidx)
 int set_filter_wr(struct adapter *adapter, int fidx)
 {
 	struct filter_entry *f = &adapter->tids.ftid_tab[fidx];
-<<<<<<< HEAD
 	struct fw_filter2_wr *fwr;
-=======
-	struct fw_filter_wr *fwr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct sk_buff *skb;
 
 	skb = alloc_skb(sizeof(*fwr), GFP_KERNEL);
@@ -615,7 +565,6 @@ int set_filter_wr(struct adapter *adapter, int fidx)
 		}
 	}
 
-<<<<<<< HEAD
 	/* If the new filter requires loopback Source MAC rewriting then
 	 * we need to allocate a SMT entry for the filter.
 	 */
@@ -631,8 +580,6 @@ int set_filter_wr(struct adapter *adapter, int fidx)
 		}
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	fwr = __skb_put_zero(skb, sizeof(*fwr));
 
 	/* It would be nice to put most of the following in t4_hw.c but most
@@ -643,14 +590,10 @@ int set_filter_wr(struct adapter *adapter, int fidx)
 	 * filter specification structure but for now it's easiest to simply
 	 * put this fairly direct code in line ...
 	 */
-<<<<<<< HEAD
 	if (adapter->params.filter2_wr_support)
 		fwr->op_pkd = htonl(FW_WR_OP_V(FW_FILTER2_WR));
 	else
 		fwr->op_pkd = htonl(FW_WR_OP_V(FW_FILTER_WR));
-=======
-	fwr->op_pkd = htonl(FW_WR_OP_V(FW_FILTER_WR));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	fwr->len16_pkd = htonl(FW_WR_LEN16_V(sizeof(*fwr) / 16));
 	fwr->tid_to_iq =
 		htonl(FW_FILTER_WR_TID_V(f->tid) |
@@ -665,10 +608,6 @@ int set_filter_wr(struct adapter *adapter, int fidx)
 		      FW_FILTER_WR_DIRSTEERHASH_V(f->fs.dirsteerhash) |
 		      FW_FILTER_WR_LPBK_V(f->fs.action == FILTER_SWITCH) |
 		      FW_FILTER_WR_DMAC_V(f->fs.newdmac) |
-<<<<<<< HEAD
-=======
-		      FW_FILTER_WR_SMAC_V(f->fs.newsmac) |
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		      FW_FILTER_WR_INSVLAN_V(f->fs.newvlan == VLAN_INSERT ||
 					     f->fs.newvlan == VLAN_REWRITE) |
 		      FW_FILTER_WR_RMVLAN_V(f->fs.newvlan == VLAN_REMOVE ||
@@ -715,7 +654,6 @@ int set_filter_wr(struct adapter *adapter, int fidx)
 	fwr->lpm = htons(f->fs.mask.lport);
 	fwr->fp = htons(f->fs.val.fport);
 	fwr->fpm = htons(f->fs.mask.fport);
-<<<<<<< HEAD
 
 	if (adapter->params.filter2_wr_support) {
 		fwr->natmode_to_ulp_type =
@@ -728,10 +666,6 @@ int set_filter_wr(struct adapter *adapter, int fidx)
 		fwr->newlport = htons(f->fs.nat_lport);
 		fwr->newfport = htons(f->fs.nat_fport);
 	}
-=======
-	if (f->fs.newsmac)
-		memcpy(fwr->sma, f->fs.smac, sizeof(fwr->sma));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Mark the filter as "pending" and ship off the Filter Work Request.
 	 * When we get the Work Request Reply we'll clear the pending status.
@@ -780,24 +714,15 @@ int delete_filter(struct adapter *adapter, unsigned int fidx)
  */
 void clear_filter(struct adapter *adap, struct filter_entry *f)
 {
-<<<<<<< HEAD
 	struct port_info *pi = netdev_priv(f->dev);
 
 	/* If the new or old filter have loopback rewriteing rules then we'll
 	 * need to free any existing L2T, SMT, CLIP entries of filter
 	 * rule.
-=======
-	/* If the new or old filter have loopback rewriteing rules then we'll
-	 * need to free any existing Layer Two Table (L2T) entries of the old
-	 * filter rule.  The firmware will handle freeing up any Source MAC
-	 * Table (SMT) entries used for rewriting Source MAC Addresses in
-	 * loopback rules.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	if (f->l2t)
 		cxgb4_l2t_release(f->l2t);
 
-<<<<<<< HEAD
 	if (f->smt)
 		cxgb4_smt_release(f->smt);
 
@@ -810,8 +735,6 @@ void clear_filter(struct adapter *adap, struct filter_entry *f)
 	if ((f->fs.hash || is_t6(adap->params.chip)) && f->fs.type)
 		cxgb4_clip_release(f->dev, (const u32 *)&f->fs.val.lip, 1);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* The zeroing of the filter rule below clears the filter valid,
 	 * pending, locked flags, l2t pointer, etc. so it's all we need for
 	 * this operation.
@@ -881,7 +804,6 @@ static void fill_default_mask(struct ch_filter_specification *fs)
 		fs->mask.fport = ~0;
 }
 
-<<<<<<< HEAD
 static bool is_addr_all_mask(u8 *ipmask, int family)
 {
 	if (family == AF_INET) {
@@ -1298,8 +1220,6 @@ out_err:
 	return ret;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Check a Chelsio Filter Request for validity, convert it into our internal
  * format and send it to the hardware.  Return 0 on success, an error number
  * otherwise.  We attach any provided filter operation context to the internal
@@ -1311,16 +1231,12 @@ int __cxgb4_set_filter(struct net_device *dev, int filter_id,
 		       struct filter_ctx *ctx)
 {
 	struct adapter *adapter = netdev2adap(dev);
-<<<<<<< HEAD
 	unsigned int chip_ver = CHELSIO_CHIP_VERSION(adapter->params.chip);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int max_fidx, fidx;
 	struct filter_entry *f;
 	u32 iconf;
 	int iq, ret;
 
-<<<<<<< HEAD
 	if (fs->hash) {
 		if (is_hashfilter(adapter))
 			return cxgb4_set_hash_filter(dev, fs, ctx);
@@ -1329,8 +1245,6 @@ int __cxgb4_set_filter(struct net_device *dev, int filter_id,
 		return -EINVAL;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	max_fidx = adapter->tids.nftids;
 	if (filter_id != (max_fidx + adapter->tids.nsftids - 1) &&
 	    filter_id >= max_fidx)
@@ -1354,7 +1268,6 @@ int __cxgb4_set_filter(struct net_device *dev, int filter_id,
 	 * insertion.
 	 */
 	if (fs->type == 0) { /* IPv4 */
-<<<<<<< HEAD
 		/* For T6, If our IPv4 filter isn't being written to a
 		 * multiple of two filter index and there's an IPv6
 		 * filter at the multiple of 2 base slot, then we need
@@ -1367,14 +1280,6 @@ int __cxgb4_set_filter(struct net_device *dev, int filter_id,
 		else
 			fidx = filter_id & ~0x1;
 
-=======
-		/* If our IPv4 filter isn't being written to a
-		 * multiple of four filter index and there's an IPv6
-		 * filter at the multiple of 4 base slot, then we
-		 * prevent insertion.
-		 */
-		fidx = filter_id & ~0x3;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (fidx != filter_id &&
 		    adapter->tids.ftid_tab[fidx].fs.type) {
 			f = &adapter->tids.ftid_tab[fidx];
@@ -1386,7 +1291,6 @@ int __cxgb4_set_filter(struct net_device *dev, int filter_id,
 			}
 		}
 	} else { /* IPv6 */
-<<<<<<< HEAD
 		if (chip_ver < CHELSIO_T6) {
 			/* Ensure that the IPv6 filter is aligned on a
 			 * multiple of 4 boundary.
@@ -1423,25 +1327,6 @@ int __cxgb4_set_filter(struct net_device *dev, int filter_id,
 				pr_err("%s: IPv6 filter requires 2 indices. IPv4 filter already present at %d. Please remove IPv4 filter first.\n",
 				       __func__, fidx);
 				return -EBUSY;
-=======
-		/* Ensure that the IPv6 filter is aligned on a
-		 * multiple of 4 boundary.
-		 */
-		if (filter_id & 0x3) {
-			dev_err(adapter->pdev_dev,
-				"Invalid location. IPv6 must be aligned on a 4-slot boundary\n");
-			return -EINVAL;
-		}
-
-		/* Check all except the base overlapping IPv4 filter slots. */
-		for (fidx = filter_id + 1; fidx < filter_id + 4; fidx++) {
-			f = &adapter->tids.ftid_tab[fidx];
-			if (f->valid) {
-				dev_err(adapter->pdev_dev,
-					"Invalid location.  IPv6 requires 4 slots and an IPv4 filter exists at %u\n",
-					fidx);
-				return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		}
 	}
@@ -1455,25 +1340,16 @@ int __cxgb4_set_filter(struct net_device *dev, int filter_id,
 
 	fidx = filter_id + adapter->tids.ftid_base;
 	ret = cxgb4_set_ftid(&adapter->tids, filter_id,
-<<<<<<< HEAD
 			     fs->type ? PF_INET6 : PF_INET,
 			     chip_ver);
 	if (ret)
 		return ret;
 
 	/* Check t  make sure the filter requested is writable ... */
-=======
-			     fs->type ? PF_INET6 : PF_INET);
-	if (ret)
-		return ret;
-
-	/* Check to make sure the filter requested is writable ... */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = writable_filter(f);
 	if (ret) {
 		/* Clear the bits we have set above */
 		cxgb4_clear_ftid(&adapter->tids, filter_id,
-<<<<<<< HEAD
 				 fs->type ? PF_INET6 : PF_INET,
 				 chip_ver);
 		return ret;
@@ -1489,17 +1365,6 @@ int __cxgb4_set_filter(struct net_device *dev, int filter_id,
 			return ret;
 		}
 	}
-=======
-				 fs->type ? PF_INET6 : PF_INET);
-		return ret;
-	}
-
-	/* Clear out any old resources being used by the filter before
-	 * we start constructing the new filter.
-	 */
-	if (f->valid)
-		clear_filter(adapter, f);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Convert the filter specification into our internal format.
 	 * We copy the PF/VF specification into the Outer VLAN field
@@ -1516,7 +1381,6 @@ int __cxgb4_set_filter(struct net_device *dev, int filter_id,
 		f->fs.mask.ovlan = (fs->mask.pf << 13) | fs->mask.vf;
 		f->fs.val.ovlan_vld = fs->val.pfvf_vld;
 		f->fs.mask.ovlan_vld = fs->mask.pfvf_vld;
-<<<<<<< HEAD
 	} else if (iconf & USE_ENC_IDX_F) {
 		if (f->fs.val.encap_vld) {
 			struct port_info *pi = netdev_priv(f->dev);
@@ -1538,8 +1402,6 @@ int __cxgb4_set_filter(struct net_device *dev, int filter_id,
 			f->fs.val.ovlan_vld = 1;
 			f->fs.mask.ovlan_vld = 1;
 		}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Attempt to set the filter.  If we don't succeed, we clear
@@ -1550,17 +1412,12 @@ int __cxgb4_set_filter(struct net_device *dev, int filter_id,
 	ret = set_filter_wr(adapter, filter_id);
 	if (ret) {
 		cxgb4_clear_ftid(&adapter->tids, filter_id,
-<<<<<<< HEAD
 				 fs->type ? PF_INET6 : PF_INET,
 				 chip_ver);
-=======
-				 fs->type ? PF_INET6 : PF_INET);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		clear_filter(adapter, f);
 	}
 
 	return ret;
-<<<<<<< HEAD
 
 free_clip:
 	if (is_t6(adapter->params.chip) && f->fs.type)
@@ -1629,8 +1486,6 @@ static int cxgb4_del_hash_filter(struct net_device *dev, int filter_id,
 	mk_abort_rpl_ulp(abort_rpl, f->tid);
 	t4_ofld_send(adapter, skb);
 	return 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Check a delete filter request for validity and send it to the hardware.
@@ -1639,22 +1494,15 @@ static int cxgb4_del_hash_filter(struct net_device *dev, int filter_id,
  * facilitate signaling completion of the operation.
  */
 int __cxgb4_del_filter(struct net_device *dev, int filter_id,
-<<<<<<< HEAD
 		       struct ch_filter_specification *fs,
 		       struct filter_ctx *ctx)
 {
 	struct adapter *adapter = netdev2adap(dev);
 	unsigned int chip_ver = CHELSIO_CHIP_VERSION(adapter->params.chip);
-=======
-		       struct filter_ctx *ctx)
-{
-	struct adapter *adapter = netdev2adap(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct filter_entry *f;
 	unsigned int max_fidx;
 	int ret;
 
-<<<<<<< HEAD
 	if (fs && fs->hash) {
 		if (is_hashfilter(adapter))
 			return cxgb4_del_hash_filter(dev, filter_id, ctx);
@@ -1663,8 +1511,6 @@ int __cxgb4_del_filter(struct net_device *dev, int filter_id,
 		return -EINVAL;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	max_fidx = adapter->tids.nftids;
 	if (filter_id != (max_fidx + adapter->tids.nsftids - 1) &&
 	    filter_id >= max_fidx)
@@ -1678,12 +1524,8 @@ int __cxgb4_del_filter(struct net_device *dev, int filter_id,
 	if (f->valid) {
 		f->ctx = ctx;
 		cxgb4_clear_ftid(&adapter->tids, filter_id,
-<<<<<<< HEAD
 				 f->fs.type ? PF_INET6 : PF_INET,
 				 chip_ver);
-=======
-				 f->fs.type ? PF_INET6 : PF_INET);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return del_filter_wr(adapter, filter_id);
 	}
 
@@ -1720,17 +1562,12 @@ out:
 	return ret;
 }
 
-<<<<<<< HEAD
 int cxgb4_del_filter(struct net_device *dev, int filter_id,
 		     struct ch_filter_specification *fs)
-=======
-int cxgb4_del_filter(struct net_device *dev, int filter_id)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct filter_ctx ctx;
 	int ret;
 
-<<<<<<< HEAD
 	/* If we are shutting down the adapter do not wait for completion */
 	if (netdev2adap(dev)->flags & SHUTTING_DOWN)
 		return __cxgb4_del_filter(dev, filter_id, fs, NULL);
@@ -1738,11 +1575,6 @@ int cxgb4_del_filter(struct net_device *dev, int filter_id)
 	init_completion(&ctx.completion);
 
 	ret = __cxgb4_del_filter(dev, filter_id, fs, &ctx);
-=======
-	init_completion(&ctx.completion);
-
-	ret = __cxgb4_del_filter(dev, filter_id, &ctx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto out;
 
@@ -1756,7 +1588,6 @@ out:
 	return ret;
 }
 
-<<<<<<< HEAD
 static int configure_filter_tcb(struct adapter *adap, unsigned int tid,
 				struct filter_entry *f)
 {
@@ -1908,8 +1739,6 @@ void hash_filter_rpl(struct adapter *adap, const struct cpl_act_open_rpl *rpl)
 		complete(&ctx->completion);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Handle a filter write/deletion reply. */
 void filter_rpl(struct adapter *adap, const struct cpl_set_tcb_rpl *rpl)
 {
@@ -1948,7 +1777,6 @@ void filter_rpl(struct adapter *adap, const struct cpl_set_tcb_rpl *rpl)
 			clear_filter(adap, f);
 			if (ctx)
 				ctx->result = 0;
-<<<<<<< HEAD
 		} else if (ret == FW_FILTER_WR_FLT_ADDED) {
 			int err = 0;
 
@@ -1966,21 +1794,6 @@ void filter_rpl(struct adapter *adap, const struct cpl_set_tcb_rpl *rpl)
 				clear_filter(adap, f);
 				if (ctx)
 					ctx->result = err;
-=======
-		} else if (ret == FW_FILTER_WR_SMT_TBL_FULL) {
-			dev_err(adap->pdev_dev, "filter %u setup failed due to full SMT\n",
-				idx);
-			clear_filter(adap, f);
-			if (ctx)
-				ctx->result = -ENOMEM;
-		} else if (ret == FW_FILTER_WR_FLT_ADDED) {
-			f->smtidx = (be64_to_cpu(rpl->oldval) >> 24) & 0xff;
-			f->pending = 0;  /* asynchronous setup completed */
-			f->valid = 1;
-			if (ctx) {
-				ctx->result = 0;
-				ctx->tid = idx;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		} else {
 			/* Something went wrong.  Issue a warning about the
@@ -1996,7 +1809,6 @@ void filter_rpl(struct adapter *adap, const struct cpl_set_tcb_rpl *rpl)
 			complete(&ctx->completion);
 	}
 }
-<<<<<<< HEAD
 
 int init_hash_filter(struct adapter *adap)
 {
@@ -2019,5 +1831,3 @@ err:
 	dev_warn(adap->pdev_dev, "Invalid hash filter config!\n");
 	return -EINVAL;
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

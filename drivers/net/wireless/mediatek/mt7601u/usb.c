@@ -129,23 +129,14 @@ void mt7601u_vendor_reset(struct mt7601u_dev *dev)
 			       MT_VEND_DEV_MODE_RESET, 0, NULL, 0);
 }
 
-<<<<<<< HEAD
 /* should be called with vendor_req_mutex held */
 static u32 __mt7601u_rr(struct mt7601u_dev *dev, u32 offset)
-=======
-u32 mt7601u_rr(struct mt7601u_dev *dev, u32 offset)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret;
 	u32 val = ~0;
 
 	WARN_ONCE(offset > USHRT_MAX, "read high off:%08x", offset);
 
-<<<<<<< HEAD
-=======
-	mutex_lock(&dev->vendor_req_mutex);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = mt7601u_vendor_request(dev, MT_VEND_MULTI_READ, USB_DIR_IN,
 				     0, offset, dev->vend_buf, MT_VEND_BUF);
 	if (ret == MT_VEND_BUF)
@@ -154,7 +145,6 @@ u32 mt7601u_rr(struct mt7601u_dev *dev, u32 offset)
 		dev_err(dev->dev, "Error: wrong size read:%d off:%08x\n",
 			ret, offset);
 
-<<<<<<< HEAD
 	trace_reg_read(dev, offset, val);
 	return val;
 }
@@ -181,12 +171,6 @@ static int __mt7601u_vendor_single_wr(struct mt7601u_dev *dev, const u8 req,
 					     val >> 16, offset + 2, NULL, 0);
 	trace_reg_write(dev, offset, val);
 	return ret;
-=======
-	mutex_unlock(&dev->vendor_req_mutex);
-
-	trace_reg_read(dev, offset, val);
-	return val;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int mt7601u_vendor_single_wr(struct mt7601u_dev *dev, const u8 req,
@@ -195,17 +179,7 @@ int mt7601u_vendor_single_wr(struct mt7601u_dev *dev, const u8 req,
 	int ret;
 
 	mutex_lock(&dev->vendor_req_mutex);
-<<<<<<< HEAD
 	ret = __mt7601u_vendor_single_wr(dev, req, offset, val);
-=======
-
-	ret = mt7601u_vendor_request(dev, req, USB_DIR_OUT,
-				     val & 0xffff, offset, NULL, 0);
-	if (!ret)
-		ret = mt7601u_vendor_request(dev, req, USB_DIR_OUT,
-					     val >> 16, offset + 2, NULL, 0);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&dev->vendor_req_mutex);
 
 	return ret;
@@ -216,30 +190,20 @@ void mt7601u_wr(struct mt7601u_dev *dev, u32 offset, u32 val)
 	WARN_ONCE(offset > USHRT_MAX, "write high off:%08x", offset);
 
 	mt7601u_vendor_single_wr(dev, MT_VEND_WRITE, offset, val);
-<<<<<<< HEAD
-=======
-	trace_reg_write(dev, offset, val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 u32 mt7601u_rmw(struct mt7601u_dev *dev, u32 offset, u32 mask, u32 val)
 {
-<<<<<<< HEAD
 	mutex_lock(&dev->vendor_req_mutex);
 	val |= __mt7601u_rr(dev, offset) & ~mask;
 	__mt7601u_vendor_single_wr(dev, MT_VEND_WRITE, offset, val);
 	mutex_unlock(&dev->vendor_req_mutex);
 
-=======
-	val |= mt7601u_rr(dev, offset) & ~mask;
-	mt7601u_wr(dev, offset, val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return val;
 }
 
 u32 mt7601u_rmc(struct mt7601u_dev *dev, u32 offset, u32 mask, u32 val)
 {
-<<<<<<< HEAD
 	u32 reg;
 
 	mutex_lock(&dev->vendor_req_mutex);
@@ -250,13 +214,6 @@ u32 mt7601u_rmc(struct mt7601u_dev *dev, u32 offset, u32 mask, u32 val)
 					   offset, val);
 	mutex_unlock(&dev->vendor_req_mutex);
 
-=======
-	u32 reg = mt7601u_rr(dev, offset);
-
-	val |= reg & ~mask;
-	if (reg != val)
-		mt7601u_wr(dev, offset, val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return val;
 }
 

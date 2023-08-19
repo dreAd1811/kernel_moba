@@ -86,11 +86,7 @@ struct i915_syncmap {
 
 /**
  * i915_syncmap_init -- initialise the #i915_syncmap
-<<<<<<< HEAD
  * @root: pointer to the #i915_syncmap
-=======
- * @root - pointer to the #i915_syncmap
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 void i915_syncmap_init(struct i915_syncmap **root)
 {
@@ -143,15 +139,9 @@ static inline bool seqno_later(u32 a, u32 b)
 
 /**
  * i915_syncmap_is_later -- compare against the last know sync point
-<<<<<<< HEAD
  * @root: pointer to the #i915_syncmap
  * @id: the context id (other timeline) we are synchronising to
  * @seqno: the sequence number along the other timeline
-=======
- * @root - pointer to the #i915_syncmap
- * @id - the context id (other timeline) we are synchronising to
- * @seqno - the sequence number along the other timeline
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * If we have already synchronised this @root timeline with another (@id) then
  * we can omit any repeated or earlier synchronisation requests. If the two
@@ -349,15 +339,9 @@ found:
 
 /**
  * i915_syncmap_set -- mark the most recent syncpoint between contexts
-<<<<<<< HEAD
  * @root: pointer to the #i915_syncmap
  * @id: the context id (other timeline) we have synchronised to
  * @seqno: the sequence number along the other timeline
-=======
- * @root - pointer to the #i915_syncmap
- * @id - the context id (other timeline) we have synchronised to
- * @seqno - the sequence number along the other timeline
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * When we synchronise this @root timeline with another (@id), we also know
  * that we have synchronized with all previous seqno along that timeline. If
@@ -398,11 +382,7 @@ static void __sync_free(struct i915_syncmap *p)
 
 /**
  * i915_syncmap_free -- free all memory associated with the syncmap
-<<<<<<< HEAD
  * @root: pointer to the #i915_syncmap
-=======
- * @root - pointer to the #i915_syncmap
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Either when the timeline is to be freed and we no longer need the sync
  * point tracking, or when the fences are all known to be signaled and the

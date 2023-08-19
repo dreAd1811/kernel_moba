@@ -654,21 +654,12 @@ static ssize_t divas_read(struct file *file, char __user *buf,
 	return (ret);
 }
 
-<<<<<<< HEAD
 static __poll_t divas_poll(struct file *file, poll_table *wait)
 {
 	if (!file->private_data) {
 		return (EPOLLERR);
 	}
 	return (EPOLLIN | EPOLLRDNORM);
-=======
-static unsigned int divas_poll(struct file *file, poll_table *wait)
-{
-	if (!file->private_data) {
-		return (POLLERR);
-	}
-	return (POLLIN | POLLRDNORM);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct file_operations divas_fops = {

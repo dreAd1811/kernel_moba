@@ -75,11 +75,7 @@ static inline int tuner_i2c_xfer_send_recv(struct tuner_i2c_props *props,
  *
  * state structure must contain the following:
  *
-<<<<<<< HEAD
  *	struct list_head	hybrid_tuner_instance_list;
-=======
- * 	struct list_head	hybrid_tuner_instance_list;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *	struct tuner_i2c_props	i2c_props;
  *
  * hybrid_tuner_instance_list (both within state structure and globally)

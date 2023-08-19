@@ -19,10 +19,7 @@
 
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("PKCS#7 testing key type");
-<<<<<<< HEAD
 MODULE_AUTHOR("Red Hat, Inc.");
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static unsigned pkcs7_usage;
 module_param_named(usage, pkcs7_usage, uint, S_IWUSR | S_IRUGO);

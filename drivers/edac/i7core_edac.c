@@ -461,11 +461,7 @@ static struct i7core_dev *alloc_i7core_dev(u8 socket,
 	if (!i7core_dev)
 		return NULL;
 
-<<<<<<< HEAD
 	i7core_dev->pdev = kcalloc(table->n_devs, sizeof(*i7core_dev->pdev),
-=======
-	i7core_dev->pdev = kzalloc(sizeof(*i7core_dev->pdev) * table->n_devs,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   GFP_KERNEL);
 	if (!i7core_dev->pdev) {
 		kfree(i7core_dev);
@@ -1756,11 +1752,7 @@ static void i7core_mce_output_error(struct mem_ctl_info *mci,
 		err = "write parity error";
 		break;
 	case 19:
-<<<<<<< HEAD
 		err = "redundancy loss";
-=======
-		err = "redundacy loss";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case 20:
 		err = "reserved";
@@ -2176,7 +2168,6 @@ static int i7core_register_mci(struct i7core_dev *i7core_dev)
 	mci->edac_ctl_cap = EDAC_FLAG_NONE;
 	mci->edac_cap = EDAC_FLAG_NONE;
 	mci->mod_name = "i7core_edac.c";
-<<<<<<< HEAD
 
 	mci->ctl_name = kasprintf(GFP_KERNEL, "i7 core #%d", i7core_dev->socket);
 	if (!mci->ctl_name) {
@@ -2184,10 +2175,6 @@ static int i7core_register_mci(struct i7core_dev *i7core_dev)
 		goto fail1;
 	}
 
-=======
-	mci->ctl_name = kasprintf(GFP_KERNEL, "i7 core #%d",
-				  i7core_dev->socket);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mci->dev_name = pci_name(i7core_dev->pdev[0]);
 	mci->ctl_page_to_phys = NULL;
 
@@ -2241,11 +2228,8 @@ static int i7core_register_mci(struct i7core_dev *i7core_dev)
 
 fail0:
 	kfree(mci->ctl_name);
-<<<<<<< HEAD
 
 fail1:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	edac_mc_free(mci);
 	i7core_dev->mci = NULL;
 	return rc;

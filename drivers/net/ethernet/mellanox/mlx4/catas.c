@@ -178,19 +178,12 @@ void mlx4_enter_error_state(struct mlx4_dev_persistent *persist)
 
 	dev = persist->dev;
 	mlx4_err(dev, "device is going to be reset\n");
-<<<<<<< HEAD
 	if (mlx4_is_slave(dev)) {
 		err = mlx4_reset_slave(dev);
 	} else {
 		mlx4_crdump_collect(dev);
 		err = mlx4_reset_master(dev);
 	}
-=======
-	if (mlx4_is_slave(dev))
-		err = mlx4_reset_slave(dev);
-	else
-		err = mlx4_reset_master(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!err) {
 		mlx4_err(dev, "device was reset successfully\n");
@@ -221,11 +214,7 @@ static void mlx4_handle_error_state(struct mlx4_dev_persistent *persist)
 	mutex_lock(&persist->interface_state_mutex);
 	if (persist->interface_state & MLX4_INTERFACE_STATE_UP &&
 	    !(persist->interface_state & MLX4_INTERFACE_STATE_DELETION)) {
-<<<<<<< HEAD
 		err = mlx4_restart_one(persist->pdev, false, NULL);
-=======
-		err = mlx4_restart_one(persist->pdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mlx4_info(persist->dev, "mlx4_restart_one was ended, ret=%d\n",
 			  err);
 	}
@@ -244,17 +233,10 @@ static void dump_err_buf(struct mlx4_dev *dev)
 			 i, swab32(readl(priv->catas_err.map + i)));
 }
 
-<<<<<<< HEAD
 static void poll_catas(struct timer_list *t)
 {
 	struct mlx4_priv *priv = from_timer(priv, t, catas_err.timer);
 	struct mlx4_dev *dev = &priv->dev;
-=======
-static void poll_catas(unsigned long dev_ptr)
-{
-	struct mlx4_dev *dev = (struct mlx4_dev *) dev_ptr;
-	struct mlx4_priv *priv = mlx4_priv(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 slave_read;
 
 	if (mlx4_is_slave(dev)) {
@@ -297,11 +279,7 @@ void mlx4_start_catas_poll(struct mlx4_dev *dev)
 	phys_addr_t addr;
 
 	INIT_LIST_HEAD(&priv->catas_err.list);
-<<<<<<< HEAD
 	timer_setup(&priv->catas_err.timer, poll_catas, 0);
-=======
-	init_timer(&priv->catas_err.timer);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	priv->catas_err.map = NULL;
 
 	if (!mlx4_is_slave(dev)) {
@@ -317,11 +295,6 @@ void mlx4_start_catas_poll(struct mlx4_dev *dev)
 		}
 	}
 
-<<<<<<< HEAD
-=======
-	priv->catas_err.timer.data     = (unsigned long) dev;
-	priv->catas_err.timer.function = poll_catas;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	priv->catas_err.timer.expires  =
 		round_jiffies(jiffies + MLX4_CATAS_POLL_INTERVAL);
 	add_timer(&priv->catas_err.timer);

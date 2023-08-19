@@ -29,10 +29,7 @@
 #include <linux/pm.h>
 #include <asm/bootinfo.h>
 #include <asm/reboot.h>
-<<<<<<< HEAD
 #include <asm/setup.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/mach-au1x00/au1000.h>
 #include <prom.h>
 
@@ -59,11 +56,7 @@ void __init prom_init(void)
 	add_memory_region(0, memsize, BOOT_MEM_RAM);
 }
 
-<<<<<<< HEAD
 void prom_putchar(char c)
-=======
-void prom_putchar(unsigned char c)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	alchemy_uart_putchar(AU1000_UART0_PHYS_ADDR, c);
 }

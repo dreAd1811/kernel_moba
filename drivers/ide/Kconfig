@@ -117,13 +117,9 @@ config BLK_DEV_DELKIN
 
 config BLK_DEV_IDECD
 	tristate "Include IDE/ATAPI CDROM support"
-<<<<<<< HEAD
 	depends on BLK_DEV
 	select IDE_ATAPI
 	select CDROM
-=======
-	select IDE_ATAPI
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	---help---
 	  If you have a CD-ROM drive using the ATAPI protocol, say Y. ATAPI is
 	  a newer protocol used by IDE CD-ROM and TAPE drives, similar to the
@@ -204,11 +200,7 @@ comment "IDE chipset support/bugfixes"
 
 config IDE_GENERIC
 	tristate "generic/default IDE chipset support"
-<<<<<<< HEAD
 	depends on ALPHA || X86 || IA64 || MIPS || ARCH_RPC
-=======
-	depends on ALPHA || X86 || IA64 || M32R || MIPS || ARCH_RPC
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default ARM && ARCH_RPC
 	help
 	  This is the generic IDE driver.  This driver attaches to the

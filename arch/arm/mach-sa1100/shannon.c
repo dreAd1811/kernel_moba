@@ -5,20 +5,14 @@
 
 #include <linux/init.h>
 #include <linux/device.h>
-<<<<<<< HEAD
 #include <linux/gpio/machine.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/kernel.h>
 #include <linux/platform_data/sa11x0-serial.h>
 #include <linux/tty.h>
 #include <linux/mtd/mtd.h>
 #include <linux/mtd/partitions.h>
-<<<<<<< HEAD
 #include <linux/regulator/fixed.h>
 #include <linux/regulator/machine.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <video/sa1100fb.h>
 
@@ -81,7 +75,6 @@ static struct sa1100fb_mach_info shannon_lcd_info = {
 	.lccr3		= LCCR3_ACBsDiv(512),
 };
 
-<<<<<<< HEAD
 static struct gpiod_lookup_table shannon_pcmcia0_gpio_table = {
 	.dev_id = "sa11x0-pcmcia.0",
 	.table = {
@@ -119,10 +112,6 @@ static void __init shannon_init(void)
 					ARRAY_SIZE(shannon_cf_vcc_consumers));
 	sa11x0_register_pcmcia(0, &shannon_pcmcia0_gpio_table);
 	sa11x0_register_pcmcia(1, &shannon_pcmcia1_gpio_table);
-=======
-static void __init shannon_init(void)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sa11x0_ppc_configure_mcp();
 	sa11x0_register_lcd(&shannon_lcd_info);
 	sa11x0_register_mtd(&shannon_flash_data, &shannon_flash_resource, 1);

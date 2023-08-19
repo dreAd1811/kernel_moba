@@ -20,11 +20,7 @@
  *	under the terms of the GNU General Public License as published by the Free
  *	Software Foundation, version 2.
  *
-<<<<<<< HEAD
  * see Documentation/media/dvb-drivers/dvb-usb.rst for more information
-=======
- * see Documentation/dvb/README.dvb-usb for more information
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #define DVB_USB_LOG_PREFIX "ttusb2"
 #include "dvb-usb.h"
@@ -38,11 +34,7 @@
 #include "tda827x.h"
 #include "lnbp21.h"
 /* CA */
-<<<<<<< HEAD
 #include <media/dvb_ca_en50221.h>
-=======
-#include "dvb_ca_en50221.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* debug */
 static int dvb_usb_ttusb2_debug;

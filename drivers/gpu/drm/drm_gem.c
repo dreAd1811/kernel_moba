@@ -40,10 +40,7 @@
 #include <drm/drmP.h>
 #include <drm/drm_vma_manager.h>
 #include <drm/drm_gem.h>
-<<<<<<< HEAD
 #include <drm/drm_print.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "drm_internal.h"
 
 /** @file drm_gem.c
@@ -101,11 +98,7 @@ drm_gem_init(struct drm_device *dev)
 	struct drm_vma_offset_manager *vma_offset_manager;
 
 	mutex_init(&dev->object_name_lock);
-<<<<<<< HEAD
 	idr_init_base(&dev->object_name_idr, 1);
-=======
-	idr_init(&dev->object_name_idr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vma_offset_manager = kzalloc(sizeof(*vma_offset_manager), GFP_KERNEL);
 	if (!vma_offset_manager) {
@@ -290,18 +283,6 @@ drm_gem_handle_delete(struct drm_file *filp, u32 handle)
 {
 	struct drm_gem_object *obj;
 
-<<<<<<< HEAD
-=======
-	/* This is gross. The idr system doesn't let us try a delete and
-	 * return an error code.  It just spews if you fail at deleting.
-	 * So, we have to grab a lock around finding the object and then
-	 * doing the delete on it and dropping the refcount, or the user
-	 * could race us to double-decrement the refcount and cause a
-	 * use-after-free later.  Given the frequency of our handle lookups,
-	 * we may want to use ida for number allocation and a hash table
-	 * for the pointers, anyway.
-	 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock(&filp->table_lock);
 
 	/* Check if we currently have a reference on the object */
@@ -345,15 +326,12 @@ int drm_gem_dumb_map_offset(struct drm_file *file, struct drm_device *dev,
 	if (!obj)
 		return -ENOENT;
 
-<<<<<<< HEAD
 	/* Don't allow imported objects to be mapped */
 	if (obj->import_attach) {
 		ret = -EINVAL;
 		goto out;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = drm_gem_create_mmap_offset(obj);
 	if (ret)
 		goto out;
@@ -371,11 +349,7 @@ EXPORT_SYMBOL_GPL(drm_gem_dumb_map_offset);
  * @file: drm file-private structure to remove the dumb handle from
  * @dev: corresponding drm_device
  * @handle: the dumb handle to remove
-<<<<<<< HEAD
  *
-=======
- * 
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * This implements the &drm_driver.dumb_destroy kms driver callback for drivers
  * which use gem to manage their backing storage.
  */
@@ -392,11 +366,7 @@ EXPORT_SYMBOL(drm_gem_dumb_destroy);
  * @file_priv: drm file-private structure to register the handle for
  * @obj: object to register
  * @handlep: pointer to return the created handle to the caller
-<<<<<<< HEAD
  *
-=======
- * 
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * This expects the &drm_device.object_name_lock to be held already and will
  * drop it before returning. Used to avoid races in establishing new handles
  * when importing an object from either an flink name or a dma-buf.
@@ -466,18 +436,12 @@ err_unref:
  * @obj: object to register
  * @handlep: pionter to return the created handle to the caller
  *
-<<<<<<< HEAD
  * Create a handle for this object. This adds a handle reference to the object,
  * which includes a regular reference count. Callers will likely want to
  * dereference the object afterwards.
  *
  * Since this publishes @obj to userspace it must be fully set up by this point,
  * drivers must call this last in their buffer object creation callbacks.
-=======
- * Create a handle for this object. This adds a handle reference
- * to the object, which includes a regular reference count. Callers
- * will likely want to dereference the object afterwards.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 int drm_gem_handle_create(struct drm_file *file_priv,
 			  struct drm_gem_object *obj,
@@ -574,11 +538,7 @@ EXPORT_SYMBOL(drm_gem_create_mmap_offset);
  * Note that you are not allowed to change gfp-zones during runtime. That is,
  * shmem_read_mapping_page_gfp() must be called with the same gfp_zone(gfp) as
  * set during initialization. If you have special zone constraints, set them
-<<<<<<< HEAD
  * after drm_gem_object_init() via mapping_set_gfp_mask(). shmem-core takes care
-=======
- * after drm_gem_init_object() via mapping_set_gfp_mask(). shmem-core takes care
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * to keep pages in the required zone during swap-in.
  */
 struct page **drm_gem_get_pages(struct drm_gem_object *obj)
@@ -819,11 +779,7 @@ drm_gem_open_ioctl(struct drm_device *dev, void *data,
 void
 drm_gem_open(struct drm_device *dev, struct drm_file *file_private)
 {
-<<<<<<< HEAD
 	idr_init_base(&file_private->object_idr, 1);
-=======
-	idr_init(&file_private->object_idr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_init(&file_private->table_lock);
 }
 
@@ -1097,7 +1053,6 @@ int drm_gem_mmap(struct file *filp, struct vm_area_struct *vma)
 	return ret;
 }
 EXPORT_SYMBOL(drm_gem_mmap);
-<<<<<<< HEAD
 
 void drm_gem_print_info(struct drm_printer *p, unsigned int indent,
 			const struct drm_gem_object *obj)
@@ -1114,5 +1069,3 @@ void drm_gem_print_info(struct drm_printer *p, unsigned int indent,
 	if (obj->dev->driver->gem_print_info)
 		obj->dev->driver->gem_print_info(p, indent, obj);
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

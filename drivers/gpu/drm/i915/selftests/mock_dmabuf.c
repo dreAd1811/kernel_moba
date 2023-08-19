@@ -94,21 +94,6 @@ static void mock_dmabuf_vunmap(struct dma_buf *dma_buf, void *vaddr)
 	vm_unmap_ram(vaddr, mock->npages);
 }
 
-<<<<<<< HEAD
-=======
-static void *mock_dmabuf_kmap_atomic(struct dma_buf *dma_buf, unsigned long page_num)
-{
-	struct mock_dmabuf *mock = to_mock(dma_buf);
-
-	return kmap_atomic(mock->pages[page_num]);
-}
-
-static void mock_dmabuf_kunmap_atomic(struct dma_buf *dma_buf, unsigned long page_num, void *addr)
-{
-	kunmap_atomic(addr);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void *mock_dmabuf_kmap(struct dma_buf *dma_buf, unsigned long page_num)
 {
 	struct mock_dmabuf *mock = to_mock(dma_buf);
@@ -133,13 +118,7 @@ static const struct dma_buf_ops mock_dmabuf_ops =  {
 	.unmap_dma_buf = mock_unmap_dma_buf,
 	.release = mock_dmabuf_release,
 	.map = mock_dmabuf_kmap,
-<<<<<<< HEAD
 	.unmap = mock_dmabuf_kunmap,
-=======
-	.map_atomic = mock_dmabuf_kmap_atomic,
-	.unmap = mock_dmabuf_kunmap,
-	.unmap_atomic = mock_dmabuf_kunmap_atomic,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.mmap = mock_dmabuf_mmap,
 	.vmap = mock_dmabuf_vmap,
 	.vunmap = mock_dmabuf_vunmap,

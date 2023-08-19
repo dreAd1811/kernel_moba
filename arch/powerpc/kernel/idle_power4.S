@@ -15,11 +15,8 @@
 #include <asm/ppc_asm.h>
 #include <asm/asm-offsets.h>
 #include <asm/irqflags.h>
-<<<<<<< HEAD
 #include <asm/hw_irq.h>
 #include <asm/feature-fixups.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #undef DEBUG
 
@@ -35,11 +32,8 @@ END_FTR_SECTION_IFCLR(CPU_FTR_CAN_NAP)
 	cmpwi	0,r4,0
 	beqlr
 
-<<<<<<< HEAD
 	/* This sequence is similar to prep_irq_for_idle() */
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Hard disable interrupts */
 	mfmsr	r7
 	rldicl	r0,r7,48,1
@@ -49,7 +43,6 @@ END_FTR_SECTION_IFCLR(CPU_FTR_CAN_NAP)
 	/* Check if something happened while soft-disabled */
 	lbz	r0,PACAIRQHAPPENED(r13)
 	cmpwi	cr0,r0,0
-<<<<<<< HEAD
 	bne-	2f
 
 	/*
@@ -59,12 +52,6 @@ END_FTR_SECTION_IFCLR(CPU_FTR_CAN_NAP)
 	 */
 #ifdef CONFIG_TRACE_IRQFLAGS
 	/* Tell the tracer interrupts are on, because idle responds to them. */
-=======
-	bnelr
-
-	/* Soft-enable interrupts */
-#ifdef CONFIG_TRACE_IRQFLAGS
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mflr	r0
 	std	r0,16(r1)
 	stdu    r1,-128(r1)
@@ -75,13 +62,8 @@ END_FTR_SECTION_IFCLR(CPU_FTR_CAN_NAP)
 	mfmsr	r7
 #endif /* CONFIG_TRACE_IRQFLAGS */
 
-<<<<<<< HEAD
 	li	r0,IRQS_ENABLED
 	stb	r0,PACAIRQSOFTMASK(r13)	/* we'll hard-enable shortly */
-=======
-	li	r0,1
-	stb	r0,PACASOFTIRQEN(r13)	/* we'll hard-enable shortly */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 BEGIN_FTR_SECTION
 	DSSALL
 	sync
@@ -98,11 +80,8 @@ END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
 	isync
 	b	1b
 
-<<<<<<< HEAD
 2:	/* Return if an interrupt had happened while soft disabled */
 	/* Set the HARD_DIS flag because interrupts are now hard disabled */
 	ori	r0,r0,PACA_IRQ_HARD_DIS
 	stb	r0,PACAIRQHAPPENED(r13)
 	blr
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -63,27 +63,14 @@ struct qed_ll2_rx_packet {
 struct qed_ll2_tx_packet {
 	struct list_head list_entry;
 	u16 bd_used;
-<<<<<<< HEAD
 	bool notify_fw;
 	void *cookie;
 	/* Flexible Array of bds_set determined by max_bds_per_packet */
-=======
-	u16 vlan;
-	u16 l4_hdr_offset_w;
-	u8 bd_flags;
-	bool notify_fw;
-	void *cookie;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct {
 		struct core_tx_bd *txq_bd;
 		dma_addr_t tx_frag;
 		u16 frag_len;
-<<<<<<< HEAD
 	} bds_set[1];
-=======
-	} bds_set[ETH_TX_MAX_BDS_PER_NON_LSO_PACKET];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct qed_ll2_rx_queue {
@@ -111,11 +98,7 @@ struct qed_ll2_tx_queue {
 	struct list_head active_descq;
 	struct list_head free_descq;
 	struct list_head sending_descq;
-<<<<<<< HEAD
 	void *descq_mem; /* memory for variable sized qed_ll2_tx_packet*/
-=======
-	struct qed_ll2_tx_packet *descq_array;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct qed_ll2_tx_packet *cur_send_packet;
 	struct qed_ll2_tx_packet cur_completing_packet;
 	u16 cur_completing_bd_idx;
@@ -138,10 +121,7 @@ struct qed_ll2_info {
 	bool b_active;
 	enum core_tx_dest tx_dest;
 	u8 tx_stats_en;
-<<<<<<< HEAD
 	bool main_func_queue;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct qed_ll2_rx_queue rx_queue;
 	struct qed_ll2_tx_queue tx_queue;
 	struct qed_ll2_cbs cbs;

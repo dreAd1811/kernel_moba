@@ -9,24 +9,16 @@
 /* ETHTOOL Support for VNIC_VF Device*/
 
 #include <linux/pci.h>
-<<<<<<< HEAD
 #include <linux/net_tstamp.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "nic_reg.h"
 #include "nic.h"
 #include "nicvf_queues.h"
 #include "q_struct.h"
 #include "thunder_bgx.h"
-<<<<<<< HEAD
 #include "../common/cavium_ptp.h"
 
 #define DRV_NAME	"nicvf"
-=======
-
-#define DRV_NAME	"thunder-nicvf"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DRV_VERSION     "1.0"
 
 struct nicvf_stat {
@@ -535,10 +527,7 @@ static int nicvf_get_rss_hash_opts(struct nicvf *nic,
 	case SCTP_V4_FLOW:
 	case SCTP_V6_FLOW:
 		info->data |= RXH_L4_B_0_1 | RXH_L4_B_2_3;
-<<<<<<< HEAD
 		/* Fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case IPV4_FLOW:
 	case IPV6_FLOW:
 		info->data |= RXH_IP_SRC | RXH_IP_DST;
@@ -838,7 +827,6 @@ static int nicvf_set_pauseparam(struct net_device *dev,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int nicvf_get_ts_info(struct net_device *netdev,
 			     struct ethtool_ts_info *info)
 {
@@ -864,8 +852,6 @@ static int nicvf_get_ts_info(struct net_device *netdev,
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct ethtool_ops nicvf_ethtool_ops = {
 	.get_link		= nicvf_get_link,
 	.get_drvinfo		= nicvf_get_drvinfo,
@@ -889,11 +875,7 @@ static const struct ethtool_ops nicvf_ethtool_ops = {
 	.set_channels		= nicvf_set_channels,
 	.get_pauseparam         = nicvf_get_pauseparam,
 	.set_pauseparam         = nicvf_set_pauseparam,
-<<<<<<< HEAD
 	.get_ts_info		= nicvf_get_ts_info,
-=======
-	.get_ts_info		= ethtool_op_get_ts_info,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.get_link_ksettings	= nicvf_get_link_ksettings,
 };
 

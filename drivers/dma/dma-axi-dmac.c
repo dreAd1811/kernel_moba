@@ -72,12 +72,9 @@
 
 #define AXI_DMAC_FLAG_CYCLIC		BIT(0)
 
-<<<<<<< HEAD
 /* The maximum ID allocated by the hardware is 31 */
 #define AXI_DMAC_SG_UNUSED 32U
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct axi_dmac_sg {
 	dma_addr_t src_addr;
 	dma_addr_t dest_addr;
@@ -86,10 +83,7 @@ struct axi_dmac_sg {
 	unsigned int dest_stride;
 	unsigned int src_stride;
 	unsigned int id;
-<<<<<<< HEAD
 	bool schedule_when_free;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct axi_dmac_desc {
@@ -210,7 +204,6 @@ static void axi_dmac_start_transfer(struct axi_dmac_chan *chan)
 	}
 	sg = &desc->sg[desc->num_submitted];
 
-<<<<<<< HEAD
 	/* Already queued in cyclic mode. Wait for it to finish */
 	if (sg->id != AXI_DMAC_SG_UNUSED) {
 		sg->schedule_when_free = true;
@@ -226,13 +219,6 @@ static void axi_dmac_start_transfer(struct axi_dmac_chan *chan)
 	} else {
 		chan->next_desc = desc;
 	}
-=======
-	desc->num_submitted++;
-	if (desc->num_submitted == desc->num_sgs)
-		chan->next_desc = NULL;
-	else
-		chan->next_desc = desc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sg->id = axi_dmac_read(dmac, AXI_DMAC_REG_TRANSFER_ID);
 
@@ -248,17 +234,11 @@ static void axi_dmac_start_transfer(struct axi_dmac_chan *chan)
 
 	/*
 	 * If the hardware supports cyclic transfers and there is no callback to
-<<<<<<< HEAD
 	 * call and only a single segment, enable hw cyclic mode to avoid
 	 * unnecessary interrupts.
 	 */
 	if (chan->hw_cyclic && desc->cyclic && !desc->vdesc.tx.callback &&
 		desc->num_sgs == 1)
-=======
-	 * call, enable hw cyclic mode to avoid unnecessary interrupts.
-	 */
-	if (chan->hw_cyclic && desc->cyclic && !desc->vdesc.tx.callback)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		flags |= AXI_DMAC_FLAG_CYCLIC;
 
 	axi_dmac_write(dmac, AXI_DMAC_REG_X_LENGTH, sg->x_len - 1);
@@ -273,16 +253,11 @@ static struct axi_dmac_desc *axi_dmac_active_desc(struct axi_dmac_chan *chan)
 		struct axi_dmac_desc, vdesc.node);
 }
 
-<<<<<<< HEAD
 static bool axi_dmac_transfer_done(struct axi_dmac_chan *chan,
-=======
-static void axi_dmac_transfer_done(struct axi_dmac_chan *chan,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int completed_transfers)
 {
 	struct axi_dmac_desc *active;
 	struct axi_dmac_sg *sg;
-<<<<<<< HEAD
 	bool start_next = false;
 
 	active = axi_dmac_active_desc(chan);
@@ -309,45 +284,21 @@ static void axi_dmac_transfer_done(struct axi_dmac_chan *chan,
 			if (active->cyclic) {
 				active->num_completed = 0; /* wrap around */
 			} else {
-=======
-
-	active = axi_dmac_active_desc(chan);
-	if (!active)
-		return;
-
-	if (active->cyclic) {
-		vchan_cyclic_callback(&active->vdesc);
-	} else {
-		do {
-			sg = &active->sg[active->num_completed];
-			if (!(BIT(sg->id) & completed_transfers))
-				break;
-			active->num_completed++;
-			if (active->num_completed == active->num_sgs) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				list_del(&active->vdesc.node);
 				vchan_cookie_complete(&active->vdesc);
 				active = axi_dmac_active_desc(chan);
 			}
-<<<<<<< HEAD
 		}
 	} while (active);
 
 	return start_next;
-=======
-		} while (active);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static irqreturn_t axi_dmac_interrupt_handler(int irq, void *devid)
 {
 	struct axi_dmac *dmac = devid;
 	unsigned int pending;
-<<<<<<< HEAD
 	bool start_next = false;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pending = axi_dmac_read(dmac, AXI_DMAC_REG_IRQ_PENDING);
 	if (!pending)
@@ -361,17 +312,10 @@ static irqreturn_t axi_dmac_interrupt_handler(int irq, void *devid)
 		unsigned int completed;
 
 		completed = axi_dmac_read(dmac, AXI_DMAC_REG_TRANSFER_DONE);
-<<<<<<< HEAD
 		start_next = axi_dmac_transfer_done(&dmac->chan, completed);
 	}
 	/* Space has become available in the descriptor queue */
 	if ((pending & AXI_DMAC_IRQ_SOT) || start_next)
-=======
-		axi_dmac_transfer_done(&dmac->chan, completed);
-	}
-	/* Space has become available in the descriptor queue */
-	if (pending & AXI_DMAC_IRQ_SOT)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		axi_dmac_start_transfer(&dmac->chan);
 	spin_unlock(&dmac->chan.vchan.lock);
 
@@ -421,22 +365,16 @@ static void axi_dmac_issue_pending(struct dma_chan *c)
 static struct axi_dmac_desc *axi_dmac_alloc_desc(unsigned int num_sgs)
 {
 	struct axi_dmac_desc *desc;
-<<<<<<< HEAD
 	unsigned int i;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	desc = kzalloc(sizeof(struct axi_dmac_desc) +
 		sizeof(struct axi_dmac_sg) * num_sgs, GFP_NOWAIT);
 	if (!desc)
 		return NULL;
 
-<<<<<<< HEAD
 	for (i = 0; i < num_sgs; i++)
 		desc->sg[i].id = AXI_DMAC_SG_UNUSED;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	desc->num_sgs = num_sgs;
 
 	return desc;
@@ -548,11 +486,7 @@ static struct dma_async_tx_descriptor *axi_dmac_prep_interleaved(
 
 	if (chan->hw_2d) {
 		if (!axi_dmac_check_len(chan, xt->sgl[0].size) ||
-<<<<<<< HEAD
 		    !axi_dmac_check_len(chan, xt->numf))
-=======
-		    xt->numf == 0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return NULL;
 		if (xt->sgl[0].size + dst_icg > chan->max_length ||
 		    xt->sgl[0].size + src_icg > chan->max_length)
@@ -753,11 +687,7 @@ static int axi_dmac_probe(struct platform_device *pdev)
 	if (ret)
 		goto err_unregister_device;
 
-<<<<<<< HEAD
 	ret = request_irq(dmac->irq, axi_dmac_interrupt_handler, IRQF_SHARED,
-=======
-	ret = request_irq(dmac->irq, axi_dmac_interrupt_handler, 0,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_name(&pdev->dev), dmac);
 	if (ret)
 		goto err_unregister_of;

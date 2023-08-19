@@ -36,7 +36,6 @@ struct amdgpu_mm_table {
 	uint64_t		gpu_addr;
 };
 
-<<<<<<< HEAD
 #define AMDGPU_VF_ERROR_ENTRY_SIZE    16
 
 /* struct error_entry - amdgpu VF error information. */
@@ -49,8 +48,6 @@ struct amdgpu_vf_error_buffer {
 	uint64_t data[AMDGPU_VF_ERROR_ENTRY_SIZE];
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * struct amdgpu_virt_ops - amdgpu device virt operations
  */
@@ -58,7 +55,6 @@ struct amdgpu_virt_ops {
 	int (*req_full_gpu)(struct amdgpu_device *adev, bool init);
 	int (*rel_full_gpu)(struct amdgpu_device *adev, bool init);
 	int (*reset_gpu)(struct amdgpu_device *adev);
-<<<<<<< HEAD
 	int (*wait_reset)(struct amdgpu_device *adev);
 	void (*trans_msg)(struct amdgpu_device *adev, u32 req, u32 data1, u32 data2, u32 data3);
 };
@@ -238,11 +234,6 @@ typedef struct amdgim_vf2pf_info_v2 amdgim_vf2pf_info ;
 		} \
 	} while (0)
 
-=======
-	void (*trans_msg)(struct amdgpu_device *adev, u32 req, u32 data1, u32 data2, u32 data3);
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* GPU virtualization */
 struct amdgpu_virt {
 	uint32_t			caps;
@@ -250,28 +241,17 @@ struct amdgpu_virt {
 	uint64_t			csa_vmid0_addr;
 	bool chained_ib_support;
 	uint32_t			reg_val_offs;
-<<<<<<< HEAD
-=======
-	struct mutex                    lock_reset;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct amdgpu_irq_src		ack_irq;
 	struct amdgpu_irq_src		rcv_irq;
 	struct work_struct		flr_work;
 	struct amdgpu_mm_table		mm_table;
 	const struct amdgpu_virt_ops	*ops;
-<<<<<<< HEAD
 	struct amdgpu_vf_error_buffer   vf_errors;
 	struct amdgpu_virt_fw_reserve	fw_reserve;
 	uint32_t gim_feature;
 };
 
 #define AMDGPU_CSA_SIZE		(8 * 1024)
-=======
-};
-
-#define AMDGPU_CSA_SIZE    (8 * 1024)
-#define AMDGPU_CSA_VADDR   (AMDGPU_VA_RESERVED_SIZE - AMDGPU_CSA_SIZE)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define amdgpu_sriov_enabled(adev) \
 ((adev)->virt.caps & AMDGPU_SRIOV_CAPS_ENABLE_IOV)
@@ -298,7 +278,6 @@ static inline bool is_virtual_machine(void)
 }
 
 struct amdgpu_vm;
-<<<<<<< HEAD
 
 uint64_t amdgpu_csa_vaddr(struct amdgpu_device *adev);
 bool amdgpu_virt_mmio_blocked(struct amdgpu_device *adev);
@@ -306,18 +285,12 @@ int amdgpu_allocate_static_csa(struct amdgpu_device *adev);
 int amdgpu_map_static_csa(struct amdgpu_device *adev, struct amdgpu_vm *vm,
 			  struct amdgpu_bo_va **bo_va);
 void amdgpu_free_static_csa(struct amdgpu_device *adev);
-=======
-int amdgpu_allocate_static_csa(struct amdgpu_device *adev);
-int amdgpu_map_static_csa(struct amdgpu_device *adev, struct amdgpu_vm *vm,
-			  struct amdgpu_bo_va **bo_va);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void amdgpu_virt_init_setting(struct amdgpu_device *adev);
 uint32_t amdgpu_virt_kiq_rreg(struct amdgpu_device *adev, uint32_t reg);
 void amdgpu_virt_kiq_wreg(struct amdgpu_device *adev, uint32_t reg, uint32_t v);
 int amdgpu_virt_request_full_gpu(struct amdgpu_device *adev, bool init);
 int amdgpu_virt_release_full_gpu(struct amdgpu_device *adev, bool init);
 int amdgpu_virt_reset_gpu(struct amdgpu_device *adev);
-<<<<<<< HEAD
 int amdgpu_virt_wait_reset(struct amdgpu_device *adev);
 int amdgpu_virt_alloc_mm_table(struct amdgpu_device *adev);
 void amdgpu_virt_free_mm_table(struct amdgpu_device *adev);
@@ -325,10 +298,5 @@ int amdgpu_virt_fw_reserve_get_checksum(void *obj, unsigned long obj_size,
 					unsigned int key,
 					unsigned int chksum);
 void amdgpu_virt_init_data_exchange(struct amdgpu_device *adev);
-=======
-int amdgpu_sriov_gpu_reset(struct amdgpu_device *adev, struct amdgpu_job *job);
-int amdgpu_virt_alloc_mm_table(struct amdgpu_device *adev);
-void amdgpu_virt_free_mm_table(struct amdgpu_device *adev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif

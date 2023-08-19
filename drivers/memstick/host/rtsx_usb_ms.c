@@ -25,11 +25,7 @@
 #include <linux/workqueue.h>
 #include <linux/memstick.h>
 #include <linux/kthread.h>
-<<<<<<< HEAD
 #include <linux/rtsx_usb.h>
-=======
-#include <linux/mfd/rtsx_usb.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/pm_runtime.h>
 #include <linux/mutex.h>
 #include <linux/sched.h>

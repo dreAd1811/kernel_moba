@@ -89,11 +89,7 @@ static int ppc4xx_setup_msi_irqs(struct pci_dev *dev, int nvec, int type)
 	if (type == PCI_CAP_ID_MSIX)
 		pr_debug("ppc4xx msi: MSI-X untested, trying anyway.\n");
 
-<<<<<<< HEAD
 	msi_data->msi_virqs = kmalloc_array(msi_irqs, sizeof(int), GFP_KERNEL);
-=======
-	msi_data->msi_virqs = kmalloc((msi_irqs) * sizeof(int), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!msi_data->msi_virqs)
 		return -ENOMEM;
 
@@ -150,7 +146,6 @@ static int ppc4xx_setup_pcieh_hw(struct platform_device *dev,
 	const u32 *sdr_addr;
 	dma_addr_t msi_phys;
 	void *msi_virt;
-<<<<<<< HEAD
 	int err;
 
 	sdr_addr = of_get_property(dev->dev.of_node, "sdr-base", NULL);
@@ -164,15 +159,6 @@ static int ppc4xx_setup_pcieh_hw(struct platform_device *dev,
 	msi_mask = of_get_property(dev->dev.of_node, "msi-mask", NULL);
 	if (!msi_mask)
 		return -EINVAL;
-=======
-
-	sdr_addr = of_get_property(dev->dev.of_node, "sdr-base", NULL);
-	if (!sdr_addr)
-		return -1;
-
-	mtdcri(SDR0, *sdr_addr, upper_32_bits(res.start));	/*HIGH addr */
-	mtdcri(SDR0, *sdr_addr + 1, lower_32_bits(res.start));	/* Low addr */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	msi->msi_dev = of_find_node_by_name(NULL, "ppc4xx-msi");
 	if (!msi->msi_dev)
@@ -180,52 +166,30 @@ static int ppc4xx_setup_pcieh_hw(struct platform_device *dev,
 
 	msi->msi_regs = of_iomap(msi->msi_dev, 0);
 	if (!msi->msi_regs) {
-<<<<<<< HEAD
 		dev_err(&dev->dev, "of_iomap failed\n");
 		err = -ENOMEM;
 		goto node_put;
-=======
-		dev_err(&dev->dev, "of_iomap problem failed\n");
-		return -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	dev_dbg(&dev->dev, "PCIE-MSI: msi register mapped 0x%x 0x%x\n",
 		(u32) (msi->msi_regs + PEIH_TERMADH), (u32) (msi->msi_regs));
 
 	msi_virt = dma_alloc_coherent(&dev->dev, 64, &msi_phys, GFP_KERNEL);
-<<<<<<< HEAD
 	if (!msi_virt) {
 		err = -ENOMEM;
 		goto iounmap;
 	}
-=======
-	if (!msi_virt)
-		return -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	msi->msi_addr_hi = upper_32_bits(msi_phys);
 	msi->msi_addr_lo = lower_32_bits(msi_phys & 0xffffffff);
 	dev_dbg(&dev->dev, "PCIE-MSI: msi address high 0x%x, low 0x%x\n",
 		msi->msi_addr_hi, msi->msi_addr_lo);
 
-<<<<<<< HEAD
 	mtdcri(SDR0, *sdr_addr, upper_32_bits(res.start));	/*HIGH addr */
 	mtdcri(SDR0, *sdr_addr + 1, lower_32_bits(res.start));	/* Low addr */
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Progam the Interrupt handler Termination addr registers */
 	out_be32(msi->msi_regs + PEIH_TERMADH, msi->msi_addr_hi);
 	out_be32(msi->msi_regs + PEIH_TERMADL, msi->msi_addr_lo);
 
-<<<<<<< HEAD
-=======
-	msi_data = of_get_property(dev->dev.of_node, "msi-data", NULL);
-	if (!msi_data)
-		return -1;
-	msi_mask = of_get_property(dev->dev.of_node, "msi-mask", NULL);
-	if (!msi_mask)
-		return -1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Program MSI Expected data and Mask bits */
 	out_be32(msi->msi_regs + PEIH_MSIED, *msi_data);
 	out_be32(msi->msi_regs + PEIH_MSIMK, *msi_mask);
@@ -233,15 +197,12 @@ static int ppc4xx_setup_pcieh_hw(struct platform_device *dev,
 	dma_free_coherent(&dev->dev, 64, msi_virt, msi_phys);
 
 	return 0;
-<<<<<<< HEAD
 
 iounmap:
 	iounmap(msi->msi_regs);
 node_put:
 	of_node_put(msi->msi_dev);
 	return err;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int ppc4xx_of_msi_remove(struct platform_device *dev)
@@ -260,10 +221,6 @@ static int ppc4xx_of_msi_remove(struct platform_device *dev)
 		msi_bitmap_free(&msi->bitmap);
 	iounmap(msi->msi_regs);
 	of_node_put(msi->msi_dev);
-<<<<<<< HEAD
-=======
-	kfree(msi);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -277,42 +234,25 @@ static int ppc4xx_msi_probe(struct platform_device *dev)
 
 	dev_dbg(&dev->dev, "PCIE-MSI: Setting up MSI support...\n");
 
-<<<<<<< HEAD
 	msi = devm_kzalloc(&dev->dev, sizeof(*msi), GFP_KERNEL);
 	if (!msi)
 		return -ENOMEM;
-=======
-	msi = kzalloc(sizeof(struct ppc4xx_msi), GFP_KERNEL);
-	if (!msi) {
-		dev_err(&dev->dev, "No memory for MSI structure\n");
-		return -ENOMEM;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev->dev.platform_data = msi;
 
 	/* Get MSI ranges */
 	err = of_address_to_resource(dev->dev.of_node, 0, &res);
 	if (err) {
 		dev_err(&dev->dev, "%pOF resource error!\n", dev->dev.of_node);
-<<<<<<< HEAD
 		return err;
-=======
-		goto error_out;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	msi_irqs = of_irq_count(dev->dev.of_node);
 	if (!msi_irqs)
 		return -ENODEV;
 
-<<<<<<< HEAD
 	err = ppc4xx_setup_pcieh_hw(dev, res, msi);
 	if (err)
 		return err;
-=======
-	if (ppc4xx_setup_pcieh_hw(dev, res, msi))
-		goto error_out;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = ppc4xx_msi_init_allocator(dev, msi);
 	if (err) {
@@ -325,11 +265,7 @@ static int ppc4xx_msi_probe(struct platform_device *dev)
 		phb->controller_ops.setup_msi_irqs = ppc4xx_setup_msi_irqs;
 		phb->controller_ops.teardown_msi_irqs = ppc4xx_teardown_msi_irqs;
 	}
-<<<<<<< HEAD
 	return 0;
-=======
-	return err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 error_out:
 	ppc4xx_of_msi_remove(dev);

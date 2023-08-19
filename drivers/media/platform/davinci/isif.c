@@ -31,11 +31,6 @@
 #include <linux/err.h>
 #include <linux/module.h>
 
-<<<<<<< HEAD
-=======
-#include <mach/mux.h>
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <media/davinci/isif.h>
 #include <media/davinci/vpss.h>
 
@@ -889,13 +884,9 @@ static int isif_set_hw_if_params(struct vpfe_hw_if_param *params)
 static int isif_config_ycbcr(void)
 {
 	struct isif_ycbcr_config *params = &isif_cfg.ycbcr;
-<<<<<<< HEAD
 	struct vpss_pg_frame_size frame_size;
 	u32 modeset = 0, ccdcfg = 0;
 	struct vpss_sync_pol sync;
-=======
-	u32 modeset = 0, ccdcfg = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_dbg(isif_cfg.dev, "\nStarting isif_config_ycbcr...");
 
@@ -983,7 +974,6 @@ static int isif_config_ycbcr(void)
 		/* two fields are interleaved in memory */
 		regw(0x00000249, SDOFST);
 
-<<<<<<< HEAD
 	/* Setup test pattern if enabled */
 	if (isif_cfg.bayer.config_params.test_pat_gen) {
 		sync.ccdpg_hdpol = params->hd_pol;
@@ -991,8 +981,6 @@ static int isif_config_ycbcr(void)
 		dm365_vpss_set_sync_pol(sync);
 		dm365_vpss_set_pg_frame_size(frame_size);
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1010,11 +998,7 @@ static int isif_close(struct device *device)
 	return 0;
 }
 
-<<<<<<< HEAD
 static const struct ccdc_hw_device isif_hw_dev = {
-=======
-static struct ccdc_hw_device isif_hw_dev = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.name = "ISIF",
 	.owner = THIS_MODULE,
 	.hw_ops = {
@@ -1043,11 +1027,7 @@ static int isif_probe(struct platform_device *pdev)
 {
 	void (*setup_pinmux)(void);
 	struct resource	*res;
-<<<<<<< HEAD
 	void __iomem *addr;
-=======
-	void *__iomem addr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int status = 0, i;
 
 	/* Platform data holds setup_pinmux function ptr */
@@ -1120,12 +1100,7 @@ fail_nobase_res:
 
 	while (i >= 0) {
 		res = platform_get_resource(pdev, IORESOURCE_MEM, i);
-<<<<<<< HEAD
 		release_mem_region(res->start, resource_size(res));
-=======
-		if (res)
-			release_mem_region(res->start, resource_size(res));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		i--;
 	}
 	vpfe_unregister_ccdc_device(&isif_hw_dev);

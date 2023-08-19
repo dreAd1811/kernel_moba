@@ -15,10 +15,7 @@
 #include <linux/uaccess.h>
 #include <linux/kdebug.h>
 #include <linux/perf_event.h>
-<<<<<<< HEAD
 #include <linux/mm_types.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/pgalloc.h>
 #include <asm/mmu.h>
 
@@ -69,14 +66,9 @@ void do_page_fault(unsigned long address, struct pt_regs *regs)
 	struct vm_area_struct *vma = NULL;
 	struct task_struct *tsk = current;
 	struct mm_struct *mm = tsk->mm;
-<<<<<<< HEAD
 	int si_code = SEGV_MAPERR;
 	int ret;
 	vm_fault_t fault;
-=======
-	siginfo_t info;
-	int fault, ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int write = regs->ecr_cause & ECR_C_PROTV_STORE;  /* ST/EX */
 	unsigned int flags = FAULT_FLAG_ALLOW_RETRY | FAULT_FLAG_KILLABLE;
 
@@ -89,26 +81,14 @@ void do_page_fault(unsigned long address, struct pt_regs *regs)
 	 * only copy the information from the master page table,
 	 * nothing more.
 	 */
-<<<<<<< HEAD
 	if (address >= VMALLOC_START && !user_mode(regs)) {
 		ret = handle_kernel_vaddr_fault(address);
 		if (unlikely(ret))
 			goto no_context;
-=======
-	if (address >= VMALLOC_START) {
-		ret = handle_kernel_vaddr_fault(address);
-		if (unlikely(ret))
-			goto bad_area_nosemaphore;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		else
 			return;
 	}
 
-<<<<<<< HEAD
-=======
-	info.si_code = SEGV_MAPERR;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * If we're in an interrupt or have no user
 	 * context, we must not take the fault..
@@ -135,11 +115,7 @@ retry:
 	 * we can handle it..
 	 */
 good_area:
-<<<<<<< HEAD
 	si_code = SEGV_ACCERR;
-=======
-	info.si_code = SEGV_ACCERR;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Handle protection violation, execute on heap or stack */
 
@@ -163,7 +139,6 @@ good_area:
 	 */
 	fault = handle_mm_fault(vma, address, flags);
 
-<<<<<<< HEAD
 	if (unlikely(fatal_signal_pending(current))) {
 
 		/*
@@ -175,14 +150,6 @@ good_area:
 				goto no_context;
 			return;
 		}
-=======
-	/* If Pagefault was interrupted by SIGKILL, exit page fault "early" */
-	if (unlikely(fatal_signal_pending(current))) {
-		if ((fault & VM_FAULT_ERROR) && !(fault & VM_FAULT_RETRY))
-			up_read(&mm->mmap_sem);
-		if (user_mode(regs))
-			return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, address);
@@ -229,22 +196,10 @@ good_area:
 bad_area:
 	up_read(&mm->mmap_sem);
 
-<<<<<<< HEAD
 	/* User mode accesses just cause a SIGSEGV */
 	if (user_mode(regs)) {
 		tsk->thread.fault_address = address;
 		force_sig_fault(SIGSEGV, si_code, (void __user *)address, tsk);
-=======
-bad_area_nosemaphore:
-	/* User mode accesses just cause a SIGSEGV */
-	if (user_mode(regs)) {
-		tsk->thread.fault_address = address;
-		info.si_signo = SIGSEGV;
-		info.si_errno = 0;
-		/* info.si_code has been set above */
-		info.si_addr = (void __user *)address;
-		force_sig_info(SIGSEGV, &info, tsk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -279,13 +234,5 @@ do_sigbus:
 		goto no_context;
 
 	tsk->thread.fault_address = address;
-<<<<<<< HEAD
 	force_sig_fault(SIGBUS, BUS_ADRERR, (void __user *)address, tsk);
-=======
-	info.si_signo = SIGBUS;
-	info.si_errno = 0;
-	info.si_code = BUS_ADRERR;
-	info.si_addr = (void __user *)address;
-	force_sig_info(SIGBUS, &info, tsk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

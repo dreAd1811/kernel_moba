@@ -40,21 +40,13 @@ static struct cros_ec_platform pd_p = {
 };
 
 static const struct mfd_cell ec_cell = {
-<<<<<<< HEAD
 	.name = "cros-ec-dev",
-=======
-	.name = "cros-ec-ctl",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.platform_data = &ec_p,
 	.pdata_size = sizeof(ec_p),
 };
 
 static const struct mfd_cell ec_pd_cell = {
-<<<<<<< HEAD
 	.name = "cros-ec-dev",
-=======
-	.name = "cros-ec-ctl",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.platform_data = &pd_p,
 	.pdata_size = sizeof(pd_p),
 };
@@ -127,15 +119,9 @@ int cros_ec_register(struct cros_ec_device *ec_dev)
 	}
 
 	if (ec_dev->irq) {
-<<<<<<< HEAD
 		err = devm_request_threaded_irq(dev, ec_dev->irq, NULL,
 				ec_irq_thread, IRQF_TRIGGER_LOW | IRQF_ONESHOT,
 				"chromeos-ec", ec_dev);
-=======
-		err = request_threaded_irq(ec_dev->irq, NULL, ec_irq_thread,
-					   IRQF_TRIGGER_LOW | IRQF_ONESHOT,
-					   "chromeos-ec", ec_dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (err) {
 			dev_err(dev, "Failed to request IRQ %d: %d",
 				ec_dev->irq, err);
@@ -149,11 +135,7 @@ int cros_ec_register(struct cros_ec_device *ec_dev)
 		dev_err(dev,
 			"Failed to register Embedded Controller subdevice %d\n",
 			err);
-<<<<<<< HEAD
 		return err;
-=======
-		goto fail_mfd;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (ec_dev->max_passthru) {
@@ -171,11 +153,7 @@ int cros_ec_register(struct cros_ec_device *ec_dev)
 			dev_err(dev,
 				"Failed to register Power Delivery subdevice %d\n",
 				err);
-<<<<<<< HEAD
 			return err;
-=======
-			goto fail_mfd;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -184,11 +162,7 @@ int cros_ec_register(struct cros_ec_device *ec_dev)
 		if (err) {
 			mfd_remove_devices(dev);
 			dev_err(dev, "Failed to register sub-devices\n");
-<<<<<<< HEAD
 			return err;
-=======
-			goto fail_mfd;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -203,18 +177,7 @@ int cros_ec_register(struct cros_ec_device *ec_dev)
 
 	dev_info(dev, "Chrome EC device registered\n");
 
-<<<<<<< HEAD
 	return 0;
-=======
-	cros_ec_acpi_install_gpe_handler(dev);
-
-	return 0;
-
-fail_mfd:
-	if (ec_dev->irq)
-		free_irq(ec_dev->irq, ec_dev);
-	return err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(cros_ec_register);
 
@@ -222,14 +185,6 @@ int cros_ec_remove(struct cros_ec_device *ec_dev)
 {
 	mfd_remove_devices(ec_dev->dev);
 
-<<<<<<< HEAD
-=======
-	cros_ec_acpi_remove_gpe_handler();
-
-	if (ec_dev->irq)
-		free_irq(ec_dev->irq, ec_dev);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 EXPORT_SYMBOL(cros_ec_remove);
@@ -241,20 +196,9 @@ int cros_ec_suspend(struct cros_ec_device *ec_dev)
 	int ret;
 	u8 sleep_event;
 
-<<<<<<< HEAD
 	sleep_event = (!IS_ENABLED(CONFIG_ACPI) || pm_suspend_via_firmware()) ?
 		      HOST_SLEEP_EVENT_S3_SUSPEND :
 		      HOST_SLEEP_EVENT_S0IX_SUSPEND;
-=======
-	if (!IS_ENABLED(CONFIG_ACPI) || pm_suspend_via_firmware()) {
-		sleep_event = HOST_SLEEP_EVENT_S3_SUSPEND;
-	} else {
-		sleep_event = HOST_SLEEP_EVENT_S0IX_SUSPEND;
-
-		/* Clearing the GPE status for any pending event */
-		cros_ec_acpi_clear_gpe();
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = cros_ec_sleep_event(ec_dev, sleep_event);
 	if (ret < 0)
@@ -272,11 +216,7 @@ int cros_ec_suspend(struct cros_ec_device *ec_dev)
 }
 EXPORT_SYMBOL(cros_ec_suspend);
 
-<<<<<<< HEAD
 static void cros_ec_report_events_during_suspend(struct cros_ec_device *ec_dev)
-=======
-static void cros_ec_drain_events(struct cros_ec_device *ec_dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	while (cros_ec_get_next_event(ec_dev, NULL) > 0)
 		blocking_notifier_call_chain(&ec_dev->event_notifier,
@@ -300,7 +240,6 @@ int cros_ec_resume(struct cros_ec_device *ec_dev)
 		dev_dbg(ec_dev->dev, "Error %d sending resume event to ec",
 			ret);
 
-<<<<<<< HEAD
 	if (ec_dev->wake_enabled) {
 		disable_irq_wake(ec_dev->irq);
 		ec_dev->wake_enabled = 0;
@@ -311,23 +250,6 @@ int cros_ec_resume(struct cros_ec_device *ec_dev)
 	 */
 	cros_ec_report_events_during_suspend(ec_dev);
 
-=======
-	/*
-	 * In some cases, we need to distinguish between events that occur
-	 * during suspend if the EC is not a wake source. For example,
-	 * keypresses during suspend should be discarded if it does not wake
-	 * the system.
-	 *
-	 * If the EC is not a wake source, drain the event queue and mark them
-	 * as "queued during suspend".
-	 */
-	if (ec_dev->wake_enabled) {
-		disable_irq_wake(ec_dev->irq);
-		ec_dev->wake_enabled = 0;
-	} else {
-		cros_ec_drain_events(ec_dev);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

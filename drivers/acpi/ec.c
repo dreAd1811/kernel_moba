@@ -1059,7 +1059,6 @@ void acpi_ec_unblock_transactions(void)
 		acpi_ec_start(first_ec, true);
 }
 
-<<<<<<< HEAD
 void acpi_ec_mark_gpe_for_wake(void)
 {
 	if (first_ec && !ec_no_wakeup)
@@ -1078,8 +1077,6 @@ void acpi_ec_dispatch_gpe(void)
 		acpi_dispatch_gpe(NULL, first_ec->gpe);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* --------------------------------------------------------------------------
                                 Event Management
    -------------------------------------------------------------------------- */
@@ -2113,7 +2110,6 @@ static const struct dmi_system_id acpi_ec_no_wakeup[] = {
 			DMI_MATCH(DMI_PRODUCT_FAMILY, "Thinkpad X1 Carbon 6th"),
 		},
 	},
-<<<<<<< HEAD
 	{
 		.ident = "ThinkPad X1 Carbon 6th",
 		.matches = {
@@ -2128,8 +2124,6 @@ static const struct dmi_system_id acpi_ec_no_wakeup[] = {
 			DMI_MATCH(DMI_PRODUCT_FAMILY, "ThinkPad X1 Yoga 3rd"),
 		},
 	},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ },
 };
 

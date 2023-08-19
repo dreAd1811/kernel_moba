@@ -21,13 +21,10 @@
 #define MBOX_DATA28(msg)		((msg) & ~0xf)
 #define MBOX_CHAN_PROPERTY		8
 
-<<<<<<< HEAD
 #define MAX_RPI_FW_PROP_BUF_SIZE	32
 
 static struct platform_device *rpi_hwmon;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct rpi_firmware {
 	struct mbox_client cl;
 	struct mbox_chan *chan; /* The property channel. */
@@ -150,33 +147,22 @@ int rpi_firmware_property(struct rpi_firmware *fw,
 	/* Single tags are very small (generally 8 bytes), so the
 	 * stack should be safe.
 	 */
-<<<<<<< HEAD
 	u8 data[sizeof(struct rpi_firmware_property_tag_header) +
 		MAX_RPI_FW_PROP_BUF_SIZE];
-=======
-	u8 data[buf_size + sizeof(struct rpi_firmware_property_tag_header)];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct rpi_firmware_property_tag_header *header =
 		(struct rpi_firmware_property_tag_header *)data;
 	int ret;
 
-<<<<<<< HEAD
 	if (WARN_ON(buf_size > sizeof(data) - sizeof(*header)))
 		return -EINVAL;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	header->tag = tag;
 	header->buf_size = buf_size;
 	header->req_resp_size = 0;
 	memcpy(data + sizeof(struct rpi_firmware_property_tag_header),
 	       tag_data, buf_size);
 
-<<<<<<< HEAD
 	ret = rpi_firmware_property_list(fw, &data, buf_size + sizeof(*header));
-=======
-	ret = rpi_firmware_property_list(fw, &data, sizeof(data));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memcpy(tag_data,
 	       data + sizeof(struct rpi_firmware_property_tag_header),
 	       buf_size);
@@ -196,11 +182,7 @@ rpi_firmware_print_firmware_revision(struct rpi_firmware *fw)
 	if (ret == 0) {
 		struct tm tm;
 
-<<<<<<< HEAD
 		time64_to_tm(packet, 0, &tm);
-=======
-		time_to_tm(packet, 0, &tm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		dev_info(fw->cl.dev,
 			 "Attached to firmware from %04ld-%02d-%02d %02d:%02d\n",
@@ -209,7 +191,6 @@ rpi_firmware_print_firmware_revision(struct rpi_firmware *fw)
 	}
 }
 
-<<<<<<< HEAD
 static void
 rpi_register_hwmon_driver(struct device *dev, struct rpi_firmware *fw)
 {
@@ -224,8 +205,6 @@ rpi_register_hwmon_driver(struct device *dev, struct rpi_firmware *fw)
 						  -1, NULL, 0);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int rpi_firmware_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
@@ -252,10 +231,7 @@ static int rpi_firmware_probe(struct platform_device *pdev)
 	platform_set_drvdata(pdev, fw);
 
 	rpi_firmware_print_firmware_revision(fw);
-<<<<<<< HEAD
 	rpi_register_hwmon_driver(dev, fw);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -264,11 +240,8 @@ static int rpi_firmware_remove(struct platform_device *pdev)
 {
 	struct rpi_firmware *fw = platform_get_drvdata(pdev);
 
-<<<<<<< HEAD
 	platform_device_unregister(rpi_hwmon);
 	rpi_hwmon = NULL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mbox_free_channel(fw->chan);
 
 	return 0;

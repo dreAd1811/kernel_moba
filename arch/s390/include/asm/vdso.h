@@ -46,13 +46,9 @@ struct vdso_per_cpu_data {
 };
 
 extern struct vdso_data *vdso_data;
-<<<<<<< HEAD
 extern struct vdso_data boot_vdso_data;
 
 void vdso_alloc_boot_cpu(struct lowcore *lowcore);
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int vdso_alloc_per_cpu(struct lowcore *lowcore);
 void vdso_free_per_cpu(struct lowcore *lowcore);
 

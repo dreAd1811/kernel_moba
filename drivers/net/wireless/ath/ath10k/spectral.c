@@ -145,11 +145,7 @@ int ath10k_spectral_process_fft(struct ath10k *ar,
 	fft_sample->noise = __cpu_to_be16(phyerr->nf_chains[chain_idx]);
 
 	bins = (u8 *)fftr;
-<<<<<<< HEAD
 	bins += sizeof(*fftr) + ar->hw_params.spectral_bin_offset;
-=======
-	bins += sizeof(*fftr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	fft_sample->tsf = __cpu_to_be64(tsf);
 
@@ -410,11 +406,7 @@ static ssize_t write_file_spectral_count(struct file *file,
 	if (kstrtoul(buf, 0, &val))
 		return -EINVAL;
 
-<<<<<<< HEAD
 	if (val > 255)
-=======
-	if (val < 0 || val > 255)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	mutex_lock(&ar->conf_mutex);

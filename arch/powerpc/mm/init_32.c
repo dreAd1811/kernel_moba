@@ -88,25 +88,13 @@ void MMU_init(void);
 int __map_without_bats;
 int __map_without_ltlbs;
 
-<<<<<<< HEAD
-=======
-/*
- * This tells the system to allow ioremapping memory marked as reserved.
- */
-int __allow_ioremap_reserved;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* max amount of low RAM to map in */
 unsigned long __max_low_memory = MAX_LOW_MEM;
 
 /*
  * Check for command-line options that affect what MMU_init will do.
  */
-<<<<<<< HEAD
 static void __init MMU_setup(void)
-=======
-void __init MMU_setup(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* Check for nobats option (used in mapin_ram). */
 	if (strstr(boot_command_line, "nobats")) {

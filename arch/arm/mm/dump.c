@@ -21,27 +21,10 @@
 #include <asm/fixmap.h>
 #include <asm/memory.h>
 #include <asm/pgtable.h>
-<<<<<<< HEAD
 #include <asm/ptdump.h>
 
 static struct addr_marker address_markers[] = {
 	{ MODULES_VADDR,	"Modules" },
-=======
-#include <asm/highmem.h>
-
-struct addr_marker {
-	unsigned long start_address;
-	const char *name;
-};
-
-static struct addr_marker address_markers[] = {
-#ifndef CONFIG_MODULES_USE_VMALLOC
-	{ MODULES_VADDR,	"Modules" },
-#endif
-#ifdef CONFIG_HIGHMEM
-	{ PKMAP_BASE,		"Page kmap" },
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ PAGE_OFFSET,		"Kernel Mapping" },
 	{ 0,			"vmalloc() Area" },
 	{ VMALLOC_END,		"vmalloc() End" },
@@ -51,7 +34,6 @@ static struct addr_marker address_markers[] = {
 	{ -1,			NULL },
 };
 
-<<<<<<< HEAD
 #define pt_dump_seq_printf(m, fmt, args...) \
 ({                      \
 	if (m)					\
@@ -64,19 +46,14 @@ static struct addr_marker address_markers[] = {
 		seq_printf(m, fmt);	\
 })
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct pg_state {
 	struct seq_file *seq;
 	const struct addr_marker *marker;
 	unsigned long start_address;
 	unsigned level;
 	u64 current_prot;
-<<<<<<< HEAD
 	bool check_wx;
 	unsigned long wx_pages;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const char *current_domain;
 };
 
@@ -85,11 +62,8 @@ struct prot_bits {
 	u64		val;
 	const char	*set;
 	const char	*clear;
-<<<<<<< HEAD
 	bool		ro_bit;
 	bool		nx_bit;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct prot_bits pte_bits[] = {
@@ -103,19 +77,13 @@ static const struct prot_bits pte_bits[] = {
 		.val	= L_PTE_RDONLY,
 		.set	= "ro",
 		.clear	= "RW",
-<<<<<<< HEAD
 		.ro_bit	= true,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}, {
 		.mask	= L_PTE_XN,
 		.val	= L_PTE_XN,
 		.set	= "NX",
 		.clear	= "x ",
-<<<<<<< HEAD
 		.nx_bit	= true,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}, {
 		.mask	= L_PTE_SHARED,
 		.val	= L_PTE_SHARED,
@@ -179,19 +147,13 @@ static const struct prot_bits section_bits[] = {
 		.val	= L_PMD_SECT_RDONLY | PMD_SECT_AP2,
 		.set	= "ro",
 		.clear	= "RW",
-<<<<<<< HEAD
 		.ro_bit	= true,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #elif __LINUX_ARM_ARCH__ >= 6
 	{
 		.mask	= PMD_SECT_APX | PMD_SECT_AP_READ | PMD_SECT_AP_WRITE,
 		.val	= PMD_SECT_APX | PMD_SECT_AP_WRITE,
 		.set	= "    ro",
-<<<<<<< HEAD
 		.ro_bit	= true,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}, {
 		.mask	= PMD_SECT_APX | PMD_SECT_AP_READ | PMD_SECT_AP_WRITE,
 		.val	= PMD_SECT_AP_WRITE,
@@ -210,10 +172,7 @@ static const struct prot_bits section_bits[] = {
 		.mask   = PMD_SECT_AP_READ | PMD_SECT_AP_WRITE,
 		.val    = 0,
 		.set    = "    ro",
-<<<<<<< HEAD
 		.ro_bit	= true,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}, {
 		.mask   = PMD_SECT_AP_READ | PMD_SECT_AP_WRITE,
 		.val    = PMD_SECT_AP_WRITE,
@@ -232,10 +191,7 @@ static const struct prot_bits section_bits[] = {
 		.val	= PMD_SECT_XN,
 		.set	= "NX",
 		.clear	= "x ",
-<<<<<<< HEAD
 		.nx_bit	= true,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}, {
 		.mask	= PMD_SECT_S,
 		.val	= PMD_SECT_S,
@@ -248,11 +204,8 @@ struct pg_level {
 	const struct prot_bits *bits;
 	size_t num;
 	u64 mask;
-<<<<<<< HEAD
 	const struct prot_bits *ro_bit;
 	const struct prot_bits *nx_bit;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct pg_level pg_level[] = {
@@ -281,7 +234,6 @@ static void dump_prot(struct pg_state *st, const struct prot_bits *bits, size_t 
 			s = bits->clear;
 
 		if (s)
-<<<<<<< HEAD
 			pt_dump_seq_printf(st->seq, " %s", s);
 	}
 }
@@ -303,12 +255,6 @@ static void note_prot_wx(struct pg_state *st, unsigned long addr)
 	st->wx_pages += (addr - st->start_address) / PAGE_SIZE;
 }
 
-=======
-			seq_printf(st->seq, " %s", s);
-	}
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void note_page(struct pg_state *st, unsigned long addr,
 		      unsigned int level, u64 val, const char *domain)
 {
@@ -319,11 +265,7 @@ static void note_page(struct pg_state *st, unsigned long addr,
 		st->level = level;
 		st->current_prot = prot;
 		st->current_domain = domain;
-<<<<<<< HEAD
 		pt_dump_seq_printf(st->seq, "---[ %s ]---\n", st->marker->name);
-=======
-		seq_printf(st->seq, "---[ %s ]---\n", st->marker->name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (prot != st->current_prot || level != st->level ||
 		   domain != st->current_domain ||
 		   addr >= st->marker[1].start_address) {
@@ -331,12 +273,8 @@ static void note_page(struct pg_state *st, unsigned long addr,
 		unsigned long delta;
 
 		if (st->current_prot) {
-<<<<<<< HEAD
 			note_prot_wx(st, addr);
 			pt_dump_seq_printf(st->seq, "0x%08lx-0x%08lx   ",
-=======
-			seq_printf(st->seq, "0x%08lx-0x%08lx   ",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   st->start_address, addr);
 
 			delta = (addr - st->start_address) >> 10;
@@ -344,7 +282,6 @@ static void note_page(struct pg_state *st, unsigned long addr,
 				delta >>= 10;
 				unit++;
 			}
-<<<<<<< HEAD
 			pt_dump_seq_printf(st->seq, "%9lu%c", delta, *unit);
 			if (st->current_domain)
 				pt_dump_seq_printf(st->seq, " %s",
@@ -352,24 +289,12 @@ static void note_page(struct pg_state *st, unsigned long addr,
 			if (pg_level[st->level].bits)
 				dump_prot(st, pg_level[st->level].bits, pg_level[st->level].num);
 			pt_dump_seq_printf(st->seq, "\n");
-=======
-			seq_printf(st->seq, "%9lu%c", delta, *unit);
-			if (st->current_domain)
-				seq_printf(st->seq, " %s", st->current_domain);
-			if (pg_level[st->level].bits)
-				dump_prot(st, pg_level[st->level].bits, pg_level[st->level].num);
-			seq_printf(st->seq, "\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		if (addr >= st->marker[1].start_address) {
 			st->marker++;
-<<<<<<< HEAD
 			pt_dump_seq_printf(st->seq, "---[ %s ]---\n",
 							st->marker->name);
-=======
-			seq_printf(st->seq, "---[ %s ]---\n", st->marker->name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		st->start_address = addr;
 		st->current_prot = prot;
@@ -450,7 +375,6 @@ static void walk_pud(struct pg_state *st, pgd_t *pgd, unsigned long start)
 	}
 }
 
-<<<<<<< HEAD
 static void walk_pgd(struct pg_state *st, struct mm_struct *mm,
 			unsigned long start)
 {
@@ -482,57 +406,10 @@ void ptdump_walk_pgd(struct seq_file *m, struct ptdump_info *info)
 
 static void ptdump_initialize(void)
 {
-=======
-static void walk_pgd(struct seq_file *m)
-{
-	pgd_t *pgd = swapper_pg_dir;
-	struct pg_state st;
-	unsigned long addr;
-	unsigned i;
-
-	memset(&st, 0, sizeof(st));
-	st.seq = m;
-	st.marker = address_markers;
-
-	for (i = 0; i < PTRS_PER_PGD; i++, pgd++) {
-		addr = i * PGDIR_SIZE;
-		if (!pgd_none(*pgd)) {
-			walk_pud(&st, pgd, addr);
-		} else {
-			note_page(&st, addr, 1, pgd_val(*pgd), NULL);
-		}
-	}
-
-	note_page(&st, 0, 0, 0, NULL);
-}
-
-static int ptdump_show(struct seq_file *m, void *v)
-{
-	walk_pgd(m);
-	return 0;
-}
-
-static int ptdump_open(struct inode *inode, struct file *file)
-{
-	return single_open(file, ptdump_show, NULL);
-}
-
-static const struct file_operations ptdump_fops = {
-	.open		= ptdump_open,
-	.read		= seq_read,
-	.llseek		= seq_lseek,
-	.release	= single_release,
-};
-
-static int ptdump_init(void)
-{
-	struct dentry *pe;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned i, j;
 
 	for (i = 0; i < ARRAY_SIZE(pg_level); i++)
 		if (pg_level[i].bits)
-<<<<<<< HEAD
 			for (j = 0; j < pg_level[i].num; j++) {
 				pg_level[i].mask |= pg_level[i].bits[j].mask;
 				if (pg_level[i].bits[j].ro_bit)
@@ -575,17 +452,5 @@ static int ptdump_init(void)
 	ptdump_initialize();
 	return ptdump_debugfs_register(&kernel_ptdump_info,
 					"kernel_page_tables");
-=======
-			for (j = 0; j < pg_level[i].num; j++)
-				pg_level[i].mask |= pg_level[i].bits[j].mask;
-
-	i = 1 + !IS_ENABLED(CONFIG_MODULES_USE_VMALLOC) +
-		!!IS_ENABLED(CONFIG_HIGHMEM);
-	address_markers[i].start_address = VMALLOC_START;
-
-	pe = debugfs_create_file("kernel_page_tables", 0400, NULL, NULL,
-				 &ptdump_fops);
-	return pe ? 0 : -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 __initcall(ptdump_init);

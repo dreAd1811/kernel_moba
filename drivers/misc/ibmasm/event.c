@@ -155,11 +155,7 @@ int ibmasm_event_buffer_init(struct service_processor *sp)
 
 	buffer = kmalloc(sizeof(struct event_buffer), GFP_KERNEL);
 	if (!buffer)
-<<<<<<< HEAD
 		return -ENOMEM;
-=======
-		return 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	buffer->next_index = 0;
 	buffer->next_serial_number = 1;

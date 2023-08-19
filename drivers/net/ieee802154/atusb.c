@@ -21,12 +21,9 @@
  *
  * USB initialization is
  * Copyright (c) 2013 Alexander Aring <alex.aring@gmail.com>
-<<<<<<< HEAD
  *
  * Busware HUL support is
  * Copyright (c) 2017 Josef Filzmaier <j.filzmaier@gmx.at>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/kernel.h>
@@ -51,10 +48,7 @@
 struct atusb {
 	struct ieee802154_hw *hw;
 	struct usb_device *usb_dev;
-<<<<<<< HEAD
 	struct atusb_chip_data *data;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int shutdown;			/* non-zero if shutting down */
 	int err;			/* set by first error */
 
@@ -67,11 +61,7 @@ struct atusb {
 	struct usb_ctrlrequest tx_dr;
 	struct urb *tx_urb;
 	struct sk_buff *tx_skb;
-<<<<<<< HEAD
 	u8 tx_ack_seq;		/* current TX ACK sequence number */
-=======
-	uint8_t tx_ack_seq;		/* current TX ACK sequence number */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Firmware variable */
 	unsigned char fw_ver_maj;	/* Firmware major version number */
@@ -79,7 +69,6 @@ struct atusb {
 	unsigned char fw_hw_type;	/* Firmware hardware type */
 };
 
-<<<<<<< HEAD
 struct atusb_chip_data {
 	u16 t_channel_switch;
 	int rssi_base_val;
@@ -88,8 +77,6 @@ struct atusb_chip_data {
 	int (*set_txpower)(struct ieee802154_hw*, s32);
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* ----- USB commands without data ----------------------------------------- */
 
 /* To reduce the number of error checks in the code, we record the first error
@@ -112,78 +99,43 @@ static int atusb_control_msg(struct atusb *atusb, unsigned int pipe,
 	if (ret < 0) {
 		atusb->err = ret;
 		dev_err(&usb_dev->dev,
-<<<<<<< HEAD
 			"%s: req 0x%02x val 0x%x idx 0x%x, error %d\n",
 			__func__, request, value, index, ret);
-=======
-			"atusb_control_msg: req 0x%02x val 0x%x idx 0x%x, error %d\n",
-			request, value, index, ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return ret;
 }
 
-<<<<<<< HEAD
 static int atusb_command(struct atusb *atusb, u8 cmd, u8 arg)
 {
 	struct usb_device *usb_dev = atusb->usb_dev;
 
 	dev_dbg(&usb_dev->dev, "%s: cmd = 0x%x\n", __func__, cmd);
-=======
-static int atusb_command(struct atusb *atusb, uint8_t cmd, uint8_t arg)
-{
-	struct usb_device *usb_dev = atusb->usb_dev;
-
-	dev_dbg(&usb_dev->dev, "atusb_command: cmd = 0x%x\n", cmd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return atusb_control_msg(atusb, usb_sndctrlpipe(usb_dev, 0),
 				 cmd, ATUSB_REQ_TO_DEV, arg, 0, NULL, 0, 1000);
 }
 
-<<<<<<< HEAD
 static int atusb_write_reg(struct atusb *atusb, u8 reg, u8 value)
 {
 	struct usb_device *usb_dev = atusb->usb_dev;
 
 	dev_dbg(&usb_dev->dev, "%s: 0x%02x <- 0x%02x\n", __func__, reg, value);
-=======
-static int atusb_write_reg(struct atusb *atusb, uint8_t reg, uint8_t value)
-{
-	struct usb_device *usb_dev = atusb->usb_dev;
-
-	dev_dbg(&usb_dev->dev, "atusb_write_reg: 0x%02x <- 0x%02x\n",
-		reg, value);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return atusb_control_msg(atusb, usb_sndctrlpipe(usb_dev, 0),
 				 ATUSB_REG_WRITE, ATUSB_REQ_TO_DEV,
 				 value, reg, NULL, 0, 1000);
 }
 
-<<<<<<< HEAD
 static int atusb_read_reg(struct atusb *atusb, u8 reg)
 {
 	struct usb_device *usb_dev = atusb->usb_dev;
 	int ret;
 	u8 *buffer;
 	u8 value;
-=======
-static int atusb_read_reg(struct atusb *atusb, uint8_t reg)
-{
-	struct usb_device *usb_dev = atusb->usb_dev;
-	int ret;
-	uint8_t *buffer;
-	uint8_t value;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	buffer = kmalloc(1, GFP_KERNEL);
 	if (!buffer)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	dev_dbg(&usb_dev->dev, "%s: reg = 0x%x\n", __func__, reg);
-=======
-	dev_dbg(&usb_dev->dev, "atusb: reg = 0x%x\n", reg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = atusb_control_msg(atusb, usb_rcvctrlpipe(usb_dev, 0),
 				ATUSB_REG_READ, ATUSB_REQ_FROM_DEV,
 				0, reg, buffer, 1, 1000);
@@ -198,7 +150,6 @@ static int atusb_read_reg(struct atusb *atusb, uint8_t reg)
 	}
 }
 
-<<<<<<< HEAD
 static int atusb_write_subreg(struct atusb *atusb, u8 reg, u8 mask,
 			      u8 shift, u8 value)
 {
@@ -207,17 +158,6 @@ static int atusb_write_subreg(struct atusb *atusb, u8 reg, u8 mask,
 	int ret = 0;
 
 	dev_dbg(&usb_dev->dev, "%s: 0x%02x <- 0x%02x\n", __func__, reg, value);
-=======
-static int atusb_write_subreg(struct atusb *atusb, uint8_t reg, uint8_t mask,
-			      uint8_t shift, uint8_t value)
-{
-	struct usb_device *usb_dev = atusb->usb_dev;
-	uint8_t orig, tmp;
-	int ret = 0;
-
-	dev_dbg(&usb_dev->dev, "atusb_write_subreg: 0x%02x <- 0x%02x\n",
-		reg, value);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	orig = atusb_read_reg(atusb, reg);
 
@@ -233,7 +173,6 @@ static int atusb_write_subreg(struct atusb *atusb, uint8_t reg, uint8_t mask,
 	return ret;
 }
 
-<<<<<<< HEAD
 static int atusb_read_subreg(struct atusb *lp,
 			     unsigned int addr, unsigned int mask,
 			     unsigned int shift)
@@ -246,8 +185,6 @@ static int atusb_read_subreg(struct atusb *lp,
 	return rc;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int atusb_get_and_clear_error(struct atusb *atusb)
 {
 	int err = atusb->err;
@@ -322,21 +259,12 @@ static void atusb_work_urbs(struct work_struct *work)
 
 /* ----- Asynchronous USB -------------------------------------------------- */
 
-<<<<<<< HEAD
 static void atusb_tx_done(struct atusb *atusb, u8 seq)
 {
 	struct usb_device *usb_dev = atusb->usb_dev;
 	u8 expect = atusb->tx_ack_seq;
 
 	dev_dbg(&usb_dev->dev, "%s (0x%02x/0x%02x)\n", __func__, seq, expect);
-=======
-static void atusb_tx_done(struct atusb *atusb, uint8_t seq)
-{
-	struct usb_device *usb_dev = atusb->usb_dev;
-	uint8_t expect = atusb->tx_ack_seq;
-
-	dev_dbg(&usb_dev->dev, "atusb_tx_done (0x%02x/0x%02x)\n", seq, expect);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (seq == expect) {
 		/* TODO check for ifs handling in firmware */
 		ieee802154_xmit_complete(atusb->hw, atusb->tx_skb, false);
@@ -357,11 +285,7 @@ static void atusb_in_good(struct urb *urb)
 	struct usb_device *usb_dev = urb->dev;
 	struct sk_buff *skb = urb->context;
 	struct atusb *atusb = SKB_ATUSB(skb);
-<<<<<<< HEAD
 	u8 len, lqi;
-=======
-	uint8_t len, lqi;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!urb->actual_length) {
 		dev_dbg(&usb_dev->dev, "atusb_in: zero-sized URB ?\n");
@@ -400,11 +324,7 @@ static void atusb_in(struct urb *urb)
 	struct sk_buff *skb = urb->context;
 	struct atusb *atusb = SKB_ATUSB(skb);
 
-<<<<<<< HEAD
 	dev_dbg(&usb_dev->dev, "%s: status %d len %d\n", __func__,
-=======
-	dev_dbg(&usb_dev->dev, "atusb_in: status %d len %d\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		urb->status, urb->actual_length);
 	if (urb->status) {
 		if (urb->status == -ENOENT) { /* being killed */
@@ -412,11 +332,7 @@ static void atusb_in(struct urb *urb)
 			urb->context = NULL;
 			return;
 		}
-<<<<<<< HEAD
 		dev_dbg(&usb_dev->dev, "%s: URB error %d\n", __func__, urb->status);
-=======
-		dev_dbg(&usb_dev->dev, "atusb_in: URB error %d\n", urb->status);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		atusb_in_good(urb);
 	}
@@ -470,11 +386,7 @@ static int atusb_xmit(struct ieee802154_hw *hw, struct sk_buff *skb)
 	struct usb_device *usb_dev = atusb->usb_dev;
 	int ret;
 
-<<<<<<< HEAD
 	dev_dbg(&usb_dev->dev, "%s (%d)\n", __func__, skb->len);
-=======
-	dev_dbg(&usb_dev->dev, "atusb_xmit (%d)\n", skb->len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	atusb->tx_skb = skb;
 	atusb->tx_ack_seq++;
 	atusb->tx_dr.wIndex = cpu_to_le16(atusb->tx_ack_seq);
@@ -485,7 +397,6 @@ static int atusb_xmit(struct ieee802154_hw *hw, struct sk_buff *skb)
 			     (unsigned char *)&atusb->tx_dr, skb->data,
 			     skb->len, atusb_xmit_complete, NULL);
 	ret = usb_submit_urb(atusb->tx_urb, GFP_ATOMIC);
-<<<<<<< HEAD
 	dev_dbg(&usb_dev->dev, "%s done (%d)\n", __func__, ret);
 	return ret;
 }
@@ -493,27 +404,6 @@ static int atusb_xmit(struct ieee802154_hw *hw, struct sk_buff *skb)
 static int atusb_ed(struct ieee802154_hw *hw, u8 *level)
 {
 	WARN_ON(!level);
-=======
-	dev_dbg(&usb_dev->dev, "atusb_xmit done (%d)\n", ret);
-	return ret;
-}
-
-static int atusb_channel(struct ieee802154_hw *hw, u8 page, u8 channel)
-{
-	struct atusb *atusb = hw->priv;
-	int ret;
-
-	ret = atusb_write_subreg(atusb, SR_CHANNEL, channel);
-	if (ret < 0)
-		return ret;
-	msleep(1);	/* @@@ ugly synchronization */
-	return 0;
-}
-
-static int atusb_ed(struct ieee802154_hw *hw, u8 *level)
-{
-	BUG_ON(!level);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	*level = 0xbe;
 	return 0;
 }
@@ -528,11 +418,7 @@ static int atusb_set_hw_addr_filt(struct ieee802154_hw *hw,
 	if (changed & IEEE802154_AFILT_SADDR_CHANGED) {
 		u16 addr = le16_to_cpu(filt->short_addr);
 
-<<<<<<< HEAD
 		dev_vdbg(dev, "%s called for saddr\n", __func__);
-=======
-		dev_vdbg(dev, "atusb_set_hw_addr_filt called for saddr\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		atusb_write_reg(atusb, RG_SHORT_ADDR_0, addr);
 		atusb_write_reg(atusb, RG_SHORT_ADDR_1, addr >> 8);
 	}
@@ -540,11 +426,7 @@ static int atusb_set_hw_addr_filt(struct ieee802154_hw *hw,
 	if (changed & IEEE802154_AFILT_PANID_CHANGED) {
 		u16 pan = le16_to_cpu(filt->pan_id);
 
-<<<<<<< HEAD
 		dev_vdbg(dev, "%s called for pan id\n", __func__);
-=======
-		dev_vdbg(dev, "atusb_set_hw_addr_filt called for pan id\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		atusb_write_reg(atusb, RG_PAN_ID_0, pan);
 		atusb_write_reg(atusb, RG_PAN_ID_1, pan >> 8);
 	}
@@ -553,22 +435,13 @@ static int atusb_set_hw_addr_filt(struct ieee802154_hw *hw,
 		u8 i, addr[IEEE802154_EXTENDED_ADDR_LEN];
 
 		memcpy(addr, &filt->ieee_addr, IEEE802154_EXTENDED_ADDR_LEN);
-<<<<<<< HEAD
 		dev_vdbg(dev, "%s called for IEEE addr\n", __func__);
-=======
-		dev_vdbg(dev, "atusb_set_hw_addr_filt called for IEEE addr\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		for (i = 0; i < 8; i++)
 			atusb_write_reg(atusb, RG_IEEE_ADDR_0 + i, addr[i]);
 	}
 
 	if (changed & IEEE802154_AFILT_PANC_CHANGED) {
-<<<<<<< HEAD
 		dev_vdbg(dev, "%s called for panc change\n", __func__);
-=======
-		dev_vdbg(dev,
-			 "atusb_set_hw_addr_filt called for panc change\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (filt->pan_coord)
 			atusb_write_subreg(atusb, SR_AACK_I_AM_COORD, 1);
 		else
@@ -584,11 +457,7 @@ static int atusb_start(struct ieee802154_hw *hw)
 	struct usb_device *usb_dev = atusb->usb_dev;
 	int ret;
 
-<<<<<<< HEAD
 	dev_dbg(&usb_dev->dev, "%s\n", __func__);
-=======
-	dev_dbg(&usb_dev->dev, "atusb_start\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	schedule_delayed_work(&atusb->work, 0);
 	atusb_command(atusb, ATUSB_RX_MODE, 1);
 	ret = atusb_get_and_clear_error(atusb);
@@ -602,11 +471,7 @@ static void atusb_stop(struct ieee802154_hw *hw)
 	struct atusb *atusb = hw->priv;
 	struct usb_device *usb_dev = atusb->usb_dev;
 
-<<<<<<< HEAD
 	dev_dbg(&usb_dev->dev, "%s\n", __func__);
-=======
-	dev_dbg(&usb_dev->dev, "atusb_stop\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	usb_kill_anchored_urbs(&atusb->idle_urbs);
 	atusb_command(atusb, ATUSB_RX_MODE, 0);
 	atusb_get_and_clear_error(atusb);
@@ -619,7 +484,6 @@ static const s32 atusb_powers[ATUSB_MAX_TX_POWERS + 1] = {
 };
 
 static int
-<<<<<<< HEAD
 atusb_txpower(struct ieee802154_hw *hw, s32 mbm)
 {
 	struct atusb *atusb = hw->priv;
@@ -631,8 +495,6 @@ atusb_txpower(struct ieee802154_hw *hw, s32 mbm)
 }
 
 static int
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 atusb_set_txpower(struct ieee802154_hw *hw, s32 mbm)
 {
 	struct atusb *atusb = hw->priv;
@@ -646,7 +508,6 @@ atusb_set_txpower(struct ieee802154_hw *hw, s32 mbm)
 	return -EINVAL;
 }
 
-<<<<<<< HEAD
 static int
 hulusb_set_txpower(struct ieee802154_hw *hw, s32 mbm)
 {
@@ -660,15 +521,12 @@ hulusb_set_txpower(struct ieee802154_hw *hw, s32 mbm)
 	return -EINVAL;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ATUSB_MAX_ED_LEVELS 0xF
 static const s32 atusb_ed_levels[ATUSB_MAX_ED_LEVELS + 1] = {
 	-9100, -8900, -8700, -8500, -8300, -8100, -7900, -7700, -7500, -7300,
 	-7100, -6900, -6700, -6500, -6300, -6100,
 };
 
-<<<<<<< HEAD
 #define AT86RF212_MAX_TX_POWERS 0x1F
 static const s32 at86rf212_powers[AT86RF212_MAX_TX_POWERS + 1] = {
 	500, 400, 300, 200, 100, 0, -100, -200, -300, -400, -500, -600, -700,
@@ -687,8 +545,6 @@ static const s32 at86rf212_ed_levels_98[AT86RF2XX_MAX_ED_LEVELS + 1] = {
 	-7800, -7600, -7400, -7200, -7000, -6800,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int
 atusb_set_cca_mode(struct ieee802154_hw *hw, const struct wpan_phy_cca *cca)
 {
@@ -722,7 +578,6 @@ atusb_set_cca_mode(struct ieee802154_hw *hw, const struct wpan_phy_cca *cca)
 	return atusb_write_subreg(atusb, SR_CCA_MODE, val);
 }
 
-<<<<<<< HEAD
 static int hulusb_set_cca_ed_level(struct atusb *lp, int rssi_base_val)
 {
 	unsigned int cca_ed_thres;
@@ -747,8 +602,6 @@ static int hulusb_set_cca_ed_level(struct atusb *lp, int rssi_base_val)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int
 atusb_set_cca_ed_level(struct ieee802154_hw *hw, s32 mbm)
 {
@@ -763,7 +616,6 @@ atusb_set_cca_ed_level(struct ieee802154_hw *hw, s32 mbm)
 	return -EINVAL;
 }
 
-<<<<<<< HEAD
 static int atusb_channel(struct ieee802154_hw *hw, u8 page, u8 channel)
 {
 	struct atusb *atusb = hw->priv;
@@ -850,8 +702,6 @@ static int hulusb_set_channel(struct ieee802154_hw *hw, u8 page, u8 channel)
 	return atusb_write_subreg(lp, SR_CHANNEL, channel);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int
 atusb_set_csma_params(struct ieee802154_hw *hw, u8 min_be, u8 max_be, u8 retries)
 {
@@ -870,7 +720,6 @@ atusb_set_csma_params(struct ieee802154_hw *hw, u8 min_be, u8 max_be, u8 retries
 }
 
 static int
-<<<<<<< HEAD
 hulusb_set_lbt(struct ieee802154_hw *hw, bool on)
 {
 	struct atusb *atusb = hw->priv;
@@ -879,8 +728,6 @@ hulusb_set_lbt(struct ieee802154_hw *hw, bool on)
 }
 
 static int
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 atusb_set_frame_retries(struct ieee802154_hw *hw, s8 retries)
 {
 	struct atusb *atusb = hw->priv;
@@ -915,7 +762,6 @@ atusb_set_promiscuous_mode(struct ieee802154_hw *hw, const bool on)
 	return 0;
 }
 
-<<<<<<< HEAD
 static struct atusb_chip_data atusb_chip_data = {
 	.t_channel_switch = 1,
 	.rssi_base_val = -91,
@@ -930,8 +776,6 @@ static struct atusb_chip_data hulusb_chip_data = {
 	.set_channel = hulusb_set_channel,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct ieee802154_ops atusb_ops = {
 	.owner			= THIS_MODULE,
 	.xmit_async		= atusb_xmit,
@@ -940,12 +784,8 @@ static const struct ieee802154_ops atusb_ops = {
 	.start			= atusb_start,
 	.stop			= atusb_stop,
 	.set_hw_addr_filt	= atusb_set_hw_addr_filt,
-<<<<<<< HEAD
 	.set_txpower		= atusb_txpower,
 	.set_lbt		= hulusb_set_lbt,
-=======
-	.set_txpower		= atusb_set_txpower,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.set_cca_mode		= atusb_set_cca_mode,
 	.set_cca_ed_level	= atusb_set_cca_ed_level,
 	.set_csma_params	= atusb_set_csma_params,
@@ -958,10 +798,7 @@ static const struct ieee802154_ops atusb_ops = {
 static int atusb_get_and_show_revision(struct atusb *atusb)
 {
 	struct usb_device *usb_dev = atusb->usb_dev;
-<<<<<<< HEAD
 	char *hw_name;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned char *buffer;
 	int ret;
 
@@ -978,7 +815,6 @@ static int atusb_get_and_show_revision(struct atusb *atusb)
 		atusb->fw_ver_min = buffer[1];
 		atusb->fw_hw_type = buffer[2];
 
-<<<<<<< HEAD
 		switch (atusb->fw_hw_type) {
 		case ATUSB_HW_TYPE_100813:
 		case ATUSB_HW_TYPE_101216:
@@ -1005,11 +841,6 @@ static int atusb_get_and_show_revision(struct atusb *atusb)
 			 "Firmware: major: %u, minor: %u, hardware type: %s (%d)\n",
 			 atusb->fw_ver_maj, atusb->fw_ver_min, hw_name,
 			 atusb->fw_hw_type);
-=======
-		dev_info(&usb_dev->dev,
-			 "Firmware: major: %u, minor: %u, hardware type: %u\n",
-			 atusb->fw_ver_maj, atusb->fw_ver_min, atusb->fw_hw_type);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	if (atusb->fw_ver_maj == 0 && atusb->fw_ver_min < 2) {
 		dev_info(&usb_dev->dev,
@@ -1044,20 +875,12 @@ static int atusb_get_and_show_build(struct atusb *atusb)
 	return ret;
 }
 
-<<<<<<< HEAD
 static int atusb_get_and_conf_chip(struct atusb *atusb)
 {
 	struct usb_device *usb_dev = atusb->usb_dev;
 	u8 man_id_0, man_id_1, part_num, version_num;
 	const char *chip;
 	struct ieee802154_hw *hw = atusb->hw;
-=======
-static int atusb_get_and_show_chip(struct atusb *atusb)
-{
-	struct usb_device *usb_dev = atusb->usb_dev;
-	uint8_t man_id_0, man_id_1, part_num, version_num;
-	const char *chip;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	man_id_0 = atusb_read_reg(atusb, RG_MAN_ID_0);
 	man_id_1 = atusb_read_reg(atusb, RG_MAN_ID_1);
@@ -1067,7 +890,6 @@ static int atusb_get_and_show_chip(struct atusb *atusb)
 	if (atusb->err)
 		return atusb->err;
 
-<<<<<<< HEAD
 	hw->flags = IEEE802154_HW_TX_OMIT_CKSUM | IEEE802154_HW_AFILT |
 		    IEEE802154_HW_PROMISCUOUS | IEEE802154_HW_CSMA_PARAMS;
 
@@ -1084,8 +906,6 @@ static int atusb_get_and_show_chip(struct atusb *atusb)
 
 	hw->phy->current_page = 0;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if ((man_id_1 << 8 | man_id_0) != ATUSB_JEDEC_ATMEL) {
 		dev_err(&usb_dev->dev,
 			"non-Atmel transceiver xxxx%02x%02x\n",
@@ -1096,7 +916,6 @@ static int atusb_get_and_show_chip(struct atusb *atusb)
 	switch (part_num) {
 	case 2:
 		chip = "AT86RF230";
-<<<<<<< HEAD
 		atusb->hw->phy->supported.channels[0] = 0x7FFF800;
 		atusb->hw->phy->current_channel = 11;	/* reset default */
 		atusb->hw->phy->symbol_duration = 16;
@@ -1127,11 +946,6 @@ static int atusb_get_and_show_chip(struct atusb *atusb)
 		atusb->hw->phy->supported.tx_powers_size = ARRAY_SIZE(at86rf212_powers);
 		atusb->hw->phy->supported.cca_ed_levels = at86rf212_ed_levels_100;
 		atusb->hw->phy->supported.cca_ed_levels_size = ARRAY_SIZE(at86rf212_ed_levels_100);
-=======
-		break;
-	case 3:
-		chip = "AT86RF231";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		dev_err(&usb_dev->dev,
@@ -1140,12 +954,9 @@ static int atusb_get_and_show_chip(struct atusb *atusb)
 		goto fail;
 	}
 
-<<<<<<< HEAD
 	hw->phy->transmit_power = hw->phy->supported.tx_powers[0];
 	hw->phy->cca_ed_level = hw->phy->supported.cca_ed_levels[7];
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_info(&usb_dev->dev, "ATUSB: %s version %d\n", chip, version_num);
 
 	return 0;
@@ -1164,12 +975,8 @@ static int atusb_set_extended_addr(struct atusb *atusb)
 	int ret;
 
 	/* Firmware versions before 0.3 do not support the EUI64_READ command.
-<<<<<<< HEAD
 	 * Just use a random address and be done.
 	 */
-=======
-	 * Just use a random address and be done */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (atusb->fw_ver_maj == 0 && atusb->fw_ver_min < 3) {
 		ieee802154_random_extended_addr(&atusb->hw->phy->perm_extended_addr);
 		return 0;
@@ -1199,11 +1006,7 @@ static int atusb_set_extended_addr(struct atusb *atusb)
 		atusb->hw->phy->perm_extended_addr = extended_addr;
 		addr = swab64((__force u64)atusb->hw->phy->perm_extended_addr);
 		dev_info(&usb_dev->dev, "Read permanent extended address %8phC from device\n",
-<<<<<<< HEAD
 			 &addr);
-=======
-			&addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	kfree(buffer);
@@ -1242,56 +1045,19 @@ static int atusb_probe(struct usb_interface *interface,
 	atusb->tx_dr.bRequest = ATUSB_TX;
 	atusb->tx_dr.wValue = cpu_to_le16(0);
 
-<<<<<<< HEAD
 	atusb->tx_urb = usb_alloc_urb(0, GFP_KERNEL);
-=======
-	atusb->tx_urb = usb_alloc_urb(0, GFP_ATOMIC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!atusb->tx_urb)
 		goto fail;
 
 	hw->parent = &usb_dev->dev;
-<<<<<<< HEAD
 
 	atusb_command(atusb, ATUSB_RF_RESET, 0);
 	atusb_get_and_conf_chip(atusb);
-=======
-	hw->flags = IEEE802154_HW_TX_OMIT_CKSUM | IEEE802154_HW_AFILT |
-		    IEEE802154_HW_PROMISCUOUS | IEEE802154_HW_CSMA_PARAMS;
-
-	hw->phy->flags = WPAN_PHY_FLAG_TXPOWER | WPAN_PHY_FLAG_CCA_ED_LEVEL |
-			 WPAN_PHY_FLAG_CCA_MODE;
-
-	hw->phy->supported.cca_modes = BIT(NL802154_CCA_ENERGY) |
-		BIT(NL802154_CCA_CARRIER) | BIT(NL802154_CCA_ENERGY_CARRIER);
-	hw->phy->supported.cca_opts = BIT(NL802154_CCA_OPT_ENERGY_CARRIER_AND) |
-		BIT(NL802154_CCA_OPT_ENERGY_CARRIER_OR);
-
-	hw->phy->supported.cca_ed_levels = atusb_ed_levels;
-	hw->phy->supported.cca_ed_levels_size = ARRAY_SIZE(atusb_ed_levels);
-
-	hw->phy->cca.mode = NL802154_CCA_ENERGY;
-
-	hw->phy->current_page = 0;
-	hw->phy->current_channel = 11;	/* reset default */
-	hw->phy->supported.channels[0] = 0x7FFF800;
-	hw->phy->supported.tx_powers = atusb_powers;
-	hw->phy->supported.tx_powers_size = ARRAY_SIZE(atusb_powers);
-	hw->phy->transmit_power = hw->phy->supported.tx_powers[0];
-	hw->phy->cca_ed_level = hw->phy->supported.cca_ed_levels[7];
-
-	atusb_command(atusb, ATUSB_RF_RESET, 0);
-	atusb_get_and_show_chip(atusb);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	atusb_get_and_show_revision(atusb);
 	atusb_get_and_show_build(atusb);
 	atusb_set_extended_addr(atusb);
 
-<<<<<<< HEAD
 	if ((atusb->fw_ver_maj == 0 && atusb->fw_ver_min >= 3) || atusb->fw_ver_maj > 0)
-=======
-	if (atusb->fw_ver_maj >= 0 && atusb->fw_ver_min >= 3)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		hw->flags |= IEEE802154_HW_FRAME_RETRIES;
 
 	ret = atusb_get_and_clear_error(atusb);
@@ -1362,11 +1128,7 @@ static void atusb_disconnect(struct usb_interface *interface)
 {
 	struct atusb *atusb = usb_get_intfdata(interface);
 
-<<<<<<< HEAD
 	dev_dbg(&atusb->usb_dev->dev, "%s\n", __func__);
-=======
-	dev_dbg(&atusb->usb_dev->dev, "atusb_disconnect\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	atusb->shutdown = 1;
 	cancel_delayed_work_sync(&atusb->work);
@@ -1384,11 +1146,7 @@ static void atusb_disconnect(struct usb_interface *interface)
 
 	usb_set_intfdata(interface, NULL);
 
-<<<<<<< HEAD
 	pr_debug("%s done\n", __func__);
-=======
-	pr_debug("atusb_disconnect done\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* The devices we work with */
@@ -1417,9 +1175,6 @@ MODULE_AUTHOR("Alexander Aring <alex.aring@gmail.com>");
 MODULE_AUTHOR("Richard Sharpe <realrichardsharpe@gmail.com>");
 MODULE_AUTHOR("Stefan Schmidt <stefan@datenfreihafen.org>");
 MODULE_AUTHOR("Werner Almesberger <werner@almesberger.net>");
-<<<<<<< HEAD
 MODULE_AUTHOR("Josef Filzmaier <j.filzmaier@gmx.at>");
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_DESCRIPTION("ATUSB IEEE 802.15.4 Driver");
 MODULE_LICENSE("GPL");

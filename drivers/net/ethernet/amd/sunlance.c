@@ -1106,11 +1106,7 @@ static void lance_tx_timeout(struct net_device *dev)
 	netif_wake_queue(dev);
 }
 
-<<<<<<< HEAD
 static int lance_start_xmit(struct sk_buff *skb, struct net_device *dev)
-=======
-static netdev_tx_t lance_start_xmit(struct sk_buff *skb, struct net_device *dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct lance_private *lp = netdev_priv(dev);
 	int entry, skblen, len;
@@ -1252,16 +1248,10 @@ static void lance_set_multicast(struct net_device *dev)
 	netif_wake_queue(dev);
 }
 
-<<<<<<< HEAD
 static void lance_set_multicast_retry(struct timer_list *t)
 {
 	struct lance_private *lp = from_timer(lp, t, multicast_timer);
 	struct net_device *dev = lp->dev;
-=======
-static void lance_set_multicast_retry(unsigned long _opaque)
-{
-	struct net_device *dev = (struct net_device *) _opaque;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	lance_set_multicast(dev);
 }
@@ -1472,13 +1462,7 @@ no_link_test:
 	 * can occur from interrupts (ex. IPv6).  So we
 	 * use a timer to try again later when necessary. -DaveM
 	 */
-<<<<<<< HEAD
 	timer_setup(&lp->multicast_timer, lance_set_multicast_retry, 0);
-=======
-	init_timer(&lp->multicast_timer);
-	lp->multicast_timer.data = (unsigned long) dev;
-	lp->multicast_timer.function = lance_set_multicast_retry;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (register_netdev(dev)) {
 		printk(KERN_ERR "SunLance: Cannot register device.\n");

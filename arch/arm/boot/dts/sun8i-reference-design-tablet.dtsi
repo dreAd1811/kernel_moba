@@ -85,12 +85,7 @@
 	pinctrl-0 = <&mmc0_pins_a>, <&mmc0_cd_pin>;
 	vmmc-supply = <&reg_dcdc1>;
 	bus-width = <4>;
-<<<<<<< HEAD
 	cd-gpios = <&pio 1 4 GPIO_ACTIVE_LOW>; /* PB4 */
-=======
-	cd-gpios = <&pio 1 4 GPIO_ACTIVE_HIGH>; /* PB4 */
-	cd-inverted;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
@@ -129,7 +124,6 @@
 
 #include "axp223.dtsi"
 
-<<<<<<< HEAD
 &ac_power_supply {
 	status = "okay";
 };
@@ -138,8 +132,6 @@
 	status = "okay";
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &reg_aldo1 {
 	regulator-always-on;
 	regulator-min-microvolt = <3000000>;

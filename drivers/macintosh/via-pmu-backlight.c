@@ -137,11 +137,7 @@ void pmu_backlight_set_sleep(int sleep)
 }
 #endif /* CONFIG_PM */
 
-<<<<<<< HEAD
 void __init pmu_backlight_init(void)
-=======
-void __init pmu_backlight_init()
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct backlight_properties props;
 	struct backlight_device *bd;

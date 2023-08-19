@@ -738,11 +738,7 @@ static void __init clkgen_c32_pll_setup(struct device_node *np,
 		return;
 
 	clk_data->clk_num = num_odfs;
-<<<<<<< HEAD
 	clk_data->clks = kcalloc(clk_data->clk_num, sizeof(struct clk *),
-=======
-	clk_data->clks = kzalloc(clk_data->clk_num * sizeof(struct clk *),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 GFP_KERNEL);
 
 	if (!clk_data->clks)

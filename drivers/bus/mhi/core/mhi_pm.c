@@ -1,19 +1,5 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /* Copyright (c) 2018-2020, The Linux Foundation. All rights reserved. */
-=======
-/* Copyright (c) 2018-2020, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/debugfs.h>
 #include <linux/delay.h>
@@ -184,11 +170,7 @@ void mhi_set_mhi_state(struct mhi_controller *mhi_cntrl,
 		mhi_cntrl->initiate_mhi_reset = true;
 	} else {
 		mhi_cntrl->write_reg(mhi_cntrl, mhi_cntrl->regs, MHICTRL,
-<<<<<<< HEAD
 				(state << MHICTRL_MHISTATE_SHIFT));
-=======
-			 (state << MHICTRL_MHISTATE_SHIFT));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -220,19 +202,12 @@ void mhi_assert_dev_wake(struct mhi_controller *mhi_cntrl, bool force)
 		spin_unlock_irqrestore(&mhi_cntrl->wlock, flags);
 	} else {
 		/* if resources requested already, then increment and exit */
-<<<<<<< HEAD
 		spin_lock_irqsave(&mhi_cntrl->wlock, flags);
 		if (likely(atomic_add_unless(&mhi_cntrl->dev_wake, 1, 0))) {
 			spin_unlock_irqrestore(&mhi_cntrl->wlock, flags);
 			return;
 		}
 
-=======
-		if (likely(atomic_add_unless(&mhi_cntrl->dev_wake, 1, 0)))
-			return;
-
-		spin_lock_irqsave(&mhi_cntrl->wlock, flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if ((atomic_inc_return(&mhi_cntrl->dev_wake) == 1) &&
 		    MHI_WAKE_DB_SET_VALID(mhi_cntrl->pm_state) &&
 		    !mhi_cntrl->wake_set) {
@@ -252,7 +227,6 @@ void mhi_deassert_dev_wake(struct mhi_controller *mhi_cntrl, bool override)
 		   atomic_read(&mhi_cntrl->dev_wake) == 0), "dev_wake == 0");
 
 	/* resources not dropping to 0, decrement and exit */
-<<<<<<< HEAD
 	spin_lock_irqsave(&mhi_cntrl->wlock, flags);
 	if (likely(atomic_add_unless(&mhi_cntrl->dev_wake, -1, 1))) {
 		if (!override)
@@ -267,17 +241,6 @@ void mhi_deassert_dev_wake(struct mhi_controller *mhi_cntrl, bool override)
 		mhi_write_db(mhi_cntrl, mhi_cntrl->wake_db, 0);
 		mhi_cntrl->wake_set = false;
 		mhi_cntrl->ignore_override = false;
-=======
-	if (likely(atomic_add_unless(&mhi_cntrl->dev_wake, -1, 1)))
-		return;
-
-	spin_lock_irqsave(&mhi_cntrl->wlock, flags);
-	if ((atomic_dec_return(&mhi_cntrl->dev_wake) == 0) &&
-	    MHI_WAKE_DB_CLEAR_VALID(mhi_cntrl->pm_state) && !override &&
-	    mhi_cntrl->wake_set) {
-		mhi_write_db(mhi_cntrl, mhi_cntrl->wake_db, 0);
-		mhi_cntrl->wake_set = false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	spin_unlock_irqrestore(&mhi_cntrl->wlock, flags);
 }
@@ -416,7 +379,6 @@ int mhi_pm_m0_transition(struct mhi_controller *mhi_cntrl)
 	for (i = 0; i < mhi_cntrl->max_chan; i++, mhi_chan++) {
 		struct mhi_ring *tre_ring = &mhi_chan->tre_ring;
 
-<<<<<<< HEAD
 		if (mhi_chan->db_cfg.reset_req) {
 			write_lock_irq(&mhi_chan->lock);
 			mhi_chan->db_cfg.db_mode = true;
@@ -428,16 +390,6 @@ int mhi_pm_m0_transition(struct mhi_controller *mhi_cntrl)
 		if (tre_ring->base && tre_ring->wp  != tre_ring->rp)
 			mhi_ring_chan_db(mhi_cntrl, mhi_chan);
 		read_unlock_irq(&mhi_chan->lock);
-=======
-		write_lock_irq(&mhi_chan->lock);
-		if (mhi_chan->db_cfg.reset_req)
-			mhi_chan->db_cfg.db_mode = true;
-
-		/* only ring DB if ring is not empty */
-		if (tre_ring->base && tre_ring->wp  != tre_ring->rp)
-			mhi_ring_chan_db(mhi_cntrl, mhi_chan);
-		write_unlock_irq(&mhi_chan->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	mhi_cntrl->wake_put(mhi_cntrl, false);
@@ -453,7 +405,6 @@ void mhi_pm_m1_transition(struct mhi_controller *mhi_cntrl)
 	enum MHI_PM_STATE state;
 
 	write_lock_irq(&mhi_cntrl->pm_lock);
-<<<<<<< HEAD
 	/* if it fails, means we transition to M3 */
 	state = mhi_tryset_pm_state(mhi_cntrl, MHI_PM_M2);
 	if (state == MHI_PM_M2) {
@@ -483,44 +434,6 @@ void mhi_pm_m1_transition(struct mhi_controller *mhi_cntrl)
 	} else {
 		write_unlock_irq(&mhi_cntrl->pm_lock);
 	}
-=======
-	/* Just check if we are racing with device_wake assertion */
-	if (atomic_read(&mhi_cntrl->dev_wake))
-		MHI_VERB("M2 transition request post dev_wake:%d\n",
-			 atomic_read(&mhi_cntrl->dev_wake));
-
-	/* if it fails, means we transition to M3 */
-	state = mhi_tryset_pm_state(mhi_cntrl, MHI_PM_M2);
-	if (state != MHI_PM_M2) {
-		/* Nothing to be done, handle M3 transition later */
-		write_unlock_irq(&mhi_cntrl->pm_lock);
-		return;
-	}
-
-	MHI_VERB("Entered M2 State\n");
-	mhi_set_mhi_state(mhi_cntrl, MHI_STATE_M2);
-	mhi_cntrl->dev_state = MHI_STATE_M2;
-	mhi_cntrl->M2++;
-
-	write_unlock_irq(&mhi_cntrl->pm_lock);
-	wake_up_all(&mhi_cntrl->state_event);
-
-	/* transfer pending, exit M2 immediately */
-	if (unlikely(atomic_read(&mhi_cntrl->pending_pkts) ||
-		     atomic_read(&mhi_cntrl->dev_wake))) {
-		MHI_VERB(
-			 "Exiting M2 Immediately, pending_pkts:%d dev_wake:%d\n",
-			 atomic_read(&mhi_cntrl->pending_pkts),
-			 atomic_read(&mhi_cntrl->dev_wake));
-		read_lock_bh(&mhi_cntrl->pm_lock);
-		mhi_cntrl->wake_get(mhi_cntrl, true);
-		mhi_cntrl->wake_put(mhi_cntrl, true);
-		read_unlock_bh(&mhi_cntrl->pm_lock);
-		return;
-	}
-
-	mhi_cntrl->status_cb(mhi_cntrl, mhi_cntrl->priv_data, MHI_CB_IDLE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int mhi_pm_m3_transition(struct mhi_controller *mhi_cntrl)
@@ -623,11 +536,6 @@ static int mhi_pm_mission_mode_transition(struct mhi_controller *mhi_cntrl)
 	/* setup sysfs nodes for userspace votes */
 	mhi_create_sysfs(mhi_cntrl);
 
-<<<<<<< HEAD
-=======
-	mhi_special_events_pending(mhi_cntrl);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MHI_CNTRL_LOG("Adding new devices\n");
 
 	/* add supported devices */
@@ -808,20 +716,6 @@ static void mhi_pm_disable_transition(struct mhi_controller *mhi_cntrl,
 	mutex_unlock(&mhi_cntrl->pm_mutex);
 }
 
-<<<<<<< HEAD
-=======
-int mhi_debugfs_trigger_soc_reset(void *data, u64 val)
-{
-	struct mhi_controller *mhi_cntrl = data;
-
-	MHI_LOG("Trigger MHI SOC Reset\n");
-
-	mhi_perform_soc_reset(mhi_cntrl);
-
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int mhi_debugfs_trigger_reset(void *data, u64 val)
 {
 	struct mhi_controller *mhi_cntrl = data;
@@ -858,11 +752,7 @@ int mhi_debugfs_trigger_reset(void *data, u64 val)
 }
 
 /* queue disable transition work item */
-<<<<<<< HEAD
 int mhi_queue_disable_transition(struct mhi_controller *mhi_cntrl,
-=======
-static int mhi_queue_disable_transition(struct mhi_controller *mhi_cntrl,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 enum MHI_PM_STATE pm_state)
 {
 	struct state_transition *item = kmalloc(sizeof(*item), GFP_ATOMIC);
@@ -877,11 +767,7 @@ static int mhi_queue_disable_transition(struct mhi_controller *mhi_cntrl,
 	list_add_tail(&item->node, &mhi_cntrl->transition_list);
 	spin_unlock_irqrestore(&mhi_cntrl->transition_lock, flags);
 
-<<<<<<< HEAD
 	schedule_work(&mhi_cntrl->st_worker);
-=======
-	queue_work(mhi_cntrl->wq, &mhi_cntrl->st_worker);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -901,11 +787,7 @@ int mhi_queue_state_transition(struct mhi_controller *mhi_cntrl,
 	list_add_tail(&item->node, &mhi_cntrl->transition_list);
 	spin_unlock_irqrestore(&mhi_cntrl->transition_lock, flags);
 
-<<<<<<< HEAD
 	schedule_work(&mhi_cntrl->st_worker);
-=======
-	queue_work(mhi_cntrl->wq, &mhi_cntrl->st_worker);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -921,12 +803,8 @@ static void mhi_special_events_pending(struct mhi_controller *mhi_cntrl)
 
 		spin_lock_bh(&mhi_event->lock);
 		if (ev_ring->rp != mhi_to_virtual(ev_ring, er_ctxt->rp)) {
-<<<<<<< HEAD
 			queue_work(mhi_cntrl->special_wq,
 				   &mhi_cntrl->special_work);
-=======
-			queue_work(mhi_cntrl->wq, &mhi_cntrl->special_work);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			spin_unlock_bh(&mhi_event->lock);
 			break;
 		}
@@ -1351,7 +1229,6 @@ int mhi_pm_fast_suspend(struct mhi_controller *mhi_cntrl, bool notify_client)
 	int ret;
 	enum MHI_PM_STATE new_state;
 	struct mhi_chan *itr, *tmp;
-<<<<<<< HEAD
 
 	read_lock_bh(&mhi_cntrl->pm_lock);
 	if (mhi_cntrl->pm_state == MHI_PM_DISABLE) {
@@ -1367,19 +1244,6 @@ int mhi_pm_fast_suspend(struct mhi_controller *mhi_cntrl, bool notify_client)
 
 	/* do a quick check to see if any pending votes to keep us busy */
 	if (atomic_read(&mhi_cntrl->pending_pkts)) {
-=======
-	struct mhi_device *mhi_dev = mhi_cntrl->mhi_dev;
-
-	if (mhi_cntrl->pm_state == MHI_PM_DISABLE)
-		return -EINVAL;
-
-	if (MHI_PM_IN_ERROR_STATE(mhi_cntrl->pm_state))
-		return -EIO;
-
-	/* do a quick check to see if any pending votes to keep us busy */
-	if (atomic_read(&mhi_cntrl->pending_pkts) ||
-	    atomic_read(&mhi_dev->bus_vote)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		MHI_VERB("Busy, aborting M3\n");
 		return -EBUSY;
 	}
@@ -1398,26 +1262,18 @@ int mhi_pm_fast_suspend(struct mhi_controller *mhi_cntrl, bool notify_client)
 	 * Check the votes once more to see if we should abort
 	 * suspend.
 	 */
-<<<<<<< HEAD
 	if (atomic_read(&mhi_cntrl->pending_pkts)) {
-=======
-	if (atomic_read(&mhi_cntrl->pending_pkts) ||
-	    atomic_read(&mhi_dev->bus_vote)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		MHI_VERB("Busy, aborting M3\n");
 		ret = -EBUSY;
 		goto error_suspend;
 	}
 
-<<<<<<< HEAD
 	/* check pm state before saving it */
 	if (MHI_PM_IN_ERROR_STATE(mhi_cntrl->pm_state)) {
 		ret = -EIO;
 		goto error_suspend;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* anytime after this, we will resume thru runtime pm framework */
 	MHI_LOG("Allowing Fast M3 transition\n");
 
@@ -1558,12 +1414,9 @@ int mhi_pm_resume(struct mhi_controller *mhi_cntrl)
 	 */
 	mhi_special_events_pending(mhi_cntrl);
 
-<<<<<<< HEAD
 	if (MHI_REG_ACCESS_VALID(mhi_cntrl->pm_state))
 		mhi_timesync_log(mhi_cntrl);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1573,15 +1426,11 @@ int mhi_pm_fast_resume(struct mhi_controller *mhi_cntrl, bool notify_client)
 	struct mhi_event *mhi_event;
 	int i;
 
-<<<<<<< HEAD
 	read_lock_bh(&mhi_cntrl->pm_lock);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MHI_LOG("Entered with pm_state:%s dev_state:%s\n",
 		to_mhi_pm_state_str(mhi_cntrl->pm_state),
 		TO_MHI_STATE_STR(mhi_cntrl->dev_state));
 
-<<<<<<< HEAD
 	if (mhi_cntrl->pm_state == MHI_PM_DISABLE) {
 		read_unlock_bh(&mhi_cntrl->pm_lock);
 		return 0;
@@ -1594,15 +1443,6 @@ int mhi_pm_fast_resume(struct mhi_controller *mhi_cntrl, bool notify_client)
 
 	MHI_ASSERT(mhi_cntrl->pm_state != MHI_PM_M3, "mhi_pm_state != M3");
 	read_unlock_bh(&mhi_cntrl->pm_lock);
-=======
-	if (mhi_cntrl->pm_state == MHI_PM_DISABLE)
-		return 0;
-
-	if (MHI_PM_IN_ERROR_STATE(mhi_cntrl->pm_state))
-		return -EIO;
-
-	MHI_ASSERT(mhi_cntrl->pm_state != MHI_PM_M3, "mhi_pm_state != M3");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* notify any clients we're about to exit lpm */
 	if (notify_client) {
@@ -1616,7 +1456,6 @@ int mhi_pm_fast_resume(struct mhi_controller *mhi_cntrl, bool notify_client)
 	/* do not process control events */
 	tasklet_disable(&mhi_cntrl->mhi_event->task);
 
-<<<<<<< HEAD
 	/* check if we entered error state again before doing the restore */
 	write_lock_irq(&mhi_cntrl->pm_lock);
 
@@ -1630,12 +1469,6 @@ int mhi_pm_fast_resume(struct mhi_controller *mhi_cntrl, bool notify_client)
 	mhi_cntrl->pm_state = mhi_cntrl->saved_pm_state;
 	mhi_cntrl->dev_state = mhi_cntrl->saved_dev_state;
 
-=======
-	write_lock_irq(&mhi_cntrl->pm_lock);
-	/* restore the states */
-	mhi_cntrl->pm_state = mhi_cntrl->saved_pm_state;
-	mhi_cntrl->dev_state = mhi_cntrl->saved_dev_state;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	write_unlock_irq(&mhi_cntrl->pm_lock);
 
 	switch (mhi_cntrl->pm_state) {
@@ -1647,15 +1480,12 @@ int mhi_pm_fast_resume(struct mhi_controller *mhi_cntrl, bool notify_client)
 		mhi_cntrl->wake_get(mhi_cntrl, true);
 		mhi_cntrl->wake_put(mhi_cntrl, true);
 		read_unlock_bh(&mhi_cntrl->pm_lock);
-<<<<<<< HEAD
 		break;
 	default:
 		MHI_ERR("Unexpected PM state:%s after restore\n",
 			to_mhi_pm_state_str(mhi_cntrl->pm_state));
 		tasklet_enable(&mhi_cntrl->mhi_event->task);
 		return -EIO;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* now it's safe to process ctrl events */
@@ -1678,22 +1508,15 @@ int mhi_pm_fast_resume(struct mhi_controller *mhi_cntrl, bool notify_client)
 	/* schedules worker if any special purpose events need to be handled */
 	mhi_special_events_pending(mhi_cntrl);
 
-<<<<<<< HEAD
 	if (MHI_REG_ACCESS_VALID(mhi_cntrl->pm_state))
 		mhi_timesync_log(mhi_cntrl);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MHI_LOG("Exit with pm_state:%s dev_state:%s\n",
 		to_mhi_pm_state_str(mhi_cntrl->pm_state),
 		TO_MHI_STATE_STR(mhi_cntrl->dev_state));
 
 	return 0;
 }
-<<<<<<< HEAD
-=======
-EXPORT_SYMBOL(mhi_pm_resume);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int __mhi_device_get_sync(struct mhi_controller *mhi_cntrl)
 {
@@ -1706,19 +1529,11 @@ int __mhi_device_get_sync(struct mhi_controller *mhi_cntrl)
 	}
 
 	mhi_cntrl->wake_get(mhi_cntrl, true);
-<<<<<<< HEAD
 	read_unlock_bh(&mhi_cntrl->pm_lock);
 
 	pm_wakeup_hard_event(&mhi_cntrl->mhi_dev->dev);
 	mhi_cntrl->runtime_get(mhi_cntrl, mhi_cntrl->priv_data);
 
-=======
-	if (MHI_PM_IN_SUSPEND_STATE(mhi_cntrl->pm_state))
-		mhi_trigger_resume(mhi_cntrl);
-	read_unlock_bh(&mhi_cntrl->pm_lock);
-
-	/* for offload write make sure wake DB is set before any MHI reg read */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mhi_force_reg_write(mhi_cntrl);
 
 	ret = wait_event_timeout(mhi_cntrl->state_event,
@@ -1733,17 +1548,11 @@ int __mhi_device_get_sync(struct mhi_controller *mhi_cntrl)
 		read_lock_bh(&mhi_cntrl->pm_lock);
 		mhi_cntrl->wake_put(mhi_cntrl, false);
 		read_unlock_bh(&mhi_cntrl->pm_lock);
-<<<<<<< HEAD
 		mhi_cntrl->runtime_put(mhi_cntrl, mhi_cntrl->priv_data);
 		return -EIO;
 	}
 
 	mhi_cntrl->runtime_put(mhi_cntrl, mhi_cntrl->priv_data);
-=======
-		return -EIO;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1754,10 +1563,7 @@ void mhi_device_get(struct mhi_device *mhi_dev, int vote)
 	if (vote & MHI_VOTE_DEVICE) {
 		read_lock_bh(&mhi_cntrl->pm_lock);
 		mhi_cntrl->wake_get(mhi_cntrl, true);
-<<<<<<< HEAD
 		MHI_LOG("dev_wake %d\n", atomic_read(&mhi_cntrl->dev_wake));
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		read_unlock_bh(&mhi_cntrl->pm_lock);
 		atomic_inc(&mhi_dev->dev_vote);
 	}
@@ -1800,60 +1606,6 @@ int mhi_device_get_sync(struct mhi_device *mhi_dev, int vote)
 }
 EXPORT_SYMBOL(mhi_device_get_sync);
 
-<<<<<<< HEAD
-=======
-int mhi_device_get_sync_atomic(struct mhi_device *mhi_dev, int timeout_us)
-{
-	struct mhi_controller *mhi_cntrl = mhi_dev->mhi_cntrl;
-
-	read_lock_bh(&mhi_cntrl->pm_lock);
-	if (MHI_PM_IN_ERROR_STATE(mhi_cntrl->pm_state)) {
-		read_unlock_bh(&mhi_cntrl->pm_lock);
-		return -EIO;
-	}
-
-	mhi_cntrl->wake_get(mhi_cntrl, true);
-	read_unlock_bh(&mhi_cntrl->pm_lock);
-
-	atomic_inc(&mhi_dev->dev_vote);
-	pm_wakeup_hard_event(&mhi_cntrl->mhi_dev->dev);
-	mhi_cntrl->runtime_get(mhi_cntrl, mhi_cntrl->priv_data);
-
-	/* Return if client doesn't want us to wait */
-	if (!timeout_us) {
-		if (mhi_cntrl->pm_state != MHI_PM_M0)
-			MHI_ERR("Return without waiting for M0\n");
-
-		mhi_cntrl->runtime_put(mhi_cntrl, mhi_cntrl->priv_data);
-		return 0;
-	}
-
-	while (mhi_cntrl->pm_state != MHI_PM_M0 &&
-			!MHI_PM_IN_ERROR_STATE(mhi_cntrl->pm_state) &&
-			timeout_us > 0) {
-		udelay(MHI_FORCE_WAKE_DELAY_US);
-		timeout_us -= MHI_FORCE_WAKE_DELAY_US;
-	}
-
-	if (MHI_PM_IN_ERROR_STATE(mhi_cntrl->pm_state) || timeout_us <= 0) {
-		MHI_ERR("Did not enter M0 state, cur_state:%s pm_state:%s\n",
-			TO_MHI_STATE_STR(mhi_cntrl->dev_state),
-			to_mhi_pm_state_str(mhi_cntrl->pm_state));
-		read_lock_bh(&mhi_cntrl->pm_lock);
-		mhi_cntrl->wake_put(mhi_cntrl, false);
-		read_unlock_bh(&mhi_cntrl->pm_lock);
-		atomic_dec(&mhi_dev->dev_vote);
-		mhi_cntrl->runtime_put(mhi_cntrl, mhi_cntrl->priv_data);
-		return -ETIMEDOUT;
-	}
-
-	mhi_cntrl->runtime_put(mhi_cntrl, mhi_cntrl->priv_data);
-
-	return 0;
-}
-EXPORT_SYMBOL(mhi_device_get_sync_atomic);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void mhi_device_put(struct mhi_device *mhi_dev, int vote)
 {
 	struct mhi_controller *mhi_cntrl = mhi_dev->mhi_cntrl;
@@ -1861,16 +1613,9 @@ void mhi_device_put(struct mhi_device *mhi_dev, int vote)
 	if (vote & MHI_VOTE_DEVICE) {
 		atomic_dec(&mhi_dev->dev_vote);
 		read_lock_bh(&mhi_cntrl->pm_lock);
-<<<<<<< HEAD
 		mhi_trigger_resume(mhi_cntrl);
 		mhi_cntrl->wake_put(mhi_cntrl, false);
 		MHI_LOG("dev_wake %d\n", atomic_read(&mhi_cntrl->dev_wake));
-=======
-		if (MHI_PM_IN_SUSPEND_STATE(mhi_cntrl->pm_state))
-			mhi_trigger_resume(mhi_cntrl);
-
-		mhi_cntrl->wake_put(mhi_cntrl, false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		read_unlock_bh(&mhi_cntrl->pm_lock);
 	}
 

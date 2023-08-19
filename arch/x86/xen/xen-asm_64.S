@@ -12,10 +12,6 @@
 #include <asm/segment.h>
 #include <asm/asm-offsets.h>
 #include <asm/thread_info.h>
-<<<<<<< HEAD
-=======
-#include <asm/asm.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <xen/interface/xen.h>
 
@@ -28,10 +24,6 @@ ENTRY(xen_\name)
 	pop %r11
 	jmp  \name
 END(xen_\name)
-<<<<<<< HEAD
-=======
-_ASM_NOKPROBE(xen_\name)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 .endm
 
 xen_pv_trap divide_error

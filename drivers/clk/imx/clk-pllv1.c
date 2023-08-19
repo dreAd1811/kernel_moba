@@ -107,11 +107,7 @@ static unsigned long clk_pllv1_recalc_rate(struct clk_hw *hw,
 	return ull;
 }
 
-<<<<<<< HEAD
 static const struct clk_ops clk_pllv1_ops = {
-=======
-static struct clk_ops clk_pllv1_ops = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.recalc_rate = clk_pllv1_recalc_rate,
 };
 

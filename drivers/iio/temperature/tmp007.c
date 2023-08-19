@@ -426,10 +426,6 @@ static const struct iio_info tmp007_info = {
 	.read_event_value = tmp007_read_thresh,
 	.write_event_value = tmp007_write_thresh,
 	.attrs = &tmp007_attribute_group,
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static bool tmp007_identify(struct i2c_client *client)

@@ -17,11 +17,7 @@
 #include <linux/printk.h>
 #include <linux/slab.h>
 #include <linux/types.h>
-<<<<<<< HEAD
 #include <asm/bmips.h>
-=======
-#include <dma-coherence.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * BCM338x has configurable address translation windows which allow the
@@ -44,11 +40,7 @@ static struct bmips_dma_range *bmips_dma_ranges;
 
 #define FLUSH_RAC		0x100
 
-<<<<<<< HEAD
 dma_addr_t __phys_to_dma(struct device *dev, phys_addr_t pa)
-=======
-static dma_addr_t bmips_phys_to_dma(struct device *dev, phys_addr_t pa)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct bmips_dma_range *r;
 
@@ -60,21 +52,7 @@ static dma_addr_t bmips_phys_to_dma(struct device *dev, phys_addr_t pa)
 	return pa;
 }
 
-<<<<<<< HEAD
 phys_addr_t __dma_to_phys(struct device *dev, dma_addr_t dma_addr)
-=======
-dma_addr_t plat_map_dma_mem(struct device *dev, void *addr, size_t size)
-{
-	return bmips_phys_to_dma(dev, virt_to_phys(addr));
-}
-
-dma_addr_t plat_map_dma_mem_page(struct device *dev, struct page *page)
-{
-	return bmips_phys_to_dma(dev, page_to_phys(page));
-}
-
-unsigned long plat_dma_addr_to_phys(struct device *dev, dma_addr_t dma_addr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct bmips_dma_range *r;
 
@@ -86,7 +64,6 @@ unsigned long plat_dma_addr_to_phys(struct device *dev, dma_addr_t dma_addr)
 	return dma_addr;
 }
 
-<<<<<<< HEAD
 void arch_sync_dma_for_cpu_all(struct device *dev)
 {
 	void __iomem *cbr = BMIPS_GET_CBR();
@@ -103,8 +80,6 @@ void arch_sync_dma_for_cpu_all(struct device *dev)
 	__raw_readl(cbr + BMIPS_RAC_CONFIG);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __init bmips_init_dma_ranges(void)
 {
 	struct device_node *np =
@@ -125,11 +100,7 @@ static int __init bmips_init_dma_ranges(void)
 		goto out_bad;
 
 	/* add a dummy (zero) entry at the end as a sentinel */
-<<<<<<< HEAD
 	bmips_dma_ranges = kcalloc(len + 1, sizeof(struct bmips_dma_range),
-=======
-	bmips_dma_ranges = kzalloc(sizeof(struct bmips_dma_range) * (len + 1),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   GFP_KERNEL);
 	if (!bmips_dma_ranges)
 		goto out_bad;

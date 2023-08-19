@@ -187,12 +187,8 @@ static inline int atomic_fetch_##op(int i, atomic_t *v)			\
 ATOMIC_OPS(add, +=, add)
 ATOMIC_OPS(sub, -=, sub)
 
-<<<<<<< HEAD
 #define atomic_andnot		atomic_andnot
 #define atomic_fetch_andnot	atomic_fetch_andnot
-=======
-#define atomic_andnot atomic_andnot
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #undef ATOMIC_OPS
 #define ATOMIC_OPS(op, c_op, asm_op)					\
@@ -301,11 +297,6 @@ ATOMIC_OPS(add, +=, CTOP_INST_AADD_DI_R2_R2_R3)
 	ATOMIC_FETCH_OP(op, c_op, asm_op)
 
 ATOMIC_OPS(and, &=, CTOP_INST_AAND_DI_R2_R2_R3)
-<<<<<<< HEAD
-=======
-#define atomic_andnot(mask, v) atomic_and(~(mask), (v))
-#define atomic_fetch_andnot(mask, v) atomic_fetch_and(~(mask), (v))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 ATOMIC_OPS(or, |=, CTOP_INST_AOR_DI_R2_R2_R3)
 ATOMIC_OPS(xor, ^=, CTOP_INST_AXOR_DI_R2_R2_R3)
 
@@ -316,51 +307,6 @@ ATOMIC_OPS(xor, ^=, CTOP_INST_AXOR_DI_R2_R2_R3)
 #undef ATOMIC_OP_RETURN
 #undef ATOMIC_OP
 
-<<<<<<< HEAD
-=======
-/**
- * __atomic_add_unless - add unless the number is a given value
- * @v: pointer of type atomic_t
- * @a: the amount to add to v...
- * @u: ...unless v is equal to u.
- *
- * Atomically adds @a to @v, so long as it was not @u.
- * Returns the old value of @v
- */
-#define __atomic_add_unless(v, a, u)					\
-({									\
-	int c, old;							\
-									\
-	/*								\
-	 * Explicit full memory barrier needed before/after as		\
-	 * LLOCK/SCOND thmeselves don't provide any such semantics	\
-	 */								\
-	smp_mb();							\
-									\
-	c = atomic_read(v);						\
-	while (c != (u) && (old = atomic_cmpxchg((v), c, c + (a))) != c)\
-		c = old;						\
-									\
-	smp_mb();							\
-									\
-	c;								\
-})
-
-#define atomic_inc_not_zero(v)		atomic_add_unless((v), 1, 0)
-
-#define atomic_inc(v)			atomic_add(1, v)
-#define atomic_dec(v)			atomic_sub(1, v)
-
-#define atomic_inc_and_test(v)		(atomic_add_return(1, v) == 0)
-#define atomic_dec_and_test(v)		(atomic_sub_return(1, v) == 0)
-#define atomic_inc_return(v)		atomic_add_return(1, (v))
-#define atomic_dec_return(v)		atomic_sub_return(1, (v))
-#define atomic_sub_and_test(i, v)	(atomic_sub_return(i, v) == 0)
-
-#define atomic_add_negative(i, v)	(atomic_add_return(i, v) < 0)
-
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_GENERIC_ATOMIC64
 
 #include <asm-generic/atomic64.h>
@@ -483,12 +429,8 @@ static inline long long atomic64_fetch_##op(long long a, atomic64_t *v)	\
 	ATOMIC64_OP_RETURN(op, op1, op2)				\
 	ATOMIC64_FETCH_OP(op, op1, op2)
 
-<<<<<<< HEAD
 #define atomic64_andnot		atomic64_andnot
 #define atomic64_fetch_andnot	atomic64_fetch_andnot
-=======
-#define atomic64_andnot atomic64_andnot
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 ATOMIC64_OPS(add, add.f, adc)
 ATOMIC64_OPS(sub, sub.f, sbc)
@@ -575,21 +517,14 @@ static inline long long atomic64_dec_if_positive(atomic64_t *v)
 
 	return val;
 }
-<<<<<<< HEAD
 #define atomic64_dec_if_positive atomic64_dec_if_positive
 
 /**
  * atomic64_fetch_add_unless - add unless the number is a given value
-=======
-
-/**
- * atomic64_add_unless - add unless the number is a given value
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @v: pointer of type atomic64_t
  * @a: the amount to add to v...
  * @u: ...unless v is equal to u.
  *
-<<<<<<< HEAD
  * Atomically adds @a to @v, if it was not @u.
  * Returns the old value of @v
  */
@@ -597,21 +532,11 @@ static inline long long atomic64_fetch_add_unless(atomic64_t *v, long long a,
 						  long long u)
 {
 	long long old, temp;
-=======
- * if (v != u) { v += a; ret = 1} else {ret = 0}
- * Returns 1 iff @v was not @u (i.e. if add actually happened)
- */
-static inline int atomic64_add_unless(atomic64_t *v, long long a, long long u)
-{
-	long long val;
-	int op_done;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	smp_mb();
 
 	__asm__ __volatile__(
 	"1:	llockd  %0, [%2]	\n"
-<<<<<<< HEAD
 	"	brne	%L0, %L4, 2f	# continue to add since v != u \n"
 	"	breq.d	%H0, %H4, 3f	# return since v == u \n"
 	"2:				\n"
@@ -621,42 +546,14 @@ static inline int atomic64_add_unless(atomic64_t *v, long long a, long long u)
 	"	bnz     1b		\n"
 	"3:				\n"
 	: "=&r"(old), "=&r" (temp)
-=======
-	"	mov	%1, 1		\n"
-	"	brne	%L0, %L4, 2f	# continue to add since v != u \n"
-	"	breq.d	%H0, %H4, 3f	# return since v == u \n"
-	"	mov	%1, 0		\n"
-	"2:				\n"
-	"	add.f   %L0, %L0, %L3	\n"
-	"	adc     %H0, %H0, %H3	\n"
-	"	scondd  %0, [%2]	\n"
-	"	bnz     1b		\n"
-	"3:				\n"
-	: "=&r"(val), "=&r" (op_done)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	: "r"(&v->counter), "r"(a), "r"(u)
 	: "cc");	/* memory clobber comes from smp_mb() */
 
 	smp_mb();
 
-<<<<<<< HEAD
 	return old;
 }
 #define atomic64_fetch_add_unless atomic64_fetch_add_unless
-=======
-	return op_done;
-}
-
-#define atomic64_add_negative(a, v)	(atomic64_add_return((a), (v)) < 0)
-#define atomic64_inc(v)			atomic64_add(1LL, (v))
-#define atomic64_inc_return(v)		atomic64_add_return(1LL, (v))
-#define atomic64_inc_and_test(v)	(atomic64_inc_return(v) == 0)
-#define atomic64_sub_and_test(a, v)	(atomic64_sub_return((a), (v)) == 0)
-#define atomic64_dec(v)			atomic64_sub(1LL, (v))
-#define atomic64_dec_return(v)		atomic64_sub_return(1LL, (v))
-#define atomic64_dec_and_test(v)	(atomic64_dec_return((v)) == 0)
-#define atomic64_inc_not_zero(v)	atomic64_add_unless((v), 1LL, 0LL)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif	/* !CONFIG_GENERIC_ATOMIC64 */
 

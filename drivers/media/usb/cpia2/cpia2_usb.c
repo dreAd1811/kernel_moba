@@ -33,7 +33,6 @@
 
 static int frame_sizes[] = {
 	0,	// USBIF_CMDONLY
-<<<<<<< HEAD
 	0,	// USBIF_BULK
 	128,	// USBIF_ISO_1
 	384,	// USBIF_ISO_2
@@ -41,15 +40,6 @@ static int frame_sizes[] = {
 	768,	// USBIF_ISO_4
 	896,	// USBIF_ISO_5
 	1023,	// USBIF_ISO_6
-=======
-	0, 	// USBIF_BULK
-	128, 	// USBIF_ISO_1
-	384, 	// USBIF_ISO_2
-	640, 	// USBIF_ISO_3
-	768, 	// USBIF_ISO_4
-	896, 	// USBIF_ISO_5
-	1023, 	// USBIF_ISO_6
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define FRAMES_PER_DESC    10
@@ -673,12 +663,8 @@ static int submit_urbs(struct camera_data *cam)
 		if (cam->sbuf[i].data)
 			continue;
 		cam->sbuf[i].data =
-<<<<<<< HEAD
 		    kmalloc_array(FRAME_SIZE_PER_DESC, FRAMES_PER_DESC,
 				  GFP_KERNEL);
-=======
-		    kmalloc(FRAMES_PER_DESC * FRAME_SIZE_PER_DESC, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!cam->sbuf[i].data) {
 			while (--i >= 0) {
 				kfree(cam->sbuf[i].data);
@@ -928,12 +914,6 @@ static void cpia2_usb_disconnect(struct usb_interface *intf)
 		wake_up_interruptible(&cam->wq_stream);
 	}
 
-<<<<<<< HEAD
-=======
-	DBG("Releasing interface\n");
-	usb_driver_release_interface(&cpia2_driver, intf);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	v4l2_device_put(&cam->v4l2_dev);
 
 	LOG("CPiA2 camera disconnected.\n");

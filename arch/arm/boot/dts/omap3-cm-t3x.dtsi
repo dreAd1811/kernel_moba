@@ -43,20 +43,14 @@
 	hsusb1_phy: hsusb1_phy {
 		compatible = "usb-nop-xceiv";
 		vcc-supply = <&hsusb1_power>;
-<<<<<<< HEAD
 		#phy-cells = <0>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	/* HS USB Host PHY on PORT 2 */
 	hsusb2_phy: hsusb2_phy {
 		compatible = "usb-nop-xceiv";
 		vcc-supply = <&hsusb2_power>;
-<<<<<<< HEAD
 		#phy-cells = <0>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	ads7846reg: ads7846-reg {
@@ -66,11 +60,7 @@
 		regulator-max-microvolt = <3300000>;
 	};
 
-<<<<<<< HEAD
 	tv0: svideo-connector {
-=======
-	tv0: connector {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "svideo-connector";
 		label = "tv";
 
@@ -316,7 +306,6 @@
 			label = "xloader";
 			reg = <0 0x80000>;
 		};
-<<<<<<< HEAD
 		partition@80000 {
 			label = "uboot";
 			reg = <0x80000 0x1e0000>;
@@ -330,21 +319,6 @@
 			reg = <0x2a0000 0x400000>;
 		};
 		partition@6a0000 {
-=======
-		partition@0x80000 {
-			label = "uboot";
-			reg = <0x80000 0x1e0000>;
-		};
-		partition@0x260000 {
-			label = "uboot environment";
-			reg = <0x260000 0x40000>;
-		};
-		partition@0x2a0000 {
-			label = "linux";
-			reg = <0x2a0000 0x400000>;
-		};
-		partition@0x6a0000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "rootfs";
 			reg = <0x6a0000 0x1f880000>;
 		};

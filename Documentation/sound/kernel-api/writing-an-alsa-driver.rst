@@ -2498,11 +2498,7 @@ Mic boost
 Mic-boost switch is set as “Mic Boost” or “Mic Boost (6dB)”.
 
 More precise information can be found in
-<<<<<<< HEAD
 ``Documentation/sound/designs/control-names.rst``.
-=======
-``Documentation/sound/alsa/ControlNames.txt``.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Access Flags
 ------------

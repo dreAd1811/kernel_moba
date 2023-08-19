@@ -74,20 +74,11 @@ struct thread_info {
 	.task		= &tsk,				\
 	.flags		= 0,				\
 	.cpu		= 0,				\
-<<<<<<< HEAD
 	.preempt_count	= INIT_PREEMPT_COUNT,		\
-=======
-	.preempt_count	= 1,				\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.addr_limit	= KERNEL_DS,			\
 	.ksp            = 0,                            \
 }
 
-<<<<<<< HEAD
-=======
-#define init_thread_info	(init_thread_union.thread_info)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* how to get the thread information struct from C */
 register struct thread_info *current_thread_info_reg asm("r10");
 #define current_thread_info()   (current_thread_info_reg)

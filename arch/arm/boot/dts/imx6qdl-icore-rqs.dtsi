@@ -41,16 +41,10 @@
 
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/clock/imx6qdl-clock.h>
-<<<<<<< HEAD
 #include <dt-bindings/sound/fsl-imx-audmux.h>
 
 / {
 	memory@10000000 {
-=======
-
-/ {
-	memory {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x10000000 0x80000000>;
 	};
 
@@ -125,7 +119,6 @@
 		clocks = <&clks IMX6QDL_CLK_LVDS2_GATE>;
 		clock-names = "refclk";
 	};
-<<<<<<< HEAD
 
 	sound {
 		compatible = "simple-audio-card";
@@ -152,20 +145,12 @@
 			sound-dai = <&sgtl5000>;
 		};
 	};
-=======
-};
-
-&clks {
-	assigned-clocks = <&clks IMX6QDL_CLK_LVDS2_SEL>;
-	assigned-clock-parents = <&clks IMX6QDL_CLK_OSC>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &audmux {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_audmux>;
 	status = "okay";
-<<<<<<< HEAD
 
 	audmux_ssi1 {
 		fsl,audmux-port = <MX51_AUDMUX_PORT1_SSI0>;
@@ -205,8 +190,6 @@
 &clks {
 	assigned-clocks = <&clks IMX6QDL_CLK_LVDS2_SEL>;
 	assigned-clock-parents = <&clks IMX6QDL_CLK_OSC>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &fec {
@@ -217,15 +200,11 @@
 	status = "okay";
 
 	mdio {
-<<<<<<< HEAD
 		#address-cells = <1>;
 		#size-cells = <0>;
 
 		eth_phy: ethernet-phy@0 {
 			reg = <0x0>;
-=======
-		eth_phy: ethernet-phy {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rxc-skew-ps = <1140>;
 			txc-skew-ps = <1140>;
 			txen-skew-ps = <600>;
@@ -260,7 +239,6 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_i2c3>;
 	status = "okay";
-<<<<<<< HEAD
 
 	sgtl5000: codec@a {
 		#sound-dai-cells = <0>;
@@ -271,8 +249,6 @@
 		VDDIO-supply = <&reg_3p3v>;
 		VDDD-supply = <&reg_1p8v>;
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &pcie {
@@ -283,10 +259,7 @@
 };
 
 &ssi1 {
-<<<<<<< HEAD
 	fsl,mode = "i2s-slave";
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
@@ -373,7 +346,6 @@
 		>;
 	};
 
-<<<<<<< HEAD
 	pinctrl_can1: can1grp {
 		fsl,pins = <
 			MX6QDL_PAD_KEY_ROW2__FLEXCAN1_RX 0x1b020
@@ -388,8 +360,6 @@
 		>;
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pinctrl_i2c1: i2c1grp {
 		fsl,pins = <
 			MX6QDL_PAD_EIM_D21__I2C1_SCL 0x4001b8b1

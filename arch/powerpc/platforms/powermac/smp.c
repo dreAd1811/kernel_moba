@@ -65,10 +65,6 @@
 #endif
 
 extern void __secondary_start_pmac_0(void);
-<<<<<<< HEAD
-=======
-extern int pmac_pfunc_base_install(void);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void (*pmac_tb_freeze)(int freeze);
 static u64 timebase;
@@ -777,13 +773,8 @@ static void __init smp_core99_probe(void)
 	if (ppc_md.progress) ppc_md.progress("smp_core99_probe", 0x345);
 
 	/* Count CPUs in the device-tree */
-<<<<<<< HEAD
 	for_each_node_by_type(cpus, "cpu")
 		++ncpus;
-=======
-       	for (cpus = NULL; (cpus = of_find_node_by_type(cpus, "cpu")) != NULL;)
-	       	++ncpus;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	printk(KERN_INFO "PowerMac SMP probe found %d cpus\n", ncpus);
 

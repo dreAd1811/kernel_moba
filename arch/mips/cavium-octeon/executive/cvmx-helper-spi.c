@@ -4,11 +4,7 @@
  * Contact: support@caviumnetworks.com
  * This file is part of the OCTEON SDK
  *
-<<<<<<< HEAD
  * Copyright (C) 2003-2018 Cavium, Inc.
-=======
- * Copyright (c) 2003-2008 Cavium Networks
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, Version 2, as
@@ -29,13 +25,6 @@
  * Contact Cavium Networks for more information
  ***********************license end**************************************/
 
-<<<<<<< HEAD
-=======
-void __cvmx_interrupt_gmxx_enable(int interface);
-void __cvmx_interrupt_spxx_int_msk_enable(int index);
-void __cvmx_interrupt_stxx_int_msk_enable(int index);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Functions for SPI initialization, configuration,
  * and monitoring.
@@ -48,11 +37,8 @@ void __cvmx_interrupt_stxx_int_msk_enable(int index);
 
 #include <asm/octeon/cvmx-pip-defs.h>
 #include <asm/octeon/cvmx-pko-defs.h>
-<<<<<<< HEAD
 #include <asm/octeon/cvmx-spxx-defs.h>
 #include <asm/octeon/cvmx-stxx-defs.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * CVMX_HELPER_SPI_TIMEOUT is used to determine how long the SPI

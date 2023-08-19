@@ -59,54 +59,28 @@ static inline struct wuxga_nt_panel *to_wuxga_nt_panel(struct drm_panel *panel)
 
 static int wuxga_nt_panel_on(struct wuxga_nt_panel *wuxga_nt)
 {
-<<<<<<< HEAD
 	return mipi_dsi_turn_on_peripheral(wuxga_nt->dsi);
-=======
-	struct mipi_dsi_device *dsi = wuxga_nt->dsi;
-	int ret;
-
-	ret = mipi_dsi_turn_on_peripheral(dsi);
-	if (ret < 0)
-		return ret;
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int wuxga_nt_panel_disable(struct drm_panel *panel)
 {
 	struct wuxga_nt_panel *wuxga_nt = to_wuxga_nt_panel(panel);
-<<<<<<< HEAD
 	int mipi_ret, bl_ret = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!wuxga_nt->enabled)
 		return 0;
 
-<<<<<<< HEAD
 	mipi_ret = mipi_dsi_shutdown_peripheral(wuxga_nt->dsi);
-=======
-	mipi_dsi_shutdown_peripheral(wuxga_nt->dsi);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (wuxga_nt->backlight) {
 		wuxga_nt->backlight->props.power = FB_BLANK_POWERDOWN;
 		wuxga_nt->backlight->props.state |= BL_CORE_FBBLANK;
-<<<<<<< HEAD
 		bl_ret = backlight_update_status(wuxga_nt->backlight);
-=======
-		backlight_update_status(wuxga_nt->backlight);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	wuxga_nt->enabled = false;
 
-<<<<<<< HEAD
 	return mipi_ret ? mipi_ret : bl_ret;
-=======
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int wuxga_nt_panel_unprepare(struct drm_panel *panel)
@@ -325,10 +299,6 @@ static int wuxga_nt_panel_remove(struct mipi_dsi_device *dsi)
 	if (ret < 0)
 		dev_err(&dsi->dev, "failed to detach from DSI host: %d\n", ret);
 
-<<<<<<< HEAD
-=======
-	drm_panel_detach(&wuxga_nt->base);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wuxga_nt_panel_del(wuxga_nt);
 
 	return 0;

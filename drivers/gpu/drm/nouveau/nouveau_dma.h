@@ -31,12 +31,7 @@
 #include "nouveau_chan.h"
 
 int nouveau_dma_wait(struct nouveau_channel *, int slots, int size);
-<<<<<<< HEAD
 void nv50_dma_push(struct nouveau_channel *, u64 addr, int length);
-=======
-void nv50_dma_push(struct nouveau_channel *, struct nouveau_bo *,
-		   int delta, int length);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * There's a hw race condition where you can't jump to your PUT offset,
@@ -59,10 +54,6 @@ enum {
 
 	NvSub2D		= 3, /* DO NOT CHANGE - hardcoded for kepler gr fifo */
 	NvSubCopy	= 4, /* DO NOT CHANGE - hardcoded for kepler gr fifo */
-<<<<<<< HEAD
-=======
-	FermiSw		= 5, /* DO NOT CHANGE (well.. 6/7 will work...) */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Object handles - for stuff that's doesn't use handle == oclass. */
@@ -147,11 +138,7 @@ BEGIN_IMC0(struct nouveau_channel *chan, int subc, int mthd, u16 data)
 #define WRITE_PUT(val) do {                                                    \
 	mb();                                                   \
 	nouveau_bo_rd32(chan->push.buffer, 0);                                 \
-<<<<<<< HEAD
 	nvif_wr32(&chan->user, chan->user_put, ((val) << 2) + chan->push.addr);\
-=======
-	nvif_wr32(&chan->user, chan->user_put, ((val) << 2) + chan->push.vma.offset); \
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } while (0)
 
 static inline void
@@ -162,11 +149,7 @@ FIRE_RING(struct nouveau_channel *chan)
 	chan->accel_done = true;
 
 	if (chan->dma.ib_max) {
-<<<<<<< HEAD
 		nv50_dma_push(chan, chan->push.addr + (chan->dma.put << 2),
-=======
-		nv50_dma_push(chan, chan->push.buffer, chan->dma.put << 2,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      (chan->dma.cur - chan->dma.put) << 2);
 	} else {
 		WRITE_PUT(chan->dma.cur);

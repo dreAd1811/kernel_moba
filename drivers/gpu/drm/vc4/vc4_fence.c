@@ -33,14 +33,6 @@ static const char *vc4_fence_get_timeline_name(struct dma_fence *fence)
 	return "vc4-v3d";
 }
 
-<<<<<<< HEAD
-=======
-static bool vc4_fence_enable_signaling(struct dma_fence *fence)
-{
-	return true;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool vc4_fence_signaled(struct dma_fence *fence)
 {
 	struct vc4_fence *f = to_vc4_fence(fence);
@@ -52,12 +44,5 @@ static bool vc4_fence_signaled(struct dma_fence *fence)
 const struct dma_fence_ops vc4_fence_ops = {
 	.get_driver_name = vc4_fence_get_driver_name,
 	.get_timeline_name = vc4_fence_get_timeline_name,
-<<<<<<< HEAD
 	.signaled = vc4_fence_signaled,
-=======
-	.enable_signaling = vc4_fence_enable_signaling,
-	.signaled = vc4_fence_signaled,
-	.wait = dma_fence_default_wait,
-	.release = dma_fence_free,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

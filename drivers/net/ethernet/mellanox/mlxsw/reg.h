@@ -1,53 +1,10 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: BSD-3-Clause OR GPL-2.0 */
 /* Copyright (c) 2015-2018 Mellanox Technologies. All rights reserved */
-=======
-/*
- * drivers/net/ethernet/mellanox/mlxsw/reg.h
- * Copyright (c) 2015-2017 Mellanox Technologies. All rights reserved.
- * Copyright (c) 2015-2016 Ido Schimmel <idosch@mellanox.com>
- * Copyright (c) 2015 Elad Raz <eladr@mellanox.com>
- * Copyright (c) 2015-2017 Jiri Pirko <jiri@mellanox.com>
- * Copyright (c) 2016 Yotam Gigi <yotamg@mellanox.com>
- * Copyright (c) 2017 Petr Machata <petrm@mellanox.com>
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- * 3. Neither the names of the copyright holders nor the names of its
- *    contributors may be used to endorse or promote products derived from
- *    this software without specific prior written permission.
- *
- * Alternatively, this software may be distributed under the terms of the
- * GNU General Public License ("GPL") version 2 as published by the Free
- * Software Foundation.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifndef _MLXSW_REG_H
 #define _MLXSW_REG_H
 
-<<<<<<< HEAD
 #include <linux/kernel.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/string.h>
 #include <linux/bitops.h>
 #include <linux/if_vlan.h>
@@ -1767,7 +1724,6 @@ static inline void mlxsw_reg_spvmlr_pack(char *payload, u8 local_port,
 	}
 }
 
-<<<<<<< HEAD
 /* CWTP - Congetion WRED ECN TClass Profile
  * ----------------------------------------
  * Configures the profiles for queues of egress port and traffic class
@@ -1975,8 +1931,6 @@ static inline void mlxsw_reg_pgcr_pack(char *payload, u32 pointer_base)
 	mlxsw_reg_pgcr_default_action_pointer_base_set(payload, pointer_base);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* PPBT - Policy-Engine Port Binding Table
  * ---------------------------------------
  * This register is used for configuration of the Port Binding Table.
@@ -2166,16 +2120,11 @@ MLXSW_ITEM32(reg, ptar, op, 0x00, 28, 4);
 
 /* reg_ptar_action_set_type
  * Type of action set to be used on this region.
-<<<<<<< HEAD
  * For Spectrum and Spectrum-2, this is always type 2 - "flexible"
-=======
- * For Spectrum, this is always type 2 - "flexible"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Access: WO
  */
 MLXSW_ITEM32(reg, ptar, action_set_type, 0x00, 16, 8);
 
-<<<<<<< HEAD
 enum mlxsw_reg_ptar_key_type {
 	MLXSW_REG_PTAR_KEY_TYPE_FLEX = 0x50, /* Spetrum */
 	MLXSW_REG_PTAR_KEY_TYPE_FLEX2 = 0x51, /* Spectrum-2 */
@@ -2183,11 +2132,6 @@ enum mlxsw_reg_ptar_key_type {
 
 /* reg_ptar_key_type
  * TCAM key type for the region.
-=======
-/* reg_ptar_key_type
- * TCAM key type for the region.
- * For Spectrum, this is always type 0x50 - "FLEX_KEY"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Access: WO
  */
 MLXSW_ITEM32(reg, ptar, key_type, 0x00, 0, 8);
@@ -2230,21 +2174,14 @@ MLXSW_ITEM8_INDEXED(reg, ptar, flexible_key_id, 0x20, 0, 8,
 		    MLXSW_REG_PTAR_KEY_ID_LEN, 0x00, false);
 
 static inline void mlxsw_reg_ptar_pack(char *payload, enum mlxsw_reg_ptar_op op,
-<<<<<<< HEAD
 				       enum mlxsw_reg_ptar_key_type key_type,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       u16 region_size, u16 region_id,
 				       const char *tcam_region_info)
 {
 	MLXSW_REG_ZERO(ptar, payload);
 	mlxsw_reg_ptar_op_set(payload, op);
 	mlxsw_reg_ptar_action_set_type_set(payload, 2); /* "flexible" */
-<<<<<<< HEAD
 	mlxsw_reg_ptar_key_type_set(payload, key_type);
-=======
-	mlxsw_reg_ptar_key_type_set(payload, 0x50); /* "FLEX_KEY" */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlxsw_reg_ptar_region_size_set(payload, region_size);
 	mlxsw_reg_ptar_region_id_set(payload, region_id);
 	mlxsw_reg_ptar_tcam_region_info_memcpy_to(payload, tcam_region_info);
@@ -2383,7 +2320,6 @@ MLXSW_REG_DEFINE(pefa, MLXSW_REG_PEFA_ID, MLXSW_REG_PEFA_LEN);
  */
 MLXSW_ITEM32(reg, pefa, index, 0x00, 0, 24);
 
-<<<<<<< HEAD
 /* reg_pefa_a
  * Index in the KVD Linear Centralized Database.
  * Activity
@@ -2402,30 +2338,19 @@ MLXSW_ITEM32(reg, pefa, a, 0x04, 29, 1);
 MLXSW_ITEM32(reg, pefa, ca, 0x04, 24, 1);
 
 #define MLXSW_REG_FLEX_ACTION_SET_LEN 0xA8
-=======
-#define MLXSW_REG_PXXX_FLEX_ACTION_SET_LEN 0xA8
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* reg_pefa_flex_action_set
  * Action-set to perform when rule is matched.
  * Must be zero padded if action set is shorter.
  * Access: RW
  */
-<<<<<<< HEAD
 MLXSW_ITEM_BUF(reg, pefa, flex_action_set, 0x08, MLXSW_REG_FLEX_ACTION_SET_LEN);
 
 static inline void mlxsw_reg_pefa_pack(char *payload, u32 index, bool ca,
-=======
-MLXSW_ITEM_BUF(reg, pefa, flex_action_set, 0x08,
-	       MLXSW_REG_PXXX_FLEX_ACTION_SET_LEN);
-
-static inline void mlxsw_reg_pefa_pack(char *payload, u32 index,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       const char *flex_action_set)
 {
 	MLXSW_REG_ZERO(pefa, payload);
 	mlxsw_reg_pefa_index_set(payload, index);
-<<<<<<< HEAD
 	mlxsw_reg_pefa_ca_set(payload, ca);
 	if (flex_action_set)
 		mlxsw_reg_pefa_flex_action_set_memcpy_to(payload,
@@ -2435,9 +2360,6 @@ static inline void mlxsw_reg_pefa_pack(char *payload, u32 index,
 static inline void mlxsw_reg_pefa_unpack(char *payload, bool *p_a)
 {
 	*p_a = mlxsw_reg_pefa_a_get(payload);
-=======
-	mlxsw_reg_pefa_flex_action_set_memcpy_to(payload, flex_action_set);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* PTCE-V2 - Policy-Engine TCAM Entry Register Version 2
@@ -2493,7 +2415,6 @@ MLXSW_ITEM32(reg, ptce2, op, 0x00, 20, 3);
  */
 MLXSW_ITEM32(reg, ptce2, offset, 0x00, 0, 16);
 
-<<<<<<< HEAD
 /* reg_ptce2_priority
  * Priority of the rule, higher values win. The range is 1..cap_kvd_size-1.
  * Note: priority does not have to be unique per rule.
@@ -2503,8 +2424,6 @@ MLXSW_ITEM32(reg, ptce2, offset, 0x00, 0, 16);
  */
 MLXSW_ITEM32(reg, ptce2, priority, 0x04, 0, 24);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* reg_ptce2_tcam_region_info
  * Opaque object that represents the TCAM region.
  * Access: Index
@@ -2512,22 +2431,14 @@ MLXSW_ITEM32(reg, ptce2, priority, 0x04, 0, 24);
 MLXSW_ITEM_BUF(reg, ptce2, tcam_region_info, 0x10,
 	       MLXSW_REG_PXXX_TCAM_REGION_INFO_LEN);
 
-<<<<<<< HEAD
 #define MLXSW_REG_PTCEX_FLEX_KEY_BLOCKS_LEN 96
-=======
-#define MLXSW_REG_PTCE2_FLEX_KEY_BLOCKS_LEN 96
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* reg_ptce2_flex_key_blocks
  * ACL Key.
  * Access: RW
  */
 MLXSW_ITEM_BUF(reg, ptce2, flex_key_blocks, 0x20,
-<<<<<<< HEAD
 	       MLXSW_REG_PTCEX_FLEX_KEY_BLOCKS_LEN);
-=======
-	       MLXSW_REG_PTCE2_FLEX_KEY_BLOCKS_LEN);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* reg_ptce2_mask
  * mask- in the same size as key. A bit that is set directs the TCAM
@@ -2536,37 +2447,24 @@ MLXSW_ITEM_BUF(reg, ptce2, flex_key_blocks, 0x20,
  * Access: RW
  */
 MLXSW_ITEM_BUF(reg, ptce2, mask, 0x80,
-<<<<<<< HEAD
 	       MLXSW_REG_PTCEX_FLEX_KEY_BLOCKS_LEN);
-=======
-	       MLXSW_REG_PTCE2_FLEX_KEY_BLOCKS_LEN);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* reg_ptce2_flex_action_set
  * ACL action set.
  * Access: RW
  */
 MLXSW_ITEM_BUF(reg, ptce2, flex_action_set, 0xE0,
-<<<<<<< HEAD
 	       MLXSW_REG_FLEX_ACTION_SET_LEN);
-=======
-	       MLXSW_REG_PXXX_FLEX_ACTION_SET_LEN);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline void mlxsw_reg_ptce2_pack(char *payload, bool valid,
 					enum mlxsw_reg_ptce2_op op,
 					const char *tcam_region_info,
-<<<<<<< HEAD
 					u16 offset, u32 priority)
-=======
-					u16 offset)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	MLXSW_REG_ZERO(ptce2, payload);
 	mlxsw_reg_ptce2_v_set(payload, valid);
 	mlxsw_reg_ptce2_op_set(payload, op);
 	mlxsw_reg_ptce2_offset_set(payload, offset);
-<<<<<<< HEAD
 	mlxsw_reg_ptce2_priority_set(payload, priority);
 	mlxsw_reg_ptce2_tcam_region_info_memcpy_to(payload, tcam_region_info);
 }
@@ -3122,11 +3020,6 @@ static inline void mlxsw_reg_qpts_pack(char *payload, u8 local_port,
 	mlxsw_reg_qpts_trust_state_set(payload, ts);
 }
 
-=======
-	mlxsw_reg_ptce2_tcam_region_info_memcpy_to(payload, tcam_region_info);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* QPCR - QoS Policer Configuration Register
  * -----------------------------------------
  * The QPCR register is used to create policers - that limit
@@ -3322,11 +3215,7 @@ static inline void mlxsw_reg_qtct_pack(char *payload, u8 local_port,
  * Configures the ETS elements.
  */
 #define MLXSW_REG_QEEC_ID 0x400D
-<<<<<<< HEAD
 #define MLXSW_REG_QEEC_LEN 0x1C
-=======
-#define MLXSW_REG_QEEC_LEN 0x20
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 MLXSW_REG_DEFINE(qeec, MLXSW_REG_QEEC_ID, MLXSW_REG_QEEC_LEN);
 
@@ -3368,18 +3257,6 @@ MLXSW_ITEM32(reg, qeec, element_index, 0x04, 0, 8);
  */
 MLXSW_ITEM32(reg, qeec, next_element_index, 0x08, 0, 8);
 
-<<<<<<< HEAD
-=======
-/* reg_qeec_mise
- * Min shaper configuration enable. Enables configuration of the min
- * shaper on this ETS element
- * 0 - Disable
- * 1 - Enable
- * Access: RW
- */
-MLXSW_ITEM32(reg, qeec, mise, 0x0C, 31, 1);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum {
 	MLXSW_REG_QEEC_BYTES_MODE,
 	MLXSW_REG_QEEC_PACKETS_MODE,
@@ -3396,20 +3273,6 @@ enum {
  */
 MLXSW_ITEM32(reg, qeec, pb, 0x0C, 28, 1);
 
-<<<<<<< HEAD
-=======
-/* The smallest permitted min shaper rate. */
-#define MLXSW_REG_QEEC_MIS_MIN	200000		/* Kbps */
-
-/* reg_qeec_min_shaper_rate
- * Min shaper information rate.
- * For CPU port, can only be configured for port hierarchy.
- * When in bytes mode, value is specified in units of 1000bps.
- * Access: RW
- */
-MLXSW_ITEM32(reg, qeec, min_shaper_rate, 0x0C, 0, 28);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* reg_qeec_mase
  * Max shaper configuration enable. Enables configuration of the max
  * shaper on this ETS element.
@@ -3469,7 +3332,6 @@ static inline void mlxsw_reg_qeec_pack(char *payload, u8 local_port,
 	mlxsw_reg_qeec_next_element_index_set(payload, next_index);
 }
 
-<<<<<<< HEAD
 /* QRWE - QoS ReWrite Enable
  * -------------------------
  * This register configures the rewrite enable per receive port.
@@ -3683,8 +3545,6 @@ mlxsw_reg_qtctm_pack(char *payload, u8 local_port, bool mc)
 	mlxsw_reg_qtctm_mc_set(payload, mc);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* PMLP - Ports Module to Local Port Register
  * ------------------------------------------
  * Configures the assignment of modules to local ports.
@@ -3804,7 +3664,6 @@ static inline void mlxsw_reg_pmtu_pack(char *payload, u8 local_port,
 
 MLXSW_REG_DEFINE(ptys, MLXSW_REG_PTYS_ID, MLXSW_REG_PTYS_LEN);
 
-<<<<<<< HEAD
 /* an_disable_admin
  * Auto negotiation disable administrative configuration
  * 0 - Device doesn't support AN disable.
@@ -3813,8 +3672,6 @@ MLXSW_REG_DEFINE(ptys, MLXSW_REG_PTYS_ID, MLXSW_REG_PTYS_LEN);
  */
 MLXSW_ITEM32(reg, ptys, an_disable_admin, 0x00, 30, 1);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* reg_ptys_local_port
  * Local port number.
  * Access: Index
@@ -3943,20 +3800,13 @@ MLXSW_ITEM32(reg, ptys, ib_proto_oper, 0x28, 0, 16);
 MLXSW_ITEM32(reg, ptys, eth_proto_lp_advertise, 0x30, 0, 32);
 
 static inline void mlxsw_reg_ptys_eth_pack(char *payload, u8 local_port,
-<<<<<<< HEAD
 					   u32 proto_admin, bool autoneg)
-=======
-					   u32 proto_admin)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	MLXSW_REG_ZERO(ptys, payload);
 	mlxsw_reg_ptys_local_port_set(payload, local_port);
 	mlxsw_reg_ptys_proto_mask_set(payload, MLXSW_REG_PTYS_PROTO_MASK_ETH);
 	mlxsw_reg_ptys_eth_proto_admin_set(payload, proto_admin);
-<<<<<<< HEAD
 	mlxsw_reg_ptys_an_disable_admin_set(payload, !autoneg);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void mlxsw_reg_ptys_eth_unpack(char *payload,
@@ -4259,10 +4109,7 @@ static inline void mlxsw_reg_pfcc_pack(char *payload, u8 local_port)
  */
 #define MLXSW_REG_PPCNT_ID 0x5008
 #define MLXSW_REG_PPCNT_LEN 0x100
-<<<<<<< HEAD
 #define MLXSW_REG_PPCNT_COUNTERS_OFFSET 0x08
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 MLXSW_REG_DEFINE(ppcnt, MLXSW_REG_PPCNT_ID, MLXSW_REG_PPCNT_LEN);
 
@@ -4295,16 +4142,11 @@ MLXSW_ITEM32(reg, ppcnt, pnat, 0x00, 14, 2);
 
 enum mlxsw_reg_ppcnt_grp {
 	MLXSW_REG_PPCNT_IEEE_8023_CNT = 0x0,
-<<<<<<< HEAD
 	MLXSW_REG_PPCNT_RFC_2819_CNT = 0x2,
 	MLXSW_REG_PPCNT_EXT_CNT = 0x5,
 	MLXSW_REG_PPCNT_PRIO_CNT = 0x10,
 	MLXSW_REG_PPCNT_TC_CNT = 0x11,
 	MLXSW_REG_PPCNT_TC_CONG_TC = 0x13,
-=======
-	MLXSW_REG_PPCNT_PRIO_CNT = 0x10,
-	MLXSW_REG_PPCNT_TC_CNT = 0x11,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* reg_ppcnt_grp
@@ -4320,10 +4162,7 @@ enum mlxsw_reg_ppcnt_grp {
  * 0x10: Per Priority Counters
  * 0x11: Per Traffic Class Counters
  * 0x12: Physical Layer Counters
-<<<<<<< HEAD
  * 0x13: Per Traffic Class Congestion Counters
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Access: Index
  */
 MLXSW_ITEM32(reg, ppcnt, grp, 0x00, 0, 6);
@@ -4352,187 +4191,114 @@ MLXSW_ITEM32(reg, ppcnt, prio_tc, 0x04, 0, 5);
  * Access: RO
  */
 MLXSW_ITEM64(reg, ppcnt, a_frames_transmitted_ok,
-<<<<<<< HEAD
 	     MLXSW_REG_PPCNT_COUNTERS_OFFSET + 0x00, 0, 64);
-=======
-	     0x08 + 0x00, 0, 64);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* reg_ppcnt_a_frames_received_ok
  * Access: RO
  */
 MLXSW_ITEM64(reg, ppcnt, a_frames_received_ok,
-<<<<<<< HEAD
 	     MLXSW_REG_PPCNT_COUNTERS_OFFSET + 0x08, 0, 64);
-=======
-	     0x08 + 0x08, 0, 64);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* reg_ppcnt_a_frame_check_sequence_errors
  * Access: RO
  */
 MLXSW_ITEM64(reg, ppcnt, a_frame_check_sequence_errors,
-<<<<<<< HEAD
 	     MLXSW_REG_PPCNT_COUNTERS_OFFSET + 0x10, 0, 64);
-=======
-	     0x08 + 0x10, 0, 64);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* reg_ppcnt_a_alignment_errors
  * Access: RO
  */
 MLXSW_ITEM64(reg, ppcnt, a_alignment_errors,
-<<<<<<< HEAD
 	     MLXSW_REG_PPCNT_COUNTERS_OFFSET + 0x18, 0, 64);
-=======
-	     0x08 + 0x18, 0, 64);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* reg_ppcnt_a_octets_transmitted_ok
  * Access: RO
  */
 MLXSW_ITEM64(reg, ppcnt, a_octets_transmitted_ok,
-<<<<<<< HEAD
 	     MLXSW_REG_PPCNT_COUNTERS_OFFSET + 0x20, 0, 64);
-=======
-	     0x08 + 0x20, 0, 64);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* reg_ppcnt_a_octets_received_ok
  * Access: RO
  */
 MLXSW_ITEM64(reg, ppcnt, a_octets_received_ok,
-<<<<<<< HEAD
 	     MLXSW_REG_PPCNT_COUNTERS_OFFSET + 0x28, 0, 64);
-=======
-	     0x08 + 0x28, 0, 64);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* reg_ppcnt_a_multicast_frames_xmitted_ok
  * Access: RO
  */
 MLXSW_ITEM64(reg, ppcnt, a_multicast_frames_xmitted_ok,
-<<<<<<< HEAD
 	     MLXSW_REG_PPCNT_COUNTERS_OFFSET + 0x30, 0, 64);
-=======
-	     0x08 + 0x30, 0, 64);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* reg_ppcnt_a_broadcast_frames_xmitted_ok
  * Access: RO
  */
 MLXSW_ITEM64(reg, ppcnt, a_broadcast_frames_xmitted_ok,
-<<<<<<< HEAD
 	     MLXSW_REG_PPCNT_COUNTERS_OFFSET + 0x38, 0, 64);
-=======
-	     0x08 + 0x38, 0, 64);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* reg_ppcnt_a_multicast_frames_received_ok
  * Access: RO
  */
 MLXSW_ITEM64(reg, ppcnt, a_multicast_frames_received_ok,
-<<<<<<< HEAD
 	     MLXSW_REG_PPCNT_COUNTERS_OFFSET + 0x40, 0, 64);
-=======
-	     0x08 + 0x40, 0, 64);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* reg_ppcnt_a_broadcast_frames_received_ok
  * Access: RO
  */
 MLXSW_ITEM64(reg, ppcnt, a_broadcast_frames_received_ok,
-<<<<<<< HEAD
 	     MLXSW_REG_PPCNT_COUNTERS_OFFSET + 0x48, 0, 64);
-=======
-	     0x08 + 0x48, 0, 64);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* reg_ppcnt_a_in_range_length_errors
  * Access: RO
  */
 MLXSW_ITEM64(reg, ppcnt, a_in_range_length_errors,
-<<<<<<< HEAD
 	     MLXSW_REG_PPCNT_COUNTERS_OFFSET + 0x50, 0, 64);
-=======
-	     0x08 + 0x50, 0, 64);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* reg_ppcnt_a_out_of_range_length_field
  * Access: RO
  */
 MLXSW_ITEM64(reg, ppcnt, a_out_of_range_length_field,
-<<<<<<< HEAD
 	     MLXSW_REG_PPCNT_COUNTERS_OFFSET + 0x58, 0, 64);
-=======
-	     0x08 + 0x58, 0, 64);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* reg_ppcnt_a_frame_too_long_errors
  * Access: RO
  */
 MLXSW_ITEM64(reg, ppcnt, a_frame_too_long_errors,
-<<<<<<< HEAD
 	     MLXSW_REG_PPCNT_COUNTERS_OFFSET + 0x60, 0, 64);
-=======
-	     0x08 + 0x60, 0, 64);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* reg_ppcnt_a_symbol_error_during_carrier
  * Access: RO
  */
 MLXSW_ITEM64(reg, ppcnt, a_symbol_error_during_carrier,
-<<<<<<< HEAD
 	     MLXSW_REG_PPCNT_COUNTERS_OFFSET + 0x68, 0, 64);
-=======
-	     0x08 + 0x68, 0, 64);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* reg_ppcnt_a_mac_control_frames_transmitted
  * Access: RO
  */
 MLXSW_ITEM64(reg, ppcnt, a_mac_control_frames_transmitted,
-<<<<<<< HEAD
 	     MLXSW_REG_PPCNT_COUNTERS_OFFSET + 0x70, 0, 64);
-=======
-	     0x08 + 0x70, 0, 64);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* reg_ppcnt_a_mac_control_frames_received
  * Access: RO
  */
 MLXSW_ITEM64(reg, ppcnt, a_mac_control_frames_received,
-<<<<<<< HEAD
 	     MLXSW_REG_PPCNT_COUNTERS_OFFSET + 0x78, 0, 64);
-=======
-	     0x08 + 0x78, 0, 64);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* reg_ppcnt_a_unsupported_opcodes_received
  * Access: RO
  */
 MLXSW_ITEM64(reg, ppcnt, a_unsupported_opcodes_received,
-<<<<<<< HEAD
 	     MLXSW_REG_PPCNT_COUNTERS_OFFSET + 0x80, 0, 64);
-=======
-	     0x08 + 0x80, 0, 64);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* reg_ppcnt_a_pause_mac_ctrl_frames_received
  * Access: RO
  */
 MLXSW_ITEM64(reg, ppcnt, a_pause_mac_ctrl_frames_received,
-<<<<<<< HEAD
 	     MLXSW_REG_PPCNT_COUNTERS_OFFSET + 0x88, 0, 64);
-=======
-	     0x08 + 0x88, 0, 64);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* reg_ppcnt_a_pause_mac_ctrl_frames_transmitted
  * Access: RO
  */
 MLXSW_ITEM64(reg, ppcnt, a_pause_mac_ctrl_frames_transmitted,
-<<<<<<< HEAD
 	     MLXSW_REG_PPCNT_COUNTERS_OFFSET + 0x90, 0, 64);
 
 /* Ethernet RFC 2819 Counter Group */
@@ -4604,101 +4370,62 @@ MLXSW_ITEM64(reg, ppcnt, ether_stats_pkts8192to10239octets,
  */
 MLXSW_ITEM64(reg, ppcnt, ecn_marked,
 	     MLXSW_REG_PPCNT_COUNTERS_OFFSET + 0x08, 0, 64);
-=======
-	     0x08 + 0x90, 0, 64);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Ethernet Per Priority Group Counters */
 
 /* reg_ppcnt_rx_octets
  * Access: RO
  */
-<<<<<<< HEAD
 MLXSW_ITEM64(reg, ppcnt, rx_octets,
 	     MLXSW_REG_PPCNT_COUNTERS_OFFSET + 0x00, 0, 64);
-=======
-MLXSW_ITEM64(reg, ppcnt, rx_octets, 0x08 + 0x00, 0, 64);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* reg_ppcnt_rx_frames
  * Access: RO
  */
-<<<<<<< HEAD
 MLXSW_ITEM64(reg, ppcnt, rx_frames,
 	     MLXSW_REG_PPCNT_COUNTERS_OFFSET + 0x20, 0, 64);
-=======
-MLXSW_ITEM64(reg, ppcnt, rx_frames, 0x08 + 0x20, 0, 64);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* reg_ppcnt_tx_octets
  * Access: RO
  */
-<<<<<<< HEAD
 MLXSW_ITEM64(reg, ppcnt, tx_octets,
 	     MLXSW_REG_PPCNT_COUNTERS_OFFSET + 0x28, 0, 64);
-=======
-MLXSW_ITEM64(reg, ppcnt, tx_octets, 0x08 + 0x28, 0, 64);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* reg_ppcnt_tx_frames
  * Access: RO
  */
-<<<<<<< HEAD
 MLXSW_ITEM64(reg, ppcnt, tx_frames,
 	     MLXSW_REG_PPCNT_COUNTERS_OFFSET + 0x48, 0, 64);
-=======
-MLXSW_ITEM64(reg, ppcnt, tx_frames, 0x08 + 0x48, 0, 64);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* reg_ppcnt_rx_pause
  * Access: RO
  */
-<<<<<<< HEAD
 MLXSW_ITEM64(reg, ppcnt, rx_pause,
 	     MLXSW_REG_PPCNT_COUNTERS_OFFSET + 0x50, 0, 64);
-=======
-MLXSW_ITEM64(reg, ppcnt, rx_pause, 0x08 + 0x50, 0, 64);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* reg_ppcnt_rx_pause_duration
  * Access: RO
  */
-<<<<<<< HEAD
 MLXSW_ITEM64(reg, ppcnt, rx_pause_duration,
 	     MLXSW_REG_PPCNT_COUNTERS_OFFSET + 0x58, 0, 64);
-=======
-MLXSW_ITEM64(reg, ppcnt, rx_pause_duration, 0x08 + 0x58, 0, 64);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* reg_ppcnt_tx_pause
  * Access: RO
  */
-<<<<<<< HEAD
 MLXSW_ITEM64(reg, ppcnt, tx_pause,
 	     MLXSW_REG_PPCNT_COUNTERS_OFFSET + 0x60, 0, 64);
-=======
-MLXSW_ITEM64(reg, ppcnt, tx_pause, 0x08 + 0x60, 0, 64);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* reg_ppcnt_tx_pause_duration
  * Access: RO
  */
-<<<<<<< HEAD
 MLXSW_ITEM64(reg, ppcnt, tx_pause_duration,
 	     MLXSW_REG_PPCNT_COUNTERS_OFFSET + 0x68, 0, 64);
-=======
-MLXSW_ITEM64(reg, ppcnt, tx_pause_duration, 0x08 + 0x68, 0, 64);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* reg_ppcnt_rx_pause_transition
  * Access: RO
  */
-<<<<<<< HEAD
 MLXSW_ITEM64(reg, ppcnt, tx_pause_transition,
 	     MLXSW_REG_PPCNT_COUNTERS_OFFSET + 0x70, 0, 64);
-=======
-MLXSW_ITEM64(reg, ppcnt, tx_pause_transition, 0x08 + 0x70, 0, 64);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Ethernet Per Traffic Group Counters */
 
@@ -4708,19 +4435,14 @@ MLXSW_ITEM64(reg, ppcnt, tx_pause_transition, 0x08 + 0x70, 0, 64);
  * The field cannot be cleared.
  * Access: RO
  */
-<<<<<<< HEAD
 MLXSW_ITEM64(reg, ppcnt, tc_transmit_queue,
 	     MLXSW_REG_PPCNT_COUNTERS_OFFSET + 0x00, 0, 64);
-=======
-MLXSW_ITEM64(reg, ppcnt, tc_transmit_queue, 0x08 + 0x00, 0, 64);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* reg_ppcnt_tc_no_buffer_discard_uc
  * The number of unicast packets dropped due to lack of shared
  * buffer resources.
  * Access: RO
  */
-<<<<<<< HEAD
 MLXSW_ITEM64(reg, ppcnt, tc_no_buffer_discard_uc,
 	     MLXSW_REG_PPCNT_COUNTERS_OFFSET + 0x08, 0, 64);
 
@@ -4731,9 +4453,6 @@ MLXSW_ITEM64(reg, ppcnt, tc_no_buffer_discard_uc,
  */
 MLXSW_ITEM64(reg, ppcnt, wred_discard,
 	     MLXSW_REG_PPCNT_COUNTERS_OFFSET + 0x00, 0, 64);
-=======
-MLXSW_ITEM64(reg, ppcnt, tc_no_buffer_discard_uc, 0x08 + 0x08, 0, 64);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline void mlxsw_reg_ppcnt_pack(char *payload, u8 local_port,
 					enum mlxsw_reg_ppcnt_grp grp,
@@ -5042,21 +4761,15 @@ enum mlxsw_reg_htgt_trap_group {
 	MLXSW_REG_HTGT_TRAP_GROUP_SP_IGMP,
 	MLXSW_REG_HTGT_TRAP_GROUP_SP_BGP,
 	MLXSW_REG_HTGT_TRAP_GROUP_SP_OSPF,
-<<<<<<< HEAD
 	MLXSW_REG_HTGT_TRAP_GROUP_SP_PIM,
 	MLXSW_REG_HTGT_TRAP_GROUP_SP_MULTICAST,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MLXSW_REG_HTGT_TRAP_GROUP_SP_ARP,
 	MLXSW_REG_HTGT_TRAP_GROUP_SP_HOST_MISS,
 	MLXSW_REG_HTGT_TRAP_GROUP_SP_ROUTER_EXP,
 	MLXSW_REG_HTGT_TRAP_GROUP_SP_REMOTE_ROUTE,
 	MLXSW_REG_HTGT_TRAP_GROUP_SP_IP2ME,
 	MLXSW_REG_HTGT_TRAP_GROUP_SP_DHCP,
-<<<<<<< HEAD
 	MLXSW_REG_HTGT_TRAP_GROUP_SP_RPF,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MLXSW_REG_HTGT_TRAP_GROUP_SP_EVENT,
 	MLXSW_REG_HTGT_TRAP_GROUP_SP_IPV6_MLD,
 	MLXSW_REG_HTGT_TRAP_GROUP_SP_IPV6_ND,
@@ -5361,7 +5074,6 @@ MLXSW_ITEM32(reg, ritr, ipv4, 0x00, 29, 1);
  */
 MLXSW_ITEM32(reg, ritr, ipv6, 0x00, 28, 1);
 
-<<<<<<< HEAD
 /* reg_ritr_ipv4_mc
  * IPv4 multicast routing enable.
  * Access: RW
@@ -5374,8 +5086,6 @@ MLXSW_ITEM32(reg, ritr, ipv4_mc, 0x00, 27, 1);
  */
 MLXSW_ITEM32(reg, ritr, ipv6_mc, 0x00, 26, 1);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum mlxsw_reg_ritr_if_type {
 	/* VLAN interface. */
 	MLXSW_REG_RITR_VLAN_IF,
@@ -5433,7 +5143,6 @@ MLXSW_ITEM32(reg, ritr, ipv4_fe, 0x04, 29, 1);
  */
 MLXSW_ITEM32(reg, ritr, ipv6_fe, 0x04, 28, 1);
 
-<<<<<<< HEAD
 /* reg_ritr_ipv4_mc_fe
  * IPv4 Multicast Forwarding Enable.
  * When disabled, forwarding is blocked but local traffic (traps and IP to me)
@@ -5450,8 +5159,6 @@ MLXSW_ITEM32(reg, ritr, ipv4_mc_fe, 0x04, 27, 1);
  */
 MLXSW_ITEM32(reg, ritr, ipv6_mc_fe, 0x04, 26, 1);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* reg_ritr_lb_en
  * Loop-back filter enable for unicast packets.
  * If the flag is set then loop-back filter for unicast packets is
@@ -5486,7 +5193,6 @@ MLXSW_ITEM32(reg, ritr, if_swid, 0x08, 24, 8);
  */
 MLXSW_ITEM_BUF(reg, ritr, if_mac, 0x12, 6);
 
-<<<<<<< HEAD
 /* reg_ritr_if_vrrp_id_ipv6
  * VRRP ID for IPv6
  * Note: Reserved for RIF types other than VLAN, FID and Sub-port.
@@ -5501,8 +5207,6 @@ MLXSW_ITEM32(reg, ritr, if_vrrp_id_ipv6, 0x1C, 8, 8);
  */
 MLXSW_ITEM32(reg, ritr, if_vrrp_id_ipv4, 0x1C, 0, 8);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* VLAN Interface */
 
 /* reg_ritr_vlan_if_vid
@@ -5691,21 +5395,15 @@ static inline void mlxsw_reg_ritr_pack(char *payload, bool enable,
 	mlxsw_reg_ritr_enable_set(payload, enable);
 	mlxsw_reg_ritr_ipv4_set(payload, 1);
 	mlxsw_reg_ritr_ipv6_set(payload, 1);
-<<<<<<< HEAD
 	mlxsw_reg_ritr_ipv4_mc_set(payload, 1);
 	mlxsw_reg_ritr_ipv6_mc_set(payload, 1);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlxsw_reg_ritr_type_set(payload, type);
 	mlxsw_reg_ritr_op_set(payload, op);
 	mlxsw_reg_ritr_rif_set(payload, rif);
 	mlxsw_reg_ritr_ipv4_fe_set(payload, 1);
 	mlxsw_reg_ritr_ipv6_fe_set(payload, 1);
-<<<<<<< HEAD
 	mlxsw_reg_ritr_ipv4_mc_fe_set(payload, 1);
 	mlxsw_reg_ritr_ipv6_mc_fe_set(payload, 1);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlxsw_reg_ritr_lb_en_set(payload, 1);
 	mlxsw_reg_ritr_virtual_router_set(payload, vr_id);
 	mlxsw_reg_ritr_mtu_set(payload, mtu);
@@ -5741,7 +5439,6 @@ mlxsw_reg_ritr_loopback_ipip4_pack(char *payload,
 	mlxsw_reg_ritr_loopback_ipip_usip4_set(payload, usip);
 }
 
-<<<<<<< HEAD
 /* RTAR - Router TCAM Allocation Register
  * --------------------------------------
  * This register is used for allocation of regions in the TCAM table.
@@ -5793,8 +5490,6 @@ static inline void mlxsw_reg_rtar_pack(char *payload,
 	mlxsw_reg_rtar_region_size_set(payload, region_size);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* RATR - Router Adjacency Table Register
  * --------------------------------------
  * The RATR register is used to configure the Router Adjacency (next-hop)
@@ -5964,7 +5659,6 @@ MLXSW_ITEM32(reg, ratr, ipip_ipv4_udip, 0x18, 0, 32);
  */
 MLXSW_ITEM32(reg, ratr, ipip_ipv6_ptr, 0x1C, 0, 24);
 
-<<<<<<< HEAD
 enum mlxsw_reg_flow_counter_set_type {
 	/* No count */
 	MLXSW_REG_FLOW_COUNTER_SET_TYPE_NO_COUNT = 0x00,
@@ -5986,8 +5680,6 @@ MLXSW_ITEM32(reg, ratr, counter_set_type, 0x28, 24, 8);
  */
 MLXSW_ITEM32(reg, ratr, counter_index, 0x28, 0, 24);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void
 mlxsw_reg_ratr_pack(char *payload,
 		    enum mlxsw_reg_ratr_op op, bool valid,
@@ -6015,7 +5707,6 @@ static inline void mlxsw_reg_ratr_ipip4_entry_pack(char *payload, u32 ipv4_udip)
 	mlxsw_reg_ratr_ipip_ipv4_udip_set(payload, ipv4_udip);
 }
 
-<<<<<<< HEAD
 static inline void mlxsw_reg_ratr_counter_pack(char *payload, u64 counter_index,
 					       bool counter_enable)
 {
@@ -6066,8 +5757,6 @@ static inline void mlxsw_reg_rdpm_pack(char *payload, unsigned short index,
 	mlxsw_reg_rdpm_dscp_entry_prio_set(payload, index, prio);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* RICNT - Router Interface Counter Register
  * -----------------------------------------
  * The RICNT register retrieves per port performance counters
@@ -6191,7 +5880,6 @@ static inline void mlxsw_reg_ricnt_pack(char *payload, u32 index,
 					     MLXSW_REG_RICNT_COUNTER_SET_TYPE_BASIC);
 }
 
-<<<<<<< HEAD
 /* RRCR - Router Rules Copy Register Layout
  * ----------------------------------------
  * This register is used for moving and copying route entry rules.
@@ -6251,8 +5939,6 @@ static inline void mlxsw_reg_rrcr_pack(char *payload, enum mlxsw_reg_rrcr_op op,
 	mlxsw_reg_rrcr_dest_offset_set(payload, dest_offset);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* RALTA - Router Algorithmic LPM Tree Allocation Register
  * -------------------------------------------------------
  * RALTA is used to allocate the LPM trees of the SHSPM method.
@@ -6792,18 +6478,6 @@ enum mlxsw_reg_rauht_trap_id {
  */
 MLXSW_ITEM32(reg, rauht, trap_id, 0x60, 0, 9);
 
-<<<<<<< HEAD
-=======
-enum mlxsw_reg_flow_counter_set_type {
-	/* No count */
-	MLXSW_REG_FLOW_COUNTER_SET_TYPE_NO_COUNT = 0x00,
-	/* Count packets and bytes */
-	MLXSW_REG_FLOW_COUNTER_SET_TYPE_PACKETS_BYTES = 0x03,
-	/* Count only packets */
-	MLXSW_REG_FLOW_COUNTER_SET_TYPE_PACKETS = 0x05,
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* reg_rauht_counter_set_type
  * Counter set type for flow counters
  * Access: RW
@@ -7222,7 +6896,6 @@ mlxsw_reg_rtdp_ipip4_pack(char *payload, u16 irif,
 	mlxsw_reg_rtdp_ipip_expected_gre_key_set(payload, expected_gre_key);
 }
 
-<<<<<<< HEAD
 /* RIGR-V2 - Router Interface Group Register Version 2
  * ---------------------------------------------------
  * The RIGR_V2 register is used to add, remove and query egress interface list
@@ -7607,8 +7280,6 @@ mlxsw_reg_rmft2_ipv6_pack(char *payload, bool v, u16 offset, u16 virtual_router,
 	mlxsw_reg_rmft2_sip6_mask_memcpy_to(payload, (void *)&sip6_mask);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* MFCR - Management Fan Control Register
  * --------------------------------------
  * This register controls the settings of the Fan Speed PWM mechanism.
@@ -8025,7 +7696,6 @@ MLXSW_ITEM32(reg, mpat, qos, 0x04, 26, 1);
  */
 MLXSW_ITEM32(reg, mpat, be, 0x04, 25, 1);
 
-<<<<<<< HEAD
 enum mlxsw_reg_mpat_span_type {
 	/* Local SPAN Ethernet.
 	 * The original packet is not encapsulated.
@@ -8130,10 +7800,6 @@ MLXSW_ITEM_BUF(reg, mpat, eth_rspan_sip6, 0x50, 16);
 static inline void mlxsw_reg_mpat_pack(char *payload, u8 pa_id,
 				       u16 system_port, bool e,
 				       enum mlxsw_reg_mpat_span_type span_type)
-=======
-static inline void mlxsw_reg_mpat_pack(char *payload, u8 pa_id,
-				       u16 system_port, bool e)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	MLXSW_REG_ZERO(mpat, payload);
 	mlxsw_reg_mpat_pa_id_set(payload, pa_id);
@@ -8141,7 +7807,6 @@ static inline void mlxsw_reg_mpat_pack(char *payload, u8 pa_id,
 	mlxsw_reg_mpat_e_set(payload, e);
 	mlxsw_reg_mpat_qos_set(payload, 1);
 	mlxsw_reg_mpat_be_set(payload, 1);
-<<<<<<< HEAD
 	mlxsw_reg_mpat_span_type_set(payload, span_type);
 }
 
@@ -8185,8 +7850,6 @@ mlxsw_reg_mpat_eth_rspan_l3_ipv6_pack(char *payload, u8 ttl,
 				    MLXSW_REG_MPAT_ETH_RSPAN_PROTOCOL_IPV6);
 	mlxsw_reg_mpat_eth_rspan_sip6_memcpy_to(payload, (void *)&sip);
 	mlxsw_reg_mpat_eth_rspan_dip6_memcpy_to(payload, (void *)&dip);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* MPAR - Monitoring Port Analyzer Register
@@ -8240,7 +7903,6 @@ static inline void mlxsw_reg_mpar_pack(char *payload, u8 local_port,
 	mlxsw_reg_mpar_pa_id_set(payload, pa_id);
 }
 
-<<<<<<< HEAD
 /* MRSR - Management Reset and Shutdown Register
  * ---------------------------------------------
  * MRSR register is used to reset or shutdown the switch or
@@ -8265,8 +7927,6 @@ static inline void mlxsw_reg_mrsr_pack(char *payload)
 	mlxsw_reg_mrsr_command_set(payload, 1);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* MLCR - Management LED Control Register
  * --------------------------------------
  * Controls the system LEDs.
@@ -9078,12 +8738,9 @@ static const struct mlxsw_reg_info *mlxsw_reg_infos[] = {
 	MLXSW_REG(svpe),
 	MLXSW_REG(sfmr),
 	MLXSW_REG(spvmlr),
-<<<<<<< HEAD
 	MLXSW_REG(cwtp),
 	MLXSW_REG(cwtpm),
 	MLXSW_REG(pgcr),
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MLXSW_REG(ppbt),
 	MLXSW_REG(pacl),
 	MLXSW_REG(pagt),
@@ -9092,7 +8749,6 @@ static const struct mlxsw_reg_info *mlxsw_reg_infos[] = {
 	MLXSW_REG(prcr),
 	MLXSW_REG(pefa),
 	MLXSW_REG(ptce2),
-<<<<<<< HEAD
 	MLXSW_REG(perpt),
 	MLXSW_REG(perar),
 	MLXSW_REG(ptce3),
@@ -9107,11 +8763,6 @@ static const struct mlxsw_reg_info *mlxsw_reg_infos[] = {
 	MLXSW_REG(qpdsm),
 	MLXSW_REG(qpdpm),
 	MLXSW_REG(qtctm),
-=======
-	MLXSW_REG(qpcr),
-	MLXSW_REG(qtct),
-	MLXSW_REG(qeec),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MLXSW_REG(pmlp),
 	MLXSW_REG(pmtu),
 	MLXSW_REG(ptys),
@@ -9127,18 +8778,12 @@ static const struct mlxsw_reg_info *mlxsw_reg_infos[] = {
 	MLXSW_REG(hpkt),
 	MLXSW_REG(rgcr),
 	MLXSW_REG(ritr),
-<<<<<<< HEAD
 	MLXSW_REG(rtar),
 	MLXSW_REG(ratr),
 	MLXSW_REG(rtdp),
 	MLXSW_REG(rdpm),
 	MLXSW_REG(ricnt),
 	MLXSW_REG(rrcr),
-=======
-	MLXSW_REG(ratr),
-	MLXSW_REG(rtdp),
-	MLXSW_REG(ricnt),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MLXSW_REG(ralta),
 	MLXSW_REG(ralst),
 	MLXSW_REG(raltb),
@@ -9146,12 +8791,9 @@ static const struct mlxsw_reg_info *mlxsw_reg_infos[] = {
 	MLXSW_REG(rauht),
 	MLXSW_REG(raleu),
 	MLXSW_REG(rauhtd),
-<<<<<<< HEAD
 	MLXSW_REG(rigr2),
 	MLXSW_REG(recr2),
 	MLXSW_REG(rmft2),
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MLXSW_REG(mfcr),
 	MLXSW_REG(mfsc),
 	MLXSW_REG(mfsm),
@@ -9161,10 +8803,7 @@ static const struct mlxsw_reg_info *mlxsw_reg_infos[] = {
 	MLXSW_REG(mcia),
 	MLXSW_REG(mpat),
 	MLXSW_REG(mpar),
-<<<<<<< HEAD
 	MLXSW_REG(mrsr),
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MLXSW_REG(mlcr),
 	MLXSW_REG(mpsc),
 	MLXSW_REG(mcqi),

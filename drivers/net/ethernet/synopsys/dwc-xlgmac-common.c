@@ -333,14 +333,8 @@ void xlgmac_print_pkt(struct net_device *netdev,
 		      struct sk_buff *skb, bool tx_rx)
 {
 	struct ethhdr *eth = (struct ethhdr *)skb->data;
-<<<<<<< HEAD
 	unsigned char buffer[128];
 	unsigned int i;
-=======
-	unsigned char *buf = skb->data;
-	unsigned char buffer[128];
-	unsigned int i, j;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	netdev_dbg(netdev, "\n************** SKB dump ****************\n");
 
@@ -351,7 +345,6 @@ void xlgmac_print_pkt(struct net_device *netdev,
 	netdev_dbg(netdev, "Src MAC addr: %pM\n", eth->h_source);
 	netdev_dbg(netdev, "Protocol: %#06hx\n", ntohs(eth->h_proto));
 
-<<<<<<< HEAD
 	for (i = 0; i < skb->len; i += 32) {
 		unsigned int len = min(skb->len - i, 32U);
 
@@ -359,24 +352,6 @@ void xlgmac_print_pkt(struct net_device *netdev,
 				   buffer, sizeof(buffer), false);
 		netdev_dbg(netdev, "  %#06x: %s\n", i, buffer);
 	}
-=======
-	for (i = 0, j = 0; i < skb->len;) {
-		j += snprintf(buffer + j, sizeof(buffer) - j, "%02hhx",
-			      buf[i++]);
-
-		if ((i % 32) == 0) {
-			netdev_dbg(netdev, "  %#06x: %s\n", i - 32, buffer);
-			j = 0;
-		} else if ((i % 16) == 0) {
-			buffer[j++] = ' ';
-			buffer[j++] = ' ';
-		} else if ((i % 4) == 0) {
-			buffer[j++] = ' ';
-		}
-	}
-	if (i % 32)
-		netdev_dbg(netdev, "  %#06x: %s\n", i - (i % 32), buffer);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	netdev_dbg(netdev, "\n************** SKB dump ****************\n");
 }

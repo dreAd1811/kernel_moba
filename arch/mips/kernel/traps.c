@@ -67,21 +67,12 @@
 #include <asm/mmu_context.h>
 #include <asm/types.h>
 #include <asm/stacktrace.h>
-<<<<<<< HEAD
 #include <asm/tlbex.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/uasm.h>
 
 extern void check_wait(void);
 extern asmlinkage void rollback_handle_int(void);
 extern asmlinkage void handle_int(void);
-<<<<<<< HEAD
-=======
-extern u32 handle_tlbl[];
-extern u32 handle_tlbs[];
-extern u32 handle_tlbm[];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern asmlinkage void handle_adel(void);
 extern asmlinkage void handle_ades(void);
 extern asmlinkage void handle_ibe(void);
@@ -707,23 +698,11 @@ static int simulate_sync(struct pt_regs *regs, unsigned int opcode)
 asmlinkage void do_ov(struct pt_regs *regs)
 {
 	enum ctx_state prev_state;
-<<<<<<< HEAD
-=======
-	siginfo_t info = {
-		.si_signo = SIGFPE,
-		.si_code = FPE_INTOVF,
-		.si_addr = (void __user *)regs->cp0_epc,
-	};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	prev_state = exception_enter();
 	die_if_kernel("Integer overflow", regs);
 
-<<<<<<< HEAD
 	force_sig_fault(SIGFPE, FPE_INTOVF, (void __user *)regs->cp0_epc, current);
-=======
-	force_sig_info(SIGFPE, &info, current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	exception_exit(prev_state);
 }
 
@@ -736,7 +715,6 @@ asmlinkage void do_ov(struct pt_regs *regs)
 void force_fcr31_sig(unsigned long fcr31, void __user *fault_addr,
 		     struct task_struct *tsk)
 {
-<<<<<<< HEAD
 	int si_code = FPE_FLTUNK;
 
 	if (fcr31 & FPU_CSR_INV_X)
@@ -751,31 +729,11 @@ void force_fcr31_sig(unsigned long fcr31, void __user *fault_addr,
 		si_code = FPE_FLTRES;
 
 	force_sig_fault(SIGFPE, si_code, fault_addr, tsk);
-=======
-	struct siginfo si = { .si_addr = fault_addr, .si_signo = SIGFPE };
-
-	if (fcr31 & FPU_CSR_INV_X)
-		si.si_code = FPE_FLTINV;
-	else if (fcr31 & FPU_CSR_DIV_X)
-		si.si_code = FPE_FLTDIV;
-	else if (fcr31 & FPU_CSR_OVF_X)
-		si.si_code = FPE_FLTOVF;
-	else if (fcr31 & FPU_CSR_UDF_X)
-		si.si_code = FPE_FLTUND;
-	else if (fcr31 & FPU_CSR_INE_X)
-		si.si_code = FPE_FLTRES;
-
-	force_sig_info(SIGFPE, &si, tsk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int process_fpemu_return(int sig, void __user *fault_addr, unsigned long fcr31)
 {
-<<<<<<< HEAD
 	int si_code;
-=======
-	struct siginfo si = { 0 };
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct vm_area_struct *vma;
 
 	switch (sig) {
@@ -787,7 +745,6 @@ int process_fpemu_return(int sig, void __user *fault_addr, unsigned long fcr31)
 		return 1;
 
 	case SIGBUS:
-<<<<<<< HEAD
 		force_sig_fault(SIGBUS, BUS_ADRERR, fault_addr, current);
 		return 1;
 
@@ -800,25 +757,6 @@ int process_fpemu_return(int sig, void __user *fault_addr, unsigned long fcr31)
 			si_code = SEGV_MAPERR;
 		up_read(&current->mm->mmap_sem);
 		force_sig_fault(SIGSEGV, si_code, fault_addr, current);
-=======
-		si.si_addr = fault_addr;
-		si.si_signo = sig;
-		si.si_code = BUS_ADRERR;
-		force_sig_info(sig, &si, current);
-		return 1;
-
-	case SIGSEGV:
-		si.si_addr = fault_addr;
-		si.si_signo = sig;
-		down_read(&current->mm->mmap_sem);
-		vma = find_vma(current->mm, (unsigned long)fault_addr);
-		if (vma && (vma->vm_start <= (unsigned long)fault_addr))
-			si.si_code = SEGV_ACCERR;
-		else
-			si.si_code = SEGV_MAPERR;
-		up_read(&current->mm->mmap_sem);
-		force_sig_info(sig, &si, current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 1;
 
 	default:
@@ -941,10 +879,6 @@ out:
 void do_trap_or_bp(struct pt_regs *regs, unsigned int code, int si_code,
 	const char *str)
 {
-<<<<<<< HEAD
-=======
-	siginfo_t info = { 0 };
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	char b[40];
 
 #ifdef CONFIG_KGDB_LOW_LEVEL_TRAP
@@ -968,19 +902,9 @@ void do_trap_or_bp(struct pt_regs *regs, unsigned int code, int si_code,
 	case BRK_DIVZERO:
 		scnprintf(b, sizeof(b), "%s instruction in kernel code", str);
 		die_if_kernel(b, regs);
-<<<<<<< HEAD
 		force_sig_fault(SIGFPE,
 				code == BRK_DIVZERO ? FPE_INTDIV : FPE_INTOVF,
 				(void __user *) regs->cp0_epc, current);
-=======
-		if (code == BRK_DIVZERO)
-			info.si_code = FPE_INTDIV;
-		else
-			info.si_code = FPE_INTOVF;
-		info.si_signo = SIGFPE;
-		info.si_addr = (void __user *) regs->cp0_epc;
-		force_sig_info(SIGFPE, &info, current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case BRK_BUG:
 		die_if_kernel("Kernel bug detected", regs);
@@ -1005,13 +929,7 @@ void do_trap_or_bp(struct pt_regs *regs, unsigned int code, int si_code,
 		scnprintf(b, sizeof(b), "%s instruction in kernel code", str);
 		die_if_kernel(b, regs);
 		if (si_code) {
-<<<<<<< HEAD
 			force_sig_fault(SIGTRAP, si_code, NULL,	current);
-=======
-			info.si_signo = SIGTRAP;
-			info.si_code = si_code;
-			force_sig_info(SIGTRAP, &info, current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else {
 			force_sig(SIGTRAP, current);
 		}
@@ -1297,35 +1215,10 @@ static int default_cu2_call(struct notifier_block *nfb, unsigned long action,
 	return NOTIFY_OK;
 }
 
-<<<<<<< HEAD
-=======
-static int wait_on_fp_mode_switch(atomic_t *p)
-{
-	/*
-	 * The FP mode for this task is currently being switched. That may
-	 * involve modifications to the format of this tasks FP context which
-	 * make it unsafe to proceed with execution for the moment. Instead,
-	 * schedule some other task.
-	 */
-	schedule();
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int enable_restore_fp_context(int msa)
 {
 	int err, was_fpu_owner, prior_msa;
 
-<<<<<<< HEAD
-=======
-	/*
-	 * If an FP mode switch is currently underway, wait for it to
-	 * complete before proceeding.
-	 */
-	wait_on_atomic_t(&current->mm->context.fp_mode_switching,
-			 wait_on_fp_mode_switch, TASK_KILLABLE);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!used_math()) {
 		/* First time FP context user. */
 		preempt_disable();
@@ -1581,10 +1474,6 @@ asmlinkage void do_mdmx(struct pt_regs *regs)
  */
 asmlinkage void do_watch(struct pt_regs *regs)
 {
-<<<<<<< HEAD
-=======
-	siginfo_t info = { .si_signo = SIGTRAP, .si_code = TRAP_HWBKPT };
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	enum ctx_state prev_state;
 
 	prev_state = exception_enter();
@@ -1602,11 +1491,7 @@ asmlinkage void do_watch(struct pt_regs *regs)
 	if (test_tsk_thread_flag(current, TIF_LOAD_WATCH)) {
 		mips_read_watch_registers();
 		local_irq_enable();
-<<<<<<< HEAD
 		force_sig_fault(SIGTRAP, TRAP_HWBKPT, NULL, current);
-=======
-		force_sig_info(SIGTRAP, &info, current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		mips_clear_watch_registers();
 		local_irq_enable();
@@ -2211,10 +2096,6 @@ static void configure_status(void)
 
 	change_c0_status(ST0_CU|ST0_MX|ST0_RE|ST0_FR|ST0_BEV|ST0_TS|ST0_KX|ST0_SX|ST0_UX,
 			 status_set);
-<<<<<<< HEAD
-=======
-	back_to_back_c0_hazard();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 unsigned int hwrena;

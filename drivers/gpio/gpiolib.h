@@ -13,20 +13,13 @@
 #define GPIOLIB_H
 
 #include <linux/gpio/driver.h>
-<<<<<<< HEAD
 #include <linux/gpio/consumer.h> /* for enum gpiod_flags */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/err.h>
 #include <linux/device.h>
 #include <linux/module.h>
 #include <linux/cdev.h>
 
 enum of_gpio_flags;
-<<<<<<< HEAD
-=======
-enum gpiod_flags;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum gpio_lookup_flags;
 struct acpi_device;
 
@@ -65,11 +58,7 @@ struct gpio_device {
 	struct gpio_desc	*descs;
 	int			base;
 	u16			ngpio;
-<<<<<<< HEAD
 	const char		*label;
-=======
-	char			*label;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void			*data;
 	struct list_head        list;
 
@@ -86,31 +75,20 @@ struct gpio_device {
 
 /**
  * struct acpi_gpio_info - ACPI GPIO specific information
-<<<<<<< HEAD
  * @adev: reference to ACPI device which consumes GPIO resource
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @flags: GPIO initialization flags
  * @gpioint: if %true this GPIO is of type GpioInt otherwise type is GpioIo
  * @polarity: interrupt polarity as provided by ACPI
  * @triggering: triggering type as provided by ACPI
-<<<<<<< HEAD
  * @quirks: Linux specific quirks as provided by struct acpi_gpio_mapping
  */
 struct acpi_gpio_info {
 	struct acpi_device *adev;
-=======
- */
-struct acpi_gpio_info {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	enum gpiod_flags flags;
 	bool gpioint;
 	int polarity;
 	int triggering;
-<<<<<<< HEAD
 	unsigned int quirks;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* gpio suffixes used for ACPI and device tree lookup */
@@ -150,11 +128,7 @@ void acpi_gpiochip_request_interrupts(struct gpio_chip *chip);
 void acpi_gpiochip_free_interrupts(struct gpio_chip *chip);
 
 int acpi_gpio_update_gpiod_flags(enum gpiod_flags *flags,
-<<<<<<< HEAD
 				 struct acpi_gpio_info *info);
-=======
-				 enum gpiod_flags update);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct gpio_desc *acpi_find_gpio(struct device *dev,
 				 const char *con_id,
@@ -179,11 +153,7 @@ static inline void
 acpi_gpiochip_free_interrupts(struct gpio_chip *chip) { }
 
 static inline int
-<<<<<<< HEAD
 acpi_gpio_update_gpiod_flags(enum gpiod_flags *flags, struct acpi_gpio_info *info)
-=======
-acpi_gpio_update_gpiod_flags(enum gpiod_flags *flags, enum gpiod_flags update)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return 0;
 }
@@ -214,28 +184,21 @@ static inline bool acpi_can_fallback_to_crs(struct acpi_device *adev,
 #endif
 
 struct gpio_desc *gpiochip_get_desc(struct gpio_chip *chip, u16 hwnum);
-<<<<<<< HEAD
 int gpiod_get_array_value_complex(bool raw, bool can_sleep,
 				  unsigned int array_size,
 				  struct gpio_desc **desc_array,
 				  int *value_array);
 int gpiod_set_array_value_complex(bool raw, bool can_sleep,
-=======
-void gpiod_set_array_value_complex(bool raw, bool can_sleep,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   unsigned int array_size,
 				   struct gpio_desc **desc_array,
 				   int *value_array);
 
-<<<<<<< HEAD
 /* This is just passed between gpiolib and devres */
 struct gpio_desc *gpiod_get_from_of_node(struct device_node *node,
 					 const char *propname, int index,
 					 enum gpiod_flags dflags,
 					 const char *label);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern struct spinlock gpio_lock;
 extern struct list_head gpio_devices;
 
@@ -252,11 +215,7 @@ struct gpio_desc {
 #define FLAG_OPEN_SOURCE 8	/* Gpio is open source type */
 #define FLAG_USED_AS_IRQ 9	/* GPIO is connected to an IRQ */
 #define FLAG_IS_HOGGED	11	/* GPIO is hogged */
-<<<<<<< HEAD
 #define FLAG_TRANSITORY 12	/* GPIO may lose value in sleep or reset */
-=======
-#define FLAG_SLEEP_MAY_LOOSE_VALUE 12	/* GPIO may loose value in sleep */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Connection label */
 	const char		*label;

@@ -1,20 +1,6 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /* Copyright (c) 2012,2014-2017,2019 The Linux Foundation. All rights reserved. */
 
-=======
-/* Copyright (c) 2012,2014-2017,2019 The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/module.h>
 #include <linux/slab.h>
 #include <linux/seq_file.h>
@@ -49,17 +35,6 @@ struct wcnss_prealloc {
 };
 
 /* pre-alloced mem for WLAN driver */
-<<<<<<< HEAD
-=======
-
-#ifdef CONFIG_CNSS_QCA6390
-/* This table should be paired with WLAN chip attached ideally.
- * For QCA6390, roughly 800KB pre-allocation required.
- *
- * Be noted, currently not all QCA6390 attachment defined CNSS_QCA6390,
- * like on which single-DT feature enabled.
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct wcnss_prealloc wcnss_allocs[] = {
 	{0, 8  * 1024, NULL},
 	{0, 8  * 1024, NULL},
@@ -101,86 +76,6 @@ static struct wcnss_prealloc wcnss_allocs[] = {
 	{0, 64 * 1024, NULL},
 	{0, 64 * 1024, NULL},
 };
-<<<<<<< HEAD
-=======
-#else
-static struct wcnss_prealloc wcnss_allocs[] = {
-	{0, 8  * 1024, NULL},
-	{0, 8  * 1024, NULL},
-	{0, 8  * 1024, NULL},
-	{0, 8  * 1024, NULL},
-	{0, 8  * 1024, NULL},
-	{0, 8  * 1024, NULL},
-	{0, 8  * 1024, NULL},
-	{0, 8  * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 16 * 1024, NULL},
-	{0, 32 * 1024, NULL},
-	{0, 32 * 1024, NULL},
-	{0, 32 * 1024, NULL},
-	{0, 32 * 1024, NULL},
-	{0, 32 * 1024, NULL},
-	{0, 32 * 1024, NULL},
-	{0, 32 * 1024, NULL},
-	{0, 32 * 1024, NULL},
-	{0, 32 * 1024, NULL},
-	{0, 32 * 1024, NULL},
-	{0, 32 * 1024, NULL},
-	{0, 32 * 1024, NULL},
-	{0, 32 * 1024, NULL},
-	{0, 32 * 1024, NULL},
-	{0, 32 * 1024, NULL},
-	{0, 32 * 1024, NULL},
-	{0, 32 * 1024, NULL},
-	{0, 64 * 1024, NULL},
-	{0, 64 * 1024, NULL},
-	{0, 64 * 1024, NULL},
-	{0, 64 * 1024, NULL},
-	{0, 128 * 1024, NULL},
-	{0, 128 * 1024, NULL},
-};
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int wcnss_prealloc_init(void)
 {
@@ -318,14 +213,8 @@ static int prealloc_memory_stats_show(struct seq_file *fp, void *data)
 		tsize += wcnss_allocs[i].size;
 		if (size != wcnss_allocs[i].size) {
 			if (size) {
-<<<<<<< HEAD
 				seq_printf(fp, "[%d : %d]\n",
 					   used_slots, free_slots);
-=======
-				seq_printf(
-					fp, "[%d : %d]\n",
-					used_slots, free_slots);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 
 			size = wcnss_allocs[i].size;
@@ -380,17 +269,10 @@ static int __init wcnss_pre_alloc_init(void)
 	debug_base = debugfs_create_dir(PRE_ALLOC_DEBUGFS_DIR, NULL);
 	if (IS_ERR_OR_NULL(debug_base)) {
 		pr_err("%s: Failed to create debugfs dir\n", __func__);
-<<<<<<< HEAD
 	} else if (IS_ERR_OR_NULL(debugfs_create_file
 				  (PRE_ALLOC_DEBUGFS_FILE_OBJ,
 				   0644, debug_base, NULL,
 				   &prealloc_memory_stats_fops))) {
-=======
-	} else if (IS_ERR_OR_NULL(debugfs_create_file(
-			PRE_ALLOC_DEBUGFS_FILE_OBJ,
-			0644, debug_base, NULL,
-			&prealloc_memory_stats_fops))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_err("%s: Failed to create debugfs file\n", __func__);
 		debugfs_remove_recursive(debug_base);
 	}

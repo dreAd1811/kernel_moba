@@ -1928,13 +1928,6 @@ static netdev_tx_t mpi_start_xmit(struct sk_buff *skb,
 		airo_print_err(dev->name, "%s: skb == NULL!",__func__);
 		return NETDEV_TX_OK;
 	}
-<<<<<<< HEAD
-=======
-	if (skb_padto(skb, ETH_ZLEN)) {
-		dev->stats.tx_dropped++;
-		return NETDEV_TX_OK;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	npacks = skb_queue_len (&ai->txq);
 
 	if (npacks >= MAXTXQ - 1) {
@@ -2137,13 +2130,6 @@ static netdev_tx_t airo_start_xmit(struct sk_buff *skb,
 		airo_print_err(dev->name, "%s: skb == NULL!", __func__);
 		return NETDEV_TX_OK;
 	}
-<<<<<<< HEAD
-=======
-	if (skb_padto(skb, ETH_ZLEN)) {
-		dev->stats.tx_dropped++;
-		return NETDEV_TX_OK;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Find a vacant FID */
 	for( i = 0; i < MAX_FIDS / 2 && (fids[i] & 0xffff0000); i++ );
@@ -2218,13 +2204,6 @@ static netdev_tx_t airo_start_xmit11(struct sk_buff *skb,
 		airo_print_err(dev->name, "%s: skb == NULL!", __func__);
 		return NETDEV_TX_OK;
 	}
-<<<<<<< HEAD
-=======
-	if (skb_padto(skb, ETH_ZLEN)) {
-		dev->stats.tx_dropped++;
-		return NETDEV_TX_OK;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Find a vacant FID */
 	for( i = MAX_FIDS / 2; i < MAX_FIDS && (fids[i] & 0xffff0000); i++ );
@@ -3440,11 +3419,7 @@ done:
 
 static void airo_handle_tx(struct airo_info *ai, u16 status)
 {
-<<<<<<< HEAD
 	int i, index = -1;
-=======
-	int i, len = 0, index = -1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 fid;
 
 	if (test_bit(FLAG_MPI, &ai->flags)) {
@@ -3468,17 +3443,9 @@ static void airo_handle_tx(struct airo_info *ai, u16 status)
 
 	fid = IN4500(ai, TXCOMPLFID);
 
-<<<<<<< HEAD
 	for (i = 0; i < MAX_FIDS; i++) {
 		if ((ai->fids[i] & 0xffff) == fid)
 			index = i;
-=======
-	for(i = 0; i < MAX_FIDS; i++) {
-		if ((ai->fids[i] & 0xffff) == fid) {
-			len = ai->fids[i] >> 16;
-			index = i;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (index != -1) {
@@ -4550,33 +4517,21 @@ static int setup_proc_entry( struct net_device *dev,
 	proc_set_user(apriv->proc_entry, proc_kuid, proc_kgid);
 
 	/* Setup the StatsDelta */
-<<<<<<< HEAD
 	entry = proc_create_data("StatsDelta", 0444 & proc_perm,
-=======
-	entry = proc_create_data("StatsDelta", S_IRUGO & proc_perm,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 apriv->proc_entry, &proc_statsdelta_ops, dev);
 	if (!entry)
 		goto fail;
 	proc_set_user(entry, proc_kuid, proc_kgid);
 
 	/* Setup the Stats */
-<<<<<<< HEAD
 	entry = proc_create_data("Stats", 0444 & proc_perm,
-=======
-	entry = proc_create_data("Stats", S_IRUGO & proc_perm,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 apriv->proc_entry, &proc_stats_ops, dev);
 	if (!entry)
 		goto fail;
 	proc_set_user(entry, proc_kuid, proc_kgid);
 
 	/* Setup the Status */
-<<<<<<< HEAD
 	entry = proc_create_data("Status", 0444 & proc_perm,
-=======
-	entry = proc_create_data("Status", S_IRUGO & proc_perm,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 apriv->proc_entry, &proc_status_ops, dev);
 	if (!entry)
 		goto fail;
@@ -5507,11 +5462,7 @@ static int proc_BSSList_open( struct inode *inode, struct file *file ) {
            we have to add a spin lock... */
 	rc = readBSSListRid(ai, doLoseSync, &BSSList_rid);
 	while(rc == 0 && BSSList_rid.index != cpu_to_le16(0xffff)) {
-<<<<<<< HEAD
 		ptr += sprintf(ptr, "%pM %*s rssi = %d",
-=======
-		ptr += sprintf(ptr, "%pM %.*s rssi = %d",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       BSSList_rid.bssid,
 				(int)BSSList_rid.ssidLen,
 				BSSList_rid.ssid,
@@ -7174,11 +7125,7 @@ static int airo_get_aplist(struct net_device *dev,
 	int i;
 	int loseSync = capable(CAP_NET_ADMIN) ? 1: -1;
 
-<<<<<<< HEAD
 	qual = kmalloc_array(IW_MAX_AP, sizeof(*qual), GFP_KERNEL);
-=======
-	qual = kmalloc(IW_MAX_AP * sizeof(*qual), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!qual)
 		return -ENOMEM;
 
@@ -7839,7 +7786,6 @@ static int readrids(struct net_device *dev, aironet_ioctl *comp) {
 	case AIROGVLIST:    ridcode = RID_APLIST;       break;
 	case AIROGDRVNAM:   ridcode = RID_DRVNAME;      break;
 	case AIROGEHTENC:   ridcode = RID_ETHERENCAP;   break;
-<<<<<<< HEAD
 	case AIROGWEPKTMP:  ridcode = RID_WEP_TEMP;
 		/* Only super-user can read WEP keys */
 		if (!capable(CAP_NET_ADMIN))
@@ -7850,10 +7796,6 @@ static int readrids(struct net_device *dev, aironet_ioctl *comp) {
 		if (!capable(CAP_NET_ADMIN))
 			return -EPERM;
 		break;
-=======
-	case AIROGWEPKTMP:  ridcode = RID_WEP_TEMP;	break;
-	case AIROGWEPKNV:   ridcode = RID_WEP_PERM;	break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case AIROGSTAT:     ridcode = RID_STATUS;       break;
 	case AIROGSTATSD32: ridcode = RID_STATSDELTA;   break;
 	case AIROGSTATSC32: ridcode = RID_STATS;        break;
@@ -7867,17 +7809,7 @@ static int readrids(struct net_device *dev, aironet_ioctl *comp) {
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 	if ((iobuf = kmalloc(RIDSIZE, GFP_KERNEL)) == NULL)
-=======
-	if (ridcode == RID_WEP_TEMP || ridcode == RID_WEP_PERM) {
-		/* Only super-user can read WEP keys */
-		if (!capable(CAP_NET_ADMIN))
-			return -EPERM;
-	}
-
-	if ((iobuf = kzalloc(RIDSIZE, GFP_KERNEL)) == NULL)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOMEM;
 
 	PC4500_readrid(ai,ridcode,iobuf,RIDSIZE, 1);

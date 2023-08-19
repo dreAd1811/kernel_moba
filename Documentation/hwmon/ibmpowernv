@@ -33,7 +33,6 @@ fanX_input		Measured RPM value.
 fanX_min		Threshold RPM for alert generation.
 fanX_fault		0: No fail condition
 			1: Failing fan
-<<<<<<< HEAD
 
 tempX_input		Measured ambient temperature.
 tempX_max		Threshold ambient temperature for alert generation.
@@ -79,11 +78,3 @@ currX_enable		Enable/disable all current sensors belonging to the
 			0: Disable
 
 energyX_input		Cumulative energy (microJoule)
-=======
-tempX_input		Measured ambient temperature.
-tempX_max		Threshold ambient temperature for alert generation.
-inX_input		Measured power supply voltage
-inX_fault		0: No fail condition.
-			1: Failing power supply.
-power1_input		System power consumption (microWatt)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

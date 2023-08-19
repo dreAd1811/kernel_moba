@@ -151,11 +151,7 @@ qcaspi_init_device_debugfs(struct qcaspi *qca)
 			dev_name(&qca->net_dev->dev));
 		return;
 	}
-<<<<<<< HEAD
 	debugfs_create_file("info", S_IFREG | 0444, device_root, qca,
-=======
-	debugfs_create_file("info", S_IFREG | S_IRUGO, device_root, qca,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    &qcaspi_info_ops);
 }
 

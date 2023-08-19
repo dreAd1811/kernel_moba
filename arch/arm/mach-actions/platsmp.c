@@ -71,11 +71,7 @@ static int s500_wakeup_secondary(unsigned int cpu)
 	/* wait for CPUx to run to WFE instruction */
 	udelay(200);
 
-<<<<<<< HEAD
 	writel(__pa_symbol(secondary_startup),
-=======
-	writel(virt_to_phys(owl_secondary_startup),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	       timer_base_addr + OWL_CPU1_ADDR + (cpu - 1) * 4);
 	writel(OWL_CPUx_FLAG_BOOT,
 	       timer_base_addr + OWL_CPU1_FLAG + (cpu - 1) * 4);

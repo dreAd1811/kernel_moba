@@ -19,12 +19,8 @@
 #include <linux/device.h>
 #include <linux/platform_device.h>
 #include <linux/pci.h>
-<<<<<<< HEAD
 #include <linux/platform_data/i2c-gpio.h>
 #include <linux/gpio/machine.h>
-=======
-#include <linux/i2c-gpio.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/slab.h>
 
 #include <linux/sm501.h>
@@ -1055,21 +1051,13 @@ static int sm501_register_gpio(struct sm501_devdata *sm)
 	spin_lock_init(&gpio->lock);
 
 	gpio->regs_res = request_mem_region(iobase, 0x20, "sm501-gpio");
-<<<<<<< HEAD
 	if (!gpio->regs_res) {
-=======
-	if (gpio->regs_res == NULL) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(sm->dev, "gpio: failed to request region\n");
 		return -ENXIO;
 	}
 
 	gpio->regs = ioremap(iobase, 0x20);
-<<<<<<< HEAD
 	if (!gpio->regs) {
-=======
-	if (gpio->regs == NULL) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(sm->dev, "gpio: failed to remap registers\n");
 		ret = -ENXIO;
 		goto err_claimed;
@@ -1121,17 +1109,6 @@ static void sm501_gpio_remove(struct sm501_devdata *sm)
 	kfree(gpio->regs_res);
 }
 
-<<<<<<< HEAD
-=======
-static inline int sm501_gpio_pin2nr(struct sm501_devdata *sm, unsigned int pin)
-{
-	struct sm501_gpio *gpio = &sm->gpio;
-	int base = (pin < 32) ? gpio->low.gpio.base : gpio->high.gpio.base;
-
-	return (pin % 32) + base;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int sm501_gpio_isregistered(struct sm501_devdata *sm)
 {
 	return sm->gpio.registered;
@@ -1146,14 +1123,6 @@ static inline void sm501_gpio_remove(struct sm501_devdata *sm)
 {
 }
 
-<<<<<<< HEAD
-=======
-static inline int sm501_gpio_pin2nr(struct sm501_devdata *sm, unsigned int pin)
-{
-	return -1;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int sm501_gpio_isregistered(struct sm501_devdata *sm)
 {
 	return 0;
@@ -1165,17 +1134,13 @@ static int sm501_register_gpio_i2c_instance(struct sm501_devdata *sm,
 {
 	struct i2c_gpio_platform_data *icd;
 	struct platform_device *pdev;
-<<<<<<< HEAD
 	struct gpiod_lookup_table *lookup;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pdev = sm501_create_subdev(sm, "i2c-gpio", 0,
 				   sizeof(struct i2c_gpio_platform_data));
 	if (!pdev)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	/* Create a gpiod lookup using gpiochip-local offsets */
 	lookup = devm_kzalloc(&pdev->dev,
 			      sizeof(*lookup) + 3 * sizeof(struct gpiod_lookup),
@@ -1203,16 +1168,6 @@ static int sm501_register_gpio_i2c_instance(struct sm501_devdata *sm,
 	gpiod_add_lookup_table(lookup);
 
 	icd = dev_get_platdata(&pdev->dev);
-=======
-	icd = dev_get_platdata(&pdev->dev);
-
-	/* We keep the pin_sda and pin_scl fields relative in case the
-	 * same platform data is passed to >1 SM501.
-	 */
-
-	icd->sda_pin = sm501_gpio_pin2nr(sm, iic->pin_sda);
-	icd->scl_pin = sm501_gpio_pin2nr(sm, iic->pin_scl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	icd->timeout = iic->timeout;
 	icd->udelay = iic->udelay;
 
@@ -1224,15 +1179,9 @@ static int sm501_register_gpio_i2c_instance(struct sm501_devdata *sm,
 
 	pdev->id = iic->bus_num;
 
-<<<<<<< HEAD
 	dev_info(sm->dev, "registering i2c-%d: sda=%d, scl=%d\n",
 		 iic->bus_num,
 		 iic->pin_sda, iic->pin_scl);
-=======
-	dev_info(sm->dev, "registering i2c-%d: sda=%d (%d), scl=%d (%d)\n",
-		 iic->bus_num,
-		 icd->sda_pin, iic->pin_sda, icd->scl_pin, iic->pin_scl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return sm501_register_device(sm, pdev);
 }
@@ -1413,11 +1362,7 @@ static int sm501_init_dev(struct sm501_devdata *sm)
 			sm501_register_gpio(sm);
 	}
 
-<<<<<<< HEAD
 	if (pdata && pdata->gpio_i2c && pdata->gpio_i2c_nr > 0) {
-=======
-	if (pdata && pdata->gpio_i2c != NULL && pdata->gpio_i2c_nr > 0) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!sm501_gpio_isregistered(sm))
 			dev_err(sm->dev, "no gpio available for i2c gpio.\n");
 		else
@@ -1442,14 +1387,8 @@ static int sm501_plat_probe(struct platform_device *dev)
 	struct sm501_devdata *sm;
 	int ret;
 
-<<<<<<< HEAD
 	sm = kzalloc(sizeof(*sm), GFP_KERNEL);
 	if (!sm) {
-=======
-	sm = kzalloc(sizeof(struct sm501_devdata), GFP_KERNEL);
-	if (sm == NULL) {
-		dev_err(&dev->dev, "no memory for device data\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -ENOMEM;
 		goto err1;
 	}
@@ -1467,12 +1406,7 @@ static int sm501_plat_probe(struct platform_device *dev)
 
 	sm->io_res = platform_get_resource(dev, IORESOURCE_MEM, 1);
 	sm->mem_res = platform_get_resource(dev, IORESOURCE_MEM, 0);
-<<<<<<< HEAD
 	if (!sm->io_res || !sm->mem_res) {
-=======
-
-	if (sm->io_res == NULL || sm->mem_res == NULL) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(&dev->dev, "failed to get IO resource\n");
 		ret = -ENOENT;
 		goto err_res;
@@ -1480,12 +1414,7 @@ static int sm501_plat_probe(struct platform_device *dev)
 
 	sm->regs_claim = request_mem_region(sm->io_res->start,
 					    0x100, "sm501");
-<<<<<<< HEAD
 	if (!sm->regs_claim) {
-=======
-
-	if (sm->regs_claim == NULL) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(&dev->dev, "cannot claim registers\n");
 		ret = -EBUSY;
 		goto err_res;
@@ -1494,12 +1423,7 @@ static int sm501_plat_probe(struct platform_device *dev)
 	platform_set_drvdata(dev, sm);
 
 	sm->regs = ioremap(sm->io_res->start, resource_size(sm->io_res));
-<<<<<<< HEAD
 	if (!sm->regs) {
-=======
-
-	if (sm->regs == NULL) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(&dev->dev, "cannot remap registers\n");
 		ret = -EIO;
 		goto err_claim;
@@ -1525,11 +1449,7 @@ static void sm501_set_power(struct sm501_devdata *sm, int on)
 {
 	struct sm501_platdata *pd = sm->platdata;
 
-<<<<<<< HEAD
 	if (!pd)
-=======
-	if (pd == NULL)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	if (pd->get_power) {
@@ -1653,14 +1573,8 @@ static int sm501_pci_probe(struct pci_dev *dev,
 	struct sm501_devdata *sm;
 	int err;
 
-<<<<<<< HEAD
 	sm = kzalloc(sizeof(*sm), GFP_KERNEL);
 	if (!sm) {
-=======
-	sm = kzalloc(sizeof(struct sm501_devdata), GFP_KERNEL);
-	if (sm == NULL) {
-		dev_err(&dev->dev, "no memory for device data\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = -ENOMEM;
 		goto err1;
 	}
@@ -1711,23 +1625,14 @@ static int sm501_pci_probe(struct pci_dev *dev,
 
 	sm->regs_claim = request_mem_region(sm->io_res->start,
 					    0x100, "sm501");
-<<<<<<< HEAD
 	if (!sm->regs_claim) {
-=======
-	if (sm->regs_claim == NULL) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(&dev->dev, "cannot claim registers\n");
 		err= -EBUSY;
 		goto err3;
 	}
 
 	sm->regs = pci_ioremap_bar(dev, 1);
-<<<<<<< HEAD
 	if (!sm->regs) {
-=======
-
-	if (sm->regs == NULL) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(&dev->dev, "cannot remap registers\n");
 		err = -EIO;
 		goto err4;

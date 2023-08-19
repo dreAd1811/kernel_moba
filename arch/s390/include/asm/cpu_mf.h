@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
 /*
  * CPU-measurement facilities
@@ -6,18 +5,6 @@
  *  Copyright IBM Corp. 2012, 2018
  *  Author(s): Hendrik Brueckner <brueckner@linux.vnet.ibm.com>
  *	       Jan Glauber <jang@linux.vnet.ibm.com>
-=======
-/*
- * CPU-measurement facilities
- *
- *  Copyright IBM Corp. 2012
- *  Author(s): Hendrik Brueckner <brueckner@linux.vnet.ibm.com>
- *	       Jan Glauber <jang@linux.vnet.ibm.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (version 2 only)
- * as published by the Free Software Foundation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #ifndef _ASM_S390_CPU_MF_H
 #define _ASM_S390_CPU_MF_H
@@ -42,20 +29,12 @@
 /* CPU measurement facility support */
 static inline int cpum_cf_avail(void)
 {
-<<<<<<< HEAD
 	return test_facility(40) && test_facility(67);
-=======
-	return MACHINE_HAS_LPP && test_facility(67);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline int cpum_sf_avail(void)
 {
-<<<<<<< HEAD
 	return test_facility(40) && test_facility(68);
-=======
-	return MACHINE_HAS_LPP && test_facility(68);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 
@@ -160,7 +139,6 @@ struct hws_trailer_entry {
 	unsigned char timestamp[16];	 /* 16 - 31 timestamp		      */
 	unsigned long long reserved1;	 /* 32 -Reserved		      */
 	unsigned long long reserved2;	 /*				      */
-<<<<<<< HEAD
 	union {				 /* 48 - reserved for programming use */
 		struct {
 			unsigned int clock_base:1; /* in progusage2 */
@@ -177,12 +155,6 @@ static inline void lpp(void *pp)
 	asm volatile(".insn s,0xb2800000,0(%0)\n":: "a" (pp) : "memory");
 }
 
-=======
-	unsigned long long progusage1;	 /* 48 - reserved for programming use */
-	unsigned long long progusage2;	 /*				      */
-} __packed;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Query counter information */
 static inline int qctri(struct cpumf_ctr_info *info)
 {
@@ -206,11 +178,7 @@ static inline int lcctl(u64 ctl)
 		"	.insn	s,0xb2840000,%1\n"
 		"	ipm	%0\n"
 		"	srl	%0,28\n"
-<<<<<<< HEAD
 		: "=d" (cc) : "Q" (ctl) : "cc");
-=======
-		: "=d" (cc) : "m" (ctl) : "cc");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return cc;
 }
 

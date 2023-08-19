@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * s390 arch random implementation.
@@ -26,30 +25,14 @@
  * buffer but at least with 500 ms delay to avoid too much CPU consumption.
  * So the max. amount of rng data delivered via arch_get_random_seed is
  * limited to 4k bytes per second.
-=======
-/*
- * s390 arch random implementation.
- *
- * Copyright IBM Corp. 2017
- * Author(s): Harald Freudenberger <freude@de.ibm.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (version 2 only)
- * as published by the Free Software Foundation.
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/kernel.h>
 #include <linux/atomic.h>
 #include <linux/random.h>
-<<<<<<< HEAD
 #include <linux/slab.h>
 #include <linux/static_key.h>
 #include <linux/workqueue.h>
-=======
-#include <linux/static_key.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/cpacf.h>
 
 DEFINE_STATIC_KEY_FALSE(s390_arch_random_available);
@@ -57,7 +40,6 @@ DEFINE_STATIC_KEY_FALSE(s390_arch_random_available);
 atomic64_t s390_arch_random_counter = ATOMIC64_INIT(0);
 EXPORT_SYMBOL(s390_arch_random_counter);
 
-<<<<<<< HEAD
 #define ARCH_REFILL_TICKS (HZ/2)
 #define ARCH_PRNG_SEED_SIZE 32
 #define ARCH_RNG_BUF_SIZE 2048
@@ -135,13 +117,6 @@ static int __init s390_arch_random_init(void)
 		/* enable arch random to the outside world */
 		static_branch_enable(&s390_arch_random_available);
 	}
-=======
-static int __init s390_arch_random_init(void)
-{
-	/* check if subfunction CPACF_PRNO_TRNG is available */
-	if (cpacf_query_func(CPACF_PRNO, CPACF_PRNO_TRNG))
-		static_branch_enable(&s390_arch_random_available);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

@@ -3,10 +3,7 @@
 #define _ASM_M68K_NUBUS_H
 
 #include <asm/raw_io.h>
-<<<<<<< HEAD
 #include <asm/kmap.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define nubus_readb raw_inb
 #define nubus_readw raw_inw

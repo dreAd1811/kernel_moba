@@ -3,11 +3,7 @@ Key Request Service
 ===================
 
 The key request service is part of the key retention service (refer to
-<<<<<<< HEAD
 Documentation/security/keys/core.rst).  This document explains more fully how
-=======
-Documentation/security/core.rst).  This document explains more fully how
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 the requesting algorithm works.
 
 The process starts by either the kernel requesting a service by calling

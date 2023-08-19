@@ -44,11 +44,7 @@ EXPORT_SYMBOL(drm_lease_owner);
 /**
  * _drm_find_lessee - find lessee by id (idr_mutex held)
  * @master: drm_master of lessor
-<<<<<<< HEAD
  * @lessee_id: id
-=======
- * @id: lessee_id
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * RETURN:
  *
@@ -105,11 +101,7 @@ static bool _drm_has_leased(struct drm_master *master, int id)
 
 /**
  * _drm_lease_held - check drm_mode_object lease status (idr_mutex held)
-<<<<<<< HEAD
  * @file_priv: the master drm_file
-=======
- * @master: the drm_master
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @id: the object id
  *
  * Checks if the specified master holds a lease on the object. Return
@@ -129,11 +121,7 @@ EXPORT_SYMBOL(_drm_lease_held);
 
 /**
  * drm_lease_held - check drm_mode_object lease status (idr_mutex not held)
-<<<<<<< HEAD
  * @file_priv: the master drm_file
-=======
- * @master: the drm_master
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @id: the object id
  *
  * Checks if the specified master holds a lease on the object. Return
@@ -161,11 +149,7 @@ EXPORT_SYMBOL(drm_lease_held);
 /**
  * drm_lease_filter_crtcs - restricted crtc set to leased values (idr_mutex not held)
  * @file_priv: requestor file
-<<<<<<< HEAD
  * @crtcs_in: bitmask of crtcs to check
-=======
- * @crtcs: bitmask of crtcs to check
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Reconstructs a crtc mask based on the crtcs which are visible
  * through the specified file.
@@ -312,11 +296,7 @@ void drm_lease_destroy(struct drm_master *master)
 
 	if (master->lessor) {
 		/* Tell the master to check the lessee list */
-<<<<<<< HEAD
 		drm_sysfs_lease_event(dev);
-=======
-		drm_sysfs_hotplug_event(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		drm_master_put(&master->lessor);
 	}
 
@@ -325,11 +305,7 @@ void drm_lease_destroy(struct drm_master *master)
 
 /**
  * _drm_lease_revoke - revoke access to all leased objects (idr_mutex held)
-<<<<<<< HEAD
  * @top: the master losing its lease
-=======
- * @master: the master losing its lease
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static void _drm_lease_revoke(struct drm_master *top)
 {
@@ -364,11 +340,7 @@ static void _drm_lease_revoke(struct drm_master *top)
 				break;
 
 			/* Over */
-<<<<<<< HEAD
 			master = list_next_entry(master, lessee_list);
-=======
-			master = list_entry(master->lessee_list.next, struct drm_master, lessee_list);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 }
@@ -510,11 +482,7 @@ out_free_objects:
  * drm_mode_create_lease_ioctl - create a new lease
  * @dev: the drm device
  * @data: pointer to struct drm_mode_create_lease
-<<<<<<< HEAD
  * @lessor_priv: the file being manipulated
-=======
- * @file_priv: the file being manipulated
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * The master associated with the specified file will have a lease
  * created containing the objects specified in the ioctl structure.
@@ -553,12 +521,8 @@ int drm_mode_create_lease_ioctl(struct drm_device *dev,
 
 	object_count = cl->object_count;
 
-<<<<<<< HEAD
 	object_ids = memdup_user(u64_to_user_ptr(cl->object_ids),
 			array_size(object_count, sizeof(__u32)));
-=======
-	object_ids = memdup_user(u64_to_user_ptr(cl->object_ids), object_count * sizeof(__u32));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(object_ids))
 		return PTR_ERR(object_ids);
 
@@ -590,64 +554,30 @@ int drm_mode_create_lease_ioctl(struct drm_device *dev,
 
 	/* Clone the lessor file to create a new file for us */
 	DRM_DEBUG_LEASE("Allocating lease file\n");
-<<<<<<< HEAD
 	lessee_file = file_clone_open(lessor_file);
-=======
-	path_get(&lessor_file->f_path);
-	lessee_file = alloc_file(&lessor_file->f_path,
-				 lessor_file->f_mode,
-				 fops_get(lessor_file->f_inode->i_fop));
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(lessee_file)) {
 		ret = PTR_ERR(lessee_file);
 		goto out_lessee;
 	}
 
-<<<<<<< HEAD
 	lessee_priv = lessee_file->private_data;
-=======
-	/* Initialize the new file for DRM */
-	DRM_DEBUG_LEASE("Initializing the file with %p\n", lessee_file->f_op->open);
-	ret = lessee_file->f_op->open(lessee_file->f_inode, lessee_file);
-	if (ret)
-		goto out_lessee_file;
-
-	lessee_priv = lessee_file->private_data;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Change the file to a master one */
 	drm_master_put(&lessee_priv->master);
 	lessee_priv->master = lessee;
 	lessee_priv->is_master = 1;
 	lessee_priv->authenticated = 1;
 
-<<<<<<< HEAD
-=======
-	/* Hook up the fd */
-	fd_install(fd, lessee_file);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Pass fd back to userspace */
 	DRM_DEBUG_LEASE("Returning fd %d id %d\n", fd, lessee->lessee_id);
 	cl->fd = fd;
 	cl->lessee_id = lessee->lessee_id;
 
-<<<<<<< HEAD
 	/* Hook up the fd */
 	fd_install(fd, lessee_file);
 
 	DRM_DEBUG_LEASE("drm_mode_create_lease_ioctl succeeded\n");
 	return 0;
 
-=======
-	DRM_DEBUG_LEASE("drm_mode_create_lease_ioctl succeeded\n");
-	return 0;
-
-out_lessee_file:
-	fput(lessee_file);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out_lessee:
 	drm_master_put(&lessee);
 
@@ -719,11 +649,7 @@ int drm_mode_list_lessees_ioctl(struct drm_device *dev,
  * drm_mode_get_lease_ioctl - list leased objects
  * @dev: the drm device
  * @data: pointer to struct drm_mode_get_lease
-<<<<<<< HEAD
  * @lessee_priv: the file being manipulated
-=======
- * @file_priv: the file being manipulated
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Return the list of leased objects for the specified lessee
  */
@@ -783,11 +709,7 @@ int drm_mode_get_lease_ioctl(struct drm_device *dev,
  * drm_mode_revoke_lease_ioctl - revoke lease
  * @dev: the drm device
  * @data: pointer to struct drm_mode_revoke_lease
-<<<<<<< HEAD
  * @lessor_priv: the file being manipulated
-=======
- * @file_priv: the file being manipulated
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This removes all of the objects from the lease without
  * actually getting rid of the lease itself; that way all

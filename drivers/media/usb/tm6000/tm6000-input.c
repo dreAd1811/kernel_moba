@@ -352,11 +352,7 @@ static int __tm6000_ir_int_start(struct rc_dev *rc)
 	dprintk(1, "IR max size: %d\n", size);
 
 	ir->int_urb->transfer_buffer = kzalloc(size, GFP_ATOMIC);
-<<<<<<< HEAD
 	if (!ir->int_urb->transfer_buffer) {
-=======
-	if (ir->int_urb->transfer_buffer == NULL) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		usb_free_urb(ir->int_urb);
 		return err;
 	}

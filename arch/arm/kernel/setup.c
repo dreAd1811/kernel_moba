@@ -773,11 +773,7 @@ int __init arm_add_memory(u64 start, u64 size)
 	else
 		size -= aligned_start - start;
 
-<<<<<<< HEAD
 #ifndef CONFIG_PHYS_ADDR_T_64BIT
-=======
-#ifndef CONFIG_ARCH_PHYS_ADDR_T_64BIT
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (aligned_start > ULONG_MAX) {
 		pr_crit("Ignoring memory at 0x%08llx outside 32-bit physical address space\n",
 			(long long)start);
@@ -1094,7 +1090,6 @@ void __init setup_arch(char **cmdline_p)
 	mdesc = setup_machine_fdt(__atags_pointer);
 	if (!mdesc)
 		mdesc = setup_machine_tags(__atags_pointer, __machine_arch_type);
-<<<<<<< HEAD
 	if (!mdesc) {
 		early_print("\nError: invalid dtb and unrecognized/unsupported machine ID\n");
 		early_print("  r1=0x%08x, r2=0x%08x\n", __machine_arch_type,
@@ -1105,8 +1100,6 @@ void __init setup_arch(char **cmdline_p)
 		dump_machine_table();
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	machine_desc = mdesc;
 	machine_name = mdesc->name;
 	dump_stack_set_arch_desc("%s", mdesc->name);
@@ -1173,11 +1166,7 @@ void __init setup_arch(char **cmdline_p)
 
 	reserve_crashkernel();
 
-<<<<<<< HEAD
 #ifdef CONFIG_GENERIC_IRQ_MULTI_HANDLER
-=======
-#ifdef CONFIG_MULTI_IRQ_HANDLER
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	handle_arch_irq = mdesc->handle_irq;
 #endif
 

@@ -185,37 +185,22 @@ static int cdv_backlight_init(struct drm_device *dev)
  *	for this and the MID devices.
  */
 
-<<<<<<< HEAD
 static inline u32 CDV_MSG_READ32(int domain, uint port, uint offset)
 {
 	int mcr = (0x10<<24) | (port << 16) | (offset << 8);
 	uint32_t ret_val = 0;
 	struct pci_dev *pci_root = pci_get_domain_bus_and_slot(domain, 0, 0);
-=======
-static inline u32 CDV_MSG_READ32(uint port, uint offset)
-{
-	int mcr = (0x10<<24) | (port << 16) | (offset << 8);
-	uint32_t ret_val = 0;
-	struct pci_dev *pci_root = pci_get_bus_and_slot(0, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pci_write_config_dword(pci_root, 0xD0, mcr);
 	pci_read_config_dword(pci_root, 0xD4, &ret_val);
 	pci_dev_put(pci_root);
 	return ret_val;
 }
 
-<<<<<<< HEAD
 static inline void CDV_MSG_WRITE32(int domain, uint port, uint offset,
 				   u32 value)
 {
 	int mcr = (0x11<<24) | (port << 16) | (offset << 8) | 0xF0;
 	struct pci_dev *pci_root = pci_get_domain_bus_and_slot(domain, 0, 0);
-=======
-static inline void CDV_MSG_WRITE32(uint port, uint offset, u32 value)
-{
-	int mcr = (0x11<<24) | (port << 16) | (offset << 8) | 0xF0;
-	struct pci_dev *pci_root = pci_get_bus_and_slot(0, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pci_write_config_dword(pci_root, 0xD4, value);
 	pci_write_config_dword(pci_root, 0xD0, mcr);
 	pci_dev_put(pci_root);
@@ -232,20 +217,12 @@ static void cdv_init_pm(struct drm_device *dev)
 {
 	struct drm_psb_private *dev_priv = dev->dev_private;
 	u32 pwr_cnt;
-<<<<<<< HEAD
 	int domain = pci_domain_nr(dev->pdev->bus);
 	int i;
 
 	dev_priv->apm_base = CDV_MSG_READ32(domain, PSB_PUNIT_PORT,
 							PSB_APMBA) & 0xFFFF;
 	dev_priv->ospm_base = CDV_MSG_READ32(domain, PSB_PUNIT_PORT,
-=======
-	int i;
-
-	dev_priv->apm_base = CDV_MSG_READ32(PSB_PUNIT_PORT,
-							PSB_APMBA) & 0xFFFF;
-	dev_priv->ospm_base = CDV_MSG_READ32(PSB_PUNIT_PORT,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							PSB_OSPMBA) & 0xFFFF;
 
 	/* Power status */
@@ -276,11 +253,7 @@ static void cdv_errata(struct drm_device *dev)
 	 *	Bonus Launch to work around the issue, by degrading
 	 *	performance.
 	 */
-<<<<<<< HEAD
 	 CDV_MSG_WRITE32(pci_domain_nr(dev->pdev->bus), 3, 0x30, 0x08027108);
-=======
-	 CDV_MSG_WRITE32(3, 0x30, 0x08027108);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -512,11 +485,7 @@ void cdv_intel_attach_force_audio_property(struct drm_connector *connector)
 			return;
 
 		for (i = 0; i < ARRAY_SIZE(force_audio_names); i++)
-<<<<<<< HEAD
 			drm_property_add_enum(prop, i-1, force_audio_names[i]);
-=======
-			drm_property_add_enum(prop, i, i-1, force_audio_names[i]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		dev_priv->force_audio_property = prop;
 	}
@@ -545,11 +514,7 @@ void cdv_intel_attach_broadcast_rgb_property(struct drm_connector *connector)
 			return;
 
 		for (i = 0; i < ARRAY_SIZE(broadcast_rgb_names); i++)
-<<<<<<< HEAD
 			drm_property_add_enum(prop, i, broadcast_rgb_names[i]);
-=======
-			drm_property_add_enum(prop, i, i, broadcast_rgb_names[i]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		dev_priv->broadcast_rgb_property = prop;
 	}

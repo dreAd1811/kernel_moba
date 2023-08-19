@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0+ */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * ipmi_si_sm.h
  *
@@ -15,49 +12,20 @@
  *         source@mvista.com
  *
  * Copyright 2002 MontaVista Software Inc.
-<<<<<<< HEAD
  */
 
 #include <linux/ipmi.h>
 
-=======
- *
- *  This program is free software; you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation; either version 2 of the License, or (at your
- *  option) any later version.
- *
- *
- *  THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED
- *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
- *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- *  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
- *  OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- *  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
- *  TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
- *  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- *  You should have received a copy of the GNU General Public License along
- *  with this program; if not, write to the Free Software Foundation, Inc.,
- *  675 Mass Ave, Cambridge, MA 02139, USA.
- */
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * This is defined by the state machines themselves, it is an opaque
  * data type for them to use.
  */
 struct si_sm_data;
 
-<<<<<<< HEAD
 enum si_type {
 	SI_TYPE_INVALID, SI_KCS, SI_SMIC, SI_BT
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * The structure for doing I/O in the state machine.  The state
  * machine doesn't have the actual I/O routines, they are done through
@@ -79,7 +47,6 @@ struct si_sm_io {
 	int  regshift;
 	int addr_type;
 	long addr_data;
-<<<<<<< HEAD
 	enum ipmi_addr_src addr_source; /* ACPI, PCI, SMBIOS, hardcode, etc. */
 	void (*addr_source_cleanup)(struct si_sm_io *io);
 	void *addr_source_data;
@@ -97,8 +64,6 @@ struct si_sm_io {
 	u8 slave_addr;
 	enum si_type si_type;
 	struct device *dev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Results of SMI events. */

@@ -910,12 +910,8 @@ out:
 /* Called with ichan->chan_mutex held */
 static int idmac_desc_alloc(struct idmac_channel *ichan, int n)
 {
-<<<<<<< HEAD
 	struct idmac_tx_desc *desc =
 		vmalloc(array_size(n, sizeof(struct idmac_tx_desc)));
-=======
-	struct idmac_tx_desc *desc = vmalloc(n * sizeof(struct idmac_tx_desc));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct idmac *idmac = to_idmac(ichan->dma_chan.device);
 
 	if (!desc)

@@ -565,15 +565,9 @@ int mthca_cmd_use_events(struct mthca_dev *dev)
 {
 	int i;
 
-<<<<<<< HEAD
 	dev->cmd.context = kmalloc_array(dev->cmd.max_cmds,
 					 sizeof(struct mthca_cmd_context),
 					 GFP_KERNEL);
-=======
-	dev->cmd.context = kmalloc(dev->cmd.max_cmds *
-				   sizeof (struct mthca_cmd_context),
-				   GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!dev->cmd.context)
 		return -ENOMEM;
 

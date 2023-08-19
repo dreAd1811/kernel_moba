@@ -319,11 +319,7 @@ static void __init rbtx4927_mtd_init(void)
 
 static void __init rbtx4927_gpioled_init(void)
 {
-<<<<<<< HEAD
 	static const struct gpio_led leds[] = {
-=======
-	static struct gpio_led leds[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		{ .name = "gpioled:green:0", .gpio = 0, .active_low = 1, },
 		{ .name = "gpioled:green:1", .gpio = 1, .active_low = 1, },
 	};

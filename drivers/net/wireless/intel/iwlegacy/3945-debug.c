@@ -95,11 +95,7 @@ il3945_ucode_rx_stats_read(struct file *file, char __user *user_buf,
 	pos +=
 	    scnprintf(buf + pos, bufsz - pos,
 		      "%-32s     current"
-<<<<<<< HEAD
 		      "accumulative      delta         max\n",
-=======
-		      "acumulative       delta         max\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		      "Statistics_Rx - OFDM:");
 	pos +=
 	    scnprintf(buf + pos, bufsz - pos,

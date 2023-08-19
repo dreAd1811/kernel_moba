@@ -12,11 +12,7 @@
 int dvb_usb_generic_rw(struct dvb_usb_device *d, u8 *wbuf, u16 wlen, u8 *rbuf,
 	u16 rlen, int delay_ms)
 {
-<<<<<<< HEAD
 	int actlen,ret = -ENOMEM;
-=======
-	int actlen = 0, ret = -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!d || wbuf == NULL || wlen == 0)
 		return -EINVAL;

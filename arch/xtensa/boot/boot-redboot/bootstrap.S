@@ -42,10 +42,7 @@ __start_a0:
 	.align 4
 
 	.section .text, "ax"
-<<<<<<< HEAD
 	.literal_position
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.begin literal_prefix .text
 
 	/* put literals in here! */

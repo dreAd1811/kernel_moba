@@ -42,7 +42,6 @@
 
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/input/input.h>
-<<<<<<< HEAD
 #include <dt-bindings/sound/fsl-imx-audmux.h>
 
 / {
@@ -51,22 +50,12 @@
 	};
 
 	backlight_lvds: backlight-lvds {
-=======
-
-/ {
-	memory {
-		reg = <0x10000000 0x80000000>;
-	};
-
-	backlight {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "pwm-backlight";
 		pwms = <&pwm3 0 100000>;
 		brightness-levels = <0 4 8 16 32 64 128 255>;
 		default-brightness-level = <7>;
 	};
 
-<<<<<<< HEAD
 	reg_1p8v: regulator-1p8v {
 		compatible = "regulator-fixed";
 		regulator-name = "1P8V";
@@ -85,8 +74,6 @@
 		regulator-always-on;
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	reg_3p3v: regulator-3p3v {
 		compatible = "regulator-fixed";
 		regulator-name = "3P3V";
@@ -119,7 +106,6 @@
 		#clock-cells = <0>;
 		clock-frequency = <25000000>;  /* 25MHz for example */
 	};
-<<<<<<< HEAD
 
 	sound {
 		compatible = "simple-audio-card";
@@ -173,8 +159,6 @@
 			IMX_AUDMUX_V2_PDCR_RXDSEL(MX51_AUDMUX_PORT1_SSI0)
 		>;
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &can1 {
@@ -229,7 +213,6 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_i2c3>;
 	status = "okay";
-<<<<<<< HEAD
 
 	ov5640: camera@3c {
 		compatible = "ovti,ov5640";
@@ -277,8 +260,6 @@
 			data-lanes = <1 2>;
 		};
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &pwm3 {
@@ -287,14 +268,11 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
 &ssi1 {
 	fsl,mode = "i2s-slave";
 	status = "okay";
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &uart4 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart4>;
@@ -323,7 +301,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
 &usdhc3 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_usdhc3>;
@@ -342,9 +319,6 @@
 		>;
 	};
 
-=======
-&iomuxc {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pinctrl_enet: enetgrp {
 		fsl,pins = <
 			MX6QDL_PAD_ENET_CRS_DV__ENET_RX_EN	0x1b0b0
@@ -415,7 +389,6 @@
 		fsl,pins = <
 			MX6QDL_PAD_GPIO_5__I2C3_SCL  0x4001b8b1
 			MX6QDL_PAD_EIM_D18__I2C3_SDA 0x4001b8b1
-<<<<<<< HEAD
 		>;
 	};
 
@@ -424,9 +397,6 @@
 			MX6QDL_PAD_CSI0_DAT12__GPIO5_IO30 0x1b0b0
 			MX6QDL_PAD_CSI0_DAT13__GPIO5_IO31 0x1b0b0
 			MX6QDL_PAD_GPIO_0__CCM_CLKO1	  0x130b0
-=======
-			MX6QDL_PAD_GPIO_0__CCM_CLKO1	0x130b0
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		>;
 	};
 
@@ -459,7 +429,6 @@
 			MX6QDL_PAD_SD1_DAT3__SD1_DATA3 0x17070
 		>;
 	};
-<<<<<<< HEAD
 
 	pinctrl_usdhc3: usdhc3grp {
 		fsl,pins = <
@@ -475,6 +444,4 @@
 			MX6QDL_PAD_SD3_DAT7__SD3_DATA7 0x17059
 		>;
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

@@ -566,14 +566,8 @@ static int
 netxen_send_cmd_descs(struct netxen_adapter *adapter,
 		struct cmd_desc_type0 *cmd_desc_arr, int nr_desc)
 {
-<<<<<<< HEAD
 	u32 i, producer;
 	struct netxen_cmd_buffer *pbuf;
-=======
-	u32 i, producer, consumer;
-	struct netxen_cmd_buffer *pbuf;
-	struct cmd_desc_type0 *cmd_desc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct nx_host_tx_ring *tx_ring;
 
 	i = 0;
@@ -585,10 +579,6 @@ netxen_send_cmd_descs(struct netxen_adapter *adapter,
 	__netif_tx_lock_bh(tx_ring->txq);
 
 	producer = tx_ring->producer;
-<<<<<<< HEAD
-=======
-	consumer = tx_ring->sw_consumer;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (nr_desc >= netxen_tx_avail(tx_ring)) {
 		netif_tx_stop_queue(tx_ring->txq);
@@ -603,11 +593,6 @@ netxen_send_cmd_descs(struct netxen_adapter *adapter,
 	}
 
 	do {
-<<<<<<< HEAD
-=======
-		cmd_desc = &cmd_desc_arr[i];
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pbuf = &tx_ring->cmd_buf_arr[producer];
 		pbuf->skb = NULL;
 		pbuf->frag_count = 0;
@@ -2361,11 +2346,7 @@ static int netxen_md_entry_err_chk(struct netxen_adapter *adapter,
 static int netxen_parse_md_template(struct netxen_adapter *adapter)
 {
 	int num_of_entries, buff_level, e_cnt, esize;
-<<<<<<< HEAD
 	int rv = 0, sane_start = 0, sane_end = 0;
-=======
-	int end_cnt = 0, rv = 0, sane_start = 0, sane_end = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	char *dbuff;
 	void *template_buff = adapter->mdump.md_template;
 	char *dump_buff = adapter->mdump.md_capture_buff;
@@ -2401,11 +2382,6 @@ static int netxen_parse_md_template(struct netxen_adapter *adapter)
 			break;
 		case RDEND:
 			entry->hdr.driver_flags |= NX_DUMP_SKIP;
-<<<<<<< HEAD
-=======
-			if (!sane_end)
-				end_cnt = e_cnt;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			sane_end += 1;
 			break;
 		case CNTRL:
@@ -2520,19 +2496,10 @@ netxen_collect_minidump(struct netxen_adapter *adapter)
 {
 	int ret = 0;
 	struct netxen_minidump_template_hdr *hdr;
-<<<<<<< HEAD
 	hdr = (struct netxen_minidump_template_hdr *)
 				adapter->mdump.md_template;
 	hdr->driver_capture_mask = adapter->mdump.md_capture_mask;
 	hdr->driver_timestamp = ktime_get_seconds();
-=======
-	struct timespec val;
-	hdr = (struct netxen_minidump_template_hdr *)
-				adapter->mdump.md_template;
-	hdr->driver_capture_mask = adapter->mdump.md_capture_mask;
-	jiffies_to_timespec(jiffies, &val);
-	hdr->driver_timestamp = (u32) val.tv_sec;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hdr->driver_info_word2 = adapter->fw_version;
 	hdr->driver_info_word3 = NXRD32(adapter, CRB_DRIVER_VERSION);
 	ret = netxen_parse_md_template(adapter);

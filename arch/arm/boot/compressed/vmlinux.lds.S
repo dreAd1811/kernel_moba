@@ -44,7 +44,6 @@ SECTIONS
     *(.glue_7t)
     *(.glue_7)
   }
-<<<<<<< HEAD
   .table : ALIGN(4) {
     _table_start = .;
     LONG(ZIMAGE_MAGIC(2))
@@ -62,14 +61,6 @@ SECTIONS
   .piggydata : {
     *(.piggydata)
     __piggy_size_addr = . - 4;
-=======
-  .rodata : {
-    *(.rodata)
-    *(.rodata.*)
-  }
-  .piggydata : {
-    *(.piggydata)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
   }
 
   . = ALIGN(4);
@@ -111,25 +102,19 @@ SECTIONS
    * this symbol allows further debug in the near future.
    */
   .image_end (NOLOAD) : {
-<<<<<<< HEAD
     /*
      * EFI requires that the image is aligned to 512 bytes, and appended
      * DTB requires that we know where the end of the image is.  Ensure
      * that both are satisfied by ensuring that there are no additional
      * sections emitted into the decompressor image.
      */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     _edata_real = .;
   }
 
   _magic_sig = ZIMAGE_MAGIC(0x016f2818);
   _magic_start = ZIMAGE_MAGIC(_start);
   _magic_end = ZIMAGE_MAGIC(_edata);
-<<<<<<< HEAD
   _magic_table = ZIMAGE_MAGIC(_table_start - _start);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
   . = BSS_START;
   __bss_start = .;
@@ -150,7 +135,4 @@ SECTIONS
   .stab.indexstr 0	: { *(.stab.indexstr) }
   .comment 0		: { *(.comment) }
 }
-<<<<<<< HEAD
 ASSERT(_edata_real == _edata, "error: zImage file size is incorrect");
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

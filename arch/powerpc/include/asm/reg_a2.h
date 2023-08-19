@@ -12,11 +12,8 @@
 #ifndef __ASM_POWERPC_REG_A2_H__
 #define __ASM_POWERPC_REG_A2_H__
 
-<<<<<<< HEAD
 #include <asm/asm-const.h>
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SPRN_TENSR	0x1b5
 #define SPRN_TENS	0x1b6	/* Thread ENable Set */
 #define SPRN_TENC	0x1b7	/* Thread ENable Clear */

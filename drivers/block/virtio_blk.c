@@ -15,13 +15,6 @@
 #include <linux/blk-mq.h>
 #include <linux/blk-mq-virtio.h>
 #include <linux/numa.h>
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_PFK
-#include <linux/pfk.h>
-#endif
-#include <crypto/ice.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define PART_BITS 4
 #define VQ_NAME_LEN 16
@@ -30,12 +23,6 @@ static int major;
 static DEFINE_IDA(vd_index_ida);
 
 static struct workqueue_struct *virtblk_wq;
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_PFK_VIRTUALIZED
-static struct workqueue_struct *ice_workqueue;
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct virtio_blk_vq {
 	struct virtqueue *vq;
@@ -44,18 +31,6 @@ struct virtio_blk_vq {
 } ____cacheline_aligned_in_smp;
 
 struct virtio_blk {
-<<<<<<< HEAD
-=======
-	/*
-	 * This mutex must be held by anything that may run after
-	 * virtblk_remove() sets vblk->vdev to NULL.
-	 *
-	 * blk-mq, virtqueue processing, and sysfs attribute code paths are
-	 * shut down before vblk->vdev is set to NULL and therefore do not need
-	 * to hold this mutex.
-	 */
-	struct mutex vdev_mutex;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct virtio_device *vdev;
 
 	/* The disk structure for the kernel. */
@@ -67,23 +42,6 @@ struct virtio_blk {
 	/* Process context for config space updates */
 	struct work_struct config_work;
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_PFK_VIRTUALIZED
-	/* Process context for virtual ICE configuration */
-	spinlock_t ice_work_lock;
-	struct work_struct ice_cfg_work;
-	struct request *req_pending;
-	bool work_pending;
-#endif
-	/*
-	 * Tracks references from block_device_operations open/release and
-	 * virtio_driver probe/remove so this object can be freed once no
-	 * longer in use.
-	 */
-	refcount_t refs;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* What host tells us, plus 2 for header & tailer. */
 	unsigned int sg_elems;
 
@@ -218,10 +176,6 @@ static inline void virtblk_request_done(struct request *req)
 {
 	struct virtblk_req *vbr = blk_mq_rq_to_pdu(req);
 
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (req_op(req)) {
 	case REQ_OP_SCSI_IN:
 	case REQ_OP_SCSI_OUT:
@@ -229,19 +183,6 @@ static inline void virtblk_request_done(struct request *req)
 		break;
 	}
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_PFK_VIRTUALIZED
-{
-	bool ice_activated;
-	int ret = pfk_load_key_end(req->bio, &ice_activated);
-
-	if (ice_activated && ret != 0)
-		pr_err("%s:  pfk_load_key_end returned %d\n", __func__, ret);
-}
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	blk_mq_end_request(req, virtblk_result(vbr));
 }
 
@@ -273,71 +214,6 @@ static void virtblk_done(struct virtqueue *vq)
 	spin_unlock_irqrestore(&vblk->vqs[qid].lock, flags);
 }
 
-<<<<<<< HEAD
-=======
-static blk_status_t virtblk_handle_ice(struct virtio_blk *vblk,
-		struct request *req)
-{
-	blk_status_t retval = BLK_STS_OK;
-#ifdef CONFIG_PFK_VIRTUALIZED
-	int err;
-	bool activate_ice = false;
-	struct ice_crypto_setting pfk_crypto_data = {0};
-	unsigned long flags;
-	struct virtblk_req *vbr = blk_mq_rq_to_pdu(req);
-
-	spin_lock_irqsave(&vblk->ice_work_lock, flags);
-	do {
-		err = pfk_load_key_start(req->bio, &pfk_crypto_data,
-				&activate_ice, true);
-		if (activate_ice) {
-			/* ice is activated - error flow */
-			if (err) {
-				if (err != -EAGAIN) {
-					retval = BLK_STS_IOERR;
-					if (err != -EBUSY)
-						pr_err("%s: pfk_load_key_start err = %d\n",
-								__func__, err);
-					break;
-				}
-				/* ice is activated -
-				 * need to rerun in non atomic context
-				 */
-				if (!ice_workqueue) {
-					pr_err("%s: error %d workqueue NULL\n",
-							__func__, err);
-					retval = BLK_STS_NOTSUPP;
-					break;
-				}
-				if (!vblk->work_pending) {
-					vblk->req_pending = req;
-
-					if (!queue_work(ice_workqueue,
-							&vblk->ice_cfg_work)) {
-						vblk->req_pending = NULL;
-						retval = BLK_STS_IOERR;
-						break;
-					}
-					vblk->work_pending = true;
-				}
-				retval = BLK_STS_RESOURCE;
-				break;
-			}
-			/* ice is activated - successful flow */
-			vbr->out_hdr.ice_info.ice_slot =
-					pfk_crypto_data.key_index;
-			vbr->out_hdr.ice_info.activate = true;
-		} else {
-			/* ice is not activated */
-			vbr->out_hdr.ice_info.activate = false;
-		}
-	} while (0);
-	spin_unlock_irqrestore(&vblk->ice_work_lock, flags);
-#endif
-	return retval;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static blk_status_t virtio_queue_rq(struct blk_mq_hw_ctx *hctx,
 			   const struct blk_mq_queue_data *bd)
 {
@@ -350,10 +226,6 @@ static blk_status_t virtio_queue_rq(struct blk_mq_hw_ctx *hctx,
 	int err;
 	bool notify = false;
 	u32 type;
-<<<<<<< HEAD
-=======
-	blk_status_t retval;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	BUG_ON(req->nr_phys_segments + 2 > vblk->sg_elems);
 
@@ -382,15 +254,6 @@ static blk_status_t virtio_queue_rq(struct blk_mq_hw_ctx *hctx,
 		0 : cpu_to_virtio64(vblk->vdev, blk_rq_pos(req));
 	vbr->out_hdr.ioprio = cpu_to_virtio32(vblk->vdev, req_get_ioprio(req));
 
-<<<<<<< HEAD
-=======
-	retval = virtblk_handle_ice(vblk, req);
-	if (retval != BLK_STS_OK) {
-		if (retval == BLK_STS_RESOURCE)
-			blk_mq_run_hw_queue(hctx, true);
-		return retval;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	blk_mq_start_request(req);
 
 	num = blk_rq_map_sg(hctx->queue, req, vbr->sg);
@@ -408,23 +271,12 @@ static blk_status_t virtio_queue_rq(struct blk_mq_hw_ctx *hctx,
 		err = virtblk_add_req(vblk->vqs[qid].vq, vbr, vbr->sg, num);
 	if (err) {
 		virtqueue_kick(vblk->vqs[qid].vq);
-<<<<<<< HEAD
 		blk_mq_stop_hw_queue(hctx);
 		spin_unlock_irqrestore(&vblk->vqs[qid].lock, flags);
 		/* Out of mem doesn't actually happen, since we fall back
 		 * to direct descriptors */
 		if (err == -ENOMEM || err == -ENOSPC)
 			return BLK_STS_DEV_RESOURCE;
-=======
-		/* Don't stop the queue if -ENOMEM: we may have failed to
-		 * bounce the buffer due to global resource outage.
-		 */
-		if (err == -ENOSPC)
-			blk_mq_stop_hw_queue(hctx);
-		spin_unlock_irqrestore(&vblk->vqs[qid].lock, flags);
-		if (err == -ENOMEM || err == -ENOSPC)
-			return BLK_STS_RESOURCE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return BLK_STS_IOERR;
 	}
 
@@ -446,11 +298,7 @@ static int virtblk_get_id(struct gendisk *disk, char *id_str)
 	struct request *req;
 	int err;
 
-<<<<<<< HEAD
 	req = blk_get_request(q, REQ_OP_DRV_IN, 0);
-=======
-	req = blk_get_request(q, REQ_OP_DRV_IN, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(req))
 		return PTR_ERR(req);
 
@@ -465,61 +313,10 @@ out:
 	return err;
 }
 
-<<<<<<< HEAD
-=======
-static void virtblk_get(struct virtio_blk *vblk)
-{
-	refcount_inc(&vblk->refs);
-}
-
-static void virtblk_put(struct virtio_blk *vblk)
-{
-	if (refcount_dec_and_test(&vblk->refs)) {
-		ida_simple_remove(&vd_index_ida, vblk->index);
-		mutex_destroy(&vblk->vdev_mutex);
-		kfree(vblk);
-	}
-}
-
-static int virtblk_open(struct block_device *bd, fmode_t mode)
-{
-	struct virtio_blk *vblk = bd->bd_disk->private_data;
-	int ret = 0;
-
-	mutex_lock(&vblk->vdev_mutex);
-
-	if (vblk->vdev)
-		virtblk_get(vblk);
-	else
-		ret = -ENXIO;
-
-	mutex_unlock(&vblk->vdev_mutex);
-	return ret;
-}
-
-static void virtblk_release(struct gendisk *disk, fmode_t mode)
-{
-	struct virtio_blk *vblk = disk->private_data;
-
-	virtblk_put(vblk);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* We provide getgeo only to please some old bootloader/partitioning tools */
 static int virtblk_getgeo(struct block_device *bd, struct hd_geometry *geo)
 {
 	struct virtio_blk *vblk = bd->bd_disk->private_data;
-<<<<<<< HEAD
-=======
-	int ret = 0;
-
-	mutex_lock(&vblk->vdev_mutex);
-
-	if (!vblk->vdev) {
-		ret = -ENXIO;
-		goto out;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* see if the host passed in geometry config */
 	if (virtio_has_feature(vblk->vdev, VIRTIO_BLK_F_GEOMETRY)) {
@@ -535,23 +332,12 @@ static int virtblk_getgeo(struct block_device *bd, struct hd_geometry *geo)
 		geo->sectors = 1 << 5;
 		geo->cylinders = get_capacity(bd->bd_disk) >> 11;
 	}
-<<<<<<< HEAD
 	return 0;
-=======
-out:
-	mutex_unlock(&vblk->vdev_mutex);
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct block_device_operations virtblk_fops = {
 	.ioctl  = virtblk_ioctl,
 	.owner  = THIS_MODULE,
-<<<<<<< HEAD
-=======
-	.open = virtblk_open,
-	.release = virtblk_release,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.getgeo = virtblk_getgeo,
 };
 
@@ -585,7 +371,6 @@ static ssize_t virtblk_serial_show(struct device *dev,
 	return err;
 }
 
-<<<<<<< HEAD
 static DEVICE_ATTR(serial, 0444, virtblk_serial_show, NULL);
 
 /* The queue's logical block size must be set before calling this */
@@ -594,18 +379,6 @@ static void virtblk_update_capacity(struct virtio_blk *vblk, bool resize)
 	struct virtio_device *vdev = vblk->vdev;
 	struct request_queue *q = vblk->disk->queue;
 	char cap_str_2[10], cap_str_10[10];
-=======
-static DEVICE_ATTR(serial, S_IRUGO, virtblk_serial_show, NULL);
-
-static void virtblk_config_changed_work(struct work_struct *work)
-{
-	struct virtio_blk *vblk =
-		container_of(work, struct virtio_blk, config_work);
-	struct virtio_device *vdev = vblk->vdev;
-	struct request_queue *q = vblk->disk->queue;
-	char cap_str_2[10], cap_str_10[10];
-	char *envp[] = { "RESIZE=1", NULL };
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long long nblocks;
 	u64 capacity;
 
@@ -627,20 +400,15 @@ static void virtblk_config_changed_work(struct work_struct *work)
 			STRING_UNITS_10, cap_str_10, sizeof(cap_str_10));
 
 	dev_notice(&vdev->dev,
-<<<<<<< HEAD
 		   "[%s] %s%llu %d-byte logical blocks (%s/%s)\n",
 		   vblk->disk->disk_name,
 		   resize ? "new size: " : "",
-=======
-		   "new size: %llu %d-byte logical blocks (%s/%s)\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		   nblocks,
 		   queue_logical_block_size(q),
 		   cap_str_10,
 		   cap_str_2);
 
 	set_capacity(vblk->disk, capacity);
-<<<<<<< HEAD
 }
 
 static void virtblk_config_changed_work(struct work_struct *work)
@@ -650,51 +418,10 @@ static void virtblk_config_changed_work(struct work_struct *work)
 	char *envp[] = { "RESIZE=1", NULL };
 
 	virtblk_update_capacity(vblk, true);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	revalidate_disk(vblk->disk);
 	kobject_uevent_env(&disk_to_dev(vblk->disk)->kobj, KOBJ_CHANGE, envp);
 }
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_PFK_VIRTUALIZED
-static void virtblk_ice_work(struct work_struct *work)
-{
-	bool activate_ice = false;
-	struct ice_crypto_setting pfk_crypto_data = {0};
-	int err;
-	unsigned long flags;
-	struct bio *bio;
-	struct virtio_blk *vblk =
-			container_of(work, struct virtio_blk, ice_cfg_work);
-
-	spin_lock_irqsave(&vblk->ice_work_lock, flags);
-
-	if (!vblk->req_pending) {
-		vblk->work_pending = false;
-		spin_unlock_irqrestore(&vblk->ice_work_lock, flags);
-		return;
-	}
-
-	bio = vblk->req_pending->bio;
-	spin_unlock_irqrestore(&vblk->ice_work_lock, flags);
-
-	/* config_start is called again as previous attempt returned -EAGAIN,
-	 * this call shall now take care of the necessary key setup.
-	 */
-
-	err = pfk_load_key_start(bio, &pfk_crypto_data,
-			&activate_ice, false);
-
-	spin_lock_irqsave(&vblk->ice_work_lock, flags);
-	vblk->req_pending = NULL;
-	vblk->work_pending = false;
-	spin_unlock_irqrestore(&vblk->ice_work_lock, flags);
-}
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void virtblk_config_changed(struct virtio_device *vdev)
 {
 	struct virtio_blk *vblk = vdev->priv;
@@ -750,13 +477,6 @@ static int init_vq(struct virtio_blk *vblk)
 	}
 	vblk->num_vqs = num_vqs;
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_PFK_VIRTUALIZED
-	spin_lock_init(&vblk->ice_work_lock);
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	kfree(vqs);
 	kfree(callbacks);
@@ -858,17 +578,10 @@ virtblk_cache_type_show(struct device *dev, struct device_attribute *attr,
 }
 
 static const struct device_attribute dev_attr_cache_type_ro =
-<<<<<<< HEAD
 	__ATTR(cache_type, 0444,
 	       virtblk_cache_type_show, NULL);
 static const struct device_attribute dev_attr_cache_type_rw =
 	__ATTR(cache_type, 0644,
-=======
-	__ATTR(cache_type, S_IRUGO,
-	       virtblk_cache_type_show, NULL);
-static const struct device_attribute dev_attr_cache_type_rw =
-	__ATTR(cache_type, S_IRUGO|S_IWUSR,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	       virtblk_cache_type_show, virtblk_cache_type_store);
 
 static int virtblk_init_request(struct blk_mq_tag_set *set, struct request *rq,
@@ -919,10 +632,6 @@ static int virtblk_probe(struct virtio_device *vdev)
 	struct request_queue *q;
 	int err, index;
 
-<<<<<<< HEAD
-=======
-	u64 cap;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 v, blk_size, sg_elems, opt_io_size;
 	u16 min_io_size;
 	u8 physical_block_exp, alignment_offset;
@@ -956,28 +665,11 @@ static int virtblk_probe(struct virtio_device *vdev)
 		goto out_free_index;
 	}
 
-<<<<<<< HEAD
-=======
-	/* This reference is dropped in virtblk_remove(). */
-	refcount_set(&vblk->refs, 1);
-	mutex_init(&vblk->vdev_mutex);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vblk->vdev = vdev;
 	vblk->sg_elems = sg_elems;
 
 	INIT_WORK(&vblk->config_work, virtblk_config_changed_work);
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_PFK_VIRTUALIZED
-	if (!virtio_has_feature(vblk->vdev, VIRTIO_BLK_F_ICE))
-		return -ENOTTY;
-	INIT_WORK(&vblk->ice_cfg_work, virtblk_ice_work);
-	vblk->work_pending = false;
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = init_vq(vblk);
 	if (err)
 		goto out_free_vblk;
@@ -1037,34 +729,12 @@ static int virtblk_probe(struct virtio_device *vdev)
 	if (virtio_has_feature(vdev, VIRTIO_BLK_F_RO))
 		set_disk_ro(vblk->disk, 1);
 
-<<<<<<< HEAD
-=======
-	/* Host must always specify the capacity. */
-	virtio_cread(vdev, struct virtio_blk_config, capacity, &cap);
-
-	/* If capacity is too big, truncate with warning. */
-	if ((sector_t)cap != cap) {
-		dev_warn(&vdev->dev, "Capacity %llu too large: truncating\n",
-			 (unsigned long long)cap);
-		cap = (sector_t)-1;
-	}
-	set_capacity(vblk->disk, cap);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* We can handle whatever the host told us to handle. */
 	blk_queue_max_segments(q, vblk->sg_elems-2);
 
 	/* No real sector limit. */
 	blk_queue_max_hw_sectors(q, -1U);
 
-<<<<<<< HEAD
-=======
-	/* Set inline encryption. */
-#ifdef CONFIG_PFK_VIRTUALIZED
-	queue_flag_set_unlocked(QUEUE_FLAG_INLINECRYPT, q);
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Host can optionally specify maximum segment size and number of
 	 * segments. */
 	err = virtio_cread_feature(vdev, VIRTIO_BLK_F_SIZE_MAX,
@@ -1109,10 +779,7 @@ static int virtblk_probe(struct virtio_device *vdev)
 	if (!err && opt_io_size)
 		blk_queue_io_opt(q, blk_size * opt_io_size);
 
-<<<<<<< HEAD
 	virtblk_update_capacity(vblk, false);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	virtio_device_ready(vdev);
 
 	device_add_disk(&vdev->dev, vblk->disk);
@@ -1139,10 +806,6 @@ out_put_disk:
 	put_disk(vblk->disk);
 out_free_vq:
 	vdev->config->del_vqs(vdev);
-<<<<<<< HEAD
-=======
-	kfree(vblk->vqs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out_free_vblk:
 	kfree(vblk);
 out_free_index:
@@ -1154,11 +817,8 @@ out:
 static void virtblk_remove(struct virtio_device *vdev)
 {
 	struct virtio_blk *vblk = vdev->priv;
-<<<<<<< HEAD
 	int index = vblk->index;
 	int refc;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Make sure no work handler is accessing the device. */
 	flush_work(&vblk->config_work);
@@ -1168,7 +828,6 @@ static void virtblk_remove(struct virtio_device *vdev)
 
 	blk_mq_free_tag_set(&vblk->tag_set);
 
-<<<<<<< HEAD
 	/* Stop all the virtqueues. */
 	vdev->config->reset(vdev);
 
@@ -1181,23 +840,6 @@ static void virtblk_remove(struct virtio_device *vdev)
 	/* Only free device id if we don't have any users */
 	if (refc == 1)
 		ida_simple_remove(&vd_index_ida, index);
-=======
-	mutex_lock(&vblk->vdev_mutex);
-
-	/* Stop all the virtqueues. */
-	vdev->config->reset(vdev);
-
-	/* Virtqueues are stopped, nothing can use vblk->vdev anymore. */
-	vblk->vdev = NULL;
-
-	put_disk(vblk->disk);
-	vdev->config->del_vqs(vdev);
-	kfree(vblk->vqs);
-
-	mutex_unlock(&vblk->vdev_mutex);
-
-	virtblk_put(vblk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #ifdef CONFIG_PM_SLEEP
@@ -1253,12 +895,6 @@ static unsigned int features[] = {
 	VIRTIO_BLK_F_RO, VIRTIO_BLK_F_BLK_SIZE,
 	VIRTIO_BLK_F_FLUSH, VIRTIO_BLK_F_TOPOLOGY, VIRTIO_BLK_F_CONFIG_WCE,
 	VIRTIO_BLK_F_MQ,
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_PFK_VIRTUALIZED
-	VIRTIO_BLK_F_ICE,
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct virtio_driver virtio_blk = {
@@ -1268,12 +904,6 @@ static struct virtio_driver virtio_blk = {
 	.feature_table_size_legacy	= ARRAY_SIZE(features_legacy),
 	.driver.name			= KBUILD_MODNAME,
 	.driver.owner			= THIS_MODULE,
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_PLATFORM_AUTO
-	.driver.probe_type		= PROBE_PREFER_ASYNCHRONOUS,
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.id_table			= id_table,
 	.probe				= virtblk_probe,
 	.remove				= virtblk_remove,
@@ -1288,24 +918,9 @@ static int __init init(void)
 {
 	int error;
 
-<<<<<<< HEAD
 	virtblk_wq = alloc_workqueue("virtio-blk", 0, 0);
 	if (!virtblk_wq)
 		return -ENOMEM;
-=======
-#ifdef CONFIG_PFK_VIRTUALIZED
-	ice_workqueue = alloc_workqueue("virtio-blk-ice",
-			WQ_MEM_RECLAIM | WQ_HIGHPRI | WQ_FREEZABLE, 0);
-	if (!ice_workqueue)
-		return -ENOMEM;
-#endif
-
-	virtblk_wq = alloc_workqueue("virtio-blk", 0, 0);
-	if (!virtblk_wq) {
-		error = -ENOMEM;
-		goto out_destroy_ice_workqueue;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	major = register_blkdev(0, "virtblk");
 	if (major < 0) {
@@ -1322,13 +937,6 @@ out_unregister_blkdev:
 	unregister_blkdev(major, "virtblk");
 out_destroy_workqueue:
 	destroy_workqueue(virtblk_wq);
-<<<<<<< HEAD
-=======
-out_destroy_ice_workqueue:
-#ifdef CONFIG_PFK_VIRTUALIZED
-	destroy_workqueue(ice_workqueue);
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return error;
 }
 
@@ -1337,12 +945,6 @@ static void __exit fini(void)
 	unregister_virtio_driver(&virtio_blk);
 	unregister_blkdev(major, "virtblk");
 	destroy_workqueue(virtblk_wq);
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_PFK_VIRTUALIZED
-	destroy_workqueue(ice_workqueue);
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 module_init(init);
 module_exit(fini);

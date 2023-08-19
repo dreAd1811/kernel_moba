@@ -8,10 +8,7 @@
  * Copyright(c) 2012 - 2014 Intel Corporation. All rights reserved.
  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
-<<<<<<< HEAD
  * Copyright(c) 2018 - 2019 Intel Corporation
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of version 2 of the GNU General Public License as
@@ -34,10 +31,7 @@
  * Copyright(c) 2012 - 2014 Intel Corporation. All rights reserved.
  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
-<<<<<<< HEAD
  * Copyright(c) 2018 - 2019 Intel Corporation
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -71,13 +65,8 @@
 #include "runtime.h"
 #include "fw/api/commands.h"
 
-<<<<<<< HEAD
 static void iwl_parse_shared_mem_22000(struct iwl_fw_runtime *fwrt,
 				       struct iwl_rx_packet *pkt)
-=======
-static void iwl_parse_shared_mem_a000(struct iwl_fw_runtime *fwrt,
-				      struct iwl_rx_packet *pkt)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct iwl_shared_mem_cfg *mem_cfg = (void *)pkt->data;
 	int i, lmac;
@@ -145,10 +134,7 @@ void iwl_get_shared_mem_conf(struct iwl_fw_runtime *fwrt)
 		.len = { 0, },
 	};
 	struct iwl_rx_packet *pkt;
-<<<<<<< HEAD
 	int ret;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (fw_has_capa(&fwrt->fw->ucode_capa,
 			IWL_UCODE_TLV_CAPA_EXTEND_SHARED_MEM_CFG))
@@ -156,7 +142,6 @@ void iwl_get_shared_mem_conf(struct iwl_fw_runtime *fwrt)
 	else
 		cmd.id = SHARED_MEM_CFG;
 
-<<<<<<< HEAD
 	ret = iwl_trans_send_cmd(fwrt->trans, &cmd);
 
 	if (ret) {
@@ -168,14 +153,6 @@ void iwl_get_shared_mem_conf(struct iwl_fw_runtime *fwrt)
 	pkt = cmd.resp_pkt;
 	if (fwrt->trans->cfg->device_family >= IWL_DEVICE_FAMILY_22000)
 		iwl_parse_shared_mem_22000(fwrt, pkt);
-=======
-	if (WARN_ON(iwl_trans_send_cmd(fwrt->trans, &cmd)))
-		return;
-
-	pkt = cmd.resp_pkt;
-	if (fwrt->trans->cfg->device_family == IWL_DEVICE_FAMILY_A000)
-		iwl_parse_shared_mem_a000(fwrt, pkt);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		iwl_parse_shared_mem(fwrt, pkt);
 

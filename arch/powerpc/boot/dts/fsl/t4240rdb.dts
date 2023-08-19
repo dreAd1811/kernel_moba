@@ -267,38 +267,22 @@
 
 			mdio@fd000 {
 				xfiphy1: ethernet-phy@10 {
-<<<<<<< HEAD
 					compatible = "ethernet-phy-id13e5.1002";
-=======
-					compatible = "ethernet-phy-ieee802.3-c45";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					reg = <0x10>;
 				};
 
 				xfiphy2: ethernet-phy@11 {
-<<<<<<< HEAD
 					compatible = "ethernet-phy-id13e5.1002";
-=======
-					compatible = "ethernet-phy-ieee802.3-c45";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					reg = <0x11>;
 				};
 
 				xfiphy3: ethernet-phy@13 {
-<<<<<<< HEAD
 					compatible = "ethernet-phy-id13e5.1002";
-=======
-					compatible = "ethernet-phy-ieee802.3-c45";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					reg = <0x13>;
 				};
 
 				xfiphy4: ethernet-phy@12 {
-<<<<<<< HEAD
 					compatible = "ethernet-phy-id13e5.1002";
-=======
-					compatible = "ethernet-phy-ieee802.3-c45";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					reg = <0x12>;
 				};
 			};

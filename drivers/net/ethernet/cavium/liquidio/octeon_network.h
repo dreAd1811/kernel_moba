@@ -35,7 +35,6 @@
 #define   LIO_IFSTATE_RX_TIMESTAMP_ENABLED 0x08
 #define   LIO_IFSTATE_RESETTING		   0x10
 
-<<<<<<< HEAD
 struct liquidio_if_cfg_context {
 	u32 octeon_id;
 	wait_queue_head_t wc;
@@ -71,8 +70,6 @@ struct octnic_gather {
 	dma_addr_t sg_dma_ptr;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct oct_nic_stats_resp {
 	u64     rh;
 	struct oct_link_stats stats;
@@ -84,7 +81,6 @@ struct oct_nic_stats_ctrl {
 	struct net_device *netdev;
 };
 
-<<<<<<< HEAD
 struct oct_nic_seapi_resp {
 	u64 rh;
 	u32 speed;
@@ -97,8 +93,6 @@ struct liquidio_nic_seapi_ctl_context {
 	struct completion complete;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /** LiquidIO per-interface network private data */
 struct lio {
 	/** State of the interface. Rx/Tx happens only in the RUNNING state.  */
@@ -189,23 +183,16 @@ struct lio {
 	/* work queue for  link status */
 	struct cavium_wq	link_status_wq;
 
-<<<<<<< HEAD
 	/* work queue to regularly send local time to octeon firmware */
 	struct cavium_wq	sync_octeon_time_wq;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int netdev_uc_count;
 };
 
 #define LIO_SIZE         (sizeof(struct lio))
 #define GET_LIO(netdev)  ((struct lio *)netdev_priv(netdev))
 
-<<<<<<< HEAD
 #define LIO_MAX_CORES                16
-=======
-#define LIO_MAX_CORES                12
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * \brief Enable or disable feature
@@ -238,19 +225,15 @@ irqreturn_t liquidio_msix_intr_handler(int irq __attribute__((unused)),
 
 int octeon_setup_interrupt(struct octeon_device *oct, u32 num_ioqs);
 
-<<<<<<< HEAD
 int octnet_get_link_stats(struct net_device *netdev);
 
 int lio_wait_for_clean_oq(struct octeon_device *oct);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * \brief Register ethtool operations
  * @param netdev    pointer to network device
  */
 void liquidio_set_ethtool_ops(struct net_device *netdev);
 
-<<<<<<< HEAD
 void lio_if_cfg_callback(struct octeon_device *oct,
 			 u32 status __attribute__((unused)),
 			 void *buf);
@@ -270,8 +253,6 @@ int liquidio_change_mtu(struct net_device *netdev, int new_mtu);
 #define LIO_CHANGE_MTU_SUCCESS 1
 #define LIO_CHANGE_MTU_FAIL    2
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SKB_ADJ_MASK  0x3F
 #define SKB_ADJ       (SKB_ADJ_MASK + 1)
 
@@ -286,11 +267,7 @@ static inline void
 	struct sk_buff *skb;
 	struct octeon_skb_page_info *skb_pg_info;
 
-<<<<<<< HEAD
 	page = alloc_page(GFP_ATOMIC);
-=======
-	page = alloc_page(GFP_ATOMIC | __GFP_COLD);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(!page))
 		return NULL;
 
@@ -578,7 +555,6 @@ static inline int wait_for_pending_requests(struct octeon_device *oct)
 	return 0;
 }
 
-<<<<<<< HEAD
 /**
  * \brief Stop Tx queues
  * @param netdev network device
@@ -650,6 +626,4 @@ static inline struct list_head *lio_list_delete_head(struct list_head *root)
 	return node;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

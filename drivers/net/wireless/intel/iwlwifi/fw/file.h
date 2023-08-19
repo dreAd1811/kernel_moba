@@ -7,12 +7,8 @@
  *
  * Copyright(c) 2008 - 2014 Intel Corporation. All rights reserved.
  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
-<<<<<<< HEAD
  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
  * Copyright(c) 2018 Intel Corporation
-=======
- * Copyright(c) 2016        Intel Deutschland GmbH
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of version 2 of the GNU General Public License as
@@ -39,12 +35,8 @@
  *
  * Copyright(c) 2005 - 2014 Intel Corporation. All rights reserved.
  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
-<<<<<<< HEAD
  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
  * Copyright(c) 2018 Intel Corporation
-=======
- * Copyright(c) 2016        Intel Deutschland GmbH
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -146,24 +138,17 @@ enum iwl_ucode_tlv_type {
 	IWL_UCODE_TLV_N_SCAN_CHANNELS		= 31,
 	IWL_UCODE_TLV_PAGING		= 32,
 	IWL_UCODE_TLV_SEC_RT_USNIFFER	= 34,
-<<<<<<< HEAD
 	/* 35 is unused */
-=======
-	IWL_UCODE_TLV_SDIO_ADMA_ADDR	= 35,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	IWL_UCODE_TLV_FW_VERSION	= 36,
 	IWL_UCODE_TLV_FW_DBG_DEST	= 38,
 	IWL_UCODE_TLV_FW_DBG_CONF	= 39,
 	IWL_UCODE_TLV_FW_DBG_TRIGGER	= 40,
 	IWL_UCODE_TLV_FW_GSCAN_CAPA	= 50,
 	IWL_UCODE_TLV_FW_MEM_SEG	= 51,
-<<<<<<< HEAD
 	IWL_UCODE_TLV_IML		= 52,
 
 	/* TLVs 0x1000-0x2000 are for internal driver usage */
 	IWL_UCODE_TLV_FW_DBG_DUMP_LST	= 0x1000,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct iwl_ucode_tlv {
@@ -267,17 +252,12 @@ typedef unsigned int __bitwise iwl_ucode_tlv_api_t;
  * @IWL_UCODE_TLV_API_STA_TYPE: This ucode supports station type assignement.
  * @IWL_UCODE_TLV_API_NAN2_VER2: This ucode supports NAN API version 2
  * @IWL_UCODE_TLV_API_NEW_RX_STATS: should new RX STATISTICS API be used
-<<<<<<< HEAD
  * @IWL_UCODE_TLV_API_QUOTA_LOW_LATENCY: Quota command includes a field
  *	indicating low latency direction.
  * @IWL_UCODE_TLV_API_DEPRECATE_TTAK: RX status flag TTAK ok (bit 7) is
  *	deprecated.
  * @IWL_UCODE_TLV_API_ADAPTIVE_DWELL_V2: This ucode supports version 8
  *	of scan request: SCAN_REQUEST_CMD_UMAC_API_S_VER_8
-=======
- * @IWL_UCODE_TLV_API_ATS_COEX_EXTERNAL: the coex notification is enlared to
- *	include information about ACL time sharing.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * @NUM_IWL_UCODE_TLV_API: number of bits used
  */
@@ -293,18 +273,12 @@ enum iwl_ucode_tlv_api {
 	IWL_UCODE_TLV_API_NAN2_VER2		= (__force iwl_ucode_tlv_api_t)31,
 	/* API Set 1 */
 	IWL_UCODE_TLV_API_ADAPTIVE_DWELL	= (__force iwl_ucode_tlv_api_t)32,
-<<<<<<< HEAD
 	IWL_UCODE_TLV_API_OCE			= (__force iwl_ucode_tlv_api_t)33,
 	IWL_UCODE_TLV_API_NEW_BEACON_TEMPLATE	= (__force iwl_ucode_tlv_api_t)34,
 	IWL_UCODE_TLV_API_NEW_RX_STATS		= (__force iwl_ucode_tlv_api_t)35,
 	IWL_UCODE_TLV_API_QUOTA_LOW_LATENCY	= (__force iwl_ucode_tlv_api_t)38,
 	IWL_UCODE_TLV_API_DEPRECATE_TTAK	= (__force iwl_ucode_tlv_api_t)41,
 	IWL_UCODE_TLV_API_ADAPTIVE_DWELL_V2	= (__force iwl_ucode_tlv_api_t)42,
-=======
-	IWL_UCODE_TLV_API_NEW_BEACON_TEMPLATE	= (__force iwl_ucode_tlv_api_t)34,
-	IWL_UCODE_TLV_API_NEW_RX_STATS		= (__force iwl_ucode_tlv_api_t)35,
-	IWL_UCODE_TLV_API_COEX_ATS_EXTERNAL	= (__force iwl_ucode_tlv_api_t)37,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	NUM_IWL_UCODE_TLV_API
 #ifdef __CHECKER__
@@ -347,15 +321,10 @@ typedef unsigned int __bitwise iwl_ucode_tlv_capa_t;
  *	IWL_UCODE_TLV_API_WIFI_MCC_UPDATE. When either is set, multi-source LAR
  *	is supported.
  * @IWL_UCODE_TLV_CAPA_BT_COEX_RRC: supports BT Coex RRC
-<<<<<<< HEAD
  * @IWL_UCODE_TLV_CAPA_GSCAN_SUPPORT: supports gscan (no longer used)
  * @IWL_UCODE_TLV_CAPA_STA_PM_NOTIF: firmware will send STA PM notification
  * @IWL_UCODE_TLV_CAPA_TLC_OFFLOAD: firmware implements rate scaling algorithm
  * @IWL_UCODE_TLV_CAPA_DYNAMIC_QUOTA: firmware implements quota related
-=======
- * @IWL_UCODE_TLV_CAPA_GSCAN_SUPPORT: supports gscan
- * @IWL_UCODE_TLV_CAPA_STA_PM_NOTIF: firmware will send STA PM notification
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @IWL_UCODE_TLV_CAPA_EXTENDED_DTS_MEASURE: extended DTS measurement
  * @IWL_UCODE_TLV_CAPA_SHORT_PM_TIMEOUTS: supports short PM timeouts
  * @IWL_UCODE_TLV_CAPA_BT_MPLUT_SUPPORT: supports bt-coex Multi-priority LUT
@@ -410,11 +379,8 @@ enum iwl_ucode_tlv_capa {
 	IWL_UCODE_TLV_CAPA_BINDING_CDB_SUPPORT		= (__force iwl_ucode_tlv_capa_t)39,
 	IWL_UCODE_TLV_CAPA_CDB_SUPPORT			= (__force iwl_ucode_tlv_capa_t)40,
 	IWL_UCODE_TLV_CAPA_D0I3_END_FIRST		= (__force iwl_ucode_tlv_capa_t)41,
-<<<<<<< HEAD
 	IWL_UCODE_TLV_CAPA_TLC_OFFLOAD                  = (__force iwl_ucode_tlv_capa_t)43,
 	IWL_UCODE_TLV_CAPA_DYNAMIC_QUOTA                = (__force iwl_ucode_tlv_capa_t)44,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	IWL_UCODE_TLV_CAPA_EXTENDED_DTS_MEASURE		= (__force iwl_ucode_tlv_capa_t)64,
 	IWL_UCODE_TLV_CAPA_SHORT_PM_TIMEOUTS		= (__force iwl_ucode_tlv_capa_t)65,
 	IWL_UCODE_TLV_CAPA_BT_MPLUT_SUPPORT		= (__force iwl_ucode_tlv_capa_t)67,
@@ -590,11 +556,7 @@ struct iwl_fw_dbg_mem_seg_tlv {
 } __packed;
 
 /**
-<<<<<<< HEAD
  * struct iwl_fw_dbg_dest_tlv_v1 - configures the destination of the debug data
-=======
- * struct iwl_fw_dbg_dest_tlv - configures the destination of the debug data
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * @version: version of the TLV - currently 0
  * @monitor_mode: &enum iwl_fw_dbg_monitor_mode
@@ -609,11 +571,7 @@ struct iwl_fw_dbg_mem_seg_tlv {
  *
  * This parses IWL_UCODE_TLV_FW_DBG_DEST
  */
-<<<<<<< HEAD
 struct iwl_fw_dbg_dest_tlv_v1 {
-=======
-struct iwl_fw_dbg_dest_tlv {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 version;
 	u8 monitor_mode;
 	u8 size_power;
@@ -627,7 +585,6 @@ struct iwl_fw_dbg_dest_tlv {
 	struct iwl_fw_dbg_reg_op reg_ops[0];
 } __packed;
 
-<<<<<<< HEAD
 /* Mask of the register for defining the LDBG MAC2SMEM buffer SMEM size */
 #define IWL_LDBG_M2S_BUF_SIZE_MSK	0x0fff0000
 /* Mask of the register for defining the LDBG MAC2SMEM SMEM base address */
@@ -648,8 +605,6 @@ struct iwl_fw_dbg_dest_tlv {
 	struct iwl_fw_dbg_reg_op reg_ops[0];
 } __packed;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct iwl_fw_dbg_conf_hcmd {
 	u8 id;
 	u8 reserved;
@@ -672,7 +627,6 @@ enum iwl_fw_dbg_trigger_mode {
 };
 
 /**
-<<<<<<< HEAD
  * enum iwl_fw_dbg_trigger_flags - the flags supported by wrt triggers
  * @IWL_FW_DBG_FORCE_RESTART: force a firmware restart
  */
@@ -681,8 +635,6 @@ enum iwl_fw_dbg_trigger_flags {
 };
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * enum iwl_fw_dbg_trigger_vif_type - define the VIF type for a trigger
  * @IWL_FW_DBG_CONF_VIF_ANY: any vif type
  * @IWL_FW_DBG_CONF_VIF_IBSS: IBSS mode
@@ -718,10 +670,7 @@ enum iwl_fw_dbg_trigger_vif_type {
  * @occurrences: number of occurrences. 0 means the trigger will never fire.
  * @trig_dis_ms: the time, in milliseconds, after an occurrence of this
  *	trigger in which another occurrence should be ignored.
-<<<<<<< HEAD
  * @flags: &enum iwl_fw_dbg_trigger_flags
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct iwl_fw_dbg_trigger_tlv {
 	__le32 id;
@@ -732,12 +681,8 @@ struct iwl_fw_dbg_trigger_tlv {
 	u8 start_conf_id;
 	__le16 occurrences;
 	__le16 trig_dis_ms;
-<<<<<<< HEAD
 	u8 flags;
 	u8 reserved[5];
-=======
-	__le16 reserved[3];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	u8 data[0];
 } __packed;
@@ -947,42 +892,4 @@ struct iwl_fw_dbg_conf_tlv {
 	struct iwl_fw_dbg_conf_hcmd hcmd;
 } __packed;
 
-<<<<<<< HEAD
-=======
-/**
- * struct iwl_fw_gscan_capabilities - gscan capabilities supported by FW
- * @max_scan_cache_size: total space allocated for scan results (in bytes).
- * @max_scan_buckets: maximum number of channel buckets.
- * @max_ap_cache_per_scan: maximum number of APs that can be stored per scan.
- * @max_rssi_sample_size: number of RSSI samples used for averaging RSSI.
- * @max_scan_reporting_threshold: max possible report threshold. in percentage.
- * @max_hotlist_aps: maximum number of entries for hotlist APs.
- * @max_significant_change_aps: maximum number of entries for significant
- *	change APs.
- * @max_bssid_history_entries: number of BSSID/RSSI entries that the device can
- *	hold.
- * @max_hotlist_ssids: maximum number of entries for hotlist SSIDs.
- * @max_number_epno_networks: max number of epno entries.
- * @max_number_epno_networks_by_ssid: max number of epno entries if ssid is
- *	specified.
- * @max_number_of_white_listed_ssid: max number of white listed SSIDs.
- * @max_number_of_black_listed_ssid: max number of black listed SSIDs.
- */
-struct iwl_fw_gscan_capabilities {
-	__le32 max_scan_cache_size;
-	__le32 max_scan_buckets;
-	__le32 max_ap_cache_per_scan;
-	__le32 max_rssi_sample_size;
-	__le32 max_scan_reporting_threshold;
-	__le32 max_hotlist_aps;
-	__le32 max_significant_change_aps;
-	__le32 max_bssid_history_entries;
-	__le32 max_hotlist_ssids;
-	__le32 max_number_epno_networks;
-	__le32 max_number_epno_networks_by_ssid;
-	__le32 max_number_of_white_listed_ssid;
-	__le32 max_number_of_black_listed_ssid;
-} __packed;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif  /* __iwl_fw_file_h__ */

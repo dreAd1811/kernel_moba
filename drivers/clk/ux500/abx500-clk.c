@@ -88,21 +88,6 @@ static int ab8500_reg_clks(struct device *dev)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-/* Clock definitions for ab8540 */
-static int ab8540_reg_clks(struct device *dev)
-{
-	return 0;
-}
-
-/* Clock definitions for ab9540 */
-static int ab9540_reg_clks(struct device *dev)
-{
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int abx500_clk_probe(struct platform_device *pdev)
 {
 	struct ab8500 *parent = dev_get_drvdata(pdev->dev.parent);
@@ -110,13 +95,6 @@ static int abx500_clk_probe(struct platform_device *pdev)
 
 	if (is_ab8500(parent) || is_ab8505(parent)) {
 		ret = ab8500_reg_clks(&pdev->dev);
-<<<<<<< HEAD
-=======
-	} else if (is_ab8540(parent)) {
-		ret = ab8540_reg_clks(&pdev->dev);
-	} else if (is_ab9540(parent)) {
-		ret = ab9540_reg_clks(&pdev->dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		dev_err(&pdev->dev, "non supported plf id\n");
 		return -ENODEV;

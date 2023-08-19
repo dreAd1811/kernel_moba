@@ -83,7 +83,6 @@ nvkm_engine_intr(struct nvkm_subdev *subdev)
 }
 
 static int
-<<<<<<< HEAD
 nvkm_engine_info(struct nvkm_subdev *subdev, u64 mthd, u64 *data)
 {
 	struct nvkm_engine *engine = nvkm_engine(subdev);
@@ -99,8 +98,6 @@ nvkm_engine_info(struct nvkm_subdev *subdev, u64 mthd, u64 *data)
 }
 
 static int
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 nvkm_engine_fini(struct nvkm_subdev *subdev, bool suspend)
 {
 	struct nvkm_engine *engine = nvkm_engine(subdev);
@@ -144,7 +141,6 @@ nvkm_engine_init(struct nvkm_subdev *subdev)
 	return ret;
 }
 
-<<<<<<< HEAD
 static int
 nvkm_engine_preinit(struct nvkm_subdev *subdev)
 {
@@ -154,8 +150,6 @@ nvkm_engine_preinit(struct nvkm_subdev *subdev)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void *
 nvkm_engine_dtor(struct nvkm_subdev *subdev)
 {
@@ -168,15 +162,10 @@ nvkm_engine_dtor(struct nvkm_subdev *subdev)
 static const struct nvkm_subdev_func
 nvkm_engine_func = {
 	.dtor = nvkm_engine_dtor,
-<<<<<<< HEAD
 	.preinit = nvkm_engine_preinit,
 	.init = nvkm_engine_init,
 	.fini = nvkm_engine_fini,
 	.info = nvkm_engine_info,
-=======
-	.init = nvkm_engine_init,
-	.fini = nvkm_engine_fini,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.intr = nvkm_engine_intr,
 };
 

@@ -156,15 +156,8 @@ static struct pci_dn *add_one_dev_pci_data(struct pci_dn *parent,
 	pdn->parent = parent;
 	pdn->busno = busno;
 	pdn->devfn = devfn;
-<<<<<<< HEAD
 	pdn->vf_index = vf_index;
 	pdn->pe_number = IODA_INVALID_PE;
-=======
-#ifdef CONFIG_PPC_POWERNV
-	pdn->vf_index = vf_index;
-	pdn->pe_number = IODA_INVALID_PE;
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INIT_LIST_HEAD(&pdn->child_list);
 	INIT_LIST_HEAD(&pdn->list);
 	list_add_tail(&pdn->list, &parent->child_list);
@@ -231,13 +224,7 @@ void remove_dev_pci_data(struct pci_dev *pdev)
 	 */
 	if (pdev->is_virtfn) {
 		pdn = pci_get_pdn(pdev);
-<<<<<<< HEAD
 		pdn->pe_number = IODA_INVALID_PE;
-=======
-#ifdef CONFIG_PPC_POWERNV
-		pdn->pe_number = IODA_INVALID_PE;
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -270,28 +257,9 @@ void remove_dev_pci_data(struct pci_dev *pdev)
 				continue;
 
 #ifdef CONFIG_EEH
-<<<<<<< HEAD
 			/* Release EEH device for the VF */
 			edev = pdn_to_eeh_dev(pdn);
 			if (edev) {
-=======
-			/*
-			 * Release EEH state for this VF. The PCI core
-			 * has already torn down the pci_dev for this VF, but
-			 * we're responsible to removing the eeh_dev since it
-			 * has the same lifetime as the pci_dn that spawned it.
-			 */
-			edev = pdn_to_eeh_dev(pdn);
-			if (edev) {
-				/*
-				 * We allocate pci_dn's for the totalvfs count,
-				 * but only only the vfs that were activated
-				 * have a configured PE.
-				 */
-				if (edev->pe)
-					eeh_rmv_from_parent_pe(edev);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				pdn->edev = NULL;
 				kfree(edev);
 			}
@@ -322,13 +290,7 @@ struct pci_dn *pci_add_device_node_info(struct pci_controller *hose,
 		return NULL;
 	dn->data = pdn;
 	pdn->phb = hose;
-<<<<<<< HEAD
 	pdn->pe_number = IODA_INVALID_PE;
-=======
-#ifdef CONFIG_PPC_POWERNV
-	pdn->pe_number = IODA_INVALID_PE;
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	regs = of_get_property(dn, "reg", NULL);
 	if (regs) {
 		u32 addr = of_read_number(regs, 1);

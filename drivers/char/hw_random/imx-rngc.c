@@ -13,10 +13,7 @@
  */
 
 #include <linux/module.h>
-<<<<<<< HEAD
 #include <linux/mod_devicetable.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/init.h>
 #include <linux/kernel.h>
 #include <linux/clk.h>
@@ -114,15 +111,8 @@ static int imx_rngc_self_test(struct imx_rngc *rngc)
 		return -ETIMEDOUT;
 	}
 
-<<<<<<< HEAD
 	if (rngc->err_reg != 0)
 		return -EIO;
-=======
-	if (rngc->err_reg != 0) {
-		imx_rngc_irq_mask_clear(rngc);
-		return -EIO;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -293,12 +283,7 @@ static int __exit imx_rngc_remove(struct platform_device *pdev)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int __maybe_unused imx_rngc_suspend(struct device *dev)
-=======
-#ifdef CONFIG_PM
-static int imx_rngc_suspend(struct device *dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct imx_rngc *rngc = dev_get_drvdata(dev);
 
@@ -307,11 +292,7 @@ static int imx_rngc_suspend(struct device *dev)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int __maybe_unused imx_rngc_resume(struct device *dev)
-=======
-static int imx_rngc_resume(struct device *dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct imx_rngc *rngc = dev_get_drvdata(dev);
 
@@ -320,15 +301,7 @@ static int imx_rngc_resume(struct device *dev)
 	return 0;
 }
 
-<<<<<<< HEAD
 static SIMPLE_DEV_PM_OPS(imx_rngc_pm_ops, imx_rngc_suspend, imx_rngc_resume);
-=======
-static const struct dev_pm_ops imx_rngc_pm_ops = {
-	.suspend	= imx_rngc_suspend,
-	.resume		= imx_rngc_resume,
-};
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static const struct of_device_id imx_rngc_dt_ids[] = {
 	{ .compatible = "fsl,imx25-rngb", .data = NULL, },
@@ -339,13 +312,7 @@ MODULE_DEVICE_TABLE(of, imx_rngc_dt_ids);
 static struct platform_driver imx_rngc_driver = {
 	.driver = {
 		.name = "imx_rngc",
-<<<<<<< HEAD
 		.pm = &imx_rngc_pm_ops,
-=======
-#ifdef CONFIG_PM
-		.pm = &imx_rngc_pm_ops,
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.of_match_table = imx_rngc_dt_ids,
 	},
 	.remove = __exit_p(imx_rngc_remove),

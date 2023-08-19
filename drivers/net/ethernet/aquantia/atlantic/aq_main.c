@@ -13,35 +13,15 @@
 #include "aq_nic.h"
 #include "aq_pci_func.h"
 #include "aq_ethtool.h"
-<<<<<<< HEAD
-=======
-#include "hw_atl/hw_atl_a0.h"
-#include "hw_atl/hw_atl_b0.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/netdevice.h>
 #include <linux/module.h>
 
-<<<<<<< HEAD
-=======
-static const struct pci_device_id aq_pci_tbl[] = {
-	{ PCI_VDEVICE(AQUANTIA, HW_ATL_DEVICE_ID_0001), },
-	{ PCI_VDEVICE(AQUANTIA, HW_ATL_DEVICE_ID_D100), },
-	{ PCI_VDEVICE(AQUANTIA, HW_ATL_DEVICE_ID_D107), },
-	{ PCI_VDEVICE(AQUANTIA, HW_ATL_DEVICE_ID_D108), },
-	{ PCI_VDEVICE(AQUANTIA, HW_ATL_DEVICE_ID_D109), },
-	{}
-};
-
-MODULE_DEVICE_TABLE(pci, aq_pci_tbl);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_LICENSE("GPL v2");
 MODULE_VERSION(AQ_CFG_DRV_VERSION);
 MODULE_AUTHOR(AQ_CFG_DRV_AUTHOR);
 MODULE_DESCRIPTION(AQ_CFG_DRV_DESC);
 
-<<<<<<< HEAD
 static const struct net_device_ops aq_ndev_ops;
 
 struct net_device *aq_ndev_alloc(void)
@@ -59,35 +39,13 @@ struct net_device *aq_ndev_alloc(void)
 	ndev->ethtool_ops = &aq_ethtool_ops;
 
 	return ndev;
-=======
-static struct aq_hw_ops *aq_pci_probe_get_hw_ops_by_id(struct pci_dev *pdev)
-{
-	struct aq_hw_ops *ops = NULL;
-
-	ops = hw_atl_a0_get_ops_by_id(pdev);
-	if (!ops)
-		ops = hw_atl_b0_get_ops_by_id(pdev);
-
-	return ops;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int aq_ndev_open(struct net_device *ndev)
 {
-<<<<<<< HEAD
 	int err = 0;
 	struct aq_nic_s *aq_nic = netdev_priv(ndev);
 
-=======
-	struct aq_nic_s *aq_nic = NULL;
-	int err = 0;
-
-	aq_nic = aq_nic_alloc_hot(ndev);
-	if (!aq_nic) {
-		err = -ENOMEM;
-		goto err_exit;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = aq_nic_init(aq_nic);
 	if (err < 0)
 		goto err_exit;
@@ -110,10 +68,6 @@ static int aq_ndev_close(struct net_device *ndev)
 	if (err < 0)
 		goto err_exit;
 	aq_nic_deinit(aq_nic);
-<<<<<<< HEAD
-=======
-	aq_nic_free_hot_resources(aq_nic);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 err_exit:
 	return err;
@@ -181,26 +135,10 @@ err_exit:
 static void aq_ndev_set_multicast_settings(struct net_device *ndev)
 {
 	struct aq_nic_s *aq_nic = netdev_priv(ndev);
-<<<<<<< HEAD
 
 	aq_nic_set_packet_filter(aq_nic, ndev->flags);
 
 	aq_nic_set_multicast_list(aq_nic, ndev);
-=======
-	int err = 0;
-
-	err = aq_nic_set_packet_filter(aq_nic, ndev->flags);
-	if (err < 0)
-		goto err_exit;
-
-	if (netdev_mc_count(ndev)) {
-		err = aq_nic_set_multicast_list(aq_nic, ndev);
-		if (err < 0)
-			goto err_exit;
-	}
-
-err_exit:;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct net_device_ops aq_ndev_ops = {
@@ -212,69 +150,3 @@ static const struct net_device_ops aq_ndev_ops = {
 	.ndo_set_mac_address = aq_ndev_set_mac_address,
 	.ndo_set_features = aq_ndev_set_features
 };
-<<<<<<< HEAD
-=======
-
-static int aq_pci_probe(struct pci_dev *pdev,
-			const struct pci_device_id *pci_id)
-{
-	struct aq_hw_ops *aq_hw_ops = NULL;
-	struct aq_pci_func_s *aq_pci_func = NULL;
-	int err = 0;
-
-	err = pci_enable_device(pdev);
-	if (err < 0)
-		goto err_exit;
-	aq_hw_ops = aq_pci_probe_get_hw_ops_by_id(pdev);
-	aq_pci_func = aq_pci_func_alloc(aq_hw_ops, pdev,
-					&aq_ndev_ops, &aq_ethtool_ops);
-	if (!aq_pci_func) {
-		err = -ENOMEM;
-		goto err_exit;
-	}
-	err = aq_pci_func_init(aq_pci_func);
-	if (err < 0)
-		goto err_exit;
-
-err_exit:
-	if (err < 0) {
-		if (aq_pci_func)
-			aq_pci_func_free(aq_pci_func);
-	}
-	return err;
-}
-
-static void aq_pci_remove(struct pci_dev *pdev)
-{
-	struct aq_pci_func_s *aq_pci_func = pci_get_drvdata(pdev);
-
-	aq_pci_func_deinit(aq_pci_func);
-	aq_pci_func_free(aq_pci_func);
-}
-
-static int aq_pci_suspend(struct pci_dev *pdev, pm_message_t pm_msg)
-{
-	struct aq_pci_func_s *aq_pci_func = pci_get_drvdata(pdev);
-
-	return aq_pci_func_change_pm_state(aq_pci_func, &pm_msg);
-}
-
-static int aq_pci_resume(struct pci_dev *pdev)
-{
-	struct aq_pci_func_s *aq_pci_func = pci_get_drvdata(pdev);
-	pm_message_t pm_msg = PMSG_RESTORE;
-
-	return aq_pci_func_change_pm_state(aq_pci_func, &pm_msg);
-}
-
-static struct pci_driver aq_pci_ops = {
-	.name = AQ_CFG_DRV_NAME,
-	.id_table = aq_pci_tbl,
-	.probe = aq_pci_probe,
-	.remove = aq_pci_remove,
-	.suspend = aq_pci_suspend,
-	.resume = aq_pci_resume,
-};
-
-module_pci_driver(aq_pci_ops);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

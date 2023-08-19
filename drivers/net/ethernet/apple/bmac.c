@@ -19,10 +19,7 @@
 #include <linux/init.h>
 #include <linux/spinlock.h>
 #include <linux/crc32.h>
-<<<<<<< HEAD
 #include <linux/crc32poly.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/bitrev.h>
 #include <linux/ethtool.h>
 #include <linux/slab.h>
@@ -41,14 +38,6 @@
 #define trunc_page(x)	((void *)(((unsigned long)(x)) & ~((unsigned long)(PAGE_SIZE - 1))))
 #define round_page(x)	trunc_page(((unsigned long)(x)) + ((unsigned long)(PAGE_SIZE - 1)))
 
-<<<<<<< HEAD
-=======
-/*
- * CRC polynomial - used in working out multicast filter bits.
- */
-#define ENET_CRCPOLY 0x04c11db7
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* switch to use multicast code lifted from sunhme driver */
 #define SUNHME_MULTICAST
 
@@ -164,13 +153,8 @@ static irqreturn_t bmac_misc_intr(int irq, void *dev_id);
 static irqreturn_t bmac_txdma_intr(int irq, void *dev_id);
 static irqreturn_t bmac_rxdma_intr(int irq, void *dev_id);
 static void bmac_set_timeout(struct net_device *dev);
-<<<<<<< HEAD
 static void bmac_tx_timeout(struct timer_list *t);
 static netdev_tx_t bmac_output(struct sk_buff *skb, struct net_device *dev);
-=======
-static void bmac_tx_timeout(unsigned long data);
-static int bmac_output(struct sk_buff *skb, struct net_device *dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void bmac_start(struct net_device *dev);
 
 #define	DBDMA_SET(x)	( ((x) | (x) << 16) )
@@ -567,11 +551,6 @@ static inline void bmac_set_timeout(struct net_device *dev)
 	if (bp->timeout_active)
 		del_timer(&bp->tx_timeout);
 	bp->tx_timeout.expires = jiffies + TX_TIMEOUT;
-<<<<<<< HEAD
-=======
-	bp->tx_timeout.function = bmac_tx_timeout;
-	bp->tx_timeout.data = (unsigned long) dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	add_timer(&bp->tx_timeout);
 	bp->timeout_active = 1;
 	spin_unlock_irqrestore(&bp->lock, flags);
@@ -855,11 +834,7 @@ crc416(unsigned int curval, unsigned short nxtval)
 		next = next >> 1;
 
 		/* do the XOR */
-<<<<<<< HEAD
 		if (high_crc_set ^ low_data_set) cur = cur ^ CRC32_POLY_BE;
-=======
-		if (high_crc_set ^ low_data_set) cur = cur ^ ENET_CRCPOLY;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return cur;
 }
@@ -1206,11 +1181,7 @@ bmac_get_station_address(struct net_device *dev, unsigned char *ea)
 	int i;
 	unsigned short data;
 
-<<<<<<< HEAD
 	for (i = 0; i < 6; i++)
-=======
-	for (i = 0; i < 3; i++)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		{
 			reset_and_select_srom(dev);
 			data = read_srom(dev, i + EnetAddressOffset/2, SROMAddressBits);
@@ -1344,11 +1315,7 @@ static int bmac_probe(struct macio_dev *mdev, const struct of_device_id *match)
 	bp->queue = (struct sk_buff_head *)(bp->rx_cmds + N_RX_RING + 1);
 	skb_queue_head_init(bp->queue);
 
-<<<<<<< HEAD
 	timer_setup(&bp->tx_timeout, bmac_tx_timeout, 0);
-=======
-	init_timer(&bp->tx_timeout);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = request_irq(dev->irq, bmac_misc_intr, 0, "BMAC-misc", dev);
 	if (ret) {
@@ -1489,11 +1456,7 @@ bmac_start(struct net_device *dev)
 	spin_unlock_irqrestore(&bp->lock, flags);
 }
 
-<<<<<<< HEAD
 static netdev_tx_t
-=======
-static int
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 bmac_output(struct sk_buff *skb, struct net_device *dev)
 {
 	struct bmac_data *bp = netdev_priv(dev);
@@ -1502,17 +1465,10 @@ bmac_output(struct sk_buff *skb, struct net_device *dev)
 	return NETDEV_TX_OK;
 }
 
-<<<<<<< HEAD
 static void bmac_tx_timeout(struct timer_list *t)
 {
 	struct bmac_data *bp = from_timer(bp, t, tx_timeout);
 	struct net_device *dev = macio_get_drvdata(bp->mdev);
-=======
-static void bmac_tx_timeout(unsigned long data)
-{
-	struct net_device *dev = (struct net_device *) data;
-	struct bmac_data *bp = netdev_priv(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	volatile struct dbdma_regs __iomem *td = bp->tx_dma;
 	volatile struct dbdma_regs __iomem *rd = bp->rx_dma;
 	volatile struct dbdma_cmd *cp;

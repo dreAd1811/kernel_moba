@@ -314,11 +314,8 @@ static long h3a_af_ioctl(struct v4l2_subdev *sd, unsigned int cmd, void *arg)
 		return omap3isp_stat_config(stat, arg);
 	case VIDIOC_OMAP3ISP_STAT_REQ:
 		return omap3isp_stat_request_statistics(stat, arg);
-<<<<<<< HEAD
 	case VIDIOC_OMAP3ISP_STAT_REQ_TIME32:
 		return omap3isp_stat_request_statistics_time32(stat, arg);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case VIDIOC_OMAP3ISP_STAT_EN: {
 		int *en = arg;
 		return omap3isp_stat_enable(stat, !!*en);

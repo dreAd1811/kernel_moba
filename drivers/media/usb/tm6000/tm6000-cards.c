@@ -1,24 +1,7 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 // tm6000-cards.c - driver for TM5600/TM6000/TM6010 USB video capture devices
 //
 // Copyright (c) 2006-2007 Mauro Carvalho Chehab <mchehab@kernel.org>
-=======
-/*
- *  tm6000-cards.c - driver for TM5600/TM6000/TM6010 USB video capture devices
- *
- *  Copyright (C) 2006-2007 Mauro Carvalho Chehab <mchehab@infradead.org>
- *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation version 2
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/init.h>
 #include <linux/module.h>
@@ -30,10 +13,6 @@
 #include <media/v4l2-common.h>
 #include <media/tuner.h>
 #include <media/i2c/tvaudio.h>
-<<<<<<< HEAD
-=======
-#include <media/i2c-addr.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <media/rc-map.h>
 
 #include "tm6000.h"
@@ -1194,13 +1173,8 @@ static int tm6000_usb_probe(struct usb_interface *interface,
 			    const struct usb_device_id *id)
 {
 	struct usb_device *usbdev;
-<<<<<<< HEAD
 	struct tm6000_core *dev;
 	int i, rc;
-=======
-	struct tm6000_core *dev = NULL;
-	int i, rc = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int nr = 0;
 	char *speed;
 
@@ -1209,37 +1183,21 @@ static int tm6000_usb_probe(struct usb_interface *interface,
 	/* Selects the proper interface */
 	rc = usb_set_interface(usbdev, 0, 1);
 	if (rc < 0)
-<<<<<<< HEAD
 		goto report_failure;
-=======
-		goto err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Check to see next free device and mark as used */
 	nr = find_first_zero_bit(&tm6000_devused, TM6000_MAXBOARDS);
 	if (nr >= TM6000_MAXBOARDS) {
 		printk(KERN_ERR "tm6000: Supports only %i tm60xx boards.\n", TM6000_MAXBOARDS);
-<<<<<<< HEAD
 		rc = -ENOMEM;
 		goto put_device;
-=======
-		usb_put_dev(usbdev);
-		return -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Create and initialize dev struct */
 	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
-<<<<<<< HEAD
 	if (!dev) {
 		rc = -ENOMEM;
 		goto put_device;
-=======
-	if (dev == NULL) {
-		printk(KERN_ERR "tm6000" ": out of memory!\n");
-		usb_put_dev(usbdev);
-		return -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	spin_lock_init(&dev->slock);
 	mutex_init(&dev->usb_lock);
@@ -1343,12 +1301,7 @@ static int tm6000_usb_probe(struct usb_interface *interface,
 	if (!dev->isoc_in.endp) {
 		printk(KERN_ERR "tm6000: probing error: no IN ISOC endpoint!\n");
 		rc = -ENODEV;
-<<<<<<< HEAD
 		goto free_device;
-=======
-
-		goto err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* save our data pointer in this interface device */
@@ -1358,7 +1311,6 @@ static int tm6000_usb_probe(struct usb_interface *interface,
 
 	rc = tm6000_init_dev(dev);
 	if (rc < 0)
-<<<<<<< HEAD
 		goto free_device;
 
 	return 0;
@@ -1371,19 +1323,6 @@ report_failure:
 	clear_bit(nr, &tm6000_devused);
 put_device:
 	usb_put_dev(usbdev);
-=======
-		goto err;
-
-	return 0;
-
-err:
-	printk(KERN_ERR "tm6000: Error %d while registering\n", rc);
-
-	clear_bit(nr, &tm6000_devused);
-	usb_put_dev(usbdev);
-
-	kfree(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 
@@ -1455,8 +1394,4 @@ module_usb_driver(tm6000_usb_driver);
 
 MODULE_DESCRIPTION("Trident TVMaster TM5600/TM6000/TM6010 USB2 adapter");
 MODULE_AUTHOR("Mauro Carvalho Chehab");
-<<<<<<< HEAD
 MODULE_LICENSE("GPL v2");
-=======
-MODULE_LICENSE("GPL");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

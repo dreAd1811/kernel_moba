@@ -688,17 +688,11 @@ request_detach(struct drbd_device *device)
 			CS_VERBOSE | CS_ORDERED | CS_INHIBIT_MD_IO);
 }
 
-<<<<<<< HEAD
 enum drbd_state_rv
 drbd_request_detach_interruptible(struct drbd_device *device)
 {
 	enum drbd_state_rv rv;
 	int ret;
-=======
-int drbd_request_detach_interruptible(struct drbd_device *device)
-{
-	int ret, rv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	drbd_suspend_io(device); /* so no-one is stuck in drbd_al_begin_io */
 	wait_event_interruptible(device->state_wait,

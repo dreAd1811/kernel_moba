@@ -79,15 +79,7 @@ int x509_get_sig_params(struct x509_certificate *cert)
 	desc->tfm = tfm;
 	desc->flags = CRYPTO_TFM_REQ_MAY_SLEEP;
 
-<<<<<<< HEAD
 	ret = crypto_shash_digest(desc, cert->tbs, cert->tbs_size, sig->digest);
-=======
-	ret = crypto_shash_init(desc);
-	if (ret < 0)
-		goto error_2;
-	might_sleep();
-	ret = crypto_shash_finup(desc, cert->tbs, cert->tbs_size, sig->digest);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		goto error_2;
 
@@ -279,8 +271,5 @@ module_init(x509_key_init);
 module_exit(x509_key_exit);
 
 MODULE_DESCRIPTION("X.509 certificate parser");
-<<<<<<< HEAD
 MODULE_AUTHOR("Red Hat, Inc.");
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_LICENSE("GPL");

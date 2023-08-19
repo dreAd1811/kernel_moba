@@ -651,10 +651,6 @@ static const struct iio_info bmc150_magn_info = {
 	.attrs = &bmc150_magn_attrs_group,
 	.read_raw = bmc150_magn_read_raw,
 	.write_raw = bmc150_magn_write_raw,
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const unsigned long bmc150_magn_scan_masks[] = {
@@ -814,10 +810,6 @@ err_unlock:
 static const struct iio_trigger_ops bmc150_magn_trigger_ops = {
 	.set_trigger_state = bmc150_magn_data_rdy_trigger_set_state,
 	.try_reenable = bmc150_magn_trig_try_reen,
-<<<<<<< HEAD
-=======
-	.owner = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int bmc150_magn_buffer_preenable(struct iio_dev *indio_dev)

@@ -15,12 +15,8 @@
 archscripts: scripts_basic
 	$(Q)$(MAKE) $(build)=arch/mips/boot/tools relocs
 
-<<<<<<< HEAD
 KBUILD_DEFCONFIG := 32r2el_defconfig
 KBUILD_DTBS      := dtbs
-=======
-KBUILD_DEFCONFIG := ip22_defconfig
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #
 # Select the object file format to substitute into the linker script.
@@ -127,7 +123,6 @@ cflags-y += -ffreestanding
 # are used, so we kludge that here.  A bug has been filed at
 # http://gcc.gnu.org/bugzilla/show_bug.cgi?id=29413.
 #
-<<<<<<< HEAD
 # clang doesn't suffer from these issues and our checks against -dumpmachine
 # don't work so well when cross compiling, since without providing --target
 # clang's output will be based upon the build machine. So for clang we simply
@@ -137,18 +132,13 @@ ifeq ($(cc-name),clang)
 cflags-$(CONFIG_CPU_BIG_ENDIAN)		+= -EB
 cflags-$(CONFIG_CPU_LITTLE_ENDIAN)	+= -EL
 else
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 undef-all += -UMIPSEB -U_MIPSEB -U__MIPSEB -U__MIPSEB__
 undef-all += -UMIPSEL -U_MIPSEL -U__MIPSEL -U__MIPSEL__
 predef-be += -DMIPSEB -D_MIPSEB -D__MIPSEB -D__MIPSEB__
 predef-le += -DMIPSEL -D_MIPSEL -D__MIPSEL -D__MIPSEL__
 cflags-$(CONFIG_CPU_BIG_ENDIAN)		+= $(shell $(CC) -dumpmachine |grep -q 'mips.*el-.*' && echo -EB $(undef-all) $(predef-be))
 cflags-$(CONFIG_CPU_LITTLE_ENDIAN)	+= $(shell $(CC) -dumpmachine |grep -q 'mips.*el-.*' || echo -EL $(undef-all) $(predef-le))
-<<<<<<< HEAD
 endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 cflags-$(CONFIG_SB1XXX_CORELIS)	+= $(call cc-option,-mno-sched-prolog) \
 				   -fno-omit-frame-pointer
@@ -233,7 +223,6 @@ cflags-$(toolchain-msa)			+= -DTOOLCHAIN_SUPPORTS_MSA
 endif
 toolchain-virt				:= $(call cc-option-yn,$(mips-cflags) -mvirt)
 cflags-$(toolchain-virt)		+= -DTOOLCHAIN_SUPPORTS_VIRT
-<<<<<<< HEAD
 # For -mmicromips, use -Wa,-fatal-warnings to catch unsupported -mxpa which
 # only warns
 xpa-cflags-y				:= $(mips-cflags)
@@ -242,8 +231,6 @@ toolchain-xpa				:= $(call cc-option-yn,$(xpa-cflags-y) -mxpa)
 cflags-$(toolchain-xpa)			+= -DTOOLCHAIN_SUPPORTS_XPA
 toolchain-crc				:= $(call cc-option-yn,$(mips-cflags) -Wa$(comma)-mcrc)
 cflags-$(toolchain-crc)			+= -DTOOLCHAIN_SUPPORTS_CRC
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #
 # Firmware support
@@ -256,11 +243,7 @@ libs-y				+= arch/mips/fw/lib/
 #
 # Kernel compression
 #
-<<<<<<< HEAD
 ifdef CONFIG_SYS_SUPPORTS_ZBOOT
-=======
-ifdef SYS_SUPPORTS_ZBOOT
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 COMPRESSION_FNAME		= vmlinuz
 else
 COMPRESSION_FNAME		= vmlinux
@@ -275,29 +258,12 @@ ifdef CONFIG_PHYSICAL_START
 load-y					= $(CONFIG_PHYSICAL_START)
 endif
 
-<<<<<<< HEAD
 # Sign-extend the entry point to 64 bits if retrieved as a 32-bit number.
 entry-y		= $(shell $(OBJDUMP) -f vmlinux 2>/dev/null \
 			| sed -n '/^start address / { \
 				s/^.* //; \
 				s/0x\([0-7].......\)$$/0x00000000\1/; \
 				s/0x\(........\)$$/0xffffffff\1/; p }')
-=======
-entry-noisa-y				= 0x$(shell $(NM) vmlinux 2>/dev/null \
-					| grep "\bkernel_entry\b" | cut -f1 -d \ )
-ifdef CONFIG_CPU_MICROMIPS
-  #
-  # Set the ISA bit, since the kernel_entry symbol in the ELF will have it
-  # clear which would lead to images containing addresses which bootloaders may
-  # jump to as MIPS32 code.
-  #
-  entry-y = $(patsubst %0,%1,$(patsubst %2,%3,$(patsubst %4,%5, \
-              $(patsubst %6,%7,$(patsubst %8,%9,$(patsubst %a,%b, \
-              $(patsubst %c,%d,$(patsubst %e,%f,$(entry-noisa-y)))))))))
-else
-  entry-y = $(entry-noisa-y)
-endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 cflags-y			+= -I$(srctree)/arch/mips/include/asm/mach-generic
 drivers-$(CONFIG_PCI)		+= arch/mips/pci/
@@ -324,32 +290,12 @@ ifdef CONFIG_64BIT
   endif
 endif
 
-<<<<<<< HEAD
 KBUILD_AFLAGS	+= $(cflags-y)
 KBUILD_CFLAGS	+= $(cflags-y)
 KBUILD_CPPFLAGS += -DVMLINUX_LOAD_ADDRESS=$(load-y)
 KBUILD_CPPFLAGS += -DDATAOFFSET=$(if $(dataoffset-y),$(dataoffset-y),0)
 
 bootvars-y	= VMLINUX_LOAD_ADDRESS=$(load-y) \
-=======
-# When linking a 32-bit executable the LLVM linker cannot cope with a
-# 32-bit load address that has been sign-extended to 64 bits.  Simply
-# remove the upper 32 bits then, as it is safe to do so with other
-# linkers.
-ifdef CONFIG_64BIT
-	load-ld			= $(load-y)
-else
-	load-ld			= $(subst 0xffffffff,0x,$(load-y))
-endif
-
-KBUILD_AFLAGS	+= $(cflags-y)
-KBUILD_CFLAGS	+= $(cflags-y)
-KBUILD_CPPFLAGS += -DVMLINUX_LOAD_ADDRESS=$(load-y) -DLINKER_LOAD_ADDRESS=$(load-ld)
-KBUILD_CPPFLAGS += -DDATAOFFSET=$(if $(dataoffset-y),$(dataoffset-y),0)
-
-bootvars-y	= VMLINUX_LOAD_ADDRESS=$(load-y) \
-		  LINKER_LOAD_ADDRESS=$(load-ld) \
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		  VMLINUX_ENTRY_ADDRESS=$(entry-y) \
 		  PLATFORM="$(platform-y)" \
 		  ITS_INPUTS="$(its-y)"
@@ -364,22 +310,12 @@ endif
 # instead of .eh_frame so we don't discard them.
 KBUILD_CFLAGS += -fno-asynchronous-unwind-tables
 
-<<<<<<< HEAD
 KBUILD_LDFLAGS		+= -m $(ld-emul)
-=======
-LDFLAGS			+= -m $(ld-emul)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 ifdef CONFIG_MIPS
 CHECKFLAGS += $(shell $(CC) $(KBUILD_CFLAGS) -dM -E -x c /dev/null | \
 	egrep -vw '__GNUC_(|MINOR_|PATCHLEVEL_)_' | \
 	sed -e "s/^\#define /-D'/" -e "s/ /'='/" -e "s/$$/'/" -e 's/\$$/&&/g')
-<<<<<<< HEAD
-=======
-ifdef CONFIG_64BIT
-CHECKFLAGS		+= -m64
-endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 endif
 
 OBJCOPYFLAGS		+= --remove-section=.reginfo
@@ -392,10 +328,7 @@ libs-y			+= arch/mips/math-emu/
 # See arch/mips/Kbuild for content of core part of the kernel
 core-y += arch/mips/
 
-<<<<<<< HEAD
 drivers-$(CONFIG_MIPS_CRC_SUPPORT) += arch/mips/crypto/
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 drivers-$(CONFIG_OPROFILE)	+= arch/mips/oprofile/
 
 # suspend and hibernation support
@@ -453,11 +386,7 @@ quiet_cmd_64 = OBJCOPY $@
 vmlinux.64: vmlinux
 	$(call cmd,64)
 
-<<<<<<< HEAD
 all:	$(all-y) $(KBUILD_DTBS)
-=======
-all:	$(all-y)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 # boot
 $(boot-y): $(vmlinux-32) FORCE
@@ -543,7 +472,6 @@ define archhelp
 	echo
 	echo '  {micro32,32,64}{r1,r2,r6}{el,}_defconfig <BOARDS="list of boards">'
 	echo
-<<<<<<< HEAD
 	echo '  Where BOARDS is some subset of the following:'
 	for board in $(sort $(BOARDS)); do echo "    $${board}"; done
 	echo
@@ -559,8 +487,6 @@ define archhelp
 	$(foreach cfg,$(sort $(legacy_defconfigs)),
 	  printf "  %-24s - Build $($(cfg)-y)\n" $(cfg);)
 	echo
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	echo '  Otherwise, the following default configurations are available:'
 endef
 
@@ -595,13 +521,10 @@ endef
 $(eval $(call gen_generic_defconfigs,32 64,r1 r2 r6,eb el))
 $(eval $(call gen_generic_defconfigs,micro32,r2,eb el))
 
-<<<<<<< HEAD
 define describe_generic_defconfig
 $(subst 32r,MIPS32 r,$(subst 64r,MIPS64 r,$(subst el, little endian,$(patsubst %_defconfig,%,$(1)))))
 endef
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 .PHONY: $(generic_defconfigs)
 $(generic_defconfigs):
 	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/kconfig/merge_config.sh \
@@ -638,7 +561,6 @@ generic_defconfig:
 # now that the boards have been converted to use the generic kernel they are
 # wrappers around the generic rules above.
 #
-<<<<<<< HEAD
 legacy_defconfigs		+= ocelot_defconfig
 ocelot_defconfig-y		:= 32r2el_defconfig BOARDS=ocelot
 
@@ -654,12 +576,3 @@ xilfpga_defconfig-y		:= 32r2el_defconfig BOARDS=xilfpga
 .PHONY: $(legacy_defconfigs)
 $(legacy_defconfigs):
 	$(Q)$(MAKE) -f $(srctree)/Makefile $($@-y)
-=======
-.PHONY: sead3_defconfig
-sead3_defconfig:
-	$(Q)$(MAKE) -f $(srctree)/Makefile 32r2el_defconfig BOARDS=sead-3
-
-.PHONY: sead3micro_defconfig
-sead3micro_defconfig:
-	$(Q)$(MAKE) -f $(srctree)/Makefile micro32r2el_defconfig BOARDS=sead-3
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -115,17 +115,13 @@ struct lowcore {
 	/* Address space pointer. */
 	__u64	kernel_asce;			/* 0x0378 */
 	__u64	user_asce;			/* 0x0380 */
-<<<<<<< HEAD
 	__u64	vdso_asce;			/* 0x0388 */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * The lpp and current_pid fields form a
 	 * 64-bit value that is set as program
 	 * parameter with the LPP instruction.
 	 */
-<<<<<<< HEAD
 	__u32	lpp;				/* 0x0390 */
 	__u32	current_pid;			/* 0x0394 */
 
@@ -145,30 +141,6 @@ struct lowcore {
 	/* br %r1 trampoline */
 	__u16	br_r1_trampoline;		/* 0x0400 */
 	__u8	pad_0x0402[0x0e00-0x0402];	/* 0x0402 */
-=======
-	__u32	lpp;				/* 0x0388 */
-	__u32	current_pid;			/* 0x038c */
-
-	/* SMP info area */
-	__u32	cpu_nr;				/* 0x0390 */
-	__u32	softirq_pending;		/* 0x0394 */
-	__u64	percpu_offset;			/* 0x0398 */
-	__u64	vdso_per_cpu_data;		/* 0x03a0 */
-	__u64	machine_flags;			/* 0x03a8 */
-	__u32	preempt_count;			/* 0x03b0 */
-	__u8	pad_0x03b4[0x03b8-0x03b4];	/* 0x03b4 */
-	__u64	gmap;				/* 0x03b8 */
-	__u32	spinlock_lockval;		/* 0x03c0 */
-	__u32	fpu_flags;			/* 0x03c4 */
-	__u8	pad_0x03c8[0x0400-0x03c8];	/* 0x03c8 */
-
-	/* Per cpu primary space access list */
-	__u32	paste[16];			/* 0x0400 */
-
-	/* br %r1 trampoline */
-	__u16	br_r1_trampoline;		/* 0x0440 */
-	__u8	pad_0x0442[0x0e00-0x0442];	/* 0x0442 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * 0xe00 contains the address of the IPL Parameter Information
@@ -213,11 +185,7 @@ struct lowcore {
 	/* Transaction abort diagnostic block */
 	__u8	pgm_tdb[256];			/* 0x1800 */
 	__u8	pad_0x1900[0x2000-0x1900];	/* 0x1900 */
-<<<<<<< HEAD
 } __packed __aligned(8192);
-=======
-} __packed;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define S390_lowcore (*((struct lowcore *) 0))
 
@@ -225,22 +193,14 @@ extern struct lowcore *lowcore_ptr[];
 
 static inline void set_prefix(__u32 address)
 {
-<<<<<<< HEAD
 	asm volatile("spx %0" : : "Q" (address) : "memory");
-=======
-	asm volatile("spx %0" : : "m" (address) : "memory");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline __u32 store_prefix(void)
 {
 	__u32 address;
 
-<<<<<<< HEAD
 	asm volatile("stpx %0" : "=Q" (address));
-=======
-	asm volatile("stpx %0" : "=m" (address));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return address;
 }
 

@@ -1,28 +1,5 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /* Copyright(c) 1999 - 2018 Intel Corporation. */
-=======
-/* Intel PRO/1000 Linux driver
- * Copyright(c) 1999 - 2015 Intel Corporation.
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms and conditions of the GNU General Public License,
- * version 2, as published by the Free Software Foundation.
- *
- * This program is distributed in the hope it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
- * more details.
- *
- * The full GNU General Public License is included in this distribution in
- * the file called "COPYING".
- *
- * Contact Information:
- * Linux NICS <linux.nics@intel.com>
- * e1000-devel Mailing List <e1000-devel@lists.sourceforge.net>
- * Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
@@ -142,21 +119,14 @@ static const struct e1000_reg_info e1000_reg_info_tbl[] = {
  * has bit 24 set while ME is accessing MAC CSR registers, wait if it is set
  * and try again a number of times.
  **/
-<<<<<<< HEAD
 s32 __ew32_prepare(struct e1000_hw *hw)
-=======
-static void __ew32_prepare(struct e1000_hw *hw)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	s32 i = E1000_ICH_FWSM_PCIM2PCI_COUNT;
 
 	while ((er32(FWSM) & E1000_ICH_FWSM_PCIM2PCI) && --i)
 		udelay(50);
-<<<<<<< HEAD
 
 	return i;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void __ew32(struct e1000_hw *hw, unsigned long reg, u32 val)
@@ -637,19 +607,11 @@ static void e1000e_update_rdt_wa(struct e1000_ring *rx_ring, unsigned int i)
 {
 	struct e1000_adapter *adapter = rx_ring->adapter;
 	struct e1000_hw *hw = &adapter->hw;
-<<<<<<< HEAD
 	s32 ret_val = __ew32_prepare(hw);
 
 	writel(i, rx_ring->tail);
 
 	if (unlikely(!ret_val && (i != readl(rx_ring->tail)))) {
-=======
-
-	__ew32_prepare(hw);
-	writel(i, rx_ring->tail);
-
-	if (unlikely(i != readl(rx_ring->tail))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u32 rctl = er32(RCTL);
 
 		ew32(RCTL, rctl & ~E1000_RCTL_EN);
@@ -662,19 +624,11 @@ static void e1000e_update_tdt_wa(struct e1000_ring *tx_ring, unsigned int i)
 {
 	struct e1000_adapter *adapter = tx_ring->adapter;
 	struct e1000_hw *hw = &adapter->hw;
-<<<<<<< HEAD
 	s32 ret_val = __ew32_prepare(hw);
 
 	writel(i, tx_ring->tail);
 
 	if (unlikely(!ret_val && (i != readl(tx_ring->tail)))) {
-=======
-
-	__ew32_prepare(hw);
-	writel(i, tx_ring->tail);
-
-	if (unlikely(i != readl(tx_ring->tail))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u32 tctl = er32(TCTL);
 
 		ew32(TCTL, tctl & ~E1000_TCTL_EN);
@@ -1099,12 +1053,8 @@ next_desc:
 }
 
 static void e1000_put_txbuf(struct e1000_ring *tx_ring,
-<<<<<<< HEAD
 			    struct e1000_buffer *buffer_info,
 			    bool drop)
-=======
-			    struct e1000_buffer *buffer_info)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct e1000_adapter *adapter = tx_ring->adapter;
 
@@ -1118,14 +1068,10 @@ static void e1000_put_txbuf(struct e1000_ring *tx_ring,
 		buffer_info->dma = 0;
 	}
 	if (buffer_info->skb) {
-<<<<<<< HEAD
 		if (drop)
 			dev_kfree_skb_any(buffer_info->skb);
 		else
 			dev_consume_skb_any(buffer_info->skb);
-=======
-		dev_kfree_skb_any(buffer_info->skb);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		buffer_info->skb = NULL;
 	}
 	buffer_info->time_stamp = 0;
@@ -1239,11 +1185,7 @@ static void e1000e_tx_hwtstamp_work(struct work_struct *work)
 		wmb(); /* force write prior to skb_tstamp_tx */
 
 		skb_tstamp_tx(skb, &shhwtstamps);
-<<<<<<< HEAD
 		dev_consume_skb_any(skb);
-=======
-		dev_kfree_skb_any(skb);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (time_after(jiffies, adapter->tx_hwtstamp_start
 			      + adapter->tx_timeout_factor * HZ)) {
 		dev_kfree_skb_any(adapter->tx_hwtstamp_skb);
@@ -1298,11 +1240,7 @@ static bool e1000_clean_tx_irq(struct e1000_ring *tx_ring)
 				}
 			}
 
-<<<<<<< HEAD
 			e1000_put_txbuf(tx_ring, buffer_info, false);
-=======
-			e1000_put_txbuf(tx_ring, buffer_info);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			tx_desc->upper.data = 0;
 
 			i++;
@@ -2475,11 +2413,7 @@ static void e1000_clean_tx_ring(struct e1000_ring *tx_ring)
 
 	for (i = 0; i < tx_ring->count; i++) {
 		buffer_info = &tx_ring->buffer_info[i];
-<<<<<<< HEAD
 		e1000_put_txbuf(tx_ring, buffer_info, false);
-=======
-		e1000_put_txbuf(tx_ring, buffer_info);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	netdev_reset_queue(adapter->netdev);
@@ -3286,17 +3220,6 @@ static void e1000_configure_rx(struct e1000_adapter *adapter)
 		 */
 		ew32(RXDCTL(0), E1000_RXDCTL_DMA_BURST_ENABLE);
 		ew32(RXDCTL(1), E1000_RXDCTL_DMA_BURST_ENABLE);
-<<<<<<< HEAD
-=======
-
-		/* override the delay timers for enabling bursting, only if
-		 * the value was not set by the user via module options
-		 */
-		if (adapter->rx_int_delay == DEFAULT_RDTR)
-			adapter->rx_int_delay = BURST_RDTR;
-		if (adapter->rx_abs_int_delay == DEFAULT_RADV)
-			adapter->rx_abs_int_delay = BURST_RADV;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* set the Receive Delay Timer Register */
@@ -3351,17 +3274,11 @@ static void e1000_configure_rx(struct e1000_adapter *adapter)
 		if (adapter->flags & FLAG_IS_ICH) {
 			u32 rxdctl = er32(RXDCTL(0));
 
-<<<<<<< HEAD
 			ew32(RXDCTL(0), rxdctl | 0x3 | BIT(8));
 		}
 
 		dev_info(&adapter->pdev->dev,
 			 "Some CPU C-states have been disabled in order to enable jumbo frames\n");
-=======
-			ew32(RXDCTL(0), rxdctl | 0x3);
-		}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pm_qos_update_request(&adapter->pm_qos_req, lat);
 	} else {
 		pm_qos_update_request(&adapter->pm_qos_req,
@@ -3395,11 +3312,7 @@ static int e1000e_write_mc_addr_list(struct net_device *netdev)
 		return 0;
 	}
 
-<<<<<<< HEAD
 	mta_list = kcalloc(netdev_mc_count(netdev), ETH_ALEN, GFP_ATOMIC);
-=======
-	mta_list = kzalloc(netdev_mc_count(netdev) * ETH_ALEN, GFP_ATOMIC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!mta_list)
 		return -ENOMEM;
 
@@ -4883,15 +4796,9 @@ static void e1000e_update_phy_task(struct work_struct *work)
  * Need to wait a few seconds after link up to get diagnostic information from
  * the phy
  **/
-<<<<<<< HEAD
 static void e1000_update_phy_info(struct timer_list *t)
 {
 	struct e1000_adapter *adapter = from_timer(adapter, t, phy_info_timer);
-=======
-static void e1000_update_phy_info(unsigned long data)
-{
-	struct e1000_adapter *adapter = (struct e1000_adapter *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (test_bit(__E1000_DOWN, &adapter->state))
 		return;
@@ -5155,11 +5062,7 @@ static bool e1000e_has_link(struct e1000_adapter *adapter)
 
 	/* get_link_status is set on LSC (link status) interrupt or
 	 * Rx sequence error interrupt.  get_link_status will stay
-<<<<<<< HEAD
 	 * true until the check_for_link establishes link
-=======
-	 * false until the check_for_link establishes link
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * for copper adapters ONLY
 	 */
 	switch (hw->phy.media_type) {
@@ -5177,11 +5080,7 @@ static bool e1000e_has_link(struct e1000_adapter *adapter)
 		break;
 	case e1000_media_type_internal_serdes:
 		ret_val = hw->mac.ops.check_for_link(hw);
-<<<<<<< HEAD
 		link_active = hw->mac.serdes_has_link;
-=======
-		link_active = adapter->hw.mac.serdes_has_link;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 	case e1000_media_type_unknown:
@@ -5233,15 +5132,9 @@ static void e1000e_check_82574_phy_workaround(struct e1000_adapter *adapter)
  * e1000_watchdog - Timer Call-back
  * @data: pointer to adapter cast into an unsigned long
  **/
-<<<<<<< HEAD
 static void e1000_watchdog(struct timer_list *t)
 {
 	struct e1000_adapter *adapter = from_timer(adapter, t, watchdog_timer);
-=======
-static void e1000_watchdog(unsigned long data)
-{
-	struct e1000_adapter *adapter = (struct e1000_adapter *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Do the rest outside of interrupt context */
 	schedule_work(&adapter->watchdog_task);
@@ -5358,13 +5251,6 @@ static void e1000_watchdog_task(struct work_struct *work)
 					/* oops */
 					break;
 				}
-<<<<<<< HEAD
-=======
-				if (hw->mac.type == e1000_pch_spt) {
-					netdev->features &= ~NETIF_F_TSO;
-					netdev->features &= ~NETIF_F_TSO6;
-				}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 
 			/* enable transmits in the hardware, need to do this
@@ -5718,11 +5604,7 @@ dma_error:
 			i += tx_ring->count;
 		i--;
 		buffer_info = &tx_ring->buffer_info[i];
-<<<<<<< HEAD
 		e1000_put_txbuf(tx_ring, buffer_info, true);
-=======
-		e1000_put_txbuf(tx_ring, buffer_info);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -6424,25 +6306,11 @@ static int __e1000_shutdown(struct pci_dev *pdev, bool runtime)
 	struct net_device *netdev = pci_get_drvdata(pdev);
 	struct e1000_adapter *adapter = netdev_priv(netdev);
 	struct e1000_hw *hw = &adapter->hw;
-<<<<<<< HEAD
 	u32 ctrl, ctrl_ext, rctl, status;
 	/* Runtime suspend should only enable wakeup for link changes */
 	u32 wufc = runtime ? E1000_WUFC_LNKC : adapter->wol;
 	int retval = 0;
 
-=======
-	u32 ctrl, ctrl_ext, rctl, status, wufc;
-	int retval = 0;
-
-	/* Runtime suspend should only enable wakeup for link changes */
-	if (runtime)
-		wufc = E1000_WUFC_LNKC;
-	else if (device_may_wakeup(&pdev->dev))
-		wufc = adapter->wol;
-	else
-		wufc = 0;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = er32(STATUS);
 	if (status & E1000_STATUS_LU)
 		wufc &= ~E1000_WUFC_LNKC;
@@ -6499,11 +6367,7 @@ static int __e1000_shutdown(struct pci_dev *pdev, bool runtime)
 	if (adapter->hw.phy.type == e1000_phy_igp_3) {
 		e1000e_igp3_phy_powerdown_workaround_ich8lan(&adapter->hw);
 	} else if (hw->mac.type >= e1000_pch_lpt) {
-<<<<<<< HEAD
 		if (!(wufc & (E1000_WUFC_EX | E1000_WUFC_MC | E1000_WUFC_BC)))
-=======
-		if (wufc && !(wufc & (E1000_WUFC_EX | E1000_WUFC_MC | E1000_WUFC_BC)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* ULP does not support wake from unicast, multicast
 			 * or broadcast.
 			 */
@@ -7378,18 +7242,8 @@ static int e1000_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 		goto err_eeprom;
 	}
 
-<<<<<<< HEAD
 	timer_setup(&adapter->watchdog_timer, e1000_watchdog, 0);
 	timer_setup(&adapter->phy_info_timer, e1000_update_phy_info, 0);
-=======
-	init_timer(&adapter->watchdog_timer);
-	adapter->watchdog_timer.function = e1000_watchdog;
-	adapter->watchdog_timer.data = (unsigned long)adapter;
-
-	init_timer(&adapter->phy_info_timer);
-	adapter->phy_info_timer.function = e1000_update_phy_info;
-	adapter->phy_info_timer.data = (unsigned long)adapter;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	INIT_WORK(&adapter->reset_task, e1000_reset_task);
 	INIT_WORK(&adapter->watchdog_task, e1000_watchdog_task);
@@ -7478,13 +7332,9 @@ static int e1000_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 
 	e1000_print_device_info(adapter);
 
-<<<<<<< HEAD
 	dev_pm_set_driver_flags(&pdev->dev, DPM_FLAG_NEVER_SKIP);
 
 	if (pci_dev_run_wake(pdev) && hw->mac.type < e1000_pch_cnp)
-=======
-	if (pci_dev_run_wake(pdev))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pm_runtime_put_noidle(&pdev->dev);
 
 	return 0;
@@ -7548,11 +7398,7 @@ static void e1000_remove(struct pci_dev *pdev)
 	if (adapter->flags & FLAG_HAS_HW_TIMESTAMP) {
 		cancel_work_sync(&adapter->tx_hwtstamp_work);
 		if (adapter->tx_hwtstamp_skb) {
-<<<<<<< HEAD
 			dev_consume_skb_any(adapter->tx_hwtstamp_skb);
-=======
-			dev_kfree_skb_any(adapter->tx_hwtstamp_skb);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			adapter->tx_hwtstamp_skb = NULL;
 		}
 	}

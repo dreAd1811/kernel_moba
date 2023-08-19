@@ -103,11 +103,6 @@ nv10_fence_create(struct nouveau_drm *drm)
 	priv->base.dtor = nv10_fence_destroy;
 	priv->base.context_new = nv10_fence_context_new;
 	priv->base.context_del = nv10_fence_context_del;
-<<<<<<< HEAD
-=======
-	priv->base.contexts = 31;
-	priv->base.context_base = dma_fence_context_alloc(priv->base.contexts);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_init(&priv->lock);
 	return 0;
 }

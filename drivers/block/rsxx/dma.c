@@ -354,15 +354,9 @@ static void rsxx_handle_dma_error(struct rsxx_dma_ctrl *ctrl,
 		rsxx_complete_dma(ctrl, dma, status);
 }
 
-<<<<<<< HEAD
 static void dma_engine_stalled(struct timer_list *t)
 {
 	struct rsxx_dma_ctrl *ctrl = from_timer(ctrl, t, activity_timer);
-=======
-static void dma_engine_stalled(unsigned long data)
-{
-	struct rsxx_dma_ctrl *ctrl = (struct rsxx_dma_ctrl *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int cnt;
 
 	if (atomic_read(&ctrl->stats.hw_q_depth) == 0 ||
@@ -844,12 +838,7 @@ static int rsxx_dma_ctrl_init(struct pci_dev *dev,
 	mutex_init(&ctrl->work_lock);
 	INIT_LIST_HEAD(&ctrl->queue);
 
-<<<<<<< HEAD
 	timer_setup(&ctrl->activity_timer, dma_engine_stalled, 0);
-=======
-	setup_timer(&ctrl->activity_timer, dma_engine_stalled,
-					(unsigned long)ctrl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ctrl->issue_wq = alloc_ordered_workqueue(DRIVER_NAME"_issue", 0);
 	if (!ctrl->issue_wq)
@@ -1049,11 +1038,7 @@ int rsxx_eeh_save_issued_dmas(struct rsxx_cardinfo *card)
 	struct rsxx_dma *dma;
 	struct list_head *issued_dmas;
 
-<<<<<<< HEAD
 	issued_dmas = kcalloc(card->n_targets, sizeof(*issued_dmas),
-=======
-	issued_dmas = kzalloc(sizeof(*issued_dmas) * card->n_targets,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      GFP_KERNEL);
 	if (!issued_dmas)
 		return -ENOMEM;

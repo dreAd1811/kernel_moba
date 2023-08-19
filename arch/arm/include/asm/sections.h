@@ -6,7 +6,6 @@
 
 extern char _exiprom[];
 
-<<<<<<< HEAD
 extern char __idmap_text_start[];
 extern char __idmap_text_end[];
 extern char __entry_text_start[];
@@ -28,6 +27,4 @@ static inline bool in_idmap_text(unsigned long addr)
 			       a, 1);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif	/* _ASM_ARM_SECTIONS_H */

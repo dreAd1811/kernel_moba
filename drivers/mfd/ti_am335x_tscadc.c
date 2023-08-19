@@ -124,11 +124,7 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
 	struct ti_tscadc_dev	*tscadc;
 	struct resource		*res;
 	struct clk		*clk;
-<<<<<<< HEAD
 	struct device_node	*node;
-=======
-	struct device_node	*node = pdev->dev.of_node;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mfd_cell		*cell;
 	struct property         *prop;
 	const __be32            *cur;
@@ -173,16 +169,9 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
 
 	/* Allocate memory for device */
 	tscadc = devm_kzalloc(&pdev->dev, sizeof(*tscadc), GFP_KERNEL);
-<<<<<<< HEAD
 	if (!tscadc)
 		return -ENOMEM;
 
-=======
-	if (!tscadc) {
-		dev_err(&pdev->dev, "failed to allocate memory.\n");
-		return -ENOMEM;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tscadc->dev = &pdev->dev;
 
 	err = platform_get_irq(pdev, 0);
@@ -306,30 +295,11 @@ static int ti_tscadc_remove(struct platform_device *pdev)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-static int __maybe_unused ti_tscadc_can_wakeup(struct device *dev, void *data)
-{
-	return device_may_wakeup(dev);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __maybe_unused tscadc_suspend(struct device *dev)
 {
 	struct ti_tscadc_dev	*tscadc = dev_get_drvdata(dev);
 
 	regmap_write(tscadc->regmap, REG_SE, 0x00);
-<<<<<<< HEAD
-=======
-	if (device_for_each_child(dev, NULL, ti_tscadc_can_wakeup)) {
-		u32 ctrl;
-
-		regmap_read(tscadc->regmap, REG_CTRL, &ctrl);
-		ctrl &= ~(CNTRLREG_POWERDOWN);
-		ctrl |= CNTRLREG_TSCSSENB;
-		regmap_write(tscadc->regmap, REG_CTRL, ctrl);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pm_runtime_put_sync(dev);
 
 	return 0;

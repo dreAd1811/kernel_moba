@@ -349,16 +349,10 @@ static void vbi_stop(struct saa7146_fh *fh, struct file *file)
 	spin_unlock_irqrestore(&dev->slock, flags);
 }
 
-<<<<<<< HEAD
 static void vbi_read_timeout(struct timer_list *t)
 {
 	struct saa7146_vv *vv = from_timer(vv, t, vbi_read_timeout);
 	struct file *file = vv->vbi_read_timeout_file;
-=======
-static void vbi_read_timeout(unsigned long data)
-{
-	struct file *file = (struct file*)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct saa7146_fh *fh = file->private_data;
 	struct saa7146_dev *dev = fh->dev;
 
@@ -373,12 +367,7 @@ static void vbi_init(struct saa7146_dev *dev, struct saa7146_vv *vv)
 
 	INIT_LIST_HEAD(&vv->vbi_dmaq.queue);
 
-<<<<<<< HEAD
 	timer_setup(&vv->vbi_dmaq.timeout, saa7146_buffer_timeout, 0);
-=======
-	setup_timer(&vv->vbi_dmaq.timeout, saa7146_buffer_timeout,
-		    (unsigned long)(&vv->vbi_dmaq));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vv->vbi_dmaq.dev              = dev;
 
 	init_waitqueue_head(&vv->vbi_wq);
@@ -414,11 +403,7 @@ static int vbi_open(struct saa7146_dev *dev, struct file *file)
 			    file, &dev->v4l2_lock);
 
 	vv->vbi_read_timeout.function = vbi_read_timeout;
-<<<<<<< HEAD
 	vv->vbi_read_timeout_file = file;
-=======
-	vv->vbi_read_timeout.data = (unsigned long)file;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* initialize the brs */
 	if ( 0 != (SAA7146_USE_PORT_B_FOR_VBI & dev->ext_vv_data->flags)) {
@@ -504,11 +489,7 @@ static ssize_t vbi_read(struct file *file, char __user *data, size_t count, loff
 	return ret;
 }
 
-<<<<<<< HEAD
 const struct saa7146_use_ops saa7146_vbi_uops = {
-=======
-struct saa7146_use_ops saa7146_vbi_uops = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.init		= vbi_init,
 	.open		= vbi_open,
 	.release	= vbi_close,

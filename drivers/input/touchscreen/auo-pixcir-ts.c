@@ -408,11 +408,6 @@ static void auo_pixcir_input_close(struct input_dev *dev)
 	struct auo_pixcir_ts *ts = input_get_drvdata(dev);
 
 	auo_pixcir_stop(ts);
-<<<<<<< HEAD
-=======
-
-	return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int __maybe_unused auo_pixcir_suspend(struct device *dev)
@@ -490,15 +485,8 @@ static struct auo_pixcir_ts_platdata *auo_pixcir_parse_dt(struct device *dev)
 		return ERR_PTR(-ENOENT);
 
 	pdata = devm_kzalloc(dev, sizeof(*pdata), GFP_KERNEL);
-<<<<<<< HEAD
 	if (!pdata)
 		return ERR_PTR(-ENOMEM);
-=======
-	if (!pdata) {
-		dev_err(dev, "failed to allocate platform data\n");
-		return ERR_PTR(-ENOMEM);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pdata->gpio_int = of_get_gpio(np, 0);
 	if (!gpio_is_valid(pdata->gpio_int)) {

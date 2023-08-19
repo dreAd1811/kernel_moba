@@ -1,14 +1,10 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Cryptographic API.
  *
  * s390 implementation of the AES Cipher Algorithm.
  *
  * s390 Version:
-<<<<<<< HEAD
  *   Copyright IBM Corp. 2005, 2017
  *   Author(s): Jan Glauber (jang@de.ibm.com)
  *		Sebastian Siewior (sebastian@breakpoint.cc> SW-Fallback
@@ -16,19 +12,6 @@
  *		Harald Freudenberger <freude@de.ibm.com>
  *
  * Derived from "crypto/aes_generic.c"
-=======
- *   Copyright IBM Corp. 2005, 2007
- *   Author(s): Jan Glauber (jang@de.ibm.com)
- *		Sebastian Siewior (sebastian@breakpoint.cc> SW-Fallback
- *
- * Derived from "crypto/aes_generic.c"
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation; either version 2 of the License, or (at your option)
- * any later version.
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #define KMSG_COMPONENT "aes_s390"
@@ -36,40 +19,25 @@
 
 #include <crypto/aes.h>
 #include <crypto/algapi.h>
-<<<<<<< HEAD
 #include <crypto/ghash.h>
 #include <crypto/internal/aead.h>
 #include <crypto/internal/skcipher.h>
 #include <crypto/scatterwalk.h>
-=======
-#include <crypto/internal/skcipher.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/err.h>
 #include <linux/module.h>
 #include <linux/cpufeature.h>
 #include <linux/init.h>
-<<<<<<< HEAD
 #include <linux/mutex.h>
 #include <linux/fips.h>
 #include <linux/string.h>
-=======
-#include <linux/spinlock.h>
-#include <linux/fips.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <crypto/xts.h>
 #include <asm/cpacf.h>
 
 static u8 *ctrblk;
-<<<<<<< HEAD
 static DEFINE_MUTEX(ctrblk_lock);
 
 static cpacf_mask_t km_functions, kmc_functions, kmctr_functions,
 		    kma_functions;
-=======
-static DEFINE_SPINLOCK(ctrblk_lock);
-
-static cpacf_mask_t km_functions, kmc_functions, kmctr_functions;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct s390_aes_ctx {
 	u8 key[AES_MAX_KEY_SIZE];
@@ -89,7 +57,6 @@ struct s390_xts_ctx {
 	struct crypto_skcipher *fallback;
 };
 
-<<<<<<< HEAD
 struct gcm_sg_walk {
 	struct scatter_walk walk;
 	unsigned int walk_bytes;
@@ -101,8 +68,6 @@ struct gcm_sg_walk {
 	unsigned int nbytes;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int setkey_fallback_cip(struct crypto_tfm *tfm, const u8 *in_key,
 		unsigned int key_len)
 {
@@ -364,11 +329,7 @@ static void fallback_exit_blk(struct crypto_tfm *tfm)
 static struct crypto_alg ecb_aes_alg = {
 	.cra_name		=	"ecb(aes)",
 	.cra_driver_name	=	"ecb-aes-s390",
-<<<<<<< HEAD
 	.cra_priority		=	401,	/* combo: aes + ecb + 1 */
-=======
-	.cra_priority		=	400,	/* combo: aes + ecb */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.cra_flags		=	CRYPTO_ALG_TYPE_BLKCIPHER |
 					CRYPTO_ALG_NEED_FALLBACK,
 	.cra_blocksize		=	AES_BLOCK_SIZE,
@@ -465,11 +426,7 @@ static int cbc_aes_decrypt(struct blkcipher_desc *desc,
 static struct crypto_alg cbc_aes_alg = {
 	.cra_name		=	"cbc(aes)",
 	.cra_driver_name	=	"cbc-aes-s390",
-<<<<<<< HEAD
 	.cra_priority		=	402,	/* ecb-aes-s390 + 1 */
-=======
-	.cra_priority		=	400,	/* combo: aes + cbc */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.cra_flags		=	CRYPTO_ALG_TYPE_BLKCIPHER |
 					CRYPTO_ALG_NEED_FALLBACK,
 	.cra_blocksize		=	AES_BLOCK_SIZE,
@@ -682,11 +639,7 @@ static void xts_fallback_exit(struct crypto_tfm *tfm)
 static struct crypto_alg xts_aes_alg = {
 	.cra_name		=	"xts(aes)",
 	.cra_driver_name	=	"xts-aes-s390",
-<<<<<<< HEAD
 	.cra_priority		=	402,	/* ecb-aes-s390 + 1 */
-=======
-	.cra_priority		=	400,	/* combo: aes + xts */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.cra_flags		=	CRYPTO_ALG_TYPE_BLKCIPHER |
 					CRYPTO_ALG_NEED_FALLBACK,
 	.cra_blocksize		=	AES_BLOCK_SIZE,
@@ -751,11 +704,7 @@ static int ctr_aes_crypt(struct blkcipher_desc *desc, unsigned long modifier,
 	unsigned int n, nbytes;
 	int ret, locked;
 
-<<<<<<< HEAD
 	locked = mutex_trylock(&ctrblk_lock);
-=======
-	locked = spin_trylock(&ctrblk_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = blkcipher_walk_virt_block(desc, walk, AES_BLOCK_SIZE);
 	while ((nbytes = walk->nbytes) >= AES_BLOCK_SIZE) {
@@ -773,11 +722,7 @@ static int ctr_aes_crypt(struct blkcipher_desc *desc, unsigned long modifier,
 		ret = blkcipher_walk_done(desc, walk, nbytes - n);
 	}
 	if (locked)
-<<<<<<< HEAD
 		mutex_unlock(&ctrblk_lock);
-=======
-		spin_unlock(&ctrblk_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * final block may be < AES_BLOCK_SIZE, copy only nbytes
 	 */
@@ -824,11 +769,7 @@ static int ctr_aes_decrypt(struct blkcipher_desc *desc,
 static struct crypto_alg ctr_aes_alg = {
 	.cra_name		=	"ctr(aes)",
 	.cra_driver_name	=	"ctr-aes-s390",
-<<<<<<< HEAD
 	.cra_priority		=	402,	/* ecb-aes-s390 + 1 */
-=======
-	.cra_priority		=	400,	/* combo: aes + ctr */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.cra_flags		=	CRYPTO_ALG_TYPE_BLKCIPHER |
 					CRYPTO_ALG_NEED_FALLBACK,
 	.cra_blocksize		=	1,
@@ -849,7 +790,6 @@ static struct crypto_alg ctr_aes_alg = {
 	}
 };
 
-<<<<<<< HEAD
 static int gcm_aes_setkey(struct crypto_aead *tfm, const u8 *key,
 			  unsigned int keylen)
 {
@@ -1179,10 +1119,6 @@ static struct aead_alg gcm_aes_aead = {
 static struct crypto_alg *aes_s390_algs_ptr[5];
 static int aes_s390_algs_num;
 static struct aead_alg *aes_s390_aead_alg;
-=======
-static struct crypto_alg *aes_s390_algs_ptr[5];
-static int aes_s390_algs_num;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int aes_s390_register_alg(struct crypto_alg *alg)
 {
@@ -1200,30 +1136,20 @@ static void aes_s390_fini(void)
 		crypto_unregister_alg(aes_s390_algs_ptr[aes_s390_algs_num]);
 	if (ctrblk)
 		free_page((unsigned long) ctrblk);
-<<<<<<< HEAD
 
 	if (aes_s390_aead_alg)
 		crypto_unregister_aead(aes_s390_aead_alg);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int __init aes_s390_init(void)
 {
 	int ret;
 
-<<<<<<< HEAD
 	/* Query available functions for KM, KMC, KMCTR and KMA */
 	cpacf_query(CPACF_KM, &km_functions);
 	cpacf_query(CPACF_KMC, &kmc_functions);
 	cpacf_query(CPACF_KMCTR, &kmctr_functions);
 	cpacf_query(CPACF_KMA, &kma_functions);
-=======
-	/* Query available functions for KM, KMC and KMCTR */
-	cpacf_query(CPACF_KM, &km_functions);
-	cpacf_query(CPACF_KMC, &kmc_functions);
-	cpacf_query(CPACF_KMCTR, &kmctr_functions);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (cpacf_test_func(&km_functions, CPACF_KM_AES_128) ||
 	    cpacf_test_func(&km_functions, CPACF_KM_AES_192) ||
@@ -1264,7 +1190,6 @@ static int __init aes_s390_init(void)
 			goto out_err;
 	}
 
-<<<<<<< HEAD
 	if (cpacf_test_func(&kma_functions, CPACF_KMA_GCM_AES_128) ||
 	    cpacf_test_func(&kma_functions, CPACF_KMA_GCM_AES_192) ||
 	    cpacf_test_func(&kma_functions, CPACF_KMA_GCM_AES_256)) {
@@ -1274,8 +1199,6 @@ static int __init aes_s390_init(void)
 		aes_s390_aead_alg = &gcm_aes_aead;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 out_err:
 	aes_s390_fini();

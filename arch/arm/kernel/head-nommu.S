@@ -13,10 +13,7 @@
  */
 #include <linux/linkage.h>
 #include <linux/init.h>
-<<<<<<< HEAD
 #include <linux/errno.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/assembler.h>
 #include <asm/ptrace.h>
@@ -56,15 +53,11 @@ ENTRY(stext)
  THUMB(1:			)
 #endif
 
-<<<<<<< HEAD
 #ifdef CONFIG_ARM_VIRT_EXT
 	bl	__hyp_stub_install
 #endif
 	@ ensure svc mode and all interrupts masked
 	safe_svcmode_maskall r9
-=======
-	setmode	PSR_F_BIT | PSR_I_BIT | SVC_MODE, r9 @ ensure svc mode
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						@ and irqs disabled
 #if defined(CONFIG_CPU_CP15)
 	mrc	p15, 0, r9, c0, c0		@ get processor id
@@ -79,17 +72,6 @@ ENTRY(stext)
 	beq	__error_p				@ yes, error 'p'
 
 #ifdef CONFIG_ARM_MPU
-<<<<<<< HEAD
-=======
-	/* Calculate the size of a region covering just the kernel */
-	ldr	r5, =PLAT_PHYS_OFFSET		@ Region start: PHYS_OFFSET
-	ldr     r6, =(_end)			@ Cover whole kernel
-	sub	r6, r6, r5			@ Minimum size of region to map
-	clz	r6, r6				@ Region size must be 2^N...
-	rsb	r6, r6, #31			@ ...so round up region size
-	lsl	r6, r6, #MPU_RSR_SZ		@ Put size in right field
-	orr	r6, r6, #(1 << MPU_RSR_EN)	@ Set region enabled bit
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bl	__setup_mpu
 #endif
 
@@ -97,13 +79,8 @@ ENTRY(stext)
 	ldr	r12, [r10, #PROCINFO_INITFUNC]
 	add	r12, r12, r10
 	ret	r12
-<<<<<<< HEAD
 1:	ldr	lr, =__mmap_switched
 	b	__after_proc_init
-=======
-1:	bl	__after_proc_init
-	b	__mmap_switched
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 ENDPROC(stext)
 
 #ifdef CONFIG_SMP
@@ -116,15 +93,11 @@ ENTRY(secondary_startup)
 	 * the processor type - there is no need to check the machine type
 	 * as it has already been validated by the primary processor.
 	 */
-<<<<<<< HEAD
 #ifdef CONFIG_ARM_VIRT_EXT
 	bl	__hyp_stub_install_secondary
 #endif
 	safe_svcmode_maskall r9
 
-=======
-	setmode	PSR_F_BIT | PSR_I_BIT | SVC_MODE, r9
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifndef CONFIG_CPU_CP15
 	ldr	r9, =CONFIG_PROCESSOR_ID
 #else
@@ -137,13 +110,7 @@ ENTRY(secondary_startup)
 	ldr	r7, __secondary_data
 
 #ifdef CONFIG_ARM_MPU
-<<<<<<< HEAD
 	bl      __secondary_setup_mpu		@ Initialize the MPU
-=======
-	/* Use MPU region info supplied by __cpu_up */
-	ldr	r6, [r7]			@ get secondary_data.mpu_szr
-	bl      __setup_mpu			@ Initialize the MPU
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 	badr	lr, 1f				@ return (PIC) address
@@ -164,7 +131,6 @@ __secondary_data:
 /*
  * Set the Control Register and Read the process ID.
  */
-<<<<<<< HEAD
 	.text
 __after_proc_init:
 M_CLASS(movw	r12, #:lower16:BASEADDR_V7M_SCB)
@@ -194,22 +160,16 @@ M_CLASS(streq	r3, [r12, #PMSAv8_MAIR1])
 
 1:
 #endif
-=======
-__after_proc_init:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_CPU_CP15
 	/*
 	 * CP15 system control register value returned in r0 from
 	 * the CPU init function.
 	 */
-<<<<<<< HEAD
 
 #ifdef CONFIG_ARM_MPU
 	biceq	r0, r0, #CR_BR			@ Disable the 'default mem-map'
 	orreq	r0, r0, #CR_M			@ Set SCTRL.M (MPU on)
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #if defined(CONFIG_ALIGNMENT_TRAP) && __LINUX_ARM_ARCH__ < 6
 	orr	r0, r0, #CR_A
 #else
@@ -225,7 +185,6 @@ __after_proc_init:
 	bic	r0, r0, #CR_I
 #endif
 	mcr	p15, 0, r0, c1, c0, 0		@ write control reg
-<<<<<<< HEAD
 	instr_sync
 #elif defined (CONFIG_CPU_V7M)
 #ifdef CONFIG_ARM_MPU
@@ -235,9 +194,6 @@ __after_proc_init:
 	streq	r3, [r12, MPU_CTRL]
 	isb
 #endif
-=======
-#elif defined (CONFIG_CPU_V7M)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* For V7M systems we want to modify the CCR similarly to the SCTLR */
 #ifdef CONFIG_CPU_DCACHE_DISABLE
 	bic	r0, r0, #V7M_SCB_CCR_DC
@@ -248,13 +204,7 @@ __after_proc_init:
 #ifdef CONFIG_CPU_ICACHE_DISABLE
 	bic	r0, r0, #V7M_SCB_CCR_IC
 #endif
-<<<<<<< HEAD
 	str	r0, [r12, V7M_SCB_CCR]
-=======
-	movw	r3, #:lower16:(BASEADDR_V7M_SCB + V7M_SCB_CCR)
-	movt	r3, #:upper16:(BASEADDR_V7M_SCB + V7M_SCB_CCR)
-	str	r0, [r3]
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_CPU_CP15 elif CONFIG_CPU_V7M */
 	ret	lr
 ENDPROC(__after_proc_init)
@@ -263,29 +213,19 @@ ENDPROC(__after_proc_init)
 #ifdef CONFIG_ARM_MPU
 
 
-<<<<<<< HEAD
 #ifndef CONFIG_CPU_V7M
 /* Set which MPU region should be programmed */
 .macro set_region_nr tmp, rgnr, unused
-=======
-/* Set which MPU region should be programmed */
-.macro set_region_nr tmp, rgnr
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mov	\tmp, \rgnr			@ Use static region numbers
 	mcr	p15, 0, \tmp, c6, c2, 0		@ Write RGNR
 .endm
 
 /* Setup a single MPU region, either D or I side (D-side for unified) */
-<<<<<<< HEAD
 .macro setup_region bar, acr, sr, side = PMSAv7_DATA_SIDE, unused
-=======
-.macro setup_region bar, acr, sr, side = MPU_DATA_SIDE
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mcr	p15, 0, \bar, c6, c1, (0 + \side)	@ I/DRBAR
 	mcr	p15, 0, \acr, c6, c1, (4 + \side)	@ I/DRACR
 	mcr	p15, 0, \sr, c6, c1, (2 + \side)		@ I/DRSR
 .endm
-<<<<<<< HEAD
 #else
 .macro set_region_nr tmp, rgnr, base
 	mov	\tmp, \rgnr
@@ -300,9 +240,6 @@ ENDPROC(__after_proc_init)
 .endm
 
 #endif
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Setup the MPU and initial MPU Regions. We create the following regions:
  * Region 0: Use this for probing the MPU details, so leave disabled.
@@ -310,19 +247,13 @@ ENDPROC(__after_proc_init)
  * Region 2: Normal, Shared, cacheable for RAM. From PHYS_OFFSET, size from r6
  * Region 3: Normal, shared, inaccessible from PL0 to protect the vectors page
  *
-<<<<<<< HEAD
  * r6: Value to be written to DRSR (and IRSR if required) for PMSAv7_RAM_REGION
 */
 	__HEAD
-=======
- * r6: Value to be written to DRSR (and IRSR if required) for MPU_RAM_REGION
-*/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 ENTRY(__setup_mpu)
 
 	/* Probe for v7 PMSA compliance */
-<<<<<<< HEAD
 M_CLASS(movw	r12, #:lower16:BASEADDR_V7M_SCB)
 M_CLASS(movt	r12, #:upper16:BASEADDR_V7M_SCB)
 
@@ -539,18 +470,10 @@ ENDPROC(__secondary_setup_mpu)
  * r6: pointer at mpu_rgn_info
  */
 ENTRY(__secondary_setup_pmsa_v7)
-=======
-	mrc	p15, 0, r0, c0, c1, 4		@ Read ID_MMFR0
-	and	r0, r0, #(MMFR0_PMSA)		@ PMSA field
-	teq	r0, #(MMFR0_PMSAv7)		@ PMSA v7
-	bne	__error_p			@ Fail: ARM_MPU on NOT v7 PMSA
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Determine whether the D/I-side memory map is unified. We set the
 	 * flags here and continue to use them for the rest of this function */
 	mrc	p15, 0, r0, c0, c0, 4		@ MPUIR
 	ands	r5, r0, #MPUIR_DREGION_SZMASK	@ 0 size d region => No MPU
-<<<<<<< HEAD
 	beq	__error_p
 
 	ldr	r4, [r6, #MPU_RNG_INFO_USED]
@@ -611,57 +534,4 @@ ENTRY(__secondary_setup_pmsa_v8)
 ENDPROC(__secondary_setup_pmsa_v8)
 #endif /* CONFIG_SMP */
 #endif /* CONFIG_ARM_MPU */
-=======
-	beq	__error_p			@ Fail: ARM_MPU and no MPU
-	tst	r0, #MPUIR_nU			@ MPUIR_nU = 0 for unified
-
-	/* Setup second region first to free up r6 */
-	set_region_nr r0, #MPU_RAM_REGION
-	isb
-	/* Full access from PL0, PL1, shared for CONFIG_SMP, cacheable */
-	ldr	r0, =PLAT_PHYS_OFFSET		@ RAM starts at PHYS_OFFSET
-	ldr	r5,=(MPU_AP_PL1RW_PL0RW | MPU_RGN_NORMAL)
-
-	setup_region r0, r5, r6, MPU_DATA_SIDE	@ PHYS_OFFSET, shared, enabled
-	beq	1f				@ Memory-map not unified
-	setup_region r0, r5, r6, MPU_INSTR_SIDE @ PHYS_OFFSET, shared, enabled
-1:	isb
-
-	/* First/background region */
-	set_region_nr r0, #MPU_BG_REGION
-	isb
-	/* Execute Never,  strongly ordered, inaccessible to PL0, rw PL1  */
-	mov	r0, #0				@ BG region starts at 0x0
-	ldr	r5,=(MPU_ACR_XN | MPU_RGN_STRONGLY_ORDERED | MPU_AP_PL1RW_PL0NA)
-	mov	r6, #MPU_RSR_ALL_MEM		@ 4GB region, enabled
-
-	setup_region r0, r5, r6, MPU_DATA_SIDE	@ 0x0, BG region, enabled
-	beq	2f				@ Memory-map not unified
-	setup_region r0, r5, r6, MPU_INSTR_SIDE @ 0x0, BG region, enabled
-2:	isb
-
-	/* Vectors region */
-	set_region_nr r0, #MPU_VECTORS_REGION
-	isb
-	/* Shared, inaccessible to PL0, rw PL1 */
-	mov	r0, #CONFIG_VECTORS_BASE	@ Cover from VECTORS_BASE
-	ldr	r5,=(MPU_AP_PL1RW_PL0NA | MPU_RGN_NORMAL)
-	/* Writing N to bits 5:1 (RSR_SZ) --> region size 2^N+1 */
-	mov	r6, #(((2 * PAGE_SHIFT - 1) << MPU_RSR_SZ) | 1 << MPU_RSR_EN)
-
-	setup_region r0, r5, r6, MPU_DATA_SIDE	@ VECTORS_BASE, PL0 NA, enabled
-	beq	3f				@ Memory-map not unified
-	setup_region r0, r5, r6, MPU_INSTR_SIDE	@ VECTORS_BASE, PL0 NA, enabled
-3:	isb
-
-	/* Enable the MPU */
-	mrc	p15, 0, r0, c1, c0, 0		@ Read SCTLR
-	bic     r0, r0, #CR_BR			@ Disable the 'default mem-map'
-	orr	r0, r0, #CR_M			@ Set SCTRL.M (MPU on)
-	mcr	p15, 0, r0, c1, c0, 0		@ Enable MPU
-	isb
-	ret	lr
-ENDPROC(__setup_mpu)
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "head-common.S"

@@ -23,10 +23,7 @@
 #include <linux/limits.h>
 #include <linux/err.h>
 #include <linux/clk-provider.h>
-<<<<<<< HEAD
 #include <linux/cpu_pm.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/io.h>
 
@@ -35,10 +32,7 @@
 #include "soc.h"
 #include "clock.h"
 #include "clockdomain.h"
-<<<<<<< HEAD
 #include "pm.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* clkdm_list contains all registered struct clockdomains */
 static LIST_HEAD(clkdm_list);
@@ -47,11 +41,8 @@ static LIST_HEAD(clkdm_list);
 static struct clkdm_autodep *autodeps;
 
 static struct clkdm_ops *arch_clkdm;
-<<<<<<< HEAD
 void clkdm_save_context(void);
 void clkdm_restore_context(void);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Private functions */
 
@@ -462,7 +453,6 @@ int clkdm_register_autodeps(struct clkdm_autodep *ia)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int cpu_notifier(struct notifier_block *nb, unsigned long cmd, void *v)
 {
 	switch (cmd) {
@@ -479,8 +469,6 @@ static int cpu_notifier(struct notifier_block *nb, unsigned long cmd, void *v)
 	return NOTIFY_OK;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * clkdm_complete_init - set up the clockdomain layer
  *
@@ -492,10 +480,7 @@ static int cpu_notifier(struct notifier_block *nb, unsigned long cmd, void *v)
 int clkdm_complete_init(void)
 {
 	struct clockdomain *clkdm;
-<<<<<<< HEAD
 	static struct notifier_block nb;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (list_empty(&clkdm_list))
 		return -EACCES;
@@ -510,15 +495,12 @@ int clkdm_complete_init(void)
 		clkdm_clear_all_sleepdeps(clkdm);
 	}
 
-<<<<<<< HEAD
 	/* Only AM43XX can lose clkdm context during rtc-ddr suspend */
 	if (soc_is_am43xx()) {
 		nb.notifier_call = cpu_notifier;
 		cpu_pm_register_notifier(&nb);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1269,17 +1251,6 @@ ccd_exit:
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-u32 clkdm_xlate_address(struct clockdomain *clkdm)
-{
-	if (arch_clkdm->clkdm_xlate_address)
-		return arch_clkdm->clkdm_xlate_address(clkdm);
-
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * clkdm_hwmod_enable - add an enabled downstream hwmod to this clkdm
  * @clkdm: struct clockdomain *
@@ -1363,7 +1334,6 @@ int clkdm_hwmod_disable(struct clockdomain *clkdm, struct omap_hwmod *oh)
 	return 0;
 }
 
-<<<<<<< HEAD
 /**
  * _clkdm_save_context - save the context for the control of this clkdm
  *
@@ -1410,5 +1380,3 @@ void clkdm_restore_context(void)
 {
 	clkdm_for_each(_clkdm_restore_context, NULL);
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

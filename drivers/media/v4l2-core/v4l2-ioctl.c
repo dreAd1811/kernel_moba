@@ -9,11 +9,7 @@
  * 2 of the License, or (at your option) any later version.
  *
  * Authors:	Alan Cox, <alan@lxorguk.ukuu.org.uk> (version 1)
-<<<<<<< HEAD
  *              Mauro Carvalho Chehab <mchehab@kernel.org> (version 2)
-=======
- *              Mauro Carvalho Chehab <mchehab@infradead.org> (version 2)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/mm.h>
@@ -33,10 +29,7 @@
 #include <media/v4l2-device.h>
 #include <media/videobuf2-v4l2.h>
 #include <media/v4l2-mc.h>
-<<<<<<< HEAD
 #include <media/v4l2-mem2mem.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <trace/events/v4l2.h>
 
@@ -54,7 +47,6 @@ struct std_descr {
 };
 
 static const struct std_descr standards[] = {
-<<<<<<< HEAD
 	{ V4L2_STD_NTSC,	"NTSC"      },
 	{ V4L2_STD_NTSC_M,	"NTSC-M"    },
 	{ V4L2_STD_NTSC_M_JP,	"NTSC-M-JP" },
@@ -86,39 +78,6 @@ static const struct std_descr standards[] = {
 	{ V4L2_STD_SECAM_L,	"SECAM-L"   },
 	{ V4L2_STD_SECAM_LC,	"SECAM-Lc"  },
 	{ 0,			"Unknown"   }
-=======
-	{ V4L2_STD_NTSC, 	"NTSC"      },
-	{ V4L2_STD_NTSC_M, 	"NTSC-M"    },
-	{ V4L2_STD_NTSC_M_JP, 	"NTSC-M-JP" },
-	{ V4L2_STD_NTSC_M_KR,	"NTSC-M-KR" },
-	{ V4L2_STD_NTSC_443, 	"NTSC-443"  },
-	{ V4L2_STD_PAL, 	"PAL"       },
-	{ V4L2_STD_PAL_BG, 	"PAL-BG"    },
-	{ V4L2_STD_PAL_B, 	"PAL-B"     },
-	{ V4L2_STD_PAL_B1, 	"PAL-B1"    },
-	{ V4L2_STD_PAL_G, 	"PAL-G"     },
-	{ V4L2_STD_PAL_H, 	"PAL-H"     },
-	{ V4L2_STD_PAL_I, 	"PAL-I"     },
-	{ V4L2_STD_PAL_DK, 	"PAL-DK"    },
-	{ V4L2_STD_PAL_D, 	"PAL-D"     },
-	{ V4L2_STD_PAL_D1, 	"PAL-D1"    },
-	{ V4L2_STD_PAL_K, 	"PAL-K"     },
-	{ V4L2_STD_PAL_M, 	"PAL-M"     },
-	{ V4L2_STD_PAL_N, 	"PAL-N"     },
-	{ V4L2_STD_PAL_Nc, 	"PAL-Nc"    },
-	{ V4L2_STD_PAL_60, 	"PAL-60"    },
-	{ V4L2_STD_SECAM, 	"SECAM"     },
-	{ V4L2_STD_SECAM_B, 	"SECAM-B"   },
-	{ V4L2_STD_SECAM_G, 	"SECAM-G"   },
-	{ V4L2_STD_SECAM_H, 	"SECAM-H"   },
-	{ V4L2_STD_SECAM_DK, 	"SECAM-DK"  },
-	{ V4L2_STD_SECAM_D, 	"SECAM-D"   },
-	{ V4L2_STD_SECAM_K, 	"SECAM-K"   },
-	{ V4L2_STD_SECAM_K1, 	"SECAM-K1"  },
-	{ V4L2_STD_SECAM_L, 	"SECAM-L"   },
-	{ V4L2_STD_SECAM_LC, 	"SECAM-Lc"  },
-	{ 0, 			"Unknown"   }
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* video4linux standard ID conversion to standard name
@@ -167,7 +126,6 @@ int v4l2_video_std_construct(struct v4l2_standard *vs,
 }
 EXPORT_SYMBOL(v4l2_video_std_construct);
 
-<<<<<<< HEAD
 /* Fill in the fields of a v4l2_standard structure according to the
  * 'id' and 'vs->index' parameters. Returns negative on error. */
 int v4l_video_std_enumstd(struct v4l2_standard *vs, v4l2_std_id id)
@@ -204,8 +162,6 @@ int v4l_video_std_enumstd(struct v4l2_standard *vs, v4l2_std_id id)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* ----------------------------------------------------------------- */
 /* some arrays for pretty-printing debug messages of enum types      */
 
@@ -813,18 +769,12 @@ static void v4l_print_frmsizeenum(const void *arg, bool write_only)
 		break;
 	case V4L2_FRMSIZE_TYPE_STEPWISE:
 		pr_cont(", min=%ux%u, max=%ux%u, step=%ux%u\n",
-<<<<<<< HEAD
 				p->stepwise.min_width,
 				p->stepwise.min_height,
 				p->stepwise.max_width,
 				p->stepwise.max_height,
 				p->stepwise.step_width,
 				p->stepwise.step_height);
-=======
-				p->stepwise.min_width,  p->stepwise.min_height,
-				p->stepwise.step_width, p->stepwise.step_height,
-				p->stepwise.max_width,  p->stepwise.max_height);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case V4L2_FRMSIZE_TYPE_CONTINUOUS:
 		/* fall through */
@@ -1051,13 +1001,10 @@ static int check_fmt(struct file *file, enum v4l2_buf_type type)
 		if (is_vid && is_rx && ops->vidioc_g_fmt_meta_cap)
 			return 0;
 		break;
-<<<<<<< HEAD
 	case V4L2_BUF_TYPE_PRIVATE:
 		if (ops->vidioc_g_fmt_type_private)
 			return 0;
 		break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		break;
 	}
@@ -1243,10 +1190,7 @@ static void v4l_fill_fmtdesc(struct v4l2_fmtdesc *fmt)
 	case V4L2_PIX_FMT_Y16:		descr = "16-bit Greyscale"; break;
 	case V4L2_PIX_FMT_Y16_BE:	descr = "16-bit Greyscale BE"; break;
 	case V4L2_PIX_FMT_Y10BPACK:	descr = "10-bit Greyscale (Packed)"; break;
-<<<<<<< HEAD
 	case V4L2_PIX_FMT_Y10P:		descr = "10-bit Greyscale (MIPI Packed)"; break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case V4L2_PIX_FMT_Y8I:		descr = "Interleaved 8-bit Greyscale"; break;
 	case V4L2_PIX_FMT_Y12I:		descr = "Interleaved 12-bit Greyscale"; break;
 	case V4L2_PIX_FMT_Z16:		descr = "16-bit Depth"; break;
@@ -1302,13 +1246,10 @@ static void v4l_fill_fmtdesc(struct v4l2_fmtdesc *fmt)
 	case V4L2_PIX_FMT_SGBRG10P:	descr = "10-bit Bayer GBGB/RGRG Packed"; break;
 	case V4L2_PIX_FMT_SGRBG10P:	descr = "10-bit Bayer GRGR/BGBG Packed"; break;
 	case V4L2_PIX_FMT_SRGGB10P:	descr = "10-bit Bayer RGRG/GBGB Packed"; break;
-<<<<<<< HEAD
 	case V4L2_PIX_FMT_IPU3_SBGGR10: descr = "10-bit bayer BGGR IPU3 Packed"; break;
 	case V4L2_PIX_FMT_IPU3_SGBRG10: descr = "10-bit bayer GBRG IPU3 Packed"; break;
 	case V4L2_PIX_FMT_IPU3_SGRBG10: descr = "10-bit bayer GRBG IPU3 Packed"; break;
 	case V4L2_PIX_FMT_IPU3_SRGGB10: descr = "10-bit bayer RGGB IPU3 Packed"; break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case V4L2_PIX_FMT_SBGGR10ALAW8:	descr = "8-bit Bayer BGBG/GRGR (A-law)"; break;
 	case V4L2_PIX_FMT_SGBRG10ALAW8:	descr = "8-bit Bayer GBGB/RGRG (A-law)"; break;
 	case V4L2_PIX_FMT_SGRBG10ALAW8:	descr = "8-bit Bayer GRGR/BGBG (A-law)"; break;
@@ -1325,13 +1266,10 @@ static void v4l_fill_fmtdesc(struct v4l2_fmtdesc *fmt)
 	case V4L2_PIX_FMT_SGBRG12P:	descr = "12-bit Bayer GBGB/RGRG Packed"; break;
 	case V4L2_PIX_FMT_SGRBG12P:	descr = "12-bit Bayer GRGR/BGBG Packed"; break;
 	case V4L2_PIX_FMT_SRGGB12P:	descr = "12-bit Bayer RGRG/GBGB Packed"; break;
-<<<<<<< HEAD
 	case V4L2_PIX_FMT_SBGGR14P:	descr = "14-bit Bayer BGBG/GRGR Packed"; break;
 	case V4L2_PIX_FMT_SGBRG14P:	descr = "14-bit Bayer GBGB/RGRG Packed"; break;
 	case V4L2_PIX_FMT_SGRBG14P:	descr = "14-bit Bayer GRGR/BGBG Packed"; break;
 	case V4L2_PIX_FMT_SRGGB14P:	descr = "14-bit Bayer RGRG/GBGB Packed"; break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case V4L2_PIX_FMT_SBGGR16:	descr = "16-bit Bayer BGBG/GRGR"; break;
 	case V4L2_PIX_FMT_SGBRG16:	descr = "16-bit Bayer GBGB/RGRG"; break;
 	case V4L2_PIX_FMT_SGRBG16:	descr = "16-bit Bayer GRGR/BGBG"; break;
@@ -1360,7 +1298,6 @@ static void v4l_fill_fmtdesc(struct v4l2_fmtdesc *fmt)
 	case V4L2_TCH_FMT_TU08:		descr = "8-bit unsigned touch data"; break;
 	case V4L2_META_FMT_VSP1_HGO:	descr = "R-Car VSP1 1-D Histogram"; break;
 	case V4L2_META_FMT_VSP1_HGT:	descr = "R-Car VSP1 2-D Histogram"; break;
-<<<<<<< HEAD
 	case V4L2_META_FMT_UVC:		descr = "UVC payload header metadata"; break;
 	case V4L2_PIX_FMT_NV12_UBWC:
 					descr = "NV12 UBWC"; break;
@@ -1374,12 +1311,6 @@ static void v4l_fill_fmtdesc(struct v4l2_fmtdesc *fmt)
 					descr = "Y/CbCr 4:2:0 P010 UBWC"; break;
 	case V4L2_PIX_FMT_RGBA8888_UBWC:
 					descr = "RGBA8888 UBWC"; break;
-=======
-	case V4L2_PIX_FMT_NV12_UBWC:
-		descr = "NV12 UBWC"; break;
-	case V4L2_PIX_FMT_RGBA8888_UBWC:
-		descr = "RGBA8888 UBWC"; break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case V4L2_PIX_FMT_SDE_ABGR_8888:
 					descr = "32-bit ABGR 8-8-8-8"; break;
 	case V4L2_PIX_FMT_SDE_RGBA_8888:
@@ -1452,17 +1383,6 @@ static void v4l_fill_fmtdesc(struct v4l2_fmtdesc *fmt)
 					descr = "Y/CbCr 4:2:0 TP10"; break;
 	case V4L2_PIX_FMT_SDE_Y_CBCR_H2V2_P010:
 					descr = "Y/CbCr 4:2:0 P10"; break;
-<<<<<<< HEAD
-=======
-	case V4L2_PIX_FMT_SDE_Y_CBCR_H2V2_P010_VENUS:
-					descr = "Y/CbCr 4:2:0 P10 Venus"; break;
-	case V4L2_PIX_FMT_NV12_TP10_UBWC:
-					descr = "Y/CbCr 4:2:0 TP10 UBWC"; break;
-	case V4L2_PIX_FMT_NV12_P010_UBWC:
-					descr = "Y/CbCr 4:2:0 P010 UBWC"; break;
-	case V4L2_PIX_FMT_NV12_512:
-				descr = "Y/CbCr 4:2:0 (512 align)"; break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	default:
 		/* Compressed formats */
@@ -1477,10 +1397,6 @@ static void v4l_fill_fmtdesc(struct v4l2_fmtdesc *fmt)
 		case V4L2_PIX_FMT_H264_NO_SC:	descr = "H.264 (No Start Codes)"; break;
 		case V4L2_PIX_FMT_H264_MVC:	descr = "H.264 MVC"; break;
 		case V4L2_PIX_FMT_H263:		descr = "H.263"; break;
-<<<<<<< HEAD
-=======
-		case V4L2_PIX_FMT_HEVC:		descr = "HEVC"; break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case V4L2_PIX_FMT_MPEG1:	descr = "MPEG-1 ES"; break;
 		case V4L2_PIX_FMT_MPEG2:	descr = "MPEG-2 ES"; break;
 		case V4L2_PIX_FMT_MPEG4:	descr = "MPEG-4 part 2 ES"; break;
@@ -1489,11 +1405,8 @@ static void v4l_fill_fmtdesc(struct v4l2_fmtdesc *fmt)
 		case V4L2_PIX_FMT_VC1_ANNEX_L:	descr = "VC-1 (SMPTE 412M Annex L)"; break;
 		case V4L2_PIX_FMT_VP8:		descr = "VP8"; break;
 		case V4L2_PIX_FMT_VP9:		descr = "VP9"; break;
-<<<<<<< HEAD
 		case V4L2_PIX_FMT_HEVC:		descr = "HEVC"; break; /* aka H.265 */
 		case V4L2_PIX_FMT_FWHT:		descr = "FWHT"; break; /* used in vicodec */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case V4L2_PIX_FMT_CPIA1:	descr = "GSPCA CPiA YUV"; break;
 		case V4L2_PIX_FMT_WNVA:		descr = "WNVA"; break;
 		case V4L2_PIX_FMT_SN9C10X:	descr = "GSPCA SN9C10X"; break;
@@ -1515,15 +1428,6 @@ static void v4l_fill_fmtdesc(struct v4l2_fmtdesc *fmt)
 		case V4L2_PIX_FMT_MT21C:	descr = "Mediatek Compressed Format"; break;
 		case V4L2_PIX_FMT_TME:
 			descr = "TME"; break;
-<<<<<<< HEAD
-=======
-		case V4L2_PIX_FMT_HEVC_HYBRID:
-			descr = "HEVC Hybrid"; break;
-		case V4L2_PIX_FMT_DIVX_311:
-			descr = "DIVX311"; break;
-		case V4L2_PIX_FMT_DIVX:
-			descr = "DIVX"; break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		default:
 			WARN(1, "Unknown pixelformat 0x%08x\n", fmt->pixelformat);
 			if (fmt->description[0])
@@ -1601,32 +1505,10 @@ static int v4l_enum_fmt(const struct v4l2_ioctl_ops *ops,
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
-static void v4l_pix_format_touch(struct v4l2_pix_format *p)
-{
-	/*
-	 * The v4l2_pix_format structure contains fields that make no sense for
-	 * touch. Set them to default values in this case.
-	 */
-
-	p->field = V4L2_FIELD_NONE;
-	p->colorspace = V4L2_COLORSPACE_RAW;
-	p->flags = 0;
-	p->ycbcr_enc = 0;
-	p->quantization = 0;
-	p->xfer_func = 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int v4l_g_fmt(const struct v4l2_ioctl_ops *ops,
 				struct file *file, void *fh, void *arg)
 {
 	struct v4l2_format *p = arg;
-<<<<<<< HEAD
-=======
-	struct video_device *vfd = video_devdata(file);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = check_fmt(file, p->type);
 
 	if (ret)
@@ -1664,11 +1546,6 @@ static int v4l_g_fmt(const struct v4l2_ioctl_ops *ops,
 		ret = ops->vidioc_g_fmt_vid_cap(file, fh, arg);
 		/* just in case the driver zeroed it again */
 		p->fmt.pix.priv = V4L2_PIX_FMT_PRIV_MAGIC;
-<<<<<<< HEAD
-=======
-		if (vfd->vfl_type == VFL_TYPE_TOUCH)
-			v4l_pix_format_touch(&p->fmt.pix);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	case V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE:
 		return ops->vidioc_g_fmt_vid_cap_mplane(file, fh, arg);
@@ -1704,7 +1581,6 @@ static int v4l_g_fmt(const struct v4l2_ioctl_ops *ops,
 	return -EINVAL;
 }
 
-<<<<<<< HEAD
 static void v4l_pix_format_touch(struct v4l2_pix_format *p)
 {
 	/*
@@ -1720,8 +1596,6 @@ static void v4l_pix_format_touch(struct v4l2_pix_format *p)
 	p->xfer_func = 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int v4l_s_fmt(const struct v4l2_ioctl_ops *ops,
 				struct file *file, void *fh, void *arg)
 {
@@ -1761,20 +1635,12 @@ static int v4l_s_fmt(const struct v4l2_ioctl_ops *ops,
 	case V4L2_BUF_TYPE_VBI_CAPTURE:
 		if (unlikely(!ops->vidioc_s_fmt_vbi_cap))
 			break;
-<<<<<<< HEAD
 		CLEAR_AFTER_FIELD(p, fmt.vbi);
-=======
-		CLEAR_AFTER_FIELD(p, fmt.vbi.flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ops->vidioc_s_fmt_vbi_cap(file, fh, arg);
 	case V4L2_BUF_TYPE_SLICED_VBI_CAPTURE:
 		if (unlikely(!ops->vidioc_s_fmt_sliced_vbi_cap))
 			break;
-<<<<<<< HEAD
 		CLEAR_AFTER_FIELD(p, fmt.sliced);
-=======
-		CLEAR_AFTER_FIELD(p, fmt.sliced.io_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ops->vidioc_s_fmt_sliced_vbi_cap(file, fh, arg);
 	case V4L2_BUF_TYPE_VIDEO_OUTPUT:
 		if (unlikely(!ops->vidioc_s_fmt_vid_out))
@@ -1797,38 +1663,22 @@ static int v4l_s_fmt(const struct v4l2_ioctl_ops *ops,
 	case V4L2_BUF_TYPE_VBI_OUTPUT:
 		if (unlikely(!ops->vidioc_s_fmt_vbi_out))
 			break;
-<<<<<<< HEAD
 		CLEAR_AFTER_FIELD(p, fmt.vbi);
-=======
-		CLEAR_AFTER_FIELD(p, fmt.vbi.flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ops->vidioc_s_fmt_vbi_out(file, fh, arg);
 	case V4L2_BUF_TYPE_SLICED_VBI_OUTPUT:
 		if (unlikely(!ops->vidioc_s_fmt_sliced_vbi_out))
 			break;
-<<<<<<< HEAD
 		CLEAR_AFTER_FIELD(p, fmt.sliced);
-=======
-		CLEAR_AFTER_FIELD(p, fmt.sliced.io_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ops->vidioc_s_fmt_sliced_vbi_out(file, fh, arg);
 	case V4L2_BUF_TYPE_SDR_CAPTURE:
 		if (unlikely(!ops->vidioc_s_fmt_sdr_cap))
 			break;
-<<<<<<< HEAD
 		CLEAR_AFTER_FIELD(p, fmt.sdr);
-=======
-		CLEAR_AFTER_FIELD(p, fmt.sdr.buffersize);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ops->vidioc_s_fmt_sdr_cap(file, fh, arg);
 	case V4L2_BUF_TYPE_SDR_OUTPUT:
 		if (unlikely(!ops->vidioc_s_fmt_sdr_out))
 			break;
-<<<<<<< HEAD
 		CLEAR_AFTER_FIELD(p, fmt.sdr);
-=======
-		CLEAR_AFTER_FIELD(p, fmt.sdr.buffersize);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ops->vidioc_s_fmt_sdr_out(file, fh, arg);
 	case V4L2_BUF_TYPE_META_CAPTURE:
 		if (unlikely(!ops->vidioc_s_fmt_meta_cap))
@@ -1872,20 +1722,12 @@ static int v4l_try_fmt(const struct v4l2_ioctl_ops *ops,
 	case V4L2_BUF_TYPE_VBI_CAPTURE:
 		if (unlikely(!ops->vidioc_try_fmt_vbi_cap))
 			break;
-<<<<<<< HEAD
 		CLEAR_AFTER_FIELD(p, fmt.vbi);
-=======
-		CLEAR_AFTER_FIELD(p, fmt.vbi.flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ops->vidioc_try_fmt_vbi_cap(file, fh, arg);
 	case V4L2_BUF_TYPE_SLICED_VBI_CAPTURE:
 		if (unlikely(!ops->vidioc_try_fmt_sliced_vbi_cap))
 			break;
-<<<<<<< HEAD
 		CLEAR_AFTER_FIELD(p, fmt.sliced);
-=======
-		CLEAR_AFTER_FIELD(p, fmt.sliced.io_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ops->vidioc_try_fmt_sliced_vbi_cap(file, fh, arg);
 	case V4L2_BUF_TYPE_VIDEO_OUTPUT:
 		if (unlikely(!ops->vidioc_try_fmt_vid_out))
@@ -1908,38 +1750,22 @@ static int v4l_try_fmt(const struct v4l2_ioctl_ops *ops,
 	case V4L2_BUF_TYPE_VBI_OUTPUT:
 		if (unlikely(!ops->vidioc_try_fmt_vbi_out))
 			break;
-<<<<<<< HEAD
 		CLEAR_AFTER_FIELD(p, fmt.vbi);
-=======
-		CLEAR_AFTER_FIELD(p, fmt.vbi.flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ops->vidioc_try_fmt_vbi_out(file, fh, arg);
 	case V4L2_BUF_TYPE_SLICED_VBI_OUTPUT:
 		if (unlikely(!ops->vidioc_try_fmt_sliced_vbi_out))
 			break;
-<<<<<<< HEAD
 		CLEAR_AFTER_FIELD(p, fmt.sliced);
-=======
-		CLEAR_AFTER_FIELD(p, fmt.sliced.io_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ops->vidioc_try_fmt_sliced_vbi_out(file, fh, arg);
 	case V4L2_BUF_TYPE_SDR_CAPTURE:
 		if (unlikely(!ops->vidioc_try_fmt_sdr_cap))
 			break;
-<<<<<<< HEAD
 		CLEAR_AFTER_FIELD(p, fmt.sdr);
-=======
-		CLEAR_AFTER_FIELD(p, fmt.sdr.buffersize);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ops->vidioc_try_fmt_sdr_cap(file, fh, arg);
 	case V4L2_BUF_TYPE_SDR_OUTPUT:
 		if (unlikely(!ops->vidioc_try_fmt_sdr_out))
 			break;
-<<<<<<< HEAD
 		CLEAR_AFTER_FIELD(p, fmt.sdr);
-=======
-		CLEAR_AFTER_FIELD(p, fmt.sdr.buffersize);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ops->vidioc_try_fmt_sdr_out(file, fh, arg);
 	case V4L2_BUF_TYPE_META_CAPTURE:
 		if (unlikely(!ops->vidioc_try_fmt_meta_cap))
@@ -2062,41 +1888,8 @@ static int v4l_enumstd(const struct v4l2_ioctl_ops *ops,
 {
 	struct video_device *vfd = video_devdata(file);
 	struct v4l2_standard *p = arg;
-<<<<<<< HEAD
 
 	return v4l_video_std_enumstd(p, vfd->tvnorms);
-=======
-	v4l2_std_id id = vfd->tvnorms, curr_id = 0;
-	unsigned int index = p->index, i, j = 0;
-	const char *descr = "";
-
-	/* Return -ENODATA if the tvnorms for the current input
-	   or output is 0, meaning that it doesn't support this API. */
-	if (id == 0)
-		return -ENODATA;
-
-	/* Return norm array in a canonical way */
-	for (i = 0; i <= index && id; i++) {
-		/* last std value in the standards array is 0, so this
-		   while always ends there since (id & 0) == 0. */
-		while ((id & standards[j].std) != standards[j].std)
-			j++;
-		curr_id = standards[j].std;
-		descr = standards[j].descr;
-		j++;
-		if (curr_id == 0)
-			break;
-		if (curr_id != V4L2_STD_PAL &&
-				curr_id != V4L2_STD_SECAM &&
-				curr_id != V4L2_STD_NTSC)
-			id &= ~curr_id;
-	}
-	if (i <= index)
-		return -EINVAL;
-
-	v4l2_video_std_construct(p, curr_id, descr);
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int v4l_s_std(const struct v4l2_ioctl_ops *ops,
@@ -2827,24 +2620,14 @@ struct v4l2_ioctl_info {
 #define INFO_FL_PRIO		(1 << 0)
 /* This control can be valid if the filehandle passes a control handler. */
 #define INFO_FL_CTRL		(1 << 1)
-<<<<<<< HEAD
 /* Queuing ioctl */
 #define INFO_FL_QUEUE		(1 << 2)
 /* Always copy back result, even on error */
 #define INFO_FL_ALWAYS_COPY	(1 << 3)
-=======
-/* This is ioctl has its own function */
-#define INFO_FL_FUNC		(1 << 2)
-/* Queuing ioctl */
-#define INFO_FL_QUEUE		(1 << 3)
-/* Always copy back result, even on error */
-#define INFO_FL_ALWAYS_COPY	(1 << 4)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Zero struct from after the field to the end */
 #define INFO_FL_CLEAR(v4l2_struct, field)			\
 	((offsetof(struct v4l2_struct, field) +			\
 	  sizeof(((struct v4l2_struct *)0)->field)) << 16)
-<<<<<<< HEAD
 #define INFO_FL_CLEAR_MASK	(_IOC_SIZEMASK << 16)
 
 #define DEFINE_V4L_STUB_FUNC(_vidioc)				\
@@ -2980,152 +2763,12 @@ static struct v4l2_ioctl_info v4l2_ioctls[] = {
 #define V4L2_IOCTLS ARRAY_SIZE(v4l2_ioctls)
 
 static bool v4l2_is_known_ioctl(unsigned int cmd)
-=======
-#define INFO_FL_CLEAR_MASK 	(_IOC_SIZEMASK << 16)
-
-#define DEFINE_IOCTL_STD_FNC(_vidioc) \
-	static int __v4l_ ## _vidioc ## _fnc(				\
-			const struct v4l2_ioctl_ops *ops, 		\
-			struct file *file, void *fh, void *p) {		\
-		return ops->_vidioc(file, fh, p); 			\
-	}
-
-#define IOCTL_INFO_FNC(_ioctl, _func, _debug, _flags)			\
-	[_IOC_NR(_ioctl)] = {						\
-		.ioctl = _ioctl,					\
-		.flags = _flags | INFO_FL_FUNC,				\
-		.name = #_ioctl,					\
-		.func = _func,						\
-		.debug = _debug,					\
-	}
-
-#define IOCTL_INFO_STD(_ioctl, _vidioc, _debug, _flags)	\
-	IOCTL_INFO_FNC(_ioctl, __v4l_ ## _vidioc ## _fnc, _debug, _flags)
-
-DEFINE_IOCTL_STD_FNC(vidioc_g_fbuf)
-DEFINE_IOCTL_STD_FNC(vidioc_s_fbuf)
-DEFINE_IOCTL_STD_FNC(vidioc_expbuf)
-DEFINE_IOCTL_STD_FNC(vidioc_g_std)
-DEFINE_IOCTL_STD_FNC(vidioc_g_audio)
-DEFINE_IOCTL_STD_FNC(vidioc_s_audio)
-DEFINE_IOCTL_STD_FNC(vidioc_g_input)
-DEFINE_IOCTL_STD_FNC(vidioc_g_edid)
-DEFINE_IOCTL_STD_FNC(vidioc_s_edid)
-DEFINE_IOCTL_STD_FNC(vidioc_g_output)
-DEFINE_IOCTL_STD_FNC(vidioc_g_audout)
-DEFINE_IOCTL_STD_FNC(vidioc_s_audout)
-DEFINE_IOCTL_STD_FNC(vidioc_g_jpegcomp)
-DEFINE_IOCTL_STD_FNC(vidioc_s_jpegcomp)
-DEFINE_IOCTL_STD_FNC(vidioc_enumaudio)
-DEFINE_IOCTL_STD_FNC(vidioc_enumaudout)
-DEFINE_IOCTL_STD_FNC(vidioc_enum_framesizes)
-DEFINE_IOCTL_STD_FNC(vidioc_enum_frameintervals)
-DEFINE_IOCTL_STD_FNC(vidioc_g_enc_index)
-DEFINE_IOCTL_STD_FNC(vidioc_encoder_cmd)
-DEFINE_IOCTL_STD_FNC(vidioc_try_encoder_cmd)
-DEFINE_IOCTL_STD_FNC(vidioc_decoder_cmd)
-DEFINE_IOCTL_STD_FNC(vidioc_try_decoder_cmd)
-DEFINE_IOCTL_STD_FNC(vidioc_s_dv_timings)
-DEFINE_IOCTL_STD_FNC(vidioc_g_dv_timings)
-DEFINE_IOCTL_STD_FNC(vidioc_enum_dv_timings)
-DEFINE_IOCTL_STD_FNC(vidioc_query_dv_timings)
-DEFINE_IOCTL_STD_FNC(vidioc_dv_timings_cap)
-
-static struct v4l2_ioctl_info v4l2_ioctls[] = {
-	IOCTL_INFO_FNC(VIDIOC_QUERYCAP, v4l_querycap, v4l_print_querycap, 0),
-	IOCTL_INFO_FNC(VIDIOC_ENUM_FMT, v4l_enum_fmt, v4l_print_fmtdesc, INFO_FL_CLEAR(v4l2_fmtdesc, type)),
-	IOCTL_INFO_FNC(VIDIOC_G_FMT, v4l_g_fmt, v4l_print_format, 0),
-	IOCTL_INFO_FNC(VIDIOC_S_FMT, v4l_s_fmt, v4l_print_format, INFO_FL_PRIO),
-	IOCTL_INFO_FNC(VIDIOC_REQBUFS, v4l_reqbufs, v4l_print_requestbuffers, INFO_FL_PRIO | INFO_FL_QUEUE),
-	IOCTL_INFO_FNC(VIDIOC_QUERYBUF, v4l_querybuf, v4l_print_buffer, INFO_FL_QUEUE | INFO_FL_CLEAR(v4l2_buffer, length)),
-	IOCTL_INFO_STD(VIDIOC_G_FBUF, vidioc_g_fbuf, v4l_print_framebuffer, 0),
-	IOCTL_INFO_STD(VIDIOC_S_FBUF, vidioc_s_fbuf, v4l_print_framebuffer, INFO_FL_PRIO),
-	IOCTL_INFO_FNC(VIDIOC_OVERLAY, v4l_overlay, v4l_print_u32, INFO_FL_PRIO),
-	IOCTL_INFO_FNC(VIDIOC_QBUF, v4l_qbuf, v4l_print_buffer, INFO_FL_QUEUE),
-	IOCTL_INFO_STD(VIDIOC_EXPBUF, vidioc_expbuf, v4l_print_exportbuffer, INFO_FL_QUEUE | INFO_FL_CLEAR(v4l2_exportbuffer, flags)),
-	IOCTL_INFO_FNC(VIDIOC_DQBUF, v4l_dqbuf, v4l_print_buffer, INFO_FL_QUEUE),
-	IOCTL_INFO_FNC(VIDIOC_STREAMON, v4l_streamon, v4l_print_buftype, INFO_FL_PRIO | INFO_FL_QUEUE),
-	IOCTL_INFO_FNC(VIDIOC_STREAMOFF, v4l_streamoff, v4l_print_buftype, INFO_FL_PRIO | INFO_FL_QUEUE),
-	IOCTL_INFO_FNC(VIDIOC_G_PARM, v4l_g_parm, v4l_print_streamparm, INFO_FL_CLEAR(v4l2_streamparm, type)),
-	IOCTL_INFO_FNC(VIDIOC_S_PARM, v4l_s_parm, v4l_print_streamparm, INFO_FL_PRIO),
-	IOCTL_INFO_STD(VIDIOC_G_STD, vidioc_g_std, v4l_print_std, 0),
-	IOCTL_INFO_FNC(VIDIOC_S_STD, v4l_s_std, v4l_print_std, INFO_FL_PRIO),
-	IOCTL_INFO_FNC(VIDIOC_ENUMSTD, v4l_enumstd, v4l_print_standard, INFO_FL_CLEAR(v4l2_standard, index)),
-	IOCTL_INFO_FNC(VIDIOC_ENUMINPUT, v4l_enuminput, v4l_print_enuminput, INFO_FL_CLEAR(v4l2_input, index)),
-	IOCTL_INFO_FNC(VIDIOC_G_CTRL, v4l_g_ctrl, v4l_print_control, INFO_FL_CTRL | INFO_FL_CLEAR(v4l2_control, id)),
-	IOCTL_INFO_FNC(VIDIOC_S_CTRL, v4l_s_ctrl, v4l_print_control, INFO_FL_PRIO | INFO_FL_CTRL),
-	IOCTL_INFO_FNC(VIDIOC_G_TUNER, v4l_g_tuner, v4l_print_tuner, INFO_FL_CLEAR(v4l2_tuner, index)),
-	IOCTL_INFO_FNC(VIDIOC_S_TUNER, v4l_s_tuner, v4l_print_tuner, INFO_FL_PRIO),
-	IOCTL_INFO_STD(VIDIOC_G_AUDIO, vidioc_g_audio, v4l_print_audio, 0),
-	IOCTL_INFO_STD(VIDIOC_S_AUDIO, vidioc_s_audio, v4l_print_audio, INFO_FL_PRIO),
-	IOCTL_INFO_FNC(VIDIOC_QUERYCTRL, v4l_queryctrl, v4l_print_queryctrl, INFO_FL_CTRL | INFO_FL_CLEAR(v4l2_queryctrl, id)),
-	IOCTL_INFO_FNC(VIDIOC_QUERYMENU, v4l_querymenu, v4l_print_querymenu, INFO_FL_CTRL | INFO_FL_CLEAR(v4l2_querymenu, index)),
-	IOCTL_INFO_STD(VIDIOC_G_INPUT, vidioc_g_input, v4l_print_u32, 0),
-	IOCTL_INFO_FNC(VIDIOC_S_INPUT, v4l_s_input, v4l_print_u32, INFO_FL_PRIO),
-	IOCTL_INFO_STD(VIDIOC_G_EDID, vidioc_g_edid, v4l_print_edid, INFO_FL_ALWAYS_COPY),
-	IOCTL_INFO_STD(VIDIOC_S_EDID, vidioc_s_edid, v4l_print_edid, INFO_FL_PRIO | INFO_FL_ALWAYS_COPY),
-	IOCTL_INFO_STD(VIDIOC_G_OUTPUT, vidioc_g_output, v4l_print_u32, 0),
-	IOCTL_INFO_FNC(VIDIOC_S_OUTPUT, v4l_s_output, v4l_print_u32, INFO_FL_PRIO),
-	IOCTL_INFO_FNC(VIDIOC_ENUMOUTPUT, v4l_enumoutput, v4l_print_enumoutput, INFO_FL_CLEAR(v4l2_output, index)),
-	IOCTL_INFO_STD(VIDIOC_G_AUDOUT, vidioc_g_audout, v4l_print_audioout, 0),
-	IOCTL_INFO_STD(VIDIOC_S_AUDOUT, vidioc_s_audout, v4l_print_audioout, INFO_FL_PRIO),
-	IOCTL_INFO_FNC(VIDIOC_G_MODULATOR, v4l_g_modulator, v4l_print_modulator, INFO_FL_CLEAR(v4l2_modulator, index)),
-	IOCTL_INFO_FNC(VIDIOC_S_MODULATOR, v4l_s_modulator, v4l_print_modulator, INFO_FL_PRIO),
-	IOCTL_INFO_FNC(VIDIOC_G_FREQUENCY, v4l_g_frequency, v4l_print_frequency, INFO_FL_CLEAR(v4l2_frequency, tuner)),
-	IOCTL_INFO_FNC(VIDIOC_S_FREQUENCY, v4l_s_frequency, v4l_print_frequency, INFO_FL_PRIO),
-	IOCTL_INFO_FNC(VIDIOC_CROPCAP, v4l_cropcap, v4l_print_cropcap, INFO_FL_CLEAR(v4l2_cropcap, type)),
-	IOCTL_INFO_FNC(VIDIOC_G_CROP, v4l_g_crop, v4l_print_crop, INFO_FL_CLEAR(v4l2_crop, type)),
-	IOCTL_INFO_FNC(VIDIOC_S_CROP, v4l_s_crop, v4l_print_crop, INFO_FL_PRIO),
-	IOCTL_INFO_FNC(VIDIOC_G_SELECTION, v4l_g_selection, v4l_print_selection, INFO_FL_CLEAR(v4l2_selection, r)),
-	IOCTL_INFO_FNC(VIDIOC_S_SELECTION, v4l_s_selection, v4l_print_selection, INFO_FL_PRIO | INFO_FL_CLEAR(v4l2_selection, r)),
-	IOCTL_INFO_STD(VIDIOC_G_JPEGCOMP, vidioc_g_jpegcomp, v4l_print_jpegcompression, 0),
-	IOCTL_INFO_STD(VIDIOC_S_JPEGCOMP, vidioc_s_jpegcomp, v4l_print_jpegcompression, INFO_FL_PRIO),
-	IOCTL_INFO_FNC(VIDIOC_QUERYSTD, v4l_querystd, v4l_print_std, 0),
-	IOCTL_INFO_FNC(VIDIOC_TRY_FMT, v4l_try_fmt, v4l_print_format, 0),
-	IOCTL_INFO_STD(VIDIOC_ENUMAUDIO, vidioc_enumaudio, v4l_print_audio, INFO_FL_CLEAR(v4l2_audio, index)),
-	IOCTL_INFO_STD(VIDIOC_ENUMAUDOUT, vidioc_enumaudout, v4l_print_audioout, INFO_FL_CLEAR(v4l2_audioout, index)),
-	IOCTL_INFO_FNC(VIDIOC_G_PRIORITY, v4l_g_priority, v4l_print_u32, 0),
-	IOCTL_INFO_FNC(VIDIOC_S_PRIORITY, v4l_s_priority, v4l_print_u32, INFO_FL_PRIO),
-	IOCTL_INFO_FNC(VIDIOC_G_SLICED_VBI_CAP, v4l_g_sliced_vbi_cap, v4l_print_sliced_vbi_cap, INFO_FL_CLEAR(v4l2_sliced_vbi_cap, type)),
-	IOCTL_INFO_FNC(VIDIOC_LOG_STATUS, v4l_log_status, v4l_print_newline, 0),
-	IOCTL_INFO_FNC(VIDIOC_G_EXT_CTRLS, v4l_g_ext_ctrls, v4l_print_ext_controls, INFO_FL_CTRL),
-	IOCTL_INFO_FNC(VIDIOC_S_EXT_CTRLS, v4l_s_ext_ctrls, v4l_print_ext_controls, INFO_FL_PRIO | INFO_FL_CTRL),
-	IOCTL_INFO_FNC(VIDIOC_TRY_EXT_CTRLS, v4l_try_ext_ctrls, v4l_print_ext_controls, INFO_FL_CTRL),
-	IOCTL_INFO_STD(VIDIOC_ENUM_FRAMESIZES, vidioc_enum_framesizes, v4l_print_frmsizeenum, INFO_FL_CLEAR(v4l2_frmsizeenum, pixel_format)),
-	IOCTL_INFO_STD(VIDIOC_ENUM_FRAMEINTERVALS, vidioc_enum_frameintervals, v4l_print_frmivalenum, INFO_FL_CLEAR(v4l2_frmivalenum, height)),
-	IOCTL_INFO_STD(VIDIOC_G_ENC_INDEX, vidioc_g_enc_index, v4l_print_enc_idx, 0),
-	IOCTL_INFO_STD(VIDIOC_ENCODER_CMD, vidioc_encoder_cmd, v4l_print_encoder_cmd, INFO_FL_PRIO | INFO_FL_CLEAR(v4l2_encoder_cmd, flags)),
-	IOCTL_INFO_STD(VIDIOC_TRY_ENCODER_CMD, vidioc_try_encoder_cmd, v4l_print_encoder_cmd, INFO_FL_CLEAR(v4l2_encoder_cmd, flags)),
-	IOCTL_INFO_STD(VIDIOC_DECODER_CMD, vidioc_decoder_cmd, v4l_print_decoder_cmd, INFO_FL_PRIO),
-	IOCTL_INFO_STD(VIDIOC_TRY_DECODER_CMD, vidioc_try_decoder_cmd, v4l_print_decoder_cmd, 0),
-	IOCTL_INFO_FNC(VIDIOC_DBG_S_REGISTER, v4l_dbg_s_register, v4l_print_dbg_register, 0),
-	IOCTL_INFO_FNC(VIDIOC_DBG_G_REGISTER, v4l_dbg_g_register, v4l_print_dbg_register, 0),
-	IOCTL_INFO_FNC(VIDIOC_S_HW_FREQ_SEEK, v4l_s_hw_freq_seek, v4l_print_hw_freq_seek, INFO_FL_PRIO),
-	IOCTL_INFO_STD(VIDIOC_S_DV_TIMINGS, vidioc_s_dv_timings, v4l_print_dv_timings, INFO_FL_PRIO | INFO_FL_CLEAR(v4l2_dv_timings, bt.flags)),
-	IOCTL_INFO_STD(VIDIOC_G_DV_TIMINGS, vidioc_g_dv_timings, v4l_print_dv_timings, 0),
-	IOCTL_INFO_FNC(VIDIOC_DQEVENT, v4l_dqevent, v4l_print_event, 0),
-	IOCTL_INFO_FNC(VIDIOC_SUBSCRIBE_EVENT, v4l_subscribe_event, v4l_print_event_subscription, 0),
-	IOCTL_INFO_FNC(VIDIOC_UNSUBSCRIBE_EVENT, v4l_unsubscribe_event, v4l_print_event_subscription, 0),
-	IOCTL_INFO_FNC(VIDIOC_CREATE_BUFS, v4l_create_bufs, v4l_print_create_buffers, INFO_FL_PRIO | INFO_FL_QUEUE),
-	IOCTL_INFO_FNC(VIDIOC_PREPARE_BUF, v4l_prepare_buf, v4l_print_buffer, INFO_FL_QUEUE),
-	IOCTL_INFO_STD(VIDIOC_ENUM_DV_TIMINGS, vidioc_enum_dv_timings, v4l_print_enum_dv_timings, INFO_FL_CLEAR(v4l2_enum_dv_timings, pad)),
-	IOCTL_INFO_STD(VIDIOC_QUERY_DV_TIMINGS, vidioc_query_dv_timings, v4l_print_dv_timings, INFO_FL_ALWAYS_COPY),
-	IOCTL_INFO_STD(VIDIOC_DV_TIMINGS_CAP, vidioc_dv_timings_cap, v4l_print_dv_timings_cap, INFO_FL_CLEAR(v4l2_dv_timings_cap, type)),
-	IOCTL_INFO_FNC(VIDIOC_ENUM_FREQ_BANDS, v4l_enum_freq_bands, v4l_print_freq_band, 0),
-	IOCTL_INFO_FNC(VIDIOC_DBG_G_CHIP_INFO, v4l_dbg_g_chip_info, v4l_print_dbg_chip_info, INFO_FL_CLEAR(v4l2_dbg_chip_info, match)),
-	IOCTL_INFO_FNC(VIDIOC_QUERY_EXT_CTRL, v4l_query_ext_ctrl, v4l_print_query_ext_ctrl, INFO_FL_CTRL | INFO_FL_CLEAR(v4l2_query_ext_ctrl, id)),
-};
-#define V4L2_IOCTLS ARRAY_SIZE(v4l2_ioctls)
-
-bool v4l2_is_known_ioctl(unsigned int cmd)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (_IOC_NR(cmd) >= V4L2_IOCTLS)
 		return false;
 	return v4l2_ioctls[_IOC_NR(cmd)].ioctl == cmd;
 }
 
-<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_V4L2_MEM2MEM_DEV)
 static bool v4l2_ioctl_m2m_queue_is_output(unsigned int cmd, void *arg)
 {
@@ -3182,14 +2825,6 @@ static struct mutex *v4l2_ioctl_get_lock(struct video_device *vdev,
 			return ctx->q.lock;
 	}
 #endif
-=======
-struct mutex *v4l2_ioctl_get_lock(struct video_device *vdev, unsigned cmd)
-{
-	if (_IOC_NR(cmd) >= V4L2_IOCTLS)
-		return vdev->lock;
-	if (test_bit(_IOC_NR(cmd), vdev->disable_locking))
-		return NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (vdev->queue && vdev->queue->lock &&
 			(v4l2_ioctls[_IOC_NR(cmd)].flags & INFO_FL_QUEUE))
 		return vdev->queue->lock;
@@ -3237,10 +2872,7 @@ static long __video_do_ioctl(struct file *file,
 		unsigned int cmd, void *arg)
 {
 	struct video_device *vfd = video_devdata(file);
-<<<<<<< HEAD
 	struct mutex *lock; /* ioctl serialization mutex */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const struct v4l2_ioctl_ops *ops = vfd->ioctl_ops;
 	bool write_only = false;
 	struct v4l2_ioctl_info default_info;
@@ -3259,7 +2891,6 @@ static long __video_do_ioctl(struct file *file,
 	if (test_bit(V4L2_FL_USES_V4L2_FH, &vfd->flags))
 		vfh = file->private_data;
 
-<<<<<<< HEAD
 	lock = v4l2_ioctl_get_lock(vfd, vfh, cmd, arg);
 
 	if (lock && mutex_lock_interruptible(lock))
@@ -3270,8 +2901,6 @@ static long __video_do_ioctl(struct file *file,
 		goto unlock;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (v4l2_is_known_ioctl(cmd)) {
 		info = &v4l2_ioctls[_IOC_NR(cmd)];
 
@@ -3292,11 +2921,7 @@ static long __video_do_ioctl(struct file *file,
 	}
 
 	write_only = _IOC_DIR(cmd) == _IOC_WRITE;
-<<<<<<< HEAD
 	if (info != &default_info) {
-=======
-	if (info->flags & INFO_FL_FUNC) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = info->func(ops, file, fh, arg);
 	} else if (!ops->vidioc_default) {
 		ret = -ENOTTY;
@@ -3310,11 +2935,7 @@ done:
 	if (dev_debug & (V4L2_DEV_DEBUG_IOCTL | V4L2_DEV_DEBUG_IOCTL_ARG)) {
 		if (!(dev_debug & V4L2_DEV_DEBUG_STREAMING) &&
 		    (cmd == VIDIOC_QBUF || cmd == VIDIOC_DQBUF))
-<<<<<<< HEAD
 			goto unlock;
-=======
-			return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		v4l_printk_ioctl(video_device_node_name(vfd), cmd);
 		if (ret < 0)
@@ -3329,12 +2950,9 @@ done:
 		}
 	}
 
-<<<<<<< HEAD
 unlock:
 	if (lock)
 		mutex_unlock(lock);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -3416,7 +3034,6 @@ video_usercopy(struct file *file, unsigned int cmd, unsigned long arg,
 	size_t  array_size = 0;
 	void __user *user_ptr = NULL;
 	void	**kernel_ptr = NULL;
-<<<<<<< HEAD
 	const size_t ioc_size = _IOC_SIZE(cmd);
 
 	/*  Copy arguments into temp kernel buffer  */
@@ -3426,16 +3043,6 @@ video_usercopy(struct file *file, unsigned int cmd, unsigned long arg,
 		} else {
 			/* too big to allocate from stack */
 			mbuf = kvmalloc(ioc_size, GFP_KERNEL);
-=======
-
-	/*  Copy arguments into temp kernel buffer  */
-	if (_IOC_DIR(cmd) != _IOC_NONE) {
-		if (_IOC_SIZE(cmd) <= sizeof(sbuf)) {
-			parg = sbuf;
-		} else {
-			/* too big to allocate from stack */
-			mbuf = kvmalloc(_IOC_SIZE(cmd), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (NULL == mbuf)
 				return -ENOMEM;
 			parg = mbuf;
@@ -3443,11 +3050,7 @@ video_usercopy(struct file *file, unsigned int cmd, unsigned long arg,
 
 		err = -EFAULT;
 		if (_IOC_DIR(cmd) & _IOC_WRITE) {
-<<<<<<< HEAD
 			unsigned int n = ioc_size;
-=======
-			unsigned int n = _IOC_SIZE(cmd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			/*
 			 * In some cases, only a few fields are used as input,
@@ -3468,19 +3071,11 @@ video_usercopy(struct file *file, unsigned int cmd, unsigned long arg,
 				goto out;
 
 			/* zero out anything we don't copy from userspace */
-<<<<<<< HEAD
 			if (n < ioc_size)
 				memset((u8 *)parg + n, 0, ioc_size - n);
 		} else {
 			/* read-only ioctl */
 			memset(parg, 0, ioc_size);
-=======
-			if (n < _IOC_SIZE(cmd))
-				memset((u8 *)parg + n, 0, _IOC_SIZE(cmd) - n);
-		} else {
-			/* read-only ioctl */
-			memset(parg, 0, _IOC_SIZE(cmd));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -3538,11 +3133,7 @@ out_array_args:
 	switch (_IOC_DIR(cmd)) {
 	case _IOC_READ:
 	case (_IOC_WRITE | _IOC_READ):
-<<<<<<< HEAD
 		if (copy_to_user((void __user *)arg, parg, ioc_size))
-=======
-		if (copy_to_user((void __user *)arg, parg, _IOC_SIZE(cmd)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			err = -EFAULT;
 		break;
 	}
@@ -3551,10 +3142,6 @@ out:
 	kvfree(mbuf);
 	return err;
 }
-<<<<<<< HEAD
-=======
-EXPORT_SYMBOL(video_usercopy);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 long video_ioctl2(struct file *file,
 	       unsigned int cmd, unsigned long arg)

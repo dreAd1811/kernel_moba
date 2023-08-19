@@ -421,11 +421,7 @@ int ixp4xx_setup(int nr, struct pci_sys_data *sys)
 	if (nr >= 1)
 		return 0;
 
-<<<<<<< HEAD
 	res = kcalloc(2, sizeof(*res), GFP_KERNEL);
-=======
-	res = kzalloc(sizeof(*res) * 2, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (res == NULL) {
 		/* 
 		 * If we're out of memory this early, something is wrong,

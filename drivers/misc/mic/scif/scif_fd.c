@@ -41,11 +41,7 @@ static int scif_fdmmap(struct file *f, struct vm_area_struct *vma)
 	return scif_mmap(vma, priv);
 }
 
-<<<<<<< HEAD
 static __poll_t scif_fdpoll(struct file *f, poll_table *wait)
-=======
-static unsigned int scif_fdpoll(struct file *f, poll_table *wait)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct scif_endpt *priv = f->private_data;
 

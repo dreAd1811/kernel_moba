@@ -179,14 +179,9 @@ Start_ISAC:
 }
 
 static void
-<<<<<<< HEAD
 TeleInt_Timer(struct timer_list *t)
 {
 	struct IsdnCardState *cs = from_timer(cs, t, hw.hfc.timer);
-=======
-TeleInt_Timer(struct IsdnCardState *cs)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int stat = 0;
 	u_long flags;
 
@@ -284,11 +279,7 @@ int setup_TeleInt(struct IsdnCard *card)
 	cs->bcs[0].hw.hfc.send = NULL;
 	cs->bcs[1].hw.hfc.send = NULL;
 	cs->hw.hfc.fifosize = 7 * 1024 + 512;
-<<<<<<< HEAD
 	timer_setup(&cs->hw.hfc.timer, TeleInt_Timer, 0);
-=======
-	setup_timer(&cs->hw.hfc.timer, (void *)TeleInt_Timer, (long)cs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!request_region(cs->hw.hfc.addr, 2, "TeleInt isdn")) {
 		printk(KERN_WARNING
 		       "HiSax: TeleInt config port %x-%x already in use\n",

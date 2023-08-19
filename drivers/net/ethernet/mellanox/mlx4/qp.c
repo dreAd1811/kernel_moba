@@ -55,11 +55,7 @@ void mlx4_qp_event(struct mlx4_dev *dev, u32 qpn, int event_type)
 
 	qp = __mlx4_qp_lookup(dev, qpn);
 	if (qp)
-<<<<<<< HEAD
 		refcount_inc(&qp->refcount);
-=======
-		atomic_inc(&qp->refcount);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_unlock(&qp_table->lock);
 
@@ -70,11 +66,7 @@ void mlx4_qp_event(struct mlx4_dev *dev, u32 qpn, int event_type)
 
 	qp->event(qp, event_type);
 
-<<<<<<< HEAD
 	if (refcount_dec_and_test(&qp->refcount))
-=======
-	if (atomic_dec_and_test(&qp->refcount))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		complete(&qp->free);
 }
 
@@ -431,11 +423,7 @@ int mlx4_qp_alloc(struct mlx4_dev *dev, int qpn, struct mlx4_qp *qp)
 	if (err)
 		goto err_icm;
 
-<<<<<<< HEAD
 	refcount_set(&qp->refcount, 1);
-=======
-	atomic_set(&qp->refcount, 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	init_completion(&qp->free);
 
 	return 0;
@@ -535,11 +523,7 @@ EXPORT_SYMBOL_GPL(mlx4_qp_remove);
 
 void mlx4_qp_free(struct mlx4_dev *dev, struct mlx4_qp *qp)
 {
-<<<<<<< HEAD
 	if (refcount_dec_and_test(&qp->refcount))
-=======
-	if (atomic_dec_and_test(&qp->refcount))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		complete(&qp->free);
 	wait_for_completion(&qp->free);
 
@@ -944,11 +928,7 @@ int mlx4_qp_to_ready(struct mlx4_dev *dev, struct mlx4_mtt *mtt,
 		context->flags &= cpu_to_be32(~(0xf << 28));
 		context->flags |= cpu_to_be32(states[i + 1] << 28);
 		if (states[i + 1] != MLX4_QP_STATE_RTR)
-<<<<<<< HEAD
 			context->params2 &= ~cpu_to_be32(MLX4_QP_BIT_FPP);
-=======
-			context->params2 &= ~MLX4_QP_BIT_FPP;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = mlx4_qp_modify(dev, mtt, states[i], states[i + 1],
 				     context, 0, 0, qp);
 		if (err) {

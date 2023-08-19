@@ -30,10 +30,7 @@
 
 #include <linux/kernel.h>
 #include <linux/string.h>
-<<<<<<< HEAD
 #include <linux/delay.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum cvmx_mips_space {
 	CVMX_MIPS_SPACE_XKSEG = 3LL,
@@ -433,21 +430,6 @@ static inline uint64_t cvmx_get_cycle(void)
 }
 
 /**
-<<<<<<< HEAD
-=======
- * Wait for the specified number of cycle
- *
- */
-static inline void cvmx_wait(uint64_t cycles)
-{
-	uint64_t done = cvmx_get_cycle() + cycles;
-
-	while (cvmx_get_cycle() < done)
-		; /* Spin */
-}
-
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Reads a chip global cycle counter.  This counts CPU cycles since
  * chip reset.	The counter is 64 bit.
  * This register does not exist on CN38XX pass 1 silicion
@@ -488,11 +470,7 @@ static inline uint64_t cvmx_get_cycle_global(void)
 				result = -1;				\
 				break;					\
 			} else						\
-<<<<<<< HEAD
 				__delay(100);				\
-=======
-				cvmx_wait(100);				\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}							\
 	} while (0);							\
 	result;								\

@@ -41,7 +41,6 @@ struct ascot2e_config {
 };
 
 #if IS_REACHABLE(CONFIG_DVB_ASCOT2E)
-<<<<<<< HEAD
 /**
  * Attach an ascot2e tuner
  *
@@ -51,8 +50,6 @@ struct ascot2e_config {
  *
  * return: FE pointer on success, NULL on failure.
  */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern struct dvb_frontend *ascot2e_attach(struct dvb_frontend *fe,
 					const struct ascot2e_config *config,
 					struct i2c_adapter *i2c);

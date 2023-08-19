@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 // Copyright (c) 2010-2011 Samsung Electronics Co., Ltd.
 //		http://www.samsung.com
@@ -7,21 +6,6 @@
 //
 //  Copyright (C) 2002 ARM Ltd.
 //  All Rights Reserved
-=======
- /*
- * Copyright (c) 2010-2011 Samsung Electronics Co., Ltd.
- *		http://www.samsung.com
- *
- * Cloned from linux/arch/arm/mach-vexpress/platsmp.c
- *
- *  Copyright (C) 2002 ARM Ltd.
- *  All Rights Reserved
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
-*/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/init.h>
 #include <linux/errno.h>
@@ -179,7 +163,6 @@ int exynos_cluster_power_state(int cluster)
 		S5P_CORE_LOCAL_PWR_EN);
 }
 
-<<<<<<< HEAD
 /**
  * exynos_scu_enable : enables SCU for Cortex-A9 based system
  */
@@ -200,8 +183,6 @@ void exynos_scu_enable(void)
 	scu_enable(scu_base);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void __iomem *cpu_boot_reg_base(void)
 {
 	if (soc_is_exynos4210() && samsung_rev() == EXYNOS4210_REV_1_1)
@@ -258,14 +239,6 @@ static void write_pen_release(int val)
 	sync_cache_w(&pen_release);
 }
 
-<<<<<<< HEAD
-=======
-static void __iomem *scu_base_addr(void)
-{
-	return (void __iomem *)(S5P_VA_SCU);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static DEFINE_SPINLOCK(boot_lock);
 
 static void exynos_secondary_init(unsigned int cpu)
@@ -431,11 +404,7 @@ static void __init exynos_smp_prepare_cpus(unsigned int max_cpus)
 	exynos_set_delayed_reset_assertion(true);
 
 	if (read_cpuid_part() == ARM_CPU_PART_CORTEX_A9)
-<<<<<<< HEAD
 		exynos_scu_enable();
-=======
-		scu_enable(scu_base_addr());
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Write the address of secondary startup into the

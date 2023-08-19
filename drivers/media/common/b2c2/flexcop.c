@@ -42,11 +42,7 @@ int b2c2_flexcop_debug;
 EXPORT_SYMBOL_GPL(b2c2_flexcop_debug);
 module_param_named(debug, b2c2_flexcop_debug,  int, 0644);
 MODULE_PARM_DESC(debug,
-<<<<<<< HEAD
 		"set debug level (1=info,2=tuner,4=i2c,8=ts,16=sram,32=reg,64=i2cdump (|-able))."
-=======
-		"set debug level (1=info,2=tuner,4=i2c,8=ts,16=sram,32=reg (|-able))."
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		DEBSTATUS);
 #undef DEBSTATUS
 

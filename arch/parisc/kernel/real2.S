@@ -35,15 +35,6 @@ real32_stack:
 real64_stack:
 	.block	8192
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_64BIT
-#  define REG_SZ 8
-#else
-#  define REG_SZ 4
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define N_SAVED_REGS 9
 
 save_cr_space:

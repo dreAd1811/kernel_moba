@@ -48,12 +48,9 @@ static unsigned int vrf_net_id;
 struct net_vrf {
 	struct rtable __rcu	*rth;
 	struct rt6_info	__rcu	*rt6;
-<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_IPV6)
 	struct fib6_table	*fib6_table;
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32                     tb_id;
 };
 
@@ -138,10 +135,6 @@ static int vrf_local_xmit(struct sk_buff *skb, struct net_device *dev,
 	skb_orphan(skb);
 
 	skb_dst_set(skb, dst);
-<<<<<<< HEAD
-=======
-	skb_dst_force(skb);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* set pkt_type to avoid skb hitting packet taps twice -
 	 * once on Tx and again in Rx processing
@@ -485,12 +478,7 @@ static struct sk_buff *vrf_ip6_out(struct net_device *vrf_dev,
 	if (rt6_need_strict(&ipv6_hdr(skb)->daddr))
 		return skb;
 
-<<<<<<< HEAD
 	if (qdisc_tx_is_default(vrf_dev))
-=======
-	if (qdisc_tx_is_default(vrf_dev) ||
-	    IP6CB(skb)->flags & IP6SKB_XFRM_TRANSFORMED)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return vrf_ip6_out_direct(vrf_dev, sk, skb);
 
 	return vrf_ip6_out_redirect(vrf_dev, skb);
@@ -523,10 +511,6 @@ static int vrf_rt6_create(struct net_device *dev)
 	int flags = DST_HOST | DST_NOPOLICY | DST_NOXFRM;
 	struct net_vrf *vrf = netdev_priv(dev);
 	struct net *net = dev_net(dev);
-<<<<<<< HEAD
-=======
-	struct fib6_table *rt6i_table;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct rt6_info *rt6;
 	int rc = -ENOMEM;
 
@@ -534,13 +518,8 @@ static int vrf_rt6_create(struct net_device *dev)
 	if (!ipv6_mod_enabled())
 		return 0;
 
-<<<<<<< HEAD
 	vrf->fib6_table = fib6_new_table(net, vrf->tb_id);
 	if (!vrf->fib6_table)
-=======
-	rt6i_table = fib6_new_table(net, vrf->tb_id);
-	if (!rt6i_table)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out;
 
 	/* create a dst for routing packets out a VRF device */
@@ -548,10 +527,6 @@ static int vrf_rt6_create(struct net_device *dev)
 	if (!rt6)
 		goto out;
 
-<<<<<<< HEAD
-=======
-	rt6->rt6i_table = rt6i_table;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rt6->dst.output	= vrf_output6;
 
 	rcu_assign_pointer(vrf->rt6, rt6);
@@ -717,12 +692,7 @@ static struct sk_buff *vrf_ip_out(struct net_device *vrf_dev,
 	    ipv4_is_lbcast(ip_hdr(skb)->daddr))
 		return skb;
 
-<<<<<<< HEAD
 	if (qdisc_tx_is_default(vrf_dev))
-=======
-	if (qdisc_tx_is_default(vrf_dev) ||
-	    IPCB(skb)->flags & IPSKB_XFRM_TRANSFORMED)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return vrf_ip_out_direct(vrf_dev, sk, skb);
 
 	return vrf_ip_out_redirect(vrf_dev, skb);
@@ -780,10 +750,6 @@ static int vrf_rtable_create(struct net_device *dev)
 		return -ENOMEM;
 
 	rth->dst.output	= vrf_output;
-<<<<<<< HEAD
-=======
-	rth->rt_table_id = vrf->tb_id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rcu_assign_pointer(vrf->rth, rth);
 
@@ -812,19 +778,14 @@ static void cycle_netdev(struct net_device *dev)
 	}
 }
 
-<<<<<<< HEAD
 static int do_vrf_add_slave(struct net_device *dev, struct net_device *port_dev,
 			    struct netlink_ext_ack *extack)
-=======
-static int do_vrf_add_slave(struct net_device *dev, struct net_device *port_dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret;
 
 	/* do not allow loopback device to be enslaved to a VRF.
 	 * The vrf device acts as the loopback for the vrf.
 	 */
-<<<<<<< HEAD
 	if (port_dev == dev_net(dev)->loopback_dev) {
 		NL_SET_ERR_MSG(extack,
 			       "Can not enslave loopback device to a VRF");
@@ -833,13 +794,6 @@ static int do_vrf_add_slave(struct net_device *dev, struct net_device *port_dev)
 
 	port_dev->priv_flags |= IFF_L3MDEV_SLAVE;
 	ret = netdev_master_upper_dev_link(port_dev, dev, NULL, NULL, extack);
-=======
-	if (port_dev == dev_net(dev)->loopback_dev)
-		return -EOPNOTSUPP;
-
-	port_dev->priv_flags |= IFF_L3MDEV_SLAVE;
-	ret = netdev_master_upper_dev_link(port_dev, dev, NULL, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		goto err;
 
@@ -852,7 +806,6 @@ err:
 	return ret;
 }
 
-<<<<<<< HEAD
 static int vrf_add_slave(struct net_device *dev, struct net_device *port_dev,
 			 struct netlink_ext_ack *extack)
 {
@@ -866,14 +819,6 @@ static int vrf_add_slave(struct net_device *dev, struct net_device *port_dev,
 		return -EINVAL;
 
 	return do_vrf_add_slave(dev, port_dev, extack);
-=======
-static int vrf_add_slave(struct net_device *dev, struct net_device *port_dev)
-{
-	if (netif_is_l3_master(port_dev) || netif_is_l3_slave(port_dev))
-		return -EINVAL;
-
-	return do_vrf_add_slave(dev, port_dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* inverse of do_vrf_add_slave */
@@ -1010,34 +955,12 @@ static struct rt6_info *vrf_ip6_route_lookup(struct net *net,
 					     const struct net_device *dev,
 					     struct flowi6 *fl6,
 					     int ifindex,
-<<<<<<< HEAD
 					     const struct sk_buff *skb,
 					     int flags)
 {
 	struct net_vrf *vrf = netdev_priv(dev);
 
 	return ip6_pol_route(net, vrf->fib6_table, ifindex, fl6, skb, flags);
-=======
-					     int flags)
-{
-	struct net_vrf *vrf = netdev_priv(dev);
-	struct fib6_table *table = NULL;
-	struct rt6_info *rt6;
-
-	rcu_read_lock();
-
-	/* fib6_table does not have a refcnt and can not be freed */
-	rt6 = rcu_dereference(vrf->rt6);
-	if (likely(rt6))
-		table = rt6->rt6i_table;
-
-	rcu_read_unlock();
-
-	if (!table)
-		return NULL;
-
-	return ip6_pol_route(net, table, ifindex, fl6, flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void vrf_ip6_input_dst(struct sk_buff *skb, struct net_device *vrf_dev,
@@ -1055,11 +978,7 @@ static void vrf_ip6_input_dst(struct sk_buff *skb, struct net_device *vrf_dev,
 	struct net *net = dev_net(vrf_dev);
 	struct rt6_info *rt6;
 
-<<<<<<< HEAD
 	rt6 = vrf_ip6_route_lookup(net, vrf_dev, &fl6, ifindex, skb,
-=======
-	rt6 = vrf_ip6_route_lookup(net, vrf_dev, &fl6, ifindex,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   RT6_LOOKUP_F_HAS_SADDR | RT6_LOOKUP_F_IFACE);
 	if (unlikely(!rt6))
 		return;
@@ -1192,11 +1111,7 @@ static struct dst_entry *vrf_link_scope_lookup(const struct net_device *dev,
 	if (!ipv6_addr_any(&fl6->saddr))
 		flags |= RT6_LOOKUP_F_HAS_SADDR;
 
-<<<<<<< HEAD
 	rt = vrf_ip6_route_lookup(net, dev, fl6, fl6->flowi6_oif, NULL, flags);
-=======
-	rt = vrf_ip6_route_lookup(net, dev, fl6, fl6->flowi6_oif, flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rt)
 		dst = &rt->dst;
 
@@ -1231,10 +1146,7 @@ static inline size_t vrf_fib_rule_nl_size(void)
 	sz  = NLMSG_ALIGN(sizeof(struct fib_rule_hdr));
 	sz += nla_total_size(sizeof(u8));	/* FRA_L3MDEV */
 	sz += nla_total_size(sizeof(u32));	/* FRA_PRIORITY */
-<<<<<<< HEAD
 	sz += nla_total_size(sizeof(u8));       /* FRA_PROTOCOL */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return sz;
 }
@@ -1265,12 +1177,9 @@ static int vrf_fib_rule(const struct net_device *dev, __u8 family, bool add_it)
 	frh->family = family;
 	frh->action = FR_ACT_TO_TBL;
 
-<<<<<<< HEAD
 	if (nla_put_u8(skb, FRA_PROTOCOL, RTPROT_KERNEL))
 		goto nla_put_failure;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (nla_put_u8(skb, FRA_L3MDEV, 1))
 		goto nla_put_failure;
 
@@ -1357,11 +1266,7 @@ static void vrf_setup(struct net_device *dev)
 
 	/* enable offload features */
 	dev->features   |= NETIF_F_GSO_SOFTWARE;
-<<<<<<< HEAD
 	dev->features   |= NETIF_F_RXCSUM | NETIF_F_HW_CSUM | NETIF_F_SCTP_CRC;
-=======
-	dev->features   |= NETIF_F_RXCSUM | NETIF_F_HW_CSUM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev->features   |= NETIF_F_SG | NETIF_F_FRAGLIST | NETIF_F_HIGHDMA;
 
 	dev->hw_features = dev->features;
@@ -1369,10 +1274,7 @@ static void vrf_setup(struct net_device *dev)
 
 	/* default to no qdisc; user can add if desired */
 	dev->priv_flags |= IFF_NO_QUEUE;
-<<<<<<< HEAD
 	dev->priv_flags |= IFF_NO_RX_HANDLER;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int vrf_validate(struct nlattr *tb[], struct nlattr *data[],

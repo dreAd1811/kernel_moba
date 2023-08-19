@@ -189,7 +189,6 @@ static unsigned int random(unsigned long n,
 	return 1 + (prandom_u32_state(rnd) % 1024);
 }
 
-<<<<<<< HEAD
 static unsigned int random_page_size_pages(unsigned long n,
 					   unsigned long count,
 					   struct rnd_state *rnd)
@@ -204,8 +203,6 @@ static unsigned int random_page_size_pages(unsigned long n,
 	return page_count[(prandom_u32_state(rnd) % 3)];
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline bool page_contiguous(struct page *first,
 				   struct page *last,
 				   unsigned long npages)
@@ -269,10 +266,7 @@ static const npages_fn_t npages_funcs[] = {
 	grow,
 	shrink,
 	random,
-<<<<<<< HEAD
 	random_page_size_pages,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	NULL,
 };
 

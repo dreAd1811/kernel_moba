@@ -1,18 +1,5 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /* Copyright (c) 2014-2020, The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2014-2020, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/slab.h>
@@ -35,10 +22,6 @@
 #include "diag_mux.h"
 #include "diagmem.h"
 #include "diag_ipc_logging.h"
-<<<<<<< HEAD
-=======
-#include <soc/qcom/boot_stats.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DIAG_USB_STRING_SZ	10
 #define DIAG_USB_MAX_SIZE	16384
@@ -426,15 +409,9 @@ static void diag_usb_notifier(void *priv, unsigned int event,
 
 	switch (event) {
 	case USB_DIAG_CONNECT:
-<<<<<<< HEAD
 		DIAG_LOG(DIAG_DEBUG_PERIPHERALS,
 			"diag: USB channel %s: Received Connect event\n",
 			usb_info->name);
-=======
-		pr_info("diag: USB channel %s: Received Connect event\n",
-			usb_info->name);
-		place_marker("M - Diag port is enumerated");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_lock_irqsave(&usb_info->event_lock, flags);
 		diag_usb_event_add(usb_info, USB_DIAG_CONNECT);
 		spin_unlock_irqrestore(&usb_info->event_lock, flags);
@@ -442,12 +419,8 @@ static void diag_usb_notifier(void *priv, unsigned int event,
 			   &usb_info->event_work);
 		break;
 	case USB_DIAG_DISCONNECT:
-<<<<<<< HEAD
 		DIAG_LOG(DIAG_DEBUG_PERIPHERALS,
 			"diag: USB channel %s: Received Disconnect event\n",
-=======
-		pr_info("diag: USB channel %s: Received Disconnect event\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			usb_info->name);
 		spin_lock_irqsave(&usb_info->event_lock, flags);
 		diag_usb_event_add(usb_info, USB_DIAG_DISCONNECT);
@@ -668,19 +641,11 @@ void diag_usb_connect_device(int id)
 {
 	struct diag_usb_info *usb_info = NULL;
 
-<<<<<<< HEAD
 		usb_info = &diag_usb[id];
 		if (!usb_info->enabled)
 			return;
 		atomic_set(&usb_info->diag_state, 1);
 		usb_connect(usb_info);
-=======
-	usb_info = &diag_usb[id];
-	if (!usb_info->enabled)
-		return;
-	atomic_set(&usb_info->diag_state, 1);
-	usb_connect(usb_info);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -706,20 +671,12 @@ void diag_usb_disconnect_device(int id)
 {
 	struct diag_usb_info *usb_info = NULL;
 
-<<<<<<< HEAD
 		usb_info = &diag_usb[id];
 		if (!usb_info->enabled)
 			return;
 		atomic_set(&usb_info->diag_state, 0);
 		usb_disconnect(usb_info);
 
-=======
-	usb_info = &diag_usb[id];
-	if (!usb_info->enabled)
-		return;
-	atomic_set(&usb_info->diag_state, 0);
-	usb_disconnect(usb_info);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 int diag_usb_register(int id, int ctxt, struct diag_mux_ops *ops)
 {

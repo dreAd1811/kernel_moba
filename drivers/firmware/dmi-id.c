@@ -47,10 +47,7 @@ DEFINE_DMI_ATTR_WITH_SHOW(product_name,		0444, DMI_PRODUCT_NAME);
 DEFINE_DMI_ATTR_WITH_SHOW(product_version,	0444, DMI_PRODUCT_VERSION);
 DEFINE_DMI_ATTR_WITH_SHOW(product_serial,	0400, DMI_PRODUCT_SERIAL);
 DEFINE_DMI_ATTR_WITH_SHOW(product_uuid,		0400, DMI_PRODUCT_UUID);
-<<<<<<< HEAD
 DEFINE_DMI_ATTR_WITH_SHOW(product_sku,		0444, DMI_PRODUCT_SKU);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 DEFINE_DMI_ATTR_WITH_SHOW(product_family,	0444, DMI_PRODUCT_FAMILY);
 DEFINE_DMI_ATTR_WITH_SHOW(board_vendor,		0444, DMI_BOARD_VENDOR);
 DEFINE_DMI_ATTR_WITH_SHOW(board_name,		0444, DMI_BOARD_NAME);
@@ -197,10 +194,7 @@ static void __init dmi_id_init_attr_table(void)
 	ADD_DMI_ATTR(product_serial,    DMI_PRODUCT_SERIAL);
 	ADD_DMI_ATTR(product_uuid,      DMI_PRODUCT_UUID);
 	ADD_DMI_ATTR(product_family,    DMI_PRODUCT_FAMILY);
-<<<<<<< HEAD
 	ADD_DMI_ATTR(product_sku,       DMI_PRODUCT_SKU);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ADD_DMI_ATTR(board_vendor,      DMI_BOARD_VENDOR);
 	ADD_DMI_ATTR(board_name,        DMI_BOARD_NAME);
 	ADD_DMI_ATTR(board_version,     DMI_BOARD_VERSION);

@@ -47,15 +47,9 @@ static int echainiv_encrypt(struct aead_request *req)
 	info = req->iv;
 
 	if (req->src != req->dst) {
-<<<<<<< HEAD
 		SYNC_SKCIPHER_REQUEST_ON_STACK(nreq, ctx->sknull);
 
 		skcipher_request_set_sync_tfm(nreq, ctx->sknull);
-=======
-		SKCIPHER_REQUEST_ON_STACK(nreq, ctx->sknull);
-
-		skcipher_request_set_tfm(nreq, ctx->sknull);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		skcipher_request_set_callback(nreq, req->base.flags,
 					      NULL, NULL);
 		skcipher_request_set_crypt(nreq, req->src, req->dst,
@@ -124,11 +118,6 @@ static int echainiv_aead_create(struct crypto_template *tmpl,
 				struct rtattr **tb)
 {
 	struct aead_instance *inst;
-<<<<<<< HEAD
-=======
-	struct crypto_aead_spawn *spawn;
-	struct aead_alg *alg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	inst = aead_geniv_alloc(tmpl, tb, 0, 0);
@@ -136,12 +125,6 @@ static int echainiv_aead_create(struct crypto_template *tmpl,
 	if (IS_ERR(inst))
 		return PTR_ERR(inst);
 
-<<<<<<< HEAD
-=======
-	spawn = aead_instance_ctx(inst);
-	alg = crypto_spawn_aead_alg(spawn);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = -EINVAL;
 	if (inst->alg.ivsize & (sizeof(u64) - 1) || !inst->alg.ivsize)
 		goto free_inst;

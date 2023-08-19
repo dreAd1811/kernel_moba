@@ -1,19 +1,5 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0-only */
 /* Copyright (c) 2018-2020, The Linux Foundation. All rights reserved. */
-=======
-/* Copyright (c) 2018-2020, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifndef _MHI_INT_H
 #define _MHI_INT_H
@@ -266,10 +252,7 @@ struct mhi_event_ctxt {
 	u32 intmodt : 16;
 	u32 ertype;
 	u32 msivec;
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 rbase __packed __aligned(4);
 	u64 rlen __packed __aligned(4);
 	u64 rp __packed __aligned(4);
@@ -283,10 +266,7 @@ struct mhi_chan_ctxt {
 	u32 reserved : 16;
 	u32 chtype;
 	u32 erindex;
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 rbase __packed __aligned(4);
 	u64 rlen __packed __aligned(4);
 	u64 rp __packed __aligned(4);
@@ -297,10 +277,7 @@ struct mhi_cmd_ctxt {
 	u32 reserved0;
 	u32 reserved1;
 	u32 reserved2;
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 rbase __packed __aligned(4);
 	u64 rlen __packed __aligned(4);
 	u64 rp __packed __aligned(4);
@@ -552,7 +529,6 @@ enum MHI_XFER_TYPE {
 #define MHI_DEV_WAKE_DB (127)
 #define MHI_MAX_MTU (0xffff)
 
-<<<<<<< HEAD
 #define MHI_TIMESYNC_DB_SETUP(er_index) ((MHI_TIMESYNC_CHAN_DB << \
 	TIMESYNC_CFG_CHAN_DB_ID_SHIFT) & TIMESYNC_CFG_CHAN_DB_ID_MASK | \
 	(1 << TIMESYNC_CFG_ENABLED_SHIFT) & TIMESYNC_CFG_ENABLED_MASK | \
@@ -562,17 +538,6 @@ enum MHI_XFER_TYPE {
 	BW_SCALE_CFG_CHAN_DB_ID_SHIFT) & BW_SCALE_CFG_CHAN_DB_ID_MASK | \
 	(1 << BW_SCALE_CFG_ENABLED_SHIFT) & BW_SCALE_CFG_ENABLED_MASK | \
 	((er_index) << BW_SCALE_CFG_ER_ID_SHIFT) & BW_SCALE_CFG_ER_ID_MASK)
-=======
-#define MHI_TIMESYNC_DB_SETUP(er_index) (((MHI_TIMESYNC_CHAN_DB << \
-	TIMESYNC_CFG_CHAN_DB_ID_SHIFT) & TIMESYNC_CFG_CHAN_DB_ID_MASK) | \
-	((1 << TIMESYNC_CFG_ENABLED_SHIFT) & TIMESYNC_CFG_ENABLED_MASK) | \
-	(((er_index) << TIMESYNC_CFG_ER_ID_SHIFT) & TIMESYNC_CFG_ER_ID_MASK))
-
-#define MHI_BW_SCALE_SETUP(er_index) (((MHI_BW_SCALE_CHAN_DB << \
-	BW_SCALE_CFG_CHAN_DB_ID_SHIFT) & BW_SCALE_CFG_CHAN_DB_ID_MASK) | \
-	((1 << BW_SCALE_CFG_ENABLED_SHIFT) & BW_SCALE_CFG_ENABLED_MASK) | \
-	(((er_index) << BW_SCALE_CFG_ER_ID_SHIFT) & BW_SCALE_CFG_ER_ID_MASK))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define MHI_BW_SCALE_RESULT(status, seq) ((status & 0xF) << 8 | (seq & 0xFF))
 #define MHI_BW_SCALE_NACK 0xF
@@ -700,12 +665,9 @@ struct mhi_event {
 			     struct mhi_event *mhi_event,
 			     u32 event_quota);
 	struct mhi_controller *mhi_cntrl;
-<<<<<<< HEAD
 	struct mhi_tre last_cached_tre;
 	u64 last_dev_rp;
 	bool force_uncached;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct mhi_chan {
@@ -734,7 +696,6 @@ struct mhi_chan {
 	bool auto_start;
 	bool wake_capable; /* channel should wake up system */
 	/* functions that generate the transfer ring elements */
-<<<<<<< HEAD
 	int (*gen_tre)(struct mhi_controller *mhi_cntrl,
 		       struct mhi_chan *mhi_chan, void *buf, void *cb,
 		       size_t len, enum MHI_FLAGS flags);
@@ -744,15 +705,6 @@ struct mhi_chan {
 	/* xfer call back */
 	struct mhi_device *mhi_dev;
 	void (*xfer_cb)(struct mhi_device *mhi_dev, struct mhi_result *result);
-=======
-	int (*gen_tre)(struct mhi_controller *, struct mhi_chan *, void *,
-		       void *, size_t, enum MHI_FLAGS);
-	int (*queue_xfer)(struct mhi_device *, struct mhi_chan *, void *,
-			  size_t, enum MHI_FLAGS);
-	/* xfer call back */
-	struct mhi_device *mhi_dev;
-	void (*xfer_cb)(struct mhi_device *, struct mhi_result *);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mutex mutex;
 	struct completion completion;
 	rwlock_t lock;
@@ -775,15 +727,8 @@ struct mhi_timesync {
 	void __iomem *time_reg;
 	u32 int_sequence;
 	u64 local_time;
-<<<<<<< HEAD
 	bool db_support;
 	bool db_response_pending;
-=======
-	u64 remote_time;
-	bool db_support;
-	bool db_response_pending;
-	struct completion db_completion;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spinlock_t lock; /* list protection */
 	struct list_head head;
 };
@@ -804,29 +749,16 @@ struct mhi_bus {
 
 /* default MHI timeout */
 #define MHI_TIMEOUT_MS (1000)
-<<<<<<< HEAD
-=======
-#define MHI_FORCE_WAKE_DELAY_US (100)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern struct mhi_bus mhi_bus;
 
 struct mhi_controller *find_mhi_controller_by_name(const char *name);
 
 /* debug fs related functions */
-<<<<<<< HEAD
-=======
-int mhi_debugfs_mhi_regdump_show(struct seq_file *m, void *d);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int mhi_debugfs_mhi_vote_show(struct seq_file *m, void *d);
 int mhi_debugfs_mhi_chan_show(struct seq_file *m, void *d);
 int mhi_debugfs_mhi_event_show(struct seq_file *m, void *d);
 int mhi_debugfs_mhi_states_show(struct seq_file *m, void *d);
 int mhi_debugfs_trigger_reset(void *data, u64 val);
-<<<<<<< HEAD
-=======
-int mhi_debugfs_trigger_soc_reset(void *data, u64 val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void mhi_deinit_debugfs(struct mhi_controller *mhi_cntrl);
 void mhi_init_debugfs(struct mhi_controller *mhi_cntrl);
@@ -867,11 +799,7 @@ static inline void mhi_trigger_resume(struct mhi_controller *mhi_cntrl)
 {
 	mhi_cntrl->runtime_get(mhi_cntrl, mhi_cntrl->priv_data);
 	mhi_cntrl->runtime_put(mhi_cntrl, mhi_cntrl->priv_data);
-<<<<<<< HEAD
 	pm_wakeup_hard_event(&mhi_cntrl->mhi_dev->dev);
-=======
-	pm_wakeup_event(&mhi_cntrl->mhi_dev->dev, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* queue transfer buffer */
@@ -950,7 +878,6 @@ static inline void mhi_free_coherent(struct mhi_controller *mhi_cntrl,
 	atomic_sub(size, &mhi_cntrl->alloc_size);
 	dma_free_coherent(mhi_cntrl->dev, size, vaddr, dma_handle);
 }
-<<<<<<< HEAD
 
 static inline void *mhi_alloc_uncached(struct mhi_controller *mhi_cntrl,
 				       size_t size,
@@ -998,8 +925,6 @@ static inline void mhi_free_contig_coherent(
 					DMA_ATTR_FORCE_CONTIGUOUS);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct mhi_device *mhi_alloc_device(struct mhi_controller *mhi_cntrl);
 static inline void mhi_dealloc_device(struct mhi_controller *mhi_cntrl,
 				      struct mhi_device *mhi_dev)
@@ -1040,10 +965,6 @@ int mhi_prepare_channel(struct mhi_controller *mhi_cntrl,
 			struct mhi_chan *mhi_chan);
 void mhi_reset_reg_write_q(struct mhi_controller *mhi_cntrl);
 void mhi_force_reg_write(struct mhi_controller *mhi_cntrl);
-<<<<<<< HEAD
-=======
-void mhi_perform_soc_reset(struct mhi_controller *mhi_cntrl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* isr handlers */
 irqreturn_t mhi_msi_handlr(int irq_number, void *dev);

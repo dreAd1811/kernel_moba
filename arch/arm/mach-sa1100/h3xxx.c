@@ -11,10 +11,7 @@
  */
 
 #include <linux/kernel.h>
-<<<<<<< HEAD
 #include <linux/gpio/machine.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/gpio.h>
 #include <linux/gpio_keys.h>
 #include <linux/input.h>
@@ -268,7 +265,6 @@ static struct platform_device *h3xxx_devices[] = {
 	&h3xxx_micro_asic,
 };
 
-<<<<<<< HEAD
 static struct gpiod_lookup_table h3xxx_pcmcia_gpio_table = {
 	.dev_id = "sa11x0-pcmcia",
 	.table = {
@@ -287,10 +283,6 @@ static struct gpiod_lookup_table h3xxx_pcmcia_gpio_table = {
 void __init h3xxx_mach_init(void)
 {
 	gpiod_add_lookup_table(&h3xxx_pcmcia_gpio_table);
-=======
-void __init h3xxx_mach_init(void)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sa1100_register_uart_fns(&h3xxx_port_fns);
 	sa11x0_register_mtd(&h3xxx_flash_data, &h3xxx_flash_resource, 1);
 	platform_add_devices(h3xxx_devices, ARRAY_SIZE(h3xxx_devices));

@@ -18,11 +18,7 @@
  * as keys are inserted we only sort the pages that have not yet been written.
  * When garbage collection is run, we resort the entire node.
  *
-<<<<<<< HEAD
  * All configuration is done via sysfs; see Documentation/admin-guide/bcache.rst.
-=======
- * All configuration is done via sysfs; see Documentation/bcache.txt.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include "bcache.h"
@@ -39,11 +35,7 @@
 #include <linux/rcupdate.h>
 #include <linux/sched/clock.h>
 #include <linux/rculist.h>
-<<<<<<< HEAD
 #include <linux/delay.h>
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <trace/events/bcache.h>
 
 /*
@@ -98,12 +90,9 @@
 
 #define MAX_NEED_GC		64
 #define MAX_SAVE_PRIO		72
-<<<<<<< HEAD
 #define MAX_GC_TIMES		100
 #define MIN_GC_NODES		100
 #define GC_SLEEP_MS		100
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define PTR_DIRTY_BIT		(((uint64_t) 1 << 36))
 
@@ -194,11 +183,7 @@ static void bch_btree_init_next(struct btree *b)
 
 void bkey_put(struct cache_set *c, struct bkey *k)
 {
-<<<<<<< HEAD
 	unsigned int i;
-=======
-	unsigned i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < KEY_PTRS(k); i++)
 		if (ptr_available(c, k, i))
@@ -222,11 +207,7 @@ void bch_btree_node_read_done(struct btree *b)
 	struct bset *i = btree_bset_first(b);
 	struct btree_iter *iter;
 
-<<<<<<< HEAD
 	iter = mempool_alloc(&b->c->fill_iter, GFP_NOIO);
-=======
-	iter = mempool_alloc(b->c->fill_iter, GFP_NOIO);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	iter->size = b->c->sb.bucket_size / b->c->sb.block_size;
 	iter->used = 0;
 
@@ -293,11 +274,7 @@ void bch_btree_node_read_done(struct btree *b)
 		bch_bset_init_next(&b->keys, write_block(b),
 				   bset_magic(&b->c->sb));
 out:
-<<<<<<< HEAD
 	mempool_free(iter, &b->c->fill_iter);
-=======
-	mempool_free(iter, b->c->fill_iter);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return;
 err:
 	set_btree_node_io_error(b);
@@ -310,10 +287,7 @@ err:
 static void btree_node_read_endio(struct bio *bio)
 {
 	struct closure *cl = bio->bi_private;
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	closure_put(cl);
 }
 
@@ -449,11 +423,7 @@ static void do_btree_node_write(struct btree *b)
 	SET_PTR_OFFSET(&k.key, 0, PTR_OFFSET(&k.key, 0) +
 		       bset_sector_offset(&b->keys, i));
 
-<<<<<<< HEAD
 	if (!bch_bio_alloc_pages(b->bio, __GFP_NOWARN|GFP_NOWAIT)) {
-=======
-	if (!bio_alloc_pages(b->bio, __GFP_NOWARN|GFP_NOWAIT)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		int j;
 		struct bio_vec *bv;
 		void *base = (void *) ((unsigned long) i & ~(PAGE_SIZE - 1));
@@ -466,13 +436,10 @@ static void do_btree_node_write(struct btree *b)
 
 		continue_at(cl, btree_node_write_done, NULL);
 	} else {
-<<<<<<< HEAD
 		/*
 		 * No problem for multipage bvec since the bio is
 		 * just allocated
 		 */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		b->bio->bi_vcnt = 0;
 		bch_bio_map(b->bio, i);
 
@@ -516,11 +483,7 @@ void __bch_btree_node_write(struct btree *b, struct closure *parent)
 
 void bch_btree_node_write(struct btree *b, struct closure *parent)
 {
-<<<<<<< HEAD
 	unsigned int nsets = b->keys.nsets;
-=======
-	unsigned nsets = b->keys.nsets;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	lockdep_assert_held(&b->lock);
 
@@ -622,11 +585,7 @@ static void mca_bucket_free(struct btree *b)
 	list_move(&b->list, &b->c->btree_cache_freeable);
 }
 
-<<<<<<< HEAD
 static unsigned int btree_order(struct bkey *k)
-=======
-static unsigned btree_order(struct bkey *k)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return ilog2(KEY_SIZE(k) / PAGE_SECTORS ?: 1);
 }
@@ -634,11 +593,7 @@ static unsigned btree_order(struct bkey *k)
 static void mca_data_alloc(struct btree *b, struct bkey *k, gfp_t gfp)
 {
 	if (!bch_btree_keys_alloc(&b->keys,
-<<<<<<< HEAD
 				  max_t(unsigned int,
-=======
-				  max_t(unsigned,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					ilog2(b->c->btree_pages),
 					btree_order(k)),
 				  gfp)) {
@@ -653,10 +608,7 @@ static struct btree *mca_bucket_alloc(struct cache_set *c,
 				      struct bkey *k, gfp_t gfp)
 {
 	struct btree *b = kzalloc(sizeof(struct btree), gfp);
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!b)
 		return NULL;
 
@@ -673,11 +625,7 @@ static struct btree *mca_bucket_alloc(struct cache_set *c,
 	return b;
 }
 
-<<<<<<< HEAD
 static int mca_reap(struct btree *b, unsigned int min_order, bool flush)
-=======
-static int mca_reap(struct btree *b, unsigned min_order, bool flush)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct closure cl;
 
@@ -701,7 +649,6 @@ static int mca_reap(struct btree *b, unsigned min_order, bool flush)
 		up(&b->io_mutex);
 	}
 
-<<<<<<< HEAD
 retry:
 	/*
 	 * BTREE_NODE_dirty might be cleared in btree_flush_btree() by
@@ -721,9 +668,6 @@ retry:
 		goto retry;
 	}
 
-=======
-	mutex_lock(&b->write_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (btree_node_dirty(b))
 		__bch_btree_node_write(b, &cl);
 	mutex_unlock(&b->write_lock);
@@ -747,10 +691,7 @@ static unsigned long bch_mca_scan(struct shrinker *shrink,
 	struct btree *b, *t;
 	unsigned long i, nr = sc->nr_to_scan;
 	unsigned long freed = 0;
-<<<<<<< HEAD
 	unsigned int btree_cache_used;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (c->shrinker_disabled)
 		return SHRINK_STOP;
@@ -772,7 +713,6 @@ static unsigned long bch_mca_scan(struct shrinker *shrink,
 	 * IO can always make forward progress:
 	 */
 	nr /= c->btree_pages;
-<<<<<<< HEAD
 	nr = min_t(unsigned long, nr, mca_can_free(c));
 
 	i = 0;
@@ -780,16 +720,6 @@ static unsigned long bch_mca_scan(struct shrinker *shrink,
 	list_for_each_entry_safe(b, t, &c->btree_cache_freeable, list) {
 		if (nr <= 0)
 			goto out;
-=======
-	if (nr == 0)
-		nr = 1;
-	nr = min_t(unsigned long, nr, mca_can_free(c));
-
-	i = 0;
-	list_for_each_entry_safe(b, t, &c->btree_cache_freeable, list) {
-		if (freed >= nr)
-			break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (++i > 3 &&
 		    !mca_reap(b, 0, false)) {
@@ -797,16 +727,10 @@ static unsigned long bch_mca_scan(struct shrinker *shrink,
 			rw_unlock(true, b);
 			freed++;
 		}
-<<<<<<< HEAD
 		nr--;
 	}
 
 	for (;  (nr--) && i < btree_cache_used; i++) {
-=======
-	}
-
-	for (i = 0; (nr--) && i < c->btree_cache_used; i++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (list_empty(&c->btree_cache))
 			goto out;
 
@@ -824,11 +748,7 @@ static unsigned long bch_mca_scan(struct shrinker *shrink,
 	}
 out:
 	mutex_unlock(&c->bucket_lock);
-<<<<<<< HEAD
 	return freed * c->btree_pages;
-=======
-	return freed;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static unsigned long bch_mca_count(struct shrinker *shrink,
@@ -849,10 +769,7 @@ void bch_btree_cache_free(struct cache_set *c)
 {
 	struct btree *b;
 	struct closure cl;
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	closure_init_stack(&cl);
 
 	if (c->shrink.list.next)
@@ -873,7 +790,6 @@ void bch_btree_cache_free(struct cache_set *c)
 	while (!list_empty(&c->btree_cache)) {
 		b = list_first_entry(&c->btree_cache, struct btree, list);
 
-<<<<<<< HEAD
 		/*
 		 * This function is called by cache_set_free(), no I/O
 		 * request on cache now, it is unnecessary to acquire
@@ -883,12 +799,6 @@ void bch_btree_cache_free(struct cache_set *c)
 			btree_complete_write(b, btree_current_write(b));
 			clear_bit(BTREE_NODE_dirty, &b->flags);
 		}
-=======
-		if (btree_node_dirty(b))
-			btree_complete_write(b, btree_current_write(b));
-		clear_bit(BTREE_NODE_dirty, &b->flags);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mca_data_free(b);
 	}
 
@@ -905,11 +815,7 @@ void bch_btree_cache_free(struct cache_set *c)
 
 int bch_btree_cache_alloc(struct cache_set *c)
 {
-<<<<<<< HEAD
 	unsigned int i;
-=======
-	unsigned i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < mca_reserve(c); i++)
 		if (!mca_bucket_alloc(c, &ZERO_KEY, GFP_KERNEL))
@@ -1088,11 +994,7 @@ err:
 	return b;
 }
 
-<<<<<<< HEAD
 /*
-=======
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * bch_btree_node_get - find a btree node in the cache and lock it, reading it
  * in from disk if necessary.
  *
@@ -1138,7 +1040,6 @@ retry:
 		BUG_ON(b->level != level);
 	}
 
-<<<<<<< HEAD
 	if (btree_node_io_error(b)) {
 		rw_unlock(write, b);
 		return ERR_PTR(-EIO);
@@ -1146,8 +1047,6 @@ retry:
 
 	BUG_ON(!b->written);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	b->parent = parent;
 	b->accessed = 1;
 
@@ -1159,16 +1058,6 @@ retry:
 	for (; i <= b->keys.nsets; i++)
 		prefetch(b->keys.set[i].data);
 
-<<<<<<< HEAD
-=======
-	if (btree_node_io_error(b)) {
-		rw_unlock(write, b);
-		return ERR_PTR(-EIO);
-	}
-
-	BUG_ON(!b->written);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return b;
 }
 
@@ -1195,7 +1084,6 @@ static void btree_node_free(struct btree *b)
 
 	BUG_ON(b == b->c->root);
 
-<<<<<<< HEAD
 retry:
 	mutex_lock(&b->write_lock);
 	/*
@@ -1215,13 +1103,6 @@ retry:
 		btree_complete_write(b, btree_current_write(b));
 		clear_bit(BTREE_NODE_dirty, &b->flags);
 	}
-=======
-	mutex_lock(&b->write_lock);
-
-	if (btree_node_dirty(b))
-		btree_complete_write(b, btree_current_write(b));
-	clear_bit(BTREE_NODE_dirty, &b->flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_unlock(&b->write_lock);
 
@@ -1286,10 +1167,7 @@ static struct btree *btree_node_alloc_replacement(struct btree *b,
 						  struct btree_op *op)
 {
 	struct btree *n = bch_btree_node_alloc(b->c, op, b->level, b->parent);
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!IS_ERR_OR_NULL(n)) {
 		mutex_lock(&n->write_lock);
 		bch_btree_sort_into(&b->keys, &n->keys, &b->c->sort);
@@ -1302,11 +1180,7 @@ static struct btree *btree_node_alloc_replacement(struct btree *b,
 
 static void make_btree_freeing_key(struct btree *b, struct bkey *k)
 {
-<<<<<<< HEAD
 	unsigned int i;
-=======
-	unsigned i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&b->c->bucket_lock);
 
@@ -1327,11 +1201,7 @@ static int btree_check_reserve(struct btree *b, struct btree_op *op)
 {
 	struct cache_set *c = b->c;
 	struct cache *ca;
-<<<<<<< HEAD
 	unsigned int i, reserve = (c->root->level - b->level) * 2 + 1;
-=======
-	unsigned i, reserve = (c->root->level - b->level) * 2 + 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&c->bucket_lock);
 
@@ -1355,11 +1225,7 @@ static uint8_t __bch_btree_mark_key(struct cache_set *c, int level,
 				    struct bkey *k)
 {
 	uint8_t stale = 0;
-<<<<<<< HEAD
 	unsigned int i;
-=======
-	unsigned i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct bucket *g;
 
 	/*
@@ -1397,11 +1263,7 @@ static uint8_t __bch_btree_mark_key(struct cache_set *c, int level,
 			SET_GC_MARK(g, GC_MARK_RECLAIMABLE);
 
 		/* guard against overflow */
-<<<<<<< HEAD
 		SET_GC_SECTORS_USED(g, min_t(unsigned int,
-=======
-		SET_GC_SECTORS_USED(g, min_t(unsigned,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					     GC_SECTORS_USED(g) + KEY_SIZE(k),
 					     MAX_GC_SECTORS_USED));
 
@@ -1415,11 +1277,7 @@ static uint8_t __bch_btree_mark_key(struct cache_set *c, int level,
 
 void bch_initial_mark_key(struct cache_set *c, int level, struct bkey *k)
 {
-<<<<<<< HEAD
 	unsigned int i;
-=======
-	unsigned i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < KEY_PTRS(k); i++)
 		if (ptr_available(c, k, i) &&
@@ -1437,7 +1295,6 @@ void bch_initial_mark_key(struct cache_set *c, int level, struct bkey *k)
 	__bch_btree_mark_key(c, level, k);
 }
 
-<<<<<<< HEAD
 void bch_update_bucket_in_use(struct cache_set *c, struct gc_stat *stats)
 {
 	stats->in_use = (c->nbuckets - c->avail_nbuckets) * 100 / c->nbuckets;
@@ -1447,12 +1304,6 @@ static bool btree_gc_mark_node(struct btree *b, struct gc_stat *gc)
 {
 	uint8_t stale = 0;
 	unsigned int keys = 0, good_keys = 0;
-=======
-static bool btree_gc_mark_node(struct btree *b, struct gc_stat *gc)
-{
-	uint8_t stale = 0;
-	unsigned keys = 0, good_keys = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct bkey *k;
 	struct btree_iter iter;
 	struct bset_tree *t;
@@ -1495,7 +1346,6 @@ static bool btree_gc_mark_node(struct btree *b, struct gc_stat *gc)
 
 struct gc_merge_info {
 	struct btree	*b;
-<<<<<<< HEAD
 	unsigned int	keys;
 };
 
@@ -1503,22 +1353,11 @@ static int bch_btree_insert_node(struct btree *b, struct btree_op *op,
 				 struct keylist *insert_keys,
 				 atomic_t *journal_ref,
 				 struct bkey *replace_key);
-=======
-	unsigned	keys;
-};
-
-static int bch_btree_insert_node(struct btree *, struct btree_op *,
-				 struct keylist *, atomic_t *, struct bkey *);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int btree_gc_coalesce(struct btree *b, struct btree_op *op,
 			     struct gc_stat *gc, struct gc_merge_info *r)
 {
-<<<<<<< HEAD
 	unsigned int i, nodes = 0, keys = 0, blocks;
-=======
-	unsigned i, nodes = 0, keys = 0, blocks;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct btree *new_nodes[GC_MERGE_NODES];
 	struct keylist keylist;
 	struct closure cl;
@@ -1591,11 +1430,7 @@ static int btree_gc_coalesce(struct btree *b, struct btree_op *op,
 			if (__set_blocks(n1, n1->keys + n2->keys,
 					 block_bytes(b->c)) >
 			    btree_blocks(new_nodes[i]))
-<<<<<<< HEAD
 				goto out_nocoalesce;
-=======
-				goto out_unlock_nocoalesce;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			keys = n2->keys;
 			/* Take the key of the node we're getting rid of */
@@ -1624,11 +1459,7 @@ static int btree_gc_coalesce(struct btree *b, struct btree_op *op,
 
 		if (__bch_keylist_realloc(&keylist,
 					  bkey_u64s(&new_nodes[i]->key)))
-<<<<<<< HEAD
 			goto out_nocoalesce;
-=======
-			goto out_unlock_nocoalesce;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		bch_btree_node_write(new_nodes[i], &cl);
 		bch_keylist_add(&keylist, &new_nodes[i]->key);
@@ -1674,13 +1505,6 @@ static int btree_gc_coalesce(struct btree *b, struct btree_op *op,
 	/* Invalidated our iterator */
 	return -EINTR;
 
-<<<<<<< HEAD
-=======
-out_unlock_nocoalesce:
-	for (i = 0; i < nodes; i++)
-		mutex_unlock(&new_nodes[i]->write_lock);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out_nocoalesce:
 	closure_sync(&cl);
 	bch_keylist_free(&keylist);
@@ -1733,19 +1557,11 @@ static int btree_gc_rewrite_node(struct btree *b, struct btree_op *op,
 	return -EINTR;
 }
 
-<<<<<<< HEAD
 static unsigned int btree_gc_count_keys(struct btree *b)
 {
 	struct bkey *k;
 	struct btree_iter iter;
 	unsigned int ret = 0;
-=======
-static unsigned btree_gc_count_keys(struct btree *b)
-{
-	struct bkey *k;
-	struct btree_iter iter;
-	unsigned ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for_each_key_filter(&b->keys, k, &iter, bch_ptr_bad)
 		ret += bkey_u64s(k);
@@ -1753,7 +1569,6 @@ static unsigned btree_gc_count_keys(struct btree *b)
 	return ret;
 }
 
-<<<<<<< HEAD
 static size_t btree_gc_min_nodes(struct cache_set *c)
 {
 	size_t min_nodes;
@@ -1780,8 +1595,6 @@ static size_t btree_gc_min_nodes(struct cache_set *c)
 }
 
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int btree_gc_recurse(struct btree *b, struct btree_op *op,
 			    struct closure *writes, struct gc_stat *gc)
 {
@@ -1847,7 +1660,6 @@ static int btree_gc_recurse(struct btree *b, struct btree_op *op,
 		memmove(r + 1, r, sizeof(r[0]) * (GC_MERGE_NODES - 1));
 		r->b = NULL;
 
-<<<<<<< HEAD
 		if (atomic_read(&b->c->search_inflight) &&
 		    gc->nodes >= gc->nodes_pre + btree_gc_min_nodes(b->c)) {
 			gc->nodes_pre =  gc->nodes;
@@ -1855,8 +1667,6 @@ static int btree_gc_recurse(struct btree *b, struct btree_op *op,
 			break;
 		}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (need_resched()) {
 			ret = -EAGAIN;
 			break;
@@ -1914,11 +1724,7 @@ static void btree_gc_start(struct cache_set *c)
 {
 	struct cache *ca;
 	struct bucket *b;
-<<<<<<< HEAD
 	unsigned int i;
-=======
-	unsigned i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!c->gc_mark_valid)
 		return;
@@ -1940,20 +1746,11 @@ static void btree_gc_start(struct cache_set *c)
 	mutex_unlock(&c->bucket_lock);
 }
 
-<<<<<<< HEAD
 static void bch_btree_gc_finish(struct cache_set *c)
 {
 	struct bucket *b;
 	struct cache *ca;
 	unsigned int i;
-=======
-static size_t bch_btree_gc_finish(struct cache_set *c)
-{
-	size_t available = 0;
-	struct bucket *b;
-	struct cache *ca;
-	unsigned i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&c->bucket_lock);
 
@@ -1967,19 +1764,11 @@ static size_t bch_btree_gc_finish(struct cache_set *c)
 
 	/* don't reclaim buckets to which writeback keys point */
 	rcu_read_lock();
-<<<<<<< HEAD
 	for (i = 0; i < c->devices_max_used; i++) {
 		struct bcache_device *d = c->devices[i];
 		struct cached_dev *dc;
 		struct keybuf_key *w, *n;
 		unsigned int j;
-=======
-	for (i = 0; i < c->nr_uuids; i++) {
-		struct bcache_device *d = c->devices[i];
-		struct cached_dev *dc;
-		struct keybuf_key *w, *n;
-		unsigned j;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (!d || UUID_FLASH_ONLY(&c->uuids[i]))
 			continue;
@@ -1995,10 +1784,7 @@ static size_t bch_btree_gc_finish(struct cache_set *c)
 	}
 	rcu_read_unlock();
 
-<<<<<<< HEAD
 	c->avail_nbuckets = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for_each_cache(ca, c, i) {
 		uint64_t *i;
 
@@ -2020,28 +1806,16 @@ static size_t bch_btree_gc_finish(struct cache_set *c)
 			BUG_ON(!GC_MARK(b) && GC_SECTORS_USED(b));
 
 			if (!GC_MARK(b) || GC_MARK(b) == GC_MARK_RECLAIMABLE)
-<<<<<<< HEAD
 				c->avail_nbuckets++;
-=======
-				available++;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
 	mutex_unlock(&c->bucket_lock);
-<<<<<<< HEAD
-=======
-	return available;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void bch_btree_gc(struct cache_set *c)
 {
 	int ret;
-<<<<<<< HEAD
-=======
-	unsigned long available;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct gc_stat stats;
 	struct closure writes;
 	struct btree_op op;
@@ -2055,16 +1829,12 @@ static void bch_btree_gc(struct cache_set *c)
 
 	btree_gc_start(c);
 
-<<<<<<< HEAD
 	/* if CACHE_SET_IO_DISABLE set, gc thread should stop too */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	do {
 		ret = btree_root(gc_root, c, &op, &writes, &stats);
 		closure_sync(&writes);
 		cond_resched();
 
-<<<<<<< HEAD
 		if (ret == -EAGAIN)
 			schedule_timeout_interruptible(msecs_to_jiffies
 						       (GC_SLEEP_MS));
@@ -2073,24 +1843,13 @@ static void bch_btree_gc(struct cache_set *c)
 	} while (ret && !test_bit(CACHE_SET_IO_DISABLE, &c->flags));
 
 	bch_btree_gc_finish(c);
-=======
-		if (ret && ret != -EAGAIN)
-			pr_warn("gc failed!");
-	} while (ret);
-
-	available = bch_btree_gc_finish(c);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wake_up_allocators(c);
 
 	bch_time_stats_update(&c->btree_gc_time, start_time);
 
 	stats.key_bytes *= sizeof(uint64_t);
 	stats.data	<<= 9;
-<<<<<<< HEAD
 	bch_update_bucket_in_use(c, &stats);
-=======
-	stats.in_use	= (c->nbuckets - available) * 100 / c->nbuckets;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memcpy(&c->gc_stats, &stats, sizeof(struct gc_stat));
 
 	trace_bcache_gc_end(c);
@@ -2101,11 +1860,7 @@ static void bch_btree_gc(struct cache_set *c)
 static bool gc_should_run(struct cache_set *c)
 {
 	struct cache *ca;
-<<<<<<< HEAD
 	unsigned int i;
-=======
-	unsigned i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for_each_cache(ca, c, i)
 		if (ca->invalidate_needs_gc)
@@ -2123,42 +1878,26 @@ static int bch_gc_thread(void *arg)
 
 	while (1) {
 		wait_event_interruptible(c->gc_wait,
-<<<<<<< HEAD
 			   kthread_should_stop() ||
 			   test_bit(CACHE_SET_IO_DISABLE, &c->flags) ||
 			   gc_should_run(c));
 
 		if (kthread_should_stop() ||
 		    test_bit(CACHE_SET_IO_DISABLE, &c->flags))
-=======
-			   kthread_should_stop() || gc_should_run(c));
-
-		if (kthread_should_stop())
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 
 		set_gc_sectors(c);
 		bch_btree_gc(c);
 	}
 
-<<<<<<< HEAD
 	wait_for_kthread_stop();
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 int bch_gc_thread_start(struct cache_set *c)
 {
 	c->gc_thread = kthread_run(bch_gc_thread, c, "bcache_gc");
-<<<<<<< HEAD
 	return PTR_ERR_OR_ZERO(c->gc_thread);
-=======
-	if (IS_ERR(c->gc_thread))
-		return PTR_ERR(c->gc_thread);
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Initial partial gc */
@@ -2180,7 +1919,6 @@ static int bch_btree_check_recurse(struct btree *b, struct btree_op *op)
 		do {
 			k = bch_btree_iter_next_filter(&iter, &b->keys,
 						       bch_ptr_bad);
-<<<<<<< HEAD
 			if (k) {
 				btree_node_prefetch(b, k);
 				/*
@@ -2189,10 +1927,6 @@ static int bch_btree_check_recurse(struct btree *b, struct btree_op *op)
 				 */
 				b->c->gc_stats.nodes++;
 			}
-=======
-			if (k)
-				btree_node_prefetch(b, k);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			if (p)
 				ret = btree(check_recurse, p, b, op);
@@ -2217,11 +1951,7 @@ void bch_initial_gc_finish(struct cache_set *c)
 {
 	struct cache *ca;
 	struct bucket *b;
-<<<<<<< HEAD
 	unsigned int i;
-=======
-	unsigned i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	bch_btree_gc_finish(c);
 
@@ -2261,11 +1991,7 @@ void bch_initial_gc_finish(struct cache_set *c)
 static bool btree_insert_key(struct btree *b, struct bkey *k,
 			     struct bkey *replace_key)
 {
-<<<<<<< HEAD
 	unsigned int status;
-=======
-	unsigned status;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	BUG_ON(bkey_cmp(k, &b->key) > 0);
 
@@ -2364,11 +2090,7 @@ static int btree_split(struct btree *b, struct btree_op *op,
 			   block_bytes(n1->c)) > (btree_blocks(b) * 4) / 5;
 
 	if (split) {
-<<<<<<< HEAD
 		unsigned int keys = 0;
-=======
-		unsigned keys = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		trace_bcache_btree_node_split(b, btree_bset_first(n1)->keys);
 
@@ -2546,17 +2268,10 @@ int bch_btree_insert_check_key(struct btree *b, struct btree_op *op,
 		rw_lock(true, b, b->level);
 
 		if (b->key.ptr[0] != btree_ptr ||
-<<<<<<< HEAD
 		    b->seq != seq + 1) {
 			op->lock = b->level;
 			goto out;
 		}
-=======
-                   b->seq != seq + 1) {
-                       op->lock = b->level;
-			goto out;
-               }
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	SET_KEY_PTRS(check_key, 1);
@@ -2631,11 +2346,7 @@ int bch_btree_insert(struct cache_set *c, struct keylist *keys,
 
 void bch_btree_set_root(struct btree *b)
 {
-<<<<<<< HEAD
 	unsigned int i;
-=======
-	unsigned i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct closure cl;
 
 	closure_init_stack(&cl);
@@ -2747,11 +2458,7 @@ static inline int keybuf_nonoverlapping_cmp(struct keybuf_key *l,
 
 struct refill {
 	struct btree_op	op;
-<<<<<<< HEAD
 	unsigned int	nr_found;
-=======
-	unsigned	nr_found;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct keybuf	*buf;
 	struct bkey	*end;
 	keybuf_pred_fn	*pred;
@@ -2827,10 +2534,7 @@ void bch_refill_keybuf(struct cache_set *c, struct keybuf *buf,
 
 	if (!RB_EMPTY_ROOT(&buf->keys)) {
 		struct keybuf_key *w;
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		w = RB_FIRST(&buf->keys, struct keybuf_key, node);
 		buf->start	= START_KEY(&w->key);
 
@@ -2862,10 +2566,7 @@ bool bch_keybuf_check_overlapping(struct keybuf *buf, struct bkey *start,
 {
 	bool ret = false;
 	struct keybuf_key *p, *w, s;
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	s.key = *start;
 
 	if (bkey_cmp(end, &buf->start) <= 0 ||
@@ -2892,10 +2593,7 @@ bool bch_keybuf_check_overlapping(struct keybuf *buf, struct bkey *start,
 struct keybuf_key *bch_keybuf_next(struct keybuf *buf)
 {
 	struct keybuf_key *w;
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock(&buf->lock);
 
 	w = RB_FIRST(&buf->keys, struct keybuf_key, node);

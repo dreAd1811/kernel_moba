@@ -662,10 +662,7 @@ config ARM_LPAE
 	bool "Support for the Large Physical Address Extension"
 	depends on MMU && CPU_32v7 && !CPU_32v6 && !CPU_32v5 && \
 		!CPU_32v4 && !CPU_32v3
-<<<<<<< HEAD
 	select PHYS_ADDR_T_64BIT
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Say Y if you have an ARMv7 processor supporting the LPAE page
 	  table format and you would like to access memory beyond the
@@ -678,15 +675,6 @@ config ARM_PV_FIXUP
 	def_bool y
 	depends on ARM_LPAE && ARM_PATCH_PHYS_VIRT && ARCH_KEYSTONE
 
-<<<<<<< HEAD
-=======
-config ARCH_PHYS_ADDR_T_64BIT
-	def_bool ARM_LPAE
-
-config ARCH_DMA_ADDR_T_64BIT
-	bool
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config ARM_THUMB
 	bool "Support Thumb user binaries" if !CPU_THUMBONLY && EXPERT
 	depends on CPU_THUMB_CAPABLE
@@ -714,10 +702,6 @@ config ARM_THUMBEE
 
 config ARM_VIRT_EXT
 	bool
-<<<<<<< HEAD
-=======
-	depends on MMU
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default y if CPU_V7
 	help
 	  Enable the kernel to make use of the ARM Virtualization
@@ -942,7 +926,6 @@ config OUTER_CACHE_SYNC
 	  The outer cache has a outer_cache_fns.sync function pointer
 	  that can be used to drain the write buffer of the outer cache.
 
-<<<<<<< HEAD
 config CACHE_B15_RAC
 	bool "Enable the Broadcom Brahma-B15 read-ahead cache controller"
 	depends on ARCH_BRCMSTB
@@ -951,8 +934,6 @@ config CACHE_B15_RAC
 	  This option enables the Broadcom Brahma-B15 read-ahead cache
 	  controller. If disabled, the read-ahead cache remains off.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config CACHE_FEROCEON_L2
 	bool "Enable the Feroceon L2 cache controller"
 	depends on ARCH_MV78XX0 || ARCH_MVEBU

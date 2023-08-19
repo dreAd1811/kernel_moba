@@ -216,11 +216,8 @@ static void intel_pmu_lbr_reset_64(void)
 
 void intel_pmu_lbr_reset(void)
 {
-<<<<<<< HEAD
 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!x86_pmu.lbr_nr)
 		return;
 
@@ -228,12 +225,9 @@ void intel_pmu_lbr_reset(void)
 		intel_pmu_lbr_reset_32();
 	else
 		intel_pmu_lbr_reset_64();
-<<<<<<< HEAD
 
 	cpuc->last_task_ctx = NULL;
 	cpuc->last_log_id = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -345,10 +339,7 @@ static inline u64 rdlbr_to(unsigned int idx)
 
 static void __intel_pmu_lbr_restore(struct x86_perf_task_context *task_ctx)
 {
-<<<<<<< HEAD
 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 	unsigned lbr_idx, mask;
 	u64 tos;
@@ -359,7 +350,6 @@ static void __intel_pmu_lbr_restore(struct x86_perf_task_context *task_ctx)
 		return;
 	}
 
-<<<<<<< HEAD
 	tos = task_ctx->tos;
 	/*
 	 * Does not restore the LBR registers, if
@@ -374,10 +364,6 @@ static void __intel_pmu_lbr_restore(struct x86_perf_task_context *task_ctx)
 	}
 
 	mask = x86_pmu.lbr_nr - 1;
-=======
-	mask = x86_pmu.lbr_nr - 1;
-	tos = task_ctx->tos;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < task_ctx->valid_lbrs; i++) {
 		lbr_idx = (tos - i) & mask;
 		wrlbr_from(lbr_idx, task_ctx->lbr_from[i]);
@@ -401,10 +387,7 @@ static void __intel_pmu_lbr_restore(struct x86_perf_task_context *task_ctx)
 
 static void __intel_pmu_lbr_save(struct x86_perf_task_context *task_ctx)
 {
-<<<<<<< HEAD
 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned lbr_idx, mask;
 	u64 tos, from;
 	int i;
@@ -429,12 +412,9 @@ static void __intel_pmu_lbr_save(struct x86_perf_task_context *task_ctx)
 	task_ctx->valid_lbrs = i;
 	task_ctx->tos = tos;
 	task_ctx->lbr_stack_state = LBR_VALID;
-<<<<<<< HEAD
 
 	cpuc->last_task_ctx = task_ctx;
 	cpuc->last_log_id = ++task_ctx->log_id;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void intel_pmu_lbr_sched_task(struct perf_event_context *ctx, bool sched_in)

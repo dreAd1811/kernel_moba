@@ -1,18 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Device Tree Source for the Salvator-X 2nd version board
  *
  * Copyright (C) 2015-2017 Renesas Electronics Corp.
-<<<<<<< HEAD
-=======
- *
- * This file is licensed under the terms of the GNU General Public License
- * version 2.  This program is licensed "as is" without any warranty of any
- * kind, whether express or implied.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include "salvator-common.dtsi"
@@ -27,11 +17,8 @@
 };
 
 &i2c4 {
-<<<<<<< HEAD
 	clock-frequency = <400000>;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	versaclock6: clock-generator@6a {
 		compatible = "idt,5p49v6901";
 		reg = <0x6a>;

@@ -5,7 +5,6 @@
 #include <dt-bindings/pinctrl/pinctrl-tegra.h>
 #include <dt-bindings/interrupt-controller/arm-gic.h>
 
-<<<<<<< HEAD
 / {
 	compatible = "nvidia,tegra114";
 	interrupt-parent = <&lic>;
@@ -16,13 +15,6 @@
 		device_type = "memory";
 		reg = <0x80000000 0x0>;
 	};
-=======
-#include "skeleton.dtsi"
-
-/ {
-	compatible = "nvidia,tegra114";
-	interrupt-parent = <&lic>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	host1x@50000000 {
 		compatible = "nvidia,tegra114-host1x", "simple-bus";
@@ -32,10 +24,7 @@
 		clocks = <&tegra_car TEGRA114_CLK_HOST1X>;
 		resets = <&tegra_car 28>;
 		reset-names = "host1x";
-<<<<<<< HEAD
 		iommus = <&mc TEGRA_SWGROUP_HC>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		#address-cells = <1>;
 		#size-cells = <1>;
@@ -49,11 +38,8 @@
 			clocks = <&tegra_car TEGRA114_CLK_GR2D>;
 			resets = <&tegra_car 21>;
 			reset-names = "2d";
-<<<<<<< HEAD
 
 			iommus = <&mc TEGRA_SWGROUP_G2>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		gr3d@54180000 {
@@ -62,11 +48,8 @@
 			clocks = <&tegra_car TEGRA114_CLK_GR3D>;
 			resets = <&tegra_car 24>;
 			reset-names = "3d";
-<<<<<<< HEAD
 
 			iommus = <&mc TEGRA_SWGROUP_NV>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		dc@54200000 {

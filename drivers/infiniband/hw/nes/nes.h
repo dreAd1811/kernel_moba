@@ -159,11 +159,7 @@ do { \
 
 #define NES_EVENT_TIMEOUT   1200000
 #else
-<<<<<<< HEAD
 #define nes_debug(level, fmt, args...) no_printk(fmt, ##args)
-=======
-#define nes_debug(level, fmt, args...)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define assert(expr)          do {} while (0)
 
 #define NES_EVENT_TIMEOUT   100000
@@ -540,11 +536,7 @@ void nes_iwarp_ce_handler(struct nes_device *, struct nes_hw_cq *);
 int nes_destroy_cqp(struct nes_device *);
 int nes_nic_cm_xmit(struct sk_buff *, struct net_device *);
 void nes_recheck_link_status(struct work_struct *work);
-<<<<<<< HEAD
 void nes_terminate_timeout(struct timer_list *t);
-=======
-void nes_terminate_timeout(unsigned long context);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* nes_nic.c */
 struct net_device *nes_netdev_init(struct nes_device *, void __iomem *);
@@ -583,13 +575,8 @@ void nes_put_cqp_request(struct nes_device *nesdev,
 			 struct nes_cqp_request *cqp_request);
 void nes_post_cqp_request(struct nes_device *, struct nes_cqp_request *);
 int nes_arp_table(struct nes_device *, u32, u8 *, u32);
-<<<<<<< HEAD
 void nes_mh_fix(struct timer_list *t);
 void nes_clc(struct timer_list *t);
-=======
-void nes_mh_fix(unsigned long);
-void nes_clc(unsigned long);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void nes_dump_mem(unsigned int, void *, int);
 u32 nes_crc32(u32, u32, u32, u32, u8 *, u32, u32, u32);
 

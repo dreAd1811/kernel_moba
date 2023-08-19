@@ -311,10 +311,7 @@ static int radeon_move_vram_ram(struct ttm_buffer_object *bo,
 				bool no_wait_gpu,
 				struct ttm_mem_reg *new_mem)
 {
-<<<<<<< HEAD
 	struct ttm_operation_ctx ctx = { interruptible, no_wait_gpu };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct radeon_device *rdev;
 	struct ttm_mem_reg *old_mem = &bo->mem;
 	struct ttm_mem_reg tmp_mem;
@@ -332,12 +329,7 @@ static int radeon_move_vram_ram(struct ttm_buffer_object *bo,
 	placements.fpfn = 0;
 	placements.lpfn = 0;
 	placements.flags = TTM_PL_MASK_CACHING | TTM_PL_FLAG_TT;
-<<<<<<< HEAD
 	r = ttm_bo_mem_space(bo, &placement, &tmp_mem, &ctx);
-=======
-	r = ttm_bo_mem_space(bo, &placement, &tmp_mem,
-			     interruptible, no_wait_gpu);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(r)) {
 		return r;
 	}
@@ -347,11 +339,7 @@ static int radeon_move_vram_ram(struct ttm_buffer_object *bo,
 		goto out_cleanup;
 	}
 
-<<<<<<< HEAD
 	r = ttm_tt_bind(bo->ttm, &tmp_mem, &ctx);
-=======
-	r = ttm_tt_bind(bo->ttm, &tmp_mem);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(r)) {
 		goto out_cleanup;
 	}
@@ -359,11 +347,7 @@ static int radeon_move_vram_ram(struct ttm_buffer_object *bo,
 	if (unlikely(r)) {
 		goto out_cleanup;
 	}
-<<<<<<< HEAD
 	r = ttm_bo_move_ttm(bo, &ctx, new_mem);
-=======
-	r = ttm_bo_move_ttm(bo, interruptible, no_wait_gpu, new_mem);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out_cleanup:
 	ttm_bo_mem_put(bo, &tmp_mem);
 	return r;
@@ -374,10 +358,7 @@ static int radeon_move_ram_vram(struct ttm_buffer_object *bo,
 				bool no_wait_gpu,
 				struct ttm_mem_reg *new_mem)
 {
-<<<<<<< HEAD
 	struct ttm_operation_ctx ctx = { interruptible, no_wait_gpu };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct radeon_device *rdev;
 	struct ttm_mem_reg *old_mem = &bo->mem;
 	struct ttm_mem_reg tmp_mem;
@@ -395,20 +376,11 @@ static int radeon_move_ram_vram(struct ttm_buffer_object *bo,
 	placements.fpfn = 0;
 	placements.lpfn = 0;
 	placements.flags = TTM_PL_MASK_CACHING | TTM_PL_FLAG_TT;
-<<<<<<< HEAD
 	r = ttm_bo_mem_space(bo, &placement, &tmp_mem, &ctx);
 	if (unlikely(r)) {
 		return r;
 	}
 	r = ttm_bo_move_ttm(bo, &ctx, &tmp_mem);
-=======
-	r = ttm_bo_mem_space(bo, &placement, &tmp_mem,
-			     interruptible, no_wait_gpu);
-	if (unlikely(r)) {
-		return r;
-	}
-	r = ttm_bo_move_ttm(bo, interruptible, no_wait_gpu, &tmp_mem);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(r)) {
 		goto out_cleanup;
 	}
@@ -421,27 +393,16 @@ out_cleanup:
 	return r;
 }
 
-<<<<<<< HEAD
 static int radeon_bo_move(struct ttm_buffer_object *bo, bool evict,
 			  struct ttm_operation_ctx *ctx,
 			  struct ttm_mem_reg *new_mem)
-=======
-static int radeon_bo_move(struct ttm_buffer_object *bo,
-			bool evict, bool interruptible,
-			bool no_wait_gpu,
-			struct ttm_mem_reg *new_mem)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct radeon_device *rdev;
 	struct radeon_bo *rbo;
 	struct ttm_mem_reg *old_mem = &bo->mem;
 	int r;
 
-<<<<<<< HEAD
 	r = ttm_bo_wait(bo, ctx->interruptible, ctx->no_wait_gpu);
-=======
-	r = ttm_bo_wait(bo, interruptible, no_wait_gpu);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r)
 		return r;
 
@@ -471,7 +432,6 @@ static int radeon_bo_move(struct ttm_buffer_object *bo,
 
 	if (old_mem->mem_type == TTM_PL_VRAM &&
 	    new_mem->mem_type == TTM_PL_SYSTEM) {
-<<<<<<< HEAD
 		r = radeon_move_vram_ram(bo, evict, ctx->interruptible,
 					ctx->no_wait_gpu, new_mem);
 	} else if (old_mem->mem_type == TTM_PL_SYSTEM &&
@@ -481,25 +441,11 @@ static int radeon_bo_move(struct ttm_buffer_object *bo,
 	} else {
 		r = radeon_move_blit(bo, evict, ctx->no_wait_gpu,
 				     new_mem, old_mem);
-=======
-		r = radeon_move_vram_ram(bo, evict, interruptible,
-					no_wait_gpu, new_mem);
-	} else if (old_mem->mem_type == TTM_PL_SYSTEM &&
-		   new_mem->mem_type == TTM_PL_VRAM) {
-		r = radeon_move_ram_vram(bo, evict, interruptible,
-					    no_wait_gpu, new_mem);
-	} else {
-		r = radeon_move_blit(bo, evict, no_wait_gpu, new_mem, old_mem);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (r) {
 memcpy:
-<<<<<<< HEAD
 		r = ttm_bo_move_memcpy(bo, ctx, new_mem);
-=======
-		r = ttm_bo_move_memcpy(bo, interruptible, no_wait_gpu, new_mem);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (r) {
 			return r;
 		}
@@ -651,11 +597,7 @@ release_sg:
 	kfree(ttm->sg);
 
 release_pages:
-<<<<<<< HEAD
 	release_pages(ttm->pages, pinned);
-=======
-	release_pages(ttm->pages, pinned, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return r;
 }
 
@@ -744,31 +686,17 @@ static struct ttm_backend_func radeon_backend_func = {
 	.destroy = &radeon_ttm_backend_destroy,
 };
 
-<<<<<<< HEAD
 static struct ttm_tt *radeon_ttm_tt_create(struct ttm_buffer_object *bo,
 					   uint32_t page_flags)
-=======
-static struct ttm_tt *radeon_ttm_tt_create(struct ttm_bo_device *bdev,
-				    unsigned long size, uint32_t page_flags,
-				    struct page *dummy_read_page)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct radeon_device *rdev;
 	struct radeon_ttm_tt *gtt;
 
-<<<<<<< HEAD
 	rdev = radeon_get_rdev(bo->bdev);
 #if IS_ENABLED(CONFIG_AGP)
 	if (rdev->flags & RADEON_IS_AGP) {
 		return ttm_agp_tt_create(bo, rdev->ddev->agp->bridge,
 					 page_flags);
-=======
-	rdev = radeon_get_rdev(bdev);
-#if IS_ENABLED(CONFIG_AGP)
-	if (rdev->flags & RADEON_IS_AGP) {
-		return ttm_agp_tt_create(bdev, rdev->ddev->agp->bridge,
-					 size, page_flags, dummy_read_page);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 #endif
 
@@ -778,11 +706,7 @@ static struct ttm_tt *radeon_ttm_tt_create(struct ttm_bo_device *bdev,
 	}
 	gtt->ttm.ttm.func = &radeon_backend_func;
 	gtt->rdev = rdev;
-<<<<<<< HEAD
 	if (ttm_dma_tt_init(&gtt->ttm, bo, page_flags)) {
-=======
-	if (ttm_dma_tt_init(&gtt->ttm, bdev, size, page_flags, dummy_read_page)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(gtt);
 		return NULL;
 	}
@@ -796,7 +720,6 @@ static struct radeon_ttm_tt *radeon_ttm_tt_to_gtt(struct ttm_tt *ttm)
 	return (struct radeon_ttm_tt *)ttm;
 }
 
-<<<<<<< HEAD
 static int radeon_ttm_tt_populate(struct ttm_tt *ttm,
 			struct ttm_operation_ctx *ctx)
 {
@@ -804,19 +727,6 @@ static int radeon_ttm_tt_populate(struct ttm_tt *ttm,
 	struct radeon_device *rdev;
 	bool slave = !!(ttm->page_flags & TTM_PAGE_FLAG_SG);
 
-=======
-static int radeon_ttm_tt_populate(struct ttm_tt *ttm)
-{
-	struct radeon_ttm_tt *gtt = radeon_ttm_tt_to_gtt(ttm);
-	struct radeon_device *rdev;
-	unsigned i;
-	int r;
-	bool slave = !!(ttm->page_flags & TTM_PAGE_FLAG_SG);
-
-	if (ttm->state != tt_unpopulated)
-		return 0;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (gtt && gtt->userptr) {
 		ttm->sg = kzalloc(sizeof(struct sg_table), GFP_KERNEL);
 		if (!ttm->sg)
@@ -837,59 +747,23 @@ static int radeon_ttm_tt_populate(struct ttm_tt *ttm)
 	rdev = radeon_get_rdev(ttm->bdev);
 #if IS_ENABLED(CONFIG_AGP)
 	if (rdev->flags & RADEON_IS_AGP) {
-<<<<<<< HEAD
 		return ttm_agp_tt_populate(ttm, ctx);
-=======
-		return ttm_agp_tt_populate(ttm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 #endif
 
 #ifdef CONFIG_SWIOTLB
-<<<<<<< HEAD
 	if (rdev->need_swiotlb && swiotlb_nr_tbl()) {
 		return ttm_dma_populate(&gtt->ttm, rdev->dev, ctx);
 	}
 #endif
 
 	return ttm_populate_and_map_pages(rdev->dev, &gtt->ttm, ctx);
-=======
-	if (swiotlb_nr_tbl()) {
-		return ttm_dma_populate(&gtt->ttm, rdev->dev);
-	}
-#endif
-
-	r = ttm_pool_populate(ttm);
-	if (r) {
-		return r;
-	}
-
-	for (i = 0; i < ttm->num_pages; i++) {
-		gtt->ttm.dma_address[i] = pci_map_page(rdev->pdev, ttm->pages[i],
-						       0, PAGE_SIZE,
-						       PCI_DMA_BIDIRECTIONAL);
-		if (pci_dma_mapping_error(rdev->pdev, gtt->ttm.dma_address[i])) {
-			while (i--) {
-				pci_unmap_page(rdev->pdev, gtt->ttm.dma_address[i],
-					       PAGE_SIZE, PCI_DMA_BIDIRECTIONAL);
-				gtt->ttm.dma_address[i] = 0;
-			}
-			ttm_pool_unpopulate(ttm);
-			return -EFAULT;
-		}
-	}
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void radeon_ttm_tt_unpopulate(struct ttm_tt *ttm)
 {
 	struct radeon_device *rdev;
 	struct radeon_ttm_tt *gtt = radeon_ttm_tt_to_gtt(ttm);
-<<<<<<< HEAD
-=======
-	unsigned i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool slave = !!(ttm->page_flags & TTM_PAGE_FLAG_SG);
 
 	if (gtt && gtt->userptr) {
@@ -910,28 +784,13 @@ static void radeon_ttm_tt_unpopulate(struct ttm_tt *ttm)
 #endif
 
 #ifdef CONFIG_SWIOTLB
-<<<<<<< HEAD
 	if (rdev->need_swiotlb && swiotlb_nr_tbl()) {
-=======
-	if (swiotlb_nr_tbl()) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ttm_dma_unpopulate(&gtt->ttm, rdev->dev);
 		return;
 	}
 #endif
 
-<<<<<<< HEAD
 	ttm_unmap_and_unpopulate_pages(rdev->dev, &gtt->ttm);
-=======
-	for (i = 0; i < ttm->num_pages; i++) {
-		if (gtt->ttm.dma_address[i]) {
-			pci_unmap_page(rdev->pdev, gtt->ttm.dma_address[i],
-				       PAGE_SIZE, PCI_DMA_BIDIRECTIONAL);
-		}
-	}
-
-	ttm_pool_unpopulate(ttm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int radeon_ttm_tt_set_userptr(struct ttm_tt *ttm, uint64_t addr,
@@ -982,10 +841,6 @@ static struct ttm_bo_driver radeon_bo_driver = {
 	.fault_reserve_notify = &radeon_bo_fault_reserve_notify,
 	.io_mem_reserve = &radeon_ttm_io_mem_reserve,
 	.io_mem_free = &radeon_ttm_io_mem_free,
-<<<<<<< HEAD
-=======
-	.io_mem_pfn = ttm_bo_default_io_mem_pfn,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int radeon_ttm_init(struct radeon_device *rdev)
@@ -1092,19 +947,11 @@ void radeon_ttm_set_active_vram_size(struct radeon_device *rdev, u64 size)
 static struct vm_operations_struct radeon_ttm_vm_ops;
 static const struct vm_operations_struct *ttm_vm_ops = NULL;
 
-<<<<<<< HEAD
 static vm_fault_t radeon_ttm_fault(struct vm_fault *vmf)
 {
 	struct ttm_buffer_object *bo;
 	struct radeon_device *rdev;
 	vm_fault_t ret;
-=======
-static int radeon_ttm_fault(struct vm_fault *vmf)
-{
-	struct ttm_buffer_object *bo;
-	struct radeon_device *rdev;
-	int r;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	bo = (struct ttm_buffer_object *)vmf->vma->vm_private_data;
 	if (bo == NULL) {
@@ -1112,15 +959,9 @@ static int radeon_ttm_fault(struct vm_fault *vmf)
 	}
 	rdev = radeon_get_rdev(bo->bdev);
 	down_read(&rdev->pm.mclk_lock);
-<<<<<<< HEAD
 	ret = ttm_vm_ops->fault(vmf);
 	up_read(&rdev->pm.mclk_lock);
 	return ret;
-=======
-	r = ttm_vm_ops->fault(vmf);
-	up_read(&rdev->pm.mclk_lock);
-	return r;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int radeon_mmap(struct file *filp, struct vm_area_struct *vma)
@@ -1310,11 +1151,7 @@ static int radeon_ttm_debugfs_init(struct radeon_device *rdev)
 	count = ARRAY_SIZE(radeon_ttm_debugfs_list);
 
 #ifdef CONFIG_SWIOTLB
-<<<<<<< HEAD
 	if (!(rdev->need_swiotlb && swiotlb_nr_tbl()))
-=======
-	if (!swiotlb_nr_tbl())
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		--count;
 #endif
 

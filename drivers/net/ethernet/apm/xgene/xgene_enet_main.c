@@ -2034,11 +2034,7 @@ static int xgene_enet_probe(struct platform_device *pdev)
 	int ret;
 
 	ndev = alloc_etherdev_mqs(sizeof(struct xgene_enet_pdata),
-<<<<<<< HEAD
 				  XGENE_NUM_RX_RING, XGENE_NUM_TX_RING);
-=======
-				  XGENE_NUM_TX_RING, XGENE_NUM_RX_RING);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ndev)
 		return -ENOMEM;
 

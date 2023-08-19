@@ -10,11 +10,7 @@
 #ifndef _ASM_PGTABLE_2LEVEL_H
 #define _ASM_PGTABLE_2LEVEL_H
 
-<<<<<<< HEAD
 #define __PAGETABLE_PMD_FOLDED 1
-=======
-#define __PAGETABLE_PMD_FOLDED
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Hardware-wise, we have a two level page table structure, where the first

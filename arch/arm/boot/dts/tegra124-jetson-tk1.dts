@@ -24,11 +24,7 @@
 		stdout-path = "serial0:115200n8";
 	};
 
-<<<<<<< HEAD
 	memory@80000000 {
-=======
-	memory {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x0 0x80000000 0x0 0x80000000>;
 	};
 
@@ -72,13 +68,10 @@
 		};
 	};
 
-<<<<<<< HEAD
 	cec@70015000 {
 		status = "okay";
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gpu@0,57000000 {
 		/*
 		 * Node left disabled on purpose - the bootloader will enable
@@ -1425,11 +1418,7 @@
 			compatible = "realtek,rt5639";
 			reg = <0x1c>;
 			interrupt-parent = <&gpio>;
-<<<<<<< HEAD
 			interrupts = <TEGRA_GPIO(H, 4) IRQ_TYPE_EDGE_FALLING>;
-=======
-			interrupts = <TEGRA_GPIO(H, 4) GPIO_ACTIVE_HIGH>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			realtek,ldo1-en-gpios =
 				<&gpio TEGRA_GPIO(R, 2) GPIO_ACTIVE_HIGH>;
 		};

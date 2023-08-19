@@ -1,20 +1,6 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0-only */
 /*
  * Copyright (c) 2015-2017, 2019, The Linux Foundation. All rights reserved.
-=======
-/*
- * Copyright (c) 2015-2017, 2019, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #ifndef _GOVERNOR_MEMLAT_H
@@ -69,11 +55,8 @@ struct memlat_hwmon {
 	void (*stop_hwmon)(struct memlat_hwmon *hw);
 	unsigned long (*get_cnt)(struct memlat_hwmon *hw);
 	struct device_node *(*get_child_of_node)(struct device *dev);
-<<<<<<< HEAD
 	void (*request_update_ms)(struct memlat_hwmon *hw,
 				  unsigned int update_ms);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct device *dev;
 	struct device_node *of_node;
 
@@ -82,10 +65,7 @@ struct memlat_hwmon {
 
 	struct devfreq *df;
 	struct core_dev_map *freq_map;
-<<<<<<< HEAD
 	bool should_ignore_df_monitor;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #ifdef CONFIG_DEVFREQ_GOV_MEMLAT

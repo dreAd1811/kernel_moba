@@ -12,7 +12,6 @@
 
 #define UNCORE_FIXED_EVENT		0xff
 #define UNCORE_PMC_IDX_MAX_GENERIC	8
-<<<<<<< HEAD
 #define UNCORE_PMC_IDX_MAX_FIXED	1
 #define UNCORE_PMC_IDX_MAX_FREERUNNING	1
 #define UNCORE_PMC_IDX_FIXED		UNCORE_PMC_IDX_MAX_GENERIC
@@ -20,10 +19,6 @@
 					UNCORE_PMC_IDX_MAX_FIXED)
 #define UNCORE_PMC_IDX_MAX		(UNCORE_PMC_IDX_FREERUNNING + \
 					UNCORE_PMC_IDX_MAX_FREERUNNING)
-=======
-#define UNCORE_PMC_IDX_FIXED		UNCORE_PMC_IDX_MAX_GENERIC
-#define UNCORE_PMC_IDX_MAX		(UNCORE_PMC_IDX_FIXED + 1)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define UNCORE_PCI_DEV_FULL_DATA(dev, func, type, idx)	\
 		((dev << 24) | (func << 16) | (type << 8) | idx)
@@ -33,11 +28,7 @@
 #define UNCORE_PCI_DEV_TYPE(data)	((data >> 8) & 0xff)
 #define UNCORE_PCI_DEV_IDX(data)	(data & 0xff)
 #define UNCORE_EXTRA_PCI_DEV		0xff
-<<<<<<< HEAD
 #define UNCORE_EXTRA_PCI_DEV_MAX	4
-=======
-#define UNCORE_EXTRA_PCI_DEV_MAX	3
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define UNCORE_EVENT_CONSTRAINT(c, n) EVENT_CONSTRAINT(c, n, 0xff)
 
@@ -49,10 +40,7 @@ struct intel_uncore_ops;
 struct intel_uncore_pmu;
 struct intel_uncore_box;
 struct uncore_event_desc;
-<<<<<<< HEAD
 struct freerunning_counters;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct intel_uncore_type {
 	const char *name;
@@ -60,10 +48,7 @@ struct intel_uncore_type {
 	int num_boxes;
 	int perf_ctr_bits;
 	int fixed_ctr_bits;
-<<<<<<< HEAD
 	int num_freerunning_types;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned perf_ctr;
 	unsigned event_ctl;
 	unsigned event_mask;
@@ -81,10 +66,7 @@ struct intel_uncore_type {
 	struct intel_uncore_pmu *pmus;
 	struct intel_uncore_ops *ops;
 	struct uncore_event_desc *event_descs;
-<<<<<<< HEAD
 	struct freerunning_counters *freerunning;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const struct attribute_group *attr_groups[4];
 	struct pmu *pmu; /* for custom pmu ops */
 };
@@ -126,11 +108,7 @@ struct intel_uncore_extra_reg {
 
 struct intel_uncore_box {
 	int pci_phys_id;
-<<<<<<< HEAD
 	int pkgid;	/* Logical package ID */
-=======
-	int pkgid;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int n_active;	/* number of active events */
 	int n_events;
 	int cpu;	/* cpu to collect events */
@@ -159,7 +137,6 @@ struct uncore_event_desc {
 	const char *config;
 };
 
-<<<<<<< HEAD
 struct freerunning_counters {
 	unsigned int counter_base;
 	unsigned int counter_offset;
@@ -168,8 +145,6 @@ struct freerunning_counters {
 	unsigned int bits;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct pci2phy_map {
 	struct list_head list;
 	int segment;
@@ -198,7 +173,6 @@ static ssize_t __uncore_##_var##_show(struct kobject *kobj,		\
 static struct kobj_attribute format_attr_##_var =			\
 	__ATTR(_name, 0444, __uncore_##_var##_show, NULL)
 
-<<<<<<< HEAD
 static inline bool uncore_pmc_fixed(int idx)
 {
 	return idx == UNCORE_PMC_IDX_FIXED;
@@ -209,8 +183,6 @@ static inline bool uncore_pmc_freerunning(int idx)
 	return idx == UNCORE_PMC_IDX_FREERUNNING;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline unsigned uncore_pci_box_ctl(struct intel_uncore_box *box)
 {
 	return box->pmu->type->box_ctl;
@@ -268,7 +240,6 @@ static inline unsigned uncore_msr_fixed_ctr(struct intel_uncore_box *box)
 	return box->pmu->type->fixed_ctr + uncore_msr_box_offset(box);
 }
 
-<<<<<<< HEAD
 
 /*
  * In the uncore document, there is no event-code assigned to free running
@@ -323,8 +294,6 @@ unsigned int uncore_freerunning_counter(struct intel_uncore_box *box,
 	       pmu->type->freerunning[type].box_offset * pmu->pmu_idx;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline
 unsigned uncore_msr_event_ctl(struct intel_uncore_box *box, int idx)
 {
@@ -387,7 +356,6 @@ static inline int uncore_fixed_ctr_bits(struct intel_uncore_box *box)
 	return box->pmu->type->fixed_ctr_bits;
 }
 
-<<<<<<< HEAD
 static inline
 unsigned int uncore_freerunning_bits(struct intel_uncore_box *box,
 				     struct perf_event *event)
@@ -421,14 +389,11 @@ static inline bool check_valid_freerunning_event(struct intel_uncore_box *box,
 	       (idx < uncore_num_freerunning(box, event));
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int uncore_num_counters(struct intel_uncore_box *box)
 {
 	return box->pmu->type->num_counters;
 }
 
-<<<<<<< HEAD
 static inline bool is_freerunning_event(struct perf_event *event)
 {
 	u64 cfg = event->attr.config;
@@ -447,8 +412,6 @@ static inline int uncore_freerunning_hw_config(struct intel_uncore_box *box,
 	return -EINVAL;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void uncore_disable_box(struct intel_uncore_box *box)
 {
 	if (box->pmu->type->ops->disable_box)
@@ -514,13 +477,10 @@ struct intel_uncore_box *uncore_pmu_to_box(struct intel_uncore_pmu *pmu, int cpu
 u64 uncore_msr_read_counter(struct intel_uncore_box *box, struct perf_event *event);
 void uncore_pmu_start_hrtimer(struct intel_uncore_box *box);
 void uncore_pmu_cancel_hrtimer(struct intel_uncore_box *box);
-<<<<<<< HEAD
 void uncore_pmu_event_start(struct perf_event *event, int flags);
 void uncore_pmu_event_stop(struct perf_event *event, int flags);
 int uncore_pmu_event_add(struct perf_event *event, int flags);
 void uncore_pmu_event_del(struct perf_event *event, int flags);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void uncore_pmu_event_read(struct perf_event *event);
 void uncore_perf_event_update(struct intel_uncore_box *box, struct perf_event *event);
 struct event_constraint *

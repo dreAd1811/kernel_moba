@@ -834,27 +834,9 @@ struct ubi_ainf_peb *ubi_early_get_peb(struct ubi_device *ubi,
 	int err = 0;
 	struct ubi_ainf_peb *aeb, *tmp_aeb;
 
-<<<<<<< HEAD
 	if (!list_empty(&ai->free)) {
 		aeb = list_entry(ai->free.next, struct ubi_ainf_peb, u.list);
 		list_del(&aeb->u.list);
-=======
-	list_for_each_entry_safe(aeb, tmp_aeb, &ai->free, u.list) {
-		list_del(&aeb->u.list);
-		if (aeb->ec == UBI_UNKNOWN) {
-			ubi_err(ubi, "PEB %d in freelist has unknown EC",
-							aeb->pnum);
-			aeb->ec = ai->mean_ec;
-		}
-		err = early_erase_peb(ubi, ai, aeb->pnum, aeb->ec+1);
-		if (err) {
-			ubi_err(ubi, "Erase failed for PEB %d in freelist",
-							aeb->pnum);
-			list_add(&aeb->u.list, &ai->erase);
-		continue;
-		}
-		aeb->ec += 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dbg_bld("return free PEB %d, EC %d", aeb->pnum, aeb->ec);
 		return aeb;
 	}

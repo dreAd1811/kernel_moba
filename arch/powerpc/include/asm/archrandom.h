@@ -28,11 +28,7 @@ static inline int arch_get_random_seed_int(unsigned int *v)
 	unsigned long val;
 	int rc;
 
-<<<<<<< HEAD
 	rc = arch_get_random_long(&val);
-=======
-	rc = arch_get_random_seed_long(&val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc)
 		*v = val;
 

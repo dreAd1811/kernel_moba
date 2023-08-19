@@ -1,19 +1,5 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /* Copyright (c) 2018-2020, The Linux Foundation. All rights reserved.*/
-=======
-/* Copyright (c) 2018-2020, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/cdev.h>
 #include <linux/device.h>
@@ -422,24 +408,16 @@ static ssize_t mhi_uci_read(struct file *file,
 	}
 
 	uci_buf = uci_chan->cur_buf;
-<<<<<<< HEAD
-=======
-	spin_unlock_bh(&uci_chan->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Copy the buffer to user space */
 	to_copy = min_t(size_t, count, uci_chan->rx_size);
 	ptr = uci_buf->data + (uci_buf->len - uci_chan->rx_size);
-<<<<<<< HEAD
 	spin_unlock_bh(&uci_chan->lock);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = copy_to_user(buf, ptr, to_copy);
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	spin_lock_bh(&uci_chan->lock);
 	/* Buffer already queued from diff thread while we dropped lock ? */
 	if (to_copy && !uci_chan->rx_size) {
@@ -448,17 +426,11 @@ static ssize_t mhi_uci_read(struct file *file,
 		goto read_error;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MSG_VERB("Copied %lu of %lu bytes\n", to_copy, uci_chan->rx_size);
 	uci_chan->rx_size -= to_copy;
 
 	/* we finished with this buffer, queue it back to hardware */
 	if (!uci_chan->rx_size) {
-<<<<<<< HEAD
-=======
-		spin_lock_bh(&uci_chan->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		uci_chan->cur_buf = NULL;
 
 		if (uci_dev->enabled)
@@ -473,14 +445,8 @@ static ssize_t mhi_uci_read(struct file *file,
 			kfree(uci_buf->data);
 			goto read_error;
 		}
-<<<<<<< HEAD
 	}
 	spin_unlock_bh(&uci_chan->lock);
-=======
-
-		spin_unlock_bh(&uci_chan->lock);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	MSG_VERB("Returning %lu bytes\n", to_copy);
 
@@ -655,11 +621,7 @@ static int mhi_uci_probe(struct mhi_device *mhi_dev,
 		spin_lock_init(&uci_chan->lock);
 		init_waitqueue_head(&uci_chan->wq);
 		INIT_LIST_HEAD(&uci_chan->pending);
-<<<<<<< HEAD
 	}
-=======
-	};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	uci_dev->mtu = min_t(size_t, id->driver_data, mhi_dev->mtu);
 	uci_dev->actual_mtu = uci_dev->mtu -  sizeof(struct uci_buf);
@@ -713,11 +675,7 @@ static void mhi_dl_xfer_cb(struct mhi_device *mhi_dev,
 	spin_unlock_irqrestore(&uci_chan->lock, flags);
 
 	if (mhi_dev->dev.power.wakeup)
-<<<<<<< HEAD
 		pm_wakeup_hard_event(&mhi_dev->dev);
-=======
-		__pm_wakeup_event(mhi_dev->dev.power.wakeup, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	wake_up(&uci_chan->wq);
 }

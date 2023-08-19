@@ -94,11 +94,7 @@ static int create_strip_zones(struct mddev *mddev, struct r0conf **private_conf)
 	char b[BDEVNAME_SIZE];
 	char b2[BDEVNAME_SIZE];
 	struct r0conf *conf = kzalloc(sizeof(*conf), GFP_KERNEL);
-<<<<<<< HEAD
 	unsigned short blksize = 512;
-=======
-	unsigned blksize = 512;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	*private_conf = ERR_PTR(-ENOMEM);
 	if (!conf)
@@ -156,12 +152,6 @@ static int create_strip_zones(struct mddev *mddev, struct r0conf **private_conf)
 
 	if (conf->nr_strip_zones == 1) {
 		conf->layout = RAID0_ORIG_LAYOUT;
-<<<<<<< HEAD
-=======
-	} else if (mddev->layout == RAID0_ORIG_LAYOUT ||
-		   mddev->layout == RAID0_ALT_MULTIZONE_LAYOUT) {
-		conf->layout = mddev->layout;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (default_layout == RAID0_ORIG_LAYOUT ||
 		   default_layout == RAID0_ALT_MULTIZONE_LAYOUT) {
 		conf->layout = default_layout;
@@ -185,7 +175,6 @@ static int create_strip_zones(struct mddev *mddev, struct r0conf **private_conf)
 	}
 
 	err = -ENOMEM;
-<<<<<<< HEAD
 	conf->strip_zone = kcalloc(conf->nr_strip_zones,
 				   sizeof(struct strip_zone),
 				   GFP_KERNEL);
@@ -194,14 +183,6 @@ static int create_strip_zones(struct mddev *mddev, struct r0conf **private_conf)
 	conf->devlist = kzalloc(array3_size(sizeof(struct md_rdev *),
 					    conf->nr_strip_zones,
 					    mddev->raid_disks),
-=======
-	conf->strip_zone = kzalloc(sizeof(struct strip_zone)*
-				conf->nr_strip_zones, GFP_KERNEL);
-	if (!conf->strip_zone)
-		goto abort;
-	conf->devlist = kzalloc(sizeof(struct md_rdev*)*
-				conf->nr_strip_zones*mddev->raid_disks,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				GFP_KERNEL);
 	if (!conf->devlist)
 		goto abort;
@@ -436,15 +417,9 @@ static int raid0_run(struct mddev *mddev)
 				discard_supported = true;
 		}
 		if (!discard_supported)
-<<<<<<< HEAD
 			blk_queue_flag_clear(QUEUE_FLAG_DISCARD, mddev->queue);
 		else
 			blk_queue_flag_set(QUEUE_FLAG_DISCARD, mddev->queue);
-=======
-			queue_flag_clear_unlocked(QUEUE_FLAG_DISCARD, mddev->queue);
-		else
-			queue_flag_set_unlocked(QUEUE_FLAG_DISCARD, mddev->queue);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* calculate array device size */
@@ -522,11 +497,7 @@ static void raid0_handle_discard(struct mddev *mddev, struct bio *bio)
 	if (bio_end_sector(bio) > zone->zone_end) {
 		struct bio *split = bio_split(bio,
 			zone->zone_end - bio->bi_iter.bi_sector, GFP_NOIO,
-<<<<<<< HEAD
 			&mddev->bio_set);
-=======
-			mddev->bio_set);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bio_chain(split, bio);
 		generic_make_request(bio);
 		bio = split;
@@ -592,10 +563,7 @@ static void raid0_handle_discard(struct mddev *mddev, struct bio *bio)
 			trace_block_bio_remap(bdev_get_queue(rdev->bdev),
 				discard_bio, disk_devt(mddev->gendisk),
 				bio->bi_iter.bi_sector);
-<<<<<<< HEAD
 		bio_clear_flag(bio, BIO_QUEUE_ENTERED);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		generic_make_request(discard_bio);
 	}
 	bio_endio(bio);
@@ -635,12 +603,8 @@ static bool raid0_make_request(struct mddev *mddev, struct bio *bio)
 	sector = bio_sector;
 
 	if (sectors < bio_sectors(bio)) {
-<<<<<<< HEAD
 		struct bio *split = bio_split(bio, sectors, GFP_NOIO,
 					      &mddev->bio_set);
-=======
-		struct bio *split = bio_split(bio, sectors, GFP_NOIO, mddev->bio_set);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bio_chain(split, bio);
 		generic_make_request(bio);
 		bio = split;
@@ -656,11 +620,7 @@ static bool raid0_make_request(struct mddev *mddev, struct bio *bio)
 		tmp_dev = map_sector(mddev, zone, sector, &sector);
 		break;
 	default:
-<<<<<<< HEAD
 		WARN("md/raid0:%s: Invalid layout\n", mdname(mddev));
-=======
-		WARN(1, "md/raid0:%s: Invalid layout\n", mdname(mddev));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bio_io_error(bio);
 		return true;
 	}
@@ -674,10 +634,7 @@ static bool raid0_make_request(struct mddev *mddev, struct bio *bio)
 				disk_devt(mddev->gendisk), bio_sector);
 	mddev_check_writesame(mddev, bio);
 	mddev_check_write_zeroes(mddev, bio);
-<<<<<<< HEAD
 	bio_clear_flag(bio, BIO_QUEUE_ENTERED);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	generic_make_request(bio);
 	return true;
 }

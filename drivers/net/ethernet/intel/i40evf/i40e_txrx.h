@@ -1,39 +1,10 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
 /* Copyright(c) 2013 - 2018 Intel Corporation. */
-=======
-/*******************************************************************************
- *
- * Intel Ethernet Controller XL710 Family Linux Virtual Function Driver
- * Copyright(c) 2013 - 2016 Intel Corporation.
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms and conditions of the GNU General Public License,
- * version 2, as published by the Free Software Foundation.
- *
- * This program is distributed in the hope it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
- * more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * The full GNU General Public License is included in this distribution in
- * the file called "COPYING".
- *
- * Contact Information:
- * e1000-devel Mailing List <e1000-devel@lists.sourceforge.net>
- * Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497
- *
- ******************************************************************************/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifndef _I40E_TXRX_H_
 #define _I40E_TXRX_H_
 
 /* Interrupt Throttling and Rate Limiting Goodies */
-<<<<<<< HEAD
 #define I40E_DEFAULT_IRQ_WORK      256
 
 /* The datasheet for the X710 and XL710 indicate that the maximum value for
@@ -58,35 +29,11 @@
 #define I40E_ITR_RX_DEF		(I40E_ITR_20K | I40E_ITR_DYNAMIC)
 #define I40E_ITR_TX_DEF		(I40E_ITR_20K | I40E_ITR_DYNAMIC)
 
-=======
-
-#define I40E_MAX_ITR               0x0FF0  /* reg uses 2 usec resolution */
-#define I40E_MIN_ITR               0x0001  /* reg uses 2 usec resolution */
-#define I40E_ITR_100K              0x0005
-#define I40E_ITR_50K               0x000A
-#define I40E_ITR_20K               0x0019
-#define I40E_ITR_18K               0x001B
-#define I40E_ITR_8K                0x003E
-#define I40E_ITR_4K                0x007A
-#define I40E_MAX_INTRL             0x3B    /* reg uses 4 usec resolution */
-#define I40E_ITR_RX_DEF            I40E_ITR_20K
-#define I40E_ITR_TX_DEF            I40E_ITR_20K
-#define I40E_ITR_DYNAMIC           0x8000  /* use top bit as a flag */
-#define I40E_MIN_INT_RATE          250     /* ~= 1000000 / (I40E_MAX_ITR * 2) */
-#define I40E_MAX_INT_RATE          500000  /* == 1000000 / (I40E_MIN_ITR * 2) */
-#define I40E_DEFAULT_IRQ_WORK      256
-#define ITR_TO_REG(setting) ((setting & ~I40E_ITR_DYNAMIC) >> 1)
-#define ITR_IS_DYNAMIC(setting) (!!(setting & I40E_ITR_DYNAMIC))
-#define ITR_REG_TO_USEC(itr_reg) (itr_reg << 1)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* 0x40 is the enable bit for interrupt rate limiting, and must be set if
  * the value of the rate limit is non-zero
  */
 #define INTRL_ENA                  BIT(6)
-<<<<<<< HEAD
 #define I40E_MAX_INTRL             0x3B    /* reg uses 4 usec resolution */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define INTRL_REG_TO_USEC(intrl) ((intrl & ~INTRL_ENA) << 2)
 #define INTRL_USEC_TO_REG(set) ((set) ? ((set) >> 2) | INTRL_ENA : 0)
 #define I40E_INTRL_8K              125     /* 8000 ints/sec */
@@ -225,11 +172,7 @@ static inline bool i40e_test_staterr(union i40e_rx_desc *rx_desc,
 }
 
 /* How many Rx Buffers do we bundle into one write to the hardware ? */
-<<<<<<< HEAD
 #define I40E_RX_BUFFER_WRITE	32	/* Must be power of 2 */
-=======
-#define I40E_RX_BUFFER_WRITE	16	/* Must be power of 2 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define I40E_RX_INCREMENT(r, i) \
 	do {					\
 		(i)++;				\
@@ -298,11 +241,7 @@ static inline unsigned int i40e_txd_use_count(unsigned int size)
 }
 
 /* Tx Descriptors needed, worst case */
-<<<<<<< HEAD
 #define DESC_NEEDED (MAX_SKB_FRAGS + 6)
-=======
-#define DESC_NEEDED (MAX_SKB_FRAGS + 4)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define I40E_MIN_DESC_PENDING	4
 
 #define I40E_TX_FLAGS_HW_VLAN		BIT(1)
@@ -355,10 +294,7 @@ struct i40e_tx_queue_stats {
 	u64 tx_done_old;
 	u64 tx_linearize;
 	u64 tx_force_wb;
-<<<<<<< HEAD
 	int prev_pkt_ctr;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 tx_lost_interrupt;
 };
 
@@ -373,10 +309,7 @@ struct i40e_rx_queue_stats {
 enum i40e_ring_state_t {
 	__I40E_TX_FDIR_INIT_DONE,
 	__I40E_TX_XPS_INIT_DONE,
-<<<<<<< HEAD
 	__I40E_RING_STATE_NBITS /* must be last */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* some useful defines for virtchannel interface, which
@@ -400,11 +333,7 @@ struct i40e_ring {
 		struct i40e_tx_buffer *tx_bi;
 		struct i40e_rx_buffer *rx_bi;
 	};
-<<<<<<< HEAD
 	DECLARE_BITMAP(state, __I40E_RING_STATE_NBITS);
-=======
-	unsigned long state;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 queue_index;		/* Queue number of ring */
 	u8 dcb_tc;			/* Traffic class of ring */
 	u8 __iomem *tail;
@@ -414,12 +343,7 @@ struct i40e_ring {
 	 * these values always store the USER setting, and must be converted
 	 * before programming to a register.
 	 */
-<<<<<<< HEAD
 	u16 itr_setting;
-=======
-	u16 rx_itr_setting;
-	u16 tx_itr_setting;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	u16 count;			/* Number of descriptors */
 	u16 reg_idx;			/* HW register index of the ring */
@@ -481,7 +405,6 @@ static inline void clear_ring_build_skb_enabled(struct i40e_ring *ring)
 	ring->flags &= ~I40E_RXR_FLAGS_BUILD_SKB_ENABLED;
 }
 
-<<<<<<< HEAD
 #define I40E_ITR_ADAPTIVE_MIN_INC	0x0002
 #define I40E_ITR_ADAPTIVE_MIN_USECS	0x0002
 #define I40E_ITR_ADAPTIVE_MAX_USECS	0x007e
@@ -497,23 +420,6 @@ struct i40e_ring_container {
 	u16 count;
 	u16 target_itr;			/* target ITR setting for ring(s) */
 	u16 current_itr;		/* current ITR setting for ring(s) */
-=======
-enum i40e_latency_range {
-	I40E_LOWEST_LATENCY = 0,
-	I40E_LOW_LATENCY = 1,
-	I40E_BULK_LATENCY = 2,
-};
-
-struct i40e_ring_container {
-	/* array of pointers to rings */
-	struct i40e_ring *ring;
-	unsigned int total_bytes;	/* total bytes processed this int */
-	unsigned int total_packets;	/* total packets processed this int */
-	unsigned long last_itr_update;	/* jiffies of last ITR update */
-	u16 count;
-	enum i40e_latency_range latency_range;
-	u16 itr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* iterator for handling rings in ring container */
@@ -542,10 +448,7 @@ void i40evf_free_rx_resources(struct i40e_ring *rx_ring);
 int i40evf_napi_poll(struct napi_struct *napi, int budget);
 void i40evf_force_wb(struct i40e_vsi *vsi, struct i40e_q_vector *q_vector);
 u32 i40evf_get_tx_pending(struct i40e_ring *ring, bool in_sw);
-<<<<<<< HEAD
 void i40evf_detect_recover_hung(struct i40e_vsi *vsi);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int __i40evf_maybe_stop_tx(struct i40e_ring *tx_ring, int size);
 bool __i40evf_chk_linearize(struct sk_buff *skb);
 

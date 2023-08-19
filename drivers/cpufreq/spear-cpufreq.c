@@ -177,11 +177,7 @@ static int spear_cpufreq_probe(struct platform_device *pdev)
 
 	np = of_cpu_device_node_get(0);
 	if (!np) {
-<<<<<<< HEAD
 		pr_err("No cpu node found\n");
-=======
-		pr_err("No cpu node found");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 	}
 
@@ -191,11 +187,7 @@ static int spear_cpufreq_probe(struct platform_device *pdev)
 
 	prop = of_find_property(np, "cpufreq_tbl", NULL);
 	if (!prop || !prop->value) {
-<<<<<<< HEAD
 		pr_err("Invalid cpufreq_tbl\n");
-=======
-		pr_err("Invalid cpufreq_tbl");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -ENODEV;
 		goto out_put_node;
 	}
@@ -203,11 +195,7 @@ static int spear_cpufreq_probe(struct platform_device *pdev)
 	cnt = prop->length / sizeof(u32);
 	val = prop->value;
 
-<<<<<<< HEAD
 	freq_tbl = kcalloc(cnt + 1, sizeof(*freq_tbl), GFP_KERNEL);
-=======
-	freq_tbl = kzalloc(sizeof(*freq_tbl) * (cnt + 1), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!freq_tbl) {
 		ret = -ENOMEM;
 		goto out_put_node;

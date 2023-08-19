@@ -16,16 +16,8 @@
  * sum := addr + size;  carry? --> flag = true;
  * if (sum >= addr_limit) flag = true;
  */
-<<<<<<< HEAD
 #define __access_ok(addr, size)		\
 	(__addr_ok((addr) + (size)))
-=======
-#define __access_ok(addr, size)	({				\
-	unsigned long __ao_a = (addr), __ao_b = (size);		\
-	unsigned long __ao_end = __ao_a + __ao_b - !!__ao_b;	\
-	__ao_end >= __ao_a && __addr_ok(__ao_end); })
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define access_ok(type, addr, size)	\
 	(__chk_user_ptr(addr),		\
 	 __access_ok((unsigned long __force)(addr), (size)))

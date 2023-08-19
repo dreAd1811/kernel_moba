@@ -76,11 +76,7 @@ MODULE_AUTHOR("Donald Becker / Paul Gortmaker");
 MODULE_DESCRIPTION("PCI NE2000 clone driver");
 MODULE_LICENSE("GPL");
 
-<<<<<<< HEAD
 module_param_named(msg_enable, ne2k_msg_enable, uint, 0444);
-=======
-module_param_named(msg_enable, ne2k_msg_enable, uint, (S_IRUSR|S_IRGRP|S_IROTH));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 module_param_array(options, int, NULL, 0);
 module_param_array(full_duplex, int, NULL, 0);
 MODULE_PARM_DESC(msg_enable, "Debug message level (see linux/netdevice.h for bitmap)");

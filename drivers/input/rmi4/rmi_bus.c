@@ -9,11 +9,8 @@
 
 #include <linux/kernel.h>
 #include <linux/device.h>
-<<<<<<< HEAD
 #include <linux/irq.h>
 #include <linux/irqdomain.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/list.h>
 #include <linux/pm.h>
 #include <linux/rmi.h>
@@ -172,7 +169,6 @@ static inline void rmi_function_of_probe(struct rmi_function *fn)
 {}
 #endif
 
-<<<<<<< HEAD
 static struct irq_chip rmi_irq_chip = {
 	.name = "rmi4",
 };
@@ -206,8 +202,6 @@ static int rmi_create_function_irq(struct rmi_function *fn,
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int rmi_function_probe(struct device *dev)
 {
 	struct rmi_function *fn = to_rmi_function(dev);
@@ -219,7 +213,6 @@ static int rmi_function_probe(struct device *dev)
 
 	if (handler->probe) {
 		error = handler->probe(fn);
-<<<<<<< HEAD
 		if (error)
 			return error;
 	}
@@ -228,9 +221,6 @@ static int rmi_function_probe(struct device *dev)
 		error = rmi_create_function_irq(fn, handler);
 		if (error)
 			return error;
-=======
-		return error;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -282,24 +272,18 @@ err_put_device:
 
 void rmi_unregister_function(struct rmi_function *fn)
 {
-<<<<<<< HEAD
 	int i;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rmi_dbg(RMI_DEBUG_CORE, &fn->dev, "Unregistering F%02X.\n",
 			fn->fd.function_number);
 
 	device_del(&fn->dev);
 	of_node_put(fn->dev.of_node);
 	put_device(&fn->dev);
-<<<<<<< HEAD
 
 	for (i = 0; i < fn->num_of_irqs; i++)
 		irq_dispose_mapping(fn->irq[i]);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -491,7 +475,3 @@ MODULE_AUTHOR("Christopher Heiny <cheiny@synaptics.com");
 MODULE_AUTHOR("Andrew Duggan <aduggan@synaptics.com");
 MODULE_DESCRIPTION("RMI bus");
 MODULE_LICENSE("GPL");
-<<<<<<< HEAD
-=======
-MODULE_VERSION(RMI_DRIVER_VERSION);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -534,14 +534,9 @@ static int acpi_processor_get_throttling_states(struct acpi_processor *pr)
 
 	pr->throttling.state_count = tss->package.count;
 	pr->throttling.states_tss =
-<<<<<<< HEAD
 	    kmalloc_array(tss->package.count,
 			  sizeof(struct acpi_processor_tx_tss),
 			  GFP_KERNEL);
-=======
-	    kmalloc(sizeof(struct acpi_processor_tx_tss) * tss->package.count,
-		    GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!pr->throttling.states_tss) {
 		result = -ENOMEM;
 		goto end;
@@ -915,7 +910,6 @@ static long __acpi_processor_get_throttling(void *data)
 	return pr->throttling.acpi_processor_get_throttling(pr);
 }
 
-<<<<<<< HEAD
 static int call_on_cpu(int cpu, long (*fn)(void *), void *arg, bool direct)
 {
 	if (direct || (is_percpu_thread() && cpu == smp_processor_id()))
@@ -923,8 +917,6 @@ static int call_on_cpu(int cpu, long (*fn)(void *), void *arg, bool direct)
 	return work_on_cpu(cpu, fn, arg);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int acpi_processor_get_throttling(struct acpi_processor *pr)
 {
 	if (!pr)

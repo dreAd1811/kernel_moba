@@ -10,7 +10,6 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-<<<<<<< HEAD
 #include <linux/ahci_platform.h>
 #include <linux/clk-provider.h>
 #include <linux/clk.h>
@@ -31,29 +30,6 @@
 #include "cpuidle.h"
 #include "sram.h"
 
-=======
-#include <linux/init.h>
-#include <linux/platform_data/syscon.h>
-#include <linux/platform_device.h>
-#include <linux/dma-contiguous.h>
-#include <linux/serial_8250.h>
-#include <linux/ahci_platform.h>
-#include <linux/clk.h>
-#include <linux/reboot.h>
-#include <linux/dmaengine.h>
-
-#include <mach/cputype.h>
-#include <mach/common.h>
-#include <mach/time.h>
-#include <mach/da8xx.h>
-#include <mach/clock.h>
-#include "cpuidle.h"
-#include "sram.h"
-
-#include "clock.h"
-#include "asp.h"
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DA8XX_TPCC_BASE			0x01c00000
 #define DA8XX_TPTC0_BASE		0x01c08000
 #define DA8XX_TPTC1_BASE		0x01c08400
@@ -275,11 +251,7 @@ int __init da830_register_edma(struct edma_rsv_info *rsv)
 	da8xx_edma0_pdata.slavecnt = ARRAY_SIZE(da830_edma_map);
 
 	edma_pdev = platform_device_register_full(&da8xx_edma0_device);
-<<<<<<< HEAD
 	return PTR_ERR_OR_ZERO(edma_pdev);
-=======
-	return IS_ERR(edma_pdev) ? PTR_ERR(edma_pdev) : 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct dma_slave_map da850_edma0_map[] = {
@@ -324,11 +296,7 @@ int __init da850_register_edma(struct edma_rsv_info *rsv[2])
 	da850_edma1_pdata.slavecnt = ARRAY_SIZE(da850_edma1_map);
 
 	edma_pdev = platform_device_register_full(&da850_edma1_device);
-<<<<<<< HEAD
 	return PTR_ERR_OR_ZERO(edma_pdev);
-=======
-	return IS_ERR(edma_pdev) ? PTR_ERR(edma_pdev) : 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct resource da8xx_i2c_resources0[] = {
@@ -402,22 +370,6 @@ static struct platform_device da8xx_wdt_device = {
 	.resource	= da8xx_watchdog_resources,
 };
 
-<<<<<<< HEAD
-=======
-void da8xx_restart(enum reboot_mode mode, const char *cmd)
-{
-	struct device *dev;
-
-	dev = bus_find_device_by_name(&platform_bus_type, NULL, "davinci-wdt");
-	if (!dev) {
-		pr_err("%s: failed to find watchdog device\n", __func__);
-		return;
-	}
-
-	davinci_watchdog_reset(to_platform_device(dev));
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int __init da8xx_register_watchdog(void)
 {
 	return platform_device_register(&da8xx_wdt_device);
@@ -752,7 +704,6 @@ static struct resource da8xx_gpio_resources[] = {
 	},
 	{ /* interrupt */
 		.start	= IRQ_DA8XX_GPIO0,
-<<<<<<< HEAD
 		.end	= IRQ_DA8XX_GPIO0,
 		.flags	= IORESOURCE_IRQ,
 	},
@@ -793,8 +744,6 @@ static struct resource da8xx_gpio_resources[] = {
 	},
 	{
 		.start	= IRQ_DA8XX_GPIO8,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.end	= IRQ_DA8XX_GPIO8,
 		.flags	= IORESOURCE_IRQ,
 	},
@@ -1134,7 +1083,6 @@ int __init da8xx_register_spi_bus(int instance, unsigned num_chipselect)
 }
 
 #ifdef CONFIG_ARCH_DAVINCI_DA850
-<<<<<<< HEAD
 int __init da850_register_sata_refclk(int rate)
 {
 	struct clk *clk;
@@ -1144,28 +1092,6 @@ int __init da850_register_sata_refclk(int rate)
 		return PTR_ERR(clk);
 
 	return clk_register_clkdev(clk, "refclk", "ahci_da850");
-=======
-static struct clk sata_refclk = {
-	.name		= "sata_refclk",
-	.set_rate	= davinci_simple_set_rate,
-};
-
-static struct clk_lookup sata_refclk_lookup =
-		CLK("ahci_da850", "refclk", &sata_refclk);
-
-int __init da850_register_sata_refclk(int rate)
-{
-	int ret;
-
-	sata_refclk.rate = rate;
-	ret = clk_register(&sata_refclk);
-	if (ret)
-		return ret;
-
-	clkdev_add(&sata_refclk_lookup);
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct resource da850_sata_resources[] = {
@@ -1210,7 +1136,6 @@ int __init da850_register_sata(unsigned long refclkpn)
 }
 #endif
 
-<<<<<<< HEAD
 static struct regmap *da8xx_cfgchip;
 
 static const struct regmap_config da8xx_cfgchip_config __initconst = {
@@ -1237,31 +1162,4 @@ struct regmap * __init da8xx_get_cfgchip(void)
 					&da8xx_cfgchip_config);
 
 	return da8xx_cfgchip;
-=======
-static struct syscon_platform_data da8xx_cfgchip_platform_data = {
-	.label	= "cfgchip",
-};
-
-static struct resource da8xx_cfgchip_resources[] = {
-	{
-		.start	= DA8XX_SYSCFG0_BASE + DA8XX_CFGCHIP0_REG,
-		.end	= DA8XX_SYSCFG0_BASE + DA8XX_CFGCHIP4_REG + 3,
-		.flags	= IORESOURCE_MEM,
-	},
-};
-
-static struct platform_device da8xx_cfgchip_device = {
-	.name	= "syscon",
-	.id	= -1,
-	.dev	= {
-		.platform_data	= &da8xx_cfgchip_platform_data,
-	},
-	.num_resources	= ARRAY_SIZE(da8xx_cfgchip_resources),
-	.resource	= da8xx_cfgchip_resources,
-};
-
-int __init da8xx_register_cfgchip(void)
-{
-	return platform_device_register(&da8xx_cfgchip_device);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

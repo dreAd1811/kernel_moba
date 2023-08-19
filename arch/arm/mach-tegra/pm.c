@@ -192,21 +192,13 @@ void tegra_idle_lp2_last(void)
 {
 	tegra_pm_set(TEGRA_SUSPEND_LP2);
 
-<<<<<<< HEAD
 	cpu_cluster_pm_enter();
-=======
-	cpu_cluster_pm_enter(0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	suspend_cpu_complex();
 
 	cpu_suspend(PHYS_OFFSET - PAGE_OFFSET, &tegra_sleep_cpu);
 
 	restore_cpu_complex();
-<<<<<<< HEAD
 	cpu_cluster_pm_exit();
-=======
-	cpu_cluster_pm_exit(0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 enum tegra_suspend_mode tegra_pm_validate_suspend_mode(

@@ -31,7 +31,6 @@ To build and run the tests with a single command, use::
 
 Note that some tests will require root privileges.
 
-<<<<<<< HEAD
 Build and run from user specific object directory (make O=dir)::
 
   $ make O=/tmp/kselftest kselftest
@@ -43,8 +42,6 @@ Build and run KBUILD_OUTPUT directory (make KBUILD_OUTPUT=)::
 The above commands run the tests and print pass/fail summary to make it
 easier to understand the test results. Please find the detailed individual
 test results for each test in /tmp/testname file(s).
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Running a subset of selftests
 =============================
@@ -60,7 +57,6 @@ You can specify multiple tests to build and run::
 
   $  make TARGETS="size timers" kselftest
 
-<<<<<<< HEAD
 Build and run from user specific object directory (make O=dir)::
 
   $ make O=/tmp/kselftest TARGETS="size timers" kselftest
@@ -76,12 +72,6 @@ test results for each test in /tmp/testname file(s).
 See the top-level tools/testing/selftests/Makefile for the list of all
 possible targets.
 
-=======
-See the top-level tools/testing/selftests/Makefile for the list of all
-possible targets.
-
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Running the full range hotplug selftests
 ========================================
 
@@ -145,7 +135,6 @@ Contributing new tests (details)
  * Use TEST_GEN_XXX if such binaries or files are generated during
    compiling.
 
-<<<<<<< HEAD
    TEST_PROGS, TEST_GEN_PROGS mean it is the executable tested by
    default.
 
@@ -157,17 +146,11 @@ Contributing new tests (details)
 
    TEST_CUSTOM_PROGS and TEST_PROGS will be run by common run_tests.
 
-=======
-   TEST_PROGS, TEST_GEN_PROGS mean it is the excutable tested by
-   default.
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    TEST_PROGS_EXTENDED, TEST_GEN_PROGS_EXTENDED mean it is the
    executable which is not tested by default.
    TEST_FILES, TEST_GEN_FILES mean it is the file which is used by
    test.
 
-<<<<<<< HEAD
  * First use the headers inside the kernel source and/or git repo, and then the
    system headers.  Headers for the kernel release as opposed to headers
    installed by the distro on the system should be the primary focus to be able
@@ -178,8 +161,6 @@ Contributing new tests (details)
 
    e.g: tools/testing/selftests/android/ion/config
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Test Harness
 ============
 

@@ -1,18 +1,10 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * hypervisor.c - /sys/hypervisor subsystem.
  *
  * Copyright (C) IBM Corp. 2006
  * Copyright (C) 2007 Greg Kroah-Hartman <gregkh@suse.de>
  * Copyright (C) 2007 Novell Inc.
-<<<<<<< HEAD
-=======
- *
- * This file is released under the GPLv2
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/kobject.h>

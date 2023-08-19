@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * kirkwood-pogo_e02.dts - Device tree file for Pogoplug E02
  *
@@ -11,12 +8,6 @@
  *  Arch Linux ARM by Oleg Rakhmanov <moonman.ca@gmail.com>
  *  OpenWrt by Felix Kaechele <heffer@fedoraproject.org>
  *
-<<<<<<< HEAD
-=======
- * This file is licensed under the terms of the GNU General Public
- * License version 2.  This program is licensed "as is" without any
- * warranty of any kind, whether express or implied.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /dts-v1/;

@@ -1,12 +1,6 @@
 # Ignore header name
 ignore define _DVBAUDIO_H_
 
-<<<<<<< HEAD
-=======
-# Typedef pointing to structs
-replace typedef audio_karaoke_t :c:type:`audio_karaoke`
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 # Undocumented audio caps, as this is a deprecated API anyway
 ignore define AUDIO_CAP_DTS
 ignore define AUDIO_CAP_LPCM

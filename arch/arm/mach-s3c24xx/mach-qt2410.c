@@ -1,33 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
 //
 // Copyright (C) 2006 by OpenMoko, Inc.
 // Author: Harald Welte <laforge@openmoko.org>
 // All rights reserved.
-=======
-/* linux/arch/arm/mach-s3c2410/mach-qt2410.c
- *
- * Copyright (C) 2006 by OpenMoko, Inc.
- * Author: Harald Welte <laforge@openmoko.org>
- * All rights reserved.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License as
- * published by the Free Software Foundation; either version 2 of
- * the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
- * MA 02111-1307 USA
- *
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/kernel.h>
 #include <linux/types.h>
@@ -36,10 +11,7 @@
 #include <linux/timer.h>
 #include <linux/init.h>
 #include <linux/gpio.h>
-<<<<<<< HEAD
 #include <linux/gpio/machine.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/device.h>
 #include <linux/platform_device.h>
 #include <linux/serial_core.h>
@@ -223,26 +195,15 @@ static struct platform_device qt2410_led = {
 /* SPI */
 
 static struct spi_gpio_platform_data spi_gpio_cfg = {
-<<<<<<< HEAD
 	.num_chipselect	= 1,
 };
 
 static struct platform_device qt2410_spi = {
 	.name		= "spi_gpio",
-=======
-	.sck		= S3C2410_GPG(7),
-	.mosi		= S3C2410_GPG(6),
-	.miso		= S3C2410_GPG(5),
-};
-
-static struct platform_device qt2410_spi = {
-	.name		= "spi-gpio",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.id		= 1,
 	.dev.platform_data = &spi_gpio_cfg,
 };
 
-<<<<<<< HEAD
 static struct gpiod_lookup_table qt2410_spi_gpiod_table = {
 	.dev_id         = "spi_gpio",
 	.table          = {
@@ -258,8 +219,6 @@ static struct gpiod_lookup_table qt2410_spi_gpiod_table = {
 	},
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Board devices */
 
 static struct platform_device *qt2410_devices[] __initdata = {
@@ -378,13 +337,7 @@ static void __init qt2410_machine_init(void)
 	s3c24xx_udc_set_platdata(&qt2410_udc_cfg);
 	s3c_i2c0_set_platdata(NULL);
 
-<<<<<<< HEAD
 	gpiod_add_lookup_table(&qt2410_spi_gpiod_table);
-=======
-	WARN_ON(gpio_request(S3C2410_GPB(5), "spi cs"));
-	gpio_direction_output(S3C2410_GPB(5), 1);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	platform_add_devices(qt2410_devices, ARRAY_SIZE(qt2410_devices));
 	s3c_pm_init();
 }

@@ -83,12 +83,8 @@ static void bcma_core_pcie2_hw_ltr_war(struct bcma_drv_pcie2 *pcie2)
 		bcma_core_pcie2_set_ltr_vals(pcie2);
 
 		/* TODO:
-<<<<<<< HEAD
 		 *si_core_wrapperreg(pcie2, 3, 0x60, 0x8080, 0);
 		 */
-=======
-		si_core_wrapperreg(pcie2, 3, 0x60, 0x8080, 0); */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* enable the LTR */
 		devstsctr2 |= PCIE2_CAP_DEVSTSCTRL2_LTRENAB;

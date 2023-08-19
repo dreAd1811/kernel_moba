@@ -1,21 +1,10 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0+ */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * vsp1_hgt.h  --  R-Car VSP1 Histogram Generator 2D
  *
  * Copyright (C) 2016 Renesas Electronics Corporation
  *
  * Contact: Niklas Söderlund (niklas.soderlund@ragnatech.se)
-<<<<<<< HEAD
-=======
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #ifndef __VSP1_HGT_H__
 #define __VSP1_HGT_H__

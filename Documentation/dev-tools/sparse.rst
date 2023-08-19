@@ -67,11 +67,7 @@ __releases - The specified lock is held on function entry, but not exit.
 
 If the function enters and exits without the lock held, acquiring and
 releasing the lock inside the function in a balanced way, no
-<<<<<<< HEAD
 annotation is needed.  The three annotations above are for cases where
-=======
-annotation is needed.  The tree annotations above are for cases where
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 sparse would otherwise report a context imbalance.
 
 Getting sparse

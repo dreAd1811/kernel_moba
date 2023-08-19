@@ -194,12 +194,7 @@ struct adt7475_data {
 	struct mutex lock;
 
 	unsigned long measure_updated;
-<<<<<<< HEAD
 	bool valid;
-=======
-	unsigned long limits_updated;
-	char valid;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	u8 config4;
 	u8 config5;
@@ -301,16 +296,9 @@ static inline u16 volt2reg(int channel, long volt, u8 bypass_attn)
 	long reg;
 
 	if (bypass_attn & (1 << channel))
-<<<<<<< HEAD
 		reg = (volt * 1024) / 2250;
 	else
 		reg = (volt * r[1] * 1024) / ((r[0] + r[1]) * 2250);
-=======
-		reg = DIV_ROUND_CLOSEST(volt * 1024, 2250);
-	else
-		reg = DIV_ROUND_CLOSEST(volt * r[1] * 1024,
-					(r[0] + r[1]) * 2250);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return clamp_val(reg, 0, 1023) & (0xff << 2);
 }
 
@@ -341,12 +329,9 @@ static ssize_t show_voltage(struct device *dev, struct device_attribute *attr,
 	struct sensor_device_attribute_2 *sattr = to_sensor_dev_attr_2(attr);
 	unsigned short val;
 
-<<<<<<< HEAD
 	if (IS_ERR(data))
 		return PTR_ERR(data);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (sattr->nr) {
 	case ALARM:
 		return sprintf(buf, "%d\n",
@@ -402,12 +387,9 @@ static ssize_t show_temp(struct device *dev, struct device_attribute *attr,
 	struct sensor_device_attribute_2 *sattr = to_sensor_dev_attr_2(attr);
 	int out;
 
-<<<<<<< HEAD
 	if (IS_ERR(data))
 		return PTR_ERR(data);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (sattr->nr) {
 	case HYSTERSIS:
 		mutex_lock(&data->lock);
@@ -652,12 +634,9 @@ static ssize_t show_point2(struct device *dev, struct device_attribute *attr,
 	struct sensor_device_attribute_2 *sattr = to_sensor_dev_attr_2(attr);
 	int out, val;
 
-<<<<<<< HEAD
 	if (IS_ERR(data))
 		return PTR_ERR(data);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&data->lock);
 	out = (data->range[sattr->index] >> 4) & 0x0F;
 	val = reg2temp(data, data->temp[AUTOMIN][sattr->index]);
@@ -716,12 +695,9 @@ static ssize_t show_tach(struct device *dev, struct device_attribute *attr,
 	struct sensor_device_attribute_2 *sattr = to_sensor_dev_attr_2(attr);
 	int out;
 
-<<<<<<< HEAD
 	if (IS_ERR(data))
 		return PTR_ERR(data);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (sattr->nr == ALARM)
 		out = (data->alarms >> (sattr->index + 10)) & 1;
 	else
@@ -759,12 +735,9 @@ static ssize_t show_pwm(struct device *dev, struct device_attribute *attr,
 	struct adt7475_data *data = adt7475_update_device(dev);
 	struct sensor_device_attribute_2 *sattr = to_sensor_dev_attr_2(attr);
 
-<<<<<<< HEAD
 	if (IS_ERR(data))
 		return PTR_ERR(data);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return sprintf(buf, "%d\n", data->pwm[sattr->nr][sattr->index]);
 }
 
@@ -774,12 +747,9 @@ static ssize_t show_pwmchan(struct device *dev, struct device_attribute *attr,
 	struct adt7475_data *data = adt7475_update_device(dev);
 	struct sensor_device_attribute_2 *sattr = to_sensor_dev_attr_2(attr);
 
-<<<<<<< HEAD
 	if (IS_ERR(data))
 		return PTR_ERR(data);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return sprintf(buf, "%d\n", data->pwmchan[sattr->index]);
 }
 
@@ -789,12 +759,9 @@ static ssize_t show_pwmctrl(struct device *dev, struct device_attribute *attr,
 	struct adt7475_data *data = adt7475_update_device(dev);
 	struct sensor_device_attribute_2 *sattr = to_sensor_dev_attr_2(attr);
 
-<<<<<<< HEAD
 	if (IS_ERR(data))
 		return PTR_ERR(data);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return sprintf(buf, "%d\n", data->pwmctl[sattr->index]);
 }
 
@@ -999,7 +966,6 @@ static ssize_t show_pwmfreq(struct device *dev, struct device_attribute *attr,
 {
 	struct adt7475_data *data = adt7475_update_device(dev);
 	struct sensor_device_attribute_2 *sattr = to_sensor_dev_attr_2(attr);
-<<<<<<< HEAD
 	int idx;
 
 	if (IS_ERR(data))
@@ -1008,12 +974,6 @@ static ssize_t show_pwmfreq(struct device *dev, struct device_attribute *attr,
 			ARRAY_SIZE(pwmfreq_table) - 1);
 
 	return sprintf(buf, "%d\n", pwmfreq_table[idx]);
-=======
-	int i = clamp_val(data->range[sattr->index] & 0xf, 0,
-			  ARRAY_SIZE(pwmfreq_table) - 1);
-
-	return sprintf(buf, "%d\n", pwmfreq_table[i]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static ssize_t set_pwmfreq(struct device *dev, struct device_attribute *attr,
@@ -1049,13 +1009,10 @@ static ssize_t pwm_use_point2_pwm_at_crit_show(struct device *dev,
 					char *buf)
 {
 	struct adt7475_data *data = adt7475_update_device(dev);
-<<<<<<< HEAD
 
 	if (IS_ERR(data))
 		return PTR_ERR(data);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return sprintf(buf, "%d\n", !!(data->config4 & CONFIG4_MAXDUTY));
 }
 
@@ -1110,13 +1067,10 @@ static ssize_t cpu0_vid_show(struct device *dev,
 			     struct device_attribute *devattr, char *buf)
 {
 	struct adt7475_data *data = adt7475_update_device(dev);
-<<<<<<< HEAD
 
 	if (IS_ERR(data))
 		return PTR_ERR(data);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return sprintf(buf, "%d\n", vid_from_reg(data->vid, data->vrm));
 }
 
@@ -1467,7 +1421,6 @@ static void adt7475_remove_files(struct i2c_client *client,
 		sysfs_remove_group(&client->dev.kobj, &vid_attr_group);
 }
 
-<<<<<<< HEAD
 static int adt7475_update_limits(struct i2c_client *client)
 {
 	struct adt7475_data *data = i2c_get_clientdata(client);
@@ -1583,8 +1536,6 @@ static int adt7475_update_limits(struct i2c_client *client)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int adt7475_probe(struct i2c_client *client,
 			 const struct i2c_device_id *id)
 {
@@ -1762,14 +1713,11 @@ static int adt7475_probe(struct i2c_client *client,
 			 (data->bypass_attn & (1 << 3)) ? " in3" : "",
 			 (data->bypass_attn & (1 << 4)) ? " in4" : "");
 
-<<<<<<< HEAD
 	/* Limits and settings, should never change update more than once */
 	ret = adt7475_update_limits(client);
 	if (ret)
 		goto eremove;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 eremove:
@@ -1866,17 +1814,12 @@ static void adt7475_read_pwm(struct i2c_client *client, int index)
 	}
 }
 
-<<<<<<< HEAD
 static int adt7475_update_measure(struct device *dev)
-=======
-static struct adt7475_data *adt7475_update_device(struct device *dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct i2c_client *client = to_i2c_client(dev);
 	struct adt7475_data *data = i2c_get_clientdata(client);
 	u16 ext;
 	int i;
-<<<<<<< HEAD
 	int ret;
 
 	ret = adt7475_read(REG_STATUS2);
@@ -1973,15 +1916,12 @@ static struct adt7475_data *adt7475_update_device(struct device *dev)
 	struct i2c_client *client = to_i2c_client(dev);
 	struct adt7475_data *data = i2c_get_clientdata(client);
 	int ret;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&data->lock);
 
 	/* Measurement values update every 2 seconds */
 	if (time_after(jiffies, data->measure_updated + HZ * 2) ||
 	    !data->valid) {
-<<<<<<< HEAD
 		ret = adt7475_update_measure(dev);
 		if (ret) {
 			data->valid = false;
@@ -1990,111 +1930,6 @@ static struct adt7475_data *adt7475_update_device(struct device *dev)
 		}
 		data->measure_updated = jiffies;
 		data->valid = true;
-=======
-		data->alarms = adt7475_read(REG_STATUS2) << 8;
-		data->alarms |= adt7475_read(REG_STATUS1);
-
-		ext = (adt7475_read(REG_EXTEND2) << 8) |
-			adt7475_read(REG_EXTEND1);
-		for (i = 0; i < ADT7475_VOLTAGE_COUNT; i++) {
-			if (!(data->has_voltage & (1 << i)))
-				continue;
-			data->voltage[INPUT][i] =
-				(adt7475_read(VOLTAGE_REG(i)) << 2) |
-				((ext >> (i * 2)) & 3);
-		}
-
-		for (i = 0; i < ADT7475_TEMP_COUNT; i++)
-			data->temp[INPUT][i] =
-				(adt7475_read(TEMP_REG(i)) << 2) |
-				((ext >> ((i + 5) * 2)) & 3);
-
-		if (data->has_voltage & (1 << 5)) {
-			data->alarms |= adt7475_read(REG_STATUS4) << 24;
-			ext = adt7475_read(REG_EXTEND3);
-			data->voltage[INPUT][5] = adt7475_read(REG_VTT) << 2 |
-				((ext >> 4) & 3);
-		}
-
-		for (i = 0; i < ADT7475_TACH_COUNT; i++) {
-			if (i == 3 && !data->has_fan4)
-				continue;
-			data->tach[INPUT][i] =
-				adt7475_read_word(client, TACH_REG(i));
-		}
-
-		/* Updated by hw when in auto mode */
-		for (i = 0; i < ADT7475_PWM_COUNT; i++) {
-			if (i == 1 && !data->has_pwm2)
-				continue;
-			data->pwm[INPUT][i] = adt7475_read(PWM_REG(i));
-		}
-
-		if (data->has_vid)
-			data->vid = adt7475_read(REG_VID) & 0x3f;
-
-		data->measure_updated = jiffies;
-	}
-
-	/* Limits and settings, should never change update every 60 seconds */
-	if (time_after(jiffies, data->limits_updated + HZ * 60) ||
-	    !data->valid) {
-		data->config4 = adt7475_read(REG_CONFIG4);
-		data->config5 = adt7475_read(REG_CONFIG5);
-
-		for (i = 0; i < ADT7475_VOLTAGE_COUNT; i++) {
-			if (!(data->has_voltage & (1 << i)))
-				continue;
-			/* Adjust values so they match the input precision */
-			data->voltage[MIN][i] =
-				adt7475_read(VOLTAGE_MIN_REG(i)) << 2;
-			data->voltage[MAX][i] =
-				adt7475_read(VOLTAGE_MAX_REG(i)) << 2;
-		}
-
-		if (data->has_voltage & (1 << 5)) {
-			data->voltage[MIN][5] = adt7475_read(REG_VTT_MIN) << 2;
-			data->voltage[MAX][5] = adt7475_read(REG_VTT_MAX) << 2;
-		}
-
-		for (i = 0; i < ADT7475_TEMP_COUNT; i++) {
-			/* Adjust values so they match the input precision */
-			data->temp[MIN][i] =
-				adt7475_read(TEMP_MIN_REG(i)) << 2;
-			data->temp[MAX][i] =
-				adt7475_read(TEMP_MAX_REG(i)) << 2;
-			data->temp[AUTOMIN][i] =
-				adt7475_read(TEMP_TMIN_REG(i)) << 2;
-			data->temp[THERM][i] =
-				adt7475_read(TEMP_THERM_REG(i)) << 2;
-			data->temp[OFFSET][i] =
-				adt7475_read(TEMP_OFFSET_REG(i));
-		}
-		adt7475_read_hystersis(client);
-
-		for (i = 0; i < ADT7475_TACH_COUNT; i++) {
-			if (i == 3 && !data->has_fan4)
-				continue;
-			data->tach[MIN][i] =
-				adt7475_read_word(client, TACH_MIN_REG(i));
-		}
-
-		for (i = 0; i < ADT7475_PWM_COUNT; i++) {
-			if (i == 1 && !data->has_pwm2)
-				continue;
-			data->pwm[MAX][i] = adt7475_read(PWM_MAX_REG(i));
-			data->pwm[MIN][i] = adt7475_read(PWM_MIN_REG(i));
-			/* Set the channel and control information */
-			adt7475_read_pwm(client, i);
-		}
-
-		data->range[0] = adt7475_read(TEMP_TRANGE_REG(0));
-		data->range[1] = adt7475_read(TEMP_TRANGE_REG(1));
-		data->range[2] = adt7475_read(TEMP_TRANGE_REG(2));
-
-		data->limits_updated = jiffies;
-		data->valid = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	mutex_unlock(&data->lock);

@@ -47,11 +47,7 @@ static int dvb_usbv2_download_firmware(struct dvb_usb_device *d,
 	ret = request_firmware(&fw, name, &d->udev->dev);
 	if (ret < 0) {
 		dev_err(&d->udev->dev,
-<<<<<<< HEAD
 				"%s: Did not find the firmware file '%s' (status %d). You can use <kernel_dir>/scripts/get_dvb_firmware to get the firmware\n",
-=======
-				"%s: Did not find the firmware file '%s'. Please see linux/Documentation/dvb/ for more details on firmware-problems. Status %d\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				KBUILD_MODNAME, name, ret);
 		goto err;
 	}
@@ -632,12 +628,7 @@ static int dvb_usb_fe_sleep(struct dvb_frontend *fe)
 	}
 
 	ret = dvb_usbv2_device_power_ctrl(d, 0);
-<<<<<<< HEAD
 
-=======
-	if (ret < 0)
-		goto err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err:
 	if (!adap->suspend_resume_active) {
 		adap->active_fe = -1;
@@ -863,11 +854,6 @@ static int dvb_usbv2_exit(struct dvb_usb_device *d)
 	dvb_usbv2_remote_exit(d);
 	dvb_usbv2_adapter_exit(d);
 	dvb_usbv2_i2c_exit(d);
-<<<<<<< HEAD
-=======
-	kfree(d->priv);
-	kfree(d);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -946,11 +932,7 @@ int dvb_usbv2_probe(struct usb_interface *intf,
 	if (intf->cur_altsetting->desc.bInterfaceNumber !=
 			d->props->bInterfaceNumber) {
 		ret = -ENODEV;
-<<<<<<< HEAD
 		goto err_kfree_d;
-=======
-		goto err_free_all;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	mutex_init(&d->usb_mutex);
@@ -962,7 +944,6 @@ int dvb_usbv2_probe(struct usb_interface *intf,
 			dev_err(&d->udev->dev, "%s: kzalloc() failed\n",
 					KBUILD_MODNAME);
 			ret = -ENOMEM;
-<<<<<<< HEAD
 			goto err_kfree_d;
 		}
 	}
@@ -973,12 +954,6 @@ int dvb_usbv2_probe(struct usb_interface *intf,
 			goto err_kfree_priv;
 	}
 
-=======
-			goto err_free_all;
-		}
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (d->props->identify_state) {
 		const char *name = NULL;
 		ret = d->props->identify_state(d, &name);
@@ -1030,15 +1005,12 @@ exit:
 	return 0;
 err_free_all:
 	dvb_usbv2_exit(d);
-<<<<<<< HEAD
 	if (d->props->disconnect)
 		d->props->disconnect(d);
 err_kfree_priv:
 	kfree(d->priv);
 err_kfree_d:
 	kfree(d);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err:
 	dev_dbg(&udev->dev, "%s: failed=%d\n", __func__, ret);
 	return ret;
@@ -1059,15 +1031,12 @@ void dvb_usbv2_disconnect(struct usb_interface *intf)
 
 	dvb_usbv2_exit(d);
 
-<<<<<<< HEAD
 	if (d->props->disconnect)
 		d->props->disconnect(d);
 
 	kfree(d->priv);
 	kfree(d);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pr_info("%s: '%s:%s' successfully deinitialized and disconnected\n",
 		KBUILD_MODNAME, drvname, devname);
 	kfree(devname);

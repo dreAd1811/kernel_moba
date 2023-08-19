@@ -24,7 +24,6 @@
 
 #include "timer-of.h"
 
-<<<<<<< HEAD
 /**
  * timer_of_irq_exit - Release the interrupt
  * @of_irq: an of_timer_irq structure pointer
@@ -32,9 +31,6 @@
  * Free the irq resource
  */
 static __init void timer_of_irq_exit(struct of_timer_irq *of_irq)
-=======
-static __init void timer_irq_exit(struct of_timer_irq *of_irq)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct timer_of *to = container_of(of_irq, struct timer_of, of_irq);
 
@@ -44,7 +40,6 @@ static __init void timer_irq_exit(struct of_timer_irq *of_irq)
 		free_irq(of_irq->irq, clkevt);
 }
 
-<<<<<<< HEAD
 /**
  * timer_of_irq_init - Request the interrupt
  * @np: a device tree node pointer
@@ -63,10 +58,6 @@ static __init void timer_irq_exit(struct of_timer_irq *of_irq)
  */
 static __init int timer_of_irq_init(struct device_node *np,
 				    struct of_timer_irq *of_irq)
-=======
-static __init int timer_irq_init(struct device_node *np,
-				 struct of_timer_irq *of_irq)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret;
 	struct timer_of *to = container_of(of_irq, struct timer_of, of_irq);
@@ -103,7 +94,6 @@ static __init int timer_irq_init(struct device_node *np,
 	return 0;
 }
 
-<<<<<<< HEAD
 /**
  * timer_of_clk_exit - Release the clock resources
  * @of_clk: a of_timer_clk structure pointer
@@ -111,16 +101,12 @@ static __init int timer_irq_init(struct device_node *np,
  * Disables and releases the refcount on the clk
  */
 static __init void timer_of_clk_exit(struct of_timer_clk *of_clk)
-=======
-static __init void timer_clk_exit(struct of_timer_clk *of_clk)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	of_clk->rate = 0;
 	clk_disable_unprepare(of_clk->clk);
 	clk_put(of_clk->clk);
 }
 
-<<<<<<< HEAD
 /**
  * timer_of_clk_init - Initialize the clock resources
  * @np: a device tree node pointer
@@ -132,10 +118,6 @@ static __init void timer_clk_exit(struct of_timer_clk *of_clk)
  */
 static __init int timer_of_clk_init(struct device_node *np,
 				    struct of_timer_clk *of_clk)
-=======
-static __init int timer_clk_init(struct device_node *np,
-				 struct of_timer_clk *of_clk)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret;
 
@@ -171,16 +153,11 @@ out_clk_put:
 	goto out;
 }
 
-<<<<<<< HEAD
 static __init void timer_of_base_exit(struct of_timer_base *of_base)
-=======
-static __init void timer_base_exit(struct of_timer_base *of_base)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	iounmap(of_base->base);
 }
 
-<<<<<<< HEAD
 static __init int timer_of_base_init(struct device_node *np,
 				     struct of_timer_base *of_base)
 {
@@ -189,16 +166,6 @@ static __init int timer_of_base_init(struct device_node *np,
 		of_iomap(np, of_base->index);
 	if (IS_ERR(of_base->base)) {
 		pr_err("Failed to iomap (%s)\n", of_base->name);
-=======
-static __init int timer_base_init(struct device_node *np,
-				  struct of_timer_base *of_base)
-{
-	const char *name = of_base->name ? of_base->name : np->full_name;
-
-	of_base->base = of_io_request_and_map(np, of_base->index, name);
-	if (IS_ERR(of_base->base)) {
-		pr_err("Failed to iomap (%s)\n", name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return PTR_ERR(of_base->base);
 	}
 
@@ -211,33 +178,21 @@ int __init timer_of_init(struct device_node *np, struct timer_of *to)
 	int flags = 0;
 
 	if (to->flags & TIMER_OF_BASE) {
-<<<<<<< HEAD
 		ret = timer_of_base_init(np, &to->of_base);
-=======
-		ret = timer_base_init(np, &to->of_base);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			goto out_fail;
 		flags |= TIMER_OF_BASE;
 	}
 
 	if (to->flags & TIMER_OF_CLOCK) {
-<<<<<<< HEAD
 		ret = timer_of_clk_init(np, &to->of_clk);
-=======
-		ret = timer_clk_init(np, &to->of_clk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			goto out_fail;
 		flags |= TIMER_OF_CLOCK;
 	}
 
 	if (to->flags & TIMER_OF_IRQ) {
-<<<<<<< HEAD
 		ret = timer_of_irq_init(np, &to->of_irq);
-=======
-		ret = timer_irq_init(np, &to->of_irq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			goto out_fail;
 		flags |= TIMER_OF_IRQ;
@@ -245,17 +200,13 @@ int __init timer_of_init(struct device_node *np, struct timer_of *to)
 
 	if (!to->clkevt.name)
 		to->clkevt.name = np->name;
-<<<<<<< HEAD
 
 	to->np = np;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 
 out_fail:
 	if (flags & TIMER_OF_IRQ)
-<<<<<<< HEAD
 		timer_of_irq_exit(&to->of_irq);
 
 	if (flags & TIMER_OF_CLOCK)
@@ -284,14 +235,3 @@ void __init timer_of_cleanup(struct timer_of *to)
 	if (to->flags & TIMER_OF_BASE)
 		timer_of_base_exit(&to->of_base);
 }
-=======
-		timer_irq_exit(&to->of_irq);
-
-	if (flags & TIMER_OF_CLOCK)
-		timer_clk_exit(&to->of_clk);
-
-	if (flags & TIMER_OF_BASE)
-		timer_base_exit(&to->of_base);
-	return ret;
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

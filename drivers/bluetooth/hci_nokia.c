@@ -29,11 +29,7 @@
 #include <linux/slab.h>
 #include <linux/string.h>
 #include <linux/types.h>
-<<<<<<< HEAD
 #include <asm/unaligned.h>
-=======
-#include <linux/unaligned/le_struct.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <net/bluetooth/bluetooth.h>
 #include <net/bluetooth/hci_core.h>
 
@@ -481,11 +477,6 @@ static int nokia_open(struct hci_uart *hu)
 
 	dev_dbg(dev, "protocol open");
 
-<<<<<<< HEAD
-=======
-	serdev_device_open(hu->serdev);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pm_runtime_enable(dev);
 
 	return 0;
@@ -520,10 +511,6 @@ static int nokia_close(struct hci_uart *hu)
 	gpiod_set_value(btdev->wakeup_bt, 0);
 
 	pm_runtime_disable(&btdev->serdev->dev);
-<<<<<<< HEAD
-=======
-	serdev_device_close(btdev->serdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

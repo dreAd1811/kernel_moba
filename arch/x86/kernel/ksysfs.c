@@ -283,11 +283,7 @@ static int __init create_setup_data_nodes(struct kobject *parent)
 	if (ret)
 		goto out_setup_data_kobj;
 
-<<<<<<< HEAD
 	kobjp = kmalloc_array(nr, sizeof(*kobjp), GFP_KERNEL);
-=======
-	kobjp = kmalloc(sizeof(*kobjp) * nr, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!kobjp) {
 		ret = -ENOMEM;
 		goto out_setup_data_kobj;

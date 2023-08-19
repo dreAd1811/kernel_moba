@@ -143,11 +143,7 @@ int mwifiex_send_null_packet(struct mwifiex_private *priv, u8 flags)
 	int ret;
 	struct mwifiex_txinfo *tx_info = NULL;
 
-<<<<<<< HEAD
 	if (test_bit(MWIFIEX_SURPRISE_REMOVED, &adapter->work_flags))
-=======
-	if (adapter->surprise_removed)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -1;
 
 	if (!priv->media_connected)

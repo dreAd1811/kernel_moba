@@ -32,11 +32,7 @@ gm107_fb = {
 	.init_page = gf100_fb_init_page,
 	.intr = gf100_fb_intr,
 	.ram_new = gm107_ram_new,
-<<<<<<< HEAD
 	.default_bigpage = 17,
-=======
-	.memtype_valid = gf100_fb_memtype_valid,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int

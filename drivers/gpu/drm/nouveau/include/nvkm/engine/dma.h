@@ -2,10 +2,7 @@
 #ifndef __NVKM_DMA_H__
 #define __NVKM_DMA_H__
 #include <core/engine.h>
-<<<<<<< HEAD
 #include <core/object.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct nvkm_client;
 
 struct nvkm_dmaobj {
@@ -30,8 +27,5 @@ int nv04_dma_new(struct nvkm_device *, int, struct nvkm_dma **);
 int nv50_dma_new(struct nvkm_device *, int, struct nvkm_dma **);
 int gf100_dma_new(struct nvkm_device *, int, struct nvkm_dma **);
 int gf119_dma_new(struct nvkm_device *, int, struct nvkm_dma **);
-<<<<<<< HEAD
 int gv100_dma_new(struct nvkm_device *, int, struct nvkm_dma **);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

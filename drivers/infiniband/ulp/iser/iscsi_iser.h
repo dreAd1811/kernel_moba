@@ -197,11 +197,7 @@ struct iser_data_buf {
 	struct scatterlist *sg;
 	int                size;
 	unsigned long      data_len;
-<<<<<<< HEAD
 	unsigned int       dma_nents;
-=======
-	int                dma_nents;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* fwd declarations */
@@ -387,13 +383,6 @@ struct iser_device {
 	bool                         remote_inv_sup;
 };
 
-<<<<<<< HEAD
-=======
-#define ISER_CHECK_GUARD	0xc0
-#define ISER_CHECK_REFTAG	0x0f
-#define ISER_CHECK_APPTAG	0x30
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * struct iser_reg_resources - Fast registration recources
  *
@@ -505,10 +494,7 @@ struct ib_conn {
  * @rx_descs:         rx buffers array (cyclic buffer)
  * @num_rx_descs:     number of rx descriptors
  * @scsi_sg_tablesize: scsi host sg_tablesize
-<<<<<<< HEAD
  * @pages_per_mr:     maximum pages available for registration
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct iser_conn {
 	struct ib_conn		     ib_conn;
@@ -531,10 +517,7 @@ struct iser_conn {
 	struct iser_rx_desc	     *rx_descs;
 	u32                          num_rx_descs;
 	unsigned short               scsi_sg_tablesize;
-<<<<<<< HEAD
 	unsigned short               pages_per_mr;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool			     snd_w_inv;
 };
 

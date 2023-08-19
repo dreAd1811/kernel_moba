@@ -27,10 +27,7 @@
 #include <net/udp_tunnel.h>
 #include "efx.h"
 #include "nic.h"
-<<<<<<< HEAD
 #include "io.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "selftest.h"
 #include "sriov.h"
 
@@ -267,23 +264,17 @@ static int efx_check_disabled(struct efx_nic *efx)
 static int efx_process_channel(struct efx_channel *channel, int budget)
 {
 	struct efx_tx_queue *tx_queue;
-<<<<<<< HEAD
 	struct list_head rx_list;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int spent;
 
 	if (unlikely(!channel->enabled))
 		return 0;
 
-<<<<<<< HEAD
 	/* Prepare the batch receive list */
 	EFX_WARN_ON_PARANOID(channel->rx_list != NULL);
 	INIT_LIST_HEAD(&rx_list);
 	channel->rx_list = &rx_list;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	efx_for_each_channel_tx_queue(tx_queue, channel) {
 		tx_queue->pkts_compl = 0;
 		tx_queue->bytes_compl = 0;
@@ -306,13 +297,10 @@ static int efx_process_channel(struct efx_channel *channel, int budget)
 		}
 	}
 
-<<<<<<< HEAD
 	/* Receive any packets we queued up */
 	netif_receive_skb_list(channel->rx_list);
 	channel->rx_list = NULL;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return spent;
 }
 
@@ -362,14 +350,10 @@ static int efx_poll(struct napi_struct *napi, int budget)
 			efx_update_irq_mod(efx, channel);
 		}
 
-<<<<<<< HEAD
 #ifdef CONFIG_RFS_ACCEL
 		/* Perhaps expire some ARFS filters */
 		schedule_work(&channel->filter_work);
 #endif
-=======
-		efx_filter_rfs_expire(channel);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* There is no race here; although napi_disable() will
 		 * only wait for napi_complete(), this isn't a problem
@@ -499,7 +483,6 @@ efx_alloc_channel(struct efx_nic *efx, int i, struct efx_channel *old_channel)
 		tx_queue->channel = channel;
 	}
 
-<<<<<<< HEAD
 #ifdef CONFIG_RFS_ACCEL
 	INIT_WORK(&channel->filter_work, efx_filter_rfs_expire);
 #endif
@@ -507,12 +490,6 @@ efx_alloc_channel(struct efx_nic *efx, int i, struct efx_channel *old_channel)
 	rx_queue = &channel->rx_queue;
 	rx_queue->efx = efx;
 	timer_setup(&rx_queue->slow_fill, efx_rx_slow_fill, 0);
-=======
-	rx_queue = &channel->rx_queue;
-	rx_queue->efx = efx;
-	setup_timer(&rx_queue->slow_fill, efx_rx_slow_fill,
-		    (unsigned long)rx_queue);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return channel;
 }
@@ -545,25 +522,16 @@ efx_copy_channel(const struct efx_channel *old_channel)
 		if (tx_queue->channel)
 			tx_queue->channel = channel;
 		tx_queue->buffer = NULL;
-<<<<<<< HEAD
-=======
-		tx_queue->cb_page = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		memset(&tx_queue->txd, 0, sizeof(tx_queue->txd));
 	}
 
 	rx_queue = &channel->rx_queue;
 	rx_queue->buffer = NULL;
 	memset(&rx_queue->rxd, 0, sizeof(rx_queue->rxd));
-<<<<<<< HEAD
 	timer_setup(&rx_queue->slow_fill, efx_rx_slow_fill, 0);
 #ifdef CONFIG_RFS_ACCEL
 	INIT_WORK(&channel->filter_work, efx_filter_rfs_expire);
 #endif
-=======
-	setup_timer(&rx_queue->slow_fill, efx_rx_slow_fill,
-		    (unsigned long)rx_queue);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return channel;
 }
@@ -597,11 +565,8 @@ static int efx_probe_channel(struct efx_channel *channel)
 			goto fail;
 	}
 
-<<<<<<< HEAD
 	channel->rx_list = NULL;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 fail:
@@ -953,27 +918,20 @@ void efx_schedule_slow_fill(struct efx_rx_queue *rx_queue)
 	mod_timer(&rx_queue->slow_fill, jiffies + msecs_to_jiffies(100));
 }
 
-<<<<<<< HEAD
 static bool efx_default_channel_want_txqs(struct efx_channel *channel)
 {
 	return channel->channel - channel->efx->tx_channel_offset <
 		channel->efx->n_tx_channels;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct efx_channel_type efx_default_channel_type = {
 	.pre_probe		= efx_channel_dummy_op_int,
 	.post_remove		= efx_channel_dummy_op_void,
 	.get_name		= efx_get_channel_name,
 	.copy			= efx_copy_channel,
-<<<<<<< HEAD
 	.want_txqs		= efx_default_channel_want_txqs,
 	.keep_eventq		= false,
 	.want_pio		= true,
-=======
-	.keep_eventq		= false,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int efx_channel_dummy_op_int(struct efx_channel *channel)
@@ -1025,7 +983,6 @@ void efx_link_status_changed(struct efx_nic *efx)
 		netif_info(efx, link, efx->net_dev, "link down\n");
 }
 
-<<<<<<< HEAD
 void efx_link_set_advertising(struct efx_nic *efx,
 			      const unsigned long *advertising)
 {
@@ -1048,25 +1005,11 @@ void efx_link_clear_advertising(struct efx_nic *efx)
 {
 	bitmap_zero(efx->link_advertising, __ETHTOOL_LINK_MODE_MASK_NBITS);
 	efx->wanted_fc &= ~(EFX_FC_TX | EFX_FC_RX);
-=======
-void efx_link_set_advertising(struct efx_nic *efx, u32 advertising)
-{
-	efx->link_advertising = advertising;
-	if (advertising) {
-		if (advertising & ADVERTISED_Pause)
-			efx->wanted_fc |= (EFX_FC_TX | EFX_FC_RX);
-		else
-			efx->wanted_fc &= ~(EFX_FC_TX | EFX_FC_RX);
-		if (advertising & ADVERTISED_Asym_Pause)
-			efx->wanted_fc ^= EFX_FC_TX;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void efx_link_set_wanted_fc(struct efx_nic *efx, u8 wanted_fc)
 {
 	efx->wanted_fc = wanted_fc;
-<<<<<<< HEAD
 	if (efx->link_advertising[0]) {
 		if (wanted_fc & EFX_FC_RX)
 			efx->link_advertising[0] |= (ADVERTISED_Pause |
@@ -1076,17 +1019,6 @@ void efx_link_set_wanted_fc(struct efx_nic *efx, u8 wanted_fc)
 						      ADVERTISED_Asym_Pause);
 		if (wanted_fc & EFX_FC_TX)
 			efx->link_advertising[0] ^= ADVERTISED_Asym_Pause;
-=======
-	if (efx->link_advertising) {
-		if (wanted_fc & EFX_FC_RX)
-			efx->link_advertising |= (ADVERTISED_Pause |
-						  ADVERTISED_Asym_Pause);
-		else
-			efx->link_advertising &= ~(ADVERTISED_Pause |
-						   ADVERTISED_Asym_Pause);
-		if (wanted_fc & EFX_FC_TX)
-			efx->link_advertising ^= ADVERTISED_Asym_Pause;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -1358,11 +1290,7 @@ static int efx_init_io(struct efx_nic *efx)
 
 	netif_dbg(efx, probe, efx->net_dev, "initialising I/O\n");
 
-<<<<<<< HEAD
 	bar = efx->type->mem_bar(efx);
-=======
-	bar = efx->type->mem_bar;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rc = pci_enable_device(pci_dev);
 	if (rc) {
@@ -1373,14 +1301,8 @@ static int efx_init_io(struct efx_nic *efx)
 
 	pci_set_master(pci_dev);
 
-<<<<<<< HEAD
 	/* Set the PCI DMA mask.  Try all possibilities from our genuine mask
 	 * down to 32 bits, because some architectures will allow 40 bit
-=======
-	/* Set the PCI DMA mask.  Try all possibilities from our
-	 * genuine mask down to 32 bits, because some architectures
-	 * (e.g. x86_64 with iommu_sac_force set) will allow 40 bit
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * masks event though they reject 46 bit masks.
 	 */
 	while (dma_mask > 0x7fffffffUL) {
@@ -1442,11 +1364,7 @@ static void efx_fini_io(struct efx_nic *efx)
 	}
 
 	if (efx->membase_phys) {
-<<<<<<< HEAD
 		bar = efx->type->mem_bar(efx);
-=======
-		bar = efx->type->mem_bar;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pci_release_region(efx->pci_dev, bar);
 		efx->membase_phys = 0;
 	}
@@ -1456,7 +1374,6 @@ static void efx_fini_io(struct efx_nic *efx)
 		pci_disable_device(efx->pci_dev);
 }
 
-<<<<<<< HEAD
 void efx_set_default_rx_indir_table(struct efx_nic *efx,
 				    struct efx_rss_context *ctx)
 {
@@ -1464,14 +1381,6 @@ void efx_set_default_rx_indir_table(struct efx_nic *efx,
 
 	for (i = 0; i < ARRAY_SIZE(ctx->rx_indir_table); i++)
 		ctx->rx_indir_table[i] =
-=======
-void efx_set_default_rx_indir_table(struct efx_nic *efx)
-{
-	size_t i;
-
-	for (i = 0; i < ARRAY_SIZE(efx->rx_indir_table); i++)
-		efx->rx_indir_table[i] =
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ethtool_rxfh_indir_default(i, efx->rss_spread);
 }
 
@@ -1622,10 +1531,7 @@ static int efx_probe_interrupts(struct efx_nic *efx)
 	}
 
 	/* Assign extra channels if possible */
-<<<<<<< HEAD
 	efx->n_extra_tx_channels = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	j = efx->n_channels;
 	for (i = 0; i < EFX_MAX_EXTRA_CHANNELS; i++) {
 		if (!efx->extra_channel_type[i])
@@ -1637,11 +1543,8 @@ static int efx_probe_interrupts(struct efx_nic *efx)
 			--j;
 			efx_get_channel(efx, j)->type =
 				efx->extra_channel_type[i];
-<<<<<<< HEAD
 			if (efx_channel_has_tx_queues(efx_get_channel(efx, j)))
 				efx->n_extra_tx_channels++;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -1659,7 +1562,6 @@ static int efx_probe_interrupts(struct efx_nic *efx)
 	return 0;
 }
 
-<<<<<<< HEAD
 #if defined(CONFIG_SMP)
 static void efx_set_interrupt_affinity(struct efx_nic *efx)
 {
@@ -1692,8 +1594,6 @@ efx_clear_interrupt_affinity(struct efx_nic *efx __attribute__ ((unused)))
 }
 #endif /* CONFIG_SMP */
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int efx_soft_enable_interrupts(struct efx_nic *efx)
 {
 	struct efx_channel *channel, *end_channel;
@@ -1893,15 +1793,9 @@ static int efx_probe_nic(struct efx_nic *efx)
 	} while (rc == -EAGAIN);
 
 	if (efx->n_channels > 1)
-<<<<<<< HEAD
 		netdev_rss_key_fill(efx->rss_context.rx_hash_key,
 				    sizeof(efx->rss_context.rx_hash_key));
 	efx_set_default_rx_indir_table(efx, &efx->rss_context);
-=======
-		netdev_rss_key_fill(&efx->rx_hash_key,
-				    sizeof(efx->rx_hash_key));
-	efx_set_default_rx_indir_table(efx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	netif_set_real_num_tx_queues(efx->net_dev, efx->n_tx_channels);
 	netif_set_real_num_rx_queues(efx->net_dev, efx->n_rx_channels);
@@ -1932,10 +1826,6 @@ static int efx_probe_filters(struct efx_nic *efx)
 {
 	int rc;
 
-<<<<<<< HEAD
-=======
-	spin_lock_init(&efx->filter_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	init_rwsem(&efx->filter_sem);
 	mutex_lock(&efx->mac_lock);
 	down_write(&efx->filter_sem);
@@ -1993,15 +1883,6 @@ static void efx_remove_filters(struct efx_nic *efx)
 	up_write(&efx->filter_sem);
 }
 
-<<<<<<< HEAD
-=======
-static void efx_restore_filters(struct efx_nic *efx)
-{
-	down_read(&efx->filter_sem);
-	efx->type->filter_table_restore(efx);
-	up_read(&efx->filter_sem);
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**************************************************************************
  *
@@ -2327,32 +2208,6 @@ static void efx_fini_napi(struct efx_nic *efx)
 
 /**************************************************************************
  *
-<<<<<<< HEAD
-=======
- * Kernel netpoll interface
- *
- *************************************************************************/
-
-#ifdef CONFIG_NET_POLL_CONTROLLER
-
-/* Although in the common case interrupts will be disabled, this is not
- * guaranteed. However, all our work happens inside the NAPI callback,
- * so no locking is required.
- */
-static void efx_netpoll(struct net_device *net_dev)
-{
-	struct efx_nic *efx = netdev_priv(net_dev);
-	struct efx_channel *channel;
-
-	efx_for_each_channel(channel, efx)
-		efx_schedule_channel(channel);
-}
-
-#endif
-
-/**************************************************************************
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Kernel net device interface
  *
  *************************************************************************/
@@ -2507,16 +2362,11 @@ static int efx_set_features(struct net_device *net_dev, netdev_features_t data)
 			return rc;
 	}
 
-<<<<<<< HEAD
 	/* If Rx VLAN filter is changed, update filters via mac_reconfigure.
 	 * If rx-fcs is changed, mac_reconfigure updates that too.
 	 */
 	if ((net_dev->features ^ data) & (NETIF_F_HW_VLAN_CTAG_FILTER |
 					  NETIF_F_RXFCS)) {
-=======
-	/* If Rx VLAN filter is changed, update filters via mac_reconfigure */
-	if ((net_dev->features ^ data) & NETIF_F_HW_VLAN_CTAG_FILTER) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* efx_set_rx_mode() will schedule MAC work to update filters
 		 * when a new features are finally set in net_dev.
 		 */
@@ -2636,12 +2486,6 @@ static const struct net_device_ops efx_netdev_ops = {
 #endif
 	.ndo_get_phys_port_id   = efx_get_phys_port_id,
 	.ndo_get_phys_port_name	= efx_get_phys_port_name,
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_NET_POLL_CONTROLLER
-	.ndo_poll_controller = efx_netpoll,
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ndo_setup_tc		= efx_setup_tc,
 #ifdef CONFIG_RFS_ACCEL
 	.ndo_rx_flow_steer	= efx_filter_rfs,
@@ -2824,11 +2668,8 @@ void efx_reset_down(struct efx_nic *efx, enum reset_type method)
 	efx_disable_interrupts(efx);
 
 	mutex_lock(&efx->mac_lock);
-<<<<<<< HEAD
 	down_write(&efx->filter_sem);
 	mutex_lock(&efx->rss_lock);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (efx->port_initialized && method != RESET_TYPE_INVISIBLE &&
 	    method != RESET_TYPE_DATAPATH)
 		efx->phy_op->fini(efx);
@@ -2882,17 +2723,11 @@ int efx_reset_up(struct efx_nic *efx, enum reset_type method, bool ok)
 			   " VFs may not function\n", rc);
 #endif
 
-<<<<<<< HEAD
 	if (efx->type->rx_restore_rss_contexts)
 		efx->type->rx_restore_rss_contexts(efx);
 	mutex_unlock(&efx->rss_lock);
 	efx->type->filter_table_restore(efx);
 	up_write(&efx->filter_sem);
-=======
-	down_read(&efx->filter_sem);
-	efx_restore_filters(efx);
-	up_read(&efx->filter_sem);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (efx->type->sriov_reset)
 		efx->type->sriov_reset(efx);
 
@@ -2908,11 +2743,8 @@ int efx_reset_up(struct efx_nic *efx, enum reset_type method, bool ok)
 fail:
 	efx->port_initialized = false;
 
-<<<<<<< HEAD
 	mutex_unlock(&efx->rss_lock);
 	up_write(&efx->filter_sem);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&efx->mac_lock);
 
 	return rc;
@@ -3028,11 +2860,7 @@ static void efx_reset_work(struct work_struct *data)
 	unsigned long pending;
 	enum reset_type method;
 
-<<<<<<< HEAD
 	pending = READ_ONCE(efx->reset_pending);
-=======
-	pending = ACCESS_ONCE(efx->reset_pending);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	method = fls(pending) - 1;
 
 	if (method == RESET_TYPE_MC_BIST)
@@ -3097,11 +2925,7 @@ void efx_schedule_reset(struct efx_nic *efx, enum reset_type type)
 	/* If we're not READY then just leave the flags set as the cue
 	 * to abort probing or reschedule the reset later.
 	 */
-<<<<<<< HEAD
 	if (READ_ONCE(efx->state) != STATE_READY)
-=======
-	if (ACCESS_ONCE(efx->state) != STATE_READY)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	/* efx_process_channel() will no longer read events once a
@@ -3135,13 +2959,10 @@ static const struct pci_device_id efx_pci_table[] = {
 	 .driver_data = (unsigned long) &efx_hunt_a0_nic_type},
 	{PCI_DEVICE(PCI_VENDOR_ID_SOLARFLARE, 0x1a03),  /* SFC9220 VF */
 	 .driver_data = (unsigned long) &efx_hunt_a0_vf_nic_type},
-<<<<<<< HEAD
 	{PCI_DEVICE(PCI_VENDOR_ID_SOLARFLARE, 0x0b03),  /* SFC9250 PF */
 	 .driver_data = (unsigned long) &efx_hunt_a0_nic_type},
 	{PCI_DEVICE(PCI_VENDOR_ID_SOLARFLARE, 0x1b03),  /* SFC9250 VF */
 	 .driver_data = (unsigned long) &efx_hunt_a0_vf_nic_type},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{0}			/* end of list */
 };
 
@@ -3209,7 +3030,6 @@ static int efx_init_struct(struct efx_nic *efx,
 		efx->type->rx_hash_offset - efx->type->rx_prefix_size;
 	efx->rx_packet_ts_offset =
 		efx->type->rx_ts_offset - efx->type->rx_prefix_size;
-<<<<<<< HEAD
 	INIT_LIST_HEAD(&efx->rss_context.list);
 	mutex_init(&efx->rss_lock);
 	spin_lock_init(&efx->stats_lock);
@@ -3224,10 +3044,6 @@ static int efx_init_struct(struct efx_nic *efx,
 	efx->rps_hash_table = kcalloc(EFX_ARFS_HASH_TABLE_SIZE,
 				      sizeof(*efx->rps_hash_table), GFP_KERNEL);
 #endif
-=======
-	spin_lock_init(&efx->stats_lock);
-	mutex_init(&efx->mac_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	efx->phy_op = &efx_dummy_phy_operations;
 	efx->mdio.dev = net_dev;
 	INIT_WORK(&efx->mac_work, efx_mac_work);
@@ -3270,13 +3086,10 @@ static void efx_fini_struct(struct efx_nic *efx)
 {
 	int i;
 
-<<<<<<< HEAD
 #ifdef CONFIG_RFS_ACCEL
 	kfree(efx->rps_hash_table);
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < EFX_MAX_CHANNELS; i++)
 		kfree(efx->channel[i]);
 
@@ -3299,7 +3112,6 @@ void efx_update_sw_stats(struct efx_nic *efx, u64 *stats)
 	stats[GENERIC_STAT_rx_noskb_drops] = atomic_read(&efx->n_rx_noskb_drops);
 }
 
-<<<<<<< HEAD
 bool efx_filter_spec_equal(const struct efx_filter_spec *left,
 			   const struct efx_filter_spec *right)
 {
@@ -3491,8 +3303,6 @@ void efx_free_rss_context_entry(struct efx_rss_context *ctx)
 	kfree(ctx);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**************************************************************************
  *
  * PCI interface
@@ -3511,10 +3321,7 @@ static void efx_pci_remove_main(struct efx_nic *efx)
 	cancel_work_sync(&efx->reset_work);
 
 	efx_disable_interrupts(efx);
-<<<<<<< HEAD
 	efx_clear_interrupt_affinity(efx);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	efx_nic_fini_interrupt(efx);
 	efx_fini_port(efx);
 	efx->type->fini(efx);
@@ -3647,13 +3454,9 @@ static int efx_pci_probe_main(struct efx_nic *efx)
 
 	efx_init_napi(efx);
 
-<<<<<<< HEAD
 	down_write(&efx->filter_sem);
 	rc = efx->type->init(efx);
 	up_write(&efx->filter_sem);
-=======
-	rc = efx->type->init(efx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc) {
 		netif_err(efx, probe, efx->net_dev,
 			  "failed to initialise NIC\n");
@@ -3670,11 +3473,8 @@ static int efx_pci_probe_main(struct efx_nic *efx)
 	rc = efx_nic_init_interrupt(efx);
 	if (rc)
 		goto fail5;
-<<<<<<< HEAD
 
 	efx_set_interrupt_affinity(efx);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rc = efx_enable_interrupts(efx);
 	if (rc)
 		goto fail6;
@@ -3682,10 +3482,7 @@ static int efx_pci_probe_main(struct efx_nic *efx)
 	return 0;
 
  fail6:
-<<<<<<< HEAD
 	efx_clear_interrupt_affinity(efx);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	efx_nic_fini_interrupt(efx);
  fail5:
 	efx_fini_port(efx);
@@ -3715,11 +3512,7 @@ static int efx_pci_probe_post_io(struct efx_nic *efx)
 
 	/* Determine netdevice features */
 	net_dev->features |= (efx->type->offload_features | NETIF_F_SG |
-<<<<<<< HEAD
 			      NETIF_F_TSO | NETIF_F_RXCSUM | NETIF_F_RXALL);
-=======
-			      NETIF_F_TSO | NETIF_F_RXCSUM);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (efx->type->offload_features & (NETIF_F_IPV6_CSUM | NETIF_F_HW_CSUM))
 		net_dev->features |= NETIF_F_TSO6;
 	/* Check whether device supports TSO */
@@ -3730,14 +3523,10 @@ static int efx_pci_probe_post_io(struct efx_nic *efx)
 				   NETIF_F_HIGHDMA | NETIF_F_ALL_TSO |
 				   NETIF_F_RXCSUM);
 
-<<<<<<< HEAD
 	net_dev->hw_features |= net_dev->features & ~efx->fixed_features;
 
 	/* Disable receiving frames with bad FCS, by default. */
 	net_dev->features &= ~NETIF_F_RXALL;
-=======
-	net_dev->hw_features = net_dev->features & ~efx->fixed_features;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Disable VLAN filtering by default.  It may be enforced if
 	 * the feature is fixed (i.e. VLAN filters are required to
@@ -3959,13 +3748,9 @@ static int efx_pm_resume(struct device *dev)
 	rc = efx->type->reset(efx, RESET_TYPE_ALL);
 	if (rc)
 		return rc;
-<<<<<<< HEAD
 	down_write(&efx->filter_sem);
 	rc = efx->type->init(efx);
 	up_write(&efx->filter_sem);
-=======
-	rc = efx->type->init(efx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc)
 		return rc;
 	rc = efx_pm_thaw(dev);

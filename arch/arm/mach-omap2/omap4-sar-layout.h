@@ -28,11 +28,7 @@
 #define L2X0_AUXCTRL_OFFSET			0xff8
 #define L2X0_PREFETCH_CTRL_OFFSET		0xffc
 
-<<<<<<< HEAD
 /* CPUx Wakeup Non-Secure Physical Address offsets in SAR_BANK1 */
-=======
-/* CPUx Wakeup Non-Secure Physical Address offsets in SAR_BANK3 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CPU0_WAKEUP_NS_PA_ADDR_OFFSET		0xa04
 #define CPU1_WAKEUP_NS_PA_ADDR_OFFSET		0xa08
 #define OMAP5_CPU0_WAKEUP_NS_PA_ADDR_OFFSET	0xe00

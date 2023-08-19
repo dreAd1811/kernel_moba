@@ -8,20 +8,13 @@
  * version 2 as published by the Free Software Foundation.
  */
 
-<<<<<<< HEAD
 #include <linux/pm_runtime.h>
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <net/mac80211.h>
 #include <net/netlink.h>
 
 #include "wlcore.h"
 #include "debug.h"
-<<<<<<< HEAD
-=======
-#include "ps.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "hw_ops.h"
 #include "vendor_cmd.h"
 
@@ -63,35 +56,21 @@ wlcore_vendor_cmd_smart_config_start(struct wiphy *wiphy,
 		goto out;
 	}
 
-<<<<<<< HEAD
 	ret = pm_runtime_get_sync(wl->dev);
 	if (ret < 0) {
 		pm_runtime_put_noidle(wl->dev);
 		goto out;
 	}
-=======
-	ret = wl1271_ps_elp_wakeup(wl);
-	if (ret < 0)
-		goto out;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = wlcore_smart_config_start(wl,
 			nla_get_u32(tb[WLCORE_VENDOR_ATTR_GROUP_ID]));
 
-<<<<<<< HEAD
 	pm_runtime_mark_last_busy(wl->dev);
 	pm_runtime_put_autosuspend(wl->dev);
 out:
 	mutex_unlock(&wl->mutex);
 
 	return 0;
-=======
-	wl1271_ps_elp_sleep(wl);
-out:
-	mutex_unlock(&wl->mutex);
-
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int
@@ -112,7 +91,6 @@ wlcore_vendor_cmd_smart_config_stop(struct wiphy *wiphy,
 		goto out;
 	}
 
-<<<<<<< HEAD
 	ret = pm_runtime_get_sync(wl->dev);
 	if (ret < 0) {
 		pm_runtime_put_noidle(wl->dev);
@@ -123,15 +101,6 @@ wlcore_vendor_cmd_smart_config_stop(struct wiphy *wiphy,
 
 	pm_runtime_mark_last_busy(wl->dev);
 	pm_runtime_put_autosuspend(wl->dev);
-=======
-	ret = wl1271_ps_elp_wakeup(wl);
-	if (ret < 0)
-		goto out;
-
-	ret = wlcore_smart_config_stop(wl);
-
-	wl1271_ps_elp_sleep(wl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	mutex_unlock(&wl->mutex);
 
@@ -169,29 +138,19 @@ wlcore_vendor_cmd_smart_config_set_group_key(struct wiphy *wiphy,
 		goto out;
 	}
 
-<<<<<<< HEAD
 	ret = pm_runtime_get_sync(wl->dev);
 	if (ret < 0) {
 		pm_runtime_put_noidle(wl->dev);
 		goto out;
 	}
-=======
-	ret = wl1271_ps_elp_wakeup(wl);
-	if (ret < 0)
-		goto out;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = wlcore_smart_config_set_group_key(wl,
 			nla_get_u32(tb[WLCORE_VENDOR_ATTR_GROUP_ID]),
 			nla_len(tb[WLCORE_VENDOR_ATTR_GROUP_KEY]),
 			nla_data(tb[WLCORE_VENDOR_ATTR_GROUP_KEY]));
 
-<<<<<<< HEAD
 	pm_runtime_mark_last_busy(wl->dev);
 	pm_runtime_put_autosuspend(wl->dev);
-=======
-	wl1271_ps_elp_sleep(wl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	mutex_unlock(&wl->mutex);
 

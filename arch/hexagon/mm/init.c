@@ -39,12 +39,6 @@ unsigned long __phys_offset;	/*  physical kernel offset >> 12  */
 /*  Set as variable to limit PMD copies  */
 int max_kernel_seg = 0x303;
 
-<<<<<<< HEAD
-=======
-/*  think this should be (page_size-1) the way it's used...*/
-unsigned long zero_page_mask;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*  indicate pfn's of high memory  */
 unsigned long highstart_pfn, highend_pfn;
 

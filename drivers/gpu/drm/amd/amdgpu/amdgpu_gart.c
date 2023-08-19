@@ -57,7 +57,6 @@
  */
 
 /**
-<<<<<<< HEAD
  * amdgpu_dummy_page_init - init dummy page used by the driver
  *
  * @adev: amdgpu_device pointer
@@ -80,39 +79,10 @@ static int amdgpu_gart_dummy_page_init(struct amdgpu_device *adev)
 		adev->dummy_page_addr = 0;
 		return -ENOMEM;
 	}
-=======
- * amdgpu_gart_table_ram_alloc - allocate system ram for gart page table
- *
- * @adev: amdgpu_device pointer
- *
- * Allocate system memory for GART page table
- * (r1xx-r3xx, non-pcie r4xx, rs400).  These asics require the
- * gart table to be in system memory.
- * Returns 0 for success, -ENOMEM for failure.
- */
-int amdgpu_gart_table_ram_alloc(struct amdgpu_device *adev)
-{
-	void *ptr;
-
-	ptr = pci_alloc_consistent(adev->pdev, adev->gart.table_size,
-				   &adev->gart.table_addr);
-	if (ptr == NULL) {
-		return -ENOMEM;
-	}
-#ifdef CONFIG_X86
-	if (0) {
-		set_memory_uc((unsigned long)ptr,
-			      adev->gart.table_size >> PAGE_SHIFT);
-	}
-#endif
-	adev->gart.ptr = ptr;
-	memset((void *)adev->gart.ptr, 0, adev->gart.table_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 /**
-<<<<<<< HEAD
  * amdgpu_dummy_page_fini - free dummy page used by the driver
  *
  * @adev: amdgpu_device pointer
@@ -126,32 +96,6 @@ static void amdgpu_gart_dummy_page_fini(struct amdgpu_device *adev)
 	pci_unmap_page(adev->pdev, adev->dummy_page_addr,
 		       PAGE_SIZE, PCI_DMA_BIDIRECTIONAL);
 	adev->dummy_page_addr = 0;
-=======
- * amdgpu_gart_table_ram_free - free system ram for gart page table
- *
- * @adev: amdgpu_device pointer
- *
- * Free system memory for GART page table
- * (r1xx-r3xx, non-pcie r4xx, rs400).  These asics require the
- * gart table to be in system memory.
- */
-void amdgpu_gart_table_ram_free(struct amdgpu_device *adev)
-{
-	if (adev->gart.ptr == NULL) {
-		return;
-	}
-#ifdef CONFIG_X86
-	if (0) {
-		set_memory_wb((unsigned long)adev->gart.ptr,
-			      adev->gart.table_size >> PAGE_SHIFT);
-	}
-#endif
-	pci_free_consistent(adev->pdev, adev->gart.table_size,
-			    (void *)adev->gart.ptr,
-			    adev->gart.table_addr);
-	adev->gart.ptr = NULL;
-	adev->gart.table_addr = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -169,7 +113,6 @@ int amdgpu_gart_table_vram_alloc(struct amdgpu_device *adev)
 	int r;
 
 	if (adev->gart.robj == NULL) {
-<<<<<<< HEAD
 		struct amdgpu_bo_param bp;
 
 		memset(&bp, 0, sizeof(bp));
@@ -181,13 +124,6 @@ int amdgpu_gart_table_vram_alloc(struct amdgpu_device *adev)
 		bp.type = ttm_bo_type_kernel;
 		bp.resv = NULL;
 		r = amdgpu_bo_create(adev, &bp, &adev->gart.robj);
-=======
-		r = amdgpu_bo_create(adev, adev->gart.table_size,
-				     PAGE_SIZE, true, AMDGPU_GEM_DOMAIN_VRAM,
-				     AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED |
-				     AMDGPU_GEM_CREATE_VRAM_CONTIGUOUS,
-				     NULL, NULL, 0, &adev->gart.robj);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (r) {
 			return r;
 		}
@@ -207,21 +143,12 @@ int amdgpu_gart_table_vram_alloc(struct amdgpu_device *adev)
  */
 int amdgpu_gart_table_vram_pin(struct amdgpu_device *adev)
 {
-<<<<<<< HEAD
-=======
-	uint64_t gpu_addr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int r;
 
 	r = amdgpu_bo_reserve(adev->gart.robj, false);
 	if (unlikely(r != 0))
 		return r;
-<<<<<<< HEAD
 	r = amdgpu_bo_pin(adev->gart.robj, AMDGPU_GEM_DOMAIN_VRAM);
-=======
-	r = amdgpu_bo_pin(adev->gart.robj,
-				AMDGPU_GEM_DOMAIN_VRAM, &gpu_addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r) {
 		amdgpu_bo_unreserve(adev->gart.robj);
 		return r;
@@ -230,11 +157,7 @@ int amdgpu_gart_table_vram_pin(struct amdgpu_device *adev)
 	if (r)
 		amdgpu_bo_unpin(adev->gart.robj);
 	amdgpu_bo_unreserve(adev->gart.robj);
-<<<<<<< HEAD
 	adev->gart.table_addr = amdgpu_bo_gpu_offset(adev->gart.robj);
-=======
-	adev->gart.table_addr = gpu_addr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return r;
 }
 
@@ -309,16 +232,11 @@ int amdgpu_gart_unbind(struct amdgpu_device *adev, uint64_t offset,
 	}
 
 	t = offset / AMDGPU_GPU_PAGE_SIZE;
-<<<<<<< HEAD
 	p = t / AMDGPU_GPU_PAGES_IN_CPU_PAGE;
-=======
-	p = t / (PAGE_SIZE / AMDGPU_GPU_PAGE_SIZE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < pages; i++, p++) {
 #ifdef CONFIG_DRM_AMDGPU_GART_DEBUGFS
 		adev->gart.pages[p] = NULL;
 #endif
-<<<<<<< HEAD
 		page_base = adev->dummy_page_addr;
 		if (!adev->gart.ptr)
 			continue;
@@ -326,25 +244,12 @@ int amdgpu_gart_unbind(struct amdgpu_device *adev, uint64_t offset,
 		for (j = 0; j < AMDGPU_GPU_PAGES_IN_CPU_PAGE; j++, t++) {
 			amdgpu_gmc_set_pte_pde(adev, adev->gart.ptr,
 					       t, page_base, flags);
-=======
-		page_base = adev->dummy_page.addr;
-		if (!adev->gart.ptr)
-			continue;
-
-		for (j = 0; j < (PAGE_SIZE / AMDGPU_GPU_PAGE_SIZE); j++, t++) {
-			amdgpu_gart_set_pte_pde(adev, adev->gart.ptr,
-						t, page_base, flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			page_base += AMDGPU_GPU_PAGE_SIZE;
 		}
 	}
 	mb();
-<<<<<<< HEAD
 	amdgpu_asic_flush_hdp(adev, NULL);
 	amdgpu_gmc_flush_gpu_tlb(adev, 0);
-=======
-	amdgpu_gart_flush_gpu_tlb(adev, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -375,13 +280,8 @@ int amdgpu_gart_map(struct amdgpu_device *adev, uint64_t offset,
 
 	for (i = 0; i < pages; i++) {
 		page_base = dma_addr[i];
-<<<<<<< HEAD
 		for (j = 0; j < AMDGPU_GPU_PAGES_IN_CPU_PAGE; j++, t++) {
 			amdgpu_gmc_set_pte_pde(adev, dst, t, page_base, flags);
-=======
-		for (j = 0; j < (PAGE_SIZE / AMDGPU_GPU_PAGE_SIZE); j++, t++) {
-			amdgpu_gart_set_pte_pde(adev, dst, t, page_base, flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			page_base += AMDGPU_GPU_PAGE_SIZE;
 		}
 	}
@@ -417,7 +317,6 @@ int amdgpu_gart_bind(struct amdgpu_device *adev, uint64_t offset,
 
 #ifdef CONFIG_DRM_AMDGPU_GART_DEBUGFS
 	t = offset / AMDGPU_GPU_PAGE_SIZE;
-<<<<<<< HEAD
 	p = t / AMDGPU_GPU_PAGES_IN_CPU_PAGE;
 	for (i = 0; i < pages; i++, p++)
 		adev->gart.pages[p] = pagelist ? pagelist[i] : NULL;
@@ -434,22 +333,6 @@ int amdgpu_gart_bind(struct amdgpu_device *adev, uint64_t offset,
 	mb();
 	amdgpu_asic_flush_hdp(adev, NULL);
 	amdgpu_gmc_flush_gpu_tlb(adev, 0);
-=======
-	p = t / (PAGE_SIZE / AMDGPU_GPU_PAGE_SIZE);
-	for (i = 0; i < pages; i++, p++)
-		adev->gart.pages[p] = pagelist[i];
-#endif
-
-	if (adev->gart.ptr) {
-		r = amdgpu_gart_map(adev, offset, pages, dma_addr, flags,
-			    adev->gart.ptr);
-		if (r)
-			return r;
-	}
-
-	mb();
-	amdgpu_gart_flush_gpu_tlb(adev, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -465,11 +348,7 @@ int amdgpu_gart_init(struct amdgpu_device *adev)
 {
 	int r;
 
-<<<<<<< HEAD
 	if (adev->dummy_page_addr)
-=======
-	if (adev->dummy_page.page)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	/* We need PAGE_SIZE >= AMDGPU_GPU_PAGE_SIZE */
@@ -477,38 +356,21 @@ int amdgpu_gart_init(struct amdgpu_device *adev)
 		DRM_ERROR("Page size is smaller than GPU page size!\n");
 		return -EINVAL;
 	}
-<<<<<<< HEAD
 	r = amdgpu_gart_dummy_page_init(adev);
 	if (r)
 		return r;
 	/* Compute table size */
 	adev->gart.num_cpu_pages = adev->gmc.gart_size / PAGE_SIZE;
 	adev->gart.num_gpu_pages = adev->gmc.gart_size / AMDGPU_GPU_PAGE_SIZE;
-=======
-	r = amdgpu_dummy_page_init(adev);
-	if (r)
-		return r;
-	/* Compute table size */
-	adev->gart.num_cpu_pages = adev->mc.gart_size / PAGE_SIZE;
-	adev->gart.num_gpu_pages = adev->mc.gart_size / AMDGPU_GPU_PAGE_SIZE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DRM_INFO("GART: num cpu pages %u, num gpu pages %u\n",
 		 adev->gart.num_cpu_pages, adev->gart.num_gpu_pages);
 
 #ifdef CONFIG_DRM_AMDGPU_GART_DEBUGFS
 	/* Allocate pages table */
-<<<<<<< HEAD
 	adev->gart.pages = vzalloc(array_size(sizeof(void *),
 					      adev->gart.num_cpu_pages));
 	if (adev->gart.pages == NULL)
 		return -ENOMEM;
-=======
-	adev->gart.pages = vzalloc(sizeof(void *) * adev->gart.num_cpu_pages);
-	if (adev->gart.pages == NULL) {
-		amdgpu_gart_fini(adev);
-		return -ENOMEM;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 	return 0;
@@ -523,21 +385,9 @@ int amdgpu_gart_init(struct amdgpu_device *adev)
  */
 void amdgpu_gart_fini(struct amdgpu_device *adev)
 {
-<<<<<<< HEAD
-=======
-	if (adev->gart.ready) {
-		/* unbind pages */
-		amdgpu_gart_unbind(adev, 0, adev->gart.num_cpu_pages);
-	}
-	adev->gart.ready = false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_DRM_AMDGPU_GART_DEBUGFS
 	vfree(adev->gart.pages);
 	adev->gart.pages = NULL;
 #endif
-<<<<<<< HEAD
 	amdgpu_gart_dummy_page_fini(adev);
-=======
-	amdgpu_dummy_page_fini(adev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

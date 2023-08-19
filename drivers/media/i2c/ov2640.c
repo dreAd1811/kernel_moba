@@ -307,13 +307,10 @@ struct ov2640_priv {
 
 	struct gpio_desc *resetb_gpio;
 	struct gpio_desc *pwdn_gpio;
-<<<<<<< HEAD
 
 	struct mutex lock; /* lock to protect streaming and power_count */
 	bool streaming;
 	int power_count;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /*
@@ -692,11 +689,7 @@ static int ov2640_mask_set(struct i2c_client *client,
 static int ov2640_reset(struct i2c_client *client)
 {
 	int ret;
-<<<<<<< HEAD
 	static const struct regval_list reset_seq[] = {
-=======
-	const struct regval_list reset_seq[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		{BANK_SEL, BANK_SEL_SENS},
 		{COM7, COM7_SRST},
 		ENDMARKER,
@@ -720,7 +713,6 @@ static int ov2640_s_ctrl(struct v4l2_ctrl *ctrl)
 	struct v4l2_subdev *sd =
 		&container_of(ctrl->handler, struct ov2640_priv, hdl)->subdev;
 	struct i2c_client  *client = v4l2_get_subdevdata(sd);
-<<<<<<< HEAD
 	struct ov2640_priv *priv = to_ov2640(client);
 	u8 val;
 	int ret;
@@ -735,11 +727,6 @@ static int ov2640_s_ctrl(struct v4l2_ctrl *ctrl)
 	if (!priv->power_count)
 		return 0;
 
-=======
-	u8 val;
-	int ret;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = i2c_smbus_write_byte_data(client, BANK_SEL, BANK_SEL_SENS);
 	if (ret < 0)
 		return ret;
@@ -791,18 +778,9 @@ static int ov2640_s_register(struct v4l2_subdev *sd,
 }
 #endif
 
-<<<<<<< HEAD
 static void ov2640_set_power(struct ov2640_priv *priv, int on)
 {
 #ifdef CONFIG_GPIOLIB
-=======
-static int ov2640_s_power(struct v4l2_subdev *sd, int on)
-{
-#ifdef CONFIG_GPIOLIB
-	struct i2c_client *client = v4l2_get_subdevdata(sd);
-	struct ov2640_priv *priv = to_ov2640(client);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (priv->pwdn_gpio)
 		gpiod_direction_output(priv->pwdn_gpio, !on);
 	if (on && priv->resetb_gpio) {
@@ -812,7 +790,6 @@ static int ov2640_s_power(struct v4l2_subdev *sd, int on)
 		gpiod_set_value(priv->resetb_gpio, 0);
 	}
 #endif
-<<<<<<< HEAD
 }
 
 static int ov2640_s_power(struct v4l2_subdev *sd, int on)
@@ -832,8 +809,6 @@ static int ov2640_s_power(struct v4l2_subdev *sd, int on)
 	WARN_ON(priv->power_count < 0);
 	mutex_unlock(&priv->lock);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -854,25 +829,13 @@ static const struct ov2640_win_size *ov2640_select_win(u32 width, u32 height)
 static int ov2640_set_params(struct i2c_client *client,
 			     const struct ov2640_win_size *win, u32 code)
 {
-<<<<<<< HEAD
-=======
-	struct ov2640_priv       *priv = to_ov2640(client);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const struct regval_list *selected_cfmt_regs;
 	u8 val;
 	int ret;
 
-<<<<<<< HEAD
 	if (!win)
 		return -EINVAL;
 
-=======
-	/* select win */
-	priv->win = win;
-
-	/* select format */
-	priv->cfmt_code = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (code) {
 	case MEDIA_BUS_FMT_RGB565_2X8_BE:
 		dev_dbg(&client->dev, "%s: Selected cfmt RGB565 BE", __func__);
@@ -911,21 +874,13 @@ static int ov2640_set_params(struct i2c_client *client,
 		goto err;
 
 	/* select preamble */
-<<<<<<< HEAD
 	dev_dbg(&client->dev, "%s: Set size to %s", __func__, win->name);
-=======
-	dev_dbg(&client->dev, "%s: Set size to %s", __func__, priv->win->name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = ov2640_write_array(client, ov2640_size_change_preamble_regs);
 	if (ret < 0)
 		goto err;
 
 	/* set size win */
-<<<<<<< HEAD
 	ret = ov2640_write_array(client, win->regs);
-=======
-	ret = ov2640_write_array(client, priv->win->regs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		goto err;
 
@@ -945,20 +900,11 @@ static int ov2640_set_params(struct i2c_client *client,
 	if (ret < 0)
 		goto err;
 
-<<<<<<< HEAD
-=======
-	priv->cfmt_code = code;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 err:
 	dev_err(&client->dev, "%s: Error %d", __func__, ret);
 	ov2640_reset(client);
-<<<<<<< HEAD
-=======
-	priv->win = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -994,22 +940,15 @@ static int ov2640_set_fmt(struct v4l2_subdev *sd,
 {
 	struct v4l2_mbus_framefmt *mf = &format->format;
 	struct i2c_client *client = v4l2_get_subdevdata(sd);
-<<<<<<< HEAD
 	struct ov2640_priv *priv = to_ov2640(client);
 	const struct ov2640_win_size *win;
 	int ret = 0;
-=======
-	const struct ov2640_win_size *win;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (format->pad)
 		return -EINVAL;
 
-<<<<<<< HEAD
 	mutex_lock(&priv->lock);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* select suitable win */
 	win = ov2640_select_win(mf->width, mf->height);
 	mf->width	= win->width;
@@ -1031,7 +970,6 @@ static int ov2640_set_fmt(struct v4l2_subdev *sd,
 		break;
 	}
 
-<<<<<<< HEAD
 	if (format->which == V4L2_SUBDEV_FORMAT_ACTIVE) {
 		struct ov2640_priv *priv = to_ov2640(client);
 
@@ -1050,12 +988,6 @@ out:
 	mutex_unlock(&priv->lock);
 
 	return ret;
-=======
-	if (format->which == V4L2_SUBDEV_FORMAT_ACTIVE)
-		return ov2640_set_params(client, win, mf->code);
-	cfg->try_fmt = *mf;
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int ov2640_enum_mbus_code(struct v4l2_subdev *sd,
@@ -1090,7 +1022,6 @@ static int ov2640_get_selection(struct v4l2_subdev *sd,
 	}
 }
 
-<<<<<<< HEAD
 static int ov2640_s_stream(struct v4l2_subdev *sd, int on)
 {
 	struct i2c_client *client = v4l2_get_subdevdata(sd);
@@ -1113,8 +1044,6 @@ static int ov2640_s_stream(struct v4l2_subdev *sd, int on)
 	return ret;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ov2640_video_probe(struct i2c_client *client)
 {
 	struct ov2640_priv *priv = to_ov2640(client);
@@ -1150,11 +1079,6 @@ static int ov2640_video_probe(struct i2c_client *client)
 		 "%s Product ID %0x:%0x Manufacturer ID %x:%x\n",
 		 devname, pid, ver, midh, midl);
 
-<<<<<<< HEAD
-=======
-	ret = v4l2_ctrl_handler_setup(&priv->hdl);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 done:
 	ov2640_s_power(&priv->subdev, 0);
 	return ret;
@@ -1179,7 +1103,6 @@ static const struct v4l2_subdev_pad_ops ov2640_subdev_pad_ops = {
 	.set_fmt	= ov2640_set_fmt,
 };
 
-<<<<<<< HEAD
 static const struct v4l2_subdev_video_ops ov2640_subdev_video_ops = {
 	.s_stream = ov2640_s_stream,
 };
@@ -1188,11 +1111,6 @@ static const struct v4l2_subdev_ops ov2640_subdev_ops = {
 	.core	= &ov2640_subdev_core_ops,
 	.pad	= &ov2640_subdev_pad_ops,
 	.video	= &ov2640_subdev_video_ops,
-=======
-static const struct v4l2_subdev_ops ov2640_subdev_ops = {
-	.core	= &ov2640_subdev_core_ops,
-	.pad	= &ov2640_subdev_pad_ops,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int ov2640_probe_dt(struct i2c_client *client,
@@ -1247,31 +1165,17 @@ static int ov2640_probe(struct i2c_client *client,
 		return -EIO;
 	}
 
-<<<<<<< HEAD
 	priv = devm_kzalloc(&client->dev, sizeof(*priv), GFP_KERNEL);
 	if (!priv)
 		return -ENOMEM;
-=======
-	priv = devm_kzalloc(&client->dev, sizeof(struct ov2640_priv), GFP_KERNEL);
-	if (!priv) {
-		dev_err(&adapter->dev,
-			"Failed to allocate memory for private data!\n");
-		return -ENOMEM;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (client->dev.of_node) {
 		priv->clk = devm_clk_get(&client->dev, "xvclk");
 		if (IS_ERR(priv->clk))
-<<<<<<< HEAD
 			return PTR_ERR(priv->clk);
 		ret = clk_prepare_enable(priv->clk);
 		if (ret)
 			return ret;
-=======
-			return -EPROBE_DEFER;
-		clk_prepare_enable(priv->clk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ret = ov2640_probe_dt(client, priv);
@@ -1279,15 +1183,10 @@ static int ov2640_probe(struct i2c_client *client,
 		goto err_clk;
 
 	v4l2_i2c_subdev_init(&priv->subdev, client, &ov2640_subdev_ops);
-<<<<<<< HEAD
 	priv->subdev.flags |= V4L2_SUBDEV_FL_HAS_DEVNODE;
 	mutex_init(&priv->lock);
 	v4l2_ctrl_handler_init(&priv->hdl, 2);
 	priv->hdl.lock = &priv->lock;
-=======
-	priv->subdev.flags = V4L2_SUBDEV_FL_HAS_DEVNODE;
-	v4l2_ctrl_handler_init(&priv->hdl, 2);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	v4l2_ctrl_new_std(&priv->hdl, &ov2640_ctrl_ops,
 			V4L2_CID_VFLIP, 0, 1, 1, 0);
 	v4l2_ctrl_new_std(&priv->hdl, &ov2640_ctrl_ops,
@@ -1318,18 +1217,10 @@ static int ov2640_probe(struct i2c_client *client,
 	return 0;
 
 err_videoprobe:
-<<<<<<< HEAD
 	media_entity_cleanup(&priv->subdev.entity);
 err_hdl:
 	v4l2_ctrl_handler_free(&priv->hdl);
 	mutex_destroy(&priv->lock);
-=======
-#if defined(CONFIG_MEDIA_CONTROLLER)
-	media_entity_cleanup(&priv->subdev.entity);
-#endif
-err_hdl:
-	v4l2_ctrl_handler_free(&priv->hdl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_clk:
 	clk_disable_unprepare(priv->clk);
 	return ret;
@@ -1341,14 +1232,8 @@ static int ov2640_remove(struct i2c_client *client)
 
 	v4l2_async_unregister_subdev(&priv->subdev);
 	v4l2_ctrl_handler_free(&priv->hdl);
-<<<<<<< HEAD
 	mutex_destroy(&priv->lock);
 	media_entity_cleanup(&priv->subdev.entity);
-=======
-#if defined(CONFIG_MEDIA_CONTROLLER)
-	media_entity_cleanup(&priv->subdev.entity);
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	v4l2_device_unregister_subdev(&priv->subdev);
 	clk_disable_unprepare(priv->clk);
 	return 0;

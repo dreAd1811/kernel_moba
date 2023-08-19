@@ -149,10 +149,6 @@ static ssize_t ad5624r_write_dac_powerdown(struct iio_dev *indio_dev,
 static const struct iio_info ad5624r_info = {
 	.write_raw = ad5624r_write_raw,
 	.read_raw = ad5624r_read_raw,
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct iio_chan_spec_ext_info ad5624r_ext_info[] = {

@@ -7,14 +7,8 @@
  * 2 of the License, or (at your option) any later version.
  */
 #include <asm/ppc-opcode.h>
-<<<<<<< HEAD
 #include <asm/reg.h>
 
-=======
-
-#define CR0_SHIFT	28
-#define CR0_MASK	0xF
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Copy/paste instructions:
  *

@@ -22,7 +22,6 @@
 
 #include <media/v4l2-async.h>
 #include <media/v4l2-device.h>
-<<<<<<< HEAD
 #include <media/v4l2-fwnode.h>
 #include <media/v4l2-subdev.h>
 
@@ -54,10 +53,6 @@ static int v4l2_async_notifier_call_complete(struct v4l2_async_notifier *n)
 	return n->ops->complete(n);
 }
 
-=======
-#include <media/v4l2-subdev.h>
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool match_i2c(struct v4l2_subdev *sd, struct v4l2_async_subdev *asd)
 {
 #if IS_ENABLED(CONFIG_I2C)
@@ -73,20 +68,12 @@ static bool match_i2c(struct v4l2_subdev *sd, struct v4l2_async_subdev *asd)
 static bool match_devname(struct v4l2_subdev *sd,
 			  struct v4l2_async_subdev *asd)
 {
-<<<<<<< HEAD
 	return !strcmp(asd->match.device_name, dev_name(sd->dev));
-=======
-	return !strcmp(asd->match.device_name.name, dev_name(sd->dev));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool match_fwnode(struct v4l2_subdev *sd, struct v4l2_async_subdev *asd)
 {
-<<<<<<< HEAD
 	return sd->fwnode == asd->match.fwnode;
-=======
-	return sd->fwnode == asd->match.fwnode.fwnode;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool match_custom(struct v4l2_subdev *sd, struct v4l2_async_subdev *asd)
@@ -102,13 +89,8 @@ static LIST_HEAD(subdev_list);
 static LIST_HEAD(notifier_list);
 static DEFINE_MUTEX(list_lock);
 
-<<<<<<< HEAD
 static struct v4l2_async_subdev *v4l2_async_find_match(
 	struct v4l2_async_notifier *notifier, struct v4l2_subdev *sd)
-=======
-static struct v4l2_async_subdev *v4l2_async_belongs(struct v4l2_async_notifier *notifier,
-						    struct v4l2_subdev *sd)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	bool (*match)(struct v4l2_subdev *, struct v4l2_async_subdev *);
 	struct v4l2_async_subdev *asd;
@@ -142,7 +124,6 @@ static struct v4l2_async_subdev *v4l2_async_belongs(struct v4l2_async_notifier *
 	return NULL;
 }
 
-<<<<<<< HEAD
 /* Find the sub-device notifier registered by a sub-device driver. */
 static struct v4l2_async_notifier *v4l2_async_find_subdev_notifier(
 	struct v4l2_subdev *sd)
@@ -233,24 +214,6 @@ static int v4l2_async_match_notify(struct v4l2_async_notifier *notifier,
 	ret = v4l2_async_notifier_call_bound(notifier, sd, asd);
 	if (ret < 0) {
 		v4l2_device_unregister_subdev(sd);
-=======
-static int v4l2_async_test_notify(struct v4l2_async_notifier *notifier,
-				  struct v4l2_subdev *sd,
-				  struct v4l2_async_subdev *asd)
-{
-	int ret;
-
-	if (notifier->bound) {
-		ret = notifier->bound(notifier, sd, asd);
-		if (ret < 0)
-			return ret;
-	}
-
-	ret = v4l2_device_register_subdev(notifier->v4l2_dev, sd);
-	if (ret < 0) {
-		if (notifier->unbind)
-			notifier->unbind(notifier, sd, asd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
@@ -262,7 +225,6 @@ static int v4l2_async_test_notify(struct v4l2_async_notifier *notifier,
 	/* Move from the global subdevice list to notifier's done */
 	list_move(&sd->async_list, &notifier->done);
 
-<<<<<<< HEAD
 	/*
 	 * See if the sub-device has a notifier. If not, return here.
 	 */
@@ -312,10 +274,6 @@ again:
 		 */
 		goto again;
 	}
-=======
-	if (list_empty(&notifier->waiting) && notifier->complete)
-		return notifier->complete(notifier);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -326,7 +284,6 @@ static void v4l2_async_cleanup(struct v4l2_subdev *sd)
 	/* Subdevice driver will reprobe and put the subdev back onto the list */
 	list_del_init(&sd->async_list);
 	sd->asd = NULL;
-<<<<<<< HEAD
 }
 
 /* Unbind all sub-devices in the notifier tree. */
@@ -428,26 +385,6 @@ static int __v4l2_async_notifier_register(struct v4l2_async_notifier *notifier)
 
 	mutex_lock(&list_lock);
 
-=======
-	sd->dev = NULL;
-}
-
-int v4l2_async_notifier_register(struct v4l2_device *v4l2_dev,
-				 struct v4l2_async_notifier *notifier)
-{
-	struct v4l2_subdev *sd, *tmp;
-	struct v4l2_async_subdev *asd;
-	int i;
-
-	if (!v4l2_dev || !notifier->num_subdevs ||
-	    notifier->num_subdevs > V4L2_MAX_SUBDEVS)
-		return -EINVAL;
-
-	notifier->v4l2_dev = v4l2_dev;
-	INIT_LIST_HEAD(&notifier->waiting);
-	INIT_LIST_HEAD(&notifier->done);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < notifier->num_subdevs; i++) {
 		asd = notifier->subdevs[i];
 
@@ -455,7 +392,6 @@ int v4l2_async_notifier_register(struct v4l2_device *v4l2_dev,
 		case V4L2_ASYNC_MATCH_CUSTOM:
 		case V4L2_ASYNC_MATCH_DEVNAME:
 		case V4L2_ASYNC_MATCH_I2C:
-<<<<<<< HEAD
 			break;
 		case V4L2_ASYNC_MATCH_FWNODE:
 			if (v4l2_async_notifier_fwnode_has_async_subdev(
@@ -471,20 +407,10 @@ int v4l2_async_notifier_register(struct v4l2_device *v4l2_dev,
 				asd->match_type, asd);
 			ret = -EINVAL;
 			goto err_unlock;
-=======
-		case V4L2_ASYNC_MATCH_FWNODE:
-			break;
-		default:
-			dev_err(notifier->v4l2_dev ? notifier->v4l2_dev->dev : NULL,
-				"Invalid match type %u on %p\n",
-				asd->match_type, asd);
-			return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		list_add_tail(&asd->list, &notifier->waiting);
 	}
 
-<<<<<<< HEAD
 	ret = v4l2_async_notifier_try_all_subdevs(notifier);
 	if (ret < 0)
 		goto err_unbind;
@@ -492,23 +418,6 @@ int v4l2_async_notifier_register(struct v4l2_device *v4l2_dev,
 	ret = v4l2_async_notifier_try_complete(notifier);
 	if (ret < 0)
 		goto err_unbind;
-=======
-	mutex_lock(&list_lock);
-
-	list_for_each_entry_safe(sd, tmp, &subdev_list, async_list) {
-		int ret;
-
-		asd = v4l2_async_belongs(notifier, sd);
-		if (!asd)
-			continue;
-
-		ret = v4l2_async_test_notify(notifier, sd, asd);
-		if (ret < 0) {
-			mutex_unlock(&list_lock);
-			return ret;
-		}
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Keep also completed notifiers on the list */
 	list_add(&notifier->list, &notifier_list);
@@ -516,7 +425,6 @@ int v4l2_async_notifier_register(struct v4l2_device *v4l2_dev,
 	mutex_unlock(&list_lock);
 
 	return 0;
-<<<<<<< HEAD
 
 err_unbind:
 	/*
@@ -625,92 +533,6 @@ int v4l2_async_register_subdev(struct v4l2_subdev *sd)
 	struct v4l2_async_notifier *subdev_notifier;
 	struct v4l2_async_notifier *notifier;
 	int ret;
-=======
-}
-EXPORT_SYMBOL(v4l2_async_notifier_register);
-
-void v4l2_async_notifier_unregister(struct v4l2_async_notifier *notifier)
-{
-	struct v4l2_subdev *sd, *tmp;
-	unsigned int notif_n_subdev = notifier->num_subdevs;
-	unsigned int n_subdev = min(notif_n_subdev, V4L2_MAX_SUBDEVS);
-	struct device **dev;
-	int i = 0;
-
-	if (!notifier->v4l2_dev)
-		return;
-
-	dev = kvmalloc_array(n_subdev, sizeof(*dev), GFP_KERNEL);
-	if (!dev) {
-		dev_err(notifier->v4l2_dev->dev,
-			"Failed to allocate device cache!\n");
-	}
-
-	mutex_lock(&list_lock);
-
-	list_del(&notifier->list);
-
-	list_for_each_entry_safe(sd, tmp, &notifier->done, async_list) {
-		struct device *d;
-
-		d = get_device(sd->dev);
-
-		v4l2_async_cleanup(sd);
-
-		/* If we handled USB devices, we'd have to lock the parent too */
-		device_release_driver(d);
-
-		if (notifier->unbind)
-			notifier->unbind(notifier, sd, sd->asd);
-
-		/*
-		 * Store device at the device cache, in order to call
-		 * put_device() on the final step
-		 */
-		if (dev)
-			dev[i++] = d;
-		else
-			put_device(d);
-	}
-
-	mutex_unlock(&list_lock);
-
-	/*
-	 * Call device_attach() to reprobe devices
-	 *
-	 * NOTE: If dev allocation fails, i is 0, and the whole loop won't be
-	 * executed.
-	 */
-	while (i--) {
-		struct device *d = dev[i];
-
-		if (d && device_attach(d) < 0) {
-			const char *name = "(none)";
-			int lock = device_trylock(d);
-
-			if (lock && d->driver)
-				name = d->driver->name;
-			dev_err(d, "Failed to re-probe to %s\n", name);
-			if (lock)
-				device_unlock(d);
-		}
-		put_device(d);
-	}
-	kvfree(dev);
-
-	notifier->v4l2_dev = NULL;
-
-	/*
-	 * Don't care about the waiting list, it is initialised and populated
-	 * upon notifier registration.
-	 */
-}
-EXPORT_SYMBOL(v4l2_async_notifier_unregister);
-
-int v4l2_async_register_subdev(struct v4l2_subdev *sd)
-{
-	struct v4l2_async_notifier *notifier;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * No reference taken. The reference is held by the device
@@ -725,7 +547,6 @@ int v4l2_async_register_subdev(struct v4l2_subdev *sd)
 	INIT_LIST_HEAD(&sd->async_list);
 
 	list_for_each_entry(notifier, &notifier_list, list) {
-<<<<<<< HEAD
 		struct v4l2_device *v4l2_dev =
 			v4l2_async_notifier_find_v4l2_dev(notifier);
 		struct v4l2_async_subdev *asd;
@@ -746,20 +567,11 @@ int v4l2_async_register_subdev(struct v4l2_subdev *sd)
 			goto err_unbind;
 
 		goto out_unlock;
-=======
-		struct v4l2_async_subdev *asd = v4l2_async_belongs(notifier, sd);
-		if (asd) {
-			int ret = v4l2_async_test_notify(notifier, sd, asd);
-			mutex_unlock(&list_lock);
-			return ret;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* None matched, wait for hot-plugging */
 	list_add(&sd->async_list, &subdev_list);
 
-<<<<<<< HEAD
 out_unlock:
 	mutex_unlock(&list_lock);
 
@@ -781,17 +593,11 @@ err_unbind:
 	mutex_unlock(&list_lock);
 
 	return ret;
-=======
-	mutex_unlock(&list_lock);
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(v4l2_async_register_subdev);
 
 void v4l2_async_unregister_subdev(struct v4l2_subdev *sd)
 {
-<<<<<<< HEAD
 	mutex_lock(&list_lock);
 
 	__v4l2_async_notifier_unregister(sd->subdev_notifier);
@@ -809,25 +615,6 @@ void v4l2_async_unregister_subdev(struct v4l2_subdev *sd)
 
 	v4l2_async_cleanup(sd);
 
-=======
-	struct v4l2_async_notifier *notifier = sd->notifier;
-
-	if (!sd->asd) {
-		if (!list_empty(&sd->async_list))
-			v4l2_async_cleanup(sd);
-		return;
-	}
-
-	mutex_lock(&list_lock);
-
-	list_add(&sd->asd->list, &notifier->waiting);
-
-	v4l2_async_cleanup(sd);
-
-	if (notifier->unbind)
-		notifier->unbind(notifier, sd, sd->asd);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&list_lock);
 }
 EXPORT_SYMBOL(v4l2_async_unregister_subdev);

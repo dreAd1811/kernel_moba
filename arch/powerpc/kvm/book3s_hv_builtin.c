@@ -18,10 +18,7 @@
 #include <linux/cma.h>
 #include <linux/bitops.h>
 
-<<<<<<< HEAD
 #include <asm/asm-prototypes.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/cputable.h>
 #include <asm/kvm_ppc.h>
 #include <asm/kvm_book3s.h>
@@ -80,11 +77,7 @@ struct page *kvm_alloc_hpt_cma(unsigned long nr_pages)
 	VM_BUG_ON(order_base_2(nr_pages) < KVM_CMA_CHUNK_ORDER - PAGE_SHIFT);
 
 	return cma_alloc(kvm_cma, nr_pages, order_base_2(HPT_ALIGN_PAGES),
-<<<<<<< HEAD
 			 false);
-=======
-			 GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(kvm_alloc_hpt_cma);
 
@@ -219,15 +212,9 @@ long kvmppc_h_random(struct kvm_vcpu *vcpu)
 
 	/* Only need to do the expensive mfmsr() on radix */
 	if (kvm_is_radix(vcpu->kvm) && (mfmsr() & MSR_IR))
-<<<<<<< HEAD
 		r = powernv_get_random_long(&vcpu->arch.regs.gpr[4]);
 	else
 		r = powernv_get_random_real_mode(&vcpu->arch.regs.gpr[4]);
-=======
-		r = powernv_get_random_long(&vcpu->arch.gpr[4]);
-	else
-		r = powernv_get_random_real_mode(&vcpu->arch.gpr[4]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r)
 		return H_SUCCESS;
 
@@ -265,11 +252,7 @@ void kvmhv_rm_send_ipi(int cpu)
 	    return;
 
 	/* Else poke the target with an IPI */
-<<<<<<< HEAD
 	xics_phys = paca_ptrs[cpu]->kvm_hstate.xics_phys;
-=======
-	xics_phys = paca[cpu].kvm_hstate.xics_phys;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (xics_phys)
 		__raw_rm_writeb(IPI_PRIORITY, xics_phys + XICS_MFRR);
 	else
@@ -296,12 +279,8 @@ void kvmhv_commence_exit(int trap)
 	struct kvmppc_vcore *vc = local_paca->kvm_hstate.kvm_vcore;
 	int ptid = local_paca->kvm_hstate.ptid;
 	struct kvm_split_mode *sip = local_paca->kvm_hstate.kvm_split_mode;
-<<<<<<< HEAD
 	int me, ee, i, t;
 	int cpu0;
-=======
-	int me, ee, i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Set our bit in the threads-exiting-guest map in the 0xff00
 	   bits of vcore->entry_exit_map */
@@ -343,7 +322,6 @@ void kvmhv_commence_exit(int trap)
 		if ((ee >> 8) == 0)
 			kvmhv_interrupt_vcore(vc, ee);
 	}
-<<<<<<< HEAD
 
 	/*
 	 * On POWER9 when running a HPT guest on a radix host (sip != NULL),
@@ -360,8 +338,6 @@ void kvmhv_commence_exit(int trap)
 			}
 		}
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 struct kvmppc_host_rm_ops *kvmppc_host_rm_ops_hv;
@@ -587,11 +563,7 @@ unsigned long kvmppc_rm_h_xirr_x(struct kvm_vcpu *vcpu)
 {
 	if (!kvmppc_xics_enabled(vcpu))
 		return H_TOO_HARD;
-<<<<<<< HEAD
 	vcpu->arch.regs.gpr[5] = get_tb();
-=======
-	vcpu->arch.gpr[5] = get_tb();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (xive_enabled()) {
 		if (is_rm())
 			return xive_rm_h_xirr(vcpu);
@@ -659,7 +631,6 @@ int kvmppc_rm_h_eoi(struct kvm_vcpu *vcpu, unsigned long xirr)
 		return xics_rm_h_eoi(vcpu, xirr);
 }
 #endif /* CONFIG_KVM_XICS */
-<<<<<<< HEAD
 
 void kvmppc_bad_interrupt(struct pt_regs *regs)
 {
@@ -758,5 +729,3 @@ void kvmhv_p9_restore_lpcr(struct kvm_split_mode *sip)
 	smp_mb();
 	local_paca->kvm_hstate.kvm_split_mode = NULL;
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

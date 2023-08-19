@@ -56,11 +56,7 @@ EXPORT_SYMBOL(strlen);
  *
  * returns the minimum of the length of @s and @n
  */
-<<<<<<< HEAD
 size_t strnlen(const char *s, size_t n)
-=======
-size_t strnlen(const char * s, size_t n)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return __strnend(s, n) - s;
 }
@@ -199,7 +195,6 @@ EXPORT_SYMBOL(strncat);
 
 /**
  * strcmp - Compare two strings
-<<<<<<< HEAD
  * @s1: One string
  * @s2: Another string
  *
@@ -208,16 +203,6 @@ EXPORT_SYMBOL(strncat);
  *	   > 0 if @s1 is greater than @s2
  */
 int strcmp(const char *s1, const char *s2)
-=======
- * @cs: One string
- * @ct: Another string
- *
- * returns   0 if @cs and @ct are equal,
- *         < 0 if @cs is less than @ct
- *         > 0 if @cs is greater than @ct
- */
-int strcmp(const char *cs, const char *ct)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	register int r0 asm("0") = 0;
 	int ret = 0;
@@ -229,11 +214,7 @@ int strcmp(const char *cs, const char *ct)
 		      "   ic   %1,0(%3)\n"
 		      "   sr   %0,%1\n"
 		      "1:"
-<<<<<<< HEAD
 		      : "+d" (ret), "+d" (r0), "+a" (s1), "+a" (s2)
-=======
-		      : "+d" (ret), "+d" (r0), "+a" (cs), "+a" (ct)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		      : : "cc", "memory");
 	return ret;
 }
@@ -244,11 +225,7 @@ EXPORT_SYMBOL(strcmp);
  * @s: The string to be searched
  * @c: The character to search for
  */
-<<<<<<< HEAD
 char *strrchr(const char *s, int c)
-=======
-char * strrchr(const char * s, int c)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
        size_t len = __strend(s) - s;
 
@@ -284,11 +261,7 @@ static inline int clcle(const char *s1, unsigned long l1,
  * @s1: The string to be searched
  * @s2: The string to search for
  */
-<<<<<<< HEAD
 char *strstr(const char *s1, const char *s2)
-=======
-char * strstr(const char * s1,const char * s2)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int l1, l2;
 
@@ -334,7 +307,6 @@ EXPORT_SYMBOL(memchr);
 
 /**
  * memcmp - Compare two areas of memory
-<<<<<<< HEAD
  * @s1: One area of memory
  * @s2: Another area of memory
  * @count: The size of the area.
@@ -344,17 +316,6 @@ int memcmp(const void *s1, const void *s2, size_t n)
 	int ret;
 
 	ret = clcle(s1, n, s2, n);
-=======
- * @cs: One area of memory
- * @ct: Another area of memory
- * @count: The size of the area.
- */
-int memcmp(const void *cs, const void *ct, size_t n)
-{
-	int ret;
-
-	ret = clcle(cs, n, ct, n);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		ret = ret == 1 ? -1 : 1;
 	return ret;

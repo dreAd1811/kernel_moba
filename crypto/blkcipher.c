@@ -18,10 +18,6 @@
 #include <crypto/internal/skcipher.h>
 #include <crypto/scatterwalk.h>
 #include <linux/errno.h>
-<<<<<<< HEAD
-=======
-#include <linux/hardirq.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/seq_file.h>

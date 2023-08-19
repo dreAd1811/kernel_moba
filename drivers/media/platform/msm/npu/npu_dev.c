@@ -1,33 +1,13 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2018-2020, The Linux Foundation. All rights reserved.
  */
 
-=======
-/* Copyright (c) 2017-2020, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- */
-
-#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* -------------------------------------------------------------------------
  * Includes
  * -------------------------------------------------------------------------
  */
-<<<<<<< HEAD
 #include <dt-bindings/msm/msm-bus-ids.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/clk.h>
 #include <linux/interrupt.h>
 #include <linux/irq.h>
@@ -35,10 +15,6 @@
 #include <linux/of_platform.h>
 #include <linux/poll.h>
 #include <linux/regulator/consumer.h>
-<<<<<<< HEAD
-=======
-#include <linux/sizes.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/thermal.h>
 #include <linux/soc/qcom/llcc-qcom.h>
 #include <linux/soc/qcom/cdsprm_cxlimit.h>
@@ -53,13 +29,8 @@
  */
 #define CLASS_NAME              "npu"
 #define DRIVER_NAME             "msm_npu"
-<<<<<<< HEAD
 #define DDR_MAPPED_START_ADDR   0x80000000
 #define DDR_MAPPED_SIZE         0x60000000
-=======
-#define DDR_MAPPED_START_ADDR   0x00000000
-#define DDR_MAPPED_SIZE         (SZ_1G * 4ULL)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define MBOX_OP_TIMEOUTMS 1000
 
@@ -74,7 +45,6 @@ static void npu_disable_clocks(struct npu_device *npu_dev, bool post_pil);
 static int npu_enable_core_clocks(struct npu_device *npu_dev);
 static void npu_disable_core_clocks(struct npu_device *npu_dev);
 static uint32_t npu_calc_power_level(struct npu_device *npu_dev);
-<<<<<<< HEAD
 static ssize_t caps_show(struct device *dev,
 		struct device_attribute *attr, char *buf);
 static ssize_t pwr_show(struct device *dev,
@@ -96,38 +66,6 @@ static ssize_t dcvs_mode_store(struct device *dev,
 					  struct device_attribute *attr,
 					  const char *buf, size_t count);
 static ssize_t boot_store(struct device *dev,
-=======
-static ssize_t npu_show_capabilities(struct device *dev,
-		struct device_attribute *attr, char *buf);
-static ssize_t npu_show_pwr_state(struct device *dev,
-					 struct device_attribute *attr,
-					 char *buf);
-static ssize_t npu_store_pwr_state(struct device *dev,
-					  struct device_attribute *attr,
-					  const char *buf, size_t count);
-static ssize_t npu_show_perf_mode_override(struct device *dev,
-					 struct device_attribute *attr,
-					 char *buf);
-static ssize_t npu_store_perf_mode_override(struct device *dev,
-					  struct device_attribute *attr,
-					  const char *buf, size_t count);
-static ssize_t npu_show_dcvs_mode(struct device *dev,
-					 struct device_attribute *attr,
-					 char *buf);
-static ssize_t npu_store_dcvs_mode(struct device *dev,
-					  struct device_attribute *attr,
-					  const char *buf, size_t count);
-static ssize_t npu_show_fw_unload_delay_ms(struct device *dev,
-					 struct device_attribute *attr,
-					 char *buf);
-static ssize_t npu_store_fw_unload_delay_ms(struct device *dev,
-					  struct device_attribute *attr,
-					  const char *buf, size_t count);
-static ssize_t npu_show_fw_state(struct device *dev,
-					 struct device_attribute *attr,
-					 char *buf);
-static ssize_t npu_store_fw_state(struct device *dev,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  struct device_attribute *attr,
 					  const char *buf, size_t count);
 static void npu_suspend_devbw(struct npu_device *npu_dev);
@@ -146,20 +84,10 @@ static int npu_get_info(struct npu_client *client, unsigned long arg);
 static int npu_map_buf(struct npu_client *client, unsigned long arg);
 static int npu_unmap_buf(struct npu_client *client,
 	unsigned long arg);
-<<<<<<< HEAD
-=======
-static int npu_load_network(struct npu_client *client,
-	unsigned long arg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int npu_load_network_v2(struct npu_client *client,
 	unsigned long arg);
 static int npu_unload_network(struct npu_client *client,
 	unsigned long arg);
-<<<<<<< HEAD
-=======
-static int npu_exec_network(struct npu_client *client,
-	unsigned long arg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int npu_exec_network_v2(struct npu_client *client,
 	unsigned long arg);
 static int npu_receive_event(struct npu_client *client,
@@ -174,38 +102,23 @@ static long npu_ioctl(struct file *file, unsigned int cmd,
 static unsigned int npu_poll(struct file *filp, struct poll_table_struct *p);
 static int npu_parse_dt_clock(struct npu_device *npu_dev);
 static int npu_parse_dt_regulator(struct npu_device *npu_dev);
-<<<<<<< HEAD
 static int npu_parse_dt_bw(struct npu_device *npu_dev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int npu_of_parse_pwrlevels(struct npu_device *npu_dev,
 		struct device_node *node);
 static int npu_pwrctrl_init(struct npu_device *npu_dev);
 static int npu_probe(struct platform_device *pdev);
 static int npu_remove(struct platform_device *pdev);
-<<<<<<< HEAD
 static int npu_pm_suspend(struct device *dev);
 static int npu_pm_resume(struct device *dev);
 static int __init npu_init(void);
 static void __exit npu_exit(void);
 static uint32_t npu_notify_cdsprm_cxlimit_corner(struct npu_device *npu_dev,
 	uint32_t pwr_lvl);
-=======
-static int npu_suspend(struct platform_device *dev, pm_message_t state);
-static int npu_resume(struct platform_device *dev);
-static int __init npu_init(void);
-static void __exit npu_exit(void);
-static int npu_set_power_level(struct npu_device *npu_dev, bool notify_cxlimit);
-static uint32_t npu_notify_cdsprm_cxlimit_corner(struct npu_device *npu_dev,
-	uint32_t pwr_lvl);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* -------------------------------------------------------------------------
  * File Scope Variables
  * -------------------------------------------------------------------------
  */
 static const char * const npu_post_clocks[] = {
-<<<<<<< HEAD
 };
 
 static const char * const npu_exclude_rate_clocks[] = {
@@ -242,42 +155,6 @@ static const struct npu_irq npu_irq_info[] = {
 	{"error_irq", 0,  IRQF_TRIGGER_HIGH | IRQF_ONESHOT, npu_err_intr_hdlr},
 	{"wdg_bite_irq", 0,  IRQF_TRIGGER_RISING | IRQF_ONESHOT,
 		npu_wdg_intr_hdlr}
-=======
-	"npu_cpc_clk",
-	"npu_cpc_timer_clk"
-};
-
-static const char * const npu_exclude_rate_clocks[] = {
-	"qdss_clk",
-	"at_clk",
-	"trig_clk",
-	"sleep_clk",
-	"xo_clk",
-	"conf_noc_ahb_clk",
-	"comp_noc_axi_clk",
-	"npu_core_cti_clk",
-	"npu_core_apb_clk",
-	"npu_core_atb_clk",
-	"npu_cpc_timer_clk",
-	"qtimer_core_clk",
-	"bwmon_clk",
-	"bto_core_clk"
-};
-
-static struct npu_reg npu_saved_bw_registers[] = {
-	{ BWMON2_SAMPLING_WINDOW, 0, false },
-	{ BWMON2_BYTE_COUNT_THRESHOLD_HIGH, 0, false },
-	{ BWMON2_BYTE_COUNT_THRESHOLD_MEDIUM, 0, false },
-	{ BWMON2_BYTE_COUNT_THRESHOLD_LOW, 0, false },
-	{ BWMON2_ZONE_ACTIONS, 0, false },
-	{ BWMON2_ZONE_COUNT_THRESHOLD, 0, false },
-};
-
-static const struct npu_irq npu_irq_info[NPU_MAX_IRQ] = {
-	{"ipc_irq", 0, IRQF_TRIGGER_HIGH},
-	{"error_irq", 0, IRQF_TRIGGER_RISING | IRQF_ONESHOT},
-	{"wdg_bite_irq", 0, IRQF_TRIGGER_RISING | IRQF_ONESHOT},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct npu_device *g_npu_dev;
@@ -287,35 +164,18 @@ static struct npu_device *g_npu_dev;
  * -------------------------------------------------------------------------
  */
 /* Sys FS */
-<<<<<<< HEAD
 static DEVICE_ATTR_RO(caps);
 static DEVICE_ATTR_RW(pwr);
 static DEVICE_ATTR_RW(perf_mode_override);
 static DEVICE_ATTR_WO(boot);
 static DEVICE_ATTR_RW(dcvs_mode);
-=======
-static DEVICE_ATTR(caps, 0444, npu_show_capabilities, NULL);
-static DEVICE_ATTR(pwr, 0644, npu_show_pwr_state, npu_store_pwr_state);
-static DEVICE_ATTR(perf_mode_override, 0644,
-	npu_show_perf_mode_override, npu_store_perf_mode_override);
-static DEVICE_ATTR(dcvs_mode, 0644,
-	npu_show_dcvs_mode, npu_store_dcvs_mode);
-static DEVICE_ATTR(fw_unload_delay_ms, 0644,
-	npu_show_fw_unload_delay_ms, npu_store_fw_unload_delay_ms);
-static DEVICE_ATTR(fw_state, 0644, npu_show_fw_state, npu_store_fw_state);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct attribute *npu_fs_attrs[] = {
 	&dev_attr_caps.attr,
 	&dev_attr_pwr.attr,
 	&dev_attr_perf_mode_override.attr,
 	&dev_attr_dcvs_mode.attr,
-<<<<<<< HEAD
 	&dev_attr_boot.attr,
-=======
-	&dev_attr_fw_state.attr,
-	&dev_attr_fw_unload_delay_ms.attr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	NULL
 };
 
@@ -328,7 +188,6 @@ static const struct of_device_id npu_dt_match[] = {
 	{}
 };
 
-<<<<<<< HEAD
 static const struct dev_pm_ops npu_pm_ops = {
 	SET_SYSTEM_SLEEP_PM_OPS(npu_pm_suspend, npu_pm_resume)
 };
@@ -340,20 +199,6 @@ static struct platform_driver npu_driver = {
 		.name = "msm_npu",
 		.of_match_table = npu_dt_match,
 		.pm = &npu_pm_ops,
-=======
-static struct platform_driver npu_driver = {
-	.probe = npu_probe,
-	.remove = npu_remove,
-#if defined(CONFIG_PM)
-	.suspend = npu_suspend,
-	.resume = npu_resume,
-#endif
-	.driver = {
-		.name = "msm_npu",
-		.owner = THIS_MODULE,
-		.of_match_table = npu_dt_match,
-		.pm = NULL,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 };
 
@@ -378,11 +223,7 @@ static const struct thermal_cooling_device_ops npu_cooling_ops = {
  * SysFS - Capabilities
  * -------------------------------------------------------------------------
  */
-<<<<<<< HEAD
 static ssize_t caps_show(struct device *dev,
-=======
-static ssize_t npu_show_capabilities(struct device *dev,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct device_attribute *attr, char *buf)
 {
 	size_t ret = 0;
@@ -403,11 +244,7 @@ static ssize_t npu_show_capabilities(struct device *dev,
  * SysFS - Power State
  * -------------------------------------------------------------------------
  */
-<<<<<<< HEAD
 static ssize_t pwr_show(struct device *dev,
-=======
-static ssize_t npu_show_pwr_state(struct device *dev,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 struct device_attribute *attr,
 					 char *buf)
 {
@@ -418,11 +255,7 @@ static ssize_t npu_show_pwr_state(struct device *dev,
 			(pwr->pwr_vote_num > 0) ? "on" : "off");
 }
 
-<<<<<<< HEAD
 static ssize_t pwr_store(struct device *dev,
-=======
-static ssize_t npu_store_pwr_state(struct device *dev,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  struct device_attribute *attr,
 					  const char *buf, size_t count)
 {
@@ -443,17 +276,10 @@ static ssize_t npu_store_pwr_state(struct device *dev,
 }
 
 /* -------------------------------------------------------------------------
-<<<<<<< HEAD
  * SysFS - Power State
  * -------------------------------------------------------------------------
  */
 static ssize_t perf_mode_override_show(struct device *dev,
-=======
- * SysFS - perf_mode_override
- * -------------------------------------------------------------------------
- */
-static ssize_t npu_show_perf_mode_override(struct device *dev,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 struct device_attribute *attr,
 					 char *buf)
 {
@@ -463,11 +289,7 @@ static ssize_t npu_show_perf_mode_override(struct device *dev,
 	return scnprintf(buf, PAGE_SIZE, "%d\n", pwr->perf_mode_override);
 }
 
-<<<<<<< HEAD
 static ssize_t perf_mode_override_store(struct device *dev,
-=======
-static ssize_t npu_store_perf_mode_override(struct device *dev,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  struct device_attribute *attr,
 					  const char *buf, size_t count)
 {
@@ -478,33 +300,19 @@ static ssize_t npu_store_perf_mode_override(struct device *dev,
 
 	rc = kstrtou32(buf, 10, &val);
 	if (rc) {
-<<<<<<< HEAD
 		NPU_ERR("Invalid input for perf mode setting\n");
-=======
-		pr_err("Invalid input for perf mode setting\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
 	val = min(val, npu_dev->pwrctrl.num_pwrlevels);
-<<<<<<< HEAD
 	NPU_INFO("setting perf mode to %d\n", val);
-=======
-	npu_dev->pwrctrl.perf_mode_override = val;
-	pr_info("setting uc_pwrlevel_override to %d\n", val);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	client.npu_dev = npu_dev;
 	npu_host_set_perf_mode(&client, 0, val);
 
 	return count;
 }
 
-<<<<<<< HEAD
 static ssize_t dcvs_mode_show(struct device *dev,
-=======
-static ssize_t npu_show_dcvs_mode(struct device *dev,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 struct device_attribute *attr,
 					 char *buf)
 {
@@ -514,11 +322,7 @@ static ssize_t npu_show_dcvs_mode(struct device *dev,
 	return scnprintf(buf, PAGE_SIZE, "%d\n", pwr->dcvs_mode);
 }
 
-<<<<<<< HEAD
 static ssize_t dcvs_mode_store(struct device *dev,
-=======
-static ssize_t npu_store_dcvs_mode(struct device *dev,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  struct device_attribute *attr,
 					  const char *buf, size_t count)
 {
@@ -529,20 +333,12 @@ static ssize_t npu_store_dcvs_mode(struct device *dev,
 
 	ret = kstrtou32(buf, 10, &val);
 	if (ret) {
-<<<<<<< HEAD
 		NPU_ERR("Invalid input for dcvs mode setting\n");
-=======
-		pr_err("Invalid input for dcvs mode setting\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
 	val = min(val, (uint32_t)(npu_dev->pwrctrl.num_pwrlevels - 1));
-<<<<<<< HEAD
 	NPU_DBG("sysfs: setting dcvs_mode to %d\n", val);
-=======
-	pr_debug("sysfs: setting dcvs_mode to %d\n", val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	prop.prop_id = MSM_NPU_PROP_ID_DCVS_MODE;
 	prop.num_of_params = 1;
@@ -551,11 +347,7 @@ static ssize_t npu_store_dcvs_mode(struct device *dev,
 
 	ret = npu_host_set_fw_property(npu_dev, &prop);
 	if (ret) {
-<<<<<<< HEAD
 		NPU_ERR("npu_host_set_fw_property failed %d\n", ret);
-=======
-		pr_err("npu_host_set_fw_property failed %d\n", ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
@@ -563,80 +355,21 @@ static ssize_t npu_store_dcvs_mode(struct device *dev,
 
 	return count;
 }
-<<<<<<< HEAD
 /* -------------------------------------------------------------------------
  * SysFS - npu_boot
  * -------------------------------------------------------------------------
  */
 static ssize_t boot_store(struct device *dev,
-=======
-
-/* -------------------------------------------------------------------------
- * SysFS - Delayed FW unload
- * -------------------------------------------------------------------------
- */
-static ssize_t npu_show_fw_unload_delay_ms(struct device *dev,
-					 struct device_attribute *attr,
-					 char *buf)
-{
-	struct npu_device *npu_dev = dev_get_drvdata(dev);
-
-	return scnprintf(buf, PAGE_SIZE, "%d\n",
-		npu_dev->host_ctx.fw_unload_delay_ms);
-}
-
-static ssize_t npu_store_fw_unload_delay_ms(struct device *dev,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  struct device_attribute *attr,
 					  const char *buf, size_t count)
 {
 	struct npu_device *npu_dev = dev_get_drvdata(dev);
-<<<<<<< HEAD
-=======
-	uint32_t val;
-	int rc;
-
-	rc = kstrtou32(buf, 10, &val);
-	if (rc) {
-		pr_err("Invalid input for fw unload delay setting\n");
-		return -EINVAL;
-	}
-
-	npu_dev->host_ctx.fw_unload_delay_ms = val;
-	pr_debug("setting fw_unload_delay_ms to %d\n", val);
-
-	return count;
-}
-
-/* -------------------------------------------------------------------------
- * SysFS - firmware state
- * -------------------------------------------------------------------------
- */
-static ssize_t npu_show_fw_state(struct device *dev,
-					 struct device_attribute *attr,
-					 char *buf)
-{
-	struct npu_device *npu_dev = dev_get_drvdata(dev);
-
-	return scnprintf(buf, PAGE_SIZE, "%s\n",
-			(npu_dev->host_ctx.fw_state == FW_ENABLED) ?
-			"on" : "off");
-}
-
-static ssize_t npu_store_fw_state(struct device *dev,
-					  struct device_attribute *attr,
-					  const char *buf, size_t count)
-{
-	struct npu_device *npu_dev = dev_get_drvdata(dev);
-	struct npu_client client;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool enable = false;
 	int rc;
 
 	if (strtobool(buf, &enable) < 0)
 		return -EINVAL;
 
-<<<<<<< HEAD
 	if (enable) {
 		NPU_DBG("%s: load fw\n", __func__);
 		rc = load_fw(npu_dev);
@@ -647,14 +380,6 @@ static ssize_t npu_store_fw_state(struct device *dev,
 	} else {
 		NPU_DBG("%s: unload fw\n", __func__);
 		unload_fw(npu_dev);
-=======
-	client.npu_dev = npu_dev;
-	rc = npu_set_fw_state(&client, enable ? 1 : 0);
-
-	if (rc) {
-		pr_err("%s fw failed\n", enable ? "enable" : "disable");
-		return rc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return count;
@@ -753,11 +478,7 @@ static int npu_set_cdsprm_corner_limit(enum cdsprm_npu_corner corner)
 	pwr = &g_npu_dev->pwrctrl;
 	pwr_lvl = cdsprm_corner_to_npu_power_level(corner);
 	pwr->cdsprm_pwrlevel = pwr_lvl;
-<<<<<<< HEAD
 	NPU_DBG("power level from cdsp %d\n", pwr_lvl);
-=======
-	pr_debug("power level from cdsp %d\n", pwr_lvl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return npu_set_power_level(g_npu_dev, false);
 }
@@ -771,11 +492,7 @@ int npu_notify_cdsprm_cxlimit_activity(struct npu_device *npu_dev, bool enable)
 	if (!npu_dev->cxlimit_registered)
 		return 0;
 
-<<<<<<< HEAD
 	NPU_DBG("notify cxlimit %s activity\n", enable ? "enable" : "disable");
-=======
-	pr_debug("notify cxlimit %s activity\n", enable ? "enable" : "disable");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return cdsprm_cxlimit_npu_activity_notify(enable ? 1 : 0);
 }
@@ -791,11 +508,7 @@ static uint32_t npu_notify_cdsprm_cxlimit_corner(
 	corner = npu_power_level_to_cdsprm_corner(pwr_lvl);
 	corner = cdsprm_cxlimit_npu_corner_notify(corner);
 	pwr_lvl_to_set = cdsprm_corner_to_npu_power_level(corner);
-<<<<<<< HEAD
 	NPU_DBG("Notify cdsprm %d:%d\n", pwr_lvl,
-=======
-	pr_debug("Notify cdsprm %d:%d\n", pwr_lvl,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pwr_lvl_to_set);
 
 	return pwr_lvl_to_set;
@@ -808,25 +521,15 @@ int npu_cdsprm_cxlimit_init(struct npu_device *npu_dev)
 
 	enabled = of_property_read_bool(npu_dev->pdev->dev.of_node,
 		"qcom,npu-cxlimit-enable");
-<<<<<<< HEAD
 	NPU_DBG("qcom,npu-xclimit-enable is %s\n", enabled ? "true" : "false");
-=======
-	pr_debug("qcom,npu-xclimit-enable is %s\n", enabled ? "true" : "false");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	npu_dev->cxlimit_registered = false;
 	if (enabled) {
 		ret = cdsprm_cxlimit_npu_limit_register(&cdsprm_npu_limit_cbs);
 		if (ret) {
-<<<<<<< HEAD
 			NPU_ERR("register cxlimit npu limit failed\n");
 		} else {
 			NPU_DBG("register cxlimit npu limit succeeds\n");
-=======
-			pr_err("register cxlimit npu limit failed\n");
-		} else {
-			pr_debug("register cxlimit npu limit succeeds\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			npu_dev->cxlimit_registered = true;
 		}
 	}
@@ -841,11 +544,7 @@ int npu_cdsprm_cxlimit_deinit(struct npu_device *npu_dev)
 	if (npu_dev->cxlimit_registered) {
 		ret = cdsprm_cxlimit_npu_limit_deregister();
 		if (ret)
-<<<<<<< HEAD
 			NPU_ERR("deregister cxlimit npu limit failed\n");
-=======
-			pr_err("deregister cxlimit npu limit failed\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		npu_dev->cxlimit_registered = false;
 	}
 
@@ -858,7 +557,6 @@ int npu_enable_core_power(struct npu_device *npu_dev)
 	int ret = 0;
 
 	mutex_lock(&npu_dev->dev_lock);
-<<<<<<< HEAD
 	NPU_DBG("Enable core power %d\n", pwr->pwr_vote_num);
 	if (!pwr->pwr_vote_num) {
 		ret = npu_set_bw(npu_dev, 100, 100);
@@ -875,17 +573,6 @@ int npu_enable_core_power(struct npu_device *npu_dev)
 		if (ret) {
 			npu_disable_regulators(npu_dev);
 			npu_set_bw(npu_dev, 0, 0);
-=======
-	if (!pwr->pwr_vote_num) {
-		ret = npu_enable_regulators(npu_dev);
-		if (ret)
-			goto fail;
-
-		ret = npu_enable_core_clocks(npu_dev);
-		if (ret) {
-			npu_disable_regulators(npu_dev);
-			pwr->pwr_vote_num = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto fail;
 		}
 		npu_resume_devbw(npu_dev);
@@ -902,10 +589,7 @@ void npu_disable_core_power(struct npu_device *npu_dev)
 	struct npu_pwrctrl *pwr = &npu_dev->pwrctrl;
 
 	mutex_lock(&npu_dev->dev_lock);
-<<<<<<< HEAD
 	NPU_DBG("Disable core power %d\n", pwr->pwr_vote_num);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!pwr->pwr_vote_num) {
 		mutex_unlock(&npu_dev->dev_lock);
 		return;
@@ -916,19 +600,12 @@ void npu_disable_core_power(struct npu_device *npu_dev)
 		npu_suspend_devbw(npu_dev);
 		npu_disable_core_clocks(npu_dev);
 		npu_disable_regulators(npu_dev);
-<<<<<<< HEAD
 		npu_set_bw(npu_dev, 0, 0);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pwr->active_pwrlevel = pwr->default_pwrlevel;
 		pwr->uc_pwrlevel = pwr->max_pwrlevel;
 		pwr->cdsprm_pwrlevel = pwr->max_pwrlevel;
 		pwr->cur_dcvs_activity = pwr->num_pwrlevels;
-<<<<<<< HEAD
 		NPU_DBG("setting back to power level=%d\n",
-=======
-		pr_debug("setting back to power level=%d\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pwr->active_pwrlevel);
 	}
 	mutex_unlock(&npu_dev->dev_lock);
@@ -992,23 +669,14 @@ static uint32_t npu_calc_power_level(struct npu_device *npu_dev)
 	 * settings
 	 */
 	ret_level = min(therm_pwr_level, uc_pwr_level);
-<<<<<<< HEAD
 	NPU_DBG("therm=%d active=%d uc=%d set level=%d\n",
 		therm_pwr_level, active_pwr_level, uc_pwr_level,
-=======
-	pr_debug("%s therm=%d active=%d uc=%d set level=%d\n",
-		__func__, therm_pwr_level, active_pwr_level, uc_pwr_level,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret_level);
 
 	return ret_level;
 }
 
-<<<<<<< HEAD
 int npu_set_power_level(struct npu_device *npu_dev, bool notify_cxlimit)
-=======
-static int npu_set_power_level(struct npu_device *npu_dev, bool notify_cxlimit)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct npu_pwrctrl *pwr = &npu_dev->pwrctrl;
 	struct npu_pwrlevel *pwrlevel;
@@ -1020,11 +688,7 @@ static int npu_set_power_level(struct npu_device *npu_dev, bool notify_cxlimit)
 	pwr_level_to_cdsprm = pwr_level_to_set;
 
 	if (!pwr->pwr_vote_num) {
-<<<<<<< HEAD
 		NPU_DBG("power is not enabled during set request\n");
-=======
-		pr_debug("power is not enabled during set request\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pwr->active_pwrlevel = min(pwr_level_to_set,
 			npu_dev->pwrctrl.cdsprm_pwrlevel);
 		return 0;
@@ -1040,7 +704,6 @@ static int npu_set_power_level(struct npu_device *npu_dev, bool notify_cxlimit)
 
 	/* if the same as current, dont do anything */
 	if (pwr_level_to_set == pwr->active_pwrlevel) {
-<<<<<<< HEAD
 		NPU_DBG("power level %d doesn't change\n", pwr_level_to_set);
 		return 0;
 	}
@@ -1068,53 +731,30 @@ static int npu_set_power_level(struct npu_device *npu_dev, bool notify_cxlimit)
 		ret = 0;
 	}
 
-=======
-		pr_debug("power level %d doesn't change\n", pwr_level_to_set);
-		return 0;
-	}
-
-	pr_debug("setting power level to [%d]\n", pwr_level_to_set);
-	pwr_level_idx = npu_power_level_to_index(npu_dev, pwr_level_to_set);
-	pwrlevel = &npu_dev->pwrctrl.pwrlevels[pwr_level_idx];
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < npu_dev->core_clk_num; i++) {
 		if (npu_is_exclude_rate_clock(
 			npu_dev->core_clks[i].clk_name))
 			continue;
 
-<<<<<<< HEAD
 		if (npu_dev->host_ctx.fw_state != FW_ENABLED) {
-=======
-		if (npu_dev->host_ctx.fw_state == FW_DISABLED) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (npu_is_post_clock(
 				npu_dev->core_clks[i].clk_name))
 				continue;
 		}
 
-<<<<<<< HEAD
 		NPU_DBG("requested rate of clock [%s] to [%ld]\n",
-=======
-		pr_debug("requested rate of clock [%s] to [%ld]\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			npu_dev->core_clks[i].clk_name, pwrlevel->clk_freq[i]);
 
 		ret = clk_set_rate(npu_dev->core_clks[i].clk,
 			pwrlevel->clk_freq[i]);
 		if (ret) {
-<<<<<<< HEAD
 			NPU_DBG("clk_set_rate %s to %ld failed with %d\n",
-=======
-			pr_debug("clk_set_rate %s to %ld failed with %d\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				npu_dev->core_clks[i].clk_name,
 				pwrlevel->clk_freq[i], ret);
 			break;
 		}
 	}
 
-<<<<<<< HEAD
 	if (!ret) {
 		ret = npu_host_notify_fw_pwr_state(npu_dev,
 			pwr_level_to_set, true);
@@ -1129,12 +769,6 @@ static int npu_set_power_level(struct npu_device *npu_dev, bool notify_cxlimit)
 		npu_notify_cdsprm_cxlimit_corner(npu_dev,
 			pwr_level_to_cdsprm);
 		NPU_DBG("Notify cdsprm(post) %d\n", pwr_level_to_cdsprm);
-=======
-	if ((pwr_level_to_cdsprm < pwr->active_pwrlevel) && notify_cxlimit) {
-		npu_notify_cdsprm_cxlimit_corner(npu_dev,
-			pwr_level_to_cdsprm);
-		pr_debug("Notify cdsprm(post) %d\n", pwr_level_to_cdsprm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	pwr->active_pwrlevel = pwr_level_to_set;
@@ -1158,7 +792,6 @@ int npu_set_uc_power_level(struct npu_device *npu_dev,
 }
 
 /* -------------------------------------------------------------------------
-<<<<<<< HEAD
  * Bandwidth Monitor Related
  * -------------------------------------------------------------------------
  */
@@ -1175,61 +808,12 @@ static void npu_suspend_devbw(struct npu_device *npu_dev)
 					ret);
 		}
 		pwr->bwmon_enabled = 0;
-=======
- * Bandwidth Related
- * -------------------------------------------------------------------------
- */
-static void npu_save_bw_registers(struct npu_device *npu_dev)
-{
-	int i;
-
-	if (!npu_dev->bwmon_io.base)
-		return;
-
-	for (i = 0; i < ARRAY_SIZE(npu_saved_bw_registers); i++) {
-		npu_saved_bw_registers[i].val = npu_bwmon_reg_read(npu_dev,
-			npu_saved_bw_registers[i].off);
-		npu_saved_bw_registers[i].valid = true;
-	}
-}
-
-static void npu_restore_bw_registers(struct npu_device *npu_dev)
-{
-	int i;
-
-	if (!npu_dev->bwmon_io.base)
-		return;
-
-	for (i = 0; i < ARRAY_SIZE(npu_saved_bw_registers); i++) {
-		if (npu_saved_bw_registers[i].valid) {
-			npu_bwmon_reg_write(npu_dev,
-				npu_saved_bw_registers[i].off,
-				npu_saved_bw_registers[i].val);
-			npu_saved_bw_registers[i].valid = false;
-		}
-	}
-}
-
-static void npu_suspend_devbw(struct npu_device *npu_dev)
-{
-	struct npu_pwrctrl *pwr = &npu_dev->pwrctrl;
-	int ret;
-
-	if (pwr->bwmon_enabled && pwr->devbw) {
-		pwr->bwmon_enabled = 0;
-		ret = devfreq_suspend_devbw(pwr->devbw);
-		if (ret)
-			pr_err("devfreq_suspend_devbw failed rc:%d\n",
-				ret);
-		npu_save_bw_registers(npu_dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
 static void npu_resume_devbw(struct npu_device *npu_dev)
 {
 	struct npu_pwrctrl *pwr = &npu_dev->pwrctrl;
-<<<<<<< HEAD
 	int ret, i;
 
 	if (!pwr->bwmon_enabled && (pwr->devbw_num > 0)) {
@@ -1240,17 +824,6 @@ static void npu_resume_devbw(struct npu_device *npu_dev)
 					ret);
 		}
 		pwr->bwmon_enabled = 1;
-=======
-	int ret;
-
-	if (!pwr->bwmon_enabled && pwr->devbw) {
-		pwr->bwmon_enabled = 1;
-		npu_restore_bw_registers(npu_dev);
-		ret = devfreq_resume_devbw(pwr->devbw);
-
-		if (ret)
-			pr_err("devfreq_resume_devbw failed rc:%d\n", ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -1286,7 +859,6 @@ static bool npu_is_exclude_rate_clock(const char *clk_name)
 	return ret;
 }
 
-<<<<<<< HEAD
 static bool npu_clk_need_reset(const char *clk_name)
 {
 	int ret = false;
@@ -1302,8 +874,6 @@ static bool npu_clk_need_reset(const char *clk_name)
 	return ret;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int npu_enable_clocks(struct npu_device *npu_dev, bool post_pil)
 {
 	int i, rc = 0;
@@ -1316,11 +886,7 @@ static int npu_enable_clocks(struct npu_device *npu_dev, bool post_pil)
 	if (!post_pil) {
 		pwrlevel_to_set = npu_notify_cdsprm_cxlimit_corner(
 			npu_dev, pwrlevel_to_set);
-<<<<<<< HEAD
 		NPU_DBG("Notify cdsprm %d\n", pwrlevel_to_set);
-=======
-		pr_debug("Notify cdsprm %d\n", pwrlevel_to_set);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pwr->active_pwrlevel = pwrlevel_to_set;
 	}
 
@@ -1335,7 +901,6 @@ static int npu_enable_clocks(struct npu_device *npu_dev, bool post_pil)
 				continue;
 		}
 
-<<<<<<< HEAD
 		if (core_clks[i].reset) {
 			rc = reset_control_deassert(core_clks[i].reset);
 			if (rc)
@@ -1346,13 +911,6 @@ static int npu_enable_clocks(struct npu_device *npu_dev, bool post_pil)
 		rc = clk_prepare_enable(core_clks[i].clk);
 		if (rc) {
 			NPU_ERR("%s enable failed\n",
-=======
-		pr_debug("enabling clock %s\n", core_clks[i].clk_name);
-
-		rc = clk_prepare_enable(core_clks[i].clk);
-		if (rc) {
-			pr_err("%s enable failed\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				core_clks[i].clk_name);
 			break;
 		}
@@ -1360,21 +918,11 @@ static int npu_enable_clocks(struct npu_device *npu_dev, bool post_pil)
 		if (npu_is_exclude_rate_clock(core_clks[i].clk_name))
 			continue;
 
-<<<<<<< HEAD
-=======
-		pr_debug("setting rate of clock %s to %ld\n",
-			core_clks[i].clk_name, pwrlevel->clk_freq[i]);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rc = clk_set_rate(core_clks[i].clk,
 			pwrlevel->clk_freq[i]);
 		/* not fatal error, keep using previous clk rate */
 		if (rc) {
-<<<<<<< HEAD
 			NPU_ERR("clk_set_rate %s to %ld failed\n",
-=======
-			pr_err("clk_set_rate %s to %ld failed\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				core_clks[i].clk_name,
 				pwrlevel->clk_freq[i]);
 			rc = 0;
@@ -1390,7 +938,6 @@ static int npu_enable_clocks(struct npu_device *npu_dev, bool post_pil)
 				if (npu_is_post_clock(core_clks[i].clk_name))
 					continue;
 			}
-<<<<<<< HEAD
 			clk_disable_unprepare(core_clks[i].clk);
 
 			if (core_clks[i].reset) {
@@ -1399,10 +946,6 @@ static int npu_enable_clocks(struct npu_device *npu_dev, bool post_pil)
 					NPU_WARN("assert %s reset failed\n",
 						core_clks[i].clk_name);
 			}
-=======
-			pr_debug("disabling clock %s\n", core_clks[i].clk_name);
-			clk_disable_unprepare(core_clks[i].clk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -1411,20 +954,12 @@ static int npu_enable_clocks(struct npu_device *npu_dev, bool post_pil)
 
 static void npu_disable_clocks(struct npu_device *npu_dev, bool post_pil)
 {
-<<<<<<< HEAD
 	int i, rc = 0;
-=======
-	int i = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct npu_clk *core_clks = npu_dev->core_clks;
 
 	if (!post_pil) {
 		npu_notify_cdsprm_cxlimit_corner(npu_dev, NPU_PWRLEVEL_OFF);
-<<<<<<< HEAD
 		NPU_DBG("Notify cdsprm clock off\n");
-=======
-		pr_debug("Notify cdsprm clock off\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	for (i = npu_dev->core_clk_num - 1; i >= 0 ; i--) {
@@ -1436,7 +971,6 @@ static void npu_disable_clocks(struct npu_device *npu_dev, bool post_pil)
 				continue;
 		}
 
-<<<<<<< HEAD
 		/* set clock rate to 0 before disabling it */
 		if (!npu_is_exclude_rate_clock(core_clks[i].clk_name)) {
 			rc = clk_set_rate(core_clks[i].clk, 0);
@@ -1454,10 +988,6 @@ static void npu_disable_clocks(struct npu_device *npu_dev, bool post_pil)
 				NPU_WARN("assert %s reset failed\n",
 					core_clks[i].clk_name);
 		}
-=======
-		pr_debug("disabling clock %s\n", core_clks[i].clk_name);
-		clk_disable_unprepare(core_clks[i].clk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -1471,12 +1001,7 @@ static int npu_get_max_state(struct thermal_cooling_device *cdev,
 	struct npu_device *npu_dev = cdev->devdata;
 	struct npu_thermalctrl *thermalctrl = &npu_dev->thermalctrl;
 
-<<<<<<< HEAD
 	NPU_DBG("thermal max state=%lu\n", thermalctrl->max_state);
-=======
-	pr_debug("enter %s thermal max state=%lu\n", __func__,
-		thermalctrl->max_state);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	*state = thermalctrl->max_state;
 
@@ -1489,12 +1014,7 @@ static int npu_get_cur_state(struct thermal_cooling_device *cdev,
 	struct npu_device *npu_dev = cdev->devdata;
 	struct npu_thermalctrl *thermal = &npu_dev->thermalctrl;
 
-<<<<<<< HEAD
 	NPU_DBG("thermal current state=%lu\n", thermal->current_state);
-=======
-	pr_debug("enter %s thermal current state=%lu\n", __func__,
-		thermal->current_state);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	*state = thermal->current_state;
 
@@ -1507,23 +1027,14 @@ npu_set_cur_state(struct thermal_cooling_device *cdev, unsigned long state)
 	struct npu_device *npu_dev = cdev->devdata;
 	struct npu_thermalctrl *thermal = &npu_dev->thermalctrl;
 
-<<<<<<< HEAD
 	NPU_DBG("request state=%lu\n", state);
-=======
-	pr_debug("enter %s request state=%lu\n", __func__, state);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (state > thermal->max_state)
 		return -EINVAL;
 
 	thermal->current_state = state;
 	thermal->pwr_level =  npu_power_level_from_index(npu_dev,
 		thermal->max_state - state);
-<<<<<<< HEAD
 	return npu_host_update_power(npu_dev);
-=======
-
-	return npu_set_power_level(npu_dev, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* -------------------------------------------------------------------------
@@ -1541,7 +1052,6 @@ static int npu_enable_regulators(struct npu_device *npu_dev)
 		for (i = 0; i < npu_dev->regulator_num; i++) {
 			rc = regulator_enable(regulators[i].regulator);
 			if (rc < 0) {
-<<<<<<< HEAD
 				NPU_ERR("%s enable failed\n",
 					regulators[i].regulator_name);
 				break;
@@ -1555,17 +1065,6 @@ static int npu_enable_regulators(struct npu_device *npu_dev)
 	} else {
 		host_ctx->power_vote_num++;
 	}
-=======
-				pr_err("%s enable failed\n",
-					regulators[i].regulator_name);
-				break;
-			}
-			pr_debug("regulator %s enabled\n",
-				regulators[i].regulator_name);
-		}
-	}
-	host_ctx->power_vote_num++;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 
@@ -1576,17 +1075,9 @@ static void npu_disable_regulators(struct npu_device *npu_dev)
 	struct npu_regulator *regulators = npu_dev->regulators;
 
 	if (host_ctx->power_vote_num > 0) {
-<<<<<<< HEAD
 		for (i = 0; i < npu_dev->regulator_num; i++)
 			regulator_disable(regulators[i].regulator);
 
-=======
-		for (i = 0; i < npu_dev->regulator_num; i++) {
-			regulator_disable(regulators[i].regulator);
-			pr_debug("regulator %s disabled\n",
-				regulators[i].regulator_name);
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		host_ctx->power_vote_num--;
 	}
 }
@@ -1598,7 +1089,6 @@ static void npu_disable_regulators(struct npu_device *npu_dev)
 int npu_enable_irq(struct npu_device *npu_dev)
 {
 	int i;
-<<<<<<< HEAD
 	uint32_t reg_val;
 
 	if (npu_dev->irq_enabled) {
@@ -1625,22 +1115,6 @@ int npu_enable_irq(struct npu_device *npu_dev)
 
 	npu_dev->irq_enabled = true;
 	NPU_DBG("irq enabled\n");
-=======
-
-	/* clear pending irq state */
-	REGW(npu_dev, NPU_MASTERn_IPC_IRQ_OUT(0), 0x0);
-	REGW(npu_dev, NPU_MASTERn_ERROR_IRQ_CLEAR(0), NPU_ERROR_IRQ_MASK);
-	REGW(npu_dev, NPU_MASTERn_ERROR_IRQ_ENABLE(0), NPU_ERROR_IRQ_MASK);
-	REGW(npu_dev, NPU_MASTERn_ERROR_IRQ_OWNER(0), NPU_ERROR_IRQ_MASK);
-	REGW(npu_dev, NPU_MASTERn_WDOG_IRQ_OWNER(0), NPU_WDOG_IRQ_MASK);
-
-	for (i = 0; i < NPU_MAX_IRQ; i++) {
-		if (npu_dev->irq[i].irq != 0) {
-			enable_irq(npu_dev->irq[i].irq);
-			pr_debug("enable irq %d\n", npu_dev->irq[i].irq);
-		}
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -1648,7 +1122,6 @@ int npu_enable_irq(struct npu_device *npu_dev)
 void npu_disable_irq(struct npu_device *npu_dev)
 {
 	int i;
-<<<<<<< HEAD
 	uint32_t reg_val;
 
 	if (!npu_dev->irq_enabled) {
@@ -1674,20 +1147,6 @@ void npu_disable_irq(struct npu_device *npu_dev)
 		RSC_SHUTDOWN_REQ_IRQ_ENABLE | RSC_BRINGUP_REQ_IRQ_ENABLE);
 	npu_dev->irq_enabled = false;
 	NPU_DBG("irq disabled\n");
-=======
-
-	for (i = 0; i < NPU_MAX_IRQ; i++) {
-		if (npu_dev->irq[i].irq != 0) {
-			disable_irq(npu_dev->irq[i].irq);
-			pr_debug("disable irq %d\n", npu_dev->irq[i].irq);
-		}
-	}
-
-	REGW(npu_dev, NPU_MASTERn_ERROR_IRQ_ENABLE(0), 0);
-	/* clear pending irq state */
-	REGW(npu_dev, NPU_MASTERn_IPC_IRQ_OUT(0), 0x0);
-	REGW(npu_dev, NPU_MASTERn_ERROR_IRQ_CLEAR(0), NPU_ERROR_IRQ_MASK);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* -------------------------------------------------------------------------
@@ -1700,23 +1159,15 @@ int npu_enable_sys_cache(struct npu_device *npu_dev)
 	uint32_t reg_val = 0;
 
 	if (!npu_dev->host_ctx.sys_cache_disable) {
-<<<<<<< HEAD
 		npu_dev->sys_cache = llcc_slice_getd(LLCC_NPU);
 		if (IS_ERR_OR_NULL(npu_dev->sys_cache)) {
 			NPU_WARN("unable to init sys cache\n");
-=======
-		npu_dev->sys_cache = llcc_slice_getd(&(npu_dev->pdev->dev),
-			"npu");
-		if (IS_ERR_OR_NULL(npu_dev->sys_cache)) {
-			pr_warn("unable to init sys cache\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			npu_dev->sys_cache = NULL;
 			npu_dev->host_ctx.sys_cache_disable = true;
 			return 0;
 		}
 
 		/* set npu side regs - program SCID */
-<<<<<<< HEAD
 		reg_val = REGR(npu_dev, NPU_CACHEMAP0_ATTR_IDn(0));
 		reg_val = (reg_val & ~NPU_CACHEMAP_SCID_MASK) | SYS_CACHE_SCID;
 
@@ -1748,26 +1199,6 @@ int npu_enable_sys_cache(struct npu_device *npu_dev)
 			npu_dev->sys_cache = NULL;
 			rc = 0;
 		}
-=======
-		reg_val = NPU_CACHE_ATTR_IDn___POR | SYS_CACHE_SCID;
-
-		REGW(npu_dev, NPU_CACHE_ATTR_IDn(0), reg_val);
-		REGW(npu_dev, NPU_CACHE_ATTR_IDn(1), reg_val);
-		REGW(npu_dev, NPU_CACHE_ATTR_IDn(2), reg_val);
-		REGW(npu_dev, NPU_CACHE_ATTR_IDn(3), reg_val);
-		REGW(npu_dev, NPU_CACHE_ATTR_IDn(4), reg_val);
-
-		pr_debug("prior to activate sys cache\n");
-		rc = llcc_slice_activate(npu_dev->sys_cache);
-		if (rc) {
-			pr_warn("failed to activate sys cache\n");
-			llcc_slice_putd(npu_dev->sys_cache);
-			npu_dev->sys_cache = NULL;
-			return 0;
-		}
-
-		pr_debug("sys cache activated\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return rc;
@@ -1781,17 +1212,10 @@ void npu_disable_sys_cache(struct npu_device *npu_dev)
 		if (npu_dev->sys_cache) {
 			rc = llcc_slice_deactivate(npu_dev->sys_cache);
 			if (rc) {
-<<<<<<< HEAD
 				NPU_ERR("failed to deactivate sys cache\n");
 				return;
 			}
 			NPU_DBG("sys cache deactivated\n");
-=======
-				pr_err("failed to deactivate sys cache\n");
-				return;
-			}
-			pr_debug("sys cache deactivated\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			llcc_slice_putd(npu_dev->sys_cache);
 			npu_dev->sys_cache = NULL;
 		}
@@ -1855,33 +1279,21 @@ static int npu_get_info(struct npu_client *client, unsigned long arg)
 	ret = copy_from_user(&req, argp, sizeof(req));
 
 	if (ret) {
-<<<<<<< HEAD
 		NPU_ERR("fail to copy from user\n");
-=======
-		pr_err("fail to copy from user\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 	}
 
 	ret = npu_host_get_info(npu_dev, &req);
 
 	if (ret) {
-<<<<<<< HEAD
 		NPU_ERR("npu_host_get_info failed\n");
-=======
-		pr_err("npu_host_get_info failed\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
 	ret = copy_to_user(argp, &req, sizeof(req));
 
 	if (ret) {
-<<<<<<< HEAD
 		NPU_ERR("fail to copy to user\n");
-=======
-		pr_err("fail to copy to user\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 	}
 	return 0;
@@ -1896,33 +1308,21 @@ static int npu_map_buf(struct npu_client *client, unsigned long arg)
 	ret = copy_from_user(&req, argp, sizeof(req));
 
 	if (ret) {
-<<<<<<< HEAD
 		NPU_ERR("fail to copy from user\n");
-=======
-		pr_err("fail to copy from user\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 	}
 
 	ret = npu_host_map_buf(client, &req);
 
 	if (ret) {
-<<<<<<< HEAD
 		NPU_ERR("npu_host_map_buf failed\n");
-=======
-		pr_err("npu_host_map_buf failed\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
 	ret = copy_to_user(argp, &req, sizeof(req));
 
 	if (ret) {
-<<<<<<< HEAD
 		NPU_ERR("fail to copy to user\n");
-=======
-		pr_err("fail to copy to user\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 	}
 	return 0;
@@ -1937,73 +1337,26 @@ static int npu_unmap_buf(struct npu_client *client, unsigned long arg)
 	ret = copy_from_user(&req, argp, sizeof(req));
 
 	if (ret) {
-<<<<<<< HEAD
 		NPU_ERR("fail to copy from user\n");
-=======
-		pr_err("fail to copy from user\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 	}
 
 	ret = npu_host_unmap_buf(client, &req);
 
 	if (ret) {
-<<<<<<< HEAD
 		NPU_ERR("npu_host_unmap_buf failed\n");
-=======
-		pr_err("npu_host_unmap_buf failed\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
 	ret = copy_to_user(argp, &req, sizeof(req));
 
 	if (ret) {
-<<<<<<< HEAD
 		NPU_ERR("fail to copy to user\n");
-=======
-		pr_err("fail to copy to user\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 	}
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-static int npu_load_network(struct npu_client *client,
-	unsigned long arg)
-{
-	struct msm_npu_load_network_ioctl req;
-	struct msm_npu_unload_network_ioctl unload_req;
-	void __user *argp = (void __user *)arg;
-	int ret = 0;
-
-	ret = copy_from_user(&req, argp, sizeof(req));
-
-	if (ret) {
-		pr_err("fail to copy from user\n");
-		return -EFAULT;
-	}
-
-	pr_debug("network load with perf request %d\n", req.perf_mode);
-
-	ret = npu_host_load_network(client, &req);
-	if (ret) {
-		pr_err("npu_host_load_network failed %d\n", ret);
-		return ret;
-	}
-
-	ret = copy_to_user(argp, &req, sizeof(req));
-	if (ret) {
-		pr_err("fail to copy to user\n");
-		ret = -EFAULT;
-		unload_req.network_hdl = req.network_hdl;
-		npu_host_unload_network(client, &unload_req);
-	}
-	return ret;
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int npu_load_network_v2(struct npu_client *client,
 	unsigned long arg)
@@ -2016,7 +1369,6 @@ static int npu_load_network_v2(struct npu_client *client,
 
 	ret = copy_from_user(&req, argp, sizeof(req));
 	if (ret) {
-<<<<<<< HEAD
 		NPU_ERR("fail to copy from user\n");
 		return -EFAULT;
 	}
@@ -2024,14 +1376,6 @@ static int npu_load_network_v2(struct npu_client *client,
 	if ((req.patch_info_num > NPU_MAX_PATCH_NUM) ||
 		(req.patch_info_num == 0)) {
 		NPU_ERR("Invalid patch info num %d[max:%d]\n",
-=======
-		pr_err("fail to copy from user\n");
-		return -EFAULT;
-	}
-
-	if (req.patch_info_num > NPU_MAX_PATCH_NUM) {
-		pr_err("Invalid patch info num %d[max:%d]\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			req.patch_info_num, NPU_MAX_PATCH_NUM);
 		return -EINVAL;
 	}
@@ -2046,41 +1390,25 @@ static int npu_load_network_v2(struct npu_client *client,
 			(void __user *)req.patch_info,
 			req.patch_info_num * sizeof(*patch_info));
 		if (ret) {
-<<<<<<< HEAD
 			NPU_ERR("fail to copy patch info\n");
-=======
-			pr_err("fail to copy patch info\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			kfree(patch_info);
 			return -EFAULT;
 		}
 	}
 
-<<<<<<< HEAD
 	NPU_DBG("network load with perf request %d\n", req.perf_mode);
-=======
-	pr_debug("network load with perf request %d\n", req.perf_mode);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = npu_host_load_network_v2(client, &req, patch_info);
 
 	kfree(patch_info);
 	if (ret) {
-<<<<<<< HEAD
 		NPU_ERR("npu_host_load_network_v2 failed %d\n", ret);
-=======
-		pr_err("npu_host_load_network_v2 failed %d\n", ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
 	ret = copy_to_user(argp, &req, sizeof(req));
 	if (ret) {
-<<<<<<< HEAD
 		NPU_ERR("fail to copy to user\n");
-=======
-		pr_err("fail to copy to user\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -EFAULT;
 		unload_req.network_hdl = req.network_hdl;
 		npu_host_unload_network(client, &unload_req);
@@ -2099,76 +1427,21 @@ static int npu_unload_network(struct npu_client *client,
 	ret = copy_from_user(&req, argp, sizeof(req));
 
 	if (ret) {
-<<<<<<< HEAD
 		NPU_ERR("fail to copy from user\n");
-=======
-		pr_err("fail to copy from user\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 	}
 
 	ret = npu_host_unload_network(client, &req);
 
 	if (ret) {
-<<<<<<< HEAD
 		NPU_ERR("npu_host_unload_network failed %d\n", ret);
-=======
-		pr_err("npu_host_unload_network failed %d\n", ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
 	ret = copy_to_user(argp, &req, sizeof(req));
 
 	if (ret) {
-<<<<<<< HEAD
 		NPU_ERR("fail to copy to user\n");
-=======
-		pr_err("fail to copy to user\n");
-		return -EFAULT;
-	}
-	return 0;
-}
-
-static int npu_exec_network(struct npu_client *client,
-	unsigned long arg)
-{
-	struct msm_npu_exec_network_ioctl req;
-	void __user *argp = (void __user *)arg;
-	int ret = 0;
-
-	ret = copy_from_user(&req, argp, sizeof(req));
-
-	if (ret) {
-		pr_err("fail to copy from user\n");
-		return -EFAULT;
-	}
-
-	if ((req.input_layer_num > MSM_NPU_MAX_INPUT_LAYER_NUM) ||
-		(req.output_layer_num > MSM_NPU_MAX_OUTPUT_LAYER_NUM)) {
-		pr_err("Invalid input/out layer num %d[max:%d] %d[max:%d]\n",
-			req.input_layer_num, MSM_NPU_MAX_INPUT_LAYER_NUM,
-			req.output_layer_num, MSM_NPU_MAX_OUTPUT_LAYER_NUM);
-		return -EINVAL;
-	}
-
-	if (!req.patching_required) {
-		pr_err("Only support patched network");
-		return -EINVAL;
-	}
-
-	ret = npu_host_exec_network(client, &req);
-
-	if (ret) {
-		pr_err("npu_host_exec_network failed %d\n", ret);
-		return ret;
-	}
-
-	ret = copy_to_user(argp, &req, sizeof(req));
-
-	if (ret) {
-		pr_err("fail to copy to user\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 	}
 	return 0;
@@ -2184,31 +1457,19 @@ static int npu_exec_network_v2(struct npu_client *client,
 
 	ret = copy_from_user(&req, argp, sizeof(req));
 	if (ret) {
-<<<<<<< HEAD
 		NPU_ERR("fail to copy from user\n");
-=======
-		pr_err("fail to copy from user\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 	}
 
 	if ((req.patch_buf_info_num > NPU_MAX_PATCH_NUM) ||
 		(req.patch_buf_info_num == 0)) {
-<<<<<<< HEAD
 		NPU_ERR("Invalid patch buf info num %d[max:%d]\n",
-=======
-		pr_err("Invalid patch buf info num %d[max:%d]\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			req.patch_buf_info_num, NPU_MAX_PATCH_NUM);
 		return -EINVAL;
 	}
 
 	if (req.stats_buf_size > NPU_MAX_STATS_BUF_SIZE) {
-<<<<<<< HEAD
 		NPU_ERR("Invalid stats buffer size %d max %d\n",
-=======
-		pr_err("Invalid stats buffer size %d max %d\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			req.stats_buf_size, NPU_MAX_STATS_BUF_SIZE);
 		return -EINVAL;
 	}
@@ -2223,11 +1484,7 @@ static int npu_exec_network_v2(struct npu_client *client,
 			(void __user *)req.patch_buf_info,
 			req.patch_buf_info_num * sizeof(*patch_buf_info));
 		if (ret) {
-<<<<<<< HEAD
 			NPU_ERR("fail to copy patch buf info\n");
-=======
-			pr_err("fail to copy patch buf info\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			kfree(patch_buf_info);
 			return -EFAULT;
 		}
@@ -2237,52 +1494,19 @@ static int npu_exec_network_v2(struct npu_client *client,
 
 	kfree(patch_buf_info);
 	if (ret) {
-<<<<<<< HEAD
 		NPU_ERR("npu_host_exec_network_v2 failed %d\n", ret);
-=======
-		pr_err("npu_host_exec_network_v2 failed %d\n", ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
 	ret = copy_to_user(argp, &req, sizeof(req));
 	if (ret) {
-<<<<<<< HEAD
 		NPU_ERR("fail to copy to user\n");
-=======
-		pr_err("fail to copy to user\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -EFAULT;
 	}
 
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
-static int npu_process_kevent(struct npu_kevent *kevt)
-{
-	int ret = 0;
-
-	switch (kevt->evt.type) {
-	case MSM_NPU_EVENT_TYPE_EXEC_V2_DONE:
-		ret = copy_to_user((void __user *)kevt->reserved[1],
-			(void *)kevt->reserved[0],
-			kevt->evt.u.exec_v2_done.stats_buf_size);
-		if (ret) {
-			pr_err("fail to copy to user\n");
-			kevt->evt.u.exec_v2_done.stats_buf_size = 0;
-			ret = -EFAULT;
-		}
-		break;
-	default:
-		break;
-	}
-
-	return ret;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int npu_receive_event(struct npu_client *client,
 	unsigned long arg)
 {
@@ -2292,29 +1516,17 @@ static int npu_receive_event(struct npu_client *client,
 
 	mutex_lock(&client->list_lock);
 	if (list_empty(&client->evt_list)) {
-<<<<<<< HEAD
 		NPU_ERR("event list is empty\n");
-=======
-		pr_err("event list is empty\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -EINVAL;
 	} else {
 		kevt = list_first_entry(&client->evt_list,
 			struct npu_kevent, list);
 		list_del(&kevt->list);
-<<<<<<< HEAD
 		npu_process_kevent(client, kevt);
 		ret = copy_to_user(argp, &kevt->evt,
 			sizeof(struct msm_npu_event));
 		if (ret) {
 			NPU_ERR("fail to copy to user\n");
-=======
-		npu_process_kevent(kevt);
-		ret = copy_to_user(argp, &kevt->evt,
-			sizeof(struct msm_npu_event));
-		if (ret) {
-			pr_err("fail to copy to user\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ret = -EFAULT;
 		}
 		kfree(kevt);
@@ -2330,7 +1542,6 @@ static int npu_set_fw_state(struct npu_client *client, uint32_t enable)
 	struct npu_host_ctx *host_ctx = &npu_dev->host_ctx;
 	int rc = 0;
 
-<<<<<<< HEAD
 	if (enable) {
 		NPU_DBG("enable fw\n");
 		rc = enable_fw(npu_dev);
@@ -2348,34 +1559,6 @@ static int npu_set_fw_state(struct npu_client *client, uint32_t enable)
 		NPU_DBG("npu_init_cnt %d\n", host_ctx->npu_init_cnt);
 	} else {
 		NPU_ERR("can't disable fw %d\n", host_ctx->npu_init_cnt);
-=======
-	if (host_ctx->network_num > 0) {
-		pr_err("Need to unload network first\n");
-		mutex_unlock(&npu_dev->dev_lock);
-		return -EINVAL;
-	}
-
-	if (enable) {
-		pr_debug("enable fw\n");
-		rc = fw_init(npu_dev);
-		if (rc) {
-			pr_err("enable fw failed\n");
-		} else {
-			host_ctx->npu_init_cnt++;
-			pr_debug("npu_init_cnt %d\n",
-				host_ctx->npu_init_cnt);
-			/* set npu to lowest power level */
-			if (npu_set_uc_power_level(npu_dev, 1))
-				pr_warn("Failed to set uc power level");
-		}
-	} else if (host_ctx->npu_init_cnt > 0) {
-		pr_debug("disable fw\n");
-		fw_deinit(npu_dev, false, true);
-		host_ctx->npu_init_cnt--;
-		pr_debug("npu_init_cnt %d\n", host_ctx->npu_init_cnt);
-	} else {
-		pr_err("can't disable fw %d\n", host_ctx->npu_init_cnt);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return rc;
@@ -2390,11 +1573,7 @@ static int npu_set_property(struct npu_client *client,
 
 	ret = copy_from_user(&prop, argp, sizeof(prop));
 	if (ret) {
-<<<<<<< HEAD
 		NPU_ERR("fail to copy from user\n");
-=======
-		pr_err("fail to copy from user\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 	}
 
@@ -2411,11 +1590,7 @@ static int npu_set_property(struct npu_client *client,
 	default:
 		ret = npu_host_set_fw_property(client->npu_dev, &prop);
 		if (ret)
-<<<<<<< HEAD
 			NPU_ERR("npu_host_set_fw_property failed\n");
-=======
-			pr_err("npu_host_set_fw_property failed\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 
@@ -2433,11 +1608,7 @@ static int npu_get_property(struct npu_client *client,
 
 	ret = copy_from_user(&prop, argp, sizeof(prop));
 	if (ret) {
-<<<<<<< HEAD
 		NPU_ERR("fail to copy from user\n");
-=======
-		pr_err("fail to copy from user\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 	}
 
@@ -2458,7 +1629,6 @@ static int npu_get_property(struct npu_client *client,
 	case MSM_NPU_PROP_ID_HARDWARE_VERSION:
 		prop.prop_param[0] = npu_dev->hw_version;
 		break;
-<<<<<<< HEAD
 	case MSM_NPU_PROP_ID_IPC_QUEUE_INFO:
 		ret = npu_host_get_ipc_queue_size(npu_dev,
 			prop.prop_param[0]);
@@ -2478,12 +1648,6 @@ static int npu_get_property(struct npu_client *client,
 		ret = npu_host_get_fw_property(client->npu_dev, &prop);
 		if (ret) {
 			NPU_ERR("npu_host_get_fw_property failed\n");
-=======
-	default:
-		ret = npu_host_get_fw_property(client->npu_dev, &prop);
-		if (ret) {
-			pr_err("npu_host_set_fw_property failed\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return ret;
 		}
 		break;
@@ -2491,11 +1655,7 @@ static int npu_get_property(struct npu_client *client,
 
 	ret = copy_to_user(argp, &prop, sizeof(prop));
 	if (ret) {
-<<<<<<< HEAD
 		NPU_ERR("fail to copy to user\n");
-=======
-		pr_err("fail to copy to user\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 	}
 
@@ -2519,12 +1679,8 @@ static long npu_ioctl(struct file *file, unsigned int cmd,
 		ret = npu_unmap_buf(client, arg);
 		break;
 	case MSM_NPU_LOAD_NETWORK:
-<<<<<<< HEAD
 		NPU_ERR("npu_load_network_v1 is no longer supported\n");
 		ret = -ENOTTY;
-=======
-		ret = npu_load_network(client, arg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case MSM_NPU_LOAD_NETWORK_V2:
 		ret = npu_load_network_v2(client, arg);
@@ -2533,12 +1689,8 @@ static long npu_ioctl(struct file *file, unsigned int cmd,
 		ret = npu_unload_network(client, arg);
 		break;
 	case MSM_NPU_EXEC_NETWORK:
-<<<<<<< HEAD
 		NPU_ERR("npu_exec_network_v1 is no longer supported\n");
 		ret = -ENOTTY;
-=======
-		ret = npu_exec_network(client, arg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case MSM_NPU_EXEC_NETWORK_V2:
 		ret = npu_exec_network_v2(client, arg);
@@ -2553,11 +1705,7 @@ static long npu_ioctl(struct file *file, unsigned int cmd,
 		ret = npu_get_property(client, arg);
 		break;
 	default:
-<<<<<<< HEAD
 		NPU_ERR("unexpected IOCTL %x\n", cmd);
-=======
-		pr_err("unexpected IOCTL %x\n", cmd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return ret;
@@ -2572,11 +1720,7 @@ static unsigned int npu_poll(struct file *filp, struct poll_table_struct *p)
 
 	mutex_lock(&client->list_lock);
 	if (!list_empty(&client->evt_list)) {
-<<<<<<< HEAD
 		NPU_DBG("poll cmd done\n");
-=======
-		pr_debug("poll cmd done\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rc = POLLIN | POLLRDNORM;
 	}
 	mutex_unlock(&client->list_lock);
@@ -2596,27 +1740,16 @@ static int npu_parse_dt_clock(struct npu_device *npu_dev)
 	int num_clk;
 	struct npu_clk *core_clks = npu_dev->core_clks;
 	struct platform_device *pdev = npu_dev->pdev;
-<<<<<<< HEAD
 	struct reset_control *reset;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	num_clk = of_property_count_strings(pdev->dev.of_node,
 			"clock-names");
 	if (num_clk <= 0) {
-<<<<<<< HEAD
 		NPU_ERR("clocks are not defined\n");
 		rc = -EINVAL;
 		goto clk_err;
 	} else if (num_clk > NUM_MAX_CLK_NUM) {
 		NPU_ERR("number of clocks %d exceeds limit\n", num_clk);
-=======
-		pr_err("clocks are not defined\n");
-		rc = -EINVAL;
-		goto clk_err;
-	} else if (num_clk > NUM_MAX_CLK_NUM) {
-		pr_err("number of clocks %d exceeds limit\n", num_clk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rc = -EINVAL;
 		goto clk_err;
 	}
@@ -2629,7 +1762,6 @@ static int npu_parse_dt_clock(struct npu_device *npu_dev)
 			sizeof(core_clks[i].clk_name));
 		core_clks[i].clk = devm_clk_get(&pdev->dev, clock_name);
 		if (IS_ERR(core_clks[i].clk)) {
-<<<<<<< HEAD
 			if (PTR_ERR(core_clks[i].clk) != -EPROBE_DEFER)
 				NPU_ERR("unable to get clk: %s\n", clock_name);
 			rc = PTR_ERR(core_clks[i].clk);
@@ -2644,12 +1776,6 @@ static int npu_parse_dt_clock(struct npu_device *npu_dev)
 			else
 				core_clks[i].reset = reset;
 		}
-=======
-			pr_err("unable to get clk: %s\n", clock_name);
-			rc = -EINVAL;
-			break;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 clk_err:
@@ -2669,20 +1795,12 @@ static int npu_parse_dt_regulator(struct npu_device *npu_dev)
 			"qcom,proxy-reg-names");
 	if (num <= 0) {
 		rc = -EINVAL;
-<<<<<<< HEAD
 		NPU_ERR("regulator not defined\n");
-=======
-		pr_err("regulator not defined\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto regulator_err;
 	}
 	if (num > NPU_MAX_REGULATOR_NUM) {
 		rc = -EINVAL;
-<<<<<<< HEAD
 		NPU_ERR("regulator number %d is over the limit %d\n", num,
-=======
-		pr_err("regulator number %d is over the limit %d\n", num,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			NPU_MAX_REGULATOR_NUM);
 		num = NPU_MAX_REGULATOR_NUM;
 	}
@@ -2695,11 +1813,7 @@ static int npu_parse_dt_regulator(struct npu_device *npu_dev)
 				sizeof(regulators[i].regulator_name));
 		regulators[i].regulator = devm_regulator_get(&pdev->dev, name);
 		if (IS_ERR(regulators[i].regulator)) {
-<<<<<<< HEAD
 			NPU_ERR("unable to get regulator: %s\n", name);
-=======
-			pr_err("unable to get regulator: %s\n", name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rc = -EINVAL;
 			break;
 		}
@@ -2709,7 +1823,6 @@ regulator_err:
 	return rc;
 }
 
-<<<<<<< HEAD
 static int npu_parse_dt_bw(struct npu_device *npu_dev)
 {
 	int ret, len, num_paths, i;
@@ -2861,18 +1974,12 @@ static int npu_adjust_max_power_level(struct npu_device *npu_dev)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int npu_of_parse_pwrlevels(struct npu_device *npu_dev,
 		struct device_node *node)
 {
 	struct npu_pwrctrl *pwr = &npu_dev->pwrctrl;
 	struct device_node *child;
 	uint32_t init_level_index = 0, init_power_level;
-<<<<<<< HEAD
-=======
-	uint32_t fmax, fmax_pwrlvl;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pwr->num_pwrlevels = 0;
 	pwr->min_pwrlevel = NPU_PWRLEVEL_TURBO_L1;
@@ -2887,29 +1994,17 @@ static int npu_of_parse_pwrlevels(struct npu_device *npu_dev,
 		struct npu_pwrlevel *level;
 
 		if (of_property_read_u32(child, "reg", &index)) {
-<<<<<<< HEAD
 			NPU_ERR("Can't find reg property\n");
-=======
-			pr_err("Can't find reg property\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EINVAL;
 		}
 
 		if (of_property_read_u32(child, "vreg", &pwr_level)) {
-<<<<<<< HEAD
 			NPU_ERR("Can't find vreg property\n");
-=======
-			pr_err("Can't find vreg property\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EINVAL;
 		}
 
 		if (index >= NPU_MAX_PWRLEVELS) {
-<<<<<<< HEAD
 			NPU_ERR("pwrlevel index %d is out of range\n",
-=======
-			pr_err("pwrlevel index %d is out of range\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				index);
 			continue;
 		}
@@ -2919,11 +2014,7 @@ static int npu_of_parse_pwrlevels(struct npu_device *npu_dev,
 
 		if (of_property_read_u32_array(child, "clk-freq",
 			clk_array_values, npu_dev->core_clk_num)) {
-<<<<<<< HEAD
 			NPU_ERR("pwrlevel index %d read clk-freq failed %d\n",
-=======
-			pr_err("pwrlevel index %d read clk-freq failed %d\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				index, npu_dev->core_clk_num);
 			return -EINVAL;
 		}
@@ -2942,50 +2033,17 @@ static int npu_of_parse_pwrlevels(struct npu_device *npu_dev,
 
 			clk_rate = clk_round_rate(npu_dev->core_clks[i].clk,
 				clk_array_values[i]);
-<<<<<<< HEAD
 			NPU_DBG("clk %s rate [%u]:[%u]\n",
-=======
-			pr_debug("clk %s rate [%u]:[%u]\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				npu_dev->core_clks[i].clk_name,
 				clk_array_values[i], clk_rate);
 			level->clk_freq[i] = clk_rate;
 		}
 	}
 
-<<<<<<< HEAD
 	npu_adjust_max_power_level(npu_dev);
 
 	of_property_read_u32(node, "initial-pwrlevel", &init_level_index);
 	NPU_DBG("initial-pwrlevel %d\n", init_level_index);
-=======
-	/* Read FMAX info if available */
-	if (npu_dev->qfprom_io.base) {
-		fmax = (npu_qfprom_reg_read(npu_dev,
-			QFPROM_FMAX_REG_OFFSET) & QFPROM_FMAX_BITS_MASK) >>
-			QFPROM_FMAX_BITS_SHIFT;
-		pr_debug("fmax %x\n", fmax);
-
-		switch (fmax) {
-		case 1:
-		case 2:
-			fmax_pwrlvl = NPU_PWRLEVEL_NOM;
-			break;
-		case 3:
-			fmax_pwrlvl = NPU_PWRLEVEL_SVS_L1;
-			break;
-		default:
-			fmax_pwrlvl = pwr->max_pwrlevel;
-			break;
-		}
-
-		if (fmax_pwrlvl < pwr->max_pwrlevel)
-			pwr->max_pwrlevel = fmax_pwrlvl;
-	}
-
-	of_property_read_u32(node, "initial-pwrlevel", &init_level_index);
-	pr_debug("initial-pwrlevel %d\n", init_level_index);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (init_level_index >= pwr->num_pwrlevels)
 		init_level_index = pwr->num_pwrlevels - 1;
@@ -2994,17 +2052,10 @@ static int npu_of_parse_pwrlevels(struct npu_device *npu_dev,
 		init_level_index);
 	if (init_power_level > pwr->max_pwrlevel) {
 		init_power_level = pwr->max_pwrlevel;
-<<<<<<< HEAD
 		NPU_DBG("Adjust init power level to %d\n", init_power_level);
 	}
 
 	NPU_DBG("init power level %d max %d min %d\n", init_power_level,
-=======
-		pr_debug("Adjust init power level to %d\n", init_power_level);
-	}
-
-	pr_debug("init power level %d max %d min %d\n", init_power_level,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pwr->max_pwrlevel, pwr->min_pwrlevel);
 	pwr->active_pwrlevel = pwr->default_pwrlevel = init_power_level;
 	pwr->uc_pwrlevel = pwr->max_pwrlevel;
@@ -3019,28 +2070,17 @@ static int npu_pwrctrl_init(struct npu_device *npu_dev)
 {
 	struct platform_device *pdev = npu_dev->pdev;
 	struct device_node *node;
-<<<<<<< HEAD
 	int ret = 0, i;
 	struct platform_device *p2dev;
 	struct npu_pwrctrl *pwr = &npu_dev->pwrctrl;
 
 	pwr->devbw_num = 0;
 
-=======
-	int ret = 0;
-	struct platform_device *p2dev;
-	struct npu_pwrctrl *pwr = &npu_dev->pwrctrl;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Power levels */
 	node = of_find_node_by_name(pdev->dev.of_node, "qcom,npu-pwrlevels");
 
 	if (!node) {
-<<<<<<< HEAD
 		NPU_ERR("unable to find 'qcom,npu-pwrlevels'\n");
-=======
-		pr_err("unable to find 'qcom,npu-pwrlevels'\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -3048,7 +2088,6 @@ static int npu_pwrctrl_init(struct npu_device *npu_dev)
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	/* Parse Bandwidth Monitor */
 	ret = of_property_count_strings(pdev->dev.of_node,
 			"qcom,npubw-dev-names");
@@ -3090,26 +2129,6 @@ static int npu_pwrctrl_init(struct npu_device *npu_dev)
 	} else {
 		/* Set to 1 initially - we assume bwmon is on */
 		pwr->bwmon_enabled = 1;
-=======
-	/* Parse Bandwidth */
-	node = of_parse_phandle(pdev->dev.of_node,
-				"qcom,npubw-dev", 0);
-
-	if (node) {
-		/* Set to 1 initially - we assume bwmon is on */
-		pwr->bwmon_enabled = 1;
-		p2dev = of_find_device_by_node(node);
-		if (p2dev) {
-			pwr->devbw = &p2dev->dev;
-		} else {
-			pr_err("parser power level failed\n");
-			ret = -EINVAL;
-			return ret;
-		}
-	} else {
-		pr_warn("bwdev is not defined in dts\n");
-		pwr->devbw = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return ret;
@@ -3131,47 +2150,27 @@ static int npu_irq_init(struct npu_device *npu_dev)
 	int ret = 0, i;
 
 	memcpy(npu_dev->irq, npu_irq_info, sizeof(npu_irq_info));
-<<<<<<< HEAD
 	for (i = 0; i < ARRAY_SIZE(npu_irq_info); i++) {
-=======
-	for (i = 0; i < NPU_MAX_IRQ; i++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		irq_type = npu_irq_info[i].irq_type;
 		npu_dev->irq[i].irq = platform_get_irq_byname(
 			npu_dev->pdev, npu_dev->irq[i].name);
 		if (npu_dev->irq[i].irq < 0) {
-<<<<<<< HEAD
 			NPU_ERR("get_irq for %s failed\n\n",
-=======
-			pr_err("get_irq for %s failed\n\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				npu_dev->irq[i].name);
 			ret = -EINVAL;
 			break;
 		}
 
-<<<<<<< HEAD
 		NPU_DBG("irq %s: %d\n", npu_dev->irq[i].name,
-=======
-		pr_debug("irq %s: %d\n", npu_dev->irq[i].name,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			npu_dev->irq[i].irq);
 		irq_set_status_flags(npu_dev->irq[i].irq,
 						IRQ_NOAUTOEN);
 		ret = devm_request_irq(&npu_dev->pdev->dev,
-<<<<<<< HEAD
 				npu_dev->irq[i].irq, npu_dev->irq[i].handler,
 				irq_type, npu_dev->irq[i].name,
 				npu_dev);
 		if (ret) {
 			NPU_ERR("devm_request_irq(%s:%d) failed\n",
-=======
-				npu_dev->irq[i].irq, npu_intr_hdler,
-				irq_type, npu_dev->irq[i].name,
-				npu_dev);
-		if (ret) {
-			pr_err("devm_request_irq(%s:%d) failed\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				npu_dev->irq[i].name,
 				npu_dev->irq[i].irq);
 			break;
@@ -3181,7 +2180,6 @@ static int npu_irq_init(struct npu_device *npu_dev)
 	return ret;
 }
 
-<<<<<<< HEAD
 /* -------------------------------------------------------------------------
  * Mailbox
  * -------------------------------------------------------------------------
@@ -3204,30 +2202,10 @@ static int npu_ipcc_bridge_mbox_send_data(struct mbox_chan *chan, void *data)
 	if (host_ctx->app_crashed)
 		npu_bridge_mbox_send_data(host_ctx,
 					ipcc_mbox_chan->npu_mbox, NULL);
-=======
-static int npu_mbox_init(struct npu_device *npu_dev)
-{
-	struct platform_device *pdev = npu_dev->pdev;
-	struct npu_mbox *mbox_aop = &npu_dev->mbox_aop;
-
-	if (of_find_property(pdev->dev.of_node, "mboxes", NULL)) {
-		mbox_aop->client.dev = &pdev->dev;
-		mbox_aop->client.tx_block = true;
-		mbox_aop->client.tx_tout = MBOX_OP_TIMEOUTMS;
-		mbox_aop->client.knows_txdone = false;
-
-		mbox_aop->chan = mbox_request_channel(&mbox_aop->client, 0);
-		if (IS_ERR(mbox_aop->chan)) {
-			pr_warn("aop mailbox is not available\n");
-			mbox_aop->chan = NULL;
-		}
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
 static void npu_ipcc_bridge_mbox_shutdown(struct mbox_chan *chan)
 {
 	struct ipcc_mbox_chan *ipcc_mbox_chan = chan->con_priv;
@@ -3425,13 +2403,6 @@ static void npu_mbox_deinit(struct npu_device *npu_dev)
 
 		mbox_free_channel(npu_dev->mbox[i].chan);
 		npu_dev->mbox[i].chan = NULL;
-=======
-static void npu_mbox_deinit(struct npu_device *npu_dev)
-{
-	if (npu_dev->mbox_aop.chan) {
-		mbox_free_channel(npu_dev->mbox_aop.chan);
-		npu_dev->mbox_aop.chan = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -3441,20 +2412,12 @@ static int npu_hw_info_init(struct npu_device *npu_dev)
 
 	rc = npu_enable_core_power(npu_dev);
 	if (rc) {
-<<<<<<< HEAD
 		NPU_ERR("Failed to enable power\n");
-=======
-		pr_err("Failed to enable power\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return rc;
 	}
 
 	npu_dev->hw_version = REGR(npu_dev, NPU_HW_VERSION);
-<<<<<<< HEAD
 	NPU_DBG("NPU_HW_VERSION 0x%x\n", npu_dev->hw_version);
-=======
-	pr_debug("NPU_HW_VERSION 0x%x\n", npu_dev->hw_version);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	npu_disable_core_power(npu_dev);
 
 	return rc;
@@ -3479,24 +2442,15 @@ static int npu_probe(struct platform_device *pdev)
 	npu_dev->pdev = pdev;
 	mutex_init(&npu_dev->dev_lock);
 
-<<<<<<< HEAD
 	dev_set_drvdata(&pdev->dev, npu_dev);
 	res = platform_get_resource_byname(pdev,
 		IORESOURCE_MEM, "core");
 	if (!res) {
 		NPU_ERR("unable to get core resource\n");
-=======
-	platform_set_drvdata(pdev, npu_dev);
-	res = platform_get_resource_byname(pdev,
-		IORESOURCE_MEM, "core");
-	if (!res) {
-		pr_err("unable to get core resource\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rc = -ENODEV;
 		goto error_get_dev_num;
 	}
 	npu_dev->core_io.size = resource_size(res);
-<<<<<<< HEAD
 	npu_dev->core_io.phy_addr = res->start;
 	npu_dev->core_io.base = devm_ioremap(&pdev->dev, res->start,
 					npu_dev->core_io.size);
@@ -3506,31 +2460,16 @@ static int npu_probe(struct platform_device *pdev)
 		goto error_get_dev_num;
 	}
 	NPU_DBG("core phy address=0x%llx virt=%pK\n",
-=======
-	npu_dev->core_io.base = devm_ioremap(&pdev->dev, res->start,
-					npu_dev->core_io.size);
-	if (unlikely(!npu_dev->core_io.base)) {
-		pr_err("unable to map core\n");
-		rc = -ENOMEM;
-		goto error_get_dev_num;
-	}
-	pr_debug("core phy address=0x%llx virt=%pK\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		res->start, npu_dev->core_io.base);
 
 	res = platform_get_resource_byname(pdev,
 		IORESOURCE_MEM, "tcm");
 	if (!res) {
-<<<<<<< HEAD
 		NPU_ERR("unable to get tcm resource\n");
-=======
-		pr_err("unable to get tcm resource\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rc = -ENODEV;
 		goto error_get_dev_num;
 	}
 	npu_dev->tcm_io.size = resource_size(res);
-<<<<<<< HEAD
 	npu_dev->tcm_io.phy_addr = res->start;
 	npu_dev->tcm_io.base = devm_ioremap(&pdev->dev, res->start,
 					npu_dev->tcm_io.size);
@@ -3598,40 +2537,10 @@ static int npu_probe(struct platform_device *pdev)
 	}
 	NPU_DBG("apss_shared phy address=0x%llx virt=%pK\n",
 		res->start, npu_dev->apss_shared_io.base);
-=======
-	npu_dev->tcm_io.base = devm_ioremap(&pdev->dev, res->start,
-					npu_dev->tcm_io.size);
-	if (unlikely(!npu_dev->tcm_io.base)) {
-		pr_err("unable to map tcm\n");
-		rc = -ENOMEM;
-		goto error_get_dev_num;
-	}
-	pr_debug("core phy address=0x%llx virt=%pK\n",
-		res->start, npu_dev->tcm_io.base);
-
-	res = platform_get_resource_byname(pdev,
-		IORESOURCE_MEM, "bwmon");
-	if (!res) {
-		pr_err("unable to get bwmon resource\n");
-		rc = -ENODEV;
-		goto error_get_dev_num;
-	}
-	npu_dev->bwmon_io.size = resource_size(res);
-	npu_dev->bwmon_io.base = devm_ioremap(&pdev->dev, res->start,
-					npu_dev->bwmon_io.size);
-	if (unlikely(!npu_dev->bwmon_io.base)) {
-		pr_err("unable to map bwmon\n");
-		rc = -ENOMEM;
-		goto error_get_dev_num;
-	}
-	pr_debug("bwmon phy address=0x%llx virt=%pK\n",
-		res->start, npu_dev->bwmon_io.base);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	res = platform_get_resource_byname(pdev,
 		IORESOURCE_MEM, "qfprom_physical");
 	if (!res) {
-<<<<<<< HEAD
 		NPU_INFO("unable to get qfprom_physical resource\n");
 	} else {
 		npu_dev->qfprom_io.size = resource_size(res);
@@ -3644,19 +2553,6 @@ static int npu_probe(struct platform_device *pdev)
 			goto error_get_dev_num;
 		}
 		NPU_DBG("qfprom_physical phy address=0x%llx virt=%pK\n",
-=======
-		pr_info("unable to get qfprom_physical resource\n");
-	} else {
-		npu_dev->qfprom_io.size = resource_size(res);
-		npu_dev->qfprom_io.base = devm_ioremap(&pdev->dev, res->start,
-					npu_dev->qfprom_io.size);
-		if (unlikely(!npu_dev->qfprom_io.base)) {
-			pr_err("unable to map qfprom_physical\n");
-			rc = -ENOMEM;
-			goto error_get_dev_num;
-		}
-		pr_debug("qfprom_physical phy address=0x%llx virt=%pK\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			res->start, npu_dev->qfprom_io.base);
 	}
 
@@ -3668,13 +2564,10 @@ static int npu_probe(struct platform_device *pdev)
 	if (rc)
 		goto error_get_dev_num;
 
-<<<<<<< HEAD
 	rc = npu_parse_dt_bw(npu_dev);
 	if (rc)
 		NPU_WARN("Parse bw info failed\n");
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rc = npu_hw_info_init(npu_dev);
 	if (rc)
 		goto error_get_dev_num;
@@ -3698,22 +2591,14 @@ static int npu_probe(struct platform_device *pdev)
 	/* character device might be optional */
 	rc = alloc_chrdev_region(&npu_dev->dev_num, 0, 1, DRIVER_NAME);
 	if (rc < 0) {
-<<<<<<< HEAD
 		NPU_ERR("alloc_chrdev_region failed: %d\n", rc);
-=======
-		pr_err("alloc_chrdev_region failed: %d\n", rc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto error_get_dev_num;
 	}
 
 	npu_dev->class = class_create(THIS_MODULE, CLASS_NAME);
 	if (IS_ERR(npu_dev->class)) {
 		rc = PTR_ERR(npu_dev->class);
-<<<<<<< HEAD
 		NPU_ERR("class_create failed: %d\n", rc);
-=======
-		pr_err("class_create failed: %d\n", rc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto error_class_create;
 	}
 
@@ -3721,11 +2606,7 @@ static int npu_probe(struct platform_device *pdev)
 		npu_dev->dev_num, NULL, DRIVER_NAME);
 	if (IS_ERR(npu_dev->device)) {
 		rc = PTR_ERR(npu_dev->device);
-<<<<<<< HEAD
 		NPU_ERR("device_create failed: %d\n", rc);
-=======
-		pr_err("device_create failed: %d\n", rc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto error_class_device_create;
 	}
 
@@ -3733,7 +2614,6 @@ static int npu_probe(struct platform_device *pdev)
 	rc = cdev_add(&npu_dev->cdev,
 			MKDEV(MAJOR(npu_dev->dev_num), 0), 1);
 	if (rc < 0) {
-<<<<<<< HEAD
 		NPU_ERR("cdev_add failed %d\n", rc);
 		goto error_cdev_add;
 	}
@@ -3756,20 +2636,6 @@ static int npu_probe(struct platform_device *pdev)
 		goto error_driver_init;
 	}
 
-=======
-		pr_err("cdev_add failed %d\n", rc);
-		goto error_cdev_add;
-	}
-	dev_set_drvdata(npu_dev->device, npu_dev);
-	pr_debug("drvdata %pK %pK\n", dev_get_drvdata(&pdev->dev),
-		dev_get_drvdata(npu_dev->device));
-	rc = sysfs_create_group(&npu_dev->device->kobj, &npu_fs_attr_group);
-	if (rc) {
-		pr_err("unable to register npu sysfs nodes\n");
-		goto error_res_init;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ENABLED(CONFIG_THERMAL)) {
 		tcdev = thermal_of_cooling_device_register(pdev->dev.of_node,
 							  "npu", npu_dev,
@@ -3788,44 +2654,10 @@ static int npu_probe(struct platform_device *pdev)
 	if (rc)
 		goto error_driver_init;
 
-<<<<<<< HEAD
-=======
-	npu_debugfs_init(npu_dev);
-
-	npu_dev->smmu_ctx.attach_cnt = 0;
-	npu_dev->smmu_ctx.mmu_mapping = arm_iommu_create_mapping(
-		pdev->dev.bus, DDR_MAPPED_START_ADDR, DDR_MAPPED_SIZE);
-	if (IS_ERR(npu_dev->smmu_ctx.mmu_mapping)) {
-		pr_err("iommu create mapping failed\n");
-		rc = -ENOMEM;
-		npu_dev->smmu_ctx.mmu_mapping = NULL;
-		goto error_driver_init;
-	}
-
-	rc = arm_iommu_attach_device(&(npu_dev->pdev->dev),
-			npu_dev->smmu_ctx.mmu_mapping);
-	if (rc) {
-		pr_err("arm_iommu_attach_device failed\n");
-		goto error_driver_init;
-	}
-
-	rc = npu_host_init(npu_dev);
-	if (rc) {
-		pr_err("unable to init host\n");
-		goto error_driver_init;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	g_npu_dev = npu_dev;
 
 	return rc;
 error_driver_init:
-<<<<<<< HEAD
-=======
-	arm_iommu_detach_device(&(npu_dev->pdev->dev));
-	if (!npu_dev->smmu_ctx.mmu_mapping)
-		arm_iommu_release_mapping(npu_dev->smmu_ctx.mmu_mapping);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	npu_cdsprm_cxlimit_deinit(npu_dev);
 	if (npu_dev->tcdev)
 		thermal_cooling_device_unregister(npu_dev->tcdev);
@@ -3840,10 +2672,7 @@ error_class_create:
 	unregister_chrdev_region(npu_dev->dev_num, 1);
 	npu_mbox_deinit(npu_dev);
 error_get_dev_num:
-<<<<<<< HEAD
 	dev_set_drvdata(&pdev->dev, NULL);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 
@@ -3853,11 +2682,6 @@ static int npu_remove(struct platform_device *pdev)
 
 	npu_dev = platform_get_drvdata(pdev);
 	npu_host_deinit(npu_dev);
-<<<<<<< HEAD
-=======
-	arm_iommu_detach_device(&(npu_dev->pdev->dev));
-	arm_iommu_release_mapping(npu_dev->smmu_ctx.mmu_mapping);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	npu_debugfs_deinit(npu_dev);
 	npu_cdsprm_cxlimit_deinit(npu_dev);
 	if (npu_dev->tcdev)
@@ -3867,14 +2691,9 @@ static int npu_remove(struct platform_device *pdev)
 	device_destroy(npu_dev->class, npu_dev->dev_num);
 	class_destroy(npu_dev->class);
 	unregister_chrdev_region(npu_dev->dev_num, 1);
-<<<<<<< HEAD
 	dev_set_drvdata(&pdev->dev, NULL);
 	npu_mbox_deinit(npu_dev);
 	msm_bus_scale_unregister_client(npu_dev->bwctrl.bus_client);
-=======
-	platform_set_drvdata(pdev, NULL);
-	npu_mbox_deinit(npu_dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	g_npu_dev = NULL;
 
@@ -3885,7 +2704,6 @@ static int npu_remove(struct platform_device *pdev)
  * Suspend/Resume
  * -------------------------------------------------------------------------
  */
-<<<<<<< HEAD
 static int npu_pm_suspend(struct device *dev)
 {
 	struct npu_device *npu_dev;
@@ -3907,19 +2725,6 @@ static int npu_pm_resume(struct device *dev)
 	NPU_DBG("resume npu\n");
 	return 0;
 }
-=======
-#if defined(CONFIG_PM)
-static int npu_suspend(struct platform_device *dev, pm_message_t state)
-{
-	return 0;
-}
-
-static int npu_resume(struct platform_device *dev)
-{
-	return 0;
-}
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* -------------------------------------------------------------------------
  * Module Entry Points
@@ -3931,11 +2736,7 @@ static int __init npu_init(void)
 
 	rc = platform_driver_register(&npu_driver);
 	if (rc)
-<<<<<<< HEAD
 		NPU_ERR("register failed %d\n", rc);
-=======
-		pr_err("register failed %d\n", rc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 

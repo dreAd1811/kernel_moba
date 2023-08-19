@@ -113,11 +113,7 @@ static struct clock_event_device jz4740_clockevent = {
 #ifdef CONFIG_MACH_JZ4740
 	.irq = JZ4740_IRQ_TCU0,
 #endif
-<<<<<<< HEAD
 #if defined(CONFIG_MACH_JZ4770) || defined(CONFIG_MACH_JZ4780)
-=======
-#ifdef CONFIG_MACH_JZ4780
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.irq = JZ4780_IRQ_TCU2,
 #endif
 };

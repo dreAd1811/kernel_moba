@@ -1493,15 +1493,12 @@ static int emac_dev_open(struct net_device *ndev)
 
 	/* use the first phy on the bus if pdata did not give us a phy id */
 	if (!phydev && !priv->phy_id) {
-<<<<<<< HEAD
 		/* NOTE: we can't use bus_find_device_by_name() here because
 		 * the device name is not guaranteed to be 'davinci_mdio'. On
 		 * some systems it can be 'davinci_mdio.0' so we need to use
 		 * strncmp() against the first part of the string to correctly
 		 * match it.
 		 */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		phy = bus_find_device(&mdio_bus_type, NULL, NULL,
 				      match_first_device);
 		if (phy) {
@@ -1888,7 +1885,6 @@ static int davinci_emac_probe(struct platform_device *pdev)
 
 	priv->txchan = cpdma_chan_create(priv->dma, EMAC_DEF_TX_CH,
 					 emac_tx_handler, 0);
-<<<<<<< HEAD
 	if (IS_ERR(priv->txchan)) {
 		dev_err(&pdev->dev, "error initializing tx dma channel\n");
 		rc = PTR_ERR(priv->txchan);
@@ -1901,24 +1897,13 @@ static int davinci_emac_probe(struct platform_device *pdev)
 		dev_err(&pdev->dev, "error initializing rx dma channel\n");
 		rc = PTR_ERR(priv->rxchan);
 		goto err_free_txchan;
-=======
-	priv->rxchan = cpdma_chan_create(priv->dma, EMAC_DEF_RX_CH,
-					 emac_rx_handler, 1);
-	if (WARN_ON(!priv->txchan || !priv->rxchan)) {
-		rc = -ENOMEM;
-		goto no_cpdma_chan;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
 	if (!res) {
 		dev_err(&pdev->dev, "error getting irq res\n");
 		rc = -ENOENT;
-<<<<<<< HEAD
 		goto err_free_rxchan;
-=======
-		goto no_cpdma_chan;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	ndev->irq = res->start;
 
@@ -1944,11 +1929,7 @@ static int davinci_emac_probe(struct platform_device *pdev)
 		pm_runtime_put_noidle(&pdev->dev);
 		dev_err(&pdev->dev, "%s: failed to get_sync(%d)\n",
 			__func__, rc);
-<<<<<<< HEAD
 		goto err_napi_del;
-=======
-		goto no_cpdma_chan;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* register the network device */
@@ -1958,29 +1939,19 @@ static int davinci_emac_probe(struct platform_device *pdev)
 		dev_err(&pdev->dev, "error in register_netdev\n");
 		rc = -ENODEV;
 		pm_runtime_put(&pdev->dev);
-<<<<<<< HEAD
 		goto err_napi_del;
-=======
-		goto no_cpdma_chan;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 
 	if (netif_msg_probe(priv)) {
 		dev_notice(&pdev->dev, "DaVinci EMAC Probe found device "
-<<<<<<< HEAD
 			   "(regs: %pa, irq: %d)\n",
 			   &priv->emac_base_phys, ndev->irq);
-=======
-			   "(regs: %p, irq: %d)\n",
-			   (void *)priv->emac_base_phys, ndev->irq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	pm_runtime_put(&pdev->dev);
 
 	return 0;
 
-<<<<<<< HEAD
 err_napi_del:
 	netif_napi_del(&priv->napi);
 err_free_rxchan:
@@ -1988,13 +1959,6 @@ err_free_rxchan:
 err_free_txchan:
 	cpdma_chan_destroy(priv->txchan);
 err_free_dma:
-=======
-no_cpdma_chan:
-	if (priv->txchan)
-		cpdma_chan_destroy(priv->txchan);
-	if (priv->rxchan)
-		cpdma_chan_destroy(priv->rxchan);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cpdma_ctlr_destroy(priv->dma);
 no_pdata:
 	if (of_phy_is_fixed_link(np))

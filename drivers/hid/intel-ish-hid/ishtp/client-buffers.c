@@ -90,11 +90,7 @@ int ishtp_cl_alloc_tx_ring(struct ishtp_cl *cl)
 	return	0;
 out:
 	dev_err(&cl->device->dev, "error in allocating Tx pool\n");
-<<<<<<< HEAD
 	ishtp_cl_free_rx_ring(cl);
-=======
-	ishtp_cl_free_tx_ring(cl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return	-ENOMEM;
 }
 

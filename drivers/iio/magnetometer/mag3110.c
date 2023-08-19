@@ -26,10 +26,7 @@
 #define MAG3110_OUT_Y 0x03
 #define MAG3110_OUT_Z 0x05
 #define MAG3110_WHO_AM_I 0x07
-<<<<<<< HEAD
 #define MAG3110_SYSMOD 0x08
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MAG3110_OFF_X 0x09 /* MSB first */
 #define MAG3110_OFF_Y 0x0b
 #define MAG3110_OFF_Z 0x0d
@@ -43,11 +40,8 @@
 #define MAG3110_CTRL_DR_SHIFT 5
 #define MAG3110_CTRL_DR_DEFAULT 0
 
-<<<<<<< HEAD
 #define MAG3110_SYSMOD_MODE_MASK GENMASK(1, 0)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MAG3110_CTRL_TM BIT(1) /* trigger single measurement */
 #define MAG3110_CTRL_AC BIT(0) /* continuous measurements */
 
@@ -61,17 +55,13 @@ struct mag3110_data {
 	struct i2c_client *client;
 	struct mutex lock;
 	u8 ctrl_reg1;
-<<<<<<< HEAD
 	int sleep_val;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int mag3110_request(struct mag3110_data *data)
 {
 	int ret, tries = 150;
 
-<<<<<<< HEAD
 	if ((data->ctrl_reg1 & MAG3110_CTRL_AC) == 0) {
 		/* trigger measurement */
 		ret = i2c_smbus_write_byte_data(data->client, MAG3110_CTRL_REG1,
@@ -79,13 +69,6 @@ static int mag3110_request(struct mag3110_data *data)
 		if (ret < 0)
 			return ret;
 	}
-=======
-	/* trigger measurement */
-	ret = i2c_smbus_write_byte_data(data->client, MAG3110_CTRL_REG1,
-		data->ctrl_reg1 | MAG3110_CTRL_TM);
-	if (ret < 0)
-		return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	while (tries-- > 0) {
 		ret = i2c_smbus_read_byte_data(data->client, MAG3110_STATUS);
@@ -94,15 +77,11 @@ static int mag3110_request(struct mag3110_data *data)
 		/* wait for data ready */
 		if ((ret & MAG3110_STATUS_DRDY) == MAG3110_STATUS_DRDY)
 			break;
-<<<<<<< HEAD
 
 		if (data->sleep_val <= 20)
 			usleep_range(data->sleep_val * 250, data->sleep_val * 500);
 		else
 			msleep(20);
-=======
-		msleep(20);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (tries < 0) {
@@ -175,7 +154,6 @@ static int mag3110_get_samp_freq_index(struct mag3110_data *data,
 		val2);
 }
 
-<<<<<<< HEAD
 static int mag3110_calculate_sleep(struct mag3110_data *data)
 {
 	int ret, i = data->ctrl_reg1 >> MAG3110_CTRL_DR_SHIFT;
@@ -287,8 +265,6 @@ fail:
 	return ret;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mag3110_read_raw(struct iio_dev *indio_dev,
 			    struct iio_chan_spec const *chan,
 			    int *val, int *val2, long mask)
@@ -380,7 +356,6 @@ static int mag3110_write_raw(struct iio_dev *indio_dev,
 			ret = -EINVAL;
 			break;
 		}
-<<<<<<< HEAD
 		data->ctrl_reg1 &= 0xff & ~MAG3110_CTRL_DR_MASK
 					& ~MAG3110_CTRL_AC;
 		data->ctrl_reg1 |= rate << MAG3110_CTRL_DR_SHIFT;
@@ -390,13 +365,6 @@ static int mag3110_write_raw(struct iio_dev *indio_dev,
 
 		ret = mag3110_change_config(data, MAG3110_CTRL_REG1,
 					    data->ctrl_reg1);
-=======
-
-		data->ctrl_reg1 &= ~MAG3110_CTRL_DR_MASK;
-		data->ctrl_reg1 |= rate << MAG3110_CTRL_DR_SHIFT;
-		ret = i2c_smbus_write_byte_data(data->client,
-			MAG3110_CTRL_REG1, data->ctrl_reg1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case IIO_CHAN_INFO_CALIBBIAS:
 		if (val < -10000 || val > 10000) {
@@ -490,23 +458,10 @@ static const struct iio_info mag3110_info = {
 	.attrs = &mag3110_group,
 	.read_raw = &mag3110_read_raw,
 	.write_raw = &mag3110_write_raw,
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const unsigned long mag3110_scan_masks[] = {0x7, 0xf, 0};
 
-<<<<<<< HEAD
-=======
-static int mag3110_standby(struct mag3110_data *data)
-{
-	return i2c_smbus_write_byte_data(data->client, MAG3110_CTRL_REG1,
-		data->ctrl_reg1 & ~MAG3110_CTRL_AC);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mag3110_probe(struct i2c_client *client,
 			 const struct i2c_device_id *id)
 {
@@ -538,16 +493,11 @@ static int mag3110_probe(struct i2c_client *client,
 	indio_dev->available_scan_masks = mag3110_scan_masks;
 
 	data->ctrl_reg1 = MAG3110_CTRL_DR_DEFAULT << MAG3110_CTRL_DR_SHIFT;
-<<<<<<< HEAD
 	data->sleep_val = mag3110_calculate_sleep(data);
 	if (data->sleep_val < 40)
 		data->ctrl_reg1 |= MAG3110_CTRL_AC;
 
 	ret = mag3110_change_config(data, MAG3110_CTRL_REG1, data->ctrl_reg1);
-=======
-	ret = i2c_smbus_write_byte_data(client, MAG3110_CTRL_REG1,
-		data->ctrl_reg1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		return ret;
 

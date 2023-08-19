@@ -35,11 +35,7 @@
 #define LINCFG0					0x44
 #define LINCFG1					0x48
 #define CCOLP					0x4c
-<<<<<<< HEAD
 #define CRGAIN					0x50
-=======
-#define CRGAIN 					0x50
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CGRGAIN					0x54
 #define CGBGAIN					0x58
 #define CBGAIN					0x5c
@@ -50,11 +46,7 @@
 #define VDINT0					0x70
 #define VDINT1					0x74
 #define VDINT2					0x78
-<<<<<<< HEAD
 #define MISC					0x7c
-=======
-#define MISC 					0x7c
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CGAMMAWD				0x80
 #define REC656IF				0x84
 #define CCDCFG					0x88
@@ -199,11 +191,7 @@
 #define ISIF_VD_POL_SHIFT			2
 #define ISIF_DATAPOL_NORMAL			0
 #define ISIF_DATAPOL_SHIFT			6
-<<<<<<< HEAD
 #define ISIF_EXWEN_DISABLE			0
-=======
-#define ISIF_EXWEN_DISABLE 			0
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ISIF_EXWEN_SHIFT			5
 #define ISIF_FRM_FMT_SHIFT			7
 #define ISIF_DATASFT_SHIFT			8

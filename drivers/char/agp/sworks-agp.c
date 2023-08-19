@@ -96,11 +96,7 @@ static int serverworks_create_gatt_pages(int nr_tables)
 	int retval = 0;
 	int i;
 
-<<<<<<< HEAD
 	tables = kcalloc(nr_tables + 1, sizeof(struct serverworks_page_map *),
-=======
-	tables = kzalloc((nr_tables + 1) * sizeof(struct serverworks_page_map *),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 GFP_KERNEL);
 	if (tables == NULL)
 		return -ENOMEM;
@@ -478,12 +474,8 @@ static int agp_serverworks_probe(struct pci_dev *pdev,
 	}
 
 	/* Everything is on func 1 here so we are hardcoding function one */
-<<<<<<< HEAD
 	bridge_dev = pci_get_domain_bus_and_slot(pci_domain_nr(pdev->bus),
 			(unsigned int)pdev->bus->number,
-=======
-	bridge_dev = pci_get_bus_and_slot((unsigned int)pdev->bus->number,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			PCI_DEVFN(0, 1));
 	if (!bridge_dev) {
 		dev_info(&pdev->dev, "can't find secondary device\n");

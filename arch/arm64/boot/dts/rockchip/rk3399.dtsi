@@ -1,49 +1,6 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 /*
  * Copyright (c) 2016 Fuzhou Rockchip Electronics Co., Ltd
-=======
-/*
- * Copyright (c) 2016 Fuzhou Rockchip Electronics Co., Ltd
- *
- * This file is dual-licensed: you can use it either under the terms
- * of the GPL or the X11 license, at your option. Note that this dual
- * licensing only applies to this file, and not this project as a
- * whole.
- *
- *  a) This library is free software; you can redistribute it and/or
- *     modify it under the terms of the GNU General Public License as
- *     published by the Free Software Foundation; either version 2 of the
- *     License, or (at your option) any later version.
- *
- *     This library is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
- *
- * Or, alternatively,
- *
- *  b) Permission is hereby granted, free of charge, to any person
- *     obtaining a copy of this software and associated documentation
- *     files (the "Software"), to deal in the Software without
- *     restriction, including without limitation the rights to use,
- *     copy, modify, merge, publish, distribute, sublicense, and/or
- *     sell copies of the Software, and to permit persons to whom the
- *     Software is furnished to do so, subject to the following
- *     conditions:
- *
- *     The above copyright notice and this permission notice shall be
- *     included in all copies or substantial portions of the Software.
- *
- *     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- *     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
- *     OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
- *     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- *     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- *     OTHER DEALINGS IN THE SOFTWARE.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <dt-bindings/clock/rk3399-cru.h>
@@ -114,13 +71,8 @@
 			compatible = "arm,cortex-a53", "arm,armv8";
 			reg = <0x0 0x0>;
 			enable-method = "psci";
-<<<<<<< HEAD
 			clocks = <&cru ARMCLKL>;
 			#cooling-cells = <2>; /* min followed by max */
-=======
-			#cooling-cells = <2>; /* min followed by max */
-			clocks = <&cru ARMCLKL>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dynamic-power-coefficient = <100>;
 		};
 
@@ -130,10 +82,7 @@
 			reg = <0x0 0x1>;
 			enable-method = "psci";
 			clocks = <&cru ARMCLKL>;
-<<<<<<< HEAD
 			#cooling-cells = <2>; /* min followed by max */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dynamic-power-coefficient = <100>;
 		};
 
@@ -143,10 +92,7 @@
 			reg = <0x0 0x2>;
 			enable-method = "psci";
 			clocks = <&cru ARMCLKL>;
-<<<<<<< HEAD
 			#cooling-cells = <2>; /* min followed by max */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dynamic-power-coefficient = <100>;
 		};
 
@@ -156,10 +102,7 @@
 			reg = <0x0 0x3>;
 			enable-method = "psci";
 			clocks = <&cru ARMCLKL>;
-<<<<<<< HEAD
 			#cooling-cells = <2>; /* min followed by max */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dynamic-power-coefficient = <100>;
 		};
 
@@ -168,13 +111,8 @@
 			compatible = "arm,cortex-a72", "arm,armv8";
 			reg = <0x0 0x100>;
 			enable-method = "psci";
-<<<<<<< HEAD
 			clocks = <&cru ARMCLKB>;
 			#cooling-cells = <2>; /* min followed by max */
-=======
-			#cooling-cells = <2>; /* min followed by max */
-			clocks = <&cru ARMCLKB>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dynamic-power-coefficient = <436>;
 		};
 
@@ -184,10 +122,7 @@
 			reg = <0x0 0x101>;
 			enable-method = "psci";
 			clocks = <&cru ARMCLKB>;
-<<<<<<< HEAD
 			#cooling-cells = <2>; /* min followed by max */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dynamic-power-coefficient = <436>;
 		};
 	};
@@ -344,11 +279,8 @@
 		reg = <0x0 0xfe320000 0x0 0x4000>;
 		interrupts = <GIC_SPI 65 IRQ_TYPE_LEVEL_HIGH 0>;
 		max-frequency = <150000000>;
-<<<<<<< HEAD
 		assigned-clocks = <&cru HCLK_SD>;
 		assigned-clock-rates = <200000000>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		clocks = <&cru HCLK_SDMMC>, <&cru SCLK_SDMMC>,
 			 <&cru SCLK_SDMMC_DRV>, <&cru SCLK_SDMMC_SAMPLE>;
 		clock-names = "biu", "ciu", "ciu-drive", "ciu-sample";
@@ -373,10 +305,7 @@
 		phys = <&emmc_phy>;
 		phy-names = "phy_arasan";
 		power-domains = <&power RK3399_PD_EMMC>;
-<<<<<<< HEAD
 		disable-cqe-dcmd;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		status = "disabled";
 	};
 
@@ -438,7 +367,6 @@
 		#size-cells = <2>;
 		ranges;
 		clocks = <&cru SCLK_USB3OTG0_REF>, <&cru SCLK_USB3OTG0_SUSPEND>,
-<<<<<<< HEAD
 			 <&cru ACLK_USB3OTG0>, <&cru ACLK_USB3_RKSOC_AXI_PERF>,
 			 <&cru ACLK_USB3>, <&cru ACLK_USB3_GRF>;
 		clock-names = "ref_clk", "suspend_clk",
@@ -449,35 +377,19 @@
 		status = "disabled";
 
 		usbdrd_dwc3_0: dwc3 {
-=======
-			 <&cru ACLK_USB3OTG0>, <&cru ACLK_USB3_GRF>;
-		clock-names = "ref_clk", "suspend_clk",
-			      "bus_clk", "grf_clk";
-		status = "disabled";
-
-		usbdrd_dwc3_0: usb@fe800000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "snps,dwc3";
 			reg = <0x0 0xfe800000 0x0 0x100000>;
 			interrupts = <GIC_SPI 105 IRQ_TYPE_LEVEL_HIGH 0>;
 			dr_mode = "otg";
-<<<<<<< HEAD
 			phys = <&u2phy0_otg>, <&tcphy0_usb3>;
 			phy-names = "usb2-phy", "usb3-phy";
-=======
-			phys = <&u2phy0_otg>;
-			phy-names = "usb2-phy";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			phy_type = "utmi_wide";
 			snps,dis_enblslpm_quirk;
 			snps,dis-u2-freeclk-exists-quirk;
 			snps,dis_u2_susphy_quirk;
 			snps,dis-del-phy-power-chg-quirk;
 			snps,dis-tx-ipgap-linecheck-quirk;
-<<<<<<< HEAD
 			power-domains = <&power RK3399_PD_USB3>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 	};
@@ -488,7 +400,6 @@
 		#size-cells = <2>;
 		ranges;
 		clocks = <&cru SCLK_USB3OTG1_REF>, <&cru SCLK_USB3OTG1_SUSPEND>,
-<<<<<<< HEAD
 			 <&cru ACLK_USB3OTG1>, <&cru ACLK_USB3_RKSOC_AXI_PERF>,
 			 <&cru ACLK_USB3>, <&cru ACLK_USB3_GRF>;
 		clock-names = "ref_clk", "suspend_clk",
@@ -499,40 +410,23 @@
 		status = "disabled";
 
 		usbdrd_dwc3_1: dwc3 {
-=======
-			 <&cru ACLK_USB3OTG1>, <&cru ACLK_USB3_GRF>;
-		clock-names = "ref_clk", "suspend_clk",
-			      "bus_clk", "grf_clk";
-		status = "disabled";
-
-		usbdrd_dwc3_1: usb@fe900000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "snps,dwc3";
 			reg = <0x0 0xfe900000 0x0 0x100000>;
 			interrupts = <GIC_SPI 110 IRQ_TYPE_LEVEL_HIGH 0>;
 			dr_mode = "otg";
-<<<<<<< HEAD
 			phys = <&u2phy1_otg>, <&tcphy1_usb3>;
 			phy-names = "usb2-phy", "usb3-phy";
-=======
-			phys = <&u2phy1_otg>;
-			phy-names = "usb2-phy";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			phy_type = "utmi_wide";
 			snps,dis_enblslpm_quirk;
 			snps,dis-u2-freeclk-exists-quirk;
 			snps,dis_u2_susphy_quirk;
 			snps,dis-del-phy-power-chg-quirk;
 			snps,dis-tx-ipgap-linecheck-quirk;
-<<<<<<< HEAD
 			power-domains = <&power RK3399_PD_USB3>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 	};
 
-<<<<<<< HEAD
 	cdn_dp: dp@fec00000 {
 		compatible = "rockchip,rk3399-cdn-dp";
 		reg = <0x0 0xfec00000 0x0 0x100000>;
@@ -569,8 +463,6 @@
 		};
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gic: interrupt-controller@fee00000 {
 		compatible = "arm,gic-v3";
 		#interrupt-cells = <4>;
@@ -1115,15 +1007,12 @@
 				clocks = <&cru HCLK_SDIO>;
 				pm_qos = <&qos_sdioaudio>;
 			};
-<<<<<<< HEAD
 			pd_usb3@RK3399_PD_USB3 {
 				reg = <RK3399_PD_USB3>;
 				clocks = <&cru ACLK_USB3>;
 				pm_qos = <&qos_usb_otg0>,
 					 <&qos_usb_otg1>;
 			};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pd_vio@RK3399_PD_VIO {
 				reg = <RK3399_PD_VIO>;
 				#address-cells = <1>;
@@ -1315,11 +1204,8 @@
 		reg = <0x0 0xff650800 0x0 0x40>;
 		interrupts = <GIC_SPI 115 IRQ_TYPE_LEVEL_HIGH 0>;
 		interrupt-names = "vpu_mmu";
-<<<<<<< HEAD
 		clocks = <&cru ACLK_VCODEC>, <&cru HCLK_VCODEC>;
 		clock-names = "aclk", "iface";
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		#iommu-cells = <0>;
 		status = "disabled";
 	};
@@ -1329,11 +1215,8 @@
 		reg = <0x0 0xff660480 0x0 0x40>, <0x0 0xff6604c0 0x0 0x40>;
 		interrupts = <GIC_SPI 117 IRQ_TYPE_LEVEL_HIGH 0>;
 		interrupt-names = "vdec_mmu";
-<<<<<<< HEAD
 		clocks = <&cru ACLK_VDU>, <&cru HCLK_VDU>;
 		clock-names = "aclk", "iface";
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		#iommu-cells = <0>;
 		status = "disabled";
 	};
@@ -1343,16 +1226,12 @@
 		reg = <0x0 0xff670800 0x0 0x40>;
 		interrupts = <GIC_SPI 42 IRQ_TYPE_LEVEL_HIGH 0>;
 		interrupt-names = "iep_mmu";
-<<<<<<< HEAD
 		clocks = <&cru ACLK_IEP>, <&cru HCLK_IEP>;
 		clock-names = "aclk", "iface";
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		#iommu-cells = <0>;
 		status = "disabled";
 	};
 
-<<<<<<< HEAD
 	rga: rga@ff680000 {
 		compatible = "rockchip,rk3399-rga";
 		reg = <0x0 0xff680000 0x0 0x10000>;
@@ -1364,8 +1243,6 @@
 		power-domains = <&power RK3399_PD_RGA>;
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	efuse0: efuse@ff690000 {
 		compatible = "rockchip,rk3399-efuse";
 		reg = <0x0 0xff690000 0x0 0x80>;
@@ -1421,14 +1298,10 @@
 			<&cru PCLK_PERIHP>,
 			<&cru ACLK_PERILP0>, <&cru HCLK_PERILP0>,
 			<&cru PCLK_PERILP0>, <&cru ACLK_CCI>,
-<<<<<<< HEAD
 			<&cru HCLK_PERILP1>, <&cru PCLK_PERILP1>,
 			<&cru ACLK_VIO>, <&cru ACLK_HDCP>,
 			<&cru ACLK_GIC_PRE>,
 			<&cru PCLK_DDR>;
-=======
-			<&cru HCLK_PERILP1>, <&cru PCLK_PERILP1>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		assigned-clock-rates =
 			 <594000000>,  <800000000>,
 			<1000000000>,
@@ -1436,14 +1309,10 @@
 			  <37500000>,
 			 <100000000>,  <100000000>,
 			  <50000000>, <600000000>,
-<<<<<<< HEAD
 			 <100000000>,   <50000000>,
 			 <400000000>, <400000000>,
 			 <200000000>,
 			 <200000000>;
-=======
-			 <100000000>,   <50000000>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	grf: syscon@ff770000 {
@@ -1545,13 +1414,6 @@
 			 <&cru SRST_P_UPHY0_TCPHY>;
 		reset-names = "uphy", "uphy-pipe", "uphy-tcphy";
 		rockchip,grf = <&grf>;
-<<<<<<< HEAD
-=======
-		rockchip,typec-conn-dir = <0xe580 0 16>;
-		rockchip,usb3tousb2-en = <0xe580 3 19>;
-		rockchip,external-psm = <0xe588 14 30>;
-		rockchip,pipe-status = <0xe5c0 0 0>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		status = "disabled";
 
 		tcphy0_dp: dp-port {
@@ -1577,13 +1439,6 @@
 			 <&cru SRST_P_UPHY1_TCPHY>;
 		reset-names = "uphy", "uphy-pipe", "uphy-tcphy";
 		rockchip,grf = <&grf>;
-<<<<<<< HEAD
-=======
-		rockchip,typec-conn-dir = <0xe58c 0 16>;
-		rockchip,usb3tousb2-en = <0xe58c 3 19>;
-		rockchip,external-psm = <0xe594 14 30>;
-		rockchip,pipe-status = <0xe5c0 16 16>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		status = "disabled";
 
 		tcphy1_dp: dp-port {
@@ -1621,10 +1476,7 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&spdif_bus>;
 		power-domains = <&power RK3399_PD_SDIOAUDIO>;
-<<<<<<< HEAD
 		#sound-dai-cells = <0>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		status = "disabled";
 	};
 
@@ -1640,10 +1492,7 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&i2s0_8ch_bus>;
 		power-domains = <&power RK3399_PD_SDIOAUDIO>;
-<<<<<<< HEAD
 		#sound-dai-cells = <0>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		status = "disabled";
 	};
 
@@ -1658,10 +1507,7 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&i2s1_2ch_bus>;
 		power-domains = <&power RK3399_PD_SDIOAUDIO>;
-<<<<<<< HEAD
 		#sound-dai-cells = <0>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		status = "disabled";
 	};
 
@@ -1674,10 +1520,7 @@
 		clock-names = "i2s_clk", "i2s_hclk";
 		clocks = <&cru SCLK_I2S2_8CH>, <&cru HCLK_I2S2_8CH>;
 		power-domains = <&power RK3399_PD_SDIOAUDIO>;
-<<<<<<< HEAD
 		#sound-dai-cells = <0>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		status = "disabled";
 	};
 
@@ -1713,7 +1556,6 @@
 				reg = <2>;
 				remote-endpoint = <&hdmi_in_vopl>;
 			};
-<<<<<<< HEAD
 
 			vopl_out_mipi1: endpoint@3 {
 				reg = <3>;
@@ -1724,8 +1566,6 @@
 				reg = <4>;
 				remote-endpoint = <&dp_in_vopl>;
 			};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 	};
 
@@ -1735,11 +1575,7 @@
 		interrupts = <GIC_SPI 119 IRQ_TYPE_LEVEL_HIGH 0>;
 		interrupt-names = "vopl_mmu";
 		clocks = <&cru ACLK_VOP1>, <&cru HCLK_VOP1>;
-<<<<<<< HEAD
 		clock-names = "aclk", "iface";
-=======
-		clock-names = "aclk", "hclk";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		power-domains = <&power RK3399_PD_VOPL>;
 		#iommu-cells = <0>;
 		status = "disabled";
@@ -1777,7 +1613,6 @@
 				reg = <2>;
 				remote-endpoint = <&hdmi_in_vopb>;
 			};
-<<<<<<< HEAD
 
 			vopb_out_mipi1: endpoint@3 {
 				reg = <3>;
@@ -1788,8 +1623,6 @@
 				reg = <4>;
 				remote-endpoint = <&dp_in_vopb>;
 			};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 	};
 
@@ -1799,11 +1632,7 @@
 		interrupts = <GIC_SPI 118 IRQ_TYPE_LEVEL_HIGH 0>;
 		interrupt-names = "vopb_mmu";
 		clocks = <&cru ACLK_VOP0>, <&cru HCLK_VOP0>;
-<<<<<<< HEAD
 		clock-names = "aclk", "iface";
-=======
-		clock-names = "aclk", "hclk";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		power-domains = <&power RK3399_PD_VOPB>;
 		#iommu-cells = <0>;
 		status = "disabled";
@@ -1814,17 +1643,11 @@
 		reg = <0x0 0xff914000 0x0 0x100>, <0x0 0xff915000 0x0 0x100>;
 		interrupts = <GIC_SPI 43 IRQ_TYPE_LEVEL_HIGH 0>;
 		interrupt-names = "isp0_mmu";
-<<<<<<< HEAD
 		clocks = <&cru ACLK_ISP0_WRAPPER>, <&cru HCLK_ISP0_WRAPPER>;
 		clock-names = "aclk", "iface";
 		#iommu-cells = <0>;
 		power-domains = <&power RK3399_PD_ISP0>;
 		rockchip,disable-mmu-reset;
-=======
-		#iommu-cells = <0>;
-		rockchip,disable-mmu-reset;
-		status = "disabled";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	isp1_mmu: iommu@ff924000 {
@@ -1832,7 +1655,6 @@
 		reg = <0x0 0xff924000 0x0 0x100>, <0x0 0xff925000 0x0 0x100>;
 		interrupts = <GIC_SPI 44 IRQ_TYPE_LEVEL_HIGH 0>;
 		interrupt-names = "isp1_mmu";
-<<<<<<< HEAD
 		clocks = <&cru ACLK_ISP1_WRAPPER>, <&cru HCLK_ISP1_WRAPPER>;
 		clock-names = "aclk", "iface";
 		#iommu-cells = <0>;
@@ -1853,18 +1675,12 @@
 		simple-audio-card,codec {
 			sound-dai = <&hdmi>;
 		};
-=======
-		#iommu-cells = <0>;
-		rockchip,disable-mmu-reset;
-		status = "disabled";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	hdmi: hdmi@ff940000 {
 		compatible = "rockchip,rk3399-dw-hdmi";
 		reg = <0x0 0xff940000 0x0 0x20000>;
 		interrupts = <GIC_SPI 23 IRQ_TYPE_LEVEL_HIGH 0>;
-<<<<<<< HEAD
 		clocks = <&cru PCLK_HDMI_CTRL>,
 			 <&cru SCLK_HDMI_SFR>,
 			 <&cru PLL_VPLL>,
@@ -1875,13 +1691,6 @@
 		reg-io-width = <4>;
 		rockchip,grf = <&grf>;
 		#sound-dai-cells = <0>;
-=======
-		clocks = <&cru PCLK_HDMI_CTRL>, <&cru SCLK_HDMI_SFR>, <&cru PLL_VPLL>, <&cru PCLK_VIO_GRF>;
-		clock-names = "iahb", "isfr", "vpll", "grf";
-		power-domains = <&power RK3399_PD_HDCP>;
-		reg-io-width = <4>;
-		rockchip,grf = <&grf>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		status = "disabled";
 
 		ports {
@@ -1909,24 +1718,17 @@
 			 <&cru SCLK_DPHY_TX0_CFG>, <&cru PCLK_VIO_GRF>;
 		clock-names = "ref", "pclk", "phy_cfg", "grf";
 		power-domains = <&power RK3399_PD_VIO>;
-<<<<<<< HEAD
 		resets = <&cru SRST_P_MIPI_DSI0>;
 		reset-names = "apb";
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rockchip,grf = <&grf>;
 		status = "disabled";
 
 		ports {
-<<<<<<< HEAD
 			#address-cells = <1>;
 			#size-cells = <0>;
 
 			mipi_in: port@0 {
 				reg = <0>;
-=======
-			mipi_in: port {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				#address-cells = <1>;
 				#size-cells = <0>;
 
@@ -1942,7 +1744,6 @@
 		};
 	};
 
-<<<<<<< HEAD
 	mipi_dsi1: mipi@ff968000 {
 		compatible = "rockchip,rk3399-mipi-dsi", "snps,dw-mipi-dsi";
 		reg = <0x0 0xff968000 0x0 0x8000>;
@@ -1978,19 +1779,12 @@
 		};
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	edp: edp@ff970000 {
 		compatible = "rockchip,rk3399-edp";
 		reg = <0x0 0xff970000 0x0 0x8000>;
 		interrupts = <GIC_SPI 10 IRQ_TYPE_LEVEL_HIGH 0>;
-<<<<<<< HEAD
 		clocks = <&cru PCLK_EDP>, <&cru PCLK_EDP_CTRL>, <&cru PCLK_VIO_GRF>;
 		clock-names = "dp", "pclk", "grf";
-=======
-		clocks = <&cru PCLK_EDP>, <&cru PCLK_EDP_CTRL>;
-		clock-names = "dp", "pclk";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pinctrl-names = "default";
 		pinctrl-0 = <&edp_hpd>;
 		power-domains = <&power RK3399_PD_EDP>;
@@ -2023,17 +1817,10 @@
 	gpu: gpu@ff9a0000 {
 		compatible = "rockchip,rk3399-mali", "arm,mali-t860";
 		reg = <0x0 0xff9a0000 0x0 0x10000>;
-<<<<<<< HEAD
 		interrupts = <GIC_SPI 19 IRQ_TYPE_LEVEL_HIGH 0>,
 			     <GIC_SPI 20 IRQ_TYPE_LEVEL_HIGH 0>,
 			     <GIC_SPI 21 IRQ_TYPE_LEVEL_HIGH 0>;
 		interrupt-names = "gpu", "job", "mmu";
-=======
-		interrupts = <GIC_SPI 20 IRQ_TYPE_LEVEL_HIGH 0>,
-			     <GIC_SPI 21 IRQ_TYPE_LEVEL_HIGH 0>,
-			     <GIC_SPI 19 IRQ_TYPE_LEVEL_HIGH 0>;
-		interrupt-names = "job", "mmu", "gpu";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		clocks = <&cru ACLK_GPU>;
 		power-domains = <&power RK3399_PD_GPU>;
 		status = "disabled";
@@ -2129,7 +1916,6 @@
 			drive-strength = <12>;
 		};
 
-<<<<<<< HEAD
 		pcfg_pull_none_13ma: pcfg-pull-none-13ma {
 			bias-disable;
 			drive-strength = <13>;
@@ -2150,14 +1936,11 @@
 			drive-strength = <2>;
 		};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pcfg_pull_up_8ma: pcfg-pull-up-8ma {
 			bias-pull-up;
 			drive-strength = <8>;
 		};
 
-<<<<<<< HEAD
 		pcfg_pull_up_18ma: pcfg-pull-up-18ma {
 			bias-pull-up;
 			drive-strength = <18>;
@@ -2168,22 +1951,14 @@
 			drive-strength = <20>;
 		};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pcfg_pull_down_4ma: pcfg-pull-down-4ma {
 			bias-pull-down;
 			drive-strength = <4>;
 		};
 
-<<<<<<< HEAD
 		pcfg_pull_down_8ma: pcfg-pull-down-8ma {
 			bias-pull-down;
 			drive-strength = <8>;
-=======
-		pcfg_pull_up_2ma: pcfg-pull-up-2ma {
-			bias-pull-up;
-			drive-strength = <2>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		pcfg_pull_down_12ma: pcfg-pull-down-12ma {
@@ -2191,7 +1966,6 @@
 			drive-strength = <12>;
 		};
 
-<<<<<<< HEAD
 		pcfg_pull_down_18ma: pcfg-pull-down-18ma {
 			bias-pull-down;
 			drive-strength = <18>;
@@ -2208,11 +1982,6 @@
 
 		pcfg_output_low: pcfg-output-low {
 			output-low;
-=======
-		pcfg_pull_none_13ma: pcfg-pull-none-13ma {
-			bias-disable;
-			drive-strength = <13>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		clock {
@@ -2361,7 +2130,6 @@
 		};
 
 		i2s0 {
-<<<<<<< HEAD
 			i2s0_2ch_bus: i2s0-2ch-bus {
 				rockchip,pins =
 					<3 24 RK_FUNC_1 &pcfg_pull_none>,
@@ -2372,8 +2140,6 @@
 					<4 0 RK_FUNC_1 &pcfg_pull_none>;
 			};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			i2s0_8ch_bus: i2s0-8ch-bus {
 				rockchip,pins =
 					<3 24 RK_FUNC_1 &pcfg_pull_none>,
@@ -2624,7 +2390,6 @@
 			};
 		};
 
-<<<<<<< HEAD
 		testclk {
 			test_clkout0: test-clkout0 {
 				rockchip,pins =
@@ -2642,8 +2407,6 @@
 			};
 		};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		tsadc {
 			otp_gpio: otp-gpio {
 				rockchip,pins = <1 6 RK_FUNC_GPIO &pcfg_pull_none>;
@@ -2741,89 +2504,60 @@
 		pwm0 {
 			pwm0_pin: pwm0-pin {
 				rockchip,pins =
-<<<<<<< HEAD
 					<4 RK_PC2 RK_FUNC_1 &pcfg_pull_none>;
 			};
 
 			pwm0_pin_pull_down: pwm0-pin-pull-down {
 				rockchip,pins =
 					<4 RK_PC2 RK_FUNC_1 &pcfg_pull_down>;
-=======
-					<4 18 RK_FUNC_1 &pcfg_pull_none>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 
 			vop0_pwm_pin: vop0-pwm-pin {
 				rockchip,pins =
-<<<<<<< HEAD
 					<4 RK_PC2 RK_FUNC_2 &pcfg_pull_none>;
 			};
 
 			vop1_pwm_pin: vop1-pwm-pin {
 				rockchip,pins =
 					<4 RK_PC2 RK_FUNC_3 &pcfg_pull_none>;
-=======
-					<4 18 RK_FUNC_2 &pcfg_pull_none>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 		};
 
 		pwm1 {
 			pwm1_pin: pwm1-pin {
 				rockchip,pins =
-<<<<<<< HEAD
 					<4 RK_PC6 RK_FUNC_1 &pcfg_pull_none>;
 			};
 
 			pwm1_pin_pull_down: pwm1-pin-pull-down {
 				rockchip,pins =
 					<4 RK_PC6 RK_FUNC_1 &pcfg_pull_down>;
-=======
-					<4 22 RK_FUNC_1 &pcfg_pull_none>;
-			};
-
-			vop1_pwm_pin: vop1-pwm-pin {
-				rockchip,pins =
-					<4 18 RK_FUNC_3 &pcfg_pull_none>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 		};
 
 		pwm2 {
 			pwm2_pin: pwm2-pin {
 				rockchip,pins =
-<<<<<<< HEAD
 					<1 RK_PC3 RK_FUNC_1 &pcfg_pull_none>;
 			};
 
 			pwm2_pin_pull_down: pwm2-pin-pull-down {
 				rockchip,pins =
 					<1 RK_PC3 RK_FUNC_1 &pcfg_pull_down>;
-=======
-					<1 19 RK_FUNC_1 &pcfg_pull_none>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 		};
 
 		pwm3a {
 			pwm3a_pin: pwm3a-pin {
 				rockchip,pins =
-<<<<<<< HEAD
 					<0 RK_PA6 RK_FUNC_1 &pcfg_pull_none>;
-=======
-					<0 6 RK_FUNC_1 &pcfg_pull_none>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 		};
 
 		pwm3b {
 			pwm3b_pin: pwm3b-pin {
 				rockchip,pins =
-<<<<<<< HEAD
 					<1 RK_PB6 RK_FUNC_1 &pcfg_pull_none>;
-=======
-					<1 14 RK_FUNC_1 &pcfg_pull_none>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 		};
 

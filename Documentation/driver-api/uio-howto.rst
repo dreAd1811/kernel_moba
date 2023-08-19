@@ -667,48 +667,28 @@ Making the driver recognize the device
 Since the driver does not declare any device GUID's, it will not get
 loaded automatically and will not automatically bind to any devices, you
 must load it and allocate id to the driver yourself. For example, to use
-<<<<<<< HEAD
 the network device class GUID::
-=======
-the network device GUID::
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
      modprobe uio_hv_generic
      echo "f8615163-df3e-46c5-913f-f2d2f965ed0e" > /sys/bus/vmbus/drivers/uio_hv_generic/new_id
 
 If there already is a hardware specific kernel driver for the device,
 the generic driver still won't bind to it, in this case if you want to
-<<<<<<< HEAD
 use the generic driver for a userspace library you'll have to manually unbind
 the hardware specific driver and bind the generic driver, using the device specific GUID
 like this::
 
           echo -n ed963694-e847-4b2a-85af-bc9cfc11d6f3 > /sys/bus/vmbus/drivers/hv_netvsc/unbind
           echo -n ed963694-e847-4b2a-85af-bc9cfc11d6f3 > /sys/bus/vmbus/drivers/uio_hv_generic/bind
-=======
-use the generic driver (why would you?) you'll have to manually unbind
-the hardware specific driver and bind the generic driver, like this::
-
-          echo -n vmbus-ed963694-e847-4b2a-85af-bc9cfc11d6f3 > /sys/bus/vmbus/drivers/hv_netvsc/unbind
-          echo -n vmbus-ed963694-e847-4b2a-85af-bc9cfc11d6f3 > /sys/bus/vmbus/drivers/uio_hv_generic/bind
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 You can verify that the device has been bound to the driver by looking
 for it in sysfs, for example like the following::
 
-<<<<<<< HEAD
         ls -l /sys/bus/vmbus/devices/ed963694-e847-4b2a-85af-bc9cfc11d6f3/driver
 
 Which if successful should print::
 
       .../ed963694-e847-4b2a-85af-bc9cfc11d6f3/driver -> ../../../bus/vmbus/drivers/uio_hv_generic
-=======
-        ls -l /sys/bus/vmbus/devices/vmbus-ed963694-e847-4b2a-85af-bc9cfc11d6f3/driver
-
-Which if successful should print::
-
-      .../vmbus-ed963694-e847-4b2a-85af-bc9cfc11d6f3/driver -> ../../../bus/vmbus/drivers/uio_hv_generic
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Things to know about uio_hv_generic
 -----------------------------------
@@ -718,7 +698,6 @@ prevents the device from generating further interrupts until the bit is
 cleared. The userspace driver should clear this bit before blocking and
 waiting for more interrupts.
 
-<<<<<<< HEAD
 When host rescinds a device, the interrupt file descriptor is marked down
 and any reads of the interrupt file descriptor will return -EIO. Similar
 to a closed socket or disconnected serial device.
@@ -736,8 +715,6 @@ For example::
 
 	/sys/bus/vmbus/devices/3811fe4d-0fa0-4b62-981a-74fc1084c757/channels/21/ring
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Further information
 ===================
 

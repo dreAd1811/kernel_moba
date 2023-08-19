@@ -50,15 +50,6 @@ static const char *qxl_get_timeline_name(struct dma_fence *fence)
 	return "release";
 }
 
-<<<<<<< HEAD
-=======
-static bool qxl_nop_signaling(struct dma_fence *fence)
-{
-	/* fences are always automatically signaled, so just pretend we did this.. */
-	return true;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static long qxl_fence_wait(struct dma_fence *fence, bool intr,
 			   signed long timeout)
 {
@@ -122,10 +113,6 @@ signaled:
 static const struct dma_fence_ops qxl_fence_ops = {
 	.get_driver_name = qxl_get_driver_name,
 	.get_timeline_name = qxl_get_timeline_name,
-<<<<<<< HEAD
-=======
-	.enable_signaling = qxl_nop_signaling,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.wait = qxl_fence_wait,
 };
 
@@ -160,11 +147,7 @@ qxl_release_alloc(struct qxl_device *qdev, int type,
 		return handle;
 	}
 	*ret = release;
-<<<<<<< HEAD
 	DRM_DEBUG_DRIVER("allocated release %d\n", handle);
-=======
-	QXL_INFO(qdev, "allocated release %d\n", handle);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	release->id = handle;
 	return handle;
 }
@@ -183,22 +166,14 @@ qxl_release_free_list(struct qxl_release *release)
 		list_del(&entry->tv.head);
 		kfree(entry);
 	}
-<<<<<<< HEAD
 	release->release_bo = NULL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void
 qxl_release_free(struct qxl_device *qdev,
 		 struct qxl_release *release)
 {
-<<<<<<< HEAD
 	DRM_DEBUG_DRIVER("release %d, type %d\n", release->id, release->type);
-=======
-	QXL_INFO(qdev, "release %d, type %d\n", release->id,
-		 release->type);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (release->surface_release_id)
 		qxl_surface_id_dealloc(qdev, release->surface_release_id);
@@ -249,20 +224,12 @@ int qxl_release_list_add(struct qxl_release *release, struct qxl_bo *bo)
 
 static int qxl_release_validate_bo(struct qxl_bo *bo)
 {
-<<<<<<< HEAD
 	struct ttm_operation_ctx ctx = { true, false };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	if (!bo->pin_count) {
 		qxl_ttm_placement_from_domain(bo, bo->type, false);
-<<<<<<< HEAD
 		ret = ttm_bo_validate(&bo->tbo, &bo->placement, &ctx);
-=======
-		ret = ttm_bo_validate(&bo->tbo, &bo->placement,
-				      true, false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			return ret;
 	}
@@ -323,10 +290,6 @@ int qxl_alloc_surface_release_reserved(struct qxl_device *qdev,
 {
 	if (surface_cmd_type == QXL_SURFACE_CMD_DESTROY && create_rel) {
 		int idr_ret;
-<<<<<<< HEAD
-=======
-		struct qxl_bo_list *entry = list_first_entry(&create_rel->bos, struct qxl_bo_list, tv.head);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct qxl_bo *bo;
 		union qxl_release_info *info;
 
@@ -334,14 +297,9 @@ int qxl_alloc_surface_release_reserved(struct qxl_device *qdev,
 		idr_ret = qxl_release_alloc(qdev, QXL_RELEASE_SURFACE_CMD, release);
 		if (idr_ret < 0)
 			return idr_ret;
-<<<<<<< HEAD
 		bo = create_rel->release_bo;
 
 		(*release)->release_bo = bo;
-=======
-		bo = to_qxl_bo(entry->tv.bo);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		(*release)->release_offset = create_rel->release_offset + 64;
 
 		qxl_release_list_add(*release, bo);
@@ -401,10 +359,7 @@ int qxl_alloc_release_reserved(struct qxl_device *qdev, unsigned long size,
 
 	bo = qxl_bo_ref(qdev->current_release_bo[cur_idx]);
 
-<<<<<<< HEAD
 	(*release)->release_bo = bo;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	(*release)->release_offset = qdev->current_release_bo_offset[cur_idx] * release_size_per_bo[cur_idx];
 	qdev->current_release_bo_offset[cur_idx]++;
 
@@ -448,22 +403,12 @@ union qxl_release_info *qxl_release_map(struct qxl_device *qdev,
 {
 	void *ptr;
 	union qxl_release_info *info;
-<<<<<<< HEAD
 	struct qxl_bo *bo = release->release_bo;
 
 	ptr = qxl_bo_kmap_atomic_page(qdev, bo, release->release_offset & PAGE_MASK);
 	if (!ptr)
 		return NULL;
 	info = ptr + (release->release_offset & ~PAGE_MASK);
-=======
-	struct qxl_bo_list *entry = list_first_entry(&release->bos, struct qxl_bo_list, tv.head);
-	struct qxl_bo *bo = to_qxl_bo(entry->tv.bo);
-
-	ptr = qxl_bo_kmap_atomic_page(qdev, bo, release->release_offset & PAGE_SIZE);
-	if (!ptr)
-		return NULL;
-	info = ptr + (release->release_offset & ~PAGE_SIZE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return info;
 }
 
@@ -471,18 +416,10 @@ void qxl_release_unmap(struct qxl_device *qdev,
 		       struct qxl_release *release,
 		       union qxl_release_info *info)
 {
-<<<<<<< HEAD
 	struct qxl_bo *bo = release->release_bo;
 	void *ptr;
 
 	ptr = ((void *)info) - (release->release_offset & ~PAGE_MASK);
-=======
-	struct qxl_bo_list *entry = list_first_entry(&release->bos, struct qxl_bo_list, tv.head);
-	struct qxl_bo *bo = to_qxl_bo(entry->tv.bo);
-	void *ptr;
-
-	ptr = ((void *)info) - (release->release_offset & ~PAGE_SIZE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	qxl_bo_kunmap_atomic_page(qdev, bo, ptr);
 }
 
@@ -514,11 +451,7 @@ void qxl_release_fence_buffer_objects(struct qxl_release *release)
 	trace_dma_fence_emit(&release->base);
 
 	driver = bdev->driver;
-<<<<<<< HEAD
 	glob = bdev->glob;
-=======
-	glob = bo->glob;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock(&glob->lru_lock);
 
@@ -528,11 +461,7 @@ void qxl_release_fence_buffer_objects(struct qxl_release *release)
 
 		reservation_object_add_shared_fence(bo->resv, &release->base);
 		ttm_bo_add_to_lru(bo);
-<<<<<<< HEAD
 		reservation_object_unlock(bo->resv);
-=======
-		__ttm_bo_unreserve(bo);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	spin_unlock(&glob->lru_lock);
 	ww_acquire_fini(&release->ticket);

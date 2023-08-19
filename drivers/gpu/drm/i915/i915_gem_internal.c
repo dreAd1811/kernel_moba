@@ -27,10 +27,7 @@
 #include "i915_drv.h"
 
 #define QUIET (__GFP_NORETRY | __GFP_NOWARN)
-<<<<<<< HEAD
 #define MAYFAIL (__GFP_RETRY_MAYFAIL | __GFP_NOWARN)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* convert swiotlb segment size into sensible units (pages)! */
 #define IO_TLB_SEGPAGES (IO_TLB_SEGSIZE << IO_TLB_SHIFT >> PAGE_SHIFT)
@@ -48,20 +45,12 @@ static void internal_free_pages(struct sg_table *st)
 	kfree(st);
 }
 
-<<<<<<< HEAD
 static int i915_gem_object_get_pages_internal(struct drm_i915_gem_object *obj)
-=======
-static struct sg_table *
-i915_gem_object_get_pages_internal(struct drm_i915_gem_object *obj)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_i915_private *i915 = to_i915(obj->base.dev);
 	struct sg_table *st;
 	struct scatterlist *sg;
-<<<<<<< HEAD
 	unsigned int sg_page_sizes;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int npages;
 	int max_order;
 	gfp_t gfp;
@@ -90,40 +79,25 @@ i915_gem_object_get_pages_internal(struct drm_i915_gem_object *obj)
 create_st:
 	st = kmalloc(sizeof(*st), GFP_KERNEL);
 	if (!st)
-<<<<<<< HEAD
 		return -ENOMEM;
-=======
-		return ERR_PTR(-ENOMEM);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	npages = obj->base.size / PAGE_SIZE;
 	if (sg_alloc_table(st, npages, GFP_KERNEL)) {
 		kfree(st);
-<<<<<<< HEAD
 		return -ENOMEM;
-=======
-		return ERR_PTR(-ENOMEM);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	sg = st->sgl;
 	st->nents = 0;
-<<<<<<< HEAD
 	sg_page_sizes = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	do {
 		int order = min(fls(npages) - 1, max_order);
 		struct page *page;
 
 		do {
-<<<<<<< HEAD
 			page = alloc_pages(gfp | (order ? QUIET : MAYFAIL),
 					   order);
-=======
-			page = alloc_pages(gfp | (order ? QUIET : 0), order);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (page)
 				break;
 			if (!order--)
@@ -134,10 +108,7 @@ create_st:
 		} while (1);
 
 		sg_set_page(sg, page, PAGE_SIZE << order, 0);
-<<<<<<< HEAD
 		sg_page_sizes |= PAGE_SIZE << order;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		st->nents++;
 
 		npages -= 1 << order;
@@ -165,25 +136,17 @@ create_st:
 	 * object are only valid whilst active and pinned.
 	 */
 	obj->mm.madv = I915_MADV_DONTNEED;
-<<<<<<< HEAD
 
 	__i915_gem_object_set_pages(obj, st, sg_page_sizes);
 
 	return 0;
-=======
-	return st;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 err:
 	sg_set_page(sg, NULL, 0, 0);
 	sg_mark_end(sg);
 	internal_free_pages(st);
-<<<<<<< HEAD
 
 	return -ENOMEM;
-=======
-	return ERR_PTR(-ENOMEM);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void i915_gem_object_put_pages_internal(struct drm_i915_gem_object *obj,
@@ -204,13 +167,10 @@ static const struct drm_i915_gem_object_ops i915_gem_object_internal_ops = {
 };
 
 /**
-<<<<<<< HEAD
  * i915_gem_object_create_internal: create an object with volatile pages
  * @i915: the i915 device
  * @size: the size in bytes of backing storage to allocate for the object
  *
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Creates a new object that wraps some internal memory for private use.
  * This object is not backed by swappable storage, and as such its contents
  * are volatile and only valid whilst pinned. If the object is reaped by the
@@ -241,13 +201,8 @@ i915_gem_object_create_internal(struct drm_i915_private *i915,
 	drm_gem_private_object_init(&i915->drm, &obj->base, size);
 	i915_gem_object_init(obj, &i915_gem_object_internal_ops);
 
-<<<<<<< HEAD
 	obj->read_domains = I915_GEM_DOMAIN_CPU;
 	obj->write_domain = I915_GEM_DOMAIN_CPU;
-=======
-	obj->base.read_domains = I915_GEM_DOMAIN_CPU;
-	obj->base.write_domain = I915_GEM_DOMAIN_CPU;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cache_level = HAS_LLC(i915) ? I915_CACHE_LLC : I915_CACHE_NONE;
 	i915_gem_object_set_cache_coherency(obj, cache_level);

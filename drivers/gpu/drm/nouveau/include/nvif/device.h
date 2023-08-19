@@ -4,15 +4,11 @@
 
 #include <nvif/object.h>
 #include <nvif/cl0080.h>
-<<<<<<< HEAD
 #include <nvif/user.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct nvif_device {
 	struct nvif_object object;
 	struct nv_device_info_v0 info;
-<<<<<<< HEAD
 
 	struct nvif_fifo_runlist {
 		u64 engines;
@@ -20,8 +16,6 @@ struct nvif_device {
 	int runlists;
 
 	struct nvif_user user;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int  nvif_device_init(struct nvif_object *, u32 handle, s32 oclass, void *, u32,
@@ -53,10 +47,6 @@ u64  nvif_device_time(struct nvif_device *);
 /*XXX*/
 #include <subdev/bios.h>
 #include <subdev/fb.h>
-<<<<<<< HEAD
-=======
-#include <subdev/mmu.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <subdev/bar.h>
 #include <subdev/gpio.h>
 #include <subdev/clk.h>
@@ -75,11 +65,6 @@ u64  nvif_device_time(struct nvif_device *);
 })
 #define nvxx_bios(a) nvxx_device(a)->bios
 #define nvxx_fb(a) nvxx_device(a)->fb
-<<<<<<< HEAD
-=======
-#define nvxx_mmu(a) nvxx_device(a)->mmu
-#define nvxx_bar(a) nvxx_device(a)->bar
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define nvxx_gpio(a) nvxx_device(a)->gpio
 #define nvxx_clk(a) nvxx_device(a)->clk
 #define nvxx_i2c(a) nvxx_device(a)->i2c
@@ -87,17 +72,8 @@ u64  nvif_device_time(struct nvif_device *);
 #define nvxx_therm(a) nvxx_device(a)->therm
 #define nvxx_volt(a) nvxx_device(a)->volt
 
-<<<<<<< HEAD
 #include <engine/fifo.h>
 #include <engine/gr.h>
 
-=======
-#include <core/device.h>
-#include <engine/fifo.h>
-#include <engine/gr.h>
-#include <engine/sw.h>
-
-#define nvxx_fifo(a) nvxx_device(a)->fifo
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define nvxx_gr(a) nvxx_device(a)->gr
 #endif

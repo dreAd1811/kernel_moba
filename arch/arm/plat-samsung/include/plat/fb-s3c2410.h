@@ -1,20 +1,8 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
 /*
  * Copyright (c) 2004 Arnaud Patard <arnaud.patard@rtp-net.org>
  *
  * Inspired by pxafb.h
-=======
-/* arch/arm/plat-samsung/include/plat/fb-s3c2410.h
- *
- * Copyright (c) 2004 Arnaud Patard <arnaud.patard@rtp-net.org>
- *
- * Inspired by pxafb.h
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 */
 
 #ifndef __ASM_PLAT_FB_S3C2410_H

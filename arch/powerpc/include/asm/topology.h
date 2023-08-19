@@ -90,12 +90,9 @@ static inline void update_numa_cpu_lookup_table(unsigned int cpu, int node) {}
 extern int start_topology_update(void);
 extern int stop_topology_update(void);
 extern int prrn_is_enabled(void);
-<<<<<<< HEAD
 extern int find_and_online_cpu_nid(int cpu);
 extern int timed_topology_update(int nsecs);
 extern void __init shared_proc_topology_init(void);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 static inline int start_topology_update(void)
 {
@@ -109,7 +106,6 @@ static inline int prrn_is_enabled(void)
 {
 	return 0;
 }
-<<<<<<< HEAD
 static inline int find_and_online_cpu_nid(int cpu)
 {
 	return 0;
@@ -122,8 +118,6 @@ static inline int timed_topology_update(int nsecs)
 #ifdef CONFIG_SMP
 static inline void shared_proc_topology_init(void) {}
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_NUMA && CONFIG_PPC_SPLPAR */
 
 #include <asm-generic/topology.h>

@@ -161,7 +161,6 @@ it is guaranteed that the state did change in between the two events.
       - Generated if the CEC pin goes from a low voltage to a high voltage.
         Only applies to adapters that have the ``CEC_CAP_MONITOR_PIN``
 	capability set.
-<<<<<<< HEAD
     * .. _`CEC-EVENT-PIN-HPD-LOW`:
 
       - ``CEC_EVENT_PIN_HPD_LOW``
@@ -198,8 +197,6 @@ it is guaranteed that the state did change in between the two events.
 	capability set. When open() is called, the 5V pin can be read and
 	if the 5V is high, then an initial event will be generated for that
 	filehandle.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 .. tabularcolumns:: |p{6.0cm}|p{0.6cm}|p{10.9cm}|
@@ -211,15 +208,9 @@ it is guaranteed that the state did change in between the two events.
     :stub-columns: 0
     :widths:       3 1 8
 
-<<<<<<< HEAD
     * .. _`CEC-EVENT-FL-INITIAL-STATE`:
 
       - ``CEC_EVENT_FL_INITIAL_STATE``
-=======
-    * .. _`CEC-EVENT-FL-INITIAL-VALUE`:
-
-      - ``CEC_EVENT_FL_INITIAL_VALUE``
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
       - 1
       - Set for the initial events that are generated when the device is
 	opened. See the table above for which events do this. This allows

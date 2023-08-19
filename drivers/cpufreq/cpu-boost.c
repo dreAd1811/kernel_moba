@@ -1,20 +1,6 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2013-2015,2017,2019, The Linux Foundation. All rights reserved.
-=======
-/*
- * Copyright (c) 2013-2015,2017, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #define pr_fmt(fmt) "cpu-boost: " fmt
@@ -24,7 +10,6 @@
 #include <linux/cpufreq.h>
 #include <linux/cpu.h>
 #include <linux/sched.h>
-<<<<<<< HEAD
 #include <linux/slab.h>
 #include <linux/input.h>
 #include <linux/time.h>
@@ -50,12 +35,6 @@ const char *buf, size_t count)					\
 	sscanf(buf, "%u", &file_name);				\
 	return count;						\
 }
-=======
-#include <linux/moduleparam.h>
-#include <linux/slab.h>
-#include <linux/input.h>
-#include <linux/time.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct cpu_sync {
 	int cpu;
@@ -71,7 +50,6 @@ static struct work_struct input_boost_work;
 static bool input_boost_enabled;
 
 static unsigned int input_boost_ms = 40;
-<<<<<<< HEAD
 show_one(input_boost_ms);
 store_one(input_boost_ms);
 cpu_boost_attr_rw(input_boost_ms);
@@ -80,12 +58,6 @@ static unsigned int sched_boost_on_input;
 show_one(sched_boost_on_input);
 store_one(sched_boost_on_input);
 cpu_boost_attr_rw(sched_boost_on_input);
-=======
-module_param(input_boost_ms, uint, 0644);
-
-static unsigned int sched_boost_on_input;
-module_param(sched_boost_on_input, uint, 0644);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static bool sched_boost_active;
 
@@ -93,13 +65,9 @@ static struct delayed_work input_boost_rem;
 static u64 last_input_time;
 #define MIN_INPUT_INTERVAL (150 * USEC_PER_MSEC)
 
-<<<<<<< HEAD
 static ssize_t store_input_boost_freq(struct kobject *kobj,
 				      struct kobj_attribute *attr,
 				      const char *buf, size_t count)
-=======
-static int set_input_boost_freq(const char *buf, const struct kernel_param *kp)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i, ntokens = 0;
 	unsigned int val, cpu;
@@ -143,18 +111,11 @@ check_enable:
 	}
 	input_boost_enabled = enabled;
 
-<<<<<<< HEAD
 	return count;
 }
 
 static ssize_t show_input_boost_freq(struct kobject *kobj,
 				     struct kobj_attribute *attr, char *buf)
-=======
-	return 0;
-}
-
-static int get_input_boost_freq(char *buf, const struct kernel_param *kp)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int cnt = 0, cpu;
 	struct cpu_sync *s;
@@ -168,15 +129,7 @@ static int get_input_boost_freq(char *buf, const struct kernel_param *kp)
 	return cnt;
 }
 
-<<<<<<< HEAD
 cpu_boost_attr_rw(input_boost_freq);
-=======
-static const struct kernel_param_ops param_ops_input_boost_freq = {
-	.set = set_input_boost_freq,
-	.get = get_input_boost_freq,
-};
-module_param_cb(input_boost_freq, &param_ops_input_boost_freq, NULL, 0644);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * The CPUFREQ_ADJUST notifier is used to override the current policy min to
@@ -374,10 +327,7 @@ static struct input_handler cpuboost_input_handler = {
 	.id_table       = cpuboost_ids,
 };
 
-<<<<<<< HEAD
 struct kobject *cpu_boost_kobj;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int cpu_boost_init(void)
 {
 	int cpu, ret;
@@ -396,7 +346,6 @@ static int cpu_boost_init(void)
 	}
 	cpufreq_register_notifier(&boost_adjust_nb, CPUFREQ_POLICY_NOTIFIER);
 
-<<<<<<< HEAD
 	cpu_boost_kobj = kobject_create_and_add("cpu_boost",
 						&cpu_subsys.dev_root->kobj);
 	if (!cpu_boost_kobj)
@@ -415,8 +364,6 @@ static int cpu_boost_init(void)
 	if (ret)
 		pr_err("Failed to create sched_boost_on_input node: %d\n", ret);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = input_register_handler(&cpuboost_input_handler);
 	return 0;
 }

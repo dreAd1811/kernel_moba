@@ -1,14 +1,7 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Copyright (C) STMicroelectronics SA 2014
  * Author: Vincent Abriou <vincent.abriou@st.com> for STMicroelectronics.
-=======
-/*
- * Copyright (C) STMicroelectronics SA 2014
- * Author: Vincent Abriou <vincent.abriou@st.com> for STMicroelectronics.
- * License terms:  GNU General Public License (GPL), version 2
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/clk.h>
@@ -394,13 +387,9 @@ sti_dvo_connector_detect(struct drm_connector *connector, bool force)
 
 	if (!dvo->panel) {
 		dvo->panel = of_drm_find_panel(dvo->panel_node);
-<<<<<<< HEAD
 		if (IS_ERR(dvo->panel))
 			dvo->panel = NULL;
 		else
-=======
-		if (dvo->panel)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			drm_panel_attach(dvo->panel, connector);
 	}
 
@@ -476,15 +465,7 @@ static int sti_dvo_bind(struct device *dev, struct device *master, void *data)
 	bridge->driver_private = dvo;
 	bridge->funcs = &sti_dvo_bridge_funcs;
 	bridge->of_node = dvo->dev.of_node;
-<<<<<<< HEAD
 	drm_bridge_add(bridge);
-=======
-	err = drm_bridge_add(bridge);
-	if (err) {
-		DRM_ERROR("Failed to add bridge\n");
-		return err;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = drm_bridge_attach(encoder, bridge, NULL);
 	if (err) {
@@ -505,11 +486,7 @@ static int sti_dvo_bind(struct device *dev, struct device *master, void *data)
 	drm_connector_helper_add(drm_connector,
 				 &sti_dvo_connector_helper_funcs);
 
-<<<<<<< HEAD
 	err = drm_connector_attach_encoder(drm_connector, encoder);
-=======
-	err = drm_mode_connector_attach_encoder(drm_connector, encoder);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err) {
 		DRM_ERROR("Failed to attach a connector to a encoder\n");
 		goto err_sysfs;

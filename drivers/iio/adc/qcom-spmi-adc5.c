@@ -1,20 +1,6 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2012-2019, The Linux Foundation. All rights reserved.
-=======
-/*
- * Copyright (c) 2018-2020, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/bitops.h>
@@ -33,20 +19,14 @@
 #include <linux/slab.h>
 #include <linux/log2.h>
 #include <linux/qpnp/qpnp-revid.h>
-<<<<<<< HEAD
 #include <linux/ipc_logging.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <dt-bindings/iio/qcom,spmi-vadc.h>
 
 #include "qcom-vadc-common.h"
 
 #define ADC_USR_STATUS1				0x8
-<<<<<<< HEAD
 #define ADC7_USR_STATUS1_CONV_FAULT		BIT(7)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ADC_USR_STATUS1_REQ_STS			BIT(1)
 #define ADC_USR_STATUS1_EOC			BIT(0)
 #define ADC_USR_STATUS1_REQ_STS_EOC_MASK	0x3
@@ -94,12 +74,9 @@
 #define ADC_CHAN_MIN				ADC_USBIN
 #define ADC_CHAN_MAX				ADC_LR_MUX3_BUF_PU1_PU2_XO_THERM
 
-<<<<<<< HEAD
 #define ADC_CHANNEL_OFFSET			0x8
 #define ADC_CHANNEL_MASK			0xff
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Conversion time varies between 139uS to 6827uS based on the decimation,
  * clock rate, fast average samples with no measurement in queue.
@@ -116,14 +93,11 @@
 #define ADC_CAL_DELAY_CTL_VAL_256S		0x73
 #define ADC_CAL_DELAY_CTL_VAL_125MS		0x3
 
-<<<<<<< HEAD
 /* For PMIC7 */
 #define ADC_APP_SID					0x40
 #define ADC_APP_SID_MASK			0xf
 #define ADC7_CONV_TIMEOUT		msecs_to_jiffies(10)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum adc_cal_method {
 	ADC_NO_CAL = 0,
 	ADC_RATIOMETRIC_CAL,
@@ -146,10 +120,7 @@ struct pmic_rev_data {
  * @cal_method: calibration method.
  * @cal_val: calibration value
  * @decimation: sampling rate supported for the channel.
-<<<<<<< HEAD
  * @sid: slave id of PMIC owning the channel, for PMIC7.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @prescale: channel scaling performed on the input signal.
  * @hw_settle_time: the time between AMUX being configured and the
  *	start of conversion.
@@ -163,10 +134,7 @@ struct adc_channel_prop {
 	enum adc_cal_method		cal_method;
 	enum adc_cal_val		cal_val;
 	unsigned int			decimation;
-<<<<<<< HEAD
 	unsigned int			sid;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int			prescale;
 	unsigned int			hw_settle_time;
 	unsigned int			avg_samples;
@@ -202,17 +170,11 @@ struct adc_chip {
 	struct completion	complete;
 	struct mutex		lock;
 	bool			skip_usb_wa;
-<<<<<<< HEAD
 	void			*ipc_log0;
 	void			*ipc_log1;
 	bool			is_pmic7;
 	struct pmic_revid_data	*pmic_rev_id;
 	const struct adc_data	*data;
-=======
-	struct pmic_revid_data	*pmic_rev_id;
-	const struct adc_data	*data;
-	int			adc_irq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct vadc_prescale_ratio adc_prescale_ratios[] = {
@@ -237,14 +199,11 @@ static int adc_write(struct adc_chip *adc, u16 offset, u8 *data, int len)
 	return regmap_bulk_write(adc->regmap, adc->base + offset, data, len);
 }
 
-<<<<<<< HEAD
 static int adc_masked_write(struct adc_chip *adc, u16 offset, u8 mask, u8 val)
 {
 	return regmap_update_bits(adc->regmap, adc->base + offset, mask, val);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int adc_prescaling_from_dt(u32 num, u32 den)
 {
 	unsigned int pre;
@@ -587,7 +546,6 @@ static int adc_configure(struct adc_chip *adc,
 	return ret;
 }
 
-<<<<<<< HEAD
 static int adc7_configure(struct adc_chip *adc,
 			struct adc_channel_prop *prop)
 {
@@ -631,8 +589,6 @@ static int adc7_configure(struct adc_chip *adc,
 	return ret;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int adc_do_conversion(struct adc_chip *adc,
 			struct adc_channel_prop *prop,
 			struct iio_chan_spec const *chan,
@@ -683,7 +639,6 @@ unlock:
 	return ret;
 }
 
-<<<<<<< HEAD
 static int adc7_do_conversion(struct adc_chip *adc,
 			struct adc_channel_prop *prop,
 			struct iio_chan_spec const *chan,
@@ -722,8 +677,6 @@ unlock:
 	return ret;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static irqreturn_t adc_isr(int irq, void *dev_id)
 {
 	struct adc_chip *adc = dev_id;
@@ -746,7 +699,6 @@ static int adc_of_xlate(struct iio_dev *indio_dev,
 	return -EINVAL;
 }
 
-<<<<<<< HEAD
 static int adc7_of_xlate(struct iio_dev *indio_dev,
 				const struct of_phandle_args *iiospec)
 {
@@ -807,8 +759,6 @@ static int adc7_read_raw(struct iio_dev *indio_dev,
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int adc_read_raw(struct iio_dev *indio_dev,
 			 struct iio_chan_spec const *chan, int *val, int *val2,
 			 long mask)
@@ -877,7 +827,6 @@ static int adc_read_raw(struct iio_dev *indio_dev,
 
 static const struct iio_info adc_info = {
 	.read_raw = adc_read_raw,
-<<<<<<< HEAD
 	.of_xlate = adc_of_xlate,
 };
 
@@ -886,12 +835,6 @@ static const struct iio_info adc7_info = {
 	.of_xlate = adc7_of_xlate,
 };
 
-=======
-	.driver_module = THIS_MODULE,
-	.of_xlate = adc_of_xlate,
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct adc_channels {
 	const char *datasheet_name;
 	unsigned int prescale_index;
@@ -986,7 +929,6 @@ static const struct adc_channels adc_chans_pmic5[ADC_MAX_CHANNEL] = {
 					SCALE_HW_CALIB_THERM_100K_PULLUP)
 };
 
-<<<<<<< HEAD
 static const struct adc_channels adc7_chans_pmic[ADC_MAX_CHANNEL] = {
 	[ADC7_REF_GND]		= ADC_CHAN_VOLT("ref_gnd", 0,
 					SCALE_HW_CALIB_DEFAULT)
@@ -1020,8 +962,6 @@ static const struct adc_channels adc7_chans_pmic[ADC_MAX_CHANNEL] = {
 					SCALE_HW_CALIB_THERM_100K_PU_PM7)
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct adc_channels adc_chans_rev2[ADC_MAX_CHANNEL] = {
 	[ADC_REF_GND]		= ADC_CHAN_VOLT("ref_gnd", 1,
 					SCALE_HW_CALIB_DEFAULT)
@@ -1043,34 +983,18 @@ static const struct adc_channels adc_chans_rev2[ADC_MAX_CHANNEL] = {
 					SCALE_HW_CALIB_THERM_100K_PULLUP)
 	[ADC_XO_THERM_PU2]	= ADC_CHAN_TEMP("xo_therm", 1,
 					SCALE_HW_CALIB_THERM_100K_PULLUP)
-<<<<<<< HEAD
 };
 
 static int adc_get_dt_channel_data(struct adc_chip *adc,
-=======
-	[ANA_IN]		= ADC_CHAN_TEMP("drax_temp", 1,
-					SCALE_HW_CALIB_PMIC_THERM)
-	[ADC_AMUX_THM1]		= ADC_CHAN_VOLT("amux_thm1", 1,
-					SCALE_HW_CALIB_DEFAULT)
-	[ADC_AMUX_THM3]		= ADC_CHAN_VOLT("amux_thm3", 1,
-					SCALE_HW_CALIB_DEFAULT)
-};
-
-static int adc_get_dt_channel_data(struct device *dev,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    struct adc_channel_prop *prop,
 				    struct device_node *node,
 				    const struct adc_data *data)
 {
 	const char *name = node->name, *channel_name;
 	u32 chan, value, varr[2];
-<<<<<<< HEAD
 	u32 sid = 0;
 	int ret;
 	struct device *dev = adc->dev;
-=======
-	int ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = of_property_read_u32(node, "reg", &chan);
 	if (ret) {
@@ -1078,7 +1002,6 @@ static int adc_get_dt_channel_data(struct device *dev,
 		return ret;
 	}
 
-<<<<<<< HEAD
 	/*
 	 * Value read from "reg" is virtual channel number
 	 * virtual channel number = (sid << 8 | channel number).
@@ -1089,8 +1012,6 @@ static int adc_get_dt_channel_data(struct device *dev,
 		chan = (chan & ADC_CHANNEL_MASK);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (chan > ADC_PARALLEL_ISENSE_VBAT_IDATA) {
 		dev_err(dev, "%s invalid channel number %d\n", name, chan);
 		return -EINVAL;
@@ -1098,10 +1019,7 @@ static int adc_get_dt_channel_data(struct device *dev,
 
 	/* the channel has DT description */
 	prop->channel = chan;
-<<<<<<< HEAD
 	prop->sid = sid;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	channel_name = of_get_property(node,
 				"label", NULL) ? : node->name;
@@ -1163,10 +1081,7 @@ static int adc_get_dt_channel_data(struct device *dev,
 
 	prop->scale_fn_type = -EINVAL;
 	ret = of_property_read_u32(node, "qcom,scale-fn-type", &value);
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ret && value < SCALE_HW_CALIB_MAX)
 		prop->scale_fn_type = value;
 
@@ -1202,7 +1117,6 @@ const struct adc_data data_pmic5 = {
 					800, 900, 1, 2, 4, 6, 8, 10},
 };
 
-<<<<<<< HEAD
 const struct adc_data adc7_data_pmic = {
 	.full_scale_code_volt = 0x70e4,
 	.adc_chans = adc7_chans_pmic,
@@ -1211,8 +1125,6 @@ const struct adc_data adc7_data_pmic = {
 			1000, 2000, 4000, 8000, 16000, 32000, 64000, 128000},
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 const struct adc_data data_pmic_rev2 = {
 	.full_scale_code_volt = 0x4000,
 	.full_scale_code_cur = 0x1800,
@@ -1228,13 +1140,10 @@ static const struct of_device_id adc_match_table[] = {
 		.data = &data_pmic5,
 	},
 	{
-<<<<<<< HEAD
 		.compatible = "qcom,spmi-adc7",
 		.data = &adc7_data_pmic,
 	},
 	{
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.compatible = "qcom,spmi-adc-rev2",
 		.data = &data_pmic_rev2,
 	},
@@ -1275,11 +1184,7 @@ static int adc_get_dt_data(struct adc_chip *adc, struct device_node *node)
 	adc->data = data;
 
 	for_each_available_child_of_node(node, child) {
-<<<<<<< HEAD
 		ret = adc_get_dt_channel_data(adc, &prop, child, data);
-=======
-		ret = adc_get_dt_channel_data(adc->dev, &prop, child, data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret) {
 			of_node_put(child);
 			return ret;
@@ -1308,10 +1213,7 @@ static int adc_get_dt_data(struct adc_chip *adc, struct device_node *node)
 
 static const struct pmic_rev_data pmic_data[] = {
 	{PM6150_SUBTYPE,	1},
-<<<<<<< HEAD
 	{PM7250B_SUBTYPE,	0},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 bool skip_usb_in_wa(struct pmic_revid_data *pmic_rev_id)
@@ -1339,16 +1241,10 @@ static int adc_probe(struct platform_device *pdev)
 	struct adc_chip *adc;
 	struct regmap *regmap;
 	const __be32 *prop_addr;
-<<<<<<< HEAD
 	int ret, irq_eoc;
 	u32 reg;
 	bool skip_usb_wa = false;
 	char adc_name[40];
-=======
-	int ret;
-	u32 reg;
-	bool skip_usb_wa = false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	regmap = dev_get_regmap(dev->parent, NULL);
 	if (!regmap)
@@ -1377,13 +1273,8 @@ static int adc_probe(struct platform_device *pdev)
 	adc = iio_priv(indio_dev);
 	adc->regmap = regmap;
 	adc->dev = dev;
-<<<<<<< HEAD
 
 	adc->pmic_rev_id = pmic_rev_id;
-=======
-	adc->pmic_rev_id = pmic_rev_id;
-	dev_set_drvdata(&pdev->dev, adc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	prop_addr = of_get_address(dev->of_node, 0, NULL, NULL);
 	if (!prop_addr) {
@@ -1400,7 +1291,6 @@ static int adc_probe(struct platform_device *pdev)
 
 	adc->skip_usb_wa = skip_usb_wa;
 
-<<<<<<< HEAD
 	if (of_device_is_compatible(node, "qcom,spmi-adc7")) {
 		indio_dev->info = &adc7_info;
 		adc->is_pmic7 = true;
@@ -1409,8 +1299,6 @@ static int adc_probe(struct platform_device *pdev)
 
 	platform_set_drvdata(pdev, adc);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	init_completion(&adc->complete);
 	mutex_init(&adc->lock);
 
@@ -1420,7 +1308,6 @@ static int adc_probe(struct platform_device *pdev)
 		return ret;
 	}
 
-<<<<<<< HEAD
 	irq_eoc = platform_get_irq(pdev, 0);
 	if (irq_eoc < 0) {
 		if (irq_eoc == -EPROBE_DEFER || irq_eoc == -EINVAL)
@@ -1428,15 +1315,6 @@ static int adc_probe(struct platform_device *pdev)
 		adc->poll_eoc = true;
 	} else {
 		ret = devm_request_irq(dev, irq_eoc, adc_isr, 0,
-=======
-	adc->adc_irq = platform_get_irq(pdev, 0);
-	if (adc->adc_irq < 0) {
-		if (adc->adc_irq == -EPROBE_DEFER || adc->adc_irq == -EINVAL)
-			return adc->adc_irq;
-		adc->poll_eoc = true;
-	} else {
-		ret = devm_request_irq(dev, adc->adc_irq, adc_isr, 0,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       "pm-adc5", adc);
 		if (ret)
 			return ret;
@@ -1446,7 +1324,6 @@ static int adc_probe(struct platform_device *pdev)
 	indio_dev->dev.of_node = node;
 	indio_dev->name = pdev->name;
 	indio_dev->modes = INDIO_DIRECT_MODE;
-<<<<<<< HEAD
 	indio_dev->channels = adc->iio_chans;
 	indio_dev->num_channels = adc->nchannels;
 
@@ -1473,58 +1350,10 @@ static int adc_probe(struct platform_device *pdev)
 	return devm_iio_device_register(dev, indio_dev);
 }
 
-=======
-	indio_dev->info = &adc_info;
-	indio_dev->channels = adc->iio_chans;
-	indio_dev->num_channels = adc->nchannels;
-
-	return devm_iio_device_register(dev, indio_dev);
-}
-
-static int adc_restore(struct device *dev)
-{
-	int ret = 0;
-	struct adc_chip *adc = dev_get_drvdata(dev);
-
-	dev_dbg(dev, "%s\n", __func__);
-
-	if (adc->adc_irq > 0) {
-		ret = devm_request_irq(dev, adc->adc_irq, adc_isr, 0,
-				       "pm-adc5", adc);
-		if (ret)
-			return ret;
-	}
-
-	return ret;
-}
-
-static int adc_freeze(struct device *dev)
-{
-	struct adc_chip *adc = dev_get_drvdata(dev);
-
-	dev_dbg(dev, "%s\n", __func__);
-
-	if (adc->adc_irq > 0)
-		devm_free_irq(dev, adc->adc_irq, adc);
-
-	return 0;
-}
-
-static const struct dev_pm_ops adc_pm_ops = {
-	.freeze = adc_freeze,
-	.restore = adc_restore,
-	.thaw = adc_restore,
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct platform_driver adc_driver = {
 	.driver = {
 		.name = "qcom-spmi-adc5.c",
 		.of_match_table = adc_match_table,
-<<<<<<< HEAD
-=======
-		.pm = &adc_pm_ops,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.probe = adc_probe,
 };

@@ -108,11 +108,7 @@ static int adp5520_led_probe(struct platform_device *pdev)
 		return -EFAULT;
 	}
 
-<<<<<<< HEAD
 	led = devm_kcalloc(&pdev->dev, pdata->num_leds, sizeof(*led),
-=======
-	led = devm_kzalloc(&pdev->dev, sizeof(*led) * pdata->num_leds,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				GFP_KERNEL);
 	if (!led)
 		return -ENOMEM;

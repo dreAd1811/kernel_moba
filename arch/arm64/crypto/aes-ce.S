@@ -30,7 +30,6 @@
 	.endm
 
 	/* prepare for encryption with key in rk[] */
-<<<<<<< HEAD
 	.macro		enc_prepare, rounds, rk, temp
 	mov		\temp, \rk
 	load_round_keys	\rounds, \temp
@@ -46,20 +45,6 @@
 	.macro		dec_prepare, rounds, rk, temp
 	mov		\temp, \rk
 	load_round_keys	\rounds, \temp
-=======
-	.macro		enc_prepare, rounds, rk, ignore
-	load_round_keys	\rounds, \rk
-	.endm
-
-	/* prepare for encryption (again) but with new key in rk[] */
-	.macro		enc_switch_key, rounds, rk, ignore
-	load_round_keys	\rounds, \rk
-	.endm
-
-	/* prepare for decryption with key in rk[] */
-	.macro		dec_prepare, rounds, rk, ignore
-	load_round_keys	\rounds, \rk
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.endm
 
 	.macro		do_enc_Nx, de, mc, k, i0, i1, i2, i3

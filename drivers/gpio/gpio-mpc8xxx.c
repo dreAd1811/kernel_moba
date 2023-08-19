@@ -21,10 +21,7 @@
 #include <linux/slab.h>
 #include <linux/irq.h>
 #include <linux/gpio/driver.h>
-<<<<<<< HEAD
 #include <linux/bitops.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define MPC8XXX_GPIO_PINS	32
 
@@ -48,7 +45,6 @@ struct mpc8xxx_gpio_chip {
 	unsigned int irqn;
 };
 
-<<<<<<< HEAD
 /*
  * This hardware has a big endian bit assignment such that GPIO line 0 is
  * connected to bit 31, line 1 to bit 30 ... line 31 to bit 0.
@@ -59,8 +55,6 @@ static inline u32 mpc_pin2mask(unsigned int offset)
 	return BIT(31 - offset);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Workaround GPIO 1 errata on MPC8572/MPC8536. The status of GPIOs
  * defined as output cannot be determined by reading GPDAT register,
  * so we use shadow data register instead. The status of input pins
@@ -76,11 +70,7 @@ static int mpc8572_gpio_get(struct gpio_chip *gc, unsigned int gpio)
 	val = gc->read_reg(mpc8xxx_gc->regs + GPIO_DAT) & ~out_mask;
 	out_shadow = gc->bgpio_data & out_mask;
 
-<<<<<<< HEAD
 	return !!((val | out_shadow) & mpc_pin2mask(gpio));
-=======
-	return !!((val | out_shadow) & gc->pin2mask(gc, gpio));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int mpc5121_gpio_dir_out(struct gpio_chip *gc,
@@ -141,11 +131,7 @@ static void mpc8xxx_irq_unmask(struct irq_data *d)
 
 	gc->write_reg(mpc8xxx_gc->regs + GPIO_IMR,
 		gc->read_reg(mpc8xxx_gc->regs + GPIO_IMR)
-<<<<<<< HEAD
 		| mpc_pin2mask(irqd_to_hwirq(d)));
-=======
-		| gc->pin2mask(gc, irqd_to_hwirq(d)));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	raw_spin_unlock_irqrestore(&mpc8xxx_gc->lock, flags);
 }
@@ -160,11 +146,7 @@ static void mpc8xxx_irq_mask(struct irq_data *d)
 
 	gc->write_reg(mpc8xxx_gc->regs + GPIO_IMR,
 		gc->read_reg(mpc8xxx_gc->regs + GPIO_IMR)
-<<<<<<< HEAD
 		& ~mpc_pin2mask(irqd_to_hwirq(d)));
-=======
-		& ~(gc->pin2mask(gc, irqd_to_hwirq(d))));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	raw_spin_unlock_irqrestore(&mpc8xxx_gc->lock, flags);
 }
@@ -175,11 +157,7 @@ static void mpc8xxx_irq_ack(struct irq_data *d)
 	struct gpio_chip *gc = &mpc8xxx_gc->gc;
 
 	gc->write_reg(mpc8xxx_gc->regs + GPIO_IER,
-<<<<<<< HEAD
 		      mpc_pin2mask(irqd_to_hwirq(d)));
-=======
-		      gc->pin2mask(gc, irqd_to_hwirq(d)));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int mpc8xxx_irq_set_type(struct irq_data *d, unsigned int flow_type)
@@ -193,11 +171,7 @@ static int mpc8xxx_irq_set_type(struct irq_data *d, unsigned int flow_type)
 		raw_spin_lock_irqsave(&mpc8xxx_gc->lock, flags);
 		gc->write_reg(mpc8xxx_gc->regs + GPIO_ICR,
 			gc->read_reg(mpc8xxx_gc->regs + GPIO_ICR)
-<<<<<<< HEAD
 			| mpc_pin2mask(irqd_to_hwirq(d)));
-=======
-			| gc->pin2mask(gc, irqd_to_hwirq(d)));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		raw_spin_unlock_irqrestore(&mpc8xxx_gc->lock, flags);
 		break;
 
@@ -205,11 +179,7 @@ static int mpc8xxx_irq_set_type(struct irq_data *d, unsigned int flow_type)
 		raw_spin_lock_irqsave(&mpc8xxx_gc->lock, flags);
 		gc->write_reg(mpc8xxx_gc->regs + GPIO_ICR,
 			gc->read_reg(mpc8xxx_gc->regs + GPIO_ICR)
-<<<<<<< HEAD
 			& ~mpc_pin2mask(irqd_to_hwirq(d)));
-=======
-			& ~(gc->pin2mask(gc, irqd_to_hwirq(d))));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		raw_spin_unlock_irqrestore(&mpc8xxx_gc->lock, flags);
 		break;
 
@@ -347,10 +317,6 @@ static int mpc8xxx_probe(struct platform_device *pdev)
 		return -ENOMEM;
 
 	gc = &mpc8xxx_gc->gc;
-<<<<<<< HEAD
-=======
-	gc->parent = &pdev->dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (of_property_read_bool(np, "little-endian")) {
 		ret = bgpio_init(gc, &pdev->dev, 4,
@@ -382,12 +348,7 @@ static int mpc8xxx_probe(struct platform_device *pdev)
 	 * It's assumed that only a single type of gpio controller is available
 	 * on the current machine, so overwriting global data is fine.
 	 */
-<<<<<<< HEAD
 	mpc8xxx_irq_chip.irq_set_type = devtype->irq_set_type;
-=======
-	if (devtype->irq_set_type)
-		mpc8xxx_irq_chip.irq_set_type = devtype->irq_set_type;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (devtype->gpio_dir_out)
 		gc->direction_output = devtype->gpio_dir_out;

@@ -32,11 +32,7 @@ Enabling the driver
 The driver is enabled via the standard kernel configuration system,
 using the make command:
 
-<<<<<<< HEAD
      make config/oldconfig/menuconfig/etc.
-=======
-     Make oldconfig/silentoldconfig/menuconfig/etc.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 The driver is located in the menu structure at:
 

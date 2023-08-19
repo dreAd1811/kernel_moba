@@ -137,24 +137,14 @@ exit_unlock:
 	return retval;
 }
 
-<<<<<<< HEAD
 static __poll_t roccat_poll(struct file *file, poll_table *wait)
-=======
-static unsigned int roccat_poll(struct file *file, poll_table *wait)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct roccat_reader *reader = file->private_data;
 	poll_wait(file, &reader->device->wait, wait);
 	if (reader->cbuf_start != reader->device->cbuf_end)
-<<<<<<< HEAD
 		return EPOLLIN | EPOLLRDNORM;
 	if (!reader->device->exist)
 		return EPOLLERR | EPOLLHUP;
-=======
-		return POLLIN | POLLRDNORM;
-	if (!reader->device->exist)
-		return POLLERR | POLLHUP;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

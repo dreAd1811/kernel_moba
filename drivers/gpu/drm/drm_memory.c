@@ -80,11 +80,7 @@ static void *agp_remap(unsigned long offset, unsigned long size,
 	 * page-table instead (that's probably faster anyhow...).
 	 */
 	/* note: use vmalloc() because num_pages could be large... */
-<<<<<<< HEAD
 	page_map = vmalloc(array_size(num_pages, sizeof(struct page *)));
-=======
-	page_map = vmalloc(num_pages * sizeof(struct page *));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!page_map)
 		return NULL;
 
@@ -153,7 +149,6 @@ void drm_legacy_ioremapfree(struct drm_local_map *map, struct drm_device *dev)
 		iounmap(map->handle);
 }
 EXPORT_SYMBOL(drm_legacy_ioremapfree);
-<<<<<<< HEAD
 
 u64 drm_get_max_iomem(void)
 {
@@ -167,5 +162,3 @@ u64 drm_get_max_iomem(void)
 	return max_iomem;
 }
 EXPORT_SYMBOL(drm_get_max_iomem);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

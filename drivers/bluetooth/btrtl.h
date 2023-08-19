@@ -17,7 +17,6 @@
 
 #define RTL_FRAG_LEN 252
 
-<<<<<<< HEAD
 #define rtl_dev_err(dev, fmt, ...) bt_dev_err(dev, "RTL: " fmt, ##__VA_ARGS__)
 #define rtl_dev_warn(dev, fmt, ...) bt_dev_warn(dev, "RTL: " fmt, ##__VA_ARGS__)
 #define rtl_dev_info(dev, fmt, ...) bt_dev_info(dev, "RTL: " fmt, ##__VA_ARGS__)
@@ -25,8 +24,6 @@
 
 struct btrtl_device_info;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct rtl_download_cmd {
 	__u8 index;
 	__u8 data[RTL_FRAG_LEN];
@@ -48,7 +45,6 @@ struct rtl_epatch_header {
 	__le16 num_patches;
 } __packed;
 
-<<<<<<< HEAD
 struct rtl_vendor_config_entry {
 	__le16 offset;
 	__u8 len;
@@ -93,20 +89,11 @@ static inline int btrtl_download_firmware(struct hci_dev *hdev,
 	return -EOPNOTSUPP;
 }
 
-=======
-#if IS_ENABLED(CONFIG_BT_RTL)
-
-int btrtl_setup_realtek(struct hci_dev *hdev);
-
-#else
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int btrtl_setup_realtek(struct hci_dev *hdev)
 {
 	return -EOPNOTSUPP;
 }
 
-<<<<<<< HEAD
 static inline int btrtl_shutdown_realtek(struct hci_dev *hdev)
 {
 	return -EOPNOTSUPP;
@@ -121,6 +108,4 @@ static inline int btrtl_get_uart_settings(struct hci_dev *hdev,
 	return -ENOENT;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

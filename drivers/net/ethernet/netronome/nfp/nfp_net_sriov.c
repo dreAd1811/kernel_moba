@@ -112,7 +112,6 @@ int nfp_app_set_vf_mac(struct net_device *netdev, int vf, u8 *mac)
 	writew(get_unaligned_be16(mac + 4),
 	       app->pf->vfcfg_tbl2 + vf_offset + NFP_NET_VF_CFG_MAC_LO);
 
-<<<<<<< HEAD
 	err = nfp_net_sriov_update(app, vf, NFP_NET_VF_CFG_MB_UPD_MAC, "MAC");
 	if (!err)
 		nfp_info(app->pf->cpp,
@@ -120,9 +119,6 @@ int nfp_app_set_vf_mac(struct net_device *netdev, int vf, u8 *mac)
 			 mac, vf);
 
 	return err;
-=======
-	return nfp_net_sriov_update(app, vf, NFP_NET_VF_CFG_MB_UPD_MAC, "MAC");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int nfp_app_set_vf_vlan(struct net_device *netdev, int vf, u16 vlan, u8 qos,

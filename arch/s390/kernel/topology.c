@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  *    Copyright IBM Corp. 2007, 2011
  *    Author(s): Heiko Carstens <heiko.carstens@de.ibm.com>
@@ -137,10 +134,7 @@ static void add_cpus_to_mask(struct topology_core *tl_core,
 			topo->socket_id = socket->id;
 			topo->core_id = rcore;
 			topo->thread_id = lcpu + i;
-<<<<<<< HEAD
 			topo->dedicated = tl_core->d;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			cpumask_set_cpu(lcpu + i, &drawer->mask);
 			cpumask_set_cpu(lcpu + i, &book->mask);
 			cpumask_set_cpu(lcpu + i, &socket->mask);
@@ -281,7 +275,6 @@ void store_topology(struct sysinfo_15_1_x *info)
 	stsi(info, 15, 1, topology_mnest_limit());
 }
 
-<<<<<<< HEAD
 static void __arch_update_dedicated_flag(void *arg)
 {
 	if (topology_cpu_dedicated(smp_processor_id()))
@@ -290,8 +283,6 @@ static void __arch_update_dedicated_flag(void *arg)
 		clear_cpu_flag(CIF_DEDICATED_CPU);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __arch_update_cpu_topology(void)
 {
 	struct sysinfo_15_1_x *info = tl_info;
@@ -317,10 +308,7 @@ int arch_update_cpu_topology(void)
 	int cpu, rc;
 
 	rc = __arch_update_cpu_topology();
-<<<<<<< HEAD
 	on_each_cpu(__arch_update_dedicated_flag, NULL, 0);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for_each_online_cpu(cpu) {
 		dev = get_cpu_device(cpu);
 		if (dev)
@@ -344,23 +332,14 @@ static void topology_flush_work(void)
 	flush_work(&topology_work);
 }
 
-<<<<<<< HEAD
 static void topology_timer_fn(struct timer_list *unused)
-=======
-static void topology_timer_fn(unsigned long ignored)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (ptf(PTF_CHECK))
 		topology_schedule_update();
 	set_topology_timer();
 }
 
-<<<<<<< HEAD
 static struct timer_list topology_timer;
-=======
-static struct timer_list topology_timer =
-	TIMER_DEFERRED_INITIALIZER(topology_timer_fn, 0, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static atomic_t topology_poll = ATOMIC_INIT(0);
 
@@ -426,12 +405,7 @@ out:
 	put_online_cpus();
 	return rc ? rc : count;
 }
-<<<<<<< HEAD
 static DEVICE_ATTR_RW(dispatching);
-=======
-static DEVICE_ATTR(dispatching, 0644, dispatching_show,
-			 dispatching_store);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static ssize_t cpu_polarization_show(struct device *dev,
 				     struct device_attribute *attr, char *buf)
@@ -471,7 +445,6 @@ static struct attribute_group topology_cpu_attr_group = {
 	.attrs = topology_cpu_attrs,
 };
 
-<<<<<<< HEAD
 static ssize_t cpu_dedicated_show(struct device *dev,
 				  struct device_attribute *attr, char *buf)
 {
@@ -505,11 +478,6 @@ int topology_cpu_init(struct cpu *cpu)
 	if (rc)
 		sysfs_remove_group(&cpu->dev.kobj, &topology_cpu_attr_group);
 	return rc;
-=======
-int topology_cpu_init(struct cpu *cpu)
-{
-	return sysfs_create_group(&cpu->dev.kobj, &topology_cpu_attr_group);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct cpumask *cpu_thread_mask(int cpu)
@@ -581,10 +549,7 @@ void __init topology_init_early(void)
 	alloc_masks(info, &drawer_info, 3);
 out:
 	__arch_update_cpu_topology();
-<<<<<<< HEAD
 	__arch_update_dedicated_flag(NULL);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline int topology_get_mode(int enabled)
@@ -615,7 +580,6 @@ early_param("topology", topology_setup);
 static int topology_ctl_handler(struct ctl_table *ctl, int write,
 				void __user *buffer, size_t *lenp, loff_t *ppos)
 {
-<<<<<<< HEAD
 	int enabled = topology_is_enabled();
 	int new_mode;
 	int zero = 0;
@@ -635,48 +599,14 @@ static int topology_ctl_handler(struct ctl_table *ctl, int write,
 
 	mutex_lock(&smp_cpu_state_mutex);
 	new_mode = topology_get_mode(enabled);
-=======
-	unsigned int len;
-	int new_mode;
-	char buf[2];
-
-	if (!*lenp || *ppos) {
-		*lenp = 0;
-		return 0;
-	}
-	if (!write) {
-		strncpy(buf, topology_is_enabled() ? "1\n" : "0\n",
-			ARRAY_SIZE(buf));
-		len = strnlen(buf, ARRAY_SIZE(buf));
-		if (len > *lenp)
-			len = *lenp;
-		if (copy_to_user(buffer, buf, len))
-			return -EFAULT;
-		goto out;
-	}
-	len = *lenp;
-	if (copy_from_user(buf, buffer, len > sizeof(buf) ? sizeof(buf) : len))
-		return -EFAULT;
-	if (buf[0] != '0' && buf[0] != '1')
-		return -EINVAL;
-	mutex_lock(&smp_cpu_state_mutex);
-	new_mode = topology_get_mode(buf[0] == '1');
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (topology_mode != new_mode) {
 		topology_mode = new_mode;
 		topology_schedule_update();
 	}
 	mutex_unlock(&smp_cpu_state_mutex);
 	topology_flush_work();
-<<<<<<< HEAD
 
 	return rc;
-=======
-out:
-	*lenp = len;
-	*ppos += len;
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct ctl_table topology_ctl_table[] = {
@@ -700,10 +630,7 @@ static struct ctl_table topology_dir_table[] = {
 
 static int __init topology_init(void)
 {
-<<<<<<< HEAD
 	timer_setup(&topology_timer, topology_timer_fn, TIMER_DEFERRABLE);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (MACHINE_HAS_TOPOLOGY)
 		set_topology_timer();
 	else

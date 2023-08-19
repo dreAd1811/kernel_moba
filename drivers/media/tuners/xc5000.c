@@ -25,11 +25,7 @@
 #include <linux/dvb/frontend.h>
 #include <linux/i2c.h>
 
-<<<<<<< HEAD
 #include <media/dvb_frontend.h>
-=======
-#include "dvb_frontend.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "xc5000.h"
 #include "tuner-i2c.h"
@@ -464,13 +460,8 @@ static int xc_set_rf_frequency(struct xc5000_priv *priv, u32 freq_hz)
 
 	dprintk(1, "%s(%u)\n", __func__, freq_hz);
 
-<<<<<<< HEAD
 	if ((freq_hz > xc5000_tuner_ops.info.frequency_max_hz) ||
 		(freq_hz < xc5000_tuner_ops.info.frequency_min_hz))
-=======
-	if ((freq_hz > xc5000_tuner_ops.info.frequency_max) ||
-		(freq_hz < xc5000_tuner_ops.info.frequency_min))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	freq_code = (u16)(freq_hz / 15625);
@@ -694,13 +685,8 @@ static void xc_debug_dump(struct xc5000_priv *priv)
 		(totalgain % 256) * 100 / 256);
 
 	if (priv->pll_register_no) {
-<<<<<<< HEAD
 		if (!xc5000_readreg(priv, priv->pll_register_no, &regval))
 			dprintk(1, "*** PLL lock status = 0x%04x\n", regval);
-=======
-		xc5000_readreg(priv, priv->pll_register_no, &regval);
-		dprintk(1, "*** PLL lock status = 0x%04x\n", regval);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -845,27 +831,16 @@ static int xc5000_is_firmware_loaded(struct dvb_frontend *fe)
 	u16 id;
 
 	ret = xc5000_readreg(priv, XREG_PRODUCT_ID, &id);
-<<<<<<< HEAD
 	if (!ret) {
-=======
-	if (ret == 0) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (id == XC_PRODUCT_ID_FW_NOT_LOADED)
 			ret = -ENOENT;
 		else
 			ret = 0;
-<<<<<<< HEAD
 		dprintk(1, "%s() returns id = 0x%x\n", __func__, id);
 	} else {
 		dprintk(1, "%s() returns error %d\n", __func__, ret);
 	}
 
-=======
-	}
-
-	dprintk(1, "%s() returns %s id = 0x%x\n", __func__,
-		ret == 0 ? "True" : "False", id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -961,14 +936,10 @@ tune_channel:
 
 	if (priv->pll_register_no != 0) {
 		msleep(20);
-<<<<<<< HEAD
 		ret = xc5000_readreg(priv, priv->pll_register_no,
 				     &pll_lock_status);
 		if (ret)
 			return ret;
-=======
-		xc5000_readreg(priv, priv->pll_register_no, &pll_lock_status);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (pll_lock_status > 63) {
 			/* PLL is unlocked, force reload of the firmware */
 			dprintk(1, "xc5000: PLL not locked (0x%x).  Reloading...\n",
@@ -1223,15 +1194,10 @@ static int xc_load_fw_and_init_tuner(struct dvb_frontend *fe, int force)
 		}
 
 		if (priv->pll_register_no) {
-<<<<<<< HEAD
 			ret = xc5000_readreg(priv, priv->pll_register_no,
 					     &pll_lock_status);
 			if (ret)
 				continue;
-=======
-			xc5000_readreg(priv, priv->pll_register_no,
-				       &pll_lock_status);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (pll_lock_status > 63) {
 				/* PLL is unlocked, force reload of the firmware */
 				printk(KERN_ERR
@@ -1384,17 +1350,10 @@ static int xc5000_set_config(struct dvb_frontend *fe, void *priv_cfg)
 
 static const struct dvb_tuner_ops xc5000_tuner_ops = {
 	.info = {
-<<<<<<< HEAD
 		.name              = "Xceive XC5000",
 		.frequency_min_hz  =    1 * MHz,
 		.frequency_max_hz  = 1023 * MHz,
 		.frequency_step_hz =   50 * kHz,
-=======
-		.name           = "Xceive XC5000",
-		.frequency_min  =    1000000,
-		.frequency_max  = 1023000000,
-		.frequency_step =      50000,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 
 	.release	   = xc5000_release,

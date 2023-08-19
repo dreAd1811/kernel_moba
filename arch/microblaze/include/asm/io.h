@@ -36,11 +36,7 @@ extern resource_size_t isa_mem_base;
 #ifdef CONFIG_MMU
 #define page_to_bus(page)	(page_to_phys(page))
 
-<<<<<<< HEAD
 extern void iounmap(volatile void __iomem *addr);
-=======
-extern void iounmap(void __iomem *addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 extern void __iomem *ioremap(phys_addr_t address, unsigned long size);
 #define ioremap_nocache(addr, size)		ioremap((addr), (size))

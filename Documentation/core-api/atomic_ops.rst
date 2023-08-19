@@ -29,11 +29,7 @@ updated by one CPU, local_t is probably more appropriate. Please see
 local_t.
 
 The first operations to implement for atomic_t's are the initializers and
-<<<<<<< HEAD
 plain writes. ::
-=======
-plain reads. ::
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	#define ATOMIC_INIT(i)		{ (i) }
 	#define atomic_set(v, i)	((v)->counter = (i))
@@ -115,10 +111,6 @@ If the compiler can prove that do_something() does not store to the
 variable a, then the compiler is within its rights transforming this to
 the following::
 
-<<<<<<< HEAD
-=======
-	tmp = a;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (a > 0)
 		for (;;)
 			do_something();
@@ -126,11 +118,7 @@ the following::
 If you don't want the compiler to do this (and you probably don't), then
 you should use something like the following::
 
-<<<<<<< HEAD
 	while (READ_ONCE(a) > 0)
-=======
-	while (READ_ONCE(a) < 0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		do_something();
 
 Alternatively, you could place a barrier() call in the loop.
@@ -478,19 +466,12 @@ Like the above, except that these routines return a boolean which
 indicates whether the changed bit was set _BEFORE_ the atomic bit
 operation.
 
-<<<<<<< HEAD
 
 .. warning::
         It is incredibly important that the value be a boolean, ie. "0" or "1".
         Do not try to be fancy and save a few instructions by declaring the
         above to return "long" and just returning something like "old_val &
         mask" because that will not work.
-=======
-WARNING! It is incredibly important that the value be a boolean,
-ie. "0" or "1".  Do not try to be fancy and save a few instructions by
-declaring the above to return "long" and just returning something like
-"old_val & mask" because that will not work.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 For one thing, this return value gets truncated to int in many code
 paths using these interfaces, so on 64-bit if the bit is set in the

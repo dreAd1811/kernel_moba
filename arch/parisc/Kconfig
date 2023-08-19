@@ -11,10 +11,6 @@ config PARISC
 	select ARCH_HAS_ELF_RANDOMIZE
 	select ARCH_HAS_STRICT_KERNEL_RWX
 	select ARCH_HAS_UBSAN_SANITIZE_ALL
-<<<<<<< HEAD
-=======
-	select ARCH_WANTS_UBSAN_NO_NULL
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select ARCH_SUPPORTS_MEMORY_FAILURE
 	select RTC_CLASS
 	select RTC_DRV_GENERIC
@@ -35,17 +31,11 @@ config PARISC
 	select GENERIC_PCI_IOMAP
 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
 	select GENERIC_SMP_IDLE_THREAD
-<<<<<<< HEAD
 	select GENERIC_CPU_DEVICES
 	select GENERIC_STRNCPY_FROM_USER
 	select SYSCTL_ARCH_UNALIGN_ALLOW
 	select SYSCTL_EXCEPTION_TRACE
 	select ARCH_DISCARD_MEMBLOCK
-=======
-	select GENERIC_STRNCPY_FROM_USER
-	select SYSCTL_ARCH_UNALIGN_ALLOW
-	select SYSCTL_EXCEPTION_TRACE
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select HAVE_MOD_ARCH_SPECIFIC
 	select VIRT_TO_BUS
 	select MODULES_USE_ELF_RELA
@@ -56,20 +46,14 @@ config PARISC
 	select HAVE_ARCH_HASH
 	select HAVE_ARCH_SECCOMP_FILTER
 	select HAVE_ARCH_TRACEHOOK
-<<<<<<< HEAD
 	select HAVE_REGS_AND_STACK_ACCESS_API
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select GENERIC_SCHED_CLOCK
 	select HAVE_UNSTABLE_SCHED_CLOCK if SMP
 	select GENERIC_CLOCKEVENTS
 	select ARCH_NO_COHERENT_DMA_MMAP
 	select CPU_NO_EFFICIENT_FFS
-<<<<<<< HEAD
 	select NEED_DMA_MAP_STATE
 	select NEED_SG_DMA_LENGTH
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	help
 	  The PA-RISC microprocessor is designed by Hewlett-Packard and used
@@ -80,12 +64,6 @@ config PARISC
 config CPU_BIG_ENDIAN
 	def_bool y
 
-<<<<<<< HEAD
-=======
-config CPU_BIG_ENDIAN
-	def_bool y
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config MMU
 	def_bool y
 
@@ -136,15 +114,6 @@ config PM
 config STACKTRACE_SUPPORT
 	def_bool y
 
-<<<<<<< HEAD
-=======
-config NEED_DMA_MAP_STATE
-	def_bool y
-
-config NEED_SG_DMA_LENGTH
-	def_bool y
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config ISA_DMA_API
 	bool
 
@@ -161,13 +130,6 @@ config PGTABLE_LEVELS
 config SYS_SUPPORTS_HUGETLBFS
 	def_bool y if PA20
 
-<<<<<<< HEAD
-=======
-source "init/Kconfig"
-
-source "kernel/Kconfig.freezer"
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 menu "Processor type and features"
 
@@ -223,13 +185,10 @@ config PA20
 config PA11
 	def_bool y
 	depends on PA7000 || PA7100LC || PA7200 || PA7300LC
-<<<<<<< HEAD
 	select ARCH_HAS_SYNC_DMA_FOR_CPU
 	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
 	select DMA_NONCOHERENT_OPS
 	select DMA_NONCOHERENT_CACHE_SYNC
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config PREFETCH
 	def_bool y
@@ -286,19 +245,11 @@ config PARISC_PAGE_SIZE_4KB
 
 config PARISC_PAGE_SIZE_16KB
 	bool "16KB"
-<<<<<<< HEAD
 	depends on PA8X00 && BROKEN
 
 config PARISC_PAGE_SIZE_64KB
 	bool "64KB"
 	depends on PA8X00 && BROKEN
-=======
-	depends on PA8X00
-
-config PARISC_PAGE_SIZE_64KB
-	bool "64KB"
-	depends on PA8X00
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 endchoice
 
@@ -322,24 +273,14 @@ config SMP
 	  than one CPU, say Y.
 
 	  If you say N here, the kernel will run on uni- and multiprocessor
-<<<<<<< HEAD
 	  machines, but will use only one CPU of a multiprocessor machine.
 	  On a uniprocessor machine, the kernel will run faster if you say N.
 
 	  See also <file:Documentation/lockup-watchdogs.txt> and the SMP-HOWTO
-=======
-	  machines, but will use only one CPU of a multiprocessor machine. If
-	  you say Y here, the kernel will run on many, but not all,
-	  uniprocessor machines. On a uniprocessor machine, the kernel
-	  will run faster if you say N here.
-
-	  See also <file:Documentation/nmi_watchdog.txt> and the SMP-HOWTO
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	  available at <http://www.tldp.org/docs.html#howto>.
 
 	  If you don't know what to do here, say N.
 
-<<<<<<< HEAD
 config PARISC_CPU_TOPOLOGY
 	bool "Support cpu topology definition"
 	depends on SMP
@@ -355,8 +296,6 @@ config SCHED_MC
 	  making when dealing with multi-core CPU chips at a cost of slightly
 	  increased overhead in some places. If unsure say N here.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config IRQSTACKS
 	bool "Use separate kernel stacks when processing interrupts"
 	default y
@@ -373,45 +312,23 @@ config ARCH_SELECT_MEMORY_MODEL
 	def_bool y
 	depends on 64BIT
 
-<<<<<<< HEAD
 config ARCH_SPARSEMEM_ENABLE
-=======
-config ARCH_DISCONTIGMEM_ENABLE
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	def_bool y
 	depends on 64BIT
 
 config ARCH_FLATMEM_ENABLE
 	def_bool y
 
-<<<<<<< HEAD
 config ARCH_SPARSEMEM_DEFAULT
 	def_bool y
 	depends on ARCH_SPARSEMEM_ENABLE
 
 source "kernel/Kconfig.hz"
-=======
-config ARCH_DISCONTIGMEM_DEFAULT
-	def_bool y
-	depends on ARCH_DISCONTIGMEM_ENABLE
-
-config NODES_SHIFT
-	int
-	default "3"
-	depends on NEED_MULTIPLE_NODES
-
-source "kernel/Kconfig.preempt"
-source "kernel/Kconfig.hz"
-source "mm/Kconfig"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config COMPAT
 	def_bool y
 	depends on 64BIT
-<<<<<<< HEAD
 	select COMPAT_BINFMT_ELF if BINFMT_ELF
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config SYSVIPC_COMPAT
 	def_bool y
@@ -424,35 +341,13 @@ config NR_CPUS
 	int "Maximum number of CPUs (2-32)"
 	range 2 32
 	depends on SMP
-<<<<<<< HEAD
 	default "4"
-=======
-	default "32"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 endmenu
 
 
 source "drivers/parisc/Kconfig"
 
-<<<<<<< HEAD
-=======
-
-menu "Executable file formats"
-
-source "fs/Kconfig.binfmt"
-
-endmenu
-
-source "net/Kconfig"
-
-source "drivers/Kconfig"
-
-source "fs/Kconfig"
-
-source "arch/parisc/Kconfig.debug"
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config SECCOMP
 	def_bool y
 	prompt "Enable seccomp to safely compute untrusted bytecode"
@@ -468,12 +363,3 @@ config SECCOMP
 	  defined by each seccomp mode.
 
 	  If unsure, say Y. Only embedded should say N here.
-<<<<<<< HEAD
-=======
-
-source "security/Kconfig"
-
-source "crypto/Kconfig"
-
-source "lib/Kconfig"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

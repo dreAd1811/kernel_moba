@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 OR MIT */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**************************************************************************
  *
  * Copyright (c) 2009-2013 VMware, Inc., Palo Alto, CA., USA
@@ -329,13 +326,10 @@ int ttm_ref_object_add(struct ttm_object_file *tfile,
 	struct ttm_ref_object *ref;
 	struct drm_hash_item *hash;
 	struct ttm_mem_global *mem_glob = tfile->tdev->mem_glob;
-<<<<<<< HEAD
 	struct ttm_operation_ctx ctx = {
 		.interruptible = false,
 		.no_wait_gpu = false
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = -EINVAL;
 
 	if (base->tfile != tfile && !base->shareable)
@@ -361,11 +355,7 @@ int ttm_ref_object_add(struct ttm_object_file *tfile,
 			return -EPERM;
 
 		ret = ttm_mem_global_alloc(mem_glob, sizeof(*ref),
-<<<<<<< HEAD
 					   &ctx);
-=======
-					   false, false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (unlikely(ret != 0))
 			return ret;
 		ref = kmalloc(sizeof(*ref), GFP_KERNEL);
@@ -701,14 +691,10 @@ int ttm_prime_handle_to_fd(struct ttm_object_file *tfile,
 	dma_buf = prime->dma_buf;
 	if (!dma_buf || !get_dma_buf_unless_doomed(dma_buf)) {
 		DEFINE_DMA_BUF_EXPORT_INFO(exp_info);
-<<<<<<< HEAD
 		struct ttm_operation_ctx ctx = {
 			.interruptible = true,
 			.no_wait_gpu = false
 		};
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		exp_info.ops = &tdev->ops;
 		exp_info.size = prime->size;
 		exp_info.flags = flags;
@@ -718,11 +704,7 @@ int ttm_prime_handle_to_fd(struct ttm_object_file *tfile,
 		 * Need to create a new dma_buf, with memory accounting.
 		 */
 		ret = ttm_mem_global_alloc(tdev->mem_glob, tdev->dma_buf_size,
-<<<<<<< HEAD
 					   &ctx);
-=======
-					   false, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (unlikely(ret != 0)) {
 			mutex_unlock(&prime->mutex);
 			goto out_unref;

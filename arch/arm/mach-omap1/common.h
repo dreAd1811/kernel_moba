@@ -27,27 +27,15 @@
 #define __ARCH_ARM_MACH_OMAP1_COMMON_H
 
 #include <linux/mtd/mtd.h>
-<<<<<<< HEAD
 #include <linux/platform_data/i2c-omap.h>
-=======
-#include <linux/i2c-omap.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/reboot.h>
 
 #include <asm/exception.h>
 
-<<<<<<< HEAD
 #include <mach/irqs.h>
 
 #include "soc.h"
 #include "i2c.h"
-=======
-#include <plat/i2c.h>
-
-#include <mach/irqs.h>
-
-#include "soc.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #if defined(CONFIG_ARCH_OMAP730) || defined(CONFIG_ARCH_OMAP850)
 void omap7xx_map_io(void);

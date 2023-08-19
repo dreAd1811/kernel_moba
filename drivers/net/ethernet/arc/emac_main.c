@@ -26,11 +26,8 @@
 
 #include "emac.h"
 
-<<<<<<< HEAD
 static void arc_emac_restart(struct net_device *ndev);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * arc_emac_tx_avail - Return the number of available slots in the tx ring.
  * @priv: Pointer to ARC EMAC private data structure.
@@ -273,7 +270,6 @@ static int arc_emac_rx(struct net_device *ndev, int budget)
 }
 
 /**
-<<<<<<< HEAD
  * arc_emac_rx_miss_handle - handle R_MISS register
  * @ndev:	Pointer to the net_device structure.
  */
@@ -321,8 +317,6 @@ static void arc_emac_rx_stall_check(struct net_device *ndev,
 }
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * arc_emac_poll - NAPI poll handler.
  * @napi:	Pointer to napi_struct structure.
  * @budget:	How many BDs to process on 1 call.
@@ -336,10 +330,7 @@ static int arc_emac_poll(struct napi_struct *napi, int budget)
 	unsigned int work_done;
 
 	arc_emac_tx_clean(ndev);
-<<<<<<< HEAD
 	arc_emac_rx_miss_handle(ndev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	work_done = arc_emac_rx(ndev, budget);
 	if (work_done < budget) {
@@ -347,11 +338,8 @@ static int arc_emac_poll(struct napi_struct *napi, int budget)
 		arc_reg_or(priv, R_ENABLE, RXINT_MASK | TXINT_MASK);
 	}
 
-<<<<<<< HEAD
 	arc_emac_rx_stall_check(ndev, budget, work_done);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return work_done;
 }
 
@@ -393,11 +381,8 @@ static irqreturn_t arc_emac_intr(int irq, void *dev_instance)
 		if (status & MSER_MASK) {
 			stats->rx_missed_errors += 0x100;
 			stats->rx_errors += 0x100;
-<<<<<<< HEAD
 			priv->rx_missed_errors += 0x100;
 			napi_schedule(&priv->napi);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		if (status & RXCR_MASK) {
@@ -810,7 +795,6 @@ static int arc_emac_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
 }
 
 
-<<<<<<< HEAD
 /**
  * arc_emac_restart - Restart EMAC
  * @ndev:	Pointer to net_device structure.
@@ -868,8 +852,6 @@ static void arc_emac_restart(struct net_device *ndev)
 	netif_start_queue(ndev);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct net_device_ops arc_emac_netdev_ops = {
 	.ndo_open		= arc_emac_open,
 	.ndo_stop		= arc_emac_stop,

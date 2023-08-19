@@ -51,7 +51,6 @@ enum bnxt_re_hw_stats {
 	BNXT_RE_TX_PKTS,
 	BNXT_RE_TX_BYTES,
 	BNXT_RE_RECOVERABLE_ERRORS,
-<<<<<<< HEAD
 	BNXT_RE_TO_RETRANSMITS,
 	BNXT_RE_SEQ_ERR_NAKS_RCVD,
 	BNXT_RE_MAX_RETRY_EXCEEDED,
@@ -91,8 +90,6 @@ enum bnxt_re_hw_stats {
 	BNXT_RE_RES_SRQ_LOAD_ERR,
 	BNXT_RE_RES_TX_PCI_ERR,
 	BNXT_RE_RES_RX_PCI_ERR,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	BNXT_RE_NUM_COUNTERS
 };
 

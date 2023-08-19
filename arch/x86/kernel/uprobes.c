@@ -271,7 +271,6 @@ static bool is_prefix_bad(struct insn *insn)
 	int i;
 
 	for (i = 0; i < insn->prefixes.nbytes; i++) {
-<<<<<<< HEAD
 		insn_attr_t attr;
 
 		attr = inat_get_opcode_attribute(insn->prefixes.bytes[i]);
@@ -281,14 +280,6 @@ static bool is_prefix_bad(struct insn *insn)
 		case INAT_MAKE_PREFIX(INAT_PFX_DS):
 		case INAT_MAKE_PREFIX(INAT_PFX_SS):
 		case INAT_MAKE_PREFIX(INAT_PFX_LOCK):
-=======
-		switch (insn->prefixes.bytes[i]) {
-		case 0x26:	/* INAT_PFX_ES   */
-		case 0x2E:	/* INAT_PFX_CS   */
-		case 0x36:	/* INAT_PFX_DS   */
-		case 0x3E:	/* INAT_PFX_SS   */
-		case 0xF0:	/* INAT_PFX_LOCK */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return true;
 		}
 	}
@@ -544,19 +535,11 @@ static int default_pre_xol_op(struct arch_uprobe *auprobe, struct pt_regs *regs)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int emulate_push_stack(struct pt_regs *regs, unsigned long val)
 {
 	unsigned long new_sp = regs->sp - sizeof_long(regs);
 
 	if (copy_to_user((void __user *)new_sp, &val, sizeof_long(regs)))
-=======
-static int push_ret_address(struct pt_regs *regs, unsigned long ip)
-{
-	unsigned long new_sp = regs->sp - sizeof_long(regs);
-
-	if (copy_to_user((void __user *)new_sp, &ip, sizeof_long(regs)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 
 	regs->sp = new_sp;
@@ -590,11 +573,7 @@ static int default_post_xol_op(struct arch_uprobe *auprobe, struct pt_regs *regs
 		regs->ip += correction;
 	} else if (auprobe->defparam.fixups & UPROBE_FIX_CALL) {
 		regs->sp += sizeof_long(regs); /* Pop incorrect return address */
-<<<<<<< HEAD
 		if (emulate_push_stack(regs, utask->vaddr + auprobe->defparam.ilen))
-=======
-		if (push_ret_address(regs, utask->vaddr + auprobe->defparam.ilen))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -ERESTART;
 	}
 	/* popf; tell the caller to not touch TF */
@@ -683,11 +662,7 @@ static bool branch_emulate_op(struct arch_uprobe *auprobe, struct pt_regs *regs)
 		 *
 		 * But there is corner case, see the comment in ->post_xol().
 		 */
-<<<<<<< HEAD
 		if (emulate_push_stack(regs, new_ip))
-=======
-		if (push_ret_address(regs, new_ip))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return false;
 	} else if (!check_jmp_cond(auprobe, regs)) {
 		offs = 0;
@@ -697,7 +672,6 @@ static bool branch_emulate_op(struct arch_uprobe *auprobe, struct pt_regs *regs)
 	return true;
 }
 
-<<<<<<< HEAD
 static bool push_emulate_op(struct arch_uprobe *auprobe, struct pt_regs *regs)
 {
 	unsigned long *src_ptr = (void *)regs + auprobe->push.reg_offset;
@@ -708,8 +682,6 @@ static bool push_emulate_op(struct arch_uprobe *auprobe, struct pt_regs *regs)
 	return true;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int branch_post_xol_op(struct arch_uprobe *auprobe, struct pt_regs *regs)
 {
 	BUG_ON(!branch_is_call(auprobe));
@@ -748,13 +720,10 @@ static const struct uprobe_xol_ops branch_xol_ops = {
 	.post_xol = branch_post_xol_op,
 };
 
-<<<<<<< HEAD
 static const struct uprobe_xol_ops push_xol_ops = {
 	.emulate  = push_emulate_op,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Returns -ENOSYS if branch_xol_ops doesn't handle this insn */
 static int branch_setup_xol_ops(struct arch_uprobe *auprobe, struct insn *insn)
 {
@@ -802,7 +771,6 @@ static int branch_setup_xol_ops(struct arch_uprobe *auprobe, struct insn *insn)
 	return 0;
 }
 
-<<<<<<< HEAD
 /* Returns -ENOSYS if push_xol_ops doesn't handle this insn */
 static int push_setup_xol_ops(struct arch_uprobe *auprobe, struct insn *insn)
 {
@@ -884,8 +852,6 @@ static int push_setup_xol_ops(struct arch_uprobe *auprobe, struct insn *insn)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * arch_uprobe_analyze_insn - instruction analysis including validity and fixups.
  * @mm: the probed address space.
@@ -907,13 +873,10 @@ int arch_uprobe_analyze_insn(struct arch_uprobe *auprobe, struct mm_struct *mm, 
 	if (ret != -ENOSYS)
 		return ret;
 
-<<<<<<< HEAD
 	ret = push_setup_xol_ops(auprobe, &insn);
 	if (ret != -ENOSYS)
 		return ret;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Figure out which fixups default_post_xol_op() will need to perform,
 	 * and annotate defparam->fixups accordingly.
@@ -1123,17 +1086,10 @@ arch_uretprobe_hijack_return_addr(unsigned long trampoline_vaddr, struct pt_regs
 		return orig_ret_vaddr;
 
 	if (nleft != rasize) {
-<<<<<<< HEAD
 		pr_err("return address clobbered: pid=%d, %%sp=%#lx, %%ip=%#lx\n",
 		       current->pid, regs->sp, regs->ip);
 
 		force_sig_info(SIGSEGV, SEND_SIG_FORCED, current);
-=======
-		pr_err("uprobe: return address clobbered: pid=%d, %%sp=%#lx, "
-			"%%ip=%#lx\n", current->pid, regs->sp, regs->ip);
-
-		force_sig(SIGSEGV, current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return -1;

@@ -18,11 +18,7 @@
 	pinctrl-0 = <&pinctrl_i2c1>;
 	status = "okay";
 
-<<<<<<< HEAD
 	pmic: pfuze100@8 {
-=======
-	pmic: pfuze100@08 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "fsl,pfuze200";
 		reg = <0x08>;
 

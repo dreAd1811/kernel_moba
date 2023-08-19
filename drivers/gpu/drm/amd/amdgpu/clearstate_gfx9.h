@@ -48,11 +48,7 @@ static const unsigned int gfx9_SECT_CONTEXT_def_1[] =
     0x00000000, // DB_STENCIL_WRITE_BASE
     0x00000000, // DB_STENCIL_WRITE_BASE_HI
     0x00000000, // DB_DFSM_CONTROL
-<<<<<<< HEAD
     0, // HOLE
-=======
-    0x00000000, // DB_RENDER_FILTER
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     0x00000000, // DB_Z_INFO2
     0x00000000, // DB_STENCIL_INFO2
     0, // HOLE
@@ -263,13 +259,8 @@ static const unsigned int gfx9_SECT_CONTEXT_def_2[] =
     0x00000000, // PA_SC_RIGHT_VERT_GRID
     0x00000000, // PA_SC_LEFT_VERT_GRID
     0x00000000, // PA_SC_HORIZ_GRID
-<<<<<<< HEAD
     0, // HOLE
     0, // HOLE
-=======
-    0x00000000, // PA_SC_FOV_WINDOW_LR
-    0x00000000, // PA_SC_FOV_WINDOW_TB
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     0, // HOLE
     0, // HOLE
     0, // HOLE
@@ -710,11 +701,7 @@ static const unsigned int gfx9_SECT_CONTEXT_def_7[] =
 {
     0x00000000, // VGT_GS_MAX_PRIMS_PER_SUBGROUP
     0x00000000, // VGT_DRAW_PAYLOAD_CNTL
-<<<<<<< HEAD
     0, // HOLE
-=======
-    0x00000000, // VGT_INDEX_PAYLOAD_CNTL
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     0x00000000, // VGT_INSTANCE_STEP_RATE_0
     0x00000000, // VGT_INSTANCE_STEP_RATE_1
     0, // HOLE

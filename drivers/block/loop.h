@@ -54,10 +54,6 @@ struct loop_device {
 
 	spinlock_t		lo_lock;
 	int			lo_state;
-<<<<<<< HEAD
-=======
-	struct mutex		lo_ctl_mutex;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct kthread_worker	worker;
 	struct task_struct	*worker_task;
 	bool			use_dio;
@@ -70,19 +66,12 @@ struct loop_device {
 
 struct loop_cmd {
 	struct kthread_work work;
-<<<<<<< HEAD
-=======
-	struct request *rq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool use_aio; /* use AIO interface to handle I/O */
 	atomic_t ref; /* only for aio */
 	long ret;
 	struct kiocb iocb;
 	struct bio_vec *bvec;
-<<<<<<< HEAD
 	struct cgroup_subsys_state *css;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Support for loadable transfer modules */

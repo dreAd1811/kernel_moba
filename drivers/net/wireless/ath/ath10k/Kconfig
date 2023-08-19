@@ -42,13 +42,7 @@ config ATH10K_USB
 
 config ATH10K_SNOC
 	tristate "Qualcomm ath10k SNOC support (EXPERIMENTAL)"
-<<<<<<< HEAD
 	depends on ATH10K && ARCH_QCOM
-=======
-	depends on ATH10K
-	depends on ARCH_QCOM || COMPILE_TEST
-	select QCOM_QMI_HELPERS
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	---help---
 	  This module adds support for integrated WCN3990 chip connected
 	  to system NOC(SNOC). Currently work in progress and will not

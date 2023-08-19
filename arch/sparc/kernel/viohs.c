@@ -180,7 +180,6 @@ static int send_dreg(struct vio_driver_state *vio)
 		struct vio_dring_register pkt;
 		char all[sizeof(struct vio_dring_register) +
 			 (sizeof(struct ldc_trans_cookie) *
-<<<<<<< HEAD
 			  VIO_MAX_RING_COOKIES)];
 	} u;
 	size_t bytes = sizeof(struct vio_dring_register) +
@@ -192,13 +191,6 @@ static int send_dreg(struct vio_driver_state *vio)
 		return -EINVAL;
 
 	memset(&u, 0, bytes);
-=======
-			  dr->ncookies)];
-	} u;
-	int i;
-
-	memset(&u, 0, sizeof(u));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	init_tag(&u.pkt.tag, VIO_TYPE_CTRL, VIO_SUBTYPE_INFO, VIO_DRING_REG);
 	u.pkt.dring_ident = 0;
 	u.pkt.num_descr = dr->num_entries;
@@ -220,11 +212,7 @@ static int send_dreg(struct vio_driver_state *vio)
 		       (unsigned long long) u.pkt.cookies[i].cookie_size);
 	}
 
-<<<<<<< HEAD
 	return send_ctrl(vio, &u.pkt.tag, bytes);
-=======
-	return send_ctrl(vio, &u.pkt.tag, sizeof(u));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int send_rdx(struct vio_driver_state *vio)
@@ -816,15 +804,9 @@ void vio_port_up(struct vio_driver_state *vio)
 }
 EXPORT_SYMBOL(vio_port_up);
 
-<<<<<<< HEAD
 static void vio_port_timer(struct timer_list *t)
 {
 	struct vio_driver_state *vio = from_timer(vio, t, timer);
-=======
-static void vio_port_timer(unsigned long _arg)
-{
-	struct vio_driver_state *vio = (struct vio_driver_state *) _arg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vio_port_up(vio);
 }
@@ -873,11 +855,7 @@ int vio_driver_init(struct vio_driver_state *vio, struct vio_dev *vdev,
 
 	vio->ops = ops;
 
-<<<<<<< HEAD
 	timer_setup(&vio->timer, vio_port_timer, 0);
-=======
-	setup_timer(&vio->timer, vio_port_timer, (unsigned long) vio);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

@@ -177,10 +177,6 @@ mkprep
 mkregtable
 mktables
 mktree
-<<<<<<< HEAD
-=======
-mkutf8data
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 modpost
 modules.builtin
 modules.order
@@ -259,10 +255,6 @@ vsyscall_32.lds
 wanxlfw.inc
 uImage
 unifdef
-<<<<<<< HEAD
-=======
-utf8data.h
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 wakeup.bin
 wakeup.elf
 wakeup.lds

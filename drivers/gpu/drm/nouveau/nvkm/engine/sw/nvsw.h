@@ -2,11 +2,7 @@
 #ifndef __NVKM_NVSW_H__
 #define __NVKM_NVSW_H__
 #define nvkm_nvsw(p) container_of((p), struct nvkm_nvsw, object)
-<<<<<<< HEAD
 #include <core/object.h>
-=======
-#include "priv.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct nvkm_nvsw {
 	struct nvkm_object object;

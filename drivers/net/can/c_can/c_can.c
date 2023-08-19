@@ -52,10 +52,6 @@
 #define CONTROL_EX_PDR		BIT(8)
 
 /* control register */
-<<<<<<< HEAD
-=======
-#define CONTROL_SWR		BIT(15)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CONTROL_TEST		BIT(7)
 #define CONTROL_CCE		BIT(6)
 #define CONTROL_DISABLE_AR	BIT(5)
@@ -101,12 +97,6 @@
 #define BTR_TSEG2_SHIFT		12
 #define BTR_TSEG2_MASK		(0x7 << BTR_TSEG2_SHIFT)
 
-<<<<<<< HEAD
-=======
-/* interrupt register */
-#define INT_STS_PENDING		0x8000
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* brp extension register */
 #define BRP_EXT_BRPE_MASK	0x0f
 #define BRP_EXT_BRPE_SHIFT	0
@@ -579,29 +569,6 @@ static void c_can_configure_msg_objects(struct net_device *dev)
 				   IF_MCONT_RCV_EOB);
 }
 
-<<<<<<< HEAD
-=======
-static int c_can_software_reset(struct net_device *dev)
-{
-	struct c_can_priv *priv = netdev_priv(dev);
-	int retry = 0;
-
-	if (priv->type != BOSCH_D_CAN)
-		return 0;
-
-	priv->write_reg(priv, C_CAN_CTRL_REG, CONTROL_SWR | CONTROL_INIT);
-	while (priv->read_reg(priv, C_CAN_CTRL_REG) & CONTROL_SWR) {
-		msleep(20);
-		if (retry++ > 100) {
-			netdev_err(dev, "CCTRL: software reset failed\n");
-			return -EIO;
-		}
-	}
-
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Configure C_CAN chip:
  * - enable/disable auto-retransmission
@@ -611,14 +578,6 @@ static int c_can_software_reset(struct net_device *dev)
 static int c_can_chip_config(struct net_device *dev)
 {
 	struct c_can_priv *priv = netdev_priv(dev);
-<<<<<<< HEAD
-=======
-	int err;
-
-	err = c_can_software_reset(dev);
-	if (err)
-		return err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* enable automatic retransmission */
 	priv->write_reg(priv, C_CAN_CTRL_REG, CONTROL_ENABLE_AR);
@@ -1070,23 +1029,10 @@ static int c_can_poll(struct napi_struct *napi, int quota)
 	u16 curr, last = priv->last_status;
 	int work_done = 0;
 
-<<<<<<< HEAD
 	priv->last_status = curr = priv->read_reg(priv, C_CAN_STS_REG);
 	/* Ack status on C_CAN. D_CAN is self clearing */
 	if (priv->type != BOSCH_D_CAN)
 		priv->write_reg(priv, C_CAN_STS_REG, LEC_UNUSED);
-=======
-	/* Only read the status register if a status interrupt was pending */
-	if (atomic_xchg(&priv->sie_pending, 0)) {
-		priv->last_status = curr = priv->read_reg(priv, C_CAN_STS_REG);
-		/* Ack status on C_CAN. D_CAN is self clearing */
-		if (priv->type != BOSCH_D_CAN)
-			priv->write_reg(priv, C_CAN_STS_REG, LEC_UNUSED);
-	} else {
-		/* no change detected ... */
-		curr = last;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* handle state changes */
 	if ((curr & STATUS_EWARN) && (!(last & STATUS_EWARN))) {
@@ -1137,23 +1083,10 @@ static irqreturn_t c_can_isr(int irq, void *dev_id)
 {
 	struct net_device *dev = (struct net_device *)dev_id;
 	struct c_can_priv *priv = netdev_priv(dev);
-<<<<<<< HEAD
 
 	if (!priv->read_reg(priv, C_CAN_INT_REG))
 		return IRQ_NONE;
 
-=======
-	int reg_int;
-
-	reg_int = priv->read_reg(priv, C_CAN_INT_REG);
-	if (!reg_int)
-		return IRQ_NONE;
-
-	/* save for later use */
-	if (reg_int & INT_STS_PENDING)
-		atomic_set(&priv->sie_pending, 1);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* disable all interrupts and schedule the NAPI */
 	c_can_irq_control(priv, false);
 	napi_schedule(&priv->napi);

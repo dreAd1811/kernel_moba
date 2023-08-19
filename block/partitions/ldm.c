@@ -378,11 +378,7 @@ static bool ldm_validate_tocblocks(struct parsed_partitions *state,
 	BUG_ON(!state || !ldb);
 	ph = &ldb->ph;
 	tb[0] = &ldb->toc;
-<<<<<<< HEAD
 	tb[1] = kmalloc_array(3, sizeof(*tb[1]), GFP_KERNEL);
-=======
-	tb[1] = kmalloc(sizeof(*tb[1]) * 3, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!tb[1]) {
 		ldm_crit("Out of memory.");
 		goto err;
@@ -834,10 +830,6 @@ static bool ldm_parse_dgr4 (const u8 *buffer, int buflen, struct vblk *vb)
 {
 	char buf[64];
 	int r_objid, r_name, r_id1, r_id2, len;
-<<<<<<< HEAD
-=======
-	struct vblk_dgrp *dgrp;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	BUG_ON (!buffer || !vb);
 
@@ -860,11 +852,6 @@ static bool ldm_parse_dgr4 (const u8 *buffer, int buflen, struct vblk *vb)
 	if (len != get_unaligned_be32(buffer + 0x14))
 		return false;
 
-<<<<<<< HEAD
-=======
-	dgrp = &vb->vblk.dgrp;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ldm_get_vstr (buffer + 0x18 + r_objid, buf, sizeof (buf));
 	return true;
 }

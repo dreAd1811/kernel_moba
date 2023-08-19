@@ -1,36 +1,12 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  *    Filename: cfag12864bfb.c
  *     Version: 0.1.0
  * Description: cfag12864b LCD framebuffer driver
-<<<<<<< HEAD
-=======
- *     License: GPLv2
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *     Depends: cfag12864b
  *
  *      Author: Copyright (C) Miguel Ojeda Sandonis
  *        Date: 2006-10-31
-<<<<<<< HEAD
-=======
- *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License version 2 as
- *  published by the Free Software Foundation.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/init.h>
@@ -47,11 +23,7 @@
 
 #define CFAG12864BFB_NAME "cfag12864bfb"
 
-<<<<<<< HEAD
 static const struct fb_fix_screeninfo cfag12864bfb_fix = {
-=======
-static struct fb_fix_screeninfo cfag12864bfb_fix = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.id = "cfag12864b",
 	.type = FB_TYPE_PACKED_PIXELS,
 	.visual = FB_VISUAL_MONO10,
@@ -62,11 +34,7 @@ static struct fb_fix_screeninfo cfag12864bfb_fix = {
 	.accel = FB_ACCEL_NONE,
 };
 
-<<<<<<< HEAD
 static const struct fb_var_screeninfo cfag12864bfb_var = {
-=======
-static struct fb_var_screeninfo cfag12864bfb_var = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.xres = CFAG12864B_WIDTH,
 	.yres = CFAG12864B_HEIGHT,
 	.xres_virtual = CFAG12864B_WIDTH,

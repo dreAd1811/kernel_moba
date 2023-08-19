@@ -18,10 +18,7 @@ enum _dsm_op_index {
 	HNS_OP_LED_SET_FUNC             = 0x3,
 	HNS_OP_GET_PORT_TYPE_FUNC       = 0x4,
 	HNS_OP_GET_SFP_STAT_FUNC        = 0x5,
-<<<<<<< HEAD
 	HNS_OP_LOCATE_LED_SET_FUNC      = 0x6,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum _dsm_rst_type {
@@ -47,7 +44,6 @@ static void dsaf_write_sub(struct dsaf_device *dsaf_dev, u32 reg, u32 val)
 
 static u32 dsaf_read_sub(struct dsaf_device *dsaf_dev, u32 reg)
 {
-<<<<<<< HEAD
 	u32 ret = 0;
 	int err;
 
@@ -59,14 +55,6 @@ static u32 dsaf_read_sub(struct dsaf_device *dsaf_dev, u32 reg)
 	} else {
 		ret = dsaf_read_reg(dsaf_dev->sc_base, reg);
 	}
-=======
-	u32 ret;
-
-	if (dsaf_dev->sub_ctrl)
-		ret = dsaf_read_syscon(dsaf_dev->sub_ctrl, reg);
-	else
-		ret = dsaf_read_reg(dsaf_dev->sc_base, reg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -99,7 +87,6 @@ static void hns_dsaf_acpi_ledctrl_by_port(struct hns_mac_cb *mac_cb, u8 op_type,
        ACPI_FREE(obj);
 }
 
-<<<<<<< HEAD
 static void hns_dsaf_acpi_locate_ledctrl_by_port(struct hns_mac_cb *mac_cb,
 						 u8 op_type, u32 locate,
 						 u32 port)
@@ -127,8 +114,6 @@ static void hns_dsaf_acpi_locate_ledctrl_by_port(struct hns_mac_cb *mac_cb,
 	ACPI_FREE(obj);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void hns_cpld_set_led(struct hns_mac_cb *mac_cb, int link_status,
 			     u16 speed, int data)
 {
@@ -208,7 +193,6 @@ static void cpld_led_reset_acpi(struct hns_mac_cb *mac_cb)
 static int cpld_set_led_id(struct hns_mac_cb *mac_cb,
 			   enum hnae_led_state status)
 {
-<<<<<<< HEAD
 	u32 val = 0;
 	int ret;
 
@@ -226,17 +210,6 @@ static int cpld_set_led_id(struct hns_mac_cb *mac_cb,
 		dsaf_write_syscon(mac_cb->cpld_ctrl, mac_cb->cpld_ctrl_reg,
 				  val);
 		mac_cb->cpld_led_value = val;
-=======
-	switch (status) {
-	case HNAE_LED_ACTIVE:
-		mac_cb->cpld_led_value =
-			dsaf_read_syscon(mac_cb->cpld_ctrl,
-					 mac_cb->cpld_ctrl_reg);
-		dsaf_set_bit(mac_cb->cpld_led_value, DSAF_LED_ANCHOR_B,
-			     CPLD_LED_ON_VALUE);
-		dsaf_write_syscon(mac_cb->cpld_ctrl, mac_cb->cpld_ctrl_reg,
-				  mac_cb->cpld_led_value);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case HNAE_LED_INACTIVE:
 		dsaf_set_bit(mac_cb->cpld_led_value, DSAF_LED_ANCHOR_B,
@@ -252,7 +225,6 @@ static int cpld_set_led_id(struct hns_mac_cb *mac_cb,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int cpld_set_led_id_acpi(struct hns_mac_cb *mac_cb,
 				enum hnae_led_state status)
 {
@@ -277,8 +249,6 @@ static int cpld_set_led_id_acpi(struct hns_mac_cb *mac_cb,
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define RESET_REQ_OR_DREQ 1
 
 static void hns_dsaf_acpi_srst_by_port(struct dsaf_device *dsaf_dev, u8 op_type,
@@ -370,12 +340,8 @@ static void hns_dsaf_xge_srst_by_port_acpi(struct dsaf_device *dsaf_dev,
  * bit18-19 for com/dfx
  * @enable: false - request reset , true - drop reset
  */
-<<<<<<< HEAD
 static void
 hns_dsaf_srst_chns(struct dsaf_device *dsaf_dev, u32 msk, bool dereset)
-=======
-void hns_dsaf_srst_chns(struct dsaf_device *dsaf_dev, u32 msk, bool dereset)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 reg_addr;
 
@@ -397,11 +363,7 @@ void hns_dsaf_srst_chns(struct dsaf_device *dsaf_dev, u32 msk, bool dereset)
  * bit18-19 for com/dfx
  * @enable: false - request reset , true - drop reset
  */
-<<<<<<< HEAD
 static void
-=======
-void
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 hns_dsaf_srst_chns_acpi(struct dsaf_device *dsaf_dev, u32 msk, bool dereset)
 {
 	hns_dsaf_acpi_srst_by_port(dsaf_dev, HNS_OP_RESET_FUNC,
@@ -409,11 +371,7 @@ hns_dsaf_srst_chns_acpi(struct dsaf_device *dsaf_dev, u32 msk, bool dereset)
 				   msk, dereset);
 }
 
-<<<<<<< HEAD
 static void hns_dsaf_roce_srst(struct dsaf_device *dsaf_dev, bool dereset)
-=======
-void hns_dsaf_roce_srst(struct dsaf_device *dsaf_dev, bool dereset)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (!dereset) {
 		dsaf_write_sub(dsaf_dev, DSAF_SUB_SC_ROCEE_RESET_REQ_REG, 1);
@@ -427,11 +385,7 @@ void hns_dsaf_roce_srst(struct dsaf_device *dsaf_dev, bool dereset)
 	}
 }
 
-<<<<<<< HEAD
 static void hns_dsaf_roce_srst_acpi(struct dsaf_device *dsaf_dev, bool dereset)
-=======
-void hns_dsaf_roce_srst_acpi(struct dsaf_device *dsaf_dev, bool dereset)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	hns_dsaf_acpi_srst_by_port(dsaf_dev, HNS_OP_RESET_FUNC,
 				   HNS_ROCE_RESET_FUNC, 0, dereset);
@@ -615,7 +569,6 @@ static phy_interface_t hns_mac_get_phy_if_acpi(struct hns_mac_cb *mac_cb)
 	return phy_if;
 }
 
-<<<<<<< HEAD
 static int hns_mac_get_sfp_prsnt(struct hns_mac_cb *mac_cb, int *sfp_prsnt)
 {
 	u32 val = 0;
@@ -635,20 +588,6 @@ static int hns_mac_get_sfp_prsnt(struct hns_mac_cb *mac_cb, int *sfp_prsnt)
 }
 
 static int hns_mac_get_sfp_prsnt_acpi(struct hns_mac_cb *mac_cb, int *sfp_prsnt)
-=======
-int hns_mac_get_sfp_prsnt(struct hns_mac_cb *mac_cb, int *sfp_prsnt)
-{
-	if (!mac_cb->cpld_ctrl)
-		return -ENODEV;
-
-	*sfp_prsnt = !dsaf_read_syscon(mac_cb->cpld_ctrl, mac_cb->cpld_ctrl_reg
-					+ MAC_SFP_PORT_OFFSET);
-
-	return 0;
-}
-
-int hns_mac_get_sfp_prsnt_acpi(struct hns_mac_cb *mac_cb, int *sfp_prsnt)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	union acpi_object *obj;
 	union acpi_object obj_args, argv4;
@@ -694,11 +633,7 @@ static int hns_mac_config_sds_loopback(struct hns_mac_cb *mac_cb, bool en)
 #define RX_CSR(lane, reg) ((0x4080 + (reg) * 0x0002 + (lane) * 0x0200) * 2)
 	u64 reg_offset = RX_CSR(lane_id[mac_cb->mac_id], 0);
 
-<<<<<<< HEAD
 	int sfp_prsnt = 0;
-=======
-	int sfp_prsnt;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = hns_mac_get_sfp_prsnt(mac_cb, &sfp_prsnt);
 
 	if (!mac_cb->phy_dev) {
@@ -710,11 +645,7 @@ static int hns_mac_config_sds_loopback(struct hns_mac_cb *mac_cb, bool en)
 	}
 
 	if (mac_cb->serdes_ctrl) {
-<<<<<<< HEAD
 		u32 origin = 0;
-=======
-		u32 origin;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (!AE_IS_VER1(mac_cb->dsaf_dev->dsaf_ver)) {
 #define HILINK_ACCESS_SEL_CFG		0x40008
@@ -731,14 +662,10 @@ static int hns_mac_config_sds_loopback(struct hns_mac_cb *mac_cb, bool en)
 						  HILINK_ACCESS_SEL_CFG, 3);
 		}
 
-<<<<<<< HEAD
 		ret = dsaf_read_syscon(mac_cb->serdes_ctrl, reg_offset,
 				       &origin);
 		if (ret)
 			return ret;
-=======
-		origin = dsaf_read_syscon(mac_cb->serdes_ctrl, reg_offset);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		dsaf_set_field(origin, 1ull << 10, 10, en);
 		dsaf_write_syscon(mac_cb->serdes_ctrl, reg_offset, origin);
@@ -809,11 +736,7 @@ struct dsaf_misc_op *hns_misc_op_get(struct dsaf_device *dsaf_dev)
 	} else if (is_acpi_node(dsaf_dev->dev->fwnode)) {
 		misc_op->cpld_set_led = hns_cpld_set_led_acpi;
 		misc_op->cpld_reset_led = cpld_led_reset_acpi;
-<<<<<<< HEAD
 		misc_op->cpld_set_led_id = cpld_set_led_id_acpi;
-=======
-		misc_op->cpld_set_led_id = cpld_set_led_id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		misc_op->dsaf_reset = hns_dsaf_rst_acpi;
 		misc_op->xge_srst = hns_dsaf_xge_srst_by_port_acpi;

@@ -131,15 +131,12 @@ DMA Fences
 ----------
 
 .. kernel-doc:: drivers/dma-buf/dma-fence.c
-<<<<<<< HEAD
    :doc: DMA fences overview
 
 DMA Fences Functions Reference
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. kernel-doc:: drivers/dma-buf/dma-fence.c
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    :export:
 
 .. kernel-doc:: include/linux/dma-fence.h

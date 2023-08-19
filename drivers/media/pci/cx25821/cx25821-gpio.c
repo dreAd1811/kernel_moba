@@ -88,11 +88,7 @@ void cx25821_gpio_init(struct cx25821_dev *dev)
 	default:
 		/* set GPIO 5 to select the path for Medusa/Athena */
 		cx25821_set_gpiopin_logicvalue(dev, 5, 1);
-<<<<<<< HEAD
 		msleep(20);
-=======
-		mdelay(20);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 

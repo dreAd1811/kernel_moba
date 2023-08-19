@@ -227,10 +227,6 @@ static bool test_regs_ok;
 static int test_func_instance;
 static int pre_handler_called;
 static int post_handler_called;
-<<<<<<< HEAD
-=======
-static int jprobe_func_called;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int kretprobe_handler_called;
 static int tests_failed;
 
@@ -373,53 +369,6 @@ static int test_kprobe(long (*func)(long, long))
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-static void __kprobes jprobe_func(long r0, long r1)
-{
-	jprobe_func_called = test_func_instance;
-	if (r0 == FUNC_ARG1 && r1 == FUNC_ARG2)
-		test_regs_ok = true;
-	jprobe_return();
-}
-
-static struct jprobe the_jprobe = {
-	.entry		= jprobe_func,
-};
-
-static int test_jprobe(long (*func)(long, long))
-{
-	int ret;
-
-	the_jprobe.kp.addr = (kprobe_opcode_t *)func;
-	ret = register_jprobe(&the_jprobe);
-	if (ret < 0) {
-		pr_err("FAIL: register_jprobe failed with %d\n", ret);
-		return ret;
-	}
-
-	ret = call_test_func(func, true);
-
-	unregister_jprobe(&the_jprobe);
-	the_jprobe.kp.flags = 0; /* Clear disable flag to allow reuse */
-
-	if (!ret)
-		return -EINVAL;
-	if (jprobe_func_called != test_func_instance) {
-		pr_err("FAIL: jprobe handler function not called\n");
-		return -EINVAL;
-	}
-	if (!call_test_func(func, false))
-		return -EINVAL;
-	if (jprobe_func_called == test_func_instance) {
-		pr_err("FAIL: probe called after unregistering\n");
-		return -EINVAL;
-	}
-
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __kprobes
 kretprobe_handler(struct kretprobe_instance *ri, struct pt_regs *regs)
 {
@@ -457,11 +406,7 @@ static int test_kretprobe(long (*func)(long, long))
 	}
 	if (!call_test_func(func, false))
 		return -EINVAL;
-<<<<<<< HEAD
 	if (kretprobe_handler_called == test_func_instance) {
-=======
-	if (jprobe_func_called == test_func_instance) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_err("FAIL: kretprobe called after unregistering\n");
 		return -EINVAL;
 	}
@@ -478,21 +423,6 @@ static int run_api_tests(long (*func)(long, long))
 	if (ret < 0)
 		return ret;
 
-<<<<<<< HEAD
-=======
-	pr_info("    jprobe\n");
-	ret = test_jprobe(func);
-#if defined(CONFIG_THUMB2_KERNEL) && !defined(MODULE)
-	if (ret == -EINVAL) {
-		pr_err("FAIL: Known longtime bug with jprobe on Thumb kernels\n");
-		tests_failed = ret;
-		ret = 0;
-	}
-#endif
-	if (ret < 0)
-		return ret;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pr_info("    kretprobe\n");
 	ret = test_kretprobe(func);
 	if (ret < 0)
@@ -836,14 +766,9 @@ static int coverage_start_fn(const struct decode_header *h, void *args)
 
 static int coverage_start(const union decode_item *table)
 {
-<<<<<<< HEAD
 	coverage.base = kmalloc_array(MAX_COVERAGE_ENTRIES,
 				      sizeof(struct coverage_entry),
 				      GFP_KERNEL);
-=======
-	coverage.base = kmalloc(MAX_COVERAGE_ENTRIES *
-				sizeof(struct coverage_entry), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	coverage.num_entries = 0;
 	coverage.nesting = 0;
 	return table_iter(table, coverage_start_fn, &coverage);

@@ -18,17 +18,11 @@
 #include <drm/drm_atomic_helper.h>
 #include <drm/drm_fb_cma_helper.h>
 #include <drm/drm_gem_cma_helper.h>
-<<<<<<< HEAD
 #include <drm/drm_gem_framebuffer_helper.h>
 #include <drm/drm_plane_helper.h>
 
 #include "video/imx-ipu-v3.h"
 #include "imx-drm.h"
-=======
-#include <drm/drm_plane_helper.h>
-
-#include "video/imx-ipu-v3.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "ipuv3-plane.h"
 
 struct ipu_plane_state {
@@ -84,7 +78,6 @@ static const uint32_t ipu_plane_formats[] = {
 	DRM_FORMAT_BGRX8888_A8,
 };
 
-<<<<<<< HEAD
 static const uint64_t ipu_format_modifiers[] = {
 	DRM_FORMAT_MOD_LINEAR,
 	DRM_FORMAT_MOD_INVALID
@@ -97,8 +90,6 @@ static const uint64_t pre_format_modifiers[] = {
 	DRM_FORMAT_MOD_INVALID
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int ipu_plane_irq(struct ipu_plane *ipu_plane)
 {
 	return ipu_idmac_channel_irq(ipu_plane->ipu, ipu_plane->ipu_ch,
@@ -282,11 +273,7 @@ static void ipu_plane_destroy(struct drm_plane *plane)
 	kfree(ipu_plane);
 }
 
-<<<<<<< HEAD
 static void ipu_plane_state_reset(struct drm_plane *plane)
-=======
-void ipu_plane_state_reset(struct drm_plane *plane)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ipu_plane_state *ipu_state;
 
@@ -306,12 +293,8 @@ void ipu_plane_state_reset(struct drm_plane *plane)
 	plane->state = &ipu_state->base;
 }
 
-<<<<<<< HEAD
 static struct drm_plane_state *
 ipu_plane_duplicate_state(struct drm_plane *plane)
-=======
-struct drm_plane_state *ipu_plane_duplicate_state(struct drm_plane *plane)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ipu_plane_state *state;
 
@@ -325,13 +308,8 @@ struct drm_plane_state *ipu_plane_duplicate_state(struct drm_plane *plane)
 	return &state->base;
 }
 
-<<<<<<< HEAD
 static void ipu_plane_destroy_state(struct drm_plane *plane,
 				    struct drm_plane_state *state)
-=======
-void ipu_plane_destroy_state(struct drm_plane *plane,
-			     struct drm_plane_state *state)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ipu_plane_state *ipu_state = to_ipu_plane_state(state);
 
@@ -339,7 +317,6 @@ void ipu_plane_destroy_state(struct drm_plane *plane,
 	kfree(ipu_state);
 }
 
-<<<<<<< HEAD
 static bool ipu_plane_format_mod_supported(struct drm_plane *plane,
 					   uint32_t format, uint64_t modifier)
 {
@@ -356,8 +333,6 @@ static bool ipu_plane_format_mod_supported(struct drm_plane *plane,
 	return ipu_prg_format_supported(ipu, format, modifier);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct drm_plane_funcs ipu_plane_funcs = {
 	.update_plane	= drm_atomic_helper_update_plane,
 	.disable_plane	= drm_atomic_helper_disable_plane,
@@ -365,10 +340,7 @@ static const struct drm_plane_funcs ipu_plane_funcs = {
 	.reset		= ipu_plane_state_reset,
 	.atomic_duplicate_state	= ipu_plane_duplicate_state,
 	.atomic_destroy_state	= ipu_plane_destroy_state,
-<<<<<<< HEAD
 	.format_mod_supported = ipu_plane_format_mod_supported,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int ipu_plane_atomic_check(struct drm_plane *plane,
@@ -381,10 +353,6 @@ static int ipu_plane_atomic_check(struct drm_plane *plane,
 	struct drm_framebuffer *old_fb = old_state->fb;
 	unsigned long eba, ubo, vbo, old_ubo, old_vbo, alpha_eba;
 	bool can_position = (plane->type == DRM_PLANE_TYPE_OVERLAY);
-<<<<<<< HEAD
-=======
-	struct drm_rect clip;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int hsub, vsub;
 	int ret;
 
@@ -400,21 +368,10 @@ static int ipu_plane_atomic_check(struct drm_plane *plane,
 	if (WARN_ON(!crtc_state))
 		return -EINVAL;
 
-<<<<<<< HEAD
 	ret = drm_atomic_helper_check_plane_state(state, crtc_state,
 						  DRM_PLANE_HELPER_NO_SCALING,
 						  DRM_PLANE_HELPER_NO_SCALING,
 						  can_position, true);
-=======
-	clip.x1 = 0;
-	clip.y1 = 0;
-	clip.x2 = crtc_state->adjusted_mode.hdisplay;
-	clip.y2 = crtc_state->adjusted_mode.vdisplay;
-	ret = drm_plane_helper_check_state(state, &clip,
-					   DRM_PLANE_HELPER_NO_SCALING,
-					   DRM_PLANE_HELPER_NO_SCALING,
-					   can_position, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -619,13 +576,8 @@ static void ipu_plane_atomic_update(struct drm_plane *plane,
 		ipu_prg_channel_configure(ipu_plane->ipu_ch, axi_id,
 					  drm_rect_width(&state->src) >> 16,
 					  drm_rect_height(&state->src) >> 16,
-<<<<<<< HEAD
 					  fb->pitches[0], fb->format->format,
 					  fb->modifier, &eba);
-=======
-					  fb->pitches[0],
-					  fb->format->format, &eba);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (old_state->fb && !drm_atomic_crtc_needs_modeset(crtc_state)) {
@@ -765,11 +717,7 @@ static void ipu_plane_atomic_update(struct drm_plane *plane,
 }
 
 static const struct drm_plane_helper_funcs ipu_plane_helper_funcs = {
-<<<<<<< HEAD
 	.prepare_fb = drm_gem_fb_prepare_fb,
-=======
-	.prepare_fb = drm_fb_cma_prepare_fb,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.atomic_check = ipu_plane_atomic_check,
 	.atomic_disable = ipu_plane_atomic_disable,
 	.atomic_update = ipu_plane_atomic_update,
@@ -778,7 +726,6 @@ static const struct drm_plane_helper_funcs ipu_plane_helper_funcs = {
 int ipu_planes_assign_pre(struct drm_device *dev,
 			  struct drm_atomic_state *state)
 {
-<<<<<<< HEAD
 	struct drm_crtc_state *old_crtc_state, *crtc_state;
 	struct drm_plane_state *plane_state;
 	struct ipu_plane_state *ipu_state;
@@ -844,20 +791,6 @@ int ipu_planes_assign_pre(struct drm_device *dev,
 		plane_state->fb->modifier = DRM_FORMAT_MOD_LINEAR;
 
 		if (ipu_prg_present(ipu_plane->ipu) && available_pres &&
-=======
-	struct drm_plane_state *plane_state;
-	struct drm_plane *plane;
-	int available_pres = ipu_prg_max_active_channels();
-	int i;
-
-	for_each_new_plane_in_state(state, plane, plane_state, i) {
-		struct ipu_plane_state *ipu_state =
-				to_ipu_plane_state(plane_state);
-		struct ipu_plane *ipu_plane = to_ipu_plane(plane);
-
-		if (ipu_prg_present(ipu_plane->ipu) && available_pres &&
-		    plane_state->fb &&
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    ipu_prg_format_supported(ipu_plane->ipu,
 					     plane_state->fb->format->format,
 					     plane_state->fb->modifier)) {
@@ -877,10 +810,7 @@ struct ipu_plane *ipu_plane_init(struct drm_device *dev, struct ipu_soc *ipu,
 				 enum drm_plane_type type)
 {
 	struct ipu_plane *ipu_plane;
-<<<<<<< HEAD
 	const uint64_t *modifiers = ipu_format_modifiers;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	DRM_DEBUG_KMS("channel %d, dp flow %d, possible_crtcs=0x%x\n",
@@ -896,7 +826,6 @@ struct ipu_plane *ipu_plane_init(struct drm_device *dev, struct ipu_soc *ipu,
 	ipu_plane->dma = dma;
 	ipu_plane->dp_flow = dp;
 
-<<<<<<< HEAD
 	if (ipu_prg_present(ipu))
 		modifiers = pre_format_modifiers;
 
@@ -904,12 +833,6 @@ struct ipu_plane *ipu_plane_init(struct drm_device *dev, struct ipu_soc *ipu,
 				       &ipu_plane_funcs, ipu_plane_formats,
 				       ARRAY_SIZE(ipu_plane_formats),
 				       modifiers, type, NULL);
-=======
-	ret = drm_universal_plane_init(dev, &ipu_plane->base, possible_crtcs,
-				       &ipu_plane_funcs, ipu_plane_formats,
-				       ARRAY_SIZE(ipu_plane_formats),
-				       NULL, type, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		DRM_ERROR("failed to initialize plane\n");
 		kfree(ipu_plane);

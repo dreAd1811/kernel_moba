@@ -31,10 +31,6 @@
 #include "vega10_ppsmc.h"
 #include "vega10_powertune.h"
 
-<<<<<<< HEAD
-=======
-extern const uint32_t PhwVega10_Magic;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define VEGA10_MAX_HARDWARE_POWERLEVELS 2
 
 #define WaterMarksExist  1
@@ -70,10 +66,7 @@ enum {
 	GNLD_FEATURE_FAST_PPT_BIT,
 	GNLD_DIDT,
 	GNLD_ACG,
-<<<<<<< HEAD
 	GNLD_PCC_LIMIT,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	GNLD_FEATURES_MAX
 };
 
@@ -197,15 +190,6 @@ struct vega10_vbios_boot_state {
 	uint32_t    dcef_clock;
 };
 
-<<<<<<< HEAD
-=======
-#define DPMTABLE_OD_UPDATE_SCLK     0x00000001
-#define DPMTABLE_OD_UPDATE_MCLK     0x00000002
-#define DPMTABLE_UPDATE_SCLK        0x00000004
-#define DPMTABLE_UPDATE_MCLK        0x00000008
-#define DPMTABLE_OD_UPDATE_VDDC     0x00000010
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct vega10_smc_state_table {
 	uint32_t        soc_boot_level;
 	uint32_t        gfx_boot_level;
@@ -298,7 +282,6 @@ struct vega10_registry_data {
 
 struct vega10_odn_clock_voltage_dependency_table {
 	uint32_t count;
-<<<<<<< HEAD
 	struct phm_ppt_v1_clock_voltage_dependency_record entries[MAX_REGULAR_DPM_NUMBER];
 };
 
@@ -314,17 +297,6 @@ struct vega10_odn_dpm_table {
 	struct vega10_odn_vddc_lookup_table vddc_lookup_table;
 	uint32_t max_vddc;
 	uint32_t min_vddc;
-=======
-	struct phm_ppt_v1_clock_voltage_dependency_record
-		entries[MAX_REGULAR_DPM_NUMBER];
-};
-
-struct vega10_odn_dpm_table {
-	struct phm_odn_clock_levels		odn_core_clock_dpm_levels;
-	struct phm_odn_clock_levels		odn_memory_clock_dpm_levels;
-	struct vega10_odn_clock_voltage_dependency_table		vdd_dependency_on_sclk;
-	struct vega10_odn_clock_voltage_dependency_table		vdd_dependency_on_mclk;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct vega10_odn_fan_table {
@@ -335,13 +307,8 @@ struct vega10_odn_fan_table {
 };
 
 struct vega10_hwmgr {
-<<<<<<< HEAD
 	struct vega10_dpm_table          dpm_table;
 	struct vega10_dpm_table          golden_dpm_table;
-=======
-	struct vega10_dpm_table			dpm_table;
-	struct vega10_dpm_table			golden_dpm_table;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct vega10_registry_data      registry_data;
 	struct vega10_vbios_boot_state   vbios_boot_state;
 	struct vega10_mclk_latency_table mclk_latency_table;
@@ -403,40 +370,19 @@ struct vega10_hwmgr {
 	/* ---- Power Gating States ---- */
 	bool                           uvd_power_gated;
 	bool                           vce_power_gated;
-<<<<<<< HEAD
 	bool                           need_long_memory_training;
 
 	/* Internal settings to apply the application power optimization parameters */
 	uint32_t                       disable_dpm_mask;
 
-=======
-	bool                           samu_power_gated;
-	bool                           need_long_memory_training;
-
-	/* Internal settings to apply the application power optimization parameters */
-	bool                           apply_optimized_settings;
-	uint32_t                       disable_dpm_mask;
-
-	/* ---- Overdrive next setting ---- */
-	uint32_t                       apply_overdrive_next_settings_mask;
-
-	/* ---- Workload Mask ---- */
-	uint32_t                       workload_mask;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* ---- SMU9 ---- */
 	struct smu_features            smu_features[GNLD_FEATURES_MAX];
 	struct vega10_smc_state_table  smc_state_table;
 
 	uint32_t                       config_telemetry;
-<<<<<<< HEAD
 	uint32_t                       acg_loop_state;
 	uint32_t                       mem_channels;
 	uint8_t                       custom_profile_mode[4];
-=======
-	uint32_t                       smu_version;
-	uint32_t                       acg_loop_state;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define VEGA10_DPM2_NEAR_TDP_DEC                      10
@@ -495,10 +441,7 @@ int vega10_update_uvd_dpm(struct pp_hwmgr *hwmgr, bool bgate);
 int vega10_update_samu_dpm(struct pp_hwmgr *hwmgr, bool bgate);
 int vega10_update_acp_dpm(struct pp_hwmgr *hwmgr, bool bgate);
 int vega10_enable_disable_vce_dpm(struct pp_hwmgr *hwmgr, bool enable);
-<<<<<<< HEAD
 int vega10_enable_smc_features(struct pp_hwmgr *hwmgr,
 		bool enable, uint32_t feature_mask);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* _VEGA10_HWMGR_H_ */

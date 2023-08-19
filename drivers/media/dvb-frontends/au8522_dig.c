@@ -24,11 +24,7 @@
 #include <linux/module.h>
 #include <linux/string.h>
 #include <linux/delay.h>
-<<<<<<< HEAD
 #include <media/dvb_frontend.h>
-=======
-#include "dvb_frontend.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "au8522.h"
 #include "au8522_priv.h"
 
@@ -901,15 +897,9 @@ static const struct dvb_frontend_ops au8522_ops = {
 	.delsys = { SYS_ATSC, SYS_DVBC_ANNEX_B },
 	.info = {
 		.name			= "Auvitek AU8522 QAM/8VSB Frontend",
-<<<<<<< HEAD
 		.frequency_min_hz	=  54 * MHz,
 		.frequency_max_hz	= 858 * MHz,
 		.frequency_stepsize_hz	= 62500,
-=======
-		.frequency_min		= 54000000,
-		.frequency_max		= 858000000,
-		.frequency_stepsize	= 62500,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.caps = FE_CAN_QAM_64 | FE_CAN_QAM_256 | FE_CAN_8VSB
 	},
 

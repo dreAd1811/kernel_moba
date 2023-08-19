@@ -5,10 +5,7 @@
  * PaX/grsecurity.
  */
 #include <linux/refcount.h>
-<<<<<<< HEAD
 #include <asm/bug.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * This is the first portion of the refcount error handling, which lives in
@@ -21,11 +18,7 @@
 #define _REFCOUNT_EXCEPTION				\
 	".pushsection .text..refcount\n"		\
 	"111:\tlea %[counter], %%" _ASM_CX "\n"		\
-<<<<<<< HEAD
 	"112:\t" ASM_UD2 "\n"				\
-=======
-	"112:\t" ASM_UD0 "\n"				\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ASM_UNREACHABLE					\
 	".popsection\n"					\
 	"113:\n"					\

@@ -218,15 +218,9 @@ unlock:
 }
 
 /* Timer function for re-enabling ASPM in the absence of interrupt activity */
-<<<<<<< HEAD
 static inline void aspm_ctx_timer_function(struct timer_list *t)
 {
 	struct hfi1_ctxtdata *rcd = from_timer(rcd, t, aspm_timer);
-=======
-static inline void aspm_ctx_timer_function(unsigned long data)
-{
-	struct hfi1_ctxtdata *rcd = (struct hfi1_ctxtdata *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 
 	spin_lock_irqsave(&rcd->aspm_lock, flags);
@@ -287,12 +281,7 @@ static inline void aspm_enable_all(struct hfi1_devdata *dd)
 static inline void aspm_ctx_init(struct hfi1_ctxtdata *rcd)
 {
 	spin_lock_init(&rcd->aspm_lock);
-<<<<<<< HEAD
 	timer_setup(&rcd->aspm_timer, aspm_ctx_timer_function, 0);
-=======
-	setup_timer(&rcd->aspm_timer, aspm_ctx_timer_function,
-		    (unsigned long)rcd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rcd->aspm_intr_supported = rcd->dd->aspm_supported &&
 		aspm_mode == ASPM_MODE_DYNAMIC &&
 		rcd->ctxt < rcd->dd->first_dyn_alloc_ctxt;

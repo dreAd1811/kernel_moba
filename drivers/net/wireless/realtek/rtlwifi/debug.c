@@ -23,26 +23,17 @@
  *****************************************************************************/
 
 #include "wifi.h"
-<<<<<<< HEAD
 #include "cam.h"
 
 #include <linux/moduleparam.h>
 #include <linux/vmalloc.h>
-=======
-
-#include <linux/moduleparam.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_RTLWIFI_DEBUG
 void _rtl_dbg_trace(struct rtl_priv *rtlpriv, u64 comp, int level,
 		    const char *fmt, ...)
 {
 	if (unlikely((comp & rtlpriv->cfg->mod_params->debug_mask) &&
-<<<<<<< HEAD
 		     level <= rtlpriv->cfg->mod_params->debug_level)) {
-=======
-		     (level <= rtlpriv->cfg->mod_params->debug_level))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct va_format vaf;
 		va_list args;
 
@@ -62,11 +53,7 @@ void _rtl_dbg_print(struct rtl_priv *rtlpriv, u64 comp, int level,
 		    const char *fmt, ...)
 {
 	if (unlikely((comp & rtlpriv->cfg->mod_params->debug_mask) &&
-<<<<<<< HEAD
 		     level <= rtlpriv->cfg->mod_params->debug_level)) {
-=======
-		     (level <= rtlpriv->cfg->mod_params->debug_level))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct va_format vaf;
 		va_list args;
 
@@ -96,7 +83,6 @@ void _rtl_dbg_print_data(struct rtl_priv *rtlpriv, u64 comp, int level,
 }
 EXPORT_SYMBOL_GPL(_rtl_dbg_print_data);
 
-<<<<<<< HEAD
 struct rtl_debugfs_priv {
 	struct rtl_priv *rtlpriv;
 	int (*cb_read)(struct seq_file *m, void *v);
@@ -574,6 +560,4 @@ void rtl_debugfs_remove_topdir(void)
 	debugfs_remove_recursive(debugfs_topdir);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

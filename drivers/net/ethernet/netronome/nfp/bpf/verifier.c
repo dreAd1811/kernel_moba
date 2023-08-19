@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
  * Copyright (C) 2016-2018 Netronome Systems, Inc.
-=======
- * Copyright (C) 2016 Netronome Systems, Inc.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This software is dual licensed under the GNU General License Version 2,
  * June 1991 as shown in the file COPYING in the top-level directory of this
@@ -35,17 +31,11 @@
  * SOFTWARE.
  */
 
-<<<<<<< HEAD
-=======
-#define pr_fmt(fmt)	"NFP net bpf: " fmt
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/bpf.h>
 #include <linux/bpf_verifier.h>
 #include <linux/kernel.h>
 #include <linux/pkt_cls.h>
 
-<<<<<<< HEAD
 #include "../nfp_app.h"
 #include "../nfp_main.h"
 #include "fw.h"
@@ -55,17 +45,6 @@
 	bpf_verifier_log_write(env, "[nfp] " fmt, ##__VA_ARGS__)
 
 struct nfp_insn_meta *
-=======
-#include "main.h"
-
-/* Analyzer/verifier definitions */
-struct nfp_bpf_analyzer_priv {
-	struct nfp_prog *prog;
-	struct nfp_insn_meta *meta;
-};
-
-static struct nfp_insn_meta *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 nfp_bpf_goto_meta(struct nfp_prog *nfp_prog, struct nfp_insn_meta *meta,
 		  unsigned int insn_idx, unsigned int n_insns)
 {
@@ -93,7 +72,6 @@ nfp_bpf_goto_meta(struct nfp_prog *nfp_prog, struct nfp_insn_meta *meta,
 	return meta;
 }
 
-<<<<<<< HEAD
 static void
 nfp_record_adjust_head(struct nfp_app_bpf *bpf, struct nfp_prog *nfp_prog,
 		       struct nfp_insn_meta *meta,
@@ -315,8 +293,6 @@ nfp_bpf_check_call(struct nfp_prog *nfp_prog, struct bpf_verifier_env *env,
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int
 nfp_bpf_check_exit(struct nfp_prog *nfp_prog,
 		   struct bpf_verifier_env *env)
@@ -324,45 +300,24 @@ nfp_bpf_check_exit(struct nfp_prog *nfp_prog,
 	const struct bpf_reg_state *reg0 = cur_regs(env) + BPF_REG_0;
 	u64 imm;
 
-<<<<<<< HEAD
 	if (nfp_prog->type == BPF_PROG_TYPE_XDP)
-=======
-	if (nfp_prog->act == NN_ACT_XDP)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	if (!(reg0->type == SCALAR_VALUE && tnum_is_const(reg0->var_off))) {
 		char tn_buf[48];
 
 		tnum_strn(tn_buf, sizeof(tn_buf), reg0->var_off);
-<<<<<<< HEAD
 		pr_vlog(env, "unsupported exit state: %d, var_off: %s\n",
-=======
-		pr_info("unsupported exit state: %d, var_off: %s\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			reg0->type, tn_buf);
 		return -EINVAL;
 	}
 
 	imm = reg0->var_off.value;
-<<<<<<< HEAD
 	if (nfp_prog->type == BPF_PROG_TYPE_SCHED_CLS &&
 	    imm <= TC_ACT_REDIRECT &&
 	    imm != TC_ACT_SHOT && imm != TC_ACT_STOLEN &&
 	    imm != TC_ACT_QUEUED) {
 		pr_vlog(env, "unsupported exit state: %d, imm: %llx\n",
-=======
-	if (nfp_prog->act != NN_ACT_DIRECT && imm != 0 && (imm & ~0U) != ~0U) {
-		pr_info("unsupported exit state: %d, imm: %llx\n",
-			reg0->type, imm);
-		return -EINVAL;
-	}
-
-	if (nfp_prog->act == NN_ACT_DIRECT && imm <= TC_ACT_REDIRECT &&
-	    imm != TC_ACT_SHOT && imm != TC_ACT_STOLEN &&
-	    imm != TC_ACT_QUEUED) {
-		pr_info("unsupported exit state: %d, imm: %llx\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			reg0->type, imm);
 		return -EINVAL;
 	}
@@ -371,7 +326,6 @@ nfp_bpf_check_exit(struct nfp_prog *nfp_prog,
 }
 
 static int
-<<<<<<< HEAD
 nfp_bpf_check_stack_access(struct nfp_prog *nfp_prog,
 			   struct nfp_insn_meta *meta,
 			   const struct bpf_reg_state *reg,
@@ -641,14 +595,6 @@ nfp_bpf_check_alu(struct nfp_prog *nfp_prog, struct nfp_insn_meta *meta,
 			return -EINVAL;
 		}
 	}
-=======
-nfp_bpf_check_ctx_ptr(struct nfp_prog *nfp_prog,
-		      struct bpf_verifier_env *env, u8 reg_no)
-{
-	const struct bpf_reg_state *reg = cur_regs(env) + reg_no;
-	if (reg->type != PTR_TO_CTX)
-		return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -656,7 +602,6 @@ nfp_bpf_check_ctx_ptr(struct nfp_prog *nfp_prog,
 static int
 nfp_verify_insn(struct bpf_verifier_env *env, int insn_idx, int prev_insn_idx)
 {
-<<<<<<< HEAD
 	struct nfp_prog *nfp_prog = env->prog->aux->offload->dev_priv;
 	struct nfp_insn_meta *meta = nfp_prog->verifier_meta;
 
@@ -691,63 +636,10 @@ nfp_verify_insn(struct bpf_verifier_env *env, int insn_idx, int prev_insn_idx)
 
 	if (is_mbpf_alu(meta))
 		return nfp_bpf_check_alu(nfp_prog, meta, env);
-=======
-	struct nfp_bpf_analyzer_priv *priv = env->analyzer_priv;
-	struct nfp_insn_meta *meta = priv->meta;
-
-	meta = nfp_bpf_goto_meta(priv->prog, meta, insn_idx, env->prog->len);
-	priv->meta = meta;
-
-	if (meta->insn.src_reg == BPF_REG_10 ||
-	    meta->insn.dst_reg == BPF_REG_10) {
-		pr_err("stack not yet supported\n");
-		return -EINVAL;
-	}
-	if (meta->insn.src_reg >= MAX_BPF_REG ||
-	    meta->insn.dst_reg >= MAX_BPF_REG) {
-		pr_err("program uses extended registers - jit hardening?\n");
-		return -EINVAL;
-	}
-
-	if (meta->insn.code == (BPF_JMP | BPF_EXIT))
-		return nfp_bpf_check_exit(priv->prog, env);
-
-	if ((meta->insn.code & ~BPF_SIZE_MASK) == (BPF_LDX | BPF_MEM))
-		return nfp_bpf_check_ctx_ptr(priv->prog, env,
-					     meta->insn.src_reg);
-	if ((meta->insn.code & ~BPF_SIZE_MASK) == (BPF_STX | BPF_MEM))
-		return nfp_bpf_check_ctx_ptr(priv->prog, env,
-					     meta->insn.dst_reg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
 const struct bpf_prog_offload_ops nfp_bpf_analyzer_ops = {
 	.insn_hook = nfp_verify_insn,
 };
-=======
-static const struct bpf_ext_analyzer_ops nfp_bpf_analyzer_ops = {
-	.insn_hook = nfp_verify_insn,
-};
-
-int nfp_prog_verify(struct nfp_prog *nfp_prog, struct bpf_prog *prog)
-{
-	struct nfp_bpf_analyzer_priv *priv;
-	int ret;
-
-	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
-	if (!priv)
-		return -ENOMEM;
-
-	priv->prog = nfp_prog;
-	priv->meta = nfp_prog_first_meta(nfp_prog);
-
-	ret = bpf_analyzer(prog, &nfp_bpf_analyzer_ops, priv);
-
-	kfree(priv);
-
-	return ret;
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

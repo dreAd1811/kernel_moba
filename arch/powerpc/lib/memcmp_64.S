@@ -9,10 +9,7 @@
  */
 #include <asm/ppc_asm.h>
 #include <asm/export.h>
-<<<<<<< HEAD
 #include <asm/ppc-opcode.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define off8	r6
 #define off16	r7
@@ -28,7 +25,6 @@
 #define rH	r31
 
 #ifdef __LITTLE_ENDIAN__
-<<<<<<< HEAD
 #define LH	lhbrx
 #define LW	lwbrx
 #define LD	ldbrx
@@ -125,30 +121,6 @@ _GLOBAL_TOC(memcmp)
 
 .Lshort:
 	mtctr	r5
-=======
-#define LD	ldbrx
-#else
-#define LD	ldx
-#endif
-
-_GLOBAL(memcmp)
-	cmpdi	cr1,r5,0
-
-	/* Use the short loop if both strings are not 8B aligned */
-	or	r6,r3,r4
-	andi.	r6,r6,7
-
-	/* Use the short loop if length is less than 32B */
-	cmpdi	cr6,r5,31
-
-	beq	cr1,.Lzero
-	bne	.Lshort
-	bgt	cr6,.Llong
-
-.Lshort:
-	mtctr	r5
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 1:	lbz	rA,0(r3)
 	lbz	rB,0(r4)
 	subf.	rC,rB,rA
@@ -181,7 +153,6 @@ _GLOBAL(memcmp)
 	li	r3,0
 	blr
 
-<<<<<<< HEAD
 .Lno_short:
 	dcbt	0,r3
 	dcbt	0,r4
@@ -268,14 +239,11 @@ _GLOBAL(memcmp)
 	bne	cr0,.LcmpAB_lightweight
 	b	.Lzero
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 .Lnon_zero:
 	mr	r3,rC
 	blr
 
 .Llong:
-<<<<<<< HEAD
 #ifdef CONFIG_ALTIVEC
 BEGIN_FTR_SECTION
 	/* Try to use vmx loop if length is equal or greater than 4K */
@@ -286,8 +254,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
 .Llong_novmx_cmp:
 #endif
 	/* At least s1 addr is aligned with 8 bytes */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	li	off8,8
 	li	off16,16
 	li	off24,24
@@ -437,7 +403,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
 	ld	r28,-32(r1)
 	ld	r27,-40(r1)
 	blr
-<<<<<<< HEAD
 
 .LcmpAB_lightweight:   /* skip NV GPRS restore */
 	li	r3,1
@@ -674,6 +639,4 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
 	b	.Lcmp_lt32bytes
 
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 EXPORT_SYMBOL(memcmp)

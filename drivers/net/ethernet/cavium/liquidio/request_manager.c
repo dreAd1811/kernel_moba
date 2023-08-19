@@ -98,14 +98,9 @@ int octeon_init_instr_queue(struct octeon_device *oct,
 	iq->request_list = vmalloc_node((sizeof(*iq->request_list) * num_descs),
 					       numa_node);
 	if (!iq->request_list)
-<<<<<<< HEAD
 		iq->request_list =
 			vmalloc(array_size(num_descs,
 					   sizeof(*iq->request_list)));
-=======
-		iq->request_list = vmalloc(sizeof(*iq->request_list) *
-						  num_descs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!iq->request_list) {
 		lio_dma_free(oct, q_size, iq->base_addr, iq->base_addr_dma);
 		dev_err(&oct->pci_dev->dev, "Alloc failed for IQ[%d] nr free list\n",
@@ -115,13 +110,8 @@ int octeon_init_instr_queue(struct octeon_device *oct,
 
 	memset(iq->request_list, 0, sizeof(*iq->request_list) * num_descs);
 
-<<<<<<< HEAD
 	dev_dbg(&oct->pci_dev->dev, "IQ[%d]: base: %p basedma: %pad count: %d\n",
 		iq_no, iq->base_addr, &iq->base_addr_dma, iq->max_count);
-=======
-	dev_dbg(&oct->pci_dev->dev, "IQ[%d]: base: %p basedma: %llx count: %d\n",
-		iq_no, iq->base_addr, iq->base_addr_dma, iq->max_count);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	iq->txpciq.u64 = txpciq.u64;
 	iq->fill_threshold = (u32)conf->db_min;
@@ -133,7 +123,6 @@ int octeon_init_instr_queue(struct octeon_device *oct,
 	iq->do_auto_flush = 1;
 	iq->db_timeout = (u32)conf->db_timeout;
 	atomic_set(&iq->instr_pending, 0);
-<<<<<<< HEAD
 
 	/* Initialize the spinlock for this instruction queue */
 	spin_lock_init(&iq->lock);
@@ -143,13 +132,6 @@ int octeon_init_instr_queue(struct octeon_device *oct,
 	} else {
 		iq->allow_soft_cmds = false;
 	}
-=======
-	iq->pkts_processed = 0;
-
-	/* Initialize the spinlock for this instruction queue */
-	spin_lock_init(&iq->lock);
-	spin_lock_init(&iq->post_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_init(&iq->iq_flush_running_lock);
 
@@ -304,7 +286,6 @@ ring_doorbell(struct octeon_device *oct, struct octeon_instr_queue *iq)
 	}
 }
 
-<<<<<<< HEAD
 void
 octeon_ring_doorbell_locked(struct octeon_device *oct, u32 iq_no)
 {
@@ -317,8 +298,6 @@ octeon_ring_doorbell_locked(struct octeon_device *oct, u32 iq_no)
 	spin_unlock(&iq->post_lock);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void __copy_cmd_into_iq(struct octeon_instr_queue *iq,
 				      u8 *cmd)
 {
@@ -395,10 +374,7 @@ int
 lio_process_iq_request_list(struct octeon_device *oct,
 			    struct octeon_instr_queue *iq, u32 napi_budget)
 {
-<<<<<<< HEAD
 	struct cavium_wq *cwq = &oct->dma_comp_wq;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int reqtype;
 	void *buf;
 	u32 old = iq->flush_index;
@@ -483,13 +459,10 @@ lio_process_iq_request_list(struct octeon_device *oct,
 						   bytes_compl);
 	iq->flush_index = old;
 
-<<<<<<< HEAD
 	if (atomic_read(&oct->response_list
 			[OCTEON_ORDERED_SC_LIST].pending_req_count))
 		queue_delayed_work(cwq->wq, &cwq->wk.work, msecs_to_jiffies(1));
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return inst_count;
 }
 
@@ -524,20 +497,11 @@ octeon_flush_iq(struct octeon_device *oct, struct octeon_instr_queue *iq,
 				lio_process_iq_request_list(oct, iq, 0);
 
 		if (inst_processed) {
-<<<<<<< HEAD
-=======
-			iq->pkts_processed += inst_processed;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			atomic_sub(inst_processed, &iq->instr_pending);
 			iq->stats.instr_processed += inst_processed;
 		}
 
 		tot_inst_processed += inst_processed;
-<<<<<<< HEAD
-=======
-		inst_processed = 0;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} while (tot_inst_processed < napi_budget);
 
 	if (napi_budget && (tot_inst_processed >= napi_budget))
@@ -602,52 +566,33 @@ octeon_send_command(struct octeon_device *oct, u32 iq_no,
 		    u32 force_db, void *cmd, void *buf,
 		    u32 datasize, u32 reqtype)
 {
-<<<<<<< HEAD
 	int xmit_stopped;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct iq_post_status st;
 	struct octeon_instr_queue *iq = oct->instr_queue[iq_no];
 
 	/* Get the lock and prevent other tasks and tx interrupt handler from
 	 * running.
 	 */
-<<<<<<< HEAD
 	if (iq->allow_soft_cmds)
 		spin_lock_bh(&iq->post_lock);
-=======
-	spin_lock_bh(&iq->post_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	st = __post_command2(iq, cmd);
 
 	if (st.status != IQ_SEND_FAILED) {
-<<<<<<< HEAD
 		xmit_stopped = octeon_report_sent_bytes_to_bql(buf, reqtype);
-=======
-		octeon_report_sent_bytes_to_bql(buf, reqtype);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__add_to_request_list(iq, st.index, buf, reqtype);
 		INCR_INSTRQUEUE_PKT_COUNT(oct, iq_no, bytes_sent, datasize);
 		INCR_INSTRQUEUE_PKT_COUNT(oct, iq_no, instr_posted, 1);
 
-<<<<<<< HEAD
 		if (iq->fill_cnt >= MAX_OCTEON_FILL_COUNT || force_db ||
 		    xmit_stopped || st.status == IQ_SEND_STOP)
-=======
-		if (force_db)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ring_doorbell(oct, iq);
 	} else {
 		INCR_INSTRQUEUE_PKT_COUNT(oct, iq_no, instr_dropped, 1);
 	}
 
-<<<<<<< HEAD
 	if (iq->allow_soft_cmds)
 		spin_unlock_bh(&iq->post_lock);
-=======
-	spin_unlock_bh(&iq->post_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* This is only done here to expedite packets being flushed
 	 * for cases where there are no IQ completion interrupts.
@@ -693,12 +638,8 @@ octeon_prepare_soft_command(struct octeon_device *oct,
 		pki_ih3->tag     = LIO_CONTROL;
 		pki_ih3->tagtype = ATOMIC_TAG;
 		pki_ih3->qpg         =
-<<<<<<< HEAD
 			oct->instr_queue[sc->iq_no]->txpciq.s.ctrl_qpg;
 
-=======
-			oct->instr_queue[sc->iq_no]->txpciq.s.qpg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pki_ih3->pm          = 0x7;
 		pki_ih3->sl          = 8;
 
@@ -770,16 +711,12 @@ octeon_prepare_soft_command(struct octeon_device *oct,
 int octeon_send_soft_command(struct octeon_device *oct,
 			     struct octeon_soft_command *sc)
 {
-<<<<<<< HEAD
 	struct octeon_instr_queue *iq;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct octeon_instr_ih2 *ih2;
 	struct octeon_instr_ih3 *ih3;
 	struct octeon_instr_irh *irh;
 	u32 len;
 
-<<<<<<< HEAD
 	iq = oct->instr_queue[sc->iq_no];
 	if (!iq->allow_soft_cmds) {
 		dev_err(&oct->pci_dev->dev, "Soft commands are not allowed on Queue %d\n",
@@ -788,8 +725,6 @@ int octeon_send_soft_command(struct octeon_device *oct,
 		return IQ_SEND_FAILED;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (OCTEON_CN23XX_PF(oct) || OCTEON_CN23XX_VF(oct)) {
 		ih3 =  (struct octeon_instr_ih3 *)&sc->cmd.cmd3.ih3;
 		if (ih3->dlengsz) {

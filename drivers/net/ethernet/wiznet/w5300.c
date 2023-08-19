@@ -365,11 +365,7 @@ static void w5300_tx_timeout(struct net_device *ndev)
 	netif_wake_queue(ndev);
 }
 
-<<<<<<< HEAD
 static netdev_tx_t w5300_start_tx(struct sk_buff *skb, struct net_device *ndev)
-=======
-static int w5300_start_tx(struct sk_buff *skb, struct net_device *ndev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct w5300_priv *priv = netdev_priv(ndev);
 

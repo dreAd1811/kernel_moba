@@ -233,11 +233,7 @@ armv6_pmcr_counter_has_overflowed(unsigned long pmcr,
 	return ret;
 }
 
-<<<<<<< HEAD
 static inline u64 armv6pmu_read_counter(struct perf_event *event)
-=======
-static inline u32 armv6pmu_read_counter(struct perf_event *event)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct hw_perf_event *hwc = &event->hw;
 	int counter = hwc->idx;
@@ -255,11 +251,7 @@ static inline u32 armv6pmu_read_counter(struct perf_event *event)
 	return value;
 }
 
-<<<<<<< HEAD
 static inline void armv6pmu_write_counter(struct perf_event *event, u64 value)
-=======
-static inline void armv6pmu_write_counter(struct perf_event *event, u32 value)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct hw_perf_event *hwc = &event->hw;
 	int counter = hwc->idx;
@@ -311,19 +303,10 @@ static void armv6pmu_enable_event(struct perf_event *event)
 }
 
 static irqreturn_t
-<<<<<<< HEAD
 armv6pmu_handle_irq(struct arm_pmu *cpu_pmu)
 {
 	unsigned long pmcr = armv6_pmcr_read();
 	struct perf_sample_data data;
-=======
-armv6pmu_handle_irq(int irq_num,
-		    void *dev)
-{
-	unsigned long pmcr = armv6_pmcr_read();
-	struct perf_sample_data data;
-	struct arm_pmu *cpu_pmu = (struct arm_pmu *)dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct pmu_hw_events *cpuc = this_cpu_ptr(cpu_pmu->hw_events);
 	struct pt_regs *regs;
 	int idx;
@@ -428,15 +411,12 @@ armv6pmu_get_event_idx(struct pmu_hw_events *cpuc,
 	}
 }
 
-<<<<<<< HEAD
 static void armv6pmu_clear_event_idx(struct pmu_hw_events *cpuc,
 				     struct perf_event *event)
 {
 	clear_bit(event->hw.idx, cpuc->used_mask);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void armv6pmu_disable_event(struct perf_event *event)
 {
 	unsigned long val, mask, evt, flags;
@@ -517,18 +497,11 @@ static void armv6pmu_init(struct arm_pmu *cpu_pmu)
 	cpu_pmu->read_counter	= armv6pmu_read_counter;
 	cpu_pmu->write_counter	= armv6pmu_write_counter;
 	cpu_pmu->get_event_idx	= armv6pmu_get_event_idx;
-<<<<<<< HEAD
 	cpu_pmu->clear_event_idx = armv6pmu_clear_event_idx;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cpu_pmu->start		= armv6pmu_start;
 	cpu_pmu->stop		= armv6pmu_stop;
 	cpu_pmu->map_event	= armv6_map_event;
 	cpu_pmu->num_events	= 3;
-<<<<<<< HEAD
-=======
-	cpu_pmu->max_period	= (1LLU << 32) - 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int armv6_1136_pmu_init(struct arm_pmu *cpu_pmu)
@@ -575,18 +548,11 @@ static int armv6mpcore_pmu_init(struct arm_pmu *cpu_pmu)
 	cpu_pmu->read_counter	= armv6pmu_read_counter;
 	cpu_pmu->write_counter	= armv6pmu_write_counter;
 	cpu_pmu->get_event_idx	= armv6pmu_get_event_idx;
-<<<<<<< HEAD
 	cpu_pmu->clear_event_idx = armv6pmu_clear_event_idx;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cpu_pmu->start		= armv6pmu_start;
 	cpu_pmu->stop		= armv6pmu_stop;
 	cpu_pmu->map_event	= armv6mpcore_map_event;
 	cpu_pmu->num_events	= 3;
-<<<<<<< HEAD
-=======
-	cpu_pmu->max_period	= (1LLU << 32) - 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

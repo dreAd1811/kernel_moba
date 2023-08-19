@@ -55,10 +55,7 @@ configure specific aspects of kernel behavior to your liking.
    :maxdepth: 1
 
    initrd
-<<<<<<< HEAD
    cgroup-v2
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    serial-console
    braille-console
    parport
@@ -71,17 +68,11 @@ configure specific aspects of kernel behavior to your liking.
    mono
    java
    ras
-<<<<<<< HEAD
    bcache
    pm/index
    thunderbolt
    LSM/index
    mm/index
-=======
-   pm/index
-   thunderbolt
-   LSM/index
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 .. only::  subproject and html
 

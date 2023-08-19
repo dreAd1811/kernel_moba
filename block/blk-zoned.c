@@ -22,7 +22,6 @@ static inline sector_t blk_zone_start(struct request_queue *q,
 }
 
 /*
-<<<<<<< HEAD
  * Return true if a request is a write requests that needs zone write locking.
  */
 bool blk_req_needs_zone_write_lock(struct request *rq)
@@ -65,8 +64,6 @@ void __blk_req_zone_write_unlock(struct request *rq)
 EXPORT_SYMBOL_GPL(__blk_req_zone_write_unlock);
 
 /*
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Check that a zone report belongs to the partition.
  * If yes, fix its start sector and write pointer, copy it in the
  * zone information array and return true. Return false otherwise.
@@ -203,11 +200,7 @@ int blkdev_report_zones(struct block_device *bdev,
 		/* Get header in the first page */
 		ofst = 0;
 		if (!nr_rep) {
-<<<<<<< HEAD
 			hdr = addr;
-=======
-			hdr = (struct blk_zone_report_hdr *) addr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			nr_rep = hdr->nr_zones;
 			ofst = sizeof(struct blk_zone_report_hdr);
 		}
@@ -303,11 +296,7 @@ int blkdev_reset_zones(struct block_device *bdev,
 }
 EXPORT_SYMBOL_GPL(blkdev_reset_zones);
 
-<<<<<<< HEAD
 /*
-=======
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * BLKREPORTZONE ioctl processing.
  * Called from blkdev_ioctl.
  */
@@ -342,13 +331,8 @@ int blkdev_report_zones_ioctl(struct block_device *bdev, fmode_t mode,
 	if (rep.nr_zones > INT_MAX / sizeof(struct blk_zone))
 		return -ERANGE;
 
-<<<<<<< HEAD
 	zones = kvmalloc_array(rep.nr_zones, sizeof(struct blk_zone),
 			       GFP_KERNEL | __GFP_ZERO);
-=======
-	zones = kvmalloc(rep.nr_zones * sizeof(struct blk_zone),
-			GFP_KERNEL | __GFP_ZERO);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!zones)
 		return -ENOMEM;
 
@@ -375,11 +359,7 @@ int blkdev_report_zones_ioctl(struct block_device *bdev, fmode_t mode,
 	return ret;
 }
 
-<<<<<<< HEAD
 /*
-=======
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * BLKRESETZONE ioctl processing.
  * Called from blkdev_ioctl.
  */

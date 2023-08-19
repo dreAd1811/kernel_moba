@@ -117,7 +117,6 @@ int mx53_revision(void)
 	return mx5_cpu_rev;
 }
 EXPORT_SYMBOL(mx53_revision);
-<<<<<<< HEAD
 
 #define ARM_GPC		0x4
 #define DBGEN		BIT(16)
@@ -163,5 +162,3 @@ exit:
 	of_node_put(np);
 
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

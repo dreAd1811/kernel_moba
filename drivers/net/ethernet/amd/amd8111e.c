@@ -649,11 +649,7 @@ static void amd8111e_free_ring(struct amd8111e_priv *lp)
 static int amd8111e_tx(struct net_device *dev)
 {
 	struct amd8111e_priv *lp = netdev_priv(dev);
-<<<<<<< HEAD
 	int tx_index;
-=======
-	int tx_index = lp->tx_complete_idx & TX_RING_DR_MOD_MASK;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int status;
 	/* Complete all the transmit packet */
 	while (lp->tx_complete_idx != lp->tx_idx){
@@ -1078,25 +1074,12 @@ static int amd8111e_calc_coalesce(struct net_device *dev)
 				amd8111e_set_coalesce(dev,TX_INTR_COAL);
 				coal_conf->tx_coal_type = MEDIUM_COALESCE;
 			}
-<<<<<<< HEAD
 		} else if (tx_pkt_size >= 1024) {
 			if (coal_conf->tx_coal_type != HIGH_COALESCE) {
 				coal_conf->tx_timeout = 4;
 				coal_conf->tx_event_count = 8;
 				amd8111e_set_coalesce(dev, TX_INTR_COAL);
 				coal_conf->tx_coal_type = HIGH_COALESCE;
-=======
-
-		}
-		else if(tx_pkt_size >= 1024){
-			if (tx_pkt_size >= 1024){
-				if(coal_conf->tx_coal_type !=  HIGH_COALESCE){
-					coal_conf->tx_timeout = 4;
-					coal_conf->tx_event_count = 8;
-					amd8111e_set_coalesce(dev,TX_INTR_COAL);
-					coal_conf->tx_coal_type = HIGH_COALESCE;
-				}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		}
 	}
@@ -1682,15 +1665,9 @@ static int amd8111e_resume(struct pci_dev *pci_dev)
 	return 0;
 }
 
-<<<<<<< HEAD
 static void amd8111e_config_ipg(struct timer_list *t)
 {
 	struct amd8111e_priv *lp = from_timer(lp, t, ipg_data.ipg_timer);
-=======
-static void amd8111e_config_ipg(struct net_device *dev)
-{
-	struct amd8111e_priv *lp = netdev_priv(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ipg_info *ipg_data = &lp->ipg_data;
 	void __iomem *mmio = lp->mmio;
 	unsigned int prev_col_cnt = ipg_data->col_cnt;
@@ -1902,13 +1879,7 @@ static int amd8111e_probe_one(struct pci_dev *pdev,
 
 	/* Initialize software ipg timer */
 	if(lp->options & OPTION_DYN_IPG_ENABLE){
-<<<<<<< HEAD
 		timer_setup(&lp->ipg_data.ipg_timer, amd8111e_config_ipg, 0);
-=======
-		init_timer(&lp->ipg_data.ipg_timer);
-		lp->ipg_data.ipg_timer.data = (unsigned long) dev;
-		lp->ipg_data.ipg_timer.function = (void *)&amd8111e_config_ipg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		lp->ipg_data.ipg_timer.expires = jiffies +
 						 IPG_CONVERGE_JIFFIES;
 		lp->ipg_data.ipg = DEFAULT_IPG;

@@ -53,10 +53,7 @@ static DEFINE_SPINLOCK(cpa_lock);
 #define CPA_FLUSHTLB 1
 #define CPA_ARRAY 2
 #define CPA_PAGES_ARRAY 4
-<<<<<<< HEAD
 #define CPA_NO_CHECK_ALIAS 8 /* Do not search for aliases */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_PROC_FS
 static unsigned long direct_pages_count[PG_LEVEL_NUM];
@@ -97,7 +94,6 @@ void arch_report_meminfo(struct seq_file *m)
 static inline void split_page_count(int level) { }
 #endif
 
-<<<<<<< HEAD
 static inline int
 within(unsigned long addr, unsigned long start, unsigned long end)
 {
@@ -110,8 +106,6 @@ within_inclusive(unsigned long addr, unsigned long start, unsigned long end)
 	return addr >= start && addr <= end;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_X86_64
 
 static inline unsigned long highmap_start_pfn(void)
@@ -125,7 +119,6 @@ static inline unsigned long highmap_end_pfn(void)
 	return __pa_symbol(roundup(_brk_end, PMD_SIZE) - 1) >> PAGE_SHIFT;
 }
 
-<<<<<<< HEAD
 static bool __cpa_pfn_in_highmap(unsigned long pfn)
 {
 	/*
@@ -145,22 +138,6 @@ static bool __cpa_pfn_in_highmap(unsigned long pfn)
 
 #endif
 
-=======
-#endif
-
-static inline int
-within(unsigned long addr, unsigned long start, unsigned long end)
-{
-	return addr >= start && addr < end;
-}
-
-static inline int
-within_inclusive(unsigned long addr, unsigned long start, unsigned long end)
-{
-	return addr >= start && addr <= end;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Flushing functions
  */
@@ -213,11 +190,7 @@ static void __cpa_flush_all(void *arg)
 
 static void cpa_flush_all(unsigned long cache)
 {
-<<<<<<< HEAD
 	BUG_ON(irqs_disabled() && !early_boot_irqs_disabled);
-=======
-	BUG_ON(irqs_disabled());
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	on_each_cpu(__cpa_flush_all, (void *) cache, 1);
 }
@@ -281,11 +254,7 @@ static void cpa_flush_array(unsigned long *start, int numpages, int cache,
 	unsigned long do_wbinvd = cache && numpages >= 1024; /* 4M threshold */
 #endif
 
-<<<<<<< HEAD
 	BUG_ON(irqs_disabled() && !early_boot_irqs_disabled);
-=======
-	BUG_ON(irqs_disabled());
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	on_each_cpu(__cpa_flush_all, (void *) do_wbinvd, 1);
 
@@ -563,7 +532,6 @@ static void __set_pmd_pte(pte_t *kpte, unsigned long address, pte_t pte)
 #endif
 }
 
-<<<<<<< HEAD
 static pgprot_t pgprot_clear_protnone_bits(pgprot_t prot)
 {
 	/*
@@ -581,8 +549,6 @@ static pgprot_t pgprot_clear_protnone_bits(pgprot_t prot)
 	return prot;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int
 try_preserve_large_page(pte_t *kpte, unsigned long address,
 			struct cpa_data *cpa)
@@ -637,10 +603,7 @@ try_preserve_large_page(pte_t *kpte, unsigned long address,
 	 * up accordingly.
 	 */
 	old_pte = *kpte;
-<<<<<<< HEAD
 	/* Clear PSE (aka _PAGE_PAT) and move PAT bit to correct position */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	req_prot = pgprot_large_2_4k(old_prot);
 
 	pgprot_val(req_prot) &= ~pgprot_val(cpa->mask_clr);
@@ -652,25 +615,9 @@ try_preserve_large_page(pte_t *kpte, unsigned long address,
 	 * different bit positions in the two formats.
 	 */
 	req_prot = pgprot_4k_2_large(req_prot);
-<<<<<<< HEAD
 	req_prot = pgprot_clear_protnone_bits(req_prot);
 	if (pgprot_val(req_prot) & _PAGE_PRESENT)
 		pgprot_val(req_prot) |= _PAGE_PSE;
-=======
-
-	/*
-	 * Set the PSE and GLOBAL flags only if the PRESENT flag is
-	 * set otherwise pmd_present/pmd_huge will return true even on
-	 * a non present pmd. The canon_pgprot will clear _PAGE_GLOBAL
-	 * for the ancient hardware that doesn't support it.
-	 */
-	if (pgprot_val(req_prot) & _PAGE_PRESENT)
-		pgprot_val(req_prot) |= _PAGE_PSE | _PAGE_GLOBAL;
-	else
-		pgprot_val(req_prot) &= ~(_PAGE_PSE | _PAGE_GLOBAL);
-
-	req_prot = canon_pgprot(req_prot);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * old_pfn points to the large page base pfn. So we need
@@ -755,17 +702,12 @@ __split_large_page(struct cpa_data *cpa, pte_t *kpte, unsigned long address,
 	switch (level) {
 	case PG_LEVEL_2M:
 		ref_prot = pmd_pgprot(*(pmd_t *)kpte);
-<<<<<<< HEAD
 		/*
 		 * Clear PSE (aka _PAGE_PAT) and move
 		 * PAT bit to correct position.
 		 */
 		ref_prot = pgprot_large_2_4k(ref_prot);
 
-=======
-		/* clear PSE and promote PAT bit to correct position */
-		ref_prot = pgprot_large_2_4k(ref_prot);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ref_pfn = pmd_pfn(*(pmd_t *)kpte);
 		break;
 
@@ -788,31 +730,14 @@ __split_large_page(struct cpa_data *cpa, pte_t *kpte, unsigned long address,
 		return 1;
 	}
 
-<<<<<<< HEAD
 	ref_prot = pgprot_clear_protnone_bits(ref_prot);
-=======
-	/*
-	 * Set the GLOBAL flags only if the PRESENT flag is set
-	 * otherwise pmd/pte_present will return true even on a non
-	 * present pmd/pte. The canon_pgprot will clear _PAGE_GLOBAL
-	 * for the ancient hardware that doesn't support it.
-	 */
-	if (pgprot_val(ref_prot) & _PAGE_PRESENT)
-		pgprot_val(ref_prot) |= _PAGE_GLOBAL;
-	else
-		pgprot_val(ref_prot) &= ~_PAGE_GLOBAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Get the target pfn from the original entry:
 	 */
 	pfn = ref_pfn;
 	for (i = 0; i < PTRS_PER_PTE; i++, pfn += pfninc)
-<<<<<<< HEAD
 		set_pte(&pbase[i], pfn_pte(pfn, ref_prot));
-=======
-		set_pte(&pbase[i], pfn_pte(pfn, canon_pgprot(ref_prot)));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (virt_addr_valid(address)) {
 		unsigned long pfn = PFN_DOWN(__pa(address));
@@ -1028,23 +953,7 @@ static void populate_pte(struct cpa_data *cpa,
 
 	pte = pte_offset_kernel(pmd, start);
 
-<<<<<<< HEAD
 	pgprot = pgprot_clear_protnone_bits(pgprot);
-=======
-	/*
-	 * Set the GLOBAL flags only if the PRESENT flag is
-	 * set otherwise pte_present will return true even on
-	 * a non present pte. The canon_pgprot will clear
-	 * _PAGE_GLOBAL for the ancient hardware that doesn't
-	 * support it.
-	 */
-	if (pgprot_val(pgprot) & _PAGE_PRESENT)
-		pgprot_val(pgprot) |= _PAGE_GLOBAL;
-	else
-		pgprot_val(pgprot) &= ~_PAGE_GLOBAL;
-
-	pgprot = canon_pgprot(pgprot);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	while (num_pages-- && start < end) {
 		set_pte(pte, pfn_pte(cpa->pfn, pgprot));
@@ -1292,13 +1201,10 @@ static int __cpa_process_fault(struct cpa_data *cpa, unsigned long vaddr,
 		cpa->numpages = 1;
 		cpa->pfn = __pa(vaddr) >> PAGE_SHIFT;
 		return 0;
-<<<<<<< HEAD
 
 	} else if (__cpa_pfn_in_highmap(cpa->pfn)) {
 		/* Faults in the highmap are OK, so do not warn: */
 		return -EFAULT;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		WARN(1, KERN_WARNING "CPA: called for zero pte. "
 			"vaddr = %lx cpa->vaddr = %lx\n", vaddr,
@@ -1343,32 +1249,14 @@ repeat:
 
 		new_prot = static_protections(new_prot, address, pfn);
 
-<<<<<<< HEAD
 		new_prot = pgprot_clear_protnone_bits(new_prot);
-=======
-		/*
-		 * Set the GLOBAL flags only if the PRESENT flag is
-		 * set otherwise pte_present will return true even on
-		 * a non present pte. The canon_pgprot will clear
-		 * _PAGE_GLOBAL for the ancient hardware that doesn't
-		 * support it.
-		 */
-		if (pgprot_val(new_prot) & _PAGE_PRESENT)
-			pgprot_val(new_prot) |= _PAGE_GLOBAL;
-		else
-			pgprot_val(new_prot) &= ~_PAGE_GLOBAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/*
 		 * We need to keep the pfn from the existing PTE,
 		 * after all we're only going to change it's attributes
 		 * not the memory it points to
 		 */
-<<<<<<< HEAD
 		new_pte = pfn_pte(pfn, new_prot);
-=======
-		new_pte = pfn_pte(pfn, canon_pgprot(new_prot));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cpa->pfn = pfn;
 		/*
 		 * Do we really change anything ?
@@ -1469,12 +1357,7 @@ static int cpa_process_alias(struct cpa_data *cpa)
 	 * to touch the high mapped kernel as well:
 	 */
 	if (!within(vaddr, (unsigned long)_text, _brk_end) &&
-<<<<<<< HEAD
 	    __cpa_pfn_in_highmap(cpa->pfn)) {
-=======
-	    within_inclusive(cpa->pfn, highmap_start_pfn(),
-			     highmap_end_pfn())) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		unsigned long temp_cpa_vaddr = (cpa->pfn << PAGE_SHIFT) +
 					       __START_KERNEL_map - phys_base;
 		alias_cpa = *cpa;
@@ -1537,7 +1420,6 @@ static int __change_page_attr_set_clr(struct cpa_data *cpa, int checkalias)
 	return 0;
 }
 
-<<<<<<< HEAD
 /*
  * Machine check recovery code needs to change cache mode of poisoned
  * pages to UC to avoid speculative access logging another error. But
@@ -1561,8 +1443,6 @@ static inline unsigned long make_addr_canonical_again(unsigned long addr)
 }
 
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int change_page_attr_set_clr(unsigned long *addr, int numpages,
 				    pgprot_t mask_set, pgprot_t mask_clr,
 				    int force_split, int in_flag,
@@ -1575,19 +1455,11 @@ static int change_page_attr_set_clr(unsigned long *addr, int numpages,
 	memset(&cpa, 0, sizeof(cpa));
 
 	/*
-<<<<<<< HEAD
 	 * Check, if we are requested to set a not supported
 	 * feature.  Clearing non-supported features is OK.
 	 */
 	mask_set = canon_pgprot(mask_set);
 
-=======
-	 * Check, if we are requested to change a not supported
-	 * feature:
-	 */
-	mask_set = canon_pgprot(mask_set);
-	mask_clr = canon_pgprot(mask_clr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!pgprot_val(mask_set) && !pgprot_val(mask_clr) && !force_split)
 		return 0;
 
@@ -1616,11 +1488,7 @@ static int change_page_attr_set_clr(unsigned long *addr, int numpages,
 		 * Save address for cache flush. *addr is modified in the call
 		 * to __change_page_attr_set_clr() below.
 		 */
-<<<<<<< HEAD
 		baddr = make_addr_canonical_again(*addr);
-=======
-		baddr = *addr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Must avoid aliasing mappings in the highmem code */
@@ -1642,12 +1510,9 @@ static int change_page_attr_set_clr(unsigned long *addr, int numpages,
 
 	/* No alias checking for _NX bit modifications */
 	checkalias = (pgprot_val(mask_set) | pgprot_val(mask_clr)) != _PAGE_NX;
-<<<<<<< HEAD
 	/* Has caller explicitly disabled alias checking? */
 	if (in_flag & CPA_NO_CHECK_ALIAS)
 		checkalias = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = __change_page_attr_set_clr(&cpa, checkalias);
 
@@ -1934,7 +1799,6 @@ int set_memory_np(unsigned long addr, int numpages)
 	return change_page_attr_clear(&addr, numpages, __pgprot(_PAGE_PRESENT), 0);
 }
 
-<<<<<<< HEAD
 int set_memory_np_noalias(unsigned long addr, int numpages)
 {
 	int cpa_flags = CPA_NO_CHECK_ALIAS;
@@ -1944,15 +1808,12 @@ int set_memory_np_noalias(unsigned long addr, int numpages)
 					cpa_flags, NULL);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int set_memory_4k(unsigned long addr, int numpages)
 {
 	return change_page_attr_set_clr(&addr, numpages, __pgprot(0),
 					__pgprot(0), 1, 0, NULL);
 }
 
-<<<<<<< HEAD
 int set_memory_nonglobal(unsigned long addr, int numpages)
 {
 	return change_page_attr_clear(&addr, numpages,
@@ -1965,21 +1826,14 @@ int set_memory_global(unsigned long addr, int numpages)
 				    __pgprot(_PAGE_GLOBAL), 0);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __set_memory_enc_dec(unsigned long addr, int numpages, bool enc)
 {
 	struct cpa_data cpa;
 	unsigned long start;
 	int ret;
 
-<<<<<<< HEAD
 	/* Nothing to do if memory encryption is not active */
 	if (!mem_encrypt_active())
-=======
-	/* Nothing to do if the SME is not active */
-	if (!sme_active())
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	/* Should not be working on unaligned addresses */
@@ -2272,26 +2126,19 @@ int kernel_map_pages_in_pgd(pgd_t *pgd, u64 pfn, unsigned long address,
 		.pgd = pgd,
 		.numpages = numpages,
 		.mask_set = __pgprot(0),
-<<<<<<< HEAD
 		.mask_clr = __pgprot(0),
-=======
-		.mask_clr = __pgprot(~page_flags & (_PAGE_NX|_PAGE_RW)),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.flags = 0,
 	};
 
 	if (!(__supported_pte_mask & _PAGE_NX))
 		goto out;
 
-<<<<<<< HEAD
 	if (!(page_flags & _PAGE_NX))
 		cpa.mask_clr = __pgprot(_PAGE_NX);
 
 	if (!(page_flags & _PAGE_RW))
 		cpa.mask_clr = __pgprot(_PAGE_RW);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!(page_flags & _PAGE_ENC))
 		cpa.mask_clr = pgprot_encrypted(cpa.mask_clr);
 

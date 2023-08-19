@@ -225,15 +225,9 @@ interrupts.
 
 The following control flow is implemented (simplified excerpt)::
 
-<<<<<<< HEAD
     desc->irq_data.chip->irq_mask_ack();
     handle_irq_event(desc->action);
     desc->irq_data.chip->irq_unmask();
-=======
-    :c:func:`desc->irq_data.chip->irq_mask_ack`;
-    handle_irq_event(desc->action);
-    :c:func:`desc->irq_data.chip->irq_unmask`;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 Default Fast EOI IRQ flow handler
@@ -245,11 +239,7 @@ which only need an EOI at the end of the handler.
 The following control flow is implemented (simplified excerpt)::
 
     handle_irq_event(desc->action);
-<<<<<<< HEAD
     desc->irq_data.chip->irq_eoi();
-=======
-    :c:func:`desc->irq_data.chip->irq_eoi`;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 Default Edge IRQ flow handler
@@ -261,7 +251,6 @@ interrupts.
 The following control flow is implemented (simplified excerpt)::
 
     if (desc->status & running) {
-<<<<<<< HEAD
         desc->irq_data.chip->irq_mask_ack();
         desc->status |= pending | masked;
         return;
@@ -271,17 +260,6 @@ The following control flow is implemented (simplified excerpt)::
     do {
         if (desc->status & masked)
             desc->irq_data.chip->irq_unmask();
-=======
-        :c:func:`desc->irq_data.chip->irq_mask_ack`;
-        desc->status |= pending | masked;
-        return;
-    }
-    :c:func:`desc->irq_data.chip->irq_ack`;
-    desc->status |= running;
-    do {
-        if (desc->status & masked)
-            :c:func:`desc->irq_data.chip->irq_unmask`;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
         desc->status &= ~pending;
         handle_irq_event(desc->action);
     } while (status & pending);
@@ -315,17 +293,10 @@ simplified version without locking.
 The following control flow is implemented (simplified excerpt)::
 
     if (desc->irq_data.chip->irq_ack)
-<<<<<<< HEAD
         desc->irq_data.chip->irq_ack();
     handle_irq_event(desc->action);
     if (desc->irq_data.chip->irq_eoi)
         desc->irq_data.chip->irq_eoi();
-=======
-        :c:func:`desc->irq_data.chip->irq_ack`;
-    handle_irq_event(desc->action);
-    if (desc->irq_data.chip->irq_eoi)
-            :c:func:`desc->irq_data.chip->irq_eoi`;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 EOI Edge IRQ flow handler

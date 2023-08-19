@@ -29,7 +29,6 @@ config IIO_BUFFER_DMAENGINE
 
 	  Should be selected by drivers that want to use this functionality.
 
-<<<<<<< HEAD
 config IIO_BUFFER_HW_CONSUMER
 	tristate "Industrial I/O HW buffering"
 	help
@@ -40,8 +39,6 @@ config IIO_BUFFER_HW_CONSUMER
 	  Should be selected by drivers that want to use the generic Hw consumer
 	  interface.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config IIO_KFIFO_BUF
 	tristate "Industrial I/O buffering based on kfifo"
 	help

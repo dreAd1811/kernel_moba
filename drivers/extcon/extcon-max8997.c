@@ -25,11 +25,7 @@
 #include <linux/kobject.h>
 #include <linux/mfd/max8997.h>
 #include <linux/mfd/max8997-private.h>
-<<<<<<< HEAD
 #include <linux/extcon-provider.h>
-=======
-#include <linux/extcon.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/irqdomain.h>
 
 #define	DEV_NAME			"max8997-muic"
@@ -208,11 +204,7 @@ static int max8997_muic_set_debounce_time(struct max8997_muic_info *info,
 static int max8997_muic_set_path(struct max8997_muic_info *info,
 		u8 val, bool attached)
 {
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 ctrl1, ctrl2 = 0;
 
 	if (attached)
@@ -329,19 +321,12 @@ static int max8997_muic_handle_usb(struct max8997_muic_info *info,
 {
 	int ret = 0;
 
-<<<<<<< HEAD
 	if (usb_type == MAX8997_USB_HOST) {
 		ret = max8997_muic_set_path(info, info->path_usb, attached);
 		if (ret < 0) {
 			dev_err(info->dev, "failed to update muic register\n");
 			return ret;
 		}
-=======
-	ret = max8997_muic_set_path(info, info->path_usb, attached);
-	if (ret < 0) {
-		dev_err(info->dev, "failed to update muic register\n");
-		return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	switch (usb_type) {

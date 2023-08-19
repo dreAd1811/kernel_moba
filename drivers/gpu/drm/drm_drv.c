@@ -32,13 +32,9 @@
 #include <linux/moduleparam.h>
 #include <linux/mount.h>
 #include <linux/slab.h>
-<<<<<<< HEAD
 #include <linux/srcu.h>
 
 #include <drm/drm_client.h>
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <drm/drm_drv.h>
 #include <drm/drmP.h>
 
@@ -58,7 +54,6 @@ MODULE_AUTHOR("Gareth Hughes, Leif Delgass, José Fonseca, Jon Smirl");
 MODULE_DESCRIPTION("DRM shared core routines");
 MODULE_LICENSE("GPL and additional rights");
 MODULE_PARM_DESC(debug, "Enable debug output, where each bit enables a debug category.\n"
-<<<<<<< HEAD
 "\t\tBit 0 (0x01)  will enable CORE messages (drm core code)\n"
 "\t\tBit 1 (0x02)  will enable DRIVER messages (drm controller code)\n"
 "\t\tBit 2 (0x04)  will enable KMS messages (modesetting code)\n"
@@ -67,15 +62,6 @@ MODULE_PARM_DESC(debug, "Enable debug output, where each bit enables a debug cat
 "\t\tBit 5 (0x20)  will enable VBL messages (vblank code)\n"
 "\t\tBit 7 (0x80)  will enable LEASE messages (leasing code)\n"
 "\t\tBit 8 (0x100) will enable DP messages (displayport code)");
-=======
-"\t\tBit 0 (0x01) will enable CORE messages (drm core code)\n"
-"\t\tBit 1 (0x02) will enable DRIVER messages (drm controller code)\n"
-"\t\tBit 2 (0x04) will enable KMS messages (modesetting code)\n"
-"\t\tBit 3 (0x08) will enable PRIME messages (prime code)\n"
-"\t\tBit 4 (0x10) will enable ATOMIC messages (atomic code)\n"
-"\t\tBit 5 (0x20) will enable VBL messages (vblank code)\n"
-"\t\tBit 7 (0x80) will enable LEASE messages (leasing code)");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 module_param_named(debug, drm_debug, int, 0600);
 
 static DEFINE_SPINLOCK(drm_minor_lock);
@@ -92,56 +78,7 @@ static bool drm_core_init_complete = false;
 
 static struct dentry *drm_debugfs_root;
 
-<<<<<<< HEAD
 DEFINE_STATIC_SRCU(drm_unplug_srcu);
-=======
-#define DRM_PRINTK_FMT "[" DRM_NAME ":%s]%s %pV"
-
-void drm_dev_printk(const struct device *dev, const char *level,
-		    unsigned int category, const char *function_name,
-		    const char *prefix, const char *format, ...)
-{
-	struct va_format vaf;
-	va_list args;
-
-	if (category != DRM_UT_NONE && !(drm_debug & category))
-		return;
-
-	va_start(args, format);
-	vaf.fmt = format;
-	vaf.va = &args;
-
-	if (dev)
-		dev_printk(level, dev, DRM_PRINTK_FMT, function_name, prefix,
-			   &vaf);
-	else
-		printk("%s" DRM_PRINTK_FMT, level, function_name, prefix, &vaf);
-
-	va_end(args);
-}
-EXPORT_SYMBOL(drm_dev_printk);
-
-void drm_printk(const char *level, unsigned int category,
-		const char *format, ...)
-{
-	struct va_format vaf;
-	va_list args;
-
-	if (category != DRM_UT_NONE && !(drm_debug & category))
-		return;
-
-	va_start(args, format);
-	vaf.fmt = format;
-	vaf.va = &args;
-
-	printk("%s" "[" DRM_NAME ":%ps]%s %pV",
-	       level, __builtin_return_address(0),
-	       strcmp(level, KERN_ERR) == 0 ? " *ERROR*" : "", &vaf);
-
-	va_end(args);
-}
-EXPORT_SYMBOL(drm_printk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * DRM Minors
@@ -164,15 +101,8 @@ static struct drm_minor **drm_minor_get_slot(struct drm_device *dev,
 		return &dev->primary;
 	case DRM_MINOR_RENDER:
 		return &dev->render;
-<<<<<<< HEAD
 	default:
 		BUG();
-=======
-	case DRM_MINOR_CONTROL:
-		return &dev->control;
-	default:
-		return NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -313,21 +243,13 @@ struct drm_minor *drm_minor_acquire(unsigned int minor_id)
 	spin_lock_irqsave(&drm_minor_lock, flags);
 	minor = idr_find(&drm_minors_idr, minor_id);
 	if (minor)
-<<<<<<< HEAD
 		drm_dev_get(minor->dev);
-=======
-		drm_dev_ref(minor->dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irqrestore(&drm_minor_lock, flags);
 
 	if (!minor) {
 		return ERR_PTR(-ENODEV);
 	} else if (drm_dev_is_unplugged(minor->dev)) {
-<<<<<<< HEAD
 		drm_dev_put(minor->dev);
-=======
-		drm_dev_unref(minor->dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ERR_PTR(-ENODEV);
 	}
 
@@ -336,11 +258,7 @@ struct drm_minor *drm_minor_acquire(unsigned int minor_id)
 
 void drm_minor_release(struct drm_minor *minor)
 {
-<<<<<<< HEAD
 	drm_dev_put(minor->dev);
-=======
-	drm_dev_unref(minor->dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -365,19 +283,11 @@ void drm_minor_release(struct drm_minor *minor)
  * When cleaning up a device instance everything needs to be done in reverse:
  * First unpublish the device instance with drm_dev_unregister(). Then clean up
  * any other resources allocated at device initialization and drop the driver's
-<<<<<<< HEAD
  * reference to &drm_device using drm_dev_put().
  *
  * Note that the lifetime rules for &drm_device instance has still a lot of
  * historical baggage. Hence use the reference counting provided by
  * drm_dev_get() and drm_dev_put() only carefully.
-=======
- * reference to &drm_device using drm_dev_unref().
- *
- * Note that the lifetime rules for &drm_device instance has still a lot of
- * historical baggage. Hence use the reference counting provided by
- * drm_dev_ref() and drm_dev_unref() only carefully.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * It is recommended that drivers embed &struct drm_device into their own device
  * structure, which is supported through drm_dev_init().
@@ -392,11 +302,7 @@ void drm_minor_release(struct drm_minor *minor)
  * Cleans up all DRM device, calling drm_lastclose().
  *
  * Note: Use of this function is deprecated. It will eventually go away
-<<<<<<< HEAD
  * completely.  Please use drm_dev_unregister() and drm_dev_put() explicitly
-=======
- * completely.  Please use drm_dev_unregister() and drm_dev_unref() explicitly
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * instead to make sure that the device isn't userspace accessible any more
  * while teardown is in progress, ensuring that userspace can't access an
  * inconsistent state.
@@ -411,7 +317,6 @@ void drm_put_dev(struct drm_device *dev)
 	}
 
 	drm_dev_unregister(dev);
-<<<<<<< HEAD
 	drm_dev_put(dev);
 }
 EXPORT_SYMBOL(drm_put_dev);
@@ -453,35 +358,19 @@ void drm_dev_exit(int idx)
 	srcu_read_unlock(&drm_unplug_srcu, idx);
 }
 EXPORT_SYMBOL(drm_dev_exit);
-=======
-	drm_dev_unref(dev);
-}
-EXPORT_SYMBOL(drm_put_dev);
-
-static void drm_device_set_unplugged(struct drm_device *dev)
-{
-	smp_wmb();
-	atomic_set(&dev->unplugged, 1);
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * drm_dev_unplug - unplug a DRM device
  * @dev: DRM device
  *
  * This unplugs a hotpluggable DRM device, which makes it inaccessible to
-<<<<<<< HEAD
  * userspace operations. Entry-points can use drm_dev_enter() and
  * drm_dev_exit() to protect device resources in a race free manner. This
-=======
- * userspace operations. Entry-points can use drm_dev_is_unplugged(). This
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * essentially unregisters the device like drm_dev_unregister(), but can be
  * called while there are still open users of @dev.
  */
 void drm_dev_unplug(struct drm_device *dev)
 {
-<<<<<<< HEAD
 	/*
 	 * After synchronizing any critical read section is guaranteed to see
 	 * the new value of ->unplugged, and any critical section which might
@@ -493,15 +382,6 @@ void drm_dev_unplug(struct drm_device *dev)
 
 	drm_dev_unregister(dev);
 	drm_dev_put(dev);
-=======
-	drm_dev_unregister(dev);
-
-	mutex_lock(&drm_global_mutex);
-	drm_device_set_unplugged(dev);
-	if (dev->open_count == 0)
-		drm_dev_unref(dev);
-	mutex_unlock(&drm_global_mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(drm_dev_unplug);
 
@@ -589,13 +469,8 @@ static void drm_fs_inode_free(struct inode *inode)
  * initialization sequence to make sure userspace can't access an inconsistent
  * state.
  *
-<<<<<<< HEAD
  * The initial ref-count of the object is 1. Use drm_dev_get() and
  * drm_dev_put() to take and drop further ref-counts.
-=======
- * The initial ref-count of the object is 1. Use drm_dev_ref() and
- * drm_dev_unref() to take and drop further ref-counts.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Note that for purely virtual devices @parent can be NULL.
  *
@@ -628,11 +503,8 @@ int drm_dev_init(struct drm_device *dev,
 	dev->driver = driver;
 
 	INIT_LIST_HEAD(&dev->filelist);
-<<<<<<< HEAD
 	INIT_LIST_HEAD(&dev->filelist_internal);
 	INIT_LIST_HEAD(&dev->clientlist);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INIT_LIST_HEAD(&dev->ctxlist);
 	INIT_LIST_HEAD(&dev->vmalist);
 	INIT_LIST_HEAD(&dev->maplist);
@@ -642,10 +514,7 @@ int drm_dev_init(struct drm_device *dev,
 	spin_lock_init(&dev->event_lock);
 	mutex_init(&dev->struct_mutex);
 	mutex_init(&dev->filelist_mutex);
-<<<<<<< HEAD
 	mutex_init(&dev->clientlist_mutex);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_init(&dev->ctxlist_mutex);
 	mutex_init(&dev->master_mutex);
 
@@ -697,19 +566,12 @@ err_ctxbitmap:
 err_minors:
 	drm_minor_free(dev, DRM_MINOR_PRIMARY);
 	drm_minor_free(dev, DRM_MINOR_RENDER);
-<<<<<<< HEAD
-=======
-	drm_minor_free(dev, DRM_MINOR_CONTROL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drm_fs_inode_free(dev->anon_inode);
 err_free:
 	put_device(dev->dev);
 	mutex_destroy(&dev->master_mutex);
 	mutex_destroy(&dev->ctxlist_mutex);
-<<<<<<< HEAD
 	mutex_destroy(&dev->clientlist_mutex);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_destroy(&dev->filelist_mutex);
 	mutex_destroy(&dev->struct_mutex);
 	return ret;
@@ -741,19 +603,12 @@ void drm_dev_fini(struct drm_device *dev)
 
 	drm_minor_free(dev, DRM_MINOR_PRIMARY);
 	drm_minor_free(dev, DRM_MINOR_RENDER);
-<<<<<<< HEAD
-=======
-	drm_minor_free(dev, DRM_MINOR_CONTROL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	put_device(dev->dev);
 
 	mutex_destroy(&dev->master_mutex);
 	mutex_destroy(&dev->ctxlist_mutex);
-<<<<<<< HEAD
 	mutex_destroy(&dev->clientlist_mutex);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_destroy(&dev->filelist_mutex);
 	mutex_destroy(&dev->struct_mutex);
 	kfree(dev->unique);
@@ -771,13 +626,8 @@ EXPORT_SYMBOL(drm_dev_fini);
  * initialization sequence to make sure userspace can't access an inconsistent
  * state.
  *
-<<<<<<< HEAD
  * The initial ref-count of the object is 1. Use drm_dev_get() and
  * drm_dev_put() to take and drop further ref-counts.
-=======
- * The initial ref-count of the object is 1. Use drm_dev_ref() and
- * drm_dev_unref() to take and drop further ref-counts.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Note that for purely virtual devices @parent can be NULL.
  *
@@ -820,35 +670,22 @@ static void drm_dev_release(struct kref *ref)
 }
 
 /**
-<<<<<<< HEAD
  * drm_dev_get - Take reference of a DRM device
  * @dev: device to take reference of or NULL
  *
  * This increases the ref-count of @dev by one. You *must* already own a
  * reference when calling this. Use drm_dev_put() to drop this reference
-=======
- * drm_dev_ref - Take reference of a DRM device
- * @dev: device to take reference of or NULL
- *
- * This increases the ref-count of @dev by one. You *must* already own a
- * reference when calling this. Use drm_dev_unref() to drop this reference
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * again.
  *
  * This function never fails. However, this function does not provide *any*
  * guarantee whether the device is alive or running. It only provides a
  * reference to the object and the memory associated with it.
  */
-<<<<<<< HEAD
 void drm_dev_get(struct drm_device *dev)
-=======
-void drm_dev_ref(struct drm_device *dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (dev)
 		kref_get(&dev->ref);
 }
-<<<<<<< HEAD
 EXPORT_SYMBOL(drm_dev_get);
 
 /**
@@ -864,30 +701,17 @@ void drm_dev_put(struct drm_device *dev)
 		kref_put(&dev->ref, drm_dev_release);
 }
 EXPORT_SYMBOL(drm_dev_put);
-=======
-EXPORT_SYMBOL(drm_dev_ref);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * drm_dev_unref - Drop reference of a DRM device
  * @dev: device to drop reference of or NULL
  *
-<<<<<<< HEAD
  * This is a compatibility alias for drm_dev_put() and should not be used by new
  * code.
  */
 void drm_dev_unref(struct drm_device *dev)
 {
 	drm_dev_put(dev);
-=======
- * This decreases the ref-count of @dev by one. The device is destroyed if the
- * ref-count drops to zero.
- */
-void drm_dev_unref(struct drm_device *dev)
-{
-	if (dev)
-		kref_put(&dev->ref, drm_dev_release);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(drm_dev_unref);
 
@@ -974,13 +798,6 @@ int drm_dev_register(struct drm_device *dev, unsigned long flags)
 
 	mutex_lock(&drm_global_mutex);
 
-<<<<<<< HEAD
-=======
-	ret = drm_minor_register(dev, DRM_MINOR_CONTROL);
-	if (ret)
-		goto err_minors;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = drm_minor_register(dev, DRM_MINOR_RENDER);
 	if (ret)
 		goto err_minors;
@@ -1018,10 +835,6 @@ err_minors:
 	remove_compat_control_link(dev);
 	drm_minor_unregister(dev, DRM_MINOR_PRIMARY);
 	drm_minor_unregister(dev, DRM_MINOR_RENDER);
-<<<<<<< HEAD
-=======
-	drm_minor_unregister(dev, DRM_MINOR_CONTROL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out_unlock:
 	mutex_unlock(&drm_global_mutex);
 	return ret;
@@ -1034,11 +847,7 @@ EXPORT_SYMBOL(drm_dev_register);
  *
  * Unregister the DRM device from the system. This does the reverse of
  * drm_dev_register() but does not deallocate the device. The caller must call
-<<<<<<< HEAD
  * drm_dev_put() to drop their final reference.
-=======
- * drm_dev_unref() to drop their final reference.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * A special form of unregistering for hotpluggable devices is drm_dev_unplug(),
  * which can be called while there are still open users of @dev.
@@ -1055,11 +864,8 @@ void drm_dev_unregister(struct drm_device *dev)
 
 	dev->registered = false;
 
-<<<<<<< HEAD
 	drm_client_dev_unregister(dev);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (drm_core_check_feature(dev, DRIVER_MODESET))
 		drm_modeset_unregister_all(dev);
 
@@ -1075,10 +881,6 @@ void drm_dev_unregister(struct drm_device *dev)
 	remove_compat_control_link(dev);
 	drm_minor_unregister(dev, DRM_MINOR_PRIMARY);
 	drm_minor_unregister(dev, DRM_MINOR_RENDER);
-<<<<<<< HEAD
-=======
-	drm_minor_unregister(dev, DRM_MINOR_CONTROL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(drm_dev_unregister);
 

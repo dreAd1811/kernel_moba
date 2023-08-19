@@ -65,10 +65,7 @@ struct pmbus_sensor {
 	u16 reg;		/* register */
 	enum pmbus_sensor_classes class;	/* sensor class */
 	bool update;		/* runtime sensor update needed */
-<<<<<<< HEAD
 	bool convert;		/* Whether or not to apply linear/vid/direct */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int data;		/* Sensor data.
 				   Negative if there was a read error */
 };
@@ -133,7 +130,6 @@ struct pmbus_debugfs_entry {
 	u8 reg;
 };
 
-<<<<<<< HEAD
 static const int pmbus_fan_rpm_mask[] = {
 	PB_FAN_1_RPM,
 	PB_FAN_2_RPM,
@@ -155,8 +151,6 @@ static const int pmbus_fan_command_registers[] = {
 	PMBUS_FAN_COMMAND_4,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void pmbus_clear_cache(struct i2c_client *client)
 {
 	struct pmbus_data *data = i2c_get_clientdata(client);
@@ -168,7 +162,6 @@ EXPORT_SYMBOL_GPL(pmbus_clear_cache);
 int pmbus_set_page(struct i2c_client *client, int page)
 {
 	struct pmbus_data *data = i2c_get_clientdata(client);
-<<<<<<< HEAD
 	int rv;
 
 	if (page < 0 || page == data->currpage)
@@ -190,20 +183,6 @@ int pmbus_set_page(struct i2c_client *client, int page)
 	data->currpage = page;
 
 	return 0;
-=======
-	int rv = 0;
-	int newpage;
-
-	if (page >= 0 && page != data->currpage) {
-		rv = i2c_smbus_write_byte_data(client, PMBUS_PAGE, page);
-		newpage = i2c_smbus_read_byte_data(client, PMBUS_PAGE);
-		if (newpage != page)
-			rv = -EIO;
-		else
-			data->currpage = page;
-	}
-	return rv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(pmbus_set_page);
 
@@ -250,7 +229,6 @@ int pmbus_write_word_data(struct i2c_client *client, int page, u8 reg,
 }
 EXPORT_SYMBOL_GPL(pmbus_write_word_data);
 
-<<<<<<< HEAD
 
 static int pmbus_write_virt_reg(struct i2c_client *client, int page, int reg,
 				u16 word)
@@ -273,8 +251,6 @@ static int pmbus_write_virt_reg(struct i2c_client *client, int page, int reg,
 	return rv;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * _pmbus_write_word_data() is similar to pmbus_write_word_data(), but checks if
  * a device specific mapping function exists and calls it if necessary.
@@ -291,7 +267,6 @@ static int _pmbus_write_word_data(struct i2c_client *client, int page, int reg,
 		if (status != -ENODATA)
 			return status;
 	}
-<<<<<<< HEAD
 
 	if (reg >= PMBUS_VIRT_BASE)
 		return pmbus_write_virt_reg(client, page, reg, word);
@@ -324,13 +299,6 @@ int pmbus_update_fan(struct i2c_client *client, int page, int id,
 }
 EXPORT_SYMBOL_GPL(pmbus_update_fan);
 
-=======
-	if (reg >= PMBUS_VIRT_BASE)
-		return -ENXIO;
-	return pmbus_write_word_data(client, page, reg, word);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int pmbus_read_word_data(struct i2c_client *client, int page, u8 reg)
 {
 	int rv;
@@ -343,7 +311,6 @@ int pmbus_read_word_data(struct i2c_client *client, int page, u8 reg)
 }
 EXPORT_SYMBOL_GPL(pmbus_read_word_data);
 
-<<<<<<< HEAD
 static int pmbus_read_virt_reg(struct i2c_client *client, int page, int reg)
 {
 	int rv;
@@ -362,8 +329,6 @@ static int pmbus_read_virt_reg(struct i2c_client *client, int page, int reg)
 	return rv;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * _pmbus_read_word_data() is similar to pmbus_read_word_data(), but checks if
  * a device specific mapping function exists and calls it if necessary.
@@ -379,15 +344,10 @@ static int _pmbus_read_word_data(struct i2c_client *client, int page, int reg)
 		if (status != -ENODATA)
 			return status;
 	}
-<<<<<<< HEAD
 
 	if (reg >= PMBUS_VIRT_BASE)
 		return pmbus_read_virt_reg(client, page, reg);
 
-=======
-	if (reg >= PMBUS_VIRT_BASE)
-		return -ENXIO;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return pmbus_read_word_data(client, page, reg);
 }
 
@@ -452,7 +412,6 @@ static int _pmbus_read_byte_data(struct i2c_client *client, int page, int reg)
 	return pmbus_read_byte_data(client, page, reg);
 }
 
-<<<<<<< HEAD
 static struct pmbus_sensor *pmbus_find_sensor(struct pmbus_data *data, int page,
 					      int reg)
 {
@@ -515,8 +474,6 @@ int pmbus_get_fan_rate_cached(struct i2c_client *client, int page, int id,
 }
 EXPORT_SYMBOL_GPL(pmbus_get_fan_rate_cached);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void pmbus_clear_fault_page(struct i2c_client *client, int page)
 {
 	_pmbus_write_byte(client, page, PMBUS_CLEAR_FAULTS);
@@ -718,11 +675,7 @@ static long pmbus_reg2data_direct(struct pmbus_data *data,
 	/* X = 1/m * (Y * 10^-R - b) */
 	R = -R;
 	/* scale result to milli-units for everything but fans */
-<<<<<<< HEAD
 	if (!(sensor->class == PSC_FAN || sensor->class == PSC_PWM)) {
-=======
-	if (sensor->class != PSC_FAN) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		R += 3;
 		b *= 1000;
 	}
@@ -777,12 +730,9 @@ static long pmbus_reg2data(struct pmbus_data *data, struct pmbus_sensor *sensor)
 {
 	long val;
 
-<<<<<<< HEAD
 	if (!sensor->convert)
 		return sensor->data;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (data->info->format[sensor->class]) {
 	case direct:
 		val = pmbus_reg2data_direct(data, sensor);
@@ -887,11 +837,7 @@ static u16 pmbus_data2reg_direct(struct pmbus_data *data,
 	}
 
 	/* Calculate Y = (m * X + b) * 10^R */
-<<<<<<< HEAD
 	if (!(sensor->class == PSC_FAN || sensor->class == PSC_PWM)) {
-=======
-	if (sensor->class != PSC_FAN) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		R -= 3;		/* Adjust R and b for data in milli-units */
 		b *= 1000;
 	}
@@ -922,12 +868,9 @@ static u16 pmbus_data2reg(struct pmbus_data *data,
 {
 	u16 regval;
 
-<<<<<<< HEAD
 	if (!sensor->convert)
 		return val;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (data->info->format[sensor->class]) {
 	case direct:
 		regval = pmbus_data2reg_direct(data, sensor, val);
@@ -1140,12 +1083,8 @@ static struct pmbus_sensor *pmbus_add_sensor(struct pmbus_data *data,
 					     const char *name, const char *type,
 					     int seq, int page, int reg,
 					     enum pmbus_sensor_classes class,
-<<<<<<< HEAD
 					     bool update, bool readonly,
 					     bool convert)
-=======
-					     bool update, bool readonly)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct pmbus_sensor *sensor;
 	struct device_attribute *a;
@@ -1155,7 +1094,6 @@ static struct pmbus_sensor *pmbus_add_sensor(struct pmbus_data *data,
 		return NULL;
 	a = &sensor->attribute;
 
-<<<<<<< HEAD
 	if (type)
 		snprintf(sensor->name, sizeof(sensor->name), "%s%d_%s",
 			 name, seq, type);
@@ -1163,18 +1101,11 @@ static struct pmbus_sensor *pmbus_add_sensor(struct pmbus_data *data,
 		snprintf(sensor->name, sizeof(sensor->name), "%s%d",
 			 name, seq);
 
-=======
-	snprintf(sensor->name, sizeof(sensor->name), "%s%d_%s",
-		 name, seq, type);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sensor->page = page;
 	sensor->reg = reg;
 	sensor->class = class;
 	sensor->update = update;
-<<<<<<< HEAD
 	sensor->convert = convert;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pmbus_dev_attr_init(a, sensor->name,
 			    readonly ? S_IRUGO : S_IRUGO | S_IWUSR,
 			    pmbus_show_sensor, pmbus_set_sensor);
@@ -1273,11 +1204,7 @@ static int pmbus_add_limit_attrs(struct i2c_client *client,
 			curr = pmbus_add_sensor(data, name, l->attr, index,
 						page, l->reg, attr->class,
 						attr->update || l->update,
-<<<<<<< HEAD
 						false, true);
-=======
-						false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (!curr)
 				return -ENOMEM;
 			if (l->sbit && (info->func[page] & attr->sfunc)) {
@@ -1317,11 +1244,7 @@ static int pmbus_add_sensor_attrs_one(struct i2c_client *client,
 			return ret;
 	}
 	base = pmbus_add_sensor(data, name, "input", index, page, attr->reg,
-<<<<<<< HEAD
 				attr->class, true, true, true);
-=======
-				attr->class, true, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!base)
 		return -ENOMEM;
 	if (attr->sfunc) {
@@ -1870,16 +1793,6 @@ static const int pmbus_fan_registers[] = {
 	PMBUS_READ_FAN_SPEED_4
 };
 
-<<<<<<< HEAD
-=======
-static const int pmbus_fan_config_registers[] = {
-	PMBUS_FAN_CONFIG_12,
-	PMBUS_FAN_CONFIG_12,
-	PMBUS_FAN_CONFIG_34,
-	PMBUS_FAN_CONFIG_34
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const int pmbus_fan_status_registers[] = {
 	PMBUS_STATUS_FAN_12,
 	PMBUS_STATUS_FAN_12,
@@ -1902,7 +1815,6 @@ static const u32 pmbus_fan_status_flags[] = {
 };
 
 /* Fans */
-<<<<<<< HEAD
 
 /* Precondition: FAN_CONFIG_x_y and FAN_COMMAND_x must exist for the fan ID */
 static int pmbus_add_fan_ctrl(struct i2c_client *client,
@@ -1939,8 +1851,6 @@ static int pmbus_add_fan_ctrl(struct i2c_client *client,
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int pmbus_add_fan_attributes(struct i2c_client *client,
 				    struct pmbus_data *data)
 {
@@ -1975,7 +1885,6 @@ static int pmbus_add_fan_attributes(struct i2c_client *client,
 
 			if (pmbus_add_sensor(data, "fan", "input", index,
 					     page, pmbus_fan_registers[f],
-<<<<<<< HEAD
 					     PSC_FAN, true, true, true) == NULL)
 				return -ENOMEM;
 
@@ -1988,11 +1897,6 @@ static int pmbus_add_fan_attributes(struct i2c_client *client,
 					return ret;
 			}
 
-=======
-					     PSC_FAN, true, true) == NULL)
-				return -ENOMEM;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/*
 			 * Each fan status register covers multiple fans,
 			 * so we have to do some magic.
@@ -2301,13 +2205,8 @@ static int pmbus_init_debugfs(struct i2c_client *client,
 	}
 
 	/* Allocate the max possible entries we need. */
-<<<<<<< HEAD
 	entries = devm_kcalloc(data->dev,
 			       data->info->pages * 10, sizeof(*entries),
-=======
-	entries = devm_kzalloc(data->dev,
-			       sizeof(*entries) * (data->info->pages * 10),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       GFP_KERNEL);
 	if (!entries)
 		return -ENOMEM;
@@ -2511,7 +2410,6 @@ int pmbus_do_remove(struct i2c_client *client)
 }
 EXPORT_SYMBOL_GPL(pmbus_do_remove);
 
-<<<<<<< HEAD
 struct dentry *pmbus_get_debugfs_dir(struct i2c_client *client)
 {
 	struct pmbus_data *data = i2c_get_clientdata(client);
@@ -2520,8 +2418,6 @@ struct dentry *pmbus_get_debugfs_dir(struct i2c_client *client)
 }
 EXPORT_SYMBOL_GPL(pmbus_get_debugfs_dir);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __init pmbus_core_init(void)
 {
 	pmbus_debugfs_dir = debugfs_create_dir("pmbus", NULL);

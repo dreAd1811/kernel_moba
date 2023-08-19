@@ -49,11 +49,8 @@ static u32 to_codec_type(u32 pixfmt)
 		return HFI_VIDEO_CODEC_VP9;
 	case V4L2_PIX_FMT_XVID:
 		return HFI_VIDEO_CODEC_DIVX;
-<<<<<<< HEAD
 	case V4L2_PIX_FMT_HEVC:
 		return HFI_VIDEO_CODEC_HEVC;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		return 0;
 	}
@@ -93,15 +90,6 @@ unlock:
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
-static int core_deinit_wait_atomic_t(atomic_t *p)
-{
-	schedule();
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int hfi_core_deinit(struct venus_core *core, bool blocking)
 {
 	int ret = 0, empty;
@@ -120,13 +108,8 @@ int hfi_core_deinit(struct venus_core *core, bool blocking)
 
 	if (!empty) {
 		mutex_unlock(&core->lock);
-<<<<<<< HEAD
 		wait_var_event(&core->insts_count,
 			       !atomic_read(&core->insts_count));
-=======
-		wait_on_atomic_t(&core->insts_count, core_deinit_wait_atomic_t,
-				 TASK_UNINTERRUPTIBLE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_lock(&core->lock);
 	}
 
@@ -222,22 +205,12 @@ int hfi_session_init(struct venus_inst *inst, u32 pixfmt)
 {
 	struct venus_core *core = inst->core;
 	const struct hfi_ops *ops = core->ops;
-<<<<<<< HEAD
 	int ret;
 
 	inst->hfi_codec = to_codec_type(pixfmt);
 	reinit_completion(&inst->done);
 
 	ret = ops->session_init(inst, inst->session_type, inst->hfi_codec);
-=======
-	u32 codec;
-	int ret;
-
-	codec = to_codec_type(pixfmt);
-	reinit_completion(&inst->done);
-
-	ret = ops->session_init(inst, inst->session_type, codec);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -257,13 +230,8 @@ void hfi_session_destroy(struct venus_inst *inst)
 
 	mutex_lock(&core->lock);
 	list_del_init(&inst->list);
-<<<<<<< HEAD
 	if (atomic_dec_and_test(&core->insts_count))
 		wake_up_var(&core->insts_count);
-=======
-	atomic_dec(&core->insts_count);
-	wake_up_atomic_t(&core->insts_count);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&core->lock);
 }
 EXPORT_SYMBOL_GPL(hfi_session_destroy);
@@ -345,11 +313,7 @@ int hfi_session_continue(struct venus_inst *inst)
 {
 	struct venus_core *core = inst->core;
 
-<<<<<<< HEAD
 	if (core->res->hfi_version == HFI_VERSION_1XX)
-=======
-	if (core->res->hfi_version != HFI_VERSION_3XX)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	return core->ops->session_continue(inst);
@@ -510,12 +474,8 @@ int hfi_session_process_buf(struct venus_inst *inst, struct hfi_frame_data *fd)
 
 	if (fd->buffer_type == HFI_BUFFER_INPUT)
 		return ops->session_etb(inst, fd);
-<<<<<<< HEAD
 	else if (fd->buffer_type == HFI_BUFFER_OUTPUT ||
 		 fd->buffer_type == HFI_BUFFER_OUTPUT2)
-=======
-	else if (fd->buffer_type == HFI_BUFFER_OUTPUT)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ops->session_ftb(inst, fd);
 
 	return -EINVAL;

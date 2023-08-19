@@ -78,11 +78,7 @@
 };
 
 &mmc0 {
-<<<<<<< HEAD
 	pinctrl-0 = <&mmc0_pins_a>;
-=======
-	pinctrl-0 = <&mmc0_pins>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pinctrl-names = "default";
 	broken-cd;
 	bus-width = <4>;
@@ -91,11 +87,7 @@
 };
 
 &uart0 {
-<<<<<<< HEAD
 	pinctrl-0 = <&uart0_pins_a>;
-=======
-	pinctrl-0 = <&uart0_pb_pins>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pinctrl-names = "default";
 	status = "okay";
 };

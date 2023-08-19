@@ -122,11 +122,8 @@ void __init xen_smp_cpus_done(unsigned int max_cpus)
 
 	if (xen_hvm_domain())
 		native_smp_cpus_done(max_cpus);
-<<<<<<< HEAD
 	else
 		calculate_max_logical_packages();
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (xen_have_vcpu_info_placement)
 		return;

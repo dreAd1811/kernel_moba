@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * SAMSUNG EXYNOS5410 SoC device tree source
  *
@@ -11,20 +8,9 @@
  * SAMSUNG EXYNOS5410 SoC device nodes are listed in this file.
  * EXYNOS5410 based board files can include this file and provide
  * values for board specfic bindings.
-<<<<<<< HEAD
  */
 
 #include "exynos54xx.dtsi"
-=======
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
- */
-
-#include "exynos54xx.dtsi"
-#include "exynos-syscon-restart.dtsi"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <dt-bindings/clock/exynos5410.h>
 #include <dt-bindings/clock/exynos-audss-clk.h>
 #include <dt-bindings/interrupt-controller/arm-gic.h>
@@ -107,11 +93,7 @@
 			interrupts = <GIC_SPI 65 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&clock CLK_TMU>;
 			clock-names = "tmu_apbif";
-<<<<<<< HEAD
 			#thermal-sensor-cells = <0>;
-=======
-			#include "exynos4412-tmu-sensor-conf.dtsi"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		tmu_cpu1: tmu@10064000 {
@@ -120,11 +102,7 @@
 			interrupts = <GIC_SPI 183 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&clock CLK_TMU>;
 			clock-names = "tmu_apbif";
-<<<<<<< HEAD
 			#thermal-sensor-cells = <0>;
-=======
-			#include "exynos4412-tmu-sensor-conf.dtsi"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		tmu_cpu2: tmu@10068000 {
@@ -133,11 +111,7 @@
 			interrupts = <GIC_SPI 184 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&clock CLK_TMU>;
 			clock-names = "tmu_apbif";
-<<<<<<< HEAD
 			#thermal-sensor-cells = <0>;
-=======
-			#include "exynos4412-tmu-sensor-conf.dtsi"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		tmu_cpu3: tmu@1006c000 {
@@ -146,11 +120,7 @@
 			interrupts = <GIC_SPI 185 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&clock CLK_TMU>;
 			clock-names = "tmu_apbif";
-<<<<<<< HEAD
 			#thermal-sensor-cells = <0>;
-=======
-			#include "exynos4412-tmu-sensor-conf.dtsi"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		mmc_0: mmc@12200000 {
@@ -213,11 +183,7 @@
 			interrupts = <GIC_SPI 50 IRQ_TYPE_LEVEL_HIGH>;
 		};
 
-<<<<<<< HEAD
 		pinctrl_3: pinctrl@3860000 {
-=======
-		pinctrl_3: pinctrl@03860000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "samsung,exynos5410-pinctrl";
 			reg = <0x03860000 0x1000>;
 			interrupts = <GIC_SPI 47 IRQ_TYPE_LEVEL_HIGH>;
@@ -230,15 +196,9 @@
 			interrupt-parent = <&gic>;
 			ranges;
 
-<<<<<<< HEAD
 			pdma0: pdma@121a0000 {
 				compatible = "arm,pl330", "arm,primecell";
 				reg = <0x121a0000 0x1000>;
-=======
-			pdma0: pdma@12680000 {
-				compatible = "arm,pl330", "arm,primecell";
-				reg = <0x121A0000 0x1000>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				interrupts = <GIC_SPI 34 IRQ_TYPE_LEVEL_HIGH>;
 				clocks = <&clock CLK_PDMA0>;
 				clock-names = "apb_pclk";
@@ -247,15 +207,9 @@
 				#dma-requests = <32>;
 			};
 
-<<<<<<< HEAD
 			pdma1: pdma@121b0000 {
 				compatible = "arm,pl330", "arm,primecell";
 				reg = <0x121b0000 0x1000>;
-=======
-			pdma1: pdma@12690000 {
-				compatible = "arm,pl330", "arm,primecell";
-				reg = <0x121B0000 0x1000>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				interrupts = <GIC_SPI 35 IRQ_TYPE_LEVEL_HIGH>;
 				clocks = <&clock CLK_PDMA1>;
 				clock-names = "apb_pclk";
@@ -265,11 +219,7 @@
 			};
 		};
 
-<<<<<<< HEAD
 		audi2s0: i2s@3830000 {
-=======
-		audi2s0: i2s@03830000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "samsung,exynos5420-i2s";
 			reg = <0x03830000 0x100>;
 			dmas = <&pdma0 10
@@ -310,14 +260,11 @@
 	};
 };
 
-<<<<<<< HEAD
 &arm_a15_pmu {
 	interrupt-affinity = <&cpu0>, <&cpu1>, <&cpu2>, <&cpu3>;
 	status = "okay";
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &i2c_0 {
 	clocks = <&clock CLK_I2C0>;
 	clock-names = "i2c";
@@ -379,14 +326,11 @@
 	clock-names = "fin_pll", "mct";
 };
 
-<<<<<<< HEAD
 &prng {
 	clocks = <&clock CLK_SSS>;
 	clock-names = "secss";
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &pwm {
 	clocks = <&clock CLK_PWM>;
 	clock-names = "timers";
@@ -440,14 +384,11 @@
 		  3 0 0x07000000 0x20000>;
 };
 
-<<<<<<< HEAD
 &trng {
 	clocks = <&clock CLK_SSS>;
 	clock-names = "secss";
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &usbdrd3_0 {
 	clocks = <&clock CLK_USBD300>;
 	clock-names = "usbdrd30";
@@ -498,7 +439,4 @@
 };
 
 #include "exynos5410-pinctrl.dtsi"
-<<<<<<< HEAD
 #include "exynos-syscon-restart.dtsi"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

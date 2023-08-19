@@ -32,10 +32,6 @@
 #include "../rtl8192ce/def.h"
 #include "fw_common.h"
 #include <linux/export.h>
-<<<<<<< HEAD
-=======
-#include <linux/kmemleak.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void _rtl92c_enable_fw_download(struct ieee80211_hw *hw, bool enable)
 {

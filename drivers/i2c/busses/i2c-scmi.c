@@ -183,12 +183,8 @@ acpi_smbus_cmi_access(struct i2c_adapter *adap, u16 addr, unsigned short flags,
 	status = acpi_evaluate_object(smbus_cmi->handle, method, &input,
 				      &buffer);
 	if (ACPI_FAILURE(status)) {
-<<<<<<< HEAD
 		acpi_handle_err(smbus_cmi->handle,
 				"Failed to evaluate %s: %i\n", method, status);
-=======
-		ACPI_ERROR((AE_INFO, "Evaluating %s: %i", method, status));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EIO;
 	}
 
@@ -196,32 +192,19 @@ acpi_smbus_cmi_access(struct i2c_adapter *adap, u16 addr, unsigned short flags,
 	if (pkg && pkg->type == ACPI_TYPE_PACKAGE)
 		obj = pkg->package.elements;
 	else {
-<<<<<<< HEAD
 		acpi_handle_err(smbus_cmi->handle, "Invalid argument type\n");
-=======
-		ACPI_ERROR((AE_INFO, "Invalid argument type"));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		result = -EIO;
 		goto out;
 	}
 	if (obj == NULL || obj->type != ACPI_TYPE_INTEGER) {
-<<<<<<< HEAD
 		acpi_handle_err(smbus_cmi->handle, "Invalid argument type\n");
-=======
-		ACPI_ERROR((AE_INFO, "Invalid argument type"));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		result = -EIO;
 		goto out;
 	}
 
 	result = obj->integer.value;
-<<<<<<< HEAD
 	acpi_handle_debug(smbus_cmi->handle,  "%s return status: %i\n", method,
 			  result);
-=======
-	ACPI_DEBUG_PRINT((ACPI_DB_INFO, "%s return status: %i\n",
-			  method, result));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (result) {
 	case ACPI_SMBUS_STATUS_OK:
@@ -246,11 +229,7 @@ acpi_smbus_cmi_access(struct i2c_adapter *adap, u16 addr, unsigned short flags,
 
 	obj = pkg->package.elements + 1;
 	if (obj->type != ACPI_TYPE_INTEGER) {
-<<<<<<< HEAD
 		acpi_handle_err(smbus_cmi->handle, "Invalid argument type\n");
-=======
-		ACPI_ERROR((AE_INFO, "Invalid argument type"));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		result = -EIO;
 		goto out;
 	}
@@ -262,12 +241,8 @@ acpi_smbus_cmi_access(struct i2c_adapter *adap, u16 addr, unsigned short flags,
 	case I2C_SMBUS_BYTE_DATA:
 	case I2C_SMBUS_WORD_DATA:
 		if (obj->type != ACPI_TYPE_INTEGER) {
-<<<<<<< HEAD
 			acpi_handle_err(smbus_cmi->handle,
 					"Invalid argument type\n");
-=======
-			ACPI_ERROR((AE_INFO, "Invalid argument type"));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			result = -EIO;
 			goto out;
 		}
@@ -278,12 +253,8 @@ acpi_smbus_cmi_access(struct i2c_adapter *adap, u16 addr, unsigned short flags,
 		break;
 	case I2C_SMBUS_BLOCK_DATA:
 		if (obj->type != ACPI_TYPE_BUFFER) {
-<<<<<<< HEAD
 			acpi_handle_err(smbus_cmi->handle,
 					"Invalid argument type\n");
-=======
-			ACPI_ERROR((AE_INFO, "Invalid argument type"));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			result = -EIO;
 			goto out;
 		}
@@ -333,10 +304,7 @@ static int acpi_smbus_cmi_add_cap(struct acpi_smbus_cmi *smbus_cmi,
 				  const char *name)
 {
 	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
-<<<<<<< HEAD
 	struct acpi_handle *handle = smbus_cmi->handle;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	union acpi_object *obj;
 	acpi_status status;
 
@@ -345,13 +313,8 @@ static int acpi_smbus_cmi_add_cap(struct acpi_smbus_cmi *smbus_cmi,
 					smbus_cmi->methods->mt_info,
 					NULL, &buffer);
 		if (ACPI_FAILURE(status)) {
-<<<<<<< HEAD
 			acpi_handle_err(handle, "Failed to evaluate %s: %i\n",
 					smbus_cmi->methods->mt_info, status);
-=======
-			ACPI_ERROR((AE_INFO, "Evaluating %s: %i",
-				   smbus_cmi->methods->mt_info, status));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EIO;
 		}
 
@@ -359,31 +322,18 @@ static int acpi_smbus_cmi_add_cap(struct acpi_smbus_cmi *smbus_cmi,
 		if (obj && obj->type == ACPI_TYPE_PACKAGE)
 			obj = obj->package.elements;
 		else {
-<<<<<<< HEAD
 			acpi_handle_err(handle, "Invalid argument type\n");
-=======
-			ACPI_ERROR((AE_INFO, "Invalid argument type"));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			kfree(buffer.pointer);
 			return -EIO;
 		}
 
 		if (obj->type != ACPI_TYPE_INTEGER) {
-<<<<<<< HEAD
 			acpi_handle_err(handle, "Invalid argument type\n");
 			kfree(buffer.pointer);
 			return -EIO;
 		} else
 			acpi_handle_debug(handle, "SMBus CMI Version %x\n",
 					  (int)obj->integer.value);
-=======
-			ACPI_ERROR((AE_INFO, "Invalid argument type"));
-			kfree(buffer.pointer);
-			return -EIO;
-		} else
-			ACPI_DEBUG_PRINT((ACPI_DB_INFO, "SMBus CMI Version %x"
-					  "\n", (int)obj->integer.value));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		kfree(buffer.pointer);
 		smbus_cmi->cap_info = 1;
@@ -392,12 +342,7 @@ static int acpi_smbus_cmi_add_cap(struct acpi_smbus_cmi *smbus_cmi,
 	else if (!strcmp(name, smbus_cmi->methods->mt_sbw))
 		smbus_cmi->cap_write = 1;
 	else
-<<<<<<< HEAD
 		acpi_handle_debug(handle, "Unsupported CMI method: %s\n", name);
-=======
-		ACPI_DEBUG_PRINT((ACPI_DB_INFO, "Unsupported CMI method: %s\n",
-				 name));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

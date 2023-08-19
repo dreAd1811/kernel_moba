@@ -47,7 +47,6 @@
  * be clobbered.
  */
 #define RECONCILE_IRQ_STATE(__rA, __rB)		\
-<<<<<<< HEAD
 	lbz	__rA,PACAIRQSOFTMASK(r13);	\
 	lbz	__rB,PACAIRQHAPPENED(r13);	\
 	andi.	__rA,__rA,IRQS_DISABLED;	\
@@ -56,16 +55,6 @@
 	stb	__rB,PACAIRQHAPPENED(r13);	\
 	bne	44f;				\
 	stb	__rA,PACAIRQSOFTMASK(r13);	\
-=======
-	lbz	__rA,PACASOFTIRQEN(r13);	\
-	lbz	__rB,PACAIRQHAPPENED(r13);	\
-	cmpwi	cr0,__rA,0;			\
-	li	__rA,0;				\
-	ori	__rB,__rB,PACA_IRQ_HARD_DIS;	\
-	stb	__rB,PACAIRQHAPPENED(r13);	\
-	beq	44f;				\
-	stb	__rA,PACASOFTIRQEN(r13);	\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	TRACE_DISABLE_INTS;			\
 44:
 
@@ -75,15 +64,9 @@
 
 #define RECONCILE_IRQ_STATE(__rA, __rB)		\
 	lbz	__rA,PACAIRQHAPPENED(r13);	\
-<<<<<<< HEAD
 	li	__rB,IRQS_DISABLED;		\
 	ori	__rA,__rA,PACA_IRQ_HARD_DIS;	\
 	stb	__rB,PACAIRQSOFTMASK(r13);	\
-=======
-	li	__rB,0;				\
-	ori	__rA,__rA,PACA_IRQ_HARD_DIS;	\
-	stb	__rB,PACASOFTIRQEN(r13);	\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	stb	__rA,PACAIRQHAPPENED(r13)
 #endif
 #endif

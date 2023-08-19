@@ -51,10 +51,6 @@ struct arch_probes_insn {
  * We assume one instruction can consume at most 64 bytes stack, which is
  * 'push {r0-r15}'. Instructions consume more or unknown stack space like
  * 'str r0, [sp, #-80]' and 'str r0, [sp, r1]' should be prohibit to probe.
-<<<<<<< HEAD
-=======
- * Both kprobe and jprobe use this macro.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #define MAX_STACK_SIZE			64
 

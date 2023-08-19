@@ -25,14 +25,8 @@
 #include <linux/init.h>
 #include <linux/module.h>
 #include <linux/mm.h>
-<<<<<<< HEAD
 #include <asm/byteorder.h>
 #include <linux/types.h>
-=======
-#include <linux/types.h>
-#include <asm/byteorder.h>
-#include <asm/unaligned.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define TGR192_DIGEST_SIZE 24
 #define TGR160_DIGEST_SIZE 20
@@ -474,16 +468,10 @@ static void tgr192_transform(struct tgr192_ctx *tctx, const u8 * data)
 	u64 a, b, c, aa, bb, cc;
 	u64 x[8];
 	int i;
-<<<<<<< HEAD
 	const __le64 *ptr = (const __le64 *)data;
 
 	for (i = 0; i < 8; i++)
 		x[i] = le64_to_cpu(ptr[i]);
-=======
-
-	for (i = 0; i < 8; i++)
-		x[i] = get_unaligned_le64(data + i * sizeof(__le64));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* save */
 	a = aa = tctx->a;
@@ -648,10 +636,6 @@ static struct shash_alg tgr_algs[3] = { {
 	.descsize	=	sizeof(struct tgr192_ctx),
 	.base		=	{
 		.cra_name	=	"tgr192",
-<<<<<<< HEAD
-=======
-		.cra_flags	=	CRYPTO_ALG_TYPE_SHASH,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.cra_blocksize	=	TGR192_BLOCK_SIZE,
 		.cra_module	=	THIS_MODULE,
 	}
@@ -663,10 +647,6 @@ static struct shash_alg tgr_algs[3] = { {
 	.descsize	=	sizeof(struct tgr192_ctx),
 	.base		=	{
 		.cra_name	=	"tgr160",
-<<<<<<< HEAD
-=======
-		.cra_flags	=	CRYPTO_ALG_TYPE_SHASH,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.cra_blocksize	=	TGR192_BLOCK_SIZE,
 		.cra_module	=	THIS_MODULE,
 	}
@@ -678,10 +658,6 @@ static struct shash_alg tgr_algs[3] = { {
 	.descsize	=	sizeof(struct tgr192_ctx),
 	.base		=	{
 		.cra_name	=	"tgr128",
-<<<<<<< HEAD
-=======
-		.cra_flags	=	CRYPTO_ALG_TYPE_SHASH,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.cra_blocksize	=	TGR192_BLOCK_SIZE,
 		.cra_module	=	THIS_MODULE,
 	}

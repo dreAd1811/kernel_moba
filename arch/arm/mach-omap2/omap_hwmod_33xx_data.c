@@ -14,18 +14,9 @@
  * GNU General Public License for more details.
  */
 
-<<<<<<< HEAD
 #include <linux/platform_data/i2c-omap.h>
 
 #include "omap_hwmod.h"
-=======
-#include <linux/i2c-omap.h>
-
-#include "omap_hwmod.h"
-#include <linux/platform_data/gpio-omap.h>
-#include <linux/platform_data/spi-omap2-mcspi.h>
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "omap_hwmod_common_data.h"
 
 #include "control.h"
@@ -258,10 +249,6 @@ static struct omap_hwmod am33xx_gpio0_hwmod = {
 	},
 	.opt_clks	= gpio0_opt_clks,
 	.opt_clks_cnt	= ARRAY_SIZE(gpio0_opt_clks),
-<<<<<<< HEAD
-=======
-	.dev_attr	= &gpio_dev_attr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* lcdc */
@@ -329,26 +316,11 @@ static struct omap_hwmod am33xx_usbss_hwmod = {
  * Interfaces
  */
 
-<<<<<<< HEAD
-=======
-static struct omap_hwmod_addr_space am33xx_emif_addrs[] = {
-	{
-		.pa_start	= 0x4c000000,
-		.pa_end		= 0x4c000fff,
-		.flags		= ADDR_TYPE_RT
-	},
-	{ }
-};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* l3 main -> emif */
 static struct omap_hwmod_ocp_if am33xx_l3_main__emif = {
 	.master		= &am33xx_l3_main_hwmod,
 	.slave		= &am33xx_emif_hwmod,
 	.clk		= "dpll_core_m4_ck",
-<<<<<<< HEAD
-=======
-	.addr		= am33xx_emif_addrs,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.user		= OCP_USER_MPU | OCP_USER_SDMA,
 };
 
@@ -385,26 +357,10 @@ static struct omap_hwmod_ocp_if am33xx_l4_hs__pruss = {
 };
 
 /* l3_main -> debugss */
-<<<<<<< HEAD
-=======
-static struct omap_hwmod_addr_space am33xx_debugss_addrs[] = {
-	{
-		.pa_start	= 0x4b000000,
-		.pa_end		= 0x4b000000 + SZ_16M - 1,
-		.flags		= ADDR_TYPE_RT
-	},
-	{ }
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct omap_hwmod_ocp_if am33xx_l3_main__debugss = {
 	.master		= &am33xx_l3_main_hwmod,
 	.slave		= &am33xx_debugss_hwmod,
 	.clk		= "dpll_core_m4_ck",
-<<<<<<< HEAD
-=======
-	.addr		= am33xx_debugss_addrs,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.user		= OCP_USER_MPU,
 };
 
@@ -449,26 +405,10 @@ static struct omap_hwmod_ocp_if am33xx_l4_wkup__gpio0 = {
 };
 
 /* L4 WKUP -> ADC_TSC */
-<<<<<<< HEAD
-=======
-static struct omap_hwmod_addr_space am33xx_adc_tsc_addrs[] = {
-	{
-		.pa_start	= 0x44E0D000,
-		.pa_end		= 0x44E0D000 + SZ_8K - 1,
-		.flags		= ADDR_TYPE_RT
-	},
-	{ }
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct omap_hwmod_ocp_if am33xx_l4_wkup__adc_tsc = {
 	.master		= &am33xx_l4_wkup_hwmod,
 	.slave		= &am33xx_adc_tsc_hwmod,
 	.clk		= "dpll_core_m4_div2_ck",
-<<<<<<< HEAD
-=======
-	.addr		= am33xx_adc_tsc_addrs,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.user		= OCP_USER_MPU,
 };
 
@@ -479,26 +419,10 @@ static struct omap_hwmod_ocp_if am33xx_l4_hs__cpgmac0 = {
 	.user		= OCP_USER_MPU,
 };
 
-<<<<<<< HEAD
-=======
-static struct omap_hwmod_addr_space am33xx_lcdc_addr_space[] = {
-	{
-		.pa_start	= 0x4830E000,
-		.pa_end		= 0x4830E000 + SZ_8K - 1,
-		.flags		= ADDR_TYPE_RT,
-	},
-	{ }
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct omap_hwmod_ocp_if am33xx_l3_main__lcdc = {
 	.master		= &am33xx_l3_main_hwmod,
 	.slave		= &am33xx_lcdc_hwmod,
 	.clk		= "dpll_core_m4_ck",
-<<<<<<< HEAD
-=======
-	.addr		= am33xx_lcdc_addr_space,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.user		= OCP_USER_MPU,
 };
 

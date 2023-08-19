@@ -328,12 +328,6 @@ static const struct hid_device_id hid_battery_quirks[] = {
 	{ HID_USB_DEVICE(USB_VENDOR_ID_SYMBOL,
 		USB_DEVICE_ID_SYMBOL_SCANNER_3),
 	  HID_BATTERY_QUIRK_IGNORE },
-<<<<<<< HEAD
-=======
-	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_ASUSTEK,
-		USB_DEVICE_ID_ASUSTEK_T100CHI_KEYBOARD),
-	  HID_BATTERY_QUIRK_IGNORE },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{}
 };
 
@@ -824,7 +818,6 @@ static void hidinput_configure_usage(struct hid_input *hidinput, struct hid_fiel
 			map_key_clear(BTN_STYLUS);
 			break;
 
-<<<<<<< HEAD
 		case 0x45: /* ERASER */
 			/*
 			 * This event is reported when eraser tip touches the surface.
@@ -834,8 +827,6 @@ static void hidinput_configure_usage(struct hid_input *hidinput, struct hid_fiel
 			map_key_clear(BTN_TOUCH);
 			break;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case 0x46: /* TabletPick */
 		case 0x5a: /* SecondaryBarrelSwitch */
 			map_key_clear(BTN_STYLUS2);
@@ -1131,7 +1122,6 @@ static void hidinput_configure_usage(struct hid_input *hidinput, struct hid_fiel
 	}
 
 mapped:
-<<<<<<< HEAD
 	if (device->driver->input_mapped && device->driver->input_mapped(device,
 				hidinput, field, usage, &bit, &max) < 0)
 		goto ignore;
@@ -1163,22 +1153,6 @@ mapped:
 			goto ignore;
 		}
 	}
-=======
-	if (device->driver->input_mapped &&
-	    device->driver->input_mapped(device, hidinput, field, usage,
-					 &bit, &max) < 0) {
-		/*
-		 * The driver indicated that no further generic handling
-		 * of the usage is desired.
-		 */
-		return;
-	}
-
-	set_bit(usage->type, input->evbit);
-
-	while (usage->code <= max && test_and_set_bit(usage->code, bit))
-		usage->code = find_next_zero_bit(bit, max + 1, usage->code);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (usage->code > max)
 		goto ignore;
@@ -1231,17 +1205,9 @@ mapped:
 		set_bit(MSC_SCAN, input->mscbit);
 	}
 
-<<<<<<< HEAD
 ignore:
 	return;
 
-=======
-	return;
-
-ignore:
-	usage->type = 0;
-	usage->code = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void hidinput_hid_event(struct hid_device *hid, struct hid_field *field, struct hid_usage *usage, __s32 value)
@@ -1562,7 +1528,6 @@ static void report_features(struct hid_device *hid)
 		}
 }
 
-<<<<<<< HEAD
 static struct hid_input *hidinput_allocate(struct hid_device *hid,
 					   unsigned int application)
 {
@@ -1616,17 +1581,6 @@ static struct hid_input *hidinput_allocate(struct hid_device *hid,
 					   hid->name, suffix);
 		if (!hidinput->name)
 			goto fail;
-=======
-static struct hid_input *hidinput_allocate(struct hid_device *hid)
-{
-	struct hid_input *hidinput = kzalloc(sizeof(*hidinput), GFP_KERNEL);
-	struct input_dev *input_dev = input_allocate_device();
-	if (!hidinput || !input_dev) {
-		kfree(hidinput);
-		input_free_device(input_dev);
-		hid_err(hid, "Out of memory during hid input probe\n");
-		return NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	input_set_drvdata(input_dev, hid);
@@ -1636,11 +1590,7 @@ static struct hid_input *hidinput_allocate(struct hid_device *hid)
 	input_dev->setkeycode = hidinput_setkeycode;
 	input_dev->getkeycode = hidinput_getkeycode;
 
-<<<<<<< HEAD
 	input_dev->name = hidinput->name ? hidinput->name : hid->name;
-=======
-	input_dev->name = hid->name;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	input_dev->phys = hid->phys;
 	input_dev->uniq = hid->uniq;
 	input_dev->id.bustype = hid->bus;
@@ -1648,7 +1598,6 @@ static struct hid_input *hidinput_allocate(struct hid_device *hid)
 	input_dev->id.product = hid->product;
 	input_dev->id.version = hid->version;
 	input_dev->dev.parent = &hid->dev;
-<<<<<<< HEAD
 
 	hidinput->input = input_dev;
 	hidinput->application = application;
@@ -1663,12 +1612,6 @@ fail:
 	input_free_device(input_dev);
 	hid_err(hid, "Out of memory during hid input probe\n");
 	return NULL;
-=======
-	hidinput->input = input_dev;
-	list_add_tail(&hidinput->list, &hid->inputs);
-
-	return hidinput;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool hidinput_has_been_populated(struct hid_input *hidinput)
@@ -1714,10 +1657,7 @@ static void hidinput_cleanup_hidinput(struct hid_device *hid,
 
 	list_del(&hidinput->list);
 	input_free_device(hidinput->input);
-<<<<<<< HEAD
 	kfree(hidinput->name);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (k = HID_INPUT_REPORT; k <= HID_OUTPUT_REPORT; k++) {
 		if (k == HID_OUTPUT_REPORT &&
@@ -1750,7 +1690,6 @@ static struct hid_input *hidinput_match(struct hid_report *report)
 	return NULL;
 }
 
-<<<<<<< HEAD
 static struct hid_input *hidinput_match_application(struct hid_report *report)
 {
 	struct hid_device *hid = report->device;
@@ -1764,8 +1703,6 @@ static struct hid_input *hidinput_match_application(struct hid_report *report)
 	return NULL;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void hidinput_configure_usages(struct hid_input *hidinput,
 					     struct hid_report *report)
 {
@@ -1788,20 +1725,14 @@ int hidinput_connect(struct hid_device *hid, unsigned int force)
 	struct hid_driver *drv = hid->driver;
 	struct hid_report *report;
 	struct hid_input *next, *hidinput = NULL;
-<<<<<<< HEAD
 	unsigned int application;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i, k;
 
 	INIT_LIST_HEAD(&hid->inputs);
 	INIT_WORK(&hid->led_work, hidinput_led_worker);
 
-<<<<<<< HEAD
 	hid->status &= ~HID_STAT_DUP_DETECTED;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!force) {
 		for (i = 0; i < hid->maxcollection; i++) {
 			struct hid_collection *col = &hid->collection[i];
@@ -1827,29 +1758,20 @@ int hidinput_connect(struct hid_device *hid, unsigned int force)
 			if (!report->maxfield)
 				continue;
 
-<<<<<<< HEAD
 			application = report->application;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/*
 			 * Find the previous hidinput report attached
 			 * to this report id.
 			 */
 			if (hid->quirks & HID_QUIRK_MULTI_INPUT)
 				hidinput = hidinput_match(report);
-<<<<<<< HEAD
 			else if (hid->maxapplication > 1 &&
 				 (hid->quirks & HID_QUIRK_INPUT_PER_APP))
 				hidinput = hidinput_match_application(report);
 
 			if (!hidinput) {
 				hidinput = hidinput_allocate(hid, application);
-=======
-
-			if (!hidinput) {
-				hidinput = hidinput_allocate(hid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				if (!hidinput)
 					goto out_unwind;
 			}
@@ -1858,37 +1780,23 @@ int hidinput_connect(struct hid_device *hid, unsigned int force)
 
 			if (hid->quirks & HID_QUIRK_MULTI_INPUT)
 				hidinput->report = report;
-<<<<<<< HEAD
 
 			list_add_tail(&report->hidinput_list,
 				      &hidinput->reports);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
 	list_for_each_entry_safe(hidinput, next, &hid->inputs, list) {
-<<<<<<< HEAD
 		if (drv->input_configured &&
 		    drv->input_configured(hid, hidinput))
 			goto out_unwind;
 
 		if (!hidinput_has_been_populated(hidinput)) {
-=======
-		if ((hid->quirks & HID_QUIRK_NO_EMPTY_INPUT) &&
-		    !hidinput_has_been_populated(hidinput)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* no need to register an input device not populated */
 			hidinput_cleanup_hidinput(hid, hidinput);
 			continue;
 		}
 
-<<<<<<< HEAD
-=======
-		if (drv->input_configured &&
-		    drv->input_configured(hid, hidinput))
-			goto out_unwind;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (input_register_device(hidinput->input))
 			goto out_unwind;
 		hidinput->registered = true;
@@ -1899,13 +1807,10 @@ int hidinput_connect(struct hid_device *hid, unsigned int force)
 		goto out_unwind;
 	}
 
-<<<<<<< HEAD
 	if (hid->status & HID_STAT_DUP_DETECTED)
 		hid_dbg(hid,
 			"Some usages could not be mapped, please use HID_QUIRK_INCREMENT_USAGE_ON_DUPLICATE if this is legitimate.\n");
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 out_unwind:
@@ -1928,10 +1833,7 @@ void hidinput_disconnect(struct hid_device *hid)
 			input_unregister_device(hidinput->input);
 		else
 			input_free_device(hidinput->input);
-<<<<<<< HEAD
 		kfree(hidinput->name);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(hidinput);
 	}
 

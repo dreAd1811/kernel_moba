@@ -18,14 +18,6 @@
 #define pcibios_assign_all_busses() \
 	(pci_has_flag(PCI_REASSIGN_ALL_BUS))
 
-<<<<<<< HEAD
-=======
-/*
- * PCI address space differs from physical memory address space
- */
-#define PCI_DMA_BUS_IS_PHYS	(0)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ARCH_GENERIC_PCI_MMAP_RESOURCE	1
 
 extern int isa_dma_bridge_buggy;

@@ -2,15 +2,10 @@
 config M68K
 	bool
 	default y
-<<<<<<< HEAD
 	select ARCH_HAS_SYNC_DMA_FOR_DEVICE if HAS_DMA
 	select ARCH_MIGHT_HAVE_PC_PARPORT if ISA
 	select ARCH_NO_COHERENT_DMA_MMAP if !MMU
 	select ARCH_NO_PREEMPT if !COLDFIRE
-=======
-	select ARCH_MIGHT_HAVE_PC_PARPORT if ISA
-	select ARCH_NO_COHERENT_DMA_MMAP if !MMU
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select HAVE_IDE
 	select HAVE_AOUT if MMU
 	select HAVE_DEBUG_BUGVERBOSE
@@ -31,13 +26,10 @@ config M68K
 	select MODULES_USE_ELF_RELA
 	select OLD_SIGSUSPEND3
 	select OLD_SIGACTION
-<<<<<<< HEAD
 	select DMA_NONCOHERENT_OPS if HAS_DMA
 	select HAVE_MEMBLOCK
 	select ARCH_DISCARD_MEMBLOCK
 	select NO_BOOTMEM
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config CPU_BIG_ENDIAN
 	def_bool y
@@ -89,13 +81,6 @@ config PGTABLE_LEVELS
 	default 2 if SUN3 || COLDFIRE
 	default 3
 
-<<<<<<< HEAD
-=======
-source "init/Kconfig"
-
-source "kernel/Kconfig.freezer"
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config MMU
 	bool "MMU-based Paged Memory Management Support"
 	default y
@@ -150,21 +135,6 @@ endmenu
 
 menu "Kernel Features"
 
-<<<<<<< HEAD
-=======
-if COLDFIRE
-source "kernel/Kconfig.preempt"
-endif
-
-source "mm/Kconfig"
-
-endmenu
-
-menu "Executable file formats"
-
-source "fs/Kconfig.binfmt"
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 endmenu
 
 if !MMU
@@ -178,22 +148,4 @@ config PM
 endmenu
 endif
 
-<<<<<<< HEAD
 source "arch/m68k/Kconfig.devices"
-=======
-source "net/Kconfig"
-
-source "drivers/Kconfig"
-
-source "arch/m68k/Kconfig.devices"
-
-source "fs/Kconfig"
-
-source "arch/m68k/Kconfig.debug"
-
-source "security/Kconfig"
-
-source "crypto/Kconfig"
-
-source "lib/Kconfig"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

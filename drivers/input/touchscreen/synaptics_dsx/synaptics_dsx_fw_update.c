@@ -3,10 +3,6 @@
  *
  * Copyright (C) 2012-2016 Synaptics Incorporated. All rights reserved.
  *
-<<<<<<< HEAD
-=======
- * Copyright (c) 2018 The Linux Foundation. All rights reserved.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Copyright (C) 2012 Alexandra Chin <alexandra.chin@tw.synaptics.com>
  * Copyright (C) 2012 Scott Lin <scott.lin@tw.synaptics.com>
  *
@@ -47,7 +43,6 @@
 #include "synaptics_dsx_core.h"
 
 #define FW_IHEX_NAME "synaptics/startup_fw_update.bin"
-<<<<<<< HEAD
 #define FW_IMAGE_NAME "synaptics_fw.img"
 #define DO_STARTUP_FW_UPDATE
 
@@ -62,23 +57,6 @@
 */
 /*
 #define MAX_WRITE_SIZE 4096
-=======
-#define FW_IMAGE_NAME "synaptics/startup_fw_update.img"
-/*
-*#define DO_STARTUP_FW_UPDATE
-*/
-/*
-*#ifdef DO_STARTUP_FW_UPDATE
-*#ifdef CONFIG_FB
-*#define WAIT_FOR_FB_READY
-*#define FB_READY_WAIT_MS 100
-*#define FB_READY_TIMEOUT_S 30
-*#endif
-*#endif
-*/
-/*
-*#define MAX_WRITE_SIZE 4096
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 */
 
 #define ENABLE_SYS_REFLASH false
@@ -154,18 +132,11 @@
 #define ENTER_FLASH_PROG_WAIT_MS 20
 #define READ_CONFIG_WAIT_MS 20
 
-<<<<<<< HEAD
 unsigned char *hq_fwu_config_id;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int fwu_do_reflash(void);
 
 static int fwu_recovery_check_status(void);
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_TOUCHSCREEN_SYNAPTICS_DSX_FW_UPDATE_EXTRA_SYSFS
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static ssize_t fwu_sysfs_show_image(struct file *data_file,
 		struct kobject *kobj, struct bin_attribute *attributes,
 		char *buf, loff_t pos, size_t count);
@@ -230,11 +201,6 @@ static ssize_t fwu_sysfs_read_lockdown_code_show(struct device *dev,
 		struct device_attribute *attr, char *buf);
 #endif
 
-<<<<<<< HEAD
-=======
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum f34_version {
 	F34_V0 = 0,
 	F34_V1,
@@ -791,24 +757,15 @@ struct synaptics_rmi4_fwu_handle {
 	struct work_struct fwu_work;
 };
 
-<<<<<<< HEAD
 static struct bin_attribute dev_attr_data = {
 	.attr = {
 		.name = "data",
 		.mode = (S_IRUGO | S_IWUSR | S_IWGRP),
-=======
-#ifdef CONFIG_TOUCHSCREEN_SYNAPTICS_DSX_FW_UPDATE_EXTRA_SYSFS
-static struct bin_attribute dev_attr_data = {
-	.attr = {
-		.name = "data",
-		.mode = 0664,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.size = 0,
 	.read = fwu_sysfs_show_image,
 	.write = fwu_sysfs_store_image,
 };
-<<<<<<< HEAD
 
 static struct device_attribute attrs[] = {
 	__ATTR(dorecovery, (S_IWUSR | S_IWGRP),
@@ -864,79 +821,13 @@ static struct device_attribute attrs[] = {
 			fwu_sysfs_read_lockdown_code_show,
 			fwu_sysfs_write_lockdown_code_store),
 #endif
-=======
-#endif
-
-static struct device_attribute attrs[] = {
-#ifdef CONFIG_TOUCHSCREEN_SYNAPTICS_DSX_FW_UPDATE_EXTRA_SYSFS
-	__ATTR(dorecovery, 0220,
-			synaptics_rmi4_show_error,
-			fwu_sysfs_do_recovery_store),
-	__ATTR(doreflash, 0220,
-			synaptics_rmi4_show_error,
-			fwu_sysfs_do_reflash_store),
-	__ATTR(writeconfig, 0220,
-			synaptics_rmi4_show_error,
-			fwu_sysfs_write_config_store),
-	__ATTR(readconfig, 0220,
-			synaptics_rmi4_show_error,
-			fwu_sysfs_read_config_store),
-	__ATTR(configarea, 0220,
-			synaptics_rmi4_show_error,
-			fwu_sysfs_config_area_store),
-	__ATTR(imagename, 0220,
-			synaptics_rmi4_show_error,
-			fwu_sysfs_image_name_store),
-	__ATTR(imagesize, 0220,
-			synaptics_rmi4_show_error,
-			fwu_sysfs_image_size_store),
-	__ATTR(blocksize, 0444,
-			fwu_sysfs_block_size_show,
-			synaptics_rmi4_store_error),
-	__ATTR(fwblockcount, 0444,
-			fwu_sysfs_firmware_block_count_show,
-			synaptics_rmi4_store_error),
-	__ATTR(configblockcount, 0444,
-			fwu_sysfs_configuration_block_count_show,
-			synaptics_rmi4_store_error),
-	__ATTR(dispconfigblockcount, 0444,
-			fwu_sysfs_disp_config_block_count_show,
-			synaptics_rmi4_store_error),
-	__ATTR(permconfigblockcount, 0444,
-			fwu_sysfs_perm_config_block_count_show,
-			synaptics_rmi4_store_error),
-	__ATTR(blconfigblockcount, 0444,
-			fwu_sysfs_bl_config_block_count_show,
-			synaptics_rmi4_store_error),
-	__ATTR(uppblockcount, 0444,
-			fwu_sysfs_utility_parameter_block_count_show,
-			synaptics_rmi4_store_error),
-	__ATTR(guestcodeblockcount, 0444,
-			fwu_sysfs_guest_code_block_count_show,
-			synaptics_rmi4_store_error),
-	__ATTR(writeguestcode, 0220,
-			synaptics_rmi4_show_error,
-			fwu_sysfs_write_guest_code_store),
-#ifdef SYNA_TDDI
-	__ATTR(lockdowncode, 0664,
-			fwu_sysfs_read_lockdown_code_show,
-			fwu_sysfs_write_lockdown_code_store),
-#endif
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct synaptics_rmi4_fwu_handle *fwu;
 
 DECLARE_COMPLETION(fwu_remove_complete);
 
-<<<<<<< HEAD
 DEFINE_MUTEX(fwu_sysfs_mutex);
-=======
-#ifdef CONFIG_TOUCHSCREEN_SYNAPTICS_DSX_FW_UPDATE_EXTRA_SYSFS
-DEFINE_MUTEX(fwu_sysfs_mutex);
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void calculate_checksum(unsigned short *data, unsigned long len,
 		unsigned long *result)
@@ -2814,10 +2705,7 @@ static int fwu_get_device_config_id(void)
 	if (retval < 0)
 		return retval;
 
-<<<<<<< HEAD
 	hq_fwu_config_id=fwu->config_id;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -2858,17 +2746,11 @@ static enum flash_area fwu_go_nogo(void)
 			"%s: Image firmware ID = %d\n",
 			__func__, image_fw_id);
 
-<<<<<<< HEAD
 
 	if (image_fw_id > device_fw_id) {
 		flash_area = UI_FIRMWARE;
 		goto exit;
 
-=======
-	if (image_fw_id > device_fw_id) {
-		flash_area = UI_FIRMWARE;
-		goto exit;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (image_fw_id < device_fw_id) {
 		dev_info(rmi4_data->pdev->dev.parent,
 				"%s: Image firmware ID older than device firmware ID\n",
@@ -2892,7 +2774,6 @@ static enum flash_area fwu_go_nogo(void)
 	else
 		config_id_size = V5V6_CONFIG_ID_SIZE;
 
-<<<<<<< HEAD
 	if (config_id_size == 32) {
                 printk("[syna] fwu_go_nogo , fwu->config_id[28-31]= %02x%02x%02x%02x\n",fwu->config_id[28],fwu->config_id[29],fwu->config_id[30],fwu->config_id[31]);
                 printk("[syna] fwu_go_nogo , fwu->img.ui_config.data[28-31]= %02x%02x%02x%02x\n",fwu->img.ui_config.data[28],fwu->img.ui_config.data[29],fwu->img.ui_config.data[30],fwu->img.ui_config.data[31]);
@@ -2902,8 +2783,6 @@ static enum flash_area fwu_go_nogo(void)
 		printk("[syna] fwu_go_nogo , fwu->img.ui_config.data:= %02x%02x%02x%02x\n",fwu->img.ui_config.data[0],fwu->img.ui_config.data[1],fwu->img.ui_config.data[2],fwu->img.ui_config.data[3]);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (ii = 0; ii < config_id_size; ii++) {
 		if (fwu->img.ui_config.data[ii] > fwu->config_id[ii]) {
 			flash_area = UI_CONFIG;
@@ -3194,10 +3073,6 @@ static int fwu_check_dp_configuration_size(void)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_TOUCHSCREEN_SYNAPTICS_DSX_FW_UPDATE_EXTRA_SYSFS
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int fwu_check_pm_configuration_size(void)
 {
 	unsigned short block_count;
@@ -3214,10 +3089,6 @@ static int fwu_check_pm_configuration_size(void)
 
 	return 0;
 }
-<<<<<<< HEAD
-=======
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int fwu_check_bl_configuration_size(void)
 {
@@ -3585,10 +3456,6 @@ static int fwu_write_dp_configuration(void)
 	return fwu_write_configuration();
 }
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_TOUCHSCREEN_SYNAPTICS_DSX_FW_UPDATE_EXTRA_SYSFS
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int fwu_write_pm_configuration(void)
 {
 	fwu->config_area = PM_CONFIG_AREA;
@@ -3614,10 +3481,6 @@ static int fwu_write_tddi_lockdown_data(void)
 	return 0;
 }
 #endif
-<<<<<<< HEAD
-=======
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int fwu_write_flash_configuration(void)
 {
@@ -3906,10 +3769,6 @@ static int fwu_do_reflash(void)
 	return retval;
 }
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_TOUCHSCREEN_SYNAPTICS_DSX_FW_UPDATE_EXTRA_SYSFS
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int fwu_do_read_config(void)
 {
 	int retval;
@@ -4106,11 +3965,6 @@ int set_tddi_lockdown_data(unsigned char *lockdown_data, unsigned short leng)
 	if (retval < 0)
 		goto exit;
 
-<<<<<<< HEAD
-=======
-	blk_cnt = fwu->blkcount.tddi_lockdown_data;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	fwu->config_size = fwu->blkcount.tddi_lockdown_data * fwu->block_size;
 	retval = fwu_allocate_read_config_buf(fwu->config_size);
 	if (retval < 0)
@@ -4140,10 +3994,6 @@ exit:
 	return retval;
 }
 #endif
-<<<<<<< HEAD
-=======
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int fwu_do_lockdown_v7(void)
 {
@@ -4294,10 +4144,6 @@ static int fwu_do_restore_f51_cal_data(void)
 }
 #endif
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_TOUCHSCREEN_SYNAPTICS_DSX_FW_UPDATE_EXTRA_SYSFS
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int fwu_start_write_guest_code(void)
 {
 	int retval;
@@ -4503,10 +4349,6 @@ exit:
 
 	return retval;
 }
-<<<<<<< HEAD
-=======
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int fwu_start_reflash(void)
 {
@@ -4525,13 +4367,10 @@ static int fwu_start_reflash(void)
 
 	rmi4_data->stay_awake = true;
 
-<<<<<<< HEAD
 #ifdef ESD_WATCHDOG
 	cancel_delayed_work(&rmi4_data->esd_watchdog_work);
 	printk("[syna]hq add for reflash update cancel ESD\n");
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&rmi4_data->rmi4_exp_init_mutex);
 
 	pr_notice("%s: Start of reflash process\n", __func__);
@@ -4736,13 +4575,10 @@ exit:
 
 	mutex_unlock(&rmi4_data->rmi4_exp_init_mutex);
 
-<<<<<<< HEAD
 #ifdef ESD_WATCHDOG
 	printk("[syna]hq add for reflash open ESD\n");
 	queue_delayed_work(rmi4_data->esd_watchdog_workqueue, &rmi4_data->esd_watchdog_work,msecs_to_jiffies(1));
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rmi4_data->stay_awake = false;
 
 	return retval;
@@ -5145,21 +4981,11 @@ static void fwu_startup_fw_update_work(struct work_struct *work)
 		}
 	}
 #endif
-<<<<<<< HEAD
 	synaptics_fw_updater(NULL);
-=======
-
-	synaptics_fw_updater(NULL);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return;
 }
 #endif
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_TOUCHSCREEN_SYNAPTICS_DSX_FW_UPDATE_EXTRA_SYSFS
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static ssize_t fwu_sysfs_show_image(struct file *data_file,
 		struct kobject *kobj, struct bin_attribute *attributes,
 		char *buf, loff_t pos, size_t count)
@@ -5232,11 +5058,7 @@ static ssize_t fwu_sysfs_do_recovery_store(struct device *dev,
 	if (!mutex_trylock(&fwu_sysfs_mutex))
 		return -EBUSY;
 
-<<<<<<< HEAD
 	if (sscanf(buf, "%u", &input) != 1) {
-=======
-	if (kstrtouint(buf, 10, &input) != 1) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		retval = -EINVAL;
 		goto exit;
 	}
@@ -5284,11 +5106,7 @@ static ssize_t fwu_sysfs_do_reflash_store(struct device *dev,
 	if (!mutex_trylock(&fwu_sysfs_mutex))
 		return -EBUSY;
 
-<<<<<<< HEAD
 	if (sscanf(buf, "%u", &input) != 1) {
-=======
-	if (kstrtouint(buf, 10, &input) != 1) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		retval = -EINVAL;
 		goto exit;
 	}
@@ -5351,11 +5169,7 @@ static ssize_t fwu_sysfs_write_config_store(struct device *dev,
 	if (!mutex_trylock(&fwu_sysfs_mutex))
 		return -EBUSY;
 
-<<<<<<< HEAD
 	if (sscanf(buf, "%u", &input) != 1) {
-=======
-	if (kstrtouint(buf, 10, &input) != 1) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		retval = -EINVAL;
 		goto exit;
 	}
@@ -5405,11 +5219,7 @@ static ssize_t fwu_sysfs_read_config_store(struct device *dev,
 	unsigned int input;
 	struct synaptics_rmi4_data *rmi4_data = fwu->rmi4_data;
 
-<<<<<<< HEAD
 	if (sscanf(buf, "%u", &input) != 1)
-=======
-	if (kstrtouint(buf, 10, &input) != 1)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	if (input != 1)
@@ -5648,11 +5458,7 @@ static ssize_t fwu_sysfs_write_guest_code_store(struct device *dev,
 	if (!mutex_trylock(&fwu_sysfs_mutex))
 		return -EBUSY;
 
-<<<<<<< HEAD
 	if (sscanf(buf, "%u", &input) != 1) {
-=======
-	if (kstrtouint(buf, 10, &input) != 1) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		retval = -EINVAL;
 		goto exit;
 	}
@@ -5759,11 +5565,7 @@ static ssize_t fwu_sysfs_write_lockdown_code_store(struct device *dev,
 
 	for (i = 0; i < lockdown_data_size; i++) {
 		memcpy(temp, (buf + 2 * i), sizeof(temp));
-<<<<<<< HEAD
 		if (sscanf(temp, "%02x", &ld_val) == 1)
-=======
-		if (kstrtoint(temp, 16, &ld_val) == 1)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			*(lockdown_data + i) = ld_val & 0xff;
 	}
 
@@ -5780,10 +5582,6 @@ static ssize_t fwu_sysfs_write_lockdown_code_store(struct device *dev,
 	return count;
 }
 #endif
-<<<<<<< HEAD
-=======
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void synaptics_rmi4_fwu_attn(struct synaptics_rmi4_data *rmi4_data,
 		unsigned char intr_mask)
 {
@@ -5886,10 +5684,6 @@ static int synaptics_rmi4_fwu_init(struct synaptics_rmi4_data *rmi4_data)
 	if (ENABLE_SYS_REFLASH == false)
 		return 0;
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_TOUCHSCREEN_SYNAPTICS_DSX_FW_UPDATE_EXTRA_SYSFS
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	retval = sysfs_create_bin_file(&rmi4_data->input_dev->dev.kobj,
 			&dev_attr_data);
 	if (retval < 0) {
@@ -5898,10 +5692,6 @@ static int synaptics_rmi4_fwu_init(struct synaptics_rmi4_data *rmi4_data)
 				__func__);
 		goto exit_free_mem;
 	}
-<<<<<<< HEAD
-=======
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (attr_count = 0; attr_count < ARRAY_SIZE(attrs); attr_count++) {
 		retval = sysfs_create_file(&rmi4_data->input_dev->dev.kobj,
@@ -5923,13 +5713,7 @@ exit_remove_attrs:
 				&attrs[attr_count].attr);
 	}
 
-<<<<<<< HEAD
 	sysfs_remove_bin_file(&rmi4_data->input_dev->dev.kobj, &dev_attr_data);
-=======
-#ifdef CONFIG_TOUCHSCREEN_SYNAPTICS_DSX_FW_UPDATE_EXTRA_SYSFS
-	sysfs_remove_bin_file(&rmi4_data->input_dev->dev.kobj, &dev_attr_data);
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 exit_free_mem:
 	kfree(fwu->image_name);
@@ -5971,13 +5755,7 @@ static void synaptics_rmi4_fwu_remove(struct synaptics_rmi4_data *rmi4_data)
 				&attrs[attr_count].attr);
 	}
 
-<<<<<<< HEAD
 	sysfs_remove_bin_file(&rmi4_data->input_dev->dev.kobj, &dev_attr_data);
-=======
-#ifdef CONFIG_TOUCHSCREEN_SYNAPTICS_DSX_FW_UPDATE_EXTRA_SYSFS
-	sysfs_remove_bin_file(&rmi4_data->input_dev->dev.kobj, &dev_attr_data);
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 exit:
 	complete(&fwu_remove_complete);

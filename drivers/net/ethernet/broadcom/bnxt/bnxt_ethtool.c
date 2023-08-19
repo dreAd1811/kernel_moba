@@ -16,30 +16,19 @@
 #include <linux/etherdevice.h>
 #include <linux/crc32.h>
 #include <linux/firmware.h>
-<<<<<<< HEAD
 #include <linux/utsname.h>
 #include <linux/time.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "bnxt_hsi.h"
 #include "bnxt.h"
 #include "bnxt_xdp.h"
 #include "bnxt_ethtool.h"
 #include "bnxt_nvm_defs.h"	/* NVRAM content constant and structure defs */
 #include "bnxt_fw_hdr.h"	/* Firmware hdr constant and structure defs */
-<<<<<<< HEAD
 #include "bnxt_coredump.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define FLASH_NVRAM_TIMEOUT	((HWRM_CMD_TIMEOUT) * 100)
 #define FLASH_PACKAGE_TIMEOUT	((HWRM_CMD_TIMEOUT) * 200)
 #define INSTALL_PACKAGE_TIMEOUT	((HWRM_CMD_TIMEOUT) * 200)
 
-<<<<<<< HEAD
-=======
-static char *bnxt_get_pkgver(struct net_device *dev, char *buf, size_t buflen);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static u32 bnxt_get_msglevel(struct net_device *dev)
 {
 	struct bnxt *bp = netdev_priv(dev);
@@ -58,7 +47,6 @@ static int bnxt_get_coalesce(struct net_device *dev,
 			     struct ethtool_coalesce *coal)
 {
 	struct bnxt *bp = netdev_priv(dev);
-<<<<<<< HEAD
 	struct bnxt_coal *hw_coal;
 	u16 mult;
 
@@ -79,21 +67,6 @@ static int bnxt_get_coalesce(struct net_device *dev,
 	coal->tx_max_coalesced_frames = hw_coal->coal_bufs / mult;
 	coal->tx_coalesce_usecs_irq = hw_coal->coal_ticks_irq;
 	coal->tx_max_coalesced_frames_irq = hw_coal->coal_bufs_irq / mult;
-=======
-
-	memset(coal, 0, sizeof(*coal));
-
-	coal->rx_coalesce_usecs = bp->rx_coal_ticks;
-	/* 2 completion records per rx packet */
-	coal->rx_max_coalesced_frames = bp->rx_coal_bufs / 2;
-	coal->rx_coalesce_usecs_irq = bp->rx_coal_ticks_irq;
-	coal->rx_max_coalesced_frames_irq = bp->rx_coal_bufs_irq / 2;
-
-	coal->tx_coalesce_usecs = bp->tx_coal_ticks;
-	coal->tx_max_coalesced_frames = bp->tx_coal_bufs;
-	coal->tx_coalesce_usecs_irq = bp->tx_coal_ticks_irq;
-	coal->tx_max_coalesced_frames_irq = bp->tx_coal_bufs_irq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	coal->stats_block_coalesce_usecs = bp->stats_coal_ticks;
 
@@ -105,7 +78,6 @@ static int bnxt_set_coalesce(struct net_device *dev,
 {
 	struct bnxt *bp = netdev_priv(dev);
 	bool update_stats = false;
-<<<<<<< HEAD
 	struct bnxt_coal *hw_coal;
 	int rc = 0;
 	u16 mult;
@@ -132,20 +104,6 @@ static int bnxt_set_coalesce(struct net_device *dev,
 	hw_coal->coal_bufs = coal->tx_max_coalesced_frames * mult;
 	hw_coal->coal_ticks_irq = coal->tx_coalesce_usecs_irq;
 	hw_coal->coal_bufs_irq = coal->tx_max_coalesced_frames_irq * mult;
-=======
-	int rc = 0;
-
-	bp->rx_coal_ticks = coal->rx_coalesce_usecs;
-	/* 2 completion records per rx packet */
-	bp->rx_coal_bufs = coal->rx_max_coalesced_frames * 2;
-	bp->rx_coal_ticks_irq = coal->rx_coalesce_usecs_irq;
-	bp->rx_coal_bufs_irq = coal->rx_max_coalesced_frames_irq * 2;
-
-	bp->tx_coal_ticks = coal->tx_coalesce_usecs;
-	bp->tx_coal_bufs = coal->tx_max_coalesced_frames;
-	bp->tx_coal_ticks_irq = coal->tx_coalesce_usecs_irq;
-	bp->tx_coal_bufs_irq = coal->tx_max_coalesced_frames_irq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (bp->stats_coal_ticks != coal->stats_block_coalesce_usecs) {
 		u32 stats_ticks = coal->stats_block_coalesce_usecs;
@@ -157,7 +115,6 @@ static int bnxt_set_coalesce(struct net_device *dev,
 					      BNXT_MAX_STATS_COAL_TICKS);
 		stats_ticks = rounddown(stats_ticks, BNXT_MIN_STATS_COAL_TICKS);
 		bp->stats_coal_ticks = stats_ticks;
-<<<<<<< HEAD
 		if (bp->stats_coal_ticks)
 			bp->current_interval =
 				bp->stats_coal_ticks * HZ / 1000000;
@@ -167,11 +124,6 @@ static int bnxt_set_coalesce(struct net_device *dev,
 	}
 
 reset_coalesce:
-=======
-		update_stats = true;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (netif_running(dev)) {
 		if (update_stats) {
 			rc = bnxt_close_nic(bp, true, false);
@@ -193,7 +145,6 @@ reset_coalesce:
 #define BNXT_TX_STATS_ENTRY(counter)	\
 	{ BNXT_TX_STATS_OFFSET(counter), __stringify(counter) }
 
-<<<<<<< HEAD
 #define BNXT_RX_STATS_EXT_ENTRY(counter)	\
 	{ BNXT_RX_STATS_EXT_OFFSET(counter), __stringify(counter) }
 
@@ -210,8 +161,6 @@ static struct {
 	{0, "tx_total_discard_pkts"},
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct {
 	long offset;
 	char string[ETH_GSTRING_LEN];
@@ -221,11 +170,7 @@ static const struct {
 	BNXT_RX_STATS_ENTRY(rx_128b_255b_frames),
 	BNXT_RX_STATS_ENTRY(rx_256b_511b_frames),
 	BNXT_RX_STATS_ENTRY(rx_512b_1023b_frames),
-<<<<<<< HEAD
 	BNXT_RX_STATS_ENTRY(rx_1024b_1518b_frames),
-=======
-	BNXT_RX_STATS_ENTRY(rx_1024b_1518_frames),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	BNXT_RX_STATS_ENTRY(rx_good_vlan_frames),
 	BNXT_RX_STATS_ENTRY(rx_1519b_2047b_frames),
 	BNXT_RX_STATS_ENTRY(rx_2048b_4095b_frames),
@@ -260,26 +205,17 @@ static const struct {
 	BNXT_RX_STATS_ENTRY(rx_bytes),
 	BNXT_RX_STATS_ENTRY(rx_runt_bytes),
 	BNXT_RX_STATS_ENTRY(rx_runt_frames),
-<<<<<<< HEAD
 	BNXT_RX_STATS_ENTRY(rx_stat_discard),
 	BNXT_RX_STATS_ENTRY(rx_stat_err),
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	BNXT_TX_STATS_ENTRY(tx_64b_frames),
 	BNXT_TX_STATS_ENTRY(tx_65b_127b_frames),
 	BNXT_TX_STATS_ENTRY(tx_128b_255b_frames),
 	BNXT_TX_STATS_ENTRY(tx_256b_511b_frames),
 	BNXT_TX_STATS_ENTRY(tx_512b_1023b_frames),
-<<<<<<< HEAD
 	BNXT_TX_STATS_ENTRY(tx_1024b_1518b_frames),
 	BNXT_TX_STATS_ENTRY(tx_good_vlan_frames),
 	BNXT_TX_STATS_ENTRY(tx_1519b_2047b_frames),
-=======
-	BNXT_TX_STATS_ENTRY(tx_1024b_1518_frames),
-	BNXT_TX_STATS_ENTRY(tx_good_vlan_frames),
-	BNXT_TX_STATS_ENTRY(tx_1519b_2047_frames),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	BNXT_TX_STATS_ENTRY(tx_2048b_4095b_frames),
 	BNXT_TX_STATS_ENTRY(tx_4096b_9216b_frames),
 	BNXT_TX_STATS_ENTRY(tx_9217b_16383b_frames),
@@ -306,7 +242,6 @@ static const struct {
 	BNXT_TX_STATS_ENTRY(tx_eee_lpi_duration),
 	BNXT_TX_STATS_ENTRY(tx_total_collisions),
 	BNXT_TX_STATS_ENTRY(tx_bytes),
-<<<<<<< HEAD
 	BNXT_TX_STATS_ENTRY(tx_xthol_frames),
 	BNXT_TX_STATS_ENTRY(tx_stat_discard),
 	BNXT_TX_STATS_ENTRY(tx_stat_error),
@@ -326,17 +261,11 @@ static const struct {
 #define BNXT_NUM_SW_FUNC_STATS	ARRAY_SIZE(bnxt_sw_func_stats)
 #define BNXT_NUM_PORT_STATS ARRAY_SIZE(bnxt_port_stats_arr)
 #define BNXT_NUM_PORT_STATS_EXT ARRAY_SIZE(bnxt_port_stats_ext_arr)
-=======
-};
-
-#define BNXT_NUM_PORT_STATS ARRAY_SIZE(bnxt_port_stats_arr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int bnxt_get_num_stats(struct bnxt *bp)
 {
 	int num_stats = BNXT_NUM_STATS * bp->cp_nr_rings;
 
-<<<<<<< HEAD
 	num_stats += BNXT_NUM_SW_FUNC_STATS;
 
 	if (bp->flags & BNXT_FLAG_PORT_STATS)
@@ -345,11 +274,6 @@ static int bnxt_get_num_stats(struct bnxt *bp)
 	if (bp->flags & BNXT_FLAG_PORT_STATS_EXT)
 		num_stats += BNXT_NUM_PORT_STATS_EXT;
 
-=======
-	if (bp->flags & BNXT_FLAG_PORT_STATS)
-		num_stats += BNXT_NUM_PORT_STATS;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return num_stats;
 }
 
@@ -379,12 +303,9 @@ static void bnxt_get_ethtool_stats(struct net_device *dev,
 	if (!bp->bnapi)
 		return;
 
-<<<<<<< HEAD
 	for (i = 0; i < BNXT_NUM_SW_FUNC_STATS; i++)
 		bnxt_sw_func_stats[i].counter = 0;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < bp->cp_nr_rings; i++) {
 		struct bnxt_napi *bnapi = bp->bnapi[i];
 		struct bnxt_cp_ring_info *cpr = &bnapi->cp_ring;
@@ -394,7 +315,6 @@ static void bnxt_get_ethtool_stats(struct net_device *dev,
 		for (k = 0; k < stat_fields; j++, k++)
 			buf[j] = le64_to_cpu(hw_stats[k]);
 		buf[j++] = cpr->rx_l4_csum_errors;
-<<<<<<< HEAD
 
 		bnxt_sw_func_stats[RX_TOTAL_DISCARDS].counter +=
 			le64_to_cpu(cpr->hw_stats->rx_discard_pkts);
@@ -405,9 +325,6 @@ static void bnxt_get_ethtool_stats(struct net_device *dev,
 	for (i = 0; i < BNXT_NUM_SW_FUNC_STATS; i++, j++)
 		buf[j] = bnxt_sw_func_stats[i].counter;
 
-=======
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (bp->flags & BNXT_FLAG_PORT_STATS) {
 		__le64 *port_stats = (__le64 *)bp->hw_rx_port_stats;
 
@@ -416,7 +333,6 @@ static void bnxt_get_ethtool_stats(struct net_device *dev,
 					       bnxt_port_stats_arr[i].offset));
 		}
 	}
-<<<<<<< HEAD
 	if (bp->flags & BNXT_FLAG_PORT_STATS_EXT) {
 		__le64 *port_stats_ext = (__le64 *)bp->hw_rx_port_stats_ext;
 
@@ -425,8 +341,6 @@ static void bnxt_get_ethtool_stats(struct net_device *dev,
 					    bnxt_port_stats_ext_arr[i].offset));
 		}
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void bnxt_get_strings(struct net_device *dev, u32 stringset, u8 *buf)
@@ -481,29 +395,23 @@ static void bnxt_get_strings(struct net_device *dev, u32 stringset, u8 *buf)
 			sprintf(buf, "[%d]: rx_l4_csum_errors", i);
 			buf += ETH_GSTRING_LEN;
 		}
-<<<<<<< HEAD
 		for (i = 0; i < BNXT_NUM_SW_FUNC_STATS; i++) {
 			strcpy(buf, bnxt_sw_func_stats[i].string);
 			buf += ETH_GSTRING_LEN;
 		}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (bp->flags & BNXT_FLAG_PORT_STATS) {
 			for (i = 0; i < BNXT_NUM_PORT_STATS; i++) {
 				strcpy(buf, bnxt_port_stats_arr[i].string);
 				buf += ETH_GSTRING_LEN;
 			}
 		}
-<<<<<<< HEAD
 		if (bp->flags & BNXT_FLAG_PORT_STATS_EXT) {
 			for (i = 0; i < BNXT_NUM_PORT_STATS_EXT; i++) {
 				strcpy(buf, bnxt_port_stats_ext_arr[i].string);
 				buf += ETH_GSTRING_LEN;
 			}
 		}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case ETH_SS_TEST:
 		if (bp->num_tests)
@@ -558,7 +466,6 @@ static void bnxt_get_channels(struct net_device *dev,
 			      struct ethtool_channels *channel)
 {
 	struct bnxt *bp = netdev_priv(dev);
-<<<<<<< HEAD
 	struct bnxt_hw_resc *hw_resc = &bp->hw_resc;
 	int max_rx_rings, max_tx_rings, tcs;
 	int max_tx_sch_inputs;
@@ -571,22 +478,14 @@ static void bnxt_get_channels(struct net_device *dev,
 	bnxt_get_max_rings(bp, &max_rx_rings, &max_tx_rings, true);
 	if (max_tx_sch_inputs)
 		max_tx_rings = min_t(int, max_tx_rings, max_tx_sch_inputs);
-=======
-	int max_rx_rings, max_tx_rings, tcs;
-
-	bnxt_get_max_rings(bp, &max_rx_rings, &max_tx_rings, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	channel->max_combined = min_t(int, max_rx_rings, max_tx_rings);
 
 	if (bnxt_get_max_rings(bp, &max_rx_rings, &max_tx_rings, false)) {
 		max_rx_rings = 0;
 		max_tx_rings = 0;
 	}
-<<<<<<< HEAD
 	if (max_tx_sch_inputs)
 		max_tx_rings = min_t(int, max_tx_rings, max_tx_sch_inputs);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tcs = netdev_get_num_tc(dev);
 	if (tcs > 1)
@@ -693,11 +592,8 @@ static int bnxt_set_channels(struct net_device *dev,
 			 * to renable
 			 */
 		}
-<<<<<<< HEAD
 	} else {
 		rc = bnxt_reserve_rings(bp);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return rc;
@@ -1017,17 +913,12 @@ static int bnxt_get_rxfh(struct net_device *dev, u32 *indir, u8 *key,
 			 u8 *hfunc)
 {
 	struct bnxt *bp = netdev_priv(dev);
-<<<<<<< HEAD
 	struct bnxt_vnic_info *vnic;
-=======
-	struct bnxt_vnic_info *vnic = &bp->vnic_info[0];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i = 0;
 
 	if (hfunc)
 		*hfunc = ETH_RSS_HASH_TOP;
 
-<<<<<<< HEAD
 	if (!bp->vnic_info)
 		return 0;
 
@@ -1038,13 +929,6 @@ static int bnxt_get_rxfh(struct net_device *dev, u32 *indir, u8 *key,
 	}
 
 	if (key && vnic->rss_hash_key)
-=======
-	if (indir)
-		for (i = 0; i < HW_HASH_INDEX_SIZE; i++)
-			indir[i] = le16_to_cpu(vnic->rss_table[i]);
-
-	if (key)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		memcpy(key, vnic->rss_hash_key, HW_HASH_KEY_SIZE);
 
 	return 0;
@@ -1054,27 +938,10 @@ static void bnxt_get_drvinfo(struct net_device *dev,
 			     struct ethtool_drvinfo *info)
 {
 	struct bnxt *bp = netdev_priv(dev);
-<<<<<<< HEAD
 
 	strlcpy(info->driver, DRV_MODULE_NAME, sizeof(info->driver));
 	strlcpy(info->version, DRV_MODULE_VERSION, sizeof(info->version));
 	strlcpy(info->fw_version, bp->fw_ver_str, sizeof(info->fw_version));
-=======
-	char *pkglog;
-	char *pkgver = NULL;
-
-	pkglog = kmalloc(BNX_PKG_LOG_MAX_LENGTH, GFP_KERNEL);
-	if (pkglog)
-		pkgver = bnxt_get_pkgver(dev, pkglog, BNX_PKG_LOG_MAX_LENGTH);
-	strlcpy(info->driver, DRV_MODULE_NAME, sizeof(info->driver));
-	strlcpy(info->version, DRV_MODULE_VERSION, sizeof(info->version));
-	if (pkgver && *pkgver != 0 && isdigit(*pkgver))
-		snprintf(info->fw_version, sizeof(info->fw_version) - 1,
-			 "%s pkg %s", bp->fw_ver_str, pkgver);
-	else
-		strlcpy(info->fw_version, bp->fw_ver_str,
-			sizeof(info->fw_version));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	strlcpy(info->bus_info, pci_name(bp->pdev), sizeof(info->bus_info));
 	info->n_stats = bnxt_get_num_stats(bp);
 	info->testinfo_len = bp->num_tests;
@@ -1082,10 +949,6 @@ static void bnxt_get_drvinfo(struct net_device *dev,
 	info->eedump_len = 0;
 	/* TODO CHIMP FW: reg dump details */
 	info->regdump_len = 0;
-<<<<<<< HEAD
-=======
-	kfree(pkglog);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void bnxt_get_wol(struct net_device *dev, struct ethtool_wolinfo *wol)
@@ -1529,16 +1392,8 @@ static int bnxt_set_pauseparam(struct net_device *dev,
 	if (epause->tx_pause)
 		link_info->req_flow_ctrl |= BNXT_LINK_PAUSE_TX;
 
-<<<<<<< HEAD
 	if (netif_running(dev))
 		rc = bnxt_hwrm_set_pause(bp);
-=======
-	if (netif_running(dev)) {
-		mutex_lock(&bp->link_lock);
-		rc = bnxt_hwrm_set_pause(bp);
-		mutex_unlock(&bp->link_lock);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 
@@ -1589,37 +1444,17 @@ static int bnxt_flash_nvram(struct net_device *dev,
 	rc = hwrm_send_message(bp, &req, sizeof(req), FLASH_NVRAM_TIMEOUT);
 	dma_free_coherent(&bp->pdev->dev, data_len, kmem, dma_handle);
 
-<<<<<<< HEAD
-=======
-	if (rc == HWRM_ERR_CODE_RESOURCE_ACCESS_DENIED) {
-		netdev_info(dev,
-			    "PF does not have admin privileges to flash the device\n");
-		rc = -EACCES;
-	} else if (rc) {
-		rc = -EIO;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 
 static int bnxt_firmware_reset(struct net_device *dev,
 			       u16 dir_type)
 {
-<<<<<<< HEAD
 	struct bnxt *bp = netdev_priv(dev);
 	struct hwrm_fw_reset_input req = {0};
 
 	bnxt_hwrm_cmd_hdr_init(bp, &req, HWRM_FW_RESET, -1, -1);
 
-=======
-	struct hwrm_fw_reset_input req = {0};
-	struct bnxt *bp = netdev_priv(dev);
-	int rc;
-
-	bnxt_hwrm_cmd_hdr_init(bp, &req, HWRM_FW_RESET, -1, -1);
-
-	/* TODO: Support ASAP ChiMP self-reset (e.g. upon PF driver unload) */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* TODO: Address self-reset of APE/KONG/BONO/TANG or ungraceful reset */
 	/*       (e.g. when firmware isn't already running) */
 	switch (dir_type) {
@@ -1645,7 +1480,6 @@ static int bnxt_firmware_reset(struct net_device *dev,
 	case BNX_DIR_TYPE_BONO_PATCH:
 		req.embedded_proc_type = FW_RESET_REQ_EMBEDDED_PROC_TYPE_ROCE;
 		break;
-<<<<<<< HEAD
 	case BNXT_FW_RESET_CHIP:
 		req.embedded_proc_type = FW_RESET_REQ_EMBEDDED_PROC_TYPE_CHIP;
 		req.selfrst_status = FW_RESET_REQ_SELFRST_STATUS_SELFRSTASAP;
@@ -1653,25 +1487,11 @@ static int bnxt_firmware_reset(struct net_device *dev,
 	case BNXT_FW_RESET_AP:
 		req.embedded_proc_type = FW_RESET_REQ_EMBEDDED_PROC_TYPE_AP;
 		break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 	return hwrm_send_message(bp, &req, sizeof(req), HWRM_CMD_TIMEOUT);
-=======
-	rc = hwrm_send_message(bp, &req, sizeof(req), HWRM_CMD_TIMEOUT);
-	if (rc == HWRM_ERR_CODE_RESOURCE_ACCESS_DENIED) {
-		netdev_info(dev,
-			    "PF does not have admin privileges to reset the device\n");
-		rc = -EACCES;
-	} else if (rc) {
-		rc = -EIO;
-	}
-	return rc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int bnxt_flash_firmware(struct net_device *dev,
@@ -1878,15 +1698,9 @@ static int bnxt_flash_package_from_file(struct net_device *dev,
 	struct hwrm_nvm_install_update_output *resp = bp->hwrm_cmd_resp_addr;
 	struct hwrm_nvm_install_update_input install = {0};
 	const struct firmware *fw;
-<<<<<<< HEAD
 	u32 item_len;
 	u16 index;
 	int rc;
-=======
-	int rc, hwrm_err = 0;
-	u32 item_len;
-	u16 index;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	bnxt_hwrm_fw_set_time(bp);
 
@@ -1929,26 +1743,15 @@ static int bnxt_flash_package_from_file(struct net_device *dev,
 			memcpy(kmem, fw->data, fw->size);
 			modify.host_src_addr = cpu_to_le64(dma_handle);
 
-<<<<<<< HEAD
 			rc = hwrm_send_message(bp, &modify, sizeof(modify),
 					       FLASH_PACKAGE_TIMEOUT);
-=======
-			hwrm_err = hwrm_send_message(bp, &modify,
-						     sizeof(modify),
-						     FLASH_PACKAGE_TIMEOUT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dma_free_coherent(&bp->pdev->dev, fw->size, kmem,
 					  dma_handle);
 		}
 	}
 	release_firmware(fw);
-<<<<<<< HEAD
 	if (rc)
 		return rc;
-=======
-	if (rc || hwrm_err)
-		goto err_exit;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if ((install_type & 0xffff) == 0)
 		install_type >>= 16;
@@ -1956,7 +1759,6 @@ static int bnxt_flash_package_from_file(struct net_device *dev,
 	install.install_type = cpu_to_le32(install_type);
 
 	mutex_lock(&bp->hwrm_cmd_lock);
-<<<<<<< HEAD
 	rc = _hwrm_send_message(bp, &install, sizeof(install),
 				INSTALL_PACKAGE_TIMEOUT);
 	if (rc) {
@@ -1977,23 +1779,6 @@ static int bnxt_flash_package_from_file(struct net_device *dev,
 				goto flash_pkg_exit;
 			}
 		}
-=======
-	hwrm_err = _hwrm_send_message(bp, &install, sizeof(install),
-				      INSTALL_PACKAGE_TIMEOUT);
-	if (hwrm_err) {
-		u8 error_code = ((struct hwrm_err_output *)resp)->cmd_err;
-
-		if (resp->error_code && error_code ==
-		    NVM_INSTALL_UPDATE_CMD_ERR_CODE_FRAG_ERR) {
-			install.flags |= cpu_to_le16(
-			       NVM_INSTALL_UPDATE_REQ_FLAGS_ALLOWED_TO_DEFRAG);
-			hwrm_err = _hwrm_send_message(bp, &install,
-						      sizeof(install),
-						      INSTALL_PACKAGE_TIMEOUT);
-		}
-		if (hwrm_err)
-			goto flash_pkg_exit;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (resp->result) {
@@ -2003,17 +1788,6 @@ static int bnxt_flash_package_from_file(struct net_device *dev,
 	}
 flash_pkg_exit:
 	mutex_unlock(&bp->hwrm_cmd_lock);
-<<<<<<< HEAD
-=======
-err_exit:
-	if (hwrm_err == HWRM_ERR_CODE_RESOURCE_ACCESS_DENIED) {
-		netdev_info(dev,
-			    "PF does not have admin privileges to flash the device\n");
-		rc = -EACCES;
-	} else if (hwrm_err) {
-		rc = -EOPNOTSUPP;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 
@@ -2054,14 +1828,11 @@ static int nvm_get_dir_info(struct net_device *dev, u32 *entries, u32 *length)
 
 static int bnxt_get_eeprom_len(struct net_device *dev)
 {
-<<<<<<< HEAD
 	struct bnxt *bp = netdev_priv(dev);
 
 	if (BNXT_VF(bp))
 		return 0;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* The -1 return value allows the entire 32-bit range of offsets to be
 	 * passed via the ethtool command-line utility.
 	 */
@@ -2118,12 +1889,9 @@ static int bnxt_get_nvram_item(struct net_device *dev, u32 index, u32 offset,
 	dma_addr_t dma_handle;
 	struct hwrm_nvm_read_input req = {0};
 
-<<<<<<< HEAD
 	if (!length)
 		return -EINVAL;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	buf = dma_alloc_coherent(&bp->pdev->dev, length, &dma_handle,
 				 GFP_KERNEL);
 	if (!buf) {
@@ -2207,7 +1975,6 @@ static char *bnxt_parse_pkglog(int desired_field, u8 *data, size_t datalen)
 	return retval;
 }
 
-<<<<<<< HEAD
 static void bnxt_get_pkgver(struct net_device *dev)
 {
 	struct bnxt *bp = netdev_priv(dev);
@@ -2241,24 +2008,6 @@ static void bnxt_get_pkgver(struct net_device *dev)
 	}
 err:
 	kfree(pkgbuf);
-=======
-static char *bnxt_get_pkgver(struct net_device *dev, char *buf, size_t buflen)
-{
-	u16 index = 0;
-	u32 datalen;
-
-	if (bnxt_find_nvram_item(dev, BNX_DIR_TYPE_PKG_LOG,
-				 BNX_DIR_ORDINAL_FIRST, BNX_DIR_EXT_NONE,
-				 &index, NULL, &datalen) != 0)
-		return NULL;
-
-	memset(buf, 0, buflen);
-	if (bnxt_get_nvram_item(dev, index, 0, datalen, buf) != 0)
-		return NULL;
-
-	return bnxt_parse_pkglog(BNX_PKG_LOG_FIELD_IDX_PKG_VERSION, buf,
-		datalen);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int bnxt_get_eeprom(struct net_device *dev,
@@ -2443,14 +2192,8 @@ static int bnxt_read_sfp_module_eeprom_info(struct bnxt *bp, u16 i2c_addr,
 static int bnxt_get_module_info(struct net_device *dev,
 				struct ethtool_modinfo *modinfo)
 {
-<<<<<<< HEAD
 	u8 data[SFF_DIAG_SUPPORT_OFFSET + 1];
 	struct bnxt *bp = netdev_priv(dev);
-=======
-	struct bnxt *bp = netdev_priv(dev);
-	struct hwrm_port_phy_i2c_read_input req = {0};
-	struct hwrm_port_phy_i2c_read_output *output = bp->hwrm_cmd_resp_addr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc;
 
 	/* No point in going further if phy status indicates
@@ -2465,35 +2208,19 @@ static int bnxt_get_module_info(struct net_device *dev,
 	if (bp->hwrm_spec_code < 0x10202)
 		return -EOPNOTSUPP;
 
-<<<<<<< HEAD
 	rc = bnxt_read_sfp_module_eeprom_info(bp, I2C_DEV_ADDR_A0, 0, 0,
 					      SFF_DIAG_SUPPORT_OFFSET + 1,
 					      data);
 	if (!rc) {
 		u8 module_id = data[0];
 		u8 diag_supported = data[SFF_DIAG_SUPPORT_OFFSET];
-=======
-	bnxt_hwrm_cmd_hdr_init(bp, &req, HWRM_PORT_PHY_I2C_READ, -1, -1);
-	req.i2c_slave_addr = I2C_DEV_ADDR_A0;
-	req.page_number = 0;
-	req.page_offset = cpu_to_le16(SFP_EEPROM_SFF_8472_COMP_ADDR);
-	req.data_length = SFP_EEPROM_SFF_8472_COMP_SIZE;
-	req.port_id = cpu_to_le16(bp->pf.port_id);
-	mutex_lock(&bp->hwrm_cmd_lock);
-	rc = _hwrm_send_message(bp, &req, sizeof(req), HWRM_CMD_TIMEOUT);
-	if (!rc) {
-		u32 module_id = le32_to_cpu(output->data[0]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		switch (module_id) {
 		case SFF_MODULE_ID_SFP:
 			modinfo->type = ETH_MODULE_SFF_8472;
 			modinfo->eeprom_len = ETH_MODULE_SFF_8472_LEN;
-<<<<<<< HEAD
 			if (!diag_supported)
 				modinfo->eeprom_len = ETH_MODULE_SFF_8436_LEN;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		case SFF_MODULE_ID_QSFP:
 		case SFF_MODULE_ID_QSFP_PLUS:
@@ -2509,10 +2236,6 @@ static int bnxt_get_module_info(struct net_device *dev,
 			break;
 		}
 	}
-<<<<<<< HEAD
-=======
-	mutex_unlock(&bp->hwrm_cmd_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 
@@ -2645,47 +2368,17 @@ static int bnxt_hwrm_mac_loopback(struct bnxt *bp, bool enable)
 	return hwrm_send_message(bp, &req, sizeof(req), HWRM_CMD_TIMEOUT);
 }
 
-<<<<<<< HEAD
-=======
-static int bnxt_query_force_speeds(struct bnxt *bp, u16 *force_speeds)
-{
-	struct hwrm_port_phy_qcaps_output *resp = bp->hwrm_cmd_resp_addr;
-	struct hwrm_port_phy_qcaps_input req = {0};
-	int rc;
-
-	bnxt_hwrm_cmd_hdr_init(bp, &req, HWRM_PORT_PHY_QCAPS, -1, -1);
-	mutex_lock(&bp->hwrm_cmd_lock);
-	rc = _hwrm_send_message(bp, &req, sizeof(req), HWRM_CMD_TIMEOUT);
-	if (!rc)
-		*force_speeds = le16_to_cpu(resp->supported_speeds_force_mode);
-
-	mutex_unlock(&bp->hwrm_cmd_lock);
-	return rc;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int bnxt_disable_an_for_lpbk(struct bnxt *bp,
 				    struct hwrm_port_phy_cfg_input *req)
 {
 	struct bnxt_link_info *link_info = &bp->link_info;
-<<<<<<< HEAD
 	u16 fw_advertising = link_info->advertising;
-=======
-	u16 fw_advertising;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 fw_speed;
 	int rc;
 
 	if (!link_info->autoneg)
 		return 0;
 
-<<<<<<< HEAD
-=======
-	rc = bnxt_query_force_speeds(bp, &fw_advertising);
-	if (rc)
-		return rc;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	fw_speed = PORT_PHY_CFG_REQ_FORCE_LINK_SPEED_1GB;
 	if (netif_carrier_ok(bp->dev))
 		fw_speed = bp->link_info.link_speed;
@@ -2707,11 +2400,7 @@ static int bnxt_disable_an_for_lpbk(struct bnxt *bp,
 	return rc;
 }
 
-<<<<<<< HEAD
 static int bnxt_hwrm_phy_loopback(struct bnxt *bp, bool enable, bool ext)
-=======
-static int bnxt_hwrm_phy_loopback(struct bnxt *bp, bool enable)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct hwrm_port_phy_cfg_input req = {0};
 
@@ -2719,14 +2408,10 @@ static int bnxt_hwrm_phy_loopback(struct bnxt *bp, bool enable)
 
 	if (enable) {
 		bnxt_disable_an_for_lpbk(bp, &req);
-<<<<<<< HEAD
 		if (ext)
 			req.lpbk = PORT_PHY_CFG_REQ_LPBK_EXTERNAL;
 		else
 			req.lpbk = PORT_PHY_CFG_REQ_LPBK_LOCAL;
-=======
-		req.lpbk = PORT_PHY_CFG_REQ_LPBK_LOCAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		req.lpbk = PORT_PHY_CFG_REQ_LPBK_NONE;
 	}
@@ -2859,35 +2544,21 @@ static int bnxt_run_fw_tests(struct bnxt *bp, u8 test_mask, u8 *test_results)
 	return rc;
 }
 
-<<<<<<< HEAD
 #define BNXT_DRV_TESTS			4
 #define BNXT_MACLPBK_TEST_IDX		(bp->num_tests - BNXT_DRV_TESTS)
 #define BNXT_PHYLPBK_TEST_IDX		(BNXT_MACLPBK_TEST_IDX + 1)
 #define BNXT_EXTLPBK_TEST_IDX		(BNXT_MACLPBK_TEST_IDX + 2)
 #define BNXT_IRQ_TEST_IDX		(BNXT_MACLPBK_TEST_IDX + 3)
-=======
-#define BNXT_DRV_TESTS			3
-#define BNXT_MACLPBK_TEST_IDX		(bp->num_tests - BNXT_DRV_TESTS)
-#define BNXT_PHYLPBK_TEST_IDX		(BNXT_MACLPBK_TEST_IDX + 1)
-#define BNXT_IRQ_TEST_IDX		(BNXT_MACLPBK_TEST_IDX + 2)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void bnxt_self_test(struct net_device *dev, struct ethtool_test *etest,
 			   u64 *buf)
 {
 	struct bnxt *bp = netdev_priv(dev);
-<<<<<<< HEAD
 	bool do_ext_lpbk = false;
 	bool offline = false;
 	u8 test_results = 0;
 	u8 test_mask = 0;
 	int rc, i;
-=======
-	bool offline = false;
-	u8 test_results = 0;
-	u8 test_mask = 0;
-	int rc = 0, i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!bp->num_tests || !BNXT_SINGLE_PF(bp))
 		return;
@@ -2897,13 +2568,10 @@ static void bnxt_self_test(struct net_device *dev, struct ethtool_test *etest,
 		return;
 	}
 
-<<<<<<< HEAD
 	if ((etest->flags & ETH_TEST_FL_EXTERNAL_LB) &&
 	    (bp->test_info->flags & BNXT_TEST_FL_EXT_LPBK))
 		do_ext_lpbk = true;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (etest->flags & ETH_TEST_FL_OFFLINE) {
 		if (bp->pf.active_vfs) {
 			etest->flags |= ETH_TEST_FL_FAILED;
@@ -2944,17 +2612,12 @@ static void bnxt_self_test(struct net_device *dev, struct ethtool_test *etest,
 			buf[BNXT_MACLPBK_TEST_IDX] = 0;
 
 		bnxt_hwrm_mac_loopback(bp, false);
-<<<<<<< HEAD
 		bnxt_hwrm_phy_loopback(bp, true, false);
-=======
-		bnxt_hwrm_phy_loopback(bp, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		msleep(1000);
 		if (bnxt_run_loopback(bp)) {
 			buf[BNXT_PHYLPBK_TEST_IDX] = 1;
 			etest->flags |= ETH_TEST_FL_FAILED;
 		}
-<<<<<<< HEAD
 		if (do_ext_lpbk) {
 			etest->flags |= ETH_TEST_FL_EXTERNAL_LB_DONE;
 			bnxt_hwrm_phy_loopback(bp, true, true);
@@ -2969,13 +2632,6 @@ static void bnxt_self_test(struct net_device *dev, struct ethtool_test *etest,
 		bnxt_open_nic(bp, false, true);
 	}
 	if (bnxt_test_irq(bp)) {
-=======
-		bnxt_hwrm_phy_loopback(bp, false);
-		bnxt_half_close_nic(bp);
-		rc = bnxt_open_nic(bp, false, true);
-	}
-	if (rc || bnxt_test_irq(bp)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		buf[BNXT_IRQ_TEST_IDX] = 1;
 		etest->flags |= ETH_TEST_FL_FAILED;
 	}
@@ -2989,7 +2645,6 @@ static void bnxt_self_test(struct net_device *dev, struct ethtool_test *etest,
 	}
 }
 
-<<<<<<< HEAD
 static int bnxt_reset(struct net_device *dev, u32 *flags)
 {
 	struct bnxt *bp = netdev_priv(dev);
@@ -3358,23 +3013,16 @@ static int bnxt_get_dump_data(struct net_device *dev, struct ethtool_dump *dump,
 	return bnxt_get_coredump(bp, buf, &dump->len);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void bnxt_ethtool_init(struct bnxt *bp)
 {
 	struct hwrm_selftest_qlist_output *resp = bp->hwrm_cmd_resp_addr;
 	struct hwrm_selftest_qlist_input req = {0};
 	struct bnxt_test_info *test_info;
-<<<<<<< HEAD
 	struct net_device *dev = bp->dev;
 	int i, rc;
 
 	bnxt_get_pkgver(dev);
 
-=======
-	int i, rc;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (bp->hwrm_spec_code < 0x10704 || !BNXT_SINGLE_PF(bp))
 		return;
 
@@ -3405,11 +3053,8 @@ void bnxt_ethtool_init(struct bnxt *bp)
 			strcpy(str, "Mac loopback test (offline)");
 		} else if (i == BNXT_PHYLPBK_TEST_IDX) {
 			strcpy(str, "Phy loopback test (offline)");
-<<<<<<< HEAD
 		} else if (i == BNXT_EXTLPBK_TEST_IDX) {
 			strcpy(str, "Ext loopback test (offline)");
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else if (i == BNXT_IRQ_TEST_IDX) {
 			strcpy(str, "Interrupt_test (offline)");
 		} else {
@@ -3470,10 +3115,7 @@ const struct ethtool_ops bnxt_ethtool_ops = {
 	.nway_reset		= bnxt_nway_reset,
 	.set_phys_id		= bnxt_set_phys_id,
 	.self_test		= bnxt_self_test,
-<<<<<<< HEAD
 	.reset			= bnxt_reset,
 	.get_dump_flag		= bnxt_get_dump_flag,
 	.get_dump_data		= bnxt_get_dump_data,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

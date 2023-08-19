@@ -97,13 +97,8 @@ static int pktdev_major;
 static int write_congestion_on  = PKT_WRITE_CONGESTION_ON;
 static int write_congestion_off = PKT_WRITE_CONGESTION_OFF;
 static struct mutex ctl_mutex;	/* Serialize open/close/setup/teardown */
-<<<<<<< HEAD
 static mempool_t psd_pool;
 static struct bio_set pkt_bio_set;
-=======
-static mempool_t *psd_pool;
-static struct bio_set *pkt_bio_set;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct class	*class_pktcdvd = NULL;    /* /sys/class/pktcdvd */
 static struct dentry	*pkt_debugfs_root = NULL; /* /sys/kernel/debug/pktcdvd */
@@ -483,13 +478,8 @@ static void pkt_debugfs_dev_new(struct pktcdvd_device *pd)
 	if (!pd->dfs_d_root)
 		return;
 
-<<<<<<< HEAD
 	pd->dfs_f_info = debugfs_create_file("info", 0444,
 					     pd->dfs_d_root, pd, &debug_fops);
-=======
-	pd->dfs_f_info = debugfs_create_file("info", S_IRUGO,
-				pd->dfs_d_root, pd, &debug_fops);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void pkt_debugfs_dev_remove(struct pktcdvd_device *pd)
@@ -641,11 +631,7 @@ static inline struct pkt_rb_node *pkt_rbtree_next(struct pkt_rb_node *node)
 static void pkt_rbtree_erase(struct pktcdvd_device *pd, struct pkt_rb_node *node)
 {
 	rb_erase(&node->rb_node, &pd->bio_queue);
-<<<<<<< HEAD
 	mempool_free(node, &pd->rb_pool);
-=======
-	mempool_free(node, pd->rb_pool);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pd->bio_queue_size--;
 	BUG_ON(pd->bio_queue_size < 0);
 }
@@ -718,21 +704,13 @@ static int pkt_generic_packet(struct pktcdvd_device *pd, struct packet_command *
 	int ret = 0;
 
 	rq = blk_get_request(q, (cgc->data_direction == CGC_DATA_WRITE) ?
-<<<<<<< HEAD
 			     REQ_OP_SCSI_OUT : REQ_OP_SCSI_IN, 0);
-=======
-			     REQ_OP_SCSI_OUT : REQ_OP_SCSI_IN, __GFP_RECLAIM);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(rq))
 		return PTR_ERR(rq);
 
 	if (cgc->buflen) {
 		ret = blk_rq_map_kern(q, rq, cgc->buffer, cgc->buflen,
-<<<<<<< HEAD
 				      GFP_NOIO);
-=======
-				      __GFP_RECLAIM);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			goto out;
 	}
@@ -770,7 +748,6 @@ static const char *sense_key_string(__u8 index)
 static void pkt_dump_sense(struct pktcdvd_device *pd,
 			   struct packet_command *cgc)
 {
-<<<<<<< HEAD
 	struct scsi_sense_hdr *sshdr = cgc->sshdr;
 
 	if (sshdr)
@@ -778,15 +755,6 @@ static void pkt_dump_sense(struct pktcdvd_device *pd,
 			CDROM_PACKET_SIZE, cgc->cmd,
 			sshdr->sense_key, sshdr->asc, sshdr->ascq,
 			sense_key_string(sshdr->sense_key));
-=======
-	struct request_sense *sense = cgc->sense;
-
-	if (sense)
-		pkt_err(pd, "%*ph - sense %02x.%02x.%02x (%s)\n",
-			CDROM_PACKET_SIZE, cgc->cmd,
-			sense->sense_key, sense->asc, sense->ascq,
-			sense_key_string(sense->sense_key));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		pkt_err(pd, "%*ph - no sense\n", CDROM_PACKET_SIZE, cgc->cmd);
 }
@@ -819,31 +787,19 @@ static noinline_for_stack int pkt_set_speed(struct pktcdvd_device *pd,
 				unsigned write_speed, unsigned read_speed)
 {
 	struct packet_command cgc;
-<<<<<<< HEAD
 	struct scsi_sense_hdr sshdr;
 	int ret;
 
 	init_cdrom_command(&cgc, NULL, 0, CGC_DATA_NONE);
 	cgc.sshdr = &sshdr;
-=======
-	struct request_sense sense;
-	int ret;
-
-	init_cdrom_command(&cgc, NULL, 0, CGC_DATA_NONE);
-	cgc.sense = &sense;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cgc.cmd[0] = GPCMD_SET_SPEED;
 	cgc.cmd[2] = (read_speed >> 8) & 0xff;
 	cgc.cmd[3] = read_speed & 0xff;
 	cgc.cmd[4] = (write_speed >> 8) & 0xff;
 	cgc.cmd[5] = write_speed & 0xff;
 
-<<<<<<< HEAD
 	ret = pkt_generic_packet(pd, &cgc);
 	if (ret)
-=======
-	if ((ret = pkt_generic_packet(pd, &cgc)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pkt_dump_sense(pd, &cgc);
 
 	return ret;
@@ -1167,11 +1123,7 @@ static int pkt_start_recovery(struct packet_data *pkt)
 	pkt->sector = new_sector;
 
 	bio_reset(pkt->bio);
-<<<<<<< HEAD
 	bio_set_dev(pkt->bio, pd->bdev);
-=======
-	bio_set_set(pkt->bio, pd->bdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bio_set_op_attrs(pkt->bio, REQ_OP_WRITE, 0);
 	pkt->bio->bi_iter.bi_sector = new_sector;
 	pkt->bio->bi_iter.bi_size = pkt->frames * CD_FRAMESIZE;
@@ -1334,11 +1286,7 @@ static void pkt_start_write(struct pktcdvd_device *pd, struct packet_data *pkt)
 	 * Fill-in bvec with data from orig_bios.
 	 */
 	spin_lock(&pkt->lock);
-<<<<<<< HEAD
 	bio_list_copy_data(pkt->w_bio, pkt->orig_bios.head);
-=======
-	bio_copy_data(pkt->w_bio, pkt->orig_bios.head);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pkt_set_state(pkt, PACKET_WRITE_WAIT_STATE);
 	spin_unlock(&pkt->lock);
@@ -1615,12 +1563,8 @@ static int pkt_get_disc_info(struct pktcdvd_device *pd, disc_information *di)
 	cgc.cmd[8] = cgc.buflen = 2;
 	cgc.quiet = 1;
 
-<<<<<<< HEAD
 	ret = pkt_generic_packet(pd, &cgc);
 	if (ret)
-=======
-	if ((ret = pkt_generic_packet(pd, &cgc)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 
 	/* not all drives have the same disc_info length, so requeue
@@ -1649,12 +1593,8 @@ static int pkt_get_track_info(struct pktcdvd_device *pd, __u16 track, __u8 type,
 	cgc.cmd[8] = 8;
 	cgc.quiet = 1;
 
-<<<<<<< HEAD
 	ret = pkt_generic_packet(pd, &cgc);
 	if (ret)
-=======
-	if ((ret = pkt_generic_packet(pd, &cgc)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 
 	cgc.buflen = be16_to_cpu(ti->track_information_length) +
@@ -1675,7 +1615,6 @@ static noinline_for_stack int pkt_get_last_written(struct pktcdvd_device *pd,
 	__u32 last_track;
 	int ret = -1;
 
-<<<<<<< HEAD
 	ret = pkt_get_disc_info(pd, &di);
 	if (ret)
 		return ret;
@@ -1683,24 +1622,13 @@ static noinline_for_stack int pkt_get_last_written(struct pktcdvd_device *pd,
 	last_track = (di.last_track_msb << 8) | di.last_track_lsb;
 	ret = pkt_get_track_info(pd, last_track, 1, &ti);
 	if (ret)
-=======
-	if ((ret = pkt_get_disc_info(pd, &di)))
-		return ret;
-
-	last_track = (di.last_track_msb << 8) | di.last_track_lsb;
-	if ((ret = pkt_get_track_info(pd, last_track, 1, &ti)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 
 	/* if this track is blank, try the previous. */
 	if (ti.blank) {
 		last_track--;
-<<<<<<< HEAD
 		ret = pkt_get_track_info(pd, last_track, 1, &ti);
 		if (ret)
-=======
-		if ((ret = pkt_get_track_info(pd, last_track, 1, &ti)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return ret;
 	}
 
@@ -1723,11 +1651,7 @@ static noinline_for_stack int pkt_get_last_written(struct pktcdvd_device *pd,
 static noinline_for_stack int pkt_set_write_settings(struct pktcdvd_device *pd)
 {
 	struct packet_command cgc;
-<<<<<<< HEAD
 	struct scsi_sense_hdr sshdr;
-=======
-	struct request_sense sense;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	write_param_page *wp;
 	char buffer[128];
 	int ret, size;
@@ -1738,14 +1662,9 @@ static noinline_for_stack int pkt_set_write_settings(struct pktcdvd_device *pd)
 
 	memset(buffer, 0, sizeof(buffer));
 	init_cdrom_command(&cgc, buffer, sizeof(*wp), CGC_DATA_READ);
-<<<<<<< HEAD
 	cgc.sshdr = &sshdr;
 	ret = pkt_mode_sense(pd, &cgc, GPMODE_WRITE_PARMS_PAGE, 0);
 	if (ret) {
-=======
-	cgc.sense = &sense;
-	if ((ret = pkt_mode_sense(pd, &cgc, GPMODE_WRITE_PARMS_PAGE, 0))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pkt_dump_sense(pd, &cgc);
 		return ret;
 	}
@@ -1759,14 +1678,9 @@ static noinline_for_stack int pkt_set_write_settings(struct pktcdvd_device *pd)
 	 * now get it all
 	 */
 	init_cdrom_command(&cgc, buffer, size, CGC_DATA_READ);
-<<<<<<< HEAD
 	cgc.sshdr = &sshdr;
 	ret = pkt_mode_sense(pd, &cgc, GPMODE_WRITE_PARMS_PAGE, 0);
 	if (ret) {
-=======
-	cgc.sense = &sense;
-	if ((ret = pkt_mode_sense(pd, &cgc, GPMODE_WRITE_PARMS_PAGE, 0))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pkt_dump_sense(pd, &cgc);
 		return ret;
 	}
@@ -1808,12 +1722,8 @@ static noinline_for_stack int pkt_set_write_settings(struct pktcdvd_device *pd)
 	wp->packet_size = cpu_to_be32(pd->settings.size >> 2);
 
 	cgc.buflen = cgc.cmd[8] = size;
-<<<<<<< HEAD
 	ret = pkt_mode_select(pd, &cgc);
 	if (ret) {
-=======
-	if ((ret = pkt_mode_select(pd, &cgc))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pkt_dump_sense(pd, &cgc);
 		return ret;
 	}
@@ -1918,12 +1828,8 @@ static noinline_for_stack int pkt_probe_settings(struct pktcdvd_device *pd)
 	memset(&di, 0, sizeof(disc_information));
 	memset(&ti, 0, sizeof(track_information));
 
-<<<<<<< HEAD
 	ret = pkt_get_disc_info(pd, &di);
 	if (ret) {
-=======
-	if ((ret = pkt_get_disc_info(pd, &di))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pkt_err(pd, "failed get_disc\n");
 		return ret;
 	}
@@ -1934,12 +1840,8 @@ static noinline_for_stack int pkt_probe_settings(struct pktcdvd_device *pd)
 	pd->type = di.erasable ? PACKET_CDRW : PACKET_CDR;
 
 	track = 1; /* (di.last_track_msb << 8) | di.last_track_lsb; */
-<<<<<<< HEAD
 	ret = pkt_get_track_info(pd, track, 1, &ti);
 	if (ret) {
-=======
-	if ((ret = pkt_get_track_info(pd, track, 1, &ti))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pkt_err(pd, "failed get_track\n");
 		return ret;
 	}
@@ -2014,20 +1916,12 @@ static noinline_for_stack int pkt_write_caching(struct pktcdvd_device *pd,
 						int set)
 {
 	struct packet_command cgc;
-<<<<<<< HEAD
 	struct scsi_sense_hdr sshdr;
-=======
-	struct request_sense sense;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned char buf[64];
 	int ret;
 
 	init_cdrom_command(&cgc, buf, sizeof(buf), CGC_DATA_READ);
-<<<<<<< HEAD
 	cgc.sshdr = &sshdr;
-=======
-	cgc.sense = &sense;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cgc.buflen = pd->mode_offset + 12;
 
 	/*
@@ -2035,12 +1929,8 @@ static noinline_for_stack int pkt_write_caching(struct pktcdvd_device *pd,
 	 */
 	cgc.quiet = 1;
 
-<<<<<<< HEAD
 	ret = pkt_mode_sense(pd, &cgc, GPMODE_WCACHING_PAGE, 0);
 	if (ret)
-=======
-	if ((ret = pkt_mode_sense(pd, &cgc, GPMODE_WCACHING_PAGE, 0)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 
 	buf[pd->mode_offset + 10] |= (!!set << 2);
@@ -2072,22 +1962,14 @@ static noinline_for_stack int pkt_get_max_speed(struct pktcdvd_device *pd,
 						unsigned *write_speed)
 {
 	struct packet_command cgc;
-<<<<<<< HEAD
 	struct scsi_sense_hdr sshdr;
-=======
-	struct request_sense sense;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned char buf[256+18];
 	unsigned char *cap_buf;
 	int ret, offset;
 
 	cap_buf = &buf[sizeof(struct mode_page_header) + pd->mode_offset];
 	init_cdrom_command(&cgc, buf, sizeof(buf), CGC_DATA_UNKNOWN);
-<<<<<<< HEAD
 	cgc.sshdr = &sshdr;
-=======
-	cgc.sense = &sense;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = pkt_mode_sense(pd, &cgc, GPMODE_CAPABILITIES_PAGE, 0);
 	if (ret) {
@@ -2141,21 +2023,13 @@ static noinline_for_stack int pkt_media_speed(struct pktcdvd_device *pd,
 						unsigned *speed)
 {
 	struct packet_command cgc;
-<<<<<<< HEAD
 	struct scsi_sense_hdr sshdr;
-=======
-	struct request_sense sense;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned char buf[64];
 	unsigned int size, st, sp;
 	int ret;
 
 	init_cdrom_command(&cgc, buf, 2, CGC_DATA_READ);
-<<<<<<< HEAD
 	cgc.sshdr = &sshdr;
-=======
-	cgc.sense = &sense;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cgc.cmd[0] = GPCMD_READ_TOC_PMA_ATIP;
 	cgc.cmd[1] = 2;
 	cgc.cmd[2] = 4; /* READ ATIP */
@@ -2170,11 +2044,7 @@ static noinline_for_stack int pkt_media_speed(struct pktcdvd_device *pd,
 		size = sizeof(buf);
 
 	init_cdrom_command(&cgc, buf, size, CGC_DATA_READ);
-<<<<<<< HEAD
 	cgc.sshdr = &sshdr;
-=======
-	cgc.sense = &sense;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cgc.cmd[0] = GPCMD_READ_TOC_PMA_ATIP;
 	cgc.cmd[1] = 2;
 	cgc.cmd[2] = 4;
@@ -2225,30 +2095,18 @@ static noinline_for_stack int pkt_media_speed(struct pktcdvd_device *pd,
 static noinline_for_stack int pkt_perform_opc(struct pktcdvd_device *pd)
 {
 	struct packet_command cgc;
-<<<<<<< HEAD
 	struct scsi_sense_hdr sshdr;
-=======
-	struct request_sense sense;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	pkt_dbg(2, pd, "Performing OPC\n");
 
 	init_cdrom_command(&cgc, NULL, 0, CGC_DATA_NONE);
-<<<<<<< HEAD
 	cgc.sshdr = &sshdr;
 	cgc.timeout = 60*HZ;
 	cgc.cmd[0] = GPCMD_SEND_OPC;
 	cgc.cmd[1] = 1;
 	ret = pkt_generic_packet(pd, &cgc);
 	if (ret)
-=======
-	cgc.sense = &sense;
-	cgc.timeout = 60*HZ;
-	cgc.cmd[0] = GPCMD_SEND_OPC;
-	cgc.cmd[1] = 1;
-	if ((ret = pkt_generic_packet(pd, &cgc)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pkt_dump_sense(pd, &cgc);
 	return ret;
 }
@@ -2258,34 +2116,22 @@ static int pkt_open_write(struct pktcdvd_device *pd)
 	int ret;
 	unsigned int write_speed, media_write_speed, read_speed;
 
-<<<<<<< HEAD
 	ret = pkt_probe_settings(pd);
 	if (ret) {
-=======
-	if ((ret = pkt_probe_settings(pd))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pkt_dbg(2, pd, "failed probe\n");
 		return ret;
 	}
 
-<<<<<<< HEAD
 	ret = pkt_set_write_settings(pd);
 	if (ret) {
-=======
-	if ((ret = pkt_set_write_settings(pd))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pkt_dbg(1, pd, "failed saving write settings\n");
 		return -EIO;
 	}
 
 	pkt_write_caching(pd, USE_WCACHING);
 
-<<<<<<< HEAD
 	ret = pkt_get_max_speed(pd, &write_speed);
 	if (ret)
-=======
-	if ((ret = pkt_get_max_speed(pd, &write_speed)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		write_speed = 16 * 177;
 	switch (pd->mmc3_profile) {
 		case 0x13: /* DVD-RW */
@@ -2294,12 +2140,8 @@ static int pkt_open_write(struct pktcdvd_device *pd)
 			pkt_dbg(1, pd, "write speed %ukB/s\n", write_speed);
 			break;
 		default:
-<<<<<<< HEAD
 			ret = pkt_media_speed(pd, &media_write_speed);
 			if (ret)
-=======
-			if ((ret = pkt_media_speed(pd, &media_write_speed)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				media_write_speed = 16;
 			write_speed = min(write_speed, media_write_speed * 177);
 			pkt_dbg(1, pd, "write speed %ux\n", write_speed / 176);
@@ -2307,24 +2149,16 @@ static int pkt_open_write(struct pktcdvd_device *pd)
 	}
 	read_speed = write_speed;
 
-<<<<<<< HEAD
 	ret = pkt_set_speed(pd, write_speed, read_speed);
 	if (ret) {
-=======
-	if ((ret = pkt_set_speed(pd, write_speed, read_speed))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pkt_dbg(1, pd, "couldn't set write speed\n");
 		return -EIO;
 	}
 	pd->write_speed = write_speed;
 	pd->read_speed = read_speed;
 
-<<<<<<< HEAD
 	ret = pkt_perform_opc(pd);
 	if (ret) {
-=======
-	if ((ret = pkt_perform_opc(pd))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pkt_dbg(1, pd, "Optimum Power Calibration failed\n");
 	}
 
@@ -2346,19 +2180,12 @@ static int pkt_open_dev(struct pktcdvd_device *pd, fmode_t write)
 	 * so bdget() can't fail.
 	 */
 	bdget(pd->bdev->bd_dev);
-<<<<<<< HEAD
 	ret = blkdev_get(pd->bdev, FMODE_READ | FMODE_EXCL, pd);
 	if (ret)
 		goto out;
 
 	ret = pkt_get_last_written(pd, &lba);
 	if (ret) {
-=======
-	if ((ret = blkdev_get(pd->bdev, FMODE_READ | FMODE_EXCL, pd)))
-		goto out;
-
-	if ((ret = pkt_get_last_written(pd, &lba))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pkt_err(pd, "pkt_get_last_written failed\n");
 		goto out_putdev;
 	}
@@ -2369,12 +2196,8 @@ static int pkt_open_dev(struct pktcdvd_device *pd, fmode_t write)
 
 	q = bdev_get_queue(pd->bdev);
 	if (write) {
-<<<<<<< HEAD
 		ret = pkt_open_write(pd);
 		if (ret)
-=======
-		if ((ret = pkt_open_write(pd)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto out_putdev;
 		/*
 		 * Some CDRW drives can not handle writes larger than one packet,
@@ -2389,12 +2212,8 @@ static int pkt_open_dev(struct pktcdvd_device *pd, fmode_t write)
 		clear_bit(PACKET_WRITABLE, &pd->flags);
 	}
 
-<<<<<<< HEAD
 	ret = pkt_set_segment_merging(pd, q);
 	if (ret)
-=======
-	if ((ret = pkt_set_segment_merging(pd, q)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out_putdev;
 
 	if (write) {
@@ -2509,23 +2328,14 @@ static void pkt_end_io_read_cloned(struct bio *bio)
 	psd->bio->bi_status = bio->bi_status;
 	bio_put(bio);
 	bio_endio(psd->bio);
-<<<<<<< HEAD
 	mempool_free(psd, &psd_pool);
-=======
-	mempool_free(psd, psd_pool);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pkt_bio_finished(pd);
 }
 
 static void pkt_make_request_read(struct pktcdvd_device *pd, struct bio *bio)
 {
-<<<<<<< HEAD
 	struct bio *cloned_bio = bio_clone_fast(bio, GFP_NOIO, &pkt_bio_set);
 	struct packet_stacked_data *psd = mempool_alloc(&psd_pool, GFP_NOIO);
-=======
-	struct bio *cloned_bio = bio_clone_fast(bio, GFP_NOIO, pkt_bio_set);
-	struct packet_stacked_data *psd = mempool_alloc(psd_pool, GFP_NOIO);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	psd->pd = pd;
 	psd->bio = bio;
@@ -2596,11 +2406,7 @@ static void pkt_make_request_write(struct request_queue *q, struct bio *bio)
 	/*
 	 * No matching packet found. Store the bio in the work queue.
 	 */
-<<<<<<< HEAD
 	node = mempool_alloc(&pd->rb_pool, GFP_NOIO);
-=======
-	node = mempool_alloc(pd->rb_pool, GFP_NOIO);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	node->bio = bio;
 	spin_lock(&pd->lock);
 	BUG_ON(pd->bio_queue_size < 0);
@@ -2670,11 +2476,7 @@ static blk_qc_t pkt_make_request(struct request_queue *q, struct bio *bio)
 
 			split = bio_split(bio, last_zone -
 					  bio->bi_iter.bi_sector,
-<<<<<<< HEAD
 					  GFP_NOIO, &pkt_bio_set);
-=======
-					  GFP_NOIO, pkt_bio_set);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			bio_chain(split, bio);
 		} else {
 			split = bio;
@@ -2761,21 +2563,6 @@ static int pkt_seq_show(struct seq_file *m, void *p)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-static int pkt_seq_open(struct inode *inode, struct file *file)
-{
-	return single_open(file, pkt_seq_show, PDE_DATA(inode));
-}
-
-static const struct file_operations pkt_proc_fops = {
-	.open	= pkt_seq_open,
-	.read	= seq_read,
-	.llseek	= seq_lseek,
-	.release = single_release
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int pkt_new_dev(struct pktcdvd_device *pd, dev_t dev)
 {
 	int i;
@@ -2829,11 +2616,7 @@ static int pkt_new_dev(struct pktcdvd_device *pd, dev_t dev)
 		goto out_mem;
 	}
 
-<<<<<<< HEAD
 	proc_create_single_data(pd->name, 0, pkt_proc, pkt_seq_show, pd);
-=======
-	proc_create_data(pd->name, 0, pkt_proc, &pkt_proc_fops, pd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pkt_dbg(1, pd, "writer mapped to %s\n", bdevname(bdev, b));
 	return 0;
 
@@ -2936,15 +2719,9 @@ static int pkt_setup_dev(dev_t dev, dev_t* pkt_dev)
 	if (!pd)
 		goto out_mutex;
 
-<<<<<<< HEAD
 	ret = mempool_init_kmalloc_pool(&pd->rb_pool, PKT_RB_POOL_SIZE,
 					sizeof(struct pkt_rb_node));
 	if (ret)
-=======
-	pd->rb_pool = mempool_create_kmalloc_pool(PKT_RB_POOL_SIZE,
-						  sizeof(struct pkt_rb_node));
-	if (!pd->rb_pool)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out_mem;
 
 	INIT_LIST_HEAD(&pd->cdrw.pkt_free_list);
@@ -2962,10 +2739,7 @@ static int pkt_setup_dev(dev_t dev, dev_t* pkt_dev)
 	pd->write_congestion_on  = write_congestion_on;
 	pd->write_congestion_off = write_congestion_off;
 
-<<<<<<< HEAD
 	ret = -ENOMEM;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	disk = alloc_disk(1);
 	if (!disk)
 		goto out_mem;
@@ -3005,11 +2779,7 @@ static int pkt_setup_dev(dev_t dev, dev_t* pkt_dev)
 out_mem2:
 	put_disk(disk);
 out_mem:
-<<<<<<< HEAD
 	mempool_exit(&pd->rb_pool);
-=======
-	mempool_destroy(pd->rb_pool);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(pd);
 out_mutex:
 	mutex_unlock(&ctl_mutex);
@@ -3060,11 +2830,7 @@ static int pkt_remove_dev(dev_t pkt_dev)
 	blk_cleanup_queue(pd->disk->queue);
 	put_disk(pd->disk);
 
-<<<<<<< HEAD
 	mempool_exit(&pd->rb_pool);
-=======
-	mempool_destroy(pd->rb_pool);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(pd);
 
 	/* This is safe: open() is still holding a reference. */
@@ -3161,7 +2927,6 @@ static int __init pkt_init(void)
 
 	mutex_init(&ctl_mutex);
 
-<<<<<<< HEAD
 	ret = mempool_init_kmalloc_pool(&psd_pool, PSD_POOL_SIZE,
 				    sizeof(struct packet_stacked_data));
 	if (ret)
@@ -3170,16 +2935,6 @@ static int __init pkt_init(void)
 	if (ret) {
 		mempool_exit(&psd_pool);
 		return ret;
-=======
-	psd_pool = mempool_create_kmalloc_pool(PSD_POOL_SIZE,
-					sizeof(struct packet_stacked_data));
-	if (!psd_pool)
-		return -ENOMEM;
-	pkt_bio_set = bioset_create(BIO_POOL_SIZE, 0, 0);
-	if (!pkt_bio_set) {
-		mempool_destroy(psd_pool);
-		return -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ret = register_blkdev(pktdev_major, DRIVER_NAME);
@@ -3212,13 +2967,8 @@ out_misc:
 out:
 	unregister_blkdev(pktdev_major, DRIVER_NAME);
 out2:
-<<<<<<< HEAD
 	mempool_exit(&psd_pool);
 	bioset_exit(&pkt_bio_set);
-=======
-	mempool_destroy(psd_pool);
-	bioset_free(pkt_bio_set);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -3231,13 +2981,8 @@ static void __exit pkt_exit(void)
 	pkt_sysfs_cleanup();
 
 	unregister_blkdev(pktdev_major, DRIVER_NAME);
-<<<<<<< HEAD
 	mempool_exit(&psd_pool);
 	bioset_exit(&pkt_bio_set);
-=======
-	mempool_destroy(psd_pool);
-	bioset_free(pkt_bio_set);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 MODULE_DESCRIPTION("Packet writing layer for CD/DVD drives");

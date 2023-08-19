@@ -64,17 +64,10 @@ static void hsu_dma_chan_start(struct hsu_dma_chan *hsuc)
 
 	if (hsuc->direction == DMA_MEM_TO_DEV) {
 		bsr = config->dst_maxburst;
-<<<<<<< HEAD
 		mtsr = config->src_addr_width;
 	} else if (hsuc->direction == DMA_DEV_TO_MEM) {
 		bsr = config->src_maxburst;
 		mtsr = config->dst_addr_width;
-=======
-		mtsr = config->dst_addr_width;
-	} else if (hsuc->direction == DMA_DEV_TO_MEM) {
-		bsr = config->src_maxburst;
-		mtsr = config->src_addr_width;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	hsu_chan_disable(hsuc);
@@ -420,7 +413,6 @@ static void hsu_dma_free_chan_resources(struct dma_chan *chan)
 	vchan_free_chan_resources(to_virt_chan(chan));
 }
 
-<<<<<<< HEAD
 static void hsu_dma_synchronize(struct dma_chan *chan)
 {
 	struct hsu_dma_chan *hsuc = to_hsu_dma_chan(chan);
@@ -428,8 +420,6 @@ static void hsu_dma_synchronize(struct dma_chan *chan)
 	vchan_synchronize(&hsuc->vchan);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int hsu_dma_probe(struct hsu_dma_chip *chip)
 {
 	struct hsu_dma *hsu;
@@ -476,10 +466,7 @@ int hsu_dma_probe(struct hsu_dma_chip *chip)
 	hsu->dma.device_pause = hsu_dma_pause;
 	hsu->dma.device_resume = hsu_dma_resume;
 	hsu->dma.device_terminate_all = hsu_dma_terminate_all;
-<<<<<<< HEAD
 	hsu->dma.device_synchronize = hsu_dma_synchronize;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	hsu->dma.src_addr_widths = HSU_DMA_BUSWIDTHS;
 	hsu->dma.dst_addr_widths = HSU_DMA_BUSWIDTHS;

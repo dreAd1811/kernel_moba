@@ -14,12 +14,9 @@
 static int udl_usb_suspend(struct usb_interface *interface,
 			   pm_message_t message)
 {
-<<<<<<< HEAD
 	struct drm_device *dev = usb_get_intfdata(interface);
 
 	drm_kms_helper_poll_disable(dev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -27,10 +24,7 @@ static int udl_usb_resume(struct usb_interface *interface)
 {
 	struct drm_device *dev = usb_get_intfdata(interface);
 
-<<<<<<< HEAD
 	drm_kms_helper_poll_enable(dev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	udl_modeset_restore(dev);
 	return 0;
 }
@@ -66,11 +60,7 @@ static struct drm_driver driver = {
 	.release = udl_driver_release,
 
 	/* gem hooks */
-<<<<<<< HEAD
 	.gem_free_object_unlocked = udl_gem_free_object,
-=======
-	.gem_free_object = udl_gem_free_object,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.gem_vm_ops = &udl_gem_vm_ops,
 
 	.dumb_create = udl_dumb_create,
@@ -139,11 +129,7 @@ static int udl_usb_probe(struct usb_interface *interface,
 	return 0;
 
 err_free:
-<<<<<<< HEAD
 	drm_dev_put(&udl->drm);
-=======
-	drm_dev_unref(&udl->drm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return r;
 }
 

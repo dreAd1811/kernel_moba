@@ -8,7 +8,6 @@ http://github.com/freedreno/envytools/
 git clone https://github.com/freedreno/envytools.git
 
 The rules-ng-ng source files this header was generated from are:
-<<<<<<< HEAD
 - /home/robclark/src/envytools/rnndb/adreno.xml               (    501 bytes, from 2018-07-03 19:37:13)
 - /home/robclark/src/envytools/rnndb/freedreno_copyright.xml  (   1572 bytes, from 2018-07-03 19:37:13)
 - /home/robclark/src/envytools/rnndb/adreno/a2xx.xml          (  36805 bytes, from 2018-07-03 19:37:13)
@@ -22,19 +21,6 @@ The rules-ng-ng source files this header was generated from are:
 - /home/robclark/src/envytools/rnndb/adreno/ocmem.xml         (   1773 bytes, from 2018-07-03 19:37:13)
 
 Copyright (C) 2013-2018 by the following authors:
-=======
-- /home/robclark/src/freedreno/envytools/rnndb/adreno.xml               (    431 bytes, from 2017-05-17 13:21:27)
-- /home/robclark/src/freedreno/envytools/rnndb/freedreno_copyright.xml  (   1572 bytes, from 2017-05-17 13:21:27)
-- /home/robclark/src/freedreno/envytools/rnndb/adreno/a2xx.xml          (  37162 bytes, from 2017-05-17 13:21:27)
-- /home/robclark/src/freedreno/envytools/rnndb/adreno/adreno_common.xml (  13324 bytes, from 2017-05-17 13:21:27)
-- /home/robclark/src/freedreno/envytools/rnndb/adreno/adreno_pm4.xml    (  31866 bytes, from 2017-06-06 18:26:14)
-- /home/robclark/src/freedreno/envytools/rnndb/adreno/a3xx.xml          (  83840 bytes, from 2017-05-17 13:21:27)
-- /home/robclark/src/freedreno/envytools/rnndb/adreno/a4xx.xml          ( 111898 bytes, from 2017-06-06 18:23:59)
-- /home/robclark/src/freedreno/envytools/rnndb/adreno/a5xx.xml          ( 139480 bytes, from 2017-06-16 12:44:39)
-- /home/robclark/src/freedreno/envytools/rnndb/adreno/ocmem.xml         (   1773 bytes, from 2017-05-17 13:21:27)
-
-Copyright (C) 2013-2017 by the following authors:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 - Rob Clark <robdclark@gmail.com> (robclark)
 - Ilia Mirkin <imirkin@alum.mit.edu> (imirkin)
 
@@ -135,14 +121,11 @@ enum a5xx_vtx_fmt {
 	VFMT5_8_8_8_8_SNORM = 50,
 	VFMT5_8_8_8_8_UINT = 51,
 	VFMT5_8_8_8_8_SINT = 52,
-<<<<<<< HEAD
 	VFMT5_10_10_10_2_UNORM = 54,
 	VFMT5_10_10_10_2_SNORM = 57,
 	VFMT5_10_10_10_2_UINT = 58,
 	VFMT5_10_10_10_2_SINT = 59,
 	VFMT5_11_11_10_FLOAT = 66,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	VFMT5_16_16_UNORM = 67,
 	VFMT5_16_16_SNORM = 68,
 	VFMT5_16_16_FLOAT = 69,
@@ -228,17 +211,13 @@ enum a5xx_tex_fmt {
 	TFMT5_32_32_FLOAT = 103,
 	TFMT5_32_32_UINT = 104,
 	TFMT5_32_32_SINT = 105,
-<<<<<<< HEAD
 	TFMT5_32_32_32_UINT = 114,
 	TFMT5_32_32_32_SINT = 115,
 	TFMT5_32_32_32_FLOAT = 116,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	TFMT5_32_32_32_32_FLOAT = 130,
 	TFMT5_32_32_32_32_UINT = 131,
 	TFMT5_32_32_32_32_SINT = 132,
 	TFMT5_X8Z24_UNORM = 160,
-<<<<<<< HEAD
 	TFMT5_ETC2_RG11_UNORM = 171,
 	TFMT5_ETC2_RG11_SNORM = 172,
 	TFMT5_ETC2_R11_UNORM = 173,
@@ -250,13 +229,10 @@ enum a5xx_tex_fmt {
 	TFMT5_DXT1 = 179,
 	TFMT5_DXT3 = 180,
 	TFMT5_DXT5 = 181,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	TFMT5_RGTC1_UNORM = 183,
 	TFMT5_RGTC1_SNORM = 184,
 	TFMT5_RGTC2_UNORM = 187,
 	TFMT5_RGTC2_SNORM = 188,
-<<<<<<< HEAD
 	TFMT5_BPTC_UFLOAT = 190,
 	TFMT5_BPTC_FLOAT = 191,
 	TFMT5_BPTC = 192,
@@ -274,8 +250,6 @@ enum a5xx_tex_fmt {
 	TFMT5_ASTC_10x10 = 204,
 	TFMT5_ASTC_12x10 = 205,
 	TFMT5_ASTC_12x12 = 206,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum a5xx_tex_fetchsize {
@@ -303,11 +277,7 @@ enum a5xx_blit_buf {
 	BLIT_MRT6 = 6,
 	BLIT_MRT7 = 7,
 	BLIT_ZS = 8,
-<<<<<<< HEAD
 	BLIT_S = 9,
-=======
-	BLIT_Z32 = 9,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum a5xx_cp_perfcounter_select {
@@ -967,15 +937,12 @@ enum a5xx_tex_type {
 
 #define REG_A5XX_CP_DRAW_STATE_DATA				0x0000080c
 
-<<<<<<< HEAD
 #define REG_A5XX_CP_ME_NRT_ADDR_LO				0x0000080d
 
 #define REG_A5XX_CP_ME_NRT_ADDR_HI				0x0000080e
 
 #define REG_A5XX_CP_ME_NRT_DATA					0x00000810
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define REG_A5XX_CP_CRASH_SCRIPT_BASE_LO			0x00000817
 
 #define REG_A5XX_CP_CRASH_SCRIPT_BASE_HI			0x00000818
@@ -2149,7 +2116,6 @@ static inline uint32_t A5XX_VSC_RESOLVE_CNTL_Y(uint32_t val)
 
 #define REG_A5XX_PC_MODE_CNTL					0x00000d02
 
-<<<<<<< HEAD
 #define REG_A5XX_PC_INDEX_BUF_LO				0x00000d04
 
 #define REG_A5XX_PC_INDEX_BUF_HI				0x00000d05
@@ -2161,11 +2127,6 @@ static inline uint32_t A5XX_VSC_RESOLVE_CNTL_Y(uint32_t val)
 #define REG_A5XX_PC_TESSFACTOR_ADDR_LO				0x00000d08
 
 #define REG_A5XX_PC_TESSFACTOR_ADDR_HI				0x00000d09
-=======
-#define REG_A5XX_UNKNOWN_0D08					0x00000d08
-
-#define REG_A5XX_UNKNOWN_0D09					0x00000d09
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define REG_A5XX_PC_PERFCTR_PC_SEL_0				0x00000d10
 
@@ -2418,7 +2379,6 @@ static inline uint32_t A5XX_VSC_RESOLVE_CNTL_Y(uint32_t val)
 
 #define REG_A5XX_VBIF_PERF_CNT_EN3				0x000030c3
 
-<<<<<<< HEAD
 #define REG_A5XX_VBIF_PERF_CNT_CLR0				0x000030c8
 
 #define REG_A5XX_VBIF_PERF_CNT_CLR1				0x000030c9
@@ -2427,8 +2387,6 @@ static inline uint32_t A5XX_VSC_RESOLVE_CNTL_Y(uint32_t val)
 
 #define REG_A5XX_VBIF_PERF_CNT_CLR3				0x000030cb
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define REG_A5XX_VBIF_PERF_CNT_SEL0				0x000030d0
 
 #define REG_A5XX_VBIF_PERF_CNT_SEL1				0x000030d1
@@ -2692,10 +2650,7 @@ static inline uint32_t A5XX_VSC_RESOLVE_CNTL_Y(uint32_t val)
 #define REG_A5XX_GPU_CS_AMP_CALIBRATION_CONTROL1		0x0000c557
 
 #define REG_A5XX_GRAS_CL_CNTL					0x0000e000
-<<<<<<< HEAD
 #define A5XX_GRAS_CL_CNTL_ZERO_GB_SCALE_Z			0x00000040
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define REG_A5XX_UNKNOWN_E001					0x0000e001
 
@@ -2806,11 +2761,7 @@ static inline uint32_t A5XX_GRAS_SU_POINT_SIZE(float val)
 	return ((((int32_t)(val * 16.0))) << A5XX_GRAS_SU_POINT_SIZE__SHIFT) & A5XX_GRAS_SU_POINT_SIZE__MASK;
 }
 
-<<<<<<< HEAD
 #define REG_A5XX_GRAS_SU_LAYERED				0x0000e093
-=======
-#define REG_A5XX_UNKNOWN_E093					0x0000e093
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define REG_A5XX_GRAS_SU_DEPTH_PLANE_CNTL			0x0000e094
 #define A5XX_GRAS_SU_DEPTH_PLANE_CNTL_FRAG_WRITES_Z		0x00000001
@@ -3046,13 +2997,9 @@ static inline uint32_t A5XX_RB_DEST_MSAA_CNTL_SAMPLES(enum a3xx_msaa_samples val
 #define A5XX_RB_RENDER_CONTROL0_WCOORD				0x00000200
 
 #define REG_A5XX_RB_RENDER_CONTROL1				0x0000e145
-<<<<<<< HEAD
 #define A5XX_RB_RENDER_CONTROL1_SAMPLEMASK			0x00000001
 #define A5XX_RB_RENDER_CONTROL1_FACENESS			0x00000002
 #define A5XX_RB_RENDER_CONTROL1_SAMPLEID			0x00000004
-=======
-#define A5XX_RB_RENDER_CONTROL1_FACENESS			0x00000002
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define REG_A5XX_RB_FS_OUTPUT_CNTL				0x0000e146
 #define A5XX_RB_FS_OUTPUT_CNTL_MRT__MASK			0x0000000f
@@ -3118,7 +3065,6 @@ static inline uint32_t REG_A5XX_RB_MRT(uint32_t i0) { return 0x0000e150 + 0x7*i0
 static inline uint32_t REG_A5XX_RB_MRT_CONTROL(uint32_t i0) { return 0x0000e150 + 0x7*i0; }
 #define A5XX_RB_MRT_CONTROL_BLEND				0x00000001
 #define A5XX_RB_MRT_CONTROL_BLEND2				0x00000002
-<<<<<<< HEAD
 #define A5XX_RB_MRT_CONTROL_ROP_ENABLE				0x00000004
 #define A5XX_RB_MRT_CONTROL_ROP_CODE__MASK			0x00000078
 #define A5XX_RB_MRT_CONTROL_ROP_CODE__SHIFT			3
@@ -3126,8 +3072,6 @@ static inline uint32_t A5XX_RB_MRT_CONTROL_ROP_CODE(enum a3xx_rop_code val)
 {
 	return ((val) << A5XX_RB_MRT_CONTROL_ROP_CODE__SHIFT) & A5XX_RB_MRT_CONTROL_ROP_CODE__MASK;
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define A5XX_RB_MRT_CONTROL_COMPONENT_ENABLE__MASK		0x00000780
 #define A5XX_RB_MRT_CONTROL_COMPONENT_ENABLE__SHIFT		7
 static inline uint32_t A5XX_RB_MRT_CONTROL_COMPONENT_ENABLE(uint32_t val)
@@ -3186,15 +3130,12 @@ static inline uint32_t A5XX_RB_MRT_BUF_INFO_COLOR_TILE_MODE(enum a5xx_tile_mode 
 {
 	return ((val) << A5XX_RB_MRT_BUF_INFO_COLOR_TILE_MODE__SHIFT) & A5XX_RB_MRT_BUF_INFO_COLOR_TILE_MODE__MASK;
 }
-<<<<<<< HEAD
 #define A5XX_RB_MRT_BUF_INFO_DITHER_MODE__MASK			0x00001800
 #define A5XX_RB_MRT_BUF_INFO_DITHER_MODE__SHIFT			11
 static inline uint32_t A5XX_RB_MRT_BUF_INFO_DITHER_MODE(enum adreno_rb_dither_mode val)
 {
 	return ((val) << A5XX_RB_MRT_BUF_INFO_DITHER_MODE__SHIFT) & A5XX_RB_MRT_BUF_INFO_DITHER_MODE__MASK;
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define A5XX_RB_MRT_BUF_INFO_COLOR_SWAP__MASK			0x00006000
 #define A5XX_RB_MRT_BUF_INFO_COLOR_SWAP__SHIFT			13
 static inline uint32_t A5XX_RB_MRT_BUF_INFO_COLOR_SWAP(enum a3xx_color_swap val)
@@ -3358,10 +3299,7 @@ static inline uint32_t A5XX_RB_BLEND_CNTL_ENABLE_BLEND(uint32_t val)
 	return ((val) << A5XX_RB_BLEND_CNTL_ENABLE_BLEND__SHIFT) & A5XX_RB_BLEND_CNTL_ENABLE_BLEND__MASK;
 }
 #define A5XX_RB_BLEND_CNTL_INDEPENDENT_BLEND			0x00000100
-<<<<<<< HEAD
 #define A5XX_RB_BLEND_CNTL_ALPHA_TO_COVERAGE			0x00000400
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define A5XX_RB_BLEND_CNTL_SAMPLE_MASK__MASK			0xffff0000
 #define A5XX_RB_BLEND_CNTL_SAMPLE_MASK__SHIFT			16
 static inline uint32_t A5XX_RB_BLEND_CNTL_SAMPLE_MASK(uint32_t val)
@@ -3508,7 +3446,6 @@ static inline uint32_t A5XX_RB_STENCILREFMASK_STENCILWRITEMASK(uint32_t val)
 	return ((val) << A5XX_RB_STENCILREFMASK_STENCILWRITEMASK__SHIFT) & A5XX_RB_STENCILREFMASK_STENCILWRITEMASK__MASK;
 }
 
-<<<<<<< HEAD
 #define REG_A5XX_RB_STENCILREFMASK_BF				0x0000e1c7
 #define A5XX_RB_STENCILREFMASK_BF_STENCILREF__MASK		0x000000ff
 #define A5XX_RB_STENCILREFMASK_BF_STENCILREF__SHIFT		0
@@ -3528,9 +3465,6 @@ static inline uint32_t A5XX_RB_STENCILREFMASK_BF_STENCILWRITEMASK(uint32_t val)
 {
 	return ((val) << A5XX_RB_STENCILREFMASK_BF_STENCILWRITEMASK__SHIFT) & A5XX_RB_STENCILREFMASK_BF_STENCILWRITEMASK__MASK;
 }
-=======
-#define REG_A5XX_UNKNOWN_E1C7					0x0000e1c7
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define REG_A5XX_RB_WINDOW_OFFSET				0x0000e1d0
 #define A5XX_RB_WINDOW_OFFSET_WINDOW_OFFSET_DISABLE		0x80000000
@@ -3589,10 +3523,7 @@ static inline uint32_t A5XX_RB_RESOLVE_CNTL_2_Y(uint32_t val)
 }
 
 #define REG_A5XX_RB_RESOLVE_CNTL_3				0x0000e213
-<<<<<<< HEAD
 #define A5XX_RB_RESOLVE_CNTL_3_TILED				0x00000001
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define REG_A5XX_RB_BLIT_DST_LO					0x0000e214
 
@@ -3624,10 +3555,7 @@ static inline uint32_t A5XX_RB_BLIT_DST_ARRAY_PITCH(uint32_t val)
 
 #define REG_A5XX_RB_CLEAR_CNTL					0x0000e21c
 #define A5XX_RB_CLEAR_CNTL_FAST_CLEAR				0x00000002
-<<<<<<< HEAD
 #define A5XX_RB_CLEAR_CNTL_MSAA_RESOLVE				0x00000004
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define A5XX_RB_CLEAR_CNTL_MASK__MASK				0x000000f0
 #define A5XX_RB_CLEAR_CNTL_MASK__SHIFT				4
 static inline uint32_t A5XX_RB_CLEAR_CNTL_MASK(uint32_t val)
@@ -3796,18 +3724,14 @@ static inline uint32_t A5XX_PC_PRIMITIVE_CNTL_STRIDE_IN_VPC(uint32_t val)
 {
 	return ((val) << A5XX_PC_PRIMITIVE_CNTL_STRIDE_IN_VPC__SHIFT) & A5XX_PC_PRIMITIVE_CNTL_STRIDE_IN_VPC__MASK;
 }
-<<<<<<< HEAD
 #define A5XX_PC_PRIMITIVE_CNTL_PRIMITIVE_RESTART		0x00000100
 #define A5XX_PC_PRIMITIVE_CNTL_COUNT_PRIMITIVES			0x00000200
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define A5XX_PC_PRIMITIVE_CNTL_PROVOKING_VTX_LAST		0x00000400
 
 #define REG_A5XX_PC_PRIM_VTX_CNTL				0x0000e385
 #define A5XX_PC_PRIM_VTX_CNTL_PSIZE				0x00000800
 
 #define REG_A5XX_PC_RASTER_CNTL					0x0000e388
-<<<<<<< HEAD
 #define A5XX_PC_RASTER_CNTL_POLYMODE_FRONT_PTYPE__MASK		0x00000007
 #define A5XX_PC_RASTER_CNTL_POLYMODE_FRONT_PTYPE__SHIFT		0
 static inline uint32_t A5XX_PC_RASTER_CNTL_POLYMODE_FRONT_PTYPE(enum adreno_pa_su_sc_draw val)
@@ -3821,14 +3745,11 @@ static inline uint32_t A5XX_PC_RASTER_CNTL_POLYMODE_BACK_PTYPE(enum adreno_pa_su
 	return ((val) << A5XX_PC_RASTER_CNTL_POLYMODE_BACK_PTYPE__SHIFT) & A5XX_PC_RASTER_CNTL_POLYMODE_BACK_PTYPE__MASK;
 }
 #define A5XX_PC_RASTER_CNTL_POLYMODE_ENABLE			0x00000040
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define REG_A5XX_UNKNOWN_E389					0x0000e389
 
 #define REG_A5XX_PC_RESTART_INDEX				0x0000e38c
 
-<<<<<<< HEAD
 #define REG_A5XX_PC_GS_LAYERED					0x0000e38d
 
 #define REG_A5XX_PC_GS_PARAM					0x0000e38e
@@ -3866,13 +3787,6 @@ static inline uint32_t A5XX_PC_HS_PARAM_SPACING(enum a4xx_tess_spacing val)
 }
 #define A5XX_PC_HS_PARAM_CW					0x00800000
 #define A5XX_PC_HS_PARAM_CONNECTED				0x01000000
-=======
-#define REG_A5XX_UNKNOWN_E38D					0x0000e38d
-
-#define REG_A5XX_PC_GS_PARAM					0x0000e38e
-
-#define REG_A5XX_PC_HS_PARAM					0x0000e38f
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define REG_A5XX_PC_POWER_CNTL					0x0000e3b0
 
@@ -3897,7 +3811,6 @@ static inline uint32_t A5XX_VFD_CONTROL_1_REGID4INST(uint32_t val)
 {
 	return ((val) << A5XX_VFD_CONTROL_1_REGID4INST__SHIFT) & A5XX_VFD_CONTROL_1_REGID4INST__MASK;
 }
-<<<<<<< HEAD
 #define A5XX_VFD_CONTROL_1_REGID4PRIMID__MASK			0x00ff0000
 #define A5XX_VFD_CONTROL_1_REGID4PRIMID__SHIFT			16
 static inline uint32_t A5XX_VFD_CONTROL_1_REGID4PRIMID(uint32_t val)
@@ -3932,12 +3845,6 @@ static inline uint32_t A5XX_VFD_CONTROL_3_REGID_TESSY(uint32_t val)
 {
 	return ((val) << A5XX_VFD_CONTROL_3_REGID_TESSY__SHIFT) & A5XX_VFD_CONTROL_3_REGID_TESSY__MASK;
 }
-=======
-
-#define REG_A5XX_VFD_CONTROL_2					0x0000e402
-
-#define REG_A5XX_VFD_CONTROL_3					0x0000e403
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define REG_A5XX_VFD_CONTROL_4					0x0000e404
 
@@ -3967,25 +3874,18 @@ static inline uint32_t A5XX_VFD_DECODE_INSTR_IDX(uint32_t val)
 	return ((val) << A5XX_VFD_DECODE_INSTR_IDX__SHIFT) & A5XX_VFD_DECODE_INSTR_IDX__MASK;
 }
 #define A5XX_VFD_DECODE_INSTR_INSTANCED				0x00020000
-<<<<<<< HEAD
 #define A5XX_VFD_DECODE_INSTR_FORMAT__MASK			0x0ff00000
-=======
-#define A5XX_VFD_DECODE_INSTR_FORMAT__MASK			0x3ff00000
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define A5XX_VFD_DECODE_INSTR_FORMAT__SHIFT			20
 static inline uint32_t A5XX_VFD_DECODE_INSTR_FORMAT(enum a5xx_vtx_fmt val)
 {
 	return ((val) << A5XX_VFD_DECODE_INSTR_FORMAT__SHIFT) & A5XX_VFD_DECODE_INSTR_FORMAT__MASK;
 }
-<<<<<<< HEAD
 #define A5XX_VFD_DECODE_INSTR_SWAP__MASK			0x30000000
 #define A5XX_VFD_DECODE_INSTR_SWAP__SHIFT			28
 static inline uint32_t A5XX_VFD_DECODE_INSTR_SWAP(enum a3xx_color_swap val)
 {
 	return ((val) << A5XX_VFD_DECODE_INSTR_SWAP__SHIFT) & A5XX_VFD_DECODE_INSTR_SWAP__MASK;
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define A5XX_VFD_DECODE_INSTR_UNK30				0x40000000
 #define A5XX_VFD_DECODE_INSTR_FLOAT				0x80000000
 
@@ -4240,10 +4140,7 @@ static inline uint32_t A5XX_SP_FS_CTRL_REG0_BRANCHSTACK(uint32_t val)
 #define REG_A5XX_SP_BLEND_CNTL					0x0000e5c9
 #define A5XX_SP_BLEND_CNTL_ENABLED				0x00000001
 #define A5XX_SP_BLEND_CNTL_UNK8					0x00000100
-<<<<<<< HEAD
 #define A5XX_SP_BLEND_CNTL_ALPHA_TO_COVERAGE			0x00000400
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define REG_A5XX_SP_FS_OUTPUT_CNTL				0x0000e5ca
 #define A5XX_SP_FS_OUTPUT_CNTL_MRT__MASK			0x0000000f
@@ -4285,24 +4182,12 @@ static inline uint32_t A5XX_SP_FS_MRT_REG_COLOR_FORMAT(enum a5xx_color_fmt val)
 {
 	return ((val) << A5XX_SP_FS_MRT_REG_COLOR_FORMAT__SHIFT) & A5XX_SP_FS_MRT_REG_COLOR_FORMAT__MASK;
 }
-<<<<<<< HEAD
 #define A5XX_SP_FS_MRT_REG_COLOR_SINT				0x00000100
 #define A5XX_SP_FS_MRT_REG_COLOR_UINT				0x00000200
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define A5XX_SP_FS_MRT_REG_COLOR_SRGB				0x00000400
 
 #define REG_A5XX_UNKNOWN_E5DB					0x0000e5db
 
-<<<<<<< HEAD
-=======
-#define REG_A5XX_UNKNOWN_E5F2					0x0000e5f2
-
-#define REG_A5XX_SP_CS_OBJ_START_LO				0x0000e5f3
-
-#define REG_A5XX_SP_CS_OBJ_START_HI				0x0000e5f4
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define REG_A5XX_SP_CS_CTRL_REG0				0x0000e5f0
 #define A5XX_SP_CS_CTRL_REG0_THREADSIZE__MASK			0x00000008
 #define A5XX_SP_CS_CTRL_REG0_THREADSIZE__SHIFT			3
@@ -4331,7 +4216,6 @@ static inline uint32_t A5XX_SP_CS_CTRL_REG0_BRANCHSTACK(uint32_t val)
 	return ((val) << A5XX_SP_CS_CTRL_REG0_BRANCHSTACK__SHIFT) & A5XX_SP_CS_CTRL_REG0_BRANCHSTACK__MASK;
 }
 
-<<<<<<< HEAD
 #define REG_A5XX_UNKNOWN_E5F2					0x0000e5f2
 
 #define REG_A5XX_SP_CS_OBJ_START_LO				0x0000e5f3
@@ -4365,9 +4249,6 @@ static inline uint32_t A5XX_SP_HS_CTRL_REG0_BRANCHSTACK(uint32_t val)
 {
 	return ((val) << A5XX_SP_HS_CTRL_REG0_BRANCHSTACK__SHIFT) & A5XX_SP_HS_CTRL_REG0_BRANCHSTACK__MASK;
 }
-=======
-#define REG_A5XX_UNKNOWN_E600					0x0000e600
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define REG_A5XX_UNKNOWN_E602					0x0000e602
 
@@ -4375,7 +4256,6 @@ static inline uint32_t A5XX_SP_HS_CTRL_REG0_BRANCHSTACK(uint32_t val)
 
 #define REG_A5XX_SP_HS_OBJ_START_HI				0x0000e604
 
-<<<<<<< HEAD
 #define REG_A5XX_SP_DS_CTRL_REG0				0x0000e610
 #define A5XX_SP_DS_CTRL_REG0_THREADSIZE__MASK			0x00000008
 #define A5XX_SP_DS_CTRL_REG0_THREADSIZE__SHIFT			3
@@ -4404,15 +4284,12 @@ static inline uint32_t A5XX_SP_DS_CTRL_REG0_BRANCHSTACK(uint32_t val)
 	return ((val) << A5XX_SP_DS_CTRL_REG0_BRANCHSTACK__SHIFT) & A5XX_SP_DS_CTRL_REG0_BRANCHSTACK__MASK;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define REG_A5XX_UNKNOWN_E62B					0x0000e62b
 
 #define REG_A5XX_SP_DS_OBJ_START_LO				0x0000e62c
 
 #define REG_A5XX_SP_DS_OBJ_START_HI				0x0000e62d
 
-<<<<<<< HEAD
 #define REG_A5XX_SP_GS_CTRL_REG0				0x0000e640
 #define A5XX_SP_GS_CTRL_REG0_THREADSIZE__MASK			0x00000008
 #define A5XX_SP_GS_CTRL_REG0_THREADSIZE__SHIFT			3
@@ -4440,9 +4317,6 @@ static inline uint32_t A5XX_SP_GS_CTRL_REG0_BRANCHSTACK(uint32_t val)
 {
 	return ((val) << A5XX_SP_GS_CTRL_REG0_BRANCHSTACK__SHIFT) & A5XX_SP_GS_CTRL_REG0_BRANCHSTACK__MASK;
 }
-=======
-#define REG_A5XX_UNKNOWN_E640					0x0000e640
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define REG_A5XX_UNKNOWN_E65B					0x0000e65b
 
@@ -4562,7 +4436,6 @@ static inline uint32_t A5XX_HLSQ_CONTROL_2_REG_FACEREGID(uint32_t val)
 {
 	return ((val) << A5XX_HLSQ_CONTROL_2_REG_FACEREGID__SHIFT) & A5XX_HLSQ_CONTROL_2_REG_FACEREGID__MASK;
 }
-<<<<<<< HEAD
 #define A5XX_HLSQ_CONTROL_2_REG_SAMPLEID__MASK			0x0000ff00
 #define A5XX_HLSQ_CONTROL_2_REG_SAMPLEID__SHIFT			8
 static inline uint32_t A5XX_HLSQ_CONTROL_2_REG_SAMPLEID(uint32_t val)
@@ -4575,8 +4448,6 @@ static inline uint32_t A5XX_HLSQ_CONTROL_2_REG_SAMPLEMASK(uint32_t val)
 {
 	return ((val) << A5XX_HLSQ_CONTROL_2_REG_SAMPLEMASK__SHIFT) & A5XX_HLSQ_CONTROL_2_REG_SAMPLEMASK__MASK;
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define REG_A5XX_HLSQ_CONTROL_3_REG				0x0000e787
 #define A5XX_HLSQ_CONTROL_3_REG_FRAGCOORDXYREGID__MASK		0x000000ff
@@ -4779,7 +4650,6 @@ static inline uint32_t A5XX_HLSQ_CS_NDRANGE_0_LOCALSIZEZ(uint32_t val)
 }
 
 #define REG_A5XX_HLSQ_CS_NDRANGE_1				0x0000e7b1
-<<<<<<< HEAD
 #define A5XX_HLSQ_CS_NDRANGE_1_GLOBALSIZE_X__MASK		0xffffffff
 #define A5XX_HLSQ_CS_NDRANGE_1_GLOBALSIZE_X__SHIFT		0
 static inline uint32_t A5XX_HLSQ_CS_NDRANGE_1_GLOBALSIZE_X(uint32_t val)
@@ -4826,36 +4696,6 @@ static inline uint32_t A5XX_HLSQ_CS_NDRANGE_6_GLOBALOFF_Z(uint32_t val)
 {
 	return ((val) << A5XX_HLSQ_CS_NDRANGE_6_GLOBALOFF_Z__SHIFT) & A5XX_HLSQ_CS_NDRANGE_6_GLOBALOFF_Z__MASK;
 }
-=======
-#define A5XX_HLSQ_CS_NDRANGE_1_SIZE_X__MASK			0xffffffff
-#define A5XX_HLSQ_CS_NDRANGE_1_SIZE_X__SHIFT			0
-static inline uint32_t A5XX_HLSQ_CS_NDRANGE_1_SIZE_X(uint32_t val)
-{
-	return ((val) << A5XX_HLSQ_CS_NDRANGE_1_SIZE_X__SHIFT) & A5XX_HLSQ_CS_NDRANGE_1_SIZE_X__MASK;
-}
-
-#define REG_A5XX_HLSQ_CS_NDRANGE_2				0x0000e7b2
-
-#define REG_A5XX_HLSQ_CS_NDRANGE_3				0x0000e7b3
-#define A5XX_HLSQ_CS_NDRANGE_3_SIZE_Y__MASK			0xffffffff
-#define A5XX_HLSQ_CS_NDRANGE_3_SIZE_Y__SHIFT			0
-static inline uint32_t A5XX_HLSQ_CS_NDRANGE_3_SIZE_Y(uint32_t val)
-{
-	return ((val) << A5XX_HLSQ_CS_NDRANGE_3_SIZE_Y__SHIFT) & A5XX_HLSQ_CS_NDRANGE_3_SIZE_Y__MASK;
-}
-
-#define REG_A5XX_HLSQ_CS_NDRANGE_4				0x0000e7b4
-
-#define REG_A5XX_HLSQ_CS_NDRANGE_5				0x0000e7b5
-#define A5XX_HLSQ_CS_NDRANGE_5_SIZE_Z__MASK			0xffffffff
-#define A5XX_HLSQ_CS_NDRANGE_5_SIZE_Z__SHIFT			0
-static inline uint32_t A5XX_HLSQ_CS_NDRANGE_5_SIZE_Z(uint32_t val)
-{
-	return ((val) << A5XX_HLSQ_CS_NDRANGE_5_SIZE_Z__SHIFT) & A5XX_HLSQ_CS_NDRANGE_5_SIZE_Z__MASK;
-}
-
-#define REG_A5XX_HLSQ_CS_NDRANGE_6				0x0000e7b6
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define REG_A5XX_HLSQ_CS_CNTL_0					0x0000e7b7
 #define A5XX_HLSQ_CS_CNTL_0_WGIDCONSTID__MASK			0x000000ff
@@ -4921,11 +4761,8 @@ static inline uint32_t A5XX_HLSQ_CS_CNTL_0_LOCALIDREGID(uint32_t val)
 
 #define REG_A5XX_HLSQ_CS_INSTRLEN				0x0000e7dd
 
-<<<<<<< HEAD
 #define REG_A5XX_RB_2D_BLIT_CNTL				0x00002100
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define REG_A5XX_RB_2D_SRC_SOLID_DW0				0x00002101
 
 #define REG_A5XX_RB_2D_SRC_SOLID_DW1				0x00002102
@@ -4941,25 +4778,19 @@ static inline uint32_t A5XX_RB_2D_SRC_INFO_COLOR_FORMAT(enum a5xx_color_fmt val)
 {
 	return ((val) << A5XX_RB_2D_SRC_INFO_COLOR_FORMAT__SHIFT) & A5XX_RB_2D_SRC_INFO_COLOR_FORMAT__MASK;
 }
-<<<<<<< HEAD
 #define A5XX_RB_2D_SRC_INFO_TILE_MODE__MASK			0x00000300
 #define A5XX_RB_2D_SRC_INFO_TILE_MODE__SHIFT			8
 static inline uint32_t A5XX_RB_2D_SRC_INFO_TILE_MODE(enum a5xx_tile_mode val)
 {
 	return ((val) << A5XX_RB_2D_SRC_INFO_TILE_MODE__SHIFT) & A5XX_RB_2D_SRC_INFO_TILE_MODE__MASK;
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define A5XX_RB_2D_SRC_INFO_COLOR_SWAP__MASK			0x00000c00
 #define A5XX_RB_2D_SRC_INFO_COLOR_SWAP__SHIFT			10
 static inline uint32_t A5XX_RB_2D_SRC_INFO_COLOR_SWAP(enum a3xx_color_swap val)
 {
 	return ((val) << A5XX_RB_2D_SRC_INFO_COLOR_SWAP__SHIFT) & A5XX_RB_2D_SRC_INFO_COLOR_SWAP__MASK;
 }
-<<<<<<< HEAD
 #define A5XX_RB_2D_SRC_INFO_FLAGS				0x00001000
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define REG_A5XX_RB_2D_SRC_LO					0x00002108
 
@@ -4986,25 +4817,19 @@ static inline uint32_t A5XX_RB_2D_DST_INFO_COLOR_FORMAT(enum a5xx_color_fmt val)
 {
 	return ((val) << A5XX_RB_2D_DST_INFO_COLOR_FORMAT__SHIFT) & A5XX_RB_2D_DST_INFO_COLOR_FORMAT__MASK;
 }
-<<<<<<< HEAD
 #define A5XX_RB_2D_DST_INFO_TILE_MODE__MASK			0x00000300
 #define A5XX_RB_2D_DST_INFO_TILE_MODE__SHIFT			8
 static inline uint32_t A5XX_RB_2D_DST_INFO_TILE_MODE(enum a5xx_tile_mode val)
 {
 	return ((val) << A5XX_RB_2D_DST_INFO_TILE_MODE__SHIFT) & A5XX_RB_2D_DST_INFO_TILE_MODE__MASK;
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define A5XX_RB_2D_DST_INFO_COLOR_SWAP__MASK			0x00000c00
 #define A5XX_RB_2D_DST_INFO_COLOR_SWAP__SHIFT			10
 static inline uint32_t A5XX_RB_2D_DST_INFO_COLOR_SWAP(enum a3xx_color_swap val)
 {
 	return ((val) << A5XX_RB_2D_DST_INFO_COLOR_SWAP__SHIFT) & A5XX_RB_2D_DST_INFO_COLOR_SWAP__MASK;
 }
-<<<<<<< HEAD
 #define A5XX_RB_2D_DST_INFO_FLAGS				0x00001000
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define REG_A5XX_RB_2D_DST_LO					0x00002111
 
@@ -5032,11 +4857,8 @@ static inline uint32_t A5XX_RB_2D_DST_SIZE_ARRAY_PITCH(uint32_t val)
 
 #define REG_A5XX_RB_2D_DST_FLAGS_HI				0x00002144
 
-<<<<<<< HEAD
 #define REG_A5XX_GRAS_2D_BLIT_CNTL				0x00002180
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define REG_A5XX_GRAS_2D_SRC_INFO				0x00002181
 #define A5XX_GRAS_2D_SRC_INFO_COLOR_FORMAT__MASK		0x000000ff
 #define A5XX_GRAS_2D_SRC_INFO_COLOR_FORMAT__SHIFT		0
@@ -5044,25 +4866,19 @@ static inline uint32_t A5XX_GRAS_2D_SRC_INFO_COLOR_FORMAT(enum a5xx_color_fmt va
 {
 	return ((val) << A5XX_GRAS_2D_SRC_INFO_COLOR_FORMAT__SHIFT) & A5XX_GRAS_2D_SRC_INFO_COLOR_FORMAT__MASK;
 }
-<<<<<<< HEAD
 #define A5XX_GRAS_2D_SRC_INFO_TILE_MODE__MASK			0x00000300
 #define A5XX_GRAS_2D_SRC_INFO_TILE_MODE__SHIFT			8
 static inline uint32_t A5XX_GRAS_2D_SRC_INFO_TILE_MODE(enum a5xx_tile_mode val)
 {
 	return ((val) << A5XX_GRAS_2D_SRC_INFO_TILE_MODE__SHIFT) & A5XX_GRAS_2D_SRC_INFO_TILE_MODE__MASK;
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define A5XX_GRAS_2D_SRC_INFO_COLOR_SWAP__MASK			0x00000c00
 #define A5XX_GRAS_2D_SRC_INFO_COLOR_SWAP__SHIFT			10
 static inline uint32_t A5XX_GRAS_2D_SRC_INFO_COLOR_SWAP(enum a3xx_color_swap val)
 {
 	return ((val) << A5XX_GRAS_2D_SRC_INFO_COLOR_SWAP__SHIFT) & A5XX_GRAS_2D_SRC_INFO_COLOR_SWAP__MASK;
 }
-<<<<<<< HEAD
 #define A5XX_GRAS_2D_SRC_INFO_FLAGS				0x00001000
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define REG_A5XX_GRAS_2D_DST_INFO				0x00002182
 #define A5XX_GRAS_2D_DST_INFO_COLOR_FORMAT__MASK		0x000000ff
@@ -5071,25 +4887,19 @@ static inline uint32_t A5XX_GRAS_2D_DST_INFO_COLOR_FORMAT(enum a5xx_color_fmt va
 {
 	return ((val) << A5XX_GRAS_2D_DST_INFO_COLOR_FORMAT__SHIFT) & A5XX_GRAS_2D_DST_INFO_COLOR_FORMAT__MASK;
 }
-<<<<<<< HEAD
 #define A5XX_GRAS_2D_DST_INFO_TILE_MODE__MASK			0x00000300
 #define A5XX_GRAS_2D_DST_INFO_TILE_MODE__SHIFT			8
 static inline uint32_t A5XX_GRAS_2D_DST_INFO_TILE_MODE(enum a5xx_tile_mode val)
 {
 	return ((val) << A5XX_GRAS_2D_DST_INFO_TILE_MODE__SHIFT) & A5XX_GRAS_2D_DST_INFO_TILE_MODE__MASK;
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define A5XX_GRAS_2D_DST_INFO_COLOR_SWAP__MASK			0x00000c00
 #define A5XX_GRAS_2D_DST_INFO_COLOR_SWAP__SHIFT			10
 static inline uint32_t A5XX_GRAS_2D_DST_INFO_COLOR_SWAP(enum a3xx_color_swap val)
 {
 	return ((val) << A5XX_GRAS_2D_DST_INFO_COLOR_SWAP__SHIFT) & A5XX_GRAS_2D_DST_INFO_COLOR_SWAP__MASK;
 }
-<<<<<<< HEAD
 #define A5XX_GRAS_2D_DST_INFO_FLAGS				0x00001000
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define REG_A5XX_UNKNOWN_2100					0x00002100
 
@@ -5213,15 +5023,12 @@ static inline uint32_t A5XX_TEX_CONST_0_MIPLVLS(uint32_t val)
 {
 	return ((val) << A5XX_TEX_CONST_0_MIPLVLS__SHIFT) & A5XX_TEX_CONST_0_MIPLVLS__MASK;
 }
-<<<<<<< HEAD
 #define A5XX_TEX_CONST_0_SAMPLES__MASK				0x00300000
 #define A5XX_TEX_CONST_0_SAMPLES__SHIFT				20
 static inline uint32_t A5XX_TEX_CONST_0_SAMPLES(enum a3xx_msaa_samples val)
 {
 	return ((val) << A5XX_TEX_CONST_0_SAMPLES__SHIFT) & A5XX_TEX_CONST_0_SAMPLES__MASK;
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define A5XX_TEX_CONST_0_FMT__MASK				0x3fc00000
 #define A5XX_TEX_CONST_0_FMT__SHIFT				22
 static inline uint32_t A5XX_TEX_CONST_0_FMT(enum a5xx_tex_fmt val)
@@ -5312,7 +5119,6 @@ static inline uint32_t A5XX_TEX_CONST_5_DEPTH(uint32_t val)
 
 #define REG_A5XX_TEX_CONST_11					0x0000000b
 
-<<<<<<< HEAD
 #define REG_A5XX_SSBO_0_0					0x00000000
 #define A5XX_SSBO_0_0_BASE_LO__MASK				0xffffffe0
 #define A5XX_SSBO_0_0_BASE_LO__SHIFT				5
@@ -5389,7 +5195,5 @@ static inline uint32_t A5XX_SSBO_2_1_BASE_HI(uint32_t val)
 	return ((val) << A5XX_SSBO_2_1_BASE_HI__SHIFT) & A5XX_SSBO_2_1_BASE_HI__MASK;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* A5XX_XML */

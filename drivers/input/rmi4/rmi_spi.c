@@ -69,11 +69,7 @@ static int rmi_spi_manage_pools(struct rmi_spi_xport *rmi_spi, int len)
 		buf_size = RMI_SPI_XFER_SIZE_LIMIT;
 
 	tmp = rmi_spi->rx_buf;
-<<<<<<< HEAD
 	buf = devm_kcalloc(&spi->dev, buf_size, 2,
-=======
-	buf = devm_kzalloc(&spi->dev, buf_size * 2,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				GFP_KERNEL | GFP_DMA);
 	if (!buf)
 		return -ENOMEM;
@@ -100,16 +96,10 @@ static int rmi_spi_manage_pools(struct rmi_spi_xport *rmi_spi, int len)
 	 * per byte delays.
 	 */
 	tmp = rmi_spi->rx_xfers;
-<<<<<<< HEAD
 	xfer_buf = devm_kcalloc(&spi->dev,
 		rmi_spi->rx_xfer_count + rmi_spi->tx_xfer_count,
 		sizeof(struct spi_transfer),
 		GFP_KERNEL);
-=======
-	xfer_buf = devm_kzalloc(&spi->dev,
-		(rmi_spi->rx_xfer_count + rmi_spi->tx_xfer_count)
-		* sizeof(struct spi_transfer), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!xfer_buf)
 		return -ENOMEM;
 
@@ -542,7 +532,3 @@ MODULE_AUTHOR("Christopher Heiny <cheiny@synaptics.com>");
 MODULE_AUTHOR("Andrew Duggan <aduggan@synaptics.com>");
 MODULE_DESCRIPTION("RMI SPI driver");
 MODULE_LICENSE("GPL");
-<<<<<<< HEAD
-=======
-MODULE_VERSION(RMI_DRIVER_VERSION);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -56,15 +56,9 @@ enum {
  * @max_height: maximum camera interface input height in pixels
  * @out_width_align: minimum output width alignment in pixels
  * @win_hor_offs_align: minimum camera interface crop window horizontal
-<<<<<<< HEAD
  *			offset alignment in pixels
  * @out_hor_offs_align: minimum output DMA compose rectangle horizontal
  *			offset alignment in pixels
-=======
- * 			offset alignment in pixels
- * @out_hor_offs_align: minimum output DMA compose rectangle horizontal
- * 			offset alignment in pixels
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @max_dma_bufs: number of output DMA buffer start address registers
  * @num_instances: total number of FIMC-LITE IP instances available
  */

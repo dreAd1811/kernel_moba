@@ -45,12 +45,8 @@ struct mtk_drm_crtc {
 	bool				pending_needs_vblank;
 	struct drm_pending_vblank_event	*event;
 
-<<<<<<< HEAD
 	struct drm_plane		*planes;
 	unsigned int			layer_nr;
-=======
-	struct drm_plane		planes[OVL_LAYER_NR];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool				pending_planes;
 
 	void __iomem			*config_regs;
@@ -176,15 +172,9 @@ static void mtk_drm_crtc_mode_set_nofb(struct drm_crtc *crtc)
 static int mtk_drm_crtc_enable_vblank(struct drm_crtc *crtc)
 {
 	struct mtk_drm_crtc *mtk_crtc = to_mtk_crtc(crtc);
-<<<<<<< HEAD
 	struct mtk_ddp_comp *comp = mtk_crtc->ddp_comp[0];
 
 	mtk_ddp_comp_enable_vblank(comp, &mtk_crtc->base);
-=======
-	struct mtk_ddp_comp *ovl = mtk_crtc->ddp_comp[0];
-
-	mtk_ddp_comp_enable_vblank(ovl, &mtk_crtc->base);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -192,15 +182,9 @@ static int mtk_drm_crtc_enable_vblank(struct drm_crtc *crtc)
 static void mtk_drm_crtc_disable_vblank(struct drm_crtc *crtc)
 {
 	struct mtk_drm_crtc *mtk_crtc = to_mtk_crtc(crtc);
-<<<<<<< HEAD
 	struct mtk_ddp_comp *comp = mtk_crtc->ddp_comp[0];
 
 	mtk_ddp_comp_disable_vblank(comp);
-=======
-	struct mtk_ddp_comp *ovl = mtk_crtc->ddp_comp[0];
-
-	mtk_ddp_comp_disable_vblank(ovl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int mtk_crtc_ddp_clk_enable(struct mtk_drm_crtc *mtk_crtc)
@@ -303,11 +287,7 @@ static int mtk_crtc_ddp_hw_init(struct mtk_drm_crtc *mtk_crtc)
 	}
 
 	/* Initially configure all planes */
-<<<<<<< HEAD
 	for (i = 0; i < mtk_crtc->layer_nr; i++) {
-=======
-	for (i = 0; i < OVL_LAYER_NR; i++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct drm_plane *plane = &mtk_crtc->planes[i];
 		struct mtk_plane_state *plane_state;
 
@@ -328,10 +308,6 @@ err_pm_runtime_put:
 static void mtk_crtc_ddp_hw_fini(struct mtk_drm_crtc *mtk_crtc)
 {
 	struct drm_device *drm = mtk_crtc->base.dev;
-<<<<<<< HEAD
-=======
-	struct drm_crtc *crtc = &mtk_crtc->base;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 
 	DRM_DEBUG_DRIVER("%s\n", __func__);
@@ -353,27 +329,13 @@ static void mtk_crtc_ddp_hw_fini(struct mtk_drm_crtc *mtk_crtc)
 	mtk_disp_mutex_unprepare(mtk_crtc->mutex);
 
 	pm_runtime_put(drm->dev);
-<<<<<<< HEAD
-=======
-
-	if (crtc->state->event && !crtc->state->active) {
-		spin_lock_irq(&crtc->dev->event_lock);
-		drm_crtc_send_vblank_event(crtc, crtc->state->event);
-		crtc->state->event = NULL;
-		spin_unlock_irq(&crtc->dev->event_lock);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void mtk_crtc_ddp_config(struct drm_crtc *crtc)
 {
 	struct mtk_drm_crtc *mtk_crtc = to_mtk_crtc(crtc);
 	struct mtk_crtc_state *state = to_mtk_crtc_state(mtk_crtc->base.state);
-<<<<<<< HEAD
 	struct mtk_ddp_comp *comp = mtk_crtc->ddp_comp[0];
-=======
-	struct mtk_ddp_comp *ovl = mtk_crtc->ddp_comp[0];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int i;
 
 	/*
@@ -382,11 +344,7 @@ static void mtk_crtc_ddp_config(struct drm_crtc *crtc)
 	 * queue update module registers on vblank.
 	 */
 	if (state->pending_config) {
-<<<<<<< HEAD
 		mtk_ddp_comp_config(comp, state->pending_width,
-=======
-		mtk_ddp_comp_config(ovl, state->pending_width,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    state->pending_height,
 				    state->pending_vrefresh, 0);
 
@@ -394,22 +352,14 @@ static void mtk_crtc_ddp_config(struct drm_crtc *crtc)
 	}
 
 	if (mtk_crtc->pending_planes) {
-<<<<<<< HEAD
 		for (i = 0; i < mtk_crtc->layer_nr; i++) {
-=======
-		for (i = 0; i < OVL_LAYER_NR; i++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			struct drm_plane *plane = &mtk_crtc->planes[i];
 			struct mtk_plane_state *plane_state;
 
 			plane_state = to_mtk_plane_state(plane->state);
 
 			if (plane_state->pending.config) {
-<<<<<<< HEAD
 				mtk_ddp_comp_layer_config(comp, i, plane_state);
-=======
-				mtk_ddp_comp_layer_config(ovl, i, plane_state);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				plane_state->pending.config = false;
 			}
 		}
@@ -421,20 +371,12 @@ static void mtk_drm_crtc_atomic_enable(struct drm_crtc *crtc,
 				       struct drm_crtc_state *old_state)
 {
 	struct mtk_drm_crtc *mtk_crtc = to_mtk_crtc(crtc);
-<<<<<<< HEAD
 	struct mtk_ddp_comp *comp = mtk_crtc->ddp_comp[0];
-=======
-	struct mtk_ddp_comp *ovl = mtk_crtc->ddp_comp[0];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	DRM_DEBUG_DRIVER("%s %d\n", __func__, crtc->base.id);
 
-<<<<<<< HEAD
 	ret = mtk_smi_larb_get(comp->larb_dev);
-=======
-	ret = mtk_smi_larb_get(ovl->larb_dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		DRM_ERROR("Failed to get larb: %d\n", ret);
 		return;
@@ -442,11 +384,7 @@ static void mtk_drm_crtc_atomic_enable(struct drm_crtc *crtc,
 
 	ret = mtk_crtc_ddp_hw_init(mtk_crtc);
 	if (ret) {
-<<<<<<< HEAD
 		mtk_smi_larb_put(comp->larb_dev);
-=======
-		mtk_smi_larb_put(ovl->larb_dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -458,11 +396,7 @@ static void mtk_drm_crtc_atomic_disable(struct drm_crtc *crtc,
 					struct drm_crtc_state *old_state)
 {
 	struct mtk_drm_crtc *mtk_crtc = to_mtk_crtc(crtc);
-<<<<<<< HEAD
 	struct mtk_ddp_comp *comp = mtk_crtc->ddp_comp[0];
-=======
-	struct mtk_ddp_comp *ovl = mtk_crtc->ddp_comp[0];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 
 	DRM_DEBUG_DRIVER("%s %d\n", __func__, crtc->base.id);
@@ -470,11 +404,7 @@ static void mtk_drm_crtc_atomic_disable(struct drm_crtc *crtc,
 		return;
 
 	/* Set all pending plane state to disabled */
-<<<<<<< HEAD
 	for (i = 0; i < mtk_crtc->layer_nr; i++) {
-=======
-	for (i = 0; i < OVL_LAYER_NR; i++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct drm_plane *plane = &mtk_crtc->planes[i];
 		struct mtk_plane_state *plane_state;
 
@@ -489,11 +419,7 @@ static void mtk_drm_crtc_atomic_disable(struct drm_crtc *crtc,
 
 	drm_crtc_vblank_off(crtc);
 	mtk_crtc_ddp_hw_fini(mtk_crtc);
-<<<<<<< HEAD
 	mtk_smi_larb_put(comp->larb_dev);
-=======
-	mtk_smi_larb_put(ovl->larb_dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mtk_crtc->enabled = false;
 }
@@ -525,11 +451,7 @@ static void mtk_drm_crtc_atomic_flush(struct drm_crtc *crtc,
 
 	if (mtk_crtc->event)
 		mtk_crtc->pending_needs_vblank = true;
-<<<<<<< HEAD
 	for (i = 0; i < mtk_crtc->layer_nr; i++) {
-=======
-	for (i = 0; i < OVL_LAYER_NR; i++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct drm_plane *plane = &mtk_crtc->planes[i];
 		struct mtk_plane_state *plane_state;
 
@@ -595,11 +517,7 @@ err_cleanup_crtc:
 	return ret;
 }
 
-<<<<<<< HEAD
 void mtk_crtc_ddp_irq(struct drm_crtc *crtc, struct mtk_ddp_comp *comp)
-=======
-void mtk_crtc_ddp_irq(struct drm_crtc *crtc, struct mtk_ddp_comp *ovl)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mtk_drm_crtc *mtk_crtc = to_mtk_crtc(crtc);
 	struct mtk_drm_private *priv = crtc->dev->dev_private;
@@ -622,12 +540,9 @@ int mtk_drm_crtc_create(struct drm_device *drm_dev,
 	int ret;
 	int i;
 
-<<<<<<< HEAD
 	if (!path)
 		return 0;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < path_len; i++) {
 		enum mtk_ddp_comp_id comp_id = path[i];
 		struct device_node *node;
@@ -684,16 +599,12 @@ int mtk_drm_crtc_create(struct drm_device *drm_dev,
 		mtk_crtc->ddp_comp[i] = comp;
 	}
 
-<<<<<<< HEAD
 	mtk_crtc->layer_nr = mtk_ddp_comp_layer_nr(mtk_crtc->ddp_comp[0]);
 	mtk_crtc->planes = devm_kcalloc(dev, mtk_crtc->layer_nr,
 					sizeof(struct drm_plane),
 					GFP_KERNEL);
 
 	for (zpos = 0; zpos < mtk_crtc->layer_nr; zpos++) {
-=======
-	for (zpos = 0; zpos < OVL_LAYER_NR; zpos++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		type = (zpos == 0) ? DRM_PLANE_TYPE_PRIMARY :
 				(zpos == 1) ? DRM_PLANE_TYPE_CURSOR :
 						DRM_PLANE_TYPE_OVERLAY;
@@ -704,12 +615,8 @@ int mtk_drm_crtc_create(struct drm_device *drm_dev,
 	}
 
 	ret = mtk_drm_crtc_init(drm_dev, mtk_crtc, &mtk_crtc->planes[0],
-<<<<<<< HEAD
 				mtk_crtc->layer_nr > 1 ? &mtk_crtc->planes[1] :
 				NULL, pipe);
-=======
-				&mtk_crtc->planes[1], pipe);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		goto unprepare;
 	drm_mode_crtc_set_gamma_size(&mtk_crtc->base, MTK_LUT_SIZE);

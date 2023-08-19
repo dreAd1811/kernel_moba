@@ -8,10 +8,7 @@
 
 #include <linux/cpu.h>
 #include <lantiq_soc.h>
-<<<<<<< HEAD
 #include <asm/setup.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define ASC_BUF		1024
 #define LTQ_ASC_FSTAT	((u32 *)(LTQ_EARLY_ASC + 0x0048))

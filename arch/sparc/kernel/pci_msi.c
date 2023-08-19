@@ -191,13 +191,8 @@ static void sparc64_teardown_msi_irq(unsigned int irq,
 			break;
 	}
 	if (i >= pbm->msi_num) {
-<<<<<<< HEAD
 		pci_err(pdev, "%s: teardown: No MSI for irq %u\n", pbm->name,
 			irq);
-=======
-		printk(KERN_ERR "%s: teardown: No MSI for irq %u\n",
-		       pbm->name, irq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -206,15 +201,9 @@ static void sparc64_teardown_msi_irq(unsigned int irq,
 
 	err = ops->msi_teardown(pbm, msi_num);
 	if (err) {
-<<<<<<< HEAD
 		pci_err(pdev, "%s: teardown: ops->teardown() on MSI %u, "
 			"irq %u, gives error %d\n", pbm->name, msi_num, irq,
 			err);
-=======
-		printk(KERN_ERR "%s: teardown: ops->teardown() on MSI %u, "
-		       "irq %u, gives error %d\n",
-		       pbm->name, msi_num, irq, err);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 

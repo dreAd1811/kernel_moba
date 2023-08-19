@@ -184,12 +184,9 @@ static int __init processor_probe(struct parisc_device *dev)
 	p->txn_addr = txn_addr;	/* save CPU IRQ address */
 	p->cpu_num = cpu_info.cpu_num;
 	p->cpu_loc = cpu_info.cpu_loc;
-<<<<<<< HEAD
 
 	store_cpu_topology(cpuid);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_SMP
 	/*
 	** FIXME: review if any other initialization is clobbered
@@ -291,11 +288,8 @@ void __init collect_boot_cpu_data(void)
 		printk(KERN_INFO "model %s\n",
 			boot_cpu_data.pdc.sys_model_name);
 
-<<<<<<< HEAD
 	dump_stack_set_arch_desc("%s", boot_cpu_data.pdc.sys_model_name);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	boot_cpu_data.hversion =  boot_cpu_data.pdc.model.hversion;
 	boot_cpu_data.sversion =  boot_cpu_data.pdc.model.sversion;
 
@@ -336,11 +330,8 @@ int __init init_per_cpu(int cpunum)
 	set_firmware_width();
 	ret = pdc_coproc_cfg(&coproc_cfg);
 
-<<<<<<< HEAD
 	store_cpu_topology(cpunum);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if(ret >= 0 && coproc_cfg.ccr_functional) {
 		mtctl(coproc_cfg.ccr_functional, 10);  /* 10 == Coprocessor Control Reg */
 
@@ -404,7 +395,6 @@ show_cpuinfo (struct seq_file *m, void *v)
 				 boot_cpu_data.cpu_hz / 1000000,
 				 boot_cpu_data.cpu_hz % 1000000  );
 
-<<<<<<< HEAD
 #ifdef CONFIG_PARISC_CPU_TOPOLOGY
 		seq_printf(m, "physical id\t: %d\n",
 				topology_physical_package_id(cpu));
@@ -413,8 +403,6 @@ show_cpuinfo (struct seq_file *m, void *v)
 		seq_printf(m, "core id\t\t: %d\n", topology_core_id(cpu));
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		seq_printf(m, "capabilities\t:");
 		if (boot_cpu_data.pdc.capabilities & PDC_MODEL_OS32)
 			seq_puts(m, " os32");

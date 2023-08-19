@@ -392,20 +392,12 @@ int usnic_ib_qp_grp_modify(struct usnic_ib_qp_grp *qp_grp,
 				void *data)
 {
 	int status = 0;
-<<<<<<< HEAD
-=======
-	int vnic_idx;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ib_event ib_event;
 	enum ib_qp_state old_state;
 	struct usnic_transport_spec *trans_spec;
 	struct usnic_ib_qp_grp_flow *qp_flow;
 
 	old_state = qp_grp->state;
-<<<<<<< HEAD
-=======
-	vnic_idx = usnic_vnic_get_index(qp_grp->vf->vnic);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	trans_spec = (struct usnic_transport_spec *) data;
 
 	spin_lock(&qp_grp->lock);
@@ -551,11 +543,7 @@ alloc_res_chunk_list(struct usnic_vnic *vnic,
 		/* Do Nothing */
 	}
 
-<<<<<<< HEAD
 	res_chunk_list = kcalloc(res_lst_sz + 1, sizeof(*res_chunk_list),
-=======
-	res_chunk_list = kzalloc(sizeof(*res_chunk_list)*(res_lst_sz+1),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					GFP_ATOMIC);
 	if (!res_chunk_list)
 		return ERR_PTR(-ENOMEM);

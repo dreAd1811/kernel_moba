@@ -31,10 +31,6 @@ struct psb_framebuffer {
 	struct drm_framebuffer base;
 	struct address_space *addr_space;
 	struct fb_info *fbdev;
-<<<<<<< HEAD
-=======
-	struct gtt_range *gtt;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct psb_fbdev {

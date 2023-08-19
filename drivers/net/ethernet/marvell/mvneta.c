@@ -28,11 +28,7 @@
 #include <linux/of_mdio.h>
 #include <linux/of_net.h>
 #include <linux/phy.h>
-<<<<<<< HEAD
 #include <linux/phylink.h>
-=======
-#include <linux/phy_fixed.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/platform_device.h>
 #include <linux/skbuff.h>
 #include <net/hwbm.h>
@@ -193,10 +189,7 @@
 #define MVNETA_GMAC_CTRL_0                       0x2c00
 #define      MVNETA_GMAC_MAX_RX_SIZE_SHIFT       2
 #define      MVNETA_GMAC_MAX_RX_SIZE_MASK        0x7ffc
-<<<<<<< HEAD
 #define      MVNETA_GMAC0_PORT_1000BASE_X        BIT(1)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define      MVNETA_GMAC0_PORT_ENABLE            BIT(0)
 #define MVNETA_GMAC_CTRL_2                       0x2c08
 #define      MVNETA_GMAC2_INBAND_AN_ENABLE       BIT(0)
@@ -212,16 +205,12 @@
 #define      MVNETA_GMAC_TX_FLOW_CTRL_ENABLE     BIT(5)
 #define      MVNETA_GMAC_RX_FLOW_CTRL_ACTIVE     BIT(6)
 #define      MVNETA_GMAC_TX_FLOW_CTRL_ACTIVE     BIT(7)
-<<<<<<< HEAD
 #define      MVNETA_GMAC_AN_COMPLETE             BIT(11)
 #define      MVNETA_GMAC_SYNC_OK                 BIT(14)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MVNETA_GMAC_AUTONEG_CONFIG               0x2c0c
 #define      MVNETA_GMAC_FORCE_LINK_DOWN         BIT(0)
 #define      MVNETA_GMAC_FORCE_LINK_PASS         BIT(1)
 #define      MVNETA_GMAC_INBAND_AN_ENABLE        BIT(2)
-<<<<<<< HEAD
 #define      MVNETA_GMAC_AN_BYPASS_ENABLE        BIT(3)
 #define      MVNETA_GMAC_INBAND_RESTART_AN       BIT(4)
 #define      MVNETA_GMAC_CONFIG_MII_SPEED        BIT(5)
@@ -229,11 +218,6 @@
 #define      MVNETA_GMAC_AN_SPEED_EN             BIT(7)
 #define      MVNETA_GMAC_CONFIG_FLOW_CTRL        BIT(8)
 #define      MVNETA_GMAC_ADVERT_SYM_FLOW_CTRL    BIT(9)
-=======
-#define      MVNETA_GMAC_CONFIG_MII_SPEED        BIT(5)
-#define      MVNETA_GMAC_CONFIG_GMII_SPEED       BIT(6)
-#define      MVNETA_GMAC_AN_SPEED_EN             BIT(7)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define      MVNETA_GMAC_AN_FLOW_CTRL_EN         BIT(11)
 #define      MVNETA_GMAC_CONFIG_FULL_DUPLEX      BIT(12)
 #define      MVNETA_GMAC_AN_DUPLEX_EN            BIT(13)
@@ -260,15 +244,12 @@
 #define MVNETA_TXQ_TOKEN_SIZE_REG(q)             (0x3e40 + ((q) << 2))
 #define      MVNETA_TXQ_TOKEN_SIZE_MAX           0x7fffffff
 
-<<<<<<< HEAD
 #define MVNETA_LPI_CTRL_0                        0x2cc0
 #define MVNETA_LPI_CTRL_1                        0x2cc4
 #define      MVNETA_LPI_REQUEST_ENABLE           BIT(0)
 #define MVNETA_LPI_CTRL_2                        0x2cc8
 #define MVNETA_LPI_STATUS                        0x2ccc
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MVNETA_CAUSE_TXQ_SENT_DESC_ALL_MASK	 0xff
 
 /* Descriptor ring Macros */
@@ -314,17 +295,10 @@
 #define MVNETA_RSS_LU_TABLE_SIZE	1
 
 /* Max number of Rx descriptors */
-<<<<<<< HEAD
 #define MVNETA_MAX_RXD 512
 
 /* Max number of Tx descriptors */
 #define MVNETA_MAX_TXD 1024
-=======
-#define MVNETA_MAX_RXD 128
-
-/* Max number of Tx descriptors */
-#define MVNETA_MAX_TXD 532
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Max number of allowed TCP segments for software TSO */
 #define MVNETA_MAX_TSO_SEGS 100
@@ -352,7 +326,6 @@
 #define MVNETA_RX_GET_BM_POOL_ID(rxd) \
 	(((rxd)->status & MVNETA_RXD_BM_POOL_MASK) >> MVNETA_RXD_BM_POOL_SHIFT)
 
-<<<<<<< HEAD
 enum {
 	ETHTOOL_STAT_EEE_WAKEUP,
 	ETHTOOL_STAT_SKB_ALLOC_ERR,
@@ -360,8 +333,6 @@ enum {
 	ETHTOOL_MAX_STATS,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct mvneta_statistic {
 	unsigned short offset;
 	unsigned short type;
@@ -370,10 +341,7 @@ struct mvneta_statistic {
 
 #define T_REG_32	32
 #define T_REG_64	64
-<<<<<<< HEAD
 #define T_SW		1
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static const struct mvneta_statistic mvneta_statistics[] = {
 	{ 0x3000, T_REG_64, "good_octets_received", },
@@ -408,12 +376,9 @@ static const struct mvneta_statistic mvneta_statistics[] = {
 	{ 0x304c, T_REG_32, "broadcast_frames_sent", },
 	{ 0x3054, T_REG_32, "fc_sent", },
 	{ 0x300c, T_REG_32, "internal_mac_transmit_err", },
-<<<<<<< HEAD
 	{ ETHTOOL_STAT_EEE_WAKEUP, T_SW, "eee_wakeup_errors", },
 	{ ETHTOOL_STAT_SKB_ALLOC_ERR, T_SW, "skb_alloc_errors", },
 	{ ETHTOOL_STAT_REFILL_ERR, T_SW, "refill_errors", },
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct mvneta_pcpu_stats {
@@ -441,10 +406,6 @@ struct mvneta_port {
 	struct mvneta_pcpu_stats __percpu	*stats;
 
 	int pkt_size;
-<<<<<<< HEAD
-=======
-	unsigned int frag_size;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void __iomem *base;
 	struct mvneta_rx_queue *rxqs;
 	struct mvneta_tx_queue *txqs;
@@ -469,34 +430,20 @@ struct mvneta_port {
 	u16 tx_ring_size;
 	u16 rx_ring_size;
 
-<<<<<<< HEAD
 	phy_interface_t phy_interface;
 	struct device_node *dn;
 	unsigned int tx_csum_limit;
 	struct phylink *phylink;
-=======
-	struct mii_bus *mii_bus;
-	phy_interface_t phy_interface;
-	struct device_node *phy_node;
-	unsigned int link;
-	unsigned int duplex;
-	unsigned int speed;
-	unsigned int tx_csum_limit;
-	unsigned int use_inband_status:1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct mvneta_bm *bm_priv;
 	struct mvneta_bm_pool *pool_long;
 	struct mvneta_bm_pool *pool_short;
 	int bm_win_id;
 
-<<<<<<< HEAD
 	bool eee_enabled;
 	bool eee_active;
 	bool tx_lpi_enabled;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 ethtool_stats[ARRAY_SIZE(mvneta_statistics)];
 
 	u32 indir[MVNETA_RSS_LU_TABLE_SIZE];
@@ -535,14 +482,10 @@ struct mvneta_port {
 #define MVNETA_RXD_ERR_RESOURCE		(BIT(17) | BIT(18))
 #define MVNETA_RXD_ERR_CODE_MASK	(BIT(17) | BIT(18))
 #define MVNETA_RXD_L3_IP4		BIT(25)
-<<<<<<< HEAD
 #define MVNETA_RXD_LAST_DESC		BIT(26)
 #define MVNETA_RXD_FIRST_DESC		BIT(27)
 #define MVNETA_RXD_FIRST_LAST_DESC	(MVNETA_RXD_FIRST_DESC | \
 					 MVNETA_RXD_LAST_DESC)
-=======
-#define MVNETA_RXD_FIRST_LAST_DESC	(BIT(26) | BIT(27))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MVNETA_RXD_L4_CSUM_OK		BIT(30)
 
 #if defined(__LITTLE_ENDIAN)
@@ -652,12 +595,6 @@ struct mvneta_rx_queue {
 	/* num of rx descriptors in the rx descriptor ring */
 	int size;
 
-<<<<<<< HEAD
-=======
-	/* counter of times when mvneta_refill() failed */
-	int missed;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 pkts_coal;
 	u32 time_coal;
 
@@ -675,7 +612,6 @@ struct mvneta_rx_queue {
 
 	/* Index of the next RX DMA descriptor to process */
 	int next_desc_to_proc;
-<<<<<<< HEAD
 
 	/* Index of first RX DMA descriptor to refill */
 	int first_to_refill;
@@ -688,8 +624,6 @@ struct mvneta_rx_queue {
 	/* error counters */
 	u32 skb_alloc_err;
 	u32 refill_err;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static enum cpuhp_state online_hpstate;
@@ -702,10 +636,7 @@ static int txq_number = 8;
 static int rxq_def;
 
 static int rx_copybreak __read_mostly = 256;
-<<<<<<< HEAD
 static int rx_header_size __read_mostly = 128;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* HW BM need that each port be identify by a unique ID */
 static int global_port_id;
@@ -1320,13 +1251,6 @@ static void mvneta_port_disable(struct mvneta_port *pp)
 	val &= ~MVNETA_GMAC0_PORT_ENABLE;
 	mvreg_write(pp, MVNETA_GMAC_CTRL_0, val);
 
-<<<<<<< HEAD
-=======
-	pp->link = 0;
-	pp->duplex = -1;
-	pp->speed = 0;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	udelay(200);
 }
 
@@ -1386,47 +1310,6 @@ static void mvneta_set_other_mcast_table(struct mvneta_port *pp, int queue)
 		mvreg_write(pp, MVNETA_DA_FILT_OTH_MCAST + offset, val);
 }
 
-<<<<<<< HEAD
-=======
-static void mvneta_set_autoneg(struct mvneta_port *pp, int enable)
-{
-	u32 val;
-
-	if (enable) {
-		val = mvreg_read(pp, MVNETA_GMAC_AUTONEG_CONFIG);
-		val &= ~(MVNETA_GMAC_FORCE_LINK_PASS |
-			 MVNETA_GMAC_FORCE_LINK_DOWN |
-			 MVNETA_GMAC_AN_FLOW_CTRL_EN);
-		val |= MVNETA_GMAC_INBAND_AN_ENABLE |
-		       MVNETA_GMAC_AN_SPEED_EN |
-		       MVNETA_GMAC_AN_DUPLEX_EN;
-		mvreg_write(pp, MVNETA_GMAC_AUTONEG_CONFIG, val);
-
-		val = mvreg_read(pp, MVNETA_GMAC_CLOCK_DIVIDER);
-		val |= MVNETA_GMAC_1MS_CLOCK_ENABLE;
-		mvreg_write(pp, MVNETA_GMAC_CLOCK_DIVIDER, val);
-
-		val = mvreg_read(pp, MVNETA_GMAC_CTRL_2);
-		val |= MVNETA_GMAC2_INBAND_AN_ENABLE;
-		mvreg_write(pp, MVNETA_GMAC_CTRL_2, val);
-	} else {
-		val = mvreg_read(pp, MVNETA_GMAC_AUTONEG_CONFIG);
-		val &= ~(MVNETA_GMAC_INBAND_AN_ENABLE |
-		       MVNETA_GMAC_AN_SPEED_EN |
-		       MVNETA_GMAC_AN_DUPLEX_EN);
-		mvreg_write(pp, MVNETA_GMAC_AUTONEG_CONFIG, val);
-
-		val = mvreg_read(pp, MVNETA_GMAC_CLOCK_DIVIDER);
-		val &= ~MVNETA_GMAC_1MS_CLOCK_ENABLE;
-		mvreg_write(pp, MVNETA_GMAC_CLOCK_DIVIDER, val);
-
-		val = mvreg_read(pp, MVNETA_GMAC_CTRL_2);
-		val &= ~MVNETA_GMAC2_INBAND_AN_ENABLE;
-		mvreg_write(pp, MVNETA_GMAC_CTRL_2, val);
-	}
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void mvneta_percpu_unmask_interrupt(void *arg)
 {
 	struct mvneta_port *pp = arg;
@@ -1579,10 +1462,6 @@ static void mvneta_defaults_set(struct mvneta_port *pp)
 	val &= ~MVNETA_PHY_POLLING_ENABLE;
 	mvreg_write(pp, MVNETA_UNIT_CONTROL, val);
 
-<<<<<<< HEAD
-=======
-	mvneta_set_autoneg(pp, pp->use_inband_status);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mvneta_set_ucast_table(pp, -1);
 	mvneta_set_special_mcast_table(pp, -1);
 	mvneta_set_other_mcast_table(pp, -1);
@@ -1693,10 +1572,6 @@ static void mvneta_rx_pkts_coal_set(struct mvneta_port *pp,
 {
 	mvreg_write(pp, MVNETA_RXQ_THRESHOLD_REG(rxq->id),
 		    value | MVNETA_RXQ_NON_OCCUPIED(0));
-<<<<<<< HEAD
-=======
-	rxq->pkts_coal = value;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Set the time delay in usec before RX interrupt will be generated by
@@ -1712,10 +1587,6 @@ static void mvneta_rx_time_coal_set(struct mvneta_port *pp,
 	val = (clk_rate / 1000000) * value;
 
 	mvreg_write(pp, MVNETA_RXQ_TIME_COAL_REG(rxq->id), val);
-<<<<<<< HEAD
-=======
-	rxq->time_coal = value;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Set threshold for TX_DONE pkts coalescing */
@@ -1730,11 +1601,6 @@ static void mvneta_tx_done_pkts_coal_set(struct mvneta_port *pp,
 	val |= MVNETA_TXQ_SENT_THRESH_MASK(value);
 
 	mvreg_write(pp, MVNETA_TXQ_SIZE_REG(txq->id), val);
-<<<<<<< HEAD
-=======
-
-	txq->done_pkts_coal = value;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Handle rx descriptor fill by setting buf_cookie and buf_phys_addr */
@@ -1834,16 +1700,6 @@ static void mvneta_rx_error(struct mvneta_port *pp,
 {
 	u32 status = rx_desc->status;
 
-<<<<<<< HEAD
-=======
-	if (!mvneta_rxq_desc_is_first_last(status)) {
-		netdev_err(pp->dev,
-			   "bad rx status %08x (buffer oversize), size=%d\n",
-			   status, rx_desc->data_size);
-		return;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (status & MVNETA_RXD_ERR_CODE_MASK) {
 	case MVNETA_RXD_ERR_CRC:
 		netdev_err(pp->dev, "bad rx status %08x (crc error), size=%d\n",
@@ -1868,12 +1724,8 @@ static void mvneta_rx_error(struct mvneta_port *pp,
 static void mvneta_rx_csum(struct mvneta_port *pp, u32 status,
 			   struct sk_buff *skb)
 {
-<<<<<<< HEAD
 	if ((pp->dev->features & NETIF_F_RXCSUM) &&
 	    (status & MVNETA_RXD_L3_IP4) &&
-=======
-	if ((status & MVNETA_RXD_L3_IP4) &&
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    (status & MVNETA_RXD_L4_CSUM_OK)) {
 		skb->csum = 0;
 		skb->ip_summed = CHECKSUM_UNNECESSARY;
@@ -1948,7 +1800,6 @@ static void mvneta_txq_done(struct mvneta_port *pp,
 	}
 }
 
-<<<<<<< HEAD
 /* Refill processing for SW buffer management */
 /* Allocate page per descriptor */
 static int mvneta_rx_refill(struct mvneta_port *pp,
@@ -1968,53 +1819,11 @@ static int mvneta_rx_refill(struct mvneta_port *pp,
 				 DMA_FROM_DEVICE);
 	if (unlikely(dma_mapping_error(pp->dev->dev.parent, phys_addr))) {
 		__free_page(page);
-=======
-void *mvneta_frag_alloc(unsigned int frag_size)
-{
-	if (likely(frag_size <= PAGE_SIZE))
-		return netdev_alloc_frag(frag_size);
-	else
-		return kmalloc(frag_size, GFP_ATOMIC);
-}
-EXPORT_SYMBOL_GPL(mvneta_frag_alloc);
-
-void mvneta_frag_free(unsigned int frag_size, void *data)
-{
-	if (likely(frag_size <= PAGE_SIZE))
-		skb_free_frag(data);
-	else
-		kfree(data);
-}
-EXPORT_SYMBOL_GPL(mvneta_frag_free);
-
-/* Refill processing for SW buffer management */
-static int mvneta_rx_refill(struct mvneta_port *pp,
-			    struct mvneta_rx_desc *rx_desc,
-			    struct mvneta_rx_queue *rxq)
-
-{
-	dma_addr_t phys_addr;
-	void *data;
-
-	data = mvneta_frag_alloc(pp->frag_size);
-	if (!data)
-		return -ENOMEM;
-
-	phys_addr = dma_map_single(pp->dev->dev.parent, data,
-				   MVNETA_RX_BUF_SIZE(pp->pkt_size),
-				   DMA_FROM_DEVICE);
-	if (unlikely(dma_mapping_error(pp->dev->dev.parent, phys_addr))) {
-		mvneta_frag_free(pp->frag_size, data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOMEM;
 	}
 
 	phys_addr += pp->rx_offset_correction;
-<<<<<<< HEAD
 	mvneta_rx_desc_fill(rx_desc, phys_addr, page, rxq);
-=======
-	mvneta_rx_desc_fill(rx_desc, phys_addr, data, rxq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -2077,7 +1886,6 @@ static void mvneta_rxq_drop_pkts(struct mvneta_port *pp,
 	for (i = 0; i < rxq->size; i++) {
 		struct mvneta_rx_desc *rx_desc = rxq->descs + i;
 		void *data = rxq->buf_virt_addr[i];
-<<<<<<< HEAD
 		if (!data || !(rx_desc->buf_phys_addr))
 			continue;
 
@@ -2120,27 +1928,10 @@ static int mvneta_rx_swbm(struct napi_struct *napi,
 	struct net_device *dev = pp->dev;
 	int rx_todo, rx_proc;
 	int refill = 0;
-=======
-
-		dma_unmap_single(pp->dev->dev.parent, rx_desc->buf_phys_addr,
-				 MVNETA_RX_BUF_SIZE(pp->pkt_size), DMA_FROM_DEVICE);
-		mvneta_frag_free(pp->frag_size, data);
-	}
-}
-
-/* Main rx processing when using software buffer management */
-static int mvneta_rx_swbm(struct mvneta_port *pp, int rx_todo,
-			  struct mvneta_rx_queue *rxq)
-{
-	struct mvneta_pcpu_port *port = this_cpu_ptr(pp->ports);
-	struct net_device *dev = pp->dev;
-	int rx_done;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 rcvd_pkts = 0;
 	u32 rcvd_bytes = 0;
 
 	/* Get number of received packets */
-<<<<<<< HEAD
 	rx_todo = mvneta_rxq_busy_desc_num_get(pp, rxq);
 	rx_proc = 0;
 
@@ -2280,99 +2071,6 @@ static int mvneta_rx_swbm(struct mvneta_port *pp, int rx_todo,
 		/* clean uncomplete skb pointer in queue */
 		rxq->skb = NULL;
 		rxq->left_size = 0;
-=======
-	rx_done = mvneta_rxq_busy_desc_num_get(pp, rxq);
-
-	if (rx_todo > rx_done)
-		rx_todo = rx_done;
-
-	rx_done = 0;
-
-	/* Fairness NAPI loop */
-	while (rx_done < rx_todo) {
-		struct mvneta_rx_desc *rx_desc = mvneta_rxq_next_desc_get(rxq);
-		struct sk_buff *skb;
-		unsigned char *data;
-		dma_addr_t phys_addr;
-		u32 rx_status, frag_size;
-		int rx_bytes, err, index;
-
-		rx_done++;
-		rx_status = rx_desc->status;
-		rx_bytes = rx_desc->data_size - (ETH_FCS_LEN + MVNETA_MH_SIZE);
-		index = rx_desc - rxq->descs;
-		data = rxq->buf_virt_addr[index];
-		phys_addr = rx_desc->buf_phys_addr - pp->rx_offset_correction;
-
-		if (!mvneta_rxq_desc_is_first_last(rx_status) ||
-		    (rx_status & MVNETA_RXD_ERR_SUMMARY)) {
-			mvneta_rx_error(pp, rx_desc);
-err_drop_frame:
-			dev->stats.rx_errors++;
-			/* leave the descriptor untouched */
-			continue;
-		}
-
-		if (rx_bytes <= rx_copybreak) {
-		/* better copy a small frame and not unmap the DMA region */
-			skb = netdev_alloc_skb_ip_align(dev, rx_bytes);
-			if (unlikely(!skb))
-				goto err_drop_frame;
-
-			dma_sync_single_range_for_cpu(dev->dev.parent,
-						      phys_addr,
-						      MVNETA_MH_SIZE + NET_SKB_PAD,
-						      rx_bytes,
-						      DMA_FROM_DEVICE);
-			skb_put_data(skb, data + MVNETA_MH_SIZE + NET_SKB_PAD,
-				     rx_bytes);
-
-			skb->protocol = eth_type_trans(skb, dev);
-			mvneta_rx_csum(pp, rx_status, skb);
-			napi_gro_receive(&port->napi, skb);
-
-			rcvd_pkts++;
-			rcvd_bytes += rx_bytes;
-
-			/* leave the descriptor and buffer untouched */
-			continue;
-		}
-
-		/* Refill processing */
-		err = mvneta_rx_refill(pp, rx_desc, rxq);
-		if (err) {
-			netdev_err(dev, "Linux processing - Can't refill\n");
-			rxq->missed++;
-			goto err_drop_frame;
-		}
-
-		frag_size = pp->frag_size;
-
-		skb = build_skb(data, frag_size > PAGE_SIZE ? 0 : frag_size);
-
-		/* After refill old buffer has to be unmapped regardless
-		 * the skb is successfully built or not.
-		 */
-		dma_unmap_single(dev->dev.parent, phys_addr,
-				 MVNETA_RX_BUF_SIZE(pp->pkt_size),
-				 DMA_FROM_DEVICE);
-
-		if (!skb)
-			goto err_drop_frame;
-
-		rcvd_pkts++;
-		rcvd_bytes += rx_bytes;
-
-		/* Linux processing */
-		skb_reserve(skb, MVNETA_MH_SIZE + NET_SKB_PAD);
-		skb_put(skb, rx_bytes);
-
-		skb->protocol = eth_type_trans(skb, dev);
-
-		mvneta_rx_csum(pp, rx_status, skb);
-
-		napi_gro_receive(&port->napi, skb);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (rcvd_pkts) {
@@ -2384,7 +2082,6 @@ err_drop_frame:
 		u64_stats_update_end(&stats->syncp);
 	}
 
-<<<<<<< HEAD
 	/* return some buffers to hardware queue, one at a time is too slow */
 	refill = mvneta_rx_refill_queue(pp, rxq);
 
@@ -2399,19 +2096,6 @@ static int mvneta_rx_hwbm(struct napi_struct *napi,
 			  struct mvneta_port *pp, int rx_todo,
 			  struct mvneta_rx_queue *rxq)
 {
-=======
-	/* Update rxq management counters */
-	mvneta_rxq_desc_num_update(pp, rxq, rx_done, rx_done);
-
-	return rx_done;
-}
-
-/* Main rx processing when using hardware buffer management */
-static int mvneta_rx_hwbm(struct mvneta_port *pp, int rx_todo,
-			  struct mvneta_rx_queue *rxq)
-{
-	struct mvneta_pcpu_port *port = this_cpu_ptr(pp->ports);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct net_device *dev = pp->dev;
 	int rx_done;
 	u32 rcvd_pkts = 0;
@@ -2473,11 +2157,7 @@ err_drop_frame:
 
 			skb->protocol = eth_type_trans(skb, dev);
 			mvneta_rx_csum(pp, rx_status, skb);
-<<<<<<< HEAD
 			napi_gro_receive(napi, skb);
-=======
-			napi_gro_receive(&port->napi, skb);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			rcvd_pkts++;
 			rcvd_bytes += rx_bytes;
@@ -2494,11 +2174,7 @@ err_drop_frame:
 		err = hwbm_pool_refill(&bm_pool->hwbm_pool, GFP_ATOMIC);
 		if (err) {
 			netdev_err(dev, "Linux processing - Can't refill\n");
-<<<<<<< HEAD
 			rxq->refill_err++;
-=======
-			rxq->missed++;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto err_drop_frame_ret_pool;
 		}
 
@@ -2525,11 +2201,7 @@ err_drop_frame:
 
 		mvneta_rx_csum(pp, rx_status, skb);
 
-<<<<<<< HEAD
 		napi_gro_receive(napi, skb);
-=======
-		napi_gro_receive(&port->napi, skb);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (rcvd_pkts) {
@@ -3066,34 +2738,11 @@ static irqreturn_t mvneta_percpu_isr(int irq, void *dev_id)
 	return IRQ_HANDLED;
 }
 
-<<<<<<< HEAD
 static void mvneta_link_change(struct mvneta_port *pp)
 {
 	u32 gmac_stat = mvreg_read(pp, MVNETA_GMAC_STATUS);
 
 	phylink_mac_change(pp->phylink, !!(gmac_stat & MVNETA_GMAC_LINK_UP));
-=======
-static int mvneta_fixed_link_update(struct mvneta_port *pp,
-				    struct phy_device *phy)
-{
-	struct fixed_phy_status status;
-	struct fixed_phy_status changed = {};
-	u32 gmac_stat = mvreg_read(pp, MVNETA_GMAC_STATUS);
-
-	status.link = !!(gmac_stat & MVNETA_GMAC_LINK_UP);
-	if (gmac_stat & MVNETA_GMAC_SPEED_1000)
-		status.speed = SPEED_1000;
-	else if (gmac_stat & MVNETA_GMAC_SPEED_100)
-		status.speed = SPEED_100;
-	else
-		status.speed = SPEED_10;
-	status.duplex = !!(gmac_stat & MVNETA_GMAC_FULL_DUPLEX);
-	changed.link = 1;
-	changed.speed = 1;
-	changed.duplex = 1;
-	fixed_phy_update_state(phy, &status, &changed);
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* NAPI handler
@@ -3109,10 +2758,6 @@ static int mvneta_poll(struct napi_struct *napi, int budget)
 	u32 cause_rx_tx;
 	int rx_queue;
 	struct mvneta_port *pp = netdev_priv(napi->dev);
-<<<<<<< HEAD
-=======
-	struct net_device *ndev = pp->dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mvneta_pcpu_port *port = this_cpu_ptr(pp->ports);
 
 	if (!netif_running(pp->dev)) {
@@ -3126,19 +2771,10 @@ static int mvneta_poll(struct napi_struct *napi, int budget)
 		u32 cause_misc = mvreg_read(pp, MVNETA_INTR_MISC_CAUSE);
 
 		mvreg_write(pp, MVNETA_INTR_MISC_CAUSE, 0);
-<<<<<<< HEAD
 
 		if (cause_misc & (MVNETA_CAUSE_PHY_STATUS_CHANGE |
 				  MVNETA_CAUSE_LINK_CHANGE))
 			mvneta_link_change(pp);
-=======
-		if (pp->use_inband_status && (cause_misc &
-				(MVNETA_CAUSE_PHY_STATUS_CHANGE |
-				 MVNETA_CAUSE_LINK_CHANGE |
-				 MVNETA_CAUSE_PSC_SYNC_CHANGE))) {
-			mvneta_fixed_link_update(pp, ndev->phydev);
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Release Tx descriptors */
@@ -3150,7 +2786,6 @@ static int mvneta_poll(struct napi_struct *napi, int budget)
 	/* For the case where the last mvneta_poll did not process all
 	 * RX packets
 	 */
-<<<<<<< HEAD
 	rx_queue = fls(((cause_rx_tx >> 8) & 0xff));
 
 	cause_rx_tx |= pp->neta_armada3700 ? pp->cause_rx_tx :
@@ -3164,18 +2799,6 @@ static int mvneta_poll(struct napi_struct *napi, int budget)
 		else
 			rx_done = mvneta_rx_swbm(napi, pp, budget,
 						 &pp->rxqs[rx_queue]);
-=======
-	cause_rx_tx |= pp->neta_armada3700 ? pp->cause_rx_tx :
-		port->cause_rx_tx;
-
-	rx_queue = fls(((cause_rx_tx >> 8) & 0xff));
-	if (rx_queue) {
-		rx_queue = rx_queue - 1;
-		if (pp->bm_priv)
-			rx_done = mvneta_rx_hwbm(pp, budget, &pp->rxqs[rx_queue]);
-		else
-			rx_done = mvneta_rx_swbm(pp, budget, &pp->rxqs[rx_queue]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (rx_done < budget) {
@@ -3212,17 +2835,11 @@ static int mvneta_rxq_fill(struct mvneta_port *pp, struct mvneta_rx_queue *rxq,
 
 	for (i = 0; i < num; i++) {
 		memset(rxq->descs + i, 0, sizeof(struct mvneta_rx_desc));
-<<<<<<< HEAD
 		if (mvneta_rx_refill(pp, rxq->descs + i, rxq,
 				     GFP_KERNEL) != 0) {
 			netdev_err(pp->dev,
 				   "%s:rxq %d, %d of %d buffs  filled\n",
 				   __func__, rxq->id, i, num);
-=======
-		if (mvneta_rx_refill(pp, rxq->descs + i, rxq) != 0) {
-			netdev_err(pp->dev, "%s:rxq %d, %d of %d buffs  filled\n",
-				__func__, rxq->id, i, num);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 	}
@@ -3256,15 +2873,8 @@ static void mvneta_rx_reset(struct mvneta_port *pp)
 
 /* Rx/Tx queue initialization/cleanup methods */
 
-<<<<<<< HEAD
 static int mvneta_rxq_sw_init(struct mvneta_port *pp,
 			      struct mvneta_rx_queue *rxq)
-=======
-/* Create a specified RX queue */
-static int mvneta_rxq_init(struct mvneta_port *pp,
-			   struct mvneta_rx_queue *rxq)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	rxq->size = pp->rx_ring_size;
 
@@ -3277,58 +2887,39 @@ static int mvneta_rxq_init(struct mvneta_port *pp,
 
 	rxq->last_desc = rxq->size - 1;
 
-<<<<<<< HEAD
 	return 0;
 }
 
 static void mvneta_rxq_hw_init(struct mvneta_port *pp,
 			       struct mvneta_rx_queue *rxq)
 {
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Set Rx descriptors queue starting address */
 	mvreg_write(pp, MVNETA_RXQ_BASE_ADDR_REG(rxq->id), rxq->descs_phys);
 	mvreg_write(pp, MVNETA_RXQ_SIZE_REG(rxq->id), rxq->size);
 
-<<<<<<< HEAD
-=======
-	/* Set Offset */
-	mvneta_rxq_offset_set(pp, rxq, NET_SKB_PAD - pp->rx_offset_correction);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Set coalescing pkts and time */
 	mvneta_rx_pkts_coal_set(pp, rxq, rxq->pkts_coal);
 	mvneta_rx_time_coal_set(pp, rxq, rxq->time_coal);
 
 	if (!pp->bm_priv) {
-<<<<<<< HEAD
 		/* Set Offset */
 		mvneta_rxq_offset_set(pp, rxq, 0);
 		mvneta_rxq_buf_size_set(pp, rxq, PAGE_SIZE < SZ_64K ?
 					PAGE_SIZE :
-=======
-		/* Fill RXQ with buffers from RX pool */
-		mvneta_rxq_buf_size_set(pp, rxq,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					MVNETA_RX_BUF_SIZE(pp->pkt_size));
 		mvneta_rxq_bm_disable(pp, rxq);
 		mvneta_rxq_fill(pp, rxq, rxq->size);
 	} else {
-<<<<<<< HEAD
 		/* Set Offset */
 		mvneta_rxq_offset_set(pp, rxq,
 				      NET_SKB_PAD - pp->rx_offset_correction);
 
 		mvneta_rxq_bm_enable(pp, rxq);
 		/* Fill RXQ with buffers from RX pool */
-=======
-		mvneta_rxq_bm_enable(pp, rxq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mvneta_rxq_long_pool_set(pp, rxq);
 		mvneta_rxq_short_pool_set(pp, rxq);
 		mvneta_rxq_non_occup_desc_add(pp, rxq, rxq->size);
 	}
-<<<<<<< HEAD
 }
 
 /* Create a specified RX queue */
@@ -3343,8 +2934,6 @@ static int mvneta_rxq_init(struct mvneta_port *pp,
 		return ret;
 
 	mvneta_rxq_hw_init(pp, rxq);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -3355,12 +2944,9 @@ static void mvneta_rxq_deinit(struct mvneta_port *pp,
 {
 	mvneta_rxq_drop_pkts(pp, rxq);
 
-<<<<<<< HEAD
 	if (rxq->skb)
 		dev_kfree_skb_any(rxq->skb);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rxq->descs)
 		dma_free_coherent(pp->dev->dev.parent,
 				  rxq->size * MVNETA_DESC_ALIGNED_SIZE,
@@ -3371,7 +2957,6 @@ static void mvneta_rxq_deinit(struct mvneta_port *pp,
 	rxq->last_desc         = 0;
 	rxq->next_desc_to_proc = 0;
 	rxq->descs_phys        = 0;
-<<<<<<< HEAD
 	rxq->first_to_refill   = 0;
 	rxq->refill_num        = 0;
 	rxq->skb               = NULL;
@@ -3380,13 +2965,6 @@ static void mvneta_rxq_deinit(struct mvneta_port *pp,
 
 static int mvneta_txq_sw_init(struct mvneta_port *pp,
 			      struct mvneta_tx_queue *txq)
-=======
-}
-
-/* Create and initialize a tx queue */
-static int mvneta_txq_init(struct mvneta_port *pp,
-			   struct mvneta_tx_queue *txq)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int cpu;
 
@@ -3399,10 +2977,6 @@ static int mvneta_txq_init(struct mvneta_port *pp,
 	txq->tx_stop_threshold = txq->size - MVNETA_MAX_SKB_DESCS;
 	txq->tx_wake_threshold = txq->tx_stop_threshold / 2;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Allocate memory for TX descriptors */
 	txq->descs = dma_alloc_coherent(pp->dev->dev.parent,
 					txq->size * MVNETA_DESC_ALIGNED_SIZE,
@@ -3412,17 +2986,6 @@ static int mvneta_txq_init(struct mvneta_port *pp,
 
 	txq->last_desc = txq->size - 1;
 
-<<<<<<< HEAD
-=======
-	/* Set maximum bandwidth for enabled TXQs */
-	mvreg_write(pp, MVETH_TXQ_TOKEN_CFG_REG(txq->id), 0x03ffffff);
-	mvreg_write(pp, MVETH_TXQ_TOKEN_COUNT_REG(txq->id), 0x3fffffff);
-
-	/* Set Tx descriptors queue starting address */
-	mvreg_write(pp, MVNETA_TXQ_BASE_ADDR_REG(txq->id), txq->descs_phys);
-	mvreg_write(pp, MVNETA_TXQ_SIZE_REG(txq->id), txq->size);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	txq->tx_skb = kmalloc_array(txq->size, sizeof(*txq->tx_skb),
 				    GFP_KERNEL);
 	if (!txq->tx_skb) {
@@ -3443,10 +3006,6 @@ static int mvneta_txq_init(struct mvneta_port *pp,
 				  txq->descs, txq->descs_phys);
 		return -ENOMEM;
 	}
-<<<<<<< HEAD
-=======
-	mvneta_tx_done_pkts_coal_set(pp, txq, txq->done_pkts_coal);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Setup XPS mapping */
 	if (txq_number > 1)
@@ -3459,7 +3018,6 @@ static int mvneta_txq_init(struct mvneta_port *pp,
 	return 0;
 }
 
-<<<<<<< HEAD
 static void mvneta_txq_hw_init(struct mvneta_port *pp,
 			       struct mvneta_tx_queue *txq)
 {
@@ -3492,11 +3050,6 @@ static int mvneta_txq_init(struct mvneta_port *pp,
 /* Free allocated resources when mvneta_txq_init() fails to allocate memory*/
 static void mvneta_txq_sw_deinit(struct mvneta_port *pp,
 				 struct mvneta_tx_queue *txq)
-=======
-/* Free allocated resources when mvneta_txq_init() fails to allocate memory*/
-static void mvneta_txq_deinit(struct mvneta_port *pp,
-			      struct mvneta_tx_queue *txq)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct netdev_queue *nq = netdev_get_tx_queue(pp->dev, txq->id);
 
@@ -3517,15 +3070,11 @@ static void mvneta_txq_deinit(struct mvneta_port *pp,
 	txq->last_desc         = 0;
 	txq->next_desc_to_proc = 0;
 	txq->descs_phys        = 0;
-<<<<<<< HEAD
 }
 
 static void mvneta_txq_hw_deinit(struct mvneta_port *pp,
 				 struct mvneta_tx_queue *txq)
 {
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Set minimum bandwidth for disabled TXQs */
 	mvreg_write(pp, MVETH_TXQ_TOKEN_CFG_REG(txq->id), 0);
 	mvreg_write(pp, MVETH_TXQ_TOKEN_COUNT_REG(txq->id), 0);
@@ -3535,7 +3084,6 @@ static void mvneta_txq_hw_deinit(struct mvneta_port *pp,
 	mvreg_write(pp, MVNETA_TXQ_SIZE_REG(txq->id), 0);
 }
 
-<<<<<<< HEAD
 static void mvneta_txq_deinit(struct mvneta_port *pp,
 			      struct mvneta_tx_queue *txq)
 {
@@ -3543,8 +3091,6 @@ static void mvneta_txq_deinit(struct mvneta_port *pp,
 	mvneta_txq_hw_deinit(pp, txq);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Cleanup all Tx queues */
 static void mvneta_cleanup_txqs(struct mvneta_port *pp)
 {
@@ -3604,10 +3150,6 @@ static int mvneta_setup_txqs(struct mvneta_port *pp)
 static void mvneta_start_dev(struct mvneta_port *pp)
 {
 	int cpu;
-<<<<<<< HEAD
-=======
-	struct net_device *ndev = pp->dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mvneta_max_rx_size_set(pp, pp->pkt_size);
 	mvneta_txq_max_tx_size_set(pp, pp->pkt_size);
@@ -3632,30 +3174,17 @@ static void mvneta_start_dev(struct mvneta_port *pp)
 
 	mvreg_write(pp, MVNETA_INTR_MISC_MASK,
 		    MVNETA_CAUSE_PHY_STATUS_CHANGE |
-<<<<<<< HEAD
 		    MVNETA_CAUSE_LINK_CHANGE);
 
 	phylink_start(pp->phylink);
-=======
-		    MVNETA_CAUSE_LINK_CHANGE |
-		    MVNETA_CAUSE_PSC_SYNC_CHANGE);
-
-	phy_start(ndev->phydev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	netif_tx_start_all_queues(pp->dev);
 }
 
 static void mvneta_stop_dev(struct mvneta_port *pp)
 {
 	unsigned int cpu;
-<<<<<<< HEAD
 
 	phylink_stop(pp->phylink);
-=======
-	struct net_device *ndev = pp->dev;
-
-	phy_stop(ndev->phydev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!pp->neta_armada3700) {
 		for_each_online_cpu(cpu) {
@@ -3735,11 +3264,6 @@ static int mvneta_change_mtu(struct net_device *dev, int mtu)
 		mvneta_bm_update_mtu(pp, mtu);
 
 	pp->pkt_size = MVNETA_RX_PKT_SIZE(dev->mtu);
-<<<<<<< HEAD
-=======
-	pp->frag_size = SKB_DATA_ALIGN(MVNETA_RX_BUF_SIZE(pp->pkt_size)) +
-	                SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = mvneta_setup_rxqs(pp);
 	if (ret) {
@@ -3811,7 +3335,6 @@ static int mvneta_set_mac_addr(struct net_device *dev, void *addr)
 	return 0;
 }
 
-<<<<<<< HEAD
 static void mvneta_validate(struct net_device *ndev, unsigned long *supported,
 			    struct phylink_link_state *state)
 {
@@ -4063,109 +3586,11 @@ static int mvneta_mdio_probe(struct mvneta_port *pp)
 	device_set_wakeup_capable(&pp->dev->dev, !!wol.supported);
 
 	return err;
-=======
-static void mvneta_adjust_link(struct net_device *ndev)
-{
-	struct mvneta_port *pp = netdev_priv(ndev);
-	struct phy_device *phydev = ndev->phydev;
-	int status_change = 0;
-
-	if (phydev->link) {
-		if ((pp->speed != phydev->speed) ||
-		    (pp->duplex != phydev->duplex)) {
-			u32 val;
-
-			val = mvreg_read(pp, MVNETA_GMAC_AUTONEG_CONFIG);
-			val &= ~(MVNETA_GMAC_CONFIG_MII_SPEED |
-				 MVNETA_GMAC_CONFIG_GMII_SPEED |
-				 MVNETA_GMAC_CONFIG_FULL_DUPLEX);
-
-			if (phydev->duplex)
-				val |= MVNETA_GMAC_CONFIG_FULL_DUPLEX;
-
-			if (phydev->speed == SPEED_1000)
-				val |= MVNETA_GMAC_CONFIG_GMII_SPEED;
-			else if (phydev->speed == SPEED_100)
-				val |= MVNETA_GMAC_CONFIG_MII_SPEED;
-
-			mvreg_write(pp, MVNETA_GMAC_AUTONEG_CONFIG, val);
-
-			pp->duplex = phydev->duplex;
-			pp->speed  = phydev->speed;
-		}
-	}
-
-	if (phydev->link != pp->link) {
-		if (!phydev->link) {
-			pp->duplex = -1;
-			pp->speed = 0;
-		}
-
-		pp->link = phydev->link;
-		status_change = 1;
-	}
-
-	if (status_change) {
-		if (phydev->link) {
-			if (!pp->use_inband_status) {
-				u32 val = mvreg_read(pp,
-						  MVNETA_GMAC_AUTONEG_CONFIG);
-				val &= ~MVNETA_GMAC_FORCE_LINK_DOWN;
-				val |= MVNETA_GMAC_FORCE_LINK_PASS;
-				mvreg_write(pp, MVNETA_GMAC_AUTONEG_CONFIG,
-					    val);
-			}
-			mvneta_port_up(pp);
-		} else {
-			if (!pp->use_inband_status) {
-				u32 val = mvreg_read(pp,
-						  MVNETA_GMAC_AUTONEG_CONFIG);
-				val &= ~MVNETA_GMAC_FORCE_LINK_PASS;
-				val |= MVNETA_GMAC_FORCE_LINK_DOWN;
-				mvreg_write(pp, MVNETA_GMAC_AUTONEG_CONFIG,
-					    val);
-			}
-			mvneta_port_down(pp);
-		}
-		phy_print_status(phydev);
-	}
-}
-
-static int mvneta_mdio_probe(struct mvneta_port *pp)
-{
-	struct phy_device *phy_dev;
-	struct ethtool_wolinfo wol = { .cmd = ETHTOOL_GWOL };
-
-	phy_dev = of_phy_connect(pp->dev, pp->phy_node, mvneta_adjust_link, 0,
-				 pp->phy_interface);
-	if (!phy_dev) {
-		netdev_err(pp->dev, "could not find the PHY\n");
-		return -ENODEV;
-	}
-
-	phy_ethtool_get_wol(phy_dev, &wol);
-	device_set_wakeup_capable(&pp->dev->dev, !!wol.supported);
-
-	phy_dev->supported &= PHY_GBIT_FEATURES;
-	phy_dev->advertising = phy_dev->supported;
-
-	pp->link    = 0;
-	pp->duplex  = 0;
-	pp->speed   = 0;
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void mvneta_mdio_remove(struct mvneta_port *pp)
 {
-<<<<<<< HEAD
 	phylink_disconnect_phy(pp->phylink);
-=======
-	struct net_device *ndev = pp->dev;
-
-	phy_disconnect(ndev->phydev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Electing a CPU must be done in an atomic way: it should be done
@@ -4273,12 +3698,7 @@ static int mvneta_cpu_online(unsigned int cpu, struct hlist_node *node)
 	on_each_cpu(mvneta_percpu_unmask_interrupt, pp, true);
 	mvreg_write(pp, MVNETA_INTR_MISC_MASK,
 		    MVNETA_CAUSE_PHY_STATUS_CHANGE |
-<<<<<<< HEAD
 		    MVNETA_CAUSE_LINK_CHANGE);
-=======
-		    MVNETA_CAUSE_LINK_CHANGE |
-		    MVNETA_CAUSE_PSC_SYNC_CHANGE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	netif_tx_start_all_queues(pp->dev);
 	spin_unlock(&pp->lock);
 	return 0;
@@ -4319,12 +3739,7 @@ static int mvneta_cpu_dead(unsigned int cpu, struct hlist_node *node)
 	on_each_cpu(mvneta_percpu_unmask_interrupt, pp, true);
 	mvreg_write(pp, MVNETA_INTR_MISC_MASK,
 		    MVNETA_CAUSE_PHY_STATUS_CHANGE |
-<<<<<<< HEAD
 		    MVNETA_CAUSE_LINK_CHANGE);
-=======
-		    MVNETA_CAUSE_LINK_CHANGE |
-		    MVNETA_CAUSE_PSC_SYNC_CHANGE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	netif_tx_start_all_queues(pp->dev);
 	return 0;
 }
@@ -4335,11 +3750,6 @@ static int mvneta_open(struct net_device *dev)
 	int ret;
 
 	pp->pkt_size = MVNETA_RX_PKT_SIZE(pp->dev->mtu);
-<<<<<<< HEAD
-=======
-	pp->frag_size = SKB_DATA_ALIGN(MVNETA_RX_BUF_SIZE(pp->pkt_size)) +
-	                SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = mvneta_setup_rxqs(pp);
 	if (ret)
@@ -4455,16 +3865,9 @@ static int mvneta_stop(struct net_device *dev)
 
 static int mvneta_ioctl(struct net_device *dev, struct ifreq *ifr, int cmd)
 {
-<<<<<<< HEAD
 	struct mvneta_port *pp = netdev_priv(dev);
 
 	return phylink_mii_ioctl(pp->phylink, ifr, cmd);
-=======
-	if (!dev->phydev)
-		return -ENOTSUPP;
-
-	return phy_mii_ioctl(dev->phydev, ifr, cmd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Ethtool methods */
@@ -4475,7 +3878,6 @@ mvneta_ethtool_set_link_ksettings(struct net_device *ndev,
 				  const struct ethtool_link_ksettings *cmd)
 {
 	struct mvneta_port *pp = netdev_priv(ndev);
-<<<<<<< HEAD
 
 	return phylink_ethtool_ksettings_set(pp->phylink, cmd);
 }
@@ -4495,46 +3897,6 @@ static int mvneta_ethtool_nway_reset(struct net_device *dev)
 	struct mvneta_port *pp = netdev_priv(dev);
 
 	return phylink_ethtool_nway_reset(pp->phylink);
-=======
-	struct phy_device *phydev = ndev->phydev;
-
-	if (!phydev)
-		return -ENODEV;
-
-	if ((cmd->base.autoneg == AUTONEG_ENABLE) != pp->use_inband_status) {
-		u32 val;
-
-		mvneta_set_autoneg(pp, cmd->base.autoneg == AUTONEG_ENABLE);
-
-		if (cmd->base.autoneg == AUTONEG_DISABLE) {
-			val = mvreg_read(pp, MVNETA_GMAC_AUTONEG_CONFIG);
-			val &= ~(MVNETA_GMAC_CONFIG_MII_SPEED |
-				 MVNETA_GMAC_CONFIG_GMII_SPEED |
-				 MVNETA_GMAC_CONFIG_FULL_DUPLEX);
-
-			if (phydev->duplex)
-				val |= MVNETA_GMAC_CONFIG_FULL_DUPLEX;
-
-			if (phydev->speed == SPEED_1000)
-				val |= MVNETA_GMAC_CONFIG_GMII_SPEED;
-			else if (phydev->speed == SPEED_100)
-				val |= MVNETA_GMAC_CONFIG_MII_SPEED;
-
-			mvreg_write(pp, MVNETA_GMAC_AUTONEG_CONFIG, val);
-		}
-
-		pp->use_inband_status = (cmd->base.autoneg == AUTONEG_ENABLE);
-		netdev_info(pp->dev, "autoneg status set to %i\n",
-			    pp->use_inband_status);
-
-		if (netif_running(ndev)) {
-			mvneta_port_down(pp);
-			mvneta_port_up(pp);
-		}
-	}
-
-	return phy_ethtool_ksettings_set(ndev->phydev, cmd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Set interrupt coalescing for ethtools */
@@ -4626,7 +3988,6 @@ static int mvneta_ethtool_set_ringparam(struct net_device *dev,
 	return 0;
 }
 
-<<<<<<< HEAD
 static void mvneta_ethtool_get_pauseparam(struct net_device *dev,
 					  struct ethtool_pauseparam *pause)
 {
@@ -4643,8 +4004,6 @@ static int mvneta_ethtool_set_pauseparam(struct net_device *dev,
 	return phylink_ethtool_set_pauseparam(pp->phylink, pause);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void mvneta_ethtool_get_strings(struct net_device *netdev, u32 sset,
 				       u8 *data)
 {
@@ -4661,36 +4020,23 @@ static void mvneta_ethtool_update_stats(struct mvneta_port *pp)
 {
 	const struct mvneta_statistic *s;
 	void __iomem *base = pp->base;
-<<<<<<< HEAD
 	u32 high, low;
 	u64 val;
-=======
-	u32 high, low, val;
-	u64 val64;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 
 	for (i = 0, s = mvneta_statistics;
 	     s < mvneta_statistics + ARRAY_SIZE(mvneta_statistics);
 	     s++, i++) {
-<<<<<<< HEAD
 		val = 0;
 
 		switch (s->type) {
 		case T_REG_32:
 			val = readl_relaxed(base + s->offset);
-=======
-		switch (s->type) {
-		case T_REG_32:
-			val = readl_relaxed(base + s->offset);
-			pp->ethtool_stats[i] += val;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		case T_REG_64:
 			/* Docs say to read low 32-bit then high */
 			low = readl_relaxed(base + s->offset);
 			high = readl_relaxed(base + s->offset + 4);
-<<<<<<< HEAD
 			val = (u64)high << 32 | low;
 			break;
 		case T_SW:
@@ -4709,12 +4055,6 @@ static void mvneta_ethtool_update_stats(struct mvneta_port *pp)
 		}
 
 		pp->ethtool_stats[i] += val;
-=======
-			val64 = (u64)high << 32 | low;
-			pp->ethtool_stats[i] += val64;
-			break;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -4766,7 +4106,6 @@ static int  mvneta_config_rss(struct mvneta_port *pp)
 
 	on_each_cpu(mvneta_percpu_mask_interrupt, pp, true);
 
-<<<<<<< HEAD
 	if (!pp->neta_armada3700) {
 		/* We have to synchronise on the napi of each CPU */
 		for_each_online_cpu(cpu) {
@@ -4779,15 +4118,6 @@ static int  mvneta_config_rss(struct mvneta_port *pp)
 	} else {
 		napi_synchronize(&pp->napi);
 		napi_disable(&pp->napi);
-=======
-	/* We have to synchronise on the napi of each CPU */
-	for_each_online_cpu(cpu) {
-		struct mvneta_pcpu_port *pcpu_port =
-			per_cpu_ptr(pp->ports, cpu);
-
-		napi_synchronize(&pcpu_port->napi);
-		napi_disable(&pcpu_port->napi);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	pp->rxq_def = pp->indir[0];
@@ -4804,7 +4134,6 @@ static int  mvneta_config_rss(struct mvneta_port *pp)
 	mvneta_percpu_elect(pp);
 	spin_unlock(&pp->lock);
 
-<<<<<<< HEAD
 	if (!pp->neta_armada3700) {
 		/* We have to synchronise on the napi of each CPU */
 		for_each_online_cpu(cpu) {
@@ -4815,14 +4144,6 @@ static int  mvneta_config_rss(struct mvneta_port *pp)
 		}
 	} else {
 		napi_enable(&pp->napi);
-=======
-	/* We have to synchronise on the napi of each CPU */
-	for_each_online_cpu(cpu) {
-		struct mvneta_pcpu_port *pcpu_port =
-			per_cpu_ptr(pp->ports, cpu);
-
-		napi_enable(&pcpu_port->napi);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	netif_tx_start_all_queues(pp->dev);
@@ -4877,42 +4198,24 @@ static int mvneta_ethtool_get_rxfh(struct net_device *dev, u32 *indir, u8 *key,
 static void mvneta_ethtool_get_wol(struct net_device *dev,
 				   struct ethtool_wolinfo *wol)
 {
-<<<<<<< HEAD
 	struct mvneta_port *pp = netdev_priv(dev);
 
 	phylink_ethtool_get_wol(pp->phylink, wol);
-=======
-	wol->supported = 0;
-	wol->wolopts = 0;
-
-	if (dev->phydev)
-		phy_ethtool_get_wol(dev->phydev, wol);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int mvneta_ethtool_set_wol(struct net_device *dev,
 				  struct ethtool_wolinfo *wol)
 {
-<<<<<<< HEAD
 	struct mvneta_port *pp = netdev_priv(dev);
 	int ret;
 
 	ret = phylink_ethtool_set_wol(pp->phylink, wol);
-=======
-	int ret;
-
-	if (!dev->phydev)
-		return -EOPNOTSUPP;
-
-	ret = phy_ethtool_set_wol(dev->phydev, wol);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ret)
 		device_set_wakeup_enable(&dev->dev, !!wol->wolopts);
 
 	return ret;
 }
 
-<<<<<<< HEAD
 static int mvneta_ethtool_get_eee(struct net_device *dev,
 				  struct ethtool_eee *eee)
 {
@@ -4954,8 +4257,6 @@ static int mvneta_ethtool_set_eee(struct net_device *dev,
 	return phylink_ethtool_set_eee(pp->phylink, eee);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct net_device_ops mvneta_netdev_ops = {
 	.ndo_open            = mvneta_open,
 	.ndo_stop            = mvneta_stop,
@@ -4969,22 +4270,15 @@ static const struct net_device_ops mvneta_netdev_ops = {
 };
 
 static const struct ethtool_ops mvneta_eth_tool_ops = {
-<<<<<<< HEAD
 	.nway_reset	= mvneta_ethtool_nway_reset,
-=======
-	.nway_reset	= phy_ethtool_nway_reset,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.get_link       = ethtool_op_get_link,
 	.set_coalesce   = mvneta_ethtool_set_coalesce,
 	.get_coalesce   = mvneta_ethtool_get_coalesce,
 	.get_drvinfo    = mvneta_ethtool_get_drvinfo,
 	.get_ringparam  = mvneta_ethtool_get_ringparam,
 	.set_ringparam	= mvneta_ethtool_set_ringparam,
-<<<<<<< HEAD
 	.get_pauseparam	= mvneta_ethtool_get_pauseparam,
 	.set_pauseparam	= mvneta_ethtool_set_pauseparam,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.get_strings	= mvneta_ethtool_get_strings,
 	.get_ethtool_stats = mvneta_ethtool_get_stats,
 	.get_sset_count	= mvneta_ethtool_get_sset_count,
@@ -4992,19 +4286,12 @@ static const struct ethtool_ops mvneta_eth_tool_ops = {
 	.get_rxnfc	= mvneta_ethtool_get_rxnfc,
 	.get_rxfh	= mvneta_ethtool_get_rxfh,
 	.set_rxfh	= mvneta_ethtool_set_rxfh,
-<<<<<<< HEAD
 	.get_link_ksettings = mvneta_ethtool_get_link_ksettings,
 	.set_link_ksettings = mvneta_ethtool_set_link_ksettings,
 	.get_wol        = mvneta_ethtool_get_wol,
 	.set_wol        = mvneta_ethtool_set_wol,
 	.get_eee	= mvneta_ethtool_get_eee,
 	.set_eee	= mvneta_ethtool_set_eee,
-=======
-	.get_link_ksettings = phy_ethtool_get_link_ksettings,
-	.set_link_ksettings = mvneta_ethtool_set_link_ksettings,
-	.get_wol        = mvneta_ethtool_get_wol,
-	.set_wol        = mvneta_ethtool_set_wol,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Initialize hw */
@@ -5104,7 +4391,6 @@ static void mvneta_conf_mbus_windows(struct mvneta_port *pp,
 /* Power up the port */
 static int mvneta_port_power_up(struct mvneta_port *pp, int phy_mode)
 {
-<<<<<<< HEAD
 	/* MAC Cause register should be cleared */
 	mvreg_write(pp, MVNETA_UNIT_INTR_CAUSE, 0);
 
@@ -5115,44 +4401,6 @@ static int mvneta_port_power_up(struct mvneta_port *pp, int phy_mode)
 		mvreg_write(pp, MVNETA_SERDES_CFG, MVNETA_SGMII_SERDES_PROTO);
 	else if (!phy_interface_mode_is_rgmii(phy_mode))
 		return -EINVAL;
-=======
-	u32 ctrl;
-
-	/* MAC Cause register should be cleared */
-	mvreg_write(pp, MVNETA_UNIT_INTR_CAUSE, 0);
-
-	ctrl = mvreg_read(pp, MVNETA_GMAC_CTRL_2);
-
-	/* Even though it might look weird, when we're configured in
-	 * SGMII or QSGMII mode, the RGMII bit needs to be set.
-	 */
-	switch(phy_mode) {
-	case PHY_INTERFACE_MODE_QSGMII:
-		mvreg_write(pp, MVNETA_SERDES_CFG, MVNETA_QSGMII_SERDES_PROTO);
-		ctrl |= MVNETA_GMAC2_PCS_ENABLE | MVNETA_GMAC2_PORT_RGMII;
-		break;
-	case PHY_INTERFACE_MODE_SGMII:
-		mvreg_write(pp, MVNETA_SERDES_CFG, MVNETA_SGMII_SERDES_PROTO);
-		ctrl |= MVNETA_GMAC2_PCS_ENABLE | MVNETA_GMAC2_PORT_RGMII;
-		break;
-	case PHY_INTERFACE_MODE_RGMII:
-	case PHY_INTERFACE_MODE_RGMII_ID:
-	case PHY_INTERFACE_MODE_RGMII_RXID:
-	case PHY_INTERFACE_MODE_RGMII_TXID:
-		ctrl |= MVNETA_GMAC2_PORT_RGMII;
-		break;
-	default:
-		return -EINVAL;
-	}
-
-	/* Cancel Port Reset */
-	ctrl &= ~MVNETA_GMAC2_PORT_RESET;
-	mvreg_write(pp, MVNETA_GMAC_CTRL_2, ctrl);
-
-	while ((mvreg_read(pp, MVNETA_GMAC_CTRL_2) &
-		MVNETA_GMAC2_PORT_RESET) != 0)
-		continue;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -5162,7 +4410,6 @@ static int mvneta_probe(struct platform_device *pdev)
 {
 	struct resource *res;
 	struct device_node *dn = pdev->dev.of_node;
-<<<<<<< HEAD
 	struct device_node *bm_node;
 	struct mvneta_port *pp;
 	struct net_device *dev;
@@ -5170,16 +4417,6 @@ static int mvneta_probe(struct platform_device *pdev)
 	const char *dt_mac_addr;
 	char hw_mac_addr[ETH_ALEN];
 	const char *mac_from;
-=======
-	struct device_node *phy_node;
-	struct device_node *bm_node;
-	struct mvneta_port *pp;
-	struct net_device *dev;
-	const char *dt_mac_addr;
-	char hw_mac_addr[ETH_ALEN];
-	const char *mac_from;
-	const char *managed;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int tx_csum_limit;
 	int phy_mode;
 	int err;
@@ -5195,34 +4432,10 @@ static int mvneta_probe(struct platform_device *pdev)
 		goto err_free_netdev;
 	}
 
-<<<<<<< HEAD
-=======
-	phy_node = of_parse_phandle(dn, "phy", 0);
-	if (!phy_node) {
-		if (!of_phy_is_fixed_link(dn)) {
-			dev_err(&pdev->dev, "no PHY specified\n");
-			err = -ENODEV;
-			goto err_free_irq;
-		}
-
-		err = of_phy_register_fixed_link(dn);
-		if (err < 0) {
-			dev_err(&pdev->dev, "cannot register fixed PHY\n");
-			goto err_free_irq;
-		}
-
-		/* In the case of a fixed PHY, the DT node associated
-		 * to the PHY is the Ethernet MAC DT node.
-		 */
-		phy_node = of_node_get(dn);
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	phy_mode = of_get_phy_mode(dn);
 	if (phy_mode < 0) {
 		dev_err(&pdev->dev, "incorrect phy-mode\n");
 		err = -EINVAL;
-<<<<<<< HEAD
 		goto err_free_irq;
 	}
 
@@ -5231,9 +4444,6 @@ static int mvneta_probe(struct platform_device *pdev)
 	if (IS_ERR(phylink)) {
 		err = PTR_ERR(phylink);
 		goto err_free_irq;
-=======
-		goto err_put_phy_node;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	dev->tx_queue_len = MVNETA_MAX_TXD;
@@ -5244,30 +4454,11 @@ static int mvneta_probe(struct platform_device *pdev)
 
 	pp = netdev_priv(dev);
 	spin_lock_init(&pp->lock);
-<<<<<<< HEAD
 	pp->phylink = phylink;
 	pp->phy_interface = phy_mode;
 	pp->dn = dn;
 
 	pp->rxq_def = rxq_def;
-=======
-	pp->phy_node = phy_node;
-	pp->phy_interface = phy_mode;
-
-	err = of_property_read_string(dn, "managed", &managed);
-	pp->use_inband_status = (err == 0 &&
-				 strcmp(managed, "in-band-status") == 0);
-
-	pp->rxq_def = rxq_def;
-
-	/* Set RX packet offset correction for platforms, whose
-	 * NET_SKB_PAD, exceeds 64B. It should be 64B for 64-bit
-	 * platforms and 0B for 32-bit ones.
-	 */
-	pp->rx_offset_correction =
-		max(0, NET_SKB_PAD - MVNETA_RX_PKT_OFFSET_CORRECTION);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pp->indir[0] = rxq_def;
 
 	/* Get special SoC configurations */
@@ -5279,11 +4470,7 @@ static int mvneta_probe(struct platform_device *pdev)
 		pp->clk = devm_clk_get(&pdev->dev, NULL);
 	if (IS_ERR(pp->clk)) {
 		err = PTR_ERR(pp->clk);
-<<<<<<< HEAD
 		goto err_free_phylink;
-=======
-		goto err_put_phy_node;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	clk_prepare_enable(pp->clk);
@@ -5359,7 +4546,6 @@ static int mvneta_probe(struct platform_device *pdev)
 	SET_NETDEV_DEV(dev, &pdev->dev);
 
 	pp->id = global_port_id++;
-<<<<<<< HEAD
 	pp->rx_offset_correction = 0; /* not relevant for SW BM */
 
 	/* Obtain access to BM resources if enabled and already initialized */
@@ -5382,18 +4568,6 @@ static int mvneta_probe(struct platform_device *pdev)
 		pp->rx_offset_correction = max(0,
 					       NET_SKB_PAD -
 					       MVNETA_RX_PKT_OFFSET_CORRECTION);
-=======
-
-	/* Obtain access to BM resources if enabled and already initialized */
-	bm_node = of_parse_phandle(dn, "buffer-manager", 0);
-	if (bm_node && bm_node->data) {
-		pp->bm_priv = bm_node->data;
-		err = mvneta_bm_port_init(pdev, pp);
-		if (err < 0) {
-			dev_info(&pdev->dev, "use SW buffer management\n");
-			pp->bm_priv = NULL;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	of_node_put(bm_node);
 
@@ -5445,17 +4619,6 @@ static int mvneta_probe(struct platform_device *pdev)
 
 	platform_set_drvdata(pdev, pp->dev);
 
-<<<<<<< HEAD
-=======
-	if (pp->use_inband_status) {
-		struct phy_device *phy = of_phy_find_device(dn);
-
-		mvneta_fixed_link_update(pp, phy);
-
-		put_device(&phy->mdio.dev);
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 err_netdev:
@@ -5463,10 +4626,7 @@ err_netdev:
 		mvneta_bm_pool_destroy(pp->bm_priv, pp->pool_long, 1 << pp->id);
 		mvneta_bm_pool_destroy(pp->bm_priv, pp->pool_short,
 				       1 << pp->id);
-<<<<<<< HEAD
 		mvneta_bm_put(pp->bm_priv);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	free_percpu(pp->stats);
 err_free_ports:
@@ -5474,16 +4634,9 @@ err_free_ports:
 err_clk:
 	clk_disable_unprepare(pp->clk_bus);
 	clk_disable_unprepare(pp->clk);
-<<<<<<< HEAD
 err_free_phylink:
 	if (pp->phylink)
 		phylink_destroy(pp->phylink);
-=======
-err_put_phy_node:
-	of_node_put(phy_node);
-	if (of_phy_is_fixed_link(dn))
-		of_phy_deregister_fixed_link(dn);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_free_irq:
 	irq_dispose_mapping(dev->irq);
 err_free_netdev:
@@ -5495,10 +4648,6 @@ err_free_netdev:
 static int mvneta_remove(struct platform_device *pdev)
 {
 	struct net_device  *dev = platform_get_drvdata(pdev);
-<<<<<<< HEAD
-=======
-	struct device_node *dn = pdev->dev.of_node;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mvneta_port *pp = netdev_priv(dev);
 
 	unregister_netdev(dev);
@@ -5506,25 +4655,15 @@ static int mvneta_remove(struct platform_device *pdev)
 	clk_disable_unprepare(pp->clk);
 	free_percpu(pp->ports);
 	free_percpu(pp->stats);
-<<<<<<< HEAD
 	irq_dispose_mapping(dev->irq);
 	phylink_destroy(pp->phylink);
-=======
-	if (of_phy_is_fixed_link(dn))
-		of_phy_deregister_fixed_link(dn);
-	irq_dispose_mapping(dev->irq);
-	of_node_put(pp->phy_node);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	free_netdev(dev);
 
 	if (pp->bm_priv) {
 		mvneta_bm_pool_destroy(pp->bm_priv, pp->pool_long, 1 << pp->id);
 		mvneta_bm_pool_destroy(pp->bm_priv, pp->pool_short,
 				       1 << pp->id);
-<<<<<<< HEAD
 		mvneta_bm_put(pp->bm_priv);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -5533,7 +4672,6 @@ static int mvneta_remove(struct platform_device *pdev)
 #ifdef CONFIG_PM_SLEEP
 static int mvneta_suspend(struct device *device)
 {
-<<<<<<< HEAD
 	int queue;
 	struct net_device *dev = dev_get_drvdata(device);
 	struct mvneta_port *pp = netdev_priv(dev);
@@ -5573,16 +4711,6 @@ clean_exit:
 	clk_disable_unprepare(pp->clk_bus);
 	clk_disable_unprepare(pp->clk);
 
-=======
-	struct net_device *dev = dev_get_drvdata(device);
-	struct mvneta_port *pp = netdev_priv(dev);
-
-	if (netif_running(dev))
-		mvneta_stop(dev);
-	netif_device_detach(dev);
-	clk_disable_unprepare(pp->clk_bus);
-	clk_disable_unprepare(pp->clk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -5591,11 +4719,7 @@ static int mvneta_resume(struct device *device)
 	struct platform_device *pdev = to_platform_device(device);
 	struct net_device *dev = dev_get_drvdata(device);
 	struct mvneta_port *pp = netdev_priv(dev);
-<<<<<<< HEAD
 	int err, queue;
-=======
-	int err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	clk_prepare_enable(pp->clk);
 	if (!IS_ERR(pp->clk_bus))
@@ -5616,7 +4740,6 @@ static int mvneta_resume(struct device *device)
 		return err;
 	}
 
-<<<<<<< HEAD
 	netif_device_attach(dev);
 
 	if (!netif_running(dev))
@@ -5651,17 +4774,6 @@ static int mvneta_resume(struct device *device)
 	rtnl_unlock();
 	mvneta_set_rx_mode(dev);
 
-=======
-	if (pp->use_inband_status)
-		mvneta_fixed_link_update(pp, dev->phydev);
-
-	netif_device_attach(dev);
-	if (netif_running(dev)) {
-		mvneta_open(dev);
-		mvneta_set_rx_mode(dev);
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 #endif
@@ -5727,16 +4839,8 @@ MODULE_DESCRIPTION("Marvell NETA Ethernet Driver - www.marvell.com");
 MODULE_AUTHOR("Rami Rosen <rosenr@marvell.com>, Thomas Petazzoni <thomas.petazzoni@free-electrons.com>");
 MODULE_LICENSE("GPL");
 
-<<<<<<< HEAD
 module_param(rxq_number, int, 0444);
 module_param(txq_number, int, 0444);
 
 module_param(rxq_def, int, 0444);
 module_param(rx_copybreak, int, 0644);
-=======
-module_param(rxq_number, int, S_IRUGO);
-module_param(txq_number, int, S_IRUGO);
-
-module_param(rxq_def, int, S_IRUGO);
-module_param(rx_copybreak, int, S_IRUGO | S_IWUSR);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

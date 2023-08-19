@@ -62,10 +62,7 @@
 #include <rdma/iw_cm.h>
 
 #include "core_priv.h"
-<<<<<<< HEAD
 #include "cma_priv.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 MODULE_AUTHOR("Sean Hefty");
 MODULE_DESCRIPTION("Generic RDMA CM Agent");
@@ -149,7 +146,6 @@ const void *rdma_consumer_reject_data(struct rdma_cm_id *id,
 }
 EXPORT_SYMBOL(rdma_consumer_reject_data);
 
-<<<<<<< HEAD
 /**
  * rdma_iw_cm_id() - return the iw_cm_id pointer for this cm_id.
  * @id: Communication Identifier
@@ -178,8 +174,6 @@ struct rdma_cm_id *rdma_res_to_id(struct rdma_restrack_entry *res)
 }
 EXPORT_SYMBOL(rdma_res_to_id);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void cma_add_one(struct ib_device *device);
 static void cma_remove_one(struct ib_device *device, void *client_data);
 
@@ -190,10 +184,6 @@ static struct ib_client cma_client = {
 };
 
 static struct ib_sa_client sa_client;
-<<<<<<< HEAD
-=======
-static struct rdma_addr_client addr_client;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static LIST_HEAD(dev_list);
 static LIST_HEAD(listen_any_list);
 static DEFINE_MUTEX(lock);
@@ -212,11 +202,7 @@ static struct cma_pernet *cma_pernet(struct net *net)
 	return net_generic(net, cma_pernet_id);
 }
 
-<<<<<<< HEAD
 static struct idr *cma_pernet_idr(struct net *net, enum rdma_ucm_port_space ps)
-=======
-static struct idr *cma_pernet_idr(struct net *net, enum rdma_port_space ps)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct cma_pernet *pernet = cma_pernet(net);
 
@@ -245,11 +231,7 @@ struct cma_device {
 };
 
 struct rdma_bind_list {
-<<<<<<< HEAD
 	enum rdma_ucm_port_space ps;
-=======
-	enum rdma_port_space	ps;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct hlist_head	owners;
 	unsigned short		port;
 };
@@ -262,11 +244,7 @@ struct class_port_info_context {
 	u8				port_num;
 };
 
-<<<<<<< HEAD
 static int cma_ps_alloc(struct net *net, enum rdma_ucm_port_space ps,
-=======
-static int cma_ps_alloc(struct net *net, enum rdma_port_space ps,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			struct rdma_bind_list *bind_list, int snum)
 {
 	struct idr *idr = cma_pernet_idr(net, ps);
@@ -275,23 +253,15 @@ static int cma_ps_alloc(struct net *net, enum rdma_port_space ps,
 }
 
 static struct rdma_bind_list *cma_ps_find(struct net *net,
-<<<<<<< HEAD
 					  enum rdma_ucm_port_space ps, int snum)
-=======
-					  enum rdma_port_space ps, int snum)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct idr *idr = cma_pernet_idr(net, ps);
 
 	return idr_find(idr, snum);
 }
 
-<<<<<<< HEAD
 static void cma_ps_remove(struct net *net, enum rdma_ucm_port_space ps,
 			  int snum)
-=======
-static void cma_ps_remove(struct net *net, enum rdma_port_space ps, int snum)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct idr *idr = cma_pernet_idr(net, ps);
 
@@ -386,49 +356,6 @@ struct ib_device *cma_get_ib_dev(struct cma_device *cma_dev)
  * We do this by disabling removal notification while a callback is in process,
  * and reporting it after the callback completes.
  */
-<<<<<<< HEAD
-=======
-struct rdma_id_private {
-	struct rdma_cm_id	id;
-
-	struct rdma_bind_list	*bind_list;
-	struct hlist_node	node;
-	struct list_head	list; /* listen_any_list or cma_device.list */
-	struct list_head	listen_list; /* per device listens */
-	struct cma_device	*cma_dev;
-	struct list_head	mc_list;
-
-	int			internal_id;
-	enum rdma_cm_state	state;
-	spinlock_t		lock;
-	struct mutex		qp_mutex;
-
-	struct completion	comp;
-	atomic_t		refcount;
-	struct mutex		handler_mutex;
-
-	int			backlog;
-	int			timeout_ms;
-	struct ib_sa_query	*query;
-	int			query_id;
-	union {
-		struct ib_cm_id	*ib;
-		struct iw_cm_id	*iw;
-	} cm_id;
-
-	u32			seq_num;
-	u32			qkey;
-	u32			qp_num;
-	pid_t			owner;
-	u32			options;
-	u8			srq;
-	u8			tos;
-	bool			tos_set;
-	u8			reuseaddr;
-	u8			afonly;
-	enum ib_gid_type	gid_type;
-};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct cma_multicast {
 	struct rdma_id_private *id_priv;
@@ -439,10 +366,6 @@ struct cma_multicast {
 	void			*context;
 	struct sockaddr_storage	addr;
 	struct kref		mcref;
-<<<<<<< HEAD
-=======
-	bool			igmp_joined;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8			join_state;
 };
 
@@ -488,19 +411,11 @@ struct cma_req_info {
 	struct sockaddr_storage listen_addr_storage;
 	struct sockaddr_storage src_addr_storage;
 	struct ib_device *device;
-<<<<<<< HEAD
 	union ib_gid local_gid;
 	__be64 service_id;
 	int port;
 	bool has_gid;
 	u16 pkey;
-=======
-	int port;
-	union ib_gid local_gid;
-	__be64 service_id;
-	u16 pkey;
-	bool has_gid:1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int cma_comp(struct rdma_id_private *id_priv, enum rdma_cm_state comp)
@@ -575,18 +490,11 @@ static void _cma_attach_to_dev(struct rdma_id_private *id_priv,
 {
 	cma_ref_dev(cma_dev);
 	id_priv->cma_dev = cma_dev;
-<<<<<<< HEAD
-=======
-	id_priv->gid_type = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	id_priv->id.device = cma_dev->device;
 	id_priv->id.route.addr.dev_addr.transport =
 		rdma_node_get_transport(cma_dev->device->node_type);
 	list_add_tail(&id_priv->list, &cma_dev->id_list);
-<<<<<<< HEAD
 	rdma_restrack_add(&id_priv->res);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void cma_attach_to_dev(struct rdma_id_private *id_priv,
@@ -683,11 +591,7 @@ static int cma_translate_addr(struct sockaddr *addr, struct rdma_dev_addr *dev_a
 	int ret;
 
 	if (addr->sa_family != AF_IB) {
-<<<<<<< HEAD
 		ret = rdma_translate_ip(addr, dev_addr);
-=======
-		ret = rdma_translate_ip(addr, dev_addr, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		cma_translate_ib((struct sockaddr_ib *) addr, dev_addr);
 		ret = 0;
@@ -696,7 +600,6 @@ static int cma_translate_addr(struct sockaddr *addr, struct rdma_dev_addr *dev_a
 	return ret;
 }
 
-<<<<<<< HEAD
 static const struct ib_gid_attr *
 cma_validate_port(struct ib_device *device, u8 port,
 		  enum ib_gid_type gid_type,
@@ -719,31 +622,10 @@ cma_validate_port(struct ib_device *device, u8 port,
 		ndev = dev_get_by_index(dev_addr->net, bound_if_index);
 		if (!ndev)
 			return ERR_PTR(-ENODEV);
-=======
-static inline int cma_validate_port(struct ib_device *device, u8 port,
-				    enum ib_gid_type gid_type,
-				      union ib_gid *gid, int dev_type,
-				      int bound_if_index)
-{
-	int ret = -ENODEV;
-	struct net_device *ndev = NULL;
-
-	if ((dev_type == ARPHRD_INFINIBAND) && !rdma_protocol_ib(device, port))
-		return ret;
-
-	if ((dev_type != ARPHRD_INFINIBAND) && rdma_protocol_ib(device, port))
-		return ret;
-
-	if (dev_type == ARPHRD_ETHER && rdma_protocol_roce(device, port)) {
-		ndev = dev_get_by_index(&init_net, bound_if_index);
-		if (!ndev)
-			return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		gid_type = IB_GID_TYPE_IB;
 	}
 
-<<<<<<< HEAD
 	sgid_attr = rdma_find_gid_by_port(device, gid, gid_type, port, ndev);
 	if (ndev)
 		dev_put(ndev);
@@ -765,23 +647,6 @@ static int cma_acquire_dev(struct rdma_id_private *id_priv,
 	struct cma_device *cma_dev;
 	union ib_gid gid, iboe_gid, *gidp;
 	enum ib_gid_type gid_type;
-=======
-	ret = ib_find_cached_gid_by_port(device, gid, gid_type, port,
-					 ndev, NULL);
-
-	if (ndev)
-		dev_put(ndev);
-
-	return ret;
-}
-
-static int cma_acquire_dev(struct rdma_id_private *id_priv,
-			   struct rdma_id_private *listen_id_priv)
-{
-	struct rdma_dev_addr *dev_addr = &id_priv->id.route.addr.dev_addr;
-	struct cma_device *cma_dev;
-	union ib_gid gid, iboe_gid, *gidp;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = -ENODEV;
 	u8 port;
 
@@ -801,7 +666,6 @@ static int cma_acquire_dev(struct rdma_id_private *id_priv,
 		port = listen_id_priv->id.port_num;
 		gidp = rdma_protocol_roce(cma_dev->device, port) ?
 		       &iboe_gid : &gid;
-<<<<<<< HEAD
 		gid_type = listen_id_priv->gid_type;
 		sgid_attr = cma_validate_port(cma_dev->device, port,
 					      gid_type, gidp, id_priv);
@@ -809,17 +673,6 @@ static int cma_acquire_dev(struct rdma_id_private *id_priv,
 			id_priv->id.port_num = port;
 			cma_bind_sgid_attr(id_priv, sgid_attr);
 			ret = 0;
-=======
-
-		ret = cma_validate_port(cma_dev->device, port,
-					rdma_protocol_ib(cma_dev->device, port) ?
-					IB_GID_TYPE_IB :
-					listen_id_priv->gid_type, gidp,
-					dev_addr->dev_type,
-					dev_addr->bound_dev_if);
-		if (!ret) {
-			id_priv->id.port_num = port;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto out;
 		}
 	}
@@ -833,7 +686,6 @@ static int cma_acquire_dev(struct rdma_id_private *id_priv,
 
 			gidp = rdma_protocol_roce(cma_dev->device, port) ?
 			       &iboe_gid : &gid;
-<<<<<<< HEAD
 			gid_type = cma_dev->default_gid_type[port - 1];
 			sgid_attr = cma_validate_port(cma_dev->device, port,
 						      gid_type, gidp, id_priv);
@@ -841,17 +693,6 @@ static int cma_acquire_dev(struct rdma_id_private *id_priv,
 				id_priv->id.port_num = port;
 				cma_bind_sgid_attr(id_priv, sgid_attr);
 				ret = 0;
-=======
-
-			ret = cma_validate_port(cma_dev->device, port,
-						rdma_protocol_ib(cma_dev->device, port) ?
-						IB_GID_TYPE_IB :
-						cma_dev->default_gid_type[port - 1],
-						gidp, dev_addr->dev_type,
-						dev_addr->bound_dev_if);
-			if (!ret) {
-				id_priv->id.port_num = port;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				goto out;
 			}
 		}
@@ -894,13 +735,8 @@ static int cma_resolve_ib_dev(struct rdma_id_private *id_priv)
 
 			if (ib_get_cached_port_state(cur_dev->device, p, &port_state))
 				continue;
-<<<<<<< HEAD
 			for (i = 0; !rdma_query_gid(cur_dev->device,
 						    p, i, &gid);
-=======
-			for (i = 0; !ib_get_cached_gid(cur_dev->device, p, i,
-						       &gid, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     i++) {
 				if (!memcmp(&gid, dgid, sizeof(gid))) {
 					cma_dev = cur_dev;
@@ -938,17 +774,10 @@ static void cma_deref_id(struct rdma_id_private *id_priv)
 		complete(&id_priv->comp);
 }
 
-<<<<<<< HEAD
 struct rdma_cm_id *__rdma_create_id(struct net *net,
 				    rdma_cm_event_handler event_handler,
 				    void *context, enum rdma_ucm_port_space ps,
 				    enum ib_qp_type qp_type, const char *caller)
-=======
-struct rdma_cm_id *rdma_create_id(struct net *net,
-				  rdma_cm_event_handler event_handler,
-				  void *context, enum rdma_port_space ps,
-				  enum ib_qp_type qp_type)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rdma_id_private *id_priv;
 
@@ -956,25 +785,18 @@ struct rdma_cm_id *rdma_create_id(struct net *net,
 	if (!id_priv)
 		return ERR_PTR(-ENOMEM);
 
-<<<<<<< HEAD
 	if (caller)
 		id_priv->res.kern_name = caller;
 	else
 		rdma_restrack_set_task(&id_priv->res, current);
 	id_priv->res.type = RDMA_RESTRACK_CM_ID;
-=======
-	id_priv->owner = task_pid_nr(current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	id_priv->state = RDMA_CM_IDLE;
 	id_priv->id.context = context;
 	id_priv->id.event_handler = event_handler;
 	id_priv->id.ps = ps;
 	id_priv->id.qp_type = qp_type;
 	id_priv->tos_set = false;
-<<<<<<< HEAD
 	id_priv->gid_type = IB_GID_TYPE_IB;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_init(&id_priv->lock);
 	mutex_init(&id_priv->qp_mutex);
 	init_completion(&id_priv->comp);
@@ -988,11 +810,7 @@ struct rdma_cm_id *rdma_create_id(struct net *net,
 
 	return &id_priv->id;
 }
-<<<<<<< HEAD
 EXPORT_SYMBOL(__rdma_create_id);
-=======
-EXPORT_SYMBOL(rdma_create_id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int cma_init_ud_qp(struct rdma_id_private *id_priv, struct ib_qp *qp)
 {
@@ -1224,17 +1042,12 @@ int rdma_init_qp_attr(struct rdma_cm_id *id, struct ib_qp_attr *qp_attr,
 }
 EXPORT_SYMBOL(rdma_init_qp_attr);
 
-<<<<<<< HEAD
 static inline bool cma_zero_addr(const struct sockaddr *addr)
-=======
-static inline int cma_zero_addr(struct sockaddr *addr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	switch (addr->sa_family) {
 	case AF_INET:
 		return ipv4_is_zeronet(((struct sockaddr_in *)addr)->sin_addr.s_addr);
 	case AF_INET6:
-<<<<<<< HEAD
 		return ipv6_addr_any(&((struct sockaddr_in6 *)addr)->sin6_addr);
 	case AF_IB:
 		return ib_addr_any(&((struct sockaddr_ib *)addr)->sib_addr);
@@ -1261,47 +1074,17 @@ static inline bool cma_loopback_addr(const struct sockaddr *addr)
 }
 
 static inline bool cma_any_addr(const struct sockaddr *addr)
-=======
-		return ipv6_addr_any(&((struct sockaddr_in6 *) addr)->sin6_addr);
-	case AF_IB:
-		return ib_addr_any(&((struct sockaddr_ib *) addr)->sib_addr);
-	default:
-		return 0;
-	}
-}
-
-static inline int cma_loopback_addr(struct sockaddr *addr)
-{
-	switch (addr->sa_family) {
-	case AF_INET:
-		return ipv4_is_loopback(((struct sockaddr_in *) addr)->sin_addr.s_addr);
-	case AF_INET6:
-		return ipv6_addr_loopback(&((struct sockaddr_in6 *) addr)->sin6_addr);
-	case AF_IB:
-		return ib_addr_loopback(&((struct sockaddr_ib *) addr)->sib_addr);
-	default:
-		return 0;
-	}
-}
-
-static inline int cma_any_addr(struct sockaddr *addr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return cma_zero_addr(addr) || cma_loopback_addr(addr);
 }
 
-<<<<<<< HEAD
 static int cma_addr_cmp(const struct sockaddr *src, const struct sockaddr *dst)
-=======
-static int cma_addr_cmp(struct sockaddr *src, struct sockaddr *dst)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (src->sa_family != dst->sa_family)
 		return -1;
 
 	switch (src->sa_family) {
 	case AF_INET:
-<<<<<<< HEAD
 		return ((struct sockaddr_in *)src)->sin_addr.s_addr !=
 		       ((struct sockaddr_in *)dst)->sin_addr.s_addr;
 	case AF_INET6: {
@@ -1320,24 +1103,13 @@ static int cma_addr_cmp(struct sockaddr *src, struct sockaddr *dst)
 				    0;
 	}
 
-=======
-		return ((struct sockaddr_in *) src)->sin_addr.s_addr !=
-		       ((struct sockaddr_in *) dst)->sin_addr.s_addr;
-	case AF_INET6:
-		return ipv6_addr_cmp(&((struct sockaddr_in6 *) src)->sin6_addr,
-				     &((struct sockaddr_in6 *) dst)->sin6_addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		return ib_addr_cmp(&((struct sockaddr_ib *) src)->sib_addr,
 				   &((struct sockaddr_ib *) dst)->sib_addr);
 	}
 }
 
-<<<<<<< HEAD
 static __be16 cma_port(const struct sockaddr *addr)
-=======
-static __be16 cma_port(struct sockaddr *addr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct sockaddr_ib *sib;
 
@@ -1355,24 +1127,15 @@ static __be16 cma_port(struct sockaddr *addr)
 	}
 }
 
-<<<<<<< HEAD
 static inline int cma_any_port(const struct sockaddr *addr)
-=======
-static inline int cma_any_port(struct sockaddr *addr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return !cma_port(addr);
 }
 
 static void cma_save_ib_info(struct sockaddr *src_addr,
 			     struct sockaddr *dst_addr,
-<<<<<<< HEAD
 			     const struct rdma_cm_id *listen_id,
 			     const struct sa_path_rec *path)
-=======
-			     struct rdma_cm_id *listen_id,
-			     struct sa_path_rec *path)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct sockaddr_ib *listen_ib, *ib;
 
@@ -1457,11 +1220,7 @@ static u16 cma_port_from_service_id(__be64 service_id)
 
 static int cma_save_ip_info(struct sockaddr *src_addr,
 			    struct sockaddr *dst_addr,
-<<<<<<< HEAD
 			    const struct ib_cm_event *ib_event,
-=======
-			    struct ib_cm_event *ib_event,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    __be64 service_id)
 {
 	struct cma_hdr *hdr;
@@ -1491,13 +1250,8 @@ static int cma_save_ip_info(struct sockaddr *src_addr,
 
 static int cma_save_net_info(struct sockaddr *src_addr,
 			     struct sockaddr *dst_addr,
-<<<<<<< HEAD
 			     const struct rdma_cm_id *listen_id,
 			     const struct ib_cm_event *ib_event,
-=======
-			     struct rdma_cm_id *listen_id,
-			     struct ib_cm_event *ib_event,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     sa_family_t sa_family, __be64 service_id)
 {
 	if (sa_family == AF_IB) {
@@ -1591,11 +1345,7 @@ static bool validate_ipv6_net_dev(struct net_device *net_dev,
 			   IPV6_ADDR_LINKLOCAL;
 	struct rt6_info *rt = rt6_lookup(dev_net(net_dev), &dst_addr->sin6_addr,
 					 &src_addr->sin6_addr, net_dev->ifindex,
-<<<<<<< HEAD
 					 NULL, strict);
-=======
-					 strict);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool ret;
 
 	if (!rt)
@@ -1633,7 +1383,6 @@ static bool validate_net_dev(struct net_device *net_dev,
 	}
 }
 
-<<<<<<< HEAD
 static struct net_device *
 roce_get_net_dev_by_cm_event(const struct ib_cm_event *ib_event)
 {
@@ -1651,9 +1400,6 @@ roce_get_net_dev_by_cm_event(const struct ib_cm_event *ib_event)
 }
 
 static struct net_device *cma_get_net_dev(const struct ib_cm_event *ib_event,
-=======
-static struct net_device *cma_get_net_dev(struct ib_cm_event *ib_event,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  struct cma_req_info *req)
 {
 	struct sockaddr *listen_addr =
@@ -1668,28 +1414,19 @@ static struct net_device *cma_get_net_dev(struct ib_cm_event *ib_event,
 	if (err)
 		return ERR_PTR(err);
 
-<<<<<<< HEAD
 	if (rdma_protocol_roce(req->device, req->port))
 		net_dev = roce_get_net_dev_by_cm_event(ib_event);
 	else
 		net_dev = ib_get_net_dev_by_params(req->device, req->port,
 						   req->pkey,
 						   gid, listen_addr);
-=======
-	net_dev = ib_get_net_dev_by_params(req->device, req->port, req->pkey,
-					   gid, listen_addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!net_dev)
 		return ERR_PTR(-ENODEV);
 
 	return net_dev;
 }
 
-<<<<<<< HEAD
 static enum rdma_ucm_port_space rdma_ps_from_service_id(__be64 service_id)
-=======
-static enum rdma_port_space rdma_ps_from_service_id(__be64 service_id)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return (be64_to_cpu(service_id) >> 16) & 0xffff;
 }
@@ -1730,28 +1467,12 @@ static bool cma_match_private_data(struct rdma_id_private *id_priv,
 	return true;
 }
 
-<<<<<<< HEAD
-=======
-static bool cma_protocol_roce_dev_port(struct ib_device *device, int port_num)
-{
-	enum rdma_link_layer ll = rdma_port_get_link_layer(device, port_num);
-	enum rdma_transport_type transport =
-		rdma_node_get_transport(device->node_type);
-
-	return ll == IB_LINK_LAYER_ETHERNET && transport == RDMA_TRANSPORT_IB;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool cma_protocol_roce(const struct rdma_cm_id *id)
 {
 	struct ib_device *device = id->device;
 	const int port_num = id->port_num ?: rdma_start_port(device);
 
-<<<<<<< HEAD
 	return rdma_protocol_roce(device, port_num);
-=======
-	return cma_protocol_roce_dev_port(device, port_num);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool cma_match_net_dev(const struct rdma_cm_id *id,
@@ -1761,16 +1482,9 @@ static bool cma_match_net_dev(const struct rdma_cm_id *id,
 	const struct rdma_addr *addr = &id->route.addr;
 
 	if (!net_dev)
-<<<<<<< HEAD
 		/* This request is an AF_IB request */
 		return (!id->port_num || id->port_num == port_num) &&
 		       (addr->src_addr.ss_family == AF_IB);
-=======
-		/* This request is an AF_IB request or a RoCE request */
-		return (!id->port_num || id->port_num == port_num) &&
-		       (addr->src_addr.ss_family == AF_IB ||
-			cma_protocol_roce_dev_port(id->device, port_num));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Net namespaces must match, and if the listner is listening
@@ -1793,11 +1507,6 @@ static struct rdma_id_private *cma_find_listener(
 {
 	struct rdma_id_private *id_priv, *id_priv_dev;
 
-<<<<<<< HEAD
-=======
-	lockdep_assert_held(&lock);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!bind_list)
 		return ERR_PTR(-EINVAL);
 
@@ -1819,16 +1528,10 @@ static struct rdma_id_private *cma_find_listener(
 	return ERR_PTR(-EINVAL);
 }
 
-<<<<<<< HEAD
 static struct rdma_id_private *
 cma_ib_id_from_event(struct ib_cm_id *cm_id,
 		     const struct ib_cm_event *ib_event,
 		     struct net_device **net_dev)
-=======
-static struct rdma_id_private *cma_id_from_event(struct ib_cm_id *cm_id,
-						 struct ib_cm_event *ib_event,
-						 struct net_device **net_dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct cma_req_info req;
 	struct rdma_bind_list *bind_list;
@@ -1844,22 +1547,11 @@ static struct rdma_id_private *cma_id_from_event(struct ib_cm_id *cm_id,
 		if (PTR_ERR(*net_dev) == -EAFNOSUPPORT) {
 			/* Assuming the protocol is AF_IB */
 			*net_dev = NULL;
-<<<<<<< HEAD
-=======
-		} else if (cma_protocol_roce_dev_port(req.device, req.port)) {
-			/* TODO find the net dev matching the request parameters
-			 * through the RoCE GID table */
-			*net_dev = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else {
 			return ERR_CAST(*net_dev);
 		}
 	}
 
-<<<<<<< HEAD
-=======
-	mutex_lock(&lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Net namespace might be getting deleted while route lookup,
 	 * cm_id lookup is in progress. Therefore, perform netdevice
@@ -1901,10 +1593,6 @@ static struct rdma_id_private *cma_id_from_event(struct ib_cm_id *cm_id,
 	id_priv = cma_find_listener(bind_list, cm_id, ib_event, &req, *net_dev);
 err:
 	rcu_read_unlock();
-<<<<<<< HEAD
-=======
-	mutex_unlock(&lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(id_priv) && *net_dev) {
 		dev_put(*net_dev);
 		*net_dev = NULL;
@@ -1986,7 +1674,6 @@ static void cma_release_port(struct rdma_id_private *id_priv)
 	mutex_unlock(&lock);
 }
 
-<<<<<<< HEAD
 static void cma_leave_roce_mc_group(struct rdma_id_private *id_priv,
 				    struct cma_multicast *mc)
 {
@@ -2002,8 +1689,6 @@ static void cma_leave_roce_mc_group(struct rdma_id_private *id_priv,
 	kref_put(&mc->mcref, release_mc);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void cma_leave_mc_groups(struct rdma_id_private *id_priv)
 {
 	struct cma_multicast *mc;
@@ -2017,26 +1702,7 @@ static void cma_leave_mc_groups(struct rdma_id_private *id_priv)
 			ib_sa_free_multicast(mc->multicast.ib);
 			kfree(mc);
 		} else {
-<<<<<<< HEAD
 			cma_leave_roce_mc_group(id_priv, mc);
-=======
-			if (mc->igmp_joined) {
-				struct rdma_dev_addr *dev_addr =
-					&id_priv->id.route.addr.dev_addr;
-				struct net_device *ndev = NULL;
-
-				if (dev_addr->bound_dev_if)
-					ndev = dev_get_by_index(&init_net,
-								dev_addr->bound_dev_if);
-				if (ndev) {
-					cma_igmp_send(ndev,
-						      &mc->multicast.ib->rec.mgid,
-						      false);
-					dev_put(ndev);
-				}
-			}
-			kref_put(&mc->mcref, release_mc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 }
@@ -2057,10 +1723,7 @@ void rdma_destroy_id(struct rdma_cm_id *id)
 	mutex_lock(&id_priv->handler_mutex);
 	mutex_unlock(&id_priv->handler_mutex);
 
-<<<<<<< HEAD
 	rdma_restrack_del(&id_priv->res);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (id_priv->cma_dev) {
 		if (rdma_cap_ib_cm(id_priv->id.device, 1)) {
 			if (id_priv->cm_id.ib)
@@ -2081,13 +1744,10 @@ void rdma_destroy_id(struct rdma_cm_id *id)
 		cma_deref_id(id_priv->id.context);
 
 	kfree(id_priv->id.route.path_rec);
-<<<<<<< HEAD
 
 	if (id_priv->id.route.addr.dev_addr.sgid_attr)
 		rdma_put_gid_attr(id_priv->id.route.addr.dev_addr.sgid_attr);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	put_net(id_priv->id.route.addr.dev_addr.net);
 	kfree(id_priv);
 }
@@ -2119,11 +1779,7 @@ reject:
 }
 
 static void cma_set_rep_event_data(struct rdma_cm_event *event,
-<<<<<<< HEAD
 				   const struct ib_cm_rep_event_param *rep_data,
-=======
-				   struct ib_cm_rep_event_param *rep_data,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   void *private_data)
 {
 	event->param.conn.private_data = private_data;
@@ -2136,18 +1792,11 @@ static void cma_set_rep_event_data(struct rdma_cm_event *event,
 	event->param.conn.qp_num = rep_data->remote_qpn;
 }
 
-<<<<<<< HEAD
 static int cma_ib_handler(struct ib_cm_id *cm_id,
 			  const struct ib_cm_event *ib_event)
 {
 	struct rdma_id_private *id_priv = cm_id->context;
 	struct rdma_cm_event event = {};
-=======
-static int cma_ib_handler(struct ib_cm_id *cm_id, struct ib_cm_event *ib_event)
-{
-	struct rdma_id_private *id_priv = cm_id->context;
-	struct rdma_cm_event event;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = 0;
 
 	mutex_lock(&id_priv->handler_mutex);
@@ -2157,10 +1806,6 @@ static int cma_ib_handler(struct ib_cm_id *cm_id, struct ib_cm_event *ib_event)
 	     id_priv->state != RDMA_CM_DISCONNECT))
 		goto out;
 
-<<<<<<< HEAD
-=======
-	memset(&event, 0, sizeof event);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (ib_event->event) {
 	case IB_CM_REQ_ERROR:
 	case IB_CM_REP_ERROR:
@@ -2229,19 +1874,12 @@ out:
 	return ret;
 }
 
-<<<<<<< HEAD
 static struct rdma_id_private *
 cma_ib_new_conn_id(const struct rdma_cm_id *listen_id,
 		   const struct ib_cm_event *ib_event,
 		   struct net_device *net_dev)
 {
 	struct rdma_id_private *listen_id_priv;
-=======
-static struct rdma_id_private *cma_new_conn_id(struct rdma_cm_id *listen_id,
-					       struct ib_cm_event *ib_event,
-					       struct net_device *net_dev)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct rdma_id_private *id_priv;
 	struct rdma_cm_id *id;
 	struct rdma_route *rt;
@@ -2251,17 +1889,11 @@ static struct rdma_id_private *cma_new_conn_id(struct rdma_cm_id *listen_id,
 		ib_event->param.req_rcvd.primary_path->service_id;
 	int ret;
 
-<<<<<<< HEAD
 	listen_id_priv = container_of(listen_id, struct rdma_id_private, id);
 	id = __rdma_create_id(listen_id->route.addr.dev_addr.net,
 			    listen_id->event_handler, listen_id->context,
 			    listen_id->ps, ib_event->param.req_rcvd.qp_type,
 			    listen_id_priv->res.kern_name);
-=======
-	id = rdma_create_id(listen_id->route.addr.dev_addr.net,
-			    listen_id->event_handler, listen_id->context,
-			    listen_id->ps, ib_event->param.req_rcvd.qp_type);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(id))
 		return NULL;
 
@@ -2273,13 +1905,8 @@ static struct rdma_id_private *cma_new_conn_id(struct rdma_cm_id *listen_id,
 
 	rt = &id->route;
 	rt->num_paths = ib_event->param.req_rcvd.alternate_path ? 2 : 1;
-<<<<<<< HEAD
 	rt->path_rec = kmalloc_array(rt->num_paths, sizeof(*rt->path_rec),
 				     GFP_KERNEL);
-=======
-	rt->path_rec = kmalloc(sizeof *rt->path_rec * rt->num_paths,
-			       GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!rt->path_rec)
 		goto err;
 
@@ -2288,13 +1915,7 @@ static struct rdma_id_private *cma_new_conn_id(struct rdma_cm_id *listen_id,
 		rt->path_rec[1] = *ib_event->param.req_rcvd.alternate_path;
 
 	if (net_dev) {
-<<<<<<< HEAD
 		rdma_copy_addr(&rt->addr.dev_addr, net_dev, NULL);
-=======
-		ret = rdma_copy_addr(&rt->addr.dev_addr, net_dev, NULL);
-		if (ret)
-			goto err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		if (!cma_protocol_roce(listen_id) &&
 		    cma_any_addr(cma_src_addr(id_priv))) {
@@ -2317,34 +1938,22 @@ err:
 	return NULL;
 }
 
-<<<<<<< HEAD
 static struct rdma_id_private *
 cma_ib_new_udp_id(const struct rdma_cm_id *listen_id,
 		  const struct ib_cm_event *ib_event,
 		  struct net_device *net_dev)
 {
 	const struct rdma_id_private *listen_id_priv;
-=======
-static struct rdma_id_private *cma_new_udp_id(struct rdma_cm_id *listen_id,
-					      struct ib_cm_event *ib_event,
-					      struct net_device *net_dev)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct rdma_id_private *id_priv;
 	struct rdma_cm_id *id;
 	const sa_family_t ss_family = listen_id->route.addr.src_addr.ss_family;
 	struct net *net = listen_id->route.addr.dev_addr.net;
 	int ret;
 
-<<<<<<< HEAD
 	listen_id_priv = container_of(listen_id, struct rdma_id_private, id);
 	id = __rdma_create_id(net, listen_id->event_handler, listen_id->context,
 			      listen_id->ps, IB_QPT_UD,
 			      listen_id_priv->res.kern_name);
-=======
-	id = rdma_create_id(net, listen_id->event_handler, listen_id->context,
-			    listen_id->ps, IB_QPT_UD);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(id))
 		return NULL;
 
@@ -2356,13 +1965,7 @@ static struct rdma_id_private *cma_new_udp_id(struct rdma_cm_id *listen_id,
 		goto err;
 
 	if (net_dev) {
-<<<<<<< HEAD
 		rdma_copy_addr(&id->route.addr.dev_addr, net_dev, NULL);
-=======
-		ret = rdma_copy_addr(&id->route.addr.dev_addr, net_dev, NULL);
-		if (ret)
-			goto err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		if (!cma_any_addr(cma_src_addr(id_priv))) {
 			ret = cma_translate_addr(cma_src_addr(id_priv),
@@ -2380,11 +1983,7 @@ err:
 }
 
 static void cma_set_req_event_data(struct rdma_cm_event *event,
-<<<<<<< HEAD
 				   const struct ib_cm_req_event_param *req_data,
-=======
-				   struct ib_cm_req_event_param *req_data,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   void *private_data, int offset)
 {
 	event->param.conn.private_data = private_data + offset;
@@ -2398,12 +1997,8 @@ static void cma_set_req_event_data(struct rdma_cm_event *event,
 	event->param.conn.qp_num = req_data->remote_qpn;
 }
 
-<<<<<<< HEAD
 static int cma_ib_check_req_qp_type(const struct rdma_cm_id *id,
 				    const struct ib_cm_event *ib_event)
-=======
-static int cma_check_req_qp_type(struct rdma_cm_id *id, struct ib_cm_event *ib_event)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return (((ib_event->event == IB_CM_REQ_RECEIVED) &&
 		 (ib_event->param.req_rcvd.qp_type == id->qp_type)) ||
@@ -2412,35 +2007,20 @@ static int cma_check_req_qp_type(struct rdma_cm_id *id, struct ib_cm_event *ib_e
 		(!id->qp_type));
 }
 
-<<<<<<< HEAD
 static int cma_ib_req_handler(struct ib_cm_id *cm_id,
 			      const struct ib_cm_event *ib_event)
 {
 	struct rdma_id_private *listen_id, *conn_id = NULL;
 	struct rdma_cm_event event = {};
-=======
-static int cma_req_handler(struct ib_cm_id *cm_id, struct ib_cm_event *ib_event)
-{
-	struct rdma_id_private *listen_id, *conn_id = NULL;
-	struct rdma_cm_event event;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct net_device *net_dev;
 	u8 offset;
 	int ret;
 
-<<<<<<< HEAD
 	listen_id = cma_ib_id_from_event(cm_id, ib_event, &net_dev);
 	if (IS_ERR(listen_id))
 		return PTR_ERR(listen_id);
 
 	if (!cma_ib_check_req_qp_type(&listen_id->id, ib_event)) {
-=======
-	listen_id = cma_id_from_event(cm_id, ib_event, &net_dev);
-	if (IS_ERR(listen_id))
-		return PTR_ERR(listen_id);
-
-	if (!cma_check_req_qp_type(&listen_id->id, ib_event)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -EINVAL;
 		goto net_dev_put;
 	}
@@ -2451,27 +2031,15 @@ static int cma_req_handler(struct ib_cm_id *cm_id, struct ib_cm_event *ib_event)
 		goto err1;
 	}
 
-<<<<<<< HEAD
 	offset = cma_user_data_offset(listen_id);
 	event.event = RDMA_CM_EVENT_CONNECT_REQUEST;
 	if (ib_event->event == IB_CM_SIDR_REQ_RECEIVED) {
 		conn_id = cma_ib_new_udp_id(&listen_id->id, ib_event, net_dev);
-=======
-	memset(&event, 0, sizeof event);
-	offset = cma_user_data_offset(listen_id);
-	event.event = RDMA_CM_EVENT_CONNECT_REQUEST;
-	if (ib_event->event == IB_CM_SIDR_REQ_RECEIVED) {
-		conn_id = cma_new_udp_id(&listen_id->id, ib_event, net_dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		event.param.ud.private_data = ib_event->private_data + offset;
 		event.param.ud.private_data_len =
 				IB_CM_SIDR_REQ_PRIVATE_DATA_SIZE - offset;
 	} else {
-<<<<<<< HEAD
 		conn_id = cma_ib_new_conn_id(&listen_id->id, ib_event, net_dev);
-=======
-		conn_id = cma_new_conn_id(&listen_id->id, ib_event, net_dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cma_set_req_event_data(&event, &ib_event->param.req_rcvd,
 				       ib_event->private_data, offset);
 	}
@@ -2541,7 +2109,6 @@ __be64 rdma_get_service_id(struct rdma_cm_id *id, struct sockaddr *addr)
 }
 EXPORT_SYMBOL(rdma_get_service_id);
 
-<<<<<<< HEAD
 void rdma_read_gids(struct rdma_cm_id *cm_id, union ib_gid *sgid,
 		    union ib_gid *dgid)
 {
@@ -2573,12 +2140,6 @@ static int cma_iw_handler(struct iw_cm_id *iw_id, struct iw_cm_event *iw_event)
 {
 	struct rdma_id_private *id_priv = iw_id->context;
 	struct rdma_cm_event event = {};
-=======
-static int cma_iw_handler(struct iw_cm_id *iw_id, struct iw_cm_event *iw_event)
-{
-	struct rdma_id_private *id_priv = iw_id->context;
-	struct rdma_cm_event event;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = 0;
 	struct sockaddr *laddr = (struct sockaddr *)&iw_event->local_addr;
 	struct sockaddr *raddr = (struct sockaddr *)&iw_event->remote_addr;
@@ -2587,10 +2148,6 @@ static int cma_iw_handler(struct iw_cm_id *iw_id, struct iw_cm_event *iw_event)
 	if (id_priv->state != RDMA_CM_CONNECT)
 		goto out;
 
-<<<<<<< HEAD
-=======
-	memset(&event, 0, sizeof event);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (iw_event->event) {
 	case IW_CM_EVENT_CLOSE:
 		event.event = RDMA_CM_EVENT_DISCONNECTED;
@@ -2624,11 +2181,7 @@ static int cma_iw_handler(struct iw_cm_id *iw_id, struct iw_cm_event *iw_event)
 		event.param.conn.responder_resources = iw_event->ord;
 		break;
 	default:
-<<<<<<< HEAD
 		goto out;
-=======
-		BUG_ON(1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	event.status = iw_event->status;
@@ -2654,24 +2207,17 @@ static int iw_conn_req_handler(struct iw_cm_id *cm_id,
 {
 	struct rdma_cm_id *new_cm_id;
 	struct rdma_id_private *listen_id, *conn_id;
-<<<<<<< HEAD
 	struct rdma_cm_event event = {};
-=======
-	struct rdma_cm_event event;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = -ECONNABORTED;
 	struct sockaddr *laddr = (struct sockaddr *)&iw_event->local_addr;
 	struct sockaddr *raddr = (struct sockaddr *)&iw_event->remote_addr;
 
-<<<<<<< HEAD
 	event.event = RDMA_CM_EVENT_CONNECT_REQUEST;
 	event.param.conn.private_data = iw_event->private_data;
 	event.param.conn.private_data_len = iw_event->private_data_len;
 	event.param.conn.initiator_depth = iw_event->ird;
 	event.param.conn.responder_resources = iw_event->ord;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	listen_id = cm_id->context;
 
 	mutex_lock(&listen_id->handler_mutex);
@@ -2679,18 +2225,11 @@ static int iw_conn_req_handler(struct iw_cm_id *cm_id,
 		goto out;
 
 	/* Create a new RDMA id for the new IW CM ID */
-<<<<<<< HEAD
 	new_cm_id = __rdma_create_id(listen_id->id.route.addr.dev_addr.net,
 				     listen_id->id.event_handler,
 				     listen_id->id.context,
 				     RDMA_PS_TCP, IB_QPT_RC,
 				     listen_id->res.kern_name);
-=======
-	new_cm_id = rdma_create_id(listen_id->id.route.addr.dev_addr.net,
-				   listen_id->id.event_handler,
-				   listen_id->id.context,
-				   RDMA_PS_TCP, IB_QPT_RC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(new_cm_id)) {
 		ret = -ENOMEM;
 		goto out;
@@ -2699,11 +2238,7 @@ static int iw_conn_req_handler(struct iw_cm_id *cm_id,
 	mutex_lock_nested(&conn_id->handler_mutex, SINGLE_DEPTH_NESTING);
 	conn_id->state = RDMA_CM_CONNECT;
 
-<<<<<<< HEAD
 	ret = rdma_translate_ip(laddr, &conn_id->id.route.addr.dev_addr);
-=======
-	ret = rdma_translate_ip(laddr, &conn_id->id.route.addr.dev_addr, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		mutex_unlock(&conn_id->handler_mutex);
 		rdma_destroy_id(new_cm_id);
@@ -2724,16 +2259,6 @@ static int iw_conn_req_handler(struct iw_cm_id *cm_id,
 	memcpy(cma_src_addr(conn_id), laddr, rdma_addr_size(laddr));
 	memcpy(cma_dst_addr(conn_id), raddr, rdma_addr_size(raddr));
 
-<<<<<<< HEAD
-=======
-	memset(&event, 0, sizeof event);
-	event.event = RDMA_CM_EVENT_CONNECT_REQUEST;
-	event.param.conn.private_data = iw_event->private_data;
-	event.param.conn.private_data_len = iw_event->private_data_len;
-	event.param.conn.initiator_depth = iw_event->ird;
-	event.param.conn.responder_resources = iw_event->ord;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Protect against the user destroying conn_id from another thread
 	 * until we're done accessing it.
@@ -2745,16 +2270,9 @@ static int iw_conn_req_handler(struct iw_cm_id *cm_id,
 		conn_id->cm_id.iw = NULL;
 		cma_exch(conn_id, RDMA_CM_DESTROYING);
 		mutex_unlock(&conn_id->handler_mutex);
-<<<<<<< HEAD
 		cma_deref_id(conn_id);
 		rdma_destroy_id(&conn_id->id);
 		goto out;
-=======
-		mutex_unlock(&listen_id->handler_mutex);
-		cma_deref_id(conn_id);
-		rdma_destroy_id(&conn_id->id);
-		return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	mutex_unlock(&conn_id->handler_mutex);
@@ -2773,12 +2291,8 @@ static int cma_ib_listen(struct rdma_id_private *id_priv)
 
 	addr = cma_src_addr(id_priv);
 	svc_id = rdma_get_service_id(&id_priv->id, addr);
-<<<<<<< HEAD
 	id = ib_cm_insert_listen(id_priv->id.device,
 				 cma_ib_req_handler, svc_id);
-=======
-	id = ib_cm_insert_listen(id_priv->id.device, cma_req_handler, svc_id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(id))
 		return PTR_ERR(id);
 	id_priv->cm_id.ib = id;
@@ -2831,21 +2345,11 @@ static void cma_listen_on_dev(struct rdma_id_private *id_priv,
 	struct net *net = id_priv->id.route.addr.dev_addr.net;
 	int ret;
 
-<<<<<<< HEAD
 	if (cma_family(id_priv) == AF_IB && !rdma_cap_ib_cm(cma_dev->device, 1))
 		return;
 
 	id = __rdma_create_id(net, cma_listen_handler, id_priv, id_priv->id.ps,
 			      id_priv->id.qp_type, id_priv->res.kern_name);
-=======
-	lockdep_assert_held(&lock);
-
-	if (cma_family(id_priv) == AF_IB && !rdma_cap_ib_cm(cma_dev->device, 1))
-		return;
-
-	id = rdma_create_id(net, cma_listen_handler, id_priv, id_priv->id.ps,
-			    id_priv->id.qp_type);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(id))
 		return;
 
@@ -3010,7 +2514,6 @@ out:
 	kfree(work);
 }
 
-<<<<<<< HEAD
 static void cma_init_resolve_route_work(struct cma_work *work,
 					struct rdma_id_private *id_priv)
 {
@@ -3031,8 +2534,6 @@ static void cma_init_resolve_addr_work(struct cma_work *work,
 	work->event.event = RDMA_CM_EVENT_ADDR_RESOLVED;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int cma_resolve_ib_route(struct rdma_id_private *id_priv, int timeout_ms)
 {
 	struct rdma_route *route = &id_priv->id.route;
@@ -3043,15 +2544,7 @@ static int cma_resolve_ib_route(struct rdma_id_private *id_priv, int timeout_ms)
 	if (!work)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	cma_init_resolve_route_work(work, id_priv);
-=======
-	work->id = id_priv;
-	INIT_WORK(&work->work, cma_work_handler);
-	work->old_state = RDMA_CM_ROUTE_QUERY;
-	work->new_state = RDMA_CM_ROUTE_RESOLVED;
-	work->event.event = RDMA_CM_EVENT_ROUTE_RESOLVED;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	route->path_rec = kmalloc(sizeof *route->path_rec, GFP_KERNEL);
 	if (!route->path_rec) {
@@ -3072,7 +2565,6 @@ err1:
 	return ret;
 }
 
-<<<<<<< HEAD
 static enum ib_gid_type cma_route_gid_type(enum rdma_network_type network_type,
 					   unsigned long supported_gids,
 					   enum ib_gid_type default_gid)
@@ -3129,12 +2621,6 @@ int rdma_set_ib_path(struct rdma_cm_id *id,
 {
 	struct rdma_id_private *id_priv;
 	struct net_device *ndev;
-=======
-int rdma_set_ib_paths(struct rdma_cm_id *id,
-		      struct sa_path_rec *path_rec, int num_paths)
-{
-	struct rdma_id_private *id_priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	id_priv = container_of(id, struct rdma_id_private, id);
@@ -3142,18 +2628,13 @@ int rdma_set_ib_paths(struct rdma_cm_id *id,
 			   RDMA_CM_ROUTE_RESOLVED))
 		return -EINVAL;
 
-<<<<<<< HEAD
 	id->route.path_rec = kmemdup(path_rec, sizeof(*path_rec),
-=======
-	id->route.path_rec = kmemdup(path_rec, sizeof *path_rec * num_paths,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     GFP_KERNEL);
 	if (!id->route.path_rec) {
 		ret = -ENOMEM;
 		goto err;
 	}
 
-<<<<<<< HEAD
 	if (rdma_protocol_roce(id->device, id->port_num)) {
 		ndev = cma_iboe_set_path_rec_l2_fields(id_priv);
 		if (!ndev) {
@@ -3169,19 +2650,11 @@ int rdma_set_ib_paths(struct rdma_cm_id *id,
 err_free:
 	kfree(id->route.path_rec);
 	id->route.path_rec = NULL;
-=======
-	id->route.num_paths = num_paths;
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err:
 	cma_comp_exch(id_priv, RDMA_CM_ROUTE_RESOLVED, RDMA_CM_ADDR_RESOLVED);
 	return ret;
 }
-<<<<<<< HEAD
 EXPORT_SYMBOL(rdma_set_ib_path);
-=======
-EXPORT_SYMBOL(rdma_set_ib_paths);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int cma_resolve_iw_route(struct rdma_id_private *id_priv, int timeout_ms)
 {
@@ -3191,15 +2664,7 @@ static int cma_resolve_iw_route(struct rdma_id_private *id_priv, int timeout_ms)
 	if (!work)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	cma_init_resolve_route_work(work, id_priv);
-=======
-	work->id = id_priv;
-	INIT_WORK(&work->work, cma_work_handler);
-	work->old_state = RDMA_CM_ROUTE_QUERY;
-	work->new_state = RDMA_CM_ROUTE_RESOLVED;
-	work->event.event = RDMA_CM_EVENT_ROUTE_RESOLVED;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	queue_work(cma_wq, &work->work);
 	return 0;
 }
@@ -3222,34 +2687,14 @@ static int iboe_tos_to_sl(struct net_device *ndev, int tos)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-static enum ib_gid_type cma_route_gid_type(enum rdma_network_type network_type,
-					   unsigned long supported_gids,
-					   enum ib_gid_type default_gid)
-{
-	if ((network_type == RDMA_NETWORK_IPV4 ||
-	     network_type == RDMA_NETWORK_IPV6) &&
-	    test_bit(IB_GID_TYPE_ROCE_UDP_ENCAP, &supported_gids))
-		return IB_GID_TYPE_ROCE_UDP_ENCAP;
-
-	return default_gid;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int cma_resolve_iboe_route(struct rdma_id_private *id_priv)
 {
 	struct rdma_route *route = &id_priv->id.route;
 	struct rdma_addr *addr = &route->addr;
 	struct cma_work *work;
 	int ret;
-<<<<<<< HEAD
 	struct net_device *ndev;
 
-=======
-	struct net_device *ndev = NULL;
-	enum ib_gid_type gid_type = IB_GID_TYPE_IB;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 default_roce_tos = id_priv->cma_dev->default_roce_tos[id_priv->id.port_num -
 					rdma_start_port(id_priv->cma_dev->device)];
 	u8 tos = id_priv->tos_set ? id_priv->tos : default_roce_tos;
@@ -3259,12 +2704,6 @@ static int cma_resolve_iboe_route(struct rdma_id_private *id_priv)
 	if (!work)
 		return -ENOMEM;
 
-<<<<<<< HEAD
-=======
-	work->id = id_priv;
-	INIT_WORK(&work->work, cma_work_handler);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	route->path_rec = kzalloc(sizeof *route->path_rec, GFP_KERNEL);
 	if (!route->path_rec) {
 		ret = -ENOMEM;
@@ -3273,52 +2712,17 @@ static int cma_resolve_iboe_route(struct rdma_id_private *id_priv)
 
 	route->num_paths = 1;
 
-<<<<<<< HEAD
 	ndev = cma_iboe_set_path_rec_l2_fields(id_priv);
-=======
-	if (addr->dev_addr.bound_dev_if) {
-		unsigned long supported_gids;
-
-		ndev = dev_get_by_index(&init_net, addr->dev_addr.bound_dev_if);
-		if (!ndev) {
-			ret = -ENODEV;
-			goto err2;
-		}
-
-		supported_gids = roce_gid_type_mask_support(id_priv->id.device,
-							    id_priv->id.port_num);
-		gid_type = cma_route_gid_type(addr->dev_addr.network,
-					      supported_gids,
-					      id_priv->gid_type);
-		route->path_rec->rec_type =
-			sa_conv_gid_to_pathrec_type(gid_type);
-		sa_path_set_ndev(route->path_rec, &init_net);
-		sa_path_set_ifindex(route->path_rec, ndev->ifindex);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ndev) {
 		ret = -ENODEV;
 		goto err2;
 	}
 
-<<<<<<< HEAD
-=======
-	sa_path_set_dmac(route->path_rec, addr->dev_addr.dst_dev_addr);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rdma_ip2gid((struct sockaddr *)&id_priv->id.route.addr.src_addr,
 		    &route->path_rec->sgid);
 	rdma_ip2gid((struct sockaddr *)&id_priv->id.route.addr.dst_addr,
 		    &route->path_rec->dgid);
 
-<<<<<<< HEAD
-=======
-	/* Use the hint from IP Stack to select GID Type */
-	if (gid_type < ib_network_to_gid_type(addr->dev_addr.network))
-		gid_type = ib_network_to_gid_type(addr->dev_addr.network);
-	route->path_rec->rec_type = sa_conv_gid_to_pathrec_type(gid_type);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (((struct sockaddr *)&id_priv->id.route.addr.dst_addr)->sa_family != AF_IB)
 		/* TODO: get the hoplimit from the inet/inet6 device */
 		route->path_rec->hop_limit = addr->dev_addr.hoplimit;
@@ -3340,15 +2744,7 @@ static int cma_resolve_iboe_route(struct rdma_id_private *id_priv)
 		goto err2;
 	}
 
-<<<<<<< HEAD
 	cma_init_resolve_route_work(work, id_priv);
-=======
-	work->old_state = RDMA_CM_ROUTE_QUERY;
-	work->new_state = RDMA_CM_ROUTE_RESOLVED;
-	work->event.event = RDMA_CM_EVENT_ROUTE_RESOLVED;
-	work->event.status = 0;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	queue_work(cma_wq, &work->work);
 
 	return 0;
@@ -3356,10 +2752,6 @@ static int cma_resolve_iboe_route(struct rdma_id_private *id_priv)
 err2:
 	kfree(route->path_rec);
 	route->path_rec = NULL;
-<<<<<<< HEAD
-=======
-	route->num_paths = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err1:
 	kfree(work);
 	return ret;
@@ -3448,11 +2840,7 @@ static int cma_bind_loopback(struct rdma_id_private *id_priv)
 	p = 1;
 
 port_found:
-<<<<<<< HEAD
 	ret = rdma_query_gid(cma_dev->device, p, 0, &gid);
-=======
-	ret = ib_get_cached_gid(cma_dev->device, p, 0, &gid, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto out;
 
@@ -3478,22 +2866,15 @@ static void addr_handler(int status, struct sockaddr *src_addr,
 			 struct rdma_dev_addr *dev_addr, void *context)
 {
 	struct rdma_id_private *id_priv = context;
-<<<<<<< HEAD
 	struct rdma_cm_event event = {};
 	struct sockaddr *addr;
 	struct sockaddr_storage old_addr;
 
-=======
-	struct rdma_cm_event event;
-
-	memset(&event, 0, sizeof event);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&id_priv->handler_mutex);
 	if (!cma_comp_exch(id_priv, RDMA_CM_ADDR_QUERY,
 			   RDMA_CM_ADDR_RESOLVED))
 		goto out;
 
-<<<<<<< HEAD
 	/*
 	 * Store the previous src address, so that if we fail to acquire
 	 * matching rdma device, old address can be restored back, which helps
@@ -3502,28 +2883,18 @@ static void addr_handler(int status, struct sockaddr *src_addr,
 	addr = cma_src_addr(id_priv);
 	memcpy(&old_addr, addr, rdma_addr_size(addr));
 	memcpy(addr, src_addr, rdma_addr_size(src_addr));
-=======
-	memcpy(cma_src_addr(id_priv), src_addr, rdma_addr_size(src_addr));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!status && !id_priv->cma_dev) {
 		status = cma_acquire_dev(id_priv, NULL);
 		if (status)
 			pr_debug_ratelimited("RDMA CM: ADDR_ERROR: failed to acquire device. status %d\n",
 					     status);
-<<<<<<< HEAD
 	} else {
-=======
-	} else if (status) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_debug_ratelimited("RDMA CM: ADDR_ERROR: failed to resolve IP. status %d\n", status);
 	}
 
 	if (status) {
-<<<<<<< HEAD
 		memcpy(addr, &old_addr,
 		       rdma_addr_size((struct sockaddr *)&old_addr));
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!cma_comp_exch(id_priv, RDMA_CM_ADDR_RESOLVED,
 				   RDMA_CM_ADDR_BOUND))
 			goto out;
@@ -3563,15 +2934,7 @@ static int cma_resolve_loopback(struct rdma_id_private *id_priv)
 	rdma_addr_get_sgid(&id_priv->id.route.addr.dev_addr, &gid);
 	rdma_addr_set_dgid(&id_priv->id.route.addr.dev_addr, &gid);
 
-<<<<<<< HEAD
 	cma_init_resolve_addr_work(work, id_priv);
-=======
-	work->id = id_priv;
-	INIT_WORK(&work->work, cma_work_handler);
-	work->old_state = RDMA_CM_ADDR_QUERY;
-	work->new_state = RDMA_CM_ADDR_RESOLVED;
-	work->event.event = RDMA_CM_EVENT_ADDR_RESOLVED;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	queue_work(cma_wq, &work->work);
 	return 0;
 err:
@@ -3597,15 +2960,7 @@ static int cma_resolve_ib_addr(struct rdma_id_private *id_priv)
 	rdma_addr_set_dgid(&id_priv->id.route.addr.dev_addr, (union ib_gid *)
 		&(((struct sockaddr_ib *) &id_priv->id.route.addr.dst_addr)->sib_addr));
 
-<<<<<<< HEAD
 	cma_init_resolve_addr_work(work, id_priv);
-=======
-	work->id = id_priv;
-	INIT_WORK(&work->work, cma_work_handler);
-	work->old_state = RDMA_CM_ADDR_QUERY;
-	work->new_state = RDMA_CM_ADDR_RESOLVED;
-	work->event.event = RDMA_CM_EVENT_ADDR_RESOLVED;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	queue_work(cma_wq, &work->work);
 	return 0;
 err:
@@ -3614,11 +2969,7 @@ err:
 }
 
 static int cma_bind_addr(struct rdma_cm_id *id, struct sockaddr *src_addr,
-<<<<<<< HEAD
 			 const struct sockaddr *dst_addr)
-=======
-			 struct sockaddr *dst_addr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (!src_addr || !src_addr->sa_family) {
 		src_addr = (struct sockaddr *) &id->route.addr.src_addr;
@@ -3639,17 +2990,12 @@ static int cma_bind_addr(struct rdma_cm_id *id, struct sockaddr *src_addr,
 }
 
 int rdma_resolve_addr(struct rdma_cm_id *id, struct sockaddr *src_addr,
-<<<<<<< HEAD
 		      const struct sockaddr *dst_addr, int timeout_ms)
-=======
-		      struct sockaddr *dst_addr, int timeout_ms)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rdma_id_private *id_priv;
 	int ret;
 
 	id_priv = container_of(id, struct rdma_id_private, id);
-<<<<<<< HEAD
 	if (id_priv->state == RDMA_CM_IDLE) {
 		ret = cma_bind_addr(id, src_addr, dst_addr);
 		if (ret)
@@ -3663,27 +3009,6 @@ int rdma_resolve_addr(struct rdma_cm_id *id, struct sockaddr *src_addr,
 		return -EINVAL;
 
 	memcpy(cma_dst_addr(id_priv), dst_addr, rdma_addr_size(dst_addr));
-=======
-	memcpy(cma_dst_addr(id_priv), dst_addr, rdma_addr_size(dst_addr));
-	if (id_priv->state == RDMA_CM_IDLE) {
-		ret = cma_bind_addr(id, src_addr, dst_addr);
-		if (ret) {
-			memset(cma_dst_addr(id_priv), 0, rdma_addr_size(dst_addr));
-			return ret;
-		}
-	}
-
-	if (cma_family(id_priv) != dst_addr->sa_family) {
-		memset(cma_dst_addr(id_priv), 0, rdma_addr_size(dst_addr));
-		return -EINVAL;
-	}
-
-	if (!cma_comp_exch(id_priv, RDMA_CM_ADDR_BOUND, RDMA_CM_ADDR_QUERY)) {
-		memset(cma_dst_addr(id_priv), 0, rdma_addr_size(dst_addr));
-		return -EINVAL;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	atomic_inc(&id_priv->refcount);
 	if (cma_any_addr(dst_addr)) {
 		ret = cma_resolve_loopback(id_priv);
@@ -3691,11 +3016,7 @@ int rdma_resolve_addr(struct rdma_cm_id *id, struct sockaddr *src_addr,
 		if (dst_addr->sa_family == AF_IB) {
 			ret = cma_resolve_ib_addr(id_priv);
 		} else {
-<<<<<<< HEAD
 			ret = rdma_resolve_ip(cma_src_addr(id_priv),
-=======
-			ret = rdma_resolve_ip(&addr_client, cma_src_addr(id_priv),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					      dst_addr, &id->route.addr.dev_addr,
 					      timeout_ms, addr_handler, id_priv);
 		}
@@ -3758,11 +3079,6 @@ static void cma_bind_port(struct rdma_bind_list *bind_list,
 	u64 sid, mask;
 	__be16 port;
 
-<<<<<<< HEAD
-=======
-	lockdep_assert_held(&lock);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	addr = cma_src_addr(id_priv);
 	port = htons(bind_list->port);
 
@@ -3785,21 +3101,12 @@ static void cma_bind_port(struct rdma_bind_list *bind_list,
 	hlist_add_head(&id_priv->node, &bind_list->owners);
 }
 
-<<<<<<< HEAD
 static int cma_alloc_port(enum rdma_ucm_port_space ps,
-=======
-static int cma_alloc_port(enum rdma_port_space ps,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  struct rdma_id_private *id_priv, unsigned short snum)
 {
 	struct rdma_bind_list *bind_list;
 	int ret;
 
-<<<<<<< HEAD
-=======
-	lockdep_assert_held(&lock);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bind_list = kzalloc(sizeof *bind_list, GFP_KERNEL);
 	if (!bind_list)
 		return -ENOMEM;
@@ -3826,11 +3133,6 @@ static int cma_port_is_unique(struct rdma_bind_list *bind_list,
 	struct sockaddr  *saddr = cma_src_addr(id_priv);
 	__be16 dport = cma_port(daddr);
 
-<<<<<<< HEAD
-=======
-	lockdep_assert_held(&lock);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hlist_for_each_entry(cur_id, &bind_list->owners, node) {
 		struct sockaddr  *cur_daddr = cma_dst_addr(cur_id);
 		struct sockaddr  *cur_saddr = cma_src_addr(cur_id);
@@ -3862,11 +3164,7 @@ static int cma_port_is_unique(struct rdma_bind_list *bind_list,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int cma_alloc_any_port(enum rdma_ucm_port_space ps,
-=======
-static int cma_alloc_any_port(enum rdma_port_space ps,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      struct rdma_id_private *id_priv)
 {
 	static unsigned int last_used_port;
@@ -3874,11 +3172,6 @@ static int cma_alloc_any_port(enum rdma_port_space ps,
 	unsigned int rover;
 	struct net *net = id_priv->id.route.addr.dev_addr.net;
 
-<<<<<<< HEAD
-=======
-	lockdep_assert_held(&lock);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	inet_get_local_port_range(net, &low, &high);
 	remaining = (high - low) + 1;
 	rover = prandom_u32() % remaining + low;
@@ -3926,11 +3219,6 @@ static int cma_check_port(struct rdma_bind_list *bind_list,
 	struct rdma_id_private *cur_id;
 	struct sockaddr *addr, *cur_addr;
 
-<<<<<<< HEAD
-=======
-	lockdep_assert_held(&lock);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	addr = cma_src_addr(id_priv);
 	hlist_for_each_entry(cur_id, &bind_list->owners, node) {
 		if (id_priv == cur_id)
@@ -3954,22 +3242,13 @@ static int cma_check_port(struct rdma_bind_list *bind_list,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int cma_use_port(enum rdma_ucm_port_space ps,
-=======
-static int cma_use_port(enum rdma_port_space ps,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			struct rdma_id_private *id_priv)
 {
 	struct rdma_bind_list *bind_list;
 	unsigned short snum;
 	int ret;
 
-<<<<<<< HEAD
-=======
-	lockdep_assert_held(&lock);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	snum = ntohs(cma_port(cma_src_addr(id_priv)));
 	if (snum < PROT_SOCK && !capable(CAP_NET_BIND_SERVICE))
 		return -EACCES;
@@ -3997,13 +3276,8 @@ static int cma_bind_listen(struct rdma_id_private *id_priv)
 	return ret;
 }
 
-<<<<<<< HEAD
 static enum rdma_ucm_port_space
 cma_select_inet_ps(struct rdma_id_private *id_priv)
-=======
-static enum rdma_port_space cma_select_inet_ps(
-		struct rdma_id_private *id_priv)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	switch (id_priv->id.ps) {
 	case RDMA_PS_TCP:
@@ -4017,16 +3291,10 @@ static enum rdma_port_space cma_select_inet_ps(
 	}
 }
 
-<<<<<<< HEAD
 static enum rdma_ucm_port_space
 cma_select_ib_ps(struct rdma_id_private *id_priv)
 {
 	enum rdma_ucm_port_space ps = 0;
-=======
-static enum rdma_port_space cma_select_ib_ps(struct rdma_id_private *id_priv)
-{
-	enum rdma_port_space ps = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct sockaddr_ib *sib;
 	u64 sid_ps, mask, sid;
 
@@ -4057,11 +3325,7 @@ static enum rdma_port_space cma_select_ib_ps(struct rdma_id_private *id_priv)
 
 static int cma_get_port(struct rdma_id_private *id_priv)
 {
-<<<<<<< HEAD
 	enum rdma_ucm_port_space ps;
-=======
-	enum rdma_port_space ps;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	if (cma_family(id_priv) != AF_IB)
@@ -4199,10 +3463,7 @@ int rdma_bind_addr(struct rdma_cm_id *id, struct sockaddr *addr)
 
 	return 0;
 err2:
-<<<<<<< HEAD
 	rdma_restrack_del(&id_priv->res);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (id_priv->cma_dev)
 		cma_release_dev(id_priv);
 err1:
@@ -4242,30 +3503,18 @@ static int cma_format_hdr(void *hdr, struct rdma_id_private *id_priv)
 }
 
 static int cma_sidr_rep_handler(struct ib_cm_id *cm_id,
-<<<<<<< HEAD
 				const struct ib_cm_event *ib_event)
 {
 	struct rdma_id_private *id_priv = cm_id->context;
 	struct rdma_cm_event event = {};
 	const struct ib_cm_sidr_rep_event_param *rep =
 				&ib_event->param.sidr_rep_rcvd;
-=======
-				struct ib_cm_event *ib_event)
-{
-	struct rdma_id_private *id_priv = cm_id->context;
-	struct rdma_cm_event event;
-	struct ib_cm_sidr_rep_event_param *rep = &ib_event->param.sidr_rep_rcvd;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = 0;
 
 	mutex_lock(&id_priv->handler_mutex);
 	if (id_priv->state != RDMA_CM_CONNECT)
 		goto out;
 
-<<<<<<< HEAD
-=======
-	memset(&event, 0, sizeof event);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (ib_event->event) {
 	case IB_CM_SIDR_REQ_ERROR:
 		event.event = RDMA_CM_EVENT_UNREACHABLE;
@@ -4288,17 +3537,11 @@ static int cma_sidr_rep_handler(struct ib_cm_id *cm_id,
 			event.status = ret;
 			break;
 		}
-<<<<<<< HEAD
 		ib_init_ah_attr_from_path(id_priv->id.device,
 					  id_priv->id.port_num,
 					  id_priv->id.route.path_rec,
 					  &event.param.ud.ah_attr,
 					  rep->sgid_attr);
-=======
-		ib_init_ah_from_path(id_priv->id.device, id_priv->id.port_num,
-				     id_priv->id.route.path_rec,
-				     &event.param.ud.ah_attr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		event.param.ud.qp_num = rep->qpn;
 		event.param.ud.qkey = rep->qkey;
 		event.event = RDMA_CM_EVENT_ESTABLISHED;
@@ -4311,11 +3554,8 @@ static int cma_sidr_rep_handler(struct ib_cm_id *cm_id,
 	}
 
 	ret = id_priv->id.event_handler(&id_priv->id, &event);
-<<<<<<< HEAD
 
 	rdma_destroy_ah_attr(&event.param.ud.ah_attr);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		/* Destroy the CM ID by returning a non-zero value. */
 		id_priv->cm_id.ib = NULL;
@@ -4372,10 +3612,7 @@ static int cma_resolve_ib_udp(struct rdma_id_private *id_priv,
 	id_priv->cm_id.ib = id;
 
 	req.path = id_priv->id.route.path_rec;
-<<<<<<< HEAD
 	req.sgid_attr = id_priv->id.route.addr.dev_addr.sgid_attr;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	req.service_id = rdma_get_service_id(&id_priv->id, cma_dst_addr(id_priv));
 	req.timeout_ms = 1 << (CMA_CM_RESPONSE_TIMEOUT - 8);
 	req.max_cm_retries = CMA_MAX_CM_RETRIES;
@@ -4437,11 +3674,8 @@ static int cma_connect_ib(struct rdma_id_private *id_priv,
 	if (route->num_paths == 2)
 		req.alternate_path = &route->path_rec[1];
 
-<<<<<<< HEAD
 	req.ppath_sgid_attr = id_priv->id.route.addr.dev_addr.sgid_attr;
 	/* Alternate path SGID attribute currently unsupported */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	req.service_id = rdma_get_service_id(&id_priv->id, cma_dst_addr(id_priv));
 	req.qp_num = id_priv->qp_num;
 	req.qp_type = id_priv->id.qp_type;
@@ -4620,26 +3854,18 @@ static int cma_send_sidr_rep(struct rdma_id_private *id_priv,
 	return ib_send_cm_sidr_rep(id_priv->cm_id.ib, &rep);
 }
 
-<<<<<<< HEAD
 int __rdma_accept(struct rdma_cm_id *id, struct rdma_conn_param *conn_param,
 		  const char *caller)
-=======
-int rdma_accept(struct rdma_cm_id *id, struct rdma_conn_param *conn_param)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rdma_id_private *id_priv;
 	int ret;
 
 	id_priv = container_of(id, struct rdma_id_private, id);
 
-<<<<<<< HEAD
 	if (caller)
 		id_priv->res.kern_name = caller;
 	else
 		rdma_restrack_set_task(&id_priv->res, current);
-=======
-	id_priv->owner = task_pid_nr(current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!cma_comp(id_priv, RDMA_CM_CONNECT))
 		return -EINVAL;
@@ -4679,11 +3905,7 @@ reject:
 	rdma_reject(id, NULL, 0);
 	return ret;
 }
-<<<<<<< HEAD
 EXPORT_SYMBOL(__rdma_accept);
-=======
-EXPORT_SYMBOL(rdma_accept);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int rdma_notify(struct rdma_cm_id *id, enum ib_event_type event)
 {
@@ -4764,11 +3986,7 @@ static int cma_ib_mc_handler(int status, struct ib_sa_multicast *multicast)
 {
 	struct rdma_id_private *id_priv;
 	struct cma_multicast *mc = multicast->context;
-<<<<<<< HEAD
 	struct rdma_cm_event event = {};
-=======
-	struct rdma_cm_event event;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = 0;
 
 	id_priv = mc->id_priv;
@@ -4792,27 +4010,18 @@ static int cma_ib_mc_handler(int status, struct ib_sa_multicast *multicast)
 	}
 	mutex_unlock(&id_priv->qp_mutex);
 
-<<<<<<< HEAD
-=======
-	memset(&event, 0, sizeof event);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	event.status = status;
 	event.param.ud.private_data = mc->context;
 	if (!status) {
 		struct rdma_dev_addr *dev_addr =
 			&id_priv->id.route.addr.dev_addr;
 		struct net_device *ndev =
-<<<<<<< HEAD
 			dev_get_by_index(dev_addr->net, dev_addr->bound_dev_if);
-=======
-			dev_get_by_index(&init_net, dev_addr->bound_dev_if);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		enum ib_gid_type gid_type =
 			id_priv->cma_dev->default_gid_type[id_priv->id.port_num -
 			rdma_start_port(id_priv->cma_dev->device)];
 
 		event.event = RDMA_CM_EVENT_MULTICAST_JOIN;
-<<<<<<< HEAD
 		ret = ib_init_ah_from_mcmember(id_priv->id.device,
 					       id_priv->id.port_num,
 					       &multicast->rec,
@@ -4821,12 +4030,6 @@ static int cma_ib_mc_handler(int status, struct ib_sa_multicast *multicast)
 		if (ret)
 			event.event = RDMA_CM_EVENT_MULTICAST_ERROR;
 
-=======
-		ib_init_ah_from_mcmember(id_priv->id.device,
-					 id_priv->id.port_num, &multicast->rec,
-					 ndev, gid_type,
-					 &event.param.ud.ah_attr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		event.param.ud.qp_num = 0xFFFFFF;
 		event.param.ud.qkey = be32_to_cpu(multicast->rec.qkey);
 		if (ndev)
@@ -4835,11 +4038,8 @@ static int cma_ib_mc_handler(int status, struct ib_sa_multicast *multicast)
 		event.event = RDMA_CM_EVENT_MULTICAST_ERROR;
 
 	ret = id_priv->id.event_handler(&id_priv->id, &event);
-<<<<<<< HEAD
 
 	rdma_destroy_ah_attr(&event.param.ud.ah_attr);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		cma_exch(id_priv, RDMA_CM_DESTROYING);
 		mutex_unlock(&id_priv->handler_mutex);
@@ -4869,11 +4069,7 @@ static void cma_set_mgid(struct rdma_id_private *id_priv,
 		memcpy(mgid, &sin6->sin6_addr, sizeof *mgid);
 	} else if (addr->sa_family == AF_IB) {
 		memcpy(mgid, &((struct sockaddr_ib *) addr)->sib_addr, sizeof *mgid);
-<<<<<<< HEAD
 	} else if (addr->sa_family == AF_INET6) {
-=======
-	} else if ((addr->sa_family == AF_INET6)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ipv6_ib_mc_map(&sin6->sin6_addr, dev_addr->broadcast, mc_map);
 		if (id_priv->id.ps == RDMA_PS_UDP)
 			mc_map[7] = 0x01;	/* Use RDMA CM signature */
@@ -4963,15 +4159,10 @@ static void cma_iboe_set_mgid(struct sockaddr *addr, union ib_gid *mgid,
 	} else if (addr->sa_family == AF_INET6) {
 		memcpy(mgid, &sin6->sin6_addr, sizeof *mgid);
 	} else {
-<<<<<<< HEAD
 		mgid->raw[0] =
 			(gid_type == IB_GID_TYPE_ROCE_UDP_ENCAP) ? 0 : 0xff;
 		mgid->raw[1] =
 			(gid_type == IB_GID_TYPE_ROCE_UDP_ENCAP) ? 0 : 0x0e;
-=======
-		mgid->raw[0] = (gid_type == IB_GID_TYPE_IB) ? 0xff : 0;
-		mgid->raw[1] = (gid_type == IB_GID_TYPE_IB) ? 0x0e : 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mgid->raw[2] = 0;
 		mgid->raw[3] = 0;
 		mgid->raw[4] = 0;
@@ -5021,11 +4212,7 @@ static int cma_iboe_join_multicast(struct rdma_id_private *id_priv,
 		mc->multicast.ib->rec.qkey = cpu_to_be32(RDMA_UDP_QKEY);
 
 	if (dev_addr->bound_dev_if)
-<<<<<<< HEAD
 		ndev = dev_get_by_index(dev_addr->net, dev_addr->bound_dev_if);
-=======
-		ndev = dev_get_by_index(&init_net, dev_addr->bound_dev_if);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ndev) {
 		err = -ENODEV;
 		goto out2;
@@ -5040,11 +4227,6 @@ static int cma_iboe_join_multicast(struct rdma_id_private *id_priv,
 			if (!send_only) {
 				err = cma_igmp_send(ndev, &mc->multicast.ib->rec.mgid,
 						    true);
-<<<<<<< HEAD
-=======
-				if (!err)
-					mc->igmp_joined = true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		}
 	} else {
@@ -5096,7 +4278,6 @@ int rdma_join_multicast(struct rdma_cm_id *id, struct sockaddr *addr,
 	memcpy(&mc->addr, addr, rdma_addr_size(addr));
 	mc->context = context;
 	mc->id_priv = id_priv;
-<<<<<<< HEAD
 	mc->join_state = join_state;
 
 	if (rdma_protocol_roce(id->device, id->port_num)) {
@@ -5113,34 +4294,13 @@ int rdma_join_multicast(struct rdma_cm_id *id, struct sockaddr *addr,
 		goto out_err;
 	}
 
-=======
-	mc->igmp_joined = false;
-	mc->join_state = join_state;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock(&id_priv->lock);
 	list_add(&mc->list, &id_priv->mc_list);
 	spin_unlock(&id_priv->lock);
 
-<<<<<<< HEAD
 	return 0;
 out_err:
 	kfree(mc);
-=======
-	if (rdma_protocol_roce(id->device, id->port_num)) {
-		kref_init(&mc->mcref);
-		ret = cma_iboe_join_multicast(id_priv, mc);
-	} else if (rdma_cap_ib_mcast(id->device, id->port_num))
-		ret = cma_join_ib_multicast(id_priv, mc);
-	else
-		ret = -ENOSYS;
-
-	if (ret) {
-		spin_lock_irq(&id_priv->lock);
-		list_del(&mc->list);
-		spin_unlock_irq(&id_priv->lock);
-		kfree(mc);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 EXPORT_SYMBOL(rdma_join_multicast);
@@ -5168,27 +4328,7 @@ void rdma_leave_multicast(struct rdma_cm_id *id, struct sockaddr *addr)
 				ib_sa_free_multicast(mc->multicast.ib);
 				kfree(mc);
 			} else if (rdma_protocol_roce(id->device, id->port_num)) {
-<<<<<<< HEAD
 				cma_leave_roce_mc_group(id_priv, mc);
-=======
-				if (mc->igmp_joined) {
-					struct rdma_dev_addr *dev_addr =
-						&id->route.addr.dev_addr;
-					struct net_device *ndev = NULL;
-
-					if (dev_addr->bound_dev_if)
-						ndev = dev_get_by_index(&init_net,
-									dev_addr->bound_dev_if);
-					if (ndev) {
-						cma_igmp_send(ndev,
-							      &mc->multicast.ib->rec.mgid,
-							      false);
-						dev_put(ndev);
-					}
-					mc->igmp_joined = false;
-				}
-				kref_put(&mc->mcref, release_mc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 			return;
 		}
@@ -5234,11 +4374,7 @@ static int cma_netdev_callback(struct notifier_block *self, unsigned long event,
 	if (event != NETDEV_BONDING_FAILOVER)
 		return NOTIFY_DONE;
 
-<<<<<<< HEAD
 	if (!netif_is_bond_master(ndev))
-=======
-	if (!(ndev->flags & IFF_MASTER) || !(ndev->priv_flags & IFF_BONDING))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return NOTIFY_DONE;
 
 	mutex_lock(&lock);
@@ -5318,11 +4454,7 @@ free_cma_dev:
 
 static int cma_remove_id_dev(struct rdma_id_private *id_priv)
 {
-<<<<<<< HEAD
 	struct rdma_cm_event event = {};
-=======
-	struct rdma_cm_event event;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	enum rdma_cm_state state;
 	int ret = 0;
 
@@ -5338,10 +4470,6 @@ static int cma_remove_id_dev(struct rdma_id_private *id_priv)
 	if (!cma_comp(id_priv, RDMA_CM_DEVICE_REMOVAL))
 		goto out;
 
-<<<<<<< HEAD
-=======
-	memset(&event, 0, sizeof event);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	event.event = RDMA_CM_EVENT_DEVICE_REMOVAL;
 	ret = id_priv->id.event_handler(&id_priv->id, &event);
 out:
@@ -5447,11 +4575,7 @@ static int cma_get_id_stats(struct sk_buff *skb, struct netlink_callback *cb)
 					  RDMA_NL_RDMA_CM_ATTR_DST_ADDR))
 				goto out;
 
-<<<<<<< HEAD
 			id_stats->pid	= task_pid_vnr(id_priv->res.task);
-=======
-			id_stats->pid		= id_priv->owner;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			id_stats->port_space	= id->ps;
 			id_stats->cm_state	= id_priv->state;
 			id_stats->qp_num	= id_priv->qp_num;
@@ -5519,10 +4643,6 @@ static int __init cma_init(void)
 		goto err_wq;
 
 	ib_sa_register_client(&sa_client);
-<<<<<<< HEAD
-=======
-	rdma_addr_register_client(&addr_client);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	register_netdevice_notifier(&cma_nb);
 
 	ret = ib_register_client(&cma_client);
@@ -5536,13 +4656,7 @@ static int __init cma_init(void)
 
 err:
 	unregister_netdevice_notifier(&cma_nb);
-<<<<<<< HEAD
 	ib_sa_unregister_client(&sa_client);
-=======
-	rdma_addr_unregister_client(&addr_client);
-	ib_sa_unregister_client(&sa_client);
-	unregister_pernet_subsys(&cma_pernet_operations);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_wq:
 	destroy_workqueue(cma_wq);
 	return ret;
@@ -5554,10 +4668,6 @@ static void __exit cma_cleanup(void)
 	rdma_nl_unregister(RDMA_NL_RDMA_CM);
 	ib_unregister_client(&cma_client);
 	unregister_netdevice_notifier(&cma_nb);
-<<<<<<< HEAD
-=======
-	rdma_addr_unregister_client(&addr_client);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ib_sa_unregister_client(&sa_client);
 	unregister_pernet_subsys(&cma_pernet_operations);
 	destroy_workqueue(cma_wq);

@@ -62,7 +62,6 @@
  */
 #define AR9300_PWR_TABLE_OFFSET  0
 
-<<<<<<< HEAD
 /* Noise power data definitions
  * units are: 4 x dBm - NOISE_PWR_DATA_OFFSET
  * (e.g. -25 = (-25/4 - 90) = -96.25 dBm)
@@ -73,8 +72,6 @@
 #define NOISE_PWR_DBM_2_INT(_p)	((((_p) + 3) >> 2) + NOISE_PWR_DATA_OFFSET)
 #define N2DBM(_p)		NOISE_PWR_DBM_2_INT(_p)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* byte addressable */
 #define AR9300_EEPROM_SIZE (16*1024)
 

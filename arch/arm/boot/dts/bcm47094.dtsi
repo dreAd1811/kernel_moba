@@ -7,16 +7,10 @@
 #include "bcm4708.dtsi"
 
 / {
-<<<<<<< HEAD
 };
 
 &usb3_phy {
 	compatible = "brcm,ns-bx-usb3-phy";
-=======
-	usb3_phy: usb3-phy {
-		compatible = "brcm,ns-bx-usb3-phy";
-	};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &uart0 {

@@ -17,11 +17,7 @@ struct nvif_object {
 	void *priv; /*XXX: hack */
 	struct {
 		void __iomem *ptr;
-<<<<<<< HEAD
 		u64 size;
-=======
-		u32 size;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} map;
 };
 
@@ -34,14 +30,10 @@ void nvif_object_sclass_put(struct nvif_sclass **);
 u32  nvif_object_rd(struct nvif_object *, int, u64);
 void nvif_object_wr(struct nvif_object *, int, u64, u32);
 int  nvif_object_mthd(struct nvif_object *, u32, void *, u32);
-<<<<<<< HEAD
 int  nvif_object_map_handle(struct nvif_object *, void *, u32,
 			    u64 *handle, u64 *length);
 void nvif_object_unmap_handle(struct nvif_object *);
 int  nvif_object_map(struct nvif_object *, void *, u32);
-=======
-int  nvif_object_map(struct nvif_object *);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void nvif_object_unmap(struct nvif_object *);
 
 #define nvif_handle(a) (unsigned long)(void *)(a)
@@ -86,11 +78,7 @@ struct nvif_mclass {
 #define nvif_mclass(o,m) ({                                                    \
 	struct nvif_object *object = (o);                                      \
 	struct nvif_sclass *sclass;                                            \
-<<<<<<< HEAD
 	typeof(m[0]) *mclass = (m);                                            \
-=======
-	const typeof(m[0]) *mclass = (m);                                      \
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = -ENODEV;                                                     \
 	int cnt, i, j;                                                         \
                                                                                \
@@ -111,7 +99,6 @@ struct nvif_mclass {
 	ret;                                                                   \
 })
 
-<<<<<<< HEAD
 #define nvif_sclass(o,m,u) ({                                                  \
 	const typeof(m[0]) *_mclass = (m);                                     \
 	s32 _oclass = (u);                                                     \
@@ -128,8 +115,6 @@ struct nvif_mclass {
 	_cid;                                                                  \
 })
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*XXX*/
 #include <core/object.h>
 #define nvxx_object(a) ({                                                      \

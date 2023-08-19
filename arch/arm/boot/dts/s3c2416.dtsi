@@ -1,18 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Samsung's S3C2416 SoC device tree source
  *
  * Copyright (c) 2013 Heiko Stuebner <heiko@sntech.de>
-<<<<<<< HEAD
-=======
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <dt-bindings/clock/s3c2443.h>
@@ -28,12 +18,6 @@
 	};
 
 	cpus {
-<<<<<<< HEAD
-=======
-		#address-cells = <1>;
-		#size-cells = <0>;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cpu {
 			compatible = "arm,arm926ej-s";
 		};
@@ -43,11 +27,7 @@
 		compatible = "samsung,s3c2416-irq";
 	};
 
-<<<<<<< HEAD
 	clocks: clock-controller@4c000000 {
-=======
-	clocks: clock-controller@0x4c000000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "samsung,s3c2416-clock";
 		reg = <0x4c000000 0x40>;
 		#clock-cells = <1>;
@@ -86,11 +66,7 @@
 				<&clocks SCLK_UART>;
 	};
 
-<<<<<<< HEAD
 	uart_3: serial@5000c000 {
-=======
-	uart_3: serial@5000C000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "samsung,s3c2440-uart";
 		reg = <0x5000C000 0x4000>;
 		interrupts = <1 18 24 4>, <1 18 25 4>;
@@ -101,11 +77,7 @@
 		status = "disabled";
 	};
 
-<<<<<<< HEAD
 	sdhci_1: sdhci@4ac00000 {
-=======
-	sdhci_1: sdhci@4AC00000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "samsung,s3c6410-sdhci";
 		reg = <0x4AC00000 0x100>;
 		interrupts = <0 0 21 3>;
@@ -116,11 +88,7 @@
 		status = "disabled";
 	};
 
-<<<<<<< HEAD
 	sdhci_0: sdhci@4a800000 {
-=======
-	sdhci_0: sdhci@4A800000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "samsung,s3c6410-sdhci";
 		reg = <0x4A800000 0x100>;
 		interrupts = <0 0 20 3>;

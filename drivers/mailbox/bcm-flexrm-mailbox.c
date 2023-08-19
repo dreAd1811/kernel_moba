@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /*
  * Copyright (C) 2017 Broadcom
  *
@@ -14,15 +13,6 @@
 
 /*
  * Broadcom FlexRM Mailbox Driver
-=======
-/* Broadcom FlexRM Mailbox Driver
- *
- * Copyright (C) 2017 Broadcom
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Each Broadcom FlexSparx4 offload engine is implemented as an
  * extension to Broadcom FlexRM ring manager. The FlexRM ring
@@ -1134,13 +1124,8 @@ static int flexrm_process_completions(struct flexrm_ring *ring)
 		err = flexrm_cmpl_desc_to_error(desc);
 		if (err < 0) {
 			dev_warn(ring->mbox->dev,
-<<<<<<< HEAD
 			"ring%d got completion desc=0x%lx with error %d\n",
 			ring->num, (unsigned long)desc, err);
-=======
-				 "got completion desc=0x%lx with error %d",
-				 (unsigned long)desc, err);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		/* Determine request id from completion descriptor */
@@ -1150,13 +1135,8 @@ static int flexrm_process_completions(struct flexrm_ring *ring)
 		msg = ring->requests[reqid];
 		if (!msg) {
 			dev_warn(ring->mbox->dev,
-<<<<<<< HEAD
 			"ring%d null msg pointer for completion desc=0x%lx\n",
 			ring->num, (unsigned long)desc);
-=======
-				 "null msg pointer for completion desc=0x%lx",
-				 (unsigned long)desc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 		}
 
@@ -1266,13 +1246,9 @@ static int flexrm_startup(struct mbox_chan *chan)
 	ring->bd_base = dma_pool_alloc(ring->mbox->bd_pool,
 				       GFP_KERNEL, &ring->bd_dma_base);
 	if (!ring->bd_base) {
-<<<<<<< HEAD
 		dev_err(ring->mbox->dev,
 			"can't allocate BD memory for ring%d\n",
 			ring->num);
-=======
-		dev_err(ring->mbox->dev, "can't allocate BD memory\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -ENOMEM;
 		goto fail;
 	}
@@ -1292,7 +1268,6 @@ static int flexrm_startup(struct mbox_chan *chan)
 	}
 
 	/* Allocate completion memory */
-<<<<<<< HEAD
 	ring->cmpl_base = dma_pool_zalloc(ring->mbox->cmpl_pool,
 					 GFP_KERNEL, &ring->cmpl_dma_base);
 	if (!ring->cmpl_base) {
@@ -1307,20 +1282,6 @@ static int flexrm_startup(struct mbox_chan *chan)
 	if (ring->irq == UINT_MAX) {
 		dev_err(ring->mbox->dev,
 			"ring%d IRQ not available\n", ring->num);
-=======
-	ring->cmpl_base = dma_pool_alloc(ring->mbox->cmpl_pool,
-					 GFP_KERNEL, &ring->cmpl_dma_base);
-	if (!ring->cmpl_base) {
-		dev_err(ring->mbox->dev, "can't allocate completion memory\n");
-		ret = -ENOMEM;
-		goto fail_free_bd_memory;
-	}
-	memset(ring->cmpl_base, 0, RING_CMPL_SIZE);
-
-	/* Request IRQ */
-	if (ring->irq == UINT_MAX) {
-		dev_err(ring->mbox->dev, "ring IRQ not available\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -ENODEV;
 		goto fail_free_cmpl_memory;
 	}
@@ -1329,12 +1290,8 @@ static int flexrm_startup(struct mbox_chan *chan)
 				   flexrm_irq_thread,
 				   0, dev_name(ring->mbox->dev), ring);
 	if (ret) {
-<<<<<<< HEAD
 		dev_err(ring->mbox->dev,
 			"failed to request ring%d IRQ\n", ring->num);
-=======
-		dev_err(ring->mbox->dev, "failed to request ring IRQ\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto fail_free_cmpl_memory;
 	}
 	ring->irq_requested = true;
@@ -1347,13 +1304,9 @@ static int flexrm_startup(struct mbox_chan *chan)
 			&ring->irq_aff_hint);
 	ret = irq_set_affinity_hint(ring->irq, &ring->irq_aff_hint);
 	if (ret) {
-<<<<<<< HEAD
 		dev_err(ring->mbox->dev,
 			"failed to set IRQ affinity hint for ring%d\n",
 			ring->num);
-=======
-		dev_err(ring->mbox->dev, "failed to set IRQ affinity hint\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto fail_free_irq;
 	}
 

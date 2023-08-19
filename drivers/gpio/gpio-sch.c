@@ -26,12 +26,7 @@
 #include <linux/acpi.h>
 #include <linux/platform_device.h>
 #include <linux/pci_ids.h>
-<<<<<<< HEAD
 #include <linux/gpio/driver.h>
-=======
-
-#include <linux/gpio.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define GEN	0x00
 #define GIO	0x04
@@ -142,7 +137,6 @@ static int sch_gpio_direction_out(struct gpio_chip *gc, unsigned gpio_num,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int sch_gpio_get_direction(struct gpio_chip *gc, unsigned gpio_num)
 {
 	struct sch_gpio *sch = gpiochip_get_data(gc);
@@ -150,8 +144,6 @@ static int sch_gpio_get_direction(struct gpio_chip *gc, unsigned gpio_num)
 	return sch_gpio_reg_get(sch, gpio_num, GIO);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct gpio_chip sch_gpio_chip = {
 	.label			= "sch_gpio",
 	.owner			= THIS_MODULE,
@@ -159,10 +151,7 @@ static const struct gpio_chip sch_gpio_chip = {
 	.get			= sch_gpio_get,
 	.direction_output	= sch_gpio_direction_out,
 	.set			= sch_gpio_set,
-<<<<<<< HEAD
 	.get_direction		= sch_gpio_get_direction,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int sch_gpio_probe(struct platform_device *pdev)

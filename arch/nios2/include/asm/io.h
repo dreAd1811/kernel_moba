@@ -45,10 +45,7 @@ static inline void iounmap(void __iomem *addr)
 	__iounmap(addr);
 }
 
-<<<<<<< HEAD
 #define ioremap_nocache ioremap_nocache
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ioremap_wc ioremap_nocache
 #define ioremap_wt ioremap_nocache
 

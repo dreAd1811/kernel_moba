@@ -123,10 +123,7 @@
 
 #define SO_ZEROCOPY		60
 
-<<<<<<< HEAD
 #define SO_TXTIME		61
 #define SCM_TXTIME		SO_TXTIME
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* _UAPI_ASM_SOCKET_H */

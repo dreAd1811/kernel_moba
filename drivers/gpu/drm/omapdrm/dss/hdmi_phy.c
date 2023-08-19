@@ -1,11 +1,7 @@
 /*
  * HDMI PHY
  *
-<<<<<<< HEAD
  * Copyright (C) 2013 Texas Instruments Incorporated - http://www.ti.com/
-=======
- * Copyright (C) 2013 Texas Instruments Incorporated
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 as published by
@@ -103,11 +99,7 @@ static void hdmi_phy_configure_lanes(struct hdmi_phy_data *phy)
 
 	u16 lane_cfg = 0;
 	int i;
-<<<<<<< HEAD
 	unsigned int lane_cfg_val;
-=======
-	unsigned lane_cfg_val;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 pol_val = 0;
 
 	for (i = 0; i < 4; ++i)

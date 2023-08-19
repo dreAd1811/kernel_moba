@@ -1,19 +1,11 @@
 # SPDX-License-Identifier: GPL-2.0
-<<<<<<< HEAD
-=======
-rc-core-objs	:= rc-main.o rc-ir-raw.o
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 obj-y += keymaps/
 
 obj-$(CONFIG_RC_CORE) += rc-core.o
-<<<<<<< HEAD
 rc-core-y := rc-main.o rc-ir-raw.o
 rc-core-$(CONFIG_LIRC) += lirc_dev.o
 rc-core-$(CONFIG_BPF_LIRC_MODE2) += bpf-lirc.o
-=======
-obj-$(CONFIG_LIRC) += lirc_dev.o
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 obj-$(CONFIG_IR_NEC_DECODER) += ir-nec-decoder.o
 obj-$(CONFIG_IR_RC5_DECODER) += ir-rc5-decoder.o
 obj-$(CONFIG_IR_RC6_DECODER) += ir-rc6-decoder.o
@@ -22,22 +14,14 @@ obj-$(CONFIG_IR_SONY_DECODER) += ir-sony-decoder.o
 obj-$(CONFIG_IR_SANYO_DECODER) += ir-sanyo-decoder.o
 obj-$(CONFIG_IR_SHARP_DECODER) += ir-sharp-decoder.o
 obj-$(CONFIG_IR_MCE_KBD_DECODER) += ir-mce_kbd-decoder.o
-<<<<<<< HEAD
 obj-$(CONFIG_IR_XMP_DECODER) += ir-xmp-decoder.o
 obj-$(CONFIG_IR_IMON_DECODER) += ir-imon-decoder.o
-=======
-obj-$(CONFIG_IR_LIRC_CODEC) += ir-lirc-codec.o
-obj-$(CONFIG_IR_XMP_DECODER) += ir-xmp-decoder.o
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 # stand-alone IR receivers/transmitters
 obj-$(CONFIG_RC_ATI_REMOTE) += ati_remote.o
 obj-$(CONFIG_IR_HIX5HD2) += ir-hix5hd2.o
 obj-$(CONFIG_IR_IMON) += imon.o
-<<<<<<< HEAD
 obj-$(CONFIG_IR_IMON_RAW) += imon_raw.o
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 obj-$(CONFIG_IR_ITE_CIR) += ite-cir.o
 obj-$(CONFIG_IR_MCEUSB) += mceusb.o
 obj-$(CONFIG_IR_FINTEK) += fintek-cir.o
@@ -63,8 +47,4 @@ obj-$(CONFIG_IR_SERIAL) += serial_ir.o
 obj-$(CONFIG_IR_SIR) += sir_ir.o
 obj-$(CONFIG_IR_MTK) += mtk-cir.o
 obj-$(CONFIG_IR_ZX) += zx-irdec.o
-<<<<<<< HEAD
 obj-$(CONFIG_IR_TANGO) += tango-ir.o
-=======
-obj-$(CONFIG_IR_MSM_GENI) += msm-geni-ir.o
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

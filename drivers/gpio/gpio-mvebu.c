@@ -36,12 +36,8 @@
 #include <linux/bitops.h>
 #include <linux/clk.h>
 #include <linux/err.h>
-<<<<<<< HEAD
 #include <linux/gpio/driver.h>
 #include <linux/gpio/consumer.h>
-=======
-#include <linux/gpio.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/init.h>
 #include <linux/io.h>
 #include <linux/irq.h>
@@ -56,11 +52,6 @@
 #include <linux/regmap.h>
 #include <linux/slab.h>
 
-<<<<<<< HEAD
-=======
-#include "gpiolib.h"
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * GPIO unit register offsets.
  */
@@ -616,7 +607,6 @@ static int mvebu_pwm_request(struct pwm_chip *chip, struct pwm_device *pwm)
 	if (mvpwm->gpiod) {
 		ret = -EBUSY;
 	} else {
-<<<<<<< HEAD
 		desc = gpiochip_request_own_desc(&mvchip->chip,
 						 pwm->hwpwm, "mvebu-pwm");
 		if (IS_ERR(desc)) {
@@ -627,21 +617,6 @@ static int mvebu_pwm_request(struct pwm_chip *chip, struct pwm_device *pwm)
 		ret = gpiod_direction_output(desc, 0);
 		if (ret) {
 			gpiochip_free_own_desc(desc);
-=======
-		desc = gpio_to_desc(mvchip->chip.base + pwm->hwpwm);
-		if (!desc) {
-			ret = -ENODEV;
-			goto out;
-		}
-
-		ret = gpiod_request(desc, "mvebu-pwm");
-		if (ret)
-			goto out;
-
-		ret = gpiod_direction_output(desc, 0);
-		if (ret) {
-			gpiod_free(desc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto out;
 		}
 
@@ -658,11 +633,7 @@ static void mvebu_pwm_free(struct pwm_chip *chip, struct pwm_device *pwm)
 	unsigned long flags;
 
 	spin_lock_irqsave(&mvpwm->lock, flags);
-<<<<<<< HEAD
 	gpiochip_free_own_desc(mvpwm->gpiod);
-=======
-	gpiod_free(mvpwm->gpiod);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mvpwm->gpiod = NULL;
 	spin_unlock_irqrestore(&mvpwm->lock, flags);
 }

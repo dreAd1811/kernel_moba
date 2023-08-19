@@ -398,12 +398,7 @@ aoecmd_ata_rw(struct aoedev *d)
 
 	skb = skb_clone(f->skb, GFP_ATOMIC);
 	if (skb) {
-<<<<<<< HEAD
 		f->sent = ktime_get();
-=======
-		do_gettimeofday(&f->sent);
-		f->sent_jiffs = (u32) jiffies;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__skb_queue_head_init(&queue);
 		__skb_queue_tail(&queue, skb);
 		aoenet_xmit(&queue);
@@ -493,12 +488,7 @@ resend(struct aoedev *d, struct frame *f)
 	skb = skb_clone(skb, GFP_ATOMIC);
 	if (skb == NULL)
 		return;
-<<<<<<< HEAD
 	f->sent = ktime_get();
-=======
-	do_gettimeofday(&f->sent);
-	f->sent_jiffs = (u32) jiffies;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__skb_queue_head_init(&queue);
 	__skb_queue_tail(&queue, skb);
 	aoenet_xmit(&queue);
@@ -507,7 +497,6 @@ resend(struct aoedev *d, struct frame *f)
 static int
 tsince_hr(struct frame *f)
 {
-<<<<<<< HEAD
 	u64 delta = ktime_to_ns(ktime_sub(ktime_get(), f->sent));
 
 	/* delta is normally under 4.2 seconds, avoid 64-bit division */
@@ -519,35 +508,6 @@ tsince_hr(struct frame *f)
 		return INT_MAX;
 
 	return div_u64(delta, NSEC_PER_USEC);
-=======
-	struct timeval now;
-	int n;
-
-	do_gettimeofday(&now);
-	n = now.tv_usec - f->sent.tv_usec;
-	n += (now.tv_sec - f->sent.tv_sec) * USEC_PER_SEC;
-
-	if (n < 0)
-		n = -n;
-
-	/* For relatively long periods, use jiffies to avoid
-	 * discrepancies caused by updates to the system time.
-	 *
-	 * On system with HZ of 1000, 32-bits is over 49 days
-	 * worth of jiffies, or over 71 minutes worth of usecs.
-	 *
-	 * Jiffies overflow is handled by subtraction of unsigned ints:
-	 * (gdb) print (unsigned) 2 - (unsigned) 0xfffffffe
-	 * $3 = 4
-	 * (gdb)
-	 */
-	if (n > USEC_PER_SEC / 4) {
-		n = ((u32) jiffies) - f->sent_jiffs;
-		n *= USEC_PER_SEC / HZ;
-	}
-
-	return n;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int
@@ -611,10 +571,6 @@ reassign_frame(struct frame *f)
 	nf->waited = 0;
 	nf->waited_total = f->waited_total;
 	nf->sent = f->sent;
-<<<<<<< HEAD
-=======
-	nf->sent_jiffs = f->sent_jiffs;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	f->skb = skb;
 
 	return nf;
@@ -658,12 +614,7 @@ probe(struct aoetgt *t)
 
 	skb = skb_clone(f->skb, GFP_ATOMIC);
 	if (skb) {
-<<<<<<< HEAD
 		f->sent = ktime_get();
-=======
-		do_gettimeofday(&f->sent);
-		f->sent_jiffs = (u32) jiffies;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__skb_queue_head_init(&queue);
 		__skb_queue_tail(&queue, skb);
 		aoenet_xmit(&queue);
@@ -773,11 +724,7 @@ count_targets(struct aoedev *d, int *untainted)
 }
 
 static void
-<<<<<<< HEAD
 rexmit_timer(struct timer_list *timer)
-=======
-rexmit_timer(ulong vp)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct aoedev *d;
 	struct aoetgt *t;
@@ -791,11 +738,7 @@ rexmit_timer(ulong vp)
 	int utgts;	/* number of aoetgt descriptors (not slots) */
 	int since;
 
-<<<<<<< HEAD
 	d = from_timer(d, timer, timer);
-=======
-	d = (struct aoedev *) vp;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irqsave(&d->lock, flags);
 
@@ -1089,14 +1032,9 @@ bvcpy(struct sk_buff *skb, struct bio *bio, struct bvec_iter iter, long cnt)
 	iter.bi_size = cnt;
 
 	__bio_for_each_segment(bv, bio, iter, iter) {
-<<<<<<< HEAD
 		char *p = kmap_atomic(bv.bv_page) + bv.bv_offset;
 		skb_copy_bits(skb, soff, p, bv.bv_len);
 		kunmap_atomic(p);
-=======
-		char *p = page_address(bv.bv_page) + bv.bv_offset;
-		skb_copy_bits(skb, soff, p, bv.bv_len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		soff += bv.bv_len;
 	}
 }
@@ -1199,10 +1137,7 @@ noskb:		if (buf)
 			break;
 		}
 		bvcpy(skb, f->buf->bio, f->iter, n);
-<<<<<<< HEAD
 		/* fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case ATA_CMD_PIO_WRITE:
 	case ATA_CMD_PIO_WRITE_EXT:
 		spin_lock_irq(&d->lock);
@@ -1479,15 +1414,8 @@ aoecmd_ata_id(struct aoedev *d)
 	d->timer.function = rexmit_timer;
 
 	skb = skb_clone(skb, GFP_ATOMIC);
-<<<<<<< HEAD
 	if (skb)
 		f->sent = ktime_get();
-=======
-	if (skb) {
-		do_gettimeofday(&f->sent);
-		f->sent_jiffs = (u32) jiffies;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return skb;
 }

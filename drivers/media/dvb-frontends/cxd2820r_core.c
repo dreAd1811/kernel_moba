@@ -403,11 +403,7 @@ error:
 	return DVBFE_ALGO_SEARCH_ERROR;
 }
 
-<<<<<<< HEAD
 static enum dvbfe_algo cxd2820r_get_frontend_algo(struct dvb_frontend *fe)
-=======
-static int cxd2820r_get_frontend_algo(struct dvb_frontend *fe)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return DVBFE_ALGO_CUSTOM;
 }

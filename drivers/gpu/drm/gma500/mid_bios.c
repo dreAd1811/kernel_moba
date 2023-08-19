@@ -32,13 +32,9 @@
 static void mid_get_fuse_settings(struct drm_device *dev)
 {
 	struct drm_psb_private *dev_priv = dev->dev_private;
-<<<<<<< HEAD
 	struct pci_dev *pci_root =
 		pci_get_domain_bus_and_slot(pci_domain_nr(dev->pdev->bus),
 					    0, 0);
-=======
-	struct pci_dev *pci_root = pci_get_bus_and_slot(0, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t fuse_value = 0;
 	uint32_t fuse_value_tmp = 0;
 
@@ -110,13 +106,9 @@ static void mid_get_fuse_settings(struct drm_device *dev)
 static void mid_get_pci_revID(struct drm_psb_private *dev_priv)
 {
 	uint32_t platform_rev_id = 0;
-<<<<<<< HEAD
 	int domain = pci_domain_nr(dev_priv->dev->pdev->bus);
 	struct pci_dev *pci_gfx_root =
 		pci_get_domain_bus_and_slot(domain, 0, PCI_DEVFN(2, 0));
-=======
-	struct pci_dev *pci_gfx_root = pci_get_bus_and_slot(0, PCI_DEVFN(2, 0));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (pci_gfx_root == NULL) {
 		WARN_ON(1);
@@ -247,15 +239,9 @@ static int mid_get_vbt_data_r10(struct drm_psb_private *dev_priv, u32 addr)
 	if (read_vbt_r10(addr, &vbt))
 		return -1;
 
-<<<<<<< HEAD
 	gct = kmalloc_array(vbt.panel_count, sizeof(*gct), GFP_KERNEL);
 	if (!gct)
 		return -ENOMEM;
-=======
-	gct = kmalloc(sizeof(*gct) * vbt.panel_count, GFP_KERNEL);
-	if (!gct)
-		return -1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	gct_virtual = ioremap(addr + sizeof(vbt),
 			sizeof(*gct) * vbt.panel_count);
@@ -299,13 +285,9 @@ static void mid_get_vbt_data(struct drm_psb_private *dev_priv)
 	u32 addr;
 	u8 __iomem *vbt_virtual;
 	struct mid_vbt_header vbt_header;
-<<<<<<< HEAD
 	struct pci_dev *pci_gfx_root =
 		pci_get_domain_bus_and_slot(pci_domain_nr(dev->pdev->bus),
 					    0, PCI_DEVFN(2, 0));
-=======
-	struct pci_dev *pci_gfx_root = pci_get_bus_and_slot(0, PCI_DEVFN(2, 0));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = -1;
 
 	/* Get the address of the platform config vbt */

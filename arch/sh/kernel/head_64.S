@@ -101,17 +101,6 @@ empty_zero_page:
 mmu_pdtp_cache:
 	.space PAGE_SIZE, 0
 
-<<<<<<< HEAD
-=======
-	.global empty_bad_page
-empty_bad_page:
-	.space PAGE_SIZE, 0
-
-	.global empty_bad_pte_table
-empty_bad_pte_table:
-	.space PAGE_SIZE, 0
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.global	fpu_in_use
 fpu_in_use:	.quad	0
 

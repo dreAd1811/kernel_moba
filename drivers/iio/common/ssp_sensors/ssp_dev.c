@@ -175,15 +175,9 @@ static void ssp_wdt_work_func(struct work_struct *work)
 	data->timeout_cnt = 0;
 }
 
-<<<<<<< HEAD
 static void ssp_wdt_timer_func(struct timer_list *t)
 {
 	struct ssp_data *data = from_timer(data, t, wdt_timer);
-=======
-static void ssp_wdt_timer_func(unsigned long ptr)
-{
-	struct ssp_data *data = (struct ssp_data *)ptr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (data->fw_dl_state) {
 	case SSP_FW_DL_STATE_FAIL:
@@ -492,11 +486,7 @@ static struct ssp_data *ssp_parse_dt(struct device *dev)
 	if (!match)
 		goto err_mcu_reset_gpio;
 
-<<<<<<< HEAD
 	data->sensorhub_info = match->data;
-=======
-	data->sensorhub_info = (struct ssp_sensorhub_info *)match->data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_set_drvdata(dev, data);
 
@@ -581,11 +571,7 @@ static int ssp_probe(struct spi_device *spi)
 	INIT_WORK(&data->work_wdt, ssp_wdt_work_func);
 	INIT_DELAYED_WORK(&data->work_refresh, ssp_refresh_task);
 
-<<<<<<< HEAD
 	timer_setup(&data->wdt_timer, ssp_wdt_timer_func, 0);
-=======
-	setup_timer(&data->wdt_timer, ssp_wdt_timer_func, (unsigned long)data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = request_threaded_irq(data->spi->irq, NULL,
 				   ssp_irq_thread_fn,

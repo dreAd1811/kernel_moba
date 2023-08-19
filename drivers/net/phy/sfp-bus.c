@@ -8,7 +8,6 @@
 
 #include "sfp.h"
 
-<<<<<<< HEAD
 /**
  * struct sfp_bus - internal representation of a sfp bus
  */
@@ -17,12 +16,6 @@ struct sfp_bus {
 	struct kref kref;
 	struct list_head node;
 	struct fwnode_handle *fwnode;
-=======
-struct sfp_bus {
-	struct kref kref;
-	struct list_head node;
-	struct device_node *device_node;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	const struct sfp_socket_ops *socket_ops;
 	struct device *sfp_dev;
@@ -37,7 +30,6 @@ struct sfp_bus {
 	bool started;
 };
 
-<<<<<<< HEAD
 /**
  * sfp_parse_port() - Parse the EEPROM base ID, setting the port type
  * @bus: a pointer to the &struct sfp_bus structure for the sfp module
@@ -52,9 +44,6 @@ struct sfp_bus {
  *
  * If the port type is not known, returns %PORT_OTHER.
  */
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int sfp_parse_port(struct sfp_bus *bus, const struct sfp_eeprom_id *id,
 		   unsigned long *support)
 {
@@ -68,16 +57,10 @@ int sfp_parse_port(struct sfp_bus *bus, const struct sfp_eeprom_id *id,
 	case SFP_CONNECTOR_MT_RJ:
 	case SFP_CONNECTOR_MU:
 	case SFP_CONNECTOR_OPTICAL_PIGTAIL:
-<<<<<<< HEAD
-=======
-		if (support)
-			phylink_set(support, FIBRE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		port = PORT_FIBRE;
 		break;
 
 	case SFP_CONNECTOR_RJ45:
-<<<<<<< HEAD
 		port = PORT_TP;
 		break;
 
@@ -87,17 +70,6 @@ int sfp_parse_port(struct sfp_bus *bus, const struct sfp_eeprom_id *id,
 
 	case SFP_CONNECTOR_UNSPEC:
 		if (id->base.e1000_base_t) {
-=======
-		if (support)
-			phylink_set(support, TP);
-		port = PORT_TP;
-		break;
-
-	case SFP_CONNECTOR_UNSPEC:
-		if (id->base.e1000_base_t) {
-			if (support)
-				phylink_set(support, TP);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			port = PORT_TP;
 			break;
 		}
@@ -106,10 +78,6 @@ int sfp_parse_port(struct sfp_bus *bus, const struct sfp_eeprom_id *id,
 	case SFP_CONNECTOR_MPO_1X12:
 	case SFP_CONNECTOR_MPO_2X16:
 	case SFP_CONNECTOR_HSSDC_II:
-<<<<<<< HEAD
-=======
-	case SFP_CONNECTOR_COPPER_PIGTAIL:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case SFP_CONNECTOR_NOSEPARATE:
 	case SFP_CONNECTOR_MXC_2X16:
 		port = PORT_OTHER;
@@ -121,7 +89,6 @@ int sfp_parse_port(struct sfp_bus *bus, const struct sfp_eeprom_id *id,
 		break;
 	}
 
-<<<<<<< HEAD
 	if (support) {
 		switch (port) {
 		case PORT_FIBRE:
@@ -134,13 +101,10 @@ int sfp_parse_port(struct sfp_bus *bus, const struct sfp_eeprom_id *id,
 		}
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return port;
 }
 EXPORT_SYMBOL_GPL(sfp_parse_port);
 
-<<<<<<< HEAD
 /**
  * sfp_parse_support() - Parse the eeprom id for supported link modes
  * @bus: a pointer to the &struct sfp_bus structure for the sfp module
@@ -221,102 +185,24 @@ void sfp_parse_support(struct sfp_bus *bus, const struct sfp_eeprom_id *id,
 		    id->base.active.sff8431_lim) {
 			phylink_set(modes, 10000baseCR_Full);
 		}
-=======
-phy_interface_t sfp_parse_interface(struct sfp_bus *bus,
-				    const struct sfp_eeprom_id *id)
-{
-	phy_interface_t iface;
-
-	/* Setting the serdes link mode is guesswork: there's no field in
-	 * the EEPROM which indicates what mode should be used.
-	 *
-	 * If the module wants 64b66b, then it must be >= 10G.
-	 *
-	 * If it's a gigabit-only fiber module, it probably does not have
-	 * a PHY, so switch to 802.3z negotiation mode. Otherwise, switch
-	 * to SGMII mode (which is required to support non-gigabit speeds).
-	 */
-	switch (id->base.encoding) {
-	case SFP_ENCODING_8472_64B66B:
-		iface = PHY_INTERFACE_MODE_10GKR;
-		break;
-
-	case SFP_ENCODING_8B10B:
-		if (!id->base.e1000_base_t &&
-		    !id->base.e100_base_lx &&
-		    !id->base.e100_base_fx)
-			iface = PHY_INTERFACE_MODE_1000BASEX;
-		else
-			iface = PHY_INTERFACE_MODE_SGMII;
-		break;
-
-	default:
-		iface = PHY_INTERFACE_MODE_NA;
-		dev_err(bus->sfp_dev,
-			"SFP module encoding does not support 8b10b nor 64b66b\n");
-		break;
-	}
-
-	return iface;
-}
-EXPORT_SYMBOL_GPL(sfp_parse_interface);
-
-void sfp_parse_support(struct sfp_bus *bus, const struct sfp_eeprom_id *id,
-		       unsigned long *support)
-{
-	phylink_set(support, Autoneg);
-	phylink_set(support, Pause);
-	phylink_set(support, Asym_Pause);
-
-	/* Set ethtool support from the compliance fields. */
-	if (id->base.e10g_base_sr)
-		phylink_set(support, 10000baseSR_Full);
-	if (id->base.e10g_base_lr)
-		phylink_set(support, 10000baseLR_Full);
-	if (id->base.e10g_base_lrm)
-		phylink_set(support, 10000baseLRM_Full);
-	if (id->base.e10g_base_er)
-		phylink_set(support, 10000baseER_Full);
-	if (id->base.e1000_base_sx ||
-	    id->base.e1000_base_lx ||
-	    id->base.e1000_base_cx)
-		phylink_set(support, 1000baseX_Full);
-	if (id->base.e1000_base_t) {
-		phylink_set(support, 1000baseT_Half);
-		phylink_set(support, 1000baseT_Full);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	switch (id->base.extended_cc) {
 	case 0x00: /* Unspecified */
 		break;
 	case 0x02: /* 100Gbase-SR4 or 25Gbase-SR */
-<<<<<<< HEAD
 		phylink_set(modes, 100000baseSR4_Full);
 		phylink_set(modes, 25000baseSR_Full);
 		break;
 	case 0x03: /* 100Gbase-LR4 or 25Gbase-LR */
 	case 0x04: /* 100Gbase-ER4 or 25Gbase-ER */
 		phylink_set(modes, 100000baseLR4_ER4_Full);
-=======
-		phylink_set(support, 100000baseSR4_Full);
-		phylink_set(support, 25000baseSR_Full);
-		break;
-	case 0x03: /* 100Gbase-LR4 or 25Gbase-LR */
-	case 0x04: /* 100Gbase-ER4 or 25Gbase-ER */
-		phylink_set(support, 100000baseLR4_ER4_Full);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case 0x0b: /* 100Gbase-CR4 or 25Gbase-CR CA-L */
 	case 0x0c: /* 25Gbase-CR CA-S */
 	case 0x0d: /* 25Gbase-CR CA-N */
-<<<<<<< HEAD
 		phylink_set(modes, 100000baseCR4_Full);
 		phylink_set(modes, 25000baseCR_Full);
-=======
-		phylink_set(support, 100000baseCR4_Full);
-		phylink_set(support, 25000baseCR_Full);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		dev_warn(bus->sfp_dev,
@@ -330,7 +216,6 @@ void sfp_parse_support(struct sfp_bus *bus, const struct sfp_eeprom_id *id,
 	    id->base.fc_speed_200 ||
 	    id->base.fc_speed_400) {
 		if (id->base.br_nominal >= 31)
-<<<<<<< HEAD
 			phylink_set(modes, 2500baseX_Full);
 		if (id->base.br_nominal >= 12)
 			phylink_set(modes, 1000baseX_Full);
@@ -394,44 +279,6 @@ phy_interface_t sfp_select_interface(struct sfp_bus *bus,
 	return PHY_INTERFACE_MODE_NA;
 }
 EXPORT_SYMBOL_GPL(sfp_select_interface);
-=======
-			phylink_set(support, 2500baseX_Full);
-		if (id->base.br_nominal >= 12)
-			phylink_set(support, 1000baseX_Full);
-	}
-
-	switch (id->base.connector) {
-	case SFP_CONNECTOR_SC:
-	case SFP_CONNECTOR_FIBERJACK:
-	case SFP_CONNECTOR_LC:
-	case SFP_CONNECTOR_MT_RJ:
-	case SFP_CONNECTOR_MU:
-	case SFP_CONNECTOR_OPTICAL_PIGTAIL:
-		break;
-
-	case SFP_CONNECTOR_UNSPEC:
-		if (id->base.e1000_base_t)
-			break;
-
-	case SFP_CONNECTOR_SG: /* guess */
-	case SFP_CONNECTOR_MPO_1X12:
-	case SFP_CONNECTOR_MPO_2X16:
-	case SFP_CONNECTOR_HSSDC_II:
-	case SFP_CONNECTOR_COPPER_PIGTAIL:
-	case SFP_CONNECTOR_NOSEPARATE:
-	case SFP_CONNECTOR_MXC_2X16:
-	default:
-		/* a guess at the supported link modes */
-		dev_warn(bus->sfp_dev,
-			 "Guessing link modes, please report...\n");
-		phylink_set(support, 1000baseT_Half);
-		phylink_set(support, 1000baseT_Full);
-		break;
-	}
-}
-EXPORT_SYMBOL_GPL(sfp_parse_support);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static LIST_HEAD(sfp_buses);
 static DEFINE_MUTEX(sfp_mutex);
@@ -441,11 +288,7 @@ static const struct sfp_upstream_ops *sfp_get_upstream_ops(struct sfp_bus *bus)
 	return bus->registered ? bus->upstream_ops : NULL;
 }
 
-<<<<<<< HEAD
 static struct sfp_bus *sfp_bus_get(struct fwnode_handle *fwnode)
-=======
-static struct sfp_bus *sfp_bus_get(struct device_node *np)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct sfp_bus *sfp, *new, *found = NULL;
 
@@ -454,11 +297,7 @@ static struct sfp_bus *sfp_bus_get(struct device_node *np)
 	mutex_lock(&sfp_mutex);
 
 	list_for_each_entry(sfp, &sfp_buses, node) {
-<<<<<<< HEAD
 		if (sfp->fwnode == fwnode) {
-=======
-		if (sfp->device_node == np) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			kref_get(&sfp->kref);
 			found = sfp;
 			break;
@@ -467,11 +306,7 @@ static struct sfp_bus *sfp_bus_get(struct device_node *np)
 
 	if (!found && new) {
 		kref_init(&new->kref);
-<<<<<<< HEAD
 		new->fwnode = fwnode;
-=======
-		new->device_node = np;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		list_add(&new->node, &sfp_buses);
 		found = new;
 		new = NULL;
@@ -484,11 +319,7 @@ static struct sfp_bus *sfp_bus_get(struct device_node *np)
 	return found;
 }
 
-<<<<<<< HEAD
 static void sfp_bus_release(struct kref *kref)
-=======
-static void sfp_bus_release(struct kref *kref) __releases(sfp_mutex)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct sfp_bus *bus = container_of(kref, struct sfp_bus, kref);
 
@@ -519,10 +350,7 @@ static int sfp_register_bus(struct sfp_bus *bus)
 	bus->socket_ops->attach(bus->sfp);
 	if (bus->started)
 		bus->socket_ops->start(bus->sfp);
-<<<<<<< HEAD
 	bus->netdev->sfp_bus = bus;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bus->registered = true;
 	return 0;
 }
@@ -531,10 +359,7 @@ static void sfp_unregister_bus(struct sfp_bus *bus)
 {
 	const struct sfp_upstream_ops *ops = bus->upstream_ops;
 
-<<<<<<< HEAD
 	bus->netdev->sfp_bus = NULL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (bus->registered) {
 		if (bus->started)
 			bus->socket_ops->stop(bus->sfp);
@@ -545,7 +370,6 @@ static void sfp_unregister_bus(struct sfp_bus *bus)
 	bus->registered = false;
 }
 
-<<<<<<< HEAD
 /**
  * sfp_get_module_info() - Get the ethtool_modinfo for a SFP module
  * @bus: a pointer to the &struct sfp_bus structure for the sfp module
@@ -558,18 +382,10 @@ static void sfp_unregister_bus(struct sfp_bus *bus)
  */
 int sfp_get_module_info(struct sfp_bus *bus, struct ethtool_modinfo *modinfo)
 {
-=======
-
-int sfp_get_module_info(struct sfp_bus *bus, struct ethtool_modinfo *modinfo)
-{
-	if (!bus->registered)
-		return -ENOIOCTLCMD;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return bus->socket_ops->module_info(bus->sfp, modinfo);
 }
 EXPORT_SYMBOL_GPL(sfp_get_module_info);
 
-<<<<<<< HEAD
 /**
  * sfp_get_module_eeprom() - Read the SFP module EEPROM
  * @bus: a pointer to the &struct sfp_bus structure for the sfp module
@@ -584,18 +400,10 @@ EXPORT_SYMBOL_GPL(sfp_get_module_info);
 int sfp_get_module_eeprom(struct sfp_bus *bus, struct ethtool_eeprom *ee,
 			  u8 *data)
 {
-=======
-int sfp_get_module_eeprom(struct sfp_bus *bus, struct ethtool_eeprom *ee,
-	u8 *data)
-{
-	if (!bus->registered)
-		return -ENOIOCTLCMD;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return bus->socket_ops->module_eeprom(bus->sfp, ee, data);
 }
 EXPORT_SYMBOL_GPL(sfp_get_module_eeprom);
 
-<<<<<<< HEAD
 /**
  * sfp_upstream_start() - Inform the SFP that the network device is up
  * @bus: a pointer to the &struct sfp_bus structure for the sfp module
@@ -605,8 +413,6 @@ EXPORT_SYMBOL_GPL(sfp_get_module_eeprom);
  * should be called from the network device driver's &struct net_device_ops
  * ndo_open() method.
  */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void sfp_upstream_start(struct sfp_bus *bus)
 {
 	if (bus->registered)
@@ -615,7 +421,6 @@ void sfp_upstream_start(struct sfp_bus *bus)
 }
 EXPORT_SYMBOL_GPL(sfp_upstream_start);
 
-<<<<<<< HEAD
 /**
  * sfp_upstream_stop() - Inform the SFP that the network device is down
  * @bus: a pointer to the &struct sfp_bus structure for the sfp module
@@ -625,8 +430,6 @@ EXPORT_SYMBOL_GPL(sfp_upstream_start);
  * in optical modules. This should be called from the network device
  * driver's &struct net_device_ops ndo_stop() method.
  */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void sfp_upstream_stop(struct sfp_bus *bus)
 {
 	if (bus->registered)
@@ -635,7 +438,6 @@ void sfp_upstream_stop(struct sfp_bus *bus)
 }
 EXPORT_SYMBOL_GPL(sfp_upstream_stop);
 
-<<<<<<< HEAD
 static void sfp_upstream_clear(struct sfp_bus *bus)
 {
 	bus->upstream_ops = NULL;
@@ -661,13 +463,6 @@ struct sfp_bus *sfp_register_upstream(struct fwnode_handle *fwnode,
 				      const struct sfp_upstream_ops *ops)
 {
 	struct sfp_bus *bus = sfp_bus_get(fwnode);
-=======
-struct sfp_bus *sfp_register_upstream(struct device_node *np,
-	struct net_device *ndev, void *upstream,
-	const struct sfp_upstream_ops *ops)
-{
-	struct sfp_bus *bus = sfp_bus_get(np);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = 0;
 
 	if (bus) {
@@ -676,16 +471,11 @@ struct sfp_bus *sfp_register_upstream(struct device_node *np,
 		bus->upstream = upstream;
 		bus->netdev = ndev;
 
-<<<<<<< HEAD
 		if (bus->sfp) {
 			ret = sfp_register_bus(bus);
 			if (ret)
 				sfp_upstream_clear(bus);
 		}
-=======
-		if (bus->sfp)
-			ret = sfp_register_bus(bus);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rtnl_unlock();
 	}
 
@@ -698,7 +488,6 @@ struct sfp_bus *sfp_register_upstream(struct device_node *np,
 }
 EXPORT_SYMBOL_GPL(sfp_register_upstream);
 
-<<<<<<< HEAD
 /**
  * sfp_unregister_upstream() - Unregister sfp bus
  * @bus: a pointer to the &struct sfp_bus structure for the sfp module
@@ -706,29 +495,18 @@ EXPORT_SYMBOL_GPL(sfp_register_upstream);
  * Unregister a previously registered upstream connection for the SFP
  * module. @bus is returned from sfp_register_upstream().
  */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void sfp_unregister_upstream(struct sfp_bus *bus)
 {
 	rtnl_lock();
 	if (bus->sfp)
 		sfp_unregister_bus(bus);
-<<<<<<< HEAD
 	sfp_upstream_clear(bus);
-=======
-	bus->upstream = NULL;
-	bus->netdev = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rtnl_unlock();
 
 	sfp_bus_put(bus);
 }
 EXPORT_SYMBOL_GPL(sfp_unregister_upstream);
 
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Socket driver entry points */
 int sfp_add_phy(struct sfp_bus *bus, struct phy_device *phydev)
 {
@@ -755,10 +533,6 @@ void sfp_remove_phy(struct sfp_bus *bus)
 }
 EXPORT_SYMBOL_GPL(sfp_remove_phy);
 
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void sfp_link_up(struct sfp_bus *bus)
 {
 	const struct sfp_upstream_ops *ops = sfp_get_upstream_ops(bus);
@@ -798,7 +572,6 @@ void sfp_module_remove(struct sfp_bus *bus)
 }
 EXPORT_SYMBOL_GPL(sfp_module_remove);
 
-<<<<<<< HEAD
 static void sfp_socket_clear(struct sfp_bus *bus)
 {
 	bus->sfp_dev = NULL;
@@ -810,12 +583,6 @@ struct sfp_bus *sfp_register_socket(struct device *dev, struct sfp *sfp,
 				    const struct sfp_socket_ops *ops)
 {
 	struct sfp_bus *bus = sfp_bus_get(dev->fwnode);
-=======
-struct sfp_bus *sfp_register_socket(struct device *dev, struct sfp *sfp,
-				    const struct sfp_socket_ops *ops)
-{
-	struct sfp_bus *bus = sfp_bus_get(dev->of_node);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = 0;
 
 	if (bus) {
@@ -824,16 +591,11 @@ struct sfp_bus *sfp_register_socket(struct device *dev, struct sfp *sfp,
 		bus->sfp = sfp;
 		bus->socket_ops = ops;
 
-<<<<<<< HEAD
 		if (bus->netdev) {
 			ret = sfp_register_bus(bus);
 			if (ret)
 				sfp_socket_clear(bus);
 		}
-=======
-		if (bus->netdev)
-			ret = sfp_register_bus(bus);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rtnl_unlock();
 	}
 
@@ -851,13 +613,7 @@ void sfp_unregister_socket(struct sfp_bus *bus)
 	rtnl_lock();
 	if (bus->netdev)
 		sfp_unregister_bus(bus);
-<<<<<<< HEAD
 	sfp_socket_clear(bus);
-=======
-	bus->sfp_dev = NULL;
-	bus->sfp = NULL;
-	bus->socket_ops = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rtnl_unlock();
 
 	sfp_bus_put(bus);

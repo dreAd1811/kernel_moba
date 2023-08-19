@@ -381,11 +381,7 @@ static int nforce2_probe(struct pci_dev *dev, const struct pci_device_id *id)
 	int res1, res2;
 
 	/* we support 2 SMBus adapters */
-<<<<<<< HEAD
 	smbuses = kcalloc(2, sizeof(struct nforce2_smbus), GFP_KERNEL);
-=======
-	smbuses = kzalloc(2 * sizeof(struct nforce2_smbus), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!smbuses)
 		return -ENOMEM;
 	pci_set_drvdata(dev, smbuses);

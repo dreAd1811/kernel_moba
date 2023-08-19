@@ -108,11 +108,7 @@ ENDPROC(flush_cache_all)
  *	- start   - virtual start address of region
  *	- end     - virtual end address of region
  */
-<<<<<<< HEAD
 ENTRY(__flush_icache_range)
-=======
-ENTRY(flush_icache_range)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* FALLTHROUGH */
 
 /*
@@ -127,13 +123,10 @@ ENTRY(flush_icache_range)
  */
 ENTRY(__flush_cache_user_range)
 	uaccess_ttbr0_enable x2, x3, x4
-<<<<<<< HEAD
 alternative_if ARM64_HAS_CACHE_IDC
 	dsb	ishst
 	b	7f
 alternative_else_nop_endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dcache_line_size x2, x3
 	sub	x3, x2, #1
 	bic	x4, x0, x3
@@ -144,7 +137,6 @@ user_alt 9f, "dc cvau, x4",  "dc civac, x4",  ARM64_WORKAROUND_CLEAN_CACHE
 	b.lo	1b
 	dsb	ish
 
-<<<<<<< HEAD
 7:
 alternative_if ARM64_HAS_CACHE_DIC
 	isb
@@ -152,26 +144,12 @@ alternative_if ARM64_HAS_CACHE_DIC
 alternative_else_nop_endif
 	invalidate_icache_by_line x0, x1, x2, x3, 9f
 8:	mov	x0, #0
-=======
-	icache_line_size x2, x3
-	sub	x3, x2, #1
-	bic	x4, x0, x3
-1:
-USER(9f, ic	ivau, x4	)		// invalidate I line PoU
-	add	x4, x4, x2
-	cmp	x4, x1
-	b.lo	1b
-	dsb	ish
-	isb
-	mov	x0, #0
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 1:
 	uaccess_ttbr0_disable x1, x2
 	ret
 9:
 	mov	x0, #-EFAULT
 	b	1b
-<<<<<<< HEAD
 ENDPROC(__flush_icache_range)
 ENDPROC(__flush_cache_user_range)
 
@@ -203,12 +181,6 @@ alternative_else_nop_endif
 ENDPROC(invalidate_icache_range)
 
 /*
-=======
-ENDPROC(flush_icache_range)
-ENDPROC(__flush_cache_user_range)
-
-/*
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *	__flush_dcache_area(kaddr, size)
  *
  *	Ensure that any D-cache lines for the interval [kaddr, kaddr+size)
@@ -232,13 +204,10 @@ ENDPIPROC(__flush_dcache_area)
  *	- size    - size in question
  */
 ENTRY(__clean_dcache_area_pou)
-<<<<<<< HEAD
 alternative_if ARM64_HAS_CACHE_IDC
 	dsb	ishst
 	ret
 alternative_else_nop_endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dcache_by_line_op cvau, ish, x0, x1, x2, x3
 	ret
 ENDPROC(__clean_dcache_area_pou)

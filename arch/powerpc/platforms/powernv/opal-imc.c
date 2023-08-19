@@ -21,7 +21,6 @@
 #include <asm/io.h>
 #include <asm/imc-pmu.h>
 #include <asm/cputhreads.h>
-<<<<<<< HEAD
 #include <asm/debugfs.h>
 
 static struct dentry *imc_debugfs_parent;
@@ -94,8 +93,6 @@ static void export_imc_mode_and_cmd(struct device_node *node,
 err:
 	debugfs_remove_recursive(imc_debugfs_parent);
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * imc_get_mem_addr_nest: Function to get nest counter memory region
@@ -113,7 +110,6 @@ static int imc_get_mem_addr_nest(struct device_node *node,
 	if (nr_chips <= 0)
 		return -ENODEV;
 
-<<<<<<< HEAD
 	base_addr_arr = kcalloc(nr_chips, sizeof(*base_addr_arr), GFP_KERNEL);
 	if (!base_addr_arr)
 		return -ENOMEM;
@@ -123,15 +119,6 @@ static int imc_get_mem_addr_nest(struct device_node *node,
 		kfree(base_addr_arr);
 		return -ENOMEM;
 	}
-=======
-	base_addr_arr = kcalloc(nr_chips, sizeof(u64), GFP_KERNEL);
-	if (!base_addr_arr)
-		return -ENOMEM;
-
-	chipid_arr = kcalloc(nr_chips, sizeof(u32), GFP_KERNEL);
-	if (!chipid_arr)
-		return -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (of_property_read_u32_array(node, "chip-id", chipid_arr, nr_chips))
 		goto error;
@@ -140,13 +127,8 @@ static int imc_get_mem_addr_nest(struct device_node *node,
 								nr_chips))
 		goto error;
 
-<<<<<<< HEAD
 	pmu_ptr->mem_info = kcalloc(nr_chips + 1, sizeof(*pmu_ptr->mem_info),
 				    GFP_KERNEL);
-=======
-	pmu_ptr->mem_info = kcalloc(nr_chips, sizeof(struct imc_mem_info),
-								GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!pmu_ptr->mem_info)
 		goto error;
 
@@ -157,19 +139,12 @@ static int imc_get_mem_addr_nest(struct device_node *node,
 	}
 
 	pmu_ptr->imc_counter_mmaped = true;
-<<<<<<< HEAD
 	export_imc_mode_and_cmd(node, pmu_ptr);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(base_addr_arr);
 	kfree(chipid_arr);
 	return 0;
 
 error:
-<<<<<<< HEAD
-=======
-	kfree(pmu_ptr->mem_info);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(base_addr_arr);
 	kfree(chipid_arr);
 	return -1;
@@ -191,11 +166,7 @@ static int imc_pmu_create(struct device_node *parent, int pmu_index, int domain)
 		return -EINVAL;
 
 	/* memory for pmu */
-<<<<<<< HEAD
 	pmu_ptr = kzalloc(sizeof(*pmu_ptr), GFP_KERNEL);
-=======
-	pmu_ptr = kzalloc(sizeof(struct imc_pmu), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!pmu_ptr)
 		return -ENOMEM;
 
@@ -217,7 +188,6 @@ static int imc_pmu_create(struct device_node *parent, int pmu_index, int domain)
 
 	/* Function to register IMC pmu */
 	ret = init_imc_pmu(parent, pmu_ptr, pmu_index);
-<<<<<<< HEAD
 	if (ret) {
 		pr_err("IMC PMU %s Register failed\n", pmu_ptr->pmu.name);
 		kfree(pmu_ptr->pmu.name);
@@ -226,10 +196,6 @@ static int imc_pmu_create(struct device_node *parent, int pmu_index, int domain)
 		kfree(pmu_ptr);
 		return ret;
 	}
-=======
-	if (ret)
-		pr_err("IMC PMU %s Register failed\n", pmu_ptr->pmu.name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 
@@ -293,10 +259,7 @@ static int opal_imc_counters_probe(struct platform_device *pdev)
 {
 	struct device_node *imc_dev = pdev->dev.of_node;
 	int pmu_count = 0, domain;
-<<<<<<< HEAD
 	bool core_imc_reg = false, thread_imc_reg = false;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 type;
 
 	/*
@@ -334,7 +297,6 @@ static int opal_imc_counters_probe(struct platform_device *pdev)
 		if (!imc_pmu_create(imc_dev, pmu_count, domain)) {
 			if (domain == IMC_DOMAIN_NEST)
 				pmu_count++;
-<<<<<<< HEAD
 			if (domain == IMC_DOMAIN_CORE)
 				core_imc_reg = true;
 			if (domain == IMC_DOMAIN_THREAD)
@@ -350,11 +312,6 @@ static int opal_imc_counters_probe(struct platform_device *pdev)
 	if (!core_imc_reg && thread_imc_reg)
 		unregister_thread_imc();
 
-=======
-		}
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

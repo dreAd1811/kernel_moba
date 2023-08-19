@@ -325,10 +325,6 @@ static void b53_get_vlan_entry(struct b53_device *dev, u16 vid,
 
 static void b53_set_forwarding(struct b53_device *dev, int enable)
 {
-<<<<<<< HEAD
-=======
-	struct dsa_switch *ds = dev->ds;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 mgmt;
 
 	b53_read8(dev, B53_CTRL_PAGE, B53_SWITCH_MODE, &mgmt);
@@ -340,22 +336,11 @@ static void b53_set_forwarding(struct b53_device *dev, int enable)
 
 	b53_write8(dev, B53_CTRL_PAGE, B53_SWITCH_MODE, mgmt);
 
-<<<<<<< HEAD
 	/* Include IMP port in dumb forwarding mode
 	 */
 	b53_read8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, &mgmt);
 	mgmt |= B53_MII_DUMB_FWDG_EN;
 	b53_write8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, mgmt);
-=======
-	/* Include IMP port in dumb forwarding mode when no tagging protocol is
-	 * set
-	 */
-	if (ds->ops->get_tag_protocol(ds) == DSA_TAG_PROTO_NONE) {
-		b53_read8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, &mgmt);
-		mgmt |= B53_MII_DUMB_FWDG_EN;
-		b53_write8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, mgmt);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void b53_enable_vlan(struct b53_device *dev, bool enable)
@@ -495,11 +480,7 @@ static int b53_fast_age_vlan(struct b53_device *dev, u16 vid)
 	return b53_flush_arl(dev, FAST_AGE_VLAN);
 }
 
-<<<<<<< HEAD
 void b53_imp_vlan_setup(struct dsa_switch *ds, int cpu_port)
-=======
-static void b53_imp_vlan_setup(struct dsa_switch *ds, int cpu_port)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct b53_device *dev = ds->priv;
 	unsigned int i;
@@ -515,21 +496,12 @@ static void b53_imp_vlan_setup(struct dsa_switch *ds, int cpu_port)
 		b53_write16(dev, B53_PVLAN_PAGE, B53_PVLAN_PORT_MASK(i), pvlan);
 	}
 }
-<<<<<<< HEAD
 EXPORT_SYMBOL(b53_imp_vlan_setup);
 
 int b53_enable_port(struct dsa_switch *ds, int port, struct phy_device *phy)
 {
 	struct b53_device *dev = ds->priv;
 	unsigned int cpu_port = ds->ports[port].cpu_dp->index;
-=======
-
-static int b53_enable_port(struct dsa_switch *ds, int port,
-			   struct phy_device *phy)
-{
-	struct b53_device *dev = ds->priv;
-	unsigned int cpu_port = dev->cpu_port;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 pvlan;
 
 	/* Clear the Rx and Tx disable bits and set to no spanning tree */
@@ -547,7 +519,6 @@ static int b53_enable_port(struct dsa_switch *ds, int port,
 
 	b53_imp_vlan_setup(ds, cpu_port);
 
-<<<<<<< HEAD
 	/* If EEE was enabled, restore it */
 	if (dev->ports[port].eee.eee_enabled)
 		b53_eee_enable_set(ds, port, true);
@@ -557,13 +528,6 @@ static int b53_enable_port(struct dsa_switch *ds, int port,
 EXPORT_SYMBOL(b53_enable_port);
 
 void b53_disable_port(struct dsa_switch *ds, int port, struct phy_device *phy)
-=======
-	return 0;
-}
-
-static void b53_disable_port(struct dsa_switch *ds, int port,
-			     struct phy_device *phy)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct b53_device *dev = ds->priv;
 	u8 reg;
@@ -573,7 +537,6 @@ static void b53_disable_port(struct dsa_switch *ds, int port,
 	reg |= PORT_CTRL_RX_DISABLE | PORT_CTRL_TX_DISABLE;
 	b53_write8(dev, B53_CTRL_PAGE, B53_PORT_CTRL(port), reg);
 }
-<<<<<<< HEAD
 EXPORT_SYMBOL(b53_disable_port);
 
 void b53_brcm_hdr_setup(struct dsa_switch *ds, int port)
@@ -641,28 +604,13 @@ static void b53_enable_cpu_port(struct b53_device *dev, int port)
 	/* BCM5325 CPU port is at 8 */
 	if ((is5325(dev) || is5365(dev)) && port == B53_CPU_PORT_25)
 		port = B53_CPU_PORT;
-=======
-
-static void b53_enable_cpu_port(struct b53_device *dev)
-{
-	unsigned int cpu_port = dev->cpu_port;
-	u8 port_ctrl;
-
-	/* BCM5325 CPU port is at 8 */
-	if ((is5325(dev) || is5365(dev)) && cpu_port == B53_CPU_PORT_25)
-		cpu_port = B53_CPU_PORT;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	port_ctrl = PORT_CTRL_RX_BCST_EN |
 		    PORT_CTRL_RX_MCST_EN |
 		    PORT_CTRL_RX_UCST_EN;
-<<<<<<< HEAD
 	b53_write8(dev, B53_CTRL_PAGE, B53_PORT_CTRL(port), port_ctrl);
 
 	b53_brcm_hdr_setup(dev->ds, port);
-=======
-	b53_write8(dev, B53_CTRL_PAGE, B53_PORT_CTRL(cpu_port), port_ctrl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void b53_enable_mib(struct b53_device *dev)
@@ -674,14 +622,9 @@ static void b53_enable_mib(struct b53_device *dev)
 	b53_write8(dev, B53_MGMT_PAGE, B53_GLOBAL_CONFIG, gc);
 }
 
-<<<<<<< HEAD
 int b53_configure_vlan(struct dsa_switch *ds)
 {
 	struct b53_device *dev = ds->priv;
-=======
-static int b53_configure_vlan(struct b53_device *dev)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct b53_vlan vl = { 0 };
 	int i;
 
@@ -704,10 +647,7 @@ static int b53_configure_vlan(struct b53_device *dev)
 
 	return 0;
 }
-<<<<<<< HEAD
 EXPORT_SYMBOL(b53_configure_vlan);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void b53_switch_reset_gpio(struct b53_device *dev)
 {
@@ -744,12 +684,8 @@ static int b53_switch_reset(struct b53_device *dev)
 	 * still use this driver as a library and need to perform the reset
 	 * earlier.
 	 */
-<<<<<<< HEAD
 	if (dev->chip_id == BCM58XX_DEVICE_ID ||
 	    dev->chip_id == BCM583XX_DEVICE_ID) {
-=======
-	if (dev->chip_id == BCM58XX_DEVICE_ID) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		b53_read8(dev, B53_CTRL_PAGE, B53_SOFTRESET, &reg);
 		reg |= SW_RST | EN_SW_RST | EN_CH_RST;
 		b53_write8(dev, B53_CTRL_PAGE, B53_SOFTRESET, reg);
@@ -827,11 +763,7 @@ static int b53_apply_config(struct b53_device *priv)
 	/* disable switching */
 	b53_set_forwarding(priv, 0);
 
-<<<<<<< HEAD
 	b53_configure_vlan(priv->ds);
-=======
-	b53_configure_vlan(priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* enable switching */
 	b53_set_forwarding(priv, 1);
@@ -875,7 +807,6 @@ static unsigned int b53_get_mib_size(struct b53_device *dev)
 		return B53_MIBS_SIZE;
 }
 
-<<<<<<< HEAD
 static struct phy_device *b53_get_phy_device(struct dsa_switch *ds, int port)
 {
 	/* These ports typically do not have built-in PHYs */
@@ -891,14 +822,10 @@ static struct phy_device *b53_get_phy_device(struct dsa_switch *ds, int port)
 
 void b53_get_strings(struct dsa_switch *ds, int port, u32 stringset,
 		     uint8_t *data)
-=======
-void b53_get_strings(struct dsa_switch *ds, int port, uint8_t *data)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct b53_device *dev = ds->priv;
 	const struct b53_mib_desc *mibs = b53_get_mib(dev);
 	unsigned int mib_size = b53_get_mib_size(dev);
-<<<<<<< HEAD
 	struct phy_device *phydev;
 	unsigned int i;
 
@@ -913,13 +840,6 @@ void b53_get_strings(struct dsa_switch *ds, int port, uint8_t *data)
 
 		phy_ethtool_get_strings(phydev, data);
 	}
-=======
-	unsigned int i;
-
-	for (i = 0; i < mib_size; i++)
-		memcpy(data + i * ETH_GSTRING_LEN,
-		       mibs[i].name, ETH_GSTRING_LEN);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(b53_get_strings);
 
@@ -956,7 +876,6 @@ void b53_get_ethtool_stats(struct dsa_switch *ds, int port, uint64_t *data)
 }
 EXPORT_SYMBOL(b53_get_ethtool_stats);
 
-<<<<<<< HEAD
 void b53_get_ethtool_phy_stats(struct dsa_switch *ds, int port, uint64_t *data)
 {
 	struct phy_device *phydev;
@@ -985,13 +904,6 @@ int b53_get_sset_count(struct dsa_switch *ds, int port, int sset)
 	}
 
 	return 0;
-=======
-int b53_get_sset_count(struct dsa_switch *ds)
-{
-	struct b53_device *dev = ds->priv;
-
-	return b53_get_mib_size(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(b53_get_sset_count);
 
@@ -1013,7 +925,6 @@ static int b53_setup(struct dsa_switch *ds)
 	if (ret)
 		dev_err(ds->dev, "failed to apply configuration\n");
 
-<<<<<<< HEAD
 	/* Configure IMP/CPU port, disable unused ports. Enabled
 	 * ports will be configured with .port_enable
 	 */
@@ -1021,14 +932,6 @@ static int b53_setup(struct dsa_switch *ds)
 		if (dsa_is_cpu_port(ds, port))
 			b53_enable_cpu_port(dev, port);
 		else if (dsa_is_unused_port(ds, port))
-=======
-	for (port = 0; port < dev->num_ports; port++) {
-		if (BIT(port) & ds->enabled_port_mask)
-			b53_enable_port(ds, port, NULL);
-		else if (dsa_is_cpu_port(ds, port))
-			b53_enable_cpu_port(dev);
-		else
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			b53_disable_port(ds, port, NULL);
 	}
 
@@ -1039,10 +942,7 @@ static void b53_adjust_link(struct dsa_switch *ds, int port,
 			    struct phy_device *phydev)
 {
 	struct b53_device *dev = ds->priv;
-<<<<<<< HEAD
 	struct ethtool_eee *p = &dev->ports[port].eee;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 rgmii_ctrl = 0, reg = 0, off;
 
 	if (!phy_is_pseudo_fixed_link(phydev))
@@ -1164,12 +1064,9 @@ static void b53_adjust_link(struct dsa_switch *ds, int port,
 			b53_write8(dev, B53_CTRL_PAGE, po_reg, gmii_po);
 		}
 	}
-<<<<<<< HEAD
 
 	/* Re-negotiate EEE if it was enabled already */
 	p->eee_enabled = b53_eee_init(ds, port, phydev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int b53_vlan_filtering(struct dsa_switch *ds, int port, bool vlan_filtering)
@@ -1179,12 +1076,7 @@ int b53_vlan_filtering(struct dsa_switch *ds, int port, bool vlan_filtering)
 EXPORT_SYMBOL(b53_vlan_filtering);
 
 int b53_vlan_prepare(struct dsa_switch *ds, int port,
-<<<<<<< HEAD
 		     const struct switchdev_obj_port_vlan *vlan)
-=======
-		     const struct switchdev_obj_port_vlan *vlan,
-		     struct switchdev_trans *trans)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct b53_device *dev = ds->priv;
 
@@ -1201,20 +1093,11 @@ int b53_vlan_prepare(struct dsa_switch *ds, int port,
 EXPORT_SYMBOL(b53_vlan_prepare);
 
 void b53_vlan_add(struct dsa_switch *ds, int port,
-<<<<<<< HEAD
 		  const struct switchdev_obj_port_vlan *vlan)
-=======
-		  const struct switchdev_obj_port_vlan *vlan,
-		  struct switchdev_trans *trans)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct b53_device *dev = ds->priv;
 	bool untagged = vlan->flags & BRIDGE_VLAN_INFO_UNTAGGED;
 	bool pvid = vlan->flags & BRIDGE_VLAN_INFO_PVID;
-<<<<<<< HEAD
-=======
-	unsigned int cpu_port = dev->cpu_port;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct b53_vlan *vl;
 	u16 vid;
 
@@ -1223,20 +1106,11 @@ void b53_vlan_add(struct dsa_switch *ds, int port,
 
 		b53_get_vlan_entry(dev, vid, vl);
 
-<<<<<<< HEAD
 		vl->members |= BIT(port);
 		if (untagged && !dsa_is_cpu_port(ds, port))
 			vl->untag |= BIT(port);
 		else
 			vl->untag &= ~BIT(port);
-=======
-		vl->members |= BIT(port) | BIT(cpu_port);
-		if (untagged)
-			vl->untag |= BIT(port);
-		else
-			vl->untag &= ~BIT(port);
-		vl->untag &= ~BIT(cpu_port);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		b53_set_vlan_entry(dev, vid, vl);
 		b53_fast_age_vlan(dev, vid);
@@ -1275,11 +1149,7 @@ int b53_vlan_del(struct dsa_switch *ds, int port,
 				pvid = 0;
 		}
 
-<<<<<<< HEAD
 		if (untagged && !dsa_is_cpu_port(ds, port))
-=======
-		if (untagged)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			vl->untag &= ~(BIT(port));
 
 		b53_set_vlan_entry(dev, vid, vl);
@@ -1334,10 +1204,6 @@ static int b53_arl_read(struct b53_device *dev, u64 mac,
 			u16 vid, struct b53_arl_entry *ent, u8 *idx,
 			bool is_valid)
 {
-<<<<<<< HEAD
-=======
-	DECLARE_BITMAP(free_bins, B53_ARLTBL_MAX_BIN_ENTRIES);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int i;
 	int ret;
 
@@ -1345,11 +1211,6 @@ static int b53_arl_read(struct b53_device *dev, u64 mac,
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
-=======
-	bitmap_zero(free_bins, dev->num_arl_entries);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Read the bins */
 	for (i = 0; i < dev->num_arl_entries; i++) {
 		u64 mac_vid;
@@ -1361,7 +1222,6 @@ static int b53_arl_read(struct b53_device *dev, u64 mac,
 			   B53_ARLTBL_DATA_ENTRY(i), &fwd_entry);
 		b53_arl_to_entry(ent, mac_vid, fwd_entry);
 
-<<<<<<< HEAD
 		if (!(fwd_entry & ARLTBL_VALID))
 			continue;
 		if ((mac_vid & ARLTBL_MAC_MASK) != mac)
@@ -1369,23 +1229,6 @@ static int b53_arl_read(struct b53_device *dev, u64 mac,
 		*idx = i;
 	}
 
-=======
-		if (!(fwd_entry & ARLTBL_VALID)) {
-			set_bit(i, free_bins);
-			continue;
-		}
-		if ((mac_vid & ARLTBL_MAC_MASK) != mac)
-			continue;
-		*idx = i;
-		return 0;
-	}
-
-	if (bitmap_weight(free_bins, dev->num_arl_entries) == 0)
-		return -ENOSPC;
-
-	*idx = find_first_bit(free_bins, dev->num_arl_entries);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return -ENOENT;
 }
 
@@ -1415,28 +1258,10 @@ static int b53_arl_op(struct b53_device *dev, int op, int port,
 	if (op)
 		return ret;
 
-<<<<<<< HEAD
 	/* We could not find a matching MAC, so reset to a new entry */
 	if (ret) {
 		fwd_entry = 0;
 		idx = 1;
-=======
-	switch (ret) {
-	case -ENOSPC:
-		dev_dbg(dev->dev, "{%pM,%.4d} no space left in ARL\n",
-			addr, vid);
-		return is_valid ? ret : 0;
-	case -ENOENT:
-		/* We could not find a matching MAC, so reset to a new entry */
-		dev_dbg(dev->dev, "{%pM,%.4d} not found, using idx: %d\n",
-			addr, vid, idx);
-		fwd_entry = 0;
-		break;
-	default:
-		dev_dbg(dev->dev, "{%pM,%.4d} found, using idx: %d\n",
-			addr, vid, idx);
-		break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	memset(&ent, 0, sizeof(ent));
@@ -1565,11 +1390,7 @@ EXPORT_SYMBOL(b53_fdb_dump);
 int b53_br_join(struct dsa_switch *ds, int port, struct net_device *br)
 {
 	struct b53_device *dev = ds->priv;
-<<<<<<< HEAD
 	s8 cpu_port = ds->ports[port].cpu_dp->index;
-=======
-	s8 cpu_port = ds->dst->cpu_dp->index;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 pvlan, reg;
 	unsigned int i;
 
@@ -1587,11 +1408,7 @@ int b53_br_join(struct dsa_switch *ds, int port, struct net_device *br)
 	b53_read16(dev, B53_PVLAN_PAGE, B53_PVLAN_PORT_MASK(port), &pvlan);
 
 	b53_for_each_port(dev, i) {
-<<<<<<< HEAD
 		if (dsa_to_port(ds, i)->bridge_dev != br)
-=======
-		if (ds->ports[i].bridge_dev != br)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 
 		/* Add this local port to the remote port VLAN control
@@ -1619,11 +1436,7 @@ void b53_br_leave(struct dsa_switch *ds, int port, struct net_device *br)
 {
 	struct b53_device *dev = ds->priv;
 	struct b53_vlan *vl = &dev->vlans[0];
-<<<<<<< HEAD
 	s8 cpu_port = ds->ports[port].cpu_dp->index;
-=======
-	s8 cpu_port = ds->dst->cpu_dp->index;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int i;
 	u16 pvlan, reg, pvid;
 
@@ -1631,11 +1444,7 @@ void b53_br_leave(struct dsa_switch *ds, int port, struct net_device *br)
 
 	b53_for_each_port(dev, i) {
 		/* Don't touch the remaining ports */
-<<<<<<< HEAD
 		if (dsa_to_port(ds, i)->bridge_dev != br)
-=======
-		if (ds->ports[i].bridge_dev != br)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 
 		b53_read16(dev, B53_PVLAN_PAGE, B53_PVLAN_PORT_MASK(i), &reg);
@@ -1665,13 +1474,8 @@ void b53_br_leave(struct dsa_switch *ds, int port, struct net_device *br)
 		b53_write16(dev, B53_VLAN_PAGE, B53_JOIN_ALL_VLAN_EN, reg);
 	} else {
 		b53_get_vlan_entry(dev, pvid, vl);
-<<<<<<< HEAD
 		vl->members |= BIT(port) | BIT(cpu_port);
 		vl->untag |= BIT(port) | BIT(cpu_port);
-=======
-		vl->members |= BIT(port) | BIT(dev->cpu_port);
-		vl->untag |= BIT(port) | BIT(dev->cpu_port);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		b53_set_vlan_entry(dev, pvid, vl);
 	}
 }
@@ -1720,7 +1524,6 @@ void b53_br_fast_age(struct dsa_switch *ds, int port)
 }
 EXPORT_SYMBOL(b53_br_fast_age);
 
-<<<<<<< HEAD
 static bool b53_possible_cpu_port(struct dsa_switch *ds, int port)
 {
 	/* Broadcom switches will accept enabling Broadcom tags on the
@@ -1769,13 +1572,6 @@ enum dsa_tag_protocol b53_get_tag_protocol(struct dsa_switch *ds, int port)
 }
 EXPORT_SYMBOL(b53_get_tag_protocol);
 
-=======
-static enum dsa_tag_protocol b53_get_tag_protocol(struct dsa_switch *ds)
-{
-	return DSA_TAG_PROTO_NONE;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int b53_mirror_add(struct dsa_switch *ds, int port,
 		   struct dsa_mall_mirror_tc_entry *mirror, bool ingress)
 {
@@ -1788,10 +1584,7 @@ int b53_mirror_add(struct dsa_switch *ds, int port,
 		loc = B53_EG_MIR_CTL;
 
 	b53_read16(dev, B53_MGMT_PAGE, loc, &reg);
-<<<<<<< HEAD
 	reg &= ~MIRROR_MASK;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	reg |= BIT(port);
 	b53_write16(dev, B53_MGMT_PAGE, loc, reg);
 
@@ -1844,7 +1637,6 @@ void b53_mirror_del(struct dsa_switch *ds, int port,
 }
 EXPORT_SYMBOL(b53_mirror_del);
 
-<<<<<<< HEAD
 void b53_eee_enable_set(struct dsa_switch *ds, int port, bool enable)
 {
 	struct b53_device *dev = ds->priv;
@@ -1908,28 +1700,20 @@ int b53_set_mac_eee(struct dsa_switch *ds, int port, struct ethtool_eee *e)
 }
 EXPORT_SYMBOL(b53_set_mac_eee);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct dsa_switch_ops b53_switch_ops = {
 	.get_tag_protocol	= b53_get_tag_protocol,
 	.setup			= b53_setup,
 	.get_strings		= b53_get_strings,
 	.get_ethtool_stats	= b53_get_ethtool_stats,
 	.get_sset_count		= b53_get_sset_count,
-<<<<<<< HEAD
 	.get_ethtool_phy_stats	= b53_get_ethtool_phy_stats,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.phy_read		= b53_phy_read16,
 	.phy_write		= b53_phy_write16,
 	.adjust_link		= b53_adjust_link,
 	.port_enable		= b53_enable_port,
 	.port_disable		= b53_disable_port,
-<<<<<<< HEAD
 	.get_mac_eee		= b53_get_mac_eee,
 	.set_mac_eee		= b53_set_mac_eee,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.port_bridge_join	= b53_br_join,
 	.port_bridge_leave	= b53_br_leave,
 	.port_stp_state_set	= b53_br_set_stp_state,
@@ -2153,7 +1937,6 @@ static const struct b53_chip_data b53_switch_chips[] = {
 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
 	},
 	{
-<<<<<<< HEAD
 		.chip_id = BCM583XX_DEVICE_ID,
 		.dev_name = "BCM583xx/11360",
 		.vlans = 4096,
@@ -2166,8 +1949,6 @@ static const struct b53_chip_data b53_switch_chips[] = {
 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
 	},
 	{
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.chip_id = BCM7445_DEVICE_ID,
 		.dev_name = "BCM7445",
 		.vlans	= 4096,
@@ -2254,7 +2035,6 @@ static int b53_switch_init(struct b53_device *dev)
 	dev->num_ports = dev->cpu_port + 1;
 	dev->enabled_ports |= BIT(dev->cpu_port);
 
-<<<<<<< HEAD
 	/* Include non standard CPU port built-in PHYs to be probed */
 	if (is539x(dev) || is531x5(dev)) {
 		for (i = 0; i < dev->num_ports; i++) {
@@ -2266,21 +2046,12 @@ static int b53_switch_init(struct b53_device *dev)
 
 	dev->ports = devm_kcalloc(dev->dev,
 				  dev->num_ports, sizeof(struct b53_port),
-=======
-	dev->ports = devm_kzalloc(dev->dev,
-				  sizeof(struct b53_port) * dev->num_ports,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  GFP_KERNEL);
 	if (!dev->ports)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	dev->vlans = devm_kcalloc(dev->dev,
 				  dev->num_vlans, sizeof(struct b53_vlan),
-=======
-	dev->vlans = devm_kzalloc(dev->dev,
-				  sizeof(struct b53_vlan) * dev->num_vlans,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  GFP_KERNEL);
 	if (!dev->vlans)
 		return -ENOMEM;

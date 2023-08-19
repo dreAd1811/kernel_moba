@@ -536,13 +536,8 @@ static int intel_setup_irq_remapping(struct intel_iommu *iommu)
 					    0, INTR_REMAP_TABLE_ENTRIES,
 					    fn, &intel_ir_domain_ops,
 					    iommu);
-<<<<<<< HEAD
 	irq_domain_free_fwnode(fn);
 	if (!iommu->ir_domain) {
-=======
-	if (!iommu->ir_domain) {
-		irq_domain_free_fwnode(fn);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_err("IR%d: failed to allocate irqdomain\n", iommu->seq_id);
 		goto out_free_bitmap;
 	}
@@ -1127,7 +1122,6 @@ struct irq_remap_ops intel_irq_remap_ops = {
 	.get_irq_domain		= intel_get_irq_domain,
 };
 
-<<<<<<< HEAD
 static void intel_ir_reconfigure_irte(struct irq_data *irqd, bool force)
 {
 	struct intel_ir_data *ir_data = irqd->chip_data;
@@ -1146,8 +1140,6 @@ static void intel_ir_reconfigure_irte(struct irq_data *irqd, bool force)
 		modify_irte(&ir_data->irq_2_iommu, irte);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Migrate the IO-APIC irq in the presence of intr-remapping.
  *
@@ -1166,36 +1158,15 @@ static int
 intel_ir_set_affinity(struct irq_data *data, const struct cpumask *mask,
 		      bool force)
 {
-<<<<<<< HEAD
 	struct irq_data *parent = data->parent_data;
 	struct irq_cfg *cfg = irqd_cfg(data);
-=======
-	struct intel_ir_data *ir_data = data->chip_data;
-	struct irte *irte = &ir_data->irte_entry;
-	struct irq_cfg *cfg = irqd_cfg(data);
-	struct irq_data *parent = data->parent_data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	ret = parent->chip->irq_set_affinity(parent, mask, force);
 	if (ret < 0 || ret == IRQ_SET_MASK_OK_DONE)
 		return ret;
 
-<<<<<<< HEAD
 	intel_ir_reconfigure_irte(data, false);
-=======
-	/*
-	 * Atomically updates the IRTE with the new destination, vector
-	 * and flushes the interrupt entry cache.
-	 */
-	irte->vector = cfg->vector;
-	irte->dest_id = IRTE_DEST(cfg->dest_apicid);
-
-	/* Update the hardware only if the interrupt is in remapped mode. */
-	if (ir_data->irq_2_iommu.mode == IRQ_REMAPPING)
-		modify_irte(&ir_data->irq_2_iommu, irte);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * After this point, all the interrupts will start arriving
 	 * at the new destination. So, time to cleanup the previous
@@ -1252,11 +1223,7 @@ static int intel_ir_set_vcpu_affinity(struct irq_data *data, void *info)
 
 static struct irq_chip intel_ir_chip = {
 	.name			= "INTEL-IR",
-<<<<<<< HEAD
 	.irq_ack		= apic_ack_irq,
-=======
-	.irq_ack		= ir_ack_apic_edge,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.irq_set_affinity	= intel_ir_set_affinity,
 	.irq_compose_msi_msg	= intel_ir_compose_msi_msg,
 	.irq_set_vcpu_affinity	= intel_ir_set_vcpu_affinity,
@@ -1429,20 +1396,11 @@ static void intel_irq_remapping_free(struct irq_domain *domain,
 	irq_domain_free_irqs_common(domain, virq, nr_irqs);
 }
 
-<<<<<<< HEAD
 static int intel_irq_remapping_activate(struct irq_domain *domain,
 					struct irq_data *irq_data, bool reserve)
 {
 	intel_ir_reconfigure_irte(irq_data, true);
 	return 0;
-=======
-static void intel_irq_remapping_activate(struct irq_domain *domain,
-					 struct irq_data *irq_data)
-{
-	struct intel_ir_data *data = irq_data->chip_data;
-
-	modify_irte(&data->irq_2_iommu, &data->irte_entry);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void intel_irq_remapping_deactivate(struct irq_domain *domain,

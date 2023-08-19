@@ -15,11 +15,7 @@
 #include <linux/sched.h>
 #include <linux/raid/md_p.h>
 #include "md.h"
-<<<<<<< HEAD
 #include "md-bitmap.h"
-=======
-#include "bitmap.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "md-cluster.h"
 
 #define LVB_SIZE	64
@@ -321,11 +317,7 @@ static void recover_bitmaps(struct md_thread *thread)
 					str, ret);
 			goto clear_bit;
 		}
-<<<<<<< HEAD
 		ret = md_bitmap_copy_from_slot(mddev, slot, &lo, &hi, true);
-=======
-		ret = bitmap_copy_from_slot(mddev, slot, &lo, &hi, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret) {
 			pr_err("md-cluster: Could not copy data from bitmap %d\n", slot);
 			goto clear_bit;
@@ -346,7 +338,6 @@ static void recover_bitmaps(struct md_thread *thread)
 			/* wake up thread to continue resync in case resync
 			 * is not finished */
 			if (mddev->recovery_cp != MaxSector) {
-<<<<<<< HEAD
 				/*
 				 * clear the REMOTE flag since we will launch
 				 * resync thread in current node.
@@ -355,10 +346,6 @@ static void recover_bitmaps(struct md_thread *thread)
 					  &mddev->recovery);
 				set_bit(MD_RECOVERY_NEEDED, &mddev->recovery);
 				md_wakeup_thread(mddev->thread);
-=======
-			    set_bit(MD_RECOVERY_NEEDED, &mddev->recovery);
-			    md_wakeup_thread(mddev->thread);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		}
 clear_bit:
@@ -477,14 +464,11 @@ static void process_suspend_info(struct mddev *mddev,
 	struct suspend_info *s;
 
 	if (!hi) {
-<<<<<<< HEAD
 		/*
 		 * clear the REMOTE flag since resync or recovery is finished
 		 * in remote node.
 		 */
 		clear_bit(MD_RESYNCING_REMOTE, &mddev->recovery);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		remove_suspend_info(mddev, slot);
 		set_bit(MD_RECOVERY_NEEDED, &mddev->recovery);
 		md_wakeup_thread(mddev->thread);
@@ -508,13 +492,7 @@ static void process_suspend_info(struct mddev *mddev,
 	 * resync thread is running in another node,
 	 * so we don't need to do the resync again
 	 * with the same section */
-<<<<<<< HEAD
 	md_bitmap_sync_with_cluster(mddev, cinfo->sync_low, cinfo->sync_hi, lo, hi);
-=======
-	bitmap_sync_with_cluster(mddev, cinfo->sync_low,
-					cinfo->sync_hi,
-					lo, hi);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cinfo->sync_low = lo;
 	cinfo->sync_hi = hi;
 
@@ -617,10 +595,7 @@ static int process_recvd_msg(struct mddev *mddev, struct cluster_msg *msg)
 		revalidate_disk(mddev->gendisk);
 		break;
 	case RESYNCING:
-<<<<<<< HEAD
 		set_bit(MD_RESYNCING_REMOTE, &mddev->recovery);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		process_suspend_info(mddev, le32_to_cpu(msg->slot),
 				     le64_to_cpu(msg->low),
 				     le64_to_cpu(msg->high));
@@ -865,11 +840,7 @@ static int gather_all_resync_info(struct mddev *mddev, int total_slots)
 		}
 
 		/* Read the disk bitmap sb and check if it needs recovery */
-<<<<<<< HEAD
 		ret = md_bitmap_copy_from_slot(mddev, i, &lo, &hi, false);
-=======
-		ret = bitmap_copy_from_slot(mddev, i, &lo, &hi, false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret) {
 			pr_warn("md-cluster: Could not gather bitmaps from slot %d", i);
 			lockres_free(bm_lockres);
@@ -1134,11 +1105,7 @@ static void metadata_update_cancel(struct mddev *mddev)
 /*
  * return 0 if all the bitmaps have the same sync_size
  */
-<<<<<<< HEAD
 static int cluster_check_sync_size(struct mddev *mddev)
-=======
-int cluster_check_sync_size(struct mddev *mddev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i, rv;
 	bitmap_super_t *sb;
@@ -1177,11 +1144,7 @@ int cluster_check_sync_size(struct mddev *mddev)
 		bm_lockres->flags |= DLM_LKF_NOQUEUE;
 		rv = dlm_lock_sync(bm_lockres, DLM_LOCK_PW);
 		if (!rv)
-<<<<<<< HEAD
 			md_bitmap_update_sb(bitmap);
-=======
-			bitmap_update_sb(bitmap);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		lockres_free(bm_lockres);
 
 		sb = kmap_atomic(bitmap->storage.sb_page);
@@ -1313,7 +1276,6 @@ static int resync_info_update(struct mddev *mddev, sector_t lo, sector_t hi)
 static int resync_finish(struct mddev *mddev)
 {
 	struct md_cluster_info *cinfo = mddev->cluster_info;
-<<<<<<< HEAD
 	int ret = 0;
 
 	clear_bit(MD_RESYNCING_REMOTE, &mddev->recovery);
@@ -1326,10 +1288,6 @@ static int resync_finish(struct mddev *mddev)
 		ret = resync_info_update(mddev, 0, 0);
 	dlm_unlock_sync(cinfo->resync_lockres);
 	return ret;
-=======
-	dlm_unlock_sync(cinfo->resync_lockres);
-	return resync_info_update(mddev, 0, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int area_resyncing(struct mddev *mddev, int direction,
@@ -1443,15 +1401,9 @@ static int lock_all_bitmaps(struct mddev *mddev)
 	char str[64];
 	struct md_cluster_info *cinfo = mddev->cluster_info;
 
-<<<<<<< HEAD
 	cinfo->other_bitmap_lockres =
 		kcalloc(mddev->bitmap_info.nodes - 1,
 			sizeof(struct dlm_lock_resource *), GFP_KERNEL);
-=======
-	cinfo->other_bitmap_lockres = kzalloc((mddev->bitmap_info.nodes - 1) *
-					     sizeof(struct dlm_lock_resource *),
-					     GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!cinfo->other_bitmap_lockres) {
 		pr_err("md: can't alloc mem for other bitmap locks\n");
 		return 0;
@@ -1511,11 +1463,7 @@ static int gather_bitmaps(struct md_rdev *rdev)
 	for (sn = 0; sn < mddev->bitmap_info.nodes; sn++) {
 		if (sn == (cinfo->slot_number - 1))
 			continue;
-<<<<<<< HEAD
 		err = md_bitmap_copy_from_slot(mddev, sn, &lo, &hi, false);
-=======
-		err = bitmap_copy_from_slot(mddev, sn, &lo, &hi, false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (err) {
 			pr_warn("md-cluster: Could not gather bitmaps from slot %d", sn);
 			goto out;
@@ -1551,11 +1499,7 @@ static struct md_cluster_operations cluster_ops = {
 
 static int __init cluster_init(void)
 {
-<<<<<<< HEAD
 	pr_warn("md-cluster: support raid1 and raid10 (limited support)\n");
-=======
-	pr_warn("md-cluster: EXPERIMENTAL. Use with caution\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pr_info("Registering Cluster MD functions\n");
 	register_md_cluster_operations(&cluster_ops, THIS_MODULE);
 	return 0;

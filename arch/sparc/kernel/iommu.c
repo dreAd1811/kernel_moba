@@ -14,11 +14,7 @@
 #include <linux/errno.h>
 #include <linux/iommu-helper.h>
 #include <linux/bitmap.h>
-<<<<<<< HEAD
 #include <asm/iommu-common.h>
-=======
-#include <linux/iommu-common.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_PCI
 #include <linux/pci.h>

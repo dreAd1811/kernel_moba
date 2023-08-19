@@ -24,11 +24,7 @@
 #include <linux/dvb/frontend.h>
 #include <linux/types.h>
 #include "horus3a.h"
-<<<<<<< HEAD
 #include <media/dvb_frontend.h>
-=======
-#include "dvb_frontend.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define MAX_WRITE_REGSIZE      5
 
@@ -334,15 +330,9 @@ static int horus3a_get_frequency(struct dvb_frontend *fe, u32 *frequency)
 static const struct dvb_tuner_ops horus3a_tuner_ops = {
 	.info = {
 		.name = "Sony Horus3a",
-<<<<<<< HEAD
 		.frequency_min_hz  =  950 * MHz,
 		.frequency_max_hz  = 2150 * MHz,
 		.frequency_step_hz =    1 * MHz,
-=======
-		.frequency_min = 950000,
-		.frequency_max = 2150000,
-		.frequency_step = 1000,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.init = horus3a_init,
 	.release = horus3a_release,

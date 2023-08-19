@@ -195,22 +195,13 @@ static const struct pci_raw_ops pci_direct_conf2 = {
 static int __init pci_sanity_check(const struct pci_raw_ops *o)
 {
 	u32 x = 0;
-<<<<<<< HEAD
 	int devfn;
-=======
-	int year, devfn;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (pci_probe & PCI_NO_CHECKS)
 		return 1;
 	/* Assume Type 1 works for newer systems.
 	   This handles machines that don't have anything on PCI Bus 0. */
-<<<<<<< HEAD
 	if (dmi_get_bios_year() >= 2001)
-=======
-	dmi_get_date(DMI_BIOS_DATE, &year, NULL, NULL);
-	if (year >= 2001)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 1;
 
 	for (devfn = 0; devfn < 0x100; devfn++) {

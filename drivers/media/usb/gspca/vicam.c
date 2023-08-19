@@ -182,11 +182,7 @@ static void vicam_dostream(struct work_struct *work)
 
 	frame_sz = gspca_dev->cam.cam_mode[gspca_dev->curr_mode].sizeimage +
 		   HEADER_SIZE;
-<<<<<<< HEAD
 	buffer = kmalloc(frame_sz, GFP_KERNEL);
-=======
-	buffer = kmalloc(frame_sz, GFP_KERNEL | GFP_DMA);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!buffer) {
 		pr_err("Couldn't allocate USB buffer\n");
 		goto exit;

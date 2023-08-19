@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 # SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 obj-y				+= kernel/
 obj-y				+= mm/
 obj-$(CONFIG_KVM)		+= kvm/
@@ -11,7 +8,4 @@ obj-$(CONFIG_APPLDATA_BASE)	+= appldata/
 obj-y				+= net/
 obj-$(CONFIG_PCI)		+= pci/
 obj-$(CONFIG_NUMA)		+= numa/
-<<<<<<< HEAD
 obj-$(CONFIG_ARCH_HAS_KEXEC_PURGATORY) += purgatory/
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

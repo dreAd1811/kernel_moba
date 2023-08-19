@@ -5,7 +5,6 @@ menu "IIO dummy driver"
 	depends on IIO
 
 config IIO_DUMMY_EVGEN
-<<<<<<< HEAD
 	select IRQ_SIM
 	tristate
 
@@ -16,23 +15,10 @@ config IIO_SIMPLE_DUMMY
 	  Driver intended mainly as documentation for how to write
 	  a driver. May also be useful for testing userspace code
 	  without hardware.
-=======
-	select IRQ_WORK
-	tristate
-
-config IIO_SIMPLE_DUMMY
-       tristate "An example driver with no hardware requirements"
-       depends on IIO_SW_DEVICE
-       help
-	 Driver intended mainly as documentation for how to write
-	 a driver. May also be useful for testing userspace code
-	 without hardware.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 if IIO_SIMPLE_DUMMY
 
 config IIO_SIMPLE_DUMMY_EVENTS
-<<<<<<< HEAD
 	bool "Event generation support"
 	select IIO_DUMMY_EVGEN
 	help
@@ -41,12 +27,6 @@ config IIO_SIMPLE_DUMMY_EVENTS
 	  The purpose of this is to generate 'fake' event interrupts thus
 	  allowing that driver's code to be as close as possible to that
 	  a normal driver talking to hardware.
-=======
-       bool "Event generation support"
-       select IIO_DUMMY_EVGEN
-       help
-         Add some dummy events to the simple dummy driver.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config IIO_SIMPLE_DUMMY_BUFFER
 	bool "Buffered capture support"
@@ -56,12 +36,9 @@ config IIO_SIMPLE_DUMMY_BUFFER
 	help
 	  Add buffered data capture to the simple dummy driver.
 
-<<<<<<< HEAD
 	  Buffer handling elements of industrial I/O reference driver.
 	  Uses the kfifo buffer.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 endif # IIO_SIMPLE_DUMMY
 
 endmenu

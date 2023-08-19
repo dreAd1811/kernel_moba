@@ -1,12 +1,4 @@
 # SPDX-License-Identifier: GPL-2.0
-<<<<<<< HEAD
-=======
-mainmenu "User Mode Linux/$SUBARCH $KERNELVERSION Kernel Configuration"
-
-source "arch/um/Kconfig.common"
-
-menu "UML-specific options"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 menu "Host processor type and features"
 
@@ -19,13 +11,8 @@ config UML_X86
 	select GENERIC_FIND_FIRST_BIT
 
 config 64BIT
-<<<<<<< HEAD
 	bool "64-bit kernel" if "$(SUBARCH)" = "x86"
 	default "$(SUBARCH)" != "i386"
-=======
-	bool "64-bit kernel" if SUBARCH = "x86"
-	default SUBARCH != "i386"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config X86_32
 	def_bool !64BIT
@@ -70,12 +57,3 @@ config ARCH_REUSE_HOST_VSYSCALL_AREA
 
 config GENERIC_HWEIGHT
 	def_bool y
-<<<<<<< HEAD
-=======
-
-source "arch/um/Kconfig.um"
-
-endmenu
-
-source "arch/um/Kconfig.rest"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

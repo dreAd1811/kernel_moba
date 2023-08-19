@@ -184,7 +184,6 @@ static int virtrng_freeze(struct virtio_device *vdev)
 
 static int virtrng_restore(struct virtio_device *vdev)
 {
-<<<<<<< HEAD
 	int err;
 
 	err = probe_common(vdev);
@@ -205,9 +204,6 @@ static int virtrng_restore(struct virtio_device *vdev)
 	}
 
 	return err;
-=======
-	return probe_common(vdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #endif
 

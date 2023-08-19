@@ -110,11 +110,7 @@ static int bcm47xxpart_parse(struct mtd_info *master,
 		blocksize = 0x1000;
 
 	/* Alloc */
-<<<<<<< HEAD
 	parts = kcalloc(BCM47XXPART_MAX_PARTS, sizeof(struct mtd_partition),
-=======
-	parts = kzalloc(sizeof(struct mtd_partition) * BCM47XXPART_MAX_PARTS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			GFP_KERNEL);
 	if (!parts)
 		return -ENOMEM;
@@ -190,11 +186,8 @@ static int bcm47xxpart_parse(struct mtd_info *master,
 		/* TRX */
 		if (buf[0x000 / 4] == TRX_MAGIC) {
 			struct trx_header *trx;
-<<<<<<< HEAD
 			uint32_t last_subpart;
 			uint32_t trx_size;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			if (trx_num >= ARRAY_SIZE(trx_parts))
 				pr_warn("No enough space to store another TRX found at 0x%X\n",
@@ -204,7 +197,6 @@ static int bcm47xxpart_parse(struct mtd_info *master,
 			bcm47xxpart_add_part(&parts[curr_part++], "firmware",
 					     offset, 0);
 
-<<<<<<< HEAD
 			/*
 			 * Try to find TRX size. The "length" field isn't fully
 			 * reliable as it could be decreased to make CRC32 cover
@@ -222,13 +214,6 @@ static int bcm47xxpart_parse(struct mtd_info *master,
 			 * the next loop iteration will increase it.
 			 */
 			offset += roundup(trx_size, blocksize) - blocksize;
-=======
-			/* Jump to the end of TRX */
-			trx = (struct trx_header *)buf;
-			offset = roundup(offset + trx->length, blocksize);
-			/* Next loop iteration will increase the offset */
-			offset -= blocksize;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 		}
 
@@ -319,7 +304,6 @@ static int bcm47xxpart_parse(struct mtd_info *master,
 	return curr_part;
 };
 
-<<<<<<< HEAD
 static const struct of_device_id bcm47xxpart_of_match_table[] = {
 	{ .compatible = "brcm,bcm947xx-cfe-partitions" },
 	{},
@@ -330,11 +314,6 @@ static struct mtd_part_parser bcm47xxpart_mtd_parser = {
 	.parse_fn = bcm47xxpart_parse,
 	.name = "bcm47xxpart",
 	.of_match_table = bcm47xxpart_of_match_table,
-=======
-static struct mtd_part_parser bcm47xxpart_mtd_parser = {
-	.parse_fn = bcm47xxpart_parse,
-	.name = "bcm47xxpart",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 module_mtd_part_parser(bcm47xxpart_mtd_parser);
 

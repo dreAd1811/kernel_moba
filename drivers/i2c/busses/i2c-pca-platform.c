@@ -20,12 +20,7 @@
 #include <linux/interrupt.h>
 #include <linux/platform_device.h>
 #include <linux/i2c-algo-pca.h>
-<<<<<<< HEAD
 #include <linux/platform_data/i2c-pca-platform.h>
-=======
-#include <linux/i2c-pca-platform.h>
-#include <linux/gpio.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/gpio/consumer.h>
 #include <linux/io.h>
 #include <linux/of.h>
@@ -177,7 +172,6 @@ static int i2c_pca_pf_probe(struct platform_device *pdev)
 	i2c->adap.dev.parent = &pdev->dev;
 	i2c->adap.dev.of_node = np;
 
-<<<<<<< HEAD
 	i2c->gpio = devm_gpiod_get_optional(&pdev->dev, "reset", GPIOD_OUT_LOW);
 	if (IS_ERR(i2c->gpio))
 		return PTR_ERR(i2c->gpio);
@@ -191,35 +185,6 @@ static int i2c_pca_pf_probe(struct platform_device *pdev)
 	if (platform_data) {
 		i2c->adap.timeout = platform_data->timeout;
 		i2c->algo_data.i2c_clock = platform_data->i2c_clock_speed;
-=======
-	if (platform_data) {
-		i2c->adap.timeout = platform_data->timeout;
-		i2c->algo_data.i2c_clock = platform_data->i2c_clock_speed;
-		if (gpio_is_valid(platform_data->gpio)) {
-			ret = devm_gpio_request_one(&pdev->dev,
-						    platform_data->gpio,
-						    GPIOF_ACTIVE_LOW,
-						    i2c->adap.name);
-			if (ret == 0) {
-				i2c->gpio = gpio_to_desc(platform_data->gpio);
-				gpiod_direction_output(i2c->gpio, 0);
-			} else {
-				dev_warn(&pdev->dev, "Registering gpio failed!\n");
-				i2c->gpio = NULL;
-			}
-		}
-	} else if (np) {
-		i2c->adap.timeout = HZ;
-		i2c->gpio = devm_gpiod_get_optional(&pdev->dev, "reset-gpios", GPIOD_OUT_LOW);
-		if (IS_ERR(i2c->gpio))
-			return PTR_ERR(i2c->gpio);
-		of_property_read_u32_index(np, "clock-frequency", 0,
-					   &i2c->algo_data.i2c_clock);
-	} else {
-		i2c->adap.timeout = HZ;
-		i2c->algo_data.i2c_clock = 59000;
-		i2c->gpio = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	i2c->algo_data.data = i2c;

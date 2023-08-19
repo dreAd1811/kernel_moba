@@ -8,10 +8,7 @@ ccp-$(CONFIG_CRYPTO_DEV_SP_CCP) += ccp-dev.o \
 	    ccp-dmaengine.o \
 	    ccp-debugfs.o
 ccp-$(CONFIG_PCI) += sp-pci.o
-<<<<<<< HEAD
 ccp-$(CONFIG_CRYPTO_DEV_SP_PSP) += psp-dev.o
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 obj-$(CONFIG_CRYPTO_DEV_CCP_CRYPTO) += ccp-crypto.o
 ccp-crypto-objs := ccp-crypto-main.o \

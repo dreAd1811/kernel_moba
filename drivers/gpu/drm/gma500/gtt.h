@@ -53,11 +53,8 @@ struct gtt_range {
 	int roll;			/* Roll applied to the GTT entries */
 };
 
-<<<<<<< HEAD
 #define to_gtt_range(x) container_of(x, struct gtt_range, gem)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern struct gtt_range *psb_gtt_alloc_range(struct drm_device *dev, int len,
 					     const char *name, int backed,
 					     u32 align);

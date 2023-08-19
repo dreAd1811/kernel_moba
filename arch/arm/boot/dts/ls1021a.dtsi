@@ -107,7 +107,6 @@
 		compatible = "arm,cortex-a7-pmu";
 		interrupts = <GIC_SPI 138 IRQ_TYPE_LEVEL_HIGH>,
 			     <GIC_SPI 139 IRQ_TYPE_LEVEL_HIGH>;
-<<<<<<< HEAD
 		interrupt-affinity = <&cpu0>, <&cpu1>;
 	};
 
@@ -116,8 +115,6 @@
 		regmap = <&dcfg>;
 		offset = <0xb0>;
 		mask = <0x02>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	soc {
@@ -166,7 +163,6 @@
 			big-endian;
 		};
 
-<<<<<<< HEAD
 		qspi: quadspi@1550000 {
 			compatible = "fsl,ls1021a-qspi";
 			#address-cells = <1>;
@@ -181,8 +177,6 @@
 			status = "disabled";
 		};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		esdhc: esdhc@1560000 {
 			compatible = "fsl,ls1021a-esdhc", "fsl,esdhc";
 			reg = <0x0 0x1560000 0x0 0x10000>;
@@ -594,21 +588,8 @@
 			device_type = "mdio";
 			#address-cells = <1>;
 			#size-cells = <0>;
-<<<<<<< HEAD
 			reg = <0x0 0x2d24000 0x0 0x4000>,
 			      <0x0 0x2d10030 0x0 0x4>;
-=======
-			reg = <0x0 0x2d24000 0x0 0x4000>;
-		};
-
-		mdio1: mdio@2d64000 {
-			compatible = "gianfar";
-			device_type = "mdio";
-			#address-cells = <1>;
-			#size-cells = <0>;
-			reg = <0x0 0x2d64000 0x0 0x4000>,
-			      <0x0 0x2d50030 0x0 0x4>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		ptp_clock@2d10e00 {
@@ -618,11 +599,7 @@
 			fsl,tclk-period = <5>;
 			fsl,tmr-prsc    = <2>;
 			fsl,tmr-add     = <0xaaaaaaab>;
-<<<<<<< HEAD
 			fsl,tmr-fiper1  = <999999995>;
-=======
-			fsl,tmr-fiper1  = <999999990>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			fsl,tmr-fiper2  = <99990>;
 			fsl,max-adj     = <499999999>;
 		};
@@ -715,11 +692,7 @@
 			};
 		};
 
-<<<<<<< HEAD
 		usb2: usb@8600000 {
-=======
-		usb@8600000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "fsl-usb2-dr-v2.5", "fsl-usb2-dr";
 			reg = <0x0 0x8600000 0x0 0x1000>;
 			interrupts = <GIC_SPI 171 IRQ_TYPE_LEVEL_HIGH>;
@@ -727,11 +700,7 @@
 			phy_type = "ulpi";
 		};
 
-<<<<<<< HEAD
 		usb3: usb3@3100000 {
-=======
-		usb3@3100000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "snps,dwc3";
 			reg = <0x0 0x3100000 0x0 0x10000>;
 			interrupts = <GIC_SPI 93 IRQ_TYPE_LEVEL_HIGH>;
@@ -785,7 +754,6 @@
 					<0000 0 0 3 &gic GIC_SPI 191 IRQ_TYPE_LEVEL_HIGH>,
 					<0000 0 0 4 &gic GIC_SPI 193 IRQ_TYPE_LEVEL_HIGH>;
 		};
-<<<<<<< HEAD
 
 		can0: can@2a70000 {
 			compatible = "fsl,ls1021ar2-flexcan";
@@ -838,7 +806,5 @@
 			#size-cells = <1>;
 			ranges = <0x0 0x0 0x10010000 0x10000>;
 		};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };

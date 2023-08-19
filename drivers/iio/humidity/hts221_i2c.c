@@ -13,7 +13,6 @@
 #include <linux/acpi.h>
 #include <linux/i2c.h>
 #include <linux/slab.h>
-<<<<<<< HEAD
 #include <linux/regmap.h>
 
 #include "hts221.h"
@@ -25,62 +24,11 @@ static const struct regmap_config hts221_i2c_regmap_config = {
 	.val_bits = 8,
 	.write_flag_mask = HTS221_I2C_AUTO_INCREMENT,
 	.read_flag_mask = HTS221_I2C_AUTO_INCREMENT,
-=======
-#include "hts221.h"
-
-#define I2C_AUTO_INCREMENT	0x80
-
-static int hts221_i2c_read(struct device *dev, u8 addr, int len, u8 *data)
-{
-	struct i2c_msg msg[2];
-	struct i2c_client *client = to_i2c_client(dev);
-
-	if (len > 1)
-		addr |= I2C_AUTO_INCREMENT;
-
-	msg[0].addr = client->addr;
-	msg[0].flags = client->flags;
-	msg[0].len = 1;
-	msg[0].buf = &addr;
-
-	msg[1].addr = client->addr;
-	msg[1].flags = client->flags | I2C_M_RD;
-	msg[1].len = len;
-	msg[1].buf = data;
-
-	return i2c_transfer(client->adapter, msg, 2);
-}
-
-static int hts221_i2c_write(struct device *dev, u8 addr, int len, u8 *data)
-{
-	u8 send[len + 1];
-	struct i2c_msg msg;
-	struct i2c_client *client = to_i2c_client(dev);
-
-	if (len > 1)
-		addr |= I2C_AUTO_INCREMENT;
-
-	send[0] = addr;
-	memcpy(&send[1], data, len * sizeof(u8));
-
-	msg.addr = client->addr;
-	msg.flags = client->flags;
-	msg.len = len + 1;
-	msg.buf = send;
-
-	return i2c_transfer(client->adapter, &msg, 1);
-}
-
-static const struct hts221_transfer_function hts221_transfer_fn = {
-	.read = hts221_i2c_read,
-	.write = hts221_i2c_write,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int hts221_i2c_probe(struct i2c_client *client,
 			    const struct i2c_device_id *id)
 {
-<<<<<<< HEAD
 	struct regmap *regmap;
 
 	regmap = devm_regmap_init_i2c(client, &hts221_i2c_regmap_config);
@@ -92,24 +40,6 @@ static int hts221_i2c_probe(struct i2c_client *client,
 
 	return hts221_probe(&client->dev, client->irq,
 			    client->name, regmap);
-=======
-	struct hts221_hw *hw;
-	struct iio_dev *iio_dev;
-
-	iio_dev = devm_iio_device_alloc(&client->dev, sizeof(*hw));
-	if (!iio_dev)
-		return -ENOMEM;
-
-	i2c_set_clientdata(client, iio_dev);
-
-	hw = iio_priv(iio_dev);
-	hw->name = client->name;
-	hw->dev = &client->dev;
-	hw->irq = client->irq;
-	hw->tf = &hts221_transfer_fn;
-
-	return hts221_probe(iio_dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct acpi_device_id hts221_acpi_match[] = {

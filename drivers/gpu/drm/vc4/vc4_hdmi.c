@@ -285,14 +285,8 @@ static int vc4_hdmi_connector_get_modes(struct drm_connector *connector)
 			drm_rgb_quant_range_selectable(edid);
 	}
 
-<<<<<<< HEAD
 	drm_connector_update_edid_property(connector, edid);
 	ret = drm_add_edid_modes(connector, edid);
-=======
-	drm_mode_connector_update_edid_property(connector, edid);
-	ret = drm_add_edid_modes(connector, edid);
-	drm_edid_to_eld(connector, edid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(edid);
 
 	return ret;
@@ -314,7 +308,6 @@ static const struct drm_connector_helper_funcs vc4_hdmi_connector_helper_funcs =
 static struct drm_connector *vc4_hdmi_connector_init(struct drm_device *dev,
 						     struct drm_encoder *encoder)
 {
-<<<<<<< HEAD
 	struct drm_connector *connector;
 	struct vc4_hdmi_connector *hdmi_connector;
 
@@ -322,18 +315,6 @@ static struct drm_connector *vc4_hdmi_connector_init(struct drm_device *dev,
 				      GFP_KERNEL);
 	if (!hdmi_connector)
 		return ERR_PTR(-ENOMEM);
-=======
-	struct drm_connector *connector = NULL;
-	struct vc4_hdmi_connector *hdmi_connector;
-	int ret = 0;
-
-	hdmi_connector = devm_kzalloc(dev->dev, sizeof(*hdmi_connector),
-				      GFP_KERNEL);
-	if (!hdmi_connector) {
-		ret = -ENOMEM;
-		goto fail;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	connector = &hdmi_connector->base;
 
 	hdmi_connector->encoder = encoder;
@@ -348,21 +329,9 @@ static struct drm_connector *vc4_hdmi_connector_init(struct drm_device *dev,
 	connector->interlace_allowed = 1;
 	connector->doublescan_allowed = 0;
 
-<<<<<<< HEAD
 	drm_connector_attach_encoder(connector, encoder);
 
 	return connector;
-=======
-	drm_mode_connector_attach_encoder(connector, encoder);
-
-	return connector;
-
- fail:
-	if (connector)
-		vc4_hdmi_connector_destroy(connector);
-
-	return ERR_PTR(ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void vc4_hdmi_encoder_destroy(struct drm_encoder *encoder)
@@ -712,11 +681,7 @@ static void vc4_hdmi_encoder_enable(struct drm_encoder *encoder)
 			   drift & ~VC4_HDMI_FIFO_CTL_RECENTER);
 		HDMI_WRITE(VC4_HDMI_FIFO_CTL,
 			   drift | VC4_HDMI_FIFO_CTL_RECENTER);
-<<<<<<< HEAD
 		usleep_range(1000, 1100);
-=======
-		udelay(1000);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		HDMI_WRITE(VC4_HDMI_FIFO_CTL,
 			   drift & ~VC4_HDMI_FIFO_CTL_RECENTER);
 		HDMI_WRITE(VC4_HDMI_FIFO_CTL,
@@ -729,7 +694,6 @@ static void vc4_hdmi_encoder_enable(struct drm_encoder *encoder)
 	}
 }
 
-<<<<<<< HEAD
 static enum drm_mode_status
 vc4_hdmi_encoder_mode_valid(struct drm_encoder *crtc,
 			    const struct drm_display_mode *mode)
@@ -746,9 +710,6 @@ vc4_hdmi_encoder_mode_valid(struct drm_encoder *crtc,
 
 static const struct drm_encoder_helper_funcs vc4_hdmi_encoder_helper_funcs = {
 	.mode_valid = vc4_hdmi_encoder_mode_valid,
-=======
-static const struct drm_encoder_helper_funcs vc4_hdmi_encoder_helper_funcs = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.disable = vc4_hdmi_encoder_disable,
 	.enable = vc4_hdmi_encoder_enable,
 };
@@ -1034,7 +995,6 @@ static const struct snd_soc_dapm_route vc4_hdmi_audio_routes[] = {
 	{ "TX", NULL, "Playback" },
 };
 
-<<<<<<< HEAD
 static const struct snd_soc_component_driver vc4_hdmi_audio_component_drv = {
 	.controls		= vc4_hdmi_audio_controls,
 	.num_controls		= ARRAY_SIZE(vc4_hdmi_audio_controls),
@@ -1046,17 +1006,6 @@ static const struct snd_soc_component_driver vc4_hdmi_audio_component_drv = {
 	.use_pmdown_time	= 1,
 	.endianness		= 1,
 	.non_legacy_dai_naming	= 1,
-=======
-static const struct snd_soc_codec_driver vc4_hdmi_audio_codec_drv = {
-	.component_driver = {
-		.controls = vc4_hdmi_audio_controls,
-		.num_controls = ARRAY_SIZE(vc4_hdmi_audio_controls),
-		.dapm_widgets = vc4_hdmi_audio_widgets,
-		.num_dapm_widgets = ARRAY_SIZE(vc4_hdmi_audio_widgets),
-		.dapm_routes = vc4_hdmi_audio_routes,
-		.num_dapm_routes = ARRAY_SIZE(vc4_hdmi_audio_routes),
-	},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct snd_soc_dai_ops vc4_hdmi_audio_dai_ops = {
@@ -1154,19 +1103,11 @@ static int vc4_hdmi_audio_init(struct vc4_hdmi *hdmi)
 		return ret;
 	}
 
-<<<<<<< HEAD
 	/* register component and codec dai */
 	ret = devm_snd_soc_register_component(dev, &vc4_hdmi_audio_component_drv,
 				     &vc4_hdmi_audio_codec_dai_drv, 1);
 	if (ret) {
 		dev_err(dev, "Could not register component: %d\n", ret);
-=======
-	/* register codec and codec dai */
-	ret = snd_soc_register_codec(dev, &vc4_hdmi_audio_codec_drv,
-				     &vc4_hdmi_audio_codec_dai_drv, 1);
-	if (ret) {
-		dev_err(dev, "Could not register codec: %d\n", ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
@@ -1191,37 +1132,11 @@ static int vc4_hdmi_audio_init(struct vc4_hdmi *hdmi)
 	 */
 	snd_soc_card_set_drvdata(card, hdmi);
 	ret = devm_snd_soc_register_card(dev, card);
-<<<<<<< HEAD
 	if (ret)
 		dev_err(dev, "Could not register sound card: %d\n", ret);
 
 	return ret;
 
-=======
-	if (ret) {
-		dev_err(dev, "Could not register sound card: %d\n", ret);
-		goto unregister_codec;
-	}
-
-	return 0;
-
-unregister_codec:
-	snd_soc_unregister_codec(dev);
-
-	return ret;
-}
-
-static void vc4_hdmi_audio_cleanup(struct vc4_hdmi *hdmi)
-{
-	struct device *dev = &hdmi->pdev->dev;
-
-	/*
-	 * If drvdata is not set this means the audio card was not
-	 * registered, just skip codec unregistration in this case.
-	 */
-	if (dev_get_drvdata(dev))
-		snd_soc_unregister_codec(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #ifdef CONFIG_DRM_VC4_HDMI_CEC
@@ -1549,10 +1464,6 @@ static void vc4_hdmi_unbind(struct device *dev, struct device *master,
 	struct vc4_dev *vc4 = drm->dev_private;
 	struct vc4_hdmi *hdmi = vc4->hdmi;
 
-<<<<<<< HEAD
-=======
-	vc4_hdmi_audio_cleanup(hdmi);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cec_unregister_adapter(hdmi->cec_adap);
 	vc4_hdmi_connector_destroy(hdmi->connector);
 	vc4_hdmi_encoder_destroy(hdmi->encoder);

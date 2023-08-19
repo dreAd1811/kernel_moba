@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+ OR MIT
 //
 // Device Tree Source for UniPhier LD20 SoC
@@ -9,16 +8,6 @@
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/gpio/uniphier-gpio.h>
 #include <dt-bindings/thermal/thermal.h>
-=======
-/*
- * Device Tree Source for UniPhier LD20 SoC
- *
- * Copyright (C) 2015-2016 Socionext Inc.
- *   Author: Masahiro Yamada <yamada.masahiro@socionext.com>
- *
- * SPDX-License-Identifier: (GPL-2.0+ OR MIT)
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /memreserve/ 0x80000000 0x02000000;
 
@@ -59,10 +48,7 @@
 			clocks = <&sys_clk 32>;
 			enable-method = "psci";
 			operating-points-v2 = <&cluster0_opp>;
-<<<<<<< HEAD
 			#cooling-cells = <2>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		cpu1: cpu@1 {
@@ -82,10 +68,7 @@
 			clocks = <&sys_clk 33>;
 			enable-method = "psci";
 			operating-points-v2 = <&cluster1_opp>;
-<<<<<<< HEAD
 			#cooling-cells = <2>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		cpu3: cpu@101 {
@@ -99,11 +82,7 @@
 		};
 	};
 
-<<<<<<< HEAD
 	cluster0_opp: opp-table0 {
-=======
-	cluster0_opp: opp_table0 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "operating-points-v2";
 		opp-shared;
 
@@ -141,11 +120,7 @@
 		};
 	};
 
-<<<<<<< HEAD
 	cluster1_opp: opp-table1 {
-=======
-	cluster1_opp: opp_table1 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "operating-points-v2";
 		opp-shared;
 
@@ -196,14 +171,11 @@
 		};
 	};
 
-<<<<<<< HEAD
 	emmc_pwrseq: emmc-pwrseq {
 		compatible = "mmc-pwrseq-emmc";
 		reset-gpios = <&gpio UNIPHIER_GPIO_PORT(3, 2) GPIO_ACTIVE_LOW>;
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	timer {
 		compatible = "arm,armv8-timer";
 		interrupts = <1 13 4>,
@@ -212,7 +184,6 @@
 			     <1 10 4>;
 	};
 
-<<<<<<< HEAD
 	thermal-zones {
 		cpu-thermal {
 			polling-delay-passive = <250>;	/* 250ms */
@@ -247,8 +218,6 @@
 		};
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	soc@0 {
 		compatible = "simple-bus";
 		#address-cells = <1>;
@@ -263,10 +232,7 @@
 			pinctrl-names = "default";
 			pinctrl-0 = <&pinctrl_uart0>;
 			clocks = <&peri_clk 0>;
-<<<<<<< HEAD
 			resets = <&peri_rst 0>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		serial1: serial@54006900 {
@@ -277,10 +243,7 @@
 			pinctrl-names = "default";
 			pinctrl-0 = <&pinctrl_uart1>;
 			clocks = <&peri_clk 1>;
-<<<<<<< HEAD
 			resets = <&peri_rst 1>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		serial2: serial@54006a00 {
@@ -291,10 +254,7 @@
 			pinctrl-names = "default";
 			pinctrl-0 = <&pinctrl_uart2>;
 			clocks = <&peri_clk 2>;
-<<<<<<< HEAD
 			resets = <&peri_rst 2>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		serial3: serial@54006b00 {
@@ -305,7 +265,6 @@
 			pinctrl-names = "default";
 			pinctrl-0 = <&pinctrl_uart3>;
 			clocks = <&peri_clk 3>;
-<<<<<<< HEAD
 			resets = <&peri_rst 3>;
 		};
 
@@ -412,8 +371,6 @@
 					remote-endpoint = <&i2s_hp>;
 				};
 			};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		adamv@57920000 {
@@ -437,10 +394,7 @@
 			pinctrl-names = "default";
 			pinctrl-0 = <&pinctrl_i2c0>;
 			clocks = <&peri_clk 4>;
-<<<<<<< HEAD
 			resets = <&peri_rst 4>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clock-frequency = <100000>;
 		};
 
@@ -454,10 +408,7 @@
 			pinctrl-names = "default";
 			pinctrl-0 = <&pinctrl_i2c1>;
 			clocks = <&peri_clk 5>;
-<<<<<<< HEAD
 			resets = <&peri_rst 5>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clock-frequency = <100000>;
 		};
 
@@ -468,10 +419,7 @@
 			#size-cells = <0>;
 			interrupts = <0 43 4>;
 			clocks = <&peri_clk 6>;
-<<<<<<< HEAD
 			resets = <&peri_rst 6>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clock-frequency = <400000>;
 		};
 
@@ -485,10 +433,7 @@
 			pinctrl-names = "default";
 			pinctrl-0 = <&pinctrl_i2c3>;
 			clocks = <&peri_clk 7>;
-<<<<<<< HEAD
 			resets = <&peri_rst 7>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clock-frequency = <100000>;
 		};
 
@@ -502,10 +447,7 @@
 			pinctrl-names = "default";
 			pinctrl-0 = <&pinctrl_i2c4>;
 			clocks = <&peri_clk 8>;
-<<<<<<< HEAD
 			resets = <&peri_rst 8>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clock-frequency = <100000>;
 		};
 
@@ -516,10 +458,7 @@
 			#size-cells = <0>;
 			interrupts = <0 25 4>;
 			clocks = <&peri_clk 9>;
-<<<<<<< HEAD
 			resets = <&peri_rst 9>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clock-frequency = <400000>;
 		};
 
@@ -577,30 +516,19 @@
 			pinctrl-names = "default";
 			pinctrl-0 = <&pinctrl_emmc>;
 			clocks = <&sys_clk 4>;
-<<<<<<< HEAD
 			resets = <&sys_rst 4>;
 			bus-width = <8>;
 			mmc-ddr-1_8v;
 			mmc-hs200-1_8v;
 			mmc-pwrseq = <&emmc_pwrseq>;
 			cdns,phy-input-delay-legacy = <9>;
-=======
-			bus-width = <8>;
-			mmc-ddr-1_8v;
-			mmc-hs200-1_8v;
-			cdns,phy-input-delay-legacy = <4>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			cdns,phy-input-delay-mmc-highspeed = <2>;
 			cdns,phy-input-delay-mmc-ddr = <3>;
 			cdns,phy-dll-delay-sdclk = <21>;
 			cdns,phy-dll-delay-sdclk-hsmmc = <21>;
 		};
 
-<<<<<<< HEAD
 		soc_glue: soc-glue@5f800000 {
-=======
-		soc-glue@5f800000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "socionext,uniphier-ld20-soc-glue",
 				     "simple-mfd", "syscon";
 			reg = <0x5f800000 0x2000>;
@@ -610,7 +538,6 @@
 			};
 		};
 
-<<<<<<< HEAD
 		soc-glue@5f900000 {
 			compatible = "socionext,uniphier-ld20-soc-glue-debug",
 				     "simple-mfd";
@@ -629,8 +556,6 @@
 			};
 		};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		aidet: aidet@5fc20000 {
 			compatible = "socionext,uniphier-ld20-aidet";
 			reg = <0x5fc20000 0x200>;
@@ -665,7 +590,6 @@
 			watchdog {
 				compatible = "socionext,uniphier-wdt";
 			};
-<<<<<<< HEAD
 
 			pvtctl: pvtctl {
 				compatible = "socionext,uniphier-ld20-thermal";
@@ -694,8 +618,6 @@
 				#address-cells = <1>;
 				#size-cells = <0>;
 			};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		nand: nand@68000000 {
@@ -707,16 +629,12 @@
 			pinctrl-names = "default";
 			pinctrl-0 = <&pinctrl_nand>;
 			clocks = <&sys_clk 2>;
-<<<<<<< HEAD
 			resets = <&sys_rst 2>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 	};
 };
 
 #include "uniphier-pinctrl.dtsi"
-<<<<<<< HEAD
 
 &pinctrl_aout1 {
 	drive-strength = <4>;	/* default: 3.5mA */
@@ -735,5 +653,3 @@
 		drive-strength = <11>;	/* 11mA */
 	};
 };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

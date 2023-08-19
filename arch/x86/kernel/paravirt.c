@@ -41,10 +41,7 @@
 #include <asm/tlbflush.h>
 #include <asm/timer.h>
 #include <asm/special_insns.h>
-<<<<<<< HEAD
 #include <asm/tlb.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * nop stub, which must not clobber anything *including the stack* to
@@ -125,7 +122,6 @@ unsigned paravirt_patch_jmp(void *insnbuf, const void *target,
 	return 5;
 }
 
-<<<<<<< HEAD
 DEFINE_STATIC_KEY_TRUE(virt_spin_lock_key);
 
 void __init native_pv_lock_init(void)
@@ -138,10 +134,6 @@ void __init native_pv_lock_init(void)
  * Neat trick to map patch type back to the call within the
  * corresponding structure.
  */
-=======
-/* Neat trick to map patch type back to the call within the
- * corresponding structure. */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void *get_call_destination(u8 type)
 {
 	struct paravirt_patch_template tmpl = {
@@ -418,10 +410,7 @@ struct pv_mmu_ops pv_mmu_ops __ro_after_init = {
 	.flush_tlb_kernel = native_flush_tlb_global,
 	.flush_tlb_one_user = native_flush_tlb_one_user,
 	.flush_tlb_others = native_flush_tlb_others,
-<<<<<<< HEAD
 	.tlb_remove_table = (void (*)(struct mmu_gather *, void *))tlb_remove_page,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	.pgd_alloc = __paravirt_pgd_alloc,
 	.pgd_free = paravirt_nop,

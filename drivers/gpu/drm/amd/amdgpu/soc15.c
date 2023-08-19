@@ -34,7 +34,6 @@
 #include "atom.h"
 #include "amd_pcie.h"
 
-<<<<<<< HEAD
 #include "uvd/uvd_7_0_offset.h"
 #include "gc/gc_9_0_offset.h"
 #include "gc/gc_9_0_sh_mask.h"
@@ -44,20 +43,6 @@
 #include "hdp/hdp_4_0_sh_mask.h"
 #include "smuio/smuio_9_0_offset.h"
 #include "smuio/smuio_9_0_sh_mask.h"
-=======
-#include "vega10/soc15ip.h"
-#include "vega10/UVD/uvd_7_0_offset.h"
-#include "vega10/GC/gc_9_0_offset.h"
-#include "vega10/GC/gc_9_0_sh_mask.h"
-#include "vega10/SDMA0/sdma0_4_0_offset.h"
-#include "vega10/SDMA1/sdma1_4_0_offset.h"
-#include "vega10/HDP/hdp_4_0_offset.h"
-#include "vega10/HDP/hdp_4_0_sh_mask.h"
-#include "vega10/MP/mp_9_0_offset.h"
-#include "vega10/MP/mp_9_0_sh_mask.h"
-#include "vega10/SMUIO/smuio_9_0_offset.h"
-#include "vega10/SMUIO/smuio_9_0_sh_mask.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "soc15.h"
 #include "soc15_common.h"
@@ -65,53 +50,16 @@
 #include "gmc_v9_0.h"
 #include "gfxhub_v1_0.h"
 #include "mmhub_v1_0.h"
-<<<<<<< HEAD
 #include "df_v1_7.h"
 #include "df_v3_6.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "vega10_ih.h"
 #include "sdma_v4_0.h"
 #include "uvd_v7_0.h"
 #include "vce_v4_0.h"
 #include "vcn_v1_0.h"
-<<<<<<< HEAD
 #include "dce_virtual.h"
 #include "mxgpu_ai.h"
 
-=======
-#include "amdgpu_powerplay.h"
-#include "dce_virtual.h"
-#include "mxgpu_ai.h"
-
-#define mmFabricConfigAccessControl                                                                    0x0410
-#define mmFabricConfigAccessControl_BASE_IDX                                                           0
-#define mmFabricConfigAccessControl_DEFAULT                                      0x00000000
-//FabricConfigAccessControl
-#define FabricConfigAccessControl__CfgRegInstAccEn__SHIFT                                                     0x0
-#define FabricConfigAccessControl__CfgRegInstAccRegLock__SHIFT                                                0x1
-#define FabricConfigAccessControl__CfgRegInstID__SHIFT                                                        0x10
-#define FabricConfigAccessControl__CfgRegInstAccEn_MASK                                                       0x00000001L
-#define FabricConfigAccessControl__CfgRegInstAccRegLock_MASK                                                  0x00000002L
-#define FabricConfigAccessControl__CfgRegInstID_MASK                                                          0x00FF0000L
-
-
-#define mmDF_PIE_AON0_DfGlobalClkGater                                                                 0x00fc
-#define mmDF_PIE_AON0_DfGlobalClkGater_BASE_IDX                                                        0
-//DF_PIE_AON0_DfGlobalClkGater
-#define DF_PIE_AON0_DfGlobalClkGater__MGCGMode__SHIFT                                                         0x0
-#define DF_PIE_AON0_DfGlobalClkGater__MGCGMode_MASK                                                           0x0000000FL
-
-enum {
-	DF_MGCG_DISABLE = 0,
-	DF_MGCG_ENABLE_00_CYCLE_DELAY =1,
-	DF_MGCG_ENABLE_01_CYCLE_DELAY =2,
-	DF_MGCG_ENABLE_15_CYCLE_DELAY =13,
-	DF_MGCG_ENABLE_31_CYCLE_DELAY =14,
-	DF_MGCG_ENABLE_63_CYCLE_DELAY =15
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define mmMP0_MISC_CGTT_CTRL0                                                                   0x01b9
 #define mmMP0_MISC_CGTT_CTRL0_BASE_IDX                                                          0
 #define mmMP0_MISC_LIGHT_SLEEP_CTRL                                                             0x01ba
@@ -124,20 +72,8 @@ static u32 soc15_pcie_rreg(struct amdgpu_device *adev, u32 reg)
 {
 	unsigned long flags, address, data;
 	u32 r;
-<<<<<<< HEAD
 	address = adev->nbio_funcs->get_pcie_index_offset(adev);
 	data = adev->nbio_funcs->get_pcie_data_offset(adev);
-=======
-	struct nbio_pcie_index_data *nbio_pcie_id;
-
-	if (adev->flags & AMD_IS_APU)
-		nbio_pcie_id = &nbio_v7_0_pcie_index_data;
-	else
-		nbio_pcie_id = &nbio_v6_1_pcie_index_data;
-
-	address = nbio_pcie_id->index_offset;
-	data = nbio_pcie_id->data_offset;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irqsave(&adev->pcie_idx_lock, flags);
 	WREG32(address, reg);
@@ -150,21 +86,9 @@ static u32 soc15_pcie_rreg(struct amdgpu_device *adev, u32 reg)
 static void soc15_pcie_wreg(struct amdgpu_device *adev, u32 reg, u32 v)
 {
 	unsigned long flags, address, data;
-<<<<<<< HEAD
 
 	address = adev->nbio_funcs->get_pcie_index_offset(adev);
 	data = adev->nbio_funcs->get_pcie_data_offset(adev);
-=======
-	struct nbio_pcie_index_data *nbio_pcie_id;
-
-	if (adev->flags & AMD_IS_APU)
-		nbio_pcie_id = &nbio_v7_0_pcie_index_data;
-	else
-		nbio_pcie_id = &nbio_v6_1_pcie_index_data;
-
-	address = nbio_pcie_id->index_offset;
-	data = nbio_pcie_id->data_offset;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irqsave(&adev->pcie_idx_lock, flags);
 	WREG32(address, reg);
@@ -276,58 +200,12 @@ static void soc15_se_cac_wreg(struct amdgpu_device *adev, u32 reg, u32 v)
 
 static u32 soc15_get_config_memsize(struct amdgpu_device *adev)
 {
-<<<<<<< HEAD
 	return adev->nbio_funcs->get_memsize(adev);
 }
 
 static u32 soc15_get_xclk(struct amdgpu_device *adev)
 {
 	return adev->clock.spll.reference_freq;
-=======
-	if (adev->flags & AMD_IS_APU)
-		return nbio_v7_0_get_memsize(adev);
-	else
-		return nbio_v6_1_get_memsize(adev);
-}
-
-static const u32 vega10_golden_init[] =
-{
-};
-
-static const u32 raven_golden_init[] =
-{
-};
-
-static void soc15_init_golden_registers(struct amdgpu_device *adev)
-{
-	/* Some of the registers might be dependent on GRBM_GFX_INDEX */
-	mutex_lock(&adev->grbm_idx_mutex);
-
-	switch (adev->asic_type) {
-	case CHIP_VEGA10:
-		amdgpu_program_register_sequence(adev,
-						 vega10_golden_init,
-						 (const u32)ARRAY_SIZE(vega10_golden_init));
-		break;
-	case CHIP_RAVEN:
-		amdgpu_program_register_sequence(adev,
-						 raven_golden_init,
-						 (const u32)ARRAY_SIZE(raven_golden_init));
-		break;
-	default:
-		break;
-	}
-	mutex_unlock(&adev->grbm_idx_mutex);
-}
-static u32 soc15_get_xclk(struct amdgpu_device *adev)
-{
-	u32 reference_clock = adev->clock.spll.reference_freq;
-
-	if (adev->asic_type == CHIP_RAVEN)
-		return reference_clock / 4;
-
-	return reference_clock;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 
@@ -380,7 +258,6 @@ static bool soc15_read_bios_from_rom(struct amdgpu_device *adev,
 	return true;
 }
 
-<<<<<<< HEAD
 struct soc15_allowed_register_entry {
 	uint32_t hwip;
 	uint32_t inst;
@@ -410,27 +287,6 @@ static struct soc15_allowed_register_entry soc15_allowed_read_registers[] = {
 	{ SOC15_REG_ENTRY(GC, 0, mmCP_CPC_STATUS)},
 	{ SOC15_REG_ENTRY(GC, 0, mmGB_ADDR_CONFIG)},
 	{ SOC15_REG_ENTRY(GC, 0, mmDB_DEBUG2)},
-=======
-static struct amdgpu_allowed_register_entry soc15_allowed_read_registers[] = {
-	{ SOC15_REG_OFFSET(GC, 0, mmGRBM_STATUS)},
-	{ SOC15_REG_OFFSET(GC, 0, mmGRBM_STATUS2)},
-	{ SOC15_REG_OFFSET(GC, 0, mmGRBM_STATUS_SE0)},
-	{ SOC15_REG_OFFSET(GC, 0, mmGRBM_STATUS_SE1)},
-	{ SOC15_REG_OFFSET(GC, 0, mmGRBM_STATUS_SE2)},
-	{ SOC15_REG_OFFSET(GC, 0, mmGRBM_STATUS_SE3)},
-	{ SOC15_REG_OFFSET(SDMA0, 0, mmSDMA0_STATUS_REG)},
-	{ SOC15_REG_OFFSET(SDMA1, 0, mmSDMA1_STATUS_REG)},
-	{ SOC15_REG_OFFSET(GC, 0, mmCP_STAT)},
-	{ SOC15_REG_OFFSET(GC, 0, mmCP_STALLED_STAT1)},
-	{ SOC15_REG_OFFSET(GC, 0, mmCP_STALLED_STAT2)},
-	{ SOC15_REG_OFFSET(GC, 0, mmCP_STALLED_STAT3)},
-	{ SOC15_REG_OFFSET(GC, 0, mmCP_CPF_BUSY_STAT)},
-	{ SOC15_REG_OFFSET(GC, 0, mmCP_CPF_STALLED_STAT1)},
-	{ SOC15_REG_OFFSET(GC, 0, mmCP_CPF_STATUS)},
-	{ SOC15_REG_OFFSET(GC, 0, mmCP_CPC_STALLED_STAT1)},
-	{ SOC15_REG_OFFSET(GC, 0, mmCP_CPC_STATUS)},
-	{ SOC15_REG_OFFSET(GC, 0, mmGB_ADDR_CONFIG)},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static uint32_t soc15_read_indexed_register(struct amdgpu_device *adev, u32 se_num,
@@ -457,20 +313,11 @@ static uint32_t soc15_get_register_value(struct amdgpu_device *adev,
 	if (indexed) {
 		return soc15_read_indexed_register(adev, se_num, sh_num, reg_offset);
 	} else {
-<<<<<<< HEAD
 		if (reg_offset == SOC15_REG_OFFSET(GC, 0, mmGB_ADDR_CONFIG))
 			return adev->gfx.config.gb_addr_config;
 		else if (reg_offset == SOC15_REG_OFFSET(GC, 0, mmDB_DEBUG2))
 			return adev->gfx.config.db_debug2;
 		return RREG32(reg_offset);
-=======
-		switch (reg_offset) {
-		case SOC15_REG_OFFSET(GC, 0, mmGB_ADDR_CONFIG):
-			return adev->gfx.config.gb_addr_config;
-		default:
-			return RREG32(reg_offset);
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -478,7 +325,6 @@ static int soc15_read_register(struct amdgpu_device *adev, u32 se_num,
 			    u32 sh_num, u32 reg_offset, u32 *value)
 {
 	uint32_t i;
-<<<<<<< HEAD
 	struct soc15_allowed_register_entry  *en;
 
 	*value = 0;
@@ -486,12 +332,6 @@ static int soc15_read_register(struct amdgpu_device *adev, u32 se_num,
 		en = &soc15_allowed_read_registers[i];
 		if (reg_offset != (adev->reg_offset[en->hwip][en->inst][en->seg]
 					+ en->reg_offset))
-=======
-
-	*value = 0;
-	for (i = 0; i < ARRAY_SIZE(soc15_allowed_read_registers); i++) {
-		if (reg_offset != soc15_allowed_read_registers[i].reg_offset)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 
 		*value = soc15_get_register_value(adev,
@@ -502,7 +342,6 @@ static int soc15_read_register(struct amdgpu_device *adev, u32 se_num,
 	return -EINVAL;
 }
 
-<<<<<<< HEAD
 
 /**
  * soc15_program_register_sequence - program an array of registers.
@@ -561,42 +400,11 @@ static int soc15_asic_reset(struct amdgpu_device *adev)
 	for (i = 0; i < adev->usec_timeout; i++) {
 		u32 memsize = adev->nbio_funcs->get_memsize(adev);
 
-=======
-static void soc15_gpu_pci_config_reset(struct amdgpu_device *adev)
-{
-	u32 i;
-
-	dev_info(adev->dev, "GPU pci config reset\n");
-
-	/* disable BM */
-	pci_clear_master(adev->pdev);
-	/* reset */
-	amdgpu_pci_config_reset(adev);
-
-	udelay(100);
-
-	/* wait for asic to come out of reset */
-	for (i = 0; i < adev->usec_timeout; i++) {
-		u32 memsize = (adev->flags & AMD_IS_APU) ?
-			nbio_v7_0_get_memsize(adev) :
-			nbio_v6_1_get_memsize(adev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (memsize != 0xffffffff)
 			break;
 		udelay(1);
 	}
 
-<<<<<<< HEAD
-=======
-}
-
-static int soc15_asic_reset(struct amdgpu_device *adev)
-{
-	amdgpu_atombios_scratch_regs_engine_hung(adev, true);
-
-	soc15_gpu_pci_config_reset(adev);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	amdgpu_atombios_scratch_regs_engine_hung(adev, false);
 
 	return 0;
@@ -656,21 +464,10 @@ static void soc15_program_aspm(struct amdgpu_device *adev)
 }
 
 static void soc15_enable_doorbell_aperture(struct amdgpu_device *adev,
-<<<<<<< HEAD
 					   bool enable)
 {
 	adev->nbio_funcs->enable_doorbell_aperture(adev, enable);
 	adev->nbio_funcs->enable_doorbell_selfring_aperture(adev, enable);
-=======
-					bool enable)
-{
-	if (adev->flags & AMD_IS_APU) {
-		nbio_v7_0_enable_doorbell_aperture(adev, enable);
-	} else {
-		nbio_v6_1_enable_doorbell_aperture(adev, enable);
-		nbio_v6_1_enable_doorbell_selfring_aperture(adev, enable);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct amdgpu_ip_block_version vega10_common_ip_block =
@@ -684,7 +481,6 @@ static const struct amdgpu_ip_block_version vega10_common_ip_block =
 
 int soc15_set_ip_blocks(struct amdgpu_device *adev)
 {
-<<<<<<< HEAD
 	/* Set IP register base before any HW register access */
 	switch (adev->asic_type) {
 	case CHIP_VEGA10:
@@ -711,16 +507,12 @@ int soc15_set_ip_blocks(struct amdgpu_device *adev)
 	else
 		adev->df_funcs = &df_v1_7_funcs;
 	adev->nbio_funcs->detect_hw_virt(adev);
-=======
-	nbio_v6_1_detect_hw_virt(adev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (amdgpu_sriov_vf(adev))
 		adev->virt.ops = &xgpu_ai_virt_ops;
 
 	switch (adev->asic_type) {
 	case CHIP_VEGA10:
-<<<<<<< HEAD
 	case CHIP_VEGA12:
 	case CHIP_VEGA20:
 		amdgpu_device_ip_block_add(adev, &vega10_common_ip_block);
@@ -761,33 +553,6 @@ int soc15_set_ip_blocks(struct amdgpu_device *adev)
 		amdgpu_device_ip_block_add(adev, &gfx_v9_0_ip_block);
 		amdgpu_device_ip_block_add(adev, &sdma_v4_0_ip_block);
 		amdgpu_device_ip_block_add(adev, &vcn_v1_0_ip_block);
-=======
-		amdgpu_ip_block_add(adev, &vega10_common_ip_block);
-		amdgpu_ip_block_add(adev, &gmc_v9_0_ip_block);
-		amdgpu_ip_block_add(adev, &vega10_ih_ip_block);
-		if (amdgpu_fw_load_type == 2 || amdgpu_fw_load_type == -1)
-			amdgpu_ip_block_add(adev, &psp_v3_1_ip_block);
-		if (!amdgpu_sriov_vf(adev))
-			amdgpu_ip_block_add(adev, &amdgpu_pp_ip_block);
-		if (adev->enable_virtual_display || amdgpu_sriov_vf(adev))
-			amdgpu_ip_block_add(adev, &dce_virtual_ip_block);
-		amdgpu_ip_block_add(adev, &gfx_v9_0_ip_block);
-		amdgpu_ip_block_add(adev, &sdma_v4_0_ip_block);
-		amdgpu_ip_block_add(adev, &uvd_v7_0_ip_block);
-		amdgpu_ip_block_add(adev, &vce_v4_0_ip_block);
-		break;
-	case CHIP_RAVEN:
-		amdgpu_ip_block_add(adev, &vega10_common_ip_block);
-		amdgpu_ip_block_add(adev, &gmc_v9_0_ip_block);
-		amdgpu_ip_block_add(adev, &vega10_ih_ip_block);
-		amdgpu_ip_block_add(adev, &psp_v10_0_ip_block);
-		amdgpu_ip_block_add(adev, &amdgpu_pp_ip_block);
-		if (adev->enable_virtual_display || amdgpu_sriov_vf(adev))
-			amdgpu_ip_block_add(adev, &dce_virtual_ip_block);
-		amdgpu_ip_block_add(adev, &gfx_v9_0_ip_block);
-		amdgpu_ip_block_add(adev, &sdma_v4_0_ip_block);
-		amdgpu_ip_block_add(adev, &vcn_v1_0_ip_block);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		return -EINVAL;
@@ -798,7 +563,6 @@ int soc15_set_ip_blocks(struct amdgpu_device *adev)
 
 static uint32_t soc15_get_rev_id(struct amdgpu_device *adev)
 {
-<<<<<<< HEAD
 	return adev->nbio_funcs->get_rev_id(adev);
 }
 
@@ -821,12 +585,6 @@ static bool soc15_need_full_reset(struct amdgpu_device *adev)
 {
 	/* change this when we implement soft reset */
 	return true;
-=======
-	if (adev->flags & AMD_IS_APU)
-		return nbio_v7_0_get_rev_id(adev);
-	else
-		return nbio_v6_1_get_rev_id(adev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct amdgpu_asic_funcs soc15_asic_funcs =
@@ -840,20 +598,13 @@ static const struct amdgpu_asic_funcs soc15_asic_funcs =
 	.set_uvd_clocks = &soc15_set_uvd_clocks,
 	.set_vce_clocks = &soc15_set_vce_clocks,
 	.get_config_memsize = &soc15_get_config_memsize,
-<<<<<<< HEAD
 	.flush_hdp = &soc15_flush_hdp,
 	.invalidate_hdp = &soc15_invalidate_hdp,
 	.need_full_reset = &soc15_need_full_reset,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int soc15_common_early_init(void *handle)
 {
-<<<<<<< HEAD
-=======
-	bool psp_enabled = false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
 
 	adev->smc_rreg = NULL;
@@ -871,28 +622,6 @@ static int soc15_common_early_init(void *handle)
 
 	adev->asic_funcs = &soc15_asic_funcs;
 
-<<<<<<< HEAD
-=======
-	if (amdgpu_get_ip_block(adev, AMD_IP_BLOCK_TYPE_PSP) &&
-		(amdgpu_ip_block_mask & (1 << AMD_IP_BLOCK_TYPE_PSP)))
-		psp_enabled = true;
-
-	/*
-	 * nbio need be used for both sdma and gfx9, but only
-	 * initializes once
-	 */
-	switch(adev->asic_type) {
-	case CHIP_VEGA10:
-		nbio_v6_1_init(adev);
-		break;
-	case CHIP_RAVEN:
-		nbio_v7_0_init(adev);
-		break;
-	default:
-		return -EINVAL;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adev->rev_id = soc15_get_rev_id(adev);
 	adev->external_rev_id = 0xFF;
 	switch (adev->asic_type) {
@@ -919,7 +648,6 @@ static int soc15_common_early_init(void *handle)
 		adev->pg_flags = 0;
 		adev->external_rev_id = 0x1;
 		break;
-<<<<<<< HEAD
 	case CHIP_VEGA12:
 		adev->cg_flags = AMD_CG_SUPPORT_GFX_MGCG |
 			AMD_CG_SUPPORT_GFX_MGLS |
@@ -964,8 +692,6 @@ static int soc15_common_early_init(void *handle)
 		adev->pg_flags = 0;
 		adev->external_rev_id = adev->rev_id + 0x28;
 		break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case CHIP_RAVEN:
 		adev->cg_flags = AMD_CG_SUPPORT_GFX_MGCG |
 			AMD_CG_SUPPORT_GFX_MGLS |
@@ -985,7 +711,6 @@ static int soc15_common_early_init(void *handle)
 			AMD_CG_SUPPORT_MC_MGCG |
 			AMD_CG_SUPPORT_MC_LS |
 			AMD_CG_SUPPORT_SDMA_MGCG |
-<<<<<<< HEAD
 			AMD_CG_SUPPORT_SDMA_LS |
 			AMD_CG_SUPPORT_VCN_MGCG;
 
@@ -995,10 +720,6 @@ static int soc15_common_early_init(void *handle)
 			adev->pg_flags |= AMD_PG_SUPPORT_GFX_PG |
 				AMD_PG_SUPPORT_CP |
 				AMD_PG_SUPPORT_RLC_SMU_HS;
-=======
-			AMD_CG_SUPPORT_SDMA_LS;
-		adev->pg_flags = AMD_PG_SUPPORT_SDMA;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		adev->external_rev_id = 0x1;
 		break;
@@ -1012,13 +733,6 @@ static int soc15_common_early_init(void *handle)
 		xgpu_ai_mailbox_set_irq_funcs(adev);
 	}
 
-<<<<<<< HEAD
-=======
-	adev->firmware.load_type = amdgpu_ucode_get_load_type(adev, amdgpu_fw_load_type);
-
-	amdgpu_get_pcie_info(adev);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1051,22 +765,12 @@ static int soc15_common_hw_init(void *handle)
 {
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
 
-<<<<<<< HEAD
-=======
-	/* move the golden regs per IP block */
-	soc15_init_golden_registers(adev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* enable pcie gen2/3 link */
 	soc15_pcie_gen3_enable(adev);
 	/* enable aspm */
 	soc15_program_aspm(adev);
 	/* setup nbio registers */
-<<<<<<< HEAD
 	adev->nbio_funcs->init_registers(adev);
-=======
-	if (!(adev->flags & AMD_IS_APU))
-		nbio_v6_1_init_registers(adev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* enable the doorbell aperture */
 	soc15_enable_doorbell_aperture(adev, true);
 
@@ -1191,35 +895,6 @@ static void soc15_update_rom_medium_grain_clock_gating(struct amdgpu_device *ade
 		WREG32(SOC15_REG_OFFSET(SMUIO, 0, mmCGTT_ROM_CLK_CTRL0), data);
 }
 
-<<<<<<< HEAD
-=======
-static void soc15_update_df_medium_grain_clock_gating(struct amdgpu_device *adev,
-						       bool enable)
-{
-	uint32_t data;
-
-	/* Put DF on broadcast mode */
-	data = RREG32(SOC15_REG_OFFSET(DF, 0, mmFabricConfigAccessControl));
-	data &= ~FabricConfigAccessControl__CfgRegInstAccEn_MASK;
-	WREG32(SOC15_REG_OFFSET(DF, 0, mmFabricConfigAccessControl), data);
-
-	if (enable && (adev->cg_flags & AMD_CG_SUPPORT_DF_MGCG)) {
-		data = RREG32(SOC15_REG_OFFSET(DF, 0, mmDF_PIE_AON0_DfGlobalClkGater));
-		data &= ~DF_PIE_AON0_DfGlobalClkGater__MGCGMode_MASK;
-		data |= DF_MGCG_ENABLE_15_CYCLE_DELAY;
-		WREG32(SOC15_REG_OFFSET(DF, 0, mmDF_PIE_AON0_DfGlobalClkGater), data);
-	} else {
-		data = RREG32(SOC15_REG_OFFSET(DF, 0, mmDF_PIE_AON0_DfGlobalClkGater));
-		data &= ~DF_PIE_AON0_DfGlobalClkGater__MGCGMode_MASK;
-		data |= DF_MGCG_DISABLE;
-		WREG32(SOC15_REG_OFFSET(DF, 0, mmDF_PIE_AON0_DfGlobalClkGater), data);
-	}
-
-	WREG32(SOC15_REG_OFFSET(DF, 0, mmFabricConfigAccessControl),
-	       mmFabricConfigAccessControl_DEFAULT);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int soc15_common_set_clockgating_state(void *handle,
 					    enum amd_clockgating_state state)
 {
@@ -1230,17 +905,11 @@ static int soc15_common_set_clockgating_state(void *handle,
 
 	switch (adev->asic_type) {
 	case CHIP_VEGA10:
-<<<<<<< HEAD
 	case CHIP_VEGA12:
 	case CHIP_VEGA20:
 		adev->nbio_funcs->update_medium_grain_clock_gating(adev,
 				state == AMD_CG_STATE_GATE ? true : false);
 		adev->nbio_funcs->update_medium_grain_light_sleep(adev,
-=======
-		nbio_v6_1_update_medium_grain_clock_gating(adev,
-				state == AMD_CG_STATE_GATE ? true : false);
-		nbio_v6_1_update_medium_grain_light_sleep(adev,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				state == AMD_CG_STATE_GATE ? true : false);
 		soc15_update_hdp_light_sleep(adev,
 				state == AMD_CG_STATE_GATE ? true : false);
@@ -1250,7 +919,6 @@ static int soc15_common_set_clockgating_state(void *handle,
 				state == AMD_CG_STATE_GATE ? true : false);
 		soc15_update_rom_medium_grain_clock_gating(adev,
 				state == AMD_CG_STATE_GATE ? true : false);
-<<<<<<< HEAD
 		adev->df_funcs->update_medium_grain_clock_gating(adev,
 				state == AMD_CG_STATE_GATE ? true : false);
 		break;
@@ -1258,15 +926,6 @@ static int soc15_common_set_clockgating_state(void *handle,
 		adev->nbio_funcs->update_medium_grain_clock_gating(adev,
 				state == AMD_CG_STATE_GATE ? true : false);
 		adev->nbio_funcs->update_medium_grain_light_sleep(adev,
-=======
-		soc15_update_df_medium_grain_clock_gating(adev,
-				state == AMD_CG_STATE_GATE ? true : false);
-		break;
-	case CHIP_RAVEN:
-		nbio_v7_0_update_medium_grain_clock_gating(adev,
-				state == AMD_CG_STATE_GATE ? true : false);
-		nbio_v6_1_update_medium_grain_light_sleep(adev,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				state == AMD_CG_STATE_GATE ? true : false);
 		soc15_update_hdp_light_sleep(adev,
 				state == AMD_CG_STATE_GATE ? true : false);
@@ -1291,11 +950,7 @@ static void soc15_common_get_clockgating_state(void *handle, u32 *flags)
 	if (amdgpu_sriov_vf(adev))
 		*flags = 0;
 
-<<<<<<< HEAD
 	adev->nbio_funcs->get_clockgating_state(adev, flags);
-=======
-	nbio_v6_1_get_clockgating_state(adev, flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* AMD_CG_SUPPORT_HDP_LS */
 	data = RREG32(SOC15_REG_OFFSET(HDP, 0, mmHDP_MEM_POWER_LS));
@@ -1317,14 +972,7 @@ static void soc15_common_get_clockgating_state(void *handle, u32 *flags)
 	if (!(data & CGTT_ROM_CLK_CTRL0__SOFT_OVERRIDE0_MASK))
 		*flags |= AMD_CG_SUPPORT_ROM_MGCG;
 
-<<<<<<< HEAD
 	adev->df_funcs->get_clockgating_state(adev, flags);
-=======
-	/* AMD_CG_SUPPORT_DF_MGCG */
-	data = RREG32(SOC15_REG_OFFSET(DF, 0, mmDF_PIE_AON0_DfGlobalClkGater));
-	if (data & DF_MGCG_ENABLE_15_CYCLE_DELAY)
-		*flags |= AMD_CG_SUPPORT_DF_MGCG;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int soc15_common_set_powergating_state(void *handle,

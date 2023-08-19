@@ -762,7 +762,6 @@ void read_decode_mmu_bcr(void)
 	tmp = read_aux_reg(ARC_REG_MMU_BCR);
 	mmu->ver = (tmp >> 24);
 
-<<<<<<< HEAD
 	if (is_isa_arcompact()) {
 		if (mmu->ver <= 2) {
 			mmu2 = (struct bcr_mmu_1_2 *)&tmp;
@@ -780,23 +779,6 @@ void read_decode_mmu_bcr(void)
 			mmu->u_itlb = mmu3->u_itlb;
 			mmu->sasid = mmu3->sasid;
 		}
-=======
-	if (mmu->ver <= 2) {
-		mmu2 = (struct bcr_mmu_1_2 *)&tmp;
-		mmu->pg_sz_k = TO_KB(0x2000);
-		mmu->sets = 1 << mmu2->sets;
-		mmu->ways = 1 << mmu2->ways;
-		mmu->u_dtlb = mmu2->u_dtlb;
-		mmu->u_itlb = mmu2->u_itlb;
-	} else if (mmu->ver == 3) {
-		mmu3 = (struct bcr_mmu_3 *)&tmp;
-		mmu->pg_sz_k = 1 << (mmu3->pg_sz - 1);
-		mmu->sets = 1 << mmu3->sets;
-		mmu->ways = 1 << mmu3->ways;
-		mmu->u_dtlb = mmu3->u_dtlb;
-		mmu->u_itlb = mmu3->u_itlb;
-		mmu->sasid = mmu3->sasid;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		mmu4 = (struct bcr_mmu_4 *)&tmp;
 		mmu->pg_sz_k = 1 << (mmu4->sz0 - 1);
@@ -838,14 +820,9 @@ int pae40_exist_but_not_enab(void)
 
 void arc_mmu_init(void)
 {
-<<<<<<< HEAD
 	struct cpuinfo_arc_mmu *mmu = &cpuinfo_arc700[smp_processor_id()].mmu;
 	char str[256];
 	int compat = 0;
-=======
-	char str[256];
-	struct cpuinfo_arc_mmu *mmu = &cpuinfo_arc700[smp_processor_id()].mmu;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pr_info("%s", arc_mmu_mumbojumbo(0, str, sizeof(str)));
 
@@ -860,7 +837,6 @@ void arc_mmu_init(void)
 	 */
 	BUILD_BUG_ON(!IS_ALIGNED(STACK_TOP, PMD_SIZE));
 
-<<<<<<< HEAD
 	/*
 	 * Ensure that MMU features assumed by kernel exist in hardware.
 	 * For older ARC700 cpus, it has to be exact match, since the MMU
@@ -876,17 +852,6 @@ void arc_mmu_init(void)
 		compat = 1;
 
 	if (!compat) {
-=======
-	/* For efficiency sake, kernel is compile time built for a MMU ver
-	 * This must match the hardware it is running on.
-	 * Linux built for MMU V2, if run on MMU V1 will break down because V1
-	 *  hardware doesn't understand cmds such as WriteNI, or IVUTLB
-	 * On the other hand, Linux built for V1 if run on MMU V2 will do
-	 *   un-needed workarounds to prevent memcpy thrashing.
-	 * Similarly MMU V3 has new features which won't work on older MMU
-	 */
-	if (mmu->ver != CONFIG_ARC_MMU_VER) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		panic("MMU ver %d doesn't match kernel built for %d...\n",
 		      mmu->ver, CONFIG_ARC_MMU_VER);
 	}

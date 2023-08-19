@@ -4,7 +4,6 @@ Remote Controller devices
 Remote Controller core
 ~~~~~~~~~~~~~~~~~~~~~~
 
-<<<<<<< HEAD
 The remote controller core implements infrastructure to receive and send
 remote controller keyboard keystrokes and mouse events.
 
@@ -85,13 +84,3 @@ Remote controller data structures and functions
 .. kernel-doc:: include/media/rc-core.h
 
 .. kernel-doc:: include/media/rc-map.h
-=======
-.. kernel-doc:: include/media/rc-core.h
-
-.. kernel-doc:: include/media/rc-map.h
-
-LIRC
-~~~~
-
-.. kernel-doc:: include/media/lirc_dev.h
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

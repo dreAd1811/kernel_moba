@@ -197,14 +197,9 @@ static int z2_open(struct block_device *bdev, fmode_t mode)
 		vaddr = (unsigned long)z_remap_nocache_nonser(paddr, size);
 #endif
 		z2ram_map = 
-<<<<<<< HEAD
 			kmalloc_array(size / Z2RAM_CHUNKSIZE,
                                       sizeof(z2ram_map[0]),
                                       GFP_KERNEL);
-=======
-			kmalloc((size/Z2RAM_CHUNKSIZE)*sizeof(z2ram_map[0]),
-				GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if ( z2ram_map == NULL )
 		{
 		    printk( KERN_ERR DEVICE_NAME
@@ -338,11 +333,7 @@ static const struct block_device_operations z2_fops =
 static struct kobject *z2_find(dev_t dev, int *part, void *data)
 {
 	*part = 0;
-<<<<<<< HEAD
 	return get_disk_and_module(z2ram_gendisk);
-=======
-	return get_disk(z2ram_gendisk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct request_queue *z2_queue;

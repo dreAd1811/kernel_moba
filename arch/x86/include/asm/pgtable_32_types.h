@@ -15,11 +15,8 @@
 # include <asm/pgtable-2level_types.h>
 #endif
 
-<<<<<<< HEAD
 #define pgtable_l5_enabled() 0
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define PGDIR_SIZE	(1UL << PGDIR_SHIFT)
 #define PGDIR_MASK	(~(PGDIR_SIZE - 1))
 
@@ -53,7 +50,6 @@ extern bool __vmalloc_start_set; /* set once high_memory is set */
 	((FIXADDR_TOT_START - PAGE_SIZE * (CPU_ENTRY_AREA_PAGES + 1))   \
 	 & PMD_MASK)
 
-<<<<<<< HEAD
 #define LDT_BASE_ADDR		\
 	((CPU_ENTRY_AREA_BASE - PAGE_SIZE) & PMD_MASK)
 
@@ -61,19 +57,11 @@ extern bool __vmalloc_start_set; /* set once high_memory is set */
 
 #define PKMAP_BASE		\
 	((LDT_BASE_ADDR - PAGE_SIZE) & PMD_MASK)
-=======
-#define PKMAP_BASE		\
-	((CPU_ENTRY_AREA_BASE - PAGE_SIZE) & PMD_MASK)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_HIGHMEM
 # define VMALLOC_END	(PKMAP_BASE - 2 * PAGE_SIZE)
 #else
-<<<<<<< HEAD
 # define VMALLOC_END	(LDT_BASE_ADDR - 2 * PAGE_SIZE)
-=======
-# define VMALLOC_END	(CPU_ENTRY_AREA_BASE - 2 * PAGE_SIZE)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 #define MODULES_VADDR	VMALLOC_START

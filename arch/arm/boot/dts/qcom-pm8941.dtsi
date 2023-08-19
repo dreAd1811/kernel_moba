@@ -139,12 +139,9 @@
 			#size-cells = <0>;
 			#io-channel-cells = <1>;
 
-<<<<<<< HEAD
 			bat_temp {
 				reg = <VADC_LR_MUX1_BAT_THERM>;
 			};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			die_temp {
 				reg = <VADC_DIE_TEMP>;
 			};
@@ -160,12 +157,9 @@
 			ref_vdd {
 				reg = <VADC_VDD_VADC>;
 			};
-<<<<<<< HEAD
 			vbat_sns {
 				reg = <VADC_VBAT_SNS>;
 			};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		pm8941_iadc: iadc@3600 {

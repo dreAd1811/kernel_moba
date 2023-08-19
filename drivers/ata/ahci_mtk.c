@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
  * MediaTek AHCI SATA driver
-=======
- * MeidaTek AHCI SATA driver
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Copyright (c) 2017 MediaTek Inc.
  * Author: Ryder Lee <ryder.lee@mediatek.com>
@@ -29,11 +25,7 @@
 #include <linux/reset.h>
 #include "ahci.h"
 
-<<<<<<< HEAD
 #define DRV_NAME		"ahci-mtk"
-=======
-#define DRV_NAME		"ahci"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define SYS_CFG			0x14
 #define SYS_CFG_SATA_MSK	GENMASK(31, 30)
@@ -150,11 +142,7 @@ static int mtk_ahci_probe(struct platform_device *pdev)
 	if (!plat)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	hpriv = ahci_platform_get_resources(pdev, 0);
-=======
-	hpriv = ahci_platform_get_resources(pdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(hpriv))
 		return PTR_ERR(hpriv);
 
@@ -204,9 +192,5 @@ static struct platform_driver mtk_ahci_driver = {
 };
 module_platform_driver(mtk_ahci_driver);
 
-<<<<<<< HEAD
 MODULE_DESCRIPTION("MediaTek SATA AHCI Driver");
-=======
-MODULE_DESCRIPTION("MeidaTek SATA AHCI Driver");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_LICENSE("GPL v2");

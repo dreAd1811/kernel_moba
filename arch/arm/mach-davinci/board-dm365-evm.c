@@ -28,10 +28,7 @@
 #include <linux/spi/spi.h>
 #include <linux/spi/eeprom.h>
 #include <linux/v4l2-dv-timings.h>
-<<<<<<< HEAD
 #include <linux/platform_data/ti-aemif.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/mach-types.h>
 #include <asm/mach/arch.h>
@@ -142,10 +139,7 @@ static struct mtd_partition davinci_nand_partitions[] = {
 };
 
 static struct davinci_nand_pdata davinci_nand_data = {
-<<<<<<< HEAD
 	.core_chipsel		= 0,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.mask_chipsel		= BIT(14),
 	.parts			= davinci_nand_partitions,
 	.nr_parts		= ARRAY_SIZE(davinci_nand_partitions),
@@ -166,7 +160,6 @@ static struct resource davinci_nand_resources[] = {
 	},
 };
 
-<<<<<<< HEAD
 static struct platform_device davinci_aemif_devices[] = {
 	{
 		.name		= "davinci_nand",
@@ -210,18 +203,6 @@ static struct platform_device davinci_aemif_device = {
 	.num_resources		= ARRAY_SIZE(davinci_aemif_resources),
 };
 
-=======
-static struct platform_device davinci_nand_device = {
-	.name			= "davinci_nand",
-	.id			= 0,
-	.num_resources		= ARRAY_SIZE(davinci_nand_resources),
-	.resource		= davinci_nand_resources,
-	.dev			= {
-		.platform_data	= &davinci_nand_data,
-	},
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct at24_platform_data eeprom_info = {
 	.byte_len       = (256*1024) / 8,
 	.page_size      = 64,
@@ -590,13 +571,6 @@ static void __init evm_init_i2c(void)
 	i2c_register_board_info(1, i2c_info, ARRAY_SIZE(i2c_info));
 }
 
-<<<<<<< HEAD
-=======
-static struct platform_device *dm365_evm_nand_devices[] __initdata = {
-	&davinci_nand_device,
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int have_leds(void)
 {
 #ifdef CONFIG_LEDS_CLASS
@@ -684,10 +658,7 @@ static void __init evm_init_cpld(void)
 	u8 mux, resets;
 	const char *label;
 	struct clk *aemif_clk;
-<<<<<<< HEAD
 	int rc;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Make sure we can configure the CPLD through CS1.  Then
 	 * leave it on for later access to MMC and LED registers.
@@ -720,15 +691,10 @@ fail:
 		/* external keypad mux */
 		mux |= BIT(7);
 
-<<<<<<< HEAD
 		rc = platform_device_register(&davinci_aemif_device);
 		if (rc)
 			pr_warn("%s(): error registering the aemif device: %d\n",
 				__func__, rc);
-=======
-		platform_add_devices(dm365_evm_nand_devices,
-				ARRAY_SIZE(dm365_evm_nand_devices));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		/* no OneNAND support yet */
 	}
@@ -794,11 +760,7 @@ static struct spi_eeprom at25640 = {
 	.flags		= EE_ADDR2,
 };
 
-<<<<<<< HEAD
 static const struct spi_board_info dm365_evm_spi_info[] __initconst = {
-=======
-static struct spi_board_info dm365_evm_spi_info[] __initconst = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{
 		.modalias	= "at25",
 		.platform_data	= &at25640,
@@ -813,11 +775,8 @@ static __init void dm365_evm_init(void)
 {
 	int ret;
 
-<<<<<<< HEAD
 	dm365_register_clocks();
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = dm365_gpio_register();
 	if (ret)
 		pr_warn("%s: GPIO init failed: %d\n", __func__, ret);
@@ -851,17 +810,9 @@ MACHINE_START(DAVINCI_DM365_EVM, "DaVinci DM365 EVM")
 	.atag_offset	= 0x100,
 	.map_io		= dm365_evm_map_io,
 	.init_irq	= davinci_irq_init,
-<<<<<<< HEAD
 	.init_time	= dm365_init_time,
 	.init_machine	= dm365_evm_init,
 	.init_late	= davinci_init_late,
 	.dma_zone_size	= SZ_128M,
-=======
-	.init_time	= davinci_timer_init,
-	.init_machine	= dm365_evm_init,
-	.init_late	= davinci_init_late,
-	.dma_zone_size	= SZ_128M,
-	.restart	= davinci_restart,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MACHINE_END
 

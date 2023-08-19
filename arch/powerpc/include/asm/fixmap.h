@@ -15,10 +15,6 @@
 #define _ASM_FIXMAP_H
 
 #ifndef __ASSEMBLY__
-<<<<<<< HEAD
-=======
-#include <linux/kernel.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/page.h>
 #include <asm/pgtable.h>
 #ifdef CONFIG_HIGHMEM

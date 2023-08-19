@@ -358,7 +358,6 @@ fore200e_shutdown(struct fore200e* fore200e)
     case FORE200E_STATE_COMPLETE:
 	kfree(fore200e->stats);
 
-<<<<<<< HEAD
 	/* fall through */
     case FORE200E_STATE_IRQ:
 	free_irq(fore200e->irq, fore200e->atm_dev);
@@ -372,40 +371,20 @@ fore200e_shutdown(struct fore200e* fore200e)
 	fore200e_uninit_bs_queue(fore200e);
 
 	/* fall through */
-=======
-    case FORE200E_STATE_IRQ:
-	free_irq(fore200e->irq, fore200e->atm_dev);
-
-    case FORE200E_STATE_ALLOC_BUF:
-	fore200e_free_rx_buf(fore200e);
-
-    case FORE200E_STATE_INIT_BSQ:
-	fore200e_uninit_bs_queue(fore200e);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     case FORE200E_STATE_INIT_RXQ:
 	fore200e->bus->dma_chunk_free(fore200e, &fore200e->host_rxq.status);
 	fore200e->bus->dma_chunk_free(fore200e, &fore200e->host_rxq.rpd);
 
-<<<<<<< HEAD
 	/* fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     case FORE200E_STATE_INIT_TXQ:
 	fore200e->bus->dma_chunk_free(fore200e, &fore200e->host_txq.status);
 	fore200e->bus->dma_chunk_free(fore200e, &fore200e->host_txq.tpd);
 
-<<<<<<< HEAD
 	/* fall through */
     case FORE200E_STATE_INIT_CMDQ:
 	fore200e->bus->dma_chunk_free(fore200e, &fore200e->host_cmdq.status);
 
 	/* fall through */
-=======
-    case FORE200E_STATE_INIT_CMDQ:
-	fore200e->bus->dma_chunk_free(fore200e, &fore200e->host_cmdq.status);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     case FORE200E_STATE_INITIALIZE:
 	/* nothing to do for that state */
 
@@ -418,10 +397,7 @@ fore200e_shutdown(struct fore200e* fore200e)
     case FORE200E_STATE_MAP:
 	fore200e->bus->unmap(fore200e);
 
-<<<<<<< HEAD
 	/* fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     case FORE200E_STATE_CONFIGURE:
 	/* nothing to do for that state */
 
@@ -1528,22 +1504,12 @@ fore200e_open(struct atm_vcc *vcc)
 static void
 fore200e_close(struct atm_vcc* vcc)
 {
-<<<<<<< HEAD
     struct fore200e*        fore200e = FORE200E_DEV(vcc->dev);
     struct fore200e_vcc*    fore200e_vcc;
-=======
-    struct fore200e_vcc*    fore200e_vcc;
-    struct fore200e*        fore200e;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     struct fore200e_vc_map* vc_map;
     unsigned long           flags;
 
     ASSERT(vcc);
-<<<<<<< HEAD
-=======
-    fore200e = FORE200E_DEV(vcc->dev);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     ASSERT((vcc->vpi >= 0) && (vcc->vpi < 1<<FORE200E_VPI_BITS));
     ASSERT((vcc->vci >= 0) && (vcc->vci < 1<<FORE200E_VCI_BITS));
 
@@ -1588,17 +1554,10 @@ fore200e_close(struct atm_vcc* vcc)
 static int
 fore200e_send(struct atm_vcc *vcc, struct sk_buff *skb)
 {
-<<<<<<< HEAD
     struct fore200e*        fore200e     = FORE200E_DEV(vcc->dev);
     struct fore200e_vcc*    fore200e_vcc = FORE200E_VCC(vcc);
     struct fore200e_vc_map* vc_map;
     struct host_txq*        txq          = &fore200e->host_txq;
-=======
-    struct fore200e*        fore200e;
-    struct fore200e_vcc*    fore200e_vcc;
-    struct fore200e_vc_map* vc_map;
-    struct host_txq*        txq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     struct host_txq_entry*  entry;
     struct tpd*             tpd;
     struct tpd_haddr        tpd_haddr;
@@ -1611,24 +1570,9 @@ fore200e_send(struct atm_vcc *vcc, struct sk_buff *skb)
     unsigned char*          data;
     unsigned long           flags;
 
-<<<<<<< HEAD
     ASSERT(vcc);
     ASSERT(fore200e);
     ASSERT(fore200e_vcc);
-=======
-    if (!vcc)
-        return -EINVAL;
-
-    fore200e = FORE200E_DEV(vcc->dev);
-    fore200e_vcc = FORE200E_VCC(vcc);
-
-    if (!fore200e)
-        return -EINVAL;
-
-    txq = &fore200e->host_txq;
-    if (!fore200e_vcc)
-        return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
     if (!test_bit(ATM_VF_READY, &vcc->flags)) {
 	DPRINTK(1, "VC %d.%d.%d not ready for tx\n", vcc->itf, vcc->vpi, vcc->vpi);
@@ -2150,12 +2094,8 @@ static int fore200e_alloc_rx_buf(struct fore200e *fore200e)
 	    DPRINTK(2, "rx buffers %d / %d are being allocated\n", scheme, magn);
 
 	    /* allocate the array of receive buffers */
-<<<<<<< HEAD
 	    buffer = bsq->buffer = kcalloc(nbr, sizeof(struct buffer),
                                            GFP_KERNEL);
-=======
-	    buffer = bsq->buffer = kzalloc(nbr * sizeof(struct buffer), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	    if (buffer == NULL)
 		return -ENOMEM;
@@ -3144,13 +3084,8 @@ fore200e_proc_read(struct atm_dev *dev, loff_t* pos, char* page)
 	    ASSERT(fore200e_vcc);
 
 	    len = sprintf(page,
-<<<<<<< HEAD
 			  "  %pK  %03d %05d %1d   %09lu %05d/%05d      %09lu %05d/%05d\n",
 			  vcc,
-=======
-			  "  %08x  %03d %05d %1d   %09lu %05d/%05d      %09lu %05d/%05d\n",
-			  (u32)(unsigned long)vcc,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  vcc->vpi, vcc->vci, fore200e_atm2fore_aal(vcc->qos.aal),
 			  fore200e_vcc->tx_pdu,
 			  fore200e_vcc->tx_min_pdu > 0xFFFF ? 0 : fore200e_vcc->tx_min_pdu,

@@ -184,30 +184,17 @@ out_unlock:
 	return ret;
 }
 
-<<<<<<< HEAD
 static __poll_t gnss_poll(struct file *file, poll_table *wait)
 {
 	struct gnss_device *gdev = file->private_data;
 	__poll_t mask = 0;
-=======
-static unsigned int gnss_poll(struct file *file, poll_table *wait)
-{
-	struct gnss_device *gdev = file->private_data;
-	unsigned int mask = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	poll_wait(file, &gdev->read_queue, wait);
 
 	if (!kfifo_is_empty(&gdev->read_fifo))
-<<<<<<< HEAD
 		mask |= EPOLLIN | EPOLLRDNORM;
 	if (gdev->disconnected)
 		mask |= EPOLLHUP;
-=======
-		mask |= POLLIN | POLLRDNORM;
-	if (gdev->disconnected)
-		mask |= POLLHUP;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return mask;
 }

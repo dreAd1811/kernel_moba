@@ -68,15 +68,11 @@
 #define ALT_FW_FABRIC_NAME "hfi1_fabric_d.fw"
 #define ALT_FW_SBUS_NAME "hfi1_sbus_d.fw"
 #define ALT_FW_PCIE_NAME "hfi1_pcie_d.fw"
-<<<<<<< HEAD
 
 MODULE_FIRMWARE(DEFAULT_FW_8051_NAME_ASIC);
 MODULE_FIRMWARE(DEFAULT_FW_FABRIC_NAME);
 MODULE_FIRMWARE(DEFAULT_FW_SBUS_NAME);
 MODULE_FIRMWARE(DEFAULT_FW_PCIE_NAME);
-=======
-#define HOST_INTERFACE_VERSION 1
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static uint fw_8051_load = 1;
 static uint fw_fabric_serdes_load = 1;
@@ -121,15 +117,12 @@ struct css_header {
 #define MU_SIZE		8
 #define EXPONENT_SIZE	4
 
-<<<<<<< HEAD
 /* size of platform configuration partition */
 #define MAX_PLATFORM_CONFIG_FILE_SIZE 4096
 
 /* size of file of plaform configuration encoded in format version 4 */
 #define PLATFORM_CONFIG_FORMAT_4_FILE_SIZE 528
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* the file itself */
 struct firmware_file {
 	struct css_header css_header;
@@ -1404,7 +1397,6 @@ int acquire_hw_mutex(struct hfi1_devdata *dd)
 	unsigned long timeout;
 	int try = 0;
 	u8 mask = 1 << dd->hfi1_id;
-<<<<<<< HEAD
 	u8 user = (u8)read_csr(dd, ASIC_CFG_MUTEX);
 
 	if (user == mask) {
@@ -1413,9 +1405,6 @@ int acquire_hw_mutex(struct hfi1_devdata *dd)
 			    (u32)mask);
 		return 0;
 	}
-=======
-	u8 user;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 retry:
 	timeout = msecs_to_jiffies(HM_TIMEOUT) + jiffies;
@@ -1446,7 +1435,6 @@ retry:
 
 void release_hw_mutex(struct hfi1_devdata *dd)
 {
-<<<<<<< HEAD
 	u8 mask = 1 << dd->hfi1_id;
 	u8 user = (u8)read_csr(dd, ASIC_CFG_MUTEX);
 
@@ -1456,9 +1444,6 @@ void release_hw_mutex(struct hfi1_devdata *dd)
 			    (u32)user, (u32)mask);
 	else
 		write_csr(dd, ASIC_CFG_MUTEX, 0);
-=======
-	write_csr(dd, ASIC_CFG_MUTEX, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* return the given resource bit(s) as a mask for the given HFI */
@@ -1773,11 +1758,7 @@ static int check_meta_version(struct hfi1_devdata *dd, u32 *system_table)
 	ver_start /= 8;
 	meta_ver = *((u8 *)system_table + ver_start) & ((1 << ver_len) - 1);
 
-<<<<<<< HEAD
 	if (meta_ver < 4) {
-=======
-	if (meta_ver < 5) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dd_dev_info(
 			dd, "%s:Please update platform config\n", __func__);
 		return -EINVAL;
@@ -1818,7 +1799,6 @@ int parse_platform_config(struct hfi1_devdata *dd)
 
 	/* Field is file size in DWORDs */
 	file_length = (*ptr) * 4;
-<<<<<<< HEAD
 
 	/*
 	 * Length can't be larger than partition size. Assume platform
@@ -1833,9 +1813,6 @@ int parse_platform_config(struct hfi1_devdata *dd)
 	} else {
 		ptr++;
 	}
-=======
-	ptr++;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (file_length > dd->platform_config.size) {
 		dd_dev_info(dd, "%s:File claims to be larger than read size\n",
@@ -1850,12 +1827,8 @@ int parse_platform_config(struct hfi1_devdata *dd)
 
 	/*
 	 * In both cases where we proceed, using the self-reported file length
-<<<<<<< HEAD
 	 * is the safer option. In case of old format a predefined value is
 	 * being used.
-=======
-	 * is the safer option
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	while (ptr < (u32 *)(dd->platform_config.data + file_length)) {
 		header1 = *ptr;

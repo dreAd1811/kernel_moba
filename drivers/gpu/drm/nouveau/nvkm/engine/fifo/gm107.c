@@ -24,7 +24,6 @@
 #include "gk104.h"
 #include "changk104.h"
 
-<<<<<<< HEAD
 #include <core/gpuobj.h>
 
 #include <nvif/class.h>
@@ -44,8 +43,6 @@ gm107_fifo_runlist = {
 	.chan = gm107_fifo_runlist_chan,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 const struct nvkm_enum
 gm107_fifo_fault_engine[] = {
 	{ 0x01, "DISPLAY" },
@@ -71,24 +68,14 @@ gm107_fifo_fault_engine[] = {
 
 static const struct gk104_fifo_func
 gm107_fifo = {
-<<<<<<< HEAD
 	.init_pbdma_timeout = gk208_fifo_init_pbdma_timeout,
 	.fault.access = gk104_fifo_fault_access,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.fault.engine = gm107_fifo_fault_engine,
 	.fault.reason = gk104_fifo_fault_reason,
 	.fault.hubclient = gk104_fifo_fault_hubclient,
 	.fault.gpcclient = gk104_fifo_fault_gpcclient,
-<<<<<<< HEAD
 	.runlist = &gm107_fifo_runlist,
 	.chan = {{0,0,KEPLER_CHANNEL_GPFIFO_B}, gk104_fifo_gpfifo_new },
-=======
-	.chan = {
-		&gk110_fifo_gpfifo_oclass,
-		NULL
-	},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int

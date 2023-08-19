@@ -3,11 +3,7 @@
 # Makefile for the Linux/MIPS-specific parts of the memory manager.
 #
 
-<<<<<<< HEAD
 obj-y				+= cache.o extable.o fault.o \
-=======
-obj-y				+= cache.o dma-default.o extable.o fault.o \
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   gup.o init.o mmap.o page.o page-funcs.o \
 				   pgtable.o tlbex.o tlbex-fault.o tlb-funcs.o
 
@@ -21,10 +17,7 @@ obj-$(CONFIG_32BIT)		+= ioremap.o pgtable-32.o
 obj-$(CONFIG_64BIT)		+= pgtable-64.o
 obj-$(CONFIG_HIGHMEM)		+= highmem.o
 obj-$(CONFIG_HUGETLB_PAGE)	+= hugetlbpage.o
-<<<<<<< HEAD
 obj-$(CONFIG_DMA_NONCOHERENT)	+= dma-noncoherent.o
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 obj-$(CONFIG_CPU_R4K_CACHE_TLB) += c-r4k.o cex-gen.o tlb-r4k.o
 obj-$(CONFIG_CPU_R3000)		+= c-r3k.o tlb-r3k.o

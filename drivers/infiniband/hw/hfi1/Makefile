@@ -14,7 +14,6 @@ hfi1-y := affinity.o chip.o device.o driver.o efivar.o \
 	qp.o qsfp.o rc.o ruc.o sdma.o sysfs.o trace.o \
 	uc.o ud.o user_exp_rcv.o user_pages.o user_sdma.o verbs.o \
 	verbs_txreq.o vnic_main.o vnic_sdma.o
-<<<<<<< HEAD
 
 ifdef CONFIG_DEBUG_FS
 hfi1-y += debugfs.o
@@ -24,9 +23,6 @@ hfi1-y += fault.o
 endif
 endif
 endif
-=======
-hfi1-$(CONFIG_DEBUG_FS) += debugfs.o
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 CFLAGS_trace.o = -I$(src)
 ifdef MVERSION

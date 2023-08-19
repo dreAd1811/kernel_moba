@@ -98,20 +98,12 @@ static void xtensa_mx_irq_unmask(struct irq_data *d)
 
 static void xtensa_mx_irq_enable(struct irq_data *d)
 {
-<<<<<<< HEAD
-=======
-	variant_irq_enable(d->hwirq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	xtensa_mx_irq_unmask(d);
 }
 
 static void xtensa_mx_irq_disable(struct irq_data *d)
 {
 	xtensa_mx_irq_mask(d);
-<<<<<<< HEAD
-=======
-	variant_irq_disable(d->hwirq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void xtensa_mx_irq_ack(struct irq_data *d)

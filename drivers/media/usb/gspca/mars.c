@@ -378,13 +378,8 @@ static void sd_pkt_scan(struct gspca_dev *gspca_dev,
 			    || data[5 + p] == 0x65
 			    || data[5 + p] == 0x66
 			    || data[5 + p] == 0x67) {
-<<<<<<< HEAD
 				gspca_dbg(gspca_dev, D_PACK, "sof offset: %d len: %d\n",
 					  p, len);
-=======
-				PDEBUG(D_PACK, "sof offset: %d len: %d",
-					p, len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				gspca_frame_add(gspca_dev, LAST_PACKET,
 						data, p);
 

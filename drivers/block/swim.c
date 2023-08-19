@@ -798,11 +798,7 @@ static struct kobject *floppy_find(dev_t dev, int *part, void *data)
 		return NULL;
 
 	*part = 0;
-<<<<<<< HEAD
 	return get_disk_and_module(swd->unit[drive].disk);
-=======
-	return get_disk(swd->unit[drive].disk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int swim_add_floppy(struct swim_priv *swd, enum drive_location location)

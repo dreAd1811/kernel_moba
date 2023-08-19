@@ -801,33 +801,12 @@ SUN_PI_(lda	[%l4] ASI_M_MMUREGS, %l5)	! read sfsr last
 	RESTORE_ALL
 
 	.align	4
-<<<<<<< HEAD
-=======
-	.globl	sys_nis_syscall
-sys_nis_syscall:
-	mov	%o7, %l5
-	add	%sp, STACKFRAME_SZ, %o0		! pt_regs *regs arg
-	call	c_sys_nis_syscall
-	 mov	%l5, %o7
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 sunos_execv:
 	.globl	sunos_execv
 	b	sys_execve
 	 clr	%i2
 
 	.align	4
-<<<<<<< HEAD
-=======
-	.globl	sys_sparc_pipe
-sys_sparc_pipe:
-	mov	%o7, %l5
-	add	%sp, STACKFRAME_SZ, %o0		! pt_regs *regs arg
-	call	sparc_pipe
-	 mov	%l5, %o7
-
-	.align	4
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.globl	sys_sigstack
 sys_sigstack:
 	mov	%o7, %l5

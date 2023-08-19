@@ -29,11 +29,7 @@
 #include <linux/string.h>
 #include <linux/uaccess.h>
 
-<<<<<<< HEAD
 #include <media/dvb_ringbuffer.h>
-=======
-#include "dvb_ringbuffer.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define PKT_READY 0
 #define PKT_DISPOSED 1
@@ -61,11 +57,7 @@ int dvb_ringbuffer_empty(struct dvb_ringbuffer *rbuf)
 	 * this pairs with smp_store_release() in dvb_ringbuffer_write(),
 	 * dvb_ringbuffer_write_user(), or dvb_ringbuffer_reset()
 	 *
-<<<<<<< HEAD
 	 * for memory barriers also see Documentation/core-api/circular-buffers.rst
-=======
-	 * for memory barriers also see Documentation/circular-buffers.txt
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	return (rbuf->pread == smp_load_acquire(&rbuf->pwrite));
 }
@@ -76,20 +68,12 @@ ssize_t dvb_ringbuffer_free(struct dvb_ringbuffer *rbuf)
 {
 	ssize_t free;
 
-<<<<<<< HEAD
 	/* READ_ONCE() to load read pointer on writer side
-=======
-	/* ACCESS_ONCE() to load read pointer on writer side
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * this pairs with smp_store_release() in dvb_ringbuffer_read(),
 	 * dvb_ringbuffer_read_user(), dvb_ringbuffer_flush(),
 	 * or dvb_ringbuffer_reset()
 	 */
-<<<<<<< HEAD
 	free = READ_ONCE(rbuf->pread) - rbuf->pwrite;
-=======
-	free = ACCESS_ONCE(rbuf->pread) - rbuf->pwrite;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (free <= 0)
 		free += rbuf->size;
 	return free-1;
@@ -161,11 +145,7 @@ ssize_t dvb_ringbuffer_read_user(struct dvb_ringbuffer *rbuf, u8 __user *buf, si
 		todo -= split;
 		/* smp_store_release() for read pointer update to ensure
 		 * that buf is not overwritten until read is complete,
-<<<<<<< HEAD
 		 * this pairs with READ_ONCE() in dvb_ringbuffer_free()
-=======
-		 * this pairs with ACCESS_ONCE() in dvb_ringbuffer_free()
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 */
 		smp_store_release(&rbuf->pread, 0);
 	}
@@ -190,11 +170,7 @@ void dvb_ringbuffer_read(struct dvb_ringbuffer *rbuf, u8 *buf, size_t len)
 		todo -= split;
 		/* smp_store_release() for read pointer update to ensure
 		 * that buf is not overwritten until read is complete,
-<<<<<<< HEAD
 		 * this pairs with READ_ONCE() in dvb_ringbuffer_free()
-=======
-		 * this pairs with ACCESS_ONCE() in dvb_ringbuffer_free()
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 */
 		smp_store_release(&rbuf->pread, 0);
 	}
@@ -231,11 +207,7 @@ ssize_t dvb_ringbuffer_write(struct dvb_ringbuffer *rbuf, const u8 *buf, size_t 
 }
 
 ssize_t dvb_ringbuffer_write_user(struct dvb_ringbuffer *rbuf,
-<<<<<<< HEAD
 				  const u8 __user *buf, size_t len)
-=======
-					const u8 __user *buf, size_t len)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	size_t todo = len;
 	size_t split;

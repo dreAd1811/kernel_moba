@@ -59,10 +59,7 @@
 #include <linux/mm.h>
 #include <linux/ethtool.h>
 #include <linux/proc_fs.h>
-<<<<<<< HEAD
 #include <linux/if_arp.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/in.h>
 #include <linux/ip.h>
 #include <linux/ipv6.h>
@@ -79,10 +76,7 @@
 #include <asm/firmware.h>
 #include <linux/workqueue.h>
 #include <linux/if_vlan.h>
-<<<<<<< HEAD
 #include <linux/utsname.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "ibmvnic.h"
 
@@ -96,11 +90,7 @@ MODULE_VERSION(IBMVNIC_DRIVER_VERSION);
 
 static int ibmvnic_version = IBMVNIC_INITIAL_VERSION;
 static int ibmvnic_remove(struct vio_dev *);
-<<<<<<< HEAD
 static void release_sub_crqs(struct ibmvnic_adapter *, bool);
-=======
-static void release_sub_crqs(struct ibmvnic_adapter *);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ibmvnic_reset_crq(struct ibmvnic_adapter *);
 static int ibmvnic_send_crq_init(struct ibmvnic_adapter *);
 static int ibmvnic_reenable_crq_queue(struct ibmvnic_adapter *);
@@ -119,27 +109,17 @@ static union sub_crq *ibmvnic_next_scrq(struct ibmvnic_adapter *,
 					struct ibmvnic_sub_crq_queue *);
 static int ibmvnic_poll(struct napi_struct *napi, int data);
 static void send_map_query(struct ibmvnic_adapter *adapter);
-<<<<<<< HEAD
 static int send_request_map(struct ibmvnic_adapter *, dma_addr_t, __be32, u8);
 static int send_request_unmap(struct ibmvnic_adapter *, u8);
 static int send_login(struct ibmvnic_adapter *adapter);
-=======
-static void send_request_map(struct ibmvnic_adapter *, dma_addr_t, __be32, u8);
-static void send_request_unmap(struct ibmvnic_adapter *, u8);
-static void send_login(struct ibmvnic_adapter *adapter);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void send_cap_queries(struct ibmvnic_adapter *adapter);
 static int init_sub_crqs(struct ibmvnic_adapter *);
 static int init_sub_crq_irqs(struct ibmvnic_adapter *adapter);
 static int ibmvnic_init(struct ibmvnic_adapter *);
-<<<<<<< HEAD
 static int ibmvnic_reset_init(struct ibmvnic_adapter *);
 static void release_crq_queue(struct ibmvnic_adapter *);
 static int __ibmvnic_set_mac(struct net_device *netdev, struct sockaddr *p);
 static int init_crq_queue(struct ibmvnic_adapter *adapter);
-=======
-static void release_crq_queue(struct ibmvnic_adapter *);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct ibmvnic_stat {
 	char name[ETH_GSTRING_LEN];
@@ -193,10 +173,7 @@ static int alloc_long_term_buff(struct ibmvnic_adapter *adapter,
 				struct ibmvnic_long_term_buff *ltb, int size)
 {
 	struct device *dev = &adapter->vdev->dev;
-<<<<<<< HEAD
 	int rc;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ltb->size = size;
 	ltb->buff = dma_alloc_coherent(dev, ltb->size, &ltb->addr,
@@ -210,26 +187,18 @@ static int alloc_long_term_buff(struct ibmvnic_adapter *adapter,
 	adapter->map_id++;
 
 	init_completion(&adapter->fw_done);
-<<<<<<< HEAD
 	rc = send_request_map(adapter, ltb->addr,
 			      ltb->size, ltb->map_id);
 	if (rc) {
 		dma_free_coherent(dev, ltb->size, ltb->buff, ltb->addr);
 		return rc;
 	}
-=======
-	send_request_map(adapter, ltb->addr,
-			 ltb->size, ltb->map_id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wait_for_completion(&adapter->fw_done);
 
 	if (adapter->fw_done_rc) {
 		dev_err(dev, "Couldn't map long term buffer,rc = %d\n",
 			adapter->fw_done_rc);
-<<<<<<< HEAD
 		dma_free_coherent(dev, ltb->size, ltb->buff, ltb->addr);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -1;
 	}
 	return 0;
@@ -252,7 +221,6 @@ static void free_long_term_buff(struct ibmvnic_adapter *adapter,
 static int reset_long_term_buff(struct ibmvnic_adapter *adapter,
 				struct ibmvnic_long_term_buff *ltb)
 {
-<<<<<<< HEAD
 	int rc;
 
 	memset(ltb->buff, 0, ltb->size);
@@ -261,12 +229,6 @@ static int reset_long_term_buff(struct ibmvnic_adapter *adapter,
 	rc = send_request_map(adapter, ltb->addr, ltb->size, ltb->map_id);
 	if (rc)
 		return rc;
-=======
-	memset(ltb->buff, 0, ltb->size);
-
-	init_completion(&adapter->fw_done);
-	send_request_map(adapter, ltb->addr, ltb->size, ltb->map_id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wait_for_completion(&adapter->fw_done);
 
 	if (adapter->fw_done_rc) {
@@ -367,36 +329,20 @@ static void replenish_rx_pool(struct ibmvnic_adapter *adapter,
 	return;
 
 failure:
-<<<<<<< HEAD
 	if (lpar_rc != H_PARAMETER && lpar_rc != H_CLOSED)
 		dev_err_ratelimited(dev, "rx: replenish packet buffer failed\n");
 	pool->free_map[pool->next_free] = index;
 	pool->rx_buff[index].skb = NULL;
-=======
-	dev_info(dev, "replenish pools failure\n");
-	pool->free_map[pool->next_free] = index;
-	pool->rx_buff[index].skb = NULL;
-	if (!dma_mapping_error(dev, dma_addr))
-		dma_unmap_single(dev, dma_addr, pool->buff_size,
-				 DMA_FROM_DEVICE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_kfree_skb_any(skb);
 	adapter->replenish_add_buff_failure++;
 	atomic_add(buffers_added, &pool->available);
 
-<<<<<<< HEAD
 	if (lpar_rc == H_CLOSED || adapter->failover_pending) {
 		/* Disable buffer pool replenishment and report carrier off if
 		 * queue is closed or pending failover.
 		 * Firmware guarantees that a signal will be sent to the
 		 * driver, triggering a reset.
-=======
-	if (lpar_rc == H_CLOSED) {
-		/* Disable buffer pool replenishment and report carrier off if
-		 * queue is closed. Firmware guarantees that a signal will
-		 * be sent to the driver, triggering a reset.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 */
 		deactivate_rx_pools(adapter);
 		netif_carrier_off(adapter->netdev);
@@ -419,32 +365,21 @@ static void release_stats_buffers(struct ibmvnic_adapter *adapter)
 {
 	kfree(adapter->tx_stats_buffers);
 	kfree(adapter->rx_stats_buffers);
-<<<<<<< HEAD
 	adapter->tx_stats_buffers = NULL;
 	adapter->rx_stats_buffers = NULL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int init_stats_buffers(struct ibmvnic_adapter *adapter)
 {
 	adapter->tx_stats_buffers =
-<<<<<<< HEAD
 				kcalloc(IBMVNIC_MAX_QUEUES,
-=======
-				kcalloc(adapter->req_tx_queues,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					sizeof(struct ibmvnic_tx_queue_stats),
 					GFP_KERNEL);
 	if (!adapter->tx_stats_buffers)
 		return -ENOMEM;
 
 	adapter->rx_stats_buffers =
-<<<<<<< HEAD
 				kcalloc(IBMVNIC_MAX_QUEUES,
-=======
-				kcalloc(adapter->req_rx_queues,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					sizeof(struct ibmvnic_rx_queue_stats),
 					GFP_KERNEL);
 	if (!adapter->rx_stats_buffers)
@@ -489,13 +424,10 @@ static int reset_rx_pools(struct ibmvnic_adapter *adapter)
 	struct ibmvnic_rx_pool *rx_pool;
 	int rx_scrqs;
 	int i, j, rc;
-<<<<<<< HEAD
 	u64 *size_array;
 
 	size_array = (u64 *)((u8 *)(adapter->login_rsp_buf) +
 		be32_to_cpu(adapter->login_rsp_buf->off_rxadd_buff_size));
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rx_scrqs = be32_to_cpu(adapter->login_rsp_buf->num_rxadd_subcrqs);
 	for (i = 0; i < rx_scrqs; i++) {
@@ -503,7 +435,6 @@ static int reset_rx_pools(struct ibmvnic_adapter *adapter)
 
 		netdev_dbg(adapter->netdev, "Re-setting rx_pool[%d]\n", i);
 
-<<<<<<< HEAD
 		if (rx_pool->buff_size != be64_to_cpu(size_array[i])) {
 			free_long_term_buff(adapter, &rx_pool->long_term_buff);
 			rx_pool->buff_size = be64_to_cpu(size_array[i]);
@@ -516,9 +447,6 @@ static int reset_rx_pools(struct ibmvnic_adapter *adapter)
 						  &rx_pool->long_term_buff);
 		}
 
-=======
-		rc = reset_long_term_buff(adapter, &rx_pool->long_term_buff);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (rc)
 			return rc;
 
@@ -540,21 +468,12 @@ static int reset_rx_pools(struct ibmvnic_adapter *adapter)
 static void release_rx_pools(struct ibmvnic_adapter *adapter)
 {
 	struct ibmvnic_rx_pool *rx_pool;
-<<<<<<< HEAD
-=======
-	int rx_scrqs;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i, j;
 
 	if (!adapter->rx_pool)
 		return;
 
-<<<<<<< HEAD
 	for (i = 0; i < adapter->num_active_rx_pools; i++) {
-=======
-	rx_scrqs = be32_to_cpu(adapter->login_rsp_buf->num_rxadd_subcrqs);
-	for (i = 0; i < rx_scrqs; i++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rx_pool = &adapter->rx_pool[i];
 
 		netdev_dbg(adapter->netdev, "Releasing rx_pool[%d]\n", i);
@@ -577,10 +496,7 @@ static void release_rx_pools(struct ibmvnic_adapter *adapter)
 
 	kfree(adapter->rx_pool);
 	adapter->rx_pool = NULL;
-<<<<<<< HEAD
 	adapter->num_active_rx_pools = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int init_rx_pools(struct net_device *netdev)
@@ -605,11 +521,8 @@ static int init_rx_pools(struct net_device *netdev)
 		return -1;
 	}
 
-<<<<<<< HEAD
 	adapter->num_active_rx_pools = rxadd_subcrqs;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < rxadd_subcrqs; i++) {
 		rx_pool = &adapter->rx_pool[i];
 
@@ -656,7 +569,6 @@ static int init_rx_pools(struct net_device *netdev)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int reset_one_tx_pool(struct ibmvnic_adapter *adapter,
 			     struct ibmvnic_tx_pool *tx_pool)
 {
@@ -692,39 +604,11 @@ static int reset_tx_pools(struct ibmvnic_adapter *adapter)
 		rc = reset_one_tx_pool(adapter, &adapter->tx_pool[i]);
 		if (rc)
 			return rc;
-=======
-static int reset_tx_pools(struct ibmvnic_adapter *adapter)
-{
-	struct ibmvnic_tx_pool *tx_pool;
-	int tx_scrqs;
-	int i, j, rc;
-
-	tx_scrqs = be32_to_cpu(adapter->login_rsp_buf->num_txsubm_subcrqs);
-	for (i = 0; i < tx_scrqs; i++) {
-		netdev_dbg(adapter->netdev, "Re-setting tx_pool[%d]\n", i);
-
-		tx_pool = &adapter->tx_pool[i];
-
-		rc = reset_long_term_buff(adapter, &tx_pool->long_term_buff);
-		if (rc)
-			return rc;
-
-		memset(tx_pool->tx_buff, 0,
-		       adapter->req_tx_entries_per_subcrq *
-		       sizeof(struct ibmvnic_tx_buff));
-
-		for (j = 0; j < adapter->req_tx_entries_per_subcrq; j++)
-			tx_pool->free_map[j] = j;
-
-		tx_pool->consumer_index = 0;
-		tx_pool->producer_index = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
 }
 
-<<<<<<< HEAD
 static void release_vpd_data(struct ibmvnic_adapter *adapter)
 {
 	if (!adapter->vpd)
@@ -747,34 +631,17 @@ static void release_one_tx_pool(struct ibmvnic_adapter *adapter,
 static void release_tx_pools(struct ibmvnic_adapter *adapter)
 {
 	int i;
-=======
-static void release_tx_pools(struct ibmvnic_adapter *adapter)
-{
-	struct ibmvnic_tx_pool *tx_pool;
-	int i, tx_scrqs;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!adapter->tx_pool)
 		return;
 
-<<<<<<< HEAD
 	for (i = 0; i < adapter->num_active_tx_pools; i++) {
 		release_one_tx_pool(adapter, &adapter->tx_pool[i]);
 		release_one_tx_pool(adapter, &adapter->tso_pool[i]);
-=======
-	tx_scrqs = be32_to_cpu(adapter->login_rsp_buf->num_txsubm_subcrqs);
-	for (i = 0; i < tx_scrqs; i++) {
-		netdev_dbg(adapter->netdev, "Releasing tx_pool[%d]\n", i);
-		tx_pool = &adapter->tx_pool[i];
-		kfree(tx_pool->tx_buff);
-		free_long_term_buff(adapter, &tx_pool->long_term_buff);
-		kfree(tx_pool->free_map);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	kfree(adapter->tx_pool);
 	adapter->tx_pool = NULL;
-<<<<<<< HEAD
 	kfree(adapter->tso_pool);
 	adapter->tso_pool = NULL;
 	adapter->num_active_tx_pools = 0;
@@ -810,22 +677,13 @@ static int init_one_tx_pool(struct net_device *netdev,
 	tx_pool->buf_size = buf_size;
 
 	return 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int init_tx_pools(struct net_device *netdev)
 {
 	struct ibmvnic_adapter *adapter = netdev_priv(netdev);
-<<<<<<< HEAD
 	int tx_subcrqs;
 	int i, rc;
-=======
-	struct device *dev = &adapter->vdev->dev;
-	struct ibmvnic_tx_pool *tx_pool;
-	int tx_subcrqs;
-	int i, j;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tx_subcrqs = be32_to_cpu(adapter->login_rsp_buf->num_txsubm_subcrqs);
 	adapter->tx_pool = kcalloc(tx_subcrqs,
@@ -833,7 +691,6 @@ static int init_tx_pools(struct net_device *netdev)
 	if (!adapter->tx_pool)
 		return -1;
 
-<<<<<<< HEAD
 	adapter->tso_pool = kcalloc(tx_subcrqs,
 				    sizeof(struct ibmvnic_tx_pool), GFP_KERNEL);
 	if (!adapter->tso_pool)
@@ -857,68 +714,11 @@ static int init_tx_pools(struct net_device *netdev)
 			release_tx_pools(adapter);
 			return rc;
 		}
-=======
-	for (i = 0; i < tx_subcrqs; i++) {
-		tx_pool = &adapter->tx_pool[i];
-
-		netdev_dbg(adapter->netdev,
-			   "Initializing tx_pool[%d], %lld buffs\n",
-			   i, adapter->req_tx_entries_per_subcrq);
-
-		tx_pool->tx_buff = kcalloc(adapter->req_tx_entries_per_subcrq,
-					   sizeof(struct ibmvnic_tx_buff),
-					   GFP_KERNEL);
-		if (!tx_pool->tx_buff) {
-			dev_err(dev, "tx pool buffer allocation failed\n");
-			release_tx_pools(adapter);
-			return -1;
-		}
-
-		if (alloc_long_term_buff(adapter, &tx_pool->long_term_buff,
-					 adapter->req_tx_entries_per_subcrq *
-					 adapter->req_mtu)) {
-			release_tx_pools(adapter);
-			return -1;
-		}
-
-		tx_pool->free_map = kcalloc(adapter->req_tx_entries_per_subcrq,
-					    sizeof(int), GFP_KERNEL);
-		if (!tx_pool->free_map) {
-			release_tx_pools(adapter);
-			return -1;
-		}
-
-		for (j = 0; j < adapter->req_tx_entries_per_subcrq; j++)
-			tx_pool->free_map[j] = j;
-
-		tx_pool->consumer_index = 0;
-		tx_pool->producer_index = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-static void release_error_buffers(struct ibmvnic_adapter *adapter)
-{
-	struct device *dev = &adapter->vdev->dev;
-	struct ibmvnic_error_buff *error_buff, *tmp;
-	unsigned long flags;
-
-	spin_lock_irqsave(&adapter->error_list_lock, flags);
-	list_for_each_entry_safe(error_buff, tmp, &adapter->errors, list) {
-		list_del(&error_buff->list);
-		dma_unmap_single(dev, error_buff->dma, error_buff->len,
-				 DMA_FROM_DEVICE);
-		kfree(error_buff->buff);
-		kfree(error_buff);
-	}
-	spin_unlock_irqrestore(&adapter->error_list_lock, flags);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void ibmvnic_napi_enable(struct ibmvnic_adapter *adapter)
 {
 	int i;
@@ -947,7 +747,6 @@ static void ibmvnic_napi_disable(struct ibmvnic_adapter *adapter)
 	adapter->napi_enabled = false;
 }
 
-<<<<<<< HEAD
 static int init_napi(struct ibmvnic_adapter *adapter)
 {
 	int i;
@@ -988,13 +787,10 @@ static void release_napi(struct ibmvnic_adapter *adapter)
 	adapter->napi_enabled = false;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ibmvnic_login(struct net_device *netdev)
 {
 	struct ibmvnic_adapter *adapter = netdev_priv(netdev);
 	unsigned long timeout = msecs_to_jiffies(30000);
-<<<<<<< HEAD
 	int retry_count = 0;
 	bool retry;
 	int rc;
@@ -1028,21 +824,10 @@ static int ibmvnic_login(struct net_device *netdev)
 			netdev_dbg(netdev,
 				   "Received partial success, retrying...\n");
 			adapter->init_done_rc = 0;
-=======
-	struct device *dev = &adapter->vdev->dev;
-	int rc;
-
-	do {
-		if (adapter->renegotiate) {
-			adapter->renegotiate = false;
-			release_sub_crqs(adapter);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			reinit_completion(&adapter->init_done);
 			send_cap_queries(adapter);
 			if (!wait_for_completion_timeout(&adapter->init_done,
 							 timeout)) {
-<<<<<<< HEAD
 				netdev_warn(netdev,
 					    "Capabilities query timed out\n");
 				return -1;
@@ -1072,38 +857,10 @@ static int ibmvnic_login(struct net_device *netdev)
 		__ibmvnic_set_mac(netdev, &adapter->desired.mac);
 		adapter->mac_change_pending = false;
 	}
-=======
-				dev_err(dev, "Capabilities query timeout\n");
-				return -1;
-			}
-			rc = init_sub_crqs(adapter);
-			if (rc) {
-				dev_err(dev,
-					"Initialization of SCRQ's failed\n");
-				return -1;
-			}
-			rc = init_sub_crq_irqs(adapter);
-			if (rc) {
-				dev_err(dev,
-					"Initialization of SCRQ's irqs failed\n");
-				return -1;
-			}
-		}
-
-		reinit_completion(&adapter->init_done);
-		send_login(adapter);
-		if (!wait_for_completion_timeout(&adapter->init_done,
-						 timeout)) {
-			dev_err(dev, "Login timeout\n");
-			return -1;
-		}
-	} while (adapter->renegotiate);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
 static void release_login_buffer(struct ibmvnic_adapter *adapter)
 {
 	kfree(adapter->login_buf);
@@ -1119,33 +876,12 @@ static void release_login_rsp_buffer(struct ibmvnic_adapter *adapter)
 static void release_resources(struct ibmvnic_adapter *adapter)
 {
 	release_vpd_data(adapter);
-=======
-static void release_resources(struct ibmvnic_adapter *adapter)
-{
-	int i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	release_tx_pools(adapter);
 	release_rx_pools(adapter);
 
-<<<<<<< HEAD
 	release_napi(adapter);
 	release_login_rsp_buffer(adapter);
-=======
-	release_stats_token(adapter);
-	release_stats_buffers(adapter);
-	release_error_buffers(adapter);
-
-	if (adapter->napi) {
-		for (i = 0; i < adapter->req_rx_queues; i++) {
-			if (&adapter->napi[i]) {
-				netdev_dbg(adapter->netdev,
-					   "Releasing napi[%d]\n", i);
-				netif_napi_del(&adapter->napi[i]);
-			}
-		}
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int set_link_state(struct ibmvnic_adapter *adapter, u8 link_state)
@@ -1183,13 +919,10 @@ static int set_link_state(struct ibmvnic_adapter *adapter, u8 link_state)
 			/* Partuial success, delay and re-send */
 			mdelay(1000);
 			resend = true;
-<<<<<<< HEAD
 		} else if (adapter->init_done_rc) {
 			netdev_warn(netdev, "Unable to set link state, rc=%d\n",
 				    adapter->init_done_rc);
 			return adapter->init_done_rc;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	} while (resend);
 
@@ -1217,7 +950,6 @@ static int set_real_num_queues(struct net_device *netdev)
 	return rc;
 }
 
-<<<<<<< HEAD
 static int ibmvnic_get_vpd(struct ibmvnic_adapter *adapter)
 {
 	struct device *dev = &adapter->vdev->dev;
@@ -1281,18 +1013,11 @@ static int init_resources(struct ibmvnic_adapter *adapter)
 {
 	struct net_device *netdev = adapter->netdev;
 	int rc;
-=======
-static int init_resources(struct ibmvnic_adapter *adapter)
-{
-	struct net_device *netdev = adapter->netdev;
-	int i, rc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rc = set_real_num_queues(netdev);
 	if (rc)
 		return rc;
 
-<<<<<<< HEAD
 	adapter->vpd = kzalloc(sizeof(*adapter->vpd), GFP_KERNEL);
 	if (!adapter->vpd)
 		return -ENOMEM;
@@ -1310,28 +1035,6 @@ static int init_resources(struct ibmvnic_adapter *adapter)
 	if (rc)
 		return rc;
 
-=======
-	rc = init_stats_buffers(adapter);
-	if (rc)
-		return rc;
-
-	rc = init_stats_token(adapter);
-	if (rc)
-		return rc;
-
-	adapter->map_id = 1;
-	adapter->napi = kcalloc(adapter->req_rx_queues,
-				sizeof(struct napi_struct), GFP_KERNEL);
-	if (!adapter->napi)
-		return -ENOMEM;
-
-	for (i = 0; i < adapter->req_rx_queues; i++) {
-		netdev_dbg(netdev, "Adding napi[%d]\n", i);
-		netif_napi_add(netdev, &adapter->napi[i], ibmvnic_poll,
-			       NAPI_POLL_WEIGHT);
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	send_map_query(adapter);
 
 	rc = init_rx_pools(netdev);
@@ -1359,24 +1062,14 @@ static int __ibmvnic_open(struct net_device *netdev)
 		netdev_dbg(netdev, "Enabling rx_scrq[%d] irq\n", i);
 		if (prev_state == VNIC_CLOSED)
 			enable_irq(adapter->rx_scrq[i]->irq);
-<<<<<<< HEAD
 		enable_scrq_irq(adapter, adapter->rx_scrq[i]);
-=======
-		else
-			enable_scrq_irq(adapter, adapter->rx_scrq[i]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	for (i = 0; i < adapter->req_tx_queues; i++) {
 		netdev_dbg(netdev, "Enabling tx_scrq[%d] irq\n", i);
 		if (prev_state == VNIC_CLOSED)
 			enable_irq(adapter->tx_scrq[i]->irq);
-<<<<<<< HEAD
 		enable_scrq_irq(adapter, adapter->tx_scrq[i]);
-=======
-		else
-			enable_scrq_irq(adapter, adapter->tx_scrq[i]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	rc = set_link_state(adapter, IBMVNIC_LOGICAL_LNK_UP);
@@ -1403,7 +1096,6 @@ static int ibmvnic_open(struct net_device *netdev)
 	struct ibmvnic_adapter *adapter = netdev_priv(netdev);
 	int rc;
 
-<<<<<<< HEAD
 	/* If device failover is pending, just set device state and return.
 	 * Device operation will be handled by reset routine.
 	 */
@@ -1416,35 +1108,17 @@ static int ibmvnic_open(struct net_device *netdev)
 		rc = ibmvnic_login(netdev);
 		if (rc)
 			return rc;
-=======
-	mutex_lock(&adapter->reset_lock);
-
-	if (adapter->state != VNIC_CLOSED) {
-		rc = ibmvnic_login(netdev);
-		if (rc) {
-			mutex_unlock(&adapter->reset_lock);
-			return rc;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		rc = init_resources(adapter);
 		if (rc) {
 			netdev_err(netdev, "failed to initialize resources\n");
 			release_resources(adapter);
-<<<<<<< HEAD
-=======
-			mutex_unlock(&adapter->reset_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return rc;
 		}
 	}
 
 	rc = __ibmvnic_open(netdev);
 	netif_carrier_on(netdev);
-<<<<<<< HEAD
-=======
-	mutex_unlock(&adapter->reset_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return rc;
 }
@@ -1452,10 +1126,7 @@ static int ibmvnic_open(struct net_device *netdev)
 static void clean_rx_pools(struct ibmvnic_adapter *adapter)
 {
 	struct ibmvnic_rx_pool *rx_pool;
-<<<<<<< HEAD
 	struct ibmvnic_rx_buff *rx_buff;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 rx_entries;
 	int rx_scrqs;
 	int i, j;
@@ -1463,41 +1134,26 @@ static void clean_rx_pools(struct ibmvnic_adapter *adapter)
 	if (!adapter->rx_pool)
 		return;
 
-<<<<<<< HEAD
 	rx_scrqs = adapter->num_active_rx_pools;
-=======
-	rx_scrqs = be32_to_cpu(adapter->login_rsp_buf->num_rxadd_subcrqs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rx_entries = adapter->req_rx_add_entries_per_subcrq;
 
 	/* Free any remaining skbs in the rx buffer pools */
 	for (i = 0; i < rx_scrqs; i++) {
 		rx_pool = &adapter->rx_pool[i];
-<<<<<<< HEAD
 		if (!rx_pool || !rx_pool->rx_buff)
-=======
-		if (!rx_pool)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 
 		netdev_dbg(adapter->netdev, "Cleaning rx_pool[%d]\n", i);
 		for (j = 0; j < rx_entries; j++) {
-<<<<<<< HEAD
 			rx_buff = &rx_pool->rx_buff[j];
 			if (rx_buff && rx_buff->skb) {
 				dev_kfree_skb_any(rx_buff->skb);
 				rx_buff->skb = NULL;
-=======
-			if (rx_pool->rx_buff[j].skb) {
-				dev_kfree_skb_any(rx_pool->rx_buff[j].skb);
-				rx_pool->rx_buff[j].skb = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		}
 	}
 }
 
-<<<<<<< HEAD
 static void clean_one_tx_pool(struct ibmvnic_adapter *adapter,
 			      struct ibmvnic_tx_pool *tx_pool)
 {
@@ -1559,50 +1215,14 @@ static void ibmvnic_disable_irqs(struct ibmvnic_adapter *adapter)
 					   "Disabling rx_scrq[%d] irq\n", i);
 				disable_scrq_irq(adapter, adapter->rx_scrq[i]);
 				disable_irq(adapter->rx_scrq[i]->irq);
-=======
-static void clean_tx_pools(struct ibmvnic_adapter *adapter)
-{
-	struct ibmvnic_tx_pool *tx_pool;
-	u64 tx_entries;
-	int tx_scrqs;
-	int i, j;
-
-	if (!adapter->tx_pool)
-		return;
-
-	tx_scrqs = be32_to_cpu(adapter->login_rsp_buf->num_txsubm_subcrqs);
-	tx_entries = adapter->req_tx_entries_per_subcrq;
-
-	/* Free any remaining skbs in the tx buffer pools */
-	for (i = 0; i < tx_scrqs; i++) {
-		tx_pool = &adapter->tx_pool[i];
-		if (!tx_pool)
-			continue;
-
-		netdev_dbg(adapter->netdev, "Cleaning tx_pool[%d]\n", i);
-		for (j = 0; j < tx_entries; j++) {
-			if (tx_pool->tx_buff[j].skb) {
-				dev_kfree_skb_any(tx_pool->tx_buff[j].skb);
-				tx_pool->tx_buff[j].skb = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		}
 	}
 }
 
-<<<<<<< HEAD
 static void ibmvnic_cleanup(struct net_device *netdev)
 {
 	struct ibmvnic_adapter *adapter = netdev_priv(netdev);
-=======
-static int __ibmvnic_close(struct net_device *netdev)
-{
-	struct ibmvnic_adapter *adapter = netdev_priv(netdev);
-	int rc = 0;
-	int i;
-
-	adapter->state = VNIC_CLOSING;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* ensure that transmissions are stopped if called by do_reset */
 	if (adapter->resetting)
@@ -1611,7 +1231,6 @@ static int __ibmvnic_close(struct net_device *netdev)
 		netif_tx_stop_all_queues(netdev);
 
 	ibmvnic_napi_disable(adapter);
-<<<<<<< HEAD
 	ibmvnic_disable_irqs(adapter);
 
 	clean_rx_pools(adapter);
@@ -1629,45 +1248,6 @@ static int __ibmvnic_close(struct net_device *netdev)
 		return rc;
 	adapter->state = VNIC_CLOSED;
 	return 0;
-=======
-
-	if (adapter->tx_scrq) {
-		for (i = 0; i < adapter->req_tx_queues; i++)
-			if (adapter->tx_scrq[i]->irq) {
-				netdev_dbg(adapter->netdev,
-					   "Disabling tx_scrq[%d] irq\n", i);
-				disable_irq(adapter->tx_scrq[i]->irq);
-			}
-	}
-
-	rc = set_link_state(adapter, IBMVNIC_LOGICAL_LNK_DN);
-	if (rc)
-		return rc;
-
-	if (adapter->rx_scrq) {
-		for (i = 0; i < adapter->req_rx_queues; i++) {
-			int retries = 10;
-
-			while (pending_scrq(adapter, adapter->rx_scrq[i])) {
-				retries--;
-				mdelay(100);
-
-				if (retries == 0)
-					break;
-			}
-
-			if (adapter->rx_scrq[i]->irq) {
-				netdev_dbg(adapter->netdev,
-					   "Disabling rx_scrq[%d] irq\n", i);
-				disable_irq(adapter->rx_scrq[i]->irq);
-			}
-		}
-	}
-	clean_rx_pools(adapter);
-	clean_tx_pools(adapter);
-	adapter->state = VNIC_CLOSED;
-	return rc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int ibmvnic_close(struct net_device *netdev)
@@ -1675,7 +1255,6 @@ static int ibmvnic_close(struct net_device *netdev)
 	struct ibmvnic_adapter *adapter = netdev_priv(netdev);
 	int rc;
 
-<<<<<<< HEAD
 	/* If device failover is pending, just set device state and return.
 	 * Device operation will be handled by reset routine.
 	 */
@@ -1686,11 +1265,6 @@ static int ibmvnic_close(struct net_device *netdev)
 
 	rc = __ibmvnic_close(netdev);
 	ibmvnic_cleanup(netdev);
-=======
-	mutex_lock(&adapter->reset_lock);
-	rc = __ibmvnic_close(netdev);
-	mutex_unlock(&adapter->reset_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return rc;
 }
@@ -1712,14 +1286,10 @@ static int build_hdr_data(u8 hdr_field, struct sk_buff *skb,
 	int len = 0;
 	u8 *hdr;
 
-<<<<<<< HEAD
 	if (skb_vlan_tagged(skb) && !skb_vlan_tag_present(skb))
 		hdr_len[0] = sizeof(struct vlan_ethhdr);
 	else
 		hdr_len[0] = sizeof(struct ethhdr);
-=======
-	hdr_len[0] = sizeof(struct ethhdr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (skb->protocol == htons(ETH_P_IP)) {
 		hdr_len[1] = ip_hdr(skb)->ihl * 4;
@@ -1733,12 +1303,9 @@ static int build_hdr_data(u8 hdr_field, struct sk_buff *skb,
 			hdr_len[2] = tcp_hdrlen(skb);
 		else if (ipv6_hdr(skb)->nexthdr == IPPROTO_UDP)
 			hdr_len[2] = sizeof(struct udphdr);
-<<<<<<< HEAD
 	} else if (skb->protocol == htons(ETH_P_ARP)) {
 		hdr_len[1] = arp_hdr_len(skb->dev);
 		hdr_len[2] = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	memset(hdr_data, 0, 120);
@@ -1838,7 +1405,6 @@ static void build_hdr_descs_arr(struct ibmvnic_tx_buff *txbuff,
 			 txbuff->indir_arr + 1);
 }
 
-<<<<<<< HEAD
 static int ibmvnic_xmit_workarounds(struct sk_buff *skb,
 				    struct net_device *netdev)
 {
@@ -1854,8 +1420,6 @@ static int ibmvnic_xmit_workarounds(struct sk_buff *skb,
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
 {
 	struct ibmvnic_adapter *adapter = netdev_priv(netdev);
@@ -1879,10 +1443,7 @@ static int ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
 	unsigned char *dst;
 	u64 *handle_array;
 	int index = 0;
-<<<<<<< HEAD
 	u8 proto = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = 0;
 
 	if (adapter->resetting) {
@@ -1896,7 +1457,6 @@ static int ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
 		goto out;
 	}
 
-<<<<<<< HEAD
 	if (ibmvnic_xmit_workarounds(skb, netdev)) {
 		tx_dropped++;
 		tx_send_failed++;
@@ -1908,16 +1468,12 @@ static int ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
 	else
 		tx_pool = &adapter->tx_pool[queue_num];
 
-=======
-	tx_pool = &adapter->tx_pool[queue_num];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tx_scrq = adapter->tx_scrq[queue_num];
 	txq = netdev_get_tx_queue(netdev, skb_get_queue_mapping(skb));
 	handle_array = (u64 *)((u8 *)(adapter->login_rsp_buf) +
 		be32_to_cpu(adapter->login_rsp_buf->off_txsubm_subcrqs));
 
 	index = tx_pool->free_map[tx_pool->consumer_index];
-<<<<<<< HEAD
 
 	if (index == IBMVNIC_INVALID_MAP) {
 		dev_kfree_skb_any(skb);
@@ -1956,17 +1512,6 @@ static int ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
 
 	tx_pool->consumer_index =
 	    (tx_pool->consumer_index + 1) % tx_pool->num_buffers;
-=======
-	offset = index * adapter->req_mtu;
-	dst = tx_pool->long_term_buff.buff + offset;
-	memset(dst, 0, adapter->req_mtu);
-	skb_copy_from_linear_data(skb, dst, skb->len);
-	data_dma_addr = tx_pool->long_term_buff.addr + offset;
-
-	tx_pool->consumer_index =
-	    (tx_pool->consumer_index + 1) %
-		adapter->req_tx_entries_per_subcrq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tx_buff = &tx_pool->tx_buff[index];
 	tx_buff->skb = skb;
@@ -1982,16 +1527,12 @@ static int ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
 	tx_crq.v1.n_crq_elem = 1;
 	tx_crq.v1.n_sge = 1;
 	tx_crq.v1.flags1 = IBMVNIC_TX_COMP_NEEDED;
-<<<<<<< HEAD
 
 	if (skb_is_gso(skb))
 		tx_crq.v1.correlator =
 			cpu_to_be32(index | IBMVNIC_TSO_POOL_MASK);
 	else
 		tx_crq.v1.correlator = cpu_to_be32(index);
-=======
-	tx_crq.v1.correlator = cpu_to_be32(index);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tx_crq.v1.dma_reg = cpu_to_be16(tx_pool->long_term_buff.map_id);
 	tx_crq.v1.sge_len = cpu_to_be32(skb->len);
 	tx_crq.v1.ioba = cpu_to_be64(data_dma_addr);
@@ -2002,7 +1543,6 @@ static int ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
 	}
 
 	if (skb->protocol == htons(ETH_P_IP)) {
-<<<<<<< HEAD
 		tx_crq.v1.flags1 |= IBMVNIC_TX_PROT_IPV4;
 		proto = ip_hdr(skb)->protocol;
 	} else if (skb->protocol == htons(ETH_P_IPV6)) {
@@ -2014,24 +1554,11 @@ static int ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
 		tx_crq.v1.flags1 |= IBMVNIC_TX_PROT_TCP;
 	else if (proto == IPPROTO_UDP)
 		tx_crq.v1.flags1 |= IBMVNIC_TX_PROT_UDP;
-=======
-		if (ip_hdr(skb)->version == 4)
-			tx_crq.v1.flags1 |= IBMVNIC_TX_PROT_IPV4;
-		else if (ip_hdr(skb)->version == 6)
-			tx_crq.v1.flags1 |= IBMVNIC_TX_PROT_IPV6;
-
-		if (ip_hdr(skb)->protocol == IPPROTO_TCP)
-			tx_crq.v1.flags1 |= IBMVNIC_TX_PROT_TCP;
-		else if (ip_hdr(skb)->protocol != IPPROTO_TCP)
-			tx_crq.v1.flags1 |= IBMVNIC_TX_PROT_UDP;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (skb->ip_summed == CHECKSUM_PARTIAL) {
 		tx_crq.v1.flags1 |= IBMVNIC_TX_CHKSUM_OFFLOAD;
 		hdrs += 2;
 	}
-<<<<<<< HEAD
 	if (skb_is_gso(skb)) {
 		tx_crq.v1.flags1 |= IBMVNIC_TX_LSO;
 		tx_crq.v1.mss = cpu_to_be16(skb_shinfo(skb)->gso_size);
@@ -2042,14 +1569,6 @@ static int ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
 		build_hdr_descs_arr(tx_buff, &num_entries, *hdrs);
 		tx_crq.v1.n_crq_elem = num_entries;
 		tx_buff->num_entries = num_entries;
-=======
-	/* determine if l2/3/4 headers are sent to firmware */
-	if ((*hdrs >> 7) & 1 &&
-	    (skb->protocol == htons(ETH_P_IP) ||
-	     skb->protocol == htons(ETH_P_IPV6))) {
-		build_hdr_descs_arr(tx_buff, &num_entries, *hdrs);
-		tx_crq.v1.n_crq_elem = num_entries;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		tx_buff->indir_arr[0] = tx_crq;
 		tx_buff->indir_dma = dma_map_single(dev, tx_buff->indir_arr,
 						    sizeof(tx_buff->indir_arr),
@@ -2062,28 +1581,19 @@ static int ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
 			tx_map_failed++;
 			tx_dropped++;
 			ret = NETDEV_TX_OK;
-<<<<<<< HEAD
 			goto tx_err_out;
-=======
-			goto out;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		lpar_rc = send_subcrq_indirect(adapter, handle_array[queue_num],
 					       (u64)tx_buff->indir_dma,
 					       (u64)num_entries);
-<<<<<<< HEAD
 		dma_unmap_single(dev, tx_buff->indir_dma,
 				 sizeof(tx_buff->indir_arr), DMA_TO_DEVICE);
 	} else {
 		tx_buff->num_entries = num_entries;
-=======
-	} else {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		lpar_rc = send_subcrq(adapter, handle_array[queue_num],
 				      &tx_crq);
 	}
 	if (lpar_rc != H_SUCCESS) {
-<<<<<<< HEAD
 		if (lpar_rc != H_CLOSED && lpar_rc != H_PARAMETER)
 			dev_err_ratelimited(dev, "tx: send failed\n");
 		dev_kfree_skb_any(skb);
@@ -2092,21 +1602,6 @@ static int ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
 		if (lpar_rc == H_CLOSED || adapter->failover_pending) {
 			/* Disable TX and report carrier off if queue is closed
 			 * or pending failover.
-=======
-		dev_err(dev, "tx failed with code %ld\n", lpar_rc);
-
-		if (tx_pool->consumer_index == 0)
-			tx_pool->consumer_index =
-				adapter->req_tx_entries_per_subcrq - 1;
-		else
-			tx_pool->consumer_index--;
-
-		dev_kfree_skb_any(skb);
-		tx_buff->skb = NULL;
-
-		if (lpar_rc == H_CLOSED) {
-			/* Disable TX and report carrier off if queue is closed.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 * Firmware guarantees that a signal will be sent to the
 			 * driver, triggering a reset or some other action.
 			 */
@@ -2117,21 +1612,12 @@ static int ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
 		tx_send_failed++;
 		tx_dropped++;
 		ret = NETDEV_TX_OK;
-<<<<<<< HEAD
 		goto tx_err_out;
 	}
 
 	if (atomic_add_return(num_entries, &tx_scrq->used)
 					>= adapter->req_tx_entries_per_subcrq) {
 		netdev_dbg(netdev, "Stopping queue %d\n", queue_num);
-=======
-		goto out;
-	}
-
-	if (atomic_inc_return(&tx_scrq->used)
-					>= adapter->req_tx_entries_per_subcrq) {
-		netdev_info(netdev, "Stopping queue %d\n", queue_num);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		netif_stop_subqueue(netdev, queue_num);
 	}
 
@@ -2139,7 +1625,6 @@ static int ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
 	tx_bytes += skb->len;
 	txq->trans_start = jiffies;
 	ret = NETDEV_TX_OK;
-<<<<<<< HEAD
 	goto out;
 
 tx_err_out:
@@ -2150,9 +1635,6 @@ tx_err_out:
 	else
 		tx_pool->consumer_index--;
 	tx_pool->free_map[tx_pool->consumer_index] = index;
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	netdev->stats.tx_dropped += tx_dropped;
 	netdev->stats.tx_bytes += tx_bytes;
@@ -2209,19 +1691,12 @@ static void ibmvnic_set_multi(struct net_device *netdev)
 	}
 }
 
-<<<<<<< HEAD
 static int __ibmvnic_set_mac(struct net_device *netdev, struct sockaddr *p)
-=======
-static int ibmvnic_set_mac(struct net_device *netdev, void *p)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ibmvnic_adapter *adapter = netdev_priv(netdev);
 	struct sockaddr *addr = p;
 	union ibmvnic_crq crq;
-<<<<<<< HEAD
 	int rc;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!is_valid_ether_addr(addr->sa_data))
 		return -EADDRNOTAVAIL;
@@ -2230,7 +1705,6 @@ static int ibmvnic_set_mac(struct net_device *netdev, void *p)
 	crq.change_mac_addr.first = IBMVNIC_CRQ_CMD;
 	crq.change_mac_addr.cmd = CHANGE_MAC_ADDR;
 	ether_addr_copy(&crq.change_mac_addr.mac_addr[0], addr->sa_data);
-<<<<<<< HEAD
 
 	init_completion(&adapter->fw_done);
 	rc = ibmvnic_send_crq(adapter, &crq);
@@ -2256,11 +1730,6 @@ static int ibmvnic_set_mac(struct net_device *netdev, void *p)
 	rc = __ibmvnic_set_mac(netdev, addr);
 
 	return rc;
-=======
-	ibmvnic_send_crq(adapter, &crq);
-	/* netdev->dev_addr is changed in handle_change_mac_rsp function */
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -2270,11 +1739,8 @@ static int ibmvnic_set_mac(struct net_device *netdev, void *p)
 static int do_reset(struct ibmvnic_adapter *adapter,
 		    struct ibmvnic_rwi *rwi, u32 reset_state)
 {
-<<<<<<< HEAD
 	u64 old_num_rx_queues, old_num_tx_queues;
 	u64 old_num_rx_slots, old_num_tx_slots;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct net_device *netdev = adapter->netdev;
 	int i, rc;
 
@@ -2284,7 +1750,6 @@ static int do_reset(struct ibmvnic_adapter *adapter,
 	netif_carrier_off(netdev);
 	adapter->reset_reason = rwi->reset_reason;
 
-<<<<<<< HEAD
 	old_num_rx_queues = adapter->req_rx_queues;
 	old_num_tx_queues = adapter->req_tx_queues;
 	old_num_rx_slots = adapter->req_rx_add_entries_per_subcrq;
@@ -2306,17 +1771,6 @@ static int do_reset(struct ibmvnic_adapter *adapter,
 		release_sub_crqs(adapter, 1);
 		release_crq_queue(adapter);
 	}
-=======
-	if (rwi->reset_reason == VNIC_RESET_MOBILITY) {
-		rc = ibmvnic_reenable_crq_queue(adapter);
-		if (rc)
-			return 0;
-	}
-
-	rc = __ibmvnic_close(netdev);
-	if (rc)
-		return rc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (adapter->reset_reason != VNIC_RESET_NON_FATAL) {
 		/* remove the closed state so when we call open it appears
@@ -2324,7 +1778,6 @@ static int do_reset(struct ibmvnic_adapter *adapter,
 		 */
 		adapter->state = VNIC_PROBED;
 
-<<<<<<< HEAD
 		if (adapter->wait_for_reset) {
 			rc = init_crq_queue(adapter);
 		} else if (adapter->reset_reason == VNIC_RESET_MOBILITY) {
@@ -2345,11 +1798,6 @@ static int do_reset(struct ibmvnic_adapter *adapter,
 		rc = ibmvnic_reset_init(adapter);
 		if (rc)
 			return IBMVNIC_INIT_FAILED;
-=======
-		rc = ibmvnic_init(adapter);
-		if (rc)
-			return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* If the adapter was in PROBE state prior to the reset,
 		 * exit here.
@@ -2363,7 +1811,6 @@ static int do_reset(struct ibmvnic_adapter *adapter,
 			return rc;
 		}
 
-<<<<<<< HEAD
 		if (adapter->reset_reason == VNIC_RESET_CHANGE_PARAM ||
 		    adapter->wait_for_reset) {
 			rc = init_resources(adapter);
@@ -2399,19 +1846,6 @@ static int do_reset(struct ibmvnic_adapter *adapter,
 
 	if (reset_state == VNIC_CLOSED)
 		return 0;
-=======
-		rc = reset_tx_pools(adapter);
-		if (rc)
-			return rc;
-
-		rc = reset_rx_pools(adapter);
-		if (rc)
-			return rc;
-
-		if (reset_state == VNIC_CLOSED)
-			return 0;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rc = __ibmvnic_open(netdev);
 	if (rc) {
@@ -2430,7 +1864,6 @@ static int do_reset(struct ibmvnic_adapter *adapter,
 	for (i = 0; i < adapter->req_rx_queues; i++)
 		napi_schedule(&adapter->napi[i]);
 
-<<<<<<< HEAD
 	if (adapter->reset_reason != VNIC_RESET_FAILOVER &&
 	    adapter->reset_reason != VNIC_RESET_CHANGE_PARAM)
 		call_netdevice_notifiers(NETDEV_NOTIFY_PEERS, netdev);
@@ -2505,10 +1938,6 @@ static int do_hard_reset(struct ibmvnic_adapter *adapter,
 
 		return 0;
 	}
-=======
-	if (adapter->reset_reason != VNIC_RESET_FAILOVER)
-		netdev_notify_peers(netdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	netif_carrier_on(netdev);
 
@@ -2518,14 +1947,9 @@ static int do_hard_reset(struct ibmvnic_adapter *adapter,
 static struct ibmvnic_rwi *get_next_rwi(struct ibmvnic_adapter *adapter)
 {
 	struct ibmvnic_rwi *rwi;
-<<<<<<< HEAD
 	unsigned long flags;
 
 	spin_lock_irqsave(&adapter->rwi_lock, flags);
-=======
-
-	mutex_lock(&adapter->rwi_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!list_empty(&adapter->rwi_list)) {
 		rwi = list_first_entry(&adapter->rwi_list, struct ibmvnic_rwi,
@@ -2535,11 +1959,7 @@ static struct ibmvnic_rwi *get_next_rwi(struct ibmvnic_adapter *adapter)
 		rwi = NULL;
 	}
 
-<<<<<<< HEAD
 	spin_unlock_irqrestore(&adapter->rwi_lock, flags);
-=======
-	mutex_unlock(&adapter->rwi_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rwi;
 }
 
@@ -2559,19 +1979,13 @@ static void __ibmvnic_reset(struct work_struct *work)
 	struct ibmvnic_rwi *rwi;
 	struct ibmvnic_adapter *adapter;
 	struct net_device *netdev;
-<<<<<<< HEAD
 	bool we_lock_rtnl = false;
 	u32 reset_state;
 	int rc = 0;
-=======
-	u32 reset_state;
-	int rc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	adapter = container_of(work, struct ibmvnic_adapter, ibmvnic_reset);
 	netdev = adapter->netdev;
 
-<<<<<<< HEAD
 	/* netif_set_real_num_xx_queues needs to take rtnl lock here
 	 * unless wait_for_reset is set, in which case the rtnl lock
 	 * has already been taken before initializing the reset
@@ -2580,15 +1994,10 @@ static void __ibmvnic_reset(struct work_struct *work)
 		rtnl_lock();
 		we_lock_rtnl = true;
 	}
-=======
-	mutex_lock(&adapter->reset_lock);
-	adapter->resetting = true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	reset_state = adapter->state;
 
 	rwi = get_next_rwi(adapter);
 	while (rwi) {
-<<<<<<< HEAD
 		if (adapter->state == VNIC_REMOVING ||
 		    adapter->state == VNIC_REMOVED) {
 			kfree(rwi);
@@ -2605,17 +2014,11 @@ static void __ibmvnic_reset(struct work_struct *work)
 		kfree(rwi);
 		if (rc && rc != IBMVNIC_INIT_FAILED &&
 		    !adapter->force_reset_recovery)
-=======
-		rc = do_reset(adapter, rwi, reset_state);
-		kfree(rwi);
-		if (rc)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 
 		rwi = get_next_rwi(adapter);
 	}
 
-<<<<<<< HEAD
 	if (adapter->wait_for_reset) {
 		adapter->wait_for_reset = false;
 		adapter->reset_done_rc = rc;
@@ -2647,66 +2050,28 @@ static int ibmvnic_reset(struct ibmvnic_adapter *adapter,
 		ret = EBUSY;
 		netdev_dbg(netdev, "Adapter removing or pending failover, skipping reset\n");
 		goto err;
-=======
-	if (rc) {
-		netdev_dbg(adapter->netdev, "Reset failed\n");
-		free_all_rwi(adapter);
-		mutex_unlock(&adapter->reset_lock);
-		return;
-	}
-
-	adapter->resetting = false;
-	mutex_unlock(&adapter->reset_lock);
-}
-
-static void ibmvnic_reset(struct ibmvnic_adapter *adapter,
-			  enum ibmvnic_reset_reason reason)
-{
-	struct ibmvnic_rwi *rwi, *tmp;
-	struct net_device *netdev = adapter->netdev;
-	struct list_head *entry;
-
-	if (adapter->state == VNIC_REMOVING ||
-	    adapter->state == VNIC_REMOVED) {
-		netdev_dbg(netdev, "Adapter removing, skipping reset\n");
-		return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (adapter->state == VNIC_PROBING) {
 		netdev_warn(netdev, "Adapter reset during probe\n");
-<<<<<<< HEAD
 		ret = adapter->init_done_rc = EAGAIN;
 		goto err;
 	}
 
 	spin_lock_irqsave(&adapter->rwi_lock, flags);
-=======
-		adapter->init_done_rc = EAGAIN;
-		return;
-	}
-
-	mutex_lock(&adapter->rwi_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	list_for_each(entry, &adapter->rwi_list) {
 		tmp = list_entry(entry, struct ibmvnic_rwi, list);
 		if (tmp->reset_reason == reason) {
 			netdev_dbg(netdev, "Skipping matching reset\n");
-<<<<<<< HEAD
 			spin_unlock_irqrestore(&adapter->rwi_lock, flags);
 			ret = EBUSY;
 			goto err;
-=======
-			mutex_unlock(&adapter->rwi_lock);
-			return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
 	rwi = kzalloc(sizeof(*rwi), GFP_ATOMIC);
 	if (!rwi) {
-<<<<<<< HEAD
 		spin_unlock_irqrestore(&adapter->rwi_lock, flags);
 		ibmvnic_close(netdev);
 		ret = ENOMEM;
@@ -2731,19 +2096,6 @@ err:
 	if (adapter->wait_for_reset)
 		adapter->wait_for_reset = false;
 	return -ret;
-=======
-		mutex_unlock(&adapter->rwi_lock);
-		ibmvnic_close(netdev);
-		return;
-	}
-
-	rwi->reset_reason = reason;
-	list_add_tail(&rwi->list, &adapter->rwi_list);
-	mutex_unlock(&adapter->rwi_lock);
-
-	netdev_dbg(adapter->netdev, "Scheduling reset (reason %d)\n", reason);
-	schedule_work(&adapter->ibmvnic_reset);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void ibmvnic_tx_timeout(struct net_device *dev)
@@ -2782,12 +2134,8 @@ restart_poll:
 		u16 offset;
 		u8 flags = 0;
 
-<<<<<<< HEAD
 		if (unlikely(adapter->resetting &&
 			     adapter->reset_reason != VNIC_RESET_NON_FATAL)) {
-=======
-		if (unlikely(adapter->resetting)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			enable_scrq_irq(adapter, adapter->rx_scrq[scrq_num]);
 			napi_complete_done(napi, frames_processed);
 			return frames_processed;
@@ -2867,7 +2215,6 @@ restart_poll:
 	return frames_processed;
 }
 
-<<<<<<< HEAD
 static int wait_for_reset(struct ibmvnic_adapter *adapter)
 {
 	int rc, ret;
@@ -2930,24 +2277,6 @@ static netdev_features_t ibmvnic_features_check(struct sk_buff *skb,
 	}
 
 	return features;
-=======
-#ifdef CONFIG_NET_POLL_CONTROLLER
-static void ibmvnic_netpoll_controller(struct net_device *dev)
-{
-	struct ibmvnic_adapter *adapter = netdev_priv(dev);
-	int i;
-
-	replenish_pools(netdev_priv(dev));
-	for (i = 0; i < adapter->req_rx_queues; i++)
-		ibmvnic_interrupt_rx(adapter->rx_scrq[i]->irq,
-				     adapter->rx_scrq[i]);
-}
-#endif
-
-static int ibmvnic_change_mtu(struct net_device *netdev, int new_mtu)
-{
-	return -EOPNOTSUPP;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct net_device_ops ibmvnic_netdev_ops = {
@@ -2958,15 +2287,8 @@ static const struct net_device_ops ibmvnic_netdev_ops = {
 	.ndo_set_mac_address	= ibmvnic_set_mac,
 	.ndo_validate_addr	= eth_validate_addr,
 	.ndo_tx_timeout		= ibmvnic_tx_timeout,
-<<<<<<< HEAD
 	.ndo_change_mtu		= ibmvnic_change_mtu,
 	.ndo_features_check     = ibmvnic_features_check,
-=======
-#ifdef CONFIG_NET_POLL_CONTROLLER
-	.ndo_poll_controller	= ibmvnic_netpoll_controller,
-#endif
-	.ndo_change_mtu		= ibmvnic_change_mtu,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* ethtool functions */
@@ -2994,7 +2316,6 @@ static int ibmvnic_get_link_ksettings(struct net_device *netdev,
 	return 0;
 }
 
-<<<<<<< HEAD
 static void ibmvnic_get_drvinfo(struct net_device *netdev,
 				struct ethtool_drvinfo *info)
 {
@@ -3004,13 +2325,6 @@ static void ibmvnic_get_drvinfo(struct net_device *netdev,
 	strlcpy(info->version, IBMVNIC_DRIVER_VERSION, sizeof(info->version));
 	strlcpy(info->fw_version, adapter->fw_version,
 		sizeof(info->fw_version));
-=======
-static void ibmvnic_get_drvinfo(struct net_device *dev,
-				struct ethtool_drvinfo *info)
-{
-	strlcpy(info->driver, ibmvnic_driver_name, sizeof(info->driver));
-	strlcpy(info->version, IBMVNIC_DRIVER_VERSION, sizeof(info->version));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static u32 ibmvnic_get_msglevel(struct net_device *netdev)
@@ -3052,7 +2366,6 @@ static void ibmvnic_get_ringparam(struct net_device *netdev,
 	ring->rx_jumbo_pending = 0;
 }
 
-<<<<<<< HEAD
 static int ibmvnic_set_ringparam(struct net_device *netdev,
 				 struct ethtool_ringparam *ring)
 {
@@ -3074,8 +2387,6 @@ static int ibmvnic_set_ringparam(struct net_device *netdev,
 	return wait_for_reset(adapter);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void ibmvnic_get_channels(struct net_device *netdev,
 				 struct ethtool_channels *channels)
 {
@@ -3091,7 +2402,6 @@ static void ibmvnic_get_channels(struct net_device *netdev,
 	channels->combined_count = 0;
 }
 
-<<<<<<< HEAD
 static int ibmvnic_set_channels(struct net_device *netdev,
 				struct ethtool_channels *channels)
 {
@@ -3103,8 +2413,6 @@ static int ibmvnic_set_channels(struct net_device *netdev,
 	return wait_for_reset(adapter);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void ibmvnic_get_strings(struct net_device *dev, u32 stringset, u8 *data)
 {
 	struct ibmvnic_adapter *adapter = netdev_priv(dev);
@@ -3159,10 +2467,7 @@ static void ibmvnic_get_ethtool_stats(struct net_device *dev,
 	struct ibmvnic_adapter *adapter = netdev_priv(dev);
 	union ibmvnic_crq crq;
 	int i, j;
-<<<<<<< HEAD
 	int rc;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memset(&crq, 0, sizeof(crq));
 	crq.request_statistics.first = IBMVNIC_CRQ_CMD;
@@ -3173,13 +2478,9 @@ static void ibmvnic_get_ethtool_stats(struct net_device *dev,
 
 	/* Wait for data to be written */
 	init_completion(&adapter->stats_done);
-<<<<<<< HEAD
 	rc = ibmvnic_send_crq(adapter, &crq);
 	if (rc)
 		return;
-=======
-	ibmvnic_send_crq(adapter, &crq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wait_for_completion(&adapter->stats_done);
 
 	for (i = 0; i < ARRAY_SIZE(ibmvnic_stats); i++)
@@ -3211,13 +2512,9 @@ static const struct ethtool_ops ibmvnic_ethtool_ops = {
 	.set_msglevel		= ibmvnic_set_msglevel,
 	.get_link		= ibmvnic_get_link,
 	.get_ringparam		= ibmvnic_get_ringparam,
-<<<<<<< HEAD
 	.set_ringparam		= ibmvnic_set_ringparam,
 	.get_channels		= ibmvnic_get_channels,
 	.set_channels		= ibmvnic_set_channels,
-=======
-	.get_channels		= ibmvnic_get_channels,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.get_strings            = ibmvnic_get_strings,
 	.get_sset_count         = ibmvnic_get_sset_count,
 	.get_ethtool_stats	= ibmvnic_get_ethtool_stats,
@@ -3268,19 +2565,14 @@ static int reset_sub_crq_queues(struct ibmvnic_adapter *adapter)
 }
 
 static void release_sub_crq_queue(struct ibmvnic_adapter *adapter,
-<<<<<<< HEAD
 				  struct ibmvnic_sub_crq_queue *scrq,
 				  bool do_h_free)
-=======
-				  struct ibmvnic_sub_crq_queue *scrq)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct device *dev = &adapter->vdev->dev;
 	long rc;
 
 	netdev_dbg(adapter->netdev, "Releasing sub-CRQ\n");
 
-<<<<<<< HEAD
 	if (do_h_free) {
 		/* Close the sub-crqs */
 		do {
@@ -3294,19 +2586,6 @@ static void release_sub_crq_queue(struct ibmvnic_adapter *adapter,
 				   "Failed to release sub-CRQ %16lx, rc = %ld\n",
 				   scrq->crq_num, rc);
 		}
-=======
-	/* Close the sub-crqs */
-	do {
-		rc = plpar_hcall_norets(H_FREE_SUB_CRQ,
-					adapter->vdev->unit_address,
-					scrq->crq_num);
-	} while (rc == H_BUSY || H_IS_LONG_BUSY(rc));
-
-	if (rc) {
-		netdev_err(adapter->netdev,
-			   "Failed to release sub-CRQ %16lx, rc = %ld\n",
-			   scrq->crq_num, rc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	dma_unmap_single(dev, scrq->msg_token, 4 * PAGE_SIZE,
@@ -3374,20 +2653,12 @@ zero_page_failed:
 	return NULL;
 }
 
-<<<<<<< HEAD
 static void release_sub_crqs(struct ibmvnic_adapter *adapter, bool do_h_free)
-=======
-static void release_sub_crqs(struct ibmvnic_adapter *adapter)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i;
 
 	if (adapter->tx_scrq) {
-<<<<<<< HEAD
 		for (i = 0; i < adapter->num_active_tx_scrqs; i++) {
-=======
-		for (i = 0; i < adapter->req_tx_queues; i++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (!adapter->tx_scrq[i])
 				continue;
 
@@ -3400,28 +2671,17 @@ static void release_sub_crqs(struct ibmvnic_adapter *adapter)
 				adapter->tx_scrq[i]->irq = 0;
 			}
 
-<<<<<<< HEAD
 			release_sub_crq_queue(adapter, adapter->tx_scrq[i],
 					      do_h_free);
-=======
-			release_sub_crq_queue(adapter, adapter->tx_scrq[i]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		kfree(adapter->tx_scrq);
 		adapter->tx_scrq = NULL;
-<<<<<<< HEAD
 		adapter->num_active_tx_scrqs = 0;
 	}
 
 	if (adapter->rx_scrq) {
 		for (i = 0; i < adapter->num_active_rx_scrqs; i++) {
-=======
-	}
-
-	if (adapter->rx_scrq) {
-		for (i = 0; i < adapter->req_rx_queues; i++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (!adapter->rx_scrq[i])
 				continue;
 
@@ -3434,20 +2694,13 @@ static void release_sub_crqs(struct ibmvnic_adapter *adapter)
 				adapter->rx_scrq[i]->irq = 0;
 			}
 
-<<<<<<< HEAD
 			release_sub_crq_queue(adapter, adapter->rx_scrq[i],
 					      do_h_free);
-=======
-			release_sub_crq_queue(adapter, adapter->rx_scrq[i]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		kfree(adapter->rx_scrq);
 		adapter->rx_scrq = NULL;
-<<<<<<< HEAD
 		adapter->num_active_rx_scrqs = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -3476,7 +2729,6 @@ static int enable_scrq_irq(struct ibmvnic_adapter *adapter,
 		return 1;
 	}
 
-<<<<<<< HEAD
 	if (adapter->resetting &&
 	    adapter->reset_reason == VNIC_RESET_MOBILITY) {
 		struct irq_desc *desc = irq_to_desc(scrq->irq);
@@ -3485,8 +2737,6 @@ static int enable_scrq_irq(struct ibmvnic_adapter *adapter,
 		chip->irq_eoi(&desc->irq_data);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rc = plpar_hcall_norets(H_VIOCTL, adapter->vdev->unit_address,
 				H_ENABLE_VIO_INTERRUPT, scrq->hw_irq, 0, 0);
 	if (rc)
@@ -3499,26 +2749,16 @@ static int ibmvnic_complete_tx(struct ibmvnic_adapter *adapter,
 			       struct ibmvnic_sub_crq_queue *scrq)
 {
 	struct device *dev = &adapter->vdev->dev;
-<<<<<<< HEAD
 	struct ibmvnic_tx_pool *tx_pool;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ibmvnic_tx_buff *txbuff;
 	union sub_crq *next;
 	int index;
 	int i, j;
-<<<<<<< HEAD
-=======
-	u8 first;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 restart_loop:
 	while (pending_scrq(adapter, scrq)) {
 		unsigned int pool = scrq->pool_index;
-<<<<<<< HEAD
 		int num_entries = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		next = ibmvnic_next_scrq(adapter, scrq);
 		for (i = 0; i < next->tx_comp.num_comps; i++) {
@@ -3528,7 +2768,6 @@ restart_loop:
 				continue;
 			}
 			index = be32_to_cpu(next->tx_comp.correlators[i]);
-<<<<<<< HEAD
 			if (index & IBMVNIC_TSO_POOL_MASK) {
 				tx_pool = &adapter->tso_pool[pool];
 				index &= ~IBMVNIC_TSO_POOL_MASK;
@@ -3537,9 +2776,6 @@ restart_loop:
 			}
 
 			txbuff = &tx_pool->tx_buff[index];
-=======
-			txbuff = &adapter->tx_pool[pool].tx_buff[index];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			for (j = 0; j < IBMVNIC_MAX_FRAGS_PER_CRQ; j++) {
 				if (!txbuff->data_dma[j])
@@ -3547,56 +2783,29 @@ restart_loop:
 
 				txbuff->data_dma[j] = 0;
 			}
-<<<<<<< HEAD
-=======
-			/* if sub_crq was sent indirectly */
-			first = txbuff->indir_arr[0].generic.first;
-			if (first == IBMVNIC_CRQ_CMD) {
-				dma_unmap_single(dev, txbuff->indir_dma,
-						 sizeof(txbuff->indir_arr),
-						 DMA_TO_DEVICE);
-			}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			if (txbuff->last_frag) {
 				dev_kfree_skb_any(txbuff->skb);
 				txbuff->skb = NULL;
 			}
 
-<<<<<<< HEAD
 			num_entries += txbuff->num_entries;
 
 			tx_pool->free_map[tx_pool->producer_index] = index;
 			tx_pool->producer_index =
 				(tx_pool->producer_index + 1) %
 					tx_pool->num_buffers;
-=======
-			adapter->tx_pool[pool].free_map[adapter->tx_pool[pool].
-						     producer_index] = index;
-			adapter->tx_pool[pool].producer_index =
-			    (adapter->tx_pool[pool].producer_index + 1) %
-			    adapter->req_tx_entries_per_subcrq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		/* remove tx_comp scrq*/
 		next->tx_comp.first = 0;
 
-<<<<<<< HEAD
 		if (atomic_sub_return(num_entries, &scrq->used) <=
-=======
-		if (atomic_sub_return(next->tx_comp.num_comps, &scrq->used) <=
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    (adapter->req_tx_entries_per_subcrq / 2) &&
 		    __netif_subqueue_stopped(adapter->netdev,
 					     scrq->pool_index)) {
 			netif_wake_subqueue(adapter->netdev, scrq->pool_index);
-<<<<<<< HEAD
 			netdev_dbg(adapter->netdev, "Started queue %d\n",
 				   scrq->pool_index);
-=======
-			netdev_info(adapter->netdev, "Started queue %d\n",
-				    scrq->pool_index);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -3668,11 +2877,7 @@ static int init_sub_crq_irqs(struct ibmvnic_adapter *adapter)
 			dev_err(dev, "Couldn't register tx irq 0x%x. rc=%d\n",
 				scrq->irq, rc);
 			irq_dispose_mapping(scrq->irq);
-<<<<<<< HEAD
 			goto req_tx_irq_failed;
-=======
-			goto req_rx_irq_failed;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -3708,11 +2913,7 @@ req_tx_irq_failed:
 		free_irq(adapter->tx_scrq[j]->irq, adapter->tx_scrq[j]);
 		irq_dispose_mapping(adapter->rx_scrq[j]->irq);
 	}
-<<<<<<< HEAD
 	release_sub_crqs(adapter, 1);
-=======
-	release_sub_crqs(adapter);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 
@@ -3774,10 +2975,7 @@ static int init_sub_crqs(struct ibmvnic_adapter *adapter)
 	for (i = 0; i < adapter->req_tx_queues; i++) {
 		adapter->tx_scrq[i] = allqueues[i];
 		adapter->tx_scrq[i]->pool_index = i;
-<<<<<<< HEAD
 		adapter->num_active_tx_scrqs++;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	adapter->rx_scrq = kcalloc(adapter->req_rx_queues,
@@ -3788,10 +2986,7 @@ static int init_sub_crqs(struct ibmvnic_adapter *adapter)
 	for (i = 0; i < adapter->req_rx_queues; i++) {
 		adapter->rx_scrq[i] = allqueues[i + adapter->req_tx_queues];
 		adapter->rx_scrq[i]->scrq_num = i;
-<<<<<<< HEAD
 		adapter->num_active_rx_scrqs++;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	kfree(allqueues);
@@ -3802,11 +2997,7 @@ rx_failed:
 	adapter->tx_scrq = NULL;
 tx_failed:
 	for (i = 0; i < registered_queues; i++)
-<<<<<<< HEAD
 		release_sub_crq_queue(adapter, allqueues[i], 1);
-=======
-		release_sub_crq_queue(adapter, allqueues[i]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(allqueues);
 	return -1;
 }
@@ -3815,10 +3006,7 @@ static void ibmvnic_send_req_caps(struct ibmvnic_adapter *adapter, int retry)
 {
 	struct device *dev = &adapter->vdev->dev;
 	union ibmvnic_crq crq;
-<<<<<<< HEAD
 	int max_entries;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!retry) {
 		/* Sub-CRQ entries are 32 byte long */
@@ -3830,7 +3018,6 @@ static void ibmvnic_send_req_caps(struct ibmvnic_adapter *adapter, int retry)
 			return;
 		}
 
-<<<<<<< HEAD
 		if (adapter->desired.mtu)
 			adapter->req_mtu = adapter->desired.mtu;
 		else
@@ -3885,23 +3072,6 @@ static void ibmvnic_send_req_caps(struct ibmvnic_adapter *adapter, int retry)
 					adapter->opt_rx_comp_queues;
 
 		adapter->req_rx_add_queues = adapter->max_rx_add_queues;
-=======
-		/* Get the minimum between the queried max and the entries
-		 * that fit in our PAGE_SIZE
-		 */
-		adapter->req_tx_entries_per_subcrq =
-		    adapter->max_tx_entries_per_subcrq > entries_page ?
-		    entries_page : adapter->max_tx_entries_per_subcrq;
-		adapter->req_rx_add_entries_per_subcrq =
-		    adapter->max_rx_add_entries_per_subcrq > entries_page ?
-		    entries_page : adapter->max_rx_add_entries_per_subcrq;
-
-		adapter->req_tx_queues = adapter->opt_tx_comp_sub_queues;
-		adapter->req_rx_queues = adapter->opt_rx_comp_queues;
-		adapter->req_rx_add_queues = adapter->max_rx_add_queues;
-
-		adapter->req_mtu = adapter->netdev->mtu + ETH_HLEN;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	memset(&crq, 0, sizeof(crq));
@@ -4005,7 +3175,6 @@ static union ibmvnic_crq *ibmvnic_next_crq(struct ibmvnic_adapter *adapter)
 	return crq;
 }
 
-<<<<<<< HEAD
 static void print_subcrq_error(struct device *dev, int rc, const char *func)
 {
 	switch (rc) {
@@ -4025,8 +3194,6 @@ static void print_subcrq_error(struct device *dev, int rc, const char *func)
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int send_subcrq(struct ibmvnic_adapter *adapter, u64 remote_handle,
 		       union sub_crq *sub_crq)
 {
@@ -4053,16 +3220,8 @@ static int send_subcrq(struct ibmvnic_adapter *adapter, u64 remote_handle,
 				cpu_to_be64(u64_crq[2]),
 				cpu_to_be64(u64_crq[3]));
 
-<<<<<<< HEAD
 	if (rc)
 		print_subcrq_error(dev, rc, __func__);
-=======
-	if (rc) {
-		if (rc == H_CLOSED)
-			dev_warn(dev, "CRQ Queue closed\n");
-		dev_err(dev, "Send error (rc=%d)\n", rc);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return rc;
 }
@@ -4080,16 +3239,8 @@ static int send_subcrq_indirect(struct ibmvnic_adapter *adapter,
 				cpu_to_be64(remote_handle),
 				ioba, num_entries);
 
-<<<<<<< HEAD
 	if (rc)
 		print_subcrq_error(dev, rc, __func__);
-=======
-	if (rc) {
-		if (rc == H_CLOSED)
-			dev_warn(dev, "CRQ Queue closed\n");
-		dev_err(dev, "Send (indirect) error (rc=%d)\n", rc);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return rc;
 }
@@ -4106,15 +3257,12 @@ static int ibmvnic_send_crq(struct ibmvnic_adapter *adapter,
 		   (unsigned long int)cpu_to_be64(u64_crq[0]),
 		   (unsigned long int)cpu_to_be64(u64_crq[1]));
 
-<<<<<<< HEAD
 	if (!adapter->crq.active &&
 	    crq->generic.first != IBMVNIC_CRQ_INIT_CMD) {
 		dev_warn(dev, "Invalid request detected while CRQ is inactive, possible device state change during reset\n");
 		return -EINVAL;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Make sure the hypervisor sees the complete request */
 	mb();
 
@@ -4123,17 +3271,12 @@ static int ibmvnic_send_crq(struct ibmvnic_adapter *adapter,
 				cpu_to_be64(u64_crq[1]));
 
 	if (rc) {
-<<<<<<< HEAD
 		if (rc == H_CLOSED) {
 			dev_warn(dev, "CRQ Queue closed\n");
 			if (adapter->resetting)
 				ibmvnic_reset(adapter, VNIC_RESET_FATAL);
 		}
 
-=======
-		if (rc == H_CLOSED)
-			dev_warn(dev, "CRQ Queue closed\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_warn(dev, "Send error (rc=%d)\n", rc);
 	}
 
@@ -4164,7 +3307,6 @@ static int send_version_xchg(struct ibmvnic_adapter *adapter)
 	return ibmvnic_send_crq(adapter, &crq);
 }
 
-<<<<<<< HEAD
 struct vnic_login_client_data {
 	u8	type;
 	__be16	len;
@@ -4215,9 +3357,6 @@ static void vnic_add_client_data(struct ibmvnic_adapter *adapter,
 }
 
 static int send_login(struct ibmvnic_adapter *adapter)
-=======
-static void send_login(struct ibmvnic_adapter *adapter)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ibmvnic_login_rsp_buffer *login_rsp_buffer;
 	struct ibmvnic_login_buffer *login_buffer;
@@ -4229,7 +3368,6 @@ static void send_login(struct ibmvnic_adapter *adapter)
 	size_t buffer_size;
 	__be64 *tx_list_p;
 	__be64 *rx_list_p;
-<<<<<<< HEAD
 	int client_data_len;
 	struct vnic_login_client_data *vlcd;
 	int i;
@@ -4249,15 +3387,6 @@ static void send_login(struct ibmvnic_adapter *adapter)
 	    client_data_len;
 
 	login_buffer = kzalloc(buffer_size, GFP_ATOMIC);
-=======
-	int i;
-
-	buffer_size =
-	    sizeof(struct ibmvnic_login_buffer) +
-	    sizeof(u64) * (adapter->req_tx_queues + adapter->req_rx_queues);
-
-	login_buffer = kmalloc(buffer_size, GFP_ATOMIC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!login_buffer)
 		goto buf_alloc_failed;
 
@@ -4324,7 +3453,6 @@ static void send_login(struct ibmvnic_adapter *adapter)
 		}
 	}
 
-<<<<<<< HEAD
 	/* Insert vNIC login client data */
 	vlcd = (struct vnic_login_client_data *)
 		((char *)rx_list_p + (sizeof(u64) * adapter->req_rx_queues));
@@ -4334,8 +3462,6 @@ static void send_login(struct ibmvnic_adapter *adapter)
 
 	vnic_add_client_data(adapter, vlcd);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	netdev_dbg(adapter->netdev, "Login Buffer:\n");
 	for (i = 0; i < (adapter->login_buf_sz - 1) / 8 + 1; i++) {
 		netdev_dbg(adapter->netdev, "%016lx\n",
@@ -4349,11 +3475,7 @@ static void send_login(struct ibmvnic_adapter *adapter)
 	crq.login.len = cpu_to_be32(buffer_size);
 	ibmvnic_send_crq(adapter, &crq);
 
-<<<<<<< HEAD
 	return 0;
-=======
-	return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 buf_rsp_map_failed:
 	kfree(login_rsp_buffer);
@@ -4362,19 +3484,11 @@ buf_rsp_alloc_failed:
 buf_map_failed:
 	kfree(login_buffer);
 buf_alloc_failed:
-<<<<<<< HEAD
 	return -1;
 }
 
 static int send_request_map(struct ibmvnic_adapter *adapter, dma_addr_t addr,
 			    u32 len, u8 map_id)
-=======
-	return;
-}
-
-static void send_request_map(struct ibmvnic_adapter *adapter, dma_addr_t addr,
-			     u32 len, u8 map_id)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	union ibmvnic_crq crq;
 
@@ -4384,17 +3498,10 @@ static void send_request_map(struct ibmvnic_adapter *adapter, dma_addr_t addr,
 	crq.request_map.map_id = map_id;
 	crq.request_map.ioba = cpu_to_be32(addr);
 	crq.request_map.len = cpu_to_be32(len);
-<<<<<<< HEAD
 	return ibmvnic_send_crq(adapter, &crq);
 }
 
 static int send_request_unmap(struct ibmvnic_adapter *adapter, u8 map_id)
-=======
-	ibmvnic_send_crq(adapter, &crq);
-}
-
-static void send_request_unmap(struct ibmvnic_adapter *adapter, u8 map_id)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	union ibmvnic_crq crq;
 
@@ -4402,11 +3509,7 @@ static void send_request_unmap(struct ibmvnic_adapter *adapter, u8 map_id)
 	crq.request_unmap.first = IBMVNIC_CRQ_CMD;
 	crq.request_unmap.cmd = REQUEST_UNMAP;
 	crq.request_unmap.map_id = map_id;
-<<<<<<< HEAD
 	return ibmvnic_send_crq(adapter, &crq);
-=======
-	ibmvnic_send_crq(adapter, &crq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void send_map_query(struct ibmvnic_adapter *adapter)
@@ -4537,7 +3640,6 @@ static void send_cap_queries(struct ibmvnic_adapter *adapter)
 	ibmvnic_send_crq(adapter, &crq);
 }
 
-<<<<<<< HEAD
 static void handle_vpd_size_rsp(union ibmvnic_crq *crq,
 				struct ibmvnic_adapter *adapter)
 {
@@ -4603,8 +3705,6 @@ complete:
 	complete(&adapter->fw_done);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void handle_query_ip_offload_rsp(struct ibmvnic_adapter *adapter)
 {
 	struct device *dev = &adapter->vdev->dev;
@@ -4668,20 +3768,15 @@ static void handle_query_ip_offload_rsp(struct ibmvnic_adapter *adapter)
 		return;
 	}
 
-<<<<<<< HEAD
 	adapter->ip_offload_ctrl.len =
 	    cpu_to_be32(sizeof(adapter->ip_offload_ctrl));
 	adapter->ip_offload_ctrl.version = cpu_to_be32(INITIAL_VERSION_IOB);
 	adapter->ip_offload_ctrl.ipv4_chksum = buf->ipv4_chksum;
 	adapter->ip_offload_ctrl.ipv6_chksum = buf->ipv6_chksum;
-=======
-	adapter->ip_offload_ctrl.version = cpu_to_be32(INITIAL_VERSION_IOB);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adapter->ip_offload_ctrl.tcp_ipv4_chksum = buf->tcp_ipv4_chksum;
 	adapter->ip_offload_ctrl.udp_ipv4_chksum = buf->udp_ipv4_chksum;
 	adapter->ip_offload_ctrl.tcp_ipv6_chksum = buf->tcp_ipv6_chksum;
 	adapter->ip_offload_ctrl.udp_ipv6_chksum = buf->udp_ipv6_chksum;
-<<<<<<< HEAD
 	adapter->ip_offload_ctrl.large_tx_ipv4 = buf->large_tx_ipv4;
 	adapter->ip_offload_ctrl.large_tx_ipv6 = buf->large_tx_ipv6;
 
@@ -4690,16 +3785,6 @@ static void handle_query_ip_offload_rsp(struct ibmvnic_adapter *adapter)
 	adapter->ip_offload_ctrl.large_rx_ipv6 = 0;
 
 	adapter->netdev->features = NETIF_F_SG | NETIF_F_GSO;
-=======
-
-	/* large_tx/rx disabled for now, additional features needed */
-	adapter->ip_offload_ctrl.large_tx_ipv4 = 0;
-	adapter->ip_offload_ctrl.large_tx_ipv6 = 0;
-	adapter->ip_offload_ctrl.large_rx_ipv4 = 0;
-	adapter->ip_offload_ctrl.large_rx_ipv6 = 0;
-
-	adapter->netdev->features = NETIF_F_GSO;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (buf->tcp_ipv4_chksum || buf->udp_ipv4_chksum)
 		adapter->netdev->features |= NETIF_F_IP_CSUM;
@@ -4711,7 +3796,6 @@ static void handle_query_ip_offload_rsp(struct ibmvnic_adapter *adapter)
 	    (NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM)))
 		adapter->netdev->features |= NETIF_F_RXCSUM;
 
-<<<<<<< HEAD
 	if (buf->large_tx_ipv4)
 		adapter->netdev->features |= NETIF_F_TSO;
 	if (buf->large_tx_ipv6)
@@ -4719,8 +3803,6 @@ static void handle_query_ip_offload_rsp(struct ibmvnic_adapter *adapter)
 
 	adapter->netdev->hw_features |= adapter->netdev->features;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memset(&crq, 0, sizeof(crq));
 	crq.control_ip_offload.first = IBMVNIC_CRQ_CMD;
 	crq.control_ip_offload.cmd = CONTROL_IP_OFFLOAD;
@@ -4730,7 +3812,6 @@ static void handle_query_ip_offload_rsp(struct ibmvnic_adapter *adapter)
 	ibmvnic_send_crq(adapter, &crq);
 }
 
-<<<<<<< HEAD
 static const char *ibmvnic_fw_err_cause(u16 cause)
 {
 	switch (cause) {
@@ -4751,126 +3832,12 @@ static const char *ibmvnic_fw_err_cause(u16 cause)
 	default:
 		return "unknown";
 	}
-=======
-static void handle_error_info_rsp(union ibmvnic_crq *crq,
-				  struct ibmvnic_adapter *adapter)
-{
-	struct device *dev = &adapter->vdev->dev;
-	struct ibmvnic_error_buff *error_buff, *tmp;
-	unsigned long flags;
-	bool found = false;
-	int i;
-
-	if (!crq->request_error_rsp.rc.code) {
-		dev_info(dev, "Request Error Rsp returned with rc=%x\n",
-			 crq->request_error_rsp.rc.code);
-		return;
-	}
-
-	spin_lock_irqsave(&adapter->error_list_lock, flags);
-	list_for_each_entry_safe(error_buff, tmp, &adapter->errors, list)
-		if (error_buff->error_id == crq->request_error_rsp.error_id) {
-			found = true;
-			list_del(&error_buff->list);
-			break;
-		}
-	spin_unlock_irqrestore(&adapter->error_list_lock, flags);
-
-	if (!found) {
-		dev_err(dev, "Couldn't find error id %x\n",
-			be32_to_cpu(crq->request_error_rsp.error_id));
-		return;
-	}
-
-	dev_err(dev, "Detailed info for error id %x:",
-		be32_to_cpu(crq->request_error_rsp.error_id));
-
-	for (i = 0; i < error_buff->len; i++) {
-		pr_cont("%02x", (int)error_buff->buff[i]);
-		if (i % 8 == 7)
-			pr_cont(" ");
-	}
-	pr_cont("\n");
-
-	dma_unmap_single(dev, error_buff->dma, error_buff->len,
-			 DMA_FROM_DEVICE);
-	kfree(error_buff->buff);
-	kfree(error_buff);
-}
-
-static void request_error_information(struct ibmvnic_adapter *adapter,
-				      union ibmvnic_crq *err_crq)
-{
-	struct device *dev = &adapter->vdev->dev;
-	struct net_device *netdev = adapter->netdev;
-	struct ibmvnic_error_buff *error_buff;
-	unsigned long timeout = msecs_to_jiffies(30000);
-	union ibmvnic_crq crq;
-	unsigned long flags;
-	int rc, detail_len;
-
-	error_buff = kmalloc(sizeof(*error_buff), GFP_ATOMIC);
-	if (!error_buff)
-		return;
-
-	detail_len = be32_to_cpu(err_crq->error_indication.detail_error_sz);
-	error_buff->buff = kmalloc(detail_len, GFP_ATOMIC);
-	if (!error_buff->buff) {
-		kfree(error_buff);
-		return;
-	}
-
-	error_buff->dma = dma_map_single(dev, error_buff->buff, detail_len,
-					 DMA_FROM_DEVICE);
-	if (dma_mapping_error(dev, error_buff->dma)) {
-		netdev_err(netdev, "Couldn't map error buffer\n");
-		kfree(error_buff->buff);
-		kfree(error_buff);
-		return;
-	}
-
-	error_buff->len = detail_len;
-	error_buff->error_id = err_crq->error_indication.error_id;
-
-	spin_lock_irqsave(&adapter->error_list_lock, flags);
-	list_add_tail(&error_buff->list, &adapter->errors);
-	spin_unlock_irqrestore(&adapter->error_list_lock, flags);
-
-	memset(&crq, 0, sizeof(crq));
-	crq.request_error_info.first = IBMVNIC_CRQ_CMD;
-	crq.request_error_info.cmd = REQUEST_ERROR_INFO;
-	crq.request_error_info.ioba = cpu_to_be32(error_buff->dma);
-	crq.request_error_info.len = cpu_to_be32(detail_len);
-	crq.request_error_info.error_id = err_crq->error_indication.error_id;
-
-	rc = ibmvnic_send_crq(adapter, &crq);
-	if (rc) {
-		netdev_err(netdev, "failed to request error information\n");
-		goto err_info_fail;
-	}
-
-	if (!wait_for_completion_timeout(&adapter->init_done, timeout)) {
-		netdev_err(netdev, "timeout waiting for error information\n");
-		goto err_info_fail;
-	}
-
-	return;
-
-err_info_fail:
-	spin_lock_irqsave(&adapter->error_list_lock, flags);
-	list_del(&error_buff->list);
-	spin_unlock_irqrestore(&adapter->error_list_lock, flags);
-
-	kfree(error_buff->buff);
-	kfree(error_buff);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void handle_error_indication(union ibmvnic_crq *crq,
 				    struct ibmvnic_adapter *adapter)
 {
 	struct device *dev = &adapter->vdev->dev;
-<<<<<<< HEAD
 	u16 cause;
 
 	cause = be16_to_cpu(crq->error_indication.error_cause);
@@ -4880,17 +3847,6 @@ static void handle_error_indication(union ibmvnic_crq *crq,
 			     crq->error_indication.flags
 				& IBMVNIC_FATAL_ERROR ? "FATAL " : "",
 			     ibmvnic_fw_err_cause(cause));
-=======
-
-	dev_err(dev, "Firmware reports %serror id %x, cause %d\n",
-		crq->error_indication.flags
-			& IBMVNIC_FATAL_ERROR ? "FATAL " : "",
-		be32_to_cpu(crq->error_indication.error_id),
-		be16_to_cpu(crq->error_indication.error_cause));
-
-	if (be32_to_cpu(crq->error_indication.error_id))
-		request_error_information(adapter, crq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (crq->error_indication.flags & IBMVNIC_FATAL_ERROR)
 		ibmvnic_reset(adapter, VNIC_RESET_FATAL);
@@ -4898,13 +3854,8 @@ static void handle_error_indication(union ibmvnic_crq *crq,
 		ibmvnic_reset(adapter, VNIC_RESET_NON_FATAL);
 }
 
-<<<<<<< HEAD
 static int handle_change_mac_rsp(union ibmvnic_crq *crq,
 				 struct ibmvnic_adapter *adapter)
-=======
-static void handle_change_mac_rsp(union ibmvnic_crq *crq,
-				  struct ibmvnic_adapter *adapter)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct net_device *netdev = adapter->netdev;
 	struct device *dev = &adapter->vdev->dev;
@@ -4913,7 +3864,6 @@ static void handle_change_mac_rsp(union ibmvnic_crq *crq,
 	rc = crq->change_mac_addr_rsp.rc.code;
 	if (rc) {
 		dev_err(dev, "Error %ld in CHANGE_MAC_ADDR_RSP\n", rc);
-<<<<<<< HEAD
 		goto out;
 	}
 	memcpy(netdev->dev_addr, &crq->change_mac_addr_rsp.mac_addr[0],
@@ -4921,12 +3871,6 @@ static void handle_change_mac_rsp(union ibmvnic_crq *crq,
 out:
 	complete(&adapter->fw_done);
 	return rc;
-=======
-		return;
-	}
-	memcpy(netdev->dev_addr, &crq->change_mac_addr_rsp.mac_addr[0],
-	       ETH_ALEN);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void handle_request_cap_rsp(union ibmvnic_crq *crq,
@@ -4980,7 +3924,6 @@ static void handle_request_cap_rsp(union ibmvnic_crq *crq,
 			 *req_value,
 			 (long int)be64_to_cpu(crq->request_capability_rsp.
 					       number), name);
-<<<<<<< HEAD
 
 		if (be16_to_cpu(crq->request_capability_rsp.capability) ==
 		    REQ_MTU) {
@@ -4992,9 +3935,6 @@ static void handle_request_cap_rsp(union ibmvnic_crq *crq,
 				be64_to_cpu(crq->request_capability_rsp.number);
 		}
 
-=======
-		*req_value = be64_to_cpu(crq->request_capability_rsp.number);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ibmvnic_send_req_caps(adapter, 1);
 		return;
 	default:
@@ -5036,44 +3976,28 @@ static int handle_login_rsp(union ibmvnic_crq *login_rsp_crq,
 			    struct ibmvnic_adapter *adapter)
 {
 	struct device *dev = &adapter->vdev->dev;
-<<<<<<< HEAD
 	struct net_device *netdev = adapter->netdev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ibmvnic_login_rsp_buffer *login_rsp = adapter->login_rsp_buf;
 	struct ibmvnic_login_buffer *login = adapter->login_buf;
 	int i;
 
 	dma_unmap_single(dev, adapter->login_buf_token, adapter->login_buf_sz,
-<<<<<<< HEAD
 			 DMA_TO_DEVICE);
 	dma_unmap_single(dev, adapter->login_rsp_buf_token,
 			 adapter->login_rsp_buf_sz, DMA_FROM_DEVICE);
-=======
-			 DMA_BIDIRECTIONAL);
-	dma_unmap_single(dev, adapter->login_rsp_buf_token,
-			 adapter->login_rsp_buf_sz, DMA_BIDIRECTIONAL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* If the number of queues requested can't be allocated by the
 	 * server, the login response will return with code 1. We will need
 	 * to resend the login buffer with fewer queues requested.
 	 */
 	if (login_rsp_crq->generic.rc.code) {
-<<<<<<< HEAD
 		adapter->init_done_rc = login_rsp_crq->generic.rc.code;
-=======
-		adapter->renegotiate = true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		complete(&adapter->init_done);
 		return 0;
 	}
 
-<<<<<<< HEAD
 	netdev->mtu = adapter->req_mtu - ETH_HLEN;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	netdev_dbg(adapter->netdev, "Login Response Buffer:\n");
 	for (i = 0; i < (adapter->login_rsp_buf_sz - 1) / 8 + 1; i++) {
 		netdev_dbg(adapter->netdev, "%016lx\n",
@@ -5089,10 +4013,7 @@ static int handle_login_rsp(union ibmvnic_crq *login_rsp_crq,
 		ibmvnic_remove(adapter->vdev);
 		return -EIO;
 	}
-<<<<<<< HEAD
 	release_login_buffer(adapter);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	complete(&adapter->init_done);
 
 	return 0;
@@ -5323,7 +4244,6 @@ static void ibmvnic_handle_crq(union ibmvnic_crq *crq,
 		case IBMVNIC_CRQ_INIT:
 			dev_info(dev, "Partner initialized\n");
 			adapter->from_passive_init = true;
-<<<<<<< HEAD
 			adapter->failover_pending = false;
 			if (!completion_done(&adapter->init_done)) {
 				complete(&adapter->init_done);
@@ -5334,12 +4254,6 @@ static void ibmvnic_handle_crq(union ibmvnic_crq *crq,
 		case IBMVNIC_CRQ_INIT_COMPLETE:
 			dev_info(dev, "Partner initialization complete\n");
 			adapter->crq.active = true;
-=======
-			complete(&adapter->init_done);
-			break;
-		case IBMVNIC_CRQ_INIT_COMPLETE:
-			dev_info(dev, "Partner initialization complete\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			send_version_xchg(adapter);
 			break;
 		default:
@@ -5348,22 +4262,15 @@ static void ibmvnic_handle_crq(union ibmvnic_crq *crq,
 		return;
 	case IBMVNIC_CRQ_XPORT_EVENT:
 		netif_carrier_off(netdev);
-<<<<<<< HEAD
 		adapter->crq.active = false;
 		if (adapter->resetting)
 			adapter->force_reset_recovery = true;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (gen_crq->cmd == IBMVNIC_PARTITION_MIGRATED) {
 			dev_info(dev, "Migrated, re-enabling adapter\n");
 			ibmvnic_reset(adapter, VNIC_RESET_MOBILITY);
 		} else if (gen_crq->cmd == IBMVNIC_DEVICE_FAILOVER) {
 			dev_info(dev, "Backing device failover detected\n");
-<<<<<<< HEAD
 			adapter->failover_pending = true;
-=======
-			ibmvnic_reset(adapter, VNIC_RESET_FAILOVER);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else {
 			/* The adapter lost the connection */
 			dev_err(dev, "Virtual Adapter failed (rc=%d)\n",
@@ -5386,19 +4293,12 @@ static void ibmvnic_handle_crq(union ibmvnic_crq *crq,
 			dev_err(dev, "Error %ld in VERSION_EXCHG_RSP\n", rc);
 			break;
 		}
-<<<<<<< HEAD
 		dev_info(dev, "Partner protocol version is %d\n",
 			 crq->version_exchange_rsp.version);
 		if (be16_to_cpu(crq->version_exchange_rsp.version) <
 		    ibmvnic_version)
 			ibmvnic_version =
 			    be16_to_cpu(crq->version_exchange_rsp.version);
-=======
-		ibmvnic_version =
-			    be16_to_cpu(crq->version_exchange_rsp.version);
-		dev_info(dev, "Partner protocol version is %d\n",
-			 ibmvnic_version);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		send_cap_queries(adapter);
 		break;
 	case QUERY_CAPABILITY_RSP:
@@ -5440,23 +4340,12 @@ static void ibmvnic_handle_crq(union ibmvnic_crq *crq,
 		break;
 	case CHANGE_MAC_ADDR_RSP:
 		netdev_dbg(netdev, "Got MAC address change Response\n");
-<<<<<<< HEAD
 		adapter->fw_done_rc = handle_change_mac_rsp(crq, adapter);
-=======
-		handle_change_mac_rsp(crq, adapter);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case ERROR_INDICATION:
 		netdev_dbg(netdev, "Got Error Indication\n");
 		handle_error_indication(crq, adapter);
 		break;
-<<<<<<< HEAD
-=======
-	case REQUEST_ERROR_RSP:
-		netdev_dbg(netdev, "Got Error Detail Response\n");
-		handle_error_info_rsp(crq, adapter);
-		break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case REQUEST_STATISTICS_RSP:
 		netdev_dbg(netdev, "Got Statistics Response\n");
 		complete(&adapter->stats_done);
@@ -5479,15 +4368,12 @@ static void ibmvnic_handle_crq(union ibmvnic_crq *crq,
 		netdev_dbg(netdev, "Got Collect firmware trace Response\n");
 		complete(&adapter->fw_done);
 		break;
-<<<<<<< HEAD
 	case GET_VPD_SIZE_RSP:
 		handle_vpd_size_rsp(crq, adapter);
 		break;
 	case GET_VPD_RSP:
 		handle_vpd_rsp(crq, adapter);
 		break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		netdev_err(netdev, "Got an invalid cmd type 0x%02x\n",
 			   gen_crq->cmd);
@@ -5562,10 +4448,7 @@ static int ibmvnic_reset_crq(struct ibmvnic_adapter *adapter)
 	/* Clean out the queue */
 	memset(crq->msgs, 0, PAGE_SIZE);
 	crq->cur = 0;
-<<<<<<< HEAD
 	crq->active = false;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* And re-open it again */
 	rc = plpar_hcall_norets(H_REG_CRQ, vdev->unit_address,
@@ -5600,10 +4483,7 @@ static void release_crq_queue(struct ibmvnic_adapter *adapter)
 			 DMA_BIDIRECTIONAL);
 	free_page((unsigned long)crq->msgs);
 	crq->msgs = NULL;
-<<<<<<< HEAD
 	crq->active = false;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int init_crq_queue(struct ibmvnic_adapter *adapter)
@@ -5681,7 +4561,6 @@ map_failed:
 	return retrc;
 }
 
-<<<<<<< HEAD
 static int ibmvnic_reset_init(struct ibmvnic_adapter *adapter)
 {
 	struct device *dev = &adapter->vdev->dev;
@@ -5741,35 +4620,14 @@ static int ibmvnic_reset_init(struct ibmvnic_adapter *adapter)
 	return rc;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ibmvnic_init(struct ibmvnic_adapter *adapter)
 {
 	struct device *dev = &adapter->vdev->dev;
 	unsigned long timeout = msecs_to_jiffies(30000);
 	int rc;
 
-<<<<<<< HEAD
 	adapter->from_passive_init = false;
 
-=======
-	if (adapter->resetting) {
-		rc = ibmvnic_reset_crq(adapter);
-		if (!rc)
-			rc = vio_enable_interrupts(adapter->vdev);
-	} else {
-		rc = init_crq_queue(adapter);
-	}
-
-	if (rc) {
-		dev_err(dev, "Couldn't initialize crq. rc=%d\n", rc);
-		return rc;
-	}
-
-	adapter->from_passive_init = false;
-
-	init_completion(&adapter->init_done);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adapter->init_done_rc = 0;
 	ibmvnic_send_crq_init(adapter);
 	if (!wait_for_completion_timeout(&adapter->init_done, timeout)) {
@@ -5788,14 +4646,7 @@ static int ibmvnic_init(struct ibmvnic_adapter *adapter)
 		return -1;
 	}
 
-<<<<<<< HEAD
 	rc = init_sub_crqs(adapter);
-=======
-	if (adapter->resetting)
-		rc = reset_sub_crq_queues(adapter);
-	else
-		rc = init_sub_crqs(adapter);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc) {
 		dev_err(dev, "Initialization of sub crqs failed\n");
 		release_crq_queue(adapter);
@@ -5833,11 +4684,7 @@ static int ibmvnic_probe(struct vio_dev *dev, const struct vio_device_id *id)
 	}
 
 	netdev = alloc_etherdev_mq(sizeof(struct ibmvnic_adapter),
-<<<<<<< HEAD
 				   IBMVNIC_MAX_QUEUES);
-=======
-				   IBMVNIC_MAX_TX_QUEUES);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!netdev)
 		return -ENOMEM;
 
@@ -5856,7 +4703,6 @@ static int ibmvnic_probe(struct vio_dev *dev, const struct vio_device_id *id)
 
 	spin_lock_init(&adapter->stats_lock);
 
-<<<<<<< HEAD
 	INIT_WORK(&adapter->ibmvnic_reset, __ibmvnic_reset);
 	INIT_LIST_HEAD(&adapter->rwi_list);
 	spin_lock_init(&adapter->rwi_lock);
@@ -5873,24 +4719,11 @@ static int ibmvnic_probe(struct vio_dev *dev, const struct vio_device_id *id)
 			goto ibmvnic_init_fail;
 		}
 
-=======
-	INIT_LIST_HEAD(&adapter->errors);
-	spin_lock_init(&adapter->error_list_lock);
-
-	INIT_WORK(&adapter->ibmvnic_reset, __ibmvnic_reset);
-	INIT_LIST_HEAD(&adapter->rwi_list);
-	mutex_init(&adapter->reset_lock);
-	mutex_init(&adapter->rwi_lock);
-	adapter->resetting = false;
-
-	do {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rc = ibmvnic_init(adapter);
 		if (rc && rc != EAGAIN)
 			goto ibmvnic_init_fail;
 	} while (rc == EAGAIN);
 
-<<<<<<< HEAD
 	rc = init_stats_buffers(adapter);
 	if (rc)
 		goto ibmvnic_init_fail;
@@ -5906,13 +4739,6 @@ static int ibmvnic_probe(struct vio_dev *dev, const struct vio_device_id *id)
 	rc = device_create_file(&dev->dev, &dev_attr_failover);
 	if (rc)
 		goto ibmvnic_dev_file_err;
-=======
-	netdev->mtu = adapter->req_mtu - ETH_HLEN;
-
-	rc = device_create_file(&dev->dev, &dev_attr_failover);
-	if (rc)
-		goto ibmvnic_init_fail;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	netif_carrier_off(netdev);
 	rc = register_netdev(netdev);
@@ -5923,18 +4749,14 @@ static int ibmvnic_probe(struct vio_dev *dev, const struct vio_device_id *id)
 	dev_info(&dev->dev, "ibmvnic registered\n");
 
 	adapter->state = VNIC_PROBED;
-<<<<<<< HEAD
 
 	adapter->wait_for_reset = false;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 ibmvnic_register_fail:
 	device_remove_file(&dev->dev, &dev_attr_failover);
 
-<<<<<<< HEAD
 ibmvnic_dev_file_err:
 	release_stats_token(adapter);
 
@@ -5943,10 +4765,6 @@ ibmvnic_stats_fail:
 
 ibmvnic_init_fail:
 	release_sub_crqs(adapter, 1);
-=======
-ibmvnic_init_fail:
-	release_sub_crqs(adapter);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	release_crq_queue(adapter);
 	free_netdev(netdev);
 
@@ -5959,7 +4777,6 @@ static int ibmvnic_remove(struct vio_dev *dev)
 	struct ibmvnic_adapter *adapter = netdev_priv(netdev);
 
 	adapter->state = VNIC_REMOVING;
-<<<<<<< HEAD
 	rtnl_lock();
 	unregister_netdevice(netdev);
 
@@ -5973,18 +4790,6 @@ static int ibmvnic_remove(struct vio_dev *dev)
 	adapter->state = VNIC_REMOVED;
 
 	rtnl_unlock();
-=======
-	unregister_netdev(netdev);
-	mutex_lock(&adapter->reset_lock);
-
-	release_resources(adapter);
-	release_sub_crqs(adapter);
-	release_crq_queue(adapter);
-
-	adapter->state = VNIC_REMOVED;
-
-	mutex_unlock(&adapter->reset_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	device_remove_file(&dev->dev, &dev_attr_failover);
 	free_netdev(netdev);
 	dev_set_drvdata(&dev->dev, NULL);
@@ -6026,11 +4831,7 @@ static ssize_t failover_store(struct device *dev, struct device_attribute *attr,
 	return count;
 }
 
-<<<<<<< HEAD
 static DEVICE_ATTR_WO(failover);
-=======
-static DEVICE_ATTR(failover, 0200, NULL, failover_store);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static unsigned long ibmvnic_get_desired_dma(struct vio_dev *vdev)
 {

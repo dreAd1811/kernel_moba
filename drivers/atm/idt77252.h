@@ -184,11 +184,8 @@ struct aal1 {
 	unsigned char		sequence;
 };
 
-<<<<<<< HEAD
 struct vc_map;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct rate_estimator {
 	struct timer_list	timer;
 	unsigned int		interval;
@@ -198,10 +195,7 @@ struct rate_estimator {
 	long			avcps;
 	u32			cps;
 	u32			maxcps;
-<<<<<<< HEAD
 	struct vc_map		*vc;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct vc_map {

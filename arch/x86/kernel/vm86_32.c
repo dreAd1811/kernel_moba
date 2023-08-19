@@ -149,11 +149,7 @@ void save_v86_state(struct kernel_vm86_regs *regs, int retval)
 	preempt_disable();
 	tsk->thread.sp0 = vm86->saved_sp0;
 	tsk->thread.sysenter_cs = __KERNEL_CS;
-<<<<<<< HEAD
 	update_task_stack(tsk);
-=======
-	update_sp0(tsk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	refresh_sysenter_cs(&tsk->thread);
 	vm86->saved_sp0 = 0;
 	preempt_enable();
@@ -378,11 +374,7 @@ static long do_sys_vm86(struct vm86plus_struct __user *user_vm86, bool plus)
 		refresh_sysenter_cs(&tsk->thread);
 	}
 
-<<<<<<< HEAD
 	update_task_stack(tsk);
-=======
-	update_sp0(tsk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	preempt_enable();
 
 	if (vm86->flags & VM86_SCREEN_BITMAP)

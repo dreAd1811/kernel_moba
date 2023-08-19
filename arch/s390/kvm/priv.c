@@ -1,19 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * handling privileged instructions
  *
  * Copyright IBM Corp. 2008, 2018
-=======
-/*
- * handling privileged instructions
- *
- * Copyright IBM Corp. 2008, 2013
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (version 2 only)
- * as published by the Free Software Foundation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  *    Author(s): Carsten Otte <cotte@de.ibm.com>
  *               Christian Borntraeger <borntraeger@de.ibm.com>
@@ -37,10 +26,6 @@
 #include <asm/gmap.h>
 #include <asm/io.h>
 #include <asm/ptrace.h>
-<<<<<<< HEAD
-=======
-#include <asm/compat.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/sclp.h>
 #include "gaccess.h"
 #include "kvm-s390.h"
@@ -48,11 +33,8 @@
 
 static int handle_ri(struct kvm_vcpu *vcpu)
 {
-<<<<<<< HEAD
 	vcpu->stat.instruction_ri++;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (test_kvm_facility(vcpu->kvm, 64)) {
 		VCPU_EVENT(vcpu, 3, "%s", "ENABLE: RI (lazy)");
 		vcpu->arch.sie_block->ecb3 |= ECB3_RI;
@@ -72,11 +54,8 @@ int kvm_s390_handle_aa(struct kvm_vcpu *vcpu)
 
 static int handle_gs(struct kvm_vcpu *vcpu)
 {
-<<<<<<< HEAD
 	vcpu->stat.instruction_gs++;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (test_kvm_facility(vcpu->kvm, 133)) {
 		VCPU_EVENT(vcpu, 3, "%s", "ENABLE: GS (lazy)");
 		preempt_disable();
@@ -110,11 +89,8 @@ static int handle_set_clock(struct kvm_vcpu *vcpu)
 	u8 ar;
 	u64 op2;
 
-<<<<<<< HEAD
 	vcpu->stat.instruction_sck++;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (vcpu->arch.sie_block->gpsw.mask & PSW_MASK_PSTATE)
 		return kvm_s390_inject_program_int(vcpu, PGM_PRIVILEGED_OP);
 
@@ -228,7 +204,6 @@ static int handle_store_cpu_address(struct kvm_vcpu *vcpu)
 
 int kvm_s390_skey_check_enable(struct kvm_vcpu *vcpu)
 {
-<<<<<<< HEAD
 	int rc;
 
 	trace_kvm_s390_skey_related_inst(vcpu);
@@ -249,44 +224,16 @@ int kvm_s390_skey_check_enable(struct kvm_vcpu *vcpu)
 		vcpu->arch.sie_block->ictl &= ~(ICTL_ISKE | ICTL_SSKE | ICTL_RRBE);
 	vcpu->arch.skey_enabled = true;
 	return 0;
-=======
-	int rc = 0;
-	struct kvm_s390_sie_block *sie_block = vcpu->arch.sie_block;
-
-	trace_kvm_s390_skey_related_inst(vcpu);
-	if (!(sie_block->ictl & (ICTL_ISKE | ICTL_SSKE | ICTL_RRBE)) &&
-	    !(atomic_read(&sie_block->cpuflags) & CPUSTAT_KSS))
-		return rc;
-
-	rc = s390_enable_skey();
-	VCPU_EVENT(vcpu, 3, "enabling storage keys for guest: %d", rc);
-	if (!rc) {
-		if (atomic_read(&sie_block->cpuflags) & CPUSTAT_KSS)
-			atomic_andnot(CPUSTAT_KSS, &sie_block->cpuflags);
-		else
-			sie_block->ictl &= ~(ICTL_ISKE | ICTL_SSKE |
-					     ICTL_RRBE);
-	}
-	return rc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int try_handle_skey(struct kvm_vcpu *vcpu)
 {
 	int rc;
 
-<<<<<<< HEAD
 	rc = kvm_s390_skey_check_enable(vcpu);
 	if (rc)
 		return rc;
 	if (vcpu->kvm->arch.use_skf) {
-=======
-	vcpu->stat.instruction_storage_key++;
-	rc = kvm_s390_skey_check_enable(vcpu);
-	if (rc)
-		return rc;
-	if (sclp.has_skey) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* with storage-key facility, SIE interprets it for us */
 		kvm_s390_retry_instr(vcpu);
 		VCPU_EVENT(vcpu, 4, "%s", "retrying storage key operation");
@@ -297,7 +244,6 @@ static int try_handle_skey(struct kvm_vcpu *vcpu)
 
 static int handle_iske(struct kvm_vcpu *vcpu)
 {
-<<<<<<< HEAD
 	unsigned long gaddr, vmaddr;
 	unsigned char key;
 	int reg1, reg2;
@@ -306,13 +252,6 @@ static int handle_iske(struct kvm_vcpu *vcpu)
 
 	vcpu->stat.instruction_iske++;
 
-=======
-	unsigned long addr;
-	unsigned char key;
-	int reg1, reg2;
-	int rc;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (vcpu->arch.sie_block->gpsw.mask & PSW_MASK_PSTATE)
 		return kvm_s390_inject_program_int(vcpu, PGM_PRIVILEGED_OP);
 
@@ -322,7 +261,6 @@ static int handle_iske(struct kvm_vcpu *vcpu)
 
 	kvm_s390_get_regs_rre(vcpu, &reg1, &reg2);
 
-<<<<<<< HEAD
 	gaddr = vcpu->run->s.regs.gprs[reg2] & PAGE_MASK;
 	gaddr = kvm_s390_logical_to_effective(vcpu, gaddr);
 	gaddr = kvm_s390_real_to_abs(vcpu, gaddr);
@@ -347,20 +285,6 @@ retry:
 		return kvm_s390_inject_program_int(vcpu, PGM_ADDRESSING);
 	if (rc < 0)
 		return rc;
-=======
-	addr = vcpu->run->s.regs.gprs[reg2] & PAGE_MASK;
-	addr = kvm_s390_logical_to_effective(vcpu, addr);
-	addr = kvm_s390_real_to_abs(vcpu, addr);
-	addr = gfn_to_hva(vcpu->kvm, gpa_to_gfn(addr));
-	if (kvm_is_error_hva(addr))
-		return kvm_s390_inject_program_int(vcpu, PGM_ADDRESSING);
-
-	down_read(&current->mm->mmap_sem);
-	rc = get_guest_storage_key(current->mm, addr, &key);
-	up_read(&current->mm->mmap_sem);
-	if (rc)
-		return kvm_s390_inject_program_int(vcpu, PGM_ADDRESSING);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vcpu->run->s.regs.gprs[reg1] &= ~0xff;
 	vcpu->run->s.regs.gprs[reg1] |= key;
 	return 0;
@@ -368,7 +292,6 @@ retry:
 
 static int handle_rrbe(struct kvm_vcpu *vcpu)
 {
-<<<<<<< HEAD
 	unsigned long vmaddr, gaddr;
 	int reg1, reg2;
 	bool unlocked;
@@ -376,12 +299,6 @@ static int handle_rrbe(struct kvm_vcpu *vcpu)
 
 	vcpu->stat.instruction_rrbe++;
 
-=======
-	unsigned long addr;
-	int reg1, reg2;
-	int rc;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (vcpu->arch.sie_block->gpsw.mask & PSW_MASK_PSTATE)
 		return kvm_s390_inject_program_int(vcpu, PGM_PRIVILEGED_OP);
 
@@ -391,7 +308,6 @@ static int handle_rrbe(struct kvm_vcpu *vcpu)
 
 	kvm_s390_get_regs_rre(vcpu, &reg1, &reg2);
 
-<<<<<<< HEAD
 	gaddr = vcpu->run->s.regs.gprs[reg2] & PAGE_MASK;
 	gaddr = kvm_s390_logical_to_effective(vcpu, gaddr);
 	gaddr = kvm_s390_real_to_abs(vcpu, gaddr);
@@ -415,21 +331,6 @@ retry:
 		return kvm_s390_inject_program_int(vcpu, PGM_ADDRESSING);
 	if (rc < 0)
 		return rc;
-=======
-	addr = vcpu->run->s.regs.gprs[reg2] & PAGE_MASK;
-	addr = kvm_s390_logical_to_effective(vcpu, addr);
-	addr = kvm_s390_real_to_abs(vcpu, addr);
-	addr = gfn_to_hva(vcpu->kvm, gpa_to_gfn(addr));
-	if (kvm_is_error_hva(addr))
-		return kvm_s390_inject_program_int(vcpu, PGM_ADDRESSING);
-
-	down_read(&current->mm->mmap_sem);
-	rc = reset_guest_reference_bit(current->mm, addr);
-	up_read(&current->mm->mmap_sem);
-	if (rc < 0)
-		return kvm_s390_inject_program_int(vcpu, PGM_ADDRESSING);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kvm_s390_set_psw_cc(vcpu, rc);
 	return 0;
 }
@@ -444,16 +345,11 @@ static int handle_sske(struct kvm_vcpu *vcpu)
 	unsigned long start, end;
 	unsigned char key, oldkey;
 	int reg1, reg2;
-<<<<<<< HEAD
 	bool unlocked;
 	int rc;
 
 	vcpu->stat.instruction_sske++;
 
-=======
-	int rc;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (vcpu->arch.sie_block->gpsw.mask & PSW_MASK_PSTATE)
 		return kvm_s390_inject_program_int(vcpu, PGM_PRIVILEGED_OP);
 
@@ -482,7 +378,6 @@ static int handle_sske(struct kvm_vcpu *vcpu)
 	}
 
 	while (start != end) {
-<<<<<<< HEAD
 		unsigned long vmaddr = gfn_to_hva(vcpu->kvm, gpa_to_gfn(start));
 		unlocked = false;
 
@@ -504,20 +399,6 @@ static int handle_sske(struct kvm_vcpu *vcpu)
 			return kvm_s390_inject_program_int(vcpu, PGM_ADDRESSING);
 		if (rc < 0)
 			return rc;
-=======
-		unsigned long addr = gfn_to_hva(vcpu->kvm, gpa_to_gfn(start));
-
-		if (kvm_is_error_hva(addr))
-			return kvm_s390_inject_program_int(vcpu, PGM_ADDRESSING);
-
-		down_read(&current->mm->mmap_sem);
-		rc = cond_set_guest_storage_key(current->mm, addr, key, &oldkey,
-						m3 & SSKE_NQ, m3 & SSKE_MR,
-						m3 & SSKE_MC);
-		up_read(&current->mm->mmap_sem);
-		if (rc < 0)
-			return kvm_s390_inject_program_int(vcpu, PGM_ADDRESSING);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		start += PAGE_SIZE;
 	}
 
@@ -558,11 +439,8 @@ static int handle_test_block(struct kvm_vcpu *vcpu)
 	gpa_t addr;
 	int reg2;
 
-<<<<<<< HEAD
 	vcpu->stat.instruction_tb++;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (vcpu->arch.sie_block->gpsw.mask & PSW_MASK_PSTATE)
 		return kvm_s390_inject_program_int(vcpu, PGM_PRIVILEGED_OP);
 
@@ -595,11 +473,8 @@ static int handle_tpi(struct kvm_vcpu *vcpu)
 	u64 addr;
 	u8 ar;
 
-<<<<<<< HEAD
 	vcpu->stat.instruction_tpi++;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	addr = kvm_s390_get_base_disp_s(vcpu, &ar);
 	if (addr & 3)
 		return kvm_s390_inject_program_int(vcpu, PGM_SPECIFICATION);
@@ -660,11 +535,8 @@ static int handle_tsch(struct kvm_vcpu *vcpu)
 	struct kvm_s390_interrupt_info *inti = NULL;
 	const u64 isc_mask = 0xffUL << 24; /* all iscs set */
 
-<<<<<<< HEAD
 	vcpu->stat.instruction_tsch++;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* a valid schid has at least one bit set */
 	if (vcpu->run->s.regs.gprs[1])
 		inti = kvm_s390_get_io_int(vcpu->kvm, isc_mask,
@@ -708,10 +580,7 @@ static int handle_io_inst(struct kvm_vcpu *vcpu)
 		if (vcpu->arch.sie_block->ipa == 0xb235)
 			return handle_tsch(vcpu);
 		/* Handle in userspace. */
-<<<<<<< HEAD
 		vcpu->stat.instruction_io_other++;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EOPNOTSUPP;
 	} else {
 		/*
@@ -777,11 +646,8 @@ int kvm_s390_handle_lpsw(struct kvm_vcpu *vcpu)
 	int rc;
 	u8 ar;
 
-<<<<<<< HEAD
 	vcpu->stat.instruction_lpsw++;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (gpsw->mask & PSW_MASK_PSTATE)
 		return kvm_s390_inject_program_int(vcpu, PGM_PRIVILEGED_OP);
 
@@ -809,11 +675,8 @@ static int handle_lpswe(struct kvm_vcpu *vcpu)
 	int rc;
 	u8 ar;
 
-<<<<<<< HEAD
 	vcpu->stat.instruction_lpswe++;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (vcpu->arch.sie_block->gpsw.mask & PSW_MASK_PSTATE)
 		return kvm_s390_inject_program_int(vcpu, PGM_PRIVILEGED_OP);
 
@@ -968,7 +831,6 @@ out:
 	return rc;
 }
 
-<<<<<<< HEAD
 int kvm_s390_handle_b2(struct kvm_vcpu *vcpu)
 {
 	switch (vcpu->arch.sie_block->ipa & 0x00ff) {
@@ -1023,68 +885,14 @@ int kvm_s390_handle_b2(struct kvm_vcpu *vcpu)
 	default:
 		return -EOPNOTSUPP;
 	}
-=======
-static const intercept_handler_t b2_handlers[256] = {
-	[0x02] = handle_stidp,
-	[0x04] = handle_set_clock,
-	[0x10] = handle_set_prefix,
-	[0x11] = handle_store_prefix,
-	[0x12] = handle_store_cpu_address,
-	[0x14] = kvm_s390_handle_vsie,
-	[0x21] = handle_ipte_interlock,
-	[0x29] = handle_iske,
-	[0x2a] = handle_rrbe,
-	[0x2b] = handle_sske,
-	[0x2c] = handle_test_block,
-	[0x30] = handle_io_inst,
-	[0x31] = handle_io_inst,
-	[0x32] = handle_io_inst,
-	[0x33] = handle_io_inst,
-	[0x34] = handle_io_inst,
-	[0x35] = handle_io_inst,
-	[0x36] = handle_io_inst,
-	[0x37] = handle_io_inst,
-	[0x38] = handle_io_inst,
-	[0x39] = handle_io_inst,
-	[0x3a] = handle_io_inst,
-	[0x3b] = handle_io_inst,
-	[0x3c] = handle_io_inst,
-	[0x50] = handle_ipte_interlock,
-	[0x56] = handle_sthyi,
-	[0x5f] = handle_io_inst,
-	[0x74] = handle_io_inst,
-	[0x76] = handle_io_inst,
-	[0x7d] = handle_stsi,
-	[0xb1] = handle_stfl,
-	[0xb2] = handle_lpswe,
-};
-
-int kvm_s390_handle_b2(struct kvm_vcpu *vcpu)
-{
-	intercept_handler_t handler;
-
-	/*
-	 * A lot of B2 instructions are priviledged. Here we check for
-	 * the privileged ones, that we can handle in the kernel.
-	 * Anything else goes to userspace.
-	 */
-	handler = b2_handlers[vcpu->arch.sie_block->ipa & 0x00ff];
-	if (handler)
-		return handler(vcpu);
-
-	return -EOPNOTSUPP;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int handle_epsw(struct kvm_vcpu *vcpu)
 {
 	int reg1, reg2;
 
-<<<<<<< HEAD
 	vcpu->stat.instruction_epsw++;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kvm_s390_get_regs_rre(vcpu, &reg1, &reg2);
 
 	/* This basically extracts the mask half of the psw. */
@@ -1172,7 +980,6 @@ static int handle_pfmf(struct kvm_vcpu *vcpu)
 	}
 
 	while (start != end) {
-<<<<<<< HEAD
 		unsigned long vmaddr;
 		bool unlocked = false;
 
@@ -1183,17 +990,6 @@ static int handle_pfmf(struct kvm_vcpu *vcpu)
 
 		if (vcpu->run->s.regs.gprs[reg1] & PFMF_CF) {
 			if (kvm_clear_guest(vcpu->kvm, start, PAGE_SIZE))
-=======
-		unsigned long useraddr;
-
-		/* Translate guest address to host address */
-		useraddr = gfn_to_hva(vcpu->kvm, gpa_to_gfn(start));
-		if (kvm_is_error_hva(useraddr))
-			return kvm_s390_inject_program_int(vcpu, PGM_ADDRESSING);
-
-		if (vcpu->run->s.regs.gprs[reg1] & PFMF_CF) {
-			if (clear_user((void __user *)useraddr, PAGE_SIZE))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				return kvm_s390_inject_program_int(vcpu, PGM_ADDRESSING);
 		}
 
@@ -1203,7 +999,6 @@ static int handle_pfmf(struct kvm_vcpu *vcpu)
 			if (rc)
 				return rc;
 			down_read(&current->mm->mmap_sem);
-<<<<<<< HEAD
 			rc = cond_set_guest_storage_key(current->mm, vmaddr,
 							key, NULL, nq, mr, mc);
 			if (rc < 0) {
@@ -1219,15 +1014,6 @@ static int handle_pfmf(struct kvm_vcpu *vcpu)
 			if (rc < 0)
 				return rc;
 		}
-=======
-			rc = cond_set_guest_storage_key(current->mm, useraddr,
-							key, NULL, nq, mr, mc);
-			up_read(&current->mm->mmap_sem);
-			if (rc < 0)
-				return kvm_s390_inject_program_int(vcpu, PGM_ADDRESSING);
-		}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		start += PAGE_SIZE;
 	}
 	if (vcpu->run->s.regs.gprs[reg1] & PFMF_FSC) {
@@ -1242,17 +1028,11 @@ static int handle_pfmf(struct kvm_vcpu *vcpu)
 	return 0;
 }
 
-<<<<<<< HEAD
 /*
  * Must be called with relevant read locks held (kvm->mm->mmap_sem, kvm->srcu)
  */
 static inline int __do_essa(struct kvm_vcpu *vcpu, const int orc)
 {
-=======
-static inline int do_essa(struct kvm_vcpu *vcpu, const int orc)
-{
-	struct kvm_s390_migration_state *ms = vcpu->kvm->arch.migration_state;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int r1, r2, nappended, entries;
 	unsigned long gfn, hva, res, pgstev, ptev;
 	unsigned long *cbrlo;
@@ -1302,19 +1082,12 @@ static inline int do_essa(struct kvm_vcpu *vcpu, const int orc)
 		cbrlo[entries] = gfn << PAGE_SHIFT;
 	}
 
-<<<<<<< HEAD
 	if (orc) {
 		struct kvm_memory_slot *ms = gfn_to_memslot(vcpu->kvm, gfn);
 
 		/* Increment only if we are really flipping the bit */
 		if (ms && !test_and_set_bit(gfn - ms->base_gfn, kvm_second_dirty_bitmap(ms)))
 			atomic64_inc(&vcpu->kvm->arch.cmma_dirty_pages);
-=======
-	if (orc && gfn < ms->bitmap_size) {
-		/* increment only if we are really flipping the bit to 1 */
-		if (!test_and_set_bit(gfn, ms->pgste_bitmap))
-			atomic64_inc(&ms->dirty_pages);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return nappended;
@@ -1343,11 +1116,7 @@ static int handle_essa(struct kvm_vcpu *vcpu)
 						: ESSA_SET_STABLE_IF_RESIDENT))
 		return kvm_s390_inject_program_int(vcpu, PGM_SPECIFICATION);
 
-<<<<<<< HEAD
 	if (!vcpu->kvm->arch.migration_mode) {
-=======
-	if (likely(!vcpu->kvm->arch.migration_state)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * CMMA is enabled in the KVM settings, but is disabled in
 		 * the SIE block and in the mm_context, and we are not doing
@@ -1357,15 +1126,9 @@ static int handle_essa(struct kvm_vcpu *vcpu)
 		 * value really needs to be written to; if the value is
 		 * already correct, we do nothing and avoid the lock.
 		 */
-<<<<<<< HEAD
 		if (vcpu->kvm->mm->context.uses_cmm == 0) {
 			down_write(&vcpu->kvm->mm->mmap_sem);
 			vcpu->kvm->mm->context.uses_cmm = 1;
-=======
-		if (vcpu->kvm->mm->context.use_cmma == 0) {
-			down_write(&vcpu->kvm->mm->mmap_sem);
-			vcpu->kvm->mm->context.use_cmma = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			up_write(&vcpu->kvm->mm->mmap_sem);
 		}
 		/*
@@ -1381,7 +1144,6 @@ static int handle_essa(struct kvm_vcpu *vcpu)
 		/* Retry the ESSA instruction */
 		kvm_s390_retry_instr(vcpu);
 	} else {
-<<<<<<< HEAD
 		int srcu_idx;
 
 		down_read(&vcpu->kvm->mm->mmap_sem);
@@ -1392,12 +1154,6 @@ static int handle_essa(struct kvm_vcpu *vcpu)
 		if (i < 0)
 			return i;
 		/* Account for the possible extra cbrl entry */
-=======
-		/* Account for the possible extra cbrl entry */
-		i = do_essa(vcpu, orc);
-		if (i < 0)
-			return i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		entries += i;
 	}
 	vcpu->arch.sie_block->cbrlo &= PAGE_MASK;	/* reset nceo */
@@ -1409,7 +1165,6 @@ static int handle_essa(struct kvm_vcpu *vcpu)
 	return 0;
 }
 
-<<<<<<< HEAD
 int kvm_s390_handle_b9(struct kvm_vcpu *vcpu)
 {
 	switch (vcpu->arch.sie_block->ipa & 0x00ff) {
@@ -1426,27 +1181,6 @@ int kvm_s390_handle_b9(struct kvm_vcpu *vcpu)
 	default:
 		return -EOPNOTSUPP;
 	}
-=======
-static const intercept_handler_t b9_handlers[256] = {
-	[0x8a] = handle_ipte_interlock,
-	[0x8d] = handle_epsw,
-	[0x8e] = handle_ipte_interlock,
-	[0x8f] = handle_ipte_interlock,
-	[0xab] = handle_essa,
-	[0xaf] = handle_pfmf,
-};
-
-int kvm_s390_handle_b9(struct kvm_vcpu *vcpu)
-{
-	intercept_handler_t handler;
-
-	/* This is handled just as for the B2 instructions. */
-	handler = b9_handlers[vcpu->arch.sie_block->ipa & 0x00ff];
-	if (handler)
-		return handler(vcpu);
-
-	return -EOPNOTSUPP;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int kvm_s390_handle_lctl(struct kvm_vcpu *vcpu)
@@ -1594,7 +1328,6 @@ static int handle_stctg(struct kvm_vcpu *vcpu)
 	return rc ? kvm_s390_inject_prog_cond(vcpu, rc) : 0;
 }
 
-<<<<<<< HEAD
 int kvm_s390_handle_eb(struct kvm_vcpu *vcpu)
 {
 	switch (vcpu->arch.sie_block->ipb & 0x000000ff) {
@@ -1609,24 +1342,6 @@ int kvm_s390_handle_eb(struct kvm_vcpu *vcpu)
 	default:
 		return -EOPNOTSUPP;
 	}
-=======
-static const intercept_handler_t eb_handlers[256] = {
-	[0x2f] = handle_lctlg,
-	[0x25] = handle_stctg,
-	[0x60] = handle_ri,
-	[0x61] = handle_ri,
-	[0x62] = handle_ri,
-};
-
-int kvm_s390_handle_eb(struct kvm_vcpu *vcpu)
-{
-	intercept_handler_t handler;
-
-	handler = eb_handlers[vcpu->arch.sie_block->ipb & 0xff];
-	if (handler)
-		return handler(vcpu);
-	return -EOPNOTSUPP;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int handle_tprot(struct kvm_vcpu *vcpu)
@@ -1686,30 +1401,20 @@ out_unlock:
 
 int kvm_s390_handle_e5(struct kvm_vcpu *vcpu)
 {
-<<<<<<< HEAD
 	switch (vcpu->arch.sie_block->ipa & 0x00ff) {
 	case 0x01:
 		return handle_tprot(vcpu);
 	default:
 		return -EOPNOTSUPP;
 	}
-=======
-	/* For e5xx... instructions we only handle TPROT */
-	if ((vcpu->arch.sie_block->ipa & 0x00ff) == 0x01)
-		return handle_tprot(vcpu);
-	return -EOPNOTSUPP;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int handle_sckpf(struct kvm_vcpu *vcpu)
 {
 	u32 value;
 
-<<<<<<< HEAD
 	vcpu->stat.instruction_sckpf++;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (vcpu->arch.sie_block->gpsw.mask & PSW_MASK_PSTATE)
 		return kvm_s390_inject_program_int(vcpu, PGM_PRIVILEGED_OP);
 
@@ -1725,17 +1430,13 @@ static int handle_sckpf(struct kvm_vcpu *vcpu)
 
 static int handle_ptff(struct kvm_vcpu *vcpu)
 {
-<<<<<<< HEAD
 	vcpu->stat.instruction_ptff++;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* we don't emulate any control instructions yet */
 	kvm_s390_set_psw_cc(vcpu, 3);
 	return 0;
 }
 
-<<<<<<< HEAD
 int kvm_s390_handle_01(struct kvm_vcpu *vcpu)
 {
 	switch (vcpu->arch.sie_block->ipa & 0x00ff) {
@@ -1746,19 +1447,4 @@ int kvm_s390_handle_01(struct kvm_vcpu *vcpu)
 	default:
 		return -EOPNOTSUPP;
 	}
-=======
-static const intercept_handler_t x01_handlers[256] = {
-	[0x04] = handle_ptff,
-	[0x07] = handle_sckpf,
-};
-
-int kvm_s390_handle_01(struct kvm_vcpu *vcpu)
-{
-	intercept_handler_t handler;
-
-	handler = x01_handlers[vcpu->arch.sie_block->ipa & 0x00ff];
-	if (handler)
-		return handler(vcpu);
-	return -EOPNOTSUPP;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

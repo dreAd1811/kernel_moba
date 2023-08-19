@@ -184,10 +184,6 @@ static int eps_cpu_init(struct cpufreq_policy *policy)
 	struct cpuinfo_x86 *c = &cpu_data(0);
 	struct cpufreq_frequency_table *f_table;
 	int k, step, voltage;
-<<<<<<< HEAD
-=======
-	int ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int states;
 #if IS_ENABLED(CONFIG_ACPI_PROCESSOR)
 	unsigned int limit;
@@ -362,16 +358,7 @@ static int eps_cpu_init(struct cpufreq_policy *policy)
 	}
 
 	policy->cpuinfo.transition_latency = 140000; /* 844mV -> 700mV in ns */
-<<<<<<< HEAD
 	policy->freq_table = &centaur->freq_table[0];
-=======
-
-	ret = cpufreq_table_validate_and_show(policy, &centaur->freq_table[0]);
-	if (ret) {
-		kfree(centaur);
-		return ret;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

@@ -12,20 +12,10 @@
 #include <asm/guarded_storage.h>
 #include "entry.h"
 
-<<<<<<< HEAD
 void guarded_storage_release(struct task_struct *tsk)
 {
 	kfree(tsk->thread.gs_cb);
 	kfree(tsk->thread.gs_bc_cb);
-=======
-void exit_thread_gs(void)
-{
-	preempt_disable();
-	kfree(current->thread.gs_cb);
-	kfree(current->thread.gs_bc_cb);
-	current->thread.gs_cb = current->thread.gs_bc_cb = NULL;
-	preempt_enable();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int gs_enable(void)

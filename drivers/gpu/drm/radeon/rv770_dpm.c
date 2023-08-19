@@ -2282,14 +2282,9 @@ int rv7xx_parse_power_table(struct radeon_device *rdev)
 		return -EINVAL;
 	power_info = (union power_info *)(mode_info->atom_context->bios + data_offset);
 
-<<<<<<< HEAD
 	rdev->pm.dpm.ps = kcalloc(power_info->pplib.ucNumStates,
 				  sizeof(struct radeon_ps),
 				  GFP_KERNEL);
-=======
-	rdev->pm.dpm.ps = kzalloc(sizeof(struct radeon_ps) *
-				  power_info->pplib.ucNumStates, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!rdev->pm.dpm.ps)
 		return -ENOMEM;
 

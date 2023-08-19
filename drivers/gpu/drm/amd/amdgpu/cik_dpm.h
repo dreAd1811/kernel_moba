@@ -24,12 +24,7 @@
 #ifndef __CIK_DPM_H__
 #define __CIK_DPM_H__
 
-<<<<<<< HEAD
 extern const struct amdgpu_ip_block_version ci_smu_ip_block;
 extern const struct amdgpu_ip_block_version kv_smu_ip_block;
-=======
-extern const struct amd_ip_funcs ci_dpm_ip_funcs;
-extern const struct amd_ip_funcs kv_dpm_ip_funcs;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif

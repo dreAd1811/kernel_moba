@@ -96,11 +96,7 @@
 	# cleanup workspace
 	mov	$8, %ecx
 	mov	%rsp, %rdi
-<<<<<<< HEAD
 	xor	%eax, %eax
-=======
-	xor	%rax, %rax
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rep stosq
 
 	mov	%rbp, %rsp		# deallocate workspace
@@ -465,19 +461,9 @@ W_PRECALC_SSSE3
 	movdqu	\a,\b
 .endm
 
-<<<<<<< HEAD
 /* SSSE3 optimized implementation:
  *  extern "C" void sha1_transform_ssse3(u32 *digest, const char *data, u32 *ws,
  *                                       unsigned int rounds);
-=======
-/*
- * SSSE3 optimized implementation:
- *
- * extern "C" void sha1_transform_ssse3(struct sha1_state *state,
- *					const u8 *data, int blocks);
- *
- * Note that struct sha1_state is assumed to begin with u32 state[5].
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 SHA1_VECTOR_ASM     sha1_transform_ssse3
 
@@ -563,13 +549,8 @@ W_PRECALC_AVX
 
 
 /* AVX optimized implementation:
-<<<<<<< HEAD
  *  extern "C" void sha1_transform_avx(u32 *digest, const char *data, u32 *ws,
  *                                     unsigned int rounds);
-=======
- *  extern "C" void sha1_transform_avx(struct sha1_state *state,
- *				       const u8 *data, int blocks);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 SHA1_VECTOR_ASM     sha1_transform_avx
 

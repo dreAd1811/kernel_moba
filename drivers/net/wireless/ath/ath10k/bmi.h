@@ -86,13 +86,6 @@ enum bmi_cmd_id {
 #define BMI_PARAM_GET_FLASH_BOARD_ID 0x8000
 #define BMI_PARAM_FLASH_SECTION_ALL 0x10000
 
-<<<<<<< HEAD
-=======
-/* Dual-band Extended Board ID */
-#define BMI_PARAM_GET_EXT_BOARD_ID 0x40000
-#define ATH10K_BMI_EXT_BOARD_ID_SUPPORT 0x40000
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ATH10K_BMI_BOARD_ID_FROM_OTP_MASK   0x7c00
 #define ATH10K_BMI_BOARD_ID_FROM_OTP_LSB    10
 
@@ -100,10 +93,6 @@ enum bmi_cmd_id {
 #define ATH10K_BMI_CHIP_ID_FROM_OTP_LSB     15
 
 #define ATH10K_BMI_BOARD_ID_STATUS_MASK 0xff
-<<<<<<< HEAD
-=======
-#define ATH10K_BMI_EBOARD_ID_STATUS_MASK 0xff
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct bmi_cmd {
 	__le32 id; /* enum bmi_cmd_id */

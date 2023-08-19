@@ -99,10 +99,7 @@ static inline void pte_free(struct mm_struct *mm, pgtable_t ptepage)
 static inline void pgtable_free(void *table, unsigned index_size)
 {
 	if (!index_size) {
-<<<<<<< HEAD
 		pgtable_page_dtor(virt_to_page(table));
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		free_page((unsigned long)table);
 	} else {
 		BUG_ON(index_size > MAX_PGTABLE_INDEX_SIZE);
@@ -111,10 +108,7 @@ static inline void pgtable_free(void *table, unsigned index_size)
 }
 
 #define check_pgt_cache()	do { } while (0)
-<<<<<<< HEAD
 #define get_hugepd_cache_index(x)  (x)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_SMP
 static inline void pgtable_free_tlb(struct mmu_gather *tlb,
@@ -144,10 +138,6 @@ static inline void pgtable_free_tlb(struct mmu_gather *tlb,
 static inline void __pte_free_tlb(struct mmu_gather *tlb, pgtable_t table,
 				  unsigned long address)
 {
-<<<<<<< HEAD
-=======
-	pgtable_page_dtor(table);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pgtable_free_tlb(tlb, page_address(table), 0);
 }
 #endif /* _ASM_POWERPC_BOOK3S_32_PGALLOC_H */

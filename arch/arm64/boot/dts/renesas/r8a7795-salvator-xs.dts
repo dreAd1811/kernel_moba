@@ -1,19 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Device Tree Source for the Salvator-X 2nd version board with R-Car H3 ES2.0
  *
  * Copyright (C) 2015-2017 Renesas Electronics Corp.
-=======
-/*
- * Device Tree Source for the Salvator-X 2nd version board
- *
- * Copyright (C) 2015-2017 Renesas Electronics Corp.
- *
- * This file is licensed under the terms of the GNU General Public License
- * version 2.  This program is licensed "as is" without any warranty of any
- * kind, whether express or implied.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /dts-v1/;
@@ -64,7 +53,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
 &ehci3 {
 	dr_mode = "otg";
 	status = "okay";
@@ -81,8 +69,6 @@
 		&rsnd_port2>;	/* HDMI1  */
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &hdmi0 {
 	status = "okay";
 
@@ -93,15 +79,12 @@
 				remote-endpoint = <&hdmi0_con>;
 			};
 		};
-<<<<<<< HEAD
 		port@2 {
 			reg = <2>;
 			dw_hdmi0_snd_in: endpoint {
 				remote-endpoint = <&rsnd_endpoint1>;
 			};
 		};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };
 
@@ -119,15 +102,12 @@
 				remote-endpoint = <&hdmi1_con>;
 			};
 		};
-<<<<<<< HEAD
 		port@2 {
 			reg = <2>;
 			dw_hdmi1_snd_in: endpoint {
 				remote-endpoint = <&rsnd_endpoint2>;
 			};
 		};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };
 
@@ -139,7 +119,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
 &ohci3 {
 	dr_mode = "otg";
 	status = "okay";
@@ -173,14 +152,11 @@
 	};
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &pfc {
 	usb2_pins: usb2 {
 		groups = "usb2";
 		function = "usb2";
 	};
-<<<<<<< HEAD
 
 	/*
 	 * - On Salvator-X[S], GP6_3[01] are connected to ADV7482 as irq pins
@@ -198,8 +174,6 @@
 		groups = "usb2_ch3";
 		function = "usb2_ch3";
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &usb2_phy2 {
@@ -208,7 +182,6 @@
 
 	status = "okay";
 };
-<<<<<<< HEAD
 
 &usb2_phy3 {
 	pinctrl-0 = <&usb2_ch3_pins>;
@@ -216,5 +189,3 @@
 
 	status = "okay";
 };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

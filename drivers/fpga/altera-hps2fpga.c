@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * FPGA to/from HPS Bridge Driver for Altera SoCFPGA Devices
  *
@@ -10,21 +7,6 @@
  * Includes this patch from the mailing list:
  *   fpga: altera-hps2fpga: fix HPS2FPGA bridge visibility to L3 masters
  *   Signed-off-by: Anatolij Gustschin <agust@denx.de>
-<<<<<<< HEAD
-=======
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms and conditions of the GNU General Public License,
- * version 2, as published by the Free Software Foundation.
- *
- * This program is distributed in the hope it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
- * more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program.  If not, see <http://www.gnu.org/licenses/>.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /*
@@ -146,10 +128,7 @@ static int alt_fpga_bridge_probe(struct platform_device *pdev)
 	struct device *dev = &pdev->dev;
 	struct altera_hps2fpga_data *priv;
 	const struct of_device_id *of_id;
-<<<<<<< HEAD
 	struct fpga_bridge *br;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 enable;
 	int ret;
 
@@ -201,7 +180,6 @@ static int alt_fpga_bridge_probe(struct platform_device *pdev)
 		}
 	}
 
-<<<<<<< HEAD
 	br = fpga_bridge_create(dev, priv->name, &altera_hps2fpga_br_ops, priv);
 	if (!br) {
 		ret = -ENOMEM;
@@ -220,13 +198,6 @@ err_free:
 	fpga_bridge_free(br);
 err:
 	clk_disable_unprepare(priv->clk);
-=======
-	ret = fpga_bridge_register(dev, priv->name, &altera_hps2fpga_br_ops,
-				   priv);
-err:
-	if (ret)
-		clk_disable_unprepare(priv->clk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -236,11 +207,7 @@ static int alt_fpga_bridge_remove(struct platform_device *pdev)
 	struct fpga_bridge *bridge = platform_get_drvdata(pdev);
 	struct altera_hps2fpga_data *priv = bridge->priv;
 
-<<<<<<< HEAD
 	fpga_bridge_unregister(bridge);
-=======
-	fpga_bridge_unregister(&pdev->dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	clk_disable_unprepare(priv->clk);
 

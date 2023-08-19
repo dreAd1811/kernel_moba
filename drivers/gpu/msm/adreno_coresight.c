@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2013-2019, The Linux Foundation. All rights reserved.
@@ -9,24 +8,6 @@
 
 #include "adreno.h"
 
-=======
-/* Copyright (c) 2013-2018, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
-
-#include <linux/platform_device.h>
-#include <linux/coresight.h>
-
-#include "adreno.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define TO_ADRENO_CORESIGHT_ATTR(_attr) \
 	container_of(_attr, struct adreno_coresight_attr, attr)
 
@@ -47,44 +28,23 @@ ssize_t adreno_coresight_show_register(struct device *dev,
 	struct kgsl_device *device = dev_get_drvdata(dev->parent);
 	struct adreno_device *adreno_dev;
 	struct adreno_coresight_attr *cattr = TO_ADRENO_CORESIGHT_ATTR(attr);
-<<<<<<< HEAD
 	bool is_cx;
-=======
-	struct adreno_gpudev *gpudev;
-	struct adreno_coresight *coresight;
-	int cs_id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (device == NULL)
 		return -EINVAL;
 
 	adreno_dev = ADRENO_DEVICE(device);
-<<<<<<< HEAD
-=======
-	gpudev = ADRENO_GPU_DEVICE(adreno_dev);
-
-	cs_id = adreno_coresight_identify(dev_name(dev));
-
-	if (cs_id < 0)
-		return -ENODEV;
-
-	coresight = gpudev->coresight[cs_id];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (cattr->reg == NULL)
 		return -EINVAL;
 
-<<<<<<< HEAD
 	is_cx = adreno_is_cx_dbgc_register(device, cattr->reg->offset);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Return the current value of the register if coresight is enabled,
 	 * otherwise report 0
 	 */
 
 	mutex_lock(&device->mutex);
-<<<<<<< HEAD
 	if ((is_cx && test_bit(ADRENO_DEVICE_CORESIGHT_CX, &adreno_dev->priv))
 		|| (!is_cx && test_bit(ADRENO_DEVICE_CORESIGHT,
 			&adreno_dev->priv))) {
@@ -112,30 +72,6 @@ ssize_t adreno_coresight_show_register(struct device *dev,
 	mutex_unlock(&device->mutex);
 
 	return scnprintf(buf, PAGE_SIZE, "0x%X\n", val);
-=======
-	if (!(test_bit(ADRENO_DEVICE_CORESIGHT_CX, &adreno_dev->priv)
-		|| test_bit(ADRENO_DEVICE_CORESIGHT,
-			&adreno_dev->priv)))
-		goto out;
-	/*
-	 * If the device isn't power collapsed read the actual value
-	 * from the hardware - otherwise return the cached value
-	 */
-
-	if (device->state == KGSL_STATE_ACTIVE ||
-		device->state == KGSL_STATE_NAP) {
-		if (!kgsl_active_count_get(device)) {
-			coresight->read(device,
-				cattr->reg->offset, &cattr->reg->value);
-			kgsl_active_count_put(device);
-		}
-	}
-
-out:
-	val = cattr->reg->value;
-	mutex_unlock(&device->mutex);
-	return snprintf(buf, PAGE_SIZE, "0x%X\n", val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 ssize_t adreno_coresight_store_register(struct device *dev,
@@ -144,38 +80,18 @@ ssize_t adreno_coresight_store_register(struct device *dev,
 	struct kgsl_device *device = dev_get_drvdata(dev->parent);
 	struct adreno_device *adreno_dev;
 	struct adreno_coresight_attr *cattr = TO_ADRENO_CORESIGHT_ATTR(attr);
-<<<<<<< HEAD
 	unsigned long val;
 	int ret, is_cx;
-=======
-	struct adreno_gpudev *gpudev;
-	struct adreno_coresight *coresight;
-	unsigned long val;
-	int ret, cs_id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (device == NULL)
 		return -EINVAL;
 
 	adreno_dev = ADRENO_DEVICE(device);
-<<<<<<< HEAD
-=======
-	gpudev = ADRENO_GPU_DEVICE(adreno_dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (cattr->reg == NULL)
 		return -EINVAL;
 
-<<<<<<< HEAD
 	is_cx = adreno_is_cx_dbgc_register(device, cattr->reg->offset);
-=======
-	cs_id = adreno_coresight_identify(dev_name(dev));
-
-	if (cs_id < 0)
-		return -ENODEV;
-
-	coresight = gpudev->coresight[cs_id];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = kstrtoul(buf, 0, &val);
 	if (ret)
@@ -184,15 +100,9 @@ ssize_t adreno_coresight_store_register(struct device *dev,
 	mutex_lock(&device->mutex);
 
 	/* Ignore writes while coresight is off */
-<<<<<<< HEAD
 	if (!((is_cx && test_bit(ADRENO_DEVICE_CORESIGHT_CX, &adreno_dev->priv))
 		|| (!is_cx && test_bit(ADRENO_DEVICE_CORESIGHT,
 		&adreno_dev->priv))))
-=======
-	if (!(test_bit(ADRENO_DEVICE_CORESIGHT_CX, &adreno_dev->priv)
-		|| test_bit(ADRENO_DEVICE_CORESIGHT,
-		&adreno_dev->priv)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out;
 
 	cattr->reg->value = val;
@@ -201,7 +111,6 @@ ssize_t adreno_coresight_store_register(struct device *dev,
 	if (device->state == KGSL_STATE_ACTIVE ||
 		device->state == KGSL_STATE_NAP) {
 		if (!kgsl_active_count_get(device)) {
-<<<<<<< HEAD
 			if (!is_cx)
 				kgsl_regwrite(device, cattr->reg->offset,
 					cattr->reg->value);
@@ -210,10 +119,6 @@ ssize_t adreno_coresight_store_register(struct device *dev,
 					cattr->reg->offset,
 					cattr->reg->value);
 
-=======
-			coresight->write(device,
-				cattr->reg->offset, cattr->reg->value);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			kgsl_active_count_put(device);
 		}
 	}
@@ -264,7 +169,6 @@ static void adreno_coresight_disable(struct coresight_device *csdev,
 	mutex_lock(&device->mutex);
 
 	if (!kgsl_active_count_get(device)) {
-<<<<<<< HEAD
 		if (cs_id == GPU_CORESIGHT_GX)
 			for (i = 0; i < coresight->count; i++)
 				kgsl_regwrite(device,
@@ -273,23 +177,14 @@ static void adreno_coresight_disable(struct coresight_device *csdev,
 			for (i = 0; i < coresight->count; i++)
 				adreno_cx_dbgc_regwrite(device,
 					coresight->registers[i].offset, 0);
-=======
-		for (i = 0; i < coresight->count; i++)
-			coresight->write(device,
-				coresight->registers[i].offset, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		kgsl_active_count_put(device);
 	}
 
-<<<<<<< HEAD
 	if (cs_id == GPU_CORESIGHT_GX)
 		clear_bit(ADRENO_DEVICE_CORESIGHT, &adreno_dev->priv);
 	else if (cs_id == GPU_CORESIGHT_CX)
 		clear_bit(ADRENO_DEVICE_CORESIGHT_CX, &adreno_dev->priv);
-=======
-	clear_bit(ADRENO_DEVICE_CORESIGHT, &adreno_dev->priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_unlock(&device->mutex);
 }
@@ -312,15 +207,10 @@ static int _adreno_coresight_get_and_clear(struct adreno_device *adreno_dev,
 		return -ENODEV;
 
 	kgsl_pre_hwaccess(device);
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Save the current value of each coresight register
 	 * and then clear each register
 	 */
-<<<<<<< HEAD
 	if (cs_id == GPU_CORESIGHT_GX) {
 		for (i = 0; i < coresight->count; i++) {
 			kgsl_regread(device, coresight->registers[i].offset,
@@ -336,12 +226,6 @@ static int _adreno_coresight_get_and_clear(struct adreno_device *adreno_dev,
 			adreno_cx_dbgc_regwrite(device,
 				coresight->registers[i].offset, 0);
 		}
-=======
-	for (i = 0; i < coresight->count; i++) {
-		coresight->read(device, coresight->registers[i].offset,
-			&coresight->registers[i].value);
-		coresight->write(device, coresight->registers[i].offset, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -357,7 +241,6 @@ static int _adreno_coresight_set(struct adreno_device *adreno_dev, int cs_id)
 	if (coresight == NULL)
 		return -ENODEV;
 
-<<<<<<< HEAD
 	if (cs_id == GPU_CORESIGHT_GX) {
 		for (i = 0; i < coresight->count; i++)
 			kgsl_regwrite(device, coresight->registers[i].offset,
@@ -368,12 +251,6 @@ static int _adreno_coresight_set(struct adreno_device *adreno_dev, int cs_id)
 				coresight->registers[i].offset,
 				coresight->registers[i].value);
 	}
-=======
-	for (i = 0; i < coresight->count; i++)
-		coresight->write(device, coresight->registers[i].offset,
-			coresight->registers[i].value);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 /**
@@ -444,11 +321,7 @@ static int adreno_coresight_enable(struct coresight_device *csdev,
 }
 
 /**
-<<<<<<< HEAD
  * adreno_coresight_stop() - Reprogram coresight registers after power collapse
-=======
- * adreno_coresight_start() - Reprogram coresight registers after power collapse
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @adreno_dev: Pointer to the adreno device structure
  *
  * Cache the current coresight register values so they can be restored after
@@ -553,7 +426,6 @@ int adreno_coresight_init(struct adreno_device *adreno_dev)
 		memset(&desc, 0, sizeof(desc));
 		desc.pdata = of_get_coresight_platform_data(&device->pdev->dev,
 				child);
-<<<<<<< HEAD
 		if (IS_ERR(desc.pdata)) {
 			ret = PTR_ERR(desc.pdata);
 			goto err;
@@ -562,13 +434,6 @@ int adreno_coresight_init(struct adreno_device *adreno_dev)
 			ret = -ENODEV;
 			goto err;
 		}
-=======
-		if (IS_ERR_OR_NULL(desc.pdata))
-			return (desc.pdata == NULL) ? -ENODEV :
-				PTR_ERR(desc.pdata);
-		if (gpudev->coresight[i] == NULL)
-			return -ENODEV;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		desc.type = CORESIGHT_DEV_TYPE_SOURCE;
 		desc.subtype.source_subtype =
@@ -578,7 +443,6 @@ int adreno_coresight_init(struct adreno_device *adreno_dev)
 		desc.groups = gpudev->coresight[i]->groups;
 
 		adreno_dev->csdev[i] = coresight_register(&desc);
-<<<<<<< HEAD
 		if (IS_ERR(adreno_dev->csdev[i])) {
 			ret = PTR_ERR(adreno_dev->csdev[i]);
 			adreno_dev->csdev[i] = NULL;
@@ -599,15 +463,5 @@ err:
 		of_node_put(child);
 
 	of_node_put(node);
-=======
-		if (IS_ERR(adreno_dev->csdev[i]))
-			ret = PTR_ERR(adreno_dev->csdev[i]);
-		if (of_property_read_u32(child, "coresight-atid",
-			&gpudev->coresight[i]->atid))
-			return -EINVAL;
-		i++;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }

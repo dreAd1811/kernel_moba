@@ -36,7 +36,6 @@
 				status = "okay";
 			};
 
-<<<<<<< HEAD
 			tcb0: timer@fff7c000 {
 				timer@0 {
 					compatible = "atmel,tcb-timer";
@@ -49,8 +48,6 @@
 				};
 			};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			macb0: ethernet@fffbc000 {
 				phy-mode = "rmii";
 				status = "okay";
@@ -143,11 +140,7 @@
 			};
 		};
 
-<<<<<<< HEAD
 		usb0: ohci@a00000 {
-=======
-		usb0: ohci@00a00000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			num-ports = <2>;
 			status = "okay";
 		};

@@ -94,7 +94,6 @@
 				};
 			};
 
-<<<<<<< HEAD
 			tcb0: timer@f0010000 {
 				timer@0 {
 					compatible = "atmel,tcb-timer";
@@ -107,8 +106,6 @@
 				};
 			};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			usart0: serial@f001c000 {
 				status = "okay";
 			};
@@ -148,19 +145,11 @@
 			};
 		};
 
-<<<<<<< HEAD
 		usb1: ohci@600000 {
 			status = "okay";
 		};
 
 		usb2: ehci@700000 {
-=======
-		usb1: ohci@00600000 {
-			status = "okay";
-		};
-
-		usb2: ehci@00700000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "okay";
 		};
 

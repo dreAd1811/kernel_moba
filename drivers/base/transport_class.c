@@ -1,18 +1,10 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * transport_class.c - implementation of generic transport classes
  *                     using attribute_containers
  *
  * Copyright (c) 2005 - James Bottomley <James.Bottomley@steeleye.com>
  *
-<<<<<<< HEAD
-=======
- * This file is licensed under GPLv2
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * The basic idea here is to allow any "device controller" (which
  * would most often be a Host Bus Adapter to use the services of one
  * or more tranport classes for performing transport specific

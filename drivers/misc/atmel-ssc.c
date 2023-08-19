@@ -13,11 +13,7 @@
 #include <linux/clk.h>
 #include <linux/err.h>
 #include <linux/io.h>
-<<<<<<< HEAD
 #include <linux/spinlock.h>
-=======
-#include <linux/mutex.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/atmel-ssc.h>
 #include <linux/slab.h>
 #include <linux/module.h>
@@ -27,11 +23,7 @@
 #include "../../sound/soc/atmel/atmel_ssc_dai.h"
 
 /* Serialize access to ssc_list and user count */
-<<<<<<< HEAD
 static DEFINE_SPINLOCK(user_lock);
-=======
-static DEFINE_MUTEX(user_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static LIST_HEAD(ssc_list);
 
 struct ssc_device *ssc_request(unsigned int ssc_num)
@@ -39,11 +31,7 @@ struct ssc_device *ssc_request(unsigned int ssc_num)
 	int ssc_valid = 0;
 	struct ssc_device *ssc;
 
-<<<<<<< HEAD
 	spin_lock(&user_lock);
-=======
-	mutex_lock(&user_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_for_each_entry(ssc, &ssc_list, list) {
 		if (ssc->pdev->dev.of_node) {
 			if (of_alias_get_id(ssc->pdev->dev.of_node, "ssc")
@@ -59,30 +47,18 @@ struct ssc_device *ssc_request(unsigned int ssc_num)
 	}
 
 	if (!ssc_valid) {
-<<<<<<< HEAD
 		spin_unlock(&user_lock);
-=======
-		mutex_unlock(&user_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_err("ssc: ssc%d platform device is missing\n", ssc_num);
 		return ERR_PTR(-ENODEV);
 	}
 
 	if (ssc->user) {
-<<<<<<< HEAD
 		spin_unlock(&user_lock);
-=======
-		mutex_unlock(&user_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_dbg(&ssc->pdev->dev, "module busy\n");
 		return ERR_PTR(-EBUSY);
 	}
 	ssc->user++;
-<<<<<<< HEAD
 	spin_unlock(&user_lock);
-=======
-	mutex_unlock(&user_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	clk_prepare(ssc->clk);
 
@@ -94,22 +70,14 @@ void ssc_free(struct ssc_device *ssc)
 {
 	bool disable_clk = true;
 
-<<<<<<< HEAD
 	spin_lock(&user_lock);
-=======
-	mutex_lock(&user_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ssc->user)
 		ssc->user--;
 	else {
 		disable_clk = false;
 		dev_dbg(&ssc->pdev->dev, "device already free\n");
 	}
-<<<<<<< HEAD
 	spin_unlock(&user_lock);
-=======
-	mutex_unlock(&user_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (disable_clk)
 		clk_unprepare(ssc->clk);
@@ -272,15 +240,9 @@ static int ssc_probe(struct platform_device *pdev)
 		return -ENXIO;
 	}
 
-<<<<<<< HEAD
 	spin_lock(&user_lock);
 	list_add_tail(&ssc->list, &ssc_list);
 	spin_unlock(&user_lock);
-=======
-	mutex_lock(&user_lock);
-	list_add_tail(&ssc->list, &ssc_list);
-	mutex_unlock(&user_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	platform_set_drvdata(pdev, ssc);
 
@@ -299,15 +261,9 @@ static int ssc_remove(struct platform_device *pdev)
 
 	ssc_sound_dai_remove(ssc);
 
-<<<<<<< HEAD
 	spin_lock(&user_lock);
 	list_del(&ssc->list);
 	spin_unlock(&user_lock);
-=======
-	mutex_lock(&user_lock);
-	list_del(&ssc->list);
-	mutex_unlock(&user_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

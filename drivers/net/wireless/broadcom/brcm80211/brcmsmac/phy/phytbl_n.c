@@ -14,10 +14,7 @@
  * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-<<<<<<< HEAD
 #include <linux/kernel.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <types.h>
 #include "phytbl_n.h"
 
@@ -4441,7 +4438,6 @@ static const u16 loft_lut_core1_rev0[] = {
 };
 
 const struct phytbl_info mimophytbl_info_rev0_volatile[] = {
-<<<<<<< HEAD
 	{&bdi_tbl_rev0, ARRAY_SIZE(bdi_tbl_rev0), 21, 0, 16},
 	{&pltlut_tbl_rev0, ARRAY_SIZE(pltlut_tbl_rev0), 20, 0, 32},
 	{&gainctrl_lut_core0_rev0, ARRAY_SIZE(gainctrl_lut_core0_rev0), 26, 192, 32},
@@ -4475,111 +4471,6 @@ const struct phytbl_info mimophytbl_info_rev0[] = {
 
 const u32 mimophytbl_info_sz_rev0 = ARRAY_SIZE(mimophytbl_info_rev0);
 const u32 mimophytbl_info_sz_rev0_volatile = ARRAY_SIZE(mimophytbl_info_rev0_volatile);
-=======
-	{&bdi_tbl_rev0, sizeof(bdi_tbl_rev0) / sizeof(bdi_tbl_rev0[0]), 21, 0,
-	 16}
-	,
-	{&pltlut_tbl_rev0, sizeof(pltlut_tbl_rev0) / sizeof(pltlut_tbl_rev0[0]),
-	 20, 0, 32}
-	,
-	{&gainctrl_lut_core0_rev0,
-	 sizeof(gainctrl_lut_core0_rev0) / sizeof(gainctrl_lut_core0_rev0[0]),
-	 26, 192, 32}
-	,
-	{&gainctrl_lut_core1_rev0,
-	 sizeof(gainctrl_lut_core1_rev0) / sizeof(gainctrl_lut_core1_rev0[0]),
-	 27, 192, 32}
-	,
-
-	{&est_pwr_lut_core0_rev0,
-	 sizeof(est_pwr_lut_core0_rev0) / sizeof(est_pwr_lut_core0_rev0[0]), 26,
-	 0, 8}
-	,
-	{&est_pwr_lut_core1_rev0,
-	 sizeof(est_pwr_lut_core1_rev0) / sizeof(est_pwr_lut_core1_rev0[0]), 27,
-	 0, 8}
-	,
-	{&adj_pwr_lut_core0_rev0,
-	 sizeof(adj_pwr_lut_core0_rev0) / sizeof(adj_pwr_lut_core0_rev0[0]), 26,
-	 64, 8}
-	,
-	{&adj_pwr_lut_core1_rev0,
-	 sizeof(adj_pwr_lut_core1_rev0) / sizeof(adj_pwr_lut_core1_rev0[0]), 27,
-	 64, 8}
-	,
-	{&iq_lut_core0_rev0,
-	 sizeof(iq_lut_core0_rev0) / sizeof(iq_lut_core0_rev0[0]), 26, 320, 32}
-	,
-	{&iq_lut_core1_rev0,
-	 sizeof(iq_lut_core1_rev0) / sizeof(iq_lut_core1_rev0[0]), 27, 320, 32}
-	,
-	{&loft_lut_core0_rev0,
-	 sizeof(loft_lut_core0_rev0) / sizeof(loft_lut_core0_rev0[0]), 26, 448,
-	 16}
-	,
-	{&loft_lut_core1_rev0,
-	 sizeof(loft_lut_core1_rev0) / sizeof(loft_lut_core1_rev0[0]), 27, 448,
-	 16}
-	,
-};
-
-const struct phytbl_info mimophytbl_info_rev0[] = {
-	{&frame_struct_rev0,
-	 sizeof(frame_struct_rev0) / sizeof(frame_struct_rev0[0]), 10, 0, 32}
-	,
-	{&frame_lut_rev0, sizeof(frame_lut_rev0) / sizeof(frame_lut_rev0[0]),
-	 24, 0, 8}
-	,
-	{&tmap_tbl_rev0, sizeof(tmap_tbl_rev0) / sizeof(tmap_tbl_rev0[0]), 12,
-	 0, 32}
-	,
-	{&tdtrn_tbl_rev0, sizeof(tdtrn_tbl_rev0) / sizeof(tdtrn_tbl_rev0[0]),
-	 14, 0, 32}
-	,
-	{&intlv_tbl_rev0, sizeof(intlv_tbl_rev0) / sizeof(intlv_tbl_rev0[0]),
-	 13, 0, 32}
-	,
-	{&pilot_tbl_rev0, sizeof(pilot_tbl_rev0) / sizeof(pilot_tbl_rev0[0]),
-	 11, 0, 16}
-	,
-	{&tdi_tbl20_ant0_rev0,
-	 sizeof(tdi_tbl20_ant0_rev0) / sizeof(tdi_tbl20_ant0_rev0[0]), 19, 128,
-	 32}
-	,
-	{&tdi_tbl20_ant1_rev0,
-	 sizeof(tdi_tbl20_ant1_rev0) / sizeof(tdi_tbl20_ant1_rev0[0]), 19, 256,
-	 32}
-	,
-	{&tdi_tbl40_ant0_rev0,
-	 sizeof(tdi_tbl40_ant0_rev0) / sizeof(tdi_tbl40_ant0_rev0[0]), 19, 640,
-	 32}
-	,
-	{&tdi_tbl40_ant1_rev0,
-	 sizeof(tdi_tbl40_ant1_rev0) / sizeof(tdi_tbl40_ant1_rev0[0]), 19, 768,
-	 32}
-	,
-	{&chanest_tbl_rev0,
-	 sizeof(chanest_tbl_rev0) / sizeof(chanest_tbl_rev0[0]), 22, 0, 32}
-	,
-	{&mcs_tbl_rev0, sizeof(mcs_tbl_rev0) / sizeof(mcs_tbl_rev0[0]), 18, 0,
-	 8}
-	,
-	{&noise_var_tbl0_rev0,
-	 sizeof(noise_var_tbl0_rev0) / sizeof(noise_var_tbl0_rev0[0]), 16, 0,
-	 32}
-	,
-	{&noise_var_tbl1_rev0,
-	 sizeof(noise_var_tbl1_rev0) / sizeof(noise_var_tbl1_rev0[0]), 16, 128,
-	 32}
-	,
-};
-
-const u32 mimophytbl_info_sz_rev0 =
-	sizeof(mimophytbl_info_rev0) / sizeof(mimophytbl_info_rev0[0]);
-const u32 mimophytbl_info_sz_rev0_volatile =
-	sizeof(mimophytbl_info_rev0_volatile) /
-	sizeof(mimophytbl_info_rev0_volatile[0]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static const u16 ant_swctrl_tbl_rev3[] = {
 	0x0082,
@@ -9403,7 +9294,6 @@ static const u32 papd_cal_scalars_tbl_core1_rev3[] = {
 };
 
 const struct phytbl_info mimophytbl_info_rev3_volatile[] = {
-<<<<<<< HEAD
 	{&ant_swctrl_tbl_rev3, ARRAY_SIZE(ant_swctrl_tbl_rev3), 9, 0, 16},
 };
 
@@ -9451,134 +9341,6 @@ const u32 mimophytbl_info_sz_rev3_volatile = ARRAY_SIZE(mimophytbl_info_rev3_vol
 const u32 mimophytbl_info_sz_rev3_volatile1 = ARRAY_SIZE(mimophytbl_info_rev3_volatile1);
 const u32 mimophytbl_info_sz_rev3_volatile2 = ARRAY_SIZE(mimophytbl_info_rev3_volatile2);
 const u32 mimophytbl_info_sz_rev3_volatile3 = ARRAY_SIZE(mimophytbl_info_rev3_volatile3);
-=======
-	{&ant_swctrl_tbl_rev3,
-	 sizeof(ant_swctrl_tbl_rev3) / sizeof(ant_swctrl_tbl_rev3[0]), 9, 0, 16}
-	,
-};
-
-const struct phytbl_info mimophytbl_info_rev3_volatile1[] = {
-	{&ant_swctrl_tbl_rev3_1,
-	 sizeof(ant_swctrl_tbl_rev3_1) / sizeof(ant_swctrl_tbl_rev3_1[0]), 9, 0,
-	 16}
-	,
-};
-
-const struct phytbl_info mimophytbl_info_rev3_volatile2[] = {
-	{&ant_swctrl_tbl_rev3_2,
-	 sizeof(ant_swctrl_tbl_rev3_2) / sizeof(ant_swctrl_tbl_rev3_2[0]), 9, 0,
-	 16}
-	,
-};
-
-const struct phytbl_info mimophytbl_info_rev3_volatile3[] = {
-	{&ant_swctrl_tbl_rev3_3,
-	 sizeof(ant_swctrl_tbl_rev3_3) / sizeof(ant_swctrl_tbl_rev3_3[0]), 9, 0,
-	 16}
-	,
-};
-
-const struct phytbl_info mimophytbl_info_rev3[] = {
-	{&frame_struct_rev3,
-	 sizeof(frame_struct_rev3) / sizeof(frame_struct_rev3[0]), 10, 0, 32}
-	,
-	{&pilot_tbl_rev3, sizeof(pilot_tbl_rev3) / sizeof(pilot_tbl_rev3[0]),
-	 11, 0, 16}
-	,
-	{&tmap_tbl_rev3, sizeof(tmap_tbl_rev3) / sizeof(tmap_tbl_rev3[0]), 12,
-	 0, 32}
-	,
-	{&intlv_tbl_rev3, sizeof(intlv_tbl_rev3) / sizeof(intlv_tbl_rev3[0]),
-	 13, 0, 32}
-	,
-	{&tdtrn_tbl_rev3, sizeof(tdtrn_tbl_rev3) / sizeof(tdtrn_tbl_rev3[0]),
-	 14, 0, 32}
-	,
-	{&noise_var_tbl_rev3,
-	 sizeof(noise_var_tbl_rev3) / sizeof(noise_var_tbl_rev3[0]), 16, 0, 32}
-	,
-	{&mcs_tbl_rev3, sizeof(mcs_tbl_rev3) / sizeof(mcs_tbl_rev3[0]), 18, 0,
-	 16}
-	,
-	{&tdi_tbl20_ant0_rev3,
-	 sizeof(tdi_tbl20_ant0_rev3) / sizeof(tdi_tbl20_ant0_rev3[0]), 19, 128,
-	 32}
-	,
-	{&tdi_tbl20_ant1_rev3,
-	 sizeof(tdi_tbl20_ant1_rev3) / sizeof(tdi_tbl20_ant1_rev3[0]), 19, 256,
-	 32}
-	,
-	{&tdi_tbl40_ant0_rev3,
-	 sizeof(tdi_tbl40_ant0_rev3) / sizeof(tdi_tbl40_ant0_rev3[0]), 19, 640,
-	 32}
-	,
-	{&tdi_tbl40_ant1_rev3,
-	 sizeof(tdi_tbl40_ant1_rev3) / sizeof(tdi_tbl40_ant1_rev3[0]), 19, 768,
-	 32}
-	,
-	{&pltlut_tbl_rev3, sizeof(pltlut_tbl_rev3) / sizeof(pltlut_tbl_rev3[0]),
-	 20, 0, 32}
-	,
-	{&chanest_tbl_rev3,
-	 sizeof(chanest_tbl_rev3) / sizeof(chanest_tbl_rev3[0]), 22, 0, 32}
-	,
-	{&frame_lut_rev3, sizeof(frame_lut_rev3) / sizeof(frame_lut_rev3[0]),
-	 24, 0, 8}
-	,
-	{&est_pwr_lut_core0_rev3,
-	 sizeof(est_pwr_lut_core0_rev3) / sizeof(est_pwr_lut_core0_rev3[0]), 26,
-	 0, 8}
-	,
-	{&est_pwr_lut_core1_rev3,
-	 sizeof(est_pwr_lut_core1_rev3) / sizeof(est_pwr_lut_core1_rev3[0]), 27,
-	 0, 8}
-	,
-	{&adj_pwr_lut_core0_rev3,
-	 sizeof(adj_pwr_lut_core0_rev3) / sizeof(adj_pwr_lut_core0_rev3[0]), 26,
-	 64, 8}
-	,
-	{&adj_pwr_lut_core1_rev3,
-	 sizeof(adj_pwr_lut_core1_rev3) / sizeof(adj_pwr_lut_core1_rev3[0]), 27,
-	 64, 8}
-	,
-	{&gainctrl_lut_core0_rev3,
-	 sizeof(gainctrl_lut_core0_rev3) / sizeof(gainctrl_lut_core0_rev3[0]),
-	 26, 192, 32}
-	,
-	{&gainctrl_lut_core1_rev3,
-	 sizeof(gainctrl_lut_core1_rev3) / sizeof(gainctrl_lut_core1_rev3[0]),
-	 27, 192, 32}
-	,
-	{&iq_lut_core0_rev3,
-	 sizeof(iq_lut_core0_rev3) / sizeof(iq_lut_core0_rev3[0]), 26, 320, 32}
-	,
-	{&iq_lut_core1_rev3,
-	 sizeof(iq_lut_core1_rev3) / sizeof(iq_lut_core1_rev3[0]), 27, 320, 32}
-	,
-	{&loft_lut_core0_rev3,
-	 sizeof(loft_lut_core0_rev3) / sizeof(loft_lut_core0_rev3[0]), 26, 448,
-	 16}
-	,
-	{&loft_lut_core1_rev3,
-	 sizeof(loft_lut_core1_rev3) / sizeof(loft_lut_core1_rev3[0]), 27, 448,
-	 16}
-};
-
-const u32 mimophytbl_info_sz_rev3 =
-	sizeof(mimophytbl_info_rev3) / sizeof(mimophytbl_info_rev3[0]);
-const u32 mimophytbl_info_sz_rev3_volatile =
-	sizeof(mimophytbl_info_rev3_volatile) /
-	sizeof(mimophytbl_info_rev3_volatile[0]);
-const u32 mimophytbl_info_sz_rev3_volatile1 =
-	sizeof(mimophytbl_info_rev3_volatile1) /
-	sizeof(mimophytbl_info_rev3_volatile1[0]);
-const u32 mimophytbl_info_sz_rev3_volatile2 =
-	sizeof(mimophytbl_info_rev3_volatile2) /
-	sizeof(mimophytbl_info_rev3_volatile2[0]);
-const u32 mimophytbl_info_sz_rev3_volatile3 =
-	sizeof(mimophytbl_info_rev3_volatile3) /
-	sizeof(mimophytbl_info_rev3_volatile3[0]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static const u32 tmap_tbl_rev7[] = {
 	0x8a88aa80,
@@ -10559,7 +10321,6 @@ static const u32 papd_cal_scalars_tbl_core1_rev7[] = {
 };
 
 const struct phytbl_info mimophytbl_info_rev7[] = {
-<<<<<<< HEAD
 	{&frame_struct_rev3, ARRAY_SIZE(frame_struct_rev3), 10, 0, 32},
 	{&pilot_tbl_rev3, ARRAY_SIZE(pilot_tbl_rev3), 11, 0, 16},
 	{&tmap_tbl_rev7, ARRAY_SIZE(tmap_tbl_rev7), 12, 0, 32},
@@ -10615,164 +10376,3 @@ const struct phytbl_info mimophytbl_info_rev16[] = {
 };
 
 const u32 mimophytbl_info_sz_rev16 = ARRAY_SIZE(mimophytbl_info_rev16);
-=======
-	{&frame_struct_rev3,
-	 sizeof(frame_struct_rev3) / sizeof(frame_struct_rev3[0]), 10, 0, 32}
-	,
-	{&pilot_tbl_rev3, sizeof(pilot_tbl_rev3) / sizeof(pilot_tbl_rev3[0]),
-	 11, 0, 16}
-	,
-	{&tmap_tbl_rev7, sizeof(tmap_tbl_rev7) / sizeof(tmap_tbl_rev7[0]), 12,
-	 0, 32}
-	,
-	{&intlv_tbl_rev3, sizeof(intlv_tbl_rev3) / sizeof(intlv_tbl_rev3[0]),
-	 13, 0, 32}
-	,
-	{&tdtrn_tbl_rev3, sizeof(tdtrn_tbl_rev3) / sizeof(tdtrn_tbl_rev3[0]),
-	 14, 0, 32}
-	,
-	{&noise_var_tbl_rev7,
-	 sizeof(noise_var_tbl_rev7) / sizeof(noise_var_tbl_rev7[0]), 16, 0, 32}
-	,
-	{&mcs_tbl_rev3, sizeof(mcs_tbl_rev3) / sizeof(mcs_tbl_rev3[0]), 18, 0,
-	 16}
-	,
-	{&tdi_tbl20_ant0_rev3,
-	 sizeof(tdi_tbl20_ant0_rev3) / sizeof(tdi_tbl20_ant0_rev3[0]), 19, 128,
-	 32}
-	,
-	{&tdi_tbl20_ant1_rev3,
-	 sizeof(tdi_tbl20_ant1_rev3) / sizeof(tdi_tbl20_ant1_rev3[0]), 19, 256,
-	 32}
-	,
-	{&tdi_tbl40_ant0_rev3,
-	 sizeof(tdi_tbl40_ant0_rev3) / sizeof(tdi_tbl40_ant0_rev3[0]), 19, 640,
-	 32}
-	,
-	{&tdi_tbl40_ant1_rev3,
-	 sizeof(tdi_tbl40_ant1_rev3) / sizeof(tdi_tbl40_ant1_rev3[0]), 19, 768,
-	 32}
-	,
-	{&pltlut_tbl_rev3, sizeof(pltlut_tbl_rev3) / sizeof(pltlut_tbl_rev3[0]),
-	 20, 0, 32}
-	,
-	{&chanest_tbl_rev3,
-	 sizeof(chanest_tbl_rev3) / sizeof(chanest_tbl_rev3[0]), 22, 0, 32}
-	,
-	{&frame_lut_rev3, sizeof(frame_lut_rev3) / sizeof(frame_lut_rev3[0]),
-	 24, 0, 8}
-	,
-	{&est_pwr_lut_core0_rev3,
-	 sizeof(est_pwr_lut_core0_rev3) / sizeof(est_pwr_lut_core0_rev3[0]), 26,
-	 0, 8}
-	,
-	{&est_pwr_lut_core1_rev3,
-	 sizeof(est_pwr_lut_core1_rev3) / sizeof(est_pwr_lut_core1_rev3[0]), 27,
-	 0, 8}
-	,
-	{&adj_pwr_lut_core0_rev3,
-	 sizeof(adj_pwr_lut_core0_rev3) / sizeof(adj_pwr_lut_core0_rev3[0]), 26,
-	 64, 8}
-	,
-	{&adj_pwr_lut_core1_rev3,
-	 sizeof(adj_pwr_lut_core1_rev3) / sizeof(adj_pwr_lut_core1_rev3[0]), 27,
-	 64, 8}
-	,
-	{&gainctrl_lut_core0_rev3,
-	 sizeof(gainctrl_lut_core0_rev3) / sizeof(gainctrl_lut_core0_rev3[0]),
-	 26, 192, 32}
-	,
-	{&gainctrl_lut_core1_rev3,
-	 sizeof(gainctrl_lut_core1_rev3) / sizeof(gainctrl_lut_core1_rev3[0]),
-	 27, 192, 32}
-	,
-	{&iq_lut_core0_rev3,
-	 sizeof(iq_lut_core0_rev3) / sizeof(iq_lut_core0_rev3[0]), 26, 320, 32}
-	,
-	{&iq_lut_core1_rev3,
-	 sizeof(iq_lut_core1_rev3) / sizeof(iq_lut_core1_rev3[0]), 27, 320, 32}
-	,
-	{&loft_lut_core0_rev3,
-	 sizeof(loft_lut_core0_rev3) / sizeof(loft_lut_core0_rev3[0]), 26, 448,
-	 16}
-	,
-	{&loft_lut_core1_rev3,
-	 sizeof(loft_lut_core1_rev3) / sizeof(loft_lut_core1_rev3[0]), 27, 448,
-	 16}
-	,
-	{&papd_comp_rfpwr_tbl_core0_rev3,
-	 sizeof(papd_comp_rfpwr_tbl_core0_rev3) /
-	 sizeof(papd_comp_rfpwr_tbl_core0_rev3[0]), 26, 576, 16}
-	,
-	{&papd_comp_rfpwr_tbl_core1_rev3,
-	 sizeof(papd_comp_rfpwr_tbl_core1_rev3) /
-	 sizeof(papd_comp_rfpwr_tbl_core1_rev3[0]), 27, 576, 16}
-	,
-	{&papd_comp_epsilon_tbl_core0_rev7,
-	 sizeof(papd_comp_epsilon_tbl_core0_rev7) /
-	 sizeof(papd_comp_epsilon_tbl_core0_rev7[0]), 31, 0, 32}
-	,
-	{&papd_cal_scalars_tbl_core0_rev7,
-	 sizeof(papd_cal_scalars_tbl_core0_rev7) /
-	 sizeof(papd_cal_scalars_tbl_core0_rev7[0]), 32, 0, 32}
-	,
-	{&papd_comp_epsilon_tbl_core1_rev7,
-	 sizeof(papd_comp_epsilon_tbl_core1_rev7) /
-	 sizeof(papd_comp_epsilon_tbl_core1_rev7[0]), 33, 0, 32}
-	,
-	{&papd_cal_scalars_tbl_core1_rev7,
-	 sizeof(papd_cal_scalars_tbl_core1_rev7) /
-	 sizeof(papd_cal_scalars_tbl_core1_rev7[0]), 34, 0, 32}
-	,
-};
-
-const u32 mimophytbl_info_sz_rev7 =
-	sizeof(mimophytbl_info_rev7) / sizeof(mimophytbl_info_rev7[0]);
-
-const struct phytbl_info mimophytbl_info_rev16[] = {
-	{&noise_var_tbl_rev7,
-	 sizeof(noise_var_tbl_rev7) / sizeof(noise_var_tbl_rev7[0]), 16, 0, 32}
-	,
-	{&est_pwr_lut_core0_rev3,
-	 sizeof(est_pwr_lut_core0_rev3) / sizeof(est_pwr_lut_core0_rev3[0]), 26,
-	 0, 8}
-	,
-	{&est_pwr_lut_core1_rev3,
-	 sizeof(est_pwr_lut_core1_rev3) / sizeof(est_pwr_lut_core1_rev3[0]), 27,
-	 0, 8}
-	,
-	{&adj_pwr_lut_core0_rev3,
-	 sizeof(adj_pwr_lut_core0_rev3) / sizeof(adj_pwr_lut_core0_rev3[0]), 26,
-	 64, 8}
-	,
-	{&adj_pwr_lut_core1_rev3,
-	 sizeof(adj_pwr_lut_core1_rev3) / sizeof(adj_pwr_lut_core1_rev3[0]), 27,
-	 64, 8}
-	,
-	{&gainctrl_lut_core0_rev3,
-	 sizeof(gainctrl_lut_core0_rev3) / sizeof(gainctrl_lut_core0_rev3[0]),
-	 26, 192, 32}
-	,
-	{&gainctrl_lut_core1_rev3,
-	 sizeof(gainctrl_lut_core1_rev3) / sizeof(gainctrl_lut_core1_rev3[0]),
-	 27, 192, 32}
-	,
-	{&iq_lut_core0_rev3,
-	 sizeof(iq_lut_core0_rev3) / sizeof(iq_lut_core0_rev3[0]), 26, 320, 32}
-	,
-	{&iq_lut_core1_rev3,
-	 sizeof(iq_lut_core1_rev3) / sizeof(iq_lut_core1_rev3[0]), 27, 320, 32}
-	,
-	{&loft_lut_core0_rev3,
-	 sizeof(loft_lut_core0_rev3) / sizeof(loft_lut_core0_rev3[0]), 26, 448,
-	 16}
-	,
-	{&loft_lut_core1_rev3,
-	 sizeof(loft_lut_core1_rev3) / sizeof(loft_lut_core1_rev3[0]), 27, 448,
-	 16}
-	,
-};
-
-const u32 mimophytbl_info_sz_rev16 =
-	sizeof(mimophytbl_info_rev16) / sizeof(mimophytbl_info_rev16[0]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

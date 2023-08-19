@@ -141,11 +141,8 @@ int rtl88e_download_fw(struct ieee80211_hw *hw,
 		return 1;
 
 	pfwheader = (struct rtlwifi_firmware_header *)rtlhal->pfirmware;
-<<<<<<< HEAD
 	rtlhal->fw_version = le16_to_cpu(pfwheader->version);
 	rtlhal->fw_subversion = pfwheader->subversion;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pfwdata = rtlhal->pfirmware;
 	fwsize = rtlhal->fwsize;
 	RT_TRACE(rtlpriv, COMP_FW, DBG_DMESG,

@@ -87,12 +87,6 @@ unsigned int nlm_get_cpu_frequency(void);
 extern const struct plat_smp_ops nlm_smp_ops;
 extern char nlm_reset_entry[], nlm_reset_entry_end[];
 
-<<<<<<< HEAD
-=======
-/* SWIOTLB */
-extern const struct dma_map_ops nlm_swiotlb_dma_ops;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern unsigned int nlm_threads_per_core;
 extern cpumask_t nlm_cpumask;
 

@@ -19,7 +19,6 @@ struct _ccu_nm {
 	unsigned long	m, min_m, max_m;
 };
 
-<<<<<<< HEAD
 static unsigned long ccu_nm_calc_rate(unsigned long parent,
 				      unsigned long n, unsigned long m)
 {
@@ -31,8 +30,6 @@ static unsigned long ccu_nm_calc_rate(unsigned long parent,
 	return rate;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void ccu_nm_find_best(unsigned long parent, unsigned long rate,
 			     struct _ccu_nm *nm)
 {
@@ -42,12 +39,8 @@ static void ccu_nm_find_best(unsigned long parent, unsigned long rate,
 
 	for (_n = nm->min_n; _n <= nm->max_n; _n++) {
 		for (_m = nm->min_m; _m <= nm->max_m; _m++) {
-<<<<<<< HEAD
 			unsigned long tmp_rate = ccu_nm_calc_rate(parent,
 								  _n, _m);
-=======
-			unsigned long tmp_rate = parent * _n  / _m;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			if (tmp_rate > rate)
 				continue;
@@ -89,7 +82,6 @@ static unsigned long ccu_nm_recalc_rate(struct clk_hw *hw,
 					unsigned long parent_rate)
 {
 	struct ccu_nm *nm = hw_to_ccu_nm(hw);
-<<<<<<< HEAD
 	unsigned long rate;
 	unsigned long n, m;
 	u32 reg;
@@ -102,13 +94,6 @@ static unsigned long ccu_nm_recalc_rate(struct clk_hw *hw,
 
 		return rate;
 	}
-=======
-	unsigned long n, m;
-	u32 reg;
-
-	if (ccu_frac_helper_is_enabled(&nm->common, &nm->frac))
-		return ccu_frac_helper_read_rate(&nm->common, &nm->frac);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	reg = readl(nm->common.base + nm->common.reg);
 
@@ -124,7 +109,6 @@ static unsigned long ccu_nm_recalc_rate(struct clk_hw *hw,
 	if (!m)
 		m++;
 
-<<<<<<< HEAD
 	if (ccu_sdm_helper_is_enabled(&nm->common, &nm->sdm))
 		rate = ccu_sdm_helper_read_rate(&nm->common, &nm->sdm, m, n);
 	else
@@ -134,9 +118,6 @@ static unsigned long ccu_nm_recalc_rate(struct clk_hw *hw,
 		rate /= nm->fixed_post_div;
 
 	return rate;
-=======
-	return parent_rate * n / m;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static long ccu_nm_round_rate(struct clk_hw *hw, unsigned long rate,
@@ -145,7 +126,6 @@ static long ccu_nm_round_rate(struct clk_hw *hw, unsigned long rate,
 	struct ccu_nm *nm = hw_to_ccu_nm(hw);
 	struct _ccu_nm _nm;
 
-<<<<<<< HEAD
 	if (nm->common.features & CCU_FEATURE_FIXED_POSTDIV)
 		rate *= nm->fixed_post_div;
 
@@ -167,10 +147,6 @@ static long ccu_nm_round_rate(struct clk_hw *hw, unsigned long rate,
 			rate /= nm->fixed_post_div;
 		return rate;
 	}
-=======
-	if (ccu_frac_helper_has_rate(&nm->common, &nm->frac, rate))
-		return rate;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	_nm.min_n = nm->n.min ?: 1;
 	_nm.max_n = nm->n.max ?: 1 << nm->n.width;
@@ -178,17 +154,12 @@ static long ccu_nm_round_rate(struct clk_hw *hw, unsigned long rate,
 	_nm.max_m = nm->m.max ?: 1 << nm->m.width;
 
 	ccu_nm_find_best(*parent_rate, rate, &_nm);
-<<<<<<< HEAD
 	rate = ccu_nm_calc_rate(*parent_rate, _nm.n, _nm.m);
 
 	if (nm->common.features & CCU_FEATURE_FIXED_POSTDIV)
 		rate /= nm->fixed_post_div;
 
 	return rate;
-=======
-
-	return *parent_rate * _nm.n / _nm.m;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int ccu_nm_set_rate(struct clk_hw *hw, unsigned long rate,
@@ -199,13 +170,10 @@ static int ccu_nm_set_rate(struct clk_hw *hw, unsigned long rate,
 	unsigned long flags;
 	u32 reg;
 
-<<<<<<< HEAD
 	/* Adjust target rate according to post-dividers */
 	if (nm->common.features & CCU_FEATURE_FIXED_POSTDIV)
 		rate = rate * nm->fixed_post_div;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ccu_frac_helper_has_rate(&nm->common, &nm->frac, rate)) {
 		spin_lock_irqsave(nm->common.lock, flags);
 
@@ -229,7 +197,6 @@ static int ccu_nm_set_rate(struct clk_hw *hw, unsigned long rate,
 	_nm.min_m = 1;
 	_nm.max_m = nm->m.max ?: 1 << nm->m.width;
 
-<<<<<<< HEAD
 	if (ccu_sdm_helper_has_rate(&nm->common, &nm->sdm, rate)) {
 		ccu_sdm_helper_enable(&nm->common, &nm->sdm, rate);
 
@@ -240,9 +207,6 @@ static int ccu_nm_set_rate(struct clk_hw *hw, unsigned long rate,
 		ccu_sdm_helper_disable(&nm->common, &nm->sdm);
 		ccu_nm_find_best(parent_rate, rate, &_nm);
 	}
-=======
-	ccu_nm_find_best(parent_rate, rate, &_nm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irqsave(nm->common.lock, flags);
 

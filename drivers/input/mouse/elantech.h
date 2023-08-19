@@ -107,7 +107,6 @@
 #define ETP_WEIGHT_VALUE		5
 
 /*
-<<<<<<< HEAD
  * Bus information on 3rd byte of query ETP_RESOLUTION_QUERY(0x04)
  */
 #define ETP_BUS_PS2_ONLY		0
@@ -132,8 +131,6 @@
 		 ((fw_version) & 0x0000ff) > 0)
 
 /*
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * The base position for one finger, v4 hardware
  */
 struct finger_pos {
@@ -141,7 +138,6 @@ struct finger_pos {
 	unsigned int y;
 };
 
-<<<<<<< HEAD
 struct elantech_device_info {
 	unsigned char capabilities[3];
 	unsigned char samples[3];
@@ -161,8 +157,6 @@ struct elantech_device_info {
 			unsigned char *param);
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct elantech_data {
 	struct input_dev *tp_dev;	/* Relative device for trackpoint */
 	char tp_phys[32];
@@ -176,38 +170,18 @@ struct elantech_data {
 	unsigned char reg_24;
 	unsigned char reg_25;
 	unsigned char reg_26;
-<<<<<<< HEAD
-=======
-	unsigned char debug;
-	unsigned char capabilities[3];
-	unsigned char samples[3];
-	bool paritycheck;
-	bool jumpy_cursor;
-	bool reports_pressure;
-	bool crc_enabled;
-	bool set_hw_resolution;
-	unsigned char hw_version;
-	unsigned int fw_version;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int single_finger_reports;
 	unsigned int y_max;
 	unsigned int width;
 	struct finger_pos mt[ETP_MAX_FINGERS];
 	unsigned char parity[256];
-<<<<<<< HEAD
 	struct elantech_device_info info;
-=======
-	int (*send_cmd)(struct psmouse *psmouse, unsigned char c, unsigned char *param);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void (*original_set_rate)(struct psmouse *psmouse, unsigned int rate);
 };
 
 #ifdef CONFIG_MOUSE_PS2_ELANTECH
 int elantech_detect(struct psmouse *psmouse, bool set_properties);
-<<<<<<< HEAD
 int elantech_init_ps2(struct psmouse *psmouse);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int elantech_init(struct psmouse *psmouse);
 #else
 static inline int elantech_detect(struct psmouse *psmouse, bool set_properties)
@@ -218,7 +192,6 @@ static inline int elantech_init(struct psmouse *psmouse)
 {
 	return -ENOSYS;
 }
-<<<<<<< HEAD
 static inline int elantech_init_ps2(struct psmouse *psmouse)
 {
 	return -ENOSYS;
@@ -234,8 +207,4 @@ static inline int elantech_init_smbus(struct psmouse *psmouse)
 }
 #endif /* CONFIG_MOUSE_PS2_ELANTECH_SMBUS */
 
-=======
-#endif /* CONFIG_MOUSE_PS2_ELANTECH */
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

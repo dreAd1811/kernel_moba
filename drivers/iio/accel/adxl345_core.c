@@ -6,33 +6,24 @@
  * This file is subject to the terms and conditions of version 2 of
  * the GNU General Public License. See the file COPYING in the main
  * directory of this archive for more details.
-<<<<<<< HEAD
  *
  * Datasheet: http://www.analog.com/media/en/technical-documentation/data-sheets/ADXL345.pdf
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/module.h>
 #include <linux/regmap.h>
 
 #include <linux/iio/iio.h>
-<<<<<<< HEAD
 #include <linux/iio/sysfs.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "adxl345.h"
 
 #define ADXL345_REG_DEVID		0x00
-<<<<<<< HEAD
 #define ADXL345_REG_OFSX		0x1e
 #define ADXL345_REG_OFSY		0x1f
 #define ADXL345_REG_OFSZ		0x20
 #define ADXL345_REG_OFS_AXIS(index)	(ADXL345_REG_OFSX + (index))
 #define ADXL345_REG_BW_RATE		0x2C
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ADXL345_REG_POWER_CTL		0x2D
 #define ADXL345_REG_DATA_FORMAT		0x31
 #define ADXL345_REG_DATAX0		0x32
@@ -41,13 +32,10 @@
 #define ADXL345_REG_DATA_AXIS(index)	\
 	(ADXL345_REG_DATAX0 + (index) * sizeof(__le16))
 
-<<<<<<< HEAD
 #define ADXL345_BW_RATE			GENMASK(3, 0)
 #define ADXL345_BASE_RATE_NANO_HZ	97656250LL
 #define NHZ_PER_HZ			1000000000LL
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ADXL345_POWER_CTL_MEASURE	BIT(3)
 #define ADXL345_POWER_CTL_STANDBY	0x00
 
@@ -68,7 +56,6 @@
  */
 static const int adxl345_uscale = 38300;
 
-<<<<<<< HEAD
 /*
  * The Datasheet lists a resolution of Resolution is ~49 mg per LSB. That's
  * ~480mm/s**2 per LSB.
@@ -79,11 +66,6 @@ struct adxl345_data {
 	struct regmap *regmap;
 	u8 data_range;
 	enum adxl345_device_type type;
-=======
-struct adxl345_data {
-	struct regmap *regmap;
-	u8 data_range;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define ADXL345_CHANNEL(index, axis) {					\
@@ -91,15 +73,10 @@ struct adxl345_data {
 	.modified = 1,							\
 	.channel2 = IIO_MOD_##axis,					\
 	.address = index,						\
-<<<<<<< HEAD
 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |			\
 		BIT(IIO_CHAN_INFO_CALIBBIAS),				\
 	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |		\
 		BIT(IIO_CHAN_INFO_SAMP_FREQ),				\
-=======
-	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),			\
-	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),		\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct iio_chan_spec adxl345_channels[] = {
@@ -114,11 +91,8 @@ static int adxl345_read_raw(struct iio_dev *indio_dev,
 {
 	struct adxl345_data *data = iio_priv(indio_dev);
 	__le16 accel;
-<<<<<<< HEAD
 	long long samp_freq_nhz;
 	unsigned int regval;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	switch (mask) {
@@ -138,7 +112,6 @@ static int adxl345_read_raw(struct iio_dev *indio_dev,
 		return IIO_VAL_INT;
 	case IIO_CHAN_INFO_SCALE:
 		*val = 0;
-<<<<<<< HEAD
 		switch (data->type) {
 		case ADXL345:
 			*val2 = adxl345_uscale;
@@ -171,17 +144,11 @@ static int adxl345_read_raw(struct iio_dev *indio_dev,
 		*val = div_s64_rem(samp_freq_nhz, NHZ_PER_HZ, val2);
 
 		return IIO_VAL_INT_PLUS_NANO;
-=======
-		*val2 = adxl345_uscale;
-
-		return IIO_VAL_INT_PLUS_MICRO;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return -EINVAL;
 }
 
-<<<<<<< HEAD
 static int adxl345_write_raw(struct iio_dev *indio_dev,
 			    struct iio_chan_spec const *chan,
 			    int val, int val2, long mask)
@@ -246,15 +213,6 @@ static const struct iio_info adxl345_info = {
 
 int adxl345_core_probe(struct device *dev, struct regmap *regmap,
 		       enum adxl345_device_type type, const char *name)
-=======
-static const struct iio_info adxl345_info = {
-	.driver_module	= THIS_MODULE,
-	.read_raw	= adxl345_read_raw,
-};
-
-int adxl345_core_probe(struct device *dev, struct regmap *regmap,
-		       const char *name)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct adxl345_data *data;
 	struct iio_dev *indio_dev;
@@ -280,10 +238,7 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
 	data = iio_priv(indio_dev);
 	dev_set_drvdata(dev, indio_dev);
 	data->regmap = regmap;
-<<<<<<< HEAD
 	data->type = type;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Enable full-resolution mode */
 	data->data_range = ADXL345_DATA_FORMAT_FULL_RES;
 

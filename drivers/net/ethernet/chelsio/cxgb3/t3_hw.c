@@ -681,30 +681,18 @@ int t3_seeprom_wp(struct adapter *adapter, int enable)
 	return t3_seeprom_write(adapter, EEPROM_STAT_ADDR, enable ? 0xc : 0);
 }
 
-<<<<<<< HEAD
 static int vpdstrtouint(char *s, u8 len, unsigned int base, unsigned int *val)
 {
 	char tok[256];
-=======
-static int vpdstrtouint(char *s, int len, unsigned int base, unsigned int *val)
-{
-	char tok[len + 1];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memcpy(tok, s, len);
 	tok[len] = 0;
 	return kstrtouint(strim(tok), base, val);
 }
 
-<<<<<<< HEAD
 static int vpdstrtou16(char *s, u8 len, unsigned int base, u16 *val)
 {
 	char tok[256];
-=======
-static int vpdstrtou16(char *s, int len, unsigned int base, u16 *val)
-{
-	char tok[len + 1];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memcpy(tok, s, len);
 	tok[len] = 0;

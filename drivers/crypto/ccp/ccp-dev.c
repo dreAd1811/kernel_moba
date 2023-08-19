@@ -298,18 +298,12 @@ int ccp_enqueue_cmd(struct ccp_cmd *cmd)
 	i = ccp->cmd_q_count;
 
 	if (ccp->cmd_count >= MAX_CMD_QLEN) {
-<<<<<<< HEAD
 		if (cmd->flags & CCP_CMD_MAY_BACKLOG) {
 			ret = -EBUSY;
 			list_add_tail(&cmd->entry, &ccp->backlog);
 		} else {
 			ret = -ENOSPC;
 		}
-=======
-		ret = -EBUSY;
-		if (cmd->flags & CCP_CMD_MAY_BACKLOG)
-			list_add_tail(&cmd->entry, &ccp->backlog);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		ret = -EINPROGRESS;
 		ccp->cmd_count++;

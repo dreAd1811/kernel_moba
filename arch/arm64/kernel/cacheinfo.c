@@ -17,10 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-<<<<<<< HEAD
 #include <linux/acpi.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/cacheinfo.h>
 #include <linux/of.h>
 
@@ -50,11 +47,7 @@ static void ci_leaf_init(struct cacheinfo *this_leaf,
 
 static int __init_cache_level(unsigned int cpu)
 {
-<<<<<<< HEAD
 	unsigned int ctype, level, leaves, fw_level;
-=======
-	unsigned int ctype, level, leaves, of_level;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
 
 	for (level = 1, leaves = 0; level <= MAX_CACHE_LEVEL; level++) {
@@ -67,29 +60,19 @@ static int __init_cache_level(unsigned int cpu)
 		leaves += (ctype == CACHE_TYPE_SEPARATE) ? 2 : 1;
 	}
 
-<<<<<<< HEAD
 	if (acpi_disabled)
 		fw_level = of_find_last_cache_level(cpu);
 	else
 		fw_level = acpi_find_last_cache_level(cpu);
 
 	if (level < fw_level) {
-=======
-	of_level = of_find_last_cache_level(cpu);
-	if (level < of_level) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * some external caches not specified in CLIDR_EL1
 		 * the information may be available in the device tree
 		 * only unified external caches are considered here
 		 */
-<<<<<<< HEAD
 		leaves += (fw_level - level);
 		level = fw_level;
-=======
-		leaves += (of_level - level);
-		level = of_level;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	this_cpu_ci->num_levels = level;

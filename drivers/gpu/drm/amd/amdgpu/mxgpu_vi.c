@@ -279,7 +279,6 @@ void xgpu_vi_init_golden_registers(struct amdgpu_device *adev)
 {
 	switch (adev->asic_type) {
 	case CHIP_FIJI:
-<<<<<<< HEAD
 		amdgpu_device_program_register_sequence(adev,
 							xgpu_fiji_mgcg_cgcg_init,
 							ARRAY_SIZE(
@@ -306,34 +305,6 @@ void xgpu_vi_init_golden_registers(struct amdgpu_device *adev)
 							xgpu_tonga_golden_common_all,
 							ARRAY_SIZE(
 								xgpu_tonga_golden_common_all));
-=======
-		amdgpu_program_register_sequence(adev,
-						 xgpu_fiji_mgcg_cgcg_init,
-						 (const u32)ARRAY_SIZE(
-						 xgpu_fiji_mgcg_cgcg_init));
-		amdgpu_program_register_sequence(adev,
-						 xgpu_fiji_golden_settings_a10,
-						 (const u32)ARRAY_SIZE(
-						 xgpu_fiji_golden_settings_a10));
-		amdgpu_program_register_sequence(adev,
-						 xgpu_fiji_golden_common_all,
-						 (const u32)ARRAY_SIZE(
-						 xgpu_fiji_golden_common_all));
-		break;
-	case CHIP_TONGA:
-		amdgpu_program_register_sequence(adev,
-						 xgpu_tonga_mgcg_cgcg_init,
-						 (const u32)ARRAY_SIZE(
-						 xgpu_tonga_mgcg_cgcg_init));
-		amdgpu_program_register_sequence(adev,
-						 xgpu_tonga_golden_settings_a11,
-						 (const u32)ARRAY_SIZE(
-						 xgpu_tonga_golden_settings_a11));
-		amdgpu_program_register_sequence(adev,
-						 xgpu_tonga_golden_common_all,
-						 (const u32)ARRAY_SIZE(
-						 xgpu_tonga_golden_common_all));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		BUG_ON("Doesn't support chip type.\n");
@@ -475,15 +446,10 @@ static int xgpu_vi_send_access_requests(struct amdgpu_device *adev,
 		request == IDH_REQ_GPU_FINI_ACCESS ||
 		request == IDH_REQ_GPU_RESET_ACCESS) {
 		r = xgpu_vi_poll_msg(adev, IDH_READY_TO_ACCESS_GPU);
-<<<<<<< HEAD
 		if (r) {
 			pr_err("Doesn't get ack from pf, give up\n");
 			return r;
 		}
-=======
-		if (r)
-			pr_err("Doesn't get ack from pf, continue\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -494,14 +460,11 @@ static int xgpu_vi_request_reset(struct amdgpu_device *adev)
 	return xgpu_vi_send_access_requests(adev, IDH_REQ_GPU_RESET_ACCESS);
 }
 
-<<<<<<< HEAD
 static int xgpu_vi_wait_reset_cmpl(struct amdgpu_device *adev)
 {
 	return xgpu_vi_poll_msg(adev, IDH_FLR_NOTIFICATION_CMPL);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int xgpu_vi_request_full_gpu_access(struct amdgpu_device *adev,
 					   bool init)
 {
@@ -558,11 +521,7 @@ static void xgpu_vi_mailbox_flr_work(struct work_struct *work)
 	}
 
 	/* Trigger recovery due to world switch failure */
-<<<<<<< HEAD
 	amdgpu_device_gpu_recover(adev, NULL, false);
-=======
-	amdgpu_sriov_gpu_reset(adev, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int xgpu_vi_set_mailbox_rcv_irq(struct amdgpu_device *adev,
@@ -586,11 +545,7 @@ static int xgpu_vi_mailbox_rcv_irq(struct amdgpu_device *adev,
 	int r;
 
 	/* trigger gpu-reset by hypervisor only if TDR disbaled */
-<<<<<<< HEAD
 	if (!amdgpu_gpu_recovery) {
-=======
-	if (amdgpu_lockup_timeout == 0) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* see what event we get */
 		r = xgpu_vi_mailbox_rcv_msg(adev, IDH_FLR_NOTIFICATION);
 
@@ -665,9 +620,6 @@ const struct amdgpu_virt_ops xgpu_vi_virt_ops = {
 	.req_full_gpu		= xgpu_vi_request_full_gpu_access,
 	.rel_full_gpu		= xgpu_vi_release_full_gpu_access,
 	.reset_gpu		= xgpu_vi_request_reset,
-<<<<<<< HEAD
 	.wait_reset             = xgpu_vi_wait_reset_cmpl,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.trans_msg		= NULL, /* Does not need to trans VF errors to host. */
 };

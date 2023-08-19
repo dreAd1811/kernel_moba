@@ -82,7 +82,6 @@
 #define JZ4780_I2C_STA_TFNF		BIT(1)
 #define JZ4780_I2C_STA_ACT		BIT(0)
 
-<<<<<<< HEAD
 static const char * const jz4780_i2c_abrt_src[] = {
 	"ABRT_7B_ADDR_NOACK",
 	"ABRT_10ADDR1_NOACK",
@@ -102,8 +101,6 @@ static const char * const jz4780_i2c_abrt_src[] = {
 	"SLVRD_INTX",
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define JZ4780_I2C_INTST_IGC		BIT(11)
 #define JZ4780_I2C_INTST_ISTT		BIT(10)
 #define JZ4780_I2C_INTST_ISTP		BIT(9)
@@ -541,7 +538,6 @@ done:
 
 static void jz4780_i2c_txabrt(struct jz4780_i2c *i2c, int src)
 {
-<<<<<<< HEAD
 	int i;
 
 	dev_err(&i2c->adap.dev, "txabrt: 0x%08x\n", src);
@@ -557,10 +553,6 @@ static void jz4780_i2c_txabrt(struct jz4780_i2c *i2c, int src)
 			dev_dbg(&i2c->adap.dev, "I2C TXABRT[%d]=%s\n",
 				i, jz4780_i2c_abrt_src[i]);
 	}
-=======
-	dev_dbg(&i2c->adap.dev, "txabrt: 0x%08x, cmd: %d, send: %d, recv: %d\n",
-		src, i2c->cmd, i2c->cmd_buf[i2c->cmd], i2c->data_buf[i2c->cmd]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline int jz4780_i2c_xfer_read(struct jz4780_i2c *i2c,

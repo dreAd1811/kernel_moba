@@ -25,10 +25,7 @@
 #include "nouveau_drv.h"
 #include "nouveau_dma.h"
 #include "nouveau_fbcon.h"
-<<<<<<< HEAD
 #include "nouveau_vmm.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int
 nvc0_fbcon_fillrect(struct fb_info *info, const struct fb_fillrect *rect)
@@ -243,13 +240,8 @@ nvc0_fbcon_accel_init(struct fb_info *info)
 	OUT_RING  (chan, info->fix.line_length);
 	OUT_RING  (chan, info->var.xres_virtual);
 	OUT_RING  (chan, info->var.yres_virtual);
-<<<<<<< HEAD
 	OUT_RING  (chan, upper_32_bits(fb->vma->addr));
 	OUT_RING  (chan, lower_32_bits(fb->vma->addr));
-=======
-	OUT_RING  (chan, upper_32_bits(fb->vma.offset));
-	OUT_RING  (chan, lower_32_bits(fb->vma.offset));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	BEGIN_NVC0(chan, NvSub2D, 0x0230, 10);
 	OUT_RING  (chan, format);
 	OUT_RING  (chan, 1);
@@ -259,13 +251,8 @@ nvc0_fbcon_accel_init(struct fb_info *info)
 	OUT_RING  (chan, info->fix.line_length);
 	OUT_RING  (chan, info->var.xres_virtual);
 	OUT_RING  (chan, info->var.yres_virtual);
-<<<<<<< HEAD
 	OUT_RING  (chan, upper_32_bits(fb->vma->addr));
 	OUT_RING  (chan, lower_32_bits(fb->vma->addr));
-=======
-	OUT_RING  (chan, upper_32_bits(fb->vma.offset));
-	OUT_RING  (chan, lower_32_bits(fb->vma.offset));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	FIRE_RING (chan);
 
 	return 0;

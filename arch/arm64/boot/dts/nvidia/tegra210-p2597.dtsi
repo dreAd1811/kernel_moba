@@ -1325,14 +1325,11 @@
 		status = "okay";
 	};
 
-<<<<<<< HEAD
 	sata@70020000 {
 		status = "okay";
 		phys = <&{/padctl@7009f000/pads/sata/lanes/sata-0}>;
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	padctl@7009f000 {
 		status = "okay";
 
@@ -1592,11 +1589,7 @@
 			regulator-name = "VDD_HDMI_5V0";
 			regulator-min-microvolt = <5000000>;
 			regulator-max-microvolt = <5000000>;
-<<<<<<< HEAD
 			gpio = <&exp1 12 GPIO_ACTIVE_LOW>;
-=======
-			gpio = <&exp1 12 GPIO_ACTIVE_HIGH>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			enable-active-high;
 			vin-supply = <&vdd_5v0_sys>;
 		};

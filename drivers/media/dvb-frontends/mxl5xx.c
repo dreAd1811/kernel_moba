@@ -33,11 +33,7 @@
 #include <asm/div64.h>
 #include <asm/unaligned.h>
 
-<<<<<<< HEAD
 #include <media/dvb_frontend.h>
-=======
-#include "dvb_frontend.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "mxl5xx.h"
 #include "mxl5xx_regs.h"
 #include "mxl5xx_defs.h"
@@ -47,11 +43,7 @@
 #define BYTE2(v) ((v >> 16) & 0xff)
 #define BYTE3(v) ((v >> 24) & 0xff)
 
-<<<<<<< HEAD
 static LIST_HEAD(mxllist);
-=======
-LIST_HEAD(mxllist);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct mxl_base {
 	struct list_head     mxllist;
@@ -383,16 +375,11 @@ static void release(struct dvb_frontend *fe)
 	kfree(state);
 }
 
-<<<<<<< HEAD
 static enum dvbfe_algo get_algo(struct dvb_frontend *fe)
-=======
-static int get_algo(struct dvb_frontend *fe)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return DVBFE_ALGO_HW;
 }
 
-<<<<<<< HEAD
 static u32 gold2root(u32 gold)
 {
 	u32 x, g, tmp = gold;
@@ -425,8 +412,6 @@ static int cfg_scrambler(struct mxl *state, u32 gold)
 	return send_command(state, sizeof(buf), buf);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int cfg_demod_abort_tune(struct mxl *state)
 {
 	struct MXL_HYDRA_DEMOD_ABORT_TUNE_T abort_tune_cmd;
@@ -484,11 +469,7 @@ static int set_parameters(struct dvb_frontend *fe)
 		demod_chan_cfg.roll_off = MXL_HYDRA_ROLLOFF_AUTO;
 		demod_chan_cfg.modulation_scheme = MXL_HYDRA_MOD_AUTO;
 		demod_chan_cfg.pilots = MXL_HYDRA_PILOTS_AUTO;
-<<<<<<< HEAD
 		cfg_scrambler(state, p->scrambling_sequence_index);
-=======
-		/* cfg_scrambler(state); */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		return -EINVAL;
@@ -687,22 +668,9 @@ static int tune(struct dvb_frontend *fe, bool re_tune,
 		if (r)
 			return r;
 		state->tune_time = jiffies;
-<<<<<<< HEAD
 	}
 
 	return read_status(fe, status);
-=======
-		return 0;
-	}
-	if (*status & FE_HAS_LOCK)
-		return 0;
-
-	r = read_status(fe, status);
-	if (r)
-		return r;
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static enum fe_code_rate conv_fec(enum MXL_HYDRA_FEC_E fec)
@@ -816,15 +784,8 @@ static struct dvb_frontend_ops mxl_ops = {
 	.delsys = { SYS_DVBS, SYS_DVBS2, SYS_DSS },
 	.info = {
 		.name			= "MaxLinear MxL5xx DVB-S/S2 tuner-demodulator",
-<<<<<<< HEAD
 		.frequency_min_hz	=  300 * MHz,
 		.frequency_max_hz	= 2350 * MHz,
-=======
-		.frequency_min		= 300000,
-		.frequency_max		= 2350000,
-		.frequency_stepsize	= 0,
-		.frequency_tolerance	= 0,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.symbol_rate_min	= 1000000,
 		.symbol_rate_max	= 45000000,
 		.caps			= FE_CAN_INVERSION_AUTO |

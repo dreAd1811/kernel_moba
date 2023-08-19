@@ -1,41 +1,5 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: BSD-3-Clause OR GPL-2.0
 /* Copyright (c) 2017-2018 Mellanox Technologies. All rights reserved */
-=======
-/*
- * drivers/net/ethernet/mellanox/mlxsw/core_acl_flex_actions.c
- * Copyright (c) 2017 Mellanox Technologies. All rights reserved.
- * Copyright (c) 2017 Jiri Pirko <jiri@mellanox.com>
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- * 3. Neither the names of the copyright holders nor the names of its
- *    contributors may be used to endorse or promote products derived from
- *    this software without specific prior written permission.
- *
- * Alternatively, this software may be distributed under the terms of the
- * GNU General Public License ("GPL") version 2 as published by the Free
- * Software Foundation.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/kernel.h>
 #include <linux/types.h>
@@ -315,7 +279,6 @@ struct mlxsw_afa_block {
 	struct mlxsw_afa_set *first_set;
 	struct mlxsw_afa_set *cur_set;
 	unsigned int cur_act_index; /* In current set. */
-<<<<<<< HEAD
 	struct list_head resource_list; /* List of resources held by actions
 					 * in this block.
 					 */
@@ -347,11 +310,6 @@ static void mlxsw_afa_resources_destroy(struct mlxsw_afa_block *block)
 	}
 }
 
-=======
-	struct list_head fwd_entry_ref_list;
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct mlxsw_afa_block *mlxsw_afa_block_create(struct mlxsw_afa *mlxsw_afa)
 {
 	struct mlxsw_afa_block *block;
@@ -359,18 +317,13 @@ struct mlxsw_afa_block *mlxsw_afa_block_create(struct mlxsw_afa *mlxsw_afa)
 	block = kzalloc(sizeof(*block), GFP_KERNEL);
 	if (!block)
 		return NULL;
-<<<<<<< HEAD
 	INIT_LIST_HEAD(&block->resource_list);
-=======
-	INIT_LIST_HEAD(&block->fwd_entry_ref_list);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	block->afa = mlxsw_afa;
 
 	/* At least one action set is always present, so just create it here */
 	block->first_set = mlxsw_afa_set_create(true);
 	if (!block->first_set)
 		goto err_first_set_create;
-<<<<<<< HEAD
 
 	/* In case user instructs to have dummy first set, we leave it
 	 * empty here and create another, real, set right away.
@@ -389,22 +342,12 @@ struct mlxsw_afa_block *mlxsw_afa_block_create(struct mlxsw_afa *mlxsw_afa)
 
 err_second_set_create:
 	mlxsw_afa_set_destroy(block->first_set);
-=======
-	block->cur_set = block->first_set;
-	return block;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_first_set_create:
 	kfree(block);
 	return NULL;
 }
 EXPORT_SYMBOL(mlxsw_afa_block_create);
 
-<<<<<<< HEAD
-=======
-static void mlxsw_afa_fwd_entry_refs_destroy(struct mlxsw_afa_block *block);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void mlxsw_afa_block_destroy(struct mlxsw_afa_block *block)
 {
 	struct mlxsw_afa_set *set = block->first_set;
@@ -415,11 +358,7 @@ void mlxsw_afa_block_destroy(struct mlxsw_afa_block *block)
 		mlxsw_afa_set_put(block->afa, set);
 		set = next_set;
 	} while (set);
-<<<<<<< HEAD
 	mlxsw_afa_resources_destroy(block);
-=======
-	mlxsw_afa_fwd_entry_refs_destroy(block);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(block);
 }
 EXPORT_SYMBOL(mlxsw_afa_block_destroy);
@@ -464,7 +403,6 @@ char *mlxsw_afa_block_first_set(struct mlxsw_afa_block *block)
 }
 EXPORT_SYMBOL(mlxsw_afa_block_first_set);
 
-<<<<<<< HEAD
 char *mlxsw_afa_block_cur_set(struct mlxsw_afa_block *block)
 {
 	return block->cur_set->ht_key.enc_actions;
@@ -524,34 +462,6 @@ int mlxsw_afa_block_terminate(struct mlxsw_afa_block *block)
 }
 EXPORT_SYMBOL(mlxsw_afa_block_terminate);
 
-=======
-u32 mlxsw_afa_block_first_set_kvdl_index(struct mlxsw_afa_block *block)
-{
-	return block->first_set->kvdl_index;
-}
-EXPORT_SYMBOL(mlxsw_afa_block_first_set_kvdl_index);
-
-void mlxsw_afa_block_continue(struct mlxsw_afa_block *block)
-{
-	if (WARN_ON(block->finished))
-		return;
-	mlxsw_afa_set_goto_set(block->cur_set,
-			       MLXSW_AFA_SET_GOTO_BINDING_CMD_NONE, 0);
-	block->finished = true;
-}
-EXPORT_SYMBOL(mlxsw_afa_block_continue);
-
-void mlxsw_afa_block_jump(struct mlxsw_afa_block *block, u16 group_id)
-{
-	if (WARN_ON(block->finished))
-		return;
-	mlxsw_afa_set_goto_set(block->cur_set,
-			       MLXSW_AFA_SET_GOTO_BINDING_CMD_JUMP, group_id);
-	block->finished = true;
-}
-EXPORT_SYMBOL(mlxsw_afa_block_jump);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct mlxsw_afa_fwd_entry *
 mlxsw_afa_fwd_entry_create(struct mlxsw_afa *mlxsw_afa, u8 local_port)
 {
@@ -620,7 +530,6 @@ static void mlxsw_afa_fwd_entry_put(struct mlxsw_afa *mlxsw_afa,
 }
 
 struct mlxsw_afa_fwd_entry_ref {
-<<<<<<< HEAD
 	struct mlxsw_afa_resource resource;
 	struct mlxsw_afa_fwd_entry *fwd_entry;
 };
@@ -645,12 +554,6 @@ mlxsw_afa_fwd_entry_ref_destructor(struct mlxsw_afa_block *block,
 	mlxsw_afa_fwd_entry_ref_destroy(block, fwd_entry_ref);
 }
 
-=======
-	struct list_head list;
-	struct mlxsw_afa_fwd_entry *fwd_entry;
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct mlxsw_afa_fwd_entry_ref *
 mlxsw_afa_fwd_entry_ref_create(struct mlxsw_afa_block *block, u8 local_port)
 {
@@ -667,12 +570,8 @@ mlxsw_afa_fwd_entry_ref_create(struct mlxsw_afa_block *block, u8 local_port)
 		goto err_fwd_entry_get;
 	}
 	fwd_entry_ref->fwd_entry = fwd_entry;
-<<<<<<< HEAD
 	fwd_entry_ref->resource.destructor = mlxsw_afa_fwd_entry_ref_destructor;
 	mlxsw_afa_resource_add(block, &fwd_entry_ref->resource);
-=======
-	list_add(&fwd_entry_ref->list, &block->fwd_entry_ref_list);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return fwd_entry_ref;
 
 err_fwd_entry_get:
@@ -680,7 +579,6 @@ err_fwd_entry_get:
 	return ERR_PTR(err);
 }
 
-<<<<<<< HEAD
 struct mlxsw_afa_counter {
 	struct mlxsw_afa_resource resource;
 	u32 counter_index;
@@ -727,25 +625,6 @@ mlxsw_afa_counter_create(struct mlxsw_afa_block *block)
 err_counter_index_get:
 	kfree(counter);
 	return ERR_PTR(err);
-=======
-static void
-mlxsw_afa_fwd_entry_ref_destroy(struct mlxsw_afa_block *block,
-				struct mlxsw_afa_fwd_entry_ref *fwd_entry_ref)
-{
-	list_del(&fwd_entry_ref->list);
-	mlxsw_afa_fwd_entry_put(block->afa, fwd_entry_ref->fwd_entry);
-	kfree(fwd_entry_ref);
-}
-
-static void mlxsw_afa_fwd_entry_refs_destroy(struct mlxsw_afa_block *block)
-{
-	struct mlxsw_afa_fwd_entry_ref *fwd_entry_ref;
-	struct mlxsw_afa_fwd_entry_ref *tmp;
-
-	list_for_each_entry_safe(fwd_entry_ref, tmp,
-				 &block->fwd_entry_ref_list, list)
-		mlxsw_afa_fwd_entry_ref_destroy(block, fwd_entry_ref);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #define MLXSW_AFA_ONE_ACTION_LEN 32
@@ -757,13 +636,8 @@ static char *mlxsw_afa_block_append_action(struct mlxsw_afa_block *block,
 	char *oneact;
 	char *actions;
 
-<<<<<<< HEAD
 	if (block->finished)
 		return ERR_PTR(-EINVAL);
-=======
-	if (WARN_ON(block->finished))
-		return NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (block->cur_act_index + action_size >
 	    block->afa->max_acts_per_set) {
 		struct mlxsw_afa_set *set;
@@ -773,11 +647,7 @@ static char *mlxsw_afa_block_append_action(struct mlxsw_afa_block *block,
 		 */
 		set = mlxsw_afa_set_create(false);
 		if (!set)
-<<<<<<< HEAD
 			return ERR_PTR(-ENOBUFS);
-=======
-			return NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		set->prev = block->cur_set;
 		block->cur_act_index = 0;
 		block->cur_set->next = set;
@@ -858,26 +728,17 @@ mlxsw_afa_vlan_pack(char *payload,
 }
 
 int mlxsw_afa_block_append_vlan_modify(struct mlxsw_afa_block *block,
-<<<<<<< HEAD
 				       u16 vid, u8 pcp, u8 et,
 				       struct netlink_ext_ack *extack)
-=======
-				       u16 vid, u8 pcp, u8 et)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	char *act = mlxsw_afa_block_append_action(block,
 						  MLXSW_AFA_VLAN_CODE,
 						  MLXSW_AFA_VLAN_SIZE);
 
-<<<<<<< HEAD
 	if (IS_ERR(act)) {
 		NL_SET_ERR_MSG_MOD(extack, "Cannot append vlan_modify action");
 		return PTR_ERR(act);
 	}
-=======
-	if (!act)
-		return -ENOBUFS;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlxsw_afa_vlan_pack(act, MLXSW_AFA_VLAN_VLAN_TAG_CMD_NOP,
 			    MLXSW_AFA_VLAN_CMD_SET_OUTER, vid,
 			    MLXSW_AFA_VLAN_CMD_SET_OUTER, pcp,
@@ -909,10 +770,7 @@ enum mlxsw_afa_trapdisc_trap_action {
 MLXSW_ITEM32(afa, trapdisc, trap_action, 0x00, 24, 4);
 
 enum mlxsw_afa_trapdisc_forward_action {
-<<<<<<< HEAD
 	MLXSW_AFA_TRAPDISC_FORWARD_ACTION_FORWARD = 1,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MLXSW_AFA_TRAPDISC_FORWARD_ACTION_DISCARD = 3,
 };
 
@@ -926,7 +784,6 @@ MLXSW_ITEM32(afa, trapdisc, forward_action, 0x00, 0, 4);
  */
 MLXSW_ITEM32(afa, trapdisc, trap_id, 0x04, 0, 9);
 
-<<<<<<< HEAD
 /* afa_trapdisc_mirror_agent
  * Mirror agent.
  */
@@ -937,8 +794,6 @@ MLXSW_ITEM32(afa, trapdisc, mirror_agent, 0x08, 29, 3);
  */
 MLXSW_ITEM32(afa, trapdisc, mirror_enable, 0x08, 24, 1);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void
 mlxsw_afa_trapdisc_pack(char *payload,
 			enum mlxsw_afa_trapdisc_trap_action trap_action,
@@ -950,7 +805,6 @@ mlxsw_afa_trapdisc_pack(char *payload,
 	mlxsw_afa_trapdisc_trap_id_set(payload, trap_id);
 }
 
-<<<<<<< HEAD
 static inline void
 mlxsw_afa_trapdisc_mirror_pack(char *payload, bool mirror_enable,
 			       u8 mirror_agent)
@@ -959,55 +813,35 @@ mlxsw_afa_trapdisc_mirror_pack(char *payload, bool mirror_enable,
 	mlxsw_afa_trapdisc_mirror_agent_set(payload, mirror_agent);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int mlxsw_afa_block_append_drop(struct mlxsw_afa_block *block)
 {
 	char *act = mlxsw_afa_block_append_action(block,
 						  MLXSW_AFA_TRAPDISC_CODE,
 						  MLXSW_AFA_TRAPDISC_SIZE);
 
-<<<<<<< HEAD
 	if (IS_ERR(act))
 		return PTR_ERR(act);
-=======
-	if (!act)
-		return -ENOBUFS;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlxsw_afa_trapdisc_pack(act, MLXSW_AFA_TRAPDISC_TRAP_ACTION_NOP,
 				MLXSW_AFA_TRAPDISC_FORWARD_ACTION_DISCARD, 0);
 	return 0;
 }
 EXPORT_SYMBOL(mlxsw_afa_block_append_drop);
 
-<<<<<<< HEAD
 int mlxsw_afa_block_append_trap(struct mlxsw_afa_block *block, u16 trap_id)
-=======
-int mlxsw_afa_block_append_trap(struct mlxsw_afa_block *block)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	char *act = mlxsw_afa_block_append_action(block,
 						  MLXSW_AFA_TRAPDISC_CODE,
 						  MLXSW_AFA_TRAPDISC_SIZE);
 
-<<<<<<< HEAD
 	if (IS_ERR(act))
 		return PTR_ERR(act);
 	mlxsw_afa_trapdisc_pack(act, MLXSW_AFA_TRAPDISC_TRAP_ACTION_TRAP,
 				MLXSW_AFA_TRAPDISC_FORWARD_ACTION_DISCARD,
 				trap_id);
-=======
-	if (!act)
-		return -ENOBUFS;
-	mlxsw_afa_trapdisc_pack(act, MLXSW_AFA_TRAPDISC_TRAP_ACTION_TRAP,
-				MLXSW_AFA_TRAPDISC_FORWARD_ACTION_DISCARD,
-				MLXSW_TRAP_ID_ACL0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 EXPORT_SYMBOL(mlxsw_afa_block_append_trap);
 
-<<<<<<< HEAD
 int mlxsw_afa_block_append_trap_and_forward(struct mlxsw_afa_block *block,
 					    u16 trap_id)
 {
@@ -1124,8 +958,6 @@ err_append_allocated_mirror:
 }
 EXPORT_SYMBOL(mlxsw_afa_block_append_mirror);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Forwarding Action
  * -----------------
  * Forwarding Action can be used to implement Policy Based Switching (PBS)
@@ -1166,19 +998,14 @@ mlxsw_afa_forward_pack(char *payload, enum mlxsw_afa_forward_type type,
 }
 
 int mlxsw_afa_block_append_fwd(struct mlxsw_afa_block *block,
-<<<<<<< HEAD
 			       u8 local_port, bool in_port,
 			       struct netlink_ext_ack *extack)
-=======
-			       u8 local_port, bool in_port)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlxsw_afa_fwd_entry_ref *fwd_entry_ref;
 	u32 kvdl_index;
 	char *act;
 	int err;
 
-<<<<<<< HEAD
 	if (in_port) {
 		NL_SET_ERR_MSG_MOD(extack, "Forwarding to ingress port is not supported");
 		return -EOPNOTSUPP;
@@ -1188,25 +1015,13 @@ int mlxsw_afa_block_append_fwd(struct mlxsw_afa_block *block,
 		NL_SET_ERR_MSG_MOD(extack, "Cannot create forward action");
 		return PTR_ERR(fwd_entry_ref);
 	}
-=======
-	if (in_port)
-		return -EOPNOTSUPP;
-	fwd_entry_ref = mlxsw_afa_fwd_entry_ref_create(block, local_port);
-	if (IS_ERR(fwd_entry_ref))
-		return PTR_ERR(fwd_entry_ref);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kvdl_index = fwd_entry_ref->fwd_entry->kvdl_index;
 
 	act = mlxsw_afa_block_append_action(block, MLXSW_AFA_FORWARD_CODE,
 					    MLXSW_AFA_FORWARD_SIZE);
-<<<<<<< HEAD
 	if (IS_ERR(act)) {
 		NL_SET_ERR_MSG_MOD(extack, "Cannot append forward action");
 		err = PTR_ERR(act);
-=======
-	if (!act) {
-		err = -ENOBUFS;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_append_action;
 	}
 	mlxsw_afa_forward_pack(act, MLXSW_AFA_FORWARD_TYPE_PBS,
@@ -1256,7 +1071,6 @@ mlxsw_afa_polcnt_pack(char *payload,
 	mlxsw_afa_polcnt_counter_index_set(payload, counter_index);
 }
 
-<<<<<<< HEAD
 int mlxsw_afa_block_append_allocated_counter(struct mlxsw_afa_block *block,
 					     u32 counter_index)
 {
@@ -1264,21 +1078,10 @@ int mlxsw_afa_block_append_allocated_counter(struct mlxsw_afa_block *block,
 						  MLXSW_AFA_POLCNT_SIZE);
 	if (IS_ERR(act))
 		return PTR_ERR(act);
-=======
-int mlxsw_afa_block_append_counter(struct mlxsw_afa_block *block,
-				   u32 counter_index)
-{
-	char *act = mlxsw_afa_block_append_action(block,
-						  MLXSW_AFA_POLCNT_CODE,
-						  MLXSW_AFA_POLCNT_SIZE);
-	if (!act)
-		return -ENOBUFS;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlxsw_afa_polcnt_pack(act, MLXSW_AFA_POLCNT_COUNTER_SET_TYPE_PACKETS_BYTES,
 			      counter_index);
 	return 0;
 }
-<<<<<<< HEAD
 EXPORT_SYMBOL(mlxsw_afa_block_append_allocated_counter);
 
 int mlxsw_afa_block_append_counter(struct mlxsw_afa_block *block,
@@ -1309,8 +1112,6 @@ err_append_allocated_counter:
 	mlxsw_afa_counter_destroy(block, counter);
 	return err;
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 EXPORT_SYMBOL(mlxsw_afa_block_append_counter);
 
 /* Virtual Router and Forwarding Domain Action
@@ -1345,30 +1146,20 @@ static inline void mlxsw_afa_virfwd_pack(char *payload,
 	mlxsw_afa_virfwd_fid_set(payload, fid);
 }
 
-<<<<<<< HEAD
 int mlxsw_afa_block_append_fid_set(struct mlxsw_afa_block *block, u16 fid,
 				   struct netlink_ext_ack *extack)
-=======
-int mlxsw_afa_block_append_fid_set(struct mlxsw_afa_block *block, u16 fid)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	char *act = mlxsw_afa_block_append_action(block,
 						  MLXSW_AFA_VIRFWD_CODE,
 						  MLXSW_AFA_VIRFWD_SIZE);
-<<<<<<< HEAD
 	if (IS_ERR(act)) {
 		NL_SET_ERR_MSG_MOD(extack, "Cannot append fid_set action");
 		return PTR_ERR(act);
 	}
-=======
-	if (!act)
-		return -ENOBUFS;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlxsw_afa_virfwd_pack(act, MLXSW_AFA_VIRFWD_FID_CMD_SET, fid);
 	return 0;
 }
 EXPORT_SYMBOL(mlxsw_afa_block_append_fid_set);
-<<<<<<< HEAD
 
 /* MC Routing Action
  * -----------------
@@ -1440,5 +1231,3 @@ int mlxsw_afa_block_append_mcrouter(struct mlxsw_afa_block *block,
 	return 0;
 }
 EXPORT_SYMBOL(mlxsw_afa_block_append_mcrouter);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

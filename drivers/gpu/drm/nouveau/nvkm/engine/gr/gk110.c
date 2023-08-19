@@ -22,10 +22,7 @@
  * Authors: Ben Skeggs <bskeggs@redhat.com>
  */
 #include "gf100.h"
-<<<<<<< HEAD
 #include "gk104.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "ctxgf100.h"
 
 #include <subdev/timer.h>
@@ -146,10 +143,7 @@ gk110_gr_pack_mmio[] = {
 	{ gf119_gr_init_gpm_0 },
 	{ gk110_gr_init_gpc_unk_1 },
 	{ gf100_gr_init_gcc_0 },
-<<<<<<< HEAD
 	{ gk104_gr_init_gpc_unk_2 },
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ gk104_gr_init_tpccs_0 },
 	{ gk110_gr_init_tex_0 },
 	{ gk104_gr_init_pe_0 },
@@ -164,7 +158,6 @@ gk110_gr_pack_mmio[] = {
 	{}
 };
 
-<<<<<<< HEAD
 static const struct nvkm_therm_clkgate_init
 gk110_clkgate_blcg_init_sked_0[] = {
 	{ 0x407000, 1, 0x00004041 },
@@ -318,8 +311,6 @@ gk110_clkgate_pack[] = {
 	{}
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*******************************************************************************
  * PGRAPH engine/subdev functions
  ******************************************************************************/
@@ -344,7 +335,6 @@ gk110_gr_gpccs_ucode = {
 	.data.size = sizeof(gk110_grgpc_data),
 };
 
-<<<<<<< HEAD
 void
 gk110_gr_init_419eb4(struct gf100_gr *gr)
 {
@@ -378,24 +368,14 @@ gk110_gr = {
 	.init_shader_exceptions = gf100_gr_init_shader_exceptions,
 	.init_400054 = gf100_gr_init_400054,
 	.trap_mp = gf100_gr_trap_mp,
-=======
-static const struct gf100_gr_func
-gk110_gr = {
-	.init = gk104_gr_init,
-	.init_rop_active_fbps = gk104_gr_init_rop_active_fbps,
-	.init_ppc_exceptions = gk104_gr_init_ppc_exceptions,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.mmio = gk110_gr_pack_mmio,
 	.fecs.ucode = &gk110_gr_fecs_ucode,
 	.gpccs.ucode = &gk110_gr_gpccs_ucode,
 	.rops = gf100_gr_rops,
 	.ppc_nr = 2,
 	.grctx = &gk110_grctx,
-<<<<<<< HEAD
 	.clkgate_pack = gk110_clkgate_pack,
 	.zbc = &gf100_gr_zbc,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.sclass = {
 		{ -1, -1, FERMI_TWOD_A },
 		{ -1, -1, KEPLER_INLINE_TO_MEMORY_B },

@@ -20,10 +20,7 @@
 #include <asm/processor.h>
 #include <asm/ppc_asm.h>
 #include <asm/export.h>
-<<<<<<< HEAD
 #include <asm/feature-fixups.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Note: This code relies on -mminimal-toc */
 

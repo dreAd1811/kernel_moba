@@ -10,13 +10,8 @@ of conventions and procedures which are used in the posting of patches;
 following them will make life much easier for everybody involved.  This
 document will attempt to cover these expectations in reasonable detail;
 more information can also be found in the files process/submitting-patches.rst,
-<<<<<<< HEAD
 process/submitting-drivers.rst, and process/submit-checklist.rst in the kernel
 documentation directory.
-=======
-process/submitting-drivers.rst, and process/submit-checklist.rst in the kernel documentation
-directory.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 When to post
@@ -203,13 +198,8 @@ pass it to diff with the "-X" option.
 
 The tags mentioned above are used to describe how various developers have
 been associated with the development of this patch.  They are described in
-<<<<<<< HEAD
 detail in the process/submitting-patches.rst document; what follows here is a
 brief summary.  Each of these lines has the format:
-=======
-detail in the process/submitting-patches.rst document; what follows here is a brief
-summary.  Each of these lines has the format:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 ::
 
@@ -220,7 +210,6 @@ The tags in common use are:
  - Signed-off-by: this is a developer's certification that he or she has
    the right to submit the patch for inclusion into the kernel.  It is an
    agreement to the Developer's Certificate of Origin, the full text of
-<<<<<<< HEAD
    which can be found in Documentation/process/submitting-patches.rst.  Code
    without a proper signoff cannot be merged into the mainline.
 
@@ -228,10 +217,6 @@ The tags in common use are:
    along with the original author.  This is useful at times when multiple
    people work on a single patch.  Note, this person also needs to have a
    Signed-off-by: line in the patch as well.
-=======
-   which can be found in Documentation/process/submitting-patches.rst.  Code without a
-   proper signoff cannot be merged into the mainline.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
  - Acked-by: indicates an agreement by another developer (often a
    maintainer of the relevant code) that the patch is appropriate for
@@ -241,13 +226,8 @@ The tags in common use are:
    it to work.
 
  - Reviewed-by: the named developer has reviewed the patch for correctness;
-<<<<<<< HEAD
    see the reviewer's statement in Documentation/process/submitting-patches.rst
    for more detail.
-=======
-   see the reviewer's statement in Documentation/process/submitting-patches.rst for more
-   detail.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
  - Reported-by: names a user who reported a problem which is fixed by this
    patch; this tag is used to give credit to the (often underappreciated)

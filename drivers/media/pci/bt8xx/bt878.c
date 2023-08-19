@@ -40,13 +40,8 @@
 #include <linux/vmalloc.h>
 #include <linux/init.h>
 
-<<<<<<< HEAD
 #include <media/dmxdev.h>
 #include <media/dvbdev.h>
-=======
-#include "dmxdev.h"
-#include "dvbdev.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "bt878.h"
 #include "dst_priv.h"
 

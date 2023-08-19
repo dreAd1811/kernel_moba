@@ -18,10 +18,7 @@
 #include <asm/ptrace.h>
 #include <asm/cpuidle.h>
 #include <asm/head-64.h>
-<<<<<<< HEAD
 #include <asm/feature-fixups.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * There are a few constraints to be concerned with.
@@ -118,10 +115,7 @@ EXC_VIRT_NONE(0x4000, 0x100)
 	cmpwi	cr3,r10,2 ;						\
 	BRANCH_TO_C000(r10, system_reset_idle_common) ;			\
 1:									\
-<<<<<<< HEAD
 	KVMTEST_PR(n) ;							\
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	END_FTR_SECTION_IFSET(CPU_FTR_HVMODE | CPU_FTR_ARCH_206)
 #else
 #define IDLETEST NOTEST
@@ -133,20 +127,12 @@ EXC_REAL_BEGIN(system_reset, 0x100, 0x100)
 	 * MSR_RI is not enabled, because PACA_EXNMI and nmi stack is
 	 * being used, so a nested NMI exception would corrupt it.
 	 */
-<<<<<<< HEAD
 	EXCEPTION_PROLOG_NORI(PACA_EXNMI, system_reset_common, EXC_STD,
 			      IDLETEST, 0x100)
 
 EXC_REAL_END(system_reset, 0x100, 0x100)
 EXC_VIRT_NONE(0x4100, 0x100)
 TRAMP_KVM(PACA_EXNMI, 0x100)
-=======
-	EXCEPTION_PROLOG_PSERIES_NORI(PACA_EXNMI, system_reset_common, EXC_STD,
-				 IDLETEST, 0x100)
-
-EXC_REAL_END(system_reset, 0x100, 0x100)
-EXC_VIRT_NONE(0x4100, 0x100)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_PPC_P7_NAP
 EXC_COMMON_BEGIN(system_reset_idle_common)
@@ -154,7 +140,6 @@ EXC_COMMON_BEGIN(system_reset_idle_common)
 	b	pnv_powersave_wakeup
 #endif
 
-<<<<<<< HEAD
 /*
  * Set IRQS_ALL_DISABLED unconditionally so arch_irqs_disabled does
  * the right thing. We do not want to reconcile because that goes
@@ -170,8 +155,6 @@ EXC_COMMON_BEGIN(system_reset_idle_common)
 	lbz	r10,PACAIRQHAPPENED(r13);				\
 	std	r10,_DAR(r1)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 EXC_COMMON_BEGIN(system_reset_common)
 	/*
 	 * Increment paca->in_nmi then enable MSR_RI. SLB or MCE will be able
@@ -190,7 +173,6 @@ EXC_COMMON_BEGIN(system_reset_common)
 	subi	r1,r1,INT_FRAME_SIZE
 	EXCEPTION_COMMON_NORET_STACK(PACA_EXNMI, 0x100,
 			system_reset, system_reset_exception,
-<<<<<<< HEAD
 			ADD_NVGPRS;ADD_RECONCILE_NMI)
 
 	/* This (and MCE) can be simplified with mtmsrd L=1 */
@@ -202,18 +184,11 @@ EXC_COMMON_BEGIN(system_reset_common)
 
 	/*
 	 * MSR_RI is clear, now we can decrement paca->in_nmi.
-=======
-			ADD_NVGPRS;ADD_RECONCILE)
-
-	/*
-	 * The stack is no longer in use, decrement in_nmi.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	lhz	r10,PACA_IN_NMI(r13)
 	subi	r10,r10,1
 	sth	r10,PACA_IN_NMI(r13)
 
-<<<<<<< HEAD
 	/*
 	 * Restore soft mask settings.
 	 */
@@ -248,9 +223,6 @@ EXC_COMMON_BEGIN(system_reset_common)
 	/* restore original r1. */
 	ld	r1,GPR1(r1)
 	RFI_TO_USER_OR_KERNEL
-=======
-	b	ret_from_except
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_PPC_PSERIES
 /*
@@ -259,13 +231,8 @@ EXC_COMMON_BEGIN(system_reset_common)
 TRAMP_REAL_BEGIN(system_reset_fwnmi)
 	SET_SCRATCH0(r13)		/* save r13 */
 	/* See comment at system_reset exception */
-<<<<<<< HEAD
 	EXCEPTION_PROLOG_NORI(PACA_EXNMI, system_reset_common, EXC_STD,
 			      NOTEST, 0x100)
-=======
-	EXCEPTION_PROLOG_PSERIES_NORI(PACA_EXNMI, system_reset_common,
-						EXC_STD, NOTEST, 0x100)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_PPC_PSERIES */
 
 
@@ -310,13 +277,7 @@ BEGIN_FTR_SECTION
 	 *
 	 * This interrupt can wake directly from idle. If that is the case,
 	 * the machine check is handled then the idle wakeup code is called
-<<<<<<< HEAD
 	 * to restore state.
-=======
-	 * to restore state. In that case, the POWER9 DD1 idle PACA workaround
-	 * is not applied in the early machine check code, which will cause
-	 * bugs.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	mr	r11,r1			/* Save r1 */
 	lhz	r10,PACA_IN_MCE(r13)
@@ -328,11 +289,7 @@ BEGIN_FTR_SECTION
 	addi	r10,r10,1		/* increment paca->in_mce */
 	sth	r10,PACA_IN_MCE(r13)
 	/* Limit nested MCE to level 4 to avoid stack overflow */
-<<<<<<< HEAD
 	cmpwi	r10,MAX_MCE_DEPTH
-=======
-	cmpwi	r10,4
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bgt	2f			/* Check if we hit limit of 4 */
 	std	r11,GPR1(r1)		/* Save r1 on the stack. */
 	std	r11,0(r1)		/* make stack chain pointer */
@@ -381,11 +338,7 @@ machine_check_pSeries_0:
 	 * nested machine check corrupts it. machine_check_common enables
 	 * MSR_RI.
 	 */
-<<<<<<< HEAD
 	EXCEPTION_PROLOG_2_NORI(machine_check_common, EXC_STD)
-=======
-	EXCEPTION_PROLOG_PSERIES_1_NORI(machine_check_common, EXC_STD)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 TRAMP_KVM_SKIP(PACA_EXMC, 0x200)
 
@@ -716,11 +669,7 @@ EXC_COMMON_BEGIN(slb_miss_common)
 	cmpdi	cr5,r11,MSR_RI
 
 	crset	4*cr0+eq
-<<<<<<< HEAD
 #ifdef CONFIG_PPC_BOOK3S_64
-=======
-#ifdef CONFIG_PPC_STD_MMU_64
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 BEGIN_MMU_FTR_SECTION
 	bl	slb_allocate
 END_MMU_FTR_SECTION_IFCLR(MMU_FTR_TYPE_RADIX)
@@ -730,14 +679,10 @@ END_MMU_FTR_SECTION_IFCLR(MMU_FTR_TYPE_RADIX)
 	lwz	r9,PACA_EXSLB+EX_CCR(r13)	/* get saved CR */
 	mtlr	r10
 
-<<<<<<< HEAD
 	/*
 	 * Large address, check whether we have to allocate new contexts.
 	 */
 	beq-	8f
-=======
-	beq-	8f		/* if bad address, make full stack frame */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	bne-	cr5,2f		/* if unrecoverable exception, oops */
 
@@ -745,20 +690,11 @@ END_MMU_FTR_SECTION_IFCLR(MMU_FTR_TYPE_RADIX)
 
 	bne	cr4,1f		/* returning to kernel */
 
-<<<<<<< HEAD
-=======
-.machine	push
-.machine	"power4"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mtcrf	0x80,r9
 	mtcrf	0x08,r9		/* MSR[PR] indication is in cr4 */
 	mtcrf	0x04,r9		/* MSR[RI] indication is in cr5 */
 	mtcrf	0x02,r9		/* I/D indication is in cr6 */
 	mtcrf	0x01,r9		/* slb_allocate uses cr0 and cr7 */
-<<<<<<< HEAD
-=======
-.machine	pop
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	RESTORE_CTR(r9, PACA_EXSLB)
 	RESTORE_PPR_PACA(PACA_EXSLB, r9)
@@ -771,20 +707,11 @@ END_MMU_FTR_SECTION_IFCLR(MMU_FTR_TYPE_RADIX)
 	RFI_TO_USER
 	b	.	/* prevent speculative execution */
 1:
-<<<<<<< HEAD
-=======
-.machine	push
-.machine	"power4"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mtcrf	0x80,r9
 	mtcrf	0x08,r9		/* MSR[PR] indication is in cr4 */
 	mtcrf	0x04,r9		/* MSR[RI] indication is in cr5 */
 	mtcrf	0x02,r9		/* I/D indication is in cr6 */
 	mtcrf	0x01,r9		/* slb_allocate uses cr0 and cr7 */
-<<<<<<< HEAD
-=======
-.machine	pop
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	RESTORE_CTR(r9, PACA_EXSLB)
 	RESTORE_PPR_PACA(PACA_EXSLB, r9)
@@ -813,11 +740,7 @@ END_MMU_FTR_SECTION_IFCLR(MMU_FTR_TYPE_RADIX)
 	mr	r3,r12
 	mfspr	r11,SPRN_SRR0
 	mfspr	r12,SPRN_SRR1
-<<<<<<< HEAD
 	LOAD_HANDLER(r10, large_addr_slb)
-=======
-	LOAD_HANDLER(r10,bad_addr_slb)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mtspr	SPRN_SRR0,r10
 	ld	r10,PACAKMSR(r13)
 	mtspr	SPRN_SRR1,r10
@@ -832,11 +755,7 @@ EXC_COMMON_BEGIN(unrecov_slb)
 	bl	unrecoverable_exception
 	b	1b
 
-<<<<<<< HEAD
 EXC_COMMON_BEGIN(large_addr_slb)
-=======
-EXC_COMMON_BEGIN(bad_addr_slb)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	EXCEPTION_PROLOG_COMMON(0x380, PACA_EXSLB)
 	RECONCILE_IRQ_STATE(r10, r11)
 	ld	r3, PACA_EXSLB+EX_DAR(r13)
@@ -846,28 +765,16 @@ EXC_COMMON_BEGIN(bad_addr_slb)
 	std	r10, _TRAP(r1)
 2:	bl	save_nvgprs
 	addi	r3, r1, STACK_FRAME_OVERHEAD
-<<<<<<< HEAD
 	bl	slb_miss_large_addr
-=======
-	bl	slb_miss_bad_addr
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	b	ret_from_except
 
 EXC_REAL_BEGIN(hardware_interrupt, 0x500, 0x100)
 	.globl hardware_interrupt_hv;
 hardware_interrupt_hv:
 	BEGIN_FTR_SECTION
-<<<<<<< HEAD
 		MASKABLE_EXCEPTION_HV(0x500, hardware_interrupt_common, IRQS_DISABLED)
 	FTR_SECTION_ELSE
 		MASKABLE_EXCEPTION(0x500, hardware_interrupt_common, IRQS_DISABLED)
-=======
-		_MASKABLE_EXCEPTION_PSERIES(0x500, hardware_interrupt_common,
-					    EXC_HV, SOFTEN_TEST_HV)
-	FTR_SECTION_ELSE
-		_MASKABLE_EXCEPTION_PSERIES(0x500, hardware_interrupt_common,
-					    EXC_STD, SOFTEN_TEST_PR)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ALT_FTR_SECTION_END_IFSET(CPU_FTR_HVMODE | CPU_FTR_ARCH_206)
 EXC_REAL_END(hardware_interrupt, 0x500, 0x100)
 
@@ -875,17 +782,11 @@ EXC_VIRT_BEGIN(hardware_interrupt, 0x4500, 0x100)
 	.globl hardware_interrupt_relon_hv;
 hardware_interrupt_relon_hv:
 	BEGIN_FTR_SECTION
-<<<<<<< HEAD
 		MASKABLE_RELON_EXCEPTION_HV(0x500, hardware_interrupt_common,
 					    IRQS_DISABLED)
 	FTR_SECTION_ELSE
 		__MASKABLE_RELON_EXCEPTION(0x500, hardware_interrupt_common,
 					   EXC_STD, SOFTEN_TEST_PR, IRQS_DISABLED)
-=======
-		_MASKABLE_RELON_EXCEPTION_PSERIES(0x500, hardware_interrupt_common, EXC_HV, SOFTEN_TEST_HV)
-	FTR_SECTION_ELSE
-		_MASKABLE_RELON_EXCEPTION_PSERIES(0x500, hardware_interrupt_common, EXC_STD, SOFTEN_TEST_PR)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ALT_FTR_SECTION_END_IFSET(CPU_FTR_HVMODE)
 EXC_VIRT_END(hardware_interrupt, 0x4500, 0x100)
 
@@ -981,13 +882,8 @@ END_FTR_SECTION_IFSET(CPU_FTR_TM)
 #endif
 
 
-<<<<<<< HEAD
 EXC_REAL_OOL_MASKABLE(decrementer, 0x900, 0x80, IRQS_DISABLED)
 EXC_VIRT_MASKABLE(decrementer, 0x4900, 0x80, 0x900, IRQS_DISABLED)
-=======
-EXC_REAL_OOL_MASKABLE(decrementer, 0x900, 0x80)
-EXC_VIRT_MASKABLE(decrementer, 0x4900, 0x80, 0x900)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 TRAMP_KVM(PACA_EXGEN, 0x900)
 EXC_COMMON_ASYNC(decrementer_common, 0x900, timer_interrupt)
 
@@ -998,13 +894,8 @@ TRAMP_KVM_HV(PACA_EXGEN, 0x980)
 EXC_COMMON(hdecrementer_common, 0x980, hdec_interrupt)
 
 
-<<<<<<< HEAD
 EXC_REAL_MASKABLE(doorbell_super, 0xa00, 0x100, IRQS_DISABLED)
 EXC_VIRT_MASKABLE(doorbell_super, 0x4a00, 0x100, 0xa00, IRQS_DISABLED)
-=======
-EXC_REAL_MASKABLE(doorbell_super, 0xa00, 0x100)
-EXC_VIRT_MASKABLE(doorbell_super, 0x4a00, 0x100, 0xa00)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 TRAMP_KVM(PACA_EXGEN, 0xa00)
 #ifdef CONFIG_PPC_DOORBELL
 EXC_COMMON_ASYNC(doorbell_super_common, 0xa00, doorbell_exception)
@@ -1083,15 +974,6 @@ EXC_COMMON(trap_0b_common, 0xb00, unknown_exception)
 #define LOAD_SYSCALL_HANDLER(reg)					\
 	__LOAD_HANDLER(reg, system_call_common)
 
-<<<<<<< HEAD
-=======
-#define SYSCALL_FASTENDIAN_TEST					\
-BEGIN_FTR_SECTION						\
-	cmpdi	r0,0x1ebe ; 					\
-	beq-	1f ;						\
-END_FTR_SECTION_IFSET(CPU_FTR_REAL_LE)				\
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * After SYSCALL_KVMTEST, we reach here with PACA in r13, r13 in r9,
  * and HMT_MEDIUM.
@@ -1106,7 +988,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_REAL_LE)				\
 	RFI_TO_KERNEL ;						\
 	b	. ;	/* prevent speculative execution */
 
-<<<<<<< HEAD
 #ifdef CONFIG_PPC_FAST_ENDIAN_SWITCH
 #define SYSCALL_FASTENDIAN_TEST					\
 BEGIN_FTR_SECTION						\
@@ -1114,8 +995,6 @@ BEGIN_FTR_SECTION						\
 	beq-	1f ;						\
 END_FTR_SECTION_IFSET(CPU_FTR_REAL_LE)				\
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SYSCALL_FASTENDIAN					\
 	/* Fast LE/BE switch system call */			\
 1:	mfspr	r12,SPRN_SRR1 ;					\
@@ -1124,13 +1003,10 @@ END_FTR_SECTION_IFSET(CPU_FTR_REAL_LE)				\
 	mr	r13,r9 ;					\
 	RFI_TO_USER ;	/* return to userspace */		\
 	b	. ;	/* prevent speculative execution */
-<<<<<<< HEAD
 #else
 #define SYSCALL_FASTENDIAN_TEST
 #define SYSCALL_FASTENDIAN
 #endif /* CONFIG_PPC_FAST_ENDIAN_SWITCH */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #if defined(CONFIG_RELOCATABLE)
 	/*
@@ -1233,11 +1109,7 @@ EXC_COMMON(emulation_assist_common, 0xe40, emulation_assist_interrupt)
  * mode.
  */
 __EXC_REAL_OOL_HV_DIRECT(hmi_exception, 0xe60, 0x20, hmi_exception_early)
-<<<<<<< HEAD
 __TRAMP_REAL_OOL_MASKABLE_HV(hmi_exception, 0xe60, IRQS_DISABLED)
-=======
-__TRAMP_REAL_OOL_MASKABLE_HV(hmi_exception, 0xe60)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 EXC_VIRT_NONE(0x4e60, 0x20)
 TRAMP_KVM_HV(PACA_EXGEN, 0xe60)
 TRAMP_REAL_BEGIN(hmi_exception_early)
@@ -1252,11 +1124,8 @@ TRAMP_REAL_BEGIN(hmi_exception_early)
 	EXCEPTION_PROLOG_COMMON_3(0xe60)
 	addi	r3,r1,STACK_FRAME_OVERHEAD
 	BRANCH_LINK_TO_FAR(hmi_exception_realmode) /* Function call ABI */
-<<<<<<< HEAD
 	cmpdi	cr0,r3,0
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Windup the stack. */
 	/* Move original HSRR0 and HSRR1 into the respective regs */
 	ld	r9,_MSR(r1)
@@ -1273,7 +1142,6 @@ TRAMP_REAL_BEGIN(hmi_exception_early)
 	REST_8GPRS(2, r1)
 	REST_GPR(10, r1)
 	ld	r11,_CCR(r1)
-<<<<<<< HEAD
 	REST_2GPRS(12, r1)
 	bne	1f
 	mtcr	r11
@@ -1283,12 +1151,6 @@ TRAMP_REAL_BEGIN(hmi_exception_early)
 
 1:	mtcr	r11
 	REST_GPR(11, r1)
-=======
-	mtcr	r11
-	REST_GPR(11, r1)
-	REST_2GPRS(12, r1)
-	/* restore original r1. */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ld	r1,GPR1(r1)
 
 	/*
@@ -1301,20 +1163,12 @@ hmi_exception_after_realmode:
 	EXCEPTION_PROLOG_0(PACA_EXGEN)
 	b	tramp_real_hmi_exception
 
-<<<<<<< HEAD
 EXC_COMMON_BEGIN(hmi_exception_common)
 EXCEPTION_COMMON(PACA_EXGEN, 0xe60, hmi_exception_common, handle_hmi_exception,
         ret_from_except, FINISH_NAP;ADD_NVGPRS;ADD_RECONCILE;RUNLATCH_ON)
 
 EXC_REAL_OOL_MASKABLE_HV(h_doorbell, 0xe80, 0x20, IRQS_DISABLED)
 EXC_VIRT_OOL_MASKABLE_HV(h_doorbell, 0x4e80, 0x20, 0xe80, IRQS_DISABLED)
-=======
-EXC_COMMON_ASYNC(hmi_exception_common, 0xe60, handle_hmi_exception)
-
-
-EXC_REAL_OOL_MASKABLE_HV(h_doorbell, 0xe80, 0x20)
-EXC_VIRT_OOL_MASKABLE_HV(h_doorbell, 0x4e80, 0x20, 0xe80)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 TRAMP_KVM_HV(PACA_EXGEN, 0xe80)
 #ifdef CONFIG_PPC_DOORBELL
 EXC_COMMON_ASYNC(h_doorbell_common, 0xe80, doorbell_exception)
@@ -1323,13 +1177,8 @@ EXC_COMMON_ASYNC(h_doorbell_common, 0xe80, unknown_exception)
 #endif
 
 
-<<<<<<< HEAD
 EXC_REAL_OOL_MASKABLE_HV(h_virt_irq, 0xea0, 0x20, IRQS_DISABLED)
 EXC_VIRT_OOL_MASKABLE_HV(h_virt_irq, 0x4ea0, 0x20, 0xea0, IRQS_DISABLED)
-=======
-EXC_REAL_OOL_MASKABLE_HV(h_virt_irq, 0xea0, 0x20)
-EXC_VIRT_OOL_MASKABLE_HV(h_virt_irq, 0x4ea0, 0x20, 0xea0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 TRAMP_KVM_HV(PACA_EXGEN, 0xea0)
 EXC_COMMON_ASYNC(h_virt_irq_common, 0xea0, do_IRQ)
 
@@ -1340,13 +1189,8 @@ EXC_REAL_NONE(0xee0, 0x20)
 EXC_VIRT_NONE(0x4ee0, 0x20)
 
 
-<<<<<<< HEAD
 EXC_REAL_OOL_MASKABLE(performance_monitor, 0xf00, 0x20, IRQS_PMI_DISABLED)
 EXC_VIRT_OOL_MASKABLE(performance_monitor, 0x4f00, 0x20, 0xf00, IRQS_PMI_DISABLED)
-=======
-EXC_REAL_OOL(performance_monitor, 0xf00, 0x20)
-EXC_VIRT_OOL(performance_monitor, 0x4f00, 0x20, 0xf00)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 TRAMP_KVM(PACA_EXGEN, 0xf00)
 EXC_COMMON_ASYNC(performance_monitor_common, 0xf00, performance_monitor_exception)
 
@@ -1474,23 +1318,12 @@ EXC_REAL_BEGIN(denorm_exception_hv, 0x1500, 0x100)
 
 #ifdef CONFIG_PPC_DENORMALISATION
 	mfspr	r10,SPRN_HSRR1
-<<<<<<< HEAD
 	andis.	r10,r10,(HSRR1_DENORM)@h /* denorm? */
 	bne+	denorm_assist
 #endif
 
 	KVMTEST_HV(0x1500)
 	EXCEPTION_PROLOG_2(denorm_common, EXC_HV)
-=======
-	mfspr	r11,SPRN_HSRR0		/* save HSRR0 */
-	andis.	r10,r10,(HSRR1_DENORM)@h /* denorm? */
-	addi	r11,r11,-4		/* HSRR0 is next instruction */
-	bne+	denorm_assist
-#endif
-
-	KVMTEST_PR(0x1500)
-	EXCEPTION_PROLOG_PSERIES_1(denorm_common, EXC_HV)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 EXC_REAL_END(denorm_exception_hv, 0x1500, 0x100)
 
 #ifdef CONFIG_PPC_DENORMALISATION
@@ -1501,11 +1334,7 @@ EXC_VIRT_END(denorm_exception, 0x5500, 0x100)
 EXC_VIRT_NONE(0x5500, 0x100)
 #endif
 
-<<<<<<< HEAD
 TRAMP_KVM_HV(PACA_EXGEN, 0x1500)
-=======
-TRAMP_KVM_SKIP(PACA_EXGEN, 0x1500)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_PPC_DENORMALISATION
 TRAMP_REAL_BEGIN(denorm_assist)
@@ -1555,11 +1384,8 @@ END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_207S)
  */
 	XVCPSGNDP32(32)
 denorm_done:
-<<<<<<< HEAD
 	mfspr	r11,SPRN_HSRR0
 	subi	r11,r11,4
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mtspr	SPRN_HSRR0,r11
 	mtcrf	0x80,r9
 	ld	r9,PACA_EXGEN+EX_R9(r13)
@@ -1576,11 +1402,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_CFAR)
 	b	.
 #endif
 
-<<<<<<< HEAD
 EXC_COMMON(denorm_common, 0x1500, unknown_exception)
-=======
-EXC_COMMON_HV(denorm_common, 0x1500, unknown_exception)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 #ifdef CONFIG_CBE_RAS
@@ -1623,11 +1445,7 @@ EXC_VIRT_NONE(0x5800, 0x100)
 	std	r12,PACA_EXGEN+EX_R12(r13);		\
 	GET_SCRATCH0(r10);				\
 	std	r10,PACA_EXGEN+EX_R13(r13);		\
-<<<<<<< HEAD
 	EXCEPTION_PROLOG_2(soft_nmi_common, _H)
-=======
-	EXCEPTION_PROLOG_PSERIES_1(soft_nmi_common, _H)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Branch to soft_nmi_interrupt using the emergency stack. The emergency
@@ -1659,11 +1477,7 @@ EXC_COMMON_BEGIN(soft_nmi_common)
  *   triggered and won't automatically refire.
  * - If it was a HMI we return immediately since we handled it in realmode
  *   and it won't refire.
-<<<<<<< HEAD
  * - Else it is one of PACA_IRQ_MUST_HARD_MASK, so hard disable and return.
-=======
- * - else we hard disable and return.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * This is called with r10 containing the value to OR to the paca field.
  */
 #define MASKED_INTERRUPT(_H)				\
@@ -1678,7 +1492,6 @@ masked_##_H##interrupt:					\
 	ori	r10,r10,0xffff;				\
 	mtspr	SPRN_DEC,r10;				\
 	b	MASKED_DEC_HANDLER_LABEL;		\
-<<<<<<< HEAD
 1:	andi.	r10,r10,PACA_IRQ_MUST_HARD_MASK;	\
 	beq	2f;					\
 	mfspr	r10,SPRN_##_H##SRR1;			\
@@ -1689,14 +1502,6 @@ masked_##_H##interrupt:					\
 2:	/* done */					\
 	mtcrf	0x80,r9;				\
 	std	r1,PACAR1(r13);				\
-=======
-1:	andi.	r10,r10,(PACA_IRQ_DBELL|PACA_IRQ_HMI);	\
-	bne	2f;					\
-	mfspr	r10,SPRN_##_H##SRR1;			\
-	xori	r10,r10,MSR_EE; /* clear MSR_EE */	\
-	mtspr	SPRN_##_H##SRR1,r10;			\
-2:	mtcrf	0x80,r9;				\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ld	r9,PACA_EXGEN+EX_R9(r13);		\
 	ld	r10,PACA_EXGEN+EX_R10(r13);		\
 	ld	r11,PACA_EXGEN+EX_R11(r13);		\
@@ -1731,11 +1536,7 @@ TRAMP_REAL_BEGIN(rfi_flush_fallback)
 	ld	r11,PACA_L1D_FLUSH_SIZE(r13)
 	srdi	r11,r11,(7 + 3) /* 128 byte lines, unrolled 8x */
 	mtctr	r11
-<<<<<<< HEAD
 	DCBT_BOOK3S_STOP_ALL_STREAM_IDS(r11) /* Stop prefetch streams */
-=======
-	DCBT_STOP_ALL_STREAM_IDS(r11) /* Stop prefetch streams */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* order ld/st prior to dcbt stop all streams with flushing */
 	sync
@@ -1778,11 +1579,7 @@ TRAMP_REAL_BEGIN(hrfi_flush_fallback)
 	ld	r11,PACA_L1D_FLUSH_SIZE(r13)
 	srdi	r11,r11,(7 + 3) /* 128 byte lines, unrolled 8x */
 	mtctr	r11
-<<<<<<< HEAD
 	DCBT_BOOK3S_STOP_ALL_STREAM_IDS(r11) /* Stop prefetch streams */
-=======
-	DCBT_STOP_ALL_STREAM_IDS(r11) /* Stop prefetch streams */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* order ld/st prior to dcbt stop all streams with flushing */
 	sync
@@ -1910,13 +1707,8 @@ USE_TEXT_SECTION()
  */
 	.balign	IFETCH_ALIGN_BYTES
 do_hash_page:
-<<<<<<< HEAD
 #ifdef CONFIG_PPC_BOOK3S_64
 	lis	r0,(DSISR_BAD_FAULT_64S | DSISR_DABRMATCH | DSISR_KEYFAULT)@h
-=======
-	#ifdef CONFIG_PPC_STD_MMU_64
-	lis	r0,(DSISR_BAD_FAULT_64S|DSISR_DABRMATCH)@h
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ori	r0,r0,DSISR_BAD_FAULT_64S@l
 	and.	r0,r4,r0		/* weird error? */
 	bne-	handle_page_fault	/* if not, try to insert a HPTE */
@@ -1946,11 +1738,7 @@ do_hash_page:
 
 	/* Reload DSISR into r4 for the DABR check below */
 	ld      r4,_DSISR(r1)
-<<<<<<< HEAD
 #endif /* CONFIG_PPC_BOOK3S_64 */
-=======
-#endif /* CONFIG_PPC_STD_MMU_64 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Here we have a page fault that hash_page can't handle. */
 handle_page_fault:
@@ -1984,11 +1772,7 @@ handle_dabr_fault:
 	b       ret_from_except
 
 
-<<<<<<< HEAD
 #ifdef CONFIG_PPC_BOOK3S_64
-=======
-#ifdef CONFIG_PPC_STD_MMU_64
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* We have a page fault that hash_page could handle but HV refused
  * the PTE insertion
  */
@@ -2125,11 +1909,8 @@ BEGIN_FTR_SECTION
 FTR_SECTION_ELSE
 	beq	hardware_interrupt_common
 ALT_FTR_SECTION_END_IFSET(CPU_FTR_HVMODE | CPU_FTR_ARCH_300)
-<<<<<<< HEAD
 	cmpwi	r3,0xf00
 	beq	performance_monitor_common
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 BEGIN_FTR_SECTION
 	cmpwi	r3,0xa00
 	beq	h_doorbell_common_msgclr

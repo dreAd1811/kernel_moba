@@ -64,20 +64,9 @@ static void mlx5_ib_cq_event(struct mlx5_core_cq *mcq, enum mlx5_event type)
 	}
 }
 
-<<<<<<< HEAD
 static void *get_cqe(struct mlx5_ib_cq *cq, int n)
 {
 	return mlx5_frag_buf_get_wqe(&cq->buf.fbc, n);
-=======
-static void *get_cqe_from_buf(struct mlx5_ib_cq_buf *buf, int n, int size)
-{
-	return mlx5_buf_offset(&buf->buf, n * size);
-}
-
-static void *get_cqe(struct mlx5_ib_cq *cq, int n)
-{
-	return get_cqe_from_buf(&cq->buf, n, cq->mcq.cqe_sz);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static u8 sw_ownership_bit(int n, int nent)
@@ -130,19 +119,13 @@ static void handle_good_req(struct ib_wc *wc, struct mlx5_cqe64 *cqe,
 	switch (be32_to_cpu(cqe->sop_drop_qpn) >> 24) {
 	case MLX5_OPCODE_RDMA_WRITE_IMM:
 		wc->wc_flags |= IB_WC_WITH_IMM;
-<<<<<<< HEAD
 		/* fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case MLX5_OPCODE_RDMA_WRITE:
 		wc->opcode    = IB_WC_RDMA_WRITE;
 		break;
 	case MLX5_OPCODE_SEND_IMM:
 		wc->wc_flags |= IB_WC_WITH_IMM;
-<<<<<<< HEAD
 		/* fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case MLX5_OPCODE_SEND:
 	case MLX5_OPCODE_SEND_INVAL:
 		wc->opcode    = IB_WC_SEND;
@@ -284,19 +267,8 @@ static void handle_responder(struct ib_wc *wc, struct mlx5_cqe64 *cqe,
 
 static void dump_cqe(struct mlx5_ib_dev *dev, struct mlx5_err_cqe *cqe)
 {
-<<<<<<< HEAD
 	mlx5_ib_warn(dev, "dump error cqe\n");
 	mlx5_dump_err_cqe(dev->mdev, cqe);
-=======
-	__be32 *p = (__be32 *)cqe;
-	int i;
-
-	mlx5_ib_warn(dev, "dump error cqe\n");
-	for (i = 0; i < sizeof(*cqe) / 16; i++, p += 4)
-		pr_info("%08x %08x %08x %08x\n", be32_to_cpu(p[0]),
-			be32_to_cpu(p[1]), be32_to_cpu(p[2]),
-			be32_to_cpu(p[3]));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void mlx5_handle_error_cqe(struct mlx5_ib_dev *dev,
@@ -421,11 +393,7 @@ static void handle_atomics(struct mlx5_ib_qp *qp, struct mlx5_cqe64 *cqe64,
 
 static void free_cq_buf(struct mlx5_ib_dev *dev, struct mlx5_ib_cq_buf *buf)
 {
-<<<<<<< HEAD
 	mlx5_frag_buf_free(dev->mdev, &buf->fbc.frag_buf);
-=======
-	mlx5_buf_free(dev->mdev, &buf->buf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void get_sig_err_item(struct mlx5_sig_err_cqe *cqe,
@@ -755,7 +723,6 @@ int mlx5_ib_arm_cq(struct ib_cq *ibcq, enum ib_cq_notify_flags flags)
 	return ret;
 }
 
-<<<<<<< HEAD
 static int alloc_cq_frag_buf(struct mlx5_ib_dev *dev,
 			     struct mlx5_ib_cq_buf *buf,
 			     int nent,
@@ -775,14 +742,6 @@ static int alloc_cq_frag_buf(struct mlx5_ib_dev *dev,
 				       nent * cqe_size,
 				       frag_buf,
 				       dev->mdev->priv.numa_node);
-=======
-static int alloc_cq_buf(struct mlx5_ib_dev *dev, struct mlx5_ib_cq_buf *buf,
-			int nent, int cqe_size)
-{
-	int err;
-
-	err = mlx5_buf_alloc(dev->mdev, nent * cqe_size, &buf->buf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		return err;
 
@@ -792,7 +751,6 @@ static int alloc_cq_buf(struct mlx5_ib_dev *dev, struct mlx5_ib_cq_buf *buf,
 	return 0;
 }
 
-<<<<<<< HEAD
 enum {
 	MLX5_CQE_RES_FORMAT_HASH = 0,
 	MLX5_CQE_RES_FORMAT_CSUM = 1,
@@ -815,8 +773,6 @@ static int mini_cqe_res_format_to_hw(struct mlx5_ib_dev *dev, u8 format)
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int create_cq_user(struct mlx5_ib_dev *dev, struct ib_udata *udata,
 			  struct ib_ucontext *context, struct mlx5_ib_cq *cq,
 			  int entries, u32 **cqb,
@@ -832,21 +788,13 @@ static int create_cq_user(struct mlx5_ib_dev *dev, struct ib_udata *udata,
 	int err;
 
 	ucmdlen = udata->inlen < sizeof(ucmd) ?
-<<<<<<< HEAD
 		  (sizeof(ucmd) - sizeof(ucmd.flags)) : sizeof(ucmd);
-=======
-		  (sizeof(ucmd) - sizeof(ucmd.reserved)) : sizeof(ucmd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ib_copy_from_udata(&ucmd, udata, ucmdlen))
 		return -EFAULT;
 
 	if (ucmdlen == sizeof(ucmd) &&
-<<<<<<< HEAD
 	    (ucmd.flags & ~(MLX5_IB_CREATE_CQ_FLAGS_CQE_128B_PAD)))
-=======
-	    ucmd.reserved != 0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	if (ucmd.cqe_size != 64 && ucmd.cqe_size != 128)
@@ -890,24 +838,18 @@ static int create_cq_user(struct mlx5_ib_dev *dev, struct ib_udata *udata,
 	*index = to_mucontext(context)->bfregi.sys_pages[0];
 
 	if (ucmd.cqe_comp_en == 1) {
-<<<<<<< HEAD
 		int mini_cqe_format;
 
 		if (!((*cqe_size == 128 &&
 		       MLX5_CAP_GEN(dev->mdev, cqe_compression_128)) ||
 		      (*cqe_size == 64  &&
 		       MLX5_CAP_GEN(dev->mdev, cqe_compression)))) {
-=======
-		if (unlikely((*cqe_size != 64) ||
-			     !MLX5_CAP_GEN(dev->mdev, cqe_compression))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			err = -EOPNOTSUPP;
 			mlx5_ib_warn(dev, "CQE compression is not supported for size %d!\n",
 				     *cqe_size);
 			goto err_cqb;
 		}
 
-<<<<<<< HEAD
 		mini_cqe_format =
 			mini_cqe_res_format_to_hw(dev,
 						  ucmd.cqe_comp_res_format);
@@ -915,21 +857,10 @@ static int create_cq_user(struct mlx5_ib_dev *dev, struct ib_udata *udata,
 			err = mini_cqe_format;
 			mlx5_ib_dbg(dev, "CQE compression res format %d error: %d\n",
 				    ucmd.cqe_comp_res_format, err);
-=======
-		if (unlikely(!ucmd.cqe_comp_res_format ||
-			     !(ucmd.cqe_comp_res_format <
-			       MLX5_IB_CQE_RES_RESERVED) ||
-			     (ucmd.cqe_comp_res_format &
-			      (ucmd.cqe_comp_res_format - 1)))) {
-			err = -EOPNOTSUPP;
-			mlx5_ib_warn(dev, "CQE compression res format %d is not supported!\n",
-				     ucmd.cqe_comp_res_format);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto err_cqb;
 		}
 
 		MLX5_SET(cqc, cqc, cqe_comp_en, 1);
-<<<<<<< HEAD
 		MLX5_SET(cqc, cqc, mini_cqe_res_format, mini_cqe_format);
 	}
 
@@ -944,20 +875,12 @@ static int create_cq_user(struct mlx5_ib_dev *dev, struct ib_udata *udata,
 		}
 
 		cq->private_flags |= MLX5_IB_CQ_PR_FLAGS_CQE_128_PAD;
-=======
-		MLX5_SET(cqc, cqc, mini_cqe_res_format,
-			 ilog2(ucmd.cqe_comp_res_format));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
 
 err_cqb:
-<<<<<<< HEAD
 	kvfree(*cqb);
-=======
-	kfree(*cqb);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 err_db:
 	mlx5_ib_db_unmap_user(to_mucontext(context), &cq->db);
@@ -973,23 +896,15 @@ static void destroy_cq_user(struct mlx5_ib_cq *cq, struct ib_ucontext *context)
 	ib_umem_release(cq->buf.umem);
 }
 
-<<<<<<< HEAD
 static void init_cq_frag_buf(struct mlx5_ib_cq *cq,
 			     struct mlx5_ib_cq_buf *buf)
-=======
-static void init_cq_buf(struct mlx5_ib_cq *cq, struct mlx5_ib_cq_buf *buf)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i;
 	void *cqe;
 	struct mlx5_cqe64 *cqe64;
 
 	for (i = 0; i < buf->nent; i++) {
-<<<<<<< HEAD
 		cqe = get_cqe(cq, i);
-=======
-		cqe = get_cqe_from_buf(buf, i, buf->cqe_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cqe64 = buf->cqe_size == 64 ? cqe : cqe + 64;
 		cqe64->op_own = MLX5_CQE_INVALID << 4;
 	}
@@ -1011,7 +926,6 @@ static int create_cq_kernel(struct mlx5_ib_dev *dev, struct mlx5_ib_cq *cq,
 	cq->mcq.arm_db     = cq->db.db + 1;
 	cq->mcq.cqe_sz = cqe_size;
 
-<<<<<<< HEAD
 	err = alloc_cq_frag_buf(dev, &cq->buf, entries, cqe_size);
 	if (err)
 		goto err_db;
@@ -1021,16 +935,6 @@ static int create_cq_kernel(struct mlx5_ib_dev *dev, struct mlx5_ib_cq *cq,
 	*inlen = MLX5_ST_SZ_BYTES(create_cq_in) +
 		 MLX5_FLD_SZ_BYTES(create_cq_in, pas[0]) *
 		 cq->buf.fbc.frag_buf.npages;
-=======
-	err = alloc_cq_buf(dev, &cq->buf, entries, cqe_size);
-	if (err)
-		goto err_db;
-
-	init_cq_buf(cq, &cq->buf);
-
-	*inlen = MLX5_ST_SZ_BYTES(create_cq_in) +
-		 MLX5_FLD_SZ_BYTES(create_cq_in, pas[0]) * cq->buf.buf.npages;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	*cqb = kvzalloc(*inlen, GFP_KERNEL);
 	if (!*cqb) {
 		err = -ENOMEM;
@@ -1038,20 +942,12 @@ static int create_cq_kernel(struct mlx5_ib_dev *dev, struct mlx5_ib_cq *cq,
 	}
 
 	pas = (__be64 *)MLX5_ADDR_OF(create_cq_in, *cqb, pas);
-<<<<<<< HEAD
 	mlx5_fill_page_frag_array(&cq->buf.fbc.frag_buf, pas);
 
 	cqc = MLX5_ADDR_OF(create_cq_in, *cqb, cq_context);
 	MLX5_SET(cqc, cqc, log_page_size,
 		 cq->buf.fbc.frag_buf.page_shift -
 		 MLX5_ADAPTER_PAGE_SHIFT);
-=======
-	mlx5_fill_page_array(&cq->buf.buf, pas);
-
-	cqc = MLX5_ADDR_OF(create_cq_in, *cqb, cq_context);
-	MLX5_SET(cqc, cqc, log_page_size,
-		 cq->buf.buf.page_shift - MLX5_ADAPTER_PAGE_SHIFT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	*index = dev->mdev->priv.uar->index;
 
@@ -1143,23 +1039,15 @@ struct ib_cq *mlx5_ib_create_cq(struct ib_device *ibdev,
 	cq->cqe_size = cqe_size;
 
 	cqc = MLX5_ADDR_OF(create_cq_in, cqb, cq_context);
-<<<<<<< HEAD
 	MLX5_SET(cqc, cqc, cqe_sz,
 		 cqe_sz_to_mlx_sz(cqe_size,
 				  cq->private_flags &
 				  MLX5_IB_CQ_PR_FLAGS_CQE_128_PAD));
-=======
-	MLX5_SET(cqc, cqc, cqe_sz, cqe_sz_to_mlx_sz(cqe_size));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MLX5_SET(cqc, cqc, log_cq_size, ilog2(entries));
 	MLX5_SET(cqc, cqc, uar_page, index);
 	MLX5_SET(cqc, cqc, c_eqn, eqn);
 	MLX5_SET64(cqc, cqc, dbr_addr, cq->db.dma);
-<<<<<<< HEAD
 	if (cq->create_flags & IB_UVERBS_CQ_FLAGS_IGNORE_OVERRUN)
-=======
-	if (cq->create_flags & IB_CQ_FLAGS_IGNORE_OVERRUN)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		MLX5_SET(cqc, cqc, oi, 1);
 
 	err = mlx5_core_create_cq(dev->mdev, &cq->mcq, cqb, inlen);
@@ -1296,14 +1184,10 @@ int mlx5_ib_modify_cq(struct ib_cq *cq, u16 cq_count, u16 cq_period)
 	int err;
 
 	if (!MLX5_CAP_GEN(dev->mdev, cq_moderation))
-<<<<<<< HEAD
 		return -EOPNOTSUPP;
 
 	if (cq_period > MLX5_MAX_CQ_PERIOD)
 		return -EINVAL;
-=======
-		return -ENOSYS;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = mlx5_core_modify_cq_moderation(dev->mdev, &mcq->mcq,
 					     cq_period, cq_count);
@@ -1365,19 +1249,11 @@ static int resize_kernel(struct mlx5_ib_dev *dev, struct mlx5_ib_cq *cq,
 	if (!cq->resize_buf)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	err = alloc_cq_frag_buf(dev, cq->resize_buf, entries, cqe_size);
 	if (err)
 		goto ex;
 
 	init_cq_frag_buf(cq, cq->resize_buf);
-=======
-	err = alloc_cq_buf(dev, cq->resize_buf, entries, cqe_size);
-	if (err)
-		goto ex;
-
-	init_cq_buf(cq, cq->resize_buf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 
@@ -1422,14 +1298,8 @@ static int copy_resize_cqes(struct mlx5_ib_cq *cq)
 	}
 
 	while ((scqe64->op_own >> 4) != MLX5_CQE_RESIZE_CQ) {
-<<<<<<< HEAD
 		dcqe = mlx5_frag_buf_get_wqe(&cq->resize_buf->fbc,
 					     (i + 1) & cq->resize_buf->nent);
-=======
-		dcqe = get_cqe_from_buf(cq->resize_buf,
-					(i + 1) & (cq->resize_buf->nent),
-					dsize);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dcqe64 = dsize == 64 ? dcqe : dcqe + 64;
 		sw_own = sw_ownership_bit(i + 1, cq->resize_buf->nent);
 		memcpy(dcqe, scqe, dsize);
@@ -1495,16 +1365,11 @@ int mlx5_ib_resize_cq(struct ib_cq *ibcq, int entries, struct ib_udata *udata)
 		cqe_size = 64;
 		err = resize_kernel(dev, cq, entries, cqe_size);
 		if (!err) {
-<<<<<<< HEAD
 			struct mlx5_frag_buf_ctrl *c;
 
 			c = &cq->resize_buf->fbc;
 			npas = c->frag_buf.npages;
 			page_shift = c->frag_buf.page_shift;
-=======
-			npas = cq->resize_buf->buf.npages;
-			page_shift = cq->resize_buf->buf.page_shift;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -1525,12 +1390,8 @@ int mlx5_ib_resize_cq(struct ib_cq *ibcq, int entries, struct ib_udata *udata)
 		mlx5_ib_populate_pas(dev, cq->resize_umem, page_shift,
 				     pas, 0);
 	else
-<<<<<<< HEAD
 		mlx5_fill_page_frag_array(&cq->resize_buf->fbc.frag_buf,
 					  pas);
-=======
-		mlx5_fill_page_array(&cq->resize_buf->buf, pas);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	MLX5_SET(modify_cq_in, in,
 		 modify_field_select_resize_field_select.resize_field_select.resize_field_select,
@@ -1542,14 +1403,10 @@ int mlx5_ib_resize_cq(struct ib_cq *ibcq, int entries, struct ib_udata *udata)
 
 	MLX5_SET(cqc, cqc, log_page_size,
 		 page_shift - MLX5_ADAPTER_PAGE_SHIFT);
-<<<<<<< HEAD
 	MLX5_SET(cqc, cqc, cqe_sz,
 		 cqe_sz_to_mlx_sz(cqe_size,
 				  cq->private_flags &
 				  MLX5_IB_CQ_PR_FLAGS_CQE_128_PAD));
-=======
-	MLX5_SET(cqc, cqc, cqe_sz, cqe_sz_to_mlx_sz(cqe_size));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MLX5_SET(cqc, cqc, log_cq_size, ilog2(entries));
 
 	MLX5_SET(modify_cq_in, in, op_mod, MLX5_CQ_OPMOD_RESIZE);

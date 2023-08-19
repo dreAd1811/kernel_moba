@@ -338,14 +338,9 @@ static int __init i2c_stub_allocate_banks(int i)
 		chip->bank_mask >>= 1;
 	}
 
-<<<<<<< HEAD
 	chip->bank_words = kcalloc(chip->bank_mask * chip->bank_size,
 				   sizeof(u16),
 				   GFP_KERNEL);
-=======
-	chip->bank_words = kzalloc(chip->bank_mask * chip->bank_size *
-				   sizeof(u16), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!chip->bank_words)
 		return -ENOMEM;
 

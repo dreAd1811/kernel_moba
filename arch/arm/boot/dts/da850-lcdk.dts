@@ -21,7 +21,6 @@
 		stdout-path = "serial2:115200n8";
 	};
 
-<<<<<<< HEAD
 	memory@c0000000 {
 		/* 128 MB DDR2 SDRAM @ 0xc0000000 */
 		reg = <0xc0000000 0x08000000>;
@@ -70,13 +69,6 @@
 		regulator-boot-on;
 	};
 
-=======
-	memory {
-		device_type = "memory";
-		reg = <0xc0000000 0x08000000>;
-	};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sound {
 		compatible = "simple-audio-card";
 		simple-audio-card,name = "DA850-OMAPL138 LCDK";
@@ -161,13 +153,10 @@
 	};
 };
 
-<<<<<<< HEAD
 &ref_clk {
 	clock-frequency = <24000000>;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &pmx_core {
 	status = "okay";
 
@@ -220,14 +209,11 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
 &sata_refclk {
 	status = "okay";
 	clock-frequency = <100000000>;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &sata {
 	status = "okay";
 };
@@ -265,15 +251,12 @@
 		compatible = "ti,tlv320aic3106";
 		reg = <0x18>;
 		status = "okay";
-<<<<<<< HEAD
 
 		/* Regulators */
 		IOVDD-supply = <&vcc_3v3d>;
 		AVDD-supply = <&vcc_3v3d>;
 		DRVDD-supply = <&vcc_3v3d>;
 		DVDD-supply = <&vcc_1v8d>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };
 
@@ -355,20 +338,12 @@
 					label = "u-boot env";
 					reg = <0 0x020000>;
 				};
-<<<<<<< HEAD
 				partition@20000 {
-=======
-				partition@0x020000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					/* The LCDK defaults to booting from this partition */
 					label = "u-boot";
 					reg = <0x020000 0x080000>;
 				};
-<<<<<<< HEAD
 				partition@a0000 {
-=======
-				partition@0x0a0000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					label = "free space";
 					reg = <0x0a0000 0>;
 				};
@@ -402,11 +377,8 @@
 	pinctrl-0 = <&vpif_capture_pins>;
 	status = "okay";
 };
-<<<<<<< HEAD
 
 &dsp {
 	memory-region = <&dsp_memory_region>;
 	status = "okay";
 };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

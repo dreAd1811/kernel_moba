@@ -22,11 +22,7 @@
 
 #include <linux/types.h>
 #include <asm/bootinfo-atari.h>
-<<<<<<< HEAD
 #include <asm/kmap.h>
-=======
-#include <asm/raw_io.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 extern u_long atari_mch_cookie;
 extern u_long atari_mch_type;
@@ -129,17 +125,6 @@ extern struct atari_hw_present atari_hw_present;
  */
 
 
-<<<<<<< HEAD
-=======
-#define atari_readb   raw_inb
-#define atari_writeb  raw_outb
-
-#define atari_inb_p   raw_inb
-#define atari_outb_p  raw_outb
-
-
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/mm.h>
 #include <asm/cacheflush.h>
 

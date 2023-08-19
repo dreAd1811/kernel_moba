@@ -22,7 +22,6 @@
 #include <media/v4l2-ctrls.h>
 #include <media/v4l2-ioctl.h>
 
-<<<<<<< HEAD
 /**
  * assign_in_user() - Copy from one __user var to another one
  *
@@ -35,9 +34,6 @@
  * This function complements the macros defined at asm-generic/uaccess.h.
  * It uses the same argument order as copy_in_user()
  */
-=======
-/* Use the same argument order as copy_in_user */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define assign_in_user(to, from)					\
 ({									\
 	typeof(*from) __assign_tmp;					\
@@ -45,7 +41,6 @@
 	get_user(__assign_tmp, from) || put_user(__assign_tmp, to);	\
 })
 
-<<<<<<< HEAD
 /**
  * get_user_cast() - Stores at a kernelspace local var the contents from a
  *		pointer with userspace data that is not tagged with __user.
@@ -113,8 +108,6 @@
  *
  * This function calls the native ioctl handler at v4l2-dev, e. g. v4l2_ioctl()
  */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static long native_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 {
 	long ret = -ENOIOCTLCMD;
@@ -126,7 +119,6 @@ static long native_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 }
 
 
-<<<<<<< HEAD
 /*
  * Per-ioctl data copy handlers.
  *
@@ -145,20 +137,11 @@ static long native_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 struct v4l2_clip32 {
 	struct v4l2_rect        c;
 	compat_caddr_t		next;
-=======
-struct v4l2_clip32 {
-	struct v4l2_rect        c;
-	compat_caddr_t 		next;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct v4l2_window32 {
 	struct v4l2_rect        w;
-<<<<<<< HEAD
 	__u32			field;	/* enum v4l2_field */
-=======
-	__u32		  	field;	/* enum v4l2_field */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__u32			chromakey;
 	compat_caddr_t		clips; /* actually struct v4l2_clip32 * */
 	__u32			clipcount;
@@ -166,13 +149,8 @@ struct v4l2_window32 {
 	__u8                    global_alpha;
 };
 
-<<<<<<< HEAD
 static int get_v4l2_window32(struct v4l2_window __user *p64,
 			     struct v4l2_window32 __user *p32,
-=======
-static int get_v4l2_window32(struct v4l2_window __user *kp,
-			     struct v4l2_window32 __user *up,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     void __user *aux_buf, u32 aux_space)
 {
 	struct v4l2_clip32 __user *uclips;
@@ -180,7 +158,6 @@ static int get_v4l2_window32(struct v4l2_window __user *kp,
 	compat_caddr_t p;
 	u32 clipcount;
 
-<<<<<<< HEAD
 	if (!access_ok(VERIFY_READ, p32, sizeof(*p32)) ||
 	    copy_in_user(&p64->w, &p32->w, sizeof(p32->w)) ||
 	    assign_in_user(&p64->field, &p32->field) ||
@@ -188,38 +165,19 @@ static int get_v4l2_window32(struct v4l2_window __user *kp,
 	    assign_in_user(&p64->global_alpha, &p32->global_alpha) ||
 	    get_user(clipcount, &p32->clipcount) ||
 	    put_user(clipcount, &p64->clipcount))
-=======
-	if (!access_ok(VERIFY_READ, up, sizeof(*up)) ||
-	    copy_in_user(&kp->w, &up->w, sizeof(up->w)) ||
-	    assign_in_user(&kp->field, &up->field) ||
-	    assign_in_user(&kp->chromakey, &up->chromakey) ||
-	    assign_in_user(&kp->global_alpha, &up->global_alpha) ||
-	    get_user(clipcount, &up->clipcount) ||
-	    put_user(clipcount, &kp->clipcount))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 	if (clipcount > 2048)
 		return -EINVAL;
 	if (!clipcount)
-<<<<<<< HEAD
 		return put_user(NULL, &p64->clips);
 
 	if (get_user(p, &p32->clips))
-=======
-		return put_user(NULL, &kp->clips);
-
-	if (get_user(p, &up->clips))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 	uclips = compat_ptr(p);
 	if (aux_space < clipcount * sizeof(*kclips))
 		return -EFAULT;
 	kclips = aux_buf;
-<<<<<<< HEAD
 	if (put_user(kclips, &p64->clips))
-=======
-	if (put_user(kclips, &kp->clips))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 
 	while (clipcount--) {
@@ -233,47 +191,27 @@ static int get_v4l2_window32(struct v4l2_window __user *kp,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int put_v4l2_window32(struct v4l2_window __user *p64,
 			     struct v4l2_window32 __user *p32)
-=======
-static int put_v4l2_window32(struct v4l2_window __user *kp,
-			     struct v4l2_window32 __user *up)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct v4l2_clip __user *kclips;
 	struct v4l2_clip32 __user *uclips;
 	compat_caddr_t p;
 	u32 clipcount;
 
-<<<<<<< HEAD
 	if (copy_in_user(&p32->w, &p64->w, sizeof(p64->w)) ||
 	    assign_in_user(&p32->field, &p64->field) ||
 	    assign_in_user(&p32->chromakey, &p64->chromakey) ||
 	    assign_in_user(&p32->global_alpha, &p64->global_alpha) ||
 	    get_user(clipcount, &p64->clipcount) ||
 	    put_user(clipcount, &p32->clipcount))
-=======
-	if (copy_in_user(&up->w, &kp->w, sizeof(kp->w)) ||
-	    assign_in_user(&up->field, &kp->field) ||
-	    assign_in_user(&up->chromakey, &kp->chromakey) ||
-	    assign_in_user(&up->global_alpha, &kp->global_alpha) ||
-	    get_user(clipcount, &kp->clipcount) ||
-	    put_user(clipcount, &up->clipcount))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 	if (!clipcount)
 		return 0;
 
-<<<<<<< HEAD
 	if (get_user(kclips, &p64->clips))
 		return -EFAULT;
 	if (get_user(p, &p32->clips))
-=======
-	if (get_user(kclips, &kp->clips))
-		return -EFAULT;
-	if (get_user(p, &up->clips))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 	uclips = compat_ptr(p);
 	while (clipcount--) {
@@ -316,19 +254,11 @@ struct v4l2_create_buffers32 {
 	__u32			reserved[8];
 };
 
-<<<<<<< HEAD
 static int __bufsize_v4l2_format(struct v4l2_format32 __user *p32, u32 *size)
 {
 	u32 type;
 
 	if (get_user(type, &p32->type))
-=======
-static int __bufsize_v4l2_format(struct v4l2_format32 __user *up, u32 *size)
-{
-	u32 type;
-
-	if (get_user(type, &up->type))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 
 	switch (type) {
@@ -336,11 +266,7 @@ static int __bufsize_v4l2_format(struct v4l2_format32 __user *up, u32 *size)
 	case V4L2_BUF_TYPE_VIDEO_OUTPUT_OVERLAY: {
 		u32 clipcount;
 
-<<<<<<< HEAD
 		if (get_user(clipcount, &p32->fmt.win.clipcount))
-=======
-		if (get_user(clipcount, &up->fmt.win.clipcount))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EFAULT;
 		if (clipcount > 2048)
 			return -EINVAL;
@@ -353,7 +279,6 @@ static int __bufsize_v4l2_format(struct v4l2_format32 __user *up, u32 *size)
 	}
 }
 
-<<<<<<< HEAD
 static int bufsize_v4l2_format(struct v4l2_format32 __user *p32, u32 *size)
 {
 	if (!access_ok(VERIFY_READ, p32, sizeof(*p32)))
@@ -363,32 +288,16 @@ static int bufsize_v4l2_format(struct v4l2_format32 __user *p32, u32 *size)
 
 static int __get_v4l2_format32(struct v4l2_format __user *p64,
 			       struct v4l2_format32 __user *p32,
-=======
-static int bufsize_v4l2_format(struct v4l2_format32 __user *up, u32 *size)
-{
-	if (!access_ok(VERIFY_READ, up, sizeof(*up)))
-		return -EFAULT;
-	return __bufsize_v4l2_format(up, size);
-}
-
-static int __get_v4l2_format32(struct v4l2_format __user *kp,
-			       struct v4l2_format32 __user *up,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       void __user *aux_buf, u32 aux_space)
 {
 	u32 type;
 
-<<<<<<< HEAD
 	if (get_user(type, &p32->type) || put_user(type, &p64->type))
-=======
-	if (get_user(type, &up->type) || put_user(type, &kp->type))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 
 	switch (type) {
 	case V4L2_BUF_TYPE_VIDEO_CAPTURE:
 	case V4L2_BUF_TYPE_VIDEO_OUTPUT:
-<<<<<<< HEAD
 		return copy_in_user(&p64->fmt.pix, &p32->fmt.pix,
 				    sizeof(p64->fmt.pix)) ? -EFAULT : 0;
 	case V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE:
@@ -414,39 +323,11 @@ static int __get_v4l2_format32(struct v4l2_format __user *kp,
 	case V4L2_BUF_TYPE_META_CAPTURE:
 		return copy_in_user(&p64->fmt.meta, &p32->fmt.meta,
 				    sizeof(p64->fmt.meta)) ? -EFAULT : 0;
-=======
-		return copy_in_user(&kp->fmt.pix, &up->fmt.pix,
-				    sizeof(kp->fmt.pix)) ? -EFAULT : 0;
-	case V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE:
-	case V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE:
-		return copy_in_user(&kp->fmt.pix_mp, &up->fmt.pix_mp,
-				    sizeof(kp->fmt.pix_mp)) ? -EFAULT : 0;
-	case V4L2_BUF_TYPE_VIDEO_OVERLAY:
-	case V4L2_BUF_TYPE_VIDEO_OUTPUT_OVERLAY:
-		return get_v4l2_window32(&kp->fmt.win, &up->fmt.win,
-					 aux_buf, aux_space);
-	case V4L2_BUF_TYPE_VBI_CAPTURE:
-	case V4L2_BUF_TYPE_VBI_OUTPUT:
-		return copy_in_user(&kp->fmt.vbi, &up->fmt.vbi,
-				    sizeof(kp->fmt.vbi)) ? -EFAULT : 0;
-	case V4L2_BUF_TYPE_SLICED_VBI_CAPTURE:
-	case V4L2_BUF_TYPE_SLICED_VBI_OUTPUT:
-		return copy_in_user(&kp->fmt.sliced, &up->fmt.sliced,
-				    sizeof(kp->fmt.sliced)) ? -EFAULT : 0;
-	case V4L2_BUF_TYPE_SDR_CAPTURE:
-	case V4L2_BUF_TYPE_SDR_OUTPUT:
-		return copy_in_user(&kp->fmt.sdr, &up->fmt.sdr,
-				    sizeof(kp->fmt.sdr)) ? -EFAULT : 0;
-	case V4L2_BUF_TYPE_META_CAPTURE:
-		return copy_in_user(&kp->fmt.meta, &up->fmt.meta,
-				    sizeof(kp->fmt.meta)) ? -EFAULT : 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		return -EINVAL;
 	}
 }
 
-<<<<<<< HEAD
 static int get_v4l2_format32(struct v4l2_format __user *p64,
 			     struct v4l2_format32 __user *p32,
 			     void __user *aux_buf, u32 aux_space)
@@ -482,49 +363,11 @@ static int __put_v4l2_format32(struct v4l2_format __user *p64,
 	u32 type;
 
 	if (get_user(type, &p64->type))
-=======
-static int get_v4l2_format32(struct v4l2_format __user *kp,
-			     struct v4l2_format32 __user *up,
-			     void __user *aux_buf, u32 aux_space)
-{
-	if (!access_ok(VERIFY_READ, up, sizeof(*up)))
-		return -EFAULT;
-	return __get_v4l2_format32(kp, up, aux_buf, aux_space);
-}
-
-static int bufsize_v4l2_create(struct v4l2_create_buffers32 __user *up,
-			       u32 *size)
-{
-	if (!access_ok(VERIFY_READ, up, sizeof(*up)))
-		return -EFAULT;
-	return __bufsize_v4l2_format(&up->format, size);
-}
-
-static int get_v4l2_create32(struct v4l2_create_buffers __user *kp,
-			     struct v4l2_create_buffers32 __user *up,
-			     void __user *aux_buf, u32 aux_space)
-{
-	if (!access_ok(VERIFY_READ, up, sizeof(*up)) ||
-	    copy_in_user(kp, up,
-			 offsetof(struct v4l2_create_buffers32, format)))
-		return -EFAULT;
-	return __get_v4l2_format32(&kp->format, &up->format,
-				   aux_buf, aux_space);
-}
-
-static int __put_v4l2_format32(struct v4l2_format __user *kp,
-			       struct v4l2_format32 __user *up)
-{
-	u32 type;
-
-	if (get_user(type, &kp->type))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 
 	switch (type) {
 	case V4L2_BUF_TYPE_VIDEO_CAPTURE:
 	case V4L2_BUF_TYPE_VIDEO_OUTPUT:
-<<<<<<< HEAD
 		return copy_in_user(&p32->fmt.pix, &p64->fmt.pix,
 				    sizeof(p64->fmt.pix)) ? -EFAULT : 0;
 	case V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE:
@@ -549,38 +392,11 @@ static int __put_v4l2_format32(struct v4l2_format __user *kp,
 	case V4L2_BUF_TYPE_META_CAPTURE:
 		return copy_in_user(&p32->fmt.meta, &p64->fmt.meta,
 				    sizeof(p64->fmt.meta)) ? -EFAULT : 0;
-=======
-		return copy_in_user(&up->fmt.pix, &kp->fmt.pix,
-				    sizeof(kp->fmt.pix)) ? -EFAULT : 0;
-	case V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE:
-	case V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE:
-		return copy_in_user(&up->fmt.pix_mp, &kp->fmt.pix_mp,
-				    sizeof(kp->fmt.pix_mp)) ? -EFAULT : 0;
-	case V4L2_BUF_TYPE_VIDEO_OVERLAY:
-	case V4L2_BUF_TYPE_VIDEO_OUTPUT_OVERLAY:
-		return put_v4l2_window32(&kp->fmt.win, &up->fmt.win);
-	case V4L2_BUF_TYPE_VBI_CAPTURE:
-	case V4L2_BUF_TYPE_VBI_OUTPUT:
-		return copy_in_user(&up->fmt.vbi, &kp->fmt.vbi,
-				    sizeof(kp->fmt.vbi)) ? -EFAULT : 0;
-	case V4L2_BUF_TYPE_SLICED_VBI_CAPTURE:
-	case V4L2_BUF_TYPE_SLICED_VBI_OUTPUT:
-		return copy_in_user(&up->fmt.sliced, &kp->fmt.sliced,
-				    sizeof(kp->fmt.sliced)) ? -EFAULT : 0;
-	case V4L2_BUF_TYPE_SDR_CAPTURE:
-	case V4L2_BUF_TYPE_SDR_OUTPUT:
-		return copy_in_user(&up->fmt.sdr, &kp->fmt.sdr,
-				    sizeof(kp->fmt.sdr)) ? -EFAULT : 0;
-	case V4L2_BUF_TYPE_META_CAPTURE:
-		return copy_in_user(&up->fmt.meta, &kp->fmt.meta,
-				    sizeof(kp->fmt.meta)) ? -EFAULT : 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		return -EINVAL;
 	}
 }
 
-<<<<<<< HEAD
 static int put_v4l2_format32(struct v4l2_format __user *p64,
 			     struct v4l2_format32 __user *p32)
 {
@@ -598,25 +414,6 @@ static int put_v4l2_create32(struct v4l2_create_buffers __user *p64,
 	    copy_in_user(p32->reserved, p64->reserved, sizeof(p64->reserved)))
 		return -EFAULT;
 	return __put_v4l2_format32(&p64->format, &p32->format);
-=======
-static int put_v4l2_format32(struct v4l2_format __user *kp,
-			     struct v4l2_format32 __user *up)
-{
-	if (!access_ok(VERIFY_WRITE, up, sizeof(*up)))
-		return -EFAULT;
-	return __put_v4l2_format32(kp, up);
-}
-
-static int put_v4l2_create32(struct v4l2_create_buffers __user *kp,
-			     struct v4l2_create_buffers32 __user *up)
-{
-	if (!access_ok(VERIFY_WRITE, up, sizeof(*up)) ||
-	    copy_in_user(up, kp,
-			 offsetof(struct v4l2_create_buffers32, format)) ||
-	    copy_in_user(up->reserved, kp->reserved, sizeof(kp->reserved)))
-		return -EFAULT;
-	return __put_v4l2_format32(&kp->format, &up->format);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 struct v4l2_standard32 {
@@ -628,26 +425,16 @@ struct v4l2_standard32 {
 	__u32		     reserved[4];
 };
 
-<<<<<<< HEAD
 static int get_v4l2_standard32(struct v4l2_standard __user *p64,
 			       struct v4l2_standard32 __user *p32)
 {
 	/* other fields are not set by the user, nor used by the driver */
 	if (!access_ok(VERIFY_READ, p32, sizeof(*p32)) ||
 	    assign_in_user(&p64->index, &p32->index))
-=======
-static int get_v4l2_standard32(struct v4l2_standard __user *kp,
-			       struct v4l2_standard32 __user *up)
-{
-	/* other fields are not set by the user, nor used by the driver */
-	if (!access_ok(VERIFY_READ, up, sizeof(*up)) ||
-	    assign_in_user(&kp->index, &up->index))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 	return 0;
 }
 
-<<<<<<< HEAD
 static int put_v4l2_standard32(struct v4l2_standard __user *p64,
 			       struct v4l2_standard32 __user *p32)
 {
@@ -659,19 +446,6 @@ static int put_v4l2_standard32(struct v4l2_standard __user *p64,
 			 sizeof(p32->frameperiod)) ||
 	    assign_in_user(&p32->framelines, &p64->framelines) ||
 	    copy_in_user(p32->reserved, p64->reserved, sizeof(p32->reserved)))
-=======
-static int put_v4l2_standard32(struct v4l2_standard __user *kp,
-			       struct v4l2_standard32 __user *up)
-{
-	if (!access_ok(VERIFY_WRITE, up, sizeof(*up)) ||
-	    assign_in_user(&up->index, &kp->index) ||
-	    assign_in_user(&up->id, &kp->id) ||
-	    copy_in_user(up->name, kp->name, sizeof(up->name)) ||
-	    copy_in_user(&up->frameperiod, &kp->frameperiod,
-			 sizeof(up->frameperiod)) ||
-	    assign_in_user(&up->framelines, &kp->framelines) ||
-	    copy_in_user(up->reserved, kp->reserved, sizeof(up->reserved)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 	return 0;
 }
@@ -711,18 +485,12 @@ struct v4l2_buffer32 {
 	__u32			reserved;
 };
 
-<<<<<<< HEAD
 static int get_v4l2_plane32(struct v4l2_plane __user *p64,
 			    struct v4l2_plane32 __user *p32,
-=======
-static int get_v4l2_plane32(struct v4l2_plane __user *up,
-			    struct v4l2_plane32 __user *up32,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    enum v4l2_memory memory)
 {
 	compat_ulong_t p;
 
-<<<<<<< HEAD
 	if (copy_in_user(p64, p32, 2 * sizeof(__u32)) ||
 	    copy_in_user(&p64->data_offset, &p32->data_offset,
 			 sizeof(p64->data_offset)) ||
@@ -730,21 +498,11 @@ static int get_v4l2_plane32(struct v4l2_plane __user *up,
 			 sizeof(p64->reserved)) ||
 	    copy_in_user(&p64->length, &p32->length,
 			 sizeof(p64->length)))
-=======
-	if (copy_in_user(up, up32, 2 * sizeof(__u32)) ||
-	    copy_in_user(&up->data_offset, &up32->data_offset,
-			 sizeof(up->data_offset)) ||
-	    copy_in_user(up->reserved, up32->reserved,
-			 sizeof(up->reserved)) ||
-	    copy_in_user(&up->length, &up32->length,
-			 sizeof(up->length)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 
 	switch (memory) {
 	case V4L2_MEMORY_MMAP:
 	case V4L2_MEMORY_OVERLAY:
-<<<<<<< HEAD
 		if (copy_in_user(&p64->m.mem_offset, &p32->m.mem_offset,
 				 sizeof(p32->m.mem_offset)))
 			return -EFAULT;
@@ -756,19 +514,6 @@ static int get_v4l2_plane32(struct v4l2_plane __user *up,
 		break;
 	case V4L2_MEMORY_DMABUF:
 		if (copy_in_user(&p64->m.fd, &p32->m.fd, sizeof(p32->m.fd)))
-=======
-		if (copy_in_user(&up->m.mem_offset, &up32->m.mem_offset,
-				 sizeof(up32->m.mem_offset)))
-			return -EFAULT;
-		break;
-	case V4L2_MEMORY_USERPTR:
-		if (get_user(p, &up32->m.userptr) ||
-		    put_user((unsigned long)compat_ptr(p), &up->m.userptr))
-			return -EFAULT;
-		break;
-	case V4L2_MEMORY_DMABUF:
-		if (copy_in_user(&up->m.fd, &up32->m.fd, sizeof(up32->m.fd)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EFAULT;
 		break;
 	}
@@ -776,36 +521,22 @@ static int get_v4l2_plane32(struct v4l2_plane __user *up,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int put_v4l2_plane32(struct v4l2_plane __user *p64,
 			    struct v4l2_plane32 __user *p32,
-=======
-static int put_v4l2_plane32(struct v4l2_plane __user *up,
-			    struct v4l2_plane32 __user *up32,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    enum v4l2_memory memory)
 {
 	unsigned long p;
 
-<<<<<<< HEAD
 	if (copy_in_user(p32, p64, 2 * sizeof(__u32)) ||
 	    copy_in_user(&p32->data_offset, &p64->data_offset,
 			 sizeof(p64->data_offset)) ||
 	    copy_in_user(p32->reserved, p64->reserved,
 			 sizeof(p64->reserved)))
-=======
-	if (copy_in_user(up32, up, 2 * sizeof(__u32)) ||
-	    copy_in_user(&up32->data_offset, &up->data_offset,
-			 sizeof(up->data_offset)) ||
-	    copy_in_user(up32->reserved, up->reserved,
-			 sizeof(up->reserved)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 
 	switch (memory) {
 	case V4L2_MEMORY_MMAP:
 	case V4L2_MEMORY_OVERLAY:
-<<<<<<< HEAD
 		if (copy_in_user(&p32->m.mem_offset, &p64->m.mem_offset,
 				 sizeof(p64->m.mem_offset)))
 			return -EFAULT;
@@ -818,20 +549,6 @@ static int put_v4l2_plane32(struct v4l2_plane __user *up,
 		break;
 	case V4L2_MEMORY_DMABUF:
 		if (copy_in_user(&p32->m.fd, &p64->m.fd, sizeof(p64->m.fd)))
-=======
-		if (copy_in_user(&up32->m.mem_offset, &up->m.mem_offset,
-				 sizeof(up->m.mem_offset)))
-			return -EFAULT;
-		break;
-	case V4L2_MEMORY_USERPTR:
-		if (get_user(p, &up->m.userptr) ||
-		    put_user((compat_ulong_t)ptr_to_compat((__force void *)p),
-			     &up32->m.userptr))
-			return -EFAULT;
-		break;
-	case V4L2_MEMORY_DMABUF:
-		if (copy_in_user(&up32->m.fd, &up->m.fd, sizeof(up->m.fd)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EFAULT;
 		break;
 	}
@@ -839,24 +556,14 @@ static int put_v4l2_plane32(struct v4l2_plane __user *up,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int bufsize_v4l2_buffer(struct v4l2_buffer32 __user *p32, u32 *size)
-=======
-static int bufsize_v4l2_buffer(struct v4l2_buffer32 __user *up, u32 *size)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 type;
 	u32 length;
 
-<<<<<<< HEAD
 	if (!access_ok(VERIFY_READ, p32, sizeof(*p32)) ||
 	    get_user(type, &p32->type) ||
 	    get_user(length, &p32->length))
-=======
-	if (!access_ok(VERIFY_READ, up, sizeof(*up)) ||
-	    get_user(type, &up->type) ||
-	    get_user(length, &up->length))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 
 	if (V4L2_TYPE_IS_MULTIPLANAR(type)) {
@@ -874,13 +581,8 @@ static int bufsize_v4l2_buffer(struct v4l2_buffer32 __user *up, u32 *size)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int get_v4l2_buffer32(struct v4l2_buffer __user *p64,
 			     struct v4l2_buffer32 __user *p32,
-=======
-static int get_v4l2_buffer32(struct v4l2_buffer __user *kp,
-			     struct v4l2_buffer32 __user *up,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     void __user *aux_buf, u32 aux_space)
 {
 	u32 type;
@@ -891,7 +593,6 @@ static int get_v4l2_buffer32(struct v4l2_buffer __user *kp,
 	compat_caddr_t p;
 	int ret;
 
-<<<<<<< HEAD
 	if (!access_ok(VERIFY_READ, p32, sizeof(*p32)) ||
 	    assign_in_user(&p64->index, &p32->index) ||
 	    get_user(type, &p32->type) ||
@@ -910,26 +611,6 @@ static int get_v4l2_buffer32(struct v4l2_buffer __user *kp,
 				   &p32->timestamp.tv_sec) ||
 		    assign_in_user(&p64->timestamp.tv_usec,
 				   &p32->timestamp.tv_usec))
-=======
-	if (!access_ok(VERIFY_READ, up, sizeof(*up)) ||
-	    assign_in_user(&kp->index, &up->index) ||
-	    get_user(type, &up->type) ||
-	    put_user(type, &kp->type) ||
-	    assign_in_user(&kp->flags, &up->flags) ||
-	    get_user(memory, &up->memory) ||
-	    put_user(memory, &kp->memory) ||
-	    get_user(length, &up->length) ||
-	    put_user(length, &kp->length))
-		return -EFAULT;
-
-	if (V4L2_TYPE_IS_OUTPUT(type))
-		if (assign_in_user(&kp->bytesused, &up->bytesused) ||
-		    assign_in_user(&kp->field, &up->field) ||
-		    assign_in_user(&kp->timestamp.tv_sec,
-				   &up->timestamp.tv_sec) ||
-		    assign_in_user(&kp->timestamp.tv_usec,
-				   &up->timestamp.tv_usec))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EFAULT;
 
 	if (V4L2_TYPE_IS_MULTIPLANAR(type)) {
@@ -940,20 +621,12 @@ static int get_v4l2_buffer32(struct v4l2_buffer __user *kp,
 			 * num_planes == 0 is legal, e.g. when userspace doesn't
 			 * need planes array on DQBUF
 			 */
-<<<<<<< HEAD
 			return put_user(NULL, &p64->m.planes);
-=======
-			return put_user(NULL, &kp->m.planes);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		if (num_planes > VIDEO_MAX_PLANES)
 			return -EINVAL;
 
-<<<<<<< HEAD
 		if (get_user(p, &p32->m.planes))
-=======
-		if (get_user(p, &up->m.planes))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EFAULT;
 
 		uplane32 = compat_ptr(p);
@@ -969,12 +642,7 @@ static int get_v4l2_buffer32(struct v4l2_buffer __user *kp,
 			return -EFAULT;
 
 		uplane = aux_buf;
-<<<<<<< HEAD
 		if (put_user_force(uplane, &p64->m.planes))
-=======
-		if (put_user((__force struct v4l2_plane *)uplane,
-			     &kp->m.planes))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EFAULT;
 
 		while (num_planes--) {
@@ -988,34 +656,20 @@ static int get_v4l2_buffer32(struct v4l2_buffer __user *kp,
 		switch (memory) {
 		case V4L2_MEMORY_MMAP:
 		case V4L2_MEMORY_OVERLAY:
-<<<<<<< HEAD
 			if (assign_in_user(&p64->m.offset, &p32->m.offset))
-=======
-			if (assign_in_user(&kp->m.offset, &up->m.offset))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				return -EFAULT;
 			break;
 		case V4L2_MEMORY_USERPTR: {
 			compat_ulong_t userptr;
 
-<<<<<<< HEAD
 			if (get_user(userptr, &p32->m.userptr) ||
 			    put_user((unsigned long)compat_ptr(userptr),
 				     &p64->m.userptr))
-=======
-			if (get_user(userptr, &up->m.userptr) ||
-			    put_user((unsigned long)compat_ptr(userptr),
-				     &kp->m.userptr))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				return -EFAULT;
 			break;
 		}
 		case V4L2_MEMORY_DMABUF:
-<<<<<<< HEAD
 			if (assign_in_user(&p64->m.fd, &p32->m.fd))
-=======
-			if (assign_in_user(&kp->m.fd, &up->m.fd))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				return -EFAULT;
 			break;
 		}
@@ -1024,19 +678,13 @@ static int get_v4l2_buffer32(struct v4l2_buffer __user *kp,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int put_v4l2_buffer32(struct v4l2_buffer __user *p64,
 			     struct v4l2_buffer32 __user *p32)
-=======
-static int put_v4l2_buffer32(struct v4l2_buffer __user *kp,
-			     struct v4l2_buffer32 __user *up)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 type;
 	u32 length;
 	enum v4l2_memory memory;
 	struct v4l2_plane32 __user *uplane32;
-<<<<<<< HEAD
 	struct v4l2_plane *uplane;
 	compat_caddr_t p;
 	int ret;
@@ -1060,31 +708,6 @@ static int put_v4l2_buffer32(struct v4l2_buffer __user *kp,
 	    assign_in_user(&p32->reserved, &p64->reserved) ||
 	    get_user(length, &p64->length) ||
 	    put_user(length, &p32->length))
-=======
-	struct v4l2_plane __user *uplane;
-	compat_caddr_t p;
-	int ret;
-
-	if (!access_ok(VERIFY_WRITE, up, sizeof(*up)) ||
-	    assign_in_user(&up->index, &kp->index) ||
-	    get_user(type, &kp->type) ||
-	    put_user(type, &up->type) ||
-	    assign_in_user(&up->flags, &kp->flags) ||
-	    get_user(memory, &kp->memory) ||
-	    put_user(memory, &up->memory))
-		return -EFAULT;
-
-	if (assign_in_user(&up->bytesused, &kp->bytesused) ||
-	    assign_in_user(&up->field, &kp->field) ||
-	    assign_in_user(&up->timestamp.tv_sec, &kp->timestamp.tv_sec) ||
-	    assign_in_user(&up->timestamp.tv_usec, &kp->timestamp.tv_usec) ||
-	    copy_in_user(&up->timecode, &kp->timecode, sizeof(kp->timecode)) ||
-	    assign_in_user(&up->sequence, &kp->sequence) ||
-	    assign_in_user(&up->reserved2, &kp->reserved2) ||
-	    assign_in_user(&up->reserved, &kp->reserved) ||
-	    get_user(length, &kp->length) ||
-	    put_user(length, &up->length))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 
 	if (V4L2_TYPE_IS_MULTIPLANAR(type)) {
@@ -1092,7 +715,6 @@ static int put_v4l2_buffer32(struct v4l2_buffer __user *kp,
 
 		if (num_planes == 0)
 			return 0;
-<<<<<<< HEAD
 		/* We need to define uplane without __user, even though
 		 * it does point to data in userspace here. The reason is
 		 * that v4l2-ioctl.c copies it from userspace to kernelspace,
@@ -1104,22 +726,12 @@ static int put_v4l2_buffer32(struct v4l2_buffer __user *kp,
 		if (get_user(uplane, &p64->m.planes))
 			return -EFAULT;
 		if (get_user(p, &p32->m.planes))
-=======
-
-		if (get_user(uplane, ((__force struct v4l2_plane __user **)&kp->m.planes)))
-			return -EFAULT;
-		if (get_user(p, &up->m.planes))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EFAULT;
 		uplane32 = compat_ptr(p);
 
 		while (num_planes--) {
-<<<<<<< HEAD
 			ret = put_v4l2_plane32((void __user *)uplane,
 					       uplane32, memory);
-=======
-			ret = put_v4l2_plane32(uplane, uplane32, memory);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (ret)
 				return ret;
 			++uplane;
@@ -1129,7 +741,6 @@ static int put_v4l2_buffer32(struct v4l2_buffer __user *kp,
 		switch (memory) {
 		case V4L2_MEMORY_MMAP:
 		case V4L2_MEMORY_OVERLAY:
-<<<<<<< HEAD
 			if (assign_in_user(&p32->m.offset, &p64->m.offset))
 				return -EFAULT;
 			break;
@@ -1139,17 +750,6 @@ static int put_v4l2_buffer32(struct v4l2_buffer __user *kp,
 			break;
 		case V4L2_MEMORY_DMABUF:
 			if (assign_in_user(&p32->m.fd, &p64->m.fd))
-=======
-			if (assign_in_user(&up->m.offset, &kp->m.offset))
-				return -EFAULT;
-			break;
-		case V4L2_MEMORY_USERPTR:
-			if (assign_in_user(&up->m.userptr, &kp->m.userptr))
-				return -EFAULT;
-			break;
-		case V4L2_MEMORY_DMABUF:
-			if (assign_in_user(&up->m.fd, &kp->m.fd))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				return -EFAULT;
 			break;
 		}
@@ -1161,11 +761,7 @@ static int put_v4l2_buffer32(struct v4l2_buffer __user *kp,
 struct v4l2_framebuffer32 {
 	__u32			capability;
 	__u32			flags;
-<<<<<<< HEAD
 	compat_caddr_t		base;
-=======
-	compat_caddr_t 		base;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct {
 		__u32		width;
 		__u32		height;
@@ -1178,7 +774,6 @@ struct v4l2_framebuffer32 {
 	} fmt;
 };
 
-<<<<<<< HEAD
 static int get_v4l2_framebuffer32(struct v4l2_framebuffer __user *p64,
 				  struct v4l2_framebuffer32 __user *p32)
 {
@@ -1190,24 +785,10 @@ static int get_v4l2_framebuffer32(struct v4l2_framebuffer __user *p64,
 	    assign_in_user(&p64->capability, &p32->capability) ||
 	    assign_in_user(&p64->flags, &p32->flags) ||
 	    copy_in_user(&p64->fmt, &p32->fmt, sizeof(p64->fmt)))
-=======
-static int get_v4l2_framebuffer32(struct v4l2_framebuffer __user *kp,
-				  struct v4l2_framebuffer32 __user *up)
-{
-	compat_caddr_t tmp;
-
-	if (!access_ok(VERIFY_READ, up, sizeof(*up)) ||
-	    get_user(tmp, &up->base) ||
-	    put_user((__force void *)compat_ptr(tmp), &kp->base) ||
-	    assign_in_user(&kp->capability, &up->capability) ||
-	    assign_in_user(&kp->flags, &up->flags) ||
-	    copy_in_user(&kp->fmt, &up->fmt, sizeof(kp->fmt)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 	return 0;
 }
 
-<<<<<<< HEAD
 static int put_v4l2_framebuffer32(struct v4l2_framebuffer __user *p64,
 				  struct v4l2_framebuffer32 __user *p32)
 {
@@ -1219,19 +800,6 @@ static int put_v4l2_framebuffer32(struct v4l2_framebuffer __user *p64,
 	    assign_in_user(&p32->capability, &p64->capability) ||
 	    assign_in_user(&p32->flags, &p64->flags) ||
 	    copy_in_user(&p32->fmt, &p64->fmt, sizeof(p64->fmt)))
-=======
-static int put_v4l2_framebuffer32(struct v4l2_framebuffer __user *kp,
-				  struct v4l2_framebuffer32 __user *up)
-{
-	void *base;
-
-	if (!access_ok(VERIFY_WRITE, up, sizeof(*up)) ||
-	    get_user(base, &kp->base) ||
-	    put_user(ptr_to_compat(base), &up->base) ||
-	    assign_in_user(&up->capability, &kp->capability) ||
-	    assign_in_user(&up->flags, &kp->flags) ||
-	    copy_in_user(&up->fmt, &kp->fmt, sizeof(kp->fmt)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 	return 0;
 }
@@ -1252,32 +820,18 @@ struct v4l2_input32 {
  * The 64-bit v4l2_input struct has extra padding at the end of the struct.
  * Otherwise it is identical to the 32-bit version.
  */
-<<<<<<< HEAD
 static inline int get_v4l2_input32(struct v4l2_input __user *p64,
 				   struct v4l2_input32 __user *p32)
 {
 	if (copy_in_user(p64, p32, sizeof(*p32)))
-=======
-static inline int get_v4l2_input32(struct v4l2_input __user *kp,
-				   struct v4l2_input32 __user *up)
-{
-	if (copy_in_user(kp, up, sizeof(*up)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 	return 0;
 }
 
-<<<<<<< HEAD
 static inline int put_v4l2_input32(struct v4l2_input __user *p64,
 				   struct v4l2_input32 __user *p32)
 {
 	if (copy_in_user(p32, p64, sizeof(*p32)))
-=======
-static inline int put_v4l2_input32(struct v4l2_input __user *kp,
-				   struct v4l2_input32 __user *up)
-{
-	if (copy_in_user(up, kp, sizeof(*up)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 	return 0;
 }
@@ -1331,22 +885,13 @@ static inline bool ctrl_is_pointer(struct file *file, u32 id)
 		(qec.flags & V4L2_CTRL_FLAG_HAS_PAYLOAD);
 }
 
-<<<<<<< HEAD
 static int bufsize_v4l2_ext_controls(struct v4l2_ext_controls32 __user *p32,
-=======
-static int bufsize_v4l2_ext_controls(struct v4l2_ext_controls32 __user *up,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     u32 *size)
 {
 	u32 count;
 
-<<<<<<< HEAD
 	if (!access_ok(VERIFY_READ, p32, sizeof(*p32)) ||
 	    get_user(count, &p32->count))
-=======
-	if (!access_ok(VERIFY_READ, up, sizeof(*up)) ||
-	    get_user(count, &up->count))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 	if (count > V4L2_CID_MAX_CTRLS)
 		return -EINVAL;
@@ -1355,13 +900,8 @@ static int bufsize_v4l2_ext_controls(struct v4l2_ext_controls32 __user *up,
 }
 
 static int get_v4l2_ext_controls32(struct file *file,
-<<<<<<< HEAD
 				   struct v4l2_ext_controls __user *p64,
 				   struct v4l2_ext_controls32 __user *p32,
-=======
-				   struct v4l2_ext_controls __user *kp,
-				   struct v4l2_ext_controls32 __user *up,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   void __user *aux_buf, u32 aux_space)
 {
 	struct v4l2_ext_control32 __user *ucontrols;
@@ -1370,7 +910,6 @@ static int get_v4l2_ext_controls32(struct file *file,
 	u32 n;
 	compat_caddr_t p;
 
-<<<<<<< HEAD
 	if (!access_ok(VERIFY_READ, p32, sizeof(*p32)) ||
 	    assign_in_user(&p64->which, &p32->which) ||
 	    get_user(count, &p32->count) ||
@@ -1384,21 +923,6 @@ static int get_v4l2_ext_controls32(struct file *file,
 	if (count > V4L2_CID_MAX_CTRLS)
 		return -EINVAL;
 	if (get_user(p, &p32->controls))
-=======
-	if (!access_ok(VERIFY_READ, up, sizeof(*up)) ||
-	    assign_in_user(&kp->which, &up->which) ||
-	    get_user(count, &up->count) ||
-	    put_user(count, &kp->count) ||
-	    assign_in_user(&kp->error_idx, &up->error_idx) ||
-	    copy_in_user(kp->reserved, up->reserved, sizeof(kp->reserved)))
-		return -EFAULT;
-
-	if (count == 0)
-		return put_user(NULL, &kp->controls);
-	if (count > V4L2_CID_MAX_CTRLS)
-		return -EINVAL;
-	if (get_user(p, &up->controls))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 	ucontrols = compat_ptr(p);
 	if (!access_ok(VERIFY_READ, ucontrols, count * sizeof(*ucontrols)))
@@ -1406,12 +930,7 @@ static int get_v4l2_ext_controls32(struct file *file,
 	if (aux_space < count * sizeof(*kcontrols))
 		return -EFAULT;
 	kcontrols = aux_buf;
-<<<<<<< HEAD
 	if (put_user_force(kcontrols, &p64->controls))
-=======
-	if (put_user((__force struct v4l2_ext_control *)kcontrols,
-		     &kp->controls))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 
 	for (n = 0; n < count; n++) {
@@ -1439,24 +958,15 @@ static int get_v4l2_ext_controls32(struct file *file,
 }
 
 static int put_v4l2_ext_controls32(struct file *file,
-<<<<<<< HEAD
 				   struct v4l2_ext_controls __user *p64,
 				   struct v4l2_ext_controls32 __user *p32)
 {
 	struct v4l2_ext_control32 __user *ucontrols;
 	struct v4l2_ext_control *kcontrols;
-=======
-				   struct v4l2_ext_controls __user *kp,
-				   struct v4l2_ext_controls32 __user *up)
-{
-	struct v4l2_ext_control32 __user *ucontrols;
-	struct v4l2_ext_control __user *kcontrols;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 count;
 	u32 n;
 	compat_caddr_t p;
 
-<<<<<<< HEAD
 	/*
 	 * We need to define kcontrols without __user, even though it does
 	 * point to data in userspace here. The reason is that v4l2-ioctl.c
@@ -1472,24 +982,11 @@ static int put_v4l2_ext_controls32(struct file *file,
 	    assign_in_user(&p32->error_idx, &p64->error_idx) ||
 	    copy_in_user(p32->reserved, p64->reserved, sizeof(p32->reserved)) ||
 	    get_user(kcontrols, &p64->controls))
-=======
-	if (!access_ok(VERIFY_WRITE, up, sizeof(*up)) ||
-	    assign_in_user(&up->which, &kp->which) ||
-	    get_user(count, &kp->count) ||
-	    put_user(count, &up->count) ||
-	    assign_in_user(&up->error_idx, &kp->error_idx) ||
-	    copy_in_user(up->reserved, kp->reserved, sizeof(up->reserved)) ||
-	    get_user(kcontrols, &kp->controls))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 
 	if (!count || count > (U32_MAX/sizeof(*ucontrols)))
 		return 0;
-<<<<<<< HEAD
 	if (get_user(p, &p32->controls))
-=======
-	if (get_user(p, &up->controls))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 	ucontrols = compat_ptr(p);
 	if (!access_ok(VERIFY_WRITE, ucontrols, count * sizeof(*ucontrols)))
@@ -1499,18 +996,11 @@ static int put_v4l2_ext_controls32(struct file *file,
 		unsigned int size = sizeof(*ucontrols);
 		u32 id;
 
-<<<<<<< HEAD
 		if (get_user_cast(id, &kcontrols->id) ||
 		    put_user(id, &ucontrols->id) ||
 		    assign_in_user_cast(&ucontrols->size, &kcontrols->size) ||
 		    copy_in_user(&ucontrols->reserved2,
 				 (void __user *)&kcontrols->reserved2,
-=======
-		if (get_user(id, &kcontrols->id) ||
-		    put_user(id, &ucontrols->id) ||
-		    assign_in_user(&ucontrols->size, &kcontrols->size) ||
-		    copy_in_user(&ucontrols->reserved2, &kcontrols->reserved2,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 sizeof(ucontrols->reserved2)))
 			return -EFAULT;
 
@@ -1522,12 +1012,8 @@ static int put_v4l2_ext_controls32(struct file *file,
 		if (ctrl_is_pointer(file, id))
 			size -= sizeof(ucontrols->value64);
 
-<<<<<<< HEAD
 		if (copy_in_user(ucontrols,
 				 (void __user *)kcontrols, size))
-=======
-		if (copy_in_user(ucontrols, kcontrols, size))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EFAULT;
 
 		ucontrols++;
@@ -1549,7 +1035,6 @@ struct v4l2_event32 {
 	__u32				reserved[8];
 };
 
-<<<<<<< HEAD
 static int put_v4l2_event32(struct v4l2_event __user *p64,
 			    struct v4l2_event32 __user *p32)
 {
@@ -1562,20 +1047,6 @@ static int put_v4l2_event32(struct v4l2_event __user *p64,
 	    assign_in_user(&p32->timestamp.tv_nsec, &p64->timestamp.tv_nsec) ||
 	    assign_in_user(&p32->id, &p64->id) ||
 	    copy_in_user(p32->reserved, p64->reserved, sizeof(p32->reserved)))
-=======
-static int put_v4l2_event32(struct v4l2_event __user *kp,
-			    struct v4l2_event32 __user *up)
-{
-	if (!access_ok(VERIFY_WRITE, up, sizeof(*up)) ||
-	    assign_in_user(&up->type, &kp->type) ||
-	    copy_in_user(&up->u, &kp->u, sizeof(kp->u)) ||
-	    assign_in_user(&up->pending, &kp->pending) ||
-	    assign_in_user(&up->sequence, &kp->sequence) ||
-	    assign_in_user(&up->timestamp.tv_sec, &kp->timestamp.tv_sec) ||
-	    assign_in_user(&up->timestamp.tv_nsec, &kp->timestamp.tv_nsec) ||
-	    assign_in_user(&up->id, &kp->id) ||
-	    copy_in_user(up->reserved, kp->reserved, sizeof(up->reserved)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 	return 0;
 }
@@ -1588,7 +1059,6 @@ struct v4l2_edid32 {
 	compat_caddr_t edid;
 };
 
-<<<<<<< HEAD
 static int get_v4l2_edid32(struct v4l2_edid __user *p64,
 			   struct v4l2_edid32 __user *p32)
 {
@@ -1601,25 +1071,10 @@ static int get_v4l2_edid32(struct v4l2_edid __user *p64,
 	    get_user(tmp, &p32->edid) ||
 	    put_user_force(compat_ptr(tmp), &p64->edid) ||
 	    copy_in_user(p64->reserved, p32->reserved, sizeof(p64->reserved)))
-=======
-static int get_v4l2_edid32(struct v4l2_edid __user *kp,
-			   struct v4l2_edid32 __user *up)
-{
-	compat_uptr_t tmp;
-
-	if (!access_ok(VERIFY_READ, up, sizeof(*up)) ||
-	    assign_in_user(&kp->pad, &up->pad) ||
-	    assign_in_user(&kp->start_block, &up->start_block) ||
-	    assign_in_user(&kp->blocks, &up->blocks) ||
-	    get_user(tmp, &up->edid) ||
-	    put_user(compat_ptr(tmp), &kp->edid) ||
-	    copy_in_user(kp->reserved, up->reserved, sizeof(kp->reserved)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 	return 0;
 }
 
-<<<<<<< HEAD
 static int put_v4l2_edid32(struct v4l2_edid __user *p64,
 			   struct v4l2_edid32 __user *p32)
 {
@@ -1632,25 +1087,10 @@ static int put_v4l2_edid32(struct v4l2_edid __user *p64,
 	    get_user(edid, &p64->edid) ||
 	    put_user(ptr_to_compat((void __user *)edid), &p32->edid) ||
 	    copy_in_user(p32->reserved, p64->reserved, sizeof(p32->reserved)))
-=======
-static int put_v4l2_edid32(struct v4l2_edid __user *kp,
-			   struct v4l2_edid32 __user *up)
-{
-	void *edid;
-
-	if (!access_ok(VERIFY_WRITE, up, sizeof(*up)) ||
-	    assign_in_user(&up->pad, &kp->pad) ||
-	    assign_in_user(&up->start_block, &kp->start_block) ||
-	    assign_in_user(&up->blocks, &kp->blocks) ||
-	    get_user(edid, &kp->edid) ||
-	    put_user(ptr_to_compat(edid), &up->edid) ||
-	    copy_in_user(up->reserved, kp->reserved, sizeof(up->reserved)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 	return 0;
 }
 
-<<<<<<< HEAD
 /*
  * List of ioctls that require 32-bits/64-bits conversion
  *
@@ -1658,8 +1098,6 @@ static int put_v4l2_edid32(struct v4l2_edid __user *kp,
  * and the struct size is identical for both 32 and 64 bits versions, so
  * they don't need translations.
  */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define VIDIOC_G_FMT32		_IOWR('V',  4, struct v4l2_format32)
 #define VIDIOC_S_FMT32		_IOWR('V',  5, struct v4l2_format32)
@@ -1672,11 +1110,7 @@ static int put_v4l2_edid32(struct v4l2_edid __user *kp,
 #define VIDIOC_ENUMINPUT32	_IOWR('V', 26, struct v4l2_input32)
 #define VIDIOC_G_EDID32		_IOWR('V', 40, struct v4l2_edid32)
 #define VIDIOC_S_EDID32		_IOWR('V', 41, struct v4l2_edid32)
-<<<<<<< HEAD
 #define VIDIOC_TRY_FMT32	_IOWR('V', 64, struct v4l2_format32)
-=======
-#define VIDIOC_TRY_FMT32      	_IOWR('V', 64, struct v4l2_format32)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define VIDIOC_G_EXT_CTRLS32    _IOWR('V', 71, struct v4l2_ext_controls32)
 #define VIDIOC_S_EXT_CTRLS32    _IOWR('V', 72, struct v4l2_ext_controls32)
 #define VIDIOC_TRY_EXT_CTRLS32  _IOWR('V', 73, struct v4l2_ext_controls32)
@@ -1692,7 +1126,6 @@ static int put_v4l2_edid32(struct v4l2_edid __user *kp,
 #define VIDIOC_G_OUTPUT32	_IOR ('V', 46, s32)
 #define VIDIOC_S_OUTPUT32	_IOWR('V', 47, s32)
 
-<<<<<<< HEAD
 /**
  * alloc_userspace() - Allocates a 64-bits userspace pointer compatible
  *	for calling the native 64-bits version of an ioctl.
@@ -1715,20 +1148,10 @@ static int alloc_userspace(unsigned int size, u32 aux_space,
 	if (!*new_p64)
 		return -ENOMEM;
 	if (clear_user(*new_p64, size))
-=======
-static int alloc_userspace(unsigned int size, u32 aux_space,
-			   void __user **up_native)
-{
-	*up_native = compat_alloc_user_space(size + aux_space);
-	if (!*up_native)
-		return -ENOMEM;
-	if (clear_user(*up_native, size))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 	return 0;
 }
 
-<<<<<<< HEAD
 /**
  * do_video_ioctl() - Ancillary function with handles a compat32 ioctl call
  *
@@ -1750,24 +1173,14 @@ static long do_video_ioctl(struct file *file, unsigned int cmd, unsigned long ar
 {
 	void __user *p32 = compat_ptr(arg);
 	void __user *new_p64 = NULL;
-=======
-static long do_video_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
-{
-	void __user *up = compat_ptr(arg);
-	void __user *up_native = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void __user *aux_buf;
 	u32 aux_space;
 	int compatible_arg = 1;
 	long err = 0;
 
-<<<<<<< HEAD
 	/*
 	 * 1. When struct size is different, converts the command.
 	 */
-=======
-	/* First, convert the command. */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (cmd) {
 	case VIDIOC_G_FMT32: cmd = VIDIOC_G_FMT; break;
 	case VIDIOC_S_FMT32: cmd = VIDIOC_S_FMT; break;
@@ -1796,61 +1209,41 @@ static long do_video_ioctl(struct file *file, unsigned int cmd, unsigned long ar
 	case VIDIOC_S_EDID32: cmd = VIDIOC_S_EDID; break;
 	}
 
-<<<<<<< HEAD
 	/*
 	 * 2. Allocates a 64-bits userspace pointer to store the
 	 * values of the ioctl and copy data from the 32-bits __user
 	 * argument into it.
 	 */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (cmd) {
 	case VIDIOC_OVERLAY:
 	case VIDIOC_STREAMON:
 	case VIDIOC_STREAMOFF:
 	case VIDIOC_S_INPUT:
 	case VIDIOC_S_OUTPUT:
-<<<<<<< HEAD
 		err = alloc_userspace(sizeof(unsigned int), 0, &new_p64);
 		if (!err && assign_in_user((unsigned int __user *)new_p64,
 					   (compat_uint_t __user *)p32))
-=======
-		err = alloc_userspace(sizeof(unsigned int), 0, &up_native);
-		if (!err && assign_in_user((unsigned int __user *)up_native,
-					   (compat_uint_t __user *)up))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			err = -EFAULT;
 		compatible_arg = 0;
 		break;
 
 	case VIDIOC_G_INPUT:
 	case VIDIOC_G_OUTPUT:
-<<<<<<< HEAD
 		err = alloc_userspace(sizeof(unsigned int), 0, &new_p64);
-=======
-		err = alloc_userspace(sizeof(unsigned int), 0, &up_native);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible_arg = 0;
 		break;
 
 	case VIDIOC_G_EDID:
 	case VIDIOC_S_EDID:
-<<<<<<< HEAD
 		err = alloc_userspace(sizeof(struct v4l2_edid), 0, &new_p64);
 		if (!err)
 			err = get_v4l2_edid32(new_p64, p32);
-=======
-		err = alloc_userspace(sizeof(struct v4l2_edid), 0, &up_native);
-		if (!err)
-			err = get_v4l2_edid32(up_native, up);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible_arg = 0;
 		break;
 
 	case VIDIOC_G_FMT:
 	case VIDIOC_S_FMT:
 	case VIDIOC_TRY_FMT:
-<<<<<<< HEAD
 		err = bufsize_v4l2_format(p32, &aux_space);
 		if (!err)
 			err = alloc_userspace(sizeof(struct v4l2_format),
@@ -1858,22 +1251,12 @@ static long do_video_ioctl(struct file *file, unsigned int cmd, unsigned long ar
 		if (!err) {
 			aux_buf = new_p64 + sizeof(struct v4l2_format);
 			err = get_v4l2_format32(new_p64, p32,
-=======
-		err = bufsize_v4l2_format(up, &aux_space);
-		if (!err)
-			err = alloc_userspace(sizeof(struct v4l2_format),
-					      aux_space, &up_native);
-		if (!err) {
-			aux_buf = up_native + sizeof(struct v4l2_format);
-			err = get_v4l2_format32(up_native, up,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						aux_buf, aux_space);
 		}
 		compatible_arg = 0;
 		break;
 
 	case VIDIOC_CREATE_BUFS:
-<<<<<<< HEAD
 		err = bufsize_v4l2_create(p32, &aux_space);
 		if (!err)
 			err = alloc_userspace(sizeof(struct v4l2_create_buffers),
@@ -1881,15 +1264,6 @@ static long do_video_ioctl(struct file *file, unsigned int cmd, unsigned long ar
 		if (!err) {
 			aux_buf = new_p64 + sizeof(struct v4l2_create_buffers);
 			err = get_v4l2_create32(new_p64, p32,
-=======
-		err = bufsize_v4l2_create(up, &aux_space);
-		if (!err)
-			err = alloc_userspace(sizeof(struct v4l2_create_buffers),
-					      aux_space, &up_native);
-		if (!err) {
-			aux_buf = up_native + sizeof(struct v4l2_create_buffers);
-			err = get_v4l2_create32(up_native, up,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						aux_buf, aux_space);
 		}
 		compatible_arg = 0;
@@ -1899,7 +1273,6 @@ static long do_video_ioctl(struct file *file, unsigned int cmd, unsigned long ar
 	case VIDIOC_QUERYBUF:
 	case VIDIOC_QBUF:
 	case VIDIOC_DQBUF:
-<<<<<<< HEAD
 		err = bufsize_v4l2_buffer(p32, &aux_space);
 		if (!err)
 			err = alloc_userspace(sizeof(struct v4l2_buffer),
@@ -1907,15 +1280,6 @@ static long do_video_ioctl(struct file *file, unsigned int cmd, unsigned long ar
 		if (!err) {
 			aux_buf = new_p64 + sizeof(struct v4l2_buffer);
 			err = get_v4l2_buffer32(new_p64, p32,
-=======
-		err = bufsize_v4l2_buffer(up, &aux_space);
-		if (!err)
-			err = alloc_userspace(sizeof(struct v4l2_buffer),
-					      aux_space, &up_native);
-		if (!err) {
-			aux_buf = up_native + sizeof(struct v4l2_buffer);
-			err = get_v4l2_buffer32(up_native, up,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						aux_buf, aux_space);
 		}
 		compatible_arg = 0;
@@ -1923,59 +1287,36 @@ static long do_video_ioctl(struct file *file, unsigned int cmd, unsigned long ar
 
 	case VIDIOC_S_FBUF:
 		err = alloc_userspace(sizeof(struct v4l2_framebuffer), 0,
-<<<<<<< HEAD
 				      &new_p64);
 		if (!err)
 			err = get_v4l2_framebuffer32(new_p64, p32);
-=======
-				      &up_native);
-		if (!err)
-			err = get_v4l2_framebuffer32(up_native, up);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible_arg = 0;
 		break;
 
 	case VIDIOC_G_FBUF:
 		err = alloc_userspace(sizeof(struct v4l2_framebuffer), 0,
-<<<<<<< HEAD
 				      &new_p64);
-=======
-				      &up_native);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible_arg = 0;
 		break;
 
 	case VIDIOC_ENUMSTD:
 		err = alloc_userspace(sizeof(struct v4l2_standard), 0,
-<<<<<<< HEAD
 				      &new_p64);
 		if (!err)
 			err = get_v4l2_standard32(new_p64, p32);
-=======
-				      &up_native);
-		if (!err)
-			err = get_v4l2_standard32(up_native, up);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible_arg = 0;
 		break;
 
 	case VIDIOC_ENUMINPUT:
-<<<<<<< HEAD
 		err = alloc_userspace(sizeof(struct v4l2_input), 0, &new_p64);
 		if (!err)
 			err = get_v4l2_input32(new_p64, p32);
-=======
-		err = alloc_userspace(sizeof(struct v4l2_input), 0, &up_native);
-		if (!err)
-			err = get_v4l2_input32(up_native, up);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible_arg = 0;
 		break;
 
 	case VIDIOC_G_EXT_CTRLS:
 	case VIDIOC_S_EXT_CTRLS:
 	case VIDIOC_TRY_EXT_CTRLS:
-<<<<<<< HEAD
 		err = bufsize_v4l2_ext_controls(p32, &aux_space);
 		if (!err)
 			err = alloc_userspace(sizeof(struct v4l2_ext_controls),
@@ -1983,32 +1324,18 @@ static long do_video_ioctl(struct file *file, unsigned int cmd, unsigned long ar
 		if (!err) {
 			aux_buf = new_p64 + sizeof(struct v4l2_ext_controls);
 			err = get_v4l2_ext_controls32(file, new_p64, p32,
-=======
-		err = bufsize_v4l2_ext_controls(up, &aux_space);
-		if (!err)
-			err = alloc_userspace(sizeof(struct v4l2_ext_controls),
-					      aux_space, &up_native);
-		if (!err) {
-			aux_buf = up_native + sizeof(struct v4l2_ext_controls);
-			err = get_v4l2_ext_controls32(file, up_native, up,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						      aux_buf, aux_space);
 		}
 		compatible_arg = 0;
 		break;
 	case VIDIOC_DQEVENT:
-<<<<<<< HEAD
 		err = alloc_userspace(sizeof(struct v4l2_event), 0, &new_p64);
-=======
-		err = alloc_userspace(sizeof(struct v4l2_event), 0, &up_native);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible_arg = 0;
 		break;
 	}
 	if (err)
 		return err;
 
-<<<<<<< HEAD
 	/*
 	 * 3. Calls the native 64-bits ioctl handler.
 	 *
@@ -2022,18 +1349,11 @@ static long do_video_ioctl(struct file *file, unsigned int cmd, unsigned long ar
 		err = native_ioctl(file, cmd, (unsigned long)p32);
 	else
 		err = native_ioctl(file, cmd, (unsigned long)new_p64);
-=======
-	if (compatible_arg)
-		err = native_ioctl(file, cmd, (unsigned long)up);
-	else
-		err = native_ioctl(file, cmd, (unsigned long)up_native);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (err == -ENOTTY)
 		return err;
 
 	/*
-<<<<<<< HEAD
 	 * 4. Special case: even after an error we need to put the
 	 * results back for some ioctls.
 	 *
@@ -2042,59 +1362,37 @@ static long do_video_ioctl(struct file *file, unsigned int cmd, unsigned long ar
 	 *
 	 * In the case of S_EDID, the driver can return E2BIG and set
 	 * the blocks to maximum allowed value.
-=======
-	 * Special case: even after an error we need to put the
-	 * results back for these ioctls since the error_idx will
-	 * contain information on which control failed.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	switch (cmd) {
 	case VIDIOC_G_EXT_CTRLS:
 	case VIDIOC_S_EXT_CTRLS:
 	case VIDIOC_TRY_EXT_CTRLS:
-<<<<<<< HEAD
 		if (put_v4l2_ext_controls32(file, new_p64, p32))
 			err = -EFAULT;
 		break;
 	case VIDIOC_S_EDID:
 		if (put_v4l2_edid32(new_p64, p32))
-=======
-		if (put_v4l2_ext_controls32(file, up_native, up))
-			err = -EFAULT;
-		break;
-	case VIDIOC_S_EDID:
-		if (put_v4l2_edid32(up_native, up))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			err = -EFAULT;
 		break;
 	}
 	if (err)
 		return err;
 
-<<<<<<< HEAD
 	/*
 	 * 5. Copy the data returned at the 64 bits userspace pointer to
 	 * the original 32 bits structure.
 	 */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (cmd) {
 	case VIDIOC_S_INPUT:
 	case VIDIOC_S_OUTPUT:
 	case VIDIOC_G_INPUT:
 	case VIDIOC_G_OUTPUT:
-<<<<<<< HEAD
 		if (assign_in_user((compat_uint_t __user *)p32,
 				   ((unsigned int __user *)new_p64)))
-=======
-		if (assign_in_user((compat_uint_t __user *)up,
-				   ((unsigned int __user *)up_native)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			err = -EFAULT;
 		break;
 
 	case VIDIOC_G_FBUF:
-<<<<<<< HEAD
 		err = put_v4l2_framebuffer32(new_p64, p32);
 		break;
 
@@ -2104,42 +1402,22 @@ static long do_video_ioctl(struct file *file, unsigned int cmd, unsigned long ar
 
 	case VIDIOC_G_EDID:
 		err = put_v4l2_edid32(new_p64, p32);
-=======
-		err = put_v4l2_framebuffer32(up_native, up);
-		break;
-
-	case VIDIOC_DQEVENT:
-		err = put_v4l2_event32(up_native, up);
-		break;
-
-	case VIDIOC_G_EDID:
-		err = put_v4l2_edid32(up_native, up);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case VIDIOC_G_FMT:
 	case VIDIOC_S_FMT:
 	case VIDIOC_TRY_FMT:
-<<<<<<< HEAD
 		err = put_v4l2_format32(new_p64, p32);
 		break;
 
 	case VIDIOC_CREATE_BUFS:
 		err = put_v4l2_create32(new_p64, p32);
-=======
-		err = put_v4l2_format32(up_native, up);
-		break;
-
-	case VIDIOC_CREATE_BUFS:
-		err = put_v4l2_create32(up_native, up);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case VIDIOC_PREPARE_BUF:
 	case VIDIOC_QUERYBUF:
 	case VIDIOC_QBUF:
 	case VIDIOC_DQBUF:
-<<<<<<< HEAD
 		err = put_v4l2_buffer32(new_p64, p32);
 		break;
 
@@ -2149,23 +1427,11 @@ static long do_video_ioctl(struct file *file, unsigned int cmd, unsigned long ar
 
 	case VIDIOC_ENUMINPUT:
 		err = put_v4l2_input32(new_p64, p32);
-=======
-		err = put_v4l2_buffer32(up_native, up);
-		break;
-
-	case VIDIOC_ENUMSTD:
-		err = put_v4l2_standard32(up_native, up);
-		break;
-
-	case VIDIOC_ENUMINPUT:
-		err = put_v4l2_input32(up_native, up);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 	return err;
 }
 
-<<<<<<< HEAD
 /**
  * v4l2_compat_ioctl32() - Handles a compat32 ioctl call
  *
@@ -2180,8 +1446,6 @@ static long do_video_ioctl(struct file *file, unsigned int cmd, unsigned long ar
  * If the function is a private one it calls vdev->fops->compat_ioctl32
  * instead.
  */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 long v4l2_compat_ioctl32(struct file *file, unsigned int cmd, unsigned long arg)
 {
 	struct video_device *vdev = video_devdata(file);
@@ -2190,12 +1454,7 @@ long v4l2_compat_ioctl32(struct file *file, unsigned int cmd, unsigned long arg)
 	if (!file->f_op->unlocked_ioctl)
 		return ret;
 
-<<<<<<< HEAD
 	if (_IOC_TYPE(cmd) == 'V' && _IOC_NR(cmd) < BASE_VIDIOC_PRIVATE)
-=======
-	if (((_IOC_TYPE(cmd) == 'V') || (_IOC_TYPE(cmd) == 'U')) &&
-					_IOC_NR(cmd) < BASE_VIDIOC_PRIVATE)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = do_video_ioctl(file, cmd, arg);
 	else if (vdev->fops->compat_ioctl32)
 		ret = vdev->fops->compat_ioctl32(file, cmd, arg);

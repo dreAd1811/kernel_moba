@@ -18,10 +18,7 @@
 #include <linux/slab.h>
 #include <linux/idr.h>
 #include <linux/sched/mm.h>
-<<<<<<< HEAD
 #include <linux/mmu_context.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/cputable.h>
 #include <asm/current.h>
 #include <asm/copro.h>
@@ -48,11 +45,8 @@ int cxl_context_init(struct cxl_context *ctx, struct cxl_afu *afu, bool master)
 	ctx->pid = NULL; /* Set in start work ioctl */
 	mutex_init(&ctx->mapping_lock);
 	ctx->mapping = NULL;
-<<<<<<< HEAD
 	ctx->tidr = 0;
 	ctx->assign_tidr = false;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (cxl_is_power8()) {
 		spin_lock_init(&ctx->sste_lock);
@@ -80,10 +74,6 @@ int cxl_context_init(struct cxl_context *ctx, struct cxl_afu *afu, bool master)
 	ctx->pending_afu_err = false;
 
 	INIT_LIST_HEAD(&ctx->irq_names);
-<<<<<<< HEAD
-=======
-	INIT_LIST_HEAD(&ctx->extra_irq_contexts);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * When we have to destroy all contexts in cxl_context_detach_all() we
@@ -105,11 +95,7 @@ int cxl_context_init(struct cxl_context *ctx, struct cxl_afu *afu, bool master)
 	 */
 	mutex_lock(&afu->contexts_lock);
 	idr_preload(GFP_KERNEL);
-<<<<<<< HEAD
 	i = idr_alloc(&ctx->afu->contexts_idr, ctx, 0,
-=======
-	i = idr_alloc(&ctx->afu->contexts_idr, ctx, ctx->afu->adapter->min_pe,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		      ctx->afu->num_procs, GFP_NOWAIT);
 	idr_preload_end();
 	mutex_unlock(&afu->contexts_lock);
@@ -141,19 +127,12 @@ void cxl_context_set_mapping(struct cxl_context *ctx,
 	mutex_unlock(&ctx->mapping_lock);
 }
 
-<<<<<<< HEAD
 static vm_fault_t cxl_mmap_fault(struct vm_fault *vmf)
-=======
-static int cxl_mmap_fault(struct vm_fault *vmf)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct vm_area_struct *vma = vmf->vma;
 	struct cxl_context *ctx = vma->vm_file->private_data;
 	u64 area, offset;
-<<<<<<< HEAD
 	vm_fault_t ret;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	offset = vmf->pgoff << PAGE_SHIFT;
 
@@ -190,19 +169,11 @@ static int cxl_mmap_fault(struct vm_fault *vmf)
 		return VM_FAULT_SIGBUS;
 	}
 
-<<<<<<< HEAD
 	ret = vmf_insert_pfn(vma, vmf->address, (area + offset) >> PAGE_SHIFT);
 
 	mutex_unlock(&ctx->status_mutex);
 
 	return ret;
-=======
-	vm_insert_pfn(vma, vmf->address, (area + offset) >> PAGE_SHIFT);
-
-	mutex_unlock(&ctx->status_mutex);
-
-	return VM_FAULT_NOPAGE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct vm_operations_struct cxl_mmap_vmops = {
@@ -299,11 +270,8 @@ int __detach_context(struct cxl_context *ctx)
 
 	/* Decrease the mm count on the context */
 	cxl_context_mm_count_put(ctx);
-<<<<<<< HEAD
 	if (ctx->mm)
 		mm_context_remove_copro(ctx->mm);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ctx->mm = NULL;
 
 	return 0;

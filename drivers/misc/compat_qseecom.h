@@ -1,10 +1,7 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0-only */
 /*
  * Copyright (c) 2017, 2019, The Linux Foundation. All rights reserved.
  */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifndef _UAPI_COMPAT_QSEECOM_H_
 #define _UAPI_COMPAT_QSEECOM_H_
 
@@ -117,13 +114,6 @@ struct compat_qseecom_qseos_version_req {
 	compat_uint_t qseos_version; /* in */
 };
 
-<<<<<<< HEAD
-=======
-struct compat_qseecom_ice_data_t {
-	compat_int_t flag; /* in */
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * struct compat_qseecom_qseos_app_load_query - verify if app is loaded in qsee
  * @app_name[MAX_APP_NAME_SIZE]-  name of the app.
@@ -343,11 +333,5 @@ extern long compat_qseecom_ioctl(struct file *file,
 	_IOWR(QSEECOM_IOC_MAGIC, 42, \
 				struct compat_qseecom_ce_info_req)
 
-<<<<<<< HEAD
-=======
-#define COMPAT_QSEECOM_IOCTL_SET_ICE_INFO \
-	 _IOWR(QSEECOM_IOC_MAGIC, 43, struct qseecom_ice_data_t)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 #endif /* _UAPI_COMPAT_QSEECOM_H_ */

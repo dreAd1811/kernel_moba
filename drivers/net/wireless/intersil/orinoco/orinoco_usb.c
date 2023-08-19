@@ -319,15 +319,9 @@ static inline void ezusb_mod_timer(struct ezusb_priv *upriv,
 	mod_timer(timer, expire);
 }
 
-<<<<<<< HEAD
 static void ezusb_request_timerfn(struct timer_list *t)
 {
 	struct request_context *ctx = from_timer(ctx, t, timer);
-=======
-static void ezusb_request_timerfn(u_long _ctx)
-{
-	struct request_context *ctx = (void *) _ctx;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ctx->outurb->transfer_flags |= URB_ASYNC_UNLINK;
 	if (usb_unlink_urb(ctx->outurb) == -EINPROGRESS) {
@@ -371,11 +365,7 @@ static struct request_context *ezusb_alloc_ctx(struct ezusb_priv *upriv,
 	refcount_set(&ctx->refcount, 1);
 	init_completion(&ctx->done);
 
-<<<<<<< HEAD
 	timer_setup(&ctx->timer, ezusb_request_timerfn, 0);
-=======
-	setup_timer(&ctx->timer, ezusb_request_timerfn, (u_long)ctx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ctx;
 }
 
@@ -1374,12 +1364,7 @@ static int ezusb_init(struct hermes *hw)
 	int retval;
 
 	BUG_ON(in_interrupt());
-<<<<<<< HEAD
 	BUG_ON(!upriv);
-=======
-	if (!upriv)
-		return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	upriv->reply_count = 0;
 	/* Write the MAGIC number on the simulated registers to keep
@@ -1472,10 +1457,6 @@ static void ezusb_bulk_in_callback(struct urb *urb)
 
 static inline void ezusb_delete(struct ezusb_priv *upriv)
 {
-<<<<<<< HEAD
-=======
-	struct net_device *dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct list_head *item;
 	struct list_head *tmp_item;
 	unsigned long flags;
@@ -1483,10 +1464,6 @@ static inline void ezusb_delete(struct ezusb_priv *upriv)
 	BUG_ON(in_interrupt());
 	BUG_ON(!upriv);
 
-<<<<<<< HEAD
-=======
-	dev = upriv->dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&upriv->mtx);
 
 	upriv->udev = NULL;	/* No timer will be rearmed from here */
@@ -1634,15 +1611,9 @@ static int ezusb_probe(struct usb_interface *interface,
 	/* set up the endpoint information */
 	/* check out the endpoints */
 
-<<<<<<< HEAD
 	iface_desc = &interface->altsetting[0].desc;
 	for (i = 0; i < iface_desc->bNumEndpoints; ++i) {
 		ep = &interface->altsetting[0].endpoint[i].desc;
-=======
-	iface_desc = &interface->cur_altsetting->desc;
-	for (i = 0; i < iface_desc->bNumEndpoints; ++i) {
-		ep = &interface->cur_altsetting->endpoint[i].desc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (usb_endpoint_is_bulk_in(ep)) {
 			/* we found a bulk in endpoint */

@@ -266,11 +266,7 @@ static const struct of_device_id of_nfcmrvl_i2c_match[] = {
 };
 MODULE_DEVICE_TABLE(of, of_nfcmrvl_i2c_match);
 
-<<<<<<< HEAD
 static const struct i2c_device_id nfcmrvl_i2c_id_table[] = {
-=======
-static struct i2c_device_id nfcmrvl_i2c_id_table[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ "nfcmrvl_i2c", 0 },
 	{}
 };

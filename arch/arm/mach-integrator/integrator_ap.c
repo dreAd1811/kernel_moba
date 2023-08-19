@@ -36,10 +36,6 @@
 #include "hardware.h"
 #include "cm.h"
 #include "common.h"
-<<<<<<< HEAD
-=======
-#include "pci_v3.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "lm.h"
 
 /* Regmap to the AP system controller */
@@ -77,10 +73,6 @@ static struct map_desc ap_io_desc[] __initdata __maybe_unused = {
 static void __init ap_map_io(void)
 {
 	iotable_init(ap_io_desc, ARRAY_SIZE(ap_io_desc));
-<<<<<<< HEAD
-=======
-	pci_v3_early_init();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #ifdef CONFIG_PM

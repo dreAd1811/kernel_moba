@@ -35,7 +35,6 @@
 
 #include <uapi/linux/pcitest.h>
 
-<<<<<<< HEAD
 #define DRV_MODULE_NAME				"pci-endpoint-test"
 
 #define IRQ_TYPE_UNDEFINED			-1
@@ -65,48 +64,16 @@
 #define STATUS_DST_ADDR_INVALID			BIT(8)
 
 #define PCI_ENDPOINT_TEST_LOWER_SRC_ADDR	0x0c
-=======
-#define DRV_MODULE_NAME			"pci-endpoint-test"
-
-#define PCI_ENDPOINT_TEST_MAGIC		0x0
-
-#define PCI_ENDPOINT_TEST_COMMAND	0x4
-#define COMMAND_RAISE_LEGACY_IRQ	BIT(0)
-#define COMMAND_RAISE_MSI_IRQ		BIT(1)
-#define MSI_NUMBER_SHIFT		2
-/* 6 bits for MSI number */
-#define COMMAND_READ                    BIT(8)
-#define COMMAND_WRITE                   BIT(9)
-#define COMMAND_COPY                    BIT(10)
-
-#define PCI_ENDPOINT_TEST_STATUS	0x8
-#define STATUS_READ_SUCCESS             BIT(0)
-#define STATUS_READ_FAIL                BIT(1)
-#define STATUS_WRITE_SUCCESS            BIT(2)
-#define STATUS_WRITE_FAIL               BIT(3)
-#define STATUS_COPY_SUCCESS             BIT(4)
-#define STATUS_COPY_FAIL                BIT(5)
-#define STATUS_IRQ_RAISED               BIT(6)
-#define STATUS_SRC_ADDR_INVALID         BIT(7)
-#define STATUS_DST_ADDR_INVALID         BIT(8)
-
-#define PCI_ENDPOINT_TEST_LOWER_SRC_ADDR	0xc
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define PCI_ENDPOINT_TEST_UPPER_SRC_ADDR	0x10
 
 #define PCI_ENDPOINT_TEST_LOWER_DST_ADDR	0x14
 #define PCI_ENDPOINT_TEST_UPPER_DST_ADDR	0x18
 
-<<<<<<< HEAD
 #define PCI_ENDPOINT_TEST_SIZE			0x1c
 #define PCI_ENDPOINT_TEST_CHECKSUM		0x20
 
 #define PCI_ENDPOINT_TEST_IRQ_TYPE		0x24
 #define PCI_ENDPOINT_TEST_IRQ_NUMBER		0x28
-=======
-#define PCI_ENDPOINT_TEST_SIZE		0x1c
-#define PCI_ENDPOINT_TEST_CHECKSUM	0x20
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static DEFINE_IDA(pci_endpoint_test_ida);
 
@@ -117,13 +84,10 @@ static bool no_msi;
 module_param(no_msi, bool, 0444);
 MODULE_PARM_DESC(no_msi, "Disable MSI interrupt in pci_endpoint_test");
 
-<<<<<<< HEAD
 static int irq_type = IRQ_TYPE_MSI;
 module_param(irq_type, int, 0444);
 MODULE_PARM_DESC(irq_type, "IRQ mode selection in pci_endpoint_test (0 - Legacy, 1 - MSI, 2 - MSI-X)");
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum pci_barno {
 	BAR_0,
 	BAR_1,
@@ -150,11 +114,7 @@ struct pci_endpoint_test {
 struct pci_endpoint_test_data {
 	enum pci_barno test_reg_bar;
 	size_t alignment;
-<<<<<<< HEAD
 	int irq_type;
-=======
-	bool no_msi;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static inline u32 pci_endpoint_test_readl(struct pci_endpoint_test *test,
@@ -198,7 +158,6 @@ static irqreturn_t pci_endpoint_test_irqhandler(int irq, void *dev_id)
 	return IRQ_HANDLED;
 }
 
-<<<<<<< HEAD
 static void pci_endpoint_test_free_irq_vectors(struct pci_endpoint_test *test)
 {
 	struct pci_dev *pdev = test->pdev;
@@ -293,8 +252,6 @@ fail:
 	return false;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool pci_endpoint_test_bar(struct pci_endpoint_test *test,
 				  enum pci_barno barno)
 {
@@ -327,12 +284,9 @@ static bool pci_endpoint_test_legacy_irq(struct pci_endpoint_test *test)
 {
 	u32 val;
 
-<<<<<<< HEAD
 	pci_endpoint_test_writel(test, PCI_ENDPOINT_TEST_IRQ_TYPE,
 				 IRQ_TYPE_LEGACY);
 	pci_endpoint_test_writel(test, PCI_ENDPOINT_TEST_IRQ_NUMBER, 0);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pci_endpoint_test_writel(test, PCI_ENDPOINT_TEST_COMMAND,
 				 COMMAND_RAISE_LEGACY_IRQ);
 	val = wait_for_completion_timeout(&test->irq_raised,
@@ -344,16 +298,11 @@ static bool pci_endpoint_test_legacy_irq(struct pci_endpoint_test *test)
 }
 
 static bool pci_endpoint_test_msi_irq(struct pci_endpoint_test *test,
-<<<<<<< HEAD
 				       u16 msi_num, bool msix)
-=======
-				      u8 msi_num)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 val;
 	struct pci_dev *pdev = test->pdev;
 
-<<<<<<< HEAD
 	pci_endpoint_test_writel(test, PCI_ENDPOINT_TEST_IRQ_TYPE,
 				 msix == false ? IRQ_TYPE_MSI :
 				 IRQ_TYPE_MSIX);
@@ -361,21 +310,12 @@ static bool pci_endpoint_test_msi_irq(struct pci_endpoint_test *test,
 	pci_endpoint_test_writel(test, PCI_ENDPOINT_TEST_COMMAND,
 				 msix == false ? COMMAND_RAISE_MSI_IRQ :
 				 COMMAND_RAISE_MSIX_IRQ);
-=======
-	pci_endpoint_test_writel(test, PCI_ENDPOINT_TEST_COMMAND,
-				 msi_num << MSI_NUMBER_SHIFT |
-				 COMMAND_RAISE_MSI_IRQ);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	val = wait_for_completion_timeout(&test->irq_raised,
 					  msecs_to_jiffies(1000));
 	if (!val)
 		return false;
 
-<<<<<<< HEAD
 	if (pci_irq_vector(pdev, msi_num - 1) == test->last_irq)
-=======
-	if (test->last_irq - pdev->irq == msi_num - 1)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return true;
 
 	return false;
@@ -402,7 +342,6 @@ static bool pci_endpoint_test_copy(struct pci_endpoint_test *test, size_t size)
 	if (size > SIZE_MAX - alignment)
 		goto err;
 
-<<<<<<< HEAD
 	if (irq_type < IRQ_TYPE_LEGACY || irq_type > IRQ_TYPE_MSIX) {
 		dev_err(dev, "Invalid IRQ type option\n");
 		goto err;
@@ -412,12 +351,6 @@ static bool pci_endpoint_test_copy(struct pci_endpoint_test *test, size_t size)
 					   &orig_src_phys_addr, GFP_KERNEL);
 	if (!orig_src_addr) {
 		dev_err(dev, "Failed to allocate source buffer\n");
-=======
-	orig_src_addr = dma_alloc_coherent(dev, size + alignment,
-					   &orig_src_phys_addr, GFP_KERNEL);
-	if (!orig_src_addr) {
-		dev_err(dev, "failed to allocate source buffer\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = false;
 		goto err;
 	}
@@ -443,11 +376,7 @@ static bool pci_endpoint_test_copy(struct pci_endpoint_test *test, size_t size)
 	orig_dst_addr = dma_alloc_coherent(dev, size + alignment,
 					   &orig_dst_phys_addr, GFP_KERNEL);
 	if (!orig_dst_addr) {
-<<<<<<< HEAD
 		dev_err(dev, "Failed to allocate destination address\n");
-=======
-		dev_err(dev, "failed to allocate destination address\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = false;
 		goto err_orig_src_addr;
 	}
@@ -469,15 +398,10 @@ static bool pci_endpoint_test_copy(struct pci_endpoint_test *test, size_t size)
 	pci_endpoint_test_writel(test, PCI_ENDPOINT_TEST_SIZE,
 				 size);
 
-<<<<<<< HEAD
 	pci_endpoint_test_writel(test, PCI_ENDPOINT_TEST_IRQ_TYPE, irq_type);
 	pci_endpoint_test_writel(test, PCI_ENDPOINT_TEST_IRQ_NUMBER, 1);
 	pci_endpoint_test_writel(test, PCI_ENDPOINT_TEST_COMMAND,
 				 COMMAND_COPY);
-=======
-	pci_endpoint_test_writel(test, PCI_ENDPOINT_TEST_COMMAND,
-				 1 << MSI_NUMBER_SHIFT | COMMAND_COPY);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	wait_for_completion(&test->irq_raised);
 
@@ -513,7 +437,6 @@ static bool pci_endpoint_test_write(struct pci_endpoint_test *test, size_t size)
 	if (size > SIZE_MAX - alignment)
 		goto err;
 
-<<<<<<< HEAD
 	if (irq_type < IRQ_TYPE_LEGACY || irq_type > IRQ_TYPE_MSIX) {
 		dev_err(dev, "Invalid IRQ type option\n");
 		goto err;
@@ -523,12 +446,6 @@ static bool pci_endpoint_test_write(struct pci_endpoint_test *test, size_t size)
 				       GFP_KERNEL);
 	if (!orig_addr) {
 		dev_err(dev, "Failed to allocate address\n");
-=======
-	orig_addr = dma_alloc_coherent(dev, size + alignment, &orig_phys_addr,
-				       GFP_KERNEL);
-	if (!orig_addr) {
-		dev_err(dev, "failed to allocate address\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = false;
 		goto err;
 	}
@@ -555,15 +472,10 @@ static bool pci_endpoint_test_write(struct pci_endpoint_test *test, size_t size)
 
 	pci_endpoint_test_writel(test, PCI_ENDPOINT_TEST_SIZE, size);
 
-<<<<<<< HEAD
 	pci_endpoint_test_writel(test, PCI_ENDPOINT_TEST_IRQ_TYPE, irq_type);
 	pci_endpoint_test_writel(test, PCI_ENDPOINT_TEST_IRQ_NUMBER, 1);
 	pci_endpoint_test_writel(test, PCI_ENDPOINT_TEST_COMMAND,
 				 COMMAND_READ);
-=======
-	pci_endpoint_test_writel(test, PCI_ENDPOINT_TEST_COMMAND,
-				 1 << MSI_NUMBER_SHIFT | COMMAND_READ);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	wait_for_completion(&test->irq_raised);
 
@@ -593,7 +505,6 @@ static bool pci_endpoint_test_read(struct pci_endpoint_test *test, size_t size)
 	if (size > SIZE_MAX - alignment)
 		goto err;
 
-<<<<<<< HEAD
 	if (irq_type < IRQ_TYPE_LEGACY || irq_type > IRQ_TYPE_MSIX) {
 		dev_err(dev, "Invalid IRQ type option\n");
 		goto err;
@@ -603,12 +514,6 @@ static bool pci_endpoint_test_read(struct pci_endpoint_test *test, size_t size)
 				       GFP_KERNEL);
 	if (!orig_addr) {
 		dev_err(dev, "Failed to allocate destination address\n");
-=======
-	orig_addr = dma_alloc_coherent(dev, size + alignment, &orig_phys_addr,
-				       GFP_KERNEL);
-	if (!orig_addr) {
-		dev_err(dev, "failed to allocate destination address\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = false;
 		goto err;
 	}
@@ -629,15 +534,10 @@ static bool pci_endpoint_test_read(struct pci_endpoint_test *test, size_t size)
 
 	pci_endpoint_test_writel(test, PCI_ENDPOINT_TEST_SIZE, size);
 
-<<<<<<< HEAD
 	pci_endpoint_test_writel(test, PCI_ENDPOINT_TEST_IRQ_TYPE, irq_type);
 	pci_endpoint_test_writel(test, PCI_ENDPOINT_TEST_IRQ_NUMBER, 1);
 	pci_endpoint_test_writel(test, PCI_ENDPOINT_TEST_COMMAND,
 				 COMMAND_WRITE);
-=======
-	pci_endpoint_test_writel(test, PCI_ENDPOINT_TEST_COMMAND,
-				 1 << MSI_NUMBER_SHIFT | COMMAND_WRITE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	wait_for_completion(&test->irq_raised);
 
@@ -650,7 +550,6 @@ err:
 	return ret;
 }
 
-<<<<<<< HEAD
 static bool pci_endpoint_test_set_irq(struct pci_endpoint_test *test,
 				      int req_irq_type)
 {
@@ -683,8 +582,6 @@ err:
 	return false;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static long pci_endpoint_test_ioctl(struct file *file, unsigned int cmd,
 				    unsigned long arg)
 {
@@ -704,12 +601,8 @@ static long pci_endpoint_test_ioctl(struct file *file, unsigned int cmd,
 		ret = pci_endpoint_test_legacy_irq(test);
 		break;
 	case PCITEST_MSI:
-<<<<<<< HEAD
 	case PCITEST_MSIX:
 		ret = pci_endpoint_test_msi_irq(test, arg, cmd == PCITEST_MSIX);
-=======
-		ret = pci_endpoint_test_msi_irq(test, arg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case PCITEST_WRITE:
 		ret = pci_endpoint_test_write(test, arg);
@@ -720,15 +613,12 @@ static long pci_endpoint_test_ioctl(struct file *file, unsigned int cmd,
 	case PCITEST_COPY:
 		ret = pci_endpoint_test_copy(test, arg);
 		break;
-<<<<<<< HEAD
 	case PCITEST_SET_IRQTYPE:
 		ret = pci_endpoint_test_set_irq(test, arg);
 		break;
 	case PCITEST_GET_IRQTYPE:
 		ret = irq_type;
 		break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 ret:
@@ -744,17 +634,9 @@ static const struct file_operations pci_endpoint_test_fops = {
 static int pci_endpoint_test_probe(struct pci_dev *pdev,
 				   const struct pci_device_id *ent)
 {
-<<<<<<< HEAD
 	int err;
 	int id;
 	char name[20];
-=======
-	int i;
-	int err;
-	int irq = 0;
-	int id;
-	char name[24];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	enum pci_barno bar;
 	void __iomem *base;
 	struct device *dev = &pdev->dev;
@@ -774,22 +656,15 @@ static int pci_endpoint_test_probe(struct pci_dev *pdev,
 	test->alignment = 0;
 	test->pdev = pdev;
 
-<<<<<<< HEAD
 	if (no_msi)
 		irq_type = IRQ_TYPE_LEGACY;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	data = (struct pci_endpoint_test_data *)ent->driver_data;
 	if (data) {
 		test_reg_bar = data->test_reg_bar;
 		test->test_reg_bar = test_reg_bar;
 		test->alignment = data->alignment;
-<<<<<<< HEAD
 		irq_type = data->irq_type;
-=======
-		no_msi = data->no_msi;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	init_completion(&test->irq_raised);
@@ -809,7 +684,6 @@ static int pci_endpoint_test_probe(struct pci_dev *pdev,
 
 	pci_set_master(pdev);
 
-<<<<<<< HEAD
 	if (!pci_endpoint_test_alloc_irq_vectors(test, irq_type))
 		goto err_disable_irq;
 
@@ -825,38 +699,6 @@ static int pci_endpoint_test_probe(struct pci_dev *pdev,
 			}
 			test->bar[bar] = base;
 		}
-=======
-	if (!no_msi) {
-		irq = pci_alloc_irq_vectors(pdev, 1, 32, PCI_IRQ_MSI);
-		if (irq < 0)
-			dev_err(dev, "failed to get MSI interrupts\n");
-		test->num_irqs = irq;
-	}
-
-	err = devm_request_irq(dev, pdev->irq, pci_endpoint_test_irqhandler,
-			       IRQF_SHARED, DRV_MODULE_NAME, test);
-	if (err) {
-		dev_err(dev, "failed to request IRQ %d\n", pdev->irq);
-		goto err_disable_msi;
-	}
-
-	for (i = 1; i < irq; i++) {
-		err = devm_request_irq(dev, pdev->irq + i,
-				       pci_endpoint_test_irqhandler,
-				       IRQF_SHARED, DRV_MODULE_NAME, test);
-		if (err)
-			dev_err(dev, "failed to request IRQ %d for MSI %d\n",
-				pdev->irq + i, i + 1);
-	}
-
-	for (bar = BAR_0; bar <= BAR_5; bar++) {
-		base = pci_ioremap_bar(pdev, bar);
-		if (!base) {
-			dev_err(dev, "failed to read BAR%d\n", bar);
-			WARN_ON(bar == test_reg_bar);
-		}
-		test->bar[bar] = base;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	test->base = test->bar[test_reg_bar];
@@ -872,47 +714,31 @@ static int pci_endpoint_test_probe(struct pci_dev *pdev,
 	id = ida_simple_get(&pci_endpoint_test_ida, 0, 0, GFP_KERNEL);
 	if (id < 0) {
 		err = id;
-<<<<<<< HEAD
 		dev_err(dev, "Unable to get id\n");
-=======
-		dev_err(dev, "unable to get id\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_iounmap;
 	}
 
 	snprintf(name, sizeof(name), DRV_MODULE_NAME ".%d", id);
 	misc_device = &test->miscdev;
 	misc_device->minor = MISC_DYNAMIC_MINOR;
-<<<<<<< HEAD
 	misc_device->name = kstrdup(name, GFP_KERNEL);
 	if (!misc_device->name) {
 		err = -ENOMEM;
 		goto err_ida_remove;
 	}
-=======
-	misc_device->name = name;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	misc_device->fops = &pci_endpoint_test_fops,
 
 	err = misc_register(misc_device);
 	if (err) {
-<<<<<<< HEAD
 		dev_err(dev, "Failed to register device\n");
 		goto err_kfree_name;
-=======
-		dev_err(dev, "failed to register device\n");
-		goto err_ida_remove;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
 
-<<<<<<< HEAD
 err_kfree_name:
 	kfree(misc_device->name);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_ida_remove:
 	ida_simple_remove(&pci_endpoint_test_ida, id);
 
@@ -921,19 +747,10 @@ err_iounmap:
 		if (test->bar[bar])
 			pci_iounmap(pdev, test->bar[bar]);
 	}
-<<<<<<< HEAD
 	pci_endpoint_test_release_irq(test);
 
 err_disable_irq:
 	pci_endpoint_test_free_irq_vectors(test);
-=======
-
-	for (i = 0; i < irq; i++)
-		devm_free_irq(dev, pdev->irq + i, test);
-
-err_disable_msi:
-	pci_disable_msi(pdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pci_release_regions(pdev);
 
 err_disable_pdev:
@@ -945,10 +762,6 @@ err_disable_pdev:
 static void pci_endpoint_test_remove(struct pci_dev *pdev)
 {
 	int id;
-<<<<<<< HEAD
-=======
-	int i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	enum pci_barno bar;
 	struct pci_endpoint_test *test = pci_get_drvdata(pdev);
 	struct miscdevice *misc_device = &test->miscdev;
@@ -959,25 +772,16 @@ static void pci_endpoint_test_remove(struct pci_dev *pdev)
 		return;
 
 	misc_deregister(&test->miscdev);
-<<<<<<< HEAD
 	kfree(misc_device->name);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ida_simple_remove(&pci_endpoint_test_ida, id);
 	for (bar = BAR_0; bar <= BAR_5; bar++) {
 		if (test->bar[bar])
 			pci_iounmap(pdev, test->bar[bar]);
 	}
-<<<<<<< HEAD
 
 	pci_endpoint_test_release_irq(test);
 	pci_endpoint_test_free_irq_vectors(test);
 
-=======
-	for (i = 0; i < test->num_irqs; i++)
-		devm_free_irq(&pdev->dev, pdev->irq + i, test);
-	pci_disable_msi(pdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pci_release_regions(pdev);
 	pci_disable_device(pdev);
 }
@@ -985,10 +789,7 @@ static void pci_endpoint_test_remove(struct pci_dev *pdev)
 static const struct pci_device_id pci_endpoint_test_tbl[] = {
 	{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_DRA74x) },
 	{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_DRA72x) },
-<<<<<<< HEAD
 	{ PCI_DEVICE(PCI_VENDOR_ID_SYNOPSYS, 0xedda) },
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ }
 };
 MODULE_DEVICE_TABLE(pci, pci_endpoint_test_tbl);

@@ -187,21 +187,13 @@ nv40_ram_func = {
 
 int
 nv40_ram_new_(struct nvkm_fb *fb, enum nvkm_ram_type type, u64 size,
-<<<<<<< HEAD
 	      struct nvkm_ram **pram)
-=======
-	      u32 tags, struct nvkm_ram **pram)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct nv40_ram *ram;
 	if (!(ram = kzalloc(sizeof(*ram), GFP_KERNEL)))
 		return -ENOMEM;
 	*pram = &ram->base;
-<<<<<<< HEAD
 	return nvkm_ram_ctor(&nv40_ram_func, fb, type, size, &ram->base);
-=======
-	return nvkm_ram_ctor(&nv40_ram_func, fb, type, size, tags, &ram->base);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int
@@ -210,10 +202,6 @@ nv40_ram_new(struct nvkm_fb *fb, struct nvkm_ram **pram)
 	struct nvkm_device *device = fb->subdev.device;
 	u32 pbus1218 = nvkm_rd32(device, 0x001218);
 	u32     size = nvkm_rd32(device, 0x10020c) & 0xff000000;
-<<<<<<< HEAD
-=======
-	u32     tags = nvkm_rd32(device, 0x100320);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	enum nvkm_ram_type type = NVKM_RAM_TYPE_UNKNOWN;
 	int ret;
 
@@ -224,11 +212,7 @@ nv40_ram_new(struct nvkm_fb *fb, struct nvkm_ram **pram)
 	case 0x00000300: type = NVKM_RAM_TYPE_DDR2 ; break;
 	}
 
-<<<<<<< HEAD
 	ret = nv40_ram_new_(fb, type, size, pram);
-=======
-	ret = nv40_ram_new_(fb, type, size, tags, pram);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 

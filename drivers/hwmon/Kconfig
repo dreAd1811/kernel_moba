@@ -26,17 +26,9 @@ if HWMON
 
 config HWMON_VID
 	tristate
-<<<<<<< HEAD
 
 config HWMON_DEBUG_CHIP
 	bool "Hardware Monitoring Chip debugging messages"
-=======
-	default n
-
-config HWMON_DEBUG_CHIP
-	bool "Hardware Monitoring Chip debugging messages"
-	default n
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Say Y here if you want the I2C chip drivers to produce a bunch of
 	  debug messages to the system log.  Select this if you are having
@@ -48,10 +40,6 @@ comment "Native drivers"
 config SENSORS_AB8500
 	tristate "AB8500 thermal monitoring"
 	depends on AB8500_GPADC && AB8500_BM
-<<<<<<< HEAD
-=======
-	default n
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  If you say yes here you get support for the thermal sensor part
 	  of the AB8500 chip. The driver includes thermal management for
@@ -284,11 +272,7 @@ config SENSORS_K8TEMP
 
 config SENSORS_K10TEMP
 	tristate "AMD Family 10h+ temperature sensor"
-<<<<<<< HEAD
 	depends on X86 && PCI && AMD_NB
-=======
-	depends on X86 && PCI
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  If you say yes here you get support for the temperature
 	  sensor(s) inside your CPU. Supported are later revisions of
@@ -315,10 +299,6 @@ config SENSORS_APPLESMC
 	select NEW_LEDS
 	select LEDS_CLASS
 	select INPUT_POLLDEV
-<<<<<<< HEAD
-=======
-	default n
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  This driver provides support for the Apple System Management
 	  Controller, which provides an accelerometer (Apple Sudden Motion
@@ -337,7 +317,6 @@ config SENSORS_APPLESMC
 	  Say Y here if you have an applicable laptop and want to experience
 	  the awesome power of applesmc.
 
-<<<<<<< HEAD
 config SENSORS_ARM_SCMI
 	tristate "ARM SCMI Sensors"
 	depends on ARM_SCMI_PROTOCOL
@@ -350,8 +329,6 @@ config SENSORS_ARM_SCMI
 	  This driver can also be built as a module.  If so, the module
 	  will be called scmi-hwmon.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config SENSORS_ARM_SCPI
 	tristate "ARM SCPI Sensors"
 	depends on ARM_SCPI_PROTOCOL
@@ -583,10 +560,7 @@ config SENSORS_G762
 
 config SENSORS_GPIO_FAN
 	tristate "GPIO fan"
-<<<<<<< HEAD
 	depends on OF_GPIO
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on GPIOLIB || COMPILE_TEST
 	depends on THERMAL || THERMAL=n
 	help
@@ -712,10 +686,6 @@ config SENSORS_JC42
 config SENSORS_POWR1220
 	tristate "Lattice POWR1220 Power Monitoring"
 	depends on I2C
-<<<<<<< HEAD
-=======
-	default n
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  If you say yes here you get access to the hardware monitoring
 	  functions of the Lattice POWR1220 isp Power Supply Monitoring,
@@ -739,10 +709,6 @@ config SENSORS_LTC2945
 	tristate "Linear Technology LTC2945"
 	depends on I2C
 	select REGMAP_I2C
-<<<<<<< HEAD
-=======
-	default n
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  If you say yes here you get support for Linear Technology LTC2945
 	  I2C System Monitor.
@@ -751,23 +717,12 @@ config SENSORS_LTC2945
 	  be called ltc2945.
 
 config SENSORS_LTC2990
-<<<<<<< HEAD
 	tristate "Linear Technology LTC2990"
-=======
-	tristate "Linear Technology LTC2990 (current monitoring mode only)"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on I2C
 	help
 	  If you say yes here you get support for Linear Technology LTC2990
 	  I2C System Monitor. The LTC2990 supports a combination of voltage,
-<<<<<<< HEAD
 	  current and temperature monitoring.
-=======
-	  current and temperature monitoring, but in addition to the Vcc supply
-	  voltage and chip temperature, this driver currently only supports
-	  reading two currents by measuring two differential voltages across
-	  series resistors.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	  This driver can also be built as a module. If so, the module will
 	  be called ltc2990.
@@ -775,10 +730,6 @@ config SENSORS_LTC2990
 config SENSORS_LTC4151
 	tristate "Linear Technology LTC4151"
 	depends on I2C
-<<<<<<< HEAD
-=======
-	default n
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  If you say yes here you get support for Linear Technology LTC4151
 	  High Voltage I2C Current and Voltage Monitor interface.
@@ -789,10 +740,6 @@ config SENSORS_LTC4151
 config SENSORS_LTC4215
 	tristate "Linear Technology LTC4215"
 	depends on I2C
-<<<<<<< HEAD
-=======
-	default n
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  If you say yes here you get support for Linear Technology LTC4215
 	  Hot Swap Controller I2C interface.
@@ -804,10 +751,6 @@ config SENSORS_LTC4222
 	tristate "Linear Technology LTC4222"
 	depends on I2C
 	select REGMAP_I2C
-<<<<<<< HEAD
-=======
-	default n
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  If you say yes here you get support for Linear Technology LTC4222
 	  Dual Hot Swap Controller I2C interface.
@@ -818,10 +761,6 @@ config SENSORS_LTC4222
 config SENSORS_LTC4245
 	tristate "Linear Technology LTC4245"
 	depends on I2C
-<<<<<<< HEAD
-=======
-	default n
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  If you say yes here you get support for Linear Technology LTC4245
 	  Multiple Supply Hot Swap Controller I2C interface.
@@ -833,10 +772,6 @@ config SENSORS_LTC4260
 	tristate "Linear Technology LTC4260"
 	depends on I2C
 	select REGMAP_I2C
-<<<<<<< HEAD
-=======
-	default n
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  If you say yes here you get support for Linear Technology LTC4260
 	  Positive Voltage Hot Swap Controller I2C interface.
@@ -847,10 +782,6 @@ config SENSORS_LTC4260
 config SENSORS_LTC4261
 	tristate "Linear Technology LTC4261"
 	depends on I2C
-<<<<<<< HEAD
-=======
-	default n
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  If you say yes here you get support for Linear Technology LTC4261
 	  Negative Voltage Hot Swap Controller I2C interface.
@@ -929,7 +860,6 @@ tristate "MAX31722 temperature sensor"
 	  This driver can also be built as a module. If so, the module
 	  will be called max31722.
 
-<<<<<<< HEAD
 config SENSORS_MAX6621
 	tristate "Maxim MAX6621 sensor chip"
 	depends on I2C
@@ -944,8 +874,6 @@ config SENSORS_MAX6621
 	  This driver can also be built as a module. If so, the module
 	  will be called max6621.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config SENSORS_MAX6639
 	tristate "Maxim MAX6639 sensor chip"
 	depends on I2C
@@ -1009,7 +937,6 @@ config SENSORS_MCP3021
 	  This driver can also be built as a module.  If so, the module
 	  will be called mcp3021.
 
-<<<<<<< HEAD
 config SENSORS_MLXREG_FAN
 	tristate "Mellanox Mellanox FAN driver"
 	depends on MELLANOX_PLATFORM
@@ -1022,8 +949,6 @@ config SENSORS_MLXREG_FAN
 	  driver as a module, choose 'M' here: the module will be called
 	  mlxreg-fan.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config SENSORS_TC654
 	tristate "Microchip TC654/TC655 and compatibles"
 	depends on I2C
@@ -1315,14 +1240,9 @@ config SENSORS_NCT6775
 	help
 	  If you say yes here you get support for the hardware monitoring
 	  functionality of the Nuvoton NCT6106D, NCT6775F, NCT6776F, NCT6779D,
-<<<<<<< HEAD
 	  NCT6791D, NCT6792D, NCT6793D, NCT6795D, NCT6796D, and compatible
 	  Super-I/O chips. This driver replaces the w83627ehf driver for
 	  NCT6775F and NCT6776F.
-=======
-	  NCT6791D, NCT6792D, NCT6793D, and compatible Super-I/O chips. This
-	  driver replaces the w83627ehf driver for NCT6775F and NCT6776F.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	  This driver can also be built as a module.  If so, the module
 	  will be called nct6775.
@@ -1348,7 +1268,6 @@ config SENSORS_NCT7904
 	  This driver can also be built as a module.  If so, the module
 	  will be called nct7904.
 
-<<<<<<< HEAD
 config SENSORS_NPCM7XX
 	tristate "Nuvoton NPCM750 and compatible PWM and Fan controllers"
 	imply THERMAL
@@ -1359,8 +1278,6 @@ config SENSORS_NPCM7XX
           This driver can also be built as a module. If so, the module
           will be called npcm750-pwm-fan.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config SENSORS_NSA320
 	tristate "ZyXEL NSA320 and compatible fan speed and temperature sensors"
 	depends on GPIOLIB && OF
@@ -1379,10 +1296,6 @@ config SENSORS_NSA320
 config SENSORS_PCF8591
 	tristate "Philips PCF8591 ADC/DAC"
 	depends on I2C
-<<<<<<< HEAD
-=======
-	default n
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  If you say yes here you get support for Philips PCF8591 4-channel
 	  ADC, 1-channel DAC chips.
@@ -1407,7 +1320,6 @@ config SENSORS_PWM_FAN
 	  This driver can also be built as a module.  If so, the module
 	  will be called pwm-fan.
 
-<<<<<<< HEAD
 config SENSORS_RASPBERRYPI_HWMON
 	tristate "Raspberry Pi voltage monitor"
 	depends on RASPBERRYPI_FIRMWARE || (COMPILE_TEST && !RASPBERRYPI_FIRMWARE)
@@ -1418,8 +1330,6 @@ config SENSORS_RASPBERRYPI_HWMON
 	  This driver can also be built as a module. If so, the module
 	  will be called raspberrypi-hwmon.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config SENSORS_SHT15
 	tristate "Sensiron humidity and temperature sensors. SHT15 and compat."
 	depends on GPIOLIB || COMPILE_TEST
@@ -1578,10 +1488,6 @@ config SENSORS_SMSC47B397
 
 config SENSORS_SCH56XX_COMMON
 	tristate
-<<<<<<< HEAD
-=======
-	default n
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config SENSORS_SCH5627
 	tristate "SMSC SCH5627"
@@ -1627,10 +1533,6 @@ config SENSORS_STTS751
 config SENSORS_SMM665
 	tristate "Summit Microelectronics SMM665"
 	depends on I2C
-<<<<<<< HEAD
-=======
-	default n
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  If you say yes here you get support for the hardware monitoring
 	  features of the Summit Microelectronics SMM665/SMM665B Six-Channel
@@ -1850,7 +1752,6 @@ config SENSORS_VT8231
 	  This driver can also be built as a module.  If so, the module
 	  will be called vt8231.
 
-<<<<<<< HEAD
 config SENSORS_W83773G
 	tristate "Nuvoton W83773G"
 	depends on I2C
@@ -1862,8 +1763,6 @@ config SENSORS_W83773G
 	  This driver can also be built as a module.  If so, the module
 	  will be called w83773g.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config SENSORS_W83781D
 	tristate "Winbond W83781D, W83782D, W83783S, Asus AS99127F"
 	depends on I2C
@@ -1921,10 +1820,6 @@ config SENSORS_W83795
 config SENSORS_W83795_FANCTRL
 	bool "Include automatic fan control support (DANGEROUS)"
 	depends on SENSORS_W83795
-<<<<<<< HEAD
-=======
-	default n
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  If you say yes here, support for automatic fan speed control
 	  will be included in the driver.

@@ -1,19 +1,6 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 //
 // Copyright (C) 2010 Maurus Cuelenaere
-=======
-/*
- * linux/arch/arm/mach-s3c64xx/mach-smartq.c
- *
- * Copyright (C) 2010 Maurus Cuelenaere
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
- *
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/delay.h>
 #include <linux/fb.h>
@@ -219,26 +206,15 @@ static int __init smartq_lcd_setup_gpio(void)
 
 /* GPM0 -> CS */
 static struct spi_gpio_platform_data smartq_lcd_control = {
-<<<<<<< HEAD
 	.num_chipselect	= 1,
 };
 
 static struct platform_device smartq_lcd_control_device = {
 	.name			= "spi_gpio",
-=======
-	.sck			= S3C64XX_GPM(1),
-	.mosi			= S3C64XX_GPM(2),
-	.miso			= S3C64XX_GPM(2),
-};
-
-static struct platform_device smartq_lcd_control_device = {
-	.name			= "spi-gpio",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.id			= 1,
 	.dev.platform_data	= &smartq_lcd_control,
 };
 
-<<<<<<< HEAD
 static struct gpiod_lookup_table smartq_lcd_control_gpiod_table = {
 	.dev_id         = "spi_gpio",
 	.table          = {
@@ -254,8 +230,6 @@ static struct gpiod_lookup_table smartq_lcd_control_gpiod_table = {
 	},
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void smartq_lcd_power_set(struct plat_lcd_data *pd, unsigned int power)
 {
 	gpio_direction_output(S3C64XX_GPM(3), power);
@@ -443,10 +417,7 @@ void __init smartq_machine_init(void)
 	WARN_ON(smartq_wifi_init());
 
 	pwm_add_table(smartq_pwm_lookup, ARRAY_SIZE(smartq_pwm_lookup));
-<<<<<<< HEAD
 	gpiod_add_lookup_table(&smartq_lcd_control_gpiod_table);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	platform_add_devices(smartq_devices, ARRAY_SIZE(smartq_devices));
 
 	gpiod_add_lookup_table(&smartq_audio_gpios);

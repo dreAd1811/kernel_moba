@@ -18,11 +18,7 @@ if NET_VENDOR_TI
 
 config TI_DAVINCI_EMAC
 	tristate "TI DaVinci EMAC Support"
-<<<<<<< HEAD
 	depends on ARM && ( ARCH_DAVINCI || ARCH_OMAP3 ) || COMPILE_TEST
-=======
-	depends on ARM && ( ARCH_DAVINCI || ARCH_OMAP3 )
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select TI_DAVINCI_MDIO
 	select TI_DAVINCI_CPDMA
 	select PHYLIB
@@ -34,11 +30,7 @@ config TI_DAVINCI_EMAC
 
 config TI_DAVINCI_MDIO
 	tristate "TI DaVinci MDIO Support"
-<<<<<<< HEAD
 	depends on ARCH_DAVINCI || ARCH_OMAP2PLUS || ARCH_KEYSTONE || COMPILE_TEST
-=======
-	depends on ARCH_DAVINCI || ARCH_OMAP2PLUS || ARCH_KEYSTONE
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select PHYLIB
 	---help---
 	  This driver supports TI's DaVinci MDIO module.
@@ -48,12 +40,8 @@ config TI_DAVINCI_MDIO
 
 config TI_DAVINCI_CPDMA
 	tristate "TI DaVinci CPDMA Support"
-<<<<<<< HEAD
 	depends on ARCH_DAVINCI || ARCH_OMAP2PLUS || COMPILE_TEST
 	select GENERIC_ALLOCATOR
-=======
-	depends on ARCH_DAVINCI || ARCH_OMAP2PLUS
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	---help---
 	  This driver supports TI's DaVinci CPDMA dma engine.
 
@@ -73,11 +61,7 @@ config TI_CPSW_ALE
 
 config TI_CPSW
 	tristate "TI CPSW Switch Support"
-<<<<<<< HEAD
 	depends on ARCH_DAVINCI || ARCH_OMAP2PLUS || COMPILE_TEST
-=======
-	depends on ARCH_DAVINCI || ARCH_OMAP2PLUS
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select TI_DAVINCI_CPDMA
 	select TI_DAVINCI_MDIO
 	select TI_CPSW_PHY_SEL
@@ -92,11 +76,7 @@ config TI_CPSW
 
 config TI_CPTS
 	bool "TI Common Platform Time Sync (CPTS) Support"
-<<<<<<< HEAD
 	depends on TI_CPSW || TI_KEYSTONE_NETCP || COMPILE_TEST
-=======
-	depends on TI_CPSW || TI_KEYSTONE_NETCP
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on POSIX_TIMERS
 	---help---
 	  This driver supports the Common Platform Time Sync unit of

@@ -28,10 +28,6 @@
 #include <linux/types.h>
 
 #define DRIVER_NAME			"colibri-vf50-ts"
-<<<<<<< HEAD
-=======
-#define DRV_VERSION			"1.0"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define VF_ADC_MAX			((1 << 12) - 1)
 
@@ -385,7 +381,3 @@ module_platform_driver(vf50_touch_driver);
 MODULE_AUTHOR("Sanchayan Maity");
 MODULE_DESCRIPTION("Colibri VF50 Touchscreen driver");
 MODULE_LICENSE("GPL");
-<<<<<<< HEAD
-=======
-MODULE_VERSION(DRV_VERSION);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

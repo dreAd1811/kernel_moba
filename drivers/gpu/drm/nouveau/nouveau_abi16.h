@@ -24,11 +24,7 @@ struct nouveau_abi16_chan {
 	struct nouveau_channel *chan;
 	struct list_head notifiers;
 	struct nouveau_bo *ntfy;
-<<<<<<< HEAD
 	struct nouveau_vma *ntfy_vma;
-=======
-	struct nvkm_vma ntfy_vma;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct nvkm_mm  heap;
 };
 

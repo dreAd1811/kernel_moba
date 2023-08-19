@@ -41,11 +41,7 @@ MODULE_PARM_DESC(pcm_debug, "enable debug messages for pcm");
 #define dprintk(fmt, arg...) do {					\
 	    if (pcm_debug)						\
 		printk(KERN_INFO "cx18-alsa-pcm %s: " fmt,		\
-<<<<<<< HEAD
 				  __func__, ##arg);			\
-=======
-				  __func__, ##arg); 			\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} while (0)
 
 static const struct snd_pcm_hardware snd_cx18_hw_capture = {

@@ -130,10 +130,6 @@ static const struct adc128_configuration adc128_config[] = {
 
 static const struct iio_info adc128_info = {
 	.read_raw = adc128_read_raw,
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int adc128_probe(struct spi_device *spi)

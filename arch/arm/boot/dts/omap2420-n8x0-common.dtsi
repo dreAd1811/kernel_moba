@@ -7,13 +7,10 @@
 		reg = <0x80000000 0x8000000>; /* 128 MB */
 	};
 
-<<<<<<< HEAD
 	chosen {
 		stdout-path = &uart3;
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ocp {
 		i2c0 {
 			compatible = "i2c-cbus-gpio";
@@ -55,10 +52,7 @@
 	onenand@0,0 {
 		#address-cells = <1>;
 		#size-cells = <1>;
-<<<<<<< HEAD
 		compatible = "ti,omap2-onenand";
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0 0 0x20000>;	/* CS0, offset 0, IO size 128K */
 
 		gpmc,sync-read;

@@ -195,21 +195,12 @@ enum dpot_devid {
 struct dpot_data;
 
 struct ad_dpot_bus_ops {
-<<<<<<< HEAD
 	int (*read_d8)(void *client);
 	int (*read_r8d8)(void *client, u8 reg);
 	int (*read_r8d16)(void *client, u8 reg);
 	int (*write_d8)(void *client, u8 val);
 	int (*write_r8d8)(void *client, u8 reg, u8 val);
 	int (*write_r8d16)(void *client, u8 reg, u16 val);
-=======
-	int (*read_d8) (void *client);
-	int (*read_r8d8) (void *client, u8 reg);
-	int (*read_r8d16) (void *client, u8 reg);
-	int (*write_d8) (void *client, u8 val);
-	int (*write_r8d8) (void *client, u8 reg, u8 val);
-	int (*write_r8d16) (void *client, u8 reg, u16 val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct ad_dpot_bus_data {

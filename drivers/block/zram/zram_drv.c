@@ -415,12 +415,8 @@ static void reset_bdev(struct zram *zram)
 	zram->backing_dev = NULL;
 	zram->old_block_size = 0;
 	zram->bdev = NULL;
-<<<<<<< HEAD
 	zram->disk->queue->backing_dev_info->capabilities |=
 				BDI_CAP_SYNCHRONOUS_IO;
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kvfree(zram->bitmap);
 	zram->bitmap = NULL;
 }
@@ -428,23 +424,13 @@ static void reset_bdev(struct zram *zram)
 static ssize_t backing_dev_show(struct device *dev,
 		struct device_attribute *attr, char *buf)
 {
-<<<<<<< HEAD
 	struct zram *zram = dev_to_zram(dev);
 	struct file *file = zram->backing_dev;
-=======
-	struct file *file;
-	struct zram *zram = dev_to_zram(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	char *p;
 	ssize_t ret;
 
 	down_read(&zram->init_lock);
-<<<<<<< HEAD
 	if (!zram->backing_dev) {
-=======
-	file = zram->backing_dev;
-	if (!file) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		memcpy(buf, "none\n", 5);
 		up_read(&zram->init_lock);
 		return 5;
@@ -538,7 +524,6 @@ static ssize_t backing_dev_store(struct device *dev,
 	zram->backing_dev = backing_dev;
 	zram->bitmap = bitmap;
 	zram->nr_pages = nr_pages;
-<<<<<<< HEAD
 	/*
 	 * With writeback feature, zram does asynchronous IO so it's no longer
 	 * synchronous device so let's remove synchronous io flag. Othewise,
@@ -551,8 +536,6 @@ static ssize_t backing_dev_store(struct device *dev,
 	 */
 	zram->disk->queue->backing_dev_info->capabilities &=
 			~BDI_CAP_SYNCHRONOUS_IO;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	up_write(&zram->init_lock);
 
 	pr_info("setup backing device %s\n", file_name);
@@ -603,11 +586,7 @@ static void free_block_bdev(struct zram *zram, unsigned long blk_idx)
 
 static void zram_page_end_io(struct bio *bio)
 {
-<<<<<<< HEAD
 	struct page *page = bio_first_page_all(bio);
-=======
-	struct page *page = bio->bi_io_vec[0].bv_page;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	page_endio(page, op_is_write(bio_op(bio)),
 			blk_status_to_errno(bio->bi_status));
@@ -1150,15 +1129,9 @@ static ssize_t mm_stat_show(struct device *dev,
 			max_used << PAGE_SHIFT,
 			(u64)atomic64_read(&zram->stats.same_pages),
 			pool_stats.pages_compacted,
-<<<<<<< HEAD
 			(u64)atomic64_read(&zram->stats.huge_pages),
 			zram_dedup_dup_size(zram),
 			zram_dedup_meta_size(zram));
-=======
-			zram_dedup_dup_size(zram),
-			zram_dedup_meta_size(zram),
-			(u64)atomic64_read(&zram->stats.huge_pages));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	up_read(&zram->init_lock);
 
 	return ret;
@@ -1278,11 +1251,7 @@ static bool zram_meta_alloc(struct zram *zram, u64 disksize)
 	size_t num_pages;
 
 	num_pages = disksize >> PAGE_SHIFT;
-<<<<<<< HEAD
 	zram->table = vzalloc(array_size(num_pages, sizeof(*zram->table)));
-=======
-	zram->table = vzalloc(num_pages * sizeof(*zram->table));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!zram->table)
 		return false;
 
@@ -1663,7 +1632,6 @@ static void zram_bio_discard(struct zram *zram, u32 index,
  * Returns 1 if IO request was successfully submitted.
  */
 static int zram_bvec_rw(struct zram *zram, struct bio_vec *bvec, u32 index,
-<<<<<<< HEAD
 			int offset, unsigned int op, struct bio *bio)
 {
 	unsigned long start_time = jiffies;
@@ -1674,19 +1642,6 @@ static int zram_bvec_rw(struct zram *zram, struct bio_vec *bvec, u32 index,
 			&zram->disk->part0);
 
 	if (!op_is_write(op)) {
-=======
-			int offset, bool is_write, struct bio *bio)
-{
-	unsigned long start_time = jiffies;
-	int rw_acct = is_write ? REQ_OP_WRITE : REQ_OP_READ;
-	struct request_queue *q = zram->disk->queue;
-	int ret;
-
-	generic_start_io_acct(q, rw_acct, bvec->bv_len >> SECTOR_SHIFT,
-			&zram->disk->part0);
-
-	if (!is_write) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		atomic64_inc(&zram->stats.num_reads);
 		ret = zram_bvec_read(zram, bvec, index, offset, bio);
 		flush_dcache_page(bvec->bv_page);
@@ -1695,22 +1650,14 @@ static int zram_bvec_rw(struct zram *zram, struct bio_vec *bvec, u32 index,
 		ret = zram_bvec_write(zram, bvec, index, offset, bio);
 	}
 
-<<<<<<< HEAD
 	generic_end_io_acct(q, op, &zram->disk->part0, start_time);
-=======
-	generic_end_io_acct(q, rw_acct, &zram->disk->part0, start_time);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	zram_slot_lock(zram, index);
 	zram_accessed(zram, index);
 	zram_slot_unlock(zram, index);
 
 	if (unlikely(ret < 0)) {
-<<<<<<< HEAD
 		if (!op_is_write(op))
-=======
-		if (!is_write)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			atomic64_inc(&zram->stats.failed_reads);
 		else
 			atomic64_inc(&zram->stats.failed_writes);
@@ -1748,11 +1695,7 @@ static void __zram_make_request(struct zram *zram, struct bio *bio)
 			bv.bv_len = min_t(unsigned int, PAGE_SIZE - offset,
 							unwritten);
 			if (zram_bvec_rw(zram, &bv, index, offset,
-<<<<<<< HEAD
 					 bio_op(bio), bio) < 0)
-=======
-					op_is_write(bio_op(bio)), bio) < 0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				goto out;
 
 			bv.bv_offset += bv.bv_len;
@@ -1808,11 +1751,7 @@ static void zram_slot_free_notify(struct block_device *bdev,
 }
 
 static int zram_rw_page(struct block_device *bdev, sector_t sector,
-<<<<<<< HEAD
 		       struct page *page, unsigned int op)
-=======
-		       struct page *page, bool is_write)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int offset, ret;
 	u32 index;
@@ -1836,11 +1775,7 @@ static int zram_rw_page(struct block_device *bdev, sector_t sector,
 	bv.bv_len = PAGE_SIZE;
 	bv.bv_offset = 0;
 
-<<<<<<< HEAD
 	ret = zram_bvec_rw(zram, &bv, index, offset, op, NULL);
-=======
-	ret = zram_bvec_rw(zram, &bv, index, offset, is_write, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	/*
 	 * If I/O fails, just return error(ie, non-zero) without
@@ -1855,11 +1790,7 @@ out:
 
 	switch (ret) {
 	case 0:
-<<<<<<< HEAD
 		page_endio(page, op_is_write(op), 0);
-=======
-		page_endio(page, is_write, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case 1:
 		ret = 0;
@@ -2124,13 +2055,8 @@ static int zram_add(void)
 	/* Actual capacity set using syfs (/sys/block/zram<id>/disksize */
 	set_capacity(zram->disk, 0);
 	/* zram devices sort of resembles non-rotational disks */
-<<<<<<< HEAD
 	blk_queue_flag_set(QUEUE_FLAG_NONROT, zram->disk->queue);
 	blk_queue_flag_clear(QUEUE_FLAG_ADD_RANDOM, zram->disk->queue);
-=======
-	queue_flag_set_unlocked(QUEUE_FLAG_NONROT, zram->disk->queue);
-	queue_flag_clear_unlocked(QUEUE_FLAG_ADD_RANDOM, zram->disk->queue);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * To ensure that we always get PAGE_SIZE aligned
@@ -2143,11 +2069,7 @@ static int zram_add(void)
 	blk_queue_io_opt(zram->disk->queue, PAGE_SIZE);
 	zram->disk->queue->limits.discard_granularity = PAGE_SIZE;
 	blk_queue_max_discard_sectors(zram->disk->queue, UINT_MAX);
-<<<<<<< HEAD
 	blk_queue_flag_set(QUEUE_FLAG_DISCARD, zram->disk->queue);
-=======
-	queue_flag_set_unlocked(QUEUE_FLAG_DISCARD, zram->disk->queue);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * zram_bio_discard() will clear all logical blocks if logical block
@@ -2235,12 +2157,7 @@ static ssize_t hot_add_show(struct class *class,
 		return ret;
 	return scnprintf(buf, PAGE_SIZE, "%d\n", ret);
 }
-<<<<<<< HEAD
 static CLASS_ATTR_RO(hot_add);
-=======
-static struct class_attribute class_attr_hot_add =
-	__ATTR(hot_add, 0400, hot_add_show, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static ssize_t hot_remove_store(struct class *class,
 			struct class_attribute *attr,

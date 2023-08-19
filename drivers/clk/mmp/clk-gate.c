@@ -103,15 +103,8 @@ struct clk *mmp_clk_register_gate(struct device *dev, const char *name,
 
 	/* allocate the gate */
 	gate = kzalloc(sizeof(*gate), GFP_KERNEL);
-<<<<<<< HEAD
 	if (!gate)
 		return ERR_PTR(-ENOMEM);
-=======
-	if (!gate) {
-		pr_err("%s:%s could not allocate gate clk\n", __func__, name);
-		return ERR_PTR(-ENOMEM);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	init.name = name;
 	init.ops = &mmp_clk_gate_ops;

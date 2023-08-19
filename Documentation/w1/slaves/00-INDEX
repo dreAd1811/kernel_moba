@@ -10,8 +10,5 @@ w1_ds2438
 	- The Maxim/Dallas Semiconductor ds2438 smart battery monitor.
 w1_ds28e04
 	- The Maxim/Dallas Semiconductor ds28e04 eeprom.
-<<<<<<< HEAD
 w1_ds28e17
 	- The Maxim/Dallas Semiconductor ds28e17 1-Wire-to-I2C Master Bridge.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

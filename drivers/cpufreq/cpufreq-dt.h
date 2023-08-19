@@ -12,7 +12,6 @@
 
 #include <linux/types.h>
 
-<<<<<<< HEAD
 struct cpufreq_policy;
 
 struct cpufreq_dt_platform_data {
@@ -20,10 +19,6 @@ struct cpufreq_dt_platform_data {
 
 	int (*suspend)(struct cpufreq_policy *policy);
 	int (*resume)(struct cpufreq_policy *policy);
-=======
-struct cpufreq_dt_platform_data {
-	bool have_governor_per_policy;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #endif /* __CPUFREQ_DT_H__ */

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 config CRYPTO_DEV_STM32_CRC
-=======
-config CRC_DEV_STM32
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tristate "Support for STM32 crc accelerators"
 	depends on ARCH_STM32
 	select CRYPTO_HASH
@@ -10,11 +6,7 @@ config CRC_DEV_STM32
           This enables support for the CRC32 hw accelerator which can be found
 	  on STMicroelectronics STM32 SOC.
 
-<<<<<<< HEAD
 config CRYPTO_DEV_STM32_HASH
-=======
-config HASH_DEV_STM32
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tristate "Support for STM32 hash accelerators"
 	depends on ARCH_STM32
 	depends on HAS_DMA
@@ -26,7 +18,6 @@ config HASH_DEV_STM32
 	help
           This enables support for the HASH hw accelerator which can be found
 	  on STMicroelectronics STM32 SOC.
-<<<<<<< HEAD
 
 config CRYPTO_DEV_STM32_CRYP
 	tristate "Support for STM32 cryp accelerators"
@@ -36,5 +27,3 @@ config CRYPTO_DEV_STM32_CRYP
 	help
           This enables support for the CRYP (AES/DES/TDES) hw accelerator which
 	  can be found on STMicroelectronics STM32 SOC.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

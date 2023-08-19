@@ -136,11 +136,7 @@ static int sun9i_a80_mmc_config_clk_probe(struct platform_device *pdev)
 		return PTR_ERR(data->clk);
 	}
 
-<<<<<<< HEAD
 	data->reset = devm_reset_control_get_exclusive(&pdev->dev, NULL);
-=======
-	data->reset = devm_reset_control_get(&pdev->dev, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(data->reset)) {
 		dev_err(&pdev->dev, "Could not get reset control\n");
 		return PTR_ERR(data->reset);

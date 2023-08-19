@@ -23,12 +23,6 @@
 #ifndef _INTEL_GUC_FWIF_H
 #define _INTEL_GUC_FWIF_H
 
-<<<<<<< HEAD
-=======
-#define GUC_CORE_FAMILY_GEN9		12
-#define GUC_CORE_FAMILY_UNKNOWN		0x7fffffff
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define GUC_CLIENT_PRIORITY_KMD_HIGH	0
 #define GUC_CLIENT_PRIORITY_HIGH	1
 #define GUC_CLIENT_PRIORITY_KMD_NORMAL	2
@@ -59,13 +53,6 @@
 #define WQ_LEN_SHIFT			16
 #define WQ_NO_WCFLUSH_WAIT		(1 << 27)
 #define WQ_PRESENT_WORKLOAD		(1 << 28)
-<<<<<<< HEAD
-=======
-#define WQ_WORKLOAD_SHIFT		29
-#define   WQ_WORKLOAD_GENERAL		(0 << WQ_WORKLOAD_SHIFT)
-#define   WQ_WORKLOAD_GPGPU		(1 << WQ_WORKLOAD_SHIFT)
-#define   WQ_WORKLOAD_TOUCH		(2 << WQ_WORKLOAD_SHIFT)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define WQ_RING_TAIL_SHIFT		20
 #define WQ_RING_TAIL_MAX		0x7FF	/* 2^11 QWords */
@@ -92,31 +79,17 @@
 #define GUC_CTL_ARAT_LOW		2
 
 #define GUC_CTL_DEVICE_INFO		3
-<<<<<<< HEAD
-=======
-#define   GUC_CTL_GTTYPE_SHIFT		0
-#define   GUC_CTL_COREFAMILY_SHIFT	7
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define GUC_CTL_LOG_PARAMS		4
 #define   GUC_LOG_VALID			(1 << 0)
 #define   GUC_LOG_NOTIFY_ON_HALF_FULL	(1 << 1)
 #define   GUC_LOG_ALLOC_IN_MEGABYTE	(1 << 3)
-<<<<<<< HEAD
 #define   GUC_LOG_CRASH_SHIFT		4
 #define   GUC_LOG_CRASH_MASK		(0x1 << GUC_LOG_CRASH_SHIFT)
 #define   GUC_LOG_DPC_SHIFT		6
 #define   GUC_LOG_DPC_MASK	        (0x7 << GUC_LOG_DPC_SHIFT)
 #define   GUC_LOG_ISR_SHIFT		9
 #define   GUC_LOG_ISR_MASK	        (0x7 << GUC_LOG_ISR_SHIFT)
-=======
-#define   GUC_LOG_CRASH_PAGES		1
-#define   GUC_LOG_CRASH_SHIFT		4
-#define   GUC_LOG_DPC_PAGES		7
-#define   GUC_LOG_DPC_SHIFT		6
-#define   GUC_LOG_ISR_PAGES		7
-#define   GUC_LOG_ISR_SHIFT		9
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define   GUC_LOG_BUF_ADDR_SHIFT	12
 
 #define GUC_CTL_PAGE_FAULT_CONTROL	5
@@ -149,11 +122,7 @@
 #define   GUC_PROFILE_ENABLED		(1 << 7)
 #define   GUC_WQ_TRACK_ENABLED		(1 << 8)
 #define   GUC_ADS_ENABLED		(1 << 9)
-<<<<<<< HEAD
 #define   GUC_LOG_DEFAULT_DISABLED	(1 << 10)
-=======
-#define   GUC_DEBUG_RESERVED		(1 << 10)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define   GUC_ADS_ADDR_SHIFT		11
 #define   GUC_ADS_ADDR_MASK		0xfffff800
 
@@ -204,7 +173,6 @@
  */
 
 struct uc_css_header {
-<<<<<<< HEAD
 	u32 module_type;
 	/* header_size includes all non-uCode bits, including css_header, rsa
 	 * key, modulus key and exponent data. */
@@ -231,41 +199,12 @@ struct uc_css_header {
 			u16 sec;
 		};
 		u32 time;
-=======
-	uint32_t module_type;
-	/* header_size includes all non-uCode bits, including css_header, rsa
-	 * key, modulus key and exponent data. */
-	uint32_t header_size_dw;
-	uint32_t header_version;
-	uint32_t module_id;
-	uint32_t module_vendor;
-	union {
-		struct {
-			uint8_t day;
-			uint8_t month;
-			uint16_t year;
-		};
-		uint32_t date;
-	};
-	uint32_t size_dw; /* uCode plus header_size_dw */
-	uint32_t key_size_dw;
-	uint32_t modulus_size_dw;
-	uint32_t exponent_size_dw;
-	union {
-		struct {
-			uint8_t hour;
-			uint8_t min;
-			uint16_t sec;
-		};
-		uint32_t time;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	char username[8];
 	char buildnumber[12];
 	union {
 		struct {
-<<<<<<< HEAD
 			u32 branch_client_version;
 			u32 sw_version;
 	} guc;
@@ -277,19 +216,6 @@ struct uc_css_header {
 	u32 prod_preprod_fw;
 	u32 reserved[12];
 	u32 header_info;
-=======
-			uint32_t branch_client_version;
-			uint32_t sw_version;
-	} guc;
-		struct {
-			uint32_t sw_version;
-			uint32_t reserved;
-	} huc;
-	};
-	uint32_t prod_preprod_fw;
-	uint32_t reserved[12];
-	uint32_t header_info;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } __packed;
 
 struct guc_doorbell_info {
@@ -396,7 +322,6 @@ struct guc_stage_desc {
 	u64 desc_private;
 } __packed;
 
-<<<<<<< HEAD
 /**
  * DOC: CTB based communication
  *
@@ -449,8 +374,6 @@ struct guc_stage_desc {
  * - **flags**, holds various bits to control message handling
  */
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Describes single command transport buffer.
  * Used by both guc-master and clients.
@@ -508,15 +431,11 @@ struct guc_ct_buffer_desc {
 /* Preempt to idle on quantum expiry */
 #define POLICY_PREEMPT_TO_IDLE		(1<<1)
 
-<<<<<<< HEAD
 #define POLICY_MAX_NUM_WI 15
 #define POLICY_DEFAULT_DPC_PROMOTE_TIME_US 500000
 #define POLICY_DEFAULT_EXECUTION_QUANTUM_US 1000000
 #define POLICY_DEFAULT_PREEMPTION_TIME_US 500000
 #define POLICY_DEFAULT_FAULT_TIME_US 250000
-=======
-#define POLICY_MAX_NUM_WI		15
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct guc_policy {
 	/* Time for one workload to execute. (in micro seconds) */
@@ -613,23 +532,6 @@ enum guc_log_buffer_type {
 };
 
 /**
-<<<<<<< HEAD
-=======
- * DOC: GuC Log buffer Layout
- *
- * Page0  +-------------------------------+
- *        |   ISR state header (32 bytes) |
- *        |      DPC state header         |
- *        |   Crash dump state header     |
- * Page1  +-------------------------------+
- *        |           ISR logs            |
- * Page9  +-------------------------------+
- *        |           DPC logs            |
- * Page17 +-------------------------------+
- *        |         Crash Dump logs       |
- *        +-------------------------------+
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Below state structure is used for coordination of retrieval of GuC firmware
  * logs. Separate state is maintained for each log buffer type.
  * read_ptr points to the location where i915 read last in log buffer and
@@ -665,7 +567,6 @@ struct guc_log_buffer_state {
 	u32 version;
 } __packed;
 
-<<<<<<< HEAD
 struct guc_ctx_report {
 	u32 report_return_status;
 	u32 reserved1[64];
@@ -758,21 +659,6 @@ enum intel_guc_action {
 	INTEL_GUC_ACTION_DEFAULT = 0x0,
 	INTEL_GUC_ACTION_REQUEST_PREEMPTION = 0x2,
 	INTEL_GUC_ACTION_REQUEST_ENGINE_RESET = 0x3,
-=======
-union guc_log_control {
-	struct {
-		u32 logging_enabled:1;
-		u32 reserved1:3;
-		u32 verbosity:4;
-		u32 reserved2:24;
-	};
-	u32 value;
-} __packed;
-
-/* This Action will be programmed in C180 - SOFT_SCRATCH_O_REG */
-enum intel_guc_action {
-	INTEL_GUC_ACTION_DEFAULT = 0x0,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INTEL_GUC_ACTION_SAMPLE_FORCEWAKE = 0x6,
 	INTEL_GUC_ACTION_ALLOCATE_DOORBELL = 0x10,
 	INTEL_GUC_ACTION_DEALLOCATE_DOORBELL = 0x20,
@@ -788,7 +674,6 @@ enum intel_guc_action {
 	INTEL_GUC_ACTION_LIMIT
 };
 
-<<<<<<< HEAD
 enum intel_guc_preempt_options {
 	INTEL_GUC_PREEMPT_OPTION_DROP_WORK_Q = 0x4,
 	INTEL_GUC_PREEMPT_OPTION_DROP_SUBMIT_Q = 0x8,
@@ -817,26 +702,6 @@ enum intel_guc_response_status {
 	  ((INTEL_GUC_MSG_TYPE_RESPONSE << INTEL_GUC_MSG_TYPE_SHIFT) | \
 	   (INTEL_GUC_RESPONSE_STATUS_SUCCESS << INTEL_GUC_MSG_CODE_SHIFT)))
 
-=======
-/*
- * The GuC sends its response to a command by overwriting the
- * command in SS0. The response is distinguishable from a command
- * by the fact that all the MASK bits are set. The remaining bits
- * give more detail.
- */
-#define	INTEL_GUC_RECV_MASK	((u32)0xF0000000)
-#define	INTEL_GUC_RECV_IS_RESPONSE(x)	((u32)(x) >= INTEL_GUC_RECV_MASK)
-#define	INTEL_GUC_RECV_STATUS(x)	(INTEL_GUC_RECV_MASK | (x))
-
-/* GUC will return status back to SOFT_SCRATCH_O_REG */
-enum intel_guc_status {
-	INTEL_GUC_STATUS_SUCCESS = INTEL_GUC_RECV_STATUS(0x0),
-	INTEL_GUC_STATUS_ALLOCATE_DOORBELL_FAIL = INTEL_GUC_RECV_STATUS(0x10),
-	INTEL_GUC_STATUS_DEALLOCATE_DOORBELL_FAIL = INTEL_GUC_RECV_STATUS(0x20),
-	INTEL_GUC_STATUS_GENERIC_FAIL = INTEL_GUC_RECV_STATUS(0x0000F000)
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* This action will be programmed in C1BC - SOFT_SCRATCH_15_REG */
 enum intel_guc_recv_message {
 	INTEL_GUC_RECV_MSG_CRASH_DUMP_POSTED = BIT(1),

@@ -1,11 +1,7 @@
 /*
  * zc030x registers
  *
-<<<<<<< HEAD
  * Copyright (c) 2008 Mauro Carvalho Chehab <mchehab@kernel.org>
-=======
- * Copyright (c) 2008 Mauro Carvalho Chehab <mchehab@infradead.org>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * The register aliases used here came from this driver:
  *	http://zc0302.sourceforge.net/zc0302.php

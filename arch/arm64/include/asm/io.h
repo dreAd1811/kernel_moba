@@ -107,18 +107,10 @@ static inline u64 __raw_readq_no_log(const volatile void __iomem *addr)
 
 #define __raw_write_logged(v, a, _t) ({ \
 	int _ret; \
-<<<<<<< HEAD
 	void *_addr = (void *)(a); \
 	_ret = uncached_logk(LOGK_WRITEL, _addr); \
 	ETB_WAYPOINT; \
 	__raw_write##_t##_no_log((v), _addr); \
-=======
-	volatile void __iomem *_a = (a); \
-	void *_addr = (void __force *)(_a); \
-	_ret = uncached_logk(LOGK_WRITEL, _addr); \
-	ETB_WAYPOINT; \
-	__raw_write##_t##_no_log((v), _a); \
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (_ret) \
 		LOG_BARRIER; \
 	})
@@ -130,20 +122,11 @@ static inline u64 __raw_readq_no_log(const volatile void __iomem *addr)
 
 #define __raw_read_logged(a, _l, _t)    ({ \
 	_t __a; \
-<<<<<<< HEAD
 	void *_addr = (void *)(a); \
 	int _ret; \
 	_ret = uncached_logk(LOGK_READL, _addr); \
 	ETB_WAYPOINT; \
 	__a = __raw_read##_l##_no_log(_addr); \
-=======
-	const volatile void __iomem *_a = (a); \
-	void *_addr = (void __force *)(_a); \
-	int _ret; \
-	_ret = uncached_logk(LOGK_READL, _addr); \
-	ETB_WAYPOINT; \
-	__a = __raw_read##_l##_no_log(_a); \
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (_ret) \
 		LOG_BARRIER; \
 	__a; \
@@ -284,7 +267,6 @@ extern void __iomem *ioremap_cache(phys_addr_t phys_addr, size_t size);
 /*
  * io{read,write}{16,32,64}be() macros
  */
-<<<<<<< HEAD
 #define ioread16be(p)		({ __u16 __v = be16_to_cpu((__force __be16)__raw_readw_no_log(p)); __iormb(__v); __v; })
 #define ioread32be(p)		({ __u32 __v = be32_to_cpu((__force __be32)__raw_readl_no_log(p)); __iormb(__v); __v; })
 #define ioread64be(p)		({ __u64 __v = be64_to_cpu((__force __be64)__raw_readq_no_log(p)); __iormb(__v); __v; })
@@ -292,15 +274,6 @@ extern void __iomem *ioremap_cache(phys_addr_t phys_addr, size_t size);
 #define iowrite16be(v,p)	({ __iowmb(); __raw_writew_no_log((__force __u16)cpu_to_be16(v), p); })
 #define iowrite32be(v,p)	({ __iowmb(); __raw_writel_no_log((__force __u32)cpu_to_be32(v), p); })
 #define iowrite64be(v,p)	({ __iowmb(); __raw_writeq_no_log((__force __u64)cpu_to_be64(v), p); })
-=======
-#define ioread16be(p)		({ __u16 __v = be16_to_cpu((__force __be16)__raw_readw(p)); __iormb(__v); __v; })
-#define ioread32be(p)		({ __u32 __v = be32_to_cpu((__force __be32)__raw_readl(p)); __iormb(__v); __v; })
-#define ioread64be(p)		({ __u64 __v = be64_to_cpu((__force __be64)__raw_readq(p)); __iormb(__v); __v; })
-
-#define iowrite16be(v,p)	({ __iowmb(); __raw_writew((__force __u16)cpu_to_be16(v), p); })
-#define iowrite32be(v,p)	({ __iowmb(); __raw_writel((__force __u32)cpu_to_be32(v), p); })
-#define iowrite64be(v,p)	({ __iowmb(); __raw_writeq((__force __u64)cpu_to_be64(v), p); })
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm-generic/io.h>
 

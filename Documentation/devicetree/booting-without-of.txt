@@ -1309,11 +1309,7 @@ number and level/sense information. All interrupt children in an
 OpenPIC interrupt domain use 2 cells per interrupt in their interrupts
 property.
 
-<<<<<<< HEAD
 The PCI bus binding specifies a #interrupt-cells value of 1 to encode
-=======
-The PCI bus binding specifies a #interrupt-cell value of 1 to encode
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 which interrupt pin (INTA,INTB,INTC,INTD) is used.
 
 2) interrupt-parent property

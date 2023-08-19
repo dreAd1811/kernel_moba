@@ -157,11 +157,7 @@ struct hinic_cmdq {
 struct hinic_cmdqs {
 	struct hinic_hwif       *hwif;
 
-<<<<<<< HEAD
 	struct dma_pool         *cmdq_buf_pool;
-=======
-	struct pci_pool         *cmdq_buf_pool;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct hinic_wq         *saved_wqs;
 

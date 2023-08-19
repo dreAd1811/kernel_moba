@@ -1,25 +1,11 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Copyright (C) 2013-2017 Texas Instruments Incorporated - http://www.ti.com/
-=======
-/*
- * Copyright 2013 Texas Instruments, Inc.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <dt-bindings/interrupt-controller/arm-gic.h>
 #include <dt-bindings/gpio/gpio.h>
 
-<<<<<<< HEAD
-=======
-#include "skeleton.dtsi"
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 / {
 	compatible = "ti,keystone";
 	model = "Texas Instruments Keystone 2 SoC";
@@ -34,7 +20,6 @@
 		spi2 = &spi2;
 	};
 
-<<<<<<< HEAD
 	chosen { };
 
 	memory: memory@80000000 {
@@ -43,13 +28,6 @@
 	};
 
 	gic: interrupt-controller@2561000 {
-=======
-	memory {
-		reg = <0x00000000 0x80000000 0x00000000 0x40000000>;
-	};
-
-	gic: interrupt-controller {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "arm,gic-400", "arm,cortex-a15-gic";
 		#interrupt-cells = <3>;
 		interrupt-controller;
@@ -90,11 +68,7 @@
 		cpu_on		= <0x84000003>;
 	};
 
-<<<<<<< HEAD
 	soc0: soc@0 {
-=======
-	soc {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		#address-cells = <1>;
 		#size-cells = <1>;
 		compatible = "ti,keystone","simple-bus";
@@ -102,25 +76,16 @@
 		ranges = <0x0 0x0 0x0 0xc0000000>;
 		dma-ranges = <0x80000000 0x8 0x00000000 0x80000000>;
 
-<<<<<<< HEAD
 		pllctrl: pll-controller@2310000 {
-=======
-		pllctrl: pll-controller@02310000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "ti,keystone-pllctrl", "syscon";
 			reg = <0x02310000 0x200>;
 		};
 
-<<<<<<< HEAD
 		psc: power-sleep-controller@2350000 {
-=======
-		psc: power-sleep-controller@02350000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "syscon", "simple-mfd";
 			reg = <0x02350000 0x1000>;
 		};
 
-<<<<<<< HEAD
 		devctrl: device-state-control@2620000 {
 			compatible = "ti,keystone-devctrl", "syscon", "simple-mfd";
 			reg = <0x02620000 0x1000>;
@@ -144,27 +109,11 @@
 				ti,syscon-dev = <&devctrl 0x328>;
 				ti,wdt-list = <0>;
 			};
-=======
-		devctrl: device-state-control@02620000 {
-			compatible = "ti,keystone-devctrl", "syscon";
-			reg = <0x02620000 0x1000>;
-		};
-
-		rstctrl: reset-controller {
-			compatible = "ti,keystone-reset";
-			ti,syscon-pll = <&pllctrl 0xe4>;
-			ti,syscon-dev = <&devctrl 0x328>;
-			ti,wdt-list = <0>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		/include/ "keystone-clocks.dtsi"
 
-<<<<<<< HEAD
 		uart0: serial@2530c00 {
-=======
-		uart0: serial@02530c00 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "ti,da830-uart", "ns16550a";
 			current-speed = <115200>;
 			reg-shift = <2>;
@@ -174,11 +123,7 @@
 			interrupts = <GIC_SPI 277 IRQ_TYPE_EDGE_RISING>;
 		};
 
-<<<<<<< HEAD
 		uart1:	serial@2531000 {
-=======
-		uart1:	serial@02531000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "ti,da830-uart", "ns16550a";
 			current-speed = <115200>;
 			reg-shift = <2>;
@@ -280,11 +225,7 @@
 			};
 		};
 
-<<<<<<< HEAD
 		wdt: wdt@22f0080 {
-=======
-		wdt: wdt@022f0080 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "ti,keystone-wdt","ti,davinci-wdt";
 			reg = <0x022f0080 0x80>;
 			clocks = <&clkwdtimer0>;
@@ -354,17 +295,6 @@
 				  1 0 0x21000A00 0x00000100>;
 		};
 
-<<<<<<< HEAD
-=======
-		kirq0: keystone_irq@26202a0 {
-			compatible = "ti,keystone-irq";
-			interrupts = <GIC_SPI 4 IRQ_TYPE_EDGE_RISING>;
-			interrupt-controller;
-			#interrupt-cells = <1>;
-			ti,syscon-dev = <&devctrl 0x2a0>;
-		};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pcie0: pcie@21800000 {
 			compatible = "ti,keystone-pcie", "snps,dw-pcie";
 			clocks = <&clkpcie>;
@@ -413,7 +343,6 @@
 					<GIC_SPI 29 IRQ_TYPE_EDGE_RISING>;
 			};
 		};
-<<<<<<< HEAD
 
 		emif: emif@21010000 {
 			compatible = "ti,emif-keystone";
@@ -421,7 +350,5 @@
 			interrupts = <GIC_SPI 448 IRQ_TYPE_EDGE_RISING>;
 			interrupt-parent = <&gic>;
 		};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };

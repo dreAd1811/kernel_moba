@@ -292,7 +292,6 @@ static struct miscdevice rng_miscdev = {
 	.groups		= rng_dev_groups,
 };
 
-<<<<<<< HEAD
 static int enable_best_rng(void)
 {
 	int ret = -ENODEV;
@@ -316,23 +315,16 @@ static int enable_best_rng(void)
 	return ret;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static ssize_t hwrng_attr_current_store(struct device *dev,
 					struct device_attribute *attr,
 					const char *buf, size_t len)
 {
-<<<<<<< HEAD
 	int err = -ENODEV;
-=======
-	int err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct hwrng *rng;
 
 	err = mutex_lock_interruptible(&rng_mutex);
 	if (err)
 		return -ERESTARTSYS;
-<<<<<<< HEAD
 
 	if (sysfs_streq(buf, "")) {
 		err = enable_best_rng();
@@ -346,18 +338,6 @@ static ssize_t hwrng_attr_current_store(struct device *dev,
 		}
 	}
 
-=======
-	err = -ENODEV;
-	list_for_each_entry(rng, &rng_list, list) {
-		if (sysfs_streq(rng->name, buf)) {
-			err = 0;
-			cur_rng_set_by_user = 1;
-			if (rng != current_rng)
-				err = set_current_rng(rng);
-			break;
-		}
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&rng_mutex);
 
 	return err ? : len;
@@ -469,11 +449,7 @@ static void start_khwrngd(void)
 {
 	hwrng_fill = kthread_run(hwrng_fillfn, NULL, "hwrng");
 	if (IS_ERR(hwrng_fill)) {
-<<<<<<< HEAD
 		pr_err("hwrng_fill thread creation failed\n");
-=======
-		pr_err("hwrng_fill thread creation failed");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		hwrng_fill = NULL;
 	}
 }
@@ -540,30 +516,16 @@ EXPORT_SYMBOL_GPL(hwrng_register);
 
 void hwrng_unregister(struct hwrng *rng)
 {
-<<<<<<< HEAD
 	int err;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&rng_mutex);
 
 	list_del(&rng->list);
 	if (current_rng == rng) {
-<<<<<<< HEAD
 		err = enable_best_rng();
 		if (err) {
 			drop_current_rng();
 			cur_rng_set_by_user = 0;
-=======
-		drop_current_rng();
-		cur_rng_set_by_user = 0;
-		/* rng_list is sorted by quality, use the best (=first) one */
-		if (!list_empty(&rng_list)) {
-			struct hwrng *new_rng;
-
-			new_rng = list_entry(rng_list.next, struct hwrng, list);
-			set_current_rng(new_rng);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 

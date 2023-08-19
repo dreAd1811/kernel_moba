@@ -1,42 +1,20 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  *  Copyright (C) 2011 - 2014 Xilinx
  *  Copyright (C) 2012 National Instruments Corp.
-=======
-/*
- *  Copyright (C) 2011 - 2014 Xilinx
- *  Copyright (C) 2012 National Instruments Corp.
- *
- * This software is licensed under the terms of the GNU General Public
- * License version 2, as published by the Free Software Foundation, and
- * may be copied, distributed, and modified under those terms.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 /dts-v1/;
 #include "zynq-7000.dtsi"
 
 / {
-<<<<<<< HEAD
 	model = "Xilinx ZC702 board";
-=======
-	model = "Zynq ZC702 Development Board";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	compatible = "xlnx,zynq-zc702", "xlnx,zynq-7000";
 
 	aliases {
 		ethernet0 = &gem0;
 		i2c0 = &i2c0;
 		serial0 = &uart1;
-<<<<<<< HEAD
 		mmc0 = &sdhci0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	memory@0 {
@@ -51,11 +29,6 @@
 
 	gpio-keys {
 		compatible = "gpio-keys";
-<<<<<<< HEAD
-=======
-		#address-cells = <1>;
-		#size-cells = <0>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		autorepeat;
 		sw14 {
 			label = "sw14";
@@ -130,11 +103,7 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_i2c0_default>;
 
-<<<<<<< HEAD
 	i2c-mux@74 {
-=======
-	i2cswitch@74 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "nxp,pca9548";
 		#address-cells = <1>;
 		#size-cells = <0>;
@@ -174,11 +143,7 @@
 			#size-cells = <0>;
 			reg = <2>;
 			eeprom@54 {
-<<<<<<< HEAD
 				compatible = "atmel,24c08";
-=======
-				compatible = "at,24c08";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				reg = <0x54>;
 			};
 		};

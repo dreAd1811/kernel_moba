@@ -19,10 +19,6 @@
 #define _XTENSA_VECTORS_H
 
 #include <variant/core.h>
-<<<<<<< HEAD
-=======
-#include <platform/hardware.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/kmem_layout.h>
 
 #if XCHAL_HAVE_PTP_MMU

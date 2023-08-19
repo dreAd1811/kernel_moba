@@ -36,10 +36,7 @@
 #include <asm/cdmm.h>
 #include <asm/cpu.h>
 #include <asm/debug.h>
-<<<<<<< HEAD
 #include <asm/dma-coherence.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/sections.h>
 #include <asm/setup.h>
 #include <asm/smp-ops.h>
@@ -79,16 +76,11 @@ static char __initdata builtin_cmdline[COMMAND_LINE_SIZE] = CONFIG_CMDLINE;
  * mips_io_port_base is the begin of the address space to which x86 style
  * I/O ports are mapped.
  */
-<<<<<<< HEAD
 const unsigned long mips_io_port_base = -1;
-=======
-unsigned long mips_io_port_base = -1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 EXPORT_SYMBOL(mips_io_port_base);
 
 static struct resource code_resource = { .name = "Kernel code", };
 static struct resource data_resource = { .name = "Kernel data", };
-<<<<<<< HEAD
 static struct resource bss_resource = { .name = "Kernel bss", };
 
 static void *detect_magic __initdata = detect_memory_region;
@@ -98,11 +90,6 @@ unsigned long ARCH_PFN_OFFSET;
 EXPORT_SYMBOL(ARCH_PFN_OFFSET);
 #endif
 
-=======
-
-static void *detect_magic __initdata = detect_memory_region;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void __init add_memory_region(phys_addr_t start, phys_addr_t size, long type)
 {
 	int x = boot_mem_map.nr_map;
@@ -112,11 +99,7 @@ void __init add_memory_region(phys_addr_t start, phys_addr_t size, long type)
 	 * If the region reaches the top of the physical address space, adjust
 	 * the size slightly so that (start + size) doesn't overflow
 	 */
-<<<<<<< HEAD
 	if (start + size - 1 == PHYS_ADDR_MAX)
-=======
-	if (start + size - 1 == (phys_addr_t)ULLONG_MAX)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		--size;
 
 	/* Sanity check */
@@ -178,12 +161,8 @@ void __init detect_memory_region(phys_addr_t start, phys_addr_t sz_min, phys_add
 	add_memory_region(start, size, BOOT_MEM_RAM);
 }
 
-<<<<<<< HEAD
 static bool __init __maybe_unused memory_region_available(phys_addr_t start,
 							  phys_addr_t size)
-=======
-bool __init memory_region_available(phys_addr_t start, phys_addr_t size)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i;
 	bool in_ram = false, free = true;
@@ -403,11 +382,7 @@ static void __init bootmem_init(void)
 	unsigned long reserved_end;
 	unsigned long mapstart = ~0UL;
 	unsigned long bootmap_size;
-<<<<<<< HEAD
 	phys_addr_t ramstart = PHYS_ADDR_MAX;
-=======
-	phys_addr_t ramstart = (phys_addr_t)ULLONG_MAX;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool bootmap_valid = false;
 	int i;
 
@@ -472,15 +447,12 @@ static void __init bootmem_init(void)
 		mapstart = max(reserved_end, start);
 	}
 
-<<<<<<< HEAD
 	if (min_low_pfn >= max_low_pfn)
 		panic("Incorrect memory mapping !!!");
 
 #ifdef CONFIG_MIPS_AUTO_PFN_OFFSET
 	ARCH_PFN_OFFSET = PFN_UP(ramstart);
 #else
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Reserve any memory between the start of RAM and PHYS_OFFSET
 	 */
@@ -488,28 +460,16 @@ static void __init bootmem_init(void)
 		add_memory_region(PHYS_OFFSET, ramstart - PHYS_OFFSET,
 				  BOOT_MEM_RESERVED);
 
-<<<<<<< HEAD
-=======
-	if (min_low_pfn >= max_low_pfn)
-		panic("Incorrect memory mapping !!!");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (min_low_pfn > ARCH_PFN_OFFSET) {
 		pr_info("Wasting %lu bytes for tracking %lu unused pages\n",
 			(min_low_pfn - ARCH_PFN_OFFSET) * sizeof(struct page),
 			min_low_pfn - ARCH_PFN_OFFSET);
-<<<<<<< HEAD
 	} else if (ARCH_PFN_OFFSET - min_low_pfn > 0UL) {
-=======
-	} else if (min_low_pfn < ARCH_PFN_OFFSET) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_info("%lu free pages won't be used\n",
 			ARCH_PFN_OFFSET - min_low_pfn);
 	}
 	min_low_pfn = ARCH_PFN_OFFSET;
-<<<<<<< HEAD
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Determine low and high memory ranges
@@ -886,7 +846,6 @@ static void __init arch_mem_init(char **cmdline_p)
 	struct memblock_region *reg;
 	extern void plat_mem_setup(void);
 
-<<<<<<< HEAD
 	/*
 	 * Initialize boot_command_line to an innocuous but non-empty string in
 	 * order to prevent early_init_dt_scan_chosen() from copying
@@ -896,8 +855,6 @@ static void __init arch_mem_init(char **cmdline_p)
 	 */
 	strlcpy(boot_command_line, " ", COMMAND_LINE_SIZE);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* call board setup routine */
 	plat_mem_setup();
 
@@ -976,21 +933,7 @@ static void __init arch_mem_init(char **cmdline_p)
 				BOOTMEM_DEFAULT);
 #endif
 	device_tree_init();
-<<<<<<< HEAD
 	sparse_init();
-=======
-
-	/*
-	 * In order to reduce the possibility of kernel panic when failed to
-	 * get IO TLB memory under CONFIG_SWIOTLB, it is better to allocate
-	 * low memory as small as possible before plat_swiotlb_setup(), so
-	 * make sparse_init() using top-down allocation.
-	 */
-	memblock_set_bottom_up(false);
-	sparse_init();
-	memblock_set_bottom_up(true);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	plat_swiotlb_setup();
 
 	dma_contiguous_reserve(PFN_PHYS(max_low_pfn));
@@ -1014,11 +957,8 @@ static void __init resource_init(void)
 	code_resource.end = __pa_symbol(&_etext) - 1;
 	data_resource.start = __pa_symbol(&_etext);
 	data_resource.end = __pa_symbol(&_edata) - 1;
-<<<<<<< HEAD
 	bss_resource.start = __pa_symbol(&__bss_start);
 	bss_resource.end = __pa_symbol(&__bss_stop) - 1;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < boot_mem_map.nr_map; i++) {
 		struct resource *res;
@@ -1058,10 +998,7 @@ static void __init resource_init(void)
 		 */
 		request_resource(res, &code_resource);
 		request_resource(res, &data_resource);
-<<<<<<< HEAD
 		request_resource(res, &bss_resource);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		request_crashkernel(res);
 	}
 }
@@ -1137,7 +1074,6 @@ static int __init debugfs_mips(void)
 }
 arch_initcall(debugfs_mips);
 #endif
-<<<<<<< HEAD
 
 #if defined(CONFIG_DMA_MAYBE_COHERENT) && !defined(CONFIG_DMA_PERDEV_COHERENT)
 /* User defined DMA coherency from command line. */
@@ -1161,5 +1097,3 @@ static int __init setnocoherentio(char *str)
 }
 early_param("nocoherentio", setnocoherentio);
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

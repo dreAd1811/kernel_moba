@@ -21,11 +21,7 @@ http://www.t10.org/members/w_pqi2.htm
 
 Supported devices:
 ------------------
-<<<<<<< HEAD
 <Controller names to be added as they become publicly available.>
-=======
-<Controller names to be added as they become publically available.>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 smartpqi specific entries in /sys
 -----------------------------

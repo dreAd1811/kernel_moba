@@ -223,11 +223,6 @@ struct dvb_frontend_parametersContext {
 
 #define FE_CALLBACK_TIME_NEVER 0xffffffff
 
-<<<<<<< HEAD
-=======
-#define ABS(x) ((x < 0) ? (-x) : (x))
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DATA_BUS_ACCESS_MODE_8BIT                 0x01
 #define DATA_BUS_ACCESS_MODE_16BIT                0x02
 #define DATA_BUS_ACCESS_MODE_NO_ADDRESS_INCREMENT 0x10

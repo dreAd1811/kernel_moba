@@ -1,16 +1,9 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * QorIQ FMan v3 device tree
  *
  * Copyright 2012-2015 Freescale Semiconductor Inc.
  *
-<<<<<<< HEAD
-=======
- * SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 fman0: fman@1a00000 {
@@ -18,22 +11,14 @@ fman0: fman@1a00000 {
 	#size-cells = <1>;
 	cell-index = <0>;
 	compatible = "fsl,fman";
-<<<<<<< HEAD
 	ranges = <0x0 0x0 0x1a00000 0xfe000>;
 	reg = <0x0 0x1a00000 0x0 0xfe000>;
-=======
-	ranges = <0x0 0x0 0x1a00000 0x100000>;
-	reg = <0x0 0x1a00000 0x0 0x100000>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	interrupts = <GIC_SPI 44 IRQ_TYPE_LEVEL_HIGH>,
 		     <GIC_SPI 45 IRQ_TYPE_LEVEL_HIGH>;
 	clocks = <&clockgen 3 0>;
 	clock-names = "fmanclk";
 	fsl,qman-channel-range = <0x800 0x10>;
-<<<<<<< HEAD
 	ptimer-handle = <&ptp_timer0>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	muram@0 {
 		compatible = "fsl,fman-muram";
@@ -89,7 +74,6 @@ fman0: fman@1a00000 {
 		compatible = "fsl,fman-memac-mdio", "fsl,fman-xmdio";
 		reg = <0xfd000 0x1000>;
 	};
-<<<<<<< HEAD
 };
 
 ptp_timer0: ptp-timer@1afe000 {
@@ -97,11 +81,4 @@ ptp_timer0: ptp-timer@1afe000 {
 	reg = <0x0 0x1afe000 0x0 0x1000>;
 	interrupts = <GIC_SPI 44 IRQ_TYPE_LEVEL_HIGH>;
 	clocks = <&clockgen 3 0>;
-=======
-
-	ptp_timer0: ptp-timer@fe000 {
-		compatible = "fsl,fman-ptp-timer";
-		reg = <0xfe000 0x1000>;
-	};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

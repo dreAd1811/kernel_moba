@@ -256,11 +256,7 @@ int pxa3xx_u2d_start_hc(struct usb_bus *host)
 	if (!u2d)
 		return 0;
 
-<<<<<<< HEAD
 	clk_prepare_enable(u2d->clk);
-=======
-	clk_enable(u2d->clk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (cpu_is_pxa310()) {
 		pxa310_u2d_setup_otg_hc();
@@ -280,11 +276,7 @@ void pxa3xx_u2d_stop_hc(struct usb_bus *host)
 	if (cpu_is_pxa310())
 		pxa310_stop_otg_hc();
 
-<<<<<<< HEAD
 	clk_disable_unprepare(u2d->clk);
-=======
-	clk_disable(u2d->clk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(pxa3xx_u2d_stop_hc);
 
@@ -339,11 +331,7 @@ static int pxa3xx_u2d_probe(struct platform_device *pdev)
 			goto err_free_plat;
 	}
 
-<<<<<<< HEAD
 	platform_set_drvdata(pdev, u2d);
-=======
-	platform_set_drvdata(pdev, &u2d);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 

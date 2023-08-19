@@ -123,10 +123,7 @@ struct lance_private {
 	int burst_sizes;	      /* ledma SBus burst sizes */
 #endif
 	struct timer_list         multicast_timer;
-<<<<<<< HEAD
 	struct net_device	  *dev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define LANCE_ADDR(x) ((int)(x) & ~0xff000000)
@@ -642,7 +639,6 @@ static void lance_set_multicast(struct net_device *dev)
 	netif_wake_queue(dev);
 }
 
-<<<<<<< HEAD
 static void lance_set_multicast_retry(struct timer_list *t)
 {
 	struct lance_private *lp = from_timer(lp, t, multicast_timer);
@@ -650,8 +646,6 @@ static void lance_set_multicast_retry(struct timer_list *t)
 	lance_set_multicast(lp->dev);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int a2065_init_one(struct zorro_dev *z,
 			  const struct zorro_device_id *ent);
 static void a2065_remove_one(struct zorro_dev *z);
@@ -742,23 +736,13 @@ static int a2065_init_one(struct zorro_dev *z,
 	priv->lance_log_tx_bufs = LANCE_LOG_TX_BUFFERS;
 	priv->rx_ring_mod_mask = RX_RING_MOD_MASK;
 	priv->tx_ring_mod_mask = TX_RING_MOD_MASK;
-<<<<<<< HEAD
 	priv->dev = dev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev->netdev_ops = &lance_netdev_ops;
 	dev->watchdog_timeo = 5*HZ;
 	dev->dma = 0;
 
-<<<<<<< HEAD
 	timer_setup(&priv->multicast_timer, lance_set_multicast_retry, 0);
-=======
-	init_timer(&priv->multicast_timer);
-	priv->multicast_timer.data = (unsigned long) dev;
-	priv->multicast_timer.function =
-		(void (*)(unsigned long))lance_set_multicast;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = register_netdev(dev);
 	if (err) {

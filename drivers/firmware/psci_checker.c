@@ -77,31 +77,6 @@ static int psci_ops_check(void)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-static int find_clusters(const struct cpumask *cpus,
-			 const struct cpumask **clusters)
-{
-	unsigned int nb = 0;
-	cpumask_var_t tmp;
-
-	if (!alloc_cpumask_var(&tmp, GFP_KERNEL))
-		return -ENOMEM;
-	cpumask_copy(tmp, cpus);
-
-	while (!cpumask_empty(tmp)) {
-		const struct cpumask *cluster =
-			topology_core_cpumask(cpumask_any(tmp));
-
-		clusters[nb++] = cluster;
-		cpumask_andnot(tmp, tmp, cluster);
-	}
-
-	free_cpumask_var(tmp);
-	return nb;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * offlined_cpus is a temporary array but passing it as an argument avoids
  * multiple allocations.
@@ -169,7 +144,6 @@ static unsigned int down_and_up_cpus(const struct cpumask *cpus,
 	return err;
 }
 
-<<<<<<< HEAD
 static void free_cpu_groups(int num, cpumask_var_t **pcpu_groups)
 {
 	int i;
@@ -230,31 +204,6 @@ static int hotplug_tests(void)
 		goto out_free_cpu_groups;
 
 	err = 0;
-=======
-static int hotplug_tests(void)
-{
-	int err;
-	cpumask_var_t offlined_cpus;
-	int i, nb_cluster;
-	const struct cpumask **clusters;
-	char *page_buf;
-
-	err = -ENOMEM;
-	if (!alloc_cpumask_var(&offlined_cpus, GFP_KERNEL))
-		return err;
-	/* We may have up to nb_available_cpus clusters. */
-	clusters = kmalloc_array(nb_available_cpus, sizeof(*clusters),
-				 GFP_KERNEL);
-	if (!clusters)
-		goto out_free_cpus;
-	page_buf = (char *)__get_free_page(GFP_KERNEL);
-	if (!page_buf)
-		goto out_free_clusters;
-
-	err = 0;
-	nb_cluster = find_clusters(cpu_online_mask, clusters);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Of course the last CPU cannot be powered down and cpu_down() should
 	 * refuse doing that.
@@ -263,7 +212,6 @@ static int hotplug_tests(void)
 	err += down_and_up_cpus(cpu_online_mask, offlined_cpus);
 
 	/*
-<<<<<<< HEAD
 	 * Take down CPUs by cpu group this time. When the last CPU is turned
 	 * off, the cpu group itself should shut down.
 	 */
@@ -280,36 +228,12 @@ static int hotplug_tests(void)
 	free_page((unsigned long)page_buf);
 out_free_cpu_groups:
 	free_cpu_groups(nb_cpu_group, &cpu_groups);
-=======
-	 * Take down CPUs by cluster this time. When the last CPU is turned
-	 * off, the cluster itself should shut down.
-	 */
-	for (i = 0; i < nb_cluster; ++i) {
-		int cluster_id =
-			topology_physical_package_id(cpumask_any(clusters[i]));
-		ssize_t len = cpumap_print_to_pagebuf(true, page_buf,
-						      clusters[i]);
-		/* Remove trailing newline. */
-		page_buf[len - 1] = '\0';
-		pr_info("Trying to turn off and on again cluster %d "
-			"(CPUs %s)\n", cluster_id, page_buf);
-		err += down_and_up_cpus(clusters[i], offlined_cpus);
-	}
-
-	free_page((unsigned long)page_buf);
-out_free_clusters:
-	kfree(clusters);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out_free_cpus:
 	free_cpumask_var(offlined_cpus);
 	return err;
 }
 
-<<<<<<< HEAD
 static void dummy_callback(struct timer_list *unused) {}
-=======
-static void dummy_callback(unsigned long ignored) {}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int suspend_cpu(int index, bool broadcast)
 {
@@ -376,11 +300,7 @@ static int suspend_test_thread(void *arg)
 	pr_info("CPU %d entering suspend cycles, states 1 through %d\n",
 		cpu, drv->state_count - 1);
 
-<<<<<<< HEAD
 	timer_setup_on_stack(&wakeup_timer, dummy_callback, 0);
-=======
-	setup_timer_on_stack(&wakeup_timer, dummy_callback, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < NUM_SUSPEND_CYCLE; ++i) {
 		int index;
 		/*
@@ -433,10 +353,7 @@ static int suspend_test_thread(void *arg)
 	 * later.
 	 */
 	del_timer(&wakeup_timer);
-<<<<<<< HEAD
 	destroy_timer_on_stack(&wakeup_timer);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (atomic_dec_return_relaxed(&nb_active_threads) == 0)
 		complete(&suspend_threads_done);
@@ -449,26 +366,16 @@ static int suspend_test_thread(void *arg)
 	for (;;) {
 		/* Needs to be set first to avoid missing a wakeup. */
 		set_current_state(TASK_INTERRUPTIBLE);
-<<<<<<< HEAD
 		if (kthread_should_park())
 			break;
-=======
-		if (kthread_should_stop()) {
-			__set_current_state(TASK_RUNNING);
-			break;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		schedule();
 	}
 
 	pr_info("CPU %d suspend test results: success %d, shallow states %d, errors %d\n",
 		cpu, nb_suspend, nb_shallow_sleep, nb_err);
 
-<<<<<<< HEAD
 	kthread_parkme();
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return nb_err;
 }
 
@@ -533,15 +440,10 @@ static int suspend_tests(void)
 
 
 	/* Stop and destroy all threads, get return status. */
-<<<<<<< HEAD
 	for (i = 0; i < nb_threads; ++i) {
 		err += kthread_park(threads[i]);
 		err += kthread_stop(threads[i]);
 	}
-=======
-	for (i = 0; i < nb_threads; ++i)
-		err += kthread_stop(threads[i]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  out:
 	cpuidle_resume_and_unlock();
 	kfree(threads);

@@ -107,11 +107,7 @@ static int tonga_ih_irq_init(struct amdgpu_device *adev)
 	tonga_ih_disable_interrupts(adev);
 
 	/* setup interrupt control */
-<<<<<<< HEAD
 	WREG32(mmINTERRUPT_CNTL2, adev->dummy_page_addr >> 8);
-=======
-	WREG32(mmINTERRUPT_CNTL2, adev->dummy_page.addr >> 8);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	interrupt_cntl = RREG32(mmINTERRUPT_CNTL);
 	/* INTERRUPT_CNTL__IH_DUMMY_RD_OVERRIDE_MASK=0 - dummy read disabled with msi, enabled without msi
 	 * INTERRUPT_CNTL__IH_DUMMY_RD_OVERRIDE_MASK=1 - dummy read controlled by IH_DUMMY_RD_EN
@@ -223,7 +219,6 @@ static u32 tonga_ih_get_wptr(struct amdgpu_device *adev)
 }
 
 /**
-<<<<<<< HEAD
  * tonga_ih_prescreen_iv - prescreen an interrupt vector
  *
  * @adev: amdgpu_device pointer
@@ -252,8 +247,6 @@ static bool tonga_ih_prescreen_iv(struct amdgpu_device *adev)
 }
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * tonga_ih_decode_iv - decode an interrupt vector
  *
  * @adev: amdgpu_device pointer
@@ -277,13 +270,8 @@ static void tonga_ih_decode_iv(struct amdgpu_device *adev,
 	entry->src_id = dw[0] & 0xff;
 	entry->src_data[0] = dw[1] & 0xfffffff;
 	entry->ring_id = dw[2] & 0xff;
-<<<<<<< HEAD
 	entry->vmid = (dw[2] >> 8) & 0xff;
 	entry->pasid = (dw[2] >> 16) & 0xffff;
-=======
-	entry->vm_id = (dw[2] >> 8) & 0xff;
-	entry->pas_id = (dw[2] >> 16) & 0xffff;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* wptr/rptr are in bytes! */
 	adev->irq.ih.rptr += 16;
@@ -518,10 +506,7 @@ static const struct amd_ip_funcs tonga_ih_ip_funcs = {
 
 static const struct amdgpu_ih_funcs tonga_ih_funcs = {
 	.get_wptr = tonga_ih_get_wptr,
-<<<<<<< HEAD
 	.prescreen_iv = tonga_ih_prescreen_iv,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.decode_iv = tonga_ih_decode_iv,
 	.set_rptr = tonga_ih_set_rptr
 };

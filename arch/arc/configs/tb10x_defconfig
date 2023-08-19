@@ -43,10 +43,6 @@ CONFIG_IP_MULTICAST=y
 # CONFIG_IPV6 is not set
 # CONFIG_WIRELESS is not set
 CONFIG_DEVTMPFS=y
-<<<<<<< HEAD
-=======
-# CONFIG_FIRMWARE_IN_KERNEL is not set
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 CONFIG_NETDEVICES=y
 # CONFIG_NET_CADENCE is not set
 # CONFIG_NET_VENDOR_BROADCOM is not set
@@ -61,13 +57,7 @@ CONFIG_STMMAC_ETH=y
 # CONFIG_INPUT is not set
 # CONFIG_SERIO is not set
 # CONFIG_VT is not set
-<<<<<<< HEAD
 # CONFIG_LEGACY_PTYS is not set
-=======
-CONFIG_DEVPTS_MULTIPLE_INSTANCES=y
-# CONFIG_LEGACY_PTYS is not set
-# CONFIG_DEVKMEM is not set
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 CONFIG_SERIAL_8250=y
 CONFIG_SERIAL_8250_CONSOLE=y
 CONFIG_SERIAL_8250_NR_UARTS=1

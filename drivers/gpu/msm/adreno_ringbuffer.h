@@ -1,31 +1,10 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0-only */
 /*
  * Copyright (c) 2002,2007-2019, The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2002,2007-2020, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #ifndef __ADRENO_RINGBUFFER_H
 #define __ADRENO_RINGBUFFER_H
 
-<<<<<<< HEAD
-=======
-#include "kgsl_iommu.h"
-#include "adreno_iommu.h"
-#include "adreno_dispatch.h"
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Given a ringbuffer, return the adreno device that owns it */
 
 #define _RB_OFFSET(_id) (offsetof(struct adreno_device, ringbuffers) + \
@@ -170,16 +149,9 @@ int adreno_ringbuffer_submitcmd(struct adreno_device *adreno_dev,
 		struct kgsl_drawobj_cmd *cmdobj,
 		struct adreno_submit_time *time);
 
-<<<<<<< HEAD
 int adreno_ringbuffer_probe(struct adreno_device *adreno_dev);
 
 int adreno_ringbuffer_start(struct adreno_device *adreno_dev);
-=======
-int adreno_ringbuffer_probe(struct adreno_device *adreno_dev, bool nopreempt);
-
-int adreno_ringbuffer_start(struct adreno_device *adreno_dev,
-		unsigned int start_type);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void adreno_ringbuffer_stop(struct adreno_device *adreno_dev);
 
@@ -193,12 +165,6 @@ int adreno_ringbuffer_issue_internal_cmds(struct adreno_ringbuffer *rb,
 void adreno_ringbuffer_submit(struct adreno_ringbuffer *rb,
 		struct adreno_submit_time *time);
 
-<<<<<<< HEAD
-=======
-int adreno_ringbuffer_submit_spin_nosync(struct adreno_ringbuffer *rb,
-		struct adreno_submit_time *time, unsigned int timeout);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int adreno_ringbuffer_submit_spin(struct adreno_ringbuffer *rb,
 		struct adreno_submit_time *time, unsigned int timeout);
 
@@ -241,14 +207,4 @@ static inline unsigned int adreno_ringbuffer_dec_wrapped(unsigned int val,
 	return (val + size - sizeof(unsigned int)) % size;
 }
 
-<<<<<<< HEAD
-=======
-static inline int adreno_ringbuffer_set_pt_ctx(struct adreno_ringbuffer *rb,
-		struct kgsl_pagetable *pt, struct adreno_context *context,
-		unsigned long flags)
-{
-	return adreno_iommu_set_pt_ctx(rb, pt, context, flags);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif  /* __ADRENO_RINGBUFFER_H */

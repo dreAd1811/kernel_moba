@@ -54,10 +54,7 @@
 	aliases {
 		serial0 = &uart0;
 		/* ethernet0 is the H3 emac, defined in sun8i-h3.dtsi */
-<<<<<<< HEAD
 		ethernet0 = &emac;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ethernet1 = &rtl8189;
 	};
 
@@ -65,7 +62,6 @@
 		stdout-path = "serial0:115200n8";
 	};
 
-<<<<<<< HEAD
 	connector {
 		compatible = "hdmi-connector";
 		type = "a";
@@ -77,8 +73,6 @@
 		};
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	leds {
 		compatible = "gpio-leds";
 		pinctrl-names = "default";
@@ -131,18 +125,14 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
 &de {
 	status = "okay";
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &ehci1 {
 	status = "okay";
 };
 
-<<<<<<< HEAD
 &emac {
 	phy-handle = <&int_mii_phy>;
 	phy-mode = "mii";
@@ -160,8 +150,6 @@
 	};
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &ir {
 	pinctrl-names = "default";
 	pinctrl-0 = <&ir_pins_a>;
@@ -169,27 +157,13 @@
 };
 
 &mmc0 {
-<<<<<<< HEAD
 	vmmc-supply = <&reg_vcc3v3>;
 	bus-width = <4>;
 	cd-gpios = <&pio 5 6 GPIO_ACTIVE_LOW>; /* PF6 */
-=======
-	pinctrl-names = "default";
-	pinctrl-0 = <&mmc0_pins_a>, <&mmc0_cd_pin>;
-	vmmc-supply = <&reg_vcc3v3>;
-	bus-width = <4>;
-	cd-gpios = <&pio 5 6 GPIO_ACTIVE_HIGH>; /* PF6 */
-	cd-inverted;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
 &mmc1 {
-<<<<<<< HEAD
-=======
-	pinctrl-names = "default";
-	pinctrl-0 = <&mmc1_pins_a>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vmmc-supply = <&reg_vcc3v3>;
 	mmc-pwrseq = <&wifi_pwrseq>;
 	bus-width = <4>;
@@ -206,40 +180,24 @@
 };
 
 &pio {
-<<<<<<< HEAD
 	leds_opc: led_pins {
-=======
-	leds_opc: led_pins@0 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pins = "PA15";
 		function = "gpio_out";
 	};
 };
 
 &r_pio {
-<<<<<<< HEAD
 	leds_r_opc: led_pins {
-=======
-	leds_r_opc: led_pins@0 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pins = "PL10";
 		function = "gpio_out";
 	};
 
-<<<<<<< HEAD
 	sw_r_opc: key_pins {
-=======
-	sw_r_opc: key_pins@0 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pins = "PL3", "PL4";
 		function = "gpio_in";
 	};
 
-<<<<<<< HEAD
 	wifi_pwrseq_pin_orangepi: wifi_pwrseq_pin {
-=======
-	wifi_pwrseq_pin_orangepi: wifi_pwrseq_pin@0 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pins = "PL7";
 		function = "gpio_out";
 	};

@@ -8,31 +8,10 @@ menu "Bus devices"
 config ARM_CCI
 	bool
 
-<<<<<<< HEAD
-=======
-config ARM_CCI_PMU
-	bool
-	select ARM_CCI
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config ARM_CCI400_COMMON
 	bool
 	select ARM_CCI
 
-<<<<<<< HEAD
-=======
-config ARM_CCI400_PMU
-	bool "ARM CCI400 PMU support"
-	depends on (ARM && CPU_V7) || ARM64
-	depends on PERF_EVENTS
-	select ARM_CCI400_COMMON
-	select ARM_CCI_PMU
-	help
-	  Support for PMU events monitoring on the ARM CCI-400 (cache coherent
-	  interconnect). CCI-400 supports counting events related to the
-	  connected slave/master interfaces.
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config ARM_CCI400_PORT_CTRL
 	bool
 	depends on ARM && OF && CPU_V7
@@ -41,30 +20,6 @@ config ARM_CCI400_PORT_CTRL
 	  Low level power management driver for CCI400 cache coherent
 	  interconnect for ARM platforms.
 
-<<<<<<< HEAD
-=======
-config ARM_CCI5xx_PMU
-	bool "ARM CCI-500/CCI-550 PMU support"
-	depends on (ARM && CPU_V7) || ARM64
-	depends on PERF_EVENTS
-	select ARM_CCI_PMU
-	help
-	  Support for PMU events monitoring on the ARM CCI-500/CCI-550 cache
-	  coherent interconnects. Both of them provide 8 independent event counters,
-	  which can count events pertaining to the slave/master interfaces as well
-	  as the internal events to the CCI.
-
-	  If unsure, say Y
-
-config ARM_CCN
-	tristate "ARM CCN driver support"
-	depends on ARM || ARM64
-	depends on PERF_EVENTS
-	help
-	  PMU (perf) driver supporting the ARM CCN (Cache Coherent Network)
-	  interconnect.
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config BRCMSTB_GISB_ARB
 	bool "Broadcom STB GISB bus arbiter"
 	depends on ARM || ARM64 || MIPS
@@ -74,7 +29,6 @@ config BRCMSTB_GISB_ARB
 	  arbiter. This driver provides timeout and target abort error handling
 	  and internal bus master decoding.
 
-<<<<<<< HEAD
 config HISILICON_LPC
 	bool "Support for ISA I/O space on HiSilicon Hip06/7"
 	depends on ARM64 && (ARCH_HISI || COMPILE_TEST)
@@ -83,8 +37,6 @@ config HISILICON_LPC
 	  Driver to enable I/O access to devices attached to the Low Pin
 	  Count bus on the HiSilicon Hip06/7 SoC.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config IMX_WEIM
 	bool "Freescale EIM DRIVER"
 	depends on ARCH_MXC
@@ -140,11 +92,7 @@ config QCOM_EBI2
 	  SRAM, ethernet adapters, FPGAs and LCD displays.
 
 config SIMPLE_PM_BUS
-<<<<<<< HEAD
 	tristate "Simple Power-Managed Bus Driver"
-=======
-	bool "Simple Power-Managed Bus Driver"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on OF && PM
 	help
 	  Driver for transparent busses that don't need a real driver, but
@@ -155,7 +103,6 @@ config SIMPLE_PM_BUS
 	  Controller (BSC, sometimes called "LBSC within Bus Bridge", or
 	  "External Bus Interface") as found on several Renesas ARM SoCs.
 
-<<<<<<< HEAD
 config SUN50I_DE2_BUS
 	bool "Allwinner A64 DE2 Bus Driver"
 	  default ARM64
@@ -166,8 +113,6 @@ config SUN50I_DE2_BUS
 	  mostly transparent, but a SRAM region needs to be claimed in the SRAM
 	  controller to make the all blocks in the DE2 part accessible.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config SUNXI_RSB
 	tristate "Allwinner sunXi Reduced Serial Bus Driver"
 	  default MACH_SUN8I || MACH_SUN9I || ARM64
@@ -195,7 +140,6 @@ config TEGRA_GMI
 	  Driver for the Tegra Generic Memory Interface bus which can be used
 	  to attach devices such as NOR, UART, FPGA and more.
 
-<<<<<<< HEAD
 config TI_SYSC
 	bool "TI sysc interconnect target module driver"
 	depends on ARCH_OMAP2PLUS
@@ -211,8 +155,6 @@ config TS_NBUS
 	  Driver for the Technologic Systems NBUS which is used to interface
 	  with the peripherals in the FPGA of the TS-4600 SoM.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config UNIPHIER_SYSTEM_BUS
 	tristate "UniPhier System Bus driver"
 	depends on ARCH_UNIPHIER && OF
@@ -256,13 +198,8 @@ config MHI_DEBUG
 	   throughput as individual MHI packets and state transitions
 	   will be logged.
 
-<<<<<<< HEAD
 source "drivers/bus/fsl-mc/Kconfig"
 source "drivers/bus/mhi/controllers/Kconfig"
 source "drivers/bus/mhi/devices/Kconfig"
-=======
-source drivers/bus/mhi/controllers/Kconfig
-source drivers/bus/mhi/devices/Kconfig
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 endmenu

@@ -1857,11 +1857,7 @@ int usbvision_stream_interrupt(struct usb_usbvision *usbvision)
 
 static int usbvision_set_compress_params(struct usb_usbvision *usbvision)
 {
-<<<<<<< HEAD
 	static const char proc[] = "usbvision_set_compression_params: ";
-=======
-	static const char proc[] = "usbvision_set_compresion_params: ";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc;
 	unsigned char *value = usbvision->ctrl_urb_buffer;
 

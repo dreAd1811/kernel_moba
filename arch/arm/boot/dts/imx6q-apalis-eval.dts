@@ -62,13 +62,10 @@
 		rtc1 = &snvs_rtc;
 	};
 
-<<<<<<< HEAD
 	chosen {
 		stdout-path = "serial0:115200n8";
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gpio-keys {
 		compatible = "gpio-keys";
 		pinctrl-names = "default";
@@ -83,11 +80,7 @@
 		};
 	};
 
-<<<<<<< HEAD
 	lcd_display: disp0 {
-=======
-	lcd_display: display@di0 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "fsl,imx-parallel-display";
 		#address-cells = <1>;
 		#size-cells = <0>;
@@ -120,10 +113,7 @@
 		 */
 		compatible = "edt,et057090dhu";
 		backlight = <&backlight>;
-<<<<<<< HEAD
 		power-supply = <&reg_3v3_sw>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		port {
 			lcd_panel_in: endpoint {
@@ -142,7 +132,6 @@
 		enable-active-high;
 		status = "okay";
 	};
-<<<<<<< HEAD
 
 	reg_3v3_sw: regulator-3v3-sw {
 		compatible = "regulator-fixed";
@@ -151,33 +140,22 @@
 		regulator-max-microvolt = <3300000>;
 		regulator-always-on;
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &backlight {
 	brightness-levels = <0 127 191 223 239 247 251 255>;
 	default-brightness-level = <1>;
-<<<<<<< HEAD
 	power-supply = <&reg_3v3_sw>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
 &can1 {
-<<<<<<< HEAD
 	xceiver-supply = <&reg_3v3_sw>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
 &can2 {
-<<<<<<< HEAD
 	xceiver-supply = <&reg_3v3_sw>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
@@ -196,11 +174,7 @@
 
 	/* M41T0M6 real time clock on carrier board */
 	rtc_i2c: rtc@68 {
-<<<<<<< HEAD
 		compatible = "st,m41t0";
-=======
-		compatible = "st,m41t00";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x68>;
 	};
 };

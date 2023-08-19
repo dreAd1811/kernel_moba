@@ -53,7 +53,6 @@
 	};
 };
 
-<<<<<<< HEAD
 &clks {
 	assigned-clocks = <&clks IMX6QDL_CLK_LDB_DI0_SEL>,
 			  <&clks IMX6QDL_CLK_LDB_DI1_SEL>,
@@ -65,8 +64,6 @@
 				 <&clks IMX6QDL_CLK_PLL2_PFD2_396M>;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &ldb {
 	fsl,dual-channel;
 	status = "okay";
@@ -159,11 +156,6 @@
 
 	stdp2690@72 {
 		compatible = "megachips,stdp2690-ge-b850v3-fw";
-<<<<<<< HEAD
-=======
-		#address-cells = <1>;
-		#size-cells = <0>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x72>;
 
 		ports {
@@ -190,11 +182,6 @@
 
 	stdp4028@73 {
 		compatible = "megachips,stdp4028-ge-b850v3-fw";
-<<<<<<< HEAD
-=======
-		#address-cells = <1>;
-		#size-cells = <0>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x73>;
 		interrupt-parent = <&gpio2>;
 		interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
@@ -221,7 +208,6 @@
 		};
 	};
 };
-<<<<<<< HEAD
 
 &pci_root {
 	/* PLX Technology, Inc. PEX 8605 PCI Express 4-port Gen2 Switch */
@@ -297,5 +283,3 @@
 		phy-handle = <&switchphy4>;
 	};
 };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

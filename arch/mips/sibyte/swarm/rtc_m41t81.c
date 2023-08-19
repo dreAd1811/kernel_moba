@@ -141,21 +141,13 @@ static int m41t81_write(uint8_t addr, int b)
 	return 0;
 }
 
-<<<<<<< HEAD
 int m41t81_set_time(time64_t t)
-=======
-int m41t81_set_time(unsigned long t)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rtc_time tm;
 	unsigned long flags;
 
 	/* Note we don't care about the century */
-<<<<<<< HEAD
 	rtc_time64_to_tm(t, &tm);
-=======
-	rtc_time_to_tm(t, &tm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Note the write order matters as it ensures the correctness.
@@ -196,11 +188,7 @@ int m41t81_set_time(unsigned long t)
 	return 0;
 }
 
-<<<<<<< HEAD
 time64_t m41t81_get_time(void)
-=======
-unsigned long m41t81_get_time(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned int year, mon, day, hour, min, sec;
 	unsigned long flags;
@@ -230,11 +218,7 @@ unsigned long m41t81_get_time(void)
 
 	year += 2000;
 
-<<<<<<< HEAD
 	return mktime64(year, mon, day, hour, min, sec);
-=======
-	return mktime(year, mon, day, hour, min, sec);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int m41t81_probe(void)

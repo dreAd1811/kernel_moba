@@ -78,7 +78,6 @@ config MEDIA_SDR_SUPPORT
 	  Say Y when you have a software defined radio device.
 
 config MEDIA_CEC_SUPPORT
-<<<<<<< HEAD
 	bool "HDMI CEC support"
 	---help---
 	  Enable support for HDMI CEC (Consumer Electronics Control),
@@ -86,15 +85,6 @@ config MEDIA_CEC_SUPPORT
 
 	  Say Y when you have an HDMI receiver, transmitter or a USB CEC
 	  adapter that supports HDMI CEC.
-=======
-       bool "HDMI CEC support"
-       ---help---
-         Enable support for HDMI CEC (Consumer Electronics Control),
-         which is an optional HDMI feature.
-
-         Say Y when you have an HDMI receiver, transmitter or a USB CEC
-         adapter that supports HDMI CEC.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 source "drivers/media/cec/Kconfig"
 
@@ -151,7 +141,6 @@ config DVB_CORE
 	tristate
 	depends on MEDIA_SUPPORT
 	depends on MEDIA_DIGITAL_TV_SUPPORT
-<<<<<<< HEAD
 	depends on (I2C || I2C=n)
 	default y
 	select CRC32
@@ -170,11 +159,6 @@ config DVB_MMAP
 	  Support for it is experimental. Use with care. If unsure,
 	  say N.
 
-=======
-	default y
-	select CRC32
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config DVB_NET
 	bool "DVB Network Support"
 	default (NET && INET)

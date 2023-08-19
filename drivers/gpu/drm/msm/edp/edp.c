@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
  * Copyright (c) 2014-2015, 2018, The Linux Foundation. All rights reserved.
-=======
- * Copyright (c) 2014-2018, The Linux Foundation. All rights reserved.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -132,10 +128,6 @@ static struct platform_driver edp_driver = {
 	.driver = {
 		.name = "msm_edp",
 		.of_match_table = dt_match,
-<<<<<<< HEAD
-=======
-		.suppress_bind_attrs = true,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 };
 

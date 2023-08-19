@@ -277,13 +277,6 @@ u64 nfp_rtsym_read_le(struct nfp_rtsym_table *rtbl, const char *name,
 		break;
 	}
 
-<<<<<<< HEAD
-=======
-	if (err == sym->size)
-		err = 0;
-	else if (err >= 0)
-		err = -EIO;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 exit:
 	if (error)
 		*error = err;
@@ -293,7 +286,6 @@ exit:
 	return val;
 }
 
-<<<<<<< HEAD
 /**
  * nfp_rtsym_write_le() - Write an unsigned scalar value to a symbol
  * @rtbl:	NFP RTsym table
@@ -337,8 +329,6 @@ int nfp_rtsym_write_le(struct nfp_rtsym_table *rtbl, const char *name,
 	return err;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 u8 __iomem *
 nfp_rtsym_map(struct nfp_rtsym_table *rtbl, const char *name, const char *id,
 	      unsigned int min_size, struct nfp_cpp_area **area)

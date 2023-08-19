@@ -58,11 +58,7 @@ static int qib_open(struct inode *, struct file *);
 static int qib_close(struct inode *, struct file *);
 static ssize_t qib_write(struct file *, const char __user *, size_t, loff_t *);
 static ssize_t qib_write_iter(struct kiocb *, struct iov_iter *);
-<<<<<<< HEAD
 static __poll_t qib_poll(struct file *, struct poll_table_struct *);
-=======
-static unsigned int qib_poll(struct file *, struct poll_table_struct *);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int qib_mmapf(struct file *, struct vm_area_struct *);
 
 /*
@@ -451,11 +447,7 @@ cleanup:
 			ret = -EFAULT;
 			goto cleanup;
 		}
-<<<<<<< HEAD
 		if (copy_to_user(u64_to_user_ptr(ti->tidmap),
-=======
-		if (copy_to_user((void __user *) (unsigned long) ti->tidmap,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 tidmap, sizeof(tidmap))) {
 			ret = -EFAULT;
 			goto cleanup;
@@ -502,11 +494,7 @@ static int qib_tid_free(struct qib_ctxtdata *rcd, unsigned subctxt,
 		goto done;
 	}
 
-<<<<<<< HEAD
 	if (copy_from_user(tidmap, u64_to_user_ptr(ti->tidmap),
-=======
-	if (copy_from_user(tidmap, (void __user *)(unsigned long)ti->tidmap,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   sizeof(tidmap))) {
 		ret = -EFAULT;
 		goto done;
@@ -584,7 +572,6 @@ done:
 static int qib_set_part_key(struct qib_ctxtdata *rcd, u16 key)
 {
 	struct qib_pportdata *ppd = rcd->ppd;
-<<<<<<< HEAD
 	int i, pidx = -1;
 	bool any = false;
 	u16 lkey = key & 0x7FFF;
@@ -595,22 +582,6 @@ static int qib_set_part_key(struct qib_ctxtdata *rcd, u16 key)
 
 	if (!lkey)
 		return -EINVAL;
-=======
-	int i, any = 0, pidx = -1;
-	u16 lkey = key & 0x7FFF;
-	int ret;
-
-	if (lkey == (QIB_DEFAULT_P_KEY & 0x7FFF)) {
-		/* nothing to do; this key always valid */
-		ret = 0;
-		goto bail;
-	}
-
-	if (!lkey) {
-		ret = -EINVAL;
-		goto bail;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Set the full membership bit, because it has to be
@@ -623,7 +594,6 @@ static int qib_set_part_key(struct qib_ctxtdata *rcd, u16 key)
 	for (i = 0; i < ARRAY_SIZE(rcd->pkeys); i++) {
 		if (!rcd->pkeys[i] && pidx == -1)
 			pidx = i;
-<<<<<<< HEAD
 		if (rcd->pkeys[i] == key)
 			return -EEXIST;
 	}
@@ -632,20 +602,6 @@ static int qib_set_part_key(struct qib_ctxtdata *rcd, u16 key)
 	for (i = 0; i < ARRAY_SIZE(ppd->pkeys); i++) {
 		if (!ppd->pkeys[i]) {
 			any = true;
-=======
-		if (rcd->pkeys[i] == key) {
-			ret = -EEXIST;
-			goto bail;
-		}
-	}
-	if (pidx == -1) {
-		ret = -EBUSY;
-		goto bail;
-	}
-	for (any = i = 0; i < ARRAY_SIZE(ppd->pkeys); i++) {
-		if (!ppd->pkeys[i]) {
-			any++;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 		}
 		if (ppd->pkeys[i] == key) {
@@ -653,7 +609,6 @@ static int qib_set_part_key(struct qib_ctxtdata *rcd, u16 key)
 
 			if (atomic_inc_return(pkrefs) > 1) {
 				rcd->pkeys[pidx] = key;
-<<<<<<< HEAD
 				return 0;
 			}
 			/*
@@ -663,61 +618,25 @@ static int qib_set_part_key(struct qib_ctxtdata *rcd, u16 key)
 			any = true;
 		}
 		if ((ppd->pkeys[i] & 0x7FFF) == lkey)
-=======
-				ret = 0;
-				goto bail;
-			} else {
-				/*
-				 * lost race, decrement count, catch below
-				 */
-				atomic_dec(pkrefs);
-				any++;
-			}
-		}
-		if ((ppd->pkeys[i] & 0x7FFF) == lkey) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/*
 			 * It makes no sense to have both the limited and
 			 * full membership PKEY set at the same time since
 			 * the unlimited one will disable the limited one.
 			 */
-<<<<<<< HEAD
 			return -EEXIST;
 	}
 	if (!any)
 		return -EBUSY;
 	for (i = 0; i < ARRAY_SIZE(ppd->pkeys); i++) {
-=======
-			ret = -EEXIST;
-			goto bail;
-		}
-	}
-	if (!any) {
-		ret = -EBUSY;
-		goto bail;
-	}
-	for (any = i = 0; i < ARRAY_SIZE(ppd->pkeys); i++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!ppd->pkeys[i] &&
 		    atomic_inc_return(&ppd->pkeyrefs[i]) == 1) {
 			rcd->pkeys[pidx] = key;
 			ppd->pkeys[i] = key;
 			(void) ppd->dd->f_set_ib_cfg(ppd, QIB_IB_CFG_PKEYS, 0);
-<<<<<<< HEAD
 			return 0;
 		}
 	}
 	return -EBUSY;
-=======
-			ret = 0;
-			goto bail;
-		}
-	}
-	ret = -EBUSY;
-
-bail:
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -763,20 +682,8 @@ static void qib_clean_part_key(struct qib_ctxtdata *rcd,
 			       struct qib_devdata *dd)
 {
 	int i, j, pchanged = 0;
-<<<<<<< HEAD
 	struct qib_pportdata *ppd = rcd->ppd;
 
-=======
-	u64 oldpkey;
-	struct qib_pportdata *ppd = rcd->ppd;
-
-	/* for debugging only */
-	oldpkey = (u64) ppd->pkeys[0] |
-		((u64) ppd->pkeys[1] << 16) |
-		((u64) ppd->pkeys[2] << 32) |
-		((u64) ppd->pkeys[3] << 48);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < ARRAY_SIZE(rcd->pkeys); i++) {
 		if (!rcd->pkeys[i])
 			continue;
@@ -965,11 +872,7 @@ bail:
 /*
  * qib_file_vma_fault - handle a VMA page fault.
  */
-<<<<<<< HEAD
 static vm_fault_t qib_file_vma_fault(struct vm_fault *vmf)
-=======
-static int qib_file_vma_fault(struct vm_fault *vmf)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct page *page;
 
@@ -1175,30 +1078,18 @@ bail:
 	return ret;
 }
 
-<<<<<<< HEAD
 static __poll_t qib_poll_urgent(struct qib_ctxtdata *rcd,
-=======
-static unsigned int qib_poll_urgent(struct qib_ctxtdata *rcd,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    struct file *fp,
 				    struct poll_table_struct *pt)
 {
 	struct qib_devdata *dd = rcd->dd;
-<<<<<<< HEAD
 	__poll_t pollflag;
-=======
-	unsigned pollflag;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	poll_wait(fp, &rcd->wait, pt);
 
 	spin_lock_irq(&dd->uctxt_lock);
 	if (rcd->urgent != rcd->urgent_poll) {
-<<<<<<< HEAD
 		pollflag = EPOLLIN | EPOLLRDNORM;
-=======
-		pollflag = POLLIN | POLLRDNORM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rcd->urgent_poll = rcd->urgent;
 	} else {
 		pollflag = 0;
@@ -1209,20 +1100,12 @@ static unsigned int qib_poll_urgent(struct qib_ctxtdata *rcd,
 	return pollflag;
 }
 
-<<<<<<< HEAD
 static __poll_t qib_poll_next(struct qib_ctxtdata *rcd,
-=======
-static unsigned int qib_poll_next(struct qib_ctxtdata *rcd,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  struct file *fp,
 				  struct poll_table_struct *pt)
 {
 	struct qib_devdata *dd = rcd->dd;
-<<<<<<< HEAD
 	__poll_t pollflag;
-=======
-	unsigned pollflag;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	poll_wait(fp, &rcd->wait, pt);
 
@@ -1232,17 +1115,12 @@ static unsigned int qib_poll_next(struct qib_ctxtdata *rcd,
 		dd->f_rcvctrl(rcd->ppd, QIB_RCVCTRL_INTRAVAIL_ENB, rcd->ctxt);
 		pollflag = 0;
 	} else
-<<<<<<< HEAD
 		pollflag = EPOLLIN | EPOLLRDNORM;
-=======
-		pollflag = POLLIN | POLLRDNORM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irq(&dd->uctxt_lock);
 
 	return pollflag;
 }
 
-<<<<<<< HEAD
 static __poll_t qib_poll(struct file *fp, struct poll_table_struct *pt)
 {
 	struct qib_ctxtdata *rcd;
@@ -1251,26 +1129,12 @@ static __poll_t qib_poll(struct file *fp, struct poll_table_struct *pt)
 	rcd = ctxt_fp(fp);
 	if (!rcd)
 		pollflag = EPOLLERR;
-=======
-static unsigned int qib_poll(struct file *fp, struct poll_table_struct *pt)
-{
-	struct qib_ctxtdata *rcd;
-	unsigned pollflag;
-
-	rcd = ctxt_fp(fp);
-	if (!rcd)
-		pollflag = POLLERR;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else if (rcd->poll_type == QIB_POLL_TYPE_URGENT)
 		pollflag = qib_poll_urgent(rcd, fp, pt);
 	else  if (rcd->poll_type == QIB_POLL_TYPE_ANYRCV)
 		pollflag = qib_poll_next(rcd, fp, pt);
 	else /* invalid */
-<<<<<<< HEAD
 		pollflag = EPOLLERR;
-=======
-		pollflag = POLLERR;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return pollflag;
 }
@@ -1932,10 +1796,6 @@ static int qib_close(struct inode *in, struct file *fp)
 	struct qib_devdata *dd;
 	unsigned long flags;
 	unsigned ctxt;
-<<<<<<< HEAD
-=======
-	pid_t pid;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&qib_mutex);
 
@@ -1977,10 +1837,6 @@ static int qib_close(struct inode *in, struct file *fp)
 	spin_lock_irqsave(&dd->uctxt_lock, flags);
 	ctxt = rcd->ctxt;
 	dd->rcd[ctxt] = NULL;
-<<<<<<< HEAD
-=======
-	pid = rcd->pid;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rcd->pid = 0;
 	spin_unlock_irqrestore(&dd->uctxt_lock, flags);
 
@@ -2316,13 +2172,8 @@ static ssize_t qib_write(struct file *fp, const char __user *data,
 		ret = qib_do_user_init(fp, &cmd.cmd.user_info);
 		if (ret)
 			goto bail;
-<<<<<<< HEAD
 		ret = qib_get_base_info(fp, u64_to_user_ptr(
 					  cmd.cmd.user_info.spu_base_info),
-=======
-		ret = qib_get_base_info(fp, (void __user *) (unsigned long)
-					cmd.cmd.user_info.spu_base_info,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					cmd.cmd.user_info.spu_base_info_size);
 		break;
 

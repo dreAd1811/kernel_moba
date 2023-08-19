@@ -60,11 +60,7 @@ nvkm_falcon_read_dmem(struct nvkm_falcon *falcon, u32 start, u32 size, u8 port,
 }
 
 void
-<<<<<<< HEAD
 nvkm_falcon_bind_context(struct nvkm_falcon *falcon, struct nvkm_memory *inst)
-=======
-nvkm_falcon_bind_context(struct nvkm_falcon *falcon, struct nvkm_gpuobj *inst)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (!falcon->func->bind_context) {
 		nvkm_error(falcon->user,

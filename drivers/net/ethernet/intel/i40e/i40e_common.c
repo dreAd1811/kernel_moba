@@ -1,33 +1,5 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /* Copyright(c) 2013 - 2018 Intel Corporation. */
-=======
-/*******************************************************************************
- *
- * Intel Ethernet Controller XL710 Family Linux Driver
- * Copyright(c) 2013 - 2016 Intel Corporation.
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms and conditions of the GNU General Public License,
- * version 2, as published by the Free Software Foundation.
- *
- * This program is distributed in the hope it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
- * more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * The full GNU General Public License is included in this distribution in
- * the file called "COPYING".
- *
- * Contact Information:
- * e1000-devel Mailing List <e1000-devel@lists.sourceforge.net>
- * Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497
- *
- ******************************************************************************/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "i40e_type.h"
 #include "i40e_adminq.h"
@@ -283,11 +255,8 @@ const char *i40e_stat_str(struct i40e_hw *hw, i40e_status stat_err)
 		return "I40E_NOT_SUPPORTED";
 	case I40E_ERR_FIRMWARE_API_VERSION:
 		return "I40E_ERR_FIRMWARE_API_VERSION";
-<<<<<<< HEAD
 	case I40E_ERR_ADMIN_QUEUE_CRITICAL_ERROR:
 		return "I40E_ERR_ADMIN_QUEUE_CRITICAL_ERROR";
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	snprintf(hw->err_str, sizeof(hw->err_str), "%d", stat_err);
@@ -958,12 +927,8 @@ i40e_status i40e_init_shared_code(struct i40e_hw *hw)
 		hw->pf_id = (u8)(func_rid & 0x7);
 
 	if (hw->mac.type == I40E_MAC_X722)
-<<<<<<< HEAD
 		hw->flags |= I40E_HW_FLAG_AQ_SRCTL_ACCESS_ENABLE |
 			     I40E_HW_FLAG_NVM_READ_REQUIRES_LOCK;
-=======
-		hw->flags |= I40E_HW_FLAG_AQ_SRCTL_ACCESS_ENABLE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	status = i40e_init_nvm(hw);
 	return status;
@@ -1195,11 +1160,8 @@ static enum i40e_media_type i40e_get_media_type(struct i40e_hw *hw)
 	case I40E_PHY_TYPE_40GBASE_AOC:
 	case I40E_PHY_TYPE_10GBASE_AOC:
 	case I40E_PHY_TYPE_25GBASE_CR:
-<<<<<<< HEAD
 	case I40E_PHY_TYPE_25GBASE_AOC:
 	case I40E_PHY_TYPE_25GBASE_ACC:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		media = I40E_MEDIA_TYPE_DA;
 		break;
 	case I40E_PHY_TYPE_1000BASE_KX:
@@ -1223,7 +1185,6 @@ static enum i40e_media_type i40e_get_media_type(struct i40e_hw *hw)
 	return media;
 }
 
-<<<<<<< HEAD
 /**
  * i40e_poll_globr - Poll for Global Reset completion
  * @hw: pointer to the hardware structure
@@ -1247,8 +1208,6 @@ static i40e_status i40e_poll_globr(struct i40e_hw *hw,
 	return I40E_ERR_RESET_FAILED;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define I40E_PF_RESET_WAIT_COUNT_A0	200
 #define I40E_PF_RESET_WAIT_COUNT	200
 /**
@@ -1312,10 +1271,7 @@ i40e_status i40e_pf_reset(struct i40e_hw *hw)
 	 * we don't need to do the PF Reset
 	 */
 	if (!cnt) {
-<<<<<<< HEAD
 		u32 reg2 = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (hw->revision_id == 0)
 			cnt = I40E_PF_RESET_WAIT_COUNT_A0;
 		else
@@ -1327,7 +1283,6 @@ i40e_status i40e_pf_reset(struct i40e_hw *hw)
 			reg = rd32(hw, I40E_PFGEN_CTRL);
 			if (!(reg & I40E_PFGEN_CTRL_PFSWR_MASK))
 				break;
-<<<<<<< HEAD
 			reg2 = rd32(hw, I40E_GLGEN_RSTAT);
 			if (reg2 & I40E_GLGEN_RSTAT_DEVSTATE_MASK)
 				break;
@@ -1337,11 +1292,6 @@ i40e_status i40e_pf_reset(struct i40e_hw *hw)
 			if (i40e_poll_globr(hw, grst_del))
 				return I40E_ERR_RESET_FAILED;
 		} else if (reg & I40E_PFGEN_CTRL_PFSWR_MASK) {
-=======
-			usleep_range(1000, 2000);
-		}
-		if (reg & I40E_PFGEN_CTRL_PFSWR_MASK) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			hw_dbg(hw, "PF reset polling failed to complete.\n");
 			return I40E_ERR_RESET_FAILED;
 		}
@@ -1538,10 +1488,7 @@ u32 i40e_led_get(struct i40e_hw *hw)
 		case I40E_COMBINED_ACTIVITY:
 		case I40E_FILTER_ACTIVITY:
 		case I40E_MAC_ACTIVITY:
-<<<<<<< HEAD
 		case I40E_LINK_ACTIVITY:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 		default:
 			break;
@@ -1590,10 +1537,7 @@ void i40e_led_set(struct i40e_hw *hw, u32 mode, bool blink)
 		case I40E_COMBINED_ACTIVITY:
 		case I40E_FILTER_ACTIVITY:
 		case I40E_MAC_ACTIVITY:
-<<<<<<< HEAD
 		case I40E_LINK_ACTIVITY:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 		default:
 			break;
@@ -1604,12 +1548,6 @@ void i40e_led_set(struct i40e_hw *hw, u32 mode, bool blink)
 		gpio_val |= ((mode << I40E_GLGEN_GPIO_CTL_LED_MODE_SHIFT) &
 			     I40E_GLGEN_GPIO_CTL_LED_MODE_MASK);
 
-<<<<<<< HEAD
-=======
-		if (mode == I40E_LINK_ACTIVITY)
-			blink = false;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (blink)
 			gpio_val |= BIT(I40E_GLGEN_GPIO_CTL_LED_BLINK_SHIFT);
 		else
@@ -1640,15 +1578,11 @@ i40e_status i40e_aq_get_phy_capabilities(struct i40e_hw *hw,
 	struct i40e_aq_desc desc;
 	i40e_status status;
 	u16 abilities_size = sizeof(struct i40e_aq_get_phy_abilities_resp);
-<<<<<<< HEAD
 	u16 max_delay = I40E_MAX_PHY_TIMEOUT, total_delay = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!abilities)
 		return I40E_ERR_PARAM;
 
-<<<<<<< HEAD
 	do {
 		i40e_fill_default_direct_cmd_desc(&desc,
 					       i40e_aqc_opc_get_phy_abilities);
@@ -1695,32 +1629,6 @@ i40e_status i40e_aq_get_phy_capabilities(struct i40e_hw *hw,
 			hw->phy.phy_types |=
 					((u64)abilities->phy_type_ext << 32);
 		}
-=======
-	i40e_fill_default_direct_cmd_desc(&desc,
-					  i40e_aqc_opc_get_phy_abilities);
-
-	desc.flags |= cpu_to_le16((u16)I40E_AQ_FLAG_BUF);
-	if (abilities_size > I40E_AQ_LARGE_BUF)
-		desc.flags |= cpu_to_le16((u16)I40E_AQ_FLAG_LB);
-
-	if (qualified_modules)
-		desc.params.external.param0 |=
-			cpu_to_le32(I40E_AQ_PHY_REPORT_QUALIFIED_MODULES);
-
-	if (report_init)
-		desc.params.external.param0 |=
-			cpu_to_le32(I40E_AQ_PHY_REPORT_INITIAL_VALUES);
-
-	status = i40e_asq_send_command(hw, &desc, abilities, abilities_size,
-				       cmd_details);
-
-	if (hw->aq.asq_last_status == I40E_AQ_RC_EIO)
-		status = I40E_ERR_UNKNOWN_PHY;
-
-	if (report_init) {
-		hw->phy.phy_types = le32_to_cpu(abilities->phy_type);
-		hw->phy.phy_types |= ((u64)abilities->phy_type_ext << 32);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return status;
@@ -1763,11 +1671,8 @@ enum i40e_status_code i40e_aq_set_phy_config(struct i40e_hw *hw,
 /**
  * i40e_set_fc
  * @hw: pointer to the hw struct
-<<<<<<< HEAD
  * @aq_failures: buffer to return AdminQ failure information
  * @atomic_restart: whether to enable atomic link restart
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Set the requested flow control mode using set_phy_config.
  **/
@@ -1950,11 +1855,7 @@ i40e_status i40e_aq_get_link_info(struct i40e_hw *hw,
 	hw_link_info->fec_info = resp->config & (I40E_AQ_CONFIG_FEC_KR_ENA |
 						 I40E_AQ_CONFIG_FEC_RS_ENA);
 	hw_link_info->ext_info = resp->ext_info;
-<<<<<<< HEAD
 	hw_link_info->loopback = resp->loopback & I40E_AQ_LOOPBACK_MASK;
-=======
-	hw_link_info->loopback = resp->loopback;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hw_link_info->max_frame_size = le16_to_cpu(resp->max_frame_size);
 	hw_link_info->pacing = resp->config & I40E_AQ_CONFIG_PACING_MASK;
 
@@ -1985,7 +1886,6 @@ i40e_status i40e_aq_get_link_info(struct i40e_hw *hw,
 	     hw->aq.fw_min_ver < 40)) && hw_link_info->phy_type == 0xE)
 		hw_link_info->phy_type = I40E_PHY_TYPE_10GBASE_SFPP_CU;
 
-<<<<<<< HEAD
 	if (hw->aq.api_maj_ver == I40E_FW_API_VERSION_MAJOR &&
 	    hw->aq.api_min_ver >= 7) {
 		__le32 tmp;
@@ -1995,8 +1895,6 @@ i40e_status i40e_aq_get_link_info(struct i40e_hw *hw,
 		hw->phy.phy_types |= ((u64)resp->link_type_ext << 32);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* save link status information */
 	if (link)
 		*link = *hw_link_info;
@@ -2519,24 +2417,16 @@ i40e_status i40e_aq_get_switch_config(struct i40e_hw *hw,
  * i40e_aq_set_switch_config
  * @hw: pointer to the hardware structure
  * @flags: bit flag values to set
-<<<<<<< HEAD
  * @mode: cloud filter mode
  * @valid_flags: which bit flags to set
  * @mode: cloud filter mode
-=======
- * @valid_flags: which bit flags to set
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @cmd_details: pointer to command details structure or NULL
  *
  * Set switch configuration bits
  **/
 enum i40e_status_code i40e_aq_set_switch_config(struct i40e_hw *hw,
 						u16 flags,
-<<<<<<< HEAD
 						u16 valid_flags, u8 mode,
-=======
-						u16 valid_flags,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				struct i40e_asq_cmd_details *cmd_details)
 {
 	struct i40e_aq_desc desc;
@@ -2548,16 +2438,12 @@ enum i40e_status_code i40e_aq_set_switch_config(struct i40e_hw *hw,
 					  i40e_aqc_opc_set_switch_config);
 	scfg->flags = cpu_to_le16(flags);
 	scfg->valid_flags = cpu_to_le16(valid_flags);
-<<<<<<< HEAD
 	scfg->mode = mode;
 	if (hw->flags & I40E_HW_FLAG_802_1AD_CAPABLE) {
 		scfg->switch_tag = cpu_to_le16(hw->switch_tag);
 		scfg->first_tag = cpu_to_le16(hw->first_tag);
 		scfg->second_tag = cpu_to_le16(hw->second_tag);
 	}
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = i40e_asq_send_command(hw, &desc, NULL, 0, cmd_details);
 
 	return status;
@@ -2923,13 +2809,8 @@ i40e_status i40e_aq_remove_macvlan(struct i40e_hw *hw, u16 seid,
  * @mr_list: list of mirrored VSI SEIDs or VLAN IDs
  * @cmd_details: pointer to command details structure or NULL
  * @rule_id: Rule ID returned from FW
-<<<<<<< HEAD
  * @rules_used: Number of rules used in internal switch
  * @rules_free: Number of rules free in internal switch
-=======
- * @rule_used: Number of rules used in internal switch
- * @rule_free: Number of rules free in internal switch
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Add/Delete a mirror rule to a specific switch. Mirror rules are supported for
  * VEBs/VEPA elements only
@@ -2989,13 +2870,8 @@ static i40e_status i40e_mirrorrule_op(struct i40e_hw *hw,
  * @mr_list: list of mirrored VSI SEIDs or VLAN IDs
  * @cmd_details: pointer to command details structure or NULL
  * @rule_id: Rule ID returned from FW
-<<<<<<< HEAD
  * @rules_used: Number of rules used in internal switch
  * @rules_free: Number of rules free in internal switch
-=======
- * @rule_used: Number of rules used in internal switch
- * @rule_free: Number of rules free in internal switch
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Add mirror rule. Mirror rules are supported for VEBs or VEPA elements only
  **/
@@ -3025,13 +2901,8 @@ i40e_status i40e_aq_add_mirrorrule(struct i40e_hw *hw, u16 sw_seid,
  *		add_mirrorrule.
  * @mr_list: list of mirrored VLAN IDs to be removed
  * @cmd_details: pointer to command details structure or NULL
-<<<<<<< HEAD
  * @rules_used: Number of rules used in internal switch
  * @rules_free: Number of rules free in internal switch
-=======
- * @rule_used: Number of rules used in internal switch
- * @rule_free: Number of rules free in internal switch
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Delete a mirror rule. Mirror rules are supported for VEBs/VEPA elements only
  **/
@@ -3332,16 +3203,10 @@ static void i40e_parse_discover_capabilities(struct i40e_hw *hw, void *buff,
 	u32 valid_functions, num_functions;
 	u32 number, logical_id, phys_id;
 	struct i40e_hw_capabilities *p;
-<<<<<<< HEAD
 	u16 id, ocp_cfg_word0;
 	i40e_status status;
 	u8 major_rev;
 	u32 i = 0;
-=======
-	u8 major_rev;
-	u32 i = 0;
-	u16 id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cap = (struct i40e_aqc_list_capabilities_element_resp *) buff;
 
@@ -3528,7 +3393,6 @@ static void i40e_parse_discover_capabilities(struct i40e_hw *hw, void *buff,
 			hw->num_ports++;
 	}
 
-<<<<<<< HEAD
 	/* OCP cards case: if a mezz is removed the Ethernet port is at
 	 * disabled state in PRTGEN_CNF register. Additional NVM read is
 	 * needed in order to check if we are dealing with OCP card.
@@ -3549,8 +3413,6 @@ static void i40e_parse_discover_capabilities(struct i40e_hw *hw, void *buff,
 		}
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	valid_functions = p->valid_functions;
 	num_functions = 0;
 	while (valid_functions) {
@@ -3628,21 +3490,14 @@ exit:
  * @length: length of the section to be written (in bytes from the offset)
  * @data: command buffer (size [bytes] = length)
  * @last_command: tells if this is the last command in a series
-<<<<<<< HEAD
  * @preservation_flags: Preservation mode flags
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @cmd_details: pointer to command details structure or NULL
  *
  * Update the NVM using the admin queue commands
  **/
 i40e_status i40e_aq_update_nvm(struct i40e_hw *hw, u8 module_pointer,
 			       u32 offset, u16 length, void *data,
-<<<<<<< HEAD
 				bool last_command, u8 preservation_flags,
-=======
-			       bool last_command,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       struct i40e_asq_cmd_details *cmd_details)
 {
 	struct i40e_aq_desc desc;
@@ -3661,7 +3516,6 @@ i40e_status i40e_aq_update_nvm(struct i40e_hw *hw, u8 module_pointer,
 	/* If this is the last command in a series, set the proper flag. */
 	if (last_command)
 		cmd->command_flags |= I40E_AQ_NVM_LAST_CMD;
-<<<<<<< HEAD
 	if (hw->mac.type == I40E_MAC_X722) {
 		if (preservation_flags == I40E_NVM_PRESERVATION_FLAGS_SELECTED)
 			cmd->command_flags |=
@@ -3672,8 +3526,6 @@ i40e_status i40e_aq_update_nvm(struct i40e_hw *hw, u8 module_pointer,
 				(I40E_AQ_NVM_PRESERVATION_FLAGS_ALL <<
 				 I40E_AQ_NVM_PRESERVATION_FLAGS_SHIFT);
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cmd->module_pointer = module_pointer;
 	cmd->offset = cpu_to_le32(offset);
 	cmd->length = cpu_to_le16(length);
@@ -3689,7 +3541,6 @@ i40e_aq_update_nvm_exit:
 }
 
 /**
-<<<<<<< HEAD
  * i40e_aq_rearrange_nvm
  * @hw: pointer to the hw struct
  * @rearrange_nvm: defines direction of rearrangement
@@ -3725,8 +3576,6 @@ i40e_aq_rearrange_nvm_exit:
 }
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * i40e_aq_get_lldp_mib
  * @hw: pointer to the hw struct
  * @bridge_type: type of bridge requested
@@ -3836,11 +3685,8 @@ i40e_status i40e_aq_stop_lldp(struct i40e_hw *hw, bool shutdown_agent,
 /**
  * i40e_aq_start_lldp
  * @hw: pointer to the hw struct
-<<<<<<< HEAD
  * @buff: buffer for result
  * @buff_size: buffer size
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @cmd_details: pointer to command details structure or NULL
  *
  * Start the embedded LLDP Agent on all ports.
@@ -3856,7 +3702,6 @@ i40e_status i40e_aq_start_lldp(struct i40e_hw *hw,
 	i40e_fill_default_direct_cmd_desc(&desc, i40e_aqc_opc_lldp_start);
 
 	cmd->command = I40E_AQ_LLDP_AGENT_START;
-<<<<<<< HEAD
 	status = i40e_asq_send_command(hw, &desc, NULL, 0, cmd_details);
 
 	return status;
@@ -3885,9 +3730,6 @@ i40e_aq_set_dcb_parameters(struct i40e_hw *hw, bool dcb_enable,
 		cmd->valid_flags = I40E_DCB_VALID;
 		cmd->command = I40E_AQ_DCB_SET_AGENT;
 	}
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = i40e_asq_send_command(hw, &desc, NULL, 0, cmd_details);
 
 	return status;
@@ -3925,10 +3767,6 @@ i40e_status i40e_aq_get_cee_dcb_config(struct i40e_hw *hw,
  * i40e_aq_add_udp_tunnel
  * @hw: pointer to the hw struct
  * @udp_port: the UDP port to add in Host byte order
-<<<<<<< HEAD
-=======
- * @header_len: length of the tunneling header length in DWords
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @protocol_index: protocol index type
  * @filter_index: pointer to filter index
  * @cmd_details: pointer to command details structure or NULL
@@ -4147,10 +3985,7 @@ i40e_status i40e_aq_config_vsi_tc_bw(struct i40e_hw *hw,
  * @hw: pointer to the hw struct
  * @seid: seid of the switching component connected to Physical Port
  * @ets_data: Buffer holding ETS parameters
-<<<<<<< HEAD
  * @opcode: Tx scheduler AQ command opcode
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @cmd_details: pointer to command details structure or NULL
  **/
 i40e_status i40e_aq_config_switch_comp_ets(struct i40e_hw *hw,
@@ -4494,17 +4329,10 @@ i40e_status i40e_aq_add_rem_control_packet_filter(struct i40e_hw *hw,
  * @hw: pointer to the hw struct
  * @seid: VSI seid to add ethertype filter from
  **/
-<<<<<<< HEAD
 void i40e_add_filter_to_drop_tx_flow_control_frames(struct i40e_hw *hw,
 						    u16 seid)
 {
 #define I40E_FLOW_CONTROL_ETHTYPE 0x8808
-=======
-#define I40E_FLOW_CONTROL_ETHTYPE 0x8808
-void i40e_add_filter_to_drop_tx_flow_control_frames(struct i40e_hw *hw,
-						    u16 seid)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 flag = I40E_AQC_ADD_CONTROL_PACKET_FLAGS_IGNORE_MAC |
 		   I40E_AQC_ADD_CONTROL_PACKET_FLAGS_DROP |
 		   I40E_AQC_ADD_CONTROL_PACKET_FLAGS_TX;
@@ -4635,10 +4463,7 @@ void i40e_set_pci_config_data(struct i40e_hw *hw, u16 link_status)
  * @ret_buff_size: actual buffer size returned
  * @ret_next_table: next block to read
  * @ret_next_index: next index to read
-<<<<<<< HEAD
  * @cmd_details: pointer to command details structure or NULL
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Dump internal FW/HW data for debug purposes.
  *
@@ -4765,11 +4590,7 @@ i40e_status i40e_aq_configure_partition_bw(struct i40e_hw *hw,
  * i40e_read_phy_register_clause22
  * @hw: pointer to the HW structure
  * @reg: register address in the page
-<<<<<<< HEAD
  * @phy_addr: PHY address on MDIO interface
-=======
- * @phy_adr: PHY address on MDIO interface
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @value: PHY register value
  *
  * Reads specified PHY register value
@@ -4814,11 +4635,7 @@ i40e_status i40e_read_phy_register_clause22(struct i40e_hw *hw,
  * i40e_write_phy_register_clause22
  * @hw: pointer to the HW structure
  * @reg: register address in the page
-<<<<<<< HEAD
  * @phy_addr: PHY address on MDIO interface
-=======
- * @phy_adr: PHY address on MDIO interface
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @value: PHY register value
  *
  * Writes specified PHY register value
@@ -4859,11 +4676,7 @@ i40e_status i40e_write_phy_register_clause22(struct i40e_hw *hw,
  * @hw: pointer to the HW structure
  * @page: registers page number
  * @reg: register address in the page
-<<<<<<< HEAD
  * @phy_addr: PHY address on MDIO interface
-=======
- * @phy_adr: PHY address on MDIO interface
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @value: PHY register value
  *
  * Reads specified PHY register value
@@ -4937,11 +4750,7 @@ phy_read_end:
  * @hw: pointer to the HW structure
  * @page: registers page number
  * @reg: register address in the page
-<<<<<<< HEAD
  * @phy_addr: PHY address on MDIO interface
-=======
- * @phy_adr: PHY address on MDIO interface
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @value: PHY register value
  *
  * Writes value to specified PHY register
@@ -5008,11 +4817,7 @@ phy_write_end:
  * @hw: pointer to the HW structure
  * @page: registers page number
  * @reg: register address in the page
-<<<<<<< HEAD
  * @phy_addr: PHY address on MDIO interface
-=======
- * @phy_adr: PHY address on MDIO interface
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @value: PHY register value
  *
  * Writes value to specified PHY register
@@ -5048,11 +4853,7 @@ i40e_status i40e_write_phy_register(struct i40e_hw *hw,
  * @hw: pointer to the HW structure
  * @page: registers page number
  * @reg: register address in the page
-<<<<<<< HEAD
  * @phy_addr: PHY address on MDIO interface
-=======
- * @phy_adr: PHY address on MDIO interface
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @value: PHY register value
  *
  * Reads specified PHY register value
@@ -5087,10 +4888,6 @@ i40e_status i40e_read_phy_register(struct i40e_hw *hw,
  * i40e_get_phy_address
  * @hw: pointer to the HW structure
  * @dev_num: PHY port num that address we want
-<<<<<<< HEAD
-=======
- * @phy_addr: Returned PHY address
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Gets PHY address for current port
  **/
@@ -5177,7 +4974,6 @@ phy_blinking_end:
 }
 
 /**
-<<<<<<< HEAD
  * i40e_led_get_reg - read LED register
  * @hw: pointer to the HW structure
  * @led_addr: LED register address
@@ -5246,8 +5042,6 @@ static enum i40e_status_code i40e_led_set_reg(struct i40e_hw *hw, u16 led_addr,
 }
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * i40e_led_get_phy - return current on/off mode
  * @hw: pointer to the hw struct
  * @led_addr: address of led register to use
@@ -5264,7 +5058,6 @@ i40e_status i40e_led_get_phy(struct i40e_hw *hw, u16 *led_addr,
 	u16 temp_addr;
 	u8 port_num;
 	u32 i;
-<<<<<<< HEAD
 	u32 reg_val_aq;
 
 	if (hw->flags & I40E_HW_FLAG_AQ_PHY_ACCESS_CAPABLE) {
@@ -5278,9 +5071,6 @@ i40e_status i40e_led_get_phy(struct i40e_hw *hw, u16 *led_addr,
 			*val = (u16)reg_val_aq;
 		return status;
 	}
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	temp_addr = I40E_PHY_LED_PROV_REG_1;
 	i = rd32(hw, I40E_PFGEN_PORTNUM);
 	port_num = (u8)(i & I40E_PFGEN_PORTNUM_PORT_NUM_MASK);
@@ -5307,13 +5097,9 @@ i40e_status i40e_led_get_phy(struct i40e_hw *hw, u16 *led_addr,
  * i40e_led_set_phy
  * @hw: pointer to the HW structure
  * @on: true or false
-<<<<<<< HEAD
  * @led_addr: address of led register to use
  * @mode: original val plus bit for set or ignore
  *
-=======
- * @mode: original val plus bit for set or ignore
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Set led's on or off when controlled by the PHY
  *
  **/
@@ -5321,80 +5107,38 @@ i40e_status i40e_led_set_phy(struct i40e_hw *hw, bool on,
 			     u16 led_addr, u32 mode)
 {
 	i40e_status status = 0;
-<<<<<<< HEAD
 	u32 led_ctl = 0;
 	u32 led_reg = 0;
 
 	status = i40e_led_get_reg(hw, led_addr, &led_reg);
-=======
-	u16 led_ctl = 0;
-	u16 led_reg = 0;
-	u8 phy_addr = 0;
-	u8 port_num;
-	u32 i;
-
-	i = rd32(hw, I40E_PFGEN_PORTNUM);
-	port_num = (u8)(i & I40E_PFGEN_PORTNUM_PORT_NUM_MASK);
-	phy_addr = i40e_get_phy_address(hw, port_num);
-	status = i40e_read_phy_register_clause45(hw, I40E_PHY_COM_REG_PAGE,
-						 led_addr, phy_addr, &led_reg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (status)
 		return status;
 	led_ctl = led_reg;
 	if (led_reg & I40E_PHY_LED_LINK_MODE_MASK) {
 		led_reg = 0;
-<<<<<<< HEAD
 		status = i40e_led_set_reg(hw, led_addr, led_reg);
 		if (status)
 			return status;
 	}
 	status = i40e_led_get_reg(hw, led_addr, &led_reg);
-=======
-		status = i40e_write_phy_register_clause45(hw,
-							  I40E_PHY_COM_REG_PAGE,
-							  led_addr, phy_addr,
-							  led_reg);
-		if (status)
-			return status;
-	}
-	status = i40e_read_phy_register_clause45(hw, I40E_PHY_COM_REG_PAGE,
-						 led_addr, phy_addr, &led_reg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (status)
 		goto restore_config;
 	if (on)
 		led_reg = I40E_PHY_LED_MANUAL_ON;
 	else
 		led_reg = 0;
-<<<<<<< HEAD
 
 	status = i40e_led_set_reg(hw, led_addr, led_reg);
-=======
-	status = i40e_write_phy_register_clause45(hw, I40E_PHY_COM_REG_PAGE,
-						  led_addr, phy_addr, led_reg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (status)
 		goto restore_config;
 	if (mode & I40E_PHY_LED_MODE_ORIG) {
 		led_ctl = (mode & I40E_PHY_LED_MODE_MASK);
-<<<<<<< HEAD
 		status = i40e_led_set_reg(hw, led_addr, led_ctl);
 	}
 	return status;
 
 restore_config:
 	status = i40e_led_set_reg(hw, led_addr, led_ctl);
-=======
-		status = i40e_write_phy_register_clause45(hw,
-						 I40E_PHY_COM_REG_PAGE,
-						 led_addr, phy_addr, led_ctl);
-	}
-	return status;
-restore_config:
-	status = i40e_write_phy_register_clause45(hw, I40E_PHY_COM_REG_PAGE,
-						  led_addr, phy_addr, led_ctl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return status;
 }
 
@@ -5525,7 +5269,6 @@ do_retry:
 }
 
 /**
-<<<<<<< HEAD
  * i40e_aq_set_phy_register
  * @hw: pointer to the hw struct
  * @phy_select: select which phy should be accessed
@@ -5596,9 +5339,6 @@ i40e_status i40e_aq_get_phy_register(struct i40e_hw *hw,
 
 /**
  * i40e_aq_write_ddp - Write dynamic device personalization (ddp)
-=======
- * i40e_aq_write_ppp - Write pipeline personalization profile (ppp)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @hw: pointer to the hw struct
  * @buff: command buffer (size in bytes = buff_size)
  * @buff_size: buffer size in bytes
@@ -5608,11 +5348,7 @@ i40e_status i40e_aq_get_phy_register(struct i40e_hw *hw,
  * @cmd_details: pointer to command details structure or NULL
  **/
 enum
-<<<<<<< HEAD
 i40e_status_code i40e_aq_write_ddp(struct i40e_hw *hw, void *buff,
-=======
-i40e_status_code i40e_aq_write_ppp(struct i40e_hw *hw, void *buff,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   u16 buff_size, u32 track_id,
 				   u32 *error_offset, u32 *error_info,
 				   struct i40e_asq_cmd_details *cmd_details)
@@ -5621,11 +5357,7 @@ i40e_status_code i40e_aq_write_ppp(struct i40e_hw *hw, void *buff,
 	struct i40e_aqc_write_personalization_profile *cmd =
 		(struct i40e_aqc_write_personalization_profile *)
 		&desc.params.raw;
-<<<<<<< HEAD
 	struct i40e_aqc_write_ddp_resp *resp;
-=======
-	struct i40e_aqc_write_ppp_resp *resp;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i40e_status status;
 
 	i40e_fill_default_direct_cmd_desc(&desc,
@@ -5641,11 +5373,7 @@ i40e_status_code i40e_aq_write_ppp(struct i40e_hw *hw, void *buff,
 
 	status = i40e_asq_send_command(hw, &desc, buff, buff_size, cmd_details);
 	if (!status) {
-<<<<<<< HEAD
 		resp = (struct i40e_aqc_write_ddp_resp *)&desc.params.raw;
-=======
-		resp = (struct i40e_aqc_write_ppp_resp *)&desc.params.raw;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (error_offset)
 			*error_offset = le32_to_cpu(resp->error_offset);
 		if (error_info)
@@ -5656,7 +5384,6 @@ i40e_status_code i40e_aq_write_ppp(struct i40e_hw *hw, void *buff,
 }
 
 /**
-<<<<<<< HEAD
  * i40e_aq_get_ddp_list - Read dynamic device personalization (ddp)
  * @hw: pointer to the hw struct
  * @buff: command buffer (size in bytes = buff_size)
@@ -5666,16 +5393,6 @@ i40e_status_code i40e_aq_write_ppp(struct i40e_hw *hw, void *buff,
  **/
 enum
 i40e_status_code i40e_aq_get_ddp_list(struct i40e_hw *hw, void *buff,
-=======
- * i40e_aq_get_ppp_list - Read pipeline personalization profile (ppp)
- * @hw: pointer to the hw struct
- * @buff: command buffer (size in bytes = buff_size)
- * @buff_size: buffer size in bytes
- * @cmd_details: pointer to command details structure or NULL
- **/
-enum
-i40e_status_code i40e_aq_get_ppp_list(struct i40e_hw *hw, void *buff,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      u16 buff_size, u8 flags,
 				      struct i40e_asq_cmd_details *cmd_details)
 {
@@ -5750,14 +5467,6 @@ i40e_write_profile(struct i40e_hw *hw, struct i40e_profile_segment *profile,
 	u32 offset = 0, info = 0;
 	u32 i;
 
-<<<<<<< HEAD
-=======
-	if (!track_id) {
-		i40e_debug(hw, I40E_DEBUG_PACKAGE, "Track_id can't be 0.");
-		return I40E_NOT_SUPPORTED;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_cnt = profile->device_table_count;
 
 	for (i = 0; i < dev_cnt; i++) {
@@ -5767,11 +5476,7 @@ i40e_write_profile(struct i40e_hw *hw, struct i40e_profile_segment *profile,
 				break;
 	}
 	if (i == dev_cnt) {
-<<<<<<< HEAD
 		i40e_debug(hw, I40E_DEBUG_PACKAGE, "Device doesn't support DDP");
-=======
-		i40e_debug(hw, I40E_DEBUG_PACKAGE, "Device doesn't support PPP");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return I40E_ERR_DEVICE_NOT_SUPPORTED;
 	}
 
@@ -5790,11 +5495,7 @@ i40e_write_profile(struct i40e_hw *hw, struct i40e_profile_segment *profile,
 			sizeof(struct i40e_profile_section_header);
 
 		/* Write profile */
-<<<<<<< HEAD
 		status = i40e_aq_write_ddp(hw, (void *)sec, (u16)section_size,
-=======
-		status = i40e_aq_write_ppp(hw, (void *)sec, (u16)section_size,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   track_id, &offset, &info, NULL);
 		if (status) {
 			i40e_debug(hw, I40E_DEBUG_PACKAGE,
@@ -5836,7 +5537,6 @@ i40e_add_pinfo_to_list(struct i40e_hw *hw,
 					     sec->section.offset);
 	pinfo->track_id = track_id;
 	pinfo->version = profile->version;
-<<<<<<< HEAD
 	pinfo->op = I40E_DDP_ADD_TRACKID;
 	memcpy(pinfo->name, profile->name, I40E_DDP_NAME_SIZE);
 
@@ -6031,12 +5731,5 @@ i40e_aq_rem_cloud_filters_bb(struct i40e_hw *hw, u16 seid,
 
 	status = i40e_asq_send_command(hw, &desc, filters, buff_len, NULL);
 
-=======
-	pinfo->op = I40E_PPP_ADD_TRACKID;
-	memcpy(pinfo->name, profile->name, I40E_PPP_NAME_SIZE);
-
-	status = i40e_aq_write_ppp(hw, (void *)sec, sec->data_end,
-				   track_id, &offset, &info, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return status;
 }

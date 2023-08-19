@@ -201,7 +201,6 @@ static int cyttsp4_si_get_cydata(struct cyttsp4 *cd)
 	void *p;
 	int rc;
 
-<<<<<<< HEAD
 	if (si->si_ofs.test_ofs <= si->si_ofs.cydata_ofs) {
 		dev_err(cd->dev,
 			"%s: invalid offset test_ofs: %zu, cydata_ofs: %zu\n",
@@ -209,20 +208,14 @@ static int cyttsp4_si_get_cydata(struct cyttsp4 *cd)
 		return -EINVAL;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	si->si_ofs.cydata_size = si->si_ofs.test_ofs - si->si_ofs.cydata_ofs;
 	dev_dbg(cd->dev, "%s: cydata size: %zd\n", __func__,
 			si->si_ofs.cydata_size);
 
 	p = krealloc(si->si_ptrs.cydata, si->si_ofs.cydata_size, GFP_KERNEL);
 	if (p == NULL) {
-<<<<<<< HEAD
 		dev_err(cd->dev, "%s: failed to allocate cydata memory\n",
 			__func__);
-=======
-		dev_err(cd->dev, "%s: fail alloc cydata memory\n", __func__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOMEM;
 	}
 	si->si_ptrs.cydata = p;
@@ -285,7 +278,6 @@ static int cyttsp4_si_get_test_data(struct cyttsp4 *cd)
 	void *p;
 	int rc;
 
-<<<<<<< HEAD
 	if (si->si_ofs.pcfg_ofs <= si->si_ofs.test_ofs) {
 		dev_err(cd->dev,
 			"%s: invalid offset pcfg_ofs: %zu, test_ofs: %zu\n",
@@ -293,18 +285,12 @@ static int cyttsp4_si_get_test_data(struct cyttsp4 *cd)
 		return -EINVAL;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	si->si_ofs.test_size = si->si_ofs.pcfg_ofs - si->si_ofs.test_ofs;
 
 	p = krealloc(si->si_ptrs.test, si->si_ofs.test_size, GFP_KERNEL);
 	if (p == NULL) {
-<<<<<<< HEAD
 		dev_err(cd->dev, "%s: failed to allocate test memory\n",
 			__func__);
-=======
-		dev_err(cd->dev, "%s: fail alloc test memory\n", __func__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOMEM;
 	}
 	si->si_ptrs.test = p;
@@ -351,7 +337,6 @@ static int cyttsp4_si_get_pcfg_data(struct cyttsp4 *cd)
 	void *p;
 	int rc;
 
-<<<<<<< HEAD
 	if (si->si_ofs.opcfg_ofs <= si->si_ofs.pcfg_ofs) {
 		dev_err(cd->dev,
 			"%s: invalid offset opcfg_ofs: %zu, pcfg_ofs: %zu\n",
@@ -359,22 +344,13 @@ static int cyttsp4_si_get_pcfg_data(struct cyttsp4 *cd)
 		return -EINVAL;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	si->si_ofs.pcfg_size = si->si_ofs.opcfg_ofs - si->si_ofs.pcfg_ofs;
 
 	p = krealloc(si->si_ptrs.pcfg, si->si_ofs.pcfg_size, GFP_KERNEL);
 	if (p == NULL) {
-<<<<<<< HEAD
 		dev_err(cd->dev, "%s: failed to allocate pcfg memory\n",
 			__func__);
 		return -ENOMEM;
-=======
-		rc = -ENOMEM;
-		dev_err(cd->dev, "%s: fail alloc pcfg memory r=%d\n",
-			__func__, rc);
-		return rc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	si->si_ptrs.pcfg = p;
 
@@ -413,7 +389,6 @@ static int cyttsp4_si_get_opcfg_data(struct cyttsp4 *cd)
 	void *p;
 	int rc;
 
-<<<<<<< HEAD
 	if (si->si_ofs.ddata_ofs <= si->si_ofs.opcfg_ofs) {
 		dev_err(cd->dev,
 			"%s: invalid offset ddata_ofs: %zu, opcfg_ofs: %zu\n",
@@ -421,21 +396,13 @@ static int cyttsp4_si_get_opcfg_data(struct cyttsp4 *cd)
 		return -EINVAL;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	si->si_ofs.opcfg_size = si->si_ofs.ddata_ofs - si->si_ofs.opcfg_ofs;
 
 	p = krealloc(si->si_ptrs.opcfg, si->si_ofs.opcfg_size, GFP_KERNEL);
 	if (p == NULL) {
-<<<<<<< HEAD
 		dev_err(cd->dev, "%s: failed to allocate opcfg memory\n",
 			__func__);
 		return -ENOMEM;
-=======
-		dev_err(cd->dev, "%s: fail alloc opcfg memory\n", __func__);
-		rc = -ENOMEM;
-		goto cyttsp4_si_get_opcfg_data_exit;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	si->si_ptrs.opcfg = p;
 
@@ -444,11 +411,7 @@ static int cyttsp4_si_get_opcfg_data(struct cyttsp4 *cd)
 	if (rc < 0) {
 		dev_err(cd->dev, "%s: fail read opcfg data r=%d\n",
 			__func__, rc);
-<<<<<<< HEAD
 		return rc;
-=======
-		goto cyttsp4_si_get_opcfg_data_exit;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	si->si_ofs.cmd_ofs = si->si_ptrs.opcfg->cmd_ofs;
 	si->si_ofs.rep_ofs = si->si_ptrs.opcfg->rep_ofs;
@@ -513,12 +476,7 @@ static int cyttsp4_si_get_opcfg_data(struct cyttsp4 *cd)
 	cyttsp4_pr_buf(cd->dev, cd->pr_buf, (u8 *)si->si_ptrs.opcfg,
 		si->si_ofs.opcfg_size, "sysinfo_opcfg_data");
 
-<<<<<<< HEAD
 	return 0;
-=======
-cyttsp4_si_get_opcfg_data_exit:
-	return rc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int cyttsp4_si_get_ddata(struct cyttsp4 *cd)
@@ -1307,15 +1265,9 @@ static void cyttsp4_stop_wd_timer(struct cyttsp4 *cd)
 	del_timer_sync(&cd->watchdog_timer);
 }
 
-<<<<<<< HEAD
 static void cyttsp4_watchdog_timer(struct timer_list *t)
 {
 	struct cyttsp4 *cd = from_timer(cd, t, watchdog_timer);
-=======
-static void cyttsp4_watchdog_timer(unsigned long handle)
-{
-	struct cyttsp4 *cd = (struct cyttsp4 *)handle;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_vdbg(cd->dev, "%s: Watchdog timer triggered\n", __func__);
 
@@ -2048,14 +2000,11 @@ static int cyttsp4_mt_probe(struct cyttsp4 *cd)
 
 	/* get sysinfo */
 	md->si = &cd->sysinfo;
-<<<<<<< HEAD
 	if (!md->si) {
 		dev_err(dev, "%s: Fail get sysinfo pointer from core p=%p\n",
 			__func__, md->si);
 		goto error_get_sysinfo;
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rc = cyttsp4_setup_input_device(cd);
 	if (rc)
@@ -2065,11 +2014,8 @@ static int cyttsp4_mt_probe(struct cyttsp4 *cd)
 
 error_init_input:
 	input_free_device(md->input);
-<<<<<<< HEAD
 error_get_sysinfo:
 	input_set_drvdata(md->input, NULL);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 error_alloc_failed:
 	dev_err(dev, "%s failed.\n", __func__);
 	return rc;
@@ -2156,12 +2102,7 @@ struct cyttsp4 *cyttsp4_probe(const struct cyttsp4_bus_ops *ops,
 	}
 
 	/* Setup watchdog timer */
-<<<<<<< HEAD
 	timer_setup(&cd->watchdog_timer, cyttsp4_watchdog_timer, 0);
-=======
-	setup_timer(&cd->watchdog_timer, cyttsp4_watchdog_timer,
-		(unsigned long)cd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * call startup directly to ensure that the device

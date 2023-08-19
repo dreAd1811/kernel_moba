@@ -156,11 +156,7 @@ nf_conntrack_timestamp - BOOLEAN
 nf_conntrack_udp_timeout - INTEGER (seconds)
 	default 30
 
-<<<<<<< HEAD
 nf_conntrack_udp_timeout_stream - INTEGER (seconds)
-=======
-nf_conntrack_udp_timeout_stream2 - INTEGER (seconds)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default 180
 
 	This extended timeout will be used in case there is an UDP stream

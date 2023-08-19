@@ -579,10 +579,6 @@ static ssize_t show_pwm_enable(struct device *dev,
 	mutex_unlock(&data->update_lock);
 
 	val = config | (altbit << 3);
-<<<<<<< HEAD
-=======
-	newval = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (val == 3 || val >= 10)
 		newval = 255;

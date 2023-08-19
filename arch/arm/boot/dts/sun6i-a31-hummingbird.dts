@@ -62,7 +62,6 @@
 		stdout-path = "serial0:115200n8";
 	};
 
-<<<<<<< HEAD
 	hdmi-connector {
 		compatible = "hdmi-connector";
 		type = "a";
@@ -74,8 +73,6 @@
 		};
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vga-connector {
 		compatible = "vga-connector";
 
@@ -176,7 +173,6 @@
 	};
 };
 
-<<<<<<< HEAD
 &hdmi {
 	status = "okay";
 };
@@ -187,8 +183,6 @@
 	};
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &i2c0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&i2c0_pins_a>;
@@ -224,12 +218,7 @@
 	pinctrl-0 = <&mmc0_pins_a>, <&mmc0_cd_pin_hummingbird>;
 	vmmc-supply = <&reg_dcdc1>;
 	bus-width = <4>;
-<<<<<<< HEAD
 	cd-gpios = <&pio 0 8 GPIO_ACTIVE_LOW>; /* PA8 */
-=======
-	cd-gpios = <&pio 0 8 GPIO_ACTIVE_HIGH>; /* PA8 */
-	cd-inverted;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 

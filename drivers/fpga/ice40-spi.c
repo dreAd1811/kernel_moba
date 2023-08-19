@@ -133,10 +133,7 @@ static int ice40_fpga_probe(struct spi_device *spi)
 {
 	struct device *dev = &spi->dev;
 	struct ice40_fpga_priv *priv;
-<<<<<<< HEAD
 	struct fpga_manager *mgr;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	priv = devm_kzalloc(&spi->dev, sizeof(*priv), GFP_KERNEL);
@@ -178,7 +175,6 @@ static int ice40_fpga_probe(struct spi_device *spi)
 		return ret;
 	}
 
-<<<<<<< HEAD
 	mgr = fpga_mgr_create(dev, "Lattice iCE40 FPGA Manager",
 			      &ice40_fpga_ops, priv);
 	if (!mgr)
@@ -191,23 +187,14 @@ static int ice40_fpga_probe(struct spi_device *spi)
 		fpga_mgr_free(mgr);
 
 	return ret;
-=======
-	/* Register with the FPGA manager */
-	return fpga_mgr_register(dev, "Lattice iCE40 FPGA Manager",
-				 &ice40_fpga_ops, priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int ice40_fpga_remove(struct spi_device *spi)
 {
-<<<<<<< HEAD
 	struct fpga_manager *mgr = spi_get_drvdata(spi);
 
 	fpga_mgr_unregister(mgr);
 
-=======
-	fpga_mgr_unregister(&spi->dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

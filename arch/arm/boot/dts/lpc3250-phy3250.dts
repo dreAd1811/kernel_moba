@@ -49,13 +49,8 @@
 		sd_reg: regulator@2 {
 			compatible = "regulator-fixed";
 			regulator-name = "sd_reg";
-<<<<<<< HEAD
 			regulator-min-microvolt = <1800000>;
 			regulator-max-microvolt = <1800000>;
-=======
-			regulator-min-microvolt = <3300000>;
-			regulator-max-microvolt = <3300000>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			gpio = <&gpio 5 5 0>;
 			enable-active-high;
 		};
@@ -159,49 +154,29 @@
 		#address-cells = <1>;
 		#size-cells = <1>;
 
-<<<<<<< HEAD
 		mtd0@0 {
-=======
-		mtd0@00000000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "phy3250-boot";
 			reg = <0x00000000 0x00064000>;
 			read-only;
 		};
 
-<<<<<<< HEAD
 		mtd1@64000 {
-=======
-		mtd1@00064000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "phy3250-uboot";
 			reg = <0x00064000 0x00190000>;
 			read-only;
 		};
 
-<<<<<<< HEAD
 		mtd2@1f4000 {
-=======
-		mtd2@001f4000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "phy3250-ubt-prms";
 			reg = <0x001f4000 0x00010000>;
 		};
 
-<<<<<<< HEAD
 		mtd3@204000 {
-=======
-		mtd3@00204000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "phy3250-kernel";
 			reg = <0x00204000 0x00400000>;
 		};
 
-<<<<<<< HEAD
 		mtd4@604000 {
-=======
-		mtd4@00604000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "phy3250-rootfs";
 			reg = <0x00604000 0x039fc000>;
 		};

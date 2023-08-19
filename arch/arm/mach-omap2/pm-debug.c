@@ -31,10 +31,6 @@
 #include "clock.h"
 #include "powerdomain.h"
 #include "clockdomain.h"
-<<<<<<< HEAD
-=======
-#include "omap-pm.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "soc.h"
 #include "cm2xxx_3xxx.h"
@@ -51,14 +47,6 @@ static int pm_dbg_init_done;
 
 static int pm_dbg_init(void);
 
-<<<<<<< HEAD
-=======
-enum {
-	DEBUG_FILE_COUNTERS = 0,
-	DEBUG_FILE_TIMERS,
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const char pwrdm_state_names[][PWRDM_MAX_PWRSTS] = {
 	"OFF",
 	"RET",
@@ -148,53 +136,21 @@ static int pwrdm_dbg_show_timer(struct powerdomain *pwrdm, void *user)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int pm_dbg_counters_show(struct seq_file *s, void *unused)
-=======
-static int pm_dbg_show_counters(struct seq_file *s, void *unused)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	pwrdm_for_each(pwrdm_dbg_show_counter, s);
 	clkdm_for_each(clkdm_dbg_show_counter, s);
 
 	return 0;
 }
-<<<<<<< HEAD
 DEFINE_SHOW_ATTRIBUTE(pm_dbg_counters);
 
 static int pm_dbg_timers_show(struct seq_file *s, void *unused)
-=======
-
-static int pm_dbg_show_timers(struct seq_file *s, void *unused)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	pwrdm_for_each(pwrdm_dbg_show_timer, s);
 	return 0;
 }
-<<<<<<< HEAD
 DEFINE_SHOW_ATTRIBUTE(pm_dbg_timers);
-=======
-
-static int pm_dbg_open(struct inode *inode, struct file *file)
-{
-	switch ((int)inode->i_private) {
-	case DEBUG_FILE_COUNTERS:
-		return single_open(file, pm_dbg_show_counters,
-			&inode->i_private);
-	case DEBUG_FILE_TIMERS:
-	default:
-		return single_open(file, pm_dbg_show_timers,
-			&inode->i_private);
-	}
-}
-
-static const struct file_operations debug_fops = {
-	.open           = pm_dbg_open,
-	.read           = seq_read,
-	.llseek         = seq_lseek,
-	.release        = single_release,
-};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int pwrdm_suspend_get(void *data, u64 *val)
 {
@@ -260,13 +216,6 @@ static int option_set(void *data, u64 val)
 	*option = val;
 
 	if (option == &enable_off_mode) {
-<<<<<<< HEAD
-=======
-		if (val)
-			omap_pm_enable_off_mode();
-		else
-			omap_pm_disable_off_mode();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (cpu_is_omap34xx())
 			omap3_pm_off_mode_enable(val);
 	}
@@ -287,15 +236,8 @@ static int __init pm_dbg_init(void)
 	if (!d)
 		return -EINVAL;
 
-<<<<<<< HEAD
 	(void) debugfs_create_file("count", 0444, d, NULL, &pm_dbg_counters_fops);
 	(void) debugfs_create_file("time", 0444, d, NULL, &pm_dbg_timers_fops);
-=======
-	(void) debugfs_create_file("count", S_IRUGO,
-		d, (void *)DEBUG_FILE_COUNTERS, &debug_fops);
-	(void) debugfs_create_file("time", S_IRUGO,
-		d, (void *)DEBUG_FILE_TIMERS, &debug_fops);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pwrdm_for_each(pwrdms_setup, (void *)d);
 

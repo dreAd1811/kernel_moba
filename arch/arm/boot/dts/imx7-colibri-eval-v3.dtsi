@@ -45,7 +45,6 @@
 		stdout-path = "serial0:115200n8";
 	};
 
-<<<<<<< HEAD
 	/* fixed crystal dedicated to mpc258x */
 	clk16m: clk16m {
 		compatible = "fixed-clock";
@@ -53,8 +52,6 @@
 		clock-frequency = <16000000>;
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	panel: panel {
 		compatible = "edt,et057090dhu";
 		backlight = <&bl>;
@@ -80,7 +77,6 @@
 		regulator-min-microvolt = <5000000>;
 		regulator-max-microvolt = <5000000>;
 	};
-<<<<<<< HEAD
 
 	reg_usbh_vbus: regulator-usbh-vbus {
 		compatible = "regulator-fixed";
@@ -92,8 +88,6 @@
 		gpio = <&gpio4 7 GPIO_ACTIVE_LOW>;
 		vin-supply = <&reg_5v0>;
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &bl {
@@ -112,7 +106,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
 &ecspi3 {
 	status = "okay";
 
@@ -131,8 +124,6 @@
 	};
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &fec1 {
 	status = "okay";
 };
@@ -142,11 +133,7 @@
 
 	/* M41T0M6 real time clock on carrier board */
 	rtc: m41t0m6@68 {
-<<<<<<< HEAD
 		compatible = "st,m41t0";
-=======
-		compatible = "st,m41t00";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x68>;
 	};
 };
@@ -196,9 +183,6 @@
 &usdhc1 {
 	keep-power-in-suspend;
 	wakeup-source;
-<<<<<<< HEAD
 	vmmc-supply = <&reg_3v3>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };

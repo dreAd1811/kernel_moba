@@ -16,15 +16,6 @@
 #define PCIBIOS_MIN_MEM 0x100000
 
 #define pcibios_assign_all_busses()	1
-<<<<<<< HEAD
-=======
-/*
- * The PCI address space does equal the physical memory address space.
- * The networking and block device layers use this boolean for bounce
- * buffer decisions.
- */
-#define PCI_DMA_BUS_IS_PHYS	1
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* __KERNEL__ */
 

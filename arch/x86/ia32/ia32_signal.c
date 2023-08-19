@@ -33,10 +33,6 @@
 #include <asm/vdso.h>
 #include <asm/sigframe.h>
 #include <asm/sighandling.h>
-<<<<<<< HEAD
-=======
-#include <asm/sys_ia32.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/smap.h>
 
 /*
@@ -122,11 +118,7 @@ static int ia32_restore_sigcontext(struct pt_regs *regs,
 	return err;
 }
 
-<<<<<<< HEAD
 asmlinkage long sys32_sigreturn(const struct pt_regs *__unused)
-=======
-asmlinkage long sys32_sigreturn(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct pt_regs *regs = current_pt_regs();
 	struct sigframe_ia32 __user *frame = (struct sigframe_ia32 __user *)(regs->sp-8);
@@ -152,11 +144,7 @@ badframe:
 	return 0;
 }
 
-<<<<<<< HEAD
 asmlinkage long sys32_rt_sigreturn(const struct pt_regs *__unused)
-=======
-asmlinkage long sys32_rt_sigreturn(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct pt_regs *regs = current_pt_regs();
 	struct rt_sigframe_ia32 __user *frame;

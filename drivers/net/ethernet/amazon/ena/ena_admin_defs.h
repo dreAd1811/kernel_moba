@@ -627,15 +627,12 @@ enum ena_admin_flow_hash_proto {
 
 	ENA_ADMIN_RSS_NOT_IP	= 7,
 
-<<<<<<< HEAD
 	/* TCPv6 with extension header */
 	ENA_ADMIN_RSS_TCP6_EX	= 8,
 
 	/* IPv6 with extension header */
 	ENA_ADMIN_RSS_IP6_EX	= 9,
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ENA_ADMIN_RSS_PROTO_NUM	= 16,
 };
 

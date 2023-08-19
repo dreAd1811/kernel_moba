@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Hardkernel Odroid XU4 board device tree source
  *
@@ -9,20 +6,10 @@
  * Copyright (c) 2014 Collabora Ltd.
  * Copyright (c) 2013-2015 Samsung Electronics Co., Ltd.
  *		http://www.samsung.com
-<<<<<<< HEAD
  */
 
 /dts-v1/;
 #include <dt-bindings/sound/samsung-i2s.h>
-=======
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
-*/
-
-/dts-v1/;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "exynos5422-odroidxu3-common.dtsi"
 
 / {
@@ -41,7 +28,6 @@
 			linux,default-trigger = "heartbeat";
 		};
 	};
-<<<<<<< HEAD
 
 	sound: sound {
 		compatible = "samsung,odroid-xu3-audio";
@@ -92,8 +78,6 @@
 	status = "okay";
 	assigned-clocks = <&i2s0 CLK_I2S_RCLK_SRC>;
 	assigned-clock-parents = <&clock_audss EXYNOS_SCLK_I2S>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &pwm {

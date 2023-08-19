@@ -31,10 +31,6 @@
 		};
 
 		mmc0: dwmmc0@ff704000 {
-<<<<<<< HEAD
-=======
-			num-slots = <1>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			broken-cd;
 			bus-width = <4>;
 			cap-mmc-highspeed;

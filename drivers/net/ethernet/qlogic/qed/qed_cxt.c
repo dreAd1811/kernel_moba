@@ -47,10 +47,7 @@
 #include "qed_hsi.h"
 #include "qed_hw.h"
 #include "qed_init_ops.h"
-<<<<<<< HEAD
 #include "qed_rdma.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "qed_reg_addr.h"
 #include "qed_sriov.h"
 
@@ -90,39 +87,22 @@
 
 /* connection context union */
 union conn_context {
-<<<<<<< HEAD
 	struct e4_core_conn_context core_ctx;
 	struct e4_eth_conn_context eth_ctx;
 	struct e4_iscsi_conn_context iscsi_ctx;
 	struct e4_fcoe_conn_context fcoe_ctx;
 	struct e4_roce_conn_context roce_ctx;
-=======
-	struct core_conn_context core_ctx;
-	struct eth_conn_context eth_ctx;
-	struct iscsi_conn_context iscsi_ctx;
-	struct fcoe_conn_context fcoe_ctx;
-	struct roce_conn_context roce_ctx;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* TYPE-0 task context - iSCSI, FCOE */
 union type0_task_context {
-<<<<<<< HEAD
 	struct e4_iscsi_task_context iscsi_ctx;
 	struct e4_fcoe_task_context fcoe_ctx;
-=======
-	struct iscsi_task_context iscsi_ctx;
-	struct fcoe_task_context fcoe_ctx;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* TYPE-1 task context - ROCE */
 union type1_task_context {
-<<<<<<< HEAD
 	struct e4_rdma_task_context roce_ctx;
-=======
-	struct rdma_task_context roce_ctx;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct src_ent {
@@ -130,13 +110,8 @@ struct src_ent {
 	u64 next;
 };
 
-<<<<<<< HEAD
 #define CDUT_SEG_ALIGNMET		3 /* in 4k chunks */
 #define CDUT_SEG_ALIGNMET_IN_BYTES	BIT(CDUT_SEG_ALIGNMET + 12)
-=======
-#define CDUT_SEG_ALIGNMET 3	/* in 4k chunks */
-#define CDUT_SEG_ALIGNMET_IN_BYTES (1 << (CDUT_SEG_ALIGNMET + 12))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define CONN_CXT_SIZE(p_hwfn) \
 	ALIGNED_TYPE_SIZE(union conn_context, p_hwfn)
@@ -422,11 +397,7 @@ static void qed_cxt_qm_iids(struct qed_hwfn *p_hwfn,
 		vf_tids += segs[NUM_TASK_PF_SEGMENTS].count;
 	}
 
-<<<<<<< HEAD
 	iids->vf_cids += vf_cids * p_mngr->vf_count;
-=======
-	iids->vf_cids = vf_cids;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	iids->tids += vf_tids * p_mngr->vf_count;
 
 	DP_VERBOSE(p_hwfn, QED_MSG_ILT,
@@ -456,11 +427,7 @@ static void qed_cxt_set_srq_count(struct qed_hwfn *p_hwfn, u32 num_srqs)
 	p_mgr->srq_count = num_srqs;
 }
 
-<<<<<<< HEAD
 u32 qed_cxt_get_srq_count(struct qed_hwfn *p_hwfn)
-=======
-static u32 qed_cxt_get_srq_count(struct qed_hwfn *p_hwfn)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct qed_cxt_mngr *p_mgr = p_hwfn->p_cxt_mngr;
 
@@ -776,11 +743,7 @@ int qed_cxt_cfg_ilt_compute(struct qed_hwfn *p_hwfn, u32 *line_count)
 	p_blk = qed_cxt_set_blk(&p_cli->pf_blks[0]);
 
 	qed_cxt_qm_iids(p_hwfn, &qm_iids);
-<<<<<<< HEAD
 	total = qed_qm_pf_mem_size(qm_iids.cids,
-=======
-	total = qed_qm_pf_mem_size(p_hwfn->rel_pf_id, qm_iids.cids,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   qm_iids.vf_cids, qm_iids.tids,
 				   p_hwfn->qm_info.num_pqs,
 				   p_hwfn->qm_info.num_vf_pqs);
@@ -974,23 +937,13 @@ static int qed_cxt_src_t2_alloc(struct qed_hwfn *p_hwfn)
 		u32 size = min_t(u32, total_size, psz);
 		void **p_virt = &p_mngr->t2[i].p_virt;
 
-<<<<<<< HEAD
 		*p_virt = dma_zalloc_coherent(&p_hwfn->cdev->pdev->dev,
 					      size, &p_mngr->t2[i].p_phys,
 					      GFP_KERNEL);
-=======
-		*p_virt = dma_alloc_coherent(&p_hwfn->cdev->pdev->dev,
-					     size,
-					     &p_mngr->t2[i].p_phys, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!p_mngr->t2[i].p_virt) {
 			rc = -ENOMEM;
 			goto t2_fail;
 		}
-<<<<<<< HEAD
-=======
-		memset(*p_virt, 0, size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		p_mngr->t2[i].size = size;
 		total_size -= size;
 	}
@@ -1102,18 +1055,10 @@ static int qed_ilt_blk_alloc(struct qed_hwfn *p_hwfn,
 		u32 size;
 
 		size = min_t(u32, sz_left, p_blk->real_size_in_page);
-<<<<<<< HEAD
 		p_virt = dma_zalloc_coherent(&p_hwfn->cdev->pdev->dev, size,
 					     &p_phys, GFP_KERNEL);
 		if (!p_virt)
 			return -ENOMEM;
-=======
-		p_virt = dma_alloc_coherent(&p_hwfn->cdev->pdev->dev,
-					    size, &p_phys, GFP_KERNEL);
-		if (!p_virt)
-			return -ENOMEM;
-		memset(p_virt, 0, size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		ilt_shadow[line].p_phys = p_phys;
 		ilt_shadow[line].p_virt = p_virt;
@@ -1550,38 +1495,24 @@ static void qed_cdu_init_pf(struct qed_hwfn *p_hwfn)
 	}
 }
 
-<<<<<<< HEAD
 void qed_qm_init_pf(struct qed_hwfn *p_hwfn,
 		    struct qed_ptt *p_ptt, bool is_pf_loading)
 {
 	struct qed_qm_info *qm_info = &p_hwfn->qm_info;
 	struct qed_qm_pf_rt_init_params params;
 	struct qed_mcp_link_state *p_link;
-=======
-void qed_qm_init_pf(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt)
-{
-	struct qed_qm_pf_rt_init_params params;
-	struct qed_qm_info *qm_info = &p_hwfn->qm_info;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct qed_qm_iids iids;
 
 	memset(&iids, 0, sizeof(iids));
 	qed_cxt_qm_iids(p_hwfn, &iids);
 
-<<<<<<< HEAD
 	p_link = &QED_LEADING_HWFN(p_hwfn->cdev)->mcp_info->link_output;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memset(&params, 0, sizeof(params));
 	params.port_id = p_hwfn->port_id;
 	params.pf_id = p_hwfn->rel_pf_id;
 	params.max_phys_tcs_per_port = qm_info->max_phys_tcs_per_port;
-<<<<<<< HEAD
 	params.is_pf_loading = is_pf_loading;
-=======
-	params.is_first_pf = p_hwfn->first_on_engine;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	params.num_pf_cids = iids.cids;
 	params.num_vf_cids = iids.vf_cids;
 	params.num_tids = iids.tids;
@@ -1592,10 +1523,7 @@ void qed_qm_init_pf(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt)
 	params.num_vports = qm_info->num_vports;
 	params.pf_wfq = qm_info->pf_wfq;
 	params.pf_rl = qm_info->pf_rl;
-<<<<<<< HEAD
 	params.link_speed = p_link->speed;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	params.pq_params = qm_info->qm_pq_params;
 	params.vport_params = qm_info->qm_vport_params;
 
@@ -1603,11 +1531,7 @@ void qed_qm_init_pf(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt)
 }
 
 /* CM PF */
-<<<<<<< HEAD
 static void qed_cm_init_pf(struct qed_hwfn *p_hwfn)
-=======
-void qed_cm_init_pf(struct qed_hwfn *p_hwfn)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* XCM pure-LB queue */
 	STORE_RT_REG(p_hwfn, XCM_REG_CON_PHY_Q3_RT_OFFSET,
@@ -1963,11 +1887,7 @@ void qed_cxt_hw_init_common(struct qed_hwfn *p_hwfn)
 
 void qed_cxt_hw_init_pf(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt)
 {
-<<<<<<< HEAD
 	qed_qm_init_pf(p_hwfn, p_ptt, true);
-=======
-	qed_qm_init_pf(p_hwfn, p_ptt);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	qed_cm_init_pf(p_hwfn);
 	qed_dq_init_pf(p_hwfn);
 	qed_cdu_init_pf(p_hwfn);
@@ -2151,7 +2071,6 @@ static void qed_rdma_set_pf_params(struct qed_hwfn *p_hwfn,
 	u32 num_cons, num_qps, num_srqs;
 	enum protocol_type proto;
 
-<<<<<<< HEAD
 	num_srqs = min_t(u32, QED_RDMA_MAX_SRQS, p_params->num_srqs);
 
 	if (p_hwfn->mcp_info->func_info.protocol == QED_PCI_ETH_RDMA) {
@@ -2159,9 +2078,6 @@ static void qed_rdma_set_pf_params(struct qed_hwfn *p_hwfn,
 			  "Current day drivers don't support RoCE & iWARP simultaneously on the same PF. Default to RoCE-only\n");
 		p_hwfn->hw_info.personality = QED_PCI_ETH_ROCE;
 	}
-=======
-	num_srqs = min_t(u32, 32 * 1024, p_params->num_srqs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (p_hwfn->hw_info.personality) {
 	case QED_PCI_ETH_IWARP:
@@ -2391,23 +2307,13 @@ qed_cxt_dynamic_ilt_alloc(struct qed_hwfn *p_hwfn,
 		goto out0;
 	}
 
-<<<<<<< HEAD
 	p_virt = dma_zalloc_coherent(&p_hwfn->cdev->pdev->dev,
 				     p_blk->real_size_in_page, &p_phys,
 				     GFP_KERNEL);
-=======
-	p_virt = dma_alloc_coherent(&p_hwfn->cdev->pdev->dev,
-				    p_blk->real_size_in_page,
-				    &p_phys, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!p_virt) {
 		rc = -ENOMEM;
 		goto out1;
 	}
-<<<<<<< HEAD
-=======
-	memset(p_virt, 0, p_blk->real_size_in_page);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* configuration of refTagMask to 0xF is required for RoCE DIF MR only,
 	 * to compensate for a HW bug, but it is configured even if DIF is not
@@ -2423,11 +2329,7 @@ qed_cxt_dynamic_ilt_alloc(struct qed_hwfn *p_hwfn,
 		for (elem_i = 0; elem_i < elems_per_p; elem_i++) {
 			elem = (union type1_task_context *)elem_start;
 			SET_FIELD(elem->roce_ctx.tdif_context.flags1,
-<<<<<<< HEAD
 				  TDIF_TASK_CONTEXT_REF_TAG_MASK, 0xf);
-=======
-				  TDIF_TASK_CONTEXT_REFTAGMASK, 0xf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			elem_start += TYPE1_TASK_CXT_SIZE(p_hwfn);
 		}
 	}

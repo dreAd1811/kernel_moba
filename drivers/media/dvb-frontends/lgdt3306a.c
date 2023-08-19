@@ -19,14 +19,9 @@
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
 #include <asm/div64.h>
-<<<<<<< HEAD
 #include <linux/kernel.h>
 #include <linux/dvb/frontend.h>
 #include <media/dvb_math.h>
-=======
-#include <linux/dvb/frontend.h>
-#include "dvb_math.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "lgdt3306a.h"
 #include <linux/i2c-mux.h>
 
@@ -35,7 +30,6 @@ static int debug;
 module_param(debug, int, 0644);
 MODULE_PARM_DESC(debug, "set debug level (info=1, reg=2 (or-able))");
 
-<<<<<<< HEAD
 /*
  * Older drivers treated QAM64 and QAM256 the same; that is the HW always
  * used "Auto" mode during detection.  Setting "forced_manual"=1 allows
@@ -47,8 +41,6 @@ static int forced_manual;
 module_param(forced_manual, int, 0644);
 MODULE_PARM_DESC(forced_manual, "if set, QAM64 and QAM256 will only lock to modulation specified");
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DBG_INFO 1
 #define DBG_REG  2
 #define DBG_DUMP 4 /* FGR - comment out to remove dump code */
@@ -585,16 +577,12 @@ static int lgdt3306a_set_qam(struct lgdt3306a_state *state, int modulation)
 	/* 3. : 64QAM/256QAM detection(manual, auto) */
 	ret = lgdt3306a_read_reg(state, 0x0009, &val);
 	val &= 0xfc;
-<<<<<<< HEAD
 	/* Check for forced Manual modulation modes; otherwise always "auto" */
 	if(forced_manual && (modulation != QAM_AUTO)){
 		val |= 0x01; /* STDOPDETCMODE[1:0]= 1=Manual */
 	} else {
 		val |= 0x02; /* STDOPDETCMODE[1:0]= 2=Auto */
 	}
-=======
-	val |= 0x02; /* STDOPDETCMODE[1:0]=1=Manual 2=Auto */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = lgdt3306a_write_reg(state, 0x0009, val);
 	if (lg_chkerr(ret))
 		goto fail;
@@ -626,7 +614,6 @@ static int lgdt3306a_set_qam(struct lgdt3306a_state *state, int modulation)
 	if (lg_chkerr(ret))
 		goto fail;
 
-<<<<<<< HEAD
 	/* 5.1 V0.36 SRDCHKALWAYS : For better QAM detection */
 	ret = lgdt3306a_read_reg(state, 0x000a, &val);
 	val &= 0xfd;
@@ -649,8 +636,6 @@ static int lgdt3306a_set_qam(struct lgdt3306a_state *state, int modulation)
 	if (lg_chkerr(ret))
 		goto fail;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* 6. Reset */
 	ret = lgdt3306a_soft_reset(state);
 	if (lg_chkerr(ret))
@@ -673,16 +658,9 @@ static int lgdt3306a_set_modulation(struct lgdt3306a_state *state,
 		ret = lgdt3306a_set_vsb(state);
 		break;
 	case QAM_64:
-<<<<<<< HEAD
 	case QAM_256:
 	case QAM_AUTO:
 		ret = lgdt3306a_set_qam(state, p->modulation);
-=======
-		ret = lgdt3306a_set_qam(state, QAM_64);
-		break;
-	case QAM_256:
-		ret = lgdt3306a_set_qam(state, QAM_256);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		return -EINVAL;
@@ -709,10 +687,7 @@ static int lgdt3306a_agc_setup(struct lgdt3306a_state *state,
 		break;
 	case QAM_64:
 	case QAM_256:
-<<<<<<< HEAD
 	case QAM_AUTO:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		return -EINVAL;
@@ -767,10 +742,7 @@ static int lgdt3306a_spectral_inversion(struct lgdt3306a_state *state,
 		break;
 	case QAM_64:
 	case QAM_256:
-<<<<<<< HEAD
 	case QAM_AUTO:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Auto ok for QAM */
 		ret = lgdt3306a_set_inversion_auto(state, 1);
 		break;
@@ -794,10 +766,7 @@ static int lgdt3306a_set_if(struct lgdt3306a_state *state,
 		break;
 	case QAM_64:
 	case QAM_256:
-<<<<<<< HEAD
 	case QAM_AUTO:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if_freq_khz = state->cfg->qam_if_khz;
 		break;
 	default:
@@ -1656,10 +1625,7 @@ static int lgdt3306a_read_status(struct dvb_frontend *fe,
 		switch (state->current_modulation) {
 		case QAM_256:
 		case QAM_64:
-<<<<<<< HEAD
 		case QAM_AUTO:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (lgdt3306a_qam_lock_poll(state) == LG3306_LOCK) {
 				*status |= FE_HAS_VITERBI;
 				*status |= FE_HAS_SYNC;
@@ -1703,10 +1669,7 @@ static int lgdt3306a_read_signal_strength(struct dvb_frontend *fe,
 	 * Calculate some sort of "strength" from SNR
 	 */
 	struct lgdt3306a_state *state = fe->demodulator_priv;
-<<<<<<< HEAD
 	u8 val;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 snr; /* snr_x10 */
 	int ret;
 	u32 ref_snr; /* snr*100 */
@@ -1719,7 +1682,6 @@ static int lgdt3306a_read_signal_strength(struct dvb_frontend *fe,
 		 ref_snr = 1600; /* 16dB */
 		 break;
 	case QAM_64:
-<<<<<<< HEAD
 	case QAM_256:
 	case QAM_AUTO:
 		/* need to know actual modulation to set proper SNR baseline */
@@ -1729,13 +1691,6 @@ static int lgdt3306a_read_signal_strength(struct dvb_frontend *fe,
 		else
 			ref_snr = 2200; /* QAM-64  22dB */
 		break;
-=======
-		 ref_snr = 2200; /* 22dB */
-		 break;
-	case QAM_256:
-		 ref_snr = 2800; /* 28dB */
-		 break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		return -EINVAL;
 	}
@@ -1829,11 +1784,7 @@ static int lgdt3306a_get_tune_settings(struct dvb_frontend *fe,
 	return 0;
 }
 
-<<<<<<< HEAD
 static enum dvbfe_search lgdt3306a_search(struct dvb_frontend *fe)
-=======
-static int lgdt3306a_search(struct dvb_frontend *fe)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	enum fe_status status = 0;
 	int ret;
@@ -1863,17 +1814,7 @@ static void lgdt3306a_release(struct dvb_frontend *fe)
 	struct lgdt3306a_state *state = fe->demodulator_priv;
 
 	dbg_info("\n");
-<<<<<<< HEAD
 	kfree(state);
-=======
-
-	/*
-	 * If state->muxc is not NULL, then we are an i2c device
-	 * and lgdt3306a_remove will clean up state
-	 */
-	if (!state->muxc)
-		kfree(state);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct dvb_frontend_ops lgdt3306a_ops;
@@ -2178,11 +2119,7 @@ static const short regtab[] = {
 	0x30aa, /* MPEGLOCK */
 };
 
-<<<<<<< HEAD
 #define numDumpRegs (ARRAY_SIZE(regtab))
-=======
-#define numDumpRegs (sizeof(regtab)/sizeof(regtab[0]))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static u8 regval1[numDumpRegs] = {0, };
 static u8 regval2[numDumpRegs] = {0, };
 
@@ -2220,17 +2157,10 @@ static const struct dvb_frontend_ops lgdt3306a_ops = {
 	.delsys = { SYS_ATSC, SYS_DVBC_ANNEX_B },
 	.info = {
 		.name = "LG Electronics LGDT3306A VSB/QAM Frontend",
-<<<<<<< HEAD
 		.frequency_min_hz      =  54 * MHz,
 		.frequency_max_hz      = 858 * MHz,
 		.frequency_stepsize_hz = 62500,
 		.caps = FE_CAN_QAM_AUTO | FE_CAN_QAM_64 | FE_CAN_QAM_256 | FE_CAN_8VSB
-=======
-		.frequency_min      = 54000000,
-		.frequency_max      = 858000000,
-		.frequency_stepsize = 62500,
-		.caps = FE_CAN_QAM_64 | FE_CAN_QAM_256 | FE_CAN_8VSB
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.i2c_gate_ctrl        = lgdt3306a_i2c_gate_ctrl,
 	.init                 = lgdt3306a_init,
@@ -2285,11 +2215,7 @@ static int lgdt3306a_probe(struct i2c_client *client,
 			sizeof(struct lgdt3306a_config));
 
 	config->i2c_addr = client->addr;
-<<<<<<< HEAD
 	fe = lgdt3306a_attach(config, client->adapter);
-=======
-	fe = dvb_attach(lgdt3306a_attach, config, client->adapter);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (fe == NULL) {
 		ret = -ENODEV;
 		goto err_fe;
@@ -2297,10 +2223,7 @@ static int lgdt3306a_probe(struct i2c_client *client,
 
 	i2c_set_clientdata(client, fe->demodulator_priv);
 	state = fe->demodulator_priv;
-<<<<<<< HEAD
 	state->frontend.ops.release = NULL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* create mux i2c adapter for tuner */
 	state->muxc = i2c_mux_alloc(client->adapter, &client->dev,
@@ -2320,11 +2243,8 @@ static int lgdt3306a_probe(struct i2c_client *client,
 	*config->i2c_adapter = state->muxc->adapter[0];
 	*config->fe = fe;
 
-<<<<<<< HEAD
 	dev_info(&client->dev, "LG Electronics LGDT3306A successfully identified\n");
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 err_kfree:
@@ -2332,11 +2252,7 @@ err_kfree:
 err_fe:
 	kfree(config);
 fail:
-<<<<<<< HEAD
 	dev_warn(&client->dev, "probe failed = %d\n", ret);
-=======
-	dev_dbg(&client->dev, "failed=%d\n", ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 

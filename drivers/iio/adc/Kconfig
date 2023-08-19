@@ -144,16 +144,9 @@ config ASPEED_ADC
 config AT91_ADC
 	tristate "Atmel AT91 ADC"
 	depends on ARCH_AT91
-<<<<<<< HEAD
 	depends on INPUT && SYSFS
 	select IIO_BUFFER
 	select IIO_TRIGGERED_BUFFER
-=======
-	depends on INPUT
-	select IIO_BUFFER
-	select IIO_TRIGGERED_BUFFER
-	select SYSFS
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Say yes here to build support for Atmel AT91 ADC.
 
@@ -325,11 +318,8 @@ config HI8435
 config HX711
 	tristate "AVIA HX711 ADC for weight cells"
 	depends on GPIOLIB
-<<<<<<< HEAD
 	select IIO_BUFFER
 	select IIO_TRIGGERED_BUFFER
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  If you say yes here you get support for AVIA HX711 ADC which is used
 	  for weigh cells
@@ -489,21 +479,13 @@ config	MAX9611
 	  called max9611.
 
 config MCP320X
-<<<<<<< HEAD
 	tristate "Microchip Technology MCP3x01/02/04/08 and MCP3550/1/3"
-=======
-	tristate "Microchip Technology MCP3x01/02/04/08"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on SPI
 	help
 	  Say yes here to build support for Microchip Technology's
 	  MCP3001, MCP3002, MCP3004, MCP3008, MCP3201, MCP3202, MCP3204,
-<<<<<<< HEAD
 	  MCP3208, MCP3301, MCP3550, MCP3551 and MCP3553 analog to digital
 	  converters.
-=======
-	  MCP3208 or MCP3301 analog to digital converter.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	  This driver can also be built as a module. If so, the module will be
 	  called mcp320x.
@@ -585,7 +567,6 @@ config QCOM_PM8XXX_XOADC
 	  To compile this driver as a module, choose M here: the module
 	  will be called qcom-pm8xxx-xoadc.
 
-<<<<<<< HEAD
 config QCOM_SPMI_ADC5
 	tristate "Qualcomm Technologies Inc. SPMI PMIC5 ADC"
 	depends on SPMI
@@ -606,8 +587,6 @@ config QCOM_SPMI_ADC5
 	  To compile this driver as a module, choose M here: the module will
 	  be called qcom-spmi-adc5.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config QCOM_SPMI_IADC
 	tristate "Qualcomm SPMI PMIC current ADC"
 	depends on SPMI
@@ -637,57 +616,9 @@ config QCOM_SPMI_VADC
 	  To compile this driver as a module, choose M here: the module will
 	  be called qcom-spmi-vadc.
 
-<<<<<<< HEAD
 config RCAR_GYRO_ADC
 	tristate "Renesas R-Car GyroADC driver"
 	depends on ARCH_RCAR_GEN2 || COMPILE_TEST
-=======
-config QCOM_SPMI_ADC5
-	tristate "Qualcomm Technologies Inc. SPMI PMIC5 ADC"
-	depends on SPMI
-	select REGMAP_SPMI
-	select QCOM_VADC_COMMON
-	help
-	  This is the IIO Voltage PMIC5 ADC driver for Qualcomm Technologies Inc.
-
-	  The driver supports multiple channels read. The ADC is a 15-bit
-	  sigma-delta ADC. The hardware supports calibrated results for
-	  conversion requests and clients include reading voltage phone
-	  power, on board system thermistors connected to the PMIC ADC,
-	  PMIC die temperature, charger temperature, battery current, USB voltage
-	  input, voltage signals connected to supported PMIC GPIO inputs.
-
-	  To compile this driver as a module, choose M here: the module will
-	  be called qcom-spmi-adc5.
-
-config QCOM_TADC
-	tristate "Qualcomm Technologies, Inc. TADC driver"
-	depends on MFD_I2C_PMIC
-	help
-	  Say yes here to support the Qualcomm Technologies, Inc. telemetry ADC.
-	  The TADC provides battery temperature, skin temperature,
-	  die temperature, battery voltage, battery current, input voltage,
-	  input current, and OTG current.
-
-config QCOM_RRADC
-	tristate "Qualcomm Technologies Inc. PMIC Round robin ADC"
-	depends on SPMI
-	select REGMAP_SPMI
-	help
-	  This is the PMIC Round Robin ADC driver.
-
-	  The driver supports multiple channels read used for telemetry
-	  and supports clients to read batt_id, batt_therm, PMIC die
-	  temperature, USB_IN and DC_IN voltage and current.
-	  The RRADC is a 10-bit ADC.
-
-	  To compile this driver as a module, choose M here: the module will
-	  be called qcom-rradc.
-
-config RCAR_GYRO_ADC
-	tristate "Renesas R-Car GyroADC driver"
-	depends on ARCH_RCAR_GEN2 || (ARM && COMPILE_TEST)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Say yes here to build support for the GyroADC found in Renesas
 	  R-Car Gen2 SoCs. This block is a simple SPI offload engine for
@@ -709,7 +640,6 @@ config ROCKCHIP_SARADC
 	  To compile this driver as a module, choose M here: the
 	  module will be called rockchip_saradc.
 
-<<<<<<< HEAD
 config SC27XX_ADC
 	tristate "Spreadtrum SC27xx series PMICs ADC"
 	depends on MFD_SC27XX_PMIC || COMPILE_TEST
@@ -720,8 +650,6 @@ config SC27XX_ADC
 	  This driver can also be built as a module. If so, the module
 	  will be called sc27xx_adc.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config SPEAR_ADC
 	tristate "ST SPEAr ADC"
 	depends on PLAT_SPEAR || COMPILE_TEST
@@ -733,7 +661,6 @@ config SPEAR_ADC
 	  To compile this driver as a module, choose M here: the
 	  module will be called spear_adc.
 
-<<<<<<< HEAD
 config SD_ADC_MODULATOR
 	tristate "Generic sigma delta modulator"
 	depends on OF
@@ -749,12 +676,6 @@ config SD_ADC_MODULATOR
 config STM32_ADC_CORE
 	tristate "STMicroelectronics STM32 adc core"
 	depends on ARCH_STM32 || COMPILE_TEST
-=======
-config STM32_ADC_CORE
-	tristate "STMicroelectronics STM32 adc core"
-	depends on ARCH_STM32 || COMPILE_TEST
-	depends on HAS_DMA
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on OF
 	depends on REGULATOR
 	select IIO_BUFFER
@@ -778,7 +699,6 @@ config STM32_ADC
 	  This driver can also be built as a module.  If so, the module
 	  will be called stm32-adc.
 
-<<<<<<< HEAD
 config STM32_DFSDM_CORE
 	tristate "STMicroelectronics STM32 DFSDM core"
 	depends on (ARCH_STM32 && OF) || COMPILE_TEST
@@ -809,11 +729,6 @@ config STX104
 	tristate "Apex Embedded Systems STX104 driver"
 	depends on PC104 && X86
 	select ISA_BUS_API
-=======
-config STX104
-	tristate "Apex Embedded Systems STX104 driver"
-	depends on PC104 && X86 && ISA_BUS_API
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select GPIOLIB
 	help
 	  Say yes here to build support for the Apex Embedded Systems STX104
@@ -831,10 +746,7 @@ config SUN4I_GPADC
 	depends on IIO
 	depends on MFD_SUN4I_GPADC || MACH_SUN8I
 	depends on THERMAL || !THERMAL_OF
-<<<<<<< HEAD
 	select REGMAP_IRQ
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Say yes here to build support for Allwinner (A10, A13 and A31) SoCs
 	  GPADC. This ADC provides 4 channels which can be used as an ADC or as

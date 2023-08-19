@@ -14,17 +14,10 @@ obj-y        +=	ttpci/		\
 		ddbridge/	\
 		saa7146/	\
 		smipcie/	\
-<<<<<<< HEAD
 		netup_unidvb/	\
 		intel/
 
 obj-$(CONFIG_VIDEO_IVTV) += ivtv/
-=======
-		netup_unidvb/
-
-obj-$(CONFIG_VIDEO_IVTV) += ivtv/
-obj-$(CONFIG_VIDEO_ZORAN) += zoran/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 obj-$(CONFIG_VIDEO_CX18) += cx18/
 obj-$(CONFIG_VIDEO_CX23885) += cx23885/
 obj-$(CONFIG_VIDEO_CX25821) += cx25821/

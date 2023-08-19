@@ -193,11 +193,7 @@ static int nouveau_dsm_power_state(enum vga_switcheroo_client_id id,
 	return nouveau_dsm_set_discrete_state(nouveau_dsm_priv.dhandle, state);
 }
 
-<<<<<<< HEAD
 static enum vga_switcheroo_client_id nouveau_dsm_get_client_id(struct pci_dev *pdev)
-=======
-static int nouveau_dsm_get_client_id(struct pci_dev *pdev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* easy option one - intel vendor ID means Integrated */
 	if (pdev->vendor == PCI_VENDOR_ID_INTEL)

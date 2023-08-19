@@ -29,7 +29,6 @@ struct iotlb_entry {
 };
 
 /**
-<<<<<<< HEAD
  * struct omap_iommu_device - omap iommu device data
  * @pgtable:	page table used by an omap iommu attached to a domain
  * @iommu_dev:	pointer to store an omap iommu instance attached to a domain
@@ -43,24 +42,13 @@ struct omap_iommu_device {
  * struct omap_iommu_domain - omap iommu domain
  * @num_iommus: number of iommus in this domain
  * @iommus:	omap iommu device data for all iommus in this domain
-=======
- * struct omap_iommu_domain - omap iommu domain
- * @pgtable:	the page table
- * @iommu_dev:	an omap iommu device attached to this domain. only a single
- *		iommu device can be attached for now.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @dev:	Device using this domain.
  * @lock:	domain lock, should be taken when attaching/detaching
  * @domain:	generic domain handle used by iommu core code
  */
 struct omap_iommu_domain {
-<<<<<<< HEAD
 	u32 num_iommus;
 	struct omap_iommu_device *iommus;
-=======
-	u32 *pgtable;
-	struct omap_iommu *iommu_dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct device *dev;
 	spinlock_t lock;
 	struct iommu_domain domain;
@@ -118,20 +106,6 @@ struct iotlb_lock {
 	short vict;
 };
 
-<<<<<<< HEAD
-=======
-/**
- * dev_to_omap_iommu() - retrieves an omap iommu object from a user device
- * @dev: iommu client device
- */
-static inline struct omap_iommu *dev_to_omap_iommu(struct device *dev)
-{
-	struct omap_iommu_arch_data *arch_data = dev->archdata.iommu;
-
-	return arch_data->iommu_dev;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * MMU Register offsets
  */

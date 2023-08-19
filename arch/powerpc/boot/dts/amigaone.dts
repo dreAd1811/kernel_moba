@@ -168,10 +168,6 @@
 	};
 
 	chosen {
-<<<<<<< HEAD
 		stdout-path = "/pci@80000000/isa@7/serial@3f8";
-=======
-		linux,stdout-path = "/pci@80000000/isa@7/serial@3f8";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };

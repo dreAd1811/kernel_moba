@@ -28,11 +28,7 @@ Device Drivers Base
 .. kernel-doc:: drivers/base/node.c
    :internal:
 
-<<<<<<< HEAD
 .. kernel-doc:: drivers/base/firmware_loader/main.c
-=======
-.. kernel-doc:: drivers/base/firmware_class.c
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    :export:
 
 .. kernel-doc:: drivers/base/transport_class.c
@@ -53,17 +49,10 @@ Device Drivers Base
 Device Drivers DMA Management
 -----------------------------
 
-<<<<<<< HEAD
 .. kernel-doc:: kernel/dma/coherent.c
    :export:
 
 .. kernel-doc:: kernel/dma/mapping.c
-=======
-.. kernel-doc:: drivers/base/dma-coherent.c
-   :export:
-
-.. kernel-doc:: drivers/base/dma-mapping.c
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    :export:
 
 Device drivers PnP support

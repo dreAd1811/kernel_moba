@@ -39,11 +39,7 @@ gf119_head_vblank_get(struct nvkm_head *head)
 	nvkm_mask(device, 0x6100c0 + hoff, 0x00000001, 0x00000001);
 }
 
-<<<<<<< HEAD
 void
-=======
-static void
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 gf119_head_rgclk(struct nvkm_head *head, int div)
 {
 	struct nvkm_device *device = head->disp->engine.subdev.device;
@@ -96,7 +92,6 @@ gf119_head = {
 int
 gf119_head_new(struct nvkm_disp *disp, int id)
 {
-<<<<<<< HEAD
 	return nvkm_head_new_(&gf119_head, disp, id);
 }
 
@@ -107,10 +102,3 @@ gf119_head_cnt(struct nvkm_disp *disp, unsigned long *pmask)
 	*pmask = nvkm_rd32(device, 0x612004) & 0x0000000f;
 	return nvkm_rd32(device, 0x022448);
 }
-=======
-	struct nvkm_device *device = disp->engine.subdev.device;
-	if (!(nvkm_rd32(device, 0x612004) & (0x00000001 << id)))
-		return 0;
-	return nvkm_head_new_(&gf119_head, disp, id);
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

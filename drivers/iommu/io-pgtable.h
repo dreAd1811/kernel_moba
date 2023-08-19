@@ -114,11 +114,6 @@ struct io_pgtable_cfg {
 	unsigned int			oas;
 	const struct iommu_gather_ops	*tlb;
 	struct device			*iommu_dev;
-<<<<<<< HEAD
-=======
-	dma_addr_t			iova_base;
-	dma_addr_t			iova_end;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Low-level data specific to the table format */
 	union {
@@ -159,13 +154,8 @@ struct io_pgtable_cfg {
  *
  * @map:		Map a physically contiguous memory region.
  * @map_sg:		Map a scatterlist.  Returns the number of bytes mapped,
-<<<<<<< HEAD
  *			or -ve val on failure.  The size parameter contains the
  *			size of the partial mapping in case of failure.
-=======
- *			or 0 on failure.  The size parameter contains the size
- *			of the partial mapping in case of failure.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @unmap:		Unmap a physically contiguous memory region.
  * @iova_to_phys:	Translate iova to physical address.
  * @is_iova_coherent:	Checks coherency of given IOVA. Returns True if coherent
@@ -178,19 +168,11 @@ struct io_pgtable_cfg {
 struct io_pgtable_ops {
 	int (*map)(struct io_pgtable_ops *ops, unsigned long iova,
 		   phys_addr_t paddr, size_t size, int prot);
-<<<<<<< HEAD
 	size_t (*unmap)(struct io_pgtable_ops *ops, unsigned long iova,
 			size_t size);
 	int (*map_sg)(struct io_pgtable_ops *ops, unsigned long iova,
 		      struct scatterlist *sg, unsigned int nents,
 		      int prot, size_t *size);
-=======
-	int (*map_sg)(struct io_pgtable_ops *ops, unsigned long iova,
-		      struct scatterlist *sg, unsigned int nents,
-		      int prot, size_t *size);
-	size_t (*unmap)(struct io_pgtable_ops *ops, unsigned long iova,
-		     size_t size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	phys_addr_t (*iova_to_phys)(struct io_pgtable_ops *ops,
 				    unsigned long iova);
 	bool (*is_iova_coherent)(struct io_pgtable_ops *ops,

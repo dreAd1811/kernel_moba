@@ -230,13 +230,6 @@ typedef struct {
 	unsigned int	id;
 	unsigned int	active;
 	unsigned long	vdso_base;
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_PPC_64K_PAGES
-	/* for 4K PTE fragment support */
-	void *pte_frag;
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } mm_context_t;
 
 /* Page size definitions, common between 32 and 64-bit
@@ -278,11 +271,6 @@ static inline unsigned int mmu_psize_to_shift(unsigned int mmu_psize)
  */
 #if defined(CONFIG_PPC_4K_PAGES)
 #define mmu_virtual_psize	MMU_PAGE_4K
-<<<<<<< HEAD
-=======
-#elif defined(CONFIG_PPC_64K_PAGES)
-#define mmu_virtual_psize	MMU_PAGE_64K
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 #error Unsupported page size
 #endif

@@ -75,15 +75,9 @@ static void __init eisa_name_device(struct eisa_device *edev)
 
 static char __init *decode_eisa_sig(unsigned long addr)
 {
-<<<<<<< HEAD
 	static char sig_str[EISA_SIG_LEN];
 	u8 sig[4];
 	u16 rev;
-=======
-        static char sig_str[EISA_SIG_LEN];
-	u8 sig[4];
-        u16 rev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 
 	for (i = 0; i < 4; i++) {
@@ -102,7 +96,6 @@ static char __init *decode_eisa_sig(unsigned long addr)
 		if (!i && (sig[0] & 0x80))
 			return NULL;
 	}
-<<<<<<< HEAD
 
 	sig_str[0] = ((sig[0] >> 2) & 0x1f) + ('A' - 1);
 	sig_str[1] = (((sig[0] & 3) << 3) | (sig[1] >> 5)) + ('A' - 1);
@@ -111,16 +104,6 @@ static char __init *decode_eisa_sig(unsigned long addr)
 	sprintf(sig_str + 3, "%04X", rev);
 
 	return sig_str;
-=======
-	
-        sig_str[0] = ((sig[0] >> 2) & 0x1f) + ('A' - 1);
-        sig_str[1] = (((sig[0] & 3) << 3) | (sig[1] >> 5)) + ('A' - 1);
-        sig_str[2] = (sig[1] & 0x1f) + ('A' - 1);
-        rev = (sig[2] << 8) | sig[3];
-        sprintf(sig_str + 3, "%04X", rev);
-
-        return sig_str;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int eisa_bus_match(struct device *dev, struct device_driver *drv)
@@ -215,11 +198,7 @@ static int __init eisa_init_device(struct eisa_root_device *root,
 	sig = decode_eisa_sig(sig_addr);
 	if (!sig)
 		return -1;	/* No EISA device here */
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memcpy(edev->id.sig, sig, EISA_SIG_LEN);
 	edev->slot = slot;
 	edev->state = inb(SLOT_ADDRESS(root, slot) + EISA_CONFIG_OFFSET)
@@ -243,11 +222,7 @@ static int __init eisa_init_device(struct eisa_root_device *root,
 
 	if (is_forced_dev(enable_dev, enable_dev_count, root, edev))
 		edev->state = EISA_CONFIG_ENABLED | EISA_CONFIG_FORCED;
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (is_forced_dev(disable_dev, disable_dev_count, root, edev))
 		edev->state = EISA_CONFIG_FORCED;
 
@@ -300,11 +275,7 @@ static int __init eisa_request_resources(struct eisa_root_device *root,
 			edev->res[i].start = edev->res[i].end = 0;
 			continue;
 		}
-<<<<<<< HEAD
 
-=======
-		
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (slot) {
 			edev->res[i].name  = NULL;
 			edev->res[i].start = SLOT_ADDRESS(root, slot)
@@ -324,11 +295,7 @@ static int __init eisa_request_resources(struct eisa_root_device *root,
 	}
 
 	return 0;
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  failed:
 	while (--i >= 0)
 		release_resource(&edev->res[i]);
@@ -347,11 +314,7 @@ static void __init eisa_release_resources(struct eisa_device *edev)
 
 static int __init eisa_probe(struct eisa_root_device *root)
 {
-<<<<<<< HEAD
 	int i, c;
-=======
-        int i, c;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct eisa_device *edev;
 	char *enabled_str;
 
@@ -359,7 +322,6 @@ static int __init eisa_probe(struct eisa_root_device *root)
 
 	/* First try to get hold of slot 0. If there is no device
 	 * here, simply fail, unless root->force_probe is set. */
-<<<<<<< HEAD
 
 	edev = kzalloc(sizeof(*edev), GFP_KERNEL);
 	if (!edev)
@@ -368,18 +330,6 @@ static int __init eisa_probe(struct eisa_root_device *root)
 	if (eisa_request_resources(root, edev, 0)) {
 		dev_warn(root->dev,
 			 "EISA: Cannot allocate resource for mainboard\n");
-=======
-	
-	edev = kzalloc(sizeof(*edev), GFP_KERNEL);
-	if (!edev) {
-		dev_err(root->dev, "EISA: Couldn't allocate mainboard slot\n");
-		return -ENOMEM;
-	}
-		
-	if (eisa_request_resources(root, edev, 0)) {
-		dev_warn(root->dev,
-		         "EISA: Cannot allocate resource for mainboard\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(edev);
 		if (!root->force_probe)
 			return -EBUSY;
@@ -398,7 +348,6 @@ static int __init eisa_probe(struct eisa_root_device *root)
 
 	if (eisa_register_device(edev)) {
 		dev_err(&edev->dev, "EISA: Failed to register %s\n",
-<<<<<<< HEAD
 			edev->id.sig);
 		eisa_release_resources(edev);
 		kfree(edev);
@@ -407,16 +356,6 @@ static int __init eisa_probe(struct eisa_root_device *root)
  force_probe:
 
 	for (c = 0, i = 1; i <= root->slots; i++) {
-=======
-		        edev->id.sig);
-		eisa_release_resources(edev);
-		kfree(edev);
-	}
-	
- force_probe:
-	
-        for (c = 0, i = 1; i <= root->slots; i++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		edev = kzalloc(sizeof(*edev), GFP_KERNEL);
 		if (!edev) {
 			dev_err(root->dev, "EISA: Out of memory for slot %d\n",
@@ -426,13 +365,8 @@ static int __init eisa_probe(struct eisa_root_device *root)
 
 		if (eisa_request_resources(root, edev, i)) {
 			dev_warn(root->dev,
-<<<<<<< HEAD
 				 "Cannot allocate resource for EISA slot %d\n",
 				 i);
-=======
-			         "Cannot allocate resource for EISA slot %d\n",
-			         i);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			kfree(edev);
 			continue;
 		}
@@ -459,19 +393,11 @@ static int __init eisa_probe(struct eisa_root_device *root)
 
 		if (eisa_register_device(edev)) {
 			dev_err(&edev->dev, "EISA: Failed to register %s\n",
-<<<<<<< HEAD
 				edev->id.sig);
 			eisa_release_resources(edev);
 			kfree(edev);
 		}
 	}
-=======
-			        edev->id.sig);
-			eisa_release_resources(edev);
-			kfree(edev);
-		}
-        }
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_info(root->dev, "EISA: Detected %d card%s\n", c, c == 1 ? "" : "s");
 	return 0;
@@ -494,11 +420,7 @@ int __init eisa_root_register(struct eisa_root_device *root)
 	 * been already registered. This prevents the virtual root
 	 * device from registering after the real one has, for
 	 * example... */
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	root->eisa_root_res.name  = eisa_root_res.name;
 	root->eisa_root_res.start = root->res->start;
 	root->eisa_root_res.end   = root->res->end;
@@ -507,11 +429,7 @@ int __init eisa_root_register(struct eisa_root_device *root)
 	err = request_resource(&eisa_root_res, &root->eisa_root_res);
 	if (err)
 		return err;
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	root->bus_nr = eisa_bus_count++;
 
 	err = eisa_probe(root);
@@ -524,11 +442,7 @@ int __init eisa_root_register(struct eisa_root_device *root)
 static int __init eisa_init(void)
 {
 	int r;
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	r = bus_register(&eisa_bus_type);
 	if (r)
 		return r;

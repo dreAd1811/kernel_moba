@@ -34,10 +34,7 @@ struct mod_arch_specific {
 #endif
 };
 
-<<<<<<< HEAD
 struct module;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 u32 get_module_plt(struct module *mod, unsigned long loc, Elf32_Addr val);
 
 /*

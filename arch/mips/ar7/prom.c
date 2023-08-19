@@ -25,10 +25,7 @@
 #include <linux/string.h>
 #include <linux/io.h>
 #include <asm/bootinfo.h>
-<<<<<<< HEAD
 #include <asm/setup.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/mach-ar7/ar7.h>
 #include <asm/mach-ar7/prom.h>
@@ -263,17 +260,9 @@ static inline void serial_out(int offset, int value)
 	writel(value, (void *)PORT(offset));
 }
 
-<<<<<<< HEAD
 void prom_putchar(char c)
-=======
-int prom_putchar(char c)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	while ((serial_in(UART_LSR) & UART_LSR_TEMT) == 0)
 		;
 	serial_out(UART_TX, c);
-<<<<<<< HEAD
-=======
-	return 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

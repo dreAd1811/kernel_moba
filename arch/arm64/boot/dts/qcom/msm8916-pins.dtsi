@@ -278,11 +278,7 @@
 		pinconf {
 			pins = "gpio6", "gpio7";
 			drive-strength = <16>;
-<<<<<<< HEAD
 			bias-disable;
-=======
-			bias-disable = <0>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 	};
 
@@ -294,11 +290,7 @@
 		pinconf {
 			pins = "gpio6", "gpio7";
 			drive-strength = <2>;
-<<<<<<< HEAD
 			bias-disable;
-=======
-			bias-disable = <0>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 	};
 
@@ -310,11 +302,7 @@
 		pinconf {
 			pins = "gpio14", "gpio15";
 			drive-strength = <16>;
-<<<<<<< HEAD
 			bias-disable;
-=======
-			bias-disable = <0>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 	};
 
@@ -326,11 +314,7 @@
 		pinconf {
 			pins = "gpio14", "gpio15";
 			drive-strength = <2>;
-<<<<<<< HEAD
 			bias-disable;
-=======
-			bias-disable = <0>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 	};
 
@@ -342,11 +326,7 @@
 		pinconf {
 			pins = "gpio22", "gpio23";
 			drive-strength = <16>;
-<<<<<<< HEAD
 			bias-disable;
-=======
-			bias-disable = <0>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 	};
 
@@ -358,36 +338,7 @@
 		pinconf {
 			pins = "gpio22", "gpio23";
 			drive-strength = <2>;
-<<<<<<< HEAD
 			bias-disable;
-=======
-			bias-disable = <0>;
-		};
-	};
-
-	sdhc2_cd_pin {
-		sdc2_cd_on: cd_on {
-			pinmux {
-				function = "gpio";
-				pins = "gpio38";
-			};
-			pinconf {
-				pins = "gpio38";
-				drive-strength = <2>;
-				bias-pull-up;
-			};
-		};
-		sdc2_cd_off: cd_off {
-			pinmux {
-				function = "gpio";
-				pins = "gpio38";
-			};
-			pinconf {
-				pins = "gpio38";
-				drive-strength = <2>;
-				bias-disable;
-			};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 	};
 
@@ -529,7 +480,6 @@
 		};
 	};
 
-<<<<<<< HEAD
 	pmx_sdc2_cd_pin {
 		sdc2_cd_on: cd_on {
 			pinmux {
@@ -549,28 +499,6 @@
 			};
 			pinconf {
 				pins = "gpio38";
-=======
-	ext-codec-lines {
-		ext_codec_lines_act: lines_on {
-			pinmux {
-				function = "gpio";
-				pins = "gpio67";
-			};
-			pinconf {
-				pins = "gpio67";
-				drive-strength = <8>;
-				bias-disable;
-				output-high;
-			};
-		};
-		ext_codec_lines_sus: lines_off {
-			pinmux {
-				function = "gpio";
-				pins = "gpio67";
-			};
-			pinconf {
-				pins = "gpio67";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				drive-strength = <2>;
 				bias-disable;
 			};
@@ -733,7 +661,6 @@
 			};
 		};
 		cdc_dmic_lines_sus: dmic_lines_off {
-<<<<<<< HEAD
 			pinmux_dmic0_clk {
 				function = "dmic0_clk";
 				pins = "gpio0";
@@ -742,8 +669,6 @@
 				function = "dmic0_data";
 				pins = "gpio1";
 			};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pinconf {
 				pins = "gpio0", "gpio1";
 				drive-strength = <2>;
@@ -752,35 +677,6 @@
 		};
 	};
 
-<<<<<<< HEAD
-=======
-	cross-conn-det {
-		cross_conn_det_act: lines_on {
-			pinmux {
-				function = "gpio";
-				pins = "gpio120";
-			};
-			pinconf {
-				pins = "gpio120";
-				drive-strength = <8>;
-				output-low;
-				bias-pull-down;
-			};
-		};
-		cross_conn_det_sus: lines_off {
-			pinmux {
-				function = "gpio";
-				pins = "gpio120";
-			};
-			pinconf {
-				pins = "gpio120";
-				drive-strength = <2>;
-				bias-disable;
-			};
-		};
-	};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wcnss_pin_a: wcnss-active {
 		pinmux {
 			pins = "gpio40", "gpio41", "gpio42", "gpio43", "gpio44";

@@ -8,7 +8,6 @@ http://github.com/freedreno/envytools/
 git clone https://github.com/freedreno/envytools.git
 
 The rules-ng-ng source files this header was generated from are:
-<<<<<<< HEAD
 - /home/robclark/src/envytools/rnndb/adreno.xml               (    501 bytes, from 2018-07-03 19:37:13)
 - /home/robclark/src/envytools/rnndb/freedreno_copyright.xml  (   1572 bytes, from 2018-07-03 19:37:13)
 - /home/robclark/src/envytools/rnndb/adreno/a2xx.xml          (  36805 bytes, from 2018-07-03 19:37:13)
@@ -22,19 +21,6 @@ The rules-ng-ng source files this header was generated from are:
 - /home/robclark/src/envytools/rnndb/adreno/ocmem.xml         (   1773 bytes, from 2018-07-03 19:37:13)
 
 Copyright (C) 2013-2018 by the following authors:
-=======
-- /home/robclark/src/freedreno/envytools/rnndb/adreno.xml               (    431 bytes, from 2017-05-17 13:21:27)
-- /home/robclark/src/freedreno/envytools/rnndb/freedreno_copyright.xml  (   1572 bytes, from 2017-05-17 13:21:27)
-- /home/robclark/src/freedreno/envytools/rnndb/adreno/a2xx.xml          (  37162 bytes, from 2017-05-17 13:21:27)
-- /home/robclark/src/freedreno/envytools/rnndb/adreno/adreno_common.xml (  13324 bytes, from 2017-05-17 13:21:27)
-- /home/robclark/src/freedreno/envytools/rnndb/adreno/adreno_pm4.xml    (  31866 bytes, from 2017-06-06 18:26:14)
-- /home/robclark/src/freedreno/envytools/rnndb/adreno/a3xx.xml          (  83840 bytes, from 2017-05-17 13:21:27)
-- /home/robclark/src/freedreno/envytools/rnndb/adreno/a4xx.xml          ( 111898 bytes, from 2017-06-06 18:23:59)
-- /home/robclark/src/freedreno/envytools/rnndb/adreno/a5xx.xml          ( 139480 bytes, from 2017-06-16 12:44:39)
-- /home/robclark/src/freedreno/envytools/rnndb/adreno/ocmem.xml         (   1773 bytes, from 2017-05-17 13:21:27)
-
-Copyright (C) 2013-2017 by the following authors:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 - Rob Clark <robdclark@gmail.com> (robclark)
 - Ilia Mirkin <imirkin@alum.mit.edu> (imirkin)
 
@@ -279,15 +265,6 @@ enum a4xx_depth_format {
 	DEPTH4_32 = 3,
 };
 
-<<<<<<< HEAD
-=======
-enum a4xx_tess_spacing {
-	EQUAL_SPACING = 0,
-	ODD_SPACING = 2,
-	EVEN_SPACING = 3,
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum a4xx_ccu_perfcounter_select {
 	CCU_BUSY_CYCLES = 0,
 	CCU_RB_DEPTH_RETURN_STALL = 2,
@@ -3563,20 +3540,13 @@ static inline uint32_t A4XX_HLSQ_VS_CONTROL_REG_CONSTLENGTH(uint32_t val)
 {
 	return ((val) << A4XX_HLSQ_VS_CONTROL_REG_CONSTLENGTH__SHIFT) & A4XX_HLSQ_VS_CONTROL_REG_CONSTLENGTH__MASK;
 }
-<<<<<<< HEAD
 #define A4XX_HLSQ_VS_CONTROL_REG_CONSTOBJECTOFFSET__MASK	0x00007f00
-=======
-#define A4XX_HLSQ_VS_CONTROL_REG_CONSTOBJECTOFFSET__MASK	0x0000ff00
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define A4XX_HLSQ_VS_CONTROL_REG_CONSTOBJECTOFFSET__SHIFT	8
 static inline uint32_t A4XX_HLSQ_VS_CONTROL_REG_CONSTOBJECTOFFSET(uint32_t val)
 {
 	return ((val) << A4XX_HLSQ_VS_CONTROL_REG_CONSTOBJECTOFFSET__SHIFT) & A4XX_HLSQ_VS_CONTROL_REG_CONSTOBJECTOFFSET__MASK;
 }
-<<<<<<< HEAD
 #define A4XX_HLSQ_VS_CONTROL_REG_SSBO_ENABLE			0x00008000
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define A4XX_HLSQ_VS_CONTROL_REG_ENABLED			0x00010000
 #define A4XX_HLSQ_VS_CONTROL_REG_SHADEROBJOFFSET__MASK		0x00fe0000
 #define A4XX_HLSQ_VS_CONTROL_REG_SHADEROBJOFFSET__SHIFT		17
@@ -3598,20 +3568,13 @@ static inline uint32_t A4XX_HLSQ_FS_CONTROL_REG_CONSTLENGTH(uint32_t val)
 {
 	return ((val) << A4XX_HLSQ_FS_CONTROL_REG_CONSTLENGTH__SHIFT) & A4XX_HLSQ_FS_CONTROL_REG_CONSTLENGTH__MASK;
 }
-<<<<<<< HEAD
 #define A4XX_HLSQ_FS_CONTROL_REG_CONSTOBJECTOFFSET__MASK	0x00007f00
-=======
-#define A4XX_HLSQ_FS_CONTROL_REG_CONSTOBJECTOFFSET__MASK	0x0000ff00
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define A4XX_HLSQ_FS_CONTROL_REG_CONSTOBJECTOFFSET__SHIFT	8
 static inline uint32_t A4XX_HLSQ_FS_CONTROL_REG_CONSTOBJECTOFFSET(uint32_t val)
 {
 	return ((val) << A4XX_HLSQ_FS_CONTROL_REG_CONSTOBJECTOFFSET__SHIFT) & A4XX_HLSQ_FS_CONTROL_REG_CONSTOBJECTOFFSET__MASK;
 }
-<<<<<<< HEAD
 #define A4XX_HLSQ_FS_CONTROL_REG_SSBO_ENABLE			0x00008000
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define A4XX_HLSQ_FS_CONTROL_REG_ENABLED			0x00010000
 #define A4XX_HLSQ_FS_CONTROL_REG_SHADEROBJOFFSET__MASK		0x00fe0000
 #define A4XX_HLSQ_FS_CONTROL_REG_SHADEROBJOFFSET__SHIFT		17
@@ -3633,20 +3596,13 @@ static inline uint32_t A4XX_HLSQ_HS_CONTROL_REG_CONSTLENGTH(uint32_t val)
 {
 	return ((val) << A4XX_HLSQ_HS_CONTROL_REG_CONSTLENGTH__SHIFT) & A4XX_HLSQ_HS_CONTROL_REG_CONSTLENGTH__MASK;
 }
-<<<<<<< HEAD
 #define A4XX_HLSQ_HS_CONTROL_REG_CONSTOBJECTOFFSET__MASK	0x00007f00
-=======
-#define A4XX_HLSQ_HS_CONTROL_REG_CONSTOBJECTOFFSET__MASK	0x0000ff00
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define A4XX_HLSQ_HS_CONTROL_REG_CONSTOBJECTOFFSET__SHIFT	8
 static inline uint32_t A4XX_HLSQ_HS_CONTROL_REG_CONSTOBJECTOFFSET(uint32_t val)
 {
 	return ((val) << A4XX_HLSQ_HS_CONTROL_REG_CONSTOBJECTOFFSET__SHIFT) & A4XX_HLSQ_HS_CONTROL_REG_CONSTOBJECTOFFSET__MASK;
 }
-<<<<<<< HEAD
 #define A4XX_HLSQ_HS_CONTROL_REG_SSBO_ENABLE			0x00008000
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define A4XX_HLSQ_HS_CONTROL_REG_ENABLED			0x00010000
 #define A4XX_HLSQ_HS_CONTROL_REG_SHADEROBJOFFSET__MASK		0x00fe0000
 #define A4XX_HLSQ_HS_CONTROL_REG_SHADEROBJOFFSET__SHIFT		17
@@ -3668,20 +3624,13 @@ static inline uint32_t A4XX_HLSQ_DS_CONTROL_REG_CONSTLENGTH(uint32_t val)
 {
 	return ((val) << A4XX_HLSQ_DS_CONTROL_REG_CONSTLENGTH__SHIFT) & A4XX_HLSQ_DS_CONTROL_REG_CONSTLENGTH__MASK;
 }
-<<<<<<< HEAD
 #define A4XX_HLSQ_DS_CONTROL_REG_CONSTOBJECTOFFSET__MASK	0x00007f00
-=======
-#define A4XX_HLSQ_DS_CONTROL_REG_CONSTOBJECTOFFSET__MASK	0x0000ff00
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define A4XX_HLSQ_DS_CONTROL_REG_CONSTOBJECTOFFSET__SHIFT	8
 static inline uint32_t A4XX_HLSQ_DS_CONTROL_REG_CONSTOBJECTOFFSET(uint32_t val)
 {
 	return ((val) << A4XX_HLSQ_DS_CONTROL_REG_CONSTOBJECTOFFSET__SHIFT) & A4XX_HLSQ_DS_CONTROL_REG_CONSTOBJECTOFFSET__MASK;
 }
-<<<<<<< HEAD
 #define A4XX_HLSQ_DS_CONTROL_REG_SSBO_ENABLE			0x00008000
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define A4XX_HLSQ_DS_CONTROL_REG_ENABLED			0x00010000
 #define A4XX_HLSQ_DS_CONTROL_REG_SHADEROBJOFFSET__MASK		0x00fe0000
 #define A4XX_HLSQ_DS_CONTROL_REG_SHADEROBJOFFSET__SHIFT		17
@@ -3703,20 +3652,13 @@ static inline uint32_t A4XX_HLSQ_GS_CONTROL_REG_CONSTLENGTH(uint32_t val)
 {
 	return ((val) << A4XX_HLSQ_GS_CONTROL_REG_CONSTLENGTH__SHIFT) & A4XX_HLSQ_GS_CONTROL_REG_CONSTLENGTH__MASK;
 }
-<<<<<<< HEAD
 #define A4XX_HLSQ_GS_CONTROL_REG_CONSTOBJECTOFFSET__MASK	0x00007f00
-=======
-#define A4XX_HLSQ_GS_CONTROL_REG_CONSTOBJECTOFFSET__MASK	0x0000ff00
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define A4XX_HLSQ_GS_CONTROL_REG_CONSTOBJECTOFFSET__SHIFT	8
 static inline uint32_t A4XX_HLSQ_GS_CONTROL_REG_CONSTOBJECTOFFSET(uint32_t val)
 {
 	return ((val) << A4XX_HLSQ_GS_CONTROL_REG_CONSTOBJECTOFFSET__SHIFT) & A4XX_HLSQ_GS_CONTROL_REG_CONSTOBJECTOFFSET__MASK;
 }
-<<<<<<< HEAD
 #define A4XX_HLSQ_GS_CONTROL_REG_SSBO_ENABLE			0x00008000
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define A4XX_HLSQ_GS_CONTROL_REG_ENABLED			0x00010000
 #define A4XX_HLSQ_GS_CONTROL_REG_SHADEROBJOFFSET__MASK		0x00fe0000
 #define A4XX_HLSQ_GS_CONTROL_REG_SHADEROBJOFFSET__SHIFT		17
@@ -3731,7 +3673,6 @@ static inline uint32_t A4XX_HLSQ_GS_CONTROL_REG_INSTRLENGTH(uint32_t val)
 	return ((val) << A4XX_HLSQ_GS_CONTROL_REG_INSTRLENGTH__SHIFT) & A4XX_HLSQ_GS_CONTROL_REG_INSTRLENGTH__MASK;
 }
 
-<<<<<<< HEAD
 #define REG_A4XX_HLSQ_CS_CONTROL_REG				0x000023ca
 #define A4XX_HLSQ_CS_CONTROL_REG_CONSTLENGTH__MASK		0x000000ff
 #define A4XX_HLSQ_CS_CONTROL_REG_CONSTLENGTH__SHIFT		0
@@ -3793,44 +3734,30 @@ static inline uint32_t A4XX_HLSQ_CL_NDRANGE_1_SIZE_X(uint32_t val)
 {
 	return ((val) << A4XX_HLSQ_CL_NDRANGE_1_SIZE_X__SHIFT) & A4XX_HLSQ_CL_NDRANGE_1_SIZE_X__MASK;
 }
-=======
-#define REG_A4XX_HLSQ_CS_CONTROL				0x000023ca
-
-#define REG_A4XX_HLSQ_CL_NDRANGE_0				0x000023cd
-
-#define REG_A4XX_HLSQ_CL_NDRANGE_1				0x000023ce
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define REG_A4XX_HLSQ_CL_NDRANGE_2				0x000023cf
 
 #define REG_A4XX_HLSQ_CL_NDRANGE_3				0x000023d0
-<<<<<<< HEAD
 #define A4XX_HLSQ_CL_NDRANGE_3_SIZE_Y__MASK			0xffffffff
 #define A4XX_HLSQ_CL_NDRANGE_3_SIZE_Y__SHIFT			0
 static inline uint32_t A4XX_HLSQ_CL_NDRANGE_3_SIZE_Y(uint32_t val)
 {
 	return ((val) << A4XX_HLSQ_CL_NDRANGE_3_SIZE_Y__SHIFT) & A4XX_HLSQ_CL_NDRANGE_3_SIZE_Y__MASK;
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define REG_A4XX_HLSQ_CL_NDRANGE_4				0x000023d1
 
 #define REG_A4XX_HLSQ_CL_NDRANGE_5				0x000023d2
-<<<<<<< HEAD
 #define A4XX_HLSQ_CL_NDRANGE_5_SIZE_Z__MASK			0xffffffff
 #define A4XX_HLSQ_CL_NDRANGE_5_SIZE_Z__SHIFT			0
 static inline uint32_t A4XX_HLSQ_CL_NDRANGE_5_SIZE_Z(uint32_t val)
 {
 	return ((val) << A4XX_HLSQ_CL_NDRANGE_5_SIZE_Z__SHIFT) & A4XX_HLSQ_CL_NDRANGE_5_SIZE_Z__MASK;
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define REG_A4XX_HLSQ_CL_NDRANGE_6				0x000023d3
 
 #define REG_A4XX_HLSQ_CL_CONTROL_0				0x000023d4
-<<<<<<< HEAD
 #define A4XX_HLSQ_CL_CONTROL_0_WGIDCONSTID__MASK		0x000000ff
 #define A4XX_HLSQ_CL_CONTROL_0_WGIDCONSTID__SHIFT		0
 static inline uint32_t A4XX_HLSQ_CL_CONTROL_0_WGIDCONSTID(uint32_t val)
@@ -3843,8 +3770,6 @@ static inline uint32_t A4XX_HLSQ_CL_CONTROL_0_LOCALIDREGID(uint32_t val)
 {
 	return ((val) << A4XX_HLSQ_CL_CONTROL_0_LOCALIDREGID__SHIFT) & A4XX_HLSQ_CL_CONTROL_0_LOCALIDREGID__MASK;
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define REG_A4XX_HLSQ_CL_CONTROL_1				0x000023d5
 
@@ -4243,7 +4168,6 @@ static inline uint32_t A4XX_TEX_CONST_4_BASE(uint32_t val)
 
 #define REG_A4XX_TEX_CONST_7					0x00000007
 
-<<<<<<< HEAD
 #define REG_A4XX_SSBO_0_0					0x00000000
 #define A4XX_SSBO_0_0_BASE__MASK				0xffffffe0
 #define A4XX_SSBO_0_0_BASE__SHIFT				5
@@ -4310,7 +4234,5 @@ static inline uint32_t A4XX_SSBO_1_1_DEPTH(uint32_t val)
 	return ((val) << A4XX_SSBO_1_1_DEPTH__SHIFT) & A4XX_SSBO_1_1_DEPTH__MASK;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* A4XX_XML */

@@ -10,7 +10,6 @@
 #ifndef TEGRA_DC_H
 #define TEGRA_DC_H 1
 
-<<<<<<< HEAD
 #include <linux/host1x.h>
 
 #include <drm/drm_crtc.h>
@@ -163,8 +162,6 @@ int tegra_dc_rgb_remove(struct tegra_dc *dc);
 int tegra_dc_rgb_init(struct drm_device *drm, struct tegra_dc *dc);
 int tegra_dc_rgb_exit(struct tegra_dc *dc);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DC_CMD_GENERAL_INCR_SYNCPT		0x000
 #define DC_CMD_GENERAL_INCR_SYNCPT_CNTRL	0x001
 #define  SYNCPT_CNTRL_NO_STALL   (1 << 8)
@@ -202,7 +199,6 @@ int tegra_dc_rgb_exit(struct tegra_dc *dc);
 #define DC_CMD_INT_ENABLE			0x039
 #define DC_CMD_INT_TYPE				0x03a
 #define DC_CMD_INT_POLARITY			0x03b
-<<<<<<< HEAD
 #define CTXSW_INT                (1 << 0)
 #define FRAME_END_INT            (1 << 1)
 #define VBLANK_INT               (1 << 2)
@@ -223,17 +219,6 @@ int tegra_dc_rgb_exit(struct tegra_dc *dc);
 #define DSC_RBUF_UF_INT          (1 << 27)
 #define DSC_BBUF_UF_INT          (1 << 28)
 #define DSC_TO_UF_INT            (1 << 29)
-=======
-#define CTXSW_INT     (1 << 0)
-#define FRAME_END_INT (1 << 1)
-#define VBLANK_INT    (1 << 2)
-#define WIN_A_UF_INT  (1 << 8)
-#define WIN_B_UF_INT  (1 << 9)
-#define WIN_C_UF_INT  (1 << 10)
-#define WIN_A_OF_INT  (1 << 14)
-#define WIN_B_OF_INT  (1 << 15)
-#define WIN_C_OF_INT  (1 << 16)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DC_CMD_SIGNAL_RAISE1			0x03c
 #define DC_CMD_SIGNAL_RAISE2			0x03d
@@ -254,11 +239,8 @@ int tegra_dc_rgb_exit(struct tegra_dc *dc);
 #define WIN_B_UPDATE    (1 << 10)
 #define WIN_C_UPDATE    (1 << 11)
 #define CURSOR_UPDATE   (1 << 15)
-<<<<<<< HEAD
 #define COMMON_ACTREQ   (1 << 16)
 #define COMMON_UPDATE   (1 << 17)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define NC_HOST_TRIG    (1 << 24)
 
 #define DC_CMD_DISPLAY_WINDOW_HEADER		0x042
@@ -301,13 +283,10 @@ int tegra_dc_rgb_exit(struct tegra_dc *dc);
 #define DC_COM_GPIO_DEBOUNCE_COUNTER		0x328
 #define DC_COM_CRC_CHECKSUM_LATCHED		0x329
 
-<<<<<<< HEAD
 #define DC_COM_RG_UNDERFLOW			0x365
 #define  UNDERFLOW_MODE_RED      (1 << 8)
 #define  UNDERFLOW_REPORT_ENABLE (1 << 0)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DC_DISP_DISP_SIGNAL_OPTIONS0		0x400
 #define H_PULSE0_ENABLE (1 <<  8)
 #define H_PULSE1_ENABLE (1 << 10)
@@ -319,17 +298,10 @@ int tegra_dc_rgb_exit(struct tegra_dc *dc);
 #define HDMI_ENABLE	(1 << 30)
 #define DSI_ENABLE	(1 << 29)
 #define SOR1_TIMING_CYA	(1 << 27)
-<<<<<<< HEAD
 #define CURSOR_ENABLE	(1 << 16)
 
 #define SOR_ENABLE(x)	(1 << (25 + (x)))
 
-=======
-#define SOR1_ENABLE	(1 << 26)
-#define SOR_ENABLE	(1 << 25)
-#define CURSOR_ENABLE	(1 << 16)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DC_DISP_DISP_MEM_HIGH_PRIORITY		0x403
 #define CURSOR_THRESHOLD(x)   (((x) & 0x03) << 24)
 #define WINDOW_A_THRESHOLD(x) (((x) & 0x7f) << 16)
@@ -437,7 +409,6 @@ int tegra_dc_rgb_exit(struct tegra_dc *dc);
 #define DISP_ORDER_BLUE_RED        (1 << 9)
 
 #define DC_DISP_DISP_COLOR_CONTROL		0x430
-<<<<<<< HEAD
 #define BASE_COLOR_SIZE666     ( 0 << 0)
 #define BASE_COLOR_SIZE111     ( 1 << 0)
 #define BASE_COLOR_SIZE222     ( 2 << 0)
@@ -449,23 +420,11 @@ int tegra_dc_rgb_exit(struct tegra_dc *dc);
 #define BASE_COLOR_SIZE888     ( 8 << 0)
 #define BASE_COLOR_SIZE101010  (10 << 0)
 #define BASE_COLOR_SIZE121212  (12 << 0)
-=======
-#define BASE_COLOR_SIZE666     (0 << 0)
-#define BASE_COLOR_SIZE111     (1 << 0)
-#define BASE_COLOR_SIZE222     (2 << 0)
-#define BASE_COLOR_SIZE333     (3 << 0)
-#define BASE_COLOR_SIZE444     (4 << 0)
-#define BASE_COLOR_SIZE555     (5 << 0)
-#define BASE_COLOR_SIZE565     (6 << 0)
-#define BASE_COLOR_SIZE332     (7 << 0)
-#define BASE_COLOR_SIZE888     (8 << 0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DITHER_CONTROL_MASK    (3 << 8)
 #define DITHER_CONTROL_DISABLE (0 << 8)
 #define DITHER_CONTROL_ORDERED (2 << 8)
 #define DITHER_CONTROL_ERRDIFF (3 << 8)
 #define BASE_COLOR_SIZE_MASK   (0xf << 0)
-<<<<<<< HEAD
 #define BASE_COLOR_SIZE_666    (  0 << 0)
 #define BASE_COLOR_SIZE_111    (  1 << 0)
 #define BASE_COLOR_SIZE_222    (  2 << 0)
@@ -477,17 +436,6 @@ int tegra_dc_rgb_exit(struct tegra_dc *dc);
 #define BASE_COLOR_SIZE_888    (  8 << 0)
 #define BASE_COLOR_SIZE_101010 ( 10 << 0)
 #define BASE_COLOR_SIZE_121212 ( 12 << 0)
-=======
-#define BASE_COLOR_SIZE_666    (0 << 0)
-#define BASE_COLOR_SIZE_111    (1 << 0)
-#define BASE_COLOR_SIZE_222    (2 << 0)
-#define BASE_COLOR_SIZE_333    (3 << 0)
-#define BASE_COLOR_SIZE_444    (4 << 0)
-#define BASE_COLOR_SIZE_555    (5 << 0)
-#define BASE_COLOR_SIZE_565    (6 << 0)
-#define BASE_COLOR_SIZE_332    (7 << 0)
-#define BASE_COLOR_SIZE_888    (8 << 0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DC_DISP_SHIFT_CLOCK_OPTIONS		0x431
 #define  SC1_H_QUALIFIER_NONE	(1 << 16)
@@ -554,15 +502,12 @@ int tegra_dc_rgb_exit(struct tegra_dc *dc);
 #define DC_DISP_SD_HW_K_VALUES			0x4dd
 #define DC_DISP_SD_MAN_K_VALUES			0x4de
 
-<<<<<<< HEAD
 #define DC_DISP_BLEND_BACKGROUND_COLOR		0x4e4
 #define  BACKGROUND_COLOR_ALPHA(x) (((x) & 0xff) << 24)
 #define  BACKGROUND_COLOR_BLUE(x)  (((x) & 0xff) << 16)
 #define  BACKGROUND_COLOR_GREEN(x) (((x) & 0xff) << 8)
 #define  BACKGROUND_COLOR_RED(x)   (((x) & 0xff) << 0)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DC_DISP_INTERLACE_CONTROL		0x4e5
 #define  INTERLACE_STATUS (1 << 2)
 #define  INTERLACE_START  (1 << 1)
@@ -581,7 +526,6 @@ int tegra_dc_rgb_exit(struct tegra_dc *dc);
 #define CURSOR_SRC_BLEND_MASK			(3 << 8)
 #define CURSOR_ALPHA				0xff
 
-<<<<<<< HEAD
 #define DC_WIN_CORE_ACT_CONTROL 0x50e
 #define  VCOUNTER (0 << 0)
 #define  HCOUNTER (1 << 0)
@@ -614,8 +558,6 @@ int tegra_dc_rgb_exit(struct tegra_dc *dc);
 #define DC_WIN_H_FILTER_P(p)			(0x601 + (p))
 #define DC_WIN_V_FILTER_P(p)			(0x619 + (p))
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DC_WIN_CSC_YOF				0x611
 #define DC_WIN_CSC_KYRGB			0x612
 #define DC_WIN_CSC_KUR				0x613
@@ -629,11 +571,8 @@ int tegra_dc_rgb_exit(struct tegra_dc *dc);
 #define H_DIRECTION  (1 <<  0)
 #define V_DIRECTION  (1 <<  2)
 #define COLOR_EXPAND (1 <<  6)
-<<<<<<< HEAD
 #define H_FILTER     (1 <<  8)
 #define V_FILTER     (1 << 10)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CSC_ENABLE   (1 << 18)
 #define WIN_ENABLE   (1 << 30)
 
@@ -656,15 +595,9 @@ int tegra_dc_rgb_exit(struct tegra_dc *dc);
 #define WIN_COLOR_DEPTH_P4              2
 #define WIN_COLOR_DEPTH_P8              3
 #define WIN_COLOR_DEPTH_B4G4R4A4        4
-<<<<<<< HEAD
 #define WIN_COLOR_DEPTH_B5G5R5A1        5
 #define WIN_COLOR_DEPTH_B5G6R5          6
 #define WIN_COLOR_DEPTH_A1B5G5R5        7
-=======
-#define WIN_COLOR_DEPTH_B5G5R5A         5
-#define WIN_COLOR_DEPTH_B5G6R5          6
-#define WIN_COLOR_DEPTH_AB5G5R5         7
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define WIN_COLOR_DEPTH_B8G8R8A8       12
 #define WIN_COLOR_DEPTH_R8G8B8A8       13
 #define WIN_COLOR_DEPTH_B6x2G6x2R6x2A8 14
@@ -679,7 +612,6 @@ int tegra_dc_rgb_exit(struct tegra_dc *dc);
 #define WIN_COLOR_DEPTH_YUV422R        23
 #define WIN_COLOR_DEPTH_YCbCr422RA     24
 #define WIN_COLOR_DEPTH_YUV422RA       25
-<<<<<<< HEAD
 #define WIN_COLOR_DEPTH_R4G4B4A4       27
 #define WIN_COLOR_DEPTH_R5G5B5A        28
 #define WIN_COLOR_DEPTH_AR5G5B5        29
@@ -706,20 +638,6 @@ int tegra_dc_rgb_exit(struct tegra_dc *dc);
 #define DC_WIN_PRESCALED_SIZE			0x706
 #define H_PRESCALED_SIZE(x) (((x) & 0x7fff) <<  0)
 #define V_PRESCALED_SIZE(x) (((x) & 0x1fff) << 16) /* XXX 0x7fff on Tegra186 */
-=======
-
-#define DC_WIN_POSITION				0x704
-#define H_POSITION(x) (((x) & 0x1fff) <<  0)
-#define V_POSITION(x) (((x) & 0x1fff) << 16)
-
-#define DC_WIN_SIZE				0x705
-#define H_SIZE(x) (((x) & 0x1fff) <<  0)
-#define V_SIZE(x) (((x) & 0x1fff) << 16)
-
-#define DC_WIN_PRESCALED_SIZE			0x706
-#define H_PRESCALED_SIZE(x) (((x) & 0x7fff) <<  0)
-#define V_PRESCALED_SIZE(x) (((x) & 0x1fff) << 16)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DC_WIN_H_INITIAL_DDA			0x707
 #define DC_WIN_V_INITIAL_DDA			0x708
@@ -735,7 +653,6 @@ int tegra_dc_rgb_exit(struct tegra_dc *dc);
 #define DC_WIN_BUFFER_ADDR_MODE_TILE		(1 <<  0)
 #define DC_WIN_BUFFER_ADDR_MODE_LINEAR_UV	(0 << 16)
 #define DC_WIN_BUFFER_ADDR_MODE_TILE_UV		(1 << 16)
-<<<<<<< HEAD
 
 #define DC_WIN_DV_CONTROL			0x70e
 
@@ -754,13 +671,6 @@ int tegra_dc_rgb_exit(struct tegra_dc *dc);
 #define DC_WIN_BLEND_2WIN_X			0x711
 #define  BLEND_CONTROL_DEPENDENT (2 << 2)
 
-=======
-#define DC_WIN_DV_CONTROL			0x70e
-
-#define DC_WIN_BLEND_NOKEY			0x70f
-#define DC_WIN_BLEND_1WIN			0x710
-#define DC_WIN_BLEND_2WIN_X			0x711
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DC_WIN_BLEND_2WIN_Y			0x712
 #define DC_WIN_BLEND_3WIN_XY			0x713
 
@@ -785,19 +695,15 @@ int tegra_dc_rgb_exit(struct tegra_dc *dc);
 #define DC_WINBUF_SURFACE_KIND_BLOCK	(2 << 0)
 #define DC_WINBUF_SURFACE_KIND_BLOCK_HEIGHT(x) (((x) & 0x7) << 4)
 
-<<<<<<< HEAD
 #define DC_WINBUF_START_ADDR_HI			0x80d
 
 #define DC_WINBUF_CDE_CONTROL			0x82f
 #define  ENABLE_SURFACE (1 << 0)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DC_WINBUF_AD_UFLOW_STATUS		0xbca
 #define DC_WINBUF_BD_UFLOW_STATUS		0xdca
 #define DC_WINBUF_CD_UFLOW_STATUS		0xfca
 
-<<<<<<< HEAD
 /* Tegra186 and later */
 #define DC_DISP_CORE_SOR_SET_CONTROL(x)		(0x403 + (x))
 #define PROTOCOL_MASK (0xf << 8)
@@ -882,6 +788,4 @@ int tegra_dc_rgb_exit(struct tegra_dc *dc);
 #define OFFSET_Y(x) (((x) & 0xffff) << 16)
 #define OFFSET_X(x) (((x) & 0xffff) << 0)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* TEGRA_DC_H */

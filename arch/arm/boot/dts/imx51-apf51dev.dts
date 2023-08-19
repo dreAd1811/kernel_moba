@@ -16,11 +16,7 @@
 	model = "Armadeus Systems APF51Dev docking/development board";
 	compatible = "armadeus,imx51-apf51dev", "armadeus,imx51-apf51", "fsl,imx51";
 
-<<<<<<< HEAD
 	backlight {
-=======
-	backlight@bl1{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_backlight>;
 		compatible = "gpio-backlight";
@@ -28,11 +24,7 @@
 		default-on;
 	};
 
-<<<<<<< HEAD
 	disp1 {
-=======
-	display@di1 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "fsl,imx-parallel-display";
 		interface-pix-fmt = "bgr666";
 		pinctrl-names = "default";
@@ -59,11 +51,7 @@
 
 		port {
 			display_in: endpoint {
-<<<<<<< HEAD
 				remote-endpoint = <&ipu_di0_disp1>;
-=======
-				remote-endpoint = <&ipu_di0_disp0>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 		};
 	};
@@ -132,11 +120,7 @@
 	pinctrl-0 = <&pinctrl_hog>;
 
 	imx51-apf51dev {
-<<<<<<< HEAD
 		pinctrl_backlight: backlightgrp {
-=======
-		pinctrl_backlight: bl1grp {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			fsl,pins = <
 				MX51_PAD_DI1_D1_CS__GPIO3_4 0x1F5
 			>;
@@ -234,10 +218,6 @@
 	};
 };
 
-<<<<<<< HEAD
 &ipu_di0_disp1 {
-=======
-&ipu_di0_disp0 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	remote-endpoint = <&display_in>;
 };

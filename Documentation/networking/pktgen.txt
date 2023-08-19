@@ -12,13 +12,8 @@ suitable sample script and configure that.
 On a dual CPU:
 
 ps aux | grep pkt
-<<<<<<< HEAD
 root       129  0.3  0.0     0    0 ?        SW    2003 523:20 [kpktgend_0]
 root       130  0.3  0.0     0    0 ?        SW    2003 509:50 [kpktgend_1]
-=======
-root       129  0.3  0.0     0    0 ?        SW    2003 523:20 [pktgen/0]
-root       130  0.3  0.0     0    0 ?        SW    2003 509:50 [pktgen/1]
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 For monitoring and control pktgen creates:
@@ -118,7 +113,6 @@ Configuring devices
 ===================
 This is done via the /proc interface, and most easily done via pgset
 as defined in the sample scripts.
-<<<<<<< HEAD
 You need to specify PGDEV environment variable to use functions from sample
 scripts, i.e.:
 export PGDEV=/proc/net/pktgen/eth4@0
@@ -129,11 +123,6 @@ Examples:
  pg_ctrl start           starts injection.
  pg_ctrl stop            aborts injection. Also, ^C aborts generator.
 
-=======
-
-Examples:
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  pgset "clone_skb 1"     sets the number of copies of the same packet
  pgset "clone_skb 0"     use single SKB for all transmits
  pgset "burst 8"         uses xmit_more API to queue 8 copies of the same
@@ -183,17 +172,12 @@ Examples:
                               IPSEC # IPsec encapsulation (needs CONFIG_XFRM)
                               NODE_ALLOC # node specific memory allocation
                               NO_TIMESTAMP # disable timestamping
-<<<<<<< HEAD
  pgset 'flag ![name]'    Clear a flag to determine behaviour.
                          Note that you might need to use single quote in
                          interactive mode, so that your shell wouldn't expand
                          the specified flag as a history command.
 
  pgset "spi [SPI_VALUE]" Set specific SA used to transform packet.
-=======
-
- pgset spi SPI_VALUE     Set specific SA used to transform packet.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
  pgset "udp_src_min 9"   set UDP source port min, If < udp_src_max, then
                          cycle through the port range.
@@ -234,11 +218,6 @@ Examples:
  pgset "tos XX"           set former IPv4 TOS field (e.g. "tos 28" for AF11 no ECN, default 00)
  pgset "traffic_class XX" set former IPv6 TRAFFIC CLASS (e.g. "traffic_class B8" for EF no ECN, default 00)
 
-<<<<<<< HEAD
-=======
- pgset stop    	          aborts injection. Also, ^C aborts generator.
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  pgset "rate 300M"        set rate to 300 Mb/s
  pgset "ratep 1000000"    set rate to 1Mpps
 

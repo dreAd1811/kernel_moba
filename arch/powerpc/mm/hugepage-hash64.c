@@ -128,11 +128,7 @@ int __hash_page_thp(unsigned long ea, unsigned long access, unsigned long vsid,
 		new_pmd |= H_PAGE_HASHPTE;
 
 repeat:
-<<<<<<< HEAD
 		hpte_group = (hash & htab_hash_mask) * HPTES_PER_GROUP;
-=======
-		hpte_group = ((hash & htab_hash_mask) * HPTES_PER_GROUP) & ~0x7UL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Insert into the hash table, primary slot */
 		slot = mmu_hash_ops.hpte_insert(hpte_group, vpn, pa, rflags, 0,
@@ -141,25 +137,15 @@ repeat:
 		 * Primary is full, try the secondary
 		 */
 		if (unlikely(slot == -1)) {
-<<<<<<< HEAD
 			hpte_group = (~hash & htab_hash_mask) * HPTES_PER_GROUP;
-=======
-			hpte_group = ((~hash & htab_hash_mask) *
-				      HPTES_PER_GROUP) & ~0x7UL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			slot = mmu_hash_ops.hpte_insert(hpte_group, vpn, pa,
 							rflags,
 							HPTE_V_SECONDARY,
 							psize, lpsize, ssize);
 			if (slot == -1) {
 				if (mftb() & 0x1)
-<<<<<<< HEAD
 					hpte_group = (hash & htab_hash_mask) *
 							HPTES_PER_GROUP;
-=======
-					hpte_group = ((hash & htab_hash_mask) *
-						      HPTES_PER_GROUP) & ~0x7UL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 				mmu_hash_ops.hpte_remove(hpte_group);
 				goto repeat;

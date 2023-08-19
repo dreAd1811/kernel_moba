@@ -64,11 +64,7 @@ static void cdv_intel_crt_dpms(struct drm_encoder *encoder, int mode)
 	REG_WRITE(reg, temp);
 }
 
-<<<<<<< HEAD
 static enum drm_mode_status cdv_intel_crt_mode_valid(struct drm_connector *connector,
-=======
-static int cdv_intel_crt_mode_valid(struct drm_connector *connector,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				struct drm_display_mode *mode)
 {
 	if (mode->flags & DRM_MODE_FLAG_DBLSCAN)

@@ -103,7 +103,6 @@
 #define OPA_VNIC_ETH_LINK_UP     1
 #define OPA_VNIC_ETH_LINK_DOWN   2
 
-<<<<<<< HEAD
 /* routing control */
 #define OPA_VNIC_ENCAP_RC_DEFAULT   0
 #define OPA_VNIC_ENCAP_RC_IPV4      4
@@ -115,8 +114,6 @@
 
 #define OPA_VNIC_ENCAP_RC_EXT(w, b) (((w) >> OPA_VNIC_ENCAP_RC_ ## b) & 0x7)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * struct opa_vesw_info - OPA vnic switch information
  * @fabric_id: 10-bit fabric id
@@ -125,13 +122,8 @@
  * @pkey: partition key
  * @u_mcast_dlid: unknown multicast dlid
  * @u_ucast_dlid: array of unknown unicast dlids
-<<<<<<< HEAD
  * @rc: routing control
  * @eth_mtu: Ethernet MTU
-=======
- * @eth_mtu: MTUs for each vlan PCP
- * @eth_mtu_non_vlan: MTU for non vlan packets
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct opa_vesw_info {
 	__be16  fabric_id;
@@ -147,16 +139,10 @@ struct opa_vesw_info {
 	__be32  u_mcast_dlid;
 	__be32  u_ucast_dlid[OPA_VESW_MAX_NUM_DEF_PORT];
 
-<<<<<<< HEAD
 	__be32  rc;
 
 	u8      rsvd3[56];
 	__be16  eth_mtu;
-=======
-	u8      rsvd3[44];
-	__be16  eth_mtu[OPA_VNIC_MAX_NUM_PCP];
-	__be16  eth_mtu_non_vlan;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8      rsvd4[2];
 } __packed;
 

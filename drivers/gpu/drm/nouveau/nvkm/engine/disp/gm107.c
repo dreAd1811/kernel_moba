@@ -28,33 +28,20 @@
 
 static const struct nv50_disp_func
 gm107_disp = {
-<<<<<<< HEAD
 	.init = gf119_disp_init,
 	.fini = gf119_disp_fini,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.intr = gf119_disp_intr,
 	.intr_error = gf119_disp_intr_error,
 	.uevent = &gf119_disp_chan_uevent,
 	.super = gf119_disp_super,
 	.root = &gm107_disp_root_oclass,
-<<<<<<< HEAD
 	.head = { .cnt = gf119_head_cnt, .new = gf119_head_new },
 	.dac = { .cnt = gf119_dac_cnt, .new = gf119_dac_new },
 	.sor = { .cnt = gf119_sor_cnt, .new = gm107_sor_new },
-=======
-	.head.new = gf119_head_new,
-	.dac = { .nr = 3, .new = gf119_dac_new },
-	.sor = { .nr = 4, .new = gm107_sor_new },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int
 gm107_disp_new(struct nvkm_device *device, int index, struct nvkm_disp **pdisp)
 {
-<<<<<<< HEAD
 	return nv50_disp_new_(&gm107_disp, device, index, pdisp);
-=======
-	return gf119_disp_new_(&gm107_disp, device, index, pdisp);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

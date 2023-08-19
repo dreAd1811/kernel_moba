@@ -1478,17 +1478,12 @@ parse_dcb20_entry(struct drm_device *dev, struct dcb_table *dcb,
 		case 1:
 			entry->dpconf.link_bw = 270000;
 			break;
-<<<<<<< HEAD
 		case 2:
 			entry->dpconf.link_bw = 540000;
 			break;
 		case 3:
 		default:
 			entry->dpconf.link_bw = 810000;
-=======
-		default:
-			entry->dpconf.link_bw = 540000;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 		switch ((conf & 0x0f000000) >> 24) {
@@ -1973,11 +1968,7 @@ static int load_nv17_hw_sequencer_ucode(struct drm_device *dev,
 	 * The microcode entries are found by the "HWSQ" signature.
 	 */
 
-<<<<<<< HEAD
 	static const uint8_t hwsq_signature[] = { 'H', 'W', 'S', 'Q' };
-=======
-	const uint8_t hwsq_signature[] = { 'H', 'W', 'S', 'Q' };
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const int sz = sizeof(hwsq_signature);
 	int hwsq_offset;
 
@@ -1993,11 +1984,7 @@ uint8_t *nouveau_bios_embedded_edid(struct drm_device *dev)
 {
 	struct nouveau_drm *drm = nouveau_drm(dev);
 	struct nvbios *bios = &drm->vbios;
-<<<<<<< HEAD
 	static const uint8_t edid_sig[] = {
-=======
-	const uint8_t edid_sig[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			0x00, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x00 };
 	uint16_t offset = 0;
 	uint16_t newoffset;

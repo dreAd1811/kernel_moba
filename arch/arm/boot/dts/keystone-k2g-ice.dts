@@ -1,24 +1,13 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Device Tree Source for K2G Industrial Communication Engine EVM
  *
  * Copyright (C) 2017 Texas Instruments Incorporated - http://www.ti.com/
-<<<<<<< HEAD
-=======
- *
- * SPDX-License-Identifier: GPL-2.0
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 /dts-v1/;
 
 #include "keystone-k2g.dtsi"
-<<<<<<< HEAD
 #include <dt-bindings/net/ti-dp83867.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 / {
 	compatible = "ti,k2g-ice", "ti,k2g", "ti,keystone";
@@ -41,7 +30,6 @@
 			status = "okay";
 		};
 	};
-<<<<<<< HEAD
 
 	vmain: fixedregulator-vmain {
 		compatible = "regulator-fixed";
@@ -227,8 +215,6 @@
 			linux,default-trigger = "heartbeat";
 		};
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &k2g_pinctrl {
@@ -238,7 +224,6 @@
 			K2G_CORE_IOPAD(0x11d0) (BUFFER_CLASS_B | PIN_PULLDOWN | MUX_MODE0)	/* uart0_txd.uart0_txd */
 		>;
 	};
-<<<<<<< HEAD
 
 	qspi_pins: pinmux_qspi_pins {
 		pinctrl-single,pins = <
@@ -321,8 +306,6 @@
 			K2G_CORE_IOPAD(0x1188) (BUFFER_CLASS_B | PULL_DISABLE | MUX_MODE0)	/* MDIO_DATA.MDIO_DATA */
 		>;
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &uart0 {
@@ -335,7 +318,6 @@
 	memory-region = <&dsp_common_memory>;
 	status = "okay";
 };
-<<<<<<< HEAD
 
 &qspi {
 	pinctrl-names = "default";
@@ -463,5 +445,3 @@
 	phy-mode = "rgmii-id";
 	status = "okay";
 };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

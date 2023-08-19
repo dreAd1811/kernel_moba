@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Hardkernel's Exynos4412 based ODROID-X board device tree source
  *
@@ -9,15 +6,7 @@
  *
  * Device tree source file for Hardkernel's ODROID-X board which is based
  * on Samsung's Exynos4412 SoC.
-<<<<<<< HEAD
  */
-=======
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
-*/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /dts-v1/;
 #include "exynos4412-odroid-common.dtsi"
@@ -51,11 +40,6 @@
 		pinctrl-0 = <&gpio_power_key &gpio_home_key>;
 
 		home_key {
-<<<<<<< HEAD
-=======
-			interrupt-parent = <&gpx2>;
-			interrupts = <2 IRQ_TYPE_NONE>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			gpios = <&gpx2 2 GPIO_ACTIVE_HIGH>;
 			linux,code = <KEY_HOME>;
 			label = "home key";
@@ -113,21 +97,12 @@
 };
 
 &sound {
-<<<<<<< HEAD
 	model = "Odroid-X";
 	samsung,audio-widgets =
 		"Headphone", "Headphone Jack",
 		"Microphone", "Mic Jack",
 		"Microphone", "DMIC";
 	samsung,audio-routing =
-=======
-	simple-audio-card,name = "Odroid-X";
-	simple-audio-card,widgets =
-		"Headphone", "Headphone Jack",
-		"Microphone", "Mic Jack",
-		"Microphone", "DMIC";
-	simple-audio-card,routing =
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		"Headphone Jack", "HPL",
 		"Headphone Jack", "HPR",
 		"IN1", "Mic Jack",

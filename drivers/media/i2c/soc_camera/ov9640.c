@@ -335,13 +335,8 @@ static void ov9640_res_roundup(u32 *width, u32 *height)
 {
 	int i;
 	enum { QQCIF, QQVGA, QCIF, QVGA, CIF, VGA, SXGA };
-<<<<<<< HEAD
 	static const int res_x[] = { 88, 160, 176, 320, 352, 640, 1280 };
 	static const int res_y[] = { 72, 120, 144, 240, 288, 480, 960 };
-=======
-	int res_x[] = { 88, 160, 176, 320, 352, 640, 1280 };
-	int res_y[] = { 72, 120, 144, 240, 288, 480, 960 };
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < ARRAY_SIZE(res_x); i++) {
 		if (res_x[i] >= *width && res_y[i] >= *height) {
@@ -680,18 +675,9 @@ static int ov9640_probe(struct i2c_client *client,
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 	priv = devm_kzalloc(&client->dev, sizeof(*priv), GFP_KERNEL);
 	if (!priv)
 		return -ENOMEM;
-=======
-	priv = devm_kzalloc(&client->dev, sizeof(struct ov9640_priv), GFP_KERNEL);
-	if (!priv) {
-		dev_err(&client->dev,
-			"Failed to allocate memory for private data!\n");
-		return -ENOMEM;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	v4l2_i2c_subdev_init(&priv->subdev, client, &ov9640_subdev_ops);
 

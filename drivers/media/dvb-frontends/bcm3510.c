@@ -40,11 +40,7 @@
 #include <linux/slab.h>
 #include <linux/mutex.h>
 
-<<<<<<< HEAD
 #include <media/dvb_frontend.h>
-=======
-#include "dvb_frontend.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "bcm3510.h"
 #include "bcm3510_priv.h"
 
@@ -844,15 +840,8 @@ static const struct dvb_frontend_ops bcm3510_ops = {
 	.delsys = { SYS_ATSC, SYS_DVBC_ANNEX_B },
 	.info = {
 		.name = "Broadcom BCM3510 VSB/QAM frontend",
-<<<<<<< HEAD
 		.frequency_min_hz =  54 * MHz,
 		.frequency_max_hz = 803 * MHz,
-=======
-		.frequency_min =  54000000,
-		.frequency_max = 803000000,
-		/* stepsize is just a guess */
-		.frequency_stepsize = 0,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.caps =
 			FE_CAN_FEC_1_2 | FE_CAN_FEC_2_3 | FE_CAN_FEC_3_4 |
 			FE_CAN_FEC_5_6 | FE_CAN_FEC_7_8 | FE_CAN_FEC_AUTO |

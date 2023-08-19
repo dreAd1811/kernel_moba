@@ -39,7 +39,6 @@
 #ifndef __BNXT_QPLIB_FP_H__
 #define __BNXT_QPLIB_FP_H__
 
-<<<<<<< HEAD
 struct bnxt_qplib_srq {
 	struct bnxt_qplib_pd		*pd;
 	struct bnxt_qplib_dpi		*dpi;
@@ -61,8 +60,6 @@ struct bnxt_qplib_srq {
 	spinlock_t			lock; /* protect SRQE link list */
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct bnxt_qplib_sge {
 	u64				addr;
 	u32				lkey;
@@ -103,10 +100,7 @@ static inline u32 get_psne_idx(u32 val)
 
 struct bnxt_qplib_swq {
 	u64				wr_id;
-<<<<<<< HEAD
 	int				next_idx;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8				type;
 	u8				flags;
 	u32				start_psn;
@@ -395,7 +389,6 @@ struct bnxt_qplib_cq {
 	struct list_head		sqf_head, rqf_head;
 	atomic_t			arm_state;
 	spinlock_t			compl_lock; /* synch CQ handlers */
-<<<<<<< HEAD
 /* Locking Notes:
  * QP can move to error state from modify_qp, async error event or error
  * CQE as part of poll_cq. When QP is moved to error state, it gets added
@@ -408,8 +401,6 @@ struct bnxt_qplib_cq {
  * of the same QP while manipulating the flush list.
  */
 	spinlock_t			flush_lock; /* QP flush management */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define BNXT_QPLIB_MAX_IRRQE_ENTRY_SIZE	sizeof(struct xrrq_irrq)
@@ -447,7 +438,6 @@ struct bnxt_qplib_cq {
 	writel(NQ_DB_CP_FLAGS | ((raw_cons) & ((cp_bit) - 1)), db)
 
 struct bnxt_qplib_nq {
-<<<<<<< HEAD
 	struct pci_dev		*pdev;
 
 	int			vector;
@@ -469,31 +459,6 @@ struct bnxt_qplib_nq {
 						u8 event);
 	struct workqueue_struct	*cqn_wq;
 	char			name[32];
-=======
-	struct pci_dev			*pdev;
-
-	int				vector;
-	cpumask_t			mask;
-	int				budget;
-	bool				requested;
-	struct tasklet_struct		worker;
-	struct bnxt_qplib_hwq		hwq;
-
-	u16				bar_reg;
-	u16				bar_reg_off;
-	u16				ring_id;
-	void __iomem			*bar_reg_iomem;
-
-	int				(*cqn_handler)
-						(struct bnxt_qplib_nq *nq,
-						 struct bnxt_qplib_cq *cq);
-	int				(*srqn_handler)
-						(struct bnxt_qplib_nq *nq,
-						 void *srq,
-						 u8 event);
-	struct workqueue_struct         *cqn_wq;
-	char                            name[32];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct bnxt_qplib_nq_work {
@@ -502,20 +467,15 @@ struct bnxt_qplib_nq_work {
 	struct bnxt_qplib_cq    *cq;
 };
 
-<<<<<<< HEAD
 void bnxt_qplib_nq_stop_irq(struct bnxt_qplib_nq *nq, bool kill);
 void bnxt_qplib_disable_nq(struct bnxt_qplib_nq *nq);
 int bnxt_qplib_nq_start_irq(struct bnxt_qplib_nq *nq, int nq_indx,
 			    int msix_vector, bool need_init);
-=======
-void bnxt_qplib_disable_nq(struct bnxt_qplib_nq *nq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int bnxt_qplib_enable_nq(struct pci_dev *pdev, struct bnxt_qplib_nq *nq,
 			 int nq_idx, int msix_vector, int bar_reg_offset,
 			 int (*cqn_handler)(struct bnxt_qplib_nq *nq,
 					    struct bnxt_qplib_cq *cq),
 			 int (*srqn_handler)(struct bnxt_qplib_nq *nq,
-<<<<<<< HEAD
 					     struct bnxt_qplib_srq *srq,
 					     u8 event));
 int bnxt_qplib_create_srq(struct bnxt_qplib_res *res,
@@ -528,21 +488,14 @@ int bnxt_qplib_destroy_srq(struct bnxt_qplib_res *res,
 			   struct bnxt_qplib_srq *srq);
 int bnxt_qplib_post_srq_recv(struct bnxt_qplib_srq *srq,
 			     struct bnxt_qplib_swqe *wqe);
-=======
-					     void *srq,
-					     u8 event));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int bnxt_qplib_create_qp1(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp);
 int bnxt_qplib_create_qp(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp);
 int bnxt_qplib_modify_qp(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp);
 int bnxt_qplib_query_qp(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp);
 int bnxt_qplib_destroy_qp(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp);
-<<<<<<< HEAD
 void bnxt_qplib_clean_qp(struct bnxt_qplib_qp *qp);
 void bnxt_qplib_free_qp_res(struct bnxt_qplib_res *res,
 			    struct bnxt_qplib_qp *qp);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void *bnxt_qplib_get_qp1_sq_buf(struct bnxt_qplib_qp *qp,
 				struct bnxt_qplib_sge *sge);
 void *bnxt_qplib_get_qp1_rq_buf(struct bnxt_qplib_qp *qp,
@@ -565,10 +518,6 @@ void bnxt_qplib_req_notify_cq(struct bnxt_qplib_cq *cq, u32 arm_type);
 void bnxt_qplib_free_nq(struct bnxt_qplib_nq *nq);
 int bnxt_qplib_alloc_nq(struct pci_dev *pdev, struct bnxt_qplib_nq *nq);
 void bnxt_qplib_add_flush_qp(struct bnxt_qplib_qp *qp);
-<<<<<<< HEAD
-=======
-void bnxt_qplib_del_flush_qp(struct bnxt_qplib_qp *qp);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void bnxt_qplib_acquire_cq_locks(struct bnxt_qplib_qp *qp,
 				 unsigned long *flags);
 void bnxt_qplib_release_cq_locks(struct bnxt_qplib_qp *qp,
@@ -576,8 +525,5 @@ void bnxt_qplib_release_cq_locks(struct bnxt_qplib_qp *qp,
 int bnxt_qplib_process_flush_list(struct bnxt_qplib_cq *cq,
 				  struct bnxt_qplib_cqe *cqe,
 				  int num_cqes);
-<<<<<<< HEAD
 void bnxt_qplib_flush_cqn_wq(struct bnxt_qplib_qp *qp);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __BNXT_QPLIB_FP_H__ */

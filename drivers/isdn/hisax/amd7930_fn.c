@@ -398,10 +398,6 @@ Amd7930_fill_Dfifo(struct IsdnCardState *cs)
 		debugl1(cs, "Amd7930: fill_Dfifo dbusytimer running");
 		del_timer(&cs->dbusytimer);
 	}
-<<<<<<< HEAD
-=======
-	init_timer(&cs->dbusytimer);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cs->dbusytimer.expires = jiffies + ((DBUSY_TIMER_VALUE * HZ) / 1000);
 	add_timer(&cs->dbusytimer);
 
@@ -689,14 +685,9 @@ DC_Close_Amd7930(struct IsdnCardState *cs) {
 
 
 static void
-<<<<<<< HEAD
 dbusy_timer_handler(struct timer_list *t)
 {
 	struct IsdnCardState *cs = from_timer(cs, t, dbusytimer);
-=======
-dbusy_timer_handler(struct IsdnCardState *cs)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u_long flags;
 	struct PStack *stptr;
 	WORD dtcr, der;
@@ -799,9 +790,5 @@ void Amd7930_init(struct IsdnCardState *cs)
 void setup_Amd7930(struct IsdnCardState *cs)
 {
 	INIT_WORK(&cs->tqueue, Amd7930_bh);
-<<<<<<< HEAD
 	timer_setup(&cs->dbusytimer, dbusy_timer_handler, 0);
-=======
-	setup_timer(&cs->dbusytimer, (void *)dbusy_timer_handler, (long)cs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

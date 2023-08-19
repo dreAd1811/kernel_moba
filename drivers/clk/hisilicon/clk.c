@@ -49,11 +49,8 @@ struct hisi_clock_data *hisi_clk_alloc(struct platform_device *pdev,
 		return NULL;
 
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-<<<<<<< HEAD
 	if (!res)
 		return NULL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clk_data->base = devm_ioremap(&pdev->dev,
 				res->start, resource_size(res));
 	if (!clk_data->base)
@@ -202,7 +199,6 @@ err:
 }
 EXPORT_SYMBOL_GPL(hisi_clk_register_mux);
 
-<<<<<<< HEAD
 int hisi_clk_register_phase(struct device *dev,
 			    const struct hisi_phase_clock *clks,
 			    int nums, struct hisi_clock_data *data)
@@ -227,8 +223,6 @@ int hisi_clk_register_phase(struct device *dev,
 }
 EXPORT_SYMBOL_GPL(hisi_clk_register_phase);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int hisi_clk_register_divider(const struct hisi_divider_clock *clks,
 				      int nums, struct hisi_clock_data *data)
 {

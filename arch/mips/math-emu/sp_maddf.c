@@ -20,15 +20,9 @@ static union ieee754sp _sp_maddf(union ieee754sp z, union ieee754sp x,
 {
 	int re;
 	int rs;
-<<<<<<< HEAD
 	unsigned int rm;
 	u64 rm64;
 	u64 zm64;
-=======
-	unsigned rm;
-	uint64_t rm64;
-	uint64_t zm64;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int s;
 
 	COMPXSP;
@@ -132,10 +126,7 @@ static union ieee754sp _sp_maddf(union ieee754sp z, union ieee754sp x,
 
 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_DNORM):
 		SPDNORMX;
-<<<<<<< HEAD
 		/* fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_DNORM):
 		if (zc == IEEE754_CLASS_INF)
@@ -152,11 +143,7 @@ static union ieee754sp _sp_maddf(union ieee754sp z, union ieee754sp x,
 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_NORM):
 		if (zc == IEEE754_CLASS_INF)
 			return ieee754sp_inf(zs);
-<<<<<<< HEAD
 		/* continue to real computations */
-=======
-		/* fall through to real computations */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Finally get to do some computation */

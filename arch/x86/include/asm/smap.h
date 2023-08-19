@@ -58,26 +58,6 @@ static __always_inline void stac(void)
 	alternative("", __stringify(__ASM_STAC), X86_FEATURE_SMAP);
 }
 
-<<<<<<< HEAD
-=======
-static __always_inline unsigned long smap_save(void)
-{
-	unsigned long flags;
-
-	asm volatile (ALTERNATIVE("", "pushf; pop %0; " __stringify(__ASM_CLAC),
-				  X86_FEATURE_SMAP)
-		      : "=rm" (flags) : : "memory", "cc");
-
-	return flags;
-}
-
-static __always_inline void smap_restore(unsigned long flags)
-{
-	asm volatile (ALTERNATIVE("", "push %0; popf", X86_FEATURE_SMAP)
-		      : : "g" (flags) : "memory", "cc");
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* These macros can be used in asm() statements */
 #define ASM_CLAC \
 	ALTERNATIVE("", __stringify(__ASM_CLAC), X86_FEATURE_SMAP)
@@ -89,12 +69,6 @@ static __always_inline void smap_restore(unsigned long flags)
 static inline void clac(void) { }
 static inline void stac(void) { }
 
-<<<<<<< HEAD
-=======
-static inline unsigned long smap_save(void) { return 0; }
-static inline void smap_restore(unsigned long flags) { }
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ASM_CLAC
 #define ASM_STAC
 

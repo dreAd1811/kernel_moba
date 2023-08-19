@@ -278,7 +278,6 @@ int mc13xxx_adc_do_conversion(struct mc13xxx *mc13xxx, unsigned int mode,
 	if (ret)
 		goto out;
 
-<<<<<<< HEAD
 	adc0 = MC13XXX_ADC0_ADINC1 | MC13XXX_ADC0_ADINC2;
 	adc1 = MC13XXX_ADC1_ADEN | MC13XXX_ADC1_ADTRIGIGN | MC13XXX_ADC1_ASC;
 
@@ -297,14 +296,6 @@ int mc13xxx_adc_do_conversion(struct mc13xxx *mc13xxx, unsigned int mode,
 		adc0 |= MC13XXX_ADC0_ADIN7SEL_DIE;
 		channel = 7;
 	}
-=======
-	adc0 = MC13XXX_ADC0_ADINC1 | MC13XXX_ADC0_ADINC2 |
-	       MC13XXX_ADC0_CHRGRAWDIV;
-	adc1 = MC13XXX_ADC1_ADEN | MC13XXX_ADC1_ADTRIGIGN | MC13XXX_ADC1_ASC;
-
-	if (channel > 7)
-		adc1 |= MC13XXX_ADC1_ADSEL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (mode) {
 	case MC13XXX_ADC_MODE_TS:

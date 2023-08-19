@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: GPL-2.0
 # Common objects
-<<<<<<< HEAD
 obj-y				+= ccu_common.o
 obj-y				+= ccu_mmc_timing.o
 obj-y				+= ccu_reset.o
@@ -25,29 +24,6 @@ obj-y				+= ccu_mp.o
 obj-$(CONFIG_SUN50I_A64_CCU)	+= ccu-sun50i-a64.o
 obj-$(CONFIG_SUN50I_H6_CCU)	+= ccu-sun50i-h6.o
 obj-$(CONFIG_SUN50I_H6_R_CCU)	+= ccu-sun50i-h6-r.o
-=======
-lib-$(CONFIG_SUNXI_CCU)		+= ccu_common.o
-lib-$(CONFIG_SUNXI_CCU)		+= ccu_mmc_timing.o
-lib-$(CONFIG_SUNXI_CCU)		+= ccu_reset.o
-
-# Base clock types
-lib-$(CONFIG_SUNXI_CCU)		+= ccu_div.o
-lib-$(CONFIG_SUNXI_CCU)		+= ccu_frac.o
-lib-$(CONFIG_SUNXI_CCU)		+= ccu_gate.o
-lib-$(CONFIG_SUNXI_CCU)		+= ccu_mux.o
-lib-$(CONFIG_SUNXI_CCU)		+= ccu_mult.o
-lib-$(CONFIG_SUNXI_CCU)		+= ccu_phase.o
-
-# Multi-factor clocks
-lib-$(CONFIG_SUNXI_CCU)		+= ccu_nk.o
-lib-$(CONFIG_SUNXI_CCU)		+= ccu_nkm.o
-lib-$(CONFIG_SUNXI_CCU)		+= ccu_nkmp.o
-lib-$(CONFIG_SUNXI_CCU)		+= ccu_nm.o
-lib-$(CONFIG_SUNXI_CCU)		+= ccu_mp.o
-
-# SoC support
-obj-$(CONFIG_SUN50I_A64_CCU)	+= ccu-sun50i-a64.o
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 obj-$(CONFIG_SUN4I_A10_CCU)	+= ccu-sun4i-a10.o
 obj-$(CONFIG_SUN5I_CCU)		+= ccu-sun5i.o
 obj-$(CONFIG_SUN6I_A31_CCU)	+= ccu-sun6i-a31.o
@@ -62,15 +38,3 @@ obj-$(CONFIG_SUN8I_R40_CCU)	+= ccu-sun8i-r40.o
 obj-$(CONFIG_SUN9I_A80_CCU)	+= ccu-sun9i-a80.o
 obj-$(CONFIG_SUN9I_A80_CCU)	+= ccu-sun9i-a80-de.o
 obj-$(CONFIG_SUN9I_A80_CCU)	+= ccu-sun9i-a80-usb.o
-<<<<<<< HEAD
-=======
-
-# The lib-y file goals is supposed to work only in arch/*/lib or lib/. In our
-# case, we want to use that goal, but even though lib.a will be properly
-# generated, it will not be linked in, eventually resulting in a linker error
-# for missing symbols.
-#
-# We can work around that by explicitly adding lib.a to the obj-y goal. This is
-# an undocumented behaviour, but works well for now.
-obj-$(CONFIG_SUNXI_CCU)		+= lib.a
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

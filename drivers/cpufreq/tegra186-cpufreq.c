@@ -78,12 +78,8 @@ static int tegra186_cpufreq_init(struct cpufreq_policy *policy)
 
 		policy->driver_data =
 			data->regs + info->offset + EDVD_CORE_VOLT_FREQ(core);
-<<<<<<< HEAD
 		policy->freq_table = cluster->table;
 		break;
-=======
-		cpufreq_table_validate_and_show(policy, cluster->table);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	policy->cpuinfo.transition_latency = 300 * 1000;

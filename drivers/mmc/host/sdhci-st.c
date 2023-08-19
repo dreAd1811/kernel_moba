@@ -422,15 +422,8 @@ static int sdhci_st_probe(struct platform_device *pdev)
 	st_mmcss_cconfig(np, host);
 
 	ret = sdhci_add_host(host);
-<<<<<<< HEAD
 	if (ret)
 		goto err_out;
-=======
-	if (ret) {
-		dev_err(&pdev->dev, "Failed sdhci_add_host\n");
-		goto err_out;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	host_version = readw_relaxed((host->ioaddr + SDHCI_HOST_VERSION));
 

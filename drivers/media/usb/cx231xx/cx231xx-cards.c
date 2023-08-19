@@ -31,11 +31,7 @@
 #include <media/v4l2-common.h>
 
 #include <media/drv-intf/cx25840.h>
-<<<<<<< HEAD
 #include <media/dvb-usb-ids.h>
-=======
-#include "dvb-usb-ids.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "xc5000.h"
 #include "tda18271.h"
 
@@ -719,11 +715,7 @@ struct cx231xx_board cx231xx_boards[] = {
 		.tuner_i2c_master = I2C_1_MUX_3,
 		.demod_i2c_master = I2C_1_MUX_3,
 		.has_dvb = 1,
-<<<<<<< HEAD
 		.demod_addr = 0x64, /* 0xc8 >> 1 */
-=======
-		.demod_addr = 0x0e,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.norm = V4L2_STD_PAL,
 
 		.input = {{
@@ -762,11 +754,7 @@ struct cx231xx_board cx231xx_boards[] = {
 		.tuner_i2c_master = I2C_1_MUX_3,
 		.demod_i2c_master = I2C_1_MUX_3,
 		.has_dvb = 1,
-<<<<<<< HEAD
 		.demod_addr = 0x64, /* 0xc8 >> 1 */
-=======
-		.demod_addr = 0x0e,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.norm = V4L2_STD_PAL,
 
 		.input = {{
@@ -805,11 +793,7 @@ struct cx231xx_board cx231xx_boards[] = {
 		.tuner_i2c_master = I2C_1_MUX_3,
 		.demod_i2c_master = I2C_1_MUX_3,
 		.has_dvb = 1,
-<<<<<<< HEAD
 		.demod_addr = 0x59, /* 0xb2 >> 1 */
-=======
-		.demod_addr = 0x0e,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.norm = V4L2_STD_NTSC,
 
 		.input = {{
@@ -863,11 +847,7 @@ struct cx231xx_board cx231xx_boards[] = {
 		.demod_addr = 0x64, /* 0xc8 >> 1 */
 		.demod_i2c_master = I2C_1_MUX_3,
 		.has_dvb = 1,
-<<<<<<< HEAD
 		.decoder = CX231XX_AVDECODER,
-=======
-		.ir_i2c_master = I2C_0,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.norm = V4L2_STD_PAL,
 		.output_mode = OUT_MODE_VIP11,
 		.tuner_addr = 0x60, /* 0xc0 >> 1 */
@@ -892,10 +872,7 @@ struct cx231xx_board cx231xx_boards[] = {
 		.name = "Astrometa T2hybrid",
 		.tuner_type = TUNER_ABSENT,
 		.has_dvb = 1,
-<<<<<<< HEAD
 		.decoder = CX231XX_AVDECODER,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.output_mode = OUT_MODE_VIP11,
 		.agc_analog_digital_select_gpio = 0x01,
 		.ctl_pin_status_mask = 0xffffffc4,
@@ -919,7 +896,6 @@ struct cx231xx_board cx231xx_boards[] = {
 			},
 		},
 	},
-<<<<<<< HEAD
 	[CX231XX_BOARD_THE_IMAGING_SOURCE_DFG_USB2_PRO] = {
 		.name = "The Imaging Source DFG/USB2pro",
 		.tuner_type = TUNER_ABSENT,
@@ -1025,8 +1001,6 @@ struct cx231xx_board cx231xx_boards[] = {
 			.gpio = NULL,
 		} },
 	},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 const unsigned int cx231xx_bcount = ARRAY_SIZE(cx231xx_boards);
 
@@ -1061,13 +1035,10 @@ struct usb_device_id cx231xx_id_table[] = {
 	 .driver_info = CX231XX_BOARD_HAUPPAUGE_EXETER},
 	{USB_DEVICE(0x2040, 0xb123),
 	 .driver_info = CX231XX_BOARD_HAUPPAUGE_955Q},
-<<<<<<< HEAD
 	{USB_DEVICE(0x2040, 0xb151),
 	 .driver_info = CX231XX_BOARD_HAUPPAUGE_935C},
 	{USB_DEVICE(0x2040, 0xb150),
 	 .driver_info = CX231XX_BOARD_HAUPPAUGE_975},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{USB_DEVICE(0x2040, 0xb130),
 	 .driver_info = CX231XX_BOARD_HAUPPAUGE_930C_HD_1113xx},
 	{USB_DEVICE(0x2040, 0xb131),
@@ -1108,11 +1079,8 @@ struct usb_device_id cx231xx_id_table[] = {
 	.driver_info = CX231XX_BOARD_EVROMEDIA_FULL_HYBRID_FULLHD},
 	{USB_DEVICE(0x15f4, 0x0135),
 	.driver_info = CX231XX_BOARD_ASTROMETA_T2HYBRID},
-<<<<<<< HEAD
 	{USB_DEVICE(0x199e, 0x8002),
 	 .driver_info = CX231XX_BOARD_THE_IMAGING_SOURCE_DFG_USB2_PRO},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{},
 };
 
@@ -1253,11 +1221,7 @@ static void cx231xx_config_tuner(struct cx231xx *dev)
 static int read_eeprom(struct cx231xx *dev, struct i2c_client *client,
 		       u8 *eedata, int len)
 {
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 start_offset = 0;
 	int len_todo = len;
 	u8 *eedata_cur = eedata;
@@ -1333,11 +1297,8 @@ void cx231xx_card_setup(struct cx231xx *dev)
 	case CX231XX_BOARD_HAUPPAUGE_930C_HD_1113xx:
 	case CX231XX_BOARD_HAUPPAUGE_930C_HD_1114xx:
 	case CX231XX_BOARD_HAUPPAUGE_955Q:
-<<<<<<< HEAD
 	case CX231XX_BOARD_HAUPPAUGE_935C:
 	case CX231XX_BOARD_HAUPPAUGE_975:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		{
 			struct eeprom {
 				struct tveeprom tvee;

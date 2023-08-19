@@ -40,10 +40,7 @@ struct ltq_dma_channel {
 	int desc;			/* the current descriptor */
 	struct ltq_dma_desc *desc_base; /* the descriptor base */
 	int phys;			/* physical addr */
-<<<<<<< HEAD
 	struct device *dev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum {

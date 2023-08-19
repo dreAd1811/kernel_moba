@@ -45,7 +45,6 @@ void emergency_stack_init(void);
 static inline void emergency_stack_init(void) { };
 #endif
 
-<<<<<<< HEAD
 #ifdef CONFIG_PPC64
 u64 ppc64_bolted_size(void);
 
@@ -53,8 +52,6 @@ u64 ppc64_bolted_size(void);
 extern unsigned long spr_default_dscr;
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Having this in kvm_ppc.h makes include dependencies too
  * tricky to solve for setup-common.c so have it here.
@@ -65,13 +62,10 @@ void kvm_cma_reserve(void);
 static inline void kvm_cma_reserve(void) { };
 #endif
 
-<<<<<<< HEAD
 #ifdef CONFIG_TAU
 u32 cpu_temp(unsigned long cpu);
 u32 cpu_temp_both(unsigned long cpu);
 u32 tau_interrupts(unsigned long cpu);
 #endif /* CONFIG_TAU */
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __ARCH_POWERPC_KERNEL_SETUP_H */

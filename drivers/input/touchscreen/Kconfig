@@ -11,10 +11,7 @@ menuconfig INPUT_TOUCHSCREEN
 
 if INPUT_TOUCHSCREEN
 
-<<<<<<< HEAD
 source "drivers/input/touchscreen/goodix_gtx8/Kconfig"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config TOUCHSCREEN_PROPERTIES
 	def_tristate INPUT
 	depends on INPUT
@@ -96,7 +93,6 @@ config TOUCHSCREEN_AD7879_SPI
 	  To compile this driver as a module, choose M here: the
 	  module will be called ad7879-spi.
 
-<<<<<<< HEAD
 config TOUCHSCREEN_ADC
 	tristate "Generic ADC based resistive touchscreen"
 	depends on IIO
@@ -110,8 +106,6 @@ config TOUCHSCREEN_ADC
 	  To compile this driver as a module, choose M here: the
 	  module will be called resistive-adc-touch.ko.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config TOUCHSCREEN_AR1021_I2C
 	tristate "Microchip AR1020/1021 i2c touchscreen"
 	depends on I2C && OF
@@ -171,7 +165,6 @@ config TOUCHSCREEN_BU21013
 	  To compile this driver as a module, choose M here: the
 	  module will be called bu21013_ts.
 
-<<<<<<< HEAD
 config TOUCHSCREEN_BU21029
 	tristate "Rohm BU21029 based touch panel controllers"
 	depends on I2C
@@ -184,8 +177,6 @@ config TOUCHSCREEN_BU21029
 	  To compile this driver as a module, choose M here: the
 	  module will be called bu21029_ts.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config TOUCHSCREEN_CHIPONE_ICN8318
 	tristate "chipone icn8318 touchscreen controller"
 	depends on GPIOLIB || COMPILE_TEST
@@ -199,7 +190,6 @@ config TOUCHSCREEN_CHIPONE_ICN8318
 	  To compile this driver as a module, choose M here: the
 	  module will be called chipone_icn8318.
 
-<<<<<<< HEAD
 config TOUCHSCREEN_CHIPONE_ICN8505
 	tristate "chipone icn8505 touchscreen controller"
 	depends on I2C && ACPI
@@ -211,8 +201,6 @@ config TOUCHSCREEN_CHIPONE_ICN8505
 	  To compile this driver as a module, choose M here: the
 	  module will be called chipone_icn8505.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config TOUCHSCREEN_CY8CTMG110
 	tristate "cy8ctmg110 touchscreen"
 	depends on I2C
@@ -365,7 +353,6 @@ config TOUCHSCREEN_EGALAX_SERIAL
 	  To compile this driver as a module, choose M here: the
 	  module will be called egalax_ts_serial.
 
-<<<<<<< HEAD
 config TOUCHSCREEN_EXC3000
 	tristate "EETI EXC3000 multi-touch panel support"
 	depends on I2C
@@ -376,8 +363,6 @@ config TOUCHSCREEN_EXC3000
 	  To compile this driver as a module, choose M here: the
 	  module will be called exc3000.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config TOUCHSCREEN_FUJITSU
 	tristate "Fujitsu serial touchscreen"
 	select SERIO
@@ -406,7 +391,6 @@ config TOUCHSCREEN_GOODIX
 	  To compile this driver as a module, choose M here: the
 	  module will be called goodix.
 
-<<<<<<< HEAD
 config TOUCHSCREEN_HIDEEP
 	tristate "HiDeep Touch IC"
 	depends on I2C
@@ -418,8 +402,6 @@ config TOUCHSCREEN_HIDEEP
 	  To compile this driver as a module, choose M here : the
 	  module will be called hideep_ts.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config TOUCHSCREEN_ILI210X
 	tristate "Ilitek ILI210X based touchscreen"
 	depends on I2C
@@ -459,7 +441,6 @@ config TOUCHSCREEN_S3C2410
 	  To compile this driver as a module, choose M here: the
 	  module will be called s3c2410_ts.
 
-<<<<<<< HEAD
 config TOUCHSCREEN_S6SY761
 	tristate "Samsung S6SY761 Touchscreen driver"
 	depends on I2C
@@ -471,8 +452,6 @@ config TOUCHSCREEN_S6SY761
 	  To compile this driver as module, choose M here: the
 	  module will be called s6sy761.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config TOUCHSCREEN_GUNZE
 	tristate "Gunze AHL-51S touchscreen"
 	select SERIO
@@ -817,11 +796,7 @@ config TOUCHSCREEN_WM831X
 
 config TOUCHSCREEN_WM97XX
 	tristate "Support for WM97xx AC97 touchscreen controllers"
-<<<<<<< HEAD
 	depends on AC97_BUS || AC97_BUS_NEW
-=======
-	depends on AC97_BUS
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Say Y here if you have a Wolfson Microelectronics WM97xx
 	  touchscreen connected to your system. Note that this option
@@ -857,24 +832,6 @@ config TOUCHSCREEN_WM9713
 	  Say Y here to enable support for the Wolfson Microelectronics
 	  WM9713 touchscreen controller.
 
-<<<<<<< HEAD
-=======
-config TOUCHSCREEN_WM97XX_ATMEL
-	tristate "WM97xx Atmel accelerated touch"
-	depends on TOUCHSCREEN_WM97XX && AVR32
-	help
-	  Say Y here for support for streaming mode with WM97xx touchscreens
-	  on Atmel AT91 or AVR32 systems with an AC97C module.
-
-	  Be aware that this will use channel B in the controller for
-	  streaming data, this must not conflict with other AC97C drivers.
-
-	  If unsure, say N.
-
-	  To compile this driver as a module, choose M here: the module will
-	  be called atmel-wm97xx.
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config TOUCHSCREEN_WM97XX_MAINSTONE
 	tristate "WM97xx Mainstone/Palm accelerated touch"
 	depends on TOUCHSCREEN_WM97XX && ARCH_PXA
@@ -900,7 +857,6 @@ config TOUCHSCREEN_WM97XX_ZYLONITE
 	  To compile this driver as a module, choose M here: the
 	  module will be called zylonite-wm97xx.
 
-<<<<<<< HEAD
 config SECURE_TOUCH_SYNAPTICS_DSX
 	bool "Secure Touch"
 	depends on TOUCHSCREEN_SYNAPTICS_DSX_I2C
@@ -912,8 +868,6 @@ config SECURE_TOUCH_SYNAPTICS_DSX
 	  To compile the supported driver with Secure Touch enabled,
 	  choose M here.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config TOUCHSCREEN_USB_COMPOSITE
 	tristate "USB Touchscreen Driver"
 	depends on USB_ARCH_HAS_HCD
@@ -1060,11 +1014,7 @@ config TOUCHSCREEN_USB_NEXIO
 
 config TOUCHSCREEN_USB_EASYTOUCH
 	default y
-<<<<<<< HEAD
 	bool "EasyTouch USB Touch controller device support" if EXPERT
-=======
-	bool "EasyTouch USB Touch controller device support" if EMBEDDED
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on TOUCHSCREEN_USB_COMPOSITE
 	help
 	  Say Y here if you have an EasyTouch USB Touch controller.
@@ -1362,19 +1312,13 @@ config TOUCHSCREEN_ROHM_BU21023
 	  module will be called bu21023_ts.
 
 config TOUCHSCREEN_ST
-<<<<<<< HEAD
 	tristate "STMicroelectronics Touchscreen Driver"
 	depends on I2C
 	default y
-=======
-	bool "STMicroelectronics Touchscreen Driver"
-	depends on I2C
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Say Y here if you have a STMicroelectronics Touchscreen.
 
 	  If unsure, say N.
-<<<<<<< HEAD
 	  To compile this driver as a module, choose M here: the
 	  module will be called st.
 
@@ -1391,62 +1335,23 @@ config TOUCHSCREEN_SYNAPTICS_DSX
 
 	  To compile this driver as a module, choose M here: the
 	  module will be called synaptics_dsx.
-=======
-
-source "drivers/input/touchscreen/st/Kconfig"
-
-config TOUCHSCREEN_HIMAX_CHIPSET
-	bool "Himax touchpanel CHIPSET"
-	depends on I2C
-	help
-	  Say Y here if you have a Himax CHIPSET touchscreen.
-	  HIMAX controllers are multi touch controllers which can
-	  report 10 touches at a time.
-
-	  If unsure, say N.
-
-source "drivers/input/touchscreen/hxchipset/Kconfig"
-
-config TOUCHSCREEN_SYNAPTICS_DSX
-        bool "Synaptics DSX Touchscreen Driver"
-        depends on I2C
-        help
-          Say Y here if you have a Synaptics Touchscreen.
-
-          If unsure, say N.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 source "drivers/input/touchscreen/synaptics_dsx/Kconfig"
 
 config TOUCHSCREEN_SYNAPTICS_TCM
 	bool "Synaptics TCM Touchscreen Driver"
 	depends on I2C
-<<<<<<< HEAD
 	default n
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Say Y here if you have a Synaptics Touchscreen.
 
 	  If unsure, say N.
 
-<<<<<<< HEAD
 	  To compile this driver as a module, choose M here: the
 	  module will be called synaptics_tcm.
 
 source "drivers/input/touchscreen/synaptics_tcm/Kconfig"
 
 source "drivers/input/touchscreen/focaltech_touch/Kconfig"
-=======
-source "drivers/input/touchscreen/synaptics_tcm/Kconfig"
-
-config TOUCHSCREEN_RAYDIUM_CHIPSET
-	bool "Raydium WT030 touchpanel CHIPSET"
-	depends on I2C
-	help
-	  Say Y here if you have a Raydium WT030 CHIPSET touchscreen.
-
-	  If unsure, say N.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 endif

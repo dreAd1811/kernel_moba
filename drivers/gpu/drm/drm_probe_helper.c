@@ -33,10 +33,7 @@
 #include <linux/moduleparam.h>
 
 #include <drm/drmP.h>
-<<<<<<< HEAD
 #include <drm/drm_client.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <drm/drm_crtc.h>
 #include <drm/drm_fourcc.h>
 #include <drm/drm_crtc_helper.h>
@@ -92,15 +89,9 @@ drm_mode_validate_pipeline(struct drm_display_mode *mode,
 			    struct drm_connector *connector)
 {
 	struct drm_device *dev = connector->dev;
-<<<<<<< HEAD
 	enum drm_mode_status ret = MODE_OK;
 	struct drm_encoder *encoder;
 	int i;
-=======
-	uint32_t *ids = connector->encoder_ids;
-	enum drm_mode_status ret = MODE_OK;
-	unsigned int i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Step 1: Validate against connector */
 	ret = drm_connector_mode_valid(connector, mode);
@@ -108,19 +99,9 @@ drm_mode_validate_pipeline(struct drm_display_mode *mode,
 		return ret;
 
 	/* Step 2: Validate against encoders and crtcs */
-<<<<<<< HEAD
 	drm_connector_for_each_possible_encoder(connector, encoder, i) {
 		struct drm_crtc *crtc;
 
-=======
-	for (i = 0; i < DRM_CONNECTOR_MAX_ENCODER; i++) {
-		struct drm_encoder *encoder = drm_encoder_find(dev, NULL, ids[i]);
-		struct drm_crtc *crtc;
-
-		if (!encoder)
-			continue;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = drm_encoder_mode_valid(encoder, mode);
 		if (ret != MODE_OK) {
 			/* No point in continuing for crtc check as this encoder
@@ -232,12 +213,7 @@ enum drm_mode_status drm_connector_mode_valid(struct drm_connector *connector,
  * suspend/resume.
  *
  * Drivers can call this helper from their device resume implementation. It is
-<<<<<<< HEAD
  * not an error to call this even when output polling isn't enabled.
-=======
- * an error to call this when the output polling support has not yet been set
- * up.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Note that calls to enable and disable polling must be strictly ordered, which
  * is automatically the case when they're only call from suspend/resume
@@ -373,11 +349,6 @@ EXPORT_SYMBOL(drm_helper_probe_detect);
  *    drm_mode_probed_add(). New modes start their life with status as OK.
  *    Modes are added from a single source using the following priority order.
  *
-<<<<<<< HEAD
-=======
- *    - debugfs 'override_edid' (used for testing only)
- *    - firmware EDID (drm_load_edid_firmware())
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *    - &drm_connector_helper_funcs.get_modes vfunc
  *    - if the connector status is connector_status_connected, standard
  *      VESA DMT modes up to 1024x768 are automatically added
@@ -389,11 +360,7 @@ EXPORT_SYMBOL(drm_helper_probe_detect);
  *    using the VESA GTF/CVT formulas.
  *
  * 3. Modes are moved from the probed_modes list to the modes list. Potential
-<<<<<<< HEAD
  *    duplicates are merged together (see drm_connector_list_update()).
-=======
- *    duplicates are merged together (see drm_mode_connector_list_update()).
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *    After this step the probed_modes list will be empty again.
  *
  * 4. Any non-stale mode on the modes list then undergoes validation
@@ -505,16 +472,11 @@ retry:
 	if (connector->status == connector_status_disconnected) {
 		DRM_DEBUG_KMS("[CONNECTOR:%d:%s] disconnected\n",
 			connector->base.id, connector->name);
-<<<<<<< HEAD
 		drm_connector_update_edid_property(connector, NULL);
-=======
-		drm_mode_connector_update_edid_property(connector, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		verbose_prune = false;
 		goto prune;
 	}
 
-<<<<<<< HEAD
 	count = (*connector_funcs->get_modes)(connector);
 
 	/*
@@ -523,24 +485,6 @@ retry:
 	 */
 	if (count == 0 && connector->status == connector_status_connected)
 		count = drm_add_override_edid_modes(connector);
-=======
-	if (connector->override_edid) {
-		struct edid *edid = (struct edid *) connector->edid_blob_ptr->data;
-
-		count = drm_add_edid_modes(connector, edid);
-		drm_edid_to_eld(connector, edid);
-	} else {
-		struct edid *edid = drm_load_edid_firmware(connector);
-		if (!IS_ERR_OR_NULL(edid)) {
-			drm_mode_connector_update_edid_property(connector, edid);
-			count = drm_add_edid_modes(connector, edid);
-			drm_edid_to_eld(connector, edid);
-			kfree(edid);
-		}
-		if (count == 0)
-			count = (*connector_funcs->get_modes)(connector);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (count == 0 && connector->status == connector_status_connected)
 		count = drm_add_modes_noedid(connector, 1024, 768);
@@ -548,11 +492,7 @@ retry:
 	if (count == 0)
 		goto prune;
 
-<<<<<<< HEAD
 	drm_connector_list_update(connector);
-=======
-	drm_mode_connector_list_update(connector);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (connector->interlace_allowed)
 		mode_flags |= DRM_MODE_FLAG_INTERLACE;
@@ -563,11 +503,7 @@ retry:
 
 	list_for_each_entry(mode, &connector->modes, head) {
 		if (mode->status == MODE_OK)
-<<<<<<< HEAD
 			mode->status = drm_mode_validate_driver(dev, mode);
-=======
-			mode->status = drm_mode_validate_basic(mode);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (mode->status == MODE_OK)
 			mode->status = drm_mode_validate_size(mode, maxX, maxY);
@@ -631,11 +567,8 @@ void drm_kms_helper_hotplug_event(struct drm_device *dev)
 	drm_sysfs_hotplug_event(dev);
 	if (dev->mode_config.funcs->output_poll_changed)
 		dev->mode_config.funcs->output_poll_changed(dev);
-<<<<<<< HEAD
 
 	drm_client_dev_hotplug(dev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(drm_kms_helper_hotplug_event);
 

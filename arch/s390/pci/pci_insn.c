@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * s390 specific pci instructions
  *
@@ -92,12 +89,9 @@ int zpci_refresh_trans(u64 fn, u64 addr, u64 range)
 	if (cc)
 		zpci_err_insn(cc, status, addr, range);
 
-<<<<<<< HEAD
 	if (cc == 1 && (status == 4 || status == 16))
 		return -ENOMEM;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return (cc) ? -EIO : 0;
 }
 

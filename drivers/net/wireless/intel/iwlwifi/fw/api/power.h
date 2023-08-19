@@ -357,12 +357,7 @@ struct iwl_dev_tx_power_cmd {
 	u8 reserved[3];
 } __packed; /* TX_REDUCED_POWER_API_S_VER_4 */
 
-<<<<<<< HEAD
 #define IWL_NUM_GEO_PROFILES   3
-=======
-#define IWL_NUM_GEO_PROFILES	3
-#define IWL_GEO_PER_CHAIN_SIZE	3
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * enum iwl_geo_per_chain_offset_operation - type of operation

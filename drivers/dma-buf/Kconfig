@@ -3,10 +3,7 @@ menu "DMABUF options"
 config SYNC_FILE
 	bool "Explicit Synchronization Framework"
 	default n
-<<<<<<< HEAD
 	select ANON_INODES
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select DMA_SHARED_BUFFER
 	---help---
 	  The Sync File Framework adds explicit syncronization via
@@ -38,11 +35,7 @@ config DEBUG_DMA_BUF_REF
 	depends on STACKDEPOT
 	depends on DMA_SHARED_BUFFER
 	default n
-<<<<<<< HEAD
 	help
-=======
-	---help---
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	  Save stack traces for every call to dma_buf_get and dma_buf_put, to
 	  help debug memory leaks. Potential leaks may be found by manually
 	  matching the get/put call stacks.  This feature consumes extra memory

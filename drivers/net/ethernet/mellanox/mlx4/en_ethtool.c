@@ -199,13 +199,10 @@ static const char main_strings[][ETH_GSTRING_LEN] = {
 	"rx_xdp_drop",
 	"rx_xdp_tx",
 	"rx_xdp_tx_full",
-<<<<<<< HEAD
 
 	/* phy statistics */
 	"rx_packets_phy", "rx_bytes_phy",
 	"tx_packets_phy", "tx_bytes_phy",
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const char mlx4_en_test_names[][ETH_GSTRING_LEN]= {
@@ -418,13 +415,10 @@ static void mlx4_en_get_ethtool_stats(struct net_device *dev,
 		if (bitmap_iterator_test(&it))
 			data[index++] = ((unsigned long *)&priv->xdp_stats)[i];
 
-<<<<<<< HEAD
 	for (i = 0; i < NUM_PHY_STATS; i++, bitmap_iterator_inc(&it))
 		if (bitmap_iterator_test(&it))
 			data[index++] = ((unsigned long *)&priv->phy_stats)[i];
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < priv->tx_ring_num[TX]; i++) {
 		data[index++] = priv->tx_ring[TX][i]->packets;
 		data[index++] = priv->tx_ring[TX][i]->bytes;
@@ -504,15 +498,12 @@ static void mlx4_en_get_strings(struct net_device *dev,
 				strcpy(data + (index++) * ETH_GSTRING_LEN,
 				       main_strings[strings]);
 
-<<<<<<< HEAD
 		for (i = 0; i < NUM_PHY_STATS; i++, strings++,
 		     bitmap_iterator_inc(&it))
 			if (bitmap_iterator_test(&it))
 				strcpy(data + (index++) * ETH_GSTRING_LEN,
 				       main_strings[strings]);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		for (i = 0; i < priv->tx_ring_num[TX]; i++) {
 			sprintf(data + (index++) * ETH_GSTRING_LEN,
 				"tx%d_packets", i);
@@ -1138,7 +1129,6 @@ static int mlx4_en_set_ringparam(struct net_device *dev,
 	if (param->rx_jumbo_pending || param->rx_mini_pending)
 		return -EINVAL;
 
-<<<<<<< HEAD
 	if (param->rx_pending < MLX4_EN_MIN_RX_SIZE) {
 		en_warn(priv, "%s: rx_pending (%d) < min (%d)\n",
 			__func__, param->rx_pending,
@@ -1154,14 +1144,6 @@ static int mlx4_en_set_ringparam(struct net_device *dev,
 
 	rx_size = roundup_pow_of_two(param->rx_pending);
 	tx_size = roundup_pow_of_two(param->tx_pending);
-=======
-	rx_size = roundup_pow_of_two(param->rx_pending);
-	rx_size = max_t(u32, rx_size, MLX4_EN_MIN_RX_SIZE);
-	rx_size = min_t(u32, rx_size, MLX4_EN_MAX_RX_SIZE);
-	tx_size = roundup_pow_of_two(param->tx_pending);
-	tx_size = max_t(u32, tx_size, MLX4_EN_MIN_TX_SIZE);
-	tx_size = min_t(u32, tx_size, MLX4_EN_MAX_TX_SIZE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (rx_size == (priv->port_up ? priv->rx_ring[0]->actual_size :
 					priv->rx_ring[0]->size) &&
@@ -1763,10 +1745,6 @@ static int mlx4_en_get_rxnfc(struct net_device *dev, struct ethtool_rxnfc *cmd,
 		err = mlx4_en_get_flow(dev, cmd, cmd->fs.location);
 		break;
 	case ETHTOOL_GRXCLSRLALL:
-<<<<<<< HEAD
-=======
-		cmd->data = MAX_NUM_OF_FS_RULES;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		while ((!err || err == -ENOENT) && priority < cmd->rule_cnt) {
 			err = mlx4_en_get_flow(dev, cmd, i);
 			if (!err)
@@ -1808,26 +1786,18 @@ static int mlx4_en_set_rxnfc(struct net_device *dev, struct ethtool_rxnfc *cmd)
 	return err;
 }
 
-<<<<<<< HEAD
 static int mlx4_en_get_max_num_rx_rings(struct net_device *dev)
 {
 	return min_t(int, num_online_cpus(), MAX_RX_RINGS);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void mlx4_en_get_channels(struct net_device *dev,
 				 struct ethtool_channels *channel)
 {
 	struct mlx4_en_priv *priv = netdev_priv(dev);
 
-<<<<<<< HEAD
 	channel->max_rx = mlx4_en_get_max_num_rx_rings(dev);
 	channel->max_tx = priv->mdev->profile.max_num_tx_rings_p_up;
-=======
-	channel->max_rx = MAX_RX_RINGS;
-	channel->max_tx = MLX4_EN_MAX_TX_RING_P_UP;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	channel->rx_count = priv->rx_ring_num;
 	channel->tx_count = priv->tx_ring_num[TX] /
@@ -1856,11 +1826,7 @@ static int mlx4_en_set_channels(struct net_device *dev,
 	mutex_lock(&mdev->state_lock);
 	xdp_count = priv->tx_ring_num[TX_XDP] ? channel->rx_count : 0;
 	if (channel->tx_count * priv->prof->num_up + xdp_count >
-<<<<<<< HEAD
 	    priv->mdev->profile.max_num_tx_rings_p_up * priv->prof->num_up) {
-=======
-	    MAX_TX_RINGS) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = -EINVAL;
 		en_err(priv,
 		       "Total number of TX and XDP rings (%d) exceeds the maximum supported (%d)\n",

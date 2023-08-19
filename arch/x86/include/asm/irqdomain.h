@@ -9,10 +9,7 @@
 enum {
 	/* Allocate contiguous CPU vectors */
 	X86_IRQ_ALLOC_CONTIGUOUS_VECTORS		= 0x1,
-<<<<<<< HEAD
 	X86_IRQ_ALLOC_LEGACY				= 0x2,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 extern struct irq_domain *x86_vector_domain;
@@ -46,13 +43,8 @@ extern int mp_irqdomain_alloc(struct irq_domain *domain, unsigned int virq,
 			      unsigned int nr_irqs, void *arg);
 extern void mp_irqdomain_free(struct irq_domain *domain, unsigned int virq,
 			      unsigned int nr_irqs);
-<<<<<<< HEAD
 extern int mp_irqdomain_activate(struct irq_domain *domain,
 				 struct irq_data *irq_data, bool reserve);
-=======
-extern void mp_irqdomain_activate(struct irq_domain *domain,
-				  struct irq_data *irq_data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern void mp_irqdomain_deactivate(struct irq_domain *domain,
 				    struct irq_data *irq_data);
 extern int mp_irqdomain_ioapic_idx(struct irq_domain *domain);
@@ -64,13 +56,4 @@ extern void arch_init_msi_domain(struct irq_domain *domain);
 static inline void arch_init_msi_domain(struct irq_domain *domain) { }
 #endif
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_HT_IRQ
-extern void arch_init_htirq_domain(struct irq_domain *domain);
-#else
-static inline void arch_init_htirq_domain(struct irq_domain *domain) { }
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

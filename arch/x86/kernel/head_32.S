@@ -375,11 +375,7 @@ ENDPROC(startup_32_smp)
  */
 __INIT
 setup_once:
-<<<<<<< HEAD
 #ifdef CONFIG_STACKPROTECTOR
-=======
-#ifdef CONFIG_CC_STACKPROTECTOR
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Configure the stack canary. The linker can't handle this by
 	 * relocation.  Manually set base address in stack canary
@@ -516,7 +512,6 @@ ENTRY(initial_code)
 ENTRY(setup_once_ref)
 	.long setup_once
 
-<<<<<<< HEAD
 #ifdef CONFIG_PAGE_TABLE_ISOLATION
 #define	PGD_ALIGN	(2 * PAGE_SIZE)
 #define PTI_USER_PGD_FILL	1024
@@ -524,17 +519,11 @@ ENTRY(setup_once_ref)
 #define	PGD_ALIGN	(PAGE_SIZE)
 #define PTI_USER_PGD_FILL	0
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * BSS section
  */
 __PAGE_ALIGNED_BSS
-<<<<<<< HEAD
 	.align PGD_ALIGN
-=======
-	.align PAGE_SIZE
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_X86_PAE
 .globl initial_pg_pmd
 initial_pg_pmd:
@@ -544,7 +533,6 @@ initial_pg_pmd:
 initial_page_table:
 	.fill 1024,4,0
 #endif
-<<<<<<< HEAD
 	.align PGD_ALIGN
 initial_pg_fixmap:
 	.fill 1024,4,0
@@ -556,16 +544,6 @@ swapper_pg_dir:
 .globl empty_zero_page
 empty_zero_page:
 	.fill 4096,1,0
-=======
-initial_pg_fixmap:
-	.fill 1024,4,0
-.globl empty_zero_page
-empty_zero_page:
-	.fill 4096,1,0
-.globl swapper_pg_dir
-swapper_pg_dir:
-	.fill 1024,4,0
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 EXPORT_SYMBOL(empty_zero_page)
 
 /*
@@ -574,11 +552,7 @@ EXPORT_SYMBOL(empty_zero_page)
 #ifdef CONFIG_X86_PAE
 __PAGE_ALIGNED_DATA
 	/* Page-aligned for the benefit of paravirt? */
-<<<<<<< HEAD
 	.align PGD_ALIGN
-=======
-	.align PAGE_SIZE
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 ENTRY(initial_page_table)
 	.long	pa(initial_pg_pmd+PGD_IDENT_ATTR),0	/* low identity map */
 # if KPMDS == 3

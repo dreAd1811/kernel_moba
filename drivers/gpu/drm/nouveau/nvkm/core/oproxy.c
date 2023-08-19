@@ -37,7 +37,6 @@ nvkm_oproxy_ntfy(struct nvkm_object *object, u32 mthd,
 }
 
 static int
-<<<<<<< HEAD
 nvkm_oproxy_map(struct nvkm_object *object, void *argv, u32 argc,
 		enum nvkm_object_map *type, u64 *addr, u64 *size)
 {
@@ -49,11 +48,6 @@ static int
 nvkm_oproxy_unmap(struct nvkm_object *object)
 {
 	return nvkm_object_unmap(nvkm_oproxy(object)->object);
-=======
-nvkm_oproxy_map(struct nvkm_object *object, u64 *addr, u32 *size)
-{
-	return nvkm_object_map(nvkm_oproxy(object)->object, addr, size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int
@@ -185,10 +179,7 @@ nvkm_oproxy_func = {
 	.mthd = nvkm_oproxy_mthd,
 	.ntfy = nvkm_oproxy_ntfy,
 	.map = nvkm_oproxy_map,
-<<<<<<< HEAD
 	.unmap = nvkm_oproxy_unmap,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.rd08 = nvkm_oproxy_rd08,
 	.rd16 = nvkm_oproxy_rd16,
 	.rd32 = nvkm_oproxy_rd32,

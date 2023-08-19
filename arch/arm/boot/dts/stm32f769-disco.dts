@@ -42,7 +42,6 @@
 
 /dts-v1/;
 #include "stm32f746.dtsi"
-<<<<<<< HEAD
 #include "stm32f769-pinctrl.dtsi"
 #include <dt-bindings/input/input.h>
 #include <dt-bindings/gpio/gpio.h>
@@ -50,13 +49,6 @@
 / {
 	model = "STMicroelectronics STM32F769-DISCO board";
 	compatible = "st,stm32f769-disco", "st,stm32f769";
-=======
-#include <dt-bindings/input/input.h>
-
-/ {
-	model = "STMicroelectronics STM32F769-DISCO board";
-	compatible = "st,stm32f769-disco", "st,stm32f7";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	chosen {
 		bootargs = "root=/dev/ram";
@@ -71,7 +63,6 @@
 		serial0 = &usart1;
 	};
 
-<<<<<<< HEAD
 	leds {
 		compatible = "gpio-leds";
 		green {
@@ -108,8 +99,6 @@
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &cec {
@@ -122,7 +111,6 @@
 	clock-frequency = <25000000>;
 };
 
-<<<<<<< HEAD
 &i2c1 {
 	pinctrl-0 = <&i2c1_pins_b>;
 	pinctrl-names = "default";
@@ -147,14 +135,11 @@
 	bus-width = <4>;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &usart1 {
 	pinctrl-0 = <&usart1_pins_a>;
 	pinctrl-names = "default";
 	status = "okay";
 };
-<<<<<<< HEAD
 
 &usbotg_hs {
 	dr_mode = "otg";
@@ -164,5 +149,3 @@
 	pinctrl-names = "default";
 	status = "okay";
 };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

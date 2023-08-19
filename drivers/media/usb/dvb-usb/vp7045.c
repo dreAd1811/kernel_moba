@@ -10,11 +10,7 @@
  *	under the terms of the GNU General Public License as published by the Free
  *	Software Foundation, version 2.
  *
-<<<<<<< HEAD
  * see Documentation/media/dvb-drivers/dvb-usb.rst for more information
-=======
- * see Documentation/dvb/README.dvb-usb for more information
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #include "vp7045.h"
 
@@ -101,78 +97,13 @@ static int vp7045_power_ctrl(struct dvb_usb_device *d, int onoff)
 	return vp7045_usb_op(d,SET_TUNER_POWER,&v,1,NULL,0,150);
 }
 
-<<<<<<< HEAD
 static int vp7045_rc_query(struct dvb_usb_device *d)
 {
 	u8 key;
-=======
-/* remote control stuff */
-
-/* The keymapping struct. Somehow this should be loaded to the driver, but
- * currently it is hardcoded. */
-static struct rc_map_table rc_map_vp7045_table[] = {
-	{ 0x0016, KEY_POWER },
-	{ 0x0010, KEY_MUTE },
-	{ 0x0003, KEY_1 },
-	{ 0x0001, KEY_2 },
-	{ 0x0006, KEY_3 },
-	{ 0x0009, KEY_4 },
-	{ 0x001d, KEY_5 },
-	{ 0x001f, KEY_6 },
-	{ 0x000d, KEY_7 },
-	{ 0x0019, KEY_8 },
-	{ 0x001b, KEY_9 },
-	{ 0x0015, KEY_0 },
-	{ 0x0005, KEY_CHANNELUP },
-	{ 0x0002, KEY_CHANNELDOWN },
-	{ 0x001e, KEY_VOLUMEUP },
-	{ 0x000a, KEY_VOLUMEDOWN },
-	{ 0x0011, KEY_RECORD },
-	{ 0x0017, KEY_FAVORITES }, /* Heart symbol - Channel list. */
-	{ 0x0014, KEY_PLAY },
-	{ 0x001a, KEY_STOP },
-	{ 0x0040, KEY_REWIND },
-	{ 0x0012, KEY_FASTFORWARD },
-	{ 0x000e, KEY_PREVIOUS }, /* Recall - Previous channel. */
-	{ 0x004c, KEY_PAUSE },
-	{ 0x004d, KEY_SCREEN }, /* Full screen mode. */
-	{ 0x0054, KEY_AUDIO }, /* MTS - Switch to secondary audio. */
-	{ 0x000c, KEY_CANCEL }, /* Cancel */
-	{ 0x001c, KEY_EPG }, /* EPG */
-	{ 0x0000, KEY_TAB }, /* Tab */
-	{ 0x0048, KEY_INFO }, /* Preview */
-	{ 0x0004, KEY_LIST }, /* RecordList */
-	{ 0x000f, KEY_TEXT }, /* Teletext */
-	{ 0x0041, KEY_PREVIOUSSONG },
-	{ 0x0042, KEY_NEXTSONG },
-	{ 0x004b, KEY_UP },
-	{ 0x0051, KEY_DOWN },
-	{ 0x004e, KEY_LEFT },
-	{ 0x0052, KEY_RIGHT },
-	{ 0x004f, KEY_ENTER },
-	{ 0x0013, KEY_CANCEL },
-	{ 0x004a, KEY_CLEAR },
-	{ 0x0054, KEY_PRINT }, /* Capture */
-	{ 0x0043, KEY_SUBTITLE }, /* Subtitle/CC */
-	{ 0x0008, KEY_VIDEO }, /* A/V */
-	{ 0x0007, KEY_SLEEP }, /* Hibernate */
-	{ 0x0045, KEY_ZOOM }, /* Zoom+ */
-	{ 0x0018, KEY_RED},
-	{ 0x0053, KEY_GREEN},
-	{ 0x005e, KEY_YELLOW},
-	{ 0x005f, KEY_BLUE}
-};
-
-static int vp7045_rc_query(struct dvb_usb_device *d, u32 *event, int *state)
-{
-	u8 key;
-	int i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vp7045_usb_op(d,RC_VAL_READ,NULL,0,&key,1,20);
 
 	deb_rc("remote query key: %x %d\n",key,key);
 
-<<<<<<< HEAD
 	if (key != 0x44) {
 		/*
 		 * The 8 bit address isn't available, but since the remote uses
@@ -182,19 +113,6 @@ static int vp7045_rc_query(struct dvb_usb_device *d, u32 *event, int *state)
 		rc_keydown(d->rc_dev, RC_PROTO_NEC, RC_SCANCODE_NEC(0, key), 0);
 	}
 
-=======
-	if (key == 0x44) {
-		*state = REMOTE_NO_KEY_PRESSED;
-		return 0;
-	}
-
-	for (i = 0; i < ARRAY_SIZE(rc_map_vp7045_table); i++)
-		if (rc5_data(&rc_map_vp7045_table[i]) == key) {
-			*state = REMOTE_KEY_PRESSED;
-			*event = rc_map_vp7045_table[i].keycode;
-			break;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -287,7 +205,6 @@ static struct dvb_usb_device_properties vp7045_properties = {
 	.power_ctrl       = vp7045_power_ctrl,
 	.read_mac_address = vp7045_read_mac_addr,
 
-<<<<<<< HEAD
 	.rc.core = {
 		.rc_interval	= 400,
 		.rc_codes	= RC_MAP_TWINHAN_VP1027_DVBS,
@@ -295,13 +212,6 @@ static struct dvb_usb_device_properties vp7045_properties = {
 		.rc_query	= vp7045_rc_query,
 		.allowed_protos = RC_PROTO_BIT_NEC,
 		.scancode_mask	= 0xff,
-=======
-	.rc.legacy = {
-		.rc_interval      = 400,
-		.rc_map_table       = rc_map_vp7045_table,
-		.rc_map_size  = ARRAY_SIZE(rc_map_vp7045_table),
-		.rc_query         = vp7045_rc_query,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 
 	.num_device_descs = 2,

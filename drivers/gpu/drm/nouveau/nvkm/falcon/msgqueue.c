@@ -505,11 +505,8 @@ nvkm_msgqueue_new(u32 version, struct nvkm_falcon *falcon,
 		ret = msgqueue_0137bca5_new(falcon, sb, queue);
 		break;
 	case 0x0148cdec:
-<<<<<<< HEAD
 	case 0x015ccf3e:
 	case 0x0167d263:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = msgqueue_0148cdec_new(falcon, sb, queue);
 		break;
 	default:

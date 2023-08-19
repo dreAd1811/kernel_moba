@@ -276,11 +276,7 @@ static void vxge_get_ethtool_stats(struct net_device *dev,
 	*ptr++ = 0;
 	status = vxge_hw_device_xmac_stats_get(hldev, xmac_stats);
 	if (status != VXGE_HW_OK) {
-<<<<<<< HEAD
 		if (status != VXGE_HW_ERR_PRIVILEGED_OPERATION) {
-=======
-		if (status != VXGE_HW_ERR_PRIVILAGED_OPEARATION) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			vxge_debug_init(VXGE_ERR,
 				"%s : %d Failure in getting xmac stats",
 				__func__, __LINE__);

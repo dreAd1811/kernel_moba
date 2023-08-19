@@ -1,19 +1,5 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
 /* Copyright (c) 2013, 2016-2019 The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2013, 2016-2017, 2019
- * The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * RMNET Data ingress/egress handler
  *
@@ -34,10 +20,7 @@ void rmnet_deliver_skb(struct sk_buff *skb, struct rmnet_port *port);
 void rmnet_deliver_skb_wq(struct sk_buff *skb, struct rmnet_port *port,
 			  enum rmnet_packet_context ctx);
 void rmnet_set_skb_proto(struct sk_buff *skb);
-<<<<<<< HEAD
 bool rmnet_slow_start_on(u32 hash_key);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 rx_handler_result_t _rmnet_map_ingress_handler(struct sk_buff *skb,
 					       struct rmnet_port *port);
 rx_handler_result_t rmnet_rx_handler(struct sk_buff **pskb);

@@ -840,10 +840,7 @@ static int epp_open(struct net_device *dev)
 	unsigned char tmp[128];
 	unsigned char stat;
 	unsigned long tstart;
-<<<<<<< HEAD
 	struct pardev_cb par_cb;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	
         if (!pp) {
                 printk(KERN_ERR "%s: parport at 0x%lx unknown\n", bc_drvname, dev->base_addr);
@@ -863,7 +860,6 @@ static int epp_open(struct net_device *dev)
                 return -EIO;
 	}
 	memset(&bc->modem, 0, sizeof(bc->modem));
-<<<<<<< HEAD
 	memset(&par_cb, 0, sizeof(par_cb));
 	par_cb.wakeup = epp_wakeup;
 	par_cb.private = (void *)dev;
@@ -879,10 +875,6 @@ static int epp_open(struct net_device *dev)
 	}
 
 	bc->pdev = parport_register_dev_model(pp, dev->name, &par_cb, i);
-=======
-        bc->pdev = parport_register_device(pp, dev->name, NULL, epp_wakeup, 
-					   NULL, PARPORT_DEV_EXCL, dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	parport_put_port(pp);
         if (!bc->pdev) {
                 printk(KERN_ERR "%s: cannot register parport at 0x%lx\n", bc_drvname, pp->base);
@@ -1207,7 +1199,6 @@ MODULE_LICENSE("GPL");
 
 /* --------------------------------------------------------------------- */
 
-<<<<<<< HEAD
 static int baycom_epp_par_probe(struct pardevice *par_dev)
 {
 	struct device_driver *drv = par_dev->dev.driver;
@@ -1225,8 +1216,6 @@ static struct parport_driver baycom_epp_par_driver = {
 	.devmodel = true,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void __init baycom_epp_dev_setup(struct net_device *dev)
 {
 	struct baycom_state *bc = netdev_priv(dev);
@@ -1246,7 +1235,6 @@ static void __init baycom_epp_dev_setup(struct net_device *dev)
 
 static int __init init_baycomepp(void)
 {
-<<<<<<< HEAD
 	int i, found = 0, ret;
 	char set_hw = 1;
 
@@ -1256,12 +1244,6 @@ static int __init init_baycomepp(void)
 	if (ret)
 		return ret;
 
-=======
-	int i, found = 0;
-	char set_hw = 1;
-
-	printk(bc_drvinfo);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * register net devices
 	 */
@@ -1295,16 +1277,12 @@ static int __init init_baycomepp(void)
 		found++;
 	}
 
-<<<<<<< HEAD
 	if (found == 0) {
 		parport_unregister_driver(&baycom_epp_par_driver);
 		return -ENXIO;
 	}
 
 	return 0;
-=======
-	return found ? 0 : -ENXIO;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __exit cleanup_baycomepp(void)
@@ -1323,10 +1301,7 @@ static void __exit cleanup_baycomepp(void)
 				printk(paranoia_str, "cleanup_module");
 		}
 	}
-<<<<<<< HEAD
 	parport_unregister_driver(&baycom_epp_par_driver);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 module_init(init_baycomepp);

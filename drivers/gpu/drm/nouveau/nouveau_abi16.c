@@ -23,10 +23,7 @@
 
 #include <nvif/client.h>
 #include <nvif/driver.h>
-<<<<<<< HEAD
 #include <nvif/fifo.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <nvif/ioctl.h>
 #include <nvif/class.h>
 #include <nvif/cl0002.h>
@@ -38,10 +35,7 @@
 #include "nouveau_gem.h"
 #include "nouveau_chan.h"
 #include "nouveau_abi16.h"
-<<<<<<< HEAD
 #include "nouveau_vmm.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct nouveau_abi16 *
 nouveau_abi16(struct drm_file *file_priv)
@@ -109,10 +103,7 @@ nouveau_abi16_swclass(struct nouveau_drm *drm)
 	case NV_DEVICE_INFO_V0_KEPLER:
 	case NV_DEVICE_INFO_V0_MAXWELL:
 	case NV_DEVICE_INFO_V0_PASCAL:
-<<<<<<< HEAD
 	case NV_DEVICE_INFO_V0_VOLTA:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return NVIF_CLASS_SW_GF100;
 	}
 
@@ -146,15 +137,9 @@ nouveau_abi16_chan_fini(struct nouveau_abi16 *abi16,
 	}
 
 	if (chan->ntfy) {
-<<<<<<< HEAD
 		nouveau_vma_del(&chan->ntfy_vma);
 		nouveau_bo_unpin(chan->ntfy);
 		drm_gem_object_put_unlocked(&chan->ntfy->gem);
-=======
-		nouveau_bo_vma_del(chan->ntfy, &chan->ntfy_vma);
-		nouveau_bo_unpin(chan->ntfy);
-		drm_gem_object_unreference_unlocked(&chan->ntfy->gem);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (chan->heap.block_size)
@@ -202,27 +187,18 @@ nouveau_abi16_ioctl_getparam(ABI16_IOCTL_ARGS)
 		getparam->value = device->info.chipset;
 		break;
 	case NOUVEAU_GETPARAM_PCI_VENDOR:
-<<<<<<< HEAD
 		if (device->info.platform != NV_DEVICE_INFO_V0_SOC)
-=======
-		if (nvxx_device(device)->func->pci)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			getparam->value = dev->pdev->vendor;
 		else
 			getparam->value = 0;
 		break;
 	case NOUVEAU_GETPARAM_PCI_DEVICE:
-<<<<<<< HEAD
 		if (device->info.platform != NV_DEVICE_INFO_V0_SOC)
-=======
-		if (nvxx_device(device)->func->pci)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			getparam->value = dev->pdev->device;
 		else
 			getparam->value = 0;
 		break;
 	case NOUVEAU_GETPARAM_BUS_TYPE:
-<<<<<<< HEAD
 		switch (device->info.platform) {
 		case NV_DEVICE_INFO_V0_AGP : getparam->value = 0; break;
 		case NV_DEVICE_INFO_V0_PCI : getparam->value = 1; break;
@@ -238,19 +214,6 @@ nouveau_abi16_ioctl_getparam(ABI16_IOCTL_ARGS)
 			WARN_ON(1);
 			break;
 		}
-=======
-		if (!nvxx_device(device)->func->pci)
-			getparam->value = 3;
-		else
-		if (pci_find_capability(dev->pdev, PCI_CAP_ID_AGP))
-			getparam->value = 0;
-		else
-		if (!pci_is_pcie(dev->pdev))
-			getparam->value = 1;
-		else
-			getparam->value = 2;
-		break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case NOUVEAU_GETPARAM_FB_SIZE:
 		getparam->value = drm->gem.vram_available;
 		break;
@@ -295,10 +258,7 @@ nouveau_abi16_ioctl_channel_alloc(ABI16_IOCTL_ARGS)
 	struct nouveau_abi16 *abi16 = nouveau_abi16_get(file_priv);
 	struct nouveau_abi16_chan *chan;
 	struct nvif_device *device;
-<<<<<<< HEAD
 	u64 engine;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	if (unlikely(!abi16))
@@ -311,7 +271,6 @@ nouveau_abi16_ioctl_channel_alloc(ABI16_IOCTL_ARGS)
 
 	/* hack to allow channel engine type specification on kepler */
 	if (device->info.family >= NV_DEVICE_INFO_V0_KEPLER) {
-<<<<<<< HEAD
 		if (init->fb_ctxdma_handle == ~0) {
 			switch (init->tt_ctxdma_handle) {
 			case 0x01: engine = NV_DEVICE_INFO_ENGINE_GR    ; break;
@@ -332,27 +291,6 @@ nouveau_abi16_ioctl_channel_alloc(ABI16_IOCTL_ARGS)
 			engine = nvif_fifo_runlist_ce(device);
 		init->fb_ctxdma_handle = engine;
 		init->tt_ctxdma_handle = 0;
-=======
-		if (init->fb_ctxdma_handle != ~0)
-			init->fb_ctxdma_handle = NVA06F_V0_ENGINE_GR;
-		else {
-			init->fb_ctxdma_handle = 0;
-#define _(A,B) if (init->tt_ctxdma_handle & (A)) init->fb_ctxdma_handle |= (B)
-			_(0x01, NVA06F_V0_ENGINE_GR);
-			_(0x02, NVA06F_V0_ENGINE_MSPDEC);
-			_(0x04, NVA06F_V0_ENGINE_MSPPP);
-			_(0x08, NVA06F_V0_ENGINE_MSVLD);
-			_(0x10, NVA06F_V0_ENGINE_CE0);
-			_(0x20, NVA06F_V0_ENGINE_CE1);
-			_(0x40, NVA06F_V0_ENGINE_MSENC);
-#undef _
-		}
-
-		/* allow flips to be executed if this is a graphics channel */
-		init->tt_ctxdma_handle = 0;
-		if (init->fb_ctxdma_handle == NVA06F_V0_ENGINE_GR)
-			init->tt_ctxdma_handle = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (init->fb_ctxdma_handle == ~0 || init->tt_ctxdma_handle == ~0)
@@ -400,12 +338,7 @@ nouveau_abi16_ioctl_channel_alloc(ABI16_IOCTL_ARGS)
 		goto done;
 
 	if (device->info.family >= NV_DEVICE_INFO_V0_TESLA) {
-<<<<<<< HEAD
 		ret = nouveau_vma_new(chan->ntfy, &cli->vmm, &chan->ntfy_vma);
-=======
-		ret = nouveau_bo_vma_add(chan->ntfy, cli->vm,
-					&chan->ntfy_vma);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			goto done;
 	}
@@ -415,11 +348,7 @@ nouveau_abi16_ioctl_channel_alloc(ABI16_IOCTL_ARGS)
 	if (ret)
 		goto done;
 
-<<<<<<< HEAD
 	ret = nvkm_mm_init(&chan->heap, 0, 0, PAGE_SIZE, 1);
-=======
-	ret = nvkm_mm_init(&chan->heap, 0, PAGE_SIZE, 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 done:
 	if (ret)
 		nouveau_abi16_chan_fini(abi16, chan);
@@ -627,13 +556,8 @@ nouveau_abi16_ioctl_notifierobj_alloc(ABI16_IOCTL_ARGS)
 	if (device->info.family >= NV_DEVICE_INFO_V0_TESLA) {
 		args.target = NV_DMA_V0_TARGET_VM;
 		args.access = NV_DMA_V0_ACCESS_VM;
-<<<<<<< HEAD
 		args.start += chan->ntfy_vma->addr;
 		args.limit += chan->ntfy_vma->addr;
-=======
-		args.start += chan->ntfy_vma.offset;
-		args.limit += chan->ntfy_vma.offset;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else
 	if (drm->agp.bridge) {
 		args.target = NV_DMA_V0_TARGET_AGP;

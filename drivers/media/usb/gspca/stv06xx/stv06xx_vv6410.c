@@ -129,11 +129,7 @@ static int vv6410_start(struct sd *sd)
 	u32 priv = cam->cam_mode[sd->gspca_dev.curr_mode].priv;
 
 	if (priv & VV6410_SUBSAMPLE) {
-<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_CONF, "Enabling subsampling\n");
-=======
-		PDEBUG(D_CONF, "Enabling subsampling");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		stv06xx_write_bridge(sd, STV_Y_CTRL, 0x02);
 		stv06xx_write_bridge(sd, STV_X_CTRL, 0x06);
 
@@ -154,11 +150,7 @@ static int vv6410_start(struct sd *sd)
 	if (err < 0)
 		return err;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_STREAM, "Starting stream\n");
-=======
-	PDEBUG(D_STREAM, "Starting stream");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -177,11 +169,7 @@ static int vv6410_stop(struct sd *sd)
 	if (err < 0)
 		return err;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_STREAM, "Halting stream\n");
-=======
-	PDEBUG(D_STREAM, "Halting stream");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -215,11 +203,7 @@ static int vv6410_set_hflip(struct gspca_dev *gspca_dev, __s32 val)
 	else
 		i2c_data &= ~VV6410_HFLIP;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Set horizontal flip to %d\n", val);
-=======
-	PDEBUG(D_CONF, "Set horizontal flip to %d", val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = stv06xx_write_sensor(sd, VV6410_DATAFORMAT, i2c_data);
 
 	return (err < 0) ? err : 0;
@@ -240,11 +224,7 @@ static int vv6410_set_vflip(struct gspca_dev *gspca_dev, __s32 val)
 	else
 		i2c_data &= ~VV6410_VFLIP;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Set vertical flip to %d\n", val);
-=======
-	PDEBUG(D_CONF, "Set vertical flip to %d", val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = stv06xx_write_sensor(sd, VV6410_DATAFORMAT, i2c_data);
 
 	return (err < 0) ? err : 0;
@@ -255,11 +235,7 @@ static int vv6410_set_analog_gain(struct gspca_dev *gspca_dev, __s32 val)
 	int err;
 	struct sd *sd = (struct sd *) gspca_dev;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Set analog gain to %d\n", val);
-=======
-	PDEBUG(D_CONF, "Set analog gain to %d", val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = stv06xx_write_sensor(sd, VV6410_ANALOGGAIN, 0xf0 | (val & 0xf));
 
 	return (err < 0) ? err : 0;
@@ -276,13 +252,8 @@ static int vv6410_set_exposure(struct gspca_dev *gspca_dev, __s32 val)
 	fine = val % VV6410_CIF_LINELENGTH;
 	coarse = min(512, val / VV6410_CIF_LINELENGTH);
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Set coarse exposure to %d, fine exposure to %d\n",
 		  coarse, fine);
-=======
-	PDEBUG(D_CONF, "Set coarse exposure to %d, fine exposure to %d",
-	       coarse, fine);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = stv06xx_write_sensor(sd, VV6410_FINEH, fine >> 8);
 	if (err < 0)

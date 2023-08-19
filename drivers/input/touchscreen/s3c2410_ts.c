@@ -102,11 +102,7 @@ static inline bool get_down(unsigned long data0, unsigned long data1)
 		!(data1 & S3C2410_ADCDAT0_UPDOWN));
 }
 
-<<<<<<< HEAD
 static void touch_timer_fire(struct timer_list *unused)
-=======
-static void touch_timer_fire(unsigned long data)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long data0;
 	unsigned long data1;
@@ -149,11 +145,7 @@ static void touch_timer_fire(unsigned long data)
 	}
 }
 
-<<<<<<< HEAD
 static DEFINE_TIMER(touch_timer, touch_timer_fire);
-=======
-static DEFINE_TIMER(touch_timer, touch_timer_fire, 0, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * stylus_irq - touchscreen stylus event interrupt

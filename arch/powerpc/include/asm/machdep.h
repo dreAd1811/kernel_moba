@@ -83,11 +83,7 @@ struct machdep_calls {
 
 	int		(*set_rtc_time)(struct rtc_time *);
 	void		(*get_rtc_time)(struct rtc_time *);
-<<<<<<< HEAD
 	time64_t	(*get_boot_time)(void);
-=======
-	unsigned long	(*get_boot_time)(void);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned char 	(*rtc_read_val)(int addr);
 	void		(*rtc_write_val)(int addr, unsigned char val);
 
@@ -177,25 +173,19 @@ struct machdep_calls {
 	/* Called after scan and before resource survey */
 	void (*pcibios_fixup_phb)(struct pci_controller *hose);
 
-<<<<<<< HEAD
 	/*
 	 * Called after device has been added to bus and
 	 * before sysfs has been created.
 	 */
 	void (*pcibios_bus_add_device)(struct pci_dev *pdev);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	resource_size_t (*pcibios_default_alignment)(void);
 
 #ifdef CONFIG_PCI_IOV
 	void (*pcibios_fixup_sriov)(struct pci_dev *pdev);
 	resource_size_t (*pcibios_iov_resource_alignment)(struct pci_dev *, int resno);
-<<<<<<< HEAD
 	int (*pcibios_sriov_enable)(struct pci_dev *pdev, u16 num_vfs);
 	int (*pcibios_sriov_disable)(struct pci_dev *pdev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_PCI_IOV */
 
 	/* Called to shutdown machine specific hardware not already controlled

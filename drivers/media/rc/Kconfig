@@ -2,10 +2,6 @@
 menuconfig RC_CORE
 	tristate "Remote Controller support"
 	depends on INPUT
-<<<<<<< HEAD
-=======
-	default y
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	---help---
 	  Enable support for Remote Controllers on Linux. This is
 	  needed in order to support several video capture adapters,
@@ -20,7 +16,6 @@ menuconfig RC_CORE
 if RC_CORE
 source "drivers/media/rc/keymaps/Kconfig"
 
-<<<<<<< HEAD
 config LIRC
 	bool "LIRC user interface"
 	depends on RC_CORE
@@ -48,44 +43,10 @@ menuconfig RC_DECODERS
 	depends on RC_CORE
 
 if RC_DECODERS
-=======
-menuconfig RC_DECODERS
-        bool "Remote controller decoders"
-	depends on RC_CORE
-	default y
-
-if RC_DECODERS
-config LIRC
-	tristate "LIRC interface driver"
-	depends on RC_CORE
-
-	---help---
-	   Enable this option to build the Linux Infrared Remote
-	   Control (LIRC) core device interface driver. The LIRC
-	   interface passes raw IR to and from userspace, where the
-	   LIRC daemon handles protocol decoding for IR reception and
-	   encoding for IR transmitting (aka "blasting").
-
-config IR_LIRC_CODEC
-	tristate "Enable IR to LIRC bridge"
-	depends on RC_CORE
-	depends on LIRC
-	default y
-
-	---help---
-	   Enable this option to pass raw IR to and from userspace via
-	   the LIRC interface.
-
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config IR_NEC_DECODER
 	tristate "Enable IR raw decoder for the NEC protocol"
 	depends on RC_CORE
 	select BITREVERSE
-<<<<<<< HEAD
-=======
-	default y
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	---help---
 	   Enable this option if you have IR with NEC protocol, and
@@ -95,10 +56,6 @@ config IR_RC5_DECODER
 	tristate "Enable IR raw decoder for the RC-5 protocol"
 	depends on RC_CORE
 	select BITREVERSE
-<<<<<<< HEAD
-=======
-	default y
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	---help---
 	   Enable this option if you have IR with RC-5 protocol, and
@@ -108,10 +65,6 @@ config IR_RC6_DECODER
 	tristate "Enable IR raw decoder for the RC6 protocol"
 	depends on RC_CORE
 	select BITREVERSE
-<<<<<<< HEAD
-=======
-	default y
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	---help---
 	   Enable this option if you have an infrared remote control which
@@ -121,10 +74,6 @@ config IR_JVC_DECODER
 	tristate "Enable IR raw decoder for the JVC protocol"
 	depends on RC_CORE
 	select BITREVERSE
-<<<<<<< HEAD
-=======
-	default y
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	---help---
 	   Enable this option if you have an infrared remote control which
@@ -134,10 +83,6 @@ config IR_SONY_DECODER
 	tristate "Enable IR raw decoder for the Sony protocol"
 	depends on RC_CORE
 	select BITREVERSE
-<<<<<<< HEAD
-=======
-	default y
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	---help---
 	   Enable this option if you have an infrared remote control which
@@ -146,10 +91,6 @@ config IR_SONY_DECODER
 config IR_SANYO_DECODER
 	tristate "Enable IR raw decoder for the Sanyo protocol"
 	depends on RC_CORE
-<<<<<<< HEAD
-=======
-	default y
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	---help---
 	   Enable this option if you have an infrared remote control which
@@ -159,10 +100,6 @@ config IR_SANYO_DECODER
 config IR_SHARP_DECODER
 	tristate "Enable IR raw decoder for the Sharp protocol"
 	depends on RC_CORE
-<<<<<<< HEAD
-=======
-	default y
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	---help---
 	   Enable this option if you have an infrared remote control which
@@ -173,10 +110,6 @@ config IR_MCE_KBD_DECODER
 	tristate "Enable IR raw decoder for the MCE keyboard/mouse protocol"
 	depends on RC_CORE
 	select BITREVERSE
-<<<<<<< HEAD
-=======
-	default y
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	---help---
 	   Enable this option if you have a Microsoft Remote Keyboard for
@@ -187,15 +120,10 @@ config IR_XMP_DECODER
 	tristate "Enable IR raw decoder for the XMP protocol"
 	depends on RC_CORE
 	select BITREVERSE
-<<<<<<< HEAD
-=======
-	default y
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	---help---
 	   Enable this option if you have IR with XMP protocol, and
 	   if the IR is decoded in software
-<<<<<<< HEAD
 
 config IR_IMON_DECODER
 	tristate "Enable IR raw decoder for the iMON protocol"
@@ -205,8 +133,6 @@ config IR_IMON_DECODER
 	   remote control and you would like to use it with a raw IR
 	   receiver, or if you wish to use an encoder to transmit this IR.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 endif #RC_DECODERS
 
 menuconfig RC_DEVICES
@@ -236,11 +162,7 @@ config RC_ATI_REMOTE
 
 config IR_ENE
 	tristate "ENE eHome Receiver/Transceiver (pnp id: ENE0100/ENE02xxx)"
-<<<<<<< HEAD
 	depends on PNP || COMPILE_TEST
-=======
-	depends on PNP
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on RC_CORE
 	---help---
 	   Say Y here to enable support for integrated infrared receiver
@@ -255,10 +177,7 @@ config IR_ENE
 config IR_HIX5HD2
 	tristate "Hisilicon hix5hd2 IR remote control"
 	depends on RC_CORE
-<<<<<<< HEAD
 	depends on OF || COMPILE_TEST
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	   Say Y here if you want to use hisilicon hix5hd2 remote control.
 	   To compile this driver as a module, choose M here: the module will be
@@ -278,7 +197,6 @@ config IR_IMON
 	   To compile this driver as a module, choose M here: the
 	   module will be called imon.
 
-<<<<<<< HEAD
 config IR_IMON_RAW
 	tristate "SoundGraph iMON Receiver (early raw IR models)"
 	depends on USB_ARCH_HAS_HCD
@@ -291,8 +209,6 @@ config IR_IMON_RAW
 	   To compile this driver as a module, choose M here: the
 	   module will be called imon_raw.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config IR_MCEUSB
 	tristate "Windows Media Center Ed. eHome Infrared Transceiver"
 	depends on USB_ARCH_HAS_HCD
@@ -307,11 +223,7 @@ config IR_MCEUSB
 
 config IR_ITE_CIR
 	tristate "ITE Tech Inc. IT8712/IT8512 Consumer Infrared Transceiver"
-<<<<<<< HEAD
 	depends on PNP || COMPILE_TEST
-=======
-	depends on PNP
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on RC_CORE
 	---help---
 	   Say Y here to enable support for integrated infrared receivers
@@ -324,11 +236,7 @@ config IR_ITE_CIR
 
 config IR_FINTEK
 	tristate "Fintek Consumer Infrared Transceiver"
-<<<<<<< HEAD
 	depends on PNP || COMPILE_TEST
-=======
-	depends on PNP
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on RC_CORE
 	---help---
 	   Say Y here to enable support for integrated infrared receiver
@@ -362,11 +270,7 @@ config IR_MTK
 
 config IR_NUVOTON
 	tristate "Nuvoton w836x7hg Consumer Infrared Transceiver"
-<<<<<<< HEAD
 	depends on PNP || COMPILE_TEST
-=======
-	depends on PNP
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on RC_CORE
 	---help---
 	   Say Y here to enable support for integrated infrared receiver
@@ -393,10 +297,7 @@ config IR_REDRAT3
 config IR_SPI
 	tristate "SPI connected IR LED"
 	depends on SPI && LIRC
-<<<<<<< HEAD
 	depends on OF || COMPILE_TEST
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	---help---
 	  Say Y if you want to use an IR LED connected through SPI bus.
 
@@ -417,11 +318,7 @@ config IR_STREAMZAP
 
 config IR_WINBOND_CIR
 	tristate "Winbond IR remote control"
-<<<<<<< HEAD
 	depends on (X86 && PNP) || COMPILE_TEST
-=======
-	depends on X86 && PNP
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on RC_CORE
 	select NEW_LEDS
 	select LEDS_CLASS
@@ -508,10 +405,7 @@ config RC_LOOPBACK
 config IR_GPIO_CIR
 	tristate "GPIO IR remote control"
 	depends on RC_CORE
-<<<<<<< HEAD
 	depends on (OF && GPIOLIB) || COMPILE_TEST
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	---help---
 	   Say Y if you want to use GPIO based IR Receiver.
 
@@ -522,10 +416,7 @@ config IR_GPIO_TX
 	tristate "GPIO IR Bit Banging Transmitter"
 	depends on RC_CORE
 	depends on LIRC
-<<<<<<< HEAD
 	depends on (OF && GPIOLIB) || COMPILE_TEST
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	---help---
 	   Say Y if you want to a GPIO based IR transmitter. This is a
 	   bit banging driver.
@@ -538,10 +429,7 @@ config IR_PWM_TX
 	depends on RC_CORE
 	depends on LIRC
 	depends on PWM
-<<<<<<< HEAD
 	depends on OF || COMPILE_TEST
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	---help---
 	   Say Y if you want to use a PWM based IR transmitter. This is
 	   more power efficient than the bit banging gpio driver.
@@ -582,30 +470,19 @@ config IR_SERIAL
 
 config IR_SERIAL_TRANSMITTER
 	bool "Serial Port Transmitter"
-<<<<<<< HEAD
-=======
-	default y
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on IR_SERIAL
 	---help---
 	   Serial Port Transmitter support
 
 config IR_SIR
-<<<<<<< HEAD
 	tristate "Built-in SIR IrDA port"
 	depends on RC_CORE
 	---help---
-=======
-        tristate "Built-in SIR IrDA port"
-        depends on RC_CORE
-        ---help---
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	   Say Y if you want to use a IrDA SIR port Transceivers.
 
 	   To compile this driver as a module, choose M here: the module will
 	   be called sir-ir.
 
-<<<<<<< HEAD
 config IR_TANGO
 	tristate "Sigma Designs SMP86xx IR decoder"
 	depends on RC_CORE
@@ -616,8 +493,6 @@ config IR_TANGO
 	   The HW decoder supports NEC, RC-5, RC-6 IR protocols.
 	   When compiled as a module, look for tango-ir.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config IR_ZX
 	tristate "ZTE ZX IR remote control"
 	depends on RC_CORE
@@ -631,18 +506,4 @@ config IR_ZX
 
 endif #RC_DEVICES
 
-<<<<<<< HEAD
-=======
-config IR_MSM_GENI
-	tristate "MSM GENI IR Controller"
-	depends on RC_CORE
-	default m
-	---help---
-	   Say Y here to enable support for integrated infrared module
-	   for MSM family processors.
-
-	   To compile this driver as a module, choose M here: the
-	   module will be called msm-geni-ir.
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 endif #RC_CORE

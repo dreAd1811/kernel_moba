@@ -362,11 +362,6 @@ static void mmp_tdma_free_descriptor(struct mmp_tdma_chan *tdmac)
 		gen_pool_free(gpool, (unsigned long)tdmac->desc_arr,
 				size);
 	tdmac->desc_arr = NULL;
-<<<<<<< HEAD
-=======
-	if (tdmac->status == DMA_ERROR)
-		tdmac->status = DMA_COMPLETE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return;
 }

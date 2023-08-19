@@ -309,11 +309,7 @@ static struct dma_async_tx_descriptor *moxart_prep_slave_sg(
 		return NULL;
 	}
 
-<<<<<<< HEAD
 	d = kzalloc(struct_size(d, sg, sg_len), GFP_ATOMIC);
-=======
-	d = kzalloc(sizeof(*d) + sg_len * sizeof(d->sg[0]), GFP_ATOMIC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!d)
 		return NULL;
 

@@ -23,10 +23,7 @@
 #include <linux/reset.h>
 #include <linux/tcp.h>
 #include <linux/interrupt.h>
-<<<<<<< HEAD
 #include <linux/pinctrl/devinfo.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "mtk_eth_soc.h"
 
@@ -608,17 +605,10 @@ static int mtk_init_fq_dma(struct mtk_eth *eth)
 	dma_addr_t dma_addr;
 	int i;
 
-<<<<<<< HEAD
 	eth->scratch_ring = dma_zalloc_coherent(eth->dev,
 						cnt * sizeof(struct mtk_tx_dma),
 						&eth->phy_scratch_ring,
 						GFP_ATOMIC);
-=======
-	eth->scratch_ring = dma_alloc_coherent(eth->dev,
-					       cnt * sizeof(struct mtk_tx_dma),
-					       &eth->phy_scratch_ring,
-					       GFP_ATOMIC | __GFP_ZERO);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(!eth->scratch_ring))
 		return -ENOMEM;
 
@@ -633,10 +623,6 @@ static int mtk_init_fq_dma(struct mtk_eth *eth)
 	if (unlikely(dma_mapping_error(eth->dev, dma_addr)))
 		return -ENOMEM;
 
-<<<<<<< HEAD
-=======
-	memset(eth->scratch_ring, 0x0, sizeof(struct mtk_tx_dma) * cnt);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	phy_ring_tail = eth->phy_scratch_ring +
 			(sizeof(struct mtk_tx_dma) * (cnt - 1));
 
@@ -1234,22 +1220,11 @@ static int mtk_tx_alloc(struct mtk_eth *eth)
 	if (!ring->buf)
 		goto no_tx_mem;
 
-<<<<<<< HEAD
 	ring->dma = dma_zalloc_coherent(eth->dev, MTK_DMA_SIZE * sz,
 					&ring->phys, GFP_ATOMIC);
 	if (!ring->dma)
 		goto no_tx_mem;
 
-=======
-	ring->dma = dma_alloc_coherent(eth->dev,
-					  MTK_DMA_SIZE * sz,
-					  &ring->phys,
-					  GFP_ATOMIC | __GFP_ZERO);
-	if (!ring->dma)
-		goto no_tx_mem;
-
-	memset(ring->dma, 0, MTK_DMA_SIZE * sz);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < MTK_DMA_SIZE; i++) {
 		int next = (i + 1) % MTK_DMA_SIZE;
 		u32 next_ptr = ring->phys + next * sz;
@@ -1342,16 +1317,9 @@ static int mtk_rx_alloc(struct mtk_eth *eth, int ring_no, int rx_flag)
 			return -ENOMEM;
 	}
 
-<<<<<<< HEAD
 	ring->dma = dma_zalloc_coherent(eth->dev,
 					rx_dma_size * sizeof(*ring->dma),
 					&ring->phys, GFP_ATOMIC);
-=======
-	ring->dma = dma_alloc_coherent(eth->dev,
-				       rx_dma_size * sizeof(*ring->dma),
-				       &ring->phys,
-				       GFP_ATOMIC | __GFP_ZERO);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ring->dma)
 		return -ENOMEM;
 
@@ -1846,11 +1814,7 @@ static int mtk_open(struct net_device *dev)
 	struct mtk_eth *eth = mac->hw;
 
 	/* we run 2 netdevs on the same dma ring so we only bring it up once */
-<<<<<<< HEAD
 	if (!refcount_read(&eth->dma_refcnt)) {
-=======
-	if (!atomic_read(&eth->dma_refcnt)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		int err = mtk_start_dma(eth);
 
 		if (err)
@@ -1860,15 +1824,10 @@ static int mtk_open(struct net_device *dev)
 		napi_enable(&eth->rx_napi);
 		mtk_tx_irq_enable(eth, MTK_TX_DONE_INT);
 		mtk_rx_irq_enable(eth, MTK_RX_DONE_INT);
-<<<<<<< HEAD
 		refcount_set(&eth->dma_refcnt, 1);
 	}
 	else
 		refcount_inc(&eth->dma_refcnt);
-=======
-	}
-	atomic_inc(&eth->dma_refcnt);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	phy_start(dev->phydev);
 	netif_start_queue(dev);
@@ -1908,11 +1867,7 @@ static int mtk_stop(struct net_device *dev)
 	phy_stop(dev->phydev);
 
 	/* only shutdown DMA if this is the last user */
-<<<<<<< HEAD
 	if (!refcount_dec_and_test(&eth->dma_refcnt))
-=======
-	if (!atomic_dec_and_test(&eth->dma_refcnt))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	mtk_tx_irq_disable(eth, MTK_TX_DONE_INT);
@@ -1994,7 +1949,6 @@ static int mtk_hw_init(struct mtk_eth *eth)
 	}
 	regmap_write(eth->ethsys, ETHSYS_SYSCFG0, val);
 
-<<<<<<< HEAD
 	if (eth->pctl) {
 		/* Set GE2 driving and slew rate */
 		regmap_write(eth->pctl, GPIO_DRV_SEL10, 0xa00);
@@ -2005,16 +1959,6 @@ static int mtk_hw_init(struct mtk_eth *eth)
 		/* set GE2 TUNE */
 		regmap_write(eth->pctl, GPIO_BIAS_CTRL, 0x0);
 	}
-=======
-	/* Set GE2 driving and slew rate */
-	regmap_write(eth->pctl, GPIO_DRV_SEL10, 0xa00);
-
-	/* set GE2 TDSEL */
-	regmap_write(eth->pctl, GPIO_OD33_CTRL8, 0x5);
-
-	/* set GE2 TUNE */
-	regmap_write(eth->pctl, GPIO_BIAS_CTRL, 0x0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Set linkdown as the default for each GMAC. Its own MCR would be set
 	 * up with the more appropriate value when mtk_phy_link_adjust call is
@@ -2515,53 +2459,10 @@ free_netdev:
 	return err;
 }
 
-<<<<<<< HEAD
-=======
-static int mtk_get_chip_id(struct mtk_eth *eth, u32 *chip_id)
-{
-	u32 val[2], id[4];
-
-	regmap_read(eth->ethsys, ETHSYS_CHIPID0_3, &val[0]);
-	regmap_read(eth->ethsys, ETHSYS_CHIPID4_7, &val[1]);
-
-	id[3] = ((val[0] >> 16) & 0xff) - '0';
-	id[2] = ((val[0] >> 24) & 0xff) - '0';
-	id[1] = (val[1] & 0xff) - '0';
-	id[0] = ((val[1] >> 8) & 0xff) - '0';
-
-	*chip_id = (id[3] * 1000) + (id[2] * 100) +
-		   (id[1] * 10) + id[0];
-
-	if (!(*chip_id)) {
-		dev_err(eth->dev, "failed to get chip id\n");
-		return -ENODEV;
-	}
-
-	dev_info(eth->dev, "chip id = %d\n", *chip_id);
-
-	return 0;
-}
-
-static bool mtk_is_hwlro_supported(struct mtk_eth *eth)
-{
-	switch (eth->chip_id) {
-	case MT7622_ETH:
-	case MT7623_ETH:
-		return true;
-	}
-
-	return false;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mtk_probe(struct platform_device *pdev)
 {
 	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 	struct device_node *mac_np;
-<<<<<<< HEAD
-=======
-	const struct of_device_id *match;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mtk_eth *eth;
 	int err;
 	int i;
@@ -2570,12 +2471,7 @@ static int mtk_probe(struct platform_device *pdev)
 	if (!eth)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	eth->soc = of_device_get_match_data(&pdev->dev);
-=======
-	match = of_match_device(of_mtk_match, &pdev->dev);
-	eth->soc = (struct mtk_soc_data *)match->data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	eth->dev = &pdev->dev;
 	eth->base = devm_ioremap_resource(&pdev->dev, res);
@@ -2603,7 +2499,6 @@ static int mtk_probe(struct platform_device *pdev)
 		}
 	}
 
-<<<<<<< HEAD
 	if (eth->soc->required_pctl) {
 		eth->pctl = syscon_regmap_lookup_by_phandle(pdev->dev.of_node,
 							    "mediatek,pctl");
@@ -2611,13 +2506,6 @@ static int mtk_probe(struct platform_device *pdev)
 			dev_err(&pdev->dev, "no pctl regmap found\n");
 			return PTR_ERR(eth->pctl);
 		}
-=======
-	eth->pctl = syscon_regmap_lookup_by_phandle(pdev->dev.of_node,
-						    "mediatek,pctl");
-	if (IS_ERR(eth->pctl)) {
-		dev_err(&pdev->dev, "no pctl regmap found\n");
-		return PTR_ERR(eth->pctl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	for (i = 0; i < 3; i++) {
@@ -2649,15 +2537,7 @@ static int mtk_probe(struct platform_device *pdev)
 	if (err)
 		return err;
 
-<<<<<<< HEAD
 	eth->hwlro = MTK_HAS_CAPS(eth->soc->caps, MTK_HWLRO);
-=======
-	err = mtk_get_chip_id(eth, &eth->chip_id);
-	if (err)
-		return err;
-
-	eth->hwlro = mtk_is_hwlro_supported(eth);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for_each_child_of_node(pdev->dev.of_node, mac_np) {
 		if (!of_device_is_compatible(mac_np,
@@ -2746,7 +2626,6 @@ static int mtk_remove(struct platform_device *pdev)
 }
 
 static const struct mtk_soc_data mt2701_data = {
-<<<<<<< HEAD
 	.caps = MTK_GMAC1_TRGMII | MTK_HWLRO,
 	.required_clks = MT7623_CLKS_BITMAP,
 	.required_pctl = true,
@@ -2762,20 +2641,6 @@ static const struct mtk_soc_data mt7623_data = {
 	.caps = MTK_GMAC1_TRGMII | MTK_HWLRO,
 	.required_clks = MT7623_CLKS_BITMAP,
 	.required_pctl = true,
-=======
-	.caps = MTK_GMAC1_TRGMII,
-	.required_clks = MT7623_CLKS_BITMAP
-};
-
-static const struct mtk_soc_data mt7622_data = {
-	.caps = MTK_DUAL_GMAC_SHARED_SGMII | MTK_GMAC1_ESW,
-	.required_clks = MT7622_CLKS_BITMAP
-};
-
-static const struct mtk_soc_data mt7623_data = {
-	.caps = MTK_GMAC1_TRGMII,
-	.required_clks = MT7623_CLKS_BITMAP
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 const struct of_device_id of_mtk_match[] = {

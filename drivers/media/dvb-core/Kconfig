@@ -40,7 +40,6 @@ config DVB_DEMUX_SECTION_LOSS_LOG
 	  be very verbose.
 
 	  If you are unsure about this, say N here.
-<<<<<<< HEAD
 
 config DVB_ULE_DEBUG
 	bool "Enable DVB net ULE packet debug messages"
@@ -54,5 +53,3 @@ config DVB_ULE_DEBUG
 	  be very verbose.
 
 	  If you are unsure about this, say N here.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -53,12 +53,8 @@ static int c4iw_init_qid_table(struct c4iw_rdev *rdev)
 }
 
 /* nr_* must be power of 2 */
-<<<<<<< HEAD
 int c4iw_init_resource(struct c4iw_rdev *rdev, u32 nr_tpt,
 		       u32 nr_pdid, u32 nr_srqt)
-=======
-int c4iw_init_resource(struct c4iw_rdev *rdev, u32 nr_tpt, u32 nr_pdid)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int err = 0;
 	err = c4iw_id_table_alloc(&rdev->resource.tpt_table, 0, nr_tpt, 1,
@@ -72,7 +68,6 @@ int c4iw_init_resource(struct c4iw_rdev *rdev, u32 nr_tpt, u32 nr_pdid)
 					nr_pdid, 1, 0);
 	if (err)
 		goto pdid_err;
-<<<<<<< HEAD
 	if (!nr_srqt)
 		err = c4iw_id_table_alloc(&rdev->resource.srq_table, 0,
 					  1, 1, 0);
@@ -84,9 +79,6 @@ int c4iw_init_resource(struct c4iw_rdev *rdev, u32 nr_tpt, u32 nr_pdid)
 	return 0;
  srq_err:
 	c4iw_id_table_free(&rdev->resource.pdid_table);
-=======
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  pdid_err:
 	c4iw_id_table_free(&rdev->resource.qid_table);
  qid_err:
@@ -109,11 +101,7 @@ u32 c4iw_get_resource(struct c4iw_id_table *id_table)
 
 void c4iw_put_resource(struct c4iw_id_table *id_table, u32 entry)
 {
-<<<<<<< HEAD
 	pr_debug("entry 0x%x\n", entry);
-=======
-	pr_debug("%s entry 0x%x\n", __func__, entry);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	c4iw_id_free(id_table, entry);
 }
 
@@ -164,11 +152,7 @@ u32 c4iw_get_cqid(struct c4iw_rdev *rdev, struct c4iw_dev_ucontext *uctx)
 	}
 out:
 	mutex_unlock(&uctx->lock);
-<<<<<<< HEAD
 	pr_debug("qid 0x%x\n", qid);
-=======
-	pr_debug("%s qid 0x%x\n", __func__, qid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&rdev->stats.lock);
 	if (rdev->stats.qid.cur > rdev->stats.qid.max)
 		rdev->stats.qid.max = rdev->stats.qid.cur;
@@ -184,11 +168,7 @@ void c4iw_put_cqid(struct c4iw_rdev *rdev, u32 qid,
 	entry = kmalloc(sizeof *entry, GFP_KERNEL);
 	if (!entry)
 		return;
-<<<<<<< HEAD
 	pr_debug("qid 0x%x\n", qid);
-=======
-	pr_debug("%s qid 0x%x\n", __func__, qid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	entry->qid = qid;
 	mutex_lock(&uctx->lock);
 	list_add_tail(&entry->entry, &uctx->cqids);
@@ -246,11 +226,7 @@ u32 c4iw_get_qpid(struct c4iw_rdev *rdev, struct c4iw_dev_ucontext *uctx)
 	}
 out:
 	mutex_unlock(&uctx->lock);
-<<<<<<< HEAD
 	pr_debug("qid 0x%x\n", qid);
-=======
-	pr_debug("%s qid 0x%x\n", __func__, qid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&rdev->stats.lock);
 	if (rdev->stats.qid.cur > rdev->stats.qid.max)
 		rdev->stats.qid.max = rdev->stats.qid.cur;
@@ -266,11 +242,7 @@ void c4iw_put_qpid(struct c4iw_rdev *rdev, u32 qid,
 	entry = kmalloc(sizeof *entry, GFP_KERNEL);
 	if (!entry)
 		return;
-<<<<<<< HEAD
 	pr_debug("qid 0x%x\n", qid);
-=======
-	pr_debug("%s qid 0x%x\n", __func__, qid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	entry->qid = qid;
 	mutex_lock(&uctx->lock);
 	list_add_tail(&entry->entry, &uctx->qpids);
@@ -293,11 +265,7 @@ void c4iw_destroy_resource(struct c4iw_resource *rscp)
 u32 c4iw_pblpool_alloc(struct c4iw_rdev *rdev, int size)
 {
 	unsigned long addr = gen_pool_alloc(rdev->pbl_pool, size);
-<<<<<<< HEAD
 	pr_debug("addr 0x%x size %d\n", (u32)addr, size);
-=======
-	pr_debug("%s addr 0x%x size %d\n", __func__, (u32)addr, size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&rdev->stats.lock);
 	if (addr) {
 		rdev->stats.pbl.cur += roundup(size, 1 << MIN_PBL_SHIFT);
@@ -321,11 +289,7 @@ static void destroy_pblpool(struct kref *kref)
 
 void c4iw_pblpool_free(struct c4iw_rdev *rdev, u32 addr, int size)
 {
-<<<<<<< HEAD
 	pr_debug("addr 0x%x size %d\n", addr, size);
-=======
-	pr_debug("%s addr 0x%x size %d\n", __func__, addr, size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&rdev->stats.lock);
 	rdev->stats.pbl.cur -= roundup(size, 1 << MIN_PBL_SHIFT);
 	mutex_unlock(&rdev->stats.lock);
@@ -348,13 +312,8 @@ int c4iw_pblpool_create(struct c4iw_rdev *rdev)
 	while (pbl_start < pbl_top) {
 		pbl_chunk = min(pbl_top - pbl_start + 1, pbl_chunk);
 		if (gen_pool_add(rdev->pbl_pool, pbl_start, pbl_chunk, -1)) {
-<<<<<<< HEAD
 			pr_debug("failed to add PBL chunk (%x/%x)\n",
 				 pbl_start, pbl_chunk);
-=======
-			pr_debug("%s failed to add PBL chunk (%x/%x)\n",
-				 __func__, pbl_start, pbl_chunk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (pbl_chunk <= 1024 << MIN_PBL_SHIFT) {
 				pr_warn("Failed to add all PBL chunks (%x/%x)\n",
 					pbl_start, pbl_top - pbl_start);
@@ -362,13 +321,8 @@ int c4iw_pblpool_create(struct c4iw_rdev *rdev)
 			}
 			pbl_chunk >>= 1;
 		} else {
-<<<<<<< HEAD
 			pr_debug("added PBL chunk (%x/%x)\n",
 				 pbl_start, pbl_chunk);
-=======
-			pr_debug("%s added PBL chunk (%x/%x)\n",
-				 __func__, pbl_start, pbl_chunk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pbl_start += pbl_chunk;
 		}
 	}
@@ -390,11 +344,7 @@ void c4iw_pblpool_destroy(struct c4iw_rdev *rdev)
 u32 c4iw_rqtpool_alloc(struct c4iw_rdev *rdev, int size)
 {
 	unsigned long addr = gen_pool_alloc(rdev->rqt_pool, size << 6);
-<<<<<<< HEAD
 	pr_debug("addr 0x%x size %d\n", (u32)addr, size << 6);
-=======
-	pr_debug("%s addr 0x%x size %d\n", __func__, (u32)addr, size << 6);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!addr)
 		pr_warn_ratelimited("%s: Out of RQT memory\n",
 				    pci_name(rdev->lldi.pdev));
@@ -421,11 +371,7 @@ static void destroy_rqtpool(struct kref *kref)
 
 void c4iw_rqtpool_free(struct c4iw_rdev *rdev, u32 addr, int size)
 {
-<<<<<<< HEAD
 	pr_debug("addr 0x%x size %d\n", addr, size << 6);
-=======
-	pr_debug("%s addr 0x%x size %d\n", __func__, addr, size << 6);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&rdev->stats.lock);
 	rdev->stats.rqt.cur -= roundup(size << 6, 1 << MIN_RQT_SHIFT);
 	mutex_unlock(&rdev->stats.lock);
@@ -436,16 +382,12 @@ void c4iw_rqtpool_free(struct c4iw_rdev *rdev, u32 addr, int size)
 int c4iw_rqtpool_create(struct c4iw_rdev *rdev)
 {
 	unsigned rqt_start, rqt_chunk, rqt_top;
-<<<<<<< HEAD
 	int skip = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rdev->rqt_pool = gen_pool_create(MIN_RQT_SHIFT, -1);
 	if (!rdev->rqt_pool)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	/*
 	 * If SRQs are supported, then never use the first RQE from
 	 * the RQT region. This is because HW uses RQT index 0 as NULL.
@@ -455,22 +397,13 @@ int c4iw_rqtpool_create(struct c4iw_rdev *rdev)
 
 	rqt_start = rdev->lldi.vr->rq.start + skip;
 	rqt_chunk = rdev->lldi.vr->rq.size - skip;
-=======
-	rqt_start = rdev->lldi.vr->rq.start;
-	rqt_chunk = rdev->lldi.vr->rq.size;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rqt_top = rqt_start + rqt_chunk;
 
 	while (rqt_start < rqt_top) {
 		rqt_chunk = min(rqt_top - rqt_start + 1, rqt_chunk);
 		if (gen_pool_add(rdev->rqt_pool, rqt_start, rqt_chunk, -1)) {
-<<<<<<< HEAD
 			pr_debug("failed to add RQT chunk (%x/%x)\n",
 				 rqt_start, rqt_chunk);
-=======
-			pr_debug("%s failed to add RQT chunk (%x/%x)\n",
-				 __func__, rqt_start, rqt_chunk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (rqt_chunk <= 1024 << MIN_RQT_SHIFT) {
 				pr_warn("Failed to add all RQT chunks (%x/%x)\n",
 					rqt_start, rqt_top - rqt_start);
@@ -478,13 +411,8 @@ int c4iw_rqtpool_create(struct c4iw_rdev *rdev)
 			}
 			rqt_chunk >>= 1;
 		} else {
-<<<<<<< HEAD
 			pr_debug("added RQT chunk (%x/%x)\n",
 				 rqt_start, rqt_chunk);
-=======
-			pr_debug("%s added RQT chunk (%x/%x)\n",
-				 __func__, rqt_start, rqt_chunk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rqt_start += rqt_chunk;
 		}
 	}
@@ -496,7 +424,6 @@ void c4iw_rqtpool_destroy(struct c4iw_rdev *rdev)
 	kref_put(&rdev->rqt_kref, destroy_rqtpool);
 }
 
-<<<<<<< HEAD
 int c4iw_alloc_srq_idx(struct c4iw_rdev *rdev)
 {
 	int idx;
@@ -523,8 +450,6 @@ void c4iw_free_srq_idx(struct c4iw_rdev *rdev, int idx)
 	mutex_unlock(&rdev->stats.lock);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * On-Chip QP Memory.
  */
@@ -533,11 +458,7 @@ void c4iw_free_srq_idx(struct c4iw_rdev *rdev, int idx)
 u32 c4iw_ocqp_pool_alloc(struct c4iw_rdev *rdev, int size)
 {
 	unsigned long addr = gen_pool_alloc(rdev->ocqp_pool, size);
-<<<<<<< HEAD
 	pr_debug("addr 0x%x size %d\n", (u32)addr, size);
-=======
-	pr_debug("%s addr 0x%x size %d\n", __func__, (u32)addr, size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (addr) {
 		mutex_lock(&rdev->stats.lock);
 		rdev->stats.ocqp.cur += roundup(size, 1 << MIN_OCQP_SHIFT);
@@ -550,11 +471,7 @@ u32 c4iw_ocqp_pool_alloc(struct c4iw_rdev *rdev, int size)
 
 void c4iw_ocqp_pool_free(struct c4iw_rdev *rdev, u32 addr, int size)
 {
-<<<<<<< HEAD
 	pr_debug("addr 0x%x size %d\n", addr, size);
-=======
-	pr_debug("%s addr 0x%x size %d\n", __func__, addr, size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&rdev->stats.lock);
 	rdev->stats.ocqp.cur -= roundup(size, 1 << MIN_OCQP_SHIFT);
 	mutex_unlock(&rdev->stats.lock);
@@ -576,13 +493,8 @@ int c4iw_ocqp_pool_create(struct c4iw_rdev *rdev)
 	while (start < top) {
 		chunk = min(top - start + 1, chunk);
 		if (gen_pool_add(rdev->ocqp_pool, start, chunk, -1)) {
-<<<<<<< HEAD
 			pr_debug("failed to add OCQP chunk (%x/%x)\n",
 				 start, chunk);
-=======
-			pr_debug("%s failed to add OCQP chunk (%x/%x)\n",
-				 __func__, start, chunk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (chunk <= 1024 << MIN_OCQP_SHIFT) {
 				pr_warn("Failed to add all OCQP chunks (%x/%x)\n",
 					start, top - start);
@@ -590,13 +502,8 @@ int c4iw_ocqp_pool_create(struct c4iw_rdev *rdev)
 			}
 			chunk >>= 1;
 		} else {
-<<<<<<< HEAD
 			pr_debug("added OCQP chunk (%x/%x)\n",
 				 start, chunk);
-=======
-			pr_debug("%s added OCQP chunk (%x/%x)\n",
-				 __func__, start, chunk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			start += chunk;
 		}
 	}

@@ -17,7 +17,6 @@
 #include <net/rtnetlink.h>
 #include <net/dst.h>
 #include <net/xfrm.h>
-<<<<<<< HEAD
 #include <net/xdp.h>
 #include <linux/veth.h>
 #include <linux/module.h>
@@ -25,15 +24,10 @@
 #include <linux/filter.h>
 #include <linux/ptr_ring.h>
 #include <linux/bpf_trace.h>
-=======
-#include <linux/veth.h>
-#include <linux/module.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DRV_NAME	"veth"
 #define DRV_VERSION	"1.0"
 
-<<<<<<< HEAD
 #define VETH_XDP_FLAG		BIT(0)
 #define VETH_RING_SIZE		256
 #define VETH_XDP_HEADROOM	(XDP_PACKET_HEADROOM + NET_IP_ALIGN)
@@ -42,15 +36,12 @@
 #define VETH_XDP_TX		BIT(0)
 #define VETH_XDP_REDIR		BIT(1)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct pcpu_vstats {
 	u64			packets;
 	u64			bytes;
 	struct u64_stats_sync	syncp;
 };
 
-<<<<<<< HEAD
 struct veth_rq {
 	struct napi_struct	xdp_napi;
 	struct net_device	*dev;
@@ -67,12 +58,6 @@ struct veth_priv {
 	struct bpf_prog		*_xdp_prog;
 	struct veth_rq		*rq;
 	unsigned int		requested_headroom;
-=======
-struct veth_priv {
-	struct net_device __rcu	*peer;
-	atomic64_t		dropped;
-	unsigned		requested_headroom;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /*
@@ -138,7 +123,6 @@ static const struct ethtool_ops veth_ethtool_ops = {
 	.get_link_ksettings	= veth_get_link_ksettings,
 };
 
-<<<<<<< HEAD
 /* general routines */
 
 static bool veth_is_xdp_frame(void *ptr)
@@ -200,13 +184,6 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, struct net_device *dev)
 	int length = skb->len;
 	bool rcv_xdp = false;
 	int rxq;
-=======
-static netdev_tx_t veth_xmit(struct sk_buff *skb, struct net_device *dev)
-{
-	struct veth_priv *priv = netdev_priv(dev);
-	struct net_device *rcv;
-	int length = skb->len;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rcu_read_lock();
 	rcv = rcu_dereference(priv->peer);
@@ -215,7 +192,6 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, struct net_device *dev)
 		goto drop;
 	}
 
-<<<<<<< HEAD
 	rcv_priv = netdev_priv(rcv);
 	rxq = skb_get_queue_mapping(skb);
 	if (rxq < rcv->real_num_rx_queues) {
@@ -226,9 +202,6 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, struct net_device *dev)
 	}
 
 	if (likely(veth_forward_skb(rcv, skb, rq, rcv_xdp) == NET_RX_SUCCESS)) {
-=======
-	if (likely(dev_forward_skb(rcv, skb) == NET_RX_SUCCESS)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct pcpu_vstats *stats = this_cpu_ptr(dev->vstats);
 
 		u64_stats_update_begin(&stats->syncp);
@@ -239,7 +212,6 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, struct net_device *dev)
 drop:
 		atomic64_inc(&priv->dropped);
 	}
-<<<<<<< HEAD
 
 	if (rcv_xdp)
 		__veth_xdp_flush(rq);
@@ -249,16 +221,6 @@ drop:
 	return NETDEV_TX_OK;
 }
 
-=======
-	rcu_read_unlock();
-	return NETDEV_TX_OK;
-}
-
-/*
- * general routines
- */
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static u64 veth_stats_one(struct pcpu_vstats *result, struct net_device *dev)
 {
 	struct veth_priv *priv = netdev_priv(dev);
@@ -308,7 +270,6 @@ static void veth_set_multicast_list(struct net_device *dev)
 {
 }
 
-<<<<<<< HEAD
 static struct sk_buff *veth_build_skb(void *head, int headroom, int len,
 				      int buflen)
 {
@@ -785,37 +746,26 @@ static void veth_disable_xdp(struct net_device *dev)
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int veth_open(struct net_device *dev)
 {
 	struct veth_priv *priv = netdev_priv(dev);
 	struct net_device *peer = rtnl_dereference(priv->peer);
-<<<<<<< HEAD
 	int err;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!peer)
 		return -ENOTCONN;
 
-<<<<<<< HEAD
 	if (priv->_xdp_prog) {
 		err = veth_enable_xdp(dev);
 		if (err)
 			return err;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (peer->flags & IFF_UP) {
 		netif_carrier_on(dev);
 		netif_carrier_on(peer);
 	}
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -828,12 +778,9 @@ static int veth_close(struct net_device *dev)
 	if (peer)
 		netif_carrier_off(peer);
 
-<<<<<<< HEAD
 	if (priv->_xdp_prog)
 		veth_disable_xdp(dev);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -842,7 +789,6 @@ static int is_valid_veth_mtu(int mtu)
 	return mtu >= ETH_MIN_MTU && mtu <= ETH_MAX_MTU;
 }
 
-<<<<<<< HEAD
 static int veth_alloc_queues(struct net_device *dev)
 {
 	struct veth_priv *priv = netdev_priv(dev);
@@ -879,22 +825,12 @@ static int veth_dev_init(struct net_device *dev)
 		return err;
 	}
 
-=======
-static int veth_dev_init(struct net_device *dev)
-{
-	dev->vstats = netdev_alloc_pcpu_stats(struct pcpu_vstats);
-	if (!dev->vstats)
-		return -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 static void veth_dev_free(struct net_device *dev)
 {
-<<<<<<< HEAD
 	veth_free_queues(dev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	free_percpu(dev->vstats);
 }
 
@@ -902,11 +838,7 @@ static void veth_dev_free(struct net_device *dev)
 static void veth_poll_controller(struct net_device *dev)
 {
 	/* veth only receives frames when its peer sends one
-<<<<<<< HEAD
 	 * Since it has nothing to do with disabling irqs, we are guaranteed
-=======
-	 * Since it's a synchronous operation, we are guaranteed
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * never to have pending data when we poll for it so
 	 * there is nothing to do here.
 	 *
@@ -931,7 +863,6 @@ static int veth_get_iflink(const struct net_device *dev)
 	return iflink;
 }
 
-<<<<<<< HEAD
 static netdev_features_t veth_fix_features(struct net_device *dev,
 					   netdev_features_t features)
 {
@@ -949,8 +880,6 @@ static netdev_features_t veth_fix_features(struct net_device *dev,
 	return features;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void veth_set_rx_headroom(struct net_device *dev, int new_hr)
 {
 	struct veth_priv *peer_priv, *priv = netdev_priv(dev);
@@ -974,7 +903,6 @@ out:
 	rcu_read_unlock();
 }
 
-<<<<<<< HEAD
 static int veth_xdp_set(struct net_device *dev, struct bpf_prog *prog,
 			struct netlink_ext_ack *extack)
 {
@@ -1072,8 +1000,6 @@ static int veth_xdp(struct net_device *dev, struct netdev_bpf *xdp)
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct net_device_ops veth_netdev_ops = {
 	.ndo_init            = veth_dev_init,
 	.ndo_open            = veth_open,
@@ -1086,16 +1012,11 @@ static const struct net_device_ops veth_netdev_ops = {
 	.ndo_poll_controller	= veth_poll_controller,
 #endif
 	.ndo_get_iflink		= veth_get_iflink,
-<<<<<<< HEAD
 	.ndo_fix_features	= veth_fix_features,
 	.ndo_features_check	= passthru_features_check,
 	.ndo_set_rx_headroom	= veth_set_rx_headroom,
 	.ndo_bpf		= veth_xdp,
 	.ndo_xdp_xmit		= veth_xdp_xmit,
-=======
-	.ndo_features_check	= passthru_features_check,
-	.ndo_set_rx_headroom	= veth_set_rx_headroom,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define VETH_FEATURES (NETIF_F_SG | NETIF_F_FRAGLIST | NETIF_F_HW_CSUM | \
@@ -1261,10 +1182,7 @@ static int veth_newlink(struct net *src_net, struct net_device *dev,
 
 	priv = netdev_priv(peer);
 	rcu_assign_pointer(priv->peer, dev);
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 err_register_dev:

@@ -107,11 +107,7 @@ static struct map_info nettel_amd_map = {
 	.bankwidth = AMD_BUSWIDTH,
 };
 
-<<<<<<< HEAD
 static const struct mtd_partition nettel_amd_partitions[] = {
-=======
-static struct mtd_partition nettel_amd_partitions[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{
 		.name = "SnapGear BIOS config",
 		.offset = 0x000e0000,

@@ -1078,15 +1078,9 @@ static int ath6kl_wmi_tkip_micerr_event_rx(struct wmi *wmi, u8 *datap, int len,
 	return 0;
 }
 
-<<<<<<< HEAD
 void ath6kl_wmi_sscan_timer(struct timer_list *t)
 {
 	struct ath6kl_vif *vif = from_timer(vif, t, sched_scan_timer);
-=======
-void ath6kl_wmi_sscan_timer(unsigned long ptr)
-{
-	struct ath6kl_vif *vif = (struct ath6kl_vif *) ptr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cfg80211_sched_scan_results(vif->ar->wiphy, 0);
 }

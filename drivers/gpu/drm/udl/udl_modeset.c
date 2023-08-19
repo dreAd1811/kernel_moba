@@ -243,11 +243,7 @@ static int udl_crtc_write_mode_to_hw(struct drm_crtc *crtc)
 
 	memcpy(buf, udl->mode_buf, udl->mode_buf_len);
 	retval = udl_submit_urb(dev, urb, udl->mode_buf_len);
-<<<<<<< HEAD
 	DRM_DEBUG("write mode info %d\n", udl->mode_buf_len);
-=======
-	DRM_INFO("write mode info %d\n", udl->mode_buf_len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return retval;
 }
 
@@ -370,10 +366,6 @@ static int udl_crtc_page_flip(struct drm_crtc *crtc,
 {
 	struct udl_framebuffer *ufb = to_udl_fb(fb);
 	struct drm_device *dev = crtc->dev;
-<<<<<<< HEAD
-=======
-	unsigned long flags;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct drm_framebuffer *old_fb = crtc->primary->fb;
 	if (old_fb) {
@@ -384,17 +376,10 @@ static int udl_crtc_page_flip(struct drm_crtc *crtc,
 
 	udl_handle_damage(ufb, 0, 0, fb->width, fb->height);
 
-<<<<<<< HEAD
 	spin_lock_irq(&dev->event_lock);
 	if (event)
 		drm_crtc_send_vblank_event(crtc, event);
 	spin_unlock_irq(&dev->event_lock);
-=======
-	spin_lock_irqsave(&dev->event_lock, flags);
-	if (event)
-		drm_crtc_send_vblank_event(crtc, event);
-	spin_unlock_irqrestore(&dev->event_lock, flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	crtc->primary->fb = fb;
 
 	return 0;

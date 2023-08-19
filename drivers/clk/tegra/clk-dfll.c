@@ -1196,7 +1196,6 @@ static const struct file_operations attr_registers_fops = {
 	.release	= single_release,
 };
 
-<<<<<<< HEAD
 static void dfll_debug_init(struct tegra_dfll *td)
 {
 	struct dentry *root;
@@ -1215,44 +1214,6 @@ static void dfll_debug_init(struct tegra_dfll *td)
 
 #else
 static void inline dfll_debug_init(struct tegra_dfll *td) { }
-=======
-static int dfll_debug_init(struct tegra_dfll *td)
-{
-	int ret;
-
-	if (!td || (td->mode == DFLL_UNINITIALIZED))
-		return 0;
-
-	td->debugfs_dir = debugfs_create_dir("tegra_dfll_fcpu", NULL);
-	if (!td->debugfs_dir)
-		return -ENOMEM;
-
-	ret = -ENOMEM;
-
-	if (!debugfs_create_file("enable", S_IRUGO | S_IWUSR,
-				 td->debugfs_dir, td, &enable_fops))
-		goto err_out;
-
-	if (!debugfs_create_file("lock", S_IRUGO,
-				 td->debugfs_dir, td, &lock_fops))
-		goto err_out;
-
-	if (!debugfs_create_file("rate", S_IRUGO,
-				 td->debugfs_dir, td, &rate_fops))
-		goto err_out;
-
-	if (!debugfs_create_file("registers", S_IRUGO,
-				 td->debugfs_dir, td, &attr_registers_fops))
-		goto err_out;
-
-	return 0;
-
-err_out:
-	debugfs_remove_recursive(td->debugfs_dir);
-	return ret;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_DEBUG_FS */
 
 /*
@@ -1736,13 +1697,7 @@ int tegra_dfll_register(struct platform_device *pdev,
 		return ret;
 	}
 
-<<<<<<< HEAD
 	dfll_debug_init(td);
-=======
-#ifdef CONFIG_DEBUG_FS
-	dfll_debug_init(td);
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -1753,17 +1708,10 @@ EXPORT_SYMBOL(tegra_dfll_register);
  * @pdev: DFLL platform_device *
  *
  * Unbind this driver from the DFLL hardware device represented by
-<<<<<<< HEAD
  * @pdev. The DFLL must be disabled for this to succeed. Returns a
  * soc pointer upon success or -EBUSY if the DFLL is still active.
  */
 struct tegra_dfll_soc_data *tegra_dfll_unregister(struct platform_device *pdev)
-=======
- * @pdev. The DFLL must be disabled for this to succeed. Returns 0
- * upon success or -EBUSY if the DFLL is still active.
- */
-int tegra_dfll_unregister(struct platform_device *pdev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct tegra_dfll *td = platform_get_drvdata(pdev);
 
@@ -1771,11 +1719,7 @@ int tegra_dfll_unregister(struct platform_device *pdev)
 	if (td->mode != DFLL_DISABLED) {
 		dev_err(&pdev->dev,
 			"must disable DFLL before removing driver\n");
-<<<<<<< HEAD
 		return ERR_PTR(-EBUSY);
-=======
-		return -EBUSY;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	debugfs_remove_recursive(td->debugfs_dir);
@@ -1789,10 +1733,6 @@ int tegra_dfll_unregister(struct platform_device *pdev)
 
 	reset_control_assert(td->dvco_rst);
 
-<<<<<<< HEAD
 	return td->soc;
-=======
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(tegra_dfll_unregister);

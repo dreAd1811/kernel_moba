@@ -197,14 +197,8 @@ static int latch_addr_flash_probe(struct platform_device *dev)
 	}
 	info->mtd->dev.parent = &dev->dev;
 
-<<<<<<< HEAD
 	mtd_device_register(info->mtd, latch_addr_data->parts,
 			    latch_addr_data->nr_parts);
-=======
-	mtd_device_parse_register(info->mtd, NULL, NULL,
-				  latch_addr_data->parts,
-				  latch_addr_data->nr_parts);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 iounmap:

@@ -35,7 +35,6 @@
 			bias-pull-down;
 		};
 	};
-<<<<<<< HEAD
 
 	/* 0-3 for sdc1 4-6 for sdc2 */
 	/* Order of pins */
@@ -96,6 +95,4 @@
 	sdc1_rclk_off: rclk-off {
 		bias-pull-down; /* pull down */
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

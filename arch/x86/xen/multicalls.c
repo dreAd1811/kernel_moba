@@ -80,15 +80,9 @@ void xen_mc_flush(void)
 		   and just do the call directly. */
 		mc = &b->entries[0];
 
-<<<<<<< HEAD
 		mc->result = xen_single_call(mc->op, mc->args[0], mc->args[1],
 					     mc->args[2], mc->args[3],
 					     mc->args[4]);
-=======
-		mc->result = privcmd_call(mc->op,
-					  mc->args[0], mc->args[1], mc->args[2], 
-					  mc->args[3], mc->args[4]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = mc->result < 0;
 		break;
 

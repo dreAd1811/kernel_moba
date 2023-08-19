@@ -1,11 +1,7 @@
 /*
  * Accelerated GHASH implementation with ARMv8 PMULL instructions.
  *
-<<<<<<< HEAD
  * Copyright (C) 2014 - 2018 Linaro Ltd. <ard.biesheuvel@linaro.org>
-=======
- * Copyright (C) 2014 - 2017 Linaro Ltd. <ard.biesheuvel@linaro.org>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 as published
@@ -37,18 +33,12 @@ MODULE_ALIAS_CRYPTO("ghash");
 #define GCM_IV_SIZE		12
 
 struct ghash_key {
-<<<<<<< HEAD
 	u64			h[2];
 	u64			h2[2];
 	u64			h3[2];
 	u64			h4[2];
 
 	be128			k;
-=======
-	u64 a;
-	u64 b;
-	be128 k;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct ghash_desc_ctx {
@@ -70,7 +60,6 @@ asmlinkage void pmull_ghash_update_p8(int blocks, u64 dg[], const char *src,
 				      struct ghash_key const *k,
 				      const char *head);
 
-<<<<<<< HEAD
 #ifdef CONFIG_CFI_CLANG
 static inline void __cfi_pmull_ghash_update_p64(int blocks, u64 dg[],
                 const char *src, struct ghash_key const *k, const char *head)
@@ -87,28 +76,18 @@ static inline void __cfi_pmull_ghash_update_p8(int blocks, u64 dg[],
 #define pmull_ghash_update_p8 __cfi_pmull_ghash_update_p8
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void (*pmull_ghash_update)(int blocks, u64 dg[], const char *src,
 				  struct ghash_key const *k,
 				  const char *head);
 
 asmlinkage void pmull_gcm_encrypt(int blocks, u64 dg[], u8 dst[],
 				  const u8 src[], struct ghash_key const *k,
-<<<<<<< HEAD
 				  u8 ctr[], u32 const rk[], int rounds,
 				  u8 ks[]);
 
 asmlinkage void pmull_gcm_decrypt(int blocks, u64 dg[], u8 dst[],
 				  const u8 src[], struct ghash_key const *k,
 				  u8 ctr[], u32 const rk[], int rounds);
-=======
-				  u8 ctr[], int rounds, u8 ks[]);
-
-asmlinkage void pmull_gcm_decrypt(int blocks, u64 dg[], u8 dst[],
-				  const u8 src[], struct ghash_key const *k,
-				  u8 ctr[], int rounds);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 asmlinkage void pmull_gcm_encrypt_block(u8 dst[], u8 const src[],
 					u32 const rk[], int rounds);
@@ -153,12 +132,9 @@ static void ghash_do_update(int blocks, u64 dg[], const char *src,
 	}
 }
 
-<<<<<<< HEAD
 /* avoid hogging the CPU for too long */
 #define MAX_BLOCKS	(SZ_64K / GHASH_BLOCK_SIZE)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ghash_update(struct shash_desc *desc, const u8 *src,
 			unsigned int len)
 {
@@ -182,7 +158,6 @@ static int ghash_update(struct shash_desc *desc, const u8 *src,
 		blocks = len / GHASH_BLOCK_SIZE;
 		len %= GHASH_BLOCK_SIZE;
 
-<<<<<<< HEAD
 		do {
 			int chunk = min(blocks, MAX_BLOCKS);
 
@@ -193,13 +168,6 @@ static int ghash_update(struct shash_desc *desc, const u8 *src,
 			src += chunk * GHASH_BLOCK_SIZE;
 			partial = 0;
 		} while (unlikely(blocks > 0));
-=======
-		ghash_do_update(blocks, ctx->digest, src, key,
-				partial ? ctx->buf : NULL);
-
-		src += blocks * GHASH_BLOCK_SIZE;
-		partial = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	if (len)
 		memcpy(ctx->buf + partial, src, len);
@@ -225,7 +193,6 @@ static int ghash_final(struct shash_desc *desc, u8 *dst)
 	return 0;
 }
 
-<<<<<<< HEAD
 static void ghash_reflect(u64 h[], const be128 *k)
 {
 	u64 carry = be64_to_cpu(k->a) & BIT(63) ? 1 : 0;
@@ -241,17 +208,10 @@ static int __ghash_setkey(struct ghash_key *key,
 			  const u8 *inkey, unsigned int keylen)
 {
 	be128 h;
-=======
-static int __ghash_setkey(struct ghash_key *key,
-			  const u8 *inkey, unsigned int keylen)
-{
-	u64 a, b;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* needed for the fallback */
 	memcpy(&key->k, inkey, GHASH_BLOCK_SIZE);
 
-<<<<<<< HEAD
 	ghash_reflect(key->h, &key->k);
 
 	h = key->k;
@@ -263,17 +223,6 @@ static int __ghash_setkey(struct ghash_key *key,
 
 	gf128mul_lle(&h, &key->k);
 	ghash_reflect(key->h4, &h);
-=======
-	/* perform multiplication by 'x' in GF(2^128) */
-	b = get_unaligned_be64(inkey);
-	a = get_unaligned_be64(inkey + 8);
-
-	key->a = (a << 1) | (b >> 63);
-	key->b = (b << 1) | (a >> 63);
-
-	if (b >> 63)
-		key->b ^= 0xc200000000000000UL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -295,10 +244,6 @@ static struct shash_alg ghash_alg = {
 	.base.cra_name		= "ghash",
 	.base.cra_driver_name	= "ghash-ce",
 	.base.cra_priority	= 200,
-<<<<<<< HEAD
-=======
-	.base.cra_flags		= CRYPTO_ALG_TYPE_SHASH,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.base.cra_blocksize	= GHASH_BLOCK_SIZE,
 	.base.cra_ctxsize	= sizeof(struct ghash_key),
 	.base.cra_module	= THIS_MODULE,
@@ -339,11 +284,7 @@ static int gcm_setkey(struct crypto_aead *tfm, const u8 *inkey,
 	__aes_arm64_encrypt(ctx->aes_key.key_enc, key, (u8[AES_BLOCK_SIZE]){},
 			    num_rounds(&ctx->aes_key));
 
-<<<<<<< HEAD
 	return __ghash_setkey(&ctx->ghash_key, key, sizeof(be128));
-=======
-	return __ghash_setkey(&ctx->ghash_key, key, sizeof(key));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int gcm_setauthsize(struct crypto_aead *tfm, unsigned int authsize)
@@ -447,16 +388,10 @@ static int gcm_encrypt(struct aead_request *req)
 	struct gcm_aes_ctx *ctx = crypto_aead_ctx(aead);
 	struct skcipher_walk walk;
 	u8 iv[AES_BLOCK_SIZE];
-<<<<<<< HEAD
 	u8 ks[2 * AES_BLOCK_SIZE];
 	u8 tag[AES_BLOCK_SIZE];
 	u64 dg[2] = {};
 	int nrounds = num_rounds(&ctx->aes_key);
-=======
-	u8 ks[AES_BLOCK_SIZE];
-	u8 tag[AES_BLOCK_SIZE];
-	u64 dg[2] = {};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	if (req->assoclen)
@@ -465,7 +400,6 @@ static int gcm_encrypt(struct aead_request *req)
 	memcpy(iv, req->iv, GCM_IV_SIZE);
 	put_unaligned_be32(1, iv + GCM_IV_SIZE);
 
-<<<<<<< HEAD
 	err = skcipher_walk_aead_encrypt(&walk, req, false);
 
 	if (likely(may_use_simd() && walk.total >= 2 * AES_BLOCK_SIZE)) {
@@ -509,66 +443,18 @@ static int gcm_encrypt(struct aead_request *req)
 			do {
 				__aes_arm64_encrypt(ctx->aes_key.key_enc,
 						    ks, iv, nrounds);
-=======
-	if (likely(may_use_simd())) {
-		kernel_neon_begin();
-
-		pmull_gcm_encrypt_block(tag, iv, ctx->aes_key.key_enc,
-					num_rounds(&ctx->aes_key));
-		put_unaligned_be32(2, iv + GCM_IV_SIZE);
-		pmull_gcm_encrypt_block(ks, iv, NULL,
-					num_rounds(&ctx->aes_key));
-		put_unaligned_be32(3, iv + GCM_IV_SIZE);
-
-		err = skcipher_walk_aead_encrypt(&walk, req, true);
-
-		while (walk.nbytes >= AES_BLOCK_SIZE) {
-			int blocks = walk.nbytes / AES_BLOCK_SIZE;
-
-			pmull_gcm_encrypt(blocks, dg, walk.dst.virt.addr,
-					  walk.src.virt.addr, &ctx->ghash_key,
-					  iv, num_rounds(&ctx->aes_key), ks);
-
-			err = skcipher_walk_done(&walk,
-						 walk.nbytes % AES_BLOCK_SIZE);
-		}
-		kernel_neon_end();
-	} else {
-		__aes_arm64_encrypt(ctx->aes_key.key_enc, tag, iv,
-				    num_rounds(&ctx->aes_key));
-		put_unaligned_be32(2, iv + GCM_IV_SIZE);
-
-		err = skcipher_walk_aead_encrypt(&walk, req, true);
-
-		while (walk.nbytes >= AES_BLOCK_SIZE) {
-			int blocks = walk.nbytes / AES_BLOCK_SIZE;
-			u8 *dst = walk.dst.virt.addr;
-			u8 *src = walk.src.virt.addr;
-
-			do {
-				__aes_arm64_encrypt(ctx->aes_key.key_enc,
-						    ks, iv,
-						    num_rounds(&ctx->aes_key));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				crypto_xor_cpy(dst, src, ks, AES_BLOCK_SIZE);
 				crypto_inc(iv, AES_BLOCK_SIZE);
 
 				dst += AES_BLOCK_SIZE;
 				src += AES_BLOCK_SIZE;
-<<<<<<< HEAD
 			} while (--remaining > 0);
 
 			ghash_do_update(blocks, dg,
-=======
-			} while (--blocks > 0);
-
-			ghash_do_update(walk.nbytes / AES_BLOCK_SIZE, dg,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					walk.dst.virt.addr, &ctx->ghash_key,
 					NULL);
 
 			err = skcipher_walk_done(&walk,
-<<<<<<< HEAD
 						 walk.nbytes % (2 * AES_BLOCK_SIZE));
 		}
 		if (walk.nbytes) {
@@ -581,29 +467,18 @@ static int gcm_encrypt(struct aead_request *req)
 						    nrounds);
 			}
 		}
-=======
-						 walk.nbytes % AES_BLOCK_SIZE);
-		}
-		if (walk.nbytes)
-			__aes_arm64_encrypt(ctx->aes_key.key_enc, ks, iv,
-					    num_rounds(&ctx->aes_key));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* handle the tail */
 	if (walk.nbytes) {
 		u8 buf[GHASH_BLOCK_SIZE];
-<<<<<<< HEAD
 		unsigned int nbytes = walk.nbytes;
 		u8 *dst = walk.dst.virt.addr;
 		u8 *head = NULL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		crypto_xor_cpy(walk.dst.virt.addr, walk.src.virt.addr, ks,
 			       walk.nbytes);
 
-<<<<<<< HEAD
 		if (walk.nbytes > GHASH_BLOCK_SIZE) {
 			head = dst;
 			dst += GHASH_BLOCK_SIZE;
@@ -613,11 +488,6 @@ static int gcm_encrypt(struct aead_request *req)
 		memcpy(buf, dst, nbytes);
 		memset(buf + nbytes, 0, GHASH_BLOCK_SIZE - nbytes);
 		ghash_do_update(!!nbytes, dg, buf, &ctx->ghash_key, head);
-=======
-		memcpy(buf, walk.dst.virt.addr, walk.nbytes);
-		memset(buf + walk.nbytes, 0, GHASH_BLOCK_SIZE - walk.nbytes);
-		ghash_do_update(1, dg, buf, &ctx->ghash_key, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		err = skcipher_walk_done(&walk, 0);
 	}
@@ -640,18 +510,11 @@ static int gcm_decrypt(struct aead_request *req)
 	struct gcm_aes_ctx *ctx = crypto_aead_ctx(aead);
 	unsigned int authsize = crypto_aead_authsize(aead);
 	struct skcipher_walk walk;
-<<<<<<< HEAD
 	u8 iv[2 * AES_BLOCK_SIZE];
 	u8 tag[AES_BLOCK_SIZE];
 	u8 buf[2 * GHASH_BLOCK_SIZE];
 	u64 dg[2] = {};
 	int nrounds = num_rounds(&ctx->aes_key);
-=======
-	u8 iv[AES_BLOCK_SIZE];
-	u8 tag[AES_BLOCK_SIZE];
-	u8 buf[GHASH_BLOCK_SIZE];
-	u64 dg[2] = {};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	if (req->assoclen)
@@ -660,7 +523,6 @@ static int gcm_decrypt(struct aead_request *req)
 	memcpy(iv, req->iv, GCM_IV_SIZE);
 	put_unaligned_be32(1, iv + GCM_IV_SIZE);
 
-<<<<<<< HEAD
 	err = skcipher_walk_aead_decrypt(&walk, req, false);
 
 	if (likely(may_use_simd() && walk.total >= 2 * AES_BLOCK_SIZE)) {
@@ -710,41 +572,6 @@ static int gcm_decrypt(struct aead_request *req)
 
 		while (walk.nbytes >= (2 * AES_BLOCK_SIZE)) {
 			int blocks = walk.nbytes / (2 * AES_BLOCK_SIZE) * 2;
-=======
-	if (likely(may_use_simd())) {
-		kernel_neon_begin();
-
-		pmull_gcm_encrypt_block(tag, iv, ctx->aes_key.key_enc,
-					num_rounds(&ctx->aes_key));
-		put_unaligned_be32(2, iv + GCM_IV_SIZE);
-
-		err = skcipher_walk_aead_decrypt(&walk, req, true);
-
-		while (walk.nbytes >= AES_BLOCK_SIZE) {
-			int blocks = walk.nbytes / AES_BLOCK_SIZE;
-
-			pmull_gcm_decrypt(blocks, dg, walk.dst.virt.addr,
-					  walk.src.virt.addr, &ctx->ghash_key,
-					  iv, num_rounds(&ctx->aes_key));
-
-			err = skcipher_walk_done(&walk,
-						 walk.nbytes % AES_BLOCK_SIZE);
-		}
-		if (walk.nbytes)
-			pmull_gcm_encrypt_block(iv, iv, NULL,
-						num_rounds(&ctx->aes_key));
-
-		kernel_neon_end();
-	} else {
-		__aes_arm64_encrypt(ctx->aes_key.key_enc, tag, iv,
-				    num_rounds(&ctx->aes_key));
-		put_unaligned_be32(2, iv + GCM_IV_SIZE);
-
-		err = skcipher_walk_aead_decrypt(&walk, req, true);
-
-		while (walk.nbytes >= AES_BLOCK_SIZE) {
-			int blocks = walk.nbytes / AES_BLOCK_SIZE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			u8 *dst = walk.dst.virt.addr;
 			u8 *src = walk.src.virt.addr;
 
@@ -753,12 +580,7 @@ static int gcm_decrypt(struct aead_request *req)
 
 			do {
 				__aes_arm64_encrypt(ctx->aes_key.key_enc,
-<<<<<<< HEAD
 						    buf, iv, nrounds);
-=======
-						    buf, iv,
-						    num_rounds(&ctx->aes_key));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				crypto_xor_cpy(dst, src, buf, AES_BLOCK_SIZE);
 				crypto_inc(iv, AES_BLOCK_SIZE);
 
@@ -767,7 +589,6 @@ static int gcm_decrypt(struct aead_request *req)
 			} while (--blocks > 0);
 
 			err = skcipher_walk_done(&walk,
-<<<<<<< HEAD
 						 walk.nbytes % (2 * AES_BLOCK_SIZE));
 		}
 		if (walk.nbytes) {
@@ -783,18 +604,10 @@ static int gcm_decrypt(struct aead_request *req)
 			__aes_arm64_encrypt(ctx->aes_key.key_enc, iv, iv,
 					    nrounds);
 		}
-=======
-						 walk.nbytes % AES_BLOCK_SIZE);
-		}
-		if (walk.nbytes)
-			__aes_arm64_encrypt(ctx->aes_key.key_enc, iv, iv,
-					    num_rounds(&ctx->aes_key));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* handle the tail */
 	if (walk.nbytes) {
-<<<<<<< HEAD
 		const u8 *src = walk.src.virt.addr;
 		const u8 *head = NULL;
 		unsigned int nbytes = walk.nbytes;
@@ -808,11 +621,6 @@ static int gcm_decrypt(struct aead_request *req)
 		memcpy(buf, src, nbytes);
 		memset(buf + nbytes, 0, GHASH_BLOCK_SIZE - nbytes);
 		ghash_do_update(!!nbytes, dg, buf, &ctx->ghash_key, head);
-=======
-		memcpy(buf, walk.src.virt.addr, walk.nbytes);
-		memset(buf + walk.nbytes, 0, GHASH_BLOCK_SIZE - walk.nbytes);
-		ghash_do_update(1, dg, buf, &ctx->ghash_key, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		crypto_xor_cpy(walk.dst.virt.addr, walk.src.virt.addr, iv,
 			       walk.nbytes);
@@ -837,11 +645,7 @@ static int gcm_decrypt(struct aead_request *req)
 
 static struct aead_alg gcm_aes_alg = {
 	.ivsize			= GCM_IV_SIZE,
-<<<<<<< HEAD
 	.chunksize		= 2 * AES_BLOCK_SIZE,
-=======
-	.chunksize		= AES_BLOCK_SIZE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.maxauthsize		= AES_BLOCK_SIZE,
 	.setkey			= gcm_setkey,
 	.setauthsize		= gcm_setauthsize,

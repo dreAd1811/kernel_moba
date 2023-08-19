@@ -36,10 +36,7 @@
 #include <asm/opal.h>
 #include <asm/kexec.h>
 #include <asm/smp.h>
-<<<<<<< HEAD
 #include <asm/tm.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/setup.h>
 #include <asm/security_features.h>
 
@@ -212,26 +209,12 @@ static void pnv_prepare_going_down(void)
 	 */
 	opal_event_shutdown();
 
-<<<<<<< HEAD
 	/* Print flash update message if one is scheduled. */
 	opal_flash_update_print_message();
 
 	smp_send_stop();
 
 	hard_irq_disable();
-=======
-	/* Soft disable interrupts */
-	local_irq_disable();
-
-	/*
-	 * Return secondary CPUs to firwmare if a flash update
-	 * is pending otherwise we will get all sort of error
-	 * messages about CPU being stuck etc.. This will also
-	 * have the side effect of hard disabling interrupts so
-	 * past this point, the kernel is effectively dead.
-	 */
-	opal_flash_term_callback();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void  __noreturn pnv_restart(char *cmd)
@@ -313,11 +296,7 @@ static void pnv_kexec_wait_secondaries_down(void)
 			if (i != notified) {
 				printk(KERN_INFO "kexec: waiting for cpu %d "
 				       "(physical %d) to enter OPAL\n",
-<<<<<<< HEAD
 				       i, paca_ptrs[i]->hw_cpu_id);
-=======
-				       i, paca[i].hw_cpu_id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				notified = i;
 			}
 
@@ -329,11 +308,7 @@ static void pnv_kexec_wait_secondaries_down(void)
 			if (timeout-- == 0) {
 				printk(KERN_ERR "kexec: timed out waiting for "
 				       "cpu %d (physical %d) to enter OPAL\n",
-<<<<<<< HEAD
 				       i, paca_ptrs[i]->hw_cpu_id);
-=======
-				       i, paca[i].hw_cpu_id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				break;
 			}
 		}
@@ -345,11 +320,7 @@ static void pnv_kexec_cpu_down(int crash_shutdown, int secondary)
 	u64 reinit_flags;
 
 	if (xive_enabled())
-<<<<<<< HEAD
 		xive_teardown_cpu();
-=======
-		xive_kexec_teardown_cpu(secondary);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		xics_kexec_teardown_cpu(secondary);
 
@@ -393,19 +364,7 @@ static void pnv_kexec_cpu_down(int crash_shutdown, int secondary)
 #ifdef CONFIG_MEMORY_HOTPLUG_SPARSE
 static unsigned long pnv_memory_block_size(void)
 {
-<<<<<<< HEAD
 	return 256UL * 1024 * 1024;
-=======
-	/*
-	 * We map the kernel linear region with 1GB large pages on radix. For
-	 * memory hot unplug to work our memory block size must be at least
-	 * this size.
-	 */
-	if (radix_enabled())
-		return 1UL * 1024 * 1024 * 1024;
-	else
-		return 256UL * 1024 * 1024;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #endif
 
@@ -415,10 +374,7 @@ static void __init pnv_setup_machdep_opal(void)
 	ppc_md.restart = pnv_restart;
 	pm_power_off = pnv_power_off;
 	ppc_md.halt = pnv_halt;
-<<<<<<< HEAD
 	/* ppc_md.system_reset_exception gets filled in by pnv_smp_init() */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ppc_md.machine_check_exception = opal_machine_check;
 	ppc_md.mce_check_early_recovery = opal_mce_check_early_recovery;
 	ppc_md.hmi_exception_early = opal_hmi_exception_early;
@@ -440,7 +396,6 @@ static int __init pnv_probe(void)
 	return 1;
 }
 
-<<<<<<< HEAD
 #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
 void __init pnv_tm_init(void)
 {
@@ -463,8 +418,6 @@ void __init pnv_tm_init(void)
 }
 #endif /* CONFIG_PPC_TRANSACTIONAL_MEM */
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Returns the cpu frequency for 'cpu' in Hz. This is used by
  * /proc/cpuinfo

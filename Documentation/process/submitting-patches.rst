@@ -510,13 +510,8 @@ tracking your trees, and to people trying to troubleshoot bugs in your
 tree.
 
 
-<<<<<<< HEAD
 12) When to use Acked-by:, Cc:, and Co-Developed-by:
 -------------------------------------------------------
-=======
-12) When to use Acked-by: and Cc:
----------------------------------
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 The Signed-off-by: tag indicates that the signer was involved in the
 development of the patch, or that he/she was in the patch's delivery path.
@@ -548,14 +543,11 @@ person it names - but it should indicate that this person was copied on the
 patch.  This tag documents that potentially interested parties
 have been included in the discussion.
 
-<<<<<<< HEAD
 A Co-Developed-by: states that the patch was also created by another developer
 along with the original author.  This is useful at times when multiple people
 work on a single patch.  Note, this person also needs to have a Signed-off-by:
 line in the patch as well.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 13) Using Reported-by:, Tested-by:, Reviewed-by:, Suggested-by: and Fixes:
 --------------------------------------------------------------------------
@@ -619,10 +611,7 @@ which stable kernel versions should receive your fix. This is the preferred
 method for indicating a bug fixed by the patch. See :ref:`describe_changes`
 for more details.
 
-<<<<<<< HEAD
 .. _the_canonical_patch_format:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 14) The canonical patch format
 ------------------------------
@@ -638,24 +627,14 @@ The canonical patch subject line is::
 
 The canonical patch message body contains the following:
 
-<<<<<<< HEAD
   - A ``from`` line specifying the patch author, followed by an empty
     line (only needed if the person sending the patch is not the author).
-=======
-  - A ``from`` line specifying the patch author (only needed if the person
-    sending the patch is not the author).
-
-  - An empty line.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
   - The body of the explanation, line wrapped at 75 columns, which will
     be copied to the permanent changelog to describe this patch.
 
-<<<<<<< HEAD
   - An empty line.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
   - The ``Signed-off-by:`` lines, described above, which will
     also go in the changelog.
 
@@ -783,11 +762,7 @@ requests, especially from new, unknown developers.  If in doubt you can use
 the pull request as the cover letter for a normal posting of the patch
 series, giving the maintainer the option of using either.
 
-<<<<<<< HEAD
 A pull request should have [GIT PULL] in the subject line.  The
-=======
-A pull request should have [GIT] or [PULL] in the subject line.  The
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 request itself should include the repository name and the branch of
 interest on a single line; it should look something like::
 

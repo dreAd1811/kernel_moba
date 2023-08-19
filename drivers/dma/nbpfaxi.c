@@ -479,10 +479,7 @@ static size_t nbpf_xfer_size(struct nbpf_device *nbpf,
 
 	default:
 		pr_warn("%s(): invalid bus width %u\n", __func__, width);
-<<<<<<< HEAD
 		/* fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case DMA_SLAVE_BUSWIDTH_1_BYTE:
 		size = burst;
 	}
@@ -1290,10 +1287,6 @@ MODULE_DEVICE_TABLE(of, nbpf_match);
 static int nbpf_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
-<<<<<<< HEAD
-=======
-	const struct of_device_id *of_id = of_match_device(nbpf_match, dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct device_node *np = dev->of_node;
 	struct nbpf_device *nbpf;
 	struct dma_device *dma_dev;
@@ -1307,7 +1300,6 @@ static int nbpf_probe(struct platform_device *pdev)
 	BUILD_BUG_ON(sizeof(struct nbpf_desc_page) > PAGE_SIZE);
 
 	/* DT only */
-<<<<<<< HEAD
 	if (!np)
 		return -ENODEV;
 
@@ -1316,16 +1308,6 @@ static int nbpf_probe(struct platform_device *pdev)
 
 	nbpf = devm_kzalloc(dev, struct_size(nbpf, chan, num_channels),
 			    GFP_KERNEL);
-=======
-	if (!np || !of_id || !of_id->data)
-		return -ENODEV;
-
-	cfg = of_id->data;
-	num_channels = cfg->num_channels;
-
-	nbpf = devm_kzalloc(dev, sizeof(*nbpf) + num_channels *
-			    sizeof(nbpf->chan[0]), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!nbpf)
 		return -ENOMEM;
 

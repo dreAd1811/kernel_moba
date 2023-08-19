@@ -165,11 +165,7 @@ static int buffer_init(struct vb2_buffer *vb2)
 	return 0;
 }
 
-<<<<<<< HEAD
 const struct vb2_ops saa7134_vbi_qops = {
-=======
-struct vb2_ops saa7134_vbi_qops = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.queue_setup	= queue_setup,
 	.buf_init	= buffer_init,
 	.buf_prepare	= buffer_prepare,
@@ -185,12 +181,7 @@ struct vb2_ops saa7134_vbi_qops = {
 int saa7134_vbi_init1(struct saa7134_dev *dev)
 {
 	INIT_LIST_HEAD(&dev->vbi_q.queue);
-<<<<<<< HEAD
 	timer_setup(&dev->vbi_q.timeout, saa7134_buffer_timeout, 0);
-=======
-	setup_timer(&dev->vbi_q.timeout, saa7134_buffer_timeout,
-		    (unsigned long)(&dev->vbi_q));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev->vbi_q.dev              = dev;
 
 	if (vbibufs < 2)

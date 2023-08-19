@@ -211,12 +211,7 @@ int host1x_device_init(struct host1x_device *device)
 				dev_err(&device->dev,
 					"failed to initialize %s: %d\n",
 					dev_name(client->dev), err);
-<<<<<<< HEAD
 				goto teardown;
-=======
-				mutex_unlock(&device->clients_lock);
-				return err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		}
 	}
@@ -224,7 +219,6 @@ int host1x_device_init(struct host1x_device *device)
 	mutex_unlock(&device->clients_lock);
 
 	return 0;
-<<<<<<< HEAD
 
 teardown:
 	list_for_each_entry_continue_reverse(client, &device->clients, list)
@@ -233,8 +227,6 @@ teardown:
 
 	mutex_unlock(&device->clients_lock);
 	return err;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(host1x_device_init);
 
@@ -322,14 +314,11 @@ static int host1x_device_match(struct device *dev, struct device_driver *drv)
 	return strcmp(dev_name(dev), drv->name) == 0;
 }
 
-<<<<<<< HEAD
 static int host1x_dma_configure(struct device *dev)
 {
 	return of_dma_configure(dev, dev->of_node, true);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct dev_pm_ops host1x_device_pm_ops = {
 	.suspend = pm_generic_suspend,
 	.resume = pm_generic_resume,
@@ -342,10 +331,7 @@ static const struct dev_pm_ops host1x_device_pm_ops = {
 struct bus_type host1x_bus_type = {
 	.name = "host1x",
 	.match = host1x_device_match,
-<<<<<<< HEAD
 	.dma_configure	= host1x_dma_configure,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.pm = &host1x_device_pm_ops,
 };
 
@@ -430,23 +416,16 @@ static int host1x_device_add(struct host1x *host1x,
 	device->dev.coherent_dma_mask = host1x->dev->coherent_dma_mask;
 	device->dev.dma_mask = &device->dev.coherent_dma_mask;
 	dev_set_name(&device->dev, "%s", driver->driver.name);
-<<<<<<< HEAD
-=======
-	of_dma_configure(&device->dev, host1x->dev->of_node);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	device->dev.release = host1x_device_release;
 	device->dev.of_node = host1x->dev->of_node;
 	device->dev.bus = &host1x_bus_type;
 	device->dev.parent = host1x->dev;
 
-<<<<<<< HEAD
 	of_dma_configure(&device->dev, host1x->dev->of_node, true);
 
 	device->dev.dma_parms = &device->dma_parms;
 	dma_set_max_seg_size(&device->dev, SZ_4M);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = host1x_device_parse_dt(device, driver);
 	if (err < 0) {
 		kfree(device);
@@ -653,22 +632,8 @@ EXPORT_SYMBOL(host1x_driver_register_full);
  */
 void host1x_driver_unregister(struct host1x_driver *driver)
 {
-<<<<<<< HEAD
 	driver_unregister(&driver->driver);
 
-=======
-	struct host1x *host1x;
-
-	driver_unregister(&driver->driver);
-
-	mutex_lock(&devices_lock);
-
-	list_for_each_entry(host1x, &devices, list)
-		host1x_detach_driver(host1x, driver);
-
-	mutex_unlock(&devices_lock);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&drivers_lock);
 	list_del_init(&driver->list);
 	mutex_unlock(&drivers_lock);

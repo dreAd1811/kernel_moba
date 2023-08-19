@@ -61,7 +61,6 @@ void kvm_mmu_set_mmio_spte_mask(u64 mmio_mask, u64 mmio_value);
 void
 reset_shadow_zero_bits_mask(struct kvm_vcpu *vcpu, struct kvm_mmu *context);
 
-<<<<<<< HEAD
 void kvm_init_mmu(struct kvm_vcpu *vcpu, bool reset_roots);
 void kvm_init_shadow_mmu(struct kvm_vcpu *vcpu);
 void kvm_init_shadow_ept_mmu(struct kvm_vcpu *vcpu, bool execonly,
@@ -71,17 +70,6 @@ int kvm_handle_page_fault(struct kvm_vcpu *vcpu, u64 error_code,
 				u64 fault_address, char *insn, int insn_len);
 
 static inline unsigned long kvm_mmu_available_pages(struct kvm *kvm)
-=======
-void kvm_init_shadow_mmu(struct kvm_vcpu *vcpu);
-void kvm_init_shadow_ept_mmu(struct kvm_vcpu *vcpu, bool execonly,
-			     bool accessed_dirty);
-bool kvm_can_do_async_pf(struct kvm_vcpu *vcpu);
-int kvm_handle_page_fault(struct kvm_vcpu *vcpu, u64 error_code,
-				u64 fault_address, char *insn, int insn_len,
-				bool need_unprotect);
-
-static inline unsigned int kvm_mmu_available_pages(struct kvm *kvm)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (kvm->arch.n_max_mmu_pages > kvm->arch.n_used_mmu_pages)
 		return kvm->arch.n_max_mmu_pages -
@@ -98,7 +86,6 @@ static inline int kvm_mmu_reload(struct kvm_vcpu *vcpu)
 	return kvm_mmu_load(vcpu);
 }
 
-<<<<<<< HEAD
 static inline unsigned long kvm_get_pcid(struct kvm_vcpu *vcpu, gpa_t cr3)
 {
 	BUILD_BUG_ON((X86_CR3_PCID_MASK & PAGE_MASK) != 0);
@@ -120,8 +107,6 @@ static inline void kvm_mmu_load_cr3(struct kvm_vcpu *vcpu)
 					     kvm_get_active_pcid(vcpu));
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Currently, we have two sorts of write-protection, a) the first one
  * write-protects guest page to sync the guest modification, b) another one is
@@ -230,13 +215,5 @@ void kvm_mmu_gfn_disallow_lpage(struct kvm_memory_slot *slot, gfn_t gfn);
 void kvm_mmu_gfn_allow_lpage(struct kvm_memory_slot *slot, gfn_t gfn);
 bool kvm_mmu_slot_gfn_write_protect(struct kvm *kvm,
 				    struct kvm_memory_slot *slot, u64 gfn);
-<<<<<<< HEAD
 int kvm_arch_write_log_dirty(struct kvm_vcpu *vcpu);
-=======
-int kvm_arch_write_log_dirty(struct kvm_vcpu *vcpu, gpa_t l2_gpa);
-
-int kvm_mmu_post_init_vm(struct kvm *kvm);
-void kvm_mmu_pre_destroy_vm(struct kvm *kvm);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

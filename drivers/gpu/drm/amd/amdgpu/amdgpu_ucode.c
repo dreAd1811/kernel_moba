@@ -161,7 +161,6 @@ void amdgpu_ucode_print_rlc_hdr(const struct common_firmware_header *hdr)
 			  le32_to_cpu(rlc_hdr->reg_list_format_separate_array_offset_bytes));
 		DRM_DEBUG("reg_list_separate_size_bytes: %u\n",
 			  le32_to_cpu(rlc_hdr->reg_list_separate_size_bytes));
-<<<<<<< HEAD
 		DRM_DEBUG("reg_list_separate_array_offset_bytes: %u\n",
 			  le32_to_cpu(rlc_hdr->reg_list_separate_array_offset_bytes));
 		if (version_minor == 1) {
@@ -194,10 +193,6 @@ void amdgpu_ucode_print_rlc_hdr(const struct common_firmware_header *hdr)
 			DRM_DEBUG("save_restore_list_srm_offset_bytes: %u\n",
 				  le32_to_cpu(v2_1->save_restore_list_srm_offset_bytes));
 		}
-=======
-		DRM_DEBUG("reg_list_separate_size_bytes: %u\n",
-			  le32_to_cpu(rlc_hdr->reg_list_separate_size_bytes));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		DRM_ERROR("Unknown RLC ucode version: %u.%u\n", version_major, version_minor);
 	}
@@ -301,38 +296,22 @@ amdgpu_ucode_get_load_type(struct amdgpu_device *adev, int load_type)
 	case CHIP_POLARIS10:
 	case CHIP_POLARIS11:
 	case CHIP_POLARIS12:
-<<<<<<< HEAD
 	case CHIP_VEGAM:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!load_type)
 			return AMDGPU_FW_LOAD_DIRECT;
 		else
 			return AMDGPU_FW_LOAD_SMU;
 	case CHIP_VEGA10:
-<<<<<<< HEAD
 	case CHIP_RAVEN:
 	case CHIP_VEGA12:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!load_type)
 			return AMDGPU_FW_LOAD_DIRECT;
 		else
 			return AMDGPU_FW_LOAD_PSP;
-<<<<<<< HEAD
 	case CHIP_VEGA20:
 		return AMDGPU_FW_LOAD_DIRECT;
 	default:
 		DRM_ERROR("Unknown firmware load type\n");
-=======
-	case CHIP_RAVEN:
-		if (load_type != 2)
-			return AMDGPU_FW_LOAD_DIRECT;
-		else
-			return AMDGPU_FW_LOAD_PSP;
-	default:
-		DRM_ERROR("Unknow firmware load type\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return AMDGPU_FW_LOAD_DIRECT;
@@ -362,14 +341,10 @@ static int amdgpu_ucode_init_single_fw(struct amdgpu_device *adev,
 	    (ucode->ucode_id != AMDGPU_UCODE_ID_CP_MEC1 &&
 	     ucode->ucode_id != AMDGPU_UCODE_ID_CP_MEC2 &&
 	     ucode->ucode_id != AMDGPU_UCODE_ID_CP_MEC1_JT &&
-<<<<<<< HEAD
 	     ucode->ucode_id != AMDGPU_UCODE_ID_CP_MEC2_JT &&
 	     ucode->ucode_id != AMDGPU_UCODE_ID_RLC_RESTORE_LIST_CNTL &&
 	     ucode->ucode_id != AMDGPU_UCODE_ID_RLC_RESTORE_LIST_GPM_MEM &&
 	     ucode->ucode_id != AMDGPU_UCODE_ID_RLC_RESTORE_LIST_SRM_MEM)) {
-=======
-	     ucode->ucode_id != AMDGPU_UCODE_ID_CP_MEC2_JT)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ucode->ucode_size = le32_to_cpu(header->ucode_size_bytes);
 
 		memcpy(ucode->kaddr, (void *)((uint8_t *)ucode->fw->data +
@@ -391,7 +366,6 @@ static int amdgpu_ucode_init_single_fw(struct amdgpu_device *adev,
 					      le32_to_cpu(header->ucode_array_offset_bytes) +
 					      le32_to_cpu(cp_hdr->jt_offset) * 4),
 		       ucode->ucode_size);
-<<<<<<< HEAD
 	} else if (ucode->ucode_id == AMDGPU_UCODE_ID_RLC_RESTORE_LIST_CNTL) {
 		ucode->ucode_size = adev->gfx.rlc.save_restore_list_cntl_size_bytes;
 		memcpy(ucode->kaddr, adev->gfx.rlc.save_restore_list_cntl,
@@ -404,8 +378,6 @@ static int amdgpu_ucode_init_single_fw(struct amdgpu_device *adev,
 		ucode->ucode_size = adev->gfx.rlc.save_restore_list_srm_size_bytes;
 		memcpy(ucode->kaddr, adev->gfx.rlc.save_restore_list_srm,
 		       ucode->ucode_size);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -437,12 +409,6 @@ static int amdgpu_ucode_patch_jt(struct amdgpu_firmware_info *ucode,
 
 int amdgpu_ucode_init_bo(struct amdgpu_device *adev)
 {
-<<<<<<< HEAD
-=======
-	struct amdgpu_bo **bo = &adev->firmware.fw_buf;
-	uint64_t fw_mc_addr;
-	void *fw_buf_ptr = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint64_t fw_offset = 0;
 	int i, err;
 	struct amdgpu_firmware_info *ucode = NULL;
@@ -453,7 +419,6 @@ int amdgpu_ucode_init_bo(struct amdgpu_device *adev)
 		return 0;
 	}
 
-<<<<<<< HEAD
 	if (!adev->in_gpu_reset) {
 		err = amdgpu_bo_create_kernel(adev, adev->firmware.fw_size, PAGE_SIZE,
 					amdgpu_sriov_vf(adev) ? AMDGPU_GEM_DOMAIN_VRAM : AMDGPU_GEM_DOMAIN_GTT,
@@ -467,39 +432,6 @@ int amdgpu_ucode_init_bo(struct amdgpu_device *adev)
 	}
 
 	memset(adev->firmware.fw_buf_ptr, 0, adev->firmware.fw_size);
-=======
-	err = amdgpu_bo_create(adev, adev->firmware.fw_size, PAGE_SIZE, true,
-				amdgpu_sriov_vf(adev) ? AMDGPU_GEM_DOMAIN_VRAM : AMDGPU_GEM_DOMAIN_GTT,
-				AMDGPU_GEM_CREATE_VRAM_CONTIGUOUS,
-				NULL, NULL, 0, bo);
-	if (err) {
-		dev_err(adev->dev, "(%d) Firmware buffer allocate failed\n", err);
-		goto failed;
-	}
-
-	err = amdgpu_bo_reserve(*bo, false);
-	if (err) {
-		dev_err(adev->dev, "(%d) Firmware buffer reserve failed\n", err);
-		goto failed_reserve;
-	}
-
-	err = amdgpu_bo_pin(*bo, amdgpu_sriov_vf(adev) ? AMDGPU_GEM_DOMAIN_VRAM : AMDGPU_GEM_DOMAIN_GTT,
-				&fw_mc_addr);
-	if (err) {
-		dev_err(adev->dev, "(%d) Firmware buffer pin failed\n", err);
-		goto failed_pin;
-	}
-
-	err = amdgpu_bo_kmap(*bo, &fw_buf_ptr);
-	if (err) {
-		dev_err(adev->dev, "(%d) Firmware buffer kmap failed\n", err);
-		goto failed_kmap;
-	}
-
-	amdgpu_bo_unreserve(*bo);
-
-	memset(fw_buf_ptr, 0, adev->firmware.fw_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * if SMU loaded firmware, it needn't add SMC, UVD, and VCE
@@ -518,24 +450,14 @@ int amdgpu_ucode_init_bo(struct amdgpu_device *adev)
 		ucode = &adev->firmware.ucode[i];
 		if (ucode->fw) {
 			header = (const struct common_firmware_header *)ucode->fw->data;
-<<<<<<< HEAD
 			amdgpu_ucode_init_single_fw(adev, ucode, adev->firmware.fw_buf_mc + fw_offset,
 						    adev->firmware.fw_buf_ptr + fw_offset);
-=======
-			amdgpu_ucode_init_single_fw(adev, ucode, fw_mc_addr + fw_offset,
-						    (void *)((uint8_t *)fw_buf_ptr + fw_offset));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (i == AMDGPU_UCODE_ID_CP_MEC1 &&
 			    adev->firmware.load_type != AMDGPU_FW_LOAD_PSP) {
 				const struct gfx_firmware_header_v1_0 *cp_hdr;
 				cp_hdr = (const struct gfx_firmware_header_v1_0 *)ucode->fw->data;
-<<<<<<< HEAD
 				amdgpu_ucode_patch_jt(ucode,  adev->firmware.fw_buf_mc + fw_offset,
 						    adev->firmware.fw_buf_ptr + fw_offset);
-=======
-				amdgpu_ucode_patch_jt(ucode, fw_mc_addr + fw_offset,
-						    fw_buf_ptr + fw_offset);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				fw_offset += ALIGN(le32_to_cpu(cp_hdr->jt_size) << 2, PAGE_SIZE);
 			}
 			fw_offset += ALIGN(ucode->ucode_size, PAGE_SIZE);
@@ -543,15 +465,6 @@ int amdgpu_ucode_init_bo(struct amdgpu_device *adev)
 	}
 	return 0;
 
-<<<<<<< HEAD
-=======
-failed_kmap:
-	amdgpu_bo_unpin(*bo);
-failed_pin:
-	amdgpu_bo_unreserve(*bo);
-failed_reserve:
-	amdgpu_bo_unref(bo);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 failed:
 	if (err)
 		adev->firmware.load_type = AMDGPU_FW_LOAD_DIRECT;
@@ -574,15 +487,10 @@ int amdgpu_ucode_fini_bo(struct amdgpu_device *adev)
 			ucode->kaddr = NULL;
 		}
 	}
-<<<<<<< HEAD
 
 	amdgpu_bo_free_kernel(&adev->firmware.fw_buf,
 				&adev->firmware.fw_buf_mc,
 				&adev->firmware.fw_buf_ptr);
-=======
-	amdgpu_bo_unref(&adev->firmware.fw_buf);
-	adev->firmware.fw_buf = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

@@ -29,10 +29,7 @@
 #include <linux/random.h>
 #include <linux/export.h>
 #include <linux/init_task.h>
-<<<<<<< HEAD
 #include <asm/cpu_mf.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/io.h>
 #include <asm/processor.h>
 #include <asm/vtimer.h>
@@ -48,23 +45,10 @@ asmlinkage void ret_from_fork(void) asm ("ret_from_fork");
 
 extern void kernel_thread_starter(void);
 
-<<<<<<< HEAD
-=======
-/*
- * Free current thread data structures etc..
- */
-void exit_thread(struct task_struct *tsk)
-{
-	if (tsk == current)
-		exit_thread_gs();
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void flush_thread(void)
 {
 }
 
-<<<<<<< HEAD
 void arch_setup_new_exec(void)
 {
 	if (S390_lowcore.current_pid != current->pid) {
@@ -72,19 +56,12 @@ void arch_setup_new_exec(void)
 		if (test_facility(40))
 			lpp(&S390_lowcore.lpp);
 	}
-=======
-void release_thread(struct task_struct *dead_task)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void arch_release_task_struct(struct task_struct *tsk)
 {
 	runtime_instr_release(tsk);
-<<<<<<< HEAD
 	guarded_storage_release(tsk);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int arch_dup_task_struct(struct task_struct *dst, struct task_struct *src)

@@ -14,11 +14,7 @@
 #include <linux/module.h>
 #include <linux/clk.h>
 #include <linux/err.h>
-<<<<<<< HEAD
 #include <linux/gpio/driver.h>
-=======
-#include <linux/gpio.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/gpio-pxa.h>
 #include <linux/init.h>
 #include <linux/interrupt.h>
@@ -245,7 +241,6 @@ int pxa_irq_to_gpio(int irq)
 	return irq_gpio0;
 }
 
-<<<<<<< HEAD
 static bool pxa_gpio_has_pinctrl(void)
 {
 	switch (gpio_type) {
@@ -258,8 +253,6 @@ static bool pxa_gpio_has_pinctrl(void)
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int pxa_gpio_to_irq(struct gpio_chip *chip, unsigned offset)
 {
 	struct pxa_gpio_chip *pchip = chip_to_pxachip(chip);
@@ -274,17 +267,11 @@ static int pxa_gpio_direction_input(struct gpio_chip *chip, unsigned offset)
 	unsigned long flags;
 	int ret;
 
-<<<<<<< HEAD
 	if (pxa_gpio_has_pinctrl()) {
 		ret = pinctrl_gpio_direction_input(chip->base + offset);
 		if (ret)
 			return ret;
 	}
-=======
-	ret = pinctrl_gpio_direction_input(chip->base + offset);
-	if (!ret)
-		return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irqsave(&gpio_lock, flags);
 
@@ -309,17 +296,11 @@ static int pxa_gpio_direction_output(struct gpio_chip *chip,
 
 	writel_relaxed(mask, base + (value ? GPSR_OFFSET : GPCR_OFFSET));
 
-<<<<<<< HEAD
 	if (pxa_gpio_has_pinctrl()) {
 		ret = pinctrl_gpio_direction_output(chip->base + offset);
 		if (ret)
 			return ret;
 	}
-=======
-	ret = pinctrl_gpio_direction_output(chip->base + offset);
-	if (ret)
-		return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irqsave(&gpio_lock, flags);
 
@@ -365,19 +346,6 @@ static int pxa_gpio_of_xlate(struct gpio_chip *gc,
 }
 #endif
 
-<<<<<<< HEAD
-=======
-static int pxa_gpio_request(struct gpio_chip *chip, unsigned int offset)
-{
-	return pinctrl_request_gpio(chip->base + offset);
-}
-
-static void pxa_gpio_free(struct gpio_chip *chip, unsigned int offset)
-{
-	pinctrl_free_gpio(chip->base + offset);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int pxa_init_gpio_chip(struct pxa_gpio_chip *pchip, int ngpio,
 			      struct device_node *np, void __iomem *regbase)
 {
@@ -396,17 +364,12 @@ static int pxa_init_gpio_chip(struct pxa_gpio_chip *pchip, int ngpio,
 	pchip->chip.set = pxa_gpio_set;
 	pchip->chip.to_irq = pxa_gpio_to_irq;
 	pchip->chip.ngpio = ngpio;
-<<<<<<< HEAD
 
 	if (pxa_gpio_has_pinctrl()) {
 		pchip->chip.request = gpiochip_generic_request;
 		pchip->chip.free = gpiochip_generic_free;
 	}
 
-=======
-	pchip->chip.request = pxa_gpio_request;
-	pchip->chip.free = pxa_gpio_free;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_OF_GPIO
 	pchip->chip.of_node = np;
 	pchip->chip.of_xlate = pxa_gpio_of_xlate;
@@ -636,21 +599,9 @@ static int pxa_gpio_probe_dt(struct platform_device *pdev,
 			     struct pxa_gpio_chip *pchip)
 {
 	int nr_gpios;
-<<<<<<< HEAD
 	const struct pxa_gpio_id *gpio_id;
 
 	gpio_id = of_device_get_match_data(&pdev->dev);
-=======
-	const struct of_device_id *of_id =
-				of_match_device(pxa_gpio_dt_ids, &pdev->dev);
-	const struct pxa_gpio_id *gpio_id;
-
-	if (!of_id || !of_id->data) {
-		dev_err(&pdev->dev, "Failed to find gpio controller\n");
-		return -EFAULT;
-	}
-	gpio_id = of_id->data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gpio_type = gpio_id->type;
 
 	nr_gpios = gpio_id->gpio_nums;
@@ -676,11 +627,7 @@ static int pxa_gpio_probe(struct platform_device *pdev)
 	struct pxa_gpio_platform_data *info;
 	void __iomem *gpio_reg_base;
 	int gpio, ret;
-<<<<<<< HEAD
 	int irq0 = 0, irq1 = 0, irq_mux;
-=======
-	int irq0 = 0, irq1 = 0, irq_mux, gpio_offset = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pchip = devm_kzalloc(&pdev->dev, sizeof(*pchip), GFP_KERNEL);
 	if (!pchip)
@@ -726,12 +673,6 @@ static int pxa_gpio_probe(struct platform_device *pdev)
 	if (!gpio_reg_base)
 		return -EINVAL;
 
-<<<<<<< HEAD
-=======
-	if (irq0 > 0)
-		gpio_offset = 2;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clk = clk_get(&pdev->dev, NULL);
 	if (IS_ERR(clk)) {
 		dev_err(&pdev->dev, "Error %ld to get gpio clock\n",

@@ -49,10 +49,6 @@
 		compatible = "ti,wl1835";
 		reg = <2>;
 		interrupt-parent = <&gpio6>;
-<<<<<<< HEAD
 		interrupts = <17 IRQ_TYPE_EDGE_RISING>; /* gpio 177 */
-=======
-		interrupts = <17 IRQ_TYPE_LEVEL_HIGH>; /* gpio 177 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };

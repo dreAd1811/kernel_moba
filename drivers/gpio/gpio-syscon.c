@@ -10,11 +10,7 @@
  */
 
 #include <linux/err.h>
-<<<<<<< HEAD
 #include <linux/gpio/driver.h>
-=======
-#include <linux/gpio.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/module.h>
 #include <linux/of.h>
 #include <linux/of_device.h>
@@ -126,11 +122,7 @@ static int syscon_gpio_dir_out(struct gpio_chip *chip, unsigned offset, int val)
 				   BIT(offs % SYSCON_REG_BITS));
 	}
 
-<<<<<<< HEAD
 	priv->data->set(chip, offset, val);
-=======
-	chip->set(chip, offset, val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -143,7 +135,6 @@ static const struct syscon_gpio_data clps711x_mctrl_gpio = {
 	.dat_bit_offset	= 0x40 * 8 + 8,
 };
 
-<<<<<<< HEAD
 static void rockchip_gpio_set(struct gpio_chip *chip, unsigned int offset,
 			      int val)
 {
@@ -171,8 +162,6 @@ static const struct syscon_gpio_data rockchip_rk3328_gpio_mute = {
 	.set		= rockchip_gpio_set,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define KEYSTONE_LOCK_BIT BIT(0)
 
 static void keystone_gpio_set(struct gpio_chip *chip, unsigned offset, int val)
@@ -213,13 +202,10 @@ static const struct of_device_id syscon_gpio_ids[] = {
 		.compatible	= "ti,keystone-dsp-gpio",
 		.data		= &keystone_dsp_gpio,
 	},
-<<<<<<< HEAD
 	{
 		.compatible	= "rockchip,rk3328-grf-gpio",
 		.data		= &rockchip_rk3328_gpio_mute,
 	},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ }
 };
 MODULE_DEVICE_TABLE(of, syscon_gpio_ids);
@@ -227,30 +213,15 @@ MODULE_DEVICE_TABLE(of, syscon_gpio_ids);
 static int syscon_gpio_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
-<<<<<<< HEAD
-=======
-	const struct of_device_id *of_id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct syscon_gpio_priv *priv;
 	struct device_node *np = dev->of_node;
 	int ret;
 
-<<<<<<< HEAD
-=======
-	of_id = of_match_device(syscon_gpio_ids, dev);
-	if (!of_id)
-		return -ENODEV;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
 	if (!priv)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	priv->data = of_device_get_match_data(dev);
-=======
-	priv->data = of_id->data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (priv->data->compatible) {
 		priv->syscon = syscon_regmap_lookup_by_compatible(
@@ -260,11 +231,8 @@ static int syscon_gpio_probe(struct platform_device *pdev)
 	} else {
 		priv->syscon =
 			syscon_regmap_lookup_by_phandle(np, "gpio,syscon-dev");
-<<<<<<< HEAD
 		if (IS_ERR(priv->syscon) && np->parent)
 			priv->syscon = syscon_node_to_regmap(np->parent);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (IS_ERR(priv->syscon))
 			return PTR_ERR(priv->syscon);
 

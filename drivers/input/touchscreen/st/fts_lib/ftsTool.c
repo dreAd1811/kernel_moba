@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * FTS Capacitive touch screen controller (FingerTipS)
  *
@@ -211,11 +208,7 @@ int releaseInformation(void)
 	return OK;
 }
 
-<<<<<<< HEAD
 int lockDownInfo(u8 *data, int len)
-=======
-int lockDownInfo(u8 *data)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret;
 	int i = 0, num_event;
@@ -224,14 +217,9 @@ int lockDownInfo(u8 *data)
 			EVENT_TYPE_LOCKDOWN, 0x00};
 	u8 readEvent[FIFO_EVENT_SIZE];
 
-<<<<<<< HEAD
 	logError(0, "%s %s:started...\n", tag, __func__);
 	if (len <= 0)
 		return ERROR_OP_NOT_ALLOW;
-=======
-
-	logError(0, "%s %s:started...\n", tag, __func__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = fts_writeFwCmd(cmd, 1);
 	if (ret < OK) {
@@ -239,21 +227,9 @@ int lockDownInfo(u8 *data)
 		return ret;
 	}
 
-<<<<<<< HEAD
 	num_event = (len + 3) / 4;
 	logError(0, "%s %s:num_event = %d\n", tag, __func__, num_event);
 
-=======
-
-	if (LOCKDOWN_CODE_SIZE <= 4)
-		num_event = 1;
-	else if (LOCKDOWN_CODE_SIZE % 4 == 0)
-		num_event = LOCKDOWN_CODE_SIZE / 4;
-	else
-		num_event = (LOCKDOWN_CODE_SIZE) / 4 + 1;
-
-	logError(0, "%s %s:num_event = %d\n", tag, __func__, num_event);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < num_event; i++) {
 		ret = pollForEvent(event_to_search, 3,
 			&readEvent[0], GENERAL_TIMEOUT);
@@ -682,7 +658,6 @@ char *printHex(char *label, u8 *buff, int count)
 {
 	int i, offset;
 	char *result = NULL;
-<<<<<<< HEAD
 	size_t len = 0;
 
 	offset = strlen(label);
@@ -693,17 +668,6 @@ char *printHex(char *label, u8 *buff, int count)
 		for (i = 0; i < count; i++)
 			snprintf(&result[offset + i * 3], 4, "%02X ", buff[i]);
 		strlcat(result, "\n", len);
-=======
-
-	offset = strlen(label);
-	result = (char *)kmalloc_array(((offset + 3 * count) + 1),
-			sizeof(char), GFP_KERNEL);
-	if (result != NULL) {
-		strlcpy(result, label, sizeof(result));
-		for (i = 0; i < count; i++)
-			snprintf(&result[offset + i * 3], 4, "%02X ", buff[i]);
-		strlcat(result, "\n", sizeof(result));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return result;
 }
@@ -838,26 +802,18 @@ int fts_enableInterrupt(void)
 int u8ToU16n(u8 *src, int src_length, u16 *dst)
 {
 	int i, j;
-<<<<<<< HEAD
 	u16 *buf;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (src_length % 2 != 0)
 		return -EINVAL;
 
 	j = 0;
-<<<<<<< HEAD
 	buf = (u16 *)kmalloc_array((src_length / 2), sizeof(u16), GFP_KERNEL);
 	if (!buf) {
 		dst = NULL;
 		return -EINVAL;
 	}
 	dst = buf;
-=======
-	dst = (u16 *)kmalloc_array((src_length / 2), sizeof(u16), GFP_KERNEL);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < src_length; i += 2) {
 		dst[j] = ((src[i+1] & 0x00FF) << 8) + (src[i] & 0x00FF);
 		j++;
@@ -881,7 +837,6 @@ int u8ToU16_le(u8 *src, u16 *dst)
 int u16ToU8n(u16 *src, int src_length, u8 *dst)
 {
 	int i, j;
-<<<<<<< HEAD
 	u8 *buf = (u8 *)kmalloc_array(2 * src_length, sizeof(u8), GFP_KERNEL);
 
 	if (!buf) {
@@ -889,10 +844,6 @@ int u16ToU8n(u16 *src, int src_length, u8 *dst)
 		return -EINVAL;
 	}
 	dst = buf;
-=======
-
-	dst = (u8 *)kmalloc_array(2 * src_length, sizeof(u8), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	j = 0;
 	for (i = 0; i < src_length; i++) {
 		dst[j] = (u8) (src[i] & 0xFF00) >> 8;
@@ -1125,11 +1076,7 @@ int cleanUp(int enableTouch)
 int checkEcho(u8 *cmd, int size)
 {
 	int ret, i;
-<<<<<<< HEAD
 	int event_to_search[FIFO_EVENT_SIZE + 1];
-=======
-	int event_to_search[size + 1];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 readData[FIFO_EVENT_SIZE];
 
 	if ((ftsInfo.u32_echoEn & 0x00000001) != ECHO_ENABLED) {
@@ -1348,11 +1295,7 @@ void print_frame_short(char *label, short **matrix, int row, int column)
 	for (i = 0; i < row; i++) {
 		logError(0, "%s ", tag);
 		for (j = 0; j < column; j++)
-<<<<<<< HEAD
 			logError(0, "%d", matrix[i][j]);
-=======
-			pr_err("%d", matrix[i][j]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		logError(0, "\n");
 		kfree(matrix[i]);
 	}
@@ -1367,11 +1310,7 @@ void print_frame_u8(char *label, u8 **matrix, int row, int column)
 	for (i = 0; i < row; i++) {
 		logError(0, "%s ", tag);
 		for (j = 0; j < column; j++)
-<<<<<<< HEAD
 			logError(0, "%d ", matrix[i][j]);
-=======
-			pr_err("%d ", matrix[i][j]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		logError(0, "\n");
 		kfree(matrix[i]);
 	}
@@ -1386,11 +1325,7 @@ void print_frame_u32(char *label, u32 **matrix, int row, int column)
 	for (i = 0; i < row; i++) {
 		logError(0, "%s ", tag);
 		for (j = 0; j < column; j++)
-<<<<<<< HEAD
 			logError(0, "%d ", matrix[i][j]);
-=======
-			pr_err("%d ", matrix[i][j]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		logError(0, "\n");
 		kfree(matrix[i]);
 	}
@@ -1405,11 +1340,7 @@ void print_frame_int(char *label, int **matrix, int row, int column)
 	for (i = 0; i < row; i++) {
 		logError(0, "%s ", tag);
 		for (j = 0; j < column; j++)
-<<<<<<< HEAD
 			logError(0, "%d ", matrix[i][j]);
-=======
-			pr_err("%d ", matrix[i][j]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		logError(0, "\n");
 		kfree(matrix[i]);
 	}

@@ -25,7 +25,6 @@
 #include "i915_drv.h"
 #include "gvt.h"
 
-<<<<<<< HEAD
 /*
  * Note: Only for GVT-g virtual VBT generation, other usage must
  * not do like this.
@@ -244,47 +243,17 @@ int intel_vgpu_init_opregion(struct intel_vgpu *vgpu)
 	header->size = 0x8;
 	header->opregion_ver = 0x02000000;
 	header->mboxes = MBOX_VBT;
-=======
-static int init_vgpu_opregion(struct intel_vgpu *vgpu, u32 gpa)
-{
-	u8 *buf;
-	int i;
-
-	if (WARN((vgpu_opregion(vgpu)->va),
-			"vgpu%d: opregion has been initialized already.\n",
-			vgpu->id))
-		return -EINVAL;
-
-	vgpu_opregion(vgpu)->va = (void *)__get_free_pages(GFP_KERNEL |
-			__GFP_ZERO,
-			get_order(INTEL_GVT_OPREGION_SIZE));
-
-	if (!vgpu_opregion(vgpu)->va)
-		return -ENOMEM;
-
-	memcpy(vgpu_opregion(vgpu)->va, vgpu->gvt->opregion.opregion_va,
-	       INTEL_GVT_OPREGION_SIZE);
-
-	for (i = 0; i < INTEL_GVT_OPREGION_PAGES; i++)
-		vgpu_opregion(vgpu)->gfn[i] = (gpa >> PAGE_SHIFT) + i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* for unknown reason, the value in LID field is incorrect
 	 * which block the windows guest, so workaround it by force
 	 * setting it to "OPEN"
 	 */
-<<<<<<< HEAD
 	buf[INTEL_GVT_OPREGION_CLID] = 0x3;
 
 	/* emulated vbt from virt vbt generation */
 	virt_vbt_generation(&v);
 	memcpy(buf + INTEL_GVT_OPREGION_VBT_OFFSET, &v, sizeof(struct vbt));
 
-=======
-	buf = (u8 *)vgpu_opregion(vgpu)->va;
-	buf[INTEL_GVT_OPREGION_CLID] = 0x3;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -309,17 +278,13 @@ static int map_vgpu_opregion(struct intel_vgpu *vgpu, bool map)
 			return ret;
 		}
 	}
-<<<<<<< HEAD
 
 	vgpu_opregion(vgpu)->mapped = map;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 /**
-<<<<<<< HEAD
  * intel_vgpu_opregion_base_write_handler - Opregion base register write handler
  *
  * @vgpu: a vGPU
@@ -362,8 +327,6 @@ int intel_vgpu_opregion_base_write_handler(struct intel_vgpu *vgpu, u32 gpa)
 }
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * intel_vgpu_clean_opregion - clean the stuff used to emulate opregion
  * @vgpu: a vGPU
  *
@@ -376,7 +339,6 @@ void intel_vgpu_clean_opregion(struct intel_vgpu *vgpu)
 		return;
 
 	if (intel_gvt_host.hypervisor_type == INTEL_GVT_HYPERVISOR_XEN) {
-<<<<<<< HEAD
 		if (vgpu_opregion(vgpu)->mapped)
 			map_vgpu_opregion(vgpu, false);
 	} else if (intel_gvt_host.hypervisor_type == INTEL_GVT_HYPERVISOR_KVM) {
@@ -389,78 +351,6 @@ void intel_vgpu_clean_opregion(struct intel_vgpu *vgpu)
 
 }
 
-=======
-		map_vgpu_opregion(vgpu, false);
-		free_pages((unsigned long)vgpu_opregion(vgpu)->va,
-				get_order(INTEL_GVT_OPREGION_SIZE));
-
-		vgpu_opregion(vgpu)->va = NULL;
-	}
-}
-
-/**
- * intel_vgpu_init_opregion - initialize the stuff used to emulate opregion
- * @vgpu: a vGPU
- * @gpa: guest physical address of opregion
- *
- * Returns:
- * Zero on success, negative error code if failed.
- */
-int intel_vgpu_init_opregion(struct intel_vgpu *vgpu, u32 gpa)
-{
-	int ret;
-
-	gvt_dbg_core("vgpu%d: init vgpu opregion\n", vgpu->id);
-
-	if (intel_gvt_host.hypervisor_type == INTEL_GVT_HYPERVISOR_XEN) {
-		gvt_dbg_core("emulate opregion from kernel\n");
-
-		ret = init_vgpu_opregion(vgpu, gpa);
-		if (ret)
-			return ret;
-
-		ret = map_vgpu_opregion(vgpu, true);
-		if (ret)
-			return ret;
-	}
-
-	return 0;
-}
-
-/**
- * intel_gvt_clean_opregion - clean host opergion related stuffs
- * @gvt: a GVT device
- *
- */
-void intel_gvt_clean_opregion(struct intel_gvt *gvt)
-{
-	memunmap(gvt->opregion.opregion_va);
-	gvt->opregion.opregion_va = NULL;
-}
-
-/**
- * intel_gvt_init_opregion - initialize host opergion related stuffs
- * @gvt: a GVT device
- *
- * Returns:
- * Zero on success, negative error code if failed.
- */
-int intel_gvt_init_opregion(struct intel_gvt *gvt)
-{
-	gvt_dbg_core("init host opregion\n");
-
-	pci_read_config_dword(gvt->dev_priv->drm.pdev, INTEL_GVT_PCI_OPREGION,
-			&gvt->opregion.opregion_pa);
-
-	gvt->opregion.opregion_va = memremap(gvt->opregion.opregion_pa,
-					     INTEL_GVT_OPREGION_SIZE, MEMREMAP_WB);
-	if (!gvt->opregion.opregion_va) {
-		gvt_err("fail to map host opregion\n");
-		return -EFAULT;
-	}
-	return 0;
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define GVT_OPREGION_FUNC(scic)					\
 	({							\
@@ -577,7 +467,6 @@ static bool querying_capabilities(u32 scic)
  */
 int intel_vgpu_emulate_opregion_request(struct intel_vgpu *vgpu, u32 swsci)
 {
-<<<<<<< HEAD
 	u32 scic, parm;
 	u32 func, subfunc;
 	u64 scic_pa = 0, parm_pa = 0;
@@ -617,13 +506,6 @@ int intel_vgpu_emulate_opregion_request(struct intel_vgpu *vgpu, u32 swsci)
 		gvt_vgpu_err("not supported hypervisor\n");
 		return -EINVAL;
 	}
-=======
-	u32 *scic, *parm;
-	u32 func, subfunc;
-
-	scic = vgpu_opregion(vgpu)->va + INTEL_GVT_OPREGION_SCIC;
-	parm = vgpu_opregion(vgpu)->va + INTEL_GVT_OPREGION_PARM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!(swsci & SWSCI_SCI_SELECT)) {
 		gvt_vgpu_err("requesting SMI service\n");
@@ -636,15 +518,9 @@ int intel_vgpu_emulate_opregion_request(struct intel_vgpu *vgpu, u32 swsci)
 		return 0;
 	}
 
-<<<<<<< HEAD
 	func = GVT_OPREGION_FUNC(scic);
 	subfunc = GVT_OPREGION_SUBFUNC(scic);
 	if (!querying_capabilities(scic)) {
-=======
-	func = GVT_OPREGION_FUNC(*scic);
-	subfunc = GVT_OPREGION_SUBFUNC(*scic);
-	if (!querying_capabilities(*scic)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		gvt_vgpu_err("requesting runtime service: func \"%s\","
 				" subfunc \"%s\"\n",
 				opregion_func_name(func),
@@ -653,7 +529,6 @@ int intel_vgpu_emulate_opregion_request(struct intel_vgpu *vgpu, u32 swsci)
 		 * emulate exit status of function call, '0' means
 		 * "failure, generic, unsupported or unknown cause"
 		 */
-<<<<<<< HEAD
 		scic &= ~OPREGION_SCIC_EXIT_MASK;
 		goto out;
 	}
@@ -692,13 +567,5 @@ out:
 		return -EINVAL;
 	}
 
-=======
-		*scic &= ~OPREGION_SCIC_EXIT_MASK;
-		return 0;
-	}
-
-	*scic = 0;
-	*parm = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }

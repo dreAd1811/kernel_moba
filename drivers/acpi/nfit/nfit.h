@@ -24,11 +24,7 @@
 /* ACPI 6.1 */
 #define UUID_NFIT_BUS "2f10e7a4-9e91-11e4-89d3-123b93f75cba"
 
-<<<<<<< HEAD
 /* http://pmem.io/documents/NVDIMM_DSM_Interface-V1.6.pdf */
-=======
-/* http://pmem.io/documents/NVDIMM_DSM_Interface_Example.pdf */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define UUID_NFIT_DIMM "4309ac30-0d11-11e4-9191-0800200c9a66"
 
 /* https://github.com/HewlettPackard/hpe-nvm/blob/master/Documentation/ */
@@ -42,7 +38,6 @@
 		| ACPI_NFIT_MEM_RESTORE_FAILED | ACPI_NFIT_MEM_FLUSH_FAILED \
 		| ACPI_NFIT_MEM_NOT_ARMED | ACPI_NFIT_MEM_MAP_FAILED)
 
-<<<<<<< HEAD
 #define NVDIMM_FAMILY_MAX NVDIMM_FAMILY_MSFT
 
 #define NVDIMM_STANDARD_CMDMASK \
@@ -74,8 +69,6 @@ enum nvdimm_family_cmds {
  | 1 << NVDIMM_INTEL_QUERY_FWUPDATE | 1 << NVDIMM_INTEL_SET_THRESHOLD \
  | 1 << NVDIMM_INTEL_INJECT_ERROR | 1 << NVDIMM_INTEL_LATCH_SHUTDOWN)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum nfit_uuids {
 	/* for simplicity alias the uuid index with the family id */
 	NFIT_DEV_DIMM = NVDIMM_FAMILY_INTEL,
@@ -124,7 +117,6 @@ enum nfit_dimm_notifiers {
 	NFIT_NOTIFY_DIMM_HEALTH = 0x81,
 };
 
-<<<<<<< HEAD
 enum nfit_ars_state {
 	ARS_REQ_SHORT,
 	ARS_REQ_LONG,
@@ -135,12 +127,6 @@ struct nfit_spa {
 	struct list_head list;
 	struct nd_region *nd_region;
 	unsigned long ars_state;
-=======
-struct nfit_spa {
-	struct list_head list;
-	struct nd_region *nd_region;
-	unsigned int ars_required:1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 clear_err_unit;
 	u32 max_ars;
 	struct acpi_nfit_system_address spa[0];
@@ -191,7 +177,6 @@ struct nfit_mem {
 	struct resource *flush_wpq;
 	unsigned long dsm_mask;
 	int family;
-<<<<<<< HEAD
 	bool has_lsr;
 	bool has_lsw;
 };
@@ -201,8 +186,6 @@ enum scrub_flags {
 	ARS_CANCEL,
 	ARS_VALID,
 	ARS_POLL,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct acpi_nfit_desc {
@@ -218,7 +201,6 @@ struct acpi_nfit_desc {
 	struct list_head idts;
 	struct nvdimm_bus *nvdimm_bus;
 	struct device *dev;
-<<<<<<< HEAD
 	struct nd_cmd_ars_status *ars_status;
 	struct nfit_spa *scrub_spa;
 	struct delayed_work dwork;
@@ -233,20 +215,6 @@ struct acpi_nfit_desc {
 	unsigned long bus_nfit_cmd_force_en;
 	unsigned int platform_cap;
 	unsigned int scrub_tmo;
-=======
-	u8 ars_start_flags;
-	struct nd_cmd_ars_status *ars_status;
-	size_t ars_status_size;
-	struct work_struct work;
-	struct list_head list;
-	struct kernfs_node *scrub_count_state;
-	unsigned int scrub_count;
-	unsigned int scrub_mode;
-	unsigned int cancel:1;
-	unsigned int init_complete:1;
-	unsigned long dimm_cmd_force_en;
-	unsigned long bus_cmd_force_en;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int (*blk_do_io)(struct nd_blk_region *ndbr, resource_size_t dpa,
 			void *iobuf, u64 len, int rw);
 };
@@ -288,12 +256,8 @@ struct nfit_blk {
 
 extern struct list_head acpi_descs;
 extern struct mutex acpi_desc_lock;
-<<<<<<< HEAD
 int acpi_nfit_ars_rescan(struct acpi_nfit_desc *acpi_desc,
 		enum nfit_ars_state req_type);
-=======
-int acpi_nfit_ars_rescan(struct acpi_nfit_desc *acpi_desc, u8 flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_X86_MCE
 void nfit_mce_register(void);

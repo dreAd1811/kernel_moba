@@ -10,17 +10,11 @@
 #include <linux/init.h>
 #include <linux/blkdev.h>
 #include <linux/bio.h>
-<<<<<<< HEAD
 #include <linux/dax.h>
 #include <linux/slab.h>
 #include <linux/kthread.h>
 #include <linux/freezer.h>
 #include <linux/uio.h>
-=======
-#include <linux/slab.h>
-#include <linux/kthread.h>
-#include <linux/freezer.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DM_MSG_PREFIX "log-writes"
 
@@ -58,18 +52,11 @@
  * in fact we want to do the data and the discard in the order that they
  * completed.
  */
-<<<<<<< HEAD
 #define LOG_FLUSH_FLAG		(1 << 0)
 #define LOG_FUA_FLAG		(1 << 1)
 #define LOG_DISCARD_FLAG	(1 << 2)
 #define LOG_MARK_FLAG		(1 << 3)
 #define LOG_METADATA_FLAG	(1 << 4)
-=======
-#define LOG_FLUSH_FLAG (1 << 0)
-#define LOG_FUA_FLAG (1 << 1)
-#define LOG_DISCARD_FLAG (1 << 2)
-#define LOG_MARK_FLAG (1 << 3)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define WRITE_LOG_VERSION 1ULL
 #define WRITE_LOG_MAGIC 0x6a736677736872ULL
@@ -273,7 +260,6 @@ error:
 	return -1;
 }
 
-<<<<<<< HEAD
 static int write_inline_data(struct log_writes_c *lc, void *entry,
 			     size_t entrylen, void *data, size_t datalen,
 			     sector_t sector)
@@ -342,38 +328,26 @@ error:
 	return -1;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int log_one_block(struct log_writes_c *lc,
 			 struct pending_block *block, sector_t sector)
 {
 	struct bio *bio;
 	struct log_write_entry entry;
-<<<<<<< HEAD
 	size_t metadatalen, ret;
-=======
-	size_t ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 
 	entry.sector = cpu_to_le64(block->sector);
 	entry.nr_sectors = cpu_to_le64(block->nr_sectors);
 	entry.flags = cpu_to_le64(block->flags);
 	entry.data_len = cpu_to_le64(block->datalen);
-<<<<<<< HEAD
 
 	metadatalen = (block->flags & LOG_MARK_FLAG) ? block->datalen : 0;
 	if (write_metadata(lc, &entry, sizeof(entry), block->data,
 			   metadatalen, sector)) {
-=======
-	if (write_metadata(lc, &entry, sizeof(entry), block->data,
-			   block->datalen, sector)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		free_pending_block(lc, block);
 		return -1;
 	}
 
-<<<<<<< HEAD
 	sector += dev_to_bio_sectors(lc, 1);
 
 	if (block->datalen && metadatalen == 0) {
@@ -388,11 +362,6 @@ static int log_one_block(struct log_writes_c *lc,
 
 	if (!block->vec_cnt)
 		goto out;
-=======
-	if (!block->vec_cnt)
-		goto out;
-	sector += dev_to_bio_sectors(lc, 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	atomic_inc(&lc->io_blocks);
 	bio = bio_alloc(GFP_KERNEL, min(block->vec_cnt, BIO_MAX_PAGES));
@@ -645,11 +614,7 @@ static int log_mark(struct log_writes_c *lc, char *data)
 		return -ENOMEM;
 	}
 
-<<<<<<< HEAD
 	block->data = kstrndup(data, maxsize - 1, GFP_KERNEL);
-=======
-	block->data = kstrndup(data, maxsize, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!block->data) {
 		DMERR("Error copying mark data");
 		kfree(block);
@@ -709,10 +674,7 @@ static int log_writes_map(struct dm_target *ti, struct bio *bio)
 	bool flush_bio = (bio->bi_opf & REQ_PREFLUSH);
 	bool fua_bio = (bio->bi_opf & REQ_FUA);
 	bool discard_bio = (bio_op(bio) == REQ_OP_DISCARD);
-<<<<<<< HEAD
 	bool meta_bio = (bio->bi_opf & REQ_META);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pb->block = NULL;
 
@@ -757,11 +719,8 @@ static int log_writes_map(struct dm_target *ti, struct bio *bio)
 		block->flags |= LOG_FUA_FLAG;
 	if (discard_bio)
 		block->flags |= LOG_DISCARD_FLAG;
-<<<<<<< HEAD
 	if (meta_bio)
 		block->flags |= LOG_METADATA_FLAG;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	block->sector = bio_to_dev_sectors(lc, bio->bi_iter.bi_sector);
 	block->nr_sectors = bio_to_dev_sectors(lc, bio_sectors(bio));
@@ -879,11 +838,7 @@ static void log_writes_status(struct dm_target *ti, status_type_t type,
 }
 
 static int log_writes_prepare_ioctl(struct dm_target *ti,
-<<<<<<< HEAD
 				    struct block_device **bdev)
-=======
-		struct block_device **bdev, fmode_t *mode)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct log_writes_c *lc = ti->private;
 	struct dm_dev *dev = lc->dev;
@@ -910,12 +865,8 @@ static int log_writes_iterate_devices(struct dm_target *ti,
  * Messages supported:
  *   mark <mark data> - specify the marked data.
  */
-<<<<<<< HEAD
 static int log_writes_message(struct dm_target *ti, unsigned argc, char **argv,
 			      char *result, unsigned maxlen)
-=======
-static int log_writes_message(struct dm_target *ti, unsigned argc, char **argv)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int r = -EINVAL;
 	struct log_writes_c *lc = ti->private;
@@ -948,7 +899,6 @@ static void log_writes_io_hints(struct dm_target *ti, struct queue_limits *limit
 	limits->io_min = limits->physical_block_size;
 }
 
-<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_DAX_DRIVER)
 static int log_dax(struct log_writes_c *lc, sector_t sector, size_t bytes,
 		   struct iov_iter *i)
@@ -1053,11 +1003,6 @@ static size_t log_writes_dax_copy_to_iter(struct dm_target *ti,
 static struct target_type log_writes_target = {
 	.name   = "log-writes",
 	.version = {1, 1, 0},
-=======
-static struct target_type log_writes_target = {
-	.name   = "log-writes",
-	.version = {1, 0, 0},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.module = THIS_MODULE,
 	.ctr    = log_writes_ctr,
 	.dtr    = log_writes_dtr,
@@ -1068,12 +1013,9 @@ static struct target_type log_writes_target = {
 	.message = log_writes_message,
 	.iterate_devices = log_writes_iterate_devices,
 	.io_hints = log_writes_io_hints,
-<<<<<<< HEAD
 	.direct_access = log_writes_dax_direct_access,
 	.dax_copy_from_iter = log_writes_dax_copy_from_iter,
 	.dax_copy_to_iter = log_writes_dax_copy_to_iter,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int __init dm_log_writes_init(void)

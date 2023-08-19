@@ -31,11 +31,6 @@ static const struct of_device_id omap_dt_match_table[] __initconst = {
 static void __init __maybe_unused omap_generic_init(void)
 {
 	pdata_quirks_init(omap_dt_match_table);
-<<<<<<< HEAD
-=======
-
-	omapdss_init_of();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	omap_soc_device_init();
 }
 

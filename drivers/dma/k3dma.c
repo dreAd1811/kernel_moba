@@ -222,17 +222,9 @@ static irqreturn_t k3_dma_int_handler(int irq, void *dev_id)
 			c = p->vchan;
 			if (c && (tc1 & BIT(i))) {
 				spin_lock_irqsave(&c->vc.lock, flags);
-<<<<<<< HEAD
 				vchan_cookie_complete(&p->ds_run->vd);
 				p->ds_done = p->ds_run;
 				p->ds_run = NULL;
-=======
-				if (p->ds_run != NULL) {
-					vchan_cookie_complete(&p->ds_run->vd);
-					p->ds_done = p->ds_run;
-					p->ds_run = NULL;
-				}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				spin_unlock_irqrestore(&c->vc.lock, flags);
 			}
 			if (c && (tc2 & BIT(i))) {
@@ -272,13 +264,6 @@ static int k3_dma_start_txd(struct k3_dma_chan *c)
 	if (BIT(c->phy->idx) & k3_dma_get_chan_stat(d))
 		return -EAGAIN;
 
-<<<<<<< HEAD
-=======
-	/* Avoid losing track of  ds_run if a transaction is in flight */
-	if (c->phy->ds_run)
-		return -EAGAIN;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (vd) {
 		struct k3_dma_desc_sw *ds =
 			container_of(vd, struct k3_dma_desc_sw, vd);
@@ -734,11 +719,7 @@ static int k3_dma_terminate_all(struct dma_chan *chan)
 		c->phy = NULL;
 		p->vchan = NULL;
 		if (p->ds_run) {
-<<<<<<< HEAD
 			vchan_terminate_vdesc(&p->ds_run->vd);
-=======
-			k3_dma_free_desc(&p->ds_run->vd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			p->ds_run = NULL;
 		}
 		p->ds_done = NULL;
@@ -749,7 +730,6 @@ static int k3_dma_terminate_all(struct dma_chan *chan)
 	return 0;
 }
 
-<<<<<<< HEAD
 static void k3_dma_synchronize(struct dma_chan *chan)
 {
 	struct k3_dma_chan *c = to_k3_chan(chan);
@@ -757,8 +737,6 @@ static void k3_dma_synchronize(struct dma_chan *chan)
 	vchan_synchronize(&c->vc);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int k3_dma_transfer_pause(struct dma_chan *chan)
 {
 	struct k3_dma_chan *c = to_k3_chan(chan);
@@ -870,13 +848,8 @@ static int k3_dma_probe(struct platform_device *op)
 		return -ENOMEM;
 
 	/* init phy channel */
-<<<<<<< HEAD
 	d->phy = devm_kcalloc(&op->dev,
 		d->dma_channels, sizeof(struct k3_dma_phy), GFP_KERNEL);
-=======
-	d->phy = devm_kzalloc(&op->dev,
-		d->dma_channels * sizeof(struct k3_dma_phy), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (d->phy == NULL)
 		return -ENOMEM;
 
@@ -902,20 +875,12 @@ static int k3_dma_probe(struct platform_device *op)
 	d->slave.device_pause = k3_dma_transfer_pause;
 	d->slave.device_resume = k3_dma_transfer_resume;
 	d->slave.device_terminate_all = k3_dma_terminate_all;
-<<<<<<< HEAD
 	d->slave.device_synchronize = k3_dma_synchronize;
 	d->slave.copy_align = DMAENGINE_ALIGN_8_BYTES;
 
 	/* init virtual channel */
 	d->chans = devm_kcalloc(&op->dev,
 		d->dma_requests, sizeof(struct k3_dma_chan), GFP_KERNEL);
-=======
-	d->slave.copy_align = DMAENGINE_ALIGN_8_BYTES;
-
-	/* init virtual channel */
-	d->chans = devm_kzalloc(&op->dev,
-		d->dma_requests * sizeof(struct k3_dma_chan), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (d->chans == NULL)
 		return -ENOMEM;
 

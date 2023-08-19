@@ -8,10 +8,7 @@
  * Copyright(c) 2012 - 2015 Intel Corporation. All rights reserved.
  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
-<<<<<<< HEAD
  * Copyright(c) 2018 Intel Corporation
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of version 2 of the GNU General Public License as
@@ -39,10 +36,7 @@
  * Copyright(c) 2012 - 2015 Intel Corporation. All rights reserved.
  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
-<<<<<<< HEAD
  * Copyright(c) 2018 Intel Corporation
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -222,11 +216,7 @@ int iwl_mvm_sta_send_to_fw(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
 		cpu_to_le32(agg_size << STA_FLG_MAX_AGG_SIZE_SHIFT);
 	add_sta_cmd.station_flags |=
 		cpu_to_le32(mpdu_dens << STA_FLG_AGG_MPDU_DENS_SHIFT);
-<<<<<<< HEAD
 	if (mvm_sta->sta_state >= IEEE80211_STA_ASSOC)
-=======
-	if (mvm_sta->associated)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		add_sta_cmd.assoc_id = cpu_to_le16(sta->aid);
 
 	if (sta->wme) {
@@ -264,17 +254,11 @@ int iwl_mvm_sta_send_to_fw(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
 	return ret;
 }
 
-<<<<<<< HEAD
 static void iwl_mvm_rx_agg_session_expired(struct timer_list *t)
 {
 	struct iwl_mvm_baid_data *data =
 		from_timer(data, t, session_timer);
 	struct iwl_mvm_baid_data __rcu **rcu_ptr = data->rcu_ptr;
-=======
-static void iwl_mvm_rx_agg_session_expired(unsigned long data)
-{
-	struct iwl_mvm_baid_data __rcu **rcu_ptr = (void *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct iwl_mvm_baid_data *ba_data;
 	struct ieee80211_sta *sta;
 	struct iwl_mvm_sta *mvm_sta;
@@ -456,19 +440,6 @@ static int iwl_mvm_remove_sta_queue_marking(struct iwl_mvm *mvm, int queue)
 
 	rcu_read_unlock();
 
-<<<<<<< HEAD
-=======
-	/*
-	 * The TX path may have been using this TXQ_ID from the tid_data,
-	 * so make sure it's no longer running so that we can safely reuse
-	 * this TXQ later. We've set all the TIDs to IWL_MVM_INVALID_QUEUE
-	 * above, but nothing guarantees we've stopped using them. Thus,
-	 * without this, we could get to iwl_mvm_disable_txq() and remove
-	 * the queue while still sending frames to it.
-	 */
-	synchronize_net();
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return disable_agg_tids;
 }
 
@@ -677,12 +648,7 @@ int iwl_mvm_scd_queue_redirect(struct iwl_mvm *mvm, int queue, int tid,
 
 	/* Redirect to lower AC */
 	iwl_mvm_reconfig_scd(mvm, queue, iwl_mvm_ac_to_tx_fifo[ac],
-<<<<<<< HEAD
 			     cmd.sta_id, tid, IWL_FRAME_LIMIT, ssn);
-=======
-			     cmd.sta_id, tid, LINK_QUAL_AGG_FRAME_LIMIT_DEF,
-			     ssn);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Update AC marking of the queue */
 	spin_lock_bh(&mvm->queue_info_lock);
@@ -1295,7 +1261,6 @@ static void iwl_mvm_realloc_queues_after_restart(struct iwl_mvm *mvm,
 							 mvm_sta->sta_id,
 							 i, wdg_timeout);
 			tid_data->txq_id = txq_id;
-<<<<<<< HEAD
 
 			/*
 			 * Since we don't set the seq number after reset, and HW
@@ -1304,8 +1269,6 @@ static void iwl_mvm_realloc_queues_after_restart(struct iwl_mvm *mvm,
 			 * internally as well, so it keeps in sync with real val
 			 */
 			tid_data->seq_number = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else {
 			u16 seq = IEEE80211_SEQ_TO_SN(tid_data->seq_number);
 
@@ -1478,7 +1441,6 @@ int iwl_mvm_add_sta(struct iwl_mvm *mvm,
 			goto err;
 	}
 
-<<<<<<< HEAD
 	/*
 	 * if rs is registered with mac80211, then "add station" will be handled
 	 * via the corresponding ops, otherwise need to notify rate scaling here
@@ -1486,8 +1448,6 @@ int iwl_mvm_add_sta(struct iwl_mvm *mvm,
 	if (iwl_mvm_has_tlc_offload(mvm))
 		iwl_mvm_rs_add_sta(mvm, mvm_sta);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 update_fw:
 	ret = iwl_mvm_sta_send_to_fw(mvm, sta, sta_update, sta_flags);
 	if (ret)
@@ -1812,11 +1772,7 @@ int iwl_mvm_add_aux_sta(struct iwl_mvm *mvm)
 	}
 
 	/*
-<<<<<<< HEAD
 	 * For 22000 firmware and on we cannot add queue to a station unknown
-=======
-	 * For a000 firmware and on we cannot add queue to a station unknown
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * to firmware so enable queue here - after the station was added
 	 */
 	if (iwl_mvm_has_new_tx_api(mvm))
@@ -1939,11 +1895,7 @@ int iwl_mvm_send_add_bcast_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
 		return ret;
 
 	/*
-<<<<<<< HEAD
 	 * For 22000 firmware and on we cannot add queue to a station unknown
-=======
-	 * For a000 firmware and on we cannot add queue to a station unknown
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * to firmware so enable queue here - after the station was added
 	 */
 	if (iwl_mvm_has_new_tx_api(mvm)) {
@@ -2133,11 +2085,7 @@ int iwl_mvm_add_mcast_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
 
 	/*
 	 * Enable cab queue after the ADD_STA command is sent.
-<<<<<<< HEAD
 	 * This is needed for 22000 firmware which won't accept SCD_QUEUE_CFG
-=======
-	 * This is needed for a000 firmware which won't accept SCD_QUEUE_CFG
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * command with unknown station id, and for FW that doesn't support
 	 * station API since the cab queue is not included in the
 	 * tfd_queue_mask.
@@ -2202,11 +2150,8 @@ static void iwl_mvm_free_reorder(struct iwl_mvm *mvm,
 		int j;
 		struct iwl_mvm_reorder_buffer *reorder_buf =
 			&data->reorder_buf[i];
-<<<<<<< HEAD
 		struct iwl_mvm_reorder_buf_entry *entries =
 			&data->entries[i * data->entries_per_queue];
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		spin_lock_bh(&reorder_buf->lock);
 		if (likely(!reorder_buf->num_stored)) {
@@ -2222,11 +2167,7 @@ static void iwl_mvm_free_reorder(struct iwl_mvm *mvm,
 		WARN_ON(1);
 
 		for (j = 0; j < reorder_buf->buf_size; j++)
-<<<<<<< HEAD
 			__skb_queue_purge(&entries[j].e.frames);
-=======
-			__skb_queue_purge(&reorder_buf->entries[j]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * Prevent timer re-arm. This prevents a very far fetched case
 		 * where we timed out on the notification. There may be prior
@@ -2242,32 +2183,22 @@ static void iwl_mvm_free_reorder(struct iwl_mvm *mvm,
 }
 
 static void iwl_mvm_init_reorder_buffer(struct iwl_mvm *mvm,
-<<<<<<< HEAD
 					struct iwl_mvm_baid_data *data,
 					u16 ssn, u16 buf_size)
-=======
-					u32 sta_id,
-					struct iwl_mvm_baid_data *data,
-					u16 ssn, u8 buf_size)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i;
 
 	for (i = 0; i < mvm->trans->num_rx_queues; i++) {
 		struct iwl_mvm_reorder_buffer *reorder_buf =
 			&data->reorder_buf[i];
-<<<<<<< HEAD
 		struct iwl_mvm_reorder_buf_entry *entries =
 			&data->entries[i * data->entries_per_queue];
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		int j;
 
 		reorder_buf->num_stored = 0;
 		reorder_buf->head_sn = ssn;
 		reorder_buf->buf_size = buf_size;
 		/* rx reorder timer */
-<<<<<<< HEAD
 		timer_setup(&reorder_buf->reorder_timer,
 			    iwl_mvm_reorder_timer_expired, 0);
 		spin_lock_init(&reorder_buf->lock);
@@ -2276,28 +2207,11 @@ static void iwl_mvm_init_reorder_buffer(struct iwl_mvm *mvm,
 		reorder_buf->valid = false;
 		for (j = 0; j < reorder_buf->buf_size; j++)
 			__skb_queue_head_init(&entries[j].e.frames);
-=======
-		reorder_buf->reorder_timer.function =
-			iwl_mvm_reorder_timer_expired;
-		reorder_buf->reorder_timer.data = (unsigned long)reorder_buf;
-		init_timer(&reorder_buf->reorder_timer);
-		spin_lock_init(&reorder_buf->lock);
-		reorder_buf->mvm = mvm;
-		reorder_buf->queue = i;
-		reorder_buf->sta_id = sta_id;
-		reorder_buf->valid = false;
-		for (j = 0; j < reorder_buf->buf_size; j++)
-			__skb_queue_head_init(&reorder_buf->entries[j]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
 int iwl_mvm_sta_rx_agg(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
-<<<<<<< HEAD
 		       int tid, u16 ssn, bool start, u16 buf_size, u16 timeout)
-=======
-		       int tid, u16 ssn, bool start, u8 buf_size, u16 timeout)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct iwl_mvm_sta *mvm_sta = iwl_mvm_sta_from_mac80211(sta);
 	struct iwl_mvm_add_sta_cmd cmd = {};
@@ -2313,7 +2227,6 @@ int iwl_mvm_sta_rx_agg(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
 	}
 
 	if (iwl_mvm_has_new_rx_api(mvm) && start) {
-<<<<<<< HEAD
 		u16 reorder_buf_size = buf_size * sizeof(baid_data->entries[0]);
 
 		/* sparse doesn't like the __align() so don't check */
@@ -2335,15 +2248,12 @@ int iwl_mvm_sta_rx_agg(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
 		 */
 		reorder_buf_size = ALIGN(reorder_buf_size, SMP_CACHE_BYTES);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * Allocate here so if allocation fails we can bail out early
 		 * before starting the BA session in the firmware
 		 */
 		baid_data = kzalloc(sizeof(*baid_data) +
 				    mvm->trans->num_rx_queues *
-<<<<<<< HEAD
 				    reorder_buf_size,
 				    GFP_KERNEL);
 		if (!baid_data)
@@ -2355,12 +2265,6 @@ int iwl_mvm_sta_rx_agg(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
 		 */
 		baid_data->entries_per_queue =
 			reorder_buf_size / sizeof(baid_data->entries[0]);
-=======
-				    sizeof(baid_data->reorder_buf[0]),
-				    GFP_KERNEL);
-		if (!baid_data)
-			return -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	cmd.mac_id_n_color = cpu_to_le32(mvm_sta->mac_id_n_color);
@@ -2369,11 +2273,7 @@ int iwl_mvm_sta_rx_agg(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
 	if (start) {
 		cmd.add_immediate_ba_tid = (u8) tid;
 		cmd.add_immediate_ba_ssn = cpu_to_le16(ssn);
-<<<<<<< HEAD
 		cmd.rx_ba_window = cpu_to_le16(buf_size);
-=======
-		cmd.rx_ba_window = cpu_to_le16((u16)buf_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		cmd.remove_immediate_ba_tid = (u8) tid;
 	}
@@ -2423,15 +2323,9 @@ int iwl_mvm_sta_rx_agg(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
 		baid_data->baid = baid;
 		baid_data->timeout = timeout;
 		baid_data->last_rx = jiffies;
-<<<<<<< HEAD
 		baid_data->rcu_ptr = &mvm->baid_map[baid];
 		timer_setup(&baid_data->session_timer,
 			    iwl_mvm_rx_agg_session_expired, 0);
-=======
-		setup_timer(&baid_data->session_timer,
-			    iwl_mvm_rx_agg_session_expired,
-			    (unsigned long)&mvm->baid_map[baid]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		baid_data->mvm = mvm;
 		baid_data->tid = tid;
 		baid_data->sta_id = mvm_sta->sta_id;
@@ -2441,12 +2335,7 @@ int iwl_mvm_sta_rx_agg(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
 			mod_timer(&baid_data->session_timer,
 				  TU_TO_EXP_TIME(timeout * 2));
 
-<<<<<<< HEAD
 		iwl_mvm_init_reorder_buffer(mvm, baid_data, ssn, buf_size);
-=======
-		iwl_mvm_init_reorder_buffer(mvm, mvm_sta->sta_id,
-					    baid_data, ssn, buf_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * protect the BA data with RCU to cover a case where our
 		 * internal RX sync mechanism will timeout (not that it's
@@ -2563,11 +2452,7 @@ int iwl_mvm_sta_tx_agg_start(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
 	struct iwl_mvm_sta *mvmsta = iwl_mvm_sta_from_mac80211(sta);
 	struct iwl_mvm_tid_data *tid_data;
 	u16 normalized_ssn;
-<<<<<<< HEAD
 	int txq_id;
-=======
-	u16 txq_id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	if (WARN_ON_ONCE(tid >= IWL_MAX_TID_COUNT))
@@ -2583,7 +2468,6 @@ int iwl_mvm_sta_tx_agg_start(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
 
 	lockdep_assert_held(&mvm->mutex);
 
-<<<<<<< HEAD
 	if (mvmsta->tid_data[tid].txq_id == IWL_MVM_INVALID_QUEUE &&
 	    iwl_mvm_has_new_tx_api(mvm)) {
 		u8 ac = tid_to_mac80211_ac[tid];
@@ -2593,8 +2477,6 @@ int iwl_mvm_sta_tx_agg_start(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
 			return ret;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_bh(&mvmsta->lock);
 
 	/* possible race condition - we entered D0i3 while starting agg */
@@ -2614,37 +2496,17 @@ int iwl_mvm_sta_tx_agg_start(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
 	 */
 	txq_id = mvmsta->tid_data[tid].txq_id;
 	if (txq_id == IWL_MVM_INVALID_QUEUE) {
-<<<<<<< HEAD
 		txq_id = iwl_mvm_find_free_queue(mvm, mvmsta->sta_id,
 						 IWL_MVM_DQA_MIN_DATA_QUEUE,
 						 IWL_MVM_DQA_MAX_DATA_QUEUE);
 		if (txq_id < 0) {
 			ret = txq_id;
-=======
-		ret = iwl_mvm_find_free_queue(mvm, mvmsta->sta_id,
-					      IWL_MVM_DQA_MIN_DATA_QUEUE,
-					      IWL_MVM_DQA_MAX_DATA_QUEUE);
-		if (ret < 0) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			IWL_ERR(mvm, "Failed to allocate agg queue\n");
 			goto release_locks;
 		}
 
-<<<<<<< HEAD
 		/* TXQ hasn't yet been enabled, so mark it only as reserved */
 		mvm->queue_info[txq_id].status = IWL_MVM_QUEUE_RESERVED;
-=======
-		txq_id = ret;
-
-		/* TXQ hasn't yet been enabled, so mark it only as reserved */
-		mvm->queue_info[txq_id].status = IWL_MVM_QUEUE_RESERVED;
-	} else if (WARN_ON(txq_id >= IWL_MAX_HW_QUEUES)) {
-		ret = -ENXIO;
-		IWL_ERR(mvm, "tid_id %d out of range (0, %d)!\n",
-			tid, IWL_MAX_HW_QUEUES - 1);
-		goto out;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (unlikely(mvm->queue_info[txq_id].status ==
 			    IWL_MVM_QUEUE_SHARED)) {
 		ret = -ENXIO;
@@ -2671,11 +2533,7 @@ int iwl_mvm_sta_tx_agg_start(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
 			    tid_data->next_reclaimed);
 
 	/*
-<<<<<<< HEAD
 	 * In 22000 HW, the next_reclaimed index is only 8 bit, so we'll need
-=======
-	 * In A000 HW, the next_reclaimed index is only 8 bit, so we'll need
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * to align the wrap around of ssn so we compare relevant values.
 	 */
 	normalized_ssn = tid_data->ssn;
@@ -2701,11 +2559,7 @@ out:
 }
 
 int iwl_mvm_sta_tx_agg_oper(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
-<<<<<<< HEAD
 			    struct ieee80211_sta *sta, u16 tid, u16 buf_size,
-=======
-			    struct ieee80211_sta *sta, u16 tid, u8 buf_size,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    bool amsdu)
 {
 	struct iwl_mvm_sta *mvmsta = iwl_mvm_sta_from_mac80211(sta);
@@ -2724,7 +2578,6 @@ int iwl_mvm_sta_tx_agg_oper(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
 		.aggregate = true,
 	};
 
-<<<<<<< HEAD
 	/*
 	 * When FW supports TLC_OFFLOAD, it also implements Tx aggregation
 	 * manager, so this function should never be called in this case.
@@ -2735,17 +2588,6 @@ int iwl_mvm_sta_tx_agg_oper(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
 	BUILD_BUG_ON((sizeof(mvmsta->agg_tids) * BITS_PER_BYTE)
 		     != IWL_MAX_TID_COUNT);
 
-=======
-	BUILD_BUG_ON((sizeof(mvmsta->agg_tids) * BITS_PER_BYTE)
-		     != IWL_MAX_TID_COUNT);
-
-	if (!mvm->trans->cfg->gen2)
-		buf_size = min_t(int, buf_size, LINK_QUAL_AGG_FRAME_LIMIT_DEF);
-	else
-		buf_size = min_t(int, buf_size,
-				 LINK_QUAL_AGG_FRAME_LIMIT_GEN2_DEF);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_bh(&mvmsta->lock);
 	ssn = tid_data->ssn;
 	queue = tid_data->txq_id;
@@ -2757,7 +2599,6 @@ int iwl_mvm_sta_tx_agg_oper(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
 
 	if (iwl_mvm_has_new_tx_api(mvm)) {
 		/*
-<<<<<<< HEAD
 		 * If there is no queue for this tid, iwl_mvm_sta_tx_agg_start()
 		 * would have failed, so if we are here there is no need to
 		 * allocate a queue.
@@ -2769,12 +2610,6 @@ int iwl_mvm_sta_tx_agg_oper(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
 		 * should be updated as well.
 		 */
 		if (buf_size < IWL_FRAME_LIMIT)
-=======
-		 * If no queue iwl_mvm_sta_tx_agg_start() would have failed so
-		 * no need to check queue's status
-		 */
-		if (buf_size < mvmsta->max_agg_bufsize)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -ENOTSUPP;
 
 		ret = iwl_mvm_sta_tx_agg(mvm, sta, tid, queue, true);
@@ -2797,11 +2632,7 @@ int iwl_mvm_sta_tx_agg_oper(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
 	 * Only reconfig the SCD for the queue if the window size has
 	 * changed from current (become smaller)
 	 */
-<<<<<<< HEAD
 	if (!alloc_queue && buf_size < IWL_FRAME_LIMIT) {
-=======
-	if (!alloc_queue && buf_size < mvmsta->max_agg_bufsize) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * If reconfiguring an existing queue, it first must be
 		 * drained
@@ -2851,20 +2682,12 @@ out:
 	 */
 	mvmsta->max_agg_bufsize =
 		min(mvmsta->max_agg_bufsize, buf_size);
-<<<<<<< HEAD
 	mvmsta->lq_sta.rs_drv.lq.agg_frame_cnt_limit = mvmsta->max_agg_bufsize;
-=======
-	mvmsta->lq_sta.lq.agg_frame_cnt_limit = mvmsta->max_agg_bufsize;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	IWL_DEBUG_HT(mvm, "Tx aggregation enabled on ra = %pM tid = %d\n",
 		     sta->addr, tid);
 
-<<<<<<< HEAD
 	return iwl_mvm_send_lq_cmd(mvm, &mvmsta->lq_sta.rs_drv.lq, false);
-=======
-	return iwl_mvm_send_lq_cmd(mvm, &mvmsta->lq_sta.lq, false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void iwl_mvm_unreserve_agg_queue(struct iwl_mvm *mvm,
@@ -3075,11 +2898,7 @@ static int iwl_mvm_send_sta_key(struct iwl_mvm *mvm,
 				u32 sta_id,
 				struct ieee80211_key_conf *key, bool mcast,
 				u32 tkip_iv32, u16 *tkip_p1k, u32 cmd_flags,
-<<<<<<< HEAD
 				u8 key_offset, bool mfp)
-=======
-				u8 key_offset)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	union {
 		struct iwl_mvm_add_sta_key_cmd_v1 cmd_v1;
@@ -3152,11 +2971,8 @@ static int iwl_mvm_send_sta_key(struct iwl_mvm *mvm,
 
 	if (mcast)
 		key_flags |= cpu_to_le16(STA_KEY_MULTICAST);
-<<<<<<< HEAD
 	if (mfp)
 		key_flags |= cpu_to_le16(STA_KEY_MFP);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	u.cmd.common.key_offset = key_offset;
 	u.cmd.common.key_flags = key_flags;
@@ -3212,13 +3028,6 @@ static int iwl_mvm_send_sta_igtk(struct iwl_mvm *mvm,
 	igtk_cmd.sta_id = cpu_to_le32(sta_id);
 
 	if (remove_key) {
-<<<<<<< HEAD
-=======
-		/* This is a valid situation for IGTK */
-		if (sta_id == IWL_MVM_INVALID_STA)
-			return 0;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		igtk_cmd.ctrl_flags |= cpu_to_le32(STA_KEY_NOT_VALID);
 	} else {
 		struct ieee80211_key_seq seq;
@@ -3305,19 +3114,13 @@ static int __iwl_mvm_set_sta_key(struct iwl_mvm *mvm,
 	struct ieee80211_key_seq seq;
 	u16 p1k[5];
 	u32 sta_id;
-<<<<<<< HEAD
 	bool mfp = false;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (sta) {
 		struct iwl_mvm_sta *mvm_sta = iwl_mvm_sta_from_mac80211(sta);
 
 		sta_id = mvm_sta->sta_id;
-<<<<<<< HEAD
 		mfp = sta->mfp;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (vif->type == NL80211_IFTYPE_AP &&
 		   !(keyconf->flags & IEEE80211_KEY_FLAG_PAIRWISE)) {
 		struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
@@ -3330,24 +3133,17 @@ static int __iwl_mvm_set_sta_key(struct iwl_mvm *mvm,
 
 	switch (keyconf->cipher) {
 	case WLAN_CIPHER_SUITE_TKIP:
-<<<<<<< HEAD
 		if (vif->type == NL80211_IFTYPE_AP) {
 			ret = -EINVAL;
 			break;
 		}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		addr = iwl_mvm_get_mac_addr(mvm, vif, sta);
 		/* get phase 1 key from mac80211 */
 		ieee80211_get_key_rx_seq(keyconf, 0, &seq);
 		ieee80211_get_tkip_rx_p1k(keyconf, addr, seq.tkip.iv32, p1k);
 		ret = iwl_mvm_send_sta_key(mvm, sta_id, keyconf, mcast,
-<<<<<<< HEAD
 					   seq.tkip.iv32, p1k, 0, key_offset,
 					   mfp);
-=======
-					   seq.tkip.iv32, p1k, 0, key_offset);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case WLAN_CIPHER_SUITE_CCMP:
 	case WLAN_CIPHER_SUITE_WEP40:
@@ -3355,19 +3151,11 @@ static int __iwl_mvm_set_sta_key(struct iwl_mvm *mvm,
 	case WLAN_CIPHER_SUITE_GCMP:
 	case WLAN_CIPHER_SUITE_GCMP_256:
 		ret = iwl_mvm_send_sta_key(mvm, sta_id, keyconf, mcast,
-<<<<<<< HEAD
 					   0, NULL, 0, key_offset, mfp);
 		break;
 	default:
 		ret = iwl_mvm_send_sta_key(mvm, sta_id, keyconf, mcast,
 					   0, NULL, 0, key_offset, mfp);
-=======
-					   0, NULL, 0, key_offset);
-		break;
-	default:
-		ret = iwl_mvm_send_sta_key(mvm, sta_id, keyconf, mcast,
-					   0, NULL, 0, key_offset);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return ret;
@@ -3551,15 +3339,9 @@ int iwl_mvm_remove_sta_key(struct iwl_mvm *mvm,
 	IWL_DEBUG_WEP(mvm, "mvm remove dynamic key: idx=%d sta=%d\n",
 		      keyconf->keyidx, sta_id);
 
-<<<<<<< HEAD
 	if (mvm_sta && (keyconf->cipher == WLAN_CIPHER_SUITE_AES_CMAC ||
 			keyconf->cipher == WLAN_CIPHER_SUITE_BIP_GMAC_128 ||
 			keyconf->cipher == WLAN_CIPHER_SUITE_BIP_GMAC_256))
-=======
-	if (keyconf->cipher == WLAN_CIPHER_SUITE_AES_CMAC ||
-	    keyconf->cipher == WLAN_CIPHER_SUITE_BIP_GMAC_128 ||
-	    keyconf->cipher == WLAN_CIPHER_SUITE_BIP_GMAC_256)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return iwl_mvm_send_sta_igtk(mvm, keyconf, sta_id, true);
 
 	if (!__test_and_clear_bit(keyconf->hw_key_idx, mvm->fw_key_table)) {
@@ -3600,10 +3382,7 @@ void iwl_mvm_update_tkip_key(struct iwl_mvm *mvm,
 {
 	struct iwl_mvm_sta *mvm_sta;
 	bool mcast = !(keyconf->flags & IEEE80211_KEY_FLAG_PAIRWISE);
-<<<<<<< HEAD
 	bool mfp = sta ? sta->mfp : false;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rcu_read_lock();
 
@@ -3611,12 +3390,8 @@ void iwl_mvm_update_tkip_key(struct iwl_mvm *mvm,
 	if (WARN_ON_ONCE(!mvm_sta))
 		goto unlock;
 	iwl_mvm_send_sta_key(mvm, mvm_sta->sta_id, keyconf, mcast,
-<<<<<<< HEAD
 			     iv32, phase1key, CMD_ASYNC, keyconf->hw_key_idx,
 			     mfp);
-=======
-			     iv32, phase1key, CMD_ASYNC, keyconf->hw_key_idx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
  unlock:
 	rcu_read_unlock();
@@ -3865,11 +3640,7 @@ u16 iwl_mvm_tid_queued(struct iwl_mvm *mvm, struct iwl_mvm_tid_data *tid_data)
 	u16 sn = IEEE80211_SEQ_TO_SN(tid_data->seq_number);
 
 	/*
-<<<<<<< HEAD
 	 * In 22000 HW, the next_reclaimed index is only 8 bit, so we'll need
-=======
-	 * In A000 HW, the next_reclaimed index is only 8 bit, so we'll need
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * to align the wrap around of ssn so we compare relevant values.
 	 */
 	if (mvm->trans->cfg->gen2)

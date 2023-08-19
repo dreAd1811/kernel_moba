@@ -62,11 +62,7 @@ static int parser_trx_parse(struct mtd_info *mtd,
 	uint8_t curr_part = 0, i = 0;
 	int err;
 
-<<<<<<< HEAD
 	parts = kcalloc(TRX_PARSER_MAX_PARTS, sizeof(struct mtd_partition),
-=======
-	parts = kzalloc(sizeof(struct mtd_partition) * TRX_PARSER_MAX_PARTS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			GFP_KERNEL);
 	if (!parts)
 		return -ENOMEM;
@@ -120,7 +116,6 @@ static int parser_trx_parse(struct mtd_info *mtd,
 	return i;
 };
 
-<<<<<<< HEAD
 static const struct of_device_id mtd_parser_trx_of_match_table[] = {
 	{ .compatible = "brcm,trx" },
 	{},
@@ -131,11 +126,6 @@ static struct mtd_part_parser mtd_parser_trx = {
 	.parse_fn = parser_trx_parse,
 	.name = "trx",
 	.of_match_table = mtd_parser_trx_of_match_table,
-=======
-static struct mtd_part_parser mtd_parser_trx = {
-	.parse_fn = parser_trx_parse,
-	.name = "trx",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 module_mtd_part_parser(mtd_parser_trx);
 

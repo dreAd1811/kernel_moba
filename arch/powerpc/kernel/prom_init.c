@@ -27,10 +27,6 @@
 #include <linux/types.h>
 #include <linux/pci.h>
 #include <linux/proc_fs.h>
-<<<<<<< HEAD
-=======
-#include <linux/stringify.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/delay.h>
 #include <linux/initrd.h>
 #include <linux/bitops.h>
@@ -106,11 +102,7 @@ int of_workarounds;
 #ifdef DEBUG_PROM
 #define prom_debug(x...)	prom_printf(x)
 #else
-<<<<<<< HEAD
 #define prom_debug(x...)	do { } while (0)
-=======
-#define prom_debug(x...)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 
@@ -178,11 +170,7 @@ static unsigned long __initdata prom_tce_alloc_start;
 static unsigned long __initdata prom_tce_alloc_end;
 #endif
 
-<<<<<<< HEAD
 static bool prom_radix_disable __initdata = !IS_ENABLED(CONFIG_PPC_RADIX_MMU_DEFAULT);
-=======
-static bool __initdata prom_radix_disable;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct platform_support {
 	bool hash_mmu;
@@ -312,13 +300,10 @@ static void __init prom_print(const char *msg)
 }
 
 
-<<<<<<< HEAD
 /*
  * Both prom_print_hex & prom_print_dec takes an unsigned long as input so that
  * we do not need __udivdi3 or __umoddi3 on 32bits.
  */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void __init prom_print_hex(unsigned long val)
 {
 	int i, nibbles = sizeof(val)*2;
@@ -359,10 +344,7 @@ static void __init prom_printf(const char *format, ...)
 	va_list args;
 	unsigned long v;
 	long vs;
-<<<<<<< HEAD
 	int n = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	va_start(args, format);
 	for (p = format; *p != 0; p = q) {
@@ -381,13 +363,10 @@ static void __init prom_printf(const char *format, ...)
 		++q;
 		if (*q == 0)
 			break;
-<<<<<<< HEAD
 		while (*q == 'l') {
 			++q;
 			++n;
 		}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		switch (*q) {
 		case 's':
 			++q;
@@ -396,7 +375,6 @@ static void __init prom_printf(const char *format, ...)
 			break;
 		case 'x':
 			++q;
-<<<<<<< HEAD
 			switch (n) {
 			case 0:
 				v = va_arg(args, unsigned int);
@@ -441,45 +419,12 @@ static void __init prom_printf(const char *format, ...)
 				vs = va_arg(args, long long);
 				break;
 			}
-=======
-			v = va_arg(args, unsigned long);
-			prom_print_hex(v);
-			break;
-		case 'd':
-			++q;
-			vs = va_arg(args, int);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (vs < 0) {
 				prom_print("-");
 				vs = -vs;
 			}
 			prom_print_dec(vs);
 			break;
-<<<<<<< HEAD
-=======
-		case 'l':
-			++q;
-			if (*q == 0)
-				break;
-			else if (*q == 'x') {
-				++q;
-				v = va_arg(args, unsigned long);
-				prom_print_hex(v);
-			} else if (*q == 'u') { /* '%lu' */
-				++q;
-				v = va_arg(args, unsigned long);
-				prom_print_dec(v);
-			} else if (*q == 'd') { /* %ld */
-				++q;
-				vs = va_arg(args, long);
-				if (vs < 0) {
-					prom_print("-");
-					vs = -vs;
-				}
-				prom_print_dec(vs);
-			}
-			break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 	va_end(args);
@@ -683,11 +628,7 @@ static void __init early_cmdline_parse(void)
 	const char *opt;
 
 	char *p;
-<<<<<<< HEAD
 	int l __maybe_unused = 0;
-=======
-	int l = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	prom_cmd_line[0] = 0;
 	p = prom_cmd_line;
@@ -725,7 +666,6 @@ static void __init early_cmdline_parse(void)
 
 	opt = strstr(prom_cmd_line, "disable_radix");
 	if (opt) {
-<<<<<<< HEAD
 		opt += 13;
 		if (*opt && *opt == '=') {
 			bool val;
@@ -739,11 +679,6 @@ static void __init early_cmdline_parse(void)
 	}
 	if (prom_radix_disable)
 		prom_debug("Radix disabled from cmdline\n");
-=======
-		prom_debug("Radix disabled from cmdline\n");
-		prom_radix_disable = true;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #if defined(CONFIG_PPC_PSERIES) || defined(CONFIG_PPC_POWERNV)
@@ -969,10 +904,7 @@ struct ibm_arch_vec __cacheline_aligned ibm_architecture_vec = {
 		.reserved2 = 0,
 		.reserved3 = 0,
 		.subprocessors = 1,
-<<<<<<< HEAD
 		.byte22 = OV5_FEAT(OV5_DRMEM_V2),
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.intarch = 0,
 		.mmu = 0,
 		.hash_ext = 0,
@@ -1213,12 +1145,8 @@ static void __init prom_check_platform_support(void)
 		}
 	}
 
-<<<<<<< HEAD
 	if (supported.radix_mmu && supported.radix_gtse &&
 	    IS_ENABLED(CONFIG_PPC_RADIX_MMU)) {
-=======
-	if (supported.radix_mmu && supported.radix_gtse) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Radix preferred - but we require GTSE for now */
 		prom_debug("Asking for radix with GTSE\n");
 		ibm_architecture_vec.vec5.mmu = OV5_FEAT(OV5_MMU_RADIX);
@@ -1493,14 +1421,10 @@ static void __init reserve_mem(u64 base, u64 size)
 static void __init prom_init_mem(void)
 {
 	phandle node;
-<<<<<<< HEAD
 #ifdef DEBUG_PROM
 	char *path;
 #endif
 	char type[64];
-=======
-	char *path, type[64];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int plen;
 	cell_t *p, *endp;
 	__be32 val;
@@ -1521,13 +1445,9 @@ static void __init prom_init_mem(void)
 	prom_debug("root_size_cells: %x\n", rsc);
 
 	prom_debug("scanning memory:\n");
-<<<<<<< HEAD
 #ifdef DEBUG_PROM
 	path = prom_scratch;
 #endif
-=======
-	path = prom_scratch;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (node = 0; prom_next_node(&node); ) {
 		type[0] = 0;
@@ -1931,21 +1851,8 @@ static void __init prom_initialize_tce_table(void)
 		 * size to 4 MB.  This is enough to map 2GB of PCI DMA space.
 		 * By doing this, we avoid the pitfalls of trying to DMA to
 		 * MMIO space and the DMA alias hole.
-<<<<<<< HEAD
 		 */
 		minsize = 4UL << 20;
-=======
-		 *
-		 * On POWER4, firmware sets the TCE region by assuming
-		 * each TCE table is 8MB. Using this memory for anything
-		 * else will impact performance, so we always allocate 8MB.
-		 * Anton
-		 */
-		if (pvr_version_is(PVR_POWER4) || pvr_version_is(PVR_POWER4p))
-			minsize = 8UL << 20;
-		else
-			minsize = 4UL << 20;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Align to the greater of the align or size */
 		align = max(minalign, minsize);
@@ -2199,11 +2106,6 @@ static void __init prom_init_stdout(void)
 	stdout_node = call_prom("instance-to-package", 1, 1, prom.stdout);
 	if (stdout_node != PROM_ERROR) {
 		val = cpu_to_be32(stdout_node);
-<<<<<<< HEAD
-=======
-		prom_setprop(prom.chosen, "/chosen", "linux,stdout-package",
-			     &val, sizeof(val));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* If it's a display, note it */
 		memset(type, 0, sizeof(type));

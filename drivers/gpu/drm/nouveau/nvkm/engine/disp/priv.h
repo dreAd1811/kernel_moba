@@ -12,12 +12,9 @@ void nvkm_disp_vblank(struct nvkm_disp *, int head);
 
 struct nvkm_disp_func {
 	void *(*dtor)(struct nvkm_disp *);
-<<<<<<< HEAD
 	int (*oneinit)(struct nvkm_disp *);
 	int (*init)(struct nvkm_disp *);
 	void (*fini)(struct nvkm_disp *);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void (*intr)(struct nvkm_disp *);
 
 	const struct nvkm_disp_oclass *(*root)(struct nvkm_disp *);

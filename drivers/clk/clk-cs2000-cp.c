@@ -1,19 +1,9 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * CS2000  --  CIRRUS LOGIC Fractional-N Clock Synthesizer & Clock Multiplier
  *
  * Copyright (C) 2015 Renesas Electronics Corporation
  * Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-<<<<<<< HEAD
-=======
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #include <linux/clk-provider.h>
 #include <linux/delay.h>
@@ -548,11 +538,7 @@ probe_err:
 	return ret;
 }
 
-<<<<<<< HEAD
 static int __maybe_unused cs2000_resume(struct device *dev)
-=======
-static int cs2000_resume(struct device *dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct cs2000_priv *priv = dev_get_drvdata(dev);
 
@@ -560,11 +546,7 @@ static int cs2000_resume(struct device *dev)
 }
 
 static const struct dev_pm_ops cs2000_pm_ops = {
-<<<<<<< HEAD
 	SET_LATE_SYSTEM_SLEEP_PM_OPS(NULL, cs2000_resume)
-=======
-	.resume_early	= cs2000_resume,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct i2c_driver cs2000_driver = {

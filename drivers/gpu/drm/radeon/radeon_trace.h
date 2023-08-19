@@ -205,9 +205,5 @@ DEFINE_EVENT(radeon_semaphore_request, radeon_semaphore_wait,
 
 /* This part must be outside protection */
 #undef TRACE_INCLUDE_PATH
-<<<<<<< HEAD
 #define TRACE_INCLUDE_PATH ../../drivers/gpu/drm/radeon
-=======
-#define TRACE_INCLUDE_PATH .
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <trace/define_trace.h>

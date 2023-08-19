@@ -1,18 +1,8 @@
 #!/bin/sh
-<<<<<<< HEAD
 # SPDX-License-Identifier: GPL-2.0
 #
 # arch/s390x/boot/install.sh
 #
-=======
-#
-# arch/s390x/boot/install.sh
-#
-# This file is subject to the terms and conditions of the GNU General Public
-# License.  See the file "COPYING" in the main directory of this archive
-# for more details.
-#
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 # Copyright (C) 1995 by Linus Torvalds
 #
 # Adapted from code in arch/i386/boot/Makefile by H. Peter Anvin

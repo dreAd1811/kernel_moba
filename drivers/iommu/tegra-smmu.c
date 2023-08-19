@@ -20,15 +20,12 @@
 #include <soc/tegra/ahb.h>
 #include <soc/tegra/mc.h>
 
-<<<<<<< HEAD
 struct tegra_smmu_group {
 	struct list_head list;
 	const struct tegra_smmu_group_soc *soc;
 	struct iommu_group *group;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct tegra_smmu {
 	void __iomem *regs;
 	struct device *dev;
@@ -36,11 +33,8 @@ struct tegra_smmu {
 	struct tegra_mc *mc;
 	const struct tegra_smmu_soc *soc;
 
-<<<<<<< HEAD
 	struct list_head groups;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long pfn_mask;
 	unsigned long tlb_mask;
 
@@ -170,15 +164,9 @@ static bool smmu_dma_addr_valid(struct tegra_smmu *smmu, dma_addr_t addr)
 	return (addr & smmu->pfn_mask) == addr;
 }
 
-<<<<<<< HEAD
 static dma_addr_t smmu_pde_to_dma(u32 pde)
 {
 	return pde << 12;
-=======
-static dma_addr_t smmu_pde_to_dma(struct tegra_smmu *smmu, u32 pde)
-{
-	return (dma_addr_t)(pde & smmu->pfn_mask) << 12;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void smmu_flush_ptc_all(struct tegra_smmu *smmu)
@@ -563,10 +551,6 @@ static u32 *tegra_smmu_pte_lookup(struct tegra_smmu_as *as, unsigned long iova,
 				  dma_addr_t *dmap)
 {
 	unsigned int pd_index = iova_pd_index(iova);
-<<<<<<< HEAD
-=======
-	struct tegra_smmu *smmu = as->smmu;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct page *pt_page;
 	u32 *pd;
 
@@ -575,11 +559,7 @@ static u32 *tegra_smmu_pte_lookup(struct tegra_smmu_as *as, unsigned long iova,
 		return NULL;
 
 	pd = page_address(as->pd);
-<<<<<<< HEAD
 	*dmap = smmu_pde_to_dma(pd[pd_index]);
-=======
-	*dmap = smmu_pde_to_dma(smmu, pd[pd_index]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return tegra_smmu_pte_offset(pt_page, iova);
 }
@@ -621,11 +601,7 @@ static u32 *as_get_pte(struct tegra_smmu_as *as, dma_addr_t iova,
 	} else {
 		u32 *pd = page_address(as->pd);
 
-<<<<<<< HEAD
 		*dmap = smmu_pde_to_dma(pd[pde]);
-=======
-		*dmap = smmu_pde_to_dma(smmu, pd[pde]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return tegra_smmu_pte_offset(as->pts[pde], iova);
@@ -650,11 +626,7 @@ static void tegra_smmu_pte_put_use(struct tegra_smmu_as *as, unsigned long iova)
 	if (--as->count[pde] == 0) {
 		struct tegra_smmu *smmu = as->smmu;
 		u32 *pd = page_address(as->pd);
-<<<<<<< HEAD
 		dma_addr_t pte_dma = smmu_pde_to_dma(pd[pde]);
-=======
-		dma_addr_t pte_dma = smmu_pde_to_dma(smmu, pd[pde]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		tegra_smmu_set_pde(as, iova, 0);
 
@@ -750,7 +722,6 @@ static struct tegra_smmu *tegra_smmu_find(struct device_node *np)
 	return mc->smmu;
 }
 
-<<<<<<< HEAD
 static int tegra_smmu_configure(struct tegra_smmu *smmu, struct device *dev,
 				struct of_phandle_args *args)
 {
@@ -792,21 +763,6 @@ static int tegra_smmu_add_device(struct device *dev)
 			if (err < 0)
 				return err;
 
-=======
-static int tegra_smmu_add_device(struct device *dev)
-{
-	struct device_node *np = dev->of_node;
-	struct iommu_group *group;
-	struct of_phandle_args args;
-	unsigned int index = 0;
-
-	while (of_parse_phandle_with_args(np, "iommus", "#iommu-cells", index,
-					  &args) == 0) {
-		struct tegra_smmu *smmu;
-
-		smmu = tegra_smmu_find(args.np);
-		if (smmu) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/*
 			 * Only a single IOMMU master interface is currently
 			 * supported by the Linux kernel, so abort after the
@@ -819,7 +775,6 @@ static int tegra_smmu_add_device(struct device *dev)
 			break;
 		}
 
-<<<<<<< HEAD
 		of_node_put(args.np);
 		index++;
 	}
@@ -827,11 +782,6 @@ static int tegra_smmu_add_device(struct device *dev)
 	if (!smmu)
 		return -ENODEV;
 
-=======
-		index++;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	group = iommu_group_get_for_dev(dev);
 	if (IS_ERR(group))
 		return PTR_ERR(group);
@@ -852,7 +802,6 @@ static void tegra_smmu_remove_device(struct device *dev)
 	iommu_group_remove_device(dev);
 }
 
-<<<<<<< HEAD
 static const struct tegra_smmu_group_soc *
 tegra_smmu_find_group(struct tegra_smmu *smmu, unsigned int swgroup)
 {
@@ -927,8 +876,6 @@ static int tegra_smmu_of_xlate(struct device *dev,
 	return iommu_fwspec_add_ids(dev, &id, 1);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct iommu_ops tegra_smmu_ops = {
 	.capable = tegra_smmu_capable,
 	.domain_alloc = tegra_smmu_domain_alloc,
@@ -937,20 +884,11 @@ static const struct iommu_ops tegra_smmu_ops = {
 	.detach_dev = tegra_smmu_detach_dev,
 	.add_device = tegra_smmu_add_device,
 	.remove_device = tegra_smmu_remove_device,
-<<<<<<< HEAD
 	.device_group = tegra_smmu_device_group,
 	.map = tegra_smmu_map,
 	.unmap = tegra_smmu_unmap,
 	.iova_to_phys = tegra_smmu_iova_to_phys,
 	.of_xlate = tegra_smmu_of_xlate,
-=======
-	.device_group = generic_device_group,
-	.map = tegra_smmu_map,
-	.unmap = tegra_smmu_unmap,
-	.map_sg = default_iommu_map_sg,
-	.iova_to_phys = tegra_smmu_iova_to_phys,
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.pgsize_bitmap = SZ_4K,
 };
 
@@ -1099,10 +1037,7 @@ struct tegra_smmu *tegra_smmu_probe(struct device *dev,
 	if (!smmu->asids)
 		return ERR_PTR(-ENOMEM);
 
-<<<<<<< HEAD
 	INIT_LIST_HEAD(&smmu->groups);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_init(&smmu->lock);
 
 	smmu->regs = mc->regs;
@@ -1144,10 +1079,7 @@ struct tegra_smmu *tegra_smmu_probe(struct device *dev,
 		return ERR_PTR(err);
 
 	iommu_device_set_ops(&smmu->iommu, &tegra_smmu_ops);
-<<<<<<< HEAD
 	iommu_device_set_fwnode(&smmu->iommu, dev->fwnode);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = iommu_device_register(&smmu->iommu);
 	if (err) {

@@ -74,7 +74,6 @@ struct hfi_event_data {
 	u32 tag;
 	u32 profile;
 	u32 level;
-<<<<<<< HEAD
 	/* the following properties start appear from v4 onwards */
 	u32 bit_depth;
 	u32 pic_struct;
@@ -85,8 +84,6 @@ struct hfi_event_data {
 		u32 left, top;
 		u32 width, height;
 	} input_crop;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* define core states */

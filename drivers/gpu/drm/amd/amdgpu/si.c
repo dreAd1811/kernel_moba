@@ -32,11 +32,7 @@
 #include "amdgpu_vce.h"
 #include "atom.h"
 #include "amd_pcie.h"
-<<<<<<< HEAD
 #include "si_dpm.h"
-=======
-#include "amdgpu_powerplay.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "sid.h"
 #include "si_ih.h"
 #include "gfx_v6_0.h"
@@ -1235,7 +1231,6 @@ static void si_detect_hw_virtualization(struct amdgpu_device *adev)
 		adev->virt.caps |= AMDGPU_PASSTHROUGH_MODE;
 }
 
-<<<<<<< HEAD
 static void si_flush_hdp(struct amdgpu_device *adev, struct amdgpu_ring *ring)
 {
 	if (!ring || !ring->funcs->emit_wreg) {
@@ -1263,8 +1258,6 @@ static bool si_need_full_reset(struct amdgpu_device *adev)
 	return true;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int si_get_pcie_lanes(struct amdgpu_device *adev)
 {
 	u32 link_width_cntl;
@@ -1343,12 +1336,9 @@ static const struct amdgpu_asic_funcs si_asic_funcs =
 	.get_pcie_lanes = &si_get_pcie_lanes,
 	.set_pcie_lanes = &si_set_pcie_lanes,
 	.get_config_memsize = &si_get_config_memsize,
-<<<<<<< HEAD
 	.flush_hdp = &si_flush_hdp,
 	.invalidate_hdp = &si_invalidate_hdp,
 	.need_full_reset = &si_need_full_reset,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static uint32_t si_get_rev_id(struct amdgpu_device *adev)
@@ -1498,7 +1488,6 @@ static void si_init_golden_registers(struct amdgpu_device *adev)
 {
 	switch (adev->asic_type) {
 	case CHIP_TAHITI:
-<<<<<<< HEAD
 		amdgpu_device_program_register_sequence(adev,
 							tahiti_golden_registers,
 							ARRAY_SIZE(tahiti_golden_registers));
@@ -1558,67 +1547,6 @@ static void si_init_golden_registers(struct amdgpu_device *adev)
 		amdgpu_device_program_register_sequence(adev,
 							hainan_mgcg_cgcg_init,
 							ARRAY_SIZE(hainan_mgcg_cgcg_init));
-=======
-		amdgpu_program_register_sequence(adev,
-						 tahiti_golden_registers,
-						 (const u32)ARRAY_SIZE(tahiti_golden_registers));
-		amdgpu_program_register_sequence(adev,
-						 tahiti_golden_rlc_registers,
-						 (const u32)ARRAY_SIZE(tahiti_golden_rlc_registers));
-		amdgpu_program_register_sequence(adev,
-						 tahiti_mgcg_cgcg_init,
-						 (const u32)ARRAY_SIZE(tahiti_mgcg_cgcg_init));
-		amdgpu_program_register_sequence(adev,
-						 tahiti_golden_registers2,
-						 (const u32)ARRAY_SIZE(tahiti_golden_registers2));
-		break;
-	case CHIP_PITCAIRN:
-		amdgpu_program_register_sequence(adev,
-						 pitcairn_golden_registers,
-						 (const u32)ARRAY_SIZE(pitcairn_golden_registers));
-		amdgpu_program_register_sequence(adev,
-						 pitcairn_golden_rlc_registers,
-						 (const u32)ARRAY_SIZE(pitcairn_golden_rlc_registers));
-		amdgpu_program_register_sequence(adev,
-						 pitcairn_mgcg_cgcg_init,
-						 (const u32)ARRAY_SIZE(pitcairn_mgcg_cgcg_init));
-		break;
-	case CHIP_VERDE:
-		amdgpu_program_register_sequence(adev,
-						 verde_golden_registers,
-						 (const u32)ARRAY_SIZE(verde_golden_registers));
-		amdgpu_program_register_sequence(adev,
-						 verde_golden_rlc_registers,
-						 (const u32)ARRAY_SIZE(verde_golden_rlc_registers));
-		amdgpu_program_register_sequence(adev,
-						 verde_mgcg_cgcg_init,
-						 (const u32)ARRAY_SIZE(verde_mgcg_cgcg_init));
-		amdgpu_program_register_sequence(adev,
-						 verde_pg_init,
-						 (const u32)ARRAY_SIZE(verde_pg_init));
-		break;
-	case CHIP_OLAND:
-		amdgpu_program_register_sequence(adev,
-						 oland_golden_registers,
-						 (const u32)ARRAY_SIZE(oland_golden_registers));
-		amdgpu_program_register_sequence(adev,
-						 oland_golden_rlc_registers,
-						 (const u32)ARRAY_SIZE(oland_golden_rlc_registers));
-		amdgpu_program_register_sequence(adev,
-						 oland_mgcg_cgcg_init,
-						 (const u32)ARRAY_SIZE(oland_mgcg_cgcg_init));
-		break;
-	case CHIP_HAINAN:
-		amdgpu_program_register_sequence(adev,
-						 hainan_golden_registers,
-						 (const u32)ARRAY_SIZE(hainan_golden_registers));
-		amdgpu_program_register_sequence(adev,
-						 hainan_golden_registers2,
-						 (const u32)ARRAY_SIZE(hainan_golden_registers2));
-		amdgpu_program_register_sequence(adev,
-						 hainan_mgcg_cgcg_init,
-						 (const u32)ARRAY_SIZE(hainan_mgcg_cgcg_init));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 
@@ -2126,7 +2054,6 @@ int si_set_ip_blocks(struct amdgpu_device *adev)
 	case CHIP_VERDE:
 	case CHIP_TAHITI:
 	case CHIP_PITCAIRN:
-<<<<<<< HEAD
 		amdgpu_device_ip_block_add(adev, &si_common_ip_block);
 		amdgpu_device_ip_block_add(adev, &gmc_v6_0_ip_block);
 		amdgpu_device_ip_block_add(adev, &si_ih_ip_block);
@@ -2163,44 +2090,6 @@ int si_set_ip_blocks(struct amdgpu_device *adev)
 			amdgpu_device_ip_block_add(adev, &dce_virtual_ip_block);
 		amdgpu_device_ip_block_add(adev, &gfx_v6_0_ip_block);
 		amdgpu_device_ip_block_add(adev, &si_dma_ip_block);
-=======
-		amdgpu_ip_block_add(adev, &si_common_ip_block);
-		amdgpu_ip_block_add(adev, &gmc_v6_0_ip_block);
-		amdgpu_ip_block_add(adev, &si_ih_ip_block);
-		amdgpu_ip_block_add(adev, &amdgpu_pp_ip_block);
-		if (adev->enable_virtual_display)
-			amdgpu_ip_block_add(adev, &dce_virtual_ip_block);
-		else
-			amdgpu_ip_block_add(adev, &dce_v6_0_ip_block);
-		amdgpu_ip_block_add(adev, &gfx_v6_0_ip_block);
-		amdgpu_ip_block_add(adev, &si_dma_ip_block);
-		/* amdgpu_ip_block_add(adev, &uvd_v3_1_ip_block); */
-		/* amdgpu_ip_block_add(adev, &vce_v1_0_ip_block); */
-		break;
-	case CHIP_OLAND:
-		amdgpu_ip_block_add(adev, &si_common_ip_block);
-		amdgpu_ip_block_add(adev, &gmc_v6_0_ip_block);
-		amdgpu_ip_block_add(adev, &si_ih_ip_block);
-		amdgpu_ip_block_add(adev, &amdgpu_pp_ip_block);
-		if (adev->enable_virtual_display)
-			amdgpu_ip_block_add(adev, &dce_virtual_ip_block);
-		else
-			amdgpu_ip_block_add(adev, &dce_v6_4_ip_block);
-		amdgpu_ip_block_add(adev, &gfx_v6_0_ip_block);
-		amdgpu_ip_block_add(adev, &si_dma_ip_block);
-		/* amdgpu_ip_block_add(adev, &uvd_v3_1_ip_block); */
-		/* amdgpu_ip_block_add(adev, &vce_v1_0_ip_block); */
-		break;
-	case CHIP_HAINAN:
-		amdgpu_ip_block_add(adev, &si_common_ip_block);
-		amdgpu_ip_block_add(adev, &gmc_v6_0_ip_block);
-		amdgpu_ip_block_add(adev, &si_ih_ip_block);
-		amdgpu_ip_block_add(adev, &amdgpu_pp_ip_block);
-		if (adev->enable_virtual_display)
-			amdgpu_ip_block_add(adev, &dce_virtual_ip_block);
-		amdgpu_ip_block_add(adev, &gfx_v6_0_ip_block);
-		amdgpu_ip_block_add(adev, &si_dma_ip_block);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		BUG();

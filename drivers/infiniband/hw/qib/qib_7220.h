@@ -67,10 +67,6 @@ struct qib_chip_specific {
 	u32 lastbuf_for_pio;
 	u32 updthresh; /* current AvailUpdThld */
 	u32 updthresh_dflt; /* default AvailUpdThld */
-<<<<<<< HEAD
-=======
-	int irq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 presets_needed;
 	u8 relock_timer_active;
 	char emsgbuf[128];
@@ -78,10 +74,7 @@ struct qib_chip_specific {
 	char bitsmsgbuf[64];
 	struct timer_list relock_timer;
 	unsigned int relock_interval; /* in jiffies */
-<<<<<<< HEAD
 	struct qib_devdata *dd;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct qib_chippport_specific {

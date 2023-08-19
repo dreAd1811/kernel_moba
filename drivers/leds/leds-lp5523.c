@@ -325,11 +325,7 @@ static int lp5523_init_program_engine(struct lp55xx_chip *chip)
 
 	if (status != LP5523_ENG_STATUS_MASK) {
 		dev_err(&chip->cl->dev,
-<<<<<<< HEAD
 			"could not configure LED engine, status = 0x%.2x\n",
-=======
-			"cound not configure LED engine, status = 0x%.2x\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status);
 		ret = -1;
 	}
@@ -904,13 +900,8 @@ static int lp5523_probe(struct i2c_client *client,
 	if (!chip)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	led = devm_kcalloc(&client->dev,
 			pdata->num_channels, sizeof(*led), GFP_KERNEL);
-=======
-	led = devm_kzalloc(&client->dev,
-			sizeof(*led) * pdata->num_channels, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!led)
 		return -ENOMEM;
 

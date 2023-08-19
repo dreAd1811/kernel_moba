@@ -220,12 +220,9 @@ nvkm_disp_fini(struct nvkm_engine *engine, bool suspend)
 	struct nvkm_conn *conn;
 	struct nvkm_outp *outp;
 
-<<<<<<< HEAD
 	if (disp->func->fini)
 		disp->func->fini(disp);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_for_each_entry(outp, &disp->outp, head) {
 		nvkm_outp_fini(outp);
 	}
@@ -243,10 +240,7 @@ nvkm_disp_init(struct nvkm_engine *engine)
 	struct nvkm_disp *disp = nvkm_disp(engine);
 	struct nvkm_conn *conn;
 	struct nvkm_outp *outp;
-<<<<<<< HEAD
 	struct nvkm_ior *ior;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	list_for_each_entry(conn, &disp->conn, head) {
 		nvkm_conn_init(conn);
@@ -256,7 +250,6 @@ nvkm_disp_init(struct nvkm_engine *engine)
 		nvkm_outp_init(outp);
 	}
 
-<<<<<<< HEAD
 	if (disp->func->init) {
 		int ret = disp->func->init(disp);
 		if (ret)
@@ -270,8 +263,6 @@ nvkm_disp_init(struct nvkm_engine *engine)
 		ior->func->power(ior, true, true, true, true, true);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -284,10 +275,7 @@ nvkm_disp_oneinit(struct nvkm_engine *engine)
 	struct nvkm_outp *outp, *outt, *pair;
 	struct nvkm_conn *conn;
 	struct nvkm_head *head;
-<<<<<<< HEAD
 	struct nvkm_ior *ior;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct nvbios_connE connE;
 	struct dcb_output dcbE;
 	u8  hpd = 0, ver, hdr;
@@ -406,7 +394,6 @@ nvkm_disp_oneinit(struct nvkm_engine *engine)
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	if (disp->func->oneinit) {
 		ret = disp->func->oneinit(disp);
 		if (ret)
@@ -426,8 +413,6 @@ nvkm_disp_oneinit(struct nvkm_engine *engine)
 		}
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i = 0;
 	list_for_each_entry(head, &disp->head, head)
 		i = max(i, head->id + 1);

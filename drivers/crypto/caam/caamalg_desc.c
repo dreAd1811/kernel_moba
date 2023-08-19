@@ -45,7 +45,6 @@ static inline void append_dec_op1(u32 *desc, u32 type)
  * cnstr_shdsc_aead_null_encap - IPSec ESP encapsulation shared descriptor
  *                               (non-protocol) with no (null) encryption.
  * @desc: pointer to buffer used for descriptor construction
-<<<<<<< HEAD
  * @adata: pointer to authentication transform definitions.
  *         A split key is required for SEC Era < 6; the size of the split key
  *         is specified in this case. Valid algorithm values - one of
@@ -56,18 +55,6 @@ static inline void append_dec_op1(u32 *desc, u32 type)
  */
 void cnstr_shdsc_aead_null_encap(u32 * const desc, struct alginfo *adata,
 				 unsigned int icvsize, int era)
-=======
- * @adata: pointer to authentication transform definitions. Note that since a
- *         split key is to be used, the size of the split key itself is
- *         specified. Valid algorithm values - one of OP_ALG_ALGSEL_{MD5, SHA1,
- *         SHA224, SHA256, SHA384, SHA512} ANDed with OP_ALG_AAI_HMAC_PRECOMP.
- * @icvsize: integrity check value (ICV) size (truncated or full)
- *
- * Note: Requires an MDHA split key.
- */
-void cnstr_shdsc_aead_null_encap(u32 * const desc, struct alginfo *adata,
-				 unsigned int icvsize)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 *key_jump_cmd, *read_move_cmd, *write_move_cmd;
 
@@ -76,7 +63,6 @@ void cnstr_shdsc_aead_null_encap(u32 * const desc, struct alginfo *adata,
 	/* Skip if already shared */
 	key_jump_cmd = append_jump(desc, JUMP_JSL | JUMP_TEST_ALL |
 				   JUMP_COND_SHRD);
-<<<<<<< HEAD
 	if (era < 6) {
 		if (adata->key_inline)
 			append_key_as_imm(desc, adata->key_virt,
@@ -89,15 +75,6 @@ void cnstr_shdsc_aead_null_encap(u32 * const desc, struct alginfo *adata,
 	} else {
 		append_proto_dkp(desc, adata);
 	}
-=======
-	if (adata->key_inline)
-		append_key_as_imm(desc, adata->key_virt, adata->keylen_pad,
-				  adata->keylen, CLASS_2 | KEY_DEST_MDHA_SPLIT |
-				  KEY_ENC);
-	else
-		append_key(desc, adata->key_dma, adata->keylen, CLASS_2 |
-			   KEY_DEST_MDHA_SPLIT | KEY_ENC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	set_jump_tgt_here(desc, key_jump_cmd);
 
 	/* assoclen + cryptlen = seqinlen */
@@ -149,7 +126,6 @@ EXPORT_SYMBOL(cnstr_shdsc_aead_null_encap);
  * cnstr_shdsc_aead_null_decap - IPSec ESP decapsulation shared descriptor
  *                               (non-protocol) with no (null) decryption.
  * @desc: pointer to buffer used for descriptor construction
-<<<<<<< HEAD
  * @adata: pointer to authentication transform definitions.
  *         A split key is required for SEC Era < 6; the size of the split key
  *         is specified in this case. Valid algorithm values - one of
@@ -160,18 +136,6 @@ EXPORT_SYMBOL(cnstr_shdsc_aead_null_encap);
  */
 void cnstr_shdsc_aead_null_decap(u32 * const desc, struct alginfo *adata,
 				 unsigned int icvsize, int era)
-=======
- * @adata: pointer to authentication transform definitions. Note that since a
- *         split key is to be used, the size of the split key itself is
- *         specified. Valid algorithm values - one of OP_ALG_ALGSEL_{MD5, SHA1,
- *         SHA224, SHA256, SHA384, SHA512} ANDed with OP_ALG_AAI_HMAC_PRECOMP.
- * @icvsize: integrity check value (ICV) size (truncated or full)
- *
- * Note: Requires an MDHA split key.
- */
-void cnstr_shdsc_aead_null_decap(u32 * const desc, struct alginfo *adata,
-				 unsigned int icvsize)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 *key_jump_cmd, *read_move_cmd, *write_move_cmd, *jump_cmd;
 
@@ -180,7 +144,6 @@ void cnstr_shdsc_aead_null_decap(u32 * const desc, struct alginfo *adata,
 	/* Skip if already shared */
 	key_jump_cmd = append_jump(desc, JUMP_JSL | JUMP_TEST_ALL |
 				   JUMP_COND_SHRD);
-<<<<<<< HEAD
 	if (era < 6) {
 		if (adata->key_inline)
 			append_key_as_imm(desc, adata->key_virt,
@@ -193,15 +156,6 @@ void cnstr_shdsc_aead_null_decap(u32 * const desc, struct alginfo *adata,
 	} else {
 		append_proto_dkp(desc, adata);
 	}
-=======
-	if (adata->key_inline)
-		append_key_as_imm(desc, adata->key_virt, adata->keylen_pad,
-				  adata->keylen, CLASS_2 |
-				  KEY_DEST_MDHA_SPLIT | KEY_ENC);
-	else
-		append_key(desc, adata->key_dma, adata->keylen, CLASS_2 |
-			   KEY_DEST_MDHA_SPLIT | KEY_ENC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	set_jump_tgt_here(desc, key_jump_cmd);
 
 	/* Class 2 operation */
@@ -260,11 +214,7 @@ EXPORT_SYMBOL(cnstr_shdsc_aead_null_decap);
 static void init_sh_desc_key_aead(u32 * const desc,
 				  struct alginfo * const cdata,
 				  struct alginfo * const adata,
-<<<<<<< HEAD
 				  const bool is_rfc3686, u32 *nonce, int era)
-=======
-				  const bool is_rfc3686, u32 *nonce)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 *key_jump_cmd;
 	unsigned int enckeylen = cdata->keylen;
@@ -284,7 +234,6 @@ static void init_sh_desc_key_aead(u32 * const desc,
 	if (is_rfc3686)
 		enckeylen -= CTR_RFC3686_NONCE_SIZE;
 
-<<<<<<< HEAD
 	if (era < 6) {
 		if (adata->key_inline)
 			append_key_as_imm(desc, adata->key_virt,
@@ -297,15 +246,6 @@ static void init_sh_desc_key_aead(u32 * const desc,
 	} else {
 		append_proto_dkp(desc, adata);
 	}
-=======
-	if (adata->key_inline)
-		append_key_as_imm(desc, adata->key_virt, adata->keylen_pad,
-				  adata->keylen, CLASS_2 |
-				  KEY_DEST_MDHA_SPLIT | KEY_ENC);
-	else
-		append_key(desc, adata->key_dma, adata->keylen, CLASS_2 |
-			   KEY_DEST_MDHA_SPLIT | KEY_ENC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (cdata->key_inline)
 		append_key_as_imm(desc, cdata->key_virt, enckeylen,
@@ -336,46 +276,27 @@ static void init_sh_desc_key_aead(u32 * const desc,
  * @cdata: pointer to block cipher transform definitions
  *         Valid algorithm values - one of OP_ALG_ALGSEL_{AES, DES, 3DES} ANDed
  *         with OP_ALG_AAI_CBC or OP_ALG_AAI_CTR_MOD128.
-<<<<<<< HEAD
  * @adata: pointer to authentication transform definitions.
  *         A split key is required for SEC Era < 6; the size of the split key
  *         is specified in this case. Valid algorithm values - one of
  *         OP_ALG_ALGSEL_{MD5, SHA1, SHA224, SHA256, SHA384, SHA512} ANDed
  *         with OP_ALG_AAI_HMAC_PRECOMP.
-=======
- * @adata: pointer to authentication transform definitions. Note that since a
- *         split key is to be used, the size of the split key itself is
- *         specified. Valid algorithm values - one of OP_ALG_ALGSEL_{MD5, SHA1,
- *         SHA224, SHA256, SHA384, SHA512} ANDed with OP_ALG_AAI_HMAC_PRECOMP.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @ivsize: initialization vector size
  * @icvsize: integrity check value (ICV) size (truncated or full)
  * @is_rfc3686: true when ctr(aes) is wrapped by rfc3686 template
  * @nonce: pointer to rfc3686 nonce
  * @ctx1_iv_off: IV offset in CONTEXT1 register
  * @is_qi: true when called from caam/qi
-<<<<<<< HEAD
  * @era: SEC Era
-=======
- *
- * Note: Requires an MDHA split key.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 void cnstr_shdsc_aead_encap(u32 * const desc, struct alginfo *cdata,
 			    struct alginfo *adata, unsigned int ivsize,
 			    unsigned int icvsize, const bool is_rfc3686,
-<<<<<<< HEAD
 			    u32 *nonce, const u32 ctx1_iv_off, const bool is_qi,
 			    int era)
 {
 	/* Note: Context registers are saved. */
 	init_sh_desc_key_aead(desc, cdata, adata, is_rfc3686, nonce, era);
-=======
-			    u32 *nonce, const u32 ctx1_iv_off, const bool is_qi)
-{
-	/* Note: Context registers are saved. */
-	init_sh_desc_key_aead(desc, cdata, adata, is_rfc3686, nonce);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Class 2 operation */
 	append_operation(desc, adata->algtype | OP_ALG_AS_INITFINAL |
@@ -401,7 +322,6 @@ void cnstr_shdsc_aead_encap(u32 * const desc, struct alginfo *cdata,
 	}
 
 	/* Read and write assoclen bytes */
-<<<<<<< HEAD
 	if (is_qi || era < 3) {
 		append_math_add(desc, VARSEQINLEN, ZERO, REG3, CAAM_CMD_SZ);
 		append_math_add(desc, VARSEQOUTLEN, ZERO, REG3, CAAM_CMD_SZ);
@@ -409,10 +329,6 @@ void cnstr_shdsc_aead_encap(u32 * const desc, struct alginfo *cdata,
 		append_math_add(desc, VARSEQINLEN, ZERO, DPOVRD, CAAM_CMD_SZ);
 		append_math_add(desc, VARSEQOUTLEN, ZERO, DPOVRD, CAAM_CMD_SZ);
 	}
-=======
-	append_math_add(desc, VARSEQINLEN, ZERO, REG3, CAAM_CMD_SZ);
-	append_math_add(desc, VARSEQOUTLEN, ZERO, REG3, CAAM_CMD_SZ);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Skip assoc data */
 	append_seq_fifo_store(desc, 0, FIFOST_TYPE_SKIP | FIFOLDST_VLF);
@@ -455,46 +371,27 @@ EXPORT_SYMBOL(cnstr_shdsc_aead_encap);
  * @cdata: pointer to block cipher transform definitions
  *         Valid algorithm values - one of OP_ALG_ALGSEL_{AES, DES, 3DES} ANDed
  *         with OP_ALG_AAI_CBC or OP_ALG_AAI_CTR_MOD128.
-<<<<<<< HEAD
  * @adata: pointer to authentication transform definitions.
  *         A split key is required for SEC Era < 6; the size of the split key
  *         is specified in this case. Valid algorithm values - one of
  *         OP_ALG_ALGSEL_{MD5, SHA1, SHA224, SHA256, SHA384, SHA512} ANDed
  *         with OP_ALG_AAI_HMAC_PRECOMP.
-=======
- * @adata: pointer to authentication transform definitions. Note that since a
- *         split key is to be used, the size of the split key itself is
- *         specified. Valid algorithm values - one of OP_ALG_ALGSEL_{MD5, SHA1,
- *         SHA224, SHA256, SHA384, SHA512} ANDed with OP_ALG_AAI_HMAC_PRECOMP.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @ivsize: initialization vector size
  * @icvsize: integrity check value (ICV) size (truncated or full)
  * @is_rfc3686: true when ctr(aes) is wrapped by rfc3686 template
  * @nonce: pointer to rfc3686 nonce
  * @ctx1_iv_off: IV offset in CONTEXT1 register
  * @is_qi: true when called from caam/qi
-<<<<<<< HEAD
  * @era: SEC Era
-=======
- *
- * Note: Requires an MDHA split key.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 void cnstr_shdsc_aead_decap(u32 * const desc, struct alginfo *cdata,
 			    struct alginfo *adata, unsigned int ivsize,
 			    unsigned int icvsize, const bool geniv,
 			    const bool is_rfc3686, u32 *nonce,
-<<<<<<< HEAD
 			    const u32 ctx1_iv_off, const bool is_qi, int era)
 {
 	/* Note: Context registers are saved. */
 	init_sh_desc_key_aead(desc, cdata, adata, is_rfc3686, nonce, era);
-=======
-			    const u32 ctx1_iv_off, const bool is_qi)
-{
-	/* Note: Context registers are saved. */
-	init_sh_desc_key_aead(desc, cdata, adata, is_rfc3686, nonce);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Class 2 operation */
 	append_operation(desc, adata->algtype | OP_ALG_AS_INITFINAL |
@@ -521,7 +418,6 @@ void cnstr_shdsc_aead_decap(u32 * const desc, struct alginfo *cdata,
 	}
 
 	/* Read and write assoclen bytes */
-<<<<<<< HEAD
 	if (is_qi || era < 3) {
 		append_math_add(desc, VARSEQINLEN, ZERO, REG3, CAAM_CMD_SZ);
 		if (geniv)
@@ -539,13 +435,6 @@ void cnstr_shdsc_aead_decap(u32 * const desc, struct alginfo *cdata,
 			append_math_add(desc, VARSEQOUTLEN, ZERO, DPOVRD,
 					CAAM_CMD_SZ);
 	}
-=======
-	append_math_add(desc, VARSEQINLEN, ZERO, REG3, CAAM_CMD_SZ);
-	if (geniv)
-		append_math_add_imm_u32(desc, VARSEQOUTLEN, REG3, IMM, ivsize);
-	else
-		append_math_add(desc, VARSEQOUTLEN, ZERO, REG3, CAAM_CMD_SZ);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Skip assoc data */
 	append_seq_fifo_store(desc, 0, FIFOST_TYPE_SKIP | FIFOLDST_VLF);
@@ -600,50 +489,30 @@ EXPORT_SYMBOL(cnstr_shdsc_aead_decap);
  * @cdata: pointer to block cipher transform definitions
  *         Valid algorithm values - one of OP_ALG_ALGSEL_{AES, DES, 3DES} ANDed
  *         with OP_ALG_AAI_CBC or OP_ALG_AAI_CTR_MOD128.
-<<<<<<< HEAD
  * @adata: pointer to authentication transform definitions.
  *         A split key is required for SEC Era < 6; the size of the split key
  *         is specified in this case. Valid algorithm values - one of
  *         OP_ALG_ALGSEL_{MD5, SHA1, SHA224, SHA256, SHA384, SHA512} ANDed
  *         with OP_ALG_AAI_HMAC_PRECOMP.
-=======
- * @adata: pointer to authentication transform definitions. Note that since a
- *         split key is to be used, the size of the split key itself is
- *         specified. Valid algorithm values - one of OP_ALG_ALGSEL_{MD5, SHA1,
- *         SHA224, SHA256, SHA384, SHA512} ANDed with OP_ALG_AAI_HMAC_PRECOMP.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @ivsize: initialization vector size
  * @icvsize: integrity check value (ICV) size (truncated or full)
  * @is_rfc3686: true when ctr(aes) is wrapped by rfc3686 template
  * @nonce: pointer to rfc3686 nonce
  * @ctx1_iv_off: IV offset in CONTEXT1 register
  * @is_qi: true when called from caam/qi
-<<<<<<< HEAD
  * @era: SEC Era
-=======
- *
- * Note: Requires an MDHA split key.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 void cnstr_shdsc_aead_givencap(u32 * const desc, struct alginfo *cdata,
 			       struct alginfo *adata, unsigned int ivsize,
 			       unsigned int icvsize, const bool is_rfc3686,
 			       u32 *nonce, const u32 ctx1_iv_off,
-<<<<<<< HEAD
 			       const bool is_qi, int era)
-=======
-			       const bool is_qi)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 geniv, moveiv;
 	u32 *wait_cmd;
 
 	/* Note: Context registers are saved. */
-<<<<<<< HEAD
 	init_sh_desc_key_aead(desc, cdata, adata, is_rfc3686, nonce, era);
-=======
-	init_sh_desc_key_aead(desc, cdata, adata, is_rfc3686, nonce);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (is_qi) {
 		u32 *wait_load_cmd;
@@ -693,7 +562,6 @@ copy_iv:
 			 OP_ALG_ENCRYPT);
 
 	/* Read and write assoclen bytes */
-<<<<<<< HEAD
 	if (is_qi || era < 3) {
 		append_math_add(desc, VARSEQINLEN, ZERO, REG3, CAAM_CMD_SZ);
 		append_math_add(desc, VARSEQOUTLEN, ZERO, REG3, CAAM_CMD_SZ);
@@ -701,10 +569,6 @@ copy_iv:
 		append_math_add(desc, VARSEQINLEN, ZERO, DPOVRD, CAAM_CMD_SZ);
 		append_math_add(desc, VARSEQOUTLEN, ZERO, DPOVRD, CAAM_CMD_SZ);
 	}
-=======
-	append_math_add(desc, VARSEQINLEN, ZERO, REG3, CAAM_CMD_SZ);
-	append_math_add(desc, VARSEQOUTLEN, ZERO, REG3, CAAM_CMD_SZ);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Skip assoc data */
 	append_seq_fifo_store(desc, 0, FIFOST_TYPE_SKIP | FIFOLDST_VLF);
@@ -770,7 +634,6 @@ EXPORT_SYMBOL(cnstr_shdsc_aead_givencap);
  * @desc: pointer to buffer used for descriptor construction
  * @cdata: pointer to block cipher transform definitions
  *         Valid algorithm values - OP_ALG_ALGSEL_AES ANDed with OP_ALG_AAI_GCM.
-<<<<<<< HEAD
  * @ivsize: initialization vector size
  * @icvsize: integrity check value (ICV) size (truncated or full)
  * @is_qi: true when called from caam/qi
@@ -778,12 +641,6 @@ EXPORT_SYMBOL(cnstr_shdsc_aead_givencap);
 void cnstr_shdsc_gcm_encap(u32 * const desc, struct alginfo *cdata,
 			   unsigned int ivsize, unsigned int icvsize,
 			   const bool is_qi)
-=======
- * @icvsize: integrity check value (ICV) size (truncated or full)
- */
-void cnstr_shdsc_gcm_encap(u32 * const desc, struct alginfo *cdata,
-			   unsigned int icvsize)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 *key_jump_cmd, *zero_payload_jump_cmd, *zero_assoc_jump_cmd1,
 	    *zero_assoc_jump_cmd2;
@@ -805,7 +662,6 @@ void cnstr_shdsc_gcm_encap(u32 * const desc, struct alginfo *cdata,
 	append_operation(desc, cdata->algtype | OP_ALG_AS_INITFINAL |
 			 OP_ALG_ENCRYPT);
 
-<<<<<<< HEAD
 	if (is_qi) {
 		u32 *wait_load_cmd;
 
@@ -835,13 +691,6 @@ void cnstr_shdsc_gcm_encap(u32 * const desc, struct alginfo *cdata,
 		append_seq_fifo_load(desc, ivsize, FIFOLD_CLASS_CLASS1 |
 				     FIFOLD_TYPE_IV | FIFOLD_TYPE_FLUSH1);
 
-=======
-	/* if assoclen + cryptlen is ZERO, skip to ICV write */
-	append_math_sub(desc, VARSEQOUTLEN, SEQINLEN, REG0, CAAM_CMD_SZ);
-	zero_assoc_jump_cmd2 = append_jump(desc, JUMP_TEST_ALL |
-						 JUMP_COND_MATH_Z);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* if assoclen is ZERO, skip reading the assoc data */
 	append_math_add(desc, VARSEQINLEN, ZERO, REG3, CAAM_CMD_SZ);
 	zero_assoc_jump_cmd1 = append_jump(desc, JUMP_TEST_ALL |
@@ -873,16 +722,11 @@ void cnstr_shdsc_gcm_encap(u32 * const desc, struct alginfo *cdata,
 	append_seq_fifo_load(desc, 0, FIFOLD_CLASS_CLASS1 | FIFOLDST_VLF |
 			     FIFOLD_TYPE_MSG | FIFOLD_TYPE_LAST1);
 
-<<<<<<< HEAD
 	/* jump to ICV writing */
 	if (is_qi)
 		append_jump(desc, JUMP_TEST_ALL | 4);
 	else
 		append_jump(desc, JUMP_TEST_ALL | 2);
-=======
-	/* jump the zero-payload commands */
-	append_jump(desc, JUMP_TEST_ALL | 2);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* zero-payload commands */
 	set_jump_tgt_here(desc, zero_payload_jump_cmd);
@@ -890,24 +734,18 @@ void cnstr_shdsc_gcm_encap(u32 * const desc, struct alginfo *cdata,
 	/* read assoc data */
 	append_seq_fifo_load(desc, 0, FIFOLD_CLASS_CLASS1 | FIFOLDST_VLF |
 			     FIFOLD_TYPE_AAD | FIFOLD_TYPE_LAST1);
-<<<<<<< HEAD
 	if (is_qi)
 		/* jump to ICV writing */
 		append_jump(desc, JUMP_TEST_ALL | 2);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* There is no input data */
 	set_jump_tgt_here(desc, zero_assoc_jump_cmd2);
 
-<<<<<<< HEAD
 	if (is_qi)
 		append_seq_fifo_load(desc, ivsize, FIFOLD_CLASS_CLASS1 |
 				     FIFOLD_TYPE_IV | FIFOLD_TYPE_FLUSH1 |
 				     FIFOLD_TYPE_LAST1);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* write ICV */
 	append_seq_store(desc, icvsize, LDST_CLASS_1_CCB |
 			 LDST_SRCDST_BYTE_CONTEXT);
@@ -924,7 +762,6 @@ EXPORT_SYMBOL(cnstr_shdsc_gcm_encap);
  * @desc: pointer to buffer used for descriptor construction
  * @cdata: pointer to block cipher transform definitions
  *         Valid algorithm values - OP_ALG_ALGSEL_AES ANDed with OP_ALG_AAI_GCM.
-<<<<<<< HEAD
  * @ivsize: initialization vector size
  * @icvsize: integrity check value (ICV) size (truncated or full)
  * @is_qi: true when called from caam/qi
@@ -932,12 +769,6 @@ EXPORT_SYMBOL(cnstr_shdsc_gcm_encap);
 void cnstr_shdsc_gcm_decap(u32 * const desc, struct alginfo *cdata,
 			   unsigned int ivsize, unsigned int icvsize,
 			   const bool is_qi)
-=======
- * @icvsize: integrity check value (ICV) size (truncated or full)
- */
-void cnstr_shdsc_gcm_decap(u32 * const desc, struct alginfo *cdata,
-			   unsigned int icvsize)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 *key_jump_cmd, *zero_payload_jump_cmd, *zero_assoc_jump_cmd1;
 
@@ -958,7 +789,6 @@ void cnstr_shdsc_gcm_decap(u32 * const desc, struct alginfo *cdata,
 	append_operation(desc, cdata->algtype | OP_ALG_AS_INITFINAL |
 			 OP_ALG_DECRYPT | OP_ALG_ICV_ON);
 
-<<<<<<< HEAD
 	if (is_qi) {
 		u32 *wait_load_cmd;
 
@@ -977,8 +807,6 @@ void cnstr_shdsc_gcm_decap(u32 * const desc, struct alginfo *cdata,
 				     FIFOLD_TYPE_IV | FIFOLD_TYPE_FLUSH1);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* if assoclen is ZERO, skip reading the assoc data */
 	append_math_add(desc, VARSEQINLEN, ZERO, REG3, CAAM_CMD_SZ);
 	zero_assoc_jump_cmd1 = append_jump(desc, JUMP_TEST_ALL |
@@ -1031,7 +859,6 @@ EXPORT_SYMBOL(cnstr_shdsc_gcm_decap);
  * @desc: pointer to buffer used for descriptor construction
  * @cdata: pointer to block cipher transform definitions
  *         Valid algorithm values - OP_ALG_ALGSEL_AES ANDed with OP_ALG_AAI_GCM.
-<<<<<<< HEAD
  * @ivsize: initialization vector size
  * @icvsize: integrity check value (ICV) size (truncated or full)
  * @is_qi: true when called from caam/qi
@@ -1039,12 +866,6 @@ EXPORT_SYMBOL(cnstr_shdsc_gcm_decap);
 void cnstr_shdsc_rfc4106_encap(u32 * const desc, struct alginfo *cdata,
 			       unsigned int ivsize, unsigned int icvsize,
 			       const bool is_qi)
-=======
- * @icvsize: integrity check value (ICV) size (truncated or full)
- */
-void cnstr_shdsc_rfc4106_encap(u32 * const desc, struct alginfo *cdata,
-			       unsigned int icvsize)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 *key_jump_cmd;
 
@@ -1065,7 +886,6 @@ void cnstr_shdsc_rfc4106_encap(u32 * const desc, struct alginfo *cdata,
 	append_operation(desc, cdata->algtype | OP_ALG_AS_INITFINAL |
 			 OP_ALG_ENCRYPT);
 
-<<<<<<< HEAD
 	if (is_qi) {
 		u32 *wait_load_cmd;
 
@@ -1089,9 +909,6 @@ void cnstr_shdsc_rfc4106_encap(u32 * const desc, struct alginfo *cdata,
 	}
 
 	append_math_sub_imm_u32(desc, VARSEQINLEN, REG3, IMM, ivsize);
-=======
-	append_math_sub_imm_u32(desc, VARSEQINLEN, REG3, IMM, 8);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	append_math_add(desc, VARSEQOUTLEN, ZERO, REG3, CAAM_CMD_SZ);
 
 	/* Read assoc data */
@@ -1099,11 +916,7 @@ void cnstr_shdsc_rfc4106_encap(u32 * const desc, struct alginfo *cdata,
 			     FIFOLD_TYPE_AAD | FIFOLD_TYPE_FLUSH1);
 
 	/* Skip IV */
-<<<<<<< HEAD
 	append_seq_fifo_load(desc, ivsize, FIFOLD_CLASS_SKIP);
-=======
-	append_seq_fifo_load(desc, 8, FIFOLD_CLASS_SKIP);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Will read cryptlen bytes */
 	append_math_sub(desc, VARSEQINLEN, SEQINLEN, REG0, CAAM_CMD_SZ);
@@ -1142,7 +955,6 @@ EXPORT_SYMBOL(cnstr_shdsc_rfc4106_encap);
  * @desc: pointer to buffer used for descriptor construction
  * @cdata: pointer to block cipher transform definitions
  *         Valid algorithm values - OP_ALG_ALGSEL_AES ANDed with OP_ALG_AAI_GCM.
-<<<<<<< HEAD
  * @ivsize: initialization vector size
  * @icvsize: integrity check value (ICV) size (truncated or full)
  * @is_qi: true when called from caam/qi
@@ -1150,12 +962,6 @@ EXPORT_SYMBOL(cnstr_shdsc_rfc4106_encap);
 void cnstr_shdsc_rfc4106_decap(u32 * const desc, struct alginfo *cdata,
 			       unsigned int ivsize, unsigned int icvsize,
 			       const bool is_qi)
-=======
- * @icvsize: integrity check value (ICV) size (truncated or full)
- */
-void cnstr_shdsc_rfc4106_decap(u32 * const desc, struct alginfo *cdata,
-			       unsigned int icvsize)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 *key_jump_cmd;
 
@@ -1177,7 +983,6 @@ void cnstr_shdsc_rfc4106_decap(u32 * const desc, struct alginfo *cdata,
 	append_operation(desc, cdata->algtype | OP_ALG_AS_INITFINAL |
 			 OP_ALG_DECRYPT | OP_ALG_ICV_ON);
 
-<<<<<<< HEAD
 	if (is_qi) {
 		u32 *wait_load_cmd;
 
@@ -1201,9 +1006,6 @@ void cnstr_shdsc_rfc4106_decap(u32 * const desc, struct alginfo *cdata,
 	}
 
 	append_math_sub_imm_u32(desc, VARSEQINLEN, REG3, IMM, ivsize);
-=======
-	append_math_sub_imm_u32(desc, VARSEQINLEN, REG3, IMM, 8);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	append_math_add(desc, VARSEQOUTLEN, ZERO, REG3, CAAM_CMD_SZ);
 
 	/* Read assoc data */
@@ -1211,11 +1013,7 @@ void cnstr_shdsc_rfc4106_decap(u32 * const desc, struct alginfo *cdata,
 			     FIFOLD_TYPE_AAD | FIFOLD_TYPE_FLUSH1);
 
 	/* Skip IV */
-<<<<<<< HEAD
 	append_seq_fifo_load(desc, ivsize, FIFOLD_CLASS_SKIP);
-=======
-	append_seq_fifo_load(desc, 8, FIFOLD_CLASS_SKIP);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Will read cryptlen bytes */
 	append_math_sub(desc, VARSEQINLEN, SEQOUTLEN, REG3, CAAM_CMD_SZ);
@@ -1254,7 +1052,6 @@ EXPORT_SYMBOL(cnstr_shdsc_rfc4106_decap);
  * @desc: pointer to buffer used for descriptor construction
  * @cdata: pointer to block cipher transform definitions
  *         Valid algorithm values - OP_ALG_ALGSEL_AES ANDed with OP_ALG_AAI_GCM.
-<<<<<<< HEAD
  * @ivsize: initialization vector size
  * @icvsize: integrity check value (ICV) size (truncated or full)
  * @is_qi: true when called from caam/qi
@@ -1262,12 +1059,6 @@ EXPORT_SYMBOL(cnstr_shdsc_rfc4106_decap);
 void cnstr_shdsc_rfc4543_encap(u32 * const desc, struct alginfo *cdata,
 			       unsigned int ivsize, unsigned int icvsize,
 			       const bool is_qi)
-=======
- * @icvsize: integrity check value (ICV) size (truncated or full)
- */
-void cnstr_shdsc_rfc4543_encap(u32 * const desc, struct alginfo *cdata,
-			       unsigned int icvsize)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 *key_jump_cmd, *read_move_cmd, *write_move_cmd;
 
@@ -1288,7 +1079,6 @@ void cnstr_shdsc_rfc4543_encap(u32 * const desc, struct alginfo *cdata,
 	append_operation(desc, cdata->algtype | OP_ALG_AS_INITFINAL |
 			 OP_ALG_ENCRYPT);
 
-<<<<<<< HEAD
 	if (is_qi) {
 		/* assoclen is not needed, skip it */
 		append_seq_fifo_load(desc, 4, FIFOLD_CLASS_SKIP);
@@ -1301,8 +1091,6 @@ void cnstr_shdsc_rfc4543_encap(u32 * const desc, struct alginfo *cdata,
 				     FIFOLD_TYPE_IV | FIFOLD_TYPE_FLUSH1);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* assoclen + cryptlen = seqinlen */
 	append_math_sub(desc, REG3, SEQINLEN, REG0, CAAM_CMD_SZ);
 
@@ -1314,11 +1102,7 @@ void cnstr_shdsc_rfc4543_encap(u32 * const desc, struct alginfo *cdata,
 	read_move_cmd = append_move(desc, MOVE_SRC_DESCBUF | MOVE_DEST_MATH3 |
 				    (0x6 << MOVE_LEN_SHIFT));
 	write_move_cmd = append_move(desc, MOVE_SRC_MATH3 | MOVE_DEST_DESCBUF |
-<<<<<<< HEAD
 				     (0x8 << MOVE_LEN_SHIFT) | MOVE_WAITCOMP);
-=======
-				     (0x8 << MOVE_LEN_SHIFT));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Will read assoclen + cryptlen bytes */
 	append_math_sub(desc, VARSEQINLEN, SEQINLEN, REG0, CAAM_CMD_SZ);
@@ -1353,7 +1137,6 @@ EXPORT_SYMBOL(cnstr_shdsc_rfc4543_encap);
  * @desc: pointer to buffer used for descriptor construction
  * @cdata: pointer to block cipher transform definitions
  *         Valid algorithm values - OP_ALG_ALGSEL_AES ANDed with OP_ALG_AAI_GCM.
-<<<<<<< HEAD
  * @ivsize: initialization vector size
  * @icvsize: integrity check value (ICV) size (truncated or full)
  * @is_qi: true when called from caam/qi
@@ -1361,12 +1144,6 @@ EXPORT_SYMBOL(cnstr_shdsc_rfc4543_encap);
 void cnstr_shdsc_rfc4543_decap(u32 * const desc, struct alginfo *cdata,
 			       unsigned int ivsize, unsigned int icvsize,
 			       const bool is_qi)
-=======
- * @icvsize: integrity check value (ICV) size (truncated or full)
- */
-void cnstr_shdsc_rfc4543_decap(u32 * const desc, struct alginfo *cdata,
-			       unsigned int icvsize)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 *key_jump_cmd, *read_move_cmd, *write_move_cmd;
 
@@ -1387,7 +1164,6 @@ void cnstr_shdsc_rfc4543_decap(u32 * const desc, struct alginfo *cdata,
 	append_operation(desc, cdata->algtype | OP_ALG_AS_INITFINAL |
 			 OP_ALG_DECRYPT | OP_ALG_ICV_ON);
 
-<<<<<<< HEAD
 	if (is_qi) {
 		/* assoclen is not needed, skip it */
 		append_seq_fifo_load(desc, 4, FIFOLD_CLASS_SKIP);
@@ -1400,8 +1176,6 @@ void cnstr_shdsc_rfc4543_decap(u32 * const desc, struct alginfo *cdata,
 				     FIFOLD_TYPE_IV | FIFOLD_TYPE_FLUSH1);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* assoclen + cryptlen = seqoutlen */
 	append_math_sub(desc, REG3, SEQOUTLEN, REG0, CAAM_CMD_SZ);
 
@@ -1413,11 +1187,7 @@ void cnstr_shdsc_rfc4543_decap(u32 * const desc, struct alginfo *cdata,
 	read_move_cmd = append_move(desc, MOVE_SRC_DESCBUF | MOVE_DEST_MATH3 |
 				    (0x6 << MOVE_LEN_SHIFT));
 	write_move_cmd = append_move(desc, MOVE_SRC_MATH3 | MOVE_DEST_DESCBUF |
-<<<<<<< HEAD
 				     (0x8 << MOVE_LEN_SHIFT) | MOVE_WAITCOMP);
-=======
-				     (0x8 << MOVE_LEN_SHIFT));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Will read assoclen + cryptlen bytes */
 	append_math_sub(desc, VARSEQINLEN, SEQOUTLEN, REG0, CAAM_CMD_SZ);
@@ -1491,11 +1261,7 @@ void cnstr_shdsc_ablkcipher_encap(u32 * const desc, struct alginfo *cdata,
 
 	/* Load nonce into CONTEXT1 reg */
 	if (is_rfc3686) {
-<<<<<<< HEAD
 		const u8 *nonce = cdata->key_virt + cdata->keylen;
-=======
-		u8 *nonce = cdata->key_virt + cdata->keylen;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		append_load_as_imm(desc, nonce, CTR_RFC3686_NONCE_SIZE,
 				   LDST_CLASS_IND_CCB |
@@ -1560,11 +1326,7 @@ void cnstr_shdsc_ablkcipher_decap(u32 * const desc, struct alginfo *cdata,
 
 	/* Load nonce into CONTEXT1 reg */
 	if (is_rfc3686) {
-<<<<<<< HEAD
 		const u8 *nonce = cdata->key_virt + cdata->keylen;
-=======
-		u8 *nonce = cdata->key_virt + cdata->keylen;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		append_load_as_imm(desc, nonce, CTR_RFC3686_NONCE_SIZE,
 				   LDST_CLASS_IND_CCB |
@@ -1633,11 +1395,7 @@ void cnstr_shdsc_ablkcipher_givencap(u32 * const desc, struct alginfo *cdata,
 
 	/* Load Nonce into CONTEXT1 reg */
 	if (is_rfc3686) {
-<<<<<<< HEAD
 		const u8 *nonce = cdata->key_virt + cdata->keylen;
-=======
-		u8 *nonce = cdata->key_virt + cdata->keylen;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		append_load_as_imm(desc, nonce, CTR_RFC3686_NONCE_SIZE,
 				   LDST_CLASS_IND_CCB |
@@ -1699,17 +1457,7 @@ EXPORT_SYMBOL(cnstr_shdsc_ablkcipher_givencap);
  */
 void cnstr_shdsc_xts_ablkcipher_encap(u32 * const desc, struct alginfo *cdata)
 {
-<<<<<<< HEAD
 	__be64 sector_size = cpu_to_be64(512);
-=======
-	/*
-	 * Set sector size to a big value, practically disabling
-	 * sector size segmentation in xts implementation. We cannot
-	 * take full advantage of this HW feature with existing
-	 * crypto API / dm-crypt SW architecture.
-	 */
-	__be64 sector_size = cpu_to_be64(BIT(15));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 *key_jump_cmd;
 
 	init_sh_desc(desc, HDR_SHARE_SERIAL | HDR_SAVECTX);
@@ -1761,17 +1509,7 @@ EXPORT_SYMBOL(cnstr_shdsc_xts_ablkcipher_encap);
  */
 void cnstr_shdsc_xts_ablkcipher_decap(u32 * const desc, struct alginfo *cdata)
 {
-<<<<<<< HEAD
 	__be64 sector_size = cpu_to_be64(512);
-=======
-	/*
-	 * Set sector size to a big value, practically disabling
-	 * sector size segmentation in xts implementation. We cannot
-	 * take full advantage of this HW feature with existing
-	 * crypto API / dm-crypt SW architecture.
-	 */
-	__be64 sector_size = cpu_to_be64(BIT(15));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 *key_jump_cmd;
 
 	init_sh_desc(desc, HDR_SHARE_SERIAL | HDR_SAVECTX);

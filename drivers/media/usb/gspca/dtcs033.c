@@ -71,7 +71,6 @@ static int reg_reqs(struct gspca_dev *gspca_dev,
 
 		if (gspca_dev->usb_err < 0) {
 
-<<<<<<< HEAD
 			gspca_err(gspca_dev, "usb error request no: %d / %d\n",
 				  i, n_reqs);
 		} else if (preq->bRequestType & USB_DIR_IN) {
@@ -82,20 +81,6 @@ static int reg_reqs(struct gspca_dev *gspca_dev,
 				  preq->wLength,
 				  gspca_dev->usb_buf,
 				  preq->wLength > 3 ? "...\n" : "\n");
-=======
-			PERR("usb error request no: %d / %d\n",
-				i, n_reqs);
-		} else if (preq->bRequestType & USB_DIR_IN) {
-
-			PDEBUG(D_STREAM,
-			"USB IN (%d) returned[%d] %02X %02X %02X %s",
-				i,
-				preq->wLength,
-				gspca_dev->usb_buf[0],
-				gspca_dev->usb_buf[1],
-				gspca_dev->usb_buf[2],
-				preq->wLength > 3 ? "...\n" : "\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		i++;
@@ -189,20 +174,12 @@ static void dtcs033_setexposure(struct gspca_dev *gspca_dev,
 	reg_rw(gspca_dev,
 		bRequestType, bRequest, wValue, wIndex, 0);
 	if (gspca_dev->usb_err < 0)
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "usb error in setexposure(gain) sequence\n");
-=======
-		PERR("usb error in setexposure(gain) sequence.\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	reg_rw(gspca_dev,
 		bRequestType, bRequest, (xtimeVal<<4), 0x6300, 0);
 	if (gspca_dev->usb_err < 0)
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "usb error in setexposure(time) sequence\n");
-=======
-		PERR("usb error in setexposure(time) sequence.\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* specific webcam descriptor */
@@ -260,13 +237,8 @@ static int dtcs033_init_controls(struct gspca_dev *gspca_dev)
 				V4L2_CID_GAIN,
 				14,  33,  1,  24);/* [dB] */
 	if (hdl->error) {
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "Could not initialize controls: %d\n",
 			  hdl->error);
-=======
-		PERR("Could not initialize controls: %d\n",
-			hdl->error);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return hdl->error;
 	}
 

@@ -188,10 +188,7 @@
 #define OPAL_XIVE_DUMP				142
 #define OPAL_XIVE_RESERVED3			143
 #define OPAL_XIVE_RESERVED4			144
-<<<<<<< HEAD
 #define OPAL_SIGNAL_SYSTEM_RESET		145
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define OPAL_NPU_INIT_CONTEXT			146
 #define OPAL_NPU_DESTROY_CONTEXT		147
 #define OPAL_NPU_MAP_LPAR			148
@@ -204,7 +201,6 @@
 #define OPAL_SET_POWER_SHIFT_RATIO		155
 #define OPAL_SENSOR_GROUP_CLEAR			156
 #define OPAL_PCI_SET_P2P			157
-<<<<<<< HEAD
 #define OPAL_QUIESCE				158
 #define OPAL_NPU_SPA_SETUP			159
 #define OPAL_NPU_SPA_CLEAR_CACHE		160
@@ -221,9 +217,6 @@
 #define QUIESCE_LOCK_BREAK		3 /* Set to ignore locks. */
 #define QUIESCE_RESUME			4 /* Un-quiesce */
 #define QUIESCE_RESUME_FAST_REBOOT	5 /* Un-quiesce, fast reboot */
-=======
-#define OPAL_LAST				157
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Device tree flags */
 
@@ -918,11 +911,8 @@ enum {
 	 */
 	OPAL_REINIT_CPUS_MMU_HASH	= (1 << 2),
 	OPAL_REINIT_CPUS_MMU_RADIX	= (1 << 3),
-<<<<<<< HEAD
 
 	OPAL_REINIT_CPUS_TM_SUSPEND_DISABLED = (1 << 4),
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 typedef struct oppanel_line {
@@ -1098,10 +1088,7 @@ enum {
 /* Flags for OPAL_XIVE_GET/SET_VP_INFO */
 enum {
 	OPAL_XIVE_VP_ENABLED		= 0x00000001,
-<<<<<<< HEAD
 	OPAL_XIVE_VP_SINGLE_ESCALATION	= 0x00000002,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* "Any chip" replacement for chip ID for allocation functions */

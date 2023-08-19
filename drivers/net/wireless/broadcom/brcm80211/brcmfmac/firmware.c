@@ -25,10 +25,7 @@
 #include "firmware.h"
 #include "core.h"
 #include "common.h"
-<<<<<<< HEAD
 #include "chip.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define BRCMF_FW_MAX_NVRAM_SIZE			64000
 #define BRCMF_FW_NVRAM_DEVPATH_LEN		19	/* devpath0=pcie/1/4/ */
@@ -441,7 +438,6 @@ void brcmf_fw_nvram_free(void *nvram)
 
 struct brcmf_fw {
 	struct device *dev;
-<<<<<<< HEAD
 	struct brcmf_fw_request *req;
 	u32 curpos;
 	void (*done)(struct device *dev, int err, struct brcmf_fw_request *req);
@@ -467,20 +463,6 @@ static int brcmf_fw_request_nvram_done(const struct firmware *fw, void *ctx)
 {
 	struct brcmf_fw *fwctx = ctx;
 	struct brcmf_fw_item *cur;
-=======
-	u16 flags;
-	const struct firmware *code;
-	const char *nvram_name;
-	u16 domain_nr;
-	u16 bus_nr;
-	void (*done)(struct device *dev, int err, const struct firmware *fw,
-		     void *nvram_image, u32 nvram_len);
-};
-
-static void brcmf_fw_request_nvram_done(const struct firmware *fw, void *ctx)
-{
-	struct brcmf_fw *fwctx = ctx;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 nvram_length = 0;
 	void *nvram = NULL;
 	u8 *data = NULL;
@@ -488,40 +470,28 @@ static void brcmf_fw_request_nvram_done(const struct firmware *fw, void *ctx)
 	bool raw_nvram;
 
 	brcmf_dbg(TRACE, "enter: dev=%s\n", dev_name(fwctx->dev));
-<<<<<<< HEAD
 
 	cur = &fwctx->req->items[fwctx->curpos];
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (fw && fw->data) {
 		data = (u8 *)fw->data;
 		data_len = fw->size;
 		raw_nvram = false;
 	} else {
 		data = bcm47xx_nvram_get_contents(&data_len);
-<<<<<<< HEAD
 		if (!data && !(cur->flags & BRCMF_FW_REQF_OPTIONAL))
-=======
-		if (!data && !(fwctx->flags & BRCMF_FW_REQ_NV_OPTIONAL))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto fail;
 		raw_nvram = true;
 	}
 
 	if (data)
 		nvram = brcmf_fw_nvram_strip(data, data_len, &nvram_length,
-<<<<<<< HEAD
 					     fwctx->req->domain_nr,
 					     fwctx->req->bus_nr);
-=======
-					     fwctx->domain_nr, fwctx->bus_nr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (raw_nvram)
 		bcm47xx_nvram_release_contents(data);
 	release_firmware(fw);
-<<<<<<< HEAD
 	if (!nvram && !(cur->flags & BRCMF_FW_REQF_OPTIONAL))
 		goto fail;
 
@@ -640,74 +610,14 @@ static bool brcmf_fw_request_is_valid(struct brcmf_fw_request *req)
 int brcmf_fw_get_firmwares(struct device *dev, struct brcmf_fw_request *req,
 			   void (*fw_cb)(struct device *dev, int err,
 					 struct brcmf_fw_request *req))
-=======
-	if (!nvram && !(fwctx->flags & BRCMF_FW_REQ_NV_OPTIONAL))
-		goto fail;
-
-	fwctx->done(fwctx->dev, 0, fwctx->code, nvram, nvram_length);
-	kfree(fwctx);
-	return;
-
-fail:
-	brcmf_dbg(TRACE, "failed: dev=%s\n", dev_name(fwctx->dev));
-	release_firmware(fwctx->code);
-	fwctx->done(fwctx->dev, -ENOENT, NULL, NULL, 0);
-	kfree(fwctx);
-}
-
-static void brcmf_fw_request_code_done(const struct firmware *fw, void *ctx)
-{
-	struct brcmf_fw *fwctx = ctx;
-	int ret = 0;
-
-	brcmf_dbg(TRACE, "enter: dev=%s\n", dev_name(fwctx->dev));
-	if (!fw) {
-		ret = -ENOENT;
-		goto fail;
-	}
-	/* only requested code so done here */
-	if (!(fwctx->flags & BRCMF_FW_REQUEST_NVRAM))
-		goto done;
-
-	fwctx->code = fw;
-	ret = request_firmware_nowait(THIS_MODULE, true, fwctx->nvram_name,
-				      fwctx->dev, GFP_KERNEL, fwctx,
-				      brcmf_fw_request_nvram_done);
-
-	/* pass NULL to nvram callback for bcm47xx fallback */
-	if (ret)
-		brcmf_fw_request_nvram_done(NULL, fwctx);
-	return;
-
-fail:
-	brcmf_dbg(TRACE, "failed: dev=%s\n", dev_name(fwctx->dev));
-done:
-	fwctx->done(fwctx->dev, ret, fw, NULL, 0);
-	kfree(fwctx);
-}
-
-int brcmf_fw_get_firmwares_pcie(struct device *dev, u16 flags,
-				const char *code, const char *nvram,
-				void (*fw_cb)(struct device *dev, int err,
-					      const struct firmware *fw,
-					      void *nvram_image, u32 nvram_len),
-				u16 domain_nr, u16 bus_nr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct brcmf_fw *fwctx;
 
 	brcmf_dbg(TRACE, "enter: dev=%s\n", dev_name(dev));
-<<<<<<< HEAD
 	if (!fw_cb)
 		return -EINVAL;
 
 	if (!brcmf_fw_request_is_valid(req))
-=======
-	if (!fw_cb || !code)
-		return -EINVAL;
-
-	if ((flags & BRCMF_FW_REQUEST_NVRAM) && !nvram)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	fwctx = kzalloc(sizeof(*fwctx), GFP_KERNEL);
@@ -715,7 +625,6 @@ int brcmf_fw_get_firmwares_pcie(struct device *dev, u16 flags,
 		return -ENOMEM;
 
 	fwctx->dev = dev;
-<<<<<<< HEAD
 	fwctx->req = req;
 	fwctx->done = fw_cb;
 
@@ -736,37 +645,6 @@ brcmf_fw_alloc_request(u32 chip, u32 chiprev,
 	u32 i, j;
 	char end = '\0';
 	size_t reqsz;
-=======
-	fwctx->flags = flags;
-	fwctx->done = fw_cb;
-	if (flags & BRCMF_FW_REQUEST_NVRAM)
-		fwctx->nvram_name = nvram;
-	fwctx->domain_nr = domain_nr;
-	fwctx->bus_nr = bus_nr;
-
-	return request_firmware_nowait(THIS_MODULE, true, code, dev,
-				       GFP_KERNEL, fwctx,
-				       brcmf_fw_request_code_done);
-}
-
-int brcmf_fw_get_firmwares(struct device *dev, u16 flags,
-			   const char *code, const char *nvram,
-			   void (*fw_cb)(struct device *dev, int err,
-					 const struct firmware *fw,
-					 void *nvram_image, u32 nvram_len))
-{
-	return brcmf_fw_get_firmwares_pcie(dev, flags, code, nvram, fw_cb, 0,
-					   0);
-}
-
-int brcmf_fw_map_chip_to_name(u32 chip, u32 chiprev,
-			      struct brcmf_firmware_mapping mapping_table[],
-			      u32 table_size, char fw_name[BRCMF_FW_NAME_LEN],
-			      char nvram_name[BRCMF_FW_NAME_LEN])
-{
-	u32 i;
-	char end;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < table_size; i++) {
 		if (mapping_table[i].chipid == chip &&
@@ -776,7 +654,6 @@ int brcmf_fw_map_chip_to_name(u32 chip, u32 chiprev,
 
 	if (i == table_size) {
 		brcmf_err("Unknown chipid %d [%d]\n", chip, chiprev);
-<<<<<<< HEAD
 		return NULL;
 	}
 
@@ -818,34 +695,3 @@ int brcmf_fw_map_chip_to_name(u32 chip, u32 chiprev,
 
 	return fwreq;
 }
-=======
-		return -ENODEV;
-	}
-
-	/* check if firmware path is provided by module parameter */
-	if (brcmf_mp_global.firmware_path[0] != '\0') {
-		strlcpy(fw_name, brcmf_mp_global.firmware_path,
-			BRCMF_FW_NAME_LEN);
-		if ((nvram_name) && (mapping_table[i].nvram))
-			strlcpy(nvram_name, brcmf_mp_global.firmware_path,
-				BRCMF_FW_NAME_LEN);
-
-		end = brcmf_mp_global.firmware_path[
-				strlen(brcmf_mp_global.firmware_path) - 1];
-		if (end != '/') {
-			strlcat(fw_name, "/", BRCMF_FW_NAME_LEN);
-			if ((nvram_name) && (mapping_table[i].nvram))
-				strlcat(nvram_name, "/", BRCMF_FW_NAME_LEN);
-		}
-	}
-	strlcat(fw_name, mapping_table[i].fw, BRCMF_FW_NAME_LEN);
-	if ((nvram_name) && (mapping_table[i].nvram))
-		strlcat(nvram_name, mapping_table[i].nvram, BRCMF_FW_NAME_LEN);
-
-	brcmf_info("using %s for chip %#08x(%d) rev %#08x\n",
-		   fw_name, chip, chip, chiprev);
-
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

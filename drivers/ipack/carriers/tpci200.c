@@ -304,7 +304,6 @@ static int tpci200_register(struct tpci200_board *tpci200)
 		ioremap_nocache(pci_resource_start(tpci200->info->pdev,
 					   TPCI200_IP_INTERFACE_BAR),
 			TPCI200_IFACE_SIZE);
-<<<<<<< HEAD
 	if (!tpci200->info->interface_regs) {
 		dev_err(&tpci200->info->pdev->dev,
 			"(bn 0x%X, sn 0x%X) failed to map driver user space!",
@@ -312,8 +311,6 @@ static int tpci200_register(struct tpci200_board *tpci200)
 			tpci200->info->pdev->devfn);
 		goto out_release_mem8_space;
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Initialize lock that protects interface_regs */
 	spin_lock_init(&tpci200->regs_lock);
@@ -467,13 +464,8 @@ static int tpci200_install(struct tpci200_board *tpci200)
 {
 	int res;
 
-<<<<<<< HEAD
 	tpci200->slots = kcalloc(TPCI200_NB_SLOT, sizeof(struct tpci200_slot),
 				 GFP_KERNEL);
-=======
-	tpci200->slots = kzalloc(
-		TPCI200_NB_SLOT * sizeof(struct tpci200_slot), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (tpci200->slots == NULL)
 		return -ENOMEM;
 

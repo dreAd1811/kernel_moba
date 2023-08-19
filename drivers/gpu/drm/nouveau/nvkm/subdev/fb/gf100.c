@@ -26,19 +26,7 @@
 
 #include <core/memory.h>
 #include <core/option.h>
-<<<<<<< HEAD
 #include <subdev/therm.h>
-=======
-
-extern const u8 gf100_pte_storage_type_map[256];
-
-bool
-gf100_fb_memtype_valid(struct nvkm_fb *fb, u32 tile_flags)
-{
-	u8 memtype = (tile_flags & 0x0000ff00) >> 8;
-	return likely((gf100_pte_storage_type_map[memtype] != 0xff));
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void
 gf100_fb_intr(struct nvkm_fb *base)
@@ -58,17 +46,10 @@ gf100_fb_oneinit(struct nvkm_fb *base)
 {
 	struct gf100_fb *fb = gf100_fb(base);
 	struct nvkm_device *device = fb->base.subdev.device;
-<<<<<<< HEAD
 	int ret, size = 1 << (fb->base.page ? fb->base.page : 17);
 
 	size = nvkm_longopt(device->cfgopt, "MmuDebugBufferSize", size);
 	size = max(size, 0x1000);
-=======
-	int ret, size = 0x1000;
-
-	size = nvkm_longopt(device->cfgopt, "MmuDebugBufferSize", size);
-	size = min(size, 0x1000);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = nvkm_memory_new(device, NVKM_MEM_TARGET_INST, size, 0x1000,
 			      true, &fb->base.mmu_rd);
@@ -91,33 +72,17 @@ gf100_fb_oneinit(struct nvkm_fb *base)
 	return 0;
 }
 
-<<<<<<< HEAD
 int
-=======
-void
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 gf100_fb_init_page(struct nvkm_fb *fb)
 {
 	struct nvkm_device *device = fb->subdev.device;
 	switch (fb->page) {
-<<<<<<< HEAD
 	case 16: nvkm_mask(device, 0x100c80, 0x00000001, 0x00000001); break;
 	case 17: nvkm_mask(device, 0x100c80, 0x00000001, 0x00000000); break;
 	default:
 		return -EINVAL;
 	}
 	return 0;
-=======
-	case 16:
-		nvkm_mask(device, 0x100c80, 0x00000001, 0x00000001);
-		break;
-	case 17:
-	default:
-		nvkm_mask(device, 0x100c80, 0x00000001, 0x00000000);
-		fb->page = 17;
-		break;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void
@@ -128,14 +93,11 @@ gf100_fb_init(struct nvkm_fb *base)
 
 	if (fb->r100c10_page)
 		nvkm_wr32(device, 0x100c10, fb->r100c10 >> 8);
-<<<<<<< HEAD
 
 	if (base->func->clkgate_pack) {
 		nvkm_therm_clkgate_init(device->therm,
 					base->func->clkgate_pack);
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void *
@@ -175,11 +137,7 @@ gf100_fb = {
 	.init_page = gf100_fb_init_page,
 	.intr = gf100_fb_intr,
 	.ram_new = gf100_ram_new,
-<<<<<<< HEAD
 	.default_bigpage = 17,
-=======
-	.memtype_valid = gf100_fb_memtype_valid,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int

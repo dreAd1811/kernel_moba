@@ -1,24 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Device Tree Source for K2G EVM
  *
  * Copyright (C) 2016-2017 Texas Instruments Incorporated - http://www.ti.com/
-=======
-/*
- * Device Tree Source for K2G EVM
- *
- * Copyright (C) 2016 Texas Instruments Incorporated - http://www.ti.com/
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
- *
- * This program is distributed "as is" WITHOUT ANY WARRANTY of any
- * kind, whether express or implied; without even the implied warranty
- * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 /dts-v1/;
 
@@ -53,7 +37,6 @@
 		regulator-max-microvolt = <3300000>;
 		regulator-always-on;
 	};
-<<<<<<< HEAD
 
 	vcc1v8_ldo1_reg: fixedregulator-vcc1v8-ldo1 {
 		compatible = "regulator-fixed";
@@ -62,8 +45,6 @@
 		regulator-max-microvolt = <1800000>;
 		regulator-always-on;
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &k2g_pinctrl {
@@ -100,7 +81,6 @@
 			K2G_CORE_IOPAD(0x1110) (BUFFER_CLASS_B | PIN_PULLUP | MUX_MODE0)	/* mmc1_cmd.mmc1_cmd */
 		>;
 	};
-<<<<<<< HEAD
 
 	i2c0_pins: pinmux_i2c0_pins {
 		pinctrl-single,pins = <
@@ -180,8 +160,6 @@
 			K2G_CORE_IOPAD(0x1188) (BUFFER_CLASS_B | PULL_DISABLE | MUX_MODE0)	/* MDIO_DATA.MDIO_DATA */
 		>;
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &uart0 {
@@ -198,10 +176,7 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&mmc0_pins>;
 	vmmc-supply = <&vcc3v3_dcin_reg>;
-<<<<<<< HEAD
 	vqmmc-supply = <&vcc3v3_dcin_reg>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cd-gpios = <&gpio1 12 GPIO_ACTIVE_LOW>;
 	status = "okay";
 };
@@ -210,11 +185,8 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&mmc1_pins>;
 	vmmc-supply = <&vcc3v3_dcin_reg>; /* VCC3V3_EMMC is connected to VCC3V3_DCIN */
-<<<<<<< HEAD
 	vqmmc-supply = <&vcc1v8_ldo1_reg>;
 	ti,non-removable;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
@@ -222,7 +194,6 @@
 	memory-region = <&dsp_common_memory>;
 	status = "okay";
 };
-<<<<<<< HEAD
 
 &i2c0 {
 	pinctrl-names = "default";
@@ -386,5 +357,3 @@
 	pinctrl-0 = <&emac_pins>;
 	status = "okay";
 };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

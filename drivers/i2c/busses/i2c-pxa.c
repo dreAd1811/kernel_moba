@@ -36,11 +36,7 @@
 #include <linux/clk.h>
 #include <linux/slab.h>
 #include <linux/io.h>
-<<<<<<< HEAD
 #include <linux/platform_data/i2c-pxa.h>
-=======
-#include <linux/i2c/pxa-i2c.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/irq.h>
 
@@ -319,18 +315,11 @@ static void i2c_pxa_scream_blue_murder(struct pxa_i2c *i2c, const char *why)
 	dev_err(dev, "IBMR: %08x IDBR: %08x ICR: %08x ISR: %08x\n",
 		readl(_IBMR(i2c)), readl(_IDBR(i2c)), readl(_ICR(i2c)),
 		readl(_ISR(i2c)));
-<<<<<<< HEAD
 	dev_dbg(dev, "log: ");
 	for (i = 0; i < i2c->irqlogidx; i++)
 		pr_debug("[%08x:%08x] ", i2c->isrlog[i], i2c->icrlog[i]);
 
 	pr_debug("\n");
-=======
-	dev_err(dev, "log:");
-	for (i = 0; i < i2c->irqlogidx; i++)
-		pr_cont(" [%03x:%05x]", i2c->isrlog[i], i2c->icrlog[i]);
-	pr_cont("\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #else /* ifdef DEBUG */
@@ -720,17 +709,11 @@ static inline void i2c_pxa_stop_message(struct pxa_i2c *i2c)
 {
 	u32 icr;
 
-<<<<<<< HEAD
 	/*
 	 * Clear the STOP and ACK flags
 	 */
 	icr = readl(_ICR(i2c));
 	icr &= ~(ICR_STOP | ICR_ACKNAK);
-=======
-	/* Clear the START, STOP, ACK, TB and MA flags */
-	icr = readl(_ICR(i2c));
-	icr &= ~(ICR_START | ICR_STOP | ICR_ACKNAK | ICR_TB | ICR_MA);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	writel(icr, _ICR(i2c));
 }
 

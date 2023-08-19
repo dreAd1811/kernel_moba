@@ -255,11 +255,7 @@ static void request_module_async(struct work_struct *work)
 	request_module("cx18-alsa");
 
 	/* Initialize cx18-alsa for this instance of the cx18 device */
-<<<<<<< HEAD
 	if (cx18_ext_init)
-=======
-	if (cx18_ext_init != NULL)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cx18_ext_init(dev);
 }
 
@@ -295,19 +291,11 @@ int cx18_msleep_timeout(unsigned int msecs, int intr)
 /* Release ioremapped memory */
 static void cx18_iounmap(struct cx18 *cx)
 {
-<<<<<<< HEAD
 	if (!cx)
 		return;
 
 	/* Release io memory */
 	if (cx->enc_mem) {
-=======
-	if (cx == NULL)
-		return;
-
-	/* Release io memory */
-	if (cx->enc_mem != NULL) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		CX18_DEBUG_INFO("releasing enc_mem\n");
 		iounmap(cx->enc_mem);
 		cx->enc_mem = NULL;
@@ -661,25 +649,15 @@ static void cx18_process_options(struct cx18 *cx)
 		CX18_INFO("User specified %s card\n", cx->card->name);
 	else if (cx->options.cardtype != 0)
 		CX18_ERR("Unknown user specified type, trying to autodetect card\n");
-<<<<<<< HEAD
 	if (!cx->card) {
-=======
-	if (cx->card == NULL) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (cx->pci_dev->subsystem_vendor == CX18_PCI_ID_HAUPPAUGE) {
 			cx->card = cx18_get_card(CX18_CARD_HVR_1600_ESMT);
 			CX18_INFO("Autodetected Hauppauge card\n");
 		}
 	}
-<<<<<<< HEAD
 	if (!cx->card) {
 		for (i = 0; (cx->card = cx18_get_card(i)); i++) {
 			if (!cx->card->pci_list)
-=======
-	if (cx->card == NULL) {
-		for (i = 0; (cx->card = cx18_get_card(i)); i++) {
-			if (cx->card->pci_list == NULL)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				continue;
 			for (j = 0; cx->card->pci_list[j].device; j++) {
 				if (cx->pci_dev->device !=
@@ -698,11 +676,7 @@ static void cx18_process_options(struct cx18 *cx)
 	}
 done:
 
-<<<<<<< HEAD
 	if (!cx->card) {
-=======
-	if (cx->card == NULL) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cx->card = cx18_get_card(CX18_CARD_HVR_1600_ESMT);
 		CX18_ERR("Unknown card: vendor/device: [%04x:%04x]\n",
 			 cx->pci_dev->vendor, cx->pci_dev->device);
@@ -724,11 +698,7 @@ static int cx18_create_in_workq(struct cx18 *cx)
 	snprintf(cx->in_workq_name, sizeof(cx->in_workq_name), "%s-in",
 		 cx->v4l2_dev.name);
 	cx->in_work_queue = alloc_ordered_workqueue("%s", 0, cx->in_workq_name);
-<<<<<<< HEAD
 	if (!cx->in_work_queue) {
-=======
-	if (cx->in_work_queue == NULL) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		CX18_ERR("Unable to create incoming mailbox handler thread\n");
 		return -ENOMEM;
 	}
@@ -939,19 +909,10 @@ static int cx18_probe(struct pci_dev *pci_dev,
 		return -ENOMEM;
 	}
 
-<<<<<<< HEAD
 	cx = kzalloc(sizeof(*cx), GFP_ATOMIC);
 	if (!cx)
 		return -ENOMEM;
 
-=======
-	cx = kzalloc(sizeof(struct cx18), GFP_ATOMIC);
-	if (cx == NULL) {
-		printk(KERN_ERR "cx18: cannot manage card %d, out of memory\n",
-		       i);
-		return -ENOMEM;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cx->pci_dev = pci_dev;
 	cx->instance = i;
 
@@ -1173,11 +1134,6 @@ free_mem:
 free_workqueues:
 	destroy_workqueue(cx->in_work_queue);
 err:
-<<<<<<< HEAD
-=======
-	if (retval == 0)
-		retval = -ENODEV;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	CX18_ERR("Error %d on initialization\n", retval);
 
 	v4l2_device_unregister(&cx->v4l2_dev);
@@ -1296,11 +1252,7 @@ static void cx18_cancel_out_work_orders(struct cx18 *cx)
 {
 	int i;
 	for (i = 0; i < CX18_MAX_STREAMS; i++)
-<<<<<<< HEAD
 		if (&cx->streams[i].video_dev)
-=======
-		if (&cx->streams[i].video_dev != NULL)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			cancel_work_sync(&cx->streams[i].out_work_order);
 }
 
@@ -1345,11 +1297,7 @@ static void cx18_remove(struct pci_dev *pci_dev)
 
 	pci_disable_device(cx->pci_dev);
 
-<<<<<<< HEAD
 	if (cx->vbi.sliced_mpeg_data[0])
-=======
-	if (cx->vbi.sliced_mpeg_data[0] != NULL)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		for (i = 0; i < CX18_VBI_FRAMES; i++)
 			kfree(cx->vbi.sliced_mpeg_data[i]);
 

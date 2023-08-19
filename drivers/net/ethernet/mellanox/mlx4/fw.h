@@ -128,10 +128,7 @@ struct mlx4_dev_cap {
 	u32 dmfs_high_rate_qpn_base;
 	u32 dmfs_high_rate_qpn_range;
 	struct mlx4_rate_limit_caps rl_caps;
-<<<<<<< HEAD
 	u32 health_buffer_addrs;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mlx4_port_cap port_cap[MLX4_MAX_PORTS + 1];
 	bool wol_port[MLX4_MAX_PORTS + 1];
 };

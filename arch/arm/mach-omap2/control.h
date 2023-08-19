@@ -409,7 +409,6 @@
 #define AM33XX_DEV_FEATURE		0x604
 #define AM33XX_SGX_MASK			BIT(29)
 
-<<<<<<< HEAD
 /* Additional AM33XX/AM43XX CONTROL registers */
 #define AM33XX_CONTROL_SYSCONFIG_OFFSET			0x0010
 #define AM33XX_CONTROL_STATUS_OFFSET			0x0040
@@ -471,8 +470,6 @@
 #define AM43XX_CONTROL_ADC1_EVT_CAPT_OFFSET		0x0fdc
 #define AM33XX_CONTROL_RESET_ISO_OFFSET			0x1000
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* CONTROL OMAP STATUS register to identify OMAP3 features */
 #define OMAP3_CONTROL_OMAP_STATUS	0x044c
 

@@ -1,23 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Simple kernel driver to link kernel Ftrace and an STM device
  * Copyright (c) 2016, Linaro Ltd.
  *
-<<<<<<< HEAD
-=======
- * This program is free software; you can redistribute it and/or modify it
- * under the terms and conditions of the GNU General Public License,
- * version 2, as published by the Free Software Foundation.
- *
- * This program is distributed in the hope it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
- * more details.
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * STM Ftrace will be registered as a trace_export.
  */
 
@@ -49,17 +34,11 @@ static struct stm_ftrace {
  * @len:	length of the data packet
  */
 static void notrace
-<<<<<<< HEAD
 stm_ftrace_write(struct trace_export *export, const void *buf, unsigned int len)
 {
 	struct stm_ftrace *stm = container_of(export, struct stm_ftrace, ftrace);
 
 	stm_source_write(&stm->data, STM_FTRACE_CHAN, buf, len);
-=======
-stm_ftrace_write(const void *buf, unsigned int len)
-{
-	stm_source_write(&stm_ftrace.data, STM_FTRACE_CHAN, buf, len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int stm_ftrace_link(struct stm_source_data *data)

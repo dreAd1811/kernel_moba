@@ -107,11 +107,7 @@ static struct workqueue_struct *workq;
 static struct sk_buff_head rxq;
 
 static struct sk_buff *get_skb(struct sk_buff *skb, int len, gfp_t gfp);
-<<<<<<< HEAD
 static void ep_timeout(struct timer_list *t);
-=======
-static void ep_timeout(unsigned long arg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void connect_reply_upcall(struct iwch_ep *ep, int status);
 
 static void start_ep_timer(struct iwch_ep *ep)
@@ -123,11 +119,6 @@ static void start_ep_timer(struct iwch_ep *ep)
 	} else
 		get_ep(&ep->com);
 	ep->timer.expires = jiffies + ep_timeout_secs * HZ;
-<<<<<<< HEAD
-=======
-	ep->timer.data = (unsigned long)ep;
-	ep->timer.function = ep_timeout;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	add_timer(&ep->timer);
 }
 
@@ -1406,11 +1397,7 @@ static int pass_accept_req(struct t3cdev *tdev, struct sk_buff *skb, void *ctx)
 	child_ep->l2t = l2t;
 	child_ep->dst = dst;
 	child_ep->hwtid = hwtid;
-<<<<<<< HEAD
 	timer_setup(&child_ep->timer, ep_timeout, 0);
-=======
-	init_timer(&child_ep->timer);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cxgb3_insert_tid(tdev, &t3c_client, child_ep, hwtid);
 	accept_cr(child_ep, req->peer_ip, skb);
 	goto out;
@@ -1730,15 +1717,9 @@ static int ec_status(struct t3cdev *tdev, struct sk_buff *skb, void *ctx)
 	return CPL_RET_BUF_DONE;
 }
 
-<<<<<<< HEAD
 static void ep_timeout(struct timer_list *t)
 {
 	struct iwch_ep *ep = from_timer(ep, t, timer);
-=======
-static void ep_timeout(unsigned long arg)
-{
-	struct iwch_ep *ep = (struct iwch_ep *)arg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct iwch_qp_attributes attrs;
 	unsigned long flags;
 	int abort = 1;
@@ -1777,13 +1758,8 @@ static void ep_timeout(unsigned long arg)
 
 int iwch_reject_cr(struct iw_cm_id *cm_id, const void *pdata, u8 pdata_len)
 {
-<<<<<<< HEAD
 	struct iwch_ep *ep = to_ep(cm_id);
 
-=======
-	int err;
-	struct iwch_ep *ep = to_ep(cm_id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pr_debug("%s ep %p tid %u\n", __func__, ep, ep->hwtid);
 
 	if (state_read(&ep->com) == DEAD) {
@@ -1794,13 +1770,8 @@ int iwch_reject_cr(struct iw_cm_id *cm_id, const void *pdata, u8 pdata_len)
 	if (mpa_rev == 0)
 		abort_connection(ep, NULL, GFP_KERNEL);
 	else {
-<<<<<<< HEAD
 		send_mpa_reject(ep, pdata, pdata_len);
 		iwch_ep_disconnect(ep, 0, GFP_KERNEL);
-=======
-		err = send_mpa_reject(ep, pdata, pdata_len);
-		err = iwch_ep_disconnect(ep, 0, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	put_ep(&ep->com);
 	return 0;
@@ -1926,11 +1897,7 @@ int iwch_connect(struct iw_cm_id *cm_id, struct iw_cm_conn_param *conn_param)
 		err = -ENOMEM;
 		goto out;
 	}
-<<<<<<< HEAD
 	timer_setup(&ep->timer, ep_timeout, 0);
-=======
-	init_timer(&ep->timer);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ep->plen = conn_param->private_data_len;
 	if (ep->plen)
 		memcpy(ep->mpa_pkt + sizeof(struct mpa_message),

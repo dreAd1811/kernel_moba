@@ -282,11 +282,7 @@ int meson_venc_cvbs_create(struct meson_drm *priv)
 
 	encoder->possible_crtcs = BIT(0);
 
-<<<<<<< HEAD
 	drm_connector_attach_encoder(connector, encoder);
-=======
-	drm_mode_connector_attach_encoder(connector, encoder);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

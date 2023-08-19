@@ -19,13 +19,8 @@
 
 struct dm_bio_prison {
 	spinlock_t lock;
-<<<<<<< HEAD
 	struct rb_root cells;
 	mempool_t cell_pool;
-=======
-	mempool_t *cell_pool;
-	struct rb_root cells;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct kmem_cache *_cell_cache;
@@ -39,23 +34,15 @@ static struct kmem_cache *_cell_cache;
 struct dm_bio_prison *dm_bio_prison_create(void)
 {
 	struct dm_bio_prison *prison = kzalloc(sizeof(*prison), GFP_KERNEL);
-<<<<<<< HEAD
 	int ret;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!prison)
 		return NULL;
 
 	spin_lock_init(&prison->lock);
 
-<<<<<<< HEAD
 	ret = mempool_init_slab_pool(&prison->cell_pool, MIN_CELLS, _cell_cache);
 	if (ret) {
-=======
-	prison->cell_pool = mempool_create_slab_pool(MIN_CELLS, _cell_cache);
-	if (!prison->cell_pool) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(prison);
 		return NULL;
 	}
@@ -68,33 +55,21 @@ EXPORT_SYMBOL_GPL(dm_bio_prison_create);
 
 void dm_bio_prison_destroy(struct dm_bio_prison *prison)
 {
-<<<<<<< HEAD
 	mempool_exit(&prison->cell_pool);
-=======
-	mempool_destroy(prison->cell_pool);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(prison);
 }
 EXPORT_SYMBOL_GPL(dm_bio_prison_destroy);
 
 struct dm_bio_prison_cell *dm_bio_prison_alloc_cell(struct dm_bio_prison *prison, gfp_t gfp)
 {
-<<<<<<< HEAD
 	return mempool_alloc(&prison->cell_pool, gfp);
-=======
-	return mempool_alloc(prison->cell_pool, gfp);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(dm_bio_prison_alloc_cell);
 
 void dm_bio_prison_free_cell(struct dm_bio_prison *prison,
 			     struct dm_bio_prison_cell *cell)
 {
-<<<<<<< HEAD
 	mempool_free(cell, &prison->cell_pool);
-=======
-	mempool_free(cell, prison->cell_pool);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(dm_bio_prison_free_cell);
 

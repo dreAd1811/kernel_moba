@@ -8,15 +8,8 @@ struct drm_connector;
 struct drm_device;
 struct drm_display_mode;
 struct drm_encoder;
-<<<<<<< HEAD
 struct drm_framebuffer;
 struct drm_plane;
-=======
-struct drm_fbdev_cma;
-struct drm_framebuffer;
-struct drm_plane;
-struct imx_drm_crtc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct platform_device;
 
 struct imx_crtc_state {

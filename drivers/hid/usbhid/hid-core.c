@@ -56,13 +56,10 @@ static unsigned int hid_jspoll_interval;
 module_param_named(jspoll, hid_jspoll_interval, uint, 0644);
 MODULE_PARM_DESC(jspoll, "Polling interval of joysticks");
 
-<<<<<<< HEAD
 static unsigned int hid_kbpoll_interval;
 module_param_named(kbpoll, hid_kbpoll_interval, uint, 0644);
 MODULE_PARM_DESC(kbpoll, "Polling interval of keyboards");
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static unsigned int ignoreled;
 module_param_named(ignoreled, ignoreled, uint, 0644);
 MODULE_PARM_DESC(ignoreled, "Autosuspend with active leds");
@@ -108,17 +105,10 @@ static int hid_start_in(struct hid_device *hid)
 }
 
 /* I/O retry timer routine */
-<<<<<<< HEAD
 static void hid_retry_timeout(struct timer_list *t)
 {
 	struct usbhid_device *usbhid = from_timer(usbhid, t, io_retry);
 	struct hid_device *hid = usbhid->hid;
-=======
-static void hid_retry_timeout(unsigned long _hid)
-{
-	struct hid_device *hid = (struct hid_device *) _hid;
-	struct usbhid_device *usbhid = hid->driver_data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_dbg(&usbhid->intf->dev, "retrying intr urb\n");
 	if (hid_start_in(hid))
@@ -490,10 +480,7 @@ static void hid_ctrl(struct urb *urb)
 {
 	struct hid_device *hid = urb->context;
 	struct usbhid_device *usbhid = hid->driver_data;
-<<<<<<< HEAD
 	unsigned long flags;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int unplug = 0, status = urb->status;
 
 	switch (status) {
@@ -515,11 +502,7 @@ static void hid_ctrl(struct urb *urb)
 		hid_warn(urb->dev, "ctrl urb status %d received\n", status);
 	}
 
-<<<<<<< HEAD
 	spin_lock_irqsave(&usbhid->lock, flags);
-=======
-	spin_lock(&usbhid->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (unplug) {
 		usbhid->ctrltail = usbhid->ctrlhead;
@@ -529,21 +512,13 @@ static void hid_ctrl(struct urb *urb)
 		if (usbhid->ctrlhead != usbhid->ctrltail &&
 				hid_submit_ctrl(hid) == 0) {
 			/* Successfully submitted next urb in queue */
-<<<<<<< HEAD
 			spin_unlock_irqrestore(&usbhid->lock, flags);
-=======
-			spin_unlock(&usbhid->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return;
 		}
 	}
 
 	clear_bit(HID_CTRL_RUNNING, &usbhid->iofl);
-<<<<<<< HEAD
 	spin_unlock_irqrestore(&usbhid->lock, flags);
-=======
-	spin_unlock(&usbhid->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	usb_autopm_put_interface_async(usbhid->intf);
 	wake_up(&usbhid->wait);
 }
@@ -710,32 +685,16 @@ static int usbhid_open(struct hid_device *hid)
 	struct usbhid_device *usbhid = hid->driver_data;
 	int res;
 
-<<<<<<< HEAD
 	set_bit(HID_OPENED, &usbhid->iofl);
 
 	if (hid->quirks & HID_QUIRK_ALWAYS_POLL)
 		return 0;
-=======
-	mutex_lock(&usbhid->mutex);
-
-	set_bit(HID_OPENED, &usbhid->iofl);
-
-	if (hid->quirks & HID_QUIRK_ALWAYS_POLL) {
-		res = 0;
-		goto Done;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	res = usb_autopm_get_interface(usbhid->intf);
 	/* the device must be awake to reliably request remote wakeup */
 	if (res < 0) {
 		clear_bit(HID_OPENED, &usbhid->iofl);
-<<<<<<< HEAD
 		return -EIO;
-=======
-		res = -EIO;
-		goto Done;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	usbhid->intf->needs_remote_wakeup = 1;
@@ -769,12 +728,6 @@ static int usbhid_open(struct hid_device *hid)
 		msleep(50);
 
 	clear_bit(HID_RESUME_RUNNING, &usbhid->iofl);
-<<<<<<< HEAD
-=======
-
- Done:
-	mutex_unlock(&usbhid->mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return res;
 }
 
@@ -782,11 +735,6 @@ static void usbhid_close(struct hid_device *hid)
 {
 	struct usbhid_device *usbhid = hid->driver_data;
 
-<<<<<<< HEAD
-=======
-	mutex_lock(&usbhid->mutex);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Make sure we don't restart data acquisition due to
 	 * a resumption we no longer care about by avoiding racing
@@ -798,22 +746,12 @@ static void usbhid_close(struct hid_device *hid)
 		clear_bit(HID_IN_POLLING, &usbhid->iofl);
 	spin_unlock_irq(&usbhid->lock);
 
-<<<<<<< HEAD
 	if (hid->quirks & HID_QUIRK_ALWAYS_POLL)
 		return;
 
 	hid_cancel_delayed_stuff(usbhid);
 	usb_kill_urb(usbhid->urbin);
 	usbhid->intf->needs_remote_wakeup = 0;
-=======
-	if (!(hid->quirks & HID_QUIRK_ALWAYS_POLL)) {
-		hid_cancel_delayed_stuff(usbhid);
-		usb_kill_urb(usbhid->urbin);
-		usbhid->intf->needs_remote_wakeup = 0;
-	}
-
-	mutex_unlock(&usbhid->mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -1045,12 +983,7 @@ static int usbhid_parse(struct hid_device *hid)
 	int num_descriptors;
 	size_t offset = offsetof(struct hid_descriptor, desc);
 
-<<<<<<< HEAD
 	quirks = hid_lookup_quirk(hid);
-=======
-	quirks = usbhid_lookup_quirk(le16_to_cpu(dev->descriptor.idVendor),
-			le16_to_cpu(dev->descriptor.idProduct));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (quirks & HID_QUIRK_IGNORE)
 		return -ENODEV;
@@ -1127,11 +1060,6 @@ static int usbhid_start(struct hid_device *hid)
 	unsigned int n, insize = 0;
 	int ret;
 
-<<<<<<< HEAD
-=======
-	mutex_lock(&usbhid->mutex);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clear_bit(HID_DISCONNECTED, &usbhid->iofl);
 
 	usbhid->bufsize = HID_MIN_BUFFER_SIZE;
@@ -1171,13 +1099,9 @@ static int usbhid_start(struct hid_device *hid)
 				hid->name, endpoint->bInterval, interval);
 		}
 
-<<<<<<< HEAD
 		/* Change the polling interval of mice, joysticks
 		 * and keyboards.
 		 */
-=======
-		/* Change the polling interval of mice and joysticks. */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		switch (hid->collection->usage) {
 		case HID_GD_MOUSE:
 			if (hid_mousepoll_interval > 0)
@@ -1187,13 +1111,10 @@ static int usbhid_start(struct hid_device *hid)
 			if (hid_jspoll_interval > 0)
 				interval = hid_jspoll_interval;
 			break;
-<<<<<<< HEAD
 		case HID_GD_KEYBOARD:
 			if (hid_kbpoll_interval > 0)
 				interval = hid_kbpoll_interval;
 			break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		ret = -ENOMEM;
@@ -1259,11 +1180,6 @@ static int usbhid_start(struct hid_device *hid)
 		usbhid_set_leds(hid);
 		device_set_wakeup_enable(&dev->dev, 1);
 	}
-<<<<<<< HEAD
-=======
-
-	mutex_unlock(&usbhid->mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 fail:
@@ -1274,10 +1190,6 @@ fail:
 	usbhid->urbout = NULL;
 	usbhid->urbctrl = NULL;
 	hid_free_buffers(dev, hid);
-<<<<<<< HEAD
-=======
-	mutex_unlock(&usbhid->mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -1293,11 +1205,6 @@ static void usbhid_stop(struct hid_device *hid)
 		usbhid->intf->needs_remote_wakeup = 0;
 	}
 
-<<<<<<< HEAD
-=======
-	mutex_lock(&usbhid->mutex);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clear_bit(HID_STARTED, &usbhid->iofl);
 	spin_lock_irq(&usbhid->lock);	/* Sync with error and led handlers */
 	set_bit(HID_DISCONNECTED, &usbhid->iofl);
@@ -1318,11 +1225,6 @@ static void usbhid_stop(struct hid_device *hid)
 	usbhid->urbout = NULL;
 
 	hid_free_buffers(hid_to_usb_dev(hid), hid);
-<<<<<<< HEAD
-=======
-
-	mutex_unlock(&usbhid->mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int usbhid_power(struct hid_device *hid, int lvl)
@@ -1436,13 +1338,8 @@ static int usbhid_probe(struct usb_interface *intf, const struct usb_device_id *
 	hid->bus = BUS_USB;
 	hid->vendor = le16_to_cpu(dev->descriptor.idVendor);
 	hid->product = le16_to_cpu(dev->descriptor.idProduct);
-<<<<<<< HEAD
 	hid->version = le16_to_cpu(dev->descriptor.bcdDevice);
 	hid->name[0] = 0;
-=======
-	hid->name[0] = 0;
-	hid->quirks = usbhid_lookup_quirk(hid->vendor, hid->product);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (intf->cur_altsetting->desc.bInterfaceProtocol ==
 			USB_INTERFACE_PROTOCOL_MOUSE)
 		hid->type = HID_TYPE_USBMOUSE;
@@ -1486,14 +1383,8 @@ static int usbhid_probe(struct usb_interface *intf, const struct usb_device_id *
 
 	init_waitqueue_head(&usbhid->wait);
 	INIT_WORK(&usbhid->reset_work, hid_reset);
-<<<<<<< HEAD
 	timer_setup(&usbhid->io_retry, hid_retry_timeout, 0);
 	spin_lock_init(&usbhid->lock);
-=======
-	setup_timer(&usbhid->io_retry, hid_retry_timeout, (unsigned long) hid);
-	spin_lock_init(&usbhid->lock);
-	mutex_init(&usbhid->mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = hid_add_device(hid);
 	if (ret) {
@@ -1760,11 +1651,7 @@ static int __init hid_init(void)
 {
 	int retval = -ENOMEM;
 
-<<<<<<< HEAD
 	retval = hid_quirks_init(quirks_param, BUS_USB, MAX_USBHID_BOOT_QUIRKS);
-=======
-	retval = usbhid_quirks_init(quirks_param);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (retval)
 		goto usbhid_quirks_init_fail;
 	retval = usb_register(&hid_driver);
@@ -1774,11 +1661,7 @@ static int __init hid_init(void)
 
 	return 0;
 usb_register_fail:
-<<<<<<< HEAD
 	hid_quirks_exit(BUS_USB);
-=======
-	usbhid_quirks_exit();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 usbhid_quirks_init_fail:
 	return retval;
 }
@@ -1786,11 +1669,7 @@ usbhid_quirks_init_fail:
 static void __exit hid_exit(void)
 {
 	usb_deregister(&hid_driver);
-<<<<<<< HEAD
 	hid_quirks_exit(BUS_USB);
-=======
-	usbhid_quirks_exit();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 module_init(hid_init);

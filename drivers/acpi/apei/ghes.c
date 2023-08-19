@@ -33,10 +33,7 @@
 #include <linux/interrupt.h>
 #include <linux/timer.h>
 #include <linux/cper.h>
-<<<<<<< HEAD
 #include <linux/kdebug.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/platform_device.h>
 #include <linux/mutex.h>
 #include <linux/ratelimit.h>
@@ -174,46 +171,29 @@ static int ghes_estatus_pool_init(void)
 	return 0;
 }
 
-<<<<<<< HEAD
 static void ghes_estatus_pool_free_chunk_page(struct gen_pool *pool,
 					      struct gen_pool_chunk *chunk,
 					      void *data)
 {
 	free_page(chunk->start_addr);
-=======
-static void ghes_estatus_pool_free_chunk(struct gen_pool *pool,
-					      struct gen_pool_chunk *chunk,
-					      void *data)
-{
-	vfree((void *)chunk->start_addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void ghes_estatus_pool_exit(void)
 {
 	gen_pool_for_each_chunk(ghes_estatus_pool,
-<<<<<<< HEAD
 				ghes_estatus_pool_free_chunk_page, NULL);
-=======
-				ghes_estatus_pool_free_chunk, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gen_pool_destroy(ghes_estatus_pool);
 }
 
 static int ghes_estatus_pool_expand(unsigned long len)
 {
-<<<<<<< HEAD
 	unsigned long i, pages, size, addr;
 	int ret;
-=======
-	unsigned long size, addr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ghes_estatus_pool_size_request += PAGE_ALIGN(len);
 	size = gen_pool_size(ghes_estatus_pool);
 	if (size >= ghes_estatus_pool_size_request)
 		return 0;
-<<<<<<< HEAD
 	pages = (ghes_estatus_pool_size_request - size) / PAGE_SIZE;
 	for (i = 0; i < pages; i++) {
 		addr = __get_free_page(GFP_KERNEL);
@@ -225,20 +205,6 @@ static int ghes_estatus_pool_expand(unsigned long len)
 	}
 
 	return 0;
-=======
-
-	addr = (unsigned long)vmalloc(PAGE_ALIGN(len));
-	if (!addr)
-		return -ENOMEM;
-
-	/*
-	 * New allocation must be visible in all pgd before it can be found by
-	 * an NMI allocating from the pool.
-	 */
-	vmalloc_sync_mappings();
-
-	return gen_pool_add(ghes_estatus_pool, addr, PAGE_ALIGN(len), -1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int map_gen_v2(struct ghes *ghes)
@@ -444,7 +410,6 @@ static void ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata, int
 		flags = 0;
 
 	if (flags != -1)
-<<<<<<< HEAD
 		memory_failure_queue(pfn, flags);
 #endif
 }
@@ -491,9 +456,6 @@ static void ghes_handle_aer(struct acpi_hest_generic_data *gdata)
 				  (struct aer_capability_regs *)
 				  pcie_err->aer_info);
 	}
-=======
-		memory_failure_queue(pfn, 0, flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 }
 
@@ -519,53 +481,14 @@ static void ghes_do_proc(struct ghes *ghes,
 		if (guid_equal(sec_type, &CPER_SEC_PLATFORM_MEM)) {
 			struct cper_sec_mem_err *mem_err = acpi_hest_get_payload(gdata);
 
-<<<<<<< HEAD
 			ghes_edac_report_mem_error(sev, mem_err);
-=======
-			ghes_edac_report_mem_error(ghes, sev, mem_err);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			arch_apei_report_mem_error(sev, mem_err);
 			ghes_handle_memory_failure(gdata, sev);
 		}
-<<<<<<< HEAD
 		else if (guid_equal(sec_type, &CPER_SEC_PCIE)) {
 			ghes_handle_aer(gdata);
 		}
-=======
-#ifdef CONFIG_ACPI_APEI_PCIEAER
-		else if (guid_equal(sec_type, &CPER_SEC_PCIE)) {
-			struct cper_sec_pcie *pcie_err = acpi_hest_get_payload(gdata);
-
-			if (sev == GHES_SEV_RECOVERABLE &&
-			    sec_sev == GHES_SEV_RECOVERABLE &&
-			    pcie_err->validation_bits & CPER_PCIE_VALID_DEVICE_ID &&
-			    pcie_err->validation_bits & CPER_PCIE_VALID_AER_INFO) {
-				unsigned int devfn;
-				int aer_severity;
-
-				devfn = PCI_DEVFN(pcie_err->device_id.device,
-						  pcie_err->device_id.function);
-				aer_severity = cper_severity_to_aer(gdata->error_severity);
-
-				/*
-				 * If firmware reset the component to contain
-				 * the error, we must reinitialize it before
-				 * use, so treat it as a fatal AER error.
-				 */
-				if (gdata->flags & CPER_SEC_RESET)
-					aer_severity = AER_FATAL;
-
-				aer_recover_queue(pcie_err->device_id.segment,
-						  pcie_err->device_id.bus,
-						  devfn, aer_severity,
-						  (struct aer_capability_regs *)
-						  pcie_err->aer_info);
-			}
-
-		}
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		else if (guid_equal(sec_type, &CPER_SEC_PROC_ARM)) {
 			struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
 
@@ -825,15 +748,9 @@ static void ghes_add_timer(struct ghes *ghes)
 	add_timer(&ghes->timer);
 }
 
-<<<<<<< HEAD
 static void ghes_poll_func(struct timer_list *t)
 {
 	struct ghes *ghes = from_timer(ghes, t, timer);
-=======
-static void ghes_poll_func(unsigned long data)
-{
-	struct ghes *ghes = (void *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ghes_proc(ghes);
 	if (!(ghes->flags & GHES_EXITING))
@@ -971,10 +888,6 @@ static void ghes_print_queued_estatus(void)
 	struct ghes_estatus_node *estatus_node;
 	struct acpi_hest_generic *generic;
 	struct acpi_hest_generic_status *estatus;
-<<<<<<< HEAD
-=======
-	u32 len, node_len;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	llnode = llist_del_all(&ghes_estatus_llist);
 	/*
@@ -986,11 +899,6 @@ static void ghes_print_queued_estatus(void)
 		estatus_node = llist_entry(llnode, struct ghes_estatus_node,
 					   llnode);
 		estatus = GHES_ESTATUS_FROM_NODE(estatus_node);
-<<<<<<< HEAD
-=======
-		len = cper_estatus_len(estatus);
-		node_len = GHES_ESTATUS_NODE_LEN(len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		generic = estatus_node->generic;
 		ghes_print_estatus(NULL, generic, estatus);
 		llnode = llnode->next;
@@ -1041,10 +949,7 @@ static int ghes_notify_nmi(unsigned int cmd, struct pt_regs *regs)
 
 		sev = ghes_severity(ghes->estatus->error_severity);
 		if (sev >= GHES_SEV_PANIC) {
-<<<<<<< HEAD
 			oops_begin();
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ghes_print_queued_estatus();
 			__ghes_panic(ghes);
 		}
@@ -1184,20 +1089,9 @@ static int ghes_probe(struct platform_device *ghes_dev)
 		goto err;
 	}
 
-<<<<<<< HEAD
 	switch (generic->notify.type) {
 	case ACPI_HEST_NOTIFY_POLLED:
 		timer_setup(&ghes->timer, ghes_poll_func, TIMER_DEFERRABLE);
-=======
-	rc = ghes_edac_register(ghes, &ghes_dev->dev);
-	if (rc < 0)
-		goto err;
-
-	switch (generic->notify.type) {
-	case ACPI_HEST_NOTIFY_POLLED:
-		setup_deferrable_timer(&ghes->timer, ghes_poll_func,
-				       (unsigned long)ghes);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ghes_add_timer(ghes);
 		break;
 	case ACPI_HEST_NOTIFY_EXTERNAL:
@@ -1206,22 +1100,14 @@ static int ghes_probe(struct platform_device *ghes_dev)
 		if (rc) {
 			pr_err(GHES_PFX "Failed to map GSI to IRQ for generic hardware error source: %d\n",
 			       generic->header.source_id);
-<<<<<<< HEAD
 			goto err;
-=======
-			goto err_edac_unreg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		rc = request_irq(ghes->irq, ghes_irq_func, IRQF_SHARED,
 				 "GHES IRQ", ghes);
 		if (rc) {
 			pr_err(GHES_PFX "Failed to register IRQ for generic hardware error source: %d\n",
 			       generic->header.source_id);
-<<<<<<< HEAD
 			goto err;
-=======
-			goto err_edac_unreg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		break;
 
@@ -1244,26 +1130,16 @@ static int ghes_probe(struct platform_device *ghes_dev)
 	default:
 		BUG();
 	}
-<<<<<<< HEAD
 
 	platform_set_drvdata(ghes_dev, ghes);
 
 	ghes_edac_register(ghes, &ghes_dev->dev);
 
-=======
-	platform_set_drvdata(ghes_dev, ghes);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Handle any pending errors right away */
 	ghes_proc(ghes);
 
 	return 0;
-<<<<<<< HEAD
 
-=======
-err_edac_unreg:
-	ghes_edac_unregister(ghes);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err:
 	if (ghes) {
 		ghes_fini(ghes);

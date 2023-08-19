@@ -16,11 +16,7 @@
 #include <linux/oid_registry.h>
 #include <crypto/pkcs7.h>
 #include "verify_pefile.h"
-<<<<<<< HEAD
 #include "mscode.asn1.h"
-=======
-#include "mscode-asn1.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Parse a Microsoft Individual Code Signing blob

@@ -153,10 +153,6 @@
 #define  SDHCI_INT_CMD_MASK	(SDHCI_INT_RESPONSE | SDHCI_INT_TIMEOUT | \
 		SDHCI_INT_CRC | SDHCI_INT_END_BIT | SDHCI_INT_INDEX | \
 		SDHCI_INT_AUTO_CMD_ERR)
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define  SDHCI_INT_DATA_MASK	(SDHCI_INT_DATA_END | SDHCI_INT_DMA_END | \
 		SDHCI_INT_DATA_AVAIL | SDHCI_INT_SPACE_AVAIL | \
 		SDHCI_INT_DATA_TIMEOUT | SDHCI_INT_DATA_CRC | \
@@ -173,12 +169,8 @@
 
 #define SDHCI_CQE_INT_MASK (SDHCI_CQE_INT_ERR_MASK | SDHCI_INT_CQE)
 
-<<<<<<< HEAD
 #define SDHCI_AUTO_CMD_STATUS	0x3C
 
-=======
-#define SDHCI_AUTO_CMD_STATUS		0x3C
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SDHCI_AUTO_CMD12_NOT_EXEC	0x0001
 #define  SDHCI_AUTO_CMD_TIMEOUT	0x00000002
 #define  SDHCI_AUTO_CMD_CRC	0x00000004
@@ -352,7 +344,6 @@ struct sdhci_adma2_64_desc {
 /* Allow for a a command request and a data request at the same time */
 #define SDHCI_MAX_MRQS		2
 
-<<<<<<< HEAD
 /*
  * 48bit command and 136 bit response in 100KHz clock could take upto 2.48ms.
  * However since the start time of the command, the time between
@@ -361,8 +352,6 @@ struct sdhci_adma2_64_desc {
  */
 #define MMC_CMD_TRANSFER_TIME	(10 * NSEC_PER_MSEC) /* max 10 ms */
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum sdhci_cookie {
 	COOKIE_UNMAPPED,
 	COOKIE_PRE_MAPPED,	/* mapped by sdhci_pre_req() */
@@ -475,7 +464,6 @@ struct sdhci_host {
 /* Controller has CRC in 136 bit Command Response */
 #define SDHCI_QUIRK2_RSP_136_HAS_CRC			(1<<16)
 /*
-<<<<<<< HEAD
  * Disable HW timeout if the requested timeout is more than the maximum
  * obtainable timeout.
  */
@@ -486,33 +474,19 @@ struct sdhci_host {
  * de-asserted after end of transaction. Issue reset for DAT line.
  */
 #define SDHCI_QUIRK2_RDWR_TX_ACTIVE_EOT                 (1<<18)
-=======
- * Read Transfer Active/ Write Transfer Active may be not
- * de-asserted after end of transaction. Issue reset for DAT line.
- */
-#define SDHCI_QUIRK2_RDWR_TX_ACTIVE_EOT                 (1<<17)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Slow interrupt clearance at 400KHz may cause
  * host controller driver interrupt handler to
  * be called twice.
  */
-<<<<<<< HEAD
 #define SDHCI_QUIRK2_SLOW_INT_CLR                       (1<<19)
-=======
-#define SDHCI_QUIRK2_SLOW_INT_CLR                       (1<<18)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * If the base clock can be scalable, then there should be no further
  * clock dividing as the input clock itself will be scaled down to
  * required frequency.
  */
-<<<<<<< HEAD
 #define SDHCI_QUIRK2_ALWAYS_USE_BASE_CLOCK		(1<<20)
-=======
-#define SDHCI_QUIRK2_ALWAYS_USE_BASE_CLOCK		(1<<19)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Ignore data timeout error for R1B commands as there will be no
@@ -520,32 +494,20 @@ struct sdhci_host {
  * could be lager than the maximum timeout value that controller
  * can handle.
  */
-<<<<<<< HEAD
 #define SDHCI_QUIRK2_IGNORE_DATATOUT_FOR_R1BCMD		(1<<21)
-=======
-#define SDHCI_QUIRK2_IGNORE_DATATOUT_FOR_R1BCMD		(1<<20)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * The preset value registers are not properly initialized by
  * some hardware and hence preset value must not be enabled for
  * such controllers.
  */
-<<<<<<< HEAD
 #define SDHCI_QUIRK2_BROKEN_PRESET_VALUE		(1<<22)
-=======
-#define SDHCI_QUIRK2_BROKEN_PRESET_VALUE		(1<<21)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Some controllers define the usage of 0xF in data timeout counter
  * register (0x2E) which is actually a reserved bit as per
  * specification.
  */
-<<<<<<< HEAD
 #define SDHCI_QUIRK2_USE_RESERVED_MAX_TIMEOUT		(1<<23)
-=======
-#define SDHCI_QUIRK2_USE_RESERVED_MAX_TIMEOUT		(1<<22)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * This is applicable for controllers that advertize timeout clock
  * value in capabilities register (bit 5-0) as just 50MHz whereas the
@@ -558,21 +520,13 @@ struct sdhci_host {
  * will be used in such cases to avoid controller mulplication when timeout is
  * calculated based on the base clock.
  */
-<<<<<<< HEAD
 #define SDHCI_QUIRK2_DIVIDE_TOUT_BY_4 (1 << 24)
-=======
-#define SDHCI_QUIRK2_DIVIDE_TOUT_BY_4 (1 << 23)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Some SDHC controllers are unable to handle data-end bit error in
  * 1-bit mode of SDIO.
  */
-<<<<<<< HEAD
 #define SDHCI_QUIRK2_IGN_DATA_END_BIT_ERROR             (1<<25)
-=======
-#define SDHCI_QUIRK2_IGN_DATA_END_BIT_ERROR             (1<<24)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Use reset workaround in case sdhci reset timeouts */
 #define SDHCI_QUIRK2_USE_RESET_WORKAROUND		(1<<26)
@@ -592,10 +546,6 @@ struct sdhci_host {
  */
 #define SDHCI_QUIRK2_USE_PIO_FOR_EMMC_TUNING (1 << 29)
 
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int irq;		/* Device IRQ */
 	void __iomem *ioaddr;	/* Mapped address */
 	char *bounce_buffer;	/* For packing SDMA reads/writes */
@@ -647,10 +597,7 @@ struct sdhci_host {
 	bool bus_on;		/* Bus power prevents runtime suspend */
 	bool preset_enabled;	/* Preset is enabled */
 	bool pending_reset;	/* Cmd/data reset is pending */
-<<<<<<< HEAD
 	bool irq_wake_enabled;	/* IRQ wakeup is enabled */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool cdr_support;
 
 	struct mmc_request *mrqs_done[SDHCI_MAX_MRQS];	/* Requests done */
@@ -715,27 +662,17 @@ struct sdhci_host {
 	/* Host SDMA buffer boundary. */
 	u32			sdma_boundary;
 
-<<<<<<< HEAD
 	u64			data_timeout;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ktime_t data_start_time;
 
 	enum sdhci_power_policy power_policy;
 
 	bool sdio_irq_async_status;
-<<<<<<< HEAD
 	bool is_crypto_en;
 
 	u32 auto_cmd_err_sts;
 	struct ratelimit_state dbg_dump_rs;
-=======
-
-	u32 auto_cmd_err_sts;
-	struct ratelimit_state dbg_dump_rs;
-	struct cmdq_host *cq_host;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int reset_wa_applied; /* reset workaround status */
 	ktime_t reset_wa_t; /* time when the reset workaround is applied */
 	int reset_wa_cnt; /* total number of times workaround is used */
@@ -773,14 +710,11 @@ struct sdhci_ops {
 	unsigned int    (*get_ro)(struct sdhci_host *host);
 	void		(*reset)(struct sdhci_host *host, u8 mask);
 	int	(*platform_execute_tuning)(struct sdhci_host *host, u32 opcode);
-<<<<<<< HEAD
 	int	(*crypto_engine_cfg)(struct sdhci_host *host,
 				struct mmc_request *mrq, u32 slot);
 	int	(*crypto_engine_cfg_end)(struct sdhci_host *host,
 					struct mmc_request *mrq);
 	int	(*crypto_engine_reset)(struct sdhci_host *host);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void	(*set_uhs_signaling)(struct sdhci_host *host, unsigned int uhs);
 	void	(*hw_reset)(struct sdhci_host *host);
 	void    (*adma_workaround)(struct sdhci_host *host, u32 intmask);
@@ -811,11 +745,8 @@ struct sdhci_ops {
 	void	(*pre_req)(struct sdhci_host *host, struct mmc_request *req);
 	void	(*post_req)(struct sdhci_host *host, struct mmc_request *req);
 	unsigned int	(*get_current_limit)(struct sdhci_host *host);
-<<<<<<< HEAD
 	void	(*enter_dbg_mode)(struct sdhci_host *host);
 	void	(*exit_dbg_mode)(struct sdhci_host *host);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #ifdef CONFIG_MMC_SDHCI_IO_ACCESSORS
@@ -950,10 +881,6 @@ void sdhci_enable_sdio_irq(struct mmc_host *mmc, int enable);
 #ifdef CONFIG_PM
 int sdhci_suspend_host(struct sdhci_host *host);
 int sdhci_resume_host(struct sdhci_host *host);
-<<<<<<< HEAD
-=======
-void sdhci_enable_irq_wakeups(struct sdhci_host *host);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int sdhci_runtime_suspend_host(struct sdhci_host *host);
 int sdhci_runtime_resume_host(struct sdhci_host *host);
 #endif
@@ -965,13 +892,10 @@ bool sdhci_cqe_irq(struct sdhci_host *host, u32 intmask, int *cmd_error,
 
 void sdhci_dumpregs(struct sdhci_host *host);
 
-<<<<<<< HEAD
 void sdhci_start_tuning(struct sdhci_host *host);
 void sdhci_end_tuning(struct sdhci_host *host);
 void sdhci_reset_tuning(struct sdhci_host *host);
 void sdhci_send_tuning(struct sdhci_host *host, u32 opcode);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void sdhci_cfg_irq(struct sdhci_host *host, bool enable, bool sync);
 #endif /* __SDHCI_HW_H */

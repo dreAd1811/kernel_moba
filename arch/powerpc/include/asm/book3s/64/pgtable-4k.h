@@ -49,7 +49,6 @@ static inline int hugepd_ok(hugepd_t hpd)
 }
 #define is_hugepd(hpd)		(hugepd_ok(hpd))
 
-<<<<<<< HEAD
 /*
  * 16M and 16G huge page directory tables are allocated from slab cache
  *
@@ -71,8 +70,6 @@ static inline int get_hugepd_cache_index(int index)
 	/* should not reach */
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else /* !CONFIG_HUGETLB_PAGE */
 static inline int pmd_huge(pmd_t pmd) { return 0; }
 static inline int pud_huge(pud_t pud) { return 0; }

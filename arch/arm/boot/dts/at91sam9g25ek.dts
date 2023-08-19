@@ -25,11 +25,7 @@
 			};
 
 			i2c0: i2c@f8010000 {
-<<<<<<< HEAD
 				ov2640: camera@30 {
-=======
-				ov2640: camera@0x30 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					compatible = "ovti,ov2640";
 					reg = <0x30>;
 					pinctrl-names = "default";

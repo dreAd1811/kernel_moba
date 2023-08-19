@@ -1,5 +1,4 @@
 config VIDEO_USBTV
-<<<<<<< HEAD
 	tristate "USBTV007 video capture support"
 	depends on VIDEO_V4L2 && SND
 	select SND_PCM
@@ -10,15 +9,3 @@ config VIDEO_USBTV
 
 	  To compile this driver as a module, choose M here: the
 	  module will be called usbtv
-=======
-        tristate "USBTV007 video capture support"
-        depends on VIDEO_V4L2 && SND
-        select SND_PCM
-        select VIDEOBUF2_VMALLOC
-
-        ---help---
-          This is a video4linux2 driver for USBTV007 based video capture devices.
-
-          To compile this driver as a module, choose M here: the
-          module will be called usbtv
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

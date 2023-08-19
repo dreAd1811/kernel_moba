@@ -1,10 +1,6 @@
 /*
  * Copyright (c) 2014-2017 Qualcomm Atheros, Inc.
-<<<<<<< HEAD
  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
-=======
- * Copyright (c) 2018, The Linux Foundation. All rights reserved.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -149,11 +145,7 @@ fw_handle_capabilities(struct wil6210_priv *wil, const void *data,
 				    capabilities);
 	bitmap_zero(wil->fw_capabilities, WMI_FW_CAPABILITY_MAX);
 	memcpy(wil->fw_capabilities, rec->capabilities,
-<<<<<<< HEAD
 	       min_t(size_t, sizeof(wil->fw_capabilities), capa_size));
-=======
-	       min(sizeof(wil->fw_capabilities), capa_size));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wil_hex_dump_fw("CAPA", DUMP_PREFIX_OFFSET, 16, 1,
 			rec->capabilities, capa_size, false);
 	return 0;
@@ -164,7 +156,6 @@ fw_handle_brd_file(struct wil6210_priv *wil, const void *data,
 		   size_t size)
 {
 	const struct wil_fw_record_brd_file *rec = data;
-<<<<<<< HEAD
 	u32 max_num_ent, i, ent_size;
 
 	if (size <= offsetof(struct wil_fw_record_brd_file, brd_info)) {
@@ -211,19 +202,6 @@ fw_handle_brd_file(struct wil6210_priv *wil, const void *data,
 		wil_dbg_fw(wil, "num of brd info entries %d\n",
 			   wil->num_of_brd_entries);
 	}
-=======
-
-	if (size < sizeof(*rec)) {
-		wil_err_fw(wil, "brd_file record too short: %zu\n", size);
-		return 0;
-	}
-
-	wil->brd_file_addr = le32_to_cpu(rec->base_addr);
-	wil->brd_file_max_size = le32_to_cpu(rec->max_size_bytes);
-
-	wil_dbg_fw(wil, "brd_file_addr 0x%x, brd_file_max_size %d\n",
-		   wil->brd_file_addr, wil->brd_file_max_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -691,14 +669,11 @@ int wil_request_firmware(struct wil6210_priv *wil, const char *name,
 	}
 	wil_dbg_fw(wil, "Loading <%s>, %zu bytes\n", name, fw->size);
 
-<<<<<<< HEAD
 	/* re-initialize board info params */
 	wil->num_of_brd_entries = 0;
 	kfree(wil->brd_info);
 	wil->brd_info = NULL;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (sz = fw->size, d = fw->data; sz; sz -= rc1, d += rc1) {
 		rc1 = wil_fw_verify(wil, d, sz);
 		if (rc1 < 0) {
@@ -712,11 +687,8 @@ int wil_request_firmware(struct wil6210_priv *wil, const char *name,
 
 out:
 	release_firmware(fw);
-<<<<<<< HEAD
 	if (rc)
 		wil_err_fw(wil, "Loading <%s> failed, rc %d\n", name, rc);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 
@@ -730,7 +702,6 @@ static int wil_brd_process(struct wil6210_priv *wil, const void *data,
 {
 	int rc = 0;
 	const struct wil_fw_record_head *hdr = data;
-<<<<<<< HEAD
 	size_t s, hdr_sz = 0;
 	u16 type;
 	int i = 0;
@@ -738,13 +709,6 @@ static int wil_brd_process(struct wil6210_priv *wil, const void *data,
 	/* Assuming the board file includes only one file header
 	 * and one or several data records.
 	 * Each record starts with wil_fw_record_head.
-=======
-	size_t s, hdr_sz;
-	u16 type;
-
-	/* Assuming the board file includes only one header record and one data
-	 * record. Each record starts with wil_fw_record_head.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	if (size < sizeof(*hdr))
 		return -EINVAL;
@@ -752,7 +716,6 @@ static int wil_brd_process(struct wil6210_priv *wil, const void *data,
 	if (s > size)
 		return -EINVAL;
 
-<<<<<<< HEAD
 	/* Skip the header record and handle the data records */
 	size -= s;
 
@@ -814,42 +777,6 @@ static int wil_brd_process(struct wil6210_priv *wil, const void *data,
 	}
 
 	return 0;
-=======
-	/* Skip the header record and handle the data record */
-	hdr = (const void *)hdr + s;
-	size -= s;
-	if (size < sizeof(*hdr))
-		return -EINVAL;
-	hdr_sz = le32_to_cpu(hdr->size);
-
-	if (wil->brd_file_max_size && hdr_sz > wil->brd_file_max_size)
-		return -EINVAL;
-	if (sizeof(*hdr) + hdr_sz > size)
-		return -EINVAL;
-	if (hdr_sz % 4) {
-		wil_err_fw(wil, "unaligned record size: %zu\n",
-			   hdr_sz);
-		return -EINVAL;
-	}
-	type = le16_to_cpu(hdr->type);
-	if (type != wil_fw_type_data) {
-		wil_err_fw(wil, "invalid record type for board file: %d\n",
-			   type);
-		return -EINVAL;
-	}
-	if (hdr_sz < sizeof(struct wil_fw_record_data)) {
-		wil_err_fw(wil, "data record too short: %zu\n", hdr_sz);
-		return -EINVAL;
-	}
-
-	wil_dbg_fw(wil, "using addr from fw file: [0x%08x]\n",
-		   wil->brd_file_addr);
-
-	rc = __fw_handle_data(wil, &hdr[1], hdr_sz,
-			      cpu_to_le32(wil->brd_file_addr));
-
-	return rc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -880,21 +807,14 @@ int wil_request_board(struct wil6210_priv *wil, const char *name)
 		rc = dlen;
 		goto out;
 	}
-<<<<<<< HEAD
 
 	/* Process the data records */
-=======
-	/* Process the data record */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rc = wil_brd_process(wil, brd->data, dlen);
 
 out:
 	release_firmware(brd);
-<<<<<<< HEAD
 	if (rc)
 		wil_err_fw(wil, "Loading <%s> failed, rc %d\n", name, rc);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 

@@ -22,10 +22,7 @@
 #include <linux/i2c.h>
 #include <linux/input.h>
 #include <linux/input/mt.h>
-<<<<<<< HEAD
 #include <linux/input/touchscreen.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/module.h>
 #include <linux/delay.h>
 #include <linux/irq.h>
@@ -35,7 +32,6 @@
 #include <linux/of.h>
 #include <asm/unaligned.h>
 
-<<<<<<< HEAD
 struct goodix_ts_data;
 
 struct goodix_chip_data {
@@ -51,19 +47,6 @@ struct goodix_ts_data {
 	struct touchscreen_properties prop;
 	unsigned int max_touch_num;
 	unsigned int int_trigger_type;
-=======
-struct goodix_ts_data {
-	struct i2c_client *client;
-	struct input_dev *input_dev;
-	int abs_x_max;
-	int abs_y_max;
-	bool swapped_x_y;
-	bool inverted_x;
-	bool inverted_y;
-	unsigned int max_touch_num;
-	unsigned int int_trigger_type;
-	int cfg_len;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct gpio_desc *gpiod_int;
 	struct gpio_desc *gpiod_rst;
 	u16 id;
@@ -91,12 +74,8 @@ struct goodix_ts_data {
 #define GOODIX_CMD_SCREEN_OFF		0x05
 
 #define GOODIX_READ_COOR_ADDR		0x814E
-<<<<<<< HEAD
 #define GOODIX_GT1X_REG_CONFIG_DATA	0x8050
 #define GOODIX_GT9X_REG_CONFIG_DATA	0x8047
-=======
-#define GOODIX_REG_CONFIG_DATA		0x8047
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define GOODIX_REG_ID			0x8140
 
 #define GOODIX_BUFFER_STATUS_READY	BIT(7)
@@ -106,7 +85,6 @@ struct goodix_ts_data {
 #define MAX_CONTACTS_LOC	5
 #define TRIGGER_LOC		6
 
-<<<<<<< HEAD
 static int goodix_check_cfg_8(struct goodix_ts_data *ts,
 			const struct firmware *cfg);
 static int goodix_check_cfg_16(struct goodix_ts_data *ts,
@@ -136,8 +114,6 @@ static const struct goodix_chip_data gt9x_chip_data = {
 	.check_config		= goodix_check_cfg_8,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const unsigned long goodix_irq_flags[] = {
 	IRQ_TYPE_EDGE_RISING,
 	IRQ_TYPE_EDGE_FALLING,
@@ -152,18 +128,6 @@ static const unsigned long goodix_irq_flags[] = {
 static const struct dmi_system_id rotated_screen[] = {
 #if defined(CONFIG_DMI) && defined(CONFIG_X86)
 	{
-<<<<<<< HEAD
-=======
-		.ident = "Teclast X89",
-		.matches = {
-			/* tPAD is too generic, also match on bios date */
-			DMI_MATCH(DMI_BOARD_VENDOR, "TECLAST"),
-			DMI_MATCH(DMI_BOARD_NAME, "tPAD"),
-			DMI_MATCH(DMI_BIOS_DATE, "12/19/2014"),
-		},
-	},
-	{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.ident = "WinBook TW100",
 		.matches = {
 			DMI_MATCH(DMI_SYS_VENDOR, "WinBook"),
@@ -193,11 +157,7 @@ static int goodix_i2c_read(struct i2c_client *client,
 			   u16 reg, u8 *buf, int len)
 {
 	struct i2c_msg msgs[2];
-<<<<<<< HEAD
 	__be16 wbuf = cpu_to_be16(reg);
-=======
-	u16 wbuf = cpu_to_be16(reg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	msgs[0].flags = 0;
@@ -252,24 +212,17 @@ static int goodix_i2c_write_u8(struct i2c_client *client, u16 reg, u8 value)
 	return goodix_i2c_write(client, reg, &value, sizeof(value));
 }
 
-<<<<<<< HEAD
 static const struct goodix_chip_data *goodix_get_chip_data(u16 id)
 {
 	switch (id) {
 	case 1151:
 		return &gt1x_chip_data;
 
-=======
-static int goodix_get_cfg_len(u16 id)
-{
-	switch (id) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case 911:
 	case 9271:
 	case 9110:
 	case 927:
 	case 928:
-<<<<<<< HEAD
 		return &gt911_chip_data;
 
 	case 912:
@@ -278,16 +231,6 @@ static int goodix_get_cfg_len(u16 id)
 
 	default:
 		return &gt9x_chip_data;
-=======
-		return GOODIX_CONFIG_911_LENGTH;
-
-	case 912:
-	case 967:
-		return GOODIX_CONFIG_967_LENGTH;
-
-	default:
-		return GOODIX_CONFIG_MAX_LENGTH;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -349,25 +292,10 @@ static void goodix_ts_report_touch(struct goodix_ts_data *ts, u8 *coor_data)
 	int input_y = get_unaligned_le16(&coor_data[3]);
 	int input_w = get_unaligned_le16(&coor_data[5]);
 
-<<<<<<< HEAD
 	input_mt_slot(ts->input_dev, id);
 	input_mt_report_slot_state(ts->input_dev, MT_TOOL_FINGER, true);
 	touchscreen_report_pos(ts->input_dev, &ts->prop,
 			       input_x, input_y, true);
-=======
-	/* Inversions have to happen before axis swapping */
-	if (ts->inverted_x)
-		input_x = ts->abs_x_max - input_x;
-	if (ts->inverted_y)
-		input_y = ts->abs_y_max - input_y;
-	if (ts->swapped_x_y)
-		swap(input_x, input_y);
-
-	input_mt_slot(ts->input_dev, id);
-	input_mt_report_slot_state(ts->input_dev, MT_TOOL_FINGER, true);
-	input_report_abs(ts->input_dev, ABS_MT_POSITION_X, input_x);
-	input_report_abs(ts->input_dev, ABS_MT_POSITION_Y, input_y);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	input_report_abs(ts->input_dev, ABS_MT_TOUCH_MAJOR, input_w);
 	input_report_abs(ts->input_dev, ABS_MT_WIDTH_MAJOR, input_w);
 }
@@ -434,34 +362,12 @@ static int goodix_request_irq(struct goodix_ts_data *ts)
 					 ts->irq_flags, ts->client->name, ts);
 }
 
-<<<<<<< HEAD
 static int goodix_check_cfg_8(struct goodix_ts_data *ts,
 			const struct firmware *cfg)
 {
 	int i, raw_cfg_len = cfg->size - 2;
 	u8 check_sum = 0;
 
-=======
-/**
- * goodix_check_cfg - Checks if config fw is valid
- *
- * @ts: goodix_ts_data pointer
- * @cfg: firmware config data
- */
-static int goodix_check_cfg(struct goodix_ts_data *ts,
-			    const struct firmware *cfg)
-{
-	int i, raw_cfg_len;
-	u8 check_sum = 0;
-
-	if (cfg->size > GOODIX_CONFIG_MAX_LENGTH) {
-		dev_err(&ts->client->dev,
-			"The length of the config fw is not correct");
-		return -EINVAL;
-	}
-
-	raw_cfg_len = cfg->size - 2;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < raw_cfg_len; i++)
 		check_sum += cfg->data[i];
 	check_sum = (~check_sum) + 1;
@@ -480,7 +386,6 @@ static int goodix_check_cfg(struct goodix_ts_data *ts,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int goodix_check_cfg_16(struct goodix_ts_data *ts,
 			const struct firmware *cfg)
 {
@@ -523,8 +428,6 @@ static int goodix_check_cfg(struct goodix_ts_data *ts,
 	return ts->chip->check_config(ts, cfg);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * goodix_send_cfg - Write fw config to device
  *
@@ -540,11 +443,7 @@ static int goodix_send_cfg(struct goodix_ts_data *ts,
 	if (error)
 		return error;
 
-<<<<<<< HEAD
 	error = goodix_i2c_write(ts->client, ts->chip->config_addr, cfg->data,
-=======
-	error = goodix_i2c_write(ts->client, GOODIX_REG_CONFIG_DATA, cfg->data,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 cfg->size);
 	if (error) {
 		dev_err(&ts->client->dev, "Failed to write config data: %d",
@@ -669,7 +568,6 @@ static int goodix_get_gpio_config(struct goodix_ts_data *ts)
 static void goodix_read_config(struct goodix_ts_data *ts)
 {
 	u8 config[GOODIX_CONFIG_MAX_LENGTH];
-<<<<<<< HEAD
 	int x_max, y_max;
 	int error;
 
@@ -678,26 +576,11 @@ static void goodix_read_config(struct goodix_ts_data *ts)
 	if (error) {
 		dev_warn(&ts->client->dev, "Error reading config: %d\n",
 			 error);
-=======
-	int error;
-
-	error = goodix_i2c_read(ts->client, GOODIX_REG_CONFIG_DATA,
-				config, ts->cfg_len);
-	if (error) {
-		dev_warn(&ts->client->dev,
-			 "Error reading config (%d), using defaults\n",
-			 error);
-		ts->abs_x_max = GOODIX_MAX_WIDTH;
-		ts->abs_y_max = GOODIX_MAX_HEIGHT;
-		if (ts->swapped_x_y)
-			swap(ts->abs_x_max, ts->abs_y_max);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ts->int_trigger_type = GOODIX_INT_TRIGGER;
 		ts->max_touch_num = GOODIX_MAX_CONTACTS;
 		return;
 	}
 
-<<<<<<< HEAD
 	ts->int_trigger_type = config[TRIGGER_LOC] & 0x03;
 	ts->max_touch_num = config[MAX_CONTACTS_LOC] & 0x0f;
 
@@ -706,29 +589,6 @@ static void goodix_read_config(struct goodix_ts_data *ts)
 	if (x_max && y_max) {
 		input_abs_set_max(ts->input_dev, ABS_MT_POSITION_X, x_max - 1);
 		input_abs_set_max(ts->input_dev, ABS_MT_POSITION_Y, y_max - 1);
-=======
-	ts->abs_x_max = get_unaligned_le16(&config[RESOLUTION_LOC]);
-	ts->abs_y_max = get_unaligned_le16(&config[RESOLUTION_LOC + 2]);
-	if (ts->swapped_x_y)
-		swap(ts->abs_x_max, ts->abs_y_max);
-	ts->int_trigger_type = config[TRIGGER_LOC] & 0x03;
-	ts->max_touch_num = config[MAX_CONTACTS_LOC] & 0x0f;
-	if (!ts->abs_x_max || !ts->abs_y_max || !ts->max_touch_num) {
-		dev_err(&ts->client->dev,
-			"Invalid config, using defaults\n");
-		ts->abs_x_max = GOODIX_MAX_WIDTH;
-		ts->abs_y_max = GOODIX_MAX_HEIGHT;
-		if (ts->swapped_x_y)
-			swap(ts->abs_x_max, ts->abs_y_max);
-		ts->max_touch_num = GOODIX_MAX_CONTACTS;
-	}
-
-	if (dmi_check_system(rotated_screen)) {
-		ts->inverted_x = true;
-		ts->inverted_y = true;
-		dev_dbg(&ts->client->dev,
-			 "Applying '180 degrees rotated screen' quirk\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -774,11 +634,7 @@ static int goodix_i2c_test(struct i2c_client *client)
 	u8 test;
 
 	while (retry++ < 2) {
-<<<<<<< HEAD
 		error = goodix_i2c_read(client, GOODIX_REG_ID,
-=======
-		error = goodix_i2c_read(client, GOODIX_REG_CONFIG_DATA,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					&test, 1);
 		if (!error)
 			return 0;
@@ -792,56 +648,6 @@ static int goodix_i2c_test(struct i2c_client *client)
 }
 
 /**
-<<<<<<< HEAD
-=======
- * goodix_request_input_dev - Allocate, populate and register the input device
- *
- * @ts: our goodix_ts_data pointer
- *
- * Must be called during probe
- */
-static int goodix_request_input_dev(struct goodix_ts_data *ts)
-{
-	int error;
-
-	ts->input_dev = devm_input_allocate_device(&ts->client->dev);
-	if (!ts->input_dev) {
-		dev_err(&ts->client->dev, "Failed to allocate input device.");
-		return -ENOMEM;
-	}
-
-	input_set_abs_params(ts->input_dev, ABS_MT_POSITION_X,
-			     0, ts->abs_x_max, 0, 0);
-	input_set_abs_params(ts->input_dev, ABS_MT_POSITION_Y,
-			     0, ts->abs_y_max, 0, 0);
-	input_set_abs_params(ts->input_dev, ABS_MT_WIDTH_MAJOR, 0, 255, 0, 0);
-	input_set_abs_params(ts->input_dev, ABS_MT_TOUCH_MAJOR, 0, 255, 0, 0);
-
-	input_mt_init_slots(ts->input_dev, ts->max_touch_num,
-			    INPUT_MT_DIRECT | INPUT_MT_DROP_UNUSED);
-
-	ts->input_dev->name = "Goodix Capacitive TouchScreen";
-	ts->input_dev->phys = "input/ts";
-	ts->input_dev->id.bustype = BUS_I2C;
-	ts->input_dev->id.vendor = 0x0416;
-	ts->input_dev->id.product = ts->id;
-	ts->input_dev->id.version = ts->version;
-
-	/* Capacitive Windows/Home button on some devices */
-	input_set_capability(ts->input_dev, EV_KEY, KEY_LEFTMETA);
-
-	error = input_register_device(ts->input_dev);
-	if (error) {
-		dev_err(&ts->client->dev,
-			"Failed to register input device: %d", error);
-		return error;
-	}
-
-	return 0;
-}
-
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * goodix_configure_dev - Finish device initialization
  *
  * @ts: our goodix_ts_data pointer
@@ -855,7 +661,6 @@ static int goodix_configure_dev(struct goodix_ts_data *ts)
 {
 	int error;
 
-<<<<<<< HEAD
 	ts->int_trigger_type = GOODIX_INT_TRIGGER;
 	ts->max_touch_num = GOODIX_MAX_CONTACTS;
 
@@ -918,20 +723,6 @@ static int goodix_configure_dev(struct goodix_ts_data *ts)
 			"Failed to register input device: %d", error);
 		return error;
 	}
-=======
-	ts->swapped_x_y = device_property_read_bool(&ts->client->dev,
-						    "touchscreen-swapped-x-y");
-	ts->inverted_x = device_property_read_bool(&ts->client->dev,
-						   "touchscreen-inverted-x");
-	ts->inverted_y = device_property_read_bool(&ts->client->dev,
-						   "touchscreen-inverted-y");
-
-	goodix_read_config(ts);
-
-	error = goodix_request_input_dev(ts);
-	if (error)
-		return error;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ts->irq_flags = goodix_irq_flags[ts->int_trigger_type] | IRQF_ONESHOT;
 	error = goodix_request_irq(ts);
@@ -1016,11 +807,7 @@ static int goodix_ts_probe(struct i2c_client *client,
 		return error;
 	}
 
-<<<<<<< HEAD
 	ts->chip = goodix_get_chip_data(ts->id);
-=======
-	ts->cfg_len = goodix_get_cfg_len(ts->id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ts->gpiod_int && ts->gpiod_rst) {
 		/* update device config */
@@ -1154,10 +941,7 @@ MODULE_DEVICE_TABLE(acpi, goodix_acpi_match);
 
 #ifdef CONFIG_OF
 static const struct of_device_id goodix_of_match[] = {
-<<<<<<< HEAD
 	{ .compatible = "goodix,gt1151" },
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ .compatible = "goodix,gt911" },
 	{ .compatible = "goodix,gt9110" },
 	{ .compatible = "goodix,gt912" },

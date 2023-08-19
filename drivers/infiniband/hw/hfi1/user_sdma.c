@@ -179,10 +179,7 @@ int hfi1_user_sdma_alloc_queues(struct hfi1_ctxtdata *uctxt,
 	pq = kzalloc(sizeof(*pq), GFP_KERNEL);
 	if (!pq)
 		return -ENOMEM;
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pq->dd = dd;
 	pq->ctxt = uctxt->ctxt;
 	pq->subctxt = fd->subctxt;
@@ -239,11 +236,7 @@ int hfi1_user_sdma_alloc_queues(struct hfi1_ctxtdata *uctxt,
 		goto pq_mmu_fail;
 	}
 
-<<<<<<< HEAD
 	fd->pq = pq;
-=======
-	rcu_assign_pointer(fd->pq, pq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	fd->cq = cq;
 
 	return 0;
@@ -271,19 +264,8 @@ int hfi1_user_sdma_free_queues(struct hfi1_filedata *fd,
 
 	trace_hfi1_sdma_user_free_queues(uctxt->dd, uctxt->ctxt, fd->subctxt);
 
-<<<<<<< HEAD
 	pq = fd->pq;
 	if (pq) {
-=======
-	spin_lock(&fd->pq_rcu_lock);
-	pq = srcu_dereference_check(fd->pq, &fd->pq_srcu,
-				    lockdep_is_held(&fd->pq_rcu_lock));
-	if (pq) {
-		rcu_assign_pointer(fd->pq, NULL);
-		spin_unlock(&fd->pq_rcu_lock);
-		synchronize_srcu(&fd->pq_srcu);
-		/* at this point there can be no more new requests */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (pq->handler)
 			hfi1_mmu_rb_unregister(pq->handler);
 		iowait_sdma_drain(&pq->busy);
@@ -295,12 +277,7 @@ int hfi1_user_sdma_free_queues(struct hfi1_filedata *fd,
 		kfree(pq->req_in_use);
 		kmem_cache_destroy(pq->txreq_cache);
 		kfree(pq);
-<<<<<<< HEAD
 		fd->pq = NULL;
-=======
-	} else {
-		spin_unlock(&fd->pq_rcu_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	if (fd->cq) {
 		vfree(fd->cq->comps);
@@ -344,12 +321,7 @@ int hfi1_user_sdma_process_request(struct hfi1_filedata *fd,
 {
 	int ret = 0, i;
 	struct hfi1_ctxtdata *uctxt = fd->uctxt;
-<<<<<<< HEAD
 	struct hfi1_user_sdma_pkt_q *pq = fd->pq;
-=======
-	struct hfi1_user_sdma_pkt_q *pq =
-		srcu_dereference(fd->pq, &fd->pq_srcu);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct hfi1_user_sdma_comp_q *cq = fd->cq;
 	struct hfi1_devdata *dd = pq->dd;
 	unsigned long idx = 0;
@@ -845,11 +817,7 @@ static int user_sdma_send_pkts(struct user_sdma_request *req, unsigned maxpkts)
 		 */
 		if (req->data_len) {
 			iovec = &req->iovs[req->iov_idx];
-<<<<<<< HEAD
 			if (READ_ONCE(iovec->offset) == iovec->iov.iov_len) {
-=======
-			if (ACCESS_ONCE(iovec->offset) == iovec->iov.iov_len) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				if (++req->iov_idx == req->data_iovs) {
 					ret = -EFAULT;
 					goto free_tx;
@@ -888,15 +856,8 @@ static int user_sdma_send_pkts(struct user_sdma_request *req, unsigned maxpkts)
 
 				changes = set_txreq_header_ahg(req, tx,
 							       datalen);
-<<<<<<< HEAD
 				if (changes < 0)
 					goto free_tx;
-=======
-				if (changes < 0) {
-					ret = changes;
-					goto free_tx;
-				}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		} else {
 			ret = sdma_txinit(&tx->txreq, 0, sizeof(req->hdr) +
@@ -986,15 +947,8 @@ static int pin_sdma_pages(struct user_sdma_request *req,
 	struct hfi1_user_sdma_pkt_q *pq = req->pq;
 
 	pages = kcalloc(npages, sizeof(*pages), GFP_KERNEL);
-<<<<<<< HEAD
 	if (!pages)
 		return -ENOMEM;
-=======
-	if (!pages) {
-		SDMA_DBG(req, "Failed page array alloc");
-		return -ENOMEM;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memcpy(pages, node->pages, node->npages * sizeof(*pages));
 
 	npages -= node->npages;
@@ -1289,17 +1243,12 @@ static int set_txreq_header_ahg(struct user_sdma_request *req,
 				struct user_sdma_txreq *tx, u32 datalen)
 {
 	u32 ahg[AHG_KDETH_ARRAY_SIZE];
-<<<<<<< HEAD
 	int idx = 0;
-=======
-	int diff = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 omfactor; /* KDETH.OM */
 	struct hfi1_user_sdma_pkt_q *pq = req->pq;
 	struct hfi1_pkt_header *hdr = &req->hdr;
 	u16 pbclen = le16_to_cpu(hdr->pbc[0]);
 	u32 val32, tidval = 0, lrhlen = get_lrh_len(*hdr, pad_len(datalen));
-<<<<<<< HEAD
 	size_t array_size = ARRAY_SIZE(ahg);
 
 	if (PBC2LRH(pbclen) != lrhlen) {
@@ -1313,16 +1262,6 @@ static int set_txreq_header_ahg(struct user_sdma_request *req,
 				     (__force u16)cpu_to_be16(lrhlen >> 2));
 		if (idx < 0)
 			return idx;
-=======
-
-	if (PBC2LRH(pbclen) != lrhlen) {
-		/* PBC.PbcLengthDWs */
-		AHG_HEADER_SET(ahg, diff, 0, 0, 12,
-			       cpu_to_le16(LRH2PBC(lrhlen)));
-		/* LRH.PktLen (we need the full 16 bits due to byte swap) */
-		AHG_HEADER_SET(ahg, diff, 3, 0, 16,
-			       cpu_to_be16(lrhlen >> 2));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/*
@@ -1333,7 +1272,6 @@ static int set_txreq_header_ahg(struct user_sdma_request *req,
 		(HFI1_CAP_IS_KSET(EXTENDED_PSN) ? 0x7fffffff : 0xffffff);
 	if (unlikely(tx->flags & TXREQ_FLAGS_REQ_ACK))
 		val32 |= 1UL << 31;
-<<<<<<< HEAD
 	idx = ahg_header_set(ahg, idx, array_size, 6, 0, 16,
 			     (__force u16)cpu_to_be16(val32 >> 16));
 	if (idx < 0)
@@ -1351,14 +1289,6 @@ static int set_txreq_header_ahg(struct user_sdma_request *req,
 			     (__force u16)cpu_to_le16(req->koffset >> 16));
 	if (idx < 0)
 		return idx;
-=======
-	AHG_HEADER_SET(ahg, diff, 6, 0, 16, cpu_to_be16(val32 >> 16));
-	AHG_HEADER_SET(ahg, diff, 6, 16, 16, cpu_to_be16(val32 & 0xffff));
-	/* KDETH.Offset */
-	AHG_HEADER_SET(ahg, diff, 15, 0, 16,
-		       cpu_to_le16(req->koffset & 0xffff));
-	AHG_HEADER_SET(ahg, diff, 15, 16, 16, cpu_to_le16(req->koffset >> 16));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (req_opcode(req->info.ctrl) == EXPECTED) {
 		__le16 val;
 
@@ -1385,7 +1315,6 @@ static int set_txreq_header_ahg(struct user_sdma_request *req,
 				 KDETH_OM_MAX_SIZE) ? KDETH_OM_LARGE_SHIFT :
 				 KDETH_OM_SMALL_SHIFT;
 		/* KDETH.OM and KDETH.OFFSET (TID) */
-<<<<<<< HEAD
 		idx = ahg_header_set(
 				ahg, idx, array_size, 7, 0, 16,
 				((!!(omfactor - KDETH_OM_SMALL_SHIFT)) << 15 |
@@ -1393,12 +1322,6 @@ static int set_txreq_header_ahg(struct user_sdma_request *req,
 				& 0x7fff)));
 		if (idx < 0)
 			return idx;
-=======
-		AHG_HEADER_SET(ahg, diff, 7, 0, 16,
-			       ((!!(omfactor - KDETH_OM_SMALL_SHIFT)) << 15 |
-				((req->tidoffset >> omfactor)
-				 & 0x7fff)));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* KDETH.TIDCtrl, KDETH.TID, KDETH.Intr, KDETH.SH */
 		val = cpu_to_le16(((EXP_TID_GET(tidval, CTRL) & 0x3) << 10) |
 				   (EXP_TID_GET(tidval, IDX) & 0x3ff));
@@ -1415,7 +1338,6 @@ static int set_txreq_header_ahg(struct user_sdma_request *req,
 					     AHG_KDETH_INTR_SHIFT));
 		}
 
-<<<<<<< HEAD
 		idx = ahg_header_set(ahg, idx, array_size,
 				     7, 16, 14, (__force u16)val);
 		if (idx < 0)
@@ -1432,23 +1354,6 @@ static int set_txreq_header_ahg(struct user_sdma_request *req,
 			user_sdma_txreq_cb);
 
 	return idx;
-=======
-		AHG_HEADER_SET(ahg, diff, 7, 16, 14, val);
-	}
-	if (diff < 0)
-		return diff;
-
-	trace_hfi1_sdma_user_header_ahg(pq->dd, pq->ctxt, pq->subctxt,
-					req->info.comp_idx, req->sde->this_idx,
-					req->ahg_idx, ahg, diff, tidval);
-	sdma_txinit_ahg(&tx->txreq,
-			SDMA_TXREQ_F_USE_AHG,
-			datalen, req->ahg_idx, diff,
-			ahg, sizeof(req->hdr),
-			user_sdma_txreq_cb);
-
-	return diff;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -1504,11 +1409,8 @@ static inline void pq_update(struct hfi1_user_sdma_pkt_q *pq)
 
 static void user_sdma_free_request(struct user_sdma_request *req, bool unpin)
 {
-<<<<<<< HEAD
 	int i;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!list_empty(&req->txps)) {
 		struct sdma_txreq *t, *p;
 
@@ -1520,7 +1422,6 @@ static void user_sdma_free_request(struct user_sdma_request *req, bool unpin)
 			kmem_cache_free(req->pq->txreq_cache, tx);
 		}
 	}
-<<<<<<< HEAD
 
 	for (i = 0; i < req->data_iovs; i++) {
 		struct sdma_mmu_node *node = req->iovs[i].node;
@@ -1537,26 +1438,6 @@ static void user_sdma_free_request(struct user_sdma_request *req, bool unpin)
 			atomic_dec(&node->refcount);
 	}
 
-=======
-	if (req->data_iovs) {
-		struct sdma_mmu_node *node;
-		int i;
-
-		for (i = 0; i < req->data_iovs; i++) {
-			node = req->iovs[i].node;
-			if (!node)
-				continue;
-
-			req->iovs[i].node = NULL;
-
-			if (unpin)
-				hfi1_mmu_rb_remove(req->pq->handler,
-						   &node->rb);
-			else
-				atomic_dec(&node->refcount);
-		}
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(req->tids);
 	clear_bit(req->info.comp_idx, req->pq->req_in_use);
 }

@@ -355,17 +355,10 @@ static void slic_xmit_complete(struct slic_device *sdev)
 {
 	struct slic_tx_queue *txq = &sdev->txq;
 	struct net_device *dev = sdev->netdev;
-<<<<<<< HEAD
 	struct slic_tx_buffer *buff;
 	unsigned int frames = 0;
 	unsigned int bytes = 0;
 	unsigned int idx;
-=======
-	unsigned int idx = txq->done_idx;
-	struct slic_tx_buffer *buff;
-	unsigned int frames = 0;
-	unsigned int bytes = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Limit processing to SLIC_MAX_TX_COMPLETIONS frames to avoid that new
 	 * completions during processing keeps the loop running endlessly.

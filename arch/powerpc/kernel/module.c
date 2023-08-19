@@ -74,7 +74,6 @@ int module_finalize(const Elf_Ehdr *hdr,
 				  (void *)sect->sh_addr + sect->sh_size);
 #endif /* CONFIG_PPC64 */
 
-<<<<<<< HEAD
 #ifdef PPC64_ELF_ABI_v1
 	sect = find_section(hdr, sechdrs, ".opd");
 	if (sect != NULL) {
@@ -83,8 +82,6 @@ int module_finalize(const Elf_Ehdr *hdr,
 	}
 #endif /* PPC64_ELF_ABI_v1 */
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_PPC_BARRIER_NOSPEC
 	sect = find_section(hdr, sechdrs, "__spec_barrier_fixup");
 	if (sect != NULL)

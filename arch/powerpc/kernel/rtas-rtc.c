@@ -13,11 +13,7 @@
 
 #define MAX_RTC_WAIT 5000	/* 5 sec */
 #define RTAS_CLOCK_BUSY (-2)
-<<<<<<< HEAD
 time64_t __init rtas_get_boot_time(void)
-=======
-unsigned long __init rtas_get_boot_time(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret[8];
 	int error;
@@ -42,11 +38,7 @@ unsigned long __init rtas_get_boot_time(void)
 		return 0;
 	}
 
-<<<<<<< HEAD
 	return mktime64(ret[0], ret[1], ret[2], ret[3], ret[4], ret[5]);
-=======
-	return mktime(ret[0], ret[1], ret[2], ret[3], ret[4], ret[5]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* NOTE: get_rtc_time will get an error if executed in interrupt context

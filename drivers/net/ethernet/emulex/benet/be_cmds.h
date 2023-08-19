@@ -201,11 +201,7 @@ enum {
 			 phy_state == BE_PHY_UNQUALIFIED ||	\
 			 phy_state == BE_PHY_UNCERTIFIED)
 
-<<<<<<< HEAD
 extern const  char * const be_misconfig_evt_port_state[];
-=======
-extern  char *be_misconfig_evt_port_state[];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* async event indicating misconfigured port */
 struct be_async_event_misconfig_port {

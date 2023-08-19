@@ -5,10 +5,7 @@
  *
  * Copyright (C) M'boumba Cedric Madianga 2015
  * Author: M'boumba Cedric Madianga <cedric.madianga@gmail.com>
-<<<<<<< HEAD
  *         Pierre-Yves Mordret <pierre-yves.mordret@st.com>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * License terms:  GNU General Public License (GPL), version 2
  */
@@ -37,7 +34,6 @@
 #define STM32_DMA_LIFCR			0x0008 /* DMA Low Int Flag Clear Reg */
 #define STM32_DMA_HIFCR			0x000c /* DMA High Int Flag Clear Reg */
 #define STM32_DMA_TCI			BIT(5) /* Transfer Complete Interrupt */
-<<<<<<< HEAD
 #define STM32_DMA_HTI			BIT(4) /* Half Transfer Interrupt */
 #define STM32_DMA_TEI			BIT(3) /* Transfer Error Interrupt */
 #define STM32_DMA_DMEI			BIT(2) /* Direct Mode Error Interrupt */
@@ -46,11 +42,6 @@
 					 | STM32_DMA_TEI \
 					 | STM32_DMA_DMEI \
 					 | STM32_DMA_FEI)
-=======
-#define STM32_DMA_TEI			BIT(3) /* Transfer Error Interrupt */
-#define STM32_DMA_DMEI			BIT(2) /* Direct Mode Error Interrupt */
-#define STM32_DMA_FEI			BIT(0) /* FIFO Error Interrupt */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* DMA Stream x Configuration Register */
 #define STM32_DMA_SCR(x)		(0x0010 + 0x18 * (x)) /* x = 0..7 */
@@ -75,12 +66,8 @@
 #define STM32_DMA_SCR_PINC		BIT(9) /* Peripheral increment mode */
 #define STM32_DMA_SCR_CIRC		BIT(8) /* Circular mode */
 #define STM32_DMA_SCR_PFCTRL		BIT(5) /* Peripheral Flow Controller */
-<<<<<<< HEAD
 #define STM32_DMA_SCR_TCIE		BIT(4) /* Transfer Complete Int Enable
 						*/
-=======
-#define STM32_DMA_SCR_TCIE		BIT(4) /* Transfer Cplete Int Enable*/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define STM32_DMA_SCR_TEIE		BIT(2) /* Transfer Error Int Enable */
 #define STM32_DMA_SCR_DMEIE		BIT(1) /* Direct Mode Err Int Enable */
 #define STM32_DMA_SCR_EN		BIT(0) /* Stream Enable */
@@ -131,7 +118,6 @@
 #define STM32_DMA_FIFO_THRESHOLD_FULL			0x03
 
 #define STM32_DMA_MAX_DATA_ITEMS	0xffff
-<<<<<<< HEAD
 /*
  * Valid transfer starts from @0 to @0xFFFE leading to unaligned scatter
  * gather at boundary. Thus it's safer to round down this value on FIFO
@@ -150,13 +136,6 @@
 #define STM32_DMA_THRESHOLD_FTR_MASK	GENMASK(1, 0)
 #define STM32_DMA_THRESHOLD_FTR_GET(n)	((n) & STM32_DMA_THRESHOLD_FTR_MASK)
 
-=======
-#define STM32_DMA_MAX_CHANNELS		0x08
-#define STM32_DMA_MAX_REQUEST_ID	0x08
-#define STM32_DMA_MAX_DATA_PARAM	0x03
-#define STM32_DMA_MAX_BURST		16
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum stm32_dma_width {
 	STM32_DMA_BYTE,
 	STM32_DMA_HALF_WORD,
@@ -170,7 +149,6 @@ enum stm32_dma_burst_size {
 	STM32_DMA_BURST_INCR16,
 };
 
-<<<<<<< HEAD
 /**
  * struct stm32_dma_cfg - STM32 DMA custom configuration
  * @channel_id: channel ID
@@ -178,17 +156,11 @@ enum stm32_dma_burst_size {
  * @stream_config: 32bit mask specifying the DMA channel configuration
  * @features: 32bit mask specifying the DMA Feature list
  */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct stm32_dma_cfg {
 	u32 channel_id;
 	u32 request_line;
 	u32 stream_config;
-<<<<<<< HEAD
 	u32 features;
-=======
-	u32 threshold;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct stm32_dma_chan_reg {
@@ -226,12 +198,9 @@ struct stm32_dma_chan {
 	u32 next_sg;
 	struct dma_slave_config	dma_sconfig;
 	struct stm32_dma_chan_reg chan_reg;
-<<<<<<< HEAD
 	u32 threshold;
 	u32 mem_burst;
 	u32 mem_width;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct stm32_dma_device {
@@ -296,7 +265,6 @@ static int stm32_dma_get_width(struct stm32_dma_chan *chan,
 	}
 }
 
-<<<<<<< HEAD
 static enum dma_slave_buswidth stm32_dma_get_max_width(u32 buf_len,
 						       u32 threshold)
 {
@@ -376,8 +344,6 @@ static u32 stm32_dma_get_best_burst(u32 buf_len, u32 max_burst, u32 threshold,
 	return best_burst;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int stm32_dma_get_burst(struct stm32_dma_chan *chan, u32 maxburst)
 {
 	switch (maxburst) {
@@ -397,20 +363,12 @@ static int stm32_dma_get_burst(struct stm32_dma_chan *chan, u32 maxburst)
 }
 
 static void stm32_dma_set_fifo_config(struct stm32_dma_chan *chan,
-<<<<<<< HEAD
 				      u32 src_burst, u32 dst_burst)
-=======
-				      u32 src_maxburst, u32 dst_maxburst)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	chan->chan_reg.dma_sfcr &= ~STM32_DMA_SFCR_MASK;
 	chan->chan_reg.dma_scr &= ~STM32_DMA_SCR_DMEIE;
 
-<<<<<<< HEAD
 	if (!src_burst && !dst_burst) {
-=======
-	if ((!src_maxburst) && (!dst_maxburst)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Using direct mode */
 		chan->chan_reg.dma_scr |= STM32_DMA_SCR_DMEIE;
 	} else {
@@ -451,11 +409,7 @@ static u32 stm32_dma_irq_status(struct stm32_dma_chan *chan)
 
 	flags = dma_isr >> (((chan->id & 2) << 3) | ((chan->id & 1) * 6));
 
-<<<<<<< HEAD
 	return flags & STM32_DMA_MASKI;
-=======
-	return flags;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void stm32_dma_irq_clear(struct stm32_dma_chan *chan, u32 flags)
@@ -470,10 +424,7 @@ static void stm32_dma_irq_clear(struct stm32_dma_chan *chan, u32 flags)
 	 * If (ch % 4) is 2 or 3, left shift the mask by 16 bits.
 	 * If (ch % 4) is 1 or 3, additionally left shift the mask by 6 bits.
 	 */
-<<<<<<< HEAD
 	flags &= STM32_DMA_MASKI;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dma_ifcr = flags << (((chan->id & 2) << 3) | ((chan->id & 1) * 6));
 
 	if (chan->id & 4)
@@ -643,11 +594,7 @@ static void stm32_dma_start_transfer(struct stm32_dma_chan *chan)
 
 	chan->busy = true;
 
-<<<<<<< HEAD
 	dev_dbg(chan2dev(chan), "vchan %pK: started\n", &chan->vchan);
-=======
-	dev_dbg(chan2dev(chan), "vchan %p: started\n", &chan->vchan);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void stm32_dma_configure_next_sg(struct stm32_dma_chan *chan)
@@ -709,7 +656,6 @@ static irqreturn_t stm32_dma_chan_irq(int irq, void *devid)
 	status = stm32_dma_irq_status(chan);
 	scr = stm32_dma_read(dmadev, STM32_DMA_SCR(chan->id));
 
-<<<<<<< HEAD
 	if (status & STM32_DMA_TCI) {
 		stm32_dma_irq_clear(chan, STM32_DMA_TCI);
 		if (scr & STM32_DMA_SCR_TCIE)
@@ -733,15 +679,6 @@ static irqreturn_t stm32_dma_chan_irq(int irq, void *devid)
 		dev_err(chan2dev(chan), "DMA error: status=0x%08x\n", status);
 		if (!(scr & STM32_DMA_SCR_EN))
 			dev_err(chan2dev(chan), "chan disabled by HW\n");
-=======
-	if ((status & STM32_DMA_TCI) && (scr & STM32_DMA_SCR_TCIE)) {
-		stm32_dma_irq_clear(chan, STM32_DMA_TCI);
-		stm32_dma_handle_chan_done(chan);
-
-	} else {
-		stm32_dma_irq_clear(chan, status);
-		dev_err(chan2dev(chan), "DMA error: status=0x%08x\n", status);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	spin_unlock(&chan->vchan.lock);
@@ -756,11 +693,7 @@ static void stm32_dma_issue_pending(struct dma_chan *c)
 
 	spin_lock_irqsave(&chan->vchan.lock, flags);
 	if (vchan_issue_pending(&chan->vchan) && !chan->desc && !chan->busy) {
-<<<<<<< HEAD
 		dev_dbg(chan2dev(chan), "vchan %pK: issued\n", &chan->vchan);
-=======
-		dev_dbg(chan2dev(chan), "vchan %p: issued\n", &chan->vchan);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		stm32_dma_start_transfer(chan);
 
 	}
@@ -769,44 +702,28 @@ static void stm32_dma_issue_pending(struct dma_chan *c)
 
 static int stm32_dma_set_xfer_param(struct stm32_dma_chan *chan,
 				    enum dma_transfer_direction direction,
-<<<<<<< HEAD
 				    enum dma_slave_buswidth *buswidth,
 				    u32 buf_len)
-=======
-				    enum dma_slave_buswidth *buswidth)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	enum dma_slave_buswidth src_addr_width, dst_addr_width;
 	int src_bus_width, dst_bus_width;
 	int src_burst_size, dst_burst_size;
-<<<<<<< HEAD
 	u32 src_maxburst, dst_maxburst, src_best_burst, dst_best_burst;
 	u32 dma_scr, threshold;
-=======
-	u32 src_maxburst, dst_maxburst;
-	u32 dma_scr = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	src_addr_width = chan->dma_sconfig.src_addr_width;
 	dst_addr_width = chan->dma_sconfig.dst_addr_width;
 	src_maxburst = chan->dma_sconfig.src_maxburst;
 	dst_maxburst = chan->dma_sconfig.dst_maxburst;
-<<<<<<< HEAD
 	threshold = chan->threshold;
 
 	switch (direction) {
 	case DMA_MEM_TO_DEV:
 		/* Set device data size */
-=======
-
-	switch (direction) {
-	case DMA_MEM_TO_DEV:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dst_bus_width = stm32_dma_get_width(chan, dst_addr_width);
 		if (dst_bus_width < 0)
 			return dst_bus_width;
 
-<<<<<<< HEAD
 		/* Set device burst size */
 		dst_best_burst = stm32_dma_get_best_burst(buf_len,
 							  dst_maxburst,
@@ -820,20 +737,10 @@ static int stm32_dma_set_xfer_param(struct stm32_dma_chan *chan,
 		/* Set memory data size */
 		src_addr_width = stm32_dma_get_max_width(buf_len, threshold);
 		chan->mem_width = src_addr_width;
-=======
-		dst_burst_size = stm32_dma_get_burst(chan, dst_maxburst);
-		if (dst_burst_size < 0)
-			return dst_burst_size;
-
-		if (!src_addr_width)
-			src_addr_width = dst_addr_width;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		src_bus_width = stm32_dma_get_width(chan, src_addr_width);
 		if (src_bus_width < 0)
 			return src_bus_width;
 
-<<<<<<< HEAD
 		/* Set memory burst size */
 		src_maxburst = STM32_DMA_MAX_BURST;
 		src_best_burst = stm32_dma_get_best_burst(buf_len,
@@ -841,9 +748,6 @@ static int stm32_dma_set_xfer_param(struct stm32_dma_chan *chan,
 							  threshold,
 							  src_addr_width);
 		src_burst_size = stm32_dma_get_burst(chan, src_best_burst);
-=======
-		src_burst_size = stm32_dma_get_burst(chan, src_maxburst);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (src_burst_size < 0)
 			return src_burst_size;
 
@@ -853,28 +757,21 @@ static int stm32_dma_set_xfer_param(struct stm32_dma_chan *chan,
 			STM32_DMA_SCR_PBURST(dst_burst_size) |
 			STM32_DMA_SCR_MBURST(src_burst_size);
 
-<<<<<<< HEAD
 		/* Set FIFO threshold */
 		chan->chan_reg.dma_sfcr &= ~STM32_DMA_SFCR_FTH_MASK;
 		chan->chan_reg.dma_sfcr |= STM32_DMA_SFCR_FTH(threshold);
 
 		/* Set peripheral address */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		chan->chan_reg.dma_spar = chan->dma_sconfig.dst_addr;
 		*buswidth = dst_addr_width;
 		break;
 
 	case DMA_DEV_TO_MEM:
-<<<<<<< HEAD
 		/* Set device data size */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		src_bus_width = stm32_dma_get_width(chan, src_addr_width);
 		if (src_bus_width < 0)
 			return src_bus_width;
 
-<<<<<<< HEAD
 		/* Set device burst size */
 		src_best_burst = stm32_dma_get_best_burst(buf_len,
 							  src_maxburst,
@@ -888,20 +785,10 @@ static int stm32_dma_set_xfer_param(struct stm32_dma_chan *chan,
 		/* Set memory data size */
 		dst_addr_width = stm32_dma_get_max_width(buf_len, threshold);
 		chan->mem_width = dst_addr_width;
-=======
-		src_burst_size = stm32_dma_get_burst(chan, src_maxburst);
-		if (src_burst_size < 0)
-			return src_burst_size;
-
-		if (!dst_addr_width)
-			dst_addr_width = src_addr_width;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dst_bus_width = stm32_dma_get_width(chan, dst_addr_width);
 		if (dst_bus_width < 0)
 			return dst_bus_width;
 
-<<<<<<< HEAD
 		/* Set memory burst size */
 		dst_maxburst = STM32_DMA_MAX_BURST;
 		dst_best_burst = stm32_dma_get_best_burst(buf_len,
@@ -910,9 +797,6 @@ static int stm32_dma_set_xfer_param(struct stm32_dma_chan *chan,
 							  dst_addr_width);
 		chan->mem_burst = dst_best_burst;
 		dst_burst_size = stm32_dma_get_burst(chan, dst_best_burst);
-=======
-		dst_burst_size = stm32_dma_get_burst(chan, dst_maxburst);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (dst_burst_size < 0)
 			return dst_burst_size;
 
@@ -922,14 +806,11 @@ static int stm32_dma_set_xfer_param(struct stm32_dma_chan *chan,
 			STM32_DMA_SCR_PBURST(src_burst_size) |
 			STM32_DMA_SCR_MBURST(dst_burst_size);
 
-<<<<<<< HEAD
 		/* Set FIFO threshold */
 		chan->chan_reg.dma_sfcr &= ~STM32_DMA_SFCR_FTH_MASK;
 		chan->chan_reg.dma_sfcr |= STM32_DMA_SFCR_FTH(threshold);
 
 		/* Set peripheral address */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		chan->chan_reg.dma_spar = chan->dma_sconfig.src_addr;
 		*buswidth = chan->dma_sconfig.src_addr_width;
 		break;
@@ -939,14 +820,9 @@ static int stm32_dma_set_xfer_param(struct stm32_dma_chan *chan,
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 	stm32_dma_set_fifo_config(chan, src_best_burst, dst_best_burst);
 
 	/* Set DMA control register */
-=======
-	stm32_dma_set_fifo_config(chan, src_maxburst, dst_maxburst);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	chan->chan_reg.dma_scr &= ~(STM32_DMA_SCR_DIR_MASK |
 			STM32_DMA_SCR_PSIZE_MASK | STM32_DMA_SCR_MSIZE_MASK |
 			STM32_DMA_SCR_PBURST_MASK | STM32_DMA_SCR_MBURST_MASK);
@@ -986,13 +862,6 @@ static struct dma_async_tx_descriptor *stm32_dma_prep_slave_sg(
 	if (!desc)
 		return NULL;
 
-<<<<<<< HEAD
-=======
-	ret = stm32_dma_set_xfer_param(chan, direction, &buswidth);
-	if (ret < 0)
-		goto err;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Set peripheral flow controller */
 	if (chan->dma_sconfig.device_fc)
 		chan->chan_reg.dma_scr |= STM32_DMA_SCR_PFCTRL;
@@ -1000,7 +869,6 @@ static struct dma_async_tx_descriptor *stm32_dma_prep_slave_sg(
 		chan->chan_reg.dma_scr &= ~STM32_DMA_SCR_PFCTRL;
 
 	for_each_sg(sgl, sg, sg_len, i) {
-<<<<<<< HEAD
 		ret = stm32_dma_set_xfer_param(chan, direction, &buswidth,
 					       sg_dma_len(sg));
 		if (ret < 0)
@@ -1010,12 +878,6 @@ static struct dma_async_tx_descriptor *stm32_dma_prep_slave_sg(
 
 		nb_data_items = desc->sg_req[i].len / buswidth;
 		if (nb_data_items > STM32_DMA_ALIGNED_MAX_DATA_ITEMS) {
-=======
-		desc->sg_req[i].len = sg_dma_len(sg);
-
-		nb_data_items = desc->sg_req[i].len / buswidth;
-		if (nb_data_items > STM32_DMA_MAX_DATA_ITEMS) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev_err(chan2dev(chan), "nb items not supported\n");
 			goto err;
 		}
@@ -1076,20 +938,12 @@ static struct dma_async_tx_descriptor *stm32_dma_prep_dma_cyclic(
 		return NULL;
 	}
 
-<<<<<<< HEAD
 	ret = stm32_dma_set_xfer_param(chan, direction, &buswidth, period_len);
-=======
-	ret = stm32_dma_set_xfer_param(chan, direction, &buswidth);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		return NULL;
 
 	nb_data_items = period_len / buswidth;
-<<<<<<< HEAD
 	if (nb_data_items > STM32_DMA_ALIGNED_MAX_DATA_ITEMS) {
-=======
-	if (nb_data_items > STM32_DMA_MAX_DATA_ITEMS) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(chan2dev(chan), "number of items not supported\n");
 		return NULL;
 	}
@@ -1133,7 +987,6 @@ static struct dma_async_tx_descriptor *stm32_dma_prep_dma_memcpy(
 	dma_addr_t src, size_t len, unsigned long flags)
 {
 	struct stm32_dma_chan *chan = to_stm32_dma_chan(c);
-<<<<<<< HEAD
 	enum dma_slave_buswidth max_width;
 	struct stm32_dma_desc *desc;
 	size_t xfer_count, offset;
@@ -1141,19 +994,10 @@ static struct dma_async_tx_descriptor *stm32_dma_prep_dma_memcpy(
 	int i;
 
 	num_sgs = DIV_ROUND_UP(len, STM32_DMA_ALIGNED_MAX_DATA_ITEMS);
-=======
-	u32 num_sgs;
-	struct stm32_dma_desc *desc;
-	size_t xfer_count, offset;
-	int i;
-
-	num_sgs = DIV_ROUND_UP(len, STM32_DMA_MAX_DATA_ITEMS);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	desc = stm32_dma_alloc_desc(num_sgs);
 	if (!desc)
 		return NULL;
 
-<<<<<<< HEAD
 	threshold = chan->threshold;
 
 	for (offset = 0, i = 0; offset < len; offset += xfer_count, i++) {
@@ -1165,27 +1009,16 @@ static struct dma_async_tx_descriptor *stm32_dma_prep_dma_memcpy(
 		best_burst = stm32_dma_get_best_burst(len, STM32_DMA_MAX_BURST,
 						      threshold, max_width);
 		dma_burst = stm32_dma_get_burst(chan, best_burst);
-=======
-	for (offset = 0, i = 0; offset < len; offset += xfer_count, i++) {
-		xfer_count = min_t(size_t, len - offset,
-				   STM32_DMA_MAX_DATA_ITEMS);
-
-		desc->sg_req[i].len = xfer_count;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		stm32_dma_clear_reg(&desc->sg_req[i].chan_reg);
 		desc->sg_req[i].chan_reg.dma_scr =
 			STM32_DMA_SCR_DIR(STM32_DMA_MEM_TO_MEM) |
-<<<<<<< HEAD
 			STM32_DMA_SCR_PBURST(dma_burst) |
 			STM32_DMA_SCR_MBURST(dma_burst) |
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			STM32_DMA_SCR_MINC |
 			STM32_DMA_SCR_PINC |
 			STM32_DMA_SCR_TCIE |
 			STM32_DMA_SCR_TEIE;
-<<<<<<< HEAD
 		desc->sg_req[i].chan_reg.dma_sfcr |= STM32_DMA_SFCR_MASK;
 		desc->sg_req[i].chan_reg.dma_sfcr |=
 			STM32_DMA_SFCR_FTH(threshold);
@@ -1193,14 +1026,6 @@ static struct dma_async_tx_descriptor *stm32_dma_prep_dma_memcpy(
 		desc->sg_req[i].chan_reg.dma_sm0ar = dest + offset;
 		desc->sg_req[i].chan_reg.dma_sndtr = xfer_count;
 		desc->sg_req[i].len = xfer_count;
-=======
-		desc->sg_req[i].chan_reg.dma_sfcr = STM32_DMA_SFCR_DMDIS |
-			STM32_DMA_SFCR_FTH(STM32_DMA_FIFO_THRESHOLD_FULL) |
-			STM32_DMA_SFCR_FEIE;
-		desc->sg_req[i].chan_reg.dma_spar = src + offset;
-		desc->sg_req[i].chan_reg.dma_sm0ar = dest + offset;
-		desc->sg_req[i].chan_reg.dma_sndtr = xfer_count;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	desc->num_sgs = num_sgs;
@@ -1225,10 +1050,7 @@ static size_t stm32_dma_desc_residue(struct stm32_dma_chan *chan,
 				     struct stm32_dma_desc *desc,
 				     u32 next_sg)
 {
-<<<<<<< HEAD
 	u32 modulo, burst_size;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 residue = 0;
 	int i;
 
@@ -1236,15 +1058,10 @@ static size_t stm32_dma_desc_residue(struct stm32_dma_chan *chan,
 	 * In cyclic mode, for the last period, residue = remaining bytes from
 	 * NDTR
 	 */
-<<<<<<< HEAD
 	if (chan->desc->cyclic && next_sg == 0) {
 		residue = stm32_dma_get_remaining_bytes(chan);
 		goto end;
 	}
-=======
-	if (chan->desc->cyclic && next_sg == 0)
-		return stm32_dma_get_remaining_bytes(chan);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * For all other periods in cyclic mode, and in sg mode,
@@ -1255,7 +1072,6 @@ static size_t stm32_dma_desc_residue(struct stm32_dma_chan *chan,
 		residue += desc->sg_req[i].len;
 	residue += stm32_dma_get_remaining_bytes(chan);
 
-<<<<<<< HEAD
 end:
 	if (!chan->mem_burst)
 		return residue;
@@ -1265,8 +1081,6 @@ end:
 	if (modulo)
 		residue = residue - modulo + burst_size;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return residue;
 }
 
@@ -1281,11 +1095,7 @@ static enum dma_status stm32_dma_tx_status(struct dma_chan *c,
 	u32 residue = 0;
 
 	status = dma_cookie_status(c, cookie, state);
-<<<<<<< HEAD
 	if (status == DMA_COMPLETE || !state)
-=======
-	if ((status == DMA_COMPLETE) || (!state))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return status;
 
 	spin_lock_irqsave(&chan->vchan.lock, flags);
@@ -1349,11 +1159,7 @@ static void stm32_dma_desc_free(struct virt_dma_desc *vdesc)
 }
 
 static void stm32_dma_set_config(struct stm32_dma_chan *chan,
-<<<<<<< HEAD
 				 struct stm32_dma_cfg *cfg)
-=======
-			  struct stm32_dma_cfg *cfg)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	stm32_dma_clear_reg(&chan->chan_reg);
 
@@ -1363,11 +1169,7 @@ static void stm32_dma_set_config(struct stm32_dma_chan *chan,
 	/* Enable Interrupts  */
 	chan->chan_reg.dma_scr |= STM32_DMA_SCR_TEIE | STM32_DMA_SCR_TCIE;
 
-<<<<<<< HEAD
 	chan->threshold = STM32_DMA_THRESHOLD_FTR_GET(cfg->features);
-=======
-	chan->chan_reg.dma_sfcr = cfg->threshold & STM32_DMA_SFCR_FTH_MASK;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct dma_chan *stm32_dma_of_xlate(struct of_phandle_args *dma_spec,
@@ -1387,17 +1189,10 @@ static struct dma_chan *stm32_dma_of_xlate(struct of_phandle_args *dma_spec,
 	cfg.channel_id = dma_spec->args[0];
 	cfg.request_line = dma_spec->args[1];
 	cfg.stream_config = dma_spec->args[2];
-<<<<<<< HEAD
 	cfg.features = dma_spec->args[3];
 
 	if (cfg.channel_id >= STM32_DMA_MAX_CHANNELS ||
 	    cfg.request_line >= STM32_DMA_MAX_REQUEST_ID) {
-=======
-	cfg.threshold = dma_spec->args[3];
-
-	if ((cfg.channel_id >= STM32_DMA_MAX_CHANNELS) ||
-	    (cfg.request_line >= STM32_DMA_MAX_REQUEST_ID)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(dev, "Bad channel and/or request id\n");
 		return NULL;
 	}

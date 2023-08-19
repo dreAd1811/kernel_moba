@@ -11,11 +11,7 @@
 #include <linux/init.h>
 #include <linux/platform_device.h>
 #include <linux/i2c.h>
-<<<<<<< HEAD
 #include <linux/gpio/machine.h>
-=======
-#include <linux/i2c-gpio.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/platform_data/pcf857x.h>
 
 #include "machtypes.h"
@@ -37,7 +33,6 @@
 #define PB44_KEYS_POLL_INTERVAL		20	/* msecs */
 #define PB44_KEYS_DEBOUNCE_INTERVAL	(3 * PB44_KEYS_POLL_INTERVAL)
 
-<<<<<<< HEAD
 static struct gpiod_lookup_table pb44_i2c_gpiod_table = {
 	.dev_id = "i2c-gpio.0",
 	.table = {
@@ -46,22 +41,13 @@ static struct gpiod_lookup_table pb44_i2c_gpiod_table = {
 		GPIO_LOOKUP_IDX("ath79-gpio", PB44_GPIO_I2C_SCL,
 				NULL, 1, GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN),
 	},
-=======
-static struct i2c_gpio_platform_data pb44_i2c_gpio_data = {
-	.sda_pin	= PB44_GPIO_I2C_SDA,
-	.scl_pin	= PB44_GPIO_I2C_SCL,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct platform_device pb44_i2c_gpio_device = {
 	.name		= "i2c-gpio",
 	.id		= 0,
 	.dev = {
-<<<<<<< HEAD
 		.platform_data	= NULL,
-=======
-		.platform_data	= &pb44_i2c_gpio_data,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 };
 
@@ -122,10 +108,7 @@ static struct ath79_spi_platform_data pb44_spi_data = {
 
 static void __init pb44_init(void)
 {
-<<<<<<< HEAD
 	gpiod_add_lookup_table(&pb44_i2c_gpiod_table);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i2c_register_board_info(0, pb44_i2c_board_info,
 				ARRAY_SIZE(pb44_i2c_board_info));
 	platform_device_register(&pb44_i2c_gpio_device);

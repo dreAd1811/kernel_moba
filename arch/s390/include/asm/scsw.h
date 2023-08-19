@@ -390,17 +390,10 @@ static inline int scsw_cmd_is_valid_key(union scsw *scsw)
 }
 
 /**
-<<<<<<< HEAD
  * scsw_cmd_is_valid_sctl - check sctl field validity
  * @scsw: pointer to scsw
  *
  * Return non-zero if the sctl field of the specified command mode scsw is
-=======
- * scsw_cmd_is_valid_sctl - check fctl field validity
- * @scsw: pointer to scsw
- *
- * Return non-zero if the fctl field of the specified command mode scsw is
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * valid, zero otherwise.
  */
 static inline int scsw_cmd_is_valid_sctl(union scsw *scsw)

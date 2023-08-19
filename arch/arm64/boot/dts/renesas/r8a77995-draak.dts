@@ -1,27 +1,14 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Device Tree Source for the Draak board
  *
  * Copyright (C) 2016 Renesas Electronics Corp.
  * Copyright (C) 2017 Glider bvba
-<<<<<<< HEAD
-=======
- *
- * This file is licensed under the terms of the GNU General Public License
- * version 2.  This program is licensed "as is" without any warranty of any
- * kind, whether express or implied.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /dts-v1/;
 #include "r8a77995.dtsi"
-<<<<<<< HEAD
 #include <dt-bindings/gpio/gpio.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 / {
 	model = "Renesas Draak board based on r8a77995";
@@ -29,10 +16,7 @@
 
 	aliases {
 		serial0 = &scif2;
-<<<<<<< HEAD
 		ethernet0 = &avb;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	chosen {
@@ -40,7 +24,6 @@
 		stdout-path = "serial0:115200n8";
 	};
 
-<<<<<<< HEAD
 	vga {
 		compatible = "vga-connector";
 
@@ -94,14 +77,11 @@
 		};
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memory@48000000 {
 		device_type = "memory";
 		/* first 128MB is reserved for secure area. */
 		reg = <0x0 0x48000000 0x0 0x18000000>;
 	};
-<<<<<<< HEAD
 
 	reg_1p8v: regulator0 {
 		compatible = "regulator-fixed";
@@ -126,15 +106,12 @@
 		#clock-cells = <0>;
 		clock-frequency = <74250000>;
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &extal_clk {
 	clock-frequency = <48000000>;
 };
 
-<<<<<<< HEAD
 &pfc {
 	avb0_pins: avb {
 		mux {
@@ -367,9 +344,6 @@
 	pinctrl-0 = <&pwm1_pins>;
 	pinctrl-names = "default";
 
-=======
-&scif2 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
@@ -377,7 +351,6 @@
 	timeout-sec = <60>;
 	status = "okay";
 };
-<<<<<<< HEAD
 
 &vin4 {
 	pinctrl-0 = <&vin4_pins_cvbs>;
@@ -398,5 +371,3 @@
 		};
 	};
 };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

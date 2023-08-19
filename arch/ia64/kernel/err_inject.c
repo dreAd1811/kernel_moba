@@ -117,11 +117,7 @@ store_call_start(struct device *dev, struct device_attribute *attr,
 
 #ifdef ERR_INJ_DEBUG
 	printk(KERN_DEBUG "Returns: status=%d,\n", (int)status[cpu]);
-<<<<<<< HEAD
 	printk(KERN_DEBUG "capabilities=%lx,\n", capabilities[cpu]);
-=======
-	printk(KERN_DEBUG "capapbilities=%lx,\n", capabilities[cpu]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	printk(KERN_DEBUG "resources=%lx\n", resources[cpu]);
 #endif
 	return size;

@@ -30,15 +30,10 @@
 
 #include <asm/cpufeature.h>
 #include <asm/cputype.h>
-<<<<<<< HEAD
 #include <asm/daifflags.h>
 #include <asm/debug-monitors.h>
 #include <asm/system_misc.h>
 #include <asm/traps.h>
-=======
-#include <asm/debug-monitors.h>
-#include <asm/system_misc.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Determine debug architecture. */
 u8 debug_monitors_arch(void)
@@ -53,15 +48,9 @@ u8 debug_monitors_arch(void)
 static void mdscr_write(u32 mdscr)
 {
 	unsigned long flags;
-<<<<<<< HEAD
 	flags = local_daif_save();
 	write_sysreg(mdscr, mdscr_el1);
 	local_daif_restore(flags);
-=======
-	local_dbg_save(flags);
-	write_sysreg(mdscr, mdscr_el1);
-	local_dbg_restore(flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 NOKPROBE_SYMBOL(mdscr_write);
 
@@ -163,7 +152,6 @@ postcore_initcall(debug_monitors_init);
 /*
  * Single step API and exception handling.
  */
-<<<<<<< HEAD
 static void set_regs_spsr_ss(struct pt_regs *regs)
 {
 	regs->pstate |= DBG_SPSR_SS;
@@ -175,22 +163,6 @@ static void clear_regs_spsr_ss(struct pt_regs *regs)
 	regs->pstate &= ~DBG_SPSR_SS;
 }
 NOKPROBE_SYMBOL(clear_regs_spsr_ss);
-=======
-static void set_user_regs_spsr_ss(struct user_pt_regs *regs)
-{
-	regs->pstate |= DBG_SPSR_SS;
-}
-NOKPROBE_SYMBOL(set_user_regs_spsr_ss);
-
-static void clear_user_regs_spsr_ss(struct user_pt_regs *regs)
-{
-	regs->pstate &= ~DBG_SPSR_SS;
-}
-NOKPROBE_SYMBOL(clear_user_regs_spsr_ss);
-
-#define set_regs_spsr_ss(r)	set_user_regs_spsr_ss(&(r)->user_regs)
-#define clear_regs_spsr_ss(r)	clear_user_regs_spsr_ss(&(r)->user_regs)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* EL1 Single Step Handler hooks */
 static LIST_HEAD(step_hook);
@@ -239,7 +211,6 @@ NOKPROBE_SYMBOL(call_step_hook);
 static void send_user_sigtrap(int si_code)
 {
 	struct pt_regs *regs = current_pt_regs();
-<<<<<<< HEAD
 	siginfo_t info;
 
 	clear_siginfo(&info);
@@ -247,14 +218,6 @@ static void send_user_sigtrap(int si_code)
 	info.si_errno	= 0;
 	info.si_code	= si_code;
 	info.si_addr	= (void __user *)instruction_pointer(regs);
-=======
-	siginfo_t info = {
-		.si_signo	= SIGTRAP,
-		.si_errno	= 0,
-		.si_code	= si_code,
-		.si_addr	= (void __user *)instruction_pointer(regs),
-	};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (WARN_ON(!user_mode(regs)))
 		return;
@@ -262,11 +225,7 @@ static void send_user_sigtrap(int si_code)
 	if (interrupts_enabled(regs))
 		local_irq_enable();
 
-<<<<<<< HEAD
 	arm64_force_sig_info(&info, "User debug trap", current);
-=======
-	force_sig_info(SIGTRAP, &info, current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int single_step_handler(unsigned long addr, unsigned int esr,
@@ -430,37 +389,17 @@ void user_rewind_single_step(struct task_struct *task)
 	 * If single step is active for this thread, then set SPSR.SS
 	 * to 1 to avoid returning to the active-pending state.
 	 */
-<<<<<<< HEAD
 	if (test_ti_thread_flag(task_thread_info(task), TIF_SINGLESTEP))
-=======
-	if (test_tsk_thread_flag(task, TIF_SINGLESTEP))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		set_regs_spsr_ss(task_pt_regs(task));
 }
 NOKPROBE_SYMBOL(user_rewind_single_step);
 
 void user_fastforward_single_step(struct task_struct *task)
 {
-<<<<<<< HEAD
 	if (test_ti_thread_flag(task_thread_info(task), TIF_SINGLESTEP))
 		clear_regs_spsr_ss(task_pt_regs(task));
 }
 
-=======
-	if (test_tsk_thread_flag(task, TIF_SINGLESTEP))
-		clear_regs_spsr_ss(task_pt_regs(task));
-}
-
-void user_regs_reset_single_step(struct user_pt_regs *regs,
-				 struct task_struct *task)
-{
-	if (test_tsk_thread_flag(task, TIF_SINGLESTEP))
-		set_user_regs_spsr_ss(regs);
-	else
-		clear_user_regs_spsr_ss(regs);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Kernel API */
 void kernel_enable_single_step(struct pt_regs *regs)
 {

@@ -72,10 +72,6 @@
 #define DRIVER_NAME "usbvision"
 #define DRIVER_ALIAS "USBVision"
 #define DRIVER_DESC "USBVision USB Video Device Driver for Linux"
-<<<<<<< HEAD
-=======
-#define DRIVER_LICENSE "GPL"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define USBVISION_VERSION_STRING "0.9.11"
 
 #define	ENABLE_HEXDUMP	0	/* Enable if you need it */
@@ -144,11 +140,7 @@ MODULE_PARM_DESC(radio_nr, "Set radio device number (/dev/radioX).  Default: -1 
 /* Misc stuff */
 MODULE_AUTHOR(DRIVER_AUTHOR);
 MODULE_DESCRIPTION(DRIVER_DESC);
-<<<<<<< HEAD
 MODULE_LICENSE("GPL");
-=======
-MODULE_LICENSE(DRIVER_LICENSE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_VERSION(USBVISION_VERSION_STRING);
 MODULE_ALIAS(DRIVER_ALIAS);
 
@@ -335,13 +327,6 @@ static int usbvision_v4l2_open(struct file *file)
 	if (mutex_lock_interruptible(&usbvision->v4l2_lock))
 		return -ERESTARTSYS;
 
-<<<<<<< HEAD
-=======
-	if (usbvision->remove_pending) {
-		err_code = -ENODEV;
-		goto unlock;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (usbvision->user) {
 		err_code = -EBUSY;
 	} else {
@@ -405,10 +390,6 @@ unlock:
 static int usbvision_v4l2_close(struct file *file)
 {
 	struct usb_usbvision *usbvision = video_drvdata(file);
-<<<<<<< HEAD
-=======
-	int r;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	PDEBUG(DBG_IO, "close");
 
@@ -423,16 +404,9 @@ static int usbvision_v4l2_close(struct file *file)
 	usbvision_scratch_free(usbvision);
 
 	usbvision->user--;
-<<<<<<< HEAD
 	mutex_unlock(&usbvision->v4l2_lock);
 
 	if (usbvision->remove_pending) {
-=======
-	r = usbvision->remove_pending;
-	mutex_unlock(&usbvision->v4l2_lock);
-
-	if (r) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		printk(KERN_INFO "%s: Final disconnect\n", __func__);
 		usbvision_release(usbvision);
 		return 0;
@@ -1116,14 +1090,6 @@ static int usbvision_radio_open(struct file *file)
 
 	if (mutex_lock_interruptible(&usbvision->v4l2_lock))
 		return -ERESTARTSYS;
-<<<<<<< HEAD
-=======
-
-	if (usbvision->remove_pending) {
-		err_code = -ENODEV;
-		goto out;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err_code = v4l2_fh_open(file);
 	if (err_code)
 		goto out;
@@ -1156,10 +1122,6 @@ out:
 static int usbvision_radio_close(struct file *file)
 {
 	struct usb_usbvision *usbvision = video_drvdata(file);
-<<<<<<< HEAD
-=======
-	int r;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	PDEBUG(DBG_IO, "");
 
@@ -1172,16 +1134,9 @@ static int usbvision_radio_close(struct file *file)
 	usbvision_audio_off(usbvision);
 	usbvision->radio = 0;
 	usbvision->user--;
-<<<<<<< HEAD
 	mutex_unlock(&usbvision->v4l2_lock);
 
 	if (usbvision->remove_pending) {
-=======
-	r = usbvision->remove_pending;
-	mutex_unlock(&usbvision->v4l2_lock);
-
-	if (r) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		printk(KERN_INFO "%s: Final disconnect\n", __func__);
 		v4l2_fh_release(file);
 		usbvision_release(usbvision);
@@ -1537,12 +1492,8 @@ static int usbvision_probe(struct usb_interface *intf,
 
 	usbvision->num_alt = uif->num_altsetting;
 	PDEBUG(DBG_PROBE, "Alternate settings: %i", usbvision->num_alt);
-<<<<<<< HEAD
 	usbvision->alt_max_pkt_size = kmalloc_array(32, usbvision->num_alt,
 						    GFP_KERNEL);
-=======
-	usbvision->alt_max_pkt_size = kmalloc(32 * usbvision->num_alt, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!usbvision->alt_max_pkt_size) {
 		ret = -ENOMEM;
 		goto err_pkt;
@@ -1611,10 +1562,6 @@ err_usb:
 static void usbvision_disconnect(struct usb_interface *intf)
 {
 	struct usb_usbvision *usbvision = to_usbvision(usb_get_intfdata(intf));
-<<<<<<< HEAD
-=======
-	int u;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	PDEBUG(DBG_PROBE, "");
 
@@ -1631,21 +1578,13 @@ static void usbvision_disconnect(struct usb_interface *intf)
 	v4l2_device_disconnect(&usbvision->v4l2_dev);
 	usbvision_i2c_unregister(usbvision);
 	usbvision->remove_pending = 1;	/* Now all ISO data will be ignored */
-<<<<<<< HEAD
-=======
-	u = usbvision->user;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	usb_put_dev(usbvision->dev);
 	usbvision->dev = NULL;	/* USB device is no more */
 
 	mutex_unlock(&usbvision->v4l2_lock);
 
-<<<<<<< HEAD
 	if (usbvision->user) {
-=======
-	if (u) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		printk(KERN_INFO "%s: In use, disconnect pending\n",
 		       __func__);
 		wake_up_interruptible(&usbvision->wait_frame);

@@ -34,7 +34,6 @@ ALC262
 ======
 inv-dmic
     Inverted internal mic workaround
-<<<<<<< HEAD
 fsc-h270
     Fixups for Fujitsu-Siemens Celsius H270
 fsc-s7110
@@ -51,8 +50,6 @@ benq-t31
     Fixups for Benq T31
 bayleybay
     Fixups for Intel BayleyBay
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 ALC267/268
 ==========
@@ -60,11 +57,8 @@ inv-dmic
     Inverted internal mic workaround
 hp-eapd
     Disable HP EAPD on NID 0x15
-<<<<<<< HEAD
 spdif
     Enable SPDIF output on NID 0x1e
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 ALC22x/23x/25x/269/27x/28x/29x (and vendor-specific ALC3xxx models)
 ===================================================================
@@ -94,13 +88,10 @@ dell-headset-multi
     Headset jack, which can also be used as mic-in
 dell-headset-dock
     Headset jack (without mic-in), and also dock I/O
-<<<<<<< HEAD
 dell-headset3
     Headset jack (without mic-in), and also dock I/O, variant 3
 dell-headset4
     Headset jack (without mic-in), and also dock I/O, variant 4
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 alc283-dac-wcaps
     Fixups for Chromebook with ALC283
 alc283-sense-combo
@@ -111,7 +102,6 @@ tpt440
     Lenovo Thinkpad T440s setup
 tpt460
     Lenovo Thinkpad T460/560 setup
-<<<<<<< HEAD
 tpt470-dock
     Lenovo Thinkpad T470 dock setup
 dual-codecs
@@ -279,15 +269,6 @@ mario
     Chromebook mario model fixup
 hp-rp5800
     Headphone pin fixup for HP RP5800
-=======
-dual-codecs
-    Lenovo laptops with dual codecs
-
-ALC66x/67x/892
-==============
-mario
-    Chromebook mario model fixup
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 asus-mode1
     ASUS
 asus-mode2
@@ -304,7 +285,6 @@ asus-mode7
     ASUS
 asus-mode8
     ASUS
-<<<<<<< HEAD
 zotac-z68
     Front HP fixup for Zotac Z68
 inv-dmic
@@ -339,12 +319,6 @@ asrock-mobo
     Fix invalid 0x15 / 0x16 pins
 usi-headset
     Headset support on USI machines
-=======
-inv-dmic
-    Inverted internal mic workaround
-dell-headset-multi
-    Headset jack, which can also be used as mic-in
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 dual-codecs
     Lenovo laptops with dual codecs
 
@@ -352,7 +326,6 @@ ALC680
 ======
 N/A
 
-<<<<<<< HEAD
 ALC88x/898/1150/1220
 ====================
 abit-aw9d
@@ -385,17 +358,12 @@ alc889-coef
     Setup ALC889 COEF
 asus-w2jc
     Fixups for ASUS W2JC
-=======
-ALC88x/898/1150
-======================
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 acer-aspire-4930g
     Acer Aspire 4930G/5930G/6530G/6930G/7730G
 acer-aspire-8930g
     Acer Aspire 8330G/6935G
 acer-aspire
     Acer Aspire others
-<<<<<<< HEAD
 macpro-gpio
     GPIO setup for Mac Pro
 dac-route
@@ -412,23 +380,16 @@ mp11-vref
     Vref setup for Mac Pro 1,1
 mp41-vref
     Vref setup for Mac Pro 4,1
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 inv-dmic
     Inverted internal mic workaround
 no-primary-hp
     VAIO Z/VGC-LN51JGB workaround (for fixed speaker DAC)
-<<<<<<< HEAD
 asus-bass
     Bass speaker setup for ASUS ET2700
 dual-codecs
     ALC1220 dual codecs for Gaming mobos
 clevo-p950
     Fixups for Clevo P950
-=======
-dual-codecs
-    ALC1220 dual codecs for Gaming mobos
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 ALC861/660
 ==========
@@ -562,11 +523,8 @@ hp-dock
     HP dock support
 mute-led-gpio
     Mute LED control via GPIO
-<<<<<<< HEAD
 hp-mic-fix
     Fix for headset mic pin on HP boxes
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 STAC9200
 ========

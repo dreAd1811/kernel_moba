@@ -163,11 +163,7 @@ static int ef4_init_rx_buffers(struct ef4_rx_queue *rx_queue, bool atomic)
 	do {
 		page = ef4_reuse_page(rx_queue);
 		if (page == NULL) {
-<<<<<<< HEAD
 			page = alloc_pages(__GFP_COMP |
-=======
-			page = alloc_pages(__GFP_COLD | __GFP_COMP |
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   (atomic ? GFP_ATOMIC : GFP_KERNEL),
 					   efx->rx_buffer_order);
 			if (unlikely(page == NULL))
@@ -380,15 +376,9 @@ void ef4_fast_push_rx_descriptors(struct ef4_rx_queue *rx_queue, bool atomic)
 		ef4_nic_notify_rx_desc(rx_queue);
 }
 
-<<<<<<< HEAD
 void ef4_rx_slow_fill(struct timer_list *t)
 {
 	struct ef4_rx_queue *rx_queue = from_timer(rx_queue, t, slow_fill);
-=======
-void ef4_rx_slow_fill(unsigned long context)
-{
-	struct ef4_rx_queue *rx_queue = (struct ef4_rx_queue *)context;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Post an event to cause NAPI to run and refill the queue */
 	ef4_nic_generate_fill_event(rx_queue);

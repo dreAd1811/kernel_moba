@@ -168,12 +168,6 @@ static void smsc_get_strings(struct phy_device *phydev, u8 *data)
 	}
 }
 
-<<<<<<< HEAD
-=======
-#ifndef UINT64_MAX
-#define UINT64_MAX              (u64)(~((u64)0))
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static u64 smsc_get_stat(struct phy_device *phydev, int i)
 {
 	struct smsc_hw_stat stat = smsc_hw_stats[i];
@@ -182,11 +176,7 @@ static u64 smsc_get_stat(struct phy_device *phydev, int i)
 
 	val = phy_read(phydev, stat.reg);
 	if (val < 0)
-<<<<<<< HEAD
 		ret = U64_MAX;
-=======
-		ret = UINT64_MAX;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		ret = val;
 
@@ -234,11 +224,6 @@ static struct phy_driver smsc_phy_driver[] = {
 	.probe		= smsc_phy_probe,
 
 	/* basic functions */
-<<<<<<< HEAD
-=======
-	.config_aneg	= genphy_config_aneg,
-	.read_status	= genphy_read_status,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.config_init	= smsc_phy_config_init,
 	.soft_reset	= smsc_phy_reset,
 
@@ -259,11 +244,6 @@ static struct phy_driver smsc_phy_driver[] = {
 	.probe		= smsc_phy_probe,
 
 	/* basic functions */
-<<<<<<< HEAD
-=======
-	.config_aneg	= genphy_config_aneg,
-	.read_status	= genphy_read_status,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.config_init	= smsc_phy_config_init,
 	.soft_reset	= smsc_phy_reset,
 
@@ -289,10 +269,6 @@ static struct phy_driver smsc_phy_driver[] = {
 	.probe		= smsc_phy_probe,
 
 	/* basic functions */
-<<<<<<< HEAD
-=======
-	.config_aneg	= genphy_config_aneg,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read_status	= lan87xx_read_status,
 	.config_init	= smsc_phy_config_init,
 	.soft_reset	= smsc_phy_reset,
@@ -319,11 +295,6 @@ static struct phy_driver smsc_phy_driver[] = {
 	.probe		= smsc_phy_probe,
 
 	/* basic functions */
-<<<<<<< HEAD
-=======
-	.config_aneg	= genphy_config_aneg,
-	.read_status	= genphy_read_status,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.config_init	= lan911x_config_init,
 
 	/* IRQ related */
@@ -338,19 +309,11 @@ static struct phy_driver smsc_phy_driver[] = {
 	.name		= "SMSC LAN8710/LAN8720",
 
 	.features	= PHY_BASIC_FEATURES,
-<<<<<<< HEAD
 	.flags		= PHY_HAS_INTERRUPT | PHY_RST_AFTER_CLK_EN,
-=======
-	.flags		= PHY_HAS_INTERRUPT,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	.probe		= smsc_phy_probe,
 
 	/* basic functions */
-<<<<<<< HEAD
-=======
-	.config_aneg	= genphy_config_aneg,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read_status	= lan87xx_read_status,
 	.config_init	= smsc_phy_config_init,
 	.soft_reset	= smsc_phy_reset,
@@ -377,10 +340,6 @@ static struct phy_driver smsc_phy_driver[] = {
 	.probe		= smsc_phy_probe,
 
 	/* basic functions */
-<<<<<<< HEAD
-=======
-	.config_aneg	= genphy_config_aneg,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read_status	= lan87xx_read_status,
 	.config_init	= smsc_phy_config_init,
 	.soft_reset	= smsc_phy_reset,

@@ -342,7 +342,6 @@ void mlx5_unregister_interface(struct mlx5_interface *intf)
 }
 EXPORT_SYMBOL(mlx5_unregister_interface);
 
-<<<<<<< HEAD
 /* Must be called with intf_mutex held */
 static bool mlx5_has_added_dev_by_protocol(struct mlx5_core_dev *mdev, int protocol)
 {
@@ -372,8 +371,6 @@ void mlx5_reload_interface(struct mlx5_core_dev *mdev, int protocol)
 	mutex_unlock(&mlx5_intf_mutex);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void *mlx5_get_protocol_dev(struct mlx5_core_dev *mdev, int protocol)
 {
 	struct mlx5_priv *priv = &mdev->priv;

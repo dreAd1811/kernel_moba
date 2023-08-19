@@ -1462,14 +1462,7 @@ static void fimc_lite_clk_put(struct fimc_lite *fimc)
 static int fimc_lite_clk_get(struct fimc_lite *fimc)
 {
 	fimc->clock = clk_get(&fimc->pdev->dev, FLITE_CLK_NAME);
-<<<<<<< HEAD
 	return PTR_ERR_OR_ZERO(fimc->clock);
-=======
-	if (IS_ERR(fimc->clock))
-		return PTR_ERR(fimc->clock);
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct of_device_id flite_of_match[];
@@ -1650,11 +1643,7 @@ static const struct dev_pm_ops fimc_lite_pm_ops = {
 			   NULL)
 };
 
-<<<<<<< HEAD
 /* EXYNOS4412 */
-=======
-/* EXYNOS4212, EXYNOS4412 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct flite_drvdata fimc_lite_drvdata_exynos4 = {
 	.max_width		= 8192,
 	.max_height		= 8192,

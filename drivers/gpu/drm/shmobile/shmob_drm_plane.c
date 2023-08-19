@@ -17,11 +17,6 @@
 #include <drm/drm_fb_cma_helper.h>
 #include <drm/drm_gem_cma_helper.h>
 
-<<<<<<< HEAD
-=======
-#include <video/sh_mobile_meram.h>
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "shmob_drm_drv.h"
 #include "shmob_drm_kms.h"
 #include "shmob_drm_plane.h"

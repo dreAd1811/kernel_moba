@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Copyright(C) 2015 Linaro Limited. All rights reserved.
@@ -6,25 +5,6 @@
  */
 
 #include <linux/pid_namespace.h>
-=======
-/*
- * Copyright(C) 2015 Linaro Limited. All rights reserved.
- * Author: Mathieu Poirier <mathieu.poirier@linaro.org>
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License version 2 as published by
- * the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
- * more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/pm_runtime.h>
 #include <linux/sysfs.h>
 #include "coresight-etm4x.h"
@@ -37,12 +17,6 @@ static int etm4_set_mode_exclude(struct etmv4_drvdata *drvdata, bool exclude)
 
 	idx = config->addr_idx;
 
-<<<<<<< HEAD
-=======
-	if (idx >= ETM_MAX_SINGLE_ADDR_CMP)
-		return -EINVAL;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * TRCACATRn.TYPE bit[1:0]: type of comparison
 	 * the trace unit performs
@@ -277,15 +251,8 @@ static ssize_t reset_store(struct device *dev,
 	}
 
 	config->ctxid_idx = 0x0;
-<<<<<<< HEAD
 	for (i = 0; i < drvdata->numcidc; i++)
 		config->ctxid_pid[i] = 0x0;
-=======
-	for (i = 0; i < drvdata->numcidc; i++) {
-		config->ctxid_pid[i] = 0x0;
-		config->ctxid_vpid[i] = 0x0;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	config->ctxid_mask0 = 0x0;
 	config->ctxid_mask1 = 0x0;
@@ -688,20 +655,10 @@ static ssize_t cyc_threshold_store(struct device *dev,
 
 	if (kstrtoul(buf, 16, &val))
 		return -EINVAL;
-<<<<<<< HEAD
 	if (val < drvdata->ccitmin)
 		return -EINVAL;
 
 	config->ccctlr = val & ETM_CYC_THRESHOLD_MASK;
-=======
-
-	/* mask off max threshold before checking min value */
-	val &= ETM_CYC_THRESHOLD_MASK;
-	if (val < drvdata->ccitmin)
-		return -EINVAL;
-
-	config->ccctlr = val;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return size;
 }
 static DEVICE_ATTR_RW(cyc_threshold);
@@ -732,7 +689,6 @@ static ssize_t bb_ctrl_store(struct device *dev,
 		return -EINVAL;
 	if (!drvdata->nr_addr_cmp)
 		return -EINVAL;
-<<<<<<< HEAD
 	/*
 	 * Bit[7:0] selects which address range comparator is used for
 	 * branch broadcast control.
@@ -741,18 +697,6 @@ static ssize_t bb_ctrl_store(struct device *dev,
 		return -EINVAL;
 
 	config->bb_ctrl = val;
-=======
-
-	/*
-	 * Bit[8] controls include(1) / exclude(0), bits[0-7] select
-	 * individual range comparators. If include then at least 1
-	 * range must be selected.
-	 */
-	if ((val & BIT(8)) && (BMVAL(val, 0, 7) == 0))
-		return -EINVAL;
-
-	config->bb_ctrl = val & GENMASK(8, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return size;
 }
 static DEVICE_ATTR_RW(bb_ctrl);
@@ -999,15 +943,6 @@ static ssize_t addr_range_show(struct device *dev,
 
 	spin_lock(&drvdata->spinlock);
 	idx = config->addr_idx;
-<<<<<<< HEAD
-=======
-
-	if (idx >= ETM_MAX_SINGLE_ADDR_CMP) {
-		spin_unlock(&drvdata->spinlock);
-		return -EINVAL;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (idx % 2 != 0) {
 		spin_unlock(&drvdata->spinlock);
 		return -EPERM;
@@ -1043,15 +978,6 @@ static ssize_t addr_range_store(struct device *dev,
 
 	spin_lock(&drvdata->spinlock);
 	idx = config->addr_idx;
-<<<<<<< HEAD
-=======
-
-	if (idx >= ETM_MAX_SINGLE_ADDR_CMP) {
-		spin_unlock(&drvdata->spinlock);
-		return -EINVAL;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (idx % 2 != 0) {
 		spin_unlock(&drvdata->spinlock);
 		return -EPERM;
@@ -1403,13 +1329,8 @@ static ssize_t seq_event_store(struct device *dev,
 
 	spin_lock(&drvdata->spinlock);
 	idx = config->seq_idx;
-<<<<<<< HEAD
 	/* RST, bits[7:0] */
 	config->seq_ctrl[idx] = val & 0xFF;
-=======
-	/* Seq control has two masks B[15:8] F[7:0] */
-	config->seq_ctrl[idx] = val & 0xFFFF;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock(&drvdata->spinlock);
 	return size;
 }
@@ -1664,11 +1585,7 @@ static ssize_t res_ctrl_store(struct device *dev,
 	if (idx % 2 != 0)
 		/* PAIRINV, bit[21] */
 		val &= ~BIT(21);
-<<<<<<< HEAD
 	config->res_ctrl[idx] = val;
-=======
-	config->res_ctrl[idx] = val & GENMASK(21, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock(&drvdata->spinlock);
 	return size;
 }
@@ -1719,7 +1636,6 @@ static ssize_t ctxid_pid_show(struct device *dev,
 	struct etmv4_drvdata *drvdata = dev_get_drvdata(dev->parent);
 	struct etmv4_config *config = &drvdata->config;
 
-<<<<<<< HEAD
 	/*
 	 * Don't use contextID tracing if coming from a PID namespace.  See
 	 * comment in ctxid_pid_store().
@@ -1730,11 +1646,6 @@ static ssize_t ctxid_pid_show(struct device *dev,
 	spin_lock(&drvdata->spinlock);
 	idx = config->ctxid_idx;
 	val = (unsigned long)config->ctxid_pid[idx];
-=======
-	spin_lock(&drvdata->spinlock);
-	idx = config->ctxid_idx;
-	val = (unsigned long)config->ctxid_vpid[idx];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock(&drvdata->spinlock);
 	return scnprintf(buf, PAGE_SIZE, "%#lx\n", val);
 }
@@ -1744,16 +1655,11 @@ static ssize_t ctxid_pid_store(struct device *dev,
 			       const char *buf, size_t size)
 {
 	u8 idx;
-<<<<<<< HEAD
 	unsigned long pid;
-=======
-	unsigned long vpid, pid;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct etmv4_drvdata *drvdata = dev_get_drvdata(dev->parent);
 	struct etmv4_config *config = &drvdata->config;
 
 	/*
-<<<<<<< HEAD
 	 * When contextID tracing is enabled the tracers will insert the
 	 * value found in the contextID register in the trace stream.  But if
 	 * a process is in a namespace the PID of that process as seen from the
@@ -1766,32 +1672,18 @@ static ssize_t ctxid_pid_store(struct device *dev,
 		return -EINVAL;
 
 	/*
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * only implemented when ctxid tracing is enabled, i.e. at least one
 	 * ctxid comparator is implemented and ctxid is greater than 0 bits
 	 * in length
 	 */
 	if (!drvdata->ctxid_size || !drvdata->numcidc)
 		return -EINVAL;
-<<<<<<< HEAD
 	if (kstrtoul(buf, 16, &pid))
 		return -EINVAL;
 
 	spin_lock(&drvdata->spinlock);
 	idx = config->ctxid_idx;
 	config->ctxid_pid[idx] = (u64)pid;
-=======
-	if (kstrtoul(buf, 16, &vpid))
-		return -EINVAL;
-
-	pid = coresight_vpid_to_pid(vpid);
-
-	spin_lock(&drvdata->spinlock);
-	idx = config->ctxid_idx;
-	config->ctxid_pid[idx] = (u64)pid;
-	config->ctxid_vpid[idx] = (u64)vpid;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock(&drvdata->spinlock);
 	return size;
 }
@@ -1805,7 +1697,6 @@ static ssize_t ctxid_masks_show(struct device *dev,
 	struct etmv4_drvdata *drvdata = dev_get_drvdata(dev->parent);
 	struct etmv4_config *config = &drvdata->config;
 
-<<<<<<< HEAD
 	/*
 	 * Don't use contextID tracing if coming from a PID namespace.  See
 	 * comment in ctxid_pid_store().
@@ -1813,8 +1704,6 @@ static ssize_t ctxid_masks_show(struct device *dev,
 	if (task_active_pid_ns(current) != &init_pid_ns)
 		return -EINVAL;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock(&drvdata->spinlock);
 	val1 = config->ctxid_mask0;
 	val2 = config->ctxid_mask1;
@@ -1832,7 +1721,6 @@ static ssize_t ctxid_masks_store(struct device *dev,
 	struct etmv4_config *config = &drvdata->config;
 
 	/*
-<<<<<<< HEAD
 	 * Don't use contextID tracing if coming from a PID namespace.  See
 	 * comment in ctxid_pid_store().
 	 */
@@ -1840,8 +1728,6 @@ static ssize_t ctxid_masks_store(struct device *dev,
 		return -EINVAL;
 
 	/*
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * only implemented when ctxid tracing is enabled, i.e. at least one
 	 * ctxid comparator is implemented and ctxid is greater than 0 bits
 	 * in length
@@ -1912,11 +1798,7 @@ static ssize_t ctxid_masks_store(struct device *dev,
 		 */
 		for (j = 0; j < 8; j++) {
 			if (maskbyte & 1)
-<<<<<<< HEAD
 				config->ctxid_pid[i] &= ~(0xFFUL << (j * 8));
-=======
-				config->ctxid_pid[i] &= ~(0xFF << (j * 8));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			maskbyte >>= 1;
 		}
 		/* Select the next ctxid comparator mask value */
@@ -2099,11 +1981,7 @@ static ssize_t vmid_masks_store(struct device *dev,
 		 */
 		for (j = 0; j < 8; j++) {
 			if (maskbyte & 1)
-<<<<<<< HEAD
 				config->vmid_val[i] &= ~(0xFFUL << (j * 8));
-=======
-				config->vmid_val[i] &= ~(0xFF << (j * 8));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			maskbyte >>= 1;
 		}
 		/* Select the next vmid comparator mask value */

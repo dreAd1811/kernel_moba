@@ -302,13 +302,7 @@ void ath9k_sta_add_debugfs(struct ieee80211_hw *hw,
 {
 	struct ath_node *an = (struct ath_node *)sta->drv_priv;
 
-<<<<<<< HEAD
 	debugfs_create_file("node_aggr", 0444, dir, an, &fops_node_aggr);
 	debugfs_create_file("node_recv", 0444, dir, an, &fops_node_recv);
 	debugfs_create_file("airtime", 0444, dir, an, &fops_airtime);
-=======
-	debugfs_create_file("node_aggr", S_IRUGO, dir, an, &fops_node_aggr);
-	debugfs_create_file("node_recv", S_IRUGO, dir, an, &fops_node_recv);
-	debugfs_create_file("airtime", S_IRUGO, dir, an, &fops_airtime);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

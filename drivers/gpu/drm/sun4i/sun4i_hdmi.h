@@ -14,10 +14,7 @@
 
 #include <drm/drm_connector.h>
 #include <drm/drm_encoder.h>
-<<<<<<< HEAD
 #include <linux/regmap.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <media/cec-pin.h>
 
@@ -62,33 +59,24 @@
 #define SUN4I_HDMI_PAD_CTRL0_TXEN		BIT(23)
 
 #define SUN4I_HDMI_PAD_CTRL1_REG	0x204
-<<<<<<< HEAD
 #define SUN4I_HDMI_PAD_CTRL1_UNKNOWN		BIT(24)	/* set on A31 */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SUN4I_HDMI_PAD_CTRL1_AMP_OPT		BIT(23)
 #define SUN4I_HDMI_PAD_CTRL1_AMPCK_OPT		BIT(22)
 #define SUN4I_HDMI_PAD_CTRL1_EMP_OPT		BIT(20)
 #define SUN4I_HDMI_PAD_CTRL1_EMPCK_OPT		BIT(19)
-<<<<<<< HEAD
 #define SUN4I_HDMI_PAD_CTRL1_PWSCK		BIT(18)
 #define SUN4I_HDMI_PAD_CTRL1_PWSDT		BIT(17)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SUN4I_HDMI_PAD_CTRL1_REG_DEN		BIT(15)
 #define SUN4I_HDMI_PAD_CTRL1_REG_DENCK		BIT(14)
 #define SUN4I_HDMI_PAD_CTRL1_REG_EMP(n)		(((n) & 7) << 10)
 #define SUN4I_HDMI_PAD_CTRL1_HALVE_CLK		BIT(6)
 #define SUN4I_HDMI_PAD_CTRL1_REG_AMP(n)		(((n) & 7) << 3)
 
-<<<<<<< HEAD
 /* These bits seem to invert the TMDS data channels */
 #define SUN4I_HDMI_PAD_CTRL1_INVERT_R		BIT(2)
 #define SUN4I_HDMI_PAD_CTRL1_INVERT_G		BIT(1)
 #define SUN4I_HDMI_PAD_CTRL1_INVERT_B		BIT(0)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SUN4I_HDMI_PLL_CTRL_REG		0x208
 #define SUN4I_HDMI_PLL_CTRL_PLL_EN		BIT(31)
 #define SUN4I_HDMI_PLL_CTRL_BWS			BIT(30)
@@ -164,11 +152,7 @@
 #define SUN4I_HDMI_DDC_CMD_IMPLICIT_WRITE	3
 
 #define SUN4I_HDMI_DDC_CLK_REG		0x528
-<<<<<<< HEAD
 #define SUN4I_HDMI_DDC_CLK_M(m)			(((m) & 0x7) << 3)
-=======
-#define SUN4I_HDMI_DDC_CLK_M(m)			(((m) & 0xf) << 3)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SUN4I_HDMI_DDC_CLK_N(n)			((n) & 0x7)
 
 #define SUN4I_HDMI_DDC_LINE_CTRL_REG	0x540
@@ -177,7 +161,6 @@
 
 #define SUN4I_HDMI_DDC_FIFO_SIZE	16
 
-<<<<<<< HEAD
 /* A31 specific */
 #define SUN6I_HDMI_DDC_CTRL_REG		0x500
 #define SUN6I_HDMI_DDC_CTRL_RESET		BIT(31)
@@ -209,14 +192,11 @@
 
 #define SUN6I_HDMI_DDC_FIFO_DATA_REG	0x580
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum sun4i_hdmi_pkt_type {
 	SUN4I_HDMI_PKT_AVI = 2,
 	SUN4I_HDMI_PKT_END = 15,
 };
 
-<<<<<<< HEAD
 struct sun4i_hdmi_variant {
 	bool has_ddc_parent_clk;
 	bool has_reset_control;
@@ -266,29 +246,21 @@ struct sun4i_hdmi_variant {
 	bool			ddc_fifo_has_dir;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct sun4i_hdmi {
 	struct drm_connector	connector;
 	struct drm_encoder	encoder;
 	struct device		*dev;
 
 	void __iomem		*base;
-<<<<<<< HEAD
 	struct regmap		*regmap;
 
 	/* Reset control */
 	struct reset_control	*reset;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Parent clocks */
 	struct clk		*bus_clk;
 	struct clk		*mod_clk;
-<<<<<<< HEAD
 	struct clk		*ddc_parent_clk;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct clk		*pll0_clk;
 	struct clk		*pll1_clk;
 
@@ -298,7 +270,6 @@ struct sun4i_hdmi {
 
 	struct i2c_adapter	*i2c;
 
-<<<<<<< HEAD
 	/* Regmap fields for I2C adapter */
 	struct regmap_field	*field_ddc_en;
 	struct regmap_field	*field_ddc_start;
@@ -315,17 +286,12 @@ struct sun4i_hdmi {
 	struct regmap_field	*field_ddc_sda_en;
 	struct regmap_field	*field_ddc_sck_en;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct sun4i_drv	*drv;
 
 	bool			hdmi_monitor;
 	struct cec_adapter	*cec_adap;
-<<<<<<< HEAD
 
 	const struct sun4i_hdmi_variant	*variant;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int sun4i_ddc_create(struct sun4i_hdmi *hdmi, struct clk *clk);

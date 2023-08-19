@@ -82,13 +82,8 @@ struct ccdc_hw_device {
 };
 
 /* Used by CCDC module to register & unregister with vpfe capture driver */
-<<<<<<< HEAD
 int vpfe_register_ccdc_device(const struct ccdc_hw_device *dev);
 void vpfe_unregister_ccdc_device(const struct ccdc_hw_device *dev);
-=======
-int vpfe_register_ccdc_device(struct ccdc_hw_device *dev);
-void vpfe_unregister_ccdc_device(struct ccdc_hw_device *dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif
 #endif

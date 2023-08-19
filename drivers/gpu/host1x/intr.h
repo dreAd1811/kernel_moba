@@ -22,10 +22,7 @@
 #include <linux/interrupt.h>
 #include <linux/workqueue.h>
 
-<<<<<<< HEAD
 struct host1x_syncpt;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct host1x;
 
 enum host1x_intr_action {
@@ -79,16 +76,10 @@ struct host1x_waitlist {
  *
  * This is a non-blocking api.
  */
-<<<<<<< HEAD
 int host1x_intr_add_action(struct host1x *host, struct host1x_syncpt *syncpt,
 			   u32 thresh, enum host1x_intr_action action,
 			   void *data, struct host1x_waitlist *waiter,
 			   void **ref);
-=======
-int host1x_intr_add_action(struct host1x *host, unsigned int id, u32 thresh,
-	enum host1x_intr_action action, void *data,
-	struct host1x_waitlist *waiter, void **ref);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Unreference an action submitted to host1x_intr_add_action().

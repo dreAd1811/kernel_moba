@@ -387,11 +387,7 @@ static int ibmpex_find_sensors(struct ibmpex_bmc_data *data)
 		return -ENOENT;
 	data->num_sensors = err;
 
-<<<<<<< HEAD
 	data->sensors = kcalloc(data->num_sensors, sizeof(*data->sensors),
-=======
-	data->sensors = kzalloc(data->num_sensors * sizeof(*data->sensors),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				GFP_KERNEL);
 	if (!data->sensors)
 		return -ENOMEM;

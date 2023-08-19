@@ -17,28 +17,11 @@
 #define __ASM_BITOPS_H
 
 #include <linux/compiler.h>
-<<<<<<< HEAD
-=======
-#include <asm/barrier.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifndef _LINUX_BITOPS_H
 #error only <linux/bitops.h> can be included directly
 #endif
 
-<<<<<<< HEAD
-=======
-/*
- * Little endian assembly atomic bitops.
- */
-extern void set_bit(int nr, volatile unsigned long *p);
-extern void clear_bit(int nr, volatile unsigned long *p);
-extern void change_bit(int nr, volatile unsigned long *p);
-extern int test_and_set_bit(int nr, volatile unsigned long *p);
-extern int test_and_clear_bit(int nr, volatile unsigned long *p);
-extern int test_and_change_bit(int nr, volatile unsigned long *p);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm-generic/bitops/builtin-__ffs.h>
 #include <asm-generic/bitops/builtin-ffs.h>
 #include <asm-generic/bitops/builtin-__fls.h>
@@ -50,24 +33,11 @@ extern int test_and_change_bit(int nr, volatile unsigned long *p);
 
 #include <asm-generic/bitops/sched.h>
 #include <asm-generic/bitops/hweight.h>
-<<<<<<< HEAD
 
 #include <asm-generic/bitops/atomic.h>
 #include <asm-generic/bitops/lock.h>
 #include <asm-generic/bitops/non-atomic.h>
 #include <asm-generic/bitops/le.h>
 #include <asm-generic/bitops/ext2-atomic-setbit.h>
-=======
-#include <asm-generic/bitops/lock.h>
-
-#include <asm-generic/bitops/non-atomic.h>
-#include <asm-generic/bitops/le.h>
-
-/*
- * Ext2 is defined to use little-endian byte ordering.
- */
-#define ext2_set_bit_atomic(lock, nr, p)	test_and_set_bit_le(nr, p)
-#define ext2_clear_bit_atomic(lock, nr, p)	test_and_clear_bit_le(nr, p)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* __ASM_BITOPS_H */

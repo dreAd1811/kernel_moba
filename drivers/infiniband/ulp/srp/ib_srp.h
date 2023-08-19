@@ -45,10 +45,7 @@
 #include <rdma/ib_sa.h>
 #include <rdma/ib_cm.h>
 #include <rdma/ib_fmr_pool.h>
-<<<<<<< HEAD
 #include <rdma/rdma_cm.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum {
 	SRP_PATH_REC_TIMEOUT_MS	= 1000,
@@ -94,10 +91,7 @@ struct srp_device {
 	struct list_head	dev_list;
 	struct ib_device       *dev;
 	struct ib_pd	       *pd;
-<<<<<<< HEAD
 	u32			global_rkey;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64			mr_page_mask;
 	int			mr_page_size;
 	int			mr_max_size;
@@ -160,7 +154,6 @@ struct srp_rdma_ch {
 	struct completion	done;
 	int			status;
 
-<<<<<<< HEAD
 	union {
 		struct ib_cm {
 			struct sa_path_rec	path;
@@ -173,13 +166,6 @@ struct srp_rdma_ch {
 		} rdma_cm;
 	};
 
-=======
-	struct sa_path_rec	path;
-	struct ib_sa_query     *path_query;
-	int			path_query_id;
-
-	struct ib_cm_id	       *cm_id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct srp_iu	      **tx_ring;
 	struct srp_iu	      **rx_ring;
 	struct srp_request     *req_ring;
@@ -202,14 +188,9 @@ struct srp_target_port {
 	spinlock_t		lock;
 
 	/* read only in the hot path */
-<<<<<<< HEAD
 	u32			global_rkey;
 	struct srp_rdma_ch	*ch;
 	struct net		*net;
-=======
-	struct ib_pd		*pd;
-	struct srp_rdma_ch	*ch;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32			ch_count;
 	u32			lkey;
 	enum srp_target_state	state;
@@ -222,10 +203,6 @@ struct srp_target_port {
 	union ib_gid		sgid;
 	__be64			id_ext;
 	__be64			ioc_guid;
-<<<<<<< HEAD
-=======
-	__be64			service_id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__be64			initiator_ext;
 	u16			io_class;
 	struct srp_host	       *srp_host;
@@ -234,10 +211,7 @@ struct srp_target_port {
 	char			target_name[32];
 	unsigned int		scsi_id;
 	unsigned int		sg_tablesize;
-<<<<<<< HEAD
 	unsigned int		target_can_queue;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int			mr_pool_size;
 	int			mr_per_cmd;
 	int			queue_size;
@@ -245,7 +219,6 @@ struct srp_target_port {
 	int			comp_vector;
 	int			tl_retry_count;
 
-<<<<<<< HEAD
 	bool			using_rdma_cm;
 
 	union {
@@ -268,10 +241,6 @@ struct srp_target_port {
 			bool src_specified;
 		} rdma_cm;
 	};
-=======
-	union ib_gid		orig_dgid;
-	__be16			pkey;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	u32			rq_tmo_jiffies;
 

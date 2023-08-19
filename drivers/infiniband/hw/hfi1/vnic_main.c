@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
  * Copyright(c) 2017 - 2018 Intel Corporation.
-=======
- * Copyright(c) 2017 Intel Corporation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This file is provided under a dual BSD/GPLv2 license.  When using or
  * redistributing this file, you may do so under either license.
@@ -71,11 +67,6 @@ static int setup_vnic_ctxt(struct hfi1_devdata *dd, struct hfi1_ctxtdata *uctxt)
 	unsigned int rcvctrl_ops = 0;
 	int ret;
 
-<<<<<<< HEAD
-=======
-	hfi1_init_ctxt(uctxt->sc);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uctxt->do_interrupt = &handle_receive_interrupt;
 
 	/* Now allocate the RcvHdr queue and eager buffers. */
@@ -103,11 +94,6 @@ static int setup_vnic_ctxt(struct hfi1_devdata *dd, struct hfi1_ctxtdata *uctxt)
 		rcvctrl_ops |= HFI1_RCVCTRL_TAILUPD_ENB;
 
 	hfi1_rcvctrl(uctxt->dd, rcvctrl_ops, uctxt);
-<<<<<<< HEAD
-=======
-
-	uctxt->is_vnic = true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 done:
 	return ret;
 }
@@ -132,43 +118,15 @@ static int allocate_vnic_ctxt(struct hfi1_devdata *dd,
 			HFI1_CAP_KGET(NODROP_EGR_FULL) |
 			HFI1_CAP_KGET(DMA_RTAIL);
 	uctxt->seq_cnt = 1;
-<<<<<<< HEAD
 	uctxt->is_vnic = true;
 
 	hfi1_set_vnic_msix_info(uctxt);
-=======
-
-	/* Allocate and enable a PIO send context */
-	uctxt->sc = sc_alloc(dd, SC_VNIC, uctxt->rcvhdrqentsize,
-			     uctxt->numa_id);
-
-	ret = uctxt->sc ? 0 : -ENOMEM;
-	if (ret)
-		goto bail;
-
-	dd_dev_dbg(dd, "allocated vnic send context %u(%u)\n",
-		   uctxt->sc->sw_index, uctxt->sc->hw_context);
-	ret = sc_enable(uctxt->sc);
-	if (ret)
-		goto bail;
-
-	if (dd->num_msix_entries)
-		hfi1_set_vnic_msix_info(uctxt);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	hfi1_stats.sps_ctxts++;
 	dd_dev_dbg(dd, "created vnic context %d\n", uctxt->ctxt);
 	*vnic_ctxt = uctxt;
 
-<<<<<<< HEAD
 	return 0;
-=======
-	return ret;
-bail:
-	hfi1_free_ctxt(uctxt);
-	dd_dev_dbg(dd, "vnic allocation failed. rc %d\n", ret);
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void deallocate_vnic_ctxt(struct hfi1_devdata *dd,
@@ -177,12 +135,7 @@ static void deallocate_vnic_ctxt(struct hfi1_devdata *dd,
 	dd_dev_dbg(dd, "closing vnic context %d\n", uctxt->ctxt);
 	flush_wc();
 
-<<<<<<< HEAD
 	hfi1_reset_vnic_msix_info(uctxt);
-=======
-	if (dd->num_msix_entries)
-		hfi1_reset_vnic_msix_info(uctxt);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Disable receive context and interrupt available, reset all
@@ -194,21 +147,6 @@ static void deallocate_vnic_ctxt(struct hfi1_devdata *dd,
 		     HFI1_RCVCTRL_ONE_PKT_EGR_DIS |
 		     HFI1_RCVCTRL_NO_RHQ_DROP_DIS |
 		     HFI1_RCVCTRL_NO_EGR_DROP_DIS, uctxt);
-<<<<<<< HEAD
-=======
-	/*
-	 * VNIC contexts are allocated from user context pool.
-	 * Release them back to user context pool.
-	 *
-	 * Reset context integrity checks to default.
-	 * (writes to CSRs probably belong in chip.c)
-	 */
-	write_kctxt_csr(dd, uctxt->sc->hw_context, SEND_CTXT_CHECK_ENABLE,
-			hfi1_pkt_default_send_ctxt_mask(dd, SC_USER));
-	sc_disable(uctxt->sc);
-
-	dd->send_contexts[uctxt->sc->sw_index].type = SC_USER;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	uctxt->event_flags = 0;
 
@@ -483,11 +421,7 @@ tx_finish:
 
 static u16 hfi1_vnic_select_queue(struct net_device *netdev,
 				  struct sk_buff *skb,
-<<<<<<< HEAD
 				  struct net_device *sb_dev,
-=======
-				  void *accel_priv,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  select_queue_fallback_t fallback)
 {
 	struct hfi1_vnic_vport_info *vinfo = opa_vnic_dev_priv(netdev);
@@ -882,22 +816,14 @@ struct net_device *hfi1_vnic_alloc_rn(struct ib_device *device,
 
 	size = sizeof(struct opa_vnic_rdma_netdev) + sizeof(*vinfo);
 	netdev = alloc_netdev_mqs(size, name, name_assign_type, setup,
-<<<<<<< HEAD
 				  chip_sdma_engines(dd), dd->num_vnic_contexts);
-=======
-				  dd->chip_sdma_engines, dd->num_vnic_contexts);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!netdev)
 		return ERR_PTR(-ENOMEM);
 
 	rn = netdev_priv(netdev);
 	vinfo = opa_vnic_dev_priv(netdev);
 	vinfo->dd = dd;
-<<<<<<< HEAD
 	vinfo->num_tx_q = chip_sdma_engines(dd);
-=======
-	vinfo->num_tx_q = dd->chip_sdma_engines;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vinfo->num_rx_q = dd->num_vnic_contexts;
 	vinfo->netdev = netdev;
 	rn->free_rdma_netdev = hfi1_vnic_free_rn;

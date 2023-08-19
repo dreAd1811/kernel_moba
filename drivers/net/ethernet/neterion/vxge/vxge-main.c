@@ -1122,10 +1122,6 @@ static void vxge_set_multicast(struct net_device *dev)
 	struct netdev_hw_addr *ha;
 	struct vxgedev *vdev;
 	int i, mcast_cnt = 0;
-<<<<<<< HEAD
-=======
-	struct __vxge_hw_device *hldev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct vxge_vpath *vpath;
 	enum vxge_hw_status status = VXGE_HW_OK;
 	struct macInfo mac_info;
@@ -1139,10 +1135,6 @@ static void vxge_set_multicast(struct net_device *dev)
 		"%s:%d", __func__, __LINE__);
 
 	vdev = netdev_priv(dev);
-<<<<<<< HEAD
-=======
-	hldev = vdev->devh;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (unlikely(!is_vxge_card_up(vdev)))
 		return;
@@ -1289,10 +1281,6 @@ static int vxge_set_mac_addr(struct net_device *dev, void *p)
 {
 	struct sockaddr *addr = p;
 	struct vxgedev *vdev;
-<<<<<<< HEAD
-=======
-	struct __vxge_hw_device *hldev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	enum vxge_hw_status status = VXGE_HW_OK;
 	struct macInfo mac_info_new, mac_info_old;
 	int vpath_idx = 0;
@@ -1300,10 +1288,6 @@ static int vxge_set_mac_addr(struct net_device *dev, void *p)
 	vxge_debug_entryexit(VXGE_TRACE, "%s:%d", __func__, __LINE__);
 
 	vdev = netdev_priv(dev);
-<<<<<<< HEAD
-=======
-	hldev = vdev->devh;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!is_valid_ether_addr(addr->sa_data))
 		return -EINVAL;
@@ -1546,11 +1530,7 @@ static int vxge_reset_vpath(struct vxgedev *vdev, int vp_id)
 			vxge_debug_init(VXGE_ERR,
 				"vxge_hw_vpath_reset failed for"
 				"vpath:%d", vp_id);
-<<<<<<< HEAD
 			return status;
-=======
-				return status;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	} else
 		return VXGE_HW_FAIL;
@@ -1970,32 +1950,19 @@ static enum vxge_hw_status vxge_rth_configure(struct vxgedev *vdev)
 	 * for all VPATHs. The h/w only uses the lowest numbered VPATH
 	 * when steering frames.
 	 */
-<<<<<<< HEAD
 	for (index = 0; index < vdev->no_of_vpath; index++) {
-=======
-	 for (index = 0; index < vdev->no_of_vpath; index++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		status = vxge_hw_vpath_rts_rth_set(
 				vdev->vpaths[index].handle,
 				vdev->config.rth_algorithm,
 				&hash_types,
 				vdev->config.rth_bkt_sz);
-<<<<<<< HEAD
 		if (status != VXGE_HW_OK) {
-=======
-		 if (status != VXGE_HW_OK) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			vxge_debug_init(VXGE_ERR,
 				"RTH configuration failed for vpath:%d",
 				vdev->vpaths[index].device_id);
 			return status;
-<<<<<<< HEAD
 		}
 	}
-=======
-		 }
-	 }
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return status;
 }
@@ -2024,11 +1991,7 @@ static enum vxge_hw_status vxge_reset_all_vpaths(struct vxgedev *vdev)
 				vxge_debug_init(VXGE_ERR,
 					"vxge_hw_vpath_reset failed for "
 					"vpath:%d", i);
-<<<<<<< HEAD
 				return status;
-=======
-					return status;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		}
 	}
@@ -2210,10 +2173,6 @@ static void adaptive_coalesce_rx_interrupts(struct vxge_ring *ring)
  */
 static irqreturn_t vxge_isr_napi(int irq, void *dev_id)
 {
-<<<<<<< HEAD
-=======
-	struct net_device *dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct __vxge_hw_device *hldev;
 	u64 reason;
 	enum vxge_hw_status status;
@@ -2221,10 +2180,6 @@ static irqreturn_t vxge_isr_napi(int irq, void *dev_id)
 
 	vxge_debug_intr(VXGE_TRACE, "%s:%d", __func__, __LINE__);
 
-<<<<<<< HEAD
-=======
-	dev = vdev->ndev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hldev = pci_get_drvdata(vdev->pdev);
 
 	if (pci_channel_offline(vdev->pdev))
@@ -2519,56 +2474,31 @@ static int vxge_add_isr(struct vxgedev *vdev)
 			switch (msix_idx) {
 			case 0:
 				snprintf(vdev->desc[intr_cnt], VXGE_INTR_STRLEN,
-<<<<<<< HEAD
 					"%s:vxge:MSI-X %d - Tx - fn:%d vpath:%d",
-=======
-				"%s:vxge:MSI-X %d - Tx - fn:%d vpath:%d",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					vdev->ndev->name,
 					vdev->entries[intr_cnt].entry,
 					pci_fun, vp_idx);
 				ret = request_irq(
-<<<<<<< HEAD
 					vdev->entries[intr_cnt].vector,
 					vxge_tx_msix_handle, 0,
 					vdev->desc[intr_cnt],
 					&vdev->vpaths[vp_idx].fifo);
 				vdev->vxge_entries[intr_cnt].arg =
-=======
-				    vdev->entries[intr_cnt].vector,
-					vxge_tx_msix_handle, 0,
-					vdev->desc[intr_cnt],
-					&vdev->vpaths[vp_idx].fifo);
-					vdev->vxge_entries[intr_cnt].arg =
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						&vdev->vpaths[vp_idx].fifo;
 				irq_req = 1;
 				break;
 			case 1:
 				snprintf(vdev->desc[intr_cnt], VXGE_INTR_STRLEN,
-<<<<<<< HEAD
 					"%s:vxge:MSI-X %d - Rx - fn:%d vpath:%d",
-=======
-				"%s:vxge:MSI-X %d - Rx - fn:%d vpath:%d",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					vdev->ndev->name,
 					vdev->entries[intr_cnt].entry,
 					pci_fun, vp_idx);
 				ret = request_irq(
-<<<<<<< HEAD
 					vdev->entries[intr_cnt].vector,
 					vxge_rx_msix_napi_handle, 0,
 					vdev->desc[intr_cnt],
 					&vdev->vpaths[vp_idx].ring);
 				vdev->vxge_entries[intr_cnt].arg =
-=======
-				    vdev->entries[intr_cnt].vector,
-					vxge_rx_msix_napi_handle,
-					0,
-					vdev->desc[intr_cnt],
-					&vdev->vpaths[vp_idx].ring);
-					vdev->vxge_entries[intr_cnt].arg =
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						&vdev->vpaths[vp_idx].ring;
 				irq_req = 1;
 				break;
@@ -2581,15 +2511,9 @@ static int vxge_add_isr(struct vxgedev *vdev)
 				vxge_rem_msix_isr(vdev);
 				vdev->config.intr_type = INTA;
 				vxge_debug_init(VXGE_ERR,
-<<<<<<< HEAD
 					"%s: Defaulting to INTA",
 					vdev->ndev->name);
 				goto INTA_MODE;
-=======
-					"%s: Defaulting to INTA"
-					, vdev->ndev->name);
-					goto INTA_MODE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 
 			if (irq_req) {
@@ -2666,15 +2590,9 @@ INTA_MODE:
 	return VXGE_HW_OK;
 }
 
-<<<<<<< HEAD
 static void vxge_poll_vp_reset(struct timer_list *t)
 {
 	struct vxgedev *vdev = from_timer(vdev, t, vp_reset_timer);
-=======
-static void vxge_poll_vp_reset(unsigned long data)
-{
-	struct vxgedev *vdev = (struct vxgedev *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i, j = 0;
 
 	for (i = 0; i < vdev->no_of_vpath; i++) {
@@ -2691,15 +2609,9 @@ static void vxge_poll_vp_reset(unsigned long data)
 	mod_timer(&vdev->vp_reset_timer, jiffies + HZ / 2);
 }
 
-<<<<<<< HEAD
 static void vxge_poll_vp_lockup(struct timer_list *t)
 {
 	struct vxgedev *vdev = from_timer(vdev, t, vp_lockup_timer);
-=======
-static void vxge_poll_vp_lockup(unsigned long data)
-{
-	struct vxgedev *vdev = (struct vxgedev *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	enum vxge_hw_status status = VXGE_HW_OK;
 	struct vxge_vpath *vpath;
 	struct vxge_ring *ring;
@@ -2710,11 +2622,7 @@ static void vxge_poll_vp_lockup(unsigned long data)
 		ring = &vdev->vpaths[i].ring;
 
 		/* Truncated to machine word size number of frames */
-<<<<<<< HEAD
 		rx_frms = READ_ONCE(ring->stats.rx_frms);
-=======
-		rx_frms = ACCESS_ONCE(ring->stats.rx_frms);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Did this vpath received any packets */
 		if (ring->stats.prev_rx_frms == rx_frms) {
@@ -2798,21 +2706,13 @@ static int vxge_open(struct net_device *dev)
 	struct vxge_vpath *vpath;
 	int ret = 0;
 	int i;
-<<<<<<< HEAD
 	u64 val64;
-=======
-	u64 val64, function_mode;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vxge_debug_entryexit(VXGE_TRACE,
 		"%s: %s:%d", dev->name, __func__, __LINE__);
 
 	vdev = netdev_priv(dev);
 	hldev = pci_get_drvdata(vdev->pdev);
-<<<<<<< HEAD
-=======
-	function_mode = vdev->config.device_hw_info.function_mode;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* make sure you have link off by default every time Nic is
 	 * initialized */
@@ -2950,20 +2850,12 @@ static int vxge_open(struct net_device *dev)
 		vdev->config.rx_pause_enable);
 
 	if (vdev->vp_reset_timer.function == NULL)
-<<<<<<< HEAD
 		vxge_os_timer(&vdev->vp_reset_timer, vxge_poll_vp_reset,
-=======
-		vxge_os_timer(&vdev->vp_reset_timer, vxge_poll_vp_reset, vdev,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      HZ / 2);
 
 	/* There is no need to check for RxD leak and RxD lookup on Titan1A */
 	if (vdev->titan1 && vdev->vp_lockup_timer.function == NULL)
-<<<<<<< HEAD
 		vxge_os_timer(&vdev->vp_lockup_timer, vxge_poll_vp_lockup,
-=======
-		vxge_os_timer(&vdev->vp_lockup_timer, vxge_poll_vp_lockup, vdev,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      HZ / 2);
 
 	set_bit(__VXGE_STATE_CARD_UP, &vdev->state);
@@ -3537,13 +3429,8 @@ static int vxge_device_register(struct __vxge_hw_device *hldev,
 	vxge_initialize_ethtool_ops(ndev);
 
 	/* Allocate memory for vpath */
-<<<<<<< HEAD
 	vdev->vpaths = kcalloc(no_of_vpath, sizeof(struct vxge_vpath),
 			       GFP_KERNEL);
-=======
-	vdev->vpaths = kzalloc((sizeof(struct vxge_vpath)) *
-				no_of_vpath, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!vdev->vpaths) {
 		vxge_debug_init(VXGE_ERR,
 			"%s: vpath memory allocation failed",
@@ -3597,19 +3484,11 @@ static int vxge_device_register(struct __vxge_hw_device *hldev,
 				0,
 				&stat);
 
-<<<<<<< HEAD
 	if (status == VXGE_HW_ERR_PRIVILEGED_OPERATION)
 		vxge_debug_init(
 			vxge_hw_device_trace_level_get(hldev),
 			"%s: device stats clear returns"
 			"VXGE_HW_ERR_PRIVILEGED_OPERATION", ndev->name);
-=======
-	if (status == VXGE_HW_ERR_PRIVILAGED_OPEARATION)
-		vxge_debug_init(
-			vxge_hw_device_trace_level_get(hldev),
-			"%s: device stats clear returns"
-			"VXGE_HW_ERR_PRIVILAGED_OPEARATION", ndev->name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vxge_debug_entryexit(vxge_hw_device_trace_level_get(hldev),
 		"%s: %s:%d  Exiting...",
@@ -4625,13 +4504,8 @@ vxge_probe(struct pci_dev *pdev, const struct pci_device_id *pre)
 	if (status != VXGE_HW_OK) {
 		vxge_debug_init(VXGE_ERR,
 			"Failed to initialize device (%d)", status);
-<<<<<<< HEAD
 		ret = -EINVAL;
 		goto _exit3;
-=======
-			ret = -EINVAL;
-			goto _exit3;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (VXGE_FW_VER(ll_config->device_hw_info.fw_version.major,

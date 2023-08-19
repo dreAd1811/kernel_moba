@@ -149,7 +149,6 @@ static const struct vop_data rk3036_vop = {
 	.win_size = ARRAY_SIZE(rk3036_vop_win_data),
 };
 
-<<<<<<< HEAD
 static const struct vop_win_phy rk3126_win1_data = {
 	.data_formats = formats_win_lite,
 	.nformats = ARRAY_SIZE(formats_win_lite),
@@ -178,8 +177,6 @@ static const struct vop_data rk3126_vop = {
 	.win_size = ARRAY_SIZE(rk3126_vop_win_data),
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct vop_scl_extension rk3288_win_full_scl_ext = {
 	.cbcr_vsd_mode = VOP_REG(RK3288_WIN0_CTRL1, 0x1, 31),
 	.cbcr_vsu_mode = VOP_REG(RK3288_WIN0_CTRL1, 0x1, 30),
@@ -267,10 +264,7 @@ static const struct vop_common rk3288_common = {
 	.standby = VOP_REG_SYNC(RK3288_SYS_CTRL, 0x1, 22),
 	.gate_en = VOP_REG(RK3288_SYS_CTRL, 0x1, 23),
 	.mmu_en = VOP_REG(RK3288_SYS_CTRL, 0x1, 20),
-<<<<<<< HEAD
 	.pre_dither_down = VOP_REG(RK3288_DSP_CTRL1, 0x1, 1),
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.dither_down = VOP_REG(RK3288_DSP_CTRL1, 0xf, 1),
 	.dither_up = VOP_REG(RK3288_DSP_CTRL1, 0x1, 6),
 	.data_blank = VOP_REG(RK3288_DSP_CTRL0, 0x1, 19),
@@ -545,11 +539,8 @@ static const struct vop_data rk3328_vop = {
 static const struct of_device_id vop_driver_dt_match[] = {
 	{ .compatible = "rockchip,rk3036-vop",
 	  .data = &rk3036_vop },
-<<<<<<< HEAD
 	{ .compatible = "rockchip,rk3126-vop",
 	  .data = &rk3126_vop },
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ .compatible = "rockchip,rk3288-vop",
 	  .data = &rk3288_vop },
 	{ .compatible = "rockchip,rk3368-vop",
@@ -573,11 +564,7 @@ static int vop_probe(struct platform_device *pdev)
 	struct device *dev = &pdev->dev;
 
 	if (!dev->of_node) {
-<<<<<<< HEAD
 		DRM_DEV_ERROR(dev, "can't find vop devices\n");
-=======
-		dev_err(dev, "can't find vop devices\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 	}
 

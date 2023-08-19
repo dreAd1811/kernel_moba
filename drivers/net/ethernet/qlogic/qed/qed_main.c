@@ -45,10 +45,7 @@
 #include <linux/etherdevice.h>
 #include <linux/vmalloc.h>
 #include <linux/crash_dump.h>
-<<<<<<< HEAD
 #include <linux/crc32.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/qed/qed_if.h>
 #include <linux/qed/qed_ll2_if.h>
 
@@ -67,10 +64,7 @@
 
 #define QED_ROCE_QPS			(8192)
 #define QED_ROCE_DPIS			(8)
-<<<<<<< HEAD
 #define QED_RDMA_SRQS                   QED_ROCE_QPS
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static char version[] =
 	"QLogic FastLinQ 4xxxx Core Module qed " DRV_MODULE_VERSION "\n";
@@ -271,10 +265,6 @@ int qed_fill_dev_info(struct qed_dev *cdev,
 	dev_info->pci_mem_end = cdev->pci_params.mem_end;
 	dev_info->pci_irq = cdev->pci_params.irq;
 	dev_info->rdma_supported = QED_IS_RDMA_PERSONALITY(p_hwfn);
-<<<<<<< HEAD
-=======
-	dev_info->is_mf_default = IS_MF_DEFAULT(&cdev->hwfns[0]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_info->dev_type = cdev->type;
 	ether_addr_copy(dev_info->hw_mac, hw_info->hw_mac_addr);
 
@@ -283,12 +273,8 @@ int qed_fill_dev_info(struct qed_dev *cdev,
 		dev_info->fw_minor = FW_MINOR_VERSION;
 		dev_info->fw_rev = FW_REVISION_VERSION;
 		dev_info->fw_eng = FW_ENGINEERING_VERSION;
-<<<<<<< HEAD
 		dev_info->b_inter_pf_switch = test_bit(QED_MF_INTER_PF_SWITCH,
 						       &cdev->mf_bits);
-=======
-		dev_info->mf_mode = cdev->mf_mode;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_info->tx_switching = true;
 
 		if (hw_info->b_wol_support == QED_WOL_SUPPORT_PME)
@@ -385,11 +371,7 @@ static struct qed_dev *qed_probe(struct pci_dev *pdev,
 		goto err2;
 	}
 
-<<<<<<< HEAD
 	DP_INFO(cdev, "qed_probe completed successfully\n");
-=======
-	DP_INFO(cdev, "qed_probe completed successffuly\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return cdev;
 
@@ -707,11 +689,7 @@ static int qed_nic_stop(struct qed_dev *cdev)
 			tasklet_disable(p_hwfn->sp_dpc);
 			p_hwfn->b_sp_dpc_enabled = false;
 			DP_VERBOSE(cdev, NETIF_MSG_IFDOWN,
-<<<<<<< HEAD
 				   "Disabled sp tasklet [hwfn %d] at %p\n",
-=======
-				   "Disabled sp taskelt [hwfn %d] at %p\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   i, p_hwfn->sp_dpc);
 		}
 	}
@@ -961,10 +939,7 @@ static void qed_update_pf_params(struct qed_dev *cdev,
 	if (IS_ENABLED(CONFIG_QED_RDMA)) {
 		params->rdma_pf_params.num_qps = QED_ROCE_QPS;
 		params->rdma_pf_params.min_dpis = QED_ROCE_DPIS;
-<<<<<<< HEAD
 		params->rdma_pf_params.num_srqs = QED_RDMA_SRQS;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* divide by 3 the MRs to avoid MF ILT overflow */
 		params->rdma_pf_params.gl_pi = QED_ROCE_PROTOCOL_INDEX;
 	}
@@ -973,22 +948,14 @@ static void qed_update_pf_params(struct qed_dev *cdev,
 		params->eth_pf_params.num_arfs_filters = 0;
 
 	/* In case we might support RDMA, don't allow qede to be greedy
-<<<<<<< HEAD
 	 * with the L2 contexts. Allow for 64 queues [rx, tx cos, xdp]
 	 * per hwfn.
-=======
-	 * with the L2 contexts. Allow for 64 queues [rx, tx, xdp] per hwfn.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	if (QED_IS_RDMA_PERSONALITY(QED_LEADING_HWFN(cdev))) {
 		u16 *num_cons;
 
 		num_cons = &params->eth_pf_params.num_cons;
-<<<<<<< HEAD
 		*num_cons = min_t(u16, *num_cons, QED_MAX_L2_CONS);
-=======
-		*num_cons = min_t(u16, *num_cons, 192);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	for (i = 0; i < cdev->num_hwfns; i++) {
@@ -998,7 +965,6 @@ static void qed_update_pf_params(struct qed_dev *cdev,
 	}
 }
 
-<<<<<<< HEAD
 static void qed_slowpath_wq_stop(struct qed_dev *cdev)
 {
 	int i;
@@ -1061,8 +1027,6 @@ static int qed_slowpath_wq_start(struct qed_dev *cdev)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int qed_slowpath_start(struct qed_dev *cdev,
 			      struct qed_slowpath_params *params)
 {
@@ -1078,12 +1042,9 @@ static int qed_slowpath_start(struct qed_dev *cdev,
 	if (qed_iov_wq_start(cdev))
 		goto err;
 
-<<<<<<< HEAD
 	if (qed_slowpath_wq_start(cdev))
 		goto err;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_PF(cdev)) {
 		rc = request_firmware(&cdev->firmware, QED_FW_FILE_NAME,
 				      &cdev->pdev->dev);
@@ -1220,11 +1181,8 @@ err:
 
 	qed_iov_wq_stop(cdev, false);
 
-<<<<<<< HEAD
 	qed_slowpath_wq_stop(cdev);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 
@@ -1233,11 +1191,8 @@ static int qed_slowpath_stop(struct qed_dev *cdev)
 	if (!cdev)
 		return -ENODEV;
 
-<<<<<<< HEAD
 	qed_slowpath_wq_stop(cdev);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	qed_ll2_dealloc_if(cdev);
 
 	if (IS_PF(cdev)) {
@@ -1507,10 +1462,6 @@ static int qed_get_link_data(struct qed_hwfn *hwfn,
 }
 
 static void qed_fill_link(struct qed_hwfn *hwfn,
-<<<<<<< HEAD
-=======
-			  struct qed_ptt *ptt,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  struct qed_link_output *if_link)
 {
 	struct qed_mcp_link_params params;
@@ -1591,11 +1542,7 @@ static void qed_fill_link(struct qed_hwfn *hwfn,
 
 	/* TODO - fill duplex properly */
 	if_link->duplex = DUPLEX_FULL;
-<<<<<<< HEAD
 	qed_mcp_get_media_type(hwfn->cdev, &media_type);
-=======
-	qed_mcp_get_media_type(hwfn, ptt, &media_type);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if_link->port = qed_get_port_type(media_type);
 
 	if_link->autoneg = params.speed.autoneg;
@@ -1651,48 +1598,21 @@ static void qed_fill_link(struct qed_hwfn *hwfn,
 static void qed_get_current_link(struct qed_dev *cdev,
 				 struct qed_link_output *if_link)
 {
-<<<<<<< HEAD
 	int i;
 
 	qed_fill_link(&cdev->hwfns[0], if_link);
-=======
-	struct qed_hwfn *hwfn;
-	struct qed_ptt *ptt;
-	int i;
-
-	hwfn = &cdev->hwfns[0];
-	if (IS_PF(cdev)) {
-		ptt = qed_ptt_acquire(hwfn);
-		if (ptt) {
-			qed_fill_link(hwfn, ptt, if_link);
-			qed_ptt_release(hwfn, ptt);
-		} else {
-			DP_NOTICE(hwfn, "Failed to fill link; No PTT\n");
-		}
-	} else {
-		qed_fill_link(hwfn, NULL, if_link);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for_each_hwfn(cdev, i)
 		qed_inform_vf_link_state(&cdev->hwfns[i]);
 }
 
-<<<<<<< HEAD
 void qed_link_update(struct qed_hwfn *hwfn)
-=======
-void qed_link_update(struct qed_hwfn *hwfn, struct qed_ptt *ptt)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	void *cookie = hwfn->cdev->ops_cookie;
 	struct qed_common_cb_ops *op = hwfn->cdev->protocol_ops.common;
 	struct qed_link_output if_link;
 
-<<<<<<< HEAD
 	qed_fill_link(hwfn, &if_link);
-=======
-	qed_fill_link(hwfn, ptt, &if_link);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	qed_inform_vf_link_state(hwfn);
 
 	if (IS_LEAD_HWFN(hwfn) && cookie)
@@ -1724,7 +1644,6 @@ static int qed_drain(struct qed_dev *cdev)
 	return 0;
 }
 
-<<<<<<< HEAD
 static u32 qed_nvm_flash_image_access_crc(struct qed_dev *cdev,
 					  struct qed_nvm_image_att *nvm_image,
 					  u32 *crc)
@@ -2061,26 +1980,12 @@ exit:
 	return rc;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int qed_nvm_get_image(struct qed_dev *cdev, enum qed_nvm_images type,
 			     u8 *buf, u16 len)
 {
 	struct qed_hwfn *hwfn = QED_LEADING_HWFN(cdev);
-<<<<<<< HEAD
 
 	return qed_mcp_get_nvm_image(hwfn, type, buf, len);
-=======
-	struct qed_ptt *ptt = qed_ptt_acquire(hwfn);
-	int rc;
-
-	if (!ptt)
-		return -EAGAIN;
-
-	rc = qed_mcp_get_nvm_image(hwfn, ptt, type, buf, len);
-	qed_ptt_release(hwfn, ptt);
-	return rc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int qed_set_coalesce(struct qed_dev *cdev, u16 rx_coal, u16 tx_coal,
@@ -2200,7 +2105,6 @@ out:
 	return status;
 }
 
-<<<<<<< HEAD
 static int qed_read_module_eeprom(struct qed_dev *cdev, char *buf,
 				  u8 dev_addr, u32 offset, u32 len)
 {
@@ -2223,8 +2127,6 @@ static int qed_read_module_eeprom(struct qed_dev *cdev, char *buf,
 	return rc;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct qed_selftest_ops qed_selftest_ops_pass = {
 	.selftest_memory = &qed_selftest_memory,
 	.selftest_interrupt = &qed_selftest_interrupt,
@@ -2259,10 +2161,7 @@ const struct qed_common_ops qed_common_ops_pass = {
 	.dbg_all_data_size = &qed_dbg_all_data_size,
 	.chain_alloc = &qed_chain_alloc,
 	.chain_free = &qed_chain_free,
-<<<<<<< HEAD
 	.nvm_flash = &qed_nvm_flash,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.nvm_get_image = &qed_nvm_get_image,
 	.set_coalesce = &qed_set_coalesce,
 	.set_led = &qed_set_led,
@@ -2270,10 +2169,7 @@ const struct qed_common_ops qed_common_ops_pass = {
 	.update_mac = &qed_update_mac,
 	.update_mtu = &qed_update_mtu,
 	.update_wol = &qed_update_wol,
-<<<<<<< HEAD
 	.read_module_eeprom = &qed_read_module_eeprom,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 void qed_get_protocol_stats(struct qed_dev *cdev,
@@ -2305,7 +2201,6 @@ void qed_get_protocol_stats(struct qed_dev *cdev,
 		return;
 	}
 }
-<<<<<<< HEAD
 
 int qed_mfw_tlv_req(struct qed_hwfn *hwfn)
 {
@@ -2392,5 +2287,3 @@ int qed_mfw_fill_tlv_data(struct qed_hwfn *hwfn, enum qed_mfw_tlv_type type,
 
 	return 0;
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

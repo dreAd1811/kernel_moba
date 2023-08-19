@@ -341,11 +341,7 @@ static int i2c_sirfsoc_probe(struct platform_device *pdev)
 	platform_set_drvdata(pdev, adap);
 	init_completion(&siic->done);
 
-<<<<<<< HEAD
 	/* Controller initialisation */
-=======
-	/* Controller Initalisation */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	writel(SIRFSOC_I2C_RESET, siic->base + SIRFSOC_I2C_CTRL);
 	while (readl(siic->base + SIRFSOC_I2C_CTRL) & SIRFSOC_I2C_RESET)
@@ -373,11 +369,7 @@ static int i2c_sirfsoc_probe(struct platform_device *pdev)
 	 * but they start to affect the speed when clock is set to faster
 	 * frequencies.
 	 * Through the actual tests, use the different user_div value(which
-<<<<<<< HEAD
 	 * in the divider formula 'Fio / (Fi2c * user_div)') to adapt
-=======
-	 * in the divider formular 'Fio / (Fi2c * user_div)') to adapt
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * the different ranges of i2c bus clock frequency, to make the SCL
 	 * more accurate.
 	 */

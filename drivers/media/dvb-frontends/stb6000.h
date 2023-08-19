@@ -24,7 +24,6 @@
 #define __DVB_STB6000_H__
 
 #include <linux/i2c.h>
-<<<<<<< HEAD
 #include <media/dvb_frontend.h>
 
 #if IS_REACHABLE(CONFIG_DVB_STB6000)
@@ -37,19 +36,6 @@
  *
  * return: FE pointer on success, NULL on failure.
  */
-=======
-#include "dvb_frontend.h"
-
-/**
- * Attach a stb6000 tuner to the supplied frontend structure.
- *
- * @param fe Frontend to attach to.
- * @param addr i2c address of the tuner.
- * @param i2c i2c adapter to use.
- * @return FE pointer on success, NULL on failure.
- */
-#if IS_REACHABLE(CONFIG_DVB_STB6000)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern struct dvb_frontend *stb6000_attach(struct dvb_frontend *fe, int addr,
 					   struct i2c_adapter *i2c);
 #else

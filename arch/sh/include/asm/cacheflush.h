@@ -101,7 +101,6 @@ void kunmap_coherent(void *kvaddr);
 
 void cpu_cache_init(void);
 
-<<<<<<< HEAD
 static inline void *sh_cacheop_vaddr(void *vaddr)
 {
 	if (__in_29bit_mode())
@@ -109,7 +108,5 @@ static inline void *sh_cacheop_vaddr(void *vaddr)
 	return vaddr;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __KERNEL__ */
 #endif /* __ASM_SH_CACHEFLUSH_H */

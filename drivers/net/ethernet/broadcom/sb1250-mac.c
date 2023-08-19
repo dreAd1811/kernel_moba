@@ -63,16 +63,11 @@ MODULE_DESCRIPTION("Broadcom SiByte SOC GB Ethernet driver");
 
 /* 1 normal messages, 0 quiet .. 7 verbose. */
 static int debug = 1;
-<<<<<<< HEAD
 module_param(debug, int, 0444);
-=======
-module_param(debug, int, S_IRUGO);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_PARM_DESC(debug, "Debug messages");
 
 #ifdef CONFIG_SBMAC_COALESCE
 static int int_pktcnt_tx = 255;
-<<<<<<< HEAD
 module_param(int_pktcnt_tx, int, 0444);
 MODULE_PARM_DESC(int_pktcnt_tx, "TX packet count");
 
@@ -86,21 +81,6 @@ MODULE_PARM_DESC(int_pktcnt_rx, "RX packet count");
 
 static int int_timeout_rx = 64;
 module_param(int_timeout_rx, int, 0444);
-=======
-module_param(int_pktcnt_tx, int, S_IRUGO);
-MODULE_PARM_DESC(int_pktcnt_tx, "TX packet count");
-
-static int int_timeout_tx = 255;
-module_param(int_timeout_tx, int, S_IRUGO);
-MODULE_PARM_DESC(int_timeout_tx, "TX timeout value");
-
-static int int_pktcnt_rx = 64;
-module_param(int_pktcnt_rx, int, S_IRUGO);
-MODULE_PARM_DESC(int_pktcnt_rx, "RX packet count");
-
-static int int_timeout_rx = 64;
-module_param(int_timeout_rx, int, S_IRUGO);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_PARM_DESC(int_timeout_rx, "RX timeout value");
 #endif
 
@@ -319,11 +299,7 @@ static enum sbmac_state sbmac_set_channel_state(struct sbmac_softc *,
 static void sbmac_promiscuous_mode(struct sbmac_softc *sc, int onoff);
 static uint64_t sbmac_addr2reg(unsigned char *ptr);
 static irqreturn_t sbmac_intr(int irq, void *dev_instance);
-<<<<<<< HEAD
 static int sbmac_start_tx(struct sk_buff *skb, struct net_device *dev);
-=======
-static netdev_tx_t sbmac_start_tx(struct sk_buff *skb, struct net_device *dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void sbmac_setmulti(struct sbmac_softc *sc);
 static int sbmac_init(struct platform_device *pldev, long long base);
 static int sbmac_set_speed(struct sbmac_softc *s, enum sbmac_speed speed);
@@ -2052,11 +2028,7 @@ static irqreturn_t sbmac_intr(int irq,void *dev_instance)
  *  Return value:
  *  	   nothing
  ********************************************************************* */
-<<<<<<< HEAD
 static int sbmac_start_tx(struct sk_buff *skb, struct net_device *dev)
-=======
-static netdev_tx_t sbmac_start_tx(struct sk_buff *skb, struct net_device *dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct sbmac_softc *sc = netdev_priv(dev);
 	unsigned long flags;

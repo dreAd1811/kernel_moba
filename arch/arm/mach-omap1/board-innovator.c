@@ -302,11 +302,7 @@ static struct omap_usb_config innovator1510_usb_config __initdata = {
 	.pins[0]	= 2,
 };
 
-<<<<<<< HEAD
 static const struct omap_lcd_config innovator1510_lcd_config __initconst = {
-=======
-static struct omap_lcd_config innovator1510_lcd_config __initdata = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ctrl_name	= "internal",
 };
 #endif
@@ -327,11 +323,7 @@ static struct omap_usb_config h2_usb_config __initdata = {
 	.pins[1]	= 3,
 };
 
-<<<<<<< HEAD
 static const struct omap_lcd_config innovator1610_lcd_config __initconst = {
-=======
-static struct omap_lcd_config innovator1610_lcd_config __initdata = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ctrl_name	= "internal",
 };
 #endif

@@ -14,10 +14,6 @@
 #include <linux/init.h>
 #include <linux/irqchip.h>
 #include <linux/of_platform.h>
-<<<<<<< HEAD
-=======
-#include <linux/soc/brcmstb/brcmstb.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/mach-types.h>
 #include <asm/mach/arch.h>
@@ -41,10 +37,6 @@ u32 brcmstb_uart_config[3] = {
 static void __init brcmstb_init_irq(void)
 {
 	irqchip_init();
-<<<<<<< HEAD
-=======
-	brcmstb_biuctrl_init();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const char *const brcmstb_match[] __initconst = {

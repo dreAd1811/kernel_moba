@@ -1,28 +1,9 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * adv7604 - Analog Devices ADV7604 video decoder driver
  *
  * Copyright 2012 Cisco Systems, Inc. and/or its affiliates. All rights reserved.
  *
-<<<<<<< HEAD
-=======
- * This program is free software; you may redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 2 of the License.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
- * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
- * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /*
@@ -1955,11 +1936,7 @@ static int adv76xx_set_format(struct v4l2_subdev *sd,
 		return -EINVAL;
 
 	info = adv76xx_format_info(state, format->format.code);
-<<<<<<< HEAD
 	if (!info)
-=======
-	if (info == NULL)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		info = adv76xx_format_info(state, MEDIA_BUS_FMT_YUYV8_2X8);
 
 	adv76xx_fill_format(state, &format->format);
@@ -1993,10 +1970,7 @@ static void adv76xx_cec_tx_raw_status(struct v4l2_subdev *sd, u8 tx_raw_status)
 			 __func__);
 		cec_transmit_done(state->cec_adap, CEC_TX_STATUS_ARB_LOST,
 				  1, 0, 0, 0);
-<<<<<<< HEAD
 		return;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	if (tx_raw_status & 0x04) {
 		u8 status;
@@ -2271,11 +2245,7 @@ static int adv76xx_get_edid(struct v4l2_subdev *sd, struct v4l2_edid *edid)
 		return 0;
 	}
 
-<<<<<<< HEAD
 	if (!data)
-=======
-	if (data == NULL)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODATA;
 
 	if (edid->start_block >= state->edid.blocks)
@@ -2327,13 +2297,8 @@ static int adv76xx_set_edid(struct v4l2_subdev *sd, struct v4l2_edid *edid)
 		edid->blocks = 2;
 		return -E2BIG;
 	}
-<<<<<<< HEAD
 	pa = v4l2_get_edid_phys_addr(edid->edid, edid->blocks * 128, &spa_loc);
 	err = v4l2_phys_addr_validate(pa, &pa, NULL);
-=======
-	pa = cec_get_edid_phys_addr(edid->edid, edid->blocks * 128, &spa_loc);
-	err = cec_phys_addr_validate(pa, &pa, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		return err;
 
@@ -2511,11 +2476,7 @@ static int adv76xx_log_status(struct v4l2_subdev *sd)
 		"YCbCr Bt.601 (16-235)", "YCbCr Bt.709 (16-235)",
 		"xvYCC Bt.601", "xvYCC Bt.709",
 		"YCbCr Bt.601 (0-255)", "YCbCr Bt.709 (0-255)",
-<<<<<<< HEAD
 		"sYCC", "opYCC 601", "opRGB", "invalid", "invalid",
-=======
-		"sYCC", "Adobe YCC 601", "AdobeRGB", "invalid", "invalid",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		"invalid", "invalid", "invalid"
 	};
 	static const char * const rgb_quantization_range_txt[] = {
@@ -2763,7 +2724,6 @@ static const struct v4l2_ctrl_config adv76xx_ctrl_free_run_color = {
 
 /* ----------------------------------------------------------------------- */
 
-<<<<<<< HEAD
 struct adv76xx_register_map {
 	const char *name;
 	u8 default_addr;
@@ -2785,8 +2745,6 @@ static const struct adv76xx_register_map adv76xx_default_addresses[] = {
 	[ADV7604_PAGE_VDP] = { "vdp", 0x24 },
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int adv76xx_core_init(struct v4l2_subdev *sd)
 {
 	struct adv76xx_state *state = to_state(sd);
@@ -2887,7 +2845,6 @@ static void adv76xx_unregister_clients(struct adv76xx_state *state)
 }
 
 static struct i2c_client *adv76xx_dummy_client(struct v4l2_subdev *sd,
-<<<<<<< HEAD
 					       unsigned int page)
 {
 	struct i2c_client *client = v4l2_get_subdevdata(sd);
@@ -2908,15 +2865,6 @@ static struct i2c_client *adv76xx_dummy_client(struct v4l2_subdev *sd,
 		io_write(sd, io_reg, new_client->addr << 1);
 
 	return new_client;
-=======
-							u8 addr, u8 io_reg)
-{
-	struct i2c_client *client = v4l2_get_subdevdata(sd);
-
-	if (addr)
-		io_write(sd, io_reg, addr << 1);
-	return i2c_new_dummy(client->adapter, io_read(sd, io_reg) >> 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct adv76xx_reg_seq adv7604_recommended_settings_afe[] = {
@@ -3162,18 +3110,9 @@ static int adv76xx_parse_dt(struct adv76xx_state *state)
 		return -EINVAL;
 
 	ret = v4l2_fwnode_endpoint_parse(of_fwnode_handle(endpoint), &bus_cfg);
-<<<<<<< HEAD
 	of_node_put(endpoint);
 	if (ret)
 		return ret;
-=======
-	if (ret) {
-		of_node_put(endpoint);
-		return ret;
-	}
-
-	of_node_put(endpoint);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!of_property_read_u32(np, "default-input", &v))
 		state->pdata.default_input = v;
@@ -3197,23 +3136,6 @@ static int adv76xx_parse_dt(struct adv76xx_state *state)
 	/* Disable the interrupt for now as no DT-based board uses it. */
 	state->pdata.int1_config = ADV76XX_INT1_CONFIG_DISABLED;
 
-<<<<<<< HEAD
-=======
-	/* Use the default I2C addresses. */
-	state->pdata.i2c_addresses[ADV7604_PAGE_AVLINK] = 0x42;
-	state->pdata.i2c_addresses[ADV76XX_PAGE_CEC] = 0x40;
-	state->pdata.i2c_addresses[ADV76XX_PAGE_INFOFRAME] = 0x3e;
-	state->pdata.i2c_addresses[ADV7604_PAGE_ESDP] = 0x38;
-	state->pdata.i2c_addresses[ADV7604_PAGE_DPP] = 0x3c;
-	state->pdata.i2c_addresses[ADV76XX_PAGE_AFE] = 0x26;
-	state->pdata.i2c_addresses[ADV76XX_PAGE_REP] = 0x32;
-	state->pdata.i2c_addresses[ADV76XX_PAGE_EDID] = 0x36;
-	state->pdata.i2c_addresses[ADV76XX_PAGE_HDMI] = 0x34;
-	state->pdata.i2c_addresses[ADV76XX_PAGE_TEST] = 0x30;
-	state->pdata.i2c_addresses[ADV76XX_PAGE_CP] = 0x22;
-	state->pdata.i2c_addresses[ADV7604_PAGE_VDP] = 0x24;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Hardcode the remaining platform data fields. */
 	state->pdata.disable_pwrdnb = 0;
 	state->pdata.disable_cable_det_rst = 0;
@@ -3402,15 +3324,8 @@ static int adv76xx_probe(struct i2c_client *client,
 			client->addr << 1);
 
 	state = devm_kzalloc(&client->dev, sizeof(*state), GFP_KERNEL);
-<<<<<<< HEAD
 	if (!state)
 		return -ENOMEM;
-=======
-	if (!state) {
-		v4l_err(client, "Could not allocate adv76xx_state memory!\n");
-		return -ENOMEM;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	state->i2c_clients[ADV76XX_PAGE_IO] = client;
 
@@ -3570,17 +3485,9 @@ static int adv76xx_probe(struct i2c_client *client,
 		if (!(BIT(i) & state->info->page_mask))
 			continue;
 
-<<<<<<< HEAD
 		state->i2c_clients[i] = adv76xx_dummy_client(sd, i);
 		if (!state->i2c_clients[i]) {
 			err = -EINVAL;
-=======
-		state->i2c_clients[i] =
-			adv76xx_dummy_client(sd, state->pdata.i2c_addresses[i],
-					     0xf2 + i);
-		if (state->i2c_clients[i] == NULL) {
-			err = -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			v4l2_err(sd, "failed to create i2c client %u\n", i);
 			goto err_i2c;
 		}
@@ -3594,10 +3501,7 @@ static int adv76xx_probe(struct i2c_client *client,
 	for (i = 0; i < state->source_pad; ++i)
 		state->pads[i].flags = MEDIA_PAD_FL_SINK;
 	state->pads[state->source_pad].flags = MEDIA_PAD_FL_SOURCE;
-<<<<<<< HEAD
 	sd->entity.function = MEDIA_ENT_F_DV_DECODER;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = media_entity_pads_init(&sd->entity, state->source_pad + 1,
 				state->pads);

@@ -42,11 +42,7 @@ static int devfreq_performance_handler(struct devfreq *devfreq,
 }
 
 static struct devfreq_governor devfreq_performance = {
-<<<<<<< HEAD
 	.name = DEVFREQ_GOV_PERFORMANCE,
-=======
-	.name = "performance",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.get_target_freq = devfreq_performance_func,
 	.event_handler = devfreq_performance_handler,
 };

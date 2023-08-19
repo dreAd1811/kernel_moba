@@ -1,35 +1,13 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
 /*
  * Copyright(C) 2015 Linaro Limited. All rights reserved.
  * Author: Mathieu Poirier <mathieu.poirier@linaro.org>
-=======
-/*
- * Copyright(C) 2015 Linaro Limited. All rights reserved.
- * Author: Mathieu Poirier <mathieu.poirier@linaro.org>
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License version 2 as published by
- * the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
- * more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program.  If not, see <http://www.gnu.org/licenses/>.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #ifndef _CORESIGHT_TMC_H
 #define _CORESIGHT_TMC_H
 
 #include <linux/dma-mapping.h>
-<<<<<<< HEAD
-=======
-#include <linux/idr.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/miscdevice.h>
 #include <linux/delay.h>
 #include <asm/cacheflush.h>
@@ -39,12 +17,6 @@
 #include <linux/msm-sps.h>
 #include <linux/usb/usb_qdss.h>
 #include <linux/coresight-cti.h>
-<<<<<<< HEAD
-=======
-#include <linux/mutex.h>
-#include <linux/refcount.h>
-#include <linux/ipa_qdss.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "coresight-byte-cntr.h"
 
@@ -74,10 +46,6 @@
 #define TMC_ITATBCTR2		0xef0
 #define TMC_ITATBCTR1		0xef4
 #define TMC_ITATBCTR0		0xef8
-<<<<<<< HEAD
-=======
-#define TMC_AUTHSTATUS		0xfb8
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* register description */
 /* TMC_CTL - 0x020 */
@@ -86,10 +54,6 @@
 #define TMC_STS_TMCREADY_BIT	2
 #define TMC_STS_FULL		BIT(0)
 #define TMC_STS_TRIGGERED	BIT(1)
-<<<<<<< HEAD
-=======
-#define TMC_STS_MEMERR		BIT(5)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * TMC_AXICTL - 0x110
  *
@@ -129,10 +93,7 @@
 #define TMC_FFCR_TRIGON_TRIGIN	BIT(8)
 #define TMC_FFCR_STOP_ON_FLUSH	BIT(12)
 
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define TMC_DEVID_NOSCAT	BIT(24)
 
 #define TMC_DEVID_AXIAW_VALID	BIT(16)
@@ -141,13 +102,6 @@
 #define TMC_ETR_BAM_PIPE_INDEX	0
 #define TMC_ETR_BAM_NR_PIPES	2
 
-<<<<<<< HEAD
-=======
-#define TMC_ETR_PCIE_MEM_SIZE	0x400000
-
-#define TMC_AUTH_NSID_MASK	GENMASK(1, 0)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum tmc_config_type {
 	TMC_CONFIG_TYPE_ETB,
 	TMC_CONFIG_TYPE_ETR,
@@ -185,46 +139,22 @@ enum tmc_mem_intf_width {
 #define CORESIGHT_SOC_600_ETR_CAPS	\
 	(TMC_ETR_SAVE_RESTORE | TMC_ETR_AXI_ARCACHE)
 
-<<<<<<< HEAD
 enum etr_mode {
 	ETR_MODE_FLAT,		/* Uses contiguous flat buffer */
 	ETR_MODE_ETR_SG,	/* Uses in-built TMC ETR SG mechanism */
 	ETR_MODE_CATU,		/* Use SG mechanism in CATU */
-=======
-enum tmc_etr_pcie_path {
-	TMC_ETR_PCIE_SW_PATH,
-	TMC_ETR_PCIE_HW_PATH,
-};
-
-static const char * const str_tmc_etr_pcie_path[] = {
-	[TMC_ETR_PCIE_SW_PATH]	= "sw",
-	[TMC_ETR_PCIE_HW_PATH]	= "hw",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum tmc_etr_out_mode {
 	TMC_ETR_OUT_MODE_NONE,
 	TMC_ETR_OUT_MODE_MEM,
 	TMC_ETR_OUT_MODE_USB,
-<<<<<<< HEAD
-=======
-	TMC_ETR_OUT_MODE_PCIE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const char * const str_tmc_etr_out_mode[] = {
 	[TMC_ETR_OUT_MODE_NONE]		= "none",
 	[TMC_ETR_OUT_MODE_MEM]		= "mem",
 	[TMC_ETR_OUT_MODE_USB]		= "usb",
-<<<<<<< HEAD
-=======
-	[TMC_ETR_OUT_MODE_PCIE]		= "pcie",
-};
-
-struct tmc_etr_ipa_data {
-	struct ipa_qdss_conn_out_params ipa_qdss_out;
-	struct ipa_qdss_conn_in_params  ipa_qdss_in;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct tmc_etr_bam_data {
@@ -239,7 +169,6 @@ struct tmc_etr_bam_data {
 	struct sps_mem_buffer	data_fifo;
 	bool			enable;
 };
-<<<<<<< HEAD
 struct etr_buf_operations;
 
 struct etr_flat_buf {
@@ -251,20 +180,6 @@ struct etr_flat_buf {
 
 /**
  * struct etr_buf - Details of the buffer used by ETR
-=======
-
-enum etr_mode {
-	ETR_MODE_FLAT,		/* Uses contiguous flat buffer */
-	ETR_MODE_ETR_SG,	/* Uses in-built TMC ETR SG mechanism */
-	ETR_MODE_CATU,		/* Use SG mechanism in CATU */
-};
-
-struct etr_buf_operations;
-
-/**
- * struct etr_buf - Details of the buffer used by ETR
- * refcount	; Number of sources currently using this etr_buf.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @mode	: Mode of the ETR buffer, contiguous, Scatter Gather etc.
  * @full	: Trace data overflow
  * @size	: Size of the buffer.
@@ -275,10 +190,6 @@ struct etr_buf_operations;
  * @private	: Backend specific information for the buf
  */
 struct etr_buf {
-<<<<<<< HEAD
-=======
-	refcount_t			refcount;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	enum etr_mode			mode;
 	bool				full;
 	ssize_t				size;
@@ -296,11 +207,6 @@ struct etr_buf {
  * @csdev:	component vitals needed by the framework.
  * @miscdev:	specifics to handle "/dev/xyz.tmc" entry.
  * @spinlock:	only one at a time pls.
-<<<<<<< HEAD
-=======
- * @pid:	Process ID of the process being monitored by the session
- *		that is using this component.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @buf:	Snapshot of the trace data for ETF/ETB.
  * @etr_buf:	details of buffer used in TMC-ETR
  * @len:	size of the available trace for ETF/ETB.
@@ -311,13 +217,6 @@ struct etr_buf {
  * @trigger_cntr: amount of words to store after a trigger.
  * @etr_caps:	Bitmask of capabilities of the TMC ETR, inferred from the
  *		device configuration register (DEVID)
-<<<<<<< HEAD
-=======
- * @idr:	Holds etr_bufs allocated for this ETR.
- * @idr_mutex:	Access serialisation for idr.
- * @sysfs_buf:	SYSFS buffer for ETR.
- * @perf_buf:	PERF buffer for ETR.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct tmc_drvdata {
 	void __iomem		*base;
@@ -325,13 +224,7 @@ struct tmc_drvdata {
 	struct coresight_device	*csdev;
 	struct miscdevice	miscdev;
 	spinlock_t		spinlock;
-<<<<<<< HEAD
 	bool			reading;
-=======
-	pid_t			pid;
-	bool			reading;
-	bool			enable;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	union {
 		char		*buf;		/* TMC ETB */
 		struct etr_buf	*etr_buf;	/* TMC ETR */
@@ -344,7 +237,6 @@ struct tmc_drvdata {
 	struct mutex		mem_lock;
 	u32			trigger_cntr;
 	u32			etr_caps;
-<<<<<<< HEAD
 	struct coresight_csr	*csr;
 	const char		*csr_name;
 	bool			enable;
@@ -356,27 +248,6 @@ struct tmc_drvdata {
 	enum tmc_etr_out_mode	out_mode;
 	struct byte_cntr	*byte_cntr;
 	struct dma_iommu_mapping *iommu_mapping;
-=======
-	u32			delta_bottom;
-	enum tmc_etr_out_mode	out_mode;
-	enum tmc_etr_pcie_path	pcie_path;
-	struct usb_qdss_ch	*usbch;
-	struct tmc_etr_bam_data	*bamdata;
-	bool			sticky_enable;
-	bool			enable_to_bam;
-	struct coresight_cti	*cti_flush;
-	struct coresight_cti	*cti_reset;
-	struct coresight_csr	*csr;
-	const char		*csr_name;
-	struct byte_cntr	*byte_cntr;
-	struct dma_iommu_mapping *iommu_mapping;
-	bool			force_reg_dump;
-	struct idr		idr;
-	struct mutex		idr_mutex;
-	struct etr_buf		*sysfs_buf;
-	struct etr_buf		*perf_buf;
-	struct tmc_etr_ipa_data *ipa_data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct etr_buf_operations {
@@ -425,10 +296,6 @@ void tmc_wait_for_tmcready(struct tmc_drvdata *drvdata);
 void tmc_flush_and_stop(struct tmc_drvdata *drvdata);
 void tmc_enable_hw(struct tmc_drvdata *drvdata);
 void tmc_disable_hw(struct tmc_drvdata *drvdata);
-<<<<<<< HEAD
-=======
-u32 tmc_get_memwidth_mask(struct tmc_drvdata *drvdata);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* ETB/ETF functions */
 int tmc_read_prepare_etb(struct tmc_drvdata *drvdata);
@@ -441,21 +308,15 @@ ssize_t tmc_etb_get_sysfs_trace(struct tmc_drvdata *drvdata,
 /* ETR functions */
 int tmc_read_prepare_etr(struct tmc_drvdata *drvdata);
 int tmc_read_unprepare_etr(struct tmc_drvdata *drvdata);
-<<<<<<< HEAD
 void tmc_free_etr_buf(struct etr_buf *etr_buf);
 void __tmc_etr_disable_to_bam(struct tmc_drvdata *drvdata);
 void tmc_etr_bam_disable(struct tmc_drvdata *drvdata);
 void tmc_etr_enable_hw(struct tmc_drvdata *drvdata);
 void tmc_etr_disable_hw(struct tmc_drvdata *drvdata);
-=======
-void __tmc_etr_disable_to_bam(struct tmc_drvdata *drvdata);
-void tmc_etr_bam_disable(struct tmc_drvdata *drvdata);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void usb_notifier(void *priv, unsigned int event, struct qdss_request *d_req,
 		  struct usb_qdss_ch *ch);
 int tmc_etr_bam_init(struct amba_device *adev,
 		     struct tmc_drvdata *drvdata);
-<<<<<<< HEAD
 extern struct byte_cntr *byte_cntr_init(struct amba_device *adev,
 					struct tmc_drvdata *drvdata);
 extern const struct coresight_ops tmc_etr_cs_ops;
@@ -465,20 +326,6 @@ ssize_t tmc_etr_buf_get_data(struct etr_buf *etr_buf,
 				u64 offset, size_t len, char **bufpp);
 int tmc_etr_switch_mode(struct tmc_drvdata *drvdata, const char *out_mode);
 long tmc_sg_get_rwp_offset(struct tmc_drvdata *drvdata);
-=======
-int tmc_etr_ipa_init(struct amba_device *adev,
-			struct tmc_drvdata *drvdata);
-extern struct byte_cntr *byte_cntr_init(struct amba_device *adev,
-					struct tmc_drvdata *drvdata);
-extern void tmc_etr_free_mem(struct tmc_drvdata *drvdata);
-ssize_t tmc_etr_get_sysfs_trace(struct tmc_drvdata *drvdata,
-				loff_t pos, size_t len, char **bufpp);
-
-ssize_t tmc_etr_buf_get_data(struct etr_buf *etr_buf,
-			u64 offset, size_t len, char **bufpp);
-extern const struct coresight_ops tmc_etr_cs_ops;
-int tmc_etr_switch_mode(struct tmc_drvdata *drvdata, const char *out_mode);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define TMC_REG_PAIR(name, lo_off, hi_off)				\
 static inline u64							\

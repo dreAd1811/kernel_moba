@@ -1805,11 +1805,7 @@ static struct ioc_iommu ioc_iommu_info[] __initdata = {
 	{ SX2000_IOC_ID, "sx2000", NULL },
 };
 
-<<<<<<< HEAD
 static void __init ioc_init(unsigned long hpa, struct ioc *ioc)
-=======
-static void ioc_init(unsigned long hpa, struct ioc *ioc)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ioc_iommu *info;
 
@@ -1849,12 +1845,6 @@ static void ioc_init(unsigned long hpa, struct ioc *ioc)
 	ioc_resource_init(ioc);
 	ioc_sac_init(ioc);
 
-<<<<<<< HEAD
-=======
-	if ((long) ~iovp_mask > (long) ia64_max_iommu_merge_mask)
-		ia64_max_iommu_merge_mask = ~iovp_mask;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	printk(KERN_INFO PFX
 		"%s %d.%d HPA 0x%lx IOVA space %dMb at 0x%lx\n",
 		ioc->name, (ioc->rev >> 4) & 0xF, ioc->rev & 0xF,
@@ -1949,22 +1939,6 @@ static const struct seq_operations ioc_seq_ops = {
 	.show  = ioc_show
 };
 
-<<<<<<< HEAD
-=======
-static int
-ioc_open(struct inode *inode, struct file *file)
-{
-	return seq_open(file, &ioc_seq_ops);
-}
-
-static const struct file_operations ioc_fops = {
-	.open    = ioc_open,
-	.read    = seq_read,
-	.llseek  = seq_lseek,
-	.release = seq_release
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void __init
 ioc_proc_init(void)
 {
@@ -1974,11 +1948,7 @@ ioc_proc_init(void)
 	if (!dir)
 		return;
 
-<<<<<<< HEAD
 	proc_create_seq(ioc_list->name, 0, dir, &ioc_seq_ops);
-=======
-	proc_create(ioc_list->name, 0, dir, &ioc_fops);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #endif
 
@@ -2032,11 +2002,7 @@ sba_map_ioc_to_node(struct ioc *ioc, acpi_handle handle)
 #endif
 }
 
-<<<<<<< HEAD
 static void __init acpi_sba_ioc_add(struct ioc *ioc)
-=======
-static void acpi_sba_ioc_add(struct ioc *ioc)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	acpi_handle handle = ioc->handle;
 	acpi_status status;

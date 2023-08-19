@@ -134,11 +134,7 @@ static struct mbox_chan *bcm2835_mbox_index_xlate(struct mbox_controller *mbox,
 		    const struct of_phandle_args *sp)
 {
 	if (sp->args_count != 0)
-<<<<<<< HEAD
 		return ERR_PTR(-EINVAL);
-=======
-		return NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return &mbox->chans[0];
 }

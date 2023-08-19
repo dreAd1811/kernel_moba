@@ -185,11 +185,7 @@ static int sram_reserve_regions(struct sram_dev *sram, struct resource *res)
 	 * after the reserved blocks from the dt are processed.
 	 */
 	nblocks = (np) ? of_get_available_child_count(np) + 1 : 1;
-<<<<<<< HEAD
 	rblocks = kcalloc(nblocks, sizeof(*rblocks), GFP_KERNEL);
-=======
-	rblocks = kzalloc((nblocks) * sizeof(*rblocks), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!rblocks)
 		return -ENOMEM;
 
@@ -268,13 +264,8 @@ static int sram_reserve_regions(struct sram_dev *sram, struct resource *res)
 	list_sort(NULL, &reserve_list, sram_reserve_cmp);
 
 	if (exports) {
-<<<<<<< HEAD
 		sram->partition = devm_kcalloc(sram->dev,
 				       exports, sizeof(*sram->partition),
-=======
-		sram->partition = devm_kzalloc(sram->dev,
-				       exports * sizeof(*sram->partition),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       GFP_KERNEL);
 		if (!sram->partition) {
 			ret = -ENOMEM;

@@ -19,10 +19,7 @@ Video4Linux devices
     v4l2-mc
     v4l2-mediabus
     v4l2-mem2mem
-<<<<<<< HEAD
     v4l2-async
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     v4l2-fwnode
     v4l2-rect
     v4l2-tuner

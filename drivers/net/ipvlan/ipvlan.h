@@ -74,10 +74,7 @@ struct ipvl_dev {
 	DECLARE_BITMAP(mac_filters, IPVLAN_MAC_FILTER_SIZE);
 	netdev_features_t	sfeatures;
 	u32			msg_enable;
-<<<<<<< HEAD
 	spinlock_t		addrs_lock;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct ipvl_addr {
@@ -100,10 +97,7 @@ struct ipvl_port {
 	struct hlist_head	hlhead[IPVLAN_HASH_SIZE];
 	struct list_head	ipvlans;
 	u16			mode;
-<<<<<<< HEAD
 	u16			flags;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16			dev_id_start;
 	struct work_struct	wq;
 	struct sk_buff_head	backlog;
@@ -131,7 +125,6 @@ static inline struct ipvl_port *ipvlan_port_get_rtnl(const struct net_device *d)
 	return rtnl_dereference(d->rx_handler_data);
 }
 
-<<<<<<< HEAD
 static inline bool ipvlan_is_private(const struct ipvl_port *port)
 {
 	return !!(port->flags & IPVLAN_F_PRIVATE);
@@ -162,8 +155,6 @@ static inline void ipvlan_clear_vepa(struct ipvl_port *port)
 	port->flags &= ~IPVLAN_F_VEPA;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void ipvlan_init_secret(void);
 unsigned int ipvlan_mac_hash(const unsigned char *addr);
 rx_handler_result_t ipvlan_handle_frame(struct sk_buff **pskb);
@@ -186,13 +177,10 @@ int ipvlan_link_new(struct net *src_net, struct net_device *dev,
 void ipvlan_link_delete(struct net_device *dev, struct list_head *head);
 void ipvlan_link_setup(struct net_device *dev);
 int ipvlan_link_register(struct rtnl_link_ops *ops);
-<<<<<<< HEAD
 
 static inline bool netif_is_ipvlan_port(const struct net_device *dev)
 {
 	return rcu_access_pointer(dev->rx_handler) == ipvlan_handle_frame;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __IPVLAN_H */

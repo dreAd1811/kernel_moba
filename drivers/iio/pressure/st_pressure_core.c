@@ -280,7 +280,6 @@ static const struct st_sensor_settings st_press_sensors_settings[] = {
 			.mask = 0x04,
 		},
 		.drdy_irq = {
-<<<<<<< HEAD
 			.int1 = {
 				.addr = 0x22,
 				.mask = 0x04,
@@ -295,27 +294,15 @@ static const struct st_sensor_settings st_press_sensors_settings[] = {
 			},
 			.addr_ihl = 0x22,
 			.mask_ihl = 0x80,
-=======
-			.addr = 0x22,
-			.mask_int1 = 0x04,
-			.mask_int2 = 0x20,
-			.addr_ihl = 0x22,
-			.mask_ihl = 0x80,
-			.addr_od = 0x22,
-			.mask_od = 0x40,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.stat_drdy = {
 				.addr = ST_SENSORS_DEFAULT_STAT_ADDR,
 				.mask = 0x03,
 			},
 		},
-<<<<<<< HEAD
 		.sim = {
 			.addr = 0x20,
 			.value = BIT(0),
 		},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.multi_read_bit = true,
 		.bootime = 2,
 	},
@@ -362,14 +349,9 @@ static const struct st_sensor_settings st_press_sensors_settings[] = {
 			.addr = 0x20,
 			.mask = 0x04,
 		},
-<<<<<<< HEAD
 		.sim = {
 			.addr = 0x20,
 			.value = BIT(0),
-=======
-		.drdy_irq = {
-			.addr = 0,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		},
 		.multi_read_bit = true,
 		.bootime = 2,
@@ -421,7 +403,6 @@ static const struct st_sensor_settings st_press_sensors_settings[] = {
 			.mask = 0x04,
 		},
 		.drdy_irq = {
-<<<<<<< HEAD
 			.int1 = {
 				.addr = 0x23,
 				.mask = 0x01,
@@ -430,27 +411,15 @@ static const struct st_sensor_settings st_press_sensors_settings[] = {
 			},
 			.addr_ihl = 0x22,
 			.mask_ihl = 0x80,
-=======
-			.addr = 0x23,
-			.mask_int1 = 0x01,
-			.mask_int2 = 0x00,
-			.addr_ihl = 0x22,
-			.mask_ihl = 0x80,
-			.addr_od = 0x22,
-			.mask_od = 0x40,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.stat_drdy = {
 				.addr = ST_SENSORS_DEFAULT_STAT_ADDR,
 				.mask = 0x03,
 			},
 		},
-<<<<<<< HEAD
 		.sim = {
 			.addr = 0x20,
 			.value = BIT(0),
 		},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.multi_read_bit = true,
 		.bootime = 2,
 	},
@@ -464,11 +433,8 @@ static const struct st_sensor_settings st_press_sensors_settings[] = {
 		.wai_addr = ST_SENSORS_DEFAULT_WAI_ADDRESS,
 		.sensors_supported = {
 			[0] = LPS22HB_PRESS_DEV_NAME,
-<<<<<<< HEAD
 			[1] = LPS33HW_PRESS_DEV_NAME,
 			[2] = LPS35HW_PRESS_DEV_NAME,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		},
 		.ch = (struct iio_chan_spec *)st_press_lps22hb_channels,
 		.num_ch = ARRAY_SIZE(st_press_lps22hb_channels),
@@ -506,7 +472,6 @@ static const struct st_sensor_settings st_press_sensors_settings[] = {
 			.mask = 0x02,
 		},
 		.drdy_irq = {
-<<<<<<< HEAD
 			.int1 = {
 				.addr = 0x12,
 				.mask = 0x04,
@@ -515,27 +480,15 @@ static const struct st_sensor_settings st_press_sensors_settings[] = {
 			},
 			.addr_ihl = 0x12,
 			.mask_ihl = 0x80,
-=======
-			.addr = 0x12,
-			.mask_int1 = 0x04,
-			.mask_int2 = 0x00,
-			.addr_ihl = 0x12,
-			.mask_ihl = 0x80,
-			.addr_od = 0x12,
-			.mask_od = 0x40,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.stat_drdy = {
 				.addr = ST_SENSORS_DEFAULT_STAT_ADDR,
 				.mask = 0x03,
 			},
 		},
-<<<<<<< HEAD
 		.sim = {
 			.addr = 0x10,
 			.value = BIT(0),
 		},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.multi_read_bit = false,
 		.bootime = 2,
 	},
@@ -627,10 +580,6 @@ static const struct attribute_group st_press_attribute_group = {
 };
 
 static const struct iio_info press_info = {
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.attrs = &st_press_attribute_group,
 	.read_raw = &st_press_read_raw,
 	.write_raw = &st_press_write_raw,
@@ -639,10 +588,6 @@ static const struct iio_info press_info = {
 
 #ifdef CONFIG_IIO_TRIGGER
 static const struct iio_trigger_ops st_press_trigger_ops = {
-<<<<<<< HEAD
-=======
-	.owner = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.set_trigger_state = ST_PRESS_TRIGGER_SET_STATE,
 	.validate_device = st_sensors_validate_device,
 };
@@ -691,12 +636,8 @@ int st_press_common_probe(struct iio_dev *indio_dev)
 	press_data->odr = press_data->sensor_settings->odr.odr_avl[0].hz;
 
 	/* Some devices don't support a data ready pin. */
-<<<<<<< HEAD
 	if (!pdata && (press_data->sensor_settings->drdy_irq.int1.addr ||
 		       press_data->sensor_settings->drdy_irq.int2.addr))
-=======
-	if (!pdata && press_data->sensor_settings->drdy_irq.addr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pdata =	(struct st_sensors_platform_data *)&default_press_pdata;
 
 	err = st_sensors_init_sensor(indio_dev, pdata);

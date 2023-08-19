@@ -27,11 +27,7 @@ a Linux system will eventually read the clock source to determine exactly
 what time it is.
 
 Typically the clock source is a monotonic, atomic counter which will provide
-<<<<<<< HEAD
 n bits which count from 0 to (2^n)-1 and then wraps around to 0 and start over.
-=======
-n bits which count from 0 to 2^(n-1) and then wraps around to 0 and start over.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 It will ideally NEVER stop ticking as long as the system is running. It
 may stop during system suspend.
 

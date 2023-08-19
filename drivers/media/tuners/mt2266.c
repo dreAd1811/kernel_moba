@@ -20,11 +20,7 @@
 #include <linux/i2c.h>
 #include <linux/slab.h>
 
-<<<<<<< HEAD
 #include <media/dvb_frontend.h>
-=======
-#include "dvb_frontend.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "mt2266.h"
 
 #define I2C_ADDRESS 0x60
@@ -308,17 +304,10 @@ static void mt2266_release(struct dvb_frontend *fe)
 
 static const struct dvb_tuner_ops mt2266_tuner_ops = {
 	.info = {
-<<<<<<< HEAD
 		.name              = "Microtune MT2266",
 		.frequency_min_hz  = 174 * MHz,
 		.frequency_max_hz  = 862 * MHz,
 		.frequency_step_hz =  50 * kHz,
-=======
-		.name           = "Microtune MT2266",
-		.frequency_min  = 174000000,
-		.frequency_max  = 862000000,
-		.frequency_step =     50000,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.release       = mt2266_release,
 	.init          = mt2266_init,

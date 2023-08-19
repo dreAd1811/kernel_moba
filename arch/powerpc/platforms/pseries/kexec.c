@@ -23,16 +23,12 @@
 
 void pseries_kexec_cpu_down(int crash_shutdown, int secondary)
 {
-<<<<<<< HEAD
 	/*
 	 * Don't risk a hypervisor call if we're crashing
 	 * XXX: Why? The hypervisor is not crashing. It might be better
 	 * to at least attempt unregister to avoid the hypervisor stepping
 	 * on our memory.
 	 */
-=======
-	/* Don't risk a hypervisor call if we're crashing */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (firmware_has_feature(FW_FEATURE_SPLPAR) && !crash_shutdown) {
 		int ret;
 		int cpu = smp_processor_id();
@@ -61,17 +57,11 @@ void pseries_kexec_cpu_down(int crash_shutdown, int secondary)
 		}
 	}
 
-<<<<<<< HEAD
 	if (xive_enabled()) {
 		xive_teardown_cpu();
 
 		if (!secondary)
 			xive_shutdown();
 	} else
-=======
-	if (xive_enabled())
-		xive_kexec_teardown_cpu(secondary);
-	else
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		xics_kexec_teardown_cpu(secondary);
 }

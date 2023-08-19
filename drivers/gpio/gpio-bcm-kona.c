@@ -17,11 +17,7 @@
 #include <linux/bitops.h>
 #include <linux/err.h>
 #include <linux/io.h>
-<<<<<<< HEAD
 #include <linux/gpio/driver.h>
-=======
-#include <linux/gpio.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/of_device.h>
 #include <linux/of_irq.h>
 #include <linux/init.h>
@@ -131,11 +127,7 @@ static int bcm_kona_gpio_get_dir(struct gpio_chip *chip, unsigned gpio)
 	u32 val;
 
 	val = readl(reg_base + GPIO_CONTROL(gpio)) & GPIO_GPCTR0_IOTR_MASK;
-<<<<<<< HEAD
 	return !!val;
-=======
-	return val ? GPIOF_DIR_IN : GPIOF_DIR_OUT;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void bcm_kona_gpio_set(struct gpio_chip *chip, unsigned gpio, int value)
@@ -152,11 +144,7 @@ static void bcm_kona_gpio_set(struct gpio_chip *chip, unsigned gpio, int value)
 	raw_spin_lock_irqsave(&kona_gpio->lock, flags);
 
 	/* this function only applies to output pin */
-<<<<<<< HEAD
 	if (bcm_kona_gpio_get_dir(chip, gpio) == 1)
-=======
-	if (bcm_kona_gpio_get_dir(chip, gpio) == GPIOF_DIR_IN)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out;
 
 	reg_offset = value ? GPIO_OUT_SET(bank_id) : GPIO_OUT_CLEAR(bank_id);
@@ -182,11 +170,7 @@ static int bcm_kona_gpio_get(struct gpio_chip *chip, unsigned gpio)
 	reg_base = kona_gpio->reg_base;
 	raw_spin_lock_irqsave(&kona_gpio->lock, flags);
 
-<<<<<<< HEAD
 	if (bcm_kona_gpio_get_dir(chip, gpio) == 1)
-=======
-	if (bcm_kona_gpio_get_dir(chip, gpio) == GPIOF_DIR_IN)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg_offset = GPIO_IN_STATUS(bank_id);
 	else
 		reg_offset = GPIO_OUT_STATUS(bank_id);
@@ -501,7 +485,6 @@ static void bcm_kona_gpio_irq_handler(struct irq_desc *desc)
 static int bcm_kona_gpio_irq_reqres(struct irq_data *d)
 {
 	struct bcm_kona_gpio *kona_gpio = irq_data_get_irq_chip_data(d);
-<<<<<<< HEAD
 	int ret;
 
 	ret = gpiochip_lock_as_irq(&kona_gpio->gpio_chip, d->hwirq);
@@ -510,14 +493,6 @@ static int bcm_kona_gpio_irq_reqres(struct irq_data *d)
 			"unable to lock HW IRQ %lu for IRQ\n",
 			d->hwirq);
 		return ret;
-=======
-
-	if (gpiochip_lock_as_irq(&kona_gpio->gpio_chip, d->hwirq)) {
-		dev_err(kona_gpio->gpio_chip.parent,
-			"unable to lock HW IRQ %lu for IRQ\n",
-			d->hwirq);
-		return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return 0;
 }
@@ -549,10 +524,7 @@ static struct of_device_id const bcm_kona_gpio_of_match[] = {
  * category than their parents, so it won't report false recursion.
  */
 static struct lock_class_key gpio_lock_class;
-<<<<<<< HEAD
 static struct lock_class_key gpio_request_class;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int bcm_kona_gpio_irq_map(struct irq_domain *d, unsigned int irq,
 				 irq_hw_number_t hwirq)
@@ -562,11 +534,7 @@ static int bcm_kona_gpio_irq_map(struct irq_domain *d, unsigned int irq,
 	ret = irq_set_chip_data(irq, d->host_data);
 	if (ret < 0)
 		return ret;
-<<<<<<< HEAD
 	irq_set_lockdep_class(irq, &gpio_lock_class, &gpio_request_class);
-=======
-	irq_set_lockdep_class(irq, &gpio_lock_class);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	irq_set_chip_and_handler(irq, &bcm_gpio_irq_chip, handle_simple_irq);
 	irq_set_noprobe(irq);
 
@@ -635,16 +603,10 @@ static int bcm_kona_gpio_probe(struct platform_device *pdev)
 			GPIO_MAX_BANK_NUM);
 		return -ENXIO;
 	}
-<<<<<<< HEAD
 	kona_gpio->banks = devm_kcalloc(dev,
 					kona_gpio->num_bank,
 					sizeof(*kona_gpio->banks),
 					GFP_KERNEL);
-=======
-	kona_gpio->banks = devm_kzalloc(dev,
-					kona_gpio->num_bank *
-					sizeof(*kona_gpio->banks), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!kona_gpio->banks)
 		return -ENOMEM;
 

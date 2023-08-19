@@ -375,11 +375,7 @@
 #define PIN_PB22__GPIO			PINMUX_PIN(PIN_PB22, 0, 0)
 #define PIN_PB22__LCDDAT11		PINMUX_PIN(PIN_PB22, 1, 1)
 #define PIN_PB22__A11			PINMUX_PIN(PIN_PB22, 2, 1)
-<<<<<<< HEAD
 #define PIN_PB22__TD0			PINMUX_PIN(PIN_PB22, 3, 1)
-=======
-#define PIN_PB22__TDO			PINMUX_PIN(PIN_PB22, 3, 1)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define PIN_PB22__TIOA2			PINMUX_PIN(PIN_PB22, 4, 2)
 #define PIN_PB22__FLEXCOM3_IO1		PINMUX_PIN(PIN_PB22, 5, 3)
 #define PIN_PB22__GMDC			PINMUX_PIN(PIN_PB22, 6, 3)
@@ -560,11 +556,7 @@
 #define PIN_PC14__LCDDAT6		PINMUX_PIN(PIN_PC14, 1, 2)
 #define PIN_PC14__GRX0			PINMUX_PIN(PIN_PC14, 2, 1)
 #define PIN_PC14__ISC_D5		PINMUX_PIN(PIN_PC14, 3, 1)
-<<<<<<< HEAD
 #define PIN_PC14__TD0			PINMUX_PIN(PIN_PC14, 5, 2)
-=======
-#define PIN_PC14__TDO			PINMUX_PIN(PIN_PC14, 5, 2)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define PIN_PC14__A3			PINMUX_PIN(PIN_PC14, 6, 2)
 #define PIN_PC15			79
 #define PIN_PC15__GPIO			PINMUX_PIN(PIN_PC15, 0, 0)

@@ -51,13 +51,9 @@ static unsigned int rx_weight = 64;
 module_param(rx_weight, uint, 0644);
 MODULE_PARM_DESC(rx_weight, "Number Rx packets for NAPI budget (default=64)");
 
-<<<<<<< HEAD
 #define HINIC_DEV_ID_QUAD_PORT_25GE     0x1822
 #define HINIC_DEV_ID_DUAL_PORT_25GE     0x0200
 #define HINIC_DEV_ID_DUAL_PORT_100GE    0x0201
-=======
-#define PCI_DEVICE_ID_HI1822_PF         0x1822
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define HINIC_WQ_NAME                   "hinic_dev"
 
@@ -479,10 +475,7 @@ static int hinic_close(struct net_device *netdev)
 {
 	struct hinic_dev *nic_dev = netdev_priv(netdev);
 	unsigned int flags;
-<<<<<<< HEAD
 	int err;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	down(&nic_dev->mgmt_lock);
 
@@ -496,7 +489,6 @@ static int hinic_close(struct net_device *netdev)
 
 	up(&nic_dev->mgmt_lock);
 
-<<<<<<< HEAD
 	err = hinic_port_set_func_state(nic_dev, HINIC_FUNC_PORT_DISABLE);
 	if (err) {
 		netif_err(nic_dev, drv, netdev,
@@ -511,11 +503,6 @@ static int hinic_close(struct net_device *netdev)
 		nic_dev->flags |= (flags & HINIC_INTF_UP);
 		return err;
 	}
-=======
-	hinic_port_set_state(nic_dev, HINIC_PORT_DISABLE);
-
-	hinic_port_set_func_state(nic_dev, HINIC_FUNC_PORT_DISABLE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	free_rxqs(nic_dev);
 	free_txqs(nic_dev);
@@ -613,12 +600,9 @@ static int add_mac_addr(struct net_device *netdev, const u8 *addr)
 	u16 vid = 0;
 	int err;
 
-<<<<<<< HEAD
 	if (!is_valid_ether_addr(addr))
 		return -EADDRNOTAVAIL;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	netif_info(nic_dev, drv, netdev, "set mac addr = %02x %02x %02x %02x %02x %02x\n",
 		   addr[0], addr[1], addr[2], addr[3], addr[4], addr[5]);
 
@@ -742,10 +726,6 @@ static void set_rx_mode(struct work_struct *work)
 {
 	struct hinic_rx_mode_work *rx_mode_work = work_to_rx_mode_work(work);
 	struct hinic_dev *nic_dev = rx_mode_work_to_nic_dev(rx_mode_work);
-<<<<<<< HEAD
-=======
-	struct netdev_hw_addr *ha;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	netif_info(nic_dev, drv, nic_dev->netdev, "set rx mode work\n");
 
@@ -753,12 +733,6 @@ static void set_rx_mode(struct work_struct *work)
 
 	__dev_uc_sync(nic_dev->netdev, add_mac_addr, remove_mac_addr);
 	__dev_mc_sync(nic_dev->netdev, add_mac_addr, remove_mac_addr);
-<<<<<<< HEAD
-=======
-
-	netdev_for_each_mc_addr(ha, nic_dev->netdev)
-		add_mac_addr(nic_dev->netdev, ha->addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void hinic_set_rx_mode(struct net_device *netdev)
@@ -815,26 +789,6 @@ static void hinic_get_stats64(struct net_device *netdev,
 	stats->tx_errors  = nic_tx_stats->tx_dropped;
 }
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_NET_POLL_CONTROLLER
-static void hinic_netpoll(struct net_device *netdev)
-{
-	struct hinic_dev *nic_dev = netdev_priv(netdev);
-	int i, num_qps;
-
-	num_qps = hinic_hwdev_num_qps(nic_dev->hwdev);
-	for (i = 0; i < num_qps; i++) {
-		struct hinic_txq *txq = &nic_dev->txqs[i];
-		struct hinic_rxq *rxq = &nic_dev->rxqs[i];
-
-		napi_schedule(&txq->napi);
-		napi_schedule(&rxq->napi);
-	}
-}
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct net_device_ops hinic_netdev_ops = {
 	.ndo_open = hinic_open,
 	.ndo_stop = hinic_close,
@@ -847,12 +801,6 @@ static const struct net_device_ops hinic_netdev_ops = {
 	.ndo_start_xmit = hinic_xmit_frame,
 	.ndo_tx_timeout = hinic_tx_timeout,
 	.ndo_get_stats64 = hinic_get_stats64,
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_NET_POLL_CONTROLLER
-	.ndo_poll_controller = hinic_netpoll,
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void netdev_features_init(struct net_device *netdev)
@@ -1132,13 +1080,9 @@ static void hinic_remove(struct pci_dev *pdev)
 }
 
 static const struct pci_device_id hinic_pci_table[] = {
-<<<<<<< HEAD
 	{ PCI_VDEVICE(HUAWEI, HINIC_DEV_ID_QUAD_PORT_25GE), 0},
 	{ PCI_VDEVICE(HUAWEI, HINIC_DEV_ID_DUAL_PORT_25GE), 0},
 	{ PCI_VDEVICE(HUAWEI, HINIC_DEV_ID_DUAL_PORT_100GE), 0},
-=======
-	{ PCI_VDEVICE(HUAWEI, PCI_DEVICE_ID_HI1822_PF), 0},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ 0, 0}
 };
 MODULE_DEVICE_TABLE(pci, hinic_pci_table);

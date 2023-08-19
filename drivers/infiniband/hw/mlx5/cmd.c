@@ -32,7 +32,6 @@
 
 #include "cmd.h"
 
-<<<<<<< HEAD
 int mlx5_cmd_dump_fill_mkey(struct mlx5_core_dev *dev, u32 *mkey)
 {
 	u32 out[MLX5_ST_SZ_DW(query_special_contexts_out)] = {0};
@@ -48,8 +47,6 @@ int mlx5_cmd_dump_fill_mkey(struct mlx5_core_dev *dev, u32 *mkey)
 	return err;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int mlx5_cmd_null_mkey(struct mlx5_core_dev *dev, u32 *null_mkey)
 {
 	u32 out[MLX5_ST_SZ_DW(query_special_contexts_out)] = {};
@@ -65,20 +62,6 @@ int mlx5_cmd_null_mkey(struct mlx5_core_dev *dev, u32 *null_mkey)
 	return err;
 }
 
-<<<<<<< HEAD
-=======
-int mlx5_cmd_query_cong_counter(struct mlx5_core_dev *dev,
-				bool reset, void *out, int out_size)
-{
-	u32 in[MLX5_ST_SZ_DW(query_cong_statistics_in)] = { };
-
-	MLX5_SET(query_cong_statistics_in, in, opcode,
-		 MLX5_CMD_OP_QUERY_CONG_STATISTICS);
-	MLX5_SET(query_cong_statistics_in, in, clear, reset);
-	return mlx5_cmd_exec(dev, in, sizeof(in), out, out_size);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int mlx5_cmd_query_cong_params(struct mlx5_core_dev *dev, int cong_point,
 			       void *out, int out_size)
 {
@@ -98,7 +81,6 @@ int mlx5_cmd_modify_cong_params(struct mlx5_core_dev *dev,
 
 	return mlx5_cmd_exec(dev, in, in_size, out, sizeof(out));
 }
-<<<<<<< HEAD
 
 int mlx5_cmd_alloc_memic(struct mlx5_memic *memic, phys_addr_t *addr,
 			  u64 length, u32 alignment)
@@ -215,5 +197,3 @@ int mlx5_cmd_query_ext_ppcnt_counters(struct mlx5_core_dev *dev, void *out)
 	return  mlx5_core_access_reg(dev, in, sz, out, sz, MLX5_REG_PPCNT,
 				     0, 0);
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

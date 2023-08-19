@@ -53,18 +53,12 @@
 	};
 };
 
-<<<<<<< HEAD
 &emac {
 	/* LEDs changed to active high on the plus */
 	/delete-property/ allwinner,leds-active-low;
 };
 
 &mmc1 {
-=======
-&mmc1 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&mmc1_pins_a>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vmmc-supply = <&reg_vcc3v3>;
 	bus-width = <4>;
 	non-removable;

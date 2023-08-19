@@ -16,7 +16,6 @@ Description:
                 the motion sensor is placed. For example, in a laptop a motion
                 sensor can be located on the base or on the lid. Current valid
 		values are 'base' and 'lid'.
-<<<<<<< HEAD
 
 What:		/sys/bus/iio/devices/iio:deviceX/id
 Date:		Septembre 2017
@@ -27,5 +26,3 @@ Description:
 		driver and represents the sensor ID as exposed by the EC. This
 		ID is used by the Android sensor service hardware abstraction
 		layer (sensor HAL) through the Android container on ChromeOS.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

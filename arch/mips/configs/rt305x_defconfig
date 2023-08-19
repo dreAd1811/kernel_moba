@@ -76,10 +76,6 @@ CONFIG_VLAN_8021Q=y
 CONFIG_NET_SCHED=y
 CONFIG_HAMRADIO=y
 CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
-<<<<<<< HEAD
-=======
-# CONFIG_FIRMWARE_IN_KERNEL is not set
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 CONFIG_MTD=y
 CONFIG_MTD_CMDLINE_PARTS=y
 CONFIG_MTD_BLOCK=y

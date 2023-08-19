@@ -26,11 +26,7 @@
 #include <linux/mfd/max77693.h>
 #include <linux/mfd/max77693-common.h>
 #include <linux/mfd/max77693-private.h>
-<<<<<<< HEAD
 #include <linux/extcon-provider.h>
-=======
-#include <linux/extcon.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/regmap.h>
 #include <linux/irqdomain.h>
 
@@ -270,11 +266,7 @@ static int max77693_muic_set_debounce_time(struct max77693_muic_info *info,
 static int max77693_muic_set_path(struct max77693_muic_info *info,
 		u8 val, bool attached)
 {
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int ctrl1, ctrl2 = 0;
 
 	if (attached)

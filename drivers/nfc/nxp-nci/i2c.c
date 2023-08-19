@@ -236,15 +236,8 @@ static irqreturn_t nxp_nci_i2c_irq_thread_fn(int irq, void *phy_id)
 
 	if (r == -EREMOTEIO) {
 		phy->hard_fault = r;
-<<<<<<< HEAD
 		skb = NULL;
 	} else if (r < 0) {
-=======
-		if (info->mode == NXP_NCI_MODE_FW)
-			nxp_nci_fw_recv_frame(phy->ndev, NULL);
-	}
-	if (r < 0) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		nfc_err(&client->dev, "Read failed with error %d\n", r);
 		goto exit_irq_handled;
 	}
@@ -400,11 +393,7 @@ static int nxp_nci_i2c_remove(struct i2c_client *client)
 	return 0;
 }
 
-<<<<<<< HEAD
 static const struct i2c_device_id nxp_nci_i2c_id_table[] = {
-=======
-static struct i2c_device_id nxp_nci_i2c_id_table[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{"nxp-nci_i2c", 0},
 	{}
 };

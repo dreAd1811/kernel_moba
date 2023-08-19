@@ -395,7 +395,6 @@
 	dr_mode = "host";
 };
 
-<<<<<<< HEAD
 &omap_dwc3_2 {
 	extcon = <&extcon_usb2>;
 };
@@ -403,10 +402,6 @@
 &usb2 {
 	extcon = <&extcon_usb2>;
 	dr_mode = "otg";
-=======
-&usb2 {
-	dr_mode = "peripheral";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &mmc1 {
@@ -421,17 +416,11 @@
 &mmc2 {
 	status = "okay";
 	vmmc-supply = <&v3_3d>;
-<<<<<<< HEAD
 	vqmmc-supply = <&v3_3d>;
 	bus-width = <8>;
 	non-removable;
 	max-frequency = <96000000>;
 	no-1-8-v;
-=======
-	bus-width = <8>;
-	ti,non-removable;
-	max-frequency = <96000000>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &dcan1 {

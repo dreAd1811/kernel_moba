@@ -139,17 +139,9 @@ static struct clk *clk_reg_sysctrl(struct device *dev,
 		return ERR_PTR(-EINVAL);
 	}
 
-<<<<<<< HEAD
 	clk = devm_kzalloc(dev, sizeof(*clk), GFP_KERNEL);
 	if (!clk)
 		return ERR_PTR(-ENOMEM);
-=======
-	clk = devm_kzalloc(dev, sizeof(struct clk_sysctrl), GFP_KERNEL);
-	if (!clk) {
-		dev_err(dev, "clk_sysctrl: could not allocate clk\n");
-		return ERR_PTR(-ENOMEM);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* set main clock registers */
 	clk->reg_sel[0] = reg_sel[0];

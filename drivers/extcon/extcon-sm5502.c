@@ -19,11 +19,7 @@
 #include <linux/platform_device.h>
 #include <linux/regmap.h>
 #include <linux/slab.h>
-<<<<<<< HEAD
 #include <linux/extcon-provider.h>
-=======
-#include <linux/extcon.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "extcon-sm5502.h"
 
@@ -73,13 +69,6 @@ struct sm5502_muic_info {
 /* Default value of SM5502 register to bring up MUIC device. */
 static struct reg_data sm5502_reg_data[] = {
 	{
-<<<<<<< HEAD
-=======
-		.reg = SM5502_REG_RESET,
-		.val = SM5502_REG_RESET_MASK,
-		.invert = true,
-	}, {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.reg = SM5502_REG_CONTROL,
 		.val = SM5502_REG_CONTROL_MASK_INT_MASK,
 		.invert = false,

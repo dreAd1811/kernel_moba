@@ -10,10 +10,6 @@
 #include <linux/sched/task_stack.h>
 #include <linux/thread_info.h>
 
-<<<<<<< HEAD
-=======
-#include <asm/compat.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/cpufeature.h>
 
 static void ssbd_ssbs_enable(struct task_struct *task)

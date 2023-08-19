@@ -291,7 +291,6 @@ err:
 	return ret;
 }
 
-<<<<<<< HEAD
 static int msi001_standby(struct v4l2_subdev *sd)
 {
 	struct msi001_dev *dev = sd_to_msi001_dev(sd);
@@ -299,28 +298,6 @@ static int msi001_standby(struct v4l2_subdev *sd)
 	return msi001_wreg(dev, 0x000000);
 }
 
-=======
-static int msi001_s_power(struct v4l2_subdev *sd, int on)
-{
-	struct msi001_dev *dev = sd_to_msi001_dev(sd);
-	struct spi_device *spi = dev->spi;
-	int ret;
-
-	dev_dbg(&spi->dev, "on=%d\n", on);
-
-	if (on)
-		ret = 0;
-	else
-		ret = msi001_wreg(dev, 0x000000);
-
-	return ret;
-}
-
-static const struct v4l2_subdev_core_ops msi001_core_ops = {
-	.s_power                  = msi001_s_power,
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int msi001_g_tuner(struct v4l2_subdev *sd, struct v4l2_tuner *v)
 {
 	struct msi001_dev *dev = sd_to_msi001_dev(sd);
@@ -396,10 +373,7 @@ static int msi001_enum_freq_bands(struct v4l2_subdev *sd,
 }
 
 static const struct v4l2_subdev_tuner_ops msi001_tuner_ops = {
-<<<<<<< HEAD
 	.standby                  = msi001_standby,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.g_tuner                  = msi001_g_tuner,
 	.s_tuner                  = msi001_s_tuner,
 	.g_frequency              = msi001_g_frequency,
@@ -408,10 +382,6 @@ static const struct v4l2_subdev_tuner_ops msi001_tuner_ops = {
 };
 
 static const struct v4l2_subdev_ops msi001_ops = {
-<<<<<<< HEAD
-=======
-	.core                     = &msi001_core_ops,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.tuner                    = &msi001_tuner_ops,
 };
 

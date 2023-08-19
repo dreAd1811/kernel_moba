@@ -30,7 +30,6 @@ config CLK_BCM_CYGNUS
 	help
 	  Enable common clock framework support for the Broadcom Cygnus SoC
 
-<<<<<<< HEAD
 config CLK_BCM_HR2
 	bool "Broadcom Hurricane 2 clock support"
 	depends on ARCH_BCM_HR2 || COMPILE_TEST
@@ -40,8 +39,6 @@ config CLK_BCM_HR2
 	  Enable common clock framework support for the Broadcom Hurricane 2
 	  SoC
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config CLK_BCM_NSP
 	bool "Broadcom Northstar/Northstar Plus clock support"
 	depends on ARCH_BCM_5301X || ARCH_BCM_NSP || COMPILE_TEST

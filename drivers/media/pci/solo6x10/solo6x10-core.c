@@ -47,7 +47,6 @@ MODULE_PARM_DESC(full_eeprom, "Allow access to full 128B EEPROM (dangerous)");
 
 static void solo_set_time(struct solo_dev *solo_dev)
 {
-<<<<<<< HEAD
 	struct timespec64 ts;
 
 	ktime_get_ts64(&ts);
@@ -55,24 +54,12 @@ static void solo_set_time(struct solo_dev *solo_dev)
 	/* no overflow because we use monotonic timestamps */
 	solo_reg_write(solo_dev, SOLO_TIMER_SEC, (u32)ts.tv_sec);
 	solo_reg_write(solo_dev, SOLO_TIMER_USEC, (u32)ts.tv_nsec / NSEC_PER_USEC);
-=======
-	struct timespec ts;
-
-	ktime_get_ts(&ts);
-
-	solo_reg_write(solo_dev, SOLO_TIMER_SEC, ts.tv_sec);
-	solo_reg_write(solo_dev, SOLO_TIMER_USEC, ts.tv_nsec / NSEC_PER_USEC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void solo_timer_sync(struct solo_dev *solo_dev)
 {
 	u32 sec, usec;
-<<<<<<< HEAD
 	struct timespec64 ts;
-=======
-	struct timespec ts;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	long diff;
 
 	if (solo_dev->type != SOLO_DEV_6110)
@@ -86,19 +73,11 @@ static void solo_timer_sync(struct solo_dev *solo_dev)
 	sec = solo_reg_read(solo_dev, SOLO_TIMER_SEC);
 	usec = solo_reg_read(solo_dev, SOLO_TIMER_USEC);
 
-<<<<<<< HEAD
 	ktime_get_ts64(&ts);
 
 	diff = (s32)ts.tv_sec - (s32)sec;
 	diff = (diff * 1000000)
 		+ ((s32)(ts.tv_nsec / NSEC_PER_USEC) - (s32)usec);
-=======
-	ktime_get_ts(&ts);
-
-	diff = (long)ts.tv_sec - (long)sec;
-	diff = (diff * 1000000)
-		+ ((long)(ts.tv_nsec / NSEC_PER_USEC) - (long)usec);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (diff > 1000 || diff < -1000) {
 		solo_set_time(solo_dev);

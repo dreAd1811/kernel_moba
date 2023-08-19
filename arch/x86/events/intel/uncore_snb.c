@@ -304,7 +304,6 @@ static struct uncore_event_desc snb_uncore_imc_events[] = {
 #define SNB_UNCORE_PCI_IMC_DATA_WRITES_BASE	0x5054
 #define SNB_UNCORE_PCI_IMC_CTR_BASE		SNB_UNCORE_PCI_IMC_DATA_READS_BASE
 
-<<<<<<< HEAD
 enum perf_snb_uncore_imc_freerunning_types {
 	SNB_PCI_UNCORE_IMC_DATA		= 0,
 	SNB_PCI_UNCORE_IMC_FREERUNNING_TYPE_MAX,
@@ -314,8 +313,6 @@ static struct freerunning_counters snb_uncore_imc_freerunning[] = {
 	[SNB_PCI_UNCORE_IMC_DATA]     = { SNB_UNCORE_PCI_IMC_DATA_READS_BASE, 0x4, 0x0, 2, 32 },
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct attribute *snb_uncore_imc_formats_attr[] = {
 	&format_attr_event.attr,
 	NULL,
@@ -372,14 +369,8 @@ static u64 snb_uncore_imc_read_counter(struct intel_uncore_box *box, struct perf
 }
 
 /*
-<<<<<<< HEAD
  * Keep the custom event_init() function compatible with old event
  * encoding for free running counters.
-=======
- * custom event_init() function because we define our own fixed, free
- * running counters, so we do not want to conflict with generic uncore
- * logic. Also simplifies processing
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static int snb_uncore_imc_event_init(struct perf_event *event)
 {
@@ -441,19 +432,11 @@ static int snb_uncore_imc_event_init(struct perf_event *event)
 	switch (cfg) {
 	case SNB_UNCORE_PCI_IMC_DATA_READS:
 		base = SNB_UNCORE_PCI_IMC_DATA_READS_BASE;
-<<<<<<< HEAD
 		idx = UNCORE_PMC_IDX_FREERUNNING;
 		break;
 	case SNB_UNCORE_PCI_IMC_DATA_WRITES:
 		base = SNB_UNCORE_PCI_IMC_DATA_WRITES_BASE;
 		idx = UNCORE_PMC_IDX_FREERUNNING;
-=======
-		idx = UNCORE_PMC_IDX_FIXED;
-		break;
-	case SNB_UNCORE_PCI_IMC_DATA_WRITES:
-		base = SNB_UNCORE_PCI_IMC_DATA_WRITES_BASE;
-		idx = UNCORE_PMC_IDX_FIXED + 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		return -EINVAL;
@@ -461,17 +444,11 @@ static int snb_uncore_imc_event_init(struct perf_event *event)
 
 	/* must be done before validate_group */
 	event->hw.event_base = base;
-<<<<<<< HEAD
 	event->hw.idx = idx;
 
 	/* Convert to standard encoding format for freerunning counters */
 	event->hw.config = ((cfg - 1) << 8) | 0x10ff;
 
-=======
-	event->hw.config = cfg;
-	event->hw.idx = idx;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* no group validation needed, we have free running counters */
 
 	return 0;
@@ -482,78 +459,6 @@ static int snb_uncore_imc_hw_config(struct intel_uncore_box *box, struct perf_ev
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-static void snb_uncore_imc_event_start(struct perf_event *event, int flags)
-{
-	struct intel_uncore_box *box = uncore_event_to_box(event);
-	u64 count;
-
-	if (WARN_ON_ONCE(!(event->hw.state & PERF_HES_STOPPED)))
-		return;
-
-	event->hw.state = 0;
-	box->n_active++;
-
-	list_add_tail(&event->active_entry, &box->active_list);
-
-	count = snb_uncore_imc_read_counter(box, event);
-	local64_set(&event->hw.prev_count, count);
-
-	if (box->n_active == 1)
-		uncore_pmu_start_hrtimer(box);
-}
-
-static void snb_uncore_imc_event_stop(struct perf_event *event, int flags)
-{
-	struct intel_uncore_box *box = uncore_event_to_box(event);
-	struct hw_perf_event *hwc = &event->hw;
-
-	if (!(hwc->state & PERF_HES_STOPPED)) {
-		box->n_active--;
-
-		WARN_ON_ONCE(hwc->state & PERF_HES_STOPPED);
-		hwc->state |= PERF_HES_STOPPED;
-
-		list_del(&event->active_entry);
-
-		if (box->n_active == 0)
-			uncore_pmu_cancel_hrtimer(box);
-	}
-
-	if ((flags & PERF_EF_UPDATE) && !(hwc->state & PERF_HES_UPTODATE)) {
-		/*
-		 * Drain the remaining delta count out of a event
-		 * that we are disabling:
-		 */
-		uncore_perf_event_update(box, event);
-		hwc->state |= PERF_HES_UPTODATE;
-	}
-}
-
-static int snb_uncore_imc_event_add(struct perf_event *event, int flags)
-{
-	struct intel_uncore_box *box = uncore_event_to_box(event);
-	struct hw_perf_event *hwc = &event->hw;
-
-	if (!box)
-		return -ENODEV;
-
-	hwc->state = PERF_HES_UPTODATE | PERF_HES_STOPPED;
-	if (!(flags & PERF_EF_START))
-		hwc->state |= PERF_HES_ARCH;
-
-	snb_uncore_imc_event_start(event, 0);
-
-	return 0;
-}
-
-static void snb_uncore_imc_event_del(struct perf_event *event, int flags)
-{
-	snb_uncore_imc_event_stop(event, PERF_EF_UPDATE);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int snb_pci2phy_map_init(int devid)
 {
 	struct pci_dev *dev = NULL;
@@ -585,17 +490,10 @@ int snb_pci2phy_map_init(int devid)
 static struct pmu snb_uncore_imc_pmu = {
 	.task_ctx_nr	= perf_invalid_context,
 	.event_init	= snb_uncore_imc_event_init,
-<<<<<<< HEAD
 	.add		= uncore_pmu_event_add,
 	.del		= uncore_pmu_event_del,
 	.start		= uncore_pmu_event_start,
 	.stop		= uncore_pmu_event_stop,
-=======
-	.add		= snb_uncore_imc_event_add,
-	.del		= snb_uncore_imc_event_del,
-	.start		= snb_uncore_imc_event_start,
-	.stop		= snb_uncore_imc_event_stop,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read		= uncore_pmu_event_read,
 };
 
@@ -614,19 +512,10 @@ static struct intel_uncore_type snb_uncore_imc = {
 	.name		= "imc",
 	.num_counters   = 2,
 	.num_boxes	= 1,
-<<<<<<< HEAD
 	.num_freerunning_types	= SNB_PCI_UNCORE_IMC_FREERUNNING_TYPE_MAX,
 	.freerunning	= snb_uncore_imc_freerunning,
 	.event_descs	= snb_uncore_imc_events,
 	.format_group	= &snb_uncore_imc_format_group,
-=======
-	.fixed_ctr_bits	= 32,
-	.fixed_ctr	= SNB_UNCORE_PCI_IMC_CTR_BASE,
-	.event_descs	= snb_uncore_imc_events,
-	.format_group	= &snb_uncore_imc_format_group,
-	.perf_ctr	= SNB_UNCORE_PCI_IMC_DATA_READS_BASE,
-	.event_mask	= SNB_UNCORE_PCI_IMC_EVENT_MASK,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ops		= &snb_uncore_imc_ops,
 	.pmu		= &snb_uncore_imc_pmu,
 };

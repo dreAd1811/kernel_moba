@@ -50,11 +50,7 @@
 
 /* Version block */
 #define PWC_VERSION	"10.0.15"
-<<<<<<< HEAD
 #define PWC_NAME	"pwc"
-=======
-#define PWC_NAME 	"pwc"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define PFX		PWC_NAME ": "
 
 
@@ -124,17 +120,10 @@
 #define MAX_ISO_BUFS		3
 #define ISO_FRAMES_PER_DESC	10
 #define ISO_MAX_FRAME_SIZE	960
-<<<<<<< HEAD
 #define ISO_BUFFER_SIZE		(ISO_FRAMES_PER_DESC * ISO_MAX_FRAME_SIZE)
 
 /* Maximum size after decompression is 640x480 YUV data, 1.5 * 640 * 480 */
 #define PWC_FRAME_SIZE		(460800 + TOUCAM_HEADER_SIZE + TOUCAM_TRAILER_SIZE)
-=======
-#define ISO_BUFFER_SIZE 	(ISO_FRAMES_PER_DESC * ISO_MAX_FRAME_SIZE)
-
-/* Maximum size after decompression is 640x480 YUV data, 1.5 * 640 * 480 */
-#define PWC_FRAME_SIZE 		(460800 + TOUCAM_HEADER_SIZE + TOUCAM_TRAILER_SIZE)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Absolute minimum and maximum number of buffers available for mmap() */
 #define MIN_FRAMES		2

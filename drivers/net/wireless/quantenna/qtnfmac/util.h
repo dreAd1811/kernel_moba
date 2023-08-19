@@ -26,15 +26,9 @@ struct qtnf_sta_node *qtnf_sta_list_lookup(struct qtnf_sta_list *list,
 					   const u8 *mac);
 struct qtnf_sta_node *qtnf_sta_list_lookup_index(struct qtnf_sta_list *list,
 						 size_t index);
-<<<<<<< HEAD
 struct qtnf_sta_node *qtnf_sta_list_add(struct qtnf_vif *vif,
 					const u8 *mac);
 bool qtnf_sta_list_del(struct qtnf_vif *vif, const u8 *mac);
-=======
-struct qtnf_sta_node *qtnf_sta_list_add(struct qtnf_sta_list *list,
-					const u8 *mac);
-bool qtnf_sta_list_del(struct qtnf_sta_list *list, const u8 *mac);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void qtnf_sta_list_free(struct qtnf_sta_list *list);
 

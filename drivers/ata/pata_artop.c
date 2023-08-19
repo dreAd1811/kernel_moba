@@ -242,11 +242,7 @@ static void artop6210_set_dmamode (struct ata_port *ap, struct ata_device *adev)
 
 static void artop6260_set_dmamode (struct ata_port *ap, struct ata_device *adev)
 {
-<<<<<<< HEAD
 	unsigned int pio;
-=======
-	unsigned int pio	= adev->pio_mode - XFER_PIO_0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct pci_dev *pdev	= to_pci_dev(ap->host->dev);
 	u8 ultra;
 

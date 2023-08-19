@@ -16,10 +16,7 @@
 #include <linux/uaccess.h>
 #include <linux/delay.h>
 #include <asm/synch.h>
-<<<<<<< HEAD
 #include <asm/switch_to.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <misc/cxl-base.h>
 
 #include "cxl.h"
@@ -608,10 +605,7 @@ u64 cxl_calculate_sr(bool master, bool kernel, bool real_mode, bool p9)
 		sr |= CXL_PSL_SR_An_MP;
 	if (mfspr(SPRN_LPCR) & LPCR_TC)
 		sr |= CXL_PSL_SR_An_TC;
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (kernel) {
 		if (!real_mode)
 			sr |= CXL_PSL_SR_An_R;
@@ -636,11 +630,7 @@ u64 cxl_calculate_sr(bool master, bool kernel, bool real_mode, bool p9)
 
 static u64 calculate_sr(struct cxl_context *ctx)
 {
-<<<<<<< HEAD
 	return cxl_calculate_sr(ctx->master, ctx->kernel, false,
-=======
-	return cxl_calculate_sr(ctx->master, ctx->kernel, ctx->real_mode,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				cxl_is_power9());
 }
 
@@ -676,10 +666,7 @@ static void update_ivtes_directed(struct cxl_context *ctx)
 static int process_element_entry_psl9(struct cxl_context *ctx, u64 wed, u64 amr)
 {
 	u32 pid;
-<<<<<<< HEAD
 	int rc;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cxl_assign_psn_space(ctx);
 
@@ -698,7 +685,6 @@ static int process_element_entry_psl9(struct cxl_context *ctx, u64 wed, u64 amr)
 		pid = ctx->mm->context.id;
 	}
 
-<<<<<<< HEAD
 	/* Assign a unique TIDR (thread id) for the current thread */
 	if (!(ctx->tidr) && (ctx->assign_tidr)) {
 		rc = set_thread_tidr(current);
@@ -709,9 +695,6 @@ static int process_element_entry_psl9(struct cxl_context *ctx, u64 wed, u64 amr)
 	}
 
 	ctx->elem->common.tid = cpu_to_be32(ctx->tidr);
-=======
-	ctx->elem->common.tid = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ctx->elem->common.pid = cpu_to_be32(pid);
 
 	ctx->elem->sr = cpu_to_be64(calculate_sr(ctx));
@@ -935,7 +918,6 @@ int cxl_attach_dedicated_process_psl9(struct cxl_context *ctx, u64 wed, u64 amr)
 	if (ctx->afu->adapter->native->sl_ops->update_dedicated_ivtes)
 		afu->adapter->native->sl_ops->update_dedicated_ivtes(ctx);
 
-<<<<<<< HEAD
 	ctx->elem->software_state = cpu_to_be32(CXL_PE_SOFTWARE_STATE_V);
 	/*
 	 * Ideally we should do a wmb() here to make sure the changes to the
@@ -944,8 +926,6 @@ int cxl_attach_dedicated_process_psl9(struct cxl_context *ctx, u64 wed, u64 amr)
 	 * we dont dont need one here.
 	 */
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	result = cxl_ops->afu_reset(afu);
 	if (result)
 		return result;
@@ -1126,21 +1106,11 @@ static int native_get_irq_info(struct cxl_afu *afu, struct cxl_irq_info *info)
 
 void cxl_native_irq_dump_regs_psl9(struct cxl_context *ctx)
 {
-<<<<<<< HEAD
 	u64 fir1, serr;
 
 	fir1 = cxl_p1_read(ctx->afu->adapter, CXL_PSL9_FIR1);
 
 	dev_crit(&ctx->afu->dev, "PSL_FIR1: 0x%016llx\n", fir1);
-=======
-	u64 fir1, fir2, serr;
-
-	fir1 = cxl_p1_read(ctx->afu->adapter, CXL_PSL9_FIR1);
-	fir2 = cxl_p1_read(ctx->afu->adapter, CXL_PSL9_FIR2);
-
-	dev_crit(&ctx->afu->dev, "PSL_FIR1: 0x%016llx\n", fir1);
-	dev_crit(&ctx->afu->dev, "PSL_FIR2: 0x%016llx\n", fir2);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ctx->afu->adapter->native->sl_ops->register_serr_irq) {
 		serr = cxl_p1n_read(ctx->afu, CXL_PSL_SERR_An);
 		cxl_afu_decode_psl_serr(ctx->afu, serr);
@@ -1314,7 +1284,6 @@ static irqreturn_t native_slice_irq_err(int irq, void *data)
 	return IRQ_HANDLED;
 }
 
-<<<<<<< HEAD
 void cxl_native_err_irq_dump_regs_psl9(struct cxl *adapter)
 {
 	u64 fir1;
@@ -1324,22 +1293,14 @@ void cxl_native_err_irq_dump_regs_psl9(struct cxl *adapter)
 }
 
 void cxl_native_err_irq_dump_regs_psl8(struct cxl *adapter)
-=======
-void cxl_native_err_irq_dump_regs(struct cxl *adapter)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u64 fir1, fir2;
 
 	fir1 = cxl_p1_read(adapter, CXL_PSL_FIR1);
 	fir2 = cxl_p1_read(adapter, CXL_PSL_FIR2);
-<<<<<<< HEAD
 	dev_crit(&adapter->dev,
 		 "PSL_FIR1: 0x%016llx\nPSL_FIR2: 0x%016llx\n",
 		 fir1, fir2);
-=======
-
-	dev_crit(&adapter->dev, "PSL_FIR1: 0x%016llx\nPSL_FIR2: 0x%016llx\n", fir1, fir2);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static irqreturn_t native_irq_err(int irq, void *data)

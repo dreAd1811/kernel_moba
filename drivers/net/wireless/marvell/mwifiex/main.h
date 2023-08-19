@@ -84,13 +84,8 @@ enum {
 #define MWIFIEX_TIMER_10S			10000
 #define MWIFIEX_TIMER_1S			1000
 
-<<<<<<< HEAD
 #define MAX_TX_PENDING      400
 #define LOW_TX_PENDING      380
-=======
-#define MAX_TX_PENDING      100
-#define LOW_TX_PENDING      80
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define HIGH_RX_PENDING     50
 #define LOW_RX_PENDING      20
@@ -99,11 +94,8 @@ enum {
 
 #define MAX_EVENT_SIZE                  2048
 
-<<<<<<< HEAD
 #define MWIFIEX_FW_DUMP_SIZE       (2 * 1024 * 1024)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ARP_FILTER_MAX_BUF_SIZE         68
 
 #define MWIFIEX_KEY_BUFFER_SIZE			16
@@ -526,7 +518,6 @@ enum mwifiex_iface_work_flags {
 	MWIFIEX_IFACE_WORK_CARD_RESET,
 };
 
-<<<<<<< HEAD
 enum mwifiex_adapter_work_flags {
 	MWIFIEX_SURPRISE_REMOVED,
 	MWIFIEX_IS_CMD_TIMEDOUT,
@@ -547,8 +538,6 @@ struct mwifiex_channel_band {
 	u8 channel;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct mwifiex_private {
 	struct mwifiex_adapter *adapter;
 	u8 bss_type;
@@ -636,12 +625,6 @@ struct mwifiex_private {
 	struct list_head rx_reorder_tbl_ptr;
 	/* spin lock for rx_reorder_tbl_ptr queue */
 	spinlock_t rx_reorder_tbl_lock;
-<<<<<<< HEAD
-=======
-	/* spin lock for Rx packets */
-	spinlock_t rx_pkt_lock;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MWIFIEX_ASSOC_RSP_BUF_SIZE  500
 	u8 assoc_rsp_buf[MWIFIEX_ASSOC_RSP_BUF_SIZE];
 	u32 assoc_rsp_size;
@@ -717,10 +700,6 @@ struct mwifiex_private {
 	struct mwifiex_user_scan_chan hidden_chan[MWIFIEX_USER_SCAN_CHAN_MAX];
 	u8 assoc_resp_ht_param;
 	bool ht_param_present;
-<<<<<<< HEAD
-=======
-	u8 random_mac[ETH_ALEN];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 
@@ -902,11 +881,7 @@ struct mwifiex_adapter {
 	struct device *dev;
 	struct wiphy *wiphy;
 	u8 perm_addr[ETH_ALEN];
-<<<<<<< HEAD
 	unsigned long work_flags;
-=======
-	bool surprise_removed;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 fw_release_number;
 	u8 intf_hdr_len;
 	u16 init_wait_q_woken;
@@ -960,10 +935,6 @@ struct mwifiex_adapter {
 	struct cmd_ctrl_node *curr_cmd;
 	/* spin lock for command */
 	spinlock_t mwifiex_cmd_lock;
-<<<<<<< HEAD
-=======
-	u8 is_cmd_timedout;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 last_init_cmd;
 	struct timer_list cmd_timer;
 	struct list_head cmd_free_q;
@@ -1013,19 +984,10 @@ struct mwifiex_adapter {
 	u16 pps_uapsd_mode;
 	u32 pm_wakeup_fw_try;
 	struct timer_list wakeup_timer;
-<<<<<<< HEAD
-=======
-	u8 is_hs_configured;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mwifiex_hs_config_param hs_cfg;
 	u8 hs_activated;
 	u16 hs_activate_wait_q_woken;
 	wait_queue_head_t hs_activate_wait_q;
-<<<<<<< HEAD
-=======
-	bool is_suspended;
-	bool hs_enabling;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 event_body[MAX_EVENT_SIZE];
 	u32 hw_dot_11n_dev_cap;
 	u8 hw_dev_mcs_support;
@@ -1086,13 +1048,10 @@ struct mwifiex_adapter {
 	bool wake_by_wifi;
 	/* Aggregation parameters*/
 	struct bus_aggr_params bus_aggr;
-<<<<<<< HEAD
 	/* Device dump data/length */
 	void *devdump_data;
 	int devdump_len;
 	struct timer_list devdump_timer;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 void mwifiex_process_tx_queue(struct mwifiex_adapter *adapter);
@@ -1133,11 +1092,7 @@ int mwifiex_complete_cmd(struct mwifiex_adapter *adapter,
 int mwifiex_send_cmd(struct mwifiex_private *priv, u16 cmd_no,
 		     u16 cmd_action, u32 cmd_oid, void *data_buf, bool sync);
 
-<<<<<<< HEAD
 void mwifiex_cmd_timeout_func(struct timer_list *t);
-=======
-void mwifiex_cmd_timeout_func(unsigned long function_context);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int mwifiex_get_debug_info(struct mwifiex_private *,
 			   struct mwifiex_debug_info *);
@@ -1339,7 +1294,6 @@ mwifiex_copy_rates(u8 *dest, u32 pos, u8 *src, int len)
 	return pos;
 }
 
-<<<<<<< HEAD
 /* This function return interface number with the same bss_type.
  */
 static inline u8
@@ -1353,8 +1307,6 @@ mwifiex_get_intf_num(struct mwifiex_adapter *adapter, u8 bss_type)
 	return num;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * This function returns the correct private structure pointer based
  * upon the BSS type and BSS number.
@@ -1619,11 +1571,7 @@ int mwifiex_check_network_compatibility(struct mwifiex_private *priv,
 					struct mwifiex_bssdescriptor *bss_desc);
 
 u8 mwifiex_chan_type_to_sec_chan_offset(enum nl80211_channel_type chan_type);
-<<<<<<< HEAD
 u8 mwifiex_get_chan_type(struct mwifiex_private *priv);
-=======
-u8 mwifiex_sec_chan_offset_to_chan_type(u8 second_chan_offset);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct wireless_dev *mwifiex_add_virtual_intf(struct wiphy *wiphy,
 					      const char *name,
@@ -1702,11 +1650,7 @@ void mwifiex_auto_tdls_update_peer_status(struct mwifiex_private *priv,
 					  const u8 *mac, u8 link_status);
 void mwifiex_auto_tdls_update_peer_signal(struct mwifiex_private *priv,
 					  u8 *mac, s8 snr, s8 nflr);
-<<<<<<< HEAD
 void mwifiex_check_auto_tdls(struct timer_list *t);
-=======
-void mwifiex_check_auto_tdls(unsigned long context);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void mwifiex_add_auto_tdls_peer(struct mwifiex_private *priv, const u8 *mac);
 void mwifiex_setup_auto_tdls_timer(struct mwifiex_private *priv);
 void mwifiex_clean_auto_tdls(struct mwifiex_private *priv);
@@ -1745,27 +1689,17 @@ void mwifiex_hist_data_add(struct mwifiex_private *priv,
 u8 mwifiex_adjust_data_rate(struct mwifiex_private *priv,
 			    u8 rx_rate, u8 ht_info);
 
-<<<<<<< HEAD
 void mwifiex_drv_info_dump(struct mwifiex_adapter *adapter);
 void mwifiex_prepare_fw_dump_info(struct mwifiex_adapter *adapter);
 void mwifiex_upload_device_dump(struct mwifiex_adapter *adapter);
 void *mwifiex_alloc_dma_align_buf(int rx_len, gfp_t flags);
 void mwifiex_fw_dump_event(struct mwifiex_private *priv);
-=======
-int mwifiex_drv_info_dump(struct mwifiex_adapter *adapter, void **drv_info);
-void mwifiex_upload_device_dump(struct mwifiex_adapter *adapter, void *drv_info,
-				int drv_info_size);
-void *mwifiex_alloc_dma_align_buf(int rx_len, gfp_t flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void mwifiex_queue_main_work(struct mwifiex_adapter *adapter);
 int mwifiex_get_wakeup_reason(struct mwifiex_private *priv, u16 action,
 			      int cmd_type,
 			      struct mwifiex_ds_wakeup_reason *wakeup_reason);
-<<<<<<< HEAD
 int mwifiex_get_chan_info(struct mwifiex_private *priv,
 			  struct mwifiex_channel_band *channel_band);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int mwifiex_ret_wakeup_reason(struct mwifiex_private *priv,
 			      struct host_cmd_ds_command *resp,
 			      struct host_cmd_ds_wakeup_reason *wakeup_reason);
@@ -1778,13 +1712,9 @@ void mwifiex_process_multi_chan_event(struct mwifiex_private *priv,
 				      struct sk_buff *event_skb);
 void mwifiex_multi_chan_resync(struct mwifiex_adapter *adapter);
 int mwifiex_set_mac_address(struct mwifiex_private *priv,
-<<<<<<< HEAD
 			    struct net_device *dev,
 			    bool external, u8 *new_mac);
 void mwifiex_devdump_tmo_func(unsigned long function_context);
-=======
-			    struct net_device *dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_DEBUG_FS
 void mwifiex_debugfs_init(void);

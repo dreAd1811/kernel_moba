@@ -180,7 +180,6 @@ struct opa_mad_notice_attr {
 #define OPA_VLARB_PREEMPT_MATRIX     3
 
 #define IB_PMA_PORT_COUNTERS_CONG       cpu_to_be16(0xFF00)
-<<<<<<< HEAD
 #define LINK_SPEED_25G		1
 #define LINK_SPEED_12_5G	2
 #define LINK_WIDTH_DEFAULT	4
@@ -190,8 +189,6 @@ struct opa_mad_notice_attr {
  * to get accurate value after division.
  */
 #define FACTOR_LINK_WIDTH	(LINK_WIDTH_DEFAULT * DECIMAL_FACTORING)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct ib_pma_portcounters_cong {
 	u8 reserved;
@@ -251,11 +248,7 @@ struct opa_hfi1_cong_log_event_internal {
 	u8 sl;
 	u8 svc_type;
 	u32 rlid;
-<<<<<<< HEAD
 	u64 timestamp; /* wider than 32 bits to detect 32 bit rollover */
-=======
-	s64 timestamp; /* wider than 32 bits to detect 32 bit rollover */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct opa_hfi1_cong_log_event {
@@ -444,7 +437,6 @@ struct sc2vlnt {
 		    COUNTER_MASK(1, 4))
 
 void hfi1_event_pkey_change(struct hfi1_devdata *dd, u8 port);
-<<<<<<< HEAD
 void hfi1_handle_trap_timer(struct timer_list *t);
 u16 tx_link_width(u16 link_width);
 u64 get_xmit_wait_counters(struct hfi1_pportdata *ppd, u16 link_width,
@@ -483,8 +475,4 @@ static inline u64 convert_xmit_counter(u64 xmit_wait_val, u16 link_width,
 	return (xmit_wait_val * 2 * (FACTOR_LINK_WIDTH / link_width)
 		 * link_speed) / DECIMAL_FACTORING;
 }
-=======
-void hfi1_handle_trap_timer(unsigned long data);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif				/* _HFI1_MAD_H */

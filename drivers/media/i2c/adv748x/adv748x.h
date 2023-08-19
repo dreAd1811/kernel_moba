@@ -27,22 +27,6 @@
 #ifndef _ADV748X_H_
 #define _ADV748X_H_
 
-<<<<<<< HEAD
-=======
-/* I2C slave addresses */
-#define ADV748X_I2C_IO			0x70	/* IO Map */
-#define ADV748X_I2C_DPLL		0x26	/* DPLL Map */
-#define ADV748X_I2C_CP			0x22	/* CP Map */
-#define ADV748X_I2C_HDMI		0x34	/* HDMI Map */
-#define ADV748X_I2C_EDID		0x36	/* EDID Map */
-#define ADV748X_I2C_REPEATER		0x32	/* HDMI RX Repeater Map */
-#define ADV748X_I2C_INFOFRAME		0x31	/* HDMI RX InfoFrame Map */
-#define ADV748X_I2C_CEC			0x41	/* CEC Map */
-#define ADV748X_I2C_SDP			0x79	/* SDP Map */
-#define ADV748X_I2C_TXB			0x48	/* CSI-TXB Map */
-#define ADV748X_I2C_TXA			0x4a	/* CSI-TXA Map */
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum adv748x_page {
 	ADV748X_PAGE_IO,
 	ADV748X_PAGE_DPLL,
@@ -51,10 +35,7 @@ enum adv748x_page {
 	ADV748X_PAGE_EDID,
 	ADV748X_PAGE_REPEATER,
 	ADV748X_PAGE_INFOFRAME,
-<<<<<<< HEAD
 	ADV748X_PAGE_CBUS,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ADV748X_PAGE_CEC,
 	ADV748X_PAGE_SDP,
 	ADV748X_PAGE_TXB,
@@ -101,26 +82,15 @@ struct adv748x_csi2 {
 	struct adv748x_state *state;
 	struct v4l2_mbus_framefmt format;
 	unsigned int page;
-<<<<<<< HEAD
 
 	struct media_pad pads[ADV748X_CSI2_NR_PADS];
 	struct v4l2_ctrl_handler ctrl_hdl;
 	struct v4l2_ctrl *pixel_rate;
-=======
-	unsigned int port;
-
-	struct media_pad pads[ADV748X_CSI2_NR_PADS];
-	struct v4l2_ctrl_handler ctrl_hdl;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct v4l2_subdev sd;
 };
 
 #define notifier_to_csi2(n) container_of(n, struct adv748x_csi2, notifier)
 #define adv748x_sd_to_csi2(sd) container_of(sd, struct adv748x_csi2, sd)
-<<<<<<< HEAD
-=======
-#define is_tx_enabled(_tx) ((_tx)->state->endpoints[(_tx)->port] != NULL)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum adv748x_hdmi_pads {
 	ADV748X_HDMI_SINK,
@@ -389,17 +359,10 @@ int adv748x_write_block(struct adv748x_state *state, int client_page,
 
 #define io_read(s, r) adv748x_read(s, ADV748X_PAGE_IO, r)
 #define io_write(s, r, v) adv748x_write(s, ADV748X_PAGE_IO, r, v)
-<<<<<<< HEAD
 #define io_clrset(s, r, m, v) io_write(s, r, (io_read(s, r) & ~m) | v)
 
 #define hdmi_read(s, r) adv748x_read(s, ADV748X_PAGE_HDMI, r)
 #define hdmi_read16(s, r, m) (((hdmi_read(s, r) << 8) | hdmi_read(s, r+1)) & m)
-=======
-#define io_clrset(s, r, m, v) io_write(s, r, (io_read(s, r) & ~(m)) | (v))
-
-#define hdmi_read(s, r) adv748x_read(s, ADV748X_PAGE_HDMI, r)
-#define hdmi_read16(s, r, m) (((hdmi_read(s, r) << 8) | hdmi_read(s, (r)+1)) & (m))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define hdmi_write(s, r, v) adv748x_write(s, ADV748X_PAGE_HDMI, r, v)
 
 #define repeater_read(s, r) adv748x_read(s, ADV748X_PAGE_REPEATER, r)
@@ -407,19 +370,11 @@ int adv748x_write_block(struct adv748x_state *state, int client_page,
 
 #define sdp_read(s, r) adv748x_read(s, ADV748X_PAGE_SDP, r)
 #define sdp_write(s, r, v) adv748x_write(s, ADV748X_PAGE_SDP, r, v)
-<<<<<<< HEAD
 #define sdp_clrset(s, r, m, v) sdp_write(s, r, (sdp_read(s, r) & ~m) | v)
 
 #define cp_read(s, r) adv748x_read(s, ADV748X_PAGE_CP, r)
 #define cp_write(s, r, v) adv748x_write(s, ADV748X_PAGE_CP, r, v)
 #define cp_clrset(s, r, m, v) cp_write(s, r, (cp_read(s, r) & ~m) | v)
-=======
-#define sdp_clrset(s, r, m, v) sdp_write(s, r, (sdp_read(s, r) & ~(m)) | (v))
-
-#define cp_read(s, r) adv748x_read(s, ADV748X_PAGE_CP, r)
-#define cp_write(s, r, v) adv748x_write(s, ADV748X_PAGE_CP, r, v)
-#define cp_clrset(s, r, m, v) cp_write(s, r, (cp_read(s, r) & ~(m)) | (v))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define txa_read(s, r) adv748x_read(s, ADV748X_PAGE_TXA, r)
 #define txb_read(s, r) adv748x_read(s, ADV748X_PAGE_TXB, r)

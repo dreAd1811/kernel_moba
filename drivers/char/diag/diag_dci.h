@@ -1,18 +1,5 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
 /* Copyright (c) 2012-2019 The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2012-2019 The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #ifndef DIAG_DCI_H
 #define DIAG_DCI_H
@@ -71,12 +58,8 @@ extern unsigned int dci_max_clients;
 #define DCI_LOCAL_PROC		0
 #define DCI_REMOTE_BASE		1
 #define DCI_MDM_PROC		DCI_REMOTE_BASE
-<<<<<<< HEAD
 #define DCI_MDM_2_PROC		(DCI_REMOTE_BASE + 1)
 #define DCI_REMOTE_LAST		(DCI_REMOTE_BASE + 2)
-=======
-#define DCI_REMOTE_LAST		(DCI_REMOTE_BASE + 1)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifndef CONFIG_DIAGFWD_BRIDGE_CODE
 #define NUM_DCI_PROC		1
@@ -323,11 +306,7 @@ int diag_dci_set_real_time(struct diag_dci_client_tbl *entry,
 			   uint8_t real_time);
 int diag_dci_copy_health_stats(struct diag_dci_health_stats_proc *stats_proc);
 int diag_dci_write_proc(uint8_t peripheral, int pkt_type, char *buf, int len);
-<<<<<<< HEAD
 void dci_drain_data(struct timer_list *tlist);
-=======
-void dci_drain_data(unsigned long data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_DIAGFWD_BRIDGE_CODE
 int diag_send_dci_log_mask_remote(int token);

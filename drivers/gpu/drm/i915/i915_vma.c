@@ -21,11 +21,7 @@
  * IN THE SOFTWARE.
  *
  */
-<<<<<<< HEAD
 
-=======
- 
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "i915_vma.h"
 
 #include "i915_drv.h"
@@ -34,7 +30,6 @@
 
 #include <drm/drm_gem.h>
 
-<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_DRM_I915_ERRLOG_GEM) && IS_ENABLED(CONFIG_DRM_DEBUG_MM)
 
 #include <linux/stackdepot.h>
@@ -82,36 +77,15 @@ __i915_vma_retire(struct i915_vma *vma, struct i915_request *rq)
 
 	GEM_BUG_ON(!i915_vma_is_active(vma));
 	if (--vma->active_count)
-=======
-static void
-i915_vma_retire(struct i915_gem_active *active,
-		struct drm_i915_gem_request *rq)
-{
-	const unsigned int idx = rq->engine->id;
-	struct i915_vma *vma =
-		container_of(active, struct i915_vma, last_read[idx]);
-	struct drm_i915_gem_object *obj = vma->obj;
-
-	GEM_BUG_ON(!i915_vma_has_active_engine(vma, idx));
-
-	i915_vma_clear_active(vma, idx);
-	if (i915_vma_is_active(vma))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	GEM_BUG_ON(!drm_mm_node_allocated(&vma->node));
 	list_move_tail(&vma->vm_link, &vma->vm->inactive_list);
-<<<<<<< HEAD
-=======
-	if (unlikely(i915_vma_is_closed(vma) && !i915_vma_is_pinned(vma)))
-		WARN_ON(i915_vma_unbind(vma));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	GEM_BUG_ON(!i915_gem_object_is_active(obj));
 	if (--obj->active_count)
 		return;
 
-<<<<<<< HEAD
 	/* Prune the shared fence arrays iff completely idle (inc. external) */
 	if (reservation_object_trylock(obj->resv)) {
 		if (reservation_object_test_signaled_rcu(obj->resv, true))
@@ -119,21 +93,14 @@ i915_vma_retire(struct i915_gem_active *active,
 		reservation_object_unlock(obj->resv);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Bump our place on the bound list to keep it roughly in LRU order
 	 * so that we don't steal from recently used but inactive objects
 	 * (unless we are forced to ofc!)
 	 */
-<<<<<<< HEAD
 	spin_lock(&rq->i915->mm.obj_lock);
 	if (obj->bind_count)
 		list_move_tail(&obj->mm.link, &rq->i915->mm.bound_list);
 	spin_unlock(&rq->i915->mm.obj_lock);
-=======
-	if (obj->bind_count)
-		list_move_tail(&obj->global_link, &rq->i915->mm.bound_list);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	obj->mm.dirty = true; /* be paranoid  */
 
@@ -143,7 +110,6 @@ i915_vma_retire(struct i915_gem_active *active,
 	}
 }
 
-<<<<<<< HEAD
 static void
 i915_vma_retire(struct i915_gem_active *base, struct i915_request *rq)
 {
@@ -159,8 +125,6 @@ i915_vma_last_retire(struct i915_gem_active *base, struct i915_request *rq)
 	__i915_vma_retire(container_of(base, struct i915_vma, last_active), rq);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct i915_vma *
 vma_create(struct drm_i915_gem_object *obj,
 	   struct i915_address_space *vm,
@@ -168,34 +132,20 @@ vma_create(struct drm_i915_gem_object *obj,
 {
 	struct i915_vma *vma;
 	struct rb_node *rb, **p;
-<<<<<<< HEAD
 
 	/* The aliasing_ppgtt should never be used directly! */
 	GEM_BUG_ON(vm == &vm->i915->mm.aliasing_ppgtt->vm);
-=======
-	int i;
-
-	/* The aliasing_ppgtt should never be used directly! */
-	GEM_BUG_ON(vm == &vm->i915->mm.aliasing_ppgtt->base);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vma = kmem_cache_zalloc(vm->i915->vmas, GFP_KERNEL);
 	if (vma == NULL)
 		return ERR_PTR(-ENOMEM);
 
-<<<<<<< HEAD
 	vma->active = RB_ROOT;
 
 	init_request_active(&vma->last_active, i915_vma_last_retire);
 	init_request_active(&vma->last_fence, NULL);
 	vma->vm = vm;
 	vma->ops = &vm->vma_ops;
-=======
-	for (i = 0; i < ARRAY_SIZE(vma->last_read); i++)
-		init_request_active(&vma->last_read[i], i915_vma_retire);
-	init_request_active(&vma->last_fence, NULL);
-	vma->vm = vm;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vma->obj = obj;
 	vma->resv = obj->resv;
 	vma->size = obj->base.size;
@@ -210,11 +160,7 @@ vma_create(struct drm_i915_gem_object *obj,
 						     obj->base.size >> PAGE_SHIFT));
 			vma->size = view->partial.size;
 			vma->size <<= PAGE_SHIFT;
-<<<<<<< HEAD
 			GEM_BUG_ON(vma->size > obj->base.size);
-=======
-			GEM_BUG_ON(vma->size >= obj->base.size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else if (view->type == I915_GGTT_VIEW_ROTATED) {
 			vma->size = intel_rotation_info_size(&view->rotated);
 			vma->size <<= PAGE_SHIFT;
@@ -244,7 +190,6 @@ vma_create(struct drm_i915_gem_object *obj,
 								i915_gem_object_get_stride(obj));
 		GEM_BUG_ON(!is_power_of_2(vma->fence_alignment));
 
-<<<<<<< HEAD
 		/*
 		 * We put the GGTT vma at the start of the vma-list, followed
 		 * by the ppGGTT vma. This allows us to break early when
@@ -254,12 +199,6 @@ vma_create(struct drm_i915_gem_object *obj,
 		vma->flags |= I915_VMA_GGTT;
 		list_add(&vma->obj_link, &obj->vma_list);
 	} else {
-=======
-		vma->flags |= I915_VMA_GGTT;
-		list_add(&vma->obj_link, &obj->vma_list);
-	} else {
-		i915_ppgtt_get(i915_vm_to_ppgtt(vm));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		list_add_tail(&vma->obj_link, &obj->vma_list);
 	}
 
@@ -341,10 +280,6 @@ i915_vma_instance(struct drm_i915_gem_object *obj,
 	if (!vma)
 		vma = vma_create(obj, vm, view);
 
-<<<<<<< HEAD
-=======
-	GEM_BUG_ON(!IS_ERR(vma) && i915_vma_is_closed(vma));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	GEM_BUG_ON(!IS_ERR(vma) && i915_vma_compare(vma, vm, view));
 	GEM_BUG_ON(!IS_ERR(vma) && vma_lookup(obj, vm, view) != vma);
 	return vma;
@@ -392,15 +327,10 @@ int i915_vma_bind(struct i915_vma *vma, enum i915_cache_level cache_level,
 	if (bind_flags == 0)
 		return 0;
 
-<<<<<<< HEAD
 	GEM_BUG_ON(!vma->pages);
 
 	trace_i915_vma_bind(vma, bind_flags);
 	ret = vma->ops->bind_vma(vma, cache_level, bind_flags);
-=======
-	trace_i915_vma_bind(vma, bind_flags);
-	ret = vma->vm->bind_vma(vma, cache_level, bind_flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -411,31 +341,22 @@ int i915_vma_bind(struct i915_vma *vma, enum i915_cache_level cache_level,
 void __iomem *i915_vma_pin_iomap(struct i915_vma *vma)
 {
 	void __iomem *ptr;
-<<<<<<< HEAD
 	int err;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Access through the GTT requires the device to be awake. */
 	assert_rpm_wakelock_held(vma->vm->i915);
 
 	lockdep_assert_held(&vma->vm->i915->drm.struct_mutex);
-<<<<<<< HEAD
 	if (WARN_ON(!i915_vma_is_map_and_fenceable(vma))) {
 		err = -ENODEV;
 		goto err;
 	}
-=======
-	if (WARN_ON(!i915_vma_is_map_and_fenceable(vma)))
-		return IO_ERR_PTR(-ENODEV);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	GEM_BUG_ON(!i915_vma_is_ggtt(vma));
 	GEM_BUG_ON((vma->flags & I915_VMA_GLOBAL_BIND) == 0);
 
 	ptr = vma->iomap;
 	if (ptr == NULL) {
-<<<<<<< HEAD
 		ptr = io_mapping_map_wc(&i915_vm_to_ggtt(vma->vm)->iomap,
 					vma->node.start,
 					vma->node.size);
@@ -443,19 +364,11 @@ void __iomem *i915_vma_pin_iomap(struct i915_vma *vma)
 			err = -ENOMEM;
 			goto err;
 		}
-=======
-		ptr = io_mapping_map_wc(&i915_vm_to_ggtt(vma->vm)->mappable,
-					vma->node.start,
-					vma->node.size);
-		if (ptr == NULL)
-			return IO_ERR_PTR(-ENOMEM);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		vma->iomap = ptr;
 	}
 
 	__i915_vma_pin(vma);
-<<<<<<< HEAD
 
 	err = i915_vma_pin_fence(vma);
 	if (err)
@@ -490,9 +403,6 @@ void i915_vma_unpin_iomap(struct i915_vma *vma)
 
 	i915_vma_unpin_fence(vma);
 	i915_vma_unpin(vma);
-=======
-	return ptr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void i915_vma_unpin_and_release(struct i915_vma **p_vma)
@@ -505,10 +415,7 @@ void i915_vma_unpin_and_release(struct i915_vma **p_vma)
 		return;
 
 	obj = vma->obj;
-<<<<<<< HEAD
 	GEM_BUG_ON(!obj);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	i915_vma_unpin(vma);
 	i915_vma_close(vma);
@@ -603,7 +510,6 @@ bool i915_gem_valid_gtt_space(struct i915_vma *vma, unsigned long cache_level)
 	return true;
 }
 
-<<<<<<< HEAD
 static void assert_bind_count(const struct drm_i915_gem_object *obj)
 {
 	/*
@@ -616,8 +522,6 @@ static void assert_bind_count(const struct drm_i915_gem_object *obj)
 	GEM_BUG_ON(atomic_read(&obj->mm.pages_pin_count) < obj->bind_count);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * i915_vma_insert - finds a slot for the vma in its address space
  * @vma: the vma
@@ -636,11 +540,7 @@ static int
 i915_vma_insert(struct i915_vma *vma, u64 size, u64 alignment, u64 flags)
 {
 	struct drm_i915_private *dev_priv = vma->vm->i915;
-<<<<<<< HEAD
 	unsigned int cache_level;
-=======
-	struct drm_i915_gem_object *obj = vma->obj;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 start, end;
 	int ret;
 
@@ -675,19 +575,12 @@ i915_vma_insert(struct i915_vma *vma, u64 size, u64 alignment, u64 flags)
 	 * attempt to find space.
 	 */
 	if (size > end) {
-<<<<<<< HEAD
 		DRM_DEBUG("Attempting to bind an object larger than the aperture: request=%llu > %s aperture=%llu\n",
 			  size, flags & PIN_MAPPABLE ? "mappable" : "total",
-=======
-		DRM_DEBUG("Attempting to bind an object larger than the aperture: request=%llu [object=%zd] > %s aperture=%llu\n",
-			  size, obj->base.size,
-			  flags & PIN_MAPPABLE ? "mappable" : "total",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  end);
 		return -ENOSPC;
 	}
 
-<<<<<<< HEAD
 	if (vma->obj) {
 		ret = i915_gem_object_pin_pages(vma->obj);
 		if (ret)
@@ -703,18 +596,12 @@ i915_vma_insert(struct i915_vma *vma, u64 size, u64 alignment, u64 flags)
 	ret = vma->ops->set_pages(vma);
 	if (ret)
 		goto err_unpin;
-=======
-	ret = i915_gem_object_pin_pages(obj);
-	if (ret)
-		return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (flags & PIN_OFFSET_FIXED) {
 		u64 offset = flags & PIN_OFFSET_MASK;
 		if (!IS_ALIGNED(offset, alignment) ||
 		    range_overflows(offset, size, end)) {
 			ret = -EINVAL;
-<<<<<<< HEAD
 			goto err_clear;
 		}
 
@@ -762,28 +649,11 @@ i915_vma_insert(struct i915_vma *vma, u64 size, u64 alignment, u64 flags)
 					  start, end, flags);
 		if (ret)
 			goto err_clear;
-=======
-			goto err_unpin;
-		}
-
-		ret = i915_gem_gtt_reserve(vma->vm, &vma->node,
-					   size, offset, obj->cache_level,
-					   flags);
-		if (ret)
-			goto err_unpin;
-	} else {
-		ret = i915_gem_gtt_insert(vma->vm, &vma->node,
-					  size, alignment, obj->cache_level,
-					  start, end, flags);
-		if (ret)
-			goto err_unpin;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		GEM_BUG_ON(vma->node.start < start);
 		GEM_BUG_ON(vma->node.start + vma->node.size > end);
 	}
 	GEM_BUG_ON(!drm_mm_node_allocated(&vma->node));
-<<<<<<< HEAD
 	GEM_BUG_ON(!i915_gem_valid_gtt_space(vma, cache_level));
 
 	list_move_tail(&vma->vm_link, &vma->vm->inactive_list);
@@ -806,35 +676,17 @@ err_clear:
 err_unpin:
 	if (vma->obj)
 		i915_gem_object_unpin_pages(vma->obj);
-=======
-	GEM_BUG_ON(!i915_gem_valid_gtt_space(vma, obj->cache_level));
-
-	list_move_tail(&obj->global_link, &dev_priv->mm.bound_list);
-	list_move_tail(&vma->vm_link, &vma->vm->inactive_list);
-	obj->bind_count++;
-	GEM_BUG_ON(atomic_read(&obj->mm.pages_pin_count) < obj->bind_count);
-
-	return 0;
-
-err_unpin:
-	i915_gem_object_unpin_pages(obj);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
 static void
 i915_vma_remove(struct i915_vma *vma)
 {
-<<<<<<< HEAD
 	struct drm_i915_private *i915 = vma->vm->i915;
-=======
-	struct drm_i915_gem_object *obj = vma->obj;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	GEM_BUG_ON(!drm_mm_node_allocated(&vma->node));
 	GEM_BUG_ON(vma->flags & (I915_VMA_GLOBAL_BIND | I915_VMA_LOCAL_BIND));
 
-<<<<<<< HEAD
 	vma->ops->clear_pages(vma);
 
 	drm_mm_remove_node(&vma->node);
@@ -860,24 +712,6 @@ i915_vma_remove(struct i915_vma *vma)
 		i915_gem_object_unpin_pages(obj);
 		assert_bind_count(obj);
 	}
-=======
-	drm_mm_remove_node(&vma->node);
-	list_move_tail(&vma->vm_link, &vma->vm->unbound_list);
-
-	/* Since the unbound list is global, only move to that list if
-	 * no more VMAs exist.
-	 */
-	if (--obj->bind_count == 0)
-		list_move_tail(&obj->global_link,
-			       &to_i915(obj->base.dev)->mm.unbound_list);
-
-	/* And finally now the object is completely decoupled from this vma,
-	 * we can drop its hold on the backing storage and allow it to be
-	 * reaped by the shrinker.
-	 */
-	i915_gem_object_unpin_pages(obj);
-	GEM_BUG_ON(atomic_read(&obj->mm.pages_pin_count) < obj->bind_count);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int __i915_vma_do_pin(struct i915_vma *vma,
@@ -900,7 +734,6 @@ int __i915_vma_do_pin(struct i915_vma *vma,
 		if (ret)
 			goto err_unpin;
 	}
-<<<<<<< HEAD
 	GEM_BUG_ON(!drm_mm_node_allocated(&vma->node));
 
 	ret = i915_vma_bind(vma, vma->obj ? vma->obj->cache_level : 0, flags);
@@ -912,37 +745,20 @@ int __i915_vma_do_pin(struct i915_vma *vma,
 	if ((bound ^ vma->flags) & I915_VMA_GLOBAL_BIND)
 		__i915_vma_set_map_and_fenceable(vma);
 
-=======
-
-	ret = i915_vma_bind(vma, vma->obj->cache_level, flags);
-	if (ret)
-		goto err_remove;
-
-	if ((bound ^ vma->flags) & I915_VMA_GLOBAL_BIND)
-		__i915_vma_set_map_and_fenceable(vma);
-
-	GEM_BUG_ON(!drm_mm_node_allocated(&vma->node));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	GEM_BUG_ON(i915_vma_misplaced(vma, size, alignment, flags));
 	return 0;
 
 err_remove:
 	if ((bound & I915_VMA_BIND_MASK) == 0) {
-<<<<<<< HEAD
 		i915_vma_remove(vma);
 		GEM_BUG_ON(vma->pages);
 		GEM_BUG_ON(vma->flags & I915_VMA_BIND_MASK);
-=======
-		GEM_BUG_ON(vma->pages);
-		i915_vma_remove(vma);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 err_unpin:
 	__i915_vma_unpin(vma);
 	return ret;
 }
 
-<<<<<<< HEAD
 void i915_vma_close(struct i915_vma *vma)
 {
 	lockdep_assert_held(&vma->vm->i915->drm.struct_mutex);
@@ -983,24 +799,10 @@ static void __i915_vma_destroy(struct i915_vma *vma)
 	GEM_BUG_ON(vma->node.allocated);
 	GEM_BUG_ON(vma->fence);
 
-=======
-static void i915_vma_destroy(struct i915_vma *vma)
-{
-	int i;
-
-	GEM_BUG_ON(vma->node.allocated);
-	GEM_BUG_ON(i915_vma_is_active(vma));
-	GEM_BUG_ON(!i915_vma_is_closed(vma));
-	GEM_BUG_ON(vma->fence);
-
-	for (i = 0; i < ARRAY_SIZE(vma->last_read); i++)
-		GEM_BUG_ON(i915_gem_active_isset(&vma->last_read[i]));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	GEM_BUG_ON(i915_gem_active_isset(&vma->last_fence));
 
 	list_del(&vma->obj_link);
 	list_del(&vma->vm_link);
-<<<<<<< HEAD
 	if (vma->obj)
 		rb_erase(&vma->obj_node, &vma->obj->vma_tree);
 
@@ -1036,24 +838,6 @@ void i915_vma_parked(struct drm_i915_private *i915)
 	}
 
 	GEM_BUG_ON(!list_empty(&i915->gt.closed_vma));
-=======
-
-	if (!i915_vma_is_ggtt(vma))
-		i915_ppgtt_put(i915_vm_to_ppgtt(vma->vm));
-
-	kmem_cache_free(to_i915(vma->obj->base.dev)->vmas, vma);
-}
-
-void i915_vma_close(struct i915_vma *vma)
-{
-	GEM_BUG_ON(i915_vma_is_closed(vma));
-	vma->flags |= I915_VMA_CLOSED;
-
-	rb_erase(&vma->obj_node, &vma->obj->vma_tree);
-
-	if (!i915_vma_is_active(vma) && !i915_vma_is_pinned(vma))
-		WARN_ON(i915_vma_unbind(vma));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __i915_vma_iounmap(struct i915_vma *vma)
@@ -1067,7 +851,6 @@ static void __i915_vma_iounmap(struct i915_vma *vma)
 	vma->iomap = NULL;
 }
 
-<<<<<<< HEAD
 void i915_vma_revoke_mmap(struct i915_vma *vma)
 {
 	struct drm_vma_offset_node *node = &vma->obj->base.vma_node;
@@ -1259,24 +1042,6 @@ int i915_vma_unbind(struct i915_vma *vma)
 
 		/*
 		 * When a closed VMA is retired, it is unbound - eek.
-=======
-int i915_vma_unbind(struct i915_vma *vma)
-{
-	struct drm_i915_gem_object *obj = vma->obj;
-	unsigned long active;
-	int ret;
-
-	lockdep_assert_held(&obj->base.dev->struct_mutex);
-
-	/* First wait upon any activity as retiring the request may
-	 * have side-effects such as unpinning or even unbinding this vma.
-	 */
-	active = i915_vma_get_active(vma);
-	if (active) {
-		int idx;
-
-		/* When a closed VMA is retired, it is unbound - eek.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 * In order to prevent it from being recursively closed,
 		 * take a pin on the vma so that the second unbind is
 		 * aborted.
@@ -1290,7 +1055,6 @@ int i915_vma_unbind(struct i915_vma *vma)
 		 */
 		__i915_vma_pin(vma);
 
-<<<<<<< HEAD
 		ret = i915_gem_active_retire(&vma->last_active,
 					     &vma->vm->i915->drm.struct_mutex);
 		if (ret)
@@ -1307,27 +1071,12 @@ int i915_vma_unbind(struct i915_vma *vma)
 		ret = i915_gem_active_retire(&vma->last_fence,
 					     &vma->vm->i915->drm.struct_mutex);
 unpin:
-=======
-		for_each_active(active, idx) {
-			ret = i915_gem_active_retire(&vma->last_read[idx],
-						     &vma->vm->i915->drm.struct_mutex);
-			if (ret)
-				break;
-		}
-
-		if (!ret) {
-			ret = i915_gem_active_retire(&vma->last_fence,
-						     &vma->vm->i915->drm.struct_mutex);
-		}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__i915_vma_unpin(vma);
 		if (ret)
 			return ret;
 	}
 	GEM_BUG_ON(i915_vma_is_active(vma));
 
-<<<<<<< HEAD
 	if (i915_vma_is_pinned(vma)) {
 		vma_print_allocator(vma, "is pinned");
 		return -EBUSY;
@@ -1346,34 +1095,17 @@ unpin:
 		i915_vma_flush_writes(vma);
 		GEM_BUG_ON(i915_vma_has_ggtt_write(vma));
 
-=======
-	if (i915_vma_is_pinned(vma))
-		return -EBUSY;
-
-	if (!drm_mm_node_allocated(&vma->node))
-		goto destroy;
-
-	GEM_BUG_ON(obj->bind_count == 0);
-	GEM_BUG_ON(!i915_gem_object_has_pinned_pages(obj));
-
-	if (i915_vma_is_map_and_fenceable(vma)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* release the fence reg _after_ flushing */
 		ret = i915_vma_put_fence(vma);
 		if (ret)
 			return ret;
 
 		/* Force a pagefault for domain tracking on next user access */
-<<<<<<< HEAD
 		i915_vma_revoke_mmap(vma);
-=======
-		i915_gem_release_mmap(obj);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		__i915_vma_iounmap(vma);
 		vma->flags &= ~I915_VMA_CAN_FENCE;
 	}
-<<<<<<< HEAD
 	GEM_BUG_ON(vma->fence);
 	GEM_BUG_ON(i915_vma_has_userfault(vma));
 
@@ -1385,28 +1117,6 @@ unpin:
 
 	i915_vma_remove(vma);
 
-=======
-
-	if (likely(!vma->vm->closed)) {
-		trace_i915_vma_unbind(vma);
-		vma->vm->unbind_vma(vma);
-	}
-	vma->flags &= ~(I915_VMA_GLOBAL_BIND | I915_VMA_LOCAL_BIND);
-
-	if (vma->pages != obj->mm.pages) {
-		GEM_BUG_ON(!vma->pages);
-		sg_free_table(vma->pages);
-		kfree(vma->pages);
-	}
-	vma->pages = NULL;
-
-	i915_vma_remove(vma);
-
-destroy:
-	if (unlikely(i915_vma_is_closed(vma)))
-		i915_vma_destroy(vma);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

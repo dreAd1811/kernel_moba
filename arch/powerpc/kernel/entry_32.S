@@ -33,11 +33,8 @@
 #include <asm/unistd.h>
 #include <asm/ptrace.h>
 #include <asm/export.h>
-<<<<<<< HEAD
 #include <asm/asm-405.h>
 #include <asm/feature-fixups.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/barrier.h>
 
 /*
@@ -217,11 +214,7 @@ transfer_to_handler_cont:
 	mflr	r9
 	lwz	r11,0(r9)		/* virtual address of handler */
 	lwz	r9,4(r9)		/* where to go when done */
-<<<<<<< HEAD
 #if defined(CONFIG_PPC_8xx) && defined(CONFIG_PERF_EVENTS)
-=======
-#ifdef CONFIG_PPC_8xx_PERF_EVENT
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mtspr	SPRN_NRI, r0
 #endif
 #ifdef CONFIG_TRACE_IRQFLAGS
@@ -311,11 +304,7 @@ stack_ovf:
 	lis	r9,StackOverflow@ha
 	addi	r9,r9,StackOverflow@l
 	LOAD_MSR_KERNEL(r10,MSR_KERNEL)
-<<<<<<< HEAD
 #if defined(CONFIG_PPC_8xx) && defined(CONFIG_PERF_EVENTS)
-=======
-#ifdef CONFIG_PPC_8xx_PERF_EVENT
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mtspr	SPRN_NRI, r0
 #endif
 	mtspr	SPRN_SRR0,r9
@@ -388,7 +377,6 @@ syscall_dotrace_cont:
 	blrl			/* Call handler */
 	.globl	ret_from_syscall
 ret_from_syscall:
-<<<<<<< HEAD
 #ifdef CONFIG_DEBUG_RSEQ
 	/* Check whether the syscall is issued inside a restartable sequence */
 	stw	r3,GPR3(r1)
@@ -396,8 +384,6 @@ ret_from_syscall:
 	bl      rseq_syscall
 	lwz	r3,GPR3(r1)
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mr	r6,r3
 	CURRENT_THREAD_INFO(r12, r1)
 	/* disable interrupts so current_thread_info()->flags can't change */
@@ -463,11 +449,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_NEED_PAIRED_STWCX)
 	lwz	r7,_NIP(r1)
 	lwz	r2,GPR2(r1)
 	lwz	r1,GPR1(r1)
-<<<<<<< HEAD
 #if defined(CONFIG_PPC_8xx) && defined(CONFIG_PERF_EVENTS)
-=======
-#ifdef CONFIG_PPC_8xx_PERF_EVENT
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mtspr	SPRN_NRI, r0
 #endif
 	mtspr	SPRN_SRR0,r7
@@ -767,11 +749,7 @@ fast_exception_return:
 	li	r10, 0
 	stw	r10, 8(r11)
 	REST_GPR(10, r11)
-<<<<<<< HEAD
 #if defined(CONFIG_PPC_8xx) && defined(CONFIG_PERF_EVENTS)
-=======
-#ifdef CONFIG_PPC_8xx_PERF_EVENT
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mtspr	SPRN_NRI, r0
 #endif
 	mtspr	SPRN_SRR1,r9
@@ -1025,11 +1003,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_NEED_PAIRED_STWCX)
 	.globl exc_exit_restart
 exc_exit_restart:
 	lwz	r12,_NIP(r1)
-<<<<<<< HEAD
 #if defined(CONFIG_PPC_8xx) && defined(CONFIG_PERF_EVENTS)
-=======
-#ifdef CONFIG_PPC_8xx_PERF_EVENT
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mtspr	SPRN_NRI, r0
 #endif
 	mtspr	SPRN_SRR0,r12

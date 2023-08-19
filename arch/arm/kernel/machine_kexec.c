@@ -83,11 +83,7 @@ void machine_crash_nonpanic_core(void *unused)
 {
 	struct pt_regs regs;
 
-<<<<<<< HEAD
 	crash_setup_regs(&regs, get_irq_regs());
-=======
-	crash_setup_regs(&regs, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	printk(KERN_DEBUG "CPU %u will stop doing anything useful since another CPU has crashed\n",
 	       smp_processor_id());
 	crash_save_cpu(&regs, smp_processor_id());

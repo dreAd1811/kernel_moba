@@ -13,11 +13,8 @@
  * GNU General Public License for more details.
  */
 
-<<<<<<< HEAD
 #include <linux/stddef.h>
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "clk-uniphier.h"
 
 #define UNIPHIER_MIO_CLK_SD_FIXED					\
@@ -78,22 +75,12 @@
 #define UNIPHIER_MIO_CLK_USB2_PHY(idx, ch)				\
 	UNIPHIER_CLK_GATE("usb2" #ch "-phy", (idx), "usb2", 0x20 + 0x200 * (ch), 29)
 
-<<<<<<< HEAD
-=======
-#define UNIPHIER_MIO_CLK_DMAC(idx)					\
-	UNIPHIER_CLK_GATE("miodmac", (idx), "stdmac", 0x20, 25)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 const struct uniphier_clk_data uniphier_ld4_mio_clk_data[] = {
 	UNIPHIER_MIO_CLK_SD_FIXED,
 	UNIPHIER_MIO_CLK_SD(0, 0),
 	UNIPHIER_MIO_CLK_SD(1, 1),
 	UNIPHIER_MIO_CLK_SD(2, 2),
-<<<<<<< HEAD
 	UNIPHIER_CLK_GATE("miodmac", 7, NULL, 0x20, 25),
-=======
-	UNIPHIER_MIO_CLK_DMAC(7),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	UNIPHIER_MIO_CLK_USB2(8, 0),
 	UNIPHIER_MIO_CLK_USB2(9, 1),
 	UNIPHIER_MIO_CLK_USB2(10, 2),

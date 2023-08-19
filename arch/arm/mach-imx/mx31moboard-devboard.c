@@ -22,10 +22,7 @@
 
 #include <linux/usb/otg.h>
 
-<<<<<<< HEAD
 #include "board-mx31moboard.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "common.h"
 #include "devices-imx31.h"
 #include "ehci.h"

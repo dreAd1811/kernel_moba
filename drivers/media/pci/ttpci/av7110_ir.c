@@ -84,27 +84,16 @@ static u16 default_key_map [256] = {
 
 
 /* key-up timer */
-<<<<<<< HEAD
 static void av7110_emit_keyup(struct timer_list *t)
 {
 	struct infrared *ir = from_timer(ir, t, keyup_timer);
 
 	if (!ir || !ir->keypressed)
-=======
-static void av7110_emit_keyup(unsigned long parm)
-{
-	struct infrared *ir = (struct infrared *) parm;
-
-	if (!ir || !test_bit(ir->last_key, ir->input_dev->key))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	input_report_key(ir->input_dev, ir->last_key, 0);
 	input_sync(ir->input_dev);
-<<<<<<< HEAD
 	ir->keypressed = false;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 
@@ -164,7 +153,6 @@ static void av7110_emit_key(unsigned long parm)
 		return;
 	}
 
-<<<<<<< HEAD
 	if (ir->keypressed &&
 	    (ir->last_key != keycode || toggle != ir->last_toggle))
 		input_event(ir->input_dev, EV_KEY, ir->last_key, 0);
@@ -177,31 +165,6 @@ static void av7110_emit_key(unsigned long parm)
 	ir->last_toggle = toggle;
 
 	mod_timer(&ir->keyup_timer, jiffies + UP_TIMEOUT);
-=======
-	if (timer_pending(&ir->keyup_timer)) {
-		del_timer(&ir->keyup_timer);
-		if (ir->last_key != keycode || toggle != ir->last_toggle) {
-			ir->delay_timer_finished = 0;
-			input_event(ir->input_dev, EV_KEY, ir->last_key, 0);
-			input_event(ir->input_dev, EV_KEY, keycode, 1);
-			input_sync(ir->input_dev);
-		} else if (ir->delay_timer_finished) {
-			input_event(ir->input_dev, EV_KEY, keycode, 2);
-			input_sync(ir->input_dev);
-		}
-	} else {
-		ir->delay_timer_finished = 0;
-		input_event(ir->input_dev, EV_KEY, keycode, 1);
-		input_sync(ir->input_dev);
-	}
-
-	ir->last_key = keycode;
-	ir->last_toggle = toggle;
-
-	ir->keyup_timer.expires = jiffies + UP_TIMEOUT;
-	add_timer(&ir->keyup_timer);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 
@@ -231,19 +194,6 @@ static void input_register_keys(struct infrared *ir)
 	ir->input_dev->keycodemax = ARRAY_SIZE(ir->key_map);
 }
 
-<<<<<<< HEAD
-=======
-
-/* called by the input driver after rep[REP_DELAY] ms */
-static void input_repeat_key(unsigned long parm)
-{
-	struct infrared *ir = (struct infrared *) parm;
-
-	ir->delay_timer_finished = 1;
-}
-
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* check for configuration changes */
 int av7110_check_ir_config(struct av7110 *av7110, int force)
 {
@@ -363,12 +313,7 @@ int av7110_ir_init(struct av7110 *av7110)
 	av_list[av_cnt++] = av7110;
 	av7110_check_ir_config(av7110, true);
 
-<<<<<<< HEAD
 	timer_setup(&av7110->ir.keyup_timer, av7110_emit_keyup, 0);
-=======
-	setup_timer(&av7110->ir.keyup_timer, av7110_emit_keyup,
-		    (unsigned long)&av7110->ir);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	input_dev = input_allocate_device();
 	if (!input_dev)
@@ -399,7 +344,6 @@ int av7110_ir_init(struct av7110 *av7110)
 		input_free_device(input_dev);
 		return err;
 	}
-<<<<<<< HEAD
 
 	/*
 	 * Input core's default autorepeat is 33 cps with 250 msec
@@ -407,10 +351,6 @@ int av7110_ir_init(struct av7110 *av7110)
 	 * control.
 	 */
 	input_enable_softrepeat(input_dev, 250, 125);
-=======
-	input_dev->timer.function = input_repeat_key;
-	input_dev->timer.data = (unsigned long) &av7110->ir;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (av_cnt == 1) {
 		e = proc_create("av7110_ir", S_IWUSR, NULL, &av7110_ir_proc_fops);

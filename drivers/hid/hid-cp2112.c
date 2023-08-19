@@ -21,11 +21,7 @@
  * Data Sheet:
  *   http://www.silabs.com/Support%20Documents/TechnicalDocs/CP2112.pdf
  * Programming Interface Specification:
-<<<<<<< HEAD
  *   https://www.silabs.com/documents/public/application-notes/an495-cp2112-interface-specification.pdf
-=======
- *   http://www.silabs.com/Support%20Documents/TechnicalDocs/AN495.pdf
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/gpio.h>
@@ -700,7 +696,6 @@ static int cp2112_xfer(struct i2c_adapter *adap, u16 addr,
 					      (u8 *)&word, 2);
 		break;
 	case I2C_SMBUS_I2C_BLOCK_DATA:
-<<<<<<< HEAD
 		if (read_write == I2C_SMBUS_READ) {
 			read_length = data->block[0];
 			count = cp2112_write_read_req(buf, addr, read_length,
@@ -711,10 +706,6 @@ static int cp2112_xfer(struct i2c_adapter *adap, u16 addr,
 						 data->block[0]);
 		}
 		break;
-=======
-		size = I2C_SMBUS_BLOCK_DATA;
-		/* fallthrough */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case I2C_SMBUS_BLOCK_DATA:
 		if (I2C_SMBUS_READ == read_write) {
 			count = cp2112_write_read_req(buf, addr,
@@ -802,12 +793,9 @@ static int cp2112_xfer(struct i2c_adapter *adap, u16 addr,
 	case I2C_SMBUS_WORD_DATA:
 		data->word = le16_to_cpup((__le16 *)buf);
 		break;
-<<<<<<< HEAD
 	case I2C_SMBUS_I2C_BLOCK_DATA:
 		memcpy(data->block + 1, buf, read_length);
 		break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case I2C_SMBUS_BLOCK_DATA:
 		if (read_length > I2C_SMBUS_BLOCK_MAX) {
 			ret = -EPROTO;

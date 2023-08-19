@@ -45,14 +45,10 @@ struct cosm_msg {
 	u64 id;
 	union {
 		u64 shutdown_status;
-<<<<<<< HEAD
 		struct {
 			u64 tv_sec;
 			u64 tv_nsec;
 		} timespec;
-=======
-		struct timespec64 timespec;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };
 

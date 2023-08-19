@@ -332,13 +332,8 @@ References
 [5] "MBIM (Mobile Broadband Interface Model) Registry"
        - http://compliance.usb.org/mbim/
 
-<<<<<<< HEAD
 [6] "/sys/kernel/debug/usb/devices output format"
        - Documentation/driver-api/usb/usb.rst
-=======
-[6] "/dev/bus/usb filesystem output"
-       - Documentation/usb/proc_usb_info.txt
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 [7] "/sys/bus/usb/devices/.../descriptors"
        - Documentation/ABI/stable/sysfs-bus-usb

@@ -220,11 +220,7 @@ static void __init reserve_elfcorehdr(void)
 }
 #endif /* CONFIG_CRASH_DUMP */
 /*
-<<<<<<< HEAD
  * Return the maximum physical address for ZONE_DMA32 (DMA_BIT_MASK(32)). It
-=======
- * Return the maximum physical address for ZONE_DMA (DMA_BIT_MASK(32)). It
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * currently assumes that for memory starting above 4G, 32-bit devices will
  * use a DMA offset.
  */
@@ -240,14 +236,9 @@ static void __init zone_sizes_init(unsigned long min, unsigned long max)
 {
 	unsigned long max_zone_pfns[MAX_NR_ZONES]  = {0};
 
-<<<<<<< HEAD
 #ifdef CONFIG_ZONE_DMA32
 	max_zone_pfns[ZONE_DMA32] = PFN_DOWN(max_zone_dma_phys());
 #endif
-=======
-	if (IS_ENABLED(CONFIG_ZONE_DMA))
-		max_zone_pfns[ZONE_DMA] = PFN_DOWN(max_zone_dma_phys());
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	max_zone_pfns[ZONE_NORMAL] = max;
 
 	free_area_init_nodes(max_zone_pfns);
@@ -264,15 +255,9 @@ static void __init zone_sizes_init(unsigned long min, unsigned long max)
 	memset(zone_size, 0, sizeof(zone_size));
 
 	/* 4GB maximum for 32-bit only capable devices */
-<<<<<<< HEAD
 #ifdef CONFIG_ZONE_DMA32
 	max_dma = PFN_DOWN(arm64_dma_phys_limit);
 	zone_size[ZONE_DMA32] = max_dma - min;
-=======
-#ifdef CONFIG_ZONE_DMA
-	max_dma = PFN_DOWN(arm64_dma_phys_limit);
-	zone_size[ZONE_DMA] = max_dma - min;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 	zone_size[ZONE_NORMAL] = max - max_dma;
 
@@ -285,17 +270,10 @@ static void __init zone_sizes_init(unsigned long min, unsigned long max)
 		if (start >= max)
 			continue;
 
-<<<<<<< HEAD
 #ifdef CONFIG_ZONE_DMA32
 		if (start < max_dma) {
 			unsigned long dma_end = min(end, max_dma);
 			zhole_size[ZONE_DMA32] -= dma_end - start;
-=======
-#ifdef CONFIG_ZONE_DMA
-		if (start < max_dma) {
-			unsigned long dma_end = min(end, max_dma);
-			zhole_size[ZONE_DMA] -= dma_end - start;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 #endif
 		if (end > max_dma) {
@@ -340,11 +318,7 @@ static void __init arm64_memory_present(void)
 }
 #endif
 
-<<<<<<< HEAD
 static phys_addr_t memory_limit = PHYS_ADDR_MAX;
-=======
-static phys_addr_t memory_limit = (phys_addr_t)ULLONG_MAX;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 phys_addr_t bootloader_memory_limit;
 
 #ifdef CONFIG_OVERRIDE_MEMORY_LIMIT
@@ -359,11 +333,7 @@ static void __init update_memory_limit(void)
 	phys_addr_t min_ddr_sz = 0, offline_sz = 0;
 	int t_len = (2 * dt_root_size_cells) * sizeof(__be32);
 
-<<<<<<< HEAD
 	if (memory_limit == PHYS_ADDR_MAX)
-=======
-	if (memory_limit == (phys_addr_t)ULLONG_MAX)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ram_sz = memblock_phys_mem_size();
 	else if (IS_ALIGNED(memory_limit, MIN_MEMORY_BLOCK_SIZE))
 		ram_sz = memory_limit;
@@ -495,12 +465,9 @@ void __init arm64_memblock_init(void)
 	/* Handle linux,usable-memory-range property */
 	fdt_enforce_memory_region();
 
-<<<<<<< HEAD
 	/* Remove memory above our supported physical address size */
 	memblock_remove(1ULL << PHYS_MASK_SHIFT, ULLONG_MAX);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Ensure that the linear region takes up exactly half of the kernel
 	 * virtual address space. This way, we can distinguish a linear address
@@ -532,16 +499,10 @@ void __init arm64_memblock_init(void)
 	 * Save bootloader imposed memory limit before we overwirte
 	 * memblock.
 	 */
-<<<<<<< HEAD
 	if (memory_limit == PHYS_ADDR_MAX)
 		bootloader_memory_limit = memblock_end_of_DRAM();
 	else
 		bootloader_memory_limit = memblock_max_addr(memory_limit);
-=======
-	bootloader_memory_limit = memblock_max_addr(memory_limit);
-	if (bootloader_memory_limit > memblock_end_of_DRAM())
-		bootloader_memory_limit = memblock_end_of_DRAM();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	update_memory_limit();
 
@@ -550,11 +511,7 @@ void __init arm64_memblock_init(void)
 	 * high up in memory, add back the kernel region that must be accessible
 	 * via the linear mapping.
 	 */
-<<<<<<< HEAD
 	if (memory_limit != PHYS_ADDR_MAX) {
-=======
-	if (memory_limit != (phys_addr_t)ULLONG_MAX) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		memblock_mem_limit_remove_map(memory_limit);
 		memblock_add(__pa_symbol(_text), (u64)(_end - _text));
 	}
@@ -623,11 +580,7 @@ void __init arm64_memblock_init(void)
 	early_init_fdt_scan_reserved_mem();
 
 	/* 4GB maximum for 32-bit only capable devices */
-<<<<<<< HEAD
 	if (IS_ENABLED(CONFIG_ZONE_DMA32))
-=======
-	if (IS_ENABLED(CONFIG_ZONE_DMA))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		arm64_dma_phys_limit = max_zone_dma_phys();
 	else
 		arm64_dma_phys_limit = PHYS_MASK + 1;
@@ -760,53 +713,6 @@ void __init mem_init(void)
 
 	mem_init_print_info(NULL);
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_PRINT_VMEMLAYOUT
-#define MLK(b, t) b, t, ((t) - (b)) >> 10
-#define MLM(b, t) b, t, ((t) - (b)) >> 20
-#define MLG(b, t) b, t, ((t) - (b)) >> 30
-#define MLK_ROUNDUP(b, t) b, t, DIV_ROUND_UP(((t) - (b)), SZ_1K)
-
-	pr_notice("Virtual kernel memory layout:\n");
-#ifdef CONFIG_KASAN
-	pr_notice("    kasan   : 0x%16lx - 0x%16lx   (%6ld GB)\n",
-		MLG(KASAN_SHADOW_START, KASAN_SHADOW_END));
-#endif
-	pr_notice("    modules : 0x%16lx - 0x%16lx   (%6ld MB)\n",
-		MLM(MODULES_VADDR, MODULES_END));
-	pr_notice("    vmalloc : 0x%16lx - 0x%16lx   (%6ld GB)\n",
-		MLG(VMALLOC_START, VMALLOC_END));
-	pr_notice("      .text : 0x%p" " - 0x%p" "   (%6ld KB)\n",
-		MLK_ROUNDUP(_text, _etext));
-	pr_notice("    .rodata : 0x%p" " - 0x%p" "   (%6ld KB)\n",
-		MLK_ROUNDUP(__start_rodata, __init_begin));
-	pr_notice("      .init : 0x%p" " - 0x%p" "   (%6ld KB)\n",
-		MLK_ROUNDUP(__init_begin, __init_end));
-	pr_notice("      .data : 0x%p" " - 0x%p" "   (%6ld KB)\n",
-		MLK_ROUNDUP(_sdata, _edata));
-	pr_notice("       .bss : 0x%p" " - 0x%p" "   (%6ld KB)\n",
-		MLK_ROUNDUP(__bss_start, __bss_stop));
-	pr_notice("    fixed   : 0x%16lx - 0x%16lx   (%6ld KB)\n",
-		MLK(FIXADDR_START, FIXADDR_TOP));
-	pr_notice("    PCI I/O : 0x%16lx - 0x%16lx   (%6ld MB)\n",
-		MLM(PCI_IO_START, PCI_IO_END));
-#ifdef CONFIG_SPARSEMEM_VMEMMAP
-	pr_notice("    vmemmap : 0x%16lx - 0x%16lx   (%6ld GB maximum)\n",
-		MLG(VMEMMAP_START, VMEMMAP_START + VMEMMAP_SIZE));
-	pr_notice("              0x%16lx - 0x%16lx   (%6ld MB actual)\n",
-		MLM((unsigned long)phys_to_page(memblock_start_of_DRAM()),
-		    (unsigned long)virt_to_page(high_memory)));
-#endif
-	pr_notice("    memory  : 0x%16lx - 0x%16lx   (%6ld MB)\n",
-		MLM(__phys_to_virt(memblock_start_of_DRAM()),
-		    (unsigned long)high_memory));
-
-#undef MLK
-#undef MLM
-#undef MLK_ROUNDUP
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Check boundaries twice: Some fundamental inconsistencies can be
 	 * detected at build time already.
@@ -852,15 +758,10 @@ static int keep_initrd __initdata;
 
 void __init free_initrd_mem(unsigned long start, unsigned long end)
 {
-<<<<<<< HEAD
 	if (!keep_initrd) {
 		free_reserved_area((void *)start, (void *)end, 0, "initrd");
 		memblock_free(__virt_to_phys(start), end - start);
 	}
-=======
-	if (!keep_initrd)
-		free_reserved_area((void *)start, (void *)end, 0, "initrd");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int __init keepinitrd_setup(char *__unused)
@@ -877,11 +778,7 @@ __setup("keepinitrd", keepinitrd_setup);
  */
 static int dump_mem_limit(struct notifier_block *self, unsigned long v, void *p)
 {
-<<<<<<< HEAD
 	if (memory_limit != PHYS_ADDR_MAX) {
-=======
-	if (memory_limit != (phys_addr_t)ULLONG_MAX) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_emerg("Memory Limit: %llu MB\n", memory_limit >> 20);
 	} else {
 		pr_emerg("Memory Limit: none\n");
@@ -902,12 +799,8 @@ static int __init register_mem_limit_dumper(void)
 __initcall(register_mem_limit_dumper);
 
 #ifdef CONFIG_MEMORY_HOTPLUG
-<<<<<<< HEAD
 int arch_add_memory(int nid, u64 start, u64 size, struct vmem_altmap *altmap,
 		bool want_memblock)
-=======
-int arch_add_memory(int nid, u64 start, u64 size, bool want_memblock)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	pg_data_t *pgdat;
 	unsigned long start_pfn = start >> PAGE_SHIFT;
@@ -955,11 +848,7 @@ int arch_add_memory(int nid, u64 start, u64 size, bool want_memblock)
 
 	pgdat = NODE_DATA(nid);
 
-<<<<<<< HEAD
 	ret = __add_pages(nid, start_pfn, nr_pages, altmap, want_memblock);
-=======
-	ret = __add_pages(nid, start_pfn, nr_pages, want_memblock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Make the pages usable after they have been added.
@@ -1000,11 +889,7 @@ static void kernel_physical_mapping_remove(unsigned long start,
 
 }
 
-<<<<<<< HEAD
 int arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
-=======
-int arch_remove_memory(u64 start, u64 size)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long start_pfn = start >> PAGE_SHIFT;
 	unsigned long nr_pages = size >> PAGE_SHIFT;
@@ -1013,11 +898,7 @@ int arch_remove_memory(u64 start, u64 size)
 	int ret = 0;
 
 	zone = page_zone(page);
-<<<<<<< HEAD
 	ret = __remove_pages(zone, start_pfn, nr_pages, altmap);
-=======
-	ret = __remove_pages(zone, start_pfn, nr_pages);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	WARN_ON_ONCE(ret);
 
 	kernel_physical_mapping_remove(start, start + size);

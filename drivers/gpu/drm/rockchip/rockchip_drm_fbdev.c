@@ -76,11 +76,7 @@ static int rockchip_drm_fbdev_create(struct drm_fb_helper *helper,
 
 	fbi = drm_fb_helper_alloc_fbi(helper);
 	if (IS_ERR(fbi)) {
-<<<<<<< HEAD
 		DRM_DEV_ERROR(dev->dev, "Failed to create framebuffer info.\n");
-=======
-		dev_err(dev->dev, "Failed to create framebuffer info.\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = PTR_ERR(fbi);
 		goto out;
 	}
@@ -88,12 +84,8 @@ static int rockchip_drm_fbdev_create(struct drm_fb_helper *helper,
 	helper->fb = rockchip_drm_framebuffer_init(dev, &mode_cmd,
 						   private->fbdev_bo);
 	if (IS_ERR(helper->fb)) {
-<<<<<<< HEAD
 		DRM_DEV_ERROR(dev->dev,
 			      "Failed to allocate DRM framebuffer.\n");
-=======
-		dev_err(dev->dev, "Failed to allocate DRM framebuffer.\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = PTR_ERR(helper->fb);
 		goto out;
 	}
@@ -147,38 +139,24 @@ int rockchip_drm_fbdev_init(struct drm_device *dev)
 
 	ret = drm_fb_helper_init(dev, helper, ROCKCHIP_MAX_CONNECTOR);
 	if (ret < 0) {
-<<<<<<< HEAD
 		DRM_DEV_ERROR(dev->dev,
 			      "Failed to initialize drm fb helper - %d.\n",
 			      ret);
-=======
-		dev_err(dev->dev, "Failed to initialize drm fb helper - %d.\n",
-			ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
 	ret = drm_fb_helper_single_add_all_connectors(helper);
 	if (ret < 0) {
-<<<<<<< HEAD
 		DRM_DEV_ERROR(dev->dev,
 			      "Failed to add connectors - %d.\n", ret);
-=======
-		dev_err(dev->dev, "Failed to add connectors - %d.\n", ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_drm_fb_helper_fini;
 	}
 
 	ret = drm_fb_helper_initial_config(helper, PREFERRED_BPP);
 	if (ret < 0) {
-<<<<<<< HEAD
 		DRM_DEV_ERROR(dev->dev,
 			      "Failed to set initial hw config - %d.\n",
 			      ret);
-=======
-		dev_err(dev->dev, "Failed to set initial hw config - %d.\n",
-			ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_drm_fb_helper_fini;
 	}
 

@@ -151,15 +151,10 @@ EXPORT_SYMBOL(drm_dp_link_train_channel_eq_delay);
 u8 drm_dp_link_rate_to_bw_code(int link_rate)
 {
 	switch (link_rate) {
-<<<<<<< HEAD
 	default:
 		WARN(1, "unknown DP link rate %d, using %x\n", link_rate,
 		     DP_LINK_BW_1_62);
 	case 162000:
-=======
-	case 162000:
-	default:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return DP_LINK_BW_1_62;
 	case 270000:
 		return DP_LINK_BW_2_7;
@@ -174,14 +169,9 @@ EXPORT_SYMBOL(drm_dp_link_rate_to_bw_code);
 int drm_dp_bw_code_to_link_rate(u8 link_bw)
 {
 	switch (link_bw) {
-<<<<<<< HEAD
 	default:
 		WARN(1, "unknown DP link BW code %x, using 162000\n", link_bw);
 	case DP_LINK_BW_1_62:
-=======
-	case DP_LINK_BW_1_62:
-	default:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 162000;
 	case DP_LINK_BW_2_7:
 		return 270000;
@@ -195,7 +185,6 @@ EXPORT_SYMBOL(drm_dp_bw_code_to_link_rate);
 
 #define AUX_RETRY_INTERVAL 500 /* us */
 
-<<<<<<< HEAD
 static inline void
 drm_dp_dump_access(const struct drm_dp_aux *aux,
 		   u8 request, uint offset, void *buffer, int ret)
@@ -210,8 +199,6 @@ drm_dp_dump_access(const struct drm_dp_aux *aux,
 			aux->name, offset, arrow, ret);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * DOC: dp helpers
  *
@@ -315,7 +302,6 @@ ssize_t drm_dp_dpcd_read(struct drm_dp_aux *aux, unsigned int offset,
 	ret = drm_dp_dpcd_access(aux, DP_AUX_NATIVE_READ, DP_DPCD_REV, buffer,
 				 1);
 	if (ret != 1)
-<<<<<<< HEAD
 		goto out;
 
 	ret = drm_dp_dpcd_access(aux, DP_AUX_NATIVE_READ, offset, buffer,
@@ -324,12 +310,6 @@ ssize_t drm_dp_dpcd_read(struct drm_dp_aux *aux, unsigned int offset,
 out:
 	drm_dp_dump_access(aux, DP_AUX_NATIVE_READ, offset, buffer, ret);
 	return ret;
-=======
-		return ret;
-
-	return drm_dp_dpcd_access(aux, DP_AUX_NATIVE_READ, offset, buffer,
-				  size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(drm_dp_dpcd_read);
 
@@ -350,17 +330,12 @@ EXPORT_SYMBOL(drm_dp_dpcd_read);
 ssize_t drm_dp_dpcd_write(struct drm_dp_aux *aux, unsigned int offset,
 			  void *buffer, size_t size)
 {
-<<<<<<< HEAD
 	int ret;
 
 	ret = drm_dp_dpcd_access(aux, DP_AUX_NATIVE_WRITE, offset, buffer,
 				 size);
 	drm_dp_dump_access(aux, DP_AUX_NATIVE_WRITE, offset, buffer, ret);
 	return ret;
-=======
-	return drm_dp_dpcd_access(aux, DP_AUX_NATIVE_WRITE, offset, buffer,
-				  size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(drm_dp_dpcd_write);
 
@@ -422,18 +397,13 @@ EXPORT_SYMBOL(drm_dp_link_probe);
  */
 int drm_dp_link_power_up(struct drm_dp_aux *aux, struct drm_dp_link *link)
 {
-<<<<<<< HEAD
 	u8 value;
-=======
-	u8 value = DP_SET_POWER_D0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	/* DP_SET_POWER register is only available on DPCD v1.1 and later */
 	if (link->revision < 0x11)
 		return 0;
 
-<<<<<<< HEAD
 	err = drm_dp_dpcd_readb(aux, DP_SET_POWER, &value);
 	if (err < 0)
 		return err;
@@ -441,8 +411,6 @@ int drm_dp_link_power_up(struct drm_dp_aux *aux, struct drm_dp_link *link)
 	value &= ~DP_SET_POWER_MASK;
 	value |= DP_SET_POWER_D0;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = drm_dp_dpcd_writeb(aux, DP_SET_POWER, value);
 	if (err < 0)
 		return err;
@@ -1141,10 +1109,7 @@ static void drm_dp_aux_crc_work(struct work_struct *work)
 void drm_dp_aux_init(struct drm_dp_aux *aux)
 {
 	mutex_init(&aux->hw_mutex);
-<<<<<<< HEAD
 	mutex_init(&aux->cec.lock);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INIT_WORK(&aux->crc_work, drm_dp_aux_crc_work);
 
 	aux->ddc.algo = &drm_dp_i2c_algo;
@@ -1173,10 +1138,6 @@ int drm_dp_aux_register(struct drm_dp_aux *aux)
 	aux->ddc.class = I2C_CLASS_DDC;
 	aux->ddc.owner = THIS_MODULE;
 	aux->ddc.dev.parent = aux->dev;
-<<<<<<< HEAD
-=======
-	aux->ddc.dev.of_node = aux->dev->of_node;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	strlcpy(aux->ddc.name, aux->name ? aux->name : dev_name(aux->dev),
 		sizeof(aux->ddc.name));

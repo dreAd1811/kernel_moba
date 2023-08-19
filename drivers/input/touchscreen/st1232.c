@@ -29,10 +29,6 @@
 #include <linux/pm_qos.h>
 #include <linux/slab.h>
 #include <linux/types.h>
-<<<<<<< HEAD
-=======
-#include <linux/platform_data/st1232_pdata.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define ST1232_TS_NAME	"st1232-ts"
 
@@ -155,16 +151,9 @@ static void st1232_ts_power(struct st1232_ts_data *ts, bool poweron)
 }
 
 static int st1232_ts_probe(struct i2c_client *client,
-<<<<<<< HEAD
 			   const struct i2c_device_id *id)
 {
 	struct st1232_ts_data *ts;
-=======
-					const struct i2c_device_id *id)
-{
-	struct st1232_ts_data *ts;
-	struct st1232_pdata *pdata = dev_get_platdata(&client->dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct input_dev *input_dev;
 	int error;
 
@@ -189,17 +178,7 @@ static int st1232_ts_probe(struct i2c_client *client,
 	ts->client = client;
 	ts->input_dev = input_dev;
 
-<<<<<<< HEAD
 	ts->reset_gpio = of_get_gpio(client->dev.of_node, 0);
-=======
-	if (pdata)
-		ts->reset_gpio = pdata->reset_gpio;
-	else if (client->dev.of_node)
-		ts->reset_gpio = of_get_gpio(client->dev.of_node, 0);
-	else
-		ts->reset_gpio = -ENODEV;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (gpio_is_valid(ts->reset_gpio)) {
 		error = devm_gpio_request(&client->dev, ts->reset_gpio, NULL);
 		if (error) {
@@ -216,10 +195,6 @@ static int st1232_ts_probe(struct i2c_client *client,
 	input_dev->id.bustype = BUS_I2C;
 	input_dev->dev.parent = &client->dev;
 
-<<<<<<< HEAD
-=======
-	__set_bit(INPUT_PROP_DIRECT, input_dev->propbit);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__set_bit(EV_SYN, input_dev->evbit);
 	__set_bit(EV_KEY, input_dev->evbit);
 	__set_bit(EV_ABS, input_dev->evbit);
@@ -298,19 +273,11 @@ static const struct i2c_device_id st1232_ts_id[] = {
 };
 MODULE_DEVICE_TABLE(i2c, st1232_ts_id);
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_OF
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct of_device_id st1232_ts_dt_ids[] = {
 	{ .compatible = "sitronix,st1232", },
 	{ }
 };
 MODULE_DEVICE_TABLE(of, st1232_ts_dt_ids);
-<<<<<<< HEAD
-=======
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct i2c_driver st1232_ts_driver = {
 	.probe		= st1232_ts_probe,
@@ -318,11 +285,7 @@ static struct i2c_driver st1232_ts_driver = {
 	.id_table	= st1232_ts_id,
 	.driver = {
 		.name	= ST1232_TS_NAME,
-<<<<<<< HEAD
 		.of_match_table = st1232_ts_dt_ids,
-=======
-		.of_match_table = of_match_ptr(st1232_ts_dt_ids),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.pm	= &st1232_ts_pm_ops,
 	},
 };

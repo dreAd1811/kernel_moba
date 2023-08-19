@@ -4,10 +4,7 @@
 
 #include <asm/ptrace.h>
 #include <asm/string.h>
-<<<<<<< HEAD
 #include <linux/kernel.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * KEXEC_SOURCE_MEMORY_LIMIT maximum page get_free_page can return.
@@ -65,11 +62,7 @@ static inline void crash_setup_regs(struct pt_regs *newregs,
 		__asm__ __volatile__ ("stc gbr, %0" : "=r" (newregs->gbr));
 		__asm__ __volatile__ ("stc sr, %0" : "=r" (newregs->sr));
 
-<<<<<<< HEAD
 		newregs->pc = _THIS_IP_;
-=======
-		newregs->pc = (unsigned long)current_text_addr();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 #else

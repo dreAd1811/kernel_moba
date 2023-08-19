@@ -1,25 +1,10 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Hardware spinlock framework
  *
  * Copyright (C) 2010 Texas Instruments Incorporated - http://www.ti.com
  *
  * Contact: Ohad Ben-Cohen <ohad@wizery.com>
-<<<<<<< HEAD
-=======
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License version 2 as published
- * by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #define pr_fmt(fmt)    "%s: " fmt, __func__
@@ -78,7 +63,6 @@ static DEFINE_MUTEX(hwspinlock_tree_lock);
  * This function attempts to lock an hwspinlock, and will immediately
  * fail if the hwspinlock is already taken.
  *
-<<<<<<< HEAD
  * Caution: If the mode is HWLOCK_RAW, that means user must protect the routine
  * of getting hardware lock with mutex or spinlock. Since in some scenarios,
  * user need some time-consuming or sleepable operations under the hardware
@@ -89,12 +73,6 @@ static DEFINE_MUTEX(hwspinlock_tree_lock);
  * sleep, and is advised to release the hwspinlock as soon as possible. This is
  * required in order to minimize remote cores polling on the hardware
  * interconnect.
-=======
- * Upon a successful return from this function, preemption (and possibly
- * interrupts) is disabled, so the caller must not sleep, and is advised to
- * release the hwspinlock as soon as possible. This is required in order to
- * minimize remote cores polling on the hardware interconnect.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * The user decides whether local interrupts are disabled or not, and if yes,
  * whether he wants their previous state to be saved. It is up to the user
@@ -126,7 +104,6 @@ int __hwspin_trylock(struct hwspinlock *hwlock, int mode, unsigned long *flags)
 	 *    problems with hwspinlock usage (e.g. scheduler checks like
 	 *    'scheduling while atomic' etc.)
 	 */
-<<<<<<< HEAD
 	switch (mode) {
 	case HWLOCK_IRQSTATE:
 		ret = spin_trylock_irqsave(&hwlock->lock, *flags);
@@ -141,14 +118,6 @@ int __hwspin_trylock(struct hwspinlock *hwlock, int mode, unsigned long *flags)
 		ret = spin_trylock(&hwlock->lock);
 		break;
 	}
-=======
-	if (mode == HWLOCK_IRQSTATE)
-		ret = spin_trylock_irqsave(&hwlock->lock, *flags);
-	else if (mode == HWLOCK_IRQ)
-		ret = spin_trylock_irq(&hwlock->lock);
-	else
-		ret = spin_trylock(&hwlock->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* is lock already taken by another context on the local cpu ? */
 	if (!ret)
@@ -159,7 +128,6 @@ int __hwspin_trylock(struct hwspinlock *hwlock, int mode, unsigned long *flags)
 
 	/* if hwlock is already taken, undo spin_trylock_* and exit */
 	if (!ret) {
-<<<<<<< HEAD
 		switch (mode) {
 		case HWLOCK_IRQSTATE:
 			spin_unlock_irqrestore(&hwlock->lock, *flags);
@@ -174,14 +142,6 @@ int __hwspin_trylock(struct hwspinlock *hwlock, int mode, unsigned long *flags)
 			spin_unlock(&hwlock->lock);
 			break;
 		}
-=======
-		if (mode == HWLOCK_IRQSTATE)
-			spin_unlock_irqrestore(&hwlock->lock, *flags);
-		else if (mode == HWLOCK_IRQ)
-			spin_unlock_irq(&hwlock->lock);
-		else
-			spin_unlock(&hwlock->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		return -EBUSY;
 	}
@@ -214,7 +174,6 @@ EXPORT_SYMBOL_GPL(__hwspin_trylock);
  * is already taken, the function will busy loop waiting for it to
  * be released, but give up after @timeout msecs have elapsed.
  *
-<<<<<<< HEAD
  * Caution: If the mode is HWLOCK_RAW, that means user must protect the routine
  * of getting hardware lock with mutex or spinlock. Since in some scenarios,
  * user need some time-consuming or sleepable operations under the hardware
@@ -223,11 +182,6 @@ EXPORT_SYMBOL_GPL(__hwspin_trylock);
  * If the mode is not HWLOCK_RAW, upon a successful return from this function,
  * preemption is disabled (and possibly local interrupts, too), so the caller
  * must not sleep, and is advised to release the hwspinlock as soon as possible.
-=======
- * Upon a successful return from this function, preemption is disabled
- * (and possibly local interrupts, too), so the caller must not sleep,
- * and is advised to release the hwspinlock as soon as possible.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * This is required in order to minimize remote cores polling on the
  * hardware interconnect.
  *
@@ -314,7 +268,6 @@ void __hwspin_unlock(struct hwspinlock *hwlock, int mode, unsigned long *flags)
 	hwlock->bank->ops->unlock(hwlock);
 
 	/* Undo the spin_trylock{_irq, _irqsave} called while locking */
-<<<<<<< HEAD
 	switch (mode) {
 	case HWLOCK_IRQSTATE:
 		spin_unlock_irqrestore(&hwlock->lock, *flags);
@@ -329,14 +282,6 @@ void __hwspin_unlock(struct hwspinlock *hwlock, int mode, unsigned long *flags)
 		spin_unlock(&hwlock->lock);
 		break;
 	}
-=======
-	if (mode == HWLOCK_IRQSTATE)
-		spin_unlock_irqrestore(&hwlock->lock, *flags);
-	else if (mode == HWLOCK_IRQ)
-		spin_unlock_irq(&hwlock->lock);
-	else
-		spin_unlock(&hwlock->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(__hwspin_unlock);
 
@@ -422,7 +367,6 @@ out:
 }
 EXPORT_SYMBOL_GPL(of_hwspin_lock_get_id);
 
-<<<<<<< HEAD
 /**
  * of_hwspin_lock_get_id_byname() - get lock id for an specified hwlock name
  * @np: device node from which to request the specific hwlock
@@ -452,8 +396,6 @@ int of_hwspin_lock_get_id_byname(struct device_node *np, const char *name)
 }
 EXPORT_SYMBOL_GPL(of_hwspin_lock_get_id_byname);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int hwspin_lock_register_single(struct hwspinlock *hwlock, int id)
 {
 	struct hwspinlock *tmp;
@@ -587,7 +529,6 @@ int hwspin_lock_unregister(struct hwspinlock_device *bank)
 }
 EXPORT_SYMBOL_GPL(hwspin_lock_unregister);
 
-<<<<<<< HEAD
 static void devm_hwspin_lock_unreg(struct device *dev, void *res)
 {
 	hwspin_lock_unregister(*(struct hwspinlock_device **)res);
@@ -670,8 +611,6 @@ int devm_hwspin_lock_register(struct device *dev,
 }
 EXPORT_SYMBOL_GPL(devm_hwspin_lock_register);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * __hwspin_lock_request() - tag an hwspinlock as used and power it up
  *
@@ -828,11 +767,7 @@ EXPORT_SYMBOL_GPL(hwspin_lock_request_specific);
  *
  * This function mark @hwlock as free again.
  * Should only be called with an @hwlock that was retrieved from
-<<<<<<< HEAD
  * an earlier call to hwspin_lock_request{_specific}.
-=======
- * an earlier call to omap_hwspin_lock_request{_specific}.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Should be called from a process context (might sleep)
  *
@@ -882,7 +817,6 @@ out:
 }
 EXPORT_SYMBOL_GPL(hwspin_lock_free);
 
-<<<<<<< HEAD
 static int devm_hwspin_lock_match(struct device *dev, void *res, void *data)
 {
 	struct hwspinlock **hwlock = res;
@@ -993,8 +927,6 @@ struct hwspinlock *devm_hwspin_lock_request_specific(struct device *dev,
 }
 EXPORT_SYMBOL_GPL(devm_hwspin_lock_request_specific);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_LICENSE("GPL v2");
 MODULE_DESCRIPTION("Hardware spinlock interface");
 MODULE_AUTHOR("Ohad Ben-Cohen <ohad@wizery.com>");

@@ -16,7 +16,6 @@
 #include <linux/sort.h>
 #include <linux/sched/clock.h>
 
-<<<<<<< HEAD
 /* Default is -1; we skip past it for struct cached_dev's cache mode */
 static const char * const bch_cache_modes[] = {
 	"writethrough",
@@ -33,8 +32,6 @@ static const char * const bch_stop_on_failure_modes[] = {
 	NULL
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const char * const cache_replacement_policies[] = {
 	"lru",
 	"fifo",
@@ -84,12 +81,9 @@ read_attribute(bset_tree_stats);
 
 read_attribute(state);
 read_attribute(cache_read_races);
-<<<<<<< HEAD
 read_attribute(reclaim);
 read_attribute(flush_write);
 read_attribute(retry_flush_write);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 read_attribute(writeback_keys_done);
 read_attribute(writeback_keys_failed);
 read_attribute(io_errors);
@@ -100,10 +94,7 @@ rw_attribute(congested_write_threshold_us);
 rw_attribute(sequential_cutoff);
 rw_attribute(data_csum);
 rw_attribute(cache_mode);
-<<<<<<< HEAD
 rw_attribute(stop_when_cache_set_failed);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 rw_attribute(writeback_metadata);
 rw_attribute(writeback_running);
 rw_attribute(writeback_percent);
@@ -111,14 +102,9 @@ rw_attribute(writeback_delay);
 rw_attribute(writeback_rate);
 
 rw_attribute(writeback_rate_update_seconds);
-<<<<<<< HEAD
 rw_attribute(writeback_rate_i_term_inverse);
 rw_attribute(writeback_rate_p_term_inverse);
 rw_attribute(writeback_rate_minimum);
-=======
-rw_attribute(writeback_rate_d_term);
-rw_attribute(writeback_rate_p_term_inverse);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 read_attribute(writeback_rate_debug);
 
 read_attribute(stripe_size);
@@ -126,10 +112,7 @@ read_attribute(partial_stripes_expensive);
 
 rw_attribute(synchronous);
 rw_attribute(journal_delay_ms);
-<<<<<<< HEAD
 rw_attribute(io_disable);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 rw_attribute(discard);
 rw_attribute(running);
 rw_attribute(label);
@@ -147,7 +130,6 @@ rw_attribute(btree_shrinker_disabled);
 rw_attribute(copy_gc_enabled);
 rw_attribute(size);
 
-<<<<<<< HEAD
 static ssize_t bch_snprint_string_list(char *buf,
 				       size_t size,
 				       const char * const list[],
@@ -164,24 +146,17 @@ static ssize_t bch_snprint_string_list(char *buf,
 	return out - buf;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 SHOW(__bch_cached_dev)
 {
 	struct cached_dev *dc = container_of(kobj, struct cached_dev,
 					     disk.kobj);
-<<<<<<< HEAD
 	char const *states[] = { "no cache", "clean", "dirty", "inconsistent" };
 	int wb = dc->writeback_running;
-=======
-	const char *states[] = { "no cache", "clean", "dirty", "inconsistent" };
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define var(stat)		(dc->stat)
 
 	if (attr == &sysfs_cache_mode)
 		return bch_snprint_string_list(buf, PAGE_SIZE,
-<<<<<<< HEAD
 					       bch_cache_modes,
 					       BDEV_CACHE_MODE(&dc->sb));
 
@@ -191,11 +166,6 @@ SHOW(__bch_cached_dev)
 					       dc->stop_when_cache_set_failed);
 
 
-=======
-					       bch_cache_modes + 1,
-					       BDEV_CACHE_MODE(&dc->sb));
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sysfs_printf(data_csum,		"%i", dc->disk.data_csum);
 	var_printf(verify,		"%i");
 	var_printf(bypass_torture_test,	"%i");
@@ -203,7 +173,6 @@ SHOW(__bch_cached_dev)
 	var_printf(writeback_running,	"%i");
 	var_print(writeback_delay);
 	var_print(writeback_percent);
-<<<<<<< HEAD
 	sysfs_hprint(writeback_rate,
 		     wb ? atomic_long_read(&dc->writeback_rate.rate) << 9 : 0);
 	sysfs_printf(io_errors,		"%i", atomic_read(&dc->io_errors));
@@ -213,20 +182,12 @@ SHOW(__bch_cached_dev)
 	var_print(writeback_rate_i_term_inverse);
 	var_print(writeback_rate_p_term_inverse);
 	var_print(writeback_rate_minimum);
-=======
-	sysfs_hprint(writeback_rate,	dc->writeback_rate.rate << 9);
-
-	var_print(writeback_rate_update_seconds);
-	var_print(writeback_rate_d_term);
-	var_print(writeback_rate_p_term_inverse);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (attr == &sysfs_writeback_rate_debug) {
 		char rate[20];
 		char dirty[20];
 		char target[20];
 		char proportional[20];
-<<<<<<< HEAD
 		char integral[20];
 		char change[20];
 		s64 next_io;
@@ -247,50 +208,23 @@ SHOW(__bch_cached_dev)
 		bch_hprint(change, wb ? dc->writeback_rate_change << 9 : 0);
 		next_io = wb ? div64_s64(dc->writeback_rate.next-local_clock(),
 					 NSEC_PER_MSEC) : 0;
-=======
-		char derivative[20];
-		char change[20];
-		s64 next_io;
-
-		bch_hprint(rate,	dc->writeback_rate.rate << 9);
-		bch_hprint(dirty,	bcache_dev_sectors_dirty(&dc->disk) << 9);
-		bch_hprint(target,	dc->writeback_rate_target << 9);
-		bch_hprint(proportional,dc->writeback_rate_proportional << 9);
-		bch_hprint(derivative,	dc->writeback_rate_derivative << 9);
-		bch_hprint(change,	dc->writeback_rate_change << 9);
-
-		next_io = div64_s64(dc->writeback_rate.next - local_clock(),
-				    NSEC_PER_MSEC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		return sprintf(buf,
 			       "rate:\t\t%s/sec\n"
 			       "dirty:\t\t%s\n"
 			       "target:\t\t%s\n"
 			       "proportional:\t%s\n"
-<<<<<<< HEAD
 			       "integral:\t%s\n"
 			       "change:\t\t%s/sec\n"
 			       "next io:\t%llims\n",
 			       rate, dirty, target, proportional,
 			       integral, change, next_io);
-=======
-			       "derivative:\t%s\n"
-			       "change:\t\t%s/sec\n"
-			       "next io:\t%llims\n",
-			       rate, dirty, target, proportional,
-			       derivative, change, next_io);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	sysfs_hprint(dirty_data,
 		     bcache_dev_sectors_dirty(&dc->disk) << 9);
 
-<<<<<<< HEAD
 	sysfs_hprint(stripe_size,	 ((uint64_t)dc->disk.stripe_size) << 9);
-=======
-	sysfs_hprint(stripe_size,	dc->disk.stripe_size << 9);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	var_printf(partial_stripes_expensive,	"%u");
 
 	var_hprint(sequential_cutoff);
@@ -332,7 +266,6 @@ STORE(__cached_dev)
 
 	sysfs_strtoul_clamp(writeback_percent, dc->writeback_percent, 0, 40);
 
-<<<<<<< HEAD
 	if (attr == &sysfs_writeback_rate) {
 		ssize_t ret;
 		long int v = atomic_long_read(&dc->writeback_rate.rate);
@@ -365,14 +298,6 @@ STORE(__cached_dev)
 
 		dc->io_disable = v ? 1 : 0;
 	}
-=======
-	sysfs_strtoul_clamp(writeback_rate,
-			    dc->writeback_rate.rate, 1, INT_MAX);
-
-	d_strtoul_nonzero(writeback_rate_update_seconds);
-	d_strtoul(writeback_rate_d_term);
-	d_strtoul_nonzero(writeback_rate_p_term_inverse);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sysfs_strtoul_clamp(sequential_cutoff,
 			    dc->sequential_cutoff,
@@ -387,26 +312,16 @@ STORE(__cached_dev)
 		bch_cached_dev_run(dc);
 
 	if (attr == &sysfs_cache_mode) {
-<<<<<<< HEAD
 		v = __sysfs_match_string(bch_cache_modes, -1, buf);
 		if (v < 0)
 			return v;
 
 		if ((unsigned int) v != BDEV_CACHE_MODE(&dc->sb)) {
-=======
-		v = bch_read_string_list(buf, bch_cache_modes + 1);
-
-		if (v < 0)
-			return v;
-
-		if ((unsigned) v != BDEV_CACHE_MODE(&dc->sb)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			SET_BDEV_CACHE_MODE(&dc->sb, v);
 			bch_write_bdev_super(dc, NULL);
 		}
 	}
 
-<<<<<<< HEAD
 	if (attr == &sysfs_stop_when_cache_set_failed) {
 		v = __sysfs_match_string(bch_stop_on_failure_modes, -1, buf);
 		if (v < 0)
@@ -415,8 +330,6 @@ STORE(__cached_dev)
 		dc->stop_when_cache_set_failed = v;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (attr == &sysfs_label) {
 		if (size > SB_LABEL_SIZE)
 			return -EINVAL;
@@ -437,14 +350,9 @@ STORE(__cached_dev)
 		add_uevent_var(env, "DRIVER=bcache");
 		add_uevent_var(env, "CACHED_UUID=%pU", dc->sb.uuid),
 		add_uevent_var(env, "CACHED_LABEL=%s", buf);
-<<<<<<< HEAD
 		kobject_uevent_env(&disk_to_dev(dc->disk.disk)->kobj,
 				   KOBJ_CHANGE,
 				   env->envp);
-=======
-		kobject_uevent_env(
-			&disk_to_dev(dc->disk.disk)->kobj, KOBJ_CHANGE, env->envp);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(env);
 	}
 
@@ -460,13 +368,8 @@ STORE(__cached_dev)
 			if (!v)
 				return size;
 		}
-<<<<<<< HEAD
 		if (v == -ENOENT)
 			pr_err("Can't attach %s: cache set not found", buf);
-=======
-
-		pr_err("Can't attach %s: cache set not found", buf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return v;
 	}
 
@@ -490,7 +393,6 @@ STORE(bch_cached_dev)
 	if (attr == &sysfs_writeback_running)
 		bch_writeback_queue(dc);
 
-<<<<<<< HEAD
 	/*
 	 * Only set BCACHE_DEV_WB_RUNNING when cached device attached to
 	 * a cache set, otherwise it doesn't make sense.
@@ -499,10 +401,6 @@ STORE(bch_cached_dev)
 		if ((dc->disk.c != NULL) &&
 		    (!test_and_set_bit(BCACHE_DEV_WB_RUNNING, &dc->disk.flags)))
 			schedule_delayed_work(&dc->writeback_rate_update,
-=======
-	if (attr == &sysfs_writeback_percent)
-		schedule_delayed_work(&dc->writeback_rate_update,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      dc->writeback_rate_update_seconds * HZ);
 
 	mutex_unlock(&bch_register_lock);
@@ -517,17 +415,13 @@ static struct attribute *bch_cached_dev_files[] = {
 	&sysfs_data_csum,
 #endif
 	&sysfs_cache_mode,
-<<<<<<< HEAD
 	&sysfs_stop_when_cache_set_failed,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	&sysfs_writeback_metadata,
 	&sysfs_writeback_running,
 	&sysfs_writeback_delay,
 	&sysfs_writeback_percent,
 	&sysfs_writeback_rate,
 	&sysfs_writeback_rate_update_seconds,
-<<<<<<< HEAD
 	&sysfs_writeback_rate_i_term_inverse,
 	&sysfs_writeback_rate_p_term_inverse,
 	&sysfs_writeback_rate_minimum,
@@ -535,11 +429,6 @@ static struct attribute *bch_cached_dev_files[] = {
 	&sysfs_io_errors,
 	&sysfs_io_error_limit,
 	&sysfs_io_disable,
-=======
-	&sysfs_writeback_rate_d_term,
-	&sysfs_writeback_rate_p_term_inverse,
-	&sysfs_writeback_rate_debug,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	&sysfs_dirty_data,
 	&sysfs_stripe_size,
 	&sysfs_partial_stripes_expensive,
@@ -586,10 +475,7 @@ STORE(__bch_flash_dev)
 
 	if (attr == &sysfs_size) {
 		uint64_t v;
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		strtoi_h_or_return(buf, v);
 
 		u->sectors = v >> 9;
@@ -664,15 +550,9 @@ static int bch_bset_print_stats(struct cache_set *c, char *buf)
 			op.stats.floats, op.stats.failed);
 }
 
-<<<<<<< HEAD
 static unsigned int bch_root_usage(struct cache_set *c)
 {
 	unsigned int bytes = 0;
-=======
-static unsigned bch_root_usage(struct cache_set *c)
-{
-	unsigned bytes = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct bkey *k;
 	struct btree *b;
 	struct btree_iter iter;
@@ -707,15 +587,9 @@ static size_t bch_cache_size(struct cache_set *c)
 	return ret;
 }
 
-<<<<<<< HEAD
 static unsigned int bch_cache_max_chain(struct cache_set *c)
 {
 	unsigned int ret = 0;
-=======
-static unsigned bch_cache_max_chain(struct cache_set *c)
-{
-	unsigned ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct hlist_head *h;
 
 	mutex_lock(&c->bucket_lock);
@@ -723,11 +597,7 @@ static unsigned bch_cache_max_chain(struct cache_set *c)
 	for (h = c->bucket_hash;
 	     h < c->bucket_hash + (1 << BUCKET_HASH_BITS);
 	     h++) {
-<<<<<<< HEAD
 		unsigned int i = 0;
-=======
-		unsigned i = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct hlist_node *p;
 
 		hlist_for_each(p, h)
@@ -740,21 +610,13 @@ static unsigned bch_cache_max_chain(struct cache_set *c)
 	return ret;
 }
 
-<<<<<<< HEAD
 static unsigned int bch_btree_used(struct cache_set *c)
-=======
-static unsigned bch_btree_used(struct cache_set *c)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return div64_u64(c->gc_stats.key_bytes * 100,
 			 (c->gc_stats.nodes ?: 1) * btree_bytes(c));
 }
 
-<<<<<<< HEAD
 static unsigned int bch_average_key_size(struct cache_set *c)
-=======
-static unsigned bch_average_key_size(struct cache_set *c)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return c->gc_stats.nkeys
 		? div64_u64(c->gc_stats.data, c->gc_stats.nkeys)
@@ -788,7 +650,6 @@ SHOW(__bch_cache_set)
 	sysfs_print(cache_read_races,
 		    atomic_long_read(&c->cache_read_races));
 
-<<<<<<< HEAD
 	sysfs_print(reclaim,
 		    atomic_long_read(&c->reclaim));
 
@@ -798,8 +659,6 @@ SHOW(__bch_cache_set)
 	sysfs_print(retry_flush_write,
 		    atomic_long_read(&c->retry_flush_write));
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sysfs_print(writeback_keys_done,
 		    atomic_long_read(&c->writeback_keys_done));
 	sysfs_print(writeback_keys_failed,
@@ -811,11 +670,7 @@ SHOW(__bch_cache_set)
 
 	/* See count_io_errors for why 88 */
 	sysfs_print(io_error_halflife,	c->error_decay * 88);
-<<<<<<< HEAD
 	sysfs_print(io_error_limit,	c->error_limit);
-=======
-	sysfs_print(io_error_limit,	c->error_limit >> IO_ERROR_SHIFT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sysfs_hprint(congested,
 		     ((uint64_t) bch_get_congested(c)) << 9);
@@ -832,11 +687,8 @@ SHOW(__bch_cache_set)
 	sysfs_printf(gc_always_rewrite,		"%i", c->gc_always_rewrite);
 	sysfs_printf(btree_shrinker_disabled,	"%i", c->shrinker_disabled);
 	sysfs_printf(copy_gc_enabled,		"%i", c->copy_gc_enabled);
-<<<<<<< HEAD
 	sysfs_printf(io_disable,		"%i",
 		     test_bit(CACHE_SET_IO_DISABLE, &c->flags));
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (attr == &sysfs_bset_tree_stats)
 		return bch_bset_print_stats(c, buf);
@@ -848,10 +700,7 @@ SHOW_LOCKED(bch_cache_set)
 STORE(__bch_cache_set)
 {
 	struct cache_set *c = container_of(kobj, struct cache_set, kobj);
-<<<<<<< HEAD
 	ssize_t v;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (attr == &sysfs_unregister)
 		bch_cache_set_unregister(c);
@@ -871,10 +720,7 @@ STORE(__bch_cache_set)
 	if (attr == &sysfs_flash_vol_create) {
 		int r;
 		uint64_t v;
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		strtoi_h_or_return(buf, v);
 
 		r = bch_flash_dev_create(c, v);
@@ -908,10 +754,7 @@ STORE(__bch_cache_set)
 
 	if (attr == &sysfs_prune_cache) {
 		struct shrink_control sc;
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sc.gfp_mask = GFP_KERNEL;
 		sc.nr_to_scan = strtoul_or_return(buf);
 		c->shrink.scan_objects(&c->shrink, &sc);
@@ -923,12 +766,7 @@ STORE(__bch_cache_set)
 		      c->congested_write_threshold_us);
 
 	if (attr == &sysfs_errors) {
-<<<<<<< HEAD
 		v = __sysfs_match_string(error_actions, -1, buf);
-=======
-		ssize_t v = bch_read_string_list(buf, error_actions);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (v < 0)
 			return v;
 
@@ -936,11 +774,7 @@ STORE(__bch_cache_set)
 	}
 
 	if (attr == &sysfs_io_error_limit)
-<<<<<<< HEAD
 		c->error_limit = strtoul_or_return(buf);
-=======
-		c->error_limit = strtoul_or_return(buf) << IO_ERROR_SHIFT;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* See count_io_errors() for why 88 */
 	if (attr == &sysfs_io_error_halflife) {
@@ -955,7 +789,6 @@ STORE(__bch_cache_set)
 		return ret;
 	}
 
-<<<<<<< HEAD
 	if (attr == &sysfs_io_disable) {
 		v = strtoul_or_return(buf);
 		if (v) {
@@ -969,8 +802,6 @@ STORE(__bch_cache_set)
 		}
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sysfs_strtoul(journal_delay_ms,		c->journal_delay_ms);
 	sysfs_strtoul(verify,			c->verify);
 	sysfs_strtoul(key_merging_disabled,	c->key_merging_disabled);
@@ -986,20 +817,14 @@ STORE_LOCKED(bch_cache_set)
 SHOW(bch_cache_set_internal)
 {
 	struct cache_set *c = container_of(kobj, struct cache_set, internal);
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return bch_cache_set_show(&c->kobj, attr, buf);
 }
 
 STORE(bch_cache_set_internal)
 {
 	struct cache_set *c = container_of(kobj, struct cache_set, internal);
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return bch_cache_set_store(&c->kobj, attr, buf, size);
 }
 
@@ -1048,12 +873,9 @@ static struct attribute *bch_cache_set_internal_files[] = {
 
 	&sysfs_bset_tree_stats,
 	&sysfs_cache_read_races,
-<<<<<<< HEAD
 	&sysfs_reclaim,
 	&sysfs_flush_write,
 	&sysfs_retry_flush_write,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	&sysfs_writeback_keys_done,
 	&sysfs_writeback_keys_failed,
 
@@ -1067,22 +889,16 @@ static struct attribute *bch_cache_set_internal_files[] = {
 	&sysfs_gc_always_rewrite,
 	&sysfs_btree_shrinker_disabled,
 	&sysfs_copy_gc_enabled,
-<<<<<<< HEAD
 	&sysfs_io_disable,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	NULL
 };
 KTYPE(bch_cache_set_internal);
 
-<<<<<<< HEAD
 static int __bch_cache_cmp(const void *l, const void *r)
 {
 	return *((uint16_t *)r) - *((uint16_t *)l);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 SHOW(__bch_cache)
 {
 	struct cache *ca = container_of(kobj, struct cache, kobj);
@@ -1107,12 +923,6 @@ SHOW(__bch_cache)
 					       CACHE_REPLACEMENT(&ca->sb));
 
 	if (attr == &sysfs_priority_stats) {
-<<<<<<< HEAD
-=======
-		int cmp(const void *l, const void *r)
-		{	return *((uint16_t *) r) - *((uint16_t *) l); }
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct bucket *b;
 		size_t n = ca->sb.nbuckets, i;
 		size_t unused = 0, available = 0, dirty = 0, meta = 0;
@@ -1121,12 +931,8 @@ SHOW(__bch_cache)
 		uint16_t q[31], *p, *cached;
 		ssize_t ret;
 
-<<<<<<< HEAD
 		cached = p = vmalloc(array_size(sizeof(uint16_t),
 						ca->sb.nbuckets));
-=======
-		cached = p = vmalloc(ca->sb.nbuckets * sizeof(uint16_t));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!p)
 			return -ENOMEM;
 
@@ -1146,11 +952,7 @@ SHOW(__bch_cache)
 			p[i] = ca->buckets[i].prio;
 		mutex_unlock(&ca->set->bucket_lock);
 
-<<<<<<< HEAD
 		sort(p, n, sizeof(uint16_t), __bch_cache_cmp, NULL);
-=======
-		sort(p, n, sizeof(uint16_t), cmp, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		while (n &&
 		       !cached[n - 1])
@@ -1205,10 +1007,7 @@ SHOW_LOCKED(bch_cache)
 STORE(__bch_cache)
 {
 	struct cache *ca = container_of(kobj, struct cache, kobj);
-<<<<<<< HEAD
 	ssize_t v;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (attr == &sysfs_discard) {
 		bool v = strtoul_or_return(buf);
@@ -1223,20 +1022,11 @@ STORE(__bch_cache)
 	}
 
 	if (attr == &sysfs_cache_replacement_policy) {
-<<<<<<< HEAD
 		v = __sysfs_match_string(cache_replacement_policies, -1, buf);
 		if (v < 0)
 			return v;
 
 		if ((unsigned int) v != CACHE_REPLACEMENT(&ca->sb)) {
-=======
-		ssize_t v = bch_read_string_list(buf, cache_replacement_policies);
-
-		if (v < 0)
-			return v;
-
-		if ((unsigned) v != CACHE_REPLACEMENT(&ca->sb)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			mutex_lock(&ca->set->bucket_lock);
 			SET_CACHE_REPLACEMENT(&ca->sb, v);
 			mutex_unlock(&ca->set->bucket_lock);

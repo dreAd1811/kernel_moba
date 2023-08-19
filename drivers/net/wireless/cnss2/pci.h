@@ -1,19 +1,5 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0-only */
 /* Copyright (c) 2016-2020, The Linux Foundation. All rights reserved. */
-=======
-/* Copyright (c) 2016-2020, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifndef _CNSS_PCI_H
 #define _CNSS_PCI_H
@@ -30,10 +16,7 @@ enum cnss_mhi_state {
 	CNSS_MHI_INIT,
 	CNSS_MHI_DEINIT,
 	CNSS_MHI_POWER_ON,
-<<<<<<< HEAD
 	CNSS_MHI_POWERING_OFF,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	CNSS_MHI_POWER_OFF,
 	CNSS_MHI_FORCE_POWER_OFF,
 	CNSS_MHI_SUSPEND,
@@ -43,15 +26,12 @@ enum cnss_mhi_state {
 	CNSS_MHI_RDDM_DONE,
 };
 
-<<<<<<< HEAD
 enum pci_link_status {
 	PCI_GEN1,
 	PCI_GEN2,
 	PCI_DEF,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct cnss_msi_user {
 	char *name;
 	int num_vectors;
@@ -74,15 +54,12 @@ struct cnss_pci_debug_reg {
 	u32 val;
 };
 
-<<<<<<< HEAD
 struct cnss_misc_reg {
 	u8 wr;
 	u32 offset;
 	u32 val;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct cnss_pci_data {
 	struct pci_dev *pci_dev;
 	struct cnss_plat_data *plat_priv;
@@ -90,18 +67,12 @@ struct cnss_pci_data {
 	u32 device_id;
 	u16 revision_id;
 	struct cnss_wlan_driver *driver_ops;
-<<<<<<< HEAD
 	u8 pci_link_state;
 	u8 pci_link_down_ind;
-=======
-	bool pci_link_state;
-	bool pci_link_down_ind;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct pci_saved_state *saved_state;
 	struct pci_saved_state *default_state;
 	struct msm_pcie_register_event msm_pci_event;
 	atomic_t auto_suspended;
-<<<<<<< HEAD
 	atomic_t drv_connected;
 	u8 drv_connected_last;
 	u16 def_link_speed;
@@ -112,16 +83,6 @@ struct cnss_pci_data {
 	dma_addr_t smmu_iova_start;
 	size_t smmu_iova_len;
 	dma_addr_t smmu_iova_ipa_start;
-=======
-	u8 drv_connected_last;
-	bool monitor_wake_intr;
-	struct dma_iommu_mapping *smmu_mapping;
-	bool smmu_s1_enable;
-	dma_addr_t smmu_iova_start;
-	size_t smmu_iova_len;
-	dma_addr_t smmu_iova_ipa_start;
-	dma_addr_t smmu_iova_ipa_current;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	size_t smmu_iova_ipa_len;
 	void __iomem *bar;
 	struct cnss_msi_config *msi_config;
@@ -130,7 +91,6 @@ struct cnss_pci_data {
 	unsigned long mhi_state;
 	u32 remap_window;
 	struct timer_list dev_rddm_timer;
-<<<<<<< HEAD
 	struct delayed_work time_sync_work;
 	u8 disable_pc;
 	struct mutex bus_lock; /* mutex for suspend and resume bus */
@@ -141,11 +101,6 @@ struct cnss_pci_data {
 	u32 pcie_reg_size;
 	struct cnss_misc_reg *wlaon_reg;
 	u32 wlaon_reg_size;
-=======
-	bool disable_pc;
-	struct cnss_pci_debug_reg *debug_reg;
-	u32 iommu_geometry;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static inline void cnss_set_pci_priv(struct pci_dev *pci_dev, void *data)
@@ -193,7 +148,6 @@ static inline int cnss_pci_get_auto_suspended(void *bus_priv)
 	return atomic_read(&pci_priv->auto_suspended);
 }
 
-<<<<<<< HEAD
 static inline void cnss_pci_set_drv_connected(void *bus_priv, int val)
 {
 	struct cnss_pci_data *pci_priv = bus_priv;
@@ -209,22 +163,16 @@ static inline int cnss_pci_get_drv_connected(void *bus_priv)
 }
 
 int cnss_pci_check_link_status(struct cnss_pci_data *pci_priv);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int cnss_suspend_pci_link(struct cnss_pci_data *pci_priv);
 int cnss_resume_pci_link(struct cnss_pci_data *pci_priv);
 int cnss_pci_init(struct cnss_plat_data *plat_priv);
 void cnss_pci_deinit(struct cnss_plat_data *plat_priv);
-<<<<<<< HEAD
 void cnss_pci_add_fw_prefix_name(struct cnss_pci_data *pci_priv,
 				 char *prefix_name, char *name);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int cnss_pci_alloc_fw_mem(struct cnss_pci_data *pci_priv);
 int cnss_pci_alloc_qdss_mem(struct cnss_pci_data *pci_priv);
 void cnss_pci_free_qdss_mem(struct cnss_pci_data *pci_priv);
 int cnss_pci_load_m3(struct cnss_pci_data *pci_priv);
-<<<<<<< HEAD
 int cnss_pci_start_mhi(struct cnss_pci_data *pci_priv);
 void cnss_pci_collect_dump_info(struct cnss_pci_data *pci_priv, bool in_panic);
 void cnss_pci_clear_dump_info(struct cnss_pci_data *pci_priv);
@@ -232,17 +180,6 @@ u32 cnss_pci_get_wake_msi(struct cnss_pci_data *pci_priv);
 int cnss_pci_force_fw_assert_hdlr(struct cnss_pci_data *pci_priv);
 int cnss_pci_qmi_send_get(struct cnss_pci_data *pci_priv);
 int cnss_pci_qmi_send_put(struct cnss_pci_data *pci_priv);
-=======
-int cnss_pci_set_mhi_state(struct cnss_pci_data *pci_priv,
-			   enum cnss_mhi_state state);
-int cnss_pci_start_mhi(struct cnss_pci_data *pci_priv);
-void cnss_pci_stop_mhi(struct cnss_pci_data *pci_priv);
-void cnss_pci_collect_dump_info(struct cnss_pci_data *pci_priv, bool in_panic);
-void cnss_pci_clear_dump_info(struct cnss_pci_data *pci_priv);
-int cnss_pm_request_resume(struct cnss_pci_data *pci_priv);
-u32 cnss_pci_get_wake_msi(struct cnss_pci_data *pci_priv);
-int cnss_pci_force_fw_assert_hdlr(struct cnss_pci_data *pci_priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void cnss_pci_fw_boot_timeout_hdlr(struct cnss_pci_data *pci_priv);
 int cnss_pci_call_driver_probe(struct cnss_pci_data *pci_priv);
 int cnss_pci_call_driver_remove(struct cnss_pci_data *pci_priv);
@@ -255,21 +192,16 @@ int cnss_pci_unregister_driver_hdlr(struct cnss_pci_data *pci_priv);
 int cnss_pci_call_driver_modem_status(struct cnss_pci_data *pci_priv,
 				      int modem_current_status);
 void cnss_pci_pm_runtime_show_usage_count(struct cnss_pci_data *pci_priv);
-<<<<<<< HEAD
 int cnss_pci_pm_request_resume(struct cnss_pci_data *pci_priv);
 int cnss_pci_pm_runtime_resume(struct cnss_pci_data *pci_priv);
 int cnss_pci_pm_runtime_get(struct cnss_pci_data *pci_priv);
 int cnss_pci_pm_runtime_get_sync(struct cnss_pci_data *pci_priv);
-=======
-int cnss_pci_pm_runtime_get(struct cnss_pci_data *pci_priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void cnss_pci_pm_runtime_get_noresume(struct cnss_pci_data *pci_priv);
 int cnss_pci_pm_runtime_put_autosuspend(struct cnss_pci_data *pci_priv);
 void cnss_pci_pm_runtime_put_noidle(struct cnss_pci_data *pci_priv);
 void cnss_pci_pm_runtime_mark_last_busy(struct cnss_pci_data *pci_priv);
 int cnss_pci_update_status(struct cnss_pci_data *pci_priv,
 			   enum cnss_driver_status status);
-<<<<<<< HEAD
 int cnss_call_driver_uevent(struct cnss_pci_data *pci_priv,
 			    enum cnss_driver_status status, void *data);
 int cnss_pcie_is_device_down(struct cnss_pci_data *pci_priv);
@@ -282,7 +214,5 @@ int cnss_pci_debug_reg_write(struct cnss_pci_data *pci_priv, u32 offset,
 int cnss_pci_get_iova(struct cnss_pci_data *pci_priv, u64 *addr, u64 *size);
 int cnss_pci_get_iova_ipa(struct cnss_pci_data *pci_priv, u64 *addr,
 			  u64 *size);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* _CNSS_PCI_H */

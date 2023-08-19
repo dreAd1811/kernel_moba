@@ -18,11 +18,7 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-<<<<<<< HEAD
 #include <linux/gpio/driver.h>
-=======
-#include <linux/gpio.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/i2c.h>
 #include <linux/platform_data/pcf857x.h>
 #include <linux/interrupt.h>
@@ -201,11 +197,7 @@ static irqreturn_t pcf857x_irq(int irq, void *data)
 	mutex_unlock(&gpio->lock);
 
 	for_each_set_bit(i, &change, gpio->chip.ngpio)
-<<<<<<< HEAD
 		handle_nested_irq(irq_find_mapping(gpio->chip.irq.domain, i));
-=======
-		handle_nested_irq(irq_find_mapping(gpio->chip.irqdomain, i));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return IRQ_HANDLED;
 }

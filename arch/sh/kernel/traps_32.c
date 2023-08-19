@@ -477,10 +477,6 @@ asmlinkage void do_address_error(struct pt_regs *regs,
 {
 	unsigned long error_code = 0;
 	mm_segment_t oldfs;
-<<<<<<< HEAD
-=======
-	siginfo_t info;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	insn_size_t instruction;
 	int tmp;
 
@@ -540,15 +536,7 @@ uspace_segv:
 		       "access (PC %lx PR %lx)\n", current->comm, regs->pc,
 		       regs->pr);
 
-<<<<<<< HEAD
 		force_sig_fault(SIGBUS, si_code, (void __user *)address, current);
-=======
-		info.si_signo = SIGBUS;
-		info.si_errno = 0;
-		info.si_code = si_code;
-		info.si_addr = (void __user *)address;
-		force_sig_info(SIGBUS, &info, current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		inc_unaligned_kernel_access();
 
@@ -605,7 +593,6 @@ int is_dsp_inst(struct pt_regs *regs)
 #ifdef CONFIG_CPU_SH2A
 asmlinkage void do_divide_error(unsigned long r4)
 {
-<<<<<<< HEAD
 	int code;
 
 	switch (r4) {
@@ -620,21 +607,6 @@ asmlinkage void do_divide_error(unsigned long r4)
 		return;
 	}
 	force_sig_fault(SIGFPE, code, NULL, current);
-=======
-	siginfo_t info;
-
-	switch (r4) {
-	case TRAP_DIVZERO_ERROR:
-		info.si_code = FPE_INTDIV;
-		break;
-	case TRAP_DIVOVF_ERROR:
-		info.si_code = FPE_INTOVF;
-		break;
-	}
-
-	info.si_signo = SIGFPE;
-	force_sig_info(info.si_signo, &info, current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #endif
 

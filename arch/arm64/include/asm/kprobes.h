@@ -48,10 +48,6 @@ struct kprobe_ctlblk {
 	unsigned long saved_irqflag;
 	struct prev_kprobe prev_kprobe;
 	struct kprobe_step_ctx ss_ctx;
-<<<<<<< HEAD
-=======
-	struct pt_regs jprobe_saved_regs;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 void arch_remove_kprobe(struct kprobe *);

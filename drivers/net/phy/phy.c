@@ -467,7 +467,6 @@ int phy_mii_ioctl(struct phy_device *phydev, struct ifreq *ifr, int cmd)
 }
 EXPORT_SYMBOL(phy_mii_ioctl);
 
-<<<<<<< HEAD
 static int phy_config_aneg(struct phy_device *phydev)
 {
 	if (phydev->drv->config_aneg)
@@ -482,8 +481,6 @@ static int phy_config_aneg(struct phy_device *phydev)
 	return genphy_config_aneg(phydev);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * phy_start_aneg_priv - start auto-negotiation for this PHY device
  * @phydev: the phy_device struct
@@ -510,11 +507,7 @@ static int phy_start_aneg_priv(struct phy_device *phydev, bool sync)
 	/* Invalidate LP advertising flags */
 	phydev->lp_advertising = 0;
 
-<<<<<<< HEAD
 	err = phy_config_aneg(phydev);
-=======
-	err = phydev->drv->config_aneg(phydev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err < 0)
 		goto out_unlock;
 
@@ -532,11 +525,7 @@ static int phy_start_aneg_priv(struct phy_device *phydev, bool sync)
 	 * negotiation may already be done and aneg interrupt may not be
 	 * generated.
 	 */
-<<<<<<< HEAD
 	if (!phy_polling_mode(phydev) && phydev->state == PHY_AN) {
-=======
-	if (phydev->irq != PHY_POLL && phydev->state == PHY_AN) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = phy_aneg_done(phydev);
 		if (err > 0) {
 			trigger = true;
@@ -568,7 +557,6 @@ int phy_start_aneg(struct phy_device *phydev)
 }
 EXPORT_SYMBOL(phy_start_aneg);
 
-<<<<<<< HEAD
 static int phy_poll_aneg_done(struct phy_device *phydev)
 {
 	unsigned int retries = 100;
@@ -647,8 +635,6 @@ int phy_speed_up(struct phy_device *phydev)
 }
 EXPORT_SYMBOL_GPL(phy_speed_up);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * phy_start_machine - start PHY state machine tracking
  * @phydev: the phy_device struct
@@ -731,26 +717,10 @@ static int phy_disable_interrupts(struct phy_device *phydev)
 	/* Disable PHY interrupts */
 	err = phy_config_interrupt(phydev, PHY_INTERRUPT_DISABLED);
 	if (err)
-<<<<<<< HEAD
 		return err;
 
 	/* Clear the interrupt */
 	return phy_clear_interrupt(phydev);
-=======
-		goto phy_err;
-
-	/* Clear the interrupt */
-	err = phy_clear_interrupt(phydev);
-	if (err)
-		goto phy_err;
-
-	return 0;
-
-phy_err:
-	phy_error(phydev);
-
-	return err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -762,18 +732,11 @@ static irqreturn_t phy_change(struct phy_device *phydev)
 	if (phy_interrupt_is_valid(phydev)) {
 		if (phydev->drv->did_interrupt &&
 		    !phydev->drv->did_interrupt(phydev))
-<<<<<<< HEAD
 			return IRQ_NONE;
 
 		if (phydev->state == PHY_HALTED)
 			if (phy_disable_interrupts(phydev))
 				goto phy_err;
-=======
-			goto ignore;
-
-		if (phy_disable_interrupts(phydev))
-			goto phy_err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	mutex_lock(&phydev->lock);
@@ -781,7 +744,6 @@ static irqreturn_t phy_change(struct phy_device *phydev)
 		phydev->state = PHY_CHANGELINK;
 	mutex_unlock(&phydev->lock);
 
-<<<<<<< HEAD
 	/* reschedule state queue work to run as soon as possible */
 	phy_trigger_machine(phydev, true);
 
@@ -789,30 +751,6 @@ static irqreturn_t phy_change(struct phy_device *phydev)
 		goto phy_err;
 	return IRQ_HANDLED;
 
-=======
-	if (phy_interrupt_is_valid(phydev)) {
-		atomic_dec(&phydev->irq_disable);
-		enable_irq(phydev->irq);
-
-		/* Reenable interrupts */
-		if (PHY_HALTED != phydev->state &&
-		    phy_config_interrupt(phydev, PHY_INTERRUPT_ENABLED))
-			goto irq_enable_err;
-	}
-
-	/* reschedule state queue work to run as soon as possible */
-	phy_trigger_machine(phydev, true);
-	return IRQ_HANDLED;
-
-ignore:
-	atomic_dec(&phydev->irq_disable);
-	enable_irq(phydev->irq);
-	return IRQ_NONE;
-
-irq_enable_err:
-	disable_irq(phydev->irq);
-	atomic_inc(&phydev->irq_disable);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 phy_err:
 	phy_error(phydev);
 	return IRQ_NONE;
@@ -845,12 +783,6 @@ static irqreturn_t phy_interrupt(int irq, void *phy_dat)
 	if (PHY_HALTED == phydev->state)
 		return IRQ_NONE;		/* It can't be ours.  */
 
-<<<<<<< HEAD
-=======
-	disable_irq_nosync(irq);
-	atomic_inc(&phydev->irq_disable);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return phy_change(phydev);
 }
 
@@ -880,10 +812,6 @@ static int phy_enable_interrupts(struct phy_device *phydev)
  */
 int phy_start_interrupts(struct phy_device *phydev)
 {
-<<<<<<< HEAD
-=======
-	atomic_set(&phydev->irq_disable, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (request_threaded_irq(phydev->irq, NULL, phy_interrupt,
 				 IRQF_ONESHOT | IRQF_SHARED,
 				 phydev_name(phydev), phydev) < 0) {
@@ -910,16 +838,6 @@ int phy_stop_interrupts(struct phy_device *phydev)
 
 	free_irq(phydev->irq, phydev);
 
-<<<<<<< HEAD
-=======
-	/* If work indeed has been cancelled, disable_irq() will have
-	 * been left unbalanced from phy_interrupt() and enable_irq()
-	 * has to be called so that other devices on the line work.
-	 */
-	while (atomic_dec_return(&phydev->irq_disable) >= 0)
-		enable_irq(phydev->irq);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 EXPORT_SYMBOL(phy_stop_interrupts);
@@ -935,18 +853,8 @@ void phy_stop(struct phy_device *phydev)
 	if (PHY_HALTED == phydev->state)
 		goto out_unlock;
 
-<<<<<<< HEAD
 	if (phy_interrupt_is_valid(phydev))
 		phy_disable_interrupts(phydev);
-=======
-	if (phy_interrupt_is_valid(phydev)) {
-		/* Disable PHY Interrupts */
-		phy_config_interrupt(phydev, PHY_INTERRUPT_DISABLED);
-
-		/* Clear any pending interrupts */
-		phy_clear_interrupt(phydev);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	phydev->state = PHY_HALTED;
 
@@ -1075,11 +983,7 @@ void phy_state_machine(struct work_struct *work)
 			needs_aneg = true;
 		break;
 	case PHY_NOLINK:
-<<<<<<< HEAD
 		if (!phy_polling_mode(phydev))
-=======
-		if (phy_interrupt_is_valid(phydev))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 
 		err = phy_read_status(phydev);
@@ -1120,11 +1024,7 @@ void phy_state_machine(struct work_struct *work)
 		/* Only register a CHANGE if we are polling and link changed
 		 * since latest checking.
 		 */
-<<<<<<< HEAD
 		if (phy_polling_mode(phydev)) {
-=======
-		if (phydev->irq == PHY_POLL) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			old_link = phydev->link;
 			err = phy_read_status(phydev);
 			if (err)
@@ -1155,13 +1055,6 @@ void phy_state_machine(struct work_struct *work)
 			phydev->state = PHY_NOLINK;
 			phy_link_down(phydev, true);
 		}
-<<<<<<< HEAD
-=======
-
-		if (phy_interrupt_is_valid(phydev))
-			err = phy_config_interrupt(phydev,
-						   PHY_INTERRUPT_ENABLED);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case PHY_HALTED:
 		if (phydev->link) {
@@ -1230,11 +1123,7 @@ void phy_state_machine(struct work_struct *work)
 	 * PHY, if PHY_IGNORE_INTERRUPT is set, then we will be moving
 	 * between states from phy_mac_interrupt()
 	 */
-<<<<<<< HEAD
 	if (phy_polling_mode(phydev))
-=======
-	if (phydev->irq == PHY_POLL)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		queue_delayed_work(system_power_efficient_wq, &phydev->state_queue,
 				   PHY_STATE_TIME * HZ);
 }
@@ -1242,25 +1131,12 @@ void phy_state_machine(struct work_struct *work)
 /**
  * phy_mac_interrupt - MAC says the link has changed
  * @phydev: phy_device struct with changed link
-<<<<<<< HEAD
  *
  * The MAC layer is able to indicate there has been a change in the PHY link
  * status. Trigger the state machine and work a work queue.
  */
 void phy_mac_interrupt(struct phy_device *phydev)
 {
-=======
- * @new_link: Link is Up/Down.
- *
- * Description: The MAC layer is able indicate there has been a change
- *   in the PHY link status. Set the new link status, and trigger the
- *   state machine, work a work queue.
- */
-void phy_mac_interrupt(struct phy_device *phydev, int new_link)
-{
-	phydev->link = new_link;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Trigger a state machine change */
 	queue_work(system_power_efficient_wq, &phydev->phy_queue);
 }
@@ -1426,17 +1302,9 @@ int phy_ethtool_set_eee(struct phy_device *phydev, struct ethtool_eee *data)
 		/* Restart autonegotiation so the new modes get sent to the
 		 * link partner.
 		 */
-<<<<<<< HEAD
 		ret = phy_restart_aneg(phydev);
 		if (ret < 0)
 			return ret;
-=======
-		if (phydev->autoneg == AUTONEG_ENABLE) {
-			ret = phy_restart_aneg(phydev);
-			if (ret < 0)
-				return ret;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;

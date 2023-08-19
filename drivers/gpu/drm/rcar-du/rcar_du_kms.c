@@ -18,10 +18,7 @@
 #include <drm/drm_crtc_helper.h>
 #include <drm/drm_fb_cma_helper.h>
 #include <drm/drm_gem_cma_helper.h>
-<<<<<<< HEAD
 #include <drm/drm_gem_framebuffer_helper.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/of_graph.h>
 #include <linux/wait.h>
@@ -30,10 +27,6 @@
 #include "rcar_du_drv.h"
 #include "rcar_du_encoder.h"
 #include "rcar_du_kms.h"
-<<<<<<< HEAD
-=======
-#include "rcar_du_lvdsenc.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "rcar_du_regs.h"
 #include "rcar_du_vsp.h"
 
@@ -220,11 +213,7 @@ rcar_du_fb_create(struct drm_device *dev, struct drm_file *file_priv,
 		}
 	}
 
-<<<<<<< HEAD
 	return drm_gem_fb_create(dev, file_priv, mode_cmd);
-=======
-	return drm_fb_cma_create(dev, file_priv, mode_cmd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rcar_du_output_poll_changed(struct drm_device *dev)
@@ -244,19 +233,7 @@ static int rcar_du_atomic_check(struct drm_device *dev,
 	struct rcar_du_device *rcdu = dev->dev_private;
 	int ret;
 
-<<<<<<< HEAD
 	ret = drm_atomic_helper_check(dev, state);
-=======
-	ret = drm_atomic_helper_check_modeset(dev, state);
-	if (ret)
-		return ret;
-
-	ret = drm_atomic_normalize_zpos(dev, state);
-	if (ret)
-		return ret;
-
-	ret = drm_atomic_helper_check_planes(dev, state);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -323,10 +300,7 @@ static int rcar_du_encoders_init_one(struct rcar_du_device *rcdu,
 		dev_dbg(rcdu->dev,
 			"connected entity %pOF is disabled, skipping\n",
 			entity);
-<<<<<<< HEAD
 		of_node_put(entity);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 	}
 
@@ -359,19 +333,11 @@ static int rcar_du_encoders_init_one(struct rcar_du_device *rcdu,
 	of_node_put(entity_ep_node);
 
 	if (!encoder) {
-<<<<<<< HEAD
 		dev_warn(rcdu->dev,
 			 "no encoder found for endpoint %pOF, skipping\n",
 			 ep->local_node);
 		of_node_put(entity);
 		return -ENODEV;
-=======
-		/*
-		 * If no encoder has been found the entity must be the
-		 * connector.
-		 */
-		connector = entity;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ret = rcar_du_encoder_init(rcdu, output, encoder, connector);
@@ -443,14 +409,6 @@ static int rcar_du_encoders_init(struct rcar_du_device *rcdu)
 
 static int rcar_du_properties_init(struct rcar_du_device *rcdu)
 {
-<<<<<<< HEAD
-=======
-	rcdu->props.alpha =
-		drm_property_create_range(rcdu->ddev, 0, "alpha", 0, 255);
-	if (rcdu->props.alpha == NULL)
-		return -ENOMEM;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * The color key is expressed as an RGB888 triplet stored in a 32-bit
 	 * integer in XRGB8888 format. Bit 24 is used as a flag to disable (0)
@@ -472,11 +430,7 @@ static int rcar_du_vsps_init(struct rcar_du_device *rcdu)
 	struct {
 		struct device_node *np;
 		unsigned int crtcs_mask;
-<<<<<<< HEAD
 	} vsps[RCAR_DU_MAX_VSPS] = { { NULL, }, };
-=======
-	} vsps[RCAR_DU_MAX_VSPS] = { { 0, }, };
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int vsps_count = 0;
 	unsigned int cells;
 	unsigned int i;
@@ -555,11 +509,8 @@ int rcar_du_modeset_init(struct rcar_du_device *rcdu)
 	struct drm_fbdev_cma *fbdev;
 	unsigned int num_encoders;
 	unsigned int num_groups;
-<<<<<<< HEAD
 	unsigned int swindex;
 	unsigned int hwindex;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int i;
 	int ret;
 
@@ -567,7 +518,6 @@ int rcar_du_modeset_init(struct rcar_du_device *rcdu)
 
 	dev->mode_config.min_width = 0;
 	dev->mode_config.min_height = 0;
-<<<<<<< HEAD
 	dev->mode_config.normalize_zpos = true;
 	dev->mode_config.funcs = &rcar_du_mode_config_funcs;
 	dev->mode_config.helper_private = &rcar_du_mode_config_helper;
@@ -585,14 +535,6 @@ int rcar_du_modeset_init(struct rcar_du_device *rcdu)
 	}
 
 	rcdu->num_crtcs = hweight8(rcdu->info->channels_mask);
-=======
-	dev->mode_config.max_width = 4095;
-	dev->mode_config.max_height = 2047;
-	dev->mode_config.funcs = &rcar_du_mode_config_funcs;
-	dev->mode_config.helper_private = &rcar_du_mode_config_helper;
-
-	rcdu->num_crtcs = rcdu->info->num_crtcs;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = rcar_du_properties_init(rcdu);
 	if (ret < 0)
@@ -602,11 +544,7 @@ int rcar_du_modeset_init(struct rcar_du_device *rcdu)
 	 * Initialize vertical blanking interrupts handling. Start with vblank
 	 * disabled for all CRTCs.
 	 */
-<<<<<<< HEAD
 	ret = drm_vblank_init(dev, (1 << rcdu->num_crtcs) - 1);
-=======
-	ret = drm_vblank_init(dev, (1 << rcdu->info->num_crtcs) - 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		return ret;
 
@@ -621,14 +559,10 @@ int rcar_du_modeset_init(struct rcar_du_device *rcdu)
 		rgrp->dev = rcdu;
 		rgrp->mmio_offset = mmio_offsets[i];
 		rgrp->index = i;
-<<<<<<< HEAD
 		/* Extract the channel mask for this group only. */
 		rgrp->channels_mask = (rcdu->info->channels_mask >> (2 * i))
 				   & GENMASK(1, 0);
 		rgrp->num_crtcs = hweight8(rgrp->channels_mask);
-=======
-		rgrp->num_crtcs = min(rcdu->num_crtcs - 2 * i, 2U);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/*
 		 * If we have more than one CRTCs in this group pre-associate
@@ -655,7 +589,6 @@ int rcar_du_modeset_init(struct rcar_du_device *rcdu)
 	}
 
 	/* Create the CRTCs. */
-<<<<<<< HEAD
 	for (swindex = 0, hwindex = 0; swindex < rcdu->num_crtcs; ++hwindex) {
 		struct rcar_du_group *rgrp;
 
@@ -666,24 +599,11 @@ int rcar_du_modeset_init(struct rcar_du_device *rcdu)
 		rgrp = &rcdu->groups[hwindex / 2];
 
 		ret = rcar_du_crtc_create(rgrp, swindex++, hwindex);
-=======
-	for (i = 0; i < rcdu->num_crtcs; ++i) {
-		struct rcar_du_group *rgrp = &rcdu->groups[i / 2];
-
-		ret = rcar_du_crtc_create(rgrp, i);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret < 0)
 			return ret;
 	}
 
 	/* Initialize the encoders. */
-<<<<<<< HEAD
-=======
-	ret = rcar_du_lvdsenc_init(rcdu);
-	if (ret < 0)
-		return ret;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = rcar_du_encoders_init(rcdu);
 	if (ret < 0)
 		return ret;

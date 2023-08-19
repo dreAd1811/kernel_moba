@@ -1,17 +1,7 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Common definition for Hardkernel's Exynos4412 based ODROID-X/X2/U2/U3 boards
  * device tree source
-=======
-/*
- * Common definition for Hardkernel's Exynos4412 based ODROID-X/X2/U2/U3 boards
- * device tree source
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 */
 
 #include <dt-bindings/sound/samsung-i2s.h>
@@ -27,11 +17,7 @@
 		stdout-path = &serial_1;
 	};
 
-<<<<<<< HEAD
 	firmware@204f000 {
-=======
-	firmware@0204F000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "samsung,secure-firmware";
 		reg = <0x0204F000 0x1000>;
 	};
@@ -42,11 +28,6 @@
 		pinctrl-0 = <&gpio_power_key>;
 
 		power_key {
-<<<<<<< HEAD
-=======
-			interrupt-parent = <&gpx1>;
-			interrupts = <3 IRQ_TYPE_NONE>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			gpios = <&gpx1 3 GPIO_ACTIVE_LOW>;
 			linux,code = <KEY_POWER>;
 			label = "power key";
@@ -56,7 +37,6 @@
 	};
 
 	sound: sound {
-<<<<<<< HEAD
 		compatible = "hardkernel,odroid-xu4-audio";
 
 		cpu {
@@ -65,22 +45,6 @@
 
 		codec {
 			sound-dai = <&hdmi>, <&max98090>;
-=======
-		compatible = "simple-audio-card";
-
-		simple-audio-card,format = "i2s";
-		simple-audio-card,bitclock-master = <&link0_codec>;
-		simple-audio-card,frame-master = <&link0_codec>;
-
-		simple-audio-card,cpu {
-			sound-dai = <&i2s0 0>;
-			system-clock-frequency = <19200000>;
-		};
-
-		link0_codec: simple-audio-card,codec {
-			sound-dai = <&max98090>;
-			clocks = <&i2s0 CLK_I2S_CDCLK>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 	};
 
@@ -91,15 +55,6 @@
 		reset-gpios = <&gpk1 2 GPIO_ACTIVE_LOW>;
 	};
 
-<<<<<<< HEAD
-=======
-	camera {
-		status = "okay";
-		pinctrl-names = "default";
-		pinctrl-0 = <>;
-	};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	fixed-rate-clocks {
 		xxti {
 			compatible = "samsung,clock-xxti";
@@ -175,7 +130,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
 &camera {
 	status = "okay";
 	pinctrl-names = "default";
@@ -187,13 +141,10 @@
 	assigned-clock-rates = <45158401>;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &clock_audss {
 	assigned-clocks = <&clock_audss EXYNOS_MOUT_AUDSS>,
 			<&clock_audss EXYNOS_MOUT_I2S>,
 			<&clock_audss EXYNOS_DOUT_SRP>,
-<<<<<<< HEAD
 			<&clock_audss EXYNOS_DOUT_AUD_BUS>,
 			<&clock_audss EXYNOS_DOUT_I2S>;
 
@@ -204,12 +155,6 @@
 			<196608001>,
 			<(196608001 / 2)>,
 			<(196608001 / 8)>;
-=======
-			<&clock_audss EXYNOS_DOUT_AUD_BUS>;
-	assigned-clock-parents = <&clock CLK_FOUT_EPLL>,
-			<&clock_audss EXYNOS_MOUT_AUDSS>;
-	assigned-clock-rates = <0>, <0>, <192000000>, <19200000>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &cpu0 {
@@ -307,11 +252,7 @@
 	samsung,i2c-max-bus-freq = <400000>;
 	status = "okay";
 
-<<<<<<< HEAD
 	usb3503: usb3503@8 {
-=======
-	usb3503: usb3503@08 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "smsc,usb3503";
 		reg = <0x08>;
 
@@ -321,11 +262,7 @@
 		initial-mode = <1>;
 	};
 
-<<<<<<< HEAD
 	max77686: pmic@9 {
-=======
-	max77686: pmic@09 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "maxim,max77686";
 		interrupt-parent = <&gpx3>;
 		interrupts = <2 IRQ_TYPE_NONE>;
@@ -565,11 +502,8 @@
 	pinctrl-0 = <&i2s0_bus>;
 	pinctrl-names = "default";
 	status = "okay";
-<<<<<<< HEAD
 	assigned-clocks = <&i2s0 CLK_I2S_RCLK_SRC>;
 	assigned-clock-parents = <&clock_audss EXYNOS_SCLK_I2S>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &mixer {

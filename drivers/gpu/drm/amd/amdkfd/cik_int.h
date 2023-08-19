@@ -20,13 +20,8 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-<<<<<<< HEAD
 #ifndef CIK_INT_H_INCLUDED
 #define CIK_INT_H_INCLUDED
-=======
-#ifndef HSA_RADEON_CIK_INT_H_INCLUDED
-#define HSA_RADEON_CIK_INT_H_INCLUDED
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/types.h>
 
@@ -37,19 +32,12 @@ struct cik_ih_ring_entry {
 	uint32_t reserved;
 };
 
-<<<<<<< HEAD
 #define CIK_INTSRC_CP_END_OF_PIPE	0xB5
 #define CIK_INTSRC_CP_BAD_OPCODE	0xB7
 #define CIK_INTSRC_SDMA_TRAP		0xE0
 #define CIK_INTSRC_SQ_INTERRUPT_MSG	0xEF
 #define CIK_INTSRC_GFX_PAGE_INV_FAULT	0x92
 #define CIK_INTSRC_GFX_MEM_PROT_FAULT	0x93
-=======
-#define CIK_INTSRC_DEQUEUE_COMPLETE	0xC6
-#define CIK_INTSRC_CP_END_OF_PIPE	0xB5
-#define CIK_INTSRC_CP_BAD_OPCODE	0xB7
-#define CIK_INTSRC_SQ_INTERRUPT_MSG	0xEF
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif
 

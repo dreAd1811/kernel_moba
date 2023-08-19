@@ -71,7 +71,6 @@ struct rockchip_dp_device {
 	struct regmap            *grf;
 	struct reset_control     *rst;
 
-<<<<<<< HEAD
 	const struct rockchip_dp_chip_data *data;
 
 	struct analogix_dp_device *adp;
@@ -87,48 +86,10 @@ static int analogix_dp_psr_set(struct drm_encoder *encoder, bool enabled)
 		return 0;
 
 	DRM_DEV_DEBUG(dp->dev, "%s PSR...\n", enabled ? "Entry" : "Exit");
-=======
-	struct work_struct	 psr_work;
-	spinlock_t		 psr_lock;
-	unsigned int             psr_state;
-
-	const struct rockchip_dp_chip_data *data;
-
-	struct analogix_dp_plat_data plat_data;
-};
-
-static void analogix_dp_psr_set(struct drm_encoder *encoder, bool enabled)
-{
-	struct rockchip_dp_device *dp = to_dp(encoder);
-	unsigned long flags;
-
-	if (!analogix_dp_psr_supported(dp->dev))
-		return;
-
-	dev_dbg(dp->dev, "%s PSR...\n", enabled ? "Entry" : "Exit");
-
-	spin_lock_irqsave(&dp->psr_lock, flags);
-	if (enabled)
-		dp->psr_state = EDP_VSC_PSR_STATE_ACTIVE;
-	else
-		dp->psr_state = ~EDP_VSC_PSR_STATE_ACTIVE;
-
-	schedule_work(&dp->psr_work);
-	spin_unlock_irqrestore(&dp->psr_lock, flags);
-}
-
-static void analogix_dp_psr_work(struct work_struct *work)
-{
-	struct rockchip_dp_device *dp =
-				container_of(work, typeof(*dp), psr_work);
-	int ret;
-	unsigned long flags;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = rockchip_drm_wait_vact_end(dp->encoder.crtc,
 					 PSR_WAIT_LINE_FLAG_TIMEOUT_MS);
 	if (ret) {
-<<<<<<< HEAD
 		DRM_DEV_ERROR(dp->dev, "line flag interrupt did not arrive\n");
 		return -ETIMEDOUT;
 	}
@@ -137,18 +98,6 @@ static void analogix_dp_psr_work(struct work_struct *work)
 		return analogix_dp_enable_psr(dp->adp);
 	else
 		return analogix_dp_disable_psr(dp->adp);
-=======
-		dev_err(dp->dev, "line flag interrupt did not arrive\n");
-		return;
-	}
-
-	spin_lock_irqsave(&dp->psr_lock, flags);
-	if (dp->psr_state == EDP_VSC_PSR_STATE_ACTIVE)
-		analogix_dp_enable_psr(dp->dev);
-	else
-		analogix_dp_disable_psr(dp->dev);
-	spin_unlock_irqrestore(&dp->psr_lock, flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int rockchip_dp_pre_init(struct rockchip_dp_device *dp)
@@ -160,41 +109,24 @@ static int rockchip_dp_pre_init(struct rockchip_dp_device *dp)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int rockchip_dp_poweron_start(struct analogix_dp_plat_data *plat_data)
-=======
-static int rockchip_dp_poweron(struct analogix_dp_plat_data *plat_data)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rockchip_dp_device *dp = to_dp(plat_data);
 	int ret;
 
-<<<<<<< HEAD
 	ret = clk_prepare_enable(dp->pclk);
 	if (ret < 0) {
 		DRM_DEV_ERROR(dp->dev, "failed to enable pclk %d\n", ret);
-=======
-	cancel_work_sync(&dp->psr_work);
-
-	ret = clk_prepare_enable(dp->pclk);
-	if (ret < 0) {
-		dev_err(dp->dev, "failed to enable pclk %d\n", ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
 	ret = rockchip_dp_pre_init(dp);
 	if (ret < 0) {
-<<<<<<< HEAD
 		DRM_DEV_ERROR(dp->dev, "failed to dp pre init %d\n", ret);
-=======
-		dev_err(dp->dev, "failed to dp pre init %d\n", ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		clk_disable_unprepare(dp->pclk);
 		return ret;
 	}
 
-<<<<<<< HEAD
 	return ret;
 }
 
@@ -203,22 +135,16 @@ static int rockchip_dp_poweron_end(struct analogix_dp_plat_data *plat_data)
 	struct rockchip_dp_device *dp = to_dp(plat_data);
 
 	return rockchip_drm_psr_inhibit_put(&dp->encoder);
-=======
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int rockchip_dp_powerdown(struct analogix_dp_plat_data *plat_data)
 {
 	struct rockchip_dp_device *dp = to_dp(plat_data);
-<<<<<<< HEAD
 	int ret;
 
 	ret = rockchip_drm_psr_inhibit_get(&dp->encoder);
 	if (ret != 0)
 		return ret;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	clk_disable_unprepare(dp->pclk);
 
@@ -273,29 +199,17 @@ static void rockchip_dp_drm_encoder_enable(struct drm_encoder *encoder)
 	else
 		val = dp->data->lcdsel_big;
 
-<<<<<<< HEAD
 	DRM_DEV_DEBUG(dp->dev, "vop %s output to dp\n", (ret) ? "LIT" : "BIG");
 
 	ret = clk_prepare_enable(dp->grfclk);
 	if (ret < 0) {
 		DRM_DEV_ERROR(dp->dev, "failed to enable grfclk %d\n", ret);
-=======
-	dev_dbg(dp->dev, "vop %s output to dp\n", (ret) ? "LIT" : "BIG");
-
-	ret = clk_prepare_enable(dp->grfclk);
-	if (ret < 0) {
-		dev_err(dp->dev, "failed to enable grfclk %d\n", ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
 	ret = regmap_write(dp->grf, dp->data->lcdsel_grf_reg, val);
 	if (ret != 0)
-<<<<<<< HEAD
 		DRM_DEV_ERROR(dp->dev, "Could not write to GRF: %d\n", ret);
-=======
-		dev_err(dp->dev, "Could not write to GRF: %d\n", ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	clk_disable_unprepare(dp->grfclk);
 }
@@ -311,10 +225,7 @@ rockchip_dp_drm_encoder_atomic_check(struct drm_encoder *encoder,
 				      struct drm_connector_state *conn_state)
 {
 	struct rockchip_crtc_state *s = to_rockchip_crtc_state(crtc_state);
-<<<<<<< HEAD
 	struct drm_display_info *di = &conn_state->connector->display_info;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * The hardware IC designed that VOP must output the RGB10 video
@@ -326,10 +237,7 @@ rockchip_dp_drm_encoder_atomic_check(struct drm_encoder *encoder,
 
 	s->output_mode = ROCKCHIP_OUT_MODE_AAAA;
 	s->output_type = DRM_MODE_CONNECTOR_eDP;
-<<<<<<< HEAD
 	s->output_bpc = di->bpc;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -342,7 +250,6 @@ static struct drm_encoder_helper_funcs rockchip_dp_encoder_helper_funcs = {
 	.atomic_check = rockchip_dp_drm_encoder_atomic_check,
 };
 
-<<<<<<< HEAD
 static struct drm_encoder_funcs rockchip_dp_encoder_funcs = {
 	.destroy = drm_encoder_cleanup,
 };
@@ -355,26 +262,6 @@ static int rockchip_dp_of_probe(struct rockchip_dp_device *dp)
 	dp->grf = syscon_regmap_lookup_by_phandle(np, "rockchip,grf");
 	if (IS_ERR(dp->grf)) {
 		DRM_DEV_ERROR(dev, "failed to get rockchip,grf property\n");
-=======
-static void rockchip_dp_drm_encoder_destroy(struct drm_encoder *encoder)
-{
-	drm_encoder_cleanup(encoder);
-}
-
-static struct drm_encoder_funcs rockchip_dp_encoder_funcs = {
-	.destroy = rockchip_dp_drm_encoder_destroy,
-};
-
-static int rockchip_dp_init(struct rockchip_dp_device *dp)
-{
-	struct device *dev = dp->dev;
-	struct device_node *np = dev->of_node;
-	int ret;
-
-	dp->grf = syscon_regmap_lookup_by_phandle(np, "rockchip,grf");
-	if (IS_ERR(dp->grf)) {
-		dev_err(dev, "failed to get rockchip,grf property\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return PTR_ERR(dp->grf);
 	}
 
@@ -384,50 +271,22 @@ static int rockchip_dp_init(struct rockchip_dp_device *dp)
 	} else if (PTR_ERR(dp->grfclk) == -EPROBE_DEFER) {
 		return -EPROBE_DEFER;
 	} else if (IS_ERR(dp->grfclk)) {
-<<<<<<< HEAD
 		DRM_DEV_ERROR(dev, "failed to get grf clock\n");
-=======
-		dev_err(dev, "failed to get grf clock\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return PTR_ERR(dp->grfclk);
 	}
 
 	dp->pclk = devm_clk_get(dev, "pclk");
 	if (IS_ERR(dp->pclk)) {
-<<<<<<< HEAD
 		DRM_DEV_ERROR(dev, "failed to get pclk property\n");
-=======
-		dev_err(dev, "failed to get pclk property\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return PTR_ERR(dp->pclk);
 	}
 
 	dp->rst = devm_reset_control_get(dev, "dp");
 	if (IS_ERR(dp->rst)) {
-<<<<<<< HEAD
 		DRM_DEV_ERROR(dev, "failed to get dp reset control\n");
 		return PTR_ERR(dp->rst);
 	}
 
-=======
-		dev_err(dev, "failed to get dp reset control\n");
-		return PTR_ERR(dp->rst);
-	}
-
-	ret = clk_prepare_enable(dp->pclk);
-	if (ret < 0) {
-		dev_err(dp->dev, "failed to enable pclk %d\n", ret);
-		return ret;
-	}
-
-	ret = rockchip_dp_pre_init(dp);
-	if (ret < 0) {
-		dev_err(dp->dev, "failed to pre init %d\n", ret);
-		clk_disable_unprepare(dp->pclk);
-		return ret;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -462,27 +321,10 @@ static int rockchip_dp_bind(struct device *dev, struct device *master,
 	struct drm_device *drm_dev = data;
 	int ret;
 
-<<<<<<< HEAD
-=======
-	/*
-	 * Just like the probe function said, we don't need the
-	 * device drvrate anymore, we should leave the charge to
-	 * analogix dp driver, set the device drvdata to NULL.
-	 */
-	dev_set_drvdata(dev, NULL);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dp_data = of_device_get_match_data(dev);
 	if (!dp_data)
 		return -ENODEV;
 
-<<<<<<< HEAD
-=======
-	ret = rockchip_dp_init(dp);
-	if (ret < 0)
-		return ret;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dp->data = dp_data;
 	dp->drm_dev = drm_dev;
 
@@ -495,7 +337,6 @@ static int rockchip_dp_bind(struct device *dev, struct device *master,
 	dp->plat_data.encoder = &dp->encoder;
 
 	dp->plat_data.dev_type = dp->data->chip_type;
-<<<<<<< HEAD
 	dp->plat_data.power_on_start = rockchip_dp_poweron_start;
 	dp->plat_data.power_on_end = rockchip_dp_poweron_end;
 	dp->plat_data.power_off = rockchip_dp_powerdown;
@@ -517,19 +358,6 @@ err_unreg_psr:
 err_cleanup_encoder:
 	dp->encoder.funcs->destroy(&dp->encoder);
 	return ret;
-=======
-	dp->plat_data.power_on = rockchip_dp_poweron;
-	dp->plat_data.power_off = rockchip_dp_powerdown;
-	dp->plat_data.get_modes = rockchip_dp_get_modes;
-
-	spin_lock_init(&dp->psr_lock);
-	dp->psr_state = ~EDP_VSC_PSR_STATE_ACTIVE;
-	INIT_WORK(&dp->psr_work, analogix_dp_psr_work);
-
-	rockchip_drm_psr_register(&dp->encoder, analogix_dp_psr_set);
-
-	return analogix_dp_bind(dev, dp->drm_dev, &dp->plat_data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rockchip_dp_unbind(struct device *dev, struct device *master,
@@ -537,18 +365,11 @@ static void rockchip_dp_unbind(struct device *dev, struct device *master,
 {
 	struct rockchip_dp_device *dp = dev_get_drvdata(dev);
 
-<<<<<<< HEAD
 	analogix_dp_unbind(dp->adp);
 	rockchip_drm_psr_unregister(&dp->encoder);
 	dp->encoder.funcs->destroy(&dp->encoder);
 
 	dp->adp = ERR_PTR(-ENODEV);
-=======
-	rockchip_drm_psr_unregister(&dp->encoder);
-
-	analogix_dp_unbind(dev, master, data);
-	clk_disable_unprepare(dp->pclk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct component_ops rockchip_dp_component_ops = {
@@ -564,11 +385,7 @@ static int rockchip_dp_probe(struct platform_device *pdev)
 	int ret;
 
 	ret = drm_of_find_panel_or_bridge(dev->of_node, 1, 0, &panel, NULL);
-<<<<<<< HEAD
 	if (ret < 0)
-=======
-	if (ret)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 
 	dp = devm_kzalloc(dev, sizeof(*dp), GFP_KERNEL);
@@ -576,7 +393,6 @@ static int rockchip_dp_probe(struct platform_device *pdev)
 		return -ENOMEM;
 
 	dp->dev = dev;
-<<<<<<< HEAD
 	dp->adp = ERR_PTR(-ENODEV);
 	dp->plat_data.panel = panel;
 
@@ -584,16 +400,6 @@ static int rockchip_dp_probe(struct platform_device *pdev)
 	if (ret < 0)
 		return ret;
 
-=======
-
-	dp->plat_data.panel = panel;
-
-	/*
-	 * We just use the drvdata until driver run into component
-	 * add function, and then we would set drvdata to null, so
-	 * that analogix dp driver could take charge of the drvdata.
-	 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	platform_set_drvdata(pdev, dp);
 
 	return component_add(dev, &rockchip_dp_component_ops);
@@ -606,7 +412,6 @@ static int rockchip_dp_remove(struct platform_device *pdev)
 	return 0;
 }
 
-<<<<<<< HEAD
 #ifdef CONFIG_PM_SLEEP
 static int rockchip_dp_suspend(struct device *dev)
 {
@@ -633,12 +438,6 @@ static const struct dev_pm_ops rockchip_dp_pm_ops = {
 #ifdef CONFIG_PM_SLEEP
 	.suspend_late = rockchip_dp_suspend,
 	.resume_early = rockchip_dp_resume,
-=======
-static const struct dev_pm_ops rockchip_dp_pm_ops = {
-#ifdef CONFIG_PM_SLEEP
-	.suspend = analogix_dp_suspend,
-	.resume_early = analogix_dp_resume,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 };
 

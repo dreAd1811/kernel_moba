@@ -291,19 +291,9 @@ static int pcf_readbytes(struct i2c_adapter *i2c_adap, char *buf,
 static int pcf_doAddress(struct i2c_algo_pcf_data *adap,
 			 struct i2c_msg *msg)
 {
-<<<<<<< HEAD
 	unsigned char addr = i2c_8bit_addr_from_msg(msg);
 
 	if (msg->flags & I2C_M_REV_DIR_ADDR)
-=======
-	unsigned short flags = msg->flags;
-	unsigned char addr;
-
-	addr = msg->addr << 1;
-	if (flags & I2C_M_RD)
-		addr |= 1;
-	if (flags & I2C_M_REV_DIR_ADDR)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		addr ^= 1;
 	i2c_outb(adap, addr);
 

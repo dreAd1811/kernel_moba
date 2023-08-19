@@ -46,7 +46,6 @@
 #include <rdma/ib_verbs.h>
 #include <rdma/ib_umem.h>
 #include <rdma/ib_user_verbs.h>
-<<<<<<< HEAD
 #include <rdma/uverbs_std_types.h>
 
 #define UVERBS_MODULE_NAME ib_uverbs
@@ -74,24 +73,6 @@ ib_uverbs_init_udata_buf_or_null(struct ib_udata *udata,
 			     ilen ? ibuf : NULL, olen ? obuf : NULL,
 			     ilen, olen);
 }
-=======
-
-#define INIT_UDATA(udata, ibuf, obuf, ilen, olen)			\
-	do {								\
-		(udata)->inbuf  = (const void __user *) (ibuf);		\
-		(udata)->outbuf = (void __user *) (obuf);		\
-		(udata)->inlen  = (ilen);				\
-		(udata)->outlen = (olen);				\
-	} while (0)
-
-#define INIT_UDATA_BUF_OR_NULL(udata, ibuf, obuf, ilen, olen)			\
-	do {									\
-		(udata)->inbuf  = (ilen) ? (const void __user *) (ibuf) : NULL;	\
-		(udata)->outbuf = (olen) ? (void __user *) (obuf) : NULL;	\
-		(udata)->inlen  = (ilen);					\
-		(udata)->outlen = (olen);					\
-	} while (0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Our lifetime rules for these structs are the following:
@@ -117,11 +98,7 @@ ib_uverbs_init_udata_buf_or_null(struct ib_udata *udata,
 
 struct ib_uverbs_device {
 	atomic_t				refcount;
-<<<<<<< HEAD
 	int					num_comp_vectors;
-=======
-	u32					num_comp_vectors;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct completion			comp;
 	struct device			       *dev;
 	struct ib_device	__rcu	       *ib_dev;
@@ -134,11 +111,7 @@ struct ib_uverbs_device {
 	struct mutex				lists_mutex; /* protect lists */
 	struct list_head			uverbs_file_list;
 	struct list_head			uverbs_events_file_list;
-<<<<<<< HEAD
 	struct uverbs_api			*uapi;
-=======
-	struct uverbs_root_spec			*specs_root;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct ib_uverbs_event_queue {
@@ -157,35 +130,24 @@ struct ib_uverbs_async_event_file {
 };
 
 struct ib_uverbs_completion_event_file {
-<<<<<<< HEAD
 	struct ib_uobject			uobj;
-=======
-	struct ib_uobject_file			uobj_file;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ib_uverbs_event_queue		ev_queue;
 };
 
 struct ib_uverbs_file {
 	struct kref				ref;
-<<<<<<< HEAD
 	struct ib_uverbs_device		       *device;
 	struct mutex				ucontext_lock;
 	/*
 	 * ucontext must be accessed via ib_uverbs_get_ucontext() or with
 	 * ucontext_lock held
 	 */
-=======
-	struct mutex				mutex;
-	struct mutex                            cleanup_mutex; /* protect cleanup */
-	struct ib_uverbs_device		       *device;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ib_ucontext		       *ucontext;
 	struct ib_event_handler			event_handler;
 	struct ib_uverbs_async_event_file       *async_file;
 	struct list_head			list;
 	int					is_closed;
 
-<<<<<<< HEAD
 	/*
 	 * To access the uobjects list hw_destroy_rwsem must be held for write
 	 * OR hw_destroy_rwsem held for read AND uobjects_lock held.
@@ -199,8 +161,6 @@ struct ib_uverbs_file {
 	u64 uverbs_cmd_mask;
 	u64 uverbs_ex_cmd_mask;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct idr		idr;
 	/* spinlock protects write access to idr */
 	spinlock_t		idr_lock;
@@ -252,34 +212,24 @@ struct ib_uwq_object {
 
 struct ib_ucq_object {
 	struct ib_uobject	uobject;
-<<<<<<< HEAD
-=======
-	struct ib_uverbs_file  *uverbs_file;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct list_head	comp_list;
 	struct list_head	async_list;
 	u32			comp_events_reported;
 	u32			async_events_reported;
 };
 
-<<<<<<< HEAD
 struct ib_uflow_resources;
 struct ib_uflow_object {
 	struct ib_uobject		uobject;
 	struct ib_uflow_resources	*resources;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern const struct file_operations uverbs_event_fops;
 void ib_uverbs_init_event_queue(struct ib_uverbs_event_queue *ev_queue);
 struct file *ib_uverbs_alloc_async_event_file(struct ib_uverbs_file *uverbs_file,
 					      struct ib_device *ib_dev);
 void ib_uverbs_free_async_event_file(struct ib_uverbs_file *uverbs_file);
-<<<<<<< HEAD
 void ib_uverbs_flow_resources_free(struct ib_uflow_resources *uflow_res);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void ib_uverbs_release_ucq(struct ib_uverbs_file *file,
 			   struct ib_uverbs_completion_event_file *ev_file,
@@ -295,21 +245,14 @@ void ib_uverbs_wq_event_handler(struct ib_event *event, void *context_ptr);
 void ib_uverbs_srq_event_handler(struct ib_event *event, void *context_ptr);
 void ib_uverbs_event_handler(struct ib_event_handler *handler,
 			     struct ib_event *event);
-<<<<<<< HEAD
 int ib_uverbs_dealloc_xrcd(struct ib_uobject *uobject, struct ib_xrcd *xrcd,
-=======
-int ib_uverbs_dealloc_xrcd(struct ib_uverbs_device *dev, struct ib_xrcd *xrcd,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   enum rdma_remove_reason why);
 
 int uverbs_dealloc_mw(struct ib_mw *mw);
 void ib_uverbs_detach_umcast(struct ib_qp *qp,
 			     struct ib_uqp_object *uobj);
 
-<<<<<<< HEAD
 void create_udata(struct uverbs_attr_bundle *ctx, struct ib_udata *udata);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 long ib_uverbs_ioctl(struct file *filp, unsigned int cmd, unsigned long arg);
 
 struct ib_uverbs_flow_spec {
@@ -324,15 +267,11 @@ struct ib_uverbs_flow_spec {
 		};
 		struct ib_uverbs_flow_spec_eth     eth;
 		struct ib_uverbs_flow_spec_ipv4    ipv4;
-<<<<<<< HEAD
 		struct ib_uverbs_flow_spec_esp     esp;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct ib_uverbs_flow_spec_tcp_udp tcp_udp;
 		struct ib_uverbs_flow_spec_ipv6    ipv6;
 		struct ib_uverbs_flow_spec_action_tag	flow_tag;
 		struct ib_uverbs_flow_spec_action_drop	drop;
-<<<<<<< HEAD
 		struct ib_uverbs_flow_spec_action_handle action;
 		struct ib_uverbs_flow_spec_action_count flow_count;
 	};
@@ -363,14 +302,6 @@ extern const struct uverbs_object_def UVERBS_OBJECT(UVERBS_OBJECT_COUNTERS);
 
 #define IB_UVERBS_DECLARE_CMD(name)					\
 	ssize_t ib_uverbs_##name(struct ib_uverbs_file *file,		\
-=======
-	};
-};
-
-#define IB_UVERBS_DECLARE_CMD(name)					\
-	ssize_t ib_uverbs_##name(struct ib_uverbs_file *file,		\
-				 struct ib_device *ib_dev,              \
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 const char __user *buf, int in_len,	\
 				 int out_len)
 
@@ -412,10 +343,6 @@ IB_UVERBS_DECLARE_CMD(close_xrcd);
 
 #define IB_UVERBS_DECLARE_EX_CMD(name)				\
 	int ib_uverbs_ex_##name(struct ib_uverbs_file *file,	\
-<<<<<<< HEAD
-=======
-				struct ib_device *ib_dev,		\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				struct ib_udata *ucore,		\
 				struct ib_udata *uhw)
 
@@ -430,9 +357,6 @@ IB_UVERBS_DECLARE_EX_CMD(destroy_wq);
 IB_UVERBS_DECLARE_EX_CMD(create_rwq_ind_table);
 IB_UVERBS_DECLARE_EX_CMD(destroy_rwq_ind_table);
 IB_UVERBS_DECLARE_EX_CMD(modify_qp);
-<<<<<<< HEAD
 IB_UVERBS_DECLARE_EX_CMD(modify_cq);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* UVERBS_H */

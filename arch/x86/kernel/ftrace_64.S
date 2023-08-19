@@ -8,10 +8,7 @@
 #include <asm/ftrace.h>
 #include <asm/export.h>
 #include <asm/nospec-branch.h>
-<<<<<<< HEAD
 #include <asm/unwind_hints.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	.code64
 	.section .entry.text, "ax"
@@ -24,10 +21,6 @@ EXPORT_SYMBOL(__fentry__)
 EXPORT_SYMBOL(mcount)
 #endif
 
-<<<<<<< HEAD
-=======
-/* All cases save the original rbp (8 bytes) */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_FRAME_POINTER
 # ifdef CC_USING_FENTRY
 /* Save parent and function stack frames (rip and rbp) */
@@ -38,11 +31,7 @@ EXPORT_SYMBOL(mcount)
 # endif
 #else
 /* No need to save a stack frame */
-<<<<<<< HEAD
 # define MCOUNT_FRAME_SIZE	0
-=======
-# define MCOUNT_FRAME_SIZE	8
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_FRAME_POINTER */
 
 /* Size of stack used to save mcount regs in save_mcount_regs */
@@ -75,17 +64,10 @@ EXPORT_SYMBOL(mcount)
  */
 .macro save_mcount_regs added=0
 
-<<<<<<< HEAD
 #ifdef CONFIG_FRAME_POINTER
 	/* Save the original rbp */
 	pushq %rbp
 
-=======
-	/* Always save the original rbp */
-	pushq %rbp
-
-#ifdef CONFIG_FRAME_POINTER
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Stack traces will stop at the ftrace trampoline if the frame pointer
 	 * is not set up properly. If fentry is used, we need to save a frame
@@ -123,15 +105,11 @@ EXPORT_SYMBOL(mcount)
 	 * Save the original RBP. Even though the mcount ABI does not
 	 * require this, it helps out callers.
 	 */
-<<<<<<< HEAD
 #ifdef CONFIG_FRAME_POINTER
 	movq MCOUNT_REG_SIZE-8(%rsp), %rdx
 #else
 	movq %rbp, %rdx
 #endif
-=======
-	movq MCOUNT_REG_SIZE-8(%rsp), %rdx
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	movq %rdx, RBP(%rsp)
 
 	/* Copy the parent address into %rsi (second parameter) */
@@ -174,11 +152,7 @@ EXPORT_SYMBOL(mcount)
 
 ENTRY(function_hook)
 	retq
-<<<<<<< HEAD
 ENDPROC(function_hook)
-=======
-END(function_hook)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 ENTRY(ftrace_caller)
 	/* save_mcount_regs fills in first two parameters */
@@ -197,12 +171,6 @@ GLOBAL(ftrace_call)
 	restore_mcount_regs
 
 	/*
-<<<<<<< HEAD
-=======
-	 * The copied trampoline must call ftrace_epilogue as it
-	 * still may need to call the function graph tracer.
-	 *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * The code up to this label is copied into trampolines so
 	 * think twice before adding any new code or changing the
 	 * layout here.
@@ -214,7 +182,6 @@ GLOBAL(ftrace_graph_call)
 	jmp ftrace_stub
 #endif
 
-<<<<<<< HEAD
 /*
  * This is weak to keep gas from relaxing the jumps.
  * It is also used to copy the retq for trampolines.
@@ -222,12 +189,6 @@ GLOBAL(ftrace_graph_call)
 WEAK(ftrace_stub)
 	retq
 ENDPROC(ftrace_caller)
-=======
-/* This is weak to keep gas from relaxing the jumps */
-WEAK(ftrace_stub)
-	retq
-END(ftrace_caller)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 ENTRY(ftrace_regs_caller)
 	/* Save the current flags before any operations that can change them */
@@ -298,11 +259,7 @@ GLOBAL(ftrace_regs_caller_end)
 
 	jmp ftrace_epilogue
 
-<<<<<<< HEAD
 ENDPROC(ftrace_regs_caller)
-=======
-END(ftrace_regs_caller)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 #else /* ! CONFIG_DYNAMIC_FTRACE */
@@ -338,11 +295,7 @@ trace:
 	restore_mcount_regs
 
 	jmp fgraph_trace
-<<<<<<< HEAD
 ENDPROC(function_hook)
-=======
-END(function_hook)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_DYNAMIC_FTRACE */
 
 #ifdef CONFIG_FUNCTION_GRAPH_TRACER
@@ -364,16 +317,10 @@ ENTRY(ftrace_graph_caller)
 	restore_mcount_regs
 
 	retq
-<<<<<<< HEAD
 ENDPROC(ftrace_graph_caller)
 
 ENTRY(return_to_handler)
 	UNWIND_HINT_EMPTY
-=======
-END(ftrace_graph_caller)
-
-GLOBAL(return_to_handler)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	subq  $24, %rsp
 
 	/* Save the return values */
@@ -388,8 +335,5 @@ GLOBAL(return_to_handler)
 	movq (%rsp), %rax
 	addq $24, %rsp
 	JMP_NOSPEC %rdi
-<<<<<<< HEAD
 END(return_to_handler)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

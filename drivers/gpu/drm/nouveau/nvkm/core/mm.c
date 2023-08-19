@@ -237,11 +237,7 @@ nvkm_mm_tail(struct nvkm_mm *mm, u8 heap, u8 type, u32 size_max, u32 size_min,
 }
 
 int
-<<<<<<< HEAD
 nvkm_mm_init(struct nvkm_mm *mm, u8 heap, u32 offset, u32 length, u32 block)
-=======
-nvkm_mm_init(struct nvkm_mm *mm, u32 offset, u32 length, u32 block)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct nvkm_mm_node *node, *prev;
 	u32 next;
@@ -278,12 +274,8 @@ nvkm_mm_init(struct nvkm_mm *mm, u32 offset, u32 length, u32 block)
 
 	list_add_tail(&node->nl_entry, &mm->nodes);
 	list_add_tail(&node->fl_entry, &mm->free);
-<<<<<<< HEAD
 	node->heap = heap;
 	mm->heap_nodes++;
-=======
-	node->heap = ++mm->heap_nodes;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

@@ -1,19 +1,9 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * in-kernel handling for sie intercepts
  *
  * Copyright IBM Corp. 2008, 2014
  *
-<<<<<<< HEAD
-=======
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (version 2 only)
- * as published by the Free Software Foundation.
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *    Author(s): Carsten Otte <cotte@de.ibm.com>
  *               Christian Borntraeger <borntraeger@de.ibm.com>
  */
@@ -25,35 +15,13 @@
 #include <asm/kvm_host.h>
 #include <asm/asm-offsets.h>
 #include <asm/irq.h>
-<<<<<<< HEAD
 #include <asm/sysinfo.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "kvm-s390.h"
 #include "gaccess.h"
 #include "trace.h"
 #include "trace-s390.h"
 
-<<<<<<< HEAD
-=======
-
-static const intercept_handler_t instruction_handlers[256] = {
-	[0x01] = kvm_s390_handle_01,
-	[0x82] = kvm_s390_handle_lpsw,
-	[0x83] = kvm_s390_handle_diag,
-	[0xaa] = kvm_s390_handle_aa,
-	[0xae] = kvm_s390_handle_sigp,
-	[0xb2] = kvm_s390_handle_b2,
-	[0xb6] = kvm_s390_handle_stctl,
-	[0xb7] = kvm_s390_handle_lctl,
-	[0xb9] = kvm_s390_handle_b9,
-	[0xe3] = kvm_s390_handle_e3,
-	[0xe5] = kvm_s390_handle_e5,
-	[0xeb] = kvm_s390_handle_eb,
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 u8 kvm_s390_get_ilen(struct kvm_vcpu *vcpu)
 {
 	struct kvm_s390_sie_block *sie_block = vcpu->arch.sie_block;
@@ -82,21 +50,6 @@ u8 kvm_s390_get_ilen(struct kvm_vcpu *vcpu)
 	return ilen;
 }
 
-<<<<<<< HEAD
-=======
-static int handle_noop(struct kvm_vcpu *vcpu)
-{
-	switch (vcpu->arch.sie_block->icptcode) {
-	case 0x10:
-		vcpu->stat.exit_external_request++;
-		break;
-	default:
-		break; /* nothing */
-	}
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int handle_stop(struct kvm_vcpu *vcpu)
 {
 	struct kvm_s390_local_interrupt *li = &vcpu->arch.local_int;
@@ -148,16 +101,10 @@ static int handle_validity(struct kvm_vcpu *vcpu)
 
 static int handle_instruction(struct kvm_vcpu *vcpu)
 {
-<<<<<<< HEAD
-=======
-	intercept_handler_t handler;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vcpu->stat.exit_instruction++;
 	trace_kvm_s390_intercept_instruction(vcpu,
 					     vcpu->arch.sie_block->ipa,
 					     vcpu->arch.sie_block->ipb);
-<<<<<<< HEAD
 
 	switch (vcpu->arch.sie_block->ipa >> 8) {
 	case 0x01:
@@ -187,12 +134,6 @@ static int handle_instruction(struct kvm_vcpu *vcpu)
 	default:
 		return -EOPNOTSUPP;
 	}
-=======
-	handler = instruction_handlers[vcpu->arch.sie_block->ipa >> 8];
-	if (handler)
-		return handler(vcpu);
-	return -EOPNOTSUPP;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int inject_prog_on_prog_intercept(struct kvm_vcpu *vcpu)
@@ -412,7 +353,6 @@ static int handle_partial_execution(struct kvm_vcpu *vcpu)
 	return -EOPNOTSUPP;
 }
 
-<<<<<<< HEAD
 /*
  * Handle the sthyi instruction that provides the guest with system
  * information, like current CPU resources available at each level of
@@ -468,8 +408,6 @@ out:
 	return r;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int handle_operexc(struct kvm_vcpu *vcpu)
 {
 	psw_t oldpsw, newpsw;
@@ -515,16 +453,11 @@ int kvm_handle_sie_intercept(struct kvm_vcpu *vcpu)
 
 	switch (vcpu->arch.sie_block->icptcode) {
 	case ICPT_EXTREQ:
-<<<<<<< HEAD
 		vcpu->stat.exit_external_request++;
 		return 0;
 	case ICPT_IOREQ:
 		vcpu->stat.exit_io_request++;
 		return 0;
-=======
-	case ICPT_IOREQ:
-		return handle_noop(vcpu);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case ICPT_INST:
 		rc = handle_instruction(vcpu);
 		break;

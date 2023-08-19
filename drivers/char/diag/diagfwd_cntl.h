@@ -1,18 +1,5 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
 /* Copyright (c) 2011-2020, The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2011-2018, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #ifndef DIAGFWD_CNTL_H
@@ -52,10 +39,7 @@
 #define DIAG_CTRL_MSG_PD_STATUS			30
 #define DIAG_CTRL_MSG_TIME_SYNC_PKT		31
 #define DIAG_CTRL_MSG_DIAGID	33
-<<<<<<< HEAD
 #define DIAG_CTRL_MSG_PASSTHRU	35
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Feature Mask Definitions: Feature mask is used to specify Diag features
  * supported by the Apps processor
@@ -79,11 +63,8 @@
 #define F_DIAG_DIAGID_SUPPORT	15
 #define F_DIAG_PKT_HEADER_UNTAG			16
 #define F_DIAG_PD_BUFFERING		17
-<<<<<<< HEAD
 #define F_DIAGID_FEATURE_MASK	19
 #define F_DIAG_MULTI_SIM_SUPPORT		20
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define ENABLE_SEPARATE_CMDRSP	1
 #define DISABLE_SEPARATE_CMDRSP	0
@@ -104,7 +85,6 @@
 #define DIAG_MODE_PKT_LEN		36
 #define DIAG_MODE_PKT_LEN_V2	37
 
-<<<<<<< HEAD
 #define DIAGID_VERSION_1	1
 #define DIAGID_VERSION_2	2
 
@@ -115,8 +95,6 @@
 #define BITMASK_HW_ACCEL_STM_V1		0x0002
 #define BITMASK_HW_ACCEL_ATB_V1		0x0004
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct diag_ctrl_pkt_header_t {
 	uint32_t pkt_id;
 	uint32_t len;
@@ -180,7 +158,6 @@ struct diag_ctrl_msg_mask {
 	/* Copy msg mask here */
 } __packed;
 
-<<<<<<< HEAD
 struct diag_ctrl_event_mask_sub {
 	uint32_t cmd_type;
 	uint32_t data_len;
@@ -226,8 +203,6 @@ struct diag_ctrl_msg_mask_sub {
 	/* Copy msg mask here */
 } __packed;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct diag_ctrl_feature_mask {
 	uint32_t ctrl_pkt_id;
 	uint32_t ctrl_pkt_data_len;
@@ -385,7 +360,6 @@ struct diag_ctrl_set_wq_val_v2 {
 	uint8_t low_wm_val;
 } __packed;
 
-<<<<<<< HEAD
 struct diag_ctrl_diagid_header {
 	uint32_t pkt_id;
 	uint32_t len;
@@ -412,14 +386,6 @@ struct diag_ctrl_passthru {
 	uint8_t hw_accel_type;
 	uint8_t hw_accel_ver;
 	uint8_t control_data;
-=======
-struct diag_ctrl_diagid {
-	uint32_t pkt_id;
-	uint32_t len;
-	uint32_t version;
-	uint32_t diag_id;
-	char process_name[30];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } __packed;
 
 int diagfwd_cntl_init(void);
@@ -434,10 +400,7 @@ void diag_cntl_process_read_data(struct diagfwd_info *p_info, void *buf,
 int diag_send_real_time_update(uint8_t peripheral, int real_time);
 void diag_map_pd_to_diagid(uint8_t pd, uint8_t *diag_id, int *peripheral);
 int diag_send_peripheral_buffering_mode(struct diag_buffering_mode_t *params);
-<<<<<<< HEAD
 void diag_send_hw_accel_status(uint8_t peripheral);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void diag_update_proc_vote(uint16_t proc, uint8_t vote, int index);
 void diag_update_real_time_vote(uint16_t proc, uint8_t real_time, int index);
 void diag_real_time_work_fn(struct work_struct *work);
@@ -448,8 +411,5 @@ int diag_send_buffering_tx_mode_pkt(uint8_t peripheral,
 		    uint8_t diag_id, struct diag_buffering_mode_t *params);
 int diag_send_buffering_wm_values(uint8_t peripheral,
 		    uint8_t diag_id, struct diag_buffering_mode_t *params);
-<<<<<<< HEAD
 int diag_send_passthru_ctrl_pkt(struct diag_hw_accel_cmd_req_t *req_params);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

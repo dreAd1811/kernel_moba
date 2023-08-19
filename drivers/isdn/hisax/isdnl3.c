@@ -160,14 +160,9 @@ newl3state(struct l3_process *pc, int state)
 }
 
 static void
-<<<<<<< HEAD
 L3ExpireTimer(struct timer_list *timer)
 {
 	struct L3Timer *t = from_timer(t, timer, tl);
-=======
-L3ExpireTimer(struct L3Timer *t)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	t->pc->st->lli.l4l3(t->pc->st, t->event, t->pc);
 }
 
@@ -175,11 +170,7 @@ void
 L3InitTimer(struct l3_process *pc, struct L3Timer *t)
 {
 	t->pc = pc;
-<<<<<<< HEAD
 	timer_setup(&t->tl, L3ExpireTimer, 0);
-=======
-	setup_timer(&t->tl, (void *)L3ExpireTimer, (long)t);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void
@@ -196,10 +187,6 @@ L3AddTimer(struct L3Timer *t,
 		printk(KERN_WARNING "L3AddTimer: timer already active!\n");
 		return -1;
 	}
-<<<<<<< HEAD
-=======
-	init_timer(&t->tl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	t->event = event;
 	t->tl.expires = jiffies + (millisec * HZ) / 1000;
 	add_timer(&t->tl);

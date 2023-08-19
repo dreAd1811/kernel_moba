@@ -20,11 +20,7 @@ DEF_NATIVE(, mov64, "mov %rdi, %rax");
 
 #if defined(CONFIG_PARAVIRT_SPINLOCKS)
 DEF_NATIVE(pv_lock_ops, queued_spin_unlock, "movb $0, (%rdi)");
-<<<<<<< HEAD
 DEF_NATIVE(pv_lock_ops, vcpu_is_preempted, "xor %eax, %eax");
-=======
-DEF_NATIVE(pv_lock_ops, vcpu_is_preempted, "xor %rax, %rax");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 unsigned paravirt_patch_ident_32(void *insnbuf, unsigned len)

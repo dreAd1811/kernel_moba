@@ -20,10 +20,7 @@ void nv20_gr_tile(struct nvkm_gr *, int, struct nvkm_fb_tile *);
 int nv30_gr_init(struct nvkm_gr *);
 
 #define nv20_gr_chan(p) container_of((p), struct nv20_gr_chan, object)
-<<<<<<< HEAD
 #include <core/object.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct nv20_gr_chan {
 	struct nvkm_object object;

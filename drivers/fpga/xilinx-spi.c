@@ -143,11 +143,8 @@ static const struct fpga_manager_ops xilinx_spi_ops = {
 static int xilinx_spi_probe(struct spi_device *spi)
 {
 	struct xilinx_spi_conf *conf;
-<<<<<<< HEAD
 	struct fpga_manager *mgr;
 	int ret;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	conf = devm_kzalloc(&spi->dev, sizeof(*conf), GFP_KERNEL);
 	if (!conf)
@@ -170,7 +167,6 @@ static int xilinx_spi_probe(struct spi_device *spi)
 		return PTR_ERR(conf->done);
 	}
 
-<<<<<<< HEAD
 	mgr = fpga_mgr_create(&spi->dev, "Xilinx Slave Serial FPGA Manager",
 			      &xilinx_spi_ops, conf);
 	if (!mgr)
@@ -183,21 +179,13 @@ static int xilinx_spi_probe(struct spi_device *spi)
 		fpga_mgr_free(mgr);
 
 	return ret;
-=======
-	return fpga_mgr_register(&spi->dev, "Xilinx Slave Serial FPGA Manager",
-				 &xilinx_spi_ops, conf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int xilinx_spi_remove(struct spi_device *spi)
 {
-<<<<<<< HEAD
 	struct fpga_manager *mgr = spi_get_drvdata(spi);
 
 	fpga_mgr_unregister(mgr);
-=======
-	fpga_mgr_unregister(&spi->dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

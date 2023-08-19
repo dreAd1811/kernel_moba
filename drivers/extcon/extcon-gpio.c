@@ -17,13 +17,7 @@
  * GNU General Public License for more details.
  */
 
-<<<<<<< HEAD
 #include <linux/extcon-provider.h>
-=======
-#include <linux/extcon.h>
-#include <linux/extcon/extcon-gpio.h>
-#include <linux/gpio.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/gpio/consumer.h>
 #include <linux/init.h>
 #include <linux/interrupt.h>
@@ -32,7 +26,6 @@
 #include <linux/platform_device.h>
 #include <linux/slab.h>
 #include <linux/workqueue.h>
-<<<<<<< HEAD
 #include <linux/of_gpio.h>
 
 /**
@@ -52,15 +45,11 @@
  * @pctrl_default:	GPIO pinctrl default state handle.
  * @supported_cable:	Supported extcon cables.
  */
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct gpio_extcon_data {
 	struct extcon_dev *edev;
 	int irq;
 	struct delayed_work work;
 	unsigned long debounce_jiffies;
-<<<<<<< HEAD
 	struct gpio_desc *gpiod;
 	unsigned int extcon_id;
 	unsigned long debounce;
@@ -69,11 +58,6 @@ struct gpio_extcon_data {
 	struct pinctrl *pctrl;
 	struct pinctrl_state *pins_default;
 	unsigned int *supported_cable;
-=======
-
-	struct gpio_desc *id_gpiod;
-	struct gpio_extcon_pdata *pdata;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void gpio_extcon_work(struct work_struct *work)
@@ -83,16 +67,8 @@ static void gpio_extcon_work(struct work_struct *work)
 		container_of(to_delayed_work(work), struct gpio_extcon_data,
 			     work);
 
-<<<<<<< HEAD
 	state = gpiod_get_value_cansleep(data->gpiod);
 	extcon_set_state_sync(data->edev, data->extcon_id, state);
-=======
-	state = gpiod_get_value_cansleep(data->id_gpiod);
-	if (data->pdata->gpio_active_low)
-		state = !state;
-
-	extcon_set_state_sync(data->edev, data->pdata->extcon_id, state);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static irqreturn_t gpio_irq_handler(int irq, void *dev_id)
@@ -104,7 +80,6 @@ static irqreturn_t gpio_irq_handler(int irq, void *dev_id)
 	return IRQ_HANDLED;
 }
 
-<<<<<<< HEAD
 static int extcon_parse_pinctrl_data(struct device *dev,
 				     struct gpio_extcon_data *data)
 {
@@ -163,40 +138,10 @@ static int extcon_populate_data(struct device *dev,
 
 out:
 	return ret;
-=======
-static int gpio_extcon_init(struct device *dev, struct gpio_extcon_data *data)
-{
-	struct gpio_extcon_pdata *pdata = data->pdata;
-	int ret;
-
-	ret = devm_gpio_request_one(dev, pdata->gpio, GPIOF_DIR_IN,
-				dev_name(dev));
-	if (ret < 0)
-		return ret;
-
-	data->id_gpiod = gpio_to_desc(pdata->gpio);
-	if (!data->id_gpiod)
-		return -EINVAL;
-
-	if (pdata->debounce) {
-		ret = gpiod_set_debounce(data->id_gpiod,
-					pdata->debounce * 1000);
-		if (ret < 0)
-			data->debounce_jiffies =
-				msecs_to_jiffies(pdata->debounce);
-	}
-
-	data->irq = gpiod_to_irq(data->id_gpiod);
-	if (data->irq < 0)
-		return data->irq;
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int gpio_extcon_probe(struct platform_device *pdev)
 {
-<<<<<<< HEAD
 	struct gpio_extcon_data *data;
 	struct device *dev = &pdev->dev;
 	int ret;
@@ -251,36 +196,6 @@ static int gpio_extcon_probe(struct platform_device *pdev)
 	}
 
 	ret = devm_extcon_dev_register(dev, data->edev);
-=======
-	struct gpio_extcon_pdata *pdata = dev_get_platdata(&pdev->dev);
-	struct gpio_extcon_data *data;
-	int ret;
-
-	if (!pdata)
-		return -EBUSY;
-	if (!pdata->irq_flags || pdata->extcon_id > EXTCON_NONE)
-		return -EINVAL;
-
-	data = devm_kzalloc(&pdev->dev, sizeof(struct gpio_extcon_data),
-				   GFP_KERNEL);
-	if (!data)
-		return -ENOMEM;
-	data->pdata = pdata;
-
-	/* Initialize the gpio */
-	ret = gpio_extcon_init(&pdev->dev, data);
-	if (ret < 0)
-		return ret;
-
-	/* Allocate the memory of extcon devie and register extcon device */
-	data->edev = devm_extcon_dev_allocate(&pdev->dev, &pdata->extcon_id);
-	if (IS_ERR(data->edev)) {
-		dev_err(&pdev->dev, "failed to allocate extcon device\n");
-		return -ENOMEM;
-	}
-
-	ret = devm_extcon_dev_register(&pdev->dev, data->edev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		return ret;
 
@@ -290,13 +205,8 @@ static int gpio_extcon_probe(struct platform_device *pdev)
 	 * Request the interrupt of gpio to detect whether external connector
 	 * is attached or detached.
 	 */
-<<<<<<< HEAD
 	ret = devm_request_any_context_irq(dev, data->irq,
 					gpio_irq_handler, data->irq_flags,
-=======
-	ret = devm_request_any_context_irq(&pdev->dev, data->irq,
-					gpio_irq_handler, pdata->irq_flags,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					pdev->name, data);
 	if (ret < 0)
 		return ret;
@@ -321,7 +231,6 @@ static int gpio_extcon_remove(struct platform_device *pdev)
 static int gpio_extcon_resume(struct device *dev)
 {
 	struct gpio_extcon_data *data;
-<<<<<<< HEAD
 	int state, ret = 0;
 
 	data = dev_get_drvdata(dev);
@@ -350,31 +259,14 @@ static const struct of_device_id extcon_gpio_of_match[] = {
 	{ .compatible = "extcon-gpio"},
 	{},
 };
-=======
-
-	data = dev_get_drvdata(dev);
-	if (data->pdata->check_on_resume)
-		queue_delayed_work(system_power_efficient_wq,
-			&data->work, data->debounce_jiffies);
-
-	return 0;
-}
-#endif
-
-static SIMPLE_DEV_PM_OPS(gpio_extcon_pm_ops, NULL, gpio_extcon_resume);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct platform_driver gpio_extcon_driver = {
 	.probe		= gpio_extcon_probe,
 	.remove		= gpio_extcon_remove,
 	.driver		= {
 		.name	= "extcon-gpio",
-<<<<<<< HEAD
 		.pm	= EXTCON_GPIO_PMOPS,
 		.of_match_table = of_match_ptr(extcon_gpio_of_match),
-=======
-		.pm	= &gpio_extcon_pm_ops,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 };
 

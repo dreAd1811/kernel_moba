@@ -113,11 +113,7 @@
 		};
 	};
 
-<<<<<<< HEAD
 	ns_sram: sram@210000 {
-=======
-	ns_sram: sram@00210000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "mmio-sram";
 		reg = <0x00210000 0x10000>;
 	};
@@ -134,11 +130,7 @@
 			reg = <0x100000 0x2400>;
 		};
 
-<<<<<<< HEAD
 		usb0: gadget@400000 {
-=======
-		usb0: gadget@00400000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			#address-cells = <1>;
 			#size-cells = <0>;
 			compatible = "atmel,sama5d3-udc";
@@ -268,11 +260,7 @@
 			};
 		};
 
-<<<<<<< HEAD
 		usb1: ohci@500000 {
-=======
-		usb1: ohci@00500000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "atmel,at91rm9200-ohci", "usb-ohci";
 			reg = <0x00500000 0x100000>;
 			interrupts = <46 IRQ_TYPE_LEVEL_HIGH 2>;
@@ -281,11 +269,7 @@
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
 		usb2: ehci@600000 {
-=======
-		usb2: ehci@00600000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "atmel,at91sam9g45-ehci", "usb-ehci";
 			reg = <0x00600000 0x100000>;
 			interrupts = <46 IRQ_TYPE_LEVEL_HIGH 2>;
@@ -294,11 +278,7 @@
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
 		L2: cache-controller@a00000 {
-=======
-		L2: cache-controller@00a00000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "arm,pl310-cache";
 			reg = <0x00a00000 0x1000>;
 			interrupts = <67 IRQ_TYPE_LEVEL_HIGH 4>;
@@ -412,11 +392,7 @@
 			};
 
 			pmc: pmc@f0018000 {
-<<<<<<< HEAD
 				compatible = "atmel,sama5d4-pmc", "syscon";
-=======
-				compatible = "atmel,sama5d3-pmc", "syscon";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				reg = <0xf0018000 0x120>;
 				interrupts = <1 IRQ_TYPE_LEVEL_HIGH 7>;
 				interrupt-controller;
@@ -984,13 +960,9 @@
 			};
 
 			tcb0: timer@f801c000 {
-<<<<<<< HEAD
 				compatible = "atmel,at91sam9x5-tcb", "simple-mfd", "syscon";
 				#address-cells = <1>;
 				#size-cells = <0>;
-=======
-				compatible = "atmel,at91sam9x5-tcb";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				reg = <0xf801c000 0x100>;
 				interrupts = <40 IRQ_TYPE_LEVEL_HIGH 0>;
 				clocks = <&tcb0_clk>, <&clk32k>;
@@ -1218,20 +1190,15 @@
 			};
 
 			tcb1: timer@fc020000 {
-<<<<<<< HEAD
 				compatible = "atmel,at91sam9x5-tcb", "simple-mfd", "syscon";
 				#address-cells = <1>;
 				#size-cells = <0>;
-=======
-				compatible = "atmel,at91sam9x5-tcb";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				reg = <0xfc020000 0x100>;
 				interrupts = <41 IRQ_TYPE_LEVEL_HIGH 0>;
 				clocks = <&tcb1_clk>, <&clk32k>;
 				clock-names = "t0_clk", "slow_clk";
 			};
 
-<<<<<<< HEAD
 			tcb2: timer@fc024000 {
 				compatible = "atmel,at91sam9x5-tcb", "simple-mfd", "syscon";
 				#address-cells = <1>;
@@ -1242,8 +1209,6 @@
 				clock-names = "t0_clk", "slow_clk";
 			};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			macb1: ethernet@fc028000 {
 				compatible = "atmel,sama5d4-gem";
 				reg = <0xfc028000 0x100>;
@@ -1961,13 +1926,8 @@
 				uart0 {
 					pinctrl_uart0: uart0-0 {
 						atmel,pins =
-<<<<<<< HEAD
 							<AT91_PIOE 29 AT91_PERIPH_B AT91_PINCTRL_PULL_UP	/* RXD */
 							 AT91_PIOE 30 AT91_PERIPH_B AT91_PINCTRL_NONE		/* TXD */
-=======
-							<AT91_PIOE 29 AT91_PERIPH_B AT91_PINCTRL_NONE		/* RXD */
-							 AT91_PIOE 30 AT91_PERIPH_B AT91_PINCTRL_PULL_UP	/* TXD */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							>;
 					};
 				};
@@ -1975,13 +1935,8 @@
 				uart1 {
 					pinctrl_uart1: uart1-0 {
 						atmel,pins =
-<<<<<<< HEAD
 							<AT91_PIOC 25 AT91_PERIPH_C AT91_PINCTRL_PULL_UP	/* RXD */
 							 AT91_PIOC 26 AT91_PERIPH_C AT91_PINCTRL_NONE		/* TXD */
-=======
-							<AT91_PIOC 25 AT91_PERIPH_C AT91_PINCTRL_NONE		/* RXD */
-							 AT91_PIOC 26 AT91_PERIPH_C AT91_PINCTRL_PULL_UP	/* TXD */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							>;
 					};
 				};
@@ -1989,13 +1944,8 @@
 				usart0 {
 					pinctrl_usart0: usart0-0 {
 						atmel,pins =
-<<<<<<< HEAD
 							<AT91_PIOD 12 AT91_PERIPH_A AT91_PINCTRL_PULL_UP	/* RXD */
 							 AT91_PIOD 13 AT91_PERIPH_A AT91_PINCTRL_NONE		/* TXD */
-=======
-							<AT91_PIOD 12 AT91_PERIPH_A AT91_PINCTRL_NONE		/* RXD */
-							 AT91_PIOD 13 AT91_PERIPH_A AT91_PINCTRL_PULL_UP	/* TXD */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							>;
 					};
 					pinctrl_usart0_rts: usart0_rts-0 {
@@ -2009,13 +1959,8 @@
 				usart1 {
 					pinctrl_usart1: usart1-0 {
 						atmel,pins =
-<<<<<<< HEAD
 							<AT91_PIOD 16 AT91_PERIPH_A AT91_PINCTRL_PULL_UP	/* RXD */
 							 AT91_PIOD 17 AT91_PERIPH_A AT91_PINCTRL_NONE		/* TXD */
-=======
-							<AT91_PIOD 16 AT91_PERIPH_A AT91_PINCTRL_NONE		/* RXD */
-							 AT91_PIOD 17 AT91_PERIPH_A AT91_PINCTRL_PULL_UP	/* TXD */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							>;
 					};
 					pinctrl_usart1_rts: usart1_rts-0 {
@@ -2029,13 +1974,8 @@
 				usart2 {
 					pinctrl_usart2: usart2-0 {
 						atmel,pins =
-<<<<<<< HEAD
 							<AT91_PIOB 4 AT91_PERIPH_B AT91_PINCTRL_PULL_UP		/* RXD - conflicts with G0_CRS, ISI_HSYNC */
 							 AT91_PIOB 5 AT91_PERIPH_B AT91_PINCTRL_NONE		/* TXD - conflicts with G0_COL, PCK2 */
-=======
-							<AT91_PIOB 4 AT91_PERIPH_B AT91_PINCTRL_NONE		/* RXD - conflicts with G0_CRS, ISI_HSYNC */
-							 AT91_PIOB 5 AT91_PERIPH_B AT91_PINCTRL_PULL_UP		/* TXD - conflicts with G0_COL, PCK2 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							>;
 					};
 					pinctrl_usart2_rts: usart2_rts-0 {
@@ -2049,13 +1989,8 @@
 				usart3 {
 					pinctrl_usart3: usart3-0 {
 						atmel,pins =
-<<<<<<< HEAD
 							<AT91_PIOE 16 AT91_PERIPH_B AT91_PINCTRL_PULL_UP	/* RXD */
 							 AT91_PIOE 17 AT91_PERIPH_B AT91_PINCTRL_NONE		/* TXD */
-=======
-							<AT91_PIOE 16 AT91_PERIPH_B AT91_PINCTRL_NONE		/* RXD */
-							 AT91_PIOE 17 AT91_PERIPH_B AT91_PINCTRL_PULL_UP	/* TXD */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							>;
 					};
 				};
@@ -2063,13 +1998,8 @@
 				usart4 {
 					pinctrl_usart4: usart4-0 {
 						atmel,pins =
-<<<<<<< HEAD
 							<AT91_PIOE 26 AT91_PERIPH_B AT91_PINCTRL_PULL_UP	/* RXD */
 							 AT91_PIOE 27 AT91_PERIPH_B AT91_PINCTRL_NONE		/* TXD */
-=======
-							<AT91_PIOE 26 AT91_PERIPH_B AT91_PINCTRL_NONE		/* RXD */
-							 AT91_PIOE 27 AT91_PERIPH_B AT91_PINCTRL_PULL_UP	/* TXD */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							>;
 					};
 					pinctrl_usart4_rts: usart4_rts-0 {

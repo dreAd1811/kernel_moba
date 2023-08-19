@@ -10,11 +10,7 @@
 
 / {
 	model = "DM8168 EVM";
-<<<<<<< HEAD
 	compatible = "ti,dm8168-evm", "ti,dm8168", "ti,dm816";
-=======
-	compatible = "ti,dm8168-evm", "ti,dm8168";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memory@80000000 {
 		device_type = "memory";

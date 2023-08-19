@@ -294,7 +294,6 @@ enum rdwr_status {
 	RDWR_STATUS_DONE = 2
 };
 
-<<<<<<< HEAD
 enum mwifiex_chan_width {
 	CHAN_BW_20MHZ = 0,
 	CHAN_BW_10MHZ,
@@ -312,6 +311,4 @@ enum mwifiex_chan_offset {
 	SEC_CHAN_BELOW = 3
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* !_MWIFIEX_DECL_H_ */

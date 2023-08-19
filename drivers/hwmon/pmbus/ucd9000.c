@@ -19,10 +19,7 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-<<<<<<< HEAD
 #include <linux/debugfs.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/of_device.h>
@@ -31,11 +28,8 @@
 #include <linux/slab.h>
 #include <linux/i2c.h>
 #include <linux/pmbus.h>
-<<<<<<< HEAD
 #include <linux/gpio.h>
 #include <linux/gpio/driver.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "pmbus.h"
 
 enum chips { ucd9000, ucd90120, ucd90124, ucd90160, ucd9090, ucd90910 };
@@ -44,7 +38,6 @@ enum chips { ucd9000, ucd90120, ucd90124, ucd90160, ucd9090, ucd90910 };
 #define UCD9000_NUM_PAGES		0xd6
 #define UCD9000_FAN_CONFIG_INDEX	0xe7
 #define UCD9000_FAN_CONFIG		0xe8
-<<<<<<< HEAD
 #define UCD9000_MFR_STATUS		0xf3
 #define UCD9000_GPIO_SELECT		0xfa
 #define UCD9000_GPIO_CONFIG		0xfb
@@ -58,10 +51,6 @@ enum chips { ucd9000, ucd90120, ucd90124, ucd90160, ucd9090, ucd90910 };
 #define UCD9000_GPIO_INPUT		0
 #define UCD9000_GPIO_OUTPUT		1
 
-=======
-#define UCD9000_DEVICE_ID		0xfd
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define UCD9000_MON_TYPE(x)	(((x) >> 5) & 0x07)
 #define UCD9000_MON_PAGE(x)	((x) & 0x0f)
 
@@ -72,7 +61,6 @@ enum chips { ucd9000, ucd90120, ucd90124, ucd90160, ucd9090, ucd90910 };
 
 #define UCD9000_NUM_FAN		4
 
-<<<<<<< HEAD
 #define UCD9000_GPIO_NAME_LEN	16
 #define UCD9090_NUM_GPIOS	23
 #define UCD901XX_NUM_GPIOS	26
@@ -96,14 +84,6 @@ struct ucd9000_debugfs_entry {
 	u8 index;
 };
 
-=======
-struct ucd9000_data {
-	u8 fan_data[UCD9000_NUM_FAN][I2C_SMBUS_BLOCK_MAX];
-	struct pmbus_driver_info info;
-};
-#define to_ucd9000_data(_info) container_of(_info, struct ucd9000_data, info)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ucd9000_get_fan_config(struct i2c_client *client, int fan)
 {
 	int fan_config = 0;
@@ -200,7 +180,6 @@ static const struct of_device_id ucd9000_of_match[] = {
 };
 MODULE_DEVICE_TABLE(of, ucd9000_of_match);
 
-<<<<<<< HEAD
 #ifdef CONFIG_GPIOLIB
 static int ucd9000_gpio_read_config(struct i2c_client *client,
 				    unsigned int offset)
@@ -507,8 +486,6 @@ static int ucd9000_init_debugfs(struct i2c_client *client,
 }
 #endif /* CONFIG_DEBUG_FS */
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ucd9000_probe(struct i2c_client *client,
 			 const struct i2c_device_id *id)
 {
@@ -623,7 +600,6 @@ static int ucd9000_probe(struct i2c_client *client,
 		  | PMBUS_HAVE_FAN34 | PMBUS_HAVE_STATUS_FAN34;
 	}
 
-<<<<<<< HEAD
 	ucd9000_probe_gpio(client, mid, data);
 
 	ret = pmbus_do_probe(client, mid, info);
@@ -636,9 +612,6 @@ static int ucd9000_probe(struct i2c_client *client,
 			 ret);
 
 	return 0;
-=======
-	return pmbus_do_probe(client, mid, info);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* This is the driver that will be inserted */

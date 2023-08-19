@@ -92,25 +92,15 @@ int amdgpu_ih_ring_init(struct amdgpu_device *adev, unsigned ring_size,
 		}
 		return 0;
 	} else {
-<<<<<<< HEAD
 		r = amdgpu_device_wb_get(adev, &adev->irq.ih.wptr_offs);
-=======
-		r = amdgpu_wb_get(adev, &adev->irq.ih.wptr_offs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (r) {
 			dev_err(adev->dev, "(%d) ih wptr_offs wb alloc failed\n", r);
 			return r;
 		}
 
-<<<<<<< HEAD
 		r = amdgpu_device_wb_get(adev, &adev->irq.ih.rptr_offs);
 		if (r) {
 			amdgpu_device_wb_free(adev, adev->irq.ih.wptr_offs);
-=======
-		r = amdgpu_wb_get(adev, &adev->irq.ih.rptr_offs);
-		if (r) {
-			amdgpu_wb_free(adev, adev->irq.ih.wptr_offs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev_err(adev->dev, "(%d) ih rptr_offs wb alloc failed\n", r);
 			return r;
 		}
@@ -143,13 +133,8 @@ void amdgpu_ih_ring_fini(struct amdgpu_device *adev)
 		amdgpu_bo_free_kernel(&adev->irq.ih.ring_obj,
 				      &adev->irq.ih.gpu_addr,
 				      (void **)&adev->irq.ih.ring);
-<<<<<<< HEAD
 		amdgpu_device_wb_free(adev, adev->irq.ih.wptr_offs);
 		amdgpu_device_wb_free(adev, adev->irq.ih.rptr_offs);
-=======
-		amdgpu_wb_free(adev, adev->irq.ih.wptr_offs);
-		amdgpu_wb_free(adev, adev->irq.ih.rptr_offs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -184,15 +169,12 @@ restart_ih:
 	while (adev->irq.ih.rptr != wptr) {
 		u32 ring_index = adev->irq.ih.rptr >> 2;
 
-<<<<<<< HEAD
 		/* Prescreening of high-frequency interrupts */
 		if (!amdgpu_ih_prescreen_iv(adev)) {
 			adev->irq.ih.rptr &= adev->irq.ih.ptr_mask;
 			continue;
 		}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Before dispatching irq to IP blocks, send it to amdkfd */
 		amdgpu_amdkfd_interrupt(adev,
 				(const void *) &adev->irq.ih.ring[ring_index]);
@@ -214,7 +196,6 @@ restart_ih:
 
 	return IRQ_HANDLED;
 }
-<<<<<<< HEAD
 
 /**
  * amdgpu_ih_add_fault - Add a page fault record
@@ -291,5 +272,3 @@ void amdgpu_ih_clear_fault(struct amdgpu_device *adev, u64 key)
 
 	spin_unlock_irqrestore(&adev->irq.ih.faults->lock, flags);
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

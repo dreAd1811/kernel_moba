@@ -372,12 +372,7 @@ nfp_cpp_area_alloc(struct nfp_cpp *cpp, u32 dest,
  * that it can be accessed directly.
  *
  * NOTE: @address and @size must be 32-bit aligned values.
-<<<<<<< HEAD
  * The area must also be 'released' when the structure is freed.
-=======
- *
- * NOTE: The area must also be 'released' when the structure is freed.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Return: NFP CPP Area handle, or NULL
  */
@@ -540,12 +535,7 @@ void nfp_cpp_area_release_free(struct nfp_cpp_area *area)
  * Read data from indicated CPP region.
  *
  * NOTE: @offset and @length must be 32-bit aligned values.
-<<<<<<< HEAD
  * Area must have been locked down with an 'acquire'.
-=======
- *
- * NOTE: Area must have been locked down with an 'acquire'.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Return: length of io, or -ERRNO
  */
@@ -566,12 +556,7 @@ int nfp_cpp_area_read(struct nfp_cpp_area *area,
  * Write data to indicated CPP region.
  *
  * NOTE: @offset and @length must be 32-bit aligned values.
-<<<<<<< HEAD
  * Area must have been locked down with an 'acquire'.
-=======
- *
- * NOTE: Area must have been locked down with an 'acquire'.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Return: length of io, or -ERRNO
  */
@@ -583,7 +568,6 @@ int nfp_cpp_area_write(struct nfp_cpp_area *area,
 }
 
 /**
-<<<<<<< HEAD
  * nfp_cpp_area_size() - return size of a CPP area
  * @cpp_area:	CPP area handle
  *
@@ -595,8 +579,6 @@ size_t nfp_cpp_area_size(struct nfp_cpp_area *cpp_area)
 }
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * nfp_cpp_area_name() - return name of a CPP area
  * @cpp_area:	CPP area handle
  *
@@ -692,17 +674,12 @@ void __iomem *nfp_cpp_area_iomem(struct nfp_cpp_area *area)
  * @offset:	Offset into area
  * @value:	Pointer to read buffer
  *
-<<<<<<< HEAD
  * Return: 0 on success, or -ERRNO
-=======
- * Return: length of the io, or -ERRNO
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 int nfp_cpp_area_readl(struct nfp_cpp_area *area,
 		       unsigned long offset, u32 *value)
 {
 	u8 tmp[4];
-<<<<<<< HEAD
 	int n;
 
 	n = nfp_cpp_area_read(area, offset, &tmp, sizeof(tmp));
@@ -711,14 +688,6 @@ int nfp_cpp_area_readl(struct nfp_cpp_area *area,
 
 	*value = get_unaligned_le32(tmp);
 	return 0;
-=======
-	int err;
-
-	err = nfp_cpp_area_read(area, offset, &tmp, sizeof(tmp));
-	*value = get_unaligned_le32(tmp);
-
-	return err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -727,29 +696,18 @@ int nfp_cpp_area_readl(struct nfp_cpp_area *area,
  * @offset:	Offset into area
  * @value:	Value to write
  *
-<<<<<<< HEAD
  * Return: 0 on success, or -ERRNO
-=======
- * Return: length of the io, or -ERRNO
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 int nfp_cpp_area_writel(struct nfp_cpp_area *area,
 			unsigned long offset, u32 value)
 {
 	u8 tmp[4];
-<<<<<<< HEAD
 	int n;
 
 	put_unaligned_le32(value, tmp);
 	n = nfp_cpp_area_write(area, offset, &tmp, sizeof(tmp));
 
 	return n == sizeof(tmp) ? 0 : n < 0 ? n : -EIO;
-=======
-
-	put_unaligned_le32(value, tmp);
-
-	return nfp_cpp_area_write(area, offset, &tmp, sizeof(tmp));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -758,17 +716,12 @@ int nfp_cpp_area_writel(struct nfp_cpp_area *area,
  * @offset:	Offset into area
  * @value:	Pointer to read buffer
  *
-<<<<<<< HEAD
  * Return: 0 on success, or -ERRNO
-=======
- * Return: length of the io, or -ERRNO
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 int nfp_cpp_area_readq(struct nfp_cpp_area *area,
 		       unsigned long offset, u64 *value)
 {
 	u8 tmp[8];
-<<<<<<< HEAD
 	int n;
 
 	n = nfp_cpp_area_read(area, offset, &tmp, sizeof(tmp));
@@ -777,14 +730,6 @@ int nfp_cpp_area_readq(struct nfp_cpp_area *area,
 
 	*value = get_unaligned_le64(tmp);
 	return 0;
-=======
-	int err;
-
-	err = nfp_cpp_area_read(area, offset, &tmp, sizeof(tmp));
-	*value = get_unaligned_le64(tmp);
-
-	return err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -793,29 +738,18 @@ int nfp_cpp_area_readq(struct nfp_cpp_area *area,
  * @offset:	Offset into area
  * @value:	Value to write
  *
-<<<<<<< HEAD
  * Return: 0 on success, or -ERRNO
-=======
- * Return: length of the io, or -ERRNO
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 int nfp_cpp_area_writeq(struct nfp_cpp_area *area,
 			unsigned long offset, u64 value)
 {
 	u8 tmp[8];
-<<<<<<< HEAD
 	int n;
 
 	put_unaligned_le64(value, tmp);
 	n = nfp_cpp_area_write(area, offset, &tmp, sizeof(tmp));
 
 	return n == sizeof(tmp) ? 0 : n < 0 ? n : -EIO;
-=======
-
-	put_unaligned_le64(value, tmp);
-
-	return nfp_cpp_area_write(area, offset, &tmp, sizeof(tmp));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -1154,11 +1088,7 @@ static u32 nfp_xpb_to_cpp(struct nfp_cpp *cpp, u32 *xpb_addr)
  * @xpb_addr:	Address for operation
  * @value:	Pointer to read buffer
  *
-<<<<<<< HEAD
  * Return: 0 on success, or -ERRNO
-=======
- * Return: length of the io, or -ERRNO
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 int nfp_xpb_readl(struct nfp_cpp *cpp, u32 xpb_addr, u32 *value)
 {
@@ -1173,11 +1103,7 @@ int nfp_xpb_readl(struct nfp_cpp *cpp, u32 xpb_addr, u32 *value)
  * @xpb_addr:	Address for operation
  * @value:	Value to write
  *
-<<<<<<< HEAD
  * Return: 0 on success, or -ERRNO
-=======
- * Return: length of the io, or -ERRNO
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 int nfp_xpb_writel(struct nfp_cpp *cpp, u32 xpb_addr, u32 value)
 {
@@ -1195,11 +1121,7 @@ int nfp_xpb_writel(struct nfp_cpp *cpp, u32 xpb_addr, u32 value)
  *
  * KERNEL: This operation is safe to call in interrupt or softirq context.
  *
-<<<<<<< HEAD
  * Return: 0 on success, or -ERRNO
-=======
- * Return: length of the io, or -ERRNO
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 int nfp_xpb_writelm(struct nfp_cpp *cpp, u32 xpb_tgt,
 		    u32 mask, u32 value)
@@ -1241,17 +1163,10 @@ nfp_cpp_from_operations(const struct nfp_cpp_operations *ops,
 {
 	const u32 arm = NFP_CPP_ID(NFP_CPP_TARGET_ARM, NFP_CPP_ACTION_RW, 0);
 	struct nfp_cpp *cpp;
-<<<<<<< HEAD
 	int ifc, err;
 	u32 mask[2];
 	u32 xpbaddr;
 	size_t tgt;
-=======
-	u32 mask[2];
-	u32 xpbaddr;
-	size_t tgt;
-	int err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cpp = kzalloc(sizeof(*cpp), GFP_KERNEL);
 	if (!cpp) {
@@ -1261,7 +1176,6 @@ nfp_cpp_from_operations(const struct nfp_cpp_operations *ops,
 
 	cpp->op = ops;
 	cpp->priv = priv;
-<<<<<<< HEAD
 
 	ifc = ops->get_interface(parent);
 	if (ifc < 0) {
@@ -1275,11 +1189,6 @@ nfp_cpp_from_operations(const struct nfp_cpp_operations *ops,
 			goto err_free_cpp;
 	}
 
-=======
-	cpp->interface = ops->get_interface(parent);
-	if (ops->read_serial)
-		ops->read_serial(parent, cpp->serial);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rwlock_init(&cpp->resource_lock);
 	init_waitqueue_head(&cpp->waitq);
 	lockdep_set_class(&cpp->resource_lock, &nfp_cpp_resource_lock_key);
@@ -1292,11 +1201,7 @@ nfp_cpp_from_operations(const struct nfp_cpp_operations *ops,
 	err = device_register(&cpp->dev);
 	if (err < 0) {
 		put_device(&cpp->dev);
-<<<<<<< HEAD
 		goto err_free_cpp;
-=======
-		goto err_dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	dev_set_drvdata(&cpp->dev, cpp);
@@ -1343,11 +1248,7 @@ nfp_cpp_from_operations(const struct nfp_cpp_operations *ops,
 
 err_out:
 	device_unregister(&cpp->dev);
-<<<<<<< HEAD
 err_free_cpp:
-=======
-err_dev:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(cpp);
 err_malloc:
 	return ERR_PTR(err);

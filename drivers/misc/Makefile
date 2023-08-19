@@ -4,10 +4,7 @@
 #
 
 obj-$(CONFIG_IBM_ASM)		+= ibmasm/
-<<<<<<< HEAD
 obj-$(CONFIG_IBMVMC)		+= ibmvmc.o
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 obj-$(CONFIG_AD525X_DPOT)	+= ad525x_dpot.o
 obj-$(CONFIG_AD525X_DPOT_I2C)	+= ad525x_dpot-i2c.o
 obj-$(CONFIG_AD525X_DPOT_SPI)	+= ad525x_dpot-spi.o
@@ -16,11 +13,7 @@ obj-$(CONFIG_ATMEL_SSC)		+= atmel-ssc.o
 obj-$(CONFIG_ATMEL_TCLIB)	+= atmel_tclib.o
 obj-$(CONFIG_DUMMY_IRQ)		+= dummy-irq.o
 obj-$(CONFIG_ICS932S401)	+= ics932s401.o
-<<<<<<< HEAD
 obj-$(CONFIG_LKDTM)		+= lkdtm/
-=======
-obj-$(CONFIG_LKDTM)		+= lkdtm.o
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 obj-$(CONFIG_TIFM_CORE)       	+= tifm_core.o
 obj-$(CONFIG_TIFM_7XX1)       	+= tifm_7xx1.o
 obj-$(CONFIG_PHANTOM)		+= phantom.o
@@ -39,10 +32,6 @@ obj-$(CONFIG_ISL29003)		+= isl29003.o
 obj-$(CONFIG_ISL29020)		+= isl29020.o
 obj-$(CONFIG_SENSORS_TSL2550)	+= tsl2550.o
 obj-$(CONFIG_DS1682)		+= ds1682.o
-<<<<<<< HEAD
-=======
-obj-$(CONFIG_TI_DAC7512)	+= ti_dac7512.o
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 obj-$(CONFIG_C2PORT)		+= c2port/
 obj-$(CONFIG_HMC6352)		+= hmc6352.o
 obj-y				+= eeprom/
@@ -64,7 +53,6 @@ obj-$(CONFIG_GENWQE)		+= genwqe/
 obj-$(CONFIG_HDCP_QSEECOM)	+= hdcp_qseecom.o
 obj-$(CONFIG_HDCP_QSEECOM)	+= msm_hdcp.o
 obj-$(CONFIG_QSEECOM)		+= qseecom.o
-<<<<<<< HEAD
 obj-$(CONFIG_ECHO)		+= echo/
 obj-$(CONFIG_VEXPRESS_SYSCFG)	+= vexpress-syscfg.o
 obj-$(CONFIG_CXL_BASE)		+= cxl/
@@ -75,26 +63,11 @@ obj-$(CONFIG_OCXL)		+= ocxl/
 obj-$(CONFIG_MISC_RTSX)		+= cardreader/
 obj-$(CONFIG_UID_SYS_STATS)	+= uid_sys_stats.o
 obj-$(CONFIG_MEMORY_STATE_TIME)	+= memory_state_time.o
-=======
-obj-$(CONFIG_PROFILER)      += profiler.o
-obj-$(CONFIG_ECHO)		+= echo/
-obj-$(CONFIG_VEXPRESS_SYSCFG)	+= vexpress-syscfg.o
-obj-$(CONFIG_CXL_BASE)		+= cxl/
-obj-$(CONFIG_ASPEED_LPC_CTRL)  += aspeed-lpc-ctrl.o
-obj-$(CONFIG_ASPEED_LPC_SNOOP) += aspeed-lpc-snoop.o
-obj-$(CONFIG_PCI_ENDPOINT_TEST)        += pci_endpoint_test.o
-obj-$(CONFIG_FPR_FPC) 	+= fpr_FingerprintCard/
-
-obj-$(CONFIG_UID_SYS_STATS)	+= uid_sys_stats.o
-obj-$(CONFIG_MEMORY_STATE_TIME)	+= memory_state_time.o
-obj-$(CONFIG_QPNP_MISC) 	+= qpnp-misc.o
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 obj-$(CONFIG_OKL4_USER_VIRQ)	+= okl4-virq.o
 obj-$(CONFIG_OKL4_RINGBUF)	+= okl4-ringbuf.o
 obj-$(CONFIG_TEST_IRQ_REQUESTER) += irq_requester.o
 
-<<<<<<< HEAD
 obj-$(CONFIG_OKL4_USER_VIPC)    += okl4-vipc.o
 obj-$(CONFIG_OKL4_GUEST)        += okl4-panic.o
 obj-$(CONFIG_OKL4_LINK_SHBUF)    += okl4-link-shbuf.o
@@ -102,26 +75,3 @@ obj-$(CONFIG_WIGIG_SENSING_SPI)	+= wigig_sensing.o
 obj-$(CONFIG_QTI_MAXIM_FAN_CONTROLLER) += max31760.o
 obj-$(CONFIG_QTI_XR_SMRTVWR_MISC) += qxr-stdalonevwr.o
 obj-$(CONFIG_FPR_FPC)		+= fpr_FingerprintCard/
-=======
-lkdtm-$(CONFIG_LKDTM)		+= lkdtm_core.o
-lkdtm-$(CONFIG_LKDTM)		+= lkdtm_bugs.o
-lkdtm-$(CONFIG_LKDTM)		+= lkdtm_heap.o
-lkdtm-$(CONFIG_LKDTM)		+= lkdtm_perms.o
-lkdtm-$(CONFIG_LKDTM)		+= lkdtm_refcount.o
-lkdtm-$(CONFIG_LKDTM)		+= lkdtm_rodata_objcopy.o
-lkdtm-$(CONFIG_LKDTM)		+= lkdtm_usercopy.o
-
-KCOV_INSTRUMENT_lkdtm_rodata.o	:= n
-CFLAGS_lkdtm_rodata.o		+= $(DISABLE_LTO)
-
-OBJCOPYFLAGS :=
-OBJCOPYFLAGS_lkdtm_rodata_objcopy.o := \
-	--rename-section .text=.rodata,alloc,readonly,load
-targets += lkdtm_rodata.o lkdtm_rodata_objcopy.o
-$(obj)/lkdtm_rodata_objcopy.o: $(obj)/lkdtm_rodata.o FORCE
-	$(call if_changed,objcopy)
-
-obj-$(CONFIG_OKL4_USER_VIPC)    += okl4-vipc.o
-obj-$(CONFIG_OKL4_GUEST)        += okl4-panic.o
-obj-$(CONFIG_OKL4_LINK_SHBUF)    += okl4-link-shbuf.o
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

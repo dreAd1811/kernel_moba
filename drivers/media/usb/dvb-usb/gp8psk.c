@@ -12,11 +12,7 @@
  *	under the terms of the GNU General Public License as published by the Free
  *	Software Foundation, version 2.
  *
-<<<<<<< HEAD
  * see Documentation/media/dvb-drivers/dvb-usb.rst for more information
-=======
- * see Documentation/dvb/README.dvb-usb for more information
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #include "gp8psk.h"
 #include "gp8psk-fe.h"
@@ -139,11 +135,7 @@ static int gp8psk_load_bcm4500fw(struct dvb_usb_device *d)
 	u8 *buf;
 	if ((ret = request_firmware(&fw, bcm4500_firmware,
 					&d->udev->dev)) != 0) {
-<<<<<<< HEAD
 		err("did not find the bcm4500 firmware file '%s' (status %d). You can use <kernel_dir>/scripts/get_dvb_firmware to get the firmware",
-=======
-		err("did not find the bcm4500 firmware file. (%s) Please see linux/Documentation/dvb/ for more details on firmware-problems. (%d)",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			bcm4500_firmware,ret);
 		return ret;
 	}
@@ -156,11 +148,7 @@ static int gp8psk_load_bcm4500fw(struct dvb_usb_device *d)
 	info("downloading bcm4500 firmware from file '%s'",bcm4500_firmware);
 
 	ptr = fw->data;
-<<<<<<< HEAD
 	buf = kmalloc(64, GFP_KERNEL);
-=======
-	buf = kmalloc(64, GFP_KERNEL | GFP_DMA);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!buf) {
 		ret = -ENOMEM;
 		goto out_rel_fw;

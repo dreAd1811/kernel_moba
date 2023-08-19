@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
  * Copyright(c) 2015 - 2017 Intel Corporation.
-=======
- * Copyright(c) 2015, 2016 Intel Corporation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This file is provided under a dual BSD/GPLv2 license.  When using or
  * redistributing this file, you may do so under either license.
@@ -100,7 +96,6 @@ __print_symbolic(opcode,                                   \
 	ib_opcode_name(CNP))
 
 u8 ibhdr_exhdr_len(struct ib_header *hdr);
-<<<<<<< HEAD
 const char *parse_everbs_hdrs(struct trace_seq *p, u8 opcode,
 			      u8 l4, u32 dest_qpn, u32 src_qpn,
 			      void *ehdrs);
@@ -109,15 +104,6 @@ u8 hfi1_trace_packet_hdr_len(struct hfi1_packet *packet);
 const char *hfi1_trace_get_packet_l4_str(u8 l4);
 void hfi1_trace_parse_9b_bth(struct ib_other_headers *ohdr,
 			     u8 *ack, bool *becn, bool *fecn, u8 *mig,
-=======
-const char *parse_everbs_hdrs(struct trace_seq *p, u8 opcode, void *ehdrs);
-u8 hfi1_trace_opa_hdr_len(struct hfi1_opa_header *opah);
-u8 hfi1_trace_packet_hdr_len(struct hfi1_packet *packet);
-const char *hfi1_trace_get_packet_type_str(u8 l4);
-const char *hfi1_trace_get_packet_str(struct hfi1_packet *packet);
-void hfi1_trace_parse_9b_bth(struct ib_other_headers *ohdr,
-			     u8 *ack, u8 *becn, u8 *fecn, u8 *mig,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     u8 *se, u8 *pad, u8 *opcode, u8 *tver,
 			     u16 *pkey, u32 *psn, u32 *qpn);
 void hfi1_trace_parse_9b_hdr(struct ib_header *hdr, bool sc5,
@@ -128,26 +114,17 @@ void hfi1_trace_parse_16b_bth(struct ib_other_headers *ohdr,
 			      u8 *pad, u8 *se, u8 *tver,
 			      u32 *psn, u32 *qpn);
 void hfi1_trace_parse_16b_hdr(struct hfi1_16b_header *hdr,
-<<<<<<< HEAD
 			      u8 *age, bool *becn, bool *fecn,
-=======
-			      u8 *age, u8 *becn, u8 *fecn,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      u8 *l4, u8 *rc, u8 *sc,
 			      u16 *entropy, u16 *len, u16 *pkey,
 			      u32 *dlid, u32 *slid);
 
 const char *hfi1_trace_fmt_lrh(struct trace_seq *p, bool bypass,
-<<<<<<< HEAD
 			       u8 age, bool becn, bool fecn, u8 l4,
-=======
-			       u8 age, u8 becn, u8 fecn, u8 l4,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       u8 lnh, const char *lnh_name, u8 lver,
 			       u8 rc, u8 sc, u8 sl, u16 entropy,
 			       u16 len, u16 pkey, u32 dlid, u32 slid);
 
-<<<<<<< HEAD
 const char *hfi1_trace_fmt_rest(struct trace_seq *p, bool bypass, u8 l4,
 				u8 ack, bool becn, bool fecn, u8 mig,
 				u8 se, u8 pad, u8 opcode, const char *opname,
@@ -158,25 +135,12 @@ const char *hfi1_trace_get_packet_l2_str(u8 l2);
 
 #define __parse_ib_ehdrs(op, l4, dest_qpn, src_qpn, ehdrs) \
 			 parse_everbs_hdrs(p, op, l4, dest_qpn, src_qpn, ehdrs)
-=======
-const char *hfi1_trace_fmt_bth(struct trace_seq *p, bool bypass,
-			       u8 ack, u8 becn, u8 fecn, u8 mig,
-			       u8 se, u8 pad, u8 opcode, const char *opname,
-			       u8 tver, u16 pkey, u32 psn, u32 qpn);
-
-#define __parse_ib_ehdrs(op, ehdrs) parse_everbs_hdrs(p, op, ehdrs)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define lrh_name(lrh) { HFI1_##lrh, #lrh }
 #define show_lnh(lrh)                    \
 __print_symbolic(lrh,                    \
 	lrh_name(LRH_BTH),               \
 	lrh_name(LRH_GRH))
-<<<<<<< HEAD
-=======
-#define PKT_ENTRY(pkt)	__string(ptype,  hfi1_trace_get_packet_str(packet))
-#define PKT_ASSIGN(pkt) __assign_str(ptype, hfi1_trace_get_packet_str(packet))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 DECLARE_EVENT_CLASS(hfi1_input_ibhdr_template,
 		    TP_PROTO(struct hfi1_devdata *dd,
@@ -185,21 +149,12 @@ DECLARE_EVENT_CLASS(hfi1_input_ibhdr_template,
 		    TP_ARGS(dd, packet, sc5),
 		    TP_STRUCT__entry(
 			DD_DEV_ENTRY(dd)
-<<<<<<< HEAD
 			__field(u8, etype)
 			__field(u8, ack)
 			__field(u8, age)
 			__field(bool, becn)
 			__field(bool, fecn)
 			__field(u8, l2)
-=======
-			PKT_ENTRY(packet)
-			__field(bool, bypass)
-			__field(u8, ack)
-			__field(u8, age)
-			__field(u8, becn)
-			__field(u8, fecn)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			__field(u8, l4)
 			__field(u8, lnh)
 			__field(u8, lver)
@@ -218,30 +173,20 @@ DECLARE_EVENT_CLASS(hfi1_input_ibhdr_template,
 			__field(u32, psn)
 			__field(u32, qpn)
 			__field(u32, slid)
-<<<<<<< HEAD
 			__field(u32, dest_qpn)
 			__field(u32, src_qpn)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* extended headers */
 			__dynamic_array(u8, ehdrs,
 					hfi1_trace_packet_hdr_len(packet))
 			),
 		    TP_fast_assign(
 			DD_DEV_ASSIGN(dd);
-<<<<<<< HEAD
 
 			__entry->etype = packet->etype;
 			__entry->l2 = hfi1_16B_get_l2(packet->hdr);
 			__entry->dest_qpn = 0;
 			__entry->src_qpn = 0;
 			if (__entry->etype == RHF_RCV_TYPE_BYPASS) {
-=======
-			PKT_ASSIGN(packet);
-
-			if (packet->etype == RHF_RCV_TYPE_BYPASS) {
-				__entry->bypass = true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				hfi1_trace_parse_16b_hdr(packet->hdr,
 							 &__entry->age,
 							 &__entry->becn,
@@ -255,7 +200,6 @@ DECLARE_EVENT_CLASS(hfi1_input_ibhdr_template,
 							 &__entry->dlid,
 							 &__entry->slid);
 
-<<<<<<< HEAD
 				if (__entry->l4 == OPA_16B_L4_FM) {
 					__entry->opcode = IB_OPCODE_UD_SEND_ONLY;
 					__entry->dest_qpn = hfi1_16B_get_dest_qpn(packet->mgmt);
@@ -273,19 +217,6 @@ DECLARE_EVENT_CLASS(hfi1_input_ibhdr_template,
 				}
 			} else {
 				__entry->l4 = OPA_16B_L4_9B;
-=======
-				  hfi1_trace_parse_16b_bth(packet->ohdr,
-							   &__entry->ack,
-							   &__entry->mig,
-							   &__entry->opcode,
-							   &__entry->pad,
-							   &__entry->se,
-							   &__entry->tver,
-							   &__entry->psn,
-							   &__entry->qpn);
-			} else {
-				__entry->bypass = false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				hfi1_trace_parse_9b_hdr(packet->hdr, sc5,
 							&__entry->lnh,
 							&__entry->lver,
@@ -307,21 +238,15 @@ DECLARE_EVENT_CLASS(hfi1_input_ibhdr_template,
 							  &__entry->pkey,
 							  &__entry->psn,
 							  &__entry->qpn);
-<<<<<<< HEAD
 			}
 			/* extended headers */
 			if (__entry->l4 != OPA_16B_L4_FM)
-=======
-				}
-				/* extended headers */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				memcpy(__get_dynamic_array(ehdrs),
 				       &packet->ohdr->u,
 				       __get_dynamic_array_len(ehdrs));
 			 ),
 		    TP_printk("[%s] (%s) %s %s hlen:%d %s",
 			      __get_str(dev),
-<<<<<<< HEAD
 			      __entry->etype != RHF_RCV_TYPE_BYPASS ?
 					show_packettype(__entry->etype) :
 					hfi1_trace_get_packet_l2_str(
@@ -329,11 +254,6 @@ DECLARE_EVENT_CLASS(hfi1_input_ibhdr_template,
 			      hfi1_trace_fmt_lrh(p,
 						 __entry->etype ==
 							RHF_RCV_TYPE_BYPASS,
-=======
-			      __get_str(ptype),
-			      hfi1_trace_fmt_lrh(p,
-						 __entry->bypass,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						 __entry->age,
 						 __entry->becn,
 						 __entry->fecn,
@@ -349,7 +269,6 @@ DECLARE_EVENT_CLASS(hfi1_input_ibhdr_template,
 						 __entry->pkey,
 						 __entry->dlid,
 						 __entry->slid),
-<<<<<<< HEAD
 			      hfi1_trace_fmt_rest(p,
 						  __entry->etype ==
 							RHF_RCV_TYPE_BYPASS,
@@ -368,32 +287,13 @@ DECLARE_EVENT_CLASS(hfi1_input_ibhdr_template,
 						  __entry->qpn,
 						  __entry->dest_qpn,
 						  __entry->src_qpn),
-=======
-			      hfi1_trace_fmt_bth(p,
-						 __entry->bypass,
-						 __entry->ack,
-						 __entry->becn,
-						 __entry->fecn,
-						 __entry->mig,
-						 __entry->se,
-						 __entry->pad,
-						 __entry->opcode,
-						 show_ib_opcode(__entry->opcode),
-						 __entry->tver,
-						 __entry->pkey,
-						 __entry->psn,
-						 __entry->qpn),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      /* extended headers */
 			      __get_dynamic_array_len(ehdrs),
 			      __parse_ib_ehdrs(
 					__entry->opcode,
-<<<<<<< HEAD
 					__entry->l4,
 					__entry->dest_qpn,
 					__entry->src_qpn,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					(void *)__get_dynamic_array(ehdrs))
 			     )
 );
@@ -409,19 +309,11 @@ DECLARE_EVENT_CLASS(hfi1_output_ibhdr_template,
 		    TP_ARGS(dd, opah, sc5),
 		    TP_STRUCT__entry(
 			DD_DEV_ENTRY(dd)
-<<<<<<< HEAD
 			__field(u8, hdr_type)
 			__field(u8, ack)
 			__field(u8, age)
 			__field(bool, becn)
 			__field(bool, fecn)
-=======
-			__field(bool, bypass)
-			__field(u8, ack)
-			__field(u8, age)
-			__field(u8, becn)
-			__field(u8, fecn)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			__field(u8, l4)
 			__field(u8, lnh)
 			__field(u8, lver)
@@ -440,11 +332,8 @@ DECLARE_EVENT_CLASS(hfi1_output_ibhdr_template,
 			__field(u32, psn)
 			__field(u32, qpn)
 			__field(u32, slid)
-<<<<<<< HEAD
 			__field(u32, dest_qpn)
 			__field(u32, src_qpn)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* extended headers */
 			__dynamic_array(u8, ehdrs,
 					hfi1_trace_opa_hdr_len(opah))
@@ -454,15 +343,10 @@ DECLARE_EVENT_CLASS(hfi1_output_ibhdr_template,
 
 			DD_DEV_ASSIGN(dd);
 
-<<<<<<< HEAD
 			__entry->hdr_type = opah->hdr_type;
 			__entry->dest_qpn = 0;
 			__entry->src_qpn = 0;
 			if (__entry->hdr_type)  {
-=======
-			if (opah->hdr_type)  {
-				__entry->bypass = true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				hfi1_trace_parse_16b_hdr(&opah->opah,
 							 &__entry->age,
 							 &__entry->becn,
@@ -476,7 +360,6 @@ DECLARE_EVENT_CLASS(hfi1_output_ibhdr_template,
 							 &__entry->dlid,
 							 &__entry->slid);
 
-<<<<<<< HEAD
 				if (__entry->l4 == OPA_16B_L4_FM) {
 					ohdr = NULL;
 					__entry->opcode = IB_OPCODE_UD_SEND_ONLY;
@@ -499,23 +382,6 @@ DECLARE_EVENT_CLASS(hfi1_output_ibhdr_template,
 				}
 			} else {
 				__entry->l4 = OPA_16B_L4_9B;
-=======
-				if (entry->l4 == OPA_16B_L4_IB_LOCAL)
-					ohdr = &opah->opah.u.oth;
-				else
-					ohdr = &opah->opah.u.l.oth;
-				hfi1_trace_parse_16b_bth(ohdr,
-							 &__entry->ack,
-							 &__entry->mig,
-							 &__entry->opcode,
-							 &__entry->pad,
-							 &__entry->se,
-							 &__entry->tver,
-							 &__entry->psn,
-							 &__entry->qpn);
-			} else {
-				__entry->bypass = false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				hfi1_trace_parse_9b_hdr(&opah->ibh, sc5,
 							&__entry->lnh,
 							&__entry->lver,
@@ -524,11 +390,7 @@ DECLARE_EVENT_CLASS(hfi1_output_ibhdr_template,
 							&__entry->len,
 							&__entry->dlid,
 							&__entry->slid);
-<<<<<<< HEAD
 				if (__entry->lnh == HFI1_LRH_BTH)
-=======
-				if (entry->lnh == HFI1_LRH_BTH)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					ohdr = &opah->ibh.u.oth;
 				else
 					ohdr = &opah->ibh.u.l.oth;
@@ -547,7 +409,6 @@ DECLARE_EVENT_CLASS(hfi1_output_ibhdr_template,
 			}
 
 			/* extended headers */
-<<<<<<< HEAD
 			if (__entry->l4 != OPA_16B_L4_FM)
 				memcpy(__get_dynamic_array(ehdrs),
 				       &ohdr->u, __get_dynamic_array_len(ehdrs));
@@ -557,16 +418,6 @@ DECLARE_EVENT_CLASS(hfi1_output_ibhdr_template,
 			      hfi1_trace_get_packet_l4_str(__entry->l4),
 			      hfi1_trace_fmt_lrh(p,
 						 !!__entry->hdr_type,
-=======
-			memcpy(__get_dynamic_array(ehdrs),
-			       &ohdr->u, __get_dynamic_array_len(ehdrs));
-		    ),
-		    TP_printk("[%s] (%s) %s %s hlen:%d %s",
-			      __get_str(dev),
-			      hfi1_trace_get_packet_type_str(__entry->l4),
-			      hfi1_trace_fmt_lrh(p,
-						 __entry->bypass,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						 __entry->age,
 						 __entry->becn,
 						 __entry->fecn,
@@ -582,7 +433,6 @@ DECLARE_EVENT_CLASS(hfi1_output_ibhdr_template,
 						 __entry->pkey,
 						 __entry->dlid,
 						 __entry->slid),
-<<<<<<< HEAD
 			      hfi1_trace_fmt_rest(p,
 						  !!__entry->hdr_type,
 						  __entry->l4,
@@ -600,32 +450,13 @@ DECLARE_EVENT_CLASS(hfi1_output_ibhdr_template,
 						  __entry->qpn,
 						  __entry->dest_qpn,
 						  __entry->src_qpn),
-=======
-			      hfi1_trace_fmt_bth(p,
-						 __entry->bypass,
-						 __entry->ack,
-						 __entry->becn,
-						 __entry->fecn,
-						 __entry->mig,
-						 __entry->se,
-						 __entry->pad,
-						 __entry->opcode,
-						 show_ib_opcode(__entry->opcode),
-						 __entry->tver,
-						 __entry->pkey,
-						 __entry->psn,
-						 __entry->qpn),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      /* extended headers */
 			      __get_dynamic_array_len(ehdrs),
 			      __parse_ib_ehdrs(
 					__entry->opcode,
-<<<<<<< HEAD
 					__entry->l4,
 					__entry->dest_qpn,
 					__entry->src_qpn,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					(void *)__get_dynamic_array(ehdrs))
 			     )
 );

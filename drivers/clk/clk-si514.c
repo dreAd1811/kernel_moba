@@ -74,7 +74,6 @@ static int si514_enable_output(struct clk_si514 *data, bool enable)
 		SI514_CONTROL_OE, enable ? SI514_CONTROL_OE : 0);
 }
 
-<<<<<<< HEAD
 static int si514_prepare(struct clk_hw *hw)
 {
 	struct clk_si514 *data = to_clk_si514(hw);
@@ -102,8 +101,6 @@ static int si514_is_prepared(struct clk_hw *hw)
 	return !!(val & SI514_CONTROL_OE);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Retrieve clock multiplier and dividers from hardware */
 static int si514_get_muldiv(struct clk_si514 *data,
 	struct clk_si514_muldiv *settings)
@@ -265,23 +262,17 @@ static int si514_set_rate(struct clk_hw *hw, unsigned long rate,
 {
 	struct clk_si514 *data = to_clk_si514(hw);
 	struct clk_si514_muldiv settings;
-<<<<<<< HEAD
 	unsigned int old_oe_state;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	err = si514_calc_muldiv(&settings, rate);
 	if (err)
 		return err;
 
-<<<<<<< HEAD
 	err = regmap_read(data->regmap, SI514_REG_CONTROL, &old_oe_state);
 	if (err)
 		return err;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	si514_enable_output(data, false);
 
 	err = si514_set_muldiv(data, &settings);
@@ -296,23 +287,16 @@ static int si514_set_rate(struct clk_hw *hw, unsigned long rate,
 	/* Applying a new frequency can take up to 10ms */
 	usleep_range(10000, 12000);
 
-<<<<<<< HEAD
 	if (old_oe_state & SI514_CONTROL_OE)
 		si514_enable_output(data, true);
-=======
-	si514_enable_output(data, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return err;
 }
 
 static const struct clk_ops si514_clk_ops = {
-<<<<<<< HEAD
 	.prepare = si514_prepare,
 	.unprepare = si514_unprepare,
 	.is_prepared = si514_is_prepared,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.recalc_rate = si514_recalc_rate,
 	.round_rate = si514_round_rate,
 	.set_rate = si514_set_rate,

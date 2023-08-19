@@ -1,19 +1,6 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2015-2020, The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2015-2019, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/kernel.h>
@@ -35,11 +22,8 @@
 #include <linux/compat.h>
 #endif
 #include <linux/jiffies.h>
-<<<<<<< HEAD
 #include <linux/regulator/consumer.h>
 #include <linux/proc_fs.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct nqx_platform_data {
 	unsigned int irq_gpio;
@@ -47,11 +31,8 @@ struct nqx_platform_data {
 	unsigned int clkreq_gpio;
 	unsigned int firm_gpio;
 	unsigned int ese_gpio;
-<<<<<<< HEAD
 	int vdd_levels[2];
 	int max_current;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const char *clk_src_name;
 	/* NFC_CLK pin voting state */
 	bool clk_pin_voting;
@@ -66,10 +47,7 @@ MODULE_DEVICE_TABLE(of, msm_match_table);
 
 struct nqx_dev {
 	wait_queue_head_t	read_wq;
-<<<<<<< HEAD
 	wait_queue_head_t	cold_reset_read_wq;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct	mutex		read_mutex;
 	struct	mutex		dev_ref_mutex;
 	struct	i2c_client	*client;
@@ -86,22 +64,16 @@ struct nqx_dev {
 	unsigned int		ese_gpio;
 	/* NFC VEN pin state powered by Nfc */
 	bool			nfc_ven_enabled;
-<<<<<<< HEAD
 	/* NFC state reflected from MW */
 	bool			nfc_enabled;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* NFC_IRQ state */
 	bool			irq_enabled;
 	/* NFC_IRQ wake-up state */
 	bool			irq_wake_up;
-<<<<<<< HEAD
 	bool			cold_reset_rsp_pending;
 	bool			is_vreg_enabled;
 	bool			is_ese_session_active;
 	uint8_t			cold_reset_status;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spinlock_t		irq_enabled_lock;
 	unsigned int		count_irq;
 	/* NFC_IRQ Count */
@@ -115,7 +87,6 @@ struct nqx_dev {
 	size_t kbuflen;
 	u8 *kbuf;
 	struct nqx_platform_data *pdata;
-<<<<<<< HEAD
 	struct regulator *reg;
 };
 
@@ -138,8 +109,6 @@ static ssize_t nfc_check_read(struct file *filp, char __user *buf, size_t count,
 
 static const struct file_operations nfc_check_fops = {
         .read = nfc_check_read,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int nfcc_reboot(struct notifier_block *notifier, unsigned long val,
@@ -148,12 +117,9 @@ static int nfcc_reboot(struct notifier_block *notifier, unsigned long val,
 static int nqx_clock_select(struct nqx_dev *nqx_dev);
 /*clock disable function*/
 static int nqx_clock_deselect(struct nqx_dev *nqx_dev);
-<<<<<<< HEAD
 static int nqx_standby_write(struct nqx_dev *nqx_dev,
 				const unsigned char *buf, size_t len);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct notifier_block nfcc_notifier = {
 	.notifier_call	= nfcc_reboot,
 	.next			= NULL,
@@ -226,7 +192,6 @@ static int is_data_available_for_read(struct nqx_dev *nqx_dev)
 	return ret;
 }
 
-<<<<<<< HEAD
 static int send_cold_reset_cmd(struct nqx_dev *nqx_dev)
 {
 	int ret;
@@ -303,8 +268,6 @@ error:
 	kfree(cold_reset_rsp);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static ssize_t nfc_read(struct file *filp, char __user *buf,
 					size_t count, loff_t *offset)
 {
@@ -378,7 +341,6 @@ static ssize_t nfc_read(struct file *filp, char __user *buf,
 		ret = -EIO;
 		goto err;
 	}
-<<<<<<< HEAD
 	/* check if it's response of cold reset command
 	 * NFC HAL process shouldn't receive this data as
 	 * command was sent by eSE HAL
@@ -397,8 +359,6 @@ static ssize_t nfc_read(struct file *filp, char __user *buf,
 		 */
 		return 0;
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef NFC_KERNEL_BU
 		dev_dbg(&nqx_dev->client->dev, "%s : NfcNciRx %x %x %x\n",
 			__func__, tmp[0], tmp[1], tmp[2]);
@@ -493,30 +453,19 @@ static int nqx_standby_write(struct nqx_dev *nqx_dev,
 	return ret;
 }
 
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Power management of the SN100 eSE
  * eSE and NFCC both are powered using VEN gpio in SN100,
  * VEN HIGH - eSE and NFCC both are powered on
  * VEN LOW - eSE and NFCC both are power down
  */
-<<<<<<< HEAD
 
 static int sn100_ese_pwr(struct nqx_dev *nqx_dev, unsigned long arg)
 {
 	int r = -1;
 
 	if (arg == ESE_POWER_ON) {
-=======
-static int sn100_ese_pwr(struct nqx_dev *nqx_dev, unsigned long int arg)
-{
-	int r = -1;
-
-	if (arg == 0) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/**
 		 * Let's store the NFC VEN pin state
 		 * will check stored value in case of eSE power off request,
@@ -534,7 +483,6 @@ static int sn100_ese_pwr(struct nqx_dev *nqx_dev, unsigned long int arg)
 		} else {
 			dev_dbg(&nqx_dev->client->dev, "en_gpio already HIGH\n");
 		}
-<<<<<<< HEAD
 		nqx_dev->is_ese_session_active = true;
 		r = 0;
 	} else if (arg == ESE_POWER_OFF) {
@@ -582,20 +530,6 @@ static int sn100_ese_pwr(struct nqx_dev *nqx_dev, unsigned long int arg)
 		}
 		r = nqx_dev->cold_reset_status;
 	} else if (arg == ESE_POWER_STATE) {
-=======
-		r = 0;
-	} else if (arg == 1) {
-		if (!nqx_dev->nfc_ven_enabled) {
-			dev_dbg(&nqx_dev->client->dev, "NFC not enabled, disabling en_gpio\n");
-			gpio_set_value(nqx_dev->en_gpio, 0);
-			/* hardware dependent delay */
-			usleep_range(1000, 1100);
-		} else {
-			dev_dbg(&nqx_dev->client->dev, "keep en_gpio high as NFC is enabled\n");
-		}
-		r = 0;
-	} else if (arg == 3) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		// eSE power state
 		r = gpio_get_value(nqx_dev->en_gpio);
 	}
@@ -608,11 +542,7 @@ static int sn100_ese_pwr(struct nqx_dev *nqx_dev, unsigned long int arg)
  * NFC OFF & eSE ON : NFC_EN high and eSE_pwr_req high.
  * NFC OFF & eSE OFF : NFC_EN low and eSE_pwr_req low.
  */
-<<<<<<< HEAD
 static int nqx_ese_pwr(struct nqx_dev *nqx_dev, unsigned long arg)
-=======
-static int nqx_ese_pwr(struct nqx_dev *nqx_dev, unsigned long int arg)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int r = -1;
 	const unsigned char svdd_off_cmd_warn[] =  {0x2F, 0x31, 0x01, 0x01};
@@ -718,7 +648,6 @@ static int nqx_ese_pwr(struct nqx_dev *nqx_dev, unsigned long int arg)
 	return r;
 }
 
-<<<<<<< HEAD
 /**
  * nfc_ldo_vote()
  * @nqx_dev: NFC device containing regulator handle
@@ -836,8 +765,6 @@ static int nfc_ldo_unvote(struct nqx_dev *nqx_dev)
 	return ret;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int nfc_open(struct inode *inode, struct file *filp)
 {
 	struct nqx_dev *nqx_dev = container_of(inode->i_cdev,
@@ -910,11 +837,7 @@ int nfc_ioctl_power_states(struct file *filp, unsigned long arg)
 	int r = 0;
 	struct nqx_dev *nqx_dev = filp->private_data;
 
-<<<<<<< HEAD
 	if (arg == NFC_POWER_OFF) {
-=======
-	if (arg == 0) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * We are attempting a hardware reset so let us disable
 		 * interrupts to avoid spurious notifications to upper
@@ -942,21 +865,13 @@ int nfc_ioctl_power_states(struct file *filp, unsigned long arg)
 			gpio_set_value(nqx_dev->en_gpio, 0);
 			usleep_range(10000, 10100);
 		}
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (nqx_dev->pdata->clk_pin_voting) {
 			r = nqx_clock_deselect(nqx_dev);
 			if (r < 0)
 				dev_err(&nqx_dev->client->dev, "unable to disable clock\n");
 		}
 		nqx_dev->nfc_ven_enabled = false;
-<<<<<<< HEAD
 	} else if (arg == NFC_POWER_ON) {
-=======
-	} else if (arg == 1) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		nqx_enable_irq(nqx_dev);
 		dev_dbg(&nqx_dev->client->dev,
 			"gpio_set_value enable: %s: info: %p\n",
@@ -965,30 +880,15 @@ int nfc_ioctl_power_states(struct file *filp, unsigned long arg)
 			gpio_set_value(nqx_dev->firm_gpio, 0);
 			usleep_range(10000, 10100);
 		}
-<<<<<<< HEAD
 		gpio_set_value(nqx_dev->en_gpio, 1);
 		usleep_range(10000, 10100);
-=======
-
-		if (gpio_get_value(nqx_dev->en_gpio)) {
-			dev_dbg(&nqx_dev->client->dev, "VEN gpio already high\n");
-		} else {
-			gpio_set_value(nqx_dev->en_gpio, 1);
-			usleep_range(10000, 10100);
-		}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (nqx_dev->pdata->clk_pin_voting) {
 			r = nqx_clock_select(nqx_dev);
 			if (r < 0)
 				dev_err(&nqx_dev->client->dev, "unable to enable clock\n");
 		}
 		nqx_dev->nfc_ven_enabled = true;
-<<<<<<< HEAD
 	} else if (arg == NFC_FW_DWL_VEN_TOGGLE) {
-=======
-	} else if (arg == 2) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * We are switching to Dowload Mode, toggle the enable pin
 		 * in order to set the NFCC in the new mode
@@ -1010,11 +910,7 @@ int nfc_ioctl_power_states(struct file *filp, unsigned long arg)
 		usleep_range(10000, 10100);
 		gpio_set_value(nqx_dev->en_gpio, 1);
 		usleep_range(10000, 10100);
-<<<<<<< HEAD
 	} else if (arg == NFC_FW_DWL_HIGH) {
-=======
-	} else if (arg == 4) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * Setting firmware download gpio to HIGH for SN100U
 		 * before FW download start
@@ -1026,11 +922,7 @@ int nfc_ioctl_power_states(struct file *filp, unsigned long arg)
 		} else
 			dev_err(&nqx_dev->client->dev,
 				"firm_gpio is invalid\n");
-<<<<<<< HEAD
 	} else if (arg == NFC_FW_DWL_LOW) {
-=======
-	} else if (arg == 6) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * Setting firmware download gpio to LOW for SN100U
 		 * FW download finished
@@ -1043,7 +935,6 @@ int nfc_ioctl_power_states(struct file *filp, unsigned long arg)
 			dev_err(&nqx_dev->client->dev,
 				"firm_gpio is invalid\n");
 		}
-<<<<<<< HEAD
 	} else if (arg == NFC_ENABLE) {
 		/*
 		 * Setting flag true when NFC is enabled
@@ -1054,8 +945,6 @@ int nfc_ioctl_power_states(struct file *filp, unsigned long arg)
 		 * Setting flag false when NFC is disabled
 		 */
 		nqx_dev->nfc_enabled = false;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		r = -ENOIOCTLCMD;
 	}
@@ -1183,155 +1072,17 @@ static const struct file_operations nfc_dev_fops = {
 #endif
 };
 
-<<<<<<< HEAD
-=======
-/*
- * function: get_nfcc_hw_info()
- *
- * @client:                     pointer to i2c_client
- * @nqx_dev:                    pointer to nqx_dev structure
- * @nci_reset_rsp_payload_len:  payload length of NCI reset cmd
- *
- * Retrieves NFCC HW information based on the type of NFC chip
- * used on the device. Depending on the nci_reset_rsp_payload_len
- * value, core INIT command will be sent.
- *
- * NFC HW               NCI version     Send Core INIT cmd
- * NQ3xx or old         1.0             Yes
- * NQ4xx                2.0             No
- * Sn1x0x               2.0             No
- *
- * Return:      error codes in case of any failure,
- *              number of bytes read otherwise
- */
-static int get_nfcc_hw_info(struct i2c_client *client,
-		struct nqx_dev *nqx_dev, char nci_reset_rsp_payload_len)
-{
-	int ret = 0;
-
-	char *nci_init_cmd = NULL;
-	char *nci_init_rsp = NULL;
-	char *nci_reset_ntf = NULL;
-	char *nfcc_hw_info = NULL;
-	unsigned char nfcc_hw_info_len = 0;
-
-	nci_init_cmd = kzalloc(NCI_INIT_CMD_LEN + 1, GFP_DMA | GFP_KERNEL);
-	if (!nci_init_cmd) {
-		ret = -ENOMEM;
-		goto err_nfcc_hw_info;
-	}
-
-	nci_init_rsp = kzalloc(NCI_INIT_RSP_LEN + 1,  GFP_DMA | GFP_KERNEL);
-	if (!nci_init_rsp) {
-		ret = -ENOMEM;
-		goto err_nfcc_hw_info;
-	}
-
-	nci_reset_ntf = kzalloc(NCI_RESET_NTF_LEN + 1,  GFP_DMA | GFP_KERNEL);
-	if (!nci_reset_ntf) {
-		ret = -ENOMEM;
-		goto err_nfcc_hw_info;
-	}
-
-	if (nci_reset_rsp_payload_len == NCI_1_0_RESET_RSP_PAYLOAD_LEN) {
-		/*
-		 * Chipset is NQ330 or older.
-		 * Send core INIT command to get HW info.
-		 */
-		nci_init_cmd[0] = 0x20;
-		nci_init_cmd[1] = 0x01;
-		nci_init_cmd[2] = 0x00;
-		ret = nqx_standby_write(nqx_dev, nci_init_cmd,
-					NCI_INIT_CMD_LEN);
-		if (ret < 0) {
-			dev_err(&client->dev,
-			"%s: - i2c_master_send failed for Core INIT\n",
-					__func__);
-			goto err_nfcc_hw_info;
-		}
-
-		ret = is_data_available_for_read(nqx_dev);
-		if (ret <= 0) {
-			nqx_disable_irq(nqx_dev);
-			goto err_nfcc_hw_info;
-		}
-
-		/* Read Response of INIT command */
-		ret = i2c_master_recv(client, nci_init_rsp, NCI_INIT_RSP_LEN);
-		if (ret < 0) {
-			dev_err(&client->dev,
-			"%s: - i2c_master_recv get INIT rsp Error\n",
-					__func__);
-			goto err_nfcc_hw_info;
-		}
-		nfcc_hw_info = nci_init_rsp;
-	} else {
-		/*
-		 * Chipset is NQ4xx or later.
-		 * Retrieve NTF data from wait queue.
-		 */
-		ret = is_data_available_for_read(nqx_dev);
-		if (ret <= 0) {
-			nqx_disable_irq(nqx_dev);
-			goto err_nfcc_hw_info;
-		}
-
-		/* Read Notification of RESET command */
-		ret = i2c_master_recv(client, nci_reset_ntf, NCI_RESET_NTF_LEN);
-		if (ret < 0) {
-			dev_err(&client->dev,
-			"%s: - i2c_master_recv get RESET ntf Error\n",
-					__func__);
-			goto err_nfcc_hw_info;
-		}
-		nfcc_hw_info = nci_reset_ntf;
-	}
-
-	/* Save NFCC HW info */
-	nfcc_hw_info_len =
-		NCI_HEADER_LEN + nfcc_hw_info[NCI_PAYLOAD_LENGTH_INDEX];
-	if (nfcc_hw_info_len > PAYLOAD_HEADER_LENGTH) {
-		nqx_dev->nqx_info.info.chip_type =
-			nfcc_hw_info[nfcc_hw_info_len -
-					NFCC_HW_CHIP_ID_OFFSET];
-		nqx_dev->nqx_info.info.rom_version =
-			nfcc_hw_info[nfcc_hw_info_len -
-					NFCC_HW_ROM_VER_OFFSET];
-		nqx_dev->nqx_info.info.fw_major =
-			nfcc_hw_info[nfcc_hw_info_len -
-					NFCC_HW_MAJOR_NO_OFFSET];
-		nqx_dev->nqx_info.info.fw_minor =
-			nfcc_hw_info[nfcc_hw_info_len -
-					NFCC_HW_MINOR_NO_OFFSET];
-	}
-
-err_nfcc_hw_info:
-
-	kfree(nci_reset_ntf);
-	kfree(nci_init_rsp);
-	kfree(nci_init_cmd);
-
-	return ret;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Check for availability of NQ_ NFC controller hardware */
 static int nfcc_hw_check(struct i2c_client *client, struct nqx_dev *nqx_dev)
 {
 	int ret = 0;
 
-<<<<<<< HEAD
 	int gpio_retry_count = 0;
 	unsigned char reset_ntf_len = 0;
 	unsigned int enable_gpio = nqx_dev->en_gpio;
 	char *nci_reset_cmd = NULL;
 	char *nci_reset_rsp = NULL;
 	char *nci_reset_ntf = NULL;
-=======
-	unsigned int enable_gpio = nqx_dev->en_gpio;
-	char *nci_reset_cmd = NULL;
-	char *nci_reset_rsp = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	char *nci_get_version_cmd = NULL;
 	char *nci_get_version_rsp = NULL;
 
@@ -1347,15 +1098,12 @@ static int nfcc_hw_check(struct i2c_client *client, struct nqx_dev *nqx_dev)
 		goto done;
 	}
 
-<<<<<<< HEAD
 	nci_reset_ntf = kzalloc(NCI_RESET_NTF_LEN + 1,  GFP_DMA | GFP_KERNEL);
 	if (!nci_reset_ntf) {
 		ret = -ENOMEM;
 		goto done;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	nci_get_version_cmd = kzalloc(NCI_GET_VERSION_CMD_LEN + 1,
 					GFP_DMA | GFP_KERNEL);
 	if (!nci_get_version_cmd) {
@@ -1370,10 +1118,7 @@ static int nfcc_hw_check(struct i2c_client *client, struct nqx_dev *nqx_dev)
 		goto done;
 	}
 
-<<<<<<< HEAD
 reset_enable_gpio:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* making sure that the NFCC starts in a clean state. */
 	gpio_set_value(enable_gpio, 1);/* HPD : Enable*/
 	/* hardware dependent delay */
@@ -1443,17 +1188,13 @@ reset_enable_gpio:
 		}
 		goto err_nfcc_reset_failed;
 	}
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = is_data_available_for_read(nqx_dev);
 	if (ret <= 0) {
 		nqx_disable_irq(nqx_dev);
 		goto err_nfcc_hw_check;
 	}
 
-<<<<<<< HEAD
 	/* Read Response of RESET command */
 	ret = i2c_master_recv(client, nci_reset_rsp, NCI_RESET_RSP_LEN);
 	if (ret < 0) {
@@ -1490,33 +1231,6 @@ reset_enable_gpio:
 		nqx_dev->nqx_info.info.fw_minor =
 				nci_reset_ntf[reset_ntf_len];
 	}
-=======
-	/* Read Header of RESET command */
-	ret = i2c_master_recv(client, nci_reset_rsp, NCI_HEADER_LEN);
-	if (ret != NCI_HEADER_LEN) {
-		dev_err(&client->dev,
-		"%s: - i2c_master_recv get RESET rsp header Error\n", __func__);
-		goto err_nfcc_hw_check;
-	}
-
-	ret = i2c_master_recv(client, &nci_reset_rsp[NCI_PAYLOAD_START_INDEX],
-				nci_reset_rsp[NCI_PAYLOAD_LENGTH_INDEX]);
-	if (ret != nci_reset_rsp[NCI_PAYLOAD_LENGTH_INDEX]) {
-		dev_err(&client->dev,
-		"%s: - i2c_master_recv get RESET rsp data Error\n", __func__);
-		goto err_nfcc_hw_check;
-	}
-
-	/* Retrieve NFCC HW info */
-	ret = get_nfcc_hw_info(client, nqx_dev,
-			nci_reset_rsp[NCI_PAYLOAD_LENGTH_INDEX]);
-	if (ret < 0) {
-		dev_err(&client->dev,
-			"%s: - Error in getting NFCC HW info\n", __func__);
-		goto err_nfcc_hw_check;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_dbg(&client->dev,
 		"%s: - nq - reset cmd answer : NfcNciRx %x %x %x\n",
 		__func__, nci_reset_rsp[0],
@@ -1565,10 +1279,7 @@ err_nfcc_hw_check:
 
 done:
 	kfree(nci_reset_rsp);
-<<<<<<< HEAD
 	kfree(nci_reset_ntf);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(nci_reset_cmd);
 	kfree(nci_get_version_cmd);
 	kfree(nci_get_version_rsp);
@@ -1590,11 +1301,7 @@ static int nqx_clock_select(struct nqx_dev *nqx_dev)
 	if (nqx_dev->s_clk == NULL)
 		goto err_clk;
 
-<<<<<<< HEAD
 	if (!nqx_dev->clk_run)
-=======
-	if (nqx_dev->clk_run == false)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		r = clk_prepare_enable(nqx_dev->s_clk);
 
 	if (r)
@@ -1617,11 +1324,7 @@ static int nqx_clock_deselect(struct nqx_dev *nqx_dev)
 	int r = -1;
 
 	if (nqx_dev->s_clk != NULL) {
-<<<<<<< HEAD
 		if (nqx_dev->clk_run) {
-=======
-		if (nqx_dev->clk_run == true) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clk_disable_unprepare(nqx_dev->s_clk);
 			nqx_dev->clk_run = false;
 		}
@@ -1663,7 +1366,6 @@ static int nfc_parse_dt(struct device *dev, struct nqx_platform_data *pdata)
 	else
 		pdata->clk_pin_voting = true;
 
-<<<<<<< HEAD
 	// optional property
 	r = of_property_read_u32_array(np, NFC_LDO_VOL_DT_NAME,
 			(u32 *) pdata->vdd_levels,
@@ -1687,11 +1389,6 @@ static int nfc_parse_dt(struct device *dev, struct nqx_platform_data *pdata)
 
 	// return success as above properties are optional
 	return 0;
-=======
-	pdata->clkreq_gpio = of_get_named_gpio(np, "qcom,nq-clkreq", 0);
-
-	return r;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline int gpio_input_init(const struct device * const dev,
@@ -1718,15 +1415,10 @@ static int nqx_probe(struct i2c_client *client,
 	int irqn = 0;
 	struct nqx_platform_data *platform_data;
 	struct nqx_dev *nqx_dev;
-<<<<<<< HEAD
 	struct proc_dir_entry *nfc_check_entry = NULL;
 
 	dev_dbg(&client->dev, "%s: enter\n", __func__);
 	g_nfc_check_flag = 0;
-=======
-
-	dev_dbg(&client->dev, "%s: enter\n", __func__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (client->dev.of_node) {
 		platform_data = devm_kzalloc(&client->dev,
 			sizeof(struct nqx_platform_data), GFP_KERNEL);
@@ -1899,10 +1591,7 @@ static int nqx_probe(struct i2c_client *client,
 
 	/* init mutex and queues */
 	init_waitqueue_head(&nqx_dev->read_wq);
-<<<<<<< HEAD
 	init_waitqueue_head(&nqx_dev->cold_reset_read_wq);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_init(&nqx_dev->read_mutex);
 	mutex_init(&nqx_dev->dev_ref_mutex);
 	spin_lock_init(&nqx_dev->irq_enabled_lock);
@@ -1946,34 +1635,22 @@ static int nqx_probe(struct i2c_client *client,
 	}
 	nqx_disable_irq(nqx_dev);
 
-<<<<<<< HEAD
 	r = nfc_ldo_config(client, nqx_dev);
 	if (r) {
 		dev_err(&client->dev, "%s: LDO config failed\n", __func__);
 		goto err_ldo_config_failed;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * To be efficient we need to test whether nfcc hardware is physically
 	 * present before attempting further hardware initialisation.
 	 *
 	 */
 	r = nfcc_hw_check(client, nqx_dev);
-<<<<<<< HEAD
 	if (r)
 		g_nfc_check_flag = -1;
 	else
 		g_nfc_check_flag = 1;
-=======
-	if (r) {
-		/* make sure NFCC is not enabled */
-		gpio_set_value(platform_data->en_gpio, 0);
-		/* We don't think there is hardware switch NFC OFF */
-		goto err_request_hw_check_failed;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Register reboot notifier here */
 	r = register_reboot_notifier(&nfcc_notifier);
@@ -2001,7 +1678,6 @@ static int nqx_probe(struct i2c_client *client,
 	device_set_wakeup_capable(&client->dev, true);
 	i2c_set_clientdata(client, nqx_dev);
 	nqx_dev->irq_wake_up = false;
-<<<<<<< HEAD
 	nqx_dev->cold_reset_rsp_pending = false;
 	nqx_dev->nfc_enabled = false;
 	nqx_dev->is_ese_session_active = false;
@@ -2013,9 +1689,6 @@ static int nqx_probe(struct i2c_client *client,
 	nfc_check_entry = proc_create("nfc_check", 0444, NULL, &nfc_check_fops);
 	if(!nfc_check_entry)
 		dev_err(&client->dev,"%s:nfc_check proc create fail!",__func__);
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_err(&client->dev,
 	"%s: probing NFCC NQxxx exited successfully\n",
 		 __func__);
@@ -2026,14 +1699,11 @@ err_clock_en_failed:
 	unregister_reboot_notifier(&nfcc_notifier);
 #endif
 err_request_hw_check_failed:
-<<<<<<< HEAD
 	if (nqx_dev->reg) {
 		nfc_ldo_unvote(nqx_dev);
 		regulator_put(nqx_dev->reg);
 	}
 err_ldo_config_failed:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	free_irq(client->irq, nqx_dev);
 err_request_irq_failed:
 	device_destroy(nqx_dev->nqx_class, nqx_dev->devno);
@@ -2049,11 +1719,7 @@ err_clkreq_gpio:
 	gpio_free(platform_data->clkreq_gpio);
 err_ese_gpio:
 	/* optional gpio, not sure was configured in probe */
-<<<<<<< HEAD
 	if (gpio_is_valid(platform_data->ese_gpio))
-=======
-	if (nqx_dev->ese_gpio > 0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		gpio_free(platform_data->ese_gpio);
 err_firm_gpio:
 	gpio_free(platform_data->firm_gpio);
@@ -2088,7 +1754,6 @@ static int nqx_remove(struct i2c_client *client)
 		goto err;
 	}
 
-<<<<<<< HEAD
 	gpio_set_value(nqx_dev->en_gpio, 0);
 	// HW dependent delay before LDO goes into LPM mode
 	usleep_range(10000, 10100);
@@ -2096,8 +1761,6 @@ static int nqx_remove(struct i2c_client *client)
 		ret = nfc_ldo_unvote(nqx_dev);
 		regulator_put(nqx_dev->reg);
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unregister_reboot_notifier(&nfcc_notifier);
 	free_irq(client->irq, nqx_dev);
 	cdev_del(&nqx_dev->c_dev);
@@ -2160,10 +1823,6 @@ static struct i2c_driver nqx = {
 	.probe = nqx_probe,
 	.remove = nqx_remove,
 	.driver = {
-<<<<<<< HEAD
-=======
-		.owner = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.name = "nq-nci",
 		.of_match_table = msm_match_table,
 		.probe_type = PROBE_PREFER_ASYNCHRONOUS,

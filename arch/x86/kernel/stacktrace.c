@@ -30,11 +30,7 @@ static int save_stack_address(struct stack_trace *trace, unsigned long addr,
 	return 0;
 }
 
-<<<<<<< HEAD
 static void noinline __save_stack_trace(struct stack_trace *trace,
-=======
-static void __save_stack_trace(struct stack_trace *trace,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       struct task_struct *task, struct pt_regs *regs,
 			       bool nosched)
 {
@@ -60,10 +56,7 @@ static void __save_stack_trace(struct stack_trace *trace,
  */
 void save_stack_trace(struct stack_trace *trace)
 {
-<<<<<<< HEAD
 	trace->skip++;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__save_stack_trace(trace, current, NULL, false);
 }
 EXPORT_SYMBOL_GPL(save_stack_trace);
@@ -78,11 +71,8 @@ void save_stack_trace_tsk(struct task_struct *tsk, struct stack_trace *trace)
 	if (!try_get_task_stack(tsk))
 		return;
 
-<<<<<<< HEAD
 	if (tsk == current)
 		trace->skip++;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__save_stack_trace(trace, tsk, NULL, true);
 
 	put_task_stack(tsk);
@@ -91,71 +81,33 @@ EXPORT_SYMBOL_GPL(save_stack_trace_tsk);
 
 #ifdef CONFIG_HAVE_RELIABLE_STACKTRACE
 
-<<<<<<< HEAD
 static int __always_inline
 __save_stack_trace_reliable(struct stack_trace *trace,
 			    struct task_struct *task)
-=======
-#define STACKTRACE_DUMP_ONCE(task) ({				\
-	static bool __section(.data.unlikely) __dumped;		\
-								\
-	if (!__dumped) {					\
-		__dumped = true;				\
-		WARN_ON(1);					\
-		show_stack(task, NULL);				\
-	}							\
-})
-
-static int __save_stack_trace_reliable(struct stack_trace *trace,
-				       struct task_struct *task)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct unwind_state state;
 	struct pt_regs *regs;
 	unsigned long addr;
 
-<<<<<<< HEAD
 	for (unwind_start(&state, task, NULL, NULL);
 	     !unwind_done(&state) && !unwind_error(&state);
-=======
-	for (unwind_start(&state, task, NULL, NULL); !unwind_done(&state);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	     unwind_next_frame(&state)) {
 
 		regs = unwind_get_entry_regs(&state, NULL);
 		if (regs) {
-<<<<<<< HEAD
 			/* Success path for user tasks */
 			if (user_mode(regs))
 				goto success;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/*
 			 * Kernel mode registers on the stack indicate an
 			 * in-kernel interrupt or exception (e.g., preemption
 			 * or a page fault), which can make frame pointers
 			 * unreliable.
 			 */
-<<<<<<< HEAD
 
 			if (IS_ENABLED(CONFIG_FRAME_POINTER))
 				return -EINVAL;
-=======
-			if (!user_mode(regs))
-				return -EINVAL;
-
-			/*
-			 * The last frame contains the user mode syscall
-			 * pt_regs.  Skip it and finish the unwind.
-			 */
-			unwind_next_frame(&state);
-			if (!unwind_done(&state)) {
-				STACKTRACE_DUMP_ONCE(task);
-				return -EINVAL;
-			}
-			break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		addr = unwind_get_return_address(&state);
@@ -165,22 +117,14 @@ static int __save_stack_trace_reliable(struct stack_trace *trace,
 		 * generated code which __kernel_text_address() doesn't know
 		 * about.
 		 */
-<<<<<<< HEAD
 		if (!addr)
 			return -EINVAL;
-=======
-		if (!addr) {
-			STACKTRACE_DUMP_ONCE(task);
-			return -EINVAL;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (save_stack_address(trace, addr, false))
 			return -EINVAL;
 	}
 
 	/* Check for stack corruption */
-<<<<<<< HEAD
 	if (unwind_error(&state))
 		return -EINVAL;
 
@@ -189,13 +133,6 @@ static int __save_stack_trace_reliable(struct stack_trace *trace,
 		return -EINVAL;
 
 success:
-=======
-	if (unwind_error(&state)) {
-		STACKTRACE_DUMP_ONCE(task);
-		return -EINVAL;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (trace->nr_entries < trace->max_entries)
 		trace->entries[trace->nr_entries++] = ULONG_MAX;
 

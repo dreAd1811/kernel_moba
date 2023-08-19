@@ -263,12 +263,6 @@ retry:
 		new_skb = skb_copy_expand(rx_skb, 0, rx_size - rx_skb->len,
 					  GFP_KERNEL);
 		if (new_skb == NULL) {
-<<<<<<< HEAD
-=======
-			if (printk_ratelimit())
-				dev_err(dev, "RX: Can't reallocate skb to %d; "
-					"RX dropped\n", rx_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			kfree_skb(rx_skb);
 			rx_skb = NULL;
 			goto out;	/* drop it...*/

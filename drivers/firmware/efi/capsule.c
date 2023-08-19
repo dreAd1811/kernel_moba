@@ -231,11 +231,7 @@ int efi_capsule_update(efi_capsule_header_t *capsule, phys_addr_t *pages)
 	count = DIV_ROUND_UP(imagesize, PAGE_SIZE);
 	sg_count = sg_pages_num(count);
 
-<<<<<<< HEAD
 	sg_pages = kcalloc(sg_count, sizeof(*sg_pages), GFP_KERNEL);
-=======
-	sg_pages = kzalloc(sg_count * sizeof(*sg_pages), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!sg_pages)
 		return -ENOMEM;
 

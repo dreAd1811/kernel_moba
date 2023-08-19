@@ -140,10 +140,7 @@ struct frad_state {
 	int dce_pvc_count;
 
 	struct timer_list timer;
-<<<<<<< HEAD
 	struct net_device *dev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long last_poll;
 	int reliable;
 	int dce_changed;
@@ -601,16 +598,10 @@ static void fr_set_link_state(int reliable, struct net_device *dev)
 }
 
 
-<<<<<<< HEAD
 static void fr_timer(struct timer_list *t)
 {
 	struct frad_state *st = from_timer(st, t, timer);
 	struct net_device *dev = st->dev;
-=======
-static void fr_timer(unsigned long arg)
-{
-	struct net_device *dev = (struct net_device *)arg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hdlc_device *hdlc = dev_to_hdlc(dev);
 	int i, cnt = 0, reliable;
 	u32 list;
@@ -655,11 +646,6 @@ static void fr_timer(unsigned long arg)
 			state(hdlc)->settings.t391 * HZ;
 	}
 
-<<<<<<< HEAD
-=======
-	state(hdlc)->timer.function = fr_timer;
-	state(hdlc)->timer.data = arg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	add_timer(&state(hdlc)->timer);
 }
 
@@ -1017,18 +1003,10 @@ static void fr_start(struct net_device *dev)
 		state(hdlc)->n391cnt = 0;
 		state(hdlc)->txseq = state(hdlc)->rxseq = 0;
 
-<<<<<<< HEAD
 		state(hdlc)->dev = dev;
 		timer_setup(&state(hdlc)->timer, fr_timer, 0);
 		/* First poll after 1 s */
 		state(hdlc)->timer.expires = jiffies + HZ;
-=======
-		init_timer(&state(hdlc)->timer);
-		/* First poll after 1 s */
-		state(hdlc)->timer.expires = jiffies + HZ;
-		state(hdlc)->timer.function = fr_timer;
-		state(hdlc)->timer.data = (unsigned long)dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		add_timer(&state(hdlc)->timer);
 	} else
 		fr_set_link_state(1, dev);

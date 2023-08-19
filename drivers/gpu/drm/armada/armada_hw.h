@@ -316,7 +316,6 @@ enum {
 	PWRDN_IRQ_LEVEL		= 1 << 0,
 };
 
-<<<<<<< HEAD
 static inline u32 armada_rect_hw_fp(struct drm_rect *r)
 {
 	return (drm_rect_height(r) & 0xffff0000) | drm_rect_width(r) >> 16;
@@ -332,6 +331,4 @@ static inline u32 armada_rect_yx(struct drm_rect *r)
 	return (r)->y1 << 16 | ((r)->x1 & 0x0000ffff);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

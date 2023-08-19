@@ -156,7 +156,6 @@ void amdgpu_ring_undo(struct amdgpu_ring *ring)
 }
 
 /**
-<<<<<<< HEAD
  * amdgpu_ring_priority_put - restore a ring's priority
  *
  * @ring: amdgpu_ring structure holding the information
@@ -227,8 +226,6 @@ out_unlock:
 }
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * amdgpu_ring_init - init driver ring struct.
  *
  * @adev: amdgpu_device pointer
@@ -243,11 +240,7 @@ int amdgpu_ring_init(struct amdgpu_device *adev, struct amdgpu_ring *ring,
 		     unsigned max_dw, struct amdgpu_irq_src *irq_src,
 		     unsigned irq_type)
 {
-<<<<<<< HEAD
 	int r, i;
-=======
-	int r;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int sched_hw_submission = amdgpu_sched_hw_submission;
 
 	/* Set the hw submission limit higher for KIQ because
@@ -271,41 +264,25 @@ int amdgpu_ring_init(struct amdgpu_device *adev, struct amdgpu_ring *ring,
 			return r;
 	}
 
-<<<<<<< HEAD
 	r = amdgpu_device_wb_get(adev, &ring->rptr_offs);
-=======
-	r = amdgpu_wb_get(adev, &ring->rptr_offs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r) {
 		dev_err(adev->dev, "(%d) ring rptr_offs wb alloc failed\n", r);
 		return r;
 	}
 
-<<<<<<< HEAD
 	r = amdgpu_device_wb_get(adev, &ring->wptr_offs);
-=======
-	r = amdgpu_wb_get(adev, &ring->wptr_offs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r) {
 		dev_err(adev->dev, "(%d) ring wptr_offs wb alloc failed\n", r);
 		return r;
 	}
 
-<<<<<<< HEAD
 	r = amdgpu_device_wb_get(adev, &ring->fence_offs);
-=======
-	r = amdgpu_wb_get(adev, &ring->fence_offs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r) {
 		dev_err(adev->dev, "(%d) ring fence_offs wb alloc failed\n", r);
 		return r;
 	}
 
-<<<<<<< HEAD
 	r = amdgpu_device_wb_get(adev, &ring->cond_exe_offs);
-=======
-	r = amdgpu_wb_get(adev, &ring->cond_exe_offs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r) {
 		dev_err(adev->dev, "(%d) ring cond_exec_polling wb alloc failed\n", r);
 		return r;
@@ -328,11 +305,7 @@ int amdgpu_ring_init(struct amdgpu_device *adev, struct amdgpu_ring *ring,
 		0xffffffffffffffff : ring->buf_mask;
 	/* Allocate ring buffer */
 	if (ring->ring_obj == NULL) {
-<<<<<<< HEAD
 		r = amdgpu_bo_create_kernel(adev, ring->ring_size + ring->funcs->extra_dw, PAGE_SIZE,
-=======
-		r = amdgpu_bo_create_kernel(adev, ring->ring_size, PAGE_SIZE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    AMDGPU_GEM_DOMAIN_GTT,
 					    &ring->ring_obj,
 					    &ring->gpu_addr,
@@ -345,7 +318,6 @@ int amdgpu_ring_init(struct amdgpu_device *adev, struct amdgpu_ring *ring,
 	}
 
 	ring->max_dw = max_dw;
-<<<<<<< HEAD
 	ring->priority = DRM_SCHED_PRIORITY_NORMAL;
 	mutex_init(&ring->priority_mutex);
 	INIT_LIST_HEAD(&ring->lru_list);
@@ -354,11 +326,6 @@ int amdgpu_ring_init(struct amdgpu_device *adev, struct amdgpu_ring *ring,
 	for (i = 0; i < DRM_SCHED_PRIORITY_MAX; ++i)
 		atomic_set(&ring->num_jobs[i], 0);
 
-=======
-	INIT_LIST_HEAD(&ring->lru_list);
-	amdgpu_ring_lru_touch(adev, ring);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (amdgpu_debugfs_ring_init(adev, ring)) {
 		DRM_ERROR("Failed to register debugfs file for rings !\n");
 	}
@@ -382,19 +349,11 @@ void amdgpu_ring_fini(struct amdgpu_ring *ring)
 	if (!(ring->adev) || !(ring->adev->rings[ring->idx]))
 		return;
 
-<<<<<<< HEAD
 	amdgpu_device_wb_free(ring->adev, ring->rptr_offs);
 	amdgpu_device_wb_free(ring->adev, ring->wptr_offs);
 
 	amdgpu_device_wb_free(ring->adev, ring->cond_exe_offs);
 	amdgpu_device_wb_free(ring->adev, ring->fence_offs);
-=======
-	amdgpu_wb_free(ring->adev, ring->rptr_offs);
-	amdgpu_wb_free(ring->adev, ring->wptr_offs);
-
-	amdgpu_wb_free(ring->adev, ring->cond_exe_offs);
-	amdgpu_wb_free(ring->adev, ring->fence_offs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	amdgpu_bo_free_kernel(&ring->ring_obj,
 			      &ring->gpu_addr,
@@ -402,13 +361,10 @@ void amdgpu_ring_fini(struct amdgpu_ring *ring)
 
 	amdgpu_debugfs_ring_fini(ring);
 
-<<<<<<< HEAD
 	dma_fence_put(ring->vmid_wait);
 	ring->vmid_wait = NULL;
 	ring->me = 0;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ring->adev->rings[ring->idx] = NULL;
 }
 
@@ -439,24 +395,16 @@ static bool amdgpu_ring_is_blacklisted(struct amdgpu_ring *ring,
  * @type: amdgpu_ring_type enum
  * @blacklist: blacklisted ring ids array
  * @num_blacklist: number of entries in @blacklist
-<<<<<<< HEAD
  * @lru_pipe_order: find a ring from the least recently used pipe
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @ring: output ring
  *
  * Retrieve the amdgpu_ring structure for the least recently used ring of
  * a specific IP block (all asics).
  * Returns 0 on success, error on failure.
  */
-<<<<<<< HEAD
 int amdgpu_ring_lru_get(struct amdgpu_device *adev, int type,
 			int *blacklist,	int num_blacklist,
 			bool lru_pipe_order, struct amdgpu_ring **ring)
-=======
-int amdgpu_ring_lru_get(struct amdgpu_device *adev, int type, int *blacklist,
-			int num_blacklist, struct amdgpu_ring **ring)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct amdgpu_ring *entry;
 
@@ -471,7 +419,6 @@ int amdgpu_ring_lru_get(struct amdgpu_device *adev, int type, int *blacklist,
 		if (amdgpu_ring_is_blacklisted(entry, blacklist, num_blacklist))
 			continue;
 
-<<<<<<< HEAD
 		if (!*ring) {
 			*ring = entry;
 
@@ -489,12 +436,6 @@ int amdgpu_ring_lru_get(struct amdgpu_device *adev, int type, int *blacklist,
 	if (*ring)
 		amdgpu_ring_lru_touch_locked(adev, *ring);
 
-=======
-		*ring = entry;
-		amdgpu_ring_lru_touch_locked(adev, *ring);
-		break;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock(&adev->ring_lru_list_lock);
 
 	if (!*ring) {
@@ -520,7 +461,6 @@ void amdgpu_ring_lru_touch(struct amdgpu_device *adev, struct amdgpu_ring *ring)
 	spin_unlock(&adev->ring_lru_list_lock);
 }
 
-<<<<<<< HEAD
 /**
  * amdgpu_ring_emit_reg_write_reg_wait_helper - ring helper
  *
@@ -541,8 +481,6 @@ void amdgpu_ring_emit_reg_write_reg_wait_helper(struct amdgpu_ring *ring,
 	amdgpu_ring_emit_reg_wait(ring, reg1, mask, mask);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Debugfs info
  */
@@ -568,11 +506,7 @@ static ssize_t amdgpu_debugfs_ring_read(struct file *f, char __user *buf,
 	result = 0;
 
 	if (*pos < 12) {
-<<<<<<< HEAD
 		early[0] = amdgpu_ring_get_rptr(ring) & ring->buf_mask;
-=======
-		early[0] = amdgpu_ring_get_rptr(ring);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		early[1] = amdgpu_ring_get_wptr(ring) & ring->buf_mask;
 		early[2] = ring->wptr & ring->buf_mask;
 		for (i = *pos / 4; i < 3 && size; i++) {

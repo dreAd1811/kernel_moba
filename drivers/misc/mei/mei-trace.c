@@ -23,8 +23,4 @@
 EXPORT_TRACEPOINT_SYMBOL(mei_reg_read);
 EXPORT_TRACEPOINT_SYMBOL(mei_reg_write);
 EXPORT_TRACEPOINT_SYMBOL(mei_pci_cfg_read);
-<<<<<<< HEAD
-=======
-EXPORT_TRACEPOINT_SYMBOL(mei_pci_cfg_write);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __CHECKER__ */

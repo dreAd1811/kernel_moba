@@ -9,11 +9,7 @@
  *	under the terms of the GNU General Public License as published by the Free
  *	Software Foundation, version 2.
  *
-<<<<<<< HEAD
  * see Documentation/media/dvb-drivers/dvb-usb.rst for more information
-=======
- * see Documentation/dvb/README.dvb-usb for more information
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #include "digitv.h"
 
@@ -237,34 +233,18 @@ static struct rc_map_table rc_map_digitv_table[] = {
 
 static int digitv_rc_query(struct dvb_usb_device *d, u32 *event, int *state)
 {
-<<<<<<< HEAD
 	int i;
-=======
-	int ret, i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 key[5];
 	u8 b[4] = { 0 };
 
 	*event = 0;
 	*state = REMOTE_NO_KEY_PRESSED;
 
-<<<<<<< HEAD
 	digitv_ctrl_msg(d,USB_READ_REMOTE,0,NULL,0,&key[1],4);
 
 	/* Tell the device we've read the remote. Not sure how necessary
 	   this is, but the Nebula SDK does it. */
 	digitv_ctrl_msg(d,USB_WRITE_REMOTE,0,b,4,NULL,0);
-=======
-	ret = digitv_ctrl_msg(d, USB_READ_REMOTE, 0, NULL, 0, &key[1], 4);
-	if (ret)
-		return ret;
-
-	/* Tell the device we've read the remote. Not sure how necessary
-	   this is, but the Nebula SDK does it. */
-	ret = digitv_ctrl_msg(d, USB_WRITE_REMOTE, 0, b, 4, NULL, 0);
-	if (ret)
-		return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* if something is inside the buffer, simulate key press */
 	if (key[1] != 0)

@@ -26,15 +26,9 @@ void ppc4xx_trng_probe(struct crypto4xx_core_device *core_dev);
 void ppc4xx_trng_remove(struct crypto4xx_core_device *core_dev);
 #else
 static inline void ppc4xx_trng_probe(
-<<<<<<< HEAD
 	struct crypto4xx_device *dev __maybe_unused) { }
 static inline void ppc4xx_trng_remove(
 	struct crypto4xx_device *dev __maybe_unused) { }
-=======
-	struct crypto4xx_core_device *dev __maybe_unused) { }
-static inline void ppc4xx_trng_remove(
-	struct crypto4xx_core_device *dev __maybe_unused) { }
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 #endif

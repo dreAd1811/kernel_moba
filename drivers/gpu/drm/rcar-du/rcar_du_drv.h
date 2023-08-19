@@ -26,20 +26,12 @@ struct device;
 struct drm_device;
 struct drm_fbdev_cma;
 struct rcar_du_device;
-<<<<<<< HEAD
-=======
-struct rcar_du_lvdsenc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define RCAR_DU_FEATURE_CRTC_IRQ_CLOCK	(1 << 0)	/* Per-CRTC IRQ and clock */
 #define RCAR_DU_FEATURE_EXT_CTRL_REGS	(1 << 1)	/* Has extended control registers */
 #define RCAR_DU_FEATURE_VSP1_SOURCE	(1 << 2)	/* Has inputs from VSP1 */
 
 #define RCAR_DU_QUIRK_ALIGN_128B	(1 << 0)	/* Align pitches to 128 bytes */
-<<<<<<< HEAD
-=======
-#define RCAR_DU_QUIRK_LVDS_LANES	(1 << 1)	/* LVDS lanes 1 and 3 inverted */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * struct rcar_du_output_routing - Output routing specification
@@ -60,11 +52,7 @@ struct rcar_du_output_routing {
  * @gen: device generation (2 or 3)
  * @features: device features (RCAR_DU_FEATURE_*)
  * @quirks: device quirks (RCAR_DU_QUIRK_*)
-<<<<<<< HEAD
  * @channels_mask: bit mask of available DU channels
-=======
- * @num_crtcs: total number of CRTCs
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @routes: array of CRTC to output routes, indexed by output (RCAR_DU_OUTPUT_*)
  * @num_lvds: number of internal LVDS encoders
  */
@@ -72,11 +60,7 @@ struct rcar_du_device_info {
 	unsigned int gen;
 	unsigned int features;
 	unsigned int quirks;
-<<<<<<< HEAD
 	unsigned int channels_mask;
-=======
-	unsigned int num_crtcs;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct rcar_du_output_routing routes[RCAR_DU_OUTPUT_MAX];
 	unsigned int num_lvds;
 	unsigned int dpll_ch;
@@ -84,10 +68,6 @@ struct rcar_du_device_info {
 
 #define RCAR_DU_MAX_CRTCS		4
 #define RCAR_DU_MAX_GROUPS		DIV_ROUND_UP(RCAR_DU_MAX_CRTCS, 2)
-<<<<<<< HEAD
-=======
-#define RCAR_DU_MAX_LVDS		2
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define RCAR_DU_MAX_VSPS		4
 
 struct rcar_du_device {
@@ -98,10 +78,7 @@ struct rcar_du_device {
 
 	struct drm_device *ddev;
 	struct drm_fbdev_cma *fbdev;
-<<<<<<< HEAD
 	struct drm_atomic_state *suspend_state;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct rcar_du_crtc crtcs[RCAR_DU_MAX_CRTCS];
 	unsigned int num_crtcs;
@@ -110,20 +87,11 @@ struct rcar_du_device {
 	struct rcar_du_vsp vsps[RCAR_DU_MAX_VSPS];
 
 	struct {
-<<<<<<< HEAD
-=======
-		struct drm_property *alpha;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct drm_property *colorkey;
 	} props;
 
 	unsigned int dpad0_source;
 	unsigned int vspd1_sink;
-<<<<<<< HEAD
-=======
-
-	struct rcar_du_lvdsenc *lvds[RCAR_DU_MAX_LVDS];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static inline bool rcar_du_has(struct rcar_du_device *rcdu,

@@ -43,25 +43,18 @@
  */
 
 #include <dt-bindings/clock/sun50i-a64-ccu.h>
-<<<<<<< HEAD
 #include <dt-bindings/clock/sun8i-de2.h>
 #include <dt-bindings/clock/sun8i-r-ccu.h>
 #include <dt-bindings/interrupt-controller/arm-gic.h>
 #include <dt-bindings/reset/sun50i-a64-ccu.h>
 #include <dt-bindings/reset/sun8i-de2.h>
 #include <dt-bindings/reset/sun8i-r-ccu.h>
-=======
-#include <dt-bindings/clock/sun8i-r-ccu.h>
-#include <dt-bindings/interrupt-controller/arm-gic.h>
-#include <dt-bindings/reset/sun50i-a64-ccu.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 / {
 	interrupt-parent = <&gic>;
 	#address-cells = <1>;
 	#size-cells = <1>;
 
-<<<<<<< HEAD
 	chosen {
 		#address-cells = <1>;
 		#size-cells = <1>;
@@ -86,8 +79,6 @@
 		};
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cpus {
 		#address-cells = <1>;
 		#size-cells = <0>;
@@ -148,7 +139,6 @@
 		method = "smc";
 	};
 
-<<<<<<< HEAD
 	sound_spdif {
 		compatible = "simple-audio-card";
 		simple-audio-card,name = "On-board SPDIF";
@@ -167,8 +157,6 @@
 		compatible = "linux,spdif-dit";
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	timer {
 		compatible = "arm,armv8-timer";
 		interrupts = <GIC_PPI 13
@@ -187,7 +175,6 @@
 		#size-cells = <1>;
 		ranges;
 
-<<<<<<< HEAD
 		de2@1000000 {
 			compatible = "allwinner,sun50i-a64-de2";
 			reg = <0x1000000 0x400000>;
@@ -239,12 +226,6 @@
 			dma-requests = <27>;
 			resets = <&ccu RST_BUS_DMA>;
 			#dma-cells = <1>;
-=======
-		syscon: syscon@1c00000 {
-			compatible = "allwinner,sun50i-a64-system-controller",
-				"syscon";
-			reg = <0x01c00000 0x1000>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		mmc0: mmc@1c0f000 {
@@ -289,11 +270,7 @@
 			#size-cells = <0>;
 		};
 
-<<<<<<< HEAD
 		usb_otg: usb@1c19000 {
-=======
-		usb_otg: usb@01c19000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun8i-a33-musb";
 			reg = <0x01c19000 0x0400>;
 			clocks = <&ccu CLK_BUS_OTG>;
@@ -306,11 +283,7 @@
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
 		usbphy: phy@1c19400 {
-=======
-		usbphy: phy@01c19400 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun50i-a64-usb-phy";
 			reg = <0x01c19400 0x14>,
 			      <0x01c1a800 0x4>,
@@ -330,11 +303,7 @@
 			#phy-cells = <1>;
 		};
 
-<<<<<<< HEAD
 		ehci0: usb@1c1a000 {
-=======
-		ehci0: usb@01c1a000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun50i-a64-ehci", "generic-ehci";
 			reg = <0x01c1a000 0x100>;
 			interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>;
@@ -346,11 +315,7 @@
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
 		ohci0: usb@1c1a400 {
-=======
-		ohci0: usb@01c1a400 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun50i-a64-ohci", "generic-ohci";
 			reg = <0x01c1a400 0x100>;
 			interrupts = <GIC_SPI 73 IRQ_TYPE_LEVEL_HIGH>;
@@ -360,11 +325,7 @@
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
 		ehci1: usb@1c1b000 {
-=======
-		ehci1: usb@01c1b000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun50i-a64-ehci", "generic-ehci";
 			reg = <0x01c1b000 0x100>;
 			interrupts = <GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH>;
@@ -378,11 +339,7 @@
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
 		ohci1: usb@1c1b400 {
-=======
-		ohci1: usb@01c1b400 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun50i-a64-ohci", "generic-ohci";
 			reg = <0x01c1b400 0x100>;
 			interrupts = <GIC_SPI 75 IRQ_TYPE_LEVEL_HIGH>;
@@ -394,11 +351,7 @@
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
 		ccu: clock@1c20000 {
-=======
-		ccu: clock@01c20000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun50i-a64-ccu";
 			reg = <0x01c20000 0x400>;
 			clocks = <&osc24M>, <&osc32k>;
@@ -413,25 +366,17 @@
 			interrupts = <GIC_SPI 11 IRQ_TYPE_LEVEL_HIGH>,
 				     <GIC_SPI 17 IRQ_TYPE_LEVEL_HIGH>,
 				     <GIC_SPI 21 IRQ_TYPE_LEVEL_HIGH>;
-<<<<<<< HEAD
 			clocks = <&ccu 58>;
-=======
-			clocks = <&ccu 58>, <&osc24M>, <&rtc 0>;
-			clock-names = "apb", "hosc", "losc";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			gpio-controller;
 			#gpio-cells = <3>;
 			interrupt-controller;
 			#interrupt-cells = <3>;
 
-<<<<<<< HEAD
 			i2c0_pins: i2c0_pins {
 				pins = "PH0", "PH1";
 				function = "i2c0";
 			};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			i2c1_pins: i2c1_pins {
 				pins = "PH2", "PH3";
 				function = "i2c1";
@@ -462,14 +407,11 @@
 				bias-pull-up;
 			};
 
-<<<<<<< HEAD
 			pwm_pin: pwm_pin {
 				pins = "PD22";
 				function = "pwm";
 			};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rmii_pins: rmii_pins {
 				pins = "PD10", "PD11", "PD13", "PD14", "PD17",
 				       "PD18", "PD19", "PD20", "PD22", "PD23";
@@ -485,7 +427,6 @@
 				drive-strength = <40>;
 			};
 
-<<<<<<< HEAD
 			spdif_tx_pin: spdif {
 				pins = "PH8";
 				function = "spdif";
@@ -502,9 +443,6 @@
 			};
 
 			uart0_pins_a: uart0 {
-=======
-			uart0_pins_a: uart0@0 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				pins = "PB8", "PB9";
 				function = "uart0";
 			};
@@ -540,7 +478,6 @@
 			};
 		};
 
-<<<<<<< HEAD
 		spdif: spdif@1c21000 {
 			#sound-dai-cells = <0>;
 			compatible = "allwinner,sun50i-a64-spdif",
@@ -585,8 +522,6 @@
 			status = "disabled";
 		};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		uart0: serial@1c28000 {
 			compatible = "snps,dw-apb-uart";
 			reg = <0x01c28000 0x400>;
@@ -675,7 +610,6 @@
 			#size-cells = <0>;
 		};
 
-<<<<<<< HEAD
 
 		spi0: spi@1c68000 {
 			compatible = "allwinner,sun8i-h3-spi";
@@ -730,8 +664,6 @@
 			};
 		};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		gic: interrupt-controller@1c81000 {
 			compatible = "arm,gic-400";
 			reg = <0x01c81000 0x1000>,
@@ -743,7 +675,6 @@
 			#interrupt-cells = <3>;
 		};
 
-<<<<<<< HEAD
 		pwm: pwm@1c21400 {
 			compatible = "allwinner,sun50i-a64-pwm",
 				     "allwinner,sun5i-a13-pwm";
@@ -755,19 +686,14 @@
 			status = "disabled";
 		};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rtc: rtc@1f00000 {
 			compatible = "allwinner,sun6i-a31-rtc";
 			reg = <0x01f00000 0x54>;
 			interrupts = <GIC_SPI 40 IRQ_TYPE_LEVEL_HIGH>,
 				     <GIC_SPI 41 IRQ_TYPE_LEVEL_HIGH>;
-<<<<<<< HEAD
 			clock-output-names = "rtc-osc32k", "rtc-osc32k-out";
 			clocks = <&osc32k>;
 			#clock-cells = <1>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		r_intc: interrupt-controller@1f00c00 {
@@ -789,7 +715,6 @@
 			#reset-cells = <1>;
 		};
 
-<<<<<<< HEAD
 		r_i2c: i2c@1f02400 {
 			compatible = "allwinner,sun50i-a64-i2c",
 				     "allwinner,sun6i-a31-i2c";
@@ -814,9 +739,6 @@
 		};
 
 		r_pio: pinctrl@1f02c00 {
-=======
-		r_pio: pinctrl@01f02c00 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun50i-a64-r-pinctrl";
 			reg = <0x01f02c00 0x400>;
 			interrupts = <GIC_SPI 45 IRQ_TYPE_LEVEL_HIGH>;
@@ -827,7 +749,6 @@
 			interrupt-controller;
 			#interrupt-cells = <3>;
 
-<<<<<<< HEAD
 			r_i2c_pins_a: i2c-a {
 				pins = "PL8", "PL9";
 				function = "s_i2c";
@@ -839,9 +760,6 @@
 			};
 
 			r_rsb_pins: rsb {
-=======
-			r_rsb_pins: rsb@0 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				pins = "PL0", "PL1";
 				function = "s_rsb";
 			};
@@ -860,7 +778,6 @@
 			#address-cells = <1>;
 			#size-cells = <0>;
 		};
-<<<<<<< HEAD
 
 		wdt0: watchdog@1c20ca0 {
 			compatible = "allwinner,sun50i-a64-wdt",
@@ -868,7 +785,5 @@
 			reg = <0x01c20ca0 0x20>;
 			interrupts = <GIC_SPI 25 IRQ_TYPE_LEVEL_HIGH>;
 		};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };

@@ -73,17 +73,6 @@ extern void xtboard_get_ether_addr(unsigned char *buf);
 #define SONIC_WRITE(reg,val) \
 	*((volatile unsigned int *)dev->base_addr+reg) = val
 
-<<<<<<< HEAD
-=======
-
-/* Use 0 for production, 1 for verification, and >2 for debug */
-#ifdef SONIC_DEBUG
-static unsigned int sonic_debug = SONIC_DEBUG;
-#else
-static unsigned int sonic_debug = 1;
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * We cannot use station (ethernet) address prefixes to detect the
  * sonic controller since these are board manufacturer depended.
@@ -133,10 +122,6 @@ static const struct net_device_ops xtsonic_netdev_ops = {
 
 static int __init sonic_probe1(struct net_device *dev)
 {
-<<<<<<< HEAD
-=======
-	static unsigned version_printed = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int silicon_revision;
 	struct sonic_local *lp = netdev_priv(dev);
 	unsigned int base_addr = dev->base_addr;
@@ -152,34 +137,17 @@ static int __init sonic_probe1(struct net_device *dev)
 	 * the expected location.
 	 */
 	silicon_revision = SONIC_READ(SONIC_SR);
-<<<<<<< HEAD
-=======
-	if (sonic_debug > 1)
-		printk("SONIC Silicon Revision = 0x%04x\n",silicon_revision);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i = 0;
 	while ((known_revisions[i] != 0xffff) &&
 			(known_revisions[i] != silicon_revision))
 		i++;
 
 	if (known_revisions[i] == 0xffff) {
-<<<<<<< HEAD
 		pr_info("SONIC ethernet controller not found (0x%4x)\n",
 			silicon_revision);
 		return -ENODEV;
 	}
 
-=======
-		printk("SONIC ethernet controller not found (0x%4x)\n",
-				silicon_revision);
-		return -ENODEV;
-	}
-
-	if (sonic_debug  &&  version_printed++ == 0)
-		printk(version);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Put the sonic into software reset, then retrieve ethernet address.
 	 * Note: we are assuming that the boot-loader has initialized the cam.
@@ -290,7 +258,6 @@ int xtsonic_probe(struct platform_device *pdev)
 
 	if ((err = sonic_probe1(dev)))
 		goto out;
-<<<<<<< HEAD
 
 	pr_info("SONIC ethernet @%08lx, MAC %pM, IRQ %d\n",
 		dev->base_addr, dev->dev_addr, dev->irq);
@@ -300,14 +267,6 @@ int xtsonic_probe(struct platform_device *pdev)
 	if ((err = register_netdev(dev)))
 		goto out1;
 
-=======
-	if ((err = register_netdev(dev)))
-		goto out1;
-
-	printk("%s: SONIC ethernet @%08lx, MAC %pM, IRQ %d\n", dev->name,
-	       dev->base_addr, dev->dev_addr, dev->irq);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 out1:
@@ -319,11 +278,6 @@ out:
 }
 
 MODULE_DESCRIPTION("Xtensa XT2000 SONIC ethernet driver");
-<<<<<<< HEAD
-=======
-module_param(sonic_debug, int, 0);
-MODULE_PARM_DESC(sonic_debug, "xtsonic debug level (1-4)");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "sonic.c"
 

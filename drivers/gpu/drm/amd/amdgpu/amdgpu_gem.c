@@ -30,10 +30,7 @@
 #include <drm/drmP.h>
 #include <drm/amdgpu_drm.h>
 #include "amdgpu.h"
-<<<<<<< HEAD
 #include "amdgpu_display.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void amdgpu_gem_object_free(struct drm_gem_object *gobj)
 {
@@ -46,7 +43,6 @@ void amdgpu_gem_object_free(struct drm_gem_object *gobj)
 }
 
 int amdgpu_gem_object_create(struct amdgpu_device *adev, unsigned long size,
-<<<<<<< HEAD
 			     int alignment, u32 initial_domain,
 			     u64 flags, enum ttm_bo_type type,
 			     struct reservation_object *resv,
@@ -57,22 +53,12 @@ int amdgpu_gem_object_create(struct amdgpu_device *adev, unsigned long size,
 	int r;
 
 	memset(&bp, 0, sizeof(bp));
-=======
-				int alignment, u32 initial_domain,
-				u64 flags, bool kernel,
-				struct drm_gem_object **obj)
-{
-	struct amdgpu_bo *robj;
-	int r;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	*obj = NULL;
 	/* At least align on page size */
 	if (alignment < PAGE_SIZE) {
 		alignment = PAGE_SIZE;
 	}
 
-<<<<<<< HEAD
 	bp.size = size;
 	bp.byte_align = alignment;
 	bp.type = type;
@@ -89,31 +75,16 @@ retry:
 				goto retry;
 			}
 
-=======
-retry:
-	r = amdgpu_bo_create(adev, size, alignment, kernel, initial_domain,
-			     flags, NULL, NULL, 0, &robj);
-	if (r) {
-		if (r != -ERESTARTSYS) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (initial_domain == AMDGPU_GEM_DOMAIN_VRAM) {
 				initial_domain |= AMDGPU_GEM_DOMAIN_GTT;
 				goto retry;
 			}
-<<<<<<< HEAD
 			DRM_DEBUG("Failed to allocate GEM object (%ld, %d, %u, %d)\n",
-=======
-			DRM_ERROR("Failed to allocate GEM object (%ld, %d, %u, %d)\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  size, initial_domain, alignment, r);
 		}
 		return r;
 	}
-<<<<<<< HEAD
 	*obj = &bo->gem_base;
-=======
-	*obj = &robj->gem_base;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -154,7 +125,6 @@ int amdgpu_gem_object_open(struct drm_gem_object *obj,
 	struct amdgpu_fpriv *fpriv = file_priv->driver_priv;
 	struct amdgpu_vm *vm = &fpriv->vm;
 	struct amdgpu_bo_va *bo_va;
-<<<<<<< HEAD
 	struct mm_struct *mm;
 	int r;
 
@@ -166,9 +136,6 @@ int amdgpu_gem_object_open(struct drm_gem_object *obj,
 	    abo->tbo.resv != vm->root.base.bo->tbo.resv)
 		return -EPERM;
 
-=======
-	int r;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	r = amdgpu_bo_reserve(abo, false);
 	if (r)
 		return r;
@@ -183,38 +150,6 @@ int amdgpu_gem_object_open(struct drm_gem_object *obj,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-static int amdgpu_gem_vm_check(void *param, struct amdgpu_bo *bo)
-{
-	/* if anything is swapped out don't swap it in here,
-	   just abort and wait for the next CS */
-	if (!amdgpu_bo_gpu_accessible(bo))
-		return -ERESTARTSYS;
-
-	if (bo->shadow && !amdgpu_bo_gpu_accessible(bo->shadow))
-		return -ERESTARTSYS;
-
-	return 0;
-}
-
-static bool amdgpu_gem_vm_ready(struct amdgpu_device *adev,
-				struct amdgpu_vm *vm,
-				struct list_head *list)
-{
-	struct ttm_validate_buffer *entry;
-
-	list_for_each_entry(entry, list, head) {
-		struct amdgpu_bo *bo =
-			container_of(entry->bo, struct amdgpu_bo, tbo);
-		if (amdgpu_gem_vm_check(NULL, bo))
-			return false;
-	}
-
-	return !amdgpu_vm_validate_pt_bos(adev, vm, amdgpu_gem_vm_check, NULL);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void amdgpu_gem_object_close(struct drm_gem_object *obj,
 			     struct drm_file *file_priv)
 {
@@ -224,21 +159,14 @@ void amdgpu_gem_object_close(struct drm_gem_object *obj,
 	struct amdgpu_vm *vm = &fpriv->vm;
 
 	struct amdgpu_bo_list_entry vm_pd;
-<<<<<<< HEAD
 	struct list_head list, duplicates;
-=======
-	struct list_head list;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ttm_validate_buffer tv;
 	struct ww_acquire_ctx ticket;
 	struct amdgpu_bo_va *bo_va;
 	int r;
 
 	INIT_LIST_HEAD(&list);
-<<<<<<< HEAD
 	INIT_LIST_HEAD(&duplicates);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tv.bo = &bo->tbo;
 	tv.shared = true;
@@ -246,11 +174,7 @@ void amdgpu_gem_object_close(struct drm_gem_object *obj,
 
 	amdgpu_vm_get_pd_bo(vm, &list, &vm_pd);
 
-<<<<<<< HEAD
 	r = ttm_eu_reserve_buffers(&ticket, &list, false, &duplicates);
-=======
-	r = ttm_eu_reserve_buffers(&ticket, &list, false, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r) {
 		dev_err(adev->dev, "leaking bo va because "
 			"we fail to reserve bo (%d)\n", r);
@@ -260,11 +184,7 @@ void amdgpu_gem_object_close(struct drm_gem_object *obj,
 	if (bo_va && --bo_va->ref_count == 0) {
 		amdgpu_vm_bo_rmv(adev, bo_va);
 
-<<<<<<< HEAD
 		if (amdgpu_vm_ready(vm)) {
-=======
-		if (amdgpu_gem_vm_ready(adev, vm, &list)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			struct dma_fence *fence = NULL;
 
 			r = amdgpu_vm_clear_freed(adev, vm, &fence);
@@ -289,7 +209,6 @@ int amdgpu_gem_create_ioctl(struct drm_device *dev, void *data,
 			    struct drm_file *filp)
 {
 	struct amdgpu_device *adev = dev->dev_private;
-<<<<<<< HEAD
 	struct amdgpu_fpriv *fpriv = filp->driver_priv;
 	struct amdgpu_vm *vm = &fpriv->vm;
 	union drm_amdgpu_gem_create *args = data;
@@ -312,35 +231,11 @@ int amdgpu_gem_create_ioctl(struct drm_device *dev, void *data,
 
 	/* reject invalid gem domains */
 	if (args->in.domains & ~AMDGPU_GEM_DOMAIN_MASK)
-=======
-	union drm_amdgpu_gem_create *args = data;
-	uint64_t size = args->in.bo_size;
-	struct drm_gem_object *gobj;
-	uint32_t handle;
-	bool kernel = false;
-	int r;
-
-	/* reject invalid gem flags */
-	if (args->in.domain_flags & ~(AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED |
-				      AMDGPU_GEM_CREATE_NO_CPU_ACCESS |
-				      AMDGPU_GEM_CREATE_CPU_GTT_USWC |
-				      AMDGPU_GEM_CREATE_VRAM_CLEARED))
-		return -EINVAL;
-
-	/* reject invalid gem domains */
-	if (args->in.domains & ~(AMDGPU_GEM_DOMAIN_CPU |
-				 AMDGPU_GEM_DOMAIN_GTT |
-				 AMDGPU_GEM_DOMAIN_VRAM |
-				 AMDGPU_GEM_DOMAIN_GDS |
-				 AMDGPU_GEM_DOMAIN_GWS |
-				 AMDGPU_GEM_DOMAIN_OA))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	/* create a gem object to contain this object in */
 	if (args->in.domains & (AMDGPU_GEM_DOMAIN_GDS |
 	    AMDGPU_GEM_DOMAIN_GWS | AMDGPU_GEM_DOMAIN_OA)) {
-<<<<<<< HEAD
 		if (flags & AMDGPU_GEM_CREATE_VM_ALWAYS_VALID) {
 			/* if gds bo is created from user space, it must be
 			 * passed to bo list
@@ -349,9 +244,6 @@ int amdgpu_gem_create_ioctl(struct drm_device *dev, void *data,
 			return -EINVAL;
 		}
 		flags |= AMDGPU_GEM_CREATE_NO_CPU_ACCESS;
-=======
-		kernel = true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (args->in.domains == AMDGPU_GEM_DOMAIN_GDS)
 			size = size << AMDGPU_GDS_SHIFT;
 		else if (args->in.domains == AMDGPU_GEM_DOMAIN_GWS)
@@ -363,7 +255,6 @@ int amdgpu_gem_create_ioctl(struct drm_device *dev, void *data,
 	}
 	size = roundup(size, PAGE_SIZE);
 
-<<<<<<< HEAD
 	if (flags & AMDGPU_GEM_CREATE_VM_ALWAYS_VALID) {
 		r = amdgpu_bo_reserve(vm->root.base.bo, false);
 		if (r)
@@ -383,12 +274,6 @@ int amdgpu_gem_create_ioctl(struct drm_device *dev, void *data,
 		}
 		amdgpu_bo_unreserve(vm->root.base.bo);
 	}
-=======
-	r = amdgpu_gem_object_create(adev, size, args->in.alignment,
-				     (u32)(0xffffffff & args->in.domains),
-				     args->in.domain_flags,
-				     kernel, &gobj);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r)
 		return r;
 
@@ -406,10 +291,7 @@ int amdgpu_gem_create_ioctl(struct drm_device *dev, void *data,
 int amdgpu_gem_userptr_ioctl(struct drm_device *dev, void *data,
 			     struct drm_file *filp)
 {
-<<<<<<< HEAD
 	struct ttm_operation_ctx ctx = { true, false };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct amdgpu_device *adev = dev->dev_private;
 	struct drm_amdgpu_gem_userptr *args = data;
 	struct drm_gem_object *gobj;
@@ -417,11 +299,6 @@ int amdgpu_gem_userptr_ioctl(struct drm_device *dev, void *data,
 	uint32_t handle;
 	int r;
 
-<<<<<<< HEAD
-=======
-	args->addr = untagged_addr(args->addr);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (offset_in_page(args->addr | args->size))
 		return -EINVAL;
 
@@ -439,14 +316,8 @@ int amdgpu_gem_userptr_ioctl(struct drm_device *dev, void *data,
 	}
 
 	/* create a gem object to contain this object in */
-<<<<<<< HEAD
 	r = amdgpu_gem_object_create(adev, args->size, 0, AMDGPU_GEM_DOMAIN_CPU,
 				     0, ttm_bo_type_device, NULL, &gobj);
-=======
-	r = amdgpu_gem_object_create(adev, args->size, 0,
-				     AMDGPU_GEM_DOMAIN_CPU, 0,
-				     0, &gobj);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r)
 		return r;
 
@@ -464,39 +335,20 @@ int amdgpu_gem_userptr_ioctl(struct drm_device *dev, void *data,
 	}
 
 	if (args->flags & AMDGPU_GEM_USERPTR_VALIDATE) {
-<<<<<<< HEAD
 		r = amdgpu_ttm_tt_get_user_pages(bo->tbo.ttm,
 						 bo->tbo.ttm->pages);
 		if (r)
 			goto release_object;
-=======
-		down_read(&current->mm->mmap_sem);
-
-		r = amdgpu_ttm_tt_get_user_pages(bo->tbo.ttm,
-						 bo->tbo.ttm->pages);
-		if (r)
-			goto unlock_mmap_sem;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		r = amdgpu_bo_reserve(bo, true);
 		if (r)
 			goto free_pages;
 
-<<<<<<< HEAD
 		amdgpu_bo_placement_from_domain(bo, AMDGPU_GEM_DOMAIN_GTT);
 		r = ttm_bo_validate(&bo->tbo, &bo->placement, &ctx);
 		amdgpu_bo_unreserve(bo);
 		if (r)
 			goto free_pages;
-=======
-		amdgpu_ttm_placement_from_domain(bo, AMDGPU_GEM_DOMAIN_GTT);
-		r = ttm_bo_validate(&bo->tbo, &bo->placement, true, false);
-		amdgpu_bo_unreserve(bo);
-		if (r)
-			goto free_pages;
-
-		up_read(&current->mm->mmap_sem);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	r = drm_gem_handle_create(filp, gobj, &handle);
@@ -509,14 +361,7 @@ int amdgpu_gem_userptr_ioctl(struct drm_device *dev, void *data,
 	return 0;
 
 free_pages:
-<<<<<<< HEAD
 	release_pages(bo->tbo.ttm->pages, bo->tbo.ttm->num_pages);
-=======
-	release_pages(bo->tbo.ttm->pages, bo->tbo.ttm->num_pages, false);
-
-unlock_mmap_sem:
-	up_read(&current->mm->mmap_sem);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 release_object:
 	drm_gem_object_put_unlocked(gobj);
@@ -665,10 +510,6 @@ out:
  * @adev: amdgpu_device pointer
  * @vm: vm to update
  * @bo_va: bo_va to update
-<<<<<<< HEAD
-=======
- * @list: validation list
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @operation: map, unmap or clear
  *
  * Update the bo_va directly after setting its address. Errors are not
@@ -677,33 +518,18 @@ out:
 static void amdgpu_gem_va_update_vm(struct amdgpu_device *adev,
 				    struct amdgpu_vm *vm,
 				    struct amdgpu_bo_va *bo_va,
-<<<<<<< HEAD
 				    uint32_t operation)
 {
 	int r;
 
 	if (!amdgpu_vm_ready(vm))
 		return;
-=======
-				    struct list_head *list,
-				    uint32_t operation)
-{
-	int r = -ERESTARTSYS;
-
-	if (!amdgpu_gem_vm_ready(adev, vm, list))
-		goto error;
-
-	r = amdgpu_vm_update_directories(adev, vm);
-	if (r)
-		goto error;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	r = amdgpu_vm_clear_freed(adev, vm, NULL);
 	if (r)
 		goto error;
 
 	if (operation == AMDGPU_VA_OP_MAP ||
-<<<<<<< HEAD
 	    operation == AMDGPU_VA_OP_REPLACE) {
 		r = amdgpu_vm_bo_update(adev, bo_va, false);
 		if (r)
@@ -711,10 +537,6 @@ static void amdgpu_gem_va_update_vm(struct amdgpu_device *adev,
 	}
 
 	r = amdgpu_vm_update_directories(adev, vm);
-=======
-	    operation == AMDGPU_VA_OP_REPLACE)
-		r = amdgpu_vm_bo_update(adev, bo_va, false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 error:
 	if (r && r != -ERESTARTSYS)
@@ -739,16 +561,11 @@ int amdgpu_gem_va_ioctl(struct drm_device *dev, void *data,
 	struct amdgpu_bo_list_entry vm_pd;
 	struct ttm_validate_buffer tv;
 	struct ww_acquire_ctx ticket;
-<<<<<<< HEAD
 	struct list_head list, duplicates;
-=======
-	struct list_head list;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint64_t va_flags;
 	int r = 0;
 
 	if (args->va_address < AMDGPU_VA_RESERVED_SIZE) {
-<<<<<<< HEAD
 		dev_dbg(&dev->pdev->dev,
 			"va_address 0x%LX is in reserved area 0x%LX\n",
 			args->va_address, AMDGPU_VA_RESERVED_SIZE);
@@ -768,17 +585,6 @@ int amdgpu_gem_va_ioctl(struct drm_device *dev, void *data,
 
 	if ((args->flags & ~valid_flags) && (args->flags & ~prt_flags)) {
 		dev_dbg(&dev->pdev->dev, "invalid flags combination 0x%08X\n",
-=======
-		dev_err(&dev->pdev->dev,
-			"va_address 0x%lX is in reserved area 0x%X\n",
-			(unsigned long)args->va_address,
-			AMDGPU_VA_RESERVED_SIZE);
-		return -EINVAL;
-	}
-
-	if ((args->flags & ~valid_flags) && (args->flags & ~prt_flags)) {
-		dev_err(&dev->pdev->dev, "invalid flags combination 0x%08X\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			args->flags);
 		return -EINVAL;
 	}
@@ -790,7 +596,6 @@ int amdgpu_gem_va_ioctl(struct drm_device *dev, void *data,
 	case AMDGPU_VA_OP_REPLACE:
 		break;
 	default:
-<<<<<<< HEAD
 		dev_dbg(&dev->pdev->dev, "unsupported operation %d\n",
 			args->operation);
 		return -EINVAL;
@@ -798,19 +603,6 @@ int amdgpu_gem_va_ioctl(struct drm_device *dev, void *data,
 
 	INIT_LIST_HEAD(&list);
 	INIT_LIST_HEAD(&duplicates);
-=======
-		dev_err(&dev->pdev->dev, "unsupported operation %d\n",
-			args->operation);
-		return -EINVAL;
-	}
-	if ((args->operation == AMDGPU_VA_OP_MAP) ||
-	    (args->operation == AMDGPU_VA_OP_REPLACE)) {
-		if (amdgpu_kms_vram_lost(adev, fpriv))
-			return -ENODEV;
-	}
-
-	INIT_LIST_HEAD(&list);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if ((args->operation != AMDGPU_VA_OP_CLEAR) &&
 	    !(args->flags & AMDGPU_VM_PAGE_PRT)) {
 		gobj = drm_gem_object_lookup(filp, args->handle);
@@ -818,11 +610,7 @@ int amdgpu_gem_va_ioctl(struct drm_device *dev, void *data,
 			return -ENOENT;
 		abo = gem_to_amdgpu_bo(gobj);
 		tv.bo = &abo->tbo;
-<<<<<<< HEAD
 		tv.shared = !!(abo->flags & AMDGPU_GEM_CREATE_VM_ALWAYS_VALID);
-=======
-		tv.shared = false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		list_add(&tv.head, &list);
 	} else {
 		gobj = NULL;
@@ -831,11 +619,7 @@ int amdgpu_gem_va_ioctl(struct drm_device *dev, void *data,
 
 	amdgpu_vm_get_pd_bo(&fpriv->vm, &list, &vm_pd);
 
-<<<<<<< HEAD
 	r = ttm_eu_reserve_buffers(&ticket, &list, true, &duplicates);
-=======
-	r = ttm_eu_reserve_buffers(&ticket, &list, true, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r)
 		goto error_unref;
 
@@ -858,11 +642,7 @@ int amdgpu_gem_va_ioctl(struct drm_device *dev, void *data,
 		if (r)
 			goto error_backoff;
 
-<<<<<<< HEAD
 		va_flags = amdgpu_gmc_get_pte_flags(adev, args->flags);
-=======
-		va_flags = amdgpu_vm_get_pte_flags(adev, args->flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		r = amdgpu_vm_bo_map(adev, bo_va, args->va_address,
 				     args->offset_in_bo, args->map_size,
 				     va_flags);
@@ -882,11 +662,7 @@ int amdgpu_gem_va_ioctl(struct drm_device *dev, void *data,
 		if (r)
 			goto error_backoff;
 
-<<<<<<< HEAD
 		va_flags = amdgpu_gmc_get_pte_flags(adev, args->flags);
-=======
-		va_flags = amdgpu_vm_get_pte_flags(adev, args->flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		r = amdgpu_vm_bo_replace_map(adev, bo_va, args->va_address,
 					     args->offset_in_bo, args->map_size,
 					     va_flags);
@@ -895,11 +671,7 @@ int amdgpu_gem_va_ioctl(struct drm_device *dev, void *data,
 		break;
 	}
 	if (!r && !(args->flags & AMDGPU_VM_DELAY_UPDATE) && !amdgpu_vm_debug)
-<<<<<<< HEAD
 		amdgpu_gem_va_update_vm(adev, &fpriv->vm, bo_va,
-=======
-		amdgpu_gem_va_update_vm(adev, &fpriv->vm, bo_va, &list,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					args->operation);
 
 error_backoff:
@@ -913,10 +685,7 @@ error_unref:
 int amdgpu_gem_op_ioctl(struct drm_device *dev, void *data,
 			struct drm_file *filp)
 {
-<<<<<<< HEAD
 	struct amdgpu_device *adev = dev->dev_private;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_amdgpu_gem_op *args = data;
 	struct drm_gem_object *gobj;
 	struct amdgpu_bo *robj;
@@ -964,12 +733,9 @@ int amdgpu_gem_op_ioctl(struct drm_device *dev, void *data,
 		if (robj->allowed_domains == AMDGPU_GEM_DOMAIN_VRAM)
 			robj->allowed_domains |= AMDGPU_GEM_DOMAIN_GTT;
 
-<<<<<<< HEAD
 		if (robj->flags & AMDGPU_GEM_CREATE_VM_ALWAYS_VALID)
 			amdgpu_vm_bo_invalidate(adev, robj, true);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		amdgpu_bo_unreserve(robj);
 		break;
 	default:
@@ -989,30 +755,18 @@ int amdgpu_mode_dumb_create(struct drm_file *file_priv,
 	struct amdgpu_device *adev = dev->dev_private;
 	struct drm_gem_object *gobj;
 	uint32_t handle;
-<<<<<<< HEAD
 	u32 domain;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int r;
 
 	args->pitch = amdgpu_align_pitch(adev, args->width,
 					 DIV_ROUND_UP(args->bpp, 8), 0);
 	args->size = (u64)args->pitch * args->height;
 	args->size = ALIGN(args->size, PAGE_SIZE);
-<<<<<<< HEAD
 	domain = amdgpu_bo_get_preferred_pin_domain(adev,
 				amdgpu_display_supported_domains(adev));
 	r = amdgpu_gem_object_create(adev, args->size, 0, domain,
 				     AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED,
 				     ttm_bo_type_device, NULL, &gobj);
-=======
-
-	r = amdgpu_gem_object_create(adev, args->size, 0,
-				     AMDGPU_GEM_DOMAIN_VRAM,
-				     AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED,
-				     ttm_bo_type_device,
-				     &gobj);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r)
 		return -ENOMEM;
 
@@ -1027,33 +781,23 @@ int amdgpu_mode_dumb_create(struct drm_file *file_priv,
 }
 
 #if defined(CONFIG_DEBUG_FS)
-<<<<<<< HEAD
 
 #define amdgpu_debugfs_gem_bo_print_flag(m, bo, flag)	\
 	if (bo->flags & (AMDGPU_GEM_CREATE_ ## flag)) {	\
 		seq_printf((m), " " #flag);		\
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int amdgpu_debugfs_gem_bo_info(int id, void *ptr, void *data)
 {
 	struct drm_gem_object *gobj = ptr;
 	struct amdgpu_bo *bo = gem_to_amdgpu_bo(gobj);
 	struct seq_file *m = data;
 
-<<<<<<< HEAD
 	struct dma_buf_attachment *attachment;
 	struct dma_buf *dma_buf;
 	unsigned domain;
 	const char *placement;
 	unsigned pin_count;
-=======
-	unsigned domain;
-	const char *placement;
-	unsigned pin_count;
-	uint64_t offset;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	domain = amdgpu_mem_type_to_domain(bo->tbo.mem.mem_type);
 	switch (domain) {
@@ -1071,7 +815,6 @@ static int amdgpu_debugfs_gem_bo_info(int id, void *ptr, void *data)
 	seq_printf(m, "\t0x%08x: %12ld byte %s",
 		   id, amdgpu_bo_size(bo), placement);
 
-<<<<<<< HEAD
 	pin_count = READ_ONCE(bo->pin_count);
 	if (pin_count)
 		seq_printf(m, " pin count %d", pin_count);
@@ -1093,15 +836,6 @@ static int amdgpu_debugfs_gem_bo_info(int id, void *ptr, void *data)
 	amdgpu_debugfs_gem_bo_print_flag(m, bo, VM_ALWAYS_VALID);
 	amdgpu_debugfs_gem_bo_print_flag(m, bo, EXPLICIT_SYNC);
 
-=======
-	offset = ACCESS_ONCE(bo->tbo.mem.start);
-	if (offset != AMDGPU_BO_INVALID_OFFSET)
-		seq_printf(m, " @ 0x%010Lx", offset);
-
-	pin_count = ACCESS_ONCE(bo->pin_count);
-	if (pin_count)
-		seq_printf(m, " pin count %d", pin_count);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	seq_printf(m, "\n");
 
 	return 0;
@@ -1147,11 +881,7 @@ static const struct drm_info_list amdgpu_debugfs_gem_list[] = {
 };
 #endif
 
-<<<<<<< HEAD
 int amdgpu_debugfs_gem_init(struct amdgpu_device *adev)
-=======
-int amdgpu_gem_debugfs_init(struct amdgpu_device *adev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 #if defined(CONFIG_DEBUG_FS)
 	return amdgpu_debugfs_add_files(adev, amdgpu_debugfs_gem_list, 1);

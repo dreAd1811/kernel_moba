@@ -14,10 +14,7 @@
 
 #include <linux/linkage.h>
 #include <asm/asm-offsets.h>
-<<<<<<< HEAD
 #include <asm/asmmacro.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/processor.h>
 #include <asm/coprocessor.h>
 #include <asm/thread_info.h>
@@ -129,10 +126,7 @@
  *
  * Note: _user_exception might be at an odd address. Don't use call0..call12
  */
-<<<<<<< HEAD
 	.literal_position
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 ENTRY(user_exception)
 
@@ -483,12 +477,7 @@ common_exception_return:
 1:
 	irq_save a2, a3
 #ifdef CONFIG_TRACE_IRQFLAGS
-<<<<<<< HEAD
 	call4	trace_hardirqs_off
-=======
-	movi	a4, trace_hardirqs_off
-	callx4	a4
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 	/* Jump if we are returning from kernel exceptions. */
@@ -515,39 +504,20 @@ common_exception_return:
 	/* Call do_signal() */
 
 #ifdef CONFIG_TRACE_IRQFLAGS
-<<<<<<< HEAD
 	call4	trace_hardirqs_on
 #endif
 	rsil	a2, 0
 	mov	a6, a1
 	call4	do_notify_resume	# int do_notify_resume(struct pt_regs*)
-=======
-	movi	a4, trace_hardirqs_on
-	callx4	a4
-#endif
-	rsil	a2, 0
-	movi	a4, do_notify_resume	# int do_notify_resume(struct pt_regs*)
-	mov	a6, a1
-	callx4	a4
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	j	1b
 
 3:	/* Reschedule */
 
 #ifdef CONFIG_TRACE_IRQFLAGS
-<<<<<<< HEAD
 	call4	trace_hardirqs_on
 #endif
 	rsil	a2, 0
 	call4	schedule	# void schedule (void)
-=======
-	movi	a4, trace_hardirqs_on
-	callx4	a4
-#endif
-	rsil	a2, 0
-	movi	a4, schedule	# void schedule (void)
-	callx4	a4
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	j	1b
 
 #ifdef CONFIG_PREEMPT
@@ -558,12 +528,7 @@ common_exception_return:
 
 	l32i	a4, a2, TI_PRE_COUNT
 	bnez	a4, 4f
-<<<<<<< HEAD
 	call4	preempt_schedule_irq
-=======
-	movi	a4, preempt_schedule_irq
-	callx4	a4
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	j	1b
 #endif
 
@@ -576,35 +541,20 @@ common_exception_return:
 5:
 #ifdef CONFIG_HAVE_HW_BREAKPOINT
 	_bbci.l	a4, TIF_DB_DISABLED, 7f
-<<<<<<< HEAD
 	call4	restore_dbreak
-=======
-	movi	a4, restore_dbreak
-	callx4	a4
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 7:
 #endif
 #ifdef CONFIG_DEBUG_TLB_SANITY
 	l32i	a4, a1, PT_DEPC
 	bgeui	a4, VALID_DOUBLE_EXCEPTION_ADDRESS, 4f
-<<<<<<< HEAD
 	call4	check_tlb_sanity
-=======
-	movi	a4, check_tlb_sanity
-	callx4	a4
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 6:
 4:
 #ifdef CONFIG_TRACE_IRQFLAGS
 	extui	a4, a3, PS_INTLEVEL_SHIFT, PS_INTLEVEL_WIDTH
 	bgei	a4, LOCKLEVEL, 1f
-<<<<<<< HEAD
 	call4	trace_hardirqs_on
-=======
-	movi	a4, trace_hardirqs_on
-	callx4	a4
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 1:
 #endif
 	/* Restore optional registers. */
@@ -820,11 +770,8 @@ ENDPROC(kernel_exception)
  * When we get here,  a0 is trashed and saved to excsave[debuglevel]
  */
 
-<<<<<<< HEAD
 	.literal_position
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 ENTRY(debug_exception)
 
 	rsr	a0, SREG_EPS + XCHAL_DEBUGLEVEL
@@ -964,11 +911,8 @@ ENDPROC(debug_exception)
 unrecoverable_text:
 	.ascii "Unrecoverable error in exception handler\0"
 
-<<<<<<< HEAD
 	.literal_position
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 ENTRY(unrecoverable_exception)
 
 	movi	a0, 1
@@ -986,15 +930,8 @@ ENTRY(unrecoverable_exception)
 	movi	a0, 0
 	addi	a1, a1, PT_REGS_OFFSET
 
-<<<<<<< HEAD
 	movi	a6, unrecoverable_text
 	call4	panic
-=======
-	movi	a4, panic
-	movi	a6, unrecoverable_text
-
-	callx4	a4
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 1:	j	1b
 
@@ -1131,12 +1068,7 @@ ENTRY(fast_syscall_unrecoverable)
 	xsr     a2, depc                # restore a2, depc
 
 	wsr     a0, excsave1
-<<<<<<< HEAD
 	call0	unrecoverable_exception
-=======
-	movi    a0, unrecoverable_exception
-	callx0  a0
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 ENDPROC(fast_syscall_unrecoverable)
 
@@ -1163,42 +1095,12 @@ ENDPROC(fast_syscall_unrecoverable)
  *	     <  VALID_DOUBLE_EXCEPTION_ADDRESS: regular exception
  *
  * Note: we don't have to save a2; a2 holds the return value
-<<<<<<< HEAD
  */
 
 	.literal_position
 
 #ifdef CONFIG_FAST_SYSCALL_XTENSA
 
-=======
- *
- * We use the two macros TRY and CATCH:
- *
- * TRY	 adds an entry to the __ex_table fixup table for the immediately
- *	 following instruction.
- *
- * CATCH catches any exception that occurred at one of the preceding TRY
- *       statements and continues from there
- *
- * Usage TRY	l32i	a0, a1, 0
- *		<other code>
- *	 done:	rfe
- *	 CATCH	<set return code>
- *		j done
- */
-
-#ifdef CONFIG_FAST_SYSCALL_XTENSA
-
-#define TRY								\
-	.section __ex_table, "a";					\
-	.word	66f, 67f;						\
-	.text;								\
-66:
-
-#define CATCH								\
-67:
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 ENTRY(fast_syscall_xtensa)
 
 	s32i	a7, a2, PT_AREG7	# we need an additional register
@@ -1212,15 +1114,9 @@ ENTRY(fast_syscall_xtensa)
 
 .Lswp:	/* Atomic compare and swap */
 
-<<<<<<< HEAD
 EX(.Leac) l32i	a0, a3, 0		# read old value
 	bne	a0, a4, 1f		# same as old value? jump
 EX(.Leac) s32i	a5, a3, 0		# different, modify value
-=======
-TRY	l32i	a0, a3, 0		# read old value
-	bne	a0, a4, 1f		# same as old value? jump
-TRY	s32i	a5, a3, 0		# different, modify value
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	l32i	a7, a2, PT_AREG7	# restore a7
 	l32i	a0, a2, PT_AREG0	# restore a0
 	movi	a2, 1			# and return 1
@@ -1233,20 +1129,12 @@ TRY	s32i	a5, a3, 0		# different, modify value
 
 .Lnswp:	/* Atomic set, add, and exg_add. */
 
-<<<<<<< HEAD
 EX(.Leac) l32i	a7, a3, 0		# orig
-=======
-TRY	l32i	a7, a3, 0		# orig
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	addi	a6, a6, -SYS_XTENSA_ATOMIC_SET
 	add	a0, a4, a7		# + arg
 	moveqz	a0, a4, a6		# set
 	addi	a6, a6, SYS_XTENSA_ATOMIC_SET
-<<<<<<< HEAD
 EX(.Leac) s32i	a0, a3, 0		# write new value
-=======
-TRY	s32i	a0, a3, 0		# write new value
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mov	a0, a2
 	mov	a2, a7
@@ -1254,10 +1142,6 @@ TRY	s32i	a0, a3, 0		# write new value
 	l32i	a0, a0, PT_AREG0	# restore a0
 	rfe
 
-<<<<<<< HEAD
-=======
-CATCH
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 .Leac:	l32i	a7, a2, PT_AREG7	# restore a7
 	l32i	a0, a2, PT_AREG0	# restore a0
 	movi	a2, -EFAULT
@@ -1499,22 +1383,12 @@ ENTRY(fast_syscall_spill_registers)
 	rsync
 
 	movi	a6, SIGSEGV
-<<<<<<< HEAD
 	call4	do_exit
-=======
-	movi	a4, do_exit
-	callx4	a4
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* shouldn't return, so panic */
 
 	wsr	a0, excsave1
-<<<<<<< HEAD
 	call0	unrecoverable_exception		# should not return
-=======
-	movi	a0, unrecoverable_exception
-	callx0	a0		# should not return
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 1:	j	1b
 
 
@@ -1660,13 +1534,8 @@ ENDPROC(fast_syscall_spill_registers)
 
 ENTRY(fast_second_level_miss_double_kernel)
 
-<<<<<<< HEAD
 1:
 	call0	unrecoverable_exception		# should not return
-=======
-1:	movi	a0, unrecoverable_exception
-	callx0	a0		# should not return
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 1:	j	1b
 
 ENDPROC(fast_second_level_miss_double_kernel)
@@ -1988,10 +1857,7 @@ ENDPROC(fast_store_prohibited)
  * void system_call (struct pt_regs* regs, int exccause)
  *                            a2                 a3
  */
-<<<<<<< HEAD
 	.literal_position
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 ENTRY(system_call)
 
@@ -2001,14 +1867,8 @@ ENTRY(system_call)
 
 	l32i	a3, a2, PT_AREG2
 	mov	a6, a2
-<<<<<<< HEAD
 	s32i	a3, a2, PT_SYSCALL
 	call4	do_syscall_trace_enter
-=======
-	movi	a4, do_syscall_trace_enter
-	s32i	a3, a2, PT_SYSCALL
-	callx4	a4
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mov	a3, a6
 
 	/* syscall = sys_call_table[syscall_nr] */
@@ -2040,14 +1900,8 @@ ENTRY(system_call)
 1:	/* regs->areg[2] = return_value */
 
 	s32i	a6, a2, PT_AREG2
-<<<<<<< HEAD
 	mov	a6, a2
 	call4	do_syscall_trace_leave
-=======
-	movi	a4, do_syscall_trace_leave
-	mov	a6, a2
-	callx4	a4
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	retw
 
 ENDPROC(system_call)
@@ -2117,15 +1971,12 @@ ENTRY(_switch_to)
 	s32i	a1, a2, THREAD_SP	# save stack pointer
 #endif
 
-<<<<<<< HEAD
 #if defined(CONFIG_STACKPROTECTOR) && !defined(CONFIG_SMP)
 	movi	a6, __stack_chk_guard
 	l32i	a8, a3, TASK_STACK_CANARY
 	s32i	a8, a6, 0
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Disable ints while we manipulate the stack pointer. */
 
 	irq_save a14, a3
@@ -2172,19 +2023,10 @@ ENTRY(ret_from_fork)
 	/* void schedule_tail (struct task_struct *prev)
 	 * Note: prev is still in a6 (return value from fake call4 frame)
 	 */
-<<<<<<< HEAD
 	call4	schedule_tail
 
 	mov	a6, a1
 	call4	do_syscall_trace_leave
-=======
-	movi	a4, schedule_tail
-	callx4	a4
-
-	movi	a4, do_syscall_trace_leave
-	mov	a6, a1
-	callx4	a4
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	j	common_exception_return
 

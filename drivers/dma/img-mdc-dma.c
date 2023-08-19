@@ -23,10 +23,7 @@
 #include <linux/of_device.h>
 #include <linux/of_dma.h>
 #include <linux/platform_device.h>
-<<<<<<< HEAD
 #include <linux/pm_runtime.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/regmap.h>
 #include <linux/slab.h>
 #include <linux/spinlock.h>
@@ -697,10 +694,6 @@ static unsigned int mdc_get_new_events(struct mdc_chan *mchan)
 static int mdc_terminate_all(struct dma_chan *chan)
 {
 	struct mdc_chan *mchan = to_mdc_chan(chan);
-<<<<<<< HEAD
-=======
-	struct mdc_tx_desc *mdesc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 	LIST_HEAD(head);
 
@@ -709,32 +702,21 @@ static int mdc_terminate_all(struct dma_chan *chan)
 	mdc_chan_writel(mchan, MDC_CONTROL_AND_STATUS_CANCEL,
 			MDC_CONTROL_AND_STATUS);
 
-<<<<<<< HEAD
 	if (mchan->desc) {
 		vchan_terminate_vdesc(&mchan->desc->vd);
 		mchan->desc = NULL;
 	}
-=======
-	mdesc = mchan->desc;
-	mchan->desc = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vchan_get_all_descriptors(&mchan->vc, &head);
 
 	mdc_get_new_events(mchan);
 
 	spin_unlock_irqrestore(&mchan->vc.lock, flags);
 
-<<<<<<< HEAD
-=======
-	if (mdesc)
-		mdc_desc_free(&mdesc->vd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vchan_dma_desc_free_list(&mchan->vc, &head);
 
 	return 0;
 }
 
-<<<<<<< HEAD
 static void mdc_synchronize(struct dma_chan *chan)
 {
 	struct mdc_chan *mchan = to_mdc_chan(chan);
@@ -742,8 +724,6 @@ static void mdc_synchronize(struct dma_chan *chan)
 	vchan_synchronize(&mchan->vc);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mdc_slave_config(struct dma_chan *chan,
 			    struct dma_slave_config *config)
 {
@@ -757,7 +737,6 @@ static int mdc_slave_config(struct dma_chan *chan,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int mdc_alloc_chan_resources(struct dma_chan *chan)
 {
 	struct mdc_chan *mchan = to_mdc_chan(chan);
@@ -766,24 +745,15 @@ static int mdc_alloc_chan_resources(struct dma_chan *chan)
 	return pm_runtime_get_sync(dev);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void mdc_free_chan_resources(struct dma_chan *chan)
 {
 	struct mdc_chan *mchan = to_mdc_chan(chan);
 	struct mdc_dma *mdma = mchan->mdma;
-<<<<<<< HEAD
 	struct device *dev = mdma2dev(mdma);
 
 	mdc_terminate_all(chan);
 	mdma->soc->disable_chan(mchan);
 	pm_runtime_put(dev);
-=======
-
-	mdc_terminate_all(chan);
-
-	mdma->soc->disable_chan(mchan);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static irqreturn_t mdc_chan_irq(int irq, void *dev_id)
@@ -900,7 +870,6 @@ static const struct of_device_id mdc_dma_of_match[] = {
 };
 MODULE_DEVICE_TABLE(of, mdc_dma_of_match);
 
-<<<<<<< HEAD
 static int img_mdc_runtime_suspend(struct device *dev)
 {
 	struct mdc_dma *mdma = dev_get_drvdata(dev);
@@ -917,8 +886,6 @@ static int img_mdc_runtime_resume(struct device *dev)
 	return clk_prepare_enable(mdma->clk);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mdc_dma_probe(struct platform_device *pdev)
 {
 	struct mdc_dma *mdma;
@@ -948,13 +915,6 @@ static int mdc_dma_probe(struct platform_device *pdev)
 	if (IS_ERR(mdma->clk))
 		return PTR_ERR(mdma->clk);
 
-<<<<<<< HEAD
-=======
-	ret = clk_prepare_enable(mdma->clk);
-	if (ret)
-		return ret;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dma_cap_zero(mdma->dma_dev.cap_mask);
 	dma_cap_set(DMA_SLAVE, mdma->dma_dev.cap_mask);
 	dma_cap_set(DMA_PRIVATE, mdma->dma_dev.cap_mask);
@@ -987,28 +947,18 @@ static int mdc_dma_probe(struct platform_device *pdev)
 				   "img,max-burst-multiplier",
 				   &mdma->max_burst_mult);
 	if (ret)
-<<<<<<< HEAD
 		return ret;
-=======
-		goto disable_clk;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mdma->dma_dev.dev = &pdev->dev;
 	mdma->dma_dev.device_prep_slave_sg = mdc_prep_slave_sg;
 	mdma->dma_dev.device_prep_dma_cyclic = mdc_prep_dma_cyclic;
 	mdma->dma_dev.device_prep_dma_memcpy = mdc_prep_dma_memcpy;
-<<<<<<< HEAD
 	mdma->dma_dev.device_alloc_chan_resources = mdc_alloc_chan_resources;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mdma->dma_dev.device_free_chan_resources = mdc_free_chan_resources;
 	mdma->dma_dev.device_tx_status = mdc_tx_status;
 	mdma->dma_dev.device_issue_pending = mdc_issue_pending;
 	mdma->dma_dev.device_terminate_all = mdc_terminate_all;
-<<<<<<< HEAD
 	mdma->dma_dev.device_synchronize = mdc_synchronize;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mdma->dma_dev.device_config = mdc_slave_config;
 
 	mdma->dma_dev.directions = BIT(DMA_DEV_TO_MEM) | BIT(DMA_MEM_TO_DEV);
@@ -1025,25 +975,14 @@ static int mdc_dma_probe(struct platform_device *pdev)
 		mchan->mdma = mdma;
 		mchan->chan_nr = i;
 		mchan->irq = platform_get_irq(pdev, i);
-<<<<<<< HEAD
 		if (mchan->irq < 0)
 			return mchan->irq;
 
-=======
-		if (mchan->irq < 0) {
-			ret = mchan->irq;
-			goto disable_clk;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = devm_request_irq(&pdev->dev, mchan->irq, mdc_chan_irq,
 				       IRQ_TYPE_LEVEL_HIGH,
 				       dev_name(&pdev->dev), mchan);
 		if (ret < 0)
-<<<<<<< HEAD
 			return ret;
-=======
-			goto disable_clk;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		mchan->vc.desc_free = mdc_desc_free;
 		vchan_init(&mchan->vc, &mdma->dma_dev);
@@ -1052,7 +991,6 @@ static int mdc_dma_probe(struct platform_device *pdev)
 	mdma->desc_pool = dmam_pool_create(dev_name(&pdev->dev), &pdev->dev,
 					   sizeof(struct mdc_hw_list_desc),
 					   4, 0);
-<<<<<<< HEAD
 	if (!mdma->desc_pool)
 		return -ENOMEM;
 
@@ -1061,20 +999,11 @@ static int mdc_dma_probe(struct platform_device *pdev)
 		ret = img_mdc_runtime_resume(&pdev->dev);
 		if (ret)
 			return ret;
-=======
-	if (!mdma->desc_pool) {
-		ret = -ENOMEM;
-		goto disable_clk;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ret = dma_async_device_register(&mdma->dma_dev);
 	if (ret)
-<<<<<<< HEAD
 		goto suspend;
-=======
-		goto disable_clk;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = of_dma_controller_register(pdev->dev.of_node, mdc_of_xlate, mdma);
 	if (ret)
@@ -1087,15 +1016,10 @@ static int mdc_dma_probe(struct platform_device *pdev)
 
 unregister:
 	dma_async_device_unregister(&mdma->dma_dev);
-<<<<<<< HEAD
 suspend:
 	if (!pm_runtime_enabled(&pdev->dev))
 		img_mdc_runtime_suspend(&pdev->dev);
 	pm_runtime_disable(&pdev->dev);
-=======
-disable_clk:
-	clk_disable_unprepare(mdma->clk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -1116,18 +1040,13 @@ static int mdc_dma_remove(struct platform_device *pdev)
 		tasklet_kill(&mchan->vc.task);
 	}
 
-<<<<<<< HEAD
 	pm_runtime_disable(&pdev->dev);
 	if (!pm_runtime_status_suspended(&pdev->dev))
 		img_mdc_runtime_suspend(&pdev->dev);
-=======
-	clk_disable_unprepare(mdma->clk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
 #ifdef CONFIG_PM_SLEEP
 static int img_mdc_suspend_late(struct device *dev)
 {
@@ -1162,11 +1081,6 @@ static struct platform_driver mdc_dma_driver = {
 	.driver = {
 		.name = "img-mdc-dma",
 		.pm = &img_mdc_pm_ops,
-=======
-static struct platform_driver mdc_dma_driver = {
-	.driver = {
-		.name = "img-mdc-dma",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.of_match_table = of_match_ptr(mdc_dma_of_match),
 	},
 	.probe = mdc_dma_probe,

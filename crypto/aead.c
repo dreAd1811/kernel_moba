@@ -54,7 +54,6 @@ int crypto_aead_setkey(struct crypto_aead *tfm,
 		       const u8 *key, unsigned int keylen)
 {
 	unsigned long alignmask = crypto_aead_alignmask(tfm);
-<<<<<<< HEAD
 	int err;
 
 	if ((unsigned long)key & alignmask)
@@ -69,13 +68,6 @@ int crypto_aead_setkey(struct crypto_aead *tfm,
 
 	crypto_aead_clear_flags(tfm, CRYPTO_TFM_NEED_KEY);
 	return 0;
-=======
-
-	if ((unsigned long)key & alignmask)
-		return setkey_unaligned(tfm, key, keylen);
-
-	return crypto_aead_alg(tfm)->setkey(tfm, key, keylen);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(crypto_aead_setkey);
 
@@ -110,11 +102,8 @@ static int crypto_aead_init_tfm(struct crypto_tfm *tfm)
 	struct crypto_aead *aead = __crypto_aead_cast(tfm);
 	struct aead_alg *alg = crypto_aead_alg(aead);
 
-<<<<<<< HEAD
 	crypto_aead_set_flags(aead, CRYPTO_TFM_NEED_KEY);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	aead->authsize = alg->maxauthsize;
 
 	if (alg->exit)
@@ -317,11 +306,7 @@ int aead_init_geniv(struct crypto_aead *aead)
 	if (err)
 		goto out;
 
-<<<<<<< HEAD
 	ctx->sknull = crypto_get_default_null_skcipher();
-=======
-	ctx->sknull = crypto_get_default_null_skcipher2();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = PTR_ERR(ctx->sknull);
 	if (IS_ERR(ctx->sknull))
 		goto out;
@@ -341,11 +326,7 @@ out:
 	return err;
 
 drop_null:
-<<<<<<< HEAD
 	crypto_put_default_null_skcipher();
-=======
-	crypto_put_default_null_skcipher2();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	goto out;
 }
 EXPORT_SYMBOL_GPL(aead_init_geniv);
@@ -355,11 +336,7 @@ void aead_exit_geniv(struct crypto_aead *tfm)
 	struct aead_geniv_ctx *ctx = crypto_aead_ctx(tfm);
 
 	crypto_free_aead(ctx->child);
-<<<<<<< HEAD
 	crypto_put_default_null_skcipher();
-=======
-	crypto_put_default_null_skcipher2();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(aead_exit_geniv);
 

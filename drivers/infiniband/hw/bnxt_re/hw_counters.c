@@ -58,7 +58,6 @@
 #include "hw_counters.h"
 
 static const char * const bnxt_re_stat_name[] = {
-<<<<<<< HEAD
 	[BNXT_RE_ACTIVE_QP]		=  "active_qps",
 	[BNXT_RE_ACTIVE_SRQ]		=  "active_srqs",
 	[BNXT_RE_ACTIVE_CQ]		=  "active_cqs",
@@ -108,18 +107,6 @@ static const char * const bnxt_re_stat_name[] = {
 	[BNXT_RE_RES_SRQ_LOAD_ERR]      = "res_srq_load_err",
 	[BNXT_RE_RES_TX_PCI_ERR]        = "res_tx_pci_err",
 	[BNXT_RE_RES_RX_PCI_ERR]        = "res_rx_pci_err"
-=======
-	[BNXT_RE_ACTIVE_QP]           =  "active_qps",
-	[BNXT_RE_ACTIVE_SRQ]          =  "active_srqs",
-	[BNXT_RE_ACTIVE_CQ]           =  "active_cqs",
-	[BNXT_RE_ACTIVE_MR]           =  "active_mrs",
-	[BNXT_RE_ACTIVE_MW]           =  "active_mws",
-	[BNXT_RE_RX_PKTS]             =  "rx_pkts",
-	[BNXT_RE_RX_BYTES]            =  "rx_bytes",
-	[BNXT_RE_TX_PKTS]             =  "tx_pkts",
-	[BNXT_RE_TX_BYTES]            =  "tx_bytes",
-	[BNXT_RE_RECOVERABLE_ERRORS]  =  "recoverable_errors"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int bnxt_re_ib_get_hw_stats(struct ib_device *ibdev,
@@ -128,10 +115,7 @@ int bnxt_re_ib_get_hw_stats(struct ib_device *ibdev,
 {
 	struct bnxt_re_dev *rdev = to_bnxt_re_dev(ibdev, ibdev);
 	struct ctx_hw_stats *bnxt_re_stats = rdev->qplib_ctx.stats.dma;
-<<<<<<< HEAD
 	int rc  = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!port || !stats)
 		return -EINVAL;
@@ -153,7 +137,6 @@ int bnxt_re_ib_get_hw_stats(struct ib_device *ibdev,
 		stats->value[BNXT_RE_TX_BYTES] =
 			le64_to_cpu(bnxt_re_stats->tx_ucast_bytes);
 	}
-<<<<<<< HEAD
 	if (test_bit(BNXT_RE_FLAG_ISSUE_ROCE_STATS, &rdev->flags)) {
 		rc = bnxt_qplib_get_roce_stats(&rdev->rcfw, &rdev->stats);
 		if (rc)
@@ -239,8 +222,6 @@ int bnxt_re_ib_get_hw_stats(struct ib_device *ibdev,
 				rdev->stats.res_rx_pci_err;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ARRAY_SIZE(bnxt_re_stat_name);
 }
 

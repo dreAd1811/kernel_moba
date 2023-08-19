@@ -6,10 +6,7 @@
 obj-y += setup.o init.o cmdline.o env.o time.o reset.o irq.o \
     bonito-irq.o mem.o machtype.o platform.o serial.o
 obj-$(CONFIG_PCI) += pci.o
-<<<<<<< HEAD
 obj-$(CONFIG_CPU_LOONGSON2) += dma.o
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #
 # Serial port support
@@ -29,11 +26,3 @@ obj-$(CONFIG_CS5536) += cs5536/
 #
 
 obj-$(CONFIG_SUSPEND) += pm.o
-<<<<<<< HEAD
-=======
-
-#
-# Big Memory (SWIOTLB) Support
-#
-obj-$(CONFIG_SWIOTLB) += dma-swiotlb.o
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

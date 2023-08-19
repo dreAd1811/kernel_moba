@@ -1,23 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Intel(R) Trace Hub pci driver
  *
  * Copyright (C) 2014-2015 Intel Corporation.
-<<<<<<< HEAD
-=======
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms and conditions of the GNU General Public License,
- * version 2, as published by the Free Software Foundation.
- *
- * This program is distributed in the hope it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
- * more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #define pr_fmt(fmt)	KBUILD_MODNAME ": " fmt
@@ -191,74 +176,15 @@ static const struct pci_device_id intel_th_pci_id_table[] = {
 		.driver_data = (kernel_ulong_t)&intel_th_2x,
 	},
 	{
-<<<<<<< HEAD
-=======
-		/* Comet Lake PCH */
-		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x06a6),
-		.driver_data = (kernel_ulong_t)&intel_th_2x,
-	},
-	{
-		/* Comet Lake PCH-V */
-		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0xa3a6),
-		.driver_data = (kernel_ulong_t)&intel_th_2x,
-	},
-	{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Ice Lake NNPI */
 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x45c5),
 		.driver_data = (kernel_ulong_t)&intel_th_2x,
 	},
 	{
-<<<<<<< HEAD
-=======
-		/* Ice Lake CPU */
-		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x8a29),
-		.driver_data = (kernel_ulong_t)&intel_th_2x,
-	},
-	{
-		/* Tiger Lake CPU */
-		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x9a33),
-		.driver_data = (kernel_ulong_t)&intel_th_2x,
-	},
-	{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Tiger Lake PCH */
 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0xa0a6),
 		.driver_data = (kernel_ulong_t)&intel_th_2x,
 	},
-<<<<<<< HEAD
-=======
-	{
-		/* Tiger Lake PCH-H */
-		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x43a6),
-		.driver_data = (kernel_ulong_t)&intel_th_2x,
-	},
-	{
-		/* Jasper Lake PCH */
-		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x4da6),
-		.driver_data = (kernel_ulong_t)&intel_th_2x,
-	},
-	{
-		/* Jasper Lake CPU */
-		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x4e29),
-		.driver_data = (kernel_ulong_t)&intel_th_2x,
-	},
-	{
-		/* Elkhart Lake CPU */
-		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x4529),
-		.driver_data = (kernel_ulong_t)&intel_th_2x,
-	},
-	{
-		/* Elkhart Lake */
-		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x4b26),
-		.driver_data = (kernel_ulong_t)&intel_th_2x,
-	},
-	{
-		/* Emmitsburg PCH */
-		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x1bcc),
-		.driver_data = (kernel_ulong_t)&intel_th_2x,
-	},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ 0 },
 };
 

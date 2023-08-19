@@ -1014,11 +1014,7 @@ setstack_hfcd(struct PStack *st, struct IsdnCardState *cs)
 }
 
 static void
-<<<<<<< HEAD
 hfc_dbusy_timer(struct timer_list *t)
-=======
-hfc_dbusy_timer(struct IsdnCardState *cs)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 }
 
@@ -1028,11 +1024,7 @@ static unsigned int
 	int i;
 	unsigned *send;
 
-<<<<<<< HEAD
 	if (!(send = kmalloc_array(cnt, sizeof(unsigned int), GFP_ATOMIC))) {
-=======
-	if (!(send = kmalloc(cnt * sizeof(unsigned int), GFP_ATOMIC))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		printk(KERN_WARNING
 		       "HiSax: No memory for hfcd.send\n");
 		return (NULL);
@@ -1081,10 +1073,6 @@ set_cs_func(struct IsdnCardState *cs)
 	cs->writeisacfifo = &dummyf;
 	cs->BC_Read_Reg = &ReadReg;
 	cs->BC_Write_Reg = &WriteReg;
-<<<<<<< HEAD
 	timer_setup(&cs->dbusytimer, hfc_dbusy_timer, 0);
-=======
-	setup_timer(&cs->dbusytimer, (void *)hfc_dbusy_timer, (long)cs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INIT_WORK(&cs->tqueue, hfcd_bh);
 }

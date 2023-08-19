@@ -11,11 +11,7 @@
  * (at your option) any later version.
  */
 
-<<<<<<< HEAD
 #include <linux/extcon-provider.h>
-=======
-#include <linux/extcon.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/i2c.h>
 #include <linux/interrupt.h>
 #include <linux/kernel.h>
@@ -84,11 +80,7 @@ enum max77843_muic_accessory_type {
 	MAX77843_MUIC_ADC_REMOTE_S12_BUTTON,
 	MAX77843_MUIC_ADC_RESERVED_ACC_1,
 	MAX77843_MUIC_ADC_RESERVED_ACC_2,
-<<<<<<< HEAD
 	MAX77843_MUIC_ADC_RESERVED_ACC_3, /* SmartDock */
-=======
-	MAX77843_MUIC_ADC_RESERVED_ACC_3,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MAX77843_MUIC_ADC_RESERVED_ACC_4,
 	MAX77843_MUIC_ADC_RESERVED_ACC_5,
 	MAX77843_MUIC_ADC_AUDIO_DEVICE_TYPE2,
@@ -127,10 +119,7 @@ enum max77843_muic_charger_type {
 	MAX77843_MUIC_CHG_SPECIAL_BIAS,
 	MAX77843_MUIC_CHG_RESERVED,
 	MAX77843_MUIC_CHG_GND,
-<<<<<<< HEAD
 	MAX77843_MUIC_CHG_DOCK,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const unsigned int max77843_extcon_cable[] = {
@@ -142,10 +131,7 @@ static const unsigned int max77843_extcon_cable[] = {
 	EXTCON_CHG_USB_FAST,
 	EXTCON_CHG_USB_SLOW,
 	EXTCON_DISP_MHL,
-<<<<<<< HEAD
 	EXTCON_DOCK,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	EXTCON_JIG,
 	EXTCON_NONE,
 };
@@ -216,11 +202,7 @@ static const struct regmap_irq_chip max77843_muic_irq_chip = {
 };
 
 static int max77843_muic_set_path(struct max77843_muic_info *info,
-<<<<<<< HEAD
 		u8 val, bool attached, bool nobccomp)
-=======
-		u8 val, bool attached)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct max77693_dev *max77843 = info->max77843;
 	int ret = 0;
@@ -230,7 +212,6 @@ static int max77843_muic_set_path(struct max77843_muic_info *info,
 		ctrl1 = val;
 	else
 		ctrl1 = MAX77843_MUIC_CONTROL1_SW_OPEN;
-<<<<<<< HEAD
 	if (nobccomp) {
 		/* Disable BC1.2 protocol and force manual switch control */
 		ctrl1 |= MAX77843_MUIC_CONTROL1_NOBCCOMP_MASK;
@@ -241,12 +222,6 @@ static int max77843_muic_set_path(struct max77843_muic_info *info,
 			MAX77843_MUIC_CONTROL1_COM_SW |
 				MAX77843_MUIC_CONTROL1_NOBCCOMP_MASK,
 			ctrl1);
-=======
-
-	ret = regmap_update_bits(max77843->regmap_muic,
-			MAX77843_MUIC_REG_CONTROL1,
-			MAX77843_MUIC_CONTROL1_COM_SW, ctrl1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0) {
 		dev_err(info->dev, "Cannot switch MUIC port\n");
 		return ret;
@@ -273,7 +248,6 @@ static int max77843_muic_set_path(struct max77843_muic_info *info,
 	return 0;
 }
 
-<<<<<<< HEAD
 static void max77843_charger_set_otg_vbus(struct max77843_muic_info *info,
 		 bool on)
 {
@@ -289,8 +263,6 @@ static void max77843_charger_set_otg_vbus(struct max77843_muic_info *info,
 			   MAX77843_CHG_MODE_MASK, cnfg00);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int max77843_muic_get_cable_type(struct max77843_muic_info *info,
 		enum max77843_muic_cable_group group, bool *attached)
 {
@@ -339,7 +311,6 @@ static int max77843_muic_get_cable_type(struct max77843_muic_info *info,
 			break;
 		}
 
-<<<<<<< HEAD
 		if (adc == MAX77843_MUIC_ADC_RESERVED_ACC_3) { /* SmartDock */
 			if (chg_type == MAX77843_MUIC_CHG_NONE) {
 				*attached = false;
@@ -353,8 +324,6 @@ static int max77843_muic_get_cable_type(struct max77843_muic_info *info,
 			break;
 		}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (chg_type == MAX77843_MUIC_CHG_NONE) {
 			*attached = false;
 			cable_type = info->prev_chg_type;
@@ -417,29 +386,18 @@ static int max77843_muic_adc_gnd_handler(struct max77843_muic_info *info)
 	case MAX77843_MUIC_GND_USB_HOST_VB:
 		ret = max77843_muic_set_path(info,
 					     MAX77843_MUIC_CONTROL1_SW_USB,
-<<<<<<< HEAD
 					     attached, false);
-=======
-					     attached);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret < 0)
 			return ret;
 
 		extcon_set_state_sync(info->edev, EXTCON_USB_HOST, attached);
-<<<<<<< HEAD
 		max77843_charger_set_otg_vbus(info, attached);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case MAX77843_MUIC_GND_MHL_VB:
 	case MAX77843_MUIC_GND_MHL:
 		ret = max77843_muic_set_path(info,
 					     MAX77843_MUIC_CONTROL1_SW_OPEN,
-<<<<<<< HEAD
 					     attached, false);
-=======
-					     attached);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret < 0)
 			return ret;
 
@@ -475,11 +433,7 @@ static int max77843_muic_jig_handler(struct max77843_muic_info *info,
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 	ret = max77843_muic_set_path(info, path, attached, false);
-=======
-	ret = max77843_muic_set_path(info, path, attached);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		return ret;
 
@@ -488,7 +442,6 @@ static int max77843_muic_jig_handler(struct max77843_muic_info *info,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int max77843_muic_dock_handler(struct max77843_muic_info *info,
 		bool attached)
 {
@@ -509,8 +462,6 @@ static int max77843_muic_dock_handler(struct max77843_muic_info *info,
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int max77843_muic_adc_handler(struct max77843_muic_info *info)
 {
 	int ret, cable_type;
@@ -525,14 +476,11 @@ static int max77843_muic_adc_handler(struct max77843_muic_info *info)
 		info->prev_cable_type);
 
 	switch (cable_type) {
-<<<<<<< HEAD
 	case MAX77843_MUIC_ADC_RESERVED_ACC_3: /* SmartDock */
 		ret = max77843_muic_dock_handler(info, attached);
 		if (ret < 0)
 			return ret;
 		break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case MAX77843_MUIC_ADC_GROUND:
 		ret = max77843_muic_adc_gnd_handler(info);
 		if (ret < 0)
@@ -560,10 +508,6 @@ static int max77843_muic_adc_handler(struct max77843_muic_info *info)
 	case MAX77843_MUIC_ADC_REMOTE_S12_BUTTON:
 	case MAX77843_MUIC_ADC_RESERVED_ACC_1:
 	case MAX77843_MUIC_ADC_RESERVED_ACC_2:
-<<<<<<< HEAD
-=======
-	case MAX77843_MUIC_ADC_RESERVED_ACC_3:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case MAX77843_MUIC_ADC_RESERVED_ACC_4:
 	case MAX77843_MUIC_ADC_RESERVED_ACC_5:
 	case MAX77843_MUIC_ADC_AUDIO_DEVICE_TYPE2:
@@ -607,11 +551,7 @@ static int max77843_muic_chg_handler(struct max77843_muic_info *info)
 	case MAX77843_MUIC_CHG_USB:
 		ret = max77843_muic_set_path(info,
 					     MAX77843_MUIC_CONTROL1_SW_USB,
-<<<<<<< HEAD
 					     attached, false);
-=======
-					     attached);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret < 0)
 			return ret;
 
@@ -622,11 +562,7 @@ static int max77843_muic_chg_handler(struct max77843_muic_info *info)
 	case MAX77843_MUIC_CHG_DOWNSTREAM:
 		ret = max77843_muic_set_path(info,
 					     MAX77843_MUIC_CONTROL1_SW_OPEN,
-<<<<<<< HEAD
 					     attached, false);
-=======
-					     attached);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret < 0)
 			return ret;
 
@@ -636,11 +572,7 @@ static int max77843_muic_chg_handler(struct max77843_muic_info *info)
 	case MAX77843_MUIC_CHG_DEDICATED:
 		ret = max77843_muic_set_path(info,
 					     MAX77843_MUIC_CONTROL1_SW_OPEN,
-<<<<<<< HEAD
 					     attached, false);
-=======
-					     attached);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret < 0)
 			return ret;
 
@@ -650,11 +582,7 @@ static int max77843_muic_chg_handler(struct max77843_muic_info *info)
 	case MAX77843_MUIC_CHG_SPECIAL_500MA:
 		ret = max77843_muic_set_path(info,
 					     MAX77843_MUIC_CONTROL1_SW_OPEN,
-<<<<<<< HEAD
 					     attached, false);
-=======
-					     attached);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret < 0)
 			return ret;
 
@@ -664,11 +592,7 @@ static int max77843_muic_chg_handler(struct max77843_muic_info *info)
 	case MAX77843_MUIC_CHG_SPECIAL_1A:
 		ret = max77843_muic_set_path(info,
 					     MAX77843_MUIC_CONTROL1_SW_OPEN,
-<<<<<<< HEAD
 					     attached, false);
-=======
-					     attached);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret < 0)
 			return ret;
 
@@ -687,12 +611,9 @@ static int max77843_muic_chg_handler(struct max77843_muic_info *info)
 			extcon_set_state_sync(info->edev, EXTCON_CHG_USB_DCP,
 						false);
 		break;
-<<<<<<< HEAD
 	case MAX77843_MUIC_CHG_DOCK:
 		extcon_set_state_sync(info->edev, EXTCON_CHG_USB_DCP, attached);
 		break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case MAX77843_MUIC_CHG_NONE:
 		break;
 	default:
@@ -701,11 +622,7 @@ static int max77843_muic_chg_handler(struct max77843_muic_info *info)
 			attached ? "attached" : "detached", chg_type);
 
 		max77843_muic_set_path(info, MAX77843_MUIC_CONTROL1_SW_OPEN,
-<<<<<<< HEAD
 				       attached, false);
-=======
-				       attached);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -945,12 +862,8 @@ static int max77843_muic_probe(struct platform_device *pdev)
 	max77843_muic_set_debounce_time(info, MAX77843_DEBOUNCE_TIME_25MS);
 
 	/* Set initial path for UART */
-<<<<<<< HEAD
 	max77843_muic_set_path(info, MAX77843_MUIC_CONTROL1_SW_UART, true,
 			       false);
-=======
-	max77843_muic_set_path(info, MAX77843_MUIC_CONTROL1_SW_UART, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Check revision number of MUIC device */
 	ret = regmap_read(max77843->regmap_muic, MAX77843_MUIC_REG_ID, &id);

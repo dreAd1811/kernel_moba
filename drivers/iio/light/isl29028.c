@@ -536,10 +536,6 @@ static const struct iio_chan_spec isl29028_channels[] = {
 
 static const struct iio_info isl29028_info = {
 	.attrs = &isl29108_group,
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read_raw = isl29028_read_raw,
 	.write_raw = isl29028_write_raw,
 };

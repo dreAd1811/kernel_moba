@@ -27,13 +27,9 @@
 #define CLK_PLL_AUDIO_4X	4
 #define CLK_PLL_AUDIO_8X	5
 #define CLK_PLL_VIDEO0		6
-<<<<<<< HEAD
 
 /* The PLL_VIDEO0_2X clock is exported */
 
-=======
-#define CLK_PLL_VIDEO0_2X	7
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CLK_PLL_VE		8
 #define CLK_PLL_DDR		9
 
@@ -41,13 +37,9 @@
 
 #define CLK_PLL_PERIPH_2X	11
 #define CLK_PLL_VIDEO1		12
-<<<<<<< HEAD
 
 /* The PLL_VIDEO1_2X clock is exported */
 
-=======
-#define CLK_PLL_VIDEO1_2X	13
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CLK_PLL_GPU		14
 #define CLK_PLL_MIPI		15
 #define CLK_PLL9		16

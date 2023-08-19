@@ -49,11 +49,7 @@ static inline unsigned gtod_read_begin(const struct vsyscall_gtod_data *s)
 	unsigned ret;
 
 repeat:
-<<<<<<< HEAD
 	ret = READ_ONCE(s->seq);
-=======
-	ret = ACCESS_ONCE(s->seq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(ret & 1)) {
 		cpu_relax();
 		goto repeat;

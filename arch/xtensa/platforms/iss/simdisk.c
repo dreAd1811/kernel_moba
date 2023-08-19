@@ -21,10 +21,6 @@
 #include <platform/simcall.h>
 
 #define SIMDISK_MAJOR 240
-<<<<<<< HEAD
-=======
-#define SECTOR_SHIFT 9
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SIMDISK_MINORS 1
 #define MAX_SIMDISK_COUNT 10
 
@@ -113,21 +109,13 @@ static blk_qc_t simdisk_make_request(struct request_queue *q, struct bio *bio)
 	sector_t sector = bio->bi_iter.bi_sector;
 
 	bio_for_each_segment(bvec, bio, iter) {
-<<<<<<< HEAD
 		char *buffer = kmap_atomic(bvec.bv_page) + bvec.bv_offset;
-=======
-		char *buffer = __bio_kmap_atomic(bio, iter);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		unsigned len = bvec.bv_len >> SECTOR_SHIFT;
 
 		simdisk_transfer(dev, sector, len, buffer,
 				bio_data_dir(bio) == WRITE);
 		sector += len;
-<<<<<<< HEAD
 		kunmap_atomic(buffer);
-=======
-		__bio_kunmap_atomic(buffer);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	bio_endio(bio);

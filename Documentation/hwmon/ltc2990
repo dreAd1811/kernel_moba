@@ -8,10 +8,7 @@ Supported chips:
     Datasheet: http://www.linear.com/product/ltc2990
 
 Author: Mike Looijmans <mike.looijmans@topic.nl>
-<<<<<<< HEAD
         Tom Levens <tom.levens@cern.ch>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 Description
@@ -20,15 +17,8 @@ Description
 LTC2990 is a Quad I2C Voltage, Current and Temperature Monitor.
 The chip's inputs can measure 4 voltages, or two inputs together (1+2 and 3+4)
 can be combined to measure a differential voltage, which is typically used to
-<<<<<<< HEAD
 measure current through a series resistor, or a temperature with an external
 diode.
-=======
-measure current through a series resistor, or a temperature.
-
-This driver currently uses the 2x differential mode only. In order to support
-other modes, the driver will need to be expanded.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 Usage Notes
@@ -41,7 +31,6 @@ devices explicitly.
 Sysfs attributes
 ----------------
 
-<<<<<<< HEAD
 in0_input     Voltage at Vcc pin in millivolt (range 2.5V to 5V)
 temp1_input   Internal chip temperature in millidegrees Celcius
 
@@ -54,17 +43,7 @@ temp3_input   External temperature sensor TR2 in millidegrees Celcius
 curr1_input   Current in mA across V1-V2 assuming a 1mOhm sense resistor
 curr2_input   Current in mA across V3-V4 assuming a 1mOhm sense resistor
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 The "curr*_input" measurements actually report the voltage drop across the
 input pins in microvolts. This is equivalent to the current through a 1mOhm
 sense resistor. Divide the reported value by the actual sense resistor value
 in mOhm to get the actual value.
-<<<<<<< HEAD
-=======
-
-in0_input     Voltage at Vcc pin in millivolt (range 2.5V to 5V)
-temp1_input   Internal chip temperature in millidegrees Celcius
-curr1_input   Current in mA across v1-v2 assuming a 1mOhm sense resistor.
-curr2_input   Current in mA across v3-v4 assuming a 1mOhm sense resistor.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

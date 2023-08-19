@@ -15,10 +15,7 @@
 #include <linux/err.h>
 #include <linux/clk.h>
 #include <linux/io.h>
-<<<<<<< HEAD
 #include <linux/iopoll.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/interrupt.h>
 #include <linux/of.h>
 #include <linux/of_gpio.h>
@@ -39,25 +36,17 @@
 
 #define to_dp(nm)	container_of(nm, struct analogix_dp_device, nm)
 
-<<<<<<< HEAD
 static const bool verify_fast_training;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct bridge_init {
 	struct i2c_client *client;
 	struct device_node *node;
 };
 
-<<<<<<< HEAD
 static int analogix_dp_init_dp(struct analogix_dp_device *dp)
 {
 	int ret;
 
-=======
-static void analogix_dp_init_dp(struct analogix_dp_device *dp)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	analogix_dp_reset(dp);
 
 	analogix_dp_swreset(dp);
@@ -69,7 +58,6 @@ static void analogix_dp_init_dp(struct analogix_dp_device *dp)
 	analogix_dp_enable_sw_function(dp);
 
 	analogix_dp_config_interrupt(dp);
-<<<<<<< HEAD
 	ret = analogix_dp_init_analog_func(dp);
 	if (ret)
 		return ret;
@@ -77,12 +65,6 @@ static void analogix_dp_init_dp(struct analogix_dp_device *dp)
 	analogix_dp_init_hpd(dp);
 	analogix_dp_init_aux(dp);
 	return 0;
-=======
-	analogix_dp_init_analog_func(dp);
-
-	analogix_dp_init_hpd(dp);
-	analogix_dp_init_aux(dp);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int analogix_dp_detect_hpd(struct analogix_dp_device *dp)
@@ -94,11 +76,7 @@ static int analogix_dp_detect_hpd(struct analogix_dp_device *dp)
 			return 0;
 
 		timeout_loop++;
-<<<<<<< HEAD
 		usleep_range(1000, 1100);
-=======
-		usleep_range(10, 11);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/*
@@ -128,7 +106,6 @@ static int analogix_dp_detect_hpd(struct analogix_dp_device *dp)
 	return 0;
 }
 
-<<<<<<< HEAD
 int analogix_dp_psr_enabled(struct analogix_dp_device *dp)
 {
 
@@ -141,22 +118,6 @@ int analogix_dp_enable_psr(struct analogix_dp_device *dp)
 	struct edp_vsc_psr psr_vsc;
 
 	if (!dp->psr_enable)
-=======
-int analogix_dp_psr_supported(struct device *dev)
-{
-	struct analogix_dp_device *dp = dev_get_drvdata(dev);
-
-	return dp->psr_support;
-}
-EXPORT_SYMBOL_GPL(analogix_dp_psr_supported);
-
-int analogix_dp_enable_psr(struct device *dev)
-{
-	struct analogix_dp_device *dp = dev_get_drvdata(dev);
-	struct edp_vsc_psr psr_vsc;
-
-	if (!dp->psr_support)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	/* Prepare VSC packet as per EDP 1.4 spec, Table 6.9 */
@@ -169,7 +130,6 @@ int analogix_dp_enable_psr(struct device *dev)
 	psr_vsc.DB0 = 0;
 	psr_vsc.DB1 = EDP_VSC_PSR_STATE_ACTIVE | EDP_VSC_PSR_CRC_VALUES_VALID;
 
-<<<<<<< HEAD
 	return analogix_dp_send_psr_spd(dp, &psr_vsc, true);
 }
 EXPORT_SYMBOL_GPL(analogix_dp_enable_psr);
@@ -180,20 +140,6 @@ int analogix_dp_disable_psr(struct analogix_dp_device *dp)
 	int ret;
 
 	if (!dp->psr_enable)
-=======
-	analogix_dp_send_psr_spd(dp, &psr_vsc);
-	return 0;
-}
-EXPORT_SYMBOL_GPL(analogix_dp_enable_psr);
-
-int analogix_dp_disable_psr(struct device *dev)
-{
-	struct analogix_dp_device *dp = dev_get_drvdata(dev);
-	struct edp_vsc_psr psr_vsc;
-	int ret;
-
-	if (!dp->psr_support)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	/* Prepare VSC packet as per EDP 1.4 spec, Table 6.9 */
@@ -207,7 +153,6 @@ int analogix_dp_disable_psr(struct device *dev)
 	psr_vsc.DB1 = 0;
 
 	ret = drm_dp_dpcd_writeb(&dp->aux, DP_SET_POWER, DP_SET_POWER_D0);
-<<<<<<< HEAD
 	if (ret != 1) {
 		dev_err(dp->dev, "Failed to set DP Power0 %d\n", ret);
 		return ret;
@@ -261,43 +206,10 @@ static int analogix_dp_enable_sink_psr(struct analogix_dp_device *dp)
 		dev_err(dp->dev, "failed to set panel psr\n");
 		goto end;
 	}
-=======
-	if (ret != 1)
-		dev_err(dp->dev, "Failed to set DP Power0 %d\n", ret);
-
-	analogix_dp_send_psr_spd(dp, &psr_vsc);
-	return 0;
-}
-EXPORT_SYMBOL_GPL(analogix_dp_disable_psr);
-
-static bool analogix_dp_detect_sink_psr(struct analogix_dp_device *dp)
-{
-	unsigned char psr_version;
-
-	drm_dp_dpcd_readb(&dp->aux, DP_PSR_SUPPORT, &psr_version);
-	dev_dbg(dp->dev, "Panel PSR version : %x\n", psr_version);
-
-	return (psr_version & DP_PSR_IS_SUPPORTED) ? true : false;
-}
-
-static void analogix_dp_enable_sink_psr(struct analogix_dp_device *dp)
-{
-	unsigned char psr_en;
-
-	/* Disable psr function */
-	drm_dp_dpcd_readb(&dp->aux, DP_PSR_EN_CFG, &psr_en);
-	psr_en &= ~DP_PSR_ENABLE;
-	drm_dp_dpcd_writeb(&dp->aux, DP_PSR_EN_CFG, psr_en);
-
-	/* Main-Link transmitter remains active during PSR active states */
-	psr_en = DP_PSR_MAIN_LINK_ACTIVE | DP_PSR_CRC_VERIFICATION;
-	drm_dp_dpcd_writeb(&dp->aux, DP_PSR_EN_CFG, psr_en);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Enable psr function */
 	psr_en = DP_PSR_ENABLE | DP_PSR_MAIN_LINK_ACTIVE |
 		 DP_PSR_CRC_VERIFICATION;
-<<<<<<< HEAD
 	ret = drm_dp_dpcd_writeb(&dp->aux, DP_PSR_EN_CFG, psr_en);
 	if (ret != 1) {
 		dev_err(dp->dev, "failed to set panel psr\n");
@@ -315,19 +227,10 @@ end:
 }
 
 static int
-=======
-	drm_dp_dpcd_writeb(&dp->aux, DP_PSR_EN_CFG, psr_en);
-
-	analogix_dp_enable_psr_crc(dp);
-}
-
-static void
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 analogix_dp_enable_rx_to_enhanced_mode(struct analogix_dp_device *dp,
 				       bool enable)
 {
 	u8 data;
-<<<<<<< HEAD
 	int ret;
 
 	ret = drm_dp_dpcd_readb(&dp->aux, DP_LANE_COUNT_SET, &data);
@@ -390,46 +293,6 @@ static int analogix_dp_training_pattern_dis(struct analogix_dp_device *dp)
 				 DP_TRAINING_PATTERN_DISABLE);
 
 	return ret < 0 ? ret : 0;
-=======
-
-	drm_dp_dpcd_readb(&dp->aux, DP_LANE_COUNT_SET, &data);
-
-	if (enable)
-		drm_dp_dpcd_writeb(&dp->aux, DP_LANE_COUNT_SET,
-				   DP_LANE_COUNT_ENHANCED_FRAME_EN |
-					DPCD_LANE_COUNT_SET(data));
-	else
-		drm_dp_dpcd_writeb(&dp->aux, DP_LANE_COUNT_SET,
-				   DPCD_LANE_COUNT_SET(data));
-}
-
-static int analogix_dp_is_enhanced_mode_available(struct analogix_dp_device *dp)
-{
-	u8 data;
-	int retval;
-
-	drm_dp_dpcd_readb(&dp->aux, DP_MAX_LANE_COUNT, &data);
-	retval = DPCD_ENHANCED_FRAME_CAP(data);
-
-	return retval;
-}
-
-static void analogix_dp_set_enhanced_mode(struct analogix_dp_device *dp)
-{
-	u8 data;
-
-	data = analogix_dp_is_enhanced_mode_available(dp);
-	analogix_dp_enable_rx_to_enhanced_mode(dp, data);
-	analogix_dp_enable_enhanced_mode(dp, data);
-}
-
-static void analogix_dp_training_pattern_dis(struct analogix_dp_device *dp)
-{
-	analogix_dp_set_training_pattern(dp, DP_NONE);
-
-	drm_dp_dpcd_writeb(&dp->aux, DP_TRAINING_PATTERN_SET,
-			   DP_TRAINING_PATTERN_DISABLE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void
@@ -477,15 +340,12 @@ static int analogix_dp_link_start(struct analogix_dp_device *dp)
 	retval = drm_dp_dpcd_write(&dp->aux, DP_LINK_BW_SET, buf, 2);
 	if (retval < 0)
 		return retval;
-<<<<<<< HEAD
 	/* set enhanced mode if available */
 	retval = analogix_dp_set_enhanced_mode(dp);
 	if (retval < 0) {
 		dev_err(dp->dev, "failed to set enhance mode\n");
 		return retval;
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Set TX pre-emphasis to minimum */
 	for (lane = 0; lane < lane_count; lane++)
@@ -770,18 +630,11 @@ static int analogix_dp_process_equalizer_training(struct analogix_dp_device *dp)
 
 	if (!analogix_dp_channel_eq_ok(link_status, link_align, lane_count)) {
 		/* traing pattern Set to Normal */
-<<<<<<< HEAD
 		retval = analogix_dp_training_pattern_dis(dp);
 		if (retval < 0)
 			return retval;
 
 		dev_info(dp->dev, "Link Training success!\n");
-=======
-		analogix_dp_training_pattern_dis(dp);
-
-		dev_info(dp->dev, "Link Training success!\n");
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		analogix_dp_get_link_bandwidth(dp, &reg);
 		dp->link_train.link_rate = reg;
 		dev_dbg(dp->dev, "final bandwidth = %.2x\n",
@@ -792,11 +645,6 @@ static int analogix_dp_process_equalizer_training(struct analogix_dp_device *dp)
 		dev_dbg(dp->dev, "final lane count = %.2x\n",
 			dp->link_train.lane_count);
 
-<<<<<<< HEAD
-=======
-		/* set enhanced mode if available */
-		analogix_dp_set_enhanced_mode(dp);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dp->link_train.lt_state = FINISHED;
 
 		return 0;
@@ -851,19 +699,12 @@ static void analogix_dp_get_max_rx_lane_count(struct analogix_dp_device *dp,
 	*lane_count = DPCD_MAX_LANE_COUNT(data);
 }
 
-<<<<<<< HEAD
 static int analogix_dp_full_link_train(struct analogix_dp_device *dp,
 				       u32 max_lanes, u32 max_rate)
 {
 	int retval = 0;
 	bool training_finished = false;
 
-=======
-static void analogix_dp_init_training(struct analogix_dp_device *dp,
-				      enum link_lane_count_type max_lane,
-				      int max_rate)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * MACRO_RST must be applied after the PLL_LOCK to avoid
 	 * the DP inter pair skew issue for at least 10 us
@@ -889,26 +730,13 @@ static void analogix_dp_init_training(struct analogix_dp_device *dp,
 	}
 
 	/* Setup TX lane count & rate */
-<<<<<<< HEAD
 	if (dp->link_train.lane_count > max_lanes)
 		dp->link_train.lane_count = max_lanes;
-=======
-	if (dp->link_train.lane_count > max_lane)
-		dp->link_train.lane_count = max_lane;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dp->link_train.link_rate > max_rate)
 		dp->link_train.link_rate = max_rate;
 
 	/* All DP analog module power up */
 	analogix_dp_set_analog_power_down(dp, POWER_ALL, 0);
-<<<<<<< HEAD
-=======
-}
-
-static int analogix_dp_sw_link_training(struct analogix_dp_device *dp)
-{
-	int retval = 0, training_finished = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dp->link_train.lt_state = START;
 
@@ -943,7 +771,6 @@ static int analogix_dp_sw_link_training(struct analogix_dp_device *dp)
 	return retval;
 }
 
-<<<<<<< HEAD
 static int analogix_dp_fast_link_train(struct analogix_dp_device *dp)
 {
 	int i, ret;
@@ -1026,32 +853,10 @@ static int analogix_dp_train_link(struct analogix_dp_device *dp)
 
 	return analogix_dp_full_link_train(dp, dp->video_info.max_lane_count,
 					   dp->video_info.max_link_rate);
-=======
-static int analogix_dp_set_link_train(struct analogix_dp_device *dp,
-				      u32 count, u32 bwtype)
-{
-	int i;
-	int retval;
-
-	for (i = 0; i < DP_TIMEOUT_LOOP_COUNT; i++) {
-		analogix_dp_init_training(dp, count, bwtype);
-		retval = analogix_dp_sw_link_training(dp);
-		if (retval == 0)
-			break;
-
-		usleep_range(100, 110);
-	}
-
-	return retval;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int analogix_dp_config_video(struct analogix_dp_device *dp)
 {
-<<<<<<< HEAD
-=======
-	int retval = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int timeout_loop = 0;
 	int done_count = 0;
 
@@ -1069,18 +874,10 @@ static int analogix_dp_config_video(struct analogix_dp_device *dp)
 		if (analogix_dp_is_slave_video_stream_clock_on(dp) == 0)
 			break;
 		if (timeout_loop > DP_TIMEOUT_LOOP_COUNT) {
-<<<<<<< HEAD
 			dev_err(dp->dev, "Timeout of slave video streamclk ok\n");
 			return -ETIMEDOUT;
 		}
 		usleep_range(1000, 1001);
-=======
-			dev_err(dp->dev, "Timeout of video streamclk ok\n");
-			return -ETIMEDOUT;
-		}
-
-		usleep_range(1, 2);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Set to use the register calculated M/N video */
@@ -1095,12 +892,9 @@ static int analogix_dp_config_video(struct analogix_dp_device *dp)
 	/* Configure video slave mode */
 	analogix_dp_enable_video_master(dp, 0);
 
-<<<<<<< HEAD
 	/* Enable video */
 	analogix_dp_start_video(dp);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	timeout_loop = 0;
 
 	for (;;) {
@@ -1113,20 +907,14 @@ static int analogix_dp_config_video(struct analogix_dp_device *dp)
 			done_count = 0;
 		}
 		if (timeout_loop > DP_TIMEOUT_LOOP_COUNT) {
-<<<<<<< HEAD
 			dev_warn(dp->dev,
 				 "Ignoring timeout of video streamclk ok\n");
 			break;
-=======
-			dev_err(dp->dev, "Timeout of video streamclk ok\n");
-			return -ETIMEDOUT;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		usleep_range(1000, 1001);
 	}
 
-<<<<<<< HEAD
 	return 0;
 }
 
@@ -1135,37 +923,19 @@ static int analogix_dp_enable_scramble(struct analogix_dp_device *dp,
 {
 	u8 data;
 	int ret;
-=======
-	if (retval != 0)
-		dev_err(dp->dev, "Video stream is not detected!\n");
-
-	return retval;
-}
-
-static void analogix_dp_enable_scramble(struct analogix_dp_device *dp,
-					bool enable)
-{
-	u8 data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (enable) {
 		analogix_dp_enable_scrambling(dp);
 
-<<<<<<< HEAD
 		ret = drm_dp_dpcd_readb(&dp->aux, DP_TRAINING_PATTERN_SET,
 					&data);
 		if (ret != 1)
 			return ret;
 		ret = drm_dp_dpcd_writeb(&dp->aux, DP_TRAINING_PATTERN_SET,
-=======
-		drm_dp_dpcd_readb(&dp->aux, DP_TRAINING_PATTERN_SET, &data);
-		drm_dp_dpcd_writeb(&dp->aux, DP_TRAINING_PATTERN_SET,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   (u8)(data & ~DP_LINK_SCRAMBLING_DISABLE));
 	} else {
 		analogix_dp_disable_scrambling(dp);
 
-<<<<<<< HEAD
 		ret = drm_dp_dpcd_readb(&dp->aux, DP_TRAINING_PATTERN_SET,
 					&data);
 		if (ret != 1)
@@ -1174,12 +944,6 @@ static void analogix_dp_enable_scramble(struct analogix_dp_device *dp,
 				   (u8)(data | DP_LINK_SCRAMBLING_DISABLE));
 	}
 	return ret < 0 ? ret : 0;
-=======
-		drm_dp_dpcd_readb(&dp->aux, DP_TRAINING_PATTERN_SET, &data);
-		drm_dp_dpcd_writeb(&dp->aux, DP_TRAINING_PATTERN_SET,
-				   (u8)(data | DP_LINK_SCRAMBLING_DISABLE));
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static irqreturn_t analogix_dp_hardirq(int irq, void *arg)
@@ -1218,7 +982,6 @@ static irqreturn_t analogix_dp_irq_thread(int irq, void *arg)
 	return IRQ_HANDLED;
 }
 
-<<<<<<< HEAD
 static int analogix_dp_fast_link_train_detection(struct analogix_dp_device *dp)
 {
 	int ret;
@@ -1236,9 +999,6 @@ static int analogix_dp_fast_link_train_detection(struct analogix_dp_device *dp)
 }
 
 static int analogix_dp_commit(struct analogix_dp_device *dp)
-=======
-static void analogix_dp_commit(struct analogix_dp_device *dp)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret;
 
@@ -1248,7 +1008,6 @@ static void analogix_dp_commit(struct analogix_dp_device *dp)
 			DRM_ERROR("failed to disable the panel\n");
 	}
 
-<<<<<<< HEAD
 	ret = analogix_dp_train_link(dp);
 	if (ret) {
 		dev_err(dp->dev, "unable to do link train, ret=%d\n", ret);
@@ -1294,36 +1053,6 @@ static void analogix_dp_commit(struct analogix_dp_device *dp)
 
 
 	return ret;
-=======
-	ret = analogix_dp_set_link_train(dp, dp->video_info.max_lane_count,
-					 dp->video_info.max_link_rate);
-	if (ret) {
-		dev_err(dp->dev, "unable to do link train\n");
-		return;
-	}
-
-	analogix_dp_enable_scramble(dp, 1);
-	analogix_dp_enable_rx_to_enhanced_mode(dp, 1);
-	analogix_dp_enable_enhanced_mode(dp, 1);
-
-	analogix_dp_init_video(dp);
-	ret = analogix_dp_config_video(dp);
-	if (ret)
-		dev_err(dp->dev, "unable to config video\n");
-
-	/* Safe to enable the panel now */
-	if (dp->plat_data->panel) {
-		if (drm_panel_enable(dp->plat_data->panel))
-			DRM_ERROR("failed to enable the panel\n");
-	}
-
-	/* Enable video */
-	analogix_dp_start_video(dp);
-
-	dp->psr_support = analogix_dp_detect_sink_psr(dp);
-	if (dp->psr_support)
-		analogix_dp_enable_sink_psr(dp);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -1391,13 +1120,8 @@ static int analogix_dp_get_modes(struct drm_connector *connector)
 		edid = drm_get_edid(connector, &dp->aux.ddc);
 		pm_runtime_put(dp->dev);
 		if (edid) {
-<<<<<<< HEAD
 			drm_connector_update_edid_property(&dp->connector,
 							   edid);
-=======
-			drm_mode_connector_update_edid_property(&dp->connector,
-								edid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			num_modes += drm_add_edid_modes(&dp->connector, edid);
 			kfree(edid);
 		}
@@ -1465,20 +1189,14 @@ static int analogix_dp_bridge_attach(struct drm_bridge *bridge)
 {
 	struct analogix_dp_device *dp = bridge->driver_private;
 	struct drm_encoder *encoder = dp->encoder;
-<<<<<<< HEAD
 	struct drm_connector *connector = NULL;
 	int ret = 0;
-=======
-	struct drm_connector *connector = &dp->connector;
-	int ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!bridge->encoder) {
 		DRM_ERROR("Parent encoder object not found");
 		return -ENODEV;
 	}
 
-<<<<<<< HEAD
 	if (!dp->plat_data->skip_connector) {
 		connector = &dp->connector;
 		connector->polled = DRM_CONNECTOR_POLL_HPD;
@@ -1496,22 +1214,6 @@ static int analogix_dp_bridge_attach(struct drm_bridge *bridge)
 		drm_connector_attach_encoder(connector, encoder);
 	}
 
-=======
-	connector->polled = DRM_CONNECTOR_POLL_HPD;
-
-	ret = drm_connector_init(dp->drm_dev, connector,
-				 &analogix_dp_connector_funcs,
-				 DRM_MODE_CONNECTOR_eDP);
-	if (ret) {
-		DRM_ERROR("Failed to initialize connector with drm\n");
-		return ret;
-	}
-
-	drm_connector_helper_add(connector,
-				 &analogix_dp_connector_helper_funcs);
-	drm_mode_connector_attach_encoder(connector, encoder);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * NOTE: the connector registration is implemented in analogix
 	 * platform driver, that to say connector would be exist after
@@ -1547,7 +1249,6 @@ static void analogix_dp_bridge_pre_enable(struct drm_bridge *bridge)
 		DRM_ERROR("failed to setup the panel ret = %d\n", ret);
 }
 
-<<<<<<< HEAD
 static int analogix_dp_set_bridge(struct analogix_dp_device *dp)
 {
 	int ret;
@@ -1607,16 +1308,10 @@ static void analogix_dp_bridge_enable(struct drm_bridge *bridge)
 {
 	struct analogix_dp_device *dp = bridge->driver_private;
 	int timeout_loop = 0;
-=======
-static void analogix_dp_bridge_enable(struct drm_bridge *bridge)
-{
-	struct analogix_dp_device *dp = bridge->driver_private;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (dp->dpms_mode == DRM_MODE_DPMS_ON)
 		return;
 
-<<<<<<< HEAD
 	while (timeout_loop < MAX_PLL_LOCK_LOOP) {
 		if (analogix_dp_set_bridge(dp) == 0) {
 			dp->dpms_mode = DRM_MODE_DPMS_ON;
@@ -1628,19 +1323,6 @@ static void analogix_dp_bridge_enable(struct drm_bridge *bridge)
 		usleep_range(10, 11);
 	}
 	dev_err(dp->dev, "too many times retry set bridge, give it up\n");
-=======
-	pm_runtime_get_sync(dp->dev);
-
-	if (dp->plat_data->power_on)
-		dp->plat_data->power_on(dp->plat_data);
-
-	phy_power_on(dp->phy);
-	analogix_dp_init_dp(dp);
-	enable_irq(dp->irq);
-	analogix_dp_commit(dp);
-
-	dp->dpms_mode = DRM_MODE_DPMS_ON;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void analogix_dp_bridge_disable(struct drm_bridge *bridge)
@@ -1659,33 +1341,23 @@ static void analogix_dp_bridge_disable(struct drm_bridge *bridge)
 	}
 
 	disable_irq(dp->irq);
-<<<<<<< HEAD
-=======
-	phy_power_off(dp->phy);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (dp->plat_data->power_off)
 		dp->plat_data->power_off(dp->plat_data);
 
-<<<<<<< HEAD
 	analogix_dp_set_analog_power_down(dp, POWER_ALL, 1);
 	phy_power_off(dp->phy);
 
 	clk_disable_unprepare(dp->clock);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pm_runtime_put_sync(dp->dev);
 
 	ret = analogix_dp_prepare_panel(dp, false, true);
 	if (ret)
 		DRM_ERROR("failed to setup the panel ret = %d\n", ret);
 
-<<<<<<< HEAD
 	dp->psr_enable = false;
 	dp->fast_train_enable = false;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dp->dpms_mode = DRM_MODE_DPMS_OFF;
 }
 
@@ -1846,14 +1518,9 @@ static ssize_t analogix_dpaux_transfer(struct drm_dp_aux *aux,
 	return analogix_dp_transfer(dp, msg);
 }
 
-<<<<<<< HEAD
 struct analogix_dp_device *
 analogix_dp_bind(struct device *dev, struct drm_device *drm_dev,
 		 struct analogix_dp_plat_data *plat_data)
-=======
-int analogix_dp_bind(struct device *dev, struct drm_device *drm_dev,
-		     struct analogix_dp_plat_data *plat_data)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct platform_device *pdev = to_platform_device(dev);
 	struct analogix_dp_device *dp;
@@ -1863,22 +1530,12 @@ int analogix_dp_bind(struct device *dev, struct drm_device *drm_dev,
 
 	if (!plat_data) {
 		dev_err(dev, "Invalided input plat_data\n");
-<<<<<<< HEAD
 		return ERR_PTR(-EINVAL);
-=======
-		return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	dp = devm_kzalloc(dev, sizeof(struct analogix_dp_device), GFP_KERNEL);
 	if (!dp)
-<<<<<<< HEAD
 		return ERR_PTR(-ENOMEM);
-=======
-		return -ENOMEM;
-
-	dev_set_drvdata(dev, dp);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dp->dev = &pdev->dev;
 	dp->dpms_mode = DRM_MODE_DPMS_OFF;
@@ -1895,11 +1552,7 @@ int analogix_dp_bind(struct device *dev, struct drm_device *drm_dev,
 
 	ret = analogix_dp_dt_parse_pdata(dp);
 	if (ret)
-<<<<<<< HEAD
 		return ERR_PTR(ret);
-=======
-		return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dp->phy = devm_phy_get(dp->dev, "dp");
 	if (IS_ERR(dp->phy)) {
@@ -1913,22 +1566,14 @@ int analogix_dp_bind(struct device *dev, struct drm_device *drm_dev,
 			if (ret == -ENOSYS || ret == -ENODEV)
 				dp->phy = NULL;
 			else
-<<<<<<< HEAD
 				return ERR_PTR(ret);
-=======
-				return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
 	dp->clock = devm_clk_get(&pdev->dev, "dp");
 	if (IS_ERR(dp->clock)) {
 		dev_err(&pdev->dev, "failed to get clock\n");
-<<<<<<< HEAD
 		return ERR_CAST(dp->clock);
-=======
-		return PTR_ERR(dp->clock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	clk_prepare_enable(dp->clock);
@@ -1937,11 +1582,7 @@ int analogix_dp_bind(struct device *dev, struct drm_device *drm_dev,
 
 	dp->reg_base = devm_ioremap_resource(&pdev->dev, res);
 	if (IS_ERR(dp->reg_base))
-<<<<<<< HEAD
 		return ERR_CAST(dp->reg_base);
-=======
-		return PTR_ERR(dp->reg_base);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dp->force_hpd = of_property_read_bool(dev->of_node, "force-hpd");
 
@@ -1962,11 +1603,7 @@ int analogix_dp_bind(struct device *dev, struct drm_device *drm_dev,
 					    "hpd_gpio");
 		if (ret) {
 			dev_err(&pdev->dev, "failed to get hpd gpio\n");
-<<<<<<< HEAD
 			return ERR_PTR(ret);
-=======
-			return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		dp->irq = gpio_to_irq(dp->hpd_gpio);
 		irq_flags = IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING;
@@ -1978,22 +1615,9 @@ int analogix_dp_bind(struct device *dev, struct drm_device *drm_dev,
 
 	if (dp->irq == -ENXIO) {
 		dev_err(&pdev->dev, "failed to get irq\n");
-<<<<<<< HEAD
 		return ERR_PTR(-ENODEV);
 	}
 
-=======
-		return -ENODEV;
-	}
-
-	pm_runtime_enable(dev);
-
-	pm_runtime_get_sync(dev);
-	phy_power_on(dp->phy);
-
-	analogix_dp_init_dp(dp);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = devm_request_threaded_irq(&pdev->dev, dp->irq,
 					analogix_dp_hardirq,
 					analogix_dp_irq_thread,
@@ -2013,18 +1637,13 @@ int analogix_dp_bind(struct device *dev, struct drm_device *drm_dev,
 
 	ret = drm_dp_aux_register(&dp->aux);
 	if (ret)
-<<<<<<< HEAD
 		return ERR_PTR(ret);
 
 	pm_runtime_enable(dev);
-=======
-		goto err_disable_pm_runtime;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = analogix_dp_create_bridge(drm_dev, dp);
 	if (ret) {
 		DRM_ERROR("failed to create bridge (%d)\n", ret);
-<<<<<<< HEAD
 		goto err_disable_pm_runtime;
 	}
 
@@ -2042,35 +1661,6 @@ void analogix_dp_unbind(struct analogix_dp_device *dp)
 {
 	analogix_dp_bridge_disable(dp->bridge);
 	dp->connector.funcs->destroy(&dp->connector);
-=======
-		drm_encoder_cleanup(dp->encoder);
-		goto err_disable_pm_runtime;
-	}
-
-	phy_power_off(dp->phy);
-	pm_runtime_put(dev);
-
-	return 0;
-
-err_disable_pm_runtime:
-
-	phy_power_off(dp->phy);
-	pm_runtime_put(dev);
-	pm_runtime_disable(dev);
-
-	return ret;
-}
-EXPORT_SYMBOL_GPL(analogix_dp_bind);
-
-void analogix_dp_unbind(struct device *dev, struct device *master,
-			void *data)
-{
-	struct analogix_dp_device *dp = dev_get_drvdata(dev);
-
-	analogix_dp_bridge_disable(dp->bridge);
-	dp->connector.funcs->destroy(&dp->connector);
-	dp->encoder->funcs->destroy(dp->encoder);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (dp->plat_data->panel) {
 		if (drm_panel_unprepare(dp->plat_data->panel))
@@ -2080,25 +1670,14 @@ void analogix_dp_unbind(struct device *dev, struct device *master,
 	}
 
 	drm_dp_aux_unregister(&dp->aux);
-<<<<<<< HEAD
 	pm_runtime_disable(dp->dev);
-=======
-	pm_runtime_disable(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clk_disable_unprepare(dp->clock);
 }
 EXPORT_SYMBOL_GPL(analogix_dp_unbind);
 
 #ifdef CONFIG_PM
-<<<<<<< HEAD
 int analogix_dp_suspend(struct analogix_dp_device *dp)
 {
-=======
-int analogix_dp_suspend(struct device *dev)
-{
-	struct analogix_dp_device *dp = dev_get_drvdata(dev);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clk_disable_unprepare(dp->clock);
 
 	if (dp->plat_data->panel) {
@@ -2110,14 +1689,8 @@ int analogix_dp_suspend(struct device *dev)
 }
 EXPORT_SYMBOL_GPL(analogix_dp_suspend);
 
-<<<<<<< HEAD
 int analogix_dp_resume(struct analogix_dp_device *dp)
 {
-=======
-int analogix_dp_resume(struct device *dev)
-{
-	struct analogix_dp_device *dp = dev_get_drvdata(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	ret = clk_prepare_enable(dp->clock);

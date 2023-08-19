@@ -27,13 +27,9 @@ FsmNew(struct Fsm *fsm, struct FsmNode *fnlist, int fncount)
 	int i;
 
 	fsm->jumpmatrix =
-<<<<<<< HEAD
 		kzalloc(array3_size(sizeof(FSMFNPTR), fsm->state_count,
 				    fsm->event_count),
 			GFP_KERNEL);
-=======
-		kzalloc(sizeof(FSMFNPTR) * fsm->state_count * fsm->event_count, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!fsm->jumpmatrix)
 		return -ENOMEM;
 
@@ -91,14 +87,9 @@ FsmChangeState(struct FsmInst *fi, int newstate)
 }
 
 static void
-<<<<<<< HEAD
 FsmExpireTimer(struct timer_list *t)
 {
 	struct FsmTimer *ft = from_timer(ft, t, tl);
-=======
-FsmExpireTimer(struct FsmTimer *ft)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #if FSM_TIMER_DEBUG
 	if (ft->fi->debug)
 		ft->fi->printdebug(ft->fi, "FsmExpireTimer %lx", (long) ft);
@@ -114,11 +105,7 @@ FsmInitTimer(struct FsmInst *fi, struct FsmTimer *ft)
 	if (ft->fi->debug)
 		ft->fi->printdebug(ft->fi, "FsmInitTimer %lx", (long) ft);
 #endif
-<<<<<<< HEAD
 	timer_setup(&ft->tl, FsmExpireTimer, 0);
-=======
-	setup_timer(&ft->tl, (void *)FsmExpireTimer, (long)ft);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void
@@ -147,10 +134,6 @@ FsmAddTimer(struct FsmTimer *ft,
 		ft->fi->printdebug(ft->fi, "FsmAddTimer already active!");
 		return -1;
 	}
-<<<<<<< HEAD
-=======
-	init_timer(&ft->tl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ft->event = event;
 	ft->arg = arg;
 	ft->tl.expires = jiffies + (millisec * HZ) / 1000;
@@ -171,10 +154,6 @@ FsmRestartTimer(struct FsmTimer *ft,
 
 	if (timer_pending(&ft->tl))
 		del_timer(&ft->tl);
-<<<<<<< HEAD
-=======
-	init_timer(&ft->tl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ft->event = event;
 	ft->arg = arg;
 	ft->tl.expires = jiffies + (millisec * HZ) / 1000;

@@ -1,19 +1,5 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /* Copyright (c) 2018-2020, The Linux Foundation. All rights reserved. */
-=======
-/* Copyright (c) 2018-2020, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/debugfs.h>
 #include <linux/delay.h>
@@ -83,11 +69,7 @@ static int mhi_find_next_file_offset(struct mhi_controller *mhi_cntrl,
 	struct mhi_buf *mhi_buf = mhi_cntrl->rddm_image->mhi_buf;
 
 	if (info->rem_seg_len >= table_info->size) {
-<<<<<<< HEAD
 		info->file_offset += table_info->size;
-=======
-		info->file_offset += (size_t)table_info->size;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		info->rem_seg_len -= table_info->size;
 		return 0;
 	}
@@ -122,11 +104,7 @@ void mhi_dump_sfr(struct mhi_controller *mhi_cntrl)
 	struct rddm_header *rddm_header =
 		(struct rddm_header *)mhi_buf->buf;
 	struct rddm_table_info *table_info;
-<<<<<<< HEAD
 	struct file_info info = {0};
-=======
-	struct file_info info = {NULL};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 table_size, n;
 
 	if (rddm_header->header_size > sizeof(*rddm_header) ||
@@ -205,11 +183,7 @@ static int __mhi_download_rddm_in_panic(struct mhi_controller *mhi_cntrl)
 	int ret;
 	u32 rx_status;
 	enum mhi_ee ee;
-<<<<<<< HEAD
 	const u32 delayus = 5000;
-=======
-	const u32 delayus = 2000;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 retry = (mhi_cntrl->timeout_ms * 1000) / delayus;
 	const u32 rddm_timeout_us = 200000;
 	int rddm_retry = rddm_timeout_us / delayus; /* time to enter rddm */
@@ -460,11 +434,7 @@ void mhi_free_bhie_table(struct mhi_controller *mhi_cntrl,
 	struct mhi_buf *mhi_buf = image_info->mhi_buf;
 
 	for (i = 0; i < image_info->entries; i++, mhi_buf++)
-<<<<<<< HEAD
 		mhi_free_contig_coherent(mhi_cntrl, mhi_buf->len, mhi_buf->buf,
-=======
-		mhi_free_coherent(mhi_cntrl, mhi_buf->len, mhi_buf->buf,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  mhi_buf->dma_addr);
 
 	kfree(image_info->mhi_buf);
@@ -505,11 +475,7 @@ int mhi_alloc_bhie_table(struct mhi_controller *mhi_cntrl,
 			vec_size = sizeof(struct bhi_vec_entry) * i;
 
 		mhi_buf->len = vec_size;
-<<<<<<< HEAD
 		mhi_buf->buf = mhi_alloc_contig_coherent(mhi_cntrl, vec_size,
-=======
-		mhi_buf->buf = mhi_alloc_coherent(mhi_cntrl, vec_size,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					&mhi_buf->dma_addr, GFP_KERNEL);
 		if (!mhi_buf->buf)
 			goto error_alloc_segment;
@@ -528,11 +494,7 @@ int mhi_alloc_bhie_table(struct mhi_controller *mhi_cntrl,
 
 error_alloc_segment:
 	for (--i, --mhi_buf; i >= 0; i--, mhi_buf--)
-<<<<<<< HEAD
 		mhi_free_contig_coherent(mhi_cntrl, mhi_buf->len, mhi_buf->buf,
-=======
-		mhi_free_coherent(mhi_cntrl, mhi_buf->len, mhi_buf->buf,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  mhi_buf->dma_addr);
 
 error_alloc_mhi_buf:
@@ -603,26 +565,8 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
 
 	ret = request_firmware(&firmware, fw_name, mhi_cntrl->dev);
 	if (ret) {
-<<<<<<< HEAD
 		MHI_CNTRL_ERR("Error loading firmware, ret:%d\n", ret);
 		return;
-=======
-		if (!mhi_cntrl->fw_image_fallback) {
-			MHI_CNTRL_ERR("Error loading fw, ret:%d\n", ret);
-			return;
-		}
-
-		/* re-try with fall back fw image */
-		ret = request_firmware(&firmware, mhi_cntrl->fw_image_fallback,
-				mhi_cntrl->dev);
-		if (ret) {
-			MHI_CNTRL_ERR("Error loading fw_fb, ret:%d\n", ret);
-			return;
-		}
-
-		mhi_cntrl->status_cb(mhi_cntrl, mhi_cntrl->priv_data,
-				     MHI_CB_FW_FALLBACK_IMG);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	size = (mhi_cntrl->fbc_download) ? mhi_cntrl->sbl_size : firmware->size;
@@ -643,18 +587,12 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
 	ret = mhi_fw_load_sbl(mhi_cntrl, dma_addr, size);
 	mhi_free_coherent(mhi_cntrl, size, buf, dma_addr);
 
-<<<<<<< HEAD
 	if (!mhi_cntrl->fbc_download || ret || mhi_cntrl->ee == MHI_EE_EDL)
 		release_firmware(firmware);
 
 	/* error or in edl, we're done */
 	if (ret || mhi_cntrl->ee == MHI_EE_EDL)
 		return;
-=======
-	/* error or in edl, we're done */
-	if (ret || mhi_cntrl->ee == MHI_EE_EDL)
-		goto release_fw;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	write_lock_irq(&mhi_cntrl->pm_lock);
 	mhi_cntrl->dev_state = MHI_STATE_RESET;
@@ -669,11 +607,7 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
 					   firmware->size);
 		if (ret) {
 			MHI_CNTRL_ERR("Error alloc size:%zu\n", firmware->size);
-<<<<<<< HEAD
 			goto error_alloc_fw_table;
-=======
-			goto release_fw;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		MHI_CNTRL_LOG("Copying firmware image into vector table\n");
@@ -692,11 +626,7 @@ fw_load_ee_pthru:
 			TO_MHI_EXEC_STR(mhi_cntrl->ee), ret);
 
 	if (!mhi_cntrl->fbc_download)
-<<<<<<< HEAD
 		return;
-=======
-		goto release_fw;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ret) {
 		MHI_CNTRL_ERR("Did not transition to READY state\n");
@@ -730,19 +660,6 @@ error_read:
 	mhi_free_bhie_table(mhi_cntrl, mhi_cntrl->fbc_image);
 	mhi_cntrl->fbc_image = NULL;
 
-<<<<<<< HEAD
 error_alloc_fw_table:
 	release_firmware(firmware);
 }
-=======
-release_fw:
-	release_firmware(firmware);
-}
-
-void mhi_perform_soc_reset(struct mhi_controller *mhi_cntrl)
-{
-	mhi_cntrl->write_reg(mhi_cntrl, mhi_cntrl->regs,
-			     MHI_SOC_RESET_REQ_OFFSET,
-			     MHI_SOC_RESET_REQ);
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

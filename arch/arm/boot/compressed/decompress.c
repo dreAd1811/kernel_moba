@@ -6,14 +6,7 @@
 #include <linux/stddef.h>	/* for NULL */
 #include <linux/linkage.h>
 #include <asm/string.h>
-<<<<<<< HEAD
 #include "misc.h"
-=======
-
-extern unsigned long free_mem_ptr;
-extern unsigned long free_mem_end_ptr;
-extern void error(char *);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define STATIC static
 #define STATIC_RW_DATA	/* non-static please */

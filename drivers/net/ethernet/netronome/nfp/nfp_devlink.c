@@ -92,11 +92,7 @@ nfp_devlink_set_lanes(struct nfp_pf *pf, unsigned int idx, unsigned int lanes)
 
 static int
 nfp_devlink_port_split(struct devlink *devlink, unsigned int port_index,
-<<<<<<< HEAD
 		       unsigned int count, struct netlink_ext_ack *extack)
-=======
-		       unsigned int count)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct nfp_pf *pf = devlink_priv(devlink);
 	struct nfp_eth_table_port eth_port;
@@ -132,12 +128,8 @@ out:
 }
 
 static int
-<<<<<<< HEAD
 nfp_devlink_port_unsplit(struct devlink *devlink, unsigned int port_index,
 			 struct netlink_ext_ack *extack)
-=======
-nfp_devlink_port_unsplit(struct devlink *devlink, unsigned int port_index)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct nfp_pf *pf = devlink_priv(devlink);
 	struct nfp_eth_table_port eth_port;
@@ -169,7 +161,6 @@ out:
 	return ret;
 }
 
-<<<<<<< HEAD
 static int
 nfp_devlink_sb_pool_get(struct devlink *devlink, unsigned int sb_index,
 			u16 pool_index, struct devlink_sb_pool_info *pool_info)
@@ -204,20 +195,6 @@ static int nfp_devlink_eswitch_mode_set(struct devlink *devlink, u16 mode)
 
 	mutex_lock(&pf->lock);
 	ret = nfp_app_eswitch_mode_set(pf->app, mode);
-=======
-static int nfp_devlink_eswitch_mode_get(struct devlink *devlink, u16 *mode)
-{
-	struct nfp_pf *pf = devlink_priv(devlink);
-	int ret;
-
-	mutex_lock(&pf->lock);
-	if (!pf->app) {
-		ret = -EBUSY;
-		goto out;
-	}
-	ret = nfp_app_eswitch_mode_get(pf->app, mode);
-out:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&pf->lock);
 
 	return ret;
@@ -226,14 +203,10 @@ out:
 const struct devlink_ops nfp_devlink_ops = {
 	.port_split		= nfp_devlink_port_split,
 	.port_unsplit		= nfp_devlink_port_unsplit,
-<<<<<<< HEAD
 	.sb_pool_get		= nfp_devlink_sb_pool_get,
 	.sb_pool_set		= nfp_devlink_sb_pool_set,
 	.eswitch_mode_get	= nfp_devlink_eswitch_mode_get,
 	.eswitch_mode_set	= nfp_devlink_eswitch_mode_set,
-=======
-	.eswitch_mode_get	= nfp_devlink_eswitch_mode_get,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int nfp_devlink_port_register(struct nfp_app *app, struct nfp_port *port)
@@ -249,14 +222,9 @@ int nfp_devlink_port_register(struct nfp_app *app, struct nfp_port *port)
 		return ret;
 
 	devlink_port_type_eth_set(&port->dl_port, port->netdev);
-<<<<<<< HEAD
 	devlink_port_attrs_set(&port->dl_port, DEVLINK_PORT_FLAVOUR_PHYSICAL,
 			       eth_port.label_port, eth_port.is_split,
 			       eth_port.label_subport);
-=======
-	if (eth_port.is_split)
-		devlink_port_split_set(&port->dl_port, eth_port.label_port);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	devlink = priv_to_devlink(app->pf);
 

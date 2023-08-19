@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # SPDX-License-Identifier: GPL-2.0-only
 
 config CNSS_UTILS
@@ -15,11 +14,3 @@ config CNSS_QMI_SVC
 	  This feature enable wlan driver to use CNSS QMI service APIs to set
 	  and get wlan related information.
 
-=======
-config CNSS_UTILS
-	bool "CNSS utilities support"
-	---help---
-	  Add CNSS utilities support for the WLAN driver module.
-	  This feature enable wlan driver to use CNSS utilities APIs to set
-	  and get wlan related information.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

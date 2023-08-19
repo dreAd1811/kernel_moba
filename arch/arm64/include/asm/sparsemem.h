@@ -17,11 +17,7 @@
 #define __ASM_SPARSEMEM_H
 
 #ifdef CONFIG_SPARSEMEM
-<<<<<<< HEAD
 #define MAX_PHYSMEM_BITS	CONFIG_ARM64_PA_BITS
-=======
-#define MAX_PHYSMEM_BITS	48
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifndef CONFIG_MEMORY_HOTPLUG
 #define SECTION_SIZE_BITS	30
 #else

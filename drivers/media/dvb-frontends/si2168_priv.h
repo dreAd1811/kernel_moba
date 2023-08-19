@@ -18,11 +18,7 @@
 #define SI2168_PRIV_H
 
 #include "si2168.h"
-<<<<<<< HEAD
 #include <media/dvb_frontend.h>
-=======
-#include "dvb_frontend.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/firmware.h>
 #include <linux/i2c-mux.h>
 #include <linux/kernel.h>
@@ -52,10 +48,7 @@ struct si2168_dev {
 	u8 ts_mode;
 	bool ts_clock_inv;
 	bool ts_clock_gapped;
-<<<<<<< HEAD
 	bool spectral_inversion;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* firmware command struct */

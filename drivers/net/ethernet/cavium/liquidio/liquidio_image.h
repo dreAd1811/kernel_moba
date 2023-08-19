@@ -24,10 +24,7 @@
 #define LIO_FW_BASE_NAME        "lio_"
 #define LIO_FW_NAME_SUFFIX      ".bin"
 #define LIO_FW_NAME_TYPE_NIC    "nic"
-<<<<<<< HEAD
 #define LIO_FW_NAME_TYPE_AUTO   "auto"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define LIO_FW_NAME_TYPE_NONE   "none"
 #define LIO_MAX_FIRMWARE_VERSION_LEN 16
 

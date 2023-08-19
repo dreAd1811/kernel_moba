@@ -193,14 +193,10 @@ pll_map_type(struct nvkm_bios *bios, u8 type, u32 *reg, u8 *ver, u8 *len)
 		data += hdr;
 		while (cnt--) {
 			if (nvbios_rd08(bios, data + 0) == type) {
-<<<<<<< HEAD
 				if (*ver < 0x50)
 					*reg = nvbios_rd32(bios, data + 3);
 				else
 					*reg = 0;
-=======
-				*reg = nvbios_rd32(bios, data + 3);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				return data;
 			}
 			data += *len;
@@ -368,7 +364,6 @@ nvbios_pll_parse(struct nvkm_bios *bios, u32 type, struct nvbios_pll *info)
 		info->min_p = nvbios_rd08(bios, data + 12);
 		info->max_p = nvbios_rd08(bios, data + 13);
 		break;
-<<<<<<< HEAD
 	case 0x50:
 		info->refclk = nvbios_rd16(bios, data + 1) * 1000;
 		/* info->refclk_alt = nvbios_rd16(bios, data + 3) * 1000; */
@@ -383,8 +378,6 @@ nvbios_pll_parse(struct nvkm_bios *bios, u32 type, struct nvbios_pll *info)
 		info->min_p = nvbios_rd08(bios, data + 17);
 		info->max_p = nvbios_rd08(bios, data + 18);
 		break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		nvkm_error(subdev, "unknown pll limits version 0x%02x\n", ver);
 		return -EINVAL;

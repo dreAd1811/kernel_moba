@@ -154,21 +154,6 @@ static ssize_t ppc_rtas_tone_volume_write(struct file *file,
 static int ppc_rtas_tone_volume_show(struct seq_file *m, void *v);
 static int ppc_rtas_rmo_buf_show(struct seq_file *m, void *v);
 
-<<<<<<< HEAD
-=======
-static int sensors_open(struct inode *inode, struct file *file)
-{
-	return single_open(file, ppc_rtas_sensors_show, NULL);
-}
-
-static const struct file_operations ppc_rtas_sensors_operations = {
-	.open		= sensors_open,
-	.read		= seq_read,
-	.llseek		= seq_lseek,
-	.release	= single_release,
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int poweron_open(struct inode *inode, struct file *file)
 {
 	return single_open(file, ppc_rtas_poweron_show, NULL);
@@ -234,21 +219,6 @@ static const struct file_operations ppc_rtas_tone_volume_operations = {
 	.release	= single_release,
 };
 
-<<<<<<< HEAD
-=======
-static int rmo_buf_open(struct inode *inode, struct file *file)
-{
-	return single_open(file, ppc_rtas_rmo_buf_show, NULL);
-}
-
-static const struct file_operations ppc_rtas_rmo_buf_ops = {
-	.open		= rmo_buf_open,
-	.read		= seq_read,
-	.llseek		= seq_lseek,
-	.release	= single_release,
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ppc_rtas_find_all_sensors(void);
 static void ppc_rtas_process_sensor(struct seq_file *m,
 	struct individual_sensor *s, int state, int error, const char *loc);
@@ -267,7 +237,6 @@ static int __init proc_rtas_init(void)
 	if (rtas_node == NULL)
 		return -ENODEV;
 
-<<<<<<< HEAD
 	proc_create("powerpc/rtas/progress", 0644, NULL,
 		    &ppc_rtas_progress_operations);
 	proc_create("powerpc/rtas/clock", 0644, NULL,
@@ -282,32 +251,12 @@ static int __init proc_rtas_init(void)
 		    &ppc_rtas_tone_volume_operations);
 	proc_create_single("powerpc/rtas/rmo_buffer", 0400, NULL,
 			ppc_rtas_rmo_buf_show);
-=======
-	proc_create("powerpc/rtas/progress", S_IRUGO|S_IWUSR, NULL,
-		    &ppc_rtas_progress_operations);
-	proc_create("powerpc/rtas/clock", S_IRUGO|S_IWUSR, NULL,
-		    &ppc_rtas_clock_operations);
-	proc_create("powerpc/rtas/poweron", S_IWUSR|S_IRUGO, NULL,
-		    &ppc_rtas_poweron_operations);
-	proc_create("powerpc/rtas/sensors", S_IRUGO, NULL,
-		    &ppc_rtas_sensors_operations);
-	proc_create("powerpc/rtas/frequency", S_IWUSR|S_IRUGO, NULL,
-		    &ppc_rtas_tone_freq_operations);
-	proc_create("powerpc/rtas/volume", S_IWUSR|S_IRUGO, NULL,
-		    &ppc_rtas_tone_volume_operations);
-	proc_create("powerpc/rtas/rmo_buffer", S_IRUSR, NULL,
-		    &ppc_rtas_rmo_buf_ops);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 __initcall(proc_rtas_init);
 
-<<<<<<< HEAD
 static int parse_number(const char __user *p, size_t count, u64 *val)
-=======
-static int parse_number(const char __user *p, size_t count, unsigned long *val)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	char buf[40];
 	char *end;
@@ -320,11 +269,7 @@ static int parse_number(const char __user *p, size_t count, unsigned long *val)
 
 	buf[count] = 0;
 
-<<<<<<< HEAD
 	*val = simple_strtoull(buf, &end, 10);
-=======
-	*val = simple_strtoul(buf, &end, 10);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (*end && *end != '\n')
 		return -EINVAL;
 
@@ -338,28 +283,17 @@ static ssize_t ppc_rtas_poweron_write(struct file *file,
 		const char __user *buf, size_t count, loff_t *ppos)
 {
 	struct rtc_time tm;
-<<<<<<< HEAD
 	time64_t nowtime;
-=======
-	unsigned long nowtime;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int error = parse_number(buf, count, &nowtime);
 	if (error)
 		return error;
 
 	power_on_time = nowtime; /* save the time */
 
-<<<<<<< HEAD
 	rtc_time64_to_tm(nowtime, &tm);
 
 	error = rtas_call(rtas_token("set-time-for-power-on"), 7, 1, NULL, 
 			tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday,
-=======
-	to_tm(nowtime, &tm);
-
-	error = rtas_call(rtas_token("set-time-for-power-on"), 7, 1, NULL, 
-			tm.tm_year, tm.tm_mon, tm.tm_mday, 
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			tm.tm_hour, tm.tm_min, tm.tm_sec, 0 /* nano */);
 	if (error)
 		printk(KERN_WARNING "error: setting poweron time returned: %s\n", 
@@ -415,24 +349,14 @@ static ssize_t ppc_rtas_clock_write(struct file *file,
 		const char __user *buf, size_t count, loff_t *ppos)
 {
 	struct rtc_time tm;
-<<<<<<< HEAD
 	time64_t nowtime;
-=======
-	unsigned long nowtime;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int error = parse_number(buf, count, &nowtime);
 	if (error)
 		return error;
 
-<<<<<<< HEAD
 	rtc_time64_to_tm(nowtime, &tm);
 	error = rtas_call(rtas_token("set-time-of-day"), 7, 1, NULL, 
 			tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday,
-=======
-	to_tm(nowtime, &tm);
-	error = rtas_call(rtas_token("set-time-of-day"), 7, 1, NULL, 
-			tm.tm_year, tm.tm_mon, tm.tm_mday, 
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			tm.tm_hour, tm.tm_min, tm.tm_sec, 0);
 	if (error)
 		printk(KERN_WARNING "error: setting the clock returned: %s\n", 
@@ -453,13 +377,8 @@ static int ppc_rtas_clock_show(struct seq_file *m, void *v)
 		unsigned int year, mon, day, hour, min, sec;
 		year = ret[0]; mon  = ret[1]; day  = ret[2];
 		hour = ret[3]; min  = ret[4]; sec  = ret[5];
-<<<<<<< HEAD
 		seq_printf(m, "%lld\n",
 				mktime64(year, mon, day, hour, min, sec));
-=======
-		seq_printf(m, "%lu\n",
-				mktime(year, mon, day, hour, min, sec));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return 0;
 }
@@ -585,11 +504,7 @@ static void ppc_rtas_process_sensor(struct seq_file *m,
 		"EPOW power off" };
 	const char * battery_cyclestate[]  = { "None", "In progress", 
 						"Requested" };
-<<<<<<< HEAD
 	const char * battery_charging[]    = { "Charging", "Discharging",
-=======
-	const char * battery_charging[]    = { "Charging", "Discharching", 
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						"No current flow" };
 	const char * ibm_drconnector[]     = { "Empty", "Present", "Unusable", 
 						"Exchange" };
@@ -792,11 +707,7 @@ static void get_location_code(struct seq_file *m, struct individual_sensor *s,
 static ssize_t ppc_rtas_tone_freq_write(struct file *file,
 		const char __user *buf, size_t count, loff_t *ppos)
 {
-<<<<<<< HEAD
 	u64 freq;
-=======
-	unsigned long freq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int error = parse_number(buf, count, &freq);
 	if (error)
 		return error;
@@ -821,11 +732,7 @@ static int ppc_rtas_tone_freq_show(struct seq_file *m, void *v)
 static ssize_t ppc_rtas_tone_volume_write(struct file *file,
 		const char __user *buf, size_t count, loff_t *ppos)
 {
-<<<<<<< HEAD
 	u64 volume;
-=======
-	unsigned long volume;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int error = parse_number(buf, count, &volume);
 	if (error)
 		return error;

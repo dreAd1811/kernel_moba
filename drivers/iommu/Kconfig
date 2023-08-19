@@ -23,11 +23,7 @@ config IOMMU_IO_PGTABLE
 config IOMMU_IO_PGTABLE_LPAE
 	bool "ARMv7/v8 Long Descriptor Format"
 	select IOMMU_IO_PGTABLE
-<<<<<<< HEAD
 	depends on ARM || ARM64 || (COMPILE_TEST && !GENERIC_ATOMIC64)
-=======
-	depends on HAS_DMA && (ARM || ARM64 || (COMPILE_TEST && !GENERIC_ATOMIC64))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Enable support for the ARM long descriptor pagetable format.
 	  This allocator supports 4K/2M/1G, 16K/32M and 64K/512M page
@@ -46,11 +42,7 @@ config IOMMU_IO_PGTABLE_LPAE_SELFTEST
 config IOMMU_IO_PGTABLE_ARMV7S
 	bool "ARMv7/v8 Short Descriptor Format"
 	select IOMMU_IO_PGTABLE
-<<<<<<< HEAD
 	depends on ARM || ARM64 || COMPILE_TEST
-=======
-	depends on HAS_DMA && (ARM || ARM64 || COMPILE_TEST)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Enable support for the ARM Short-descriptor pagetable format.
 	  This supports 32-bit virtual and physical addresses mapped using
@@ -68,11 +60,7 @@ config IOMMU_IO_PGTABLE_ARMV7S_SELFTEST
 
 config IOMMU_IO_PGTABLE_FAST
 	bool "Fast ARMv7/v8 Long Descriptor Format"
-<<<<<<< HEAD
 	depends on (ARM64_DMA_USE_IOMMU || ARM_DMA_USE_IOMMU) && IOMMU_DMA
-=======
-	depends on ARM64_DMA_USE_IOMMU || ARM_DMA_USE_IOMMU
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
           Enable support for a subset of the ARM long descriptor pagetable
 	  format.  This allocator achieves fast performance by
@@ -109,7 +97,6 @@ config IOMMU_IO_PGTABLE_FAST_PROVE_TLB
 
 endmenu
 
-<<<<<<< HEAD
 config IOMMU_DEBUGFS
 	bool "Export IOMMU internals in DebugFS"
 	depends on DEBUG_FS
@@ -131,8 +118,6 @@ config IOMMU_DEFAULT_PASSTHROUGH
 
 	  If unsure, say N here.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config IOMMU_IOVA
 	tristate
 
@@ -208,7 +193,6 @@ config AMD_IOMMU_V2
 	  hardware. Select this option if you want to use devices that support
 	  the PCI PRI and PASID interface.
 
-<<<<<<< HEAD
 config AMD_IOMMU_DEBUGFS
 	bool "Enable AMD IOMMU internals in DebugFS"
 	depends on AMD_IOMMU && IOMMU_DEBUGFS
@@ -221,8 +205,6 @@ config AMD_IOMMU_DEBUGFS
 	  This option is -NOT- intended for production environments, and should
 	  not generally be enabled.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 # Intel IOMMU support
 config DMAR_TABLE
 	bool
@@ -232,10 +214,7 @@ config INTEL_IOMMU
 	depends on PCI_MSI && ACPI && (X86 || IA64_GENERIC)
 	select IOMMU_API
 	select IOMMU_IOVA
-<<<<<<< HEAD
 	select NEED_DMA_MAP_STATE
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select DMAR_TABLE
 	help
 	  DMA remapping (DMAR) devices support enables independent address
@@ -375,13 +354,8 @@ config IPMMU_VMSA
 	select IOMMU_IO_PGTABLE_LPAE
 	select ARM_DMA_USE_IOMMU
 	help
-<<<<<<< HEAD
 	  Support for the Renesas VMSA-compatible IPMMU found in the R-Mobile
 	  APE6, R-Car Gen2, and R-Car Gen3 SoCs.
-=======
-	  Support for the Renesas VMSA-compatible IPMMU Renesas found in the
-	  R-Mobile APE6 and R-Car H2/M2 SoCs.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	  If unsure, say N.
 
@@ -393,7 +367,6 @@ config SPAPR_TCE_IOMMU
 	  Enables bits of IOMMU API required by VFIO. The iommu_ops
 	  is not implemented as it is not necessary for VFIO.
 
-<<<<<<< HEAD
 config QTI_IOMMU_SUPPORT
 	tristate "Support for QTI iommu drivers"
 	help
@@ -402,8 +375,6 @@ config QTI_IOMMU_SUPPORT
 	  domains in a non-driver specific manner.
 	  If in doubt say N.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 # ARM IOMMU support
 config ARM_SMMU
 	bool "ARM Ltd. System MMU (SMMU) Support"
@@ -412,10 +383,7 @@ config ARM_SMMU
 	select IOMMU_IO_PGTABLE_LPAE
 	select ARM_DMA_USE_IOMMU if ARM
 	select ARM64_DMA_USE_IOMMU if ARM64
-<<<<<<< HEAD
 	select QTI_IOMMU_SUPPORT
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Support for implementations of the ARM System MMU architecture
 	  versions 1 and 2.
@@ -527,7 +495,6 @@ config MTK_IOMMU_V1
 
 menuconfig IOMMU_DEBUG
 	bool "IOMMU Profiling and Debugging"
-<<<<<<< HEAD
 	depends on DEBUG_FS
 	select IOMMU_DEBUGFS
 	help
@@ -538,39 +505,14 @@ menuconfig IOMMU_DEBUG
 
 if IOMMU_DEBUG
 
-=======
-	help
-	  Makes available some additional IOMMU profiling and debugging
-	  options.
-
-if IOMMU_DEBUG
-
-config IOMMU_DEBUG_TRACKING
-	bool "Track key IOMMU events"
-	select IOMMU_API
-	help
-	  Enables additional debug tracking in the IOMMU framework code.
-	  Tracking information and tests can be accessed through various
-	  debugfs files.
-
-	  Say Y here if you need to debug IOMMU issues and are okay with
-	  the performance penalty of the tracking.
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config IOMMU_TESTS
 	bool "Interactive IOMMU performance/functional tests"
 	select IOMMU_API
 	select ARM64_PTDUMP_CORE
 	help
 	  Enables a suite of IOMMU unit tests.  The tests are runnable
-<<<<<<< HEAD
 	  through debugfs. The impact of enabling this option to overall
 	  system performance should be minimal.
-=======
-	  through debugfs.  Unlike the IOMMU_DEBUG_TRACKING option, the
-	  impact of enabling this option to overal system performance
-	  should be minimal.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 endif # IOMMU_DEBUG
 
@@ -578,10 +520,6 @@ config QCOM_IOMMU
 	# Note: iommu drivers cannot (yet?) be built as modules
 	bool "Qualcomm IOMMU Support"
 	depends on ARCH_QCOM || (COMPILE_TEST && !GENERIC_ATOMIC64)
-<<<<<<< HEAD
-=======
-	depends on HAS_DMA
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select IOMMU_API
 	select IOMMU_IO_PGTABLE_LPAE
 	select ARM_DMA_USE_IOMMU

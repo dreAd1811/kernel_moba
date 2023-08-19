@@ -256,31 +256,18 @@ static int phantom_release(struct inode *inode, struct file *file)
 	return 0;
 }
 
-<<<<<<< HEAD
 static __poll_t phantom_poll(struct file *file, poll_table *wait)
 {
 	struct phantom_device *dev = file->private_data;
 	__poll_t mask = 0;
-=======
-static unsigned int phantom_poll(struct file *file, poll_table *wait)
-{
-	struct phantom_device *dev = file->private_data;
-	unsigned int mask = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pr_debug("phantom_poll: %d\n", atomic_read(&dev->counter));
 	poll_wait(file, &dev->wait, wait);
 
 	if (!(dev->status & PHB_RUNNING))
-<<<<<<< HEAD
 		mask = EPOLLERR;
 	else if (atomic_read(&dev->counter))
 		mask = EPOLLIN | EPOLLRDNORM;
-=======
-		mask = POLLERR;
-	else if (atomic_read(&dev->counter))
-		mask = POLLIN | POLLRDNORM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pr_debug("phantom_poll end: %x/%d\n", mask, atomic_read(&dev->counter));
 

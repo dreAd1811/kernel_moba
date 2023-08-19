@@ -5,7 +5,6 @@ V4L2 events
 The V4L2 events provide a generic way to pass events to user space.
 The driver must use :c:type:`v4l2_fh` to be able to support V4L2 events.
 
-<<<<<<< HEAD
 Events are subscribed per-filehandle. An event specification consists of a
 ``type`` and is optionally associated with an object identified through the
 ``id`` field. If unused, then the ``id`` is 0. So an event is uniquely
@@ -54,24 +53,10 @@ So to summarize:
   object, then that object will have an internal list of
   struct :c:type:`v4l2_subscribed_event` so it knows who subscribed an
   event to that object.
-=======
-Events are defined by a type and an optional ID. The ID may refer to a V4L2
-object such as a control ID. If unused, then the ID is 0.
-
-When the user subscribes to an event the driver will allocate a number of
-kevent structs for that event. So every (type, ID) event tuple will have
-its own set of kevent structs. This guarantees that if a driver is generating
-lots of events of one type in a short time, then that will not overwrite
-events of another type.
-
-But if you get more events of one type than the number of kevents that were
-reserved, then the oldest event will be dropped and the new one added.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Furthermore, the internal struct :c:type:`v4l2_subscribed_event` has
 ``merge()`` and ``replace()`` callbacks which drivers can set. These
 callbacks are called when a new event is raised and there is no more room.
-<<<<<<< HEAD
 
 The ``replace()`` callback allows you to replace the payload of the old event
 with that of the new event, merging any relevant data from the old payload
@@ -82,14 +67,6 @@ ringbuffer.
 The ``merge()`` callback allows you to merge the oldest event payload into
 that of the second-oldest event payload. It is called when
 the ringbuffer has size is greater than one.
-=======
-The ``replace()`` callback allows you to replace the payload of the old event
-with that of the new event, merging any relevant data from the old payload
-into the new payload that replaces it. It is called when this event type has
-only one kevent struct allocated. The ``merge()`` callback allows you to merge
-the oldest event payload into that of the second-oldest event payload. It is
-called when there are two or more kevent structs allocated.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 This way no status information is lost, just the intermediate steps leading
 up to that state.
@@ -137,11 +114,7 @@ The ops argument allows the driver to specify a number of callbacks:
 Callback Description
 ======== ==============================================================
 add      called when a new listener gets added (subscribing to the same
-<<<<<<< HEAD
 	 event twice will only cause this callback to get called once)
-=======
-         event twice will only cause this callback to get called once)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 del      called when a listener stops listening
 replace  replace event 'old' with event 'new'.
 merge    merge event 'old' into event 'new'.

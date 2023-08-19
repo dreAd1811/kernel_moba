@@ -144,11 +144,7 @@ enum AVDEC_STATUS{
 #define SOURCE_EXTERNAL         0x8
 #define SOURCE_TS_BDA			0x10
 #define SOURCE_TS_ENCODE		0x20
-<<<<<<< HEAD
 #define SOURCE_TS_EXTERNAL	0x40
-=======
-#define SOURCE_TS_EXTERNAL   	0x40
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /***************************************************************************
 				* interface information define *

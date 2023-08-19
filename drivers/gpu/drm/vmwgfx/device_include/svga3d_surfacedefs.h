@@ -1,14 +1,7 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 OR MIT */
 /**************************************************************************
  *
  * Copyright 2008-2015 VMware, Inc., Palo Alto, CA., USA
-=======
-/**************************************************************************
- *
- * Copyright © 2008-2015 VMware, Inc., Palo Alto, CA., USA
- * All Rights Reserved.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
@@ -32,7 +25,6 @@
  *
  **************************************************************************/
 
-<<<<<<< HEAD
 /*
  * svga3d_surfacedefs.h --
  *
@@ -339,199 +331,30 @@ struct svga3d_channel_def {
 		u8 blue;
 		u8 w_bump;
 		u8 l_bump;
-=======
-#include <linux/kernel.h>
-
-#ifdef __KERNEL__
-
-#include <drm/vmwgfx_drm.h>
-#define surf_size_struct struct drm_vmw_size
-
-#else /* __KERNEL__ */
-
-#ifndef ARRAY_SIZE
-#define ARRAY_SIZE(_A) (sizeof(_A) / sizeof((_A)[0]))
-#endif /* ARRAY_SIZE */
-
-#define max_t(type, x, y)  ((x) > (y) ? (x) : (y))
-#define surf_size_struct SVGA3dSize
-#define u32 uint32
-
-#endif /* __KERNEL__ */
-
-#include "svga3d_reg.h"
-
-/*
- * enum svga3d_block_desc describes the active data channels in a block.
- *
- * There can be at-most four active channels in a block:
- *    1. Red, bump W, luminance and depth are stored in the first channel.
- *    2. Green, bump V and stencil are stored in the second channel.
- *    3. Blue and bump U are stored in the third channel.
- *    4. Alpha and bump Q are stored in the fourth channel.
- *
- * Block channels can be used to store compressed and buffer data:
- *    1. For compressed formats, only the data channel is used and its size
- *       is equal to that of a singular block in the compression scheme.
- *    2. For buffer formats, only the data channel is used and its size is
- *       exactly one byte in length.
- *    3. In each case the bit depth represent the size of a singular block.
- *
- * Note: Compressed and IEEE formats do not use the bitMask structure.
- */
-
-enum svga3d_block_desc {
-	SVGA3DBLOCKDESC_NONE        = 0,         /* No channels are active */
-	SVGA3DBLOCKDESC_BLUE        = 1 << 0,    /* Block with red channel
-						    data */
-	SVGA3DBLOCKDESC_U           = 1 << 0,    /* Block with bump U channel
-						    data */
-	SVGA3DBLOCKDESC_UV_VIDEO    = 1 << 7,    /* Block with alternating video
-						    U and V */
-	SVGA3DBLOCKDESC_GREEN       = 1 << 1,    /* Block with green channel
-						    data */
-	SVGA3DBLOCKDESC_V           = 1 << 1,    /* Block with bump V channel
-						    data */
-	SVGA3DBLOCKDESC_STENCIL     = 1 << 1,    /* Block with a stencil
-						    channel */
-	SVGA3DBLOCKDESC_RED         = 1 << 2,    /* Block with blue channel
-						    data */
-	SVGA3DBLOCKDESC_W           = 1 << 2,    /* Block with bump W channel
-						    data */
-	SVGA3DBLOCKDESC_LUMINANCE   = 1 << 2,    /* Block with luminance channel
-						    data */
-	SVGA3DBLOCKDESC_Y           = 1 << 2,    /* Block with video luminance
-						    data */
-	SVGA3DBLOCKDESC_DEPTH       = 1 << 2,    /* Block with depth channel */
-	SVGA3DBLOCKDESC_ALPHA       = 1 << 3,    /* Block with an alpha
-						    channel */
-	SVGA3DBLOCKDESC_Q           = 1 << 3,    /* Block with bump Q channel
-						    data */
-	SVGA3DBLOCKDESC_BUFFER      = 1 << 4,    /* Block stores 1 byte of
-						    data */
-	SVGA3DBLOCKDESC_COMPRESSED  = 1 << 5,    /* Block stores n bytes of
-						    data depending on the
-						    compression method used */
-	SVGA3DBLOCKDESC_IEEE_FP     = 1 << 6,    /* Block stores data in an IEEE
-						    floating point
-						    representation in
-						    all channels */
-	SVGA3DBLOCKDESC_PLANAR_YUV  = 1 << 8,    /* Three separate blocks store
-						    data. */
-	SVGA3DBLOCKDESC_U_VIDEO     = 1 << 9,    /* Block with U video data */
-	SVGA3DBLOCKDESC_V_VIDEO     = 1 << 10,   /* Block with V video data */
-	SVGA3DBLOCKDESC_EXP         = 1 << 11,   /* Shared exponent */
-	SVGA3DBLOCKDESC_SRGB        = 1 << 12,   /* Data is in sRGB format */
-	SVGA3DBLOCKDESC_2PLANAR_YUV = 1 << 13,   /* 2 planes of Y, UV,
-						    e.g., NV12. */
-	SVGA3DBLOCKDESC_3PLANAR_YUV = 1 << 14,   /* 3 planes of separate
-						    Y, U, V, e.g., YV12. */
-
-	SVGA3DBLOCKDESC_RG         = SVGA3DBLOCKDESC_RED |
-	SVGA3DBLOCKDESC_GREEN,
-	SVGA3DBLOCKDESC_RGB        = SVGA3DBLOCKDESC_RG |
-	SVGA3DBLOCKDESC_BLUE,
-	SVGA3DBLOCKDESC_RGB_SRGB   = SVGA3DBLOCKDESC_RGB |
-	SVGA3DBLOCKDESC_SRGB,
-	SVGA3DBLOCKDESC_RGBA       = SVGA3DBLOCKDESC_RGB |
-	SVGA3DBLOCKDESC_ALPHA,
-	SVGA3DBLOCKDESC_RGBA_SRGB  = SVGA3DBLOCKDESC_RGBA |
-	SVGA3DBLOCKDESC_SRGB,
-	SVGA3DBLOCKDESC_UV         = SVGA3DBLOCKDESC_U |
-	SVGA3DBLOCKDESC_V,
-	SVGA3DBLOCKDESC_UVL        = SVGA3DBLOCKDESC_UV |
-	SVGA3DBLOCKDESC_LUMINANCE,
-	SVGA3DBLOCKDESC_UVW        = SVGA3DBLOCKDESC_UV |
-	SVGA3DBLOCKDESC_W,
-	SVGA3DBLOCKDESC_UVWA       = SVGA3DBLOCKDESC_UVW |
-	SVGA3DBLOCKDESC_ALPHA,
-	SVGA3DBLOCKDESC_UVWQ       = SVGA3DBLOCKDESC_U |
-	SVGA3DBLOCKDESC_V |
-	SVGA3DBLOCKDESC_W |
-	SVGA3DBLOCKDESC_Q,
-	SVGA3DBLOCKDESC_LA         = SVGA3DBLOCKDESC_LUMINANCE |
-	SVGA3DBLOCKDESC_ALPHA,
-	SVGA3DBLOCKDESC_R_FP       = SVGA3DBLOCKDESC_RED |
-	SVGA3DBLOCKDESC_IEEE_FP,
-	SVGA3DBLOCKDESC_RG_FP      = SVGA3DBLOCKDESC_R_FP |
-	SVGA3DBLOCKDESC_GREEN,
-	SVGA3DBLOCKDESC_RGB_FP     = SVGA3DBLOCKDESC_RG_FP |
-	SVGA3DBLOCKDESC_BLUE,
-	SVGA3DBLOCKDESC_RGBA_FP    = SVGA3DBLOCKDESC_RGB_FP |
-	SVGA3DBLOCKDESC_ALPHA,
-	SVGA3DBLOCKDESC_DS         = SVGA3DBLOCKDESC_DEPTH |
-	SVGA3DBLOCKDESC_STENCIL,
-	SVGA3DBLOCKDESC_YUV        = SVGA3DBLOCKDESC_UV_VIDEO |
-	SVGA3DBLOCKDESC_Y,
-	SVGA3DBLOCKDESC_AYUV       = SVGA3DBLOCKDESC_ALPHA |
-	SVGA3DBLOCKDESC_Y |
-	SVGA3DBLOCKDESC_U_VIDEO |
-	SVGA3DBLOCKDESC_V_VIDEO,
-	SVGA3DBLOCKDESC_RGBE       = SVGA3DBLOCKDESC_RGB |
-	SVGA3DBLOCKDESC_EXP,
-	SVGA3DBLOCKDESC_COMPRESSED_SRGB = SVGA3DBLOCKDESC_COMPRESSED |
-	SVGA3DBLOCKDESC_SRGB,
-	SVGA3DBLOCKDESC_NV12       = SVGA3DBLOCKDESC_PLANAR_YUV |
-	SVGA3DBLOCKDESC_2PLANAR_YUV,
-	SVGA3DBLOCKDESC_YV12       = SVGA3DBLOCKDESC_PLANAR_YUV |
-	SVGA3DBLOCKDESC_3PLANAR_YUV,
-};
-
-/*
- * SVGA3dSurfaceDesc describes the actual pixel data.
- *
- * This structure provides the following information:
- *    1. Block description.
- *    2. Dimensions of a block in the surface.
- *    3. Size of block in bytes.
- *    4. Bit depth of the pixel data.
- *    5. Channel bit depths and masks (if applicable).
- */
-struct svga3d_channel_def {
-	union {
-		u8 blue;
-		u8 u;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u8 uv_video;
 		u8 u_video;
 	};
 	union {
 		u8 green;
-<<<<<<< HEAD
 		u8 stencil;
 		u8 v_bump;
-=======
-		u8 v;
-		u8 stencil;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u8 v_video;
 	};
 	union {
 		u8 red;
-<<<<<<< HEAD
 		u8 u_bump;
 		u8 luminance;
 		u8 y_video;
-=======
-		u8 w;
-		u8 luminance;
-		u8 y;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u8 depth;
 		u8 data;
 	};
 	union {
 		u8 alpha;
-<<<<<<< HEAD
 		u8 q_bump;
-=======
-		u8 q;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u8 exp;
 	};
 };
 
-<<<<<<< HEAD
 /*
  * struct svga3d_surface_desc - describes the actual pixel data.
  *
@@ -547,19 +370,10 @@ struct svga3d_surface_desc {
 	SVGA3dSurfaceFormat format;
 	enum svga3d_block_desc block_desc;
 
-=======
-struct svga3d_surface_desc {
-	SVGA3dSurfaceFormat format;
-	enum svga3d_block_desc block_desc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	surf_size_struct block_size;
 	u32 bytes_per_block;
 	u32 pitch_bytes_per_block;
 
-<<<<<<< HEAD
-=======
-	u32 total_bit_depth;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct svga3d_channel_def bit_depth;
 	struct svga3d_channel_def bit_offset;
 };
@@ -567,7 +381,6 @@ struct svga3d_surface_desc {
 static const struct svga3d_surface_desc svga3d_surface_descs[] = {
    {SVGA3D_FORMAT_INVALID, SVGA3DBLOCKDESC_NONE,
       {1, 1, 1},  0, 0,
-<<<<<<< HEAD
       {{0}, {0}, {0}, {0}},
       {{0}, {0}, {0}, {0}}},
 
@@ -684,138 +497,15 @@ static const struct svga3d_surface_desc svga3d_surface_descs[] = {
    {SVGA3D_FORMAT_DEAD1, SVGA3DBLOCKDESC_UVL,
       {1, 1, 1},  3, 3,
       {{8}, {8}, {8}, {0}},
-=======
-      0, {{0}, {0}, {0}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_X8R8G8B8, SVGA3DBLOCKDESC_RGB,
-      {1, 1, 1},  4, 4,
-      24, {{8}, {8}, {8}, {0}},
-      {{0}, {8}, {16}, {24}}},
-
-   {SVGA3D_A8R8G8B8, SVGA3DBLOCKDESC_RGBA,
-      {1, 1, 1},  4, 4,
-      32, {{8}, {8}, {8}, {8}},
-      {{0}, {8}, {16}, {24}}},
-
-   {SVGA3D_R5G6B5, SVGA3DBLOCKDESC_RGB,
-      {1, 1, 1},  2, 2,
-      16, {{5}, {6}, {5}, {0}},
-      {{0}, {5}, {11}, {0}}},
-
-   {SVGA3D_X1R5G5B5, SVGA3DBLOCKDESC_RGB,
-      {1, 1, 1},  2, 2,
-      15, {{5}, {5}, {5}, {0}},
-      {{0}, {5}, {10}, {0}}},
-
-   {SVGA3D_A1R5G5B5, SVGA3DBLOCKDESC_RGBA,
-      {1, 1, 1},  2, 2,
-      16, {{5}, {5}, {5}, {1}},
-      {{0}, {5}, {10}, {15}}},
-
-   {SVGA3D_A4R4G4B4, SVGA3DBLOCKDESC_RGBA,
-      {1, 1, 1},  2, 2,
-      16, {{4}, {4}, {4}, {4}},
-      {{0}, {4}, {8}, {12}}},
-
-   {SVGA3D_Z_D32, SVGA3DBLOCKDESC_DEPTH,
-      {1, 1, 1},  4, 4,
-      32, {{0}, {0}, {32}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_Z_D16, SVGA3DBLOCKDESC_DEPTH,
-      {1, 1, 1},  2, 2,
-      16, {{0}, {0}, {16}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_Z_D24S8, SVGA3DBLOCKDESC_DS,
-      {1, 1, 1},  4, 4,
-      32, {{0}, {8}, {24}, {0}},
-      {{0}, {24}, {0}, {0}}},
-
-   {SVGA3D_Z_D15S1, SVGA3DBLOCKDESC_DS,
-      {1, 1, 1},  2, 2,
-      16, {{0}, {1}, {15}, {0}},
-      {{0}, {15}, {0}, {0}}},
-
-   {SVGA3D_LUMINANCE8, SVGA3DBLOCKDESC_LUMINANCE,
-      {1, 1, 1},  1, 1,
-      8, {{0}, {0}, {8}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_LUMINANCE4_ALPHA4, SVGA3DBLOCKDESC_LA,
-    {1  , 1, 1},  1, 1,
-      8, {{0}, {0}, {4}, {4}},
-      {{0}, {0}, {0}, {4}}},
-
-   {SVGA3D_LUMINANCE16, SVGA3DBLOCKDESC_LUMINANCE,
-      {1, 1, 1},  2, 2,
-      16, {{0}, {0}, {16}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_LUMINANCE8_ALPHA8, SVGA3DBLOCKDESC_LA,
-      {1, 1, 1},  2, 2,
-      16, {{0}, {0}, {8}, {8}},
-      {{0}, {0}, {0}, {8}}},
-
-   {SVGA3D_DXT1, SVGA3DBLOCKDESC_COMPRESSED,
-      {4, 4, 1},  8, 8,
-      64, {{0}, {0}, {64}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_DXT2, SVGA3DBLOCKDESC_COMPRESSED,
-      {4, 4, 1},  16, 16,
-      128, {{0}, {0}, {128}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_DXT3, SVGA3DBLOCKDESC_COMPRESSED,
-      {4, 4, 1},  16, 16,
-      128, {{0}, {0}, {128}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_DXT4, SVGA3DBLOCKDESC_COMPRESSED,
-      {4, 4, 1},  16, 16,
-      128, {{0}, {0}, {128}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_DXT5, SVGA3DBLOCKDESC_COMPRESSED,
-      {4, 4, 1},  16, 16,
-      128, {{0}, {0}, {128}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_BUMPU8V8, SVGA3DBLOCKDESC_UV,
-      {1, 1, 1},  2, 2,
-      16, {{0}, {0}, {8}, {8}},
-      {{0}, {0}, {0}, {8}}},
-
-   {SVGA3D_BUMPL6V5U5, SVGA3DBLOCKDESC_UVL,
-      {1, 1, 1},  2, 2,
-      16, {{5}, {5}, {6}, {0}},
-      {{11}, {6}, {0}, {0}}},
-
-   {SVGA3D_BUMPX8L8V8U8, SVGA3DBLOCKDESC_UVL,
-      {1, 1, 1},  4, 4,
-      32, {{8}, {8}, {8}, {0}},
-      {{16}, {8}, {0}, {0}}},
-
-   {SVGA3D_BUMPL8V8U8, SVGA3DBLOCKDESC_UVL,
-      {1, 1, 1},  3, 3,
-      24, {{8}, {8}, {8}, {0}},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
       {{16}, {8}, {0}, {0}}},
 
    {SVGA3D_ARGB_S10E5, SVGA3DBLOCKDESC_RGBA_FP,
       {1, 1, 1},  8, 8,
-<<<<<<< HEAD
       {{16}, {16}, {16}, {16}},
-=======
-      64, {{16}, {16}, {16}, {16}},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
       {{32}, {16}, {0}, {48}}},
 
    {SVGA3D_ARGB_S23E8, SVGA3DBLOCKDESC_RGBA_FP,
       {1, 1, 1},  16, 16,
-<<<<<<< HEAD
       {{32}, {32}, {32}, {32}},
       {{64}, {32}, {0}, {96}}},
 
@@ -842,94 +532,40 @@ static const struct svga3d_surface_desc svga3d_surface_descs[] = {
    {SVGA3D_X8L8V8U8, SVGA3DBLOCKDESC_UVL,
       {1, 1, 1},  4, 4,
       {{8}, {8}, {8}, {0}},
-=======
-      128, {{32}, {32}, {32}, {32}},
-      {{64}, {32}, {0}, {96}}},
-
-   {SVGA3D_A2R10G10B10, SVGA3DBLOCKDESC_RGBA,
-      {1, 1, 1},  4, 4,
-      32, {{10}, {10}, {10}, {2}},
-      {{0}, {10}, {20}, {30}}},
-
-   {SVGA3D_V8U8, SVGA3DBLOCKDESC_UV,
-      {1, 1, 1},  2, 2,
-      16, {{8}, {8}, {0}, {0}},
-      {{8}, {0}, {0}, {0}}},
-
-   {SVGA3D_Q8W8V8U8, SVGA3DBLOCKDESC_UVWQ,
-      {1, 1, 1},  4, 4,
-      32, {{8}, {8}, {8}, {8}},
-      {{24}, {16}, {8}, {0}}},
-
-   {SVGA3D_CxV8U8, SVGA3DBLOCKDESC_UV,
-      {1, 1, 1},  2, 2,
-      16, {{8}, {8}, {0}, {0}},
-      {{8}, {0}, {0}, {0}}},
-
-   {SVGA3D_X8L8V8U8, SVGA3DBLOCKDESC_UVL,
-      {1, 1, 1},  4, 4,
-      24, {{8}, {8}, {8}, {0}},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
       {{16}, {8}, {0}, {0}}},
 
    {SVGA3D_A2W10V10U10, SVGA3DBLOCKDESC_UVWA,
       {1, 1, 1},  4, 4,
-<<<<<<< HEAD
       {{10}, {10}, {10}, {2}},
       {{20}, {10}, {0}, {30}}},
 
    {SVGA3D_ALPHA8, SVGA3DBLOCKDESC_A_UNORM,
       {1, 1, 1},  1, 1,
       {{0}, {0}, {0}, {8}},
-=======
-      32, {{10}, {10}, {10}, {2}},
-      {{0}, {10}, {20}, {30}}},
-
-   {SVGA3D_ALPHA8, SVGA3DBLOCKDESC_ALPHA,
-      {1, 1, 1},  1, 1,
-      8, {{0}, {0}, {0}, {8}},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
       {{0}, {0}, {0}, {0}}},
 
    {SVGA3D_R_S10E5, SVGA3DBLOCKDESC_R_FP,
       {1, 1, 1},  2, 2,
-<<<<<<< HEAD
       {{0}, {0}, {16}, {0}},
-=======
-      16, {{0}, {0}, {16}, {0}},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
       {{0}, {0}, {0}, {0}}},
 
    {SVGA3D_R_S23E8, SVGA3DBLOCKDESC_R_FP,
       {1, 1, 1},  4, 4,
-<<<<<<< HEAD
       {{0}, {0}, {32}, {0}},
-=======
-      32, {{0}, {0}, {32}, {0}},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
       {{0}, {0}, {0}, {0}}},
 
    {SVGA3D_RG_S10E5, SVGA3DBLOCKDESC_RG_FP,
       {1, 1, 1},  4, 4,
-<<<<<<< HEAD
       {{0}, {16}, {16}, {0}},
-=======
-      32, {{0}, {16}, {16}, {0}},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
       {{0}, {16}, {0}, {0}}},
 
    {SVGA3D_RG_S23E8, SVGA3DBLOCKDESC_RG_FP,
       {1, 1, 1},  8, 8,
-<<<<<<< HEAD
       {{0}, {32}, {32}, {0}},
-=======
-      64, {{0}, {32}, {32}, {0}},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
       {{0}, {32}, {0}, {0}}},
 
    {SVGA3D_BUFFER, SVGA3DBLOCKDESC_BUFFER,
       {1, 1, 1},  1, 1,
-<<<<<<< HEAD
       {{0}, {0}, {8}, {0}},
       {{0}, {0}, {0}, {0}}},
 
@@ -961,53 +597,15 @@ static const struct svga3d_surface_desc svga3d_surface_descs[] = {
    {SVGA3D_YUY2, SVGA3DBLOCKDESC_YUV,
       {2, 1, 1},  4, 4,
       {{8}, {0}, {8}, {0}},
-=======
-      8, {{0}, {0}, {8}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_Z_D24X8, SVGA3DBLOCKDESC_DEPTH,
-      {1, 1, 1},  4, 4,
-      32, {{0}, {0}, {24}, {0}},
-      {{0}, {24}, {0}, {0}}},
-
-   {SVGA3D_V16U16, SVGA3DBLOCKDESC_UV,
-      {1, 1, 1},  4, 4,
-      32, {{16}, {16}, {0}, {0}},
-      {{16}, {0}, {0}, {0}}},
-
-   {SVGA3D_G16R16, SVGA3DBLOCKDESC_RG,
-      {1, 1, 1},  4, 4,
-      32, {{0}, {16}, {16}, {0}},
-      {{0}, {0}, {16}, {0}}},
-
-   {SVGA3D_A16B16G16R16, SVGA3DBLOCKDESC_RGBA,
-      {1, 1, 1},  8, 8,
-      64, {{16}, {16}, {16}, {16}},
-      {{32}, {16}, {0}, {48}}},
-
-   {SVGA3D_UYVY, SVGA3DBLOCKDESC_YUV,
-      {1, 1, 1},  2, 2,
-      16, {{8}, {0}, {8}, {0}},
-      {{0}, {0}, {8}, {0}}},
-
-   {SVGA3D_YUY2, SVGA3DBLOCKDESC_YUV,
-      {1, 1, 1},  2, 2,
-      16, {{8}, {0}, {8}, {0}},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
       {{8}, {0}, {0}, {0}}},
 
    {SVGA3D_NV12, SVGA3DBLOCKDESC_NV12,
       {2, 2, 1},  6, 2,
-<<<<<<< HEAD
       {{0}, {0}, {48}, {0}},
-=======
-      48, {{0}, {0}, {48}, {0}},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
       {{0}, {0}, {0}, {0}}},
 
    {SVGA3D_AYUV, SVGA3DBLOCKDESC_AYUV,
       {1, 1, 1},  4, 4,
-<<<<<<< HEAD
       {{8}, {8}, {8}, {8}},
       {{0}, {8}, {16}, {24}}},
 
@@ -1029,34 +627,10 @@ static const struct svga3d_surface_desc svga3d_surface_descs[] = {
    {SVGA3D_R32G32B32_TYPELESS, SVGA3DBLOCKDESC_TYPELESS,
       {1, 1, 1},  12, 12,
       {{32}, {32}, {32}, {0}},
-=======
-      32, {{8}, {8}, {8}, {8}},
-      {{0}, {8}, {16}, {24}}},
-
-   {SVGA3D_R32G32B32A32_TYPELESS, SVGA3DBLOCKDESC_RGBA,
-      {1, 1, 1},  16, 16,
-      128, {{32}, {32}, {32}, {32}},
-      {{64}, {32}, {0}, {96}}},
-
-   {SVGA3D_R32G32B32A32_UINT, SVGA3DBLOCKDESC_RGBA,
-      {1, 1, 1},  16, 16,
-      128, {{32}, {32}, {32}, {32}},
-      {{64}, {32}, {0}, {96}}},
-
-   {SVGA3D_R32G32B32A32_SINT, SVGA3DBLOCKDESC_UVWQ,
-      {1, 1, 1},  16, 16,
-      128, {{32}, {32}, {32}, {32}},
-      {{64}, {32}, {0}, {96}}},
-
-   {SVGA3D_R32G32B32_TYPELESS, SVGA3DBLOCKDESC_RGB,
-      {1, 1, 1},  12, 12,
-      96, {{32}, {32}, {32}, {0}},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
       {{64}, {32}, {0}, {0}}},
 
    {SVGA3D_R32G32B32_FLOAT, SVGA3DBLOCKDESC_RGB_FP,
       {1, 1, 1},  12, 12,
-<<<<<<< HEAD
       {{32}, {32}, {32}, {0}},
       {{64}, {32}, {0}, {0}}},
 
@@ -1108,64 +682,10 @@ static const struct svga3d_surface_desc svga3d_surface_descs[] = {
    {SVGA3D_R32G8X24_TYPELESS, SVGA3DBLOCKDESC_TYPELESS,
       {1, 1, 1},  8, 8,
       {{0}, {8}, {32}, {0}},
-=======
-      96, {{32}, {32}, {32}, {0}},
-      {{64}, {32}, {0}, {0}}},
-
-   {SVGA3D_R32G32B32_UINT, SVGA3DBLOCKDESC_RGB,
-      {1, 1, 1},  12, 12,
-      96, {{32}, {32}, {32}, {0}},
-      {{64}, {32}, {0}, {0}}},
-
-   {SVGA3D_R32G32B32_SINT, SVGA3DBLOCKDESC_UVW,
-      {1, 1, 1},  12, 12,
-      96, {{32}, {32}, {32}, {0}},
-      {{64}, {32}, {0}, {0}}},
-
-   {SVGA3D_R16G16B16A16_TYPELESS, SVGA3DBLOCKDESC_RGBA,
-      {1, 1, 1},  8, 8,
-      64, {{16}, {16}, {16}, {16}},
-      {{32}, {16}, {0}, {48}}},
-
-   {SVGA3D_R16G16B16A16_UINT, SVGA3DBLOCKDESC_RGBA,
-      {1, 1, 1},  8, 8,
-      64, {{16}, {16}, {16}, {16}},
-      {{32}, {16}, {0}, {48}}},
-
-   {SVGA3D_R16G16B16A16_SNORM, SVGA3DBLOCKDESC_UVWQ,
-      {1, 1, 1},  8, 8,
-      64, {{16}, {16}, {16}, {16}},
-      {{32}, {16}, {0}, {48}}},
-
-   {SVGA3D_R16G16B16A16_SINT, SVGA3DBLOCKDESC_UVWQ,
-      {1, 1, 1},  8, 8,
-      64, {{16}, {16}, {16}, {16}},
-      {{32}, {16}, {0}, {48}}},
-
-   {SVGA3D_R32G32_TYPELESS, SVGA3DBLOCKDESC_RG,
-      {1, 1, 1},  8, 8,
-      64, {{0}, {32}, {32}, {0}},
-      {{0}, {32}, {0}, {0}}},
-
-   {SVGA3D_R32G32_UINT, SVGA3DBLOCKDESC_RG,
-      {1, 1, 1},  8, 8,
-      64, {{0}, {32}, {32}, {0}},
-      {{0}, {32}, {0}, {0}}},
-
-   {SVGA3D_R32G32_SINT, SVGA3DBLOCKDESC_UV,
-      {1, 1, 1},  8, 8,
-      64, {{0}, {32}, {32}, {0}},
-      {{0}, {32}, {0}, {0}}},
-
-   {SVGA3D_R32G8X24_TYPELESS, SVGA3DBLOCKDESC_RG,
-      {1, 1, 1},  8, 8,
-      64, {{0}, {8}, {32}, {0}},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
       {{0}, {32}, {0}, {0}}},
 
    {SVGA3D_D32_FLOAT_S8X24_UINT, SVGA3DBLOCKDESC_DS,
       {1, 1, 1},  8, 8,
-<<<<<<< HEAD
       {{0}, {8}, {32}, {0}},
       {{0}, {32}, {0}, {0}}},
 
@@ -1467,342 +987,25 @@ static const struct svga3d_surface_desc svga3d_surface_descs[] = {
    {SVGA3D_YV12, SVGA3DBLOCKDESC_YV12,
       {2, 2, 1},  6, 2,
       {{0}, {0}, {48}, {0}},
-=======
-      64, {{0}, {8}, {32}, {0}},
-      {{0}, {32}, {0}, {0}}},
-
-   {SVGA3D_R32_FLOAT_X8X24_TYPELESS, SVGA3DBLOCKDESC_R_FP,
-      {1, 1, 1},  8, 8,
-      64, {{0}, {0}, {32}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_X32_TYPELESS_G8X24_UINT, SVGA3DBLOCKDESC_GREEN,
-      {1, 1, 1},  8, 8,
-      64, {{0}, {8}, {0}, {0}},
-      {{0}, {32}, {0}, {0}}},
-
-   {SVGA3D_R10G10B10A2_TYPELESS, SVGA3DBLOCKDESC_RGBA,
-      {1, 1, 1},  4, 4,
-      32, {{10}, {10}, {10}, {2}},
-      {{0}, {10}, {20}, {30}}},
-
-   {SVGA3D_R10G10B10A2_UINT, SVGA3DBLOCKDESC_RGBA,
-      {1, 1, 1},  4, 4,
-      32, {{10}, {10}, {10}, {2}},
-      {{0}, {10}, {20}, {30}}},
-
-   {SVGA3D_R11G11B10_FLOAT, SVGA3DBLOCKDESC_RGB_FP,
-      {1, 1, 1},  4, 4,
-      32, {{10}, {11}, {11}, {0}},
-      {{0}, {10}, {21}, {0}}},
-
-   {SVGA3D_R8G8B8A8_TYPELESS, SVGA3DBLOCKDESC_RGBA,
-      {1, 1, 1},  4, 4,
-      32, {{8}, {8}, {8}, {8}},
-      {{16}, {8}, {0}, {24}}},
-
-   {SVGA3D_R8G8B8A8_UNORM, SVGA3DBLOCKDESC_RGBA,
-      {1, 1, 1},  4, 4,
-      32, {{8}, {8}, {8}, {8}},
-      {{16}, {8}, {0}, {24}}},
-
-   {SVGA3D_R8G8B8A8_UNORM_SRGB, SVGA3DBLOCKDESC_RGBA_SRGB,
-      {1, 1, 1},  4, 4,
-      32, {{8}, {8}, {8}, {8}},
-      {{16}, {8}, {0}, {24}}},
-
-   {SVGA3D_R8G8B8A8_UINT, SVGA3DBLOCKDESC_RGBA,
-      {1, 1, 1},  4, 4,
-      32, {{8}, {8}, {8}, {8}},
-      {{16}, {8}, {0}, {24}}},
-
-   {SVGA3D_R8G8B8A8_SINT, SVGA3DBLOCKDESC_RGBA,
-      {1, 1, 1},  4, 4,
-      32, {{8}, {8}, {8}, {8}},
-      {{16}, {8}, {0}, {24}}},
-
-   {SVGA3D_R16G16_TYPELESS, SVGA3DBLOCKDESC_RG,
-      {1, 1, 1},  4, 4,
-      32, {{0}, {16}, {16}, {0}},
-      {{0}, {16}, {0}, {0}}},
-
-   {SVGA3D_R16G16_UINT, SVGA3DBLOCKDESC_RG_FP,
-      {1, 1, 1},  4, 4,
-      32, {{0}, {16}, {16}, {0}},
-      {{0}, {16}, {0}, {0}}},
-
-   {SVGA3D_R16G16_SINT, SVGA3DBLOCKDESC_UV,
-      {1, 1, 1},  4, 4,
-      32, {{0}, {16}, {16}, {0}},
-      {{0}, {16}, {0}, {0}}},
-
-   {SVGA3D_R32_TYPELESS, SVGA3DBLOCKDESC_RED,
-      {1, 1, 1},  4, 4,
-      32, {{0}, {0}, {32}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_D32_FLOAT, SVGA3DBLOCKDESC_DEPTH,
-      {1, 1, 1},  4, 4,
-      32, {{0}, {0}, {32}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_R32_UINT, SVGA3DBLOCKDESC_RED,
-      {1, 1, 1},  4, 4,
-      32, {{0}, {0}, {32}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_R32_SINT, SVGA3DBLOCKDESC_RED,
-      {1, 1, 1},  4, 4,
-      32, {{0}, {0}, {32}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_R24G8_TYPELESS, SVGA3DBLOCKDESC_RG,
-      {1, 1, 1},  4, 4,
-      32, {{0}, {8}, {24}, {0}},
-      {{0}, {24}, {0}, {0}}},
-
-   {SVGA3D_D24_UNORM_S8_UINT, SVGA3DBLOCKDESC_DS,
-      {1, 1, 1},  4, 4,
-      32, {{0}, {8}, {24}, {0}},
-      {{0}, {24}, {0}, {0}}},
-
-   {SVGA3D_R24_UNORM_X8_TYPELESS, SVGA3DBLOCKDESC_RED,
-      {1, 1, 1},  4, 4,
-      32, {{0}, {0}, {24}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_X24_TYPELESS_G8_UINT, SVGA3DBLOCKDESC_GREEN,
-      {1, 1, 1},  4, 4,
-      32, {{0}, {8}, {0}, {0}},
-      {{0}, {24}, {0}, {0}}},
-
-   {SVGA3D_R8G8_TYPELESS, SVGA3DBLOCKDESC_RG,
-      {1, 1, 1},  2, 2,
-      16, {{0}, {8}, {8}, {0}},
-      {{0}, {8}, {0}, {0}}},
-
-   {SVGA3D_R8G8_UNORM, SVGA3DBLOCKDESC_RG,
-      {1, 1, 1},  2, 2,
-      16, {{0}, {8}, {8}, {0}},
-      {{0}, {8}, {0}, {0}}},
-
-   {SVGA3D_R8G8_UINT, SVGA3DBLOCKDESC_RG,
-      {1, 1, 1},  2, 2,
-      16, {{0}, {8}, {8}, {0}},
-      {{0}, {8}, {0}, {0}}},
-
-   {SVGA3D_R8G8_SINT, SVGA3DBLOCKDESC_UV,
-      {1, 1, 1},  2, 2,
-      16, {{0}, {8}, {8}, {0}},
-      {{0}, {8}, {0}, {0}}},
-
-   {SVGA3D_R16_TYPELESS, SVGA3DBLOCKDESC_RED,
-      {1, 1, 1},  2, 2,
-      16, {{0}, {0}, {16}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_R16_UNORM, SVGA3DBLOCKDESC_RED,
-      {1, 1, 1},  2, 2,
-      16, {{0}, {0}, {16}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_R16_UINT, SVGA3DBLOCKDESC_RED,
-      {1, 1, 1},  2, 2,
-      16, {{0}, {0}, {16}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_R16_SNORM, SVGA3DBLOCKDESC_U,
-      {1, 1, 1},  2, 2,
-      16, {{0}, {0}, {16}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_R16_SINT, SVGA3DBLOCKDESC_U,
-      {1, 1, 1},  2, 2,
-      16, {{0}, {0}, {16}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_R8_TYPELESS, SVGA3DBLOCKDESC_RED,
-      {1, 1, 1},  1, 1,
-      8, {{0}, {0}, {8}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_R8_UNORM, SVGA3DBLOCKDESC_RED,
-      {1, 1, 1},  1, 1,
-      8, {{0}, {0}, {8}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_R8_UINT, SVGA3DBLOCKDESC_RED,
-      {1, 1, 1},  1, 1,
-      8, {{0}, {0}, {8}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_R8_SNORM, SVGA3DBLOCKDESC_U,
-      {1, 1, 1},  1, 1,
-      8, {{0}, {0}, {8}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_R8_SINT, SVGA3DBLOCKDESC_U,
-      {1, 1, 1},  1, 1,
-      8, {{0}, {0}, {8}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_P8, SVGA3DBLOCKDESC_RED,
-      {1, 1, 1},  1, 1,
-      8, {{0}, {0}, {8}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_R9G9B9E5_SHAREDEXP, SVGA3DBLOCKDESC_RGBE,
-      {1, 1, 1},  4, 4,
-      32, {{9}, {9}, {9}, {5}},
-      {{18}, {9}, {0}, {27}}},
-
-   {SVGA3D_R8G8_B8G8_UNORM, SVGA3DBLOCKDESC_RG,
-      {1, 1, 1},  2, 2,
-      16, {{0}, {8}, {8}, {0}},
-      {{0}, {8}, {0}, {0}}},
-
-   {SVGA3D_G8R8_G8B8_UNORM, SVGA3DBLOCKDESC_RG,
-      {1, 1, 1},  2, 2,
-      16, {{0}, {8}, {8}, {0}},
-      {{0}, {8}, {0}, {0}}},
-
-   {SVGA3D_BC1_TYPELESS, SVGA3DBLOCKDESC_COMPRESSED,
-      {4, 4, 1},  8, 8,
-      64, {{0}, {0}, {64}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_BC1_UNORM_SRGB, SVGA3DBLOCKDESC_COMPRESSED_SRGB,
-      {4, 4, 1},  8, 8,
-      64, {{0}, {0}, {64}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_BC2_TYPELESS, SVGA3DBLOCKDESC_COMPRESSED,
-      {4, 4, 1},  16, 16,
-      128, {{0}, {0}, {128}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_BC2_UNORM_SRGB, SVGA3DBLOCKDESC_COMPRESSED_SRGB,
-      {4, 4, 1},  16, 16,
-      128, {{0}, {0}, {128}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_BC3_TYPELESS, SVGA3DBLOCKDESC_COMPRESSED,
-      {4, 4, 1},  16, 16,
-      128, {{0}, {0}, {128}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_BC3_UNORM_SRGB, SVGA3DBLOCKDESC_COMPRESSED_SRGB,
-      {4, 4, 1},  16, 16,
-      128, {{0}, {0}, {128}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_BC4_TYPELESS, SVGA3DBLOCKDESC_COMPRESSED,
-      {4, 4, 1},  8, 8,
-      64, {{0}, {0}, {64}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_ATI1, SVGA3DBLOCKDESC_COMPRESSED,
-      {4, 4, 1},  8, 8,
-      64, {{0}, {0}, {64}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_BC4_SNORM, SVGA3DBLOCKDESC_COMPRESSED,
-      {4, 4, 1},  8, 8,
-      64, {{0}, {0}, {64}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_BC5_TYPELESS, SVGA3DBLOCKDESC_COMPRESSED,
-      {4, 4, 1},  16, 16,
-      128, {{0}, {0}, {128}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_ATI2, SVGA3DBLOCKDESC_COMPRESSED,
-      {4, 4, 1},  16, 16,
-      128, {{0}, {0}, {128}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_BC5_SNORM, SVGA3DBLOCKDESC_COMPRESSED,
-      {4, 4, 1},  16, 16,
-      128, {{0}, {0}, {128}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_R10G10B10_XR_BIAS_A2_UNORM, SVGA3DBLOCKDESC_RGBA,
-      {1, 1, 1},  4, 4,
-      32, {{10}, {10}, {10}, {2}},
-      {{0}, {10}, {20}, {30}}},
-
-   {SVGA3D_B8G8R8A8_TYPELESS, SVGA3DBLOCKDESC_RGBA,
-      {1, 1, 1},  4, 4,
-      32, {{8}, {8}, {8}, {8}},
-      {{0}, {8}, {16}, {24}}},
-
-   {SVGA3D_B8G8R8A8_UNORM_SRGB, SVGA3DBLOCKDESC_RGBA_SRGB,
-      {1, 1, 1},  4, 4,
-      32, {{8}, {8}, {8}, {8}},
-      {{0}, {8}, {16}, {24}}},
-
-   {SVGA3D_B8G8R8X8_TYPELESS, SVGA3DBLOCKDESC_RGB,
-      {1, 1, 1},  4, 4,
-      24, {{8}, {8}, {8}, {0}},
-      {{0}, {8}, {16}, {24}}},
-
-   {SVGA3D_B8G8R8X8_UNORM_SRGB, SVGA3DBLOCKDESC_RGB_SRGB,
-      {1, 1, 1},  4, 4,
-      24, {{8}, {8}, {8}, {0}},
-      {{0}, {8}, {16}, {24}}},
-
-   {SVGA3D_Z_DF16, SVGA3DBLOCKDESC_DEPTH,
-      {1, 1, 1},  2, 2,
-      16, {{0}, {0}, {16}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_Z_DF24, SVGA3DBLOCKDESC_DEPTH,
-      {1, 1, 1},  4, 4,
-      32, {{0}, {8}, {24}, {0}},
-      {{0}, {24}, {0}, {0}}},
-
-   {SVGA3D_Z_D24S8_INT, SVGA3DBLOCKDESC_DS,
-      {1, 1, 1},  4, 4,
-      32, {{0}, {8}, {24}, {0}},
-      {{0}, {24}, {0}, {0}}},
-
-   {SVGA3D_YV12, SVGA3DBLOCKDESC_YV12,
-      {2, 2, 1},  6, 2,
-      48, {{0}, {0}, {48}, {0}},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
       {{0}, {0}, {0}, {0}}},
 
    {SVGA3D_R32G32B32A32_FLOAT, SVGA3DBLOCKDESC_RGBA_FP,
       {1, 1, 1},  16, 16,
-<<<<<<< HEAD
       {{32}, {32}, {32}, {32}},
-=======
-      128, {{32}, {32}, {32}, {32}},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
       {{64}, {32}, {0}, {96}}},
 
    {SVGA3D_R16G16B16A16_FLOAT, SVGA3DBLOCKDESC_RGBA_FP,
       {1, 1, 1},  8, 8,
-<<<<<<< HEAD
       {{16}, {16}, {16}, {16}},
       {{32}, {16}, {0}, {48}}},
 
    {SVGA3D_R16G16B16A16_UNORM, SVGA3DBLOCKDESC_RGBA_UNORM,
       {1, 1, 1},  8, 8,
       {{16}, {16}, {16}, {16}},
-=======
-      64, {{16}, {16}, {16}, {16}},
-      {{32}, {16}, {0}, {48}}},
-
-   {SVGA3D_R16G16B16A16_UNORM, SVGA3DBLOCKDESC_RGBA,
-      {1, 1, 1},  8, 8,
-      64, {{16}, {16}, {16}, {16}},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
       {{32}, {16}, {0}, {48}}},
 
    {SVGA3D_R32G32_FLOAT, SVGA3DBLOCKDESC_RG_FP,
       {1, 1, 1},  8, 8,
-<<<<<<< HEAD
       {{0}, {32}, {32}, {0}},
       {{0}, {32}, {0}, {0}}},
 
@@ -1900,106 +1103,6 @@ static const struct svga3d_surface_desc svga3d_surface_descs[] = {
       {4, 4, 1},  16, 16,
       {{0}, {0}, {128}, {0}},
       {{0}, {0}, {0}, {0}}},
-=======
-      64, {{0}, {32}, {32}, {0}},
-      {{0}, {32}, {0}, {0}}},
-
-   {SVGA3D_R10G10B10A2_UNORM, SVGA3DBLOCKDESC_RGBA,
-      {1, 1, 1},  4, 4,
-      32, {{10}, {10}, {10}, {2}},
-      {{0}, {10}, {20}, {30}}},
-
-   {SVGA3D_R8G8B8A8_SNORM, SVGA3DBLOCKDESC_RGBA,
-      {1, 1, 1},  4, 4,
-      32, {{8}, {8}, {8}, {8}},
-      {{24}, {16}, {8}, {0}}},
-
-   {SVGA3D_R16G16_FLOAT, SVGA3DBLOCKDESC_RG_FP,
-      {1, 1, 1},  4, 4,
-      32, {{0}, {16}, {16}, {0}},
-      {{0}, {16}, {0}, {0}}},
-
-   {SVGA3D_R16G16_UNORM, SVGA3DBLOCKDESC_RG,
-      {1, 1, 1},  4, 4,
-      32, {{0}, {16}, {16}, {0}},
-      {{0}, {0}, {16}, {0}}},
-
-   {SVGA3D_R16G16_SNORM, SVGA3DBLOCKDESC_RG,
-      {1, 1, 1},  4, 4,
-      32, {{16}, {16}, {0}, {0}},
-      {{16}, {0}, {0}, {0}}},
-
-   {SVGA3D_R32_FLOAT, SVGA3DBLOCKDESC_R_FP,
-      {1, 1, 1},  4, 4,
-      32, {{0}, {0}, {32}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_R8G8_SNORM, SVGA3DBLOCKDESC_RG,
-      {1, 1, 1},  2, 2,
-      16, {{8}, {8}, {0}, {0}},
-      {{8}, {0}, {0}, {0}}},
-
-   {SVGA3D_R16_FLOAT, SVGA3DBLOCKDESC_R_FP,
-      {1, 1, 1},  2, 2,
-      16, {{0}, {0}, {16}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_D16_UNORM, SVGA3DBLOCKDESC_DEPTH,
-      {1, 1, 1},  2, 2,
-      16, {{0}, {0}, {16}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_A8_UNORM, SVGA3DBLOCKDESC_ALPHA,
-      {1, 1, 1},  1, 1,
-      8, {{0}, {0}, {0}, {8}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_BC1_UNORM, SVGA3DBLOCKDESC_COMPRESSED,
-      {4, 4, 1},  8, 8,
-      64, {{0}, {0}, {64}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_BC2_UNORM, SVGA3DBLOCKDESC_COMPRESSED,
-      {4, 4, 1},  16, 16,
-      128, {{0}, {0}, {128}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_BC3_UNORM, SVGA3DBLOCKDESC_COMPRESSED,
-      {4, 4, 1},  16, 16,
-      128, {{0}, {0}, {128}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_B5G6R5_UNORM, SVGA3DBLOCKDESC_RGB,
-      {1, 1, 1},  2, 2,
-      16, {{5}, {6}, {5}, {0}},
-      {{0}, {5}, {11}, {0}}},
-
-   {SVGA3D_B5G5R5A1_UNORM, SVGA3DBLOCKDESC_RGBA,
-      {1, 1, 1},  2, 2,
-      16, {{5}, {5}, {5}, {1}},
-      {{0}, {5}, {10}, {15}}},
-
-   {SVGA3D_B8G8R8A8_UNORM, SVGA3DBLOCKDESC_RGBA,
-      {1, 1, 1},  4, 4,
-      32, {{8}, {8}, {8}, {8}},
-      {{0}, {8}, {16}, {24}}},
-
-   {SVGA3D_B8G8R8X8_UNORM, SVGA3DBLOCKDESC_RGB,
-      {1, 1, 1},  4, 4,
-      24, {{8}, {8}, {8}, {0}},
-      {{0}, {8}, {16}, {24}}},
-
-   {SVGA3D_BC4_UNORM, SVGA3DBLOCKDESC_COMPRESSED,
-      {4, 4, 1},  8, 8,
-      64, {{0}, {0}, {64}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
-   {SVGA3D_BC5_UNORM, SVGA3DBLOCKDESC_COMPRESSED,
-      {4, 4, 1},  16, 16,
-      128, {{0}, {0}, {128}, {0}},
-      {{0}, {0}, {0}, {0}}},
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static inline u32 clamped_umul32(u32 a, u32 b)
@@ -2008,13 +1111,10 @@ static inline u32 clamped_umul32(u32 a, u32 b)
 	return (tmp > (uint64_t) ((u32) -1)) ? (u32) -1 : tmp;
 }
 
-<<<<<<< HEAD
 /**
  * svga3dsurface_get_desc - Look up the appropriate SVGA3dSurfaceDesc for the
  * given format.
  */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline const struct svga3d_surface_desc *
 svga3dsurface_get_desc(SVGA3dSurfaceFormat format)
 {
@@ -2024,30 +1124,10 @@ svga3dsurface_get_desc(SVGA3dSurfaceFormat format)
 	return &svga3d_surface_descs[SVGA3D_FORMAT_INVALID];
 }
 
-<<<<<<< HEAD
 /**
  * svga3dsurface_get_mip_size -  Given a base level size and the mip level,
  * compute the size of the mip level.
  */
-=======
-/*
- *----------------------------------------------------------------------
- *
- * svga3dsurface_get_mip_size --
- *
- *      Given a base level size and the mip level, compute the size of
- *      the mip level.
- *
- * Results:
- *      See above.
- *
- * Side effects:
- *      None.
- *
- *----------------------------------------------------------------------
- */
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline surf_size_struct
 svga3dsurface_get_mip_size(surf_size_struct base_level, u32 mip_level)
 {
@@ -2094,7 +1174,6 @@ svga3dsurface_calculate_pitch(const struct svga3d_surface_desc *desc,
 	return pitch;
 }
 
-<<<<<<< HEAD
 /**
  * svga3dsurface_get_image_buffer_size - Calculates image buffer size.
  *
@@ -2106,30 +1185,6 @@ svga3dsurface_calculate_pitch(const struct svga3d_surface_desc *desc,
  * This function is overflow-safe. If the result would have overflowed, instead
  * we return MAX_UINT32.
  */
-=======
-/*
- *-----------------------------------------------------------------------------
- *
- * svga3dsurface_get_image_buffer_size --
- *
- *      Return the number of bytes of buffer space required to store
- *      one image of a surface, optionally using the specified pitch.
- *
- *      If pitch is zero, it is assumed that rows are tightly packed.
- *
- *      This function is overflow-safe. If the result would have
- *      overflowed, instead we return MAX_UINT32.
- *
- * Results:
- *      Byte count.
- *
- * Side effects:
- *      None.
- *
- *-----------------------------------------------------------------------------
- */
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline u32
 svga3dsurface_get_image_buffer_size(const struct svga3d_surface_desc *desc,
 				    const surf_size_struct *size,
@@ -2157,12 +1212,9 @@ svga3dsurface_get_image_buffer_size(const struct svga3d_surface_desc *desc,
 	return total_size;
 }
 
-<<<<<<< HEAD
 /**
  * svga3dsurface_get_serialized_size - Get the serialized size for the image.
  */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline u32
 svga3dsurface_get_serialized_size(SVGA3dSurfaceFormat format,
 				  surf_size_struct base_level_size,
@@ -2183,7 +1235,6 @@ svga3dsurface_get_serialized_size(SVGA3dSurfaceFormat format,
 	return total_size * num_layers;
 }
 
-<<<<<<< HEAD
 /**
  * svga3dsurface_get_serialized_size_extended - Returns the number of bytes
  * required for a surface with given parameters. Support for sample count.
@@ -2204,8 +1255,6 @@ svga3dsurface_get_serialized_size_extended(SVGA3dSurfaceFormat format,
 
 	return min_t(uint64_t, total_size, (uint64_t)U32_MAX);
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * svga3dsurface_get_pixel_offset - Compute the offset (in bytes) to a pixel
@@ -2325,8 +1374,5 @@ svga3dsurface_is_screen_target_format(SVGA3dSurfaceFormat format)
 	}
 	return svga3dsurface_is_dx_screen_target_format(format);
 }
-<<<<<<< HEAD
 
 #endif /* _SVGA3D_SURFACEDEFS_H_ */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -77,11 +77,7 @@ static int cavium_rng_probe_vf(struct	pci_dev		*pdev,
 }
 
 /* Remove the VF */
-<<<<<<< HEAD
 static void  cavium_rng_remove_vf(struct pci_dev *pdev)
-=======
-void  cavium_rng_remove_vf(struct pci_dev *pdev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct cavium_rng *rng;
 

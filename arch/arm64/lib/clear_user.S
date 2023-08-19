@@ -57,9 +57,5 @@ ENDPROC(__arch_clear_user)
 	.section .fixup,"ax"
 	.align	2
 9:	mov	x0, x2			// return the original size
-<<<<<<< HEAD
-=======
-	uaccess_disable_not_uao x2, x3
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret
 	.previous

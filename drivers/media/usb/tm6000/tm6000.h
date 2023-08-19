@@ -1,5 +1,4 @@
 /*
-<<<<<<< HEAD
  * SPDX-License-Identifier: GPL-2.0
  * tm6000.h - driver for TM5600/TM6000/TM6010 USB video capture devices
  *
@@ -7,23 +6,6 @@
  *
  * Copyright (c) 2007 Michel Ludwig <michel.ludwig@gmail.com>
  *	- DVB-T support
-=======
- *  tm6000.h - driver for TM5600/TM6000/TM6010 USB video capture devices
- *
- *  Copyright (C) 2006-2007 Mauro Carvalho Chehab <mchehab@infradead.org>
- *
- *  Copyright (C) 2007 Michel Ludwig <michel.ludwig@gmail.com>
- *	- DVB-T support
- *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation version 2
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/videodev2.h>
@@ -37,15 +19,9 @@
 #include <media/v4l2-fh.h>
 
 #include <linux/dvb/frontend.h>
-<<<<<<< HEAD
 #include <media/dvb_demux.h>
 #include <media/dvb_frontend.h>
 #include <media/dmxdev.h>
-=======
-#include "dvb_demux.h"
-#include "dvb_frontend.h"
-#include "dmxdev.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Inputs */
 enum tm6000_itype {
@@ -201,11 +177,7 @@ struct tm6000_core {
 	struct tm6000_capabilities	caps;
 
 	/* Used to load alsa/dvb */
-<<<<<<< HEAD
 	struct work_struct		request_module_wk;
-=======
-        struct work_struct		request_module_wk;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Tuner configuration */
 	int				tuner_type;		/* type of the tuner */

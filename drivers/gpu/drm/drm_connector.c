@@ -24,10 +24,7 @@
 #include <drm/drm_connector.h>
 #include <drm/drm_edid.h>
 #include <drm/drm_encoder.h>
-<<<<<<< HEAD
 #include <drm/drm_utils.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "drm_crtc_internal.h"
 #include "drm_internal.h"
@@ -51,11 +48,7 @@
  *
  * Connectors must be attached to an encoder to be used. For devices that map
  * connectors to encoders 1:1, the connector should be attached at
-<<<<<<< HEAD
  * initialization time with a call to drm_connector_attach_encoder(). The
-=======
- * initialization time with a call to drm_mode_connector_attach_encoder(). The
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * driver must also set the &drm_connector.encoder field to point to the
  * attached encoder.
  *
@@ -94,10 +87,7 @@ static struct drm_conn_prop_enum_list drm_connector_enum_list[] = {
 	{ DRM_MODE_CONNECTOR_VIRTUAL, "Virtual" },
 	{ DRM_MODE_CONNECTOR_DSI, "DSI" },
 	{ DRM_MODE_CONNECTOR_DPI, "DPI" },
-<<<<<<< HEAD
 	{ DRM_MODE_CONNECTOR_WRITEBACK, "Writeback" },
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 void drm_connector_ida_init(void)
@@ -164,7 +154,6 @@ static void drm_connector_free(struct kref *kref)
 	connector->funcs->destroy(connector);
 }
 
-<<<<<<< HEAD
 void drm_connector_free_work_fn(struct work_struct *work)
 {
 	struct drm_connector *connector, *n;
@@ -184,8 +173,6 @@ void drm_connector_free_work_fn(struct work_struct *work)
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * drm_connector_init - Init a preallocated connector
  * @dev: DRM device
@@ -209,13 +196,10 @@ int drm_connector_init(struct drm_device *dev,
 	struct ida *connector_ida =
 		&drm_connector_enum_list[connector_type].ida;
 
-<<<<<<< HEAD
 	WARN_ON(drm_drv_uses_atomic_modeset(dev) &&
 		(!funcs->atomic_destroy_state ||
 		 !funcs->atomic_duplicate_state));
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = __drm_mode_object_add(dev, &connector->base,
 				    DRM_MODE_OBJECT_CONNECTOR,
 				    false, drm_connector_free);
@@ -226,7 +210,6 @@ int drm_connector_init(struct drm_device *dev,
 	connector->dev = dev;
 	connector->funcs = funcs;
 
-<<<<<<< HEAD
 	/* connector index is used with 32bit bitmasks */
 	ret = ida_simple_get(&config->connector_ida, 0, 32, GFP_KERNEL);
 	if (ret < 0) {
@@ -235,11 +218,6 @@ int drm_connector_init(struct drm_device *dev,
 			      ret);
 		goto out_put;
 	}
-=======
-	ret = ida_simple_get(&config->connector_ida, 0, 0, GFP_KERNEL);
-	if (ret < 0)
-		goto out_put;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	connector->index = ret;
 	ret = 0;
 
@@ -264,11 +242,8 @@ int drm_connector_init(struct drm_device *dev,
 	mutex_init(&connector->mutex);
 	connector->edid_blob_ptr = NULL;
 	connector->status = connector_status_unknown;
-<<<<<<< HEAD
 	connector->display_info.panel_orientation =
 		DRM_MODE_PANEL_ORIENTATION_UNKNOWN;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	drm_connector_get_cmdline_mode(connector);
 
@@ -279,16 +254,11 @@ int drm_connector_init(struct drm_device *dev,
 	config->num_connector++;
 	spin_unlock_irq(&config->connector_list_lock);
 
-<<<<<<< HEAD
 	if (connector_type != DRM_MODE_CONNECTOR_VIRTUAL &&
 	    connector_type != DRM_MODE_CONNECTOR_WRITEBACK)
 		drm_object_attach_property(&connector->base,
 					      config->edid_property,
 					      0);
-=======
-	if (connector_type != DRM_MODE_CONNECTOR_VIRTUAL)
-		drm_connector_attach_edid_property(connector);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	drm_object_attach_property(&connector->base,
 				      config->dpms_property, 0);
@@ -297,13 +267,10 @@ int drm_connector_init(struct drm_device *dev,
 				   config->link_status_property,
 				   0);
 
-<<<<<<< HEAD
 	drm_object_attach_property(&connector->base,
 				   config->non_desktop_property,
 				   0);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (drm_core_check_feature(dev, DRIVER_ATOMIC)) {
 		drm_object_attach_property(&connector->base, config->prop_crtc_id, 0);
 	}
@@ -324,30 +291,7 @@ out_put:
 EXPORT_SYMBOL(drm_connector_init);
 
 /**
-<<<<<<< HEAD
  * drm_connector_attach_encoder - attach a connector to an encoder
-=======
- * drm_connector_attach_edid_property - attach edid property.
- * @dev: DRM device
- * @connector: the connector
- *
- * Some connector types like DRM_MODE_CONNECTOR_VIRTUAL do not get a
- * edid property attached by default.  This function can be used to
- * explicitly enable the edid property in these cases.
- */
-void drm_connector_attach_edid_property(struct drm_connector *connector)
-{
-	struct drm_mode_config *config = &connector->dev->mode_config;
-
-	drm_object_attach_property(&connector->base,
-				   config->edid_property,
-				   0);
-}
-EXPORT_SYMBOL(drm_connector_attach_edid_property);
-
-/**
- * drm_mode_connector_attach_encoder - attach a connector to an encoder
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @connector: connector to attach
  * @encoder: encoder to attach @connector to
  *
@@ -358,13 +302,8 @@ EXPORT_SYMBOL(drm_connector_attach_edid_property);
  * Returns:
  * Zero on success, negative errno on failure.
  */
-<<<<<<< HEAD
 int drm_connector_attach_encoder(struct drm_connector *connector,
 				 struct drm_encoder *encoder)
-=======
-int drm_mode_connector_attach_encoder(struct drm_connector *connector,
-				      struct drm_encoder *encoder)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i;
 
@@ -382,11 +321,7 @@ int drm_mode_connector_attach_encoder(struct drm_connector *connector,
 	if (WARN_ON(connector->encoder))
 		return -EINVAL;
 
-<<<<<<< HEAD
 	for (i = 0; i < ARRAY_SIZE(connector->encoder_ids); i++) {
-=======
-	for (i = 0; i < DRM_CONNECTOR_MAX_ENCODER; i++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (connector->encoder_ids[i] == 0) {
 			connector->encoder_ids[i] = encoder->base.id;
 			return 0;
@@ -394,7 +329,6 @@ int drm_mode_connector_attach_encoder(struct drm_connector *connector,
 	}
 	return -ENOMEM;
 }
-<<<<<<< HEAD
 EXPORT_SYMBOL(drm_connector_attach_encoder);
 
 /**
@@ -419,9 +353,6 @@ bool drm_connector_has_possible_encoder(struct drm_connector *connector,
 	return false;
 }
 EXPORT_SYMBOL(drm_connector_has_possible_encoder);
-=======
-EXPORT_SYMBOL(drm_mode_connector_attach_encoder);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void drm_mode_remove(struct drm_connector *connector,
 			    struct drm_display_mode *mode)
@@ -654,7 +585,6 @@ void drm_connector_list_iter_begin(struct drm_device *dev,
 }
 EXPORT_SYMBOL(drm_connector_list_iter_begin);
 
-<<<<<<< HEAD
 /*
  * Extra-safe connector put function that works in any context. Should only be
  * used from the connector_iter functions, where we never really expect to
@@ -677,11 +607,6 @@ __drm_connector_put_safe(struct drm_connector *conn)
 /**
  * drm_connector_list_iter_next - return next connector
  * @iter: connector_list iterator
-=======
-/**
- * drm_connector_list_iter_next - return next connector
- * @iter: connectr_list iterator
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Returns the next connector for @iter, or NULL when the list walk has
  * completed.
@@ -708,17 +633,10 @@ drm_connector_list_iter_next(struct drm_connector_list_iter *iter)
 
 		/* loop until it's not a zombie connector */
 	} while (!kref_get_unless_zero(&iter->conn->base.refcount));
-<<<<<<< HEAD
 
 	if (old_conn)
 		__drm_connector_put_safe(old_conn);
 	spin_unlock_irqrestore(&config->connector_list_lock, flags);
-=======
-	spin_unlock_irqrestore(&config->connector_list_lock, flags);
-
-	if (old_conn)
-		drm_connector_put(old_conn);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return iter->conn;
 }
@@ -735,7 +653,6 @@ EXPORT_SYMBOL(drm_connector_list_iter_next);
  */
 void drm_connector_list_iter_end(struct drm_connector_list_iter *iter)
 {
-<<<<<<< HEAD
 	struct drm_mode_config *config = &iter->dev->mode_config;
 	unsigned long flags;
 
@@ -745,11 +662,6 @@ void drm_connector_list_iter_end(struct drm_connector_list_iter *iter)
 		__drm_connector_put_safe(iter->conn);
 		spin_unlock_irqrestore(&config->connector_list_lock, flags);
 	}
-=======
-	iter->dev = NULL;
-	if (iter->conn)
-		drm_connector_put(iter->conn);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	lock_release(&connector_list_iter_dep_map, 0, _RET_IP_);
 }
 EXPORT_SYMBOL(drm_connector_list_iter_end);
@@ -788,10 +700,6 @@ static const struct drm_prop_enum_list drm_link_status_enum_list[] = {
 	{ DRM_MODE_LINK_STATUS_GOOD, "Good" },
 	{ DRM_MODE_LINK_STATUS_BAD, "Bad" },
 };
-<<<<<<< HEAD
-=======
-DRM_ENUM_NAME_FN(drm_get_link_status_name, drm_link_status_enum_list)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * drm_display_info_set_bus_formats - set the supported bus formats
@@ -841,7 +749,6 @@ static const struct drm_prop_enum_list drm_aspect_ratio_enum_list[] = {
 	{ DRM_MODE_PICTURE_ASPECT_16_9, "16:9" },
 };
 
-<<<<<<< HEAD
 static const struct drm_prop_enum_list drm_content_type_enum_list[] = {
 	{ DRM_MODE_CONTENT_TYPE_NO_DATA, "No Data" },
 	{ DRM_MODE_CONTENT_TYPE_GRAPHICS, "Graphics" },
@@ -857,8 +764,6 @@ static const struct drm_prop_enum_list drm_panel_orientation_enum_list[] = {
 	{ DRM_MODE_PANEL_ORIENTATION_RIGHT_UP,	"Right Side Up"	},
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct drm_prop_enum_list drm_dvi_i_select_enum_list[] = {
 	{ DRM_MODE_SUBCONNECTOR_Automatic, "Automatic" }, /* DVI-I and TV-out */
 	{ DRM_MODE_SUBCONNECTOR_DVID,      "DVI-D"     }, /* DVI-I  */
@@ -893,7 +798,6 @@ static const struct drm_prop_enum_list drm_tv_subconnector_enum_list[] = {
 DRM_ENUM_NAME_FN(drm_get_tv_subconnector_name,
 		 drm_tv_subconnector_enum_list)
 
-<<<<<<< HEAD
 static struct drm_prop_enum_list drm_cp_enum_list[] = {
 	{ DRM_MODE_CONTENT_PROTECTION_UNDESIRED, "Undesired" },
 	{ DRM_MODE_CONTENT_PROTECTION_DESIRED, "Desired" },
@@ -950,8 +854,6 @@ static const struct drm_prop_enum_list dp_colorspaces[] = {
 	{ DRM_MODE_COLORIMETRY_BT2020_YCC, "BT2020_YCC" },
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * DOC: standard connector properties
  *
@@ -961,11 +863,7 @@ static const struct drm_prop_enum_list dp_colorspaces[] = {
  * 	Blob property which contains the current EDID read from the sink. This
  * 	is useful to parse sink identification information like vendor, model
  * 	and serial. Drivers should update this property by calling
-<<<<<<< HEAD
  * 	drm_connector_update_edid_property(), usually after having parsed
-=======
- * 	drm_mode_connector_update_edid_property(), usually after having parsed
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * 	the EDID using drm_add_edid_modes(). Userspace cannot change this
  * 	property.
  * DPMS:
@@ -977,7 +875,6 @@ static const struct drm_prop_enum_list dp_colorspaces[] = {
  * 	callback. For atomic drivers the remapping to the "ACTIVE" property is
  * 	implemented in the DRM core.  This is the only standard connector
  * 	property that userspace can change.
-<<<<<<< HEAD
  *
  * 	Note that this property cannot be set through the MODE_ATOMIC ioctl,
  * 	userspace must use "ACTIVE" on the CRTC instead.
@@ -1005,12 +902,6 @@ static const struct drm_prop_enum_list dp_colorspaces[] = {
  * 	Connector path property to identify how this sink is physically
  * 	connected. Used by DP MST. This should be set by calling
  * 	drm_connector_set_path_property(), in the case of DP MST with the
-=======
- * PATH:
- * 	Connector path property to identify how this sink is physically
- * 	connected. Used by DP MST. This should be set by calling
- * 	drm_mode_connector_set_path_property(), in the case of DP MST with the
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * 	path property the MST manager created. Userspace cannot change this
  * 	property.
  * TILE:
@@ -1021,7 +912,6 @@ static const struct drm_prop_enum_list dp_colorspaces[] = {
  * 	are not gen-locked. Note that for tiled panels which are genlocked, like
  * 	dual-link LVDS or dual-link DSI, the driver should try to not expose the
  * 	tiling and virtualize both &drm_crtc and &drm_plane if needed. Drivers
-<<<<<<< HEAD
  * 	should update this value using drm_connector_set_tile_property().
  * 	Userspace cannot change this property.
  * link-status:
@@ -1069,21 +959,11 @@ static const struct drm_prop_enum_list dp_colorspaces[] = {
  *	  the value transitions from ENABLED to DESIRED. This signifies the link
  *	  is no longer protected and userspace should take appropriate action
  *	  (whatever that might be).
-=======
- * 	should update this value using drm_mode_connector_set_tile_property().
- * 	Userspace cannot change this property.
- * link-status:
- *      Connector link-status property to indicate the status of link. The default
- *      value of link-status is "GOOD". If something fails during or after modeset,
- *      the kernel driver may set this to "BAD" and issue a hotplug uevent. Drivers
- *      should update this value using drm_mode_connector_set_link_status_property().
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Connectors also have one standardized atomic property:
  *
  * CRTC_ID:
  * 	Mode object ID of the &drm_crtc this connector should be connected to.
-<<<<<<< HEAD
  *
  * Connectors for LCD panels may also have one standardized property:
  *
@@ -1120,8 +1000,6 @@ static const struct drm_prop_enum_list dp_colorspaces[] = {
  *	can also expose this property to external outputs, in which case they
  *	must support "None", which should be the default (since external screens
  *	have a built-in scaler).
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 int drm_connector_create_standard_properties(struct drm_device *dev)
@@ -1165,14 +1043,11 @@ int drm_connector_create_standard_properties(struct drm_device *dev)
 		return -ENOMEM;
 	dev->mode_config.link_status_property = prop;
 
-<<<<<<< HEAD
 	prop = drm_property_create_bool(dev, DRM_MODE_PROP_IMMUTABLE, "non-desktop");
 	if (!prop)
 		return -ENOMEM;
 	dev->mode_config.non_desktop_property = prop;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1208,7 +1083,6 @@ int drm_mode_create_dvi_i_properties(struct drm_device *dev)
 EXPORT_SYMBOL(drm_mode_create_dvi_i_properties);
 
 /**
-<<<<<<< HEAD
  * DOC: HDMI connector properties
  *
  * content type (HDMI specific):
@@ -1285,8 +1159,6 @@ void drm_hdmi_avi_infoframe_content_type(struct hdmi_avi_infoframe *frame,
 EXPORT_SYMBOL(drm_hdmi_avi_infoframe_content_type);
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * drm_create_tv_properties - create TV specific connector properties
  * @dev: DRM device
  * @num_modes: number of different TV formats (modes) supported
@@ -1359,11 +1231,7 @@ int drm_mode_create_tv_properties(struct drm_device *dev,
 		goto nomem;
 
 	for (i = 0; i < num_modes; i++)
-<<<<<<< HEAD
 		drm_property_add_enum(dev->mode_config.tv_mode_property,
-=======
-		drm_property_add_enum(dev->mode_config.tv_mode_property, i,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      i, modes[i]);
 
 	dev->mode_config.tv_brightness_property =
@@ -1450,11 +1318,7 @@ int drm_connector_attach_scaling_mode_property(struct drm_connector *connector,
 {
 	struct drm_device *dev = connector->dev;
 	struct drm_property *scaling_mode_property;
-<<<<<<< HEAD
 	int i;
-=======
-	int i, j = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const unsigned valid_scaling_mode_mask =
 		(1U << ARRAY_SIZE(drm_scaling_mode_enum_list)) - 1;
 
@@ -1475,11 +1339,7 @@ int drm_connector_attach_scaling_mode_property(struct drm_connector *connector,
 		if (!(BIT(i) & scaling_mode_mask))
 			continue;
 
-<<<<<<< HEAD
 		ret = drm_property_add_enum(scaling_mode_property,
-=======
-		ret = drm_property_add_enum(scaling_mode_property, j++,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    drm_scaling_mode_enum_list[i].type,
 					    drm_scaling_mode_enum_list[i].name);
 
@@ -1500,7 +1360,6 @@ int drm_connector_attach_scaling_mode_property(struct drm_connector *connector,
 EXPORT_SYMBOL(drm_connector_attach_scaling_mode_property);
 
 /**
-<<<<<<< HEAD
  * drm_connector_attach_content_protection_property - attach content protection
  * property
  *
@@ -1537,8 +1396,6 @@ int drm_connector_attach_content_protection_property(
 EXPORT_SYMBOL(drm_connector_attach_content_protection_property);
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * drm_mode_create_aspect_ratio_property - create aspect ratio property
  * @dev: DRM device
  *
@@ -1566,7 +1423,6 @@ int drm_mode_create_aspect_ratio_property(struct drm_device *dev)
 EXPORT_SYMBOL(drm_mode_create_aspect_ratio_property);
 
 /**
-<<<<<<< HEAD
  * DOC: standard connector properties
  *
  * Colorspace:
@@ -1653,8 +1509,6 @@ int drm_mode_create_content_type_property(struct drm_device *dev)
 EXPORT_SYMBOL(drm_mode_create_content_type_property);
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * drm_mode_create_suggested_offset_properties - create suggests offset properties
  * @dev: DRM device
  *
@@ -1679,11 +1533,7 @@ int drm_mode_create_suggested_offset_properties(struct drm_device *dev)
 EXPORT_SYMBOL(drm_mode_create_suggested_offset_properties);
 
 /**
-<<<<<<< HEAD
  * drm_connector_set_path_property - set tile property on connector
-=======
- * drm_mode_connector_set_path_property - set tile property on connector
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @connector: connector to set property on.
  * @path: path to use for property; must not be NULL.
  *
@@ -1695,13 +1545,8 @@ EXPORT_SYMBOL(drm_mode_create_suggested_offset_properties);
  * Returns:
  * Zero on success, negative errno on failure.
  */
-<<<<<<< HEAD
 int drm_connector_set_path_property(struct drm_connector *connector,
 				    const char *path)
-=======
-int drm_mode_connector_set_path_property(struct drm_connector *connector,
-					 const char *path)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_device *dev = connector->dev;
 	int ret;
@@ -1714,17 +1559,10 @@ int drm_mode_connector_set_path_property(struct drm_connector *connector,
 	                                       dev->mode_config.path_property);
 	return ret;
 }
-<<<<<<< HEAD
 EXPORT_SYMBOL(drm_connector_set_path_property);
 
 /**
  * drm_connector_set_tile_property - set tile property on connector
-=======
-EXPORT_SYMBOL(drm_mode_connector_set_path_property);
-
-/**
- * drm_mode_connector_set_tile_property - set tile property on connector
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @connector: connector to set property on.
  *
  * This looks up the tile information for a connector, and creates a
@@ -1734,11 +1572,7 @@ EXPORT_SYMBOL(drm_mode_connector_set_path_property);
  * Returns:
  * Zero on success, errno on failure.
  */
-<<<<<<< HEAD
 int drm_connector_set_tile_property(struct drm_connector *connector)
-=======
-int drm_mode_connector_set_tile_property(struct drm_connector *connector)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_device *dev = connector->dev;
 	char tile[256];
@@ -1768,17 +1602,10 @@ int drm_mode_connector_set_tile_property(struct drm_connector *connector)
 	                                       dev->mode_config.tile_property);
 	return ret;
 }
-<<<<<<< HEAD
 EXPORT_SYMBOL(drm_connector_set_tile_property);
 
 /**
  * drm_connector_update_edid_property - update the edid property of a connector
-=======
-EXPORT_SYMBOL(drm_mode_connector_set_tile_property);
-
-/**
- * drm_mode_connector_update_edid_property - update the edid property of a connector
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @connector: drm connector
  * @edid: new value of the edid property
  *
@@ -1788,13 +1615,8 @@ EXPORT_SYMBOL(drm_mode_connector_set_tile_property);
  * Returns:
  * Zero on success, negative errno on failure.
  */
-<<<<<<< HEAD
 int drm_connector_update_edid_property(struct drm_connector *connector,
 				       const struct edid *edid)
-=======
-int drm_mode_connector_update_edid_property(struct drm_connector *connector,
-					    const struct edid *edid)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_device *dev = connector->dev;
 	size_t size = 0;
@@ -1807,7 +1629,6 @@ int drm_mode_connector_update_edid_property(struct drm_connector *connector,
 	if (edid)
 		size = EDID_LENGTH * (1 + edid->extensions);
 
-<<<<<<< HEAD
 	/* Set the display info, using edid if available, otherwise
 	 * reseting the values to defaults. This duplicates the work
 	 * done in drm_add_edid_modes, but that function is not
@@ -1825,8 +1646,6 @@ int drm_mode_connector_update_edid_property(struct drm_connector *connector,
 				      dev->mode_config.non_desktop_property,
 				      connector->display_info.non_desktop);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = drm_property_replace_global_blob(dev,
 					       &connector->edid_blob_ptr,
 	                                       size,
@@ -1835,17 +1654,10 @@ int drm_mode_connector_update_edid_property(struct drm_connector *connector,
 	                                       dev->mode_config.edid_property);
 	return ret;
 }
-<<<<<<< HEAD
 EXPORT_SYMBOL(drm_connector_update_edid_property);
 
 /**
  * drm_connector_set_link_status_property - Set link status property of a connector
-=======
-EXPORT_SYMBOL(drm_mode_connector_update_edid_property);
-
-/**
- * drm_mode_connector_set_link_status_property - Set link status property of a connector
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @connector: drm connector
  * @link_status: new value of link status property (0: Good, 1: Bad)
  *
@@ -1863,13 +1675,8 @@ EXPORT_SYMBOL(drm_mode_connector_update_edid_property);
  * it is not limited to DP or link training. For example, if we implement
  * asynchronous setcrtc, this property can be used to report any failures in that.
  */
-<<<<<<< HEAD
 void drm_connector_set_link_status_property(struct drm_connector *connector,
 					    uint64_t link_status)
-=======
-void drm_mode_connector_set_link_status_property(struct drm_connector *connector,
-						 uint64_t link_status)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_device *dev = connector->dev;
 
@@ -1877,7 +1684,6 @@ void drm_mode_connector_set_link_status_property(struct drm_connector *connector
 	connector->state->link_status = link_status;
 	drm_modeset_unlock(&dev->mode_config.connection_mutex);
 }
-<<<<<<< HEAD
 EXPORT_SYMBOL(drm_connector_set_link_status_property);
 
 /**
@@ -1932,11 +1738,6 @@ int drm_connector_init_panel_orientation_property(
 EXPORT_SYMBOL(drm_connector_init_panel_orientation_property);
 
 int drm_connector_set_obj_prop(struct drm_mode_object *obj,
-=======
-EXPORT_SYMBOL(drm_mode_connector_set_link_status_property);
-
-int drm_mode_connector_set_obj_prop(struct drm_mode_object *obj,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    struct drm_property *property,
 				    uint64_t value)
 {
@@ -1954,13 +1755,8 @@ int drm_mode_connector_set_obj_prop(struct drm_mode_object *obj,
 	return ret;
 }
 
-<<<<<<< HEAD
 int drm_connector_property_set_ioctl(struct drm_device *dev,
 				     void *data, struct drm_file *file_priv)
-=======
-int drm_mode_connector_property_set_ioctl(struct drm_device *dev,
-				       void *data, struct drm_file *file_priv)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_mode_connector_set_property *conn_set_prop = data;
 	struct drm_mode_obj_set_property obj_set_prop = {
@@ -1983,15 +1779,10 @@ static struct drm_encoder *drm_connector_get_encoder(struct drm_connector *conne
 	return connector->encoder;
 }
 
-<<<<<<< HEAD
 static bool
 drm_mode_expose_to_userspace(const struct drm_display_mode *mode,
 			     const struct list_head *export_list,
 			     const struct drm_file *file_priv)
-=======
-static bool drm_mode_expose_to_userspace(const struct drm_display_mode *mode,
-					 const struct drm_file *file_priv)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/*
 	 * If user-space hasn't configured the driver to expose the stereo 3D
@@ -1999,7 +1790,6 @@ static bool drm_mode_expose_to_userspace(const struct drm_display_mode *mode,
 	 */
 	if (!file_priv->stereo_allowed && drm_mode_is_stereo(mode))
 		return false;
-<<<<<<< HEAD
 	/*
 	 * If user-space hasn't configured the driver to expose the modes
 	 * with aspect-ratio, don't expose them. However if such a mode
@@ -2017,8 +1807,6 @@ static bool drm_mode_expose_to_userspace(const struct drm_display_mode *mode,
 					   DRM_MODE_MATCH_3D_FLAGS))
 				return false;
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return true;
 }
@@ -2038,10 +1826,7 @@ int drm_mode_getconnector(struct drm_device *dev, void *data,
 	struct drm_mode_modeinfo u_mode;
 	struct drm_mode_modeinfo __user *mode_ptr;
 	uint32_t __user *encoder_ptr;
-<<<<<<< HEAD
 	LIST_HEAD(export_list);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!drm_core_check_feature(dev, DRIVER_MODESET))
 		return -EINVAL;
@@ -2052,19 +1837,12 @@ int drm_mode_getconnector(struct drm_device *dev, void *data,
 	if (!connector)
 		return -ENOENT;
 
-<<<<<<< HEAD
 	drm_connector_for_each_possible_encoder(connector, encoder, i)
 		encoders_count++;
-=======
-	for (i = 0; i < DRM_CONNECTOR_MAX_ENCODER; i++)
-		if (connector->encoder_ids[i] != 0)
-			encoders_count++;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if ((out_resp->count_encoders >= encoders_count) && encoders_count) {
 		copied = 0;
 		encoder_ptr = (uint32_t __user *)(unsigned long)(out_resp->encoders_ptr);
-<<<<<<< HEAD
 
 		drm_connector_for_each_possible_encoder(connector, encoder, i) {
 			if (put_user(encoder->base.id, encoder_ptr + copied)) {
@@ -2072,17 +1850,6 @@ int drm_mode_getconnector(struct drm_device *dev, void *data,
 				goto out;
 			}
 			copied++;
-=======
-		for (i = 0; i < DRM_CONNECTOR_MAX_ENCODER; i++) {
-			if (connector->encoder_ids[i] != 0) {
-				if (put_user(connector->encoder_ids[i],
-					     encoder_ptr + copied)) {
-					ret = -EFAULT;
-					goto out;
-				}
-				copied++;
-			}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 	out_resp->count_encoders = encoders_count;
@@ -2105,32 +1872,23 @@ int drm_mode_getconnector(struct drm_device *dev, void *data,
 
 	/* delayed so we get modes regardless of pre-fill_modes state */
 	list_for_each_entry(mode, &connector->modes, head)
-<<<<<<< HEAD
 		if (drm_mode_expose_to_userspace(mode, &export_list,
 						 file_priv)) {
 			list_add_tail(&mode->export_head, &export_list);
 			mode_count++;
 		}
-=======
-		if (drm_mode_expose_to_userspace(mode, file_priv))
-			mode_count++;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * This ioctl is called twice, once to determine how much space is
 	 * needed, and the 2nd time to fill it.
-<<<<<<< HEAD
 	 * The modes that need to be exposed to the user are maintained in the
 	 * 'export_list'. When the ioctl is called first time to determine the,
 	 * space, the export_list gets filled, to find the no.of modes. In the
 	 * 2nd time, the user modes are filled, one by one from the export_list.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	if ((out_resp->count_modes >= mode_count) && mode_count) {
 		copied = 0;
 		mode_ptr = (struct drm_mode_modeinfo __user *)(unsigned long)out_resp->modes_ptr;
-<<<<<<< HEAD
 		list_for_each_entry(mode, &export_list, export_head) {
 			drm_mode_convert_to_umode(&u_mode, mode);
 			/*
@@ -2139,13 +1897,6 @@ int drm_mode_getconnector(struct drm_device *dev, void *data,
 			 */
 			if (!file_priv->aspect_ratio_allowed)
 				u_mode.flags &= ~DRM_MODE_FLAG_PIC_AR_MASK;
-=======
-		list_for_each_entry(mode, &connector->modes, head) {
-			if (!drm_mode_expose_to_userspace(mode, file_priv))
-				continue;
-
-			drm_mode_convert_to_umode(&u_mode, mode);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (copy_to_user(mode_ptr + copied,
 					 &u_mode, sizeof(u_mode))) {
 				ret = -EFAULT;

@@ -14,18 +14,12 @@
 #include <drm/drm_atomic_helper.h>
 #include <drm/drm_crtc.h>
 #include <drm/drm_crtc_helper.h>
-<<<<<<< HEAD
 #include <drm/drm_encoder.h>
 #include <drm/drm_modes.h>
 #include <drm/drm_of.h>
 
 #include <uapi/drm/drm_mode.h>
 
-=======
-#include <drm/drm_modes.h>
-#include <drm/drm_of.h>
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/component.h>
 #include <linux/ioport.h>
 #include <linux/of_address.h>
@@ -37,7 +31,6 @@
 #include "sun4i_crtc.h"
 #include "sun4i_dotclock.h"
 #include "sun4i_drv.h"
-<<<<<<< HEAD
 #include "sun4i_lvds.h"
 #include "sun4i_rgb.h"
 #include "sun4i_tcon.h"
@@ -201,72 +194,6 @@ void sun4i_tcon_set_status(struct sun4i_tcon *tcon,
 
 	sun4i_tcon_channel_set_status(tcon, channel, enabled);
 }
-=======
-#include "sun4i_rgb.h"
-#include "sun4i_tcon.h"
-#include "sunxi_engine.h"
-
-void sun4i_tcon_disable(struct sun4i_tcon *tcon)
-{
-	DRM_DEBUG_DRIVER("Disabling TCON\n");
-
-	/* Disable the TCON */
-	regmap_update_bits(tcon->regs, SUN4I_TCON_GCTL_REG,
-			   SUN4I_TCON_GCTL_TCON_ENABLE, 0);
-}
-EXPORT_SYMBOL(sun4i_tcon_disable);
-
-void sun4i_tcon_enable(struct sun4i_tcon *tcon)
-{
-	DRM_DEBUG_DRIVER("Enabling TCON\n");
-
-	/* Enable the TCON */
-	regmap_update_bits(tcon->regs, SUN4I_TCON_GCTL_REG,
-			   SUN4I_TCON_GCTL_TCON_ENABLE,
-			   SUN4I_TCON_GCTL_TCON_ENABLE);
-}
-EXPORT_SYMBOL(sun4i_tcon_enable);
-
-void sun4i_tcon_channel_disable(struct sun4i_tcon *tcon, int channel)
-{
-	DRM_DEBUG_DRIVER("Disabling TCON channel %d\n", channel);
-
-	/* Disable the TCON's channel */
-	if (channel == 0) {
-		regmap_update_bits(tcon->regs, SUN4I_TCON0_CTL_REG,
-				   SUN4I_TCON0_CTL_TCON_ENABLE, 0);
-		clk_disable_unprepare(tcon->dclk);
-		return;
-	}
-
-	WARN_ON(!tcon->quirks->has_channel_1);
-	regmap_update_bits(tcon->regs, SUN4I_TCON1_CTL_REG,
-			   SUN4I_TCON1_CTL_TCON_ENABLE, 0);
-	clk_disable_unprepare(tcon->sclk1);
-}
-EXPORT_SYMBOL(sun4i_tcon_channel_disable);
-
-void sun4i_tcon_channel_enable(struct sun4i_tcon *tcon, int channel)
-{
-	DRM_DEBUG_DRIVER("Enabling TCON channel %d\n", channel);
-
-	/* Enable the TCON's channel */
-	if (channel == 0) {
-		regmap_update_bits(tcon->regs, SUN4I_TCON0_CTL_REG,
-				   SUN4I_TCON0_CTL_TCON_ENABLE,
-				   SUN4I_TCON0_CTL_TCON_ENABLE);
-		clk_prepare_enable(tcon->dclk);
-		return;
-	}
-
-	WARN_ON(!tcon->quirks->has_channel_1);
-	regmap_update_bits(tcon->regs, SUN4I_TCON1_CTL_REG,
-			   SUN4I_TCON1_CTL_TCON_ENABLE,
-			   SUN4I_TCON1_CTL_TCON_ENABLE);
-	clk_prepare_enable(tcon->sclk1);
-}
-EXPORT_SYMBOL(sun4i_tcon_channel_enable);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void sun4i_tcon_enable_vblank(struct sun4i_tcon *tcon, bool enable)
 {
@@ -275,12 +202,8 @@ void sun4i_tcon_enable_vblank(struct sun4i_tcon *tcon, bool enable)
 	DRM_DEBUG_DRIVER("%sabling VBLANK interrupt\n", enable ? "En" : "Dis");
 
 	mask = SUN4I_TCON_GINT0_VBLANK_ENABLE(0) |
-<<<<<<< HEAD
 		SUN4I_TCON_GINT0_VBLANK_ENABLE(1) |
 		SUN4I_TCON_GINT0_TCON0_TRI_FINISH_ENABLE;
-=======
-	       SUN4I_TCON_GINT0_VBLANK_ENABLE(1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (enable)
 		val = mask;
@@ -289,7 +212,6 @@ void sun4i_tcon_enable_vblank(struct sun4i_tcon *tcon, bool enable)
 }
 EXPORT_SYMBOL(sun4i_tcon_enable_vblank);
 
-<<<<<<< HEAD
 /*
  * This function is a helper for TCON output muxing. The TCON output
  * muxing control register in earlier SoCs (without the TCON TOP block)
@@ -324,32 +246,6 @@ void sun4i_tcon_set_mux(struct sun4i_tcon *tcon, int channel,
 }
 
 static int sun4i_tcon_get_clk_delay(const struct drm_display_mode *mode,
-=======
-void sun4i_tcon_set_mux(struct sun4i_tcon *tcon, int channel,
-			struct drm_encoder *encoder)
-{
-	u32 val;
-
-	if (!tcon->quirks->has_unknown_mux)
-		return;
-
-	if (channel != 1)
-		return;
-
-	if (encoder->encoder_type == DRM_MODE_ENCODER_TVDAC)
-		val = 1;
-	else
-		val = 0;
-
-	/*
-	 * FIXME: Undocumented bits
-	 */
-	regmap_write(tcon->regs, SUN4I_TCON_MUX_CTRL_REG, val);
-}
-EXPORT_SYMBOL(sun4i_tcon_set_mux);
-
-static int sun4i_tcon_get_clk_delay(struct drm_display_mode *mode,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    int channel)
 {
 	int delay = mode->vtotal - mode->vdisplay;
@@ -367,7 +263,6 @@ static int sun4i_tcon_get_clk_delay(struct drm_display_mode *mode,
 	return delay;
 }
 
-<<<<<<< HEAD
 static void sun4i_tcon0_mode_set_common(struct sun4i_tcon *tcon,
 					const struct drm_display_mode *mode)
 {
@@ -521,25 +416,16 @@ static void sun4i_tcon0_mode_set_lvds(struct sun4i_tcon *tcon,
 
 static void sun4i_tcon0_mode_set_rgb(struct sun4i_tcon *tcon,
 				     const struct drm_display_mode *mode)
-=======
-void sun4i_tcon0_mode_set(struct sun4i_tcon *tcon,
-			  struct drm_display_mode *mode)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned int bp, hsync, vsync;
 	u8 clk_delay;
 	u32 val = 0;
 
-<<<<<<< HEAD
 	WARN_ON(!tcon->quirks->has_channel_0);
 
 	tcon->dclk_min_div = 6;
 	tcon->dclk_max_div = 127;
 	sun4i_tcon0_mode_set_common(tcon, mode);
-=======
-	/* Configure the dot clock */
-	clk_set_rate(tcon->dclk, mode->crtc_clock * 1000);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Adjust clock delay */
 	clk_delay = sun4i_tcon_get_clk_delay(mode, 0);
@@ -547,14 +433,6 @@ void sun4i_tcon0_mode_set(struct sun4i_tcon *tcon,
 			   SUN4I_TCON0_CTL_CLK_DELAY_MASK,
 			   SUN4I_TCON0_CTL_CLK_DELAY(clk_delay));
 
-<<<<<<< HEAD
-=======
-	/* Set the resolution */
-	regmap_write(tcon->regs, SUN4I_TCON0_BASIC0_REG,
-		     SUN4I_TCON0_BASIC0_X(mode->crtc_hdisplay) |
-		     SUN4I_TCON0_BASIC0_Y(mode->crtc_vdisplay));
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * This is called a backporch in the register documentation,
 	 * but it really is the back porch + hsync
@@ -590,17 +468,10 @@ void sun4i_tcon0_mode_set(struct sun4i_tcon *tcon,
 		     SUN4I_TCON0_BASIC3_H_SYNC(hsync));
 
 	/* Setup the polarity of the various signals */
-<<<<<<< HEAD
 	if (mode->flags & DRM_MODE_FLAG_PHSYNC)
 		val |= SUN4I_TCON0_IO_POL_HSYNC_POSITIVE;
 
 	if (mode->flags & DRM_MODE_FLAG_PVSYNC)
-=======
-	if (!(mode->flags & DRM_MODE_FLAG_PHSYNC))
-		val |= SUN4I_TCON0_IO_POL_HSYNC_POSITIVE;
-
-	if (!(mode->flags & DRM_MODE_FLAG_PVSYNC))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		val |= SUN4I_TCON0_IO_POL_VSYNC_POSITIVE;
 
 	regmap_update_bits(tcon->regs, SUN4I_TCON0_IO_POL_REG,
@@ -615,16 +486,9 @@ void sun4i_tcon0_mode_set(struct sun4i_tcon *tcon,
 	/* Enable the output on the pins */
 	regmap_write(tcon->regs, SUN4I_TCON0_IO_TRI_REG, 0);
 }
-<<<<<<< HEAD
 
 static void sun4i_tcon1_mode_set(struct sun4i_tcon *tcon,
 				 const struct drm_display_mode *mode)
-=======
-EXPORT_SYMBOL(sun4i_tcon0_mode_set);
-
-void sun4i_tcon1_mode_set(struct sun4i_tcon *tcon,
-			  struct drm_display_mode *mode)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned int bp, hsync, vsync, vtotal;
 	u8 clk_delay;
@@ -712,7 +576,6 @@ void sun4i_tcon1_mode_set(struct sun4i_tcon *tcon,
 			   SUN4I_TCON_GCTL_IOMAP_MASK,
 			   SUN4I_TCON_GCTL_IOMAP_TCON1);
 }
-<<<<<<< HEAD
 
 void sun4i_tcon_mode_set(struct sun4i_tcon *tcon,
 			 const struct drm_encoder *encoder,
@@ -746,9 +609,6 @@ void sun4i_tcon_mode_set(struct sun4i_tcon *tcon,
 	}
 }
 EXPORT_SYMBOL(sun4i_tcon_mode_set);
-=======
-EXPORT_SYMBOL(sun4i_tcon1_mode_set);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void sun4i_tcon_finish_page_flip(struct drm_device *dev,
 					struct sun4i_crtc *scrtc)
@@ -769,21 +629,14 @@ static irqreturn_t sun4i_tcon_handler(int irq, void *private)
 	struct sun4i_tcon *tcon = private;
 	struct drm_device *drm = tcon->drm;
 	struct sun4i_crtc *scrtc = tcon->crtc;
-<<<<<<< HEAD
 	struct sunxi_engine *engine = scrtc->engine;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int status;
 
 	regmap_read(tcon->regs, SUN4I_TCON_GINT0_REG, &status);
 
 	if (!(status & (SUN4I_TCON_GINT0_VBLANK_INT(0) |
-<<<<<<< HEAD
 			SUN4I_TCON_GINT0_VBLANK_INT(1) |
 			SUN4I_TCON_GINT0_TCON0_TRI_FINISH_INT)))
-=======
-			SUN4I_TCON_GINT0_VBLANK_INT(1))))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return IRQ_NONE;
 
 	drm_crtc_handle_vblank(&scrtc->crtc);
@@ -792,7 +645,6 @@ static irqreturn_t sun4i_tcon_handler(int irq, void *private)
 	/* Acknowledge the interrupt */
 	regmap_update_bits(tcon->regs, SUN4I_TCON_GINT0_REG,
 			   SUN4I_TCON_GINT0_VBLANK_INT(0) |
-<<<<<<< HEAD
 			   SUN4I_TCON_GINT0_VBLANK_INT(1) |
 			   SUN4I_TCON_GINT0_TCON0_TRI_FINISH_INT,
 			   0);
@@ -800,11 +652,6 @@ static irqreturn_t sun4i_tcon_handler(int irq, void *private)
 	if (engine->ops->vblank_quirk)
 		engine->ops->vblank_quirk(engine);
 
-=======
-			   SUN4I_TCON_GINT0_VBLANK_INT(1),
-			   0);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return IRQ_HANDLED;
 }
 
@@ -818,19 +665,12 @@ static int sun4i_tcon_init_clocks(struct device *dev,
 	}
 	clk_prepare_enable(tcon->clk);
 
-<<<<<<< HEAD
 	if (tcon->quirks->has_channel_0) {
 		tcon->sclk0 = devm_clk_get(dev, "tcon-ch0");
 		if (IS_ERR(tcon->sclk0)) {
 			dev_err(dev, "Couldn't get the TCON channel 0 clock\n");
 			return PTR_ERR(tcon->sclk0);
 		}
-=======
-	tcon->sclk0 = devm_clk_get(dev, "tcon-ch0");
-	if (IS_ERR(tcon->sclk0)) {
-		dev_err(dev, "Couldn't get the TCON channel 0 clock\n");
-		return PTR_ERR(tcon->sclk0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	clk_prepare_enable(tcon->sclk0);
 
@@ -926,7 +766,6 @@ static int sun4i_tcon_init_regmap(struct device *dev,
  * function in fact searches the corresponding engine, and the ID is
  * requested via the get_id function of the engine.
  */
-<<<<<<< HEAD
 static struct sunxi_engine *
 sun4i_tcon_find_engine_traverse(struct sun4i_drv *drv,
 				struct device_node *node,
@@ -1080,19 +919,12 @@ static struct sunxi_engine *sun4i_tcon_find_engine(struct sun4i_drv *drv,
 						   struct device_node *node)
 {
 	struct device_node *port;
-=======
-static struct sunxi_engine *sun4i_tcon_find_engine(struct sun4i_drv *drv,
-						   struct device_node *node)
-{
-	struct device_node *port, *ep, *remote;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct sunxi_engine *engine;
 
 	port = of_graph_get_port_by_id(node, 0);
 	if (!port)
 		return ERR_PTR(-EINVAL);
 
-<<<<<<< HEAD
 	/*
 	 * Is this a corrected device tree with cross pipeline
 	 * connections between the backend and TCON?
@@ -1111,32 +943,6 @@ static struct sunxi_engine *sun4i_tcon_find_engine(struct sun4i_drv *drv,
 	/* Fallback to old method by traversing input endpoints */
 	of_node_put(port);
 	return sun4i_tcon_find_engine_traverse(drv, node, 0);
-=======
-	for_each_available_child_of_node(port, ep) {
-		remote = of_graph_get_remote_port_parent(ep);
-		if (!remote)
-			continue;
-
-		/* does this node match any registered engines? */
-		list_for_each_entry(engine, &drv->engine_list, list) {
-			if (remote == engine->node) {
-				of_node_put(remote);
-				of_node_put(port);
-				return engine;
-			}
-		}
-
-		/* keep looking through upstream ports */
-		engine = sun4i_tcon_find_engine(drv, remote);
-		if (!IS_ERR(engine)) {
-			of_node_put(remote);
-			of_node_put(port);
-			return engine;
-		}
-	}
-
-	return ERR_PTR(-EINVAL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int sun4i_tcon_bind(struct device *dev, struct device *master,
@@ -1145,14 +951,10 @@ static int sun4i_tcon_bind(struct device *dev, struct device *master,
 	struct drm_device *drm = data;
 	struct sun4i_drv *drv = drm->dev_private;
 	struct sunxi_engine *engine;
-<<<<<<< HEAD
 	struct device_node *remote;
 	struct sun4i_tcon *tcon;
 	struct reset_control *edp_rstc;
 	bool has_lvds_rst, has_lvds_alt, can_lvds;
-=======
-	struct sun4i_tcon *tcon;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	engine = sun4i_tcon_find_engine(drv, dev->of_node);
@@ -1176,7 +978,6 @@ static int sun4i_tcon_bind(struct device *dev, struct device *master,
 		return PTR_ERR(tcon->lcd_rst);
 	}
 
-<<<<<<< HEAD
 	if (tcon->quirks->needs_edp_reset) {
 		edp_rstc = devm_reset_control_get_shared(dev, "edp");
 		if (IS_ERR(edp_rstc)) {
@@ -1193,19 +994,11 @@ static int sun4i_tcon_bind(struct device *dev, struct device *master,
 
 	/* Make sure our TCON is reset */
 	ret = reset_control_reset(tcon->lcd_rst);
-=======
-	/* Make sure our TCON is reset */
-	if (!reset_control_status(tcon->lcd_rst))
-		reset_control_assert(tcon->lcd_rst);
-
-	ret = reset_control_deassert(tcon->lcd_rst);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		dev_err(dev, "Couldn't deassert our reset line\n");
 		return ret;
 	}
 
-<<<<<<< HEAD
 	if (tcon->quirks->supports_lvds) {
 		/*
 		 * This can only be made optional since we've had DT
@@ -1258,8 +1051,6 @@ static int sun4i_tcon_bind(struct device *dev, struct device *master,
 		can_lvds = false;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = sun4i_tcon_init_clocks(dev, tcon);
 	if (ret) {
 		dev_err(dev, "Couldn't init our TCON clocks\n");
@@ -1272,19 +1063,12 @@ static int sun4i_tcon_bind(struct device *dev, struct device *master,
 		goto err_free_clocks;
 	}
 
-<<<<<<< HEAD
 	if (tcon->quirks->has_channel_0) {
 		ret = sun4i_dclk_create(dev, tcon);
 		if (ret) {
 			dev_err(dev, "Couldn't create our TCON dot clock\n");
 			goto err_free_clocks;
 		}
-=======
-	ret = sun4i_dclk_create(dev, tcon);
-	if (ret) {
-		dev_err(dev, "Couldn't create our TCON dot clock\n");
-		goto err_free_clocks;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ret = sun4i_tcon_init_irq(dev, tcon);
@@ -1300,7 +1084,6 @@ static int sun4i_tcon_bind(struct device *dev, struct device *master,
 		goto err_free_dotclock;
 	}
 
-<<<<<<< HEAD
 	if (tcon->quirks->has_channel_0) {
 		/*
 		 * If we have an LVDS panel connected to the TCON, we should
@@ -1339,23 +1122,14 @@ static int sun4i_tcon_bind(struct device *dev, struct device *master,
 				   SUN4I_TCON1_CTL_SRC_SEL_MASK,
 				   tcon->id);
 	}
-=======
-	ret = sun4i_rgb_init(drm, tcon);
-	if (ret < 0)
-		goto err_free_dotclock;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	list_add_tail(&tcon->list, &drv->tcon_list);
 
 	return 0;
 
 err_free_dotclock:
-<<<<<<< HEAD
 	if (tcon->quirks->has_channel_0)
 		sun4i_dclk_free(tcon);
-=======
-	sun4i_dclk_free(tcon);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_free_clocks:
 	sun4i_tcon_free_clocks(tcon);
 err_assert_reset:
@@ -1369,12 +1143,8 @@ static void sun4i_tcon_unbind(struct device *dev, struct device *master,
 	struct sun4i_tcon *tcon = dev_get_drvdata(dev);
 
 	list_del(&tcon->list);
-<<<<<<< HEAD
 	if (tcon->quirks->has_channel_0)
 		sun4i_dclk_free(tcon);
-=======
-	sun4i_dclk_free(tcon);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sun4i_tcon_free_clocks(tcon);
 }
 
@@ -1386,15 +1156,11 @@ static const struct component_ops sun4i_tcon_ops = {
 static int sun4i_tcon_probe(struct platform_device *pdev)
 {
 	struct device_node *node = pdev->dev.of_node;
-<<<<<<< HEAD
 	const struct sun4i_tcon_quirks *quirks;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_bridge *bridge;
 	struct drm_panel *panel;
 	int ret;
 
-<<<<<<< HEAD
 	quirks = of_device_get_match_data(&pdev->dev);
 
 	/* panels and bridges are present only on TCONs with channel 0 */
@@ -1403,11 +1169,6 @@ static int sun4i_tcon_probe(struct platform_device *pdev)
 		if (ret == -EPROBE_DEFER)
 			return ret;
 	}
-=======
-	ret = drm_of_find_panel_or_bridge(node, 1, 0, &panel, &bridge);
-	if (ret == -EPROBE_DEFER)
-		return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return component_add(&pdev->dev, &sun4i_tcon_ops);
 }
@@ -1419,7 +1180,6 @@ static int sun4i_tcon_remove(struct platform_device *pdev)
 	return 0;
 }
 
-<<<<<<< HEAD
 /* platform specific TCON muxing callbacks */
 static int sun4i_a10_tcon_set_mux(struct sun4i_tcon *tcon,
 				  const struct drm_encoder *encoder)
@@ -1564,38 +1324,6 @@ const struct of_device_id sun4i_tcon_of_table[] = {
 };
 MODULE_DEVICE_TABLE(of, sun4i_tcon_of_table);
 EXPORT_SYMBOL(sun4i_tcon_of_table);
-=======
-static const struct sun4i_tcon_quirks sun5i_a13_quirks = {
-	.has_unknown_mux = true,
-	.has_channel_1	= true,
-};
-
-static const struct sun4i_tcon_quirks sun6i_a31_quirks = {
-	.has_channel_1	= true,
-};
-
-static const struct sun4i_tcon_quirks sun6i_a31s_quirks = {
-	.has_channel_1	= true,
-};
-
-static const struct sun4i_tcon_quirks sun8i_a33_quirks = {
-	/* nothing is supported */
-};
-
-static const struct sun4i_tcon_quirks sun8i_v3s_quirks = {
-	/* nothing is supported */
-};
-
-static const struct of_device_id sun4i_tcon_of_table[] = {
-	{ .compatible = "allwinner,sun5i-a13-tcon", .data = &sun5i_a13_quirks },
-	{ .compatible = "allwinner,sun6i-a31-tcon", .data = &sun6i_a31_quirks },
-	{ .compatible = "allwinner,sun6i-a31s-tcon", .data = &sun6i_a31s_quirks },
-	{ .compatible = "allwinner,sun8i-a33-tcon", .data = &sun8i_a33_quirks },
-	{ .compatible = "allwinner,sun8i-v3s-tcon", .data = &sun8i_v3s_quirks },
-	{ }
-};
-MODULE_DEVICE_TABLE(of, sun4i_tcon_of_table);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct platform_driver sun4i_tcon_platform_driver = {
 	.probe		= sun4i_tcon_probe,

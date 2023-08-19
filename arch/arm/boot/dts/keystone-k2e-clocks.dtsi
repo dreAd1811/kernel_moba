@@ -1,19 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Keystone 2 Edison SoC specific device tree
  *
  * Copyright (C) 2014-2017 Texas Instruments Incorporated - http://www.ti.com/
-=======
-/*
- * Copyright 2014 Texas Instruments, Inc.
- *
- * Keystone 2 Edison SoC specific device tree
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 clocks {
@@ -43,11 +32,7 @@ clocks {
 		reg-names = "control";
 	};
 
-<<<<<<< HEAD
 	clkusb1: clkusb1@2350004 {
-=======
-	clkusb1: clkusb1 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		#clock-cells = <0>;
 		compatible = "ti,keystone,psc-clock";
 		clocks = <&chipclk16>;
@@ -57,11 +42,7 @@ clocks {
 		domain-id = <0>;
 	};
 
-<<<<<<< HEAD
 	clkhyperlink0: clkhyperlink0@2350030 {
-=======
-	clkhyperlink0: clkhyperlink0 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		#clock-cells = <0>;
 		compatible = "ti,keystone,psc-clock";
 		clocks = <&chipclk12>;
@@ -71,11 +52,7 @@ clocks {
 		domain-id = <5>;
 	};
 
-<<<<<<< HEAD
 	clkpcie1: clkpcie1@235006c {
-=======
-	clkpcie1: clkpcie1 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		#clock-cells = <0>;
 		compatible = "ti,keystone,psc-clock";
 		clocks = <&chipclk12>;
@@ -85,11 +62,7 @@ clocks {
 		domain-id = <18>;
 	};
 
-<<<<<<< HEAD
 	clkxge: clkxge@23500c8 {
-=======
-	clkxge: clkxge {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		#clock-cells = <0>;
 		compatible = "ti,keystone,psc-clock";
 		clocks = <&chipclk13>;

@@ -14,11 +14,8 @@
 #include <asm/lowcore.h>
 
 #define local_softirq_pending() (S390_lowcore.softirq_pending)
-<<<<<<< HEAD
 #define set_softirq_pending(x) (S390_lowcore.softirq_pending = (x))
 #define or_softirq_pending(x)  (S390_lowcore.softirq_pending |= (x))
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define __ARCH_IRQ_STAT
 #define __ARCH_HAS_DO_SOFTIRQ

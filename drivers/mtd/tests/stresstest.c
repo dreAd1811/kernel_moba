@@ -199,11 +199,7 @@ static int __init mtd_stresstest_init(void)
 	err = -ENOMEM;
 	readbuf = vmalloc(bufsize);
 	writebuf = vmalloc(bufsize);
-<<<<<<< HEAD
 	offsets = kmalloc_array(ebcnt, sizeof(int), GFP_KERNEL);
-=======
-	offsets = kmalloc(ebcnt * sizeof(int), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!readbuf || !writebuf || !offsets)
 		goto out;
 	for (i = 0; i < ebcnt; i++)

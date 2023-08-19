@@ -124,24 +124,17 @@ typedef uint16_t PPSMC_Result;
 #define PPSMC_MSG_NumOfDisplays                  0x56
 #define PPSMC_MSG_ReadSerialNumTop32             0x58
 #define PPSMC_MSG_ReadSerialNumBottom32          0x59
-<<<<<<< HEAD
 #define PPSMC_MSG_SetSystemVirtualDramAddrHigh   0x5A
 #define PPSMC_MSG_SetSystemVirtualDramAddrLow    0x5B
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define PPSMC_MSG_RunAcgBtc                      0x5C
 #define PPSMC_MSG_RunAcgInClosedLoop             0x5D
 #define PPSMC_MSG_RunAcgInOpenLoop               0x5E
 #define PPSMC_MSG_InitializeAcg                  0x5F
 #define PPSMC_MSG_GetCurrPkgPwr                  0x61
-<<<<<<< HEAD
 #define PPSMC_MSG_GetAverageGfxclkActualFrequency 0x63
 #define PPSMC_MSG_SetPccThrottleLevel            0x67
 #define PPSMC_MSG_UpdatePkgPwrPidAlpha           0x68
 #define PPSMC_Message_Count                      0x69
-=======
-#define PPSMC_Message_Count                      0x62
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 typedef int PPSMC_Msg;

@@ -31,25 +31,16 @@
  */
 struct amdgpu_device;
 struct amdgpu_bo;
-<<<<<<< HEAD
-=======
-struct amdgpu_gart_funcs;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define AMDGPU_GPU_PAGE_SIZE 4096
 #define AMDGPU_GPU_PAGE_MASK (AMDGPU_GPU_PAGE_SIZE - 1)
 #define AMDGPU_GPU_PAGE_SHIFT 12
 #define AMDGPU_GPU_PAGE_ALIGN(a) (((a) + AMDGPU_GPU_PAGE_MASK) & ~AMDGPU_GPU_PAGE_MASK)
 
-<<<<<<< HEAD
 #define AMDGPU_GPU_PAGES_IN_CPU_PAGE (PAGE_SIZE / AMDGPU_GPU_PAGE_SIZE)
 
 struct amdgpu_gart {
 	u64				table_addr;
-=======
-struct amdgpu_gart {
-	dma_addr_t			table_addr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct amdgpu_bo		*robj;
 	void				*ptr;
 	unsigned			num_gpu_pages;
@@ -62,17 +53,8 @@ struct amdgpu_gart {
 
 	/* Asic default pte flags */
 	uint64_t			gart_pte_flags;
-<<<<<<< HEAD
 };
 
-=======
-
-	const struct amdgpu_gart_funcs *gart_funcs;
-};
-
-int amdgpu_gart_table_ram_alloc(struct amdgpu_device *adev);
-void amdgpu_gart_table_ram_free(struct amdgpu_device *adev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int amdgpu_gart_table_vram_alloc(struct amdgpu_device *adev);
 void amdgpu_gart_table_vram_free(struct amdgpu_device *adev);
 int amdgpu_gart_table_vram_pin(struct amdgpu_device *adev);

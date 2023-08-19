@@ -100,11 +100,6 @@ void pgtable_cache_init(void)
 	 * same size as either the pgd or pmd index except with THP enabled
 	 * on book3s 64
 	 */
-<<<<<<< HEAD
 	if (PUD_CACHE_INDEX && !PGT_CACHE(PUD_CACHE_INDEX))
 		pgtable_cache_add(PUD_CACHE_INDEX, pud_ctor);
-=======
-	if (PUD_INDEX_SIZE && !PGT_CACHE(PUD_INDEX_SIZE))
-		pgtable_cache_add(PUD_INDEX_SIZE, pud_ctor);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

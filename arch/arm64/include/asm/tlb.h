@@ -33,20 +33,13 @@ static inline void __tlb_remove_table(void *_table)
 #define tlb_remove_entry(tlb, entry)	tlb_remove_page(tlb, entry)
 #endif /* CONFIG_HAVE_RCU_TABLE_FREE */
 
-<<<<<<< HEAD
 static void tlb_flush(struct mmu_gather *tlb);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm-generic/tlb.h>
 
 static inline void tlb_flush(struct mmu_gather *tlb)
 {
-<<<<<<< HEAD
 	struct vm_area_struct vma = TLB_FLUSH_VMA(tlb->mm, 0);
-=======
-	struct vm_area_struct vma = { .vm_mm = tlb->mm, };
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * The ASID allocator will either invalidate the ASID or mark

@@ -31,7 +31,6 @@ struct tsc_adjust {
 
 static DEFINE_PER_CPU(struct tsc_adjust, tsc_adjust);
 
-<<<<<<< HEAD
 /*
  * TSC's on different sockets may be reset asynchronously.
  * This may cause the TSC ADJUST value on socket 0 to be NOT 0.
@@ -46,8 +45,6 @@ void mark_tsc_async_resets(char *reason)
 	pr_info("tsc: Marking TSC async resets true due to %s\n", reason);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void tsc_verify_tsc_adjust(bool resume)
 {
 	struct tsc_adjust *adj = this_cpu_ptr(&tsc_adjust);
@@ -56,13 +53,10 @@ void tsc_verify_tsc_adjust(bool resume)
 	if (!boot_cpu_has(X86_FEATURE_TSC_ADJUST))
 		return;
 
-<<<<<<< HEAD
 	/* Skip unnecessary error messages if TSC already unstable */
 	if (check_tsc_unstable())
 		return;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Rate limit the MSR check */
 	if (!resume && time_before(jiffies, adj->nextcheck))
 		return;
@@ -96,7 +90,6 @@ static void tsc_sanitize_first_cpu(struct tsc_adjust *cur, s64 bootval,
 	 * non zero. We don't do that on non boot cpus because physical
 	 * hotplug should have set the ADJUST register to a value > 0 so
 	 * the TSC is in sync with the already running cpus.
-<<<<<<< HEAD
 	 *
 	 * Also don't force the ADJUST value to zero if that is a valid value
 	 * for socket 0 as determined by the system arch.  This is required
@@ -113,14 +106,6 @@ static void tsc_sanitize_first_cpu(struct tsc_adjust *cur, s64 bootval,
 			pr_info("TSC ADJUST: CPU%u: %lld NOT forced to 0\n",
 				cpu, bootval);
 		}
-=======
-	 */
-	if (bootcpu && bootval != 0) {
-		pr_warn(FW_BUG "TSC ADJUST: CPU%u: %lld force to 0\n", cpu,
-			bootval);
-		wrmsrl(MSR_IA32_TSC_ADJUST, 0);
-		bootval = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	cur->adjusted = bootval;
 }
@@ -134,13 +119,10 @@ bool __init tsc_store_and_check_tsc_adjust(bool bootcpu)
 	if (!boot_cpu_has(X86_FEATURE_TSC_ADJUST))
 		return false;
 
-<<<<<<< HEAD
 	/* Skip unnecessary error messages if TSC already unstable */
 	if (check_tsc_unstable())
 		return false;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rdmsrl(MSR_IA32_TSC_ADJUST, bootval);
 	cur->bootval = bootval;
 	cur->nextcheck = jiffies + HZ;
@@ -169,7 +151,6 @@ bool tsc_store_and_check_tsc_adjust(bool bootcpu)
 	cur->warned = false;
 
 	/*
-<<<<<<< HEAD
 	 * If a non-zero TSC value for socket 0 may be valid then the default
 	 * adjusted value cannot assumed to be zero either.
 	 */
@@ -177,8 +158,6 @@ bool tsc_store_and_check_tsc_adjust(bool bootcpu)
 		cur->adjusted = bootval;
 
 	/*
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * Check whether this CPU is the first in a package to come up. In
 	 * this case do not check the boot value against another package
 	 * because the new package might have been physically hotplugged,
@@ -199,16 +178,9 @@ bool tsc_store_and_check_tsc_adjust(bool bootcpu)
 	 * Compare the boot value and complain if it differs in the
 	 * package.
 	 */
-<<<<<<< HEAD
 	if (bootval != ref->bootval)
 		printk_once(FW_BUG "TSC ADJUST differs within socket(s), fixing all errors\n");
 
-=======
-	if (bootval != ref->bootval) {
-		pr_warn(FW_BUG "TSC ADJUST differs: Reference CPU%u: %lld CPU%u: %lld\n",
-			refcpu, ref->bootval, cpu, bootval);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * The TSC_ADJUST values in a package must be the same. If the boot
 	 * value on this newly upcoming CPU differs from the adjustment
@@ -216,11 +188,6 @@ bool tsc_store_and_check_tsc_adjust(bool bootcpu)
 	 * adjusted value.
 	 */
 	if (bootval != ref->adjusted) {
-<<<<<<< HEAD
-=======
-		pr_warn("TSC ADJUST synchronize: Reference CPU%u: %lld CPU%u: %lld\n",
-			refcpu, ref->adjusted, cpu, bootval);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cur->adjusted = ref->adjusted;
 		wrmsrl(MSR_IA32_TSC_ADJUST, ref->adjusted);
 	}

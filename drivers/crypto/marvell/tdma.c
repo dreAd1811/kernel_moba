@@ -304,14 +304,7 @@ int mv_cesa_dma_add_dummy_launch(struct mv_cesa_tdma_chain *chain, gfp_t flags)
 	struct mv_cesa_tdma_desc *tdma;
 
 	tdma = mv_cesa_dma_add_desc(chain, flags);
-<<<<<<< HEAD
 	return PTR_ERR_OR_ZERO(tdma);
-=======
-	if (IS_ERR(tdma))
-		return PTR_ERR(tdma);
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int mv_cesa_dma_add_dummy_end(struct mv_cesa_tdma_chain *chain, gfp_t flags)

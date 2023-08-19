@@ -7,11 +7,8 @@
 #ifndef __ASM_POWERPC_REG_FSL_EMB_H__
 #define __ASM_POWERPC_REG_FSL_EMB_H__
 
-<<<<<<< HEAD
 #include <linux/stringify.h>
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifndef __ASSEMBLY__
 /* Performance Monitor Registers */
 #define mfpmr(rn)	({unsigned int rval; \

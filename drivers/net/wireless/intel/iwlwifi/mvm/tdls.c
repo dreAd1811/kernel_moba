@@ -7,10 +7,7 @@
  *
  * Copyright(c) 2014 Intel Mobile Communications GmbH
  * Copyright(c) 2017 Intel Deutschland GmbH
-<<<<<<< HEAD
  * Copyright(C) 2018 Intel Corporation
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of version 2 of the GNU General Public License as
@@ -22,13 +19,7 @@
  * General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
-<<<<<<< HEAD
  * along with this program.
-=======
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110,
- * USA
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * The full GNU General Public License is included in this distribution
  * in the file called COPYING.
@@ -41,10 +32,7 @@
  *
  * Copyright(c) 2014 Intel Mobile Communications GmbH
  * Copyright(c) 2017 Intel Deutschland GmbH
-<<<<<<< HEAD
  * Copyright(C) 2018 Intel Corporation
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -200,7 +188,6 @@ void iwl_mvm_recalc_tdls_state(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
 	if (tdls_sta_cnt == 1 && sta_added)
 		iwl_mvm_power_update_mac(mvm);
 
-<<<<<<< HEAD
 	/* Configure the FW with TDLS peer info only if TDLS channel switch
 	 * capability is set.
 	 * TDLS config data is used currently only in TDLS channel switch code.
@@ -209,10 +196,6 @@ void iwl_mvm_recalc_tdls_state(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
 	if (fw_has_capa(&mvm->fw->ucode_capa,
 			IWL_UCODE_TLV_CAPA_TDLS_CHANNEL_SWITCH))
 		iwl_mvm_tdls_config(mvm, vif);
-=======
-	/* configure the FW with TDLS peer info */
-	iwl_mvm_tdls_config(mvm, vif);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* when the last peer leaves, send a power update last */
 	if (tdls_sta_cnt == 0 && !sta_added)

@@ -1,18 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Copyright (C) 2017 Marvell
  *
  * Antoine Tenart <antoine.tenart@free-electrons.com>
-<<<<<<< HEAD
-=======
- *
- * This file is licensed under the terms of the GNU General Public
- * License version 2. This program is licensed "as is" without any
- * warranty of any kind, whether express or implied.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/dma-mapping.h>
@@ -21,13 +11,8 @@
 #include "safexcel.h"
 
 int safexcel_init_ring_descriptors(struct safexcel_crypto_priv *priv,
-<<<<<<< HEAD
 				   struct safexcel_desc_ring *cdr,
 				   struct safexcel_desc_ring *rdr)
-=======
-				   struct safexcel_ring *cdr,
-				   struct safexcel_ring *rdr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	cdr->offset = sizeof(u32) * priv->config.cd_offset;
 	cdr->base = dmam_alloc_coherent(priv->dev,
@@ -36,11 +21,7 @@ int safexcel_init_ring_descriptors(struct safexcel_crypto_priv *priv,
 	if (!cdr->base)
 		return -ENOMEM;
 	cdr->write = cdr->base;
-<<<<<<< HEAD
 	cdr->base_end = cdr->base + cdr->offset * (EIP197_DEFAULT_RING_SIZE - 1);
-=======
-	cdr->base_end = cdr->base + cdr->offset * EIP197_DEFAULT_RING_SIZE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cdr->read = cdr->base;
 
 	rdr->offset = sizeof(u32) * priv->config.rd_offset;
@@ -50,11 +31,7 @@ int safexcel_init_ring_descriptors(struct safexcel_crypto_priv *priv,
 	if (!rdr->base)
 		return -ENOMEM;
 	rdr->write = rdr->base;
-<<<<<<< HEAD
 	rdr->base_end = rdr->base + rdr->offset  * (EIP197_DEFAULT_RING_SIZE - 1);
-=======
-	rdr->base_end = rdr->base + rdr->offset * EIP197_DEFAULT_RING_SIZE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rdr->read = rdr->base;
 
 	return 0;
@@ -66,7 +43,6 @@ inline int safexcel_select_ring(struct safexcel_crypto_priv *priv)
 }
 
 static void *safexcel_ring_next_wptr(struct safexcel_crypto_priv *priv,
-<<<<<<< HEAD
 				     struct safexcel_desc_ring *ring)
 {
 	void *ptr = ring->write;
@@ -80,25 +56,10 @@ static void *safexcel_ring_next_wptr(struct safexcel_crypto_priv *priv,
 	else
 		ring->write += ring->offset;
 
-=======
-				     struct safexcel_ring *ring)
-{
-	void *ptr = ring->write;
-
-	if (ring->nr == EIP197_DEFAULT_RING_SIZE - 1)
-		return ERR_PTR(-ENOMEM);
-
-	ring->write += ring->offset;
-	if (ring->write == ring->base_end)
-		ring->write = ring->base;
-
-	ring->nr++;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ptr;
 }
 
 void *safexcel_ring_next_rptr(struct safexcel_crypto_priv *priv,
-<<<<<<< HEAD
 			      struct safexcel_desc_ring *ring)
 {
 	void *ptr = ring->read;
@@ -149,35 +110,6 @@ void safexcel_ring_rollback_wptr(struct safexcel_crypto_priv *priv,
 		ring->write = ring->base_end;
 	else
 		ring->write -= ring->offset;
-=======
-			      struct safexcel_ring *ring)
-{
-	void *ptr = ring->read;
-
-	if (!ring->nr)
-		return ERR_PTR(-ENOENT);
-
-	ring->read += ring->offset;
-	if (ring->read == ring->base_end)
-		ring->read = ring->base;
-
-	ring->nr--;
-	return ptr;
-}
-
-void safexcel_ring_rollback_wptr(struct safexcel_crypto_priv *priv,
-				 struct safexcel_ring *ring)
-{
-	if (!ring->nr)
-		return;
-
-	if (ring->write == ring->base)
-		ring->write = ring->base_end - ring->offset;
-	else
-		ring->write -= ring->offset;
-
-	ring->nr--;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 struct safexcel_command_desc *safexcel_add_cdesc(struct safexcel_crypto_priv *priv,

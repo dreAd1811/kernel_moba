@@ -503,11 +503,7 @@ static int ps8622_attach(struct drm_bridge *bridge)
 	drm_connector_helper_add(&ps8622->connector,
 					&ps8622_connector_helper_funcs);
 	drm_connector_register(&ps8622->connector);
-<<<<<<< HEAD
 	drm_connector_attach_encoder(&ps8622->connector,
-=======
-	drm_mode_connector_attach_encoder(&ps8622->connector,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							bridge->encoder);
 
 	if (ps8622->panel)

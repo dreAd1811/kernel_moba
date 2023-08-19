@@ -8,13 +8,9 @@
  */
 
 #include <dt-bindings/clock/histb-clock.h>
-<<<<<<< HEAD
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/interrupt-controller/arm-gic.h>
 #include <dt-bindings/phy/phy.h>
-=======
-#include <dt-bindings/interrupt-controller/arm-gic.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <dt-bindings/reset/ti-syscon.h>
 
 / {
@@ -112,7 +108,6 @@
 			#reset-cells = <2>;
 		};
 
-<<<<<<< HEAD
 		perictrl: peripheral-controller@8a20000 {
 			compatible = "hisilicon,hi3798cv200-perictrl", "syscon",
 				     "simple-mfd";
@@ -220,8 +215,6 @@
 			};
 		};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		uart0: serial@8b00000 {
 			compatible = "arm,pl011", "arm,primecell";
 			reg = <0x8b00000 0x1000>;
@@ -308,7 +301,6 @@
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
 		sd0: mmc@9820000 {
 			compatible = "snps,dw-mshc";
 			reg = <0x9820000 0x10000>;
@@ -333,15 +325,6 @@
 			resets = <&crg 0xa0 4>;
 			reset-names = "reset";
 			status = "disabled";
-=======
-		emmc: mmc@9830000 {
-			compatible = "snps,dw-mshc";
-			reg = <0x9830000 0x10000>;
-			interrupts = <GIC_SPI 35 IRQ_TYPE_LEVEL_HIGH>;
-			clocks = <&crg HISTB_MMC_CIU_CLK>,
-				 <&crg HISTB_MMC_BIU_CLK>;
-			clock-names = "ciu", "biu";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		gpio0: gpio@8b20000 {
@@ -352,10 +335,7 @@
 			#gpio-cells = <2>;
 			interrupt-controller;
 			#interrupt-cells = <2>;
-<<<<<<< HEAD
 			gpio-ranges = <&pmx0 0 0 8>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clocks = <&crg HISTB_APB_CLK>;
 			clock-names = "apb_pclk";
 			status = "disabled";
@@ -369,7 +349,6 @@
 			#gpio-cells = <2>;
 			interrupt-controller;
 			#interrupt-cells = <2>;
-<<<<<<< HEAD
 			gpio-ranges = <
 				&pmx0 0 8 1
 				&pmx0 1 9 4
@@ -377,8 +356,6 @@
 				&pmx0 6 14 1
 				&pmx0 7 15 1
 			>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clocks = <&crg HISTB_APB_CLK>;
 			clock-names = "apb_pclk";
 			status = "disabled";
@@ -392,10 +369,7 @@
 			#gpio-cells = <2>;
 			interrupt-controller;
 			#interrupt-cells = <2>;
-<<<<<<< HEAD
 			gpio-ranges = <&pmx0 0 16 5 &pmx0 5 21 3>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clocks = <&crg HISTB_APB_CLK>;
 			clock-names = "apb_pclk";
 			status = "disabled";
@@ -409,15 +383,12 @@
 			#gpio-cells = <2>;
 			interrupt-controller;
 			#interrupt-cells = <2>;
-<<<<<<< HEAD
 			gpio-ranges = <
 				&pmx0 0 24 4
 				&pmx0 4 28 2
 				&pmx0 6 86 1
 				&pmx0 7 87 1
 			>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clocks = <&crg HISTB_APB_CLK>;
 			clock-names = "apb_pclk";
 			status = "disabled";
@@ -431,10 +402,7 @@
 			#gpio-cells = <2>;
 			interrupt-controller;
 			#interrupt-cells = <2>;
-<<<<<<< HEAD
 			gpio-ranges = <&pmx0 0 30 4 &pmx0 4 34 3 &pmx0 7 37 1>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clocks = <&crg HISTB_APB_CLK>;
 			clock-names = "apb_pclk";
 			status = "disabled";
@@ -461,10 +429,7 @@
 			#gpio-cells = <2>;
 			interrupt-controller;
 			#interrupt-cells = <2>;
-<<<<<<< HEAD
 			gpio-ranges = <&pmx0 0 38 3 &pmx0 0 41 5>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clocks = <&crg HISTB_APB_CLK>;
 			clock-names = "apb_pclk";
 			status = "disabled";
@@ -478,10 +443,7 @@
 			#gpio-cells = <2>;
 			interrupt-controller;
 			#interrupt-cells = <2>;
-<<<<<<< HEAD
 			gpio-ranges = <&pmx0 0 46 8>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clocks = <&crg HISTB_APB_CLK>;
 			clock-names = "apb_pclk";
 			status = "disabled";
@@ -495,10 +457,7 @@
 			#gpio-cells = <2>;
 			interrupt-controller;
 			#interrupt-cells = <2>;
-<<<<<<< HEAD
 			gpio-ranges = <&pmx0 0 54 8>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clocks = <&crg HISTB_APB_CLK>;
 			clock-names = "apb_pclk";
 			status = "disabled";
@@ -512,10 +471,7 @@
 			#gpio-cells = <2>;
 			interrupt-controller;
 			#interrupt-cells = <2>;
-<<<<<<< HEAD
 			gpio-ranges = <&pmx0 0 64 7 &pmx0 71 1>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clocks = <&crg HISTB_APB_CLK>;
 			clock-names = "apb_pclk";
 			status = "disabled";
@@ -529,10 +485,7 @@
 			#gpio-cells = <2>;
 			interrupt-controller;
 			#interrupt-cells = <2>;
-<<<<<<< HEAD
 			gpio-ranges = <&pmx0 0 72 6 &pmx0 6 78 1 &pmx0 7 79 1>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clocks = <&crg HISTB_APB_CLK>;
 			clock-names = "apb_pclk";
 			status = "disabled";
@@ -546,10 +499,7 @@
 			#gpio-cells = <2>;
 			interrupt-controller;
 			#interrupt-cells = <2>;
-<<<<<<< HEAD
 			gpio-ranges = <&pmx0 0 80 6 &pmx0 6 70 2>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clocks = <&crg HISTB_APB_CLK>;
 			clock-names = "apb_pclk";
 			status = "disabled";
@@ -563,10 +513,7 @@
 			#gpio-cells = <2>;
 			interrupt-controller;
 			#interrupt-cells = <2>;
-<<<<<<< HEAD
 			gpio-ranges = <&pmx0 0 88 8>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clocks = <&crg HISTB_APB_CLK>;
 			clock-names = "apb_pclk";
 			status = "disabled";
@@ -609,7 +556,6 @@
 			clocks = <&sysctrl HISTB_IR_CLK>;
 			status = "disabled";
 		};
-<<<<<<< HEAD
 
 		pcie: pcie@9860000 {
 			compatible = "hisilicon,hi3798cv200-pcie";
@@ -672,7 +618,5 @@
 			phy-names = "usb";
 			status = "disabled";
 		};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };

@@ -86,17 +86,10 @@ static u32 spu_backing_mbox_stat_read(struct spu_context *ctx)
 	return ctx->csa.prob.mb_stat_R;
 }
 
-<<<<<<< HEAD
 static __poll_t spu_backing_mbox_stat_poll(struct spu_context *ctx,
 					  __poll_t events)
 {
 	__poll_t ret;
-=======
-static unsigned int spu_backing_mbox_stat_poll(struct spu_context *ctx,
-					  unsigned int events)
-{
-	int ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 stat;
 
 	ret = 0;
@@ -108,15 +101,9 @@ static unsigned int spu_backing_mbox_stat_poll(struct spu_context *ctx,
 	   but first mark any pending interrupts as done so
 	   we don't get woken up unnecessarily */
 
-<<<<<<< HEAD
 	if (events & (EPOLLIN | EPOLLRDNORM)) {
 		if (stat & 0xff0000)
 			ret |= EPOLLIN | EPOLLRDNORM;
-=======
-	if (events & (POLLIN | POLLRDNORM)) {
-		if (stat & 0xff0000)
-			ret |= POLLIN | POLLRDNORM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		else {
 			ctx->csa.priv1.int_stat_class2_RW &=
 				~CLASS2_MAILBOX_INTR;
@@ -124,15 +111,9 @@ static unsigned int spu_backing_mbox_stat_poll(struct spu_context *ctx,
 				CLASS2_ENABLE_MAILBOX_INTR;
 		}
 	}
-<<<<<<< HEAD
 	if (events & (EPOLLOUT | EPOLLWRNORM)) {
 		if (stat & 0x00ff00)
 			ret = EPOLLOUT | EPOLLWRNORM;
-=======
-	if (events & (POLLOUT | POLLWRNORM)) {
-		if (stat & 0x00ff00)
-			ret = POLLOUT | POLLWRNORM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		else {
 			ctx->csa.priv1.int_stat_class2_RW &=
 				~CLASS2_MAILBOX_THRESHOLD_INTR;

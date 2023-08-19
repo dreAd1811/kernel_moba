@@ -14,15 +14,9 @@
 #include <crypto/internal/hash.h>
 #include <crypto/null.h>
 #include <crypto/scatterwalk.h>
-<<<<<<< HEAD
 #include <crypto/gcm.h>
 #include <crypto/hash.h>
 #include "internal.h"
-=======
-#include <crypto/hash.h>
-#include "internal.h"
-#include <linux/completion.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/err.h>
 #include <linux/init.h>
 #include <linux/kernel.h>
@@ -56,11 +50,7 @@ struct crypto_rfc4543_instance_ctx {
 
 struct crypto_rfc4543_ctx {
 	struct crypto_aead *child;
-<<<<<<< HEAD
 	struct crypto_sync_skcipher *null;
-=======
-	struct crypto_skcipher *null;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 nonce[4];
 };
 
@@ -88,14 +78,6 @@ struct crypto_gcm_req_priv_ctx {
 	} u;
 };
 
-<<<<<<< HEAD
-=======
-struct crypto_gcm_setkey_result {
-	int err;
-	struct completion completion;
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct {
 	u8 buf[16];
 	struct scatterlist sg;
@@ -111,20 +93,6 @@ static inline struct crypto_gcm_req_priv_ctx *crypto_gcm_reqctx(
 	return (void *)PTR_ALIGN((u8 *)aead_request_ctx(req), align + 1);
 }
 
-<<<<<<< HEAD
-=======
-static void crypto_gcm_setkey_done(struct crypto_async_request *req, int err)
-{
-	struct crypto_gcm_setkey_result *result = req->data;
-
-	if (err == -EINPROGRESS)
-		return;
-
-	result->err = err;
-	complete(&result->completion);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int crypto_gcm_setkey(struct crypto_aead *aead, const u8 *key,
 			     unsigned int keylen)
 {
@@ -135,11 +103,7 @@ static int crypto_gcm_setkey(struct crypto_aead *aead, const u8 *key,
 		be128 hash;
 		u8 iv[16];
 
-<<<<<<< HEAD
 		struct crypto_wait wait;
-=======
-		struct crypto_gcm_setkey_result result;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		struct scatterlist sg[1];
 		struct skcipher_request req;
@@ -160,16 +124,11 @@ static int crypto_gcm_setkey(struct crypto_aead *aead, const u8 *key,
 	if (!data)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	crypto_init_wait(&data->wait);
-=======
-	init_completion(&data->result.completion);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sg_init_one(data->sg, &data->hash, sizeof(data->hash));
 	skcipher_request_set_tfm(&data->req, ctr);
 	skcipher_request_set_callback(&data->req, CRYPTO_TFM_REQ_MAY_SLEEP |
 						  CRYPTO_TFM_REQ_MAY_BACKLOG,
-<<<<<<< HEAD
 				      crypto_req_done,
 				      &data->wait);
 	skcipher_request_set_crypt(&data->req, data->sg, data->sg,
@@ -177,18 +136,6 @@ static int crypto_gcm_setkey(struct crypto_aead *aead, const u8 *key,
 
 	err = crypto_wait_req(crypto_skcipher_encrypt(&data->req),
 							&data->wait);
-=======
-				      crypto_gcm_setkey_done,
-				      &data->result);
-	skcipher_request_set_crypt(&data->req, data->sg, data->sg,
-				   sizeof(data->hash), data->iv);
-
-	err = crypto_skcipher_encrypt(&data->req);
-	if (err == -EINPROGRESS || err == -EBUSY) {
-		wait_for_completion(&data->result.completion);
-		err = data->result.err;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (err)
 		goto out;
@@ -231,13 +178,8 @@ static void crypto_gcm_init_common(struct aead_request *req)
 	struct scatterlist *sg;
 
 	memset(pctx->auth_tag, 0, sizeof(pctx->auth_tag));
-<<<<<<< HEAD
 	memcpy(pctx->iv, req->iv, GCM_AES_IV_SIZE);
 	memcpy(pctx->iv + GCM_AES_IV_SIZE, &counter, 4);
-=======
-	memcpy(pctx->iv, req->iv, 12);
-	memcpy(pctx->iv + 12, &counter, 4);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sg_init_table(pctx->src, 3);
 	sg_set_buf(pctx->src, pctx->auth_tag, sizeof(pctx->auth_tag));
@@ -734,11 +676,7 @@ static int crypto_gcm_create_common(struct crypto_template *tmpl,
 	inst->alg.base.cra_alignmask = ghash->base.cra_alignmask |
 				       ctr->base.cra_alignmask;
 	inst->alg.base.cra_ctxsize = sizeof(struct crypto_gcm_ctx);
-<<<<<<< HEAD
 	inst->alg.ivsize = GCM_AES_IV_SIZE;
-=======
-	inst->alg.ivsize = 12;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	inst->alg.chunksize = crypto_skcipher_alg_chunksize(ctr);
 	inst->alg.maxauthsize = 16;
 	inst->alg.init = crypto_gcm_init_tfm;
@@ -863,32 +801,20 @@ static struct aead_request *crypto_rfc4106_crypt(struct aead_request *req)
 	u8 *iv = PTR_ALIGN((u8 *)(subreq + 1) + crypto_aead_reqsize(child),
 			   crypto_aead_alignmask(child) + 1);
 
-<<<<<<< HEAD
 	scatterwalk_map_and_copy(iv + GCM_AES_IV_SIZE, req->src, 0, req->assoclen - 8, 0);
-=======
-	scatterwalk_map_and_copy(iv + 12, req->src, 0, req->assoclen - 8, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memcpy(iv, ctx->nonce, 4);
 	memcpy(iv + 4, req->iv, 8);
 
 	sg_init_table(rctx->src, 3);
-<<<<<<< HEAD
 	sg_set_buf(rctx->src, iv + GCM_AES_IV_SIZE, req->assoclen - 8);
-=======
-	sg_set_buf(rctx->src, iv + 12, req->assoclen - 8);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sg = scatterwalk_ffwd(rctx->src + 1, req->src, req->assoclen);
 	if (sg != rctx->src + 1)
 		sg_chain(rctx->src, 2, sg);
 
 	if (req->src != req->dst) {
 		sg_init_table(rctx->dst, 3);
-<<<<<<< HEAD
 		sg_set_buf(rctx->dst, iv + GCM_AES_IV_SIZE, req->assoclen - 8);
-=======
-		sg_set_buf(rctx->dst, iv + 12, req->assoclen - 8);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sg = scatterwalk_ffwd(rctx->dst + 1, req->dst, req->assoclen);
 		if (sg != rctx->dst + 1)
 			sg_chain(rctx->dst, 2, sg);
@@ -1000,11 +926,7 @@ static int crypto_rfc4106_create(struct crypto_template *tmpl,
 	err = -EINVAL;
 
 	/* Underlying IV size must be 12. */
-<<<<<<< HEAD
 	if (crypto_aead_alg_ivsize(alg) != GCM_AES_IV_SIZE)
-=======
-	if (crypto_aead_alg_ivsize(alg) != 12)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out_drop_alg;
 
 	/* Not a stream cipher? */
@@ -1027,11 +949,7 @@ static int crypto_rfc4106_create(struct crypto_template *tmpl,
 
 	inst->alg.base.cra_ctxsize = sizeof(struct crypto_rfc4106_ctx);
 
-<<<<<<< HEAD
 	inst->alg.ivsize = GCM_RFC4106_IV_SIZE;
-=======
-	inst->alg.ivsize = 8;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	inst->alg.chunksize = crypto_aead_alg_chunksize(alg);
 	inst->alg.maxauthsize = crypto_aead_alg_maxauthsize(alg);
 
@@ -1137,15 +1055,9 @@ static int crypto_rfc4543_copy_src_to_dst(struct aead_request *req, bool enc)
 	unsigned int authsize = crypto_aead_authsize(aead);
 	unsigned int nbytes = req->assoclen + req->cryptlen -
 			      (enc ? 0 : authsize);
-<<<<<<< HEAD
 	SYNC_SKCIPHER_REQUEST_ON_STACK(nreq, ctx->null);
 
 	skcipher_request_set_sync_tfm(nreq, ctx->null);
-=======
-	SKCIPHER_REQUEST_ON_STACK(nreq, ctx->null);
-
-	skcipher_request_set_tfm(nreq, ctx->null);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	skcipher_request_set_callback(nreq, req->base.flags, NULL, NULL);
 	skcipher_request_set_crypt(nreq, req->src, req->dst, nbytes, NULL);
 
@@ -1169,11 +1081,7 @@ static int crypto_rfc4543_init_tfm(struct crypto_aead *tfm)
 	struct crypto_aead_spawn *spawn = &ictx->aead;
 	struct crypto_rfc4543_ctx *ctx = crypto_aead_ctx(tfm);
 	struct crypto_aead *aead;
-<<<<<<< HEAD
 	struct crypto_sync_skcipher *null;
-=======
-	struct crypto_skcipher *null;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long align;
 	int err = 0;
 
@@ -1181,11 +1089,7 @@ static int crypto_rfc4543_init_tfm(struct crypto_aead *tfm)
 	if (IS_ERR(aead))
 		return PTR_ERR(aead);
 
-<<<<<<< HEAD
 	null = crypto_get_default_null_skcipher();
-=======
-	null = crypto_get_default_null_skcipher2();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = PTR_ERR(null);
 	if (IS_ERR(null))
 		goto err_free_aead;
@@ -1199,11 +1103,7 @@ static int crypto_rfc4543_init_tfm(struct crypto_aead *tfm)
 		tfm,
 		sizeof(struct crypto_rfc4543_req_ctx) +
 		ALIGN(crypto_aead_reqsize(aead), crypto_tfm_ctx_alignment()) +
-<<<<<<< HEAD
 		align + GCM_AES_IV_SIZE);
-=======
-		align + 12);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 
@@ -1217,11 +1117,7 @@ static void crypto_rfc4543_exit_tfm(struct crypto_aead *tfm)
 	struct crypto_rfc4543_ctx *ctx = crypto_aead_ctx(tfm);
 
 	crypto_free_aead(ctx->child);
-<<<<<<< HEAD
 	crypto_put_default_null_skcipher();
-=======
-	crypto_put_default_null_skcipher2();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void crypto_rfc4543_free(struct aead_instance *inst)
@@ -1272,11 +1168,7 @@ static int crypto_rfc4543_create(struct crypto_template *tmpl,
 	err = -EINVAL;
 
 	/* Underlying IV size must be 12. */
-<<<<<<< HEAD
 	if (crypto_aead_alg_ivsize(alg) != GCM_AES_IV_SIZE)
-=======
-	if (crypto_aead_alg_ivsize(alg) != 12)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out_drop_alg;
 
 	/* Not a stream cipher? */
@@ -1299,11 +1191,7 @@ static int crypto_rfc4543_create(struct crypto_template *tmpl,
 
 	inst->alg.base.cra_ctxsize = sizeof(struct crypto_rfc4543_ctx);
 
-<<<<<<< HEAD
 	inst->alg.ivsize = GCM_RFC4543_IV_SIZE;
-=======
-	inst->alg.ivsize = 8;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	inst->alg.chunksize = crypto_aead_alg_chunksize(alg);
 	inst->alg.maxauthsize = crypto_aead_alg_maxauthsize(alg);
 

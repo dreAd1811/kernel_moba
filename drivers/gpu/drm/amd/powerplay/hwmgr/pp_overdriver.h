@@ -28,11 +28,7 @@
 #include <linux/kernel.h>
 
 struct phm_fuses_default {
-<<<<<<< HEAD
 	uint64_t key;
-=======
-	const char *key;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t VFT2_m1;
 	uint32_t VFT2_m2;
 	uint32_t VFT2_b;
@@ -44,16 +40,7 @@ struct phm_fuses_default {
 	uint32_t VFT0_b;
 };
 
-<<<<<<< HEAD
 extern int pp_override_get_default_fuse_value(uint64_t key,
 			struct phm_fuses_default *result);
 
 #endif
-=======
-extern struct phm_fuses_default vega10_fuses_default[];
-extern int pp_override_get_default_fuse_value(uint64_t key,
-			struct phm_fuses_default list[],
-			struct phm_fuses_default *result);
-
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

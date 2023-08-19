@@ -19,11 +19,7 @@
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <asm/bug.h>
-<<<<<<< HEAD
 #include <media/dvb_math.h>
-=======
-#include "dvb_math.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static const unsigned short logtable[256] = {
 	0x0000, 0x0171, 0x02e0, 0x044e, 0x05ba, 0x0725, 0x088e, 0x09f7,

@@ -57,7 +57,6 @@
 #include "rxe_hdr.h"
 #include "rxe_param.h"
 #include "rxe_verbs.h"
-<<<<<<< HEAD
 #include "rxe_loc.h"
 
 /*
@@ -65,10 +64,6 @@
  * machines Version 2 has a different struct layout.
  */
 #define RXE_UVERBS_ABI_VERSION		2
-=======
-
-#define RXE_UVERBS_ABI_VERSION		(1)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define IB_PHYS_STATE_LINK_UP		(5)
 #define IB_PHYS_STATE_LINK_DOWN		(3)
@@ -97,28 +92,18 @@ static inline u32 rxe_crc32(struct rxe_dev *rxe,
 	return retval;
 }
 
-<<<<<<< HEAD
 void rxe_set_mtu(struct rxe_dev *rxe, unsigned int dev_mtu);
-=======
-int rxe_set_mtu(struct rxe_dev *rxe, unsigned int dev_mtu);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int rxe_add(struct rxe_dev *rxe, unsigned int mtu);
 void rxe_remove(struct rxe_dev *rxe);
 void rxe_remove_all(void);
 
-<<<<<<< HEAD
 void rxe_rcv(struct sk_buff *skb);
 
 static inline void rxe_dev_put(struct rxe_dev *rxe)
 {
 	kref_put(&rxe->ref_cnt, rxe_release);
 }
-=======
-int rxe_rcv(struct sk_buff *skb);
-
-void rxe_dev_put(struct rxe_dev *rxe);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct rxe_dev *net_to_rxe(struct net_device *ndev);
 struct rxe_dev *get_rxe_by_name(const char *name);
 

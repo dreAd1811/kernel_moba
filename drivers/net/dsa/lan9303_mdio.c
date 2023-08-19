@@ -67,23 +67,15 @@ static int lan9303_mdio_read(void *ctx, uint32_t reg, uint32_t *val)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int lan9303_mdio_phy_write(struct lan9303 *chip, int phy, int reg,
 				  u16 val)
-=======
-int lan9303_mdio_phy_write(struct lan9303 *chip, int phy, int reg, u16 val)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct lan9303_mdio *sw_dev = dev_get_drvdata(chip->dev);
 
 	return mdiobus_write_nested(sw_dev->device->bus, phy, reg, val);
 }
 
-<<<<<<< HEAD
 static int lan9303_mdio_phy_read(struct lan9303 *chip, int phy,  int reg)
-=======
-int lan9303_mdio_phy_read(struct lan9303 *chip, int phy,  int reg)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct lan9303_mdio *sw_dev = dev_get_drvdata(chip->dev);
 
@@ -124,11 +116,7 @@ static int lan9303_mdio_probe(struct mdio_device *mdiodev)
 		return -ENOMEM;
 
 	sw_dev->chip.regmap = devm_regmap_init(&mdiodev->dev, NULL, sw_dev,
-<<<<<<< HEAD
 					       &lan9303_mdio_regmap_config);
-=======
-						&lan9303_mdio_regmap_config);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(sw_dev->chip.regmap)) {
 		ret = PTR_ERR(sw_dev->chip.regmap);
 		dev_err(&mdiodev->dev, "regmap init failed: %d\n", ret);

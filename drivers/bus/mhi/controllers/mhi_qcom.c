@@ -1,19 +1,5 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /* Copyright (c) 2018-2020, The Linux Foundation. All rights reserved.*/
-=======
-/* Copyright (c) 2018-2020, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/arch_timer.h>
 #include <linux/debugfs.h>
@@ -38,24 +24,11 @@ struct firmware_info {
 };
 
 static const struct firmware_info firmware_table[] = {
-<<<<<<< HEAD
 	{.dev_id = 0x306, .fw_image = "sdx55m/sbl1.mbn"},
 	{.dev_id = 0x305, .fw_image = "sdx50m/sbl1.mbn"},
 	{.dev_id = 0x304, .fw_image = "sbl.mbn", .edl_image = "edl.mbn"},
 	/* default, set to debug.mbn */
 	{.fw_image = "debug.mbn"},
-=======
-	{.dev_id = 0x308, .fw_image = "sdx65m/xbl.elf",
-	 .edl_image = "sdx65m/edl.mbn"},
-	{.dev_id = 0x307, .fw_image = "sdx60m/sbl1.mbn",
-	 .edl_image = "sdx60m/edl.mbn"},
-	{.dev_id = 0x306, .fw_image = "sdx55m/sbl1.mbn",
-	 .edl_image = "sdx55m/edl.mbn"},
-	{.dev_id = 0x305, .fw_image = "sdx50m/sbl1.mbn"},
-	{.dev_id = 0x304, .fw_image = "sbl.mbn", .edl_image = "edl.mbn"},
-	/* default, set to debug.mbn */
-	{.fw_image = "debug.mbn", .edl_image = "debug.mbn"},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int debug_mode;
@@ -235,7 +208,6 @@ static int mhi_runtime_suspend(struct device *dev)
 		return 0;
 	}
 
-<<<<<<< HEAD
 	/* if drv is supported we will always go into drv */
 	if (mhi_dev->drv_supported) {
 		ret = mhi_pm_fast_suspend(mhi_cntrl, true);
@@ -250,9 +222,6 @@ static int mhi_runtime_suspend(struct device *dev)
 			mhi_dev->suspend_mode = MHI_FAST_LINK_ON;
 		}
 	}
-=======
-	ret = mhi_pm_suspend(mhi_cntrl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ret) {
 		MHI_LOG("Abort due to ret:%d\n", ret);
@@ -260,26 +229,17 @@ static int mhi_runtime_suspend(struct device *dev)
 		goto exit_runtime_suspend;
 	}
 
-<<<<<<< HEAD
-=======
-	mhi_dev->suspend_mode = MHI_DEFAULT_SUSPEND;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = mhi_arch_link_suspend(mhi_cntrl);
 
 	/* failed suspending link abort mhi suspend */
 	if (ret) {
 		MHI_LOG("Failed to suspend link, abort suspend\n");
-<<<<<<< HEAD
 		if (mhi_dev->suspend_mode == MHI_DEFAULT_SUSPEND)
 			mhi_pm_resume(mhi_cntrl);
 		else
 			mhi_pm_fast_resume(mhi_cntrl,
 				mhi_dev->suspend_mode == MHI_FAST_LINK_OFF);
 
-=======
-		mhi_pm_resume(mhi_cntrl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mhi_dev->suspend_mode = MHI_ACTIVE_STATE;
 	}
 
@@ -337,12 +297,8 @@ static int mhi_runtime_resume(struct device *dev)
 	if (mhi_dev->suspend_mode == MHI_DEFAULT_SUSPEND)
 		ret = mhi_pm_resume(mhi_cntrl);
 	else
-<<<<<<< HEAD
 		ret = mhi_pm_fast_resume(mhi_cntrl,
 				mhi_dev->suspend_mode == MHI_FAST_LINK_OFF);
-=======
-		ret = mhi_pm_fast_resume(mhi_cntrl, MHI_FAST_LINK_ON);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mhi_dev->suspend_mode = MHI_ACTIVE_STATE;
 
@@ -388,7 +344,6 @@ int mhi_system_suspend(struct device *dev)
 		ret = mhi_pm_fast_suspend(mhi_cntrl, false);
 		mhi_dev->suspend_mode = MHI_FAST_LINK_ON;
 	} else {
-<<<<<<< HEAD
 		/* if drv enable always do fast suspend */
 		if (mhi_dev->drv_supported) {
 			ret = mhi_pm_fast_suspend(mhi_cntrl, true);
@@ -409,22 +364,6 @@ int mhi_system_suspend(struct device *dev)
 				ret = mhi_pm_fast_suspend(mhi_cntrl, true);
 				mhi_dev->suspend_mode = MHI_FAST_LINK_ON;
 			}
-=======
-		/* try normal suspend */
-		mhi_dev->suspend_mode = MHI_DEFAULT_SUSPEND;
-		ret = mhi_pm_suspend(mhi_cntrl);
-
-		/*
-		 * normal suspend failed because we're busy, try
-		 * fast suspend before aborting system suspend.
-		 * this could happens if client has disabled
-		 * device lpm but no active vote for PCIe from
-		 * apps processor
-		 */
-		if (ret == -EBUSY) {
-			ret = mhi_pm_fast_suspend(mhi_cntrl, true);
-			mhi_dev->suspend_mode = MHI_FAST_LINK_ON;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -442,12 +381,8 @@ int mhi_system_suspend(struct device *dev)
 		if (mhi_dev->suspend_mode == MHI_DEFAULT_SUSPEND)
 			mhi_pm_resume(mhi_cntrl);
 		else
-<<<<<<< HEAD
 			mhi_pm_fast_resume(mhi_cntrl,
 				mhi_dev->suspend_mode == MHI_FAST_LINK_OFF);
-=======
-			mhi_pm_fast_resume(mhi_cntrl, MHI_FAST_LINK_OFF);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		mhi_dev->suspend_mode = MHI_ACTIVE_STATE;
 	}
@@ -531,11 +466,7 @@ static int mhi_lpm_enable(struct mhi_controller *mhi_cntrl, void *priv)
 	return mhi_arch_link_lpm_enable(mhi_cntrl);
 }
 
-<<<<<<< HEAD
 void mhi_qcom_store_hwinfo(struct mhi_controller *mhi_cntrl)
-=======
-static void mhi_qcom_store_hwinfo(struct mhi_controller *mhi_cntrl)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mhi_dev *mhi_dev = mhi_controller_get_devdata(mhi_cntrl);
 	int i;
@@ -578,13 +509,6 @@ static int mhi_qcom_power_up(struct mhi_controller *mhi_cntrl)
 	mhi_cntrl->ee = 0;
 	mhi_cntrl->power_down = false;
 
-<<<<<<< HEAD
-=======
-	ret = mhi_arch_power_up(mhi_cntrl);
-	if (ret)
-		return ret;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = mhi_async_power_up(mhi_cntrl);
 
 	/* Update modem serial Info */
@@ -602,25 +526,6 @@ static int mhi_qcom_power_up(struct mhi_controller *mhi_cntrl)
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
-static void mhi_qcom_fatal_worker(struct work_struct *work)
-{
-	struct mhi_dev *mhi_dev = container_of(work, struct mhi_dev,
-					       fatal_worker);
-	struct device *dev = &mhi_dev->pci_dev->dev;
-	struct mhi_controller *mhi_cntrl = dev_get_drvdata(dev);
-	int ret;
-
-	mhi_power_down(mhi_cntrl, true);
-
-	ret = mhi_qcom_power_up(mhi_cntrl);
-	if (ret)
-		MHI_ERR("Power up failure after SYS ERROR in PBL, ret:%d\n",
-			ret);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mhi_runtime_get(struct mhi_controller *mhi_cntrl, void *priv)
 {
 	struct mhi_dev *mhi_dev = priv;
@@ -665,13 +570,6 @@ static void mhi_status_cb(struct mhi_controller *mhi_cntrl,
 		pm_runtime_put(dev);
 		mhi_arch_mission_mode_enter(mhi_cntrl);
 		break;
-<<<<<<< HEAD
-=======
-	case MHI_CB_FATAL_ERROR:
-		MHI_CNTRL_ERR("Perform power cycle due to SYS ERROR in PBL\n");
-		schedule_work(&mhi_dev->fatal_worker);
-		break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		MHI_CNTRL_LOG("Unhandled cb:0x%x\n", reason);
 	}
@@ -780,16 +678,10 @@ static struct mhi_controller *mhi_register_controller(struct pci_dev *pci_dev)
 	struct mhi_controller *mhi_cntrl;
 	struct mhi_dev *mhi_dev;
 	struct device_node *of_node = pci_dev->dev.of_node;
-<<<<<<< HEAD
 	const struct firmware_info *firmware_info;
 	bool use_s1;
 	u32 addr_win[2];
 	const char *iommu_dma_type;
-=======
-	const struct firmware_info *firmware_info, *debug_info;
-	bool use_bb;
-	u64 addr_win[2];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret, i, len;
 
 	if (!of_node)
@@ -805,7 +697,6 @@ static struct mhi_controller *mhi_register_controller(struct pci_dev *pci_dev)
 	mhi_cntrl->dev_id = pci_dev->device;
 	mhi_cntrl->bus = pci_dev->bus->number;
 	mhi_cntrl->slot = PCI_SLOT(pci_dev->devfn);
-<<<<<<< HEAD
 	mhi_cntrl->of_node = of_node;
 
 	mhi_cntrl->iova_start = memblock_start_of_DRAM();
@@ -850,52 +741,6 @@ static struct mhi_controller *mhi_register_controller(struct pci_dev *pci_dev)
 		}
 	}
 
-=======
-
-	ret = of_property_read_u32(of_node, "qcom,smmu-cfg",
-				   &mhi_dev->smmu_cfg);
-	if (ret)
-		goto error_register;
-
-	use_bb = of_property_read_bool(of_node, "mhi,use-bb");
-	mhi_dev->allow_m1 = of_property_read_bool(of_node, "mhi,allow-m1");
-
-	/*
-	 * if s1 translation enabled or using bounce buffer pull iova addr
-	 * from dt
-	 */
-	if (use_bb || (mhi_dev->smmu_cfg & MHI_SMMU_ATTACH &&
-		       !(mhi_dev->smmu_cfg & MHI_SMMU_S1_BYPASS))) {
-		ret = of_property_count_elems_of_size(of_node, "qcom,addr-win",
-						      sizeof(addr_win));
-		if (ret != 1)
-			goto error_register;
-		ret = of_property_read_u64_array(of_node, "qcom,addr-win",
-						 addr_win, 2);
-		if (ret)
-			goto error_register;
-	} else {
-		addr_win[0] = memblock_start_of_DRAM();
-		addr_win[1] = memblock_end_of_DRAM();
-	}
-
-	mhi_dev->iova_start = addr_win[0];
-	mhi_dev->iova_stop = addr_win[1];
-
-	/*
-	 * If S1 is enabled, set MHI_CTRL start address to 0 so we can use low
-	 * level mapping api to map buffers outside of smmu domain
-	 */
-	if (mhi_dev->smmu_cfg & MHI_SMMU_ATTACH &&
-	    !(mhi_dev->smmu_cfg & MHI_SMMU_S1_BYPASS))
-		mhi_cntrl->iova_start = 0;
-	else
-		mhi_cntrl->iova_start = addr_win[0];
-
-	mhi_cntrl->iova_stop = mhi_dev->iova_stop;
-	mhi_cntrl->of_node = of_node;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mhi_dev->pci_dev = pci_dev;
 
 	/* setup power management apis */
@@ -908,14 +753,6 @@ static struct mhi_controller *mhi_register_controller(struct pci_dev *pci_dev)
 	mhi_cntrl->lpm_enable = mhi_lpm_enable;
 	mhi_cntrl->time_get = mhi_time_get;
 	mhi_cntrl->remote_timer_freq = 19200000;
-<<<<<<< HEAD
-=======
-	mhi_cntrl->local_timer_freq = 19200000;
-
-	/* setup host support for SFR retreival */
-	if (of_property_read_bool(of_node, "mhi,sfr-support"))
-		mhi_cntrl->sfr_len = MHI_MAX_SFR_LEN;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = of_register_mhi_controller(mhi_cntrl);
 	if (ret)
@@ -930,16 +767,8 @@ static struct mhi_controller *mhi_register_controller(struct pci_dev *pci_dev)
 	}
 
 	if (debug_mode) {
-<<<<<<< HEAD
 		if (debug_mode <= MHI_DEBUG_D3)
 			firmware_info = firmware_table + (len - 1);
-=======
-		debug_info = firmware_table + (len - 1);
-		mhi_cntrl->fw_image_fallback = debug_info->fw_image;
-
-		if (debug_mode <= MHI_DEBUG_D3)
-			firmware_info = debug_info;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		MHI_CNTRL_LOG("fw info: debug_mode:%d dev_id:%d image:%s\n",
 			      debug_mode, firmware_info->dev_id,
 			      firmware_info->fw_image);
@@ -948,29 +777,12 @@ static struct mhi_controller *mhi_register_controller(struct pci_dev *pci_dev)
 	mhi_cntrl->fw_image = firmware_info->fw_image;
 	mhi_cntrl->edl_image = firmware_info->edl_image;
 
-<<<<<<< HEAD
 	mhi_cntrl->offload_wq = alloc_ordered_workqueue("offload_wq",
 						WQ_MEM_RECLAIM | WQ_HIGHPRI);
-=======
-	ret = sysfs_create_group(&mhi_cntrl->mhi_dev->dev.kobj,
-				 &mhi_qcom_group);
-	if (ret)
-		goto error_register;
-
-	if (mhi_dev->allow_m1)
-		goto skip_offload;
-
-	mhi_cntrl->offload_wq = alloc_ordered_workqueue("offload_wq",
-			WQ_MEM_RECLAIM | WQ_HIGHPRI);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!mhi_cntrl->offload_wq)
 		goto error_register;
 
 	INIT_WORK(&mhi_cntrl->reg_write_work, mhi_reg_write_work);
-<<<<<<< HEAD
-=======
-	INIT_WORK(&mhi_dev->fatal_worker, mhi_qcom_fatal_worker);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mhi_cntrl->reg_write_q = kcalloc(REG_WRITE_QUEUE_LEN,
 					sizeof(*mhi_cntrl->reg_write_q),
@@ -980,13 +792,9 @@ static struct mhi_controller *mhi_register_controller(struct pci_dev *pci_dev)
 
 	atomic_set(&mhi_cntrl->write_idx, -1);
 
-<<<<<<< HEAD
 	if (sysfs_create_group(&mhi_cntrl->mhi_dev->dev.kobj, &mhi_qcom_group))
 		MHI_CNTRL_ERR("Error while creating the sysfs group\n");
 
-=======
-skip_offload:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return mhi_cntrl;
 
 error_free_wq:
@@ -1023,7 +831,6 @@ int mhi_pci_probe(struct pci_dev *pci_dev,
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	mhi_cntrl->dev = &mhi_dev->pci_dev->dev;
 
 	ret = dma_set_mask_and_coherent(mhi_cntrl->dev, DMA_BIT_MASK(64));
@@ -1033,15 +840,6 @@ int mhi_pci_probe(struct pci_dev *pci_dev,
 	ret = mhi_init_pci_dev(mhi_cntrl);
 	if (ret)
 		goto error_pci_probe;
-=======
-	ret = mhi_arch_iommu_init(mhi_cntrl);
-	if (ret)
-		goto error_iommu_init;
-
-	ret = mhi_init_pci_dev(mhi_cntrl);
-	if (ret)
-		goto error_init_pci;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* start power up sequence */
 	if (!debug_mode) {
@@ -1059,14 +857,7 @@ int mhi_pci_probe(struct pci_dev *pci_dev,
 error_power_up:
 	mhi_deinit_pci_dev(mhi_cntrl);
 
-<<<<<<< HEAD
 error_pci_probe:
-=======
-error_init_pci:
-	mhi_arch_iommu_deinit(mhi_cntrl);
-
-error_iommu_init:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mhi_arch_pcie_deinit(mhi_cntrl);
 
 	return ret;
@@ -1087,11 +878,6 @@ static struct pci_device_id mhi_pcie_device_id[] = {
 	{PCI_DEVICE(MHI_PCIE_VENDOR_ID, 0x0304)},
 	{PCI_DEVICE(MHI_PCIE_VENDOR_ID, 0x0305)},
 	{PCI_DEVICE(MHI_PCIE_VENDOR_ID, 0x0306)},
-<<<<<<< HEAD
-=======
-	{PCI_DEVICE(MHI_PCIE_VENDOR_ID, 0x0307)},
-	{PCI_DEVICE(MHI_PCIE_VENDOR_ID, 0x0308)},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{PCI_DEVICE(MHI_PCIE_VENDOR_ID, MHI_PCIE_DEBUG_ID)},
 	{0},
 };

@@ -15,10 +15,6 @@
 #include <linux/clocksource.h>
 #include <linux/console.h>
 #include <linux/module.h>
-<<<<<<< HEAD
-=======
-#include <linux/sizes.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/cpu.h>
 #include <linux/of_fdt.h>
 #include <linux/of.h>
@@ -56,11 +52,7 @@ static const struct id_to_str arc_cpu_rel[] = {
 	{ 0x51, "R2.0" },
 	{ 0x52, "R2.1" },
 	{ 0x53, "R3.0" },
-<<<<<<< HEAD
 	{ 0x54, "R3.10a" },
-=======
-	{ 0x54, "R4.0" },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 	{ 0x00, NULL   }
 };
@@ -205,7 +197,6 @@ static void read_arc_build_cfg_regs(void)
 		cpu->bpu.num_pred = 2048 << bpu.pte;
 
 		if (cpu->core.family >= 0x54) {
-<<<<<<< HEAD
 
 			struct bcr_uarch_build_arcv2 uarch;
 
@@ -229,13 +220,6 @@ static void read_arc_build_cfg_regs(void)
 				cpu->extn.dual_enb = !(exec_ctrl & 1);
 
 			}
-=======
-			unsigned int exec_ctrl;
-
-			READ_BCR(AUX_EXEC_CTRL, exec_ctrl);
-			cpu->extn.dual_iss_exist = 1;
-			cpu->extn.dual_iss_enb = exec_ctrl & 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -288,11 +272,7 @@ static char *arc_cpu_mumbojumbo(int cpu_id, char *buf, int len)
 		       cpu_id, cpu->name, cpu->details,
 		       is_isa_arcompact() ? "ARCompact" : "ARCv2",
 		       IS_AVAIL1(cpu->isa.be, "[Big-Endian]"),
-<<<<<<< HEAD
 		       IS_AVAIL3(cpu->extn.dual, cpu->extn.dual_enb, " Dual-Issue "));
-=======
-		       IS_AVAIL3(cpu->extn.dual_iss_exist, cpu->extn.dual_iss_enb, " Dual-Issue"));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	n += scnprintf(buf + n, len - n, "Timers\t\t: %s%s%s%s%s%s\nISA Extn\t: ",
 		       IS_AVAIL1(cpu->extn.timer0, "Timer0 "),
@@ -332,16 +312,11 @@ static char *arc_cpu_mumbojumbo(int cpu_id, char *buf, int len)
 
 	if (cpu->bpu.ver)
 		n += scnprintf(buf + n, len - n,
-<<<<<<< HEAD
 			      "BPU\t\t: %s%s match, cache:%d, Predict Table:%d",
-=======
-			      "BPU\t\t: %s%s match, cache:%d, Predict Table:%d\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      IS_AVAIL1(cpu->bpu.full, "full"),
 			      IS_AVAIL1(!cpu->bpu.full, "partial"),
 			      cpu->bpu.num_cache, cpu->bpu.num_pred);
 
-<<<<<<< HEAD
 	if (is_isa_arcv2()) {
 		struct bcr_lpb lpb;
 
@@ -357,8 +332,6 @@ static char *arc_cpu_mumbojumbo(int cpu_id, char *buf, int len)
 	}
 
 	n += scnprintf(buf + n, len - n, "\n");
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return buf;
 }
 
@@ -387,7 +360,6 @@ static char *arc_extn_mumbojumbo(int cpu_id, char *buf, int len)
 			       cpu->dccm.base_addr, TO_KB(cpu->dccm.sz),
 			       cpu->iccm.base_addr, TO_KB(cpu->iccm.sz));
 
-<<<<<<< HEAD
 	if (is_isa_arcv2()) {
 
 		/* Error Protection: ECC/Parity */
@@ -406,8 +378,6 @@ static char *arc_extn_mumbojumbo(int cpu_id, char *buf, int len)
 		}
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	n += scnprintf(buf + n, len - n, "OS ABI [v%d]\t: %s\n",
 			EF_ARC_OSABI_CURRENT >> 8,
 			EF_ARC_OSABI_CURRENT == EF_ARC_OSABI_V3 ?
@@ -420,11 +390,7 @@ static void arc_chk_core_config(void)
 {
 	struct cpuinfo_arc *cpu = &cpuinfo_arc700[smp_processor_id()];
 	int saved = 0, present = 0;
-<<<<<<< HEAD
 	char *opt_nm = NULL;
-=======
-	char *opt_nm = NULL;;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!cpu->extn.timer0)
 		panic("Timer0 is not present!\n");
@@ -440,20 +406,12 @@ static void arc_chk_core_config(void)
 	if ((unsigned int)__arc_dccm_base != cpu->dccm.base_addr)
 		panic("Linux built with incorrect DCCM Base address\n");
 
-<<<<<<< HEAD
 	if (CONFIG_ARC_DCCM_SZ != cpu->dccm.sz)
-=======
-	if (CONFIG_ARC_DCCM_SZ * SZ_1K != cpu->dccm.sz)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		panic("Linux built with incorrect DCCM Size\n");
 #endif
 
 #ifdef CONFIG_ARC_HAS_ICCM
-<<<<<<< HEAD
 	if (CONFIG_ARC_ICCM_SZ != cpu->iccm.sz)
-=======
-	if (CONFIG_ARC_ICCM_SZ * SZ_1K != cpu->iccm.sz)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		panic("Linux built with incorrect ICCM Size\n");
 #endif
 
@@ -535,10 +493,6 @@ void __init handle_uboot_args(void)
 	bool use_embedded_dtb = true;
 	bool append_cmdline = false;
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_ARC_UBOOT_SUPPORT
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* check that we know this tag */
 	if (uboot_tag != UBOOT_TAG_NONE &&
 	    uboot_tag != UBOOT_TAG_CMDLINE &&
@@ -570,10 +524,6 @@ void __init handle_uboot_args(void)
 		append_cmdline = true;
 
 ignore_uboot_args:
-<<<<<<< HEAD
-=======
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (use_embedded_dtb) {
 		machine_desc = setup_machine_fdt(__dtb_start);

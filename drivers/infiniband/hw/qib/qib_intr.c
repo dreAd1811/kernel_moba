@@ -141,11 +141,7 @@ void qib_handle_e_ibstatuschanged(struct qib_pportdata *ppd, u64 ibcs)
 			qib_hol_up(ppd); /* useful only for 6120 now */
 			*ppd->statusp |=
 				QIB_STATUS_IB_READY | QIB_STATUS_IB_CONF;
-<<<<<<< HEAD
 			qib_clear_symerror_on_linkup(&ppd->symerr_clear_timer);
-=======
-			qib_clear_symerror_on_linkup((unsigned long)ppd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			spin_lock_irqsave(&ppd->lflags_lock, flags);
 			ppd->lflags |= QIBL_LINKACTIVE | QIBL_LINKV;
 			ppd->lflags &= ~(QIBL_LINKINIT |
@@ -174,15 +170,9 @@ skip_ibchange:
 		signal_ib_event(ppd, ev);
 }
 
-<<<<<<< HEAD
 void qib_clear_symerror_on_linkup(struct timer_list *t)
 {
 	struct qib_pportdata *ppd = from_timer(ppd, t, symerr_clear_timer);
-=======
-void qib_clear_symerror_on_linkup(unsigned long opaque)
-{
-	struct qib_pportdata *ppd = (struct qib_pportdata *)opaque;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ppd->lflags & QIBL_LINKACTIVE)
 		return;

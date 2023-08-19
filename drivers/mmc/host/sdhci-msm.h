@@ -1,22 +1,7 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0-only */
 /*
  * Copyright (c) 2016-2020, The Linux Foundation. All rights reserved.
  *
-=======
-/*
- * Copyright (c) 2016-2020, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #ifndef __SDHCI_MSM_H__
@@ -24,7 +9,6 @@
 
 #include <linux/mmc/mmc.h>
 #include <linux/pm_qos.h>
-<<<<<<< HEAD
 #include <linux/reset.h>
 #include "sdhci-pltfm.h"
 
@@ -89,10 +73,6 @@
 
 #define TESTBUS_EN BIT(31)
 
-=======
-#include "sdhci-pltfm.h"
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* This structure keeps information per regulator */
 struct sdhci_msm_reg_data {
 	/* voltage regulator handle */
@@ -225,7 +205,6 @@ struct sdhci_msm_pltfm_data {
 	u32 *sup_clk_table;
 	unsigned char sup_clk_cnt;
 	int sdiowakeup_irq;
-<<<<<<< HEAD
 	struct sdhci_msm_pm_qos_data pm_qos_data;
 	u32 *bus_clk_table;
 	unsigned char bus_clk_cnt;
@@ -233,16 +212,6 @@ struct sdhci_msm_pltfm_data {
 	unsigned char sup_ice_clk_cnt;
 	u32 ice_clk_max;
 	u32 ice_clk_min;
-=======
-	u32 *sup_ice_clk_table;
-	unsigned char sup_ice_clk_cnt;
-	struct sdhci_msm_pm_qos_data pm_qos_data;
-	bool sdr104_wa;
-	u32 ice_clk_max;
-	u32 ice_clk_min;
-	u32 *bus_clk_table;
-	unsigned char bus_clk_cnt;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct sdhci_msm_bus_vote {
@@ -251,10 +220,6 @@ struct sdhci_msm_bus_vote {
 	int min_bw_vote;
 	int max_bw_vote;
 	bool is_max_bw_needed;
-<<<<<<< HEAD
-=======
-	struct delayed_work vote_work;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct device_attribute max_bus_bw;
 };
 
@@ -283,11 +248,7 @@ struct sdhci_msm_regs_restore {
 /*
  * DLL registers which needs be programmed with HSR settings.
  * Add any new register only at the end and don't change the
-<<<<<<< HEAD
  * sequence.
-=======
- * seqeunce.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct sdhci_msm_dll_hsr {
 	u32 dll_config;
@@ -303,7 +264,6 @@ struct sdhci_msm_debug_data {
 	struct sdhci_host copy_host;
 };
 
-<<<<<<< HEAD
 struct sdhci_msm_ice_data {
 	struct qcom_ice_variant_ops *vops;
 	struct platform_device *pdev;
@@ -315,11 +275,6 @@ struct sdhci_msm_host {
 	void __iomem *core_mem;    /* MSM SDCC mapped address */
 	void __iomem *cryptoio;    /* ICE HCI mapped address */
 	bool ice_hci_support;
-=======
-struct sdhci_msm_host {
-	struct platform_device	*pdev;
-	void __iomem *core_mem;    /* MSM SDCC mapped address */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int	pwr_irq;	/* power irq */
 	struct clk	 *clk;     /* main SD/MMC bus clock */
 	struct clk	 *pclk;    /* SDHC peripheral bus clock */
@@ -331,10 +286,7 @@ struct sdhci_msm_host {
 	atomic_t clks_on; /* Set if clocks are enabled */
 	struct sdhci_msm_pltfm_data *pdata;
 	struct mmc_host  *mmc;
-<<<<<<< HEAD
 	struct cqhci_host *cq_host;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct sdhci_msm_debug_data cached_data;
 	struct sdhci_pltfm_data sdhci_msm_pdata;
 	u32 curr_pwr_state;
@@ -357,10 +309,6 @@ struct sdhci_msm_host {
 	bool enhanced_strobe;
 	bool rclk_delay_fix;
 	u32 caps_0;
-<<<<<<< HEAD
-=======
-	u32 ice_clk_rate;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct sdhci_msm_pm_qos_group *pm_qos;
 	int pm_qos_prev_cpu;
 	struct device_attribute pm_qos_group_enable_attr;
@@ -377,14 +325,11 @@ struct sdhci_msm_host {
 	int soc_min_rev;
 	struct workqueue_struct *pm_qos_wq;
 	struct sdhci_msm_dll_hsr *dll_hsr;
-<<<<<<< HEAD
 	struct sdhci_msm_ice_data ice;
 	u32 ice_clk_rate;
 	bool debug_mode_enabled;
 	bool reg_store;
 	struct reset_control *core_reset;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 extern char *saved_command_line;

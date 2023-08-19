@@ -55,20 +55,12 @@
  */
 #ifdef CONFIG_SUN3
 #define PTRS_PER_PTE   16
-<<<<<<< HEAD
 #define __PAGETABLE_PMD_FOLDED 1
-=======
-#define __PAGETABLE_PMD_FOLDED
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define PTRS_PER_PMD   1
 #define PTRS_PER_PGD   2048
 #elif defined(CONFIG_COLDFIRE)
 #define PTRS_PER_PTE	512
-<<<<<<< HEAD
 #define __PAGETABLE_PMD_FOLDED 1
-=======
-#define __PAGETABLE_PMD_FOLDED
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define PTRS_PER_PMD	1
 #define PTRS_PER_PGD	1024
 #else

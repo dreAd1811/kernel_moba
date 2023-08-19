@@ -541,15 +541,9 @@ isdn_tty_senddown(modem_info *info)
  * into the tty's buffer.
  */
 static void
-<<<<<<< HEAD
 isdn_tty_modem_do_ncarrier(struct timer_list *t)
 {
 	modem_info *info = from_timer(info, t, nc_timer);
-=======
-isdn_tty_modem_do_ncarrier(unsigned long data)
-{
-	modem_info *info = (modem_info *) data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	isdn_tty_modem_result(RESULT_NO_CARRIER, info);
 }
 
@@ -793,11 +787,7 @@ isdn_tty_suspend(char *id, modem_info *info, atemu *m)
 		cmd.parm.cmsg.para[3] = 4; /* 16 bit 0x0004 Suspend */
 		cmd.parm.cmsg.para[4] = 0;
 		cmd.parm.cmsg.para[5] = l;
-<<<<<<< HEAD
 		memcpy(&cmd.parm.cmsg.para[6], id, l);
-=======
-		strncpy(&cmd.parm.cmsg.para[6], id, l);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cmd.command = CAPI_PUT_MESSAGE;
 		cmd.driver = info->isdn_driver;
 		cmd.arg = info->isdn_channel;
@@ -887,11 +877,7 @@ isdn_tty_resume(char *id, modem_info *info, atemu *m)
 		cmd.parm.cmsg.para[3] = 5; /* 16 bit 0x0005 Resume */
 		cmd.parm.cmsg.para[4] = 0;
 		cmd.parm.cmsg.para[5] = l;
-<<<<<<< HEAD
 		memcpy(&cmd.parm.cmsg.para[6], id, l);
-=======
-		strncpy(&cmd.parm.cmsg.para[6], id, l);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cmd.command = CAPI_PUT_MESSAGE;
 		info->dialing = 1;
 //		strcpy(dev->num[i], n);
@@ -1830,12 +1816,7 @@ isdn_tty_modem_init(void)
 		info->isdn_channel = -1;
 		info->drv_index = -1;
 		info->xmit_size = ISDN_SERIAL_XMIT_SIZE;
-<<<<<<< HEAD
 		timer_setup(&info->nc_timer, isdn_tty_modem_do_ncarrier, 0);
-=======
-		setup_timer(&info->nc_timer, isdn_tty_modem_do_ncarrier,
-			    (unsigned long)info);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		skb_queue_head_init(&info->xmit_queue);
 #ifdef CONFIG_ISDN_AUDIO
 		skb_queue_head_init(&info->dtmf_queue);

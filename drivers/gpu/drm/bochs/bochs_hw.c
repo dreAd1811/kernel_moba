@@ -97,15 +97,10 @@ int bochs_hw_init(struct drm_device *dev, uint32_t flags)
 		size = min(size, mem);
 	}
 
-<<<<<<< HEAD
 	if (pci_request_region(pdev, 0, "bochs-drm") != 0) {
 		DRM_ERROR("Cannot request framebuffer\n");
 		return -EBUSY;
 	}
-=======
-	if (pci_request_region(pdev, 0, "bochs-drm") != 0)
-		DRM_WARN("Cannot request framebuffer, boot fb still active?\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	bochs->fb_map = ioremap(addr, size);
 	if (bochs->fb_map == NULL) {

@@ -24,12 +24,9 @@
 #include <linux/bitops.h>
 #include <linux/cpu.h>
 
-<<<<<<< HEAD
 /* The anchor node sits above the top of the usable address space */
 #define IOVA_ANCHOR	~0UL
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool iova_rcache_insert(struct iova_domain *iovad,
 			       unsigned long pfn,
 			       unsigned long size);
@@ -39,19 +36,11 @@ static unsigned long iova_rcache_get(struct iova_domain *iovad,
 static void init_iova_rcaches(struct iova_domain *iovad);
 static void free_iova_rcaches(struct iova_domain *iovad);
 static void fq_destroy_all_entries(struct iova_domain *iovad);
-<<<<<<< HEAD
 static void fq_flush_timeout(struct timer_list *t);
 
 void
 init_iova_domain(struct iova_domain *iovad, unsigned long granule,
 	unsigned long start_pfn)
-=======
-static void fq_flush_timeout(unsigned long data);
-
-void
-init_iova_domain(struct iova_domain *iovad, unsigned long granule,
-	unsigned long start_pfn, unsigned long pfn_32bit)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/*
 	 * IOVA granularity will normally be equal to the smallest
@@ -62,7 +51,6 @@ init_iova_domain(struct iova_domain *iovad, unsigned long granule,
 
 	spin_lock_init(&iovad->iova_rbtree_lock);
 	iovad->rbroot = RB_ROOT;
-<<<<<<< HEAD
 	iovad->cached_node = &iovad->anchor.node;
 	iovad->cached32_node = &iovad->anchor.node;
 	iovad->granule = granule;
@@ -74,14 +62,6 @@ init_iova_domain(struct iova_domain *iovad, unsigned long granule,
 	rb_link_node(&iovad->anchor.node, NULL, &iovad->rbroot.rb_node);
 	rb_insert_color(&iovad->anchor.node, &iovad->rbroot);
 	iovad->best_fit = false;
-=======
-	iovad->cached32_node = NULL;
-	iovad->granule = granule;
-	iovad->start_pfn = start_pfn;
-	iovad->dma_32bit_pfn = pfn_32bit + 1;
-	iovad->flush_cb = NULL;
-	iovad->fq = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	init_iova_rcaches(iovad);
 }
 EXPORT_SYMBOL_GPL(init_iova_domain);
@@ -138,11 +118,7 @@ int init_iova_flush_queue(struct iova_domain *iovad,
 
 	iovad->fq = queue;
 
-<<<<<<< HEAD
 	timer_setup(&iovad->fq_timer, fq_flush_timeout, 0);
-=======
-	setup_timer(&iovad->fq_timer, fq_flush_timeout, (unsigned long)iovad);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	atomic_set(&iovad->fq_timer_on, 0);
 
 	return 0;
@@ -150,7 +126,6 @@ int init_iova_flush_queue(struct iova_domain *iovad,
 EXPORT_SYMBOL_GPL(init_iova_flush_queue);
 
 static struct rb_node *
-<<<<<<< HEAD
 __get_cached_rbnode(struct iova_domain *iovad, unsigned long limit_pfn)
 {
 	if (limit_pfn <= iovad->dma_32bit_pfn)
@@ -166,36 +141,12 @@ __cached_rbnode_insert_update(struct iova_domain *iovad, struct iova *new)
 		iovad->cached32_node = &new->node;
 	else
 		iovad->cached_node = &new->node;
-=======
-__get_cached_rbnode(struct iova_domain *iovad, unsigned long *limit_pfn)
-{
-	if ((*limit_pfn > iovad->dma_32bit_pfn) ||
-		(iovad->cached32_node == NULL))
-		return rb_last(&iovad->rbroot);
-	else {
-		struct rb_node *prev_node = rb_prev(iovad->cached32_node);
-		struct iova *curr_iova =
-			rb_entry(iovad->cached32_node, struct iova, node);
-		*limit_pfn = curr_iova->pfn_lo;
-		return prev_node;
-	}
-}
-
-static void
-__cached_rbnode_insert_update(struct iova_domain *iovad,
-	unsigned long limit_pfn, struct iova *new)
-{
-	if (limit_pfn != iovad->dma_32bit_pfn)
-		return;
-	iovad->cached32_node = &new->node;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void
 __cached_rbnode_delete_update(struct iova_domain *iovad, struct iova *free)
 {
 	struct iova *cached_iova;
-<<<<<<< HEAD
 
 	cached_iova = rb_entry(iovad->cached32_node, struct iova, node);
 	if (free == cached_iova ||
@@ -206,25 +157,6 @@ __cached_rbnode_delete_update(struct iova_domain *iovad, struct iova *free)
 	cached_iova = rb_entry(iovad->cached_node, struct iova, node);
 	if (free->pfn_lo >= cached_iova->pfn_lo)
 		iovad->cached_node = rb_next(&free->node);
-=======
-	struct rb_node *curr;
-
-	if (!iovad->cached32_node)
-		return;
-	curr = iovad->cached32_node;
-	cached_iova = rb_entry(curr, struct iova, node);
-
-	if (free->pfn_lo >= cached_iova->pfn_lo) {
-		struct rb_node *node = rb_next(&free->node);
-		struct iova *iova = rb_entry(node, struct iova, node);
-
-		/* only cache if it's below 32bit pfn */
-		if (node && iova->pfn_lo < iovad->dma_32bit_pfn)
-			iovad->cached32_node = node;
-		else
-			iovad->cached32_node = NULL;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Insert the iova into domain rbtree by holding writer lock */
@@ -256,7 +188,6 @@ iova_insert_rbtree(struct rb_root *root, struct iova *iova,
 }
 
 #ifdef CONFIG_ARM64_DMA_IOMMU_ALIGNMENT
-<<<<<<< HEAD
 static unsigned long limit_align(struct iova_domain *iovad,
 					unsigned long shift)
 {
@@ -274,36 +205,10 @@ static unsigned long limit_align(struct iova_domain *iovad,
 }
 #endif
 
-=======
-#define MAX_ALIGN(shift) (((1 << CONFIG_ARM64_DMA_IOMMU_ALIGNMENT) * PAGE_SIZE)\
-			  >> (shift))
-#else
-#define MAX_ALIGN(shift) ULONG_MAX
-#endif
-
-/*
- * Computes the padding size required, to make the start address
- * naturally aligned on the minimum of the power-of-two order of its size and
- * max_align
- */
-static unsigned int
-iova_get_pad_size(unsigned int size, unsigned int limit_pfn,
-		  unsigned int max_align)
-{
-	unsigned int align = __roundup_pow_of_two(size);
-
-	if (align > max_align)
-		align = max_align;
-
-	return (limit_pfn - size) & (align - 1);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __alloc_and_insert_iova_range(struct iova_domain *iovad,
 		unsigned long size, unsigned long limit_pfn,
 			struct iova *new, bool size_aligned)
 {
-<<<<<<< HEAD
 	struct rb_node *curr, *prev;
 	struct iova *curr_iova;
 	unsigned long flags;
@@ -332,59 +237,11 @@ static int __alloc_and_insert_iova_range(struct iova_domain *iovad,
 
 	/* pfn_lo will point to size aligned address if size_aligned is set */
 	new->pfn_lo = new_pfn;
-=======
-	struct rb_node *prev, *curr = NULL;
-	unsigned long flags;
-	unsigned long saved_pfn;
-	unsigned int pad_size = 0;
-	unsigned long shift = iova_shift(iovad);
-
-	/* Walk the tree backwards */
-	spin_lock_irqsave(&iovad->iova_rbtree_lock, flags);
-	saved_pfn = limit_pfn;
-	curr = __get_cached_rbnode(iovad, &limit_pfn);
-	prev = curr;
-
-	while (curr) {
-		struct iova *curr_iova = rb_entry(curr, struct iova, node);
-
-		if (limit_pfn <= curr_iova->pfn_lo) {
-			goto move_left;
-		} else if (limit_pfn > curr_iova->pfn_hi) {
-			if (size_aligned)
-				pad_size = iova_get_pad_size(size, limit_pfn,
-							     MAX_ALIGN(shift));
-			if ((curr_iova->pfn_hi + size + pad_size) < limit_pfn)
-				break;	/* found a free slot */
-		}
-		limit_pfn = curr_iova->pfn_lo;
-move_left:
-		prev = curr;
-		curr = rb_prev(curr);
-	}
-
-	if (!curr) {
-		if (size_aligned)
-			pad_size = iova_get_pad_size(size, limit_pfn,
-						     MAX_ALIGN(shift));
-		if ((iovad->start_pfn + size + pad_size) > limit_pfn) {
-			spin_unlock_irqrestore(&iovad->iova_rbtree_lock, flags);
-			return -ENOMEM;
-		}
-	}
-
-	/* pfn_lo will point to size aligned address if size_aligned is set */
-	new->pfn_lo = limit_pfn - (size + pad_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	new->pfn_hi = new->pfn_lo + size - 1;
 
 	/* If we have 'prev', it's a valid place to start the insertion. */
 	iova_insert_rbtree(&iovad->rbroot, new, prev);
-<<<<<<< HEAD
 	__cached_rbnode_insert_update(iovad, new);
-=======
-	__cached_rbnode_insert_update(iovad, saved_pfn, new);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_unlock_irqrestore(&iovad->iova_rbtree_lock, flags);
 
@@ -392,7 +249,6 @@ move_left:
 	return 0;
 }
 
-<<<<<<< HEAD
 static int __alloc_and_insert_iova_best_fit(struct iova_domain *iovad,
 		unsigned long size, unsigned long limit_pfn,
 			struct iova *new, bool size_aligned)
@@ -456,8 +312,6 @@ insert:
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct kmem_cache *iova_cache;
 static unsigned int iova_cache_users;
 static DEFINE_MUTEX(iova_cache_mutex);
@@ -470,12 +324,8 @@ EXPORT_SYMBOL(alloc_iova_mem);
 
 void free_iova_mem(struct iova *iova)
 {
-<<<<<<< HEAD
 	if (iova->pfn_lo != IOVA_ANCHOR)
 		kmem_cache_free(iova_cache, iova);
-=======
-	kmem_cache_free(iova_cache, iova);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(free_iova_mem);
 
@@ -537,7 +387,6 @@ alloc_iova(struct iova_domain *iovad, unsigned long size,
 	if (!new_iova)
 		return NULL;
 
-<<<<<<< HEAD
 	if (iovad->best_fit) {
 		ret = __alloc_and_insert_iova_best_fit(iovad, size,
 				limit_pfn + 1, new_iova, size_aligned);
@@ -545,10 +394,6 @@ alloc_iova(struct iova_domain *iovad, unsigned long size,
 		ret = __alloc_and_insert_iova_range(iovad, size, limit_pfn + 1,
 				new_iova, size_aligned);
 	}
-=======
-	ret = __alloc_and_insert_iova_range(iovad, size, limit_pfn + 1,
-			new_iova, size_aligned);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ret) {
 		free_iova_mem(new_iova);
@@ -569,24 +414,12 @@ private_find_iova(struct iova_domain *iovad, unsigned long pfn)
 	while (node) {
 		struct iova *iova = rb_entry(node, struct iova, node);
 
-<<<<<<< HEAD
 		if (pfn < iova->pfn_lo)
 			node = node->rb_left;
 		else if (pfn > iova->pfn_hi)
 			node = node->rb_right;
 		else
 			return iova;	/* pfn falls within iova's range */
-=======
-		/* If pfn falls within iova's range, return iova */
-		if ((pfn >= iova->pfn_lo) && (pfn <= iova->pfn_hi)) {
-			return iova;
-		}
-
-		if (pfn < iova->pfn_lo)
-			node = node->rb_left;
-		else if (pfn > iova->pfn_lo)
-			node = node->rb_right;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return NULL;
@@ -660,7 +493,6 @@ EXPORT_SYMBOL_GPL(free_iova);
  * @iovad: - iova domain in question
  * @size: - size of page frames to allocate
  * @limit_pfn: - max limit address
-<<<<<<< HEAD
  * @flush_rcache: - set to flush rcache on regular allocation failure
  * This function tries to satisfy an iova allocation from the rcache,
  * and falls back to regular allocation on failure. If regular allocation
@@ -674,20 +506,6 @@ alloc_iova_fast(struct iova_domain *iovad, unsigned long size,
 	struct iova *new_iova;
 
 	iova_pfn = iova_rcache_get(iovad, size, limit_pfn + 1);
-=======
- * This function tries to satisfy an iova allocation from the rcache,
- * and falls back to regular allocation on failure.
-*/
-unsigned long
-alloc_iova_fast(struct iova_domain *iovad, unsigned long size,
-		unsigned long limit_pfn)
-{
-	bool flushed_rcache = false;
-	unsigned long iova_pfn;
-	struct iova *new_iova;
-
-	iova_pfn = iova_rcache_get(iovad, size, limit_pfn);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (iova_pfn)
 		return iova_pfn;
 
@@ -696,19 +514,11 @@ retry:
 	if (!new_iova) {
 		unsigned int cpu;
 
-<<<<<<< HEAD
 		if (!flush_rcache)
 			return 0;
 
 		/* Try replenishing IOVAs by flushing rcache. */
 		flush_rcache = false;
-=======
-		if (flushed_rcache)
-			return 0;
-
-		/* Try replenishing IOVAs by flushing rcache. */
-		flushed_rcache = true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		for_each_online_cpu(cpu)
 			free_cpu_cached_iovas(cpu, iovad);
 		goto retry;
@@ -807,15 +617,9 @@ static void fq_destroy_all_entries(struct iova_domain *iovad)
 	}
 }
 
-<<<<<<< HEAD
 static void fq_flush_timeout(struct timer_list *t)
 {
 	struct iova_domain *iovad = from_timer(iovad, t, fq_timer);
-=======
-static void fq_flush_timeout(unsigned long data)
-{
-	struct iova_domain *iovad = (struct iova_domain *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int cpu;
 
 	atomic_set(&iovad->fq_timer_on, 0);
@@ -836,11 +640,7 @@ void queue_iova(struct iova_domain *iovad,
 		unsigned long pfn, unsigned long pages,
 		unsigned long data)
 {
-<<<<<<< HEAD
 	struct iova_fq *fq = raw_cpu_ptr(iovad->fq);
-=======
-	struct iova_fq *fq = get_cpu_ptr(iovad->fq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 	unsigned idx;
 
@@ -872,11 +672,6 @@ void queue_iova(struct iova_domain *iovad,
 	    !atomic_cmpxchg(&iovad->fq_timer_on, 0, 1))
 		mod_timer(&iovad->fq_timer,
 			  jiffies + msecs_to_jiffies(IOVA_FQ_TIMEOUT));
-<<<<<<< HEAD
-=======
-
-	put_cpu_ptr(iovad->fq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(queue_iova);
 
@@ -887,30 +682,12 @@ EXPORT_SYMBOL_GPL(queue_iova);
  */
 void put_iova_domain(struct iova_domain *iovad)
 {
-<<<<<<< HEAD
 	struct iova *iova, *tmp;
 
 	free_iova_flush_queue(iovad);
 	free_iova_rcaches(iovad);
 	rbtree_postorder_for_each_entry_safe(iova, tmp, &iovad->rbroot, node)
 		free_iova_mem(iova);
-=======
-	struct rb_node *node;
-	unsigned long flags;
-
-	free_iova_flush_queue(iovad);
-	free_iova_rcaches(iovad);
-	spin_lock_irqsave(&iovad->iova_rbtree_lock, flags);
-	node = rb_first(&iovad->rbroot);
-	while (node) {
-		struct iova *iova = rb_entry(node, struct iova, node);
-
-		rb_erase(node, &iovad->rbroot);
-		free_iova_mem(iova);
-		node = rb_first(&iovad->rbroot);
-	}
-	spin_unlock_irqrestore(&iovad->iova_rbtree_lock, flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(put_iova_domain);
 
@@ -979,13 +756,10 @@ reserve_iova(struct iova_domain *iovad,
 	struct iova *iova;
 	unsigned int overlap = 0;
 
-<<<<<<< HEAD
 	/* Don't allow nonsensical pfns */
 	if (WARN_ON((pfn_hi | pfn_lo) > (ULLONG_MAX >> iova_shift(iovad))))
 		return NULL;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_irqsave(&iovad->iova_rbtree_lock, flags);
 	for (node = rb_first(&iovad->rbroot); node; node = rb_next(node)) {
 		if (__is_range_overlap(node, pfn_lo, pfn_hi)) {
@@ -1029,12 +803,9 @@ copy_reserved_iova(struct iova_domain *from, struct iova_domain *to)
 		struct iova *iova = rb_entry(node, struct iova, node);
 		struct iova *new_iova;
 
-<<<<<<< HEAD
 		if (iova->pfn_lo == IOVA_ANCHOR)
 			continue;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		new_iova = reserve_iova(to, iova->pfn_lo, iova->pfn_hi);
 		if (!new_iova)
 			printk(KERN_ERR "Reserve iova range %lx@%lx failed\n",
@@ -1152,7 +923,6 @@ static bool iova_magazine_empty(struct iova_magazine *mag)
 static unsigned long iova_magazine_pop(struct iova_magazine *mag,
 				       unsigned long limit_pfn)
 {
-<<<<<<< HEAD
 	int i;
 	unsigned long pfn;
 
@@ -1168,14 +938,6 @@ static unsigned long iova_magazine_pop(struct iova_magazine *mag,
 	mag->pfns[i] = mag->pfns[--mag->size];
 
 	return pfn;
-=======
-	BUG_ON(iova_magazine_empty(mag));
-
-	if (mag->pfns[mag->size - 1] >= limit_pfn)
-		return 0;
-
-	return mag->pfns[--mag->size];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void iova_magazine_push(struct iova_magazine *mag, unsigned long pfn)
@@ -1326,31 +1088,7 @@ static unsigned long iova_rcache_get(struct iova_domain *iovad,
 	if (log_size >= IOVA_RANGE_CACHE_MAX_SIZE)
 		return 0;
 
-<<<<<<< HEAD
 	return __iova_rcache_get(&iovad->rcaches[log_size], limit_pfn - size);
-=======
-	return __iova_rcache_get(&iovad->rcaches[log_size], limit_pfn);
-}
-
-/*
- * Free a cpu's rcache.
- */
-static void free_cpu_iova_rcache(unsigned int cpu, struct iova_domain *iovad,
-				 struct iova_rcache *rcache)
-{
-	struct iova_cpu_rcache *cpu_rcache = per_cpu_ptr(rcache->cpu_rcaches, cpu);
-	unsigned long flags;
-
-	spin_lock_irqsave(&cpu_rcache->lock, flags);
-
-	iova_magazine_free_pfns(cpu_rcache->loaded, iovad);
-	iova_magazine_free(cpu_rcache->loaded);
-
-	iova_magazine_free_pfns(cpu_rcache->prev, iovad);
-	iova_magazine_free(cpu_rcache->prev);
-
-	spin_unlock_irqrestore(&cpu_rcache->lock, flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -1359,17 +1097,12 @@ static void free_cpu_iova_rcache(unsigned int cpu, struct iova_domain *iovad,
 static void free_iova_rcaches(struct iova_domain *iovad)
 {
 	struct iova_rcache *rcache;
-<<<<<<< HEAD
 	struct iova_cpu_rcache *cpu_rcache;
-=======
-	unsigned long flags;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int cpu;
 	int i, j;
 
 	for (i = 0; i < IOVA_RANGE_CACHE_MAX_SIZE; ++i) {
 		rcache = &iovad->rcaches[i];
-<<<<<<< HEAD
 		for_each_possible_cpu(cpu) {
 			cpu_rcache = per_cpu_ptr(rcache->cpu_rcaches, cpu);
 			iova_magazine_free(cpu_rcache->loaded);
@@ -1378,17 +1111,6 @@ static void free_iova_rcaches(struct iova_domain *iovad)
 		free_percpu(rcache->cpu_rcaches);
 		for (j = 0; j < rcache->depot_size; ++j)
 			iova_magazine_free(rcache->depot[j]);
-=======
-		for_each_possible_cpu(cpu)
-			free_cpu_iova_rcache(cpu, iovad, rcache);
-		spin_lock_irqsave(&rcache->lock, flags);
-		free_percpu(rcache->cpu_rcaches);
-		for (j = 0; j < rcache->depot_size; ++j) {
-			iova_magazine_free_pfns(rcache->depot[j], iovad);
-			iova_magazine_free(rcache->depot[j]);
-		}
-		spin_unlock_irqrestore(&rcache->lock, flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 

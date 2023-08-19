@@ -184,11 +184,8 @@ ENTRY(_startup)
 
 	isync
 
-<<<<<<< HEAD
 	initialize_cacheattr
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_HAVE_SMP
 	movi	a2, CCON	# MX External Register to Configure Cache
 	movi	a3, 1
@@ -272,16 +269,8 @@ ENTRY(_startup)
 
 	/* init_arch kick-starts the linux kernel */
 
-<<<<<<< HEAD
 	call4	init_arch
 	call4	start_kernel
-=======
-	movi	a4, init_arch
-	callx4	a4
-
-	movi	a4, start_kernel
-	callx4	a4
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 should_never_return:
 	j	should_never_return
@@ -308,12 +297,7 @@ should_never_return:
 	movi	a6, 0
 	wsr	a6, excsave1
 
-<<<<<<< HEAD
 	call4	secondary_start_kernel
-=======
-	movi	a4, secondary_start_kernel
-	callx4	a4
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	j	should_never_return
 
 #endif  /* CONFIG_SMP */

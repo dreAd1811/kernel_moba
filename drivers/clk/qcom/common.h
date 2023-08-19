@@ -1,32 +1,12 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
 /*
  * Copyright (c) 2014, 2017-2018, The Linux Foundation. All rights reserved.
  */
 
-=======
-/*
- * Copyright (c) 2014, 2017-2019, The Linux Foundation. All rights reserved.
- *
- * This software is licensed under the terms of the GNU General Public
- * License version 2, as published by the Free Software Foundation, and
- * may be copied, distributed, and modified under those terms.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifndef __QCOM_CLK_COMMON_H__
 #define __QCOM_CLK_COMMON_H__
 
 #include <linux/reset-controller.h>
-<<<<<<< HEAD
-=======
-#include "clk-rcg.h"
-#include "../clk.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct platform_device;
 struct regmap_config;
@@ -35,10 +15,6 @@ struct qcom_reset_map;
 struct regmap;
 struct freq_tbl;
 struct clk_hw;
-<<<<<<< HEAD
-=======
-struct parent_map;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define PLL_LOCK_COUNT_SHIFT	8
 #define PLL_LOCK_COUNT_MASK	0x3f
@@ -59,7 +35,6 @@ struct qcom_cc_desc {
 	size_t num_gdscs;
 };
 
-<<<<<<< HEAD
 /**
  * struct parent_map - map table for source select configuration values
  * @src: source
@@ -70,32 +45,12 @@ struct parent_map {
 	u8 cfg;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct clk_dummy {
 	struct clk_hw hw;
 	struct reset_controller_dev reset;
 	unsigned long rrate;
 };
 
-<<<<<<< HEAD
-=======
-struct clk_dfs {
-	struct clk_rcg2 *rcg;
-	u8 rcg_flags;
-};
-
-struct qcom_cc_dfs_desc {
-	struct clk_dfs *clks;
-	size_t num_clks;
-};
-
-struct qcom_cc_critical_desc {
-	struct clk_regmap **clks;
-	size_t num_clks;
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern const struct freq_tbl *qcom_find_freq(const struct freq_tbl *f,
 					     unsigned long rate);
 extern const struct freq_tbl *qcom_find_freq_floor(const struct freq_tbl *f,
@@ -117,7 +72,6 @@ extern int qcom_cc_really_probe(struct platform_device *pdev,
 extern int qcom_cc_probe(struct platform_device *pdev,
 			 const struct qcom_cc_desc *desc);
 extern const struct clk_ops clk_dummy_ops;
-<<<<<<< HEAD
 
 extern void clk_debug_print_hw(struct clk_core *clk, struct seq_file *f);
 
@@ -135,10 +89,4 @@ extern void clk_debug_print_hw(struct clk_core *clk, struct seq_file *f);
 		else						\
 			pr_info(fmt, ##__VA_ARGS__);		\
 } while (0)
-=======
-extern int qcom_cc_register_rcg_dfs(struct platform_device *pdev,
-			 const struct qcom_cc_dfs_desc *desc);
-extern int qcom_cc_enable_critical_clks(
-		const struct qcom_cc_critical_desc *desc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

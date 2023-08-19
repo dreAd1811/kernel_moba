@@ -159,11 +159,7 @@ u16 read_radio_reg(struct brcms_phy *pi, u16 addr)
 {
 	u16 data;
 
-<<<<<<< HEAD
 	if (addr == RADIO_IDCODE)
-=======
-	if ((addr == RADIO_IDCODE))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0xffff;
 
 	switch (pi->pubpi.phy_type) {
@@ -1920,11 +1916,7 @@ void wlc_phy_txpower_update_shm(struct brcms_phy *pi)
 				     pi->hwpwr_txcur);
 
 		for (j = TXP_FIRST_OFDM; j <= TXP_LAST_OFDM; j++) {
-<<<<<<< HEAD
 			static const u8 ucode_ofdm_rates[] = {
-=======
-			const u8 ucode_ofdm_rates[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				0x0c, 0x12, 0x18, 0x24, 0x30, 0x48, 0x60, 0x6c
 			};
 			offset = wlapi_bmac_rate_shm_offset(

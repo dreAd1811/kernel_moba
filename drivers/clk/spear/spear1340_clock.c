@@ -323,11 +323,7 @@ static struct frac_rate_tbl clcd_rtbl[] = {
 };
 
 /* i2s prescaler1 masks */
-<<<<<<< HEAD
 static const struct aux_clk_masks i2s_prs1_masks = {
-=======
-static struct aux_clk_masks i2s_prs1_masks = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.eq_sel_mask = AUX_EQ_SEL_MASK,
 	.eq_sel_shift = SPEAR1340_I2S_PRS1_EQ_SEL_SHIFT,
 	.eq1_mask = AUX_EQ1_SEL,

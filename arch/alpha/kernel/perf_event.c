@@ -351,11 +351,7 @@ static int collect_events(struct perf_event *group, int max_count,
 		evtype[n] = group->hw.event_base;
 		current_idx[n++] = PMC_NO_INDEX;
 	}
-<<<<<<< HEAD
 	for_each_sibling_event(pe, group) {
-=======
-	list_for_each_entry(pe, &group->sibling_list, group_entry) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!is_software_event(pe) && pe->state != PERF_EVENT_STATE_OFF) {
 			if (n >= max_count)
 				return -1;

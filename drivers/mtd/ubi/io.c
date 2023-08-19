@@ -309,21 +309,6 @@ int ubi_io_write(struct ubi_device *ubi, const void *buf, int pnum, int offset,
 }
 
 /**
-<<<<<<< HEAD
-=======
- * erase_callback - MTD erasure call-back.
- * @ei: MTD erase information object.
- *
- * Note, even though MTD erase interface is asynchronous, all the current
- * implementations are synchronous anyway.
- */
-static void erase_callback(struct erase_info *ei)
-{
-	wake_up_interruptible((wait_queue_head_t *)ei->priv);
-}
-
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * do_sync_erase - synchronously erase a physical eraseblock.
  * @ubi: UBI device description object
  * @pnum: the physical eraseblock number to erase
@@ -336,10 +321,6 @@ static int do_sync_erase(struct ubi_device *ubi, int pnum)
 {
 	int err, retries = 0;
 	struct erase_info ei;
-<<<<<<< HEAD
-=======
-	wait_queue_head_t wq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dbg_io("erase PEB %d", pnum);
 	ubi_assert(pnum >= 0 && pnum < ubi->peb_count);
@@ -350,21 +331,10 @@ static int do_sync_erase(struct ubi_device *ubi, int pnum)
 	}
 
 retry:
-<<<<<<< HEAD
 	memset(&ei, 0, sizeof(struct erase_info));
 
 	ei.addr     = (loff_t)pnum * ubi->peb_size;
 	ei.len      = ubi->peb_size;
-=======
-	init_waitqueue_head(&wq);
-	memset(&ei, 0, sizeof(struct erase_info));
-
-	ei.mtd      = ubi->mtd;
-	ei.addr     = (loff_t)pnum * ubi->peb_size;
-	ei.len      = ubi->peb_size;
-	ei.callback = erase_callback;
-	ei.priv     = (unsigned long)&wq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = mtd_erase(ubi->mtd, &ei);
 	if (err) {
@@ -379,28 +349,6 @@ retry:
 		return err;
 	}
 
-<<<<<<< HEAD
-=======
-	err = wait_event_interruptible(wq, ei.state == MTD_ERASE_DONE ||
-					   ei.state == MTD_ERASE_FAILED);
-	if (err) {
-		ubi_err(ubi, "interrupted PEB %d erasure", pnum);
-		return -EINTR;
-	}
-
-	if (ei.state == MTD_ERASE_FAILED) {
-		if (retries++ < UBI_IO_RETRIES) {
-			ubi_warn(ubi, "error while erasing PEB %d, retry",
-				 pnum);
-			yield();
-			goto retry;
-		}
-		ubi_err(ubi, "cannot erase PEB %d", pnum);
-		dump_stack();
-		return -EIO;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = ubi_self_check_all_ff(ubi, pnum, 0, ubi->peb_size);
 	if (err)
 		return err;
@@ -1121,19 +1069,6 @@ int ubi_io_write_vid_hdr(struct ubi_device *ubi, int pnum,
 	dbg_io("write VID header to PEB %d", pnum);
 	ubi_assert(pnum >= 0 &&  pnum < ubi->peb_count);
 
-<<<<<<< HEAD
-=======
-	/*
-	 * Re-erase the PEB before using it. This should minimize any issues
-	 * from decay of charge in this block.
-	 */
-	if (ubi->wl_is_inited) {
-		err = ubi_wl_re_erase_peb(ubi, pnum);
-		if (err)
-			return err;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = self_check_peb_ec_hdr(ubi, pnum);
 	if (err)
 		return err;
@@ -1152,11 +1087,6 @@ int ubi_io_write_vid_hdr(struct ubi_device *ubi, int pnum,
 
 	err = ubi_io_write(ubi, p, pnum, ubi->vid_hdr_aloffset,
 			   ubi->vid_hdr_alsize);
-<<<<<<< HEAD
-=======
-	if (!err && ubi->wl_is_inited)
-		ubi_wl_update_peb_sqnum(ubi, pnum, vid_hdr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 

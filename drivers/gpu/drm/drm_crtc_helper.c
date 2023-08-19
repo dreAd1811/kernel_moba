@@ -562,20 +562,12 @@ int drm_crtc_helper_set_config(struct drm_mode_set *set,
 	 * Allocate space for the backup of all (non-pointer) encoder and
 	 * connector data.
 	 */
-<<<<<<< HEAD
 	save_encoder_crtcs = kcalloc(dev->mode_config.num_encoder,
-=======
-	save_encoder_crtcs = kzalloc(dev->mode_config.num_encoder *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				sizeof(struct drm_crtc *), GFP_KERNEL);
 	if (!save_encoder_crtcs)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	save_connector_encoders = kcalloc(dev->mode_config.num_connector,
-=======
-	save_connector_encoders = kzalloc(dev->mode_config.num_connector *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				sizeof(struct drm_encoder *), GFP_KERNEL);
 	if (!save_connector_encoders) {
 		kfree(save_encoder_crtcs);

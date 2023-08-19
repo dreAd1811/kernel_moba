@@ -46,7 +46,6 @@
 #include "nfp_net_sriov.h"
 #include "nfp_port.h"
 
-<<<<<<< HEAD
 struct net_device *
 nfp_repr_get_locked(struct nfp_app *app, struct nfp_reprs *set, unsigned int id)
 {
@@ -54,8 +53,6 @@ nfp_repr_get_locked(struct nfp_app *app, struct nfp_reprs *set, unsigned int id)
 					 lockdep_is_held(&app->pf->lock));
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void
 nfp_repr_inc_tx_stats(struct net_device *netdev, unsigned int len,
 		      int tx_status)
@@ -196,7 +193,6 @@ nfp_repr_get_offload_stats(int attr_id, const struct net_device *dev,
 	return -EINVAL;
 }
 
-<<<<<<< HEAD
 static int nfp_repr_change_mtu(struct net_device *netdev, int new_mtu)
 {
 	struct nfp_repr *repr = netdev_priv(netdev);
@@ -215,8 +211,6 @@ static int nfp_repr_change_mtu(struct net_device *netdev, int new_mtu)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static netdev_tx_t nfp_repr_xmit(struct sk_buff *skb, struct net_device *netdev)
 {
 	struct nfp_repr *repr = netdev_priv(netdev);
@@ -268,18 +262,12 @@ err_port_disable:
 }
 
 const struct net_device_ops nfp_repr_netdev_ops = {
-<<<<<<< HEAD
 	.ndo_init		= nfp_app_ndo_init,
 	.ndo_uninit		= nfp_app_ndo_uninit,
 	.ndo_open		= nfp_repr_open,
 	.ndo_stop		= nfp_repr_stop,
 	.ndo_start_xmit		= nfp_repr_xmit,
 	.ndo_change_mtu		= nfp_repr_change_mtu,
-=======
-	.ndo_open		= nfp_repr_open,
-	.ndo_stop		= nfp_repr_stop,
-	.ndo_start_xmit		= nfp_repr_xmit,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ndo_get_stats64	= nfp_repr_get_stats64,
 	.ndo_has_offload_stats	= nfp_repr_has_offload_stats,
 	.ndo_get_offload_stats	= nfp_repr_get_offload_stats,
@@ -290,20 +278,14 @@ const struct net_device_ops nfp_repr_netdev_ops = {
 	.ndo_set_vf_spoofchk	= nfp_app_set_vf_spoofchk,
 	.ndo_get_vf_config	= nfp_app_get_vf_config,
 	.ndo_set_vf_link_state	= nfp_app_set_vf_link_state,
-<<<<<<< HEAD
 	.ndo_set_features	= nfp_port_set_features,
 	.ndo_set_mac_address    = eth_mac_addr,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void nfp_repr_clean(struct nfp_repr *repr)
 {
 	unregister_netdev(repr->netdev);
-<<<<<<< HEAD
 	nfp_app_repr_clean(repr->app, repr->netdev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dst_release((struct dst_entry *)repr->dst);
 	nfp_port_free(repr->port);
 }
@@ -347,17 +329,13 @@ int nfp_repr_init(struct nfp_app *app, struct net_device *netdev,
 
 	SWITCHDEV_SET_OPS(netdev, &nfp_port_switchdev_ops);
 
-<<<<<<< HEAD
 	netdev->priv_flags |= IFF_DISABLE_NETPOLL;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (nfp_app_has_tc(app)) {
 		netdev->features |= NETIF_F_HW_TC;
 		netdev->hw_features |= NETIF_F_HW_TC;
 	}
 
-<<<<<<< HEAD
 	err = nfp_app_repr_init(app, netdev);
 	if (err)
 		goto err_clean;
@@ -370,30 +348,17 @@ int nfp_repr_init(struct nfp_app *app, struct net_device *netdev,
 
 err_repr_clean:
 	nfp_app_repr_clean(app, netdev);
-=======
-	err = register_netdev(netdev);
-	if (err)
-		goto err_clean;
-
-	return 0;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_clean:
 	dst_release((struct dst_entry *)repr->dst);
 	return err;
 }
 
-<<<<<<< HEAD
 static void __nfp_repr_free(struct nfp_repr *repr)
-=======
-static void nfp_repr_free(struct nfp_repr *repr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	free_percpu(repr->stats);
 	free_netdev(repr->netdev);
 }
 
-<<<<<<< HEAD
 void nfp_repr_free(struct net_device *netdev)
 {
 	__nfp_repr_free(netdev_priv(netdev));
@@ -401,26 +366,16 @@ void nfp_repr_free(struct net_device *netdev)
 
 struct net_device *
 nfp_repr_alloc_mqs(struct nfp_app *app, unsigned int txqs, unsigned int rxqs)
-=======
-struct net_device *nfp_repr_alloc(struct nfp_app *app)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct net_device *netdev;
 	struct nfp_repr *repr;
 
-<<<<<<< HEAD
 	netdev = alloc_etherdev_mqs(sizeof(*repr), txqs, rxqs);
 	if (!netdev)
 		return NULL;
 
 	netif_carrier_off(netdev);
 
-=======
-	netdev = alloc_etherdev(sizeof(*repr));
-	if (!netdev)
-		return NULL;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	repr = netdev_priv(netdev);
 	repr->netdev = netdev;
 	repr->app = app;
@@ -436,16 +391,11 @@ err_free_netdev:
 	return NULL;
 }
 
-<<<<<<< HEAD
 void nfp_repr_clean_and_free(struct nfp_repr *repr)
-=======
-static void nfp_repr_clean_and_free(struct nfp_repr *repr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	nfp_info(repr->app->cpp, "Destroying Representor(%s)\n",
 		 repr->netdev->name);
 	nfp_repr_clean(repr);
-<<<<<<< HEAD
 	__nfp_repr_free(repr);
 }
 
@@ -459,24 +409,11 @@ void nfp_reprs_clean_and_free(struct nfp_app *app, struct nfp_reprs *reprs)
 		if (netdev)
 			nfp_repr_clean_and_free(netdev_priv(netdev));
 	}
-=======
-	nfp_repr_free(repr);
-}
-
-void nfp_reprs_clean_and_free(struct nfp_reprs *reprs)
-{
-	unsigned int i;
-
-	for (i = 0; i < reprs->num_reprs; i++)
-		if (reprs->reprs[i])
-			nfp_repr_clean_and_free(netdev_priv(reprs->reprs[i]));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kfree(reprs);
 }
 
 void
-<<<<<<< HEAD
 nfp_reprs_clean_and_free_by_type(struct nfp_app *app, enum nfp_repr_type type)
 {
 	struct net_device *netdev;
@@ -501,19 +438,6 @@ nfp_reprs_clean_and_free_by_type(struct nfp_app *app, enum nfp_repr_type type)
 
 	synchronize_rcu();
 	nfp_reprs_clean_and_free(app, reprs);
-=======
-nfp_reprs_clean_and_free_by_type(struct nfp_app *app,
-				 enum nfp_repr_type type)
-{
-	struct nfp_reprs *reprs;
-
-	reprs = nfp_app_reprs_set(app, type, NULL);
-	if (!reprs)
-		return;
-
-	synchronize_rcu();
-	nfp_reprs_clean_and_free(reprs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 struct nfp_reprs *nfp_reprs_alloc(unsigned int num_reprs)
@@ -528,7 +452,6 @@ struct nfp_reprs *nfp_reprs_alloc(unsigned int num_reprs)
 
 	return reprs;
 }
-<<<<<<< HEAD
 
 int nfp_reprs_resync_phys_ports(struct nfp_app *app)
 {
@@ -558,5 +481,3 @@ int nfp_reprs_resync_phys_ports(struct nfp_app *app)
 
 	return 0;
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

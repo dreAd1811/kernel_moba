@@ -146,7 +146,6 @@
 #define AR_MACMISC_MISC_OBS_BUS_MSB_S   15
 #define AR_MACMISC_MISC_OBS_BUS_1       1
 
-<<<<<<< HEAD
 #define AR_INTCFG               0x005C
 #define AR_INTCFG_MSI_RXOK      0x00000000
 #define AR_INTCFG_MSI_RXINTM    0x00000004
@@ -155,8 +154,6 @@
 #define AR_INTCFG_MSI_TXINTM    0x00000010
 #define AR_INTCFG_MSI_TXMINTR   0x00000018
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define AR_DATABUF_SIZE		0x0060
 #define AR_DATABUF_SIZE_MASK	0x00000FFF
 
@@ -1267,7 +1264,6 @@ enum {
 #define AR_PCIE_MSI                             (AR_SREV_9340(ah) ? 0x40d8 : \
 						 (AR_SREV_9300_20_OR_LATER(ah) ? 0x40a4 : 0x4094))
 #define AR_PCIE_MSI_ENABLE                       0x00000001
-<<<<<<< HEAD
 #define AR_PCIE_MSI_HW_DBI_WR_EN                 0x02000000
 #define AR_PCIE_MSI_HW_INT_PENDING_ADDR          0xFFA0C1FF /* bits 8..11: value must be 0x5060 */
 #define AR_PCIE_MSI_HW_INT_PENDING_ADDR_MSI_64   0xFFA0C9FF /* bits 8..11: value must be 0x5064 */
@@ -1275,8 +1271,6 @@ enum {
 #define AR_INTR_PRIO_TX               0x00000001
 #define AR_INTR_PRIO_RXLP             0x00000002
 #define AR_INTR_PRIO_RXHP             0x00000004
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define AR_INTR_PRIO_SYNC_ENABLE  (AR_SREV_9340(ah) ? 0x4088 : 0x40c4)
 #define AR_INTR_PRIO_ASYNC_MASK   (AR_SREV_9340(ah) ? 0x408c : 0x40c8)

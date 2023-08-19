@@ -34,11 +34,7 @@ gp10b_mc_init(struct nvkm_mc *mc)
 static const struct nvkm_mc_func
 gp10b_mc = {
 	.init = gp10b_mc_init,
-<<<<<<< HEAD
 	.intr = gp100_mc_intr,
-=======
-	.intr = gk104_mc_intr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.intr_unarm = gp100_mc_intr_unarm,
 	.intr_rearm = gp100_mc_intr_rearm,
 	.intr_mask = gp100_mc_intr_mask,

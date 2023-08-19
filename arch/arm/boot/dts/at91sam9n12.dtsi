@@ -64,11 +64,7 @@
 		};
 	};
 
-<<<<<<< HEAD
 	sram: sram@300000 {
-=======
-	sram: sram@00300000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "mmio-sram";
 		reg = <0x00300000 0x8000>;
 	};
@@ -450,13 +446,9 @@
 			};
 
 			tcb0: timer@f8008000 {
-<<<<<<< HEAD
 				compatible = "atmel,at91sam9x5-tcb", "simple-mfd", "syscon";
 				#address-cells = <1>;
 				#size-cells = <0>;
-=======
-				compatible = "atmel,at91sam9x5-tcb";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				reg = <0xf8008000 0x100>;
 				interrupts = <17 IRQ_TYPE_LEVEL_HIGH 0>;
 				clocks = <&tcb_clk>, <&clk32k>;
@@ -464,13 +456,9 @@
 			};
 
 			tcb1: timer@f800c000 {
-<<<<<<< HEAD
 				compatible = "atmel,at91sam9x5-tcb", "simple-mfd", "syscon";
 				#address-cells = <1>;
 				#size-cells = <0>;
-=======
-				compatible = "atmel,at91sam9x5-tcb";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				reg = <0xf800c000 0x100>;
 				interrupts = <17 IRQ_TYPE_LEVEL_HIGH 0>;
 				clocks = <&tcb_clk>, <&clk32k>;
@@ -653,13 +641,8 @@
 				uart1 {
 					pinctrl_uart1: uart1-0 {
 						atmel,pins =
-<<<<<<< HEAD
 							<AT91_PIOC 16 AT91_PERIPH_C AT91_PINCTRL_NONE
 							 AT91_PIOC 17 AT91_PERIPH_C AT91_PINCTRL_PULL_UP>;
-=======
-							<AT91_PIOC 16 AT91_PERIPH_C AT91_PINCTRL_PULL_UP	/* PC17 periph C with pullup */
-							 AT91_PIOC 17 AT91_PERIPH_C AT91_PINCTRL_NONE>;	/* PC16 periph C */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					};
 				};
 
@@ -1039,11 +1022,7 @@
 			};
 		};
 
-<<<<<<< HEAD
 		usb0: ohci@500000 {
-=======
-		usb0: ohci@00500000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "atmel,at91rm9200-ohci", "usb-ohci";
 			reg = <0x00500000 0x00100000>;
 			interrupts = <22 IRQ_TYPE_LEVEL_HIGH 2>;

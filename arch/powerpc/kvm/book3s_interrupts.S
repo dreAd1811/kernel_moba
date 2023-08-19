@@ -23,10 +23,7 @@
 #include <asm/page.h>
 #include <asm/asm-offsets.h>
 #include <asm/exception-64s.h>
-<<<<<<< HEAD
 #include <asm/asm-compat.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #if defined(CONFIG_PPC_BOOK3S_64)
 #ifdef PPC64_ELF_ABI_v2
@@ -100,11 +97,7 @@ kvm_start_entry:
 
 kvm_start_lightweight:
 	/* Copy registers into shadow vcpu so we can access them in real mode */
-<<<<<<< HEAD
 	mr	r3, r4
-=======
-	GET_SHADOW_VCPU(r3)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bl	FUNC(kvmppc_copy_to_svcpu)
 	nop
 	REST_GPR(4, r1)
@@ -173,13 +166,7 @@ after_sprg3_load:
 	stw	r12, VCPU_TRAP(r3)
 
 	/* Transfer reg values from shadow vcpu back to vcpu struct */
-<<<<<<< HEAD
 
-=======
-	/* On 64-bit, interrupts are still off at this point */
-
-	GET_SHADOW_VCPU(r4)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bl	FUNC(kvmppc_copy_from_svcpu)
 	nop
 

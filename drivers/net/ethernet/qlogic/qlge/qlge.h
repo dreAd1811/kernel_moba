@@ -2185,7 +2185,6 @@ static inline void ql_write_db_reg(u32 val, void __iomem *addr)
 }
 
 /*
-<<<<<<< HEAD
  * Doorbell Registers:
  * Doorbell registers are virtual registers in the PCI memory space.
  * The space is allocated by the chip during PCI initialization.  The
@@ -2202,8 +2201,6 @@ static inline void ql_write_db_reg_relaxed(u32 val, void __iomem *addr)
 }
 
 /*
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Shadow Registers:
  * Outbound queues have a consumer index that is maintained by the chip.
  * Inbound queues have a producer index that is maintained by the chip.

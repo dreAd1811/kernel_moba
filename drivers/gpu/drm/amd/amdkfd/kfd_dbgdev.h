@@ -60,12 +60,9 @@ enum {
 	SH_REG_SIZE = SH_REG_END - SH_REG_BASE
 };
 
-<<<<<<< HEAD
 /* SQ_CMD definitions */
 #define SQ_CMD						0x8DEC
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum SQ_IND_CMD_CMD {
 	SQ_IND_CMD_CMD_NULL = 0x00000000,
 	SQ_IND_CMD_CMD_HALT = 0x00000001,
@@ -196,7 +193,6 @@ union ULARGE_INTEGER {
 void kfd_dbgdev_init(struct kfd_dbgdev *pdbgdev, struct kfd_dev *pdev,
 			enum DBGDEV_TYPE type);
 
-<<<<<<< HEAD
 union TCP_WATCH_CNTL_BITS {
 	struct {
 		uint32_t mask:24;
@@ -231,6 +227,4 @@ enum {
 	ADDRESS_WATCH_REG_MAX
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif	/* KFD_DBGDEV_H_ */

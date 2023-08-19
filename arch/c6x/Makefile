@@ -12,11 +12,7 @@ cflags-y += -mno-dsbt -msdata=none -D__linux__
 
 cflags-$(CONFIG_C6X_BIG_KERNEL) += -mlong-calls
 
-<<<<<<< HEAD
 KBUILD_CFLAGS_MODULE   += -mlong-calls -mno-dsbt -msdata=none
-=======
-CFLAGS_MODULE   += -mlong-calls -mno-dsbt -msdata=none
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 CHECKFLAGS      +=
 
@@ -27,13 +23,8 @@ ifdef CONFIG_CPU_BIG_ENDIAN
 KBUILD_CFLAGS   += -mbig-endian
 KBUILD_AFLAGS   += -mbig-endian
 LINKFLAGS       += -mbig-endian
-<<<<<<< HEAD
 KBUILD_LDFLAGS  += -mbig-endian -EB
 CHECKFLAGS	+= -D_BIG_ENDIAN
-=======
-KBUILD_LDFLAGS  += -mbig-endian
-LDFLAGS += -EB
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 endif
 
 head-y          := arch/c6x/kernel/head.o

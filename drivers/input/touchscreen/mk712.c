@@ -17,11 +17,7 @@
  * found in Gateway AOL Connected Touchpad computers.
  *
  * Documentation for ICS MK712 can be found at:
-<<<<<<< HEAD
  *	https://www.idt.com/general-parts/mk712-touch-screen-controller
-=======
- *	http://www.idt.com/products/getDoc.cfm?docID=18713923
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /*

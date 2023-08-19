@@ -71,11 +71,7 @@ static int vr_nor_init_partitions(struct vr_nor_mtd *p)
 {
 	/* register the flash bank */
 	/* partition the flash bank */
-<<<<<<< HEAD
 	return mtd_device_register(p->info, NULL, 0);
-=======
-	return mtd_device_parse_register(p->info, NULL, NULL, NULL, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void vr_nor_destroy_mtd_setup(struct vr_nor_mtd *p)

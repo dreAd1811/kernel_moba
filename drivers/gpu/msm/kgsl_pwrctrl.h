@@ -1,28 +1,11 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0-only */
 /*
  * Copyright (c) 2010-2019, The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2010-2019, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #ifndef __KGSL_PWRCTRL_H
 #define __KGSL_PWRCTRL_H
 
-<<<<<<< HEAD
 #include <linux/clk.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/pm_qos.h>
 #include <soc/qcom/cx_ipeak.h>
 
@@ -36,26 +19,15 @@
 
 #define KGSL_PWR_ON	0xFFFF
 
-<<<<<<< HEAD
 #define KGSL_GPU_CFG_PATH_OFF	0
 #define KGSL_GPU_CFG_PATH_LOW	1
 #define KGSL_GPU_CFG_PATH_HIGH	2
-=======
-#define KGSL_AHB_PATH_OFF	0
-#define KGSL_AHB_PATH_LOW	1
-#define KGSL_AHB_PATH_HIGH	2
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define KGSL_MAX_CLKS 17
 #define KGSL_MAX_REGULATORS 2
 
 #define KGSL_MAX_PWRLEVELS 10
 
-<<<<<<< HEAD
-=======
-#define KGSL_MAX_TZONE_NAMES 2
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Only two supported levels, min & max */
 #define KGSL_CONSTRAINT_PWR_MAXLEVELS 2
 
@@ -138,10 +110,7 @@ struct kgsl_pwrlevel {
 	unsigned int bus_freq;
 	unsigned int bus_min;
 	unsigned int bus_max;
-<<<<<<< HEAD
 	unsigned int acd_level;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct kgsl_regulator {
@@ -150,7 +119,6 @@ struct kgsl_regulator {
 };
 
 /**
-<<<<<<< HEAD
  * struct gpu_cx_ipeak_client - Struct holding CX Ipeak client info.
  * @client:    Client handle used for CX Ipeak vote
  * @freq:      GPU frequency threshold for which this client need to vote.
@@ -161,8 +129,6 @@ struct gpu_cx_ipeak_client {
 };
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * struct kgsl_pwrctrl - Power control settings for a KGSL device
  * @interrupt_num - The interrupt number for the device
  * @grp_clks - Array of clocks structures that we control
@@ -182,12 +148,7 @@ struct gpu_cx_ipeak_client {
  * @clock_times - Each GPU frequency's accumulated active time in us
  * @regulators - array of pointers to kgsl_regulator structs
  * @pcl - bus scale identifier
-<<<<<<< HEAD
  * @gpu_cfg - CPU to GPU AHB path bus scale identifier
-=======
- * @ocmem - ocmem bus scale identifier
- * @ahbpath_pcl - CPU to AHB path bus scale identifier
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @irq_name - resource name for the IRQ
  * @clk_stats - structure of clock statistics
  * @l2pc_cpus_mask - mask to avoid L2PC on masked CPUs
@@ -218,14 +179,8 @@ struct gpu_cx_ipeak_client {
  * @sysfs_pwr_limit - pointer to the sysfs limits node
  * isense_clk_indx - index of isense clock, 0 if no isense
  * isense_clk_on_level - isense clock rate is XO rate below this level.
-<<<<<<< HEAD
  * tzone_name - pointer to thermal zone name of GPU temperature sensor
  * gpu_cx_ipeak_client - CX Ipeak clients used by GPU
-=======
- * tzone_names - array of thermal zone names of GPU temperature sensors
- * gpu_cx_ipeak - pointer to CX Ipeak client used by GPU
- * cx_ipeak_gpu_freq - Value of GPU CX Ipeak frequency
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 struct kgsl_pwrctrl {
@@ -252,12 +207,7 @@ struct kgsl_pwrctrl {
 	u64 clock_times[KGSL_MAX_PWRLEVELS];
 	struct kgsl_regulator regulators[KGSL_MAX_REGULATORS];
 	uint32_t pcl;
-<<<<<<< HEAD
 	uint32_t gpu_cfg;
-=======
-	uint32_t ocmem_pcl;
-	uint32_t ahbpath_pcl;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const char *irq_name;
 	struct kgsl_clk_stats clk_stats;
 	unsigned int l2pc_cpus_mask;
@@ -288,23 +238,13 @@ struct kgsl_pwrctrl {
 	struct kgsl_pwr_limit *sysfs_pwr_limit;
 	unsigned int gpu_bimc_int_clk_freq;
 	bool gpu_bimc_interface_enabled;
-<<<<<<< HEAD
 	const char *tzone_name;
 	struct gpu_cx_ipeak_client gpu_ipeak_client[2];
-=======
-	const char *tzone_names[KGSL_MAX_TZONE_NAMES];
-	struct cx_ipeak_client *gpu_cx_ipeak;
-	unsigned int cx_ipeak_gpu_freq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int kgsl_pwrctrl_init(struct kgsl_device *device);
 void kgsl_pwrctrl_close(struct kgsl_device *device);
-<<<<<<< HEAD
 void kgsl_timer(struct timer_list *t);
-=======
-void kgsl_timer(unsigned long data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void kgsl_idle_check(struct work_struct *work);
 void kgsl_pre_hwaccess(struct kgsl_device *device);
 void kgsl_pwrctrl_pwrlevel_change(struct kgsl_device *device,
@@ -346,12 +286,8 @@ void kgsl_pwrctrl_set_constraint(struct kgsl_device *device,
 			struct kgsl_pwr_constraint *pwrc, uint32_t id);
 void kgsl_pwrctrl_update_l2pc(struct kgsl_device *device,
 			unsigned long timeout_us);
-<<<<<<< HEAD
 int kgsl_pwrctrl_set_default_gpu_pwrlevel(struct kgsl_device *device);
 void kgsl_pwrctrl_disable_unused_opp(struct kgsl_device *device,
 		struct device *dev);
 
-=======
-void kgsl_pwrctrl_set_default_gpu_pwrlevel(struct kgsl_device *device);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __KGSL_PWRCTRL_H */

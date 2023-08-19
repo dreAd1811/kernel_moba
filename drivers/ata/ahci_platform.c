@@ -43,12 +43,8 @@ static int ahci_probe(struct platform_device *pdev)
 	struct ahci_host_priv *hpriv;
 	int rc;
 
-<<<<<<< HEAD
 	hpriv = ahci_platform_get_resources(pdev,
 					    AHCI_PLATFORM_GET_RESETS);
-=======
-	hpriv = ahci_platform_get_resources(pdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(hpriv))
 		return PTR_ERR(hpriv);
 
@@ -80,10 +76,6 @@ static const struct of_device_id ahci_of_match[] = {
 	{ .compatible = "generic-ahci", },
 	/* Keep the following compatibles for device tree compatibility */
 	{ .compatible = "snps,spear-ahci", },
-<<<<<<< HEAD
-=======
-	{ .compatible = "snps,exynos5440-ahci", },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ .compatible = "ibm,476gtr-ahci", },
 	{ .compatible = "snps,dwc-ahci", },
 	{ .compatible = "hisilicon,hisi-ahci", },

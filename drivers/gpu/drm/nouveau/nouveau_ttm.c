@@ -1,15 +1,7 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0 OR MIT
 /*
  * Copyright (c) 2007-2008 Tungsten Graphics, Inc., Cedar Park, TX., USA,
  * Copyright (c) 2009 VMware, Inc., Palo Alto, CA., USA,
-=======
-/*
- * Copyright (c) 2007-2008 Tungsten Graphics, Inc., Cedar Park, TX., USA,
- * All Rights Reserved.
- * Copyright (c) 2009 VMware, Inc., Palo Alto, CA., USA,
- * All Rights Reserved.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -30,38 +22,22 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
  * USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-<<<<<<< HEAD
 #include "nouveau_drv.h"
 #include "nouveau_gem.h"
 #include "nouveau_mem.h"
 #include "nouveau_ttm.h"
-=======
-
-#include "nouveau_drv.h"
-#include "nouveau_ttm.h"
-#include "nouveau_gem.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <drm/drm_legacy.h>
 
 #include <core/tegra.h>
 
 static int
-<<<<<<< HEAD
 nouveau_manager_init(struct ttm_mem_type_manager *man, unsigned long psize)
 {
-=======
-nouveau_vram_manager_init(struct ttm_mem_type_manager *man, unsigned long psize)
-{
-	struct nouveau_drm *drm = nouveau_bdev(man->bdev);
-	struct nvkm_fb *fb = nvxx_fb(&drm->client.device);
-	man->priv = fb;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 static int
-<<<<<<< HEAD
 nouveau_manager_fini(struct ttm_mem_type_manager *man)
 {
 	return 0;
@@ -77,36 +53,6 @@ static void
 nouveau_manager_debug(struct ttm_mem_type_manager *man,
 		      struct drm_printer *printer)
 {
-=======
-nouveau_vram_manager_fini(struct ttm_mem_type_manager *man)
-{
-	man->priv = NULL;
-	return 0;
-}
-
-static inline void
-nvkm_mem_node_cleanup(struct nvkm_mem *node)
-{
-	if (node->vma[0].node) {
-		nvkm_vm_unmap(&node->vma[0]);
-		nvkm_vm_put(&node->vma[0]);
-	}
-
-	if (node->vma[1].node) {
-		nvkm_vm_unmap(&node->vma[1]);
-		nvkm_vm_put(&node->vma[1]);
-	}
-}
-
-static void
-nouveau_vram_manager_del(struct ttm_mem_type_manager *man,
-			 struct ttm_mem_reg *reg)
-{
-	struct nouveau_drm *drm = nouveau_bdev(man->bdev);
-	struct nvkm_ram *ram = nvxx_fb(&drm->client.device)->ram;
-	nvkm_mem_node_cleanup(reg->mm_node);
-	ram->func->put(ram, (struct nvkm_mem **)&reg->mm_node);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int
@@ -115,23 +61,14 @@ nouveau_vram_manager_new(struct ttm_mem_type_manager *man,
 			 const struct ttm_place *place,
 			 struct ttm_mem_reg *reg)
 {
-<<<<<<< HEAD
 	struct nouveau_bo *nvbo = nouveau_bo(bo);
 	struct nouveau_drm *drm = nouveau_bdev(bo->bdev);
 	struct nouveau_mem *mem;
-=======
-	struct nouveau_drm *drm = nouveau_bdev(man->bdev);
-	struct nvkm_ram *ram = nvxx_fb(&drm->client.device)->ram;
-	struct nouveau_bo *nvbo = nouveau_bo(bo);
-	struct nvkm_mem *node;
-	u32 size_nc = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	if (drm->client.device.info.ram_size == 0)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	ret = nouveau_mem_new(&drm->master, nvbo->kind, nvbo->comp, reg);
 	mem = nouveau_mem(reg);
 	if (ret)
@@ -147,28 +84,10 @@ nouveau_vram_manager_new(struct ttm_mem_type_manager *man,
 		return ret;
 	}
 
-=======
-	if (nvbo->tile_flags & NOUVEAU_GEM_TILE_NONCONTIG)
-		size_nc = 1 << nvbo->page_shift;
-
-	ret = ram->func->get(ram, reg->num_pages << PAGE_SHIFT,
-			     reg->page_alignment << PAGE_SHIFT, size_nc,
-			     (nvbo->tile_flags >> 8) & 0x3ff, &node);
-	if (ret) {
-		reg->mm_node = NULL;
-		return (ret == -ENOSPC) ? 0 : ret;
-	}
-
-	node->page_shift = nvbo->page_shift;
-
-	reg->mm_node = node;
-	reg->start   = node->offset >> PAGE_SHIFT;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 const struct ttm_mem_type_manager_func nouveau_vram_manager = {
-<<<<<<< HEAD
 	.init = nouveau_manager_init,
 	.takedown = nouveau_manager_fini,
 	.get_node = nouveau_vram_manager_new,
@@ -177,42 +96,11 @@ const struct ttm_mem_type_manager_func nouveau_vram_manager = {
 };
 
 static int
-=======
-	.init = nouveau_vram_manager_init,
-	.takedown = nouveau_vram_manager_fini,
-	.get_node = nouveau_vram_manager_new,
-	.put_node = nouveau_vram_manager_del,
-};
-
-static int
-nouveau_gart_manager_init(struct ttm_mem_type_manager *man, unsigned long psize)
-{
-	return 0;
-}
-
-static int
-nouveau_gart_manager_fini(struct ttm_mem_type_manager *man)
-{
-	return 0;
-}
-
-static void
-nouveau_gart_manager_del(struct ttm_mem_type_manager *man,
-			 struct ttm_mem_reg *reg)
-{
-	nvkm_mem_node_cleanup(reg->mm_node);
-	kfree(reg->mm_node);
-	reg->mm_node = NULL;
-}
-
-static int
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 nouveau_gart_manager_new(struct ttm_mem_type_manager *man,
 			 struct ttm_buffer_object *bo,
 			 const struct ttm_place *place,
 			 struct ttm_mem_reg *reg)
 {
-<<<<<<< HEAD
 	struct nouveau_bo *nvbo = nouveau_bo(bo);
 	struct nouveau_drm *drm = nouveau_bdev(bo->bdev);
 	struct nouveau_mem *mem;
@@ -235,100 +123,12 @@ const struct ttm_mem_type_manager_func nouveau_gart_manager = {
 	.debug = nouveau_manager_debug
 };
 
-=======
-	struct nouveau_drm *drm = nouveau_bdev(bo->bdev);
-	struct nouveau_bo *nvbo = nouveau_bo(bo);
-	struct nvkm_mem *node;
-
-	node = kzalloc(sizeof(*node), GFP_KERNEL);
-	if (!node)
-		return -ENOMEM;
-
-	node->page_shift = 12;
-
-	switch (drm->client.device.info.family) {
-	case NV_DEVICE_INFO_V0_TNT:
-	case NV_DEVICE_INFO_V0_CELSIUS:
-	case NV_DEVICE_INFO_V0_KELVIN:
-	case NV_DEVICE_INFO_V0_RANKINE:
-	case NV_DEVICE_INFO_V0_CURIE:
-		break;
-	case NV_DEVICE_INFO_V0_TESLA:
-		if (drm->client.device.info.chipset != 0x50)
-			node->memtype = (nvbo->tile_flags & 0x7f00) >> 8;
-		break;
-	case NV_DEVICE_INFO_V0_FERMI:
-	case NV_DEVICE_INFO_V0_KEPLER:
-	case NV_DEVICE_INFO_V0_MAXWELL:
-	case NV_DEVICE_INFO_V0_PASCAL:
-		node->memtype = (nvbo->tile_flags & 0xff00) >> 8;
-		break;
-	default:
-		NV_WARN(drm, "%s: unhandled family type %x\n", __func__,
-			drm->client.device.info.family);
-		break;
-	}
-
-	reg->mm_node = node;
-	reg->start   = 0;
-	return 0;
-}
-
-static void
-nouveau_gart_manager_debug(struct ttm_mem_type_manager *man,
-			   struct drm_printer *printer)
-{
-}
-
-const struct ttm_mem_type_manager_func nouveau_gart_manager = {
-	.init = nouveau_gart_manager_init,
-	.takedown = nouveau_gart_manager_fini,
-	.get_node = nouveau_gart_manager_new,
-	.put_node = nouveau_gart_manager_del,
-	.debug = nouveau_gart_manager_debug
-};
-
-/*XXX*/
-#include <subdev/mmu/nv04.h>
-static int
-nv04_gart_manager_init(struct ttm_mem_type_manager *man, unsigned long psize)
-{
-	struct nouveau_drm *drm = nouveau_bdev(man->bdev);
-	struct nvkm_mmu *mmu = nvxx_mmu(&drm->client.device);
-	struct nv04_mmu *priv = (void *)mmu;
-	struct nvkm_vm *vm = NULL;
-	nvkm_vm_ref(priv->vm, &vm, NULL);
-	man->priv = vm;
-	return 0;
-}
-
-static int
-nv04_gart_manager_fini(struct ttm_mem_type_manager *man)
-{
-	struct nvkm_vm *vm = man->priv;
-	nvkm_vm_ref(NULL, &vm, NULL);
-	man->priv = NULL;
-	return 0;
-}
-
-static void
-nv04_gart_manager_del(struct ttm_mem_type_manager *man, struct ttm_mem_reg *reg)
-{
-	struct nvkm_mem *node = reg->mm_node;
-	if (node->vma[0].node)
-		nvkm_vm_put(&node->vma[0]);
-	kfree(reg->mm_node);
-	reg->mm_node = NULL;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int
 nv04_gart_manager_new(struct ttm_mem_type_manager *man,
 		      struct ttm_buffer_object *bo,
 		      const struct ttm_place *place,
 		      struct ttm_mem_reg *reg)
 {
-<<<<<<< HEAD
 	struct nouveau_bo *nvbo = nouveau_bo(bo);
 	struct nouveau_drm *drm = nouveau_bdev(bo->bdev);
 	struct nouveau_mem *mem;
@@ -360,41 +160,6 @@ const struct ttm_mem_type_manager_func nv04_gart_manager = {
 	.get_node = nv04_gart_manager_new,
 	.put_node = nouveau_manager_del,
 	.debug = nouveau_manager_debug
-=======
-	struct nvkm_mem *node;
-	int ret;
-
-	node = kzalloc(sizeof(*node), GFP_KERNEL);
-	if (!node)
-		return -ENOMEM;
-
-	node->page_shift = 12;
-
-	ret = nvkm_vm_get(man->priv, reg->num_pages << 12, node->page_shift,
-			  NV_MEM_ACCESS_RW, &node->vma[0]);
-	if (ret) {
-		kfree(node);
-		return ret;
-	}
-
-	reg->mm_node = node;
-	reg->start   = node->vma[0].offset >> PAGE_SHIFT;
-	return 0;
-}
-
-static void
-nv04_gart_manager_debug(struct ttm_mem_type_manager *man,
-			struct drm_printer *printer)
-{
-}
-
-const struct ttm_mem_type_manager_func nv04_gart_manager = {
-	.init = nv04_gart_manager_init,
-	.takedown = nv04_gart_manager_fini,
-	.get_node = nv04_gart_manager_new,
-	.put_node = nv04_gart_manager_del,
-	.debug = nv04_gart_manager_debug
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int
@@ -473,7 +238,6 @@ nouveau_ttm_global_release(struct nouveau_drm *drm)
 	drm->ttm.mem_global_ref.release = NULL;
 }
 
-<<<<<<< HEAD
 static int
 nouveau_ttm_init_host(struct nouveau_drm *drm, u8 kind)
 {
@@ -495,14 +259,11 @@ nouveau_ttm_init_host(struct nouveau_drm *drm, u8 kind)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int
 nouveau_ttm_init(struct nouveau_drm *drm)
 {
 	struct nvkm_device *device = nvxx_device(&drm->client.device);
 	struct nvkm_pci *pci = device->pci;
-<<<<<<< HEAD
 	struct nvif_mmu *mmu = &drm->client.mmu;
 	struct drm_device *dev = drm->dev;
 	int typei, ret;
@@ -531,11 +292,6 @@ nouveau_ttm_init(struct nouveau_drm *drm)
 	} else {
 		drm->ttm.type_vram = -1;
 	}
-=======
-	struct drm_device *dev = drm->dev;
-	u8 bits;
-	int ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (pci && pci->agp.bridge) {
 		drm->agp.bridge = pci->agp.bridge;
@@ -544,37 +300,6 @@ nouveau_ttm_init(struct nouveau_drm *drm)
 		drm->agp.cma = pci->agp.cma;
 	}
 
-<<<<<<< HEAD
-=======
-	bits = nvxx_mmu(&drm->client.device)->dma_bits;
-	if (nvxx_device(&drm->client.device)->func->pci) {
-		if (drm->agp.bridge)
-			bits = 32;
-	} else if (device->func->tegra) {
-		struct nvkm_device_tegra *tegra = device->func->tegra(device);
-
-		/*
-		 * If the platform can use a IOMMU, then the addressable DMA
-		 * space is constrained by the IOMMU bit
-		 */
-		if (tegra->func->iommu_bit)
-			bits = min(bits, tegra->func->iommu_bit);
-
-	}
-
-	ret = dma_set_mask(dev->dev, DMA_BIT_MASK(bits));
-	if (ret && bits != 32) {
-		bits = 32;
-		ret = dma_set_mask(dev->dev, DMA_BIT_MASK(bits));
-	}
-	if (ret)
-		return ret;
-
-	ret = dma_set_coherent_mask(dev->dev, DMA_BIT_MASK(bits));
-	if (ret)
-		dma_set_coherent_mask(dev->dev, DMA_BIT_MASK(32));
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = nouveau_ttm_global_init(drm);
 	if (ret)
 		return ret;
@@ -584,11 +309,7 @@ nouveau_ttm_init(struct nouveau_drm *drm)
 				  &nouveau_bo_driver,
 				  dev->anon_inode->i_mapping,
 				  DRM_FILE_PAGE_OFFSET,
-<<<<<<< HEAD
 				  drm->client.mmu.dmabits <= 32 ? true : false);
-=======
-				  bits <= 32 ? true : false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		NV_ERROR(drm, "error initialising bo driver, %d\n", ret);
 		return ret;
@@ -612,11 +333,7 @@ nouveau_ttm_init(struct nouveau_drm *drm)
 
 	/* GART init */
 	if (!drm->agp.bridge) {
-<<<<<<< HEAD
 		drm->gem.gart_available = drm->client.vmm.vmm.limit;
-=======
-		drm->gem.gart_available = nvxx_mmu(&drm->client.device)->limit;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		drm->gem.gart_available = drm->agp.size;
 	}

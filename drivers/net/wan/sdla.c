@@ -711,11 +711,7 @@ static netdev_tx_t sdla_transmit(struct sk_buff *skb,
 
 					spin_lock_irqsave(&sdla_lock, flags);
 					SDLA_WINDOW(dev, addr);
-<<<<<<< HEAD
 					pbuf = (void *)(((int) dev->mem_start) + (addr & SDLA_ADDR_MASK));
-=======
-					pbuf = (void *)(dev->mem_start + (addr & SDLA_ADDR_MASK));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					__sdla_write(dev, pbuf->buf_addr, skb->data, skb->len);
 					SDLA_WINDOW(dev, addr);
 					pbuf->opp_flag = 1;
@@ -931,20 +927,10 @@ static irqreturn_t sdla_isr(int dummy, void *dev_id)
 	return IRQ_HANDLED;
 }
 
-<<<<<<< HEAD
 static void sdla_poll(struct timer_list *t)
 {
 	struct frad_local *flp = from_timer(flp, t, timer);
 	struct net_device *dev = flp->dev;
-=======
-static void sdla_poll(unsigned long device)
-{
-	struct net_device	  *dev;
-	struct frad_local *flp;
-
-	dev = (struct net_device *) device;
-	flp = netdev_priv(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (sdla_byte(dev, SDLA_502_RCV_BUF))
 		sdla_receive(dev);
@@ -1627,18 +1613,10 @@ static void setup_sdla(struct net_device *dev)
 	flp->assoc		= sdla_assoc;
 	flp->deassoc		= sdla_deassoc;
 	flp->dlci_conf		= sdla_dlci_conf;
-<<<<<<< HEAD
 	flp->dev		= dev;
 
 	timer_setup(&flp->timer, sdla_poll, 0);
 	flp->timer.expires	= 1;
-=======
-
-	init_timer(&flp->timer);
-	flp->timer.expires	= 1;
-	flp->timer.data		= (unsigned long) dev;
-	flp->timer.function	= sdla_poll;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct net_device *sdla;

@@ -118,11 +118,6 @@ static void thunder_i2c_clock_disable(struct device *dev, struct clk *clk)
 static int thunder_i2c_smbus_setup_of(struct octeon_i2c *i2c,
 				      struct device_node *node)
 {
-<<<<<<< HEAD
-=======
-	u32 type;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!node)
 		return -EINVAL;
 
@@ -130,13 +125,6 @@ static int thunder_i2c_smbus_setup_of(struct octeon_i2c *i2c,
 	if (!i2c->alert_data.irq)
 		return -EINVAL;
 
-<<<<<<< HEAD
-=======
-	type = irqd_get_trigger_type(irq_get_irq_data(i2c->alert_data.irq));
-	i2c->alert_data.alert_edge_triggered =
-		(type & IRQ_TYPE_LEVEL_MASK) ? 1 : 0;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i2c->ara = i2c_setup_smbus_alert(&i2c->adap, &i2c->alert_data);
 	if (!i2c->ara)
 		return -ENODEV;
@@ -155,12 +143,7 @@ static int thunder_i2c_smbus_setup(struct octeon_i2c *i2c,
 
 static void thunder_i2c_smbus_remove(struct octeon_i2c *i2c)
 {
-<<<<<<< HEAD
 	i2c_unregister_device(i2c->ara);
-=======
-	if (i2c->ara)
-		i2c_unregister_device(i2c->ara);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int thunder_i2c_probe_pci(struct pci_dev *pdev,

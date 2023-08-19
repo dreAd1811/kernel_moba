@@ -54,11 +54,7 @@ struct mlx5_fpga_conn {
 	/* CQ */
 	struct {
 		struct mlx5_cqwq wq;
-<<<<<<< HEAD
 		struct mlx5_wq_ctrl wq_ctrl;
-=======
-		struct mlx5_frag_wq_ctrl wq_ctrl;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct mlx5_core_cq mcq;
 		struct tasklet_struct tasklet;
 	} cq;

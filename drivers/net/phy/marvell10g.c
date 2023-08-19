@@ -6,17 +6,12 @@
  *
  * There appears to be several different data paths through the PHY which
  * are automatically managed by the PHY.  The following has been determined
-<<<<<<< HEAD
  * via observation and experimentation for a setup using single-lane Serdes:
-=======
- * via observation and experimentation:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  *       SGMII PHYXS -- BASE-T PCS -- 10G PMA -- AN -- Copper (for <= 1G)
  *  10GBASE-KR PHYXS -- BASE-T PCS -- 10G PMA -- AN -- Copper (for 10G)
  *  10GBASE-KR PHYXS -- BASE-R PCS -- Fiber
  *
-<<<<<<< HEAD
  * With XAUI, observation shows:
  *
  *        XAUI PHYXS -- <appropriate PCS as above>
@@ -30,13 +25,6 @@
 #include <linux/hwmon.h>
 #include <linux/marvell_phy.h>
 #include <linux/phy.h>
-=======
- * If both the fiber and copper ports are connected, the first to gain
- * link takes priority and the other port is completely locked out.
- */
-#include <linux/phy.h>
-#include <linux/marvell_phy.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum {
 	MV_PMA_BOOT		= 0xc050,
@@ -46,14 +34,11 @@ enum {
 	MV_PCS_BASE_R		= 0x1000,
 	MV_PCS_1000BASEX	= 0x2000,
 
-<<<<<<< HEAD
 	MV_PCS_PAIRSWAP		= 0x8182,
 	MV_PCS_PAIRSWAP_MASK	= 0x0003,
 	MV_PCS_PAIRSWAP_AB	= 0x0002,
 	MV_PCS_PAIRSWAP_NONE	= 0x0003,
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* These registers appear at 0x800X and 0xa00X - the 0xa00X control
 	 * registers appear to set themselves to the 0x800X when AN is
 	 * restarted, but status registers appear readable from either.
@@ -61,7 +46,6 @@ enum {
 	MV_AN_CTRL1000		= 0x8000, /* 1000base-T control register */
 	MV_AN_STAT1000		= 0x8001, /* 1000base-T status register */
 
-<<<<<<< HEAD
 	/* Vendor2 MMD registers */
 	MV_V2_TEMP_CTRL		= 0xf08a,
 	MV_V2_TEMP_CTRL_MASK	= 0xc000,
@@ -74,14 +58,6 @@ enum {
 struct mv3310_priv {
 	struct device *hwmon_dev;
 	char *hwmon_name;
-=======
-	/* This register appears to reflect the copper status */
-	MV_AN_RESULT		= 0xa016,
-	MV_AN_RESULT_SPD_10	= BIT(12),
-	MV_AN_RESULT_SPD_100	= BIT(13),
-	MV_AN_RESULT_SPD_1000	= BIT(14),
-	MV_AN_RESULT_SPD_10000	= BIT(15),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int mv3310_modify(struct phy_device *phydev, int devad, u16 reg,
@@ -102,7 +78,6 @@ static int mv3310_modify(struct phy_device *phydev, int devad, u16 reg,
 	return ret < 0 ? ret : 1;
 }
 
-<<<<<<< HEAD
 #ifdef CONFIG_HWMON
 static umode_t mv3310_hwmon_is_visible(const void *data,
 				       enum hwmon_sensor_types type,
@@ -247,10 +222,6 @@ static int mv3310_hwmon_probe(struct phy_device *phydev)
 static int mv3310_probe(struct phy_device *phydev)
 {
 	struct mv3310_priv *priv;
-=======
-static int mv3310_probe(struct phy_device *phydev)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 mmd_mask = MDIO_DEVS_PMAPMD | MDIO_DEVS_AN;
 	int ret;
 
@@ -268,7 +239,6 @@ static int mv3310_probe(struct phy_device *phydev)
 		return -ENODEV;
 	}
 
-<<<<<<< HEAD
 	priv = devm_kzalloc(&phydev->mdio.dev, sizeof(*priv), GFP_KERNEL);
 	if (!priv)
 		return -ENOMEM;
@@ -283,28 +253,15 @@ static int mv3310_probe(struct phy_device *phydev)
 }
 
 static int mv3310_suspend(struct phy_device *phydev)
-=======
-	return 0;
-}
-
-/*
- * Resetting the MV88X3310 causes it to become non-responsive.  Avoid
- * setting the reset bit(s).
- */
-static int mv3310_soft_reset(struct phy_device *phydev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return 0;
 }
 
-<<<<<<< HEAD
 static int mv3310_resume(struct phy_device *phydev)
 {
 	return mv3310_hwmon_config(phydev, true);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mv3310_config_init(struct phy_device *phydev)
 {
 	__ETHTOOL_DECLARE_LINK_MODE_MASK(supported) = { 0, };
@@ -313,10 +270,6 @@ static int mv3310_config_init(struct phy_device *phydev)
 
 	/* Check that the PHY interface type is compatible */
 	if (phydev->interface != PHY_INTERFACE_MODE_SGMII &&
-<<<<<<< HEAD
-=======
-	    phydev->interface != PHY_INTERFACE_MODE_XGMII &&
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    phydev->interface != PHY_INTERFACE_MODE_XAUI &&
 	    phydev->interface != PHY_INTERFACE_MODE_RXAUI &&
 	    phydev->interface != PHY_INTERFACE_MODE_10GKR)
@@ -382,7 +335,6 @@ static int mv3310_config_init(struct phy_device *phydev)
 		if (val & MDIO_PMA_EXTABLE_1000BKX)
 			__set_bit(ETHTOOL_LINK_MODE_1000baseKX_Full_BIT,
 				  supported);
-<<<<<<< HEAD
 		if (val & MDIO_PMA_EXTABLE_100BTX) {
 			__set_bit(ETHTOOL_LINK_MODE_100baseT_Full_BIT,
 				  supported);
@@ -395,14 +347,6 @@ static int mv3310_config_init(struct phy_device *phydev)
 			__set_bit(ETHTOOL_LINK_MODE_10baseT_Half_BIT,
 				  supported);
 		}
-=======
-		if (val & MDIO_PMA_EXTABLE_100BTX)
-			__set_bit(ETHTOOL_LINK_MODE_100baseT_Full_BIT,
-				  supported);
-		if (val & MDIO_PMA_EXTABLE_10BT)
-			__set_bit(ETHTOOL_LINK_MODE_10baseT_Full_BIT,
-				  supported);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (!ethtool_convert_link_mode_to_legacy_u32(&mask, supported))
@@ -422,12 +366,9 @@ static int mv3310_config_aneg(struct phy_device *phydev)
 	u32 advertising;
 	int ret;
 
-<<<<<<< HEAD
 	/* We don't support manual MDI control */
 	phydev->mdix_ctrl = ETH_TP_MDI_AUTO;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (phydev->autoneg == AUTONEG_DISABLE) {
 		ret = genphy_c45_pma_setup_forced(phydev);
 		if (ret < 0)
@@ -486,7 +427,6 @@ static int mv3310_aneg_done(struct phy_device *phydev)
 	return genphy_c45_aneg_done(phydev);
 }
 
-<<<<<<< HEAD
 static void mv3310_update_interface(struct phy_device *phydev)
 {
 	if ((phydev->interface == PHY_INTERFACE_MODE_SGMII ||
@@ -505,8 +445,6 @@ static void mv3310_update_interface(struct phy_device *phydev)
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* 10GBASE-ER,LR,LRM,SR do not support autonegotiation. */
 static int mv3310_read_10gbr_status(struct phy_device *phydev)
 {
@@ -514,12 +452,7 @@ static int mv3310_read_10gbr_status(struct phy_device *phydev)
 	phydev->speed = SPEED_10000;
 	phydev->duplex = DUPLEX_FULL;
 
-<<<<<<< HEAD
 	mv3310_update_interface(phydev);
-=======
-	if (phydev->interface == PHY_INTERFACE_MODE_SGMII)
-		phydev->interface = PHY_INTERFACE_MODE_10GKR;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -542,10 +475,7 @@ static int mv3310_read_status(struct phy_device *phydev)
 	phydev->link = 0;
 	phydev->pause = 0;
 	phydev->asym_pause = 0;
-<<<<<<< HEAD
 	phydev->mdix = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	val = phy_read_mmd(phydev, MDIO_MMD_PCS, MV_PCS_BASE_R + MDIO_STAT1);
 	if (val < 0)
@@ -569,38 +499,15 @@ static int mv3310_read_status(struct phy_device *phydev)
 		if (val < 0)
 			return val;
 
-<<<<<<< HEAD
 		/* Read the link partner's 1G advertisement */
-=======
-		/* Read the link partner's 1G advertisment */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		val = phy_read_mmd(phydev, MDIO_MMD_AN, MV_AN_STAT1000);
 		if (val < 0)
 			return val;
 
 		phydev->lp_advertising |= mii_stat1000_to_ethtool_lpa_t(val);
 
-<<<<<<< HEAD
 		if (phydev->autoneg == AUTONEG_ENABLE)
 			phy_resolve_aneg_linkmode(phydev);
-=======
-		if (phydev->autoneg == AUTONEG_ENABLE) {
-			val = phy_read_mmd(phydev, MDIO_MMD_AN, MV_AN_RESULT);
-			if (val < 0)
-				return val;
-
-			if (val & MV_AN_RESULT_SPD_10000)
-				phydev->speed = SPEED_10000;
-			else if (val & MV_AN_RESULT_SPD_1000)
-				phydev->speed = SPEED_1000;
-			else if (val & MV_AN_RESULT_SPD_100)
-				phydev->speed = SPEED_100;
-			else if (val & MV_AN_RESULT_SPD_10)
-				phydev->speed = SPEED_10;
-
-			phydev->duplex = DUPLEX_FULL;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (phydev->autoneg != AUTONEG_ENABLE) {
@@ -609,7 +516,6 @@ static int mv3310_read_status(struct phy_device *phydev)
 			return val;
 	}
 
-<<<<<<< HEAD
 	if (phydev->speed == SPEED_10000) {
 		val = genphy_c45_read_mdix(phydev);
 		if (val < 0)
@@ -634,23 +540,6 @@ static int mv3310_read_status(struct phy_device *phydev)
 
 	mv3310_update_interface(phydev);
 
-=======
-	if ((phydev->interface == PHY_INTERFACE_MODE_SGMII ||
-	     phydev->interface == PHY_INTERFACE_MODE_10GKR) && phydev->link) {
-		/* The PHY automatically switches its serdes interface (and
-		 * active PHYXS instance) between Cisco SGMII and 10GBase-KR
-		 * modes according to the speed.  Florian suggests setting
-		 * phydev->interface to communicate this to the MAC. Only do
-		 * this if we are already in either SGMII or 10GBase-KR mode.
-		 */
-		if (phydev->speed == SPEED_10000)
-			phydev->interface = PHY_INTERFACE_MODE_10GKR;
-		else if (phydev->speed >= SPEED_10 &&
-			 phydev->speed < SPEED_10000)
-			phydev->interface = PHY_INTERFACE_MODE_SGMII;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -660,30 +549,20 @@ static struct phy_driver mv3310_drivers[] = {
 		.phy_id_mask	= MARVELL_PHY_ID_MASK,
 		.name		= "mv88x3310",
 		.features	= SUPPORTED_10baseT_Full |
-<<<<<<< HEAD
 				  SUPPORTED_10baseT_Half |
 				  SUPPORTED_100baseT_Full |
 				  SUPPORTED_100baseT_Half |
-=======
-				  SUPPORTED_100baseT_Full |
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  SUPPORTED_1000baseT_Full |
 				  SUPPORTED_Autoneg |
 				  SUPPORTED_TP |
 				  SUPPORTED_FIBRE |
 				  SUPPORTED_10000baseT_Full |
 				  SUPPORTED_Backplane,
-<<<<<<< HEAD
 		.soft_reset	= gen10g_no_soft_reset,
 		.config_init	= mv3310_config_init,
 		.probe		= mv3310_probe,
 		.suspend	= mv3310_suspend,
 		.resume		= mv3310_resume,
-=======
-		.probe		= mv3310_probe,
-		.soft_reset	= mv3310_soft_reset,
-		.config_init	= mv3310_config_init,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.config_aneg	= mv3310_config_aneg,
 		.aneg_done	= mv3310_aneg_done,
 		.read_status	= mv3310_read_status,

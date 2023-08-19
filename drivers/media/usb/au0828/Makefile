@@ -12,10 +12,6 @@ endif
 obj-$(CONFIG_VIDEO_AU0828) += au0828.o
 
 ccflags-y += -Idrivers/media/tuners
-<<<<<<< HEAD
-=======
-ccflags-y += -Idrivers/media/dvb-core
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 ccflags-y += -Idrivers/media/dvb-frontends
 
 ccflags-y += $(extra-cflags-y) $(extra-cflags-m)

@@ -199,11 +199,7 @@ static int __init gtdt_parse_timer_block(struct acpi_gtdt_timer_block *block,
 	struct acpi_gtdt_timer_entry *gtdt_frame;
 
 	if (!block->timer_count) {
-<<<<<<< HEAD
 		pr_err(FW_BUG "GT block present, but frame count is zero.\n");
-=======
-		pr_err(FW_BUG "GT block present, but frame count is zero.");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 	}
 

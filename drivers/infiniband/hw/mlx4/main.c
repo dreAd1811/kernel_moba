@@ -246,20 +246,9 @@ static int mlx4_ib_update_gids(struct gid_entry *gids,
 	return mlx4_ib_update_gids_v1(gids, ibdev, port_num);
 }
 
-<<<<<<< HEAD
 static int mlx4_ib_add_gid(const struct ib_gid_attr *attr, void **context)
 {
 	struct mlx4_ib_dev *ibdev = to_mdev(attr->device);
-=======
-static int mlx4_ib_add_gid(struct ib_device *device,
-			   u8 port_num,
-			   unsigned int index,
-			   const union ib_gid *gid,
-			   const struct ib_gid_attr *attr,
-			   void **context)
-{
-	struct mlx4_ib_dev *ibdev = to_mdev(device);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mlx4_ib_iboe *iboe = &ibdev->iboe;
 	struct mlx4_port_gid_table   *port_gid_table;
 	int free = -1, found = -1;
@@ -268,23 +257,15 @@ static int mlx4_ib_add_gid(struct ib_device *device,
 	int i;
 	struct gid_entry *gids = NULL;
 
-<<<<<<< HEAD
 	if (!rdma_cap_roce_gid_table(attr->device, attr->port_num))
 		return -EINVAL;
 
 	if (attr->port_num > MLX4_MAX_PORTS)
-=======
-	if (!rdma_cap_roce_gid_table(device, port_num))
-		return -EINVAL;
-
-	if (port_num > MLX4_MAX_PORTS)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	if (!context)
 		return -EINVAL;
 
-<<<<<<< HEAD
 	port_gid_table = &iboe->gids[attr->port_num - 1];
 	spin_lock_bh(&iboe->lock);
 	for (i = 0; i < MLX4_MAX_PORT_GIDS; ++i) {
@@ -295,17 +276,6 @@ static int mlx4_ib_add_gid(struct ib_device *device,
 			break;
 		}
 		if (free < 0 && rdma_is_zero_gid(&port_gid_table->gids[i].gid))
-=======
-	port_gid_table = &iboe->gids[port_num - 1];
-	spin_lock_bh(&iboe->lock);
-	for (i = 0; i < MLX4_MAX_PORT_GIDS; ++i) {
-		if (!memcmp(&port_gid_table->gids[i].gid, gid, sizeof(*gid)) &&
-		    (port_gid_table->gids[i].gid_type == attr->gid_type))  {
-			found = i;
-			break;
-		}
-		if (free < 0 && !memcmp(&port_gid_table->gids[i].gid, &zgid, sizeof(*gid)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			free = i; /* HW has space */
 	}
 
@@ -318,12 +288,8 @@ static int mlx4_ib_add_gid(struct ib_device *device,
 				ret = -ENOMEM;
 			} else {
 				*context = port_gid_table->gids[free].ctx;
-<<<<<<< HEAD
 				memcpy(&port_gid_table->gids[free].gid,
 				       &attr->gid, sizeof(attr->gid));
-=======
-				memcpy(&port_gid_table->gids[free].gid, gid, sizeof(*gid));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				port_gid_table->gids[free].gid_type = attr->gid_type;
 				port_gid_table->gids[free].ctx->real_index = free;
 				port_gid_table->gids[free].ctx->refcount = 1;
@@ -336,12 +302,8 @@ static int mlx4_ib_add_gid(struct ib_device *device,
 		ctx->refcount++;
 	}
 	if (!ret && hw_update) {
-<<<<<<< HEAD
 		gids = kmalloc_array(MLX4_MAX_PORT_GIDS, sizeof(*gids),
 				     GFP_ATOMIC);
-=======
-		gids = kmalloc(sizeof(*gids) * MLX4_MAX_PORT_GIDS, GFP_ATOMIC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!gids) {
 			ret = -ENOMEM;
 		} else {
@@ -354,38 +316,23 @@ static int mlx4_ib_add_gid(struct ib_device *device,
 	spin_unlock_bh(&iboe->lock);
 
 	if (!ret && hw_update) {
-<<<<<<< HEAD
 		ret = mlx4_ib_update_gids(gids, ibdev, attr->port_num);
-=======
-		ret = mlx4_ib_update_gids(gids, ibdev, port_num);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(gids);
 	}
 
 	return ret;
 }
 
-<<<<<<< HEAD
 static int mlx4_ib_del_gid(const struct ib_gid_attr *attr, void **context)
 {
 	struct gid_cache_context *ctx = *context;
 	struct mlx4_ib_dev *ibdev = to_mdev(attr->device);
-=======
-static int mlx4_ib_del_gid(struct ib_device *device,
-			   u8 port_num,
-			   unsigned int index,
-			   void **context)
-{
-	struct gid_cache_context *ctx = *context;
-	struct mlx4_ib_dev *ibdev = to_mdev(device);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mlx4_ib_iboe *iboe = &ibdev->iboe;
 	struct mlx4_port_gid_table   *port_gid_table;
 	int ret = 0;
 	int hw_update = 0;
 	struct gid_entry *gids = NULL;
 
-<<<<<<< HEAD
 	if (!rdma_cap_roce_gid_table(attr->device, attr->port_num))
 		return -EINVAL;
 
@@ -393,27 +340,14 @@ static int mlx4_ib_del_gid(struct ib_device *device,
 		return -EINVAL;
 
 	port_gid_table = &iboe->gids[attr->port_num - 1];
-=======
-	if (!rdma_cap_roce_gid_table(device, port_num))
-		return -EINVAL;
-
-	if (port_num > MLX4_MAX_PORTS)
-		return -EINVAL;
-
-	port_gid_table = &iboe->gids[port_num - 1];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_bh(&iboe->lock);
 	if (ctx) {
 		ctx->refcount--;
 		if (!ctx->refcount) {
 			unsigned int real_index = ctx->real_index;
 
-<<<<<<< HEAD
 			memset(&port_gid_table->gids[real_index].gid, 0,
 			       sizeof(port_gid_table->gids[real_index].gid));
-=======
-			memcpy(&port_gid_table->gids[real_index].gid, &zgid, sizeof(zgid));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			kfree(port_gid_table->gids[real_index].ctx);
 			port_gid_table->gids[real_index].ctx = NULL;
 			hw_update = 1;
@@ -422,12 +356,8 @@ static int mlx4_ib_del_gid(struct ib_device *device,
 	if (!ret && hw_update) {
 		int i;
 
-<<<<<<< HEAD
 		gids = kmalloc_array(MLX4_MAX_PORT_GIDS, sizeof(*gids),
 				     GFP_ATOMIC);
-=======
-		gids = kmalloc(sizeof(*gids) * MLX4_MAX_PORT_GIDS, GFP_ATOMIC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!gids) {
 			ret = -ENOMEM;
 		} else {
@@ -443,18 +373,13 @@ static int mlx4_ib_del_gid(struct ib_device *device,
 	spin_unlock_bh(&iboe->lock);
 
 	if (!ret && hw_update) {
-<<<<<<< HEAD
 		ret = mlx4_ib_update_gids(gids, ibdev, attr->port_num);
-=======
-		ret = mlx4_ib_update_gids(gids, ibdev, port_num);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(gids);
 	}
 	return ret;
 }
 
 int mlx4_ib_gid_index_to_real_index(struct mlx4_ib_dev *ibdev,
-<<<<<<< HEAD
 				    const struct ib_gid_attr *attr)
 {
 	struct mlx4_ib_iboe *iboe = &ibdev->iboe;
@@ -464,19 +389,6 @@ int mlx4_ib_gid_index_to_real_index(struct mlx4_ib_dev *ibdev,
 	int i;
 	unsigned long flags;
 	u8 port_num = attr->port_num;
-=======
-				    u8 port_num, int index)
-{
-	struct mlx4_ib_iboe *iboe = &ibdev->iboe;
-	struct gid_cache_context *ctx = NULL;
-	union ib_gid gid;
-	struct mlx4_port_gid_table   *port_gid_table;
-	int real_index = -EINVAL;
-	int i;
-	int ret;
-	unsigned long flags;
-	struct ib_gid_attr attr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (port_num > MLX4_MAX_PORTS)
 		return -EINVAL;
@@ -485,34 +397,15 @@ int mlx4_ib_gid_index_to_real_index(struct mlx4_ib_dev *ibdev,
 		port_num = 1;
 
 	if (!rdma_cap_roce_gid_table(&ibdev->ib_dev, port_num))
-<<<<<<< HEAD
 		return attr->index;
-=======
-		return index;
-
-	ret = ib_get_cached_gid(&ibdev->ib_dev, port_num, index, &gid, &attr);
-	if (ret)
-		return ret;
-
-	if (attr.ndev)
-		dev_put(attr.ndev);
-
-	if (!memcmp(&gid, &zgid, sizeof(gid)))
-		return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irqsave(&iboe->lock, flags);
 	port_gid_table = &iboe->gids[port_num - 1];
 
 	for (i = 0; i < MLX4_MAX_PORT_GIDS; ++i)
-<<<<<<< HEAD
 		if (!memcmp(&port_gid_table->gids[i].gid,
 			    &attr->gid, sizeof(attr->gid)) &&
 		    attr->gid_type == port_gid_table->gids[i].gid_type) {
-=======
-		if (!memcmp(&port_gid_table->gids[i].gid, &gid, sizeof(gid)) &&
-		    attr.gid_type == port_gid_table->gids[i].gid_type) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ctx = port_gid_table->gids[i].ctx;
 			break;
 		}
@@ -522,12 +415,9 @@ int mlx4_ib_gid_index_to_real_index(struct mlx4_ib_dev *ibdev,
 	return real_index;
 }
 
-<<<<<<< HEAD
 #define field_avail(type, fld, sz) (offsetof(type, fld) + \
 				    sizeof(((type *)0)->fld) <= (sz))
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mlx4_ib_query_device(struct ib_device *ibdev,
 				struct ib_device_attr *props,
 				struct ib_udata *uhw)
@@ -627,17 +517,11 @@ static int mlx4_ib_query_device(struct ib_device *ibdev,
 	props->page_size_cap	   = dev->dev->caps.page_size_cap;
 	props->max_qp		   = dev->dev->quotas.qp;
 	props->max_qp_wr	   = dev->dev->caps.max_wqes - MLX4_IB_SQ_MAX_SPARE;
-<<<<<<< HEAD
 	props->max_send_sge =
 		min(dev->dev->caps.max_sq_sg, dev->dev->caps.max_rq_sg);
 	props->max_recv_sge =
 		min(dev->dev->caps.max_sq_sg, dev->dev->caps.max_rq_sg);
 	props->max_sge_rd = MLX4_MAX_SGE_RD;
-=======
-	props->max_sge		   = min(dev->dev->caps.max_sq_sg,
-					 dev->dev->caps.max_rq_sg);
-	props->max_sge_rd	   = MLX4_MAX_SGE_RD;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	props->max_cq		   = dev->dev->quotas.cq;
 	props->max_cqe		   = dev->dev->caps.max_cqes;
 	props->max_mr		   = dev->dev->quotas.mpt;
@@ -663,7 +547,6 @@ static int mlx4_ib_query_device(struct ib_device *ibdev,
 	props->timestamp_mask = 0xFFFFFFFFFFFFULL;
 	props->max_ah = INT_MAX;
 
-<<<<<<< HEAD
 	if (mlx4_ib_port_link_layer(ibdev, 1) == IB_LINK_LAYER_ETHERNET ||
 	    mlx4_ib_port_link_layer(ibdev, 2) == IB_LINK_LAYER_ETHERNET) {
 		if (dev->dev->caps.flags2 & MLX4_DEV_CAP_FLAG2_RSS) {
@@ -682,29 +565,13 @@ static int mlx4_ib_query_device(struct ib_device *ibdev,
 	props->cq_caps.max_cq_moderation_count = MLX4_MAX_CQ_COUNT;
 	props->cq_caps.max_cq_moderation_period = MLX4_MAX_CQ_PERIOD;
 
-=======
-	if ((dev->dev->caps.flags2 & MLX4_DEV_CAP_FLAG2_RSS) &&
-	    (mlx4_ib_port_link_layer(ibdev, 1) == IB_LINK_LAYER_ETHERNET ||
-	     mlx4_ib_port_link_layer(ibdev, 2) == IB_LINK_LAYER_ETHERNET)) {
-		props->rss_caps.max_rwq_indirection_tables = props->max_qp;
-		props->rss_caps.max_rwq_indirection_table_size =
-			dev->dev->caps.max_rss_tbl_sz;
-		props->rss_caps.supported_qpts = 1 << IB_QPT_RAW_PACKET;
-		props->max_wq_type_rq = props->max_qp;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!mlx4_is_slave(dev->dev))
 		err = mlx4_get_internal_clock_params(dev->dev, &clock_params);
 
 	if (uhw->outlen >= resp.response_length + sizeof(resp.hca_core_clock_offset)) {
 		resp.response_length += sizeof(resp.hca_core_clock_offset);
 		if (!err && !mlx4_is_slave(dev->dev)) {
-<<<<<<< HEAD
 			resp.comp_mask |= MLX4_IB_QUERY_DEV_RESP_MASK_CORE_CLOCK_OFFSET;
-=======
-			resp.comp_mask |= QUERY_DEVICE_RESP_MASK_TIMESTAMP;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			resp.hca_core_clock_offset = clock_params.offset % PAGE_SIZE;
 		}
 	}
@@ -716,7 +583,6 @@ static int mlx4_ib_query_device(struct ib_device *ibdev,
 			sizeof(struct mlx4_wqe_data_seg);
 	}
 
-<<<<<<< HEAD
 	if (field_avail(typeof(resp), rss_caps, uhw->outlen)) {
 		if (props->rss_caps.supported_qpts) {
 			resp.rss_caps.rx_hash_function =
@@ -755,8 +621,6 @@ static int mlx4_ib_query_device(struct ib_device *ibdev,
 				       sizeof(resp.tso_caps);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (uhw->outlen) {
 		err = ib_copy_to_udata(uhw, &resp, resp.response_length);
 		if (err)
@@ -900,12 +764,8 @@ static int eth_link_query_port(struct ib_device *ibdev, u8 port,
 					   IB_WIDTH_4X : IB_WIDTH_1X;
 	props->active_speed	=  (((u8 *)mailbox->buf)[5] == 0x20 /*56Gb*/) ?
 					   IB_SPEED_FDR : IB_SPEED_QDR;
-<<<<<<< HEAD
 	props->port_cap_flags	= IB_PORT_CM_SUP;
 	props->ip_gids = true;
-=======
-	props->port_cap_flags	= IB_PORT_CM_SUP | IB_PORT_IP_BASED_GIDS;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	props->gid_tbl_len	= mdev->dev->caps.gid_table_len[port];
 	props->max_msg_sz	= mdev->dev->caps.max_msg_sz;
 	props->pkey_tbl_len	= 1;
@@ -1017,30 +877,9 @@ out:
 static int mlx4_ib_query_gid(struct ib_device *ibdev, u8 port, int index,
 			     union ib_gid *gid)
 {
-<<<<<<< HEAD
 	if (rdma_protocol_ib(ibdev, port))
 		return __mlx4_ib_query_gid(ibdev, port, index, gid, 0);
 	return 0;
-=======
-	int ret;
-
-	if (rdma_protocol_ib(ibdev, port))
-		return __mlx4_ib_query_gid(ibdev, port, index, gid, 0);
-
-	if (!rdma_protocol_roce(ibdev, port))
-		return -ENODEV;
-
-	if (!rdma_cap_roce_gid_table(ibdev, port))
-		return -ENODEV;
-
-	ret = ib_get_cached_gid(ibdev, port, index, gid, NULL);
-	if (ret == -EAGAIN) {
-		memcpy(gid, &zgid, sizeof(*gid));
-		return 0;
-	}
-
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int mlx4_ib_query_sl2vl(struct ib_device *ibdev, u8 port, u64 *sl2vl_tbl)
@@ -1344,83 +1183,25 @@ static const struct vm_operations_struct mlx4_ib_vm_ops = {
 static void mlx4_ib_disassociate_ucontext(struct ib_ucontext *ibcontext)
 {
 	int i;
-<<<<<<< HEAD
 	struct vm_area_struct *vma;
 	struct mlx4_ib_ucontext *context = to_mucontext(ibcontext);
-=======
-	int ret = 0;
-	struct vm_area_struct *vma;
-	struct mlx4_ib_ucontext *context = to_mucontext(ibcontext);
-	struct task_struct *owning_process  = NULL;
-	struct mm_struct   *owning_mm       = NULL;
-
-	owning_process = get_pid_task(ibcontext->tgid, PIDTYPE_PID);
-	if (!owning_process)
-		return;
-
-	owning_mm = get_task_mm(owning_process);
-	if (!owning_mm) {
-		pr_info("no mm, disassociate ucontext is pending task termination\n");
-		while (1) {
-			/* make sure that task is dead before returning, it may
-			 * prevent a rare case of module down in parallel to a
-			 * call to mlx4_ib_vma_close.
-			 */
-			put_task_struct(owning_process);
-			usleep_range(1000, 2000);
-			owning_process = get_pid_task(ibcontext->tgid,
-						      PIDTYPE_PID);
-			if (!owning_process ||
-			    owning_process->state == TASK_DEAD) {
-				pr_info("disassociate ucontext done, task was terminated\n");
-				/* in case task was dead need to release the task struct */
-				if (owning_process)
-					put_task_struct(owning_process);
-				return;
-			}
-		}
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* need to protect from a race on closing the vma as part of
 	 * mlx4_ib_vma_close().
 	 */
-<<<<<<< HEAD
-=======
-	down_write(&owning_mm->mmap_sem);
-	if (!mmget_still_valid(owning_mm))
-		goto skip_mm;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < HW_BAR_COUNT; i++) {
 		vma = context->hw_bar_info[i].vma;
 		if (!vma)
 			continue;
 
-<<<<<<< HEAD
 		zap_vma_ptes(context->hw_bar_info[i].vma,
 			     context->hw_bar_info[i].vma->vm_start, PAGE_SIZE);
-=======
-		ret = zap_vma_ptes(context->hw_bar_info[i].vma,
-				   context->hw_bar_info[i].vma->vm_start,
-				   PAGE_SIZE);
-		if (ret) {
-			pr_err("Error: zap_vma_ptes failed for index=%d, ret=%d\n", i, ret);
-			BUG_ON(1);
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		context->hw_bar_info[i].vma->vm_flags &=
 			~(VM_SHARED | VM_MAYSHARE);
 		/* context going to be destroyed, should not access ops any more */
 		context->hw_bar_info[i].vma->vm_ops = NULL;
 	}
-<<<<<<< HEAD
-=======
-skip_mm:
-	up_write(&owning_mm->mmap_sem);
-	mmput(owning_mm);
-	put_task_struct(owning_process);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void mlx4_ib_set_vma_data(struct vm_area_struct *vma,
@@ -1506,11 +1287,7 @@ static struct ib_pd *mlx4_ib_alloc_pd(struct ib_device *ibdev,
 	struct mlx4_ib_pd *pd;
 	int err;
 
-<<<<<<< HEAD
 	pd = kzalloc(sizeof(*pd), GFP_KERNEL);
-=======
-	pd = kmalloc(sizeof *pd, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!pd)
 		return ERR_PTR(-ENOMEM);
 
@@ -1526,10 +1303,6 @@ static struct ib_pd *mlx4_ib_alloc_pd(struct ib_device *ibdev,
 			kfree(pd);
 			return ERR_PTR(-EFAULT);
 		}
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return &pd->ibpd;
 }
 
@@ -1821,14 +1594,8 @@ static int __mlx4_ib_create_default_rules(
 	int i;
 
 	for (i = 0; i < ARRAY_SIZE(pdefault_rules->rules_create_list); i++) {
-<<<<<<< HEAD
 		int ret;
 		union ib_flow_spec ib_spec;
-=======
-		union ib_flow_spec ib_spec = {};
-		int ret;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		switch (pdefault_rules->rules_create_list[i]) {
 		case 0:
 			/* no rule */
@@ -2038,11 +1805,7 @@ static int mlx4_ib_add_dont_trap_rule(struct mlx4_dev *dev,
 
 static struct ib_flow *mlx4_ib_create_flow(struct ib_qp *qp,
 				    struct ib_flow_attr *flow_attr,
-<<<<<<< HEAD
 				    int domain, struct ib_udata *udata)
-=======
-				    int domain)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int err = 0, i = 0, j = 0;
 	struct mlx4_ib_flow *mflow;
@@ -2053,23 +1816,17 @@ static struct ib_flow *mlx4_ib_create_flow(struct ib_qp *qp,
 	if (flow_attr->port < 1 || flow_attr->port > qp->device->phys_port_cnt)
 		return ERR_PTR(-EINVAL);
 
-<<<<<<< HEAD
 	if (flow_attr->flags & ~IB_FLOW_ATTR_FLAGS_DONT_TRAP)
 		return ERR_PTR(-EOPNOTSUPP);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if ((flow_attr->flags & IB_FLOW_ATTR_FLAGS_DONT_TRAP) &&
 	    (flow_attr->type != IB_FLOW_ATTR_NORMAL))
 		return ERR_PTR(-EOPNOTSUPP);
 
-<<<<<<< HEAD
 	if (udata &&
 	    udata->inlen && !ib_is_udata_cleared(udata, 0, udata->inlen))
 		return ERR_PTR(-EOPNOTSUPP);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memset(type, 0, sizeof(type));
 
 	mflow = kzalloc(sizeof(*mflow), GFP_KERNEL);
@@ -2947,11 +2704,8 @@ static void *mlx4_ib_add(struct mlx4_dev *dev)
 	ibdev->ib_dev.modify_qp		= mlx4_ib_modify_qp;
 	ibdev->ib_dev.query_qp		= mlx4_ib_query_qp;
 	ibdev->ib_dev.destroy_qp	= mlx4_ib_destroy_qp;
-<<<<<<< HEAD
 	ibdev->ib_dev.drain_sq		= mlx4_ib_drain_sq;
 	ibdev->ib_dev.drain_rq		= mlx4_ib_drain_rq;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ibdev->ib_dev.post_send		= mlx4_ib_post_send;
 	ibdev->ib_dev.post_recv		= mlx4_ib_post_recv;
 	ibdev->ib_dev.create_cq		= mlx4_ib_create_cq;
@@ -2973,12 +2727,9 @@ static void *mlx4_ib_add(struct mlx4_dev *dev)
 	ibdev->ib_dev.get_dev_fw_str    = get_fw_ver_str;
 	ibdev->ib_dev.disassociate_ucontext = mlx4_ib_disassociate_ucontext;
 
-<<<<<<< HEAD
 	ibdev->ib_dev.uverbs_ex_cmd_mask |=
 		(1ull << IB_USER_VERBS_EX_CMD_MODIFY_CQ);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if ((dev->caps.flags2 & MLX4_DEV_CAP_FLAG2_RSS) &&
 	    ((mlx4_ib_port_link_layer(&ibdev->ib_dev, 1) ==
 	    IB_LINK_LAYER_ETHERNET) ||
@@ -3120,15 +2871,9 @@ static void *mlx4_ib_add(struct mlx4_dev *dev)
 			goto err_counter;
 
 		ibdev->ib_uc_qpns_bitmap =
-<<<<<<< HEAD
 			kmalloc_array(BITS_TO_LONGS(ibdev->steer_qpn_count),
 				      sizeof(long),
 				      GFP_KERNEL);
-=======
-			kmalloc(BITS_TO_LONGS(ibdev->steer_qpn_count) *
-				sizeof(long),
-				GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!ibdev->ib_uc_qpns_bitmap)
 			goto err_steer_qp_release;
 
@@ -3153,10 +2898,7 @@ static void *mlx4_ib_add(struct mlx4_dev *dev)
 	if (mlx4_ib_alloc_diag_counters(ibdev))
 		goto err_steer_free_bitmap;
 
-<<<<<<< HEAD
 	ibdev->ib_dev.driver_id = RDMA_DRIVER_MLX4;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ib_register_device(&ibdev->ib_dev, NULL))
 		goto err_diag_counters;
 
@@ -3272,14 +3014,10 @@ void mlx4_ib_steer_qp_free(struct mlx4_ib_dev *dev, u32 qpn, int count)
 	    dev->steering_support != MLX4_STEERING_MODE_DEVICE_MANAGED)
 		return;
 
-<<<<<<< HEAD
 	if (WARN(qpn < dev->steer_qpn_base, "qpn = %u, steer_qpn_base = %u\n",
 		 qpn, dev->steer_qpn_base))
 		/* not supposed to be here */
 		return;
-=======
-	BUG_ON(qpn < dev->steer_qpn_base);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	bitmap_release_region(dev->ib_uc_qpns_bitmap,
 			      qpn - dev->steer_qpn_base,
@@ -3331,27 +3069,16 @@ static void mlx4_ib_remove(struct mlx4_dev *dev, void *ibdev_ptr)
 	ibdev->ib_active = false;
 	flush_workqueue(wq);
 
-<<<<<<< HEAD
 	mlx4_ib_close_sriov(ibdev);
 	mlx4_ib_mad_cleanup(ibdev);
 	ib_unregister_device(&ibdev->ib_dev);
 	mlx4_ib_diag_cleanup(ibdev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ibdev->iboe.nb.notifier_call) {
 		if (unregister_netdevice_notifier(&ibdev->iboe.nb))
 			pr_warn("failure unregistering notifier\n");
 		ibdev->iboe.nb.notifier_call = NULL;
 	}
 
-<<<<<<< HEAD
-=======
-	mlx4_ib_close_sriov(ibdev);
-	mlx4_ib_mad_cleanup(ibdev);
-	ib_unregister_device(&ibdev->ib_dev);
-	mlx4_ib_diag_cleanup(ibdev);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlx4_qp_release_range(dev, ibdev->steer_qpn_base,
 			      ibdev->steer_qpn_count);
 	kfree(ibdev->ib_uc_qpns_bitmap);

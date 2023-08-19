@@ -24,11 +24,7 @@
 #include <linux/dvb/frontend.h>
 #include <linux/types.h>
 #include "ascot2e.h"
-<<<<<<< HEAD
 #include <media/dvb_frontend.h>
-=======
-#include "dvb_frontend.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define MAX_WRITE_REGSIZE 10
 
@@ -472,15 +468,9 @@ static int ascot2e_get_frequency(struct dvb_frontend *fe, u32 *frequency)
 static const struct dvb_tuner_ops ascot2e_tuner_ops = {
 	.info = {
 		.name = "Sony ASCOT2E",
-<<<<<<< HEAD
 		.frequency_min_hz  =    1 * MHz,
 		.frequency_max_hz  = 1200 * MHz,
 		.frequency_step_hz =   25 * kHz,
-=======
-		.frequency_min = 1000000,
-		.frequency_max = 1200000000,
-		.frequency_step = 25000,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.init = ascot2e_init,
 	.release = ascot2e_release,

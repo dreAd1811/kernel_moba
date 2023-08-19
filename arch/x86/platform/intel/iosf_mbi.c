@@ -218,7 +218,6 @@ int iosf_mbi_register_pmic_bus_access_notifier(struct notifier_block *nb)
 }
 EXPORT_SYMBOL(iosf_mbi_register_pmic_bus_access_notifier);
 
-<<<<<<< HEAD
 int iosf_mbi_unregister_pmic_bus_access_notifier_unlocked(
 	struct notifier_block *nb)
 {
@@ -229,20 +228,13 @@ int iosf_mbi_unregister_pmic_bus_access_notifier_unlocked(
 }
 EXPORT_SYMBOL(iosf_mbi_unregister_pmic_bus_access_notifier_unlocked);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int iosf_mbi_unregister_pmic_bus_access_notifier(struct notifier_block *nb)
 {
 	int ret;
 
 	/* Wait for the bus to go inactive before unregistering */
 	mutex_lock(&iosf_mbi_punit_mutex);
-<<<<<<< HEAD
 	ret = iosf_mbi_unregister_pmic_bus_access_notifier_unlocked(nb);
-=======
-	ret = blocking_notifier_chain_unregister(
-				&iosf_mbi_pmic_bus_access_notifier, nb);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&iosf_mbi_punit_mutex);
 
 	return ret;
@@ -256,15 +248,12 @@ int iosf_mbi_call_pmic_bus_access_notifier_chain(unsigned long val, void *v)
 }
 EXPORT_SYMBOL(iosf_mbi_call_pmic_bus_access_notifier_chain);
 
-<<<<<<< HEAD
 void iosf_mbi_assert_punit_acquired(void)
 {
 	WARN_ON(!mutex_is_locked(&iosf_mbi_punit_mutex));
 }
 EXPORT_SYMBOL(iosf_mbi_assert_punit_acquired);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_IOSF_MBI_DEBUG
 static u32	dbg_mdr;
 static u32	dbg_mcr;

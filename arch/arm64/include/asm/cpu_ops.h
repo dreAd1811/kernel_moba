@@ -18,10 +18,6 @@
 
 #include <linux/init.h>
 #include <linux/threads.h>
-<<<<<<< HEAD
-=======
-#include <linux/cpu.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * struct cpu_operations - Callback operations for hotplugging CPUs.
@@ -72,11 +68,7 @@ int __init cpu_read_ops(int cpu);
 
 static inline void __init cpu_read_bootcpu_ops(void)
 {
-<<<<<<< HEAD
 	cpu_read_ops(0);
-=======
-	cpu_read_ops(logical_bootcpu_id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #endif /* ifndef __ASM_CPU_OPS_H */

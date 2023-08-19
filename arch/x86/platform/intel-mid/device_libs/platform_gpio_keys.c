@@ -62,16 +62,9 @@ static struct platform_device pb_device = {
 static int __init pb_keys_init(void)
 {
 	struct gpio_keys_button *gb = gpio_button;
-<<<<<<< HEAD
 	int i, good = 0;
 
 	for (i = 0; i < ARRAY_SIZE(gpio_button); i++) {
-=======
-	int i, num, good = 0;
-
-	num = sizeof(gpio_button) / sizeof(struct gpio_keys_button);
-	for (i = 0; i < num; i++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		gb[i].gpio = get_gpio_by_name(gb[i].desc);
 		pr_debug("info[%2d]: name = %s, gpio = %d\n", i, gb[i].desc,
 					gb[i].gpio);

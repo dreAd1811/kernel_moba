@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Hardkernel's Exynos4412 based ODROID-X2 board device tree source
  *
@@ -9,15 +6,7 @@
  *
  * Device tree source file for Hardkernel's ODROID-X2 board which is based
  * on Samsung's Exynos4412 SoC.
-<<<<<<< HEAD
  */
-=======
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
-*/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "exynos4412-odroidx.dts"
 #include "exynos4412-prime.dtsi"

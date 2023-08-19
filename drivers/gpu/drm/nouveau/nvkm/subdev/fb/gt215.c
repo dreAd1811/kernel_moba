@@ -27,10 +27,7 @@
 static const struct nv50_fb_func
 gt215_fb = {
 	.ram_new = gt215_ram_new,
-<<<<<<< HEAD
 	.tags = nv20_fb_tags,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.trap = 0x000d0fff,
 };
 

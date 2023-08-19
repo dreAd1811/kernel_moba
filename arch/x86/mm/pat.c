@@ -512,7 +512,6 @@ static int free_ram_pages_type(u64 start, u64 end)
 	return 0;
 }
 
-<<<<<<< HEAD
 static u64 sanitize_phys(u64 address)
 {
 	/*
@@ -529,8 +528,6 @@ static u64 sanitize_phys(u64 address)
 	return address;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * req_type typically has one of the:
  * - _PAGE_CACHE_MODE_WB
@@ -552,7 +549,6 @@ int reserve_memtype(u64 start, u64 end, enum page_cache_mode req_type,
 	int is_range_ram;
 	int err = 0;
 
-<<<<<<< HEAD
 	start = sanitize_phys(start);
 	end = sanitize_phys(end);
 	if (start >= end) {
@@ -560,9 +556,6 @@ int reserve_memtype(u64 start, u64 end, enum page_cache_mode req_type,
 				start, end - 1, cattr_name(req_type));
 		return -EINVAL;
 	}
-=======
-	BUG_ON(start >= end); /* end is exclusive */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!pat_enabled()) {
 		/* This is identical to page table setting without PAT */
@@ -638,12 +631,9 @@ int free_memtype(u64 start, u64 end)
 	if (!pat_enabled())
 		return 0;
 
-<<<<<<< HEAD
 	start = sanitize_phys(start);
 	end = sanitize_phys(end);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Low ISA region is always mapped WB. No need to track */
 	if (x86_platform.is_untracked_pat_range(start, end))
 		return 0;
@@ -713,7 +703,6 @@ static enum page_cache_mode lookup_memtype(u64 paddr)
 }
 
 /**
-<<<<<<< HEAD
  * pat_pfn_immune_to_uc_mtrr - Check whether the PAT memory type
  * of @pfn cannot be overridden by UC MTRR memory type.
  *
@@ -733,8 +722,6 @@ bool pat_pfn_immune_to_uc_mtrr(unsigned long pfn)
 EXPORT_SYMBOL_GPL(pat_pfn_immune_to_uc_mtrr);
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * io_reserve_memtype - Request a memory type mapping for a region of memory
  * @start: start (physical address) of the region
  * @end: end (physical address) of the region

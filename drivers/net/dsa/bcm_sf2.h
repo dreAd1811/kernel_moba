@@ -48,21 +48,13 @@ struct bcm_sf2_hw_params {
 
 struct bcm_sf2_port_status {
 	unsigned int link;
-<<<<<<< HEAD
-=======
-
-	struct ethtool_eee eee;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct bcm_sf2_cfp_priv {
 	/* Mutex protecting concurrent accesses to the CFP registers */
 	struct mutex lock;
 	DECLARE_BITMAP(used, CFP_NUM_RULES);
-<<<<<<< HEAD
 	DECLARE_BITMAP(unique, CFP_NUM_RULES);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int rules_cnt;
 };
 

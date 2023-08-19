@@ -12,11 +12,8 @@
 #include <asm/processor.h>
 #include <asm/ptrace.h>
 
-<<<<<<< HEAD
 #define THREAD_SIZE			KERNEL_STACK_SIZE
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifndef __ASSEMBLY__
 
 /*
@@ -46,11 +43,6 @@ struct thread_info {
 #endif
 };
 
-<<<<<<< HEAD
-=======
-#define THREAD_SIZE			KERNEL_STACK_SIZE
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define INIT_THREAD_INFO(tsk)			\
 {						\
 	.task		= &tsk,			\

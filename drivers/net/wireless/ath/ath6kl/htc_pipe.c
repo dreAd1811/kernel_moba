@@ -746,15 +746,8 @@ static int ath6kl_htc_pipe_tx_complete(struct ath6kl *ar, struct sk_buff *skb)
 	struct htc_endpoint *ep;
 	struct htc_packet *packet;
 	u8 ep_id, *netdata;
-<<<<<<< HEAD
 
 	netdata = skb->data;
-=======
-	u32 netlen;
-
-	netdata = skb->data;
-	netlen = skb->len;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	htc_hdr = (struct htc_frame_hdr *) netdata;
 
@@ -860,17 +853,8 @@ static int htc_process_trailer(struct htc_target *target, u8 *buffer,
 {
 	struct htc_credit_report *report;
 	struct htc_record_hdr *record;
-<<<<<<< HEAD
 	u8 *record_buf;
 	int status = 0;
-=======
-	u8 *record_buf, *orig_buf;
-	int orig_len, status;
-
-	orig_buf = buffer;
-	orig_len = len;
-	status = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	while (len > 0) {
 		if (len < sizeof(struct htc_record_hdr)) {

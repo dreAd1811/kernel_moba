@@ -173,11 +173,7 @@ static int _rtl92d_fw_init(struct ieee80211_hw *hw)
 			 rtl_read_byte(rtlpriv, FW_MAC1_READY));
 	}
 	RT_TRACE(rtlpriv, COMP_FW, DBG_DMESG,
-<<<<<<< HEAD
 		 "Polling FW ready fail!! REG_MCUFWDL:0x%08ul\n",
-=======
-		 "Polling FW ready fail!! REG_MCUFWDL:0x%08x\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 rtl_read_dword(rtlpriv, REG_MCUFWDL));
 	return -1;
 }
@@ -494,11 +490,7 @@ static bool _rtl92d_cmd_send_packet(struct ieee80211_hw *hw,
 	spin_lock_irqsave(&rtlpriv->locks.irq_th_lock, flags);
 	pdesc = &ring->desc[idx];
 	/* discard output from call below */
-<<<<<<< HEAD
 	rtlpriv->cfg->ops->get_desc(hw, (u8 *)pdesc, true, HW_DESC_OWN);
-=======
-	rtlpriv->cfg->ops->get_desc((u8 *) pdesc, true, HW_DESC_OWN);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rtlpriv->cfg->ops->fill_tx_cmddesc(hw, (u8 *) pdesc, 1, 1, skb);
 	__skb_queue_tail(&ring->queue, skb);
 	spin_unlock_irqrestore(&rtlpriv->locks.irq_th_lock, flags);

@@ -100,11 +100,7 @@ static const u8 adv7343_init_reg_val[] = {
 };
 
 /*
-<<<<<<< HEAD
  *			    2^32
-=======
- * 			    2^32
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * FSC(reg) =  FSC (HZ) * --------
  *			  27000000
  */

@@ -1,20 +1,10 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Device Tree Source for the Lager board
  *
  * Copyright (C) 2013-2014 Renesas Solutions Corp.
  * Copyright (C) 2014 Cogent Embedded, Inc.
  * Copyright (C) 2015-2016 Renesas Electronics Corporation
-<<<<<<< HEAD
-=======
- *
- * This file is licensed under the terms of the GNU General Public License
- * version 2.  This program is licensed "as is" without any warranty of any
- * kind, whether express or implied.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /*
@@ -58,16 +48,11 @@
 		serial0 = &scif0;
 		serial1 = &scifa1;
 		i2c8 = &gpioi2c1;
-<<<<<<< HEAD
 		i2c9 = &gpioi2c2;
 		i2c10 = &i2cexio0;
 		i2c11 = &i2cexio1;
 		i2c12 = &i2chdmi;
 		i2c13 = &i2cpwr;
-=======
-		i2c10 = &i2cexio0;
-		i2c11 = &i2cexio1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	chosen {
@@ -259,15 +244,12 @@
 		};
 	};
 
-<<<<<<< HEAD
 	cec_clock: cec-clock {
 		compatible = "fixed-clock";
 		#clock-cells = <0>;
 		clock-frequency = <12000000>;
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hdmi-out {
 		compatible = "hdmi-connector";
 		type = "a";
@@ -296,7 +278,6 @@
 		#size-cells = <0>;
 		compatible = "i2c-gpio";
 		status = "disabled";
-<<<<<<< HEAD
 		scl-gpios = <&gpio1 16 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
 		sda-gpios = <&gpio1 17 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
 		i2c-gpio,delay-us = <5>;
@@ -309,11 +290,6 @@
 		status = "disabled";
 		scl-gpios = <&gpio5 5 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
 		sda-gpios = <&gpio5 6 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-=======
-		gpios = <&gpio1 17 GPIO_ACTIVE_HIGH /* sda */
-			 &gpio1 16 GPIO_ACTIVE_HIGH /* scl */
-			>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		i2c-gpio,delay-us = <5>;
 	};
 
@@ -348,7 +324,6 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 	};
-<<<<<<< HEAD
 
         /*
          * IIC2 and I2C2 may be switched using pinmux.
@@ -481,8 +456,6 @@
 			regulator-always-on;
 		};
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &du {
@@ -490,20 +463,9 @@
 	pinctrl-names = "default";
 	status = "okay";
 
-<<<<<<< HEAD
 	clocks = <&cpg CPG_MOD 724>, <&cpg CPG_MOD 723>, <&cpg CPG_MOD 722>,
 		 <&x13_clk>, <&x2_clk>;
 	clock-names = "du.0", "du.1", "du.2", "dclkin.0", "dclkin.1";
-=======
-	clocks = <&mstp7_clks R8A7790_CLK_DU0>,
-		 <&mstp7_clks R8A7790_CLK_DU1>,
-		 <&mstp7_clks R8A7790_CLK_DU2>,
-		 <&mstp7_clks R8A7790_CLK_LVDS0>,
-		 <&mstp7_clks R8A7790_CLK_LVDS1>,
-		 <&x13_clk>, <&x2_clk>;
-	clock-names = "du.0", "du.1", "du.2", "lvds.0", "lvds.1",
-		      "dclkin.0", "dclkin.1";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ports {
 		port@0 {
@@ -511,7 +473,6 @@
 				remote-endpoint = <&adv7123_in>;
 			};
 		};
-<<<<<<< HEAD
 	};
 };
 
@@ -519,14 +480,11 @@
 	status = "okay";
 
 	ports {
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		port@1 {
 			endpoint {
 				remote-endpoint = <&adv7511_in>;
 			};
 		};
-<<<<<<< HEAD
 	};
 };
 
@@ -535,9 +493,6 @@
 
 	ports {
 		port@1 {
-=======
-		port@2 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			lvds_connector: endpoint {
 			};
 		};
@@ -642,27 +597,21 @@
 		function = "iic1";
 	};
 
-<<<<<<< HEAD
 	i2c2_pins: i2c2 {
 		groups = "i2c2";
 		function = "i2c2";
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	iic2_pins: iic2 {
 		groups = "iic2";
 		function = "iic2";
 	};
 
-<<<<<<< HEAD
 	i2c3_pins: i2c3 {
 		groups = "i2c3";
 		function = "i2c3";
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	iic3_pins: iic3 {
 		groups = "iic3";
 		function = "iic3";
@@ -864,7 +813,6 @@
 	pinctrl-names = "i2c-exio1";
 };
 
-<<<<<<< HEAD
 &i2c2	{
 	pinctrl-0 = <&i2c2_pins>;
 	pinctrl-names = "i2c-hdmi";
@@ -887,126 +835,6 @@
 &iic3	{
 	pinctrl-0 = <&iic3_pins>;
 	pinctrl-names = "i2c-pwr";
-=======
-&iic2	{
-	status = "okay";
-	pinctrl-0 = <&iic2_pins>;
-	pinctrl-names = "default";
-
-	clock-frequency = <100000>;
-
-	ak4643: codec@12 {
-		compatible = "asahi-kasei,ak4643";
-		#sound-dai-cells = <0>;
-		reg = <0x12>;
-	};
-
-	composite-in@20 {
-		compatible = "adi,adv7180";
-		reg = <0x20>;
-		remote = <&vin1>;
-
-		port {
-			adv7180: endpoint {
-				bus-width = <8>;
-				remote-endpoint = <&vin1ep0>;
-			};
-		};
-	};
-
-	hdmi@39 {
-		compatible = "adi,adv7511w";
-		reg = <0x39>;
-		interrupt-parent = <&gpio1>;
-		interrupts = <15 IRQ_TYPE_LEVEL_LOW>;
-
-		adi,input-depth = <8>;
-		adi,input-colorspace = "rgb";
-		adi,input-clock = "1x";
-		adi,input-style = <1>;
-		adi,input-justification = "evenly";
-
-		ports {
-			#address-cells = <1>;
-			#size-cells = <0>;
-
-			port@0 {
-				reg = <0>;
-				adv7511_in: endpoint {
-					remote-endpoint = <&du_out_lvds0>;
-				};
-			};
-
-			port@1 {
-				reg = <1>;
-				adv7511_out: endpoint {
-					remote-endpoint = <&hdmi_con_out>;
-				};
-			};
-		};
-	};
-
-	hdmi-in@4c {
-		compatible = "adi,adv7612";
-		reg = <0x4c>;
-		interrupt-parent = <&gpio1>;
-		interrupts = <20 IRQ_TYPE_LEVEL_LOW>;
-		default-input = <0>;
-
-		ports {
-			#address-cells = <1>;
-			#size-cells = <0>;
-
-			port@0 {
-				reg = <0>;
-				adv7612_in: endpoint {
-					remote-endpoint = <&hdmi_con_in>;
-				};
-			};
-
-			port@2 {
-				reg = <2>;
-				adv7612_out: endpoint {
-					remote-endpoint = <&vin0ep2>;
-				};
-			};
-		};
-	};
-};
-
-&iic3 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&iic3_pins>;
-	status = "okay";
-
-	pmic@58 {
-		compatible = "dlg,da9063";
-		reg = <0x58>;
-		interrupt-parent = <&irqc0>;
-		interrupts = <2 IRQ_TYPE_LEVEL_LOW>;
-		interrupt-controller;
-
-		rtc {
-			compatible = "dlg,da9063-rtc";
-		};
-
-		wdt {
-			compatible = "dlg,da9063-watchdog";
-		};
-	};
-
-	vdd_dvfs: regulator@68 {
-		compatible = "dlg,da9210";
-		reg = <0x68>;
-		interrupt-parent = <&irqc0>;
-		interrupts = <2 IRQ_TYPE_LEVEL_LOW>;
-
-		regulator-min-microvolt = <1000000>;
-		regulator-max-microvolt = <1000000>;
-		regulator-boot-on;
-		regulator-always-on;
-	};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &pci0 {
@@ -1071,12 +899,6 @@
 	status = "okay";
 
 	port {
-<<<<<<< HEAD
-=======
-		#address-cells = <1>;
-		#size-cells = <0>;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		vin1ep0: endpoint {
 			remote-endpoint = <&adv7180>;
 			bus-width = <8>;
@@ -1101,14 +923,11 @@
 	};
 };
 
-<<<<<<< HEAD
 &rwdt {
 	timeout-sec = <60>;
 	status = "okay";
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &ssi1 {
 	shared-pin;
 };

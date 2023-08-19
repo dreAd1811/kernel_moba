@@ -55,10 +55,7 @@
 #include <rdma/iw_cm.h>
 #include <rdma/rdma_netlink.h>
 #include <rdma/iw_portmap.h>
-<<<<<<< HEAD
 #include <rdma/restrack.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "cxgb4.h"
 #include "cxgb4_uld.h"
@@ -100,10 +97,7 @@ struct c4iw_resource {
 	struct c4iw_id_table tpt_table;
 	struct c4iw_id_table qid_table;
 	struct c4iw_id_table pdid_table;
-<<<<<<< HEAD
 	struct c4iw_id_table srq_table;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct c4iw_qid_list {
@@ -137,11 +131,8 @@ struct c4iw_stats {
 	struct c4iw_stat stag;
 	struct c4iw_stat pbl;
 	struct c4iw_stat rqt;
-<<<<<<< HEAD
 	struct c4iw_stat srqt;
 	struct c4iw_stat srq;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct c4iw_stat ocqp;
 	u64  db_full;
 	u64  db_empty;
@@ -166,13 +157,8 @@ struct c4iw_hw_queue {
 };
 
 struct wr_log_entry {
-<<<<<<< HEAD
 	ktime_t post_host_time;
 	ktime_t poll_host_time;
-=======
-	struct timespec post_host_ts;
-	struct timespec poll_host_ts;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 post_sge_ts;
 	u64 cqe_sge_ts;
 	u64 poll_sge_ts;
@@ -224,7 +210,6 @@ static inline int c4iw_num_stags(struct c4iw_rdev *rdev)
 struct c4iw_wr_wait {
 	struct completion completion;
 	int ret;
-<<<<<<< HEAD
 	struct kref kref;
 };
 
@@ -246,17 +231,12 @@ static inline void c4iw_get_wr_wait(struct c4iw_wr_wait *wr_waitp)
 	kref_get(&wr_waitp->kref);
 }
 
-=======
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void c4iw_init_wr_wait(struct c4iw_wr_wait *wr_waitp)
 {
 	wr_waitp->ret = 0;
 	init_completion(&wr_waitp->completion);
 }
 
-<<<<<<< HEAD
 static inline void _c4iw_wake_up(struct c4iw_wr_wait *wr_waitp, int ret,
 				 bool deref)
 {
@@ -274,12 +254,6 @@ static inline void c4iw_wake_up_noref(struct c4iw_wr_wait *wr_waitp, int ret)
 static inline void c4iw_wake_up_deref(struct c4iw_wr_wait *wr_waitp, int ret)
 {
 	_c4iw_wake_up(wr_waitp, ret, true);
-=======
-static inline void c4iw_wake_up(struct c4iw_wr_wait *wr_waitp, int ret)
-{
-	wr_waitp->ret = ret;
-	complete(&wr_waitp->completion);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline int c4iw_wait_for_reply(struct c4iw_rdev *rdev,
@@ -296,7 +270,6 @@ static inline int c4iw_wait_for_reply(struct c4iw_rdev *rdev,
 
 	ret = wait_for_completion_timeout(&wr_waitp->completion, C4IW_WR_TO);
 	if (!ret) {
-<<<<<<< HEAD
 		pr_err("%s - Device %s not responding (disabling device) - tid %u qpid %u\n",
 		       func, pci_name(rdev->lldi.pdev), hwtid, qpid);
 		rdev->flags |= T4_FATAL_ERROR;
@@ -331,20 +304,6 @@ static inline int c4iw_ref_send_wait(struct c4iw_rdev *rdev,
 	return c4iw_wait_for_reply(rdev, wr_waitp, hwtid, qpid, func);
 }
 
-=======
-		pr_debug("%s - Device %s not responding (disabling device) - tid %u qpid %u\n",
-			 func, pci_name(rdev->lldi.pdev), hwtid, qpid);
-		rdev->flags |= T4_FATAL_ERROR;
-		wr_waitp->ret = -EIO;
-	}
-out:
-	if (wr_waitp->ret)
-		pr_debug("%s: FW reply %d tid %u qpid %u\n",
-			 pci_name(rdev->lldi.pdev), wr_waitp->ret, hwtid, qpid);
-	return wr_waitp->ret;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum db_state {
 	NORMAL = 0,
 	FLOW_CONTROL = 1,
@@ -371,7 +330,6 @@ struct c4iw_dev {
 	wait_queue_head_t wait;
 };
 
-<<<<<<< HEAD
 struct uld_ctx {
 	struct list_head entry;
 	struct cxgb4_lld_info lldi;
@@ -379,8 +337,6 @@ struct uld_ctx {
 	struct work_struct reg_work;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline struct c4iw_dev *to_c4iw_dev(struct ib_device *ibdev)
 {
 	return container_of(ibdev, struct c4iw_dev, ibdev);
@@ -423,10 +379,6 @@ static inline int _insert_handle(struct c4iw_dev *rhp, struct idr *idr,
 		idr_preload_end();
 	}
 
-<<<<<<< HEAD
-=======
-	BUG_ON(ret == -ENOSPC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret < 0 ? ret : 0;
 }
 
@@ -510,10 +462,7 @@ struct c4iw_mr {
 	dma_addr_t mpl_addr;
 	u32 max_mpl_len;
 	u32 mpl_len;
-<<<<<<< HEAD
 	struct c4iw_wr_wait *wr_waitp;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static inline struct c4iw_mr *to_c4iw_mr(struct ib_mr *ibmr)
@@ -527,10 +476,7 @@ struct c4iw_mw {
 	struct sk_buff *dereg_skb;
 	u64 kva;
 	struct tpt_attributes attr;
-<<<<<<< HEAD
 	struct c4iw_wr_wait *wr_waitp;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static inline struct c4iw_mw *to_c4iw_mw(struct ib_mw *ibmw)
@@ -547,10 +493,7 @@ struct c4iw_cq {
 	spinlock_t comp_handler_lock;
 	atomic_t refcnt;
 	wait_queue_head_t wait;
-<<<<<<< HEAD
 	struct c4iw_wr_wait *wr_waitp;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static inline struct c4iw_cq *to_c4iw_cq(struct ib_cq *ibcq)
@@ -608,18 +551,11 @@ struct c4iw_qp {
 	struct mutex mutex;
 	struct kref kref;
 	wait_queue_head_t wait;
-<<<<<<< HEAD
 	int sq_sig_all;
 	struct c4iw_srq *srq;
 	struct work_struct free_work;
 	struct c4iw_ucontext *ucontext;
 	struct c4iw_wr_wait *wr_waitp;
-=======
-	struct timer_list timer;
-	int sq_sig_all;
-	struct work_struct free_work;
-	struct c4iw_ucontext *ucontext;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static inline struct c4iw_qp *to_c4iw_qp(struct ib_qp *ibqp)
@@ -627,7 +563,6 @@ static inline struct c4iw_qp *to_c4iw_qp(struct ib_qp *ibqp)
 	return container_of(ibqp, struct c4iw_qp, ibqp);
 }
 
-<<<<<<< HEAD
 struct c4iw_srq {
 	struct ib_srq ibsrq;
 	struct list_head db_fc_entry;
@@ -648,8 +583,6 @@ static inline struct c4iw_srq *to_c4iw_srq(struct ib_srq *ibsrq)
 	return container_of(ibsrq, struct c4iw_srq, ibsrq);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct c4iw_ucontext {
 	struct ib_ucontext ibucontext;
 	struct c4iw_dev_ucontext uctx;
@@ -657,10 +590,7 @@ struct c4iw_ucontext {
 	spinlock_t mmap_lock;
 	struct list_head mmaps;
 	struct kref kref;
-<<<<<<< HEAD
 	bool is_32b_cqe;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static inline struct c4iw_ucontext *to_c4iw_ucontext(struct ib_ucontext *c)
@@ -700,12 +630,7 @@ static inline struct c4iw_mm_entry *remove_mmap(struct c4iw_ucontext *ucontext,
 		if (mm->key == key && mm->len == len) {
 			list_del_init(&mm->entry);
 			spin_unlock(&ucontext->mmap_lock);
-<<<<<<< HEAD
 			pr_debug("key 0x%x addr 0x%llx len %d\n", key,
-=======
-			pr_debug("%s key 0x%x addr 0x%llx len %d\n",
-				 __func__, key,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 (unsigned long long)mm->addr, mm->len);
 			return mm;
 		}
@@ -718,13 +643,8 @@ static inline void insert_mmap(struct c4iw_ucontext *ucontext,
 			       struct c4iw_mm_entry *mm)
 {
 	spin_lock(&ucontext->mmap_lock);
-<<<<<<< HEAD
 	pr_debug("key 0x%x addr 0x%llx len %d\n",
 		 mm->key, (unsigned long long)mm->addr, mm->len);
-=======
-	pr_debug("%s key 0x%x addr 0x%llx len %d\n",
-		 __func__, mm->key, (unsigned long long)mm->addr, mm->len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_add_tail(&mm->entry, &ucontext->mmaps);
 	spin_unlock(&ucontext->mmap_lock);
 }
@@ -841,24 +761,14 @@ enum c4iw_mmid_state {
 #define MPA_V2_IRD_ORD_MASK             0x3FFF
 
 #define c4iw_put_ep(ep) {						\
-<<<<<<< HEAD
 	pr_debug("put_ep ep %p refcnt %d\n",		\
-=======
-	pr_debug("put_ep (via %s:%u) ep %p refcnt %d\n",		\
-		 __func__, __LINE__,					\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 ep, kref_read(&((ep)->kref)));				\
 	WARN_ON(kref_read(&((ep)->kref)) < 1);				\
 	kref_put(&((ep)->kref), _c4iw_free_ep);				\
 }
 
 #define c4iw_get_ep(ep) {						\
-<<<<<<< HEAD
 	pr_debug("get_ep ep %p, refcnt %d\n",		\
-=======
-	pr_debug("get_ep (via %s:%u) ep %p, refcnt %d\n",		\
-		 __func__, __LINE__,					\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 ep, kref_read(&((ep)->kref)));				\
 	kref_get(&((ep)->kref));					\
 }
@@ -1000,14 +910,10 @@ enum conn_pre_alloc_buffers {
 	CN_MAX_CON_BUF
 };
 
-<<<<<<< HEAD
 enum {
 	FLOWC_LEN = offsetof(struct fw_flowc_wr, mnemval[FW_FLOWC_MNEM_MAX])
 };
 
-=======
-#define FLOWC_LEN 80
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 union cpl_wr_size {
 	struct cpl_abort_req abrt_req;
 	struct cpl_abort_rpl abrt_rpl;
@@ -1026,11 +932,7 @@ struct c4iw_ep_common {
 	struct mutex mutex;
 	struct sockaddr_storage local_addr;
 	struct sockaddr_storage remote_addr;
-<<<<<<< HEAD
 	struct c4iw_wr_wait *wr_waitp;
-=======
-	struct c4iw_wr_wait wr_wait;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 	unsigned long history;
 };
@@ -1078,10 +980,7 @@ struct c4iw_ep {
 	unsigned int retry_count;
 	int snd_win;
 	int rcv_win;
-<<<<<<< HEAD
 	u32 snd_wscale;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct c4iw_ep_stats stats;
 };
 
@@ -1118,12 +1017,8 @@ void c4iw_put_qpid(struct c4iw_rdev *rdev, u32 qpid,
 		   struct c4iw_dev_ucontext *uctx);
 u32 c4iw_get_resource(struct c4iw_id_table *id_table);
 void c4iw_put_resource(struct c4iw_id_table *id_table, u32 entry);
-<<<<<<< HEAD
 int c4iw_init_resource(struct c4iw_rdev *rdev, u32 nr_tpt,
 		       u32 nr_pdid, u32 nr_srqt);
-=======
-int c4iw_init_resource(struct c4iw_rdev *rdev, u32 nr_tpt, u32 nr_pdid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int c4iw_init_ctrl_qp(struct c4iw_rdev *rdev);
 int c4iw_pblpool_create(struct c4iw_rdev *rdev);
 int c4iw_rqtpool_create(struct c4iw_rdev *rdev);
@@ -1133,11 +1028,7 @@ void c4iw_rqtpool_destroy(struct c4iw_rdev *rdev);
 void c4iw_ocqp_pool_destroy(struct c4iw_rdev *rdev);
 void c4iw_destroy_resource(struct c4iw_resource *rscp);
 int c4iw_destroy_ctrl_qp(struct c4iw_rdev *rdev);
-<<<<<<< HEAD
 void c4iw_register_device(struct work_struct *work);
-=======
-int c4iw_register_device(struct c4iw_dev *dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void c4iw_unregister_device(struct c4iw_dev *dev);
 int __init c4iw_cm_init(void);
 void c4iw_cm_term(void);
@@ -1146,17 +1037,10 @@ void c4iw_release_dev_ucontext(struct c4iw_rdev *rdev,
 void c4iw_init_dev_ucontext(struct c4iw_rdev *rdev,
 			    struct c4iw_dev_ucontext *uctx);
 int c4iw_poll_cq(struct ib_cq *ibcq, int num_entries, struct ib_wc *wc);
-<<<<<<< HEAD
 int c4iw_post_send(struct ib_qp *ibqp, const struct ib_send_wr *wr,
 		   const struct ib_send_wr **bad_wr);
 int c4iw_post_receive(struct ib_qp *ibqp, const struct ib_recv_wr *wr,
 		      const struct ib_recv_wr **bad_wr);
-=======
-int c4iw_post_send(struct ib_qp *ibqp, struct ib_send_wr *wr,
-		      struct ib_send_wr **bad_wr);
-int c4iw_post_receive(struct ib_qp *ibqp, struct ib_recv_wr *wr,
-		      struct ib_recv_wr **bad_wr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int c4iw_connect(struct iw_cm_id *cm_id, struct iw_cm_conn_param *conn_param);
 int c4iw_create_listen(struct iw_cm_id *cm_id, int backlog);
 int c4iw_destroy_listen(struct iw_cm_id *cm_id);
@@ -1170,10 +1054,7 @@ struct ib_mr *c4iw_alloc_mr(struct ib_pd *pd,
 int c4iw_map_mr_sg(struct ib_mr *ibmr, struct scatterlist *sg, int sg_nents,
 		   unsigned int *sg_offset);
 int c4iw_dealloc_mw(struct ib_mw *mw);
-<<<<<<< HEAD
 void c4iw_dealloc(struct uld_ctx *ctx);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct ib_mw *c4iw_alloc_mw(struct ib_pd *pd, enum ib_mw_type type,
 			    struct ib_udata *udata);
 struct ib_mr *c4iw_reg_user_mr(struct ib_pd *pd, u64 start,
@@ -1186,7 +1067,6 @@ struct ib_cq *c4iw_create_cq(struct ib_device *ibdev,
 			     const struct ib_cq_init_attr *attr,
 			     struct ib_ucontext *ib_context,
 			     struct ib_udata *udata);
-<<<<<<< HEAD
 int c4iw_arm_cq(struct ib_cq *ibcq, enum ib_cq_notify_flags flags);
 int c4iw_modify_srq(struct ib_srq *ib_srq, struct ib_srq_attr *attr,
 		    enum ib_srq_attr_mask srq_attr_mask,
@@ -1195,10 +1075,6 @@ int c4iw_destroy_srq(struct ib_srq *ib_srq);
 struct ib_srq *c4iw_create_srq(struct ib_pd *pd,
 			       struct ib_srq_init_attr *attrs,
 			       struct ib_udata *udata);
-=======
-int c4iw_resize_cq(struct ib_cq *cq, int cqe, struct ib_udata *udata);
-int c4iw_arm_cq(struct ib_cq *ibcq, enum ib_cq_notify_flags flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int c4iw_destroy_qp(struct ib_qp *ib_qp);
 struct ib_qp *c4iw_create_qp(struct ib_pd *pd,
 			     struct ib_qp_init_attr *attrs,
@@ -1214,10 +1090,6 @@ u32 c4iw_pblpool_alloc(struct c4iw_rdev *rdev, int size);
 void c4iw_pblpool_free(struct c4iw_rdev *rdev, u32 addr, int size);
 u32 c4iw_ocqp_pool_alloc(struct c4iw_rdev *rdev, int size);
 void c4iw_ocqp_pool_free(struct c4iw_rdev *rdev, u32 addr, int size);
-<<<<<<< HEAD
-=======
-int c4iw_ofld_send(struct c4iw_rdev *rdev, struct sk_buff *skb);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void c4iw_flush_hw_cq(struct c4iw_cq *chp, struct c4iw_qp *flush_qhp);
 void c4iw_count_rcqes(struct t4_cq *cq, struct t4_wq *wq, int *count);
 int c4iw_ep_disconnect(struct c4iw_ep *ep, int abrupt, gfp_t gfp);
@@ -1239,18 +1111,14 @@ extern c4iw_handler_func c4iw_handlers[NUM_CPL_CMDS];
 void __iomem *c4iw_bar2_addrs(struct c4iw_rdev *rdev, unsigned int qid,
 			      enum cxgb4_bar2_qtype qtype,
 			      unsigned int *pbar2_qid, u64 *pbar2_pa);
-<<<<<<< HEAD
 int c4iw_alloc_srq_idx(struct c4iw_rdev *rdev);
 void c4iw_free_srq_idx(struct c4iw_rdev *rdev, int idx);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern void c4iw_log_wr_stats(struct t4_wq *wq, struct t4_cqe *cqe);
 extern int c4iw_wr_log;
 extern int db_fc_threshold;
 extern int db_coalescing_threshold;
 extern int use_dsgl;
 void c4iw_invalidate_mr(struct c4iw_dev *rhp, u32 rkey);
-<<<<<<< HEAD
 void c4iw_dispatch_srq_limit_reached_event(struct c4iw_srq *srq);
 void c4iw_copy_wr_to_srq(struct t4_srq *srq, union t4_recv_wr *wqe, u8 len16);
 void c4iw_flush_srqidx(struct c4iw_qp *qhp, u32 srqidx);
@@ -1261,7 +1129,5 @@ struct c4iw_wr_wait *c4iw_alloc_wr_wait(gfp_t gfp);
 typedef int c4iw_restrack_func(struct sk_buff *msg,
 			       struct rdma_restrack_entry *res);
 extern c4iw_restrack_func *c4iw_restrack_funcs[RDMA_RESTRACK_MAX];
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif

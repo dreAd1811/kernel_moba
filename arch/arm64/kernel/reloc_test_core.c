@@ -28,10 +28,7 @@ asmlinkage u64 absolute_data16(void);
 asmlinkage u64 signed_movw(void);
 asmlinkage u64 unsigned_movw(void);
 asmlinkage u64 relative_adrp(void);
-<<<<<<< HEAD
 asmlinkage u64 relative_adrp_far(void);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 asmlinkage u64 relative_adr(void);
 asmlinkage u64 relative_data64(void);
 asmlinkage u64 relative_data32(void);
@@ -47,14 +44,8 @@ static struct {
 	{ "R_AARCH64_ABS16",		absolute_data16, UL(SYM16_ABS_VAL) },
 	{ "R_AARCH64_MOVW_SABS_Gn",	signed_movw, UL(SYM64_ABS_VAL) },
 	{ "R_AARCH64_MOVW_UABS_Gn",	unsigned_movw, UL(SYM64_ABS_VAL) },
-<<<<<<< HEAD
 	{ "R_AARCH64_ADR_PREL_PG_HI21",	relative_adrp, (u64)&sym64_rel },
 	{ "R_AARCH64_ADR_PREL_PG_HI21",	relative_adrp_far, (u64)&memstart_addr },
-=======
-#ifndef CONFIG_ARM64_ERRATUM_843419
-	{ "R_AARCH64_ADR_PREL_PG_HI21",	relative_adrp, (u64)&sym64_rel },
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ "R_AARCH64_ADR_PREL_LO21",	relative_adr, (u64)&sym64_rel },
 	{ "R_AARCH64_PREL64",		relative_data64, (u64)&sym64_rel },
 	{ "R_AARCH64_PREL32",		relative_data32, (u64)&sym64_rel },

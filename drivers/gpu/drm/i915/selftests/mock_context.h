@@ -36,10 +36,7 @@ void mock_context_close(struct i915_gem_context *ctx);
 struct i915_gem_context *
 live_context(struct drm_i915_private *i915, struct drm_file *file);
 
-<<<<<<< HEAD
 struct i915_gem_context *kernel_context(struct drm_i915_private *i915);
 void kernel_context_close(struct i915_gem_context *ctx);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* !__MOCK_CONTEXT_H */

@@ -17,10 +17,7 @@
 #include "rsi_mgmt.h"
 #include "rsi_common.h"
 #include "rsi_hal.h"
-<<<<<<< HEAD
 #include "rsi_coex.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * rsi_determine_min_weight_queue() - This function determines the queue with
@@ -99,11 +96,8 @@ static u32 rsi_get_num_pkts_dequeue(struct rsi_common *common, u8 q_num)
 	s16 txop = common->tx_qinfo[q_num].txop * 32;
 	__le16 r_txop;
 	struct ieee80211_rate rate;
-<<<<<<< HEAD
 	struct ieee80211_hdr *wh;
 	struct ieee80211_vif *vif;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rate.bitrate = RSI_RATE_MCS0 * 5 * 10; /* Convert to Kbps */
 	if (q_num == VI_Q)
@@ -115,15 +109,10 @@ static u32 rsi_get_num_pkts_dequeue(struct rsi_common *common, u8 q_num)
 		return 0;
 
 	do {
-<<<<<<< HEAD
 		wh = (struct ieee80211_hdr *)skb->data;
 		vif = rsi_get_vif(adapter, wh->addr2);
 		r_txop = ieee80211_generic_frame_duration(adapter->hw,
 							  vif,
-=======
-		r_txop = ieee80211_generic_frame_duration(adapter->hw,
-							  adapter->vifs[0],
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							  common->band,
 							  skb->len, &rate);
 		txop -= le16_to_cpu(r_txop);
@@ -288,11 +277,8 @@ void rsi_core_qos_processor(struct rsi_common *common)
 			rsi_dbg(DATA_TX_ZONE, "%s: No More Pkt\n", __func__);
 			break;
 		}
-<<<<<<< HEAD
 		if (common->hibernate_resume)
 			break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		mutex_lock(&common->tx_lock);
 
@@ -316,7 +302,6 @@ void rsi_core_qos_processor(struct rsi_common *common)
 			mutex_unlock(&common->tx_lock);
 			break;
 		}
-<<<<<<< HEAD
 		if (q_num == MGMT_BEACON_Q) {
 			status = rsi_send_pkt_to_bus(common, skb);
 			dev_kfree_skb(skb);
@@ -334,16 +319,6 @@ void rsi_core_qos_processor(struct rsi_common *common)
 #ifdef CONFIG_RSI_COEX
 			}
 #endif
-=======
-
-		if (q_num == MGMT_SOFT_Q) {
-			status = rsi_send_mgmt_pkt(common, skb);
-		} else if (q_num == MGMT_BEACON_Q) {
-			status = rsi_send_pkt_to_bus(common, skb);
-			dev_kfree_skb(skb);
-		} else {
-			status = rsi_send_data_pkt(common, skb);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		if (status) {
@@ -375,7 +350,6 @@ struct rsi_sta *rsi_find_sta(struct rsi_common *common, u8 *mac_addr)
 	return NULL;
 }
 
-<<<<<<< HEAD
 struct ieee80211_vif *rsi_get_vif(struct rsi_hw *adapter, u8 *mac)
 {
 	struct ieee80211_vif *vif;
@@ -391,8 +365,6 @@ struct ieee80211_vif *rsi_get_vif(struct rsi_hw *adapter, u8 *mac)
 	return NULL;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * rsi_core_xmit() - This function transmits the packets received from mac80211
  * @common: Pointer to the driver private structure.
@@ -405,13 +377,8 @@ void rsi_core_xmit(struct rsi_common *common, struct sk_buff *skb)
 	struct rsi_hw *adapter = common->priv;
 	struct ieee80211_tx_info *info;
 	struct skb_info *tx_params;
-<<<<<<< HEAD
 	struct ieee80211_hdr *wh = NULL;
 	struct ieee80211_vif *vif;
-=======
-	struct ieee80211_hdr *wh;
-	struct ieee80211_vif *vif = adapter->vifs[0];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 q_num, tid = 0;
 	struct rsi_sta *rsta = NULL;
 
@@ -424,22 +391,18 @@ void rsi_core_xmit(struct rsi_common *common, struct sk_buff *skb)
 		rsi_dbg(ERR_ZONE, "%s: FSM state not open\n", __func__);
 		goto xmit_fail;
 	}
-<<<<<<< HEAD
 	if (common->wow_flags & RSI_WOW_ENABLED) {
 		rsi_dbg(ERR_ZONE,
 			"%s: Blocking Tx_packets when WOWLAN is enabled\n",
 			__func__);
 		goto xmit_fail;
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	info = IEEE80211_SKB_CB(skb);
 	tx_params = (struct skb_info *)info->driver_data;
 	wh = (struct ieee80211_hdr *)&skb->data[0];
 	tx_params->sta_id = 0;
 
-<<<<<<< HEAD
 	vif = rsi_get_vif(adapter, wh->addr2);
 	if (!vif)
 		goto xmit_fail;
@@ -472,16 +435,6 @@ void rsi_core_xmit(struct rsi_common *common, struct sk_buff *skb)
 			u8 *qos = ieee80211_get_qos_ctl(wh);
 
 			tid = *qos & IEEE80211_QOS_CTL_TID_MASK;
-=======
-	if ((ieee80211_is_mgmt(wh->frame_control)) ||
-	    (ieee80211_is_ctl(wh->frame_control)) ||
-	    (ieee80211_is_qos_nullfunc(wh->frame_control))) {
-		q_num = MGMT_SOFT_Q;
-		skb->priority = q_num;
-	} else {
-		if (ieee80211_is_data_qos(wh->frame_control)) {
-			tid = (skb->data[24] & IEEE80211_QOS_TID);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			skb->priority = TID_TO_WME_AC(tid);
 		} else {
 			tid = IEEE80211_NONQOS_TID;
@@ -491,23 +444,16 @@ void rsi_core_xmit(struct rsi_common *common, struct sk_buff *skb)
 		q_num = skb->priority;
 		tx_params->tid = tid;
 
-<<<<<<< HEAD
 		if (((vif->type == NL80211_IFTYPE_AP) ||
 		     (vif->type == NL80211_IFTYPE_P2P_GO)) &&
-=======
-		if ((vif->type == NL80211_IFTYPE_AP) &&
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    (!is_broadcast_ether_addr(wh->addr1)) &&
 		    (!is_multicast_ether_addr(wh->addr1))) {
 			rsta = rsi_find_sta(common, wh->addr1);
 			if (!rsta)
 				goto xmit_fail;
 			tx_params->sta_id = rsta->sta_id;
-<<<<<<< HEAD
 		} else {
 			tx_params->sta_id = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		if (rsta) {
@@ -518,7 +464,6 @@ void rsi_core_xmit(struct rsi_common *common, struct sk_buff *skb)
 							      tid, 0);
 			}
 		}
-<<<<<<< HEAD
 		if (skb->protocol == cpu_to_be16(ETH_P_PAE)) {
 			q_num = MGMT_SOFT_Q;
 			skb->priority = q_num;
@@ -527,8 +472,6 @@ void rsi_core_xmit(struct rsi_common *common, struct sk_buff *skb)
 			rsi_dbg(ERR_ZONE, "Failed to prepare data desc\n");
 			goto xmit_fail;
 		}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if ((q_num < MGMT_SOFT_Q) &&
@@ -542,11 +485,7 @@ void rsi_core_xmit(struct rsi_common *common, struct sk_buff *skb)
 	}
 
 	rsi_core_queue_pkt(common, skb);
-<<<<<<< HEAD
 	rsi_dbg(DATA_TX_ZONE, "%s: ===> Scheduling TX thread <===\n", __func__);
-=======
-	rsi_dbg(DATA_TX_ZONE, "%s: ===> Scheduling TX thead <===\n", __func__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rsi_set_event(&common->tx_thread.event);
 
 	return;

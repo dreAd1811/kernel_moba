@@ -24,10 +24,7 @@
 
 #include <linux/completion.h>
 #include <linux/delay.h>
-<<<<<<< HEAD
 #include <linux/prime_numbers.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "../i915_selftest.h"
 
@@ -569,7 +566,6 @@ err_in:
 	return ret;
 }
 
-<<<<<<< HEAD
 static int test_timer(void *arg)
 {
 	unsigned long target, delay;
@@ -743,8 +739,6 @@ err:
 	return err;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int i915_sw_fence_mock_selftests(void)
 {
 	static const struct i915_subtest tests[] = {
@@ -756,11 +750,8 @@ int i915_sw_fence_mock_selftests(void)
 		SUBTEST(test_C_AB),
 		SUBTEST(test_chain),
 		SUBTEST(test_ipc),
-<<<<<<< HEAD
 		SUBTEST(test_timer),
 		SUBTEST(test_dma_fence),
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	return i915_subtests(tests, NULL);

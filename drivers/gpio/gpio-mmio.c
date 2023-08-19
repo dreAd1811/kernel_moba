@@ -126,28 +126,15 @@ static unsigned long bgpio_read32be(void __iomem *reg)
 	return ioread32be(reg);
 }
 
-<<<<<<< HEAD
 static unsigned long bgpio_line2mask(struct gpio_chip *gc, unsigned int line)
 {
 	if (gc->be_bits)
 		return BIT(gc->bgpio_bits - 1 - line);
 	return BIT(line);
-=======
-static unsigned long bgpio_pin2mask(struct gpio_chip *gc, unsigned int pin)
-{
-	return BIT(pin);
-}
-
-static unsigned long bgpio_pin2mask_be(struct gpio_chip *gc,
-				       unsigned int pin)
-{
-	return BIT(gc->bgpio_bits - 1 - pin);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int bgpio_get_set(struct gpio_chip *gc, unsigned int gpio)
 {
-<<<<<<< HEAD
 	unsigned long pinmask = bgpio_line2mask(gc, gpio);
 	bool dir = !!(gc->bgpio_dir & pinmask);
 
@@ -163,17 +150,11 @@ static int bgpio_get_set(struct gpio_chip *gc, unsigned int gpio)
 		dir = !dir;
 
 	if (dir)
-=======
-	unsigned long pinmask = gc->pin2mask(gc, gpio);
-
-	if (gc->bgpio_dir & pinmask)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return !!(gc->read_reg(gc->reg_set) & pinmask);
 	else
 		return !!(gc->read_reg(gc->reg_dat) & pinmask);
 }
 
-<<<<<<< HEAD
 /*
  * This assumes that the bits in the GPIO register are in native endianness.
  * We only assign the function pointer if we have that.
@@ -251,11 +232,6 @@ static int bgpio_get_multiple_be(struct gpio_chip *gc, unsigned long *mask,
 		*bits |= bgpio_line2mask(gc, bit);
 
 	return 0;
-=======
-static int bgpio_get(struct gpio_chip *gc, unsigned int gpio)
-{
-	return !!(gc->read_reg(gc->reg_dat) & gc->pin2mask(gc, gpio));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void bgpio_set_none(struct gpio_chip *gc, unsigned int gpio, int val)
@@ -264,11 +240,7 @@ static void bgpio_set_none(struct gpio_chip *gc, unsigned int gpio, int val)
 
 static void bgpio_set(struct gpio_chip *gc, unsigned int gpio, int val)
 {
-<<<<<<< HEAD
 	unsigned long mask = bgpio_line2mask(gc, gpio);
-=======
-	unsigned long mask = gc->pin2mask(gc, gpio);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 
 	spin_lock_irqsave(&gc->bgpio_lock, flags);
@@ -286,11 +258,7 @@ static void bgpio_set(struct gpio_chip *gc, unsigned int gpio, int val)
 static void bgpio_set_with_clear(struct gpio_chip *gc, unsigned int gpio,
 				 int val)
 {
-<<<<<<< HEAD
 	unsigned long mask = bgpio_line2mask(gc, gpio);
-=======
-	unsigned long mask = gc->pin2mask(gc, gpio);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (val)
 		gc->write_reg(gc->reg_set, mask);
@@ -300,11 +268,7 @@ static void bgpio_set_with_clear(struct gpio_chip *gc, unsigned int gpio,
 
 static void bgpio_set_set(struct gpio_chip *gc, unsigned int gpio, int val)
 {
-<<<<<<< HEAD
 	unsigned long mask = bgpio_line2mask(gc, gpio);
-=======
-	unsigned long mask = gc->pin2mask(gc, gpio);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 
 	spin_lock_irqsave(&gc->bgpio_lock, flags);
@@ -334,15 +298,9 @@ static void bgpio_multiple_get_masks(struct gpio_chip *gc,
 			break;
 		if (__test_and_clear_bit(i, mask)) {
 			if (test_bit(i, bits))
-<<<<<<< HEAD
 				*set_mask |= bgpio_line2mask(gc, i);
 			else
 				*clear_mask |= bgpio_line2mask(gc, i);
-=======
-				*set_mask |= gc->pin2mask(gc, i);
-			else
-				*clear_mask |= gc->pin2mask(gc, i);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 }
@@ -418,14 +376,10 @@ static int bgpio_dir_in(struct gpio_chip *gc, unsigned int gpio)
 
 	spin_lock_irqsave(&gc->bgpio_lock, flags);
 
-<<<<<<< HEAD
 	if (gc->bgpio_dir_inverted)
 		gc->bgpio_dir |= bgpio_line2mask(gc, gpio);
 	else
 		gc->bgpio_dir &= ~bgpio_line2mask(gc, gpio);
-=======
-	gc->bgpio_dir &= ~gc->pin2mask(gc, gpio);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gc->write_reg(gc->reg_dir, gc->bgpio_dir);
 
 	spin_unlock_irqrestore(&gc->bgpio_lock, flags);
@@ -436,14 +390,10 @@ static int bgpio_dir_in(struct gpio_chip *gc, unsigned int gpio)
 static int bgpio_get_dir(struct gpio_chip *gc, unsigned int gpio)
 {
 	/* Return 0 if output, 1 of input */
-<<<<<<< HEAD
 	if (gc->bgpio_dir_inverted)
 		return !!(gc->read_reg(gc->reg_dir) & bgpio_line2mask(gc, gpio));
 	else
 		return !(gc->read_reg(gc->reg_dir) & bgpio_line2mask(gc, gpio));
-=======
-	return !(gc->read_reg(gc->reg_dir) & gc->pin2mask(gc, gpio));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int bgpio_dir_out(struct gpio_chip *gc, unsigned int gpio, int val)
@@ -454,65 +404,19 @@ static int bgpio_dir_out(struct gpio_chip *gc, unsigned int gpio, int val)
 
 	spin_lock_irqsave(&gc->bgpio_lock, flags);
 
-<<<<<<< HEAD
 	if (gc->bgpio_dir_inverted)
 		gc->bgpio_dir &= ~bgpio_line2mask(gc, gpio);
 	else
 		gc->bgpio_dir |= bgpio_line2mask(gc, gpio);
-=======
-	gc->bgpio_dir |= gc->pin2mask(gc, gpio);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gc->write_reg(gc->reg_dir, gc->bgpio_dir);
 
 	spin_unlock_irqrestore(&gc->bgpio_lock, flags);
 
 	return 0;
-}
-
-<<<<<<< HEAD
-static int bgpio_setup_accessors(struct device *dev,
-				 struct gpio_chip *gc,
-=======
-static int bgpio_dir_in_inv(struct gpio_chip *gc, unsigned int gpio)
-{
-	unsigned long flags;
-
-	spin_lock_irqsave(&gc->bgpio_lock, flags);
-
-	gc->bgpio_dir |= gc->pin2mask(gc, gpio);
-	gc->write_reg(gc->reg_dir, gc->bgpio_dir);
-
-	spin_unlock_irqrestore(&gc->bgpio_lock, flags);
-
-	return 0;
-}
-
-static int bgpio_dir_out_inv(struct gpio_chip *gc, unsigned int gpio, int val)
-{
-	unsigned long flags;
-
-	gc->set(gc, gpio, val);
-
-	spin_lock_irqsave(&gc->bgpio_lock, flags);
-
-	gc->bgpio_dir &= ~gc->pin2mask(gc, gpio);
-	gc->write_reg(gc->reg_dir, gc->bgpio_dir);
-
-	spin_unlock_irqrestore(&gc->bgpio_lock, flags);
-
-	return 0;
-}
-
-static int bgpio_get_dir_inv(struct gpio_chip *gc, unsigned int gpio)
-{
-	/* Return 0 if output, 1 if input */
-	return !!(gc->read_reg(gc->reg_dir) & gc->pin2mask(gc, gpio));
 }
 
 static int bgpio_setup_accessors(struct device *dev,
 				 struct gpio_chip *gc,
-				 bool bit_be,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 bool byte_be)
 {
 
@@ -556,11 +460,6 @@ static int bgpio_setup_accessors(struct device *dev,
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
-=======
-	gc->pin2mask = bit_be ? bgpio_pin2mask_be : bgpio_pin2mask;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -615,7 +514,6 @@ static int bgpio_setup_io(struct gpio_chip *gc,
 	}
 
 	if (!(flags & BGPIOF_UNREADABLE_REG_SET) &&
-<<<<<<< HEAD
 	    (flags & BGPIOF_READ_OUTPUT_REG_SET)) {
 		gc->get = bgpio_get_set;
 		if (!gc->be_bits)
@@ -634,12 +532,6 @@ static int bgpio_setup_io(struct gpio_chip *gc,
 		else
 			gc->get_multiple = bgpio_get_multiple;
 	}
-=======
-	    (flags & BGPIOF_READ_OUTPUT_REG_SET))
-		gc->get = bgpio_get_set;
-	else
-		gc->get = bgpio_get;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -658,16 +550,10 @@ static int bgpio_setup_direction(struct gpio_chip *gc,
 		gc->get_direction = bgpio_get_dir;
 	} else if (dirin) {
 		gc->reg_dir = dirin;
-<<<<<<< HEAD
 		gc->direction_output = bgpio_dir_out;
 		gc->direction_input = bgpio_dir_in;
 		gc->get_direction = bgpio_get_dir;
 		gc->bgpio_dir_inverted = true;
-=======
-		gc->direction_output = bgpio_dir_out_inv;
-		gc->direction_input = bgpio_dir_in_inv;
-		gc->get_direction = bgpio_get_dir_inv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		if (flags & BGPIOF_NO_OUTPUT)
 			gc->direction_output = bgpio_dir_out_err;
@@ -687,7 +573,6 @@ static int bgpio_request(struct gpio_chip *chip, unsigned gpio_pin)
 	return -EINVAL;
 }
 
-<<<<<<< HEAD
 /**
  * bgpio_init() - Initialize generic GPIO accessor functions
  * @gc: the GPIO chip to set up
@@ -715,8 +600,6 @@ static int bgpio_request(struct gpio_chip *chip, unsigned gpio_pin)
  * @flags: Different flags that will affect the behaviour of the device, such as
  *	endianness etc.
  */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int bgpio_init(struct gpio_chip *gc, struct device *dev,
 	       unsigned long sz, void __iomem *dat, void __iomem *set,
 	       void __iomem *clr, void __iomem *dirout, void __iomem *dirin,
@@ -737,21 +620,13 @@ int bgpio_init(struct gpio_chip *gc, struct device *dev,
 	gc->base = -1;
 	gc->ngpio = gc->bgpio_bits;
 	gc->request = bgpio_request;
-<<<<<<< HEAD
 	gc->be_bits = !!(flags & BGPIOF_BIG_ENDIAN);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = bgpio_setup_io(gc, dat, set, clr, flags);
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	ret = bgpio_setup_accessors(dev, gc, flags & BGPIOF_BIG_ENDIAN_BYTE_ORDER);
-=======
-	ret = bgpio_setup_accessors(dev, gc, flags & BGPIOF_BIG_ENDIAN,
-				    flags & BGPIOF_BIG_ENDIAN_BYTE_ORDER);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 

@@ -30,11 +30,8 @@
 const struct kgd2kfd_calls *kgd2kfd;
 bool (*kgd2kfd_init_p)(unsigned int, const struct kgd2kfd_calls**);
 
-<<<<<<< HEAD
 static const unsigned int compute_vmid_bitmap = 0xFF00;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int amdgpu_amdkfd_init(void)
 {
 	int ret;
@@ -53,19 +50,14 @@ int amdgpu_amdkfd_init(void)
 		kgd2kfd = NULL;
 	}
 
-<<<<<<< HEAD
 
 #elif defined(CONFIG_HSA_AMD)
 
-=======
-#elif defined(CONFIG_HSA_AMD)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = kgd2kfd_init(KFD_INTERFACE_VERSION, &kgd2kfd);
 	if (ret)
 		kgd2kfd = NULL;
 
 #else
-<<<<<<< HEAD
 	kgd2kfd = NULL;
 	ret = -ENOENT;
 #endif
@@ -74,11 +66,6 @@ int amdgpu_amdkfd_init(void)
 	amdgpu_amdkfd_gpuvm_init_mem_limits();
 #endif
 
-=======
-	ret = -ENOENT;
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -100,15 +87,11 @@ void amdgpu_amdkfd_device_probe(struct amdgpu_device *adev)
 	switch (adev->asic_type) {
 #ifdef CONFIG_DRM_AMDGPU_CIK
 	case CHIP_KAVERI:
-<<<<<<< HEAD
 	case CHIP_HAWAII:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfd2kgd = amdgpu_amdkfd_gfx_7_get_functions();
 		break;
 #endif
 	case CHIP_CARRIZO:
-<<<<<<< HEAD
 	case CHIP_TONGA:
 	case CHIP_FIJI:
 	case CHIP_POLARIS10:
@@ -119,10 +102,6 @@ void amdgpu_amdkfd_device_probe(struct amdgpu_device *adev)
 	case CHIP_RAVEN:
 		kfd2kgd = amdgpu_amdkfd_gfx_9_0_get_functions();
 		break;
-=======
-		kfd2kgd = amdgpu_amdkfd_gfx_8_0_get_functions();
-		break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		dev_info(adev->dev, "kfd not supported on this ASIC\n");
 		return;
@@ -132,7 +111,6 @@ void amdgpu_amdkfd_device_probe(struct amdgpu_device *adev)
 				   adev->pdev, kfd2kgd);
 }
 
-<<<<<<< HEAD
 /**
  * amdgpu_doorbell_get_kfd_info - Report doorbell configuration required to
  *                                setup amdkfd
@@ -166,15 +144,12 @@ static void amdgpu_doorbell_get_kfd_info(struct amdgpu_device *adev,
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void amdgpu_amdkfd_device_init(struct amdgpu_device *adev)
 {
 	int i;
 	int last_valid_bit;
 	if (adev->kfd) {
 		struct kgd2kfd_shared_resources gpu_resources = {
-<<<<<<< HEAD
 			.compute_vmid_bitmap = compute_vmid_bitmap,
 			.num_pipe_per_mec = adev->gfx.mec.num_pipe_per_mec,
 			.num_queue_per_pipe = adev->gfx.mec.num_queue_per_pipe,
@@ -182,11 +157,6 @@ void amdgpu_amdkfd_device_init(struct amdgpu_device *adev)
 					  << AMDGPU_GPU_PAGE_SHIFT,
 					  AMDGPU_VA_HOLE_START),
 			.drm_render_minor = adev->ddev->render->index
-=======
-			.compute_vmid_bitmap = 0xFF00,
-			.num_pipe_per_mec = adev->gfx.mec.num_pipe_per_mec,
-			.num_queue_per_pipe = adev->gfx.mec.num_queue_per_pipe
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		/* this is going to have a few of the MSBs set that we need to
@@ -215,7 +185,6 @@ void amdgpu_amdkfd_device_init(struct amdgpu_device *adev)
 				&gpu_resources.doorbell_physical_address,
 				&gpu_resources.doorbell_aperture_size,
 				&gpu_resources.doorbell_start_offset);
-<<<<<<< HEAD
 		if (adev->asic_type >= CHIP_VEGA10) {
 			/* On SOC15 the BIF is involved in routing
 			 * doorbells using the low 12 bits of the
@@ -238,8 +207,6 @@ void amdgpu_amdkfd_device_init(struct amdgpu_device *adev)
 			gpu_resources.reserved_doorbell_mask = 0x1f0;
 			gpu_resources.reserved_doorbell_val  = 0x0f0;
 		}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		kgd2kfd->device_init(adev->kfd, &gpu_resources);
 	}
@@ -276,7 +243,6 @@ int amdgpu_amdkfd_resume(struct amdgpu_device *adev)
 	return r;
 }
 
-<<<<<<< HEAD
 int amdgpu_amdkfd_pre_reset(struct amdgpu_device *adev)
 {
 	int r = 0;
@@ -326,27 +292,6 @@ int alloc_gtt_mem(struct kgd_dev *kgd, size_t size,
 		bp.flags |= AMDGPU_GEM_CREATE_MQD_GFX9;
 
 	r = amdgpu_bo_create(adev, &bp, &bo);
-=======
-int alloc_gtt_mem(struct kgd_dev *kgd, size_t size,
-			void **mem_obj, uint64_t *gpu_addr,
-			void **cpu_ptr)
-{
-	struct amdgpu_device *adev = (struct amdgpu_device *)kgd;
-	struct kgd_mem **mem = (struct kgd_mem **) mem_obj;
-	int r;
-
-	BUG_ON(kgd == NULL);
-	BUG_ON(gpu_addr == NULL);
-	BUG_ON(cpu_ptr == NULL);
-
-	*mem = kmalloc(sizeof(struct kgd_mem), GFP_KERNEL);
-	if ((*mem) == NULL)
-		return -ENOMEM;
-
-	r = amdgpu_bo_create(adev, size, PAGE_SIZE, true, AMDGPU_GEM_DOMAIN_GTT,
-			     AMDGPU_GEM_CREATE_CPU_GTT_USWC, NULL, NULL, 0,
-			     &(*mem)->bo);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r) {
 		dev_err(adev->dev,
 			"failed to allocate BO for amdkfd (%d)\n", r);
@@ -354,27 +299,17 @@ int alloc_gtt_mem(struct kgd_dev *kgd, size_t size,
 	}
 
 	/* map the buffer */
-<<<<<<< HEAD
 	r = amdgpu_bo_reserve(bo, true);
-=======
-	r = amdgpu_bo_reserve((*mem)->bo, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r) {
 		dev_err(adev->dev, "(%d) failed to reserve bo for amdkfd\n", r);
 		goto allocate_mem_reserve_bo_failed;
 	}
 
-<<<<<<< HEAD
 	r = amdgpu_bo_pin(bo, AMDGPU_GEM_DOMAIN_GTT);
-=======
-	r = amdgpu_bo_pin((*mem)->bo, AMDGPU_GEM_DOMAIN_GTT,
-				&(*mem)->gpu_addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r) {
 		dev_err(adev->dev, "(%d) failed to pin bo for amdkfd\n", r);
 		goto allocate_mem_pin_bo_failed;
 	}
-<<<<<<< HEAD
 
 	r = amdgpu_ttm_alloc_gart(&bo->tbo);
 	if (r) {
@@ -383,52 +318,32 @@ int alloc_gtt_mem(struct kgd_dev *kgd, size_t size,
 	}
 
 	r = amdgpu_bo_kmap(bo, &cpu_ptr_tmp);
-=======
-	*gpu_addr = (*mem)->gpu_addr;
-
-	r = amdgpu_bo_kmap((*mem)->bo, &(*mem)->cpu_ptr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r) {
 		dev_err(adev->dev,
 			"(%d) failed to map bo to kernel for amdkfd\n", r);
 		goto allocate_mem_kmap_bo_failed;
 	}
-<<<<<<< HEAD
 
 	*mem_obj = bo;
 	*gpu_addr = amdgpu_bo_gpu_offset(bo);
 	*cpu_ptr = cpu_ptr_tmp;
 
 	amdgpu_bo_unreserve(bo);
-=======
-	*cpu_ptr = (*mem)->cpu_ptr;
-
-	amdgpu_bo_unreserve((*mem)->bo);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 
 allocate_mem_kmap_bo_failed:
-<<<<<<< HEAD
 	amdgpu_bo_unpin(bo);
 allocate_mem_pin_bo_failed:
 	amdgpu_bo_unreserve(bo);
 allocate_mem_reserve_bo_failed:
 	amdgpu_bo_unref(&bo);
-=======
-	amdgpu_bo_unpin((*mem)->bo);
-allocate_mem_pin_bo_failed:
-	amdgpu_bo_unreserve((*mem)->bo);
-allocate_mem_reserve_bo_failed:
-	amdgpu_bo_unref(&(*mem)->bo);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return r;
 }
 
 void free_gtt_mem(struct kgd_dev *kgd, void *mem_obj)
 {
-<<<<<<< HEAD
 	struct amdgpu_bo *bo = (struct amdgpu_bo *) mem_obj;
 
 	amdgpu_bo_reserve(bo, true);
@@ -468,28 +383,6 @@ void get_local_mem_info(struct kgd_dev *kgd,
 		mem_info->mem_clk_max = amdgpu_dpm_get_mclk(adev, false) / 100;
 	else
 		mem_info->mem_clk_max = 100;
-=======
-	struct kgd_mem *mem = (struct kgd_mem *) mem_obj;
-
-	BUG_ON(mem == NULL);
-
-	amdgpu_bo_reserve(mem->bo, true);
-	amdgpu_bo_kunmap(mem->bo);
-	amdgpu_bo_unpin(mem->bo);
-	amdgpu_bo_unreserve(mem->bo);
-	amdgpu_bo_unref(&(mem->bo));
-	kfree(mem);
-}
-
-uint64_t get_vmem_size(struct kgd_dev *kgd)
-{
-	struct amdgpu_device *adev =
-		(struct amdgpu_device *)kgd;
-
-	BUG_ON(kgd == NULL);
-
-	return adev->mc.real_vram_size;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 uint64_t get_gpu_clock_counter(struct kgd_dev *kgd)
@@ -508,7 +401,6 @@ uint32_t get_max_engine_clock_in_mhz(struct kgd_dev *kgd)
 	/* the sclk is in quantas of 10kHz */
 	if (amdgpu_sriov_vf(adev))
 		return adev->clock.default_sclk / 100;
-<<<<<<< HEAD
 	else if (adev->powerplay.pp_funcs)
 		return amdgpu_dpm_get_sclk(adev, false) / 100;
 	else
@@ -661,8 +553,3 @@ struct kfd2kgd_calls *amdgpu_amdkfd_gfx_9_0_get_functions(void)
 	return NULL;
 }
 #endif
-=======
-
-	return amdgpu_dpm_get_sclk(adev, false) / 100;
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

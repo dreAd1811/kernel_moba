@@ -623,38 +623,20 @@ static int pp_do_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 		if (copy_from_user(time32, argp, sizeof(time32)))
 			return -EFAULT;
 
-<<<<<<< HEAD
-=======
-		if ((time32[0] < 0) || (time32[1] < 0))
-			return -EINVAL;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return pp_set_timeout(pp->pdev, time32[0], time32[1]);
 
 	case PPSETTIME64:
 		if (copy_from_user(time64, argp, sizeof(time64)))
 			return -EFAULT;
 
-<<<<<<< HEAD
-=======
-		if ((time64[0] < 0) || (time64[1] < 0))
-			return -EINVAL;
-
-		if (IS_ENABLED(CONFIG_SPARC64) && !in_compat_syscall())
-			time64[1] >>= 32;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return pp_set_timeout(pp->pdev, time64[0], time64[1]);
 
 	case PPGETTIME32:
 		jiffies_to_timespec64(pp->pdev->timeout, &ts);
 		time32[0] = ts.tv_sec;
 		time32[1] = ts.tv_nsec / NSEC_PER_USEC;
-<<<<<<< HEAD
 		if ((time32[0] < 0) || (time32[1] < 0))
 			return -EINVAL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (copy_to_user(argp, time32, sizeof(time32)))
 			return -EFAULT;
@@ -665,14 +647,8 @@ static int pp_do_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 		jiffies_to_timespec64(pp->pdev->timeout, &ts);
 		time64[0] = ts.tv_sec;
 		time64[1] = ts.tv_nsec / NSEC_PER_USEC;
-<<<<<<< HEAD
 		if ((time64[0] < 0) || (time64[1] < 0))
 			return -EINVAL;
-=======
-
-		if (IS_ENABLED(CONFIG_SPARC64) && !in_compat_syscall())
-			time64[1] <<= 32;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (copy_to_user(argp, time64, sizeof(time64)))
 			return -EFAULT;
@@ -793,7 +769,6 @@ static int pp_release(struct inode *inode, struct file *file)
 }
 
 /* No kernel lock held - fine */
-<<<<<<< HEAD
 static __poll_t pp_poll(struct file *file, poll_table *wait)
 {
 	struct pp_struct *pp = file->private_data;
@@ -802,16 +777,6 @@ static __poll_t pp_poll(struct file *file, poll_table *wait)
 	poll_wait(file, &pp->irq_wait, wait);
 	if (atomic_read(&pp->irqc))
 		mask |= EPOLLIN | EPOLLRDNORM;
-=======
-static unsigned int pp_poll(struct file *file, poll_table *wait)
-{
-	struct pp_struct *pp = file->private_data;
-	unsigned int mask = 0;
-
-	poll_wait(file, &pp->irq_wait, wait);
-	if (atomic_read(&pp->irqc))
-		mask |= POLLIN | POLLRDNORM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return mask;
 }

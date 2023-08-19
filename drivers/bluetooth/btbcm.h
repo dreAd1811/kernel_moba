@@ -44,13 +44,8 @@ struct bcm_set_sleep_mode {
 	__u8 tristate_control;
 	__u8 usb_auto_sleep;
 	__u8 usb_resume_timeout;
-<<<<<<< HEAD
 	__u8 break_to_host;
 	__u8 pulsed_host_wake;
-=======
-	__u8 pulsed_host_wake;
-	__u8 break_to_host;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } __packed;
 
 struct bcm_set_pcm_int_params {
@@ -78,12 +73,8 @@ int btbcm_patchram(struct hci_dev *hdev, const struct firmware *fw);
 int btbcm_setup_patchram(struct hci_dev *hdev);
 int btbcm_setup_apple(struct hci_dev *hdev);
 
-<<<<<<< HEAD
 int btbcm_initialize(struct hci_dev *hdev, char *fw_name, size_t len,
 		     bool reinit);
-=======
-int btbcm_initialize(struct hci_dev *hdev, char *fw_name, size_t len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int btbcm_finalize(struct hci_dev *hdev);
 
 #else
@@ -114,11 +105,7 @@ static inline int btbcm_setup_apple(struct hci_dev *hdev)
 }
 
 static inline int btbcm_initialize(struct hci_dev *hdev, char *fw_name,
-<<<<<<< HEAD
 				   size_t len, bool reinit)
-=======
-				   size_t len)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return 0;
 }

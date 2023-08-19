@@ -517,11 +517,7 @@ unsigned long xics_rm_h_xirr(struct kvm_vcpu *vcpu)
 	} while (!icp_rm_try_update(icp, old_state, new_state));
 
 	/* Return the result in GPR4 */
-<<<<<<< HEAD
 	vcpu->arch.regs.gpr[4] = xirr;
-=======
-	vcpu->arch.gpr[4] = xirr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return check_too_hard(xics, icp);
 }

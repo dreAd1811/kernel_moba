@@ -1384,10 +1384,6 @@ static const struct iio_info gp2ap020a00f_info = {
 	.read_event_config = &gp2ap020a00f_read_event_config,
 	.write_event_value = &gp2ap020a00f_write_event_val,
 	.write_event_config = &gp2ap020a00f_write_event_config,
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int gp2ap020a00f_buffer_postenable(struct iio_dev *indio_dev)
@@ -1484,10 +1480,6 @@ static const struct iio_buffer_setup_ops gp2ap020a00f_buffer_setup_ops = {
 };
 
 static const struct iio_trigger_ops gp2ap020a00f_trigger_ops = {
-<<<<<<< HEAD
-=======
-	.owner = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int gp2ap020a00f_probe(struct i2c_client *client,

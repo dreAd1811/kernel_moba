@@ -3,7 +3,6 @@
 #define _INTEL_RINGBUFFER_H_
 
 #include <linux/hashtable.h>
-<<<<<<< HEAD
 #include <linux/seqlock.h>
 
 #include "i915_gem_batch_pool.h"
@@ -17,12 +16,6 @@
 
 struct drm_printer;
 struct i915_sched_attr;
-=======
-#include "i915_gem_batch_pool.h"
-#include "i915_gem_request.h"
-#include "i915_gem_timeline.h"
-#include "i915_selftest.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define I915_CMD_HASH_ORDER 9
 
@@ -61,19 +54,6 @@ struct intel_hw_status_page {
 /* seqno size is actually only a uint32, but since we plan to use MI_FLUSH_DW to
  * do the writes, and that must have qw aligned offsets, simply pretend it's 8b.
  */
-<<<<<<< HEAD
-=======
-#define gen8_semaphore_seqno_size sizeof(uint64_t)
-#define GEN8_SEMAPHORE_OFFSET(__from, __to)			     \
-	(((__from) * I915_NUM_ENGINES  + (__to)) * gen8_semaphore_seqno_size)
-#define GEN8_SIGNAL_OFFSET(__ring, to)			     \
-	(dev_priv->semaphore->node.start + \
-	 GEN8_SEMAPHORE_OFFSET((__ring)->id, (to)))
-#define GEN8_WAIT_OFFSET(__ring, from)			     \
-	(dev_priv->semaphore->node.start + \
-	 GEN8_SEMAPHORE_OFFSET(from, (__ring)->id))
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum intel_engine_hangcheck_action {
 	ENGINE_IDLE = 0,
 	ENGINE_WAIT,
@@ -108,11 +88,7 @@ hangcheck_action_to_str(const enum intel_engine_hangcheck_action a)
 }
 
 #define I915_MAX_SLICES	3
-<<<<<<< HEAD
 #define I915_MAX_SUBSLICES 8
-=======
-#define I915_MAX_SUBSLICES 3
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define instdone_slice_mask(dev_priv__) \
 	(INTEL_GEN(dev_priv__) == 7 ? \
@@ -120,11 +96,7 @@ hangcheck_action_to_str(const enum intel_engine_hangcheck_action a)
 
 #define instdone_subslice_mask(dev_priv__) \
 	(INTEL_GEN(dev_priv__) == 7 ? \
-<<<<<<< HEAD
 	 1 : INTEL_INFO(dev_priv__)->sseu.subslice_mask[0])
-=======
-	 1 : INTEL_INFO(dev_priv__)->sseu.subslice_mask)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define for_each_instdone_slice_subslice(dev_priv__, slice__, subslice__) \
 	for ((slice__) = 0, (subslice__) = 0; \
@@ -149,27 +121,18 @@ struct intel_engine_hangcheck {
 	unsigned long action_timestamp;
 	int deadlock;
 	struct intel_instdone instdone;
-<<<<<<< HEAD
 	struct i915_request *active_request;
 	bool stalled:1;
 	bool wedged:1;
-=======
-	struct drm_i915_gem_request *active_request;
-	bool stalled;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct intel_ring {
 	struct i915_vma *vma;
 	void *vaddr;
 
-<<<<<<< HEAD
 	struct i915_timeline *timeline;
 	struct list_head request_list;
 	struct list_head active_link;
-=======
-	struct list_head request_list;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	u32 head;
 	u32 tail;
@@ -202,15 +165,10 @@ struct i915_ctx_workarounds {
 	struct i915_vma *vma;
 };
 
-<<<<<<< HEAD
 struct i915_request;
 
 #define I915_MAX_VCS	4
 #define I915_MAX_VECS	2
-=======
-struct drm_i915_gem_request;
-struct intel_render_state;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Engine IDs definitions.
@@ -221,17 +179,12 @@ enum intel_engine_id {
 	BCS,
 	VCS,
 	VCS2,
-<<<<<<< HEAD
 	VCS3,
 	VCS4,
 #define _VCS(n) (VCS + (n))
 	VECS,
 	VECS2
 #define _VECS(n) (VECS + (n))
-=======
-#define _VCS(n) (VCS + (n))
-	VECS
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct i915_priolist {
@@ -240,7 +193,6 @@ struct i915_priolist {
 	int priority;
 };
 
-<<<<<<< HEAD
 struct st_preempt_hang {
 	struct completion completion;
 	bool inject_hang;
@@ -390,14 +342,11 @@ struct intel_engine_execlists {
 	I915_SELFTEST_DECLARE(struct st_preempt_hang preempt_hang;)
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define INTEL_ENGINE_CS_MAX_NAME 8
 
 struct intel_engine_cs {
 	struct drm_i915_private *i915;
 	char name[INTEL_ENGINE_CS_MAX_NAME];
-<<<<<<< HEAD
 
 	enum intel_engine_id id;
 	unsigned int hw_id;
@@ -406,18 +355,10 @@ struct intel_engine_cs {
 	u8 uabi_id;
 	u8 uabi_class;
 
-=======
-	enum intel_engine_id id;
-	unsigned int uabi_id;
-	unsigned int hw_id;
-	unsigned int guc_id;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 class;
 	u8 instance;
 	u32 context_size;
 	u32 mmio_base;
-<<<<<<< HEAD
 
 	struct intel_ring *buffer;
 
@@ -428,19 +369,6 @@ struct intel_engine_cs {
 
 	unsigned long irq_posted;
 #define ENGINE_IRQ_BREADCRUMB 0
-=======
-	unsigned int irq_shift;
-
-	struct intel_ring *buffer;
-	struct intel_timeline *timeline;
-
-	struct intel_render_state *render_state;
-
-	atomic_t irq_count;
-	unsigned long irq_posted;
-#define ENGINE_IRQ_BREADCRUMB 0
-#define ENGINE_IRQ_EXECLIST 1
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Rather than have every client wait upon all user interrupts,
 	 * with the herd waking after every interrupt and each doing the
@@ -464,20 +392,13 @@ struct intel_engine_cs {
 
 		spinlock_t rb_lock; /* protects the rb and wraps irq_lock */
 		struct rb_root waiters; /* sorted by retirement, priority */
-<<<<<<< HEAD
 		struct list_head signals; /* sorted by retirement */
 		struct task_struct *signaler; /* used for fence signalling */
 
-=======
-		struct rb_root signals; /* sorted by retirement */
-		struct task_struct *signaler; /* used for fence signalling */
-		struct drm_i915_gem_request __rcu *first_signal;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct timer_list fake_irq; /* used after a missed interrupt */
 		struct timer_list hangcheck; /* detect missed interrupts */
 
 		unsigned int hangcheck_interrupts;
-<<<<<<< HEAD
 		unsigned int irq_enabled;
 		unsigned int irq_count;
 
@@ -508,14 +429,6 @@ struct intel_engine_cs {
 		struct i915_pmu_sample sample[I915_ENGINE_SAMPLE_MAX];
 	} pmu;
 
-=======
-
-		bool irq_armed : 1;
-		bool irq_enabled : 1;
-		I915_SELFTEST_DECLARE(bool mock : 1);
-	} breadcrumbs;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * A pool of objects to use as shadow copies of client batch buffers
 	 * when the command parser is enabled. Prevents the client from
@@ -533,7 +446,6 @@ struct intel_engine_cs {
 	void		(*irq_disable)(struct intel_engine_cs *engine);
 
 	int		(*init_hw)(struct intel_engine_cs *engine);
-<<<<<<< HEAD
 
 	struct {
 		struct i915_request *(*prepare)(struct intel_engine_cs *engine);
@@ -558,37 +470,12 @@ struct intel_engine_cs {
 #define EMIT_FLUSH	BIT(1)
 #define EMIT_BARRIER	(EMIT_INVALIDATE | EMIT_FLUSH)
 	int		(*emit_bb_start)(struct i915_request *rq,
-=======
-	void		(*reset_hw)(struct intel_engine_cs *engine,
-				    struct drm_i915_gem_request *req);
-
-	void		(*set_default_submission)(struct intel_engine_cs *engine);
-
-	struct intel_ring *(*context_pin)(struct intel_engine_cs *engine,
-					  struct i915_gem_context *ctx);
-	void		(*context_unpin)(struct intel_engine_cs *engine,
-					 struct i915_gem_context *ctx);
-	int		(*request_alloc)(struct drm_i915_gem_request *req);
-	int		(*init_context)(struct drm_i915_gem_request *req);
-
-	int		(*emit_flush)(struct drm_i915_gem_request *request,
-				      u32 mode);
-#define EMIT_INVALIDATE	BIT(0)
-#define EMIT_FLUSH	BIT(1)
-#define EMIT_BARRIER	(EMIT_INVALIDATE | EMIT_FLUSH)
-	int		(*emit_bb_start)(struct drm_i915_gem_request *req,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 u64 offset, u32 length,
 					 unsigned int dispatch_flags);
 #define I915_DISPATCH_SECURE BIT(0)
 #define I915_DISPATCH_PINNED BIT(1)
 #define I915_DISPATCH_RS     BIT(2)
-<<<<<<< HEAD
 	void		(*emit_breadcrumb)(struct i915_request *rq, u32 *cs);
-=======
-	void		(*emit_breadcrumb)(struct drm_i915_gem_request *req,
-					   u32 *cs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int		emit_breadcrumb_sz;
 
 	/* Pass the request to the hardware queue (e.g. directly into
@@ -597,11 +484,7 @@ struct intel_engine_cs {
 	 * This is called from an atomic context with irqs disabled; must
 	 * be irq safe.
 	 */
-<<<<<<< HEAD
 	void		(*submit_request)(struct i915_request *rq);
-=======
-	void		(*submit_request)(struct drm_i915_gem_request *req);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Call when the priority on a request has changed and it and its
 	 * dependencies may need rescheduling. Note the request itself may
@@ -609,7 +492,6 @@ struct intel_engine_cs {
 	 *
 	 * Called under the struct_mutex.
 	 */
-<<<<<<< HEAD
 	void		(*schedule)(struct i915_request *request,
 				    const struct i915_sched_attr *attr);
 
@@ -620,10 +502,6 @@ struct intel_engine_cs {
 	 * This is called when marking the device as wedged.
 	 */
 	void		(*cancel_requests)(struct intel_engine_cs *engine);
-=======
-	void		(*schedule)(struct drm_i915_gem_request *request,
-				    int priority);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Some chipsets are not quite as coherent as advertised and need
 	 * an expensive kick to force a true read of the up-to-date seqno.
@@ -672,7 +550,6 @@ struct intel_engine_cs {
 	 *  ie. transpose of f(x, y)
 	 */
 	struct {
-<<<<<<< HEAD
 #define GEN6_SEMAPHORE_LAST	VECS_HW
 #define GEN6_NUM_SEMAPHORES	(GEN6_SEMAPHORE_LAST + 1)
 #define GEN6_SEMAPHORES_MASK	GENMASK(GEN6_SEMAPHORE_LAST, 0)
@@ -690,46 +567,6 @@ struct intel_engine_cs {
 	} semaphore;
 
 	struct intel_engine_execlists execlists;
-=======
-		union {
-#define GEN6_SEMAPHORE_LAST	VECS_HW
-#define GEN6_NUM_SEMAPHORES	(GEN6_SEMAPHORE_LAST + 1)
-#define GEN6_SEMAPHORES_MASK	GENMASK(GEN6_SEMAPHORE_LAST, 0)
-			struct {
-				/* our mbox written by others */
-				u32		wait[GEN6_NUM_SEMAPHORES];
-				/* mboxes this ring signals to */
-				i915_reg_t	signal[GEN6_NUM_SEMAPHORES];
-			} mbox;
-			u64		signal_ggtt[I915_NUM_ENGINES];
-		};
-
-		/* AKA wait() */
-		int	(*sync_to)(struct drm_i915_gem_request *req,
-				   struct drm_i915_gem_request *signal);
-		u32	*(*signal)(struct drm_i915_gem_request *req, u32 *cs);
-	} semaphore;
-
-	/* Execlists */
-	struct tasklet_struct irq_tasklet;
-	struct i915_priolist default_priolist;
-	bool no_priolist;
-	struct execlist_port {
-		struct drm_i915_gem_request *request_count;
-#define EXECLIST_COUNT_BITS 2
-#define port_request(p) ptr_mask_bits((p)->request_count, EXECLIST_COUNT_BITS)
-#define port_count(p) ptr_unmask_bits((p)->request_count, EXECLIST_COUNT_BITS)
-#define port_pack(rq, count) ptr_pack_bits(rq, count, EXECLIST_COUNT_BITS)
-#define port_unpack(p, count) ptr_unpack_bits((p)->request_count, count, EXECLIST_COUNT_BITS)
-#define port_set(p, packed) ((p)->request_count = (packed))
-#define port_isset(p) ((p)->request_count)
-#define port_index(p, e) ((p) - (e)->execlist_port)
-		GEM_DEBUG_DECL(u32 context_id);
-	} execlist_port[2];
-	struct rb_root execlist_queue;
-	struct rb_node *execlist_first;
-	unsigned int fw_domains;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Contexts are pinned whilst they are active on the GPU. The last
 	 * context executed remains active whilst the GPU is idle - the
@@ -740,33 +577,16 @@ struct intel_engine_cs {
 	 * to the kernel context and trash it as the save may not happen
 	 * before the hardware is powered down.
 	 */
-<<<<<<< HEAD
 	struct intel_context *last_retired_context;
-=======
-	struct i915_gem_context *last_retired_context;
-
-	/* We track the current MI_SET_CONTEXT in order to eliminate
-	 * redudant context switches. This presumes that requests are not
-	 * reordered! Or when they are the tracking is updated along with
-	 * the emission of individual requests into the legacy command
-	 * stream (ring).
-	 */
-	struct i915_gem_context *legacy_active_context;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* status_notifier: list of callbacks for context-switch changes */
 	struct atomic_notifier_head context_status_notifier;
 
 	struct intel_engine_hangcheck hangcheck;
 
-<<<<<<< HEAD
 #define I915_ENGINE_NEEDS_CMD_PARSER BIT(0)
 #define I915_ENGINE_SUPPORTS_STATS   BIT(1)
 #define I915_ENGINE_HAS_PREEMPTION   BIT(2)
-=======
-#define I915_ENGINE_USING_CMD_PARSER	BIT(0)
-#define I915_ENGINE_REQUIRES_CMD_PARSER	BIT(3)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int flags;
 
 	/*
@@ -792,7 +612,6 @@ struct intel_engine_cs {
 	 * certain bits to encode the command length in the header).
 	 */
 	u32 (*get_cmd_length_mask)(u32 cmd_header);
-<<<<<<< HEAD
 
 	struct {
 		/**
@@ -913,20 +732,6 @@ execlists_port_complete(struct intel_engine_execlists * const execlists,
 	memset(port + m, 0, sizeof(struct execlist_port));
 
 	return port;
-=======
-};
-
-static inline bool
-intel_engine_using_cmd_parser(const struct intel_engine_cs *engine)
-{
-	return engine->flags & I915_ENGINE_USING_CMD_PARSER;
-}
-
-static inline bool
-intel_engine_requires_cmd_parser(const struct intel_engine_cs *engine)
-{
-	return engine->flags & I915_ENGINE_REQUIRES_CMD_PARSER;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline unsigned int
@@ -936,11 +741,7 @@ intel_engine_flag(const struct intel_engine_cs *engine)
 }
 
 static inline u32
-<<<<<<< HEAD
 intel_read_status_page(const struct intel_engine_cs *engine, int reg)
-=======
-intel_read_status_page(struct intel_engine_cs *engine, int reg)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* Ensure that the compiler doesn't optimize away the load. */
 	return READ_ONCE(engine->status_page.page_addr[reg]);
@@ -983,7 +784,6 @@ intel_write_status_page(struct intel_engine_cs *engine, int reg, u32 value)
  */
 #define I915_GEM_HWS_INDEX		0x30
 #define I915_GEM_HWS_INDEX_ADDR (I915_GEM_HWS_INDEX << MI_STORE_DWORD_INDEX_SHIFT)
-<<<<<<< HEAD
 #define I915_GEM_HWS_PREEMPT_INDEX	0x32
 #define I915_GEM_HWS_PREEMPT_ADDR (I915_GEM_HWS_PREEMPT_INDEX << MI_STORE_DWORD_INDEX_SHIFT)
 #define I915_GEM_HWS_SCRATCH_INDEX	0x40
@@ -997,13 +797,6 @@ struct intel_ring *
 intel_engine_create_ring(struct intel_engine_cs *engine,
 			 struct i915_timeline *timeline,
 			 int size);
-=======
-#define I915_GEM_HWS_SCRATCH_INDEX	0x40
-#define I915_GEM_HWS_SCRATCH_ADDR (I915_GEM_HWS_SCRATCH_INDEX << MI_STORE_DWORD_INDEX_SHIFT)
-
-struct intel_ring *
-intel_engine_create_ring(struct intel_engine_cs *engine, int size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int intel_ring_pin(struct intel_ring *ring,
 		   struct drm_i915_private *i915,
 		   unsigned int offset_bias);
@@ -1017,22 +810,12 @@ void intel_engine_cleanup(struct intel_engine_cs *engine);
 
 void intel_legacy_submission_resume(struct drm_i915_private *dev_priv);
 
-<<<<<<< HEAD
 int __must_check intel_ring_cacheline_align(struct i915_request *rq);
 
 int intel_ring_wait_for_space(struct intel_ring *ring, unsigned int bytes);
 u32 __must_check *intel_ring_begin(struct i915_request *rq, unsigned int n);
 
 static inline void intel_ring_advance(struct i915_request *rq, u32 *cs)
-=======
-int __must_check intel_ring_cacheline_align(struct drm_i915_gem_request *req);
-
-u32 __must_check *intel_ring_begin(struct drm_i915_gem_request *req,
-				   unsigned int n);
-
-static inline void
-intel_ring_advance(struct drm_i915_gem_request *req, u32 *cs)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* Dummy function.
 	 *
@@ -1042,23 +825,14 @@ intel_ring_advance(struct drm_i915_gem_request *req, u32 *cs)
 	 * reserved for the command packet (i.e. the value passed to
 	 * intel_ring_begin()).
 	 */
-<<<<<<< HEAD
 	GEM_BUG_ON((rq->ring->vaddr + rq->ring->emit) != cs);
 }
 
 static inline u32 intel_ring_wrap(const struct intel_ring *ring, u32 pos)
-=======
-	GEM_BUG_ON((req->ring->vaddr + req->ring->emit) != cs);
-}
-
-static inline u32
-intel_ring_wrap(const struct intel_ring *ring, u32 pos)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return pos & (ring->size - 1);
 }
 
-<<<<<<< HEAD
 static inline bool
 intel_ring_offset_valid(const struct intel_ring *ring,
 			unsigned int pos)
@@ -1078,30 +852,12 @@ static inline u32 intel_ring_offset(const struct i915_request *rq, void *addr)
 	u32 offset = addr - rq->ring->vaddr;
 	GEM_BUG_ON(offset > rq->ring->size);
 	return intel_ring_wrap(rq->ring, offset);
-=======
-static inline u32
-intel_ring_offset(const struct drm_i915_gem_request *req, void *addr)
-{
-	/* Don't write ring->size (equivalent to 0) as that hangs some GPUs. */
-	u32 offset = addr - req->ring->vaddr;
-	GEM_BUG_ON(offset > req->ring->size);
-	return intel_ring_wrap(req->ring, offset);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void
 assert_ring_tail_valid(const struct intel_ring *ring, unsigned int tail)
 {
-<<<<<<< HEAD
 	GEM_BUG_ON(!intel_ring_offset_valid(ring, tail));
-=======
-	/* We could combine these into a single tail operation, but keeping
-	 * them as seperate tests will help identify the cause should one
-	 * ever fire.
-	 */
-	GEM_BUG_ON(!IS_ALIGNED(tail, 8));
-	GEM_BUG_ON(tail >= ring->size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * "Ring Buffer Use"
@@ -1128,11 +884,7 @@ intel_ring_set_tail(struct intel_ring *ring, unsigned int tail)
 {
 	/* Whilst writes to the tail are strictly order, there is no
 	 * serialisation between readers and the writers. The tail may be
-<<<<<<< HEAD
 	 * read by i915_request_retire() just as it is being updated
-=======
-	 * read by i915_gem_request_retire() just as it is being updated
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * by execlists, as although the breadcrumb is complete, the context
 	 * switch hasn't been seen.
 	 */
@@ -1145,32 +897,21 @@ void intel_engine_init_global_seqno(struct intel_engine_cs *engine, u32 seqno);
 
 void intel_engine_setup_common(struct intel_engine_cs *engine);
 int intel_engine_init_common(struct intel_engine_cs *engine);
-<<<<<<< HEAD
 void intel_engine_cleanup_common(struct intel_engine_cs *engine);
 
 int intel_engine_create_scratch(struct intel_engine_cs *engine,
 				unsigned int size);
 void intel_engine_cleanup_scratch(struct intel_engine_cs *engine);
 
-=======
-int intel_engine_create_scratch(struct intel_engine_cs *engine, int size);
-void intel_engine_cleanup_common(struct intel_engine_cs *engine);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int intel_init_render_ring_buffer(struct intel_engine_cs *engine);
 int intel_init_bsd_ring_buffer(struct intel_engine_cs *engine);
 int intel_init_blt_ring_buffer(struct intel_engine_cs *engine);
 int intel_init_vebox_ring_buffer(struct intel_engine_cs *engine);
 
-<<<<<<< HEAD
 int intel_engine_stop_cs(struct intel_engine_cs *engine);
 
 u64 intel_engine_get_active_head(const struct intel_engine_cs *engine);
 u64 intel_engine_get_last_batch_head(const struct intel_engine_cs *engine);
-=======
-u64 intel_engine_get_active_head(struct intel_engine_cs *engine);
-u64 intel_engine_get_last_batch_head(struct intel_engine_cs *engine);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline u32 intel_engine_get_seqno(struct intel_engine_cs *engine)
 {
@@ -1186,18 +927,9 @@ static inline u32 intel_engine_last_submit(struct intel_engine_cs *engine)
 	 * wtih serialising this hint with anything, so document it as
 	 * a hint and nothing more.
 	 */
-<<<<<<< HEAD
 	return READ_ONCE(engine->timeline.seqno);
 }
 
-=======
-	return READ_ONCE(engine->timeline->seqno);
-}
-
-int init_workarounds_ring(struct intel_engine_cs *engine);
-int intel_ring_workarounds_emit(struct drm_i915_gem_request *req);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void intel_engine_get_instdone(struct intel_engine_cs *engine,
 			       struct intel_instdone *instdone);
 
@@ -1215,7 +947,6 @@ static inline u32 intel_hws_seqno_address(struct intel_engine_cs *engine)
 	return engine->status_page.ggtt_offset + I915_GEM_HWS_INDEX_ADDR;
 }
 
-<<<<<<< HEAD
 static inline u32 intel_hws_preempt_done_address(struct intel_engine_cs *engine)
 {
 	return engine->status_page.ggtt_offset + I915_GEM_HWS_PREEMPT_ADDR;
@@ -1228,16 +959,6 @@ static inline void intel_wait_init(struct intel_wait *wait)
 {
 	wait->tsk = current;
 	wait->request = NULL;
-=======
-/* intel_breadcrumbs.c -- user interrupt bottom-half for waiters */
-int intel_engine_init_breadcrumbs(struct intel_engine_cs *engine);
-
-static inline void intel_wait_init(struct intel_wait *wait,
-				   struct drm_i915_gem_request *rq)
-{
-	wait->tsk = current;
-	wait->request = rq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void intel_wait_init_for_seqno(struct intel_wait *wait, u32 seqno)
@@ -1260,15 +981,9 @@ intel_wait_update_seqno(struct intel_wait *wait, u32 seqno)
 
 static inline bool
 intel_wait_update_request(struct intel_wait *wait,
-<<<<<<< HEAD
 			  const struct i915_request *rq)
 {
 	return intel_wait_update_seqno(wait, i915_request_global_seqno(rq));
-=======
-			  const struct drm_i915_gem_request *rq)
-{
-	return intel_wait_update_seqno(wait, i915_gem_request_global_seqno(rq));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline bool
@@ -1279,15 +994,9 @@ intel_wait_check_seqno(const struct intel_wait *wait, u32 seqno)
 
 static inline bool
 intel_wait_check_request(const struct intel_wait *wait,
-<<<<<<< HEAD
 			 const struct i915_request *rq)
 {
 	return intel_wait_check_seqno(wait, i915_request_global_seqno(rq));
-=======
-			 const struct drm_i915_gem_request *rq)
-{
-	return intel_wait_check_seqno(wait, i915_gem_request_global_seqno(rq));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline bool intel_wait_complete(const struct intel_wait *wait)
@@ -1299,14 +1008,8 @@ bool intel_engine_add_wait(struct intel_engine_cs *engine,
 			   struct intel_wait *wait);
 void intel_engine_remove_wait(struct intel_engine_cs *engine,
 			      struct intel_wait *wait);
-<<<<<<< HEAD
 bool intel_engine_enable_signaling(struct i915_request *request, bool wakeup);
 void intel_engine_cancel_signaling(struct i915_request *request);
-=======
-void intel_engine_enable_signaling(struct drm_i915_gem_request *request,
-				   bool wakeup);
-void intel_engine_cancel_signaling(struct drm_i915_gem_request *request);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline bool intel_engine_has_waiter(const struct intel_engine_cs *engine)
 {
@@ -1317,21 +1020,14 @@ unsigned int intel_engine_wakeup(struct intel_engine_cs *engine);
 #define ENGINE_WAKEUP_WAITER BIT(0)
 #define ENGINE_WAKEUP_ASLEEP BIT(1)
 
-<<<<<<< HEAD
 void intel_engine_pin_breadcrumbs_irq(struct intel_engine_cs *engine);
 void intel_engine_unpin_breadcrumbs_irq(struct intel_engine_cs *engine);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void __intel_engine_disarm_breadcrumbs(struct intel_engine_cs *engine);
 void intel_engine_disarm_breadcrumbs(struct intel_engine_cs *engine);
 
 void intel_engine_reset_breadcrumbs(struct intel_engine_cs *engine);
 void intel_engine_fini_breadcrumbs(struct intel_engine_cs *engine);
-<<<<<<< HEAD
-=======
-bool intel_breadcrumbs_busy(struct intel_engine_cs *engine);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline u32 *gen8_emit_pipe_control(u32 *batch, u32 flags, u32 offset)
 {
@@ -1344,7 +1040,6 @@ static inline u32 *gen8_emit_pipe_control(u32 *batch, u32 flags, u32 offset)
 	return batch + 6;
 }
 
-<<<<<<< HEAD
 static inline u32 *
 gen8_emit_ggtt_write_rcs(u32 *cs, u32 value, u32 gtt_offset)
 {
@@ -1487,24 +1182,4 @@ static inline bool inject_preempt_hang(struct intel_engine_execlists *execlists)
 
 #endif
 
-=======
-bool intel_engine_is_idle(struct intel_engine_cs *engine);
-bool intel_engines_are_idle(struct drm_i915_private *dev_priv);
-
-void intel_engines_mark_idle(struct drm_i915_private *i915);
-void intel_engines_reset_default_submission(struct drm_i915_private *i915);
-
-static inline bool
-__intel_engine_can_store_dword(unsigned int gen, unsigned int class)
-{
-	if (gen <= 2)
-		return false; /* uses physical not virtual addresses */
-
-	if (gen == 6 && class == VIDEO_DECODE_CLASS)
-		return false; /* b0rked */
-
-	return true;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* _INTEL_RINGBUFFER_H_ */

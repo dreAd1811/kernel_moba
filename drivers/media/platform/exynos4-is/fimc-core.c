@@ -1211,11 +1211,7 @@ static const struct fimc_drvdata fimc_drvdata_exynos4210 = {
 	.out_buf_count	= 32,
 };
 
-<<<<<<< HEAD
 /* EXYNOS4412 */
-=======
-/* EXYNOS4212, EXYNOS4412 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct fimc_drvdata fimc_drvdata_exynos4x12 = {
 	.num_entities	= 4,
 	.lclk_frequency	= 166000000UL,
@@ -1250,11 +1246,7 @@ static struct platform_driver fimc_driver = {
 	.driver = {
 		.of_match_table = fimc_of_match,
 		.name		= FIMC_DRIVER_NAME,
-<<<<<<< HEAD
 		.pm		= &fimc_pm_ops,
-=======
-		.pm     	= &fimc_pm_ops,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 };
 

@@ -158,10 +158,7 @@ hugetlb_get_unmapped_area(struct file *file, unsigned long addr,
 	if (len > TASK_SIZE)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	/* No address checking. See comment at mmap_address_hint_valid() */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (flags & MAP_FIXED) {
 		if (prepare_hugepage_range(file, addr, len))
 			return -EINVAL;
@@ -169,7 +166,6 @@ hugetlb_get_unmapped_area(struct file *file, unsigned long addr,
 	}
 
 	if (addr) {
-<<<<<<< HEAD
 		addr &= huge_page_mask(h);
 		if (!mmap_address_hint_valid(addr, len))
 			goto get_unmapped_area;
@@ -180,14 +176,6 @@ hugetlb_get_unmapped_area(struct file *file, unsigned long addr,
 	}
 
 get_unmapped_area:
-=======
-		addr = ALIGN(addr, huge_page_size(h));
-		vma = find_vma(mm, addr);
-		if (TASK_SIZE - len >= addr &&
-		    (!vma || addr + len <= vm_start_gap(vma)))
-			return addr;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (mm->get_unmapped_area == arch_get_unmapped_area)
 		return hugetlb_get_unmapped_area_bottomup(file, addr, len,
 				pgoff, flags);

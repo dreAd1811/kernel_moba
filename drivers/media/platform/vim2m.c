@@ -3,12 +3,8 @@
  *
  * This is a virtual device driver for testing mem-to-mem videobuf framework.
  * It simulates a device that uses memory buffers for both source and
-<<<<<<< HEAD
  * destination, processes the data and issues an "irq" (simulated by a delayed
  * workqueue).
-=======
- * destination, processes the data and issues an "irq" (simulated by a timer).
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * The device is capable of multi-instance, multi-buffer-per-transaction
  * operation (via the mem2mem framework).
  *
@@ -24,10 +20,6 @@
 #include <linux/module.h>
 #include <linux/delay.h>
 #include <linux/fs.h>
-<<<<<<< HEAD
-=======
-#include <linux/timer.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/sched.h>
 #include <linux/slab.h>
 
@@ -148,22 +140,15 @@ static struct vim2m_fmt *find_format(struct v4l2_format *f)
 struct vim2m_dev {
 	struct v4l2_device	v4l2_dev;
 	struct video_device	vfd;
-<<<<<<< HEAD
 #ifdef CONFIG_MEDIA_CONTROLLER
 	struct media_device	mdev;
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	atomic_t		num_inst;
 	struct mutex		dev_mutex;
 	spinlock_t		irqlock;
 
-<<<<<<< HEAD
 	struct delayed_work	work_run;
-=======
-	struct timer_list	timer;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct v4l2_m2m_dev	*m2m_dev;
 };
@@ -351,24 +336,11 @@ static int device_process(struct vim2m_ctx *ctx,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-static void schedule_irq(struct vim2m_dev *dev, int msec_timeout)
-{
-	dprintk(dev, "Scheduling a simulated irq\n");
-	mod_timer(&dev->timer, jiffies + msecs_to_jiffies(msec_timeout));
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * mem2mem callbacks
  */
 
-<<<<<<< HEAD
 /*
-=======
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * job_ready() - check whether an instance is ready to be scheduled to run
  */
 static int job_ready(void *priv)
@@ -409,7 +381,6 @@ static void device_run(void *priv)
 
 	device_process(ctx, src_buf, dst_buf);
 
-<<<<<<< HEAD
 	/* Run delayed work, which simulates a hardware irq  */
 	schedule_delayed_work(&dev->work_run, msecs_to_jiffies(ctx->transtime));
 }
@@ -418,15 +389,6 @@ static void device_work(struct work_struct *w)
 {
 	struct vim2m_dev *vim2m_dev =
 		container_of(w, struct vim2m_dev, work_run.work);
-=======
-	/* Run a timer, which simulates a hardware irq  */
-	schedule_irq(dev, ctx->transtime);
-}
-
-static void device_isr(unsigned long priv)
-{
-	struct vim2m_dev *vim2m_dev = (struct vim2m_dev *)priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct vim2m_ctx *curr_ctx;
 	struct vb2_v4l2_buffer *src_vb, *dst_vb;
 	unsigned long flags;
@@ -835,7 +797,6 @@ static int vim2m_start_streaming(struct vb2_queue *q, unsigned count)
 static void vim2m_stop_streaming(struct vb2_queue *q)
 {
 	struct vim2m_ctx *ctx = vb2_get_drv_priv(q);
-<<<<<<< HEAD
 	struct vim2m_dev *dev = ctx->dev;
 	struct vb2_v4l2_buffer *vbuf;
 	unsigned long flags;
@@ -843,11 +804,6 @@ static void vim2m_stop_streaming(struct vb2_queue *q)
 	if (v4l2_m2m_get_curr_priv(dev->m2m_dev) == ctx)
 		cancel_delayed_work_sync(&dev->work_run);
 
-=======
-	struct vb2_v4l2_buffer *vbuf;
-	unsigned long flags;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (;;) {
 		if (V4L2_TYPE_IS_OUTPUT(q->type))
 			vbuf = v4l2_m2m_src_buf_remove(ctx->fh.m2m_ctx);
@@ -1058,15 +1014,11 @@ static int vim2m_probe(struct platform_device *pdev)
 	vfd = &dev->vfd;
 	vfd->lock = &dev->dev_mutex;
 	vfd->v4l2_dev = &dev->v4l2_dev;
-<<<<<<< HEAD
 	INIT_DELAYED_WORK(&dev->work_run, device_work);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = video_register_device(vfd, VFL_TYPE_GRABBER, 0);
 	if (ret) {
 		v4l2_err(&dev->v4l2_dev, "Failed to register video device\n");
-<<<<<<< HEAD
 		goto unreg_v4l2;
 	}
 
@@ -1074,24 +1026,12 @@ static int vim2m_probe(struct platform_device *pdev)
 	v4l2_info(&dev->v4l2_dev,
 			"Device registered as /dev/video%d\n", vfd->num);
 
-=======
-		goto unreg_dev;
-	}
-
-	video_set_drvdata(vfd, dev);
-	snprintf(vfd->name, sizeof(vfd->name), "%s", vim2m_videodev.name);
-	v4l2_info(&dev->v4l2_dev,
-			"Device registered as /dev/video%d\n", vfd->num);
-
-	setup_timer(&dev->timer, device_isr, (long)dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	platform_set_drvdata(pdev, dev);
 
 	dev->m2m_dev = v4l2_m2m_init(&m2m_ops);
 	if (IS_ERR(dev->m2m_dev)) {
 		v4l2_err(&dev->v4l2_dev, "Failed to init mem2mem device\n");
 		ret = PTR_ERR(dev->m2m_dev);
-<<<<<<< HEAD
 		goto unreg_dev;
 	}
 
@@ -1125,17 +1065,6 @@ unreg_m2m:
 unreg_dev:
 	video_unregister_device(&dev->vfd);
 unreg_v4l2:
-=======
-		goto err_m2m;
-	}
-
-	return 0;
-
-err_m2m:
-	v4l2_m2m_release(dev->m2m_dev);
-	video_unregister_device(&dev->vfd);
-unreg_dev:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	v4l2_device_unregister(&dev->v4l2_dev);
 
 	return ret;
@@ -1146,7 +1075,6 @@ static int vim2m_remove(struct platform_device *pdev)
 	struct vim2m_dev *dev = platform_get_drvdata(pdev);
 
 	v4l2_info(&dev->v4l2_dev, "Removing " MEM2MEM_NAME);
-<<<<<<< HEAD
 
 #ifdef CONFIG_MEDIA_CONTROLLER
 	media_device_unregister(&dev->mdev);
@@ -1154,10 +1082,6 @@ static int vim2m_remove(struct platform_device *pdev)
 	media_device_cleanup(&dev->mdev);
 #endif
 	v4l2_m2m_release(dev->m2m_dev);
-=======
-	v4l2_m2m_release(dev->m2m_dev);
-	del_timer_sync(&dev->timer);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	video_unregister_device(&dev->vfd);
 	v4l2_device_unregister(&dev->v4l2_dev);
 

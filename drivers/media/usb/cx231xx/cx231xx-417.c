@@ -29,10 +29,7 @@
 #include <linux/delay.h>
 #include <linux/device.h>
 #include <linux/firmware.h>
-<<<<<<< HEAD
 #include <linux/slab.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/vmalloc.h>
 #include <media/v4l2-common.h>
 #include <media/v4l2-ioctl.h>
@@ -1816,7 +1813,6 @@ static ssize_t mpeg_read(struct file *file, char __user *data,
 				    file->f_flags & O_NONBLOCK);
 }
 
-<<<<<<< HEAD
 static __poll_t mpeg_poll(struct file *file,
 	struct poll_table_struct *wait)
 {
@@ -1831,22 +1827,6 @@ static __poll_t mpeg_poll(struct file *file,
 		poll_wait(file, &fh->fh.wait, wait);
 
 	if (!(req_events & (EPOLLIN | EPOLLRDNORM)))
-=======
-static unsigned int mpeg_poll(struct file *file,
-	struct poll_table_struct *wait)
-{
-	unsigned long req_events = poll_requested_events(wait);
-	struct cx231xx_fh *fh = file->private_data;
-	struct cx231xx *dev = fh->dev;
-	unsigned int res = 0;
-
-	if (v4l2_event_pending(&fh->fh))
-		res |= POLLPRI;
-	else
-		poll_wait(file, &fh->fh.wait, wait);
-
-	if (!(req_events & (POLLIN | POLLRDNORM)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return res;
 
 	mutex_lock(&dev->lock);

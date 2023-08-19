@@ -148,7 +148,6 @@
 			};
 
 			mdio0: mdio@fc000 {
-<<<<<<< HEAD
 				phy_sgmii_2: ethernet-phy@3 {
 					reg = <0x03>;
 				};
@@ -158,17 +157,6 @@
 				};
 
 				phy_rgmii_1: ethernet-phy@2 {
-=======
-				phy_sgmii_2: ethernet-phy@03 {
-					reg = <0x03>;
-				};
-
-				phy_rgmii_0: ethernet-phy@01 {
-					reg = <0x01>;
-				};
-
-				phy_rgmii_1: ethernet-phy@02 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					reg = <0x02>;
 				};
 			};

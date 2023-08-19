@@ -212,10 +212,6 @@ static int ad5446_write_raw(struct iio_dev *indio_dev,
 static const struct iio_info ad5446_info = {
 	.read_raw = ad5446_read_raw,
 	.write_raw = ad5446_write_raw,
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int ad5446_probe(struct device *dev, const char *name,
@@ -464,18 +460,14 @@ static const struct spi_device_id ad5446_spi_ids[] = {
 	{"ad5660-2500", ID_AD5660_2500},
 	{"ad5660-1250", ID_AD5660_1250},
 	{"ad5662", ID_AD5662},
-<<<<<<< HEAD
 	{"dac081s101", ID_AD5300}, /* compatible Texas Instruments chips */
 	{"dac101s101", ID_AD5310},
 	{"dac121s101", ID_AD5320},
 	{"dac7512", ID_AD5320},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{}
 };
 MODULE_DEVICE_TABLE(spi, ad5446_spi_ids);
 
-<<<<<<< HEAD
 #ifdef CONFIG_OF
 static const struct of_device_id ad5446_of_ids[] = {
 	{ .compatible = "ti,dac7512" },
@@ -484,8 +476,6 @@ static const struct of_device_id ad5446_of_ids[] = {
 MODULE_DEVICE_TABLE(of, ad5446_of_ids);
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ad5446_spi_probe(struct spi_device *spi)
 {
 	const struct spi_device_id *id = spi_get_device_id(spi);
@@ -502,10 +492,7 @@ static int ad5446_spi_remove(struct spi_device *spi)
 static struct spi_driver ad5446_spi_driver = {
 	.driver = {
 		.name	= "ad5446",
-<<<<<<< HEAD
 		.of_match_table = of_match_ptr(ad5446_of_ids),
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.probe		= ad5446_spi_probe,
 	.remove		= ad5446_spi_remove,

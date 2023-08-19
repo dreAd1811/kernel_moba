@@ -27,16 +27,12 @@
 #include <linux/via-core.h>
 #include <linux/via-gpio.h>
 #include <linux/via_i2c.h>
-<<<<<<< HEAD
 
 #ifdef CONFIG_X86
 #include <asm/olpc.h>
 #else
 #define machine_is_olpc(x) 0
 #endif
-=======
-#include <asm/olpc.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "via-camera.h"
 
@@ -187,11 +183,7 @@ static int via_sensor_power_setup(struct via_camera *cam)
 
 	cam->power_gpio = viafb_gpio_lookup("VGPIO3");
 	cam->reset_gpio = viafb_gpio_lookup("VGPIO2");
-<<<<<<< HEAD
 	if (!gpio_is_valid(cam->power_gpio) || !gpio_is_valid(cam->reset_gpio)) {
-=======
-	if (cam->power_gpio < 0 || cam->reset_gpio < 0) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(&cam->platdev->dev, "Unable to find GPIO lines\n");
 		return -EINVAL;
 	}
@@ -777,11 +769,7 @@ out_unlock:
 }
 
 
-<<<<<<< HEAD
 static __poll_t viacam_poll(struct file *filp, struct poll_table_struct *pt)
-=======
-static unsigned int viacam_poll(struct file *filp, struct poll_table_struct *pt)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct via_camera *cam = video_drvdata(filp);
 
@@ -1129,11 +1117,7 @@ static int viacam_g_parm(struct file *filp, void *priv,
 	int ret;
 
 	mutex_lock(&cam->lock);
-<<<<<<< HEAD
 	ret = v4l2_g_parm_cap(video_devdata(filp), cam->sensor, parm);
-=======
-	ret = sensor_call(cam, video, g_parm, parm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&cam->lock);
 	parm->parm.capture.readbuffers = cam->n_cap_bufs;
 	return ret;
@@ -1146,11 +1130,7 @@ static int viacam_s_parm(struct file *filp, void *priv,
 	int ret;
 
 	mutex_lock(&cam->lock);
-<<<<<<< HEAD
 	ret = v4l2_s_parm_cap(video_devdata(filp), cam->sensor, parm);
-=======
-	ret = sensor_call(cam, video, s_parm, parm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&cam->lock);
 	parm->parm.capture.readbuffers = cam->n_cap_bufs;
 	return ret;

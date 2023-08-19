@@ -51,11 +51,7 @@ MODULE_AUTHOR("Texas Instruments");
 
 /**
  * vpbe_current_encoder_info - Get config info for current encoder
-<<<<<<< HEAD
  * @vpbe_dev: vpbe device ptr
-=======
- * @vpbe_dev - vpbe device ptr
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Return ptr to current encoder config info
  */
@@ -72,13 +68,8 @@ vpbe_current_encoder_info(struct vpbe_device *vpbe_dev)
 /**
  * vpbe_find_encoder_sd_index - Given a name find encoder sd index
  *
-<<<<<<< HEAD
  * @cfg: ptr to vpbe cfg
  * @index: index used by application
-=======
- * @vpbe_config - ptr to vpbe cfg
- * @output_index - index used by application
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Return sd index of the encoder
  */
@@ -103,13 +94,8 @@ static int vpbe_find_encoder_sd_index(struct vpbe_config *cfg,
 
 /**
  * vpbe_g_cropcap - Get crop capabilities of the display
-<<<<<<< HEAD
  * @vpbe_dev: vpbe device ptr
  * @cropcap: cropcap is a ptr to struct v4l2_cropcap
-=======
- * @vpbe_dev - vpbe device ptr
- * @cropcap - cropcap is a ptr to struct v4l2_cropcap
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Update the crop capabilities in crop cap for current
  * mode
@@ -130,13 +116,8 @@ static int vpbe_g_cropcap(struct vpbe_device *vpbe_dev,
 
 /**
  * vpbe_enum_outputs - enumerate outputs
-<<<<<<< HEAD
  * @vpbe_dev: vpbe device ptr
  * @output: ptr to v4l2_output structure
-=======
- * @vpbe_dev - vpbe device ptr
- * @output - ptr to v4l2_output structure
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Enumerates the outputs available at the vpbe display
  * returns the status, -EINVAL if end of output list
@@ -145,11 +126,7 @@ static int vpbe_enum_outputs(struct vpbe_device *vpbe_dev,
 			     struct v4l2_output *output)
 {
 	struct vpbe_config *cfg = vpbe_dev->cfg;
-<<<<<<< HEAD
 	int temp_index = output->index;
-=======
-	unsigned int temp_index = output->index;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (temp_index >= cfg->num_outputs)
 		return -EINVAL;
@@ -235,13 +212,8 @@ static int vpbe_get_std_info_by_name(struct vpbe_device *vpbe_dev,
 
 /**
  * vpbe_set_output - Set output
-<<<<<<< HEAD
  * @vpbe_dev: vpbe device ptr
  * @index: index of output
-=======
- * @vpbe_dev - vpbe device ptr
- * @index - index of output
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Set vpbe output to the output specified by the index
  */
@@ -336,11 +308,7 @@ static int vpbe_set_default_output(struct vpbe_device *vpbe_dev)
 
 /**
  * vpbe_get_output - Get output
-<<<<<<< HEAD
  * @vpbe_dev: vpbe device ptr
-=======
- * @vpbe_dev - vpbe device ptr
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * return current vpbe output to the the index
  */
@@ -349,11 +317,7 @@ static unsigned int vpbe_get_output(struct vpbe_device *vpbe_dev)
 	return vpbe_dev->current_out_index;
 }
 
-<<<<<<< HEAD
 /*
-=======
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * vpbe_s_dv_timings - Set the given preset timings in the encoder
  *
  * Sets the timings if supported by the current encoder. Return the status.
@@ -405,11 +369,7 @@ static int vpbe_s_dv_timings(struct vpbe_device *vpbe_dev,
 	return ret;
 }
 
-<<<<<<< HEAD
 /*
-=======
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * vpbe_g_dv_timings - Get the timings in the current encoder
  *
  * Get the timings in the current encoder. Return the status. 0 - success
@@ -434,11 +394,7 @@ static int vpbe_g_dv_timings(struct vpbe_device *vpbe_dev,
 	return -EINVAL;
 }
 
-<<<<<<< HEAD
 /*
-=======
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * vpbe_enum_dv_timings - Enumerate the dv timings in the current encoder
  *
  * Get the timings in the current encoder. Return the status. 0 - success
@@ -470,11 +426,7 @@ static int vpbe_enum_dv_timings(struct vpbe_device *vpbe_dev,
 	return 0;
 }
 
-<<<<<<< HEAD
 /*
-=======
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * vpbe_s_std - Set the given standard in the encoder
  *
  * Sets the standard if supported by the current encoder. Return the status.
@@ -513,11 +465,7 @@ static int vpbe_s_std(struct vpbe_device *vpbe_dev, v4l2_std_id std_id)
 	return ret;
 }
 
-<<<<<<< HEAD
 /*
-=======
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * vpbe_g_std - Get the standard in the current encoder
  *
  * Get the standard in the current encoder. Return the status. 0 - success
@@ -540,11 +488,7 @@ static int vpbe_g_std(struct vpbe_device *vpbe_dev, v4l2_std_id *std_id)
 	return -EINVAL;
 }
 
-<<<<<<< HEAD
 /*
-=======
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * vpbe_set_mode - Set mode in the current encoder using mode info
  *
  * Use the mode string to decide what timings to set in the encoder
@@ -628,12 +572,8 @@ static int platform_device_get(struct device *dev, void *data)
 
 /**
  * vpbe_initialize() - Initialize the vpbe display controller
-<<<<<<< HEAD
  * @dev: Master and slave device ptr
  * @vpbe_dev: vpbe device ptr
-=======
- * @vpbe_dev - vpbe device ptr
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Master frame buffer device drivers calls this to initialize vpbe
  * display controller. This will then registers v4l2 device and the sub
@@ -833,12 +773,8 @@ fail_mutex_unlock:
 
 /**
  * vpbe_deinitialize() - de-initialize the vpbe display controller
-<<<<<<< HEAD
  * @dev: Master and slave device ptr
  * @vpbe_dev: vpbe device ptr
-=======
- * @dev - Master and slave device ptr
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * vpbe_master and slave frame buffer devices calls this to de-initialize
  * the display controller. It is called when master and slave device

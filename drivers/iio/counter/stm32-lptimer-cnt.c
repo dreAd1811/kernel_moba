@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * STM32 Low-Power Timer Encoder and Counter driver
  *
@@ -11,10 +8,6 @@
  *
  * Inspired by 104-quad-8 and stm32-timer-trigger drivers.
  *
-<<<<<<< HEAD
-=======
- * License terms:  GNU General Public License (GPL), version 2
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/bitfield.h>
@@ -185,10 +178,6 @@ static int stm32_lptim_read_raw(struct iio_dev *indio_dev,
 static const struct iio_info stm32_lptim_cnt_iio_info = {
 	.read_raw = stm32_lptim_read_raw,
 	.write_raw = stm32_lptim_write_raw,
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const char *const stm32_lptim_quadrature_modes[] = {

@@ -311,15 +311,8 @@ static int __init add_xo1_platform_devices(void)
 		return PTR_ERR(pdev);
 
 	pdev = platform_device_register_simple("olpc-xo1", -1, NULL, 0);
-<<<<<<< HEAD
 
 	return PTR_ERR_OR_ZERO(pdev);
-=======
-	if (IS_ERR(pdev))
-		return PTR_ERR(pdev);
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int olpc_xo1_ec_probe(struct platform_device *pdev)

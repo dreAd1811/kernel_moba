@@ -27,10 +27,7 @@
 
 #include <asm/bootinfo.h>
 #include <asm/reboot.h>
-<<<<<<< HEAD
 #include <asm/setup.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/sibyte/board.h>
 #include <asm/smp-ops.h>
 

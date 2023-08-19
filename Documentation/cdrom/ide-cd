@@ -55,19 +55,9 @@ This driver provides the following features:
    (to compile support as a module which can be loaded and unloaded)
    to the options: 
 
-<<<<<<< HEAD
       ATA/ATAPI/MFM/RLL support
       Include IDE/ATAPI CDROM support
 
-=======
-      Enhanced IDE/MFM/RLL disk/cdrom/tape/floppy support
-      Include IDE/ATAPI CDROM support
-
-   and `no' to
-
-      Use old disk-only driver on primary interface
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    Depending on what type of IDE interface you have, you may need to
    specify additional configuration options.  See
    Documentation/ide/ide.txt.

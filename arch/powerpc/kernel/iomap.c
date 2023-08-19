@@ -45,7 +45,6 @@ u64 ioread64(void __iomem *addr)
 {
 	return readq(addr);
 }
-<<<<<<< HEAD
 u64 ioread64_lo_hi(void __iomem *addr)
 {
 	return readq(addr);
@@ -54,13 +53,10 @@ u64 ioread64_hi_lo(void __iomem *addr)
 {
 	return readq(addr);
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 u64 ioread64be(void __iomem *addr)
 {
 	return readq_be(addr);
 }
-<<<<<<< HEAD
 u64 ioread64be_lo_hi(void __iomem *addr)
 {
 	return readq_be(addr);
@@ -75,10 +71,6 @@ EXPORT_SYMBOL(ioread64_hi_lo);
 EXPORT_SYMBOL(ioread64be);
 EXPORT_SYMBOL(ioread64be_lo_hi);
 EXPORT_SYMBOL(ioread64be_hi_lo);
-=======
-EXPORT_SYMBOL(ioread64);
-EXPORT_SYMBOL(ioread64be);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __powerpc64__ */
 
 void iowrite8(u8 val, void __iomem *addr)
@@ -111,7 +103,6 @@ void iowrite64(u64 val, void __iomem *addr)
 {
 	writeq(val, addr);
 }
-<<<<<<< HEAD
 void iowrite64_lo_hi(u64 val, void __iomem *addr)
 {
 	writeq(val, addr);
@@ -120,13 +111,10 @@ void iowrite64_hi_lo(u64 val, void __iomem *addr)
 {
 	writeq(val, addr);
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void iowrite64be(u64 val, void __iomem *addr)
 {
 	writeq_be(val, addr);
 }
-<<<<<<< HEAD
 void iowrite64be_lo_hi(u64 val, void __iomem *addr)
 {
 	writeq_be(val, addr);
@@ -141,10 +129,6 @@ EXPORT_SYMBOL(iowrite64_hi_lo);
 EXPORT_SYMBOL(iowrite64be);
 EXPORT_SYMBOL(iowrite64be_lo_hi);
 EXPORT_SYMBOL(iowrite64be_hi_lo);
-=======
-EXPORT_SYMBOL(iowrite64);
-EXPORT_SYMBOL(iowrite64be);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __powerpc64__ */
 
 /*

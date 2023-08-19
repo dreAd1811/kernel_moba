@@ -207,11 +207,7 @@ nffw_res_fwinfos(struct nfp_nffw_info_data *fwinf, struct nffw_fwinfo **arr)
  * nfp_nffw_info_open() - Acquire the lock on the NFFW table
  * @cpp:	NFP CPP handle
  *
-<<<<<<< HEAD
  * Return: pointer to nfp_nffw_info object or ERR_PTR()
-=======
- * Return: 0, or -ERRNO
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct nfp_nffw_info *nfp_nffw_info_open(struct nfp_cpp *cpp)
 {
@@ -257,15 +253,8 @@ err_free:
 }
 
 /**
-<<<<<<< HEAD
  * nfp_nffw_info_close() - Release the lock on the NFFW table and free state
  * @state:	NFP FW info state
-=======
- * nfp_nffw_info_release() - Release the lock on the NFFW table
- * @state:	NFP FW info state
- *
- * Return: 0, or -ERRNO
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 void nfp_nffw_info_close(struct nfp_nffw_info *state)
 {

@@ -51,10 +51,7 @@
 	compatible = "pine64,pine64", "allwinner,sun50i-a64";
 
 	aliases {
-<<<<<<< HEAD
 		ethernet0 = &emac;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		serial0 = &uart0;
 		serial1 = &uart1;
 		serial2 = &uart2;
@@ -75,7 +72,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
 &emac {
 	pinctrl-names = "default";
 	pinctrl-0 = <&rmii_pins>;
@@ -86,8 +82,6 @@
 
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &i2c1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&i2c1_pins>;
@@ -98,7 +92,6 @@
 	bias-pull-up;
 };
 
-<<<<<<< HEAD
 &mdio {
 	ext_rmii_phy1: ethernet-phy@1 {
 		compatible = "ethernet-phy-ieee802.3-c22";
@@ -106,18 +99,11 @@
 	};
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &mmc0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&mmc0_pins>;
 	vmmc-supply = <&reg_dcdc1>;
-<<<<<<< HEAD
 	cd-gpios = <&pio 5 6 GPIO_ACTIVE_LOW>;
-=======
-	cd-gpios = <&pio 5 6 GPIO_ACTIVE_HIGH>;
-	cd-inverted;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	disable-wp;
 	bus-width = <4>;
 	status = "okay";
@@ -243,7 +229,6 @@
 	regulator-name = "vcc-rtc";
 };
 
-<<<<<<< HEAD
 &simplefb_hdmi {
 	vcc-hdmi-supply = <&reg_dldo1>;
 };
@@ -253,8 +238,6 @@
 	status = "disabled";
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* On Exp and Euler connectors */
 &uart0 {
 	pinctrl-names = "default";

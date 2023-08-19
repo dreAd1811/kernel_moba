@@ -30,66 +30,29 @@
 #include <linux/sort.h>
 #include <linux/sched/mm.h>
 #include "intel_drv.h"
-<<<<<<< HEAD
 #include "intel_guc_submission.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline struct drm_i915_private *node_to_i915(struct drm_info_node *node)
 {
 	return to_i915(node->minor->dev);
 }
 
-<<<<<<< HEAD
-=======
-static __always_inline void seq_print_param(struct seq_file *m,
-					    const char *name,
-					    const char *type,
-					    const void *x)
-{
-	if (!__builtin_strcmp(type, "bool"))
-		seq_printf(m, "i915.%s=%s\n", name, yesno(*(const bool *)x));
-	else if (!__builtin_strcmp(type, "int"))
-		seq_printf(m, "i915.%s=%d\n", name, *(const int *)x);
-	else if (!__builtin_strcmp(type, "unsigned int"))
-		seq_printf(m, "i915.%s=%u\n", name, *(const unsigned int *)x);
-	else if (!__builtin_strcmp(type, "char *"))
-		seq_printf(m, "i915.%s=%s\n", name, *(const char **)x);
-	else
-		BUILD_BUG();
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int i915_capabilities(struct seq_file *m, void *data)
 {
 	struct drm_i915_private *dev_priv = node_to_i915(m->private);
 	const struct intel_device_info *info = INTEL_INFO(dev_priv);
-<<<<<<< HEAD
 	struct drm_printer p = drm_seq_file_printer(m);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	seq_printf(m, "gen: %d\n", INTEL_GEN(dev_priv));
 	seq_printf(m, "platform: %s\n", intel_platform_name(info->platform));
 	seq_printf(m, "pch: %d\n", INTEL_PCH_TYPE(dev_priv));
 
-<<<<<<< HEAD
 	intel_device_info_dump_flags(info, &p);
 	intel_device_info_dump_runtime(info, &p);
 	intel_driver_caps_print(&dev_priv->caps, &p);
 
 	kernel_param_lock(THIS_MODULE);
 	i915_params_dump(&i915_modparams, &p);
-=======
-#define PRINT_FLAG(x)  seq_printf(m, #x ": %s\n", yesno(info->x))
-	DEV_INFO_FOR_EACH_FLAG(PRINT_FLAG);
-#undef PRINT_FLAG
-
-	kernel_param_lock(THIS_MODULE);
-#define PRINT_PARAM(T, x) seq_print_param(m, #x, #T, &i915.x);
-	I915_PARAMS_FOR_EACH(PRINT_PARAM);
-#undef PRINT_PARAM
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kernel_param_unlock(THIS_MODULE);
 
 	return 0;
@@ -102,11 +65,7 @@ static char get_active_flag(struct drm_i915_gem_object *obj)
 
 static char get_pin_flag(struct drm_i915_gem_object *obj)
 {
-<<<<<<< HEAD
 	return obj->pin_global ? 'p' : ' ';
-=======
-	return obj->pin_display ? 'p' : ' ';
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static char get_tiling_flag(struct drm_i915_gem_object *obj)
@@ -121,11 +80,7 @@ static char get_tiling_flag(struct drm_i915_gem_object *obj)
 
 static char get_global_flag(struct drm_i915_gem_object *obj)
 {
-<<<<<<< HEAD
 	return obj->userfault_count ? 'g' : ' ';
-=======
-	return !list_empty(&obj->userfault_link) ? 'g' : ' ';
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static char get_pin_mapped_flag(struct drm_i915_gem_object *obj)
@@ -138,20 +93,14 @@ static u64 i915_gem_obj_total_ggtt_size(struct drm_i915_gem_object *obj)
 	u64 size = 0;
 	struct i915_vma *vma;
 
-<<<<<<< HEAD
 	for_each_ggtt_vma(vma, obj) {
 		if (drm_mm_node_allocated(&vma->node))
-=======
-	list_for_each_entry(vma, &obj->vma_list, obj_link) {
-		if (i915_vma_is_ggtt(vma) && drm_mm_node_allocated(&vma->node))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			size += vma->node.size;
 	}
 
 	return size;
 }
 
-<<<<<<< HEAD
 static const char *
 stringify_page_sizes(unsigned int page_sizes, char *buf, size_t len)
 {
@@ -182,8 +131,6 @@ stringify_page_sizes(unsigned int page_sizes, char *buf, size_t len)
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void
 describe_obj(struct seq_file *m, struct drm_i915_gem_object *obj)
 {
@@ -203,13 +150,8 @@ describe_obj(struct seq_file *m, struct drm_i915_gem_object *obj)
 		   get_global_flag(obj),
 		   get_pin_mapped_flag(obj),
 		   obj->base.size / 1024,
-<<<<<<< HEAD
 		   obj->read_domains,
 		   obj->write_domain,
-=======
-		   obj->base.read_domains,
-		   obj->base.write_domain,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		   i915_cache_level_str(dev_priv, obj->cache_level),
 		   obj->mm.dirty ? " dirty" : "",
 		   obj->mm.madv == I915_MADV_DONTNEED ? " purgeable" : "");
@@ -220,27 +162,16 @@ describe_obj(struct seq_file *m, struct drm_i915_gem_object *obj)
 			pin_count++;
 	}
 	seq_printf(m, " (pinned x %d)", pin_count);
-<<<<<<< HEAD
 	if (obj->pin_global)
 		seq_printf(m, " (global)");
-=======
-	if (obj->pin_display)
-		seq_printf(m, " (display)");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_for_each_entry(vma, &obj->vma_list, obj_link) {
 		if (!drm_mm_node_allocated(&vma->node))
 			continue;
 
-<<<<<<< HEAD
 		seq_printf(m, " (%sgtt offset: %08llx, size: %08llx, pages: %s",
 			   i915_vma_is_ggtt(vma) ? "g" : "pp",
 			   vma->node.start, vma->node.size,
 			   stringify_page_sizes(vma->page_sizes.gtt, NULL, 0));
-=======
-		seq_printf(m, " (%sgtt offset: %08llx, size: %08llx",
-			   i915_vma_is_ggtt(vma) ? "g" : "pp",
-			   vma->node.start, vma->node.size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (i915_vma_is_ggtt(vma)) {
 			switch (vma->ggtt_view.type) {
 			case I915_GGTT_VIEW_NORMAL:
@@ -322,13 +253,9 @@ static int i915_gem_stolen_list_info(struct seq_file *m, void *data)
 		goto out;
 
 	total_obj_size = total_gtt_size = count = 0;
-<<<<<<< HEAD
 
 	spin_lock(&dev_priv->mm.obj_lock);
 	list_for_each_entry(obj, &dev_priv->mm.bound_list, mm.link) {
-=======
-	list_for_each_entry(obj, &dev_priv->mm.bound_list, global_link) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (count == total)
 			break;
 
@@ -340,11 +267,7 @@ static int i915_gem_stolen_list_info(struct seq_file *m, void *data)
 		total_gtt_size += i915_gem_obj_total_ggtt_size(obj);
 
 	}
-<<<<<<< HEAD
 	list_for_each_entry(obj, &dev_priv->mm.unbound_list, mm.link) {
-=======
-	list_for_each_entry(obj, &dev_priv->mm.unbound_list, global_link) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (count == total)
 			break;
 
@@ -354,10 +277,7 @@ static int i915_gem_stolen_list_info(struct seq_file *m, void *data)
 		objects[count++] = obj;
 		total_obj_size += obj->base.size;
 	}
-<<<<<<< HEAD
 	spin_unlock(&dev_priv->mm.obj_lock);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sort(objects, count, sizeof(*objects), obj_rank_by_stolen, NULL);
 
@@ -408,11 +328,7 @@ static int per_file_stats(int id, void *ptr, void *data)
 		} else {
 			struct i915_hw_ppgtt *ppgtt = i915_vm_to_ppgtt(vma->vm);
 
-<<<<<<< HEAD
 			if (ppgtt->vm.file != stats->file_priv)
-=======
-			if (ppgtt->base.file != stats->file_priv)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				continue;
 		}
 
@@ -461,7 +377,6 @@ static void print_batch_pool_stats(struct seq_file *m,
 	print_file_stats(m, "[k]batch pool", stats);
 }
 
-<<<<<<< HEAD
 static int per_file_ctx_stats(int idx, void *ptr, void *data)
 {
 	struct i915_gem_context *ctx = ptr;
@@ -475,18 +390,6 @@ static int per_file_ctx_stats(int idx, void *ptr, void *data)
 			per_file_stats(0, ce->state->obj, data);
 		if (ce->ring)
 			per_file_stats(0, ce->ring->vma->obj, data);
-=======
-static int per_file_ctx_stats(int id, void *ptr, void *data)
-{
-	struct i915_gem_context *ctx = ptr;
-	int n;
-
-	for (n = 0; n < ARRAY_SIZE(ctx->engine); n++) {
-		if (ctx->engine[n].state)
-			per_file_stats(0, ctx->engine[n].state->obj, data);
-		if (ctx->engine[n].ring)
-			per_file_stats(0, ctx->engine[n].ring->vma->obj, data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -519,19 +422,12 @@ static int i915_gem_object_info(struct seq_file *m, void *data)
 	struct drm_i915_private *dev_priv = node_to_i915(m->private);
 	struct drm_device *dev = &dev_priv->drm;
 	struct i915_ggtt *ggtt = &dev_priv->ggtt;
-<<<<<<< HEAD
 	u32 count, mapped_count, purgeable_count, dpy_count, huge_count;
 	u64 size, mapped_size, purgeable_size, dpy_size, huge_size;
 	struct drm_i915_gem_object *obj;
 	unsigned int page_sizes = 0;
 	struct drm_file *file;
 	char buf[80];
-=======
-	u32 count, mapped_count, purgeable_count, dpy_count;
-	u64 size, mapped_size, purgeable_size, dpy_size;
-	struct drm_i915_gem_object *obj;
-	struct drm_file *file;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	ret = mutex_lock_interruptible(&dev->struct_mutex);
@@ -545,14 +441,10 @@ static int i915_gem_object_info(struct seq_file *m, void *data)
 	size = count = 0;
 	mapped_size = mapped_count = 0;
 	purgeable_size = purgeable_count = 0;
-<<<<<<< HEAD
 	huge_size = huge_count = 0;
 
 	spin_lock(&dev_priv->mm.obj_lock);
 	list_for_each_entry(obj, &dev_priv->mm.unbound_list, mm.link) {
-=======
-	list_for_each_entry(obj, &dev_priv->mm.unbound_list, global_link) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		size += obj->base.size;
 		++count;
 
@@ -565,32 +457,21 @@ static int i915_gem_object_info(struct seq_file *m, void *data)
 			mapped_count++;
 			mapped_size += obj->base.size;
 		}
-<<<<<<< HEAD
 
 		if (obj->mm.page_sizes.sg > I915_GTT_PAGE_SIZE) {
 			huge_count++;
 			huge_size += obj->base.size;
 			page_sizes |= obj->mm.page_sizes.sg;
 		}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	seq_printf(m, "%u unbound objects, %llu bytes\n", count, size);
 
 	size = count = dpy_size = dpy_count = 0;
-<<<<<<< HEAD
 	list_for_each_entry(obj, &dev_priv->mm.bound_list, mm.link) {
 		size += obj->base.size;
 		++count;
 
 		if (obj->pin_global) {
-=======
-	list_for_each_entry(obj, &dev_priv->mm.bound_list, global_link) {
-		size += obj->base.size;
-		++count;
-
-		if (obj->pin_display) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dpy_size += obj->base.size;
 			++dpy_count;
 		}
@@ -604,7 +485,6 @@ static int i915_gem_object_info(struct seq_file *m, void *data)
 			mapped_count++;
 			mapped_size += obj->base.size;
 		}
-<<<<<<< HEAD
 
 		if (obj->mm.page_sizes.sg > I915_GTT_PAGE_SIZE) {
 			huge_count++;
@@ -614,16 +494,12 @@ static int i915_gem_object_info(struct seq_file *m, void *data)
 	}
 	spin_unlock(&dev_priv->mm.obj_lock);
 
-=======
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	seq_printf(m, "%u bound objects, %llu bytes\n",
 		   count, size);
 	seq_printf(m, "%u purgeable objects, %llu bytes\n",
 		   purgeable_count, purgeable_size);
 	seq_printf(m, "%u mapped objects, %llu bytes\n",
 		   mapped_count, mapped_size);
-<<<<<<< HEAD
 	seq_printf(m, "%u huge-paged objects (%s) %llu bytes\n",
 		   huge_count,
 		   stringify_page_sizes(page_sizes, buf, sizeof(buf)),
@@ -636,13 +512,6 @@ static int i915_gem_object_info(struct seq_file *m, void *data)
 	seq_printf(m, "Supported page sizes: %s\n",
 		   stringify_page_sizes(INTEL_INFO(dev_priv)->page_sizes,
 					buf, sizeof(buf)));
-=======
-	seq_printf(m, "%u display objects (pinned), %llu bytes\n",
-		   dpy_count, dpy_size);
-
-	seq_printf(m, "%llu [%llu] gtt total\n",
-		   ggtt->base.total, ggtt->mappable_end);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	seq_putc(m, '\n');
 	print_batch_pool_stats(m, dev_priv);
@@ -653,11 +522,7 @@ static int i915_gem_object_info(struct seq_file *m, void *data)
 	list_for_each_entry_reverse(file, &dev->filelist, lhead) {
 		struct file_stats stats;
 		struct drm_i915_file_private *file_priv = file->driver_priv;
-<<<<<<< HEAD
 		struct i915_request *request;
-=======
-		struct drm_i915_gem_request *request;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct task_struct *task;
 
 		mutex_lock(&dev->struct_mutex);
@@ -674,19 +539,11 @@ static int i915_gem_object_info(struct seq_file *m, void *data)
 		 * Therefore, we need to protect this ->comm access using RCU.
 		 */
 		request = list_first_entry_or_null(&file_priv->mm.request_list,
-<<<<<<< HEAD
 						   struct i915_request,
 						   client_link);
 		rcu_read_lock();
 		task = pid_task(request && request->gem_context->pid ?
 				request->gem_context->pid : file->pid,
-=======
-						   struct drm_i915_gem_request,
-						   client_link);
-		rcu_read_lock();
-		task = pid_task(request && request->ctx->pid ?
-				request->ctx->pid : file->pid,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				PIDTYPE_PID);
 		print_file_stats(m, task ? task->comm : "<unknown>", stats);
 		rcu_read_unlock();
@@ -703,7 +560,6 @@ static int i915_gem_gtt_info(struct seq_file *m, void *data)
 	struct drm_info_node *node = m->private;
 	struct drm_i915_private *dev_priv = node_to_i915(node);
 	struct drm_device *dev = &dev_priv->drm;
-<<<<<<< HEAD
 	struct drm_i915_gem_object **objects;
 	struct drm_i915_gem_object *obj;
 	u64 total_obj_size, total_gtt_size;
@@ -715,18 +571,10 @@ static int i915_gem_gtt_info(struct seq_file *m, void *data)
 	if (!objects)
 		return -ENOMEM;
 
-=======
-	bool show_pin_display_only = !!node->info_ent->data;
-	struct drm_i915_gem_object *obj;
-	u64 total_obj_size, total_gtt_size;
-	int count, ret;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = mutex_lock_interruptible(&dev->struct_mutex);
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	count = 0;
 	spin_lock(&dev_priv->mm.obj_lock);
 	list_for_each_entry(obj, &dev_priv->mm.bound_list, mm.link) {
@@ -739,32 +587,19 @@ static int i915_gem_gtt_info(struct seq_file *m, void *data)
 	total_obj_size = total_gtt_size = 0;
 	for (n = 0;  n < count; n++) {
 		obj = objects[n];
-=======
-	total_obj_size = total_gtt_size = count = 0;
-	list_for_each_entry(obj, &dev_priv->mm.bound_list, global_link) {
-		if (show_pin_display_only && !obj->pin_display)
-			continue;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		seq_puts(m, "   ");
 		describe_obj(m, obj);
 		seq_putc(m, '\n');
 		total_obj_size += obj->base.size;
 		total_gtt_size += i915_gem_obj_total_ggtt_size(obj);
-<<<<<<< HEAD
-=======
-		count++;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	mutex_unlock(&dev->struct_mutex);
 
 	seq_printf(m, "Total %d objects, %llu bytes, %llu GTT size\n",
 		   count, total_obj_size, total_gtt_size);
-<<<<<<< HEAD
 	kvfree(objects);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -814,7 +649,6 @@ static int i915_gem_batch_pool_info(struct seq_file *m, void *data)
 	return 0;
 }
 
-<<<<<<< HEAD
 static void gen8_display_interrupt_info(struct seq_file *m)
 {
 	struct drm_i915_private *dev_priv = node_to_i915(m->private);
@@ -865,88 +699,6 @@ static void gen8_display_interrupt_info(struct seq_file *m)
 		   I915_READ(GEN8_PCU_IER));
 }
 
-=======
-static void print_request(struct seq_file *m,
-			  struct drm_i915_gem_request *rq,
-			  const char *prefix)
-{
-	seq_printf(m, "%s%x [%x:%x] prio=%d @ %dms: %s\n", prefix,
-		   rq->global_seqno, rq->ctx->hw_id, rq->fence.seqno,
-		   rq->priotree.priority,
-		   jiffies_to_msecs(jiffies - rq->emitted_jiffies),
-		   rq->timeline->common->name);
-}
-
-static int i915_gem_request_info(struct seq_file *m, void *data)
-{
-	struct drm_i915_private *dev_priv = node_to_i915(m->private);
-	struct drm_device *dev = &dev_priv->drm;
-	struct drm_i915_gem_request *req;
-	struct intel_engine_cs *engine;
-	enum intel_engine_id id;
-	int ret, any;
-
-	ret = mutex_lock_interruptible(&dev->struct_mutex);
-	if (ret)
-		return ret;
-
-	any = 0;
-	for_each_engine(engine, dev_priv, id) {
-		int count;
-
-		count = 0;
-		list_for_each_entry(req, &engine->timeline->requests, link)
-			count++;
-		if (count == 0)
-			continue;
-
-		seq_printf(m, "%s requests: %d\n", engine->name, count);
-		list_for_each_entry(req, &engine->timeline->requests, link)
-			print_request(m, req, "    ");
-
-		any++;
-	}
-	mutex_unlock(&dev->struct_mutex);
-
-	if (any == 0)
-		seq_puts(m, "No requests\n");
-
-	return 0;
-}
-
-static void i915_ring_seqno_info(struct seq_file *m,
-				 struct intel_engine_cs *engine)
-{
-	struct intel_breadcrumbs *b = &engine->breadcrumbs;
-	struct rb_node *rb;
-
-	seq_printf(m, "Current sequence (%s): %x\n",
-		   engine->name, intel_engine_get_seqno(engine));
-
-	spin_lock_irq(&b->rb_lock);
-	for (rb = rb_first(&b->waiters); rb; rb = rb_next(rb)) {
-		struct intel_wait *w = rb_entry(rb, typeof(*w), node);
-
-		seq_printf(m, "Waiting (%s): %s [%d] on %x\n",
-			   engine->name, w->tsk->comm, w->tsk->pid, w->seqno);
-	}
-	spin_unlock_irq(&b->rb_lock);
-}
-
-static int i915_gem_seqno_info(struct seq_file *m, void *data)
-{
-	struct drm_i915_private *dev_priv = node_to_i915(m->private);
-	struct intel_engine_cs *engine;
-	enum intel_engine_id id;
-
-	for_each_engine(engine, dev_priv, id)
-		i915_ring_seqno_info(m, engine);
-
-	return 0;
-}
-
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int i915_interrupt_info(struct seq_file *m, void *data)
 {
 	struct drm_i915_private *dev_priv = node_to_i915(m->private);
@@ -1010,7 +762,6 @@ static int i915_interrupt_info(struct seq_file *m, void *data)
 			   I915_READ(GEN8_PCU_IIR));
 		seq_printf(m, "PCU interrupt enable:\t%08x\n",
 			   I915_READ(GEN8_PCU_IER));
-<<<<<<< HEAD
 	} else if (INTEL_GEN(dev_priv) >= 11) {
 		seq_printf(m, "Master Interrupt Control:  %08x\n",
 			   I915_READ(GEN11_GFX_MSTR_IRQ));
@@ -1032,8 +783,6 @@ static int i915_interrupt_info(struct seq_file *m, void *data)
 			   I915_READ(GEN11_DISPLAY_INT_CTL));
 
 		gen8_display_interrupt_info(m);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (INTEL_GEN(dev_priv) >= 8) {
 		seq_printf(m, "Master Interrupt Control:\t%08x\n",
 			   I915_READ(GEN8_MASTER_IRQ));
@@ -1047,53 +796,7 @@ static int i915_interrupt_info(struct seq_file *m, void *data)
 				   i, I915_READ(GEN8_GT_IER(i)));
 		}
 
-<<<<<<< HEAD
 		gen8_display_interrupt_info(m);
-=======
-		for_each_pipe(dev_priv, pipe) {
-			enum intel_display_power_domain power_domain;
-
-			power_domain = POWER_DOMAIN_PIPE(pipe);
-			if (!intel_display_power_get_if_enabled(dev_priv,
-								power_domain)) {
-				seq_printf(m, "Pipe %c power disabled\n",
-					   pipe_name(pipe));
-				continue;
-			}
-			seq_printf(m, "Pipe %c IMR:\t%08x\n",
-				   pipe_name(pipe),
-				   I915_READ(GEN8_DE_PIPE_IMR(pipe)));
-			seq_printf(m, "Pipe %c IIR:\t%08x\n",
-				   pipe_name(pipe),
-				   I915_READ(GEN8_DE_PIPE_IIR(pipe)));
-			seq_printf(m, "Pipe %c IER:\t%08x\n",
-				   pipe_name(pipe),
-				   I915_READ(GEN8_DE_PIPE_IER(pipe)));
-
-			intel_display_power_put(dev_priv, power_domain);
-		}
-
-		seq_printf(m, "Display Engine port interrupt mask:\t%08x\n",
-			   I915_READ(GEN8_DE_PORT_IMR));
-		seq_printf(m, "Display Engine port interrupt identity:\t%08x\n",
-			   I915_READ(GEN8_DE_PORT_IIR));
-		seq_printf(m, "Display Engine port interrupt enable:\t%08x\n",
-			   I915_READ(GEN8_DE_PORT_IER));
-
-		seq_printf(m, "Display Engine misc interrupt mask:\t%08x\n",
-			   I915_READ(GEN8_DE_MISC_IMR));
-		seq_printf(m, "Display Engine misc interrupt identity:\t%08x\n",
-			   I915_READ(GEN8_DE_MISC_IIR));
-		seq_printf(m, "Display Engine misc interrupt enable:\t%08x\n",
-			   I915_READ(GEN8_DE_MISC_IER));
-
-		seq_printf(m, "PCU interrupt mask:\t%08x\n",
-			   I915_READ(GEN8_PCU_IMR));
-		seq_printf(m, "PCU interrupt identity:\t%08x\n",
-			   I915_READ(GEN8_PCU_IIR));
-		seq_printf(m, "PCU interrupt enable:\t%08x\n",
-			   I915_READ(GEN8_PCU_IER));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (IS_VALLEYVIEW(dev_priv)) {
 		seq_printf(m, "Display IER:\t%08x\n",
 			   I915_READ(VLV_IER));
@@ -1175,7 +878,6 @@ static int i915_interrupt_info(struct seq_file *m, void *data)
 		seq_printf(m, "Graphics Interrupt mask:		%08x\n",
 			   I915_READ(GTIMR));
 	}
-<<<<<<< HEAD
 
 	if (INTEL_GEN(dev_priv) >= 11) {
 		seq_printf(m, "RCS Intr Mask:\t %08x\n",
@@ -1199,21 +901,12 @@ static int i915_interrupt_info(struct seq_file *m, void *data)
 
 	} else if (INTEL_GEN(dev_priv) >= 6) {
 		for_each_engine(engine, dev_priv, id) {
-=======
-	for_each_engine(engine, dev_priv, id) {
-		if (INTEL_GEN(dev_priv) >= 6) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			seq_printf(m,
 				   "Graphics Interrupt mask (%s):	%08x\n",
 				   engine->name, I915_READ_IMR(engine));
 		}
-<<<<<<< HEAD
 	}
 
-=======
-		i915_ring_seqno_info(m, engine);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	intel_runtime_pm_put(dev_priv);
 
 	return 0;
@@ -1350,14 +1043,10 @@ i915_next_seqno_set(void *data, u64 val)
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	intel_runtime_pm_get(dev_priv);
 	ret = i915_gem_set_global_seqno(dev, val);
 	intel_runtime_pm_put(dev_priv);
 
-=======
-	ret = i915_gem_set_global_seqno(dev, val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&dev->struct_mutex);
 
 	return ret;
@@ -1370,10 +1059,7 @@ DEFINE_SIMPLE_ATTRIBUTE(i915_next_seqno_fops,
 static int i915_frequency_info(struct seq_file *m, void *unused)
 {
 	struct drm_i915_private *dev_priv = node_to_i915(m->private);
-<<<<<<< HEAD
 	struct intel_rps *rps = &dev_priv->gt_pm.rps;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = 0;
 
 	intel_runtime_pm_get(dev_priv);
@@ -1389,7 +1075,6 @@ static int i915_frequency_info(struct seq_file *m, void *unused)
 		seq_printf(m, "Current P-state: %d\n",
 			   (rgvstat & MEMSTAT_PSTATE_MASK) >> MEMSTAT_PSTATE_SHIFT);
 	} else if (IS_VALLEYVIEW(dev_priv) || IS_CHERRYVIEW(dev_priv)) {
-<<<<<<< HEAD
 		u32 rpmodectl, freq_sts;
 
 		mutex_lock(&dev_priv->pcu_lock);
@@ -1403,11 +1088,6 @@ static int i915_frequency_info(struct seq_file *m, void *unused)
 			   yesno((rpmodectl & GEN6_RP_MEDIA_MODE_MASK) ==
 				  GEN6_RP_MEDIA_SW_MODE));
 
-=======
-		u32 freq_sts;
-
-		mutex_lock(&dev_priv->rps.hw_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		freq_sts = vlv_punit_read(dev_priv, PUNIT_REG_GPU_FREQ_STS);
 		seq_printf(m, "PUNIT_REG_GPU_FREQ_STS: 0x%08x\n", freq_sts);
 		seq_printf(m, "DDR freq: %d MHz\n", dev_priv->mem_freq);
@@ -1416,7 +1096,6 @@ static int i915_frequency_info(struct seq_file *m, void *unused)
 			   intel_gpu_freq(dev_priv, (freq_sts >> 8) & 0xff));
 
 		seq_printf(m, "current GPU freq: %d MHz\n",
-<<<<<<< HEAD
 			   intel_gpu_freq(dev_priv, rps->cur_freq));
 
 		seq_printf(m, "max GPU freq: %d MHz\n",
@@ -1432,23 +1111,6 @@ static int i915_frequency_info(struct seq_file *m, void *unused)
 			   "efficient (RPe) frequency: %d MHz\n",
 			   intel_gpu_freq(dev_priv, rps->efficient_freq));
 		mutex_unlock(&dev_priv->pcu_lock);
-=======
-			   intel_gpu_freq(dev_priv, dev_priv->rps.cur_freq));
-
-		seq_printf(m, "max GPU freq: %d MHz\n",
-			   intel_gpu_freq(dev_priv, dev_priv->rps.max_freq));
-
-		seq_printf(m, "min GPU freq: %d MHz\n",
-			   intel_gpu_freq(dev_priv, dev_priv->rps.min_freq));
-
-		seq_printf(m, "idle GPU freq: %d MHz\n",
-			   intel_gpu_freq(dev_priv, dev_priv->rps.idle_freq));
-
-		seq_printf(m,
-			   "efficient (RPe) frequency: %d MHz\n",
-			   intel_gpu_freq(dev_priv, dev_priv->rps.efficient_freq));
-		mutex_unlock(&dev_priv->rps.hw_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (INTEL_GEN(dev_priv) >= 6) {
 		u32 rp_state_limits;
 		u32 gt_perf_status;
@@ -1495,7 +1157,6 @@ static int i915_frequency_info(struct seq_file *m, void *unused)
 		rpdownei = I915_READ(GEN6_RP_CUR_DOWN_EI) & GEN6_CURIAVG_MASK;
 		rpcurdown = I915_READ(GEN6_RP_CUR_DOWN) & GEN6_CURBSYTAVG_MASK;
 		rpprevdown = I915_READ(GEN6_RP_PREV_DOWN) & GEN6_CURBSYTAVG_MASK;
-<<<<<<< HEAD
 		cagf = intel_gpu_freq(dev_priv,
 				      intel_get_cagf(dev_priv, rpstat));
 
@@ -1516,24 +1177,10 @@ static int i915_frequency_info(struct seq_file *m, void *unused)
 			pm_isr = I915_READ(GEN8_GT_ISR(2));
 			pm_iir = I915_READ(GEN8_GT_IIR(2));
 		} else {
-=======
-		if (INTEL_GEN(dev_priv) >= 9)
-			cagf = (rpstat & GEN9_CAGF_MASK) >> GEN9_CAGF_SHIFT;
-		else if (IS_HASWELL(dev_priv) || IS_BROADWELL(dev_priv))
-			cagf = (rpstat & HSW_CAGF_MASK) >> HSW_CAGF_SHIFT;
-		else
-			cagf = (rpstat & GEN6_CAGF_MASK) >> GEN6_CAGF_SHIFT;
-		cagf = intel_gpu_freq(dev_priv, cagf);
-
-		intel_uncore_forcewake_put(dev_priv, FORCEWAKE_ALL);
-
-		if (IS_GEN6(dev_priv) || IS_GEN7(dev_priv)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pm_ier = I915_READ(GEN6_PMIER);
 			pm_imr = I915_READ(GEN6_PMIMR);
 			pm_isr = I915_READ(GEN6_PMISR);
 			pm_iir = I915_READ(GEN6_PMIIR);
-<<<<<<< HEAD
 		}
 		pm_mask = I915_READ(GEN6_PMINTRMSK);
 
@@ -1552,20 +1199,6 @@ static int i915_frequency_info(struct seq_file *m, void *unused)
 				   pm_isr, pm_iir);
 		seq_printf(m, "pm_intrmsk_mbz: 0x%08x\n",
 			   rps->pm_intrmsk_mbz);
-=======
-			pm_mask = I915_READ(GEN6_PMINTRMSK);
-		} else {
-			pm_ier = I915_READ(GEN8_GT_IER(2));
-			pm_imr = I915_READ(GEN8_GT_IMR(2));
-			pm_isr = I915_READ(GEN8_GT_ISR(2));
-			pm_iir = I915_READ(GEN8_GT_IIR(2));
-			pm_mask = I915_READ(GEN6_PMINTRMSK);
-		}
-		seq_printf(m, "PM IER=0x%08x IMR=0x%08x ISR=0x%08x IIR=0x%08x, MASK=0x%08x\n",
-			   pm_ier, pm_imr, pm_isr, pm_iir, pm_mask);
-		seq_printf(m, "pm_intrmsk_mbz: 0x%08x\n",
-			   dev_priv->rps.pm_intrmsk_mbz);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		seq_printf(m, "GT_PERF_STATUS: 0x%08x\n", gt_perf_status);
 		seq_printf(m, "Render p-state ratio: %d\n",
 			   (gt_perf_status & (INTEL_GEN(dev_priv) >= 9 ? 0x1ff00 : 0xff00)) >> 8);
@@ -1586,11 +1219,7 @@ static int i915_frequency_info(struct seq_file *m, void *unused)
 		seq_printf(m, "RP PREV UP: %d (%dus)\n",
 			   rpprevup, GT_PM_INTERVAL_TO_US(dev_priv, rpprevup));
 		seq_printf(m, "Up threshold: %d%%\n",
-<<<<<<< HEAD
 			   rps->power.up_threshold);
-=======
-			   dev_priv->rps.up_threshold);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		seq_printf(m, "RP CUR DOWN EI: %d (%dus)\n",
 			   rpdownei, GT_PM_INTERVAL_TO_US(dev_priv, rpdownei));
@@ -1599,37 +1228,24 @@ static int i915_frequency_info(struct seq_file *m, void *unused)
 		seq_printf(m, "RP PREV DOWN: %d (%dus)\n",
 			   rpprevdown, GT_PM_INTERVAL_TO_US(dev_priv, rpprevdown));
 		seq_printf(m, "Down threshold: %d%%\n",
-<<<<<<< HEAD
 			   rps->power.down_threshold);
-=======
-			   dev_priv->rps.down_threshold);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		max_freq = (IS_GEN9_LP(dev_priv) ? rp_state_cap >> 0 :
 			    rp_state_cap >> 16) & 0xff;
 		max_freq *= (IS_GEN9_BC(dev_priv) ||
-<<<<<<< HEAD
 			     INTEL_GEN(dev_priv) >= 10 ? GEN9_FREQ_SCALER : 1);
-=======
-			     IS_CANNONLAKE(dev_priv) ? GEN9_FREQ_SCALER : 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		seq_printf(m, "Lowest (RPN) frequency: %dMHz\n",
 			   intel_gpu_freq(dev_priv, max_freq));
 
 		max_freq = (rp_state_cap & 0xff00) >> 8;
 		max_freq *= (IS_GEN9_BC(dev_priv) ||
-<<<<<<< HEAD
 			     INTEL_GEN(dev_priv) >= 10 ? GEN9_FREQ_SCALER : 1);
-=======
-			     IS_CANNONLAKE(dev_priv) ? GEN9_FREQ_SCALER : 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		seq_printf(m, "Nominal (RP1) frequency: %dMHz\n",
 			   intel_gpu_freq(dev_priv, max_freq));
 
 		max_freq = (IS_GEN9_LP(dev_priv) ? rp_state_cap >> 16 :
 			    rp_state_cap >> 0) & 0xff;
 		max_freq *= (IS_GEN9_BC(dev_priv) ||
-<<<<<<< HEAD
 			     INTEL_GEN(dev_priv) >= 10 ? GEN9_FREQ_SCALER : 1);
 		seq_printf(m, "Max non-overclocked (RP0) frequency: %dMHz\n",
 			   intel_gpu_freq(dev_priv, max_freq));
@@ -1650,28 +1266,6 @@ static int i915_frequency_info(struct seq_file *m, void *unused)
 		seq_printf(m,
 			   "efficient (RPe) frequency: %d MHz\n",
 			   intel_gpu_freq(dev_priv, rps->efficient_freq));
-=======
-			     IS_CANNONLAKE(dev_priv) ? GEN9_FREQ_SCALER : 1);
-		seq_printf(m, "Max non-overclocked (RP0) frequency: %dMHz\n",
-			   intel_gpu_freq(dev_priv, max_freq));
-		seq_printf(m, "Max overclocked frequency: %dMHz\n",
-			   intel_gpu_freq(dev_priv, dev_priv->rps.max_freq));
-
-		seq_printf(m, "Current freq: %d MHz\n",
-			   intel_gpu_freq(dev_priv, dev_priv->rps.cur_freq));
-		seq_printf(m, "Actual freq: %d MHz\n", cagf);
-		seq_printf(m, "Idle freq: %d MHz\n",
-			   intel_gpu_freq(dev_priv, dev_priv->rps.idle_freq));
-		seq_printf(m, "Min freq: %d MHz\n",
-			   intel_gpu_freq(dev_priv, dev_priv->rps.min_freq));
-		seq_printf(m, "Boost freq: %d MHz\n",
-			   intel_gpu_freq(dev_priv, dev_priv->rps.boost_freq));
-		seq_printf(m, "Max freq: %d MHz\n",
-			   intel_gpu_freq(dev_priv, dev_priv->rps.max_freq));
-		seq_printf(m,
-			   "efficient (RPe) frequency: %d MHz\n",
-			   intel_gpu_freq(dev_priv, dev_priv->rps.efficient_freq));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		seq_puts(m, "no P-state info available\n");
 	}
@@ -1732,11 +1326,7 @@ static int i915_hangcheck_info(struct seq_file *m, void *unused)
 	if (waitqueue_active(&dev_priv->gpu_error.reset_queue))
 		seq_puts(m, "struct_mutex blocked for reset\n");
 
-<<<<<<< HEAD
 	if (!i915_modparams.enable_hangcheck) {
-=======
-	if (!i915.enable_hangcheck) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		seq_puts(m, "Hangcheck disabled\n");
 		return 0;
 	}
@@ -1768,7 +1358,6 @@ static int i915_hangcheck_info(struct seq_file *m, void *unused)
 		struct rb_node *rb;
 
 		seq_printf(m, "%s:\n", engine->name);
-<<<<<<< HEAD
 		seq_printf(m, "\tseqno = %x [current %x, last %x]\n",
 			   engine->hangcheck.seqno, seqno[id],
 			   intel_engine_last_submit(engine));
@@ -1778,17 +1367,6 @@ static int i915_hangcheck_info(struct seq_file *m, void *unused)
 					  &dev_priv->gpu_error.missed_irq_rings)),
 			   yesno(engine->hangcheck.stalled),
 			   yesno(engine->hangcheck.wedged));
-=======
-		seq_printf(m, "\tseqno = %x [current %x, last %x], inflight %d\n",
-			   engine->hangcheck.seqno, seqno[id],
-			   intel_engine_last_submit(engine),
-			   engine->timeline->inflight_seqnos);
-		seq_printf(m, "\twaiters? %s, fake irq active? %s, stalled? %s\n",
-			   yesno(intel_engine_has_waiter(engine)),
-			   yesno(test_bit(engine->id,
-					  &dev_priv->gpu_error.missed_irq_rings)),
-			   yesno(engine->hangcheck.stalled));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		spin_lock_irq(&b->rb_lock);
 		for (rb = rb_first(&b->waiters); rb; rb = rb_next(rb)) {
@@ -1903,12 +1481,9 @@ static int i915_forcewake_domains(struct seq_file *m, void *data)
 	struct intel_uncore_forcewake_domain *fw_domain;
 	unsigned int tmp;
 
-<<<<<<< HEAD
 	seq_printf(m, "user.bypass_count = %u\n",
 		   i915->uncore.user_forcewake.count);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for_each_fw_domain(fw_domain, i915, tmp)
 		seq_printf(m, "%s.wake_count = %u\n",
 			   intel_uncore_forcewake_domain_to_str(fw_domain->id),
@@ -1931,29 +1506,11 @@ static void print_rc6_res(struct seq_file *m,
 static int vlv_drpc_info(struct seq_file *m)
 {
 	struct drm_i915_private *dev_priv = node_to_i915(m->private);
-<<<<<<< HEAD
 	u32 rcctl1, pw_status;
 
 	pw_status = I915_READ(VLV_GTLC_PW_STATUS);
 	rcctl1 = I915_READ(GEN6_RC_CONTROL);
 
-=======
-	u32 rpmodectl1, rcctl1, pw_status;
-
-	pw_status = I915_READ(VLV_GTLC_PW_STATUS);
-	rpmodectl1 = I915_READ(GEN6_RP_CONTROL);
-	rcctl1 = I915_READ(GEN6_RC_CONTROL);
-
-	seq_printf(m, "Video Turbo Mode: %s\n",
-		   yesno(rpmodectl1 & GEN6_RP_MEDIA_TURBO));
-	seq_printf(m, "Turbo enabled: %s\n",
-		   yesno(rpmodectl1 & GEN6_RP_ENABLE));
-	seq_printf(m, "HW control enabled: %s\n",
-		   yesno(rpmodectl1 & GEN6_RP_ENABLE));
-	seq_printf(m, "SW control enabled: %s\n",
-		   yesno((rpmodectl1 & GEN6_RP_MEDIA_MODE_MASK) ==
-			  GEN6_RP_MEDIA_SW_MODE));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	seq_printf(m, "RC6 Enabled: %s\n",
 		   yesno(rcctl1 & (GEN7_RC_CTL_TO_MODE |
 					GEN6_RC_CTL_EI_MODE(1))));
@@ -1971,41 +1528,18 @@ static int vlv_drpc_info(struct seq_file *m)
 static int gen6_drpc_info(struct seq_file *m)
 {
 	struct drm_i915_private *dev_priv = node_to_i915(m->private);
-<<<<<<< HEAD
 	u32 gt_core_status, rcctl1, rc6vids = 0;
 	u32 gen9_powergate_enable = 0, gen9_powergate_status = 0;
-=======
-	u32 rpmodectl1, gt_core_status, rcctl1, rc6vids = 0;
-	u32 gen9_powergate_enable = 0, gen9_powergate_status = 0;
-	unsigned forcewake_count;
-	int count = 0;
-
-	forcewake_count = READ_ONCE(dev_priv->uncore.fw_domain[FW_DOMAIN_ID_RENDER].wake_count);
-	if (forcewake_count) {
-		seq_puts(m, "RC information inaccurate because somebody "
-			    "holds a forcewake reference \n");
-	} else {
-		/* NB: we cannot use forcewake, else we read the wrong values */
-		while (count++ < 50 && (I915_READ_NOTRACE(FORCEWAKE_ACK) & 1))
-			udelay(10);
-		seq_printf(m, "RC information accurate: %s\n", yesno(count < 51));
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	gt_core_status = I915_READ_FW(GEN6_GT_CORE_STATUS);
 	trace_i915_reg_rw(false, GEN6_GT_CORE_STATUS, gt_core_status, 4, true);
 
-<<<<<<< HEAD
-=======
-	rpmodectl1 = I915_READ(GEN6_RP_CONTROL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rcctl1 = I915_READ(GEN6_RC_CONTROL);
 	if (INTEL_GEN(dev_priv) >= 9) {
 		gen9_powergate_enable = I915_READ(GEN9_PG_ENABLE);
 		gen9_powergate_status = I915_READ(GEN9_PWRGT_DOMAIN_STATUS);
 	}
 
-<<<<<<< HEAD
 	if (INTEL_GEN(dev_priv) <= 7) {
 		mutex_lock(&dev_priv->pcu_lock);
 		sandybridge_pcode_read(dev_priv, GEN6_PCODE_READ_RC6VIDS,
@@ -2013,19 +1547,6 @@ static int gen6_drpc_info(struct seq_file *m)
 		mutex_unlock(&dev_priv->pcu_lock);
 	}
 
-=======
-	mutex_lock(&dev_priv->rps.hw_lock);
-	sandybridge_pcode_read(dev_priv, GEN6_PCODE_READ_RC6VIDS, &rc6vids);
-	mutex_unlock(&dev_priv->rps.hw_lock);
-
-	seq_printf(m, "Video Turbo Mode: %s\n",
-		   yesno(rpmodectl1 & GEN6_RP_MEDIA_TURBO));
-	seq_printf(m, "HW control enabled: %s\n",
-		   yesno(rpmodectl1 & GEN6_RP_ENABLE));
-	seq_printf(m, "SW control enabled: %s\n",
-		   yesno((rpmodectl1 & GEN6_RP_MEDIA_MODE_MASK) ==
-			  GEN6_RP_MEDIA_SW_MODE));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	seq_printf(m, "RC1e Enabled: %s\n",
 		   yesno(rcctl1 & GEN6_RC_CTL_RC1e_ENABLE));
 	seq_printf(m, "RC6 Enabled: %s\n",
@@ -2080,7 +1601,6 @@ static int gen6_drpc_info(struct seq_file *m)
 	print_rc6_res(m, "RC6+ residency since boot:", GEN6_GT_GFX_RC6p);
 	print_rc6_res(m, "RC6++ residency since boot:", GEN6_GT_GFX_RC6pp);
 
-<<<<<<< HEAD
 	if (INTEL_GEN(dev_priv) <= 7) {
 		seq_printf(m, "RC6   voltage: %dmV\n",
 			   GEN6_DECODE_RC6_VID(((rc6vids >> 0) & 0xff)));
@@ -2090,14 +1610,6 @@ static int gen6_drpc_info(struct seq_file *m)
 			   GEN6_DECODE_RC6_VID(((rc6vids >> 16) & 0xff)));
 	}
 
-=======
-	seq_printf(m, "RC6   voltage: %dmV\n",
-		   GEN6_DECODE_RC6_VID(((rc6vids >> 0) & 0xff)));
-	seq_printf(m, "RC6+  voltage: %dmV\n",
-		   GEN6_DECODE_RC6_VID(((rc6vids >> 8) & 0xff)));
-	seq_printf(m, "RC6++ voltage: %dmV\n",
-		   GEN6_DECODE_RC6_VID(((rc6vids >> 16) & 0xff)));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return i915_forcewake_domains(m, NULL);
 }
 
@@ -2136,7 +1648,6 @@ static int i915_frontbuffer_tracking(struct seq_file *m, void *unused)
 static int i915_fbc_status(struct seq_file *m, void *unused)
 {
 	struct drm_i915_private *dev_priv = node_to_i915(m->private);
-<<<<<<< HEAD
 	struct intel_fbc *fbc = &dev_priv->fbc;
 
 	if (!HAS_FBC(dev_priv))
@@ -2144,26 +1655,11 @@ static int i915_fbc_status(struct seq_file *m, void *unused)
 
 	intel_runtime_pm_get(dev_priv);
 	mutex_lock(&fbc->lock);
-=======
-
-	if (!HAS_FBC(dev_priv)) {
-		seq_puts(m, "FBC unsupported on this chipset\n");
-		return 0;
-	}
-
-	intel_runtime_pm_get(dev_priv);
-	mutex_lock(&dev_priv->fbc.lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (intel_fbc_is_active(dev_priv))
 		seq_puts(m, "FBC enabled\n");
 	else
-<<<<<<< HEAD
 		seq_printf(m, "FBC disabled: %s\n", fbc->no_fbc_reason);
-=======
-		seq_printf(m, "FBC disabled: %s\n",
-			   dev_priv->fbc.no_fbc_reason);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (intel_fbc_is_active(dev_priv)) {
 		u32 mask;
@@ -2183,11 +1679,7 @@ static int i915_fbc_status(struct seq_file *m, void *unused)
 		seq_printf(m, "Compressing: %s\n", yesno(mask));
 	}
 
-<<<<<<< HEAD
 	mutex_unlock(&fbc->lock);
-=======
-	mutex_unlock(&dev_priv->fbc.lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	intel_runtime_pm_put(dev_priv);
 
 	return 0;
@@ -2234,24 +1726,13 @@ static int i915_ips_status(struct seq_file *m, void *unused)
 {
 	struct drm_i915_private *dev_priv = node_to_i915(m->private);
 
-<<<<<<< HEAD
 	if (!HAS_IPS(dev_priv))
 		return -ENODEV;
-=======
-	if (!HAS_IPS(dev_priv)) {
-		seq_puts(m, "not supported\n");
-		return 0;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	intel_runtime_pm_get(dev_priv);
 
 	seq_printf(m, "Enabled by kernel parameter: %s\n",
-<<<<<<< HEAD
 		   yesno(i915_modparams.enable_ips));
-=======
-		   yesno(i915.enable_ips));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (INTEL_GEN(dev_priv) >= 8) {
 		seq_puts(m, "Currently: unknown\n");
@@ -2307,11 +1788,8 @@ static int i915_emon_status(struct seq_file *m, void *unused)
 	if (!IS_GEN5(dev_priv))
 		return -ENODEV;
 
-<<<<<<< HEAD
 	intel_runtime_pm_get(dev_priv);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = mutex_lock_interruptible(&dev->struct_mutex);
 	if (ret)
 		return ret;
@@ -2326,18 +1804,14 @@ static int i915_emon_status(struct seq_file *m, void *unused)
 	seq_printf(m, "GFX power: %ld\n", gfx);
 	seq_printf(m, "Total power: %ld\n", chipset + gfx);
 
-<<<<<<< HEAD
 	intel_runtime_pm_put(dev_priv);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 static int i915_ring_freq_table(struct seq_file *m, void *unused)
 {
 	struct drm_i915_private *dev_priv = node_to_i915(m->private);
-<<<<<<< HEAD
 	struct intel_rps *rps = &dev_priv->gt_pm.rps;
 	unsigned int max_gpu_freq, min_gpu_freq;
 	int gpu_freq, ia_freq;
@@ -2358,32 +1832,6 @@ static int i915_ring_freq_table(struct seq_file *m, void *unused)
 		/* Convert GT frequency to 50 HZ units */
 		min_gpu_freq /= GEN9_FREQ_SCALER;
 		max_gpu_freq /= GEN9_FREQ_SCALER;
-=======
-	int ret = 0;
-	int gpu_freq, ia_freq;
-	unsigned int max_gpu_freq, min_gpu_freq;
-
-	if (!HAS_LLC(dev_priv)) {
-		seq_puts(m, "unsupported on this chipset\n");
-		return 0;
-	}
-
-	intel_runtime_pm_get(dev_priv);
-
-	ret = mutex_lock_interruptible(&dev_priv->rps.hw_lock);
-	if (ret)
-		goto out;
-
-	if (IS_GEN9_BC(dev_priv) || IS_CANNONLAKE(dev_priv)) {
-		/* Convert GT frequency to 50 HZ units */
-		min_gpu_freq =
-			dev_priv->rps.min_freq_softlimit / GEN9_FREQ_SCALER;
-		max_gpu_freq =
-			dev_priv->rps.max_freq_softlimit / GEN9_FREQ_SCALER;
-	} else {
-		min_gpu_freq = dev_priv->rps.min_freq_softlimit;
-		max_gpu_freq = dev_priv->rps.max_freq_softlimit;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	seq_puts(m, "GPU freq (MHz)\tEffective CPU freq (MHz)\tEffective Ring freq (MHz)\n");
@@ -2396,21 +1844,13 @@ static int i915_ring_freq_table(struct seq_file *m, void *unused)
 		seq_printf(m, "%d\t\t%d\t\t\t\t%d\n",
 			   intel_gpu_freq(dev_priv, (gpu_freq *
 						     (IS_GEN9_BC(dev_priv) ||
-<<<<<<< HEAD
 						      INTEL_GEN(dev_priv) >= 10 ?
-=======
-						      IS_CANNONLAKE(dev_priv) ?
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						      GEN9_FREQ_SCALER : 1))),
 			   ((ia_freq >> 0) & 0xff) * 100,
 			   ((ia_freq >> 8) & 0xff) * 100);
 	}
 
-<<<<<<< HEAD
 	mutex_unlock(&dev_priv->pcu_lock);
-=======
-	mutex_unlock(&dev_priv->rps.hw_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 out:
 	intel_runtime_pm_put(dev_priv);
@@ -2470,11 +1910,7 @@ static int i915_gem_framebuffer_info(struct seq_file *m, void *data)
 			   fbdev_fb->base.format->cpp[0] * 8,
 			   fbdev_fb->base.modifier,
 			   drm_framebuffer_read_refcount(&fbdev_fb->base));
-<<<<<<< HEAD
 		describe_obj(m, intel_fb_obj(&fbdev_fb->base));
-=======
-		describe_obj(m, fbdev_fb->obj);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		seq_putc(m, '\n');
 	}
 #endif
@@ -2492,11 +1928,7 @@ static int i915_gem_framebuffer_info(struct seq_file *m, void *data)
 			   fb->base.format->cpp[0] * 8,
 			   fb->base.modifier,
 			   drm_framebuffer_read_refcount(&fb->base));
-<<<<<<< HEAD
 		describe_obj(m, intel_fb_obj(&fb->base));
-=======
-		describe_obj(m, fb->obj);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		seq_putc(m, '\n');
 	}
 	mutex_unlock(&dev->mode_config.fb_lock);
@@ -2507,13 +1939,8 @@ static int i915_gem_framebuffer_info(struct seq_file *m, void *data)
 
 static void describe_ctx_ring(struct seq_file *m, struct intel_ring *ring)
 {
-<<<<<<< HEAD
 	seq_printf(m, " (ringbuffer, space: %d, head: %u, tail: %u, emit: %u)",
 		   ring->space, ring->head, ring->tail, ring->emit);
-=======
-	seq_printf(m, " (ringbuffer, space: %d, head: %u, tail: %u)",
-		   ring->space, ring->head, ring->tail);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int i915_context_status(struct seq_file *m, void *unused)
@@ -2550,17 +1977,10 @@ static int i915_context_status(struct seq_file *m, void *unused)
 		seq_putc(m, '\n');
 
 		for_each_engine(engine, dev_priv, id) {
-<<<<<<< HEAD
 			struct intel_context *ce =
 				to_intel_context(ctx, engine);
 
 			seq_printf(m, "%s: ", engine->name);
-=======
-			struct intel_context *ce = &ctx->engine[engine->id];
-
-			seq_printf(m, "%s: ", engine->name);
-			seq_putc(m, ce->initialised ? 'I' : 'i');
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (ce->state)
 				describe_obj(m, ce->state->obj);
 			if (ce->ring)
@@ -2576,78 +1996,6 @@ static int i915_context_status(struct seq_file *m, void *unused)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-static void i915_dump_lrc_obj(struct seq_file *m,
-			      struct i915_gem_context *ctx,
-			      struct intel_engine_cs *engine)
-{
-	struct i915_vma *vma = ctx->engine[engine->id].state;
-	struct page *page;
-	int j;
-
-	seq_printf(m, "CONTEXT: %s %u\n", engine->name, ctx->hw_id);
-
-	if (!vma) {
-		seq_puts(m, "\tFake context\n");
-		return;
-	}
-
-	if (vma->flags & I915_VMA_GLOBAL_BIND)
-		seq_printf(m, "\tBound in GGTT at 0x%08x\n",
-			   i915_ggtt_offset(vma));
-
-	if (i915_gem_object_pin_pages(vma->obj)) {
-		seq_puts(m, "\tFailed to get pages for context object\n\n");
-		return;
-	}
-
-	page = i915_gem_object_get_page(vma->obj, LRC_STATE_PN);
-	if (page) {
-		u32 *reg_state = kmap_atomic(page);
-
-		for (j = 0; j < 0x600 / sizeof(u32) / 4; j += 4) {
-			seq_printf(m,
-				   "\t[0x%04x] 0x%08x 0x%08x 0x%08x 0x%08x\n",
-				   j * 4,
-				   reg_state[j], reg_state[j + 1],
-				   reg_state[j + 2], reg_state[j + 3]);
-		}
-		kunmap_atomic(reg_state);
-	}
-
-	i915_gem_object_unpin_pages(vma->obj);
-	seq_putc(m, '\n');
-}
-
-static int i915_dump_lrc(struct seq_file *m, void *unused)
-{
-	struct drm_i915_private *dev_priv = node_to_i915(m->private);
-	struct drm_device *dev = &dev_priv->drm;
-	struct intel_engine_cs *engine;
-	struct i915_gem_context *ctx;
-	enum intel_engine_id id;
-	int ret;
-
-	if (!i915.enable_execlists) {
-		seq_printf(m, "Logical Ring Contexts are disabled\n");
-		return 0;
-	}
-
-	ret = mutex_lock_interruptible(&dev->struct_mutex);
-	if (ret)
-		return ret;
-
-	list_for_each_entry(ctx, &dev_priv->contexts.list, link)
-		for_each_engine(engine, dev_priv, id)
-			i915_dump_lrc_obj(m, ctx, engine);
-
-	mutex_unlock(&dev->struct_mutex);
-
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const char *swizzle_string(unsigned swizzle)
 {
 	switch (swizzle) {
@@ -2867,21 +2215,14 @@ static int i915_rps_boost_info(struct seq_file *m, void *data)
 {
 	struct drm_i915_private *dev_priv = node_to_i915(m->private);
 	struct drm_device *dev = &dev_priv->drm;
-<<<<<<< HEAD
 	struct intel_rps *rps = &dev_priv->gt_pm.rps;
 	struct drm_file *file;
 
 	seq_printf(m, "RPS enabled? %d\n", rps->enabled);
-=======
-	struct drm_file *file;
-
-	seq_printf(m, "RPS enabled? %d\n", dev_priv->rps.enabled);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	seq_printf(m, "GPU busy? %s [%d requests]\n",
 		   yesno(dev_priv->gt.awake), dev_priv->gt.active_requests);
 	seq_printf(m, "CPU waiting? %d\n", count_irq_waiters(dev_priv));
 	seq_printf(m, "Boosts outstanding? %d\n",
-<<<<<<< HEAD
 		   atomic_read(&rps->num_waiters));
 	seq_printf(m, "Interactive? %d\n", READ_ONCE(rps->power.interactive));
 	seq_printf(m, "Frequency requested %d\n",
@@ -2895,20 +2236,6 @@ static int i915_rps_boost_info(struct seq_file *m, void *data)
 		   intel_gpu_freq(dev_priv, rps->idle_freq),
 		   intel_gpu_freq(dev_priv, rps->efficient_freq),
 		   intel_gpu_freq(dev_priv, rps->boost_freq));
-=======
-		   atomic_read(&dev_priv->rps.num_waiters));
-	seq_printf(m, "Frequency requested %d\n",
-		   intel_gpu_freq(dev_priv, dev_priv->rps.cur_freq));
-	seq_printf(m, "  min hard:%d, soft:%d; max soft:%d, hard:%d\n",
-		   intel_gpu_freq(dev_priv, dev_priv->rps.min_freq),
-		   intel_gpu_freq(dev_priv, dev_priv->rps.min_freq_softlimit),
-		   intel_gpu_freq(dev_priv, dev_priv->rps.max_freq_softlimit),
-		   intel_gpu_freq(dev_priv, dev_priv->rps.max_freq));
-	seq_printf(m, "  idle:%d, efficient:%d, boost:%d\n",
-		   intel_gpu_freq(dev_priv, dev_priv->rps.idle_freq),
-		   intel_gpu_freq(dev_priv, dev_priv->rps.efficient_freq),
-		   intel_gpu_freq(dev_priv, dev_priv->rps.boost_freq));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&dev->filelist_mutex);
 	list_for_each_entry_reverse(file, &dev->filelist, lhead) {
@@ -2920,7 +2247,6 @@ static int i915_rps_boost_info(struct seq_file *m, void *data)
 		seq_printf(m, "%s [%d]: %d boosts\n",
 			   task ? task->comm : "<unknown>",
 			   task ? task->pid : -1,
-<<<<<<< HEAD
 			   atomic_read(&file_priv->rps_client.boosts));
 		rcu_read_unlock();
 	}
@@ -2930,17 +2256,6 @@ static int i915_rps_boost_info(struct seq_file *m, void *data)
 
 	if (INTEL_GEN(dev_priv) >= 6 &&
 	    rps->enabled &&
-=======
-			   atomic_read(&file_priv->rps.boosts));
-		rcu_read_unlock();
-	}
-	seq_printf(m, "Kernel (anonymous) boosts: %d\n",
-		   atomic_read(&dev_priv->rps.boosts));
-	mutex_unlock(&dev->filelist_mutex);
-
-	if (INTEL_GEN(dev_priv) >= 6 &&
-	    dev_priv->rps.enabled &&
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    dev_priv->gt.active_requests) {
 		u32 rpup, rpupei;
 		u32 rpdown, rpdownei;
@@ -2953,7 +2268,6 @@ static int i915_rps_boost_info(struct seq_file *m, void *data)
 		intel_uncore_forcewake_put(dev_priv, FORCEWAKE_ALL);
 
 		seq_printf(m, "\nRPS Autotuning (current \"%s\" window):\n",
-<<<<<<< HEAD
 			   rps_power_to_str(rps->power.mode));
 		seq_printf(m, "  Avg. up: %d%% [above threshold? %d%%]\n",
 			   rpup && rpupei ? 100 * rpup / rpupei : 0,
@@ -2961,15 +2275,6 @@ static int i915_rps_boost_info(struct seq_file *m, void *data)
 		seq_printf(m, "  Avg. down: %d%% [below threshold? %d%%]\n",
 			   rpdown && rpdownei ? 100 * rpdown / rpdownei : 0,
 			   rps->power.down_threshold);
-=======
-			   rps_power_to_str(dev_priv->rps.power));
-		seq_printf(m, "  Avg. up: %d%% [above threshold? %d%%]\n",
-			   rpup && rpupei ? 100 * rpup / rpupei : 0,
-			   dev_priv->rps.up_threshold);
-		seq_printf(m, "  Avg. down: %d%% [below threshold? %d%%]\n",
-			   rpdown && rpdownei ? 100 * rpdown / rpdownei : 0,
-			   dev_priv->rps.down_threshold);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		seq_puts(m, "\nRPS Autotuning inactive\n");
 	}
@@ -2992,7 +2297,6 @@ static int i915_llc(struct seq_file *m, void *data)
 static int i915_huc_load_status_info(struct seq_file *m, void *data)
 {
 	struct drm_i915_private *dev_priv = node_to_i915(m->private);
-<<<<<<< HEAD
 	struct drm_printer p;
 
 	if (!HAS_HUC(dev_priv))
@@ -3000,29 +2304,6 @@ static int i915_huc_load_status_info(struct seq_file *m, void *data)
 
 	p = drm_seq_file_printer(m);
 	intel_uc_fw_dump(&dev_priv->huc.fw, &p);
-=======
-	struct intel_uc_fw *huc_fw = &dev_priv->huc.fw;
-
-	if (!HAS_HUC_UCODE(dev_priv))
-		return 0;
-
-	seq_puts(m, "HuC firmware status:\n");
-	seq_printf(m, "\tpath: %s\n", huc_fw->path);
-	seq_printf(m, "\tfetch: %s\n",
-		intel_uc_fw_status_repr(huc_fw->fetch_status));
-	seq_printf(m, "\tload: %s\n",
-		intel_uc_fw_status_repr(huc_fw->load_status));
-	seq_printf(m, "\tversion wanted: %d.%d\n",
-		huc_fw->major_ver_wanted, huc_fw->minor_ver_wanted);
-	seq_printf(m, "\tversion found: %d.%d\n",
-		huc_fw->major_ver_found, huc_fw->minor_ver_found);
-	seq_printf(m, "\theader: offset is %d; size = %d\n",
-		huc_fw->header_offset, huc_fw->header_size);
-	seq_printf(m, "\tuCode: offset is %d; size = %d\n",
-		huc_fw->ucode_offset, huc_fw->ucode_size);
-	seq_printf(m, "\tRSA: offset is %d; size = %d\n",
-		huc_fw->rsa_offset, huc_fw->rsa_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	intel_runtime_pm_get(dev_priv);
 	seq_printf(m, "\nHuC status 0x%08x:\n", I915_READ(HUC_STATUS2));
@@ -3034,7 +2315,6 @@ static int i915_huc_load_status_info(struct seq_file *m, void *data)
 static int i915_guc_load_status_info(struct seq_file *m, void *data)
 {
 	struct drm_i915_private *dev_priv = node_to_i915(m->private);
-<<<<<<< HEAD
 	struct drm_printer p;
 	u32 tmp, i;
 
@@ -3043,31 +2323,6 @@ static int i915_guc_load_status_info(struct seq_file *m, void *data)
 
 	p = drm_seq_file_printer(m);
 	intel_uc_fw_dump(&dev_priv->guc.fw, &p);
-=======
-	struct intel_uc_fw *guc_fw = &dev_priv->guc.fw;
-	u32 tmp, i;
-
-	if (!HAS_GUC_UCODE(dev_priv))
-		return 0;
-
-	seq_printf(m, "GuC firmware status:\n");
-	seq_printf(m, "\tpath: %s\n",
-		guc_fw->path);
-	seq_printf(m, "\tfetch: %s\n",
-		intel_uc_fw_status_repr(guc_fw->fetch_status));
-	seq_printf(m, "\tload: %s\n",
-		intel_uc_fw_status_repr(guc_fw->load_status));
-	seq_printf(m, "\tversion wanted: %d.%d\n",
-		guc_fw->major_ver_wanted, guc_fw->minor_ver_wanted);
-	seq_printf(m, "\tversion found: %d.%d\n",
-		guc_fw->major_ver_found, guc_fw->minor_ver_found);
-	seq_printf(m, "\theader: offset is %d; size = %d\n",
-		guc_fw->header_offset, guc_fw->header_size);
-	seq_printf(m, "\tuCode: offset is %d; size = %d\n",
-		guc_fw->ucode_offset, guc_fw->ucode_size);
-	seq_printf(m, "\tRSA: offset is %d; size = %d\n",
-		guc_fw->rsa_offset, guc_fw->rsa_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	intel_runtime_pm_get(dev_priv);
 
@@ -3089,7 +2344,6 @@ static int i915_guc_load_status_info(struct seq_file *m, void *data)
 	return 0;
 }
 
-<<<<<<< HEAD
 static const char *
 stringify_guc_log_type(enum guc_log_buffer_type type)
 {
@@ -3129,41 +2383,11 @@ static void i915_guc_log_info(struct seq_file *m,
 			   log->stats[type].flush,
 			   log->stats[type].sampled_overflow);
 	}
-=======
-static void i915_guc_log_info(struct seq_file *m,
-			      struct drm_i915_private *dev_priv)
-{
-	struct intel_guc *guc = &dev_priv->guc;
-
-	seq_puts(m, "\nGuC logging stats:\n");
-
-	seq_printf(m, "\tISR:   flush count %10u, overflow count %10u\n",
-		   guc->log.flush_count[GUC_ISR_LOG_BUFFER],
-		   guc->log.total_overflow_count[GUC_ISR_LOG_BUFFER]);
-
-	seq_printf(m, "\tDPC:   flush count %10u, overflow count %10u\n",
-		   guc->log.flush_count[GUC_DPC_LOG_BUFFER],
-		   guc->log.total_overflow_count[GUC_DPC_LOG_BUFFER]);
-
-	seq_printf(m, "\tCRASH: flush count %10u, overflow count %10u\n",
-		   guc->log.flush_count[GUC_CRASH_DUMP_LOG_BUFFER],
-		   guc->log.total_overflow_count[GUC_CRASH_DUMP_LOG_BUFFER]);
-
-	seq_printf(m, "\tTotal flush interrupt count: %u\n",
-		   guc->log.flush_interrupt_count);
-
-	seq_printf(m, "\tCapture miss count: %u\n",
-		   guc->log.capture_miss_count);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void i915_guc_client_info(struct seq_file *m,
 				 struct drm_i915_private *dev_priv,
-<<<<<<< HEAD
 				 struct intel_guc_client *client)
-=======
-				 struct i915_guc_client *client)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct intel_engine_cs *engine;
 	enum intel_engine_id id;
@@ -3171,17 +2395,8 @@ static void i915_guc_client_info(struct seq_file *m,
 
 	seq_printf(m, "\tPriority %d, GuC stage index: %u, PD offset 0x%x\n",
 		client->priority, client->stage_id, client->proc_desc_offset);
-<<<<<<< HEAD
 	seq_printf(m, "\tDoorbell id %d, offset: 0x%lx\n",
 		client->doorbell_id, client->doorbell_offset);
-=======
-	seq_printf(m, "\tDoorbell id %d, offset: 0x%lx, cookie 0x%x\n",
-		client->doorbell_id, client->doorbell_offset, client->doorbell_cookie);
-	seq_printf(m, "\tWQ size %d, offset: 0x%x, tail %d\n",
-		client->wq_size, client->wq_offset, client->wq_tail);
-
-	seq_printf(m, "\tWork queue full: %u\n", client->no_wq_space);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for_each_engine(engine, dev_priv, id) {
 		u64 submissions = client->submissions[id];
@@ -3192,31 +2407,11 @@ static void i915_guc_client_info(struct seq_file *m,
 	seq_printf(m, "\tTotal: %llu\n", tot);
 }
 
-<<<<<<< HEAD
-=======
-static bool check_guc_submission(struct seq_file *m)
-{
-	struct drm_i915_private *dev_priv = node_to_i915(m->private);
-	const struct intel_guc *guc = &dev_priv->guc;
-
-	if (!guc->execbuf_client) {
-		seq_printf(m, "GuC submission %s\n",
-			   HAS_GUC_SCHED(dev_priv) ?
-			   "disabled" :
-			   "not supported");
-		return false;
-	}
-
-	return true;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int i915_guc_info(struct seq_file *m, void *data)
 {
 	struct drm_i915_private *dev_priv = node_to_i915(m->private);
 	const struct intel_guc *guc = &dev_priv->guc;
 
-<<<<<<< HEAD
 	if (!USES_GUC(dev_priv))
 		return -ENODEV;
 
@@ -3238,19 +2433,6 @@ static int i915_guc_info(struct seq_file *m, void *data)
 			   guc->preempt_client);
 		i915_guc_client_info(m, dev_priv, guc->preempt_client);
 	}
-=======
-	if (!check_guc_submission(m))
-		return 0;
-
-	seq_printf(m, "Doorbell map:\n");
-	seq_printf(m, "\t%*pb\n", GUC_NUM_DOORBELLS, guc->doorbell_bitmap);
-	seq_printf(m, "Doorbell next cacheline: 0x%x\n\n", guc->db_cacheline);
-
-	seq_printf(m, "\nGuC execbuf client @ %p:\n", guc->execbuf_client);
-	i915_guc_client_info(m, dev_priv, guc->execbuf_client);
-
-	i915_guc_log_info(m, dev_priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Add more as required ... */
 
@@ -3262,21 +2444,12 @@ static int i915_guc_stage_pool(struct seq_file *m, void *data)
 	struct drm_i915_private *dev_priv = node_to_i915(m->private);
 	const struct intel_guc *guc = &dev_priv->guc;
 	struct guc_stage_desc *desc = guc->stage_desc_pool_vaddr;
-<<<<<<< HEAD
 	struct intel_guc_client *client = guc->execbuf_client;
 	unsigned int tmp;
 	int index;
 
 	if (!USES_GUC_SUBMISSION(dev_priv))
 		return -ENODEV;
-=======
-	struct i915_guc_client *client = guc->execbuf_client;
-	unsigned int tmp;
-	int index;
-
-	if (!check_guc_submission(m))
-		return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (index = 0; index < GUC_MAX_STAGE_DESCRIPTORS; index++, desc++) {
 		struct intel_engine_cs *engine;
@@ -3329,12 +2502,9 @@ static int i915_guc_log_dump(struct seq_file *m, void *data)
 	u32 *log;
 	int i = 0;
 
-<<<<<<< HEAD
 	if (!HAS_GUC(dev_priv))
 		return -ENODEV;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dump_load_err)
 		obj = dev_priv->guc.load_err_log;
 	else if (dev_priv->guc.log.vma)
@@ -3362,7 +2532,6 @@ static int i915_guc_log_dump(struct seq_file *m, void *data)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int i915_guc_log_level_get(void *data, u64 *val)
 {
 	struct drm_i915_private *dev_priv = data;
@@ -3371,21 +2540,10 @@ static int i915_guc_log_level_get(void *data, u64 *val)
 		return -ENODEV;
 
 	*val = intel_guc_log_get_level(&dev_priv->guc.log);
-=======
-static int i915_guc_log_control_get(void *data, u64 *val)
-{
-	struct drm_i915_private *dev_priv = data;
-
-	if (!dev_priv->guc.log.vma)
-		return -EINVAL;
-
-	*val = i915.guc_log_level;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
 static int i915_guc_log_level_set(void *data, u64 val)
 {
 	struct drm_i915_private *dev_priv = data;
@@ -3534,60 +2692,12 @@ psr_source_status(struct drm_i915_private *dev_priv, struct seq_file *m)
 	}
 
 	seq_printf(m, "Source PSR status: 0x%x [%s]\n", psr_status, "unknown");
-=======
-static int i915_guc_log_control_set(void *data, u64 val)
-{
-	struct drm_i915_private *dev_priv = data;
-	int ret;
-
-	if (!dev_priv->guc.log.vma)
-		return -EINVAL;
-
-	ret = mutex_lock_interruptible(&dev_priv->drm.struct_mutex);
-	if (ret)
-		return ret;
-
-	intel_runtime_pm_get(dev_priv);
-	ret = i915_guc_log_control(dev_priv, val);
-	intel_runtime_pm_put(dev_priv);
-
-	mutex_unlock(&dev_priv->drm.struct_mutex);
-	return ret;
-}
-
-DEFINE_SIMPLE_ATTRIBUTE(i915_guc_log_control_fops,
-			i915_guc_log_control_get, i915_guc_log_control_set,
-			"%lld\n");
-
-static const char *psr2_live_status(u32 val)
-{
-	static const char * const live_status[] = {
-		"IDLE",
-		"CAPTURE",
-		"CAPTURE_FS",
-		"SLEEP",
-		"BUFON_FW",
-		"ML_UP",
-		"SU_STANDBY",
-		"FAST_SLEEP",
-		"DEEP_SLEEP",
-		"BUF_ON",
-		"TG_ON"
-	};
-
-	val = (val & EDP_PSR2_STATUS_STATE_MASK) >> EDP_PSR2_STATUS_STATE_SHIFT;
-	if (val < ARRAY_SIZE(live_status))
-		return live_status[val];
-
-	return "unknown";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int i915_edp_psr_status(struct seq_file *m, void *data)
 {
 	struct drm_i915_private *dev_priv = node_to_i915(m->private);
 	u32 psrperf = 0;
-<<<<<<< HEAD
 	bool enabled = false;
 	bool sink_support;
 
@@ -3598,21 +2708,10 @@ static int i915_edp_psr_status(struct seq_file *m, void *data)
 	seq_printf(m, "Sink_Support: %s\n", yesno(sink_support));
 	if (!sink_support)
 		return 0;
-=======
-	u32 stat[3];
-	enum pipe pipe;
-	bool enabled = false;
-
-	if (!HAS_PSR(dev_priv)) {
-		seq_puts(m, "PSR not supported\n");
-		return 0;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	intel_runtime_pm_get(dev_priv);
 
 	mutex_lock(&dev_priv->psr.lock);
-<<<<<<< HEAD
 	seq_printf(m, "Enabled: %s\n", yesno((bool)dev_priv->psr.enabled));
 	seq_printf(m, "Busy frontbuffer bits: 0x%03x\n",
 		   dev_priv->psr.busy_frontbuffer_bits);
@@ -3621,64 +2720,13 @@ static int i915_edp_psr_status(struct seq_file *m, void *data)
 		enabled = I915_READ(EDP_PSR2_CTL) & EDP_PSR2_ENABLE;
 	else
 		enabled = I915_READ(EDP_PSR_CTL) & EDP_PSR_ENABLE;
-=======
-	seq_printf(m, "Sink_Support: %s\n", yesno(dev_priv->psr.sink_support));
-	seq_printf(m, "Source_OK: %s\n", yesno(dev_priv->psr.source_ok));
-	seq_printf(m, "Enabled: %s\n", yesno((bool)dev_priv->psr.enabled));
-	seq_printf(m, "Active: %s\n", yesno(dev_priv->psr.active));
-	seq_printf(m, "Busy frontbuffer bits: 0x%03x\n",
-		   dev_priv->psr.busy_frontbuffer_bits);
-	seq_printf(m, "Re-enable work scheduled: %s\n",
-		   yesno(work_busy(&dev_priv->psr.work.work)));
-
-	if (HAS_DDI(dev_priv)) {
-		if (dev_priv->psr.psr2_support)
-			enabled = I915_READ(EDP_PSR2_CTL) & EDP_PSR2_ENABLE;
-		else
-			enabled = I915_READ(EDP_PSR_CTL) & EDP_PSR_ENABLE;
-	} else {
-		for_each_pipe(dev_priv, pipe) {
-			enum transcoder cpu_transcoder =
-				intel_pipe_to_cpu_transcoder(dev_priv, pipe);
-			enum intel_display_power_domain power_domain;
-
-			power_domain = POWER_DOMAIN_TRANSCODER(cpu_transcoder);
-			if (!intel_display_power_get_if_enabled(dev_priv,
-								power_domain))
-				continue;
-
-			stat[pipe] = I915_READ(VLV_PSRSTAT(pipe)) &
-				VLV_EDP_PSR_CURR_STATE_MASK;
-			if ((stat[pipe] == VLV_EDP_PSR_ACTIVE_NORFB_UP) ||
-			    (stat[pipe] == VLV_EDP_PSR_ACTIVE_SF_UPDATE))
-				enabled = true;
-
-			intel_display_power_put(dev_priv, power_domain);
-		}
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	seq_printf(m, "Main link in standby mode: %s\n",
 		   yesno(dev_priv->psr.link_standby));
 
-<<<<<<< HEAD
 	seq_printf(m, "HW Enabled & Active bit: %s\n", yesno(enabled));
 
 	/*
-=======
-	seq_printf(m, "HW Enabled & Active bit: %s", yesno(enabled));
-
-	if (!HAS_DDI(dev_priv))
-		for_each_pipe(dev_priv, pipe) {
-			if ((stat[pipe] == VLV_EDP_PSR_ACTIVE_NORFB_UP) ||
-			    (stat[pipe] == VLV_EDP_PSR_ACTIVE_SF_UPDATE))
-				seq_printf(m, " pipe %c", pipe_name(pipe));
-		}
-	seq_puts(m, "\n");
-
-	/*
-	 * VLV/CHV PSR has no kind of performance counter
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * SKL+ Perf counter is reset to 0 everytime DC state is entered
 	 */
 	if (IS_HASWELL(dev_priv) || IS_BROADWELL(dev_priv)) {
@@ -3687,7 +2735,6 @@ static int i915_edp_psr_status(struct seq_file *m, void *data)
 
 		seq_printf(m, "Performance_Counter: %u\n", psrperf);
 	}
-<<<<<<< HEAD
 
 	psr_source_status(dev_priv, m);
 	mutex_unlock(&dev_priv->psr.lock);
@@ -3736,63 +2783,6 @@ DEFINE_SIMPLE_ATTRIBUTE(i915_edp_psr_debug_fops,
 			i915_edp_psr_debug_get, i915_edp_psr_debug_set,
 			"%llu\n");
 
-=======
-	if (dev_priv->psr.psr2_support) {
-		u32 psr2 = I915_READ(EDP_PSR2_STATUS_CTL);
-
-		seq_printf(m, "EDP_PSR2_STATUS_CTL: %x [%s]\n",
-			   psr2, psr2_live_status(psr2));
-	}
-	mutex_unlock(&dev_priv->psr.lock);
-
-	intel_runtime_pm_put(dev_priv);
-	return 0;
-}
-
-static int i915_sink_crc(struct seq_file *m, void *data)
-{
-	struct drm_i915_private *dev_priv = node_to_i915(m->private);
-	struct drm_device *dev = &dev_priv->drm;
-	struct intel_connector *connector;
-	struct drm_connector_list_iter conn_iter;
-	struct intel_dp *intel_dp = NULL;
-	int ret;
-	u8 crc[6];
-
-	drm_modeset_lock_all(dev);
-	drm_connector_list_iter_begin(dev, &conn_iter);
-	for_each_intel_connector_iter(connector, &conn_iter) {
-		struct drm_crtc *crtc;
-
-		if (!connector->base.state->best_encoder)
-			continue;
-
-		crtc = connector->base.state->crtc;
-		if (!crtc->state->active)
-			continue;
-
-		if (connector->base.connector_type != DRM_MODE_CONNECTOR_eDP)
-			continue;
-
-		intel_dp = enc_to_intel_dp(connector->base.state->best_encoder);
-
-		ret = intel_dp_sink_crc(intel_dp, crc);
-		if (ret)
-			goto out;
-
-		seq_printf(m, "%02x%02x%02x%02x%02x%02x\n",
-			   crc[0], crc[1], crc[2],
-			   crc[3], crc[4], crc[5]);
-		goto out;
-	}
-	ret = -ENODEV;
-out:
-	drm_connector_list_iter_end(&conn_iter);
-	drm_modeset_unlock_all(dev);
-	return ret;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int i915_energy_uJ(struct seq_file *m, void *data)
 {
 	struct drm_i915_private *dev_priv = node_to_i915(m->private);
@@ -3828,12 +2818,8 @@ static int i915_runtime_pm_status(struct seq_file *m, void *unused)
 	if (!HAS_RUNTIME_PM(dev_priv))
 		seq_puts(m, "Runtime power management not supported\n");
 
-<<<<<<< HEAD
 	seq_printf(m, "GPU idle: %s (epoch %u)\n",
 		   yesno(!dev_priv->gt.awake), dev_priv->gt.epoch);
-=======
-	seq_printf(m, "GPU idle: %s\n", yesno(!dev_priv->gt.awake));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	seq_printf(m, "IRQs disabled: %s\n",
 		   yesno(!intel_irqs_enabled(dev_priv)));
 #ifdef CONFIG_PM
@@ -3882,15 +2868,8 @@ static int i915_dmc_info(struct seq_file *m, void *unused)
 	struct drm_i915_private *dev_priv = node_to_i915(m->private);
 	struct intel_csr *csr;
 
-<<<<<<< HEAD
 	if (!HAS_CSR(dev_priv))
 		return -ENODEV;
-=======
-	if (!HAS_CSR(dev_priv)) {
-		seq_puts(m, "not supported\n");
-		return 0;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	csr = &dev_priv->csr;
 
@@ -4082,11 +3061,7 @@ static void intel_connector_info(struct seq_file *m,
 		break;
 	case DRM_MODE_CONNECTOR_HDMIA:
 		if (intel_encoder->type == INTEL_OUTPUT_HDMI ||
-<<<<<<< HEAD
 		    intel_encoder->type == INTEL_OUTPUT_DDI)
-=======
-		    intel_encoder->type == INTEL_OUTPUT_UNKNOWN)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			intel_hdmi_info(m, intel_connector);
 		break;
 	default:
@@ -4271,7 +3246,6 @@ static int i915_display_info(struct seq_file *m, void *unused)
 static int i915_engine_info(struct seq_file *m, void *unused)
 {
 	struct drm_i915_private *dev_priv = node_to_i915(m->private);
-<<<<<<< HEAD
 	struct intel_engine_cs *engine;
 	enum intel_engine_id id;
 	struct drm_printer p;
@@ -4288,164 +3262,12 @@ static int i915_engine_info(struct seq_file *m, void *unused)
 	p = drm_seq_file_printer(m);
 	for_each_engine(engine, dev_priv, id)
 		intel_engine_dump(engine, &p, "%s\n", engine->name);
-=======
-	struct i915_gpu_error *error = &dev_priv->gpu_error;
-	struct intel_engine_cs *engine;
-	enum intel_engine_id id;
-
-	intel_runtime_pm_get(dev_priv);
-
-	seq_printf(m, "GT awake? %s\n",
-		   yesno(dev_priv->gt.awake));
-	seq_printf(m, "Global active requests: %d\n",
-		   dev_priv->gt.active_requests);
-
-	for_each_engine(engine, dev_priv, id) {
-		struct intel_breadcrumbs *b = &engine->breadcrumbs;
-		struct drm_i915_gem_request *rq;
-		struct rb_node *rb;
-		u64 addr;
-
-		seq_printf(m, "%s\n", engine->name);
-		seq_printf(m, "\tcurrent seqno %x, last %x, hangcheck %x [%d ms], inflight %d\n",
-			   intel_engine_get_seqno(engine),
-			   intel_engine_last_submit(engine),
-			   engine->hangcheck.seqno,
-			   jiffies_to_msecs(jiffies - engine->hangcheck.action_timestamp),
-			   engine->timeline->inflight_seqnos);
-		seq_printf(m, "\tReset count: %d\n",
-			   i915_reset_engine_count(error, engine));
-
-		rcu_read_lock();
-
-		seq_printf(m, "\tRequests:\n");
-
-		rq = list_first_entry(&engine->timeline->requests,
-				      struct drm_i915_gem_request, link);
-		if (&rq->link != &engine->timeline->requests)
-			print_request(m, rq, "\t\tfirst  ");
-
-		rq = list_last_entry(&engine->timeline->requests,
-				     struct drm_i915_gem_request, link);
-		if (&rq->link != &engine->timeline->requests)
-			print_request(m, rq, "\t\tlast   ");
-
-		rq = i915_gem_find_active_request(engine);
-		if (rq) {
-			print_request(m, rq, "\t\tactive ");
-			seq_printf(m,
-				   "\t\t[head %04x, postfix %04x, tail %04x, batch 0x%08x_%08x]\n",
-				   rq->head, rq->postfix, rq->tail,
-				   rq->batch ? upper_32_bits(rq->batch->node.start) : ~0u,
-				   rq->batch ? lower_32_bits(rq->batch->node.start) : ~0u);
-		}
-
-		seq_printf(m, "\tRING_START: 0x%08x [0x%08x]\n",
-			   I915_READ(RING_START(engine->mmio_base)),
-			   rq ? i915_ggtt_offset(rq->ring->vma) : 0);
-		seq_printf(m, "\tRING_HEAD:  0x%08x [0x%08x]\n",
-			   I915_READ(RING_HEAD(engine->mmio_base)) & HEAD_ADDR,
-			   rq ? rq->ring->head : 0);
-		seq_printf(m, "\tRING_TAIL:  0x%08x [0x%08x]\n",
-			   I915_READ(RING_TAIL(engine->mmio_base)) & TAIL_ADDR,
-			   rq ? rq->ring->tail : 0);
-		seq_printf(m, "\tRING_CTL:   0x%08x [%s]\n",
-			   I915_READ(RING_CTL(engine->mmio_base)),
-			   I915_READ(RING_CTL(engine->mmio_base)) & (RING_WAIT | RING_WAIT_SEMAPHORE) ? "waiting" : "");
-
-		rcu_read_unlock();
-
-		addr = intel_engine_get_active_head(engine);
-		seq_printf(m, "\tACTHD:  0x%08x_%08x\n",
-			   upper_32_bits(addr), lower_32_bits(addr));
-		addr = intel_engine_get_last_batch_head(engine);
-		seq_printf(m, "\tBBADDR: 0x%08x_%08x\n",
-			   upper_32_bits(addr), lower_32_bits(addr));
-
-		if (i915.enable_execlists) {
-			u32 ptr, read, write;
-			unsigned int idx;
-
-			seq_printf(m, "\tExeclist status: 0x%08x %08x\n",
-				   I915_READ(RING_EXECLIST_STATUS_LO(engine)),
-				   I915_READ(RING_EXECLIST_STATUS_HI(engine)));
-
-			ptr = I915_READ(RING_CONTEXT_STATUS_PTR(engine));
-			read = GEN8_CSB_READ_PTR(ptr);
-			write = GEN8_CSB_WRITE_PTR(ptr);
-			seq_printf(m, "\tExeclist CSB read %d, write %d, interrupt posted? %s\n",
-				   read, write,
-				   yesno(test_bit(ENGINE_IRQ_EXECLIST,
-						  &engine->irq_posted)));
-			if (read >= GEN8_CSB_ENTRIES)
-				read = 0;
-			if (write >= GEN8_CSB_ENTRIES)
-				write = 0;
-			if (read > write)
-				write += GEN8_CSB_ENTRIES;
-			while (read < write) {
-				idx = ++read % GEN8_CSB_ENTRIES;
-				seq_printf(m, "\tExeclist CSB[%d]: 0x%08x, context: %d\n",
-					   idx,
-					   I915_READ(RING_CONTEXT_STATUS_BUF_LO(engine, idx)),
-					   I915_READ(RING_CONTEXT_STATUS_BUF_HI(engine, idx)));
-			}
-
-			rcu_read_lock();
-			for (idx = 0; idx < ARRAY_SIZE(engine->execlist_port); idx++) {
-				unsigned int count;
-
-				rq = port_unpack(&engine->execlist_port[idx],
-						 &count);
-				if (rq) {
-					seq_printf(m, "\t\tELSP[%d] count=%d, ",
-						   idx, count);
-					print_request(m, rq, "rq: ");
-				} else {
-					seq_printf(m, "\t\tELSP[%d] idle\n",
-						   idx);
-				}
-			}
-			rcu_read_unlock();
-
-			spin_lock_irq(&engine->timeline->lock);
-			for (rb = engine->execlist_first; rb; rb = rb_next(rb)){
-				struct i915_priolist *p =
-					rb_entry(rb, typeof(*p), node);
-
-				list_for_each_entry(rq, &p->requests,
-						    priotree.link)
-					print_request(m, rq, "\t\tQ ");
-			}
-			spin_unlock_irq(&engine->timeline->lock);
-		} else if (INTEL_GEN(dev_priv) > 6) {
-			seq_printf(m, "\tPP_DIR_BASE: 0x%08x\n",
-				   I915_READ(RING_PP_DIR_BASE(engine)));
-			seq_printf(m, "\tPP_DIR_BASE_READ: 0x%08x\n",
-				   I915_READ(RING_PP_DIR_BASE_READ(engine)));
-			seq_printf(m, "\tPP_DIR_DCLV: 0x%08x\n",
-				   I915_READ(RING_PP_DIR_DCLV(engine)));
-		}
-
-		spin_lock_irq(&b->rb_lock);
-		for (rb = rb_first(&b->waiters); rb; rb = rb_next(rb)) {
-			struct intel_wait *w = rb_entry(rb, typeof(*w), node);
-
-			seq_printf(m, "\t%s [%d] waiting for %x\n",
-				   w->tsk->comm, w->tsk->pid, w->seqno);
-		}
-		spin_unlock_irq(&b->rb_lock);
-
-		seq_puts(m, "\n");
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	intel_runtime_pm_put(dev_priv);
 
 	return 0;
 }
 
-<<<<<<< HEAD
 static int i915_rcs_topology(struct seq_file *m, void *unused)
 {
 	struct drm_i915_private *dev_priv = node_to_i915(m->private);
@@ -4463,68 +3285,6 @@ static int i915_shrinker_info(struct seq_file *m, void *unused)
 	seq_printf(m, "seeks = %d\n", i915->mm.shrinker.seeks);
 	seq_printf(m, "batch = %lu\n", i915->mm.shrinker.batch);
 
-=======
-static int i915_semaphore_status(struct seq_file *m, void *unused)
-{
-	struct drm_i915_private *dev_priv = node_to_i915(m->private);
-	struct drm_device *dev = &dev_priv->drm;
-	struct intel_engine_cs *engine;
-	int num_rings = INTEL_INFO(dev_priv)->num_rings;
-	enum intel_engine_id id;
-	int j, ret;
-
-	if (!i915.semaphores) {
-		seq_puts(m, "Semaphores are disabled\n");
-		return 0;
-	}
-
-	ret = mutex_lock_interruptible(&dev->struct_mutex);
-	if (ret)
-		return ret;
-	intel_runtime_pm_get(dev_priv);
-
-	if (IS_BROADWELL(dev_priv)) {
-		struct page *page;
-		uint64_t *seqno;
-
-		page = i915_gem_object_get_page(dev_priv->semaphore->obj, 0);
-
-		seqno = (uint64_t *)kmap_atomic(page);
-		for_each_engine(engine, dev_priv, id) {
-			uint64_t offset;
-
-			seq_printf(m, "%s\n", engine->name);
-
-			seq_puts(m, "  Last signal:");
-			for (j = 0; j < num_rings; j++) {
-				offset = id * I915_NUM_ENGINES + j;
-				seq_printf(m, "0x%08llx (0x%02llx) ",
-					   seqno[offset], offset * 8);
-			}
-			seq_putc(m, '\n');
-
-			seq_puts(m, "  Last wait:  ");
-			for (j = 0; j < num_rings; j++) {
-				offset = id + (j * I915_NUM_ENGINES);
-				seq_printf(m, "0x%08llx (0x%02llx) ",
-					   seqno[offset], offset * 8);
-			}
-			seq_putc(m, '\n');
-
-		}
-		kunmap_atomic(seqno);
-	} else {
-		seq_puts(m, "  Last signal:");
-		for_each_engine(engine, dev_priv, id)
-			for (j = 0; j < num_rings; j++)
-				seq_printf(m, "0x%08x\n",
-					   I915_READ(engine->semaphore.mbox.signal[j]));
-		seq_putc(m, '\n');
-	}
-
-	intel_runtime_pm_put(dev_priv);
-	mutex_unlock(&dev->struct_mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -4538,12 +3298,8 @@ static int i915_shared_dplls_info(struct seq_file *m, void *unused)
 	for (i = 0; i < dev_priv->num_shared_dpll; i++) {
 		struct intel_shared_dpll *pll = &dev_priv->shared_dplls[i];
 
-<<<<<<< HEAD
 		seq_printf(m, "DPLL%i: %s, id: %i\n", i, pll->info->name,
 			   pll->info->id);
-=======
-		seq_printf(m, "DPLL%i: %s, id: %i\n", i, pll->name, pll->id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		seq_printf(m, " crtc_mask: 0x%08x, active: 0x%x, on: %s\n",
 			   pll->state.crtc_mask, pll->active_mask, yesno(pll->on));
 		seq_printf(m, " tracked hardware state:\n");
@@ -4553,7 +3309,6 @@ static int i915_shared_dplls_info(struct seq_file *m, void *unused)
 		seq_printf(m, " fp0:     0x%08x\n", pll->state.hw_state.fp0);
 		seq_printf(m, " fp1:     0x%08x\n", pll->state.hw_state.fp1);
 		seq_printf(m, " wrpll:   0x%08x\n", pll->state.hw_state.wrpll);
-<<<<<<< HEAD
 		seq_printf(m, " cfgcr0:  0x%08x\n", pll->state.hw_state.cfgcr0);
 		seq_printf(m, " cfgcr1:  0x%08x\n", pll->state.hw_state.cfgcr1);
 		seq_printf(m, " mg_refclkin_ctl:        0x%08x\n",
@@ -4576,8 +3331,6 @@ static int i915_shared_dplls_info(struct seq_file *m, void *unused)
 			   pll->state.hw_state.mg_pll_bias);
 		seq_printf(m, " mg_pll_tdc_coldst_bias: 0x%08x\n",
 			   pll->state.hw_state.mg_pll_tdc_coldst_bias);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	drm_modeset_unlock_all(dev);
 
@@ -4586,7 +3339,6 @@ static int i915_shared_dplls_info(struct seq_file *m, void *unused)
 
 static int i915_wa_registers(struct seq_file *m, void *unused)
 {
-<<<<<<< HEAD
 	struct i915_workarounds *wa = &node_to_i915(m->private)->workarounds;
 	int i;
 
@@ -4649,46 +3401,6 @@ static const struct file_operations i915_ipc_status_fops = {
 	.write = i915_ipc_status_write
 };
 
-=======
-	int i;
-	int ret;
-	struct intel_engine_cs *engine;
-	struct drm_i915_private *dev_priv = node_to_i915(m->private);
-	struct drm_device *dev = &dev_priv->drm;
-	struct i915_workarounds *workarounds = &dev_priv->workarounds;
-	enum intel_engine_id id;
-
-	ret = mutex_lock_interruptible(&dev->struct_mutex);
-	if (ret)
-		return ret;
-
-	intel_runtime_pm_get(dev_priv);
-
-	seq_printf(m, "Workarounds applied: %d\n", workarounds->count);
-	for_each_engine(engine, dev_priv, id)
-		seq_printf(m, "HW whitelist count for %s: %d\n",
-			   engine->name, workarounds->hw_whitelist_count[id]);
-	for (i = 0; i < workarounds->count; ++i) {
-		i915_reg_t addr;
-		u32 mask, value, read;
-		bool ok;
-
-		addr = workarounds->reg[i].addr;
-		mask = workarounds->reg[i].mask;
-		value = workarounds->reg[i].value;
-		read = I915_READ(addr);
-		ok = (value & mask) == (read & mask);
-		seq_printf(m, "0x%X: 0x%08X, mask: 0x%08X, read: 0x%08x, status: %s\n",
-			   i915_mmio_reg_offset(addr), value, mask, read, ok ? "OK" : "FAIL");
-	}
-
-	intel_runtime_pm_put(dev_priv);
-	mutex_unlock(&dev->struct_mutex);
-
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int i915_ddb_info(struct seq_file *m, void *unused)
 {
 	struct drm_i915_private *dev_priv = node_to_i915(m->private);
@@ -4699,11 +3411,7 @@ static int i915_ddb_info(struct seq_file *m, void *unused)
 	int plane;
 
 	if (INTEL_GEN(dev_priv) < 9)
-<<<<<<< HEAD
 		return -ENODEV;
-=======
-		return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	drm_modeset_lock_all(dev);
 
@@ -4770,14 +3478,10 @@ static void drrs_status_per_crtc(struct seq_file *m,
 
 		/* disable_drrs() will make drrs->dp NULL */
 		if (!drrs->dp) {
-<<<<<<< HEAD
 			seq_puts(m, "Idleness DRRS: Disabled\n");
 			if (dev_priv->psr.enabled)
 				seq_puts(m,
 				"\tAs PSR is enabled, DRRS is not enabled\n");
-=======
-			seq_puts(m, "Idleness DRRS: Disabled");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			mutex_unlock(&drrs->mutex);
 			return;
 		}
@@ -4857,11 +3561,7 @@ static int i915_dp_mst_info(struct seq_file *m, void *unused)
 			continue;
 
 		seq_printf(m, "MST Source Port %c\n",
-<<<<<<< HEAD
 			   port_name(intel_dig_port->base.port));
-=======
-			   port_name(intel_dig_port->port));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		drm_dp_mst_dump_topology(m, &intel_dig_port->dp.mst_mgr);
 	}
 	drm_connector_list_iter_end(&conn_iter);
@@ -4930,12 +3630,8 @@ static ssize_t i915_displayport_test_active_write(struct file *file,
 
 static int i915_displayport_test_active_show(struct seq_file *m, void *data)
 {
-<<<<<<< HEAD
 	struct drm_i915_private *dev_priv = m->private;
 	struct drm_device *dev = &dev_priv->drm;
-=======
-	struct drm_device *dev = m->private;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_connector *connector;
 	struct drm_connector_list_iter conn_iter;
 	struct intel_dp *intel_dp;
@@ -4969,15 +3665,8 @@ static int i915_displayport_test_active_show(struct seq_file *m, void *data)
 static int i915_displayport_test_active_open(struct inode *inode,
 					     struct file *file)
 {
-<<<<<<< HEAD
 	return single_open(file, i915_displayport_test_active_show,
 			   inode->i_private);
-=======
-	struct drm_i915_private *dev_priv = inode->i_private;
-
-	return single_open(file, i915_displayport_test_active_show,
-			   &dev_priv->drm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct file_operations i915_displayport_test_active_fops = {
@@ -4991,12 +3680,8 @@ static const struct file_operations i915_displayport_test_active_fops = {
 
 static int i915_displayport_test_data_show(struct seq_file *m, void *data)
 {
-<<<<<<< HEAD
 	struct drm_i915_private *dev_priv = m->private;
 	struct drm_device *dev = &dev_priv->drm;
-=======
-	struct drm_device *dev = m->private;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_connector *connector;
 	struct drm_connector_list_iter conn_iter;
 	struct intel_dp *intel_dp;
@@ -5035,35 +3720,12 @@ static int i915_displayport_test_data_show(struct seq_file *m, void *data)
 
 	return 0;
 }
-<<<<<<< HEAD
 DEFINE_SHOW_ATTRIBUTE(i915_displayport_test_data);
 
 static int i915_displayport_test_type_show(struct seq_file *m, void *data)
 {
 	struct drm_i915_private *dev_priv = m->private;
 	struct drm_device *dev = &dev_priv->drm;
-=======
-static int i915_displayport_test_data_open(struct inode *inode,
-					   struct file *file)
-{
-	struct drm_i915_private *dev_priv = inode->i_private;
-
-	return single_open(file, i915_displayport_test_data_show,
-			   &dev_priv->drm);
-}
-
-static const struct file_operations i915_displayport_test_data_fops = {
-	.owner = THIS_MODULE,
-	.open = i915_displayport_test_data_open,
-	.read = seq_read,
-	.llseek = seq_lseek,
-	.release = single_release
-};
-
-static int i915_displayport_test_type_show(struct seq_file *m, void *data)
-{
-	struct drm_device *dev = m->private;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_connector *connector;
 	struct drm_connector_list_iter conn_iter;
 	struct intel_dp *intel_dp;
@@ -5090,27 +3752,7 @@ static int i915_displayport_test_type_show(struct seq_file *m, void *data)
 
 	return 0;
 }
-<<<<<<< HEAD
 DEFINE_SHOW_ATTRIBUTE(i915_displayport_test_type);
-=======
-
-static int i915_displayport_test_type_open(struct inode *inode,
-				       struct file *file)
-{
-	struct drm_i915_private *dev_priv = inode->i_private;
-
-	return single_open(file, i915_displayport_test_type_show,
-			   &dev_priv->drm);
-}
-
-static const struct file_operations i915_displayport_test_type_fops = {
-	.owner = THIS_MODULE,
-	.open = i915_displayport_test_type_open,
-	.read = seq_read,
-	.llseek = seq_lseek,
-	.release = single_release
-};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void wm_latency_show(struct seq_file *m, const uint16_t wm[8])
 {
@@ -5378,12 +4020,8 @@ i915_wedged_set(void *data, u64 val)
 		engine->hangcheck.stalled = true;
 	}
 
-<<<<<<< HEAD
 	i915_handle_error(i915, val, I915_ERROR_CAPTURE,
 			  "Manually set wedged engine mask = %llx", val);
-=======
-	i915_handle_error(i915, val, "Manually setting wedged to %llu", val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	wait_on_bit(&i915->gpu_error.flags,
 		    I915_RESET_HANDOFF,
@@ -5409,12 +4047,8 @@ fault_irq_set(struct drm_i915_private *i915,
 
 	err = i915_gem_wait_for_idle(i915,
 				     I915_WAIT_LOCKED |
-<<<<<<< HEAD
 				     I915_WAIT_INTERRUPTIBLE,
 				     MAX_SCHEDULE_TIMEOUT);
-=======
-				     I915_WAIT_INTERRUPTIBLE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		goto err_unlock;
 
@@ -5422,12 +4056,7 @@ fault_irq_set(struct drm_i915_private *i915,
 	mutex_unlock(&i915->drm.struct_mutex);
 
 	/* Flush idle worker to disarm irq */
-<<<<<<< HEAD
 	drain_delayed_work(&i915->gt.idle_work);
-=======
-	while (flush_delayed_work(&i915->gt.idle_work))
-		;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 
@@ -5482,7 +4111,6 @@ DEFINE_SIMPLE_ATTRIBUTE(i915_ring_test_irq_fops,
 			i915_ring_test_irq_get, i915_ring_test_irq_set,
 			"0x%08llx\n");
 
-<<<<<<< HEAD
 #define DROP_UNBOUND	BIT(0)
 #define DROP_BOUND	BIT(1)
 #define DROP_RETIRE	BIT(2)
@@ -5490,25 +4118,13 @@ DEFINE_SIMPLE_ATTRIBUTE(i915_ring_test_irq_fops,
 #define DROP_FREED	BIT(4)
 #define DROP_SHRINK_ALL	BIT(5)
 #define DROP_IDLE	BIT(6)
-=======
-#define DROP_UNBOUND 0x1
-#define DROP_BOUND 0x2
-#define DROP_RETIRE 0x4
-#define DROP_ACTIVE 0x8
-#define DROP_FREED 0x10
-#define DROP_SHRINK_ALL 0x20
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DROP_ALL (DROP_UNBOUND	| \
 		  DROP_BOUND	| \
 		  DROP_RETIRE	| \
 		  DROP_ACTIVE	| \
 		  DROP_FREED	| \
-<<<<<<< HEAD
 		  DROP_SHRINK_ALL |\
 		  DROP_IDLE)
-=======
-		  DROP_SHRINK_ALL)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int
 i915_drop_caches_get(void *data, u64 *val)
 {
@@ -5524,12 +4140,8 @@ i915_drop_caches_set(void *data, u64 val)
 	struct drm_device *dev = &dev_priv->drm;
 	int ret = 0;
 
-<<<<<<< HEAD
 	DRM_DEBUG("Dropping caches: 0x%08llx [0x%08llx]\n",
 		  val, val & DROP_ALL);
-=======
-	DRM_DEBUG("Dropping caches: 0x%08llx\n", val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* No need to check and wait for gpu resets, only libdrm auto-restarts
 	 * on ioctls on -EAGAIN. */
@@ -5541,18 +4153,11 @@ i915_drop_caches_set(void *data, u64 val)
 		if (val & DROP_ACTIVE)
 			ret = i915_gem_wait_for_idle(dev_priv,
 						     I915_WAIT_INTERRUPTIBLE |
-<<<<<<< HEAD
 						     I915_WAIT_LOCKED,
 						     MAX_SCHEDULE_TIMEOUT);
 
 		if (val & DROP_RETIRE)
 			i915_retire_requests(dev_priv);
-=======
-						     I915_WAIT_LOCKED);
-
-		if (val & DROP_RETIRE)
-			i915_gem_retire_requests(dev_priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		mutex_unlock(&dev->struct_mutex);
 	}
@@ -5568,7 +4173,6 @@ i915_drop_caches_set(void *data, u64 val)
 		i915_gem_shrink_all(dev_priv);
 	fs_reclaim_release(GFP_KERNEL);
 
-<<<<<<< HEAD
 	if (val & DROP_IDLE) {
 		do {
 			if (READ_ONCE(dev_priv->gt.active_requests))
@@ -5579,12 +4183,6 @@ i915_drop_caches_set(void *data, u64 val)
 
 	if (val & DROP_FREED)
 		i915_gem_drain_freed_objects(dev_priv);
-=======
-	if (val & DROP_FREED) {
-		synchronize_rcu();
-		i915_gem_drain_freed_objects(dev_priv);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -5594,120 +4192,6 @@ DEFINE_SIMPLE_ATTRIBUTE(i915_drop_caches_fops,
 			"0x%08llx\n");
 
 static int
-<<<<<<< HEAD
-=======
-i915_max_freq_get(void *data, u64 *val)
-{
-	struct drm_i915_private *dev_priv = data;
-
-	if (INTEL_GEN(dev_priv) < 6)
-		return -ENODEV;
-
-	*val = intel_gpu_freq(dev_priv, dev_priv->rps.max_freq_softlimit);
-	return 0;
-}
-
-static int
-i915_max_freq_set(void *data, u64 val)
-{
-	struct drm_i915_private *dev_priv = data;
-	u32 hw_max, hw_min;
-	int ret;
-
-	if (INTEL_GEN(dev_priv) < 6)
-		return -ENODEV;
-
-	DRM_DEBUG_DRIVER("Manually setting max freq to %llu\n", val);
-
-	ret = mutex_lock_interruptible(&dev_priv->rps.hw_lock);
-	if (ret)
-		return ret;
-
-	/*
-	 * Turbo will still be enabled, but won't go above the set value.
-	 */
-	val = intel_freq_opcode(dev_priv, val);
-
-	hw_max = dev_priv->rps.max_freq;
-	hw_min = dev_priv->rps.min_freq;
-
-	if (val < hw_min || val > hw_max || val < dev_priv->rps.min_freq_softlimit) {
-		mutex_unlock(&dev_priv->rps.hw_lock);
-		return -EINVAL;
-	}
-
-	dev_priv->rps.max_freq_softlimit = val;
-
-	if (intel_set_rps(dev_priv, val))
-		DRM_DEBUG_DRIVER("failed to update RPS to new softlimit\n");
-
-	mutex_unlock(&dev_priv->rps.hw_lock);
-
-	return 0;
-}
-
-DEFINE_SIMPLE_ATTRIBUTE(i915_max_freq_fops,
-			i915_max_freq_get, i915_max_freq_set,
-			"%llu\n");
-
-static int
-i915_min_freq_get(void *data, u64 *val)
-{
-	struct drm_i915_private *dev_priv = data;
-
-	if (INTEL_GEN(dev_priv) < 6)
-		return -ENODEV;
-
-	*val = intel_gpu_freq(dev_priv, dev_priv->rps.min_freq_softlimit);
-	return 0;
-}
-
-static int
-i915_min_freq_set(void *data, u64 val)
-{
-	struct drm_i915_private *dev_priv = data;
-	u32 hw_max, hw_min;
-	int ret;
-
-	if (INTEL_GEN(dev_priv) < 6)
-		return -ENODEV;
-
-	DRM_DEBUG_DRIVER("Manually setting min freq to %llu\n", val);
-
-	ret = mutex_lock_interruptible(&dev_priv->rps.hw_lock);
-	if (ret)
-		return ret;
-
-	/*
-	 * Turbo will still be enabled, but won't go below the set value.
-	 */
-	val = intel_freq_opcode(dev_priv, val);
-
-	hw_max = dev_priv->rps.max_freq;
-	hw_min = dev_priv->rps.min_freq;
-
-	if (val < hw_min ||
-	    val > hw_max || val > dev_priv->rps.max_freq_softlimit) {
-		mutex_unlock(&dev_priv->rps.hw_lock);
-		return -EINVAL;
-	}
-
-	dev_priv->rps.min_freq_softlimit = val;
-
-	if (intel_set_rps(dev_priv, val))
-		DRM_DEBUG_DRIVER("failed to update RPS to new softlimit\n");
-
-	mutex_unlock(&dev_priv->rps.hw_lock);
-
-	return 0;
-}
-
-DEFINE_SIMPLE_ATTRIBUTE(i915_min_freq_fops,
-			i915_min_freq_get, i915_min_freq_set,
-			"%llu\n");
-
-static int
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 i915_cache_sharing_get(void *data, u64 *val)
 {
 	struct drm_i915_private *dev_priv = data;
@@ -5759,16 +4243,10 @@ DEFINE_SIMPLE_ATTRIBUTE(i915_cache_sharing_fops,
 static void cherryview_sseu_device_status(struct drm_i915_private *dev_priv,
 					  struct sseu_dev_info *sseu)
 {
-<<<<<<< HEAD
 #define SS_MAX 2
 	const int ss_max = SS_MAX;
 	u32 sig1[SS_MAX], sig2[SS_MAX];
 	int ss;
-=======
-	int ss_max = 2;
-	int ss;
-	u32 sig1[ss_max], sig2[ss_max];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sig1[0] = I915_READ(CHV_POWER_SS0_SIG1);
 	sig1[1] = I915_READ(CHV_POWER_SS1_SIG1);
@@ -5783,11 +4261,7 @@ static void cherryview_sseu_device_status(struct drm_i915_private *dev_priv,
 			continue;
 
 		sseu->slice_mask = BIT(0);
-<<<<<<< HEAD
 		sseu->subslice_mask[0] |= BIT(ss);
-=======
-		sseu->subslice_mask |= BIT(ss);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		eu_cnt = ((sig1[ss] & CHV_EU08_PG_ENABLE) ? 0 : 2) +
 			 ((sig1[ss] & CHV_EU19_PG_ENABLE) ? 0 : 2) +
 			 ((sig1[ss] & CHV_EU210_PG_ENABLE) ? 0 : 2) +
@@ -5796,7 +4270,6 @@ static void cherryview_sseu_device_status(struct drm_i915_private *dev_priv,
 		sseu->eu_per_subslice = max_t(unsigned int,
 					      sseu->eu_per_subslice, eu_cnt);
 	}
-<<<<<<< HEAD
 #undef SS_MAX
 }
 
@@ -5854,33 +4327,17 @@ static void gen10_sseu_device_status(struct drm_i915_private *dev_priv,
 		}
 	}
 #undef SS_MAX
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void gen9_sseu_device_status(struct drm_i915_private *dev_priv,
 				    struct sseu_dev_info *sseu)
 {
-<<<<<<< HEAD
 #define SS_MAX 3
 	const struct intel_device_info *info = INTEL_INFO(dev_priv);
 	u32 s_reg[SS_MAX], eu_reg[2 * SS_MAX], eu_mask[2];
 	int s, ss;
 
 	for (s = 0; s < info->sseu.max_slices; s++) {
-=======
-	int s_max = 3, ss_max = 4;
-	int s, ss;
-	u32 s_reg[s_max], eu_reg[2*s_max], eu_mask[2];
-
-	/* BXT has a single slice and at most 3 subslices. */
-	if (IS_GEN9_LP(dev_priv)) {
-		s_max = 1;
-		ss_max = 3;
-	}
-
-	for (s = 0; s < s_max; s++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		s_reg[s] = I915_READ(GEN9_SLICE_PGCTL_ACK(s));
 		eu_reg[2*s] = I915_READ(GEN9_SS01_EU_PGCTL_ACK(s));
 		eu_reg[2*s + 1] = I915_READ(GEN9_SS23_EU_PGCTL_ACK(s));
@@ -5895,30 +4352,18 @@ static void gen9_sseu_device_status(struct drm_i915_private *dev_priv,
 		     GEN9_PGCTL_SSB_EU210_ACK |
 		     GEN9_PGCTL_SSB_EU311_ACK;
 
-<<<<<<< HEAD
 	for (s = 0; s < info->sseu.max_slices; s++) {
-=======
-	for (s = 0; s < s_max; s++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if ((s_reg[s] & GEN9_PGCTL_SLICE_ACK) == 0)
 			/* skip disabled slice */
 			continue;
 
 		sseu->slice_mask |= BIT(s);
 
-<<<<<<< HEAD
 		if (IS_GEN9_BC(dev_priv))
 			sseu->subslice_mask[s] =
 				INTEL_INFO(dev_priv)->sseu.subslice_mask[s];
 
 		for (ss = 0; ss < info->sseu.max_subslices; ss++) {
-=======
-		if (IS_GEN9_BC(dev_priv) || IS_CANNONLAKE(dev_priv))
-			sseu->subslice_mask =
-				INTEL_INFO(dev_priv)->sseu.subslice_mask;
-
-		for (ss = 0; ss < ss_max; ss++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			unsigned int eu_cnt;
 
 			if (IS_GEN9_LP(dev_priv)) {
@@ -5926,11 +4371,7 @@ static void gen9_sseu_device_status(struct drm_i915_private *dev_priv,
 					/* skip disabled subslice */
 					continue;
 
-<<<<<<< HEAD
 				sseu->subslice_mask[s] |= BIT(ss);
-=======
-				sseu->subslice_mask |= BIT(ss);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 
 			eu_cnt = 2 * hweight32(eu_reg[2*s + ss/2] &
@@ -5941,10 +4382,7 @@ static void gen9_sseu_device_status(struct drm_i915_private *dev_priv,
 						      eu_cnt);
 		}
 	}
-<<<<<<< HEAD
 #undef SS_MAX
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void broadwell_sseu_device_status(struct drm_i915_private *dev_priv,
@@ -5956,18 +4394,12 @@ static void broadwell_sseu_device_status(struct drm_i915_private *dev_priv,
 	sseu->slice_mask = slice_info & GEN8_LSLICESTAT_MASK;
 
 	if (sseu->slice_mask) {
-<<<<<<< HEAD
 		sseu->eu_per_subslice =
 				INTEL_INFO(dev_priv)->sseu.eu_per_subslice;
 		for (s = 0; s < fls(sseu->slice_mask); s++) {
 			sseu->subslice_mask[s] =
 				INTEL_INFO(dev_priv)->sseu.subslice_mask[s];
 		}
-=======
-		sseu->subslice_mask = INTEL_INFO(dev_priv)->sseu.subslice_mask;
-		sseu->eu_per_subslice =
-				INTEL_INFO(dev_priv)->sseu.eu_per_subslice;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sseu->eu_total = sseu->eu_per_subslice *
 				 sseu_subslice_total(sseu);
 
@@ -5986,10 +4418,7 @@ static void i915_print_sseu_info(struct seq_file *m, bool is_available_info,
 {
 	struct drm_i915_private *dev_priv = node_to_i915(m->private);
 	const char *type = is_available_info ? "Available" : "Enabled";
-<<<<<<< HEAD
 	int s;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	seq_printf(m, "  %s Slice Mask: %04x\n", type,
 		   sseu->slice_mask);
@@ -5997,17 +4426,10 @@ static void i915_print_sseu_info(struct seq_file *m, bool is_available_info,
 		   hweight8(sseu->slice_mask));
 	seq_printf(m, "  %s Subslice Total: %u\n", type,
 		   sseu_subslice_total(sseu));
-<<<<<<< HEAD
 	for (s = 0; s < fls(sseu->slice_mask); s++) {
 		seq_printf(m, "  %s Slice%i subslices: %u\n", type,
 			   s, hweight8(sseu->subslice_mask[s]));
 	}
-=======
-	seq_printf(m, "  %s Subslice Mask: %04x\n", type,
-		   sseu->subslice_mask);
-	seq_printf(m, "  %s Subslice Per Slice: %u\n", type,
-		   hweight8(sseu->subslice_mask));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	seq_printf(m, "  %s EU Total: %u\n", type,
 		   sseu->eu_total);
 	seq_printf(m, "  %s EU Per Subslice: %u\n", type,
@@ -6041,13 +4463,10 @@ static int i915_sseu_status(struct seq_file *m, void *unused)
 
 	seq_puts(m, "SSEU Device Status\n");
 	memset(&sseu, 0, sizeof(sseu));
-<<<<<<< HEAD
 	sseu.max_slices = INTEL_INFO(dev_priv)->sseu.max_slices;
 	sseu.max_subslices = INTEL_INFO(dev_priv)->sseu.max_subslices;
 	sseu.max_eus_per_subslice =
 		INTEL_INFO(dev_priv)->sseu.max_eus_per_subslice;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	intel_runtime_pm_get(dev_priv);
 
@@ -6055,15 +4474,10 @@ static int i915_sseu_status(struct seq_file *m, void *unused)
 		cherryview_sseu_device_status(dev_priv, &sseu);
 	} else if (IS_BROADWELL(dev_priv)) {
 		broadwell_sseu_device_status(dev_priv, &sseu);
-<<<<<<< HEAD
 	} else if (IS_GEN9(dev_priv)) {
 		gen9_sseu_device_status(dev_priv, &sseu);
 	} else if (INTEL_GEN(dev_priv) >= 10) {
 		gen10_sseu_device_status(dev_priv, &sseu);
-=======
-	} else if (INTEL_GEN(dev_priv) >= 9) {
-		gen9_sseu_device_status(dev_priv, &sseu);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	intel_runtime_pm_put(dev_priv);
@@ -6075,7 +4489,6 @@ static int i915_sseu_status(struct seq_file *m, void *unused)
 
 static int i915_forcewake_open(struct inode *inode, struct file *file)
 {
-<<<<<<< HEAD
 	struct drm_i915_private *i915 = inode->i_private;
 
 	if (INTEL_GEN(i915) < 6)
@@ -6083,22 +4496,12 @@ static int i915_forcewake_open(struct inode *inode, struct file *file)
 
 	intel_runtime_pm_get(i915);
 	intel_uncore_forcewake_user_get(i915);
-=======
-	struct drm_i915_private *dev_priv = inode->i_private;
-
-	if (INTEL_GEN(dev_priv) < 6)
-		return 0;
-
-	intel_runtime_pm_get(dev_priv);
-	intel_uncore_forcewake_get(dev_priv, FORCEWAKE_ALL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
 static int i915_forcewake_release(struct inode *inode, struct file *file)
 {
-<<<<<<< HEAD
 	struct drm_i915_private *i915 = inode->i_private;
 
 	if (INTEL_GEN(i915) < 6)
@@ -6106,15 +4509,6 @@ static int i915_forcewake_release(struct inode *inode, struct file *file)
 
 	intel_uncore_forcewake_user_put(i915);
 	intel_runtime_pm_put(i915);
-=======
-	struct drm_i915_private *dev_priv = inode->i_private;
-
-	if (INTEL_GEN(dev_priv) < 6)
-		return 0;
-
-	intel_uncore_forcewake_put(dev_priv, FORCEWAKE_ALL);
-	intel_runtime_pm_put(dev_priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -6200,7 +4594,6 @@ static const struct file_operations i915_hpd_storm_ctl_fops = {
 	.write = i915_hpd_storm_ctl_write
 };
 
-<<<<<<< HEAD
 static int i915_drrs_ctl_set(void *data, u64 val)
 {
 	struct drm_i915_private *dev_priv = data;
@@ -6302,20 +4695,11 @@ static const struct file_operations i915_fifo_underrun_reset_ops = {
 	.llseek = default_llseek,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct drm_info_list i915_debugfs_list[] = {
 	{"i915_capabilities", i915_capabilities, 0},
 	{"i915_gem_objects", i915_gem_object_info, 0},
 	{"i915_gem_gtt", i915_gem_gtt_info, 0},
-<<<<<<< HEAD
 	{"i915_gem_stolen", i915_gem_stolen_list_info },
-=======
-	{"i915_gem_pin_display", i915_gem_gtt_info, 0, (void *)1},
-	{"i915_gem_stolen", i915_gem_stolen_list_info },
-	{"i915_gem_request", i915_gem_request_info, 0},
-	{"i915_gem_seqno", i915_gem_seqno_info, 0},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{"i915_gem_fence_regs", i915_gem_fence_regs_info, 0},
 	{"i915_gem_interrupt", i915_interrupt_info, 0},
 	{"i915_gem_batch_pool", i915_gem_batch_pool_info, 0},
@@ -6339,31 +4723,19 @@ static const struct drm_info_list i915_debugfs_list[] = {
 	{"i915_vbt", i915_vbt, 0},
 	{"i915_gem_framebuffer", i915_gem_framebuffer_info, 0},
 	{"i915_context_status", i915_context_status, 0},
-<<<<<<< HEAD
-=======
-	{"i915_dump_lrc", i915_dump_lrc, 0},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{"i915_forcewake_domains", i915_forcewake_domains, 0},
 	{"i915_swizzle_info", i915_swizzle_info, 0},
 	{"i915_ppgtt_info", i915_ppgtt_info, 0},
 	{"i915_llc", i915_llc, 0},
 	{"i915_edp_psr_status", i915_edp_psr_status, 0},
-<<<<<<< HEAD
-=======
-	{"i915_sink_crc_eDP1", i915_sink_crc, 0},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{"i915_energy_uJ", i915_energy_uJ, 0},
 	{"i915_runtime_pm_status", i915_runtime_pm_status, 0},
 	{"i915_power_domain_info", i915_power_domain_info, 0},
 	{"i915_dmc_info", i915_dmc_info, 0},
 	{"i915_display_info", i915_display_info, 0},
 	{"i915_engine_info", i915_engine_info, 0},
-<<<<<<< HEAD
 	{"i915_rcs_topology", i915_rcs_topology, 0},
 	{"i915_shrinker_info", i915_shrinker_info, 0},
-=======
-	{"i915_semaphore_status", i915_semaphore_status, 0},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{"i915_shared_dplls_info", i915_shared_dplls_info, 0},
 	{"i915_dp_mst_info", i915_dp_mst_info, 0},
 	{"i915_wa_registers", i915_wa_registers, 0},
@@ -6379,11 +4751,6 @@ static const struct i915_debugfs_files {
 	const struct file_operations *fops;
 } i915_debugfs_files[] = {
 	{"i915_wedged", &i915_wedged_fops},
-<<<<<<< HEAD
-=======
-	{"i915_max_freq", &i915_max_freq_fops},
-	{"i915_min_freq", &i915_min_freq_fops},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{"i915_cache_sharing", &i915_cache_sharing_fops},
 	{"i915_ring_missed_irq", &i915_ring_missed_irq_fops},
 	{"i915_ring_test_irq", &i915_ring_test_irq_fops},
@@ -6392,13 +4759,8 @@ static const struct i915_debugfs_files {
 	{"i915_error_state", &i915_error_state_fops},
 	{"i915_gpu_info", &i915_gpu_info_fops},
 #endif
-<<<<<<< HEAD
 	{"i915_fifo_underrun_reset", &i915_fifo_underrun_reset_ops},
 	{"i915_next_seqno", &i915_next_seqno_fops},
-=======
-	{"i915_next_seqno", &i915_next_seqno_fops},
-	{"i915_display_crc_ctl", &i915_display_crc_ctl_fops},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{"i915_pri_wm_latency", &i915_pri_wm_latency_fops},
 	{"i915_spr_wm_latency", &i915_spr_wm_latency_fops},
 	{"i915_cur_wm_latency", &i915_cur_wm_latency_fops},
@@ -6406,28 +4768,19 @@ static const struct i915_debugfs_files {
 	{"i915_dp_test_data", &i915_displayport_test_data_fops},
 	{"i915_dp_test_type", &i915_displayport_test_type_fops},
 	{"i915_dp_test_active", &i915_displayport_test_active_fops},
-<<<<<<< HEAD
 	{"i915_guc_log_level", &i915_guc_log_level_fops},
 	{"i915_guc_log_relay", &i915_guc_log_relay_fops},
 	{"i915_hpd_storm_ctl", &i915_hpd_storm_ctl_fops},
 	{"i915_ipc_status", &i915_ipc_status_fops},
 	{"i915_drrs_ctl", &i915_drrs_ctl_fops},
 	{"i915_edp_psr_debug", &i915_edp_psr_debug_fops}
-=======
-	{"i915_guc_log_control", &i915_guc_log_control_fops},
-	{"i915_hpd_storm_ctl", &i915_hpd_storm_ctl_fops}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int i915_debugfs_register(struct drm_i915_private *dev_priv)
 {
 	struct drm_minor *minor = dev_priv->drm.primary;
 	struct dentry *ent;
-<<<<<<< HEAD
 	int i;
-=======
-	int ret, i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ent = debugfs_create_file("i915_forcewake_user", S_IRUSR,
 				  minor->debugfs_root, to_i915(minor->dev),
@@ -6435,13 +4788,6 @@ int i915_debugfs_register(struct drm_i915_private *dev_priv)
 	if (!ent)
 		return -ENOMEM;
 
-<<<<<<< HEAD
-=======
-	ret = intel_pipe_crc_create(minor);
-	if (ret)
-		return ret;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < ARRAY_SIZE(i915_debugfs_files); i++) {
 		ent = debugfs_create_file(i915_debugfs_files[i].name,
 					  S_IRUGO | S_IWUSR,
@@ -6517,23 +4863,7 @@ static int i915_dpcd_show(struct seq_file *m, void *data)
 
 	return 0;
 }
-<<<<<<< HEAD
 DEFINE_SHOW_ATTRIBUTE(i915_dpcd);
-=======
-
-static int i915_dpcd_open(struct inode *inode, struct file *file)
-{
-	return single_open(file, i915_dpcd_show, inode->i_private);
-}
-
-static const struct file_operations i915_dpcd_fops = {
-	.owner = THIS_MODULE,
-	.open = i915_dpcd_open,
-	.read = seq_read,
-	.llseek = seq_lseek,
-	.release = single_release,
-};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int i915_panel_show(struct seq_file *m, void *data)
 {
@@ -6555,23 +4885,7 @@ static int i915_panel_show(struct seq_file *m, void *data)
 
 	return 0;
 }
-<<<<<<< HEAD
 DEFINE_SHOW_ATTRIBUTE(i915_panel);
-=======
-
-static int i915_panel_open(struct inode *inode, struct file *file)
-{
-	return single_open(file, i915_panel_show, inode->i_private);
-}
-
-static const struct file_operations i915_panel_fops = {
-	.owner = THIS_MODULE,
-	.open = i915_panel_open,
-	.read = seq_read,
-	.llseek = seq_lseek,
-	.release = single_release,
-};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * i915_debugfs_connector_add - add i915 specific connector debugfs files
@@ -6595,18 +4909,12 @@ int i915_debugfs_connector_add(struct drm_connector *connector)
 		debugfs_create_file("i915_dpcd", S_IRUGO, root,
 				    connector, &i915_dpcd_fops);
 
-<<<<<<< HEAD
 	if (connector->connector_type == DRM_MODE_CONNECTOR_eDP) {
 		debugfs_create_file("i915_panel_timings", S_IRUGO, root,
 				    connector, &i915_panel_fops);
 		debugfs_create_file("i915_psr_sink_status", S_IRUGO, root,
 				    connector, &i915_psr_sink_status_fops);
 	}
-=======
-	if (connector->connector_type == DRM_MODE_CONNECTOR_eDP)
-		debugfs_create_file("i915_panel_timings", S_IRUGO, root,
-				    connector, &i915_panel_fops);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

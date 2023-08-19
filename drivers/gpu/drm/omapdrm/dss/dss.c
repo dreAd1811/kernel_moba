@@ -1,13 +1,6 @@
 /*
-<<<<<<< HEAD
  * Copyright (C) 2009 Nokia Corporation
  * Author: Tomi Valkeinen <tomi.valkeinen@ti.com>
-=======
- * linux/drivers/video/omap2/dss/dss.c
- *
- * Copyright (C) 2009 Nokia Corporation
- * Author: Tomi Valkeinen <tomi.valkeinen@nokia.com>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Some code and ideas taken from drivers/video/omap/ driver
  * by Imre Deak.
@@ -28,10 +21,7 @@
 #define DSS_SUBSYS_NAME "DSS"
 
 #include <linux/debugfs.h>
-<<<<<<< HEAD
 #include <linux/dma-mapping.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/io.h>
@@ -58,11 +48,6 @@
 #include "omapdss.h"
 #include "dss.h"
 
-<<<<<<< HEAD
-=======
-#define DSS_SZ_REGS			SZ_512
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct dss_reg {
 	u16 idx;
 };
@@ -77,7 +62,6 @@ struct dss_reg {
 #define DSS_PLL_CONTROL			DSS_REG(0x0048)
 #define DSS_SDI_STATUS			DSS_REG(0x005C)
 
-<<<<<<< HEAD
 #define REG_GET(dss, idx, start, end) \
 	FLD_GET(dss_read_reg(dss, idx), start, end)
 
@@ -91,18 +75,6 @@ struct dss_ops {
 	int (*select_lcd_source)(struct dss_device *dss,
 				 enum omap_channel channel,
 				 enum dss_clk_source clk_src);
-=======
-#define REG_GET(idx, start, end) \
-	FLD_GET(dss_read_reg(idx), start, end)
-
-#define REG_FLD_MOD(idx, val, start, end) \
-	dss_write_reg(idx, FLD_MOD(dss_read_reg(idx), val, start, end))
-
-struct dss_ops {
-	int (*dpi_select_source)(int port, enum omap_channel channel);
-	int (*select_lcd_source)(enum omap_channel channel,
-		enum dss_clk_source clk_src);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct dss_features {
@@ -119,36 +91,6 @@ struct dss_features {
 	bool has_lcd_clk_src;
 };
 
-<<<<<<< HEAD
-=======
-static struct {
-	struct platform_device *pdev;
-	void __iomem    *base;
-	struct regmap	*syscon_pll_ctrl;
-	u32		syscon_pll_ctrl_offset;
-
-	struct clk	*parent_clk;
-	struct clk	*dss_clk;
-	unsigned long	dss_clk_rate;
-
-	unsigned long	cache_req_pck;
-	unsigned long	cache_prate;
-	struct dispc_clock_info cache_dispc_cinfo;
-
-	enum dss_clk_source dsi_clk_source[MAX_NUM_DSI];
-	enum dss_clk_source dispc_clk_source;
-	enum dss_clk_source lcd_clk_source[MAX_DSS_LCD_MANAGERS];
-
-	bool		ctx_valid;
-	u32		ctx[DSS_SZ_REGS / sizeof(u32)];
-
-	const struct dss_features *feat;
-
-	struct dss_pll	*video1_pll;
-	struct dss_pll	*video2_pll;
-} dss;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const char * const dss_generic_clk_source_names[] = {
 	[DSS_CLK_SRC_FCK]	= "FCK",
 	[DSS_CLK_SRC_PLL1_1]	= "PLL1:1",
@@ -160,7 +102,6 @@ static const char * const dss_generic_clk_source_names[] = {
 	[DSS_CLK_SRC_HDMI_PLL]	= "HDMI PLL",
 };
 
-<<<<<<< HEAD
 static inline void dss_write_reg(struct dss_device *dss,
 				 const struct dss_reg idx, u32 val)
 {
@@ -189,40 +130,10 @@ static void dss_save_context(struct dss_device *dss)
 	}
 
 	dss->ctx_valid = true;
-=======
-static inline void dss_write_reg(const struct dss_reg idx, u32 val)
-{
-	__raw_writel(val, dss.base + idx.idx);
-}
-
-static inline u32 dss_read_reg(const struct dss_reg idx)
-{
-	return __raw_readl(dss.base + idx.idx);
-}
-
-#define SR(reg) \
-	dss.ctx[(DSS_##reg).idx / sizeof(u32)] = dss_read_reg(DSS_##reg)
-#define RR(reg) \
-	dss_write_reg(DSS_##reg, dss.ctx[(DSS_##reg).idx / sizeof(u32)])
-
-static void dss_save_context(void)
-{
-	DSSDBG("dss_save_context\n");
-
-	SR(CONTROL);
-
-	if (dss.feat->outputs[OMAP_DSS_CHANNEL_LCD] & OMAP_DSS_OUTPUT_SDI) {
-		SR(SDI_CONTROL);
-		SR(PLL_CONTROL);
-	}
-
-	dss.ctx_valid = true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	DSSDBG("context saved\n");
 }
 
-<<<<<<< HEAD
 static void dss_restore_context(struct dss_device *dss)
 {
 	DSSDBG("dss_restore_context\n");
@@ -235,20 +146,6 @@ static void dss_restore_context(struct dss_device *dss)
 	if (dss->feat->outputs[OMAP_DSS_CHANNEL_LCD] & OMAP_DSS_OUTPUT_SDI) {
 		RR(dss, SDI_CONTROL);
 		RR(dss, PLL_CONTROL);
-=======
-static void dss_restore_context(void)
-{
-	DSSDBG("dss_restore_context\n");
-
-	if (!dss.ctx_valid)
-		return;
-
-	RR(CONTROL);
-
-	if (dss.feat->outputs[OMAP_DSS_CHANNEL_LCD] & OMAP_DSS_OUTPUT_SDI) {
-		RR(SDI_CONTROL);
-		RR(PLL_CONTROL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	DSSDBG("context restored\n");
@@ -257,30 +154,17 @@ static void dss_restore_context(void)
 #undef SR
 #undef RR
 
-<<<<<<< HEAD
 void dss_ctrl_pll_enable(struct dss_pll *pll, bool enable)
 {
 	unsigned int shift;
 	unsigned int val;
 
 	if (!pll->dss->syscon_pll_ctrl)
-=======
-void dss_ctrl_pll_enable(enum dss_pll_id pll_id, bool enable)
-{
-	unsigned shift;
-	unsigned val;
-
-	if (!dss.syscon_pll_ctrl)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	val = !enable;
 
-<<<<<<< HEAD
 	switch (pll->id) {
-=======
-	switch (pll_id) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case DSS_PLL_VIDEO1:
 		shift = 0;
 		break;
@@ -291,7 +175,6 @@ void dss_ctrl_pll_enable(enum dss_pll_id pll_id, bool enable)
 		shift = 2;
 		break;
 	default:
-<<<<<<< HEAD
 		DSSERR("illegal DSS PLL ID %d\n", pll->id);
 		return;
 	}
@@ -308,22 +191,6 @@ static int dss_ctrl_pll_set_control_mux(struct dss_device *dss,
 	unsigned int shift, val;
 
 	if (!dss->syscon_pll_ctrl)
-=======
-		DSSERR("illegal DSS PLL ID %d\n", pll_id);
-		return;
-	}
-
-	regmap_update_bits(dss.syscon_pll_ctrl, dss.syscon_pll_ctrl_offset,
-		1 << shift, val << shift);
-}
-
-static int dss_ctrl_pll_set_control_mux(enum dss_clk_source clk_src,
-	enum omap_channel channel)
-{
-	unsigned shift, val;
-
-	if (!dss.syscon_pll_ctrl)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	switch (channel) {
@@ -378,27 +245,18 @@ static int dss_ctrl_pll_set_control_mux(enum dss_clk_source clk_src,
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 	regmap_update_bits(dss->syscon_pll_ctrl, dss->syscon_pll_ctrl_offset,
-=======
-	regmap_update_bits(dss.syscon_pll_ctrl, dss.syscon_pll_ctrl_offset,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		0x3 << shift, val << shift);
 
 	return 0;
 }
 
-<<<<<<< HEAD
 void dss_sdi_init(struct dss_device *dss, int datapairs)
-=======
-void dss_sdi_init(int datapairs)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 l;
 
 	BUG_ON(datapairs > 3 || datapairs < 1);
 
-<<<<<<< HEAD
 	l = dss_read_reg(dss, DSS_SDI_CONTROL);
 	l = FLD_MOD(l, 0xf, 19, 15);		/* SDI_PDIV */
 	l = FLD_MOD(l, datapairs-1, 3, 2);	/* SDI_PRSEL */
@@ -428,37 +286,6 @@ int dss_sdi_enable(struct dss_device *dss)
 	/* Waiting for PLL lock request to complete */
 	timeout = jiffies + msecs_to_jiffies(500);
 	while (dss_read_reg(dss, DSS_SDI_STATUS) & (1 << 6)) {
-=======
-	l = dss_read_reg(DSS_SDI_CONTROL);
-	l = FLD_MOD(l, 0xf, 19, 15);		/* SDI_PDIV */
-	l = FLD_MOD(l, datapairs-1, 3, 2);	/* SDI_PRSEL */
-	l = FLD_MOD(l, 2, 1, 0);		/* SDI_BWSEL */
-	dss_write_reg(DSS_SDI_CONTROL, l);
-
-	l = dss_read_reg(DSS_PLL_CONTROL);
-	l = FLD_MOD(l, 0x7, 25, 22);	/* SDI_PLL_FREQSEL */
-	l = FLD_MOD(l, 0xb, 16, 11);	/* SDI_PLL_REGN */
-	l = FLD_MOD(l, 0xb4, 10, 1);	/* SDI_PLL_REGM */
-	dss_write_reg(DSS_PLL_CONTROL, l);
-}
-
-int dss_sdi_enable(void)
-{
-	unsigned long timeout;
-
-	dispc_pck_free_enable(1);
-
-	/* Reset SDI PLL */
-	REG_FLD_MOD(DSS_PLL_CONTROL, 1, 18, 18); /* SDI_PLL_SYSRESET */
-	udelay(1);	/* wait 2x PCLK */
-
-	/* Lock SDI PLL */
-	REG_FLD_MOD(DSS_PLL_CONTROL, 1, 28, 28); /* SDI_PLL_GOBIT */
-
-	/* Waiting for PLL lock request to complete */
-	timeout = jiffies + msecs_to_jiffies(500);
-	while (dss_read_reg(DSS_SDI_STATUS) & (1 << 6)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (time_after_eq(jiffies, timeout)) {
 			DSSERR("PLL lock request timed out\n");
 			goto err1;
@@ -466,38 +293,22 @@ int dss_sdi_enable(void)
 	}
 
 	/* Clearing PLL_GO bit */
-<<<<<<< HEAD
 	REG_FLD_MOD(dss, DSS_PLL_CONTROL, 0, 28, 28);
 
 	/* Waiting for PLL to lock */
 	timeout = jiffies + msecs_to_jiffies(500);
 	while (!(dss_read_reg(dss, DSS_SDI_STATUS) & (1 << 5))) {
-=======
-	REG_FLD_MOD(DSS_PLL_CONTROL, 0, 28, 28);
-
-	/* Waiting for PLL to lock */
-	timeout = jiffies + msecs_to_jiffies(500);
-	while (!(dss_read_reg(DSS_SDI_STATUS) & (1 << 5))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (time_after_eq(jiffies, timeout)) {
 			DSSERR("PLL lock timed out\n");
 			goto err1;
 		}
 	}
 
-<<<<<<< HEAD
 	dispc_lcd_enable_signal(dss->dispc, 1);
 
 	/* Waiting for SDI reset to complete */
 	timeout = jiffies + msecs_to_jiffies(500);
 	while (!(dss_read_reg(dss, DSS_SDI_STATUS) & (1 << 2))) {
-=======
-	dispc_lcd_enable_signal(1);
-
-	/* Waiting for SDI reset to complete */
-	timeout = jiffies + msecs_to_jiffies(500);
-	while (!(dss_read_reg(DSS_SDI_STATUS) & (1 << 2))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (time_after_eq(jiffies, timeout)) {
 			DSSERR("SDI reset timed out\n");
 			goto err2;
@@ -507,26 +318,16 @@ int dss_sdi_enable(void)
 	return 0;
 
  err2:
-<<<<<<< HEAD
 	dispc_lcd_enable_signal(dss->dispc, 0);
  err1:
 	/* Reset SDI PLL */
 	REG_FLD_MOD(dss, DSS_PLL_CONTROL, 0, 18, 18); /* SDI_PLL_SYSRESET */
 
 	dispc_pck_free_enable(dss->dispc, 0);
-=======
-	dispc_lcd_enable_signal(0);
- err1:
-	/* Reset SDI PLL */
-	REG_FLD_MOD(DSS_PLL_CONTROL, 0, 18, 18); /* SDI_PLL_SYSRESET */
-
-	dispc_pck_free_enable(0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return -ETIMEDOUT;
 }
 
-<<<<<<< HEAD
 void dss_sdi_disable(struct dss_device *dss)
 {
 	dispc_lcd_enable_signal(dss->dispc, 0);
@@ -535,16 +336,6 @@ void dss_sdi_disable(struct dss_device *dss)
 
 	/* Reset SDI PLL */
 	REG_FLD_MOD(dss, DSS_PLL_CONTROL, 0, 18, 18); /* SDI_PLL_SYSRESET */
-=======
-void dss_sdi_disable(void)
-{
-	dispc_lcd_enable_signal(0);
-
-	dispc_pck_free_enable(0);
-
-	/* Reset SDI PLL */
-	REG_FLD_MOD(DSS_PLL_CONTROL, 0, 18, 18); /* SDI_PLL_SYSRESET */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 const char *dss_get_clk_source_name(enum dss_clk_source clk_src)
@@ -552,36 +343,23 @@ const char *dss_get_clk_source_name(enum dss_clk_source clk_src)
 	return dss_generic_clk_source_names[clk_src];
 }
 
-<<<<<<< HEAD
 static void dss_dump_clocks(struct dss_device *dss, struct seq_file *s)
-=======
-void dss_dump_clocks(struct seq_file *s)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	const char *fclk_name;
 	unsigned long fclk_rate;
 
-<<<<<<< HEAD
 	if (dss_runtime_get(dss))
-=======
-	if (dss_runtime_get())
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	seq_printf(s, "- DSS -\n");
 
 	fclk_name = dss_get_clk_source_name(DSS_CLK_SRC_FCK);
-<<<<<<< HEAD
 	fclk_rate = clk_get_rate(dss->dss_clk);
-=======
-	fclk_rate = clk_get_rate(dss.dss_clk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	seq_printf(s, "%s = %lu\n",
 			fclk_name,
 			fclk_rate);
 
-<<<<<<< HEAD
 	dss_runtime_put(dss);
 }
 
@@ -620,31 +398,6 @@ static int dss_debug_dump_clocks(struct seq_file *s, void *p)
 	dsi_dump_clocks(s);
 #endif
 	return 0;
-=======
-	dss_runtime_put();
-}
-
-static void dss_dump_regs(struct seq_file *s)
-{
-#define DUMPREG(r) seq_printf(s, "%-35s %08x\n", #r, dss_read_reg(r))
-
-	if (dss_runtime_get())
-		return;
-
-	DUMPREG(DSS_REVISION);
-	DUMPREG(DSS_SYSCONFIG);
-	DUMPREG(DSS_SYSSTATUS);
-	DUMPREG(DSS_CONTROL);
-
-	if (dss.feat->outputs[OMAP_DSS_CHANNEL_LCD] & OMAP_DSS_OUTPUT_SDI) {
-		DUMPREG(DSS_SDI_CONTROL);
-		DUMPREG(DSS_PLL_CONTROL);
-		DUMPREG(DSS_SDI_STATUS);
-	}
-
-	dss_runtime_put();
-#undef DUMPREG
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int dss_get_channel_index(enum omap_channel channel)
@@ -662,12 +415,8 @@ static int dss_get_channel_index(enum omap_channel channel)
 	}
 }
 
-<<<<<<< HEAD
 static void dss_select_dispc_clk_source(struct dss_device *dss,
 					enum dss_clk_source clk_src)
-=======
-static void dss_select_dispc_clk_source(enum dss_clk_source clk_src)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int b;
 
@@ -675,11 +424,7 @@ static void dss_select_dispc_clk_source(enum dss_clk_source clk_src)
 	 * We always use PRCM clock as the DISPC func clock, except on DSS3,
 	 * where we don't have separate DISPC and LCD clock sources.
 	 */
-<<<<<<< HEAD
 	if (WARN_ON(dss->feat->has_lcd_clk_src && clk_src != DSS_CLK_SRC_FCK))
-=======
-	if (WARN_ON(dss.feat->has_lcd_clk_src && clk_src != DSS_CLK_SRC_FCK))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	switch (clk_src) {
@@ -697,7 +442,6 @@ static void dss_select_dispc_clk_source(enum dss_clk_source clk_src)
 		return;
 	}
 
-<<<<<<< HEAD
 	REG_FLD_MOD(dss, DSS_CONTROL, b,		/* DISPC_CLK_SWITCH */
 		    dss->feat->dispc_clk_switch.start,
 		    dss->feat->dispc_clk_switch.end);
@@ -707,17 +451,6 @@ static void dss_select_dispc_clk_source(enum dss_clk_source clk_src)
 
 void dss_select_dsi_clk_source(struct dss_device *dss, int dsi_module,
 			       enum dss_clk_source clk_src)
-=======
-	REG_FLD_MOD(DSS_CONTROL, b,			/* DISPC_CLK_SWITCH */
-		    dss.feat->dispc_clk_switch.start,
-		    dss.feat->dispc_clk_switch.end);
-
-	dss.dispc_clk_source = clk_src;
-}
-
-void dss_select_dsi_clk_source(int dsi_module,
-		enum dss_clk_source clk_src)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int b, pos;
 
@@ -739,7 +472,6 @@ void dss_select_dsi_clk_source(int dsi_module,
 	}
 
 	pos = dsi_module == 0 ? 1 : 10;
-<<<<<<< HEAD
 	REG_FLD_MOD(dss, DSS_CONTROL, b, pos, pos);	/* DSIx_CLK_SWITCH */
 
 	dss->dsi_clk_source[dsi_module] = clk_src;
@@ -748,15 +480,6 @@ void dss_select_dsi_clk_source(int dsi_module,
 static int dss_lcd_clk_mux_dra7(struct dss_device *dss,
 				enum omap_channel channel,
 				enum dss_clk_source clk_src)
-=======
-	REG_FLD_MOD(DSS_CONTROL, b, pos, pos);	/* DSIx_CLK_SWITCH */
-
-	dss.dsi_clk_source[dsi_module] = clk_src;
-}
-
-static int dss_lcd_clk_mux_dra7(enum omap_channel channel,
-	enum dss_clk_source clk_src)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	const u8 ctrl_bits[] = {
 		[OMAP_DSS_CHANNEL_LCD] = 0,
@@ -769,7 +492,6 @@ static int dss_lcd_clk_mux_dra7(enum omap_channel channel,
 
 	if (clk_src == DSS_CLK_SRC_FCK) {
 		/* LCDx_CLK_SWITCH */
-<<<<<<< HEAD
 		REG_FLD_MOD(dss, DSS_CONTROL, 0, ctrl_bit, ctrl_bit);
 		return -EINVAL;
 	}
@@ -779,29 +501,13 @@ static int dss_lcd_clk_mux_dra7(enum omap_channel channel,
 		return r;
 
 	REG_FLD_MOD(dss, DSS_CONTROL, 1, ctrl_bit, ctrl_bit);
-=======
-		REG_FLD_MOD(DSS_CONTROL, 0, ctrl_bit, ctrl_bit);
-		return -EINVAL;
-	}
-
-	r = dss_ctrl_pll_set_control_mux(clk_src, channel);
-	if (r)
-		return r;
-
-	REG_FLD_MOD(DSS_CONTROL, 1, ctrl_bit, ctrl_bit);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
 static int dss_lcd_clk_mux_omap5(struct dss_device *dss,
 				 enum omap_channel channel,
 				 enum dss_clk_source clk_src)
-=======
-static int dss_lcd_clk_mux_omap5(enum omap_channel channel,
-	enum dss_clk_source clk_src)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	const u8 ctrl_bits[] = {
 		[OMAP_DSS_CHANNEL_LCD] = 0,
@@ -818,34 +524,21 @@ static int dss_lcd_clk_mux_omap5(enum omap_channel channel,
 
 	if (clk_src == DSS_CLK_SRC_FCK) {
 		/* LCDx_CLK_SWITCH */
-<<<<<<< HEAD
 		REG_FLD_MOD(dss, DSS_CONTROL, 0, ctrl_bit, ctrl_bit);
-=======
-		REG_FLD_MOD(DSS_CONTROL, 0, ctrl_bit, ctrl_bit);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
 	if (WARN_ON(allowed_plls[channel] != clk_src))
 		return -EINVAL;
 
-<<<<<<< HEAD
 	REG_FLD_MOD(dss, DSS_CONTROL, 1, ctrl_bit, ctrl_bit);
-=======
-	REG_FLD_MOD(DSS_CONTROL, 1, ctrl_bit, ctrl_bit);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
 static int dss_lcd_clk_mux_omap4(struct dss_device *dss,
 				 enum omap_channel channel,
 				 enum dss_clk_source clk_src)
-=======
-static int dss_lcd_clk_mux_omap4(enum omap_channel channel,
-	enum dss_clk_source clk_src)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	const u8 ctrl_bits[] = {
 		[OMAP_DSS_CHANNEL_LCD] = 0,
@@ -860,39 +553,25 @@ static int dss_lcd_clk_mux_omap4(enum omap_channel channel,
 
 	if (clk_src == DSS_CLK_SRC_FCK) {
 		/* LCDx_CLK_SWITCH */
-<<<<<<< HEAD
 		REG_FLD_MOD(dss, DSS_CONTROL, 0, ctrl_bit, ctrl_bit);
-=======
-		REG_FLD_MOD(DSS_CONTROL, 0, ctrl_bit, ctrl_bit);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 
 	if (WARN_ON(allowed_plls[channel] != clk_src))
 		return -EINVAL;
 
-<<<<<<< HEAD
 	REG_FLD_MOD(dss, DSS_CONTROL, 1, ctrl_bit, ctrl_bit);
-=======
-	REG_FLD_MOD(DSS_CONTROL, 1, ctrl_bit, ctrl_bit);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
 void dss_select_lcd_clk_source(struct dss_device *dss,
 			       enum omap_channel channel,
 			       enum dss_clk_source clk_src)
-=======
-void dss_select_lcd_clk_source(enum omap_channel channel,
-		enum dss_clk_source clk_src)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int idx = dss_get_channel_index(channel);
 	int r;
 
-<<<<<<< HEAD
 	if (!dss->feat->has_lcd_clk_src) {
 		dss_select_dispc_clk_source(dss, clk_src);
 		dss->lcd_clk_source[idx] = clk_src;
@@ -932,91 +611,32 @@ enum dss_clk_source dss_get_lcd_clk_source(struct dss_device *dss,
 
 bool dss_div_calc(struct dss_device *dss, unsigned long pck,
 		  unsigned long fck_min, dss_div_calc_func func, void *data)
-=======
-	if (!dss.feat->has_lcd_clk_src) {
-		dss_select_dispc_clk_source(clk_src);
-		dss.lcd_clk_source[idx] = clk_src;
-		return;
-	}
-
-	r = dss.feat->ops->select_lcd_source(channel, clk_src);
-	if (r)
-		return;
-
-	dss.lcd_clk_source[idx] = clk_src;
-}
-
-enum dss_clk_source dss_get_dispc_clk_source(void)
-{
-	return dss.dispc_clk_source;
-}
-
-enum dss_clk_source dss_get_dsi_clk_source(int dsi_module)
-{
-	return dss.dsi_clk_source[dsi_module];
-}
-
-enum dss_clk_source dss_get_lcd_clk_source(enum omap_channel channel)
-{
-	if (dss.feat->has_lcd_clk_src) {
-		int idx = dss_get_channel_index(channel);
-		return dss.lcd_clk_source[idx];
-	} else {
-		/* LCD_CLK source is the same as DISPC_FCLK source for
-		 * OMAP2 and OMAP3 */
-		return dss.dispc_clk_source;
-	}
-}
-
-bool dss_div_calc(unsigned long pck, unsigned long fck_min,
-		dss_div_calc_func func, void *data)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int fckd, fckd_start, fckd_stop;
 	unsigned long fck;
 	unsigned long fck_hw_max;
 	unsigned long fckd_hw_max;
 	unsigned long prate;
-<<<<<<< HEAD
 	unsigned int m;
 
 	fck_hw_max = dss->feat->fck_freq_max;
 
 	if (dss->parent_clk == NULL) {
 		unsigned int pckd;
-=======
-	unsigned m;
-
-	fck_hw_max = dss.feat->fck_freq_max;
-
-	if (dss.parent_clk == NULL) {
-		unsigned pckd;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		pckd = fck_hw_max / pck;
 
 		fck = pck * pckd;
 
-<<<<<<< HEAD
 		fck = clk_round_rate(dss->dss_clk, fck);
-=======
-		fck = clk_round_rate(dss.dss_clk, fck);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		return func(fck, data);
 	}
 
-<<<<<<< HEAD
 	fckd_hw_max = dss->feat->fck_div_max;
 
 	m = dss->feat->dss_fck_multiplier;
 	prate = clk_get_rate(dss->parent_clk);
-=======
-	fckd_hw_max = dss.feat->fck_div_max;
-
-	m = dss.feat->dss_fck_multiplier;
-	prate = clk_get_rate(dss.parent_clk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	fck_min = fck_min ? fck_min : 1;
 
@@ -1033,17 +653,12 @@ bool dss_div_calc(unsigned long pck, unsigned long fck_min,
 	return false;
 }
 
-<<<<<<< HEAD
 int dss_set_fck_rate(struct dss_device *dss, unsigned long rate)
-=======
-int dss_set_fck_rate(unsigned long rate)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int r;
 
 	DSSDBG("set fck to %lu\n", rate);
 
-<<<<<<< HEAD
 	r = clk_set_rate(dss->dss_clk, rate);
 	if (r)
 		return r;
@@ -1052,22 +667,10 @@ int dss_set_fck_rate(unsigned long rate)
 
 	WARN_ONCE(dss->dss_clk_rate != rate, "clk rate mismatch: %lu != %lu",
 		  dss->dss_clk_rate, rate);
-=======
-	r = clk_set_rate(dss.dss_clk, rate);
-	if (r)
-		return r;
-
-	dss.dss_clk_rate = clk_get_rate(dss.dss_clk);
-
-	WARN_ONCE(dss.dss_clk_rate != rate,
-			"clk rate mismatch: %lu != %lu", dss.dss_clk_rate,
-			rate);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
 unsigned long dss_get_dispc_clk_rate(struct dss_device *dss)
 {
 	return dss->dss_clk_rate;
@@ -1105,54 +708,13 @@ static int dss_setup_default_clock(struct dss_device *dss)
 	}
 
 	r = dss_set_fck_rate(dss, fck);
-=======
-unsigned long dss_get_dispc_clk_rate(void)
-{
-	return dss.dss_clk_rate;
-}
-
-unsigned long dss_get_max_fck_rate(void)
-{
-	return dss.feat->fck_freq_max;
-}
-
-enum omap_dss_output_id dss_get_supported_outputs(enum omap_channel channel)
-{
-	return dss.feat->outputs[channel];
-}
-
-static int dss_setup_default_clock(void)
-{
-	unsigned long max_dss_fck, prate;
-	unsigned long fck;
-	unsigned fck_div;
-	int r;
-
-	max_dss_fck = dss.feat->fck_freq_max;
-
-	if (dss.parent_clk == NULL) {
-		fck = clk_round_rate(dss.dss_clk, max_dss_fck);
-	} else {
-		prate = clk_get_rate(dss.parent_clk);
-
-		fck_div = DIV_ROUND_UP(prate * dss.feat->dss_fck_multiplier,
-				max_dss_fck);
-		fck = DIV_ROUND_UP(prate, fck_div) * dss.feat->dss_fck_multiplier;
-	}
-
-	r = dss_set_fck_rate(fck);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r)
 		return r;
 
 	return 0;
 }
 
-<<<<<<< HEAD
 void dss_set_venc_output(struct dss_device *dss, enum omap_dss_venc_type type)
-=======
-void dss_set_venc_output(enum omap_dss_venc_type type)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int l = 0;
 
@@ -1164,7 +726,6 @@ void dss_set_venc_output(enum omap_dss_venc_type type)
 		BUG();
 
 	/* venc out selection. 0 = comp, 1 = svideo */
-<<<<<<< HEAD
 	REG_FLD_MOD(dss, DSS_CONTROL, l, 6, 6);
 }
 
@@ -1180,21 +741,6 @@ void dss_select_hdmi_venc_clk_source(struct dss_device *dss,
 	enum omap_dss_output_id outputs;
 
 	outputs = dss->feat->outputs[OMAP_DSS_CHANNEL_DIGIT];
-=======
-	REG_FLD_MOD(DSS_CONTROL, l, 6, 6);
-}
-
-void dss_set_dac_pwrdn_bgz(bool enable)
-{
-	REG_FLD_MOD(DSS_CONTROL, enable, 5, 5);	/* DAC Power-Down Control */
-}
-
-void dss_select_hdmi_venc_clk_source(enum dss_hdmi_venc_clk_source_select src)
-{
-	enum omap_dss_output_id outputs;
-
-	outputs = dss.feat->outputs[OMAP_DSS_CHANNEL_DIGIT];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Complain about invalid selections */
 	WARN_ON((src == DSS_VENC_TV_CLK) && !(outputs & OMAP_DSS_OUTPUT_VENC));
@@ -1203,33 +749,12 @@ void dss_select_hdmi_venc_clk_source(enum dss_hdmi_venc_clk_source_select src)
 	/* Select only if we have options */
 	if ((outputs & OMAP_DSS_OUTPUT_VENC) &&
 	    (outputs & OMAP_DSS_OUTPUT_HDMI))
-<<<<<<< HEAD
 		/* VENC_HDMI_SWITCH */
 		REG_FLD_MOD(dss, DSS_CONTROL, src, 15, 15);
 }
 
 static int dss_dpi_select_source_omap2_omap3(struct dss_device *dss, int port,
 					     enum omap_channel channel)
-=======
-		REG_FLD_MOD(DSS_CONTROL, src, 15, 15);	/* VENC_HDMI_SWITCH */
-}
-
-enum dss_hdmi_venc_clk_source_select dss_get_hdmi_venc_clk_source(void)
-{
-	enum omap_dss_output_id outputs;
-
-	outputs = dss.feat->outputs[OMAP_DSS_CHANNEL_DIGIT];
-	if ((outputs & OMAP_DSS_OUTPUT_HDMI) == 0)
-		return DSS_VENC_TV_CLK;
-
-	if ((outputs & OMAP_DSS_OUTPUT_VENC) == 0)
-		return DSS_HDMI_M_PCLK;
-
-	return REG_GET(DSS_CONTROL, 15, 15);
-}
-
-static int dss_dpi_select_source_omap2_omap3(int port, enum omap_channel channel)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (channel != OMAP_DSS_CHANNEL_LCD)
 		return -EINVAL;
@@ -1237,12 +762,8 @@ static int dss_dpi_select_source_omap2_omap3(int port, enum omap_channel channel
 	return 0;
 }
 
-<<<<<<< HEAD
 static int dss_dpi_select_source_omap4(struct dss_device *dss, int port,
 				       enum omap_channel channel)
-=======
-static int dss_dpi_select_source_omap4(int port, enum omap_channel channel)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int val;
 
@@ -1257,21 +778,13 @@ static int dss_dpi_select_source_omap4(int port, enum omap_channel channel)
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 	REG_FLD_MOD(dss, DSS_CONTROL, val, 17, 17);
-=======
-	REG_FLD_MOD(DSS_CONTROL, val, 17, 17);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
 static int dss_dpi_select_source_omap5(struct dss_device *dss, int port,
 				       enum omap_channel channel)
-=======
-static int dss_dpi_select_source_omap5(int port, enum omap_channel channel)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int val;
 
@@ -1292,29 +805,17 @@ static int dss_dpi_select_source_omap5(int port, enum omap_channel channel)
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 	REG_FLD_MOD(dss, DSS_CONTROL, val, 17, 16);
-=======
-	REG_FLD_MOD(DSS_CONTROL, val, 17, 16);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
 static int dss_dpi_select_source_dra7xx(struct dss_device *dss, int port,
 					enum omap_channel channel)
 {
 	switch (port) {
 	case 0:
 		return dss_dpi_select_source_omap5(dss, port, channel);
-=======
-static int dss_dpi_select_source_dra7xx(int port, enum omap_channel channel)
-{
-	switch (port) {
-	case 0:
-		return dss_dpi_select_source_omap5(port, channel);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case 1:
 		if (channel != OMAP_DSS_CHANNEL_LCD2)
 			return -EINVAL;
@@ -1330,7 +831,6 @@ static int dss_dpi_select_source_dra7xx(int port, enum omap_channel channel)
 	return 0;
 }
 
-<<<<<<< HEAD
 int dss_dpi_select_source(struct dss_device *dss, int port,
 			  enum omap_channel channel)
 {
@@ -1342,24 +842,11 @@ static int dss_get_clocks(struct dss_device *dss)
 	struct clk *clk;
 
 	clk = devm_clk_get(&dss->pdev->dev, "fck");
-=======
-int dss_dpi_select_source(int port, enum omap_channel channel)
-{
-	return dss.feat->ops->dpi_select_source(port, channel);
-}
-
-static int dss_get_clocks(void)
-{
-	struct clk *clk;
-
-	clk = devm_clk_get(&dss.pdev->dev, "fck");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(clk)) {
 		DSSERR("can't get clock fck\n");
 		return PTR_ERR(clk);
 	}
 
-<<<<<<< HEAD
 	dss->dss_clk = clk;
 
 	if (dss->feat->parent_clk_name) {
@@ -1367,30 +854,17 @@ static int dss_get_clocks(void)
 		if (IS_ERR(clk)) {
 			DSSERR("Failed to get %s\n",
 			       dss->feat->parent_clk_name);
-=======
-	dss.dss_clk = clk;
-
-	if (dss.feat->parent_clk_name) {
-		clk = clk_get(NULL, dss.feat->parent_clk_name);
-		if (IS_ERR(clk)) {
-			DSSERR("Failed to get %s\n", dss.feat->parent_clk_name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return PTR_ERR(clk);
 		}
 	} else {
 		clk = NULL;
 	}
 
-<<<<<<< HEAD
 	dss->parent_clk = clk;
-=======
-	dss.parent_clk = clk;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
 static void dss_put_clocks(struct dss_device *dss)
 {
 	if (dss->parent_clk)
@@ -1398,40 +872,22 @@ static void dss_put_clocks(struct dss_device *dss)
 }
 
 int dss_runtime_get(struct dss_device *dss)
-=======
-static void dss_put_clocks(void)
-{
-	if (dss.parent_clk)
-		clk_put(dss.parent_clk);
-}
-
-int dss_runtime_get(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int r;
 
 	DSSDBG("dss_runtime_get\n");
 
-<<<<<<< HEAD
 	r = pm_runtime_get_sync(&dss->pdev->dev);
-=======
-	r = pm_runtime_get_sync(&dss.pdev->dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	WARN_ON(r < 0);
 	return r < 0 ? r : 0;
 }
 
-<<<<<<< HEAD
 void dss_runtime_put(struct dss_device *dss)
-=======
-void dss_runtime_put(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int r;
 
 	DSSDBG("dss_runtime_put\n");
 
-<<<<<<< HEAD
 	r = pm_runtime_put_sync(&dss->pdev->dev);
 	WARN_ON(r < 0 && r != -ENOSYS && r != -EBUSY);
 }
@@ -1522,82 +978,6 @@ static inline int dss_initialize_debugfs(struct dss_device *dss)
 	return 0;
 }
 static inline void dss_uninitialize_debugfs(struct dss_device *dss)
-=======
-	r = pm_runtime_put_sync(&dss.pdev->dev);
-	WARN_ON(r < 0 && r != -ENOSYS && r != -EBUSY);
-}
-
-/* DEBUGFS */
-#if defined(CONFIG_OMAP2_DSS_DEBUGFS)
-static void dss_debug_dump_clocks(struct seq_file *s)
-{
-	dss_dump_clocks(s);
-	dispc_dump_clocks(s);
-#ifdef CONFIG_OMAP2_DSS_DSI
-	dsi_dump_clocks(s);
-#endif
-}
-
-static int dss_debug_show(struct seq_file *s, void *unused)
-{
-	void (*func)(struct seq_file *) = s->private;
-
-	func(s);
-	return 0;
-}
-
-static int dss_debug_open(struct inode *inode, struct file *file)
-{
-	return single_open(file, dss_debug_show, inode->i_private);
-}
-
-static const struct file_operations dss_debug_fops = {
-	.open           = dss_debug_open,
-	.read           = seq_read,
-	.llseek         = seq_lseek,
-	.release        = single_release,
-};
-
-static struct dentry *dss_debugfs_dir;
-
-static int dss_initialize_debugfs(void)
-{
-	dss_debugfs_dir = debugfs_create_dir("omapdss", NULL);
-	if (IS_ERR(dss_debugfs_dir)) {
-		int err = PTR_ERR(dss_debugfs_dir);
-
-		dss_debugfs_dir = NULL;
-		return err;
-	}
-
-	debugfs_create_file("clk", S_IRUGO, dss_debugfs_dir,
-			&dss_debug_dump_clocks, &dss_debug_fops);
-
-	return 0;
-}
-
-static void dss_uninitialize_debugfs(void)
-{
-	if (dss_debugfs_dir)
-		debugfs_remove_recursive(dss_debugfs_dir);
-}
-
-int dss_debugfs_create_file(const char *name, void (*write)(struct seq_file *))
-{
-	struct dentry *d;
-
-	d = debugfs_create_file(name, S_IRUGO, dss_debugfs_dir,
-			write, &dss_debug_fops);
-
-	return PTR_ERR_OR_ZERO(d);
-}
-#else /* CONFIG_OMAP2_DSS_DEBUGFS */
-static inline int dss_initialize_debugfs(void)
-{
-	return 0;
-}
-static inline void dss_uninitialize_debugfs(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 }
 #endif /* CONFIG_OMAP2_DSS_DEBUGFS */
@@ -1798,42 +1178,24 @@ static const struct dss_features dra7xx_dss_feats = {
 	.has_lcd_clk_src	=	true,
 };
 
-<<<<<<< HEAD
 static int dss_init_ports(struct dss_device *dss)
 {
 	struct platform_device *pdev = dss->pdev;
-=======
-static int dss_init_ports(struct platform_device *pdev)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct device_node *parent = pdev->dev.of_node;
 	struct device_node *port;
 	int i;
 
-<<<<<<< HEAD
 	for (i = 0; i < dss->feat->num_ports; i++) {
-=======
-	for (i = 0; i < dss.feat->num_ports; i++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		port = of_graph_get_port_by_id(parent, i);
 		if (!port)
 			continue;
 
-<<<<<<< HEAD
 		switch (dss->feat->ports[i]) {
 		case OMAP_DISPLAY_TYPE_DPI:
 			dpi_init_port(dss, pdev, port, dss->feat->model);
 			break;
 		case OMAP_DISPLAY_TYPE_SDI:
 			sdi_init_port(dss, pdev, port);
-=======
-		switch (dss.feat->ports[i]) {
-		case OMAP_DISPLAY_TYPE_DPI:
-			dpi_init_port(pdev, port, dss.feat->model);
-			break;
-		case OMAP_DISPLAY_TYPE_SDI:
-			sdi_init_port(pdev, port);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		default:
 			break;
@@ -1843,32 +1205,19 @@ static int dss_init_ports(struct platform_device *pdev)
 	return 0;
 }
 
-<<<<<<< HEAD
 static void dss_uninit_ports(struct dss_device *dss)
 {
 	struct platform_device *pdev = dss->pdev;
-=======
-static void dss_uninit_ports(struct platform_device *pdev)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct device_node *parent = pdev->dev.of_node;
 	struct device_node *port;
 	int i;
 
-<<<<<<< HEAD
 	for (i = 0; i < dss->feat->num_ports; i++) {
-=======
-	for (i = 0; i < dss.feat->num_ports; i++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		port = of_graph_get_port_by_id(parent, i);
 		if (!port)
 			continue;
 
-<<<<<<< HEAD
 		switch (dss->feat->ports[i]) {
-=======
-		switch (dss.feat->ports[i]) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case OMAP_DISPLAY_TYPE_DPI:
 			dpi_uninit_port(port);
 			break;
@@ -1881,14 +1230,9 @@ static void dss_uninit_ports(struct platform_device *pdev)
 	}
 }
 
-<<<<<<< HEAD
 static int dss_video_pll_probe(struct dss_device *dss)
 {
 	struct platform_device *pdev = dss->pdev;
-=======
-static int dss_video_pll_probe(struct platform_device *pdev)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct device_node *np = pdev->dev.of_node;
 	struct regulator *pll_regulator;
 	int r;
@@ -1897,7 +1241,6 @@ static int dss_video_pll_probe(struct platform_device *pdev)
 		return 0;
 
 	if (of_property_read_bool(np, "syscon-pll-ctrl")) {
-<<<<<<< HEAD
 		dss->syscon_pll_ctrl = syscon_regmap_lookup_by_phandle(np,
 			"syscon-pll-ctrl");
 		if (IS_ERR(dss->syscon_pll_ctrl)) {
@@ -1908,18 +1251,6 @@ static int dss_video_pll_probe(struct platform_device *pdev)
 
 		if (of_property_read_u32_index(np, "syscon-pll-ctrl", 1,
 				&dss->syscon_pll_ctrl_offset)) {
-=======
-		dss.syscon_pll_ctrl = syscon_regmap_lookup_by_phandle(np,
-			"syscon-pll-ctrl");
-		if (IS_ERR(dss.syscon_pll_ctrl)) {
-			dev_err(&pdev->dev,
-				"failed to get syscon-pll-ctrl regmap\n");
-			return PTR_ERR(dss.syscon_pll_ctrl);
-		}
-
-		if (of_property_read_u32_index(np, "syscon-pll-ctrl", 1,
-				&dss.syscon_pll_ctrl_offset)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev_err(&pdev->dev,
 				"failed to get syscon-pll-ctrl offset\n");
 			return -EINVAL;
@@ -1945,7 +1276,6 @@ static int dss_video_pll_probe(struct platform_device *pdev)
 	}
 
 	if (of_property_match_string(np, "reg-names", "pll1") >= 0) {
-<<<<<<< HEAD
 		dss->video1_pll = dss_video_pll_init(dss, pdev, 0,
 						     pll_regulator);
 		if (IS_ERR(dss->video1_pll))
@@ -1958,18 +1288,6 @@ static int dss_video_pll_probe(struct platform_device *pdev)
 		if (IS_ERR(dss->video2_pll)) {
 			dss_video_pll_uninit(dss->video1_pll);
 			return PTR_ERR(dss->video2_pll);
-=======
-		dss.video1_pll = dss_video_pll_init(pdev, 0, pll_regulator);
-		if (IS_ERR(dss.video1_pll))
-			return PTR_ERR(dss.video1_pll);
-	}
-
-	if (of_property_match_string(np, "reg-names", "pll2") >= 0) {
-		dss.video2_pll = dss_video_pll_init(pdev, 1, pll_regulator);
-		if (IS_ERR(dss.video2_pll)) {
-			dss_video_pll_uninit(dss.video1_pll);
-			return PTR_ERR(dss.video2_pll);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -1996,10 +1314,7 @@ static const struct soc_device_attribute dss_soc_devices[] = {
 
 static int dss_bind(struct device *dev)
 {
-<<<<<<< HEAD
 	struct dss_device *dss = dev_get_drvdata(dev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int r;
 
 	r = component_bind_all(dev, NULL);
@@ -2009,28 +1324,16 @@ static int dss_bind(struct device *dev)
 	pm_set_vt_switch(0);
 
 	omapdss_gather_components(dev);
-<<<<<<< HEAD
 	omapdss_set_dss(dss);
-=======
-	omapdss_set_is_initialized(true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
 static void dss_unbind(struct device *dev)
 {
-<<<<<<< HEAD
 	omapdss_set_dss(NULL);
 
 	component_unbind_all(dev, NULL);
-=======
-	struct platform_device *pdev = to_platform_device(dev);
-
-	omapdss_set_is_initialized(false);
-
-	component_unbind_all(&pdev->dev, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct component_master_ops dss_component_ops = {
@@ -2062,16 +1365,11 @@ static int dss_add_child_component(struct device *dev, void *data)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int dss_probe_hardware(struct dss_device *dss)
-=======
-static int dss_probe_hardware(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 rev;
 	int r;
 
-<<<<<<< HEAD
 	r = dss_runtime_get(dss);
 	if (r)
 		return r;
@@ -2098,34 +1396,6 @@ static int dss_probe_hardware(void)
 	pr_info("OMAP DSS rev %d.%d\n", FLD_GET(rev, 7, 4), FLD_GET(rev, 3, 0));
 
 	dss_runtime_put(dss);
-=======
-	r = dss_runtime_get();
-	if (r)
-		return r;
-
-	dss.dss_clk_rate = clk_get_rate(dss.dss_clk);
-
-	/* Select DPLL */
-	REG_FLD_MOD(DSS_CONTROL, 0, 0, 0);
-
-	dss_select_dispc_clk_source(DSS_CLK_SRC_FCK);
-
-#ifdef CONFIG_OMAP2_DSS_VENC
-	REG_FLD_MOD(DSS_CONTROL, 1, 4, 4);	/* venc dac demen */
-	REG_FLD_MOD(DSS_CONTROL, 1, 3, 3);	/* venc clock 4x enable */
-	REG_FLD_MOD(DSS_CONTROL, 0, 2, 2);	/* venc clock mode = normal */
-#endif
-	dss.dsi_clk_source[0] = DSS_CLK_SRC_FCK;
-	dss.dsi_clk_source[1] = DSS_CLK_SRC_FCK;
-	dss.dispc_clk_source = DSS_CLK_SRC_FCK;
-	dss.lcd_clk_source[0] = DSS_CLK_SRC_FCK;
-	dss.lcd_clk_source[1] = DSS_CLK_SRC_FCK;
-
-	rev = dss_read_reg(DSS_REVISION);
-	pr_info("OMAP DSS rev %d.%d\n", FLD_GET(rev, 7, 4), FLD_GET(rev, 3, 0));
-
-	dss_runtime_put();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -2135,7 +1405,6 @@ static int dss_probe(struct platform_device *pdev)
 	const struct soc_device_attribute *soc;
 	struct component_match *match = NULL;
 	struct resource *dss_mem;
-<<<<<<< HEAD
 	struct dss_device *dss;
 	int r;
 
@@ -2151,11 +1420,6 @@ static int dss_probe(struct platform_device *pdev)
 		dev_err(&pdev->dev, "Failed to set the DMA mask\n");
 		goto err_free_dss;
 	}
-=======
-	int r;
-
-	dss.pdev = pdev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * The various OMAP3-based SoCs can't be told apart using the compatible
@@ -2163,7 +1427,6 @@ static int dss_probe(struct platform_device *pdev)
 	 */
 	soc = soc_device_match(dss_soc_devices);
 	if (soc)
-<<<<<<< HEAD
 		dss->feat = soc->data;
 	else
 		dss->feat = of_match_device(dss_of_match, &pdev->dev)->data;
@@ -2181,56 +1444,26 @@ static int dss_probe(struct platform_device *pdev)
 		goto err_free_dss;
 
 	r = dss_setup_default_clock(dss);
-=======
-		dss.feat = soc->data;
-	else
-		dss.feat = of_match_device(dss_of_match, &pdev->dev)->data;
-
-	/* Map I/O registers, get and setup clocks. */
-	dss_mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-	dss.base = devm_ioremap_resource(&pdev->dev, dss_mem);
-	if (IS_ERR(dss.base))
-		return PTR_ERR(dss.base);
-
-	r = dss_get_clocks();
-	if (r)
-		return r;
-
-	r = dss_setup_default_clock();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r)
 		goto err_put_clocks;
 
 	/* Setup the video PLLs and the DPI and SDI ports. */
-<<<<<<< HEAD
 	r = dss_video_pll_probe(dss);
 	if (r)
 		goto err_put_clocks;
 
 	r = dss_init_ports(dss);
-=======
-	r = dss_video_pll_probe(pdev);
-	if (r)
-		goto err_put_clocks;
-
-	r = dss_init_ports(pdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r)
 		goto err_uninit_plls;
 
 	/* Enable runtime PM and probe the hardware. */
 	pm_runtime_enable(&pdev->dev);
 
-<<<<<<< HEAD
 	r = dss_probe_hardware(dss);
-=======
-	r = dss_probe_hardware();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r)
 		goto err_pm_runtime_disable;
 
 	/* Initialize debugfs. */
-<<<<<<< HEAD
 	r = dss_initialize_debugfs(dss);
 	if (r)
 		goto err_pm_runtime_disable;
@@ -2239,13 +1472,6 @@ static int dss_probe(struct platform_device *pdev)
 						   dss_debug_dump_clocks, dss);
 	dss->debugfs.dss = dss_debugfs_create_file(dss, "dss", dss_dump_regs,
 						   dss);
-=======
-	r = dss_initialize_debugfs();
-	if (r)
-		goto err_pm_runtime_disable;
-
-	dss_debugfs_create_file("dss", dss_dump_regs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Add all the child devices as components. */
 	device_for_each_child(&pdev->dev, &match, dss_add_child_component);
@@ -2257,7 +1483,6 @@ static int dss_probe(struct platform_device *pdev)
 	return 0;
 
 err_uninit_debugfs:
-<<<<<<< HEAD
 	dss_debugfs_remove_file(dss->debugfs.clk);
 	dss_debugfs_remove_file(dss->debugfs.dss);
 	dss_uninitialize_debugfs(dss);
@@ -2277,29 +1502,12 @@ err_put_clocks:
 
 err_free_dss:
 	kfree(dss);
-=======
-	dss_uninitialize_debugfs();
-
-err_pm_runtime_disable:
-	pm_runtime_disable(&pdev->dev);
-	dss_uninit_ports(pdev);
-
-err_uninit_plls:
-	if (dss.video1_pll)
-		dss_video_pll_uninit(dss.video1_pll);
-	if (dss.video2_pll)
-		dss_video_pll_uninit(dss.video2_pll);
-
-err_put_clocks:
-	dss_put_clocks();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return r;
 }
 
 static int dss_remove(struct platform_device *pdev)
 {
-<<<<<<< HEAD
 	struct dss_device *dss = platform_get_drvdata(pdev);
 
 	component_master_del(&pdev->dev, &dss_component_ops);
@@ -2321,23 +1529,6 @@ static int dss_remove(struct platform_device *pdev)
 	dss_put_clocks(dss);
 
 	kfree(dss);
-=======
-	component_master_del(&pdev->dev, &dss_component_ops);
-
-	dss_uninitialize_debugfs();
-
-	pm_runtime_disable(&pdev->dev);
-
-	dss_uninit_ports(pdev);
-
-	if (dss.video1_pll)
-		dss_video_pll_uninit(dss.video1_pll);
-
-	if (dss.video2_pll)
-		dss_video_pll_uninit(dss.video2_pll);
-
-	dss_put_clocks();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -2359,13 +1550,9 @@ static void dss_shutdown(struct platform_device *pdev)
 
 static int dss_runtime_suspend(struct device *dev)
 {
-<<<<<<< HEAD
 	struct dss_device *dss = dev_get_drvdata(dev);
 
 	dss_save_context(dss);
-=======
-	dss_save_context();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dss_set_min_bus_tput(dev, 0);
 
 	pinctrl_pm_select_sleep_state(dev);
@@ -2375,10 +1562,7 @@ static int dss_runtime_suspend(struct device *dev)
 
 static int dss_runtime_resume(struct device *dev)
 {
-<<<<<<< HEAD
 	struct dss_device *dss = dev_get_drvdata(dev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int r;
 
 	pinctrl_pm_select_default_state(dev);
@@ -2394,11 +1578,7 @@ static int dss_runtime_resume(struct device *dev)
 	if (r)
 		return r;
 
-<<<<<<< HEAD
 	dss_restore_context(dss);
-=======
-	dss_restore_context();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -2407,11 +1587,7 @@ static const struct dev_pm_ops dss_pm_ops = {
 	.runtime_resume = dss_runtime_resume,
 };
 
-<<<<<<< HEAD
 struct platform_driver omap_dsshw_driver = {
-=======
-static struct platform_driver omap_dsshw_driver = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.probe		= dss_probe,
 	.remove		= dss_remove,
 	.shutdown	= dss_shutdown,
@@ -2422,16 +1598,3 @@ static struct platform_driver omap_dsshw_driver = {
 		.suppress_bind_attrs = true,
 	},
 };
-<<<<<<< HEAD
-=======
-
-int __init dss_init_platform_driver(void)
-{
-	return platform_driver_register(&omap_dsshw_driver);
-}
-
-void dss_uninit_platform_driver(void)
-{
-	platform_driver_unregister(&omap_dsshw_driver);
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

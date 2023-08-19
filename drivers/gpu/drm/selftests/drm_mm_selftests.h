@@ -19,13 +19,9 @@ selftest(align64, igt_align64)
 selftest(evict, igt_evict)
 selftest(evict_range, igt_evict_range)
 selftest(bottomup, igt_bottomup)
-<<<<<<< HEAD
 selftest(lowest, igt_lowest)
 selftest(topdown, igt_topdown)
 selftest(highest, igt_highest)
-=======
-selftest(topdown, igt_topdown)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 selftest(color, igt_color)
 selftest(color_evict, igt_color_evict)
 selftest(color_evict_range, igt_color_evict_range)

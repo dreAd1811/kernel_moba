@@ -40,26 +40,16 @@ extern void at91_pinctrl_gpio_resume(void);
 #endif
 
 static const match_table_t pm_modes __initconst = {
-<<<<<<< HEAD
 	{ AT91_PM_STANDBY, "standby" },
 	{ AT91_PM_ULP0, "ulp0" },
 	{ AT91_PM_ULP1, "ulp1" },
-=======
-	{ 0, "standby" },
-	{ AT91_PM_SLOW_CLOCK, "ulp0" },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ AT91_PM_BACKUP, "backup" },
 	{ -1, NULL },
 };
 
 static struct at91_pm_data pm_data = {
-<<<<<<< HEAD
 	.standby_mode = AT91_PM_STANDBY,
 	.suspend_mode = AT91_PM_ULP0,
-=======
-	.standby_mode = 0,
-	.suspend_mode = AT91_PM_SLOW_CLOCK,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define at91_ramc_read(id, field) \
@@ -90,7 +80,6 @@ static struct at91_pm_bu {
 	phys_addr_t resume;
 } *pm_bu;
 
-<<<<<<< HEAD
 struct wakeup_source_info {
 	unsigned int pmc_fsmr_bit;
 	unsigned int shdwc_mr_bit;
@@ -175,8 +164,6 @@ put_node:
 	return mode ? 0 : -EPERM;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Called after processes are frozen, but before we shutdown devices.
  */
@@ -195,11 +182,7 @@ static int at91_pm_begin(suspend_state_t state)
 		pm_data.mode = -1;
 	}
 
-<<<<<<< HEAD
 	return at91_pm_config_ws(pm_data.mode, true);
-=======
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -247,11 +230,7 @@ static int at91_pm_verify_clocks(void)
  */
 int at91_suspend_entering_slow_clock(void)
 {
-<<<<<<< HEAD
 	return (pm_data.mode >= AT91_PM_ULP0);
-=======
-	return (pm_data.mode >= AT91_PM_SLOW_CLOCK);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(at91_suspend_entering_slow_clock);
 
@@ -292,11 +271,7 @@ static void at91_pm_suspend(suspend_state_t state)
  * event sources; and reduces DRAM power.  But otherwise it's identical to
  * PM_SUSPEND_ON: cpu idle, and nothing fancy done with main or cpu clocks.
  *
-<<<<<<< HEAD
  * AT91_PM_ULP0 is like STANDBY plus slow clock mode, so drivers must
-=======
- * AT91_PM_SLOW_CLOCK is like STANDBY plus slow clock mode, so drivers must
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * suspend more deeply, the master clock switches to the clk32k and turns off
  * the main oscillator
  *
@@ -314,11 +289,7 @@ static int at91_pm_enter(suspend_state_t state)
 		/*
 		 * Ensure that clocks are in a valid state.
 		 */
-<<<<<<< HEAD
 		if (pm_data.mode >= AT91_PM_ULP0 &&
-=======
-		if ((pm_data.mode >= AT91_PM_SLOW_CLOCK) &&
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    !at91_pm_verify_clocks())
 			goto error;
 
@@ -347,10 +318,7 @@ error:
  */
 static void at91_pm_end(void)
 {
-<<<<<<< HEAD
 	at91_pm_config_ws(pm_data.mode, false);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 
@@ -596,7 +564,6 @@ static void __init at91_pm_sram_init(void)
 			&at91_pm_suspend_in_sram, at91_pm_suspend_in_sram_sz);
 }
 
-<<<<<<< HEAD
 static bool __init at91_is_pm_mode_active(int pm_mode)
 {
 	return (pm_data.standby_mode == pm_mode ||
@@ -604,14 +571,10 @@ static bool __init at91_is_pm_mode_active(int pm_mode)
 }
 
 static int __init at91_pm_backup_init(void)
-=======
-static void __init at91_pm_backup_init(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct gen_pool *sram_pool;
 	struct device_node *np;
 	struct platform_device *pdev = NULL;
-<<<<<<< HEAD
 	int ret = -ENODEV;
 
 	if (!at91_is_pm_mode_active(AT91_PM_BACKUP))
@@ -623,28 +586,6 @@ static void __init at91_pm_backup_init(void)
 	if (!np) {
 		pr_warn("%s: failed to find sfrbu!\n", __func__);
 		return ret;
-=======
-
-	if ((pm_data.standby_mode != AT91_PM_BACKUP) &&
-	    (pm_data.suspend_mode != AT91_PM_BACKUP))
-		return;
-
-	pm_bu = NULL;
-
-	np = of_find_compatible_node(NULL, NULL, "atmel,sama5d2-shdwc");
-	if (!np) {
-		pr_warn("%s: failed to find shdwc!\n", __func__);
-		return;
-	}
-
-	pm_data.shdwc = of_iomap(np, 0);
-	of_node_put(np);
-
-	np = of_find_compatible_node(NULL, NULL, "atmel,sama5d2-sfrbu");
-	if (!np) {
-		pr_warn("%s: failed to find sfrbu!\n", __func__);
-		goto sfrbu_fail;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	pm_data.sfrbu = of_iomap(np, 0);
@@ -653,21 +594,13 @@ static void __init at91_pm_backup_init(void)
 
 	np = of_find_compatible_node(NULL, NULL, "atmel,sama5d2-securam");
 	if (!np)
-<<<<<<< HEAD
 		goto securam_fail_no_ref_dev;
-=======
-		goto securam_fail;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pdev = of_find_device_by_node(np);
 	of_node_put(np);
 	if (!pdev) {
 		pr_warn("%s: failed to find securam device!\n", __func__);
-<<<<<<< HEAD
 		goto securam_fail_no_ref_dev;
-=======
-		goto securam_fail;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	sram_pool = gen_pool_get(&pdev->dev, NULL);
@@ -679,10 +612,7 @@ static void __init at91_pm_backup_init(void)
 	pm_bu = (void *)gen_pool_alloc(sram_pool, sizeof(struct at91_pm_bu));
 	if (!pm_bu) {
 		pr_warn("%s: unable to alloc securam!\n", __func__);
-<<<<<<< HEAD
 		ret = -ENOMEM;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto securam_fail;
 	}
 
@@ -690,7 +620,6 @@ static void __init at91_pm_backup_init(void)
 	pm_bu->canary = __pa_symbol(&canary);
 	pm_bu->resume = __pa_symbol(cpu_resume);
 
-<<<<<<< HEAD
 	return 0;
 
 securam_fail:
@@ -747,21 +676,6 @@ ulp1_default:
 	at91_pm_use_default_mode(AT91_PM_ULP1);
 backup_default:
 	at91_pm_use_default_mode(AT91_PM_BACKUP);
-=======
-	return;
-
-sfrbu_fail:
-	iounmap(pm_data.shdwc);
-	pm_data.shdwc = NULL;
-securam_fail:
-	iounmap(pm_data.sfrbu);
-	pm_data.sfrbu = NULL;
-
-	if (pm_data.standby_mode == AT91_PM_BACKUP)
-		pm_data.standby_mode = AT91_PM_SLOW_CLOCK;
-	if (pm_data.suspend_mode == AT91_PM_BACKUP)
-		pm_data.suspend_mode = AT91_PM_SLOW_CLOCK;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 struct pmc_info {
@@ -772,16 +686,12 @@ static const struct pmc_info pmc_infos[] __initconst = {
 	{ .uhp_udp_mask = AT91RM9200_PMC_UHP | AT91RM9200_PMC_UDP },
 	{ .uhp_udp_mask = AT91SAM926x_PMC_UHP | AT91SAM926x_PMC_UDP },
 	{ .uhp_udp_mask = AT91SAM926x_PMC_UHP },
-<<<<<<< HEAD
 	{ .uhp_udp_mask = 0 },
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct of_device_id atmel_pmc_ids[] __initconst = {
 	{ .compatible = "atmel,at91rm9200-pmc", .data = &pmc_infos[0] },
 	{ .compatible = "atmel,at91sam9260-pmc", .data = &pmc_infos[1] },
-<<<<<<< HEAD
 	{ .compatible = "atmel,at91sam9261-pmc", .data = &pmc_infos[1] },
 	{ .compatible = "atmel,at91sam9263-pmc", .data = &pmc_infos[1] },
 	{ .compatible = "atmel,at91sam9g45-pmc", .data = &pmc_infos[2] },
@@ -790,12 +700,6 @@ static const struct of_device_id atmel_pmc_ids[] __initconst = {
 	{ .compatible = "atmel,at91sam9x5-pmc", .data = &pmc_infos[1] },
 	{ .compatible = "atmel,sama5d3-pmc", .data = &pmc_infos[1] },
 	{ .compatible = "atmel,sama5d4-pmc", .data = &pmc_infos[1] },
-=======
-	{ .compatible = "atmel,at91sam9g45-pmc", .data = &pmc_infos[2] },
-	{ .compatible = "atmel,at91sam9n12-pmc", .data = &pmc_infos[1] },
-	{ .compatible = "atmel,at91sam9x5-pmc", .data = &pmc_infos[1] },
-	{ .compatible = "atmel,sama5d3-pmc", .data = &pmc_infos[1] },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ .compatible = "atmel,sama5d2-pmc", .data = &pmc_infos[1] },
 	{ /* sentinel */ },
 };
@@ -872,11 +776,7 @@ void __init sama5d2_pm_init(void)
 	if (!IS_ENABLED(CONFIG_SOC_SAMA5D2))
 		return;
 
-<<<<<<< HEAD
 	at91_pm_modes_init();
-=======
-	at91_pm_backup_init();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sama5_pm_init();
 }
 

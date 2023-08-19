@@ -30,11 +30,7 @@
 		power-supply = <&reg_backlight>;
 	};
 
-<<<<<<< HEAD
 	disp1: disp1 {
-=======
-	disp1: display@disp1 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "fsl,imx-parallel-display";
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_disp1_1>;

@@ -52,11 +52,7 @@ please make a proposal on the linux-media mailing list.
 	`http://www.ivtvdriver.org/ <http://www.ivtvdriver.org/>`__
 
 	The format is documented in the kernel sources in the file
-<<<<<<< HEAD
 	``Documentation/media/v4l-drivers/cx2341x.rst``
-=======
-	``Documentation/video4linux/cx2341x/README.hm12``
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     * .. _V4L2-PIX-FMT-CPIA1:
 
       - ``V4L2_PIX_FMT_CPIA1``

@@ -32,10 +32,7 @@ extern struct md_sysfs_entry r5c_journal_mode;
 extern void r5c_update_on_rdev_error(struct mddev *mddev,
 				     struct md_rdev *rdev);
 extern bool r5c_big_stripe_cached(struct r5conf *conf, sector_t sect);
-<<<<<<< HEAD
 extern int r5l_start(struct r5l_log *log);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 extern struct dma_async_tx_descriptor *
 ops_run_partial_parity(struct stripe_head *sh, struct raid5_percpu *percpu,
@@ -46,11 +43,8 @@ extern int ppl_write_stripe(struct r5conf *conf, struct stripe_head *sh);
 extern void ppl_write_stripe_run(struct r5conf *conf);
 extern void ppl_stripe_write_finished(struct stripe_head *sh);
 extern int ppl_modify_log(struct r5conf *conf, struct md_rdev *rdev, bool add);
-<<<<<<< HEAD
 extern void ppl_quiesce(struct r5conf *conf, int quiesce);
 extern int ppl_handle_flush_request(struct r5l_log *log, struct bio *bio);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline bool raid5_has_log(struct r5conf *conf)
 {
@@ -101,7 +95,6 @@ static inline void log_write_stripe_run(struct r5conf *conf)
 		ppl_write_stripe_run(conf);
 }
 
-<<<<<<< HEAD
 static inline void log_flush_stripe_to_raid(struct r5conf *conf)
 {
 	if (conf->log)
@@ -130,8 +123,6 @@ static inline void log_quiesce(struct r5conf *conf, int quiesce)
 		ppl_quiesce(conf, quiesce);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void log_exit(struct r5conf *conf)
 {
 	if (conf->log)

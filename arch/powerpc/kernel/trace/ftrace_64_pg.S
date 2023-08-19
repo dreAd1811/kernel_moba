@@ -14,16 +14,11 @@
 #include <asm/ppc-opcode.h>
 #include <asm/export.h>
 
-<<<<<<< HEAD
 _GLOBAL_TOC(ftrace_caller)
 	lbz	r3, PACA_FTRACE_ENABLED(r13)
 	cmpdi	r3, 0
 	beqlr
 
-=======
-#ifdef CONFIG_DYNAMIC_FTRACE
-_GLOBAL_TOC(ftrace_caller)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Taken from output of objdump from lib64/glibc */
 	mflr	r3
 	ld	r11, 0(r1)
@@ -47,10 +42,6 @@ _GLOBAL(ftrace_graph_stub)
 
 _GLOBAL(ftrace_stub)
 	blr
-<<<<<<< HEAD
-=======
-#endif /* CONFIG_DYNAMIC_FTRACE */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_FUNCTION_GRAPH_TRACER
 _GLOBAL(ftrace_graph_caller)

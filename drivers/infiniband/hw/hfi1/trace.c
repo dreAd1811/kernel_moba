@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
  * Copyright(c) 2015 - 2018 Intel Corporation.
-=======
- * Copyright(c) 2015, 2016 Intel Corporation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This file is provided under a dual BSD/GPLv2 license.  When using or
  * redistributing this file, you may do so under either license.
@@ -67,7 +63,6 @@ static u8 __get_ib_hdr_len(struct ib_header *hdr)
 
 static u8 __get_16b_hdr_len(struct hfi1_16b_header *hdr)
 {
-<<<<<<< HEAD
 	struct ib_other_headers *ohdr = NULL;
 	u8 opcode;
 	u8 l4 = hfi1_16B_get_l4(hdr);
@@ -82,15 +77,6 @@ static u8 __get_16b_hdr_len(struct hfi1_16b_header *hdr)
 	else
 		ohdr = &hdr->u.l.oth;
 
-=======
-	struct ib_other_headers *ohdr;
-	u8 opcode;
-
-	if (hfi1_16B_get_l4(hdr) == OPA_16B_L4_IB_LOCAL)
-		ohdr = &hdr->u.oth;
-	else
-		ohdr = &hdr->u.l.oth;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	opcode = ib_bth_get_opcode(ohdr);
 	return hdr_len_by_opcode[opcode] == 0 ?
 	       0 : hdr_len_by_opcode[opcode] - (12 + 8 + 8);
@@ -112,7 +98,6 @@ u8 hfi1_trace_opa_hdr_len(struct hfi1_opa_header *opa_hdr)
 		return __get_16b_hdr_len(&opa_hdr->opah);
 }
 
-<<<<<<< HEAD
 const char *hfi1_trace_get_packet_l4_str(u8 l4)
 {
 	if (l4)
@@ -124,14 +109,6 @@ const char *hfi1_trace_get_packet_l4_str(u8 l4)
 const char *hfi1_trace_get_packet_l2_str(u8 l2)
 {
 	switch (l2) {
-=======
-const char *hfi1_trace_get_packet_str(struct hfi1_packet *packet)
-{
-	if (packet->etype != RHF_RCV_TYPE_BYPASS)
-		return "IB";
-
-	switch (hfi1_16B_get_l2(packet->hdr)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case 0:
 		return "0";
 	case 1:
@@ -144,17 +121,6 @@ const char *hfi1_trace_get_packet_str(struct hfi1_packet *packet)
 	return "";
 }
 
-<<<<<<< HEAD
-=======
-const char *hfi1_trace_get_packet_type_str(u8 l4)
-{
-	if (l4)
-		return "16B";
-	else
-		return "9B";
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define IMM_PRN  "imm:%d"
 #define RETH_PRN "reth vaddr:0x%.16llx rkey:0x%.8x dlen:0x%.8x"
 #define AETH_PRN "aeth syn:0x%.2x %s msn:0x%.8x"
@@ -179,11 +145,7 @@ static const char *parse_syndrome(u8 syndrome)
 }
 
 void hfi1_trace_parse_9b_bth(struct ib_other_headers *ohdr,
-<<<<<<< HEAD
 			     u8 *ack, bool *becn, bool *fecn, u8 *mig,
-=======
-			     u8 *ack, u8 *becn, u8 *fecn, u8 *mig,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     u8 *se, u8 *pad, u8 *opcode, u8 *tver,
 			     u16 *pkey, u32 *psn, u32 *qpn)
 {
@@ -229,11 +191,7 @@ void hfi1_trace_parse_9b_hdr(struct ib_header *hdr, bool sc5,
 }
 
 void hfi1_trace_parse_16b_hdr(struct hfi1_16b_header *hdr,
-<<<<<<< HEAD
 			      u8 *age, bool *becn, bool *fecn,
-=======
-			      u8 *age, u8 *becn, u8 *fecn,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      u8 *l4, u8 *rc, u8 *sc,
 			      u16 *entropy, u16 *len, u16 *pkey,
 			      u32 *dlid, u32 *slid)
@@ -256,11 +214,7 @@ void hfi1_trace_parse_16b_hdr(struct hfi1_16b_header *hdr,
 #define LRH_16B_PRN "age:%d becn:%d fecn:%d l4:%d " \
 		    "rc:%d sc:%d pkey:0x%.4x entropy:0x%.4x"
 const char *hfi1_trace_fmt_lrh(struct trace_seq *p, bool bypass,
-<<<<<<< HEAD
 			       u8 age, bool becn, bool fecn, u8 l4,
-=======
-			       u8 age, u8 becn, u8 fecn, u8 l4,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       u8 lnh, const char *lnh_name, u8 lver,
 			       u8 rc, u8 sc, u8 sl, u16 entropy,
 			       u16 len, u16 pkey, u32 dlid, u32 slid)
@@ -287,7 +241,6 @@ const char *hfi1_trace_fmt_lrh(struct trace_seq *p, bool bypass,
 #define BTH_16B_PRN \
 	"op:0x%.2x,%s se:%d m:%d pad:%d tver:%d " \
 	"qpn:0x%.6x a:%d psn:0x%.8x"
-<<<<<<< HEAD
 #define L4_FM_16B_PRN \
 	"op:0x%.2x,%s dest_qpn:0x%.6x src_qpn:0x%.6x"
 const char *hfi1_trace_fmt_rest(struct trace_seq *p, bool bypass, u8 l4,
@@ -295,17 +248,10 @@ const char *hfi1_trace_fmt_rest(struct trace_seq *p, bool bypass, u8 l4,
 				u8 se, u8 pad, u8 opcode, const char *opname,
 				u8 tver, u16 pkey, u32 psn, u32 qpn,
 				u32 dest_qpn, u32 src_qpn)
-=======
-const char *hfi1_trace_fmt_bth(struct trace_seq *p, bool bypass,
-			       u8 ack, u8 becn, u8 fecn, u8 mig,
-			       u8 se, u8 pad, u8 opcode, const char *opname,
-			       u8 tver, u16 pkey, u32 psn, u32 qpn)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	const char *ret = trace_seq_buffer_ptr(p);
 
 	if (bypass)
-<<<<<<< HEAD
 		if (l4 == OPA_16B_L4_FM)
 			trace_seq_printf(p, L4_FM_16B_PRN,
 					 opcode, opname, dest_qpn, src_qpn);
@@ -313,11 +259,6 @@ const char *hfi1_trace_fmt_bth(struct trace_seq *p, bool bypass,
 			trace_seq_printf(p, BTH_16B_PRN,
 					 opcode, opname,
 					 se, mig, pad, tver, qpn, ack, psn);
-=======
-		trace_seq_printf(p, BTH_16B_PRN,
-				 opcode, opname,
-				 se, mig, pad, tver, qpn, ack, psn);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	else
 		trace_seq_printf(p, BTH_9B_PRN,
@@ -331,24 +272,17 @@ const char *hfi1_trace_fmt_bth(struct trace_seq *p, bool bypass,
 
 const char *parse_everbs_hdrs(
 	struct trace_seq *p,
-<<<<<<< HEAD
 	u8 opcode, u8 l4, u32 dest_qpn, u32 src_qpn,
-=======
-	u8 opcode,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void *ehdrs)
 {
 	union ib_ehdrs *eh = ehdrs;
 	const char *ret = trace_seq_buffer_ptr(p);
 
-<<<<<<< HEAD
 	if (l4 == OPA_16B_L4_FM) {
 		trace_seq_printf(p, "mgmt pkt");
 		goto out;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (opcode) {
 	/* imm */
 	case OP(RC, SEND_LAST_WITH_IMMEDIATE):
@@ -419,10 +353,7 @@ const char *parse_everbs_hdrs(
 				 be32_to_cpu(eh->ieth));
 		break;
 	}
-<<<<<<< HEAD
 out:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	trace_seq_putc(p, 0);
 	return ret;
 }
@@ -463,10 +394,7 @@ const char *print_u32_array(
 	return ret;
 }
 
-<<<<<<< HEAD
 __hfi1_trace_fn(AFFINITY);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 __hfi1_trace_fn(PKT);
 __hfi1_trace_fn(PROC);
 __hfi1_trace_fn(SDMA);

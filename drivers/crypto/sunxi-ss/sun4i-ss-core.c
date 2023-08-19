@@ -45,17 +45,9 @@ static struct sun4i_ss_alg_template ss_algs[] = {
 				.cra_driver_name = "md5-sun4i-ss",
 				.cra_priority = 300,
 				.cra_alignmask = 3,
-<<<<<<< HEAD
 				.cra_blocksize = MD5_HMAC_BLOCK_SIZE,
 				.cra_ctxsize = sizeof(struct sun4i_req_ctx),
 				.cra_module = THIS_MODULE,
-=======
-				.cra_flags = CRYPTO_ALG_TYPE_AHASH,
-				.cra_blocksize = MD5_HMAC_BLOCK_SIZE,
-				.cra_ctxsize = sizeof(struct sun4i_req_ctx),
-				.cra_module = THIS_MODULE,
-				.cra_type = &crypto_ahash_type,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				.cra_init = sun4i_hash_crainit
 			}
 		}
@@ -79,17 +71,9 @@ static struct sun4i_ss_alg_template ss_algs[] = {
 				.cra_driver_name = "sha1-sun4i-ss",
 				.cra_priority = 300,
 				.cra_alignmask = 3,
-<<<<<<< HEAD
 				.cra_blocksize = SHA1_BLOCK_SIZE,
 				.cra_ctxsize = sizeof(struct sun4i_req_ctx),
 				.cra_module = THIS_MODULE,
-=======
-				.cra_flags = CRYPTO_ALG_TYPE_AHASH,
-				.cra_blocksize = SHA1_BLOCK_SIZE,
-				.cra_ctxsize = sizeof(struct sun4i_req_ctx),
-				.cra_module = THIS_MODULE,
-				.cra_type = &crypto_ahash_type,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				.cra_init = sun4i_hash_crainit
 			}
 		}
@@ -108,12 +92,7 @@ static struct sun4i_ss_alg_template ss_algs[] = {
 			.cra_driver_name = "cbc-aes-sun4i-ss",
 			.cra_priority = 300,
 			.cra_blocksize = AES_BLOCK_SIZE,
-<<<<<<< HEAD
 			.cra_flags = CRYPTO_ALG_KERN_DRIVER_ONLY,
-=======
-			.cra_flags = CRYPTO_ALG_TYPE_SKCIPHER |
-				     CRYPTO_ALG_KERN_DRIVER_ONLY,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.cra_ctxsize = sizeof(struct sun4i_tfm_ctx),
 			.cra_module = THIS_MODULE,
 			.cra_alignmask = 3,
@@ -134,12 +113,7 @@ static struct sun4i_ss_alg_template ss_algs[] = {
 			.cra_driver_name = "ecb-aes-sun4i-ss",
 			.cra_priority = 300,
 			.cra_blocksize = AES_BLOCK_SIZE,
-<<<<<<< HEAD
 			.cra_flags = CRYPTO_ALG_KERN_DRIVER_ONLY,
-=======
-			.cra_flags = CRYPTO_ALG_TYPE_SKCIPHER |
-				     CRYPTO_ALG_KERN_DRIVER_ONLY,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.cra_ctxsize = sizeof(struct sun4i_tfm_ctx),
 			.cra_module = THIS_MODULE,
 			.cra_alignmask = 3,
@@ -160,12 +134,7 @@ static struct sun4i_ss_alg_template ss_algs[] = {
 			.cra_driver_name = "cbc-des-sun4i-ss",
 			.cra_priority = 300,
 			.cra_blocksize = DES_BLOCK_SIZE,
-<<<<<<< HEAD
 			.cra_flags = CRYPTO_ALG_KERN_DRIVER_ONLY,
-=======
-			.cra_flags = CRYPTO_ALG_TYPE_SKCIPHER |
-				     CRYPTO_ALG_KERN_DRIVER_ONLY,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.cra_ctxsize = sizeof(struct sun4i_req_ctx),
 			.cra_module = THIS_MODULE,
 			.cra_alignmask = 3,
@@ -185,12 +154,7 @@ static struct sun4i_ss_alg_template ss_algs[] = {
 			.cra_driver_name = "ecb-des-sun4i-ss",
 			.cra_priority = 300,
 			.cra_blocksize = DES_BLOCK_SIZE,
-<<<<<<< HEAD
 			.cra_flags = CRYPTO_ALG_KERN_DRIVER_ONLY,
-=======
-			.cra_flags = CRYPTO_ALG_TYPE_SKCIPHER |
-				     CRYPTO_ALG_KERN_DRIVER_ONLY,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.cra_ctxsize = sizeof(struct sun4i_req_ctx),
 			.cra_module = THIS_MODULE,
 			.cra_alignmask = 3,
@@ -211,12 +175,7 @@ static struct sun4i_ss_alg_template ss_algs[] = {
 			.cra_driver_name = "cbc-des3-sun4i-ss",
 			.cra_priority = 300,
 			.cra_blocksize = DES3_EDE_BLOCK_SIZE,
-<<<<<<< HEAD
 			.cra_flags = CRYPTO_ALG_KERN_DRIVER_ONLY,
-=======
-			.cra_flags = CRYPTO_ALG_TYPE_SKCIPHER |
-				     CRYPTO_ALG_KERN_DRIVER_ONLY,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.cra_ctxsize = sizeof(struct sun4i_req_ctx),
 			.cra_module = THIS_MODULE,
 			.cra_alignmask = 3,
@@ -237,10 +196,6 @@ static struct sun4i_ss_alg_template ss_algs[] = {
 			.cra_driver_name = "ecb-des3-sun4i-ss",
 			.cra_priority = 300,
 			.cra_blocksize = DES3_EDE_BLOCK_SIZE,
-<<<<<<< HEAD
-=======
-			.cra_flags = CRYPTO_ALG_TYPE_SKCIPHER,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.cra_ctxsize = sizeof(struct sun4i_req_ctx),
 			.cra_module = THIS_MODULE,
 			.cra_alignmask = 3,

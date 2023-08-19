@@ -42,13 +42,8 @@ static void __kprobes __do_page_fault(struct pt_regs *regs, unsigned long write,
 	struct task_struct *tsk = current;
 	struct mm_struct *mm = tsk->mm;
 	const int field = sizeof(unsigned long) * 2;
-<<<<<<< HEAD
 	int si_code;
 	vm_fault_t fault;
-=======
-	siginfo_t info;
-	int fault;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int flags = FAULT_FLAG_ALLOW_RETRY | FAULT_FLAG_KILLABLE;
 
 	static DEFINE_RATELIMIT_STATE(ratelimit_state, 5 * HZ, 10);
@@ -68,11 +63,7 @@ static void __kprobes __do_page_fault(struct pt_regs *regs, unsigned long write,
 		return;
 #endif
 
-<<<<<<< HEAD
 	si_code = SEGV_MAPERR;
-=======
-	info.si_code = SEGV_MAPERR;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * We fault-in kernel-space virtual memory on-demand. The
@@ -121,11 +112,7 @@ retry:
  * we can handle it..
  */
 good_area:
-<<<<<<< HEAD
 	si_code = SEGV_ACCERR;
-=======
-	info.si_code = SEGV_ACCERR;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (write) {
 		if (!(vma->vm_flags & VM_WRITE))
@@ -236,15 +223,7 @@ bad_area_nosemaphore:
 			pr_cont("\n");
 		}
 		current->thread.trap_nr = (regs->cp0_cause >> 2) & 0x1f;
-<<<<<<< HEAD
 		force_sig_fault(SIGSEGV, si_code, (void __user *)address, tsk);
-=======
-		info.si_signo = SIGSEGV;
-		info.si_errno = 0;
-		/* info.si_code has been set above */
-		info.si_addr = (void __user *) address;
-		force_sig_info(SIGSEGV, &info, tsk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -300,15 +279,7 @@ do_sigbus:
 #endif
 	current->thread.trap_nr = (regs->cp0_cause >> 2) & 0x1f;
 	tsk->thread.cp0_badvaddr = address;
-<<<<<<< HEAD
 	force_sig_fault(SIGBUS, BUS_ADRERR, (void __user *)address, tsk);
-=======
-	info.si_signo = SIGBUS;
-	info.si_errno = 0;
-	info.si_code = BUS_ADRERR;
-	info.si_addr = (void __user *) address;
-	force_sig_info(SIGBUS, &info, tsk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return;
 #ifndef CONFIG_64BIT

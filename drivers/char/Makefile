@@ -14,11 +14,6 @@ obj-$(CONFIG_MSPEC)		+= mspec.o
 obj-$(CONFIG_UV_MMTIMER)	+= uv_mmtimer.o
 obj-$(CONFIG_IBM_BSR)		+= bsr.o
 obj-$(CONFIG_SGI_MBCS)		+= mbcs.o
-<<<<<<< HEAD
-=======
-obj-$(CONFIG_BFIN_OTP)		+= bfin-otp.o
-obj-$(CONFIG_MSM_SMD_PKT)       += msm_smd_pkt.o
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 obj-$(CONFIG_PRINTER)		+= lp.o
 
@@ -30,10 +25,6 @@ obj-$(CONFIG_SONYPI)		+= sonypi.o
 obj-$(CONFIG_RTC)		+= rtc.o
 obj-$(CONFIG_HPET)		+= hpet.o
 obj-$(CONFIG_EFI_RTC)		+= efirtc.o
-<<<<<<< HEAD
-=======
-obj-$(CONFIG_DS1302)		+= ds1302.o
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 obj-$(CONFIG_XILINX_HWICAP)	+= xilinx_hwicap/
 ifeq ($(CONFIG_GENERIC_NVRAM),y)
   obj-$(CONFIG_NVRAM)	+= generic_nvram.o
@@ -64,32 +55,16 @@ obj-$(CONFIG_PS3_FLASH)		+= ps3flash.o
 obj-$(CONFIG_JS_RTC)		+= js-rtc.o
 js-rtc-y = rtc.o
 
-<<<<<<< HEAD
 obj-$(CONFIG_XILLYBUS)		+= xillybus/
 obj-$(CONFIG_POWERNV_OP_PANEL)	+= powernv-op-panel.o
-=======
-obj-$(CONFIG_TILE_SROM)		+= tile-srom.o
-obj-$(CONFIG_XILLYBUS)		+= xillybus/
-obj-$(CONFIG_POWERNV_OP_PANEL)	+= powernv-op-panel.o
-obj-$(CONFIG_DIAG_CHAR)		+= diag/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 obj-$(CONFIG_MSM_ADSPRPC)	+= adsprpc.o
 ifdef CONFIG_COMPAT
   obj-$(CONFIG_MSM_ADSPRPC)	+= adsprpc_compat.o
 endif
-<<<<<<< HEAD
 obj-$(CONFIG_MSM_FASTCVPD)	+= fastcvpd.o
 obj-$(CONFIG_MSM_RDBG)		+= rdbg.o
 obj-$(CONFIG_ADI)		+= adi.o
 obj-$(CONFIG_DIAG_CHAR)		+= diag/
-=======
-obj-$(CONFIG_VIRTIO_FASTRPC)	+= virtio_fastrpc.o
-ifdef CONFIG_COMPAT
-  obj-$(CONFIG_VIRTIO_FASTRPC)	+= adsprpc_compat.o
-endif
-obj-$(CONFIG_MSM_FASTCVPD)	+= fastcvpd.o
-obj-$(CONFIG_MSM_RDBG)		+= rdbg.o
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 obj-$(CONFIG_OKL4_PIPE)		+= okl4_pipe.o
 CFLAGS_okl4_pipe.o			+= -Werror
 obj-$(CONFIG_VSERVICES_SERIAL)		+= vservices_serial.o

@@ -170,11 +170,7 @@ static int mwifiex_pcie_suspend(struct device *dev)
 	if (!mwifiex_enable_hs(adapter)) {
 		mwifiex_dbg(adapter, ERROR,
 			    "cmd: failed to suspend\n");
-<<<<<<< HEAD
 		clear_bit(MWIFIEX_IS_HS_ENABLING, &adapter->work_flags);
-=======
-		adapter->hs_enabling = false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mwifiex_disable_wake(adapter);
 		return -EFAULT;
 	}
@@ -182,13 +178,8 @@ static int mwifiex_pcie_suspend(struct device *dev)
 	flush_workqueue(adapter->workqueue);
 
 	/* Indicate device suspended */
-<<<<<<< HEAD
 	set_bit(MWIFIEX_IS_SUSPENDED, &adapter->work_flags);
 	clear_bit(MWIFIEX_IS_HS_ENABLING, &adapter->work_flags);
-=======
-	adapter->is_suspended = true;
-	adapter->hs_enabling = false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -216,21 +207,13 @@ static int mwifiex_pcie_resume(struct device *dev)
 
 	adapter = card->adapter;
 
-<<<<<<< HEAD
 	if (!test_bit(MWIFIEX_IS_SUSPENDED, &adapter->work_flags)) {
-=======
-	if (!adapter->is_suspended) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mwifiex_dbg(adapter, WARN,
 			    "Device already resumed\n");
 		return 0;
 	}
 
-<<<<<<< HEAD
 	clear_bit(MWIFIEX_IS_SUSPENDED, &adapter->work_flags);
-=======
-	adapter->is_suspended = false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mwifiex_cancel_hs(mwifiex_get_priv(adapter, MWIFIEX_BSS_ROLE_STA),
 			  MWIFIEX_ASYNC_CMD);
@@ -337,7 +320,6 @@ static void mwifiex_pcie_shutdown(struct pci_dev *pdev)
 	return;
 }
 
-<<<<<<< HEAD
 static void mwifiex_pcie_coredump(struct device *dev)
 {
 	struct pci_dev *pdev;
@@ -351,8 +333,6 @@ static void mwifiex_pcie_coredump(struct device *dev)
 		schedule_work(&card->work);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct pci_device_id mwifiex_ids[] = {
 	{
 		PCIE_VENDOR_ID_MARVELL, PCIE_DEVICE_ID_MARVELL_88W8766P,
@@ -448,20 +428,12 @@ static struct pci_driver __refdata mwifiex_pcie = {
 	.id_table = mwifiex_ids,
 	.probe    = mwifiex_pcie_probe,
 	.remove   = mwifiex_pcie_remove,
-<<<<<<< HEAD
 	.driver   = {
 		.coredump = mwifiex_pcie_coredump,
 #ifdef CONFIG_PM_SLEEP
 		.pm = &mwifiex_pcie_pm_ops,
 #endif
 	},
-=======
-#ifdef CONFIG_PM_SLEEP
-	.driver   = {
-		.pm = &mwifiex_pcie_pm_ops,
-	},
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.shutdown = mwifiex_pcie_shutdown,
 	.err_handler = &mwifiex_pcie_err_handler,
 };
@@ -719,16 +691,8 @@ static int mwifiex_pcie_init_evt_ring(struct mwifiex_adapter *adapter)
 		skb_put(skb, MAX_EVENT_SIZE);
 
 		if (mwifiex_map_pci_memory(adapter, skb, MAX_EVENT_SIZE,
-<<<<<<< HEAD
 					   PCI_DMA_FROMDEVICE))
 			return -1;
-=======
-					   PCI_DMA_FROMDEVICE)) {
-			kfree_skb(skb);
-			kfree(card->evtbd_ring_vbase);
-			return -1;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		buf_pa = MWIFIEX_SKB_DMA_ADDR(skb);
 
@@ -1069,15 +1033,8 @@ static int mwifiex_pcie_alloc_cmdrsp_buf(struct mwifiex_adapter *adapter)
 	}
 	skb_put(skb, MWIFIEX_UPLD_SIZE);
 	if (mwifiex_map_pci_memory(adapter, skb, MWIFIEX_UPLD_SIZE,
-<<<<<<< HEAD
 				   PCI_DMA_FROMDEVICE))
 		return -1;
-=======
-				   PCI_DMA_FROMDEVICE)) {
-		kfree_skb(skb);
-		return -1;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	card->cmdrsp_buf = skb;
 
@@ -1938,12 +1895,8 @@ static int mwifiex_pcie_process_event_ready(struct mwifiex_adapter *adapter)
 		mwifiex_dbg(adapter, EVENT,
 			    "info: Event length: %d\n", evt_len);
 
-<<<<<<< HEAD
 		if (evt_len > MWIFIEX_EVENT_HEADER_LEN &&
 		    evt_len < MAX_EVENT_SIZE)
-=======
-		if ((evt_len > 0) && (evt_len  < MAX_EVENT_SIZE))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			memcpy(adapter->event_body, skb_cmd->data +
 			       MWIFIEX_EVENT_HEADER_LEN, evt_len -
 			       MWIFIEX_EVENT_HEADER_LEN);
@@ -2477,11 +2430,7 @@ static irqreturn_t mwifiex_pcie_interrupt(int irq, void *context)
 	}
 	adapter = card->adapter;
 
-<<<<<<< HEAD
 	if (test_bit(MWIFIEX_SURPRISE_REMOVED, &adapter->work_flags))
-=======
-	if (adapter->surprise_removed)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto exit;
 
 	if (card->msix_enable)
@@ -2835,7 +2784,6 @@ static void mwifiex_pcie_fw_dump(struct mwifiex_adapter *adapter)
 
 static void mwifiex_pcie_device_dump_work(struct mwifiex_adapter *adapter)
 {
-<<<<<<< HEAD
 	adapter->devdump_data = vzalloc(MWIFIEX_FW_DUMP_SIZE);
 	if (!adapter->devdump_data) {
 		mwifiex_dbg(adapter, ERROR,
@@ -2847,14 +2795,6 @@ static void mwifiex_pcie_device_dump_work(struct mwifiex_adapter *adapter)
 	mwifiex_pcie_fw_dump(adapter);
 	mwifiex_prepare_fw_dump_info(adapter);
 	mwifiex_upload_device_dump(adapter);
-=======
-	int drv_info_size;
-	void *drv_info;
-
-	drv_info_size = mwifiex_drv_info_dump(adapter, &drv_info);
-	mwifiex_pcie_fw_dump(adapter);
-	mwifiex_upload_device_dump(adapter, drv_info, drv_info_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void mwifiex_pcie_card_reset_work(struct mwifiex_adapter *adapter)

@@ -82,13 +82,10 @@ static int sdhci_probe(struct platform_device *pdev)
 	host->hw_name = "sdhci";
 	host->ops = &sdhci_pltfm_ops;
 	host->irq = platform_get_irq(pdev, 0);
-<<<<<<< HEAD
 	if (host->irq <= 0) {
 		ret = -EINVAL;
 		goto err_host;
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	host->quirks = SDHCI_QUIRK_BROKEN_ADMA;
 
 	sdhci = sdhci_priv(host);
@@ -129,15 +126,8 @@ static int sdhci_probe(struct platform_device *pdev)
 	}
 
 	ret = sdhci_add_host(host);
-<<<<<<< HEAD
 	if (ret)
 		goto disable_clk;
-=======
-	if (ret) {
-		dev_dbg(&pdev->dev, "error adding host\n");
-		goto disable_clk;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	platform_set_drvdata(pdev, host);
 

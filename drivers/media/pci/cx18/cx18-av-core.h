@@ -349,11 +349,7 @@ static inline struct v4l2_subdev *to_sd(struct v4l2_ctrl *ctrl)
 }
 
 /* ----------------------------------------------------------------------- */
-<<<<<<< HEAD
 /* cx18_av-core.c							   */
-=======
-/* cx18_av-core.c 							   */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int cx18_av_write(struct cx18 *cx, u16 addr, u8 value);
 int cx18_av_write4(struct cx18 *cx, u16 addr, u32 value);
 int cx18_av_write4_noretry(struct cx18 *cx, u16 addr, u32 value);

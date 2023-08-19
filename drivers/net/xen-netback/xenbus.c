@@ -224,11 +224,7 @@ static void xenvif_debugfs_addif(struct xenvif *vif)
 
 			snprintf(filename, sizeof(filename), "io_ring_q%d", i);
 			pfile = debugfs_create_file(filename,
-<<<<<<< HEAD
 						    0600,
-=======
-						    S_IRUSR | S_IWUSR,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						    vif->xenvif_dbg_root,
 						    &vif->queues[i],
 						    &xenvif_dbg_io_ring_ops_fops);
@@ -239,11 +235,7 @@ static void xenvif_debugfs_addif(struct xenvif *vif)
 
 		if (vif->ctrl_irq) {
 			pfile = debugfs_create_file("ctrl",
-<<<<<<< HEAD
 						    0400,
-=======
-						    S_IRUSR,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						    vif->xenvif_dbg_root,
 						    vif,
 						    &xenvif_dbg_ctrl_ops_fops);
@@ -985,13 +977,8 @@ static void connect(struct backend_info *be)
 	}
 
 	/* Use the number of queues requested by the frontend */
-<<<<<<< HEAD
 	be->vif->queues = vzalloc(array_size(requested_num_queues,
 					     sizeof(struct xenvif_queue)));
-=======
-	be->vif->queues = vzalloc(requested_num_queues *
-				  sizeof(struct xenvif_queue));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!be->vif->queues) {
 		xenbus_dev_fatal(dev, -ENOMEM,
 				 "allocating queues");

@@ -24,10 +24,7 @@
 #include <drm/drmP.h>
 #include "amdgpu.h"
 #include "amdgpu_trace.h"
-<<<<<<< HEAD
 #include "si.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "sid.h"
 
 const u32 sdma_offsets[SDMA_MAX_INSTANCE] =
@@ -65,44 +62,19 @@ static void si_dma_ring_set_wptr(struct amdgpu_ring *ring)
 
 static void si_dma_ring_emit_ib(struct amdgpu_ring *ring,
 				struct amdgpu_ib *ib,
-<<<<<<< HEAD
 				unsigned vmid, bool ctx_switch)
-=======
-				unsigned vm_id, bool ctx_switch)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* The indirect buffer packet must end on an 8 DW boundary in the DMA ring.
 	 * Pad as necessary with NOPs.
 	 */
 	while ((lower_32_bits(ring->wptr) & 7) != 5)
 		amdgpu_ring_write(ring, DMA_PACKET(DMA_PACKET_NOP, 0, 0, 0, 0));
-<<<<<<< HEAD
 	amdgpu_ring_write(ring, DMA_IB_PACKET(DMA_PACKET_INDIRECT_BUFFER, vmid, 0));
-=======
-	amdgpu_ring_write(ring, DMA_IB_PACKET(DMA_PACKET_INDIRECT_BUFFER, vm_id, 0));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	amdgpu_ring_write(ring, (ib->gpu_addr & 0xFFFFFFE0));
 	amdgpu_ring_write(ring, (ib->length_dw << 12) | (upper_32_bits(ib->gpu_addr) & 0xFF));
 
 }
 
-<<<<<<< HEAD
-=======
-static void si_dma_ring_emit_hdp_flush(struct amdgpu_ring *ring)
-{
-	amdgpu_ring_write(ring, DMA_PACKET(DMA_PACKET_SRBM_WRITE, 0, 0, 0, 0));
-	amdgpu_ring_write(ring, (0xf << 16) | (HDP_MEM_COHERENCY_FLUSH_CNTL));
-	amdgpu_ring_write(ring, 1);
-}
-
-static void si_dma_ring_emit_hdp_invalidate(struct amdgpu_ring *ring)
-{
-	amdgpu_ring_write(ring, DMA_PACKET(DMA_PACKET_SRBM_WRITE, 0, 0, 0, 0));
-	amdgpu_ring_write(ring, (0xf << 16) | (HDP_DEBUG0));
-	amdgpu_ring_write(ring, 1);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * si_dma_ring_emit_fence - emit a fence on the DMA ring
  *
@@ -149,11 +121,7 @@ static void si_dma_stop(struct amdgpu_device *adev)
 		WREG32(DMA_RB_CNTL + sdma_offsets[i], rb_cntl);
 
 		if (adev->mman.buffer_funcs_ring == ring)
-<<<<<<< HEAD
 			amdgpu_ttm_set_buffer_funcs_status(adev, false);
-=======
-			amdgpu_ttm_set_active_vram_size(adev, adev->mc.visible_vram_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ring->ready = false;
 	}
 }
@@ -216,11 +184,7 @@ static int si_dma_start(struct amdgpu_device *adev)
 		}
 
 		if (adev->mman.buffer_funcs_ring == ring)
-<<<<<<< HEAD
 			amdgpu_ttm_set_buffer_funcs_status(adev, true);
-=======
-			amdgpu_ttm_set_active_vram_size(adev, adev->mc.real_vram_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -244,11 +208,7 @@ static int si_dma_ring_test_ring(struct amdgpu_ring *ring)
 	u32 tmp;
 	u64 gpu_addr;
 
-<<<<<<< HEAD
 	r = amdgpu_device_wb_get(adev, &index);
-=======
-	r = amdgpu_wb_get(adev, &index);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r) {
 		dev_err(adev->dev, "(%d) failed to allocate wb slot\n", r);
 		return r;
@@ -261,11 +221,7 @@ static int si_dma_ring_test_ring(struct amdgpu_ring *ring)
 	r = amdgpu_ring_alloc(ring, 4);
 	if (r) {
 		DRM_ERROR("amdgpu: dma failed to lock ring %d (%d).\n", ring->idx, r);
-<<<<<<< HEAD
 		amdgpu_device_wb_free(adev, index);
-=======
-		amdgpu_wb_free(adev, index);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return r;
 	}
 
@@ -283,21 +239,13 @@ static int si_dma_ring_test_ring(struct amdgpu_ring *ring)
 	}
 
 	if (i < adev->usec_timeout) {
-<<<<<<< HEAD
 		DRM_DEBUG("ring test on %d succeeded in %d usecs\n", ring->idx, i);
-=======
-		DRM_INFO("ring test on %d succeeded in %d usecs\n", ring->idx, i);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		DRM_ERROR("amdgpu: ring %d test failed (0x%08X)\n",
 			  ring->idx, tmp);
 		r = -EINVAL;
 	}
-<<<<<<< HEAD
 	amdgpu_device_wb_free(adev, index);
-=======
-	amdgpu_wb_free(adev, index);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return r;
 }
@@ -320,11 +268,7 @@ static int si_dma_ring_test_ib(struct amdgpu_ring *ring, long timeout)
 	u64 gpu_addr;
 	long r;
 
-<<<<<<< HEAD
 	r = amdgpu_device_wb_get(adev, &index);
-=======
-	r = amdgpu_wb_get(adev, &index);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r) {
 		dev_err(adev->dev, "(%ld) failed to allocate wb slot\n", r);
 		return r;
@@ -360,11 +304,7 @@ static int si_dma_ring_test_ib(struct amdgpu_ring *ring, long timeout)
 	}
 	tmp = le32_to_cpu(adev->wb.wb[index]);
 	if (tmp == 0xDEADBEEF) {
-<<<<<<< HEAD
 		DRM_DEBUG("ib test on ring %d succeeded\n", ring->idx);
-=======
-		DRM_INFO("ib test on ring %d succeeded\n", ring->idx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		r = 0;
 	} else {
 		DRM_ERROR("amdgpu: ib test failed (0x%08X)\n", tmp);
@@ -375,11 +315,7 @@ err1:
 	amdgpu_ib_free(adev, &ib, NULL);
 	dma_fence_put(f);
 err0:
-<<<<<<< HEAD
 	amdgpu_device_wb_free(adev, index);
-=======
-	amdgpu_wb_free(adev, index);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return r;
 }
 
@@ -524,40 +460,19 @@ static void si_dma_ring_emit_pipeline_sync(struct amdgpu_ring *ring)
  * using sDMA (VI).
  */
 static void si_dma_ring_emit_vm_flush(struct amdgpu_ring *ring,
-<<<<<<< HEAD
 				      unsigned vmid, uint64_t pd_addr)
 {
 	amdgpu_gmc_emit_flush_gpu_tlb(ring, vmid, pd_addr);
-=======
-				      unsigned vm_id, uint64_t pd_addr)
-{
-	amdgpu_ring_write(ring, DMA_PACKET(DMA_PACKET_SRBM_WRITE, 0, 0, 0, 0));
-	if (vm_id < 8)
-		amdgpu_ring_write(ring, (0xf << 16) | (VM_CONTEXT0_PAGE_TABLE_BASE_ADDR + vm_id));
-	else
-		amdgpu_ring_write(ring, (0xf << 16) | (VM_CONTEXT8_PAGE_TABLE_BASE_ADDR + (vm_id - 8)));
-	amdgpu_ring_write(ring, pd_addr >> 12);
-
-	/* bits 0-7 are the VM contexts0-7 */
-	amdgpu_ring_write(ring, DMA_PACKET(DMA_PACKET_SRBM_WRITE, 0, 0, 0, 0));
-	amdgpu_ring_write(ring, (0xf << 16) | (VM_INVALIDATE_REQUEST));
-	amdgpu_ring_write(ring, 1 << vm_id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* wait for invalidate to complete */
 	amdgpu_ring_write(ring, DMA_PACKET(DMA_PACKET_POLL_REG_MEM, 0, 0, 0, 0));
 	amdgpu_ring_write(ring, VM_INVALIDATE_REQUEST);
 	amdgpu_ring_write(ring, 0xff << 16); /* retry */
-<<<<<<< HEAD
 	amdgpu_ring_write(ring, 1 << vmid); /* mask */
-=======
-	amdgpu_ring_write(ring, 1 << vm_id); /* mask */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	amdgpu_ring_write(ring, 0); /* value */
 	amdgpu_ring_write(ring, (0 << 28) | 0x20); /* func(always) | poll interval */
 }
 
-<<<<<<< HEAD
 static void si_dma_ring_emit_wreg(struct amdgpu_ring *ring,
 				  uint32_t reg, uint32_t val)
 {
@@ -566,8 +481,6 @@ static void si_dma_ring_emit_wreg(struct amdgpu_ring *ring,
 	amdgpu_ring_write(ring, val);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int si_dma_early_init(void *handle)
 {
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
@@ -844,35 +757,20 @@ static const struct amdgpu_ring_funcs si_dma_ring_funcs = {
 	.get_wptr = si_dma_ring_get_wptr,
 	.set_wptr = si_dma_ring_set_wptr,
 	.emit_frame_size =
-<<<<<<< HEAD
 		3 + 3 + /* hdp flush / invalidate */
 		6 + /* si_dma_ring_emit_pipeline_sync */
 		SI_FLUSH_GPU_TLB_NUM_WREG * 3 + 6 + /* si_dma_ring_emit_vm_flush */
-=======
-		3 + /* si_dma_ring_emit_hdp_flush */
-		3 + /* si_dma_ring_emit_hdp_invalidate */
-		6 + /* si_dma_ring_emit_pipeline_sync */
-		12 + /* si_dma_ring_emit_vm_flush */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		9 + 9 + 9, /* si_dma_ring_emit_fence x3 for user fence, vm fence */
 	.emit_ib_size = 7 + 3, /* si_dma_ring_emit_ib */
 	.emit_ib = si_dma_ring_emit_ib,
 	.emit_fence = si_dma_ring_emit_fence,
 	.emit_pipeline_sync = si_dma_ring_emit_pipeline_sync,
 	.emit_vm_flush = si_dma_ring_emit_vm_flush,
-<<<<<<< HEAD
-=======
-	.emit_hdp_flush = si_dma_ring_emit_hdp_flush,
-	.emit_hdp_invalidate = si_dma_ring_emit_hdp_invalidate,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.test_ring = si_dma_ring_test_ring,
 	.test_ib = si_dma_ring_test_ib,
 	.insert_nop = amdgpu_ring_insert_nop,
 	.pad_ib = si_dma_ring_pad_ib,
-<<<<<<< HEAD
 	.emit_wreg = si_dma_ring_emit_wreg,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void si_dma_set_ring_funcs(struct amdgpu_device *adev)
@@ -972,13 +870,9 @@ static void si_dma_set_buffer_funcs(struct amdgpu_device *adev)
 }
 
 static const struct amdgpu_vm_pte_funcs si_dma_vm_pte_funcs = {
-<<<<<<< HEAD
 	.copy_pte_num_dw = 5,
 	.copy_pte = si_dma_vm_copy_pte,
 
-=======
-	.copy_pte = si_dma_vm_copy_pte,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.write_pte = si_dma_vm_write_pte,
 	.set_pte_pde = si_dma_vm_set_pte_pde,
 };

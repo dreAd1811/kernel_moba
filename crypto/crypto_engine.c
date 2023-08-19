@@ -15,17 +15,12 @@
 #include <linux/err.h>
 #include <linux/delay.h>
 #include <crypto/engine.h>
-<<<<<<< HEAD
-=======
-#include <crypto/internal/hash.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <uapi/linux/sched/types.h>
 #include "internal.h"
 
 #define CRYPTO_ENGINE_MAX_QLEN 10
 
 /**
-<<<<<<< HEAD
  * crypto_finalize_request - finalize one request if the request is done
  * @engine: the hardware engine
  * @req: the request need to be finalized
@@ -64,8 +59,6 @@ static void crypto_finalize_request(struct crypto_engine *engine,
 }
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * crypto_pump_requests - dequeue one request from engine queue to process
  * @engine: the hardware engine
  * @in_kthread: true if we are in the context of the request pump thread
@@ -78,18 +71,10 @@ static void crypto_pump_requests(struct crypto_engine *engine,
 				 bool in_kthread)
 {
 	struct crypto_async_request *async_req, *backlog;
-<<<<<<< HEAD
 	unsigned long flags;
 	bool was_busy = false;
 	int ret;
 	struct crypto_engine_ctx *enginectx;
-=======
-	struct ahash_request *hreq;
-	struct ablkcipher_request *breq;
-	unsigned long flags;
-	bool was_busy = false;
-	int ret, rtype;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irqsave(&engine->queue_lock, flags);
 
@@ -145,10 +130,6 @@ static void crypto_pump_requests(struct crypto_engine *engine,
 
 	spin_unlock_irqrestore(&engine->queue_lock, flags);
 
-<<<<<<< HEAD
-=======
-	rtype = crypto_tfm_alg_type(engine->cur_req->tfm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Until here we get the request need to be encrypted successfully */
 	if (!was_busy && engine->prepare_crypt_hardware) {
 		ret = engine->prepare_crypt_hardware(engine);
@@ -158,7 +139,6 @@ static void crypto_pump_requests(struct crypto_engine *engine,
 		}
 	}
 
-<<<<<<< HEAD
 	enginectx = crypto_tfm_ctx(async_req->tfm);
 
 	if (enginectx->op.prepare_request) {
@@ -184,59 +164,6 @@ static void crypto_pump_requests(struct crypto_engine *engine,
 
 req_err:
 	crypto_finalize_request(engine, async_req, ret);
-=======
-	switch (rtype) {
-	case CRYPTO_ALG_TYPE_AHASH:
-		hreq = ahash_request_cast(engine->cur_req);
-		if (engine->prepare_hash_request) {
-			ret = engine->prepare_hash_request(engine, hreq);
-			if (ret) {
-				dev_err(engine->dev, "failed to prepare request: %d\n",
-					ret);
-				goto req_err;
-			}
-			engine->cur_req_prepared = true;
-		}
-		ret = engine->hash_one_request(engine, hreq);
-		if (ret) {
-			dev_err(engine->dev, "failed to hash one request from queue\n");
-			goto req_err;
-		}
-		return;
-	case CRYPTO_ALG_TYPE_ABLKCIPHER:
-		breq = ablkcipher_request_cast(engine->cur_req);
-		if (engine->prepare_cipher_request) {
-			ret = engine->prepare_cipher_request(engine, breq);
-			if (ret) {
-				dev_err(engine->dev, "failed to prepare request: %d\n",
-					ret);
-				goto req_err;
-			}
-			engine->cur_req_prepared = true;
-		}
-		ret = engine->cipher_one_request(engine, breq);
-		if (ret) {
-			dev_err(engine->dev, "failed to cipher one request from queue\n");
-			goto req_err;
-		}
-		return;
-	default:
-		dev_err(engine->dev, "failed to prepare request of unknown type\n");
-		return;
-	}
-
-req_err:
-	switch (rtype) {
-	case CRYPTO_ALG_TYPE_AHASH:
-		hreq = ahash_request_cast(engine->cur_req);
-		crypto_finalize_hash_request(engine, hreq, ret);
-		break;
-	case CRYPTO_ALG_TYPE_ABLKCIPHER:
-		breq = ablkcipher_request_cast(engine->cur_req);
-		crypto_finalize_cipher_request(engine, breq, ret);
-		break;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return;
 
 out:
@@ -252,22 +179,12 @@ static void crypto_pump_work(struct kthread_work *work)
 }
 
 /**
-<<<<<<< HEAD
  * crypto_transfer_request - transfer the new request into the engine queue
  * @engine: the hardware engine
  * @req: the request need to be listed into the engine queue
  */
 static int crypto_transfer_request(struct crypto_engine *engine,
 				   struct crypto_async_request *req,
-=======
- * crypto_transfer_cipher_request - transfer the new request into the
- * enginequeue
- * @engine: the hardware engine
- * @req: the request need to be listed into the engine queue
- */
-int crypto_transfer_cipher_request(struct crypto_engine *engine,
-				   struct ablkcipher_request *req,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   bool need_pump)
 {
 	unsigned long flags;
@@ -280,11 +197,7 @@ int crypto_transfer_cipher_request(struct crypto_engine *engine,
 		return -ESHUTDOWN;
 	}
 
-<<<<<<< HEAD
 	ret = crypto_enqueue_request(&engine->queue, req);
-=======
-	ret = ablkcipher_enqueue_request(&engine->queue, req);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!engine->busy && need_pump)
 		kthread_queue_work(engine->kworker, &engine->pump_requests);
@@ -292,21 +205,13 @@ int crypto_transfer_cipher_request(struct crypto_engine *engine,
 	spin_unlock_irqrestore(&engine->queue_lock, flags);
 	return ret;
 }
-<<<<<<< HEAD
 
 /**
  * crypto_transfer_request_to_engine - transfer one request to list
-=======
-EXPORT_SYMBOL_GPL(crypto_transfer_cipher_request);
-
-/**
- * crypto_transfer_cipher_request_to_engine - transfer one request to list
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * into the engine queue
  * @engine: the hardware engine
  * @req: the request need to be listed into the engine queue
  */
-<<<<<<< HEAD
 static int crypto_transfer_request_to_engine(struct crypto_engine *engine,
 					     struct crypto_async_request *req)
 {
@@ -356,63 +261,17 @@ EXPORT_SYMBOL_GPL(crypto_transfer_akcipher_request_to_engine);
 /**
  * crypto_transfer_hash_request_to_engine - transfer one ahash_request
  * to list into the engine queue
-=======
-int crypto_transfer_cipher_request_to_engine(struct crypto_engine *engine,
-					     struct ablkcipher_request *req)
-{
-	return crypto_transfer_cipher_request(engine, req, true);
-}
-EXPORT_SYMBOL_GPL(crypto_transfer_cipher_request_to_engine);
-
-/**
- * crypto_transfer_hash_request - transfer the new request into the
- * enginequeue
- * @engine: the hardware engine
- * @req: the request need to be listed into the engine queue
- */
-int crypto_transfer_hash_request(struct crypto_engine *engine,
-				 struct ahash_request *req, bool need_pump)
-{
-	unsigned long flags;
-	int ret;
-
-	spin_lock_irqsave(&engine->queue_lock, flags);
-
-	if (!engine->running) {
-		spin_unlock_irqrestore(&engine->queue_lock, flags);
-		return -ESHUTDOWN;
-	}
-
-	ret = ahash_enqueue_request(&engine->queue, req);
-
-	if (!engine->busy && need_pump)
-		kthread_queue_work(engine->kworker, &engine->pump_requests);
-
-	spin_unlock_irqrestore(&engine->queue_lock, flags);
-	return ret;
-}
-EXPORT_SYMBOL_GPL(crypto_transfer_hash_request);
-
-/**
- * crypto_transfer_hash_request_to_engine - transfer one request to list
- * into the engine queue
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @engine: the hardware engine
  * @req: the request need to be listed into the engine queue
  */
 int crypto_transfer_hash_request_to_engine(struct crypto_engine *engine,
 					   struct ahash_request *req)
 {
-<<<<<<< HEAD
 	return crypto_transfer_request_to_engine(engine, &req->base);
-=======
-	return crypto_transfer_hash_request(engine, req, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(crypto_transfer_hash_request_to_engine);
 
 /**
-<<<<<<< HEAD
  * crypto_transfer_skcipher_request_to_engine - transfer one skcipher_request
  * to list into the engine queue
  * @engine: the hardware engine
@@ -443,14 +302,10 @@ EXPORT_SYMBOL_GPL(crypto_finalize_ablkcipher_request);
 /**
  * crypto_finalize_aead_request - finalize one aead_request if
  * the request is done
-=======
- * crypto_finalize_cipher_request - finalize one request if the request is done
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @engine: the hardware engine
  * @req: the request need to be finalized
  * @err: error number
  */
-<<<<<<< HEAD
 void crypto_finalize_aead_request(struct crypto_engine *engine,
 				  struct aead_request *req, int err)
 {
@@ -475,41 +330,6 @@ EXPORT_SYMBOL_GPL(crypto_finalize_akcipher_request);
 /**
  * crypto_finalize_hash_request - finalize one ahash_request if
  * the request is done
-=======
-void crypto_finalize_cipher_request(struct crypto_engine *engine,
-				    struct ablkcipher_request *req, int err)
-{
-	unsigned long flags;
-	bool finalize_cur_req = false;
-	int ret;
-
-	spin_lock_irqsave(&engine->queue_lock, flags);
-	if (engine->cur_req == &req->base)
-		finalize_cur_req = true;
-	spin_unlock_irqrestore(&engine->queue_lock, flags);
-
-	if (finalize_cur_req) {
-		if (engine->cur_req_prepared &&
-		    engine->unprepare_cipher_request) {
-			ret = engine->unprepare_cipher_request(engine, req);
-			if (ret)
-				dev_err(engine->dev, "failed to unprepare request\n");
-		}
-		spin_lock_irqsave(&engine->queue_lock, flags);
-		engine->cur_req = NULL;
-		engine->cur_req_prepared = false;
-		spin_unlock_irqrestore(&engine->queue_lock, flags);
-	}
-
-	req->base.complete(&req->base, err);
-
-	kthread_queue_work(engine->kworker, &engine->pump_requests);
-}
-EXPORT_SYMBOL_GPL(crypto_finalize_cipher_request);
-
-/**
- * crypto_finalize_hash_request - finalize one request if the request is done
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @engine: the hardware engine
  * @req: the request need to be finalized
  * @err: error number
@@ -517,40 +337,11 @@ EXPORT_SYMBOL_GPL(crypto_finalize_cipher_request);
 void crypto_finalize_hash_request(struct crypto_engine *engine,
 				  struct ahash_request *req, int err)
 {
-<<<<<<< HEAD
 	return crypto_finalize_request(engine, &req->base, err);
-=======
-	unsigned long flags;
-	bool finalize_cur_req = false;
-	int ret;
-
-	spin_lock_irqsave(&engine->queue_lock, flags);
-	if (engine->cur_req == &req->base)
-		finalize_cur_req = true;
-	spin_unlock_irqrestore(&engine->queue_lock, flags);
-
-	if (finalize_cur_req) {
-		if (engine->cur_req_prepared &&
-		    engine->unprepare_hash_request) {
-			ret = engine->unprepare_hash_request(engine, req);
-			if (ret)
-				dev_err(engine->dev, "failed to unprepare request\n");
-		}
-		spin_lock_irqsave(&engine->queue_lock, flags);
-		engine->cur_req = NULL;
-		engine->cur_req_prepared = false;
-		spin_unlock_irqrestore(&engine->queue_lock, flags);
-	}
-
-	req->base.complete(&req->base, err);
-
-	kthread_queue_work(engine->kworker, &engine->pump_requests);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(crypto_finalize_hash_request);
 
 /**
-<<<<<<< HEAD
  * crypto_finalize_skcipher_request - finalize one skcipher_request if
  * the request is done
  * @engine: the hardware engine
@@ -565,8 +356,6 @@ void crypto_finalize_skcipher_request(struct crypto_engine *engine,
 EXPORT_SYMBOL_GPL(crypto_finalize_skcipher_request);
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * crypto_engine_start - start the hardware engine
  * @engine: the hardware engine need to be started
  *

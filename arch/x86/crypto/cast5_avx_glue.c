@@ -21,7 +21,6 @@
  *
  */
 
-<<<<<<< HEAD
 #include <asm/crypto/glue_helper.h>
 #include <crypto/algapi.h>
 #include <crypto/cast5.h>
@@ -30,20 +29,6 @@
 #include <linux/err.h>
 #include <linux/module.h>
 #include <linux/types.h>
-=======
-#include <linux/module.h>
-#include <linux/hardirq.h>
-#include <linux/types.h>
-#include <linux/crypto.h>
-#include <linux/err.h>
-#include <crypto/ablk_helper.h>
-#include <crypto/algapi.h>
-#include <crypto/cast5.h>
-#include <crypto/cryptd.h>
-#include <crypto/ctr.h>
-#include <asm/fpu/api.h>
-#include <asm/crypto/glue_helper.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define CAST5_PARALLEL_BLOCKS 16
 
@@ -56,7 +41,6 @@ asmlinkage void cast5_cbc_dec_16way(struct cast5_ctx *ctx, u8 *dst,
 asmlinkage void cast5_ctr_16way(struct cast5_ctx *ctx, u8 *dst, const u8 *src,
 				__be64 *iv);
 
-<<<<<<< HEAD
 static int cast5_setkey_skcipher(struct crypto_skcipher *tfm, const u8 *key,
 				 unsigned int keylen)
 {
@@ -68,12 +52,6 @@ static inline bool cast5_fpu_begin(bool fpu_enabled, struct skcipher_walk *walk,
 {
 	return glue_fpu_begin(CAST5_BLOCK_SIZE, CAST5_PARALLEL_BLOCKS,
 			      walk, fpu_enabled, nbytes);
-=======
-static inline bool cast5_fpu_begin(bool fpu_enabled, unsigned int nbytes)
-{
-	return glue_fpu_begin(CAST5_BLOCK_SIZE, CAST5_PARALLEL_BLOCKS,
-			      NULL, fpu_enabled, nbytes);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void cast5_fpu_end(bool fpu_enabled)
@@ -81,26 +59,17 @@ static inline void cast5_fpu_end(bool fpu_enabled)
 	return glue_fpu_end(fpu_enabled);
 }
 
-<<<<<<< HEAD
 static int ecb_crypt(struct skcipher_request *req, bool enc)
 {
 	bool fpu_enabled = false;
 	struct crypto_skcipher *tfm = crypto_skcipher_reqtfm(req);
 	struct cast5_ctx *ctx = crypto_skcipher_ctx(tfm);
 	struct skcipher_walk walk;
-=======
-static int ecb_crypt(struct blkcipher_desc *desc, struct blkcipher_walk *walk,
-		     bool enc)
-{
-	bool fpu_enabled = false;
-	struct cast5_ctx *ctx = crypto_blkcipher_ctx(desc->tfm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const unsigned int bsize = CAST5_BLOCK_SIZE;
 	unsigned int nbytes;
 	void (*fn)(struct cast5_ctx *ctx, u8 *dst, const u8 *src);
 	int err;
 
-<<<<<<< HEAD
 	err = skcipher_walk_virt(&walk, req, false);
 
 	while ((nbytes = walk.nbytes)) {
@@ -108,16 +77,6 @@ static int ecb_crypt(struct blkcipher_desc *desc, struct blkcipher_walk *walk,
 		u8 *wdst = walk.dst.virt.addr;
 
 		fpu_enabled = cast5_fpu_begin(fpu_enabled, &walk, nbytes);
-=======
-	err = blkcipher_walk_virt(desc, walk);
-	desc->flags &= ~CRYPTO_TFM_REQ_MAY_SLEEP;
-
-	while ((nbytes = walk->nbytes)) {
-		u8 *wsrc = walk->src.virt.addr;
-		u8 *wdst = walk->dst.virt.addr;
-
-		fpu_enabled = cast5_fpu_begin(fpu_enabled, nbytes);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Process multi-block batch */
 		if (nbytes >= bsize * CAST5_PARALLEL_BLOCKS) {
@@ -146,18 +105,13 @@ static int ecb_crypt(struct blkcipher_desc *desc, struct blkcipher_walk *walk,
 		} while (nbytes >= bsize);
 
 done:
-<<<<<<< HEAD
 		err = skcipher_walk_done(&walk, nbytes);
-=======
-		err = blkcipher_walk_done(desc, walk, nbytes);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	cast5_fpu_end(fpu_enabled);
 	return err;
 }
 
-<<<<<<< HEAD
 static int ecb_encrypt(struct skcipher_request *req)
 {
 	return ecb_crypt(req, true);
@@ -195,77 +149,14 @@ static int cbc_encrypt(struct skcipher_request *req)
 
 		*(u64 *)walk.iv = *iv;
 		err = skcipher_walk_done(&walk, nbytes);
-=======
-static int ecb_encrypt(struct blkcipher_desc *desc, struct scatterlist *dst,
-		       struct scatterlist *src, unsigned int nbytes)
-{
-	struct blkcipher_walk walk;
-
-	blkcipher_walk_init(&walk, dst, src, nbytes);
-	return ecb_crypt(desc, &walk, true);
-}
-
-static int ecb_decrypt(struct blkcipher_desc *desc, struct scatterlist *dst,
-		       struct scatterlist *src, unsigned int nbytes)
-{
-	struct blkcipher_walk walk;
-
-	blkcipher_walk_init(&walk, dst, src, nbytes);
-	return ecb_crypt(desc, &walk, false);
-}
-
-static unsigned int __cbc_encrypt(struct blkcipher_desc *desc,
-				  struct blkcipher_walk *walk)
-{
-	struct cast5_ctx *ctx = crypto_blkcipher_ctx(desc->tfm);
-	const unsigned int bsize = CAST5_BLOCK_SIZE;
-	unsigned int nbytes = walk->nbytes;
-	u64 *src = (u64 *)walk->src.virt.addr;
-	u64 *dst = (u64 *)walk->dst.virt.addr;
-	u64 *iv = (u64 *)walk->iv;
-
-	do {
-		*dst = *src ^ *iv;
-		__cast5_encrypt(ctx, (u8 *)dst, (u8 *)dst);
-		iv = dst;
-
-		src += 1;
-		dst += 1;
-		nbytes -= bsize;
-	} while (nbytes >= bsize);
-
-	*(u64 *)walk->iv = *iv;
-	return nbytes;
-}
-
-static int cbc_encrypt(struct blkcipher_desc *desc, struct scatterlist *dst,
-		       struct scatterlist *src, unsigned int nbytes)
-{
-	struct blkcipher_walk walk;
-	int err;
-
-	blkcipher_walk_init(&walk, dst, src, nbytes);
-	err = blkcipher_walk_virt(desc, &walk);
-
-	while ((nbytes = walk.nbytes)) {
-		nbytes = __cbc_encrypt(desc, &walk);
-		err = blkcipher_walk_done(desc, &walk, nbytes);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return err;
 }
 
-<<<<<<< HEAD
 static unsigned int __cbc_decrypt(struct cast5_ctx *ctx,
 				  struct skcipher_walk *walk)
 {
-=======
-static unsigned int __cbc_decrypt(struct blkcipher_desc *desc,
-				  struct blkcipher_walk *walk)
-{
-	struct cast5_ctx *ctx = crypto_blkcipher_ctx(desc->tfm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const unsigned int bsize = CAST5_BLOCK_SIZE;
 	unsigned int nbytes = walk->nbytes;
 	u64 *src = (u64 *)walk->src.virt.addr;
@@ -317,7 +208,6 @@ done:
 	return nbytes;
 }
 
-<<<<<<< HEAD
 static int cbc_decrypt(struct skcipher_request *req)
 {
 	struct crypto_skcipher *tfm = crypto_skcipher_reqtfm(req);
@@ -333,38 +223,14 @@ static int cbc_decrypt(struct skcipher_request *req)
 		fpu_enabled = cast5_fpu_begin(fpu_enabled, &walk, nbytes);
 		nbytes = __cbc_decrypt(ctx, &walk);
 		err = skcipher_walk_done(&walk, nbytes);
-=======
-static int cbc_decrypt(struct blkcipher_desc *desc, struct scatterlist *dst,
-		       struct scatterlist *src, unsigned int nbytes)
-{
-	bool fpu_enabled = false;
-	struct blkcipher_walk walk;
-	int err;
-
-	blkcipher_walk_init(&walk, dst, src, nbytes);
-	err = blkcipher_walk_virt(desc, &walk);
-	desc->flags &= ~CRYPTO_TFM_REQ_MAY_SLEEP;
-
-	while ((nbytes = walk.nbytes)) {
-		fpu_enabled = cast5_fpu_begin(fpu_enabled, nbytes);
-		nbytes = __cbc_decrypt(desc, &walk);
-		err = blkcipher_walk_done(desc, &walk, nbytes);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	cast5_fpu_end(fpu_enabled);
 	return err;
 }
 
-<<<<<<< HEAD
 static void ctr_crypt_final(struct skcipher_walk *walk, struct cast5_ctx *ctx)
 {
-=======
-static void ctr_crypt_final(struct blkcipher_desc *desc,
-			    struct blkcipher_walk *walk)
-{
-	struct cast5_ctx *ctx = crypto_blkcipher_ctx(desc->tfm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 *ctrblk = walk->iv;
 	u8 keystream[CAST5_BLOCK_SIZE];
 	u8 *src = walk->src.virt.addr;
@@ -377,16 +243,9 @@ static void ctr_crypt_final(struct blkcipher_desc *desc,
 	crypto_inc(ctrblk, CAST5_BLOCK_SIZE);
 }
 
-<<<<<<< HEAD
 static unsigned int __ctr_crypt(struct skcipher_walk *walk,
 				struct cast5_ctx *ctx)
 {
-=======
-static unsigned int __ctr_crypt(struct blkcipher_desc *desc,
-				struct blkcipher_walk *walk)
-{
-	struct cast5_ctx *ctx = crypto_blkcipher_ctx(desc->tfm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const unsigned int bsize = CAST5_BLOCK_SIZE;
 	unsigned int nbytes = walk->nbytes;
 	u64 *src = (u64 *)walk->src.virt.addr;
@@ -429,7 +288,6 @@ done:
 	return nbytes;
 }
 
-<<<<<<< HEAD
 static int ctr_crypt(struct skcipher_request *req)
 {
 	struct crypto_skcipher *tfm = crypto_skcipher_reqtfm(req);
@@ -445,41 +303,18 @@ static int ctr_crypt(struct skcipher_request *req)
 		fpu_enabled = cast5_fpu_begin(fpu_enabled, &walk, nbytes);
 		nbytes = __ctr_crypt(&walk, ctx);
 		err = skcipher_walk_done(&walk, nbytes);
-=======
-static int ctr_crypt(struct blkcipher_desc *desc, struct scatterlist *dst,
-		     struct scatterlist *src, unsigned int nbytes)
-{
-	bool fpu_enabled = false;
-	struct blkcipher_walk walk;
-	int err;
-
-	blkcipher_walk_init(&walk, dst, src, nbytes);
-	err = blkcipher_walk_virt_block(desc, &walk, CAST5_BLOCK_SIZE);
-	desc->flags &= ~CRYPTO_TFM_REQ_MAY_SLEEP;
-
-	while ((nbytes = walk.nbytes) >= CAST5_BLOCK_SIZE) {
-		fpu_enabled = cast5_fpu_begin(fpu_enabled, nbytes);
-		nbytes = __ctr_crypt(desc, &walk);
-		err = blkcipher_walk_done(desc, &walk, nbytes);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	cast5_fpu_end(fpu_enabled);
 
 	if (walk.nbytes) {
-<<<<<<< HEAD
 		ctr_crypt_final(&walk, ctx);
 		err = skcipher_walk_done(&walk, 0);
-=======
-		ctr_crypt_final(desc, &walk);
-		err = blkcipher_walk_done(desc, &walk, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return err;
 }
 
-<<<<<<< HEAD
 static struct skcipher_alg cast5_algs[] = {
 	{
 		.base.cra_name		= "__ecb(cast5)",
@@ -527,137 +362,6 @@ static struct skcipher_alg cast5_algs[] = {
 };
 
 static struct simd_skcipher_alg *cast5_simd_algs[ARRAY_SIZE(cast5_algs)];
-=======
-
-static struct crypto_alg cast5_algs[6] = { {
-	.cra_name		= "__ecb-cast5-avx",
-	.cra_driver_name	= "__driver-ecb-cast5-avx",
-	.cra_priority		= 0,
-	.cra_flags		= CRYPTO_ALG_TYPE_BLKCIPHER |
-				  CRYPTO_ALG_INTERNAL,
-	.cra_blocksize		= CAST5_BLOCK_SIZE,
-	.cra_ctxsize		= sizeof(struct cast5_ctx),
-	.cra_alignmask		= 0,
-	.cra_type		= &crypto_blkcipher_type,
-	.cra_module		= THIS_MODULE,
-	.cra_u = {
-		.blkcipher = {
-			.min_keysize	= CAST5_MIN_KEY_SIZE,
-			.max_keysize	= CAST5_MAX_KEY_SIZE,
-			.setkey		= cast5_setkey,
-			.encrypt	= ecb_encrypt,
-			.decrypt	= ecb_decrypt,
-		},
-	},
-}, {
-	.cra_name		= "__cbc-cast5-avx",
-	.cra_driver_name	= "__driver-cbc-cast5-avx",
-	.cra_priority		= 0,
-	.cra_flags		= CRYPTO_ALG_TYPE_BLKCIPHER |
-				  CRYPTO_ALG_INTERNAL,
-	.cra_blocksize		= CAST5_BLOCK_SIZE,
-	.cra_ctxsize		= sizeof(struct cast5_ctx),
-	.cra_alignmask		= 0,
-	.cra_type		= &crypto_blkcipher_type,
-	.cra_module		= THIS_MODULE,
-	.cra_u = {
-		.blkcipher = {
-			.min_keysize	= CAST5_MIN_KEY_SIZE,
-			.max_keysize	= CAST5_MAX_KEY_SIZE,
-			.setkey		= cast5_setkey,
-			.encrypt	= cbc_encrypt,
-			.decrypt	= cbc_decrypt,
-		},
-	},
-}, {
-	.cra_name		= "__ctr-cast5-avx",
-	.cra_driver_name	= "__driver-ctr-cast5-avx",
-	.cra_priority		= 0,
-	.cra_flags		= CRYPTO_ALG_TYPE_BLKCIPHER |
-				  CRYPTO_ALG_INTERNAL,
-	.cra_blocksize		= 1,
-	.cra_ctxsize		= sizeof(struct cast5_ctx),
-	.cra_alignmask		= 0,
-	.cra_type		= &crypto_blkcipher_type,
-	.cra_module		= THIS_MODULE,
-	.cra_u = {
-		.blkcipher = {
-			.min_keysize	= CAST5_MIN_KEY_SIZE,
-			.max_keysize	= CAST5_MAX_KEY_SIZE,
-			.ivsize		= CAST5_BLOCK_SIZE,
-			.setkey		= cast5_setkey,
-			.encrypt	= ctr_crypt,
-			.decrypt	= ctr_crypt,
-		},
-	},
-}, {
-	.cra_name		= "ecb(cast5)",
-	.cra_driver_name	= "ecb-cast5-avx",
-	.cra_priority		= 200,
-	.cra_flags		= CRYPTO_ALG_TYPE_ABLKCIPHER | CRYPTO_ALG_ASYNC,
-	.cra_blocksize		= CAST5_BLOCK_SIZE,
-	.cra_ctxsize		= sizeof(struct async_helper_ctx),
-	.cra_alignmask		= 0,
-	.cra_type		= &crypto_ablkcipher_type,
-	.cra_module		= THIS_MODULE,
-	.cra_init		= ablk_init,
-	.cra_exit		= ablk_exit,
-	.cra_u = {
-		.ablkcipher = {
-			.min_keysize	= CAST5_MIN_KEY_SIZE,
-			.max_keysize	= CAST5_MAX_KEY_SIZE,
-			.setkey		= ablk_set_key,
-			.encrypt	= ablk_encrypt,
-			.decrypt	= ablk_decrypt,
-		},
-	},
-}, {
-	.cra_name		= "cbc(cast5)",
-	.cra_driver_name	= "cbc-cast5-avx",
-	.cra_priority		= 200,
-	.cra_flags		= CRYPTO_ALG_TYPE_ABLKCIPHER | CRYPTO_ALG_ASYNC,
-	.cra_blocksize		= CAST5_BLOCK_SIZE,
-	.cra_ctxsize		= sizeof(struct async_helper_ctx),
-	.cra_alignmask		= 0,
-	.cra_type		= &crypto_ablkcipher_type,
-	.cra_module		= THIS_MODULE,
-	.cra_init		= ablk_init,
-	.cra_exit		= ablk_exit,
-	.cra_u = {
-		.ablkcipher = {
-			.min_keysize	= CAST5_MIN_KEY_SIZE,
-			.max_keysize	= CAST5_MAX_KEY_SIZE,
-			.ivsize		= CAST5_BLOCK_SIZE,
-			.setkey		= ablk_set_key,
-			.encrypt	= __ablk_encrypt,
-			.decrypt	= ablk_decrypt,
-		},
-	},
-}, {
-	.cra_name		= "ctr(cast5)",
-	.cra_driver_name	= "ctr-cast5-avx",
-	.cra_priority		= 200,
-	.cra_flags		= CRYPTO_ALG_TYPE_ABLKCIPHER | CRYPTO_ALG_ASYNC,
-	.cra_blocksize		= 1,
-	.cra_ctxsize		= sizeof(struct async_helper_ctx),
-	.cra_alignmask		= 0,
-	.cra_type		= &crypto_ablkcipher_type,
-	.cra_module		= THIS_MODULE,
-	.cra_init		= ablk_init,
-	.cra_exit		= ablk_exit,
-	.cra_u = {
-		.ablkcipher = {
-			.min_keysize	= CAST5_MIN_KEY_SIZE,
-			.max_keysize	= CAST5_MAX_KEY_SIZE,
-			.ivsize		= CAST5_BLOCK_SIZE,
-			.setkey		= ablk_set_key,
-			.encrypt	= ablk_encrypt,
-			.decrypt	= ablk_encrypt,
-			.geniv		= "chainiv",
-		},
-	},
-} };
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int __init cast5_init(void)
 {
@@ -669,23 +373,15 @@ static int __init cast5_init(void)
 		return -ENODEV;
 	}
 
-<<<<<<< HEAD
 	return simd_register_skciphers_compat(cast5_algs,
 					      ARRAY_SIZE(cast5_algs),
 					      cast5_simd_algs);
-=======
-	return crypto_register_algs(cast5_algs, ARRAY_SIZE(cast5_algs));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __exit cast5_exit(void)
 {
-<<<<<<< HEAD
 	simd_unregister_skciphers(cast5_algs, ARRAY_SIZE(cast5_algs),
 				  cast5_simd_algs);
-=======
-	crypto_unregister_algs(cast5_algs, ARRAY_SIZE(cast5_algs));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 module_init(cast5_init);

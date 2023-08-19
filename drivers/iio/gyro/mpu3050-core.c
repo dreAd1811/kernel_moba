@@ -743,10 +743,6 @@ static const struct attribute_group mpu3050_attribute_group = {
 };
 
 static const struct iio_info mpu3050_info = {
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read_raw = mpu3050_read_raw,
 	.write_raw = mpu3050_write_raw,
 	.attrs = &mpu3050_attribute_group,
@@ -1036,10 +1032,6 @@ static int mpu3050_drdy_trigger_set_state(struct iio_trigger *trig,
 }
 
 static const struct iio_trigger_ops mpu3050_trigger_ops = {
-<<<<<<< HEAD
-=======
-	.owner = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.set_trigger_state = mpu3050_drdy_trigger_set_state,
 };
 

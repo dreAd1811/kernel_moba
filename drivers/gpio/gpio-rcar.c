@@ -14,14 +14,8 @@
  * GNU General Public License for more details.
  */
 
-<<<<<<< HEAD
 #include <linux/err.h>
 #include <linux/gpio/driver.h>
-=======
-#include <linux/clk.h>
-#include <linux/err.h>
-#include <linux/gpio.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/init.h>
 #include <linux/interrupt.h>
 #include <linux/io.h>
@@ -29,17 +23,13 @@
 #include <linux/irq.h>
 #include <linux/module.h>
 #include <linux/of.h>
-<<<<<<< HEAD
 #include <linux/of_device.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/pinctrl/consumer.h>
 #include <linux/platform_device.h>
 #include <linux/pm_runtime.h>
 #include <linux/spinlock.h>
 #include <linux/slab.h>
 
-<<<<<<< HEAD
 struct gpio_rcar_bank_info {
 	u32 iointsel;
 	u32 inoutsel;
@@ -50,25 +40,16 @@ struct gpio_rcar_bank_info {
 	u32 intmsk;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct gpio_rcar_priv {
 	void __iomem *base;
 	spinlock_t lock;
 	struct platform_device *pdev;
 	struct gpio_chip gpio_chip;
 	struct irq_chip irq_chip;
-<<<<<<< HEAD
 	unsigned int irq_parent;
 	atomic_t wakeup_path;
 	bool has_both_edge_trigger;
 	struct gpio_rcar_bank_info bank_info;
-=======
-	struct clk *clk;
-	unsigned int irq_parent;
-	bool has_both_edge_trigger;
-	bool needs_clk;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define IOINTSEL 0x00	/* General IO/Interrupt Switching Register */
@@ -214,20 +195,10 @@ static int gpio_rcar_irq_set_wake(struct irq_data *d, unsigned int on)
 		}
 	}
 
-<<<<<<< HEAD
 	if (on)
 		atomic_inc(&p->wakeup_path);
 	else
 		atomic_dec(&p->wakeup_path);
-=======
-	if (!p->clk)
-		return 0;
-
-	if (on)
-		clk_enable(p->clk);
-	else
-		clk_disable(p->clk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -242,11 +213,7 @@ static irqreturn_t gpio_rcar_irq_handler(int irq, void *dev_id)
 			  gpio_rcar_read(p, INTMSK))) {
 		offset = __ffs(pending);
 		gpio_rcar_write(p, INTCLR, BIT(offset));
-<<<<<<< HEAD
 		generic_handle_irq(irq_find_mapping(p->gpio_chip.irq.domain,
-=======
-		generic_handle_irq(irq_find_mapping(p->gpio_chip.irqdomain,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						    offset));
 		irqs_handled++;
 	}
@@ -289,11 +256,7 @@ static int gpio_rcar_request(struct gpio_chip *chip, unsigned offset)
 	if (error < 0)
 		return error;
 
-<<<<<<< HEAD
 	error = pinctrl_gpio_request(chip->base + offset);
-=======
-	error = pinctrl_request_gpio(chip->base + offset);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (error)
 		pm_runtime_put(&p->pdev->dev);
 
@@ -304,11 +267,7 @@ static void gpio_rcar_free(struct gpio_chip *chip, unsigned offset)
 {
 	struct gpio_rcar_priv *p = gpiochip_get_data(chip);
 
-<<<<<<< HEAD
 	pinctrl_gpio_free(chip->base + offset);
-=======
-	pinctrl_free_gpio(chip->base + offset);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Set the GPIO as an input to ensure that the next GPIO request won't
@@ -319,7 +278,6 @@ static void gpio_rcar_free(struct gpio_chip *chip, unsigned offset)
 	pm_runtime_put(&p->pdev->dev);
 }
 
-<<<<<<< HEAD
 static int gpio_rcar_get_direction(struct gpio_chip *chip, unsigned int offset)
 {
 	struct gpio_rcar_priv *p = gpiochip_get_data(chip);
@@ -327,8 +285,6 @@ static int gpio_rcar_get_direction(struct gpio_chip *chip, unsigned int offset)
 	return !(gpio_rcar_read(p, INOUTSEL) & BIT(offset));
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int gpio_rcar_direction_input(struct gpio_chip *chip, unsigned offset)
 {
 	gpio_rcar_config_general_input_output_mode(chip, offset, false);
@@ -387,26 +343,14 @@ static int gpio_rcar_direction_output(struct gpio_chip *chip, unsigned offset,
 
 struct gpio_rcar_info {
 	bool has_both_edge_trigger;
-<<<<<<< HEAD
-=======
-	bool needs_clk;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct gpio_rcar_info gpio_rcar_info_gen1 = {
 	.has_both_edge_trigger = false,
-<<<<<<< HEAD
-=======
-	.needs_clk = false,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct gpio_rcar_info gpio_rcar_info_gen2 = {
 	.has_both_edge_trigger = true,
-<<<<<<< HEAD
-=======
-	.needs_clk = true,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct of_device_id gpio_rcar_of_table[] = {
@@ -460,31 +404,15 @@ MODULE_DEVICE_TABLE(of, gpio_rcar_of_table);
 static int gpio_rcar_parse_dt(struct gpio_rcar_priv *p, unsigned int *npins)
 {
 	struct device_node *np = p->pdev->dev.of_node;
-<<<<<<< HEAD
-=======
-	const struct of_device_id *match;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const struct gpio_rcar_info *info;
 	struct of_phandle_args args;
 	int ret;
 
-<<<<<<< HEAD
 	info = of_device_get_match_data(&p->pdev->dev);
-=======
-	match = of_match_node(gpio_rcar_of_table, np);
-	if (!match)
-		return -EINVAL;
-
-	info = match->data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = of_parse_phandle_with_fixed_args(np, "gpio-ranges", 3, 0, &args);
 	*npins = ret == 0 ? args.args[2] : RCAR_MAX_GPIO_PER_BANK;
 	p->has_both_edge_trigger = info->has_both_edge_trigger;
-<<<<<<< HEAD
-=======
-	p->needs_clk = info->needs_clk;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (*npins == 0 || *npins > RCAR_MAX_GPIO_PER_BANK) {
 		dev_warn(&p->pdev->dev,
@@ -521,56 +449,26 @@ static int gpio_rcar_probe(struct platform_device *pdev)
 
 	platform_set_drvdata(pdev, p);
 
-<<<<<<< HEAD
 	pm_runtime_enable(dev);
 
 	irq = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
 	if (!irq) {
 		dev_err(dev, "missing IRQ\n");
-=======
-	p->clk = devm_clk_get(dev, NULL);
-	if (IS_ERR(p->clk)) {
-		if (p->needs_clk) {
-			dev_err(dev, "unable to get clock\n");
-			ret = PTR_ERR(p->clk);
-			goto err0;
-		}
-		p->clk = NULL;
-	}
-
-	pm_runtime_enable(dev);
-
-	io = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-	irq = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
-
-	if (!io || !irq) {
-		dev_err(dev, "missing IRQ or IOMEM\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -EINVAL;
 		goto err0;
 	}
 
-<<<<<<< HEAD
 	io = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 	p->base = devm_ioremap_resource(dev, io);
 	if (IS_ERR(p->base)) {
 		ret = PTR_ERR(p->base);
-=======
-	p->base = devm_ioremap_nocache(dev, io->start, resource_size(io));
-	if (!p->base) {
-		dev_err(dev, "failed to remap I/O memory\n");
-		ret = -ENXIO;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err0;
 	}
 
 	gpio_chip = &p->gpio_chip;
 	gpio_chip->request = gpio_rcar_request;
 	gpio_chip->free = gpio_rcar_free;
-<<<<<<< HEAD
 	gpio_chip->get_direction = gpio_rcar_get_direction;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gpio_chip->direction_input = gpio_rcar_direction_input;
 	gpio_chip->get = gpio_rcar_get;
 	gpio_chip->direction_output = gpio_rcar_direction_output;
@@ -633,7 +531,6 @@ static int gpio_rcar_remove(struct platform_device *pdev)
 	return 0;
 }
 
-<<<<<<< HEAD
 #ifdef CONFIG_PM_SLEEP
 static int gpio_rcar_suspend(struct device *dev)
 {
@@ -691,17 +588,12 @@ static int gpio_rcar_resume(struct device *dev)
 
 static SIMPLE_DEV_PM_OPS(gpio_rcar_pm_ops, gpio_rcar_suspend, gpio_rcar_resume);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct platform_driver gpio_rcar_device_driver = {
 	.probe		= gpio_rcar_probe,
 	.remove		= gpio_rcar_remove,
 	.driver		= {
 		.name	= "gpio_rcar",
-<<<<<<< HEAD
 		.pm     = &gpio_rcar_pm_ops,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.of_match_table = of_match_ptr(gpio_rcar_of_table),
 	}
 };

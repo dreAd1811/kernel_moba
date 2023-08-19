@@ -121,10 +121,6 @@ struct pulse8 {
 	unsigned int vers;
 	struct completion cmd_done;
 	struct work_struct work;
-<<<<<<< HEAD
-=======
-	u8 work_result;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct delayed_work ping_eeprom_work;
 	struct cec_msg rx_msg;
 	u8 data[DATA_SIZE];
@@ -146,15 +142,8 @@ static void pulse8_irq_work_handler(struct work_struct *work)
 {
 	struct pulse8 *pulse8 =
 		container_of(work, struct pulse8, work);
-<<<<<<< HEAD
 
 	switch (pulse8->data[0] & 0x3f) {
-=======
-	u8 result = pulse8->work_result;
-
-	pulse8->work_result = 0;
-	switch (result & 0x3f) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case MSGCODE_FRAME_DATA:
 		cec_received_msg(pulse8->adap, &pulse8->rx_msg);
 		break;
@@ -188,20 +177,12 @@ static irqreturn_t pulse8_interrupt(struct serio *serio, unsigned char data,
 		pulse8->escape = false;
 	} else if (data == MSGEND) {
 		struct cec_msg *msg = &pulse8->rx_msg;
-<<<<<<< HEAD
-=======
-		u8 msgcode = pulse8->buf[0];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (debug)
 			dev_info(pulse8->dev, "received: %*ph\n",
 				 pulse8->idx, pulse8->buf);
-<<<<<<< HEAD
 		pulse8->data[0] = pulse8->buf[0];
 		switch (pulse8->buf[0] & 0x3f) {
-=======
-		switch (msgcode & 0x3f) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case MSGCODE_FRAME_START:
 			msg->len = 1;
 			msg->msg[0] = pulse8->buf[1];
@@ -210,28 +191,14 @@ static irqreturn_t pulse8_interrupt(struct serio *serio, unsigned char data,
 			if (msg->len == CEC_MAX_MSG_SIZE)
 				break;
 			msg->msg[msg->len++] = pulse8->buf[1];
-<<<<<<< HEAD
 			if (pulse8->buf[0] & MSGCODE_FRAME_EOM)
 				schedule_work(&pulse8->work);
-=======
-			if (msgcode & MSGCODE_FRAME_EOM) {
-				WARN_ON(pulse8->work_result);
-				pulse8->work_result = msgcode;
-				schedule_work(&pulse8->work);
-				break;
-			}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		case MSGCODE_TRANSMIT_SUCCEEDED:
 		case MSGCODE_TRANSMIT_FAILED_LINE:
 		case MSGCODE_TRANSMIT_FAILED_ACK:
 		case MSGCODE_TRANSMIT_FAILED_TIMEOUT_DATA:
 		case MSGCODE_TRANSMIT_FAILED_TIMEOUT_LINE:
-<<<<<<< HEAD
-=======
-			WARN_ON(pulse8->work_result);
-			pulse8->work_result = msgcode;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			schedule_work(&pulse8->work);
 			break;
 		case MSGCODE_HIGH_ERROR:
@@ -362,11 +329,7 @@ static int pulse8_setup(struct pulse8 *pulse8, struct serio *serio,
 	u8 cmd[2];
 	int err;
 	struct tm tm;
-<<<<<<< HEAD
 	time64_t date;
-=======
-	time_t date;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pulse8->vers = 0;
 
@@ -386,11 +349,7 @@ static int pulse8_setup(struct pulse8 *pulse8, struct serio *serio,
 	if (err)
 		return err;
 	date = (data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3];
-<<<<<<< HEAD
 	time64_to_tm(date, 0, &tm);
-=======
-	time_to_tm(date, 0, &tm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_info(pulse8->dev, "Firmware build date %04ld.%02d.%02d %02d:%02d:%02d\n",
 		 tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday,
 		 tm.tm_hour, tm.tm_min, tm.tm_sec);
@@ -626,11 +585,7 @@ unlock:
 	else
 		pulse8->config_pending = true;
 	mutex_unlock(&pulse8->config_lock);
-<<<<<<< HEAD
 	return err;
-=======
-	return log_addr == CEC_LOG_ADDR_INVALID ? 0 : err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int pulse8_cec_adap_transmit(struct cec_adapter *adap, u8 attempts,

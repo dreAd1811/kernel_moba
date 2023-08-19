@@ -1,22 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Copyright (c) 2015 MediaTek Inc.
  * Author: Erin Lo <erin.lo@mediatek.com>
  *
-<<<<<<< HEAD
-=======
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /dts-v1/;
@@ -63,7 +49,6 @@
 	bt_sco_codec:bt_sco_codec {
 		compatible = "linux,bt-sco";
 	};
-<<<<<<< HEAD
 
 	backlight_lcd: backlight_lcd {
 		compatible = "pwm-backlight";
@@ -75,23 +60,18 @@
 		>;
 		default-brightness-level = <9>;
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &auxadc {
 	status = "okay";
 };
 
-<<<<<<< HEAD
 &bls {
 	status = "okay";
 	pinctrl-names = "default";
 	pinctrl-0 = <&pwm_bls_gpio>;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &i2c0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&i2c0_pins_a>;
@@ -141,15 +121,12 @@
 		};
 	};
 
-<<<<<<< HEAD
 	pwm_bls_gpio: pwm_bls_gpio {
 		pins_cmd_dat {
 			pinmux = <MT2701_PIN_208_AUD_EXT_CK1__FUNC_DISP_PWM>;
 		};
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spi_pins_a: spi0@0 {
 		pins_spi {
 			pinmux = <MT2701_PIN_53_SPI0_CSN__FUNC_SPI0_CS>,

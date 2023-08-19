@@ -83,7 +83,6 @@ bool elv_bio_merge_ok(struct request *rq, struct bio *bio)
 }
 EXPORT_SYMBOL(elv_bio_merge_ok);
 
-<<<<<<< HEAD
 static bool elevator_match(const struct elevator_type *e, const char *name)
 {
 	if (!strcmp(e->elevator_name, name))
@@ -94,8 +93,6 @@ static bool elevator_match(const struct elevator_type *e, const char *name)
 	return false;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Return scheduler with name 'name' and with matching 'mq capability
  */
@@ -104,11 +101,7 @@ static struct elevator_type *elevator_find(const char *name, bool mq)
 	struct elevator_type *e;
 
 	list_for_each_entry(e, &elv_list, list) {
-<<<<<<< HEAD
 		if (elevator_match(e, name) && (mq == e->uses_mq))
-=======
-		if (!strcmp(e->elevator_name, name) && (mq == e->uses_mq))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return e;
 	}
 
@@ -206,7 +199,6 @@ static void elevator_release(struct kobject *kobj)
 	kfree(e);
 }
 
-<<<<<<< HEAD
 /*
  * Use the default elevator specified by config boot param for non-mq devices,
  * or by config option.  Don't try to load modules as we could be running off
@@ -216,55 +208,22 @@ int elevator_init(struct request_queue *q)
 {
 	struct elevator_type *e = NULL;
 	int err = 0;
-=======
-int elevator_init(struct request_queue *q, char *name)
-{
-	struct elevator_type *e = NULL;
-	int err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * q->sysfs_lock must be held to provide mutual exclusion between
 	 * elevator_switch() and here.
 	 */
-<<<<<<< HEAD
 	mutex_lock(&q->sysfs_lock);
 	if (unlikely(q->elevator))
 		goto out_unlock;
 
 	if (*chosen_elevator) {
-=======
-	lockdep_assert_held(&q->sysfs_lock);
-
-	if (unlikely(q->elevator))
-		return 0;
-
-	INIT_LIST_HEAD(&q->queue_head);
-	q->last_merge = NULL;
-	q->end_sector = 0;
-	q->boundary_rq = NULL;
-
-	if (name) {
-		e = elevator_get(q, name, true);
-		if (!e)
-			return -EINVAL;
-	}
-
-	/*
-	 * Use the default elevator specified by config boot param for
-	 * non-mq devices, or by config option. Don't try to load modules
-	 * as we could be running off async and request_module() isn't
-	 * allowed from async.
-	 */
-	if (!e && !q->mq_ops && *chosen_elevator) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		e = elevator_get(q, chosen_elevator, false);
 		if (!e)
 			printk(KERN_ERR "I/O scheduler %s not found\n",
 							chosen_elevator);
 	}
 
-<<<<<<< HEAD
 	if (!e)
 		e = elevator_get(q, CONFIG_DEFAULT_IOSCHED, false);
 	if (!e) {
@@ -280,40 +239,6 @@ out_unlock:
 	mutex_unlock(&q->sysfs_lock);
 	return err;
 }
-=======
-	if (!e) {
-		/*
-		 * For blk-mq devices, we default to using mq-deadline,
-		 * if available, for single queue devices. If deadline
-		 * isn't available OR we have multiple queues, default
-		 * to "none".
-		 */
-		if (q->mq_ops) {
-			if (q->nr_hw_queues == 1)
-				e = elevator_get(q, "mq-deadline", false);
-			if (!e)
-				return 0;
-		} else
-			e = elevator_get(q, CONFIG_DEFAULT_IOSCHED, false);
-
-		if (!e) {
-			printk(KERN_ERR
-				"Default I/O scheduler not found. " \
-				"Using noop.\n");
-			e = elevator_get(q, "noop", false);
-		}
-	}
-
-	if (e->uses_mq)
-		err = blk_mq_init_sched(q, e);
-	else
-		err = e->ops.sq.elevator_init_fn(q, e);
-	if (err)
-		elevator_put(e);
-	return err;
-}
-EXPORT_SYMBOL(elevator_init);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void elevator_exit(struct request_queue *q, struct elevator_queue *e)
 {
@@ -326,10 +251,6 @@ void elevator_exit(struct request_queue *q, struct elevator_queue *e)
 
 	kobject_put(&e->kobj);
 }
-<<<<<<< HEAD
-=======
-EXPORT_SYMBOL(elevator_exit);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline void __elv_rqhash_del(struct request *rq)
 {
@@ -501,11 +422,7 @@ enum elv_merge elv_merge(struct request_queue *q, struct request **req,
 {
 	struct elevator_queue *e = q->elevator;
 	struct request *__rq;
-<<<<<<< HEAD
 	enum elv_merge ret;
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Levels of merges:
 	 * 	nomerges:  No merges at all attempted
@@ -518,17 +435,11 @@ enum elv_merge elv_merge(struct request_queue *q, struct request **req,
 	/*
 	 * First try one-hit cache.
 	 */
-<<<<<<< HEAD
 	if (q->last_merge) {
 		if (!elv_bio_merge_ok(q->last_merge, bio))
 			return ELEVATOR_NO_MERGE;
 
 		ret = blk_try_merge(q->last_merge, bio);
-=======
-	if (q->last_merge && elv_bio_merge_ok(q->last_merge, bio)) {
-		enum elv_merge ret = blk_try_merge(q->last_merge, bio);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret != ELEVATOR_NO_MERGE) {
 			*req = q->last_merge;
 			return ret;
@@ -700,11 +611,7 @@ void elv_drain_elevator(struct request_queue *q)
 
 	while (e->type->ops.sq.elevator_dispatch_fn(q, 1))
 		;
-<<<<<<< HEAD
 	if (q->nr_sorted && !blk_queue_is_zoned(q) && printed++ < 10 ) {
-=======
-	if (q->nr_sorted && printed++ < 10) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		printk(KERN_ERR "%s: forced dispatching is broken "
 		       "(nr_sorted=%u), please report this\n",
 		       q->elevator->type->elevator_name, q->nr_sorted);
@@ -933,11 +840,8 @@ int elv_register_queue(struct request_queue *q)
 	struct elevator_queue *e = q->elevator;
 	int error;
 
-<<<<<<< HEAD
 	lockdep_assert_held(&q->sysfs_lock);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	error = kobject_add(&e->kobj, &q->kobj, "%s", "iosched");
 	if (!error) {
 		struct elv_fs_entry *attr = e->type->elevator_attrs;
@@ -952,7 +856,6 @@ int elv_register_queue(struct request_queue *q)
 		e->registered = 1;
 		if (!e->uses_mq && e->type->ops.sq.elevator_registered_fn)
 			e->type->ops.sq.elevator_registered_fn(q);
-<<<<<<< HEAD
 		else if (e->uses_mq && e->type->ops.mq.elevator_registered_fn)
 			e->type->ops.mq.elevator_registered_fn(q);
 	}
@@ -963,15 +866,6 @@ void elv_unregister_queue(struct request_queue *q)
 {
 	lockdep_assert_held(&q->sysfs_lock);
 
-=======
-	}
-	return error;
-}
-EXPORT_SYMBOL(elv_register_queue);
-
-void elv_unregister_queue(struct request_queue *q)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (q) {
 		struct elevator_queue *e = q->elevator;
 
@@ -982,10 +876,6 @@ void elv_unregister_queue(struct request_queue *q)
 		wbt_enable_default(q);
 	}
 }
-<<<<<<< HEAD
-=======
-EXPORT_SYMBOL(elv_unregister_queue);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int elv_register(struct elevator_type *e)
 {
@@ -1009,27 +899,16 @@ int elv_register(struct elevator_type *e)
 	spin_lock(&elv_list_lock);
 	if (elevator_find(e->elevator_name, e->uses_mq)) {
 		spin_unlock(&elv_list_lock);
-<<<<<<< HEAD
 		kmem_cache_destroy(e->icq_cache);
-=======
-		if (e->icq_cache)
-			kmem_cache_destroy(e->icq_cache);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EBUSY;
 	}
 	list_add_tail(&e->list, &elv_list);
 	spin_unlock(&elv_list_lock);
 
 	/* print pretty message */
-<<<<<<< HEAD
 	if (elevator_match(e, chosen_elevator) ||
 			(!*chosen_elevator &&
 			 elevator_match(e, CONFIG_DEFAULT_IOSCHED)))
-=======
-	if (!strcmp(e->elevator_name, chosen_elevator) ||
-			(!*chosen_elevator &&
-			 !strcmp(e->elevator_name, CONFIG_DEFAULT_IOSCHED)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				def = " (default)";
 
 	printk(KERN_INFO "io scheduler %s registered%s\n", e->elevator_name,
@@ -1057,20 +936,12 @@ void elv_unregister(struct elevator_type *e)
 }
 EXPORT_SYMBOL_GPL(elv_unregister);
 
-<<<<<<< HEAD
 int elevator_switch_mq(struct request_queue *q,
-=======
-static int elevator_switch_mq(struct request_queue *q,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      struct elevator_type *new_e)
 {
 	int ret;
 
-<<<<<<< HEAD
 	lockdep_assert_held(&q->sysfs_lock);
-=======
-	blk_mq_freeze_queue(q);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (q->elevator) {
 		if (q->elevator->registered)
@@ -1097,15 +968,10 @@ static int elevator_switch_mq(struct request_queue *q,
 		blk_add_trace_msg(q, "elv switch: none");
 
 out:
-<<<<<<< HEAD
-=======
-	blk_mq_unfreeze_queue(q);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
 /*
-<<<<<<< HEAD
  * For blk-mq devices, we default to using mq-deadline, if available, for single
  * queue devices.  If deadline isn't available OR we have multiple queues,
  * default to "none".
@@ -1144,8 +1010,6 @@ out_unlock:
 
 
 /*
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * switch to new_e io scheduler. be careful not to introduce deadlocks -
  * we don't free the old io scheduler, before we have allocated what we
  * need for the new one. this way we have a chance of going back to the old
@@ -1157,7 +1021,6 @@ static int elevator_switch(struct request_queue *q, struct elevator_type *new_e)
 	bool old_registered = false;
 	int err;
 
-<<<<<<< HEAD
 	lockdep_assert_held(&q->sysfs_lock);
 
 	if (q->mq_ops) {
@@ -1171,10 +1034,6 @@ static int elevator_switch(struct request_queue *q, struct elevator_type *new_e)
 
 		return err;
 	}
-=======
-	if (q->mq_ops)
-		return elevator_switch_mq(q, new_e);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Turn on BYPASS and drain all requests w/ elevator private data.
@@ -1250,12 +1109,7 @@ static int __elevator_change(struct request_queue *q, const char *name)
 	if (!e)
 		return -EINVAL;
 
-<<<<<<< HEAD
 	if (q->elevator && elevator_match(q->elevator->type, elevator_name)) {
-=======
-	if (q->elevator &&
-	    !strcmp(elevator_name, q->elevator->type->elevator_name)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		elevator_put(e);
 		return 0;
 	}
@@ -1291,16 +1145,10 @@ ssize_t elv_iosched_show(struct request_queue *q, char *name)
 	struct elevator_queue *e = q->elevator;
 	struct elevator_type *elv = NULL;
 	struct elevator_type *__e;
-<<<<<<< HEAD
 	bool uses_mq = q->mq_ops != NULL;
 	int len = 0;
 
 	if (!queue_is_rq_based(q))
-=======
-	int len = 0;
-
-	if (!blk_queue_stackable(q))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return sprintf(name, "none\n");
 
 	if (!q->elevator)
@@ -1310,12 +1158,8 @@ ssize_t elv_iosched_show(struct request_queue *q, char *name)
 
 	spin_lock(&elv_list_lock);
 	list_for_each_entry(__e, &elv_list, list) {
-<<<<<<< HEAD
 		if (elv && elevator_match(elv, __e->elevator_name) &&
 		    (__e->uses_mq == uses_mq)) {
-=======
-		if (elv && !strcmp(elv->elevator_name, __e->elevator_name)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			len += sprintf(name+len, "[%s] ", elv->elevator_name);
 			continue;
 		}

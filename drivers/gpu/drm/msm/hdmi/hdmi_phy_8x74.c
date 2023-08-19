@@ -41,12 +41,7 @@ static const char * const hdmi_phy_8x74_reg_names[] = {
 };
 
 static const char * const hdmi_phy_8x74_clk_names[] = {
-<<<<<<< HEAD
 	"iface", "alt_iface"
-=======
-	"iface_clk",
-	"alt_iface_clk"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 const struct hdmi_phy_cfg msm_hdmi_phy_8x74_cfg = {

@@ -104,10 +104,6 @@ const struct dma_fence_ops dma_fence_array_ops = {
 	.get_timeline_name = dma_fence_array_get_timeline_name,
 	.enable_signaling = dma_fence_array_enable_signaling,
 	.signaled = dma_fence_array_signaled,
-<<<<<<< HEAD
-=======
-	.wait = dma_fence_default_wait,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.release = dma_fence_array_release,
 };
 EXPORT_SYMBOL(dma_fence_array_ops);

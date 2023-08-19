@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
  * Copyright(c) 2015-2018 Intel Corporation.
-=======
- * Copyright(c) 2015-2017 Intel Corporation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This file is provided under a dual BSD/GPLv2 license.  When using or
  * redistributing this file, you may do so under either license.
@@ -65,10 +61,7 @@
 #include "sdma.h"
 #include "debugfs.h"
 #include "vnic.h"
-<<<<<<< HEAD
 #include "fault.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #undef pr_fmt
 #define pr_fmt(fmt) DRIVER_NAME ": " fmt
@@ -167,25 +160,6 @@ static int hfi1_caps_get(char *buffer, const struct kernel_param *kp)
 	return scnprintf(buffer, PAGE_SIZE, "0x%lx", cap_mask);
 }
 
-<<<<<<< HEAD
-=======
-const char *get_unit_name(int unit)
-{
-	static char iname[16];
-
-	snprintf(iname, sizeof(iname), DRIVER_NAME "_%u", unit);
-	return iname;
-}
-
-const char *get_card_name(struct rvt_dev_info *rdi)
-{
-	struct hfi1_ibdev *ibdev = container_of(rdi, struct hfi1_ibdev, rdi);
-	struct hfi1_devdata *dd = container_of(ibdev,
-					       struct hfi1_devdata, verbs_dev);
-	return get_unit_name(dd->unit);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct pci_dev *get_pci_dev(struct rvt_dev_info *rdi)
 {
 	struct hfi1_ibdev *ibdev = container_of(rdi, struct hfi1_ibdev, rdi);
@@ -234,16 +208,11 @@ static inline void *get_egrbuf(const struct hfi1_ctxtdata *rcd, u64 rhf,
 			(offset * RCV_BUF_BLOCK_SIZE));
 }
 
-<<<<<<< HEAD
 static inline void *hfi1_get_header(struct hfi1_ctxtdata *rcd,
-=======
-static inline void *hfi1_get_header(struct hfi1_devdata *dd,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    __le32 *rhf_addr)
 {
 	u32 offset = rhf_hdrq_offset(rhf_to_cpu(rhf_addr));
 
-<<<<<<< HEAD
 	return (void *)(rhf_addr - rcd->rhf_offset + offset);
 }
 
@@ -258,22 +227,6 @@ static inline struct hfi1_16b_header
 				     __le32 *rhf_addr)
 {
 	return (struct hfi1_16b_header *)hfi1_get_header(rcd, rhf_addr);
-=======
-	return (void *)(rhf_addr - dd->rhf_offset + offset);
-}
-
-static inline struct ib_header *hfi1_get_msgheader(struct hfi1_devdata *dd,
-						   __le32 *rhf_addr)
-{
-	return (struct ib_header *)hfi1_get_header(dd, rhf_addr);
-}
-
-static inline struct hfi1_16b_header
-		*hfi1_get_16B_header(struct hfi1_devdata *dd,
-				     __le32 *rhf_addr)
-{
-	return (struct hfi1_16b_header *)hfi1_get_header(dd, rhf_addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -304,16 +257,12 @@ static void rcv_hdrerr(struct hfi1_ctxtdata *rcd, struct hfi1_pportdata *ppd,
 	u32 mlid_base;
 	struct hfi1_ibport *ibp = rcd_to_iport(rcd);
 	struct hfi1_devdata *dd = ppd->dd;
-<<<<<<< HEAD
 	struct hfi1_ibdev *verbs_dev = &dd->verbs_dev;
 	struct rvt_dev_info *rdi = &verbs_dev->rdi;
 
 	if ((packet->rhf & RHF_DC_ERR) &&
 	    hfi1_dbg_fault_suppress_err(verbs_dev))
 		return;
-=======
-	struct rvt_dev_info *rdi = &dd->verbs_dev.rdi;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (packet->rhf & (RHF_VCRC_ERR | RHF_ICRC_ERR))
 		return;
@@ -442,10 +391,7 @@ static void rcv_hdrerr(struct hfi1_ctxtdata *rcd, struct hfi1_pportdata *ppd,
 				svc_type = IB_CC_SVCTYPE_UC;
 				break;
 			default:
-<<<<<<< HEAD
 				rcu_read_unlock();
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				goto drop;
 			}
 
@@ -478,15 +424,12 @@ static inline void init_packet(struct hfi1_ctxtdata *rcd,
 	packet->numpkt = 0;
 }
 
-<<<<<<< HEAD
 /* We support only two types - 9B and 16B for now */
 static const hfi1_handle_cnp hfi1_handle_cnp_tbl[2] = {
 	[HFI1_PKT_TYPE_9B] = &return_cnp,
 	[HFI1_PKT_TYPE_16B] = &return_cnp_16B
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void hfi1_process_ecn_slowpath(struct rvt_qp *qp, struct hfi1_packet *pkt,
 			       bool do_cnp)
 {
@@ -648,22 +591,12 @@ static void __prescan_rxq(struct hfi1_packet *packet)
 	init_ps_mdata(&mdata, packet);
 
 	while (1) {
-<<<<<<< HEAD
 		struct hfi1_ibport *ibp = rcd_to_iport(rcd);
 		__le32 *rhf_addr = (__le32 *)rcd->rcvhdrq + mdata.ps_head +
 					 packet->rcd->rhf_offset;
 		struct rvt_qp *qp;
 		struct ib_header *hdr;
 		struct rvt_dev_info *rdi = &rcd->dd->verbs_dev.rdi;
-=======
-		struct hfi1_devdata *dd = rcd->dd;
-		struct hfi1_ibport *ibp = rcd_to_iport(rcd);
-		__le32 *rhf_addr = (__le32 *)rcd->rcvhdrq + mdata.ps_head +
-					 dd->rhf_offset;
-		struct rvt_qp *qp;
-		struct ib_header *hdr;
-		struct rvt_dev_info *rdi = &dd->verbs_dev.rdi;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u64 rhf = rhf_to_cpu(rhf_addr);
 		u32 etype = rhf_rcv_type(rhf), qpn, bth1;
 		int is_ecn = 0;
@@ -678,11 +611,7 @@ static void __prescan_rxq(struct hfi1_packet *packet)
 		if (etype != RHF_RCV_TYPE_IB)
 			goto next;
 
-<<<<<<< HEAD
 		packet->hdr = hfi1_get_msgheader(packet->rcd, rhf_addr);
-=======
-		packet->hdr = hfi1_get_msgheader(dd, rhf_addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		hdr = packet->hdr;
 		lnh = ib_get_lnh(hdr);
 
@@ -722,16 +651,10 @@ next:
 	}
 }
 
-<<<<<<< HEAD
 static void process_rcv_qp_work(struct hfi1_packet *packet)
 {
 	struct rvt_qp *qp, *nqp;
 	struct hfi1_ctxtdata *rcd = packet->rcd;
-=======
-static void process_rcv_qp_work(struct hfi1_ctxtdata *rcd)
-{
-	struct rvt_qp *qp, *nqp;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Iterate over all QPs waiting to respond.
@@ -741,12 +664,8 @@ static void process_rcv_qp_work(struct hfi1_ctxtdata *rcd)
 		list_del_init(&qp->rspwait);
 		if (qp->r_flags & RVT_R_RSP_NAK) {
 			qp->r_flags &= ~RVT_R_RSP_NAK;
-<<<<<<< HEAD
 			packet->qp = qp;
 			hfi1_send_rc_ack(packet, 0);
-=======
-			hfi1_send_rc_ack(rcd, qp, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		if (qp->r_flags & RVT_R_RSP_SEND) {
 			unsigned long flags;
@@ -767,11 +686,7 @@ static noinline int max_packet_exceeded(struct hfi1_packet *packet, int thread)
 	if (thread) {
 		if ((packet->numpkt & (MAX_PKT_RECV_THREAD - 1)) == 0)
 			/* allow defered processing */
-<<<<<<< HEAD
 			process_rcv_qp_work(packet);
-=======
-			process_rcv_qp_work(packet->rcd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cond_resched();
 		return RCV_PKT_OK;
 	} else {
@@ -793,10 +708,6 @@ static noinline int skip_rcv_packet(struct hfi1_packet *packet, int thread)
 {
 	int ret;
 
-<<<<<<< HEAD
-=======
-	packet->rcd->dd->ctx0_seq_drop++;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Set up for the next packet */
 	packet->rhqoff += packet->rsize;
 	if (packet->rhqoff >= packet->maxcnt)
@@ -806,11 +717,7 @@ static noinline int skip_rcv_packet(struct hfi1_packet *packet, int thread)
 	ret = check_max_packet(packet, thread);
 
 	packet->rhf_addr = (__le32 *)packet->rcd->rcvhdrq + packet->rhqoff +
-<<<<<<< HEAD
 				     packet->rcd->rhf_offset;
-=======
-				     packet->rcd->dd->rhf_offset;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	packet->rhf = rhf_to_cpu(packet->rhf_addr);
 
 	return ret;
@@ -849,11 +756,7 @@ static inline int process_rcv_packet(struct hfi1_packet *packet, int thread)
 	 * crashing down. There is no need to eat another
 	 * comparison in this performance critical code.
 	 */
-<<<<<<< HEAD
 	packet->rcd->rhf_rcv_function_map[packet->etype](packet);
-=======
-	packet->rcd->dd->rhf_rcv_function_map[packet->etype](packet);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	packet->numpkt++;
 
 	/* Set up for the next packet */
@@ -864,11 +767,7 @@ static inline int process_rcv_packet(struct hfi1_packet *packet, int thread)
 	ret = check_max_packet(packet, thread);
 
 	packet->rhf_addr = (__le32 *)packet->rcd->rcvhdrq + packet->rhqoff +
-<<<<<<< HEAD
 				      packet->rcd->rhf_offset;
-=======
-				      packet->rcd->dd->rhf_offset;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	packet->rhf = rhf_to_cpu(packet->rhf_addr);
 
 	return ret;
@@ -929,11 +828,7 @@ int handle_receive_interrupt_nodma_rtail(struct hfi1_ctxtdata *rcd, int thread)
 			last = RCV_PKT_DONE;
 		process_rcv_update(last, &packet);
 	}
-<<<<<<< HEAD
 	process_rcv_qp_work(&packet);
-=======
-	process_rcv_qp_work(rcd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rcd->head = packet.rhqoff;
 bail:
 	finish_packet(&packet);
@@ -962,11 +857,7 @@ int handle_receive_interrupt_dma_rtail(struct hfi1_ctxtdata *rcd, int thread)
 			last = RCV_PKT_DONE;
 		process_rcv_update(last, &packet);
 	}
-<<<<<<< HEAD
 	process_rcv_qp_work(&packet);
-=======
-	process_rcv_qp_work(rcd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rcd->head = packet.rhqoff;
 bail:
 	finish_packet(&packet);
@@ -984,11 +875,7 @@ static inline void set_nodma_rtail(struct hfi1_devdata *dd, u16 ctxt)
 	 * interrupt handler for all statically allocated kernel contexts.
 	 */
 	if (ctxt >= dd->first_dyn_alloc_ctxt) {
-<<<<<<< HEAD
 		rcd = hfi1_rcd_get_by_index_safe(dd, ctxt);
-=======
-		rcd = hfi1_rcd_get_by_index(dd, ctxt);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (rcd) {
 			rcd->do_interrupt =
 				&handle_receive_interrupt_nodma_rtail;
@@ -1017,11 +904,7 @@ static inline void set_dma_rtail(struct hfi1_devdata *dd, u16 ctxt)
 	 * interrupt handler for all statically allocated kernel contexts.
 	 */
 	if (ctxt >= dd->first_dyn_alloc_ctxt) {
-<<<<<<< HEAD
 		rcd = hfi1_rcd_get_by_index_safe(dd, ctxt);
-=======
-		rcd = hfi1_rcd_get_by_index(dd, ctxt);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (rcd) {
 			rcd->do_interrupt =
 				&handle_receive_interrupt_dma_rtail;
@@ -1049,16 +932,9 @@ void set_all_slowpath(struct hfi1_devdata *dd)
 		rcd = hfi1_rcd_get_by_index(dd, i);
 		if (!rcd)
 			continue;
-<<<<<<< HEAD
 		if (i < dd->first_dyn_alloc_ctxt || rcd->is_vnic)
 			rcd->do_interrupt = &handle_receive_interrupt;
 
-=======
-		if ((i < dd->first_dyn_alloc_ctxt) ||
-		    (rcd->sc && (rcd->sc->type == SC_KERNEL))) {
-			rcd->do_interrupt = &handle_receive_interrupt;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		hfi1_rcd_put(rcd);
 	}
 }
@@ -1072,20 +948,12 @@ static inline int set_armed_to_active(struct hfi1_ctxtdata *rcd,
 	u8 sc = SC15_PACKET;
 
 	if (etype == RHF_RCV_TYPE_IB) {
-<<<<<<< HEAD
 		struct ib_header *hdr = hfi1_get_msgheader(packet->rcd,
-=======
-		struct ib_header *hdr = hfi1_get_msgheader(packet->rcd->dd,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							   packet->rhf_addr);
 		sc = hfi1_9B_get_sc5(hdr, packet->rhf);
 	} else if (etype == RHF_RCV_TYPE_BYPASS) {
 		struct hfi1_16b_header *hdr = hfi1_get_16B_header(
-<<<<<<< HEAD
 						packet->rcd,
-=======
-						packet->rcd->dd,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						packet->rhf_addr);
 		sc = hfi1_16B_get_sc(hdr);
 	}
@@ -1165,11 +1033,7 @@ int handle_receive_interrupt(struct hfi1_ctxtdata *rcd, int thread)
 			packet.rhqoff += packet.rsize;
 			packet.rhf_addr = (__le32 *)rcd->rcvhdrq +
 					  packet.rhqoff +
-<<<<<<< HEAD
 					  rcd->rhf_offset;
-=======
-					  dd->rhf_offset;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			packet.rhf = rhf_to_cpu(packet.rhf_addr);
 
 		} else if (skip_pkt) {
@@ -1223,11 +1087,7 @@ int handle_receive_interrupt(struct hfi1_ctxtdata *rcd, int thread)
 		process_rcv_update(last, &packet);
 	}
 
-<<<<<<< HEAD
 	process_rcv_qp_work(&packet);
-=======
-	process_rcv_qp_work(rcd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rcd->head = packet.rhqoff;
 
 bail:
@@ -1400,15 +1260,9 @@ void shutdown_led_override(struct hfi1_pportdata *ppd)
 	write_csr(dd, DCC_CFG_LED_CNTRL, 0);
 }
 
-<<<<<<< HEAD
 static void run_led_override(struct timer_list *t)
 {
 	struct hfi1_pportdata *ppd = from_timer(ppd, t, led_override_timer);
-=======
-static void run_led_override(unsigned long opaque)
-{
-	struct hfi1_pportdata *ppd = (struct hfi1_pportdata *)opaque;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct hfi1_devdata *dd = ppd->dd;
 	unsigned long timeout;
 	int phase_idx;
@@ -1452,12 +1306,7 @@ void hfi1_start_led_override(struct hfi1_pportdata *ppd, unsigned int timeon,
 	 * timeout so the handler will be called soon to look at our request.
 	 */
 	if (!timer_pending(&ppd->led_override_timer)) {
-<<<<<<< HEAD
 		timer_setup(&ppd->led_override_timer, run_led_override, 0);
-=======
-		setup_timer(&ppd->led_override_timer, run_led_override,
-			    (unsigned long)ppd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ppd->led_override_timer.expires = jiffies + 1;
 		add_timer(&ppd->led_override_timer);
 		atomic_set(&ppd->led_override_timer_active, 1);
@@ -1534,11 +1383,7 @@ bail:
 static inline void hfi1_setup_ib_header(struct hfi1_packet *packet)
 {
 	packet->hdr = (struct hfi1_ib_message_header *)
-<<<<<<< HEAD
 			hfi1_get_msgheader(packet->rcd,
-=======
-			hfi1_get_msgheader(packet->rcd->dd,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   packet->rhf_addr);
 	packet->hlen = (u8 *)packet->rhf_addr - (u8 *)packet->hdr;
 }
@@ -1612,13 +1457,8 @@ static int hfi1_setup_9B_packet(struct hfi1_packet *packet)
 	packet->sc = hfi1_9B_get_sc5(hdr, packet->rhf);
 	packet->pad = ib_bth_get_pad(packet->ohdr);
 	packet->extra_byte = 0;
-<<<<<<< HEAD
 	packet->pkey = ib_bth_get_pkey(packet->ohdr);
 	packet->migrated = ib_bth_is_migration(packet->ohdr);
-=======
-	packet->fecn = ib_bth_get_fecn(packet->ohdr);
-	packet->becn = ib_bth_get_becn(packet->ohdr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 drop:
@@ -1642,7 +1482,6 @@ static int hfi1_setup_bypass_packet(struct hfi1_packet *packet)
 	struct hfi1_pportdata *ppd = rcd->ppd;
 	struct hfi1_ibport *ibp = &ppd->ibport_data;
 	u8 l4;
-<<<<<<< HEAD
 
 	packet->hdr = (struct hfi1_16b_header *)
 			hfi1_get_16B_header(packet->rcd,
@@ -1670,32 +1509,11 @@ static int hfi1_setup_bypass_packet(struct hfi1_packet *packet)
 			(LRH_16B_BYTES - LRH_9B_BYTES) + grh_len;
 		packet->migrated = opa_bth_is_migration(packet->ohdr);
 
-=======
-	u8 grh_len;
-
-	packet->hdr = (struct hfi1_16b_header *)
-			hfi1_get_16B_header(packet->rcd->dd,
-					    packet->rhf_addr);
-	packet->hlen = (u8 *)packet->rhf_addr - (u8 *)packet->hdr;
-
-	l4 = hfi1_16B_get_l4(packet->hdr);
-	if (l4 == OPA_16B_L4_IB_LOCAL) {
-		grh_len = 0;
-		packet->ohdr = packet->ebuf;
-		packet->grh = NULL;
-	} else if (l4 == OPA_16B_L4_IB_GLOBAL) {
-		u32 vtf;
-
-		grh_len = sizeof(struct ib_grh);
-		packet->ohdr = packet->ebuf + grh_len;
-		packet->grh = packet->ebuf;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (packet->grh->next_hdr != IB_GRH_NEXT_HDR)
 			goto drop;
 		vtf = be32_to_cpu(packet->grh->version_tclass_flow);
 		if ((vtf >> IB_GRH_VERSION_SHIFT) != IB_GRH_VERSION)
 			goto drop;
-<<<<<<< HEAD
 	} else if (l4 == OPA_16B_L4_FM) {
 		packet->mgmt = packet->ebuf;
 		packet->ohdr = NULL;
@@ -1704,20 +1522,12 @@ static int hfi1_setup_bypass_packet(struct hfi1_packet *packet)
 		packet->pad = OPA_16B_L4_FM_PAD;
 		packet->hlen = OPA_16B_L4_FM_HLEN;
 		packet->migrated = false;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		goto drop;
 	}
 
 	/* Query commonly used fields from packet header */
-<<<<<<< HEAD
 	packet->payload = packet->ebuf + packet->hlen - LRH_16B_BYTES;
-=======
-	packet->opcode = ib_bth_get_opcode(packet->ohdr);
-	packet->hlen = hdr_len_by_opcode[packet->opcode] + 8 + grh_len;
-	packet->payload = packet->ebuf + packet->hlen - (4 * sizeof(u32));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	packet->slid = hfi1_16B_get_slid(packet->hdr);
 	packet->dlid = hfi1_16B_get_dlid(packet->hdr);
 	if (unlikely(hfi1_is_16B_mcast(packet->dlid)))
@@ -1726,15 +1536,8 @@ static int hfi1_setup_bypass_packet(struct hfi1_packet *packet)
 					    16B);
 	packet->sc = hfi1_16B_get_sc(packet->hdr);
 	packet->sl = ibp->sc_to_sl[packet->sc];
-<<<<<<< HEAD
 	packet->extra_byte = SIZE_OF_LT;
 	packet->pkey = hfi1_16B_get_pkey(packet->hdr);
-=======
-	packet->pad = hfi1_16B_bth_get_pad(packet->ohdr);
-	packet->extra_byte = SIZE_OF_LT;
-	packet->fecn = hfi1_16B_get_fecn(packet->hdr);
-	packet->becn = hfi1_16B_get_becn(packet->hdr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (hfi1_bypass_ingress_pkt_check(packet))
 		goto drop;
@@ -1771,7 +1574,6 @@ void handle_eflags(struct hfi1_packet *packet)
  * The following functions are called by the interrupt handler. They are type
  * specific handlers for each packet type.
  */
-<<<<<<< HEAD
 static int process_receive_ib(struct hfi1_packet *packet)
 {
 	if (hfi1_setup_9B_packet(packet))
@@ -1781,29 +1583,6 @@ static int process_receive_ib(struct hfi1_packet *packet)
 		return RHF_RCV_CONTINUE;
 
 	trace_hfi1_rcvhdr(packet);
-=======
-int process_receive_ib(struct hfi1_packet *packet)
-{
-	if (unlikely(hfi1_dbg_fault_packet(packet)))
-		return RHF_RCV_CONTINUE;
-
-	if (hfi1_setup_9B_packet(packet))
-		return RHF_RCV_CONTINUE;
-
-	trace_hfi1_rcvhdr(packet->rcd->ppd->dd,
-			  packet->rcd->ctxt,
-			  rhf_err_flags(packet->rhf),
-			  RHF_RCV_TYPE_IB,
-			  packet->hlen,
-			  packet->tlen,
-			  packet->updegr,
-			  rhf_egr_index(packet->rhf));
-
-	if (unlikely(
-		 (hfi1_dbg_fault_suppress_err(&packet->rcd->dd->verbs_dev) &&
-		 (packet->rhf & RHF_DC_ERR))))
-		return RHF_RCV_CONTINUE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (unlikely(rhf_err_flags(packet->rhf))) {
 		handle_eflags(packet);
@@ -1827,11 +1606,7 @@ static inline bool hfi1_is_vnic_packet(struct hfi1_packet *packet)
 	return false;
 }
 
-<<<<<<< HEAD
 static int process_receive_bypass(struct hfi1_packet *packet)
-=======
-int process_receive_bypass(struct hfi1_packet *packet)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct hfi1_devdata *dd = packet->rcd->dd;
 
@@ -1843,11 +1618,8 @@ int process_receive_bypass(struct hfi1_packet *packet)
 	if (hfi1_setup_bypass_packet(packet))
 		return RHF_RCV_CONTINUE;
 
-<<<<<<< HEAD
 	trace_hfi1_rcvhdr(packet);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(rhf_err_flags(packet->rhf))) {
 		handle_eflags(packet);
 		return RHF_RCV_CONTINUE;
@@ -1876,21 +1648,13 @@ int process_receive_bypass(struct hfi1_packet *packet)
 	return RHF_RCV_CONTINUE;
 }
 
-<<<<<<< HEAD
 static int process_receive_error(struct hfi1_packet *packet)
-=======
-int process_receive_error(struct hfi1_packet *packet)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* KHdrHCRCErr -- KDETH packet with a bad HCRC */
 	if (unlikely(
 		 hfi1_dbg_fault_suppress_err(&packet->rcd->dd->verbs_dev) &&
-<<<<<<< HEAD
 		 (rhf_rcv_type_err(packet->rhf) == RHF_RCV_TYPE_ERROR ||
 		  packet->rhf & RHF_DC_ERR)))
-=======
-		 rhf_rcv_type_err(packet->rhf) == 3))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return RHF_RCV_CONTINUE;
 
 	hfi1_setup_ib_header(packet);
@@ -1903,21 +1667,12 @@ int process_receive_error(struct hfi1_packet *packet)
 	return RHF_RCV_CONTINUE;
 }
 
-<<<<<<< HEAD
 static int kdeth_process_expected(struct hfi1_packet *packet)
 {
 	hfi1_setup_9B_packet(packet);
 	if (unlikely(hfi1_dbg_should_fault_rx(packet)))
 		return RHF_RCV_CONTINUE;
 
-=======
-int kdeth_process_expected(struct hfi1_packet *packet)
-{
-	if (unlikely(hfi1_dbg_fault_packet(packet)))
-		return RHF_RCV_CONTINUE;
-
-	hfi1_setup_ib_header(packet);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(rhf_err_flags(packet->rhf)))
 		handle_eflags(packet);
 
@@ -1926,7 +1681,6 @@ int kdeth_process_expected(struct hfi1_packet *packet)
 	return RHF_RCV_CONTINUE;
 }
 
-<<<<<<< HEAD
 static int kdeth_process_eager(struct hfi1_packet *packet)
 {
 	hfi1_setup_9B_packet(packet);
@@ -1934,26 +1688,13 @@ static int kdeth_process_eager(struct hfi1_packet *packet)
 		return RHF_RCV_CONTINUE;
 	if (unlikely(rhf_err_flags(packet->rhf)))
 		handle_eflags(packet);
-=======
-int kdeth_process_eager(struct hfi1_packet *packet)
-{
-	hfi1_setup_ib_header(packet);
-	if (unlikely(rhf_err_flags(packet->rhf)))
-		handle_eflags(packet);
-	if (unlikely(hfi1_dbg_fault_packet(packet)))
-		return RHF_RCV_CONTINUE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dd_dev_err(packet->rcd->dd,
 		   "Unhandled eager packet received. Dropping.\n");
 	return RHF_RCV_CONTINUE;
 }
 
-<<<<<<< HEAD
 static int process_receive_invalid(struct hfi1_packet *packet)
-=======
-int process_receive_invalid(struct hfi1_packet *packet)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	dd_dev_err(packet->rcd->dd, "Invalid packet type %d. Dropping\n",
 		   rhf_rcv_type(packet->rhf));
@@ -1977,14 +1718,8 @@ void seqfile_dump_rcd(struct seq_file *s, struct hfi1_ctxtdata *rcd)
 	init_ps_mdata(&mdata, &packet);
 
 	while (1) {
-<<<<<<< HEAD
 		__le32 *rhf_addr = (__le32 *)rcd->rcvhdrq + mdata.ps_head +
 					 rcd->rhf_offset;
-=======
-		struct hfi1_devdata *dd = rcd->dd;
-		__le32 *rhf_addr = (__le32 *)rcd->rcvhdrq + mdata.ps_head +
-					 dd->rhf_offset;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct ib_header *hdr;
 		u64 rhf = rhf_to_cpu(rhf_addr);
 		u32 etype = rhf_rcv_type(rhf), qpn;
@@ -2001,11 +1736,7 @@ void seqfile_dump_rcd(struct seq_file *s, struct hfi1_ctxtdata *rcd)
 		if (etype > RHF_RCV_TYPE_IB)
 			goto next;
 
-<<<<<<< HEAD
 		packet.hdr = hfi1_get_msgheader(rcd, rhf_addr);
-=======
-		packet.hdr = hfi1_get_msgheader(dd, rhf_addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		hdr = packet.hdr;
 
 		lnh = be16_to_cpu(hdr->lrh[0]) & 3;
@@ -2027,7 +1758,6 @@ next:
 		update_ps_mdata(&mdata, rcd);
 	}
 }
-<<<<<<< HEAD
 
 const rhf_rcv_function_ptr normal_rhf_rcv_functions[] = {
 	[RHF_RCV_TYPE_EXPECTED] = kdeth_process_expected,
@@ -2039,5 +1769,3 @@ const rhf_rcv_function_ptr normal_rhf_rcv_functions[] = {
 	[RHF_RCV_TYPE_INVALID6] = process_receive_invalid,
 	[RHF_RCV_TYPE_INVALID7] = process_receive_invalid,
 };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

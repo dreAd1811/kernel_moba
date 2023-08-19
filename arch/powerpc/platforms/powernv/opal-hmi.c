@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
  * OPAL hypervisor Maintenance interrupt handling support in PowerNV.
-=======
- * OPAL hypervisor Maintenance interrupt handling support in PowreNV.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -181,11 +177,7 @@ static void print_hmi_event_info(struct OpalHMIEvent *hmi_evt)
 		"Processor recovery occurred for masked error",
 		"Timer facility experienced an error",
 		"TFMR SPR is corrupted",
-<<<<<<< HEAD
 		"UPS (Uninterrupted Power System) Overflow indication",
-=======
-		"UPS (Uniterrupted Power System) Overflow indication",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		"An XSCOM operation failure",
 		"An XSCOM operation completed",
 		"SCOM has set a reserved FIR bit to cause recovery",
@@ -322,11 +314,7 @@ static int opal_handle_hmi_event(struct notifier_block *nb,
 		pr_err("HMI: out of memory, Opal message event not handled\n");
 		return -ENOMEM;
 	}
-<<<<<<< HEAD
 	memcpy(&msg_node->hmi_evt, hmi_evt, sizeof(*hmi_evt));
-=======
-	memcpy(&msg_node->hmi_evt, hmi_evt, sizeof(struct OpalHMIEvent));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irqsave(&opal_hmi_evt_lock, flags);
 	list_add(&msg_node->list, &opal_hmi_evt_list);

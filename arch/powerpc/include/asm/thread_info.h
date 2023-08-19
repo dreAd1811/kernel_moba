@@ -9,11 +9,8 @@
 #ifndef _ASM_POWERPC_THREAD_INFO_H
 #define _ASM_POWERPC_THREAD_INFO_H
 
-<<<<<<< HEAD
 #include <asm/asm-const.h>
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef __KERNEL__
 
 #define THREAD_SHIFT		CONFIG_THREAD_SHIFT
@@ -30,10 +27,6 @@
 #include <linux/cache.h>
 #include <asm/processor.h>
 #include <asm/page.h>
-<<<<<<< HEAD
-=======
-#include <linux/stringify.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/accounting.h>
 
 /*
@@ -66,12 +59,6 @@ struct thread_info {
 	.flags =	0,			\
 }
 
-<<<<<<< HEAD
-=======
-#define init_thread_info	(init_thread_union.thread_info)
-#define init_stack		(init_thread_union.stack)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define THREAD_SIZE_ORDER	(THREAD_SHIFT - PAGE_SHIFT)
 
 /* how to get the thread information struct from C */
@@ -84,10 +71,7 @@ static inline struct thread_info *current_thread_info(void)
 	return (struct thread_info *)val;
 }
 
-<<<<<<< HEAD
 extern int arch_dup_task_struct(struct task_struct *dst, struct task_struct *src);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __ASSEMBLY__ */
 
 /*
@@ -96,12 +80,7 @@ extern int arch_dup_task_struct(struct task_struct *dst, struct task_struct *src
 #define TIF_SYSCALL_TRACE	0	/* syscall trace active */
 #define TIF_SIGPENDING		1	/* signal pending */
 #define TIF_NEED_RESCHED	2	/* rescheduling necessary */
-<<<<<<< HEAD
 #define TIF_FSCHECK		3	/* Check FS is USER_DS on return */
-=======
-#define TIF_POLLING_NRFLAG	3	/* true if poll_idle() is polling
-					   TIF_NEED_RESCHED */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define TIF_32BIT		4	/* 32 bit binary */
 #define TIF_RESTORE_TM		5	/* need to restore TM FP/VEC/VSX */
 #define TIF_PATCH_PENDING	6	/* pending live patching update */
@@ -120,10 +99,7 @@ extern int arch_dup_task_struct(struct task_struct *dst, struct task_struct *src
 #if defined(CONFIG_PPC64)
 #define TIF_ELF2ABI		18	/* function descriptors must die! */
 #endif
-<<<<<<< HEAD
 #define TIF_POLLING_NRFLAG	19	/* true if poll_idle() is polling TIF_NEED_RESCHED */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* as above, but as bit values */
 #define _TIF_SYSCALL_TRACE	(1<<TIF_SYSCALL_TRACE)
@@ -143,22 +119,15 @@ extern int arch_dup_task_struct(struct task_struct *dst, struct task_struct *src
 #define _TIF_SYSCALL_TRACEPOINT	(1<<TIF_SYSCALL_TRACEPOINT)
 #define _TIF_EMULATE_STACK_STORE	(1<<TIF_EMULATE_STACK_STORE)
 #define _TIF_NOHZ		(1<<TIF_NOHZ)
-<<<<<<< HEAD
 #define _TIF_FSCHECK		(1<<TIF_FSCHECK)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define _TIF_SYSCALL_DOTRACE	(_TIF_SYSCALL_TRACE | _TIF_SYSCALL_AUDIT | \
 				 _TIF_SECCOMP | _TIF_SYSCALL_TRACEPOINT | \
 				 _TIF_NOHZ)
 
 #define _TIF_USER_WORK_MASK	(_TIF_SIGPENDING | _TIF_NEED_RESCHED | \
 				 _TIF_NOTIFY_RESUME | _TIF_UPROBE | \
-<<<<<<< HEAD
 				 _TIF_RESTORE_TM | _TIF_PATCH_PENDING | \
 				 _TIF_FSCHECK)
-=======
-				 _TIF_RESTORE_TM | _TIF_PATCH_PENDING)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define _TIF_PERSYSCALL_MASK	(_TIF_RESTOREALL|_TIF_NOERROR)
 
 /* Bits in local_flags */

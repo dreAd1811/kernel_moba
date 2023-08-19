@@ -54,15 +54,7 @@
 #include <linux/usb.h>
 #include <linux/usb/input.h>
 #include <linux/hid.h>
-<<<<<<< HEAD
 #include <linux/mutex.h>
-=======
-
-
-#define DRIVER_VERSION		"v0.6"
-#define DRIVER_AUTHOR		"Daniel Ritz <daniel.ritz@gmx.ch>"
-#define DRIVER_DESC		"USB Touchscreen Driver"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static bool swap_xy;
 module_param(swap_xy, bool, 0644);
@@ -116,11 +108,8 @@ struct usbtouch_usb {
 	struct usb_interface *interface;
 	struct input_dev *input;
 	struct usbtouch_device_info *type;
-<<<<<<< HEAD
 	struct mutex pm_mutex;  /* serialize access to open/suspend */
 	bool is_open;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	char name[128];
 	char phys[64];
 	void *priv;
@@ -206,10 +195,6 @@ static const struct usb_device_id usbtouch_devices[] = {
 #endif
 
 #ifdef CONFIG_TOUCHSCREEN_USB_IRTOUCH
-<<<<<<< HEAD
-=======
-	{USB_DEVICE(0x255e, 0x0001), .driver_info = DEVTYPE_IRTOUCH},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{USB_DEVICE(0x595a, 0x0001), .driver_info = DEVTYPE_IRTOUCH},
 	{USB_DEVICE(0x6615, 0x0001), .driver_info = DEVTYPE_IRTOUCH},
 	{USB_DEVICE(0x6615, 0x0012), .driver_info = DEVTYPE_IRTOUCH_HIRES},
@@ -455,11 +440,8 @@ static int panjit_read_data(struct usbtouch_usb *dev, unsigned char *pkt)
 #define MTOUCHUSB_RESET                 7
 #define MTOUCHUSB_REQ_CTRLLR_ID         10
 
-<<<<<<< HEAD
 #define MTOUCHUSB_REQ_CTRLLR_ID_LEN	16
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mtouch_read_data(struct usbtouch_usb *dev, unsigned char *pkt)
 {
 	if (hwcalib_xy) {
@@ -474,7 +456,6 @@ static int mtouch_read_data(struct usbtouch_usb *dev, unsigned char *pkt)
 	return 1;
 }
 
-<<<<<<< HEAD
 struct mtouch_priv {
 	u8 fw_rev_major;
 	u8 fw_rev_minor;
@@ -553,20 +534,15 @@ static int mtouch_alloc(struct usbtouch_usb *usbtouch)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mtouch_init(struct usbtouch_usb *usbtouch)
 {
 	int ret, i;
 	struct usb_device *udev = interface_to_usbdev(usbtouch->interface);
 
-<<<<<<< HEAD
 	ret = mtouch_get_fw_revision(usbtouch);
 	if (ret)
 		return ret;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = usb_control_msg(udev, usb_rcvctrlpipe(udev, 0),
 	                      MTOUCHUSB_RESET,
 	                      USB_DIR_OUT | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
@@ -600,7 +576,6 @@ static int mtouch_init(struct usbtouch_usb *usbtouch)
 
 	return 0;
 }
-<<<<<<< HEAD
 
 static void mtouch_exit(struct usbtouch_usb *usbtouch)
 {
@@ -609,8 +584,6 @@ static void mtouch_exit(struct usbtouch_usb *usbtouch)
 	sysfs_remove_group(&usbtouch->interface->dev.kobj, &mtouch_attr_group);
 	kfree(priv);
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 
@@ -1238,13 +1211,9 @@ static struct usbtouch_device_info usbtouch_dev_info[] = {
 		.max_yc		= 0x4000,
 		.rept_size	= 11,
 		.read_data	= mtouch_read_data,
-<<<<<<< HEAD
 		.alloc		= mtouch_alloc,
 		.init		= mtouch_init,
 		.exit		= mtouch_exit,
-=======
-		.init		= mtouch_init,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 #endif
 
@@ -1578,10 +1547,7 @@ static int usbtouch_open(struct input_dev *input)
 	if (r < 0)
 		goto out;
 
-<<<<<<< HEAD
 	mutex_lock(&usbtouch->pm_mutex);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!usbtouch->type->irq_always) {
 		if (usb_submit_urb(usbtouch->irq, GFP_KERNEL)) {
 			r = -EIO;
@@ -1590,13 +1556,9 @@ static int usbtouch_open(struct input_dev *input)
 	}
 
 	usbtouch->interface->needs_remote_wakeup = 1;
-<<<<<<< HEAD
 	usbtouch->is_open = true;
 out_put:
 	mutex_unlock(&usbtouch->pm_mutex);
-=======
-out_put:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	usb_autopm_put_interface(usbtouch->interface);
 out:
 	return r;
@@ -1607,17 +1569,12 @@ static void usbtouch_close(struct input_dev *input)
 	struct usbtouch_usb *usbtouch = input_get_drvdata(input);
 	int r;
 
-<<<<<<< HEAD
 	mutex_lock(&usbtouch->pm_mutex);
 	if (!usbtouch->type->irq_always)
 		usb_kill_urb(usbtouch->irq);
 	usbtouch->is_open = false;
 	mutex_unlock(&usbtouch->pm_mutex);
 
-=======
-	if (!usbtouch->type->irq_always)
-		usb_kill_urb(usbtouch->irq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	r = usb_autopm_get_interface(usbtouch->interface);
 	usbtouch->interface->needs_remote_wakeup = 0;
 	if (!r)
@@ -1637,22 +1594,12 @@ static int usbtouch_suspend
 static int usbtouch_resume(struct usb_interface *intf)
 {
 	struct usbtouch_usb *usbtouch = usb_get_intfdata(intf);
-<<<<<<< HEAD
 	int result = 0;
 
 	mutex_lock(&usbtouch->pm_mutex);
 	if (usbtouch->is_open || usbtouch->type->irq_always)
 		result = usb_submit_urb(usbtouch->irq, GFP_NOIO);
 	mutex_unlock(&usbtouch->pm_mutex);
-=======
-	struct input_dev *input = usbtouch->input;
-	int result = 0;
-
-	mutex_lock(&input->mutex);
-	if (input->users || usbtouch->type->irq_always)
-		result = usb_submit_urb(usbtouch->irq, GFP_NOIO);
-	mutex_unlock(&input->mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return result;
 }
@@ -1660,10 +1607,6 @@ static int usbtouch_resume(struct usb_interface *intf)
 static int usbtouch_reset_resume(struct usb_interface *intf)
 {
 	struct usbtouch_usb *usbtouch = usb_get_intfdata(intf);
-<<<<<<< HEAD
-=======
-	struct input_dev *input = usbtouch->input;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err = 0;
 
 	/* reinit the device */
@@ -1678,17 +1621,10 @@ static int usbtouch_reset_resume(struct usb_interface *intf)
 	}
 
 	/* restart IO if needed */
-<<<<<<< HEAD
 	mutex_lock(&usbtouch->pm_mutex);
 	if (usbtouch->is_open)
 		err = usb_submit_urb(usbtouch->irq, GFP_NOIO);
 	mutex_unlock(&usbtouch->pm_mutex);
-=======
-	mutex_lock(&input->mutex);
-	if (input->users)
-		err = usb_submit_urb(usbtouch->irq, GFP_NOIO);
-	mutex_unlock(&input->mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return err;
 }
@@ -1736,11 +1672,8 @@ static int usbtouch_probe(struct usb_interface *intf,
 	if (!usbtouch || !input_dev)
 		goto out_free;
 
-<<<<<<< HEAD
 	mutex_init(&usbtouch->pm_mutex);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	type = &usbtouch_dev_info[id->driver_info];
 	usbtouch->type = type;
 	if (!type->process_pkt)
@@ -1929,13 +1862,8 @@ static struct usb_driver usbtouch_driver = {
 
 module_usb_driver(usbtouch_driver);
 
-<<<<<<< HEAD
 MODULE_AUTHOR("Daniel Ritz <daniel.ritz@gmx.ch>");
 MODULE_DESCRIPTION("USB Touchscreen Driver");
-=======
-MODULE_AUTHOR(DRIVER_AUTHOR);
-MODULE_DESCRIPTION(DRIVER_DESC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_LICENSE("GPL");
 
 MODULE_ALIAS("touchkitusb");

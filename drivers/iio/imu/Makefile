@@ -16,15 +16,7 @@ obj-$(CONFIG_IIO_ADIS_LIB) += adis_lib.o
 
 obj-y += bmi160/
 obj-y += inv_mpu6050/
-<<<<<<< HEAD
-=======
-obj-y += inv_mpu/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 obj-$(CONFIG_KMX61) += kmx61.o
 
 obj-y += st_lsm6dsx/
-<<<<<<< HEAD
-=======
-obj-y += st_asm330lhh/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

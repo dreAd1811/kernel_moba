@@ -26,7 +26,6 @@
  * parent - parent is adjustable through clk_set_parent
  */
 
-<<<<<<< HEAD
 int clk_mux_val_to_index(struct clk_hw *hw, u32 *table, unsigned int flags,
 			 unsigned int val)
 {
@@ -37,44 +36,14 @@ int clk_mux_val_to_index(struct clk_hw *hw, u32 *table, unsigned int flags,
 
 		for (i = 0; i < num_parents; i++)
 			if (table[i] == val)
-=======
-static u8 clk_mux_get_parent(struct clk_hw *hw)
-{
-	struct clk_mux *mux = to_clk_mux(hw);
-	int num_parents = clk_hw_get_num_parents(hw);
-	u32 val;
-
-	/*
-	 * FIXME need a mux-specific flag to determine if val is bitwise or numeric
-	 * e.g. sys_clkin_ck's clksel field is 3 bits wide, but ranges from 0x1
-	 * to 0x7 (index starts at one)
-	 * OTOH, pmd_trace_clk_mux_ck uses a separate bit for each clock, so
-	 * val = 0x4 really means "bit 2, index starts at bit 0"
-	 */
-	val = clk_readl(mux->reg) >> mux->shift;
-	val &= mux->mask;
-
-	if (mux->table) {
-		int i;
-
-		for (i = 0; i < num_parents; i++)
-			if (mux->table[i] == val)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				return i;
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 	if (val && (flags & CLK_MUX_INDEX_BIT))
 		val = ffs(val) - 1;
 
 	if (val && (flags & CLK_MUX_INDEX_ONE))
-=======
-	if (val && (mux->flags & CLK_MUX_INDEX_BIT))
-		val = ffs(val) - 1;
-
-	if (val && (mux->flags & CLK_MUX_INDEX_ONE))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		val--;
 
 	if (val >= num_parents)
@@ -82,7 +51,6 @@ static u8 clk_mux_get_parent(struct clk_hw *hw)
 
 	return val;
 }
-<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(clk_mux_val_to_index);
 
 unsigned int clk_mux_index_to_val(u32 *table, unsigned int flags, u8 index)
@@ -113,30 +81,13 @@ static u8 clk_mux_get_parent(struct clk_hw *hw)
 
 	return clk_mux_val_to_index(hw, mux->table, mux->flags, val);
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int clk_mux_set_parent(struct clk_hw *hw, u8 index)
 {
 	struct clk_mux *mux = to_clk_mux(hw);
-<<<<<<< HEAD
 	u32 val = clk_mux_index_to_val(mux->table, mux->flags, index);
 	unsigned long flags = 0;
 	u32 reg;
-=======
-	u32 val;
-	unsigned long flags = 0;
-
-	if (mux->table) {
-		index = mux->table[index];
-	} else {
-		if (mux->flags & CLK_MUX_INDEX_BIT)
-			index = 1 << index;
-
-		if (mux->flags & CLK_MUX_INDEX_ONE)
-			index++;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (mux->lock)
 		spin_lock_irqsave(mux->lock, flags);
@@ -144,7 +95,6 @@ static int clk_mux_set_parent(struct clk_hw *hw, u8 index)
 		__acquire(mux->lock);
 
 	if (mux->flags & CLK_MUX_HIWORD_MASK) {
-<<<<<<< HEAD
 		reg = mux->mask << (mux->shift + 16);
 	} else {
 		reg = clk_readl(mux->reg);
@@ -153,15 +103,6 @@ static int clk_mux_set_parent(struct clk_hw *hw, u8 index)
 	val = val << mux->shift;
 	reg |= val;
 	clk_writel(reg, mux->reg);
-=======
-		val = mux->mask << (mux->shift + 16);
-	} else {
-		val = clk_readl(mux->reg);
-		val &= ~(mux->mask << mux->shift);
-	}
-	val |= index << mux->shift;
-	clk_writel(val, mux->reg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (mux->lock)
 		spin_unlock_irqrestore(mux->lock, flags);
@@ -212,17 +153,9 @@ struct clk_hw *clk_hw_register_mux_table(struct device *dev, const char *name,
 	}
 
 	/* allocate the mux */
-<<<<<<< HEAD
 	mux = kzalloc(sizeof(*mux), GFP_KERNEL);
 	if (!mux)
 		return ERR_PTR(-ENOMEM);
-=======
-	mux = kzalloc(sizeof(struct clk_mux), GFP_KERNEL);
-	if (!mux) {
-		pr_err("%s: could not allocate mux clk\n", __func__);
-		return ERR_PTR(-ENOMEM);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	init.name = name;
 	if (clk_mux_flags & CLK_MUX_READ_ONLY)
@@ -244,10 +177,7 @@ struct clk_hw *clk_hw_register_mux_table(struct device *dev, const char *name,
 
 	hw = &mux->hw;
 	ret = clk_hw_register(dev, hw);
-<<<<<<< HEAD
 	hw->init = NULL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		kfree(mux);
 		hw = ERR_PTR(ret);

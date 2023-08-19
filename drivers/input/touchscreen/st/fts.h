@@ -1,15 +1,8 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0-only */
 /*
  * FTS Capacitive touch screen controller (FingerTipS)
  *
  * Copyright (C) 2016-2019, STMicroelectronics Limited.
-=======
-/*
- * FTS Capacitive touch screen controller (FingerTipS)
- *
- * Copyright (C) 2016-2018, STMicroelectronics Limited.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Authors: AMG(Analog Mems Group) <marco.cali@st.com>
  *
  *
@@ -31,10 +24,7 @@
 
 /*#include <linux/wakelock.h>*/
 #include <linux/pm_wakeup.h>
-<<<<<<< HEAD
 #include <linux/input/touch_event_notify.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "fts_lib/ftsSoftware.h"
 #include "fts_lib/ftsHardware.h"
@@ -50,11 +40,7 @@
 #define FTS_TS_DRV_NAME      "fts"
 #define FTS_TS_DRV_VERSION   "4.2.14" /* version */
 
-<<<<<<< HEAD
 /*#define SCRIPTLESS*/ /*allow to work in scriptless mode with the GUI*/
-=======
-#define SCRIPTLESS /*allow to work in scriptless mode with the GUI*/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef SCRIPTLESS
 #define SCRIPTLESS_DEBUG
 /**
@@ -81,11 +67,7 @@
 
 
 /**** FEATURES USED IN THE IC ***/
-<<<<<<< HEAD
 /* #define PHONE_KEY enable the keys */
-=======
-#define PHONE_KEY /*enable the keys*/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define PHONE_GESTURE /*allow to use the gestures*/
 #ifdef PHONE_GESTURE
@@ -214,10 +196,7 @@ struct fts_i2c_platform_data {
 	int reset_gpio;
 	const char *pwr_reg_name;
 	const char *bus_reg_name;
-<<<<<<< HEAD
 	bool pwr_on_suspend;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /*
@@ -228,15 +207,10 @@ struct fts_ts_info;
 /*
  * Dispatch event handler
  */
-<<<<<<< HEAD
 struct event_dispatch_handler_t {
 	void (*handler)(struct fts_ts_info *info, unsigned char *data);
 };
 
-=======
-typedef void (*event_dispatch_handler_t)
-		(struct fts_ts_info *info, unsigned char *data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * struct fts_ts_info - FTS capacitive touch screen device information
  * @dev:                  Pointer to the structure device
@@ -283,11 +257,7 @@ struct fts_ts_info {
 	struct pinctrl_state *pinctrl_state_suspend;
 	struct pinctrl_state *pinctrl_state_release;
 
-<<<<<<< HEAD
 	struct event_dispatch_handler_t *event_dispatch_table;
-=======
-	event_dispatch_handler_t *event_dispatch_table;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct attribute_group    attrs;
 
@@ -331,7 +301,6 @@ struct fts_ts_info {
 	struct mutex input_report_mutex;
 
 	/*switches for features*/
-<<<<<<< HEAD
 	unsigned int gesture_enabled;
 	unsigned int glove_enabled;
 	unsigned int charger_enabled;
@@ -358,20 +327,6 @@ struct fts_ts_info {
 	int aoi_top;
 	int aoi_bottom;
 	int aoi_right;
-=======
-	int gesture_enabled;
-	int glove_enabled;
-	int charger_enabled;
-	int stylus_enabled;
-	int vr_enabled;
-	int cover_enabled;
-	int edge_rej_enabled;
-	int corner_rej_enabled;
-	int edge_palm_rej_enabled;
-
-	uint8_t *i2c_data;
-	uint8_t i2c_data_len;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 extern struct chipInfo ftsInfo;
@@ -384,7 +339,6 @@ int fts_chip_powercycle2(struct fts_ts_info *info, unsigned long sleep);
 extern int input_register_notifier_client(struct notifier_block *nb);
 extern int input_unregister_notifier_client(struct notifier_block *nb);
 
-<<<<<<< HEAD
 extern struct attribute_group aoi_cmd_attr_group;
 
 #ifdef SCRIPTLESS
@@ -393,14 +347,6 @@ extern struct attribute_group i2c_cmd_attr_group;
 
 #ifdef DRIVER_TEST
 extern struct attribute_group test_cmd_attr_group;
-=======
-#ifdef SCRIPTLESS
-extern struct attribute_group	i2c_cmd_attr_group;
-#endif
-
-#ifdef DRIVER_TEST
-extern struct attribute_group	test_cmd_attr_group;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 

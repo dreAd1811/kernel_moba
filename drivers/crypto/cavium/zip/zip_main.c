@@ -113,11 +113,7 @@ struct zip_device *zip_get_device(int node)
  */
 int zip_get_node_id(void)
 {
-<<<<<<< HEAD
 	return cpu_to_node(raw_smp_processor_id());
-=======
-	return cpu_to_node(smp_processor_id());
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Initializes the ZIP h/w sub-system */
@@ -475,11 +471,8 @@ static int zip_show_stats(struct seq_file *s, void *unused)
 	struct zip_stats  *st;
 
 	for (index = 0; index < MAX_ZIP_DEVICES; index++) {
-<<<<<<< HEAD
 		u64 pending = 0;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (zip_dev[index]) {
 			zip = zip_dev[index];
 			st  = &zip->stats;
@@ -487,7 +480,6 @@ static int zip_show_stats(struct seq_file *s, void *unused)
 			/* Get all the pending requests */
 			for (q = 0; q < ZIP_NUM_QUEUES; q++) {
 				val = zip_reg_read((zip->reg_base +
-<<<<<<< HEAD
 						    ZIP_DBG_QUEX_STA(q)));
 				pending += val >> 32 & 0xffffff;
 			}
@@ -497,18 +489,6 @@ static int zip_show_stats(struct seq_file *s, void *unused)
 
 			val = atomic64_read(&st->comp_out_bytes);
 			avg_cr = (val) ? atomic64_read(&st->comp_in_bytes) / val : 0;
-=======
-						    ZIP_DBG_COREX_STA(q)));
-				val = (val >> 32);
-				val = val & 0xffffff;
-				atomic64_add(val, &st->pending_req);
-			}
-
-			avg_chunk = (atomic64_read(&st->comp_in_bytes) /
-				     atomic64_read(&st->comp_req_complete));
-			avg_cr = (atomic64_read(&st->comp_in_bytes) /
-				  atomic64_read(&st->comp_out_bytes));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			seq_printf(s, "        ZIP Device %d Stats\n"
 				      "-----------------------------------\n"
 				      "Comp Req Submitted        : \t%lld\n"
@@ -536,14 +516,7 @@ static int zip_show_stats(struct seq_file *s, void *unused)
 				       (u64)atomic64_read(&st->decomp_in_bytes),
 				       (u64)atomic64_read(&st->decomp_out_bytes),
 				       (u64)atomic64_read(&st->decomp_bad_reqs),
-<<<<<<< HEAD
 				       pending);
-=======
-				       (u64)atomic64_read(&st->pending_req));
-
-			/* Reset pending requests  count */
-			atomic64_set(&st->pending_req, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 	return 0;

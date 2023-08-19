@@ -29,17 +29,10 @@
 #include <linux/hardirq.h>
 #include <asm/div64.h>
 
-<<<<<<< HEAD
 #include <media/dvb_frontend.h>
 #include "drxk.h"
 #include "drxk_hard.h"
 #include <media/dvb_math.h>
-=======
-#include "dvb_frontend.h"
-#include "drxk.h"
-#include "drxk_hard.h"
-#include "dvb_math.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int power_down_dvbt(struct drxk_state *state, bool set_power_mode);
 static int power_down_qam(struct drxk_state *state);
@@ -214,7 +207,6 @@ static inline u32 log10times100(u32 value)
 	return (100L * intlog10(value)) >> 24;
 }
 
-<<<<<<< HEAD
 /***************************************************************************/
 /* I2C **********************************************************************/
 /***************************************************************************/
@@ -222,15 +214,6 @@ static inline u32 log10times100(u32 value)
 static int drxk_i2c_lock(struct drxk_state *state)
 {
 	i2c_lock_bus(state->i2c, I2C_LOCK_SEGMENT);
-=======
-/****************************************************************************/
-/* I2C **********************************************************************/
-/****************************************************************************/
-
-static int drxk_i2c_lock(struct drxk_state *state)
-{
-	i2c_lock_adapter(state->i2c);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	state->drxk_i2c_exclusive_lock = true;
 
 	return 0;
@@ -241,11 +224,7 @@ static void drxk_i2c_unlock(struct drxk_state *state)
 	if (!state->drxk_i2c_exclusive_lock)
 		return;
 
-<<<<<<< HEAD
 	i2c_unlock_bus(state->i2c, I2C_LOCK_SEGMENT);
-=======
-	i2c_unlock_adapter(state->i2c);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	state->drxk_i2c_exclusive_lock = false;
 }
 
@@ -3291,21 +3270,11 @@ static int dvbt_sc_command(struct drxk_state *state,
 	case OFDM_SC_RA_RAM_CMD_SET_PREF_PARAM:
 	case OFDM_SC_RA_RAM_CMD_PROGRAM_PARAM:
 		status |= write16(state, OFDM_SC_RA_RAM_PARAM1__A, param1);
-<<<<<<< HEAD
 		/* fall through - All commands using 1 parameters */
 	case OFDM_SC_RA_RAM_CMD_SET_ECHO_TIMING:
 	case OFDM_SC_RA_RAM_CMD_USER_IO:
 		status |= write16(state, OFDM_SC_RA_RAM_PARAM0__A, param0);
 		/* fall through - All commands using 0 parameters */
-=======
-		/* All commands using 1 parameters */
-		/* fall through */
-	case OFDM_SC_RA_RAM_CMD_SET_ECHO_TIMING:
-	case OFDM_SC_RA_RAM_CMD_USER_IO:
-		status |= write16(state, OFDM_SC_RA_RAM_PARAM0__A, param0);
-		/* All commands using 0 parameters */
-		/* fall through */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case OFDM_SC_RA_RAM_CMD_GET_OP_PARAM:
 	case OFDM_SC_RA_RAM_CMD_NULL:
 		/* Write command */
@@ -3473,11 +3442,7 @@ error:
 
 /*============================================================================*/
 
-<<<<<<< HEAD
 /*
-=======
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 * \brief Activate DVBT specific presets
 * \param demod instance of demodulator.
 * \return DRXStatus_t.
@@ -3517,11 +3482,7 @@ error:
 
 /*============================================================================*/
 
-<<<<<<< HEAD
 /*
-=======
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 * \brief Initialize channelswitch-independent settings for DVBT.
 * \param demod instance of demodulator.
 * \return DRXStatus_t.
@@ -3733,11 +3694,7 @@ error:
 }
 
 /*============================================================================*/
-<<<<<<< HEAD
 /*
-=======
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 * \brief start dvbt demodulating for channel.
 * \param demod instance of demodulator.
 * \return DRXStatus_t.
@@ -3773,11 +3730,7 @@ error:
 
 /*============================================================================*/
 
-<<<<<<< HEAD
 /*
-=======
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 * \brief Set up dvbt demodulator for channel.
 * \param demod instance of demodulator.
 * \return DRXStatus_t.
@@ -3829,12 +3782,7 @@ static int set_dvbt(struct drxk_state *state, u16 intermediate_freqk_hz,
 	case TRANSMISSION_MODE_AUTO:
 	default:
 		operation_mode |= OFDM_SC_RA_RAM_OP_AUTO_MODE__M;
-<<<<<<< HEAD
 		/* fall through - try first guess DRX_FFTMODE_8K */
-=======
-		/* try first guess DRX_FFTMODE_8K */
-		/* fall through */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case TRANSMISSION_MODE_8K:
 		transmission_params |= OFDM_SC_RA_RAM_OP_PARAM_MODE_8K;
 		break;
@@ -3848,12 +3796,7 @@ static int set_dvbt(struct drxk_state *state, u16 intermediate_freqk_hz,
 	default:
 	case GUARD_INTERVAL_AUTO:
 		operation_mode |= OFDM_SC_RA_RAM_OP_AUTO_GUARD__M;
-<<<<<<< HEAD
 		/* fall through - try first guess DRX_GUARD_1DIV4 */
-=======
-		/* try first guess DRX_GUARD_1DIV4 */
-		/* fall through */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case GUARD_INTERVAL_1_4:
 		transmission_params |= OFDM_SC_RA_RAM_OP_PARAM_GUARD_4;
 		break;
@@ -3894,12 +3837,7 @@ static int set_dvbt(struct drxk_state *state, u16 intermediate_freqk_hz,
 	case QAM_AUTO:
 	default:
 		operation_mode |= OFDM_SC_RA_RAM_OP_AUTO_CONST__M;
-<<<<<<< HEAD
 		/* fall through - try first guess DRX_CONSTELLATION_QAM64 */
-=======
-		/* try first guess DRX_CONSTELLATION_QAM64 */
-		/* fall through */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case QAM_64:
 		transmission_params |= OFDM_SC_RA_RAM_OP_PARAM_CONST_QAM64;
 		break;
@@ -3942,12 +3880,7 @@ static int set_dvbt(struct drxk_state *state, u16 intermediate_freqk_hz,
 	case FEC_AUTO:
 	default:
 		operation_mode |= OFDM_SC_RA_RAM_OP_AUTO_RATE__M;
-<<<<<<< HEAD
 		/* fall through - try first guess DRX_CODERATE_2DIV3 */
-=======
-		/* try first guess DRX_CODERATE_2DIV3 */
-		/* fall through */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case FEC_2_3:
 		transmission_params |= OFDM_SC_RA_RAM_OP_PARAM_RATE_2_3;
 		break;
@@ -4147,11 +4080,7 @@ error:
 
 /*============================================================================*/
 
-<<<<<<< HEAD
 /*
-=======
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 * \brief Retrieve lock status .
 * \param demod    Pointer to demodulator instance.
 * \param lockStat Pointer to lock status structure.
@@ -4213,11 +4142,7 @@ static int power_up_qam(struct drxk_state *state)
 }
 
 
-<<<<<<< HEAD
 /* Power Down QAM */
-=======
-/** Power Down QAM */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int power_down_qam(struct drxk_state *state)
 {
 	u16 data = 0;
@@ -4255,11 +4180,7 @@ error:
 
 /*============================================================================*/
 
-<<<<<<< HEAD
 /*
-=======
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 * \brief Setup of the QAM Measurement intervals for signal quality
 * \param demod instance of demod.
 * \param modulation current modulation.
@@ -4534,11 +4455,7 @@ error:
 
 /*============================================================================*/
 
-<<<<<<< HEAD
 /*
-=======
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 * \brief QAM32 specific setup
 * \param demod instance of demod.
 * \return DRXStatus_t.
@@ -4734,11 +4651,7 @@ error:
 
 /*============================================================================*/
 
-<<<<<<< HEAD
 /*
-=======
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 * \brief QAM64 specific setup
 * \param demod instance of demod.
 * \return DRXStatus_t.
@@ -4933,11 +4846,7 @@ error:
 
 /*============================================================================*/
 
-<<<<<<< HEAD
 /*
-=======
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 * \brief QAM128 specific setup
 * \param demod: instance of demod.
 * \return DRXStatus_t.
@@ -5134,11 +5043,7 @@ error:
 
 /*============================================================================*/
 
-<<<<<<< HEAD
 /*
-=======
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 * \brief QAM256 specific setup
 * \param demod: instance of demod.
 * \return DRXStatus_t.
@@ -5333,11 +5238,7 @@ error:
 
 
 /*============================================================================*/
-<<<<<<< HEAD
 /*
-=======
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 * \brief Reset QAM block.
 * \param demod:   instance of demod.
 * \param channel: pointer to channel data.
@@ -5365,11 +5266,7 @@ error:
 
 /*============================================================================*/
 
-<<<<<<< HEAD
 /*
-=======
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 * \brief Set QAM symbolrate.
 * \param demod:   instance of demod.
 * \param channel: pointer to channel data.
@@ -5438,11 +5335,7 @@ error:
 
 /*============================================================================*/
 
-<<<<<<< HEAD
 /*
-=======
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 * \brief Get QAM lock status.
 * \param demod:   instance of demod.
 * \param channel: pointer to channel data.
@@ -6163,11 +6056,7 @@ static int init_drxk(struct drxk_state *state)
 	u16 driver_version;
 
 	dprintk(1, "\n");
-<<<<<<< HEAD
 	if (state->m_drxk_state == DRXK_UNINITIALIZED) {
-=======
-	if ((state->m_drxk_state == DRXK_UNINITIALIZED)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		drxk_i2c_lock(state);
 		status = power_up_device(state);
 		if (status < 0)
@@ -6849,7 +6738,6 @@ static const struct dvb_frontend_ops drxk_ops = {
 	/* .delsys will be filled dynamically */
 	.info = {
 		.name = "DRXK",
-<<<<<<< HEAD
 		.frequency_min_hz =  47 * MHz,
 		.frequency_max_hz = 865 * MHz,
 		 /* For DVB-C */
@@ -6857,15 +6745,6 @@ static const struct dvb_frontend_ops drxk_ops = {
 		.symbol_rate_max = 11700000,
 		/* For DVB-T */
 		.frequency_stepsize_hz = 166667,
-=======
-		.frequency_min = 47000000,
-		.frequency_max = 865000000,
-		 /* For DVB-C */
-		.symbol_rate_min = 870000,
-		.symbol_rate_max = 11700000,
-		/* For DVB-T */
-		.frequency_stepsize = 166667,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		.caps = FE_CAN_QAM_16 | FE_CAN_QAM_32 | FE_CAN_QAM_64 |
 			FE_CAN_QAM_128 | FE_CAN_QAM_256 | FE_CAN_FEC_AUTO |

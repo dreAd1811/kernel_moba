@@ -1,11 +1,7 @@
 /*
  * HDMI Connector driver
  *
-<<<<<<< HEAD
  * Copyright (C) 2013 Texas Instruments Incorporated - http://www.ti.com/
-=======
- * Copyright (C) 2013 Texas Instruments
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Author: Tomi Valkeinen <tomi.valkeinen@ti.com>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -59,11 +55,7 @@ struct panel_drv_data {
 static int hdmic_connect(struct omap_dss_device *dssdev)
 {
 	struct panel_drv_data *ddata = to_panel_data(dssdev);
-<<<<<<< HEAD
 	struct omap_dss_device *in;
-=======
-	struct omap_dss_device *in = ddata->in;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int r;
 
 	dev_dbg(ddata->dev, "connect\n");
@@ -71,7 +63,6 @@ static int hdmic_connect(struct omap_dss_device *dssdev)
 	if (omapdss_device_is_connected(dssdev))
 		return 0;
 
-<<<<<<< HEAD
 	in = omapdss_of_find_source_for_first_ep(ddata->dev->of_node);
 	if (IS_ERR(in)) {
 		dev_err(ddata->dev, "failed to find video source\n");
@@ -85,12 +76,6 @@ static int hdmic_connect(struct omap_dss_device *dssdev)
 	}
 
 	ddata->in = in;
-=======
-	r = in->ops.hdmi->connect(in, dssdev);
-	if (r)
-		return r;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -105,12 +90,9 @@ static void hdmic_disconnect(struct omap_dss_device *dssdev)
 		return;
 
 	in->ops.hdmi->disconnect(in, dssdev);
-<<<<<<< HEAD
 
 	omap_dss_put_device(in);
 	ddata->in = NULL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int hdmic_enable(struct omap_dss_device *dssdev)
@@ -195,7 +177,6 @@ static bool hdmic_detect(struct omap_dss_device *dssdev)
 {
 	struct panel_drv_data *ddata = to_panel_data(dssdev);
 	struct omap_dss_device *in = ddata->in;
-<<<<<<< HEAD
 	bool connected;
 
 	if (gpio_is_valid(ddata->hpd_gpio))
@@ -205,13 +186,6 @@ static bool hdmic_detect(struct omap_dss_device *dssdev)
 	if (!connected && in->ops.hdmi->lost_hotplug)
 		in->ops.hdmi->lost_hotplug(in);
 	return connected;
-=======
-
-	if (gpio_is_valid(ddata->hpd_gpio))
-		return gpio_get_value_cansleep(ddata->hpd_gpio);
-	else
-		return in->ops.hdmi->detect(in);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int hdmic_register_hpd_cb(struct omap_dss_device *dssdev,
@@ -340,10 +314,6 @@ static int hdmic_probe_of(struct platform_device *pdev)
 {
 	struct panel_drv_data *ddata = platform_get_drvdata(pdev);
 	struct device_node *node = pdev->dev.of_node;
-<<<<<<< HEAD
-=======
-	struct omap_dss_device *in;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int gpio;
 
 	/* HPD GPIO */
@@ -353,17 +323,6 @@ static int hdmic_probe_of(struct platform_device *pdev)
 	else
 		ddata->hpd_gpio = -ENODEV;
 
-<<<<<<< HEAD
-=======
-	in = omapdss_of_find_source_for_first_ep(node);
-	if (IS_ERR(in)) {
-		dev_err(&pdev->dev, "failed to find video source\n");
-		return PTR_ERR(in);
-	}
-
-	ddata->in = in;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -380,12 +339,6 @@ static int hdmic_probe(struct platform_device *pdev)
 	platform_set_drvdata(pdev, ddata);
 	ddata->dev = &pdev->dev;
 
-<<<<<<< HEAD
-=======
-	if (!pdev->dev.of_node)
-		return -ENODEV;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	r = hdmic_probe_of(pdev);
 	if (r)
 		return r;
@@ -396,11 +349,7 @@ static int hdmic_probe(struct platform_device *pdev)
 		r = devm_gpio_request_one(&pdev->dev, ddata->hpd_gpio,
 				GPIOF_DIR_IN, "hdmi_hpd");
 		if (r)
-<<<<<<< HEAD
 			return r;
-=======
-			goto err_reg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		r = devm_request_threaded_irq(&pdev->dev,
 				gpio_to_irq(ddata->hpd_gpio),
@@ -409,11 +358,7 @@ static int hdmic_probe(struct platform_device *pdev)
 				IRQF_ONESHOT,
 				"hdmic hpd", ddata);
 		if (r)
-<<<<<<< HEAD
 			return r;
-=======
-			goto err_reg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ddata->vm = hdmic_default_vm;
@@ -428,41 +373,22 @@ static int hdmic_probe(struct platform_device *pdev)
 	r = omapdss_register_display(dssdev);
 	if (r) {
 		dev_err(&pdev->dev, "Failed to register panel\n");
-<<<<<<< HEAD
 		return r;
 	}
 
 	return 0;
-=======
-		goto err_reg;
-	}
-
-	return 0;
-err_reg:
-	omap_dss_put_device(ddata->in);
-	return r;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int __exit hdmic_remove(struct platform_device *pdev)
 {
 	struct panel_drv_data *ddata = platform_get_drvdata(pdev);
 	struct omap_dss_device *dssdev = &ddata->dssdev;
-<<<<<<< HEAD
-=======
-	struct omap_dss_device *in = ddata->in;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	omapdss_unregister_display(&ddata->dssdev);
 
 	hdmic_disable(dssdev);
 	hdmic_disconnect(dssdev);
 
-<<<<<<< HEAD
-=======
-	omap_dss_put_device(in);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

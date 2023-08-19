@@ -13,12 +13,6 @@
  * The following structure is used to manage multiple PCI busses.
  */
 
-<<<<<<< HEAD
-=======
-struct pci_dev;
-struct pci_bus;
-struct resource;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct pci_iommu_arena;
 struct page;
 
@@ -60,20 +54,8 @@ struct pci_controller {
 #define PCIBIOS_MIN_IO		alpha_mv.min_io_address
 #define PCIBIOS_MIN_MEM		alpha_mv.min_mem_address
 
-<<<<<<< HEAD
 /* IOMMU controls.  */
 
-=======
-extern void pcibios_set_master(struct pci_dev *dev);
-
-/* IOMMU controls.  */
-
-/* The PCI address space does not equal the physical memory address space.
-   The networking and block device layers use this boolean for bounce buffer
-   decisions.  */
-#define PCI_DMA_BUS_IS_PHYS  0
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* TODO: integrate with include/asm-generic/pci.h ? */
 static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
 {

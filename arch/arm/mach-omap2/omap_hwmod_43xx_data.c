@@ -14,11 +14,6 @@
  * GNU General Public License for more details.
  */
 
-<<<<<<< HEAD
-=======
-#include <linux/platform_data/gpio-omap.h>
-#include <linux/platform_data/spi-omap2-mcspi.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "omap_hwmod.h"
 #include "omap_hwmod_33xx_43xx_common_data.h"
 #include "prcm43xx.h"
@@ -110,10 +105,6 @@ static struct omap_hwmod am43xx_gpio0_hwmod = {
 	},
 	.opt_clks	= gpio0_opt_clks,
 	.opt_clks_cnt	= ARRAY_SIZE(gpio0_opt_clks),
-<<<<<<< HEAD
-=======
-	.dev_attr	= &gpio_dev_attr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct omap_hwmod_class_sysconfig am43xx_synctimer_sysc = {
@@ -245,10 +236,6 @@ static struct omap_hwmod am43xx_spi2_hwmod = {
 			.modulemode   = MODULEMODE_SWCTRL,
 		},
 	},
-<<<<<<< HEAD
-=======
-	.dev_attr	= &mcspi_attrib,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct omap_hwmod am43xx_spi3_hwmod = {
@@ -262,10 +249,6 @@ static struct omap_hwmod am43xx_spi3_hwmod = {
 			.modulemode   = MODULEMODE_SWCTRL,
 		},
 	},
-<<<<<<< HEAD
-=======
-	.dev_attr	= &mcspi_attrib,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct omap_hwmod am43xx_spi4_hwmod = {
@@ -279,10 +262,6 @@ static struct omap_hwmod am43xx_spi4_hwmod = {
 			.modulemode   = MODULEMODE_SWCTRL,
 		},
 	},
-<<<<<<< HEAD
-=======
-	.dev_attr	= &mcspi_attrib,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct omap_hwmod_opt_clk gpio4_opt_clks[] = {
@@ -303,10 +282,6 @@ static struct omap_hwmod am43xx_gpio4_hwmod = {
 	},
 	.opt_clks	= gpio4_opt_clks,
 	.opt_clks_cnt	= ARRAY_SIZE(gpio4_opt_clks),
-<<<<<<< HEAD
-=======
-	.dev_attr	= &gpio_dev_attr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct omap_hwmod_opt_clk gpio5_opt_clks[] = {
@@ -327,10 +302,6 @@ static struct omap_hwmod am43xx_gpio5_hwmod = {
 	},
 	.opt_clks	= gpio5_opt_clks,
 	.opt_clks_cnt	= ARRAY_SIZE(gpio5_opt_clks),
-<<<<<<< HEAD
-=======
-	.dev_attr	= &gpio_dev_attr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct omap_hwmod_class am43xx_ocp2scp_hwmod_class = {
@@ -407,10 +378,7 @@ static struct omap_hwmod am43xx_usb_otg_ss1_hwmod = {
 };
 
 static struct omap_hwmod_class_sysconfig am43xx_qspi_sysc = {
-<<<<<<< HEAD
 	.rev_offs	= 0,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.sysc_offs      = 0x0010,
 	.sysc_flags     = SYSC_HAS_SIDLEMODE,
 	.idlemodes      = (SIDLE_FORCE | SIDLE_NO | SIDLE_SMART |

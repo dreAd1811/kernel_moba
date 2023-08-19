@@ -331,19 +331,11 @@ int gettimeofday(struct timeval *, struct timezone *)
 notrace time_t __vdso_time(time_t *t)
 {
 	/* This is atomic on x86 so we don't need any locks. */
-<<<<<<< HEAD
 	time_t result = READ_ONCE(gtod->wall_time_sec);
-=======
-	time_t result = ACCESS_ONCE(gtod->wall_time_sec);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (t)
 		*t = result;
 	return result;
 }
-<<<<<<< HEAD
 time_t time(time_t *t)
-=======
-int time(time_t *t)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__attribute__((weak, alias("__vdso_time")));

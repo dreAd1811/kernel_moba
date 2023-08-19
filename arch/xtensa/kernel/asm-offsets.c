@@ -76,12 +76,9 @@ int main(void)
 	DEFINE(TASK_PID, offsetof (struct task_struct, pid));
 	DEFINE(TASK_THREAD, offsetof (struct task_struct, thread));
 	DEFINE(TASK_THREAD_INFO, offsetof (struct task_struct, stack));
-<<<<<<< HEAD
 #ifdef CONFIG_STACKPROTECTOR
 	DEFINE(TASK_STACK_CANARY, offsetof(struct task_struct, stack_canary));
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DEFINE(TASK_STRUCT_SIZE, sizeof (struct task_struct));
 
 	/* offsets in thread_info struct */
@@ -135,7 +132,6 @@ int main(void)
 	       offsetof(struct debug_table, icount_level_save));
 #endif
 
-<<<<<<< HEAD
 	/* struct exc_table */
 	DEFINE(EXC_TABLE_KSTK, offsetof(struct exc_table, kstk));
 	DEFINE(EXC_TABLE_DOUBLE_SAVE, offsetof(struct exc_table, double_save));
@@ -149,7 +145,5 @@ int main(void)
 	       offsetof(struct exc_table, fast_kernel_handler));
 	DEFINE(EXC_TABLE_DEFAULT, offsetof(struct exc_table, default_handler));
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }

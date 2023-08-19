@@ -490,11 +490,7 @@ static int opal_discovery0_end(struct opal_dev *dev)
 
 	if (!found_com_id) {
 		pr_debug("Could not find OPAL comid for device. Returning early\n");
-<<<<<<< HEAD
 		return -EOPNOTSUPP;
-=======
-		return -EOPNOTSUPP;;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	dev->comid = comid;
@@ -558,23 +554,14 @@ static void add_token_u64(int *err, struct opal_dev *cmd, u64 number)
 
 	size_t len;
 	int msb;
-<<<<<<< HEAD
-=======
-	u8 n;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!(number & ~TINY_ATOM_DATA_MASK)) {
 		add_token_u8(err, cmd, number);
 		return;
 	}
 
-<<<<<<< HEAD
 	msb = fls64(number);
 	len = DIV_ROUND_UP(msb, 8);
-=======
-	msb = fls(number);
-	len = DIV_ROUND_UP(msb, 4);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (cmd->pos >= IO_BUFFER_LENGTH - len - 1) {
 		pr_debug("Error adding u64: end of buffer.\n");
@@ -582,15 +569,8 @@ static void add_token_u64(int *err, struct opal_dev *cmd, u64 number)
 		return;
 	}
 	add_short_atom_header(cmd, false, false, len);
-<<<<<<< HEAD
 	while (len--)
 		add_token_u8(err, cmd, number >> (len * 8));
-=======
-	while (len--) {
-		n = number >> (len * 8);
-		add_token_u8(err, cmd, n);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void add_token_bytestring(int *err, struct opal_dev *cmd,
@@ -888,12 +868,9 @@ static int response_parse(const u8 *buf, size_t length,
 static size_t response_get_string(const struct parsed_resp *resp, int n,
 				  const char **store)
 {
-<<<<<<< HEAD
 	u8 skip;
 	const struct opal_resp_tok *token;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	*store = NULL;
 	if (!resp) {
 		pr_debug("Response is NULL\n");
@@ -906,17 +883,12 @@ static size_t response_get_string(const struct parsed_resp *resp, int n,
 		return 0;
 	}
 
-<<<<<<< HEAD
 	token = &resp->toks[n];
 	if (token->type != OPAL_DTA_TOKENID_BYTESTRING) {
-=======
-	if (resp->toks[n].type != OPAL_DTA_TOKENID_BYTESTRING) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_debug("Token is not a byte string!\n");
 		return 0;
 	}
 
-<<<<<<< HEAD
 	switch (token->width) {
 	case OPAL_WIDTH_TINY:
 	case OPAL_WIDTH_SHORT:
@@ -935,10 +907,6 @@ static size_t response_get_string(const struct parsed_resp *resp, int n,
 
 	*store = token->pos + skip;
 	return token->len - skip;
-=======
-	*store = resp->toks[n].pos + 1;
-	return resp->toks[n].len - 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static u64 response_get_u64(const struct parsed_resp *resp, int n)

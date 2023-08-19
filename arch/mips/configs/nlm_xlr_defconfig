@@ -332,10 +332,6 @@ CONFIG_INPUT_EVDEV=y
 CONFIG_INPUT_EVBUG=m
 # CONFIG_INPUT_KEYBOARD is not set
 # CONFIG_INPUT_MOUSE is not set
-<<<<<<< HEAD
-=======
-# CONFIG_SERIO_I8042 is not set
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 CONFIG_SERIO_SERPORT=m
 CONFIG_SERIO_LIBPS2=y
 CONFIG_SERIO_RAW=m

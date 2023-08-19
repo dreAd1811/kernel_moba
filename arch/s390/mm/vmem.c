@@ -60,11 +60,7 @@ pte_t __ref *vmem_pte_alloc(void)
 		pte = (pte_t *) memblock_alloc(size, size);
 	if (!pte)
 		return NULL;
-<<<<<<< HEAD
 	memset64((u64 *)pte, _PAGE_INVALID, PTRS_PER_PTE);
-=======
-	clear_table((unsigned long *) pte, _PAGE_INVALID, size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return pte;
 }
 
@@ -215,12 +211,8 @@ static void vmem_remove_range(unsigned long start, unsigned long size)
 /*
  * Add a backed mem_map array to the virtual mem_map array.
  */
-<<<<<<< HEAD
 int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
 		struct vmem_altmap *altmap)
-=======
-int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long pgt_prot, sgt_prot;
 	unsigned long address = start;
@@ -305,12 +297,8 @@ out:
 	return ret;
 }
 
-<<<<<<< HEAD
 void vmemmap_free(unsigned long start, unsigned long end,
 		struct vmem_altmap *altmap)
-=======
-void vmemmap_free(unsigned long start, unsigned long end)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 }
 
@@ -417,7 +405,6 @@ void __init vmem_map_init(void)
 
 	for_each_memblock(memory, reg)
 		vmem_add_mem(reg->base, reg->size);
-<<<<<<< HEAD
 	__set_memory((unsigned long)_stext,
 		     (unsigned long)(_etext - _stext) >> PAGE_SHIFT,
 		     SET_MEMORY_RO | SET_MEMORY_X);
@@ -429,19 +416,6 @@ void __init vmem_map_init(void)
 		     SET_MEMORY_RO | SET_MEMORY_X);
 	pr_info("Write protected kernel read-only data: %luk\n",
 		(unsigned long)(__end_rodata - _stext) >> 10);
-=======
-	__set_memory((unsigned long) _stext,
-		     (_etext - _stext) >> PAGE_SHIFT,
-		     SET_MEMORY_RO | SET_MEMORY_X);
-	__set_memory((unsigned long) _etext,
-		     (_eshared - _etext) >> PAGE_SHIFT,
-		     SET_MEMORY_RO);
-	__set_memory((unsigned long) _sinittext,
-		     (_einittext - _sinittext) >> PAGE_SHIFT,
-		     SET_MEMORY_RO | SET_MEMORY_X);
-	pr_info("Write protected kernel read-only data: %luk\n",
-		(_eshared - _stext) >> 10);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*

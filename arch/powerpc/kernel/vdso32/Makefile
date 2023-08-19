@@ -8,7 +8,6 @@ obj-vdso32 = sigtramp.o gettimeofday.o datapage.o cacheflush.o note.o \
 
 # Build rules
 
-<<<<<<< HEAD
 ifdef CROSS32_COMPILE
     VDSOCC := $(CROSS32_COMPILE)gcc
 else
@@ -18,10 +17,6 @@ endif
 CC32FLAGS :=
 ifdef CONFIG_PPC64
 CC32FLAGS += -m32
-=======
-ifeq ($(CONFIG_PPC32),y)
-CROSS32CC := $(CC)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 endif
 
 targets := $(obj-vdso32) vdso32.so vdso32.so.dbg
@@ -57,15 +52,9 @@ $(obj-vdso32): %.o: %.S FORCE
 
 # actual build commands
 quiet_cmd_vdso32ld = VDSO32L $@
-<<<<<<< HEAD
       cmd_vdso32ld = $(VDSOCC) $(c_flags) $(CC32FLAGS) -o $@ -Wl,-T$(filter %.lds,$^) $(filter %.o,$^)
 quiet_cmd_vdso32as = VDSO32A $@
       cmd_vdso32as = $(VDSOCC) $(a_flags) $(CC32FLAGS) -c -o $@ $<
-=======
-      cmd_vdso32ld = $(CROSS32CC) $(c_flags) -o $@ -Wl,-T$(filter %.lds,$^) $(filter %.o,$^)
-quiet_cmd_vdso32as = VDSO32A $@
-      cmd_vdso32as = $(CROSS32CC) $(a_flags) -c -o $@ $<
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 # install commands for the unstripped file
 quiet_cmd_vdso_install = INSTALL $@

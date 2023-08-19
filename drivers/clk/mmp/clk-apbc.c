@@ -114,11 +114,7 @@ static void clk_apbc_unprepare(struct clk_hw *hw)
 		spin_unlock_irqrestore(apbc->lock, flags);
 }
 
-<<<<<<< HEAD
 static const struct clk_ops clk_apbc_ops = {
-=======
-static struct clk_ops clk_apbc_ops = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.prepare = clk_apbc_prepare,
 	.unprepare = clk_apbc_unprepare,
 };

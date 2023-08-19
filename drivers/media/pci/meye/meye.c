@@ -1423,24 +1423,14 @@ static long vidioc_default(struct file *file, void *fh, bool valid_prio,
 
 }
 
-<<<<<<< HEAD
 static __poll_t meye_poll(struct file *file, poll_table *wait)
 {
 	__poll_t res = v4l2_ctrl_poll(file, wait);
-=======
-static unsigned int meye_poll(struct file *file, poll_table *wait)
-{
-	unsigned int res = v4l2_ctrl_poll(file, wait);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&meye.lock);
 	poll_wait(file, &meye.proc_list, wait);
 	if (kfifo_len(&meye.doneq))
-<<<<<<< HEAD
 		res |= EPOLLIN | EPOLLRDNORM;
-=======
-		res |= POLLIN | POLLRDNORM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&meye.lock);
 	return res;
 }
@@ -1470,11 +1460,7 @@ static int meye_mmap(struct file *file, struct vm_area_struct *vma)
 	unsigned long page, pos;
 
 	mutex_lock(&meye.lock);
-<<<<<<< HEAD
 	if (size > gbuffers * gbufsize) {
-=======
-	if (size > gbuffers * gbufsize || offset > gbuffers * gbufsize - size) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_unlock(&meye.lock);
 		return -EINVAL;
 	}
@@ -1550,11 +1536,7 @@ static const struct v4l2_ioctl_ops meye_ioctl_ops = {
 static const struct video_device meye_template = {
 	.name		= "meye",
 	.fops		= &meye_fops,
-<<<<<<< HEAD
 	.ioctl_ops	= &meye_ioctl_ops,
-=======
-	.ioctl_ops 	= &meye_ioctl_ops,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.release	= video_device_release_empty,
 };
 
@@ -1643,7 +1625,6 @@ static int meye_probe(struct pci_dev *pcidev, const struct pci_device_id *ent)
 	ret = -ENOMEM;
 	meye.mchip_dev = pcidev;
 
-<<<<<<< HEAD
 	meye.grab_temp = vmalloc(array_size(PAGE_SIZE, MCHIP_NB_PAGES_MJPEG));
 	if (!meye.grab_temp)
 		goto outvmalloc;
@@ -1657,48 +1638,19 @@ static int meye_probe(struct pci_dev *pcidev, const struct pci_device_id *ent)
 	if (kfifo_alloc(&meye.doneq, sizeof(int) * MEYE_MAX_BUFNBRS,
 			GFP_KERNEL))
 		goto outkfifoalloc2;
-=======
-	meye.grab_temp = vmalloc(MCHIP_NB_PAGES_MJPEG * PAGE_SIZE);
-	if (!meye.grab_temp) {
-		v4l2_err(v4l2_dev, "grab buffer allocation failed\n");
-		goto outvmalloc;
-	}
-
-	spin_lock_init(&meye.grabq_lock);
-	if (kfifo_alloc(&meye.grabq, sizeof(int) * MEYE_MAX_BUFNBRS,
-				GFP_KERNEL)) {
-		v4l2_err(v4l2_dev, "fifo allocation failed\n");
-		goto outkfifoalloc1;
-	}
-	spin_lock_init(&meye.doneq_lock);
-	if (kfifo_alloc(&meye.doneq, sizeof(int) * MEYE_MAX_BUFNBRS,
-				GFP_KERNEL)) {
-		v4l2_err(v4l2_dev, "fifo allocation failed\n");
-		goto outkfifoalloc2;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	meye.vdev = meye_template;
 	meye.vdev.v4l2_dev = &meye.v4l2_dev;
 
-<<<<<<< HEAD
 	ret = sony_pic_camera_command(SONY_PIC_COMMAND_SETCAMERA, 1);
 	if (ret) {
-=======
-	ret = -EIO;
-	if ((ret = sony_pic_camera_command(SONY_PIC_COMMAND_SETCAMERA, 1))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		v4l2_err(v4l2_dev, "meye: unable to power on the camera\n");
 		v4l2_err(v4l2_dev, "meye: did you enable the camera in sonypi using the module options ?\n");
 		goto outsonypienable;
 	}
 
-<<<<<<< HEAD
 	ret = pci_enable_device(meye.mchip_dev);
 	if (ret) {
-=======
-	if ((ret = pci_enable_device(meye.mchip_dev))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		v4l2_err(v4l2_dev, "meye: pci_enable_device failed\n");
 		goto outenabledev;
 	}

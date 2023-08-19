@@ -1,5 +1,4 @@
 #define __ARM_ARCH__ __LINUX_ARM_ARCH__
-<<<<<<< HEAD
 @ SPDX-License-Identifier: GPL-2.0
 
 @ This code is taken from the OpenSSL project but the author (Andy Polyakov)
@@ -10,8 +9,6 @@
 @ The original headers, including the original license headers, are
 @ included below for completeness.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 @ ====================================================================
 @ Written by Andy Polyakov <appro@fy.chalmers.se> for the OpenSSL
 @ project. The module is, however, dual licensed under OpenSSL and

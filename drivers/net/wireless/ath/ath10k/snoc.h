@@ -19,18 +19,10 @@
 
 #include "hw.h"
 #include "ce.h"
-<<<<<<< HEAD
-=======
-#include "qmi.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct ath10k_snoc_drv_priv {
 	enum ath10k_hw_rev hw_rev;
 	u64 dma_mask;
-<<<<<<< HEAD
-=======
-	u32 msa_size;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct snoc_state {
@@ -89,13 +81,6 @@ struct ath10k_snoc {
 	struct timer_list rx_post_retry;
 	struct ath10k_wcn3990_vreg_info *vreg;
 	struct ath10k_wcn3990_clk_info *clk;
-<<<<<<< HEAD
-=======
-	struct ath10k_qmi *qmi;
-	struct dma_iommu_mapping *smmu_mapping;
-	dma_addr_t smmu_iova_start;
-	size_t smmu_iova_len;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static inline struct ath10k_snoc *ath10k_snoc_priv(struct ath10k *ar)
@@ -105,9 +90,5 @@ static inline struct ath10k_snoc *ath10k_snoc_priv(struct ath10k *ar)
 
 void ath10k_snoc_write32(struct ath10k *ar, u32 offset, u32 value);
 u32 ath10k_snoc_read32(struct ath10k *ar, u32 offset);
-<<<<<<< HEAD
-=======
-int ath10k_snoc_fw_indication(struct ath10k *ar, u64 type);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* _SNOC_H_ */

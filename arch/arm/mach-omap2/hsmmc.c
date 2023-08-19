@@ -13,21 +13,11 @@
 #include <linux/slab.h>
 #include <linux/string.h>
 #include <linux/delay.h>
-<<<<<<< HEAD
 #include <linux/mmc/host.h>
-=======
-#include <linux/gpio.h>
-#include <linux/mmc/host.h>
-#include <linux/platform_data/gpio-omap.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/platform_data/hsmmc-omap.h>
 
 #include "soc.h"
 #include "omap_device.h"
-<<<<<<< HEAD
-=======
-#include "omap-pm.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "hsmmc.h"
 #include "control.h"
@@ -44,11 +34,7 @@ static int __init omap_hsmmc_pdata_init(struct omap2_hsmmc_info *c,
 {
 	char *hc_name;
 
-<<<<<<< HEAD
 	hc_name = kzalloc(HSMMC_NAME_LEN + 1, GFP_KERNEL);
-=======
-	hc_name = kzalloc(sizeof(char) * (HSMMC_NAME_LEN + 1), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!hc_name) {
 		kfree(hc_name);
 		return -ENOMEM;

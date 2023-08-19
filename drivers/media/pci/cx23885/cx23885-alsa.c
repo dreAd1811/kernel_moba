@@ -89,23 +89,13 @@ static int cx23885_alsa_dma_init(struct cx23885_audio_dev *chip, int nr_pages)
 		return -ENOMEM;
 	}
 
-<<<<<<< HEAD
 	dprintk(1, "vmalloc is at addr %p, size=%d\n",
 		buf->vaddr, nr_pages << PAGE_SHIFT);
-=======
-	dprintk(1, "vmalloc is at addr 0x%08lx, size=%d\n",
-				(unsigned long)buf->vaddr,
-				nr_pages << PAGE_SHIFT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memset(buf->vaddr, 0, nr_pages << PAGE_SHIFT);
 	buf->nr_pages = nr_pages;
 
-<<<<<<< HEAD
 	buf->sglist = vzalloc(array_size(sizeof(*buf->sglist), buf->nr_pages));
-=======
-	buf->sglist = vzalloc(buf->nr_pages * sizeof(*buf->sglist));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (NULL == buf->sglist)
 		goto vzalloc_err;
 

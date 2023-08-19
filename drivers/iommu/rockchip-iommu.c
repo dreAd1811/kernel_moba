@@ -4,10 +4,7 @@
  * published by the Free Software Foundation.
  */
 
-<<<<<<< HEAD
 #include <linux/clk.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/compiler.h>
 #include <linux/delay.h>
 #include <linux/device.h>
@@ -17,24 +14,15 @@
 #include <linux/interrupt.h>
 #include <linux/io.h>
 #include <linux/iommu.h>
-<<<<<<< HEAD
 #include <linux/iopoll.h>
-=======
-#include <linux/jiffies.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/list.h>
 #include <linux/mm.h>
 #include <linux/module.h>
 #include <linux/of.h>
-<<<<<<< HEAD
 #include <linux/of_iommu.h>
 #include <linux/of_platform.h>
 #include <linux/platform_device.h>
 #include <linux/pm_runtime.h>
-=======
-#include <linux/of_platform.h>
-#include <linux/platform_device.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/slab.h>
 #include <linux/spinlock.h>
 
@@ -51,14 +39,10 @@
 #define RK_MMU_AUTO_GATING	0x24
 
 #define DTE_ADDR_DUMMY		0xCAFEBABE
-<<<<<<< HEAD
 
 #define RK_MMU_POLL_PERIOD_US		100
 #define RK_MMU_FORCE_RESET_TIMEOUT_US	100000
 #define RK_MMU_POLL_TIMEOUT_US		1000
-=======
-#define FORCE_RESET_TIMEOUT	100	/* ms */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* RK_MMU_STATUS fields */
 #define RK_MMU_STATUS_PAGING_ENABLED       BIT(0)
@@ -95,16 +79,8 @@
   */
 #define RK_IOMMU_PGSIZE_BITMAP 0x007ff000
 
-<<<<<<< HEAD
 struct rk_iommu_domain {
 	struct list_head iommus;
-=======
-#define IOMMU_REG_POLL_COUNT_FAST 1000
-
-struct rk_iommu_domain {
-	struct list_head iommus;
-	struct platform_device *pdev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 *dt; /* page directory table */
 	dma_addr_t dt_dma;
 	spinlock_t iommus_lock; /* lock for iommus list */
@@ -113,30 +89,21 @@ struct rk_iommu_domain {
 	struct iommu_domain domain;
 };
 
-<<<<<<< HEAD
 /* list of clocks required by IOMMU */
 static const char * const rk_iommu_clocks[] = {
 	"aclk", "iface",
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct rk_iommu {
 	struct device *dev;
 	void __iomem **bases;
 	int num_mmu;
-<<<<<<< HEAD
 	struct clk_bulk_data *clocks;
 	int num_clocks;
-=======
-	int *irq;
-	int num_irq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool reset_disabled;
 	struct iommu_device iommu;
 	struct list_head node; /* entry in rk_iommu_domain.iommus */
 	struct iommu_domain *domain; /* domain to which iommu is attached */
-<<<<<<< HEAD
 	struct iommu_group *group;
 };
 
@@ -147,20 +114,12 @@ struct rk_iommudata {
 
 static struct device *dma_dev;
 
-=======
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void rk_table_flush(struct rk_iommu_domain *dom, dma_addr_t dma,
 				  unsigned int count)
 {
 	size_t size = count * sizeof(u32); /* count of u32 entry */
 
-<<<<<<< HEAD
 	dma_sync_single_for_device(dma_dev, dma, size, DMA_TO_DEVICE);
-=======
-	dma_sync_single_for_device(&dom->pdev->dev, dma, size, DMA_TO_DEVICE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct rk_iommu_domain *to_rk_domain(struct iommu_domain *dom)
@@ -168,30 +127,6 @@ static struct rk_iommu_domain *to_rk_domain(struct iommu_domain *dom)
 	return container_of(dom, struct rk_iommu_domain, domain);
 }
 
-<<<<<<< HEAD
-=======
-/**
- * Inspired by _wait_for in intel_drv.h
- * This is NOT safe for use in interrupt context.
- *
- * Note that it's important that we check the condition again after having
- * timed out, since the timeout could be due to preemption or similar and
- * we've never had a chance to check the condition before the timeout.
- */
-#define rk_wait_for(COND, MS) ({ \
-	unsigned long timeout__ = jiffies + msecs_to_jiffies(MS) + 1;	\
-	int ret__ = 0;							\
-	while (!(COND)) {						\
-		if (time_after(jiffies, timeout__)) {			\
-			ret__ = (COND) ? 0 : -ETIMEDOUT;		\
-			break;						\
-		}							\
-		usleep_range(50, 100);					\
-	}								\
-	ret__;								\
-})
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * The Rockchip rk3288 iommu uses a 2-level page table.
  * The first level is the "Directory Table" (DT).
@@ -356,36 +291,21 @@ static void rk_iommu_base_command(void __iomem *base, u32 command)
 {
 	writel(command, base + RK_MMU_COMMAND);
 }
-<<<<<<< HEAD
 static void rk_iommu_zap_lines(struct rk_iommu *iommu, dma_addr_t iova_start,
 			       size_t size)
 {
 	int i;
 	dma_addr_t iova_end = iova_start + size;
-=======
-static void rk_iommu_zap_lines(struct rk_iommu *iommu, dma_addr_t iova,
-			       size_t size)
-{
-	int i;
-
-	dma_addr_t iova_end = iova + size;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * TODO(djkurtz): Figure out when it is more efficient to shootdown the
 	 * entire iotlb rather than iterate over individual iovas.
 	 */
-<<<<<<< HEAD
 	for (i = 0; i < iommu->num_mmu; i++) {
 		dma_addr_t iova;
 
 		for (iova = iova_start; iova < iova_end; iova += SPAGE_SIZE)
 			rk_iommu_write(iommu->bases[i], RK_MMU_ZAP_ONE_LINE, iova);
 	}
-=======
-	for (i = 0; i < iommu->num_mmu; i++)
-		for (; iova < iova_end; iova += SPAGE_SIZE)
-			rk_iommu_write(iommu->bases[i], RK_MMU_ZAP_ONE_LINE, iova);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool rk_iommu_is_stall_active(struct rk_iommu *iommu)
@@ -412,7 +332,6 @@ static bool rk_iommu_is_paging_enabled(struct rk_iommu *iommu)
 	return enable;
 }
 
-<<<<<<< HEAD
 static bool rk_iommu_is_reset_done(struct rk_iommu *iommu)
 {
 	bool done = true;
@@ -428,11 +347,6 @@ static int rk_iommu_enable_stall(struct rk_iommu *iommu)
 {
 	int ret, i;
 	bool val;
-=======
-static int rk_iommu_enable_stall(struct rk_iommu *iommu)
-{
-	int ret, i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (rk_iommu_is_stall_active(iommu))
 		return 0;
@@ -443,13 +357,9 @@ static int rk_iommu_enable_stall(struct rk_iommu *iommu)
 
 	rk_iommu_command(iommu, RK_MMU_CMD_ENABLE_STALL);
 
-<<<<<<< HEAD
 	ret = readx_poll_timeout(rk_iommu_is_stall_active, iommu, val,
 				 val, RK_MMU_POLL_PERIOD_US,
 				 RK_MMU_POLL_TIMEOUT_US);
-=======
-	ret = rk_wait_for(rk_iommu_is_stall_active(iommu), 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		for (i = 0; i < iommu->num_mmu; i++)
 			dev_err(iommu->dev, "Enable stall request timed out, status: %#08x\n",
@@ -461,23 +371,16 @@ static int rk_iommu_enable_stall(struct rk_iommu *iommu)
 static int rk_iommu_disable_stall(struct rk_iommu *iommu)
 {
 	int ret, i;
-<<<<<<< HEAD
 	bool val;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!rk_iommu_is_stall_active(iommu))
 		return 0;
 
 	rk_iommu_command(iommu, RK_MMU_CMD_DISABLE_STALL);
 
-<<<<<<< HEAD
 	ret = readx_poll_timeout(rk_iommu_is_stall_active, iommu, val,
 				 !val, RK_MMU_POLL_PERIOD_US,
 				 RK_MMU_POLL_TIMEOUT_US);
-=======
-	ret = rk_wait_for(!rk_iommu_is_stall_active(iommu), 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		for (i = 0; i < iommu->num_mmu; i++)
 			dev_err(iommu->dev, "Disable stall request timed out, status: %#08x\n",
@@ -489,23 +392,16 @@ static int rk_iommu_disable_stall(struct rk_iommu *iommu)
 static int rk_iommu_enable_paging(struct rk_iommu *iommu)
 {
 	int ret, i;
-<<<<<<< HEAD
 	bool val;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (rk_iommu_is_paging_enabled(iommu))
 		return 0;
 
 	rk_iommu_command(iommu, RK_MMU_CMD_ENABLE_PAGING);
 
-<<<<<<< HEAD
 	ret = readx_poll_timeout(rk_iommu_is_paging_enabled, iommu, val,
 				 val, RK_MMU_POLL_PERIOD_US,
 				 RK_MMU_POLL_TIMEOUT_US);
-=======
-	ret = rk_wait_for(rk_iommu_is_paging_enabled(iommu), 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		for (i = 0; i < iommu->num_mmu; i++)
 			dev_err(iommu->dev, "Enable paging request timed out, status: %#08x\n",
@@ -517,23 +413,16 @@ static int rk_iommu_enable_paging(struct rk_iommu *iommu)
 static int rk_iommu_disable_paging(struct rk_iommu *iommu)
 {
 	int ret, i;
-<<<<<<< HEAD
 	bool val;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!rk_iommu_is_paging_enabled(iommu))
 		return 0;
 
 	rk_iommu_command(iommu, RK_MMU_CMD_DISABLE_PAGING);
 
-<<<<<<< HEAD
 	ret = readx_poll_timeout(rk_iommu_is_paging_enabled, iommu, val,
 				 !val, RK_MMU_POLL_PERIOD_US,
 				 RK_MMU_POLL_TIMEOUT_US);
-=======
-	ret = rk_wait_for(!rk_iommu_is_paging_enabled(iommu), 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		for (i = 0; i < iommu->num_mmu; i++)
 			dev_err(iommu->dev, "Disable paging request timed out, status: %#08x\n",
@@ -546,10 +435,7 @@ static int rk_iommu_force_reset(struct rk_iommu *iommu)
 {
 	int ret, i;
 	u32 dte_addr;
-<<<<<<< HEAD
 	bool val;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (iommu->reset_disabled)
 		return 0;
@@ -570,22 +456,12 @@ static int rk_iommu_force_reset(struct rk_iommu *iommu)
 
 	rk_iommu_command(iommu, RK_MMU_CMD_FORCE_RESET);
 
-<<<<<<< HEAD
 	ret = readx_poll_timeout(rk_iommu_is_reset_done, iommu, val,
 				 val, RK_MMU_FORCE_RESET_TIMEOUT_US,
 				 RK_MMU_POLL_TIMEOUT_US);
 	if (ret) {
 		dev_err(iommu->dev, "FORCE_RESET command timed out\n");
 		return ret;
-=======
-	for (i = 0; i < iommu->num_mmu; i++) {
-		ret = rk_wait_for(rk_iommu_read(iommu->bases[i], RK_MMU_DTE_ADDR) == 0x00000000,
-				  FORCE_RESET_TIMEOUT);
-		if (ret) {
-			dev_err(iommu->dev, "FORCE_RESET command timed out\n");
-			return ret;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -645,7 +521,6 @@ static irqreturn_t rk_iommu_irq(int irq, void *dev_id)
 	u32 int_status;
 	dma_addr_t iova;
 	irqreturn_t ret = IRQ_NONE;
-<<<<<<< HEAD
 	int i, err;
 
 	err = pm_runtime_get_if_in_use(iommu->dev);
@@ -654,9 +529,6 @@ static irqreturn_t rk_iommu_irq(int irq, void *dev_id)
 
 	if (WARN_ON(clk_bulk_enable(iommu->num_clocks, iommu->clocks)))
 		goto out;
-=======
-	int i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < iommu->num_mmu; i++) {
 		int_status = rk_iommu_read(iommu->bases[i], RK_MMU_INT_STATUS);
@@ -704,13 +576,10 @@ static irqreturn_t rk_iommu_irq(int irq, void *dev_id)
 		rk_iommu_write(iommu->bases[i], RK_MMU_INT_CLEAR, int_status);
 	}
 
-<<<<<<< HEAD
 	clk_bulk_disable(iommu->num_clocks, iommu->clocks);
 
 out:
 	pm_runtime_put(iommu->dev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -752,7 +621,6 @@ static void rk_iommu_zap_iova(struct rk_iommu_domain *rk_domain,
 	spin_lock_irqsave(&rk_domain->iommus_lock, flags);
 	list_for_each(pos, &rk_domain->iommus) {
 		struct rk_iommu *iommu;
-<<<<<<< HEAD
 		int ret;
 
 		iommu = list_entry(pos, struct rk_iommu, node);
@@ -768,10 +636,6 @@ static void rk_iommu_zap_iova(struct rk_iommu_domain *rk_domain,
 			clk_bulk_disable(iommu->num_clocks, iommu->clocks);
 			pm_runtime_put(iommu->dev);
 		}
-=======
-		iommu = list_entry(pos, struct rk_iommu, node);
-		rk_iommu_zap_lines(iommu, iova, size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	spin_unlock_irqrestore(&rk_domain->iommus_lock, flags);
 }
@@ -788,10 +652,6 @@ static void rk_iommu_zap_iova_first_last(struct rk_iommu_domain *rk_domain,
 static u32 *rk_dte_get_page_table(struct rk_iommu_domain *rk_domain,
 				  dma_addr_t iova)
 {
-<<<<<<< HEAD
-=======
-	struct device *dev = &rk_domain->pdev->dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 *page_table, *dte_addr;
 	u32 dte_index, dte;
 	phys_addr_t pt_phys;
@@ -809,15 +669,9 @@ static u32 *rk_dte_get_page_table(struct rk_iommu_domain *rk_domain,
 	if (!page_table)
 		return ERR_PTR(-ENOMEM);
 
-<<<<<<< HEAD
 	pt_dma = dma_map_single(dma_dev, page_table, SPAGE_SIZE, DMA_TO_DEVICE);
 	if (dma_mapping_error(dma_dev, pt_dma)) {
 		dev_err(dma_dev, "DMA mapping error while allocating page table\n");
-=======
-	pt_dma = dma_map_single(dev, page_table, SPAGE_SIZE, DMA_TO_DEVICE);
-	if (dma_mapping_error(dev, pt_dma)) {
-		dev_err(dev, "DMA mapping error while allocating page table\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		free_page((unsigned long)page_table);
 		return ERR_PTR(-ENOMEM);
 	}
@@ -979,7 +833,6 @@ static size_t rk_iommu_unmap(struct iommu_domain *domain, unsigned long _iova,
 
 static struct rk_iommu *rk_iommu_from_dev(struct device *dev)
 {
-<<<<<<< HEAD
 	struct rk_iommudata *data = dev->archdata.iommu;
 
 	return data ? data->iommu : NULL;
@@ -1072,33 +925,11 @@ static void rk_iommu_detach_device(struct iommu_domain *domain,
 
 static int rk_iommu_attach_device(struct iommu_domain *domain,
 		struct device *dev)
-=======
-	struct iommu_group *group;
-	struct device *iommu_dev;
-	struct rk_iommu *rk_iommu;
-
-	group = iommu_group_get(dev);
-	if (!group)
-		return NULL;
-	iommu_dev = iommu_group_get_iommudata(group);
-	rk_iommu = dev_get_drvdata(iommu_dev);
-	iommu_group_put(group);
-
-	return rk_iommu;
-}
-
-static int rk_iommu_attach_device(struct iommu_domain *domain,
-				  struct device *dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rk_iommu *iommu;
 	struct rk_iommu_domain *rk_domain = to_rk_domain(domain);
 	unsigned long flags;
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret, i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Allow 'virtual devices' (e.g., drm) to attach to domain.
@@ -1108,7 +939,6 @@ static int rk_iommu_attach_device(struct iommu_domain *domain,
 	if (!iommu)
 		return 0;
 
-<<<<<<< HEAD
 	dev_dbg(dev, "Attaching to iommu domain\n");
 
 	/* iommu already attached */
@@ -1120,41 +950,10 @@ static int rk_iommu_attach_device(struct iommu_domain *domain,
 
 	iommu->domain = domain;
 
-=======
-	ret = rk_iommu_enable_stall(iommu);
-	if (ret)
-		return ret;
-
-	ret = rk_iommu_force_reset(iommu);
-	if (ret)
-		return ret;
-
-	iommu->domain = domain;
-
-	for (i = 0; i < iommu->num_irq; i++) {
-		ret = devm_request_irq(iommu->dev, iommu->irq[i], rk_iommu_irq,
-				       IRQF_SHARED, dev_name(dev), iommu);
-		if (ret)
-			return ret;
-	}
-
-	for (i = 0; i < iommu->num_mmu; i++) {
-		rk_iommu_write(iommu->bases[i], RK_MMU_DTE_ADDR,
-			       rk_domain->dt_dma);
-		rk_iommu_base_command(iommu->bases[i], RK_MMU_CMD_ZAP_CACHE);
-		rk_iommu_write(iommu->bases[i], RK_MMU_INT_MASK, RK_MMU_IRQ_MASK);
-	}
-
-	ret = rk_iommu_enable_paging(iommu);
-	if (ret)
-		return ret;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_irqsave(&rk_domain->iommus_lock, flags);
 	list_add_tail(&iommu->node, &rk_domain->iommus);
 	spin_unlock_irqrestore(&rk_domain->iommus_lock, flags);
 
-<<<<<<< HEAD
 	ret = pm_runtime_get_if_in_use(iommu->dev);
 	if (!ret || WARN_ON_ONCE(ret < 0))
 		return 0;
@@ -1166,62 +965,15 @@ static int rk_iommu_attach_device(struct iommu_domain *domain,
 	pm_runtime_put(iommu->dev);
 
 	return ret;
-=======
-	dev_dbg(dev, "Attached to iommu domain\n");
-
-	rk_iommu_disable_stall(iommu);
-
-	return 0;
-}
-
-static void rk_iommu_detach_device(struct iommu_domain *domain,
-				   struct device *dev)
-{
-	struct rk_iommu *iommu;
-	struct rk_iommu_domain *rk_domain = to_rk_domain(domain);
-	unsigned long flags;
-	int i;
-
-	/* Allow 'virtual devices' (eg drm) to detach from domain */
-	iommu = rk_iommu_from_dev(dev);
-	if (!iommu)
-		return;
-
-	spin_lock_irqsave(&rk_domain->iommus_lock, flags);
-	list_del_init(&iommu->node);
-	spin_unlock_irqrestore(&rk_domain->iommus_lock, flags);
-
-	/* Ignore error while disabling, just keep going */
-	rk_iommu_enable_stall(iommu);
-	rk_iommu_disable_paging(iommu);
-	for (i = 0; i < iommu->num_mmu; i++) {
-		rk_iommu_write(iommu->bases[i], RK_MMU_INT_MASK, 0);
-		rk_iommu_write(iommu->bases[i], RK_MMU_DTE_ADDR, 0);
-	}
-	rk_iommu_disable_stall(iommu);
-
-	for (i = 0; i < iommu->num_irq; i++)
-		devm_free_irq(iommu->dev, iommu->irq[i], iommu);
-
-	iommu->domain = NULL;
-
-	dev_dbg(dev, "Detached from iommu domain\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct iommu_domain *rk_iommu_domain_alloc(unsigned type)
 {
 	struct rk_iommu_domain *rk_domain;
-<<<<<<< HEAD
-=======
-	struct platform_device *pdev;
-	struct device *iommu_dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (type != IOMMU_DOMAIN_UNMANAGED && type != IOMMU_DOMAIN_DMA)
 		return NULL;
 
-<<<<<<< HEAD
 	if (!dma_dev)
 		return NULL;
 
@@ -1232,25 +984,6 @@ static struct iommu_domain *rk_iommu_domain_alloc(unsigned type)
 	if (type == IOMMU_DOMAIN_DMA &&
 	    iommu_get_dma_cookie(&rk_domain->domain))
 		return NULL;
-=======
-	/* Register a pdev per domain, so DMA API can base on this *dev
-	 * even some virtual master doesn't have an iommu slave
-	 */
-	pdev = platform_device_register_simple("rk_iommu_domain",
-					       PLATFORM_DEVID_AUTO, NULL, 0);
-	if (IS_ERR(pdev))
-		return NULL;
-
-	rk_domain = devm_kzalloc(&pdev->dev, sizeof(*rk_domain), GFP_KERNEL);
-	if (!rk_domain)
-		goto err_unreg_pdev;
-
-	rk_domain->pdev = pdev;
-
-	if (type == IOMMU_DOMAIN_DMA &&
-	    iommu_get_dma_cookie(&rk_domain->domain))
-		goto err_unreg_pdev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * rk32xx iommus use a 2 level pagetable.
@@ -1261,18 +994,10 @@ static struct iommu_domain *rk_iommu_domain_alloc(unsigned type)
 	if (!rk_domain->dt)
 		goto err_put_cookie;
 
-<<<<<<< HEAD
 	rk_domain->dt_dma = dma_map_single(dma_dev, rk_domain->dt,
 					   SPAGE_SIZE, DMA_TO_DEVICE);
 	if (dma_mapping_error(dma_dev, rk_domain->dt_dma)) {
 		dev_err(dma_dev, "DMA map error for DT\n");
-=======
-	iommu_dev = &pdev->dev;
-	rk_domain->dt_dma = dma_map_single(iommu_dev, rk_domain->dt,
-					   SPAGE_SIZE, DMA_TO_DEVICE);
-	if (dma_mapping_error(iommu_dev, rk_domain->dt_dma)) {
-		dev_err(iommu_dev, "DMA map error for DT\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_free_dt;
 	}
 
@@ -1293,11 +1018,6 @@ err_free_dt:
 err_put_cookie:
 	if (type == IOMMU_DOMAIN_DMA)
 		iommu_put_dma_cookie(&rk_domain->domain);
-<<<<<<< HEAD
-=======
-err_unreg_pdev:
-	platform_device_unregister(pdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return NULL;
 }
@@ -1314,89 +1034,24 @@ static void rk_iommu_domain_free(struct iommu_domain *domain)
 		if (rk_dte_is_pt_valid(dte)) {
 			phys_addr_t pt_phys = rk_dte_pt_address(dte);
 			u32 *page_table = phys_to_virt(pt_phys);
-<<<<<<< HEAD
 			dma_unmap_single(dma_dev, pt_phys,
-=======
-			dma_unmap_single(&rk_domain->pdev->dev, pt_phys,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 SPAGE_SIZE, DMA_TO_DEVICE);
 			free_page((unsigned long)page_table);
 		}
 	}
 
-<<<<<<< HEAD
 	dma_unmap_single(dma_dev, rk_domain->dt_dma,
-=======
-	dma_unmap_single(&rk_domain->pdev->dev, rk_domain->dt_dma,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 SPAGE_SIZE, DMA_TO_DEVICE);
 	free_page((unsigned long)rk_domain->dt);
 
 	if (domain->type == IOMMU_DOMAIN_DMA)
 		iommu_put_dma_cookie(&rk_domain->domain);
-<<<<<<< HEAD
-=======
-
-	platform_device_unregister(rk_domain->pdev);
-}
-
-static bool rk_iommu_is_dev_iommu_master(struct device *dev)
-{
-	struct device_node *np = dev->of_node;
-	int ret;
-
-	/*
-	 * An iommu master has an iommus property containing a list of phandles
-	 * to iommu nodes, each with an #iommu-cells property with value 0.
-	 */
-	ret = of_count_phandle_with_args(np, "iommus", "#iommu-cells");
-	return (ret > 0);
-}
-
-static int rk_iommu_group_set_iommudata(struct iommu_group *group,
-					struct device *dev)
-{
-	struct device_node *np = dev->of_node;
-	struct platform_device *pd;
-	int ret;
-	struct of_phandle_args args;
-
-	/*
-	 * An iommu master has an iommus property containing a list of phandles
-	 * to iommu nodes, each with an #iommu-cells property with value 0.
-	 */
-	ret = of_parse_phandle_with_args(np, "iommus", "#iommu-cells", 0,
-					 &args);
-	if (ret) {
-		dev_err(dev, "of_parse_phandle_with_args(%pOF) => %d\n",
-			np, ret);
-		return ret;
-	}
-	if (args.args_count != 0) {
-		dev_err(dev, "incorrect number of iommu params found for %pOF (found %d, expected 0)\n",
-			args.np, args.args_count);
-		return -EINVAL;
-	}
-
-	pd = of_find_device_by_node(args.np);
-	of_node_put(args.np);
-	if (!pd) {
-		dev_err(dev, "iommu %pOF not found\n", args.np);
-		return -EPROBE_DEFER;
-	}
-
-	/* TODO(djkurtz): handle multiple slave iommus for a single master */
-	iommu_group_set_iommudata(group, &pd->dev, NULL);
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int rk_iommu_add_device(struct device *dev)
 {
 	struct iommu_group *group;
 	struct rk_iommu *iommu;
-<<<<<<< HEAD
 	struct rk_iommudata *data;
 
 	data = dev->archdata.iommu;
@@ -1414,49 +1069,11 @@ static int rk_iommu_add_device(struct device *dev)
 	data->link = device_link_add(dev, iommu->dev, DL_FLAG_PM_RUNTIME);
 
 	return 0;
-=======
-	int ret;
-
-	if (!rk_iommu_is_dev_iommu_master(dev))
-		return -ENODEV;
-
-	group = iommu_group_get(dev);
-	if (!group) {
-		group = iommu_group_alloc();
-		if (IS_ERR(group)) {
-			dev_err(dev, "Failed to allocate IOMMU group\n");
-			return PTR_ERR(group);
-		}
-	}
-
-	ret = iommu_group_add_device(group, dev);
-	if (ret)
-		goto err_put_group;
-
-	ret = rk_iommu_group_set_iommudata(group, dev);
-	if (ret)
-		goto err_remove_device;
-
-	iommu = rk_iommu_from_dev(dev);
-	if (iommu)
-		iommu_device_link(&iommu->iommu, dev);
-
-	iommu_group_put(group);
-
-	return 0;
-
-err_remove_device:
-	iommu_group_remove_device(dev);
-err_put_group:
-	iommu_group_put(group);
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rk_iommu_remove_device(struct device *dev)
 {
 	struct rk_iommu *iommu;
-<<<<<<< HEAD
 	struct rk_iommudata *data = dev->archdata.iommu;
 
 	iommu = rk_iommu_from_dev(dev);
@@ -1495,19 +1112,6 @@ static int rk_iommu_of_xlate(struct device *dev,
 	return 0;
 }
 
-=======
-
-	if (!rk_iommu_is_dev_iommu_master(dev))
-		return;
-
-	iommu = rk_iommu_from_dev(dev);
-	if (iommu)
-		iommu_device_unlink(&iommu->iommu, dev);
-
-	iommu_group_remove_device(dev);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct iommu_ops rk_iommu_ops = {
 	.domain_alloc = rk_iommu_domain_alloc,
 	.domain_free = rk_iommu_domain_free,
@@ -1515,44 +1119,12 @@ static const struct iommu_ops rk_iommu_ops = {
 	.detach_dev = rk_iommu_detach_device,
 	.map = rk_iommu_map,
 	.unmap = rk_iommu_unmap,
-<<<<<<< HEAD
 	.add_device = rk_iommu_add_device,
 	.remove_device = rk_iommu_remove_device,
 	.iova_to_phys = rk_iommu_iova_to_phys,
 	.device_group = rk_iommu_device_group,
 	.pgsize_bitmap = RK_IOMMU_PGSIZE_BITMAP,
 	.of_xlate = rk_iommu_of_xlate,
-=======
-	.map_sg = default_iommu_map_sg,
-	.add_device = rk_iommu_add_device,
-	.remove_device = rk_iommu_remove_device,
-	.iova_to_phys = rk_iommu_iova_to_phys,
-	.pgsize_bitmap = RK_IOMMU_PGSIZE_BITMAP,
-};
-
-static int rk_iommu_domain_probe(struct platform_device *pdev)
-{
-	struct device *dev = &pdev->dev;
-
-	dev->dma_parms = devm_kzalloc(dev, sizeof(*dev->dma_parms), GFP_KERNEL);
-	if (!dev->dma_parms)
-		return -ENOMEM;
-
-	/* Set dma_ops for dev, otherwise it would be dummy_dma_ops */
-	arch_setup_dma_ops(dev, 0, DMA_BIT_MASK(32), NULL, false);
-
-	dma_set_max_seg_size(dev, DMA_BIT_MASK(32));
-	dma_coerce_mask_and_coherent(dev, DMA_BIT_MASK(32));
-
-	return 0;
-}
-
-static struct platform_driver rk_iommu_domain_driver = {
-	.probe = rk_iommu_domain_probe,
-	.driver = {
-		   .name = "rk_iommu_domain",
-	},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int rk_iommu_probe(struct platform_device *pdev)
@@ -1561,11 +1133,7 @@ static int rk_iommu_probe(struct platform_device *pdev)
 	struct rk_iommu *iommu;
 	struct resource *res;
 	int num_res = pdev->num_resources;
-<<<<<<< HEAD
 	int err, i, irq;
-=======
-	int err, i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	iommu = devm_kzalloc(dev, sizeof(*iommu), GFP_KERNEL);
 	if (!iommu)
@@ -1575,11 +1143,7 @@ static int rk_iommu_probe(struct platform_device *pdev)
 	iommu->dev = dev;
 	iommu->num_mmu = 0;
 
-<<<<<<< HEAD
 	iommu->bases = devm_kcalloc(dev, num_res, sizeof(*iommu->bases),
-=======
-	iommu->bases = devm_kzalloc(dev, sizeof(*iommu->bases) * num_res,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    GFP_KERNEL);
 	if (!iommu->bases)
 		return -ENOMEM;
@@ -1596,7 +1160,6 @@ static int rk_iommu_probe(struct platform_device *pdev)
 	if (iommu->num_mmu == 0)
 		return PTR_ERR(iommu->bases[0]);
 
-<<<<<<< HEAD
 	iommu->reset_disabled = device_property_read_bool(dev,
 					"rockchip,disable-mmu-reset");
 
@@ -1714,52 +1277,6 @@ static const struct dev_pm_ops rk_iommu_pm_ops = {
 				pm_runtime_force_resume)
 };
 
-=======
-	iommu->num_irq = platform_irq_count(pdev);
-	if (iommu->num_irq < 0)
-		return iommu->num_irq;
-	if (iommu->num_irq == 0)
-		return -ENXIO;
-
-	iommu->irq = devm_kcalloc(dev, iommu->num_irq, sizeof(*iommu->irq),
-				  GFP_KERNEL);
-	if (!iommu->irq)
-		return -ENOMEM;
-
-	for (i = 0; i < iommu->num_irq; i++) {
-		iommu->irq[i] = platform_get_irq(pdev, i);
-		if (iommu->irq[i] < 0) {
-			dev_err(dev, "Failed to get IRQ, %d\n", iommu->irq[i]);
-			return -ENXIO;
-		}
-	}
-
-	iommu->reset_disabled = device_property_read_bool(dev,
-					"rockchip,disable-mmu-reset");
-
-	err = iommu_device_sysfs_add(&iommu->iommu, dev, NULL, dev_name(dev));
-	if (err)
-		return err;
-
-	iommu_device_set_ops(&iommu->iommu, &rk_iommu_ops);
-	err = iommu_device_register(&iommu->iommu);
-
-	return err;
-}
-
-static int rk_iommu_remove(struct platform_device *pdev)
-{
-	struct rk_iommu *iommu = platform_get_drvdata(pdev);
-
-	if (iommu) {
-		iommu_device_sysfs_remove(&iommu->iommu);
-		iommu_device_unregister(&iommu->iommu);
-	}
-
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct of_device_id rk_iommu_dt_ids[] = {
 	{ .compatible = "rockchip,iommu" },
 	{ /* sentinel */ }
@@ -1768,60 +1285,20 @@ MODULE_DEVICE_TABLE(of, rk_iommu_dt_ids);
 
 static struct platform_driver rk_iommu_driver = {
 	.probe = rk_iommu_probe,
-<<<<<<< HEAD
 	.shutdown = rk_iommu_shutdown,
 	.driver = {
 		   .name = "rk_iommu",
 		   .of_match_table = rk_iommu_dt_ids,
 		   .pm = &rk_iommu_pm_ops,
 		   .suppress_bind_attrs = true,
-=======
-	.remove = rk_iommu_remove,
-	.driver = {
-		   .name = "rk_iommu",
-		   .of_match_table = rk_iommu_dt_ids,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 };
 
 static int __init rk_iommu_init(void)
 {
-<<<<<<< HEAD
 	return platform_driver_register(&rk_iommu_driver);
 }
 subsys_initcall(rk_iommu_init);
-=======
-	struct device_node *np;
-	int ret;
-
-	np = of_find_matching_node(NULL, rk_iommu_dt_ids);
-	if (!np)
-		return 0;
-
-	of_node_put(np);
-
-	ret = bus_set_iommu(&platform_bus_type, &rk_iommu_ops);
-	if (ret)
-		return ret;
-
-	ret = platform_driver_register(&rk_iommu_domain_driver);
-	if (ret)
-		return ret;
-
-	ret = platform_driver_register(&rk_iommu_driver);
-	if (ret)
-		platform_driver_unregister(&rk_iommu_domain_driver);
-	return ret;
-}
-static void __exit rk_iommu_exit(void)
-{
-	platform_driver_unregister(&rk_iommu_driver);
-	platform_driver_unregister(&rk_iommu_domain_driver);
-}
-
-subsys_initcall(rk_iommu_init);
-module_exit(rk_iommu_exit);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 MODULE_DESCRIPTION("IOMMU API for Rockchip");
 MODULE_AUTHOR("Simon Xue <xxm@rock-chips.com> and Daniel Kurtz <djkurtz@chromium.org>");

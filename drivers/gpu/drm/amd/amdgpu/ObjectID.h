@@ -136,10 +136,7 @@
 #define GENERIC_OBJECT_ID_PX2_NON_DRIVABLE        0x02
 #define GENERIC_OBJECT_ID_MXM_OPM                 0x03
 #define GENERIC_OBJECT_ID_STEREO_PIN              0x04        //This object could show up from Misc Object table, it follows ATOM_OBJECT format, and contains one ATOM_OBJECT_GPIO_CNTL_RECORD for the stereo pin
-<<<<<<< HEAD
 #define GENERIC_OBJECT_ID_BRACKET_LAYOUT          0x05
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /****************************************************/
 /* Graphics Object ENUM ID Definition               */
@@ -718,7 +715,6 @@
                                                  GRAPH_OBJECT_ENUM_ID1 << ENUM_ID_SHIFT |\
                                                  GENERIC_OBJECT_ID_STEREO_PIN << OBJECT_ID_SHIFT)
 
-<<<<<<< HEAD
 #define GENERICOBJECT_BRACKET_LAYOUT_ENUM_ID1    (GRAPH_OBJECT_TYPE_GENERIC << OBJECT_TYPE_SHIFT |\
                                                  GRAPH_OBJECT_ENUM_ID1 << ENUM_ID_SHIFT |\
                                                  GENERIC_OBJECT_ID_BRACKET_LAYOUT << OBJECT_ID_SHIFT)
@@ -726,8 +722,6 @@
 #define GENERICOBJECT_BRACKET_LAYOUT_ENUM_ID2    (GRAPH_OBJECT_TYPE_GENERIC << OBJECT_TYPE_SHIFT |\
                                                  GRAPH_OBJECT_ENUM_ID2 << ENUM_ID_SHIFT |\
                                                  GENERIC_OBJECT_ID_BRACKET_LAYOUT << OBJECT_ID_SHIFT)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /****************************************************/
 /* Object Cap definition - Shared with BIOS         */
 /****************************************************/

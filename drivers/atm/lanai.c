@@ -1586,13 +1586,8 @@ static int service_buffer_allocate(struct lanai_dev *lanai)
 	    lanai->pci);
 	if (unlikely(lanai->service.start == NULL))
 		return -ENOMEM;
-<<<<<<< HEAD
 	DPRINTK("allocated service buffer at %p, size %zu(%d)\n",
 	    lanai->service.start,
-=======
-	DPRINTK("allocated service buffer at 0x%08lX, size %zu(%d)\n",
-	    (unsigned long) lanai->service.start,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    lanai_buf_size(&lanai->service),
 	    lanai_buf_size_cardorder(&lanai->service));
 	/* Clear ServWrite register to be safe */
@@ -1766,15 +1761,9 @@ static void iter_dequeue(struct lanai_dev *lanai, vci_t vci)
 }
 #endif /* !DEBUG_RW */
 
-<<<<<<< HEAD
 static void lanai_timed_poll(struct timer_list *t)
 {
 	struct lanai_dev *lanai = from_timer(lanai, t, timer);
-=======
-static void lanai_timed_poll(unsigned long arg)
-{
-	struct lanai_dev *lanai = (struct lanai_dev *) arg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifndef DEBUG_RW
 	unsigned long flags;
 #ifdef USE_POWERDOWN
@@ -1801,15 +1790,8 @@ static void lanai_timed_poll(unsigned long arg)
 
 static inline void lanai_timed_poll_start(struct lanai_dev *lanai)
 {
-<<<<<<< HEAD
 	timer_setup(&lanai->timer, lanai_timed_poll, 0);
 	lanai->timer.expires = jiffies + LANAI_POLL_PERIOD;
-=======
-	init_timer(&lanai->timer);
-	lanai->timer.expires = jiffies + LANAI_POLL_PERIOD;
-	lanai->timer.data = (unsigned long) lanai;
-	lanai->timer.function = lanai_timed_poll;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	add_timer(&lanai->timer);
 }
 
@@ -2236,15 +2218,9 @@ static int lanai_dev_open(struct atm_dev *atmdev)
 #endif
 	memcpy(atmdev->esi, eeprom_mac(lanai), ESI_LEN);
 	lanai_timed_poll_start(lanai);
-<<<<<<< HEAD
 	printk(KERN_NOTICE DEV_LABEL "(itf %d): rev.%d, base=%p, irq=%u "
 		"(%pMF)\n", lanai->number, (int) lanai->pci->revision,
 		lanai->base, lanai->pci->irq, atmdev->esi);
-=======
-	printk(KERN_NOTICE DEV_LABEL "(itf %d): rev.%d, base=0x%lx, irq=%u "
-		"(%pMF)\n", lanai->number, (int) lanai->pci->revision,
-		(unsigned long) lanai->base, lanai->pci->irq, atmdev->esi);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	printk(KERN_NOTICE DEV_LABEL "(itf %d): LANAI%s, serialno=%u(0x%X), "
 	    "board_rev=%d\n", lanai->number,
 	    lanai->type==lanai2 ? "2" : "HB", (unsigned int) lanai->serialno,

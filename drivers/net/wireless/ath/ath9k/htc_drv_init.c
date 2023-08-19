@@ -233,11 +233,7 @@ static void ath9k_reg_notifier(struct wiphy *wiphy,
 
 static unsigned int ath9k_regread(void *hw_priv, u32 reg_offset)
 {
-<<<<<<< HEAD
 	struct ath_hw *ah = hw_priv;
-=======
-	struct ath_hw *ah = (struct ath_hw *) hw_priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ath_common *common = ath9k_hw_common(ah);
 	struct ath9k_htc_priv *priv = (struct ath9k_htc_priv *) common->priv;
 	__be32 val, reg = cpu_to_be32(reg_offset);
@@ -259,11 +255,7 @@ static unsigned int ath9k_regread(void *hw_priv, u32 reg_offset)
 static void ath9k_multi_regread(void *hw_priv, u32 *addr,
 				u32 *val, u16 count)
 {
-<<<<<<< HEAD
 	struct ath_hw *ah = hw_priv;
-=======
-	struct ath_hw *ah = (struct ath_hw *) hw_priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ath_common *common = ath9k_hw_common(ah);
 	struct ath9k_htc_priv *priv = (struct ath9k_htc_priv *) common->priv;
 	__be32 tmpaddr[8];
@@ -309,11 +301,7 @@ static void ath9k_regwrite_multi(struct ath_common *common)
 
 static void ath9k_regwrite_single(void *hw_priv, u32 val, u32 reg_offset)
 {
-<<<<<<< HEAD
 	struct ath_hw *ah = hw_priv;
-=======
-	struct ath_hw *ah = (struct ath_hw *) hw_priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ath_common *common = ath9k_hw_common(ah);
 	struct ath9k_htc_priv *priv = (struct ath9k_htc_priv *) common->priv;
 	const __be32 buf[2] = {
@@ -334,11 +322,7 @@ static void ath9k_regwrite_single(void *hw_priv, u32 val, u32 reg_offset)
 
 static void ath9k_regwrite_buffer(void *hw_priv, u32 val, u32 reg_offset)
 {
-<<<<<<< HEAD
 	struct ath_hw *ah = hw_priv;
-=======
-	struct ath_hw *ah = (struct ath_hw *) hw_priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ath_common *common = ath9k_hw_common(ah);
 	struct ath9k_htc_priv *priv = (struct ath9k_htc_priv *) common->priv;
 
@@ -361,11 +345,7 @@ static void ath9k_regwrite_buffer(void *hw_priv, u32 val, u32 reg_offset)
 
 static void ath9k_regwrite(void *hw_priv, u32 val, u32 reg_offset)
 {
-<<<<<<< HEAD
 	struct ath_hw *ah = hw_priv;
-=======
-	struct ath_hw *ah = (struct ath_hw *) hw_priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ath_common *common = ath9k_hw_common(ah);
 	struct ath9k_htc_priv *priv = (struct ath9k_htc_priv *) common->priv;
 
@@ -377,11 +357,7 @@ static void ath9k_regwrite(void *hw_priv, u32 val, u32 reg_offset)
 
 static void ath9k_enable_regwrite_buffer(void *hw_priv)
 {
-<<<<<<< HEAD
 	struct ath_hw *ah = hw_priv;
-=======
-	struct ath_hw *ah = (struct ath_hw *) hw_priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ath_common *common = ath9k_hw_common(ah);
 	struct ath9k_htc_priv *priv = (struct ath9k_htc_priv *) common->priv;
 
@@ -390,11 +366,7 @@ static void ath9k_enable_regwrite_buffer(void *hw_priv)
 
 static void ath9k_regwrite_flush(void *hw_priv)
 {
-<<<<<<< HEAD
 	struct ath_hw *ah = hw_priv;
-=======
-	struct ath_hw *ah = (struct ath_hw *) hw_priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ath_common *common = ath9k_hw_common(ah);
 	struct ath9k_htc_priv *priv = (struct ath9k_htc_priv *) common->priv;
 
@@ -411,11 +383,7 @@ static void ath9k_regwrite_flush(void *hw_priv)
 static void ath9k_reg_rmw_buffer(void *hw_priv,
 				 u32 reg_offset, u32 set, u32 clr)
 {
-<<<<<<< HEAD
 	struct ath_hw *ah = hw_priv;
-=======
-	struct ath_hw *ah = (struct ath_hw *) hw_priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ath_common *common = ath9k_hw_common(ah);
 	struct ath9k_htc_priv *priv = (struct ath9k_htc_priv *) common->priv;
 	u32 rsp_status;
@@ -453,11 +421,7 @@ static void ath9k_reg_rmw_buffer(void *hw_priv,
 
 static void ath9k_reg_rmw_flush(void *hw_priv)
 {
-<<<<<<< HEAD
 	struct ath_hw *ah = hw_priv;
-=======
-	struct ath_hw *ah = (struct ath_hw *) hw_priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ath_common *common = ath9k_hw_common(ah);
 	struct ath9k_htc_priv *priv = (struct ath9k_htc_priv *) common->priv;
 	u32 rsp_status;
@@ -489,11 +453,7 @@ static void ath9k_reg_rmw_flush(void *hw_priv)
 
 static void ath9k_enable_rmw_buffer(void *hw_priv)
 {
-<<<<<<< HEAD
 	struct ath_hw *ah = hw_priv;
-=======
-	struct ath_hw *ah = (struct ath_hw *) hw_priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ath_common *common = ath9k_hw_common(ah);
 	struct ath9k_htc_priv *priv = (struct ath9k_htc_priv *) common->priv;
 
@@ -506,11 +466,7 @@ static void ath9k_enable_rmw_buffer(void *hw_priv)
 static u32 ath9k_reg_rmw_single(void *hw_priv,
 				 u32 reg_offset, u32 set, u32 clr)
 {
-<<<<<<< HEAD
 	struct ath_hw *ah = hw_priv;
-=======
-	struct ath_hw *ah = (struct ath_hw *) hw_priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ath_common *common = ath9k_hw_common(ah);
 	struct ath9k_htc_priv *priv = (struct ath9k_htc_priv *) common->priv;
 	struct register_rmw buf, buf_ret;
@@ -534,11 +490,7 @@ static u32 ath9k_reg_rmw_single(void *hw_priv,
 
 static u32 ath9k_reg_rmw(void *hw_priv, u32 reg_offset, u32 set, u32 clr)
 {
-<<<<<<< HEAD
 	struct ath_hw *ah = hw_priv;
-=======
-	struct ath_hw *ah = (struct ath_hw *) hw_priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ath_common *common = ath9k_hw_common(ah);
 	struct ath9k_htc_priv *priv = (struct ath9k_htc_priv *) common->priv;
 
@@ -639,11 +591,7 @@ static void ath9k_init_misc(struct ath9k_htc_priv *priv)
 {
 	struct ath_common *common = ath9k_hw_common(priv->ah);
 
-<<<<<<< HEAD
 	eth_broadcast_addr(common->bssidmask);
-=======
-	memcpy(common->bssidmask, ath_bcast_mac, ETH_ALEN);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	common->last_rssi = ATH_RSSI_DUMMY_MARKER;
 	priv->ah->opmode = NL80211_IFTYPE_STATION;
@@ -706,12 +654,7 @@ static int ath9k_init_priv(struct ath9k_htc_priv *priv,
 	INIT_DELAYED_WORK(&priv->ani_work, ath9k_htc_ani_work);
 	INIT_WORK(&priv->ps_work, ath9k_ps_work);
 	INIT_WORK(&priv->fatal_work, ath9k_fatal_work);
-<<<<<<< HEAD
 	timer_setup(&priv->tx.cleanup_timer, ath9k_htc_tx_cleanup_timer, 0);
-=======
-	setup_timer(&priv->tx.cleanup_timer, ath9k_htc_tx_cleanup_timer,
-		    (unsigned long)priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Cache line size is used to size and align various
@@ -786,10 +729,7 @@ static void ath9k_set_hw_capab(struct ath9k_htc_priv *priv,
 	ieee80211_hw_set(hw, SPECTRUM_MGMT);
 	ieee80211_hw_set(hw, SIGNAL_DBM);
 	ieee80211_hw_set(hw, AMPDU_AGGREGATION);
-<<<<<<< HEAD
 	ieee80211_hw_set(hw, DOESNT_SUPPORT_QOS_NDP);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ath9k_ps_enable)
 		ieee80211_hw_set(hw, SUPPORTS_PS);
@@ -993,14 +933,8 @@ err_init:
 int ath9k_htc_probe_device(struct htc_target *htc_handle, struct device *dev,
 			   u16 devid, char *product, u32 drv_info)
 {
-<<<<<<< HEAD
 	struct ieee80211_hw *hw;
 	struct ath9k_htc_priv *priv;
-=======
-	struct hif_device_usb *hif_dev;
-	struct ath9k_htc_priv *priv;
-	struct ieee80211_hw *hw;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	hw = ieee80211_alloc_hw(sizeof(struct ath9k_htc_priv), &ath9k_htc_ops);
@@ -1035,14 +969,7 @@ int ath9k_htc_probe_device(struct htc_target *htc_handle, struct device *dev,
 	return 0;
 
 err_init:
-<<<<<<< HEAD
 	ath9k_deinit_wmi(priv);
-=======
-	ath9k_stop_wmi(priv);
-	hif_dev = (struct hif_device_usb *)htc_handle->hif_dev;
-	ath9k_hif_usb_dealloc_urbs(hif_dev);
-	ath9k_destoy_wmi(priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_free:
 	ieee80211_free_hw(hw);
 	return ret;
@@ -1057,11 +984,7 @@ void ath9k_htc_disconnect_device(struct htc_target *htc_handle, bool hotunplug)
 			htc_handle->drv_priv->ah->ah_flags |= AH_UNPLUGGED;
 
 		ath9k_deinit_device(htc_handle->drv_priv);
-<<<<<<< HEAD
 		ath9k_deinit_wmi(htc_handle->drv_priv);
-=======
-		ath9k_stop_wmi(htc_handle->drv_priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ieee80211_free_hw(htc_handle->drv_priv->hw);
 	}
 }

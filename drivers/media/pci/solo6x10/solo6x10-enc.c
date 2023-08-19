@@ -175,11 +175,7 @@ out:
 	return 0;
 }
 
-<<<<<<< HEAD
 /*
-=======
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Set channel Quality Profile (0-3).
  */
 void solo_s_jpeg_qp(struct solo_dev *solo_dev, unsigned int ch,

@@ -185,11 +185,7 @@ static const struct ddb_info ddb_ctv7 = {
 	.board_control_2 = 4,
 };
 
-<<<<<<< HEAD
 static const struct ddb_info ddb_satixs2v3 = {
-=======
-static const struct ddb_info ddb_satixS2v3 = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.type     = DDB_OCTOPUS,
 	.name     = "Mystique SaTiX-S2 V3 DVB adapter",
 	.regmap   = &octopus_map,
@@ -315,7 +311,6 @@ static const struct ddb_info ddb_s2_48 = {
 	.tempmon_irq = 24,
 };
 
-<<<<<<< HEAD
 static const struct ddb_info ddb_s2x_48 = {
 	.type     = DDB_OCTOPUS_MCI,
 	.name     = "Digital Devices MAX SX8",
@@ -327,8 +322,6 @@ static const struct ddb_info ddb_s2x_48 = {
 	.mci_type = 0,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /****************************************************************************/
 /****************************************************************************/
 /****************************************************************************/
@@ -354,11 +347,7 @@ static const struct ddb_device_id ddb_device_ids[] = {
 	DDB_DEVID(0x0006, 0x0022, ddb_v7),
 	DDB_DEVID(0x0006, 0x0024, ddb_v7a),
 	DDB_DEVID(0x0003, 0x0030, ddb_dvbct),
-<<<<<<< HEAD
 	DDB_DEVID(0x0003, 0xdb03, ddb_satixs2v3),
-=======
-	DDB_DEVID(0x0003, 0xdb03, ddb_satixS2v3),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DDB_DEVID(0x0006, 0x0031, ddb_ctv7),
 	DDB_DEVID(0x0006, 0x0032, ddb_ctv7),
 	DDB_DEVID(0x0006, 0x0033, ddb_ctv7),
@@ -368,10 +357,7 @@ static const struct ddb_device_id ddb_device_ids[] = {
 	DDB_DEVID(0x0008, 0x0036, ddb_isdbt_8),
 	DDB_DEVID(0x0008, 0x0037, ddb_c2t2i_v0_8),
 	DDB_DEVID(0x0008, 0x0038, ddb_c2t2i_8),
-<<<<<<< HEAD
 	DDB_DEVID(0x0009, 0x0025, ddb_s2x_48),
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DDB_DEVID(0x0006, 0x0039, ddb_ctv7),
 	DDB_DEVID(0x0011, 0x0040, ddb_ci),
 	DDB_DEVID(0x0011, 0x0041, ddb_cis),
@@ -393,13 +379,8 @@ const struct ddb_info *get_ddb_info(u16 vendor, u16 device,
 		if (vendor == id->vendor &&
 		    device == id->device &&
 		    subvendor == id->subvendor &&
-<<<<<<< HEAD
 		    (subdevice == id->subdevice ||
 		     id->subdevice == 0xffff))
-=======
-		    ((subdevice == id->subdevice) ||
-		     (id->subdevice == 0xffff)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return id->info;
 	}
 

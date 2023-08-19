@@ -22,9 +22,6 @@ int io_reserve_memtype(resource_size_t start, resource_size_t end,
 
 void io_free_memtype(resource_size_t start, resource_size_t end);
 
-<<<<<<< HEAD
 bool pat_pfn_immune_to_uc_mtrr(unsigned long pfn);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* _ASM_X86_PAT_H */

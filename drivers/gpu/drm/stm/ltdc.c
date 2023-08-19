@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Copyright (C) STMicroelectronics SA 2017
  *
@@ -9,11 +6,6 @@
  *          Yannick Fertre <yannick.fertre@st.com>
  *          Fabien Dessenne <fabien.dessenne@st.com>
  *          Mickael Reulier <mickael.reulier@st.com>
-<<<<<<< HEAD
-=======
- *
- * License terms:  GNU General Public License (GPL), version 2
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/clk.h>
@@ -41,11 +33,8 @@
 
 #define MAX_IRQ 4
 
-<<<<<<< HEAD
 #define MAX_ENDPOINTS 2
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define HWVER_10200 0x010200
 #define HWVER_10300 0x010300
 #define HWVER_20101 0x020101
@@ -187,11 +176,8 @@
 
 #define LXCFBLNR_CFBLN	GENMASK(10, 0)	/* Color Frame Buffer Line Number */
 
-<<<<<<< HEAD
 #define CLUT_SIZE	256
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CONSTA_MAX	0xFF		/* CONSTant Alpha MAX= 1.0 */
 #define BF1_PAXCA	0x600		/* Pixel Alpha x Constant Alpha */
 #define BF1_CA		0x400		/* Constant Alpha */
@@ -343,7 +329,6 @@ static inline u32 to_drm_pixelformat(enum ltdc_pix_fmt pf)
 	}
 }
 
-<<<<<<< HEAD
 static inline u32 get_pixelformat_without_alpha(u32 drm)
 {
 	switch (drm) {
@@ -364,8 +349,6 @@ static inline u32 get_pixelformat_without_alpha(u32 drm)
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static irqreturn_t ltdc_irq_thread(int irq, void *arg)
 {
 	struct drm_device *ddev = arg;
@@ -403,7 +386,6 @@ static irqreturn_t ltdc_irq(int irq, void *arg)
  * DRM_CRTC
  */
 
-<<<<<<< HEAD
 static void ltdc_crtc_update_clut(struct drm_crtc *crtc)
 {
 	struct ltdc_device *ldev = crtc_to_ltdc(crtc);
@@ -423,8 +405,6 @@ static void ltdc_crtc_update_clut(struct drm_crtc *crtc)
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void ltdc_crtc_atomic_enable(struct drm_crtc *crtc,
 				    struct drm_crtc_state *old_state)
 {
@@ -466,7 +446,6 @@ static void ltdc_crtc_atomic_disable(struct drm_crtc *crtc,
 	reg_set(ldev->regs, LTDC_SRCR, SRCR_IMR);
 }
 
-<<<<<<< HEAD
 #define CLK_TOLERANCE_HZ 50
 
 static enum drm_mode_status
@@ -532,17 +511,11 @@ static bool ltdc_crtc_mode_fixup(struct drm_crtc *crtc,
 	return true;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void ltdc_crtc_mode_set_nofb(struct drm_crtc *crtc)
 {
 	struct ltdc_device *ldev = crtc_to_ltdc(crtc);
 	struct drm_display_mode *mode = &crtc->state->adjusted_mode;
 	struct videomode vm;
-<<<<<<< HEAD
-=======
-	int rate = mode->clock * 1000;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 hsync, vsync, accum_hbp, accum_vbp, accum_act_w, accum_act_h;
 	u32 total_width, total_height;
 	u32 val;
@@ -565,18 +538,6 @@ static void ltdc_crtc_mode_set_nofb(struct drm_crtc *crtc)
 	total_width = accum_act_w + vm.hfront_porch;
 	total_height = accum_act_h + vm.vfront_porch;
 
-<<<<<<< HEAD
-=======
-	clk_disable(ldev->pixel_clk);
-
-	if (clk_set_rate(ldev->pixel_clk, rate) < 0) {
-		DRM_ERROR("Cannot set rate (%dHz) for pixel clk\n", rate);
-		return;
-	}
-
-	clk_enable(ldev->pixel_clk);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Configures the HS, VS, DE and PC polarities. Default Active Low */
 	val = 0;
 
@@ -622,11 +583,8 @@ static void ltdc_crtc_atomic_flush(struct drm_crtc *crtc,
 
 	DRM_DEBUG_ATOMIC("\n");
 
-<<<<<<< HEAD
 	ltdc_crtc_update_clut(crtc);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Commit shadow registers = update planes at next vblank */
 	reg_set(ldev->regs, LTDC_SRCR, SRCR_VBR);
 
@@ -643,26 +601,17 @@ static void ltdc_crtc_atomic_flush(struct drm_crtc *crtc,
 }
 
 static const struct drm_crtc_helper_funcs ltdc_crtc_helper_funcs = {
-<<<<<<< HEAD
 	.mode_valid = ltdc_crtc_mode_valid,
 	.mode_fixup = ltdc_crtc_mode_fixup,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.mode_set_nofb = ltdc_crtc_mode_set_nofb,
 	.atomic_flush = ltdc_crtc_atomic_flush,
 	.atomic_enable = ltdc_crtc_atomic_enable,
 	.atomic_disable = ltdc_crtc_atomic_disable,
 };
 
-<<<<<<< HEAD
 static int ltdc_crtc_enable_vblank(struct drm_crtc *crtc)
 {
 	struct ltdc_device *ldev = crtc_to_ltdc(crtc);
-=======
-int ltdc_crtc_enable_vblank(struct drm_device *ddev, unsigned int pipe)
-{
-	struct ltdc_device *ldev = ddev->dev_private;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	DRM_DEBUG_DRIVER("\n");
 	reg_set(ldev->regs, LTDC_IER, IER_LIE);
@@ -670,15 +619,9 @@ int ltdc_crtc_enable_vblank(struct drm_device *ddev, unsigned int pipe)
 	return 0;
 }
 
-<<<<<<< HEAD
 static void ltdc_crtc_disable_vblank(struct drm_crtc *crtc)
 {
 	struct ltdc_device *ldev = crtc_to_ltdc(crtc);
-=======
-void ltdc_crtc_disable_vblank(struct drm_device *ddev, unsigned int pipe)
-{
-	struct ltdc_device *ldev = ddev->dev_private;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	DRM_DEBUG_DRIVER("\n");
 	reg_clear(ldev->regs, LTDC_IER, IER_LIE);
@@ -691,12 +634,9 @@ static const struct drm_crtc_funcs ltdc_crtc_funcs = {
 	.reset = drm_atomic_helper_crtc_reset,
 	.atomic_duplicate_state = drm_atomic_helper_crtc_duplicate_state,
 	.atomic_destroy_state = drm_atomic_helper_crtc_destroy_state,
-<<<<<<< HEAD
 	.enable_vblank = ltdc_crtc_enable_vblank,
 	.disable_vblank = ltdc_crtc_disable_vblank,
 	.gamma_set = drm_atomic_helper_legacy_gamma_set,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /*
@@ -721,11 +661,7 @@ static int ltdc_plane_atomic_check(struct drm_plane *plane,
 	src_h = state->src_h >> 16;
 
 	/* Reject scaling */
-<<<<<<< HEAD
 	if (src_w != state->crtc_w || src_h != state->crtc_h) {
-=======
-	if ((src_w != state->crtc_w) || (src_h != state->crtc_h)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		DRM_ERROR("Scaling is not supported");
 		return -EINVAL;
 	}
@@ -806,7 +742,6 @@ static void ltdc_plane_atomic_update(struct drm_plane *plane,
 
 	/* Specifies the blending factors */
 	val = BF1_PAXCA | BF2_1PAXCA;
-<<<<<<< HEAD
 	if (!fb->format->has_alpha)
 		val = BF1_CA | BF2_1CA;
 
@@ -815,8 +750,6 @@ static void ltdc_plane_atomic_update(struct drm_plane *plane,
 	    plane->type != DRM_PLANE_TYPE_PRIMARY)
 		val = BF1_PAXCA | BF2_1PAXCA;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	reg_update_bits(ldev->regs, LTDC_L1BFCR + lofs,
 			LXBFCR_BF2 | LXBFCR_BF1, val);
 
@@ -836,11 +769,8 @@ static void ltdc_plane_atomic_update(struct drm_plane *plane,
 	reg_update_bits(ldev->regs, LTDC_L1CR + lofs,
 			LXCR_LEN | LXCR_CLUTEN, val);
 
-<<<<<<< HEAD
 	ldev->plane_fpsi[plane->index].counter++;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&ldev->err_lock);
 	if (ldev->error_status & ISR_FUIF) {
 		DRM_DEBUG_DRIVER("Fifo underrun\n");
@@ -866,7 +796,6 @@ static void ltdc_plane_atomic_disable(struct drm_plane *plane,
 			 oldstate->crtc->base.id, plane->base.id);
 }
 
-<<<<<<< HEAD
 static void ltdc_plane_atomic_print_state(struct drm_printer *p,
 					  const struct drm_plane_state *state)
 {
@@ -886,8 +815,6 @@ static void ltdc_plane_atomic_print_state(struct drm_printer *p,
 	fpsi->counter = 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct drm_plane_funcs ltdc_plane_funcs = {
 	.update_plane = drm_atomic_helper_update_plane,
 	.disable_plane = drm_atomic_helper_disable_plane,
@@ -895,10 +822,7 @@ static const struct drm_plane_funcs ltdc_plane_funcs = {
 	.reset = drm_atomic_helper_plane_reset,
 	.atomic_duplicate_state = drm_atomic_helper_plane_duplicate_state,
 	.atomic_destroy_state = drm_atomic_helper_plane_destroy_state,
-<<<<<<< HEAD
 	.atomic_print_state = ltdc_plane_atomic_print_state,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct drm_plane_helper_funcs ltdc_plane_helper_funcs = {
@@ -916,13 +840,8 @@ static struct drm_plane *ltdc_plane_create(struct drm_device *ddev,
 	struct device *dev = ddev->dev;
 	struct drm_plane *plane;
 	unsigned int i, nb_fmt = 0;
-<<<<<<< HEAD
 	u32 formats[NB_PF * 2];
 	u32 drm_fmt, drm_fmt_no_alpha;
-=======
-	u32 formats[NB_PF];
-	u32 drm_fmt;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	/* Get supported pixel formats */
@@ -931,7 +850,6 @@ static struct drm_plane *ltdc_plane_create(struct drm_device *ddev,
 		if (!drm_fmt)
 			continue;
 		formats[nb_fmt++] = drm_fmt;
-<<<<<<< HEAD
 
 		/* Add the no-alpha related format if any & supported */
 		drm_fmt_no_alpha = get_pixelformat_without_alpha(drm_fmt);
@@ -944,27 +862,17 @@ static struct drm_plane *ltdc_plane_create(struct drm_device *ddev,
 			continue;
 
 		formats[nb_fmt++] = drm_fmt_no_alpha;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	plane = devm_kzalloc(dev, sizeof(*plane), GFP_KERNEL);
 	if (!plane)
-<<<<<<< HEAD
 		return NULL;
-=======
-		return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = drm_universal_plane_init(ddev, plane, possible_crtcs,
 				       &ltdc_plane_funcs, formats, nb_fmt,
 				       NULL, type, NULL);
 	if (ret < 0)
-<<<<<<< HEAD
 		return NULL;
-=======
-		return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	drm_plane_helper_add(plane, &ltdc_plane_helper_funcs);
 
@@ -1004,12 +912,9 @@ static int ltdc_crtc_init(struct drm_device *ddev, struct drm_crtc *crtc)
 
 	drm_crtc_helper_add(crtc, &ltdc_crtc_helper_funcs);
 
-<<<<<<< HEAD
 	drm_mode_crtc_set_gamma_size(crtc, CLUT_SIZE);
 	drm_crtc_enable_color_mgmt(crtc, 0, false, CLUT_SIZE);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DRM_DEBUG_DRIVER("CRTC:%d created\n", crtc->base.id);
 
 	/* Add planes. Note : the first layer is used by primary plane */
@@ -1037,14 +942,8 @@ static const struct drm_encoder_funcs ltdc_encoder_funcs = {
 	.destroy = drm_encoder_cleanup,
 };
 
-<<<<<<< HEAD
 static int ltdc_encoder_init(struct drm_device *ddev, struct drm_bridge *bridge)
 {
-=======
-static int ltdc_encoder_init(struct drm_device *ddev)
-{
-	struct ltdc_device *ldev = ddev->dev_private;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_encoder *encoder;
 	int ret;
 
@@ -1058,11 +957,7 @@ static int ltdc_encoder_init(struct drm_device *ddev)
 	drm_encoder_init(ddev, encoder, &ltdc_encoder_funcs,
 			 DRM_MODE_ENCODER_DPI, NULL);
 
-<<<<<<< HEAD
 	ret = drm_bridge_attach(encoder, bridge, NULL);
-=======
-	ret = drm_bridge_attach(encoder, ldev->bridge, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		drm_encoder_cleanup(encoder);
 		return -EINVAL;
@@ -1094,7 +989,6 @@ static int ltdc_get_caps(struct drm_device *ddev)
 	case HWVER_10300:
 		ldev->caps.reg_ofs = REG_OFS_NONE;
 		ldev->caps.pix_fmt_hw = ltdc_pix_fmt_a0;
-<<<<<<< HEAD
 		/*
 		 * Hw older versions support non-alpha color formats derived
 		 * from native alpha color formats only on the primary layer.
@@ -1106,17 +1000,12 @@ static int ltdc_get_caps(struct drm_device *ddev)
 		ldev->caps.pad_max_freq_hz = 90000000;
 		if (ldev->caps.hw_version == HWVER_10200)
 			ldev->caps.pad_max_freq_hz = 65000000;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case HWVER_20101:
 		ldev->caps.reg_ofs = REG_OFS_4;
 		ldev->caps.pix_fmt_hw = ltdc_pix_fmt_a1;
-<<<<<<< HEAD
 		ldev->caps.non_alpha_only_l1 = false;
 		ldev->caps.pad_max_freq_hz = 150000000;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		return -ENODEV;
@@ -1131,7 +1020,6 @@ int ltdc_load(struct drm_device *ddev)
 	struct ltdc_device *ldev = ddev->dev_private;
 	struct device *dev = ddev->dev;
 	struct device_node *np = dev->of_node;
-<<<<<<< HEAD
 	struct drm_bridge *bridge[MAX_ENDPOINTS] = {NULL};
 	struct drm_panel *panel[MAX_ENDPOINTS] = {NULL};
 	struct drm_crtc *crtc;
@@ -1158,20 +1046,6 @@ int ltdc_load(struct drm_device *ddev)
 
 	if (endpoint_not_ready)
 		return endpoint_not_ready;
-=======
-	struct drm_bridge *bridge;
-	struct drm_panel *panel;
-	struct drm_crtc *crtc;
-	struct reset_control *rstc;
-	struct resource *res;
-	int irq, ret, i;
-
-	DRM_DEBUG_DRIVER("\n");
-
-	ret = drm_of_find_panel_or_bridge(np, 0, 0, &panel, &bridge);
-	if (ret)
-		return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rstc = devm_reset_control_get_exclusive(dev, NULL);
 
@@ -1189,15 +1063,6 @@ int ltdc_load(struct drm_device *ddev)
 	}
 
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-<<<<<<< HEAD
-=======
-	if (!res) {
-		DRM_ERROR("Unable to get resource\n");
-		ret = -ENODEV;
-		goto err;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ldev->regs = devm_ioremap_resource(dev, res);
 	if (IS_ERR(ldev->regs)) {
 		DRM_ERROR("Unable to get ltdc registers\n");
@@ -1219,16 +1084,11 @@ int ltdc_load(struct drm_device *ddev)
 		}
 	}
 
-<<<<<<< HEAD
 	if (!IS_ERR(rstc)) {
 		reset_control_assert(rstc);
 		usleep_range(10, 20);
 		reset_control_deassert(rstc);
 	}
-=======
-	if (!IS_ERR(rstc))
-		reset_control_deassert(rstc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Disable interrupts */
 	reg_clear(ldev->regs, LTDC_IER,
@@ -1243,7 +1103,6 @@ int ltdc_load(struct drm_device *ddev)
 
 	DRM_INFO("ltdc hw version 0x%08x - ready\n", ldev->caps.hw_version);
 
-<<<<<<< HEAD
 	/* Add endpoints panels or bridges if any */
 	for (i = 0; i < MAX_ENDPOINTS; i++) {
 		if (panel[i]) {
@@ -1263,24 +1122,6 @@ int ltdc_load(struct drm_device *ddev)
 				goto err;
 			}
 		}
-=======
-	if (panel) {
-		bridge = drm_panel_bridge_add(panel, DRM_MODE_CONNECTOR_DPI);
-		if (IS_ERR(bridge)) {
-			DRM_ERROR("Failed to create panel-bridge\n");
-			ret = PTR_ERR(bridge);
-			goto err;
-		}
-		ldev->is_panel_bridge = true;
-	}
-
-	ldev->bridge = bridge;
-
-	ret = ltdc_encoder_init(ddev);
-	if (ret) {
-		DRM_ERROR("Failed to init encoder\n");
-		goto err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	crtc = devm_kzalloc(dev, sizeof(*crtc), GFP_KERNEL);
@@ -1308,13 +1149,8 @@ int ltdc_load(struct drm_device *ddev)
 	return 0;
 
 err:
-<<<<<<< HEAD
 	for (i = 0; i < MAX_ENDPOINTS; i++)
 		drm_panel_bridge_remove(bridge[i]);
-=======
-	if (ldev->is_panel_bridge)
-		drm_panel_bridge_remove(bridge);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	clk_disable_unprepare(ldev->pixel_clk);
 
@@ -1324,20 +1160,12 @@ err:
 void ltdc_unload(struct drm_device *ddev)
 {
 	struct ltdc_device *ldev = ddev->dev_private;
-<<<<<<< HEAD
 	int i;
 
 	DRM_DEBUG_DRIVER("\n");
 
 	for (i = 0; i < MAX_ENDPOINTS; i++)
 		drm_of_panel_bridge_remove(ddev->dev->of_node, 0, i);
-=======
-
-	DRM_DEBUG_DRIVER("\n");
-
-	if (ldev->is_panel_bridge)
-		drm_panel_bridge_remove(ldev->bridge);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	clk_disable_unprepare(ldev->pixel_clk);
 }

@@ -70,7 +70,6 @@
 		regulator-always-on;
 	};
 
-<<<<<<< HEAD
 	/* FS USB Host PHY on port 1 for mdm6600 */
 	fsusb1_phy: usb-phy@1 {
 		compatible = "motorola,mapphone-mdm6600";
@@ -97,11 +96,6 @@
 	hsusb2_phy: usb-phy@2 {
 		compatible = "usb-nop-xceiv";
 		#phy-cells = <0>;
-=======
-	/* HS USB Host PHY on PORT 1 */
-	hsusb1_phy: hsusb1_phy {
-		compatible = "usb-nop-xceiv";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	/* LCD regulator from sw5 source */
@@ -134,11 +128,8 @@
 			gpios = <&gpio5 26 GPIO_ACTIVE_LOW>; /* gpio154 */
 			linux,code = <KEY_VOLUMEDOWN>;
 			linux,can-disable;
-<<<<<<< HEAD
 			/* Value above 7.95ms for no GPIO hardware debounce */
 			debounce-interval = <10>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		slider {
@@ -147,7 +138,6 @@
 			linux,input-type = <EV_SW>;
 			linux,code = <SW_KEYPAD_SLIDE>;
 			linux,can-disable;
-<<<<<<< HEAD
 			/* Value above 7.95ms for no GPIO hardware debounce */
 			debounce-interval = <10>;
 		};
@@ -171,23 +161,6 @@
 			"MICR", "Internal Mic";
 
 		dais = <&mcbsp2_port>, <&mcbsp3_port>;
-=======
-
-		};
-	};
-};
-
-&dss {
-	status = "okay";
-};
-
-&gpio6 {
-	touchscreen_reset {
-		gpio-hog;
-		gpios = <13 0>;
-		output-high;
-		line-name = "touchscreen-reset";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	pwm8: dmtimer-pwm-8 {
@@ -216,14 +189,10 @@
 		pwm-names = "enable", "direction";
 		direction-duty-cycle-ns = <10000000>;
 	};
-<<<<<<< HEAD
 };
 
 &dss {
 	status = "okay";
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &dsi1 {
@@ -243,13 +212,10 @@
 		vddi-supply = <&lcd_regulator>;
 		reset-gpios = <&gpio4 5 GPIO_ACTIVE_HIGH>;	/* gpio101 */
 
-<<<<<<< HEAD
 		width-mm = <50>;
 		height-mm = <89>;
 		backlight = <&lcd_backlight>;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		panel-timing {
 			clock-frequency = <0>;		/* Calculated by dsi */
 
@@ -406,11 +372,7 @@
 		compatible = "ti,wl1285", "ti,wl1283";
 		reg = <2>;
 		interrupt-parent = <&gpio4>;
-<<<<<<< HEAD
 		interrupts = <4 IRQ_TYPE_EDGE_RISING>; /* gpio100 */
-=======
-		interrupts = <4 IRQ_TYPE_LEVEL_HIGH>; /* gpio100 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ref-clock-frequency = <26000000>;
 		tcxo-clock-frequency = <26000000>;
 	};
@@ -423,11 +385,7 @@
 
 		enable-gpios = <&gpio6 12 GPIO_ACTIVE_HIGH>;
 
-<<<<<<< HEAD
 		lcd_backlight: backlight {
-=======
-		backlight {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "ti,lm3532-backlight";
 
 			lcd {
@@ -439,35 +397,18 @@
 	};
 };
 
-<<<<<<< HEAD
 &i2c2 {
 	touchscreen@4a {
-=======
-/*
- * REVISIT: Add gpio173 reset pin handling to the driver, see gpio-hog above.
- * If the GPIO reset is used, we probably need to have /lib/firmware/maxtouch.fw
- * available. See "mxt-app" and "droid4-touchscreen-firmware" tools for more
- * information.
- */
-&i2c2 {
-	tsp@4a {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "atmel,maxtouch";
 		reg = <0x4a>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&touchscreen_pins>;
 
-<<<<<<< HEAD
 		reset-gpios = <&gpio6 13 GPIO_ACTIVE_HIGH>; /* gpio173 */
 
 		/* gpio_183 with sys_nirq2 pad as wakeup */
 		interrupts-extended = <&gpio6 23 IRQ_TYPE_EDGE_FALLING>,
 				      <&omap4_pmx_core 0x160>;
-=======
-		/* gpio_183 with sys_nirq2 pad as wakeup */
-		interrupts-extended = <&gpio6 23 IRQ_TYPE_EDGE_FALLING
-				       &omap4_pmx_core 0x160>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		interrupt-names = "irq", "wakeup";
 		wakeup-source;
 	};
@@ -525,10 +466,7 @@
 
 	touchscreen_pins: pinmux_touchscreen_pins {
 		pinctrl-single,pins = <
-<<<<<<< HEAD
 		OMAP4_IOPAD(0x180, PIN_OUTPUT | MUX_MODE3)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		OMAP4_IOPAD(0x1a0, PIN_INPUT_PULLUP | MUX_MODE3)
 		>;
 	};
@@ -539,7 +477,6 @@
 		>;
 	};
 
-<<<<<<< HEAD
 	usb_mdm6600_pins: pinmux_usb_mdm6600_pins {
 		pinctrl-single,pins = <
 		/* enable 0x4a1000d8 usbb1_ulpitll_dat7.gpio_95 ag16 */
@@ -577,8 +514,6 @@
 		>;
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	usb_ulpi_pins: pinmux_usb_ulpi_pins {
 		pinctrl-single,pins = <
 		OMAP4_IOPAD(0x196, MUX_MODE7)
@@ -618,7 +553,6 @@
 		>;
 	};
 
-<<<<<<< HEAD
 	/*
 	 * Note that the v3.0.8 stock userspace dynamically remuxes uart1
 	 * rts pin probably for PM purposes to PIN_INPUT_PULLUP | MUX_MODE7
@@ -641,8 +575,6 @@
 		>;
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* uart3_tx_irtx and uart3_rx_irrx */
 	uart3_pins: pinmux_uart3_pins {
 		pinctrl-single,pins = <
@@ -671,7 +603,6 @@
 		OMAP4_IOPAD(0x112, PIN_OUTPUT_PULLUP | MUX_MODE5)	/* uart4_rts */
 		>;
 	};
-<<<<<<< HEAD
 
 	mcbsp2_pins: pinmux_mcbsp2_pins {
 		pinctrl-single,pins = <
@@ -688,15 +619,6 @@
 		OMAP4_IOPAD(0x108, PIN_OUTPUT | MUX_MODE1)	/* abe_mcbsp3_dx */
 		OMAP4_IOPAD(0x10a, PIN_INPUT | MUX_MODE1)	/* abe_mcbsp3_clkx */
 		OMAP4_IOPAD(0x10c, PIN_INPUT | MUX_MODE1)	/* abe_mcbsp3_fsx */
-=======
-};
-
-&omap4_pmx_wkup {
-	usb_gpio_mux_sel2: pinmux_usb_gpio_mux_sel2_pins {
-		/* gpio_wk0 */
-		pinctrl-single,pins = <
-		OMAP4_IOPAD(0x040, PIN_OUTPUT_PULLDOWN | MUX_MODE3)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		>;
 	};
 
@@ -713,7 +635,6 @@
 	};
 };
 
-<<<<<<< HEAD
 &omap4_pmx_wkup {
 	usb_gpio_mux_sel2: pinmux_usb_gpio_mux_sel2_pins {
 		/* gpio_wk0 */
@@ -745,8 +666,6 @@
 			       &omap4_pmx_core 0xfc>;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &uart3 {
 	interrupts-extended = <&wakeupgen GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH
 			       &omap4_pmx_core 0x17c>;
@@ -763,7 +682,6 @@
 	};
 };
 
-<<<<<<< HEAD
 &usbhsohci {
 	phys = <&fsusb1_phy>;
 	phy-names = "usb";
@@ -771,10 +689,6 @@
 
 &usbhsehci {
 	phys = <&hsusb2_phy>;
-=======
-&usbhsehci {
-	phys = <&hsusb1_phy>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &usbhshost {
@@ -819,7 +733,6 @@
 				  "0", "0", "1";
 	};
 };
-<<<<<<< HEAD
 
 &mcbsp2 {
 	#sound-dai-cells = <0>;
@@ -860,5 +773,3 @@
 &cpcap_audio_codec1 {
 	remote-endpoint = <&cpu_dai3>;
 };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

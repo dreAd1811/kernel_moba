@@ -15,11 +15,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
-<<<<<<< HEAD
  * see Documentation/media/dvb-drivers/dvb-usb.rst for more information
-=======
- * see Documentation/dvb/README.dvb-usb for more information
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #include "af9005.h"
 
@@ -567,11 +563,7 @@ static int af9005_boot_packet(struct usb_device *udev, int type, u8 *reply,
 			      u8 *buf, int size)
 {
 	u16 checksum;
-<<<<<<< HEAD
 	int act_len, i, ret;
-=======
-	int act_len = 0, i, ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memset(buf, 0, size);
 	buf[0] = (u8) (FW_BULKOUT_SIZE & 0xff);
@@ -993,14 +985,8 @@ static int af9005_identify_state(struct usb_device *udev,
 	else if (reply == 0x02)
 		*cold = 0;
 	else
-<<<<<<< HEAD
 		return -EIO;
 	deb_info("Identify state cold = %d\n", *cold);
-=======
-		ret = -EIO;
-	if (!ret)
-		deb_info("Identify state cold = %d\n", *cold);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 err:
 	kfree(buf);

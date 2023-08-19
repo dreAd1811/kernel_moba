@@ -75,20 +75,6 @@ helpers.
 
 Contact: Ville Syrjälä, Daniel Vetter, driver maintainers
 
-<<<<<<< HEAD
-=======
-Implement deferred fbdev setup in the helper
---------------------------------------------
-
-Many (especially embedded drivers) want to delay fbdev setup until there's a
-real screen plugged in. This is to avoid the dreaded fallback to the low-res
-fbdev default. Many drivers have a hacked-up (and often broken) version of this,
-better to do it once in the shared helpers. Thierry has a patch series, but that
-one needs to be rebased and final polish applied.
-
-Contact: Thierry Reding, Daniel Vetter, driver maintainers
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Convert early atomic drivers to async commit helpers
 ----------------------------------------------------
 
@@ -141,11 +127,8 @@ interfaces to fix these issues:
   the acquire context explicitly on stack and then also pass it down into
   drivers explicitly so that the legacy-on-atomic functions can use them.
 
-<<<<<<< HEAD
   Except for some driver code this is done.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 * A bunch of the vtable hooks are now in the wrong place: DRM has a split
   between core vfunc tables (named ``drm_foo_funcs``), which are used to
   implement the userspace ABI. And then there's the optional hooks for the
@@ -159,11 +142,8 @@ interfaces to fix these issues:
   connector at runtime. That's almost all of them, and would allow us to get
   rid of a lot of ``best_encoder`` boilerplate in drivers.
 
-<<<<<<< HEAD
   This was almost done, but new drivers added a few more cases again.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Contact: Daniel Vetter
 
 Get rid of dev->struct_mutex from GEM drivers
@@ -190,7 +170,6 @@ following drivers still use ``struct_mutex``: ``msm``, ``omapdrm`` and
 
 Contact: Daniel Vetter, respective driver maintainers
 
-<<<<<<< HEAD
 Convert instances of dev_info/dev_err/dev_warn to their DRM_DEV_* equivalent
 ----------------------------------------------------------------------------
 
@@ -264,17 +243,6 @@ Contact: Daniel Vetter
 Core refactorings
 =================
 
-=======
-Core refactorings
-=================
-
-Use new IDR deletion interface to clean up drm_gem_handle_delete()
-------------------------------------------------------------------
-
-See the "This is gross" comment -- apparently the IDR system now can return an
-error code instead of oopsing.
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Clean up the DRM header mess
 ----------------------------
 
@@ -395,7 +363,6 @@ There's a bunch of issues with it:
 
 Contact: Daniel Vetter
 
-<<<<<<< HEAD
 KMS cleanups
 ------------
 
@@ -408,8 +375,6 @@ Some of these date from the very introduction of KMS in 2008 ...
   leftovers from older (never merged into upstream) KMS designs where modes
   where set using their ID, including support to add/remove modes.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Better Testing
 ==============
 
@@ -457,7 +422,6 @@ those drivers as simple as possible, so lots of room for refactoring:
 - backlight helpers, probably best to put them into a new drm_backlight.c.
   This is because drivers/video is de-facto unmaintained. We could also
   move drivers/video/backlight to drivers/gpu/backlight and take it all
-<<<<<<< HEAD
   over within drm-misc, but that's more work. Backlight helpers require a fair
   bit of reworking and refactoring. A simple example is the enabling of a backlight.
   Tinydrm has helpers for this. It would be good if other drivers can also use the
@@ -468,9 +432,6 @@ those drivers as simple as possible, so lots of room for refactoring:
   via fb_notifier_callback() which has complicated logic. For further details, refer
   to the following discussion thread:
   https://groups.google.com/forum/#!topic/outreachy-kernel/8rBe30lwtdA
-=======
-  over within drm-misc, but that's more work.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 - spi helpers, probably best put into spi core/helper code. Thierry said
   the spi maintainer is fast&reactive, so shouldn't be a big issue.
@@ -480,14 +441,6 @@ those drivers as simple as possible, so lots of room for refactoring:
   one of the ideas for having a shared dsi/dbi helper, abstracting away the
   transport details more.
 
-<<<<<<< HEAD
-=======
-- tinydrm_lastclose could be drm_fb_helper_lastclose. Only thing we need
-  for that is to store the drm_fb_helper pointer somewhere in
-  drm_device->mode_config. And then we could roll that out to all the
-  drivers.
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 - tinydrm_gem_cma_prime_import_sg_table should probably go into the cma
   helpers, as a _vmapped variant (since not every driver needs the vmap).
   And tinydrm_gem_cma_free_object could the be merged into
@@ -501,19 +454,10 @@ those drivers as simple as possible, so lots of room for refactoring:
   a drm_device wrong. Doesn't matter, since everyone else gets it wrong
   too :-)
 
-<<<<<<< HEAD
-=======
-- With the fbdev pointer in dev->mode_config we could also make
-  suspend/resume helpers entirely generic, at least if we add a
-  dev->mode_config.suspend_state. We could even provide a generic pm_ops
-  structure with those.
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 - also rework the drm_framebuffer_funcs->dirty hook wire-up, see above.
 
 Contact: Noralf Trønnes, Daniel Vetter
 
-<<<<<<< HEAD
 AMD DC Display Driver
 ---------------------
 
@@ -531,7 +475,5 @@ i915
   device_link_add to model the dependency between i915 and snd_had. See
   https://dri.freedesktop.org/docs/drm/driver-api/device_link.html
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Outside DRM
 ===========

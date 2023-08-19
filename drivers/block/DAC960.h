@@ -2295,10 +2295,6 @@ typedef struct DAC960_Controller
   unsigned short MaxBlocksPerCommand;
   unsigned short ControllerScatterGatherLimit;
   unsigned short DriverScatterGatherLimit;
-<<<<<<< HEAD
-=======
-  u64		BounceBufferLimit;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
   unsigned int CombinedStatusBufferLength;
   unsigned int InitialStatusLength;
   unsigned int CurrentStatusLength;
@@ -2319,11 +2315,7 @@ typedef struct DAC960_Controller
   bool SuppressEnclosureMessages;
   struct timer_list MonitoringTimer;
   struct gendisk *disks[DAC960_MaxLogicalDrives];
-<<<<<<< HEAD
   struct dma_pool *ScatterGatherPool;
-=======
-  struct pci_pool *ScatterGatherPool;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
   DAC960_Command_T *FreeCommands;
   unsigned char *CombinedStatusBuffer;
   unsigned char *CurrentStatusBuffer;
@@ -2436,11 +2428,7 @@ typedef struct DAC960_Controller
       bool NeedDeviceSerialNumberInformation;
       bool StartLogicalDeviceInformationScan;
       bool StartPhysicalDeviceInformationScan;
-<<<<<<< HEAD
       struct dma_pool *RequestSensePool;
-=======
-      struct pci_pool *RequestSensePool;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
       dma_addr_t	FirstCommandMailboxDMA;
       DAC960_V2_CommandMailbox_T *FirstCommandMailbox;
@@ -4417,11 +4405,7 @@ static irqreturn_t DAC960_PD_InterruptHandler(int, void *);
 static irqreturn_t DAC960_P_InterruptHandler(int, void *);
 static void DAC960_V1_QueueMonitoringCommand(DAC960_Command_T *);
 static void DAC960_V2_QueueMonitoringCommand(DAC960_Command_T *);
-<<<<<<< HEAD
 static void DAC960_MonitoringTimerFunction(struct timer_list *);
-=======
-static void DAC960_MonitoringTimerFunction(unsigned long);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void DAC960_Message(DAC960_MessageLevel_T, unsigned char *,
 			   DAC960_Controller_T *, ...);
 static void DAC960_CreateProcEntries(DAC960_Controller_T *);

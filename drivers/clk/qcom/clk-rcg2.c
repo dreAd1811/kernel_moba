@@ -1,20 +1,6 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Copyright (c) 2013, 2018-2020, The Linux Foundation. All rights reserved.
-=======
-/*
- * Copyright (c) 2013, 2016-2020, The Linux Foundation. All rights reserved.
- *
- * This software is licensed under the terms of the GNU General Public
- * License version 2, as published by the Free Software Foundation, and
- * may be copied, distributed, and modified under those terms.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/kernel.h>
@@ -24,18 +10,11 @@
 #include <linux/export.h>
 #include <linux/clk-provider.h>
 #include <linux/delay.h>
-<<<<<<< HEAD
-=======
-#include <linux/device.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/regmap.h>
 #include <linux/rational.h>
 #include <linux/math64.h>
 #include <linux/clk.h>
-<<<<<<< HEAD
 #include <linux/slab.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/div64.h>
 
@@ -66,11 +45,7 @@
 #define D_REG			0x10
 
 /* Dynamic Frequency Scaling */
-<<<<<<< HEAD
 #define MAX_PERF_LEVEL		8
-=======
-#define MAX_PERF_LEVEL		16
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SE_CMD_DFSR_OFFSET	0x14
 #define SE_CMD_DFS_EN		BIT(0)
 #define SE_PERF_DFSR(level)	(0x1c + 0x4 * (level))
@@ -110,12 +85,7 @@ static u8 clk_rcg2_get_parent(struct clk_hw *hw)
 	u32 cfg;
 	int i, ret;
 
-<<<<<<< HEAD
 	ret = regmap_read(rcg->clkr.regmap, rcg->cmd_rcgr + CFG_REG, &cfg);
-=======
-	ret = regmap_read(rcg->clkr.regmap, rcg->cmd_rcgr + rcg->cfg_off +
-				CFG_REG, &cfg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto err;
 
@@ -157,11 +127,7 @@ static int update_config(struct clk_rcg2 *rcg, u32 cfg)
 	pr_err("CFG_RCGR old frequency configuration 0x%x !\n", cfg);
 
 	WARN_CLK(hw->core, name, count == 0,
-<<<<<<< HEAD
 			"%s: rcg didn't update its configuration.", name);
-=======
-			"rcg didn't update its configuration.");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return -EBUSY;
 }
 
@@ -169,7 +135,6 @@ static int clk_rcg2_set_parent(struct clk_hw *hw, u8 index)
 {
 	struct clk_rcg2 *rcg = to_clk_rcg2(hw);
 	int ret;
-<<<<<<< HEAD
 	u32 old_cfg, cfg = rcg->parent_map[index].cfg << CFG_SRC_SEL_SHIFT;
 
 	/* Read back the old configuration */
@@ -177,17 +142,6 @@ static int clk_rcg2_set_parent(struct clk_hw *hw, u8 index)
 
 	ret = regmap_update_bits(rcg->clkr.regmap, rcg->cmd_rcgr + CFG_REG,
 				 CFG_SRC_SEL_MASK, cfg);
-=======
-	u32 cfg = rcg->parent_map[index].cfg << CFG_SRC_SEL_SHIFT;
-	u32 old_cfg;
-
-	/* Read back the old configuration */
-	regmap_read(rcg->clkr.regmap, rcg->cmd_rcgr + rcg->cfg_off + CFG_REG,
-		       &old_cfg);
-
-	ret = regmap_update_bits(rcg->clkr.regmap, rcg->cmd_rcgr +
-			rcg->cfg_off + CFG_REG, CFG_SRC_SEL_MASK, cfg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -216,7 +170,6 @@ static int clk_rcg2_set_force_enable(struct clk_hw *hw)
 	return ret;
 }
 
-<<<<<<< HEAD
 static int clk_rcg2_clear_force_enable(struct clk_hw *hw)
 {
 	struct clk_rcg2 *rcg = to_clk_rcg2(hw);
@@ -235,16 +188,6 @@ static bool clk_rcg2_is_force_enabled(struct clk_hw *hw)
 	return val & CMD_ROOT_EN;
 }
 
-=======
-static void clk_rcg2_clear_force_enable(struct clk_hw *hw)
-{
-	struct clk_rcg2 *rcg = to_clk_rcg2(hw);
-
-	regmap_update_bits(rcg->clkr.regmap, rcg->cmd_rcgr + CMD_REG,
-					CMD_ROOT_EN, 0);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int prepare_enable_rcg_srcs(struct clk *curr, struct clk *new)
 {
 	int rc = 0;
@@ -293,13 +236,8 @@ static void disable_unprepare_rcg_srcs(struct clk *curr, struct clk *new)
  *   rate = ----------- x  ---
  *            hid_div       n
  */
-<<<<<<< HEAD
 static unsigned long
 calc_rate(unsigned long rate, u32 m, u32 n, u32 mode, u32 hid_div)
-=======
-unsigned long
-clk_rcg2_calc_rate(unsigned long rate, u32 m, u32 n, u32 mode, u32 hid_div)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (hid_div) {
 		rate *= 2;
@@ -315,10 +253,6 @@ clk_rcg2_calc_rate(unsigned long rate, u32 m, u32 n, u32 mode, u32 hid_div)
 
 	return rate;
 }
-<<<<<<< HEAD
-=======
-EXPORT_SYMBOL(clk_rcg2_calc_rate);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static unsigned long
 clk_rcg2_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
@@ -326,19 +260,9 @@ clk_rcg2_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
 	struct clk_rcg2 *rcg = to_clk_rcg2(hw);
 	const struct freq_tbl *f_curr;
 	u32 cfg, src, hid_div, m = 0, n = 0, mode = 0, mask;
-<<<<<<< HEAD
 	unsigned long rrate = 0;
 
 	regmap_read(rcg->clkr.regmap, rcg->cmd_rcgr + CFG_REG, &cfg);
-=======
-	unsigned long recalc_rate;
-
-	if (rcg->flags & DFS_ENABLE_RCG)
-		return rcg->current_freq;
-
-	regmap_read(rcg->clkr.regmap, rcg->cmd_rcgr + rcg->cfg_off + CFG_REG,
-									&cfg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	src = cfg;
 	src &= CFG_SRC_SEL_MASK;
 	src >>= CFG_SRC_SEL_SHIFT;
@@ -352,17 +276,9 @@ clk_rcg2_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
 
 	if (rcg->mnd_width) {
 		mask = BIT(rcg->mnd_width) - 1;
-<<<<<<< HEAD
 		regmap_read(rcg->clkr.regmap, rcg->cmd_rcgr + M_REG, &m);
 		m &= mask;
 		regmap_read(rcg->clkr.regmap, rcg->cmd_rcgr + N_REG, &n);
-=======
-		regmap_read(rcg->clkr.regmap, rcg->cmd_rcgr + rcg->cfg_off +
-				M_REG, &m);
-		m &= mask;
-		regmap_read(rcg->clkr.regmap, rcg->cmd_rcgr + rcg->cfg_off +
-				N_REG, &n);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		n =  ~n;
 		n &= mask;
 		n += m;
@@ -382,7 +298,6 @@ clk_rcg2_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
 		hid_div &= mask;
 	}
 
-<<<<<<< HEAD
 	rrate = calc_rate(parent_rate, m, n, mode, hid_div);
 
 	/*
@@ -393,19 +308,6 @@ clk_rcg2_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
 		rcg->current_freq = rrate;
 
 	return rrate;
-=======
-
-	recalc_rate = clk_rcg2_calc_rate(parent_rate, m, n, mode, hid_div);
-
-	/*
-	 * Check the case when the RCG has been initialized to a non-CXO
-	 * frequency.
-	 */
-	if (rcg->enable_safe_config && !rcg->current_freq)
-		rcg->current_freq = recalc_rate;
-
-	return recalc_rate;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int _freq_tbl_determine_rate(struct clk_hw *hw, const struct freq_tbl *f,
@@ -438,18 +340,11 @@ static int _freq_tbl_determine_rate(struct clk_hw *hw, const struct freq_tbl *f,
 
 	clk_flags = clk_hw_get_flags(hw);
 	p = clk_hw_get_parent_by_index(hw, index);
-<<<<<<< HEAD
 	if (!p)
 		return -EINVAL;
 	if (clk_flags & CLK_SET_RATE_PARENT) {
 		rate = f->freq;
 		if (f->pre_div) {
-=======
-	if (clk_flags & CLK_SET_RATE_PARENT) {
-		if (f->pre_div) {
-			if (!rate)
-				rate = req->rate;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rate /= 2;
 			rate *= f->pre_div + 1;
 		}
@@ -534,7 +429,6 @@ static bool clk_rcg2_current_config(struct clk_rcg2 *rcg,
 	return true;
 }
 
-<<<<<<< HEAD
 static int __clk_rcg2_configure(struct clk_rcg2 *rcg, const struct freq_tbl *f)
 {
 	u32 cfg, mask;
@@ -548,50 +442,16 @@ static int __clk_rcg2_configure(struct clk_rcg2 *rcg, const struct freq_tbl *f)
 		mask = BIT(rcg->mnd_width) - 1;
 		ret = regmap_update_bits(rcg->clkr.regmap,
 				rcg->cmd_rcgr + M_REG, mask, f->m);
-=======
-static int clk_rcg2_configure(struct clk_rcg2 *rcg, const struct freq_tbl *f)
-{
-	u32 cfg, mask, old_cfg;
-	struct clk_hw *hw = &rcg->clkr.hw;
-	int ret, index = qcom_find_src_index(hw, rcg->parent_map, f->src);
-
-	/* Skip configuration if DFS control has been enabled for the RCG. */
-	if (rcg->flags & DFS_ENABLE_RCG)
-		return 0;
-
-	if (index < 0)
-		return index;
-
-	/* Read back the old configuration */
-	regmap_read(rcg->clkr.regmap, rcg->cmd_rcgr + rcg->cfg_off + CFG_REG,
-							&old_cfg);
-
-	if (rcg->mnd_width && f->n) {
-		mask = BIT(rcg->mnd_width) - 1;
-		ret = regmap_update_bits(rcg->clkr.regmap,
-				rcg->cmd_rcgr + rcg->cfg_off + M_REG,
-				mask, f->m);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			return ret;
 
 		ret = regmap_update_bits(rcg->clkr.regmap,
-<<<<<<< HEAD
 				rcg->cmd_rcgr + N_REG, mask, ~(f->n - f->m));
-=======
-				rcg->cmd_rcgr + rcg->cfg_off + N_REG,
-				mask, ~(f->n - f->m));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			return ret;
 
 		ret = regmap_update_bits(rcg->clkr.regmap,
-<<<<<<< HEAD
 				rcg->cmd_rcgr + D_REG, mask, ~f->n);
-=======
-				rcg->cmd_rcgr + rcg->cfg_off + D_REG,
-				mask, ~f->n);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			return ret;
 	}
@@ -604,7 +464,6 @@ static int clk_rcg2_configure(struct clk_rcg2 *rcg, const struct freq_tbl *f)
 		cfg |= CFG_MODE_DUAL_EDGE;
 	if (rcg->flags & HW_CLK_CTRL_MODE)
 		cfg |= CFG_HW_CLK_CTRL_MASK;
-<<<<<<< HEAD
 
 	return regmap_update_bits(rcg->clkr.regmap, rcg->cmd_rcgr + CFG_REG,
 					mask, cfg);
@@ -619,10 +478,6 @@ static int clk_rcg2_configure(struct clk_rcg2 *rcg, const struct freq_tbl *f)
 	regmap_read(rcg->clkr.regmap, rcg->cmd_rcgr + CFG_REG, &old_cfg);
 
 	ret = __clk_rcg2_configure(rcg, f);
-=======
-	ret = regmap_update_bits(rcg->clkr.regmap,
-			rcg->cmd_rcgr + rcg->cfg_off + CFG_REG, mask, cfg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -651,29 +506,17 @@ static void clk_rcg2_list_registers(struct seq_file *f, struct clk_hw *hw)
 		size = ARRAY_SIZE(data1);
 		for (i = 0; i < size; i++) {
 			regmap_read(rcg->clkr.regmap, (rcg->cmd_rcgr +
-<<<<<<< HEAD
 					data1[i].offset), &val);
 			clock_debug_output(f, false,
 					"%20s: 0x%.8x\n", data1[i].name, val);
-=======
-					rcg->cfg_off + data1[i].offset), &val);
-			clock_debug_output(f, false, "%20s: 0x%.8x\n",
-						data1[i].name, val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	} else {
 		size = ARRAY_SIZE(data);
 		for (i = 0; i < size; i++) {
 			regmap_read(rcg->clkr.regmap, (rcg->cmd_rcgr +
-<<<<<<< HEAD
 				data[i].offset), &val);
 			clock_debug_output(f, false,
 					"%20s: 0x%.8x\n", data[i].name, val);
-=======
-					rcg->cfg_off + data[i].offset), &val);
-			clock_debug_output(f, false, "%20s: 0x%.8x\n",
-						data[i].name, val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 }
@@ -683,7 +526,6 @@ static long clk_rcg2_list_rate(struct clk_hw *hw, unsigned int n,
 		unsigned long fmax)
 {
 	struct clk_rcg2 *rcg = to_clk_rcg2(hw);
-<<<<<<< HEAD
 	const struct freq_tbl *f = rcg->freq_tbl;
 	size_t freq_tbl_size = 0;
 
@@ -696,12 +538,6 @@ static long clk_rcg2_list_rate(struct clk_hw *hw, unsigned int n,
 	if (n > freq_tbl_size - 1)
 		return -EINVAL;
 
-=======
-
-	if (!rcg->freq_tbl)
-		return -ENXIO;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return (rcg->freq_tbl + n)->freq;
 }
 
@@ -712,10 +548,7 @@ static int __clk_rcg2_set_rate(struct clk_hw *hw, unsigned long rate,
 	const struct freq_tbl *f, *f_curr;
 	int ret, curr_src_index, new_src_index;
 	struct clk_hw *curr_src = NULL, *new_src = NULL;
-<<<<<<< HEAD
 	bool force_enabled = false;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (policy) {
 	case FLOOR:
@@ -727,10 +560,7 @@ static int __clk_rcg2_set_rate(struct clk_hw *hw, unsigned long rate,
 	default:
 		return -EINVAL;
 	};
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!f)
 		return -EINVAL;
 
@@ -762,7 +592,6 @@ static int __clk_rcg2_set_rate(struct clk_hw *hw, unsigned long rate,
 							f->src);
 
 		curr_src = clk_hw_get_parent_by_index(hw, curr_src_index);
-<<<<<<< HEAD
 		if (!curr_src)
 			return -EINVAL;
 		new_src = clk_hw_get_parent_by_index(hw, new_src_index);
@@ -776,13 +605,6 @@ static int __clk_rcg2_set_rate(struct clk_hw *hw, unsigned long rate,
 		force_enabled = clk_rcg2_is_force_enabled(hw);
 		if (!force_enabled)
 			clk_rcg2_set_force_enable(hw);
-=======
-		new_src = clk_hw_get_parent_by_index(hw, new_src_index);
-
-		/* The RCG could currently be disabled. Enable its parents. */
-		ret = prepare_enable_rcg_srcs(curr_src->clk, new_src->clk);
-		clk_rcg2_set_force_enable(hw);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ret = clk_rcg2_configure(rcg, f);
@@ -790,12 +612,8 @@ static int __clk_rcg2_set_rate(struct clk_hw *hw, unsigned long rate,
 		return ret;
 
 	if (rcg->flags & FORCE_ENABLE_RCG) {
-<<<<<<< HEAD
 		if (!force_enabled)
 			clk_rcg2_clear_force_enable(hw);
-=======
-		clk_rcg2_clear_force_enable(hw);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		disable_unprepare_rcg_srcs(curr_src->clk, new_src->clk);
 	}
 
@@ -828,51 +646,15 @@ static int clk_rcg2_set_floor_rate_and_parent(struct clk_hw *hw,
 	return __clk_rcg2_set_rate(hw, rate, FLOOR);
 }
 
-<<<<<<< HEAD
-=======
-static int clk_rcg2_prepare(struct clk_hw *hw)
-{
-	struct clk_rcg2 *rcg = to_clk_rcg2(hw);
-	u32 cfg;
-	int ret;
-
-	if (rcg->flags & HW_CLK_CTRL_MODE)
-		return 0;
-
-	ret = regmap_read(rcg->clkr.regmap, rcg->cmd_rcgr + CFG_REG, &cfg);
-	if (ret)
-		return ret;
-
-	if (cfg & CFG_HW_CLK_CTRL_MASK) {
-		ret = regmap_update_bits(rcg->clkr.regmap,
-			rcg->cmd_rcgr + CFG_REG, CFG_HW_CLK_CTRL_MASK, 0);
-		if (ret)
-			return ret;
-
-		return update_config(rcg, cfg);
-	}
-
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int clk_rcg2_enable(struct clk_hw *hw)
 {
 	struct clk_rcg2 *rcg = to_clk_rcg2(hw);
 	unsigned long rate;
 	const struct freq_tbl *f;
-<<<<<<< HEAD
 	int ret;
 
 	if (rcg->flags & FORCE_ENABLE_RCG)
 		clk_rcg2_set_force_enable(hw);
-=======
-
-	if (rcg->flags & FORCE_ENABLE_RCG) {
-		clk_rcg2_set_force_enable(hw);
-		return 0;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!rcg->enable_safe_config)
 		return 0;
@@ -899,7 +681,6 @@ static int clk_rcg2_enable(struct clk_hw *hw)
 	if (rate == cxo_f.freq)
 		f = &cxo_f;
 
-<<<<<<< HEAD
 	if (!(rcg->flags & FORCE_ENABLE_RCG))
 		clk_rcg2_set_force_enable(hw);
 
@@ -909,19 +690,11 @@ static int clk_rcg2_enable(struct clk_hw *hw)
 		clk_rcg2_clear_force_enable(hw);
 
 	return ret;
-=======
-	clk_rcg2_set_force_enable(hw);
-	clk_rcg2_configure(rcg, f);
-	clk_rcg2_clear_force_enable(hw);
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void clk_rcg2_disable(struct clk_hw *hw)
 {
 	struct clk_rcg2 *rcg = to_clk_rcg2(hw);
-<<<<<<< HEAD
 	int ret;
 
 	if (!rcg->enable_safe_config) {
@@ -929,16 +702,6 @@ static void clk_rcg2_disable(struct clk_hw *hw)
 			clk_rcg2_clear_force_enable(hw);
 		return;
 	}
-=======
-
-	if (rcg->flags & FORCE_ENABLE_RCG) {
-		clk_rcg2_clear_force_enable(hw);
-		return;
-	}
-
-	if (!rcg->enable_safe_config)
-		return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Park the RCG at a safe configuration - sourced off the CXO. This is
 	 * needed for 2 reasons: In the case of RCGs sourcing PSCBCs, due to a
@@ -956,7 +719,6 @@ static void clk_rcg2_disable(struct clk_hw *hw)
 	 * online. Therefore, the RCG can safely be switched.
 	 */
 	clk_rcg2_set_force_enable(hw);
-<<<<<<< HEAD
 	ret = clk_rcg2_configure(rcg, &cxo_f);
 	if (ret)
 		pr_err("%s: CXO configuration failed\n", clk_hw_get_name(hw));
@@ -965,59 +727,6 @@ static void clk_rcg2_disable(struct clk_hw *hw)
 
 const struct clk_ops clk_rcg2_ops = {
 	.is_enabled = clk_rcg2_is_enabled,
-=======
-	clk_rcg2_configure(rcg, &cxo_f);
-	clk_rcg2_clear_force_enable(hw);
-}
-
-static int clk_rcg2_set_duty_cycle(struct clk_hw *hw, struct clk_duty *duty)
-{
-	struct clk_rcg2 *rcg = to_clk_rcg2(hw);
-	int ret;
-	u32 notn_m_val, n_val, m_val, d_val, not2d_val, old_cfg;
-	u32 duty_per = (duty->num * 100) / duty->den;
-
-	if (!rcg->mnd_width)
-		return 0;
-
-	regmap_read(rcg->clkr.regmap, rcg->cmd_rcgr + rcg->cfg_off +
-				N_REG, &notn_m_val);
-
-	regmap_read(rcg->clkr.regmap, rcg->cmd_rcgr + rcg->cfg_off +
-				M_REG, &m_val);
-
-	n_val = (~(notn_m_val) + m_val) & GENMASK((rcg->mnd_width - 1), 0);
-
-	/* Calculate 2d value */
-	d_val = DIV_ROUND_CLOSEST((25 + n_val * duty_per), 100);
-
-	 /* Check BIT WIDTHS OF 2d. If D is too big reduce Duty cycle. */
-	if ((d_val * 2) > (BIT(rcg->mnd_width) - 1))
-		d_val = (BIT(rcg->mnd_width) - 1) / 2;
-
-	if (d_val > (n_val - m_val))
-		d_val = n_val - m_val;
-	else if (d_val < (m_val / 2))
-		d_val = m_val / 2;
-
-	not2d_val = ~(2 * d_val) & (GENMASK((rcg->mnd_width - 1), 0));
-
-	ret = regmap_update_bits(rcg->clkr.regmap,
-			rcg->cmd_rcgr + rcg->cfg_off + D_REG,
-			GENMASK((rcg->mnd_width - 1), 0), not2d_val);
-	if (ret)
-		return ret;
-
-	/* Read back the old configuration */
-	regmap_read(rcg->clkr.regmap, rcg->cmd_rcgr + rcg->cfg_off + CFG_REG,
-							&old_cfg);
-	return update_config(rcg, old_cfg);
-}
-
-const struct clk_ops clk_rcg2_ops = {
-	.is_enabled = clk_rcg2_is_enabled,
-	.prepare = clk_rcg2_prepare,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.enable = clk_rcg2_enable,
 	.disable = clk_rcg2_disable,
 	.get_parent = clk_rcg2_get_parent,
@@ -1029,10 +738,6 @@ const struct clk_ops clk_rcg2_ops = {
 	.list_rate = clk_rcg2_list_rate,
 	.list_registers = clk_rcg2_list_registers,
 	.bus_vote = clk_debug_bus_vote,
-<<<<<<< HEAD
-=======
-	.set_duty_cycle = clk_rcg2_set_duty_cycle,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 EXPORT_SYMBOL_GPL(clk_rcg2_ops);
 
@@ -1050,90 +755,6 @@ const struct clk_ops clk_rcg2_floor_ops = {
 };
 EXPORT_SYMBOL_GPL(clk_rcg2_floor_ops);
 
-<<<<<<< HEAD
-=======
-static int clk_rcg2_shared_force_enable(struct clk_hw *hw, unsigned long rate)
-{
-	struct clk_rcg2 *rcg = to_clk_rcg2(hw);
-	const char *name = clk_hw_get_name(hw);
-	int ret, count;
-
-	/* force enable RCG */
-	ret = regmap_update_bits(rcg->clkr.regmap, rcg->cmd_rcgr + CMD_REG,
-				 CMD_ROOT_EN, CMD_ROOT_EN);
-	if (ret)
-		return ret;
-
-	/* wait for RCG to turn ON */
-	for (count = 500; count > 0; count--) {
-		ret = clk_rcg2_is_enabled(hw);
-		if (ret)
-			break;
-		udelay(1);
-	}
-	if (!count)
-		pr_err("%s: RCG did not turn on\n", name);
-
-	/* set clock rate */
-	ret = __clk_rcg2_set_rate(hw, rate, CEIL);
-	if (ret)
-		return ret;
-
-	/* clear force enable RCG */
-	return regmap_update_bits(rcg->clkr.regmap, rcg->cmd_rcgr + CMD_REG,
-				 CMD_ROOT_EN, 0);
-}
-
-static int clk_rcg2_shared_set_rate(struct clk_hw *hw, unsigned long rate,
-				    unsigned long parent_rate)
-{
-	struct clk_rcg2 *rcg = to_clk_rcg2(hw);
-
-	/* cache the rate */
-	rcg->current_freq = rate;
-
-	if (!__clk_is_enabled(hw->clk))
-		return 0;
-
-	return clk_rcg2_shared_force_enable(hw, rcg->current_freq);
-}
-
-static unsigned long
-clk_rcg2_shared_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
-{
-	struct clk_rcg2 *rcg = to_clk_rcg2(hw);
-
-	return rcg->current_freq = clk_rcg2_recalc_rate(hw, parent_rate);
-}
-
-static int clk_rcg2_shared_enable(struct clk_hw *hw)
-{
-	struct clk_rcg2 *rcg = to_clk_rcg2(hw);
-
-	return clk_rcg2_shared_force_enable(hw, rcg->current_freq);
-}
-
-static void clk_rcg2_shared_disable(struct clk_hw *hw)
-{
-	struct clk_rcg2 *rcg = to_clk_rcg2(hw);
-
-	/* switch to XO, which is the lowest entry in the freq table */
-	clk_rcg2_shared_set_rate(hw, rcg->freq_tbl[0].freq, 0);
-}
-
-const struct clk_ops clk_rcg2_shared_ops = {
-	.enable = clk_rcg2_shared_enable,
-	.disable = clk_rcg2_shared_disable,
-	.get_parent = clk_rcg2_get_parent,
-	.recalc_rate = clk_rcg2_shared_recalc_rate,
-	.determine_rate = clk_rcg2_determine_rate,
-	.set_rate = clk_rcg2_shared_set_rate,
-	.list_registers = clk_rcg2_list_registers,
-	.bus_vote = clk_debug_bus_vote,
-};
-EXPORT_SYMBOL_GPL(clk_rcg2_shared_ops);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct frac_entry {
 	int num;
 	int den;
@@ -1221,11 +842,8 @@ static int clk_edp_pixel_determine_rate(struct clk_hw *hw,
 
 	/* Force the correct parent */
 	req->best_parent_hw = clk_hw_get_parent_by_index(hw, index);
-<<<<<<< HEAD
 	if (!req->best_parent_hw)
 		return -EINVAL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	req->best_parent_rate = clk_hw_get_rate(req->best_parent_hw);
 
 	if (req->best_parent_rate == 810000000)
@@ -1246,11 +864,7 @@ static int clk_edp_pixel_determine_rate(struct clk_hw *hw,
 		hid_div >>= CFG_SRC_DIV_SHIFT;
 		hid_div &= mask;
 
-<<<<<<< HEAD
 		req->rate = calc_rate(req->best_parent_rate,
-=======
-		req->rate = clk_rcg2_calc_rate(req->best_parent_rate,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      frac->num, frac->den,
 				      !!frac->den, hid_div);
 		return 0;
@@ -1286,21 +900,14 @@ static int clk_byte_determine_rate(struct clk_hw *hw,
 		return -EINVAL;
 
 	req->best_parent_hw = p = clk_hw_get_parent_by_index(hw, index);
-<<<<<<< HEAD
 	if (!p)
 		return -EINVAL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	req->best_parent_rate = parent_rate = clk_hw_round_rate(p, req->rate);
 
 	div = DIV_ROUND_UP((2 * parent_rate), req->rate) - 1;
 	div = min_t(u32, div, mask);
 
-<<<<<<< HEAD
 	req->rate = calc_rate(parent_rate, 0, 0, 0, div);
-=======
-	req->rate = clk_rcg2_calc_rate(parent_rate, 0, 0, 0, div);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -1359,11 +966,7 @@ static int clk_byte2_determine_rate(struct clk_hw *hw,
 	div = DIV_ROUND_UP((2 * parent_rate), rate) - 1;
 	div = min_t(u32, div, mask);
 
-<<<<<<< HEAD
 	req->rate = calc_rate(parent_rate, 0, 0, 0, div);
-=======
-	req->rate = clk_rcg2_calc_rate(parent_rate, 0, 0, 0, div);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -1420,18 +1023,10 @@ const struct clk_ops clk_byte2_ops = {
 EXPORT_SYMBOL_GPL(clk_byte2_ops);
 
 static const struct frac_entry frac_table_pixel[] = {
-<<<<<<< HEAD
 	{ 3, 8 },
 	{ 2, 9 },
 	{ 4, 9 },
 	{ 1, 1 },
-=======
-	{ 1, 1 },
-	{ 2, 3 },
-	{ 4, 9 },
-	{ 3, 8 },
-	{ 2, 9 },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ }
 };
 
@@ -1533,15 +1128,8 @@ static int clk_dp_set_rate(struct clk_hw *hw, unsigned long rate,
 	u32 hid_div, cfg;
 	int i, num_parents = clk_hw_get_num_parents(hw);
 
-<<<<<<< HEAD
 	if (!parent)
 		return -EINVAL;
-=======
-	if (!parent) {
-		pr_err("RCG parent isn't initialized\n");
-		return -EINVAL;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	src_rate = clk_get_rate(parent->clk);
 	if (src_rate <= 0) {
@@ -1621,11 +1209,8 @@ static int clk_gfx3d_determine_rate(struct clk_hw *hw,
 	int ret;
 
 	xo = clk_hw_get_parent_by_index(hw, 0);
-<<<<<<< HEAD
 	if (!xo)
 		return -EINVAL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (req->rate == clk_hw_get_rate(xo)) {
 		req->best_parent_hw = xo;
 		return 0;
@@ -1634,11 +1219,8 @@ static int clk_gfx3d_determine_rate(struct clk_hw *hw,
 	p9 = clk_hw_get_parent_by_index(hw, 2);
 	p2 = clk_hw_get_parent_by_index(hw, 3);
 	p8 = clk_hw_get_parent_by_index(hw, 4);
-<<<<<<< HEAD
 	if (!p9 || !p2 || !p8)
 		return -EINVAL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* PLL9 is a fixed rate PLL */
 	p9_rate = clk_hw_get_rate(p9);
@@ -1714,7 +1296,6 @@ const struct clk_ops clk_gfx3d_ops = {
 };
 EXPORT_SYMBOL_GPL(clk_gfx3d_ops);
 
-<<<<<<< HEAD
 static int
 clk_rcg2_shared_force_enable_clear(struct clk_hw *hw, const struct freq_tbl *f)
 {
@@ -1762,21 +1343,11 @@ static int clk_rcg2_shared_enable(struct clk_hw *hw)
 {
 	struct clk_rcg2 *rcg = to_clk_rcg2(hw);
 	u32 old_cfg;
-=======
-
-static int clk_gfx3d_src_set_rate_and_parent(struct clk_hw *hw,
-		unsigned long rate, unsigned long parent_rate, u8 index)
-{
-	struct clk_rcg2 *rcg = to_clk_rcg2(hw);
-	const struct freq_tbl *f;
-	u32 cfg, old_cfg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	/* Read back the old configuration */
 	regmap_read(rcg->clkr.regmap, rcg->cmd_rcgr + CFG_REG, &old_cfg);
 
-<<<<<<< HEAD
 	/*
 	 * Set the update bit because required configuration has already
 	 * been written in clk_rcg2_shared_set_rate()
@@ -1857,116 +1428,10 @@ static int clk_rcg2_dfs_populate_freq(struct clk_hw *hw, unsigned int l,
 
 	mode = cfg & CFG_MODE_MASK;
 	mode >>= CFG_MODE_SHIFT;
-=======
-	cfg = rcg->parent_map[index].cfg << CFG_SRC_SEL_SHIFT;
-
-	f = qcom_find_freq(rcg->freq_tbl, rate);
-	if (!f)
-		return -EINVAL;
-
-	/* Update the RCG-DIV */
-	cfg |= f->pre_div << CFG_SRC_DIV_SHIFT;
-
-	ret = regmap_write(rcg->clkr.regmap, rcg->cmd_rcgr + CFG_REG, cfg);
-	if (ret)
-		return ret;
-
-	return update_config(rcg, old_cfg);
-}
-
-static int clk_gfx3d_src_determine_rate(struct clk_hw *hw,
-			struct clk_rate_request *req)
-{
-	struct clk_rcg2 *rcg = to_clk_rcg2(hw);
-	struct clk_rate_request parent_req = { };
-	struct clk_hw *p1, *p3, *xo, *curr_p;
-	const struct freq_tbl *f;
-	int ret;
-
-	xo = clk_hw_get_parent_by_index(hw, 0);
-	if (req->rate == clk_hw_get_rate(xo)) {
-		req->best_parent_hw = xo;
-		req->best_parent_rate = req->rate;
-		return 0;
-	}
-
-	f = qcom_find_freq(rcg->freq_tbl, req->rate);
-
-	if (!f)
-		return -EINVAL;
-
-	if (req->rate != f->freq)
-		req->rate = f->freq;
-
-	/* Indexes of source from the parent map */
-	p1 = clk_hw_get_parent_by_index(hw, 1);
-	p3 = clk_hw_get_parent_by_index(hw, 2);
-
-	curr_p = clk_hw_get_parent(hw);
-	parent_req.rate = f->src_freq;
-
-	if (curr_p == xo || curr_p == p3)
-		req->best_parent_hw = p1;
-	else if (curr_p == p1)
-		req->best_parent_hw = p3;
-
-	parent_req.best_parent_hw = req->best_parent_hw;
-
-	ret = __clk_determine_rate(req->best_parent_hw, &parent_req);
-	if (ret)
-		return ret;
-
-	req->best_parent_rate = parent_req.rate;
-
-	return 0;
-}
-
-const struct clk_ops clk_gfx3d_src_ops = {
-	.enable = clk_rcg2_enable,
-	.disable = clk_rcg2_disable,
-	.is_enabled = clk_rcg2_is_enabled,
-	.get_parent = clk_rcg2_get_parent,
-	.set_parent = clk_rcg2_set_parent,
-	.recalc_rate = clk_rcg2_recalc_rate,
-	.set_rate = clk_gfx3d_set_rate,
-	.set_rate_and_parent = clk_gfx3d_src_set_rate_and_parent,
-	.determine_rate = clk_gfx3d_src_determine_rate,
-	.list_rate = clk_rcg2_list_rate,
-	.list_registers = clk_rcg2_list_registers,
-};
-EXPORT_SYMBOL(clk_gfx3d_src_ops);
-
-/* Common APIs to be used for DFS based RCGR */
-static u8 clk_parent_index_pre_div_and_mode(struct clk_hw *hw, u32 offset,
-		u32 *mode, u32 *pre_div)
-{
-	struct clk_rcg2 *rcg;
-	int num_parents;
-	u32 cfg, mask;
-	int i, ret;
-
-	if (!hw)
-		return -EINVAL;
-
-	num_parents = clk_hw_get_num_parents(hw);
-
-	rcg = to_clk_rcg2(hw);
-
-	ret = regmap_read(rcg->clkr.regmap, rcg->cmd_rcgr + offset, &cfg);
-	if (ret)
-		goto err;
-
-	mask = BIT(rcg->hid_width) - 1;
-	*pre_div = cfg & mask ? (cfg & mask) : 1;
-
-	*mode = cfg & CFG_MODE_MASK;
-	*mode >>= CFG_MODE_SHIFT;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cfg &= CFG_SRC_SEL_MASK;
 	cfg >>= CFG_SRC_SEL_SHIFT;
 
-<<<<<<< HEAD
 	num_parents = clk_hw_get_num_parents(hw);
 	for (i = 0; i < num_parents; i++) {
 		if (cfg == rcg->parent_map[i].cfg) {
@@ -2114,171 +1579,10 @@ static int clk_rcg2_enable_dfs(const struct clk_rcg_dfs_data *data,
 	rcg->freq_tbl = NULL;
 
 	pr_debug("DFS registered for clk %s\n", init->name);
-=======
-	for (i = 0; i < num_parents; i++)
-		if (cfg == rcg->parent_map[i].cfg)
-			return i;
-err:
-	pr_debug("%s: Clock %s has invalid parent, using default.\n",
-		 __func__, clk_hw_get_name(hw));
-	return 0;
-}
-
-static int calculate_m_and_n(struct clk_hw *hw, u32 m_offset, u32 n_offset,
-		u32 mode, u32 *m, u32 *n)
-{
-	struct clk_rcg2 *rcg = to_clk_rcg2(hw);
-	u32 val, mask;
-	int ret = 0;
-
-	if (!hw)
-		return -EINVAL;
-
-	*m = *n = 0;
-
-	if (mode) {
-		/* Calculate M & N values */
-		mask = BIT(rcg->mnd_width) - 1;
-		ret =  regmap_read(rcg->clkr.regmap, rcg->cmd_rcgr + m_offset,
-					&val);
-		if (ret) {
-			pr_err("Failed to read M offset register\n");
-			goto err;
-		}
-
-		val &= mask;
-		*m  = val;
-
-		ret =  regmap_read(rcg->clkr.regmap, rcg->cmd_rcgr + n_offset,
-					&val);
-		if (ret) {
-			pr_err("Failed to read N offset register\n");
-			goto err;
-		}
-
-		/* val ~(N-M) */
-		val = ~val;
-		val &= mask;
-		val += *m;
-		*n = val;
-	}
-err:
-	return ret;
-}
-
-int clk_rcg2_get_dfs_clock_rate(struct clk_rcg2 *clk, struct device *dev,
-						u8 rcg_flags)
-{
-	int i, j, index, ret = 0;
-	unsigned long calc_freq, prate;
-	u32 val, pre_div = 0, mode = 0, m = 0, n = 0;
-	struct freq_tbl *dfs_freq_tbl;
-	struct clk_hw *phw;
-
-	if (!clk)
-		return -EINVAL;
-
-	/* Check for DFS_EN */
-	ret = regmap_read(clk->clkr.regmap, clk->cmd_rcgr + SE_CMD_DFSR_OFFSET,
-						&val);
-	if (ret) {
-		dev_err(dev, "Failed to read DFS enable register\n");
-		return -EINVAL;
-	}
-
-	if (!(val & SE_CMD_DFS_EN))
-		return ret;
-
-	dfs_freq_tbl = devm_kzalloc(dev, MAX_PERF_LEVEL *
-				sizeof(struct freq_tbl), GFP_KERNEL);
-	if (!dfs_freq_tbl)
-		return -ENOMEM;
-
-	/* Populate the Perf Level */
-	for (i = 0; i < MAX_PERF_LEVEL; i++) {
-		/* Get parent index and mode */
-		index = clk_parent_index_pre_div_and_mode(&clk->clkr.hw,
-							SE_PERF_DFSR(i), &mode,
-							&pre_div);
-		if (index < 0) {
-			pr_err("Failed to get parent index & mode %d\n", index);
-			return index;
-		}
-
-		/* clock pre_div */
-		dfs_freq_tbl[i].pre_div = pre_div;
-
-		/* Fill the parent src */
-		dfs_freq_tbl[i].src = clk->parent_map[index].src;
-
-		/* Get the parent clock and parent rate */
-		phw = clk_hw_get_parent_by_index(&clk->clkr.hw, index);
-		prate = clk_hw_get_rate(phw);
-
-		ret = calculate_m_and_n(&clk->clkr.hw, SE_PERF_M_DFSR(i),
-					SE_PERF_N_DFSR(i), mode, &m, &n);
-		if (ret)
-			goto err;
-
-		dfs_freq_tbl[i].m = m;
-		dfs_freq_tbl[i].n = n;
-
-		/* calculate the final frequency */
-		calc_freq = clk_rcg2_calc_rate(prate, dfs_freq_tbl[i].m,
-						dfs_freq_tbl[i].n, mode,
-						dfs_freq_tbl[i].pre_div);
-
-		/* Check for duplicate frequencies */
-		for (j = 0; j  < i; j++) {
-			if (dfs_freq_tbl[j].freq == calc_freq)
-				goto done;
-		}
-
-		dfs_freq_tbl[i].freq = calc_freq;
-	}
-done:
-	j = i;
-
-	for (i = 0; i < j; i++)
-		pr_debug("Index[%d]\tfreq_table.freq %ld\tfreq_table.src %d\t"
-		"freq_table.pre_div %d\tfreq_table.m %d\tfreq_table.n %d\t"
-		"RCG flags %x\n", i, dfs_freq_tbl[i].freq, dfs_freq_tbl[i].src,
-				dfs_freq_tbl[i].pre_div, dfs_freq_tbl[i].m,
-				dfs_freq_tbl[i].n, rcg_flags);
-	/* Skip the safe configuration if DFS has been enabled for the RCG. */
-	if (clk->enable_safe_config)
-		clk->enable_safe_config = false;
-	clk->flags |= rcg_flags;
-	clk->freq_tbl = dfs_freq_tbl;
-err:
-	return ret;
-}
-
-static int clk_esc_determine_rate(struct clk_hw *hw,
-	struct clk_rate_request *req)
-{
-	struct clk_rcg2 *rcg = to_clk_rcg2(hw);
-	unsigned long parent_rate, div;
-	u32 mask = BIT(rcg->hid_width) - 1;
-	struct clk_hw *p;
-	unsigned long rate = req->rate;
-
-	if (rate == 0)
-		return -EINVAL;
-
-	p = req->best_parent_hw;
-	req->best_parent_rate = parent_rate = clk_hw_round_rate(p, rate);
-
-	div = ((2 * parent_rate) / rate) - 1;
-	div = min_t(u32, div, mask);
-
-	req->rate = clk_rcg2_calc_rate(parent_rate, 0, 0, 0, div);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
 int qcom_cc_register_rcg_dfs(struct regmap *regmap,
 			     const struct clk_rcg_dfs_data *rcgs, size_t len)
 {
@@ -2402,51 +1706,3 @@ const struct clk_ops clk_rcg2_dependent_ops = {
 	.bus_vote = clk_debug_bus_vote,
 };
 EXPORT_SYMBOL(clk_rcg2_dependent_ops);
-=======
-static int clk_esc_set_rate(struct clk_hw *hw, unsigned long rate,
-	unsigned long parent_rate)
-{
-	struct clk_rcg2 *rcg = to_clk_rcg2(hw);
-	struct freq_tbl f = { 0 };
-	unsigned long div;
-	int i, num_parents = clk_hw_get_num_parents(hw);
-	u32 mask = BIT(rcg->hid_width) - 1;
-	u32 cfg;
-
-	div = ((2 * parent_rate) / rate) - 1;
-	div = min_t(u32, div, mask);
-
-	f.pre_div = div;
-
-	regmap_read(rcg->clkr.regmap, rcg->cmd_rcgr + CFG_REG, &cfg);
-	cfg &= CFG_SRC_SEL_MASK;
-	cfg >>= CFG_SRC_SEL_SHIFT;
-
-	for (i = 0; i < num_parents; i++) {
-		if (cfg == rcg->parent_map[i].cfg) {
-			f.src = rcg->parent_map[i].src;
-				return clk_rcg2_configure(rcg, &f);
-		}
-	}
-
-	return -EINVAL;
-}
-
-static int clk_esc_set_rate_and_parent(struct clk_hw *hw,
-		unsigned long rate, unsigned long parent_rate, u8 index)
-{
-	return clk_esc_set_rate(hw, rate, parent_rate);
-}
-
-const struct clk_ops clk_esc_ops = {
-	.is_enabled = clk_rcg2_is_enabled,
-	.get_parent = clk_rcg2_get_parent,
-	.set_parent = clk_rcg2_set_parent,
-	.recalc_rate = clk_rcg2_recalc_rate,
-	.determine_rate = clk_esc_determine_rate,
-	.set_rate = clk_esc_set_rate,
-	.set_rate_and_parent = clk_esc_set_rate_and_parent,
-	.list_registers = clk_rcg2_list_registers,
-};
-EXPORT_SYMBOL(clk_esc_ops);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -351,16 +351,8 @@ struct clk *s3c_cpufreq_clk_get(struct device *dev, const char *name)
 static int s3c_cpufreq_init(struct cpufreq_policy *policy)
 {
 	policy->clk = clk_arm;
-<<<<<<< HEAD
 	policy->cpuinfo.transition_latency = cpu_cur.info->latency;
 	policy->freq_table = ftab;
-=======
-
-	policy->cpuinfo.transition_latency = cpu_cur.info->latency;
-
-	if (ftab)
-		return cpufreq_table_validate_and_show(policy, ftab);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -484,15 +476,8 @@ int __init s3c_cpufreq_setboard(struct s3c_cpufreq_board *board)
 	 * initdata. */
 
 	ours = kzalloc(sizeof(*ours), GFP_KERNEL);
-<<<<<<< HEAD
 	if (!ours)
 		return -ENOMEM;
-=======
-	if (ours == NULL) {
-		pr_err("%s: no memory\n", __func__);
-		return -ENOMEM;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	*ours = *board;
 	cpu_cur.board = ours;
@@ -577,17 +562,9 @@ static int s3c_cpufreq_build_freq(void)
 	size = cpu_cur.info->calc_freqtable(&cpu_cur, NULL, 0);
 	size++;
 
-<<<<<<< HEAD
 	ftab = kcalloc(size, sizeof(*ftab), GFP_KERNEL);
 	if (!ftab)
 		return -ENOMEM;
-=======
-	ftab = kzalloc(sizeof(*ftab) * size, GFP_KERNEL);
-	if (!ftab) {
-		pr_err("%s: no memory for tables\n", __func__);
-		return -ENOMEM;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ftab_size = size;
 

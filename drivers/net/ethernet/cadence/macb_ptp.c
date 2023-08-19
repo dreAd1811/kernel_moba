@@ -115,14 +115,7 @@ static int gem_tsu_incr_set(struct macb *bp, struct tsu_incr *incr_spec)
 	 * to take effect.
 	 */
 	spin_lock_irqsave(&bp->tsu_clk_lock, flags);
-<<<<<<< HEAD
 	gem_writel(bp, TISUBN, GEM_BF(SUBNSINCR, incr_spec->sub_ns));
-=======
-	/* RegBit[15:0] = Subns[23:8]; RegBit[31:24] = Subns[7:0] */
-	gem_writel(bp, TISUBN, GEM_BF(SUBNSINCRL, incr_spec->sub_ns) |
-		   GEM_BF(SUBNSINCRH, (incr_spec->sub_ns >>
-			  GEM_SUBNSINCRL_SIZE)));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gem_writel(bp, TI, GEM_BF(NSINCR, incr_spec->ns));
 	spin_unlock_irqrestore(&bp->tsu_clk_lock, flags);
 
@@ -326,11 +319,8 @@ int gem_ptp_txstamp(struct macb_queue *queue, struct sk_buff *skb,
 	desc_ptp = macb_ptp_desc(queue->bp, desc);
 	tx_timestamp = &queue->tx_timestamps[head];
 	tx_timestamp->skb = skb;
-<<<<<<< HEAD
 	/* ensure ts_1/ts_2 is loaded after ctrl (TX_USED check) */
 	dma_rmb();
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tx_timestamp->desc_ptp.ts_1 = desc_ptp->ts_1;
 	tx_timestamp->desc_ptp.ts_2 = desc_ptp->ts_2;
 	/* move head */
@@ -478,10 +468,7 @@ int gem_set_hwtst(struct net_device *dev, struct ifreq *ifr, int cmd)
 	case HWTSTAMP_TX_ONESTEP_SYNC:
 		if (gem_ptp_set_one_step_sync(bp, 1) != 0)
 			return -ERANGE;
-<<<<<<< HEAD
 		/* fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case HWTSTAMP_TX_ON:
 		tx_bd_control = TSTAMP_ALL_FRAMES;
 		break;

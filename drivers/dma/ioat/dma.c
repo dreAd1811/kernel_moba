@@ -38,21 +38,6 @@
 
 #include "../dmaengine.h"
 
-<<<<<<< HEAD
-=======
-int completion_timeout = 200;
-module_param(completion_timeout, int, 0644);
-MODULE_PARM_DESC(completion_timeout,
-		"set ioat completion timeout [msec] (default 200 [msec])");
-int idle_timeout = 2000;
-module_param(idle_timeout, int, 0644);
-MODULE_PARM_DESC(idle_timeout,
-		"set ioat idel timeout [msec] (default 2000 [msec])");
-
-#define IDLE_TIMEOUT msecs_to_jiffies(idle_timeout)
-#define COMPLETION_TIMEOUT msecs_to_jiffies(completion_timeout)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static char *chanerr_str[] = {
 	"DMA Transfer Source Address Error",
 	"DMA Transfer Destination Address Error",
@@ -403,18 +388,10 @@ ioat_alloc_ring(struct dma_chan *c, int order, gfp_t flags)
 
 		descs->virt = dma_alloc_coherent(to_dev(ioat_chan),
 						 SZ_2M, &descs->hw, flags);
-<<<<<<< HEAD
 		if (!descs->virt && (i > 0)) {
 			int idx;
 
 			for (idx = 0; idx < i; idx++) {
-=======
-		if (!descs->virt) {
-			int idx;
-
-			for (idx = 0; idx < i; idx++) {
-				descs = &ioat_chan->descs[idx];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				dma_free_coherent(to_dev(ioat_chan), SZ_2M,
 						  descs->virt, descs->hw);
 				descs->virt = NULL;
@@ -497,11 +474,7 @@ int ioat_check_space_lock(struct ioatdma_chan *ioat_chan, int num_descs)
 	if (time_is_before_jiffies(ioat_chan->timer.expires)
 	    && timer_pending(&ioat_chan->timer)) {
 		mod_timer(&ioat_chan->timer, jiffies + COMPLETION_TIMEOUT);
-<<<<<<< HEAD
 		ioat_timer_event(&ioat_chan->timer);
-=======
-		ioat_timer_event((unsigned long)ioat_chan);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return -ENOMEM;
@@ -624,10 +597,6 @@ static void __cleanup(struct ioatdma_chan *ioat_chan, dma_addr_t phys_complete)
 	for (i = 0; i < active && !seen_current; i++) {
 		struct dma_async_tx_descriptor *tx;
 
-<<<<<<< HEAD
-=======
-		smp_read_barrier_depends();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		prefetch(ioat_get_ring_ent(ioat_chan, idx + i + 1));
 		desc = ioat_get_ring_ent(ioat_chan, idx + i);
 		dump_desc_dbg(ioat_chan, desc);
@@ -719,15 +688,12 @@ static void ioat_restart_channel(struct ioatdma_chan *ioat_chan)
 {
 	u64 phys_complete;
 
-<<<<<<< HEAD
 	/* set the completion address register again */
 	writel(lower_32_bits(ioat_chan->completion_dma),
 	       ioat_chan->reg_base + IOAT_CHANCMP_OFFSET_LOW);
 	writel(upper_32_bits(ioat_chan->completion_dma),
 	       ioat_chan->reg_base + IOAT_CHANCMP_OFFSET_HIGH);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ioat_quiesce(ioat_chan, 0);
 	if (ioat_cleanup_preamble(ioat_chan, &phys_complete))
 		__cleanup(ioat_chan, phys_complete);
@@ -754,10 +720,6 @@ static void ioat_abort_descs(struct ioatdma_chan *ioat_chan)
 	for (i = 1; i < active; i++) {
 		struct dma_async_tx_descriptor *tx;
 
-<<<<<<< HEAD
-=======
-		smp_read_barrier_depends();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		prefetch(ioat_get_ring_ent(ioat_chan, idx + i + 1));
 		desc = ioat_get_ring_ent(ioat_chan, idx + i);
 
@@ -904,15 +866,9 @@ static void check_active(struct ioatdma_chan *ioat_chan)
 		mod_timer(&ioat_chan->timer, jiffies + IDLE_TIMEOUT);
 }
 
-<<<<<<< HEAD
 void ioat_timer_event(struct timer_list *t)
 {
 	struct ioatdma_chan *ioat_chan = from_timer(ioat_chan, t, timer);
-=======
-void ioat_timer_event(unsigned long data)
-{
-	struct ioatdma_chan *ioat_chan = to_ioat_chan((void *)data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dma_addr_t phys_complete;
 	u64 status;
 

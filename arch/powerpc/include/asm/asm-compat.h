@@ -1,28 +1,10 @@
 #ifndef _ASM_POWERPC_ASM_COMPAT_H
 #define _ASM_POWERPC_ASM_COMPAT_H
 
-<<<<<<< HEAD
 #include <asm/asm-const.h>
 #include <asm/types.h>
 #include <asm/ppc-opcode.h>
 
-=======
-#include <asm/types.h>
-#include <asm/ppc-opcode.h>
-
-#ifdef __ASSEMBLY__
-#  define stringify_in_c(...)	__VA_ARGS__
-#  define ASM_CONST(x)		x
-#else
-/* This version of stringify will deal with commas... */
-#  define __stringify_in_c(...)	#__VA_ARGS__
-#  define stringify_in_c(...)	__stringify_in_c(__VA_ARGS__) " "
-#  define __ASM_CONST(x)	x##UL
-#  define ASM_CONST(x)		__ASM_CONST(x)
-#endif
-
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef __powerpc64__
 
 /* operations for longs and pointers */
@@ -77,20 +59,4 @@
 
 #endif
 
-<<<<<<< HEAD
-=======
-#ifdef __KERNEL__
-#ifdef CONFIG_IBM405_ERR77
-/* Erratum #77 on the 405 means we need a sync or dcbt before every
- * stwcx.  The old ATOMIC_SYNC_FIX covered some but not all of this.
- */
-#define PPC405_ERR77(ra,rb)	stringify_in_c(dcbt	ra, rb;)
-#define	PPC405_ERR77_SYNC	stringify_in_c(sync;)
-#else
-#define PPC405_ERR77(ra,rb)
-#define PPC405_ERR77_SYNC
-#endif
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* _ASM_POWERPC_ASM_COMPAT_H */

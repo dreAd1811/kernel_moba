@@ -600,10 +600,7 @@ void rt2800mmio_kick_queue(struct data_queue *queue)
 	case QID_AC_VI:
 	case QID_AC_BE:
 	case QID_AC_BK:
-<<<<<<< HEAD
 		WARN_ON_ONCE(rt2x00queue_empty(queue));
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		entry = rt2x00queue_get_entry(queue, Q_INDEX);
 		rt2x00mmio_register_write(rt2x00dev, TX_CTX_IDX(queue->qid),
 					  entry->entry_idx);

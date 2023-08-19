@@ -1,50 +1,24 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0-only */
 /*
  * Copyright (c) 2017-2019, The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2017-2019, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #ifndef __ADRENO_LLC_H
 #define __ADRENO_LLC_H
 
-<<<<<<< HEAD
 #include <linux/soc/qcom/llcc-qcom.h>
 
 #include "adreno.h"
 
 #ifdef CONFIG_QCOM_LLCC
-=======
-#ifdef CONFIG_QCOM_LLCC
-#include "adreno.h"
-#include <linux/soc/qcom/llcc-qcom.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline bool adreno_llc_supported(void)
 {
 	return true;
 }
 
-<<<<<<< HEAD
 static inline void *adreno_llc_getd(u32 uid)
 {
 	return llcc_slice_getd(uid);
-=======
-static inline void *adreno_llc_getd(struct device *dev, const char *name)
-{
-	return llcc_slice_getd(dev, name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void adreno_llc_putd(void *desc)
@@ -97,16 +71,9 @@ static inline bool adreno_llc_supported(void)
 	return false;
 }
 
-<<<<<<< HEAD
 static inline void *adreno_llc_getd(u32 uid)
 {
 	return ERR_PTR(-ENOENT);
-=======
-static inline void *adreno_llc_getd(struct device *dev,
-		const char *name)
-{
-	return ERR_PTR(-ENODEV);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void adreno_llc_putd(void *desc)

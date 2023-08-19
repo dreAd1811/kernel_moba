@@ -109,15 +109,9 @@ static int rt_timer_probe(struct platform_device *pdev)
 	}
 
 	rt->irq = platform_get_irq(pdev, 0);
-<<<<<<< HEAD
 	if (rt->irq < 0) {
 		dev_err(&pdev->dev, "failed to load irq\n");
 		return rt->irq;
-=======
-	if (!rt->irq) {
-		dev_err(&pdev->dev, "failed to load irq\n");
-		return -ENOENT;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	rt->membase = devm_ioremap_resource(&pdev->dev, res);

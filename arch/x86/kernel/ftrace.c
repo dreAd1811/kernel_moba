@@ -28,10 +28,6 @@
 
 #include <asm/set_memory.h>
 #include <asm/kprobes.h>
-<<<<<<< HEAD
-=======
-#include <asm/sections.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/ftrace.h>
 #include <asm/nops.h>
 #include <asm/text-patching.h>
@@ -39,10 +35,6 @@
 #ifdef CONFIG_DYNAMIC_FTRACE
 
 int ftrace_arch_code_modify_prepare(void)
-<<<<<<< HEAD
-=======
-    __acquires(&text_mutex)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	mutex_lock(&text_mutex);
 	set_kernel_text_rw();
@@ -51,10 +43,6 @@ int ftrace_arch_code_modify_prepare(void)
 }
 
 int ftrace_arch_code_modify_post_process(void)
-<<<<<<< HEAD
-=======
-    __releases(&text_mutex)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	set_all_modules_text_ro();
 	set_kernel_text_ro();
@@ -65,11 +53,7 @@ int ftrace_arch_code_modify_post_process(void)
 union ftrace_code_union {
 	char code[MCOUNT_INSN_SIZE];
 	struct {
-<<<<<<< HEAD
 		unsigned char op;
-=======
-		unsigned char e8;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		int offset;
 	} __attribute__((packed));
 };
@@ -79,7 +63,6 @@ static int ftrace_calc_offset(long ip, long addr)
 	return (int)(addr - ip);
 }
 
-<<<<<<< HEAD
 static unsigned char *
 ftrace_text_replace(unsigned char op, unsigned long ip, unsigned long addr)
 {
@@ -97,22 +80,6 @@ ftrace_call_replace(unsigned long ip, unsigned long addr)
 	return ftrace_text_replace(0xe8, ip, addr);
 }
 
-=======
-static unsigned char *ftrace_call_replace(unsigned long ip, unsigned long addr)
-{
-	static union ftrace_code_union calc;
-
-	calc.e8		= 0xe8;
-	calc.offset	= ftrace_calc_offset(ip + MCOUNT_INSN_SIZE, addr);
-
-	/*
-	 * No locking needed, this must be called via kstop_machine
-	 * which in essence is like running on a uniprocessor machine.
-	 */
-	return calc.code;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int
 within(unsigned long addr, unsigned long start, unsigned long end)
 {
@@ -722,25 +689,6 @@ int __init ftrace_dyn_arch_init(void)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-#if defined(CONFIG_X86_64) || defined(CONFIG_FUNCTION_GRAPH_TRACER)
-static unsigned char *ftrace_jmp_replace(unsigned long ip, unsigned long addr)
-{
-	static union ftrace_code_union calc;
-
-	/* Jmp not a call (ignore the .e8) */
-	calc.e8		= 0xe9;
-	calc.offset	= ftrace_calc_offset(ip + MCOUNT_INSN_SIZE, addr);
-
-	/*
-	 * ftrace external locks synchronize the access to the static variable.
-	 */
-	return calc.code;
-}
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Currently only x86_64 supports dynamic trampolines */
 #ifdef CONFIG_X86_64
 
@@ -794,35 +742,21 @@ union ftrace_op_code_union {
 	} __attribute__((packed));
 };
 
-<<<<<<< HEAD
 #define RET_SIZE		1
 
 static unsigned long
 create_trampoline(struct ftrace_ops *ops, unsigned int *tramp_size)
 {
-=======
-static unsigned long
-create_trampoline(struct ftrace_ops *ops, unsigned int *tramp_size)
-{
-	unsigned const char *jmp;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long start_offset;
 	unsigned long end_offset;
 	unsigned long op_offset;
 	unsigned long offset;
-<<<<<<< HEAD
 	unsigned long npages;
 	unsigned long size;
 	unsigned long retq;
 	unsigned long *ptr;
 	void *trampoline;
 	void *ip;
-=======
-	unsigned long size;
-	unsigned long ip;
-	unsigned long *ptr;
-	void *trampoline;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* 48 8b 15 <offset> is movq <offset>(%rip), %rdx */
 	unsigned const char op_ref[] = { 0x48, 0x8b, 0x15 };
 	union ftrace_op_code_union op_ptr;
@@ -842,7 +776,6 @@ create_trampoline(struct ftrace_ops *ops, unsigned int *tramp_size)
 
 	/*
 	 * Allocate enough size to store the ftrace_caller code,
-<<<<<<< HEAD
 	 * the iret , as well as the address of the ftrace_ops this
 	 * trampoline is used for.
 	 */
@@ -865,29 +798,6 @@ create_trampoline(struct ftrace_ops *ops, unsigned int *tramp_size)
 	ret = probe_kernel_read(ip, (void *)retq, RET_SIZE);
 	if (WARN_ON(ret < 0))
 		goto fail;
-=======
-	 * the jmp to ftrace_epilogue, as well as the address of
-	 * the ftrace_ops this trampoline is used for.
-	 */
-	trampoline = alloc_tramp(size + MCOUNT_INSN_SIZE + sizeof(void *));
-	if (!trampoline)
-		return 0;
-
-	*tramp_size = size + MCOUNT_INSN_SIZE + sizeof(void *);
-
-	/* Copy ftrace_caller onto the trampoline memory */
-	ret = probe_kernel_read(trampoline, (void *)start_offset, size);
-	if (WARN_ON(ret < 0)) {
-		tramp_free(trampoline, *tramp_size);
-		return 0;
-	}
-
-	ip = (unsigned long)trampoline + size;
-
-	/* The trampoline ends with a jmp to ftrace_epilogue */
-	jmp = ftrace_jmp_replace(ip, (unsigned long)ftrace_epilogue);
-	memcpy(trampoline + size, jmp, MCOUNT_INSN_SIZE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * The address of the ftrace_ops that is used for this trampoline
@@ -897,26 +807,15 @@ create_trampoline(struct ftrace_ops *ops, unsigned int *tramp_size)
 	 * the global function_trace_op variable.
 	 */
 
-<<<<<<< HEAD
 	ptr = (unsigned long *)(trampoline + size + RET_SIZE);
-=======
-	ptr = (unsigned long *)(trampoline + size + MCOUNT_INSN_SIZE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	*ptr = (unsigned long)ops;
 
 	op_offset -= start_offset;
 	memcpy(&op_ptr, trampoline + op_offset, OP_REF_SIZE);
 
 	/* Are we pointing to the reference? */
-<<<<<<< HEAD
 	if (WARN_ON(memcmp(op_ptr.op, op_ref, 3) != 0))
 		goto fail;
-=======
-	if (WARN_ON(memcmp(op_ptr.op, op_ref, 3) != 0)) {
-		tramp_free(trampoline, *tramp_size);
-		return 0;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Load the contents of ptr into the callback parameter */
 	offset = (unsigned long)ptr;
@@ -930,7 +829,6 @@ create_trampoline(struct ftrace_ops *ops, unsigned int *tramp_size)
 	/* ALLOC_TRAMP flags lets us know we created it */
 	ops->flags |= FTRACE_OPS_FL_ALLOC_TRAMP;
 
-<<<<<<< HEAD
 	/*
 	 * Module allocation needs to be completed by making the page
 	 * executable. The page is still writable, which is a security hazard,
@@ -941,9 +839,6 @@ create_trampoline(struct ftrace_ops *ops, unsigned int *tramp_size)
 fail:
 	tramp_free(trampoline, *tramp_size);
 	return 0;
-=======
-	return (unsigned long)trampoline;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static unsigned long calc_trampoline_call_offset(bool save_regs)
@@ -1015,13 +910,8 @@ static void *addr_from_call(void *ptr)
 		return NULL;
 
 	/* Make sure this is a call */
-<<<<<<< HEAD
 	if (WARN_ON_ONCE(calc.op != 0xe8)) {
 		pr_warn("Expected e8, got %x\n", calc.op);
-=======
-	if (WARN_ON_ONCE(calc.e8 != 0xe8)) {
-		pr_warn("Expected e8, got %x\n", calc.e8);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return NULL;
 	}
 
@@ -1092,14 +982,11 @@ void arch_ftrace_trampoline_free(struct ftrace_ops *ops)
 #ifdef CONFIG_DYNAMIC_FTRACE
 extern void ftrace_graph_call(void);
 
-<<<<<<< HEAD
 static unsigned char *ftrace_jmp_replace(unsigned long ip, unsigned long addr)
 {
 	return ftrace_text_replace(0xe9, ip, addr);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ftrace_mod_jmp(unsigned long ip, void *func)
 {
 	unsigned char *new;
@@ -1135,10 +1022,6 @@ void prepare_ftrace_return(unsigned long self_addr, unsigned long *parent,
 {
 	unsigned long old;
 	int faulted;
-<<<<<<< HEAD
-=======
-	struct ftrace_graph_ent trace;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long return_hooker = (unsigned long)
 				&return_to_handler;
 
@@ -1190,24 +1073,7 @@ void prepare_ftrace_return(unsigned long self_addr, unsigned long *parent,
 		return;
 	}
 
-<<<<<<< HEAD
 	if (function_graph_enter(old, self_addr, frame_pointer, parent))
 		*parent = old;
-=======
-	trace.func = self_addr;
-	trace.depth = current->curr_ret_stack + 1;
-
-	/* Only trace if the calling function expects to */
-	if (!ftrace_graph_entry(&trace)) {
-		*parent = old;
-		return;
-	}
-
-	if (ftrace_push_return_trace(old, self_addr, &trace.depth,
-				     frame_pointer, parent) == -EBUSY) {
-		*parent = old;
-		return;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #endif /* CONFIG_FUNCTION_GRAPH_TRACER */

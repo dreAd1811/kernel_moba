@@ -105,7 +105,6 @@ static int flexcop_i2c_write4(struct flexcop_device *fc,
 }
 
 int flexcop_i2c_request(struct flexcop_i2c_adapter *i2c,
-<<<<<<< HEAD
 			flexcop_access_op_t op, u8 chipaddr,
 			u8 start_addr, u8 *buf, u16 size)
 {
@@ -113,61 +112,29 @@ int flexcop_i2c_request(struct flexcop_i2c_adapter *i2c,
 	int len = size;
 	u8 *p;
 	u8 addr = start_addr;
-=======
-		flexcop_access_op_t op, u8 chipaddr, u8 addr, u8 *buf, u16 len)
-{
-	int ret;
-
-#ifdef DUMP_I2C_MESSAGES
-	int i;
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	u16 bytes_to_transfer;
 	flexcop_ibi_value r100;
 
-<<<<<<< HEAD
 	deb_i2c("port %d %s(%02x): register %02x, size: %d\n",
 		i2c->port,
 		op == FC_READ ? "rd" : "wr",
 		chipaddr, start_addr, size);
-=======
-	deb_i2c("op = %d\n",op);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	r100.raw = 0;
 	r100.tw_sm_c_100.chipaddr = chipaddr;
 	r100.tw_sm_c_100.twoWS_rw = op;
 	r100.tw_sm_c_100.twoWS_port_reg = i2c->port;
 
-<<<<<<< HEAD
-=======
-#ifdef DUMP_I2C_MESSAGES
-	printk(KERN_DEBUG "%d ", i2c->port);
-	if (op == FC_READ)
-		printk(KERN_CONT "rd(");
-	else
-		printk(KERN_CONT "wr(");
-	printk(KERN_CONT "%02x): %02x ", chipaddr, addr);
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* in that case addr is the only value ->
 	 * we write it twice as baseaddr and val0
 	 * BBTI is doing it like that for ISL6421 at least */
 	if (i2c->no_base_addr && len == 0 && op == FC_WRITE) {
-<<<<<<< HEAD
 		buf = &start_addr;
 		len = 1;
 	}
 
 	p = buf;
 
-=======
-		buf = &addr;
-		len = 1;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	while (len != 0) {
 		bytes_to_transfer = len > 4 ? 4 : len;
 
@@ -175,25 +142,13 @@ int flexcop_i2c_request(struct flexcop_i2c_adapter *i2c,
 		r100.tw_sm_c_100.baseaddr = addr;
 
 		if (op == FC_READ)
-<<<<<<< HEAD
 			ret = flexcop_i2c_read4(i2c, r100, p);
 		else
 			ret = flexcop_i2c_write4(i2c->fc, r100, p);
-=======
-			ret = flexcop_i2c_read4(i2c, r100, buf);
-		else
-			ret = flexcop_i2c_write4(i2c->fc, r100, buf);
-
-#ifdef DUMP_I2C_MESSAGES
-		for (i = 0; i < bytes_to_transfer; i++)
-			printk(KERN_CONT "%02x ", buf[i]);
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (ret < 0)
 			return ret;
 
-<<<<<<< HEAD
 		p  += bytes_to_transfer;
 		addr += bytes_to_transfer;
 		len  -= bytes_to_transfer;
@@ -202,16 +157,6 @@ int flexcop_i2c_request(struct flexcop_i2c_adapter *i2c,
 		i2c->port,
 		op == FC_READ ? "rd" : "wr",
 		chipaddr, start_addr, size, buf);
-=======
-		buf  += bytes_to_transfer;
-		addr += bytes_to_transfer;
-		len  -= bytes_to_transfer;
-	}
-
-#ifdef DUMP_I2C_MESSAGES
-	printk(KERN_CONT "\n");
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

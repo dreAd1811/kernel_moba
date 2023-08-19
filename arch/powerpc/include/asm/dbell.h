@@ -16,11 +16,7 @@
 #include <linux/threads.h>
 
 #include <asm/ppc-opcode.h>
-<<<<<<< HEAD
 #include <asm/feature-fixups.h>
-=======
-#include <asm/cpu_has_feature.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define PPC_DBELL_MSG_BRDCAST	(0x04000000)
 #define PPC_DBELL_TYPE(x)	(((x) & 0xf) << (63-36))

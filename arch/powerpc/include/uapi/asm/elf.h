@@ -97,10 +97,7 @@
 #define ELF_NTMSPRREG	3	/* include tfhar, tfiar, texasr */
 #define ELF_NEBB	3	/* includes ebbrr, ebbhr, bescr */
 #define ELF_NPMU	5	/* includes siar, sdar, sier, mmcr2, mmcr0 */
-<<<<<<< HEAD
 #define ELF_NPKEY	3	/* includes amr, iamr, uamor */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 typedef unsigned long elf_greg_t64;
 typedef elf_greg_t64 elf_gregset_t64[ELF_NGREG];

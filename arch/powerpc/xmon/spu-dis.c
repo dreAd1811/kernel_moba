@@ -102,11 +102,7 @@ print_insn_spu (unsigned long insn, unsigned long memaddr)
 
   if (index == 0)
     {
-<<<<<<< HEAD
       printf(".long 0x%lx", insn);
-=======
-      printf(".long 0x%x", insn);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     }
   else
     {
@@ -138,7 +134,6 @@ print_insn_spu (unsigned long insn, unsigned long memaddr)
 	  switch (arg)
 	    {
 	    case A_T:
-<<<<<<< HEAD
 	      printf("$%lu",
 				     DECODE_INSN_RT (insn));
 	      break;
@@ -160,29 +155,6 @@ print_insn_spu (unsigned long insn, unsigned long memaddr)
 	      break;
 	    case A_H:
 	      printf("$ch%lu",
-=======
-	      printf("$%d",
-				     DECODE_INSN_RT (insn));
-	      break;
-	    case A_A:
-	      printf("$%d",
-				     DECODE_INSN_RA (insn));
-	      break;
-	    case A_B:
-	      printf("$%d",
-				     DECODE_INSN_RB (insn));
-	      break;
-	    case A_C:
-	      printf("$%d",
-				     DECODE_INSN_RC (insn));
-	      break;
-	    case A_S:
-	      printf("$sp%d",
-				     DECODE_INSN_RA (insn));
-	      break;
-	    case A_H:
-	      printf("$ch%d",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     DECODE_INSN_RA (insn));
 	      break;
 	    case A_P:
@@ -190,19 +162,11 @@ print_insn_spu (unsigned long insn, unsigned long memaddr)
 	      printf("(");
 	      break;
 	    case A_U7A:
-<<<<<<< HEAD
 	      printf("%lu",
 				     173 - DECODE_INSN_U8 (insn));
 	      break;
 	    case A_U7B:
 	      printf("%lu",
-=======
-	      printf("%d",
-				     173 - DECODE_INSN_U8 (insn));
-	      break;
-	    case A_U7B:
-	      printf("%d",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     155 - DECODE_INSN_U8 (insn));
 	      break;
 	    case A_S3:

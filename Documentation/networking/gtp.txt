@@ -1,11 +1,7 @@
 The Linux kernel GTP tunneling module
 ======================================================================
-<<<<<<< HEAD
 Documentation by Harald Welte <laforge@gnumonks.org> and
                  Andreas Schultz <aschultz@tpip.net>
-=======
-Documentation by Harald Welte <laforge@gnumonks.org>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 In 'drivers/net/gtp.c' you are finding a kernel-level implementation
 of a GTP tunnel endpoint.
@@ -71,11 +67,7 @@ Don't be confused by terminology:  The GTP User Plane goes through
 kernel accelerated path, while the GTP Control Plane goes to
 Userspace :)
 
-<<<<<<< HEAD
 The official homepage of the module is at
-=======
-The official homepge of the module is at
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 https://osmocom.org/projects/linux-kernel-gtp-u/wiki
 
 == Userspace Programs with Linux Kernel GTP-U support ==
@@ -100,7 +92,6 @@ http://git.osmocom.org/libgtpnl/
 
 == Protocol Versions ==
 
-<<<<<<< HEAD
 There are two different versions of GTP-U: v0 [GSM TS 09.60] and v1
 [3GPP TS 29.281].  Both are implemented in the Kernel GTP module.
 Version 0 is a legacy version, and deprecated from recent 3GPP
@@ -108,11 +99,6 @@ specifications.
 
 GTP-U uses UDP for transporting PDUs.  The receiving UDP port is 2151
 for GTPv1-U and 3386 for GTPv0-U.
-=======
-There are two different versions of GTP-U: v0 and v1.  Both are
-implemented in the Kernel GTP module.  Version 0 is a legacy version,
-and deprecated from recent 3GPP specifications.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 There are three versions of GTP-C: v0, v1, and v2.  As the kernel
 doesn't implement GTP-C, we don't have to worry about this.  It's the
@@ -134,11 +120,7 @@ If yo have questions regarding how to use the Kernel GTP module from
 your own software, or want to contribute to the code, please use the
 osmocom-net-grps mailing list for related discussion. The list can be
 reached at osmocom-net-gprs@lists.osmocom.org and the mailman
-<<<<<<< HEAD
 interface for managing your subscription is at
-=======
-interface for managign your subscription is at
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 https://lists.osmocom.org/mailman/listinfo/osmocom-net-gprs
 
 == Issue Tracker ==
@@ -156,7 +138,6 @@ doe to a lack of user interest, it never got merged.
 In 2015, Andreas Schultz came to the rescue and fixed lots more bugs,
 extended it with new features and finally pushed all of us to get it
 mainline, where it was merged in 4.7.0.
-<<<<<<< HEAD
 
 == Architectural Details ==
 
@@ -247,5 +228,3 @@ and from PDN to IP network:
 
 Furthermore, before a received T-PDU is injected into the network
 device the MS IP is checked against the IP recorded in PDP context.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

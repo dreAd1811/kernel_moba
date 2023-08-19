@@ -20,10 +20,7 @@
 #include <linux/log2.h>
 #include <linux/module.h>
 #include <linux/of.h>
-<<<<<<< HEAD
 #include <linux/of_device.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/platform_device.h>
 #include <linux/reboot.h>
 #include <linux/regmap.h>
@@ -32,10 +29,7 @@
 
 #define PON_RT_STS			0x10
 #define  PON_KPDPWR_N_SET		BIT(0)
-<<<<<<< HEAD
 #define  PON_RESIN_N_SET		BIT(1)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define PON_PS_HOLD_RST_CTL		0x5a
 #define PON_PS_HOLD_RST_CTL2		0x5b
@@ -46,21 +40,15 @@
 
 #define PON_PULL_CTL			0x70
 #define  PON_KPDPWR_PULL_UP		BIT(1)
-<<<<<<< HEAD
 #define  PON_RESIN_PULL_UP		BIT(0)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define PON_DBC_CTL			0x71
 #define  PON_DBC_DELAY_MASK		0x7
 
-<<<<<<< HEAD
 struct pm8941_data {
 	unsigned int pull_up_bit;
 	unsigned int status_bit;
 };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct pm8941_pwrkey {
 	struct device *dev;
@@ -71,12 +59,9 @@ struct pm8941_pwrkey {
 
 	unsigned int revision;
 	struct notifier_block reboot_notifier;
-<<<<<<< HEAD
 
 	u32 code;
 	const struct pm8941_data *data;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int pm8941_reboot_notify(struct notifier_block *nb,
@@ -149,12 +134,8 @@ static irqreturn_t pm8941_pwrkey_irq(int irq, void *_data)
 	if (error)
 		return IRQ_HANDLED;
 
-<<<<<<< HEAD
 	input_report_key(pwrkey->input, pwrkey->code,
 			 sts & pwrkey->data->status_bit);
-=======
-	input_report_key(pwrkey->input, KEY_POWER, !!(sts & PON_KPDPWR_N_SET));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	input_sync(pwrkey->input);
 
 	return IRQ_HANDLED;
@@ -187,10 +168,7 @@ static int pm8941_pwrkey_probe(struct platform_device *pdev)
 {
 	struct pm8941_pwrkey *pwrkey;
 	bool pull_up;
-<<<<<<< HEAD
 	struct device *parent;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 req_delay;
 	int error;
 
@@ -209,7 +187,6 @@ static int pm8941_pwrkey_probe(struct platform_device *pdev)
 		return -ENOMEM;
 
 	pwrkey->dev = &pdev->dev;
-<<<<<<< HEAD
 	pwrkey->data = of_device_get_match_data(&pdev->dev);
 
 	parent = pdev->dev.parent;
@@ -234,14 +211,6 @@ static int pm8941_pwrkey_probe(struct platform_device *pdev)
 	}
 	if (error)
 		return error;
-=======
-
-	pwrkey->regmap = dev_get_regmap(pdev->dev.parent, NULL);
-	if (!pwrkey->regmap) {
-		dev_err(&pdev->dev, "failed to locate regmap\n");
-		return -ENODEV;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pwrkey->irq = platform_get_irq(pdev, 0);
 	if (pwrkey->irq < 0) {
@@ -249,14 +218,6 @@ static int pm8941_pwrkey_probe(struct platform_device *pdev)
 		return pwrkey->irq;
 	}
 
-<<<<<<< HEAD
-=======
-	error = of_property_read_u32(pdev->dev.of_node, "reg",
-				     &pwrkey->baseaddr);
-	if (error)
-		return error;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	error = regmap_read(pwrkey->regmap, pwrkey->baseaddr + PON_REV2,
 			    &pwrkey->revision);
 	if (error) {
@@ -264,7 +225,6 @@ static int pm8941_pwrkey_probe(struct platform_device *pdev)
 		return error;
 	}
 
-<<<<<<< HEAD
 	error = of_property_read_u32(pdev->dev.of_node, "linux,code",
 				     &pwrkey->code);
 	if (error) {
@@ -273,19 +233,13 @@ static int pm8941_pwrkey_probe(struct platform_device *pdev)
 		pwrkey->code = KEY_POWER;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pwrkey->input = devm_input_allocate_device(&pdev->dev);
 	if (!pwrkey->input) {
 		dev_dbg(&pdev->dev, "unable to allocate input device\n");
 		return -ENOMEM;
 	}
 
-<<<<<<< HEAD
 	input_set_capability(pwrkey->input, EV_KEY, pwrkey->code);
-=======
-	input_set_capability(pwrkey->input, EV_KEY, KEY_POWER);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pwrkey->input->name = "pm8941_pwrkey";
 	pwrkey->input->phys = "pm8941_pwrkey/input0";
@@ -304,13 +258,8 @@ static int pm8941_pwrkey_probe(struct platform_device *pdev)
 
 	error = regmap_update_bits(pwrkey->regmap,
 				   pwrkey->baseaddr + PON_PULL_CTL,
-<<<<<<< HEAD
 				   pwrkey->data->pull_up_bit,
 				   pull_up ? pwrkey->data->pull_up_bit : 0);
-=======
-				   PON_KPDPWR_PULL_UP,
-				   pull_up ? PON_KPDPWR_PULL_UP : 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (error) {
 		dev_err(&pdev->dev, "failed to set pull: %d\n", error);
 		return error;
@@ -355,7 +304,6 @@ static int pm8941_pwrkey_remove(struct platform_device *pdev)
 	return 0;
 }
 
-<<<<<<< HEAD
 static const struct pm8941_data pwrkey_data = {
 	.pull_up_bit = PON_KPDPWR_PULL_UP,
 	.status_bit = PON_KPDPWR_N_SET,
@@ -369,10 +317,6 @@ static const struct pm8941_data resin_data = {
 static const struct of_device_id pm8941_pwr_key_id_table[] = {
 	{ .compatible = "qcom,pm8941-pwrkey", .data = &pwrkey_data },
 	{ .compatible = "qcom,pm8941-resin", .data = &resin_data },
-=======
-static const struct of_device_id pm8941_pwr_key_id_table[] = {
-	{ .compatible = "qcom,pm8941-pwrkey" },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ }
 };
 MODULE_DEVICE_TABLE(of, pm8941_pwr_key_id_table);

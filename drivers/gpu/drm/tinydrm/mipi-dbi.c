@@ -9,10 +9,7 @@
  * (at your option) any later version.
  */
 
-<<<<<<< HEAD
 #include <drm/drm_gem_framebuffer_helper.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <drm/tinydrm/mipi-dbi.h>
 #include <drm/tinydrm/tinydrm-helpers.h>
 #include <linux/debugfs.h>
@@ -147,7 +144,6 @@ EXPORT_SYMBOL(mipi_dbi_command_read);
  */
 int mipi_dbi_command_buf(struct mipi_dbi *mipi, u8 cmd, u8 *data, size_t len)
 {
-<<<<<<< HEAD
 	u8 *cmdbuf;
 	int ret;
 
@@ -162,19 +158,10 @@ int mipi_dbi_command_buf(struct mipi_dbi *mipi, u8 cmd, u8 *data, size_t len)
 
 	kfree(cmdbuf);
 
-=======
-	int ret;
-
-	mutex_lock(&mipi->cmdlock);
-	ret = mipi->command(mipi, cmd, data, len);
-	mutex_unlock(&mipi->cmdlock);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 EXPORT_SYMBOL(mipi_dbi_command_buf);
 
-<<<<<<< HEAD
 /* This should only be used by mipi_dbi_command() */
 int mipi_dbi_command_stackbuf(struct mipi_dbi *mipi, u8 cmd, u8 *data, size_t len)
 {
@@ -205,10 +192,6 @@ EXPORT_SYMBOL(mipi_dbi_command_stackbuf);
  */
 int mipi_dbi_buf_copy(void *dst, struct drm_framebuffer *fb,
 		      struct drm_clip_rect *clip, bool swap)
-=======
-static int mipi_dbi_buf_copy(void *dst, struct drm_framebuffer *fb,
-				struct drm_clip_rect *clip, bool swap)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_gem_cma_object *cma_obj = drm_fb_cma_get_gem_obj(fb, 0);
 	struct dma_buf_attachment *import_attach = cma_obj->base.import_attach;
@@ -245,10 +228,7 @@ static int mipi_dbi_buf_copy(void *dst, struct drm_framebuffer *fb,
 					     DMA_FROM_DEVICE);
 	return ret;
 }
-<<<<<<< HEAD
 EXPORT_SYMBOL(mipi_dbi_buf_copy);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int mipi_dbi_fb_dirty(struct drm_framebuffer *fb,
 			     struct drm_file *file_priv,
@@ -265,19 +245,8 @@ static int mipi_dbi_fb_dirty(struct drm_framebuffer *fb,
 	bool full;
 	void *tr;
 
-<<<<<<< HEAD
 	if (!mipi->enabled)
 		return 0;
-=======
-	mutex_lock(&tdev->dirty_lock);
-
-	if (!mipi->enabled)
-		goto out_unlock;
-
-	/* fbdev can flush even when we're not interested */
-	if (tdev->pipe.plane.fb != fb)
-		goto out_unlock;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	full = tinydrm_merge_clips(&clip, clips, num_clips, flags,
 				   fb->width, fb->height);
@@ -290,11 +259,7 @@ static int mipi_dbi_fb_dirty(struct drm_framebuffer *fb,
 		tr = mipi->tx_buf;
 		ret = mipi_dbi_buf_copy(mipi->tx_buf, fb, &clip, swap);
 		if (ret)
-<<<<<<< HEAD
 			return ret;
-=======
-			goto out_unlock;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		tr = cma_obj->vaddr;
 	}
@@ -309,21 +274,10 @@ static int mipi_dbi_fb_dirty(struct drm_framebuffer *fb,
 	ret = mipi_dbi_command_buf(mipi, MIPI_DCS_WRITE_MEMORY_START, tr,
 				(clip.x2 - clip.x1) * (clip.y2 - clip.y1) * 2);
 
-<<<<<<< HEAD
-=======
-out_unlock:
-	mutex_unlock(&tdev->dirty_lock);
-
-	if (ret)
-		dev_err_once(fb->dev->dev, "Failed to update display %d\n",
-			     ret);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
 static const struct drm_framebuffer_funcs mipi_dbi_fb_funcs = {
-<<<<<<< HEAD
 	.destroy	= drm_gem_fb_destroy,
 	.create_handle	= drm_gem_fb_create_handle,
 	.dirty		= tinydrm_fb_dirty,
@@ -353,37 +307,6 @@ void mipi_dbi_enable_flush(struct mipi_dbi *mipi,
 	backlight_enable(mipi->backlight);
 }
 EXPORT_SYMBOL(mipi_dbi_enable_flush);
-=======
-	.destroy	= drm_fb_cma_destroy,
-	.create_handle	= drm_fb_cma_create_handle,
-	.dirty		= mipi_dbi_fb_dirty,
-};
-
-/**
- * mipi_dbi_pipe_enable - MIPI DBI pipe enable helper
- * @pipe: Display pipe
- * @crtc_state: CRTC state
- *
- * This function enables backlight. Drivers can use this as their
- * &drm_simple_display_pipe_funcs->enable callback.
- */
-void mipi_dbi_pipe_enable(struct drm_simple_display_pipe *pipe,
-			  struct drm_crtc_state *crtc_state)
-{
-	struct tinydrm_device *tdev = pipe_to_tinydrm(pipe);
-	struct mipi_dbi *mipi = mipi_dbi_from_tinydrm(tdev);
-	struct drm_framebuffer *fb = pipe->plane.fb;
-
-	DRM_DEBUG_KMS("\n");
-
-	mipi->enabled = true;
-	if (fb)
-		fb->funcs->dirty(fb, NULL, 0, 0, NULL, 0);
-
-	tinydrm_enable_backlight(mipi->backlight);
-}
-EXPORT_SYMBOL(mipi_dbi_pipe_enable);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void mipi_dbi_blank(struct mipi_dbi *mipi)
 {
@@ -406,13 +329,8 @@ static void mipi_dbi_blank(struct mipi_dbi *mipi)
  * mipi_dbi_pipe_disable - MIPI DBI pipe disable helper
  * @pipe: Display pipe
  *
-<<<<<<< HEAD
  * This function disables backlight if present, if not the display memory is
  * blanked. The regulator is disabled if in use. Drivers can use this as their
-=======
- * This function disables backlight if present or if not the
- * display memory is blanked. Drivers can use this as their
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * &drm_simple_display_pipe_funcs->disable callback.
  */
 void mipi_dbi_pipe_disable(struct drm_simple_display_pipe *pipe)
@@ -425,18 +343,12 @@ void mipi_dbi_pipe_disable(struct drm_simple_display_pipe *pipe)
 	mipi->enabled = false;
 
 	if (mipi->backlight)
-<<<<<<< HEAD
 		backlight_disable(mipi->backlight);
 	else
 		mipi_dbi_blank(mipi);
 
 	if (mipi->regulator)
 		regulator_disable(mipi->regulator);
-=======
-		tinydrm_disable_backlight(mipi->backlight);
-	else
-		mipi_dbi_blank(mipi);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(mipi_dbi_pipe_disable);
 
@@ -487,11 +399,8 @@ int mipi_dbi_init(struct device *dev, struct mipi_dbi *mipi,
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	tdev->fb_dirty = mipi_dbi_fb_dirty;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* TODO: Maybe add DRM_MODE_CONNECTOR_SPI */
 	ret = tinydrm_display_pipe_init(tdev, pipe_funcs,
 					DRM_MODE_CONNECTOR_VIRTUAL,
@@ -525,11 +434,7 @@ void mipi_dbi_hw_reset(struct mipi_dbi *mipi)
 		return;
 
 	gpiod_set_value_cansleep(mipi->reset, 0);
-<<<<<<< HEAD
 	usleep_range(20, 1000);
-=======
-	msleep(20);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gpiod_set_value_cansleep(mipi->reset, 1);
 	msleep(120);
 }
@@ -556,10 +461,7 @@ bool mipi_dbi_display_is_on(struct mipi_dbi *mipi)
 
 	val &= ~DCS_POWER_MODE_RESERVED_MASK;
 
-<<<<<<< HEAD
 	/* The poweron/reset value is 08h DCS_POWER_MODE_DISPLAY_NORMAL_MODE */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (val != (DCS_POWER_MODE_DISPLAY |
 	    DCS_POWER_MODE_DISPLAY_NORMAL_MODE | DCS_POWER_MODE_SLEEP_MODE))
 		return false;
@@ -570,7 +472,6 @@ bool mipi_dbi_display_is_on(struct mipi_dbi *mipi)
 }
 EXPORT_SYMBOL(mipi_dbi_display_is_on);
 
-<<<<<<< HEAD
 static int mipi_dbi_poweron_reset_conditional(struct mipi_dbi *mipi, bool cond)
 {
 	struct device *dev = mipi->tinydrm.drm->dev;
@@ -650,30 +551,18 @@ EXPORT_SYMBOL(mipi_dbi_poweron_conditional_reset);
  * @spi: SPI device
  * @len: The transfer buffer length.
  *
-=======
-#if IS_ENABLED(CONFIG_SPI)
-
-/*
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Many controllers have a max speed of 10MHz, but can be pushed way beyond
  * that. Increase reliability by running pixel data at max speed and the rest
  * at 10MHz, preventing transfer glitches from messing up the init settings.
  */
-<<<<<<< HEAD
 u32 mipi_dbi_spi_cmd_max_speed(struct spi_device *spi, size_t len)
-=======
-static u32 mipi_dbi_spi_cmd_max_speed(struct spi_device *spi, size_t len)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (len > 64)
 		return 0; /* use default */
 
 	return min_t(u32, 10000000, spi->max_speed_hz);
 }
-<<<<<<< HEAD
 EXPORT_SYMBOL(mipi_dbi_spi_cmd_max_speed);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * MIPI DBI Type C Option 1
@@ -878,7 +767,6 @@ static int mipi_dbi_spi1_transfer(struct mipi_dbi *mipi, int dc,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int mipi_dbi_typec1_command(struct mipi_dbi *mipi, u8 *cmd,
 				   u8 *parameters, size_t num)
 {
@@ -891,20 +779,6 @@ static int mipi_dbi_typec1_command(struct mipi_dbi *mipi, u8 *cmd,
 	MIPI_DBI_DEBUG_COMMAND(*cmd, parameters, num);
 
 	ret = mipi_dbi_spi1_transfer(mipi, 0, cmd, 1, 8);
-=======
-static int mipi_dbi_typec1_command(struct mipi_dbi *mipi, u8 cmd,
-				   u8 *parameters, size_t num)
-{
-	unsigned int bpw = (cmd == MIPI_DCS_WRITE_MEMORY_START) ? 16 : 8;
-	int ret;
-
-	if (mipi_dbi_command_is_read(mipi, cmd))
-		return -ENOTSUPP;
-
-	MIPI_DBI_DEBUG_COMMAND(cmd, parameters, num);
-
-	ret = mipi_dbi_spi1_transfer(mipi, 0, &cmd, 1, 8);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret || !num)
 		return ret;
 
@@ -913,11 +787,7 @@ static int mipi_dbi_typec1_command(struct mipi_dbi *mipi, u8 cmd,
 
 /* MIPI DBI Type C Option 3 */
 
-<<<<<<< HEAD
 static int mipi_dbi_typec3_command_read(struct mipi_dbi *mipi, u8 *cmd,
-=======
-static int mipi_dbi_typec3_command_read(struct mipi_dbi *mipi, u8 cmd,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					u8 *data, size_t len)
 {
 	struct spi_device *spi = mipi->spi;
@@ -926,11 +796,7 @@ static int mipi_dbi_typec3_command_read(struct mipi_dbi *mipi, u8 cmd,
 	struct spi_transfer tr[2] = {
 		{
 			.speed_hz = speed_hz,
-<<<<<<< HEAD
 			.tx_buf = cmd,
-=======
-			.tx_buf = &cmd,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.len = 1,
 		}, {
 			.speed_hz = speed_hz,
@@ -948,13 +814,8 @@ static int mipi_dbi_typec3_command_read(struct mipi_dbi *mipi, u8 cmd,
 	 * Support non-standard 24-bit and 32-bit Nokia read commands which
 	 * start with a dummy clock, so we need to read an extra byte.
 	 */
-<<<<<<< HEAD
 	if (*cmd == MIPI_DCS_GET_DISPLAY_ID ||
 	    *cmd == MIPI_DCS_GET_DISPLAY_STATUS) {
-=======
-	if (cmd == MIPI_DCS_GET_DISPLAY_ID ||
-	    cmd == MIPI_DCS_GET_DISPLAY_STATUS) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!(len == 3 || len == 4))
 			return -EINVAL;
 
@@ -984,11 +845,7 @@ static int mipi_dbi_typec3_command_read(struct mipi_dbi *mipi, u8 cmd,
 			data[i] = (buf[i] << 1) | !!(buf[i + 1] & BIT(7));
 	}
 
-<<<<<<< HEAD
 	MIPI_DBI_DEBUG_COMMAND(*cmd, data, len);
-=======
-	MIPI_DBI_DEBUG_COMMAND(cmd, data, len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 err_free:
 	kfree(buf);
@@ -996,11 +853,7 @@ err_free:
 	return ret;
 }
 
-<<<<<<< HEAD
 static int mipi_dbi_typec3_command(struct mipi_dbi *mipi, u8 *cmd,
-=======
-static int mipi_dbi_typec3_command(struct mipi_dbi *mipi, u8 cmd,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   u8 *par, size_t num)
 {
 	struct spi_device *spi = mipi->spi;
@@ -1008,7 +861,6 @@ static int mipi_dbi_typec3_command(struct mipi_dbi *mipi, u8 cmd,
 	u32 speed_hz;
 	int ret;
 
-<<<<<<< HEAD
 	if (mipi_dbi_command_is_read(mipi, *cmd))
 		return mipi_dbi_typec3_command_read(mipi, cmd, par, num);
 
@@ -1021,20 +873,6 @@ static int mipi_dbi_typec3_command(struct mipi_dbi *mipi, u8 cmd,
 		return ret;
 
 	if (*cmd == MIPI_DCS_WRITE_MEMORY_START && !mipi->swap_bytes)
-=======
-	if (mipi_dbi_command_is_read(mipi, cmd))
-		return mipi_dbi_typec3_command_read(mipi, cmd, par, num);
-
-	MIPI_DBI_DEBUG_COMMAND(cmd, par, num);
-
-	gpiod_set_value_cansleep(mipi->dc, 0);
-	speed_hz = mipi_dbi_spi_cmd_max_speed(spi, 1);
-	ret = tinydrm_spi_transfer(spi, speed_hz, NULL, 8, &cmd, 1);
-	if (ret || !num)
-		return ret;
-
-	if (cmd == MIPI_DCS_WRITE_MEMORY_START && !mipi->swap_bytes)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bpw = 16;
 
 	gpiod_set_value_cansleep(mipi->dc, 1);
@@ -1112,11 +950,8 @@ int mipi_dbi_spi_init(struct spi_device *spi, struct mipi_dbi *mipi,
 			return -ENOMEM;
 	}
 
-<<<<<<< HEAD
 	DRM_DEBUG_DRIVER("SPI speed: %uMHz\n", spi->max_speed_hz / 1000000);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 EXPORT_SYMBOL(mipi_dbi_spi_init);
@@ -1233,13 +1068,6 @@ static const struct file_operations mipi_dbi_debugfs_command_fops = {
 	.write = mipi_dbi_debugfs_command_write,
 };
 
-<<<<<<< HEAD
-=======
-static const struct drm_info_list mipi_dbi_debugfs_list[] = {
-	{ "fb",   drm_fb_cma_debugfs_show, 0 },
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * mipi_dbi_debugfs_init - Create debugfs entries
  * @minor: DRM minor
@@ -1262,13 +1090,7 @@ int mipi_dbi_debugfs_init(struct drm_minor *minor)
 	debugfs_create_file("command", mode, minor->debugfs_root, mipi,
 			    &mipi_dbi_debugfs_command_fops);
 
-<<<<<<< HEAD
 	return 0;
-=======
-	return drm_debugfs_create_files(mipi_dbi_debugfs_list,
-					ARRAY_SIZE(mipi_dbi_debugfs_list),
-					minor->debugfs_root, minor);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(mipi_dbi_debugfs_init);
 

@@ -130,7 +130,6 @@ enum bt_state {
 	BT_INFO_STATE_MAX = 7
 };
 
-<<<<<<< HEAD
 enum rtl8723e_c2h_evt_v0 {
 	C2H_V0_DBG = 0,
 	C2H_V0_TSF = 1,
@@ -142,19 +141,6 @@ enum rtl8723e_c2h_evt_v0 {
 	C2H_V0_HW_INFO_EXCH = 10,
 	C2H_V0_C2H_H2C_TEST = 11,
 	C2H_V0_BT_INFO = 12,
-=======
-enum rtl8723e_c2h_evt {
-	C2H_DBG = 0,
-	C2H_TSF = 1,
-	C2H_AP_RPT_RSP = 2,
-	/* The FW notify the report of the specific tx packet. */
-	C2H_CCX_TX_RPT = 3,
-	C2H_BT_RSSI = 4,
-	C2H_BT_OP_MODE = 5,
-	C2H_HW_INFO_EXCH = 10,
-	C2H_C2H_H2C_TEST = 11,
-	BT_INFO = 12,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MAX_C2HEVENT
 };
 

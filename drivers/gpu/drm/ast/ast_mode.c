@@ -791,28 +791,16 @@ static int ast_get_modes(struct drm_connector *connector)
 	if (!flags)
 		edid = drm_get_edid(connector, &ast_connector->i2c->adapter);
 	if (edid) {
-<<<<<<< HEAD
 		drm_connector_update_edid_property(&ast_connector->base, edid);
-=======
-		drm_mode_connector_update_edid_property(&ast_connector->base, edid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = drm_add_edid_modes(connector, edid);
 		kfree(edid);
 		return ret;
 	} else
-<<<<<<< HEAD
 		drm_connector_update_edid_property(&ast_connector->base, NULL);
 	return 0;
 }
 
 static enum drm_mode_status ast_mode_valid(struct drm_connector *connector,
-=======
-		drm_mode_connector_update_edid_property(&ast_connector->base, NULL);
-	return 0;
-}
-
-static int ast_mode_valid(struct drm_connector *connector,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  struct drm_display_mode *mode)
 {
 	struct ast_private *ast = connector->dev->dev_private;
@@ -913,11 +901,7 @@ static int ast_connector_init(struct drm_device *dev)
 	connector->polled = DRM_CONNECTOR_POLL_CONNECT;
 
 	encoder = list_first_entry(&dev->mode_config.encoder_list, struct drm_encoder, head);
-<<<<<<< HEAD
 	drm_connector_attach_encoder(connector, encoder);
-=======
-	drm_mode_connector_attach_encoder(connector, encoder);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ast_connector->i2c = ast_i2c_create(dev);
 	if (!ast_connector->i2c)

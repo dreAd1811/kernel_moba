@@ -605,10 +605,7 @@ enum cpm_clk {
 };
 
 int cpm1_clk_setup(enum cpm_clk_target target, int clock, int mode);
-<<<<<<< HEAD
 int cpm1_gpiochip_add16(struct device *dev);
 int cpm1_gpiochip_add32(struct device *dev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* __CPM1__ */

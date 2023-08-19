@@ -494,10 +494,7 @@ static int init_chipset_sis5513(struct pci_dev *dev)
 		pci_read_config_byte(dev, 0x09, &reg);
 		if ((reg & 0x0f) != 0x00)
 			pci_write_config_byte(dev, 0x09, reg&0xf0);
-<<<<<<< HEAD
 		/* fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case ATA_16:
 		/* force per drive recovery and active timings
 		   needed on ATA_33 and below chips */

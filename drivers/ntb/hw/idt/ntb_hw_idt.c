@@ -1105,15 +1105,9 @@ static struct idt_mw_cfg *idt_scan_mws(struct idt_ntb_dev *ndev, int port,
 	}
 
 	/* Allocate memory for memory window descriptors */
-<<<<<<< HEAD
 	ret_mws = devm_kcalloc(&ndev->ntb.pdev->dev, *mw_cnt,
 				sizeof(*ret_mws), GFP_KERNEL);
 	if (IS_ERR_OR_NULL(ret_mws))
-=======
-	ret_mws = devm_kcalloc(&ndev->ntb.pdev->dev, *mw_cnt, sizeof(*ret_mws),
-			       GFP_KERNEL);
-	if (!ret_mws)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ERR_PTR(-ENOMEM);
 
 	/* Copy the info of detected memory windows */
@@ -1407,11 +1401,7 @@ static int idt_ntb_peer_mw_clear_trans(struct ntb_dev *ntb, int pidx,
  *                          5. Doorbell operations
  *
  *    Doorbell functionality of IDT PCIe-switches is pretty unusual. First of
-<<<<<<< HEAD
  * all there is global doorbell register which state can be changed by any
-=======
- * all there is global doorbell register which state can by changed by any
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * NT-function of the IDT device in accordance with global permissions. These
  * permissions configs are not supported by NTB API, so it must be done by
  * either BIOS or EEPROM settings. In the same way the state of the global
@@ -1754,7 +1744,6 @@ static int idt_ntb_msg_clear_mask(struct ntb_dev *ntb, u64 mask_bits)
  * idt_ntb_msg_read() - read message register with specified index
  *			(NTB API callback)
  * @ntb:	NTB device context.
-<<<<<<< HEAD
  * @pidx:	OUT - Port index of peer device a message retrieved from
  * @midx:	Message register index
  *
@@ -1763,26 +1752,11 @@ static int idt_ntb_msg_clear_mask(struct ntb_dev *ntb, u64 mask_bits)
  * Return: inbound message register value.
  */
 static u32 idt_ntb_msg_read(struct ntb_dev *ntb, int *pidx, int midx)
-=======
- * @midx:	Message register index
- * @pidx:	OUT - Port index of peer device a message retrieved from
- * @msg:	OUT - Data
- *
- * Read data from the specified message register and source register.
- *
- * Return: zero on success, negative error if invalid argument passed.
- */
-static int idt_ntb_msg_read(struct ntb_dev *ntb, int midx, int *pidx, u32 *msg)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct idt_ntb_dev *ndev = to_ndev_ntb(ntb);
 
 	if (midx < 0 || IDT_MSG_CNT <= midx)
-<<<<<<< HEAD
 		return ~(u32)0;
-=======
-		return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Retrieve source port index of the message */
 	if (pidx != NULL) {
@@ -1797,7 +1771,6 @@ static int idt_ntb_msg_read(struct ntb_dev *ntb, int midx, int *pidx, u32 *msg)
 	}
 
 	/* Retrieve data of the corresponding message register */
-<<<<<<< HEAD
 	return idt_nt_read(ndev, ntdata_tbl.msgs[midx].in);
 }
 
@@ -1807,20 +1780,6 @@ static int idt_ntb_msg_read(struct ntb_dev *ntb, int midx, int *pidx, u32 *msg)
  * @ntb:	NTB device context.
  * @pidx:	Port index of peer device a message being sent to
  * @midx:	Message register index
-=======
-	if (msg != NULL)
-		*msg = idt_nt_read(ndev, ntdata_tbl.msgs[midx].in);
-
-	return 0;
-}
-
-/*
- * idt_ntb_msg_write() - write data to the specified message register
- *			 (NTB API callback)
- * @ntb:	NTB device context.
- * @midx:	Message register index
- * @pidx:	Port index of peer device a message being sent to
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @msg:	Data to send
  *
  * Just try to send data to a peer. Message status register should be
@@ -1828,12 +1787,8 @@ static int idt_ntb_msg_read(struct ntb_dev *ntb, int midx, int *pidx, u32 *msg)
  *
  * Return: zero on success, negative error if invalid argument passed.
  */
-<<<<<<< HEAD
 static int idt_ntb_peer_msg_write(struct ntb_dev *ntb, int pidx, int midx,
 				  u32 msg)
-=======
-static int idt_ntb_msg_write(struct ntb_dev *ntb, int midx, int pidx, u32 msg)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct idt_ntb_dev *ndev = to_ndev_ntb(ntb);
 	unsigned long irqflags;
@@ -2100,11 +2055,7 @@ static const struct ntb_dev_ops idt_ntb_ops = {
 	.msg_set_mask		= idt_ntb_msg_set_mask,
 	.msg_clear_mask		= idt_ntb_msg_clear_mask,
 	.msg_read		= idt_ntb_msg_read,
-<<<<<<< HEAD
 	.peer_msg_write		= idt_ntb_peer_msg_write
-=======
-	.msg_write		= idt_ntb_msg_write
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /*
@@ -2119,11 +2070,7 @@ static int idt_register_device(struct idt_ntb_dev *ndev)
 
 	/* Initialize the rest of NTB device structure and register it */
 	ndev->ntb.ops = &idt_ntb_ops;
-<<<<<<< HEAD
 	ndev->ntb.topo = NTB_TOPO_SWITCH;
-=======
-	ndev->ntb.topo = NTB_TOPO_PRI;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = ntb_register_device(&ndev->ntb);
 	if (ret != 0) {
@@ -2319,11 +2266,7 @@ static ssize_t idt_dbgfs_info_read(struct file *filp, char __user *ubuf,
 		 "Message data:\n");
 	for (idx = 0; idx < IDT_MSG_CNT; idx++) {
 		int src;
-<<<<<<< HEAD
 		data = idt_ntb_msg_read(&ndev->ntb, &src, idx);
-=======
-		(void)idt_ntb_msg_read(&ndev->ntb, idx, &src, &data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		off += scnprintf(strbuf + off, size - off,
 			"\t%hhu. 0x%08x from peer %hhu (Port %hhu)\n",
 			idx, data, src, ndev->peers[src].port);
@@ -2447,11 +2390,7 @@ static struct idt_ntb_dev *idt_create_dev(struct pci_dev *pdev,
 
 	/* Allocate memory for the IDT PCIe-device descriptor */
 	ndev = devm_kzalloc(&pdev->dev, sizeof(*ndev), GFP_KERNEL);
-<<<<<<< HEAD
 	if (IS_ERR_OR_NULL(ndev)) {
-=======
-	if (!ndev) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(&pdev->dev, "Memory allocation failed for descriptor");
 		return ERR_PTR(-ENOMEM);
 	}
@@ -2487,11 +2426,7 @@ static int idt_init_pci(struct idt_ntb_dev *ndev)
 	struct pci_dev *pdev = ndev->ntb.pdev;
 	int ret;
 
-<<<<<<< HEAD
 	/* Initialize the bit mask of PCI/NTB DMA */
-=======
-	/* Initialize the bit mask of DMA */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = pci_set_dma_mask(pdev, DMA_BIT_MASK(64));
 	if (ret != 0) {
 		ret = pci_set_dma_mask(pdev, DMA_BIT_MASK(32));
@@ -2512,15 +2447,12 @@ static int idt_init_pci(struct idt_ntb_dev *ndev)
 		dev_warn(&pdev->dev,
 			"Cannot set consistent DMA highmem bit mask\n");
 	}
-<<<<<<< HEAD
 	ret = dma_coerce_mask_and_coherent(&ndev->ntb.dev,
 					   dma_get_mask(&pdev->dev));
 	if (ret != 0) {
 		dev_err(&pdev->dev, "Failed to set NTB device DMA bit mask\n");
 		return ret;
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Enable the device advanced error reporting. It's not critical to
@@ -2699,7 +2631,6 @@ static void idt_pci_remove(struct pci_dev *pdev)
 /*
  * IDT PCIe-switch models ports configuration structures
  */
-<<<<<<< HEAD
 static const struct idt_89hpes_cfg idt_89hpes24nt6ag2_config = {
 	.name = "89HPES24NT6AG2",
 	.port_cnt = 6, .ports = {0, 2, 4, 6, 8, 12}
@@ -2729,37 +2660,6 @@ static const struct idt_89hpes_cfg idt_89hpes32nt24ag2_config = {
 	.port_cnt = 8, .ports = {0, 2, 4, 6, 8, 12, 16, 20}
 };
 static const struct idt_89hpes_cfg idt_89hpes32nt24bg2_config = {
-=======
-static struct idt_89hpes_cfg idt_89hpes24nt6ag2_config = {
-	.name = "89HPES24NT6AG2",
-	.port_cnt = 6, .ports = {0, 2, 4, 6, 8, 12}
-};
-static struct idt_89hpes_cfg idt_89hpes32nt8ag2_config = {
-	.name = "89HPES32NT8AG2",
-	.port_cnt = 8, .ports = {0, 2, 4, 6, 8, 12, 16, 20}
-};
-static struct idt_89hpes_cfg idt_89hpes32nt8bg2_config = {
-	.name = "89HPES32NT8BG2",
-	.port_cnt = 8, .ports = {0, 2, 4, 6, 8, 12, 16, 20}
-};
-static struct idt_89hpes_cfg idt_89hpes12nt12g2_config = {
-	.name = "89HPES12NT12G2",
-	.port_cnt = 3, .ports = {0, 8, 16}
-};
-static struct idt_89hpes_cfg idt_89hpes16nt16g2_config = {
-	.name = "89HPES16NT16G2",
-	.port_cnt = 4, .ports = {0, 8, 12, 16}
-};
-static struct idt_89hpes_cfg idt_89hpes24nt24g2_config = {
-	.name = "89HPES24NT24G2",
-	.port_cnt = 8, .ports = {0, 2, 4, 6, 8, 12, 16, 20}
-};
-static struct idt_89hpes_cfg idt_89hpes32nt24ag2_config = {
-	.name = "89HPES32NT24AG2",
-	.port_cnt = 8, .ports = {0, 2, 4, 6, 8, 12, 16, 20}
-};
-static struct idt_89hpes_cfg idt_89hpes32nt24bg2_config = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.name = "89HPES32NT24BG2",
 	.port_cnt = 8, .ports = {0, 2, 4, 6, 8, 12, 16, 20}
 };

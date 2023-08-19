@@ -5,7 +5,4 @@ platform-$(CONFIG_BCM47XX)	+= bcm47xx/
 cflags-$(CONFIG_BCM47XX)	+=					\
 		-I$(srctree)/arch/mips/include/asm/mach-bcm47xx
 load-$(CONFIG_BCM47XX)		:= 0xffffffff80001000
-<<<<<<< HEAD
 zload-$(CONFIG_BCM47XX)		+= 0xffffffff80400000
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

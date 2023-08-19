@@ -29,19 +29,11 @@ static inline unsigned long ffz(unsigned long word)
 
 	result = -1;
 	__asm__("1:\n\t"
-<<<<<<< HEAD
 		"shlr.l %1\n\t"
 		"adds #1,%0\n\t"
 		"bcs 1b"
 		: "=r"(result),"=r"(word)
 		: "0"(result), "1"(word));
-=======
-		"shlr.l %2\n\t"
-		"adds #1,%0\n\t"
-		"bcs 1b"
-		: "=r"(result)
-		: "0"(result), "r"(word));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return result;
 }
 
@@ -74,11 +66,7 @@ H8300_GEN_BITOP(change_bit, "bnot")
 
 #undef H8300_GEN_BITOP
 
-<<<<<<< HEAD
 static inline int test_bit(int nr, const volatile unsigned long *addr)
-=======
-static inline int test_bit(int nr, const unsigned long *addr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret = 0;
 	unsigned char *b_addr;
@@ -174,19 +162,11 @@ static inline unsigned long __ffs(unsigned long word)
 
 	result = -1;
 	__asm__("1:\n\t"
-<<<<<<< HEAD
 		"shlr.l %1\n\t"
 		"adds #1,%0\n\t"
 		"bcc 1b"
 		: "=r" (result),"=r"(word)
 		: "0"(result), "1"(word));
-=======
-		"shlr.l %2\n\t"
-		"adds #1,%0\n\t"
-		"bcc 1b"
-		: "=r" (result)
-		: "0"(result), "r"(word));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return result;
 }
 

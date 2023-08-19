@@ -26,11 +26,7 @@
 
 #include <core/gpuobj.h>
 #include <subdev/fb.h>
-<<<<<<< HEAD
 #include <subdev/mmu/vmm.h>
-=======
-#include <subdev/mmu/nv04.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <nvif/class.h>
 
@@ -53,13 +49,8 @@ nv04_dmaobj_bind(struct nvkm_dmaobj *base, struct nvkm_gpuobj *parent,
 	int ret;
 
 	if (dmaobj->clone) {
-<<<<<<< HEAD
 		struct nvkm_memory *pgt =
 			device->mmu->vmm->pd->pt[0]->memory;
-=======
-		struct nv04_mmu *mmu = nv04_mmu(device->mmu);
-		struct nvkm_memory *pgt = mmu->vm->pgt[0].mem[0];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!dmaobj->base.start)
 			return nvkm_gpuobj_wrap(pgt, pgpuobj);
 		nvkm_kmap(pgt);

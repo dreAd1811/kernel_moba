@@ -215,22 +215,15 @@ static int fec_read_bufs(struct dm_verity *v, struct dm_verity_io *io,
 	struct dm_verity_fec_io *fio = fec_io(io);
 	u64 block, ileaved;
 	u8 *bbuf, *rs_block;
-<<<<<<< HEAD
 	u8 want_digest[HASH_MAX_DIGESTSIZE];
-=======
-	u8 want_digest[v->digest_size];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned n, k;
 
 	if (neras)
 		*neras = 0;
 
-<<<<<<< HEAD
 	if (WARN_ON(v->digest_size > sizeof(want_digest)))
 		return -EINVAL;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * read each of the rsn data blocks that are part of the RS block, and
 	 * interleave contents to available bufs
@@ -322,21 +315,13 @@ static int fec_alloc_bufs(struct dm_verity *v, struct dm_verity_fec_io *fio)
 	unsigned n;
 
 	if (!fio->rs)
-<<<<<<< HEAD
 		fio->rs = mempool_alloc(&v->fec->rs_pool, GFP_NOIO);
-=======
-		fio->rs = mempool_alloc(v->fec->rs_pool, GFP_NOIO);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	fec_for_each_prealloc_buffer(n) {
 		if (fio->bufs[n])
 			continue;
 
-<<<<<<< HEAD
 		fio->bufs[n] = mempool_alloc(&v->fec->prealloc_pool, GFP_NOWAIT);
-=======
-		fio->bufs[n] = mempool_alloc(v->fec->prealloc_pool, GFP_NOWAIT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (unlikely(!fio->bufs[n])) {
 			DMERR("failed to allocate FEC buffer");
 			return -ENOMEM;
@@ -348,11 +333,7 @@ static int fec_alloc_bufs(struct dm_verity *v, struct dm_verity_fec_io *fio)
 		if (fio->bufs[n])
 			continue;
 
-<<<<<<< HEAD
 		fio->bufs[n] = mempool_alloc(&v->fec->extra_pool, GFP_NOWAIT);
-=======
-		fio->bufs[n] = mempool_alloc(v->fec->extra_pool, GFP_NOWAIT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* we can manage with even one buffer if necessary */
 		if (unlikely(!fio->bufs[n]))
 			break;
@@ -360,11 +341,7 @@ static int fec_alloc_bufs(struct dm_verity *v, struct dm_verity_fec_io *fio)
 	fio->nbufs = n;
 
 	if (!fio->output)
-<<<<<<< HEAD
 		fio->output = mempool_alloc(&v->fec->output_pool, GFP_NOIO);
-=======
-		fio->output = mempool_alloc(v->fec->output_pool, GFP_NOIO);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -465,11 +442,7 @@ int verity_fec_decode(struct dm_verity *v, struct dm_verity_io *io,
 	fio->level++;
 
 	if (type == DM_VERITY_BLOCK_TYPE_METADATA)
-<<<<<<< HEAD
 		block += v->data_blocks;
-=======
-		block = block - v->hash_start + v->data_blocks;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * For RS(M, N), the continuous FEC data is divided into blocks of N
@@ -526,7 +499,6 @@ void verity_fec_finish_io(struct dm_verity_io *io)
 	if (!verity_fec_is_enabled(io->v))
 		return;
 
-<<<<<<< HEAD
 	mempool_free(fio->rs, &f->rs_pool);
 
 	fec_for_each_prealloc_buffer(n)
@@ -536,17 +508,6 @@ void verity_fec_finish_io(struct dm_verity_io *io)
 		mempool_free(fio->bufs[n], &f->extra_pool);
 
 	mempool_free(fio->output, &f->output_pool);
-=======
-	mempool_free(fio->rs, f->rs_pool);
-
-	fec_for_each_prealloc_buffer(n)
-		mempool_free(fio->bufs[n], f->prealloc_pool);
-
-	fec_for_each_extra_buffer(fio, n)
-		mempool_free(fio->bufs[n], f->extra_pool);
-
-	mempool_free(fio->output, f->output_pool);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -595,16 +556,9 @@ void verity_fec_dtr(struct dm_verity *v)
 	if (!verity_fec_is_enabled(v))
 		goto out;
 
-<<<<<<< HEAD
 	mempool_exit(&f->rs_pool);
 	mempool_exit(&f->prealloc_pool);
 	mempool_exit(&f->extra_pool);
-=======
-	mempool_destroy(f->rs_pool);
-	mempool_destroy(f->prealloc_pool);
-	mempool_destroy(f->extra_pool);
-	mempool_destroy(f->output_pool);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kmem_cache_destroy(f->cache);
 
 	if (f->data_bufio)
@@ -629,11 +583,7 @@ static void *fec_rs_alloc(gfp_t gfp_mask, void *pool_data)
 {
 	struct dm_verity *v = (struct dm_verity *)pool_data;
 
-<<<<<<< HEAD
 	return init_rs_gfp(8, 0x11d, 0, 1, v->fec->roots, gfp_mask);
-=======
-	return init_rs(8, 0x11d, 0, 1, v->fec->roots);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void fec_rs_free(void *element, void *pool_data)
@@ -762,10 +712,7 @@ int verity_fec_ctr(struct dm_verity *v)
 	struct dm_target *ti = v->ti;
 	struct mapped_device *md = dm_table_get_md(ti->table);
 	u64 hash_blocks;
-<<<<<<< HEAD
 	int ret;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!verity_fec_is_enabled(v)) {
 		verity_fec_dtr(v);
@@ -871,19 +818,11 @@ int verity_fec_ctr(struct dm_verity *v)
 	}
 
 	/* Preallocate an rs_control structure for each worker thread */
-<<<<<<< HEAD
 	ret = mempool_init(&f->rs_pool, num_online_cpus(), fec_rs_alloc,
 			   fec_rs_free, (void *) v);
 	if (ret) {
 		ti->error = "Cannot allocate RS pool";
 		return ret;
-=======
-	f->rs_pool = mempool_create(num_online_cpus(), fec_rs_alloc,
-				    fec_rs_free, (void *) v);
-	if (!f->rs_pool) {
-		ti->error = "Cannot allocate RS pool";
-		return -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	f->cache = kmem_cache_create("dm_verity_fec_buffers",
@@ -895,7 +834,6 @@ int verity_fec_ctr(struct dm_verity *v)
 	}
 
 	/* Preallocate DM_VERITY_FEC_BUF_PREALLOC buffers for each thread */
-<<<<<<< HEAD
 	ret = mempool_init_slab_pool(&f->prealloc_pool, num_online_cpus() *
 				     DM_VERITY_FEC_BUF_PREALLOC,
 				     f->cache);
@@ -916,28 +854,6 @@ int verity_fec_ctr(struct dm_verity *v)
 	if (ret) {
 		ti->error = "Cannot allocate FEC output pool";
 		return ret;
-=======
-	f->prealloc_pool = mempool_create_slab_pool(num_online_cpus() *
-						    DM_VERITY_FEC_BUF_PREALLOC,
-						    f->cache);
-	if (!f->prealloc_pool) {
-		ti->error = "Cannot allocate FEC buffer prealloc pool";
-		return -ENOMEM;
-	}
-
-	f->extra_pool = mempool_create_slab_pool(0, f->cache);
-	if (!f->extra_pool) {
-		ti->error = "Cannot allocate FEC buffer extra pool";
-		return -ENOMEM;
-	}
-
-	/* Preallocate an output buffer for each thread */
-	f->output_pool = mempool_create_kmalloc_pool(num_online_cpus(),
-						     1 << v->data_dev_block_bits);
-	if (!f->output_pool) {
-		ti->error = "Cannot allocate FEC output pool";
-		return -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Reserve space for our per-bio data */

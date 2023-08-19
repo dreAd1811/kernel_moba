@@ -73,10 +73,6 @@ void c4iw_id_free(struct c4iw_id_table *alloc, u32 obj)
 	unsigned long flags;
 
 	obj -= alloc->start;
-<<<<<<< HEAD
-=======
-	BUG_ON((int)obj < 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irqsave(&alloc->lock, flags);
 	clear_bit(obj, alloc->table);
@@ -96,13 +92,8 @@ int c4iw_id_table_alloc(struct c4iw_id_table *alloc, u32 start, u32 num,
 		alloc->last = 0;
 	alloc->max  = num;
 	spin_lock_init(&alloc->lock);
-<<<<<<< HEAD
 	alloc->table = kmalloc_array(BITS_TO_LONGS(num), sizeof(long),
 				     GFP_KERNEL);
-=======
-	alloc->table = kmalloc(BITS_TO_LONGS(num) * sizeof(long),
-				GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!alloc->table)
 		return -ENOMEM;
 

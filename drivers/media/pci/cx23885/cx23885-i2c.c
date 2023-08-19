@@ -270,11 +270,7 @@ static const struct i2c_adapter cx23885_i2c_adap_template = {
 	.algo              = &cx23885_i2c_algo_template,
 };
 
-<<<<<<< HEAD
 static const struct i2c_client cx23885_i2c_client_template = {
-=======
-static struct i2c_client cx23885_i2c_client_template = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.name	= "cx23885 internal",
 };
 

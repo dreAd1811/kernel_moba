@@ -486,11 +486,7 @@ int peak_canfd_handle_msgs_list(struct peak_canfd_priv *priv,
 		if (msg_size <= 0)
 			break;
 
-<<<<<<< HEAD
 		msg_ptr += ALIGN(msg_size, 4);
-=======
-		msg_ptr += msg_size;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (msg_size < 0)

@@ -35,10 +35,7 @@
 #include <linux/interrupt.h>
 #include <crypto/scatterwalk.h>
 #include <crypto/aes.h>
-<<<<<<< HEAD
 #include <crypto/gcm.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <crypto/engine.h>
 #include <crypto/internal/skcipher.h>
 #include <crypto/internal/aead.h>
@@ -50,11 +47,8 @@
 static LIST_HEAD(dev_list);
 static DEFINE_SPINLOCK(list_lock);
 
-<<<<<<< HEAD
 static int aes_fallback_sz = 200;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef DEBUG
 #define omap_aes_read(dd, offset)				\
 ({								\
@@ -396,11 +390,7 @@ static void omap_aes_finish_req(struct omap_aes_dev *dd, int err)
 
 	pr_debug("err: %d\n", err);
 
-<<<<<<< HEAD
 	crypto_finalize_ablkcipher_request(dd->engine, req, err);
-=======
-	crypto_finalize_cipher_request(dd->engine, req, err);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pm_runtime_mark_last_busy(dd->dev);
 	pm_runtime_put_autosuspend(dd->dev);
@@ -420,24 +410,15 @@ static int omap_aes_handle_queue(struct omap_aes_dev *dd,
 				 struct ablkcipher_request *req)
 {
 	if (req)
-<<<<<<< HEAD
 		return crypto_transfer_ablkcipher_request_to_engine(dd->engine, req);
-=======
-		return crypto_transfer_cipher_request_to_engine(dd->engine, req);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
 static int omap_aes_prepare_req(struct crypto_engine *engine,
-<<<<<<< HEAD
 				void *areq)
 {
 	struct ablkcipher_request *req = container_of(areq, struct ablkcipher_request, base);
-=======
-				struct ablkcipher_request *req)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct omap_aes_ctx *ctx = crypto_ablkcipher_ctx(
 			crypto_ablkcipher_reqtfm(req));
 	struct omap_aes_reqctx *rctx = ablkcipher_request_ctx(req);
@@ -490,14 +471,9 @@ static int omap_aes_prepare_req(struct crypto_engine *engine,
 }
 
 static int omap_aes_crypt_req(struct crypto_engine *engine,
-<<<<<<< HEAD
 			      void *areq)
 {
 	struct ablkcipher_request *req = container_of(areq, struct ablkcipher_request, base);
-=======
-			      struct ablkcipher_request *req)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct omap_aes_reqctx *rctx = ablkcipher_request_ctx(req);
 	struct omap_aes_dev *dd = rctx->dd;
 
@@ -545,11 +521,7 @@ static int omap_aes_crypt(struct ablkcipher_request *req, unsigned long mode)
 		  !!(mode & FLAGS_ENCRYPT),
 		  !!(mode & FLAGS_CBC));
 
-<<<<<<< HEAD
 	if (req->nbytes < aes_fallback_sz) {
-=======
-	if (req->nbytes < 200) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		SKCIPHER_REQUEST_ON_STACK(subreq, ctx->fallback);
 
 		skcipher_request_set_tfm(subreq, ctx->fallback);
@@ -633,14 +605,11 @@ static int omap_aes_ctr_decrypt(struct ablkcipher_request *req)
 	return omap_aes_crypt(req, FLAGS_CTR);
 }
 
-<<<<<<< HEAD
 static int omap_aes_prepare_req(struct crypto_engine *engine,
 				void *req);
 static int omap_aes_crypt_req(struct crypto_engine *engine,
 			      void *req);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int omap_aes_cra_init(struct crypto_tfm *tfm)
 {
 	const char *name = crypto_tfm_alg_name(tfm);
@@ -656,13 +625,10 @@ static int omap_aes_cra_init(struct crypto_tfm *tfm)
 
 	tfm->crt_ablkcipher.reqsize = sizeof(struct omap_aes_reqctx);
 
-<<<<<<< HEAD
 	ctx->enginectx.op.prepare_request = omap_aes_prepare_req;
 	ctx->enginectx.op.unprepare_request = NULL;
 	ctx->enginectx.op.do_one_request = omap_aes_crypt_req;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -815,11 +781,7 @@ static struct aead_alg algs_aead_gcm[] = {
 	},
 	.init		= omap_aes_gcm_cra_init,
 	.exit		= omap_aes_gcm_cra_exit,
-<<<<<<< HEAD
 	.ivsize		= GCM_AES_IV_SIZE,
-=======
-	.ivsize		= 12,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.maxauthsize	= AES_BLOCK_SIZE,
 	.setkey		= omap_aes_gcm_setkey,
 	.encrypt	= omap_aes_gcm_encrypt,
@@ -840,11 +802,7 @@ static struct aead_alg algs_aead_gcm[] = {
 	.init		= omap_aes_gcm_cra_init,
 	.exit		= omap_aes_gcm_cra_exit,
 	.maxauthsize	= AES_BLOCK_SIZE,
-<<<<<<< HEAD
 	.ivsize		= GCM_RFC4106_IV_SIZE,
-=======
-	.ivsize		= 8,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.setkey		= omap_aes_4106gcm_setkey,
 	.encrypt	= omap_aes_4106gcm_encrypt,
 	.decrypt	= omap_aes_4106gcm_decrypt,
@@ -1030,18 +988,10 @@ static int omap_aes_get_res_of(struct omap_aes_dev *dd,
 		struct device *dev, struct resource *res)
 {
 	struct device_node *node = dev->of_node;
-<<<<<<< HEAD
 	int err = 0;
 
 	dd->pdata = of_device_get_match_data(dev);
 	if (!dd->pdata) {
-=======
-	const struct of_device_id *match;
-	int err = 0;
-
-	match = of_match_device(of_match_ptr(omap_aes_of_match), dev);
-	if (!match) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(dev, "no compatible OF match\n");
 		err = -EINVAL;
 		goto err;
@@ -1054,11 +1004,6 @@ static int omap_aes_get_res_of(struct omap_aes_dev *dd,
 		goto err;
 	}
 
-<<<<<<< HEAD
-=======
-	dd->pdata = match->data;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err:
 	return err;
 }
@@ -1097,7 +1042,6 @@ err:
 	return err;
 }
 
-<<<<<<< HEAD
 static ssize_t fallback_show(struct device *dev, struct device_attribute *attr,
 			     char *buf)
 {
@@ -1179,8 +1123,6 @@ static struct attribute_group omap_aes_attr_group = {
 	.attrs = omap_aes_attrs,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int omap_aes_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
@@ -1271,11 +1213,6 @@ static int omap_aes_probe(struct platform_device *pdev)
 		goto err_engine;
 	}
 
-<<<<<<< HEAD
-=======
-	dd->engine->prepare_cipher_request = omap_aes_prepare_req;
-	dd->engine->cipher_one_request = omap_aes_crypt_req;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = crypto_engine_start(dd->engine);
 	if (err)
 		goto err_engine;
@@ -1314,15 +1251,12 @@ static int omap_aes_probe(struct platform_device *pdev)
 		}
 	}
 
-<<<<<<< HEAD
 	err = sysfs_create_group(&dev->kobj, &omap_aes_attr_group);
 	if (err) {
 		dev_err(dev, "could not create sysfs device attrs\n");
 		goto err_aead_algs;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 err_aead_algs:
 	for (i = dd->pdata->aead_algs_info->registered - 1; i >= 0; i--) {

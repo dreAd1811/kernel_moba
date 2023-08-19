@@ -19,7 +19,6 @@
 #include <linux/jiffies.h>
 #include <linux/irq.h>
 #include <linux/interrupt.h>
-<<<<<<< HEAD
 #include <linux/poll.h>
 #include <linux/math64.h>
 #include <asm/unaligned.h>
@@ -97,20 +96,6 @@ static s64 inv_mpu6050_get_timestamp(struct inv_mpu6050_state *st)
 	st->data_timestamp += st->chip_period * INV_MPU6050_FREQ_DIVIDER(st);
 
 	return ts;
-=======
-#include <linux/kfifo.h>
-#include <linux/poll.h>
-#include "inv_mpu_iio.h"
-
-static void inv_clear_kfifo(struct inv_mpu6050_state *st)
-{
-	unsigned long flags;
-
-	/* take the spin lock sem to avoid interrupt kick in */
-	spin_lock_irqsave(&st->time_stamp_lock, flags);
-	kfifo_reset(&st->timestamps);
-	spin_unlock_irqrestore(&st->time_stamp_lock, flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int inv_reset_fifo(struct iio_dev *indio_dev)
@@ -119,12 +104,9 @@ int inv_reset_fifo(struct iio_dev *indio_dev)
 	u8 d;
 	struct inv_mpu6050_state  *st = iio_priv(indio_dev);
 
-<<<<<<< HEAD
 	/* reset it timestamp validation */
 	st->it_timestamp = 0;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* disable interrupt */
 	result = regmap_write(st->map, st->reg->int_enable, 0);
 	if (result) {
@@ -137,32 +119,17 @@ int inv_reset_fifo(struct iio_dev *indio_dev)
 	if (result)
 		goto reset_fifo_fail;
 	/* disable fifo reading */
-<<<<<<< HEAD
 	result = regmap_write(st->map, st->reg->user_ctrl,
 			      st->chip_config.user_ctrl);
-=======
-	result = regmap_write(st->map, st->reg->user_ctrl, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (result)
 		goto reset_fifo_fail;
 
 	/* reset FIFO*/
-<<<<<<< HEAD
 	d = st->chip_config.user_ctrl | INV_MPU6050_BIT_FIFO_RST;
 	result = regmap_write(st->map, st->reg->user_ctrl, d);
 	if (result)
 		goto reset_fifo_fail;
 
-=======
-	result = regmap_write(st->map, st->reg->user_ctrl,
-			      INV_MPU6050_BIT_FIFO_RST);
-	if (result)
-		goto reset_fifo_fail;
-
-	/* clear timestamps fifo */
-	inv_clear_kfifo(st);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* enable interrupt */
 	if (st->chip_config.accl_fifo_enable ||
 	    st->chip_config.gyro_fifo_enable) {
@@ -171,15 +138,9 @@ int inv_reset_fifo(struct iio_dev *indio_dev)
 		if (result)
 			return result;
 	}
-<<<<<<< HEAD
 	/* enable FIFO reading */
 	d = st->chip_config.user_ctrl | INV_MPU6050_BIT_FIFO_EN;
 	result = regmap_write(st->map, st->reg->user_ctrl, d);
-=======
-	/* enable FIFO reading and I2C master interface*/
-	result = regmap_write(st->map, st->reg->user_ctrl,
-			      INV_MPU6050_BIT_FIFO_EN);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (result)
 		goto reset_fifo_fail;
 	/* enable sensor output to FIFO */
@@ -203,26 +164,6 @@ reset_fifo_fail:
 }
 
 /**
-<<<<<<< HEAD
-=======
- * inv_mpu6050_irq_handler() - Cache a timestamp at each data ready interrupt.
- */
-irqreturn_t inv_mpu6050_irq_handler(int irq, void *p)
-{
-	struct iio_poll_func *pf = p;
-	struct iio_dev *indio_dev = pf->indio_dev;
-	struct inv_mpu6050_state *st = iio_priv(indio_dev);
-	s64 timestamp;
-
-	timestamp = iio_get_time_ns(indio_dev);
-	kfifo_in_spinlocked(&st->timestamps, &timestamp, 1,
-			    &st->time_stamp_lock);
-
-	return IRQ_WAKE_THREAD;
-}
-
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * inv_mpu6050_read_fifo() - Transfer data from hardware FIFO to KFIFO.
  */
 irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
@@ -235,7 +176,6 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
 	u8 data[INV_MPU6050_OUTPUT_DATA_SIZE];
 	u16 fifo_count;
 	s64 timestamp;
-<<<<<<< HEAD
 	int int_status;
 	size_t i, nb;
 
@@ -257,10 +197,6 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
 		goto end_session;
 	}
 
-=======
-
-	mutex_lock(&st->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!(st->chip_config.accl_fifo_enable |
 		st->chip_config.gyro_fifo_enable))
 		goto end_session;
@@ -272,43 +208,22 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
 		bytes_per_datum += INV_MPU6050_BYTES_PER_3AXIS_SENSOR;
 
 	/*
-<<<<<<< HEAD
 	 * read fifo_count register to know how many bytes are inside the FIFO
-=======
-	 * read fifo_count register to know how many bytes inside FIFO
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * right now
 	 */
 	result = regmap_bulk_read(st->map, st->reg->fifo_count_h, data,
 				  INV_MPU6050_FIFO_COUNT_BYTE);
 	if (result)
 		goto end_session;
-<<<<<<< HEAD
 	fifo_count = get_unaligned_be16(&data[0]);
 	/* compute and process all complete datum */
 	nb = fifo_count / bytes_per_datum;
 	inv_mpu6050_update_period(st, pf->timestamp, nb);
 	for (i = 0; i < nb; ++i) {
-=======
-	fifo_count = be16_to_cpup((__be16 *)(&data[0]));
-	if (fifo_count < bytes_per_datum)
-		goto end_session;
-	/* fifo count can't be odd number, if it is odd, reset fifo*/
-	if (fifo_count & 1)
-		goto flush_fifo;
-	if (fifo_count >  INV_MPU6050_FIFO_THRESHOLD)
-		goto flush_fifo;
-	/* Timestamp mismatch. */
-	if (kfifo_len(&st->timestamps) >
-	    fifo_count / bytes_per_datum + INV_MPU6050_TIME_STAMP_TOR)
-		goto flush_fifo;
-	while (fifo_count >= bytes_per_datum) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		result = regmap_bulk_read(st->map, st->reg->fifo_r_w,
 					  data, bytes_per_datum);
 		if (result)
 			goto flush_fifo;
-<<<<<<< HEAD
 		/* skip first samples if needed */
 		if (st->skip_samples) {
 			st->skip_samples--;
@@ -316,19 +231,6 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
 		}
 		timestamp = inv_mpu6050_get_timestamp(st);
 		iio_push_to_buffers_with_timestamp(indio_dev, data, timestamp);
-=======
-
-		result = kfifo_out(&st->timestamps, &timestamp, 1);
-		/* when there is no timestamp, put timestamp as 0 */
-		if (result == 0)
-			timestamp = 0;
-
-		result = iio_push_to_buffers_with_timestamp(indio_dev, data,
-							    timestamp);
-		if (result)
-			goto flush_fifo;
-		fifo_count -= bytes_per_datum;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 end_session:

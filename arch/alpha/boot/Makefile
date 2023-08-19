@@ -14,11 +14,7 @@ targets		:= vmlinux.gz vmlinux \
 		   tools/bootpzh bootloader bootpheader bootpzheader 
 OBJSTRIP	:= $(obj)/tools/objstrip
 
-<<<<<<< HEAD
 KBUILD_HOSTCFLAGS := -Wall -I$(objtree)/usr/include
-=======
-HOSTCFLAGS	:= -Wall -I$(objtree)/usr/include
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 BOOTCFLAGS	+= -I$(objtree)/$(obj) -I$(srctree)/$(obj)
 
 # SRM bootable image.  Copy to offset 512 of a partition.

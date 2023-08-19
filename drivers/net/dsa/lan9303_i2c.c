@@ -50,11 +50,7 @@ static int lan9303_i2c_probe(struct i2c_client *client,
 		return -ENOMEM;
 
 	sw_dev->chip.regmap = devm_regmap_init_i2c(client,
-<<<<<<< HEAD
 						   &lan9303_i2c_regmap_config);
-=======
-						&lan9303_i2c_regmap_config);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(sw_dev->chip.regmap)) {
 		ret = PTR_ERR(sw_dev->chip.regmap);
 		dev_err(&client->dev, "Failed to allocate register map: %d\n",

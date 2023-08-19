@@ -192,11 +192,7 @@ static int fdp_nci_send_patch(struct nci_dev *ndev, u8 conn_id, u8 type)
 	const struct firmware *fw;
 	struct sk_buff *skb;
 	unsigned long len;
-<<<<<<< HEAD
 	u8 max_size, payload_size;
-=======
-	int max_size, payload_size;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc = 0;
 
 	if ((type == NCI_PATCH_TYPE_OTP && !info->otp_patch) ||
@@ -219,12 +215,8 @@ static int fdp_nci_send_patch(struct nci_dev *ndev, u8 conn_id, u8 type)
 
 	while (len) {
 
-<<<<<<< HEAD
 		payload_size = min_t(unsigned long, (unsigned long) max_size,
 				     len);
-=======
-		payload_size = min_t(unsigned long, max_size, len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		skb = nci_skb_alloc(ndev, (NCI_CTRL_HDR_SIZE + payload_size),
 				    GFP_KERNEL);
@@ -734,11 +726,7 @@ static struct nci_driver_ops fdp_prop_ops[] = {
 	},
 };
 
-<<<<<<< HEAD
 static struct nci_ops nci_ops = {
-=======
-struct nci_ops nci_ops = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.open = fdp_nci_open,
 	.close = fdp_nci_close,
 	.send = fdp_nci_send,

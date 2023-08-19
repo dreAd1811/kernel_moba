@@ -13,11 +13,7 @@
  *
  * Datasheet: http://ams.com/eng/content/download/319364/1117183/file/TCS3472_Datasheet_EN_v2.pdf
  *
-<<<<<<< HEAD
  * TODO: wait time
-=======
- * TODO: interrupt support, thresholds, wait time
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/module.h>
@@ -27,10 +23,7 @@
 
 #include <linux/iio/iio.h>
 #include <linux/iio/sysfs.h>
-<<<<<<< HEAD
 #include <linux/iio/events.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/iio/trigger_consumer.h>
 #include <linux/iio/buffer.h>
 #include <linux/iio/triggered_buffer.h>
@@ -39,23 +32,15 @@
 
 #define TCS3472_COMMAND BIT(7)
 #define TCS3472_AUTO_INCR BIT(5)
-<<<<<<< HEAD
 #define TCS3472_SPECIAL_FUNC (BIT(5) | BIT(6))
 
 #define TCS3472_INTR_CLEAR (TCS3472_COMMAND | TCS3472_SPECIAL_FUNC | 0x06)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define TCS3472_ENABLE (TCS3472_COMMAND | 0x00)
 #define TCS3472_ATIME (TCS3472_COMMAND | 0x01)
 #define TCS3472_WTIME (TCS3472_COMMAND | 0x03)
-<<<<<<< HEAD
 #define TCS3472_AILT (TCS3472_COMMAND | TCS3472_AUTO_INCR | 0x04)
 #define TCS3472_AIHT (TCS3472_COMMAND | TCS3472_AUTO_INCR | 0x06)
-=======
-#define TCS3472_AILT (TCS3472_COMMAND | 0x04)
-#define TCS3472_AIHT (TCS3472_COMMAND | 0x06)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define TCS3472_PERS (TCS3472_COMMAND | 0x0c)
 #define TCS3472_CONFIG (TCS3472_COMMAND | 0x0d)
 #define TCS3472_CONTROL (TCS3472_COMMAND | 0x0f)
@@ -66,20 +51,15 @@
 #define TCS3472_GDATA (TCS3472_COMMAND | TCS3472_AUTO_INCR | 0x18)
 #define TCS3472_BDATA (TCS3472_COMMAND | TCS3472_AUTO_INCR | 0x1a)
 
-<<<<<<< HEAD
 #define TCS3472_STATUS_AINT BIT(4)
 #define TCS3472_STATUS_AVALID BIT(0)
 #define TCS3472_ENABLE_AIEN BIT(4)
-=======
-#define TCS3472_STATUS_AVALID BIT(0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define TCS3472_ENABLE_AEN BIT(1)
 #define TCS3472_ENABLE_PON BIT(0)
 #define TCS3472_CONTROL_AGAIN_MASK (BIT(0) | BIT(1))
 
 struct tcs3472_data {
 	struct i2c_client *client;
-<<<<<<< HEAD
 	struct mutex lock;
 	u16 low_thresh;
 	u16 high_thresh;
@@ -107,14 +87,6 @@ static const struct iio_event_spec tcs3472_events[] = {
 	},
 };
 
-=======
-	u8 enable;
-	u8 control;
-	u8 atime;
-	u16 buffer[8]; /* 4 16-bit channels + 64-bit timestamp */
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define TCS3472_CHANNEL(_color, _si, _addr) { \
 	.type = IIO_INTENSITY, \
 	.modified = 1, \
@@ -130,11 +102,8 @@ static const struct iio_event_spec tcs3472_events[] = {
 		.storagebits = 16, \
 		.endianness = IIO_CPU, \
 	}, \
-<<<<<<< HEAD
 	.event_spec = _si ? NULL : tcs3472_events, \
 	.num_event_specs = _si ? 0 : ARRAY_SIZE(tcs3472_events), \
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const int tcs3472_agains[] = { 1, 4, 16, 60 };
@@ -242,7 +211,6 @@ static int tcs3472_write_raw(struct iio_dev *indio_dev,
 	return -EINVAL;
 }
 
-<<<<<<< HEAD
 /*
  * Translation from APERS field value to the number of consecutive out-of-range
  * clear channel values before an interrupt is generated
@@ -403,8 +371,6 @@ static irqreturn_t tcs3472_event_handler(int irq, void *priv)
 	return IRQ_HANDLED;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static irqreturn_t tcs3472_trigger_handler(int irq, void *p)
 {
 	struct iio_poll_func *pf = p;
@@ -468,16 +434,11 @@ static const struct attribute_group tcs3472_attribute_group = {
 static const struct iio_info tcs3472_info = {
 	.read_raw = tcs3472_read_raw,
 	.write_raw = tcs3472_write_raw,
-<<<<<<< HEAD
 	.read_event_value = tcs3472_read_event,
 	.write_event_value = tcs3472_write_event,
 	.read_event_config = tcs3472_read_event_config,
 	.write_event_config = tcs3472_write_event_config,
 	.attrs = &tcs3472_attribute_group,
-=======
-	.attrs = &tcs3472_attribute_group,
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int tcs3472_probe(struct i2c_client *client,
@@ -494,10 +455,7 @@ static int tcs3472_probe(struct i2c_client *client,
 	data = iio_priv(indio_dev);
 	i2c_set_clientdata(client, indio_dev);
 	data->client = client;
-<<<<<<< HEAD
 	mutex_init(&data->lock);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	indio_dev->dev.parent = &client->dev;
 	indio_dev->info = &tcs3472_info;
@@ -527,7 +485,6 @@ static int tcs3472_probe(struct i2c_client *client,
 		return ret;
 	data->atime = ret;
 
-<<<<<<< HEAD
 	ret = i2c_smbus_read_word_data(data->client, TCS3472_AILT);
 	if (ret < 0)
 		return ret;
@@ -544,18 +501,13 @@ static int tcs3472_probe(struct i2c_client *client,
 	if (ret < 0)
 		return ret;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = i2c_smbus_read_byte_data(data->client, TCS3472_ENABLE);
 	if (ret < 0)
 		return ret;
 
 	/* enable device */
 	data->enable = ret | TCS3472_ENABLE_PON | TCS3472_ENABLE_AEN;
-<<<<<<< HEAD
 	data->enable &= ~TCS3472_ENABLE_AIEN;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = i2c_smbus_write_byte_data(data->client, TCS3472_ENABLE,
 		data->enable);
 	if (ret < 0)
@@ -566,7 +518,6 @@ static int tcs3472_probe(struct i2c_client *client,
 	if (ret < 0)
 		return ret;
 
-<<<<<<< HEAD
 	if (client->irq) {
 		ret = request_threaded_irq(client->irq, NULL,
 					   tcs3472_event_handler,
@@ -585,14 +536,6 @@ static int tcs3472_probe(struct i2c_client *client,
 
 free_irq:
 	free_irq(client->irq, indio_dev);
-=======
-	ret = iio_device_register(indio_dev);
-	if (ret < 0)
-		goto buffer_cleanup;
-
-	return 0;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 buffer_cleanup:
 	iio_triggered_buffer_cleanup(indio_dev);
 	return ret;
@@ -600,7 +543,6 @@ buffer_cleanup:
 
 static int tcs3472_powerdown(struct tcs3472_data *data)
 {
-<<<<<<< HEAD
 	int ret;
 	u8 enable_mask = TCS3472_ENABLE_AEN | TCS3472_ENABLE_PON;
 
@@ -614,10 +556,6 @@ static int tcs3472_powerdown(struct tcs3472_data *data)
 	mutex_unlock(&data->lock);
 
 	return ret;
-=======
-	return i2c_smbus_write_byte_data(data->client, TCS3472_ENABLE,
-		data->enable & ~(TCS3472_ENABLE_AEN | TCS3472_ENABLE_PON));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int tcs3472_remove(struct i2c_client *client)
@@ -625,10 +563,7 @@ static int tcs3472_remove(struct i2c_client *client)
 	struct iio_dev *indio_dev = i2c_get_clientdata(client);
 
 	iio_device_unregister(indio_dev);
-<<<<<<< HEAD
 	free_irq(client->irq, indio_dev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	iio_triggered_buffer_cleanup(indio_dev);
 	tcs3472_powerdown(iio_priv(indio_dev));
 
@@ -647,7 +582,6 @@ static int tcs3472_resume(struct device *dev)
 {
 	struct tcs3472_data *data = iio_priv(i2c_get_clientdata(
 		to_i2c_client(dev)));
-<<<<<<< HEAD
 	int ret;
 	u8 enable_mask = TCS3472_ENABLE_AEN | TCS3472_ENABLE_PON;
 
@@ -661,10 +595,6 @@ static int tcs3472_resume(struct device *dev)
 	mutex_unlock(&data->lock);
 
 	return ret;
-=======
-	return i2c_smbus_write_byte_data(data->client, TCS3472_ENABLE,
-		data->enable | (TCS3472_ENABLE_AEN | TCS3472_ENABLE_PON));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #endif
 

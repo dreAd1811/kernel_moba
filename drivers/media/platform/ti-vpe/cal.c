@@ -28,14 +28,7 @@
 #include <media/v4l2-device.h>
 #include <media/v4l2-event.h>
 #include <media/v4l2-ioctl.h>
-<<<<<<< HEAD
 #include <media/v4l2-fh.h>
-=======
-#include <media/v4l2-ctrls.h>
-#include <media/v4l2-fh.h>
-#include <media/v4l2-event.h>
-#include <media/v4l2-common.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <media/videobuf2-core.h>
 #include <media/videobuf2-dma-contig.h>
 #include "cal_regs.h"
@@ -548,7 +541,6 @@ static void enable_irqs(struct cal_ctx *ctx)
 
 static void disable_irqs(struct cal_ctx *ctx)
 {
-<<<<<<< HEAD
 	/* Disable IRQ_WDMA_END 0/1 */
 	reg_write_field(ctx->dev,
 			CAL_HL_IRQENABLE_CLR(2),
@@ -559,18 +551,6 @@ static void disable_irqs(struct cal_ctx *ctx)
 			CAL_HL_IRQENABLE_CLR(3),
 			CAL_HL_IRQ_CLEAR,
 			CAL_HL_IRQ_MASK(ctx->csi2_port));
-=======
-	u32 val;
-
-	/* Disable IRQ_WDMA_END 0/1 */
-	val = 0;
-	set_field(&val, CAL_HL_IRQ_CLEAR, CAL_HL_IRQ_MASK(ctx->csi2_port));
-	reg_write(ctx->dev, CAL_HL_IRQENABLE_CLR(2), val);
-	/* Disable IRQ_WDMA_START 0/1 */
-	val = 0;
-	set_field(&val, CAL_HL_IRQ_CLEAR, CAL_HL_IRQ_MASK(ctx->csi2_port));
-	reg_write(ctx->dev, CAL_HL_IRQENABLE_CLR(3), val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Todo: Add VC_IRQ and CSI2_COMPLEXIO_IRQ handling */
 	reg_write(ctx->dev, CAL_CSI2_VC_IRQENABLE(1), 0);
 }
@@ -1539,14 +1519,11 @@ static int cal_async_complete(struct v4l2_async_notifier *notifier)
 	return 0;
 }
 
-<<<<<<< HEAD
 static const struct v4l2_async_notifier_operations cal_async_ops = {
 	.bound = cal_async_bound,
 	.complete = cal_async_complete,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int cal_complete_ctx(struct cal_ctx *ctx)
 {
 	struct video_device *vfd;
@@ -1725,11 +1702,7 @@ static int of_cal_create_instance(struct cal_ctx *ctx, int inst)
 		goto cleanup_exit;
 	}
 	asd->match_type = V4L2_ASYNC_MATCH_FWNODE;
-<<<<<<< HEAD
 	asd->match.fwnode = of_fwnode_handle(sensor_node);
-=======
-	asd->match.fwnode.fwnode = of_fwnode_handle(sensor_node);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	remote_ep = of_graph_get_remote_endpoint(ep_node);
 	if (!remote_ep) {
@@ -1765,12 +1738,7 @@ static int of_cal_create_instance(struct cal_ctx *ctx, int inst)
 	ctx->asd_list[0] = asd;
 	ctx->notifier.subdevs = ctx->asd_list;
 	ctx->notifier.num_subdevs = 1;
-<<<<<<< HEAD
 	ctx->notifier.ops = &cal_async_ops;
-=======
-	ctx->notifier.bound = cal_async_bound;
-	ctx->notifier.complete = cal_async_complete;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = v4l2_async_notifier_register(&ctx->v4l2_dev,
 					   &ctx->notifier);
 	if (ret) {

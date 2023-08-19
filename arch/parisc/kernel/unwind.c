@@ -13,13 +13,7 @@
 #include <linux/init.h>
 #include <linux/sched.h>
 #include <linux/slab.h>
-<<<<<<< HEAD
 #include <linux/sort.h>
-=======
-#include <linux/kallsyms.h>
-#include <linux/sort.h>
-#include <linux/sched.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/uaccess.h>
 #include <asm/assembly.h>
@@ -30,11 +24,7 @@
 
 /* #define DEBUG 1 */
 #ifdef DEBUG
-<<<<<<< HEAD
 #define dbg(x...) pr_debug(x)
-=======
-#define dbg(x...) printk(x)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 #define dbg(x...)
 #endif
@@ -126,12 +116,8 @@ unwind_table_init(struct unwind_table *table, const char *name,
 	for (; start <= end; start++) {
 		if (start < end && 
 		    start->region_end > (start+1)->region_start) {
-<<<<<<< HEAD
 			pr_warn("Out of order unwind entry! %px and %px\n",
 				start, start+1);
-=======
-			printk("WARNING: Out of order unwind entry! %p and %p\n", start, start+1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		start->region_start += base_addr;
@@ -196,11 +182,7 @@ int __init unwind_init(void)
 	start = (long)&__start___unwind[0];
 	stop = (long)&__stop___unwind[0];
 
-<<<<<<< HEAD
 	dbg("unwind_init: start = 0x%lx, end = 0x%lx, entries = %lu\n",
-=======
-	printk("unwind_init: start = 0x%lx, end = 0x%lx, entries = %lu\n", 
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    start, stop,
 	    (stop - start) / sizeof(struct unwind_table_entry));
 
@@ -221,7 +203,6 @@ int __init unwind_init(void)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int unwind_special(struct unwind_frame_info *info, unsigned long pc, int frame_size)
 {
 	/*
@@ -241,25 +222,10 @@ static int unwind_special(struct unwind_frame_info *info, unsigned long pc, int 
 #endif /* CONFIG_IRQSTACKS */
 
 	if (pc == (unsigned long) &handle_interruption) {
-=======
-#ifdef CONFIG_64BIT
-#define get_func_addr(fptr) fptr[2]
-#else
-#define get_func_addr(fptr) fptr[0]
-#endif
-
-static int unwind_special(struct unwind_frame_info *info, unsigned long pc, int frame_size)
-{
-	extern void handle_interruption(int, struct pt_regs *);
-	static unsigned long *hi = (unsigned long *)&handle_interruption;
-
-	if (pc == get_func_addr(hi)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct pt_regs *regs = (struct pt_regs *)(info->sp - frame_size - PT_SZ_ALGN);
 		dbg("Unwinding through handle_interruption()\n");
 		info->prev_sp = regs->gr[30];
 		info->prev_ip = regs->iaoq[0];
-<<<<<<< HEAD
 		return 1;
 	}
 
@@ -294,12 +260,6 @@ static int unwind_special(struct unwind_frame_info *info, unsigned long pc, int 
 	}
 #endif
 
-=======
-
-		return 1;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -315,39 +275,8 @@ static void unwind_frame_regs(struct unwind_frame_info *info)
 	if (e == NULL) {
 		unsigned long sp;
 
-<<<<<<< HEAD
 		dbg("Cannot find unwind entry for %pS; forced unwinding\n",
 			(void *) info->ip);
-=======
-		dbg("Cannot find unwind entry for 0x%lx; forced unwinding\n", info->ip);
-
-#ifdef CONFIG_KALLSYMS
-		/* Handle some frequent special cases.... */
-		{
-			char symname[KSYM_NAME_LEN];
-			char *modname;
-
-			kallsyms_lookup(info->ip, NULL, NULL, &modname,
-				symname);
-
-			dbg("info->ip = 0x%lx, name = %s\n", info->ip, symname);
-
-			if (strcmp(symname, "_switch_to_ret") == 0) {
-				info->prev_sp = info->sp - CALLEE_SAVE_FRAME_SIZE;
-				info->prev_ip = *(unsigned long *)(info->prev_sp - RP_OFFSET);
-				dbg("_switch_to_ret @ %lx - setting "
-				    "prev_sp=%lx prev_ip=%lx\n", 
-				    info->ip, info->prev_sp, 
-				    info->prev_ip);
-				return;
-			} else if (strcmp(symname, "ret_from_kernel_thread") == 0 ||
-				   strcmp(symname, "syscall_exit") == 0) {
-				info->prev_ip = info->prev_sp = 0;
-				return;
-			}
-		}
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Since we are doing the unwinding blind, we don't know if
 		   we are adjusting the stack correctly or extracting the rp
@@ -476,7 +405,6 @@ void unwind_frame_init_from_blocked_task(struct unwind_frame_info *info, struct 
 	kfree(r2);
 }
 
-<<<<<<< HEAD
 #define get_parisc_stackpointer() ({ \
 	unsigned long sp; \
 	__asm__("copy %%r30, %0" : "=r"(sp)); \
@@ -502,11 +430,6 @@ void unwind_frame_init_task(struct unwind_frame_info *info,
 	} else {
 		unwind_frame_init_from_blocked_task(info, task);
 	}
-=======
-void unwind_frame_init_running(struct unwind_frame_info *info, struct pt_regs *regs)
-{
-	unwind_frame_init(info, current, regs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int unwind_once(struct unwind_frame_info *next_frame)
@@ -543,28 +466,12 @@ int unwind_to_user(struct unwind_frame_info *info)
 unsigned long return_address(unsigned int level)
 {
 	struct unwind_frame_info info;
-<<<<<<< HEAD
 
 	/* initialize unwind info */
 	unwind_frame_init_task(&info, current, NULL);
 
 	/* unwind stack */
 	level += 2;
-=======
-	struct pt_regs r;
-	unsigned long sp;
-
-	/* initialize unwind info */
-	asm volatile ("copy %%r30, %0" : "=r"(sp));
-	memset(&r, 0, sizeof(struct pt_regs));
-	r.iaoq[0] = (unsigned long) current_text_addr();
-	r.gr[2] = (unsigned long) __builtin_return_address(0);
-	r.gr[30] = sp;
-	unwind_frame_init(&info, current, &r);
-
-	/* unwind stack */
-	++level;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	do {
 		if (unwind_once(&info) < 0 || info.ip == 0)
 			return 0;

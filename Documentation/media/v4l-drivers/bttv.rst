@@ -307,11 +307,7 @@ console and let some terminal application log the messages.  /me uses
 screen.  See Documentation/admin-guide/serial-console.rst for details on setting
 up a serial console.
 
-<<<<<<< HEAD
 Read Documentation/admin-guide/bug-hunting.rst to learn how to get any useful
-=======
-Read Documentation/admin-guide/oops-tracing.rst to learn how to get any useful
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 information out of a register+stack dump printed by the kernel on
 protection faults (so-called "kernel oops").
 

@@ -42,11 +42,7 @@
 #include "intel_drv.h"
 #include "intel_frontbuffer.h"
 
-<<<<<<< HEAD
 #define I915_GFP_ALLOW_FAIL (GFP_KERNEL | __GFP_RETRY_MAYFAIL | __GFP_NOWARN)
-=======
-#define I915_GFP_DMA (GFP_KERNEL | __GFP_HIGHMEM)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * DOC: Global GTT views
@@ -114,12 +110,8 @@ i915_get_ggtt_vma_pages(struct i915_vma *vma);
 
 static void gen6_ggtt_invalidate(struct drm_i915_private *dev_priv)
 {
-<<<<<<< HEAD
 	/*
 	 * Note that as an uncached mmio write, this will flush the
-=======
-	/* Note that as an uncached mmio write, this should flush the
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * WCB of the writes into the GGTT before it triggers the invalidate.
 	 */
 	I915_WRITE(GFX_FLSH_CNTL_GEN6, GFX_FLSH_CNTL_EN);
@@ -144,20 +136,12 @@ static inline void i915_ggtt_invalidate(struct drm_i915_private *i915)
 int intel_sanitize_enable_ppgtt(struct drm_i915_private *dev_priv,
 			       	int enable_ppgtt)
 {
-<<<<<<< HEAD
 	bool has_full_ppgtt;
 	bool has_full_48bit_ppgtt;
 
 	if (!dev_priv->info.has_aliasing_ppgtt)
 		return 0;
 
-=======
-	bool has_aliasing_ppgtt;
-	bool has_full_ppgtt;
-	bool has_full_48bit_ppgtt;
-
-	has_aliasing_ppgtt = dev_priv->info.has_aliasing_ppgtt;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	has_full_ppgtt = dev_priv->info.has_full_ppgtt;
 	has_full_48bit_ppgtt = dev_priv->info.has_full_48bit_ppgtt;
 
@@ -167,12 +151,6 @@ int intel_sanitize_enable_ppgtt(struct drm_i915_private *dev_priv,
 		has_full_48bit_ppgtt = intel_vgpu_has_full_48bit_ppgtt(dev_priv);
 	}
 
-<<<<<<< HEAD
-=======
-	if (!has_aliasing_ppgtt)
-		return 0;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * We don't allow disabling PPGTT for gen9+ as it's a requirement for
 	 * execlists, the sole mechanism available to submit work.
@@ -180,12 +158,7 @@ int intel_sanitize_enable_ppgtt(struct drm_i915_private *dev_priv,
 	if (enable_ppgtt == 0 && INTEL_GEN(dev_priv) < 9)
 		return 0;
 
-<<<<<<< HEAD
 	if (enable_ppgtt == 1)
-=======
-	/* Full PPGTT is required by the Gen9 cmdparser */
-	if (enable_ppgtt == 1 && INTEL_GEN(dev_priv) != 9)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 1;
 
 	if (enable_ppgtt == 2 && has_full_ppgtt)
@@ -206,11 +179,7 @@ int intel_sanitize_enable_ppgtt(struct drm_i915_private *dev_priv,
 		return 0;
 	}
 
-<<<<<<< HEAD
 	if (HAS_LOGICAL_RING_CONTEXTS(dev_priv)) {
-=======
-	if (INTEL_GEN(dev_priv) >= 8 && i915.enable_execlists) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (has_full_48bit_ppgtt)
 			return 3;
 
@@ -218,11 +187,7 @@ int intel_sanitize_enable_ppgtt(struct drm_i915_private *dev_priv,
 			return 2;
 	}
 
-<<<<<<< HEAD
 	return 1;
-=======
-	return has_aliasing_ppgtt ? 1 : 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int ppgtt_bind_vma(struct i915_vma *vma,
@@ -230,7 +195,6 @@ static int ppgtt_bind_vma(struct i915_vma *vma,
 			  u32 unused)
 {
 	u32 pte_flags;
-<<<<<<< HEAD
 	int err;
 
 	if (!(vma->flags & I915_VMA_LOCAL_BIND)) {
@@ -240,19 +204,6 @@ static int ppgtt_bind_vma(struct i915_vma *vma,
 			return err;
 	}
 
-=======
-	int ret;
-
-	if (!(vma->flags & I915_VMA_LOCAL_BIND)) {
-		ret = vma->vm->allocate_va_range(vma->vm, vma->node.start,
-						 vma->size);
-		if (ret)
-			return ret;
-	}
-
-	vma->pages = vma->obj->mm.pages;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Applicable to VLV, and gen8+ */
 	pte_flags = 0;
 	if (i915_gem_object_is_readonly(vma->obj))
@@ -268,7 +219,6 @@ static void ppgtt_unbind_vma(struct i915_vma *vma)
 	vma->vm->clear_range(vma->vm, vma->node.start, vma->size);
 }
 
-<<<<<<< HEAD
 static int ppgtt_set_pages(struct i915_vma *vma)
 {
 	GEM_BUG_ON(vma->pages);
@@ -293,8 +243,6 @@ static void clear_pages(struct i915_vma *vma)
 	memset(&vma->page_sizes, 0, sizeof(vma->page_sizes));
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static gen8_pte_t gen8_pte_encode(dma_addr_t addr,
 				  enum i915_cache_level level,
 				  u32 flags)
@@ -306,7 +254,6 @@ static gen8_pte_t gen8_pte_encode(dma_addr_t addr,
 
 	switch (level) {
 	case I915_CACHE_NONE:
-<<<<<<< HEAD
 		pte |= PPAT_UNCACHED;
 		break;
 	case I915_CACHE_WT:
@@ -314,15 +261,6 @@ static gen8_pte_t gen8_pte_encode(dma_addr_t addr,
 		break;
 	default:
 		pte |= PPAT_CACHED;
-=======
-		pte |= PPAT_UNCACHED_INDEX;
-		break;
-	case I915_CACHE_WT:
-		pte |= PPAT_DISPLAY_ELLC_INDEX;
-		break;
-	default:
-		pte |= PPAT_CACHED_INDEX;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 
@@ -335,15 +273,9 @@ static gen8_pde_t gen8_pde_encode(const dma_addr_t addr,
 	gen8_pde_t pde = _PAGE_PRESENT | _PAGE_RW;
 	pde |= addr;
 	if (level != I915_CACHE_NONE)
-<<<<<<< HEAD
 		pde |= PPAT_CACHED_PDE;
 	else
 		pde |= PPAT_UNCACHED;
-=======
-		pde |= PPAT_CACHED_PDE_INDEX;
-	else
-		pde |= PPAT_UNCACHED_INDEX;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return pde;
 }
 
@@ -446,7 +378,6 @@ static gen6_pte_t iris_pte_encode(dma_addr_t addr,
 	return pte;
 }
 
-<<<<<<< HEAD
 static void stash_init(struct pagestash *stash)
 {
 	pagevec_init(&stash->pvec);
@@ -485,16 +416,11 @@ static void stash_push_pagevec(struct pagestash *stash, struct pagevec *pvec)
 static struct page *vm_alloc_page(struct i915_address_space *vm, gfp_t gfp)
 {
 	struct pagevec stack;
-=======
-static struct page *vm_alloc_page(struct i915_address_space *vm, gfp_t gfp)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct page *page;
 
 	if (I915_SELFTEST_ONLY(should_fail(&vm->fault_attr, 1)))
 		i915_gem_shrink_all(vm->i915);
 
-<<<<<<< HEAD
 	page = stash_pop_page(&vm->free_pages);
 	if (page)
 		return page;
@@ -542,22 +468,10 @@ static struct page *vm_alloc_page(struct i915_address_space *vm, gfp_t gfp)
 		WARN_ON_ONCE(set_pages_array_wb(stack.pages, stack.nr));
 		__pagevec_release(&stack);
 	}
-=======
-	if (vm->free_pages.nr)
-		return vm->free_pages.pages[--vm->free_pages.nr];
-
-	page = alloc_page(gfp);
-	if (!page)
-		return NULL;
-
-	if (vm->pt_kmap_wc)
-		set_pages_array_wc(&page, 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return page;
 }
 
-<<<<<<< HEAD
 static void vm_free_pages_release(struct i915_address_space *vm,
 				  bool immediate)
 {
@@ -599,22 +513,10 @@ static void vm_free_pages_release(struct i915_address_space *vm,
 	}
 
 	__pagevec_release(pvec);
-=======
-static void vm_free_pages_release(struct i915_address_space *vm)
-{
-	GEM_BUG_ON(!pagevec_count(&vm->free_pages));
-
-	if (vm->pt_kmap_wc)
-		set_pages_array_wb(vm->free_pages.pages,
-				   pagevec_count(&vm->free_pages));
-
-	__pagevec_release(&vm->free_pages);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void vm_free_page(struct i915_address_space *vm, struct page *page)
 {
-<<<<<<< HEAD
 	/*
 	 * On !llc, we need to change the pages back to WB. We only do so
 	 * in bulk, so we rarely need to change the page attributes here,
@@ -662,17 +564,12 @@ static void i915_address_space_fini(struct i915_address_space *vm)
 	drm_mm_takedown(&vm->mm);
 
 	mutex_destroy(&vm->mutex);
-=======
-	if (!pagevec_add(&vm->free_pages, page))
-		vm_free_pages_release(vm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int __setup_page_dma(struct i915_address_space *vm,
 			    struct i915_page_dma *p,
 			    gfp_t gfp)
 {
-<<<<<<< HEAD
 	p->page = vm_alloc_page(vm, gfp | I915_GFP_ALLOW_FAIL);
 	if (unlikely(!p->page))
 		return -ENOMEM;
@@ -682,14 +579,6 @@ static int __setup_page_dma(struct i915_address_space *vm,
 				      PCI_DMA_BIDIRECTIONAL,
 				      DMA_ATTR_SKIP_CPU_SYNC |
 				      DMA_ATTR_NO_WARN);
-=======
-	p->page = vm_alloc_page(vm, gfp | __GFP_NOWARN | __GFP_NORETRY);
-	if (unlikely(!p->page))
-		return -ENOMEM;
-
-	p->daddr = dma_map_page(vm->dma, p->page, 0, PAGE_SIZE,
-				PCI_DMA_BIDIRECTIONAL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(dma_mapping_error(vm->dma, p->daddr))) {
 		vm_free_page(vm, p->page);
 		return -ENOMEM;
@@ -701,11 +590,7 @@ static int __setup_page_dma(struct i915_address_space *vm,
 static int setup_page_dma(struct i915_address_space *vm,
 			  struct i915_page_dma *p)
 {
-<<<<<<< HEAD
 	return __setup_page_dma(vm, p, __GFP_HIGHMEM);
-=======
-	return __setup_page_dma(vm, p, I915_GFP_DMA);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void cleanup_page_dma(struct i915_address_space *vm,
@@ -719,28 +604,16 @@ static void cleanup_page_dma(struct i915_address_space *vm,
 
 #define setup_px(vm, px) setup_page_dma((vm), px_base(px))
 #define cleanup_px(vm, px) cleanup_page_dma((vm), px_base(px))
-<<<<<<< HEAD
 #define fill_px(vm, px, v) fill_page_dma((vm), px_base(px), (v))
 #define fill32_px(vm, px, v) fill_page_dma_32((vm), px_base(px), (v))
-=======
-#define fill_px(ppgtt, px, v) fill_page_dma((vm), px_base(px), (v))
-#define fill32_px(ppgtt, px, v) fill_page_dma_32((vm), px_base(px), (v))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void fill_page_dma(struct i915_address_space *vm,
 			  struct i915_page_dma *p,
 			  const u64 val)
 {
 	u64 * const vaddr = kmap_atomic(p->page);
-<<<<<<< HEAD
 
 	memset64(vaddr, val, PAGE_SIZE / sizeof(val));
-=======
-	int i;
-
-	for (i = 0; i < 512; i++)
-		vaddr[i] = val;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kunmap_atomic(vaddr);
 }
@@ -755,7 +628,6 @@ static void fill_page_dma_32(struct i915_address_space *vm,
 static int
 setup_scratch_page(struct i915_address_space *vm, gfp_t gfp)
 {
-<<<<<<< HEAD
 	unsigned long size;
 
 	/*
@@ -814,33 +686,22 @@ skip:
 		size = I915_GTT_PAGE_SIZE_4K;
 		gfp &= ~__GFP_NOWARN;
 	} while (1);
-=======
-	return __setup_page_dma(vm, &vm->scratch_page, gfp | __GFP_ZERO);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void cleanup_scratch_page(struct i915_address_space *vm)
 {
-<<<<<<< HEAD
 	struct i915_page_dma *p = &vm->scratch_page;
 
 	dma_unmap_page(vm->dma, p->daddr, BIT(p->order) << PAGE_SHIFT,
 		       PCI_DMA_BIDIRECTIONAL);
 	__free_pages(p->page, p->order);
-=======
-	cleanup_page_dma(vm, &vm->scratch_page);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct i915_page_table *alloc_pt(struct i915_address_space *vm)
 {
 	struct i915_page_table *pt;
 
-<<<<<<< HEAD
 	pt = kmalloc(sizeof(*pt), I915_GFP_ALLOW_FAIL);
-=======
-	pt = kmalloc(sizeof(*pt), GFP_KERNEL | __GFP_NOWARN);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(!pt))
 		return ERR_PTR(-ENOMEM);
 
@@ -866,29 +727,17 @@ static void gen8_initialize_pt(struct i915_address_space *vm,
 		gen8_pte_encode(vm->scratch_page.daddr, I915_CACHE_LLC, 0));
 }
 
-<<<<<<< HEAD
 static void gen6_initialize_pt(struct gen6_hw_ppgtt *ppgtt,
 			       struct i915_page_table *pt)
 {
 	fill32_px(&ppgtt->base.vm, pt, ppgtt->scratch_pte);
-=======
-static void gen6_initialize_pt(struct i915_address_space *vm,
-			       struct i915_page_table *pt)
-{
-	fill32_px(vm, pt,
-		  vm->pte_encode(vm->scratch_page.daddr, I915_CACHE_LLC, 0));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct i915_page_directory *alloc_pd(struct i915_address_space *vm)
 {
 	struct i915_page_directory *pd;
 
-<<<<<<< HEAD
 	pd = kzalloc(sizeof(*pd), I915_GFP_ALLOW_FAIL);
-=======
-	pd = kzalloc(sizeof(*pd), GFP_KERNEL | __GFP_NOWARN);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(!pd))
 		return ERR_PTR(-ENOMEM);
 
@@ -911,25 +760,15 @@ static void free_pd(struct i915_address_space *vm,
 static void gen8_initialize_pd(struct i915_address_space *vm,
 			       struct i915_page_directory *pd)
 {
-<<<<<<< HEAD
 	fill_px(vm, pd,
 		gen8_pde_encode(px_dma(vm->scratch_pt), I915_CACHE_LLC));
 	memset_p((void **)pd->page_table, vm->scratch_pt, I915_PDES);
-=======
-	unsigned int i;
-
-	fill_px(vm, pd,
-		gen8_pde_encode(px_dma(vm->scratch_pt), I915_CACHE_LLC));
-	for (i = 0; i < I915_PDES; i++)
-		pd->page_table[i] = vm->scratch_pt;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int __pdp_init(struct i915_address_space *vm,
 		      struct i915_page_directory_pointer *pdp)
 {
 	const unsigned int pdpes = i915_pdpes_per_pdp(vm);
-<<<<<<< HEAD
 
 	pdp->page_directory = kmalloc_array(pdpes, sizeof(*pdp->page_directory),
 					    I915_GFP_ALLOW_FAIL);
@@ -937,17 +776,6 @@ static int __pdp_init(struct i915_address_space *vm,
 		return -ENOMEM;
 
 	memset_p((void **)pdp->page_directory, vm->scratch_pd, pdpes);
-=======
-	unsigned int i;
-
-	pdp->page_directory = kmalloc_array(pdpes, sizeof(*pdp->page_directory),
-					    GFP_KERNEL | __GFP_NOWARN);
-	if (unlikely(!pdp->page_directory))
-		return -ENOMEM;
-
-	for (i = 0; i < pdpes; i++)
-		pdp->page_directory[i] = vm->scratch_pd;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -969,11 +797,7 @@ alloc_pdp(struct i915_address_space *vm)
 	struct i915_page_directory_pointer *pdp;
 	int ret = -ENOMEM;
 
-<<<<<<< HEAD
 	GEM_BUG_ON(!use_4lvl(vm));
-=======
-	WARN_ON(!use_4lvl(vm));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pdp = kzalloc(sizeof(*pdp), GFP_KERNEL);
 	if (!pdp)
@@ -1022,65 +846,9 @@ static void gen8_initialize_pdp(struct i915_address_space *vm,
 static void gen8_initialize_pml4(struct i915_address_space *vm,
 				 struct i915_pml4 *pml4)
 {
-<<<<<<< HEAD
 	fill_px(vm, pml4,
 		gen8_pml4e_encode(px_dma(vm->scratch_pdp), I915_CACHE_LLC));
 	memset_p((void **)pml4->pdps, vm->scratch_pdp, GEN8_PML4ES_PER_PML4);
-=======
-	unsigned int i;
-
-	fill_px(vm, pml4,
-		gen8_pml4e_encode(px_dma(vm->scratch_pdp), I915_CACHE_LLC));
-	for (i = 0; i < GEN8_PML4ES_PER_PML4; i++)
-		pml4->pdps[i] = vm->scratch_pdp;
-}
-
-/* Broadwell Page Directory Pointer Descriptors */
-static int gen8_write_pdp(struct drm_i915_gem_request *req,
-			  unsigned entry,
-			  dma_addr_t addr)
-{
-	struct intel_engine_cs *engine = req->engine;
-	u32 *cs;
-
-	BUG_ON(entry >= 4);
-
-	cs = intel_ring_begin(req, 6);
-	if (IS_ERR(cs))
-		return PTR_ERR(cs);
-
-	*cs++ = MI_LOAD_REGISTER_IMM(1);
-	*cs++ = i915_mmio_reg_offset(GEN8_RING_PDP_UDW(engine, entry));
-	*cs++ = upper_32_bits(addr);
-	*cs++ = MI_LOAD_REGISTER_IMM(1);
-	*cs++ = i915_mmio_reg_offset(GEN8_RING_PDP_LDW(engine, entry));
-	*cs++ = lower_32_bits(addr);
-	intel_ring_advance(req, cs);
-
-	return 0;
-}
-
-static int gen8_mm_switch_3lvl(struct i915_hw_ppgtt *ppgtt,
-			       struct drm_i915_gem_request *req)
-{
-	int i, ret;
-
-	for (i = GEN8_3LVL_PDPES - 1; i >= 0; i--) {
-		const dma_addr_t pd_daddr = i915_page_dir_dma_addr(ppgtt, i);
-
-		ret = gen8_write_pdp(req, i, pd_daddr);
-		if (ret)
-			return ret;
-	}
-
-	return 0;
-}
-
-static int gen8_mm_switch_4lvl(struct i915_hw_ppgtt *ppgtt,
-			       struct drm_i915_gem_request *req)
-{
-	return gen8_write_pdp(req, 0, px_dma(&ppgtt->pml4));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* PDE TLBs are a pain to invalidate on GEN8+. When we modify
@@ -1090,11 +858,7 @@ static int gen8_mm_switch_4lvl(struct i915_hw_ppgtt *ppgtt,
  */
 static void mark_tlbs_dirty(struct i915_hw_ppgtt *ppgtt)
 {
-<<<<<<< HEAD
 	ppgtt->pd_dirty_rings = INTEL_INFO(ppgtt->vm.i915)->ring_mask;
-=======
-	ppgtt->pd_dirty_rings = INTEL_INFO(ppgtt->base.i915)->ring_mask;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Removes entries from a single page table, releasing it if it's empty.
@@ -1288,21 +1052,13 @@ gen8_ppgtt_insert_pte_entries(struct i915_hw_ppgtt *ppgtt,
 	gen8_pte_t *vaddr;
 	bool ret;
 
-<<<<<<< HEAD
 	GEM_BUG_ON(idx->pdpe >= i915_pdpes_per_pdp(&ppgtt->vm));
-=======
-	GEM_BUG_ON(idx->pdpe >= i915_pdpes_per_pdp(&ppgtt->base));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pd = pdp->page_directory[idx->pdpe];
 	vaddr = kmap_atomic_px(pd->page_table[idx->pde]);
 	do {
 		vaddr[idx->pte] = pte_encode | iter->dma;
 
-<<<<<<< HEAD
 		iter->dma += I915_GTT_PAGE_SIZE;
-=======
-		iter->dma += PAGE_SIZE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (iter->dma >= iter->max) {
 			iter->sg = __sg_next(iter->sg);
 			if (!iter->sg) {
@@ -1327,11 +1083,7 @@ gen8_ppgtt_insert_pte_entries(struct i915_hw_ppgtt *ppgtt,
 					break;
 				}
 
-<<<<<<< HEAD
 				GEM_BUG_ON(idx->pdpe >= i915_pdpes_per_pdp(&ppgtt->vm));
-=======
-				GEM_BUG_ON(idx->pdpe >= i915_pdpes_per_pdp(&ppgtt->base));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				pd = pdp->page_directory[idx->pdpe];
 			}
 
@@ -1355,7 +1107,6 @@ static void gen8_ppgtt_insert_3lvl(struct i915_address_space *vm,
 
 	gen8_ppgtt_insert_pte_entries(ppgtt, &ppgtt->pdp, &iter, &idx,
 				      cache_level, flags);
-<<<<<<< HEAD
 
 	vma->page_sizes.gtt = I915_GTT_PAGE_SIZE;
 }
@@ -1477,8 +1228,6 @@ static void gen8_ppgtt_insert_huge_entries(struct i915_vma *vma,
 
 		vma->page_sizes.gtt |= page_size;
 	} while (iter->sg);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void gen8_ppgtt_insert_4lvl(struct i915_address_space *vm,
@@ -1489,7 +1238,6 @@ static void gen8_ppgtt_insert_4lvl(struct i915_address_space *vm,
 	struct i915_hw_ppgtt *ppgtt = i915_vm_to_ppgtt(vm);
 	struct sgt_dma iter = sgt_dma(vma);
 	struct i915_page_directory_pointer **pdps = ppgtt->pml4.pdps;
-<<<<<<< HEAD
 
 	if (vma->page_sizes.sg > I915_GTT_PAGE_SIZE) {
 		gen8_ppgtt_insert_huge_entries(vma, pdps, &iter, cache_level,
@@ -1504,13 +1252,6 @@ static void gen8_ppgtt_insert_4lvl(struct i915_address_space *vm,
 
 		vma->page_sizes.gtt = I915_GTT_PAGE_SIZE;
 	}
-=======
-	struct gen8_insert_pte idx = gen8_insert_pte(vma->node.start);
-
-	while (gen8_ppgtt_insert_pte_entries(ppgtt, pdps[idx.pml4e++], &iter,
-					     &idx, cache_level, flags))
-		GEM_BUG_ON(idx.pml4e >= GEN8_PML4ES_PER_PML4);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void gen8_free_page_tables(struct i915_address_space *vm,
@@ -1531,11 +1272,7 @@ static int gen8_init_scratch(struct i915_address_space *vm)
 {
 	int ret;
 
-<<<<<<< HEAD
 	ret = setup_scratch_page(vm, __GFP_HIGHMEM);
-=======
-	ret = setup_scratch_page(vm, I915_GFP_DMA);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -1578,11 +1315,7 @@ free_scratch_page:
 
 static int gen8_ppgtt_notify_vgt(struct i915_hw_ppgtt *ppgtt, bool create)
 {
-<<<<<<< HEAD
 	struct i915_address_space *vm = &ppgtt->vm;
-=======
-	struct i915_address_space *vm = &ppgtt->base;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_i915_private *dev_priv = vm->i915;
 	enum vgt_g2v_type msg;
 	int i;
@@ -1643,7 +1376,6 @@ static void gen8_ppgtt_cleanup_4lvl(struct i915_hw_ppgtt *ppgtt)
 	int i;
 
 	for (i = 0; i < GEN8_PML4ES_PER_PML4; i++) {
-<<<<<<< HEAD
 		if (ppgtt->pml4.pdps[i] == ppgtt->vm.scratch_pdp)
 			continue;
 
@@ -1651,15 +1383,6 @@ static void gen8_ppgtt_cleanup_4lvl(struct i915_hw_ppgtt *ppgtt)
 	}
 
 	cleanup_px(&ppgtt->vm, &ppgtt->pml4);
-=======
-		if (ppgtt->pml4.pdps[i] == ppgtt->base.scratch_pdp)
-			continue;
-
-		gen8_ppgtt_cleanup_3lvl(&ppgtt->base, ppgtt->pml4.pdps[i]);
-	}
-
-	cleanup_px(&ppgtt->base, &ppgtt->pml4);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void gen8_ppgtt_cleanup(struct i915_address_space *vm)
@@ -1673,11 +1396,7 @@ static void gen8_ppgtt_cleanup(struct i915_address_space *vm)
 	if (use_4lvl(vm))
 		gen8_ppgtt_cleanup_4lvl(ppgtt);
 	else
-<<<<<<< HEAD
 		gen8_ppgtt_cleanup_3lvl(&ppgtt->vm, &ppgtt->pdp);
-=======
-		gen8_ppgtt_cleanup_3lvl(&ppgtt->base, &ppgtt->pdp);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	gen8_free_scratch(vm);
 }
@@ -1691,7 +1410,6 @@ static int gen8_ppgtt_alloc_pd(struct i915_address_space *vm,
 	unsigned int pde;
 
 	gen8_for_each_pde(pt, pd, start, length, pde) {
-<<<<<<< HEAD
 		int count = gen8_pte_count(start, length);
 
 		if (pt == vm->scratch_pt) {
@@ -1711,21 +1429,6 @@ static int gen8_ppgtt_alloc_pd(struct i915_address_space *vm,
 		}
 
 		pt->used_ptes += count;
-=======
-		if (pt == vm->scratch_pt) {
-			pt = alloc_pt(vm);
-			if (IS_ERR(pt))
-				goto unwind;
-
-			gen8_initialize_pt(vm, pt);
-
-			gen8_ppgtt_set_pde(vm, pd, pt, pde);
-			pd->used_pdes++;
-			GEM_BUG_ON(pd->used_pdes > I915_PDES);
-		}
-
-		pt->used_ptes += gen8_pte_count(start, length);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return 0;
 
@@ -1745,7 +1448,6 @@ static int gen8_ppgtt_alloc_pdp(struct i915_address_space *vm,
 
 	gen8_for_each_pdpe(pd, pdp, start, length, pdpe) {
 		if (pd == vm->scratch_pd) {
-<<<<<<< HEAD
 			pdp->used_pdpes++;
 
 			pd = alloc_pd(vm);
@@ -1756,15 +1458,6 @@ static int gen8_ppgtt_alloc_pdp(struct i915_address_space *vm,
 
 			gen8_initialize_pd(vm, pd);
 			gen8_ppgtt_set_pdpe(vm, pdp, pd, pdpe);
-=======
-			pd = alloc_pd(vm);
-			if (IS_ERR(pd))
-				goto unwind;
-
-			gen8_initialize_pd(vm, pd);
-			gen8_ppgtt_set_pdpe(vm, pdp, pd, pdpe);
-			pdp->used_pdpes++;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			GEM_BUG_ON(pdp->used_pdpes > i915_pdpes_per_pdp(vm));
 
 			mark_tlbs_dirty(i915_vm_to_ppgtt(vm));
@@ -1839,11 +1532,7 @@ static void gen8_dump_pdp(struct i915_hw_ppgtt *ppgtt,
 			  gen8_pte_t scratch_pte,
 			  struct seq_file *m)
 {
-<<<<<<< HEAD
 	struct i915_address_space *vm = &ppgtt->vm;
-=======
-	struct i915_address_space *vm = &ppgtt->base;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct i915_page_directory *pd;
 	u32 pdpe;
 
@@ -1853,11 +1542,7 @@ static void gen8_dump_pdp(struct i915_hw_ppgtt *ppgtt,
 		u64 pd_start = start;
 		u32 pde;
 
-<<<<<<< HEAD
 		if (pdp->page_directory[pdpe] == ppgtt->vm.scratch_pd)
-=======
-		if (pdp->page_directory[pdpe] == ppgtt->base.scratch_pd)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 
 		seq_printf(m, "\tPDPE #%d\n", pdpe);
@@ -1865,11 +1550,7 @@ static void gen8_dump_pdp(struct i915_hw_ppgtt *ppgtt,
 			u32 pte;
 			gen8_pte_t *pt_vaddr;
 
-<<<<<<< HEAD
 			if (pd->page_table[pde] == ppgtt->vm.scratch_pt)
-=======
-			if (pd->page_table[pde] == ppgtt->base.scratch_pt)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				continue;
 
 			pt_vaddr = kmap_atomic_px(pt);
@@ -1902,17 +1583,10 @@ static void gen8_dump_pdp(struct i915_hw_ppgtt *ppgtt,
 
 static void gen8_dump_ppgtt(struct i915_hw_ppgtt *ppgtt, struct seq_file *m)
 {
-<<<<<<< HEAD
 	struct i915_address_space *vm = &ppgtt->vm;
 	const gen8_pte_t scratch_pte =
 		gen8_pte_encode(vm->scratch_page.daddr, I915_CACHE_LLC, 0);
 	u64 start = 0, length = ppgtt->vm.total;
-=======
-	struct i915_address_space *vm = &ppgtt->base;
-	const gen8_pte_t scratch_pte =
-		gen8_pte_encode(vm->scratch_page.daddr, I915_CACHE_LLC, 0);
-	u64 start = 0, length = ppgtt->base.total;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (use_4lvl(vm)) {
 		u64 pml4e;
@@ -1920,11 +1594,7 @@ static void gen8_dump_ppgtt(struct i915_hw_ppgtt *ppgtt, struct seq_file *m)
 		struct i915_page_directory_pointer *pdp;
 
 		gen8_for_each_pml4e(pdp, pml4, start, length, pml4e) {
-<<<<<<< HEAD
 			if (pml4->pdps[pml4e] == ppgtt->vm.scratch_pdp)
-=======
-			if (pml4->pdps[pml4e] == ppgtt->base.scratch_pdp)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				continue;
 
 			seq_printf(m, "    PML4E #%llu\n", pml4e);
@@ -1937,17 +1607,10 @@ static void gen8_dump_ppgtt(struct i915_hw_ppgtt *ppgtt, struct seq_file *m)
 
 static int gen8_preallocate_top_level_pdp(struct i915_hw_ppgtt *ppgtt)
 {
-<<<<<<< HEAD
 	struct i915_address_space *vm = &ppgtt->vm;
 	struct i915_page_directory_pointer *pdp = &ppgtt->pdp;
 	struct i915_page_directory *pd;
 	u64 start = 0, length = ppgtt->vm.total;
-=======
-	struct i915_address_space *vm = &ppgtt->base;
-	struct i915_page_directory_pointer *pdp = &ppgtt->pdp;
-	struct i915_page_directory *pd;
-	u64 start = 0, length = ppgtt->base.total;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 from = start;
 	unsigned int pdpe;
 
@@ -1981,7 +1644,6 @@ unwind:
  * space.
  *
  */
-<<<<<<< HEAD
 static struct i915_hw_ppgtt *gen8_ppgtt_create(struct drm_i915_private *i915)
 {
 	struct i915_hw_ppgtt *ppgtt;
@@ -2000,41 +1662,18 @@ static struct i915_hw_ppgtt *gen8_ppgtt_create(struct drm_i915_private *i915)
 		1ULL << 48 :
 		1ULL << 32;
 
-=======
-static int gen8_ppgtt_init(struct i915_hw_ppgtt *ppgtt)
-{
-	struct i915_address_space *vm = &ppgtt->base;
-	struct drm_i915_private *dev_priv = vm->i915;
-	int ret;
-
-	ppgtt->base.total = USES_FULL_48BIT_PPGTT(dev_priv) ?
-		1ULL << 48 :
-		1ULL << 32;
-
-	ret = gen8_init_scratch(&ppgtt->base);
-	if (ret) {
-		ppgtt->base.total = 0;
-		return ret;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * From bdw, there is support for read-only pages in the PPGTT.
 	 *
 	 * XXX GVT is not honouring the lack of RW in the PTE bits.
 	 */
-<<<<<<< HEAD
 	ppgtt->vm.has_read_only = !intel_vgpu_active(i915);
 
 	i915_address_space_init(&ppgtt->vm, i915);
-=======
-	ppgtt->base.has_read_only = !intel_vgpu_active(dev_priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* There are only few exceptions for gen >=6. chv and bxt.
 	 * And we are not sure about the latter so play safe for now.
 	 */
-<<<<<<< HEAD
 	if (IS_CHERRYVIEW(i915) || IS_BROXTON(i915))
 		ppgtt->vm.pt_kmap_wc = true;
 
@@ -2141,201 +1780,17 @@ static void gen6_dump_ppgtt(struct i915_hw_ppgtt *base, struct seq_file *m)
 			seq_puts(m, "\n");
 		}
 		kunmap_atomic(vaddr);
-=======
-	if (IS_CHERRYVIEW(dev_priv) || IS_BROXTON(dev_priv))
-		ppgtt->base.pt_kmap_wc = true;
-
-	if (use_4lvl(vm)) {
-		ret = setup_px(&ppgtt->base, &ppgtt->pml4);
-		if (ret)
-			goto free_scratch;
-
-		gen8_initialize_pml4(&ppgtt->base, &ppgtt->pml4);
-
-		ppgtt->switch_mm = gen8_mm_switch_4lvl;
-		ppgtt->base.allocate_va_range = gen8_ppgtt_alloc_4lvl;
-		ppgtt->base.insert_entries = gen8_ppgtt_insert_4lvl;
-		ppgtt->base.clear_range = gen8_ppgtt_clear_4lvl;
-	} else {
-		ret = __pdp_init(&ppgtt->base, &ppgtt->pdp);
-		if (ret)
-			goto free_scratch;
-
-		if (intel_vgpu_active(dev_priv)) {
-			ret = gen8_preallocate_top_level_pdp(ppgtt);
-			if (ret) {
-				__pdp_fini(&ppgtt->pdp);
-				goto free_scratch;
-			}
-		}
-
-		ppgtt->switch_mm = gen8_mm_switch_3lvl;
-		ppgtt->base.allocate_va_range = gen8_ppgtt_alloc_3lvl;
-		ppgtt->base.insert_entries = gen8_ppgtt_insert_3lvl;
-		ppgtt->base.clear_range = gen8_ppgtt_clear_3lvl;
-	}
-
-	if (intel_vgpu_active(dev_priv))
-		gen8_ppgtt_notify_vgt(ppgtt, true);
-
-	ppgtt->base.cleanup = gen8_ppgtt_cleanup;
-	ppgtt->base.unbind_vma = ppgtt_unbind_vma;
-	ppgtt->base.bind_vma = ppgtt_bind_vma;
-	ppgtt->debug_dump = gen8_dump_ppgtt;
-
-	return 0;
-
-free_scratch:
-	gen8_free_scratch(&ppgtt->base);
-	return ret;
-}
-
-static void gen6_dump_ppgtt(struct i915_hw_ppgtt *ppgtt, struct seq_file *m)
-{
-	struct i915_address_space *vm = &ppgtt->base;
-	struct i915_page_table *unused;
-	gen6_pte_t scratch_pte;
-	u32 pd_entry, pte, pde;
-	u32 start = 0, length = ppgtt->base.total;
-
-	scratch_pte = vm->pte_encode(vm->scratch_page.daddr,
-				     I915_CACHE_LLC, 0);
-
-	gen6_for_each_pde(unused, &ppgtt->pd, start, length, pde) {
-		u32 expected;
-		gen6_pte_t *pt_vaddr;
-		const dma_addr_t pt_addr = px_dma(ppgtt->pd.page_table[pde]);
-		pd_entry = readl(ppgtt->pd_addr + pde);
-		expected = (GEN6_PDE_ADDR_ENCODE(pt_addr) | GEN6_PDE_VALID);
-
-		if (pd_entry != expected)
-			seq_printf(m, "\tPDE #%d mismatch: Actual PDE: %x Expected PDE: %x\n",
-				   pde,
-				   pd_entry,
-				   expected);
-		seq_printf(m, "\tPDE: %x\n", pd_entry);
-
-		pt_vaddr = kmap_atomic_px(ppgtt->pd.page_table[pde]);
-
-		for (pte = 0; pte < GEN6_PTES; pte+=4) {
-			unsigned long va =
-				(pde * PAGE_SIZE * GEN6_PTES) +
-				(pte * PAGE_SIZE);
-			int i;
-			bool found = false;
-			for (i = 0; i < 4; i++)
-				if (pt_vaddr[pte + i] != scratch_pte)
-					found = true;
-			if (!found)
-				continue;
-
-			seq_printf(m, "\t\t0x%lx [%03d,%04d]: =", va, pde, pte);
-			for (i = 0; i < 4; i++) {
-				if (pt_vaddr[pte + i] != scratch_pte)
-					seq_printf(m, " %08x", pt_vaddr[pte + i]);
-				else
-					seq_puts(m, "  SCRATCH ");
-			}
-			seq_puts(m, "\n");
-		}
-		kunmap_atomic(pt_vaddr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
 /* Write pde (index) from the page directory @pd to the page table @pt */
-<<<<<<< HEAD
 static inline void gen6_write_pde(const struct gen6_hw_ppgtt *ppgtt,
-=======
-static inline void gen6_write_pde(const struct i915_hw_ppgtt *ppgtt,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  const unsigned int pde,
 				  const struct i915_page_table *pt)
 {
 	/* Caller needs to make sure the write completes if necessary */
-<<<<<<< HEAD
 	iowrite32(GEN6_PDE_ADDR_ENCODE(px_dma(pt)) | GEN6_PDE_VALID,
 		  ppgtt->pd_addr + pde);
-=======
-	writel_relaxed(GEN6_PDE_ADDR_ENCODE(px_dma(pt)) | GEN6_PDE_VALID,
-		       ppgtt->pd_addr + pde);
-}
-
-/* Write all the page tables found in the ppgtt structure to incrementing page
- * directories. */
-static void gen6_write_page_range(struct i915_hw_ppgtt *ppgtt,
-				  u32 start, u32 length)
-{
-	struct i915_page_table *pt;
-	unsigned int pde;
-
-	gen6_for_each_pde(pt, &ppgtt->pd, start, length, pde)
-		gen6_write_pde(ppgtt, pde, pt);
-
-	mark_tlbs_dirty(ppgtt);
-	wmb();
-}
-
-static inline u32 get_pd_offset(struct i915_hw_ppgtt *ppgtt)
-{
-	GEM_BUG_ON(ppgtt->pd.base.ggtt_offset & 0x3f);
-	return ppgtt->pd.base.ggtt_offset << 10;
-}
-
-static int hsw_mm_switch(struct i915_hw_ppgtt *ppgtt,
-			 struct drm_i915_gem_request *req)
-{
-	struct intel_engine_cs *engine = req->engine;
-	u32 *cs;
-
-	/* NB: TLBs must be flushed and invalidated before a switch */
-	cs = intel_ring_begin(req, 6);
-	if (IS_ERR(cs))
-		return PTR_ERR(cs);
-
-	*cs++ = MI_LOAD_REGISTER_IMM(2);
-	*cs++ = i915_mmio_reg_offset(RING_PP_DIR_DCLV(engine));
-	*cs++ = PP_DIR_DCLV_2G;
-	*cs++ = i915_mmio_reg_offset(RING_PP_DIR_BASE(engine));
-	*cs++ = get_pd_offset(ppgtt);
-	*cs++ = MI_NOOP;
-	intel_ring_advance(req, cs);
-
-	return 0;
-}
-
-static int gen7_mm_switch(struct i915_hw_ppgtt *ppgtt,
-			  struct drm_i915_gem_request *req)
-{
-	struct intel_engine_cs *engine = req->engine;
-	u32 *cs;
-
-	/* NB: TLBs must be flushed and invalidated before a switch */
-	cs = intel_ring_begin(req, 6);
-	if (IS_ERR(cs))
-		return PTR_ERR(cs);
-
-	*cs++ = MI_LOAD_REGISTER_IMM(2);
-	*cs++ = i915_mmio_reg_offset(RING_PP_DIR_DCLV(engine));
-	*cs++ = PP_DIR_DCLV_2G;
-	*cs++ = i915_mmio_reg_offset(RING_PP_DIR_BASE(engine));
-	*cs++ = get_pd_offset(ppgtt);
-	*cs++ = MI_NOOP;
-	intel_ring_advance(req, cs);
-
-	return 0;
-}
-
-static int gen6_mm_switch(struct i915_hw_ppgtt *ppgtt,
-			  struct drm_i915_gem_request *req)
-{
-	struct intel_engine_cs *engine = req->engine;
-	struct drm_i915_private *dev_priv = req->i915;
-
-	I915_WRITE(RING_PP_DIR_DCLV(engine), PP_DIR_DCLV_2G);
-	I915_WRITE(RING_PP_DIR_BASE(engine), get_pd_offset(ppgtt));
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void gen8_ppgtt_enable(struct drm_i915_private *dev_priv)
@@ -2397,16 +1852,11 @@ static void gen6_ppgtt_enable(struct drm_i915_private *dev_priv)
 static void gen6_ppgtt_clear_range(struct i915_address_space *vm,
 				   u64 start, u64 length)
 {
-<<<<<<< HEAD
 	struct gen6_hw_ppgtt *ppgtt = to_gen6_ppgtt(i915_vm_to_ppgtt(vm));
-=======
-	struct i915_hw_ppgtt *ppgtt = i915_vm_to_ppgtt(vm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int first_entry = start >> PAGE_SHIFT;
 	unsigned int pde = first_entry / GEN6_PTES;
 	unsigned int pte = first_entry % GEN6_PTES;
 	unsigned int num_entries = length >> PAGE_SHIFT;
-<<<<<<< HEAD
 	const gen6_pte_t scratch_pte = ppgtt->scratch_pte;
 
 	while (num_entries) {
@@ -2426,19 +1876,6 @@ static void gen6_ppgtt_clear_range(struct i915_address_space *vm,
 
 		/*
 		 * Note that the hw doesn't support removing PDE on the fly
-=======
-	gen6_pte_t scratch_pte =
-		vm->pte_encode(vm->scratch_page.daddr, I915_CACHE_LLC, 0);
-
-	while (num_entries) {
-		struct i915_page_table *pt = ppgtt->pd.page_table[pde++];
-		unsigned int end = min(pte + num_entries, GEN6_PTES);
-		gen6_pte_t *vaddr;
-
-		num_entries -= end - pte;
-
-		/* Note that the hw doesn't support removing PDE on the fly
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 * (they are cached inside the context with no means to
 		 * invalidate the cache), so we can only reset the PTE
 		 * entries back to scratch.
@@ -2467,20 +1904,13 @@ static void gen6_ppgtt_insert_entries(struct i915_address_space *vm,
 	struct sgt_dma iter = sgt_dma(vma);
 	gen6_pte_t *vaddr;
 
-<<<<<<< HEAD
 	GEM_BUG_ON(ppgtt->pd.page_table[act_pt] == vm->scratch_pt);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vaddr = kmap_atomic_px(ppgtt->pd.page_table[act_pt]);
 	do {
 		vaddr[act_pte] = pte_encode | GEN6_PTE_ADDR_ENCODE(iter.dma);
 
-<<<<<<< HEAD
 		iter.dma += I915_GTT_PAGE_SIZE;
-=======
-		iter.dma += PAGE_SIZE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (iter.dma == iter.max) {
 			iter.sg = __sg_next(iter.sg);
 			if (!iter.sg)
@@ -2497,39 +1927,27 @@ static void gen6_ppgtt_insert_entries(struct i915_address_space *vm,
 		}
 	} while (1);
 	kunmap_atomic(vaddr);
-<<<<<<< HEAD
 
 	vma->page_sizes.gtt = I915_GTT_PAGE_SIZE;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int gen6_alloc_va_range(struct i915_address_space *vm,
 			       u64 start, u64 length)
 {
-<<<<<<< HEAD
 	struct gen6_hw_ppgtt *ppgtt = to_gen6_ppgtt(i915_vm_to_ppgtt(vm));
-=======
-	struct i915_hw_ppgtt *ppgtt = i915_vm_to_ppgtt(vm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct i915_page_table *pt;
 	u64 from = start;
 	unsigned int pde;
 	bool flush = false;
 
-<<<<<<< HEAD
 	gen6_for_each_pde(pt, &ppgtt->base.pd, start, length, pde) {
 		const unsigned int count = gen6_pte_count(start, length);
 
-=======
-	gen6_for_each_pde(pt, &ppgtt->pd, start, length, pde) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (pt == vm->scratch_pt) {
 			pt = alloc_pt(vm);
 			if (IS_ERR(pt))
 				goto unwind_out;
 
-<<<<<<< HEAD
 			gen6_initialize_pt(ppgtt, pt);
 			ppgtt->base.pd.page_table[pde] = pt;
 
@@ -2548,24 +1966,11 @@ static int gen6_alloc_va_range(struct i915_address_space *vm,
 	if (flush) {
 		mark_tlbs_dirty(&ppgtt->base);
 		gen6_ggtt_invalidate(ppgtt->base.vm.i915);
-=======
-			gen6_initialize_pt(vm, pt);
-			ppgtt->pd.page_table[pde] = pt;
-			gen6_write_pde(ppgtt, pde, pt);
-			flush = true;
-		}
-	}
-
-	if (flush) {
-		mark_tlbs_dirty(ppgtt);
-		wmb();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
 
 unwind_out:
-<<<<<<< HEAD
 	gen6_ppgtt_clear_range(vm, from, start - from);
 	return -ENOMEM;
 }
@@ -2585,48 +1990,25 @@ static int gen6_ppgtt_init_scratch(struct gen6_hw_ppgtt *ppgtt)
 		vm->pte_encode(vm->scratch_page.daddr,
 			       I915_CACHE_NONE, PTE_READ_ONLY);
 
-=======
-	gen6_ppgtt_clear_range(vm, from, start);
-	return -ENOMEM;
-}
-
-static int gen6_init_scratch(struct i915_address_space *vm)
-{
-	int ret;
-
-	ret = setup_scratch_page(vm, I915_GFP_DMA);
-	if (ret)
-		return ret;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vm->scratch_pt = alloc_pt(vm);
 	if (IS_ERR(vm->scratch_pt)) {
 		cleanup_scratch_page(vm);
 		return PTR_ERR(vm->scratch_pt);
 	}
 
-<<<<<<< HEAD
 	gen6_initialize_pt(ppgtt, vm->scratch_pt);
 	gen6_for_all_pdes(unused, &ppgtt->base.pd, pde)
 		ppgtt->base.pd.page_table[pde] = vm->scratch_pt;
-=======
-	gen6_initialize_pt(vm, vm->scratch_pt);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
 static void gen6_ppgtt_free_scratch(struct i915_address_space *vm)
-=======
-static void gen6_free_scratch(struct i915_address_space *vm)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	free_pt(vm, vm->scratch_pt);
 	cleanup_scratch_page(vm);
 }
 
-<<<<<<< HEAD
 static void gen6_ppgtt_free_pd(struct gen6_hw_ppgtt *ppgtt)
 {
 	struct i915_page_table *pt;
@@ -2835,165 +2217,6 @@ err_scratch:
 err_free:
 	kfree(ppgtt);
 	return ERR_PTR(err);
-=======
-static void gen6_ppgtt_cleanup(struct i915_address_space *vm)
-{
-	struct i915_hw_ppgtt *ppgtt = i915_vm_to_ppgtt(vm);
-	struct i915_page_directory *pd = &ppgtt->pd;
-	struct i915_page_table *pt;
-	u32 pde;
-
-	drm_mm_remove_node(&ppgtt->node);
-
-	gen6_for_all_pdes(pt, pd, pde)
-		if (pt != vm->scratch_pt)
-			free_pt(vm, pt);
-
-	gen6_free_scratch(vm);
-}
-
-static int gen6_ppgtt_allocate_page_directories(struct i915_hw_ppgtt *ppgtt)
-{
-	struct i915_address_space *vm = &ppgtt->base;
-	struct drm_i915_private *dev_priv = ppgtt->base.i915;
-	struct i915_ggtt *ggtt = &dev_priv->ggtt;
-	int ret;
-
-	/* PPGTT PDEs reside in the GGTT and consists of 512 entries. The
-	 * allocator works in address space sizes, so it's multiplied by page
-	 * size. We allocate at the top of the GTT to avoid fragmentation.
-	 */
-	BUG_ON(!drm_mm_initialized(&ggtt->base.mm));
-
-	ret = gen6_init_scratch(vm);
-	if (ret)
-		return ret;
-
-	ret = i915_gem_gtt_insert(&ggtt->base, &ppgtt->node,
-				  GEN6_PD_SIZE, GEN6_PD_ALIGN,
-				  I915_COLOR_UNEVICTABLE,
-				  0, ggtt->base.total,
-				  PIN_HIGH);
-	if (ret)
-		goto err_out;
-
-	if (ppgtt->node.start < ggtt->mappable_end)
-		DRM_DEBUG("Forced to use aperture for PDEs\n");
-
-	ppgtt->pd.base.ggtt_offset =
-		ppgtt->node.start / PAGE_SIZE * sizeof(gen6_pte_t);
-
-	ppgtt->pd_addr = (gen6_pte_t __iomem *)ggtt->gsm +
-		ppgtt->pd.base.ggtt_offset / sizeof(gen6_pte_t);
-
-	return 0;
-
-err_out:
-	gen6_free_scratch(vm);
-	return ret;
-}
-
-static int gen6_ppgtt_alloc(struct i915_hw_ppgtt *ppgtt)
-{
-	return gen6_ppgtt_allocate_page_directories(ppgtt);
-}
-
-static void gen6_scratch_va_range(struct i915_hw_ppgtt *ppgtt,
-				  u64 start, u64 length)
-{
-	struct i915_page_table *unused;
-	u32 pde;
-
-	gen6_for_each_pde(unused, &ppgtt->pd, start, length, pde)
-		ppgtt->pd.page_table[pde] = ppgtt->base.scratch_pt;
-}
-
-static int gen6_ppgtt_init(struct i915_hw_ppgtt *ppgtt)
-{
-	struct drm_i915_private *dev_priv = ppgtt->base.i915;
-	struct i915_ggtt *ggtt = &dev_priv->ggtt;
-	int ret;
-
-	ppgtt->base.pte_encode = ggtt->base.pte_encode;
-	if (intel_vgpu_active(dev_priv) || IS_GEN6(dev_priv))
-		ppgtt->switch_mm = gen6_mm_switch;
-	else if (IS_HASWELL(dev_priv))
-		ppgtt->switch_mm = hsw_mm_switch;
-	else if (IS_GEN7(dev_priv))
-		ppgtt->switch_mm = gen7_mm_switch;
-	else
-		BUG();
-
-	ret = gen6_ppgtt_alloc(ppgtt);
-	if (ret)
-		return ret;
-
-	ppgtt->base.total = I915_PDES * GEN6_PTES * PAGE_SIZE;
-
-	gen6_scratch_va_range(ppgtt, 0, ppgtt->base.total);
-	gen6_write_page_range(ppgtt, 0, ppgtt->base.total);
-
-	ret = gen6_alloc_va_range(&ppgtt->base, 0, ppgtt->base.total);
-	if (ret) {
-		gen6_ppgtt_cleanup(&ppgtt->base);
-		return ret;
-	}
-
-	ppgtt->base.clear_range = gen6_ppgtt_clear_range;
-	ppgtt->base.insert_entries = gen6_ppgtt_insert_entries;
-	ppgtt->base.unbind_vma = ppgtt_unbind_vma;
-	ppgtt->base.bind_vma = ppgtt_bind_vma;
-	ppgtt->base.cleanup = gen6_ppgtt_cleanup;
-	ppgtt->debug_dump = gen6_dump_ppgtt;
-
-	DRM_DEBUG_DRIVER("Allocated pde space (%lldM) at GTT entry: %llx\n",
-			 ppgtt->node.size >> 20,
-			 ppgtt->node.start / PAGE_SIZE);
-
-	DRM_DEBUG_DRIVER("Adding PPGTT at offset %x\n",
-			 ppgtt->pd.base.ggtt_offset << 10);
-
-	return 0;
-}
-
-static int __hw_ppgtt_init(struct i915_hw_ppgtt *ppgtt,
-			   struct drm_i915_private *dev_priv)
-{
-	ppgtt->base.i915 = dev_priv;
-	ppgtt->base.dma = &dev_priv->drm.pdev->dev;
-
-	if (INTEL_INFO(dev_priv)->gen < 8)
-		return gen6_ppgtt_init(ppgtt);
-	else
-		return gen8_ppgtt_init(ppgtt);
-}
-
-static void i915_address_space_init(struct i915_address_space *vm,
-				    struct drm_i915_private *dev_priv,
-				    const char *name)
-{
-	i915_gem_timeline_init(dev_priv, &vm->timeline, name);
-
-	drm_mm_init(&vm->mm, 0, vm->total);
-	vm->mm.head_node.color = I915_COLOR_UNEVICTABLE;
-
-	INIT_LIST_HEAD(&vm->active_list);
-	INIT_LIST_HEAD(&vm->inactive_list);
-	INIT_LIST_HEAD(&vm->unbound_list);
-
-	list_add_tail(&vm->global_link, &dev_priv->vm_list);
-	pagevec_init(&vm->free_pages, false);
-}
-
-static void i915_address_space_fini(struct i915_address_space *vm)
-{
-	if (pagevec_count(&vm->free_pages))
-		vm_free_pages_release(vm);
-
-	i915_gem_timeline_fini(&vm->timeline);
-	drm_mm_takedown(&vm->mm);
-	list_del(&vm->global_link);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void gtt_write_workarounds(struct drm_i915_private *dev_priv)
@@ -3002,16 +2225,11 @@ static void gtt_write_workarounds(struct drm_i915_private *dev_priv)
 	 * called on driver load and after a GPU reset, so you can place
 	 * workarounds here even if they get overwritten by GPU reset.
 	 */
-<<<<<<< HEAD
 	/* WaIncreaseDefaultTLBEntries:chv,bdw,skl,bxt,kbl,glk,cfl,cnl,icl */
-=======
-	/* WaIncreaseDefaultTLBEntries:chv,bdw,skl,bxt,kbl,glk,cfl */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_BROADWELL(dev_priv))
 		I915_WRITE(GEN8_L3_LRA_1_GPGPU, GEN8_L3_LRA_1_GPGPU_DEFAULT_VALUE_BDW);
 	else if (IS_CHERRYVIEW(dev_priv))
 		I915_WRITE(GEN8_L3_LRA_1_GPGPU, GEN8_L3_LRA_1_GPGPU_DEFAULT_VALUE_CHV);
-<<<<<<< HEAD
 	else if (IS_GEN9_LP(dev_priv))
 		I915_WRITE(GEN8_L3_LRA_1_GPGPU, GEN9_L3_LRA_1_GPGPU_DEFAULT_VALUE_BXT);
 	else if (INTEL_GEN(dev_priv) >= 9)
@@ -3033,12 +2251,6 @@ static void gtt_write_workarounds(struct drm_i915_private *dev_priv)
 		I915_WRITE(GEN8_GAMW_ECO_DEV_RW_IA,
 			   I915_READ(GEN8_GAMW_ECO_DEV_RW_IA) |
 			   GAMW_ECO_ENABLE_64K_IPS_FIELD);
-=======
-	else if (IS_GEN9_BC(dev_priv))
-		I915_WRITE(GEN8_L3_LRA_1_GPGPU, GEN9_L3_LRA_1_GPGPU_DEFAULT_VALUE_SKL);
-	else if (IS_GEN9_LP(dev_priv))
-		I915_WRITE(GEN8_L3_LRA_1_GPGPU, GEN9_L3_LRA_1_GPGPU_DEFAULT_VALUE_BXT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int i915_ppgtt_init_hw(struct drm_i915_private *dev_priv)
@@ -3048,11 +2260,7 @@ int i915_ppgtt_init_hw(struct drm_i915_private *dev_priv)
 	/* In the case of execlists, PPGTT is enabled by the context descriptor
 	 * and the PDPs are contained within the context itself.  We don't
 	 * need to do anything here. */
-<<<<<<< HEAD
 	if (HAS_LOGICAL_RING_CONTEXTS(dev_priv))
-=======
-	if (i915.enable_execlists)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	if (!USES_PPGTT(dev_priv))
@@ -3070,7 +2278,6 @@ int i915_ppgtt_init_hw(struct drm_i915_private *dev_priv)
 	return 0;
 }
 
-<<<<<<< HEAD
 static struct i915_hw_ppgtt *
 __hw_ppgtt_create(struct drm_i915_private *i915)
 {
@@ -3093,46 +2300,18 @@ i915_ppgtt_create(struct drm_i915_private *i915,
 	ppgtt->vm.file = fpriv;
 
 	trace_i915_ppgtt_create(&ppgtt->vm);
-=======
-struct i915_hw_ppgtt *
-i915_ppgtt_create(struct drm_i915_private *dev_priv,
-		  struct drm_i915_file_private *fpriv,
-		  const char *name)
-{
-	struct i915_hw_ppgtt *ppgtt;
-	int ret;
-
-	ppgtt = kzalloc(sizeof(*ppgtt), GFP_KERNEL);
-	if (!ppgtt)
-		return ERR_PTR(-ENOMEM);
-
-	ret = __hw_ppgtt_init(ppgtt, dev_priv);
-	if (ret) {
-		kfree(ppgtt);
-		return ERR_PTR(ret);
-	}
-
-	kref_init(&ppgtt->ref);
-	i915_address_space_init(&ppgtt->base, dev_priv, name);
-	ppgtt->base.file = fpriv;
-
-	trace_i915_ppgtt_create(&ppgtt->base);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ppgtt;
 }
 
 void i915_ppgtt_close(struct i915_address_space *vm)
 {
-<<<<<<< HEAD
 	GEM_BUG_ON(vm->closed);
 	vm->closed = true;
 }
 
 static void ppgtt_destroy_vma(struct i915_address_space *vm)
 {
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct list_head *phases[] = {
 		&vm->active_list,
 		&vm->inactive_list,
@@ -3140,23 +2319,12 @@ static void ppgtt_destroy_vma(struct i915_address_space *vm)
 		NULL,
 	}, **phase;
 
-<<<<<<< HEAD
 	vm->closed = true;
-=======
-	GEM_BUG_ON(vm->closed);
-	vm->closed = true;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (phase = phases; *phase; phase++) {
 		struct i915_vma *vma, *vn;
 
 		list_for_each_entry_safe(vma, vn, *phase, vm_link)
-<<<<<<< HEAD
 			i915_vma_destroy(vma);
-=======
-			if (!i915_vma_is_closed(vma))
-				i915_vma_close(vma);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -3165,7 +2333,6 @@ void i915_ppgtt_release(struct kref *kref)
 	struct i915_hw_ppgtt *ppgtt =
 		container_of(kref, struct i915_hw_ppgtt, ref);
 
-<<<<<<< HEAD
 	trace_i915_ppgtt_release(&ppgtt->vm);
 
 	ppgtt_destroy_vma(&ppgtt->vm);
@@ -3176,17 +2343,6 @@ void i915_ppgtt_release(struct kref *kref)
 
 	ppgtt->vm.cleanup(&ppgtt->vm);
 	i915_address_space_fini(&ppgtt->vm);
-=======
-	trace_i915_ppgtt_release(&ppgtt->base);
-
-	/* vmas should already be unbound and destroyed */
-	WARN_ON(!list_empty(&ppgtt->base.active_list));
-	WARN_ON(!list_empty(&ppgtt->base.inactive_list));
-	WARN_ON(!list_empty(&ppgtt->base.unbound_list));
-
-	ppgtt->base.cleanup(&ppgtt->base);
-	i915_address_space_fini(&ppgtt->base);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(ppgtt);
 }
 
@@ -3201,7 +2357,6 @@ static bool needs_idle_maps(struct drm_i915_private *dev_priv)
 	return IS_GEN5(dev_priv) && IS_MOBILE(dev_priv) && intel_vtd_active();
 }
 
-<<<<<<< HEAD
 static void gen6_check_and_clear_faults(struct drm_i915_private *dev_priv)
 {
 	struct intel_engine_cs *engine;
@@ -3211,26 +2366,11 @@ static void gen6_check_and_clear_faults(struct drm_i915_private *dev_priv)
 	for_each_engine(engine, dev_priv, id) {
 		fault = I915_READ(RING_FAULT_REG(engine));
 		if (fault & RING_FAULT_VALID) {
-=======
-void i915_check_and_clear_faults(struct drm_i915_private *dev_priv)
-{
-	struct intel_engine_cs *engine;
-	enum intel_engine_id id;
-
-	if (INTEL_INFO(dev_priv)->gen < 6)
-		return;
-
-	for_each_engine(engine, dev_priv, id) {
-		u32 fault_reg;
-		fault_reg = I915_READ(RING_FAULT_REG(engine));
-		if (fault_reg & RING_FAULT_VALID) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			DRM_DEBUG_DRIVER("Unexpected fault\n"
 					 "\tAddr: 0x%08lx\n"
 					 "\tAddress space: %s\n"
 					 "\tSource ID: %d\n"
 					 "\tType: %d\n",
-<<<<<<< HEAD
 					 fault & PAGE_MASK,
 					 fault & RING_FAULT_GTTSEL_MASK ? "GGTT" : "PPGTT",
 					 RING_FAULT_SRCID(fault),
@@ -3284,20 +2424,6 @@ void i915_check_and_clear_faults(struct drm_i915_private *dev_priv)
 		gen6_check_and_clear_faults(dev_priv);
 	else
 		return;
-=======
-					 fault_reg & PAGE_MASK,
-					 fault_reg & RING_FAULT_GTTSEL_MASK ? "GGTT" : "PPGTT",
-					 RING_FAULT_SRCID(fault_reg),
-					 RING_FAULT_FAULT_TYPE(fault_reg));
-			I915_WRITE(RING_FAULT_REG(engine),
-				   fault_reg & ~RING_FAULT_VALID);
-		}
-	}
-
-	/* Engine specific init may not have been done till this point. */
-	if (dev_priv->engine[RCS])
-		POSTING_READ(RING_FAULT_REG(dev_priv->engine[RCS]));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void i915_gem_suspend_gtt_mappings(struct drm_i915_private *dev_priv)
@@ -3312,11 +2438,7 @@ void i915_gem_suspend_gtt_mappings(struct drm_i915_private *dev_priv)
 
 	i915_check_and_clear_faults(dev_priv);
 
-<<<<<<< HEAD
 	ggtt->vm.clear_range(&ggtt->vm, 0, ggtt->vm.total);
-=======
-	ggtt->base.clear_range(&ggtt->base, 0, ggtt->base.total);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	i915_ggtt_invalidate(dev_priv);
 }
@@ -3325,16 +2447,10 @@ int i915_gem_gtt_prepare_pages(struct drm_i915_gem_object *obj,
 			       struct sg_table *pages)
 {
 	do {
-<<<<<<< HEAD
 		if (dma_map_sg_attrs(&obj->base.dev->pdev->dev,
 				     pages->sgl, pages->nents,
 				     PCI_DMA_BIDIRECTIONAL,
 				     DMA_ATTR_NO_WARN))
-=======
-		if (dma_map_sg(&obj->base.dev->pdev->dev,
-			       pages->sgl, pages->nents,
-			       PCI_DMA_BIDIRECTIONAL))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return 0;
 
 		/* If the DMA remap fails, one cause can be that we have
@@ -3394,17 +2510,9 @@ static void gen8_ggtt_insert_entries(struct i915_address_space *vm,
 	for_each_sgt_dma(addr, sgt_iter, vma->pages)
 		gen8_set_pte(gtt_entries++, pte_encode | addr);
 
-<<<<<<< HEAD
 	/*
 	 * We want to flush the TLBs only after we're certain all the PTE
 	 * updates have finished.
-=======
-	wmb();
-
-	/* This next bit makes the above posting read even more important. We
-	 * want to flush the TLBs only after we're certain all the PTE updates
-	 * have finished.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	ggtt->invalidate(vm->i915);
 }
@@ -3442,18 +2550,10 @@ static void gen6_ggtt_insert_entries(struct i915_address_space *vm,
 	dma_addr_t addr;
 	for_each_sgt_dma(addr, iter, vma->pages)
 		iowrite32(vm->pte_encode(addr, level, flags), &entries[i++]);
-<<<<<<< HEAD
 
 	/*
 	 * We want to flush the TLBs only after we're certain all the PTE
 	 * updates have finished.
-=======
-	wmb();
-
-	/* This next bit makes the above posting read even more important. We
-	 * want to flush the TLBs only after we're certain all the PTE updates
-	 * have finished.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	ggtt->invalidate(vm->i915);
 }
@@ -3640,15 +2740,6 @@ static int ggtt_bind_vma(struct i915_vma *vma,
 	struct drm_i915_gem_object *obj = vma->obj;
 	u32 pte_flags;
 
-<<<<<<< HEAD
-=======
-	if (unlikely(!vma->pages)) {
-		int ret = i915_get_ggtt_vma_pages(vma);
-		if (ret)
-			return ret;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Applicable to VLV (gen8+ do not support RO in the GGTT) */
 	pte_flags = 0;
 	if (i915_gem_object_is_readonly(obj))
@@ -3658,11 +2749,8 @@ static int ggtt_bind_vma(struct i915_vma *vma,
 	vma->vm->insert_entries(vma->vm, vma, cache_level, pte_flags);
 	intel_runtime_pm_put(i915);
 
-<<<<<<< HEAD
 	vma->page_sizes.gtt = I915_GTT_PAGE_SIZE;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Without aliasing PPGTT there's no difference between
 	 * GLOBAL/LOCAL_BIND, it's all the same ptes. Hence unconditionally
@@ -3690,15 +2778,6 @@ static int aliasing_gtt_bind_vma(struct i915_vma *vma,
 	u32 pte_flags;
 	int ret;
 
-<<<<<<< HEAD
-=======
-	if (unlikely(!vma->pages)) {
-		ret = i915_get_ggtt_vma_pages(vma);
-		if (ret)
-			return ret;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Currently applicable only to VLV */
 	pte_flags = 0;
 	if (i915_gem_object_is_readonly(vma->obj))
@@ -3707,7 +2786,6 @@ static int aliasing_gtt_bind_vma(struct i915_vma *vma,
 	if (flags & I915_VMA_LOCAL_BIND) {
 		struct i915_hw_ppgtt *appgtt = i915->mm.aliasing_ppgtt;
 
-<<<<<<< HEAD
 		if (!(vma->flags & I915_VMA_LOCAL_BIND)) {
 			ret = appgtt->vm.allocate_va_range(&appgtt->vm,
 							   vma->node.start,
@@ -3718,19 +2796,6 @@ static int aliasing_gtt_bind_vma(struct i915_vma *vma,
 
 		appgtt->vm.insert_entries(&appgtt->vm, vma, cache_level,
 					  pte_flags);
-=======
-		if (!(vma->flags & I915_VMA_LOCAL_BIND) &&
-		    appgtt->base.allocate_va_range) {
-			ret = appgtt->base.allocate_va_range(&appgtt->base,
-							     vma->node.start,
-							     vma->size);
-			if (ret)
-				goto err_pages;
-		}
-
-		appgtt->base.insert_entries(&appgtt->base, vma, cache_level,
-					    pte_flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (flags & I915_VMA_GLOBAL_BIND) {
@@ -3740,20 +2805,6 @@ static int aliasing_gtt_bind_vma(struct i915_vma *vma,
 	}
 
 	return 0;
-<<<<<<< HEAD
-=======
-
-err_pages:
-	if (!(vma->flags & (I915_VMA_GLOBAL_BIND | I915_VMA_LOCAL_BIND))) {
-		if (vma->pages != vma->obj->mm.pages) {
-			GEM_BUG_ON(!vma->pages);
-			sg_free_table(vma->pages);
-			kfree(vma->pages);
-		}
-		vma->pages = NULL;
-	}
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void aliasing_gtt_unbind_vma(struct i915_vma *vma)
@@ -3767,11 +2818,7 @@ static void aliasing_gtt_unbind_vma(struct i915_vma *vma)
 	}
 
 	if (vma->flags & I915_VMA_LOCAL_BIND) {
-<<<<<<< HEAD
 		struct i915_address_space *vm = &i915->mm.aliasing_ppgtt->vm;
-=======
-		struct i915_address_space *vm = &i915->mm.aliasing_ppgtt->base;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		vm->clear_range(vm, vma->node.start, vma->size);
 	}
@@ -3785,11 +2832,7 @@ void i915_gem_gtt_finish_pages(struct drm_i915_gem_object *obj,
 	struct i915_ggtt *ggtt = &dev_priv->ggtt;
 
 	if (unlikely(ggtt->do_idle_maps)) {
-<<<<<<< HEAD
 		if (i915_gem_wait_for_idle(dev_priv, 0, MAX_SCHEDULE_TIMEOUT)) {
-=======
-		if (i915_gem_wait_for_idle(dev_priv, 0)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			DRM_ERROR("Failed to wait for idle; VT'd may hang.\n");
 			/* Wait a bit, in hopes it avoids the hang */
 			udelay(10);
@@ -3799,7 +2842,6 @@ void i915_gem_gtt_finish_pages(struct drm_i915_gem_object *obj,
 	dma_unmap_sg(kdev, pages->sgl, pages->nents, PCI_DMA_BIDIRECTIONAL);
 }
 
-<<<<<<< HEAD
 static int ggtt_set_pages(struct i915_vma *vma)
 {
 	int ret;
@@ -3815,8 +2857,6 @@ static int ggtt_set_pages(struct i915_vma *vma)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void i915_gtt_color_adjust(const struct drm_mm_node *node,
 				  unsigned long color,
 				  u64 *start,
@@ -3841,24 +2881,15 @@ int i915_gem_init_aliasing_ppgtt(struct drm_i915_private *i915)
 	struct i915_hw_ppgtt *ppgtt;
 	int err;
 
-<<<<<<< HEAD
 	ppgtt = i915_ppgtt_create(i915, ERR_PTR(-EPERM));
 	if (IS_ERR(ppgtt))
 		return PTR_ERR(ppgtt);
 
 	if (GEM_WARN_ON(ppgtt->vm.total < ggtt->vm.total)) {
-=======
-	ppgtt = i915_ppgtt_create(i915, ERR_PTR(-EPERM), "[alias]");
-	if (IS_ERR(ppgtt))
-		return PTR_ERR(ppgtt);
-
-	if (WARN_ON(ppgtt->base.total < ggtt->base.total)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = -ENODEV;
 		goto err_ppgtt;
 	}
 
-<<<<<<< HEAD
 	/*
 	 * Note we only pre-allocate as far as the end of the global
 	 * GTT. On 48b / 4-level page-tables, the difference is very,
@@ -3876,27 +2907,6 @@ int i915_gem_init_aliasing_ppgtt(struct drm_i915_private *i915)
 
 	GEM_BUG_ON(ggtt->vm.vma_ops.unbind_vma != ggtt_unbind_vma);
 	ggtt->vm.vma_ops.unbind_vma = aliasing_gtt_unbind_vma;
-=======
-	if (ppgtt->base.allocate_va_range) {
-		/* Note we only pre-allocate as far as the end of the global
-		 * GTT. On 48b / 4-level page-tables, the difference is very,
-		 * very significant! We have to preallocate as GVT/vgpu does
-		 * not like the page directory disappearing.
-		 */
-		err = ppgtt->base.allocate_va_range(&ppgtt->base,
-						    0, ggtt->base.total);
-		if (err)
-			goto err_ppgtt;
-	}
-
-	i915->mm.aliasing_ppgtt = ppgtt;
-
-	WARN_ON(ggtt->base.bind_vma != ggtt_bind_vma);
-	ggtt->base.bind_vma = aliasing_gtt_bind_vma;
-
-	WARN_ON(ggtt->base.unbind_vma != ggtt_unbind_vma);
-	ggtt->base.unbind_vma = aliasing_gtt_unbind_vma;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 
@@ -3916,13 +2926,8 @@ void i915_gem_fini_aliasing_ppgtt(struct drm_i915_private *i915)
 
 	i915_ppgtt_put(ppgtt);
 
-<<<<<<< HEAD
 	ggtt->vm.vma_ops.bind_vma   = ggtt_bind_vma;
 	ggtt->vm.vma_ops.unbind_vma = ggtt_unbind_vma;
-=======
-	ggtt->base.bind_vma = ggtt_bind_vma;
-	ggtt->base.unbind_vma = ggtt_unbind_vma;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int i915_gem_init_ggtt(struct drm_i915_private *dev_priv)
@@ -3946,11 +2951,7 @@ int i915_gem_init_ggtt(struct drm_i915_private *dev_priv)
 		return ret;
 
 	/* Reserve a mappable slot for our lockless error capture */
-<<<<<<< HEAD
 	ret = drm_mm_insert_node_in_range(&ggtt->vm.mm, &ggtt->error_capture,
-=======
-	ret = drm_mm_insert_node_in_range(&ggtt->base.mm, &ggtt->error_capture,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  PAGE_SIZE, 0, I915_COLOR_UNEVICTABLE,
 					  0, ggtt->mappable_end,
 					  DRM_MM_INSERT_LOW);
@@ -3958,7 +2959,6 @@ int i915_gem_init_ggtt(struct drm_i915_private *dev_priv)
 		return ret;
 
 	/* Clear any non-preallocated blocks */
-<<<<<<< HEAD
 	drm_mm_for_each_hole(entry, &ggtt->vm.mm, hole_start, hole_end) {
 		DRM_DEBUG_KMS("clearing unused GTT space: [%lx, %lx]\n",
 			      hole_start, hole_end);
@@ -3968,18 +2968,6 @@ int i915_gem_init_ggtt(struct drm_i915_private *dev_priv)
 
 	/* And finally clear the reserved guard page */
 	ggtt->vm.clear_range(&ggtt->vm, ggtt->vm.total - PAGE_SIZE, PAGE_SIZE);
-=======
-	drm_mm_for_each_hole(entry, &ggtt->base.mm, hole_start, hole_end) {
-		DRM_DEBUG_KMS("clearing unused GTT space: [%lx, %lx]\n",
-			      hole_start, hole_end);
-		ggtt->base.clear_range(&ggtt->base, hole_start,
-				       hole_end - hole_start);
-	}
-
-	/* And finally clear the reserved guard page */
-	ggtt->base.clear_range(&ggtt->base,
-			       ggtt->base.total - PAGE_SIZE, PAGE_SIZE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (USES_PPGTT(dev_priv) && !USES_FULL_PPGTT(dev_priv)) {
 		ret = i915_gem_init_aliasing_ppgtt(dev_priv);
@@ -4002,27 +2990,13 @@ void i915_ggtt_cleanup_hw(struct drm_i915_private *dev_priv)
 {
 	struct i915_ggtt *ggtt = &dev_priv->ggtt;
 	struct i915_vma *vma, *vn;
-<<<<<<< HEAD
 	struct pagevec *pvec;
 
 	ggtt->vm.closed = true;
-=======
-
-	ggtt->base.closed = true;
-
-	mutex_lock(&dev_priv->drm.struct_mutex);
-	WARN_ON(!list_empty(&ggtt->base.active_list));
-	list_for_each_entry_safe(vma, vn, &ggtt->base.inactive_list, vm_link)
-		WARN_ON(i915_vma_unbind(vma));
-	mutex_unlock(&dev_priv->drm.struct_mutex);
-
-	i915_gem_cleanup_stolen(&dev_priv->drm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&dev_priv->drm.struct_mutex);
 	i915_gem_fini_aliasing_ppgtt(dev_priv);
 
-<<<<<<< HEAD
 	GEM_BUG_ON(!list_empty(&ggtt->vm.active_list));
 	list_for_each_entry_safe(vma, vn, &ggtt->vm.inactive_list, vm_link)
 		WARN_ON(i915_vma_unbind(vma));
@@ -4049,21 +3023,6 @@ void i915_ggtt_cleanup_hw(struct drm_i915_private *dev_priv)
 	io_mapping_fini(&ggtt->iomap);
 
 	i915_gem_cleanup_stolen(&dev_priv->drm);
-=======
-	if (drm_mm_node_allocated(&ggtt->error_capture))
-		drm_mm_remove_node(&ggtt->error_capture);
-
-	if (drm_mm_initialized(&ggtt->base.mm)) {
-		intel_vgt_deballoon(dev_priv);
-		i915_address_space_fini(&ggtt->base);
-	}
-
-	ggtt->base.cleanup(&ggtt->base);
-	mutex_unlock(&dev_priv->drm.struct_mutex);
-
-	arch_phys_wc_del(ggtt->mtrr);
-	io_mapping_fini(&ggtt->mappable);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static unsigned int gen6_get_total_gtt_size(u16 snb_gmch_ctl)
@@ -4081,11 +3040,7 @@ static unsigned int gen8_get_total_gtt_size(u16 bdw_gmch_ctl)
 		bdw_gmch_ctl = 1 << bdw_gmch_ctl;
 
 #ifdef CONFIG_X86_32
-<<<<<<< HEAD
 	/* Limit 32b platforms to a 2GB GGTT: 4 << 20 / pte size * I915_GTT_PAGE_SIZE */
-=======
-	/* Limit 32b platforms to a 2GB GGTT: 4 << 20 / pte size * PAGE_SIZE */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (bdw_gmch_ctl > 4)
 		bdw_gmch_ctl = 4;
 #endif
@@ -4104,59 +3059,9 @@ static unsigned int chv_get_total_gtt_size(u16 gmch_ctrl)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int ggtt_probe_common(struct i915_ggtt *ggtt, u64 size)
 {
 	struct drm_i915_private *dev_priv = ggtt->vm.i915;
-=======
-static size_t gen6_get_stolen_size(u16 snb_gmch_ctl)
-{
-	snb_gmch_ctl >>= SNB_GMCH_GMS_SHIFT;
-	snb_gmch_ctl &= SNB_GMCH_GMS_MASK;
-	return (size_t)snb_gmch_ctl << 25; /* 32 MB units */
-}
-
-static size_t gen8_get_stolen_size(u16 bdw_gmch_ctl)
-{
-	bdw_gmch_ctl >>= BDW_GMCH_GMS_SHIFT;
-	bdw_gmch_ctl &= BDW_GMCH_GMS_MASK;
-	return (size_t)bdw_gmch_ctl << 25; /* 32 MB units */
-}
-
-static size_t chv_get_stolen_size(u16 gmch_ctrl)
-{
-	gmch_ctrl >>= SNB_GMCH_GMS_SHIFT;
-	gmch_ctrl &= SNB_GMCH_GMS_MASK;
-
-	/*
-	 * 0x0  to 0x10: 32MB increments starting at 0MB
-	 * 0x11 to 0x16: 4MB increments starting at 8MB
-	 * 0x17 to 0x1d: 4MB increments start at 36MB
-	 */
-	if (gmch_ctrl < 0x11)
-		return (size_t)gmch_ctrl << 25;
-	else if (gmch_ctrl < 0x17)
-		return (size_t)(gmch_ctrl - 0x11 + 2) << 22;
-	else
-		return (size_t)(gmch_ctrl - 0x17 + 9) << 22;
-}
-
-static size_t gen9_get_stolen_size(u16 gen9_gmch_ctl)
-{
-	gen9_gmch_ctl >>= BDW_GMCH_GMS_SHIFT;
-	gen9_gmch_ctl &= BDW_GMCH_GMS_MASK;
-
-	if (gen9_gmch_ctl < 0xf0)
-		return (size_t)gen9_gmch_ctl << 25; /* 32 MB units */
-	else
-		/* 4MB increments starting at 0xf0 for 4MB */
-		return (size_t)(gen9_gmch_ctl - 0xf0 + 1) << 22;
-}
-
-static int ggtt_probe_common(struct i915_ggtt *ggtt, u64 size)
-{
-	struct drm_i915_private *dev_priv = ggtt->base.i915;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct pci_dev *pdev = dev_priv->drm.pdev;
 	phys_addr_t phys_addr;
 	int ret;
@@ -4165,7 +3070,6 @@ static int ggtt_probe_common(struct i915_ggtt *ggtt, u64 size)
 	phys_addr = pci_resource_start(pdev, 0) + pci_resource_len(pdev, 0) / 2;
 
 	/*
-<<<<<<< HEAD
 	 * On BXT+/CNL+ writes larger than 64 bit to the GTT pagetable range
 	 * will be dropped. For WC mappings in general we have 64 byte burst
 	 * writes when the WC buffer is flushed, so we can't use it, but have to
@@ -4173,15 +3077,6 @@ static int ggtt_probe_common(struct i915_ggtt *ggtt, u64 size)
 	 * readback check when writing GTT PTE entries.
 	 */
 	if (IS_GEN9_LP(dev_priv) || INTEL_GEN(dev_priv) >= 10)
-=======
-	 * On BXT writes larger than 64 bit to the GTT pagetable range will be
-	 * dropped. For WC mappings in general we have 64 byte burst writes
-	 * when the WC buffer is flushed, so we can't use it, but have to
-	 * resort to an uncached mapping. The WC issue is easily caught by the
-	 * readback check when writing GTT PTE entries.
-	 */
-	if (IS_GEN9_LP(dev_priv))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ggtt->gsm = ioremap_nocache(phys_addr, size);
 	else
 		ggtt->gsm = ioremap_wc(phys_addr, size);
@@ -4190,11 +3085,7 @@ static int ggtt_probe_common(struct i915_ggtt *ggtt, u64 size)
 		return -ENOMEM;
 	}
 
-<<<<<<< HEAD
 	ret = setup_scratch_page(&ggtt->vm, GFP_DMA32);
-=======
-	ret = setup_scratch_page(&ggtt->base, GFP_DMA32);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		DRM_ERROR("Scratch setup failed\n");
 		/* iounmap will also get called at remove, but meh */
@@ -4205,7 +3096,6 @@ static int ggtt_probe_common(struct i915_ggtt *ggtt, u64 size)
 	return 0;
 }
 
-<<<<<<< HEAD
 static struct intel_ppat_entry *
 __alloc_ppat_entry(struct intel_ppat *ppat, unsigned int index, u8 value)
 {
@@ -4390,30 +3280,11 @@ static void cnl_setup_private_ppat(struct intel_ppat *ppat)
 	__alloc_ppat_entry(ppat, 5, GEN8_PPAT_WB | GEN8_PPAT_LLCELLC | GEN8_PPAT_AGE(1));
 	__alloc_ppat_entry(ppat, 6, GEN8_PPAT_WB | GEN8_PPAT_LLCELLC | GEN8_PPAT_AGE(2));
 	__alloc_ppat_entry(ppat, 7, GEN8_PPAT_WB | GEN8_PPAT_LLCELLC | GEN8_PPAT_AGE(3));
-=======
-static void cnl_setup_private_ppat(struct drm_i915_private *dev_priv)
-{
-	/* XXX: spec is unclear if this is still needed for CNL+ */
-	if (!USES_PPGTT(dev_priv)) {
-		I915_WRITE(GEN10_PAT_INDEX(0), GEN8_PPAT_UC);
-		return;
-	}
-
-	I915_WRITE(GEN10_PAT_INDEX(0), GEN8_PPAT_WB | GEN8_PPAT_LLC);
-	I915_WRITE(GEN10_PAT_INDEX(1), GEN8_PPAT_WC | GEN8_PPAT_LLCELLC);
-	I915_WRITE(GEN10_PAT_INDEX(2), GEN8_PPAT_WT | GEN8_PPAT_LLCELLC);
-	I915_WRITE(GEN10_PAT_INDEX(3), GEN8_PPAT_UC);
-	I915_WRITE(GEN10_PAT_INDEX(4), GEN8_PPAT_WB | GEN8_PPAT_LLCELLC | GEN8_PPAT_AGE(0));
-	I915_WRITE(GEN10_PAT_INDEX(5), GEN8_PPAT_WB | GEN8_PPAT_LLCELLC | GEN8_PPAT_AGE(1));
-	I915_WRITE(GEN10_PAT_INDEX(6), GEN8_PPAT_WB | GEN8_PPAT_LLCELLC | GEN8_PPAT_AGE(2));
-	I915_WRITE(GEN10_PAT_INDEX(7), GEN8_PPAT_WB | GEN8_PPAT_LLCELLC | GEN8_PPAT_AGE(3));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* The GGTT and PPGTT need a private PPAT setup in order to handle cacheability
  * bits. When using advanced contexts each context stores its own PAT, but
  * writing this data shouldn't be harmful even in those cases. */
-<<<<<<< HEAD
 static void bdw_setup_private_ppat(struct intel_ppat *ppat)
 {
 	ppat->max_entries = 8;
@@ -4422,22 +3293,6 @@ static void bdw_setup_private_ppat(struct intel_ppat *ppat)
 	ppat->clear_value = GEN8_PPAT_WB | GEN8_PPAT_LLCELLC | GEN8_PPAT_AGE(3);
 
 	if (!USES_PPGTT(ppat->i915)) {
-=======
-static void bdw_setup_private_ppat(struct drm_i915_private *dev_priv)
-{
-	u64 pat;
-
-	pat = GEN8_PPAT(0, GEN8_PPAT_WB | GEN8_PPAT_LLC)     | /* for normal objects, no eLLC */
-	      GEN8_PPAT(1, GEN8_PPAT_WC | GEN8_PPAT_LLCELLC) | /* for something pointing to ptes? */
-	      GEN8_PPAT(2, GEN8_PPAT_WT | GEN8_PPAT_LLCELLC) | /* for scanout with eLLC */
-	      GEN8_PPAT(3, GEN8_PPAT_UC)                     | /* Uncached objects, mostly for scanout */
-	      GEN8_PPAT(4, GEN8_PPAT_WB | GEN8_PPAT_LLCELLC | GEN8_PPAT_AGE(0)) |
-	      GEN8_PPAT(5, GEN8_PPAT_WB | GEN8_PPAT_LLCELLC | GEN8_PPAT_AGE(1)) |
-	      GEN8_PPAT(6, GEN8_PPAT_WB | GEN8_PPAT_LLCELLC | GEN8_PPAT_AGE(2)) |
-	      GEN8_PPAT(7, GEN8_PPAT_WB | GEN8_PPAT_LLCELLC | GEN8_PPAT_AGE(3));
-
-	if (!USES_PPGTT(dev_priv))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Spec: "For GGTT, there is NO pat_sel[2:0] from the entry,
 		 * so RTL will always use the value corresponding to
 		 * pat_sel = 000".
@@ -4451,7 +3306,6 @@ static void bdw_setup_private_ppat(struct drm_i915_private *dev_priv)
 		 * So we can still hold onto all our assumptions wrt cpu
 		 * clflushing on LLC machines.
 		 */
-<<<<<<< HEAD
 		__alloc_ppat_entry(ppat, 0, GEN8_PPAT_UC);
 		return;
 	}
@@ -4472,19 +3326,6 @@ static void chv_setup_private_ppat(struct intel_ppat *ppat)
 	ppat->update_hw = bdw_private_pat_update_hw;
 	ppat->match = chv_private_pat_match;
 	ppat->clear_value = CHV_PPAT_SNOOP;
-=======
-		pat = GEN8_PPAT(0, GEN8_PPAT_UC);
-
-	/* XXX: spec defines this as 2 distinct registers. It's unclear if a 64b
-	 * write would work. */
-	I915_WRITE(GEN8_PRIVATE_PAT_LO, pat);
-	I915_WRITE(GEN8_PRIVATE_PAT_HI, pat >> 32);
-}
-
-static void chv_setup_private_ppat(struct drm_i915_private *dev_priv)
-{
-	u64 pat;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Map WB on BDW to snooped on CHV.
@@ -4504,7 +3345,6 @@ static void chv_setup_private_ppat(struct drm_i915_private *dev_priv)
 	 * Which means we must set the snoop bit in PAT entry 0
 	 * in order to keep the global status page working.
 	 */
-<<<<<<< HEAD
 
 	__alloc_ppat_entry(ppat, 0, CHV_PPAT_SNOOP);
 	__alloc_ppat_entry(ppat, 1, 0);
@@ -4514,19 +3354,6 @@ static void chv_setup_private_ppat(struct drm_i915_private *dev_priv)
 	__alloc_ppat_entry(ppat, 5, CHV_PPAT_SNOOP);
 	__alloc_ppat_entry(ppat, 6, CHV_PPAT_SNOOP);
 	__alloc_ppat_entry(ppat, 7, CHV_PPAT_SNOOP);
-=======
-	pat = GEN8_PPAT(0, CHV_PPAT_SNOOP) |
-	      GEN8_PPAT(1, 0) |
-	      GEN8_PPAT(2, 0) |
-	      GEN8_PPAT(3, 0) |
-	      GEN8_PPAT(4, CHV_PPAT_SNOOP) |
-	      GEN8_PPAT(5, CHV_PPAT_SNOOP) |
-	      GEN8_PPAT(6, CHV_PPAT_SNOOP) |
-	      GEN8_PPAT(7, CHV_PPAT_SNOOP);
-
-	I915_WRITE(GEN8_PRIVATE_PAT_LO, pat);
-	I915_WRITE(GEN8_PRIVATE_PAT_HI, pat >> 32);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void gen6_gmch_remove(struct i915_address_space *vm)
@@ -4537,7 +3364,6 @@ static void gen6_gmch_remove(struct i915_address_space *vm)
 	cleanup_scratch_page(vm);
 }
 
-<<<<<<< HEAD
 static void setup_private_pat(struct drm_i915_private *dev_priv)
 {
 	struct intel_ppat *ppat = &dev_priv->ppat;
@@ -4566,26 +3392,16 @@ static void setup_private_pat(struct drm_i915_private *dev_priv)
 static int gen8_gmch_probe(struct i915_ggtt *ggtt)
 {
 	struct drm_i915_private *dev_priv = ggtt->vm.i915;
-=======
-static int gen8_gmch_probe(struct i915_ggtt *ggtt)
-{
-	struct drm_i915_private *dev_priv = ggtt->base.i915;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct pci_dev *pdev = dev_priv->drm.pdev;
 	unsigned int size;
 	u16 snb_gmch_ctl;
 	int err;
 
 	/* TODO: We're not aware of mappable constraints on gen8 yet */
-<<<<<<< HEAD
 	ggtt->gmadr =
 		(struct resource) DEFINE_RES_MEM(pci_resource_start(pdev, 2),
 						 pci_resource_len(pdev, 2));
 	ggtt->mappable_end = resource_size(&ggtt->gmadr);
-=======
-	ggtt->mappable_base = pci_resource_start(pdev, 2);
-	ggtt->mappable_end = pci_resource_len(pdev, 2);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = pci_set_dma_mask(pdev, DMA_BIT_MASK(39));
 	if (!err)
@@ -4594,7 +3410,6 @@ static int gen8_gmch_probe(struct i915_ggtt *ggtt)
 		DRM_ERROR("Can't set DMA mask/consistent mask (%d)\n", err);
 
 	pci_read_config_word(pdev, SNB_GMCH_CTRL, &snb_gmch_ctl);
-<<<<<<< HEAD
 	if (IS_CHERRYVIEW(dev_priv))
 		size = chv_get_total_gtt_size(snb_gmch_ctl);
 	else
@@ -4615,50 +3430,10 @@ static int gen8_gmch_probe(struct i915_ggtt *ggtt)
 		ggtt->vm.insert_page    = bxt_vtd_ggtt_insert_page__BKL;
 		if (ggtt->vm.clear_range != nop_clear_range)
 			ggtt->vm.clear_range = bxt_vtd_ggtt_clear_range__BKL;
-=======
-
-	if (INTEL_GEN(dev_priv) >= 9) {
-		ggtt->stolen_size = gen9_get_stolen_size(snb_gmch_ctl);
-		size = gen8_get_total_gtt_size(snb_gmch_ctl);
-	} else if (IS_CHERRYVIEW(dev_priv)) {
-		ggtt->stolen_size = chv_get_stolen_size(snb_gmch_ctl);
-		size = chv_get_total_gtt_size(snb_gmch_ctl);
-	} else {
-		ggtt->stolen_size = gen8_get_stolen_size(snb_gmch_ctl);
-		size = gen8_get_total_gtt_size(snb_gmch_ctl);
-	}
-
-	ggtt->base.total = (size / sizeof(gen8_pte_t)) << PAGE_SHIFT;
-
-	if (INTEL_GEN(dev_priv) >= 10)
-		cnl_setup_private_ppat(dev_priv);
-	else if (IS_CHERRYVIEW(dev_priv) || IS_GEN9_LP(dev_priv))
-		chv_setup_private_ppat(dev_priv);
-	else
-		bdw_setup_private_ppat(dev_priv);
-
-	ggtt->base.cleanup = gen6_gmch_remove;
-	ggtt->base.bind_vma = ggtt_bind_vma;
-	ggtt->base.unbind_vma = ggtt_unbind_vma;
-	ggtt->base.insert_page = gen8_ggtt_insert_page;
-	ggtt->base.clear_range = nop_clear_range;
-	if (!USES_FULL_PPGTT(dev_priv) || intel_scanout_needs_vtd_wa(dev_priv))
-		ggtt->base.clear_range = gen8_ggtt_clear_range;
-
-	ggtt->base.insert_entries = gen8_ggtt_insert_entries;
-
-	/* Serialize GTT updates with aperture access on BXT if VT-d is on. */
-	if (intel_ggtt_update_needs_vtd_wa(dev_priv)) {
-		ggtt->base.insert_entries = bxt_vtd_ggtt_insert_entries__BKL;
-		ggtt->base.insert_page    = bxt_vtd_ggtt_insert_page__BKL;
-		if (ggtt->base.clear_range != nop_clear_range)
-			ggtt->base.clear_range = bxt_vtd_ggtt_clear_range__BKL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ggtt->invalidate = gen6_ggtt_invalidate;
 
-<<<<<<< HEAD
 	ggtt->vm.vma_ops.bind_vma    = ggtt_bind_vma;
 	ggtt->vm.vma_ops.unbind_vma  = ggtt_unbind_vma;
 	ggtt->vm.vma_ops.set_pages   = ggtt_set_pages;
@@ -4666,42 +3441,27 @@ static int gen8_gmch_probe(struct i915_ggtt *ggtt)
 
 	setup_private_pat(dev_priv);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ggtt_probe_common(ggtt, size);
 }
 
 static int gen6_gmch_probe(struct i915_ggtt *ggtt)
 {
-<<<<<<< HEAD
 	struct drm_i915_private *dev_priv = ggtt->vm.i915;
-=======
-	struct drm_i915_private *dev_priv = ggtt->base.i915;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct pci_dev *pdev = dev_priv->drm.pdev;
 	unsigned int size;
 	u16 snb_gmch_ctl;
 	int err;
 
-<<<<<<< HEAD
 	ggtt->gmadr =
 		(struct resource) DEFINE_RES_MEM(pci_resource_start(pdev, 2),
 						 pci_resource_len(pdev, 2));
 	ggtt->mappable_end = resource_size(&ggtt->gmadr);
-=======
-	ggtt->mappable_base = pci_resource_start(pdev, 2);
-	ggtt->mappable_end = pci_resource_len(pdev, 2);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* 64/512MB is the current min/max we actually know of, but this is just
 	 * a coarse sanity check.
 	 */
 	if (ggtt->mappable_end < (64<<20) || ggtt->mappable_end > (512<<20)) {
-<<<<<<< HEAD
 		DRM_ERROR("Unknown GMADR size (%pa)\n", &ggtt->mappable_end);
-=======
-		DRM_ERROR("Unknown GMADR size (%llx)\n", ggtt->mappable_end);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENXIO;
 	}
 
@@ -4712,7 +3472,6 @@ static int gen6_gmch_probe(struct i915_ggtt *ggtt)
 		DRM_ERROR("Can't set DMA mask/consistent mask (%d)\n", err);
 	pci_read_config_word(pdev, SNB_GMCH_CTRL, &snb_gmch_ctl);
 
-<<<<<<< HEAD
 	size = gen6_get_total_gtt_size(snb_gmch_ctl);
 	ggtt->vm.total = (size / sizeof(gen6_pte_t)) << PAGE_SHIFT;
 
@@ -4720,24 +3479,10 @@ static int gen6_gmch_probe(struct i915_ggtt *ggtt)
 	ggtt->vm.insert_page = gen6_ggtt_insert_page;
 	ggtt->vm.insert_entries = gen6_ggtt_insert_entries;
 	ggtt->vm.cleanup = gen6_gmch_remove;
-=======
-	ggtt->stolen_size = gen6_get_stolen_size(snb_gmch_ctl);
-
-	size = gen6_get_total_gtt_size(snb_gmch_ctl);
-	ggtt->base.total = (size / sizeof(gen6_pte_t)) << PAGE_SHIFT;
-
-	ggtt->base.clear_range = gen6_ggtt_clear_range;
-	ggtt->base.insert_page = gen6_ggtt_insert_page;
-	ggtt->base.insert_entries = gen6_ggtt_insert_entries;
-	ggtt->base.bind_vma = ggtt_bind_vma;
-	ggtt->base.unbind_vma = ggtt_unbind_vma;
-	ggtt->base.cleanup = gen6_gmch_remove;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ggtt->invalidate = gen6_ggtt_invalidate;
 
 	if (HAS_EDRAM(dev_priv))
-<<<<<<< HEAD
 		ggtt->vm.pte_encode = iris_pte_encode;
 	else if (IS_HASWELL(dev_priv))
 		ggtt->vm.pte_encode = hsw_pte_encode;
@@ -4752,17 +3497,6 @@ static int gen6_gmch_probe(struct i915_ggtt *ggtt)
 	ggtt->vm.vma_ops.unbind_vma  = ggtt_unbind_vma;
 	ggtt->vm.vma_ops.set_pages   = ggtt_set_pages;
 	ggtt->vm.vma_ops.clear_pages = clear_pages;
-=======
-		ggtt->base.pte_encode = iris_pte_encode;
-	else if (IS_HASWELL(dev_priv))
-		ggtt->base.pte_encode = hsw_pte_encode;
-	else if (IS_VALLEYVIEW(dev_priv))
-		ggtt->base.pte_encode = byt_pte_encode;
-	else if (INTEL_GEN(dev_priv) >= 7)
-		ggtt->base.pte_encode = ivb_pte_encode;
-	else
-		ggtt->base.pte_encode = snb_pte_encode;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ggtt_probe_common(ggtt, size);
 }
@@ -4774,12 +3508,8 @@ static void i915_gmch_remove(struct i915_address_space *vm)
 
 static int i915_gmch_probe(struct i915_ggtt *ggtt)
 {
-<<<<<<< HEAD
 	struct drm_i915_private *dev_priv = ggtt->vm.i915;
 	phys_addr_t gmadr_base;
-=======
-	struct drm_i915_private *dev_priv = ggtt->base.i915;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	ret = intel_gmch_probe(dev_priv->bridge_dev, dev_priv->drm.pdev, NULL);
@@ -4788,7 +3518,6 @@ static int i915_gmch_probe(struct i915_ggtt *ggtt)
 		return -EIO;
 	}
 
-<<<<<<< HEAD
 	intel_gtt_get(&ggtt->vm.total, &gmadr_base, &ggtt->mappable_end);
 
 	ggtt->gmadr =
@@ -4808,23 +3537,6 @@ static int i915_gmch_probe(struct i915_ggtt *ggtt)
 	ggtt->vm.vma_ops.set_pages   = ggtt_set_pages;
 	ggtt->vm.vma_ops.clear_pages = clear_pages;
 
-=======
-	intel_gtt_get(&ggtt->base.total,
-		      &ggtt->stolen_size,
-		      &ggtt->mappable_base,
-		      &ggtt->mappable_end);
-
-	ggtt->do_idle_maps = needs_idle_maps(dev_priv);
-	ggtt->base.insert_page = i915_ggtt_insert_page;
-	ggtt->base.insert_entries = i915_ggtt_insert_entries;
-	ggtt->base.clear_range = i915_ggtt_clear_range;
-	ggtt->base.bind_vma = ggtt_bind_vma;
-	ggtt->base.unbind_vma = ggtt_unbind_vma;
-	ggtt->base.cleanup = i915_gmch_remove;
-
-	ggtt->invalidate = gmch_ggtt_invalidate;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(ggtt->do_idle_maps))
 		DRM_INFO("applying Ironlake quirks for intel_iommu\n");
 
@@ -4840,13 +3552,8 @@ int i915_ggtt_probe_hw(struct drm_i915_private *dev_priv)
 	struct i915_ggtt *ggtt = &dev_priv->ggtt;
 	int ret;
 
-<<<<<<< HEAD
 	ggtt->vm.i915 = dev_priv;
 	ggtt->vm.dma = &dev_priv->drm.pdev->dev;
-=======
-	ggtt->base.i915 = dev_priv;
-	ggtt->base.dma = &dev_priv->drm.pdev->dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (INTEL_GEN(dev_priv) <= 5)
 		ret = i915_gmch_probe(ggtt);
@@ -4862,7 +3569,6 @@ int i915_ggtt_probe_hw(struct drm_i915_private *dev_priv)
 	 * currently don't have any bits spare to pass in this upper
 	 * restriction!
 	 */
-<<<<<<< HEAD
 	if (USES_GUC(dev_priv)) {
 		ggtt->vm.total = min_t(u64, ggtt->vm.total, GUC_GGTT_TOP);
 		ggtt->mappable_end =
@@ -4890,33 +3596,6 @@ int i915_ggtt_probe_hw(struct drm_i915_private *dev_priv)
 	DRM_DEBUG_DRIVER("GMADR size = %lluM\n", (u64)ggtt->mappable_end >> 20);
 	DRM_DEBUG_DRIVER("DSM size = %lluM\n",
 			 (u64)resource_size(&intel_graphics_stolen_res) >> 20);
-=======
-	if (HAS_GUC(dev_priv) && i915.enable_guc_loading) {
-		ggtt->base.total = min_t(u64, ggtt->base.total, GUC_GGTT_TOP);
-		ggtt->mappable_end = min(ggtt->mappable_end, ggtt->base.total);
-	}
-
-	if ((ggtt->base.total - 1) >> 32) {
-		DRM_ERROR("We never expected a Global GTT with more than 32bits"
-			  " of address space! Found %lldM!\n",
-			  ggtt->base.total >> 20);
-		ggtt->base.total = 1ULL << 32;
-		ggtt->mappable_end = min(ggtt->mappable_end, ggtt->base.total);
-	}
-
-	if (ggtt->mappable_end > ggtt->base.total) {
-		DRM_ERROR("mappable aperture extends past end of GGTT,"
-			  " aperture=%llx, total=%llx\n",
-			  ggtt->mappable_end, ggtt->base.total);
-		ggtt->mappable_end = ggtt->base.total;
-	}
-
-	/* GMADR is the PCI mmio aperture into the global GTT. */
-	DRM_INFO("Memory usable by graphics device = %lluM\n",
-		 ggtt->base.total >> 20);
-	DRM_DEBUG_DRIVER("GMADR size = %lldM\n", ggtt->mappable_end >> 20);
-	DRM_DEBUG_DRIVER("GTT stolen size = %uM\n", ggtt->stolen_size >> 20);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (intel_vtd_active())
 		DRM_INFO("VT-d active for gfx access\n");
 
@@ -4932,11 +3611,7 @@ int i915_ggtt_init_hw(struct drm_i915_private *dev_priv)
 	struct i915_ggtt *ggtt = &dev_priv->ggtt;
 	int ret;
 
-<<<<<<< HEAD
 	stash_init(&dev_priv->mm.wc_stash);
-=======
-	INIT_LIST_HEAD(&dev_priv->vm_list);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Note that we use page colouring to enforce a guard page at the
 	 * end of the address space. This is required as the CS may prefetch
@@ -4944,7 +3619,6 @@ int i915_ggtt_init_hw(struct drm_i915_private *dev_priv)
 	 * and beyond the end of the GTT if we do not provide a guard.
 	 */
 	mutex_lock(&dev_priv->drm.struct_mutex);
-<<<<<<< HEAD
 	i915_address_space_init(&ggtt->vm, dev_priv);
 
 	/* Only VLV supports read-only GGTT mappings */
@@ -4956,29 +3630,12 @@ int i915_ggtt_init_hw(struct drm_i915_private *dev_priv)
 
 	if (!io_mapping_init_wc(&dev_priv->ggtt.iomap,
 				dev_priv->ggtt.gmadr.start,
-=======
-	i915_address_space_init(&ggtt->base, dev_priv, "[global]");
-
-	/* Only VLV supports read-only GGTT mappings */
-	ggtt->base.has_read_only = IS_VALLEYVIEW(dev_priv);
-
-	if (!HAS_LLC(dev_priv) && !USES_PPGTT(dev_priv))
-		ggtt->base.mm.color_adjust = i915_gtt_color_adjust;
-	mutex_unlock(&dev_priv->drm.struct_mutex);
-
-	if (!io_mapping_init_wc(&dev_priv->ggtt.mappable,
-				dev_priv->ggtt.mappable_base,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				dev_priv->ggtt.mappable_end)) {
 		ret = -EIO;
 		goto out_gtt_cleanup;
 	}
 
-<<<<<<< HEAD
 	ggtt->mtrr = arch_phys_wc_add(ggtt->gmadr.start, ggtt->mappable_end);
-=======
-	ggtt->mtrr = arch_phys_wc_add(ggtt->mappable_base, ggtt->mappable_end);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Initialise stolen early so that we may reserve preallocated
@@ -4991,11 +3648,7 @@ int i915_ggtt_init_hw(struct drm_i915_private *dev_priv)
 	return 0;
 
 out_gtt_cleanup:
-<<<<<<< HEAD
 	ggtt->vm.cleanup(&ggtt->vm);
-=======
-	ggtt->base.cleanup(&ggtt->base);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -5003,10 +3656,7 @@ int i915_ggtt_enable_hw(struct drm_i915_private *dev_priv)
 {
 	if (INTEL_GEN(dev_priv) < 6 && !intel_enable_gtt())
 		return -EIO;
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -5015,11 +3665,8 @@ void i915_ggtt_enable_guc(struct drm_i915_private *i915)
 	GEM_BUG_ON(i915->ggtt.invalidate != gen6_ggtt_invalidate);
 
 	i915->ggtt.invalidate = guc_ggtt_invalidate;
-<<<<<<< HEAD
 
 	i915_ggtt_invalidate(i915);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void i915_ggtt_disable_guc(struct drm_i915_private *i915)
@@ -5028,26 +3675,18 @@ void i915_ggtt_disable_guc(struct drm_i915_private *i915)
 	GEM_BUG_ON(i915->ggtt.invalidate != guc_ggtt_invalidate);
 
 	i915->ggtt.invalidate = gen6_ggtt_invalidate;
-<<<<<<< HEAD
 
 	i915_ggtt_invalidate(i915);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void i915_gem_restore_gtt_mappings(struct drm_i915_private *dev_priv)
 {
 	struct i915_ggtt *ggtt = &dev_priv->ggtt;
-<<<<<<< HEAD
 	struct i915_vma *vma, *vn;
-=======
-	struct drm_i915_gem_object *obj, *on;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	i915_check_and_clear_faults(dev_priv);
 
 	/* First fill our portion of the GTT with scratch pages */
-<<<<<<< HEAD
 	ggtt->vm.clear_range(&ggtt->vm, 0, ggtt->vm.total);
 
 	ggtt->vm.closed = true; /* skip rewriting PTE on VMA unbind */
@@ -5080,63 +3719,6 @@ void i915_gem_restore_gtt_mappings(struct drm_i915_private *dev_priv)
 		dev_priv->ppat.update_hw(dev_priv);
 		return;
 	}
-=======
-	ggtt->base.clear_range(&ggtt->base, 0, ggtt->base.total);
-
-	ggtt->base.closed = true; /* skip rewriting PTE on VMA unbind */
-
-	/* clflush objects bound into the GGTT and rebind them. */
-	list_for_each_entry_safe(obj, on,
-				 &dev_priv->mm.bound_list, global_link) {
-		bool ggtt_bound = false;
-		struct i915_vma *vma;
-
-		list_for_each_entry(vma, &obj->vma_list, obj_link) {
-			if (vma->vm != &ggtt->base)
-				continue;
-
-			if (!i915_vma_unbind(vma))
-				continue;
-
-			WARN_ON(i915_vma_bind(vma, obj->cache_level,
-					      PIN_UPDATE));
-			ggtt_bound = true;
-		}
-
-		if (ggtt_bound)
-			WARN_ON(i915_gem_object_set_to_gtt_domain(obj, false));
-	}
-
-	ggtt->base.closed = false;
-
-	if (INTEL_GEN(dev_priv) >= 8) {
-		if (INTEL_GEN(dev_priv) >= 10)
-			cnl_setup_private_ppat(dev_priv);
-		else if (IS_CHERRYVIEW(dev_priv) || IS_GEN9_LP(dev_priv))
-			chv_setup_private_ppat(dev_priv);
-		else
-			bdw_setup_private_ppat(dev_priv);
-
-		return;
-	}
-
-	if (USES_PPGTT(dev_priv)) {
-		struct i915_address_space *vm;
-
-		list_for_each_entry(vm, &dev_priv->vm_list, global_link) {
-			struct i915_hw_ppgtt *ppgtt;
-
-			if (i915_is_ggtt(vm))
-				ppgtt = dev_priv->mm.aliasing_ppgtt;
-			else
-				ppgtt = i915_vm_to_ppgtt(vm);
-
-			gen6_write_page_range(ppgtt, 0, ppgtt->base.total);
-		}
-	}
-
-	i915_ggtt_invalidate(dev_priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct scatterlist *
@@ -5156,15 +3738,9 @@ rotate_pages(const dma_addr_t *in, unsigned int offset,
 			 * the entries so the sg list can be happily traversed.
 			 * The only thing we need are DMA addresses.
 			 */
-<<<<<<< HEAD
 			sg_set_page(sg, NULL, I915_GTT_PAGE_SIZE, 0);
 			sg_dma_address(sg) = in[offset + src_idx];
 			sg_dma_len(sg) = I915_GTT_PAGE_SIZE;
-=======
-			sg_set_page(sg, NULL, PAGE_SIZE, 0);
-			sg_dma_address(sg) = in[offset + src_idx];
-			sg_dma_len(sg) = PAGE_SIZE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			sg = sg_next(sg);
 			src_idx -= stride;
 		}
@@ -5177,11 +3753,7 @@ static noinline struct sg_table *
 intel_rotate_pages(struct intel_rotation_info *rot_info,
 		   struct drm_i915_gem_object *obj)
 {
-<<<<<<< HEAD
 	const unsigned long n_pages = obj->base.size / I915_GTT_PAGE_SIZE;
-=======
-	const unsigned long n_pages = obj->base.size / PAGE_SIZE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int size = intel_rotation_info_size(rot_info);
 	struct sgt_iter sgt_iter;
 	dma_addr_t dma_addr;
@@ -5222,12 +3794,6 @@ intel_rotate_pages(struct intel_rotation_info *rot_info,
 				  rot_info->plane[i].stride, st, sg);
 	}
 
-<<<<<<< HEAD
-=======
-	DRM_DEBUG_KMS("Created rotated page mapping for object size %zu (%ux%u tiles, %u pages)\n",
-		      obj->base.size, rot_info->plane[0].width, rot_info->plane[0].height, size);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kvfree(page_addr_list);
 
 	return st;
@@ -5237,13 +3803,8 @@ err_sg_alloc:
 err_st_alloc:
 	kvfree(page_addr_list);
 
-<<<<<<< HEAD
 	DRM_DEBUG_DRIVER("Failed to create rotated mapping for object size %zu! (%ux%u tiles, %u pages)\n",
 			 obj->base.size, rot_info->plane[0].width, rot_info->plane[0].height, size);
-=======
-	DRM_DEBUG_KMS("Failed to create rotated mapping for object size %zu! (%ux%u tiles, %u pages)\n",
-		      obj->base.size, rot_info->plane[0].width, rot_info->plane[0].height, size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ERR_PTR(ret);
 }
@@ -5312,12 +3873,9 @@ i915_get_ggtt_vma_pages(struct i915_vma *vma)
 	GEM_BUG_ON(!i915_gem_object_has_pinned_pages(vma->obj));
 
 	switch (vma->ggtt_view.type) {
-<<<<<<< HEAD
 	default:
 		GEM_BUG_ON(vma->ggtt_view.type);
 		/* fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case I915_GGTT_VIEW_NORMAL:
 		vma->pages = vma->obj->mm.pages;
 		return 0;
@@ -5330,14 +3888,6 @@ i915_get_ggtt_vma_pages(struct i915_vma *vma)
 	case I915_GGTT_VIEW_PARTIAL:
 		vma->pages = intel_partial_pages(&vma->ggtt_view, vma->obj);
 		break;
-<<<<<<< HEAD
-=======
-
-	default:
-		WARN_ONCE(1, "GGTT view %u not implemented!\n",
-			  vma->ggtt_view.type);
-		return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ret = 0;
@@ -5386,11 +3936,7 @@ int i915_gem_gtt_reserve(struct i915_address_space *vm,
 	GEM_BUG_ON(!IS_ALIGNED(size, I915_GTT_PAGE_SIZE));
 	GEM_BUG_ON(!IS_ALIGNED(offset, I915_GTT_MIN_ALIGNMENT));
 	GEM_BUG_ON(range_overflows(offset, size, vm->total));
-<<<<<<< HEAD
 	GEM_BUG_ON(vm == &vm->i915->mm.aliasing_ppgtt->vm);
-=======
-	GEM_BUG_ON(vm == &vm->i915->mm.aliasing_ppgtt->base);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	GEM_BUG_ON(drm_mm_node_allocated(node));
 
 	node->size = size;
@@ -5487,11 +4033,7 @@ int i915_gem_gtt_insert(struct i915_address_space *vm,
 	GEM_BUG_ON(start >= end);
 	GEM_BUG_ON(start > 0  && !IS_ALIGNED(start, I915_GTT_PAGE_SIZE));
 	GEM_BUG_ON(end < U64_MAX && !IS_ALIGNED(end, I915_GTT_PAGE_SIZE));
-<<<<<<< HEAD
 	GEM_BUG_ON(vm == &vm->i915->mm.aliasing_ppgtt->vm);
-=======
-	GEM_BUG_ON(vm == &vm->i915->mm.aliasing_ppgtt->base);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	GEM_BUG_ON(drm_mm_node_allocated(node));
 
 	if (unlikely(range_overflows(start, size, end)))
@@ -5502,11 +4044,7 @@ int i915_gem_gtt_insert(struct i915_address_space *vm,
 
 	mode = DRM_MM_INSERT_BEST;
 	if (flags & PIN_HIGH)
-<<<<<<< HEAD
 		mode = DRM_MM_INSERT_HIGHEST;
-=======
-		mode = DRM_MM_INSERT_HIGH;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (flags & PIN_MAPPABLE)
 		mode = DRM_MM_INSERT_LOW;
 
@@ -5526,7 +4064,6 @@ int i915_gem_gtt_insert(struct i915_address_space *vm,
 	if (err != -ENOSPC)
 		return err;
 
-<<<<<<< HEAD
 	if (mode & DRM_MM_INSERT_ONCE) {
 		err = drm_mm_insert_node_in_range(&vm->mm, node,
 						  size, alignment, color,
@@ -5536,8 +4073,6 @@ int i915_gem_gtt_insert(struct i915_address_space *vm,
 			return err;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (flags & PIN_NOEVICT)
 		return -ENOSPC;
 

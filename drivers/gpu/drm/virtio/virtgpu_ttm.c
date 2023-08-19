@@ -106,7 +106,6 @@ static void virtio_gpu_ttm_global_fini(struct virtio_gpu_device *vgdev)
 	}
 }
 
-<<<<<<< HEAD
 #if 0
 /*
  * Hmm, seems to not do anything useful.  Leftover debug hack?
@@ -130,8 +129,6 @@ static int virtio_gpu_ttm_fault(struct vm_fault *vmf)
 }
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int virtio_gpu_mmap(struct file *filp, struct vm_area_struct *vma)
 {
 	struct drm_file *file_priv;
@@ -146,7 +143,6 @@ int virtio_gpu_mmap(struct file *filp, struct vm_area_struct *vma)
 		return -EINVAL;
 	}
 	r = ttm_bo_mmap(filp, vma, &vgdev->mman.bdev);
-<<<<<<< HEAD
 #if 0
 	if (unlikely(r != 0))
 		return r;
@@ -160,10 +156,6 @@ int virtio_gpu_mmap(struct file *filp, struct vm_area_struct *vma)
 #else
 	return r;
 #endif
-=======
-
-	return r;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int virtio_gpu_invalidate_caches(struct ttm_bo_device *bdev,
@@ -214,13 +206,10 @@ static const struct ttm_mem_type_manager_func virtio_gpu_bo_manager_func = {
 static int virtio_gpu_init_mem_type(struct ttm_bo_device *bdev, uint32_t type,
 				    struct ttm_mem_type_manager *man)
 {
-<<<<<<< HEAD
 	struct virtio_gpu_device *vgdev;
 
 	vgdev = virtio_gpu_get_vgdev(bdev);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (type) {
 	case TTM_PL_SYSTEM:
 		/* System memory */
@@ -234,15 +223,6 @@ static int virtio_gpu_init_mem_type(struct ttm_bo_device *bdev, uint32_t type,
 		man->available_caching = TTM_PL_MASK_CACHING;
 		man->default_caching = TTM_PL_FLAG_CACHED;
 		break;
-<<<<<<< HEAD
-=======
-	case TTM_PL_VRAM:
-		man->func = &ttm_bo_manager_func;
-		man->flags = TTM_MEMTYPE_FLAG_MAPPABLE;
-		man->available_caching = TTM_PL_MASK_CACHING;
-		man->default_caching = TTM_PL_FLAG_CACHED;
-		break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		DRM_ERROR("Unsupported memory type %u\n", (unsigned int)type);
 		return -EINVAL;
@@ -274,10 +254,6 @@ static int virtio_gpu_verify_access(struct ttm_buffer_object *bo,
 static int virtio_gpu_ttm_io_mem_reserve(struct ttm_bo_device *bdev,
 					 struct ttm_mem_reg *mem)
 {
-<<<<<<< HEAD
-=======
-	struct virtio_gpu_device *vgdev = virtio_gpu_get_vgdev(bdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ttm_mem_type_manager *man = &bdev->man[mem->mem_type];
 
 	mem->bus.addr = NULL;
@@ -291,23 +267,8 @@ static int virtio_gpu_ttm_io_mem_reserve(struct ttm_bo_device *bdev,
 	case TTM_PL_SYSTEM:
 	case TTM_PL_TT:
 		/* system memory */
-<<<<<<< HEAD
 		return 0;
 	default:
-=======
-		mem->bus.offset = 0;
-		mem->bus.base = 0;
-		mem->bus.is_iomem = false;
-		return 0;
-	case TTM_PL_VRAM:
-		/* coherent memory (pci bar) */
-		mem->bus.offset = mem->start << PAGE_SHIFT;
-		mem->bus.base = vgdev->caddr;
-		mem->bus.is_iomem = true;
-		return 0;
-	default:
-		DRM_ERROR("Unsupported memory type %u\n", mem->mem_type);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 	return 0;
@@ -323,7 +284,6 @@ static void virtio_gpu_ttm_io_mem_free(struct ttm_bo_device *bdev,
  */
 struct virtio_gpu_ttm_tt {
 	struct ttm_dma_tt		ttm;
-<<<<<<< HEAD
 	struct virtio_gpu_device	*vgdev;
 	u64				offset;
 };
@@ -339,44 +299,11 @@ static int virtio_gpu_ttm_backend_bind(struct ttm_tt *ttm,
 		     ttm->num_pages, bo_mem, ttm);
 
 	/* Not implemented */
-=======
-	struct virtio_gpu_object        *obj;
-};
-
-static int virtio_gpu_ttm_vram_bind(struct ttm_tt *ttm,
-				    struct ttm_mem_reg *bo_mem)
-{
-	return 0;
-}
-
-static int virtio_gpu_ttm_vram_unbind(struct ttm_tt *ttm)
-{
-	struct virtio_gpu_ttm_tt *gtt =
-		container_of(ttm, struct virtio_gpu_ttm_tt, ttm.ttm);
-	struct virtio_gpu_device *vgdev =
-		virtio_gpu_get_vgdev(gtt->obj->tbo.bdev);
-	struct virtio_gpu_object *obj = gtt->obj;
-
-	virtio_gpu_cmd_unmap(vgdev, obj->hw_res_handle);
-	return 0;
-}
-
-static int virtio_gpu_ttm_backend_bind(struct ttm_tt *ttm,
-				       struct ttm_mem_reg *bo_mem)
-{
-	struct virtio_gpu_ttm_tt *gtt =
-		container_of(ttm, struct virtio_gpu_ttm_tt, ttm.ttm);
-	struct virtio_gpu_device *vgdev =
-		virtio_gpu_get_vgdev(gtt->obj->tbo.bdev);
-
-	virtio_gpu_object_attach(vgdev, gtt->obj, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 static int virtio_gpu_ttm_backend_unbind(struct ttm_tt *ttm)
 {
-<<<<<<< HEAD
 	/* Not implemented */
 	return 0;
 }
@@ -384,21 +311,6 @@ static int virtio_gpu_ttm_backend_unbind(struct ttm_tt *ttm)
 static void virtio_gpu_ttm_backend_destroy(struct ttm_tt *ttm)
 {
 	struct virtio_gpu_ttm_tt *gtt = (void *)ttm;
-=======
-	struct virtio_gpu_ttm_tt *gtt =
-		container_of(ttm, struct virtio_gpu_ttm_tt, ttm.ttm);
-	struct virtio_gpu_device *vgdev =
-		virtio_gpu_get_vgdev(gtt->obj->tbo.bdev);
-
-	virtio_gpu_object_detach(vgdev, gtt->obj);
-	return 0;
-}
-
-static void virtio_gpu_ttm_tt_destroy(struct ttm_tt *ttm)
-{
-	struct virtio_gpu_ttm_tt *gtt =
-		container_of(ttm, struct virtio_gpu_ttm_tt, ttm.ttm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ttm_dma_tt_fini(&gtt->ttm);
 	kfree(gtt);
@@ -407,7 +319,6 @@ static void virtio_gpu_ttm_tt_destroy(struct ttm_tt *ttm)
 static struct ttm_backend_func virtio_gpu_backend_func = {
 	.bind = &virtio_gpu_ttm_backend_bind,
 	.unbind = &virtio_gpu_ttm_backend_unbind,
-<<<<<<< HEAD
 	.destroy = &virtio_gpu_ttm_backend_destroy,
 };
 
@@ -475,110 +386,31 @@ static void virtio_gpu_bo_move_notify(struct ttm_buffer_object *tbo,
 						 NULL);
 		}
 	}
-=======
-	.destroy = &virtio_gpu_ttm_tt_destroy,
-};
-
-static struct ttm_backend_func virtio_gpu_vram_func = {
-	.bind = &virtio_gpu_ttm_vram_bind,
-	.unbind = &virtio_gpu_ttm_vram_unbind,
-	.destroy = &virtio_gpu_ttm_tt_destroy,
-};
-
-static int virtio_gpu_ttm_tt_populate(struct ttm_tt *ttm)
-{
-	if (ttm->state != tt_unpopulated)
-		return 0;
-
-	return ttm_pool_populate(ttm);
-}
-
-static void virtio_gpu_ttm_tt_unpopulate(struct ttm_tt *ttm)
-{
-	ttm_pool_unpopulate(ttm);
-}
-
-static struct ttm_tt *virtio_gpu_ttm_tt_create2(struct ttm_buffer_object *bo,
-						uint32_t page_flags,
-						struct page *dummy_read_page)
-{
-	unsigned long size = bo->num_pages << PAGE_SHIFT;
-	struct virtio_gpu_device *vgdev;
-	struct virtio_gpu_object *obj;
-	struct virtio_gpu_ttm_tt *gtt;
-	uint32_t has_guest;
-
-	vgdev = virtio_gpu_get_vgdev(bo->bdev);
-	obj = container_of(bo, struct virtio_gpu_object, tbo);
-
-	gtt = kzalloc(sizeof(struct virtio_gpu_ttm_tt), GFP_KERNEL);
-	if (gtt == NULL)
-		return NULL;
-	gtt->obj = obj;
-	has_guest = (obj->blob_mem == VIRTGPU_BLOB_MEM_GUEST ||
-		     obj->blob_mem == VIRTGPU_BLOB_MEM_HOST_GUEST);
-
-	if (!has_guest && obj->blob) {
-		gtt->ttm.ttm.func = &virtio_gpu_vram_func;
-		if (ttm_tt_init(&gtt->ttm.ttm, bo->bdev, size, page_flags,
-				dummy_read_page)) {
-			kfree(gtt);
-			return NULL;
-		}
-	} else {
-		gtt->ttm.ttm.func = &virtio_gpu_backend_func;
-		if (ttm_dma_tt_init(&gtt->ttm, bo->bdev, size, page_flags,
-				    dummy_read_page)) {
-			kfree(gtt);
-			return NULL;
-		}
-	}
-
-	return &gtt->ttm.ttm;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void virtio_gpu_bo_swap_notify(struct ttm_buffer_object *tbo)
 {
 	struct virtio_gpu_object *bo;
-<<<<<<< HEAD
 	struct virtio_gpu_device *vgdev;
 
 	bo = container_of(tbo, struct virtio_gpu_object, tbo);
 	vgdev = (struct virtio_gpu_device *)bo->gem_base.dev->dev_private;
-=======
-
-	bo = container_of(tbo, struct virtio_gpu_object, tbo);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (bo->pages)
 		virtio_gpu_object_free_sg_table(bo);
 }
 
 static struct ttm_bo_driver virtio_gpu_bo_driver = {
-<<<<<<< HEAD
 	.ttm_tt_create = &virtio_gpu_ttm_tt_create,
-=======
-	.ttm_tt_create2 = &virtio_gpu_ttm_tt_create2,
-	.ttm_tt_populate = &virtio_gpu_ttm_tt_populate,
-	.ttm_tt_unpopulate = &virtio_gpu_ttm_tt_unpopulate,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.invalidate_caches = &virtio_gpu_invalidate_caches,
 	.init_mem_type = &virtio_gpu_init_mem_type,
 	.eviction_valuable = ttm_bo_eviction_valuable,
 	.evict_flags = &virtio_gpu_evict_flags,
-<<<<<<< HEAD
 	.move = &virtio_gpu_bo_move,
 	.verify_access = &virtio_gpu_verify_access,
 	.io_mem_reserve = &virtio_gpu_ttm_io_mem_reserve,
 	.io_mem_free = &virtio_gpu_ttm_io_mem_free,
 	.move_notify = &virtio_gpu_bo_move_notify,
-=======
-	.verify_access = &virtio_gpu_verify_access,
-	.io_mem_reserve = &virtio_gpu_ttm_io_mem_reserve,
-	.io_mem_free = &virtio_gpu_ttm_io_mem_free,
-	.io_mem_pfn = ttm_bo_default_io_mem_pfn,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.swap_notify = &virtio_gpu_bo_swap_notify,
 };
 
@@ -605,18 +437,6 @@ int virtio_gpu_ttm_init(struct virtio_gpu_device *vgdev)
 		DRM_ERROR("Failed initializing GTT heap.\n");
 		goto err_mm_init;
 	}
-<<<<<<< HEAD
-=======
-
-	if (vgdev->has_host_visible) {
-		r = ttm_bo_init_mm(&vgdev->mman.bdev, TTM_PL_VRAM,
-				   vgdev->csize >> PAGE_SHIFT);
-		if (r) {
-			DRM_ERROR("Failed initializing VRAM heap.\n");
-			goto err_mm_init;
-		}
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 err_mm_init:

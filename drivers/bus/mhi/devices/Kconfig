@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 # SPDX-License-Identifier: GPL-2.0-only
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 menu "MHI device support"
 
 config MHI_NETDEV
@@ -11,12 +8,8 @@ config MHI_NETDEV
        help
 	  MHI based net device driver for transferring IP traffic
 	  between host and modem. By enabling this driver, clients
-<<<<<<< HEAD
 	  can transfer data using standard network interface. Over
 	  the air traffic goes thru mhi netdev interface.
-=======
-	  can transfer data using standard network interface.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config MHI_UCI
        tristate "MHI UCI"
@@ -25,7 +18,6 @@ config MHI_UCI
 	  MHI based uci driver is for transferring data between host and
 	  modem using standard file operations from user space. Open, read,
 	  write, ioctl, and close operations are supported by this driver.
-<<<<<<< HEAD
 	  Please check mhi_uci_match_table for all supported channels that
 	  are exposed to userspace.
 
@@ -39,7 +31,5 @@ config MHI_SATELLITE
 	  to NON-HLOS MHI satellite drivers, channel states, and power
 	  management over IPC communication. It helps in HLOS power
 	  savings.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 endmenu

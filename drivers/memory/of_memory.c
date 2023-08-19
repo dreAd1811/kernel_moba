@@ -126,13 +126,8 @@ const struct lpddr2_timings *of_get_ddr_timings(struct device_node *np_ddr,
 			arr_sz++;
 
 	if (arr_sz)
-<<<<<<< HEAD
 		timings = devm_kcalloc(dev, arr_sz, sizeof(*timings),
 				       GFP_KERNEL);
-=======
-		timings = devm_kzalloc(dev, sizeof(*timings) * arr_sz,
-			GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!timings)
 		goto default_timings;

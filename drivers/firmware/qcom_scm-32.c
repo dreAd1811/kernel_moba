@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 /* Copyright (c) 2010,2015, The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2010,2015,2020 The Linux Foundation. All rights reserved.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Copyright (C) 2015 Linaro Ltd.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -151,11 +147,7 @@ static u32 smc(u32 cmd_addr)
 			"smc	#0	@ switch to secure world\n"
 			: "=r" (r0)
 			: "r" (r0), "r" (r1), "r" (r2)
-<<<<<<< HEAD
 			: "r3", "r12");
-=======
-			: "r3");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} while (r0 == QCOM_SCM_INTERRUPTED);
 
 	return r0;
@@ -271,11 +263,7 @@ static s32 qcom_scm_call_atomic1(u32 svc, u32 cmd, u32 arg1)
 			"smc    #0      @ switch to secure world\n"
 			: "=r" (r0)
 			: "r" (r0), "r" (r1), "r" (r2)
-<<<<<<< HEAD
 			: "r3", "r12");
-=======
-			: "r3");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return r0;
 }
 
@@ -310,11 +298,7 @@ static s32 qcom_scm_call_atomic2(u32 svc, u32 cmd, u32 arg1, u32 arg2)
 			"smc    #0      @ switch to secure world\n"
 			: "=r" (r0)
 			: "r" (r0), "r" (r1), "r" (r2), "r" (r3)
-<<<<<<< HEAD
 			: "r12");
-=======
-			);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return r0;
 }
 
@@ -344,11 +328,7 @@ u32 qcom_scm_get_version(void)
 			"smc	#0	@ switch to secure world\n"
 			: "=r" (r0), "=r" (r1)
 			: "r" (r0), "r" (r1)
-<<<<<<< HEAD
 			: "r2", "r3", "r12");
-=======
-			: "r2", "r3");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} while (r0 == QCOM_SCM_INTERRUPTED);
 
 	version = r1;
@@ -581,15 +561,12 @@ int __qcom_scm_pas_mss_reset(struct device *dev, bool reset)
 	return ret ? : le32_to_cpu(out);
 }
 
-<<<<<<< HEAD
 int __qcom_scm_set_dload_mode(struct device *dev, bool enable)
 {
 	return qcom_scm_call_atomic2(QCOM_SCM_SVC_BOOT, QCOM_SCM_SET_DLOAD_MODE,
 				     enable ? QCOM_SCM_SET_DLOAD_MODE : 0, 0);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int __qcom_scm_set_remote_state(struct device *dev, u32 state, u32 id)
 {
 	struct {
@@ -632,7 +609,6 @@ int __qcom_scm_iommu_secure_ptbl_init(struct device *dev, u64 addr, u32 size,
 {
 	return -ENODEV;
 }
-<<<<<<< HEAD
 
 int __qcom_scm_io_readl(struct device *dev, phys_addr_t addr,
 			unsigned int *val)
@@ -651,5 +627,3 @@ int __qcom_scm_io_writel(struct device *dev, phys_addr_t addr, unsigned int val)
 	return qcom_scm_call_atomic2(QCOM_SCM_SVC_IO, QCOM_SCM_IO_WRITE,
 				     addr, val);
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

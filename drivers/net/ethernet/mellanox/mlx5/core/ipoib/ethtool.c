@@ -250,12 +250,9 @@ const struct ethtool_ops mlx5i_ethtool_ops = {
 	.get_link_ksettings = mlx5i_get_link_ksettings,
 	.get_link           = ethtool_op_get_link,
 };
-<<<<<<< HEAD
 
 const struct ethtool_ops mlx5i_pkey_ethtool_ops = {
 	.get_drvinfo        = mlx5i_get_drvinfo,
 	.get_link           = ethtool_op_get_link,
 	.get_ts_info        = mlx5i_get_ts_info,
 };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

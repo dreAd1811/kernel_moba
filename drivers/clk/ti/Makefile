@@ -19,13 +19,6 @@ obj-$(CONFIG_SOC_DRA7XX)		+= $(clk-common) clk-7xx.o \
 					   clk-dra7-atl.o dpll3xxx.o dpll44xx.o
 obj-$(CONFIG_SOC_AM43XX)		+= $(clk-common) dpll3xxx.o clk-43xx.o
 
-<<<<<<< HEAD
-=======
-ifdef CONFIG_ATAGS
-obj-$(CONFIG_ARCH_OMAP3)                += clk-3xxx-legacy.o
-endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 endif	# CONFIG_ARCH_OMAP2PLUS
 
 obj-$(CONFIG_COMMON_CLK_TI_ADPLL)	+= adpll.o

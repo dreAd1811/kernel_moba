@@ -480,11 +480,7 @@ EXPORT_SYMBOL(ath9k_hw_addrxbuf_edma);
 int ath9k_hw_process_rxdesc_edma(struct ath_hw *ah, struct ath_rx_status *rxs,
 				 void *buf_addr)
 {
-<<<<<<< HEAD
 	struct ar9003_rxs *rxsp = buf_addr;
-=======
-	struct ar9003_rxs *rxsp = (struct ar9003_rxs *) buf_addr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int phyerr;
 
 	if ((rxsp->status11 & AR_RxDone) == 0)
@@ -614,11 +610,7 @@ void ath9k_hw_setup_statusring(struct ath_hw *ah, void *ts_start,
 	ah->ts_paddr_start = ts_paddr_start;
 	ah->ts_paddr_end = ts_paddr_start + (size * sizeof(struct ar9003_txs));
 	ah->ts_size = size;
-<<<<<<< HEAD
 	ah->ts_ring = ts_start;
-=======
-	ah->ts_ring = (struct ar9003_txs *) ts_start;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ath9k_hw_reset_txstatus_ring(ah);
 }

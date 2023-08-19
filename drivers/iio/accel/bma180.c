@@ -536,10 +536,6 @@ static const struct iio_info bma180_info = {
 	.attrs			= &bma180_attrs_group,
 	.read_raw		= bma180_read_raw,
 	.write_raw		= bma180_write_raw,
-<<<<<<< HEAD
-=======
-	.driver_module		= THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const char * const bma180_power_modes[] = { "low_noise", "low_power" };
@@ -703,10 +699,6 @@ static int bma180_trig_try_reen(struct iio_trigger *trig)
 static const struct iio_trigger_ops bma180_trigger_ops = {
 	.set_trigger_state = bma180_data_rdy_trigger_set_state,
 	.try_reenable = bma180_trig_try_reen,
-<<<<<<< HEAD
-=======
-	.owner = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int bma180_probe(struct i2c_client *client,

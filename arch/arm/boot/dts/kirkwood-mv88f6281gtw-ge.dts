@@ -1,20 +1,10 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Marvell 88F6281 GTW GE Board
  *
  * Lennert Buytenhek <buytenh@marvell.com>
  * Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  *
-<<<<<<< HEAD
-=======
- * This file is licensed under the terms of the GNU General Public
- * License version 2.  This program is licensed "as is" without any
- * warranty of any kind, whether express or implied.
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * This file contains the definitions that are common between the 6281
  * and 6282 variants of the Marvell Kirkwood Development Board.
  */

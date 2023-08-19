@@ -201,11 +201,7 @@ static const unsigned short init_pal[] = {
 				 * skipped by the VFE) */
 	0x8b, 16,		/* Horizontal begin */
 	0x8c, 768,		/* Horizontal length */
-<<<<<<< HEAD
 	0x8d, 784,		/* Number of pixels
-=======
-	0x8d, 784, 		/* Number of pixels
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 * Must be >= Horizontal begin + Horizontal length */
 	0x8f, 0xc00,		/* Disable window 2 */
 	0xf0, 0x77,		/* 13.5 MHz transport, Forced

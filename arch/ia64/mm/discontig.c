@@ -20,10 +20,7 @@
 #include <linux/nmi.h>
 #include <linux/swap.h>
 #include <linux/bootmem.h>
-<<<<<<< HEAD
 #include <linux/memblock.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/acpi.h>
 #include <linux/efi.h>
 #include <linux/nodemask.h>
@@ -42,12 +39,6 @@ struct early_node_data {
 	struct ia64_node_data *node_data;
 	unsigned long pernode_addr;
 	unsigned long pernode_size;
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_ZONE_DMA
-	unsigned long num_dma_physpages;
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long min_pfn;
 	unsigned long max_pfn;
 };
@@ -67,57 +58,31 @@ pg_data_t *pgdat_list[MAX_NUMNODES];
 	     (((node)*PERCPU_PAGE_SIZE) & (MAX_NODE_ALIGN_OFFSET - 1)))
 
 /**
-<<<<<<< HEAD
  * build_node_maps - callback to setup mem_data structs for each node
-=======
- * build_node_maps - callback to setup bootmem structs for each node
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @start: physical start of range
  * @len: length of range
  * @node: node where this range resides
  *
-<<<<<<< HEAD
  * Detect extents of each piece of memory that we wish to
  * treat as a virtually contiguous block (i.e. each node). Each such block
  * must start on an %IA64_GRANULE_SIZE boundary, so we round the address down
  * if necessary.  Any non-existent pages will simply be part of the virtual
  * memmap.
-=======
- * We allocate a struct bootmem_data for each piece of memory that we wish to
- * treat as a virtually contiguous block (i.e. each node). Each such block
- * must start on an %IA64_GRANULE_SIZE boundary, so we round the address down
- * if necessary.  Any non-existent pages will simply be part of the virtual
- * memmap.  We also update min_low_pfn and max_low_pfn here as we receive
- * memory ranges from the caller.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static int __init build_node_maps(unsigned long start, unsigned long len,
 				  int node)
 {
 	unsigned long spfn, epfn, end = start + len;
-<<<<<<< HEAD
-=======
-	struct bootmem_data *bdp = &bootmem_node_data[node];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	epfn = GRANULEROUNDUP(end) >> PAGE_SHIFT;
 	spfn = GRANULEROUNDDOWN(start) >> PAGE_SHIFT;
 
-<<<<<<< HEAD
 	if (!mem_data[node].min_pfn) {
 		mem_data[node].min_pfn = spfn;
 		mem_data[node].max_pfn = epfn;
 	} else {
 		mem_data[node].min_pfn = min(spfn, mem_data[node].min_pfn);
 		mem_data[node].max_pfn = max(epfn, mem_data[node].max_pfn);
-=======
-	if (!bdp->node_low_pfn) {
-		bdp->node_min_pfn = spfn;
-		bdp->node_low_pfn = epfn;
-	} else {
-		bdp->node_min_pfn = min(spfn, bdp->node_min_pfn);
-		bdp->node_low_pfn = max(epfn, bdp->node_low_pfn);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -300,10 +265,6 @@ static void __init fill_pernode(int node, unsigned long pernode,
 {
 	void *cpu_data;
 	int cpus = early_nr_cpus_node(node);
-<<<<<<< HEAD
-=======
-	struct bootmem_data *bdp = &bootmem_node_data[node];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mem_data[node].pernode_addr = pernode;
 	mem_data[node].pernode_size = pernodesize;
@@ -318,11 +279,6 @@ static void __init fill_pernode(int node, unsigned long pernode,
 
 	mem_data[node].node_data = __va(pernode);
 	pernode += L1_CACHE_ALIGN(sizeof(struct ia64_node_data));
-<<<<<<< HEAD
-=======
-
-	pgdat_list[node]->bdata = bdp;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pernode += L1_CACHE_ALIGN(sizeof(pg_data_t));
 
 	cpu_data = per_cpu_node_setup(cpu_data, node);
@@ -362,31 +318,16 @@ static int __init find_pernode_space(unsigned long start, unsigned long len,
 				     int node)
 {
 	unsigned long spfn, epfn;
-<<<<<<< HEAD
 	unsigned long pernodesize = 0, pernode;
-=======
-	unsigned long pernodesize = 0, pernode, pages, mapsize;
-	struct bootmem_data *bdp = &bootmem_node_data[node];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spfn = start >> PAGE_SHIFT;
 	epfn = (start + len) >> PAGE_SHIFT;
 
-<<<<<<< HEAD
-=======
-	pages = bdp->node_low_pfn - bdp->node_min_pfn;
-	mapsize = bootmem_bootmap_pages(pages) << PAGE_SHIFT;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Make sure this memory falls within this node's usable memory
 	 * since we may have thrown some away in build_maps().
 	 */
-<<<<<<< HEAD
 	if (spfn < mem_data[node].min_pfn || epfn > mem_data[node].max_pfn)
-=======
-	if (spfn < bdp->node_min_pfn || epfn > bdp->node_low_pfn)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	/* Don't setup this node's local space twice... */
@@ -401,39 +342,13 @@ static int __init find_pernode_space(unsigned long start, unsigned long len,
 	pernode = NODEDATA_ALIGN(start, node);
 
 	/* Is this range big enough for what we want to store here? */
-<<<<<<< HEAD
 	if (start + len > (pernode + pernodesize))
-=======
-	if (start + len > (pernode + pernodesize + mapsize))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		fill_pernode(node, pernode, pernodesize);
 
 	return 0;
 }
 
 /**
-<<<<<<< HEAD
-=======
- * free_node_bootmem - free bootmem allocator memory for use
- * @start: physical start of range
- * @len: length of range
- * @node: node where this range resides
- *
- * Simply calls the bootmem allocator to free the specified ranged from
- * the given pg_data_t's bdata struct.  After this function has been called
- * for all the entries in the EFI memory map, the bootmem allocator will
- * be ready to service allocation requests.
- */
-static int __init free_node_bootmem(unsigned long start, unsigned long len,
-				    int node)
-{
-	free_bootmem_node(pgdat_list[node], start, len);
-
-	return 0;
-}
-
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * reserve_pernode_space - reserve memory for per-node space
  *
  * Reserve the space used by the bootmem maps & per-node space in the boot
@@ -442,7 +357,6 @@ static int __init free_node_bootmem(unsigned long start, unsigned long len,
  */
 static void __init reserve_pernode_space(void)
 {
-<<<<<<< HEAD
 	unsigned long base, size;
 	int node;
 
@@ -454,30 +368,6 @@ static void __init reserve_pernode_space(void)
 		size = mem_data[node].pernode_size;
 		base = __pa(mem_data[node].pernode_addr);
 		memblock_reserve(base, size);
-=======
-	unsigned long base, size, pages;
-	struct bootmem_data *bdp;
-	int node;
-
-	for_each_online_node(node) {
-		pg_data_t *pdp = pgdat_list[node];
-
-		if (node_isset(node, memory_less_mask))
-			continue;
-
-		bdp = pdp->bdata;
-
-		/* First the bootmem_map itself */
-		pages = bdp->node_low_pfn - bdp->node_min_pfn;
-		size = bootmem_bootmap_pages(pages) << PAGE_SHIFT;
-		base = __pa(bdp->node_bootmem_map);
-		reserve_bootmem_node(pdp, base, size, BOOTMEM_DEFAULT);
-
-		/* Now the per-node space */
-		size = mem_data[node].pernode_size;
-		base = __pa(mem_data[node].pernode_addr);
-		reserve_bootmem_node(pdp, base, size, BOOTMEM_DEFAULT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -597,10 +487,7 @@ void __init find_memory(void)
 	int node;
 
 	reserve_memory();
-<<<<<<< HEAD
 	efi_memmap_walk(filter_memory, register_active_ranges);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (num_online_nodes() == 0) {
 		printk(KERN_ERR "node info missing!\n");
@@ -617,43 +504,8 @@ void __init find_memory(void)
 	efi_memmap_walk(find_max_min_low_pfn, NULL);
 
 	for_each_online_node(node)
-<<<<<<< HEAD
 		if (mem_data[node].min_pfn)
 			node_clear(node, memory_less_mask);
-=======
-		if (bootmem_node_data[node].node_low_pfn) {
-			node_clear(node, memory_less_mask);
-			mem_data[node].min_pfn = ~0UL;
-		}
-
-	efi_memmap_walk(filter_memory, register_active_ranges);
-
-	/*
-	 * Initialize the boot memory maps in reverse order since that's
-	 * what the bootmem allocator expects
-	 */
-	for (node = MAX_NUMNODES - 1; node >= 0; node--) {
-		unsigned long pernode, pernodesize, map;
-		struct bootmem_data *bdp;
-
-		if (!node_online(node))
-			continue;
-		else if (node_isset(node, memory_less_mask))
-			continue;
-
-		bdp = &bootmem_node_data[node];
-		pernode = mem_data[node].pernode_addr;
-		pernodesize = mem_data[node].pernode_size;
-		map = pernode + pernodesize;
-
-		init_bootmem_node(pgdat_list[node],
-				  map>>PAGE_SHIFT,
-				  bdp->node_min_pfn,
-				  bdp->node_low_pfn);
-	}
-
-	efi_memmap_walk(filter_rsvd_memory, free_node_bootmem);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	reserve_pernode_space();
 	memory_less_nodes();
@@ -733,39 +585,6 @@ void call_pernode_memory(unsigned long start, unsigned long len, void *arg)
 }
 
 /**
-<<<<<<< HEAD
-=======
- * count_node_pages - callback to build per-node memory info structures
- * @start: physical start of range
- * @len: length of range
- * @node: node where this range resides
- *
- * Each node has it's own number of physical pages, DMAable pages, start, and
- * end page frame number.  This routine will be called by call_pernode_memory()
- * for each piece of usable memory and will setup these values for each node.
- * Very similar to build_maps().
- */
-static __init int count_node_pages(unsigned long start, unsigned long len, int node)
-{
-	unsigned long end = start + len;
-
-#ifdef CONFIG_ZONE_DMA
-	if (start <= __pa(MAX_DMA_ADDRESS))
-		mem_data[node].num_dma_physpages +=
-			(min(end, __pa(MAX_DMA_ADDRESS)) - start) >>PAGE_SHIFT;
-#endif
-	start = GRANULEROUNDDOWN(start);
-	end = GRANULEROUNDUP(end);
-	mem_data[node].max_pfn = max(mem_data[node].max_pfn,
-				     end >> PAGE_SHIFT);
-	mem_data[node].min_pfn = min(mem_data[node].min_pfn,
-				     start >> PAGE_SHIFT);
-
-	return 0;
-}
-
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * paging_init - setup page tables
  *
  * paging_init() sets up the page tables for each node of the system and frees
@@ -781,11 +600,6 @@ void __init paging_init(void)
 
 	max_dma = virt_to_phys((void *) MAX_DMA_ADDRESS) >> PAGE_SHIFT;
 
-<<<<<<< HEAD
-=======
-	efi_memmap_walk(filter_rsvd_memory, count_node_pages);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sparse_memory_present_with_active_regions(MAX_NUMNODES);
 	sparse_init();
 
@@ -808,13 +622,8 @@ void __init paging_init(void)
 	}
 
 	memset(max_zone_pfns, 0, sizeof(max_zone_pfns));
-<<<<<<< HEAD
 #ifdef CONFIG_ZONE_DMA32
 	max_zone_pfns[ZONE_DMA32] = max_dma;
-=======
-#ifdef CONFIG_ZONE_DMA
-	max_zone_pfns[ZONE_DMA] = max_dma;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 	max_zone_pfns[ZONE_NORMAL] = max_pfn;
 	free_area_init_nodes(max_zone_pfns);
@@ -843,22 +652,14 @@ void arch_refresh_nodedata(int update_node, pg_data_t *update_pgdat)
 #endif
 
 #ifdef CONFIG_SPARSEMEM_VMEMMAP
-<<<<<<< HEAD
 int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
 		struct vmem_altmap *altmap)
-=======
-int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return vmemmap_populate_basepages(start, end, node);
 }
 
-<<<<<<< HEAD
 void vmemmap_free(unsigned long start, unsigned long end,
 		struct vmem_altmap *altmap)
-=======
-void vmemmap_free(unsigned long start, unsigned long end)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 }
 #endif

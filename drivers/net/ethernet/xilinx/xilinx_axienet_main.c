@@ -657,12 +657,7 @@ static inline int axienet_check_tx_bd_space(struct axienet_local *lp,
  * start the transmission. Additionally if checksum offloading is supported,
  * it populates AXI Stream Control fields with appropriate values.
  */
-<<<<<<< HEAD
 static int axienet_start_xmit(struct sk_buff *skb, struct net_device *ndev)
-=======
-static netdev_tx_t
-axienet_start_xmit(struct sk_buff *skb, struct net_device *ndev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 ii;
 	u32 num_frag;
@@ -919,10 +914,6 @@ static void axienet_dma_err_handler(unsigned long data);
  * @ndev:	Pointer to net_device structure
  *
  * Return: 0, on success.
-<<<<<<< HEAD
-=======
- *	    -ENODEV, if PHY cannot be connected to
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *	    non-zero error value on failure
  *
  * This is the driver open routine. It calls phy_start to start the PHY device.
@@ -1581,11 +1572,7 @@ static int axienet_probe(struct platform_device *pdev)
 		}
 	} else {
 		lp->phy_mode = of_get_phy_mode(pdev->dev.of_node);
-<<<<<<< HEAD
 		if (lp->phy_mode < 0) {
-=======
-		if ((int)lp->phy_mode < 0) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ret = -EINVAL;
 			goto free_netdev;
 		}

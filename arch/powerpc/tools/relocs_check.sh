@@ -23,11 +23,7 @@ objdump="$1"
 vmlinux="$2"
 
 bad_relocs=$(
-<<<<<<< HEAD
 "$objdump" -R "$vmlinux" |
-=======
-$objdump -R "$vmlinux" |
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	# Only look at relocation lines.
 	grep -E '\<R_' |
 	# These relocations are okay

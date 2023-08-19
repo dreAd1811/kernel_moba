@@ -21,10 +21,7 @@
 #include "cxgb4.h"
 #include "t4_regs.h"
 #include "t4fw_api.h"
-<<<<<<< HEAD
 #include "cxgb4_cudbg.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define EEPROM_MAGIC 0x38E2F10C
 
@@ -118,48 +115,10 @@ static char adapter_stats_strings[][ETH_GSTRING_LEN] = {
 	"db_drop                ",
 	"db_full                ",
 	"db_empty               ",
-<<<<<<< HEAD
-=======
-	"tcp_ipv4_out_rsts      ",
-	"tcp_ipv4_in_segs       ",
-	"tcp_ipv4_out_segs      ",
-	"tcp_ipv4_retrans_segs  ",
-	"tcp_ipv6_out_rsts      ",
-	"tcp_ipv6_in_segs       ",
-	"tcp_ipv6_out_segs      ",
-	"tcp_ipv6_retrans_segs  ",
-	"usm_ddp_frames         ",
-	"usm_ddp_octets         ",
-	"usm_ddp_drops          ",
-	"rdma_no_rqe_mod_defer  ",
-	"rdma_no_rqe_pkt_defer  ",
-	"tp_err_ofld_no_neigh   ",
-	"tp_err_ofld_cong_defer ",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	"write_coal_success     ",
 	"write_coal_fail        ",
 };
 
-<<<<<<< HEAD
-=======
-static char channel_stats_strings[][ETH_GSTRING_LEN] = {
-	"--------Channel--------- ",
-	"tp_cpl_requests        ",
-	"tp_cpl_responses       ",
-	"tp_mac_in_errs         ",
-	"tp_hdr_in_errs         ",
-	"tp_tcp_in_errs         ",
-	"tp_tcp6_in_errs        ",
-	"tp_tnl_cong_drops      ",
-	"tp_tnl_tx_drops        ",
-	"tp_ofld_vlan_drops     ",
-	"tp_ofld_chan_drops     ",
-	"fcoe_octets_ddp        ",
-	"fcoe_frames_ddp        ",
-	"fcoe_frames_drop       ",
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static char loopback_stats_strings[][ETH_GSTRING_LEN] = {
 	"-------Loopback----------- ",
 	"octets_ok              ",
@@ -186,27 +145,19 @@ static char loopback_stats_strings[][ETH_GSTRING_LEN] = {
 	"bg3_frames_trunc       ",
 };
 
-<<<<<<< HEAD
 static const char cxgb4_priv_flags_strings[][ETH_GSTRING_LEN] = {
 	[PRIV_FLAG_PORT_TX_VM_BIT] = "port_tx_vm_wr",
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int get_sset_count(struct net_device *dev, int sset)
 {
 	switch (sset) {
 	case ETH_SS_STATS:
 		return ARRAY_SIZE(stats_strings) +
 		       ARRAY_SIZE(adapter_stats_strings) +
-<<<<<<< HEAD
 		       ARRAY_SIZE(loopback_stats_strings);
 	case ETH_SS_PRIV_FLAGS:
 		return ARRAY_SIZE(cxgb4_priv_flags_strings);
-=======
-		       ARRAY_SIZE(channel_stats_strings) +
-		       ARRAY_SIZE(loopback_stats_strings);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		return -EOPNOTSUPP;
 	}
@@ -257,10 +208,7 @@ static void get_drvinfo(struct net_device *dev, struct ethtool_drvinfo *info)
 			 FW_HDR_FW_VER_MINOR_G(exprom_vers),
 			 FW_HDR_FW_VER_MICRO_G(exprom_vers),
 			 FW_HDR_FW_VER_BUILD_G(exprom_vers));
-<<<<<<< HEAD
 	info->n_priv_flags = ARRAY_SIZE(cxgb4_priv_flags_strings);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void get_strings(struct net_device *dev, u32 stringset, u8 *data)
@@ -271,19 +219,11 @@ static void get_strings(struct net_device *dev, u32 stringset, u8 *data)
 		memcpy(data, adapter_stats_strings,
 		       sizeof(adapter_stats_strings));
 		data += sizeof(adapter_stats_strings);
-<<<<<<< HEAD
 		memcpy(data, loopback_stats_strings,
 		       sizeof(loopback_stats_strings));
 	} else if (stringset == ETH_SS_PRIV_FLAGS) {
 		memcpy(data, cxgb4_priv_flags_strings,
 		       sizeof(cxgb4_priv_flags_strings));
-=======
-		memcpy(data, channel_stats_strings,
-		       sizeof(channel_stats_strings));
-		data += sizeof(channel_stats_strings);
-		memcpy(data, loopback_stats_strings,
-		       sizeof(loopback_stats_strings));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -304,47 +244,10 @@ struct adapter_stats {
 	u64 db_drop;
 	u64 db_full;
 	u64 db_empty;
-<<<<<<< HEAD
-=======
-	u64 tcp_v4_out_rsts;
-	u64 tcp_v4_in_segs;
-	u64 tcp_v4_out_segs;
-	u64 tcp_v4_retrans_segs;
-	u64 tcp_v6_out_rsts;
-	u64 tcp_v6_in_segs;
-	u64 tcp_v6_out_segs;
-	u64 tcp_v6_retrans_segs;
-	u64 frames;
-	u64 octets;
-	u64 drops;
-	u64 rqe_dfr_mod;
-	u64 rqe_dfr_pkt;
-	u64 ofld_no_neigh;
-	u64 ofld_cong_defer;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 wc_success;
 	u64 wc_fail;
 };
 
-<<<<<<< HEAD
-=======
-struct channel_stats {
-	u64 cpl_req;
-	u64 cpl_rsp;
-	u64 mac_in_errs;
-	u64 hdr_in_errs;
-	u64 tcp_in_errs;
-	u64 tcp6_in_errs;
-	u64 tnl_cong_drops;
-	u64 tnl_tx_drops;
-	u64 ofld_vlan_drops;
-	u64 ofld_chan_drops;
-	u64 octets_ddp;
-	u64 frames_ddp;
-	u64 frames_drop;
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void collect_sge_port_stats(const struct adapter *adap,
 				   const struct port_info *p,
 				   struct queue_port_stats *s)
@@ -367,54 +270,14 @@ static void collect_sge_port_stats(const struct adapter *adap,
 
 static void collect_adapter_stats(struct adapter *adap, struct adapter_stats *s)
 {
-<<<<<<< HEAD
-=======
-	struct tp_tcp_stats v4, v6;
-	struct tp_rdma_stats rdma_stats;
-	struct tp_err_stats err_stats;
-	struct tp_usm_stats usm_stats;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 val1, val2;
 
 	memset(s, 0, sizeof(*s));
 
-<<<<<<< HEAD
-=======
-	spin_lock(&adap->stats_lock);
-	t4_tp_get_tcp_stats(adap, &v4, &v6);
-	t4_tp_get_rdma_stats(adap, &rdma_stats);
-	t4_get_usm_stats(adap, &usm_stats);
-	t4_tp_get_err_stats(adap, &err_stats);
-	spin_unlock(&adap->stats_lock);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	s->db_drop = adap->db_stats.db_drop;
 	s->db_full = adap->db_stats.db_full;
 	s->db_empty = adap->db_stats.db_empty;
 
-<<<<<<< HEAD
-=======
-	s->tcp_v4_out_rsts = v4.tcp_out_rsts;
-	s->tcp_v4_in_segs = v4.tcp_in_segs;
-	s->tcp_v4_out_segs = v4.tcp_out_segs;
-	s->tcp_v4_retrans_segs = v4.tcp_retrans_segs;
-	s->tcp_v6_out_rsts = v6.tcp_out_rsts;
-	s->tcp_v6_in_segs = v6.tcp_in_segs;
-	s->tcp_v6_out_segs = v6.tcp_out_segs;
-	s->tcp_v6_retrans_segs = v6.tcp_retrans_segs;
-
-	if (is_offload(adap)) {
-		s->frames = usm_stats.frames;
-		s->octets = usm_stats.octets;
-		s->drops = usm_stats.drops;
-		s->rqe_dfr_mod = rdma_stats.rqe_dfr_mod;
-		s->rqe_dfr_pkt = rdma_stats.rqe_dfr_pkt;
-	}
-
-	s->ofld_no_neigh = err_stats.ofld_no_neigh;
-	s->ofld_cong_defer = err_stats.ofld_cong_defer;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!is_t4(adap->params.chip)) {
 		int v;
 
@@ -428,39 +291,6 @@ static void collect_adapter_stats(struct adapter *adap, struct adapter_stats *s)
 	}
 }
 
-<<<<<<< HEAD
-=======
-static void collect_channel_stats(struct adapter *adap, struct channel_stats *s,
-				  u8 i)
-{
-	struct tp_cpl_stats cpl_stats;
-	struct tp_err_stats err_stats;
-	struct tp_fcoe_stats fcoe_stats;
-
-	memset(s, 0, sizeof(*s));
-
-	spin_lock(&adap->stats_lock);
-	t4_tp_get_cpl_stats(adap, &cpl_stats);
-	t4_tp_get_err_stats(adap, &err_stats);
-	t4_get_fcoe_stats(adap, i, &fcoe_stats);
-	spin_unlock(&adap->stats_lock);
-
-	s->cpl_req = cpl_stats.req[i];
-	s->cpl_rsp = cpl_stats.rsp[i];
-	s->mac_in_errs = err_stats.mac_in_errs[i];
-	s->hdr_in_errs = err_stats.hdr_in_errs[i];
-	s->tcp_in_errs = err_stats.tcp_in_errs[i];
-	s->tcp6_in_errs = err_stats.tcp6_in_errs[i];
-	s->tnl_cong_drops = err_stats.tnl_cong_drops[i];
-	s->tnl_tx_drops = err_stats.tnl_tx_drops[i];
-	s->ofld_vlan_drops = err_stats.ofld_vlan_drops[i];
-	s->ofld_chan_drops = err_stats.ofld_chan_drops[i];
-	s->octets_ddp = fcoe_stats.octets_ddp;
-	s->frames_ddp = fcoe_stats.frames_ddp;
-	s->frames_drop = fcoe_stats.frames_drop;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void get_stats(struct net_device *dev, struct ethtool_stats *stats,
 		      u64 *data)
 {
@@ -481,14 +311,6 @@ static void get_stats(struct net_device *dev, struct ethtool_stats *stats,
 	data += sizeof(struct adapter_stats) / sizeof(u64);
 
 	*data++ = (u64)pi->port_id;
-<<<<<<< HEAD
-=======
-	collect_channel_stats(adapter, (struct channel_stats *)data,
-			      pi->port_id);
-	data += sizeof(struct channel_stats) / sizeof(u64);
-
-	*data++ = (u64)pi->port_id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memset(&s, 0, sizeof(s));
 	t4_get_lb_stats(adapter, pi->port_id, &s);
 
@@ -572,12 +394,8 @@ static int from_fw_port_mod_type(enum fw_port_type port_type,
 		else
 			return PORT_OTHER;
 	} else if (port_type == FW_PORT_TYPE_KR4_100G ||
-<<<<<<< HEAD
 		   port_type == FW_PORT_TYPE_KR_SFP28 ||
 		   port_type == FW_PORT_TYPE_KR_XLAUI) {
-=======
-		   port_type == FW_PORT_TYPE_KR_SFP28) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return PORT_NONE;
 	}
 
@@ -656,39 +474,22 @@ static void fw_caps_to_lmm(enum fw_port_type port_type,
 
 	case FW_PORT_TYPE_KR:
 		SET_LMM(Backplane);
-<<<<<<< HEAD
 		FW_CAPS_TO_LMM(SPEED_10G, 10000baseKR_Full);
-=======
-		SET_LMM(10000baseKR_Full);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case FW_PORT_TYPE_BP_AP:
 		SET_LMM(Backplane);
-<<<<<<< HEAD
 		FW_CAPS_TO_LMM(SPEED_1G, 1000baseKX_Full);
 		FW_CAPS_TO_LMM(SPEED_10G, 10000baseR_FEC);
 		FW_CAPS_TO_LMM(SPEED_10G, 10000baseKR_Full);
-=======
-		SET_LMM(10000baseR_FEC);
-		SET_LMM(10000baseKR_Full);
-		SET_LMM(1000baseKX_Full);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case FW_PORT_TYPE_BP4_AP:
 		SET_LMM(Backplane);
-<<<<<<< HEAD
 		FW_CAPS_TO_LMM(SPEED_1G, 1000baseKX_Full);
 		FW_CAPS_TO_LMM(SPEED_10G, 10000baseR_FEC);
 		FW_CAPS_TO_LMM(SPEED_10G, 10000baseKR_Full);
 		FW_CAPS_TO_LMM(SPEED_10G, 10000baseKX4_Full);
-=======
-		SET_LMM(10000baseR_FEC);
-		SET_LMM(10000baseKR_Full);
-		SET_LMM(1000baseKX_Full);
-		SET_LMM(10000baseKX4_Full);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case FW_PORT_TYPE_FIBER_XFI:
@@ -704,13 +505,9 @@ static void fw_caps_to_lmm(enum fw_port_type port_type,
 	case FW_PORT_TYPE_BP40_BA:
 	case FW_PORT_TYPE_QSFP:
 		SET_LMM(FIBRE);
-<<<<<<< HEAD
 		FW_CAPS_TO_LMM(SPEED_1G, 1000baseT_Full);
 		FW_CAPS_TO_LMM(SPEED_10G, 10000baseT_Full);
 		FW_CAPS_TO_LMM(SPEED_40G, 40000baseSR4_Full);
-=======
-		SET_LMM(40000baseSR4_Full);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case FW_PORT_TYPE_CR_QSFP:
@@ -728,7 +525,6 @@ static void fw_caps_to_lmm(enum fw_port_type port_type,
 		FW_CAPS_TO_LMM(SPEED_25G, 25000baseKR_Full);
 		break;
 
-<<<<<<< HEAD
 	case FW_PORT_TYPE_KR_XLAUI:
 		SET_LMM(Backplane);
 		FW_CAPS_TO_LMM(SPEED_1G, 1000baseKX_Full);
@@ -739,21 +535,13 @@ static void fw_caps_to_lmm(enum fw_port_type port_type,
 	case FW_PORT_TYPE_CR2_QSFP:
 		SET_LMM(FIBRE);
 		FW_CAPS_TO_LMM(SPEED_50G, 50000baseSR2_Full);
-=======
-	case FW_PORT_TYPE_CR2_QSFP:
-		SET_LMM(FIBRE);
-		SET_LMM(50000baseSR2_Full);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case FW_PORT_TYPE_KR4_100G:
 	case FW_PORT_TYPE_CR4_QSFP:
 		SET_LMM(FIBRE);
-<<<<<<< HEAD
 		FW_CAPS_TO_LMM(SPEED_1G,  1000baseT_Full);
 		FW_CAPS_TO_LMM(SPEED_10G, 10000baseSR_Full);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		FW_CAPS_TO_LMM(SPEED_40G, 40000baseSR4_Full);
 		FW_CAPS_TO_LMM(SPEED_25G, 25000baseCR_Full);
 		FW_CAPS_TO_LMM(SPEED_50G, 50000baseCR2_Full);
@@ -840,20 +628,10 @@ static int get_link_ksettings(struct net_device *dev,
 	fw_caps_to_lmm(pi->port_type, pi->link_cfg.lpacaps,
 		       link_ksettings->link_modes.lp_advertising);
 
-<<<<<<< HEAD
 	base->speed = (netif_carrier_ok(dev)
 		       ? pi->link_cfg.speed
 		       : SPEED_UNKNOWN);
 	base->duplex = DUPLEX_FULL;
-=======
-	if (netif_carrier_ok(dev)) {
-		base->speed = pi->link_cfg.speed;
-		base->duplex = DUPLEX_FULL;
-	} else {
-		base->speed = SPEED_UNKNOWN;
-		base->duplex = DUPLEX_UNKNOWN;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (pi->link_cfg.fc & PAUSE_RX) {
 		if (pi->link_cfg.fc & PAUSE_TX) {
@@ -896,7 +674,6 @@ static int set_link_ksettings(struct net_device *dev,
 	if (base->duplex != DUPLEX_FULL)
 		return -EINVAL;
 
-<<<<<<< HEAD
 	old_lc = *lc;
 	if (!(lc->pcaps & FW_PORT_CAP32_ANEG) ||
 	    base->autoneg == AUTONEG_DISABLE) {
@@ -911,26 +688,6 @@ static int set_link_ksettings(struct net_device *dev,
 
 		lc->speed_caps = fw_caps;
 		lc->acaps = fw_caps;
-=======
-	if (!(lc->pcaps & FW_PORT_CAP32_ANEG)) {
-		/* PHY offers a single speed.  See if that's what's
-		 * being requested.
-		 */
-		if (base->autoneg == AUTONEG_DISABLE &&
-		    (lc->pcaps & speed_to_fw_caps(base->speed)))
-			return 0;
-		return -EINVAL;
-	}
-
-	old_lc = *lc;
-	if (base->autoneg == AUTONEG_DISABLE) {
-		fw_caps = speed_to_fw_caps(base->speed);
-
-		if (!(lc->pcaps & fw_caps))
-			return -EINVAL;
-		lc->speed_caps = fw_caps;
-		lc->acaps = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		fw_caps =
 			 lmm_to_fw_caps(link_ksettings->link_modes.advertising);
@@ -1189,47 +946,11 @@ static int get_coalesce(struct net_device *dev, struct ethtool_coalesce *c)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-/**
- *	eeprom_ptov - translate a physical EEPROM address to virtual
- *	@phys_addr: the physical EEPROM address
- *	@fn: the PCI function number
- *	@sz: size of function-specific area
- *
- *	Translate a physical EEPROM address to virtual.  The first 1K is
- *	accessed through virtual addresses starting at 31K, the rest is
- *	accessed through virtual addresses starting at 0.
- *
- *	The mapping is as follows:
- *	[0..1K) -> [31K..32K)
- *	[1K..1K+A) -> [31K-A..31K)
- *	[1K+A..ES) -> [0..ES-A-1K)
- *
- *	where A = @fn * @sz, and ES = EEPROM size.
- */
-static int eeprom_ptov(unsigned int phys_addr, unsigned int fn, unsigned int sz)
-{
-	fn *= sz;
-	if (phys_addr < 1024)
-		return phys_addr + (31 << 10);
-	if (phys_addr < 1024 + fn)
-		return 31744 - fn + phys_addr - 1024;
-	if (phys_addr < EEPROMSIZE)
-		return phys_addr - 1024 - fn;
-	return -EINVAL;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* The next two routines implement eeprom read/write from physical addresses.
  */
 static int eeprom_rd_phys(struct adapter *adap, unsigned int phys_addr, u32 *v)
 {
-<<<<<<< HEAD
 	int vaddr = t4_eeprom_ptov(phys_addr, adap->pf, EEPROMPFSIZE);
-=======
-	int vaddr = eeprom_ptov(phys_addr, adap->pf, EEPROMPFSIZE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (vaddr >= 0)
 		vaddr = pci_read_vpd(adap->pdev, vaddr, sizeof(u32), v);
@@ -1238,11 +959,7 @@ static int eeprom_rd_phys(struct adapter *adap, unsigned int phys_addr, u32 *v)
 
 static int eeprom_wr_phys(struct adapter *adap, unsigned int phys_addr, u32 v)
 {
-<<<<<<< HEAD
 	int vaddr = t4_eeprom_ptov(phys_addr, adap->pf, EEPROMPFSIZE);
-=======
-	int vaddr = eeprom_ptov(phys_addr, adap->pf, EEPROMPFSIZE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (vaddr >= 0)
 		vaddr = pci_write_vpd(adap->pdev, vaddr, sizeof(u32), &v);
@@ -1511,7 +1228,6 @@ static int get_rxnfc(struct net_device *dev, struct ethtool_rxnfc *info,
 	return -EOPNOTSUPP;
 }
 
-<<<<<<< HEAD
 static int set_dump(struct net_device *dev, struct ethtool_dump *eth_dump)
 {
 	struct adapter *adapter = netdev2adap(dev);
@@ -1687,8 +1403,6 @@ static int cxgb4_set_priv_flags(struct net_device *netdev, u32 flags)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct ethtool_ops cxgb_ethtool_ops = {
 	.get_link_ksettings = get_link_ksettings,
 	.set_link_ksettings = set_link_ksettings,
@@ -1719,7 +1433,6 @@ static const struct ethtool_ops cxgb_ethtool_ops = {
 	.get_rxfh	   = get_rss_table,
 	.set_rxfh	   = set_rss_table,
 	.flash_device      = set_flash,
-<<<<<<< HEAD
 	.get_ts_info       = get_ts_info,
 	.set_dump          = set_dump,
 	.get_dump_flag     = get_dump_flag,
@@ -1728,9 +1441,6 @@ static const struct ethtool_ops cxgb_ethtool_ops = {
 	.get_module_eeprom = cxgb4_get_module_eeprom,
 	.get_priv_flags    = cxgb4_get_priv_flags,
 	.set_priv_flags    = cxgb4_set_priv_flags,
-=======
-	.get_ts_info       = get_ts_info
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 void cxgb4_set_ethtool_ops(struct net_device *netdev)

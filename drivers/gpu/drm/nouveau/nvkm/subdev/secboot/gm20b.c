@@ -108,10 +108,6 @@ gm20b_secboot_new(struct nvkm_device *device, int index,
 	struct gm200_secboot *gsb;
 	struct nvkm_acr *acr;
 
-<<<<<<< HEAD
-=======
-	*psb = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	acr = acr_r352_new(BIT(NVKM_SECBOOT_FALCON_FECS) |
 			   BIT(NVKM_SECBOOT_FALCON_PMU));
 	if (IS_ERR(acr))
@@ -120,15 +116,10 @@ gm20b_secboot_new(struct nvkm_device *device, int index,
 	acr->optional_falcons = BIT(NVKM_SECBOOT_FALCON_PMU);
 
 	gsb = kzalloc(sizeof(*gsb), GFP_KERNEL);
-<<<<<<< HEAD
 	if (!gsb) {
 		psb = NULL;
 		return -ENOMEM;
 	}
-=======
-	if (!gsb)
-		return -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	*psb = &gsb->base;
 
 	ret = nvkm_secboot_ctor(&gm20b_secboot, acr, device, index, &gsb->base);
@@ -138,10 +129,7 @@ gm20b_secboot_new(struct nvkm_device *device, int index,
 	return 0;
 }
 
-<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_ARCH_TEGRA_210_SOC)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_FIRMWARE("nvidia/gm20b/acr/bl.bin");
 MODULE_FIRMWARE("nvidia/gm20b/acr/ucode_load.bin");
 MODULE_FIRMWARE("nvidia/gm20b/gr/fecs_bl.bin");
@@ -157,7 +145,4 @@ MODULE_FIRMWARE("nvidia/gm20b/gr/sw_method_init.bin");
 MODULE_FIRMWARE("nvidia/gm20b/pmu/desc.bin");
 MODULE_FIRMWARE("nvidia/gm20b/pmu/image.bin");
 MODULE_FIRMWARE("nvidia/gm20b/pmu/sig.bin");
-<<<<<<< HEAD
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

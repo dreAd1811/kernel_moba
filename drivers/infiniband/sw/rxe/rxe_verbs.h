@@ -139,11 +139,6 @@ enum rxe_qp_state {
 	QP_STATE_ERROR
 };
 
-<<<<<<< HEAD
-=======
-extern char *rxe_qp_state_name[];
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct rxe_req_info {
 	enum rxe_qp_state	state;
 	int			wqe_index;
@@ -411,30 +406,18 @@ struct rxe_dev {
 	struct list_head	pending_mmaps;
 
 	spinlock_t		mmap_offset_lock; /* guard mmap_offset */
-<<<<<<< HEAD
 	int			mmap_offset;
 
 	u64			stats_counters[RXE_NUM_OF_COUNTERS];
-=======
-	u64			mmap_offset;
-
-	atomic64_t		stats_counters[RXE_NUM_OF_COUNTERS];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct rxe_port		port;
 	struct list_head	list;
 	struct crypto_shash	*tfm;
 };
 
-<<<<<<< HEAD
 static inline void rxe_counter_inc(struct rxe_dev *rxe, enum rxe_counters cnt)
 {
 	rxe->stats_counters[cnt]++;
-=======
-static inline void rxe_counter_inc(struct rxe_dev *rxe, enum rxe_counters index)
-{
-	atomic64_inc(&rxe->stats_counters[index]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline struct rxe_dev *to_rdev(struct ib_device *dev)

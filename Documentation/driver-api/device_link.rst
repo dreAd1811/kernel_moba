@@ -81,7 +81,6 @@ integration is desired.
 Two other flags are specifically targeted at use cases where the device
 link is added from the consumer's ``->probe`` callback:  ``DL_FLAG_RPM_ACTIVE``
 can be specified to runtime resume the supplier upon addition of the
-<<<<<<< HEAD
 device link.  ``DL_FLAG_AUTOREMOVE_CONSUMER`` causes the device link to be
 automatically purged when the consumer fails to probe or later unbinds.
 This obviates the need to explicitly delete the link in the ``->remove``
@@ -90,12 +89,6 @@ callback or in the error path of the ``->probe`` callback.
 Similarly, when the device link is added from supplier's ``->probe`` callback,
 ``DL_FLAG_AUTOREMOVE_SUPPLIER`` causes the device link to be automatically
 purged when the supplier fails to probe or later unbinds.
-=======
-device link.  ``DL_FLAG_AUTOREMOVE`` causes the device link to be automatically
-purged when the consumer fails to probe or later unbinds.  This obviates
-the need to explicitly delete the link in the ``->remove`` callback or in
-the error path of the ``->probe`` callback.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Limitations
 ===========

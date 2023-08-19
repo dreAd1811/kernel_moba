@@ -6,16 +6,11 @@
 
 #include <linux/bitrev.h>
 #include <linux/clk.h>
-<<<<<<< HEAD
 #include <linux/crc32poly.h>
 #include <linux/module.h>
 #include <linux/mod_devicetable.h>
 #include <linux/platform_device.h>
 #include <linux/pm_runtime.h>
-=======
-#include <linux/module.h>
-#include <linux/platform_device.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <crypto/internal/hash.h>
 
@@ -36,13 +31,7 @@
 #define CRC_CR_REVERSE          (BIT(7) | BIT(6) | BIT(5))
 #define CRC_INIT_DEFAULT        0xFFFFFFFF
 
-<<<<<<< HEAD
 #define CRC_AUTOSUSPEND_DELAY	50
-=======
-/* Polynomial reversed */
-#define POLY_CRC32              0xEDB88320
-#define POLY_CRC32C             0x82F63B78
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct stm32_crc {
 	struct list_head list;
@@ -78,11 +67,7 @@ static int stm32_crc32_cra_init(struct crypto_tfm *tfm)
 	struct stm32_crc_ctx *mctx = crypto_tfm_ctx(tfm);
 
 	mctx->key = CRC_INIT_DEFAULT;
-<<<<<<< HEAD
 	mctx->poly = CRC32_POLY_LE;
-=======
-	mctx->poly = POLY_CRC32;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -91,11 +76,7 @@ static int stm32_crc32c_cra_init(struct crypto_tfm *tfm)
 	struct stm32_crc_ctx *mctx = crypto_tfm_ctx(tfm);
 
 	mctx->key = CRC_INIT_DEFAULT;
-<<<<<<< HEAD
 	mctx->poly = CRC32C_POLY_LE;
-=======
-	mctx->poly = POLY_CRC32C;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -126,11 +107,8 @@ static int stm32_crc_init(struct shash_desc *desc)
 	}
 	spin_unlock_bh(&crc_list.lock);
 
-<<<<<<< HEAD
 	pm_runtime_get_sync(ctx->crc->dev);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Reset, set key, poly and configure in bit reverse mode */
 	writel_relaxed(bitrev32(mctx->key), ctx->crc->regs + CRC_INIT);
 	writel_relaxed(bitrev32(mctx->poly), ctx->crc->regs + CRC_POL);
@@ -140,12 +118,9 @@ static int stm32_crc_init(struct shash_desc *desc)
 	ctx->partial = readl_relaxed(ctx->crc->regs + CRC_DR);
 	ctx->crc->nb_pending_bytes = 0;
 
-<<<<<<< HEAD
 	pm_runtime_mark_last_busy(ctx->crc->dev);
 	pm_runtime_put_autosuspend(ctx->crc->dev);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -157,11 +132,8 @@ static int stm32_crc_update(struct shash_desc *desc, const u8 *d8,
 	u32 *d32;
 	unsigned int i;
 
-<<<<<<< HEAD
 	pm_runtime_get_sync(crc->dev);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(crc->nb_pending_bytes)) {
 		while (crc->nb_pending_bytes != sizeof(u32) && length) {
 			/* Fill in pending data */
@@ -185,12 +157,9 @@ static int stm32_crc_update(struct shash_desc *desc, const u8 *d8,
 	/* Store partial result */
 	ctx->partial = readl_relaxed(crc->regs + CRC_DR);
 
-<<<<<<< HEAD
 	pm_runtime_mark_last_busy(crc->dev);
 	pm_runtime_put_autosuspend(crc->dev);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Check for pending data (non 32 bits) */
 	length &= 3;
 	if (likely(!length))
@@ -216,11 +185,7 @@ static int stm32_crc_final(struct shash_desc *desc, u8 *out)
 	struct stm32_crc_ctx *mctx = crypto_shash_ctx(desc->tfm);
 
 	/* Send computed CRC */
-<<<<<<< HEAD
 	put_unaligned_le32(mctx->poly == CRC32C_POLY_LE ?
-=======
-	put_unaligned_le32(mctx->poly == POLY_CRC32C ?
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   ~ctx->partial : ctx->partial, out);
 
 	return 0;
@@ -318,7 +283,6 @@ static int stm32_crc_probe(struct platform_device *pdev)
 		return ret;
 	}
 
-<<<<<<< HEAD
 	pm_runtime_set_autosuspend_delay(dev, CRC_AUTOSUSPEND_DELAY);
 	pm_runtime_use_autosuspend(dev);
 
@@ -326,8 +290,6 @@ static int stm32_crc_probe(struct platform_device *pdev)
 	pm_runtime_set_active(dev);
 	pm_runtime_enable(dev);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	platform_set_drvdata(pdev, crc);
 
 	spin_lock(&crc_list.lock);
@@ -343,24 +305,18 @@ static int stm32_crc_probe(struct platform_device *pdev)
 
 	dev_info(dev, "Initialized\n");
 
-<<<<<<< HEAD
 	pm_runtime_put_sync(dev);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 static int stm32_crc_remove(struct platform_device *pdev)
 {
 	struct stm32_crc *crc = platform_get_drvdata(pdev);
-<<<<<<< HEAD
 	int ret = pm_runtime_get_sync(crc->dev);
 
 	if (ret < 0)
 		return ret;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock(&crc_list.lock);
 	list_del(&crc->list);
@@ -368,18 +324,14 @@ static int stm32_crc_remove(struct platform_device *pdev)
 
 	crypto_unregister_shashes(algs, ARRAY_SIZE(algs));
 
-<<<<<<< HEAD
 	pm_runtime_disable(crc->dev);
 	pm_runtime_put_noidle(crc->dev);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clk_disable_unprepare(crc->clk);
 
 	return 0;
 }
 
-<<<<<<< HEAD
 #ifdef CONFIG_PM
 static int stm32_crc_runtime_suspend(struct device *dev)
 {
@@ -412,8 +364,6 @@ static const struct dev_pm_ops stm32_crc_pm_ops = {
 			   stm32_crc_runtime_resume, NULL)
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct of_device_id stm32_dt_ids[] = {
 	{ .compatible = "st,stm32f7-crc", },
 	{},
@@ -425,10 +375,7 @@ static struct platform_driver stm32_crc_driver = {
 	.remove = stm32_crc_remove,
 	.driver = {
 		.name           = DRIVER_NAME,
-<<<<<<< HEAD
 		.pm		= &stm32_crc_pm_ops,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.of_match_table = stm32_dt_ids,
 	},
 };

@@ -23,22 +23,13 @@ unsigned long __clear_user(void __user *addr, unsigned long size)
 	asm volatile(
 		"	testq  %[size8],%[size8]\n"
 		"	jz     4f\n"
-<<<<<<< HEAD
 		"0:	movq $0,(%[dst])\n"
 		"	addq   $8,%[dst]\n"
-=======
-		"0:	movq %[zero],(%[dst])\n"
-		"	addq   %[eight],%[dst]\n"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		"	decl %%ecx ; jnz   0b\n"
 		"4:	movq  %[size1],%%rcx\n"
 		"	testl %%ecx,%%ecx\n"
 		"	jz     2f\n"
-<<<<<<< HEAD
 		"1:	movb   $0,(%[dst])\n"
-=======
-		"1:	movb   %b[zero],(%[dst])\n"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		"	incq   %[dst]\n"
 		"	decl %%ecx ; jnz  1b\n"
 		"2:\n"
@@ -49,12 +40,7 @@ unsigned long __clear_user(void __user *addr, unsigned long size)
 		_ASM_EXTABLE(0b,3b)
 		_ASM_EXTABLE(1b,2b)
 		: [size8] "=&c"(size), [dst] "=&D" (__d0)
-<<<<<<< HEAD
 		: [size1] "r"(size & 7), "[size8]" (size / 8), "[dst]"(addr));
-=======
-		: [size1] "r"(size & 7), "[size8]" (size / 8), "[dst]"(addr),
-		  [zero] "r" (0UL), [eight] "r" (8UL));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clac();
 	return size;
 }
@@ -88,7 +74,6 @@ copy_user_handle_tail(char *to, char *from, unsigned len)
 	return len;
 }
 
-<<<<<<< HEAD
 /*
  * Similar to copy_user_handle_tail, probe for the write fault point,
  * but reuse __memcpy_mcsafe in case a new read error is encountered.
@@ -110,8 +95,6 @@ mcsafe_handle_tail(char *to, char *from, unsigned len)
 	return len;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE
 /**
  * clean_cache_range - write back a cache range with CLWB

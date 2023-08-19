@@ -507,11 +507,7 @@ brcms_c_attach_malloc(uint unit, uint *err, uint devid)
 	wlc->hw->wlc = wlc;
 
 	wlc->hw->bandstate[0] =
-<<<<<<< HEAD
 		kcalloc(MAXBANDS, sizeof(struct brcms_hw_band), GFP_ATOMIC);
-=======
-		kzalloc(sizeof(struct brcms_hw_band) * MAXBANDS, GFP_ATOMIC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (wlc->hw->bandstate[0] == NULL) {
 		*err = 1006;
 		goto fail;
@@ -525,12 +521,8 @@ brcms_c_attach_malloc(uint unit, uint *err, uint devid)
 	}
 
 	wlc->modulecb =
-<<<<<<< HEAD
 		kcalloc(BRCMS_MAXMODULES, sizeof(struct modulecb),
 			GFP_ATOMIC);
-=======
-		kzalloc(sizeof(struct modulecb) * BRCMS_MAXMODULES, GFP_ATOMIC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (wlc->modulecb == NULL) {
 		*err = 1009;
 		goto fail;
@@ -562,11 +554,7 @@ brcms_c_attach_malloc(uint unit, uint *err, uint devid)
 	}
 
 	wlc->bandstate[0] =
-<<<<<<< HEAD
 		kcalloc(MAXBANDS, sizeof(struct brcms_band), GFP_ATOMIC);
-=======
-		kzalloc(sizeof(struct brcms_band)*MAXBANDS, GFP_ATOMIC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (wlc->bandstate[0] == NULL) {
 		*err = 1025;
 		goto fail;

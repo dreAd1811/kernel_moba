@@ -1,16 +1,9 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Copyright (C) STMicroelectronics SA 2014
  * Authors: Benjamin Gaignard <benjamin.gaignard@st.com>
  *          Fabien Dessenne <fabien.dessenne@st.com>
  *          for STMicroelectronics.
-<<<<<<< HEAD
-=======
- * License terms:  GNU General Public License (GPL), version 2
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <drm/drmP.h>
@@ -47,10 +40,7 @@ void sti_plane_update_fps(struct sti_plane *plane,
 			  bool new_frame,
 			  bool new_field)
 {
-<<<<<<< HEAD
 	struct drm_plane_state *state = plane->drm_plane.state;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ktime_t now;
 	struct sti_fps_info *fps;
 	int fpks, fipks, ms_since_last, num_frames, num_fields;
@@ -77,24 +67,14 @@ void sti_plane_update_fps(struct sti_plane *plane,
 	fps->last_timestamp = now;
 	fps->last_frame_counter = fps->curr_frame_counter;
 
-<<<<<<< HEAD
 	if (state->fb) {
-=======
-	if (plane->drm_plane.fb) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		fpks = (num_frames * 1000000) / ms_since_last;
 		snprintf(plane->fps_info.fps_str, FPS_LENGTH,
 			 "%-8s %4dx%-4d %.4s @ %3d.%-3.3d fps (%s)",
 			 plane->drm_plane.name,
-<<<<<<< HEAD
 			 state->fb->width,
 			 state->fb->height,
 			 (char *)&state->fb->format->format,
-=======
-			 plane->drm_plane.fb->width,
-			 plane->drm_plane.fb->height,
-			 (char *)&plane->drm_plane.fb->format->format,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 fpks / 1000, fpks % 1000,
 			 sti_plane_to_str(plane));
 	}

@@ -86,11 +86,6 @@ retry:
 		return err;
 
 	if (fsm_state_err != MLXFW_FSM_STATE_ERR_OK) {
-<<<<<<< HEAD
-=======
-		fsm_state_err = min_t(enum mlxfw_fsm_state_err,
-				      fsm_state_err, MLXFW_FSM_STATE_ERR_MAX);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_err("Firmware flash failed: %s\n",
 		       mlxfw_fsm_state_err_str[fsm_state_err]);
 		return -EINVAL;

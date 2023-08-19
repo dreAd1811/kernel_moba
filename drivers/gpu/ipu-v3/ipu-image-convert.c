@@ -227,15 +227,12 @@ static const struct ipu_image_pixfmt image_convert_formats[] = {
 		.fourcc	= V4L2_PIX_FMT_BGR32,
 		.bpp    = 32,
 	}, {
-<<<<<<< HEAD
 		.fourcc	= V4L2_PIX_FMT_XRGB32,
 		.bpp    = 32,
 	}, {
 		.fourcc	= V4L2_PIX_FMT_XBGR32,
 		.bpp    = 32,
 	}, {
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.fourcc	= V4L2_PIX_FMT_YUYV,
 		.bpp    = 16,
 		.uv_width_dec = 2,

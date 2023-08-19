@@ -59,15 +59,9 @@ MODULE_AUTHOR("Texas Instruments");
 #define DM365_ISP5_INTSEL1		0x10
 #define DM365_ISP5_INTSEL2		0x14
 #define DM365_ISP5_INTSEL3		0x18
-<<<<<<< HEAD
 #define DM365_ISP5_CCDCMUX		0x20
 #define DM365_ISP5_PG_FRAME_SIZE	0x28
 #define DM365_VPBE_CLK_CTRL		0x00
-=======
-#define DM365_ISP5_CCDCMUX 		0x20
-#define DM365_ISP5_PG_FRAME_SIZE 	0x28
-#define DM365_VPBE_CLK_CTRL 		0x00
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define VPSS_CLK_CTRL			0x01c40044
 #define VPSS_CLK_CTRL_VENCCLKEN		BIT(3)
@@ -84,13 +78,8 @@ MODULE_AUTHOR("Texas Instruments");
 #define DM365_ISP5_INTSEL3_DEFAULT	0x00000015
 
 /* masks and shifts for DM365*/
-<<<<<<< HEAD
 #define DM365_CCDC_PG_VD_POL_SHIFT	0
 #define DM365_CCDC_PG_HD_POL_SHIFT	1
-=======
-#define DM365_CCDC_PG_VD_POL_SHIFT 	0
-#define DM365_CCDC_PG_HD_POL_SHIFT 	1
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define CCD_SRC_SEL_MASK		(BIT_MASK(5) | BIT_MASK(4))
 #define CCD_SRC_SEL_SHIFT		4
@@ -127,11 +116,7 @@ struct vpss_hw_ops {
 struct vpss_oper_config {
 	__iomem void *vpss_regs_base0;
 	__iomem void *vpss_regs_base1;
-<<<<<<< HEAD
 	__iomem void *vpss_regs_base2;
-=======
-	resource_size_t *vpss_regs_base2;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	enum vpss_platform_type platform;
 	spinlock_t vpss_lock;
 	struct vpss_hw_ops hw_ops;

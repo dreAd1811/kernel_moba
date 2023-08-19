@@ -12,11 +12,7 @@
 struct kmem_cache *task_xstate_cachep = NULL;
 unsigned int xstate_size;
 
-<<<<<<< HEAD
 #ifdef CONFIG_STACKPROTECTOR
-=======
-#ifdef CONFIG_CC_STACKPROTECTOR
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 unsigned long __stack_chk_guard __read_mostly;
 EXPORT_SYMBOL(__stack_chk_guard);
 #endif

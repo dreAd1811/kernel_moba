@@ -172,11 +172,7 @@ int mlx4_do_bond(struct mlx4_dev *dev, bool enable)
 		list_add_tail(&dev_ctx->list, &priv->ctx_list);
 		spin_unlock_irqrestore(&priv->ctx_lock, flags);
 
-<<<<<<< HEAD
 		mlx4_dbg(dev, "Interface for protocol %d restarted with bonded mode %s\n",
-=======
-		mlx4_dbg(dev, "Inrerface for protocol %d restarted with when bonded mode is %s\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 dev_ctx->intf->protocol, enable ?
 			 "enabled" : "disabled");
 	}

@@ -111,15 +111,10 @@ int arch_register_cpu(int num)
 	/*
 	 * Currently CPU0 is only hotpluggable on Intel platforms. Other
 	 * vendors can add hotplug support later.
-<<<<<<< HEAD
 	 * Xen PV guests don't support CPU0 hotplug at all.
 	 */
 	if (c->x86_vendor != X86_VENDOR_INTEL ||
 	    boot_cpu_has(X86_FEATURE_XENPV))
-=======
-	 */
-	if (c->x86_vendor != X86_VENDOR_INTEL)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cpu0_hotpluggable = 0;
 
 	/*

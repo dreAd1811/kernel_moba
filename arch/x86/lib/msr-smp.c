@@ -2,10 +2,7 @@
 #include <linux/export.h>
 #include <linux/preempt.h>
 #include <linux/smp.h>
-<<<<<<< HEAD
 #include <linux/completion.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/msr.h>
 
 static void __rdmsr_on_cpu(void *info)
@@ -147,28 +144,19 @@ void wrmsr_on_cpus(const struct cpumask *mask, u32 msr_no, struct msr *msrs)
 }
 EXPORT_SYMBOL(wrmsr_on_cpus);
 
-<<<<<<< HEAD
 struct msr_info_completion {
 	struct msr_info		msr;
 	struct completion	done;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* These "safe" variants are slower and should be used when the target MSR
    may not actually exist. */
 static void __rdmsr_safe_on_cpu(void *info)
 {
-<<<<<<< HEAD
 	struct msr_info_completion *rv = info;
 
 	rv->msr.err = rdmsr_safe(rv->msr.msr_no, &rv->msr.reg.l, &rv->msr.reg.h);
 	complete(&rv->done);
-=======
-	struct msr_info *rv = info;
-
-	rv->err = rdmsr_safe(rv->msr_no, &rv->reg.l, &rv->reg.h);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __wrmsr_safe_on_cpu(void *info)
@@ -180,7 +168,6 @@ static void __wrmsr_safe_on_cpu(void *info)
 
 int rdmsr_safe_on_cpu(unsigned int cpu, u32 msr_no, u32 *l, u32 *h)
 {
-<<<<<<< HEAD
 	struct msr_info_completion rv;
 	call_single_data_t csd = {
 		.func	= __rdmsr_safe_on_cpu,
@@ -201,19 +188,6 @@ int rdmsr_safe_on_cpu(unsigned int cpu, u32 msr_no, u32 *l, u32 *h)
 	*h = rv.msr.reg.h;
 
 	return err;
-=======
-	int err;
-	struct msr_info rv;
-
-	memset(&rv, 0, sizeof(rv));
-
-	rv.msr_no = msr_no;
-	err = smp_call_function_single(cpu, __rdmsr_safe_on_cpu, &rv, 1);
-	*l = rv.reg.l;
-	*h = rv.reg.h;
-
-	return err ? err : rv.err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(rdmsr_safe_on_cpu);
 
@@ -251,7 +225,6 @@ EXPORT_SYMBOL(wrmsrl_safe_on_cpu);
 
 int rdmsrl_safe_on_cpu(unsigned int cpu, u32 msr_no, u64 *q)
 {
-<<<<<<< HEAD
 	u32 low, high;
 	int err;
 
@@ -259,18 +232,6 @@ int rdmsrl_safe_on_cpu(unsigned int cpu, u32 msr_no, u64 *q)
 	*q = (u64)high << 32 | low;
 
 	return err;
-=======
-	int err;
-	struct msr_info rv;
-
-	memset(&rv, 0, sizeof(rv));
-
-	rv.msr_no = msr_no;
-	err = smp_call_function_single(cpu, __rdmsr_safe_on_cpu, &rv, 1);
-	*q = rv.reg.q;
-
-	return err ? err : rv.err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(rdmsrl_safe_on_cpu);
 

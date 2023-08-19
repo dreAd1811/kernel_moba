@@ -11,11 +11,7 @@
 
 #include "agp.h"
 
-<<<<<<< HEAD
 static vm_fault_t alpha_core_agp_vm_fault(struct vm_fault *vmf)
-=======
-static int alpha_core_agp_vm_fault(struct vm_fault *vmf)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	alpha_agp_info *agp = agp_bridge->dev_private_data;
 	dma_addr_t dma_addr;

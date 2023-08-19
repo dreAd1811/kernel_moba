@@ -30,12 +30,8 @@
 #include <linux/wm97xx.h>
 #include <linux/power_supply.h>
 #include <linux/usb/gpio_vbus.h>
-<<<<<<< HEAD
 #include <linux/platform_data/i2c-gpio.h>
 #include <linux/gpio/machine.h>
-=======
-#include <linux/i2c-gpio.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/mach-types.h>
 #include <asm/suspend.h>
@@ -325,7 +321,6 @@ static struct soc_camera_link palmz72_iclink = {
 	.flags		= SOCAM_DATAWIDTH_8,
 };
 
-<<<<<<< HEAD
 static struct gpiod_lookup_table palmz72_i2c_gpiod_table = {
 	.dev_id		= "i2c-gpio.0",
 	.table		= {
@@ -337,11 +332,6 @@ static struct gpiod_lookup_table palmz72_i2c_gpiod_table = {
 };
 
 static struct i2c_gpio_platform_data palmz72_i2c_bus_data = {
-=======
-static struct i2c_gpio_platform_data palmz72_i2c_bus_data = {
-	.sda_pin	= 118,
-	.scl_pin	= 117,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.udelay		= 10,
 	.timeout	= 100,
 };
@@ -388,10 +378,7 @@ static void __init palmz72_camera_init(void)
 {
 	palmz72_cam_gpio_init();
 	pxa_set_camera_info(&palmz72_pxacamera_platform_data);
-<<<<<<< HEAD
 	gpiod_add_lookup_table(&palmz72_i2c_gpiod_table);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	platform_device_register(&palmz72_i2c_bus_device);
 	platform_device_register(&palmz72_camera);
 }

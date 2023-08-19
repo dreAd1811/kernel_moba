@@ -7,25 +7,17 @@
 #include <dt-bindings/reset/tegra124-car.h>
 #include <dt-bindings/thermal/tegra124-soctherm.h>
 
-<<<<<<< HEAD
-=======
-#include "skeleton.dtsi"
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 / {
 	compatible = "nvidia,tegra124";
 	interrupt-parent = <&lic>;
 	#address-cells = <2>;
 	#size-cells = <2>;
 
-<<<<<<< HEAD
 	memory@80000000 {
 		device_type = "memory";
 		reg = <0x0 0x80000000 0x0 0x0>;
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pcie@1003000 {
 		compatible = "nvidia,tegra124-pcie";
 		device_type = "pci";
@@ -136,11 +128,7 @@
 			nvidia,head = <1>;
 		};
 
-<<<<<<< HEAD
 		hdmi: hdmi@54280000 {
-=======
-		hdmi@54280000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "nvidia,tegra124-hdmi";
 			reg = <0x0 0x54280000 0x0 0x00040000>;
 			interrupts = <GIC_SPI 75 IRQ_TYPE_LEVEL_HIGH>;
@@ -868,7 +856,6 @@
 		status = "disabled";
 	};
 
-<<<<<<< HEAD
 	cec@70015000 {
 		compatible = "nvidia,tegra124-cec";
 		reg = <0x0 0x70015000 0x0 0x00001000>;
@@ -879,8 +866,6 @@
 		hdmi-phandle = <&hdmi>;
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	soctherm: thermal-sensor@700e2000 {
 		compatible = "nvidia,tegra124-soctherm";
 		reg = <0x0 0x700e2000 0x0 0x600 /* SOC_THERM reg_base */

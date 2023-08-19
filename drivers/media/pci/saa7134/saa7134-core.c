@@ -338,15 +338,9 @@ void saa7134_buffer_next(struct saa7134_dev *dev,
 	}
 }
 
-<<<<<<< HEAD
 void saa7134_buffer_timeout(struct timer_list *t)
 {
 	struct saa7134_dmaqueue *q = from_timer(q, t, timeout);
-=======
-void saa7134_buffer_timeout(unsigned long data)
-{
-	struct saa7134_dmaqueue *q = (struct saa7134_dmaqueue *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct saa7134_dev *dev = q->dev;
 	unsigned long flags;
 
@@ -384,11 +378,7 @@ void saa7134_stop_streaming(struct saa7134_dev *dev, struct saa7134_dmaqueue *q)
 		}
 	}
 	spin_unlock_irqrestore(&dev->slock, flags);
-<<<<<<< HEAD
 	saa7134_buffer_timeout(&q->timeout); /* also calls del_timer(&q->timeout) */
-=======
-	saa7134_buffer_timeout((unsigned long)q); /* also calls del_timer(&q->timeout) */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(saa7134_stop_streaming);
 

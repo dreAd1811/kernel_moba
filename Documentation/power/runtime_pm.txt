@@ -435,12 +435,7 @@ drivers/base/power/runtime.c and include/linux/pm_runtime.h:
       PM status to 'suspended' and update its parent's counter of 'active'
       children as appropriate (it is only valid to use this function if
       'power.runtime_error' is set or 'power.disable_depth' is greater than
-<<<<<<< HEAD
       zero)
-=======
-      zero); it will fail and return an error code if the device has a child
-      which is active and the 'power.ignore_children' flag is unset
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
   bool pm_runtime_active(struct device *dev);
     - return true if the device's runtime PM status is 'active' or its
@@ -684,11 +679,7 @@ left in runtime suspend.  If that happens, the PM core will not execute any
 system suspend and resume callbacks for all of those devices, except for the
 complete callback, which is then entirely responsible for handling the device
 as appropriate.  This only applies to system suspend transitions that are not
-<<<<<<< HEAD
 related to hibernation (see Documentation/driver-api/pm/devices.rst for more
-=======
-related to hibernation (see Documentation/power/admin-guide/devices.rst for more
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 information).
 
 The PM core does its best to reduce the probability of race conditions between

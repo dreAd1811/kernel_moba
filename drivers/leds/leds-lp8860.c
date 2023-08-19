@@ -22,10 +22,7 @@
 #include <linux/of_gpio.h>
 #include <linux/gpio/consumer.h>
 #include <linux/slab.h>
-<<<<<<< HEAD
 #include <uapi/linux/uleds.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define LP8860_DISP_CL1_BRT_MSB		0x00
 #define LP8860_DISP_CL1_BRT_LSB		0x01
@@ -90,11 +87,6 @@
 
 #define LP8860_CLEAR_FAULTS		0x01
 
-<<<<<<< HEAD
-=======
-#define LP8860_DISP_LED_NAME		"display_cluster"
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * struct lp8860_led -
  * @lock - Lock for reading/writing the device
@@ -105,11 +97,7 @@
  * @enable_gpio - VDDIO/EN gpio to enable communication interface
  * @regulator - LED supply regulator pointer
  * @label - LED label
-<<<<<<< HEAD
  */
-=======
-**/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct lp8860_led {
 	struct mutex lock;
 	struct i2c_client *client;
@@ -118,11 +106,7 @@ struct lp8860_led {
 	struct regmap *eeprom_regmap;
 	struct gpio_desc *enable_gpio;
 	struct regulator *regulator;
-<<<<<<< HEAD
 	char label[LED_MAX_NAME_SIZE];
-=======
-	const char *label;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct lp8860_eeprom_reg {
@@ -262,7 +246,6 @@ static int lp8860_init(struct lp8860_led *led)
 	unsigned int read_buf;
 	int ret, i, reg_count;
 
-<<<<<<< HEAD
 	if (led->regulator) {
 		ret = regulator_enable(led->regulator);
 		if (ret) {
@@ -272,8 +255,6 @@ static int lp8860_init(struct lp8860_led *led)
 		}
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (led->enable_gpio)
 		gpiod_direction_output(led->enable_gpio, 1);
 
@@ -309,7 +290,6 @@ static int lp8860_init(struct lp8860_led *led)
 	ret = regmap_write(led->regmap,
 			LP8860_EEPROM_CNTRL,
 			LP8860_PROGRAM_EEPROM);
-<<<<<<< HEAD
 	if (ret) {
 		dev_err(&led->client->dev, "Failed programming EEPROM\n");
 		goto out;
@@ -317,15 +297,10 @@ static int lp8860_init(struct lp8860_led *led)
 
 	return ret;
 
-=======
-	if (ret)
-		dev_err(&led->client->dev, "Failed programming EEPROM\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	if (ret)
 		if (led->enable_gpio)
 			gpiod_direction_output(led->enable_gpio, 0);
-<<<<<<< HEAD
 
 	if (led->regulator) {
 		ret = regulator_disable(led->regulator);
@@ -334,8 +309,6 @@ out:
 				"Failed to disable regulator\n");
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -413,17 +386,13 @@ static int lp8860_probe(struct i2c_client *client,
 	int ret;
 	struct lp8860_led *led;
 	struct device_node *np = client->dev.of_node;
-<<<<<<< HEAD
 	struct device_node *child_node;
 	const char *name;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	led = devm_kzalloc(&client->dev, sizeof(*led), GFP_KERNEL);
 	if (!led)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	for_each_available_child_of_node(np, child_node) {
 		led->led_dev.default_trigger = of_get_property(child_node,
 						    "linux,default-trigger",
@@ -436,16 +405,6 @@ static int lp8860_probe(struct i2c_client *client,
 		else
 			snprintf(led->label, sizeof(led->label),
 				"%s::display_cluster", id->name);
-=======
-	led->label = LP8860_DISP_LED_NAME;
-
-	if (client->dev.of_node) {
-		ret = of_property_read_string(np, "label", &led->label);
-		if (ret) {
-			dev_err(&client->dev, "Missing label in dt\n");
-			return -EINVAL;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	led->enable_gpio = devm_gpiod_get_optional(&client->dev,
@@ -462,10 +421,6 @@ static int lp8860_probe(struct i2c_client *client,
 
 	led->client = client;
 	led->led_dev.name = led->label;
-<<<<<<< HEAD
-=======
-	led->led_dev.max_brightness = LED_FULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	led->led_dev.brightness_set_blocking = lp8860_brightness_set;
 
 	mutex_init(&led->lock);
@@ -492,11 +447,7 @@ static int lp8860_probe(struct i2c_client *client,
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	ret = devm_led_classdev_register(&client->dev, &led->led_dev);
-=======
-	ret = led_classdev_register(&client->dev, &led->led_dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		dev_err(&client->dev, "led register err: %d\n", ret);
 		return ret;
@@ -510,11 +461,6 @@ static int lp8860_remove(struct i2c_client *client)
 	struct lp8860_led *led = i2c_get_clientdata(client);
 	int ret;
 
-<<<<<<< HEAD
-=======
-	led_classdev_unregister(&led->led_dev);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (led->enable_gpio)
 		gpiod_direction_output(led->enable_gpio, 0);
 
@@ -525,11 +471,8 @@ static int lp8860_remove(struct i2c_client *client)
 				"Failed to disable regulator\n");
 	}
 
-<<<<<<< HEAD
 	mutex_destroy(&led->lock);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -539,28 +482,16 @@ static const struct i2c_device_id lp8860_id[] = {
 };
 MODULE_DEVICE_TABLE(i2c, lp8860_id);
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_OF
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct of_device_id of_lp8860_leds_match[] = {
 	{ .compatible = "ti,lp8860", },
 	{},
 };
 MODULE_DEVICE_TABLE(of, of_lp8860_leds_match);
-<<<<<<< HEAD
-=======
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct i2c_driver lp8860_driver = {
 	.driver = {
 		.name	= "lp8860",
-<<<<<<< HEAD
 		.of_match_table = of_lp8860_leds_match,
-=======
-		.of_match_table = of_match_ptr(of_lp8860_leds_match),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.probe		= lp8860_probe,
 	.remove		= lp8860_remove,
@@ -570,8 +501,4 @@ module_i2c_driver(lp8860_driver);
 
 MODULE_DESCRIPTION("Texas Instruments LP8860 LED driver");
 MODULE_AUTHOR("Dan Murphy <dmurphy@ti.com>");
-<<<<<<< HEAD
 MODULE_LICENSE("GPL v2");
-=======
-MODULE_LICENSE("GPL");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

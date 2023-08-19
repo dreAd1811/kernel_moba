@@ -45,13 +45,8 @@ int gm200_gr_new(struct nvkm_device *, int, struct nvkm_gr **);
 int gm20b_gr_new(struct nvkm_device *, int, struct nvkm_gr **);
 int gp100_gr_new(struct nvkm_device *, int, struct nvkm_gr **);
 int gp102_gr_new(struct nvkm_device *, int, struct nvkm_gr **);
-<<<<<<< HEAD
 int gp104_gr_new(struct nvkm_device *, int, struct nvkm_gr **);
 int gp107_gr_new(struct nvkm_device *, int, struct nvkm_gr **);
 int gp10b_gr_new(struct nvkm_device *, int, struct nvkm_gr **);
 int gv100_gr_new(struct nvkm_device *, int, struct nvkm_gr **);
-=======
-int gp107_gr_new(struct nvkm_device *, int, struct nvkm_gr **);
-int gp10b_gr_new(struct nvkm_device *, int, struct nvkm_gr **);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

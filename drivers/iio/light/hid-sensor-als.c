@@ -98,11 +98,7 @@ static int als_read_raw(struct iio_dev *indio_dev,
 	*val = 0;
 	*val2 = 0;
 	switch (mask) {
-<<<<<<< HEAD
 	case IIO_CHAN_INFO_RAW:
-=======
-	case 0:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		switch (chan->scan_index) {
 		case  CHANNEL_SCAN_INDEX_INTENSITY:
 		case  CHANNEL_SCAN_INDEX_ILLUM:
@@ -183,10 +179,6 @@ static int als_write_raw(struct iio_dev *indio_dev,
 }
 
 static const struct iio_info als_info = {
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read_raw = &als_read_raw,
 	.write_raw = &als_write_raw,
 };

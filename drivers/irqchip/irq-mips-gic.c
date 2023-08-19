@@ -6,17 +6,12 @@
  * Copyright (C) 2008 Ralf Baechle (ralf@linux-mips.org)
  * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
  */
-<<<<<<< HEAD
 
 #define pr_fmt(fmt) "irq-mips-gic: " fmt
 
 #include <linux/bitmap.h>
 #include <linux/clocksource.h>
 #include <linux/cpuhotplug.h>
-=======
-#include <linux/bitmap.h>
-#include <linux/clocksource.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/init.h>
 #include <linux/interrupt.h>
 #include <linux/irq.h>
@@ -57,7 +52,6 @@ static DEFINE_SPINLOCK(gic_lock);
 static struct irq_domain *gic_irq_domain;
 static struct irq_domain *gic_ipi_domain;
 static int gic_shared_intrs;
-<<<<<<< HEAD
 static unsigned int gic_cpu_pin;
 static unsigned int timer_cpu_pin;
 static struct irq_chip gic_level_irq_controller, gic_edge_irq_controller;
@@ -68,14 +62,6 @@ static struct gic_all_vpes_chip_data {
 	u32	map;
 	bool	mask;
 } gic_all_vpes_chip_data[GIC_NUM_LOCAL_INTRS];
-=======
-static int gic_vpes;
-static unsigned int gic_cpu_pin;
-static unsigned int timer_cpu_pin;
-static struct irq_chip gic_level_irq_controller, gic_edge_irq_controller;
-DECLARE_BITMAP(ipi_resrv, GIC_MAX_INTRS);
-DECLARE_BITMAP(ipi_available, GIC_MAX_INTRS);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void gic_clear_pcpu_masks(unsigned int intr)
 {
@@ -216,21 +202,14 @@ static void gic_ack_irq(struct irq_data *d)
 
 static int gic_set_type(struct irq_data *d, unsigned int type)
 {
-<<<<<<< HEAD
 	unsigned int irq, pol, trig, dual;
 	unsigned long flags;
 
 	irq = GIC_HWIRQ_TO_SHARED(d->hwirq);
-=======
-	unsigned int irq = GIC_HWIRQ_TO_SHARED(d->hwirq);
-	unsigned long flags;
-	bool is_edge;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irqsave(&gic_lock, flags);
 	switch (type & IRQ_TYPE_SENSE_MASK) {
 	case IRQ_TYPE_EDGE_FALLING:
-<<<<<<< HEAD
 		pol = GIC_POL_FALLING_EDGE;
 		trig = GIC_TRIG_EDGE;
 		dual = GIC_DUAL_SINGLE;
@@ -263,41 +242,6 @@ static int gic_set_type(struct irq_data *d, unsigned int type)
 	change_gic_dual(irq, dual);
 
 	if (trig == GIC_TRIG_EDGE)
-=======
-		change_gic_pol(irq, GIC_POL_FALLING_EDGE);
-		change_gic_trig(irq, GIC_TRIG_EDGE);
-		change_gic_dual(irq, GIC_DUAL_SINGLE);
-		is_edge = true;
-		break;
-	case IRQ_TYPE_EDGE_RISING:
-		change_gic_pol(irq, GIC_POL_RISING_EDGE);
-		change_gic_trig(irq, GIC_TRIG_EDGE);
-		change_gic_dual(irq, GIC_DUAL_SINGLE);
-		is_edge = true;
-		break;
-	case IRQ_TYPE_EDGE_BOTH:
-		/* polarity is irrelevant in this case */
-		change_gic_trig(irq, GIC_TRIG_EDGE);
-		change_gic_dual(irq, GIC_DUAL_DUAL);
-		is_edge = true;
-		break;
-	case IRQ_TYPE_LEVEL_LOW:
-		change_gic_pol(irq, GIC_POL_ACTIVE_LOW);
-		change_gic_trig(irq, GIC_TRIG_LEVEL);
-		change_gic_dual(irq, GIC_DUAL_SINGLE);
-		is_edge = false;
-		break;
-	case IRQ_TYPE_LEVEL_HIGH:
-	default:
-		change_gic_pol(irq, GIC_POL_ACTIVE_HIGH);
-		change_gic_trig(irq, GIC_TRIG_LEVEL);
-		change_gic_dual(irq, GIC_DUAL_SINGLE);
-		is_edge = false;
-		break;
-	}
-
-	if (is_edge)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		irq_set_chip_handler_name_locked(d, &gic_edge_irq_controller,
 						 handle_edge_irq, NULL);
 	else
@@ -402,7 +346,6 @@ static struct irq_chip gic_local_irq_controller = {
 
 static void gic_mask_local_irq_all_vpes(struct irq_data *d)
 {
-<<<<<<< HEAD
 	struct gic_all_vpes_chip_data *cd;
 	unsigned long flags;
 	int intr, cpu;
@@ -414,15 +357,6 @@ static void gic_mask_local_irq_all_vpes(struct irq_data *d)
 	spin_lock_irqsave(&gic_lock, flags);
 	for_each_online_cpu(cpu) {
 		write_gic_vl_other(mips_cm_vp_id(cpu));
-=======
-	int intr = GIC_HWIRQ_TO_LOCAL(d->hwirq);
-	int i;
-	unsigned long flags;
-
-	spin_lock_irqsave(&gic_lock, flags);
-	for (i = 0; i < gic_vpes; i++) {
-		write_gic_vl_other(mips_cm_vp_id(i));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		write_gic_vo_rmask(BIT(intr));
 	}
 	spin_unlock_irqrestore(&gic_lock, flags);
@@ -430,7 +364,6 @@ static void gic_mask_local_irq_all_vpes(struct irq_data *d)
 
 static void gic_unmask_local_irq_all_vpes(struct irq_data *d)
 {
-<<<<<<< HEAD
 	struct gic_all_vpes_chip_data *cd;
 	unsigned long flags;
 	int intr, cpu;
@@ -442,21 +375,11 @@ static void gic_unmask_local_irq_all_vpes(struct irq_data *d)
 	spin_lock_irqsave(&gic_lock, flags);
 	for_each_online_cpu(cpu) {
 		write_gic_vl_other(mips_cm_vp_id(cpu));
-=======
-	int intr = GIC_HWIRQ_TO_LOCAL(d->hwirq);
-	int i;
-	unsigned long flags;
-
-	spin_lock_irqsave(&gic_lock, flags);
-	for (i = 0; i < gic_vpes; i++) {
-		write_gic_vl_other(mips_cm_vp_id(i));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		write_gic_vo_smask(BIT(intr));
 	}
 	spin_unlock_irqrestore(&gic_lock, flags);
 }
 
-<<<<<<< HEAD
 static void gic_all_vpes_irq_cpu_online(struct irq_data *d)
 {
 	struct gic_all_vpes_chip_data *cd;
@@ -475,12 +398,6 @@ static struct irq_chip gic_all_vpes_local_irq_controller = {
 	.irq_mask		= gic_mask_local_irq_all_vpes,
 	.irq_unmask		= gic_unmask_local_irq_all_vpes,
 	.irq_cpu_online		= gic_all_vpes_irq_cpu_online,
-=======
-static struct irq_chip gic_all_vpes_local_irq_controller = {
-	.name			=	"MIPS GIC Local",
-	.irq_mask		=	gic_mask_local_irq_all_vpes,
-	.irq_unmask		=	gic_unmask_local_irq_all_vpes,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void __gic_irq_dispatch(void)
@@ -495,42 +412,6 @@ static void gic_irq_dispatch(struct irq_desc *desc)
 	gic_handle_shared_int(true);
 }
 
-<<<<<<< HEAD
-=======
-static int gic_local_irq_domain_map(struct irq_domain *d, unsigned int virq,
-				    irq_hw_number_t hw)
-{
-	int intr = GIC_HWIRQ_TO_LOCAL(hw);
-	int i;
-	unsigned long flags;
-	u32 val;
-
-	if (!gic_local_irq_is_routable(intr))
-		return -EPERM;
-
-	if (intr > GIC_LOCAL_INT_FDC) {
-		pr_err("Invalid local IRQ %d\n", intr);
-		return -EINVAL;
-	}
-
-	if (intr == GIC_LOCAL_INT_TIMER) {
-		/* CONFIG_MIPS_CMP workaround (see __gic_init) */
-		val = GIC_MAP_PIN_MAP_TO_PIN | timer_cpu_pin;
-	} else {
-		val = GIC_MAP_PIN_MAP_TO_PIN | gic_cpu_pin;
-	}
-
-	spin_lock_irqsave(&gic_lock, flags);
-	for (i = 0; i < gic_vpes; i++) {
-		write_gic_vl_other(mips_cm_vp_id(i));
-		write_gic_vo_map(intr, val);
-	}
-	spin_unlock_irqrestore(&gic_lock, flags);
-
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int gic_shared_irq_domain_map(struct irq_domain *d, unsigned int virq,
 				     irq_hw_number_t hw, unsigned int cpu)
 {
@@ -571,15 +452,11 @@ static int gic_irq_domain_xlate(struct irq_domain *d, struct device_node *ctrlr,
 static int gic_irq_domain_map(struct irq_domain *d, unsigned int virq,
 			      irq_hw_number_t hwirq)
 {
-<<<<<<< HEAD
 	struct gic_all_vpes_chip_data *cd;
 	unsigned long flags;
 	unsigned int intr;
 	int err, cpu;
 	u32 map;
-=======
-	int err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (hwirq >= GIC_SHARED_HWIRQ_BASE) {
 		/* verify that shared irqs don't conflict with an IPI irq */
@@ -596,7 +473,6 @@ static int gic_irq_domain_map(struct irq_domain *d, unsigned int virq,
 		return gic_shared_irq_domain_map(d, virq, hwirq, 0);
 	}
 
-<<<<<<< HEAD
 	intr = GIC_HWIRQ_TO_LOCAL(hwirq);
 	map = GIC_MAP_PIN_MAP_TO_PIN | gic_cpu_pin;
 
@@ -605,10 +481,6 @@ static int gic_irq_domain_map(struct irq_domain *d, unsigned int virq,
 		/* CONFIG_MIPS_CMP workaround (see __gic_init) */
 		map = GIC_MAP_PIN_MAP_TO_PIN | timer_cpu_pin;
 		/* fall-through */
-=======
-	switch (GIC_HWIRQ_TO_LOCAL(hwirq)) {
-	case GIC_LOCAL_INT_TIMER:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case GIC_LOCAL_INT_PERFCTR:
 	case GIC_LOCAL_INT_FDC:
 		/*
@@ -616,17 +488,11 @@ static int gic_irq_domain_map(struct irq_domain *d, unsigned int virq,
 		 * the rest of the MIPS kernel code does not use the
 		 * percpu IRQ API for them.
 		 */
-<<<<<<< HEAD
 		cd = &gic_all_vpes_chip_data[intr];
 		cd->map = map;
 		err = irq_domain_set_hwirq_and_chip(d, virq, hwirq,
 						    &gic_all_vpes_local_irq_controller,
 						    cd);
-=======
-		err = irq_domain_set_hwirq_and_chip(d, virq, hwirq,
-						    &gic_all_vpes_local_irq_controller,
-						    NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (err)
 			return err;
 
@@ -645,7 +511,6 @@ static int gic_irq_domain_map(struct irq_domain *d, unsigned int virq,
 		break;
 	}
 
-<<<<<<< HEAD
 	if (!gic_local_irq_is_routable(intr))
 		return -EPERM;
 
@@ -657,9 +522,6 @@ static int gic_irq_domain_map(struct irq_domain *d, unsigned int virq,
 	spin_unlock_irqrestore(&gic_lock, flags);
 
 	return 0;
-=======
-	return gic_local_irq_domain_map(d, virq, hwirq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int gic_irq_domain_alloc(struct irq_domain *d, unsigned int virq,
@@ -791,7 +653,6 @@ static const struct irq_domain_ops gic_ipi_domain_ops = {
 	.match = gic_ipi_domain_match,
 };
 
-<<<<<<< HEAD
 static int gic_cpu_startup(unsigned int cpu)
 {
 	/* Enable or disable EIC */
@@ -806,17 +667,11 @@ static int gic_cpu_startup(unsigned int cpu)
 
 	return 0;
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int __init gic_of_init(struct device_node *node,
 			      struct device_node *parent)
 {
-<<<<<<< HEAD
 	unsigned int cpu_vec, i, gicconfig, v[2], num_ipis;
-=======
-	unsigned int cpu_vec, i, j, gicconfig, cpu, v[2];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long reserved;
 	phys_addr_t gic_base;
 	struct resource res;
@@ -831,11 +686,7 @@ static int __init gic_of_init(struct device_node *node,
 
 	cpu_vec = find_first_zero_bit(&reserved, hweight_long(ST0_IM));
 	if (cpu_vec == hweight_long(ST0_IM)) {
-<<<<<<< HEAD
 		pr_err("No CPU vectors available\n");
-=======
-		pr_err("No CPU vectors available for GIC\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 	}
 
@@ -848,15 +699,10 @@ static int __init gic_of_init(struct device_node *node,
 			gic_base = read_gcr_gic_base() &
 				~CM_GCR_GIC_BASE_GICEN;
 			gic_len = 0x20000;
-<<<<<<< HEAD
 			pr_warn("Using inherited base address %pa\n",
 				&gic_base);
 		} else {
 			pr_err("Failed to get memory range\n");
-=======
-		} else {
-			pr_err("Failed to get GIC memory range\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -ENODEV;
 		}
 	} else {
@@ -877,21 +723,7 @@ static int __init gic_of_init(struct device_node *node,
 	gic_shared_intrs >>= __ffs(GIC_CONFIG_NUMINTERRUPTS);
 	gic_shared_intrs = (gic_shared_intrs + 1) * 8;
 
-<<<<<<< HEAD
 	if (cpu_has_veic) {
-=======
-	gic_vpes = gicconfig & GIC_CONFIG_PVPS;
-	gic_vpes >>= __ffs(GIC_CONFIG_PVPS);
-	gic_vpes = gic_vpes + 1;
-
-	if (cpu_has_veic) {
-		/* Set EIC mode for all VPEs */
-		for_each_present_cpu(cpu) {
-			write_gic_vl_other(mips_cm_vp_id(cpu));
-			write_gic_vo_ctl(GIC_VX_CTL_EIC);
-		}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Always use vector 1 in EIC mode */
 		gic_cpu_pin = 0;
 		timer_cpu_pin = gic_cpu_pin;
@@ -928,11 +760,7 @@ static int __init gic_of_init(struct device_node *node,
 					       gic_shared_intrs, 0,
 					       &gic_irq_domain_ops, NULL);
 	if (!gic_irq_domain) {
-<<<<<<< HEAD
 		pr_err("Failed to add IRQ domain");
-=======
-		pr_err("Failed to add GIC IRQ domain");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENXIO;
 	}
 
@@ -941,11 +769,7 @@ static int __init gic_of_init(struct device_node *node,
 						  GIC_NUM_LOCAL_INTRS + gic_shared_intrs,
 						  node, &gic_ipi_domain_ops, NULL);
 	if (!gic_ipi_domain) {
-<<<<<<< HEAD
 		pr_err("Failed to add IPI domain");
-=======
-		pr_err("Failed to add GIC IPI domain");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENXIO;
 	}
 
@@ -955,19 +779,12 @@ static int __init gic_of_init(struct device_node *node,
 	    !of_property_read_u32_array(node, "mti,reserved-ipi-vectors", v, 2)) {
 		bitmap_set(ipi_resrv, v[0], v[1]);
 	} else {
-<<<<<<< HEAD
 		/*
 		 * Reserve 2 interrupts per possible CPU/VP for use as IPIs,
 		 * meeting the requirements of arch/mips SMP.
 		 */
 		num_ipis = 2 * num_possible_cpus();
 		bitmap_set(ipi_resrv, gic_shared_intrs - num_ipis, num_ipis);
-=======
-		/* Make the last 2 * gic_vpes available for IPIs */
-		bitmap_set(ipi_resrv,
-			   gic_shared_intrs - 2 * gic_vpes,
-			   2 * gic_vpes);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	bitmap_copy(ipi_available, ipi_resrv, GIC_MAX_INTRS);
@@ -981,21 +798,8 @@ static int __init gic_of_init(struct device_node *node,
 		write_gic_rmask(i);
 	}
 
-<<<<<<< HEAD
 	return cpuhp_setup_state(CPUHP_AP_IRQ_MIPS_GIC_STARTING,
 				 "irqchip/mips/gic:starting",
 				 gic_cpu_startup, NULL);
-=======
-	for (i = 0; i < gic_vpes; i++) {
-		write_gic_vl_other(mips_cm_vp_id(i));
-		for (j = 0; j < GIC_NUM_LOCAL_INTRS; j++) {
-			if (!gic_local_irq_is_routable(j))
-				continue;
-			write_gic_vo_rmask(BIT(j));
-		}
-	}
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 IRQCHIP_DECLARE(mips_gic, "mti,gic", gic_of_init);

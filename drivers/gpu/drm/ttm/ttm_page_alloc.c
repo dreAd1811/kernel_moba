@@ -47,17 +47,7 @@
 
 #include <drm/ttm/ttm_bo_driver.h>
 #include <drm/ttm/ttm_page_alloc.h>
-<<<<<<< HEAD
 #include <drm/ttm/ttm_set_memory.h>
-=======
-
-#if IS_ENABLED(CONFIG_AGP)
-#include <asm/agp.h>
-#endif
-#ifdef CONFIG_X86
-#include <asm/set_memory.h>
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define NUM_PAGES_TO_ALLOC		(PAGE_SIZE/sizeof(struct page *))
 #define SMALL_ALLOCATION		16
@@ -85,10 +75,7 @@ struct ttm_page_pool {
 	char			*name;
 	unsigned long		nfrees;
 	unsigned long		nrefills;
-<<<<<<< HEAD
 	unsigned int		order;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -103,11 +90,7 @@ struct ttm_pool_opts {
 	unsigned	small;
 };
 
-<<<<<<< HEAD
 #define NUM_POOLS 6
-=======
-#define NUM_POOLS 4
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * struct ttm_pool_manager - Holds memory pools for fst allocation
@@ -134,11 +117,8 @@ struct ttm_pool_manager {
 			struct ttm_page_pool	uc_pool;
 			struct ttm_page_pool	wc_pool_dma32;
 			struct ttm_page_pool	uc_pool_dma32;
-<<<<<<< HEAD
 			struct ttm_page_pool	wc_pool_huge;
 			struct ttm_page_pool	uc_pool_huge;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} ;
 	};
 };
@@ -236,52 +216,10 @@ static struct kobj_type ttm_pool_kobj_type = {
 
 static struct ttm_pool_manager *_manager;
 
-<<<<<<< HEAD
 /**
  * Select the right pool or requested caching state and ttm flags. */
 static struct ttm_page_pool *ttm_get_pool(int flags, bool huge,
 					  enum ttm_caching_state cstate)
-=======
-#ifndef CONFIG_X86
-static int set_pages_array_wb(struct page **pages, int addrinarray)
-{
-#if IS_ENABLED(CONFIG_AGP)
-	int i;
-
-	for (i = 0; i < addrinarray; i++)
-		unmap_page_from_agp(pages[i]);
-#endif
-	return 0;
-}
-
-static int set_pages_array_wc(struct page **pages, int addrinarray)
-{
-#if IS_ENABLED(CONFIG_AGP)
-	int i;
-
-	for (i = 0; i < addrinarray; i++)
-		map_page_into_agp(pages[i]);
-#endif
-	return 0;
-}
-
-static int set_pages_array_uc(struct page **pages, int addrinarray)
-{
-#if IS_ENABLED(CONFIG_AGP)
-	int i;
-
-	for (i = 0; i < addrinarray; i++)
-		map_page_into_agp(pages[i]);
-#endif
-	return 0;
-}
-#endif
-
-/**
- * Select the right pool or requested caching state and ttm flags. */
-static struct ttm_page_pool *ttm_get_pool(int flags,
-		enum ttm_caching_state cstate)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int pool_index;
 
@@ -293,7 +231,6 @@ static struct ttm_page_pool *ttm_get_pool(int flags,
 	else
 		pool_index = 0x1;
 
-<<<<<<< HEAD
 	if (flags & TTM_PAGE_FLAG_DMA32) {
 		if (huge)
 			return NULL;
@@ -303,16 +240,10 @@ static struct ttm_page_pool *ttm_get_pool(int flags,
 		pool_index |= 0x4;
 	}
 
-=======
-	if (flags & TTM_PAGE_FLAG_DMA32)
-		pool_index |= 0x2;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return &_manager->pools[pool_index];
 }
 
 /* set memory back to wb and free the pages. */
-<<<<<<< HEAD
 static void ttm_pages_put(struct page *pages[], unsigned npages,
 		unsigned int order)
 {
@@ -330,15 +261,6 @@ static void ttm_pages_put(struct page *pages[], unsigned npages,
 		}
 		__free_pages(pages[i], order);
 	}
-=======
-static void ttm_pages_put(struct page *pages[], unsigned npages)
-{
-	unsigned i;
-	if (set_pages_array_wb(pages, npages))
-		pr_err("Failed to set %d pages to wb!\n", npages);
-	for (i = 0; i < npages; ++i)
-		__free_page(pages[i]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void ttm_pool_update_free_locked(struct ttm_page_pool *pool,
@@ -374,18 +296,11 @@ static int ttm_page_pool_free(struct ttm_page_pool *pool, unsigned nr_free,
 	if (use_static)
 		pages_to_free = static_buf;
 	else
-<<<<<<< HEAD
 		pages_to_free = kmalloc_array(npages_to_free,
 					      sizeof(struct page *),
 					      GFP_KERNEL);
 	if (!pages_to_free) {
 		pr_debug("Failed to allocate memory for pool free operation\n");
-=======
-		pages_to_free = kmalloc(npages_to_free * sizeof(struct page *),
-					GFP_KERNEL);
-	if (!pages_to_free) {
-		pr_err("Failed to allocate memory for pool free operation\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 
@@ -409,11 +324,7 @@ restart:
 			 */
 			spin_unlock_irqrestore(&pool->lock, irq_flags);
 
-<<<<<<< HEAD
 			ttm_pages_put(pages_to_free, freed_pages, pool->order);
-=======
-			ttm_pages_put(pages_to_free, freed_pages);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (likely(nr_free != FREE_ALL_PAGES))
 				nr_free -= freed_pages;
 
@@ -448,11 +359,7 @@ restart:
 	spin_unlock_irqrestore(&pool->lock, irq_flags);
 
 	if (freed_pages)
-<<<<<<< HEAD
 		ttm_pages_put(pages_to_free, freed_pages, pool->order);
-=======
-		ttm_pages_put(pages_to_free, freed_pages);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	if (pages_to_free != static_buf)
 		kfree(pages_to_free);
@@ -476,10 +383,7 @@ ttm_pool_shrink_scan(struct shrinker *shrink, struct shrink_control *sc)
 	struct ttm_page_pool *pool;
 	int shrink_pages = sc->nr_to_scan;
 	unsigned long freed = 0;
-<<<<<<< HEAD
 	unsigned int nr_free_pool;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!mutex_trylock(&lock))
 		return SHRINK_STOP;
@@ -487,7 +391,6 @@ ttm_pool_shrink_scan(struct shrinker *shrink, struct shrink_control *sc)
 	/* select start pool in round robin fashion */
 	for (i = 0; i < NUM_POOLS; ++i) {
 		unsigned nr_free = shrink_pages;
-<<<<<<< HEAD
 		unsigned page_nr;
 
 		if (shrink_pages == 0)
@@ -502,14 +405,6 @@ ttm_pool_shrink_scan(struct shrinker *shrink, struct shrink_control *sc)
 		if (freed >= sc->nr_to_scan)
 			break;
 		shrink_pages <<= pool->order;
-=======
-		if (shrink_pages == 0)
-			break;
-		pool = &_manager->pools[(i + pool_offset)%NUM_POOLS];
-		/* OK to use static buffer since global mutex is held. */
-		shrink_pages = ttm_page_pool_free(pool, nr_free, true);
-		freed += nr_free - shrink_pages;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	mutex_unlock(&lock);
 	return freed;
@@ -521,36 +416,22 @@ ttm_pool_shrink_count(struct shrinker *shrink, struct shrink_control *sc)
 {
 	unsigned i;
 	unsigned long count = 0;
-<<<<<<< HEAD
 	struct ttm_page_pool *pool;
 
 	for (i = 0; i < NUM_POOLS; ++i) {
 		pool = &_manager->pools[i];
 		count += (pool->npages << pool->order);
 	}
-=======
-
-	for (i = 0; i < NUM_POOLS; ++i)
-		count += _manager->pools[i].npages;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return count;
 }
 
-<<<<<<< HEAD
 static int ttm_pool_mm_shrink_init(struct ttm_pool_manager *manager)
-=======
-static void ttm_pool_mm_shrink_init(struct ttm_pool_manager *manager)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	manager->mm_shrink.count_objects = ttm_pool_shrink_count;
 	manager->mm_shrink.scan_objects = ttm_pool_shrink_scan;
 	manager->mm_shrink.seeks = 1;
-<<<<<<< HEAD
 	return register_shrinker(&manager->mm_shrink);
-=======
-	register_shrinker(&manager->mm_shrink);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void ttm_pool_mm_shrink_fini(struct ttm_pool_manager *manager)
@@ -565,20 +446,12 @@ static int ttm_set_pages_caching(struct page **pages,
 	/* Set page caching */
 	switch (cstate) {
 	case tt_uncached:
-<<<<<<< HEAD
 		r = ttm_set_pages_array_uc(pages, cpages);
-=======
-		r = set_pages_array_uc(pages, cpages);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (r)
 			pr_err("Failed to set %d pages to uc!\n", cpages);
 		break;
 	case tt_wc:
-<<<<<<< HEAD
 		r = ttm_set_pages_array_wc(pages, cpages);
-=======
-		r = set_pages_array_wc(pages, cpages);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (r)
 			pr_err("Failed to set %d pages to wc!\n", cpages);
 		break;
@@ -612,17 +485,12 @@ static void ttm_handle_caching_state_failure(struct list_head *pages,
  * pages returned in pages array.
  */
 static int ttm_alloc_new_pages(struct list_head *pages, gfp_t gfp_flags,
-<<<<<<< HEAD
 			       int ttm_flags, enum ttm_caching_state cstate,
 			       unsigned count, unsigned order)
-=======
-		int ttm_flags, enum ttm_caching_state cstate, unsigned count)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct page **caching_array;
 	struct page *p;
 	int r = 0;
-<<<<<<< HEAD
 	unsigned i, j, cpages;
 	unsigned npages = 1 << order;
 	unsigned max_cpages = min(count << order, (unsigned)NUM_PAGES_TO_ALLOC);
@@ -633,32 +501,14 @@ static int ttm_alloc_new_pages(struct list_head *pages, gfp_t gfp_flags,
 
 	if (!caching_array) {
 		pr_debug("Unable to allocate table for new pages\n");
-=======
-	unsigned i, cpages;
-	unsigned max_cpages = min(count,
-			(unsigned)(PAGE_SIZE/sizeof(struct page *)));
-
-	/* allocate array for page caching change */
-	caching_array = kmalloc(max_cpages*sizeof(struct page *), GFP_KERNEL);
-
-	if (!caching_array) {
-		pr_err("Unable to allocate table for new pages\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOMEM;
 	}
 
 	for (i = 0, cpages = 0; i < count; ++i) {
-<<<<<<< HEAD
 		p = alloc_pages(gfp_flags, order);
 
 		if (!p) {
 			pr_debug("Unable to get page %u\n", i);
-=======
-		p = alloc_page(gfp_flags);
-
-		if (!p) {
-			pr_err("Unable to get page %u\n", i);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			/* store already allocated pages in the pool after
 			 * setting the caching state */
@@ -674,28 +524,18 @@ static int ttm_alloc_new_pages(struct list_head *pages, gfp_t gfp_flags,
 			goto out;
 		}
 
-<<<<<<< HEAD
 		list_add(&p->lru, pages);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_HIGHMEM
 		/* gfp flags of highmem page should never be dma32 so we
 		 * we should be fine in such case
 		 */
-<<<<<<< HEAD
 		if (PageHighMem(p))
 			continue;
 
 #endif
 		for (j = 0; j < npages; ++j) {
 			caching_array[cpages++] = p++;
-=======
-		if (!PageHighMem(p))
-#endif
-		{
-			caching_array[cpages++] = p;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (cpages == max_cpages) {
 
 				r = ttm_set_pages_caching(caching_array,
@@ -709,11 +549,6 @@ static int ttm_alloc_new_pages(struct list_head *pages, gfp_t gfp_flags,
 				cpages = 0;
 			}
 		}
-<<<<<<< HEAD
-=======
-
-		list_add(&p->lru, pages);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (cpages) {
@@ -733,15 +568,9 @@ out:
  * Fill the given pool if there aren't enough pages and the requested number of
  * pages is small.
  */
-<<<<<<< HEAD
 static void ttm_page_pool_fill_locked(struct ttm_page_pool *pool, int ttm_flags,
 				      enum ttm_caching_state cstate,
 				      unsigned count, unsigned long *irq_flags)
-=======
-static void ttm_page_pool_fill_locked(struct ttm_page_pool *pool,
-		int ttm_flags, enum ttm_caching_state cstate, unsigned count,
-		unsigned long *irq_flags)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct page *p;
 	int r;
@@ -771,11 +600,7 @@ static void ttm_page_pool_fill_locked(struct ttm_page_pool *pool,
 
 		INIT_LIST_HEAD(&new_pages);
 		r = ttm_alloc_new_pages(&new_pages, pool->gfp_flags, ttm_flags,
-<<<<<<< HEAD
 					cstate, alloc_size, 0);
-=======
-				cstate,	alloc_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_lock_irqsave(&pool->lock, *irq_flags);
 
 		if (!r) {
@@ -783,11 +608,7 @@ static void ttm_page_pool_fill_locked(struct ttm_page_pool *pool,
 			++pool->nrefills;
 			pool->npages += alloc_size;
 		} else {
-<<<<<<< HEAD
 			pr_debug("Failed to fill pool (%p)\n", pool);
-=======
-			pr_err("Failed to fill pool (%p)\n", pool);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* If we have any pages left put them to the pool. */
 			list_for_each_entry(p, &new_pages, lru) {
 				++cpages;
@@ -801,7 +622,6 @@ static void ttm_page_pool_fill_locked(struct ttm_page_pool *pool,
 }
 
 /**
-<<<<<<< HEAD
  * Allocate pages from the pool and put them on the return list.
  *
  * @return zero for success or negative error code.
@@ -811,33 +631,16 @@ static int ttm_page_pool_get_pages(struct ttm_page_pool *pool,
 				   int ttm_flags,
 				   enum ttm_caching_state cstate,
 				   unsigned count, unsigned order)
-=======
- * Cut 'count' number of pages from the pool and put them on the return list.
- *
- * @return count of pages still required to fulfill the request.
- */
-static unsigned ttm_page_pool_get_pages(struct ttm_page_pool *pool,
-					struct list_head *pages,
-					int ttm_flags,
-					enum ttm_caching_state cstate,
-					unsigned count)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long irq_flags;
 	struct list_head *p;
 	unsigned i;
-<<<<<<< HEAD
 	int r = 0;
 
 	spin_lock_irqsave(&pool->lock, irq_flags);
 	if (!order)
 		ttm_page_pool_fill_locked(pool, ttm_flags, cstate, count,
 					  &irq_flags);
-=======
-
-	spin_lock_irqsave(&pool->lock, irq_flags);
-	ttm_page_pool_fill_locked(pool, ttm_flags, cstate, count, &irq_flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (count >= pool->npages) {
 		/* take all pages from the pool */
@@ -867,7 +670,6 @@ static unsigned ttm_page_pool_get_pages(struct ttm_page_pool *pool,
 	count = 0;
 out:
 	spin_unlock_irqrestore(&pool->lock, irq_flags);
-<<<<<<< HEAD
 
 	/* clear the pages coming from the pool if requested */
 	if (ttm_flags & TTM_PAGE_FLAG_ZERO_ALLOC) {
@@ -900,30 +702,21 @@ out:
 	}
 
 	return r;
-=======
-	return count;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Put all pages in pages list to correct pool to wait for reuse */
 static void ttm_put_pages(struct page **pages, unsigned npages, int flags,
 			  enum ttm_caching_state cstate)
 {
-<<<<<<< HEAD
 	struct ttm_page_pool *pool = ttm_get_pool(flags, false, cstate);
 #ifdef CONFIG_TRANSPARENT_HUGEPAGE
 	struct ttm_page_pool *huge = ttm_get_pool(flags, true, cstate);
 #endif
 	unsigned long irq_flags;
-=======
-	unsigned long irq_flags;
-	struct ttm_page_pool *pool = ttm_get_pool(flags, cstate);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned i;
 
 	if (pool == NULL) {
 		/* No pool for this memory type so free the pages */
-<<<<<<< HEAD
 		i = 0;
 		while (i < npages) {
 #ifdef CONFIG_TRANSPARENT_HUGEPAGE
@@ -956,20 +749,11 @@ static void ttm_put_pages(struct page **pages, unsigned npages, int flags,
 			while (j) {
 				pages[i++] = NULL;
 				--j;
-=======
-		for (i = 0; i < npages; i++) {
-			if (pages[i]) {
-				if (page_count(pages[i]) != 1)
-					pr_err("Erroneous page count. Leaking pages.\n");
-				__free_page(pages[i]);
-				pages[i] = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		}
 		return;
 	}
 
-<<<<<<< HEAD
 	i = 0;
 #ifdef CONFIG_TRANSPARENT_HUGEPAGE
 	if (huge) {
@@ -1012,10 +796,6 @@ static void ttm_put_pages(struct page **pages, unsigned npages, int flags,
 
 	spin_lock_irqsave(&pool->lock, irq_flags);
 	while (i < npages) {
-=======
-	spin_lock_irqsave(&pool->lock, irq_flags);
-	for (i = 0; i < npages; i++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (pages[i]) {
 			if (page_count(pages[i]) != 1)
 				pr_err("Erroneous page count. Leaking pages.\n");
@@ -1023,10 +803,7 @@ static void ttm_put_pages(struct page **pages, unsigned npages, int flags,
 			pages[i] = NULL;
 			pool->npages++;
 		}
-<<<<<<< HEAD
 		++i;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	/* Check that we don't go over the pool limit */
 	npages = 0;
@@ -1049,7 +826,6 @@ static void ttm_put_pages(struct page **pages, unsigned npages, int flags,
 static int ttm_get_pages(struct page **pages, unsigned npages, int flags,
 			 enum ttm_caching_state cstate)
 {
-<<<<<<< HEAD
 	struct ttm_page_pool *pool = ttm_get_pool(flags, false, cstate);
 #ifdef CONFIG_TRANSPARENT_HUGEPAGE
 	struct ttm_page_pool *huge = ttm_get_pool(flags, true, cstate);
@@ -1074,27 +850,11 @@ static int ttm_get_pages(struct page **pages, unsigned npages, int flags,
 		if (flags & TTM_PAGE_FLAG_NO_RETRY)
 			gfp_flags |= __GFP_RETRY_MAYFAIL;
 
-=======
-	struct ttm_page_pool *pool = ttm_get_pool(flags, cstate);
-	struct list_head plist;
-	struct page *p = NULL;
-	gfp_t gfp_flags = GFP_USER;
-	unsigned count;
-	int r;
-
-	/* set zero flag for page allocation if required */
-	if (flags & TTM_PAGE_FLAG_ZERO_ALLOC)
-		gfp_flags |= __GFP_ZERO;
-
-	/* No pool for cached pages */
-	if (pool == NULL) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (flags & TTM_PAGE_FLAG_DMA32)
 			gfp_flags |= GFP_DMA32;
 		else
 			gfp_flags |= GFP_HIGHUSER;
 
-<<<<<<< HEAD
 		i = 0;
 #ifdef CONFIG_TRANSPARENT_HUGEPAGE
 		if (!(gfp_flags & GFP_DMA32)) {
@@ -1131,22 +891,10 @@ static int ttm_get_pages(struct page **pages, unsigned npages, int flags,
 
 			pages[i++] = p;
 			--npages;
-=======
-		for (r = 0; r < npages; ++r) {
-			p = alloc_page(gfp_flags);
-			if (!p) {
-
-				pr_err("Unable to allocate page\n");
-				return -ENOMEM;
-			}
-
-			pages[r] = p;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		return 0;
 	}
 
-<<<<<<< HEAD
 	count = 0;
 
 #ifdef CONFIG_TRANSPARENT_HUGEPAGE
@@ -1186,57 +934,13 @@ static int ttm_get_pages(struct page **pages, unsigned npages, int flags,
 		pr_debug("Failed to allocate extra pages for large request\n");
 		ttm_put_pages(pages, count, flags, cstate);
 		return r;
-=======
-	/* combine zero flag to pool flags */
-	gfp_flags |= pool->gfp_flags;
-
-	/* First we take pages from the pool */
-	INIT_LIST_HEAD(&plist);
-	npages = ttm_page_pool_get_pages(pool, &plist, flags, cstate, npages);
-	count = 0;
-	list_for_each_entry(p, &plist, lru) {
-		pages[count++] = p;
-	}
-
-	/* clear the pages coming from the pool if requested */
-	if (flags & TTM_PAGE_FLAG_ZERO_ALLOC) {
-		list_for_each_entry(p, &plist, lru) {
-			if (PageHighMem(p))
-				clear_highpage(p);
-			else
-				clear_page(page_address(p));
-		}
-	}
-
-	/* If pool didn't have enough pages allocate new one. */
-	if (npages > 0) {
-		/* ttm_alloc_new_pages doesn't reference pool so we can run
-		 * multiple requests in parallel.
-		 **/
-		INIT_LIST_HEAD(&plist);
-		r = ttm_alloc_new_pages(&plist, gfp_flags, flags, cstate, npages);
-		list_for_each_entry(p, &plist, lru) {
-			pages[count++] = p;
-		}
-		if (r) {
-			/* If there is any pages in the list put them back to
-			 * the pool. */
-			pr_err("Failed to allocate extra pages for large request\n");
-			ttm_put_pages(pages, count, flags, cstate);
-			return r;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
 }
 
 static void ttm_page_pool_init_locked(struct ttm_page_pool *pool, gfp_t flags,
-<<<<<<< HEAD
 		char *name, unsigned int order)
-=======
-		char *name)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	spin_lock_init(&pool->lock);
 	pool->fill_lock = false;
@@ -1244,23 +948,17 @@ static void ttm_page_pool_init_locked(struct ttm_page_pool *pool, gfp_t flags,
 	pool->npages = pool->nfrees = 0;
 	pool->gfp_flags = flags;
 	pool->name = name;
-<<<<<<< HEAD
 	pool->order = order;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int ttm_page_alloc_init(struct ttm_mem_global *glob, unsigned max_pages)
 {
 	int ret;
-<<<<<<< HEAD
 #ifdef CONFIG_TRANSPARENT_HUGEPAGE
 	unsigned order = HPAGE_PMD_ORDER;
 #else
 	unsigned order = 0;
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	WARN_ON(_manager);
 
@@ -1270,7 +968,6 @@ int ttm_page_alloc_init(struct ttm_mem_global *glob, unsigned max_pages)
 	if (!_manager)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	ttm_page_pool_init_locked(&_manager->wc_pool, GFP_HIGHUSER, "wc", 0);
 
 	ttm_page_pool_init_locked(&_manager->uc_pool, GFP_HIGHUSER, "uc", 0);
@@ -1292,17 +989,6 @@ int ttm_page_alloc_init(struct ttm_mem_global *glob, unsigned max_pages)
 				   __GFP_KSWAPD_RECLAIM) &
 				  ~(__GFP_MOVABLE | __GFP_COMP)
 				  , "uc huge", order);
-=======
-	ttm_page_pool_init_locked(&_manager->wc_pool, GFP_HIGHUSER, "wc");
-
-	ttm_page_pool_init_locked(&_manager->uc_pool, GFP_HIGHUSER, "uc");
-
-	ttm_page_pool_init_locked(&_manager->wc_pool_dma32,
-				  GFP_USER | GFP_DMA32, "wc dma");
-
-	ttm_page_pool_init_locked(&_manager->uc_pool_dma32,
-				  GFP_USER | GFP_DMA32, "uc dma");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	_manager->options.max_size = max_pages;
 	_manager->options.small = SMALL_ALLOCATION;
@@ -1310,7 +996,6 @@ int ttm_page_alloc_init(struct ttm_mem_global *glob, unsigned max_pages)
 
 	ret = kobject_init_and_add(&_manager->kobj, &ttm_pool_kobj_type,
 				   &glob->kobj, "pool");
-<<<<<<< HEAD
 	if (unlikely(ret != 0))
 		goto error;
 
@@ -1323,17 +1008,6 @@ error:
 	kobject_put(&_manager->kobj);
 	_manager = NULL;
 	return ret;
-=======
-	if (unlikely(ret != 0)) {
-		kobject_put(&_manager->kobj);
-		_manager = NULL;
-		return ret;
-	}
-
-	ttm_pool_mm_shrink_init(_manager);
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void ttm_page_alloc_fini(void)
@@ -1351,7 +1025,6 @@ void ttm_page_alloc_fini(void)
 	_manager = NULL;
 }
 
-<<<<<<< HEAD
 static void
 ttm_pool_unpopulate_helper(struct ttm_tt *ttm, unsigned mem_count_update)
 {
@@ -1377,18 +1050,12 @@ put_pages:
 int ttm_pool_populate(struct ttm_tt *ttm, struct ttm_operation_ctx *ctx)
 {
 	struct ttm_mem_global *mem_glob = ttm->bdev->glob->mem_glob;
-=======
-int ttm_pool_populate(struct ttm_tt *ttm)
-{
-	struct ttm_mem_global *mem_glob = ttm->glob->mem_glob;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned i;
 	int ret;
 
 	if (ttm->state != tt_unpopulated)
 		return 0;
 
-<<<<<<< HEAD
 	if (ttm_check_under_lowerlimit(mem_glob, ttm->num_pages, ctx))
 		return -ENOMEM;
 
@@ -1404,21 +1071,6 @@ int ttm_pool_populate(struct ttm_tt *ttm)
 						PAGE_SIZE, ctx);
 		if (unlikely(ret != 0)) {
 			ttm_pool_unpopulate_helper(ttm, i);
-=======
-	for (i = 0; i < ttm->num_pages; ++i) {
-		ret = ttm_get_pages(&ttm->pages[i], 1,
-				    ttm->page_flags,
-				    ttm->caching_state);
-		if (ret != 0) {
-			ttm_pool_unpopulate(ttm);
-			return -ENOMEM;
-		}
-
-		ret = ttm_mem_global_alloc_page(mem_glob, ttm->pages[i],
-						false, false);
-		if (unlikely(ret != 0)) {
-			ttm_pool_unpopulate(ttm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -ENOMEM;
 		}
 	}
@@ -1438,7 +1090,6 @@ EXPORT_SYMBOL(ttm_pool_populate);
 
 void ttm_pool_unpopulate(struct ttm_tt *ttm)
 {
-<<<<<<< HEAD
 	ttm_pool_unpopulate_helper(ttm, ttm->num_pages);
 }
 EXPORT_SYMBOL(ttm_pool_unpopulate);
@@ -1515,23 +1166,6 @@ void ttm_unmap_and_unpopulate_pages(struct device *dev, struct ttm_dma_tt *tt)
 }
 EXPORT_SYMBOL(ttm_unmap_and_unpopulate_pages);
 
-=======
-	unsigned i;
-
-	for (i = 0; i < ttm->num_pages; ++i) {
-		if (ttm->pages[i]) {
-			ttm_mem_global_free_page(ttm->glob->mem_glob,
-						 ttm->pages[i]);
-			ttm_put_pages(&ttm->pages[i], 1,
-				      ttm->page_flags,
-				      ttm->caching_state);
-		}
-	}
-	ttm->state = tt_unpopulated;
-}
-EXPORT_SYMBOL(ttm_pool_unpopulate);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int ttm_page_alloc_debugfs(struct seq_file *m, void *data)
 {
 	struct ttm_page_pool *p;
@@ -1541,20 +1175,12 @@ int ttm_page_alloc_debugfs(struct seq_file *m, void *data)
 		seq_printf(m, "No pool allocator running.\n");
 		return 0;
 	}
-<<<<<<< HEAD
 	seq_printf(m, "%7s %12s %13s %8s\n",
-=======
-	seq_printf(m, "%6s %12s %13s %8s\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			h[0], h[1], h[2], h[3]);
 	for (i = 0; i < NUM_POOLS; ++i) {
 		p = &_manager->pools[i];
 
-<<<<<<< HEAD
 		seq_printf(m, "%7s %12ld %13ld %8d\n",
-=======
-		seq_printf(m, "%6s %12ld %13ld %8d\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				p->name, p->nrefills,
 				p->nfrees, p->npages);
 	}

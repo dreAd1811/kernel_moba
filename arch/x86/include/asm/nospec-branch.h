@@ -232,10 +232,6 @@ enum spectre_v2_mitigation {
 enum spectre_v2_user_mitigation {
 	SPECTRE_V2_USER_NONE,
 	SPECTRE_V2_USER_STRICT,
-<<<<<<< HEAD
-=======
-	SPECTRE_V2_USER_STRICT_PREFERRED,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	SPECTRE_V2_USER_PRCTL,
 	SPECTRE_V2_USER_SECCOMP,
 };
@@ -327,11 +323,7 @@ DECLARE_STATIC_KEY_FALSE(mds_idle_clear);
 #include <asm/segment.h>
 
 /**
-<<<<<<< HEAD
  * mds_clear_cpu_buffers - Mitigation for MDS vulnerability
-=======
- * mds_clear_cpu_buffers - Mitigation for MDS and TAA vulnerability
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This uses the otherwise unused and obsolete VERW instruction in
  * combination with microcode which triggers a CPU buffer flush when the
@@ -354,11 +346,7 @@ static inline void mds_clear_cpu_buffers(void)
 }
 
 /**
-<<<<<<< HEAD
  * mds_user_clear_cpu_buffers - Mitigation for MDS vulnerability
-=======
- * mds_user_clear_cpu_buffers - Mitigation for MDS and TAA vulnerability
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Clear CPU buffers if the corresponding static key is enabled
  */
@@ -393,17 +381,12 @@ static inline void mds_idle_clear_cpu_buffers(void)
  *    lfence
  *    jmp spec_trap
  *  do_rop:
-<<<<<<< HEAD
  *    mov %rax,(%rsp) for x86_64
  *    mov %edx,(%esp) for x86_32
-=======
- *    mov %rax,(%rsp)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *    retq
  *
  * Without retpolines configured:
  *
-<<<<<<< HEAD
  *    jmp *%rax for x86_64
  *    jmp *%edx for x86_32
  */
@@ -412,13 +395,6 @@ static inline void mds_idle_clear_cpu_buffers(void)
 #  define RETPOLINE_RAX_BPF_JIT_SIZE	17
 #  define RETPOLINE_RAX_BPF_JIT()				\
 do {								\
-=======
- *    jmp *%rax
- */
-#ifdef CONFIG_RETPOLINE
-# define RETPOLINE_RAX_BPF_JIT_SIZE	17
-# define RETPOLINE_RAX_BPF_JIT()				\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	EMIT1_off32(0xE8, 7);	 /* callq do_rop */		\
 	/* spec_trap: */					\
 	EMIT2(0xF3, 0x90);       /* pause */			\
@@ -426,7 +402,6 @@ do {								\
 	EMIT2(0xEB, 0xF9);       /* jmp spec_trap */		\
 	/* do_rop: */						\
 	EMIT4(0x48, 0x89, 0x04, 0x24); /* mov %rax,(%rsp) */	\
-<<<<<<< HEAD
 	EMIT1(0xC3);             /* retq */			\
 } while (0)
 # else /* !CONFIG_X86_64 */
@@ -451,13 +426,6 @@ do {								\
 #  define RETPOLINE_EDX_BPF_JIT()				\
 	EMIT2(0xFF, 0xE2)        /* jmp *%edx */
 # endif
-=======
-	EMIT1(0xC3);             /* retq */
-#else
-# define RETPOLINE_RAX_BPF_JIT_SIZE	2
-# define RETPOLINE_RAX_BPF_JIT()				\
-	EMIT2(0xFF, 0xE0);	 /* jmp *%rax */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 #endif /* _ASM_X86_NOSPEC_BRANCH_H_ */

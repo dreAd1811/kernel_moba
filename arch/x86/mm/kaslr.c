@@ -34,31 +34,12 @@
 #define TB_SHIFT 40
 
 /*
-<<<<<<< HEAD
-=======
- * Virtual address start and end range for randomization.
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * The end address could depend on more configuration options to make the
  * highest amount of space for randomization available, but that's too hard
  * to keep straight and caused issues already.
  */
-<<<<<<< HEAD
 static const unsigned long vaddr_end = CPU_ENTRY_AREA_BASE;
 
-=======
-static const unsigned long vaddr_start = __PAGE_OFFSET_BASE;
-static const unsigned long vaddr_end = CPU_ENTRY_AREA_BASE;
-
-/* Default values */
-unsigned long page_offset_base = __PAGE_OFFSET_BASE;
-EXPORT_SYMBOL(page_offset_base);
-unsigned long vmalloc_base = __VMALLOC_BASE;
-EXPORT_SYMBOL(vmalloc_base);
-unsigned long vmemmap_base = __VMEMMAP_BASE;
-EXPORT_SYMBOL(vmemmap_base);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Memory regions randomized by KASLR (except modules that use a separate logic
  * earlier during boot). The list is ordered based on virtual addresses. This
@@ -68,15 +49,9 @@ static __initdata struct kaslr_memory_region {
 	unsigned long *base;
 	unsigned long size_tb;
 } kaslr_regions[] = {
-<<<<<<< HEAD
 	{ &page_offset_base, 0 },
 	{ &vmalloc_base, 0 },
 	{ &vmemmap_base, 0 },
-=======
-	{ &page_offset_base, 1 << (__PHYSICAL_MASK_SHIFT - TB_SHIFT) /* Maximum */ },
-	{ &vmalloc_base, VMALLOC_SIZE_TB },
-	{ &vmemmap_base, 1 },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Get size in bytes used by the memory region */
@@ -98,7 +73,6 @@ static inline bool kaslr_memory_enabled(void)
 void __init kernel_randomize_memory(void)
 {
 	size_t i;
-<<<<<<< HEAD
 	unsigned long vaddr_start, vaddr;
 	unsigned long rand, memory_tb;
 	struct rnd_state rand_state;
@@ -107,12 +81,6 @@ void __init kernel_randomize_memory(void)
 
 	vaddr_start = pgtable_l5_enabled() ? __PAGE_OFFSET_BASE_L5 : __PAGE_OFFSET_BASE_L4;
 	vaddr = vaddr_start;
-=======
-	unsigned long vaddr = vaddr_start;
-	unsigned long rand, memory_tb;
-	struct rnd_state rand_state;
-	unsigned long remain_entropy;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * These BUILD_BUG_ON checks ensure the memory layout is consistent
@@ -126,12 +94,9 @@ void __init kernel_randomize_memory(void)
 	if (!kaslr_memory_enabled())
 		return;
 
-<<<<<<< HEAD
 	kaslr_regions[0].size_tb = 1 << (MAX_PHYSMEM_BITS - TB_SHIFT);
 	kaslr_regions[1].size_tb = VMALLOC_SIZE_TB;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Update Physical memory mapping to available and
 	 * add padding if needed (especially for memory hotplug support).
@@ -144,7 +109,6 @@ void __init kernel_randomize_memory(void)
 	if (memory_tb < kaslr_regions[0].size_tb)
 		kaslr_regions[0].size_tb = memory_tb;
 
-<<<<<<< HEAD
 	/*
 	 * Calculate the vmemmap region size in TBs, aligned to a TB
 	 * boundary.
@@ -153,8 +117,6 @@ void __init kernel_randomize_memory(void)
 			sizeof(struct page);
 	kaslr_regions[2].size_tb = DIV_ROUND_UP(vmemmap_size, 1UL << TB_SHIFT);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Calculate entropy available between regions */
 	remain_entropy = vaddr_end - vaddr_start;
 	for (i = 0; i < ARRAY_SIZE(kaslr_regions); i++)
@@ -171,11 +133,7 @@ void __init kernel_randomize_memory(void)
 		 */
 		entropy = remain_entropy / (ARRAY_SIZE(kaslr_regions) - i);
 		prandom_bytes_state(&rand_state, &rand, sizeof(rand));
-<<<<<<< HEAD
 		if (pgtable_l5_enabled())
-=======
-		if (IS_ENABLED(CONFIG_X86_5LEVEL))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			entropy = (rand % (entropy + 1)) & P4D_MASK;
 		else
 			entropy = (rand % (entropy + 1)) & PUD_MASK;
@@ -187,11 +145,7 @@ void __init kernel_randomize_memory(void)
 		 * randomization alignment.
 		 */
 		vaddr += get_padding(&kaslr_regions[i]);
-<<<<<<< HEAD
 		if (pgtable_l5_enabled())
-=======
-		if (IS_ENABLED(CONFIG_X86_5LEVEL))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			vaddr = round_up(vaddr + 1, P4D_SIZE);
 		else
 			vaddr = round_up(vaddr + 1, PUD_SIZE);
@@ -267,11 +221,7 @@ void __meminit init_trampoline(void)
 		return;
 	}
 
-<<<<<<< HEAD
 	if (pgtable_l5_enabled())
-=======
-	if (IS_ENABLED(CONFIG_X86_5LEVEL))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		init_trampoline_p4d();
 	else
 		init_trampoline_pud();

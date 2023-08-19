@@ -23,11 +23,7 @@
 #include <linux/i8253.h>
 #include <asm/processor.h>
 #include <asm/hypervisor.h>
-<<<<<<< HEAD
 #include <asm/hyperv-tlfs.h>
-=======
-#include <asm/hyperv.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/mshyperv.h>
 #include <asm/desc.h>
 #include <asm/irq_regs.h>
@@ -42,18 +38,11 @@ EXPORT_SYMBOL_GPL(ms_hyperv);
 
 #if IS_ENABLED(CONFIG_HYPERV)
 static void (*vmbus_handler)(void);
-<<<<<<< HEAD
 static void (*hv_stimer0_handler)(void);
 static void (*hv_kexec_handler)(void);
 static void (*hv_crash_handler)(struct pt_regs *regs);
 
 __visible void __irq_entry hyperv_vector_handler(struct pt_regs *regs)
-=======
-static void (*hv_kexec_handler)(void);
-static void (*hv_crash_handler)(struct pt_regs *regs);
-
-void hyperv_vector_handler(struct pt_regs *regs)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct pt_regs *old_regs = set_irq_regs(regs);
 
@@ -62,11 +51,7 @@ void hyperv_vector_handler(struct pt_regs *regs)
 	if (vmbus_handler)
 		vmbus_handler();
 
-<<<<<<< HEAD
 	if (ms_hyperv.hints & HV_DEPRECATING_AEOI_RECOMMENDED)
-=======
-	if (ms_hyperv.hints & HV_X64_DEPRECATING_AEOI_RECOMMENDED)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ack_APIC_irq();
 
 	exiting_irq();
@@ -86,7 +71,6 @@ void hv_remove_vmbus_irq(void)
 EXPORT_SYMBOL_GPL(hv_setup_vmbus_irq);
 EXPORT_SYMBOL_GPL(hv_remove_vmbus_irq);
 
-<<<<<<< HEAD
 /*
  * Routines to do per-architecture handling of stimer0
  * interrupts when in Direct Mode
@@ -122,8 +106,6 @@ void hv_remove_stimer0_irq(int irq)
 }
 EXPORT_SYMBOL_GPL(hv_remove_stimer0_irq);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void hv_setup_kexec_handler(void (*handler)(void))
 {
 	hv_kexec_handler = handler;
@@ -232,19 +214,11 @@ static void __init ms_hyperv_init_platform(void)
 	ms_hyperv.misc_features = cpuid_edx(HYPERV_CPUID_FEATURES);
 	ms_hyperv.hints    = cpuid_eax(HYPERV_CPUID_ENLIGHTMENT_INFO);
 
-<<<<<<< HEAD
 	pr_info("Hyper-V: features 0x%x, hints 0x%x\n",
 		ms_hyperv.features, ms_hyperv.hints);
 
 	ms_hyperv.max_vp_index = cpuid_eax(HYPERV_CPUID_IMPLEMENT_LIMITS);
 	ms_hyperv.max_lp_index = cpuid_ebx(HYPERV_CPUID_IMPLEMENT_LIMITS);
-=======
-	pr_info("Hyper-V: features 0x%x, hints 0x%x, misc 0x%x\n",
-		ms_hyperv.features, ms_hyperv.hints, ms_hyperv.misc_features);
-
-	ms_hyperv.max_vp_index = cpuid_eax(HVCPUID_IMPLEMENTATION_LIMITS);
-	ms_hyperv.max_lp_index = cpuid_ebx(HVCPUID_IMPLEMENTATION_LIMITS);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pr_debug("Hyper-V: max %u virtual processors, %u logical processors\n",
 		 ms_hyperv.max_vp_index, ms_hyperv.max_lp_index);
@@ -252,20 +226,12 @@ static void __init ms_hyperv_init_platform(void)
 	/*
 	 * Extract host information.
 	 */
-<<<<<<< HEAD
 	if (cpuid_eax(HYPERV_CPUID_VENDOR_AND_MAX_FUNCTIONS) >=
 	    HYPERV_CPUID_VERSION) {
 		hv_host_info_eax = cpuid_eax(HYPERV_CPUID_VERSION);
 		hv_host_info_ebx = cpuid_ebx(HYPERV_CPUID_VERSION);
 		hv_host_info_ecx = cpuid_ecx(HYPERV_CPUID_VERSION);
 		hv_host_info_edx = cpuid_edx(HYPERV_CPUID_VERSION);
-=======
-	if (cpuid_eax(HVCPUID_VENDOR_MAXFUNCTION) >= HVCPUID_VERSION) {
-		hv_host_info_eax = cpuid_eax(HVCPUID_VERSION);
-		hv_host_info_ebx = cpuid_ebx(HVCPUID_VERSION);
-		hv_host_info_ecx = cpuid_ecx(HVCPUID_VERSION);
-		hv_host_info_edx = cpuid_edx(HVCPUID_VERSION);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		pr_info("Hyper-V Host Build:%d-%d.%d-%d-%d.%d\n",
 			hv_host_info_eax, hv_host_info_ebx >> 16,
@@ -279,14 +245,11 @@ static void __init ms_hyperv_init_platform(void)
 		x86_platform.calibrate_cpu = hv_get_tsc_khz;
 	}
 
-<<<<<<< HEAD
 	if (ms_hyperv.hints & HV_X64_ENLIGHTENED_VMCS_RECOMMENDED) {
 		ms_hyperv.nested_features =
 			cpuid_eax(HYPERV_CPUID_NESTED_FEATURES);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_X86_LOCAL_APIC
 	if (ms_hyperv.features & HV_X64_ACCESS_FREQUENCY_MSRS &&
 	    ms_hyperv.misc_features & HV_FEATURE_FREQUENCY_MSRS_AVAILABLE) {
@@ -341,7 +304,6 @@ static void __init ms_hyperv_init_platform(void)
 	hyperv_setup_mmu_ops();
 	/* Setup the IDT for hypervisor callback */
 	alloc_intr_gate(HYPERVISOR_CALLBACK_VECTOR, hyperv_callback_vector);
-<<<<<<< HEAD
 
 	/* Setup the IDT for reenlightenment notifications */
 	if (ms_hyperv.features & HV_X64_ACCESS_REENLIGHTENMENT)
@@ -352,8 +314,6 @@ static void __init ms_hyperv_init_platform(void)
 	if (ms_hyperv.misc_features & HV_STIMER_DIRECT_MODE_AVAILABLE)
 		alloc_intr_gate(HYPERV_STIMER0_VECTOR,
 				hv_stimer0_callback_vector);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 }
 

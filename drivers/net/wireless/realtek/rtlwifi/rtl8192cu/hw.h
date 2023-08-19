@@ -104,10 +104,6 @@ void rtl92c_fill_h2c_cmd(struct ieee80211_hw *hw,
 bool rtl92cu_phy_mac_config(struct ieee80211_hw *hw);
 void rtl92cu_update_hal_rate_tbl(struct ieee80211_hw *hw,
 				 struct ieee80211_sta *sta,
-<<<<<<< HEAD
 				 u8 rssi_level, bool update_bw);
-=======
-				 u8 rssi_level);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif

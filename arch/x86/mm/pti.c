@@ -56,7 +56,6 @@
 #define __GFP_NOTRACK	0
 #endif
 
-<<<<<<< HEAD
 /*
  * Define the page-table levels we clone for user-space on 32
  * and 64 bit.
@@ -67,8 +66,6 @@
 #define	PTI_LEVEL_KERNEL_IMAGE	PTI_CLONE_PTE
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void __init pti_print_if_insecure(const char *reason)
 {
 	if (boot_cpu_has_bug(X86_BUG_CPU_MELTDOWN))
@@ -81,29 +78,22 @@ static void __init pti_print_if_secure(const char *reason)
 		pr_info("%s\n", reason);
 }
 
-<<<<<<< HEAD
 enum pti_mode {
 	PTI_AUTO = 0,
 	PTI_FORCE_OFF,
 	PTI_FORCE_ON
 } pti_mode;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void __init pti_check_boottime_disable(void)
 {
 	char arg[5];
 	int ret;
 
-<<<<<<< HEAD
 	/* Assume mode is auto unless overridden. */
 	pti_mode = PTI_AUTO;
 
 	if (hypervisor_is_type(X86_HYPER_XEN_PV)) {
 		pti_mode = PTI_FORCE_OFF;
-=======
-	if (hypervisor_is_type(X86_HYPER_XEN_PV)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pti_print_if_insecure("disabled on XEN PV.");
 		return;
 	}
@@ -111,15 +101,11 @@ void __init pti_check_boottime_disable(void)
 	ret = cmdline_find_option(boot_command_line, "pti", arg, sizeof(arg));
 	if (ret > 0)  {
 		if (ret == 3 && !strncmp(arg, "off", 3)) {
-<<<<<<< HEAD
 			pti_mode = PTI_FORCE_OFF;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pti_print_if_insecure("disabled on command line.");
 			return;
 		}
 		if (ret == 2 && !strncmp(arg, "on", 2)) {
-<<<<<<< HEAD
 			pti_mode = PTI_FORCE_ON;
 			pti_print_if_secure("force enabled on command line.");
 			goto enable;
@@ -128,21 +114,11 @@ void __init pti_check_boottime_disable(void)
 			pti_mode = PTI_AUTO;
 			goto autosel;
 		}
-=======
-			pti_print_if_secure("force enabled on command line.");
-			goto enable;
-		}
-		if (ret == 4 && !strncmp(arg, "auto", 4))
-			goto autosel;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (cmdline_find_option_bool(boot_command_line, "nopti") ||
 	    cpu_mitigations_off()) {
-<<<<<<< HEAD
 		pti_mode = PTI_FORCE_OFF;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pti_print_if_insecure("disabled on command line.");
 		return;
 	}
@@ -154,11 +130,7 @@ enable:
 	setup_force_cpu_cap(X86_FEATURE_PTI);
 }
 
-<<<<<<< HEAD
 pgd_t __pti_set_user_pgtbl(pgd_t *pgdp, pgd_t pgd)
-=======
-pgd_t __pti_set_user_pgd(pgd_t *pgdp, pgd_t pgd)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/*
 	 * Changes to the high (kernel) portion of the kernelmode page
@@ -205,11 +177,7 @@ pgd_t __pti_set_user_pgd(pgd_t *pgdp, pgd_t pgd)
  *
  * Returns a pointer to a P4D on success, or NULL on failure.
  */
-<<<<<<< HEAD
 static p4d_t *pti_user_pagetable_walk_p4d(unsigned long address)
-=======
-static __init p4d_t *pti_user_pagetable_walk_p4d(unsigned long address)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	pgd_t *pgd = kernel_to_user_pgdp(pgd_offset_k(address));
 	gfp_t gfp = (GFP_KERNEL | __GFP_NOTRACK | __GFP_ZERO);
@@ -237,11 +205,7 @@ static __init p4d_t *pti_user_pagetable_walk_p4d(unsigned long address)
  *
  * Returns a pointer to a PMD on success, or NULL on failure.
  */
-<<<<<<< HEAD
 static pmd_t *pti_user_pagetable_walk_pmd(unsigned long address)
-=======
-static __init pmd_t *pti_user_pagetable_walk_pmd(unsigned long address)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	gfp_t gfp = (GFP_KERNEL | __GFP_NOTRACK | __GFP_ZERO);
 	p4d_t *p4d;
@@ -277,10 +241,6 @@ static __init pmd_t *pti_user_pagetable_walk_pmd(unsigned long address)
 	return pmd_offset(pud, address);
 }
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_X86_VSYSCALL_EMULATION
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Walk the shadow copy of the page tables (optionally) trying to allocate
  * page table pages on the way down.  Does not support large pages.
@@ -322,10 +282,7 @@ static pte_t *pti_user_pagetable_walk_pte(unsigned long address)
 	return pte;
 }
 
-<<<<<<< HEAD
 #ifdef CONFIG_X86_VSYSCALL_EMULATION
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void __init pti_setup_vsyscall(void)
 {
 	pte_t *pte, *target_pte;
@@ -346,7 +303,6 @@ static void __init pti_setup_vsyscall(void)
 static void __init pti_setup_vsyscall(void) { }
 #endif
 
-<<<<<<< HEAD
 enum pti_clone_level {
 	PTI_CLONE_PMD,
 	PTI_CLONE_PTE,
@@ -355,10 +311,6 @@ enum pti_clone_level {
 static void
 pti_clone_pgtable(unsigned long start, unsigned long end,
 		  enum pti_clone_level level)
-=======
-static void __init
-pti_clone_pmds(unsigned long start, unsigned long end, pmdval_t clear)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long addr;
 
@@ -366,12 +318,8 @@ pti_clone_pmds(unsigned long start, unsigned long end, pmdval_t clear)
 	 * Clone the populated PMDs which cover start to end. These PMD areas
 	 * can have holes.
 	 */
-<<<<<<< HEAD
 	for (addr = start; addr < end;) {
 		pte_t *pte, *target_pte;
-=======
-	for (addr = start; addr < end; addr += PMD_SIZE) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pmd_t *pmd, *target_pmd;
 		pgd_t *pgd;
 		p4d_t *p4d;
@@ -387,7 +335,6 @@ pti_clone_pmds(unsigned long start, unsigned long end, pmdval_t clear)
 		p4d = p4d_offset(pgd, addr);
 		if (WARN_ON(p4d_none(*p4d)))
 			return;
-<<<<<<< HEAD
 
 		pud = pud_offset(p4d, addr);
 		if (pud_none(*pud)) {
@@ -472,28 +419,6 @@ pti_clone_pmds(unsigned long start, unsigned long end, pmdval_t clear)
 }
 
 #ifdef CONFIG_X86_64
-=======
-		pud = pud_offset(p4d, addr);
-		if (pud_none(*pud))
-			continue;
-		pmd = pmd_offset(pud, addr);
-		if (pmd_none(*pmd))
-			continue;
-
-		target_pmd = pti_user_pagetable_walk_pmd(addr);
-		if (WARN_ON(!target_pmd))
-			return;
-
-		/*
-		 * Copy the PMD.  That is, the kernelmode and usermode
-		 * tables will share the last-level page tables of this
-		 * address range
-		 */
-		*target_pmd = pmd_clear_flags(*pmd, clear);
-	}
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Clone a single p4d (i.e. a top-level entry on 4-level systems and a
  * next-level entry on 5-level systems.
@@ -520,7 +445,6 @@ static void __init pti_clone_user_shared(void)
 	pti_clone_p4d(CPU_ENTRY_AREA_BASE);
 }
 
-<<<<<<< HEAD
 #else /* CONFIG_X86_64 */
 
 /*
@@ -542,10 +466,6 @@ static void __init pti_clone_user_shared(void)
 
 /*
  * Clone the ESPFIX P4D into the user space visible page table
-=======
-/*
- * Clone the ESPFIX P4D into the user space visinble page table
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static void __init pti_setup_espfix64(void)
 {
@@ -557,7 +477,6 @@ static void __init pti_setup_espfix64(void)
 /*
  * Clone the populated PMDs of the entry and irqentry text and force it RO.
  */
-<<<<<<< HEAD
 static void pti_clone_entry_text(void)
 {
 	pti_clone_pgtable((unsigned long) __entry_text_start,
@@ -673,22 +592,6 @@ void pti_set_kernel_image_nonglobal(void)
 	 * areas that are mapped to userspace.
 	 */
 	set_memory_nonglobal(start, (end - start) >> PAGE_SHIFT);
-=======
-static void __init pti_clone_entry_text(void)
-{
-	pti_clone_pmds((unsigned long) __entry_text_start,
-			(unsigned long) __irqentry_text_end,
-		       _PAGE_RW | _PAGE_GLOBAL);
-
-	/*
-	 * If CFI is enabled, also map jump tables, so the entry code can
-	 * make indirect calls.
-	 */
-	if (IS_ENABLED(CONFIG_CFI_CLANG))
-		pti_clone_pmds((unsigned long) __cfi_jt_start,
-			       (unsigned long) __cfi_jt_end,
-			       _PAGE_RW | _PAGE_GLOBAL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -701,7 +604,6 @@ void __init pti_init(void)
 
 	pr_info("enabled\n");
 
-<<<<<<< HEAD
 #ifdef CONFIG_X86_32
 	/*
 	 * We check for X86_FEATURE_PCID here. But the init-code will
@@ -729,14 +631,10 @@ void __init pti_init(void)
 	/* Undo all global bits from the init pagetables in head_64.S: */
 	pti_set_kernel_image_nonglobal();
 	/* Replace some of the global bits just for shared entry text: */
-=======
-	pti_clone_user_shared();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pti_clone_entry_text();
 	pti_setup_espfix64();
 	pti_setup_vsyscall();
 }
-<<<<<<< HEAD
 
 /*
  * Finalize the kernel mappings in the userspace page-table. Some of the
@@ -758,5 +656,3 @@ void pti_finalize(void)
 
 	debug_checkwx_user();
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

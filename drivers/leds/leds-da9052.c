@@ -113,13 +113,8 @@ static int da9052_led_probe(struct platform_device *pdev)
 		goto err;
 	}
 
-<<<<<<< HEAD
 	led = devm_kcalloc(&pdev->dev,
 			   pled->num_leds, sizeof(struct da9052_led),
-=======
-	led = devm_kzalloc(&pdev->dev,
-			   sizeof(struct da9052_led) * pled->num_leds,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   GFP_KERNEL);
 	if (!led) {
 		error = -ENOMEM;

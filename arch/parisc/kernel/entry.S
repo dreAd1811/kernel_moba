@@ -36,10 +36,7 @@
 #include <asm/signal.h>
 #include <asm/unistd.h>
 #include <asm/ldcw.h>
-<<<<<<< HEAD
 #include <asm/traps.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/thread_info.h>
 
 #include <linux/linkage.h>
@@ -696,11 +693,7 @@ ENTRY(fault_vector_20)
 	def		 3
 	extint		 4
 	def		 5
-<<<<<<< HEAD
 	itlb_20		 PARISC_ITLB_TRAP
-=======
-	itlb_20		 6
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	def		 7
 	def		 8
 	def              9
@@ -743,11 +736,7 @@ ENTRY(fault_vector_11)
 	def		 3
 	extint		 4
 	def		 5
-<<<<<<< HEAD
 	itlb_11		 PARISC_ITLB_TRAP
-=======
-	itlb_11		 6
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	def		 7
 	def		 8
 	def              9
@@ -778,10 +767,6 @@ END(fault_vector_11)
 #endif
 	/* Fault vector is separately protected and *must* be on its own page */
 	.align		PAGE_SIZE
-<<<<<<< HEAD
-=======
-ENTRY(end_fault_vector)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	.import		handle_interruption,code
 	.import		do_cpu_irq_mask,code
@@ -792,12 +777,7 @@ ENTRY(end_fault_vector)
 	 * copy_thread moved args into task save area.
 	 */
 
-<<<<<<< HEAD
 ENTRY(ret_from_kernel_thread)
-=======
-ENTRY_CFI(ret_from_kernel_thread)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Call schedule_tail first though */
 	BL	schedule_tail, %r2
 	nop
@@ -812,11 +792,7 @@ ENTRY_CFI(ret_from_kernel_thread)
 	copy	%r31, %r2
 	b	finish_child_return
 	nop
-<<<<<<< HEAD
 END(ret_from_kernel_thread)
-=======
-ENDPROC_CFI(ret_from_kernel_thread)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 	/*
@@ -841,11 +817,7 @@ ENTRY_CFI(_switch_to)
 	bv	%r0(%r2)
 	mtctl   %r25,%cr30
 
-<<<<<<< HEAD
 ENTRY(_switch_to_ret)
-=======
-_switch_to_ret:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mtctl	%r0, %cr0		/* Needed for single stepping */
 	callee_rest
 	callee_rest_float
@@ -915,11 +887,7 @@ ENTRY_CFI(syscall_exit_rfi)
 	STREG   %r19,PT_SR6(%r16)
 	STREG   %r19,PT_SR7(%r16)
 
-<<<<<<< HEAD
 ENTRY(intr_return)
-=======
-intr_return:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* check for reschedule */
 	mfctl   %cr30,%r1
 	LDREG   TI_FLAGS(%r1),%r19	/* sched.h: TIF_NEED_RESCHED */
@@ -1099,30 +1067,12 @@ ENTRY_CFI(intr_save)		/* for os_hpmc */
 	save_specials	%r29
 
 	/* If this trap is a itlb miss, skip saving/adjusting isr/ior */
-<<<<<<< HEAD
 	cmpib,COND(=),n        PARISC_ITLB_TRAP,%r26,skip_save_ior
 
 
 	mfctl           %isr, %r16
 	nop		/* serialize mfctl on PA 2.0 to avoid 4 cycle penalty */
 	mfctl           %ior, %r17
-=======
-
-	/*
-	 * FIXME: 1) Use a #define for the hardwired "6" below (and in
-	 *           traps.c.
-	 *        2) Once we start executing code above 4 Gb, we need
-	 *           to adjust iasq/iaoq here in the same way we
-	 *           adjust isr/ior below.
-	 */
-
-	cmpib,COND(=),n        6,%r26,skip_save_ior
-
-
-	mfctl           %cr20, %r16 /* isr */
-	nop		/* serialize mfctl on PA 2.0 to avoid 4 cycle penalty */
-	mfctl           %cr21, %r17 /* ior */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 #ifdef CONFIG_64BIT
@@ -1134,26 +1084,12 @@ ENTRY_CFI(intr_save)		/* for os_hpmc */
 	extrd,u,*<>     %r8,PSW_W_BIT,1,%r0
 	depdi           0,1,2,%r17
 
-<<<<<<< HEAD
 	/* adjust isr/ior: get high bits from isr and deposit in ior */
 	space_adjust	%r16,%r17,%r1
-=======
-	/*
-	 * FIXME: This code has hardwired assumptions about the split
-	 *        between space bits and offset bits. This will change
-	 *        when we allow alternate page sizes.
-	 */
-
-	/* adjust isr/ior. */
-	extrd,u         %r16,63,SPACEID_SHIFT,%r1	/* get high bits from isr for ior */
-	depd            %r1,31,SPACEID_SHIFT,%r17	/* deposit them into ior */
-	depdi           0,63,SPACEID_SHIFT,%r16		/* clear them from isr */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 	STREG           %r16, PT_ISR(%r29)
 	STREG           %r17, PT_IOR(%r29)
 
-<<<<<<< HEAD
 #if 0 && defined(CONFIG_64BIT)
 	/* Revisit when we have 64-bit code above 4Gb */
 	b,n		intr_save2
@@ -1176,10 +1112,6 @@ skip_save_ior:
 #endif
 
 intr_save2:
-=======
-
-skip_save_ior:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	virt_map
 	save_general	%r29
 
@@ -1817,11 +1749,7 @@ fork_like fork
 fork_like vfork
 
 	/* Set the return value for the child */
-<<<<<<< HEAD
 ENTRY(child_return)
-=======
-ENTRY_CFI(child_return)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	BL	schedule_tail, %r2
 	nop
 finish_child_return:
@@ -1833,11 +1761,7 @@ finish_child_return:
 	reg_restore %r1
 	b	syscall_exit
 	copy	%r0,%r28
-<<<<<<< HEAD
 END(child_return)
-=======
-ENDPROC_CFI(child_return)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 ENTRY_CFI(sys_rt_sigreturn_wrapper)
 	LDREG	TI_TASK-THREAD_SZ_ALGN-FRAME_SIZE(%r30),%r26
@@ -1869,11 +1793,7 @@ ENTRY_CFI(sys_rt_sigreturn_wrapper)
 	LDREG	PT_GR28(%r1),%r28  /* reload original r28 for syscall_exit */
 ENDPROC_CFI(sys_rt_sigreturn_wrapper)
 
-<<<<<<< HEAD
 ENTRY(syscall_exit)
-=======
-ENTRY_CFI(syscall_exit)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* NOTE: Not all syscalls exit this way.  rt_sigreturn will exit
 	 * via syscall_exit_rfi if the signal was received while the process
 	 * was running.
@@ -2072,31 +1992,16 @@ syscall_do_resched:
 #else
 	nop
 #endif
-<<<<<<< HEAD
 END(syscall_exit)
-=======
-ENDPROC_CFI(syscall_exit)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 #ifdef CONFIG_FUNCTION_TRACER
 
 	.import ftrace_function_trampoline,code
 	.align L1_CACHE_BYTES
-<<<<<<< HEAD
 ENTRY_CFI(mcount, caller)
 _mcount:
 	.export _mcount,data
-=======
-	.globl mcount
-	.type  mcount, @function
-ENTRY(mcount)
-_mcount:
-	.export _mcount,data
-	.proc
-	.callinfo caller,frame=0
-	.entry
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * The 64bit mcount() function pointer needs 4 dwords, of which the
 	 * first two are free.  We optimize it here and put 2 instructions for
@@ -2118,26 +2023,11 @@ ftrace_stub:
 	.dword mcount
 	.dword 0 /* code in head.S puts value of global gp here */
 #endif
-<<<<<<< HEAD
 ENDPROC_CFI(mcount)
 
 #ifdef CONFIG_FUNCTION_GRAPH_TRACER
 	.align 8
 ENTRY_CFI(return_to_handler, caller,frame=FRAME_SIZE)
-=======
-	.exit
-	.procend
-ENDPROC(mcount)
-
-#ifdef CONFIG_FUNCTION_GRAPH_TRACER
-	.align 8
-	.globl return_to_handler
-	.type  return_to_handler, @function
-ENTRY_CFI(return_to_handler)
-	.proc
-	.callinfo caller,frame=FRAME_SIZE
-	.entry
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.export parisc_return_to_handler,data
 parisc_return_to_handler:
 	copy %r3,%r1
@@ -2176,11 +2066,6 @@ parisc_return_to_handler:
 	bv	%r0(%rp)
 #endif
 	LDREGM -FRAME_SIZE(%sp),%r3
-<<<<<<< HEAD
-=======
-	.exit
-	.procend
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 ENDPROC_CFI(return_to_handler)
 
 #endif /* CONFIG_FUNCTION_GRAPH_TRACER */
@@ -2190,19 +2075,14 @@ ENDPROC_CFI(return_to_handler)
 #ifdef CONFIG_IRQSTACKS
 /* void call_on_stack(unsigned long param1, void *func,
 		      unsigned long new_stack) */
-<<<<<<< HEAD
 ENTRY_CFI(call_on_stack, FRAME=2*FRAME_SIZE,CALLS,SAVE_RP,SAVE_SP)
 ENTRY(_call_on_stack)
-=======
-ENTRY_CFI(call_on_stack)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	copy	%sp, %r1
 
 	/* Regarding the HPPA calling conventions for function pointers,
 	   we assume the PIC register is not changed across call.  For
 	   CONFIG_64BIT, the argument pointer is left to point at the
 	   argument region allocated for the call to call_on_stack. */
-<<<<<<< HEAD
 
 	/* Switch to new stack.  We allocate two frames.  */
 	ldo	2*FRAME_SIZE(%arg2), %sp
@@ -2220,26 +2100,6 @@ ENTRY_CFI(call_on_stack)
 	/* Save previous stack pointer and return pointer in frame marker */
 	STREG	%r1, -FRAME_SIZE-REG_SZ(%sp)
 	STREG	%rp, -FRAME_SIZE-RP_OFFSET(%sp)
-=======
-# ifdef CONFIG_64BIT
-	/* Switch to new stack.  We allocate two 128 byte frames.  */
-	ldo	256(%arg2), %sp
-	/* Save previous stack pointer and return pointer in frame marker */
-	STREG	%rp, -144(%sp)
-	/* Calls always use function descriptor */
-	LDREG	16(%arg1), %arg1
-	bve,l	(%arg1), %rp
-	STREG	%r1, -136(%sp)
-	LDREG	-144(%sp), %rp
-	bve	(%rp)
-	LDREG	-136(%sp), %sp
-# else
-	/* Switch to new stack.  We allocate two 64 byte frames.  */
-	ldo	128(%arg2), %sp
-	/* Save previous stack pointer and return pointer in frame marker */
-	STREG	%r1, -68(%sp)
-	STREG	%rp, -84(%sp)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Calls use function descriptor if PLABEL bit is set */
 	bb,>=,n	%arg1, 30, 1f
 	depwi	0,31,2, %arg1
@@ -2247,15 +2107,9 @@ ENTRY_CFI(call_on_stack)
 1:
 	be,l	0(%sr4,%arg1), %sr0, %r31
 	copy	%r31, %rp
-<<<<<<< HEAD
 	LDREG	-FRAME_SIZE-RP_OFFSET(%sp), %rp
 	bv	(%rp)
 	LDREG	-FRAME_SIZE-REG_SZ(%sp), %sp
-=======
-	LDREG	-84(%sp), %rp
-	bv	(%rp)
-	LDREG	-68(%sp), %sp
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 # endif /* CONFIG_64BIT */
 ENDPROC_CFI(call_on_stack)
 #endif /* CONFIG_IRQSTACKS */

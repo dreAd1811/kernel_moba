@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 .. _kernel_hacking_hack:
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 ============================================
 Unreliable Guide To Hacking The Linux Kernel
 ============================================
@@ -528,11 +525,7 @@ this expression is true, or ``-ERESTARTSYS`` if a signal is received. The
 Waking Up Queued Tasks
 ----------------------
 
-<<<<<<< HEAD
 Call :c:func:`wake_up()` (``include/linux/wait.h``), which will wake
-=======
-Call :c:func:`wake_up()` (``include/linux/wait.h``);, which will wake
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 up every process in the queue. The exception is if one has
 ``TASK_EXCLUSIVE`` set, in which case the remainder of the queue will
 not be woken. There are other variants of this basic function available
@@ -699,13 +692,8 @@ not provide the necessary runtime environment and the include files are
 not tested for it. It is still possible, but not recommended. If you
 really want to do this, forget about exceptions at least.
 
-<<<<<<< HEAD
 #if
 ---
-=======
-NUMif
------
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 It is generally considered cleaner to use macros in header files (or at
 the top of .c files) to abstract away functions rather than using \`#if'

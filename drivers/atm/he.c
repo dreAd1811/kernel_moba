@@ -738,7 +738,6 @@ static int he_init_cs_block_rcm(struct he_dev *he_dev)
 #else
 		/* this is pretty, but avoids _divdu3 and is mostly correct */
 		mult = he_dev->atm_dev->link_rate / ATM_OC3_PCR;
-<<<<<<< HEAD
 		if (rate_cps > (272ULL * mult))
 			buf = 4;
 		else if (rate_cps > (204ULL * mult))
@@ -746,15 +745,6 @@ static int he_init_cs_block_rcm(struct he_dev *he_dev)
 		else if (rate_cps > (136ULL * mult))
 			buf = 2;
 		else if (rate_cps > (68ULL * mult))
-=======
-		if (rate_cps > (272 * mult))
-			buf = 4;
-		else if (rate_cps > (204 * mult))
-			buf = 3;
-		else if (rate_cps > (136 * mult))
-			buf = 2;
-		else if (rate_cps > (68 * mult))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			buf = 1;
 		else
 			buf = 0;

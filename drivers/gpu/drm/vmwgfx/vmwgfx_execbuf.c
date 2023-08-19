@@ -1,14 +1,7 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0 OR MIT
 /**************************************************************************
  *
  * Copyright 2009 - 2015 VMware, Inc., Palo Alto, CA., USA
-=======
-/**************************************************************************
- *
- * Copyright © 2009 - 2015 VMware, Inc., Palo Alto, CA., USA
- * All Rights Reserved.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
@@ -99,11 +92,7 @@ struct vmw_resource_val_node {
 	struct list_head head;
 	struct drm_hash_item hash;
 	struct vmw_resource *res;
-<<<<<<< HEAD
 	struct vmw_buffer_object *new_backup;
-=======
-	struct vmw_dma_buffer *new_backup;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct vmw_ctx_binding_state *staged_bindings;
 	unsigned long new_backup_offset;
 	u32 first_usage : 1;
@@ -137,15 +126,9 @@ static int vmw_resource_context_res_add(struct vmw_private *dev_priv,
 static int vmw_translate_mob_ptr(struct vmw_private *dev_priv,
 				 struct vmw_sw_context *sw_context,
 				 SVGAMobId *id,
-<<<<<<< HEAD
 				 struct vmw_buffer_object **vmw_bo_p);
 static int vmw_bo_to_validate_list(struct vmw_sw_context *sw_context,
 				   struct vmw_buffer_object *vbo,
-=======
-				 struct vmw_dma_buffer **vmw_bo_p);
-static int vmw_bo_to_validate_list(struct vmw_sw_context *sw_context,
-				   struct vmw_dma_buffer *vbo,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   bool validate_as_mob,
 				   uint32_t *p_val_node);
 /**
@@ -202,11 +185,7 @@ static void vmw_resources_unreserve(struct vmw_sw_context *sw_context,
 		}
 		vmw_resource_unreserve(res, switch_backup, val->new_backup,
 				       val->new_backup_offset);
-<<<<<<< HEAD
 		vmw_bo_unreference(&val->new_backup);
-=======
-		vmw_dmabuf_unreference(&val->new_backup);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -444,11 +423,7 @@ static int vmw_resource_context_res_add(struct vmw_private *dev_priv,
 	}
 
 	if (dev_priv->has_dx && vmw_res_type(ctx) == vmw_res_dx_context) {
-<<<<<<< HEAD
 		struct vmw_buffer_object *dx_query_mob;
-=======
-		struct vmw_dma_buffer *dx_query_mob;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		dx_query_mob = vmw_context_get_dx_query_mob(ctx);
 		if (dx_query_mob)
@@ -569,11 +544,7 @@ static int vmw_cmd_ok(struct vmw_private *dev_priv,
  * submission is reached.
  */
 static int vmw_bo_to_validate_list(struct vmw_sw_context *sw_context,
-<<<<<<< HEAD
 				   struct vmw_buffer_object *vbo,
-=======
-				   struct vmw_dma_buffer *vbo,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   bool validate_as_mob,
 				   uint32_t *p_val_node)
 {
@@ -645,11 +616,7 @@ static int vmw_resources_reserve(struct vmw_sw_context *sw_context)
 			return ret;
 
 		if (res->backup) {
-<<<<<<< HEAD
 			struct vmw_buffer_object *vbo = res->backup;
-=======
-			struct vmw_dma_buffer *vbo = res->backup;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			ret = vmw_bo_to_validate_list
 				(sw_context, vbo,
@@ -661,11 +628,7 @@ static int vmw_resources_reserve(struct vmw_sw_context *sw_context)
 	}
 
 	if (sw_context->dx_query_mob) {
-<<<<<<< HEAD
 		struct vmw_buffer_object *expected_dx_query_mob;
-=======
-		struct vmw_dma_buffer *expected_dx_query_mob;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		expected_dx_query_mob =
 			vmw_context_get_dx_query_mob(sw_context->dx_query_ctx);
@@ -694,11 +657,7 @@ static int vmw_resources_validate(struct vmw_sw_context *sw_context)
 
 	list_for_each_entry(val, &sw_context->resource_list, head) {
 		struct vmw_resource *res = val->res;
-<<<<<<< HEAD
 		struct vmw_buffer_object *backup = res->backup;
-=======
-		struct vmw_dma_buffer *backup = res->backup;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		ret = vmw_resource_validate(res);
 		if (unlikely(ret != 0)) {
@@ -709,11 +668,7 @@ static int vmw_resources_validate(struct vmw_sw_context *sw_context)
 
 		/* Check if the resource switched backup buffer */
 		if (backup && res->backup && (backup != res->backup)) {
-<<<<<<< HEAD
 			struct vmw_buffer_object *vbo = res->backup;
-=======
-			struct vmw_dma_buffer *vbo = res->backup;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			ret = vmw_bo_to_validate_list
 				(sw_context, vbo,
@@ -866,11 +821,7 @@ out_no_reloc:
 static int vmw_rebind_all_dx_query(struct vmw_resource *ctx_res)
 {
 	struct vmw_private *dev_priv = ctx_res->dev_priv;
-<<<<<<< HEAD
 	struct vmw_buffer_object *dx_query_mob;
-=======
-	struct vmw_dma_buffer *dx_query_mob;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct {
 		SVGA3dCmdHeader header;
 		SVGA3dCmdDXBindAllQuery body;
@@ -1201,11 +1152,7 @@ static int vmw_cmd_present_check(struct vmw_private *dev_priv,
  * command batch.
  */
 static int vmw_query_bo_switch_prepare(struct vmw_private *dev_priv,
-<<<<<<< HEAD
 				       struct vmw_buffer_object *new_query_bo,
-=======
-				       struct vmw_dma_buffer *new_query_bo,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       struct vmw_sw_context *sw_context)
 {
 	struct vmw_res_cache_entry *ctx_entry =
@@ -1287,11 +1234,7 @@ static void vmw_query_bo_switch_commit(struct vmw_private *dev_priv,
 	if (dev_priv->pinned_bo != sw_context->cur_query_bo) {
 		if (dev_priv->pinned_bo) {
 			vmw_bo_pin_reserved(dev_priv->pinned_bo, false);
-<<<<<<< HEAD
 			vmw_bo_unreference(&dev_priv->pinned_bo);
-=======
-			vmw_dmabuf_unreference(&dev_priv->pinned_bo);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		if (!sw_context->needs_post_query_barrier) {
@@ -1313,11 +1256,7 @@ static void vmw_query_bo_switch_commit(struct vmw_private *dev_priv,
 			dev_priv->query_cid = sw_context->last_query_ctx->id;
 			dev_priv->query_cid_valid = true;
 			dev_priv->pinned_bo =
-<<<<<<< HEAD
 				vmw_bo_reference(sw_context->cur_query_bo);
-=======
-				vmw_dmabuf_reference(sw_context->cur_query_bo);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 }
@@ -1343,25 +1282,14 @@ static void vmw_query_bo_switch_commit(struct vmw_private *dev_priv,
 static int vmw_translate_mob_ptr(struct vmw_private *dev_priv,
 				 struct vmw_sw_context *sw_context,
 				 SVGAMobId *id,
-<<<<<<< HEAD
 				 struct vmw_buffer_object **vmw_bo_p)
 {
 	struct vmw_buffer_object *vmw_bo = NULL;
-=======
-				 struct vmw_dma_buffer **vmw_bo_p)
-{
-	struct vmw_dma_buffer *vmw_bo = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t handle = *id;
 	struct vmw_relocation *reloc;
 	int ret;
 
-<<<<<<< HEAD
 	ret = vmw_user_bo_lookup(sw_context->fp->tfile, handle, &vmw_bo, NULL);
-=======
-	ret = vmw_user_dmabuf_lookup(sw_context->fp->tfile, handle, &vmw_bo,
-				     NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(ret != 0)) {
 		DRM_ERROR("Could not find or use MOB buffer.\n");
 		ret = -EINVAL;
@@ -1387,11 +1315,7 @@ static int vmw_translate_mob_ptr(struct vmw_private *dev_priv,
 	return 0;
 
 out_no_reloc:
-<<<<<<< HEAD
 	vmw_bo_unreference(&vmw_bo);
-=======
-	vmw_dmabuf_unreference(&vmw_bo);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	*vmw_bo_p = NULL;
 	return ret;
 }
@@ -1418,25 +1342,14 @@ out_no_reloc:
 static int vmw_translate_guest_ptr(struct vmw_private *dev_priv,
 				   struct vmw_sw_context *sw_context,
 				   SVGAGuestPtr *ptr,
-<<<<<<< HEAD
 				   struct vmw_buffer_object **vmw_bo_p)
 {
 	struct vmw_buffer_object *vmw_bo = NULL;
-=======
-				   struct vmw_dma_buffer **vmw_bo_p)
-{
-	struct vmw_dma_buffer *vmw_bo = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t handle = ptr->gmrId;
 	struct vmw_relocation *reloc;
 	int ret;
 
-<<<<<<< HEAD
 	ret = vmw_user_bo_lookup(sw_context->fp->tfile, handle, &vmw_bo, NULL);
-=======
-	ret = vmw_user_dmabuf_lookup(sw_context->fp->tfile, handle, &vmw_bo,
-				     NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(ret != 0)) {
 		DRM_ERROR("Could not find or use GMR region.\n");
 		ret = -EINVAL;
@@ -1461,11 +1374,7 @@ static int vmw_translate_guest_ptr(struct vmw_private *dev_priv,
 	return 0;
 
 out_no_reloc:
-<<<<<<< HEAD
 	vmw_bo_unreference(&vmw_bo);
-=======
-	vmw_dmabuf_unreference(&vmw_bo);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	*vmw_bo_p = NULL;
 	return ret;
 }
@@ -1536,11 +1445,7 @@ static int vmw_cmd_dx_bind_query(struct vmw_private *dev_priv,
 		SVGA3dCmdDXBindQuery q;
 	} *cmd;
 
-<<<<<<< HEAD
 	struct vmw_buffer_object *vmw_bo;
-=======
-	struct vmw_dma_buffer *vmw_bo;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int    ret;
 
 
@@ -1559,11 +1464,7 @@ static int vmw_cmd_dx_bind_query(struct vmw_private *dev_priv,
 	sw_context->dx_query_mob = vmw_bo;
 	sw_context->dx_query_ctx = sw_context->dx_ctx_node->res;
 
-<<<<<<< HEAD
 	vmw_bo_unreference(&vmw_bo);
-=======
-	vmw_dmabuf_unreference(&vmw_bo);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -1646,11 +1547,7 @@ static int vmw_cmd_end_gb_query(struct vmw_private *dev_priv,
 				struct vmw_sw_context *sw_context,
 				SVGA3dCmdHeader *header)
 {
-<<<<<<< HEAD
 	struct vmw_buffer_object *vmw_bo;
-=======
-	struct vmw_dma_buffer *vmw_bo;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct vmw_query_cmd {
 		SVGA3dCmdHeader header;
 		SVGA3dCmdEndGBQuery q;
@@ -1670,11 +1567,7 @@ static int vmw_cmd_end_gb_query(struct vmw_private *dev_priv,
 
 	ret = vmw_query_bo_switch_prepare(dev_priv, vmw_bo, sw_context);
 
-<<<<<<< HEAD
 	vmw_bo_unreference(&vmw_bo);
-=======
-	vmw_dmabuf_unreference(&vmw_bo);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -1689,11 +1582,7 @@ static int vmw_cmd_end_query(struct vmw_private *dev_priv,
 			     struct vmw_sw_context *sw_context,
 			     SVGA3dCmdHeader *header)
 {
-<<<<<<< HEAD
 	struct vmw_buffer_object *vmw_bo;
-=======
-	struct vmw_dma_buffer *vmw_bo;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct vmw_query_cmd {
 		SVGA3dCmdHeader header;
 		SVGA3dCmdEndQuery q;
@@ -1732,11 +1621,7 @@ static int vmw_cmd_end_query(struct vmw_private *dev_priv,
 
 	ret = vmw_query_bo_switch_prepare(dev_priv, vmw_bo, sw_context);
 
-<<<<<<< HEAD
 	vmw_bo_unreference(&vmw_bo);
-=======
-	vmw_dmabuf_unreference(&vmw_bo);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -1751,11 +1636,7 @@ static int vmw_cmd_wait_gb_query(struct vmw_private *dev_priv,
 				 struct vmw_sw_context *sw_context,
 				 SVGA3dCmdHeader *header)
 {
-<<<<<<< HEAD
 	struct vmw_buffer_object *vmw_bo;
-=======
-	struct vmw_dma_buffer *vmw_bo;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct vmw_query_cmd {
 		SVGA3dCmdHeader header;
 		SVGA3dCmdWaitForGBQuery q;
@@ -1773,11 +1654,7 @@ static int vmw_cmd_wait_gb_query(struct vmw_private *dev_priv,
 	if (unlikely(ret != 0))
 		return ret;
 
-<<<<<<< HEAD
 	vmw_bo_unreference(&vmw_bo);
-=======
-	vmw_dmabuf_unreference(&vmw_bo);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1792,11 +1669,7 @@ static int vmw_cmd_wait_query(struct vmw_private *dev_priv,
 			      struct vmw_sw_context *sw_context,
 			      SVGA3dCmdHeader *header)
 {
-<<<<<<< HEAD
 	struct vmw_buffer_object *vmw_bo;
-=======
-	struct vmw_dma_buffer *vmw_bo;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct vmw_query_cmd {
 		SVGA3dCmdHeader header;
 		SVGA3dCmdWaitForQuery q;
@@ -1833,11 +1706,7 @@ static int vmw_cmd_wait_query(struct vmw_private *dev_priv,
 	if (unlikely(ret != 0))
 		return ret;
 
-<<<<<<< HEAD
 	vmw_bo_unreference(&vmw_bo);
-=======
-	vmw_dmabuf_unreference(&vmw_bo);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1845,11 +1714,7 @@ static int vmw_cmd_dma(struct vmw_private *dev_priv,
 		       struct vmw_sw_context *sw_context,
 		       SVGA3dCmdHeader *header)
 {
-<<<<<<< HEAD
 	struct vmw_buffer_object *vmw_bo = NULL;
-=======
-	struct vmw_dma_buffer *vmw_bo = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct vmw_surface *srf = NULL;
 	struct vmw_dma_cmd {
 		SVGA3dCmdHeader header;
@@ -1901,11 +1766,7 @@ static int vmw_cmd_dma(struct vmw_private *dev_priv,
 			     header);
 
 out_no_surface:
-<<<<<<< HEAD
 	vmw_bo_unreference(&vmw_bo);
-=======
-	vmw_dmabuf_unreference(&vmw_bo);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -2024,11 +1885,7 @@ static int vmw_cmd_check_define_gmrfb(struct vmw_private *dev_priv,
 				      struct vmw_sw_context *sw_context,
 				      void *buf)
 {
-<<<<<<< HEAD
 	struct vmw_buffer_object *vmw_bo;
-=======
-	struct vmw_dma_buffer *vmw_bo;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	struct {
@@ -2042,11 +1899,7 @@ static int vmw_cmd_check_define_gmrfb(struct vmw_private *dev_priv,
 	if (unlikely(ret != 0))
 		return ret;
 
-<<<<<<< HEAD
 	vmw_bo_unreference(&vmw_bo);
-=======
-	vmw_dmabuf_unreference(&vmw_bo);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -2073,11 +1926,7 @@ static int vmw_cmd_res_switch_backup(struct vmw_private *dev_priv,
 				     uint32_t *buf_id,
 				     unsigned long backup_offset)
 {
-<<<<<<< HEAD
 	struct vmw_buffer_object *dma_buf;
-=======
-	struct vmw_dma_buffer *dma_buf;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	ret = vmw_translate_mob_ptr(dev_priv, sw_context, buf_id, &dma_buf);
@@ -2088,11 +1937,7 @@ static int vmw_cmd_res_switch_backup(struct vmw_private *dev_priv,
 	if (val_node->first_usage)
 		val_node->no_buffer_needed = true;
 
-<<<<<<< HEAD
 	vmw_bo_unreference(&val_node->new_backup);
-=======
-	vmw_dmabuf_unreference(&val_node->new_backup);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	val_node->new_backup = dma_buf;
 	val_node->new_backup_offset = backup_offset;
 
@@ -3276,7 +3121,6 @@ static int vmw_cmd_dx_transfer_from_buffer(struct vmw_private *dev_priv,
 				 &cmd->body.destSid, NULL);
 }
 
-<<<<<<< HEAD
 /**
  * vmw_cmd_intra_surface_copy -
  * Validate an SVGA_3D_CMD_INTRA_SURFACE_COPY command
@@ -3303,8 +3147,6 @@ static int vmw_cmd_intra_surface_copy(struct vmw_private *dev_priv,
 }
 
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int vmw_cmd_check_not_3d(struct vmw_private *dev_priv,
 				struct vmw_sw_context *sw_context,
 				void *buf, uint32_t *size)
@@ -3419,15 +3261,9 @@ static const struct vmw_cmd_entry vmw_cmd_entries[SVGA_3D_CMD_MAX] = {
 		    false, false, false),
 	VMW_CMD_DEF(SVGA_3D_CMD_SCREEN_DMA, &vmw_cmd_invalid,
 		    false, false, false),
-<<<<<<< HEAD
 	VMW_CMD_DEF(SVGA_3D_CMD_DEAD1, &vmw_cmd_invalid,
 		    false, false, false),
 	VMW_CMD_DEF(SVGA_3D_CMD_DEAD2, &vmw_cmd_invalid,
-=======
-	VMW_CMD_DEF(SVGA_3D_CMD_SET_UNITY_SURFACE_COOKIE, &vmw_cmd_invalid,
-		    false, false, false),
-	VMW_CMD_DEF(SVGA_3D_CMD_OPEN_CONTEXT_SURFACE, &vmw_cmd_invalid,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    false, false, false),
 	VMW_CMD_DEF(SVGA_3D_CMD_LOGICOPS_BITBLT, &vmw_cmd_invalid,
 		    false, false, false),
@@ -3666,11 +3502,8 @@ static const struct vmw_cmd_entry vmw_cmd_entries[SVGA_3D_CMD_MAX] = {
 	VMW_CMD_DEF(SVGA_3D_CMD_DX_TRANSFER_FROM_BUFFER,
 		    &vmw_cmd_dx_transfer_from_buffer,
 		    true, false, true),
-<<<<<<< HEAD
 	VMW_CMD_DEF(SVGA_3D_CMD_INTRA_SURFACE_COPY, &vmw_cmd_intra_surface_copy,
 		    true, false, true),
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 bool vmw_cmd_describe(const void *buf, u32 *size, char const **cmd)
@@ -3899,26 +3732,16 @@ int vmw_validate_single_buffer(struct vmw_private *dev_priv,
 			       bool interruptible,
 			       bool validate_as_mob)
 {
-<<<<<<< HEAD
 	struct vmw_buffer_object *vbo =
 		container_of(bo, struct vmw_buffer_object, base);
 	struct ttm_operation_ctx ctx = { interruptible, false };
-=======
-	struct vmw_dma_buffer *vbo = container_of(bo, struct vmw_dma_buffer,
-						  base);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	if (vbo->pin_count > 0)
 		return 0;
 
 	if (validate_as_mob)
-<<<<<<< HEAD
 		return ttm_bo_validate(bo, &vmw_mob_placement, &ctx);
-=======
-		return ttm_bo_validate(bo, &vmw_mob_placement, interruptible,
-				       false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/**
 	 * Put BO in VRAM if there is space, otherwise as a GMR.
@@ -3927,12 +3750,7 @@ int vmw_validate_single_buffer(struct vmw_private *dev_priv,
 	 * used as a GMR, this will return -ENOMEM.
 	 */
 
-<<<<<<< HEAD
 	ret = ttm_bo_validate(bo, &vmw_vram_gmr_placement, &ctx);
-=======
-	ret = ttm_bo_validate(bo, &vmw_vram_gmr_placement, interruptible,
-			      false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (likely(ret == 0 || ret == -ERESTARTSYS))
 		return ret;
 
@@ -3941,11 +3759,7 @@ int vmw_validate_single_buffer(struct vmw_private *dev_priv,
 	 * previous contents.
 	 */
 
-<<<<<<< HEAD
 	ret = ttm_bo_validate(bo, &vmw_vram_placement, &ctx);
-=======
-	ret = ttm_bo_validate(bo, &vmw_vram_placement, interruptible, false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -4640,11 +4454,7 @@ void __vmw_execbuf_release_pinned_bo(struct vmw_private *dev_priv,
 
 	ttm_bo_unref(&query_val.bo);
 	ttm_bo_unref(&pinned_val.bo);
-<<<<<<< HEAD
 	vmw_bo_unreference(&dev_priv->pinned_bo);
-=======
-	vmw_dmabuf_unreference(&dev_priv->pinned_bo);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out_unlock:
 	return;
 
@@ -4653,11 +4463,7 @@ out_no_emit:
 out_no_reserve:
 	ttm_bo_unref(&query_val.bo);
 	ttm_bo_unref(&pinned_val.bo);
-<<<<<<< HEAD
 	vmw_bo_unreference(&dev_priv->pinned_bo);
-=======
-	vmw_dmabuf_unreference(&dev_priv->pinned_bo);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**

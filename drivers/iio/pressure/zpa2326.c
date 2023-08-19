@@ -672,15 +672,8 @@ static int zpa2326_resume(const struct iio_dev *indio_dev)
 	int err;
 
 	err = pm_runtime_get_sync(indio_dev->dev.parent);
-<<<<<<< HEAD
 	if (err < 0)
 		return err;
-=======
-	if (err < 0) {
-		pm_runtime_put(indio_dev->dev.parent);
-		return err;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (err > 0) {
 		/*
@@ -1397,10 +1390,6 @@ static int zpa2326_set_trigger_state(struct iio_trigger *trig, bool state)
 }
 
 static const struct iio_trigger_ops zpa2326_trigger_ops = {
-<<<<<<< HEAD
-=======
-	.owner             = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.set_trigger_state = zpa2326_set_trigger_state,
 };
 
@@ -1600,10 +1589,6 @@ static const struct iio_chan_spec zpa2326_channels[] = {
 };
 
 static const struct iio_info zpa2326_info = {
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.attrs         = &zpa2326_attribute_group,
 	.read_raw      = zpa2326_read_raw,
 	.write_raw     = zpa2326_write_raw,

@@ -138,7 +138,6 @@ int dbg_set_reg(int regno, void *mem, struct pt_regs *regs)
 void
 sleeping_thread_to_gdb_regs(unsigned long *gdb_regs, struct task_struct *task)
 {
-<<<<<<< HEAD
 	struct cpu_context *cpu_context = &task->thread.cpu_context;
 
 	/* Initialize to zero */
@@ -158,16 +157,6 @@ sleeping_thread_to_gdb_regs(unsigned long *gdb_regs, struct task_struct *task)
 
 	gdb_regs[31] = cpu_context->sp;
 	gdb_regs[32] = cpu_context->pc;
-=======
-	struct pt_regs *thread_regs;
-
-	/* Initialize to zero */
-	memset((char *)gdb_regs, 0, NUMREGBYTES);
-	thread_regs = task_pt_regs(task);
-	memcpy((void *)gdb_regs, (void *)thread_regs->regs, GP_REG_BYTES);
-	/* Special case for PSTATE (check comments in asm/kgdb.h for details) */
-	dbg_get_reg(33, gdb_regs + GP_REG_BYTES, thread_regs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void kgdb_arch_set_pc(struct pt_regs *regs, unsigned long pc)
@@ -280,11 +269,7 @@ static int kgdb_step_brk_fn(struct pt_regs *regs, unsigned int esr)
 	if (user_mode(regs) || !kgdb_single_step)
 		return DBG_HOOK_ERROR;
 
-<<<<<<< HEAD
 	kgdb_handle_exception(1, SIGTRAP, 0, regs);
-=======
-	kgdb_handle_exception(0, SIGTRAP, 0, regs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return DBG_HOOK_HANDLED;
 }
 NOKPROBE_SYMBOL(kgdb_step_brk_fn);

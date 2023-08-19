@@ -20,10 +20,7 @@
 #include <linux/irqreturn.h>
 #include <linux/klist.h>
 #include <linux/module.h>
-<<<<<<< HEAD
 #include <linux/mod_devicetable.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/platform_device.h>
 #include <linux/regulator/consumer.h>
 #include <linux/semaphore.h>
@@ -1408,14 +1405,8 @@ static void cryp_algs_unregister_all(void)
 static int ux500_cryp_probe(struct platform_device *pdev)
 {
 	int ret;
-<<<<<<< HEAD
 	struct resource *res;
 	struct resource *res_irq;
-=======
-	int cryp_error = 0;
-	struct resource *res = NULL;
-	struct resource *res_irq = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct cryp_device_data *device_data;
 	struct cryp_protection_config prot = {
 		.privilege_access = CRYP_STATE_ENABLE
@@ -1425,10 +1416,6 @@ static int ux500_cryp_probe(struct platform_device *pdev)
 	dev_dbg(dev, "[%s]", __func__);
 	device_data = devm_kzalloc(dev, sizeof(*device_data), GFP_ATOMIC);
 	if (!device_data) {
-<<<<<<< HEAD
-=======
-		dev_err(dev, "[%s]: kzalloc() failed!", __func__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -ENOMEM;
 		goto out;
 	}
@@ -1491,24 +1478,13 @@ static int ux500_cryp_probe(struct platform_device *pdev)
 		goto out_clk_unprepare;
 	}
 
-<<<<<<< HEAD
 	if (cryp_check(device_data)) {
 		dev_err(dev, "[%s]: cryp_check() failed!", __func__);
-=======
-	cryp_error = cryp_check(device_data);
-	if (cryp_error != 0) {
-		dev_err(dev, "[%s]: cryp_init() failed!", __func__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -EINVAL;
 		goto out_power;
 	}
 
-<<<<<<< HEAD
 	if (cryp_configure_protection(device_data, &prot)) {
-=======
-	cryp_error = cryp_configure_protection(device_data, &prot);
-	if (cryp_error != 0) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(dev, "[%s]: cryp_configure_protection() failed!",
 			__func__);
 		ret = -EINVAL;
@@ -1772,10 +1748,6 @@ static void __exit ux500_cryp_mod_fini(void)
 {
 	pr_debug("[%s] is called!", __func__);
 	platform_driver_unregister(&cryp_driver);
-<<<<<<< HEAD
-=======
-	return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 module_init(ux500_cryp_mod_init);

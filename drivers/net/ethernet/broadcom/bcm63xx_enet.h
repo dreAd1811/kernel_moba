@@ -9,10 +9,6 @@
 #include <linux/platform_device.h>
 
 #include <bcm63xx_regs.h>
-<<<<<<< HEAD
-=======
-#include <bcm63xx_irq.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <bcm63xx_io.h>
 #include <bcm63xx_iudma.h>
 
@@ -197,12 +193,6 @@ struct bcm_enet_mib_counters {
 
 struct bcm_enet_priv {
 
-<<<<<<< HEAD
-=======
-	/* mac id (from platform device id) */
-	int mac_id;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* base remapped address of device */
 	void __iomem *base;
 

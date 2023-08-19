@@ -88,7 +88,6 @@
  * drm_mode_crtc_set_gamma_size(). Drivers which support both should use
  * drm_atomic_helper_legacy_gamma_set() to alias the legacy gamma ramp with the
  * "GAMMA_LUT" property above.
-<<<<<<< HEAD
  *
  * Support for different non RGB color encodings is controlled through
  * &drm_plane specific COLOR_ENCODING and COLOR_RANGE properties. They
@@ -103,8 +102,6 @@
  * 	Optional plane enum property to support different non RGB
  * 	color parameter ranges. The driver can provide a subset of
  * 	standard enum values supported by the DRM plane.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /**
@@ -356,7 +353,6 @@ out:
 	drm_modeset_unlock(&crtc->mutex);
 	return ret;
 }
-<<<<<<< HEAD
 
 static const char * const color_encoding_name[] = {
 	[DRM_COLOR_YCBCR_BT601] = "ITU-R BT.601 YCbCr",
@@ -476,5 +472,3 @@ int drm_plane_create_color_properties(struct drm_plane *plane,
 	return 0;
 }
 EXPORT_SYMBOL(drm_plane_create_color_properties);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

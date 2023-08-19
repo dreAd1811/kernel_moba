@@ -22,10 +22,7 @@
 #include <linux/pm_domain.h>
 #include <linux/pm_runtime.h>
 #include <linux/pwm.h>
-<<<<<<< HEAD
 #include <linux/suspend.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/delay.h>
 
 #include "internal.h"
@@ -102,12 +99,6 @@ struct lpss_private_data {
 	u32 prv_reg_ctx[LPSS_PRV_REG_COUNT];
 };
 
-<<<<<<< HEAD
-=======
-/* Devices which need to be in D3 before lpss_iosf_enter_d3_state() proceeds */
-static u32 pmc_atom_d3_mask = 0xfe000ffe;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* LPSS run time quirks */
 static unsigned int lpss_quirks;
 
@@ -184,24 +175,6 @@ static void byt_pwm_setup(struct lpss_private_data *pdata)
 
 static void byt_i2c_setup(struct lpss_private_data *pdata)
 {
-<<<<<<< HEAD
-=======
-	const char *uid_str = acpi_device_uid(pdata->adev);
-	acpi_handle handle = pdata->adev->handle;
-	unsigned long long shared_host = 0;
-	acpi_status status;
-	long uid = 0;
-
-	/* Expected to always be true, but better safe then sorry */
-	if (uid_str)
-		uid = simple_strtol(uid_str, NULL, 10);
-
-	/* Detect I2C bus shared with PUNIT and ignore its d3 status */
-	status = acpi_evaluate_integer(handle, "_SEM", NULL, &shared_host);
-	if (ACPI_SUCCESS(status) && shared_host && uid)
-		pmc_atom_d3_mask &= ~(BIT_LPSS2_F1_I2C1 << (uid - 1));
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	lpss_deassert_reset(pdata);
 
 	if (readl(pdata->mmio_base + pdata->dev_desc->prv_offset))
@@ -398,11 +371,7 @@ static int register_device_clock(struct acpi_device *adev,
 {
 	const struct lpss_device_desc *dev_desc = pdata->dev_desc;
 	const char *devname = dev_name(&adev->dev);
-<<<<<<< HEAD
 	struct clk *clk;
-=======
-	struct clk *clk = ERR_PTR(-ENODEV);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct lpss_clk_data *clk_data;
 	const char *parent, *clk_name;
 	void __iomem *prv_base;
@@ -467,7 +436,6 @@ out:
 	return 0;
 }
 
-<<<<<<< HEAD
 struct lpss_device_links {
 	const char *supplier_hid;
 	const char *supplier_uid;
@@ -604,8 +572,6 @@ static void acpi_lpss_create_device_links(struct acpi_device *adev,
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int acpi_lpss_create_device(struct acpi_device *adev,
 				   const struct acpi_device_id *id)
 {
@@ -671,24 +637,17 @@ static int acpi_lpss_create_device(struct acpi_device *adev,
 	 * have _PS0 and _PS3 without _PSC (and no power resources), so
 	 * acpi_bus_init_power() will assume that the BIOS has put them into D0.
 	 */
-<<<<<<< HEAD
 	ret = acpi_device_fix_up_power(adev);
 	if (ret) {
 		/* Skip the device, but continue the namespace scan. */
 		ret = 0;
 		goto err_out;
 	}
-=======
-	acpi_device_fix_up_power(adev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	adev->driver_data = pdata;
 	pdev = acpi_create_platform_device(adev, dev_desc->properties);
 	if (!IS_ERR_OR_NULL(pdev)) {
-<<<<<<< HEAD
 		acpi_lpss_create_device_links(adev, pdev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 1;
 	}
 
@@ -882,11 +841,7 @@ static int acpi_lpss_activate(struct device *dev)
 	struct lpss_private_data *pdata = acpi_driver_data(ACPI_COMPANION(dev));
 	int ret;
 
-<<<<<<< HEAD
 	ret = acpi_dev_resume(dev);
-=======
-	ret = acpi_dev_runtime_resume(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -906,49 +861,9 @@ static int acpi_lpss_activate(struct device *dev)
 
 static void acpi_lpss_dismiss(struct device *dev)
 {
-<<<<<<< HEAD
 	acpi_dev_suspend(dev, false);
 }
 
-=======
-	acpi_dev_runtime_suspend(dev);
-}
-
-#ifdef CONFIG_PM_SLEEP
-static int acpi_lpss_suspend_late(struct device *dev)
-{
-	struct lpss_private_data *pdata = acpi_driver_data(ACPI_COMPANION(dev));
-	int ret;
-
-	ret = pm_generic_suspend_late(dev);
-	if (ret)
-		return ret;
-
-	if (pdata->dev_desc->flags & LPSS_SAVE_CTX)
-		acpi_lpss_save_ctx(dev, pdata);
-
-	return acpi_dev_suspend_late(dev);
-}
-
-static int acpi_lpss_resume_early(struct device *dev)
-{
-	struct lpss_private_data *pdata = acpi_driver_data(ACPI_COMPANION(dev));
-	int ret;
-
-	ret = acpi_dev_resume_early(dev);
-	if (ret)
-		return ret;
-
-	acpi_lpss_d3_to_d0_delay(pdata);
-
-	if (pdata->dev_desc->flags & LPSS_SAVE_CTX)
-		acpi_lpss_restore_ctx(dev, pdata);
-
-	return pm_generic_resume_early(dev);
-}
-#endif /* CONFIG_PM_SLEEP */
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* IOSF SB for LPSS island */
 #define LPSS_IOSF_UNIT_LPIOEP		0xA0
 #define LPSS_IOSF_UNIT_LPIO1		0xAB
@@ -966,10 +881,7 @@ static int acpi_lpss_resume_early(struct device *dev)
 #define LPSS_GPIODEF0_DMA_LLP		BIT(13)
 
 static DEFINE_MUTEX(lpss_iosf_mutex);
-<<<<<<< HEAD
 static bool lpss_iosf_d3_entered = true;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void lpss_iosf_enter_d3_state(void)
 {
@@ -982,11 +894,7 @@ static void lpss_iosf_enter_d3_state(void)
 	 * Here we read the values related to LPSS power island, i.e. LPSS
 	 * devices, excluding both LPSS DMA controllers, along with SCC domain.
 	 */
-<<<<<<< HEAD
 	u32 func_dis, d3_sts_0, pmc_status, pmc_mask = 0xfe000ffe;
-=======
-	u32 func_dis, d3_sts_0, pmc_status;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	ret = pmc_atom_read(PMC_FUNC_DIS, &func_dis);
@@ -1004,11 +912,7 @@ static void lpss_iosf_enter_d3_state(void)
 	 * Shutdown both LPSS DMA controllers if and only if all other devices
 	 * are already in D3hot.
 	 */
-<<<<<<< HEAD
 	pmc_status = (~(d3_sts_0 | func_dis)) & pmc_mask;
-=======
-	pmc_status = (~(d3_sts_0 | func_dis)) & pmc_atom_d3_mask;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (pmc_status)
 		goto exit;
 
@@ -1020,12 +924,9 @@ static void lpss_iosf_enter_d3_state(void)
 
 	iosf_mbi_modify(LPSS_IOSF_UNIT_LPIOEP, MBI_CR_WRITE,
 			LPSS_IOSF_GPIODEF0, value1, mask1);
-<<<<<<< HEAD
 
 	lpss_iosf_d3_entered = true;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 exit:
 	mutex_unlock(&lpss_iosf_mutex);
 }
@@ -1040,14 +941,11 @@ static void lpss_iosf_exit_d3_state(void)
 
 	mutex_lock(&lpss_iosf_mutex);
 
-<<<<<<< HEAD
 	if (!lpss_iosf_d3_entered)
 		goto exit;
 
 	lpss_iosf_d3_entered = false;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	iosf_mbi_modify(LPSS_IOSF_UNIT_LPIOEP, MBI_CR_WRITE,
 			LPSS_IOSF_GPIODEF0, value1, mask1);
 
@@ -1057,59 +955,33 @@ static void lpss_iosf_exit_d3_state(void)
 	iosf_mbi_modify(LPSS_IOSF_UNIT_LPIO1, MBI_CFG_WRITE,
 			LPSS_IOSF_PMCSR, value2, mask2);
 
-<<<<<<< HEAD
 exit:
 	mutex_unlock(&lpss_iosf_mutex);
 }
 
 static int acpi_lpss_suspend(struct device *dev, bool wakeup)
-=======
-	mutex_unlock(&lpss_iosf_mutex);
-}
-
-static int acpi_lpss_runtime_suspend(struct device *dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct lpss_private_data *pdata = acpi_driver_data(ACPI_COMPANION(dev));
 	int ret;
 
-<<<<<<< HEAD
 	if (pdata->dev_desc->flags & LPSS_SAVE_CTX)
 		acpi_lpss_save_ctx(dev, pdata);
 
 	ret = acpi_dev_suspend(dev, wakeup);
-=======
-	ret = pm_generic_runtime_suspend(dev);
-	if (ret)
-		return ret;
-
-	if (pdata->dev_desc->flags & LPSS_SAVE_CTX)
-		acpi_lpss_save_ctx(dev, pdata);
-
-	ret = acpi_dev_runtime_suspend(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * This call must be last in the sequence, otherwise PMC will return
 	 * wrong status for devices being about to be powered off. See
 	 * lpss_iosf_enter_d3_state() for further information.
 	 */
-<<<<<<< HEAD
 	if (acpi_target_system_state() == ACPI_STATE_S0 &&
 	    lpss_quirks & LPSS_QUIRK_ALWAYS_POWER_ON && iosf_mbi_available())
-=======
-	if (lpss_quirks & LPSS_QUIRK_ALWAYS_POWER_ON && iosf_mbi_available())
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		lpss_iosf_enter_d3_state();
 
 	return ret;
 }
 
-<<<<<<< HEAD
 static int acpi_lpss_resume(struct device *dev)
-=======
-static int acpi_lpss_runtime_resume(struct device *dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct lpss_private_data *pdata = acpi_driver_data(ACPI_COMPANION(dev));
 	int ret;
@@ -1121,11 +993,7 @@ static int acpi_lpss_runtime_resume(struct device *dev)
 	if (lpss_quirks & LPSS_QUIRK_ALWAYS_POWER_ON && iosf_mbi_available())
 		lpss_iosf_exit_d3_state();
 
-<<<<<<< HEAD
 	ret = acpi_dev_resume(dev);
-=======
-	ret = acpi_dev_runtime_resume(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -1134,7 +1002,6 @@ static int acpi_lpss_runtime_resume(struct device *dev)
 	if (pdata->dev_desc->flags & LPSS_SAVE_CTX)
 		acpi_lpss_restore_ctx(dev, pdata);
 
-<<<<<<< HEAD
 	return 0;
 }
 
@@ -1170,9 +1037,6 @@ static int acpi_lpss_runtime_resume(struct device *dev)
 	int ret = acpi_lpss_resume(dev);
 
 	return ret ? ret : pm_generic_runtime_resume(dev);
-=======
-	return pm_generic_runtime_resume(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #endif /* CONFIG_PM */
 
@@ -1185,7 +1049,6 @@ static struct dev_pm_domain acpi_lpss_pm_domain = {
 #ifdef CONFIG_PM
 #ifdef CONFIG_PM_SLEEP
 		.prepare = acpi_subsys_prepare,
-<<<<<<< HEAD
 		.complete = acpi_subsys_complete,
 		.suspend = acpi_subsys_suspend,
 		.suspend_late = acpi_lpss_suspend_late,
@@ -1200,15 +1063,6 @@ static struct dev_pm_domain acpi_lpss_pm_domain = {
 		.poweroff_late = acpi_lpss_suspend_late,
 		.poweroff_noirq = acpi_subsys_suspend_noirq,
 		.restore_noirq = acpi_subsys_resume_noirq,
-=======
-		.complete = pm_complete_with_resume_check,
-		.suspend = acpi_subsys_suspend,
-		.suspend_late = acpi_lpss_suspend_late,
-		.resume_early = acpi_lpss_resume_early,
-		.freeze = acpi_subsys_freeze,
-		.poweroff = acpi_subsys_suspend,
-		.poweroff_late = acpi_lpss_suspend_late,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.restore_early = acpi_lpss_resume_early,
 #endif
 		.runtime_suspend = acpi_lpss_runtime_suspend,

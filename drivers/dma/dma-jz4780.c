@@ -511,11 +511,7 @@ static int jz4780_dma_terminate_all(struct dma_chan *chan)
 	/* Clear the DMA status and stop the transfer. */
 	jz4780_dma_writel(jzdma, JZ_DMA_REG_DCS(jzchan->id), 0);
 	if (jzchan->desc) {
-<<<<<<< HEAD
 		vchan_terminate_vdesc(&jzchan->desc->vdesc);
-=======
-		jz4780_dma_desc_free(&jzchan->desc->vdesc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		jzchan->desc = NULL;
 	}
 
@@ -527,7 +523,6 @@ static int jz4780_dma_terminate_all(struct dma_chan *chan)
 	return 0;
 }
 
-<<<<<<< HEAD
 static void jz4780_dma_synchronize(struct dma_chan *chan)
 {
 	struct jz4780_dma_chan *jzchan = to_jz4780_dma_chan(chan);
@@ -535,8 +530,6 @@ static void jz4780_dma_synchronize(struct dma_chan *chan)
 	vchan_synchronize(&jzchan->vchan);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int jz4780_dma_config(struct dma_chan *chan,
 	struct dma_slave_config *config)
 {
@@ -594,11 +587,7 @@ static enum dma_status jz4780_dma_tx_status(struct dma_chan *chan,
 					to_jz4780_dma_desc(vdesc), 0);
 	} else if (cookie == jzchan->desc->vdesc.tx.cookie) {
 		txstate->residue = jz4780_dma_desc_residue(jzchan, jzchan->desc,
-<<<<<<< HEAD
 			  (jzchan->curr_hwdesc + 1) % jzchan->desc->count);
-=======
-					jzchan->curr_hwdesc + 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else
 		txstate->residue = 0;
 
@@ -836,10 +825,7 @@ static int jz4780_dma_probe(struct platform_device *pdev)
 	dd->device_prep_dma_memcpy = jz4780_dma_prep_dma_memcpy;
 	dd->device_config = jz4780_dma_config;
 	dd->device_terminate_all = jz4780_dma_terminate_all;
-<<<<<<< HEAD
 	dd->device_synchronize = jz4780_dma_synchronize;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dd->device_tx_status = jz4780_dma_tx_status;
 	dd->device_issue_pending = jz4780_dma_issue_pending;
 	dd->src_addr_widths = JZ_DMA_BUSWIDTHS;

@@ -18,11 +18,7 @@
 #include <linux/kernel.h>
 #include <linux/slab.h>
 #include <linux/pci.h>
-<<<<<<< HEAD
 #include <linux/gpio/driver.h>
-=======
-#include <linux/gpio.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/interrupt.h>
 #include <linux/irq.h>
 
@@ -447,14 +443,8 @@ static int ioh_gpio_probe(struct pci_dev *pdev,
 		goto err_iomap;
 	}
 
-<<<<<<< HEAD
 	chip_save = kcalloc(8, sizeof(*chip), GFP_KERNEL);
 	if (chip_save == NULL) {
-=======
-	chip_save = kzalloc(sizeof(*chip) * 8, GFP_KERNEL);
-	if (chip_save == NULL) {
-		dev_err(&pdev->dev, "%s : kzalloc failed", __func__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -ENOMEM;
 		goto err_kzalloc;
 	}

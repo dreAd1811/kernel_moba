@@ -63,11 +63,7 @@ struct ms5611_state {
 };
 
 int ms5611_probe(struct iio_dev *indio_dev, struct device *dev,
-<<<<<<< HEAD
 		 const char *name, int type);
-=======
-                 const char* name, int type);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int ms5611_remove(struct iio_dev *indio_dev);
 
 #endif /* _MS5611_H */

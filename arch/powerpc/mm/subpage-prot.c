@@ -13,17 +13,10 @@
 #include <linux/types.h>
 #include <linux/mm.h>
 #include <linux/hugetlb.h>
-<<<<<<< HEAD
 #include <linux/syscalls.h>
 
 #include <asm/pgtable.h>
 #include <linux/uaccess.h>
-=======
-
-#include <asm/pgtable.h>
-#include <linux/uaccess.h>
-#include <asm/tlbflush.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Free all pages allocated for subpage protection maps and pointers.
@@ -192,12 +185,8 @@ static void subpage_mark_vma_nohuge(struct mm_struct *mm, unsigned long addr,
  * in a 2-bit field won't allow writes to a page that is otherwise
  * write-protected.
  */
-<<<<<<< HEAD
 SYSCALL_DEFINE3(subpage_prot, unsigned long, addr,
 		unsigned long, len, u32 __user *, map)
-=======
-long sys_subpage_prot(unsigned long addr, unsigned long len, u32 __user *map)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mm_struct *mm = current->mm;
 	struct subpage_prot_table *spt = &mm->context.spt;
@@ -207,12 +196,9 @@ long sys_subpage_prot(unsigned long addr, unsigned long len, u32 __user *map)
 	unsigned long next, limit;
 	int err;
 
-<<<<<<< HEAD
 	if (radix_enabled())
 		return -ENOENT;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Check parameters */
 	if ((addr & ~PAGE_MASK) || (len & ~PAGE_MASK) ||
 	    addr >= mm->task_size || len >= mm->task_size ||

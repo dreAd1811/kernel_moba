@@ -85,11 +85,7 @@ static int __init topology_init(void)
 	}
 #endif
 
-<<<<<<< HEAD
 	sysfs_cpus = kcalloc(NR_CPUS, sizeof(struct ia64_cpu), GFP_KERNEL);
-=======
-	sysfs_cpus = kzalloc(sizeof(struct ia64_cpu) * NR_CPUS, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!sysfs_cpus)
 		panic("kzalloc in topology_init failed - NR_CPUS too big?");
 
@@ -323,13 +319,8 @@ static int cpu_cache_sysfs_init(unsigned int cpu)
 		return -1;
 	}
 
-<<<<<<< HEAD
 	this_cache=kcalloc(unique_caches, sizeof(struct cache_info),
 			   GFP_KERNEL);
-=======
-	this_cache=kzalloc(sizeof(struct cache_info)*unique_caches,
-			GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (this_cache == NULL)
 		return -ENOMEM;
 

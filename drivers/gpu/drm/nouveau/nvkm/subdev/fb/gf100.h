@@ -18,11 +18,5 @@ void gf100_fb_intr(struct nvkm_fb *);
 
 void gp100_fb_init(struct nvkm_fb *);
 
-<<<<<<< HEAD
 void gm200_fb_init(struct nvkm_fb *base);
-=======
-void gm200_fb_init_page(struct nvkm_fb *fb);
-void gm200_fb_init(struct nvkm_fb *base);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

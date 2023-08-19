@@ -77,12 +77,7 @@ struct rxe_queue {
 };
 
 int do_mmap_info(struct rxe_dev *rxe,
-<<<<<<< HEAD
 		 struct mminfo __user *outbuf,
-=======
-		 struct ib_udata *udata,
-		 bool is_req,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 struct ib_ucontext *context,
 		 struct rxe_queue_buf *buf,
 		 size_t buf_size,
@@ -98,11 +93,7 @@ int rxe_queue_resize(struct rxe_queue *q,
 		     unsigned int *num_elem_p,
 		     unsigned int elem_size,
 		     struct ib_ucontext *context,
-<<<<<<< HEAD
 		     struct mminfo __user *outbuf,
-=======
-		     struct ib_udata *udata,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		     /* Protect producers while resizing queue */
 		     spinlock_t *producer_lock,
 		     /* Protect consumers while resizing queue */

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2012-2017,2019, The Linux Foundation. All rights reserved.
@@ -10,28 +9,6 @@
 #include "adreno_a3xx.h"
 #include "adreno_snapshot.h"
 #include "kgsl_device.h"
-=======
-/* Copyright (c) 2012-2017, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- */
-
-#include <linux/io.h>
-#include "kgsl.h"
-#include "adreno.h"
-#include "kgsl_snapshot.h"
-#include "a3xx_reg.h"
-#include "adreno_snapshot.h"
-#include "adreno_a3xx.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Set of registers to dump for A3XX on snapshot.
@@ -127,19 +104,9 @@ static size_t a3xx_snapshot_shader_memory(struct kgsl_device *device,
 	u8 *buf, size_t remain, void *priv)
 {
 	struct kgsl_snapshot_debug *header = (struct kgsl_snapshot_debug *)buf;
-<<<<<<< HEAD
 	void *data = buf + sizeof(*header);
 	unsigned int shader_read_len = SHADER_MEMORY_SIZE;
 
-=======
-	unsigned int i;
-	unsigned int *data = (unsigned int *)(buf + sizeof(*header));
-	unsigned int shader_read_len = SHADER_MEMORY_SIZE;
-
-	if (shader_read_len > (device->shader_mem_len >> 2))
-		shader_read_len = (device->shader_mem_len >> 2);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (remain < DEBUG_SECTION_SZ(shader_read_len)) {
 		SNAPSHOT_ERR_NOMEM(device, "SHADER MEMORY");
 		return 0;
@@ -149,7 +116,6 @@ static size_t a3xx_snapshot_shader_memory(struct kgsl_device *device,
 	header->size = shader_read_len;
 
 	/* Map shader memory to kernel, for dumping */
-<<<<<<< HEAD
 	if (IS_ERR_OR_NULL(device->shader_mem_virt)) {
 		struct resource *res;
 
@@ -167,23 +133,6 @@ static size_t a3xx_snapshot_shader_memory(struct kgsl_device *device,
 	}
 
 	memcpy_fromio(data, device->shader_mem_virt, shader_read_len << 2);
-=======
-	if (device->shader_mem_virt == NULL)
-		device->shader_mem_virt = devm_ioremap(device->dev,
-					device->shader_mem_phys,
-					device->shader_mem_len);
-
-	if (device->shader_mem_virt == NULL) {
-		KGSL_DRV_ERR(device,
-		"Unable to map shader memory region\n");
-		return 0;
-	}
-
-	/* Now, dump shader memory to snapshot */
-	for (i = 0; i < shader_read_len; i++)
-		adreno_shadermem_regread(device, i, &data[i]);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return DEBUG_SECTION_SZ(shader_read_len);
 }
@@ -191,36 +140,14 @@ static size_t a3xx_snapshot_shader_memory(struct kgsl_device *device,
 static size_t a3xx_snapshot_debugbus_block(struct kgsl_device *device,
 	u8 *buf, size_t remain, void *priv)
 {
-<<<<<<< HEAD
-=======
-	struct adreno_device *adreno_dev = ADRENO_DEVICE(device);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct kgsl_snapshot_debugbus *header
 		= (struct kgsl_snapshot_debugbus *)buf;
 	struct adreno_debugbus_block *block = priv;
 	int i;
 	unsigned int *data = (unsigned int *)(buf + sizeof(*header));
-<<<<<<< HEAD
 	size_t size;
 
 	size = (0x40 * sizeof(unsigned int)) + sizeof(*header);
-=======
-	unsigned int dwords;
-	size_t size;
-
-	/*
-	 * For A305 and A320 all debug bus regions are the same size (0x40). For
-	 * A330, they can be different sizes - most are still 0x40, but some
-	 * like CP are larger
-	 */
-
-	dwords = (adreno_is_a330(adreno_dev) ||
-		adreno_is_a305b(adreno_dev)) ?
-		block->dwords : 0x40;
-
-	size = (dwords * sizeof(unsigned int)) + sizeof(*header);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (remain < size) {
 		SNAPSHOT_ERR_NOMEM(device, "DEBUGBUS");
@@ -228,15 +155,9 @@ static size_t a3xx_snapshot_debugbus_block(struct kgsl_device *device,
 	}
 
 	header->id = block->block_id;
-<<<<<<< HEAD
 	header->count = 0x40;
 
 	for (i = 0; i < 0x40; i++)
-=======
-	header->count = dwords;
-
-	for (i = 0; i < dwords; i++)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		_rbbm_debug_bus_read(device, block->block_id, i, &data[i]);
 
 	return size;
@@ -288,11 +209,7 @@ static void a3xx_snapshot_debugbus(struct kgsl_device *device,
 static void _snapshot_hlsq_regs(struct kgsl_device *device,
 		struct kgsl_snapshot *snapshot)
 {
-<<<<<<< HEAD
 	unsigned int next_pif = 0;
-=======
-	struct adreno_device *adreno_dev = ADRENO_DEVICE(device);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Trying to read HLSQ registers when the HLSQ block is busy
@@ -303,7 +220,6 @@ static void _snapshot_hlsq_regs(struct kgsl_device *device,
 	 * dump the registers, otherwise dump the HLSQ registers.
 	 */
 
-<<<<<<< HEAD
 	/*
 	 * tpif status bits: RBBM_BLOCK_ID_HLSQ index 4 [4:0]
 	 * spif status bits: RBBM_BLOCK_ID_HLSQ index 7 [5:0]
@@ -323,45 +239,6 @@ static void _snapshot_hlsq_regs(struct kgsl_device *device,
 	next_pif &= 0x3f;
 	if (next_pif != 0 && next_pif != 1 && next_pif != 10)
 		return;
-=======
-	if (adreno_is_a330(adreno_dev)) {
-		/*
-		 * stall_ctxt_full status bit: RBBM_BLOCK_ID_HLSQ index 49 [27]
-		 *
-		 * if (!stall_context_full)
-		 * then dump HLSQ registers
-		 */
-		unsigned int stall_context_full = 0;
-
-		_rbbm_debug_bus_read(device, RBBM_BLOCK_ID_HLSQ, 49,
-				&stall_context_full);
-		stall_context_full &= 0x08000000;
-
-		if (stall_context_full)
-			return;
-	} else {
-		/*
-		 * tpif status bits: RBBM_BLOCK_ID_HLSQ index 4 [4:0]
-		 * spif status bits: RBBM_BLOCK_ID_HLSQ index 7 [5:0]
-		 *
-		 * if ((tpif == 0, 1, 28) && (spif == 0, 1, 10))
-		 * then dump HLSQ registers
-		 */
-		unsigned int next_pif = 0;
-
-		/* check tpif */
-		_rbbm_debug_bus_read(device, RBBM_BLOCK_ID_HLSQ, 4, &next_pif);
-		next_pif &= 0x1f;
-		if (next_pif != 0 && next_pif != 1 && next_pif != 28)
-			return;
-
-		/* check spif */
-		_rbbm_debug_bus_read(device, RBBM_BLOCK_ID_HLSQ, 7, &next_pif);
-		next_pif &= 0x3f;
-		if (next_pif != 0 && next_pif != 1 && next_pif != 10)
-			return;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	SNAPSHOT_REGISTERS(device, snapshot, a3xx_hlsq_registers);
 }
@@ -390,12 +267,6 @@ void a3xx_snapshot(struct adreno_device *adreno_dev,
 
 	_snapshot_hlsq_regs(device, snapshot);
 
-<<<<<<< HEAD
-=======
-	if (adreno_is_a330(adreno_dev) || adreno_is_a305b(adreno_dev))
-		SNAPSHOT_REGISTERS(device, snapshot, a330_registers);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kgsl_snapshot_indexed_registers(device, snapshot,
 		A3XX_CP_STATE_DEBUG_INDEX, A3XX_CP_STATE_DEBUG_DATA,
 		0x0, snap_data->sect_sizes->cp_pfp);

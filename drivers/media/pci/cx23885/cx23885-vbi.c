@@ -254,11 +254,7 @@ static void cx23885_stop_streaming(struct vb2_queue *q)
 }
 
 
-<<<<<<< HEAD
 const struct vb2_ops cx23885_vbi_qops = {
-=======
-struct vb2_ops cx23885_vbi_qops = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.queue_setup    = queue_setup,
 	.buf_prepare  = buffer_prepare,
 	.buf_finish = buffer_finish,

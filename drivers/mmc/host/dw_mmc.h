@@ -65,12 +65,7 @@ struct dw_mci_dma_slave {
  * @fifo_reg: Pointer to MMIO registers for data FIFO
  * @sg: Scatterlist entry currently being processed by PIO code, if any.
  * @sg_miter: PIO mapping scatterlist iterator.
-<<<<<<< HEAD
  * @mrq: The request currently being processed on @slot,
-=======
- * @cur_slot: The slot which is currently using the controller.
- * @mrq: The request currently being processed on @cur_slot,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *	or NULL if the controller is idle.
  * @cmd: The command currently being sent to the card, or NULL.
  * @data: The data currently being transferred, or NULL if no data
@@ -78,12 +73,8 @@ struct dw_mci_dma_slave {
  * @stop_abort: The command currently prepared for stoping transfer.
  * @prev_blksz: The former transfer blksz record.
  * @timing: Record of current ios timing.
-<<<<<<< HEAD
  * @use_dma: Which DMA channel is in use for the current transfer, zero
  *	denotes PIO mode.
-=======
- * @use_dma: Whether DMA channel is initialized or not.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @using_dma: Whether DMA is in use for the current transfer.
  * @dma_64bit_address: Whether DMA supports 64-bit address mode or not.
  * @sg_dma: Bus address of DMA buffer.
@@ -110,10 +101,6 @@ struct dw_mci_dma_slave {
  * @bus_hz: The rate of @mck in Hz. This forms the basis for MMC bus
  *	rate and timeout calculations.
  * @current_speed: Configured rate of the controller.
-<<<<<<< HEAD
-=======
- * @num_slots: Number of slots available.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @fifoth_val: The value of FIFOTH register.
  * @verid: Denote Version ID.
  * @dev: Device associated with the MMC controller.
@@ -145,28 +132,17 @@ struct dw_mci_dma_slave {
  * =======
  *
  * @lock is a softirq-safe spinlock protecting @queue as well as
-<<<<<<< HEAD
  * @slot, @mrq and @state. These must always be updated
  * at the same time while holding @lock.
  * The @mrq field of struct dw_mci_slot is also protected by @lock,
  * and must always be written at the same time as the slot is added to
  * @queue.
-=======
- * at the same time while holding @lock.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * @irq_lock is an irq-safe spinlock protecting the INTMASK register
  * to allow the interrupt handler to modify it directly.  Held for only long
  * enough to read-modify-write INTMASK and no other locks are grabbed when
  * holding this one.
  *
-<<<<<<< HEAD
-=======
- * The @mrq field of struct dw_mci_slot is also protected by @lock,
- * and must always be written at the same time as the slot is added to
- * @queue.
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @pending_events and @completed_events are accessed using atomic bit
  * operations, so they don't need any locking.
  *
@@ -275,11 +251,6 @@ struct dma_pdata;
 
 /* Board platform data */
 struct dw_mci_board {
-<<<<<<< HEAD
-=======
-	u32 num_slots;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int bus_hz; /* Clock speed at the cclk_in pad */
 
 	u32 caps;	/* Capabilities */
@@ -343,20 +314,12 @@ struct dw_mci_board {
 #define SDMMC_BUFADDR		0x098
 #define SDMMC_CDTHRCTL		0x100
 #define SDMMC_UHS_REG_EXT	0x108
-<<<<<<< HEAD
 #define SDMMC_DDR_REG		0x10c
 #define SDMMC_ENABLE_SHIFT	0x110
 #define SDMMC_DATA(x)		(x)
 /*
  * Registers to support idmac 64-bit address mode
  */
-=======
-#define SDMMC_ENABLE_SHIFT	0x110
-#define SDMMC_DATA(x)		(x)
-/*
-* Registers to support idmac 64-bit address mode
-*/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SDMMC_DBADDRL		0x088
 #define SDMMC_DBADDRU		0x08c
 #define SDMMC_IDSTS64		0x090
@@ -477,27 +440,19 @@ struct dw_mci_board {
 #define SDMMC_CARD_WR_THR_EN		BIT(2)
 #define SDMMC_CARD_RD_THR_EN		BIT(0)
 /* UHS-1 register defines */
-<<<<<<< HEAD
 #define SDMMC_UHS_DDR			BIT(16)
 #define SDMMC_UHS_18V			BIT(0)
 /* DDR register defines */
 #define SDMMC_DDR_HS400			BIT(31)
 /* Enable shift register defines */
 #define SDMMC_ENABLE_PHASE		BIT(0)
-=======
-#define SDMMC_UHS_18V			BIT(0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* All ctrl reset bits */
 #define SDMMC_CTRL_ALL_RESET_FLAGS \
 	(SDMMC_CTRL_RESET | SDMMC_CTRL_FIFO_RESET | SDMMC_CTRL_DMA_RESET)
 
 /* FIFO register access macros. These should not change the data endian-ness
-<<<<<<< HEAD
  * as they are written to memory to be dealt with by the upper layers
  */
-=======
- * as they are written to memory to be dealt with by the upper layers */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define mci_fifo_readw(__reg)	__raw_readw(__reg)
 #define mci_fifo_readl(__reg)	__raw_readl(__reg)
 #define mci_fifo_readq(__reg)	__raw_readq(__reg)

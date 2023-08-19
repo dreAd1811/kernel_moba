@@ -134,19 +134,11 @@ unsigned long pm_runtime_autosuspend_expiration(struct device *dev)
 	if (!dev->power.use_autosuspend)
 		goto out;
 
-<<<<<<< HEAD
 	autosuspend_delay = READ_ONCE(dev->power.autosuspend_delay);
 	if (autosuspend_delay < 0)
 		goto out;
 
 	last_busy = READ_ONCE(dev->power.last_busy);
-=======
-	autosuspend_delay = ACCESS_ONCE(dev->power.autosuspend_delay);
-	if (autosuspend_delay < 0)
-		goto out;
-
-	last_busy = ACCESS_ONCE(dev->power.last_busy);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	elapsed = jiffies - last_busy;
 	if (elapsed < 0)
 		goto out;	/* jiffies has wrapped around. */
@@ -261,11 +253,7 @@ static int rpm_check_suspend_allowed(struct device *dev)
 	    || (dev->power.request_pending
 			&& dev->power.request == RPM_REQ_RESUME))
 		retval = -EAGAIN;
-<<<<<<< HEAD
 	else if (__dev_pm_qos_read_value(dev) == 0)
-=======
-	else if (__dev_pm_qos_read_value(dev) < 0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		retval = -EPERM;
 	else if (dev->power.runtime_status == RPM_SUSPENDED)
 		retval = 1;
@@ -907,15 +895,9 @@ static void pm_runtime_work(struct work_struct *work)
  *
  * Check if the time is right and queue a suspend request.
  */
-<<<<<<< HEAD
 static void pm_suspend_timer_fn(struct timer_list *t)
 {
 	struct device *dev = from_timer(dev, t, power.suspend_timer);
-=======
-static void pm_suspend_timer_fn(unsigned long data)
-{
-	struct device *dev = (struct device *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 	unsigned long expires;
 
@@ -1120,7 +1102,6 @@ int __pm_runtime_set_status(struct device *dev, unsigned int status)
 		goto out;
 	}
 
-<<<<<<< HEAD
 	if (dev->power.runtime_status == status || !parent)
 		goto out_set;
 
@@ -1128,31 +1109,6 @@ int __pm_runtime_set_status(struct device *dev, unsigned int status)
 		atomic_add_unless(&parent->power.child_count, -1, 0);
 		notify_parent = !parent->power.ignore_children;
 	} else {
-=======
-	if (dev->power.runtime_status == status)
-		goto out_set;
-
-	if (status == RPM_SUSPENDED) {
-		/*
-		 * It is invalid to suspend a device with an active child,
-		 * unless it has been set to ignore its children.
-		 */
-		if (!dev->power.ignore_children &&
-			atomic_read(&dev->power.child_count)) {
-			dev_err(dev, "runtime PM trying to suspend device but active child\n");
-			error = -EBUSY;
-			goto out;
-		}
-
-		if (parent) {
-			atomic_add_unless(&parent->power.child_count, -1, 0);
-			notify_parent = !parent->power.ignore_children;
-		}
-		goto out_set;
-	}
-
-	if (parent) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_lock_nested(&parent->power.lock, SINGLE_DEPTH_NESTING);
 
 		/*
@@ -1336,7 +1292,6 @@ void pm_runtime_enable(struct device *dev)
 	else
 		dev_warn(dev, "Unbalanced %s!\n", __func__);
 
-<<<<<<< HEAD
 	WARN(!dev->power.disable_depth &&
 	     dev->power.runtime_status == RPM_SUSPENDED &&
 	     !dev->power.ignore_children &&
@@ -1344,8 +1299,6 @@ void pm_runtime_enable(struct device *dev)
 	     "Enabling runtime PM for inactive device (%s) with active children\n",
 	     dev_name(dev));
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irqrestore(&dev->power.lock, flags);
 }
 EXPORT_SYMBOL_GPL(pm_runtime_enable);
@@ -1538,12 +1491,7 @@ void pm_runtime_init(struct device *dev)
 	INIT_WORK(&dev->power.work, pm_runtime_work);
 
 	dev->power.timer_expires = 0;
-<<<<<<< HEAD
 	timer_setup(&dev->power.suspend_timer, pm_suspend_timer_fn, 0);
-=======
-	setup_timer(&dev->power.suspend_timer, pm_suspend_timer_fn,
-			(unsigned long)dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	init_waitqueue_head(&dev->power.wait_queue);
 }
@@ -1659,18 +1607,14 @@ void pm_runtime_new_link(struct device *dev)
 
 void pm_runtime_drop_link(struct device *dev)
 {
-<<<<<<< HEAD
 	rpm_put_suppliers(dev);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_irq(&dev->power.lock);
 	WARN_ON(dev->power.links_count == 0);
 	dev->power.links_count--;
 	spin_unlock_irq(&dev->power.lock);
 }
 
-<<<<<<< HEAD
 static bool pm_runtime_need_not_resume(struct device *dev)
 {
 	return atomic_read(&dev->power.usage_count) <= 1 &&
@@ -1678,14 +1622,11 @@ static bool pm_runtime_need_not_resume(struct device *dev)
 		 dev->power.ignore_children);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * pm_runtime_force_suspend - Force a device into suspend state if needed.
  * @dev: Device to suspend.
  *
  * Disable runtime PM so we safely can check the device's runtime PM status and
-<<<<<<< HEAD
  * if it is active, invoke its ->runtime_suspend callback to suspend it and
  * change its runtime PM status field to RPM_SUSPENDED.  Also, if the device's
  * usage and children counters don't indicate that the device was in use before
@@ -1697,23 +1638,11 @@ static bool pm_runtime_need_not_resume(struct device *dev)
  * sure the device is put into low power state and it should only be used during
  * system-wide PM transitions to sleep states.  It assumes that the analogous
  * pm_runtime_force_resume() will be used to resume the device.
-=======
- * if it is active, invoke it's .runtime_suspend callback to bring it into
- * suspend state. Keep runtime PM disabled to preserve the state unless we
- * encounter errors.
- *
- * Typically this function may be invoked from a system suspend callback to make
- * sure the device is put into low power state.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 int pm_runtime_force_suspend(struct device *dev)
 {
 	int (*callback)(struct device *);
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pm_runtime_disable(dev);
 	if (pm_runtime_status_suspended(dev))
@@ -1721,21 +1650,11 @@ int pm_runtime_force_suspend(struct device *dev)
 
 	callback = RPM_GET_CALLBACK(dev, runtime_suspend);
 
-<<<<<<< HEAD
 	ret = callback ? callback(dev) : 0;
-=======
-	if (!callback) {
-		ret = -ENOSYS;
-		goto err;
-	}
-
-	ret = callback(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto err;
 
 	/*
-<<<<<<< HEAD
 	 * If the device can stay in suspend after the system-wide transition
 	 * to the working state that will follow, drop the children counter of
 	 * its parent, but set its status to RPM_SUSPENDED anyway in case this
@@ -1748,19 +1667,6 @@ int pm_runtime_force_suspend(struct device *dev)
 
 	return 0;
 
-=======
-	 * Increase the runtime PM usage count for the device's parent, in case
-	 * when we find the device being used when system suspend was invoked.
-	 * This informs pm_runtime_force_resume() to resume the parent
-	 * immediately, which is needed to be able to resume its children,
-	 * when not deferring the resume to be managed via runtime PM.
-	 */
-	if (dev->parent && atomic_read(&dev->power.usage_count) > 1)
-		pm_runtime_get_noresume(dev->parent);
-
-	pm_runtime_set_suspended(dev);
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err:
 	pm_runtime_enable(dev);
 	return ret;
@@ -1773,19 +1679,9 @@ EXPORT_SYMBOL_GPL(pm_runtime_force_suspend);
  *
  * Prior invoking this function we expect the user to have brought the device
  * into low power state by a call to pm_runtime_force_suspend(). Here we reverse
-<<<<<<< HEAD
  * those actions and bring the device into full power, if it is expected to be
  * used on system resume.  In the other case, we defer the resume to be managed
  * via runtime PM.
-=======
- * those actions and brings the device into full power, if it is expected to be
- * used on system resume. To distinguish that, we check whether the runtime PM
- * usage count is greater than 1 (the PM core increases the usage count in the
- * system PM prepare phase), as that indicates a real user (such as a subsystem,
- * driver, userspace, etc.) is using it. If that is the case, the device is
- * expected to be used on system resume as well, so then we resume it. In the
- * other case, we defer the resume to be managed via runtime PM.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Typically this function may be invoked from a system resume callback.
  */
@@ -1794,7 +1690,6 @@ int pm_runtime_force_resume(struct device *dev)
 	int (*callback)(struct device *);
 	int ret = 0;
 
-<<<<<<< HEAD
 	if (!pm_runtime_status_suspended(dev) || pm_runtime_need_not_resume(dev))
 		goto out;
 
@@ -1807,34 +1702,6 @@ int pm_runtime_force_resume(struct device *dev)
 	callback = RPM_GET_CALLBACK(dev, runtime_resume);
 
 	ret = callback ? callback(dev) : 0;
-=======
-	callback = RPM_GET_CALLBACK(dev, runtime_resume);
-
-	if (!callback) {
-		ret = -ENOSYS;
-		goto out;
-	}
-
-	if (!pm_runtime_status_suspended(dev))
-		goto out;
-
-	/*
-	 * Decrease the parent's runtime PM usage count, if we increased it
-	 * during system suspend in pm_runtime_force_suspend().
-	*/
-	if (atomic_read(&dev->power.usage_count) > 1) {
-		if (dev->parent)
-			pm_runtime_put_noidle(dev->parent);
-	} else {
-		goto out;
-	}
-
-	ret = pm_runtime_set_active(dev);
-	if (ret)
-		goto out;
-
-	ret = callback(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		pm_runtime_set_suspended(dev);
 		goto out;

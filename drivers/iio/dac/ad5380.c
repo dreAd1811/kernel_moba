@@ -158,11 +158,7 @@ static unsigned int ad5380_info_to_reg(struct iio_chan_spec const *chan,
 	long info)
 {
 	switch (info) {
-<<<<<<< HEAD
 	case IIO_CHAN_INFO_RAW:
-=======
-	case 0:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return AD5380_REG_DATA(chan->address);
 	case IIO_CHAN_INFO_CALIBBIAS:
 		return AD5380_REG_OFFSET(chan->address);
@@ -225,11 +221,7 @@ static int ad5380_read_raw(struct iio_dev *indio_dev,
 		if (ret)
 			return ret;
 		*val >>= chan->scan_type.shift;
-<<<<<<< HEAD
 		val -= (1 << chan->scan_type.realbits) / 2;
-=======
-		*val -= (1 << chan->scan_type.realbits) / 2;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return IIO_VAL_INT;
 	case IIO_CHAN_INFO_SCALE:
 		*val = 2 * st->vref;
@@ -245,10 +237,6 @@ static int ad5380_read_raw(struct iio_dev *indio_dev,
 static const struct iio_info ad5380_info = {
 	.read_raw = ad5380_read_raw,
 	.write_raw = ad5380_write_raw,
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct iio_chan_spec_ext_info ad5380_ext_info[] = {

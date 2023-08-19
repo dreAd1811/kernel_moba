@@ -56,7 +56,6 @@
 #include "talitos.h"
 
 static void to_talitos_ptr(struct talitos_ptr *ptr, dma_addr_t dma_addr,
-<<<<<<< HEAD
 			   unsigned int len, bool is_sec1)
 {
 	ptr->ptr = cpu_to_be32(lower_32_bits(dma_addr));
@@ -66,39 +65,17 @@ static void to_talitos_ptr(struct talitos_ptr *ptr, dma_addr_t dma_addr,
 		ptr->len = cpu_to_be16(len);
 		ptr->eptr = upper_32_bits(dma_addr);
 	}
-=======
-			   bool is_sec1)
-{
-	ptr->ptr = cpu_to_be32(lower_32_bits(dma_addr));
-	if (!is_sec1)
-		ptr->eptr = upper_32_bits(dma_addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void copy_talitos_ptr(struct talitos_ptr *dst_ptr,
 			     struct talitos_ptr *src_ptr, bool is_sec1)
 {
 	dst_ptr->ptr = src_ptr->ptr;
-<<<<<<< HEAD
 	if (is_sec1) {
 		dst_ptr->len1 = src_ptr->len1;
 	} else {
 		dst_ptr->len = src_ptr->len;
 		dst_ptr->eptr = src_ptr->eptr;
-=======
-	if (!is_sec1)
-		dst_ptr->eptr = src_ptr->eptr;
-}
-
-static void to_talitos_ptr_len(struct talitos_ptr *ptr, unsigned int len,
-			       bool is_sec1)
-{
-	if (is_sec1) {
-		ptr->res = 0;
-		ptr->len1 = cpu_to_be16(len);
-	} else {
-		ptr->len = cpu_to_be16(len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -127,7 +104,6 @@ static void to_talitos_ptr_ext_or(struct talitos_ptr *ptr, u8 val, bool is_sec1)
 /*
  * map virtual single (contiguous) pointer to h/w descriptor pointer
  */
-<<<<<<< HEAD
 static void __map_single_talitos_ptr(struct device *dev,
 				     struct talitos_ptr *ptr,
 				     unsigned int len, void *data,
@@ -141,14 +117,11 @@ static void __map_single_talitos_ptr(struct device *dev,
 	to_talitos_ptr(ptr, dma_addr, len, is_sec1);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void map_single_talitos_ptr(struct device *dev,
 				   struct talitos_ptr *ptr,
 				   unsigned int len, void *data,
 				   enum dma_data_direction dir)
 {
-<<<<<<< HEAD
 	__map_single_talitos_ptr(dev, ptr, len, data, dir, 0);
 }
 
@@ -159,15 +132,6 @@ static void map_single_talitos_ptr_nosync(struct device *dev,
 {
 	__map_single_talitos_ptr(dev, ptr, len, data, dir,
 				 DMA_ATTR_SKIP_CPU_SYNC);
-=======
-	dma_addr_t dma_addr = dma_map_single(dev, data, len, dir);
-	struct talitos_private *priv = dev_get_drvdata(dev);
-	bool is_sec1 = has_ftr_sec1(priv);
-
-	to_talitos_ptr_len(ptr, len, is_sec1);
-	to_talitos_ptr(ptr, dma_addr, is_sec1);
-	to_talitos_ptr_ext_set(ptr, 0, is_sec1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -214,13 +178,10 @@ static int reset_channel(struct device *dev, int ch)
 	/* set 36-bit addressing, done writeback enable and done IRQ enable */
 	setbits32(priv->chan[ch].reg + TALITOS_CCCR_LO, TALITOS_CCCR_LO_EAE |
 		  TALITOS_CCCR_LO_CDWE | TALITOS_CCCR_LO_CDIE);
-<<<<<<< HEAD
 	/* enable chaining descriptors */
 	if (is_sec1)
 		setbits32(priv->chan[ch].reg + TALITOS_CCCR_LO,
 			  TALITOS_CCCR_LO_NE);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* and ICCR writeback, if available */
 	if (priv->features & TALITOS_FTR_HW_AUTH_CHECK)
@@ -343,10 +304,6 @@ int talitos_submit(struct device *dev, int ch, struct talitos_desc *desc,
 	/* map descriptor and save caller data */
 	if (is_sec1) {
 		desc->hdr1 = desc->hdr;
-<<<<<<< HEAD
-=======
-		desc->next_desc = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		request->dma_desc = dma_map_single(dev, &desc->hdr1,
 						   TALITOS_DESC_SIZE,
 						   DMA_BIDIRECTIONAL);
@@ -377,7 +334,6 @@ int talitos_submit(struct device *dev, int ch, struct talitos_desc *desc,
 }
 EXPORT_SYMBOL(talitos_submit);
 
-<<<<<<< HEAD
 static __be32 get_request_hdr(struct talitos_request *request, bool is_sec1)
 {
 	struct talitos_edesc *edesc;
@@ -393,8 +349,6 @@ static __be32 get_request_hdr(struct talitos_request *request, bool is_sec1)
 	return ((struct talitos_desc *)(edesc->buf + edesc->dma_len))->hdr1;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * process what was done, notify callback of error if not
  */
@@ -416,11 +370,7 @@ static void flush_channel(struct device *dev, int ch, int error, int reset_ch)
 
 		/* descriptors with their done bits set don't get the error */
 		rmb();
-<<<<<<< HEAD
 		hdr = get_request_hdr(request, is_sec1);
-=======
-		hdr = is_sec1 ? request->desc->hdr1 : request->desc->hdr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if ((hdr & DESC_HDR_DONE) == DESC_HDR_DONE)
 			status = 0;
@@ -474,11 +424,6 @@ static void talitos1_done_##name(unsigned long data)			\
 									\
 	if (ch_done_mask & 0x10000000)					\
 		flush_channel(dev, 0, 0, 0);			\
-<<<<<<< HEAD
-=======
-	if (priv->num_channels == 1)					\
-		goto out;						\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ch_done_mask & 0x40000000)					\
 		flush_channel(dev, 1, 0, 0);			\
 	if (ch_done_mask & 0x00010000)					\
@@ -486,10 +431,6 @@ static void talitos1_done_##name(unsigned long data)			\
 	if (ch_done_mask & 0x00040000)					\
 		flush_channel(dev, 3, 0, 0);			\
 									\
-<<<<<<< HEAD
-=======
-out:									\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* At this point, all completed channels have been processed */	\
 	/* Unmask done interrupts for channels completed later on. */	\
 	spin_lock_irqsave(&priv->reg_lock, flags);			\
@@ -499,10 +440,7 @@ out:									\
 }
 
 DEF_TALITOS1_DONE(4ch, TALITOS1_ISR_4CHDONE)
-<<<<<<< HEAD
 DEF_TALITOS1_DONE(ch0, TALITOS1_ISR_CH_0_DONE)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DEF_TALITOS2_DONE(name, ch_done_mask)				\
 static void talitos2_done_##name(unsigned long data)			\
@@ -513,11 +451,6 @@ static void talitos2_done_##name(unsigned long data)			\
 									\
 	if (ch_done_mask & 1)						\
 		flush_channel(dev, 0, 0, 0);				\
-<<<<<<< HEAD
-=======
-	if (priv->num_channels == 1)					\
-		goto out;						\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ch_done_mask & (1 << 2))					\
 		flush_channel(dev, 1, 0, 0);				\
 	if (ch_done_mask & (1 << 4))					\
@@ -525,10 +458,6 @@ static void talitos2_done_##name(unsigned long data)			\
 	if (ch_done_mask & (1 << 6))					\
 		flush_channel(dev, 3, 0, 0);				\
 									\
-<<<<<<< HEAD
-=======
-out:									\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* At this point, all completed channels have been processed */	\
 	/* Unmask done interrupts for channels completed later on. */	\
 	spin_lock_irqsave(&priv->reg_lock, flags);			\
@@ -538,10 +467,7 @@ out:									\
 }
 
 DEF_TALITOS2_DONE(4ch, TALITOS2_ISR_4CHDONE)
-<<<<<<< HEAD
 DEF_TALITOS2_DONE(ch0, TALITOS2_ISR_CH_0_DONE)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 DEF_TALITOS2_DONE(ch0_2, TALITOS2_ISR_CH_0_2_DONE)
 DEF_TALITOS2_DONE(ch1_3, TALITOS2_ISR_CH_1_3_DONE)
 
@@ -565,12 +491,8 @@ static u32 current_desc_hdr(struct device *dev, int ch)
 	tail = priv->chan[ch].tail;
 
 	iter = tail;
-<<<<<<< HEAD
 	while (priv->chan[ch].fifo[iter].dma_desc != cur_desc &&
 	       priv->chan[ch].fifo[iter].desc->next_desc != cur_desc) {
-=======
-	while (priv->chan[ch].fifo[iter].dma_desc != cur_desc) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		iter = (iter + 1) & (priv->fifo_len - 1);
 		if (iter == tail) {
 			dev_err(dev, "couldn't locate current descriptor\n");
@@ -578,7 +500,6 @@ static u32 current_desc_hdr(struct device *dev, int ch)
 		}
 	}
 
-<<<<<<< HEAD
 	if (priv->chan[ch].fifo[iter].desc->next_desc == cur_desc) {
 		struct talitos_edesc *edesc;
 
@@ -588,8 +509,6 @@ static u32 current_desc_hdr(struct device *dev, int ch)
 			(edesc->buf + edesc->dma_len))->hdr;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return priv->chan[ch].fifo[iter].desc->hdr;
 }
 
@@ -943,10 +862,7 @@ struct talitos_ctx {
 	__be32 desc_hdr_template;
 	u8 key[TALITOS_MAX_KEY_SIZE];
 	u8 iv[TALITOS_MAX_IV_LENGTH];
-<<<<<<< HEAD
 	dma_addr_t dma_key;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int keylen;
 	unsigned int enckeylen;
 	unsigned int authkeylen;
@@ -958,13 +874,8 @@ struct talitos_ctx {
 struct talitos_ahash_req_ctx {
 	u32 hw_context[TALITOS_MDEU_MAX_CONTEXT_SIZE / sizeof(u32)];
 	unsigned int hw_context_size;
-<<<<<<< HEAD
 	u8 buf[2][HASH_MAX_BLOCK_SIZE];
 	int buf_idx;
-=======
-	u8 buf[HASH_MAX_BLOCK_SIZE];
-	u8 bufnext[HASH_MAX_BLOCK_SIZE];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int swinit;
 	unsigned int first;
 	unsigned int last;
@@ -988,10 +899,7 @@ static int aead_setkey(struct crypto_aead *authenc,
 		       const u8 *key, unsigned int keylen)
 {
 	struct talitos_ctx *ctx = crypto_aead_ctx(authenc);
-<<<<<<< HEAD
 	struct device *dev = ctx->dev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct crypto_authenc_keys keys;
 
 	if (crypto_authenc_extractkeys(&keys, key, keylen) != 0)
@@ -1000,70 +908,27 @@ static int aead_setkey(struct crypto_aead *authenc,
 	if (keys.authkeylen + keys.enckeylen > TALITOS_MAX_KEY_SIZE)
 		goto badkey;
 
-<<<<<<< HEAD
 	if (ctx->keylen)
 		dma_unmap_single(dev, ctx->dma_key, ctx->keylen, DMA_TO_DEVICE);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memcpy(ctx->key, keys.authkey, keys.authkeylen);
 	memcpy(&ctx->key[keys.authkeylen], keys.enckey, keys.enckeylen);
 
 	ctx->keylen = keys.authkeylen + keys.enckeylen;
 	ctx->enckeylen = keys.enckeylen;
 	ctx->authkeylen = keys.authkeylen;
-<<<<<<< HEAD
 	ctx->dma_key = dma_map_single(dev, ctx->key, ctx->keylen,
 				      DMA_TO_DEVICE);
 
 	memzero_explicit(&keys, sizeof(keys));
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 badkey:
 	crypto_aead_set_flags(authenc, CRYPTO_TFM_RES_BAD_KEY_LEN);
-<<<<<<< HEAD
 	memzero_explicit(&keys, sizeof(keys));
 	return -EINVAL;
 }
 
-=======
-	return -EINVAL;
-}
-
-/*
- * talitos_edesc - s/w-extended descriptor
- * @src_nents: number of segments in input scatterlist
- * @dst_nents: number of segments in output scatterlist
- * @icv_ool: whether ICV is out-of-line
- * @iv_dma: dma address of iv for checking continuity and link table
- * @dma_len: length of dma mapped link_tbl space
- * @dma_link_tbl: bus physical address of link_tbl/buf
- * @desc: h/w descriptor
- * @link_tbl: input and output h/w link tables (if {src,dst}_nents > 1) (SEC2)
- * @buf: input and output buffeur (if {src,dst}_nents > 1) (SEC1)
- *
- * if decrypting (with authcheck), or either one of src_nents or dst_nents
- * is greater than 1, an integrity check value is concatenated to the end
- * of link_tbl data
- */
-struct talitos_edesc {
-	int src_nents;
-	int dst_nents;
-	bool icv_ool;
-	dma_addr_t iv_dma;
-	int dma_len;
-	dma_addr_t dma_link_tbl;
-	struct talitos_desc desc;
-	union {
-		struct talitos_ptr link_tbl[0];
-		u8 buf[0];
-	};
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void talitos_sg_unmap(struct device *dev,
 			     struct talitos_edesc *edesc,
 			     struct scatterlist *src,
@@ -1101,7 +966,6 @@ static void ipsec_esp_unmap(struct device *dev,
 	unsigned int ivsize = crypto_aead_ivsize(aead);
 	unsigned int authsize = crypto_aead_authsize(aead);
 	unsigned int cryptlen = areq->cryptlen - (encrypt ? 0 : authsize);
-<<<<<<< HEAD
 	bool is_ipsec_esp = edesc->desc.hdr & DESC_HDR_TYPE_IPSEC_ESP;
 	struct talitos_ptr *civ_ptr = &edesc->desc.ptr[is_ipsec_esp ? 2 : 3];
 
@@ -1109,15 +973,6 @@ static void ipsec_esp_unmap(struct device *dev,
 		unmap_single_talitos_ptr(dev, &edesc->desc.ptr[6],
 					 DMA_FROM_DEVICE);
 	unmap_single_talitos_ptr(dev, civ_ptr, DMA_TO_DEVICE);
-=======
-
-	if (edesc->desc.hdr & DESC_HDR_TYPE_IPSEC_ESP)
-		unmap_single_talitos_ptr(dev, &edesc->desc.ptr[6],
-					 DMA_FROM_DEVICE);
-	unmap_single_talitos_ptr(dev, &edesc->desc.ptr[3], DMA_TO_DEVICE);
-	unmap_single_talitos_ptr(dev, &edesc->desc.ptr[2], DMA_TO_DEVICE);
-	unmap_single_talitos_ptr(dev, &edesc->desc.ptr[0], DMA_TO_DEVICE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	talitos_sg_unmap(dev, edesc, areq->src, areq->dst, cryptlen,
 			 areq->assoclen);
@@ -1126,11 +981,7 @@ static void ipsec_esp_unmap(struct device *dev,
 		dma_unmap_single(dev, edesc->dma_link_tbl, edesc->dma_len,
 				 DMA_BIDIRECTIONAL);
 
-<<<<<<< HEAD
 	if (!is_ipsec_esp) {
-=======
-	if (!(edesc->desc.hdr & DESC_HDR_TYPE_IPSEC_ESP)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		unsigned int dst_nents = edesc->dst_nents ? : 1;
 
 		sg_pcopy_to_buffer(areq->dst, dst_nents, ctx->iv, ivsize,
@@ -1150,10 +1001,7 @@ static void ipsec_esp_encrypt_done(struct device *dev,
 	struct aead_request *areq = context;
 	struct crypto_aead *authenc = crypto_aead_reqtfm(areq);
 	unsigned int authsize = crypto_aead_authsize(authenc);
-<<<<<<< HEAD
 	unsigned int ivsize = crypto_aead_ivsize(authenc);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct talitos_edesc *edesc;
 	void *icvdata;
 
@@ -1172,11 +1020,8 @@ static void ipsec_esp_encrypt_done(struct device *dev,
 				     authsize, areq->assoclen + areq->cryptlen);
 	}
 
-<<<<<<< HEAD
 	dma_unmap_single(dev, edesc->iv_dma, ivsize, DMA_TO_DEVICE);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(edesc);
 
 	aead_request_complete(areq, err);
@@ -1279,12 +1124,7 @@ static int sg_to_link_tbl_offset(struct scatterlist *sg, int sg_count,
 			len = cryptlen;
 
 		to_talitos_ptr(link_tbl_ptr + count,
-<<<<<<< HEAD
 			       sg_dma_address(sg) + offset, len, 0);
-=======
-			       sg_dma_address(sg) + offset, 0);
-		to_talitos_ptr_len(link_tbl_ptr + count, len, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		to_talitos_ptr_ext_set(link_tbl_ptr + count, 0, 0);
 		count++;
 		cryptlen -= len;
@@ -1311,7 +1151,6 @@ static int talitos_sg_map_ext(struct device *dev, struct scatterlist *src,
 	bool is_sec1 = has_ftr_sec1(priv);
 
 	if (!src) {
-<<<<<<< HEAD
 		to_talitos_ptr(ptr, 0, 0, is_sec1);
 		return 1;
 	}
@@ -1322,21 +1161,6 @@ static int talitos_sg_map_ext(struct device *dev, struct scatterlist *src,
 	}
 	if (is_sec1) {
 		to_talitos_ptr(ptr, edesc->dma_link_tbl + offset, len, is_sec1);
-=======
-		*ptr = zero_entry;
-		return 1;
-	}
-
-	to_talitos_ptr_len(ptr, len, is_sec1);
-	to_talitos_ptr_ext_set(ptr, elen, is_sec1);
-
-	if (sg_count == 1) {
-		to_talitos_ptr(ptr, sg_dma_address(src) + offset, is_sec1);
-		return sg_count;
-	}
-	if (is_sec1) {
-		to_talitos_ptr(ptr, edesc->dma_link_tbl + offset, is_sec1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return sg_count;
 	}
 	sg_count = sg_to_link_tbl_offset(src, sg_count, offset, len + elen,
@@ -1347,11 +1171,7 @@ static int talitos_sg_map_ext(struct device *dev, struct scatterlist *src,
 		return sg_count;
 	}
 	to_talitos_ptr(ptr, edesc->dma_link_tbl +
-<<<<<<< HEAD
 			    tbl_off * sizeof(struct talitos_ptr), len, is_sec1);
-=======
-			    tbl_off * sizeof(struct talitos_ptr), is_sec1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	to_talitos_ptr_ext_or(ptr, DESC_PTR_LNKTBL_JUMP, is_sec1);
 
 	return sg_count;
@@ -1388,19 +1208,12 @@ static int ipsec_esp(struct talitos_edesc *edesc, struct aead_request *areq,
 	bool sync_needed = false;
 	struct talitos_private *priv = dev_get_drvdata(dev);
 	bool is_sec1 = has_ftr_sec1(priv);
-<<<<<<< HEAD
 	bool is_ipsec_esp = desc->hdr & DESC_HDR_TYPE_IPSEC_ESP;
 	struct talitos_ptr *civ_ptr = &desc->ptr[is_ipsec_esp ? 2 : 3];
 	struct talitos_ptr *ckey_ptr = &desc->ptr[is_ipsec_esp ? 3 : 2];
 
 	/* hmac key */
 	to_talitos_ptr(&desc->ptr[0], ctx->dma_key, ctx->authkeylen, is_sec1);
-=======
-
-	/* hmac key */
-	map_single_talitos_ptr(dev, &desc->ptr[0], ctx->authkeylen, &ctx->key,
-			       DMA_TO_DEVICE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sg_count = edesc->src_nents ?: 1;
 	if (is_sec1 && sg_count > 1)
@@ -1421,33 +1234,11 @@ static int ipsec_esp(struct talitos_edesc *edesc, struct aead_request *areq,
 	}
 
 	/* cipher iv */
-<<<<<<< HEAD
 	to_talitos_ptr(civ_ptr, edesc->iv_dma, ivsize, is_sec1);
 
 	/* cipher key */
 	to_talitos_ptr(ckey_ptr, ctx->dma_key  + ctx->authkeylen,
 		       ctx->enckeylen, is_sec1);
-=======
-	if (desc->hdr & DESC_HDR_TYPE_IPSEC_ESP) {
-		to_talitos_ptr(&desc->ptr[2], edesc->iv_dma, is_sec1);
-		to_talitos_ptr_len(&desc->ptr[2], ivsize, is_sec1);
-		to_talitos_ptr_ext_set(&desc->ptr[2], 0, is_sec1);
-	} else {
-		to_talitos_ptr(&desc->ptr[3], edesc->iv_dma, is_sec1);
-		to_talitos_ptr_len(&desc->ptr[3], ivsize, is_sec1);
-		to_talitos_ptr_ext_set(&desc->ptr[3], 0, is_sec1);
-	}
-
-	/* cipher key */
-	if (desc->hdr & DESC_HDR_TYPE_IPSEC_ESP)
-		map_single_talitos_ptr(dev, &desc->ptr[3], ctx->enckeylen,
-				       (char *)&ctx->key + ctx->authkeylen,
-				       DMA_TO_DEVICE);
-	else
-		map_single_talitos_ptr(dev, &desc->ptr[2], ctx->enckeylen,
-				       (char *)&ctx->key + ctx->authkeylen,
-				       DMA_TO_DEVICE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * cipher in
@@ -1455,12 +1246,7 @@ static int ipsec_esp(struct talitos_edesc *edesc, struct aead_request *areq,
 	 * extent is bytes of HMAC postpended to ciphertext,
 	 * typically 12 for ipsec
 	 */
-<<<<<<< HEAD
 	if (is_ipsec_esp && (desc->hdr & DESC_HDR_MODE1_MDEU_CICV))
-=======
-	if ((desc->hdr & DESC_HDR_TYPE_IPSEC_ESP) &&
-	    (desc->hdr & DESC_HDR_MODE1_MDEU_CICV))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		elen = authsize;
 
 	ret = talitos_sg_map_ext(dev, areq->src, cryptlen, edesc, &desc->ptr[4],
@@ -1481,11 +1267,7 @@ static int ipsec_esp(struct talitos_edesc *edesc, struct aead_request *areq,
 	ret = talitos_sg_map(dev, areq->dst, cryptlen, edesc, &desc->ptr[5],
 			     sg_count, areq->assoclen, tbl_off);
 
-<<<<<<< HEAD
 	if (is_ipsec_esp)
-=======
-	if (desc->hdr & DESC_HDR_TYPE_IPSEC_ESP)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		to_talitos_ptr_ext_or(&desc->ptr[5], authsize, is_sec1);
 
 	/* ICV data */
@@ -1494,11 +1276,7 @@ static int ipsec_esp(struct talitos_edesc *edesc, struct aead_request *areq,
 		edesc->icv_ool = true;
 		sync_needed = true;
 
-<<<<<<< HEAD
 		if (is_ipsec_esp) {
-=======
-		if (desc->hdr & DESC_HDR_TYPE_IPSEC_ESP) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			struct talitos_ptr *tbl_ptr = &edesc->link_tbl[tbl_off];
 			int offset = (edesc->src_nents + edesc->dst_nents + 2) *
 				     sizeof(struct talitos_ptr) + authsize;
@@ -1507,18 +1285,10 @@ static int ipsec_esp(struct talitos_edesc *edesc, struct aead_request *areq,
 			to_talitos_ptr_ext_set(tbl_ptr - 1, 0, is_sec1);
 			to_talitos_ptr_ext_set(tbl_ptr, DESC_PTR_LNKTBL_RETURN,
 					       is_sec1);
-<<<<<<< HEAD
 
 			/* icv data follows link tables */
 			to_talitos_ptr(tbl_ptr, edesc->dma_link_tbl + offset,
 				       authsize, is_sec1);
-=======
-			to_talitos_ptr_len(tbl_ptr, authsize, is_sec1);
-
-			/* icv data follows link tables */
-			to_talitos_ptr(tbl_ptr, edesc->dma_link_tbl + offset,
-				       is_sec1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else {
 			dma_addr_t addr = edesc->dma_link_tbl;
 
@@ -1527,16 +1297,9 @@ static int ipsec_esp(struct talitos_edesc *edesc, struct aead_request *areq,
 			else
 				addr += sizeof(struct talitos_ptr) * tbl_off;
 
-<<<<<<< HEAD
 			to_talitos_ptr(&desc->ptr[6], addr, authsize, is_sec1);
 		}
 	} else if (!is_ipsec_esp) {
-=======
-			to_talitos_ptr(&desc->ptr[6], addr, is_sec1);
-			to_talitos_ptr_len(&desc->ptr[6], authsize, is_sec1);
-		}
-	} else if (!(desc->hdr & DESC_HDR_TYPE_IPSEC_ESP)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = talitos_sg_map(dev, areq->dst, authsize, edesc,
 				     &desc->ptr[6], sg_count, areq->assoclen +
 							      cryptlen,
@@ -1553,11 +1316,7 @@ static int ipsec_esp(struct talitos_edesc *edesc, struct aead_request *areq,
 	}
 
 	/* iv out */
-<<<<<<< HEAD
 	if (is_ipsec_esp)
-=======
-	if (desc->hdr & DESC_HDR_TYPE_IPSEC_ESP)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		map_single_talitos_ptr(dev, &desc->ptr[6], ivsize, ctx->iv,
 				       DMA_FROM_DEVICE);
 
@@ -1648,13 +1407,10 @@ static struct talitos_edesc *talitos_edesc_alloc(struct device *dev,
 		dma_len = 0;
 		alloc_len += icv_stashing ? authsize : 0;
 	}
-<<<<<<< HEAD
 
 	/* if its a ahash, add space for a second desc next to the first one */
 	if (is_sec1 && !dst)
 		alloc_len += sizeof(struct talitos_desc);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	alloc_len += ivsize;
 
 	edesc = kmalloc(alloc_len, GFP_DMA | flags);
@@ -1664,10 +1420,7 @@ static struct talitos_edesc *talitos_edesc_alloc(struct device *dev,
 		iv = memcpy(((u8 *)edesc) + alloc_len - ivsize, iv, ivsize);
 		iv_dma = dma_map_single(dev, iv, ivsize, DMA_TO_DEVICE);
 	}
-<<<<<<< HEAD
 	memset(&edesc->desc, 0, sizeof(edesc->desc));
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	edesc->src_nents = src_nents;
 	edesc->dst_nents = dst_nents;
@@ -1738,10 +1491,6 @@ static int aead_decrypt(struct aead_request *req)
 				  DESC_HDR_MODE1_MDEU_CICV;
 
 		/* reset integrity check result bits */
-<<<<<<< HEAD
-=======
-		edesc->desc.hdr_lo = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		return ipsec_esp(edesc, req, false,
 				 ipsec_esp_decrypt_hwauth_done);
@@ -1767,10 +1516,7 @@ static int ablkcipher_setkey(struct crypto_ablkcipher *cipher,
 			     const u8 *key, unsigned int keylen)
 {
 	struct talitos_ctx *ctx = crypto_ablkcipher_ctx(cipher);
-<<<<<<< HEAD
 	struct device *dev = ctx->dev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 tmp[DES_EXPKEY_WORDS];
 
 	if (keylen > TALITOS_MAX_KEY_SIZE) {
@@ -1785,7 +1531,6 @@ static int ablkcipher_setkey(struct crypto_ablkcipher *cipher,
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 	if (ctx->keylen)
 		dma_unmap_single(dev, ctx->dma_key, ctx->keylen, DMA_TO_DEVICE);
 
@@ -1794,11 +1539,6 @@ static int ablkcipher_setkey(struct crypto_ablkcipher *cipher,
 
 	ctx->dma_key = dma_map_single(dev, ctx->key, keylen, DMA_TO_DEVICE);
 
-=======
-	memcpy(&ctx->key, key, keylen);
-	ctx->keylen = keylen;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1821,10 +1561,6 @@ static void common_nonsnoop_unmap(struct device *dev,
 	unmap_single_talitos_ptr(dev, &edesc->desc.ptr[5], DMA_FROM_DEVICE);
 
 	talitos_sg_unmap(dev, edesc, areq->src, areq->dst, areq->nbytes, 0);
-<<<<<<< HEAD
-=======
-	unmap_single_talitos_ptr(dev, &edesc->desc.ptr[2], DMA_TO_DEVICE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unmap_single_talitos_ptr(dev, &edesc->desc.ptr[1], DMA_TO_DEVICE);
 
 	if (edesc->dma_len)
@@ -1870,25 +1606,12 @@ static int common_nonsnoop(struct talitos_edesc *edesc,
 	bool is_sec1 = has_ftr_sec1(priv);
 
 	/* first DWORD empty */
-<<<<<<< HEAD
 
 	/* cipher iv */
 	to_talitos_ptr(&desc->ptr[1], edesc->iv_dma, ivsize, is_sec1);
 
 	/* cipher key */
 	to_talitos_ptr(&desc->ptr[2], ctx->dma_key, ctx->keylen, is_sec1);
-=======
-	desc->ptr[0] = zero_entry;
-
-	/* cipher iv */
-	to_talitos_ptr(&desc->ptr[1], edesc->iv_dma, is_sec1);
-	to_talitos_ptr_len(&desc->ptr[1], ivsize, is_sec1);
-	to_talitos_ptr_ext_set(&desc->ptr[1], 0, is_sec1);
-
-	/* cipher key */
-	map_single_talitos_ptr(dev, &desc->ptr[2], ctx->keylen,
-			       (char *)&ctx->key, DMA_TO_DEVICE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sg_count = edesc->src_nents ?: 1;
 	if (is_sec1 && sg_count > 1)
@@ -1923,10 +1646,6 @@ static int common_nonsnoop(struct talitos_edesc *edesc,
 			       DMA_FROM_DEVICE);
 
 	/* last DWORD empty */
-<<<<<<< HEAD
-=======
-	desc->ptr[6] = zero_entry;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (sync_needed)
 		dma_sync_single_for_device(dev, edesc->dma_link_tbl,
@@ -2008,7 +1727,6 @@ static void common_nonsnoop_hash_unmap(struct device *dev,
 	struct talitos_ahash_req_ctx *req_ctx = ahash_request_ctx(areq);
 	struct talitos_private *priv = dev_get_drvdata(dev);
 	bool is_sec1 = has_ftr_sec1(priv);
-<<<<<<< HEAD
 	struct talitos_desc *desc = &edesc->desc;
 	struct talitos_desc *desc2 = (struct talitos_desc *)
 				     (edesc->buf + edesc->dma_len);
@@ -2020,41 +1738,26 @@ static void common_nonsnoop_hash_unmap(struct device *dev,
 
 	if (req_ctx->psrc)
 		talitos_sg_unmap(dev, edesc, req_ctx->psrc, NULL, 0, 0);
-=======
-
-	unmap_single_talitos_ptr(dev, &edesc->desc.ptr[5], DMA_FROM_DEVICE);
-
-	talitos_sg_unmap(dev, edesc, req_ctx->psrc, NULL, 0, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* When using hashctx-in, must unmap it. */
 	if (from_talitos_ptr_len(&edesc->desc.ptr[1], is_sec1))
 		unmap_single_talitos_ptr(dev, &edesc->desc.ptr[1],
 					 DMA_TO_DEVICE);
-<<<<<<< HEAD
 	else if (desc->next_desc)
 		unmap_single_talitos_ptr(dev, &desc2->ptr[1],
 					 DMA_TO_DEVICE);
 
 	if (is_sec1 && req_ctx->nbuf)
 		unmap_single_talitos_ptr(dev, &desc->ptr[3],
-=======
-
-	if (from_talitos_ptr_len(&edesc->desc.ptr[2], is_sec1))
-		unmap_single_talitos_ptr(dev, &edesc->desc.ptr[2],
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 DMA_TO_DEVICE);
 
 	if (edesc->dma_len)
 		dma_unmap_single(dev, edesc->dma_link_tbl, edesc->dma_len,
 				 DMA_BIDIRECTIONAL);
 
-<<<<<<< HEAD
 	if (edesc->desc.next_desc)
 		dma_unmap_single(dev, be32_to_cpu(edesc->desc.next_desc),
 				 TALITOS_DESC_SIZE, DMA_BIDIRECTIONAL);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void ahash_done(struct device *dev,
@@ -2068,11 +1771,7 @@ static void ahash_done(struct device *dev,
 
 	if (!req_ctx->last && req_ctx->to_hash_later) {
 		/* Position any partial block for next update/final/finup */
-<<<<<<< HEAD
 		req_ctx->buf_idx = (req_ctx->buf_idx + 1) & 1;
-=======
-		memcpy(req_ctx->buf, req_ctx->bufnext, req_ctx->to_hash_later);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		req_ctx->nbuf = req_ctx->to_hash_later;
 	}
 	common_nonsnoop_hash_unmap(dev, edesc, areq);
@@ -2086,11 +1785,7 @@ static void ahash_done(struct device *dev,
  * SEC1 doesn't like hashing of 0 sized message, so we do the padding
  * ourself and submit a padded block
  */
-<<<<<<< HEAD
 static void talitos_handle_buggy_hash(struct talitos_ctx *ctx,
-=======
-void talitos_handle_buggy_hash(struct talitos_ctx *ctx,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       struct talitos_edesc *edesc,
 			       struct talitos_ptr *ptr)
 {
@@ -2125,7 +1820,6 @@ static int common_nonsnoop_hash(struct talitos_edesc *edesc,
 	int sg_count;
 
 	/* first DWORD empty */
-<<<<<<< HEAD
 
 	/* hash context in */
 	if (!req_ctx->first || req_ctx->swinit) {
@@ -2134,52 +1828,27 @@ static int common_nonsnoop_hash(struct talitos_edesc *edesc,
 					      req_ctx->hw_context,
 					      DMA_TO_DEVICE);
 		req_ctx->swinit = 0;
-=======
-	desc->ptr[0] = zero_entry;
-
-	/* hash context in */
-	if (!req_ctx->first || req_ctx->swinit) {
-		map_single_talitos_ptr(dev, &desc->ptr[1],
-				       req_ctx->hw_context_size,
-				       (char *)req_ctx->hw_context,
-				       DMA_TO_DEVICE);
-		req_ctx->swinit = 0;
-	} else {
-		desc->ptr[1] = zero_entry;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	/* Indicate next op is not the first. */
 	req_ctx->first = 0;
 
 	/* HMAC key */
 	if (ctx->keylen)
-<<<<<<< HEAD
 		to_talitos_ptr(&desc->ptr[2], ctx->dma_key, ctx->keylen,
 			       is_sec1);
 
 	if (is_sec1 && req_ctx->nbuf)
 		length -= req_ctx->nbuf;
-=======
-		map_single_talitos_ptr(dev, &desc->ptr[2], ctx->keylen,
-				       (char *)&ctx->key, DMA_TO_DEVICE);
-	else
-		desc->ptr[2] = zero_entry;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sg_count = edesc->src_nents ?: 1;
 	if (is_sec1 && sg_count > 1)
 		sg_copy_to_buffer(req_ctx->psrc, sg_count, edesc->buf, length);
-<<<<<<< HEAD
 	else if (length)
-=======
-	else
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sg_count = dma_map_sg(dev, req_ctx->psrc, sg_count,
 				      DMA_TO_DEVICE);
 	/*
 	 * data in
 	 */
-<<<<<<< HEAD
 	if (is_sec1 && req_ctx->nbuf) {
 		map_single_talitos_ptr(dev, &desc->ptr[3], req_ctx->nbuf,
 				       req_ctx->buf[req_ctx->buf_idx],
@@ -2192,15 +1861,6 @@ static int common_nonsnoop_hash(struct talitos_edesc *edesc,
 	}
 
 	/* fifth DWORD empty */
-=======
-	sg_count = talitos_sg_map(dev, req_ctx->psrc, length, edesc,
-				  &desc->ptr[3], sg_count, 0, 0);
-	if (sg_count > 1)
-		sync_needed = true;
-
-	/* fifth DWORD empty */
-	desc->ptr[4] = zero_entry;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* hash/HMAC out -or- hash context out */
 	if (req_ctx->last)
@@ -2208,26 +1868,16 @@ static int common_nonsnoop_hash(struct talitos_edesc *edesc,
 				       crypto_ahash_digestsize(tfm),
 				       areq->result, DMA_FROM_DEVICE);
 	else
-<<<<<<< HEAD
 		map_single_talitos_ptr_nosync(dev, &desc->ptr[5],
 					      req_ctx->hw_context_size,
 					      req_ctx->hw_context,
 					      DMA_FROM_DEVICE);
 
 	/* last DWORD empty */
-=======
-		map_single_talitos_ptr(dev, &desc->ptr[5],
-				       req_ctx->hw_context_size,
-				       req_ctx->hw_context, DMA_FROM_DEVICE);
-
-	/* last DWORD empty */
-	desc->ptr[6] = zero_entry;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (is_sec1 && from_talitos_ptr_len(&desc->ptr[3], true) == 0)
 		talitos_handle_buggy_hash(ctx, edesc, &desc->ptr[3]);
 
-<<<<<<< HEAD
 	if (is_sec1 && req_ctx->nbuf && length) {
 		struct talitos_desc *desc2 = (struct talitos_desc *)
 					     (edesc->buf + edesc->dma_len);
@@ -2266,8 +1916,6 @@ static int common_nonsnoop_hash(struct talitos_edesc *edesc,
 		desc->next_desc = cpu_to_be32(next_desc);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (sync_needed)
 		dma_sync_single_for_device(dev, edesc->dma_link_tbl,
 					   edesc->dma_len, DMA_BIDIRECTIONAL);
@@ -2286,14 +1934,11 @@ static struct talitos_edesc *ahash_edesc_alloc(struct ahash_request *areq,
 	struct crypto_ahash *tfm = crypto_ahash_reqtfm(areq);
 	struct talitos_ctx *ctx = crypto_ahash_ctx(tfm);
 	struct talitos_ahash_req_ctx *req_ctx = ahash_request_ctx(areq);
-<<<<<<< HEAD
 	struct talitos_private *priv = dev_get_drvdata(ctx->dev);
 	bool is_sec1 = has_ftr_sec1(priv);
 
 	if (is_sec1)
 		nbytes -= req_ctx->nbuf;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return talitos_edesc_alloc(ctx->dev, req_ctx->psrc, NULL, NULL, 0,
 				   nbytes, 0, 0, 0, areq->base.flags, false);
@@ -2302,7 +1947,6 @@ static struct talitos_edesc *ahash_edesc_alloc(struct ahash_request *areq,
 static int ahash_init(struct ahash_request *areq)
 {
 	struct crypto_ahash *tfm = crypto_ahash_reqtfm(areq);
-<<<<<<< HEAD
 	struct talitos_ctx *ctx = crypto_ahash_ctx(tfm);
 	struct device *dev = ctx->dev;
 	struct talitos_ahash_req_ctx *req_ctx = ahash_request_ctx(areq);
@@ -2322,18 +1966,6 @@ static int ahash_init(struct ahash_request *areq)
 	dma = dma_map_single(dev, req_ctx->hw_context, req_ctx->hw_context_size,
 			     DMA_TO_DEVICE);
 	dma_unmap_single(dev, dma, req_ctx->hw_context_size, DMA_TO_DEVICE);
-=======
-	struct talitos_ahash_req_ctx *req_ctx = ahash_request_ctx(areq);
-
-	/* Initialize the context */
-	req_ctx->nbuf = 0;
-	req_ctx->first = 1; /* first indicates h/w must init its context */
-	req_ctx->swinit = 0; /* assume h/w init of context */
-	req_ctx->hw_context_size =
-		(crypto_ahash_digestsize(tfm) <= SHA256_DIGEST_SIZE)
-			? TALITOS_MDEU_CONTEXT_SIZE_MD5_SHA1_SHA256
-			: TALITOS_MDEU_CONTEXT_SIZE_SHA384_SHA512;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -2346,12 +1978,6 @@ static int ahash_init_sha224_swinit(struct ahash_request *areq)
 {
 	struct talitos_ahash_req_ctx *req_ctx = ahash_request_ctx(areq);
 
-<<<<<<< HEAD
-=======
-	ahash_init(areq);
-	req_ctx->swinit = 1;/* prevent h/w initting context with sha256 values*/
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	req_ctx->hw_context[0] = SHA224_H0;
 	req_ctx->hw_context[1] = SHA224_H1;
 	req_ctx->hw_context[2] = SHA224_H2;
@@ -2365,12 +1991,9 @@ static int ahash_init_sha224_swinit(struct ahash_request *areq)
 	req_ctx->hw_context[8] = 0;
 	req_ctx->hw_context[9] = 0;
 
-<<<<<<< HEAD
 	ahash_init(areq);
 	req_ctx->swinit = 1;/* prevent h/w initting context with sha256 values*/
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -2386,13 +2009,10 @@ static int ahash_process_req(struct ahash_request *areq, unsigned int nbytes)
 	unsigned int to_hash_later;
 	unsigned int nsg;
 	int nents;
-<<<<<<< HEAD
 	struct device *dev = ctx->dev;
 	struct talitos_private *priv = dev_get_drvdata(dev);
 	bool is_sec1 = has_ftr_sec1(priv);
 	u8 *ctx_buf = req_ctx->buf[req_ctx->buf_idx];
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!req_ctx->last && (nbytes + req_ctx->nbuf <= blocksize)) {
 		/* Buffer up to one whole block */
@@ -2402,11 +2022,7 @@ static int ahash_process_req(struct ahash_request *areq, unsigned int nbytes)
 			return nents;
 		}
 		sg_copy_to_buffer(areq->src, nents,
-<<<<<<< HEAD
 				  ctx_buf + req_ctx->nbuf, nbytes);
-=======
-				  req_ctx->buf + req_ctx->nbuf, nbytes);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		req_ctx->nbuf += nbytes;
 		return 0;
 	}
@@ -2427,7 +2043,6 @@ static int ahash_process_req(struct ahash_request *areq, unsigned int nbytes)
 	}
 
 	/* Chain in any previously buffered data */
-<<<<<<< HEAD
 	if (!is_sec1 && req_ctx->nbuf) {
 		nsg = (req_ctx->nbuf < nbytes_to_hash) ? 2 : 1;
 		sg_init_table(req_ctx->bufsl, nsg);
@@ -2452,15 +2067,6 @@ static int ahash_process_req(struct ahash_request *areq, unsigned int nbytes)
 		req_ctx->nbuf += offset;
 		req_ctx->psrc = scatterwalk_ffwd(req_ctx->bufsl, areq->src,
 						 offset);
-=======
-	if (req_ctx->nbuf) {
-		nsg = (req_ctx->nbuf < nbytes_to_hash) ? 2 : 1;
-		sg_init_table(req_ctx->bufsl, nsg);
-		sg_set_buf(req_ctx->bufsl, req_ctx->buf, req_ctx->nbuf);
-		if (nsg > 1)
-			sg_chain(req_ctx->bufsl, 2, areq->src);
-		req_ctx->psrc = req_ctx->bufsl;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else
 		req_ctx->psrc = areq->src;
 
@@ -2471,11 +2077,7 @@ static int ahash_process_req(struct ahash_request *areq, unsigned int nbytes)
 			return nents;
 		}
 		sg_pcopy_to_buffer(areq->src, nents,
-<<<<<<< HEAD
 				   req_ctx->buf[(req_ctx->buf_idx + 1) & 1],
-=======
-				      req_ctx->bufnext,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      to_hash_later,
 				      nbytes - to_hash_later);
 	}
@@ -2504,12 +2106,7 @@ static int ahash_process_req(struct ahash_request *areq, unsigned int nbytes)
 	if (ctx->keylen && (req_ctx->first || req_ctx->last))
 		edesc->desc.hdr |= DESC_HDR_MODE0_MDEU_HMAC;
 
-<<<<<<< HEAD
 	return common_nonsnoop_hash(edesc, areq, nbytes_to_hash, ahash_done);
-=======
-	return common_nonsnoop_hash(edesc, areq, nbytes_to_hash,
-				    ahash_done);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int ahash_update(struct ahash_request *areq)
@@ -2554,7 +2151,6 @@ static int ahash_export(struct ahash_request *areq, void *out)
 {
 	struct talitos_ahash_req_ctx *req_ctx = ahash_request_ctx(areq);
 	struct talitos_export_state *export = out;
-<<<<<<< HEAD
 	struct crypto_ahash *tfm = crypto_ahash_reqtfm(areq);
 	struct talitos_ctx *ctx = crypto_ahash_ctx(tfm);
 	struct device *dev = ctx->dev;
@@ -2567,12 +2163,6 @@ static int ahash_export(struct ahash_request *areq, void *out)
 	memcpy(export->hw_context, req_ctx->hw_context,
 	       req_ctx->hw_context_size);
 	memcpy(export->buf, req_ctx->buf[req_ctx->buf_idx], req_ctx->nbuf);
-=======
-
-	memcpy(export->hw_context, req_ctx->hw_context,
-	       req_ctx->hw_context_size);
-	memcpy(export->buf, req_ctx->buf, req_ctx->nbuf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	export->swinit = req_ctx->swinit;
 	export->first = req_ctx->first;
 	export->last = req_ctx->last;
@@ -2586,7 +2176,6 @@ static int ahash_import(struct ahash_request *areq, const void *in)
 {
 	struct talitos_ahash_req_ctx *req_ctx = ahash_request_ctx(areq);
 	struct crypto_ahash *tfm = crypto_ahash_reqtfm(areq);
-<<<<<<< HEAD
 	struct talitos_ctx *ctx = crypto_ahash_ctx(tfm);
 	struct device *dev = ctx->dev;
 	const struct talitos_export_state *export = in;
@@ -2600,25 +2189,12 @@ static int ahash_import(struct ahash_request *areq, const void *in)
 	req_ctx->hw_context_size = size;
 	memcpy(req_ctx->hw_context, export->hw_context, size);
 	memcpy(req_ctx->buf[0], export->buf, export->nbuf);
-=======
-	const struct talitos_export_state *export = in;
-
-	memset(req_ctx, 0, sizeof(*req_ctx));
-	req_ctx->hw_context_size =
-		(crypto_ahash_digestsize(tfm) <= SHA256_DIGEST_SIZE)
-			? TALITOS_MDEU_CONTEXT_SIZE_MD5_SHA1_SHA256
-			: TALITOS_MDEU_CONTEXT_SIZE_SHA384_SHA512;
-	memcpy(req_ctx->hw_context, export->hw_context,
-	       req_ctx->hw_context_size);
-	memcpy(req_ctx->buf, export->buf, export->nbuf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	req_ctx->swinit = export->swinit;
 	req_ctx->first = export->first;
 	req_ctx->last = export->last;
 	req_ctx->to_hash_later = export->to_hash_later;
 	req_ctx->nbuf = export->nbuf;
 
-<<<<<<< HEAD
 	dma = dma_map_single(dev, req_ctx->hw_context, req_ctx->hw_context_size,
 			     DMA_TO_DEVICE);
 	dma_unmap_single(dev, dma, req_ctx->hw_context_size, DMA_TO_DEVICE);
@@ -2626,27 +2202,6 @@ static int ahash_import(struct ahash_request *areq, const void *in)
 	return 0;
 }
 
-=======
-	return 0;
-}
-
-struct keyhash_result {
-	struct completion completion;
-	int err;
-};
-
-static void keyhash_complete(struct crypto_async_request *req, int err)
-{
-	struct keyhash_result *res = req->data;
-
-	if (err == -EINPROGRESS)
-		return;
-
-	res->err = err;
-	complete(&res->completion);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int keyhash(struct crypto_ahash *tfm, const u8 *key, unsigned int keylen,
 		   u8 *hash)
 {
@@ -2654,17 +2209,10 @@ static int keyhash(struct crypto_ahash *tfm, const u8 *key, unsigned int keylen,
 
 	struct scatterlist sg[1];
 	struct ahash_request *req;
-<<<<<<< HEAD
 	struct crypto_wait wait;
 	int ret;
 
 	crypto_init_wait(&wait);
-=======
-	struct keyhash_result hresult;
-	int ret;
-
-	init_completion(&hresult.completion);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	req = ahash_request_alloc(tfm, GFP_KERNEL);
 	if (!req)
@@ -2673,34 +2221,13 @@ static int keyhash(struct crypto_ahash *tfm, const u8 *key, unsigned int keylen,
 	/* Keep tfm keylen == 0 during hash of the long key */
 	ctx->keylen = 0;
 	ahash_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG,
-<<<<<<< HEAD
 				   crypto_req_done, &wait);
-=======
-				   keyhash_complete, &hresult);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sg_init_one(&sg[0], key, keylen);
 
 	ahash_request_set_crypt(req, sg, hash, keylen);
-<<<<<<< HEAD
 	ret = crypto_wait_req(crypto_ahash_digest(req), &wait);
 
-=======
-	ret = crypto_ahash_digest(req);
-	switch (ret) {
-	case 0:
-		break;
-	case -EINPROGRESS:
-	case -EBUSY:
-		ret = wait_for_completion_interruptible(
-			&hresult.completion);
-		if (!ret)
-			ret = hresult.err;
-		break;
-	default:
-		break;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ahash_request_free(req);
 
 	return ret;
@@ -2710,10 +2237,7 @@ static int ahash_setkey(struct crypto_ahash *tfm, const u8 *key,
 			unsigned int keylen)
 {
 	struct talitos_ctx *ctx = crypto_tfm_ctx(crypto_ahash_tfm(tfm));
-<<<<<<< HEAD
 	struct device *dev = ctx->dev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int blocksize =
 			crypto_tfm_alg_blocksize(crypto_ahash_tfm(tfm));
 	unsigned int digestsize = crypto_ahash_digestsize(tfm);
@@ -2736,15 +2260,11 @@ static int ahash_setkey(struct crypto_ahash *tfm, const u8 *key,
 		memcpy(ctx->key, hash, digestsize);
 	}
 
-<<<<<<< HEAD
 	if (ctx->keylen)
 		dma_unmap_single(dev, ctx->dma_key, ctx->keylen, DMA_TO_DEVICE);
 
 	ctx->keylen = keysize;
 	ctx->dma_key = dma_map_single(dev, ctx->key, keysize, DMA_TO_DEVICE);
-=======
-	ctx->keylen = keysize;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -3200,10 +2720,7 @@ static struct talitos_alg_template driver_algs[] = {
 			.cra_ablkcipher = {
 				.min_keysize = AES_MIN_KEY_SIZE,
 				.max_keysize = AES_MAX_KEY_SIZE,
-<<<<<<< HEAD
 				.ivsize = AES_BLOCK_SIZE,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		},
 		.desc_hdr_template = DESC_HDR_TYPE_COMMON_NONSNOOP_NO_AFEU |
@@ -3237,10 +2754,6 @@ static struct talitos_alg_template driver_algs[] = {
 			.cra_ablkcipher = {
 				.min_keysize = AES_MIN_KEY_SIZE,
 				.max_keysize = AES_MAX_KEY_SIZE,
-<<<<<<< HEAD
-=======
-				.ivsize = AES_BLOCK_SIZE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				.setkey = ablkcipher_aes_setkey,
 			}
 		},
@@ -3325,12 +2838,7 @@ static struct talitos_alg_template driver_algs[] = {
 				.cra_name = "md5",
 				.cra_driver_name = "md5-talitos",
 				.cra_blocksize = MD5_HMAC_BLOCK_SIZE,
-<<<<<<< HEAD
 				.cra_flags = CRYPTO_ALG_ASYNC,
-=======
-				.cra_flags = CRYPTO_ALG_TYPE_AHASH |
-					     CRYPTO_ALG_ASYNC,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		},
 		.desc_hdr_template = DESC_HDR_TYPE_COMMON_NONSNOOP_NO_AFEU |
@@ -3345,12 +2853,7 @@ static struct talitos_alg_template driver_algs[] = {
 				.cra_name = "sha1",
 				.cra_driver_name = "sha1-talitos",
 				.cra_blocksize = SHA1_BLOCK_SIZE,
-<<<<<<< HEAD
 				.cra_flags = CRYPTO_ALG_ASYNC,
-=======
-				.cra_flags = CRYPTO_ALG_TYPE_AHASH |
-					     CRYPTO_ALG_ASYNC,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		},
 		.desc_hdr_template = DESC_HDR_TYPE_COMMON_NONSNOOP_NO_AFEU |
@@ -3365,12 +2868,7 @@ static struct talitos_alg_template driver_algs[] = {
 				.cra_name = "sha224",
 				.cra_driver_name = "sha224-talitos",
 				.cra_blocksize = SHA224_BLOCK_SIZE,
-<<<<<<< HEAD
 				.cra_flags = CRYPTO_ALG_ASYNC,
-=======
-				.cra_flags = CRYPTO_ALG_TYPE_AHASH |
-					     CRYPTO_ALG_ASYNC,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		},
 		.desc_hdr_template = DESC_HDR_TYPE_COMMON_NONSNOOP_NO_AFEU |
@@ -3385,12 +2883,7 @@ static struct talitos_alg_template driver_algs[] = {
 				.cra_name = "sha256",
 				.cra_driver_name = "sha256-talitos",
 				.cra_blocksize = SHA256_BLOCK_SIZE,
-<<<<<<< HEAD
 				.cra_flags = CRYPTO_ALG_ASYNC,
-=======
-				.cra_flags = CRYPTO_ALG_TYPE_AHASH |
-					     CRYPTO_ALG_ASYNC,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		},
 		.desc_hdr_template = DESC_HDR_TYPE_COMMON_NONSNOOP_NO_AFEU |
@@ -3405,12 +2898,7 @@ static struct talitos_alg_template driver_algs[] = {
 				.cra_name = "sha384",
 				.cra_driver_name = "sha384-talitos",
 				.cra_blocksize = SHA384_BLOCK_SIZE,
-<<<<<<< HEAD
 				.cra_flags = CRYPTO_ALG_ASYNC,
-=======
-				.cra_flags = CRYPTO_ALG_TYPE_AHASH |
-					     CRYPTO_ALG_ASYNC,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		},
 		.desc_hdr_template = DESC_HDR_TYPE_COMMON_NONSNOOP_NO_AFEU |
@@ -3425,12 +2913,7 @@ static struct talitos_alg_template driver_algs[] = {
 				.cra_name = "sha512",
 				.cra_driver_name = "sha512-talitos",
 				.cra_blocksize = SHA512_BLOCK_SIZE,
-<<<<<<< HEAD
 				.cra_flags = CRYPTO_ALG_ASYNC,
-=======
-				.cra_flags = CRYPTO_ALG_TYPE_AHASH |
-					     CRYPTO_ALG_ASYNC,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		},
 		.desc_hdr_template = DESC_HDR_TYPE_COMMON_NONSNOOP_NO_AFEU |
@@ -3445,12 +2928,7 @@ static struct talitos_alg_template driver_algs[] = {
 				.cra_name = "hmac(md5)",
 				.cra_driver_name = "hmac-md5-talitos",
 				.cra_blocksize = MD5_HMAC_BLOCK_SIZE,
-<<<<<<< HEAD
 				.cra_flags = CRYPTO_ALG_ASYNC,
-=======
-				.cra_flags = CRYPTO_ALG_TYPE_AHASH |
-					     CRYPTO_ALG_ASYNC,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		},
 		.desc_hdr_template = DESC_HDR_TYPE_COMMON_NONSNOOP_NO_AFEU |
@@ -3465,12 +2943,7 @@ static struct talitos_alg_template driver_algs[] = {
 				.cra_name = "hmac(sha1)",
 				.cra_driver_name = "hmac-sha1-talitos",
 				.cra_blocksize = SHA1_BLOCK_SIZE,
-<<<<<<< HEAD
 				.cra_flags = CRYPTO_ALG_ASYNC,
-=======
-				.cra_flags = CRYPTO_ALG_TYPE_AHASH |
-					     CRYPTO_ALG_ASYNC,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		},
 		.desc_hdr_template = DESC_HDR_TYPE_COMMON_NONSNOOP_NO_AFEU |
@@ -3485,12 +2958,7 @@ static struct talitos_alg_template driver_algs[] = {
 				.cra_name = "hmac(sha224)",
 				.cra_driver_name = "hmac-sha224-talitos",
 				.cra_blocksize = SHA224_BLOCK_SIZE,
-<<<<<<< HEAD
 				.cra_flags = CRYPTO_ALG_ASYNC,
-=======
-				.cra_flags = CRYPTO_ALG_TYPE_AHASH |
-					     CRYPTO_ALG_ASYNC,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		},
 		.desc_hdr_template = DESC_HDR_TYPE_COMMON_NONSNOOP_NO_AFEU |
@@ -3505,12 +2973,7 @@ static struct talitos_alg_template driver_algs[] = {
 				.cra_name = "hmac(sha256)",
 				.cra_driver_name = "hmac-sha256-talitos",
 				.cra_blocksize = SHA256_BLOCK_SIZE,
-<<<<<<< HEAD
 				.cra_flags = CRYPTO_ALG_ASYNC,
-=======
-				.cra_flags = CRYPTO_ALG_TYPE_AHASH |
-					     CRYPTO_ALG_ASYNC,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		},
 		.desc_hdr_template = DESC_HDR_TYPE_COMMON_NONSNOOP_NO_AFEU |
@@ -3525,12 +2988,7 @@ static struct talitos_alg_template driver_algs[] = {
 				.cra_name = "hmac(sha384)",
 				.cra_driver_name = "hmac-sha384-talitos",
 				.cra_blocksize = SHA384_BLOCK_SIZE,
-<<<<<<< HEAD
 				.cra_flags = CRYPTO_ALG_ASYNC,
-=======
-				.cra_flags = CRYPTO_ALG_TYPE_AHASH |
-					     CRYPTO_ALG_ASYNC,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		},
 		.desc_hdr_template = DESC_HDR_TYPE_COMMON_NONSNOOP_NO_AFEU |
@@ -3545,12 +3003,7 @@ static struct talitos_alg_template driver_algs[] = {
 				.cra_name = "hmac(sha512)",
 				.cra_driver_name = "hmac-sha512-talitos",
 				.cra_blocksize = SHA512_BLOCK_SIZE,
-<<<<<<< HEAD
 				.cra_flags = CRYPTO_ALG_ASYNC,
-=======
-				.cra_flags = CRYPTO_ALG_TYPE_AHASH |
-					     CRYPTO_ALG_ASYNC,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		},
 		.desc_hdr_template = DESC_HDR_TYPE_COMMON_NONSNOOP_NO_AFEU |
@@ -3629,7 +3082,6 @@ static int talitos_cra_init_ahash(struct crypto_tfm *tfm)
 	return 0;
 }
 
-<<<<<<< HEAD
 static void talitos_cra_exit(struct crypto_tfm *tfm)
 {
 	struct talitos_ctx *ctx = crypto_tfm_ctx(tfm);
@@ -3639,8 +3091,6 @@ static void talitos_cra_exit(struct crypto_tfm *tfm)
 		dma_unmap_single(dev, ctx->dma_key, ctx->keylen, DMA_TO_DEVICE);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * given the alg's descriptor header template, determine whether descriptor
  * type and primary/secondary execution units required match the hw
@@ -3680,23 +3130,11 @@ static int talitos_remove(struct platform_device *ofdev)
 			break;
 		}
 		list_del(&t_alg->entry);
-<<<<<<< HEAD
-=======
-		kfree(t_alg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (hw_supports(dev, DESC_HDR_SEL0_RNG))
 		talitos_unregister_rng(dev);
 
-<<<<<<< HEAD
-=======
-	for (i = 0; priv->chan && i < priv->num_channels; i++)
-		kfree(priv->chan[i].fifo);
-
-	kfree(priv->chan);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < 2; i++)
 		if (priv->irq[i]) {
 			free_irq(priv->irq[i], dev);
@@ -3707,13 +3145,6 @@ static int talitos_remove(struct platform_device *ofdev)
 	if (priv->irq[1])
 		tasklet_kill(&priv->done_task[1]);
 
-<<<<<<< HEAD
-=======
-	iounmap(priv->reg);
-
-	kfree(priv);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -3725,12 +3156,8 @@ static struct talitos_crypto_alg *talitos_alg_alloc(struct device *dev,
 	struct talitos_crypto_alg *t_alg;
 	struct crypto_alg *alg;
 
-<<<<<<< HEAD
 	t_alg = devm_kzalloc(dev, sizeof(struct talitos_crypto_alg),
 			     GFP_KERNEL);
-=======
-	t_alg = kzalloc(sizeof(struct talitos_crypto_alg), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!t_alg)
 		return ERR_PTR(-ENOMEM);
 
@@ -3740,10 +3167,7 @@ static struct talitos_crypto_alg *talitos_alg_alloc(struct device *dev,
 	case CRYPTO_ALG_TYPE_ABLKCIPHER:
 		alg = &t_alg->algt.alg.crypto;
 		alg->cra_init = talitos_cra_init;
-<<<<<<< HEAD
 		alg->cra_exit = talitos_cra_exit;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		alg->cra_type = &crypto_ablkcipher_type;
 		alg->cra_ablkcipher.setkey = ablkcipher_setkey;
 		alg->cra_ablkcipher.encrypt = ablkcipher_encrypt;
@@ -3752,32 +3176,21 @@ static struct talitos_crypto_alg *talitos_alg_alloc(struct device *dev,
 		break;
 	case CRYPTO_ALG_TYPE_AEAD:
 		alg = &t_alg->algt.alg.aead.base;
-<<<<<<< HEAD
 		alg->cra_exit = talitos_cra_exit;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		t_alg->algt.alg.aead.init = talitos_cra_init_aead;
 		t_alg->algt.alg.aead.setkey = aead_setkey;
 		t_alg->algt.alg.aead.encrypt = aead_encrypt;
 		t_alg->algt.alg.aead.decrypt = aead_decrypt;
 		if (!(priv->features & TALITOS_FTR_SHA224_HWINIT) &&
 		    !strncmp(alg->cra_name, "authenc(hmac(sha224)", 20)) {
-<<<<<<< HEAD
 			devm_kfree(dev, t_alg);
-=======
-			kfree(t_alg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return ERR_PTR(-ENOTSUPP);
 		}
 		break;
 	case CRYPTO_ALG_TYPE_AHASH:
 		alg = &t_alg->algt.alg.hash.halg.base;
 		alg->cra_init = talitos_cra_init_ahash;
-<<<<<<< HEAD
 		alg->cra_exit = talitos_cra_exit;
-=======
-		alg->cra_type = &crypto_ahash_type;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		t_alg->algt.alg.hash.init = ahash_init;
 		t_alg->algt.alg.hash.update = ahash_update;
 		t_alg->algt.alg.hash.final = ahash_final;
@@ -3790,11 +3203,7 @@ static struct talitos_crypto_alg *talitos_alg_alloc(struct device *dev,
 
 		if (!(priv->features & TALITOS_FTR_HMAC_OK) &&
 		    !strncmp(alg->cra_name, "hmac", 4)) {
-<<<<<<< HEAD
 			devm_kfree(dev, t_alg);
-=======
-			kfree(t_alg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return ERR_PTR(-ENOTSUPP);
 		}
 		if (!(priv->features & TALITOS_FTR_SHA224_HWINIT) &&
@@ -3809,11 +3218,7 @@ static struct talitos_crypto_alg *talitos_alg_alloc(struct device *dev,
 		break;
 	default:
 		dev_err(dev, "unknown algorithm type %d\n", t_alg->algt.type);
-<<<<<<< HEAD
 		devm_kfree(dev, t_alg);
-=======
-		kfree(t_alg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ERR_PTR(-EINVAL);
 	}
 
@@ -3893,19 +3298,11 @@ static int talitos_probe(struct platform_device *ofdev)
 	struct device *dev = &ofdev->dev;
 	struct device_node *np = ofdev->dev.of_node;
 	struct talitos_private *priv;
-<<<<<<< HEAD
 	int i, err;
 	int stride;
 	struct resource *res;
 
 	priv = devm_kzalloc(dev, sizeof(struct talitos_private), GFP_KERNEL);
-=======
-	const unsigned int *prop;
-	int i, err;
-	int stride;
-
-	priv = kzalloc(sizeof(struct talitos_private), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!priv)
 		return -ENOMEM;
 
@@ -3917,14 +3314,10 @@ static int talitos_probe(struct platform_device *ofdev)
 
 	spin_lock_init(&priv->reg_lock);
 
-<<<<<<< HEAD
 	res = platform_get_resource(ofdev, IORESOURCE_MEM, 0);
 	if (!res)
 		return -ENXIO;
 	priv->reg = devm_ioremap(dev, res->start, resource_size(res));
-=======
-	priv->reg = of_iomap(np, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!priv->reg) {
 		dev_err(dev, "failed to of_iomap\n");
 		err = -ENOMEM;
@@ -3932,29 +3325,11 @@ static int talitos_probe(struct platform_device *ofdev)
 	}
 
 	/* get SEC version capabilities from device tree */
-<<<<<<< HEAD
 	of_property_read_u32(np, "fsl,num-channels", &priv->num_channels);
 	of_property_read_u32(np, "fsl,channel-fifo-len", &priv->chfifo_len);
 	of_property_read_u32(np, "fsl,exec-units-mask", &priv->exec_units);
 	of_property_read_u32(np, "fsl,descriptor-types-mask",
 			     &priv->desc_types);
-=======
-	prop = of_get_property(np, "fsl,num-channels", NULL);
-	if (prop)
-		priv->num_channels = *prop;
-
-	prop = of_get_property(np, "fsl,channel-fifo-len", NULL);
-	if (prop)
-		priv->chfifo_len = *prop;
-
-	prop = of_get_property(np, "fsl,exec-units-mask", NULL);
-	if (prop)
-		priv->exec_units = *prop;
-
-	prop = of_get_property(np, "fsl,descriptor-types-mask", NULL);
-	if (prop)
-		priv->desc_types = *prop;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!is_power_of_2(priv->num_channels) || !priv->chfifo_len ||
 	    !priv->exec_units || !priv->desc_types) {
@@ -4004,7 +3379,6 @@ static int talitos_probe(struct platform_device *ofdev)
 		goto err_out;
 
 	if (of_device_is_compatible(np, "fsl,sec1.0")) {
-<<<<<<< HEAD
 		if (priv->num_channels == 1)
 			tasklet_init(&priv->done_task[0], talitos1_done_ch0,
 				     (unsigned long)dev);
@@ -4013,20 +3387,10 @@ static int talitos_probe(struct platform_device *ofdev)
 				     (unsigned long)dev);
 	} else {
 		if (priv->irq[1]) {
-=======
-		tasklet_init(&priv->done_task[0], talitos1_done_4ch,
-			     (unsigned long)dev);
-	} else {
-		if (!priv->irq[1]) {
-			tasklet_init(&priv->done_task[0], talitos2_done_4ch,
-				     (unsigned long)dev);
-		} else {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			tasklet_init(&priv->done_task[0], talitos2_done_ch0_2,
 				     (unsigned long)dev);
 			tasklet_init(&priv->done_task[1], talitos2_done_ch1_3,
 				     (unsigned long)dev);
-<<<<<<< HEAD
 		} else if (priv->num_channels == 1) {
 			tasklet_init(&priv->done_task[0], talitos2_done_ch0,
 				     (unsigned long)dev);
@@ -4040,13 +3404,6 @@ static int talitos_probe(struct platform_device *ofdev)
 				  priv->num_channels,
 				  sizeof(struct talitos_channel),
 				  GFP_KERNEL);
-=======
-		}
-	}
-
-	priv->chan = kzalloc(sizeof(struct talitos_channel) *
-			     priv->num_channels, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!priv->chan) {
 		dev_err(dev, "failed to allocate channel management space\n");
 		err = -ENOMEM;
@@ -4063,15 +3420,10 @@ static int talitos_probe(struct platform_device *ofdev)
 		spin_lock_init(&priv->chan[i].head_lock);
 		spin_lock_init(&priv->chan[i].tail_lock);
 
-<<<<<<< HEAD
 		priv->chan[i].fifo = devm_kcalloc(dev,
 						priv->fifo_len,
 						sizeof(struct talitos_request),
 						GFP_KERNEL);
-=======
-		priv->chan[i].fifo = kzalloc(sizeof(struct talitos_request) *
-					     priv->fifo_len, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!priv->chan[i].fifo) {
 			dev_err(dev, "failed to allocate request fifo %d\n", i);
 			err = -ENOMEM;
@@ -4137,11 +3489,7 @@ static int talitos_probe(struct platform_device *ofdev)
 			if (err) {
 				dev_err(dev, "%s alg registration failed\n",
 					alg->cra_driver_name);
-<<<<<<< HEAD
 				devm_kfree(dev, t_alg);
-=======
-				kfree(t_alg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			} else
 				list_add_tail(&t_alg->entry, &priv->alg_list);
 		}

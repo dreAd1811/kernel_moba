@@ -75,10 +75,6 @@ config CORESIGHT_SOURCE_ETM3X
 config CORESIGHT_SOURCE_ETM4X
 	bool "CoreSight Embedded Trace Macrocell 4.x driver"
 	select CORESIGHT_LINKS_AND_SINKS
-<<<<<<< HEAD
-=======
-	select PID_IN_CONTEXTIDR
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  This driver provides support for the ETM4.x tracer module, tracing the
 	  instructions that a processor is executing. This is primarily useful
@@ -93,17 +89,6 @@ config CORESIGHT_DYNAMIC_REPLICATOR
 	  The programmable ATB replicator allows independent filtering of the
 	  trace data based on the traceid.
 
-<<<<<<< HEAD
-=======
-config CORESIGHT_DBGUI
-	bool "CoreSight DebugUI driver"
-	help
-	  This driver provides support for DebugUI that helps to capture
-	  the value at a specified address. It allows configuring DebugUI
-	  to select specified address and trigger mode based on user
-	  input.
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config CORESIGHT_STM
 	bool "CoreSight System Trace Macrocell driver"
 	depends on (ARM && !(CPU_32v3 || CPU_32v4 || CPU_32v4T)) || ARM64
@@ -138,7 +123,6 @@ config CORESIGHT_CTI
 	  hardware component to another. It can also be used to pass
 	  software generated events.
 
-<<<<<<< HEAD
 config CORESIGHT_CTI_SAVE_DISABLE
 	bool "Turn off CTI save and restore"
 	depends on CORESIGHT_CTI
@@ -150,20 +134,14 @@ config CORESIGHT_CTI_SAVE_DISABLE
 
 	  If unsure, say 'N' here to avoid breaking cpu CTI support.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config CORESIGHT_OST
 	bool "CoreSight OST framework"
 	depends on CORESIGHT_STM
 	help
 	  This driver enables the support for Open System Trace packets in STM.
 	  This is primarily intended to be used as a layer on top of underlying
-<<<<<<< HEAD
 	  physical byte transport mechanisms.The additional header can be used
 	  to provide more information.
-=======
-	  physical byte transport mechanisms.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config CORESIGHT_TPDA
 	bool "CoreSight Trace, Profiling & Diagnostics Aggregator driver"
@@ -192,7 +170,6 @@ config CORESIGHT_TPDM_DEFAULT_ENABLE
 	  If unsure, say 'N' here to avoid potential power and performance
 	  penalty.
 
-<<<<<<< HEAD
 config CORESIGHT_CSR
 	bool "CoreSight Slave Register driver"
 	help
@@ -200,15 +177,6 @@ config CORESIGHT_CSR
 	  that hosts miscellaneous configuration registers.
 	  Those configuration registers can be used to control, various
 	  coresight configurations.
-=======
-config CORESIGHT_QPDI
-	bool "CoreSight PMIC debug interface support"
-	help
-	  This driver provides support for controlling the PMIC debug interface
-	  feature. When enabled via sysfs it allows disagnostic access to the
-	  PMIC. Similarly this debug feature can be disabled via sysfs which
-	  prevents debug dongle detection.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config CORESIGHT_HWEVENT
 	bool "CoreSight Hardware Event driver"
@@ -223,16 +191,10 @@ config CORESIGHT_HWEVENT
 config CORESIGHT_DUMMY
 	bool "Dummy driver support"
 	help
-<<<<<<< HEAD
 	  Enables support for dummy driver. Dummy driver can be	used for
 	  CoreSight sources/sinks that are owned and configured by some
 	  other subsystem and use Linux drivers to configure rest of trace
 	  path.
-=======
-	  Enables support for dummy driver. Dummy driver can be
-	  used for CoreSight sources/sinks that are owned and configured by some other
-	  subsystem and use Linux drivers to configure rest of trace path.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config CORESIGHT_REMOTE_ETM
 	bool "Remote processor ETM trace support"
@@ -246,25 +208,11 @@ config CORESIGHT_REMOTE_ETM
 config CORESIGHT_REMOTE_ETM_DEFAULT_ENABLE
 	int "default enable ETM for Remote processor based on instance id"
 	depends on CORESIGHT_REMOTE_ETM
-<<<<<<< HEAD
 	default 0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Support for enabling separated Remote processor ETM tracing. Depends
 	  on if instance id bit is set.
 
-<<<<<<< HEAD
-=======
-config CORESIGHT_CSR
-	bool "CoreSight Slave Register driver"
-	help
-	  This driver provides support for CoreSight Slave Register block
-	  that hosts miscellaneous configuration registers.
-	  Those configuration registers can be used to control, various
-	  coresight configurations.
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config CORESIGHT_TGU
 	bool "CoreSight Trigger Generation Unit driver"
 	help
@@ -276,7 +224,6 @@ config CORESIGHT_TGU
 	  provide a trigger point for centering data around a specific event
 	  within the trace data buffer.
 
-<<<<<<< HEAD
 config CORESIGHT_LINK_LATE_DISABLE
 	bool "Disable CoreSight link after sink is disabled"
 	depends on CORESIGHT_LINKS_AND_SINKS
@@ -285,13 +232,4 @@ config CORESIGHT_LINK_LATE_DISABLE
 	  disabled. Otherwise, link is disabled when it's not active. Enable
 	  this when some CoreSight source holds trace data after disabled.
 	  This data will be flushed out when CoreSight sink is disabled.
-=======
-config CORESIGHT_EVENT
-        tristate "CoreSight Event driver"
-        help
-          This driver provides support for registering with various events
-          and performing CoreSight actions like aborting trace on their
-          occurrence. These events can be controlled by using module
-          parameters.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 endif

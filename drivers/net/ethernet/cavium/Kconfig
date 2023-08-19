@@ -4,10 +4,6 @@
 
 config NET_VENDOR_CAVIUM
 	bool "Cavium ethernet drivers"
-<<<<<<< HEAD
-=======
-	depends on PCI
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default y
 	---help---
 	  Select this option if you want enable Cavium network support.
@@ -18,11 +14,7 @@ if NET_VENDOR_CAVIUM
 
 config THUNDER_NIC_PF
 	tristate "Thunder Physical function driver"
-<<<<<<< HEAD
 	depends on 64BIT && PCI
-=======
-	depends on 64BIT
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select THUNDER_NIC_BGX
 	---help---
 	  This driver supports Thunder's NIC physical function.
@@ -34,26 +26,16 @@ config THUNDER_NIC_PF
 
 config THUNDER_NIC_VF
 	tristate "Thunder Virtual function driver"
-<<<<<<< HEAD
 	imply CAVIUM_PTP
 	depends on 64BIT && PCI
-=======
-	depends on 64BIT
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	---help---
 	  This driver supports Thunder's NIC virtual function
 
 config	THUNDER_NIC_BGX
 	tristate "Thunder MAC interface driver (BGX)"
-<<<<<<< HEAD
 	depends on 64BIT && PCI
 	select PHYLIB
 	select MDIO_THUNDER if PCI
-=======
-	depends on 64BIT
-	select PHYLIB
-	select MDIO_THUNDER
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select THUNDER_NIC_RGX
 	---help---
 	  This driver supports programming and controlling of MAC
@@ -61,20 +43,13 @@ config	THUNDER_NIC_BGX
 
 config	THUNDER_NIC_RGX
 	tristate "Thunder MAC interface driver (RGX)"
-<<<<<<< HEAD
 	depends on 64BIT && PCI
 	select PHYLIB
 	select MDIO_THUNDER if PCI
-=======
-	depends on 64BIT
-	select PHYLIB
-	select MDIO_THUNDER
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	---help---
 	  This driver supports configuring XCV block of RGX interface
 	  present on CN81XX chip.
 
-<<<<<<< HEAD
 config CAVIUM_PTP
 	tristate "Cavium PTP coprocessor as PTP clock"
 	depends on 64BIT && PCI
@@ -92,11 +67,6 @@ config LIQUIDIO
 	depends on 64BIT && PCI
 	depends on MAY_USE_DEVLINK
 	depends on PCI
-=======
-config LIQUIDIO
-	tristate "Cavium LiquidIO support"
-	depends on 64BIT
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	imply PTP_1588_CLOCK
 	select FW_LOADER
 	select LIBCRC32C

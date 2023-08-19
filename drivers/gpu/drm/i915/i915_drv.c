@@ -48,26 +48,19 @@
 
 #include "i915_drv.h"
 #include "i915_trace.h"
-<<<<<<< HEAD
 #include "i915_pmu.h"
 #include "i915_query.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "i915_vgpu.h"
 #include "intel_drv.h"
 #include "intel_uc.h"
 
 static struct drm_driver driver;
 
-<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_DRM_I915_DEBUG)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static unsigned int i915_load_fail_count;
 
 bool __i915_inject_load_failure(const char *func, int line)
 {
-<<<<<<< HEAD
 	if (i915_load_fail_count >= i915_modparams.inject_load_failure)
 		return false;
 
@@ -75,21 +68,12 @@ bool __i915_inject_load_failure(const char *func, int line)
 		DRM_INFO("Injecting failure at checkpoint %u [%s:%d]\n",
 			 i915_modparams.inject_load_failure, func, line);
 		i915_modparams.inject_load_failure = 0;
-=======
-	if (i915_load_fail_count >= i915.inject_load_failure)
-		return false;
-
-	if (++i915_load_fail_count == i915.inject_load_failure) {
-		DRM_INFO("Injecting failure at checkpoint %u [%s:%d]\n",
-			 i915.inject_load_failure, func, line);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return true;
 	}
 
 	return false;
 }
 
-<<<<<<< HEAD
 bool i915_error_injected(void)
 {
 	return i915_load_fail_count && !i915_modparams.inject_load_failure;
@@ -97,8 +81,6 @@ bool i915_error_injected(void)
 
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define FDO_BUG_URL "https://bugs.freedesktop.org/enter_bug.cgi?product=DRI"
 #define FDO_BUG_MSG "Please file a bug at " FDO_BUG_URL " against DRM/Intel " \
 		    "providing the dmesg log by booting with drm.debug=0xf"
@@ -122,7 +104,6 @@ __i915_printk(struct drm_i915_private *dev_priv, const char *level,
 	vaf.fmt = fmt;
 	vaf.va = &args;
 
-<<<<<<< HEAD
 	if (is_error)
 		dev_printk(level, kdev, "%pV", &vaf);
 	else
@@ -227,34 +208,6 @@ static unsigned short
 intel_virt_detect_pch(const struct drm_i915_private *dev_priv)
 {
 	unsigned short id = 0;
-=======
-	dev_printk(level, kdev, "[" DRM_NAME ":%ps] %pV",
-		   __builtin_return_address(0), &vaf);
-
-	if (is_error && !shown_bug_once) {
-		dev_notice(kdev, "%s", FDO_BUG_MSG);
-		shown_bug_once = true;
-	}
-
-	va_end(args);
-}
-
-static bool i915_error_injected(struct drm_i915_private *dev_priv)
-{
-	return i915.inject_load_failure &&
-	       i915_load_fail_count == i915.inject_load_failure;
-}
-
-#define i915_load_error(dev_priv, fmt, ...)				     \
-	__i915_printk(dev_priv,						     \
-		      i915_error_injected(dev_priv) ? KERN_DEBUG : KERN_ERR, \
-		      fmt, ##__VA_ARGS__)
-
-
-static enum intel_pch intel_virt_detect_pch(struct drm_i915_private *dev_priv)
-{
-	enum intel_pch ret = PCH_NOP;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * In a virtualized passthrough environment we can be in a
@@ -263,7 +216,6 @@ static enum intel_pch intel_virt_detect_pch(struct drm_i915_private *dev_priv)
 	 * make an educated guess as to which PCH is really there.
 	 */
 
-<<<<<<< HEAD
 	if (IS_GEN5(dev_priv))
 		id = INTEL_PCH_IBX_DEVICE_ID_TYPE;
 	else if (IS_GEN6(dev_priv) || IS_IVYBRIDGE(dev_priv))
@@ -285,47 +237,12 @@ static enum intel_pch intel_virt_detect_pch(struct drm_i915_private *dev_priv)
 		DRM_DEBUG_KMS("Assuming no PCH\n");
 
 	return id;
-=======
-	if (IS_GEN5(dev_priv)) {
-		ret = PCH_IBX;
-		DRM_DEBUG_KMS("Assuming Ibex Peak PCH\n");
-	} else if (IS_GEN6(dev_priv) || IS_IVYBRIDGE(dev_priv)) {
-		ret = PCH_CPT;
-		DRM_DEBUG_KMS("Assuming CougarPoint PCH\n");
-	} else if (IS_HASWELL(dev_priv) || IS_BROADWELL(dev_priv)) {
-		ret = PCH_LPT;
-		if (IS_HSW_ULT(dev_priv) || IS_BDW_ULT(dev_priv))
-			dev_priv->pch_id = INTEL_PCH_LPT_LP_DEVICE_ID_TYPE;
-		else
-			dev_priv->pch_id = INTEL_PCH_LPT_DEVICE_ID_TYPE;
-		DRM_DEBUG_KMS("Assuming LynxPoint PCH\n");
-	} else if (IS_SKYLAKE(dev_priv) || IS_KABYLAKE(dev_priv)) {
-		ret = PCH_SPT;
-		DRM_DEBUG_KMS("Assuming SunrisePoint PCH\n");
-	} else if (IS_COFFEELAKE(dev_priv) || IS_CANNONLAKE(dev_priv)) {
-		ret = PCH_CNP;
-		DRM_DEBUG_KMS("Assuming CannonPoint PCH\n");
-	}
-
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void intel_detect_pch(struct drm_i915_private *dev_priv)
 {
 	struct pci_dev *pch = NULL;
 
-<<<<<<< HEAD
-=======
-	/* In all current cases, num_pipes is equivalent to the PCH_NOP setting
-	 * (which really amounts to a PCH but no South Display).
-	 */
-	if (INTEL_INFO(dev_priv)->num_pipes == 0) {
-		dev_priv->pch_type = PCH_NOP;
-		return;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * The reason to probe ISA bridge instead of Dev31:Fun0 is to
 	 * make graphics device passthrough work easy for VMM, that only
@@ -338,7 +255,6 @@ static void intel_detect_pch(struct drm_i915_private *dev_priv)
 	 * of only checking the first one.
 	 */
 	while ((pch = pci_get_class(PCI_CLASS_BRIDGE_ISA << 8, pch))) {
-<<<<<<< HEAD
 		unsigned short id;
 		enum intel_pch pch_type;
 
@@ -377,111 +293,14 @@ static void intel_detect_pch(struct drm_i915_private *dev_priv)
 		dev_priv->pch_id = 0;
 	}
 
-=======
-		if (pch->vendor == PCI_VENDOR_ID_INTEL) {
-			unsigned short id = pch->device & INTEL_PCH_DEVICE_ID_MASK;
-
-			dev_priv->pch_id = id;
-
-			if (id == INTEL_PCH_IBX_DEVICE_ID_TYPE) {
-				dev_priv->pch_type = PCH_IBX;
-				DRM_DEBUG_KMS("Found Ibex Peak PCH\n");
-				WARN_ON(!IS_GEN5(dev_priv));
-			} else if (id == INTEL_PCH_CPT_DEVICE_ID_TYPE) {
-				dev_priv->pch_type = PCH_CPT;
-				DRM_DEBUG_KMS("Found CougarPoint PCH\n");
-				WARN_ON(!IS_GEN6(dev_priv) &&
-					!IS_IVYBRIDGE(dev_priv));
-			} else if (id == INTEL_PCH_PPT_DEVICE_ID_TYPE) {
-				/* PantherPoint is CPT compatible */
-				dev_priv->pch_type = PCH_CPT;
-				DRM_DEBUG_KMS("Found PantherPoint PCH\n");
-				WARN_ON(!IS_GEN6(dev_priv) &&
-					!IS_IVYBRIDGE(dev_priv));
-			} else if (id == INTEL_PCH_LPT_DEVICE_ID_TYPE) {
-				dev_priv->pch_type = PCH_LPT;
-				DRM_DEBUG_KMS("Found LynxPoint PCH\n");
-				WARN_ON(!IS_HASWELL(dev_priv) &&
-					!IS_BROADWELL(dev_priv));
-				WARN_ON(IS_HSW_ULT(dev_priv) ||
-					IS_BDW_ULT(dev_priv));
-			} else if (id == INTEL_PCH_LPT_LP_DEVICE_ID_TYPE) {
-				dev_priv->pch_type = PCH_LPT;
-				DRM_DEBUG_KMS("Found LynxPoint LP PCH\n");
-				WARN_ON(!IS_HASWELL(dev_priv) &&
-					!IS_BROADWELL(dev_priv));
-				WARN_ON(!IS_HSW_ULT(dev_priv) &&
-					!IS_BDW_ULT(dev_priv));
-			} else if (id == INTEL_PCH_WPT_DEVICE_ID_TYPE) {
-				/* WildcatPoint is LPT compatible */
-				dev_priv->pch_type = PCH_LPT;
-				DRM_DEBUG_KMS("Found WildcatPoint PCH\n");
-				WARN_ON(!IS_HASWELL(dev_priv) &&
-					!IS_BROADWELL(dev_priv));
-				WARN_ON(IS_HSW_ULT(dev_priv) ||
-					IS_BDW_ULT(dev_priv));
-			} else if (id == INTEL_PCH_WPT_LP_DEVICE_ID_TYPE) {
-				/* WildcatPoint is LPT compatible */
-				dev_priv->pch_type = PCH_LPT;
-				DRM_DEBUG_KMS("Found WildcatPoint LP PCH\n");
-				WARN_ON(!IS_HASWELL(dev_priv) &&
-					!IS_BROADWELL(dev_priv));
-				WARN_ON(!IS_HSW_ULT(dev_priv) &&
-					!IS_BDW_ULT(dev_priv));
-			} else if (id == INTEL_PCH_SPT_DEVICE_ID_TYPE) {
-				dev_priv->pch_type = PCH_SPT;
-				DRM_DEBUG_KMS("Found SunrisePoint PCH\n");
-				WARN_ON(!IS_SKYLAKE(dev_priv) &&
-					!IS_KABYLAKE(dev_priv));
-			} else if (id == INTEL_PCH_SPT_LP_DEVICE_ID_TYPE) {
-				dev_priv->pch_type = PCH_SPT;
-				DRM_DEBUG_KMS("Found SunrisePoint LP PCH\n");
-				WARN_ON(!IS_SKYLAKE(dev_priv) &&
-					!IS_KABYLAKE(dev_priv));
-			} else if (id == INTEL_PCH_KBP_DEVICE_ID_TYPE) {
-				dev_priv->pch_type = PCH_KBP;
-				DRM_DEBUG_KMS("Found Kaby Lake PCH (KBP)\n");
-				WARN_ON(!IS_SKYLAKE(dev_priv) &&
-					!IS_KABYLAKE(dev_priv));
-			} else if (id == INTEL_PCH_CNP_DEVICE_ID_TYPE) {
-				dev_priv->pch_type = PCH_CNP;
-				DRM_DEBUG_KMS("Found Cannon Lake PCH (CNP)\n");
-				WARN_ON(!IS_CANNONLAKE(dev_priv) &&
-					!IS_COFFEELAKE(dev_priv));
-			} else if (id == INTEL_PCH_CNP_LP_DEVICE_ID_TYPE) {
-				dev_priv->pch_type = PCH_CNP;
-				DRM_DEBUG_KMS("Found Cannon Lake LP PCH (CNP-LP)\n");
-				WARN_ON(!IS_CANNONLAKE(dev_priv) &&
-					!IS_COFFEELAKE(dev_priv));
-			} else if (id == INTEL_PCH_P2X_DEVICE_ID_TYPE ||
-				   id == INTEL_PCH_P3X_DEVICE_ID_TYPE ||
-				   (id == INTEL_PCH_QEMU_DEVICE_ID_TYPE &&
-				    pch->subsystem_vendor ==
-					    PCI_SUBVENDOR_ID_REDHAT_QUMRANET &&
-				    pch->subsystem_device ==
-					    PCI_SUBDEVICE_ID_QEMU)) {
-				dev_priv->pch_type =
-					intel_virt_detect_pch(dev_priv);
-			} else
-				continue;
-
-			break;
-		}
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!pch)
 		DRM_DEBUG_KMS("No PCH found.\n");
 
 	pci_dev_put(pch);
 }
 
-<<<<<<< HEAD
 static int i915_getparam_ioctl(struct drm_device *dev, void *data,
 			       struct drm_file *file_priv)
-=======
-static int i915_getparam(struct drm_device *dev, void *data,
-			 struct drm_file *file_priv)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_i915_private *dev_priv = to_i915(dev);
 	struct pci_dev *pdev = dev_priv->drm.pdev;
@@ -529,17 +348,10 @@ static int i915_getparam(struct drm_device *dev, void *data,
 		value = USES_PPGTT(dev_priv);
 		break;
 	case I915_PARAM_HAS_SEMAPHORES:
-<<<<<<< HEAD
 		value = HAS_LEGACY_SEMAPHORES(dev_priv);
 		break;
 	case I915_PARAM_HAS_SECURE_BATCHES:
 		value = capable(CAP_SYS_ADMIN);
-=======
-		value = i915.semaphores;
-		break;
-	case I915_PARAM_HAS_SECURE_BATCHES:
-		value = HAS_SECURE_BATCHES(dev_priv) && capable(CAP_SYS_ADMIN);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case I915_PARAM_CMD_PARSER_VERSION:
 		value = i915_cmd_parser_get_version(dev_priv);
@@ -555,12 +367,8 @@ static int i915_getparam(struct drm_device *dev, void *data,
 			return -ENODEV;
 		break;
 	case I915_PARAM_HAS_GPU_RESET:
-<<<<<<< HEAD
 		value = i915_modparams.enable_hangcheck &&
 			intel_has_gpu_reset(dev_priv);
-=======
-		value = i915.enable_hangcheck && intel_has_gpu_reset(dev_priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (value && intel_has_reset_engine(dev_priv))
 			value = 2;
 		break;
@@ -574,15 +382,9 @@ static int i915_getparam(struct drm_device *dev, void *data,
 		value = INTEL_INFO(dev_priv)->sseu.min_eu_in_pool;
 		break;
 	case I915_PARAM_HUC_STATUS:
-<<<<<<< HEAD
 		value = intel_huc_check_status(&dev_priv->huc);
 		if (value < 0)
 			return value;
-=======
-		intel_runtime_pm_get(dev_priv);
-		value = I915_READ(HUC_STATUS2) & HUC_FW_VERIFIED;
-		intel_runtime_pm_put(dev_priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case I915_PARAM_MMAP_GTT_VERSION:
 		/* Though we've started our numbering from 1, and so class all
@@ -592,15 +394,9 @@ static int i915_getparam(struct drm_device *dev, void *data,
 		value = i915_gem_mmap_gtt_version();
 		break;
 	case I915_PARAM_HAS_SCHEDULER:
-<<<<<<< HEAD
 		value = dev_priv->caps.scheduler;
 		break;
 
-=======
-		value = dev_priv->engine[RCS] &&
-			dev_priv->engine[RCS]->schedule;
-		break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case I915_PARAM_MMAP_VERSION:
 		/* Remember to bump this if the version changes! */
 	case I915_PARAM_HAS_GEM:
@@ -629,19 +425,15 @@ static int i915_getparam(struct drm_device *dev, void *data,
 		 */
 		value = 1;
 		break;
-<<<<<<< HEAD
 	case I915_PARAM_HAS_CONTEXT_ISOLATION:
 		value = intel_engines_has_context_isolation(dev_priv);
 		break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case I915_PARAM_SLICE_MASK:
 		value = INTEL_INFO(dev_priv)->sseu.slice_mask;
 		if (!value)
 			return -ENODEV;
 		break;
 	case I915_PARAM_SUBSLICE_MASK:
-<<<<<<< HEAD
 		value = INTEL_INFO(dev_priv)->sseu.subslice_mask[0];
 		if (!value)
 			return -ENODEV;
@@ -649,12 +441,6 @@ static int i915_getparam(struct drm_device *dev, void *data,
 	case I915_PARAM_CS_TIMESTAMP_FREQUENCY:
 		value = 1000 * INTEL_INFO(dev_priv)->cs_timestamp_frequency_khz;
 		break;
-=======
-		value = INTEL_INFO(dev_priv)->sseu.subslice_mask;
-		if (!value)
-			return -ENODEV;
-		break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		DRM_DEBUG("Unknown parameter %d\n", param->param);
 		return -EINVAL;
@@ -668,14 +454,10 @@ static int i915_getparam(struct drm_device *dev, void *data,
 
 static int i915_get_bridge_dev(struct drm_i915_private *dev_priv)
 {
-<<<<<<< HEAD
 	int domain = pci_domain_nr(dev_priv->drm.pdev->bus);
 
 	dev_priv->bridge_dev =
 		pci_get_domain_bus_and_slot(domain, 0, PCI_DEVFN(0, 0));
-=======
-	dev_priv->bridge_dev = pci_get_bus_and_slot(0, PCI_DEVFN(0, 0));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!dev_priv->bridge_dev) {
 		DRM_ERROR("bridge device not found\n");
 		return -1;
@@ -851,26 +633,6 @@ static const struct vga_switcheroo_client_ops i915_switcheroo_ops = {
 	.can_switch = i915_switcheroo_can_switch,
 };
 
-<<<<<<< HEAD
-=======
-static void i915_gem_fini(struct drm_i915_private *dev_priv)
-{
-	/* Flush any outstanding unpin_work. */
-	i915_gem_drain_workqueue(dev_priv);
-
-	mutex_lock(&dev_priv->drm.struct_mutex);
-	intel_uc_fini_hw(dev_priv);
-	i915_gem_cleanup_engines(dev_priv);
-	i915_gem_contexts_fini(dev_priv);
-	i915_gem_cleanup_userptr(dev_priv);
-	mutex_unlock(&dev_priv->drm.struct_mutex);
-
-	i915_gem_drain_freed_objects(dev_priv);
-
-	WARN_ON(!list_empty(&dev_priv->contexts.list));
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int i915_load_modeset_init(struct drm_device *dev)
 {
 	struct drm_i915_private *dev_priv = to_i915(dev);
@@ -918,21 +680,11 @@ static int i915_load_modeset_init(struct drm_device *dev)
 	if (ret)
 		goto cleanup_irq;
 
-<<<<<<< HEAD
 	ret = i915_gem_init(dev_priv);
 	if (ret)
 		goto cleanup_modeset;
 
 	intel_setup_overlay(dev_priv);
-=======
-	intel_uc_init_fw(dev_priv);
-
-	ret = i915_gem_init(dev_priv);
-	if (ret)
-		goto cleanup_uc;
-
-	intel_modeset_gem_init(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (INTEL_INFO(dev_priv)->num_pipes == 0)
 		return 0;
@@ -944,24 +696,14 @@ static int i915_load_modeset_init(struct drm_device *dev)
 	/* Only enable hotplug handling once the fbdev is fully set up. */
 	intel_hpd_init(dev_priv);
 
-<<<<<<< HEAD
-=======
-	drm_kms_helper_poll_init(dev);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 cleanup_gem:
 	if (i915_gem_suspend(dev_priv))
 		DRM_ERROR("failed to idle hardware; continuing to unload!\n");
 	i915_gem_fini(dev_priv);
-<<<<<<< HEAD
 cleanup_modeset:
 	intel_modeset_cleanup(dev);
-=======
-cleanup_uc:
-	intel_uc_fini_fw(dev_priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 cleanup_irq:
 	drm_irq_uninstall(dev);
 	intel_teardown_gmbus(dev_priv);
@@ -987,11 +729,7 @@ static int i915_kick_out_firmware_fb(struct drm_i915_private *dev_priv)
 	if (!ap)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	ap->ranges[0].base = ggtt->gmadr.start;
-=======
-	ap->ranges[0].base = ggtt->mappable_base;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ap->ranges[0].size = ggtt->mappable_end;
 
 	primary =
@@ -1057,11 +795,7 @@ static int i915_workqueues_init(struct drm_i915_private *dev_priv)
 	/*
 	 * The i915 workqueue is primarily used for batched retirement of
 	 * requests (and thus managing bo) once the task has been completed
-<<<<<<< HEAD
 	 * by the GPU. i915_retire_requests() is called directly when we
-=======
-	 * by the GPU. i915_gem_retire_requests() is called directly when we
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * need high-priority retirement, such as waiting for an explicit
 	 * bo.
 	 *
@@ -1109,14 +843,11 @@ static void i915_workqueues_cleanup(struct drm_i915_private *dev_priv)
  * We don't keep the workarounds for pre-production hardware, so we expect our
  * driver to fail on these machines in one way or another. A little warning on
  * dmesg may help both the user and the bug triagers.
-<<<<<<< HEAD
  *
  * Our policy for removing pre-production workarounds is to keep the
  * current gen workarounds as a guide to the bring-up of the next gen
  * (workarounds have a habit of persisting!). Anything older than that
  * should be removed along with the complications they introduce.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static void intel_detect_preproduction_hw(struct drm_i915_private *dev_priv)
 {
@@ -1136,10 +867,7 @@ static void intel_detect_preproduction_hw(struct drm_i915_private *dev_priv)
 /**
  * i915_driver_init_early - setup state not requiring device access
  * @dev_priv: device private
-<<<<<<< HEAD
  * @ent: the matching pci_device_id
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Initialize everything that is a "SW-only" state, that is state not
  * requiring accessing the device or exposing the driver via kernel internal
@@ -1163,40 +891,25 @@ static int i915_driver_init_early(struct drm_i915_private *dev_priv,
 	memcpy(device_info, match_info, sizeof(*device_info));
 	device_info->device_id = dev_priv->drm.pdev->device;
 
-<<<<<<< HEAD
 	BUILD_BUG_ON(INTEL_MAX_PLATFORMS >
 		     sizeof(device_info->platform_mask) * BITS_PER_BYTE);
 	BUG_ON(device_info->gen > sizeof(device_info->gen_mask) * BITS_PER_BYTE);
-=======
-	BUG_ON(device_info->gen > sizeof(device_info->gen_mask) * BITS_PER_BYTE);
-	device_info->gen_mask = BIT(device_info->gen - 1);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_init(&dev_priv->irq_lock);
 	spin_lock_init(&dev_priv->gpu_error.lock);
 	mutex_init(&dev_priv->backlight_lock);
 	spin_lock_init(&dev_priv->uncore.lock);
 
-<<<<<<< HEAD
-=======
-	spin_lock_init(&dev_priv->mm.object_stat_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_init(&dev_priv->sb_lock);
 	mutex_init(&dev_priv->av_mutex);
 	mutex_init(&dev_priv->wm.wm_mutex);
 	mutex_init(&dev_priv->pps_mutex);
 
-<<<<<<< HEAD
-=======
-	intel_uc_init_early(dev_priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i915_memcpy_init_early(dev_priv);
 
 	ret = i915_workqueues_init(dev_priv);
 	if (ret < 0)
 		goto err_engines;
 
-<<<<<<< HEAD
 	ret = i915_gem_init_early(dev_priv);
 	if (ret < 0)
 		goto err_workqueues;
@@ -1206,11 +919,6 @@ static int i915_driver_init_early(struct drm_i915_private *dev_priv,
 
 	intel_wopcm_init_early(&dev_priv->wopcm);
 	intel_uc_init_early(dev_priv);
-=======
-	/* This must be called before any calls to HAS_PCH_* */
-	intel_detect_pch(dev_priv);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	intel_pm_setup(dev_priv);
 	intel_init_dpio(dev_priv);
 	intel_power_domains_init(dev_priv);
@@ -1219,7 +927,6 @@ static int i915_driver_init_early(struct drm_i915_private *dev_priv,
 	intel_init_display_hooks(dev_priv);
 	intel_init_clock_gating_hooks(dev_priv);
 	intel_init_audio_hooks(dev_priv);
-<<<<<<< HEAD
 	intel_display_crc_init(dev_priv);
 
 	intel_detect_preproduction_hw(dev_priv);
@@ -1227,24 +934,6 @@ static int i915_driver_init_early(struct drm_i915_private *dev_priv,
 	return 0;
 
 err_workqueues:
-=======
-	ret = i915_gem_load_init(dev_priv);
-	if (ret < 0)
-		goto err_irq;
-
-	intel_display_crc_init(dev_priv);
-
-	intel_device_info_dump(dev_priv);
-
-	intel_detect_preproduction_hw(dev_priv);
-
-	i915_perf_init(dev_priv);
-
-	return 0;
-
-err_irq:
-	intel_irq_fini(dev_priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i915_workqueues_cleanup(dev_priv);
 err_engines:
 	i915_engines_cleanup(dev_priv);
@@ -1257,15 +946,9 @@ err_engines:
  */
 static void i915_driver_cleanup_early(struct drm_i915_private *dev_priv)
 {
-<<<<<<< HEAD
 	intel_irq_fini(dev_priv);
 	intel_uc_cleanup_early(dev_priv);
 	i915_gem_cleanup_early(dev_priv);
-=======
-	i915_perf_fini(dev_priv);
-	i915_gem_load_cleanup(dev_priv);
-	intel_irq_fini(dev_priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i915_workqueues_cleanup(dev_priv);
 	i915_engines_cleanup(dev_priv);
 }
@@ -1335,15 +1018,12 @@ static int i915_driver_init_mmio(struct drm_i915_private *dev_priv)
 
 	intel_uncore_init(dev_priv);
 
-<<<<<<< HEAD
 	intel_device_info_init_mmio(dev_priv);
 
 	intel_uncore_prune(dev_priv);
 
 	intel_uc_init_mmio(dev_priv);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = intel_engines_init_mmio(dev_priv);
 	if (ret)
 		goto err_uncore;
@@ -1373,34 +1053,16 @@ static void i915_driver_cleanup_mmio(struct drm_i915_private *dev_priv)
 
 static void intel_sanitize_options(struct drm_i915_private *dev_priv)
 {
-<<<<<<< HEAD
-=======
-	i915.enable_execlists =
-		intel_sanitize_enable_execlists(dev_priv,
-						i915.enable_execlists);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * i915.enable_ppgtt is read-only, so do an early pass to validate the
 	 * user's requested state against the hardware/driver capabilities.  We
 	 * do this now so that we can print out any log messages once rather
 	 * than every time we check intel_enable_ppgtt().
 	 */
-<<<<<<< HEAD
 	i915_modparams.enable_ppgtt =
 		intel_sanitize_enable_ppgtt(dev_priv,
 					    i915_modparams.enable_ppgtt);
 	DRM_DEBUG_DRIVER("ppgtt mode: %i\n", i915_modparams.enable_ppgtt);
-=======
-	i915.enable_ppgtt =
-		intel_sanitize_enable_ppgtt(dev_priv, i915.enable_ppgtt);
-	DRM_DEBUG_DRIVER("ppgtt mode: %i\n", i915.enable_ppgtt);
-
-	i915.semaphores = intel_sanitize_semaphores(dev_priv, i915.semaphores);
-	DRM_DEBUG_DRIVER("use GPU semaphores? %s\n", yesno(i915.semaphores));
-
-	intel_uc_sanitize_options(dev_priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	intel_gvt_sanitize_options(dev_priv);
 }
@@ -1420,7 +1082,6 @@ static int i915_driver_init_hw(struct drm_i915_private *dev_priv)
 	if (i915_inject_load_failure())
 		return -ENODEV;
 
-<<<<<<< HEAD
 	intel_device_info_runtime_init(mkwrite_device_info(dev_priv));
 
 	intel_sanitize_options(dev_priv);
@@ -1439,74 +1100,39 @@ static int i915_driver_init_hw(struct drm_i915_private *dev_priv)
 	if (ret) {
 		DRM_ERROR("failed to remove conflicting framebuffer drivers\n");
 		goto err_ggtt;
-=======
-	intel_device_info_runtime_init(dev_priv);
-
-	intel_sanitize_options(dev_priv);
-
-	ret = i915_ggtt_probe_hw(dev_priv);
-	if (ret)
-		return ret;
-
-	/* WARNING: Apparently we must kick fbdev drivers before vgacon,
-	 * otherwise the vga fbdev driver falls over. */
-	ret = i915_kick_out_firmware_fb(dev_priv);
-	if (ret) {
-		DRM_ERROR("failed to remove conflicting framebuffer drivers\n");
-		goto out_ggtt;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ret = i915_kick_out_vgacon(dev_priv);
 	if (ret) {
 		DRM_ERROR("failed to remove conflicting VGA console\n");
-<<<<<<< HEAD
 		goto err_ggtt;
-=======
-		goto out_ggtt;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ret = i915_ggtt_init_hw(dev_priv);
 	if (ret)
-<<<<<<< HEAD
 		goto err_ggtt;
-=======
-		return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = i915_ggtt_enable_hw(dev_priv);
 	if (ret) {
 		DRM_ERROR("failed to enable GGTT\n");
-<<<<<<< HEAD
 		goto err_ggtt;
-=======
-		goto out_ggtt;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	pci_set_master(pdev);
 
-<<<<<<< HEAD
 	/*
 	 * We don't have a max segment size, so set it to the max so sg's
 	 * debugging layer doesn't complain
 	 */
 	dma_set_max_seg_size(&pdev->dev, UINT_MAX);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* overlay on gen2 is broken and can't address above 1G */
 	if (IS_GEN2(dev_priv)) {
 		ret = dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(30));
 		if (ret) {
 			DRM_ERROR("failed to set DMA mask\n");
 
-<<<<<<< HEAD
 			goto err_ggtt;
-=======
-			goto out_ggtt;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -1524,11 +1150,7 @@ static int i915_driver_init_hw(struct drm_i915_private *dev_priv)
 		if (ret) {
 			DRM_ERROR("failed to set DMA mask\n");
 
-<<<<<<< HEAD
 			goto err_ggtt;
-=======
-			goto out_ggtt;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -1537,11 +1159,6 @@ static int i915_driver_init_hw(struct drm_i915_private *dev_priv)
 
 	intel_uncore_sanitize(dev_priv);
 
-<<<<<<< HEAD
-=======
-	intel_opregion_setup(dev_priv);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i915_gem_load_init_fences(dev_priv);
 
 	/* On the 945G/GM, the chipset reports the MSI capability on the
@@ -1556,15 +1173,12 @@ static int i915_driver_init_hw(struct drm_i915_private *dev_priv)
 	 * get lost on g4x as well, and interrupt delivery seems to stay
 	 * properly dead afterwards. So we'll just disable them for all
 	 * pre-gen5 chipsets.
-<<<<<<< HEAD
 	 *
 	 * dp aux and gmbus irq on gen4 seems to be able to generate legacy
 	 * interrupts even when in MSI mode. This results in spurious
 	 * interrupt warnings if the legacy irq no. is shared with another
 	 * device. The kernel then disables that interrupt source and so
 	 * prevents the other device from working properly.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	if (INTEL_GEN(dev_priv) >= 5) {
 		if (pci_enable_msi(pdev) < 0)
@@ -1573,7 +1187,6 @@ static int i915_driver_init_hw(struct drm_i915_private *dev_priv)
 
 	ret = intel_gvt_init(dev_priv);
 	if (ret)
-<<<<<<< HEAD
 		goto err_msi;
 
 	intel_opregion_setup(dev_priv);
@@ -1588,15 +1201,6 @@ err_ggtt:
 	i915_ggtt_cleanup_hw(dev_priv);
 err_perf:
 	i915_perf_fini(dev_priv);
-=======
-		goto out_ggtt;
-
-	return 0;
-
-out_ggtt:
-	i915_ggtt_cleanup_hw(dev_priv);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -1608,11 +1212,8 @@ static void i915_driver_cleanup_hw(struct drm_i915_private *dev_priv)
 {
 	struct pci_dev *pdev = dev_priv->drm.pdev;
 
-<<<<<<< HEAD
 	i915_perf_fini(dev_priv);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (pdev->msi_enabled)
 		pci_disable_msi(pdev);
 
@@ -1631,12 +1232,8 @@ static void i915_driver_register(struct drm_i915_private *dev_priv)
 {
 	struct drm_device *dev = &dev_priv->drm;
 
-<<<<<<< HEAD
 	i915_gem_shrinker_register(dev_priv);
 	i915_pmu_register(dev_priv);
-=======
-	i915_gem_shrinker_init(dev_priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Notify a valid surface after modesetting,
@@ -1648,10 +1245,6 @@ static void i915_driver_register(struct drm_i915_private *dev_priv)
 	/* Reveal our presence to userspace */
 	if (drm_dev_register(dev, 0) == 0) {
 		i915_debugfs_register(dev_priv);
-<<<<<<< HEAD
-=======
-		i915_guc_log_register(dev_priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		i915_setup_sysfs(dev_priv);
 
 		/* Depends on sysfs having been initialized */
@@ -1678,7 +1271,6 @@ static void i915_driver_register(struct drm_i915_private *dev_priv)
 	 * cannot run before the connectors are registered.
 	 */
 	intel_fbdev_initial_config_async(dev);
-<<<<<<< HEAD
 
 	/*
 	 * We need to coordinate the hotplugs with the asynchronous fbdev
@@ -1686,8 +1278,6 @@ static void i915_driver_register(struct drm_i915_private *dev_priv)
 	 */
 	if (INTEL_INFO(dev_priv)->num_pipes)
 		drm_kms_helper_poll_init(dev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -1699,7 +1289,6 @@ static void i915_driver_unregister(struct drm_i915_private *dev_priv)
 	intel_fbdev_unregister(dev_priv);
 	intel_audio_deinit(dev_priv);
 
-<<<<<<< HEAD
 	/*
 	 * After flushing the fbdev (incl. a late async config which will
 	 * have delayed queuing of a hotplug event), then flush the hotplug
@@ -1707,14 +1296,11 @@ static void i915_driver_unregister(struct drm_i915_private *dev_priv)
 	 */
 	drm_kms_helper_poll_fini(&dev_priv->drm);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	intel_gpu_ips_teardown();
 	acpi_video_unregister();
 	intel_opregion_unregister(dev_priv);
 
 	i915_perf_unregister(dev_priv);
-<<<<<<< HEAD
 	i915_pmu_unregister(dev_priv);
 
 	i915_teardown_sysfs(dev_priv);
@@ -1736,14 +1322,6 @@ static void i915_welcome_messages(struct drm_i915_private *dev_priv)
 		DRM_INFO("DRM_I915_DEBUG enabled\n");
 	if (IS_ENABLED(CONFIG_DRM_I915_DEBUG_GEM))
 		DRM_INFO("DRM_I915_DEBUG_GEM enabled\n");
-=======
-
-	i915_teardown_sysfs(dev_priv);
-	i915_guc_log_unregister(dev_priv);
-	drm_dev_unregister(&dev_priv->drm);
-
-	i915_gem_shrinker_cleanup(dev_priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -1765,11 +1343,7 @@ int i915_driver_load(struct pci_dev *pdev, const struct pci_device_id *ent)
 	int ret;
 
 	/* Enable nuclear pageflip on ILK+ */
-<<<<<<< HEAD
 	if (!i915_modparams.nuclear_pageflip && match_info->gen < 5)
-=======
-	if (!i915.nuclear_pageflip && match_info->gen < 5)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		driver.driver_features &= ~DRIVER_ATOMIC;
 
 	ret = -ENOMEM;
@@ -1797,11 +1371,7 @@ int i915_driver_load(struct pci_dev *pdev, const struct pci_device_id *ent)
 	 * becaue the HDA driver may require us to enable the audio power
 	 * domain during system suspend.
 	 */
-<<<<<<< HEAD
 	dev_pm_set_driver_flags(&pdev->dev, DPM_FLAG_NEVER_SKIP);
-=======
-	pdev->dev_flags |= PCI_DEV_FLAGS_NEEDS_RESUME;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = i915_driver_init_early(dev_priv, ent);
 	if (ret < 0)
@@ -1837,24 +1407,12 @@ int i915_driver_load(struct pci_dev *pdev, const struct pci_device_id *ent)
 
 	intel_runtime_pm_enable(dev_priv);
 
-<<<<<<< HEAD
 	intel_init_ipc(dev_priv);
 
 	intel_runtime_pm_put(dev_priv);
 
 	i915_welcome_messages(dev_priv);
 
-=======
-	dev_priv->ipc_enabled = false;
-
-	if (IS_ENABLED(CONFIG_DRM_I915_DEBUG))
-		DRM_INFO("DRM_I915_DEBUG enabled\n");
-	if (IS_ENABLED(CONFIG_DRM_I915_DEBUG_GEM))
-		DRM_INFO("DRM_I915_DEBUG_GEM enabled\n");
-
-	intel_runtime_pm_put(dev_priv);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 out_cleanup_hw:
@@ -1871,10 +1429,7 @@ out_fini:
 	drm_dev_fini(&dev_priv->drm);
 out_free:
 	kfree(dev_priv);
-<<<<<<< HEAD
 	pci_set_drvdata(pdev, NULL);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -1896,23 +1451,7 @@ void i915_driver_unload(struct drm_device *dev)
 
 	intel_modeset_cleanup(dev);
 
-<<<<<<< HEAD
 	intel_bios_cleanup(dev_priv);
-=======
-	/*
-	 * free the memory space allocated for the child device
-	 * config parsed from VBT
-	 */
-	if (dev_priv->vbt.child_dev && dev_priv->vbt.child_dev_num) {
-		kfree(dev_priv->vbt.child_dev);
-		dev_priv->vbt.child_dev = NULL;
-		dev_priv->vbt.child_dev_num = 0;
-	}
-	kfree(dev_priv->vbt.sdvo_lvds_vbt_mode);
-	dev_priv->vbt.sdvo_lvds_vbt_mode = NULL;
-	kfree(dev_priv->vbt.lfp_lvds_vbt_mode);
-	dev_priv->vbt.lfp_lvds_vbt_mode = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vga_switcheroo_unregister_client(pdev);
 	vga_client_register(pdev, NULL, NULL, NULL);
@@ -1924,10 +1463,6 @@ void i915_driver_unload(struct drm_device *dev)
 	i915_reset_error_state(dev_priv);
 
 	i915_gem_fini(dev_priv);
-<<<<<<< HEAD
-=======
-	intel_uc_fini_fw(dev_priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	intel_fbc_cleanup_cfb(dev_priv);
 
 	intel_power_domains_fini(dev_priv);
@@ -2015,7 +1550,6 @@ static bool suspend_to_idle(struct drm_i915_private *dev_priv)
 	return false;
 }
 
-<<<<<<< HEAD
 static int i915_drm_prepare(struct drm_device *dev)
 {
 	struct drm_i915_private *i915 = to_i915(dev);
@@ -2035,17 +1569,11 @@ static int i915_drm_prepare(struct drm_device *dev)
 	return err;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int i915_drm_suspend(struct drm_device *dev)
 {
 	struct drm_i915_private *dev_priv = to_i915(dev);
 	struct pci_dev *pdev = dev_priv->drm.pdev;
 	pci_power_t opregion_target_state;
-<<<<<<< HEAD
-=======
-	int error;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	disable_rpm_wakeref_asserts(dev_priv);
 
@@ -2057,22 +1585,9 @@ static int i915_drm_suspend(struct drm_device *dev)
 
 	pci_save_state(pdev);
 
-<<<<<<< HEAD
 	intel_display_suspend(dev);
 
 	intel_dp_mst_suspend(dev_priv);
-=======
-	error = i915_gem_suspend(dev_priv);
-	if (error) {
-		dev_err(&pdev->dev,
-			"GEM idle failed, resume might fail\n");
-		goto out;
-	}
-
-	intel_display_suspend(dev);
-
-	intel_dp_mst_suspend(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	intel_runtime_pm_disable_interrupts(dev_priv);
 	intel_hpd_cancel_work(dev_priv);
@@ -2088,10 +1603,6 @@ static int i915_drm_suspend(struct drm_device *dev)
 	opregion_target_state = suspend_to_idle(dev_priv) ? PCI_D1 : PCI_D3cold;
 	intel_opregion_notify_adapter(dev_priv, opregion_target_state);
 
-<<<<<<< HEAD
-=======
-	intel_uncore_suspend(dev_priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	intel_opregion_unregister(dev_priv);
 
 	intel_fbdev_set_suspend(dev, FBINFO_STATE_SUSPENDED, true);
@@ -2100,43 +1611,24 @@ static int i915_drm_suspend(struct drm_device *dev)
 
 	intel_csr_ucode_suspend(dev_priv);
 
-<<<<<<< HEAD
 	enable_rpm_wakeref_asserts(dev_priv);
 
 	return 0;
-=======
-out:
-	enable_rpm_wakeref_asserts(dev_priv);
-
-	return error;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int i915_drm_suspend_late(struct drm_device *dev, bool hibernation)
 {
 	struct drm_i915_private *dev_priv = to_i915(dev);
 	struct pci_dev *pdev = dev_priv->drm.pdev;
-<<<<<<< HEAD
-=======
-	bool fw_csr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	disable_rpm_wakeref_asserts(dev_priv);
 
-<<<<<<< HEAD
 	i915_gem_suspend_late(dev_priv);
 
 	intel_display_set_init_power(dev_priv, false);
 	intel_uncore_suspend(dev_priv);
 
-=======
-	intel_display_set_init_power(dev_priv, false);
-	i915_rc6_ctx_wa_suspend(dev_priv);
-
-	fw_csr = !IS_GEN9_LP(dev_priv) &&
-		suspend_to_idle(dev_priv) && dev_priv->csr.dmc_payload;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * In case of firmware assisted context save/restore don't manually
 	 * deinit the power domains. This also means the CSR/DMC firmware will
@@ -2144,16 +1636,11 @@ static int i915_drm_suspend_late(struct drm_device *dev, bool hibernation)
 	 * also enable deeper system power states that would be blocked if the
 	 * firmware was inactive.
 	 */
-<<<<<<< HEAD
 	if (IS_GEN9_LP(dev_priv) || hibernation || !suspend_to_idle(dev_priv) ||
 	    dev_priv->csr.dmc_payload == NULL) {
 		intel_power_domains_suspend(dev_priv);
 		dev_priv->power_domains_suspended = true;
 	}
-=======
-	if (!fw_csr)
-		intel_power_domains_suspend(dev_priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = 0;
 	if (IS_GEN9_LP(dev_priv))
@@ -2165,15 +1652,10 @@ static int i915_drm_suspend_late(struct drm_device *dev, bool hibernation)
 
 	if (ret) {
 		DRM_ERROR("Suspend complete failed: %d\n", ret);
-<<<<<<< HEAD
 		if (dev_priv->power_domains_suspended) {
 			intel_power_domains_init_hw(dev_priv, true);
 			dev_priv->power_domains_suspended = false;
 		}
-=======
-		if (!fw_csr)
-			intel_power_domains_init_hw(dev_priv, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		goto out;
 	}
@@ -2194,11 +1676,6 @@ static int i915_drm_suspend_late(struct drm_device *dev, bool hibernation)
 	if (!(hibernation && INTEL_GEN(dev_priv) < 6))
 		pci_set_power_state(pdev, PCI_D3hot);
 
-<<<<<<< HEAD
-=======
-	dev_priv->suspended_to_idle = suspend_to_idle(dev_priv);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	enable_rpm_wakeref_asserts(dev_priv);
 
@@ -2237,22 +1714,14 @@ static int i915_drm_resume(struct drm_device *dev)
 	disable_rpm_wakeref_asserts(dev_priv);
 	intel_sanitize_gt_powersave(dev_priv);
 
-<<<<<<< HEAD
 	i915_gem_sanitize(dev_priv);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = i915_ggtt_enable_hw(dev_priv);
 	if (ret)
 		DRM_ERROR("failed to re-enable GGTT\n");
 
 	intel_csr_ucode_resume(dev_priv);
 
-<<<<<<< HEAD
-=======
-	i915_gem_resume(dev_priv);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i915_restore_state(dev_priv);
 	intel_pps_unlock_regs_wa(dev_priv);
 	intel_opregion_setup(dev_priv);
@@ -2273,18 +1742,7 @@ static int i915_drm_resume(struct drm_device *dev)
 
 	drm_mode_config_reset(dev);
 
-<<<<<<< HEAD
 	i915_gem_resume(dev_priv);
-=======
-	mutex_lock(&dev->struct_mutex);
-	if (i915_gem_init_hw(dev_priv)) {
-		DRM_ERROR("failed to re-initialize GPU, declaring wedged!\n");
-		i915_gem_set_wedged(dev_priv);
-	}
-	mutex_unlock(&dev->struct_mutex);
-
-	intel_guc_resume(dev_priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	intel_modeset_init_hw(dev);
 	intel_init_clock_gating(dev_priv);
@@ -2294,11 +1752,7 @@ static int i915_drm_resume(struct drm_device *dev)
 		dev_priv->display.hpd_irq_setup(dev_priv);
 	spin_unlock_irq(&dev_priv->irq_lock);
 
-<<<<<<< HEAD
 	intel_dp_mst_resume(dev_priv);
-=======
-	intel_dp_mst_resume(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	intel_display_resume(dev);
 
@@ -2318,11 +1772,6 @@ static int i915_drm_resume(struct drm_device *dev)
 
 	intel_opregion_notify_adapter(dev_priv, PCI_D0);
 
-<<<<<<< HEAD
-=======
-	intel_autoenable_gt_powersave(dev_priv);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	enable_rpm_wakeref_asserts(dev_priv);
 
 	return 0;
@@ -2391,12 +1840,7 @@ static int i915_drm_resume_early(struct drm_device *dev)
 	intel_uncore_resume_early(dev_priv);
 
 	if (IS_GEN9_LP(dev_priv)) {
-<<<<<<< HEAD
 		gen9_sanitize_dc_state(dev_priv);
-=======
-		if (!dev_priv->suspended_to_idle)
-			gen9_sanitize_dc_state(dev_priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bxt_disable_dc9(dev_priv);
 	} else if (IS_HASWELL(dev_priv) || IS_BROADWELL(dev_priv)) {
 		hsw_disable_pc8(dev_priv);
@@ -2404,31 +1848,17 @@ static int i915_drm_resume_early(struct drm_device *dev)
 
 	intel_uncore_sanitize(dev_priv);
 
-<<<<<<< HEAD
 	if (dev_priv->power_domains_suspended)
-=======
-	if (IS_GEN9_LP(dev_priv) ||
-	    !(dev_priv->suspended_to_idle && dev_priv->csr.dmc_payload))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		intel_power_domains_init_hw(dev_priv, true);
 	else
 		intel_display_set_init_power(dev_priv, true);
 
-<<<<<<< HEAD
 	intel_engines_sanitize(dev_priv);
-=======
-	i915_gem_sanitize(dev_priv);
-	i915_rc6_ctx_wa_resume(dev_priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	enable_rpm_wakeref_asserts(dev_priv);
 
 out:
-<<<<<<< HEAD
 	dev_priv->power_domains_suspended = false;
-=======
-	dev_priv->suspended_to_idle = false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -2450,12 +1880,8 @@ static int i915_resume_switcheroo(struct drm_device *dev)
 /**
  * i915_reset - reset chip after a hang
  * @i915: #drm_i915_private to reset
-<<<<<<< HEAD
  * @stalled_mask: mask of the stalled engines with the guilty requests
  * @reason: user error message for why we are resetting
-=======
- * @flags: Instructions
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Reset the chip.  Useful if a hang is detected. Marks the device as wedged
  * on failure.
@@ -2470,7 +1896,6 @@ static int i915_resume_switcheroo(struct drm_device *dev)
  *   - re-init interrupt state
  *   - re-init display
  */
-<<<<<<< HEAD
 void i915_reset(struct drm_i915_private *i915,
 		unsigned int stalled_mask,
 		const char *reason)
@@ -2482,13 +1907,6 @@ void i915_reset(struct drm_i915_private *i915,
 	GEM_TRACE("flags=%lx\n", error->flags);
 
 	might_sleep();
-=======
-void i915_reset(struct drm_i915_private *i915, unsigned int flags)
-{
-	struct i915_gpu_error *error = &i915->gpu_error;
-	int ret;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	lockdep_assert_held(&i915->drm.struct_mutex);
 	GEM_BUG_ON(!test_bit(I915_RESET_BACKOFF, &error->flags));
 
@@ -2499,19 +1917,13 @@ void i915_reset(struct drm_i915_private *i915, unsigned int flags)
 	if (!i915_gem_unset_wedged(i915))
 		goto wakeup;
 
-<<<<<<< HEAD
 	if (reason)
 		dev_notice(i915->drm.dev, "Resetting chip for %s\n", reason);
-=======
-	if (!(flags & I915_RESET_QUIET))
-		dev_notice(i915->drm.dev, "Resetting chip after gpu hang\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	error->reset_count++;
 
 	disable_irq(i915->drm.irq);
 	ret = i915_gem_reset_prepare(i915);
 	if (ret) {
-<<<<<<< HEAD
 		dev_err(i915->drm.dev, "GPU recovery failed\n");
 		goto taint;
 	}
@@ -2519,23 +1931,11 @@ void i915_reset(struct drm_i915_private *i915, unsigned int flags)
 	if (!intel_has_gpu_reset(i915)) {
 		if (i915_modparams.reset)
 			dev_err(i915->drm.dev, "GPU reset not supported\n");
-=======
-		DRM_ERROR("GPU recovery failed\n");
-		intel_gpu_reset(i915, ALL_ENGINES);
-		goto error;
-	}
-
-	ret = intel_gpu_reset(i915, ALL_ENGINES);
-	if (ret) {
-		if (ret != -ENODEV)
-			DRM_ERROR("Failed to reset chip: %i\n", ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		else
 			DRM_DEBUG_DRIVER("GPU reset disabled\n");
 		goto error;
 	}
 
-<<<<<<< HEAD
 	for (i = 0; i < 3; i++) {
 		ret = intel_gpu_reset(i915, ALL_ENGINES);
 		if (ret == 0)
@@ -2547,10 +1947,6 @@ void i915_reset(struct drm_i915_private *i915, unsigned int flags)
 		dev_err(i915->drm.dev, "Failed to reset chip\n");
 		goto taint;
 	}
-=======
-	i915_gem_reset(i915);
-	intel_overlay_reset(i915);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Ok, now get things going again... */
 
@@ -2560,7 +1956,6 @@ void i915_reset(struct drm_i915_private *i915, unsigned int flags)
 	 */
 	ret = i915_ggtt_enable_hw(i915);
 	if (ret) {
-<<<<<<< HEAD
 		DRM_ERROR("Failed to re-enable GGTT following reset (%d)\n",
 			  ret);
 		goto error;
@@ -2569,12 +1964,6 @@ void i915_reset(struct drm_i915_private *i915, unsigned int flags)
 	i915_gem_reset(i915, stalled_mask);
 	intel_overlay_reset(i915);
 
-=======
-		DRM_ERROR("Failed to re-enable GGTT following reset %d\n", ret);
-		goto error;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Next we need to restore the context, but we don't use those
 	 * yet either...
@@ -2585,12 +1974,8 @@ void i915_reset(struct drm_i915_private *i915, unsigned int flags)
 	 */
 	ret = i915_gem_init_hw(i915);
 	if (ret) {
-<<<<<<< HEAD
 		DRM_ERROR("Failed to initialise HW following reset (%d)\n",
 			  ret);
-=======
-		DRM_ERROR("Failed hw init on reset %d\n", ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto error;
 	}
 
@@ -2605,7 +1990,6 @@ wakeup:
 	wake_up_bit(&error->flags, I915_RESET_HANDOFF);
 	return;
 
-<<<<<<< HEAD
 taint:
 	/*
 	 * History tells us that if we cannot reset the GPU now, we
@@ -2636,18 +2020,6 @@ static inline int intel_gt_reset_engine(struct drm_i915_private *dev_priv,
  * i915_reset_engine - reset GPU engine to recover from a hang
  * @engine: engine to reset
  * @msg: reason for GPU reset; or NULL for no dev_notice()
-=======
-error:
-	i915_gem_set_wedged(i915);
-	i915_gem_retire_requests(i915);
-	goto finish;
-}
-
-/**
- * i915_reset_engine - reset GPU engine to recover from a hang
- * @engine: engine to reset
- * @flags: options
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Reset a specific GPU engine. Useful if a hang is detected.
  * Returns zero on successful reset or otherwise an error code.
@@ -2657,7 +2029,6 @@ error:
  *  - reset engine (which will force the engine to idle)
  *  - re-init/configure engine
  */
-<<<<<<< HEAD
 int i915_reset_engine(struct intel_engine_cs *engine, const char *msg)
 {
 	struct i915_gpu_error *error = &engine->i915->gpu_error;
@@ -2670,30 +2041,10 @@ int i915_reset_engine(struct intel_engine_cs *engine, const char *msg)
 	active_request = i915_gem_reset_prepare_engine(engine);
 	if (IS_ERR_OR_NULL(active_request)) {
 		/* Either the previous reset failed, or we pardon the reset. */
-=======
-int i915_reset_engine(struct intel_engine_cs *engine, unsigned int flags)
-{
-	struct i915_gpu_error *error = &engine->i915->gpu_error;
-	struct drm_i915_gem_request *active_request;
-	int ret;
-
-	GEM_BUG_ON(!test_bit(I915_RESET_ENGINE + engine->id, &error->flags));
-
-	if (!(flags & I915_RESET_QUIET)) {
-		dev_notice(engine->i915->drm.dev,
-			   "Resetting %s after gpu hang\n", engine->name);
-	}
-	error->reset_engine_count[engine->id]++;
-
-	active_request = i915_gem_reset_prepare_engine(engine);
-	if (IS_ERR(active_request)) {
-		DRM_DEBUG_DRIVER("Previous reset failed, promote to full reset\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = PTR_ERR(active_request);
 		goto out;
 	}
 
-<<<<<<< HEAD
 	if (msg)
 		dev_notice(engine->i915->drm.dev,
 			   "Resetting %s for %s\n", engine->name, msg);
@@ -2707,12 +2058,6 @@ int i915_reset_engine(struct intel_engine_cs *engine, unsigned int flags)
 		/* If we fail here, we expect to fallback to a global reset */
 		DRM_DEBUG_DRIVER("%sFailed to reset %s, ret=%d\n",
 				 engine->i915->guc.execbuf_client ? "GuC " : "",
-=======
-	ret = intel_gpu_reset(engine->i915, intel_engine_flag(engine));
-	if (ret) {
-		/* If we fail here, we expect to fallback to a global reset */
-		DRM_DEBUG_DRIVER("Failed to reset %s, ret=%d\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 engine->name, ret);
 		goto out;
 	}
@@ -2722,11 +2067,7 @@ int i915_reset_engine(struct intel_engine_cs *engine, unsigned int flags)
 	 * active request and can drop it, adjust head to skip the offending
 	 * request to resume executing remaining requests in the queue.
 	 */
-<<<<<<< HEAD
 	i915_gem_reset_engine(engine, active_request, true);
-=======
-	i915_gem_reset_engine(engine, active_request);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * The engine and its registers (and workarounds in case of render)
@@ -2742,7 +2083,6 @@ out:
 	return ret;
 }
 
-<<<<<<< HEAD
 static int i915_pm_prepare(struct device *kdev)
 {
 	struct pci_dev *pdev = to_pci_dev(kdev);
@@ -2759,8 +2099,6 @@ static int i915_pm_prepare(struct device *kdev)
 	return i915_drm_prepare(dev);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int i915_pm_suspend(struct device *kdev)
 {
 	struct pci_dev *pdev = to_pci_dev(kdev);
@@ -2829,7 +2167,6 @@ static int i915_pm_resume(struct device *kdev)
 /* freeze: before creating the hibernation_image */
 static int i915_pm_freeze(struct device *kdev)
 {
-<<<<<<< HEAD
 	struct drm_device *dev = &kdev_to_i915(kdev)->drm;
 	int ret;
 
@@ -2838,13 +2175,6 @@ static int i915_pm_freeze(struct device *kdev)
 		if (ret)
 			return ret;
 	}
-=======
-	int ret;
-
-	ret = i915_pm_suspend(kdev);
-	if (ret)
-		return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = i915_gem_freeze(kdev_to_i915(kdev));
 	if (ret)
@@ -2855,7 +2185,6 @@ static int i915_pm_freeze(struct device *kdev)
 
 static int i915_pm_freeze_late(struct device *kdev)
 {
-<<<<<<< HEAD
 	struct drm_device *dev = &kdev_to_i915(kdev)->drm;
 	int ret;
 
@@ -2864,13 +2193,6 @@ static int i915_pm_freeze_late(struct device *kdev)
 		if (ret)
 			return ret;
 	}
-=======
-	int ret;
-
-	ret = i915_pm_suspend_late(kdev);
-	if (ret)
-		return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = i915_gem_freeze_late(kdev_to_i915(kdev));
 	if (ret)
@@ -3170,7 +2492,6 @@ static void vlv_wait_for_gt_wells(struct drm_i915_private *dev_priv,
 	/*
 	 * RC6 transitioning can be delayed up to 2 msec (see
 	 * valleyview_enable_rps), use 3 msec for safety.
-<<<<<<< HEAD
 	 *
 	 * This can fail to turn off the rc6 if the GPU is stuck after a failed
 	 * reset and we are trying to force the machine to sleep.
@@ -3178,12 +2499,6 @@ static void vlv_wait_for_gt_wells(struct drm_i915_private *dev_priv,
 	if (vlv_wait_for_pw_status(dev_priv, mask, val))
 		DRM_DEBUG_DRIVER("timeout waiting for GT wells to go %s\n",
 				 onoff(wait_for_on));
-=======
-	 */
-	if (vlv_wait_for_pw_status(dev_priv, mask, val))
-		DRM_ERROR("timeout waiting for GT wells to go %s\n",
-			  onoff(wait_for_on));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void vlv_check_no_gt_access(struct drm_i915_private *dev_priv)
@@ -3276,11 +2591,7 @@ static int intel_runtime_suspend(struct device *kdev)
 	struct drm_i915_private *dev_priv = to_i915(dev);
 	int ret;
 
-<<<<<<< HEAD
 	if (WARN_ON_ONCE(!(dev_priv->gt_pm.rc6.enabled && HAS_RC6(dev_priv))))
-=======
-	if (WARN_ON_ONCE(!(dev_priv->rps.enabled && intel_enable_rc6())))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 
 	if (WARN_ON_ONCE(!HAS_RUNTIME_PM(dev_priv)))
@@ -3296,19 +2607,12 @@ static int intel_runtime_suspend(struct device *kdev)
 	 */
 	i915_gem_runtime_suspend(dev_priv);
 
-<<<<<<< HEAD
 	intel_uc_suspend(dev_priv);
 
 	intel_runtime_pm_disable_interrupts(dev_priv);
 
 	intel_uncore_suspend(dev_priv);
 
-=======
-	intel_guc_suspend(dev_priv);
-
-	intel_runtime_pm_disable_interrupts(dev_priv);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = 0;
 	if (IS_GEN9_LP(dev_priv)) {
 		bxt_display_core_uninit(dev_priv);
@@ -3321,7 +2625,6 @@ static int intel_runtime_suspend(struct device *kdev)
 
 	if (ret) {
 		DRM_ERROR("Runtime suspend failed, disabling it (%d)\n", ret);
-<<<<<<< HEAD
 		intel_uncore_runtime_resume(dev_priv);
 
 		intel_runtime_pm_enable_interrupts(dev_priv);
@@ -3331,33 +2634,18 @@ static int intel_runtime_suspend(struct device *kdev)
 		i915_gem_init_swizzling(dev_priv);
 		i915_gem_restore_fences(dev_priv);
 
-=======
-		intel_runtime_pm_enable_interrupts(dev_priv);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		enable_rpm_wakeref_asserts(dev_priv);
 
 		return ret;
 	}
 
-<<<<<<< HEAD
 	enable_rpm_wakeref_asserts(dev_priv);
 	WARN_ON_ONCE(atomic_read(&dev_priv->runtime_pm.wakeref_count));
-=======
-	intel_uncore_suspend(dev_priv);
-
-	enable_rpm_wakeref_asserts(dev_priv);
-	WARN_ON_ONCE(atomic_read(&dev_priv->pm.wakeref_count));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (intel_uncore_arm_unclaimed_mmio_detection(dev_priv))
 		DRM_ERROR("Unclaimed access detected prior to suspending\n");
 
-<<<<<<< HEAD
 	dev_priv->runtime_pm.suspended = true;
-=======
-	dev_priv->pm.suspended = true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * FIXME: We really should find a document that references the arguments
@@ -3403,7 +2691,6 @@ static int intel_runtime_resume(struct device *kdev)
 
 	DRM_DEBUG_KMS("Resuming device\n");
 
-<<<<<<< HEAD
 	WARN_ON_ONCE(atomic_read(&dev_priv->runtime_pm.wakeref_count));
 	disable_rpm_wakeref_asserts(dev_priv);
 
@@ -3412,18 +2699,6 @@ static int intel_runtime_resume(struct device *kdev)
 	if (intel_uncore_unclaimed_mmio(dev_priv))
 		DRM_DEBUG_DRIVER("Unclaimed access during suspend, bios?\n");
 
-=======
-	WARN_ON_ONCE(atomic_read(&dev_priv->pm.wakeref_count));
-	disable_rpm_wakeref_asserts(dev_priv);
-
-	intel_opregion_notify_adapter(dev_priv, PCI_D0);
-	dev_priv->pm.suspended = false;
-	if (intel_uncore_unclaimed_mmio(dev_priv))
-		DRM_DEBUG_DRIVER("Unclaimed access during suspend, bios?\n");
-
-	intel_guc_resume(dev_priv);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_GEN9_LP(dev_priv)) {
 		bxt_disable_dc9(dev_priv);
 		bxt_display_core_init(dev_priv, true);
@@ -3438,13 +2713,10 @@ static int intel_runtime_resume(struct device *kdev)
 
 	intel_uncore_runtime_resume(dev_priv);
 
-<<<<<<< HEAD
 	intel_runtime_pm_enable_interrupts(dev_priv);
 
 	intel_uc_resume(dev_priv);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * No point of rolling back things in case of an error, as the best
 	 * we can do is to hope that things will still work (and disable RPM).
@@ -3452,11 +2724,6 @@ static int intel_runtime_resume(struct device *kdev)
 	i915_gem_init_swizzling(dev_priv);
 	i915_gem_restore_fences(dev_priv);
 
-<<<<<<< HEAD
-=======
-	intel_runtime_pm_enable_interrupts(dev_priv);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * On VLV/CHV display interrupts are part of the display
 	 * power well, so hpd is reinitialized from there. For
@@ -3465,11 +2732,8 @@ static int intel_runtime_resume(struct device *kdev)
 	if (!IS_VALLEYVIEW(dev_priv) && !IS_CHERRYVIEW(dev_priv))
 		intel_hpd_init(dev_priv);
 
-<<<<<<< HEAD
 	intel_enable_ipc(dev_priv);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	enable_rpm_wakeref_asserts(dev_priv);
 
 	if (ret)
@@ -3485,10 +2749,7 @@ const struct dev_pm_ops i915_pm_ops = {
 	 * S0ix (via system suspend) and S3 event handlers [PMSG_SUSPEND,
 	 * PMSG_RESUME]
 	 */
-<<<<<<< HEAD
 	.prepare = i915_pm_prepare,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.suspend = i915_pm_suspend,
 	.suspend_late = i915_pm_suspend_late,
 	.resume_early = i915_pm_resume_early,
@@ -3555,11 +2816,7 @@ static const struct drm_ioctl_desc i915_ioctls[] = {
 	DRM_IOCTL_DEF_DRV(I915_BATCHBUFFER, drm_noop, DRM_AUTH),
 	DRM_IOCTL_DEF_DRV(I915_IRQ_EMIT, drm_noop, DRM_AUTH),
 	DRM_IOCTL_DEF_DRV(I915_IRQ_WAIT, drm_noop, DRM_AUTH),
-<<<<<<< HEAD
 	DRM_IOCTL_DEF_DRV(I915_GETPARAM, i915_getparam_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),
-=======
-	DRM_IOCTL_DEF_DRV(I915_GETPARAM, i915_getparam, DRM_AUTH|DRM_RENDER_ALLOW),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DRM_IOCTL_DEF_DRV(I915_SETPARAM, drm_noop, DRM_AUTH|DRM_MASTER|DRM_ROOT_ONLY),
 	DRM_IOCTL_DEF_DRV(I915_ALLOC, drm_noop, DRM_AUTH),
 	DRM_IOCTL_DEF_DRV(I915_FREE, drm_noop, DRM_AUTH),
@@ -3571,13 +2828,8 @@ static const struct drm_ioctl_desc i915_ioctls[] = {
 	DRM_IOCTL_DEF_DRV(I915_VBLANK_SWAP, drm_noop, DRM_AUTH),
 	DRM_IOCTL_DEF_DRV(I915_HWS_ADDR, drm_noop, DRM_AUTH|DRM_MASTER|DRM_ROOT_ONLY),
 	DRM_IOCTL_DEF_DRV(I915_GEM_INIT, drm_noop, DRM_AUTH|DRM_MASTER|DRM_ROOT_ONLY),
-<<<<<<< HEAD
 	DRM_IOCTL_DEF_DRV(I915_GEM_EXECBUFFER, i915_gem_execbuffer_ioctl, DRM_AUTH),
 	DRM_IOCTL_DEF_DRV(I915_GEM_EXECBUFFER2_WR, i915_gem_execbuffer2_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),
-=======
-	DRM_IOCTL_DEF_DRV(I915_GEM_EXECBUFFER, i915_gem_execbuffer, DRM_AUTH),
-	DRM_IOCTL_DEF_DRV(I915_GEM_EXECBUFFER2_WR, i915_gem_execbuffer2, DRM_AUTH|DRM_RENDER_ALLOW),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DRM_IOCTL_DEF_DRV(I915_GEM_PIN, i915_gem_reject_pin_ioctl, DRM_AUTH|DRM_ROOT_ONLY),
 	DRM_IOCTL_DEF_DRV(I915_GEM_UNPIN, i915_gem_reject_pin_ioctl, DRM_AUTH|DRM_ROOT_ONLY),
 	DRM_IOCTL_DEF_DRV(I915_GEM_BUSY, i915_gem_busy_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),
@@ -3596,21 +2848,12 @@ static const struct drm_ioctl_desc i915_ioctls[] = {
 	DRM_IOCTL_DEF_DRV(I915_GEM_SET_TILING, i915_gem_set_tiling_ioctl, DRM_RENDER_ALLOW),
 	DRM_IOCTL_DEF_DRV(I915_GEM_GET_TILING, i915_gem_get_tiling_ioctl, DRM_RENDER_ALLOW),
 	DRM_IOCTL_DEF_DRV(I915_GEM_GET_APERTURE, i915_gem_get_aperture_ioctl, DRM_RENDER_ALLOW),
-<<<<<<< HEAD
 	DRM_IOCTL_DEF_DRV(I915_GET_PIPE_FROM_CRTC_ID, intel_get_pipe_from_crtc_id_ioctl, 0),
 	DRM_IOCTL_DEF_DRV(I915_GEM_MADVISE, i915_gem_madvise_ioctl, DRM_RENDER_ALLOW),
 	DRM_IOCTL_DEF_DRV(I915_OVERLAY_PUT_IMAGE, intel_overlay_put_image_ioctl, DRM_MASTER),
 	DRM_IOCTL_DEF_DRV(I915_OVERLAY_ATTRS, intel_overlay_attrs_ioctl, DRM_MASTER),
 	DRM_IOCTL_DEF_DRV(I915_SET_SPRITE_COLORKEY, intel_sprite_set_colorkey_ioctl, DRM_MASTER),
 	DRM_IOCTL_DEF_DRV(I915_GET_SPRITE_COLORKEY, drm_noop, DRM_MASTER),
-=======
-	DRM_IOCTL_DEF_DRV(I915_GET_PIPE_FROM_CRTC_ID, intel_get_pipe_from_crtc_id, 0),
-	DRM_IOCTL_DEF_DRV(I915_GEM_MADVISE, i915_gem_madvise_ioctl, DRM_RENDER_ALLOW),
-	DRM_IOCTL_DEF_DRV(I915_OVERLAY_PUT_IMAGE, intel_overlay_put_image_ioctl, DRM_MASTER|DRM_CONTROL_ALLOW),
-	DRM_IOCTL_DEF_DRV(I915_OVERLAY_ATTRS, intel_overlay_attrs_ioctl, DRM_MASTER|DRM_CONTROL_ALLOW),
-	DRM_IOCTL_DEF_DRV(I915_SET_SPRITE_COLORKEY, intel_sprite_set_colorkey, DRM_MASTER|DRM_CONTROL_ALLOW),
-	DRM_IOCTL_DEF_DRV(I915_GET_SPRITE_COLORKEY, drm_noop, DRM_MASTER|DRM_CONTROL_ALLOW),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DRM_IOCTL_DEF_DRV(I915_GEM_WAIT, i915_gem_wait_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),
 	DRM_IOCTL_DEF_DRV(I915_GEM_CONTEXT_CREATE, i915_gem_context_create_ioctl, DRM_RENDER_ALLOW),
 	DRM_IOCTL_DEF_DRV(I915_GEM_CONTEXT_DESTROY, i915_gem_context_destroy_ioctl, DRM_RENDER_ALLOW),
@@ -3622,10 +2865,7 @@ static const struct drm_ioctl_desc i915_ioctls[] = {
 	DRM_IOCTL_DEF_DRV(I915_PERF_OPEN, i915_perf_open_ioctl, DRM_RENDER_ALLOW),
 	DRM_IOCTL_DEF_DRV(I915_PERF_ADD_CONFIG, i915_perf_add_config_ioctl, DRM_UNLOCKED|DRM_RENDER_ALLOW),
 	DRM_IOCTL_DEF_DRV(I915_PERF_REMOVE_CONFIG, i915_perf_remove_config_ioctl, DRM_UNLOCKED|DRM_RENDER_ALLOW),
-<<<<<<< HEAD
 	DRM_IOCTL_DEF_DRV(I915_QUERY, i915_query_ioctl, DRM_UNLOCKED|DRM_RENDER_ALLOW),
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct drm_driver driver = {

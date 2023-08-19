@@ -82,10 +82,7 @@ static int acpi_processor_errata_piix4(struct pci_dev *dev)
 		 * PIIX4 models.
 		 */
 		errata.piix4.throttle = 1;
-<<<<<<< HEAD
 		/* fall through*/
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	case 2:		/* PIIX4E */
 	case 3:		/* PIIX4M */

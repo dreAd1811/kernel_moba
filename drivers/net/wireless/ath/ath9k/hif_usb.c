@@ -24,10 +24,7 @@ static const struct usb_device_id ath9k_hif_usb_ids[] = {
 	{ USB_DEVICE(0x0cf3, 0x9271) }, /* Atheros */
 	{ USB_DEVICE(0x0cf3, 0x1006) }, /* Atheros */
 	{ USB_DEVICE(0x0846, 0x9030) }, /* Netgear N150 */
-<<<<<<< HEAD
 	{ USB_DEVICE(0x07b8, 0x9271) }, /* Altai WA1011N-GU */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ USB_DEVICE(0x07D1, 0x3A10) }, /* Dlink Wireless 150 */
 	{ USB_DEVICE(0x13D3, 0x3327) }, /* Azurewave */
 	{ USB_DEVICE(0x13D3, 0x3328) }, /* Azurewave */
@@ -141,10 +138,7 @@ static void hif_usb_mgmt_cb(struct urb *urb)
 {
 	struct cmd_buf *cmd = (struct cmd_buf *)urb->context;
 	struct hif_device_usb *hif_dev;
-<<<<<<< HEAD
 	unsigned long flags;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool txok = true;
 
 	if (!cmd || !cmd->skb || !cmd->hif_dev)
@@ -165,24 +159,14 @@ static void hif_usb_mgmt_cb(struct urb *urb)
 		 * If the URBs are being flushed, no need to complete
 		 * this packet.
 		 */
-<<<<<<< HEAD
 		spin_lock_irqsave(&hif_dev->tx.tx_lock, flags);
 		if (hif_dev->tx.flags & HIF_USB_TX_FLUSH) {
 			spin_unlock_irqrestore(&hif_dev->tx.tx_lock, flags);
-=======
-		spin_lock(&hif_dev->tx.tx_lock);
-		if (hif_dev->tx.flags & HIF_USB_TX_FLUSH) {
-			spin_unlock(&hif_dev->tx.tx_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev_kfree_skb_any(cmd->skb);
 			kfree(cmd);
 			return;
 		}
-<<<<<<< HEAD
 		spin_unlock_irqrestore(&hif_dev->tx.tx_lock, flags);
-=======
-		spin_unlock(&hif_dev->tx.tx_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		break;
 	default:
@@ -442,11 +426,7 @@ static int hif_usb_send_tx(struct hif_device_usb *hif_dev, struct sk_buff *skb)
 
 static void hif_usb_start(void *hif_handle)
 {
-<<<<<<< HEAD
 	struct hif_device_usb *hif_dev = hif_handle;
-=======
-	struct hif_device_usb *hif_dev = (struct hif_device_usb *)hif_handle;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 
 	hif_dev->flags |= HIF_USB_START;
@@ -458,11 +438,7 @@ static void hif_usb_start(void *hif_handle)
 
 static void hif_usb_stop(void *hif_handle)
 {
-<<<<<<< HEAD
 	struct hif_device_usb *hif_dev = hif_handle;
-=======
-	struct hif_device_usb *hif_dev = (struct hif_device_usb *)hif_handle;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct tx_buf *tx_buf = NULL, *tx_buf_tmp = NULL;
 	unsigned long flags;
 
@@ -483,11 +459,7 @@ static void hif_usb_stop(void *hif_handle)
 
 static int hif_usb_send(void *hif_handle, u8 pipe_id, struct sk_buff *skb)
 {
-<<<<<<< HEAD
 	struct hif_device_usb *hif_dev = hif_handle;
-=======
-	struct hif_device_usb *hif_dev = (struct hif_device_usb *)hif_handle;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = 0;
 
 	switch (pipe_id) {
@@ -522,11 +494,7 @@ static inline bool check_index(struct sk_buff *skb, u8 idx)
 
 static void hif_usb_sta_drain(void *hif_handle, u8 idx)
 {
-<<<<<<< HEAD
 	struct hif_device_usb *hif_dev = hif_handle;
-=======
-	struct hif_device_usb *hif_dev = (struct hif_device_usb *)hif_handle;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct sk_buff *skb, *tmp;
 	unsigned long flags;
 
@@ -644,14 +612,6 @@ static void ath9k_hif_usb_rx_stream(struct hif_device_usb *hif_dev,
 			hif_dev->remain_skb = nskb;
 			spin_unlock(&hif_dev->rx_lock);
 		} else {
-<<<<<<< HEAD
-=======
-			if (pool_index == MAX_PKT_NUM_IN_TRANSFER) {
-				dev_err(&hif_dev->udev->dev,
-					"ath9k_htc: over RX MAX_PKT_NUM\n");
-				goto err;
-			}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			nskb = __dev_alloc_skb(pkt_len + 32, GFP_ATOMIC);
 			if (!nskb) {
 				dev_err(&hif_dev->udev->dev,
@@ -678,15 +638,9 @@ err:
 
 static void ath9k_hif_usb_rx_cb(struct urb *urb)
 {
-<<<<<<< HEAD
 	struct sk_buff *skb = (struct sk_buff *) urb->context;
 	struct hif_device_usb *hif_dev =
 		usb_get_intfdata(usb_ifnum_to_if(urb->dev, 0));
-=======
-	struct rx_buf *rx_buf = (struct rx_buf *)urb->context;
-	struct hif_device_usb *hif_dev = rx_buf->hif_dev;
-	struct sk_buff *skb = rx_buf->skb;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	if (!skb)
@@ -726,25 +680,14 @@ resubmit:
 	return;
 free:
 	kfree_skb(skb);
-<<<<<<< HEAD
-=======
-	kfree(rx_buf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void ath9k_hif_usb_reg_in_cb(struct urb *urb)
 {
-<<<<<<< HEAD
 	struct sk_buff *skb = (struct sk_buff *) urb->context;
 	struct sk_buff *nskb;
 	struct hif_device_usb *hif_dev =
 		usb_get_intfdata(usb_ifnum_to_if(urb->dev, 0));
-=======
-	struct rx_buf *rx_buf = (struct rx_buf *)urb->context;
-	struct hif_device_usb *hif_dev = rx_buf->hif_dev;
-	struct sk_buff *skb = rx_buf->skb;
-	struct sk_buff *nskb;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	if (!skb)
@@ -784,20 +727,11 @@ static void ath9k_hif_usb_reg_in_cb(struct urb *urb)
 			return;
 		}
 
-<<<<<<< HEAD
-=======
-		rx_buf->skb = nskb;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		usb_fill_int_urb(urb, hif_dev->udev,
 				 usb_rcvintpipe(hif_dev->udev,
 						 USB_REG_IN_PIPE),
 				 nskb->data, MAX_REG_IN_BUF_SIZE,
-<<<<<<< HEAD
 				 ath9k_hif_usb_reg_in_cb, nskb, 1);
-=======
-				 ath9k_hif_usb_reg_in_cb, rx_buf, 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 resubmit:
@@ -811,10 +745,6 @@ resubmit:
 	return;
 free:
 	kfree_skb(skb);
-<<<<<<< HEAD
-=======
-	kfree(rx_buf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	urb->context = NULL;
 }
 
@@ -860,11 +790,7 @@ static int ath9k_hif_usb_alloc_tx_urbs(struct hif_device_usb *hif_dev)
 	init_usb_anchor(&hif_dev->mgmt_submitted);
 
 	for (i = 0; i < MAX_TX_URB_NUM; i++) {
-<<<<<<< HEAD
 		tx_buf = kzalloc(sizeof(struct tx_buf), GFP_KERNEL);
-=======
-		tx_buf = kzalloc(sizeof(*tx_buf), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!tx_buf)
 			goto err;
 
@@ -901,14 +827,8 @@ static void ath9k_hif_usb_dealloc_rx_urbs(struct hif_device_usb *hif_dev)
 
 static int ath9k_hif_usb_alloc_rx_urbs(struct hif_device_usb *hif_dev)
 {
-<<<<<<< HEAD
 	struct urb *urb = NULL;
 	struct sk_buff *skb = NULL;
-=======
-	struct rx_buf *rx_buf = NULL;
-	struct sk_buff *skb = NULL;
-	struct urb *urb = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i, ret;
 
 	init_usb_anchor(&hif_dev->rx_submitted);
@@ -916,15 +836,6 @@ static int ath9k_hif_usb_alloc_rx_urbs(struct hif_device_usb *hif_dev)
 
 	for (i = 0; i < MAX_RX_URB_NUM; i++) {
 
-<<<<<<< HEAD
-=======
-		rx_buf = kzalloc(sizeof(*rx_buf), GFP_KERNEL);
-		if (!rx_buf) {
-			ret = -ENOMEM;
-			goto err_rxb;
-		}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Allocate URB */
 		urb = usb_alloc_urb(0, GFP_KERNEL);
 		if (urb == NULL) {
@@ -939,21 +850,11 @@ static int ath9k_hif_usb_alloc_rx_urbs(struct hif_device_usb *hif_dev)
 			goto err_skb;
 		}
 
-<<<<<<< HEAD
-=======
-		rx_buf->hif_dev = hif_dev;
-		rx_buf->skb = skb;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		usb_fill_bulk_urb(urb, hif_dev->udev,
 				  usb_rcvbulkpipe(hif_dev->udev,
 						  USB_WLAN_RX_PIPE),
 				  skb->data, MAX_RX_BUF_SIZE,
-<<<<<<< HEAD
 				  ath9k_hif_usb_rx_cb, skb);
-=======
-				  ath9k_hif_usb_rx_cb, rx_buf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Anchor URB */
 		usb_anchor_urb(urb, &hif_dev->rx_submitted);
@@ -979,11 +880,6 @@ err_submit:
 err_skb:
 	usb_free_urb(urb);
 err_urb:
-<<<<<<< HEAD
-=======
-	kfree(rx_buf);
-err_rxb:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ath9k_hif_usb_dealloc_rx_urbs(hif_dev);
 	return ret;
 }
@@ -995,29 +891,14 @@ static void ath9k_hif_usb_dealloc_reg_in_urbs(struct hif_device_usb *hif_dev)
 
 static int ath9k_hif_usb_alloc_reg_in_urbs(struct hif_device_usb *hif_dev)
 {
-<<<<<<< HEAD
 	struct urb *urb = NULL;
 	struct sk_buff *skb = NULL;
-=======
-	struct rx_buf *rx_buf = NULL;
-	struct sk_buff *skb = NULL;
-	struct urb *urb = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i, ret;
 
 	init_usb_anchor(&hif_dev->reg_in_submitted);
 
 	for (i = 0; i < MAX_REG_IN_URB_NUM; i++) {
 
-<<<<<<< HEAD
-=======
-		rx_buf = kzalloc(sizeof(*rx_buf), GFP_KERNEL);
-		if (!rx_buf) {
-			ret = -ENOMEM;
-			goto err_rxb;
-		}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Allocate URB */
 		urb = usb_alloc_urb(0, GFP_KERNEL);
 		if (urb == NULL) {
@@ -1032,21 +913,11 @@ static int ath9k_hif_usb_alloc_reg_in_urbs(struct hif_device_usb *hif_dev)
 			goto err_skb;
 		}
 
-<<<<<<< HEAD
-=======
-		rx_buf->hif_dev = hif_dev;
-		rx_buf->skb = skb;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		usb_fill_int_urb(urb, hif_dev->udev,
 				  usb_rcvintpipe(hif_dev->udev,
 						  USB_REG_IN_PIPE),
 				  skb->data, MAX_REG_IN_BUF_SIZE,
-<<<<<<< HEAD
 				  ath9k_hif_usb_reg_in_cb, skb, 1);
-=======
-				  ath9k_hif_usb_reg_in_cb, rx_buf, 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Anchor URB */
 		usb_anchor_urb(urb, &hif_dev->reg_in_submitted);
@@ -1072,11 +943,6 @@ err_submit:
 err_skb:
 	usb_free_urb(urb);
 err_urb:
-<<<<<<< HEAD
-=======
-	kfree(rx_buf);
-err_rxb:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ath9k_hif_usb_dealloc_reg_in_urbs(hif_dev);
 	return ret;
 }
@@ -1107,11 +973,7 @@ err:
 	return -ENOMEM;
 }
 
-<<<<<<< HEAD
 static void ath9k_hif_usb_dealloc_urbs(struct hif_device_usb *hif_dev)
-=======
-void ath9k_hif_usb_dealloc_urbs(struct hif_device_usb *hif_dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	usb_kill_anchored_urbs(&hif_dev->regout_submitted);
 	ath9k_hif_usb_dealloc_reg_in_urbs(hif_dev);
@@ -1354,11 +1216,7 @@ err_fw:
 static int send_eject_command(struct usb_interface *interface)
 {
 	struct usb_device *udev = interface_to_usbdev(interface);
-<<<<<<< HEAD
 	struct usb_host_interface *iface_desc = &interface->altsetting[0];
-=======
-	struct usb_host_interface *iface_desc = interface->cur_altsetting;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct usb_endpoint_descriptor *endpoint;
 	unsigned char *cmd;
 	u8 bulk_out_ep;
@@ -1483,14 +1341,8 @@ static void ath9k_hif_usb_disconnect(struct usb_interface *interface)
 
 	if (hif_dev->flags & HIF_USB_READY) {
 		ath9k_htc_hw_deinit(hif_dev->htc_handle, unplugged);
-<<<<<<< HEAD
 		ath9k_htc_hw_free(hif_dev->htc_handle);
 		ath9k_hif_usb_dev_deinit(hif_dev);
-=======
-		ath9k_hif_usb_dev_deinit(hif_dev);
-		ath9k_destoy_wmi(hif_dev->htc_handle->drv_priv);
-		ath9k_htc_hw_free(hif_dev->htc_handle);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	usb_set_intfdata(interface, NULL);

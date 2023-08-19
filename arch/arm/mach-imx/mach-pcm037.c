@@ -23,11 +23,7 @@
 #include <linux/smsc911x.h>
 #include <linux/interrupt.h>
 #include <linux/i2c.h>
-<<<<<<< HEAD
 #include <linux/property.h>
-=======
-#include <linux/platform_data/at24.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/delay.h>
 #include <linux/spi/spi.h>
 #include <linux/irq.h>
@@ -267,27 +263,15 @@ static const struct imxi2c_platform_data pcm037_i2c2_data __initconst = {
 	.bitrate = 20000,
 };
 
-<<<<<<< HEAD
 static const struct property_entry board_eeprom_properties[] = {
 	PROPERTY_ENTRY_U32("pagesize", 32),
 	{ }
-=======
-static struct at24_platform_data board_eeprom = {
-	.byte_len = 4096,
-	.page_size = 32,
-	.flags = AT24_FLAG_ADDR16,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct i2c_board_info pcm037_i2c_devices[] = {
 	{
-<<<<<<< HEAD
 		I2C_BOARD_INFO("24c32", 0x52), /* E0=0, E1=1, E2=0 */
 		.properties = board_eeprom_properties,
-=======
-		I2C_BOARD_INFO("at24", 0x52), /* E0=0, E1=1, E2=0 */
-		.platform_data = &board_eeprom,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}, {
 		I2C_BOARD_INFO("pcf8563", 0x51),
 	}

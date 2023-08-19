@@ -56,13 +56,8 @@ static const struct iproc_pll_ctrl sr_genpll0 = {
 };
 
 static const struct iproc_clk_ctrl sr_genpll0_clk[] = {
-<<<<<<< HEAD
 	[BCM_SR_GENPLL0_125M_CLK] = {
 		.channel = BCM_SR_GENPLL0_125M_CLK,
-=======
-	[BCM_SR_GENPLL0_SATA_CLK] = {
-		.channel = BCM_SR_GENPLL0_SATA_CLK,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.flags = IPROC_CLK_AON,
 		.enable = ENABLE_VAL(0x4, 6, 0, 12),
 		.mdiv = REG_VAL(0x18, 0, 9),
@@ -107,7 +102,6 @@ static int sr_genpll0_clk_init(struct platform_device *pdev)
 	return 0;
 }
 
-<<<<<<< HEAD
 static const struct iproc_pll_ctrl sr_genpll2 = {
 	.flags = IPROC_CLK_AON | IPROC_CLK_PLL_HAS_NDIV_FRAC |
 		IPROC_CLK_PLL_NEEDS_SW_CFG,
@@ -167,8 +161,6 @@ static int sr_genpll2_clk_init(struct platform_device *pdev)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct iproc_pll_ctrl sr_genpll3 = {
 	.flags = IPROC_CLK_AON | IPROC_CLK_PLL_HAS_NDIV_FRAC |
 		IPROC_CLK_PLL_NEEDS_SW_CFG,
@@ -224,7 +216,6 @@ static const struct iproc_clk_ctrl sr_genpll4_clk[] = {
 		.enable = ENABLE_VAL(0x4, 6, 0, 12),
 		.mdiv = REG_VAL(0x18, 0, 9),
 	},
-<<<<<<< HEAD
 	[BCM_SR_GENPLL4_TPIU_PLL_CLK] = {
 		.channel = BCM_SR_GENPLL4_TPIU_PLL_CLK,
 		.flags = IPROC_CLK_AON,
@@ -249,8 +240,6 @@ static const struct iproc_clk_ctrl sr_genpll4_clk[] = {
 		.enable = ENABLE_VAL(0x4, 10, 4, 16),
 		.mdiv = REG_VAL(0x1c, 10, 9),
 	},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int sr_genpll4_clk_init(struct platform_device *pdev)
@@ -275,7 +264,6 @@ static const struct iproc_pll_ctrl sr_genpll5 = {
 };
 
 static const struct iproc_clk_ctrl sr_genpll5_clk[] = {
-<<<<<<< HEAD
 	[BCM_SR_GENPLL5_FS4_HF_CLK] = {
 		.channel = BCM_SR_GENPLL5_FS4_HF_CLK,
 		.enable = ENABLE_VAL(0x4, 6, 0, 12),
@@ -291,20 +279,6 @@ static const struct iproc_clk_ctrl sr_genpll5_clk[] = {
 		.enable = ENABLE_VAL(0x4, 8, 2, 14),
 		.mdiv = REG_VAL(0x18, 20, 9),
 	},
-=======
-	[BCM_SR_GENPLL5_FS_CLK] = {
-		.channel = BCM_SR_GENPLL5_FS_CLK,
-		.flags = IPROC_CLK_AON,
-		.enable = ENABLE_VAL(0x4, 6, 0, 12),
-		.mdiv = REG_VAL(0x18, 0, 9),
-	},
-	[BCM_SR_GENPLL5_SPU_CLK] = {
-		.channel = BCM_SR_GENPLL5_SPU_CLK,
-		.flags = IPROC_CLK_AON,
-		.enable = ENABLE_VAL(0x4, 6, 0, 12),
-		.mdiv = REG_VAL(0x18, 10, 9),
-	},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int sr_genpll5_clk_init(struct platform_device *pdev)
@@ -326,48 +300,30 @@ static const struct iproc_pll_ctrl sr_lcpll0 = {
 };
 
 static const struct iproc_clk_ctrl sr_lcpll0_clk[] = {
-<<<<<<< HEAD
 	[BCM_SR_LCPLL0_SATA_REFP_CLK] = {
 		.channel = BCM_SR_LCPLL0_SATA_REFP_CLK,
-=======
-	[BCM_SR_LCPLL0_SATA_REF_CLK] = {
-		.channel = BCM_SR_LCPLL0_SATA_REF_CLK,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.flags = IPROC_CLK_AON,
 		.enable = ENABLE_VAL(0x0, 7, 1, 13),
 		.mdiv = REG_VAL(0x14, 0, 9),
 	},
-<<<<<<< HEAD
 	[BCM_SR_LCPLL0_SATA_REFN_CLK] = {
 		.channel = BCM_SR_LCPLL0_SATA_REFN_CLK,
-=======
-	[BCM_SR_LCPLL0_USB_REF_CLK] = {
-		.channel = BCM_SR_LCPLL0_USB_REF_CLK,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.flags = IPROC_CLK_AON,
 		.enable = ENABLE_VAL(0x0, 8, 2, 14),
 		.mdiv = REG_VAL(0x14, 10, 9),
 	},
-<<<<<<< HEAD
 	[BCM_SR_LCPLL0_SATA_350_CLK] = {
 		.channel = BCM_SR_LCPLL0_SATA_350_CLK,
-=======
-	[BCM_SR_LCPLL0_SATA_REFPN_CLK] = {
-		.channel = BCM_SR_LCPLL0_SATA_REFPN_CLK,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.flags = IPROC_CLK_AON,
 		.enable = ENABLE_VAL(0x0, 9, 3, 15),
 		.mdiv = REG_VAL(0x14, 20, 9),
 	},
-<<<<<<< HEAD
 	[BCM_SR_LCPLL0_SATA_500_CLK] = {
 		.channel = BCM_SR_LCPLL0_SATA_500_CLK,
 		.flags = IPROC_CLK_AON,
 		.enable = ENABLE_VAL(0x0, 10, 4, 16),
 		.mdiv = REG_VAL(0x18, 0, 9),
 	},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int sr_lcpll0_clk_init(struct platform_device *pdev)
@@ -395,7 +351,6 @@ static const struct iproc_clk_ctrl sr_lcpll1_clk[] = {
 		.enable = ENABLE_VAL(0x0, 7, 1, 13),
 		.mdiv = REG_VAL(0x14, 0, 9),
 	},
-<<<<<<< HEAD
 	[BCM_SR_LCPLL1_USB_REF_CLK] = {
 		.channel = BCM_SR_LCPLL1_USB_REF_CLK,
 		.flags = IPROC_CLK_AON,
@@ -408,8 +363,6 @@ static const struct iproc_clk_ctrl sr_lcpll1_clk[] = {
 		.enable = ENABLE_VAL(0x0, 9, 3, 15),
 		.mdiv = REG_VAL(0x14, 20, 9),
 	},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int sr_lcpll1_clk_init(struct platform_device *pdev)
@@ -449,10 +402,7 @@ static int sr_lcpll_pcie_clk_init(struct platform_device *pdev)
 
 static const struct of_device_id sr_clk_dt_ids[] = {
 	{ .compatible = "brcm,sr-genpll0", .data = sr_genpll0_clk_init },
-<<<<<<< HEAD
 	{ .compatible = "brcm,sr-genpll2", .data = sr_genpll2_clk_init },
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ .compatible = "brcm,sr-genpll4", .data = sr_genpll4_clk_init },
 	{ .compatible = "brcm,sr-genpll5", .data = sr_genpll5_clk_init },
 	{ .compatible = "brcm,sr-lcpll0", .data = sr_lcpll0_clk_init },

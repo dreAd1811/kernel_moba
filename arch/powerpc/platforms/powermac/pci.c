@@ -62,11 +62,7 @@ struct device_node *k2_skiplist[2];
 
 static int __init fixup_one_level_bus_range(struct device_node *node, int higher)
 {
-<<<<<<< HEAD
 	for (; node; node = node->sibling) {
-=======
-	for (; node != 0;node = node->sibling) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		const int * bus_range;
 		const unsigned int *class_code;
 		int len;
@@ -785,20 +781,12 @@ static int __init pmac_add_bridge(struct device_node *dev)
 	struct resource rsrc;
 	char *disp_name;
 	const int *bus_range;
-<<<<<<< HEAD
 	int primary = 1;
-=======
-	int primary = 1, has_address = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	DBG("Adding PCI host bridge %pOF\n", dev);
 
 	/* Fetch host bridge registers address */
-<<<<<<< HEAD
 	of_address_to_resource(dev, 0, &rsrc);
-=======
-	has_address = (of_address_to_resource(dev, 0, &rsrc) == 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Get bus range if any */
 	bus_range = of_get_property(dev, "bus-range", &len);
@@ -916,11 +904,7 @@ static int pmac_pci_root_bridge_prepare(struct pci_host_bridge *bridge)
 void __init pmac_pci_init(void)
 {
 	struct device_node *np, *root;
-<<<<<<< HEAD
 	struct device_node *ht __maybe_unused = NULL;
-=======
-	struct device_node *ht = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pci_set_flags(PCI_CAN_SKIP_ISA_ALIGN);
 
@@ -1035,11 +1019,7 @@ static bool pmac_pci_enable_device_hook(struct pci_dev *dev)
 	return true;
 }
 
-<<<<<<< HEAD
 static void pmac_pci_fixup_ohci(struct pci_dev *dev)
-=======
-void pmac_pci_fixup_ohci(struct pci_dev *dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct device_node *node = pci_device_to_OF_node(dev);
 
@@ -1074,11 +1054,7 @@ void __init pmac_pcibios_after_init(void)
 	}
 }
 
-<<<<<<< HEAD
 static void pmac_pci_fixup_cardbus(struct pci_dev *dev)
-=======
-void pmac_pci_fixup_cardbus(struct pci_dev* dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (!machine_is(powermac))
 		return;
@@ -1115,11 +1091,7 @@ void pmac_pci_fixup_cardbus(struct pci_dev* dev)
 
 DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_TI, PCI_ANY_ID, pmac_pci_fixup_cardbus);
 
-<<<<<<< HEAD
 static void pmac_pci_fixup_pciata(struct pci_dev *dev)
-=======
-void pmac_pci_fixup_pciata(struct pci_dev* dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
        u8 progif = 0;
 
@@ -1247,11 +1219,7 @@ static void fixup_u4_pcie(struct pci_dev* dev)
 			region = r;
 	}
 	/* Nothing found, bail */
-<<<<<<< HEAD
 	if (!region)
-=======
-	if (region == 0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	/* Print things out */

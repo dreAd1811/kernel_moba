@@ -269,24 +269,15 @@ static void fdp_nci_i2c_read_device_properties(struct device *dev,
 		/* Add 1 to the length to inclue the length byte itself */
 		len++;
 
-<<<<<<< HEAD
 		*fw_vsc_cfg = devm_kmalloc_array(dev,
 					   len, sizeof(**fw_vsc_cfg),
-=======
-		*fw_vsc_cfg = devm_kmalloc(dev,
-					   len * sizeof(**fw_vsc_cfg),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   GFP_KERNEL);
 
 		r = device_property_read_u8_array(dev, FDP_DP_FW_VSC_CFG_NAME,
 						  *fw_vsc_cfg, len);
 
 		if (r) {
-<<<<<<< HEAD
 			devm_kfree(dev, fw_vsc_cfg);
-=======
-			devm_kfree(dev, *fw_vsc_cfg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto vsc_read_err;
 		}
 	} else {

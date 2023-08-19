@@ -417,10 +417,6 @@ static ssize_t ad5755_write_powerdown(struct iio_dev *indio_dev, uintptr_t priv,
 static const struct iio_info ad5755_info = {
 	.read_raw = ad5755_read_raw,
 	.write_raw = ad5755_write_raw,
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct iio_chan_spec_ext_info ad5755_ext_info[] = {

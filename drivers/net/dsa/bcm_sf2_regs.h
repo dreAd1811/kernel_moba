@@ -115,7 +115,6 @@ enum bcm_sf2_reg_offs {
 #define P7_IRQ_OFF			0
 #define P_IRQ_OFF(x)			((6 - (x)) * P_NUM_IRQ)
 
-<<<<<<< HEAD
 /* Register set relative to 'ACB' */
 #define ACB_CONTROL			0x00
 #define  ACB_EN				(1 << 0)
@@ -134,8 +133,6 @@ enum bcm_sf2_reg_offs {
 #define  PKTLEN_MASK			0x3f
 #define ACB_QUEUE_CFG(x)		(ACB_QUEUE_0_CFG + ((x) * 0x4))
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Register set relative to 'CORE' */
 #define CORE_G_PCTL_PORT0		0x00000
 #define CORE_G_PCTL_PORT(x)		(CORE_G_PCTL_PORT0 + (x * 0x4))
@@ -171,11 +168,8 @@ enum bcm_sf2_reg_offs {
 #define CORE_SWITCH_CTRL		0x00088
 #define  MII_DUMB_FWDG_EN		(1 << 6)
 
-<<<<<<< HEAD
 #define CORE_DIS_LEARN			0x000f0
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CORE_SFT_LRN_CTRL		0x000f8
 #define  SW_LEARN_CNTL(x)		(1 << (x))
 
@@ -231,21 +225,8 @@ enum bcm_sf2_reg_offs {
 
 #define CORE_IMP0_PRT_ID		0x0804
 
-<<<<<<< HEAD
 #define CORE_RST_MIB_CNT_EN		0x0950
 
-=======
-#define CORE_BRCM_HDR_CTRL		0x0080c
-#define  BRCM_HDR_EN_P8			(1 << 0)
-#define  BRCM_HDR_EN_P5			(1 << 1)
-#define  BRCM_HDR_EN_P7			(1 << 2)
-
-#define CORE_RST_MIB_CNT_EN		0x0950
-
-#define CORE_BRCM_HDR_RX_DIS		0x0980
-#define CORE_BRCM_HDR_TX_DIS		0x0988
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CORE_ARLA_VTBL_RWCTRL		0x1600
 #define  ARLA_VTBL_CMD_WRITE		0
 #define  ARLA_VTBL_CMD_READ		1
@@ -276,14 +257,11 @@ enum bcm_sf2_reg_offs {
 #define CORE_PORT_VLAN_CTL_PORT(x)	(0xc400 + ((x) * 0x8))
 #define  PORT_VLAN_CTRL_MASK		0x1ff
 
-<<<<<<< HEAD
 #define CORE_TXQ_THD_PAUSE_QN_PORT_0	0x2c80
 #define  TXQ_PAUSE_THD_MASK		0x7ff
 #define CORE_TXQ_THD_PAUSE_QN_PORT(x)	(CORE_TXQ_THD_PAUSE_QN_PORT_0 + \
 					(x) * 0x8)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CORE_DEFAULT_1Q_TAG_P(x)	(0xd040 + ((x) * 8))
 #define  CFI_SHIFT			12
 #define  PRI_SHIFT			13
@@ -291,12 +269,6 @@ enum bcm_sf2_reg_offs {
 
 #define CORE_JOIN_ALL_VLAN_EN		0xd140
 
-<<<<<<< HEAD
-=======
-#define CORE_EEE_EN_CTRL		0x24800
-#define CORE_EEE_LPI_INDICATE		0x24810
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CORE_CFP_ACC			0x28000
 #define  OP_STR_DONE			(1 << 0)
 #define  OP_SEL_SHIFT			1
@@ -332,27 +304,18 @@ enum bcm_sf2_reg_offs {
 /* UDF_DATA7 */
 #define L3_FRAMING_SHIFT		24
 #define L3_FRAMING_MASK			(0x3 << L3_FRAMING_SHIFT)
-<<<<<<< HEAD
 #define IPTOS_SHIFT			16
 #define IPTOS_MASK			0xff
 #define IPPROTO_SHIFT			8
 #define IPPROTO_MASK			(0xff << IPPROTO_SHIFT)
 #define IP_FRAG_SHIFT			7
 #define IP_FRAG				(1 << IP_FRAG_SHIFT)
-=======
-#define IPPROTO_SHIFT			8
-#define IPPROTO_MASK			(0xff << IPPROTO_SHIFT)
-#define IP_FRAG				(1 << 7)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* UDF_DATA0 */
 #define  SLICE_VALID			3
 #define  SLICE_NUM_SHIFT		2
 #define  SLICE_NUM(x)			((x) << SLICE_NUM_SHIFT)
-<<<<<<< HEAD
 #define  SLICE_NUM_MASK			0x3
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define CORE_CFP_MASK_PORT_0		0x280c0
 
@@ -448,7 +411,6 @@ enum bcm_sf2_reg_offs {
 #define  CFG_UDF_EOL2			(2 << CFG_UDF_OFFSET_BASE_SHIFT)
 #define  CFG_UDF_EOL3			(3 << CFG_UDF_OFFSET_BASE_SHIFT)
 
-<<<<<<< HEAD
 /* IPv6 slices */
 #define CORE_UDF_0_B_0_8_PORT_0		0x28500
 
@@ -458,10 +420,6 @@ enum bcm_sf2_reg_offs {
 /* Number of slices for IPv4, IPv6 and non-IP */
 #define UDF_NUM_SLICES			4
 #define UDFS_PER_SLICE			9
-=======
-/* Number of slices for IPv4, IPv6 and non-IP */
-#define UDF_NUM_SLICES			9
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Spacing between different slices */
 #define UDF_SLICE_OFFSET		0x40

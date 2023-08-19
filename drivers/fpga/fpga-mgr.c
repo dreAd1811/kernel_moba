@@ -1,33 +1,12 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * FPGA Manager Core
  *
  *  Copyright (C) 2013-2015 Altera Corporation
-<<<<<<< HEAD
  *  Copyright (C) 2017 Intel Corporation
  *
  * With code from the mailing list:
  * Copyright (C) 2013 Xilinx, Inc.
-=======
- *
- * With code from the mailing list:
- * Copyright (C) 2013 Xilinx, Inc.
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms and conditions of the GNU General Public License,
- * version 2, as published by the Free Software Foundation.
- *
- * This program is distributed in the hope it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
- * more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program.  If not, see <http://www.gnu.org/licenses/>.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #include <linux/firmware.h>
 #include <linux/fpga/fpga-mgr.h>
@@ -42,7 +21,6 @@
 static DEFINE_IDA(fpga_mgr_ida);
 static struct class *fpga_mgr_class;
 
-<<<<<<< HEAD
 /**
  * fpga_image_info_alloc - Allocate a FPGA image info struct
  * @dev: owning device
@@ -87,8 +65,6 @@ void fpga_image_info_free(struct fpga_image_info *info)
 }
 EXPORT_SYMBOL_GPL(fpga_image_info_free);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Call the low level driver's write_init function.  This will do the
  * device-specific things to get the FPGA into the state where it is ready to
@@ -195,14 +171,9 @@ static int fpga_mgr_write_complete(struct fpga_manager *mgr,
  *
  * Return: 0 on success, negative error code otherwise.
  */
-<<<<<<< HEAD
 static int fpga_mgr_buf_load_sg(struct fpga_manager *mgr,
 				struct fpga_image_info *info,
 				struct sg_table *sgt)
-=======
-int fpga_mgr_buf_load_sg(struct fpga_manager *mgr, struct fpga_image_info *info,
-			 struct sg_table *sgt)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret;
 
@@ -234,10 +205,6 @@ int fpga_mgr_buf_load_sg(struct fpga_manager *mgr, struct fpga_image_info *info,
 
 	return fpga_mgr_write_complete(mgr, info);
 }
-<<<<<<< HEAD
-=======
-EXPORT_SYMBOL_GPL(fpga_mgr_buf_load_sg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int fpga_mgr_buf_load_mapped(struct fpga_manager *mgr,
 				    struct fpga_image_info *info,
@@ -266,11 +233,7 @@ static int fpga_mgr_buf_load_mapped(struct fpga_manager *mgr,
 /**
  * fpga_mgr_buf_load - load fpga from image in buffer
  * @mgr:	fpga manager
-<<<<<<< HEAD
  * @info:	fpga image info
-=======
- * @flags:	flags setting fpga confuration modes
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @buf:	buffer contain fpga image
  * @count:	byte count of buf
  *
@@ -281,14 +244,9 @@ static int fpga_mgr_buf_load_mapped(struct fpga_manager *mgr,
  *
  * Return: 0 on success, negative error code otherwise.
  */
-<<<<<<< HEAD
 static int fpga_mgr_buf_load(struct fpga_manager *mgr,
 			     struct fpga_image_info *info,
 			     const char *buf, size_t count)
-=======
-int fpga_mgr_buf_load(struct fpga_manager *mgr, struct fpga_image_info *info,
-		      const char *buf, size_t count)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct page **pages;
 	struct sg_table sgt;
@@ -343,10 +301,6 @@ int fpga_mgr_buf_load(struct fpga_manager *mgr, struct fpga_image_info *info,
 
 	return rc;
 }
-<<<<<<< HEAD
-=======
-EXPORT_SYMBOL_GPL(fpga_mgr_buf_load);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * fpga_mgr_firmware_load - request firmware and load to fpga
@@ -362,15 +316,9 @@ EXPORT_SYMBOL_GPL(fpga_mgr_buf_load);
  *
  * Return: 0 on success, negative error code otherwise.
  */
-<<<<<<< HEAD
 static int fpga_mgr_firmware_load(struct fpga_manager *mgr,
 				  struct fpga_image_info *info,
 				  const char *image_name)
-=======
-int fpga_mgr_firmware_load(struct fpga_manager *mgr,
-			   struct fpga_image_info *info,
-			   const char *image_name)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct device *dev = &mgr->dev;
 	const struct firmware *fw;
@@ -393,7 +341,6 @@ int fpga_mgr_firmware_load(struct fpga_manager *mgr,
 
 	return ret;
 }
-<<<<<<< HEAD
 
 /**
  * fpga_mgr_load - load FPGA from scatter/gather table, buffer, or firmware
@@ -416,9 +363,6 @@ int fpga_mgr_load(struct fpga_manager *mgr, struct fpga_image_info *info)
 	return -EINVAL;
 }
 EXPORT_SYMBOL_GPL(fpga_mgr_load);
-=======
-EXPORT_SYMBOL_GPL(fpga_mgr_firmware_load);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static const char * const state_str[] = {
 	[FPGA_MGR_STATE_UNKNOWN] =		"unknown",
@@ -462,7 +406,6 @@ static ssize_t state_show(struct device *dev,
 	return sprintf(buf, "%s\n", state_str[mgr->state]);
 }
 
-<<<<<<< HEAD
 static ssize_t status_show(struct device *dev,
 			   struct device_attribute *attr, char *buf)
 {
@@ -492,18 +435,11 @@ static ssize_t status_show(struct device *dev,
 static DEVICE_ATTR_RO(name);
 static DEVICE_ATTR_RO(state);
 static DEVICE_ATTR_RO(status);
-=======
-static DEVICE_ATTR_RO(name);
-static DEVICE_ATTR_RO(state);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct attribute *fpga_mgr_attrs[] = {
 	&dev_attr_name.attr,
 	&dev_attr_state.attr,
-<<<<<<< HEAD
 	&dev_attr_status.attr,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	NULL,
 };
 ATTRIBUTE_GROUPS(fpga_mgr);
@@ -511,7 +447,6 @@ ATTRIBUTE_GROUPS(fpga_mgr);
 static struct fpga_manager *__fpga_mgr_get(struct device *dev)
 {
 	struct fpga_manager *mgr;
-<<<<<<< HEAD
 
 	mgr = to_fpga_manager(dev);
 
@@ -523,30 +458,6 @@ static struct fpga_manager *__fpga_mgr_get(struct device *dev)
 err_dev:
 	put_device(dev);
 	return ERR_PTR(-ENODEV);
-=======
-	int ret = -ENODEV;
-
-	mgr = to_fpga_manager(dev);
-	if (!mgr)
-		goto err_dev;
-
-	/* Get exclusive use of fpga manager */
-	if (!mutex_trylock(&mgr->ref_mutex)) {
-		ret = -EBUSY;
-		goto err_dev;
-	}
-
-	if (!try_module_get(dev->parent->driver->owner))
-		goto err_ll_mod;
-
-	return mgr;
-
-err_ll_mod:
-	mutex_unlock(&mgr->ref_mutex);
-err_dev:
-	put_device(dev);
-	return ERR_PTR(ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int fpga_mgr_dev_match(struct device *dev, const void *data)
@@ -555,17 +466,9 @@ static int fpga_mgr_dev_match(struct device *dev, const void *data)
 }
 
 /**
-<<<<<<< HEAD
  * fpga_mgr_get - Given a device, get a reference to a fpga mgr.
  * @dev:	parent device that fpga mgr was registered with
  *
-=======
- * fpga_mgr_get - get an exclusive reference to a fpga mgr
- * @dev:	parent device that fpga mgr was registered with
- *
- * Given a device, get an exclusive reference to a fpga mgr.
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Return: fpga manager struct or IS_ERR() condition containing error code.
  */
 struct fpga_manager *fpga_mgr_get(struct device *dev)
@@ -585,18 +488,10 @@ static int fpga_mgr_of_node_match(struct device *dev, const void *data)
 }
 
 /**
-<<<<<<< HEAD
  * of_fpga_mgr_get - Given a device node, get a reference to a fpga mgr.
  *
  * @node:	device node
  *
-=======
- * of_fpga_mgr_get - get an exclusive reference to a fpga mgr
- * @node:	device node
- *
- * Given a device node, get an exclusive reference to a fpga mgr.
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Return: fpga manager struct or IS_ERR() condition containing error code.
  */
 struct fpga_manager *of_fpga_mgr_get(struct device_node *node)
@@ -619,16 +514,11 @@ EXPORT_SYMBOL_GPL(of_fpga_mgr_get);
 void fpga_mgr_put(struct fpga_manager *mgr)
 {
 	module_put(mgr->dev.parent->driver->owner);
-<<<<<<< HEAD
-=======
-	mutex_unlock(&mgr->ref_mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	put_device(&mgr->dev);
 }
 EXPORT_SYMBOL_GPL(fpga_mgr_put);
 
 /**
-<<<<<<< HEAD
  * fpga_mgr_lock - Lock FPGA manager for exclusive use
  * @mgr:	fpga manager
  *
@@ -663,27 +553,16 @@ EXPORT_SYMBOL_GPL(fpga_mgr_unlock);
 
 /**
  * fpga_mgr_create - create and initialize a FPGA manager struct
-=======
- * fpga_mgr_register - register a low level fpga manager driver
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @dev:	fpga manager device from pdev
  * @name:	fpga manager name
  * @mops:	pointer to structure of fpga manager ops
  * @priv:	fpga manager private data
  *
-<<<<<<< HEAD
  * Return: pointer to struct fpga_manager or NULL
  */
 struct fpga_manager *fpga_mgr_create(struct device *dev, const char *name,
 				     const struct fpga_manager_ops *mops,
 				     void *priv)
-=======
- * Return: 0 on success, negative error code otherwise.
- */
-int fpga_mgr_register(struct device *dev, const char *name,
-		      const struct fpga_manager_ops *mops,
-		      void *priv)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct fpga_manager *mgr;
 	int id, ret;
@@ -692,29 +571,17 @@ int fpga_mgr_register(struct device *dev, const char *name,
 	    !mops->write_init || (!mops->write && !mops->write_sg) ||
 	    (mops->write && mops->write_sg)) {
 		dev_err(dev, "Attempt to register without fpga_manager_ops\n");
-<<<<<<< HEAD
 		return NULL;
-=======
-		return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (!name || !strlen(name)) {
 		dev_err(dev, "Attempt to register with no name!\n");
-<<<<<<< HEAD
 		return NULL;
-=======
-		return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	mgr = kzalloc(sizeof(*mgr), GFP_KERNEL);
 	if (!mgr)
-<<<<<<< HEAD
 		return NULL;
-=======
-		return -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	id = ida_simple_get(&fpga_mgr_ida, 0, 0, GFP_KERNEL);
 	if (id < 0) {
@@ -728,7 +595,6 @@ int fpga_mgr_register(struct device *dev, const char *name,
 	mgr->mops = mops;
 	mgr->priv = priv;
 
-<<<<<<< HEAD
 	device_initialize(&mgr->dev);
 	mgr->dev.class = fpga_mgr_class;
 	mgr->dev.groups = mops->groups;
@@ -772,8 +638,6 @@ int fpga_mgr_register(struct fpga_manager *mgr)
 {
 	int ret;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Initialize framework state by requesting low level driver read state
 	 * from device.  FPGA may be in reset mode or may have been programmed
@@ -781,20 +645,6 @@ int fpga_mgr_register(struct fpga_manager *mgr)
 	 */
 	mgr->state = mgr->mops->state(mgr);
 
-<<<<<<< HEAD
-=======
-	device_initialize(&mgr->dev);
-	mgr->dev.class = fpga_mgr_class;
-	mgr->dev.parent = dev;
-	mgr->dev.of_node = dev->of_node;
-	mgr->dev.id = id;
-	dev_set_drvdata(dev, mgr);
-
-	ret = dev_set_name(&mgr->dev, "fpga%d", id);
-	if (ret)
-		goto error_device;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = device_add(&mgr->dev);
 	if (ret)
 		goto error_device;
@@ -804,34 +654,18 @@ int fpga_mgr_register(struct fpga_manager *mgr)
 	return 0;
 
 error_device:
-<<<<<<< HEAD
 	ida_simple_remove(&fpga_mgr_ida, mgr->dev.id);
-=======
-	ida_simple_remove(&fpga_mgr_ida, id);
-error_kfree:
-	kfree(mgr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
 EXPORT_SYMBOL_GPL(fpga_mgr_register);
 
 /**
-<<<<<<< HEAD
  * fpga_mgr_unregister - unregister and free a FPGA manager
  * @mgr:	fpga manager struct
  */
 void fpga_mgr_unregister(struct fpga_manager *mgr)
 {
-=======
- * fpga_mgr_unregister - unregister a low level fpga manager driver
- * @dev:	fpga manager device from pdev
- */
-void fpga_mgr_unregister(struct device *dev)
-{
-	struct fpga_manager *mgr = dev_get_drvdata(dev);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_info(&mgr->dev, "%s %s\n", __func__, mgr->name);
 
 	/*
@@ -849,12 +683,7 @@ static void fpga_mgr_dev_release(struct device *dev)
 {
 	struct fpga_manager *mgr = to_fpga_manager(dev);
 
-<<<<<<< HEAD
 	fpga_mgr_free(mgr);
-=======
-	ida_simple_remove(&fpga_mgr_ida, mgr->dev.id);
-	kfree(mgr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int __init fpga_mgr_class_init(void)
@@ -877,11 +706,7 @@ static void __exit fpga_mgr_class_exit(void)
 	ida_destroy(&fpga_mgr_ida);
 }
 
-<<<<<<< HEAD
 MODULE_AUTHOR("Alan Tull <atull@kernel.org>");
-=======
-MODULE_AUTHOR("Alan Tull <atull@opensource.altera.com>");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_DESCRIPTION("FPGA manager framework");
 MODULE_LICENSE("GPL v2");
 

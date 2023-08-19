@@ -117,7 +117,6 @@
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
 		usb0: ohci@4c000000 {
 			compatible = "marvell,pxa-ohci";
 			reg = <0x4c000000 0x10000>;
@@ -125,8 +124,6 @@
 			status = "disabled";
 		};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mmc0: mmc@41100000 {
 			compatible = "marvell,pxa-mmc";
 			reg = <0x41100000 0x1000>;
@@ -144,11 +141,7 @@
 			interrupts = <30 31>;
 		};
 
-<<<<<<< HEAD
 		lcdc: lcd-controller@40500000 {
-=======
-		lcd-controller@40500000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "marvell,pxa2xx-lcdc";
 			reg = <0x44000000 0x10000>;
 			interrupts = <17>;

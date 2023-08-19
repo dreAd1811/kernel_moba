@@ -19,14 +19,4 @@
 void kernel_neon_begin(void);
 void kernel_neon_end(void);
 
-<<<<<<< HEAD
-=======
-/*
- * Temporary macro to allow the crypto code to compile. Note that the
- * semantics of kernel_neon_begin_partial() are now different from the
- * original as it does not allow being called in an interrupt context.
- */
-#define kernel_neon_begin_partial(num_regs)	kernel_neon_begin()
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* ! __ASM_NEON_H */

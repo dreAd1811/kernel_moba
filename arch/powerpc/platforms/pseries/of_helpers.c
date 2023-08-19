@@ -3,10 +3,7 @@
 #include <linux/err.h>
 #include <linux/slab.h>
 #include <linux/of.h>
-<<<<<<< HEAD
 #include <asm/prom.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "of_helpers.h"
 
@@ -41,7 +38,6 @@ struct device_node *pseries_of_derive_parent(const char *path)
 		kfree(parent_path);
 	return parent ? parent : ERR_PTR(-EINVAL);
 }
-<<<<<<< HEAD
 
 
 /* Helper Routines to convert between drc_index to cpu numbers */
@@ -101,5 +97,3 @@ int of_read_drc_info_cell(struct property **prop, const __be32 **curval,
 	return 0;
 }
 EXPORT_SYMBOL(of_read_drc_info_cell);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

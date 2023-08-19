@@ -204,11 +204,8 @@ at91_clk_register_programmable(struct regmap *regmap,
 	if (ret) {
 		kfree(prog);
 		hw = ERR_PTR(ret);
-<<<<<<< HEAD
 	} else {
 		pmc_register_pck(id);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return hw;

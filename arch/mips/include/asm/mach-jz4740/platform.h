@@ -29,10 +29,6 @@ extern struct platform_device jz4740_i2s_device;
 extern struct platform_device jz4740_pcm_device;
 extern struct platform_device jz4740_codec_device;
 extern struct platform_device jz4740_adc_device;
-<<<<<<< HEAD
-=======
-extern struct platform_device jz4740_wdt_device;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern struct platform_device jz4740_pwm_device;
 extern struct platform_device jz4740_dma_device;
 

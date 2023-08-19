@@ -14,10 +14,7 @@
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/types.h>
-<<<<<<< HEAD
 #include <linux/pci.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/percpu-defs.h>
 #include <linux/init.h>
 #include <linux/mod_devicetable.h>
@@ -113,15 +110,11 @@ out:
 static int __init amd_freq_sensitivity_init(void)
 {
 	u64 val;
-<<<<<<< HEAD
 	struct pci_dev *pcidev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD)
 		return -ENODEV;
 
-<<<<<<< HEAD
 	pcidev = pci_get_device(PCI_VENDOR_ID_AMD,
 			PCI_DEVICE_ID_AMD_KERNCZ_SMBUS, NULL);
 
@@ -129,10 +122,6 @@ static int __init amd_freq_sensitivity_init(void)
 		if (!static_cpu_has(X86_FEATURE_PROC_FEEDBACK))
 			return -ENODEV;
 	}
-=======
-	if (!static_cpu_has(X86_FEATURE_PROC_FEEDBACK))
-		return -ENODEV;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (rdmsrl_safe(MSR_AMD64_FREQ_SENSITIVITY_ACTUAL, &val))
 		return -ENODEV;

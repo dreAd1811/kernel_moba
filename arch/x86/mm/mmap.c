@@ -33,11 +33,8 @@
 #include <linux/compat.h>
 #include <asm/elf.h>
 
-<<<<<<< HEAD
 #include "physaddr.h"
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct va_alignment __read_mostly va_align = {
 	.flags = -1,
 };
@@ -93,16 +90,10 @@ unsigned long arch_mmap_rnd(void)
 	return arch_rnd(mmap_is_ia32() ? mmap32_rnd_bits : mmap64_rnd_bits);
 }
 
-<<<<<<< HEAD
 static unsigned long mmap_base(unsigned long rnd, unsigned long task_size,
 			       struct rlimit *rlim_stack)
 {
 	unsigned long gap = rlim_stack->rlim_cur;
-=======
-static unsigned long mmap_base(unsigned long rnd, unsigned long task_size)
-{
-	unsigned long gap = rlimit(RLIMIT_STACK);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long pad = stack_maxrandom_size(task_size) + stack_guard_gap;
 	unsigned long gap_min, gap_max;
 
@@ -136,28 +127,17 @@ static unsigned long mmap_legacy_base(unsigned long rnd,
  * process VM image, sets up which VM layout function to use:
  */
 static void arch_pick_mmap_base(unsigned long *base, unsigned long *legacy_base,
-<<<<<<< HEAD
 		unsigned long random_factor, unsigned long task_size,
 		struct rlimit *rlim_stack)
-=======
-		unsigned long random_factor, unsigned long task_size)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	*legacy_base = mmap_legacy_base(random_factor, task_size);
 	if (mmap_is_legacy())
 		*base = *legacy_base;
 	else
-<<<<<<< HEAD
 		*base = mmap_base(random_factor, task_size, rlim_stack);
 }
 
 void arch_pick_mmap_layout(struct mm_struct *mm, struct rlimit *rlim_stack)
-=======
-		*base = mmap_base(random_factor, task_size);
-}
-
-void arch_pick_mmap_layout(struct mm_struct *mm)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (mmap_is_legacy())
 		mm->get_unmapped_area = arch_get_unmapped_area;
@@ -165,12 +145,8 @@ void arch_pick_mmap_layout(struct mm_struct *mm)
 		mm->get_unmapped_area = arch_get_unmapped_area_topdown;
 
 	arch_pick_mmap_base(&mm->mmap_base, &mm->mmap_legacy_base,
-<<<<<<< HEAD
 			arch_rnd(mmap64_rnd_bits), task_size_64bit(0),
 			rlim_stack);
-=======
-			arch_rnd(mmap64_rnd_bits), task_size_64bit(0));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_HAVE_ARCH_COMPAT_MMAP_BASES
 	/*
@@ -180,12 +156,8 @@ void arch_pick_mmap_layout(struct mm_struct *mm)
 	 * mmap_base, the compat syscall uses mmap_compat_base.
 	 */
 	arch_pick_mmap_base(&mm->mmap_compat_base, &mm->mmap_compat_legacy_base,
-<<<<<<< HEAD
 			arch_rnd(mmap32_rnd_bits), task_size_32bit(),
 			rlim_stack);
-=======
-			arch_rnd(mmap32_rnd_bits), task_size_32bit());
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 }
 
@@ -209,7 +181,6 @@ const char *arch_vma_name(struct vm_area_struct *vma)
 	return NULL;
 }
 
-<<<<<<< HEAD
 /**
  * mmap_address_hint_valid - Validate the address hint of mmap
  * @addr:	Address hint
@@ -270,8 +241,6 @@ int valid_mmap_phys_addr_range(unsigned long pfn, size_t count)
 	return phys_addr_valid(addr + count - 1);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Only allow root to set high MMIO mappings to PROT_NONE.
  * This prevents an unpriv. user to set them to PROT_NONE and invert

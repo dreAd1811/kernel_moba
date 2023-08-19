@@ -190,15 +190,8 @@ qed_dcbx_dp_protocol(struct qed_hwfn *p_hwfn, struct qed_dcbx_results *p_data)
 
 static void
 qed_dcbx_set_params(struct qed_dcbx_results *p_data,
-<<<<<<< HEAD
 		    struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt,
 		    bool app_tlv, bool enable, u8 prio, u8 tc,
-=======
-		    struct qed_hw_info *p_info,
-		    bool enable,
-		    u8 prio,
-		    u8 tc,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    enum dcbx_protocol_type type,
 		    enum qed_pci_personality personality)
 {
@@ -211,7 +204,6 @@ qed_dcbx_set_params(struct qed_dcbx_results *p_data,
 	else
 		p_data->arr[type].update = DONT_UPDATE_DCB_DSCP;
 
-<<<<<<< HEAD
 	/* Do not add vlan tag 0 when DCB is enabled and port in UFP/OV mode */
 	if ((test_bit(QED_MF_8021Q_TAGGING, &p_hwfn->cdev->mf_bits) ||
 	     test_bit(QED_MF_8021AD_TAGGING, &p_hwfn->cdev->mf_bits)))
@@ -227,33 +219,17 @@ qed_dcbx_set_params(struct qed_dcbx_results *p_data,
 		qed_wr(p_hwfn, p_ptt, DORQ_REG_TAG1_OVRD_MODE, 1);
 		qed_wr(p_hwfn, p_ptt, DORQ_REG_PF_PCP_BB_K2, prio << 1);
 	}
-=======
-	/* QM reconf data */
-	if (p_info->personality == personality)
-		p_info->offload_tc = tc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Update app protocol data and hw_info fields with the TLV info */
 static void
 qed_dcbx_update_app_info(struct qed_dcbx_results *p_data,
-<<<<<<< HEAD
 			 struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt,
 			 bool app_tlv, bool enable, u8 prio, u8 tc,
 			 enum dcbx_protocol_type type)
 {
 	enum qed_pci_personality personality;
 	enum dcbx_protocol_type id;
-=======
-			 struct qed_hwfn *p_hwfn,
-			 bool enable,
-			 u8 prio, u8 tc, enum dcbx_protocol_type type)
-{
-	struct qed_hw_info *p_info = &p_hwfn->hw_info;
-	enum qed_pci_personality personality;
-	enum dcbx_protocol_type id;
-	char *name;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 
 	for (i = 0; i < ARRAY_SIZE(qed_dcbx_app_update); i++) {
@@ -263,14 +239,8 @@ qed_dcbx_update_app_info(struct qed_dcbx_results *p_data,
 			continue;
 
 		personality = qed_dcbx_app_update[i].personality;
-<<<<<<< HEAD
 
 		qed_dcbx_set_params(p_data, p_hwfn, p_ptt, app_tlv, enable,
-=======
-		name = qed_dcbx_app_update[i].name;
-
-		qed_dcbx_set_params(p_data, p_info, enable,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    prio, tc, type, personality);
 	}
 }
@@ -304,23 +274,14 @@ qed_dcbx_get_app_protocol_type(struct qed_hwfn *p_hwfn,
  * reconfiguring QM. Get protocol specific data for PF update ramrod command.
  */
 static int
-<<<<<<< HEAD
 qed_dcbx_process_tlv(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt,
-=======
-qed_dcbx_process_tlv(struct qed_hwfn *p_hwfn,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		     struct qed_dcbx_results *p_data,
 		     struct dcbx_app_priority_entry *p_tbl,
 		     u32 pri_tc_tbl, int count, u8 dcbx_version)
 {
 	enum dcbx_protocol_type type;
-<<<<<<< HEAD
 	bool enable, ieee, eth_tlv;
 	u8 tc, priority_map;
-=======
-	u8 tc, priority_map;
-	bool enable, ieee;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 protocol_id;
 	int priority;
 	int i;
@@ -328,10 +289,7 @@ qed_dcbx_process_tlv(struct qed_hwfn *p_hwfn,
 	DP_VERBOSE(p_hwfn, QED_MSG_DCB, "Num APP entries = %d\n", count);
 
 	ieee = (dcbx_version == DCBX_CONFIG_VERSION_IEEE);
-<<<<<<< HEAD
 	eth_tlv = false;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Parse APP TLV */
 	for (i = 0; i < count; i++) {
 		protocol_id = QED_MFW_GET_FIELD(p_tbl[i].entry,
@@ -353,7 +311,6 @@ qed_dcbx_process_tlv(struct qed_hwfn *p_hwfn,
 			 * indication, but we only got here if there was an
 			 * app tlv for the protocol, so dcbx must be enabled.
 			 */
-<<<<<<< HEAD
 			if (type == DCBX_PROTOCOL_ETH) {
 				enable = false;
 				eth_tlv = true;
@@ -370,15 +327,6 @@ qed_dcbx_process_tlv(struct qed_hwfn *p_hwfn,
 	if (test_bit(QED_MF_UFP_SPECIFIC, &p_hwfn->cdev->mf_bits) && !eth_tlv)
 		p_data->arr[DCBX_PROTOCOL_ETH].tc = p_hwfn->ufp_info.tc;
 
-=======
-			enable = !(type == DCBX_PROTOCOL_ETH);
-
-			qed_dcbx_update_app_info(p_data, p_hwfn, enable,
-						 priority, tc, type);
-		}
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Update ramrod protocol data and hw_info fields
 	 * with default info when corresponding APP TLV's are not detected.
 	 * The enabled field has a different logic for ethernet as only for
@@ -392,11 +340,7 @@ qed_dcbx_process_tlv(struct qed_hwfn *p_hwfn,
 			continue;
 
 		enable = (type == DCBX_PROTOCOL_ETH) ? false : !!dcbx_version;
-<<<<<<< HEAD
 		qed_dcbx_update_app_info(p_data, p_hwfn, p_ptt, false, enable,
-=======
-		qed_dcbx_update_app_info(p_data, p_hwfn, enable,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 priority, tc, type);
 	}
 
@@ -406,12 +350,8 @@ qed_dcbx_process_tlv(struct qed_hwfn *p_hwfn,
 /* Parse app TLV's to update TC information in hw_info structure for
  * reconfiguring QM. Get protocol specific data for PF update ramrod command.
  */
-<<<<<<< HEAD
 static int
 qed_dcbx_process_mib_info(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt)
-=======
-static int qed_dcbx_process_mib_info(struct qed_hwfn *p_hwfn)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct dcbx_app_priority_feature *p_app;
 	struct dcbx_app_priority_entry *p_tbl;
@@ -435,11 +375,7 @@ static int qed_dcbx_process_mib_info(struct qed_hwfn *p_hwfn)
 	p_info = &p_hwfn->hw_info;
 	num_entries = QED_MFW_GET_FIELD(p_app->flags, DCBX_APP_NUM_ENTRIES);
 
-<<<<<<< HEAD
 	rc = qed_dcbx_process_tlv(p_hwfn, p_ptt, &data, p_tbl, pri_tc_tbl,
-=======
-	rc = qed_dcbx_process_tlv(p_hwfn, &data, p_tbl, pri_tc_tbl,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  num_entries, dcbx_version);
 	if (rc)
 		return rc;
@@ -941,11 +877,7 @@ static int qed_dcbx_read_mib(struct qed_hwfn *p_hwfn,
 	return rc;
 }
 
-<<<<<<< HEAD
 static void qed_dcbx_aen(struct qed_hwfn *hwfn, u32 mib_type)
-=======
-void qed_dcbx_aen(struct qed_hwfn *hwfn, u32 mib_type)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct qed_common_cb_ops *op = hwfn->cdev->protocol_ops.common;
 	void *cookie = hwfn->cdev->ops_cookie;
@@ -969,11 +901,7 @@ qed_dcbx_mib_update_event(struct qed_hwfn *p_hwfn,
 		return rc;
 
 	if (type == QED_DCBX_OPERATIONAL_MIB) {
-<<<<<<< HEAD
 		rc = qed_dcbx_process_mib_info(p_hwfn, p_ptt);
-=======
-		rc = qed_dcbx_process_mib_info(p_hwfn);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!rc) {
 			/* reconfigure tcs of QM queues according
 			 * to negotiation results
@@ -1036,10 +964,7 @@ static void qed_dcbx_update_protocol_data(struct protocol_dcb_data *p_data,
 	p_data->dcb_enable_flag = p_src->arr[type].enable;
 	p_data->dcb_priority = p_src->arr[type].priority;
 	p_data->dcb_tc = p_src->arr[type].tc;
-<<<<<<< HEAD
 	p_data->dcb_dont_add_vlan0 = p_src->arr[type].dont_add_vlan0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Set pf update ramrod command params */
@@ -1047,13 +972,7 @@ void qed_dcbx_set_pf_update_params(struct qed_dcbx_results *p_src,
 				   struct pf_update_ramrod_data *p_dest)
 {
 	struct protocol_dcb_data *p_dcb_data;
-<<<<<<< HEAD
 	u8 update_flag;
-=======
-	bool update_flag = false;
-
-	p_dest->pf_id = p_src->pf_id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	update_flag = p_src->arr[DCBX_PROTOCOL_FCOE].update;
 	p_dest->update_fcoe_dcb_data_mode = update_flag;
@@ -1081,7 +1000,6 @@ void qed_dcbx_set_pf_update_params(struct qed_dcbx_results *p_src,
 	qed_dcbx_update_protocol_data(p_dcb_data, p_src, DCBX_PROTOCOL_ETH);
 }
 
-<<<<<<< HEAD
 u8 qed_dcbx_get_priority_tc(struct qed_hwfn *p_hwfn, u8 pri)
 {
 	struct qed_dcbx_get *dcbx_info = &p_hwfn->p_dcbx_info->get;
@@ -1100,8 +1018,6 @@ u8 qed_dcbx_get_priority_tc(struct qed_hwfn *p_hwfn, u8 pri)
 	return dcbx_info->operational.params.ets_pri_tc_tbl[pri];
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_DCB
 static int qed_dcbx_query_params(struct qed_hwfn *p_hwfn,
 				 struct qed_dcbx_get *p_get,
@@ -1395,18 +1311,10 @@ static struct qed_dcbx_get *qed_dcbnl_get_dcbx(struct qed_hwfn *hwfn,
 {
 	struct qed_dcbx_get *dcbx_info;
 
-<<<<<<< HEAD
 	dcbx_info = kzalloc(sizeof(*dcbx_info), GFP_ATOMIC);
 	if (!dcbx_info)
 		return NULL;
 
-=======
-	dcbx_info = kmalloc(sizeof(*dcbx_info), GFP_ATOMIC);
-	if (!dcbx_info)
-		return NULL;
-
-	memset(dcbx_info, 0, sizeof(*dcbx_info));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (qed_dcbx_query_params(hwfn, dcbx_info, type)) {
 		kfree(dcbx_info);
 		return NULL;
@@ -2431,11 +2339,7 @@ static int qed_dcbnl_ieee_setapp(struct qed_dev *cdev, struct dcb_app *app)
 
 	DP_VERBOSE(hwfn, QED_MSG_DCB, "selector = %d protocol = %d pri = %d\n",
 		   app->selector, app->protocol, app->priority);
-<<<<<<< HEAD
 	if (app->priority >= QED_MAX_PFC_PRIORITIES) {
-=======
-	if (app->priority < 0 || app->priority >= QED_MAX_PFC_PRIORITIES) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		DP_INFO(hwfn, "Invalid priority %d\n", app->priority);
 		return -EINVAL;
 	}

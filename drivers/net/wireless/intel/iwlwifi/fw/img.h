@@ -8,10 +8,7 @@
  * Copyright(c) 2008 - 2014 Intel Corporation. All rights reserved.
  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
  * Copyright(c) 2016        Intel Deutschland GmbH
-<<<<<<< HEAD
  * Copyright(c) 2018 Intel Corporation
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of version 2 of the GNU General Public License as
@@ -39,10 +36,7 @@
  * Copyright(c) 2005 - 2014 Intel Corporation. All rights reserved.
  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
  * Copyright(c) 2016        Intel Deutschland GmbH
-<<<<<<< HEAD
  * Copyright(c) 2018 Intel Corporation
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -146,14 +140,6 @@ struct fw_img {
 	u32 paging_mem_size;
 };
 
-<<<<<<< HEAD
-=======
-struct iwl_sf_region {
-	u32 addr;
-	u32 size;
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Block paging calculations
  */
@@ -207,44 +193,6 @@ struct iwl_fw_cscheme_list {
 } __packed;
 
 /**
-<<<<<<< HEAD
-=======
- * struct iwl_gscan_capabilities - gscan capabilities supported by FW
- * @max_scan_cache_size: total space allocated for scan results (in bytes).
- * @max_scan_buckets: maximum number of channel buckets.
- * @max_ap_cache_per_scan: maximum number of APs that can be stored per scan.
- * @max_rssi_sample_size: number of RSSI samples used for averaging RSSI.
- * @max_scan_reporting_threshold: max possible report threshold. in percentage.
- * @max_hotlist_aps: maximum number of entries for hotlist APs.
- * @max_significant_change_aps: maximum number of entries for significant
- *	change APs.
- * @max_bssid_history_entries: number of BSSID/RSSI entries that the device can
- *	hold.
- * @max_hotlist_ssids: maximum number of entries for hotlist SSIDs.
- * @max_number_epno_networks: max number of epno entries.
- * @max_number_epno_networks_by_ssid: max number of epno entries if ssid is
- *	specified.
- * @max_number_of_white_listed_ssid: max number of white listed SSIDs.
- * @max_number_of_black_listed_ssid: max number of black listed SSIDs.
- */
-struct iwl_gscan_capabilities {
-	u32 max_scan_cache_size;
-	u32 max_scan_buckets;
-	u32 max_ap_cache_per_scan;
-	u32 max_rssi_sample_size;
-	u32 max_scan_reporting_threshold;
-	u32 max_hotlist_aps;
-	u32 max_significant_change_aps;
-	u32 max_bssid_history_entries;
-	u32 max_hotlist_ssids;
-	u32 max_number_epno_networks;
-	u32 max_number_epno_networks_by_ssid;
-	u32 max_number_of_white_listed_ssid;
-	u32 max_number_of_black_listed_ssid;
-};
-
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * enum iwl_fw_type - iwlwifi firmware type
  * @IWL_FW_DVM: DVM firmware
  * @IWL_FW_MVM: MVM firmware
@@ -260,11 +208,8 @@ enum iwl_fw_type {
  * @ucode_ver: ucode version from the ucode file
  * @fw_version: firmware version string
  * @img: ucode image like ucode_rt, ucode_init, ucode_wowlan.
-<<<<<<< HEAD
  * @iml_len: length of the image loader image
  * @iml: image loader fw image
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @ucode_capa: capabilities parsed from the ucode file.
  * @enhance_sensitivity_table: device can do enhanced sensitivity.
  * @init_evtlog_ptr: event log offset for init ucode.
@@ -276,10 +221,6 @@ enum iwl_fw_type {
  * @type: firmware type (&enum iwl_fw_type)
  * @cipher_scheme: optional external cipher scheme.
  * @human_readable: human readable version
-<<<<<<< HEAD
-=======
- * @sdio_adma_addr: the default address to set for the ADMA in SDIO mode until
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *	we get the ALIVE from the uCode
  * @dbg_dest_tlv: points to the destination TLV for debug
  * @dbg_conf_tlv: array of pointers to configuration TLVs for debug
@@ -295,11 +236,8 @@ struct iwl_fw {
 
 	/* ucode images */
 	struct fw_img img[IWL_UCODE_TYPE_MAX];
-<<<<<<< HEAD
 	size_t iml_len;
 	u8 *iml;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct iwl_ucode_capabilities ucode_capa;
 	bool enhance_sensitivity_table;
@@ -317,13 +255,7 @@ struct iwl_fw {
 	struct iwl_fw_cipher_scheme cs[IWL_UCODE_MAX_CS];
 	u8 human_readable[FW_VER_HUMAN_READABLE_SZ];
 
-<<<<<<< HEAD
 	struct iwl_fw_dbg_dest_tlv_v1 *dbg_dest_tlv;
-=======
-	u32 sdio_adma_addr;
-
-	struct iwl_fw_dbg_dest_tlv *dbg_dest_tlv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct iwl_fw_dbg_conf_tlv *dbg_conf_tlv[FW_DBG_CONF_MAX];
 	size_t dbg_conf_tlv_len[FW_DBG_CONF_MAX];
 	struct iwl_fw_dbg_trigger_tlv *dbg_trigger_tlv[FW_DBG_TRIGGER_MAX];
@@ -331,11 +263,7 @@ struct iwl_fw {
 	size_t n_dbg_mem_tlv;
 	size_t dbg_trigger_tlv_len[FW_DBG_TRIGGER_MAX];
 	u8 dbg_dest_reg_num;
-<<<<<<< HEAD
 	u32 dbg_dump_mask;
-=======
-	struct iwl_gscan_capabilities gscan_capa;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static inline const char *get_fw_dbg_mode_string(int mode)

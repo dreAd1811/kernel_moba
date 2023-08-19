@@ -507,25 +507,15 @@ static int moxart_mac_probe(struct platform_device *pdev)
 		goto init_fail;
 	}
 
-<<<<<<< HEAD
 	priv->tx_buf_base = kmalloc_array(priv->tx_buf_size, TX_DESC_NUM,
 					  GFP_ATOMIC);
-=======
-	priv->tx_buf_base = kmalloc(priv->tx_buf_size * TX_DESC_NUM,
-				    GFP_ATOMIC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!priv->tx_buf_base) {
 		ret = -ENOMEM;
 		goto init_fail;
 	}
 
-<<<<<<< HEAD
 	priv->rx_buf_base = kmalloc_array(priv->rx_buf_size, RX_DESC_NUM,
 					  GFP_ATOMIC);
-=======
-	priv->rx_buf_base = kmalloc(priv->rx_buf_size * RX_DESC_NUM,
-				    GFP_ATOMIC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!priv->rx_buf_base) {
 		ret = -ENOMEM;
 		goto init_fail;
@@ -571,11 +561,7 @@ static int moxart_remove(struct platform_device *pdev)
 	struct net_device *ndev = platform_get_drvdata(pdev);
 
 	unregister_netdev(ndev);
-<<<<<<< HEAD
 	free_irq(ndev->irq, ndev);
-=======
-	devm_free_irq(&pdev->dev, ndev->irq, ndev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	moxart_mac_free_memory(ndev);
 	free_netdev(ndev);
 

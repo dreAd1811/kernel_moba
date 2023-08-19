@@ -47,7 +47,6 @@
 / {
 	model = "ZII RDU2+ Board";
 	compatible = "zii,imx6qp-zii-rdu2", "fsl,imx6qp";
-<<<<<<< HEAD
 
 	/* Will be filled by the bootloader */
 	memory@10000000 {
@@ -58,6 +57,4 @@
 &gpu_3d {
 	assigned-clocks = <&clks IMX6QDL_CLK_GPU3D_SHADER_SEL>;
 	assigned-clock-parents = <&clks IMX6QDL_CLK_PLL2_PFD1_594M>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

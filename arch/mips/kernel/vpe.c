@@ -134,11 +134,7 @@ void release_vpe(struct vpe *v)
 {
 	list_del(&v->list);
 	if (v->load_addr)
-<<<<<<< HEAD
 		release_progmem(v);
-=======
-		release_progmem(v->load_addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(v);
 }
 
@@ -876,11 +872,7 @@ static ssize_t vpe_write(struct file *file, const char __user *buffer,
 		return -ENODEV;
 
 	if ((count + v->len) > v->plen) {
-<<<<<<< HEAD
 		pr_warn("VPE loader: elf size too big. Perhaps strip unneeded symbols\n");
-=======
-		pr_warn("VPE loader: elf size too big. Perhaps strip uneeded symbols\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOMEM;
 	}
 

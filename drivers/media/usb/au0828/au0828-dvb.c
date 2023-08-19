@@ -105,15 +105,9 @@ static struct tda18271_config hauppauge_woodbury_tunerconfig = {
 
 static void au0828_restart_dvb_streaming(struct work_struct *work);
 
-<<<<<<< HEAD
 static void au0828_bulk_timeout(struct timer_list *t)
 {
 	struct au0828_dev *dev = from_timer(dev, t, bulk_timeout);
-=======
-static void au0828_bulk_timeout(unsigned long data)
-{
-	struct au0828_dev *dev = (struct au0828_dev *) data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dprintk(1, "%s called\n", __func__);
 	dev->bulk_timeout_running = 0;
@@ -654,13 +648,7 @@ int au0828_dvb_register(struct au0828_dev *dev)
 		return ret;
 	}
 
-<<<<<<< HEAD
 	timer_setup(&dev->bulk_timeout, au0828_bulk_timeout, 0);
-=======
-	dev->bulk_timeout.function = au0828_bulk_timeout;
-	dev->bulk_timeout.data = (unsigned long) dev;
-	init_timer(&dev->bulk_timeout);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

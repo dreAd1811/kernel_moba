@@ -216,11 +216,6 @@ struct x86_emulate_ops {
 	void (*halt)(struct x86_emulate_ctxt *ctxt);
 	void (*wbinvd)(struct x86_emulate_ctxt *ctxt);
 	int (*fix_hypercall)(struct x86_emulate_ctxt *ctxt);
-<<<<<<< HEAD
-=======
-	void (*get_fpu)(struct x86_emulate_ctxt *ctxt); /* disables preempt */
-	void (*put_fpu)(struct x86_emulate_ctxt *ctxt); /* reenables preempt */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int (*intercept)(struct x86_emulate_ctxt *ctxt,
 			 struct x86_instruction_info *info,
 			 enum x86_intercept_stage stage);
@@ -231,11 +226,8 @@ struct x86_emulate_ops {
 
 	unsigned (*get_hflags)(struct x86_emulate_ctxt *ctxt);
 	void (*set_hflags)(struct x86_emulate_ctxt *ctxt, unsigned hflags);
-<<<<<<< HEAD
 	int (*pre_leave_smm)(struct x86_emulate_ctxt *ctxt, u64 smbase);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 typedef u32 __attribute__((vector_size(16))) sse128_t;

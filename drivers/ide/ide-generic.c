@@ -13,20 +13,10 @@
 #include <linux/ide.h>
 #include <linux/pci_ids.h>
 
-<<<<<<< HEAD
 /* FIXME: convert arm to use ide_platform host driver */
 #ifdef CONFIG_ARM
 #include <asm/irq.h>
 #endif
-=======
-/* FIXME: convert arm and m32r to use ide_platform host driver */
-#ifdef CONFIG_ARM
-#include <asm/irq.h>
-#endif
-#ifdef CONFIG_M32R
-#include <asm/m32r.h>
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DRV_NAME	"ide_generic"
 
@@ -42,16 +32,6 @@ static const struct ide_port_info ide_generic_port_info = {
 #ifdef CONFIG_ARM
 static const u16 legacy_bases[] = { 0x1f0 };
 static const int legacy_irqs[]  = { IRQ_HARDDISK };
-<<<<<<< HEAD
-=======
-#elif defined(CONFIG_PLAT_M32700UT) || defined(CONFIG_PLAT_MAPPI2) || \
-      defined(CONFIG_PLAT_OPSPUT)
-static const u16 legacy_bases[] = { 0x1f0 };
-static const int legacy_irqs[]  = { PLD_IRQ_CFIREQ };
-#elif defined(CONFIG_PLAT_MAPPI3)
-static const u16 legacy_bases[] = { 0x1f0, 0x170 };
-static const int legacy_irqs[]  = { PLD_IRQ_CFIREQ, PLD_IRQ_IDEIREQ };
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #elif defined(CONFIG_ALPHA)
 static const u16 legacy_bases[] = { 0x1f0, 0x170, 0x1e8, 0x168 };
 static const int legacy_irqs[]  = { 14, 15, 11, 10 };

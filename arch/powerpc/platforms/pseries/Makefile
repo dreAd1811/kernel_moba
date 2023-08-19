@@ -25,10 +25,6 @@ obj-$(CONFIG_LPARCFG)		+= lparcfg.o
 obj-$(CONFIG_IBMVIO)		+= vio.o
 obj-$(CONFIG_IBMEBUS)		+= ibmebus.o
 
-<<<<<<< HEAD
 ifdef CONFIG_PPC_PSERIES
-=======
-ifeq ($(CONFIG_PPC_PSERIES),y)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 obj-$(CONFIG_SUSPEND)		+= suspend.o
 endif

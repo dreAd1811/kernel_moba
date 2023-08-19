@@ -30,7 +30,6 @@
 #define VENDOR_V_22	0x12
 #define VENDOR_V_23	0x13
 
-<<<<<<< HEAD
 #define MMC_TIMING_NUM (MMC_TIMING_MMC_HS400 + 1)
 
 struct esdhc_clk_fixup {
@@ -75,17 +74,12 @@ static const struct of_device_id sdhci_esdhc_of_match[] = {
 };
 MODULE_DEVICE_TABLE(of, sdhci_esdhc_of_match);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct sdhci_esdhc {
 	u8 vendor_ver;
 	u8 spec_ver;
 	bool quirk_incorrect_hostver;
 	unsigned int peripheral_clock;
-<<<<<<< HEAD
 	const struct esdhc_clk_fixup *clk_fixup;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -558,10 +552,7 @@ static void esdhc_of_set_clock(struct sdhci_host *host, unsigned int clock)
 	int pre_div = 1;
 	int div = 1;
 	ktime_t timeout;
-<<<<<<< HEAD
 	long fixup = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 temp;
 
 	host->mmc->actual_clock = 0;
@@ -575,7 +566,6 @@ static void esdhc_of_set_clock(struct sdhci_host *host, unsigned int clock)
 	if (esdhc->vendor_ver < VENDOR_V_23)
 		pre_div = 2;
 
-<<<<<<< HEAD
 	if (host->mmc->card && mmc_card_sd(host->mmc->card) &&
 		esdhc->clk_fixup && host->mmc->ios.timing == MMC_TIMING_LEGACY)
 		fixup = esdhc->clk_fixup->sd_dflt_max_clk;
@@ -584,29 +574,6 @@ static void esdhc_of_set_clock(struct sdhci_host *host, unsigned int clock)
 
 	if (fixup && clock > fixup)
 		clock = fixup;
-=======
-	/*
-	 * Limit SD clock to 167MHz for ls1046a according to its datasheet
-	 */
-	if (clock > 167000000 &&
-	    of_find_compatible_node(NULL, NULL, "fsl,ls1046a-esdhc"))
-		clock = 167000000;
-
-	/*
-	 * Limit SD clock to 125MHz for ls1012a according to its datasheet
-	 */
-	if (clock > 125000000 &&
-	    of_find_compatible_node(NULL, NULL, "fsl,ls1012a-esdhc"))
-		clock = 125000000;
-
-	/* Workaround to reduce the clock frequency for p1010 esdhc */
-	if (of_find_compatible_node(NULL, NULL, "fsl,p1010-esdhc")) {
-		if (clock > 20000000)
-			clock -= 5000000;
-		if (clock > 40000000)
-			clock -= 5000000;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	temp = sdhci_readl(host, ESDHC_SYSTEM_CONTROL);
 	temp &= ~(ESDHC_CLOCK_SDCLKEN | ESDHC_CLOCK_IPGEN | ESDHC_CLOCK_HCKEN |
@@ -681,12 +648,9 @@ static void esdhc_reset(struct sdhci_host *host, u8 mask)
 	sdhci_writel(host, host->ier, SDHCI_INT_ENABLE);
 	sdhci_writel(host, host->ier, SDHCI_SIGNAL_ENABLE);
 
-<<<<<<< HEAD
 	if (of_find_compatible_node(NULL, NULL, "fsl,p2020-esdhc"))
 		mdelay(5);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (mask & SDHCI_RESET_ALL) {
 		val = sdhci_readl(host, ESDHC_TBCTL);
 		val &= ~ESDHC_TB_EN;
@@ -874,10 +838,7 @@ static struct soc_device_attribute soc_incorrect_hostver[] = {
 
 static void esdhc_init(struct platform_device *pdev, struct sdhci_host *host)
 {
-<<<<<<< HEAD
 	const struct of_device_id *match;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct sdhci_pltfm_host *pltfm_host;
 	struct sdhci_esdhc *esdhc;
 	struct device_node *np;
@@ -897,12 +858,9 @@ static void esdhc_init(struct platform_device *pdev, struct sdhci_host *host)
 	else
 		esdhc->quirk_incorrect_hostver = false;
 
-<<<<<<< HEAD
 	match = of_match_node(sdhci_esdhc_of_match, pdev->dev.of_node);
 	if (match)
 		esdhc->clk_fixup = match->data;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	np = pdev->dev.of_node;
 	clk = of_clk_get(np, 0);
 	if (!IS_ERR(clk)) {
@@ -968,13 +926,8 @@ static int sdhci_esdhc_probe(struct platform_device *pdev)
 		host->quirks &= ~SDHCI_QUIRK_NO_BUSY_IRQ;
 
 	if (of_find_compatible_node(NULL, NULL, "fsl,p2020-esdhc")) {
-<<<<<<< HEAD
 		host->quirks2 |= SDHCI_QUIRK_RESET_AFTER_REQUEST;
 		host->quirks2 |= SDHCI_QUIRK_BROKEN_TIMEOUT_VAL;
-=======
-		host->quirks |= SDHCI_QUIRK_RESET_AFTER_REQUEST;
-		host->quirks |= SDHCI_QUIRK_BROKEN_TIMEOUT_VAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (of_device_is_compatible(np, "fsl,p5040-esdhc") ||
@@ -1012,17 +965,6 @@ static int sdhci_esdhc_probe(struct platform_device *pdev)
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
-static const struct of_device_id sdhci_esdhc_of_match[] = {
-	{ .compatible = "fsl,mpc8379-esdhc" },
-	{ .compatible = "fsl,mpc8536-esdhc" },
-	{ .compatible = "fsl,esdhc" },
-	{ }
-};
-MODULE_DEVICE_TABLE(of, sdhci_esdhc_of_match);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct platform_driver sdhci_esdhc_driver = {
 	.driver = {
 		.name = "sdhci-esdhc",

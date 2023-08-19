@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * drivers/base/dd.c - The core device/driver interactions.
  *
@@ -17,16 +14,9 @@
  * Copyright (c) 2002-3 Open Source Development Labs
  * Copyright (c) 2007-2009 Greg Kroah-Hartman <gregkh@suse.de>
  * Copyright (c) 2007-2009 Novell Inc.
-<<<<<<< HEAD
  */
 
 #include <linux/debugfs.h>
-=======
- *
- * This file is released under the GPLv2
- */
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/device.h>
 #include <linux/delay.h>
 #include <linux/dma-mapping.h>
@@ -37,10 +27,6 @@
 #include <linux/async.h>
 #include <linux/pm_runtime.h>
 #include <linux/pinctrl/devinfo.h>
-<<<<<<< HEAD
-=======
-#include <linux/platform_device.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "base.h"
 #include "power/power.h"
@@ -68,18 +54,9 @@ static DEFINE_MUTEX(deferred_probe_mutex);
 static LIST_HEAD(deferred_probe_pending_list);
 static LIST_HEAD(deferred_probe_active_list);
 static atomic_t deferred_trigger_count = ATOMIC_INIT(0);
-<<<<<<< HEAD
 static struct dentry *deferred_devices;
 static bool initcalls_done;
 
-=======
-static bool initcalls_done;
-
-/* Save the async probe drivers' name from kernel cmdline */
-#define ASYNC_DRV_NAMES_MAX_LEN	256
-static char async_probe_drv_names[ASYNC_DRV_NAMES_MAX_LEN];
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * In some cases, like suspend to RAM or hibernation, It might be reasonable
  * to prohibit probing of devices as it could be unsafe.
@@ -88,29 +65,6 @@ static char async_probe_drv_names[ASYNC_DRV_NAMES_MAX_LEN];
 static bool defer_all_probes;
 
 /*
-<<<<<<< HEAD
-=======
- * For initcall_debug, show the deferred probes executed in late_initcall
- * processing.
- */
-static void deferred_probe_debug(struct device *dev)
-{
-	ktime_t calltime, delta, rettime;
-	unsigned long long duration;
-
-	printk(KERN_DEBUG "deferred probe %s @ %i\n", dev_name(dev),
-	       task_pid_nr(current));
-	calltime = ktime_get();
-	bus_probe_device(dev);
-	rettime = ktime_get();
-	delta = ktime_sub(rettime, calltime);
-	duration = (unsigned long long) ktime_to_ns(delta) >> 10;
-	printk(KERN_DEBUG "deferred probe %s returned after %lld usecs\n",
-	       dev_name(dev), duration);
-}
-
-/*
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * deferred_probe_work_func() - Retry probing devices in the active list.
  */
 static void deferred_probe_work_func(struct work_struct *work)
@@ -150,23 +104,10 @@ static void deferred_probe_work_func(struct work_struct *work)
 		 * the list is a good order for suspend but deferred
 		 * probe makes that very unsafe.
 		 */
-<<<<<<< HEAD
 		device_pm_move_to_tail(dev);
 
 		dev_dbg(dev, "Retrying from deferred list\n");
 		bus_probe_device(dev);
-=======
-		device_pm_lock();
-		device_pm_move_last(dev);
-		device_pm_unlock();
-
-		dev_dbg(dev, "Retrying from deferred list\n");
-		if (initcall_debug && !initcalls_done)
-			deferred_probe_debug(dev);
-		else
-			bus_probe_device(dev);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_lock(&deferred_probe_mutex);
 
 		put_device(dev);
@@ -272,7 +213,6 @@ static void enable_trigger_defer_cycle(void)
 	flush_work(&deferred_probe_work);
 }
 
-<<<<<<< HEAD
 /*
  * deferred_devs_show() - Show the devices in the deferred probe pending list.
  */
@@ -336,8 +276,6 @@ static void deferred_probe_timeout_work_func(struct work_struct *work)
 }
 static DECLARE_DELAYED_WORK(deferred_probe_timeout_work, deferred_probe_timeout_work_func);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * deferred_probe_initcall() - Enable probing of deferred devices
  *
@@ -359,7 +297,6 @@ device_initcall_sync(deferred_probe_initcall);
 
 static int deferred_probe_enable_fn(void)
 {
-<<<<<<< HEAD
 	deferred_devices = debugfs_create_file("devices_deferred", 0444, NULL,
 					       NULL, &deferred_devs_fops);
 
@@ -378,24 +315,16 @@ static int deferred_probe_enable_fn(void)
 		schedule_delayed_work(&deferred_probe_timeout_work,
 			deferred_probe_timeout * HZ);
 	}
-=======
-	/* Enable deferred probing for all time */
-	enable_trigger_defer_cycle();
-	initcalls_done = true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 late_initcall(deferred_probe_enable_fn);
 
-<<<<<<< HEAD
 static void __exit deferred_probe_exit(void)
 {
 	debugfs_remove_recursive(deferred_devices);
 }
 __exitcall(deferred_probe_exit);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * device_is_bound() - Check if device is bound to a driver
  * @dev: device to check
@@ -440,7 +369,6 @@ static void driver_bound(struct device *dev)
 	kobject_uevent(&dev->kobj, KOBJ_BIND);
 }
 
-<<<<<<< HEAD
 static ssize_t coredump_store(struct device *dev, struct device_attribute *attr,
 			    const char *buf, size_t count)
 {
@@ -452,8 +380,6 @@ static ssize_t coredump_store(struct device *dev, struct device_attribute *attr,
 }
 static DEVICE_ATTR_WO(coredump);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int driver_sysfs_add(struct device *dev)
 {
 	int ret;
@@ -463,7 +389,6 @@ static int driver_sysfs_add(struct device *dev)
 					     BUS_NOTIFY_BIND_DRIVER, dev);
 
 	ret = sysfs_create_link(&dev->driver->p->kobj, &dev->kobj,
-<<<<<<< HEAD
 				kobject_name(&dev->kobj));
 	if (ret)
 		goto fail;
@@ -484,16 +409,6 @@ rm_dev:
 			  kobject_name(&dev->kobj));
 
 fail:
-=======
-			  kobject_name(&dev->kobj));
-	if (ret == 0) {
-		ret = sysfs_create_link(&dev->kobj, &dev->driver->p->kobj,
-					"driver");
-		if (ret)
-			sysfs_remove_link(&dev->driver->p->kobj,
-					kobject_name(&dev->kobj));
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -502,11 +417,8 @@ static void driver_sysfs_remove(struct device *dev)
 	struct device_driver *drv = dev->driver;
 
 	if (drv) {
-<<<<<<< HEAD
 		if (drv->coredump)
 			device_remove_file(dev, &dev_attr_coredump);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sysfs_remove_link(&drv->p->kobj, kobject_name(&dev->kobj));
 		sysfs_remove_link(&dev->kobj, "driver");
 	}
@@ -543,7 +455,6 @@ EXPORT_SYMBOL_GPL(device_bind_driver);
 static atomic_t probe_count = ATOMIC_INIT(0);
 static DECLARE_WAIT_QUEUE_HEAD(probe_waitqueue);
 
-<<<<<<< HEAD
 static void driver_deferred_probe_add_trigger(struct device *dev,
 					      int local_trigger_count)
 {
@@ -553,8 +464,6 @@ static void driver_deferred_probe_add_trigger(struct device *dev,
 		driver_deferred_probe_trigger();
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int really_probe(struct device *dev, struct device_driver *drv)
 {
 	int ret = -EPROBE_DEFER;
@@ -574,25 +483,15 @@ static int really_probe(struct device *dev, struct device_driver *drv)
 	}
 
 	ret = device_links_check_suppliers(dev);
-<<<<<<< HEAD
 	if (ret == -EPROBE_DEFER)
 		driver_deferred_probe_add_trigger(dev, local_trigger_count);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	atomic_inc(&probe_count);
 	pr_debug("bus: '%s': %s: probing driver %s with device %s\n",
 		 drv->bus->name, __func__, drv->name, dev_name(dev));
-<<<<<<< HEAD
 	WARN_ON(!list_empty(&dev->devres_head));
-=======
-	if (!list_empty(&dev->devres_head)) {
-		dev_crit(dev, "Resources present before probing\n");
-		return -EBUSY;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 re_probe:
 	dev->driver = drv;
@@ -672,23 +571,13 @@ pinctrl_bind_failed:
 	if (dev->pm_domain && dev->pm_domain->dismiss)
 		dev->pm_domain->dismiss(dev);
 	pm_runtime_reinit(dev);
-<<<<<<< HEAD
 	dev_pm_set_driver_flags(dev, 0);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (ret) {
 	case -EPROBE_DEFER:
 		/* Driver requested deferred probing */
 		dev_dbg(dev, "Driver %s requests probe deferral\n", drv->name);
-<<<<<<< HEAD
 		driver_deferred_probe_add_trigger(dev, local_trigger_count);
-=======
-		driver_deferred_probe_add(dev);
-		/* Did a trigger occur while probing? Need to re-trigger if yes */
-		if (local_trigger_count != atomic_read(&deferred_trigger_count))
-			driver_deferred_probe_trigger();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case -ENODEV:
 	case -ENXIO:
@@ -712,7 +601,6 @@ done:
 	return ret;
 }
 
-<<<<<<< HEAD
 /*
  * For initcall_debug, show the driver probe time.
  */
@@ -730,8 +618,6 @@ static int really_probe_debug(struct device *dev, struct device_driver *drv)
 	return ret;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * driver_probe_done
  * Determine if the probe sequence is finished or not.
@@ -790,14 +676,10 @@ int driver_probe_device(struct device_driver *drv, struct device *dev)
 		pm_runtime_get_sync(dev->parent);
 
 	pm_runtime_barrier(dev);
-<<<<<<< HEAD
 	if (initcall_debug)
 		ret = really_probe_debug(dev, drv);
 	else
 		ret = really_probe(dev, drv);
-=======
-	ret = really_probe(dev, drv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pm_request_idle(dev);
 
 	if (dev->parent)
@@ -807,26 +689,6 @@ int driver_probe_device(struct device_driver *drv, struct device *dev)
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
-static inline bool cmdline_requested_async_probing(const char *drv_name)
-{
-	return parse_option_str(async_probe_drv_names, drv_name);
-}
-
-/* The option format is "driver_async_probe=drv_name1,drv_name2,..." */
-static int __init save_async_options(char *buf)
-{
-	if (strlen(buf) >= ASYNC_DRV_NAMES_MAX_LEN)
-		printk(KERN_WARNING
-			"Too long list of driver names for 'driver_async_probe'!\n");
-
-	strlcpy(async_probe_drv_names, buf, ASYNC_DRV_NAMES_MAX_LEN);
-	return 0;
-}
-__setup("driver_async_probe=", save_async_options);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 bool driver_allows_async_probing(struct device_driver *drv)
 {
 	switch (drv->probe_type) {
@@ -837,12 +699,6 @@ bool driver_allows_async_probing(struct device_driver *drv)
 		return false;
 
 	default:
-<<<<<<< HEAD
-=======
-		if (cmdline_requested_async_probing(drv->name))
-			return true;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (module_requested_async_probing(drv->owner))
 			return true;
 
@@ -890,18 +746,6 @@ static int __device_attach_driver(struct device_driver *drv, void *_data)
 	bool async_allowed;
 	int ret;
 
-<<<<<<< HEAD
-=======
-	/*
-	 * Check if device has already been claimed. This may
-	 * happen with driver loading, device discovery/registration,
-	 * and deferred probe processing happens all at once with
-	 * multiple threads.
-	 */
-	if (dev->driver)
-		return -EBUSY;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = driver_match_device(drv, dev);
 	if (ret == 0) {
 		/* no match */
@@ -936,7 +780,6 @@ static void __device_attach_async_helper(void *_dev, async_cookie_t cookie)
 
 	device_lock(dev);
 
-<<<<<<< HEAD
 	/*
 	 * Check if device has already been removed or claimed. This may
 	 * happen with driver loading, device discovery/registration,
@@ -946,8 +789,6 @@ static void __device_attach_async_helper(void *_dev, async_cookie_t cookie)
 	if (dev->p->dead || dev->driver)
 		goto out_unlock;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dev->parent)
 		pm_runtime_get_sync(dev->parent);
 
@@ -958,11 +799,7 @@ static void __device_attach_async_helper(void *_dev, async_cookie_t cookie)
 
 	if (dev->parent)
 		pm_runtime_put(dev->parent);
-<<<<<<< HEAD
 out_unlock:
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	device_unlock(dev);
 
 	put_device(dev);
@@ -1045,24 +882,6 @@ void device_initial_probe(struct device *dev)
 	__device_attach(dev, true);
 }
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_PLATFORM_AUTO
-static inline int lock_parent(struct device *dev)
-{
-	if (!dev->parent || dev->bus == &platform_bus_type)
-		return 0;
-
-	return 1;
-}
-#else
-static inline int lock_parent(struct device *dev)
-{
-	return dev->parent ? 1 : 0;
-}
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __driver_attach(struct device *dev, void *data)
 {
 	struct device_driver *drv = data;
@@ -1090,7 +909,6 @@ static int __driver_attach(struct device *dev, void *data)
 		return ret;
 	} /* ret > 0 means positive match */
 
-<<<<<<< HEAD
 	if (dev->parent && dev->bus->need_parent_lock)
 		device_lock(dev->parent);
 	device_lock(dev);
@@ -1098,15 +916,6 @@ static int __driver_attach(struct device *dev, void *data)
 		driver_probe_device(drv, dev);
 	device_unlock(dev);
 	if (dev->parent && dev->bus->need_parent_lock)
-=======
-	if (lock_parent(dev))	/* Needed for USB */
-		device_lock(dev->parent);
-	device_lock(dev);
-	if (!dev->driver)
-		driver_probe_device(drv, dev);
-	device_unlock(dev);
-	if (lock_parent(dev))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		device_unlock(dev->parent);
 
 	return 0;
@@ -1139,19 +948,11 @@ static void __device_release_driver(struct device *dev, struct device *parent)
 	if (drv) {
 		while (device_links_busy(dev)) {
 			device_unlock(dev);
-<<<<<<< HEAD
 			if (parent && dev->bus->need_parent_lock)
 				device_unlock(parent);
 
 			device_links_unbind_consumers(dev);
 			if (parent && dev->bus->need_parent_lock)
-=======
-			if (parent)
-				device_unlock(parent);
-
-			device_links_unbind_consumers(dev);
-			if (parent)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				device_lock(parent);
 
 			device_lock(dev);
@@ -1190,10 +991,7 @@ static void __device_release_driver(struct device *dev, struct device *parent)
 		if (dev->pm_domain && dev->pm_domain->dismiss)
 			dev->pm_domain->dismiss(dev);
 		pm_runtime_reinit(dev);
-<<<<<<< HEAD
 		dev_pm_set_driver_flags(dev, 0);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		klist_remove(&dev->p->knode_driver);
 		device_pm_check_callbacks(dev);
@@ -1210,11 +1008,7 @@ void device_release_driver_internal(struct device *dev,
 				    struct device_driver *drv,
 				    struct device *parent)
 {
-<<<<<<< HEAD
 	if (parent && dev->bus->need_parent_lock)
-=======
-	if (parent)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		device_lock(parent);
 
 	device_lock(dev);
@@ -1222,11 +1016,7 @@ void device_release_driver_internal(struct device *dev,
 		__device_release_driver(dev, parent);
 
 	device_unlock(dev);
-<<<<<<< HEAD
 	if (parent && dev->bus->need_parent_lock)
-=======
-	if (parent)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		device_unlock(parent);
 }
 

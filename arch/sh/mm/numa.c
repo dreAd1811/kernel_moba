@@ -8,10 +8,6 @@
  * for more details.
  */
 #include <linux/module.h>
-<<<<<<< HEAD
-=======
-#include <linux/bootmem.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/memblock.h>
 #include <linux/mm.h>
 #include <linux/numa.h>
@@ -29,13 +25,7 @@ EXPORT_SYMBOL_GPL(node_data);
  */
 void __init setup_bootmem_node(int nid, unsigned long start, unsigned long end)
 {
-<<<<<<< HEAD
 	unsigned long start_pfn, end_pfn;
-=======
-	unsigned long bootmap_pages;
-	unsigned long start_pfn, end_pfn;
-	unsigned long bootmem_paddr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Don't allow bogus node assignment */
 	BUG_ON(nid >= MAX_NUMNODES || nid <= 0);
@@ -55,31 +45,9 @@ void __init setup_bootmem_node(int nid, unsigned long start, unsigned long end)
 					     SMP_CACHE_BYTES, end));
 	memset(NODE_DATA(nid), 0, sizeof(struct pglist_data));
 
-<<<<<<< HEAD
 	NODE_DATA(nid)->node_start_pfn = start_pfn;
 	NODE_DATA(nid)->node_spanned_pages = end_pfn - start_pfn;
 
-=======
-	NODE_DATA(nid)->bdata = &bootmem_node_data[nid];
-	NODE_DATA(nid)->node_start_pfn = start_pfn;
-	NODE_DATA(nid)->node_spanned_pages = end_pfn - start_pfn;
-
-	/* Node-local bootmap */
-	bootmap_pages = bootmem_bootmap_pages(end_pfn - start_pfn);
-	bootmem_paddr = memblock_alloc_base(bootmap_pages << PAGE_SHIFT,
-				       PAGE_SIZE, end);
-	init_bootmem_node(NODE_DATA(nid), bootmem_paddr >> PAGE_SHIFT,
-			  start_pfn, end_pfn);
-
-	free_bootmem_with_active_regions(nid, end_pfn);
-
-	/* Reserve the pgdat and bootmap space with the bootmem allocator */
-	reserve_bootmem_node(NODE_DATA(nid), start_pfn << PAGE_SHIFT,
-			     sizeof(struct pglist_data), BOOTMEM_DEFAULT);
-	reserve_bootmem_node(NODE_DATA(nid), bootmem_paddr,
-			     bootmap_pages << PAGE_SHIFT, BOOTMEM_DEFAULT);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* It's up */
 	node_set_online(nid);
 

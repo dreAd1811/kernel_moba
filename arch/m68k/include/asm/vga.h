@@ -2,7 +2,6 @@
 #ifndef _ASM_M68K_VGA_H
 #define _ASM_M68K_VGA_H
 
-<<<<<<< HEAD
 /*
  * Some ColdFire platforms do in fact have a PCI bus. So for those we want
  * to use the real IO access functions, don't fake them out or redirect them
@@ -12,9 +11,6 @@
 
 #include <asm/raw_io.h>
 #include <asm/kmap.h>
-=======
-#include <asm/raw_io.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * FIXME
@@ -37,8 +33,5 @@
 #define writeb			raw_outb
 #define writew			raw_outw
 
-<<<<<<< HEAD
 #endif /* CONFIG_PCI */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* _ASM_M68K_VGA_H */

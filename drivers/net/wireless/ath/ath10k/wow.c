@@ -1,9 +1,6 @@
 /*
  * Copyright (c) 2015-2017 Qualcomm Atheros, Inc.
-<<<<<<< HEAD
  * Copyright (c) 2018, The Linux Foundation. All rights reserved.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -80,7 +77,6 @@ static int ath10k_wow_cleanup(struct ath10k *ar)
 	return 0;
 }
 
-<<<<<<< HEAD
 /**
  * Convert a 802.3 format to a 802.11 format.
  *         +------------+-----------+--------+----------------+
@@ -184,8 +180,6 @@ static void ath10k_wow_convert_8023_to_80211
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ath10k_vif_wow_set_wakeups(struct ath10k_vif *arvif,
 				      struct cfg80211_wowlan *wowlan)
 {
@@ -226,7 +220,6 @@ static int ath10k_vif_wow_set_wakeups(struct ath10k_vif *arvif,
 
 	for (i = 0; i < wowlan->n_patterns; i++) {
 		u8 bitmask[WOW_MAX_PATTERN_SIZE] = {};
-<<<<<<< HEAD
 		u8 ath_pattern[WOW_MAX_PATTERN_SIZE] = {};
 		u8 ath_bitmask[WOW_MAX_PATTERN_SIZE] = {};
 		struct cfg80211_pkt_pattern new_pattern = {};
@@ -237,18 +230,10 @@ static int ath10k_vif_wow_set_wakeups(struct ath10k_vif *arvif,
 		new_pattern.mask = ath_bitmask;
 		if (patterns[i].pattern_len > WOW_MAX_PATTERN_SIZE)
 			continue;
-=======
-		int j;
-
-		if (patterns[i].pattern_len > WOW_MAX_PATTERN_SIZE)
-			continue;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* convert bytemask to bitmask */
 		for (j = 0; j < patterns[i].pattern_len; j++)
 			if (patterns[i].mask[j / 8] & BIT(j % 8))
 				bitmask[j] = 0xff;
-<<<<<<< HEAD
 		old_pattern.mask = bitmask;
 		new_pattern = old_pattern;
 
@@ -269,15 +254,6 @@ static int ath10k_vif_wow_set_wakeups(struct ath10k_vif *arvif,
 						 new_pattern.mask,
 						 new_pattern.pattern_len,
 						 new_pattern.pkt_offset);
-=======
-
-		ret = ath10k_wmi_wow_add_pattern(ar, arvif->vdev_id,
-						 pattern_id,
-						 patterns[i].pattern,
-						 bitmask,
-						 patterns[i].pattern_len,
-						 patterns[i].pkt_offset);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret) {
 			ath10k_warn(ar, "failed to add pattern %i to vdev %i: %d\n",
 				    pattern_id,
@@ -491,15 +467,12 @@ int ath10k_wow_init(struct ath10k *ar)
 		return -EINVAL;
 
 	ar->wow.wowlan_support = ath10k_wowlan_support;
-<<<<<<< HEAD
 
 	if (ar->wmi.rx_decap_mode == ATH10K_HW_TXRX_NATIVE_WIFI) {
 		ar->wow.wowlan_support.pattern_max_len -= WOW_MAX_REDUCE;
 		ar->wow.wowlan_support.max_pkt_offset -= WOW_MAX_REDUCE;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ar->wow.wowlan_support.n_patterns = ar->wow.max_num_patterns;
 	ar->hw->wiphy->wowlan = &ar->wow.wowlan_support;
 

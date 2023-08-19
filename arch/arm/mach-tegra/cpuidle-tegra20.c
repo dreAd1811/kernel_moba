@@ -179,11 +179,7 @@ static int tegra20_idle_lp2_coupled(struct cpuidle_device *dev,
 	bool entered_lp2 = false;
 
 	if (tegra_pending_sgi())
-<<<<<<< HEAD
 		WRITE_ONCE(abort_flag, true);
-=======
-		ACCESS_ONCE(abort_flag) = true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cpuidle_coupled_parallel_barrier(dev, &abort_barrier);
 

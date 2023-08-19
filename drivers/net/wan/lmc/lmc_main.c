@@ -99,11 +99,7 @@ static void lmc_initcsrs(lmc_softc_t * const sc, lmc_csrptr_t csr_base, size_t c
 static void lmc_softreset(lmc_softc_t * const);
 static void lmc_running_reset(struct net_device *dev);
 static int lmc_ifdown(struct net_device * const);
-<<<<<<< HEAD
 static void lmc_watchdog(struct timer_list *t);
-=======
-static void lmc_watchdog(unsigned long data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void lmc_reset(lmc_softc_t * const sc);
 static void lmc_dec_reset(lmc_softc_t * const sc);
 static void lmc_driver_timeout(struct net_device *dev);
@@ -498,26 +494,11 @@ int lmc_ioctl(struct net_device *dev, struct ifreq *ifr, int cmd) /*fold00*/
                             break;
                     }
 
-<<<<<<< HEAD
                     data = memdup_user(xc.data, xc.len);
                     if (IS_ERR(data)) {
                             ret = PTR_ERR(data);
                             break;
                     }
-=======
-                    data = kmalloc(xc.len, GFP_KERNEL);
-                    if (!data) {
-                            ret = -ENOMEM;
-                            break;
-                    }
-                    
-                    if(copy_from_user(data, xc.data, xc.len))
-                    {
-                    	kfree(data);
-                    	ret = -ENOMEM;
-                    	break;
-                    }
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
                     printk("%s: Starting load of data Len: %d at 0x%p == 0x%p\n", dev->name, xc.len, xc.data, data);
 
@@ -648,17 +629,10 @@ int lmc_ioctl(struct net_device *dev, struct ifreq *ifr, int cmd) /*fold00*/
 
 
 /* the watchdog process that cruises around */
-<<<<<<< HEAD
 static void lmc_watchdog(struct timer_list *t) /*fold00*/
 {
     lmc_softc_t *sc = from_timer(sc, t, timer);
     struct net_device *dev = sc->lmc_device;
-=======
-static void lmc_watchdog (unsigned long data) /*fold00*/
-{
-    struct net_device *dev = (struct net_device *)data;
-    lmc_softc_t *sc = dev_to_sc(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     int link_status;
     u32 ticks;
     unsigned long flags;
@@ -1103,15 +1077,8 @@ static int lmc_open(struct net_device *dev)
      * Setup a timer for the watchdog on probe, and start it running.
      * Since lmc_ok == 0, it will be a NOP for now.
      */
-<<<<<<< HEAD
     timer_setup(&sc->timer, lmc_watchdog, 0);
     sc->timer.expires = jiffies + HZ;
-=======
-    init_timer (&sc->timer);
-    sc->timer.expires = jiffies + HZ;
-    sc->timer.data = (unsigned long) dev;
-    sc->timer.function = lmc_watchdog;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     add_timer (&sc->timer);
 
     lmc_trace(dev, "lmc_open out");
@@ -1524,10 +1491,6 @@ static int lmc_rx(struct net_device *dev)
     lmc_softc_t *sc = dev_to_sc(dev);
     int i;
     int rx_work_limit = LMC_RXDESCS;
-<<<<<<< HEAD
-=======
-    unsigned int next_rx;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     int rxIntLoopCnt;		/* debug -baz */
     int localLengthErrCnt = 0;
     long stat;
@@ -1541,10 +1504,6 @@ static int lmc_rx(struct net_device *dev)
     rxIntLoopCnt = 0;		/* debug -baz */
 
     i = sc->lmc_next_rx % LMC_RXDESCS;
-<<<<<<< HEAD
-=======
-    next_rx = sc->lmc_next_rx;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
     while (((stat = sc->lmc_rxring[i].status) & LMC_RDES_OWN_BIT) != DESC_OWNED_BY_DC21X4)
     {

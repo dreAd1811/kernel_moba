@@ -31,65 +31,19 @@
 
 #define SLAVE_CODE_SIZE		256
 
-<<<<<<< HEAD
 const struct kexec_file_ops * const kexec_file_loaders[] = {
 	&kexec_elf64_ops,
 	NULL
-=======
-static struct kexec_file_ops *kexec_file_loaders[] = {
-	&kexec_elf64_ops,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int arch_kexec_kernel_image_probe(struct kimage *image, void *buf,
 				  unsigned long buf_len)
 {
-<<<<<<< HEAD
-=======
-	int i, ret = -ENOEXEC;
-	struct kexec_file_ops *fops;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* We don't support crash kernels yet. */
 	if (image->type == KEXEC_TYPE_CRASH)
 		return -EOPNOTSUPP;
 
-<<<<<<< HEAD
 	return kexec_image_probe_default(image, buf, buf_len);
-=======
-	for (i = 0; i < ARRAY_SIZE(kexec_file_loaders); i++) {
-		fops = kexec_file_loaders[i];
-		if (!fops || !fops->probe)
-			continue;
-
-		ret = fops->probe(buf, buf_len);
-		if (!ret) {
-			image->fops = fops;
-			return ret;
-		}
-	}
-
-	return ret;
-}
-
-void *arch_kexec_kernel_image_load(struct kimage *image)
-{
-	if (!image->fops || !image->fops->load)
-		return ERR_PTR(-ENOEXEC);
-
-	return image->fops->load(image, image->kernel_buf,
-				 image->kernel_buf_len, image->initrd_buf,
-				 image->initrd_buf_len, image->cmdline_buf,
-				 image->cmdline_buf_len);
-}
-
-int arch_kimage_file_post_load_cleanup(struct kimage *image)
-{
-	if (!image->fops || !image->fops->cleanup)
-		return 0;
-
-	return image->fops->cleanup(image->image_loader_data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -104,20 +58,13 @@ int arch_kimage_file_post_load_cleanup(struct kimage *image)
  * and that value will be returned. If all free regions are visited without
  * func returning non-zero, then zero will be returned.
  */
-<<<<<<< HEAD
 int arch_kexec_walk_mem(struct kexec_buf *kbuf,
 			int (*func)(struct resource *, void *))
-=======
-int arch_kexec_walk_mem(struct kexec_buf *kbuf, int (*func)(u64, u64, void *))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret = 0;
 	u64 i;
 	phys_addr_t mstart, mend;
-<<<<<<< HEAD
 	struct resource res = { };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (kbuf->top_down) {
 		for_each_free_mem_range_reverse(i, NUMA_NO_NODE, 0,
@@ -127,13 +74,9 @@ int arch_kexec_walk_mem(struct kexec_buf *kbuf, int (*func)(u64, u64, void *))
 			 * range while in kexec, end points to the last byte
 			 * in the range.
 			 */
-<<<<<<< HEAD
 			res.start = mstart;
 			res.end = mend - 1;
 			ret = func(&res, kbuf);
-=======
-			ret = func(mstart, mend - 1, kbuf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (ret)
 				break;
 		}
@@ -145,13 +88,9 @@ int arch_kexec_walk_mem(struct kexec_buf *kbuf, int (*func)(u64, u64, void *))
 			 * range while in kexec, end points to the last byte
 			 * in the range.
 			 */
-<<<<<<< HEAD
 			res.start = mstart;
 			res.end = mend - 1;
 			ret = func(&res, kbuf);
-=======
-			ret = func(mstart, mend - 1, kbuf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (ret)
 				break;
 		}
@@ -330,28 +269,14 @@ int setup_new_fdt(const struct kimage *image, void *fdt,
 		ret = fdt_setprop_u64(fdt, chosen_node,
 				      "linux,initrd-start",
 				      initrd_load_addr);
-<<<<<<< HEAD
 		if (ret < 0)
 			goto err;
-=======
-		if (ret < 0) {
-			pr_err("Error setting up the new device tree.\n");
-			return -EINVAL;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* initrd-end is the first address after the initrd image. */
 		ret = fdt_setprop_u64(fdt, chosen_node, "linux,initrd-end",
 				      initrd_load_addr + initrd_len);
-<<<<<<< HEAD
 		if (ret < 0)
 			goto err;
-=======
-		if (ret < 0) {
-			pr_err("Error setting up the new device tree.\n");
-			return -EINVAL;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		ret = fdt_add_mem_rsv(fdt, initrd_load_addr, initrd_len);
 		if (ret) {
@@ -363,15 +288,8 @@ int setup_new_fdt(const struct kimage *image, void *fdt,
 
 	if (cmdline != NULL) {
 		ret = fdt_setprop_string(fdt, chosen_node, "bootargs", cmdline);
-<<<<<<< HEAD
 		if (ret < 0)
 			goto err;
-=======
-		if (ret < 0) {
-			pr_err("Error setting up the new device tree.\n");
-			return -EINVAL;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		ret = fdt_delprop(fdt, chosen_node, "bootargs");
 		if (ret && ret != -FDT_ERR_NOTFOUND) {
@@ -387,7 +305,6 @@ int setup_new_fdt(const struct kimage *image, void *fdt,
 	}
 
 	ret = fdt_setprop(fdt, chosen_node, "linux,booted-from-kexec", NULL, 0);
-<<<<<<< HEAD
 	if (ret)
 		goto err;
 
@@ -396,12 +313,4 @@ int setup_new_fdt(const struct kimage *image, void *fdt,
 err:
 	pr_err("Error setting up the new device tree.\n");
 	return -EINVAL;
-=======
-	if (ret) {
-		pr_err("Error setting up the new device tree.\n");
-		return -EINVAL;
-	}
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

@@ -1564,14 +1564,11 @@ W: http://www.carumba.com/
 D: bug toaster (A1 sauce makes all the difference)
 D: Random linux hacker
 
-<<<<<<< HEAD
 N: James Hogan
 E: jhogan@kernel.org
 D: Metag architecture maintainer
 D: TZ1090 SoC maintainer
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 N: Tim Hockin
 E: thockin@hockin.org
 W: http://www.hockin.org/~thockin
@@ -2574,14 +2571,11 @@ S: Helstorfer Str. 7
 S: D-30625 Hannover
 S: Germany
 
-<<<<<<< HEAD
 N: Ron Minnich
 E: rminnich@sandia.gov
 E: rminnich@gmail.com
 D: 9p filesystem development
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 N: Corey Minyard
 E: minyard@wf-rch.cirr.com
 E: minyard@mvista.com

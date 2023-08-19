@@ -16,10 +16,7 @@ struct nvkm_ior {
 	char name[8];
 
 	struct list_head head;
-<<<<<<< HEAD
 	bool identity;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct nvkm_ior_state {
 		struct nvkm_outp *outp;
@@ -34,11 +31,7 @@ struct nvkm_ior {
 			UNKNOWN
 		} proto:3;
 		unsigned link:2;
-<<<<<<< HEAD
 		unsigned head:8;
-=======
-		unsigned head:4;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} arm, asy;
 
 	/* Armed DP state. */
@@ -114,10 +107,6 @@ nv50_sor_link(struct nvkm_ior *ior)
 	return nv50_ior_base(ior) + ((ior->asy.link == 2) * 0x80);
 }
 
-<<<<<<< HEAD
-=======
-int nv50_sor_new_(const struct nvkm_ior_func *, struct nvkm_disp *, int id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void nv50_sor_state(struct nvkm_ior *, struct nvkm_ior_state *);
 void nv50_sor_power(struct nvkm_ior *, bool, bool, bool, bool, bool);
 void nv50_sor_clock(struct nvkm_ior *);
@@ -133,10 +122,6 @@ void g94_sor_dp_watermark(struct nvkm_ior *, int, u8);
 
 void gt215_sor_dp_audio(struct nvkm_ior *, int, bool);
 
-<<<<<<< HEAD
-=======
-int gf119_sor_new_(const struct nvkm_ior_func *, struct nvkm_disp *, int id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void gf119_sor_state(struct nvkm_ior *, struct nvkm_ior_state *);
 void gf119_sor_clock(struct nvkm_ior *);
 int gf119_sor_dp_links(struct nvkm_ior *, struct nvkm_i2c_aux *);
@@ -149,21 +134,15 @@ void gf119_sor_dp_watermark(struct nvkm_ior *, int, u8);
 
 void gm107_sor_dp_pattern(struct nvkm_ior *, int);
 
-<<<<<<< HEAD
 void gm200_sor_route_set(struct nvkm_outp *, struct nvkm_ior *);
 int gm200_sor_route_get(struct nvkm_outp *, int *);
 void gm200_sor_dp_drive(struct nvkm_ior *, int, int, int, int, int);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void g84_hdmi_ctrl(struct nvkm_ior *, int, bool, u8, u8, u8 *, u8 , u8 *, u8);
 void gt215_hdmi_ctrl(struct nvkm_ior *, int, bool, u8, u8, u8 *, u8 , u8 *, u8);
 void gf119_hdmi_ctrl(struct nvkm_ior *, int, bool, u8, u8, u8 *, u8 , u8 *, u8);
 void gk104_hdmi_ctrl(struct nvkm_ior *, int, bool, u8, u8, u8 *, u8 , u8 *, u8);
-<<<<<<< HEAD
 void gv100_hdmi_ctrl(struct nvkm_ior *, int, bool, u8, u8, u8 *, u8 , u8 *, u8);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void gt215_hda_hpd(struct nvkm_ior *, int, bool);
 void gt215_hda_eld(struct nvkm_ior *, u8 *, u8);
@@ -173,16 +152,11 @@ void gf119_hda_eld(struct nvkm_ior *, u8 *, u8);
 
 #define IOR_MSG(i,l,f,a...) do {                                               \
 	struct nvkm_ior *_ior = (i);                                           \
-<<<<<<< HEAD
 	nvkm_##l(&_ior->disp->engine.subdev, "%s: "f"\n", _ior->name, ##a);    \
-=======
-	nvkm_##l(&_ior->disp->engine.subdev, "%s: "f, _ior->name, ##a);        \
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } while(0)
 #define IOR_WARN(i,f,a...) IOR_MSG((i), warn, f, ##a)
 #define IOR_DBG(i,f,a...) IOR_MSG((i), debug, f, ##a)
 
-<<<<<<< HEAD
 int nv50_dac_cnt(struct nvkm_disp *, unsigned long *);
 int nv50_dac_new(struct nvkm_disp *, int);
 
@@ -213,21 +187,4 @@ int gm200_sor_new(struct nvkm_disp *, int);
 
 int gv100_sor_cnt(struct nvkm_disp *, unsigned long *);
 int gv100_sor_new(struct nvkm_disp *, int);
-=======
-int nv50_dac_new(struct nvkm_disp *, int);
-int gf119_dac_new(struct nvkm_disp *, int);
-
-int nv50_pior_new(struct nvkm_disp *, int);
-
-int nv50_sor_new(struct nvkm_disp *, int);
-int g84_sor_new(struct nvkm_disp *, int);
-int g94_sor_new(struct nvkm_disp *, int);
-int mcp77_sor_new(struct nvkm_disp *, int);
-int gt215_sor_new(struct nvkm_disp *, int);
-int mcp89_sor_new(struct nvkm_disp *, int);
-int gf119_sor_new(struct nvkm_disp *, int);
-int gk104_sor_new(struct nvkm_disp *, int);
-int gm107_sor_new(struct nvkm_disp *, int);
-int gm200_sor_new(struct nvkm_disp *, int);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

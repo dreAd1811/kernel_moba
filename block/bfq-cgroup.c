@@ -24,11 +24,7 @@
 
 #include "bfq-iosched.h"
 
-<<<<<<< HEAD
 #if defined(CONFIG_BFQ_GROUP_IOSCHED) &&  defined(CONFIG_DEBUG_BLK_CGROUP)
-=======
-#ifdef CONFIG_BFQ_GROUP_IOSCHED
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* bfqg stats flags */
 enum bfqg_stats_flags {
@@ -59,22 +55,13 @@ BFQG_FLAG_FNS(empty)
 /* This should be called with the scheduler lock held. */
 static void bfqg_stats_update_group_wait_time(struct bfqg_stats *stats)
 {
-<<<<<<< HEAD
 	u64 now;
-=======
-	unsigned long long now;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!bfqg_stats_waiting(stats))
 		return;
 
-<<<<<<< HEAD
 	now = ktime_get_ns();
 	if (now > stats->start_group_wait_time)
-=======
-	now = sched_clock();
-	if (time_after64(now, stats->start_group_wait_time))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		blkg_stat_add(&stats->group_wait_time,
 			      now - stats->start_group_wait_time);
 	bfqg_stats_clear_waiting(stats);
@@ -90,33 +77,20 @@ static void bfqg_stats_set_start_group_wait_time(struct bfq_group *bfqg,
 		return;
 	if (bfqg == curr_bfqg)
 		return;
-<<<<<<< HEAD
 	stats->start_group_wait_time = ktime_get_ns();
-=======
-	stats->start_group_wait_time = sched_clock();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bfqg_stats_mark_waiting(stats);
 }
 
 /* This should be called with the scheduler lock held. */
 static void bfqg_stats_end_empty_time(struct bfqg_stats *stats)
 {
-<<<<<<< HEAD
 	u64 now;
-=======
-	unsigned long long now;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!bfqg_stats_empty(stats))
 		return;
 
-<<<<<<< HEAD
 	now = ktime_get_ns();
 	if (now > stats->start_empty_time)
-=======
-	now = sched_clock();
-	if (time_after64(now, stats->start_empty_time))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		blkg_stat_add(&stats->empty_time,
 			      now - stats->start_empty_time);
 	bfqg_stats_clear_empty(stats);
@@ -142,11 +116,7 @@ void bfqg_stats_set_start_empty_time(struct bfq_group *bfqg)
 	if (bfqg_stats_empty(stats))
 		return;
 
-<<<<<<< HEAD
 	stats->start_empty_time = ktime_get_ns();
-=======
-	stats->start_empty_time = sched_clock();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bfqg_stats_mark_empty(stats);
 }
 
@@ -155,15 +125,9 @@ void bfqg_stats_update_idle_time(struct bfq_group *bfqg)
 	struct bfqg_stats *stats = &bfqg->stats;
 
 	if (bfqg_stats_idling(stats)) {
-<<<<<<< HEAD
 		u64 now = ktime_get_ns();
 
 		if (now > stats->start_idle_time)
-=======
-		unsigned long long now = sched_clock();
-
-		if (time_after64(now, stats->start_idle_time))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			blkg_stat_add(&stats->idle_time,
 				      now - stats->start_idle_time);
 		bfqg_stats_clear_idling(stats);
@@ -174,11 +138,7 @@ void bfqg_stats_set_start_idle_time(struct bfq_group *bfqg)
 {
 	struct bfqg_stats *stats = &bfqg->stats;
 
-<<<<<<< HEAD
 	stats->start_idle_time = ktime_get_ns();
-=======
-	stats->start_idle_time = sched_clock();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bfqg_stats_mark_idling(stats);
 }
 
@@ -192,7 +152,6 @@ void bfqg_stats_update_avg_queue_size(struct bfq_group *bfqg)
 	bfqg_stats_update_group_wait_time(stats);
 }
 
-<<<<<<< HEAD
 void bfqg_stats_update_io_add(struct bfq_group *bfqg, struct bfq_queue *bfqq,
 			      unsigned int op)
 {
@@ -244,8 +203,6 @@ void bfqg_stats_update_avg_queue_size(struct bfq_group *bfqg) { }
 
 #ifdef CONFIG_BFQ_GROUP_IOSCHED
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * blk-cgroup policy-related handlers
  * The following functions help in converting between blk-cgroup
@@ -323,49 +280,10 @@ void bfqg_and_blkg_put(struct bfq_group *bfqg)
 	bfqg_put(bfqg);
 }
 
-<<<<<<< HEAD
 /* @stats = 0 */
 static void bfqg_stats_reset(struct bfqg_stats *stats)
 {
 #ifdef CONFIG_DEBUG_BLK_CGROUP
-=======
-void bfqg_stats_update_io_add(struct bfq_group *bfqg, struct bfq_queue *bfqq,
-			      unsigned int op)
-{
-	blkg_rwstat_add(&bfqg->stats.queued, op, 1);
-	bfqg_stats_end_empty_time(&bfqg->stats);
-	if (!(bfqq == ((struct bfq_data *)bfqg->bfqd)->in_service_queue))
-		bfqg_stats_set_start_group_wait_time(bfqg, bfqq_group(bfqq));
-}
-
-void bfqg_stats_update_io_remove(struct bfq_group *bfqg, unsigned int op)
-{
-	blkg_rwstat_add(&bfqg->stats.queued, op, -1);
-}
-
-void bfqg_stats_update_io_merged(struct bfq_group *bfqg, unsigned int op)
-{
-	blkg_rwstat_add(&bfqg->stats.merged, op, 1);
-}
-
-void bfqg_stats_update_completion(struct bfq_group *bfqg, uint64_t start_time,
-				  uint64_t io_start_time, unsigned int op)
-{
-	struct bfqg_stats *stats = &bfqg->stats;
-	unsigned long long now = sched_clock();
-
-	if (time_after64(now, io_start_time))
-		blkg_rwstat_add(&stats->service_time, op,
-				now - io_start_time);
-	if (time_after64(io_start_time, start_time))
-		blkg_rwstat_add(&stats->wait_time, op,
-				io_start_time - start_time);
-}
-
-/* @stats = 0 */
-static void bfqg_stats_reset(struct bfqg_stats *stats)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* queued stats shouldn't be cleared */
 	blkg_rwstat_reset(&stats->merged);
 	blkg_rwstat_reset(&stats->service_time);
@@ -377,10 +295,7 @@ static void bfqg_stats_reset(struct bfqg_stats *stats)
 	blkg_stat_reset(&stats->group_wait_time);
 	blkg_stat_reset(&stats->idle_time);
 	blkg_stat_reset(&stats->empty_time);
-<<<<<<< HEAD
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* @to += @from */
@@ -389,10 +304,7 @@ static void bfqg_stats_add_aux(struct bfqg_stats *to, struct bfqg_stats *from)
 	if (!to || !from)
 		return;
 
-<<<<<<< HEAD
 #ifdef CONFIG_DEBUG_BLK_CGROUP
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* queued stats shouldn't be cleared */
 	blkg_rwstat_add_aux(&to->merged, &from->merged);
 	blkg_rwstat_add_aux(&to->service_time, &from->service_time);
@@ -405,10 +317,7 @@ static void bfqg_stats_add_aux(struct bfqg_stats *to, struct bfqg_stats *from)
 	blkg_stat_add_aux(&to->group_wait_time, &from->group_wait_time);
 	blkg_stat_add_aux(&to->idle_time, &from->idle_time);
 	blkg_stat_add_aux(&to->empty_time, &from->empty_time);
-<<<<<<< HEAD
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -455,10 +364,7 @@ void bfq_init_entity(struct bfq_entity *entity, struct bfq_group *bfqg)
 
 static void bfqg_stats_exit(struct bfqg_stats *stats)
 {
-<<<<<<< HEAD
 #ifdef CONFIG_DEBUG_BLK_CGROUP
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	blkg_rwstat_exit(&stats->merged);
 	blkg_rwstat_exit(&stats->service_time);
 	blkg_rwstat_exit(&stats->wait_time);
@@ -470,18 +376,12 @@ static void bfqg_stats_exit(struct bfqg_stats *stats)
 	blkg_stat_exit(&stats->group_wait_time);
 	blkg_stat_exit(&stats->idle_time);
 	blkg_stat_exit(&stats->empty_time);
-<<<<<<< HEAD
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int bfqg_stats_init(struct bfqg_stats *stats, gfp_t gfp)
 {
-<<<<<<< HEAD
 #ifdef CONFIG_DEBUG_BLK_CGROUP
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (blkg_rwstat_init(&stats->merged, gfp) ||
 	    blkg_rwstat_init(&stats->service_time, gfp) ||
 	    blkg_rwstat_init(&stats->wait_time, gfp) ||
@@ -496,10 +396,7 @@ static int bfqg_stats_init(struct bfqg_stats *stats, gfp_t gfp)
 		bfqg_stats_exit(stats);
 		return -ENOMEM;
 	}
-<<<<<<< HEAD
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -628,22 +525,12 @@ struct bfq_group *bfq_find_set_group(struct bfq_data *bfqd,
 	 */
 	entity = &bfqg->entity;
 	for_each_entity(entity) {
-<<<<<<< HEAD
 		bfqg = container_of(entity, struct bfq_group, entity);
 		if (bfqg != bfqd->root_group) {
 			parent = bfqg_parent(bfqg);
 			if (!parent)
 				parent = bfqd->root_group;
 			bfq_group_set_parent(bfqg, parent);
-=======
-		struct bfq_group *curr_bfqg = container_of(entity,
-						struct bfq_group, entity);
-		if (curr_bfqg != bfqd->root_group) {
-			parent = bfqg_parent(curr_bfqg);
-			if (!parent)
-				parent = bfqd->root_group;
-			bfq_group_set_parent(curr_bfqg, parent);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -1030,10 +917,7 @@ static ssize_t bfq_io_set_weight(struct kernfs_open_file *of,
 	return ret ?: nbytes;
 }
 
-<<<<<<< HEAD
 #ifdef CONFIG_DEBUG_BLK_CGROUP
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int bfqg_print_stat(struct seq_file *sf, void *v)
 {
 	blkcg_print_blkgs(sf, css_to_blkcg(seq_css(sf)), blkg_prfill_stat,
@@ -1138,10 +1022,7 @@ static int bfqg_print_avg_queue_size(struct seq_file *sf, void *v)
 			  0, false);
 	return 0;
 }
-<<<<<<< HEAD
 #endif /* CONFIG_DEBUG_BLK_CGROUP */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct bfq_group *bfq_create_group_hierarchy(struct bfq_data *bfqd, int node)
 {
@@ -1180,18 +1061,6 @@ struct cftype bfq_blkcg_legacy_files[] = {
 
 	/* statistics, covers only the tasks in the bfqg */
 	{
-<<<<<<< HEAD
-=======
-		.name = "bfq.time",
-		.private = offsetof(struct bfq_group, stats.time),
-		.seq_show = bfqg_print_stat,
-	},
-	{
-		.name = "bfq.sectors",
-		.seq_show = bfqg_print_stat_sectors,
-	},
-	{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.name = "bfq.io_service_bytes",
 		.private = (unsigned long)&blkcg_policy_bfq,
 		.seq_show = blkg_print_stat_bytes,
@@ -1201,7 +1070,6 @@ struct cftype bfq_blkcg_legacy_files[] = {
 		.private = (unsigned long)&blkcg_policy_bfq,
 		.seq_show = blkg_print_stat_ios,
 	},
-<<<<<<< HEAD
 #ifdef CONFIG_DEBUG_BLK_CGROUP
 	{
 		.name = "bfq.time",
@@ -1212,8 +1080,6 @@ struct cftype bfq_blkcg_legacy_files[] = {
 		.name = "bfq.sectors",
 		.seq_show = bfqg_print_stat_sectors,
 	},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{
 		.name = "bfq.io_service_time",
 		.private = offsetof(struct bfq_group, stats.service_time),
@@ -1234,25 +1100,10 @@ struct cftype bfq_blkcg_legacy_files[] = {
 		.private = offsetof(struct bfq_group, stats.queued),
 		.seq_show = bfqg_print_rwstat,
 	},
-<<<<<<< HEAD
 #endif /* CONFIG_DEBUG_BLK_CGROUP */
 
 	/* the same statictics which cover the bfqg and its descendants */
 	{
-=======
-
-	/* the same statictics which cover the bfqg and its descendants */
-	{
-		.name = "bfq.time_recursive",
-		.private = offsetof(struct bfq_group, stats.time),
-		.seq_show = bfqg_print_stat_recursive,
-	},
-	{
-		.name = "bfq.sectors_recursive",
-		.seq_show = bfqg_print_stat_sectors_recursive,
-	},
-	{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.name = "bfq.io_service_bytes_recursive",
 		.private = (unsigned long)&blkcg_policy_bfq,
 		.seq_show = blkg_print_stat_bytes_recursive,
@@ -1262,7 +1113,6 @@ struct cftype bfq_blkcg_legacy_files[] = {
 		.private = (unsigned long)&blkcg_policy_bfq,
 		.seq_show = blkg_print_stat_ios_recursive,
 	},
-<<<<<<< HEAD
 #ifdef CONFIG_DEBUG_BLK_CGROUP
 	{
 		.name = "bfq.time_recursive",
@@ -1273,8 +1123,6 @@ struct cftype bfq_blkcg_legacy_files[] = {
 		.name = "bfq.sectors_recursive",
 		.seq_show = bfqg_print_stat_sectors_recursive,
 	},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{
 		.name = "bfq.io_service_time_recursive",
 		.private = offsetof(struct bfq_group, stats.service_time),
@@ -1319,10 +1167,7 @@ struct cftype bfq_blkcg_legacy_files[] = {
 		.private = offsetof(struct bfq_group, stats.dequeue),
 		.seq_show = bfqg_print_stat,
 	},
-<<<<<<< HEAD
 #endif	/* CONFIG_DEBUG_BLK_CGROUP */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ }	/* terminate */
 };
 
@@ -1338,21 +1183,6 @@ struct cftype bfq_blkg_files[] = {
 
 #else	/* CONFIG_BFQ_GROUP_IOSCHED */
 
-<<<<<<< HEAD
-=======
-void bfqg_stats_update_io_add(struct bfq_group *bfqg, struct bfq_queue *bfqq,
-			      unsigned int op) { }
-void bfqg_stats_update_io_remove(struct bfq_group *bfqg, unsigned int op) { }
-void bfqg_stats_update_io_merged(struct bfq_group *bfqg, unsigned int op) { }
-void bfqg_stats_update_completion(struct bfq_group *bfqg, uint64_t start_time,
-				  uint64_t io_start_time, unsigned int op) { }
-void bfqg_stats_update_dequeue(struct bfq_group *bfqg) { }
-void bfqg_stats_set_start_empty_time(struct bfq_group *bfqg) { }
-void bfqg_stats_update_idle_time(struct bfq_group *bfqg) { }
-void bfqg_stats_set_start_idle_time(struct bfq_group *bfqg) { }
-void bfqg_stats_update_avg_queue_size(struct bfq_group *bfqg) { }
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void bfq_bfqq_move(struct bfq_data *bfqd, struct bfq_queue *bfqq,
 		   struct bfq_group *bfqg) {}
 

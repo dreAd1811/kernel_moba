@@ -47,10 +47,7 @@
 #define MDIO_CLK_25_28                                               7
 
 #define MDIO_WAIT_TIMES                                           1000
-<<<<<<< HEAD
 #define MDIO_STATUS_DELAY_TIME                                       1
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int emac_mdio_read(struct mii_bus *bus, int addr, int regnum)
 {
@@ -69,11 +66,7 @@ static int emac_mdio_read(struct mii_bus *bus, int addr, int regnum)
 
 	if (readl_poll_timeout(adpt->base + EMAC_MDIO_CTRL, reg,
 			       !(reg & (MDIO_START | MDIO_BUSY)),
-<<<<<<< HEAD
 			       MDIO_STATUS_DELAY_TIME, MDIO_WAIT_TIMES * 100))
-=======
-			       100, MDIO_WAIT_TIMES * 100))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EIO;
 
 	return (reg >> MDIO_DATA_SHFT) & MDIO_DATA_BMSK;
@@ -96,13 +89,8 @@ static int emac_mdio_write(struct mii_bus *bus, int addr, int regnum, u16 val)
 	writel(reg, adpt->base + EMAC_MDIO_CTRL);
 
 	if (readl_poll_timeout(adpt->base + EMAC_MDIO_CTRL, reg,
-<<<<<<< HEAD
 			       !(reg & (MDIO_START | MDIO_BUSY)),
 			       MDIO_STATUS_DELAY_TIME, MDIO_WAIT_TIMES * 100))
-=======
-			       !(reg & (MDIO_START | MDIO_BUSY)), 100,
-			       MDIO_WAIT_TIMES * 100))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EIO;
 
 	return 0;

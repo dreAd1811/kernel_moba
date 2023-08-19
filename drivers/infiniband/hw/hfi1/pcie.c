@@ -56,14 +56,6 @@
 #include "chip_registers.h"
 #include "aspm.h"
 
-<<<<<<< HEAD
-=======
-/* link speed vector for Gen3 speed - not in Linux headers */
-#define GEN1_SPEED_VECTOR 0x1
-#define GEN2_SPEED_VECTOR 0x2
-#define GEN3_SPEED_VECTOR 0x3
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * This file contains PCIe utility routines.
  */
@@ -165,10 +157,7 @@ int hfi1_pcie_ddinit(struct hfi1_devdata *dd, struct pci_dev *pdev)
 	unsigned long len;
 	resource_size_t addr;
 	int ret = 0;
-<<<<<<< HEAD
 	u32 rcv_array_count;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	addr = pci_resource_start(pdev, 0);
 	len = pci_resource_len(pdev, 0);
@@ -190,7 +179,6 @@ int hfi1_pcie_ddinit(struct hfi1_devdata *dd, struct pci_dev *pdev)
 		return -ENOMEM;
 	}
 	dd_dev_info(dd, "UC base1: %p for %x\n", dd->kregbase1, RCV_ARRAY);
-<<<<<<< HEAD
 
 	/* verify that reads actually work, save revision for reset check */
 	dd->revision = readq(dd->kregbase1 + CCE_REVISION);
@@ -202,11 +190,6 @@ int hfi1_pcie_ddinit(struct hfi1_devdata *dd, struct pci_dev *pdev)
 	rcv_array_count = readq(dd->kregbase1 + RCV_ARRAY_CNT);
 	dd_dev_info(dd, "RcvArray count: %u\n", rcv_array_count);
 	dd->base2_start  = RCV_ARRAY + rcv_array_count * 8;
-=======
-	dd->chip_rcv_array_count = readq(dd->kregbase1 + RCV_ARRAY_CNT);
-	dd_dev_info(dd, "RcvArray count: %u\n", dd->chip_rcv_array_count);
-	dd->base2_start  = RCV_ARRAY + dd->chip_rcv_array_count * 8;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dd->kregbase2 = ioremap_nocache(
 		addr + dd->base2_start,
@@ -232,21 +215,13 @@ int hfi1_pcie_ddinit(struct hfi1_devdata *dd, struct pci_dev *pdev)
 	 * to write an entire cacheline worth of entries in one shot.
 	 */
 	dd->rcvarray_wc = ioremap_wc(addr + RCV_ARRAY,
-<<<<<<< HEAD
 				     rcv_array_count * 8);
-=======
-				     dd->chip_rcv_array_count * 8);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!dd->rcvarray_wc) {
 		dd_dev_err(dd, "WC mapping of receive array failed\n");
 		goto nomem;
 	}
 	dd_dev_info(dd, "WC RcvArray: %p for %x\n",
-<<<<<<< HEAD
 		    dd->rcvarray_wc, rcv_array_count * 8);
-=======
-		    dd->rcvarray_wc, dd->chip_rcv_array_count * 8);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dd->flags |= HFI1_PRESENT;	/* chip.c CSR routines now work */
 	return 0;
@@ -291,11 +266,7 @@ static u32 extract_speed(u16 linkstat)
 	case PCI_EXP_LNKSTA_CLS_5_0GB:
 		speed = 5000; /* Gen 2, 5GHz */
 		break;
-<<<<<<< HEAD
 	case PCI_EXP_LNKSTA_CLS_8_0GB:
-=======
-	case GEN3_SPEED_VECTOR:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		speed = 8000; /* Gen 3, 8GHz */
 		break;
 	}
@@ -350,11 +321,7 @@ int pcie_speeds(struct hfi1_devdata *dd)
 		return ret;
 	}
 
-<<<<<<< HEAD
 	if ((linkcap & PCI_EXP_LNKCAP_SLS) != PCI_EXP_LNKCAP_SLS_8_0GB) {
-=======
-	if ((linkcap & PCI_EXP_LNKCAP_SLS) != GEN3_SPEED_VECTOR) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dd_dev_info(dd,
 			    "This HFI is not Gen3 capable, max speed 0x%x, need 0x3\n",
 			    linkcap & PCI_EXP_LNKCAP_SLS);
@@ -364,13 +331,7 @@ int pcie_speeds(struct hfi1_devdata *dd)
 	/*
 	 * bus->max_bus_speed is set from the bridge's linkcap Max Link Speed
 	 */
-<<<<<<< HEAD
 	if (parent && dd->pcidev->bus->max_bus_speed != PCIE_SPEED_8_0GT) {
-=======
-	if (parent &&
-	    (dd->pcidev->bus->max_bus_speed == PCIE_SPEED_2_5GT ||
-	     dd->pcidev->bus->max_bus_speed == PCIE_SPEED_5_0GT)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dd_dev_info(dd, "Parent PCIe bridge does not support Gen3\n");
 		dd->link_gen3_capable = 0;
 	}
@@ -386,22 +347,13 @@ int pcie_speeds(struct hfi1_devdata *dd)
 /*
  * Returns:
  *	- actual number of interrupts allocated or
-<<<<<<< HEAD
-=======
- *	- 0 if fell back to INTx.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *      - error
  */
 int request_msix(struct hfi1_devdata *dd, u32 msireq)
 {
 	int nvec;
 
-<<<<<<< HEAD
 	nvec = pci_alloc_irq_vectors(dd->pcidev, msireq, msireq, PCI_IRQ_MSIX);
-=======
-	nvec = pci_alloc_irq_vectors(dd->pcidev, 1, msireq,
-				     PCI_IRQ_MSIX | PCI_IRQ_LEGACY);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (nvec < 0) {
 		dd_dev_err(dd, "pci_alloc_irq_vectors() failed: %d\n", nvec);
 		return nvec;
@@ -409,13 +361,6 @@ int request_msix(struct hfi1_devdata *dd, u32 msireq)
 
 	tune_pcie_caps(dd);
 
-<<<<<<< HEAD
-=======
-	/* check for legacy IRQ */
-	if (nvec == 1 && !dd->pcidev->msix_enabled)
-		return 0;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return nvec;
 }
 
@@ -747,12 +692,6 @@ const struct pci_error_handlers hfi1_pci_err_handler = {
 /* gasket block secondary bus reset delay */
 #define SBR_DELAY_US 200000	/* 200ms */
 
-<<<<<<< HEAD
-=======
-/* mask for PCIe capability register lnkctl2 target link speed */
-#define LNKCTL2_TARGET_LINK_SPEED_MASK 0xf
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static uint pcie_target = 3;
 module_param(pcie_target, uint, S_IRUGO);
 MODULE_PARM_DESC(pcie_target, "PCIe target speed (0 skip, 1-3 Gen1-3)");
@@ -954,24 +893,11 @@ static int trigger_sbr(struct hfi1_devdata *dd)
 		}
 
 	/*
-<<<<<<< HEAD
 	 * This is an end around to do an SBR during probe time. A new API needs
 	 * to be implemented to have cleaner interface but this fixes the
 	 * current brokenness
 	 */
 	return pci_bridge_secondary_bus_reset(dev->bus->self);
-=======
-	 * A secondary bus reset (SBR) issues a hot reset to our device.
-	 * The following routine does a 1s wait after the reset is dropped
-	 * per PCI Trhfa (recovery time).  PCIe 3.0 section 6.6.1 -
-	 * Conventional Reset, paragraph 3, line 35 also says that a 1s
-	 * delay after a reset is required.  Per spec requirements,
-	 * the link is either working or not after that point.
-	 */
-	pci_reset_bridge_secondary_bus(dev->bus->self);
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -1095,10 +1021,7 @@ int do_pcie_gen3_transition(struct hfi1_devdata *dd)
 	int do_retry, retry_count = 0;
 	int intnum = 0;
 	uint default_pset;
-<<<<<<< HEAD
 	uint pset = pcie_pset;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 target_vector, target_speed;
 	u16 lnkctl2, vendor;
 	u8 div;
@@ -1112,7 +1035,6 @@ int do_pcie_gen3_transition(struct hfi1_devdata *dd)
 		return 0;
 
 	if (pcie_target == 1) {			/* target Gen1 */
-<<<<<<< HEAD
 		target_vector = PCI_EXP_LNKCTL2_TLS_2_5GT;
 		target_speed = 2500;
 	} else if (pcie_target == 2) {		/* target Gen2 */
@@ -1120,15 +1042,6 @@ int do_pcie_gen3_transition(struct hfi1_devdata *dd)
 		target_speed = 5000;
 	} else if (pcie_target == 3) {		/* target Gen3 */
 		target_vector = PCI_EXP_LNKCTL2_TLS_8_0GT;
-=======
-		target_vector = GEN1_SPEED_VECTOR;
-		target_speed = 2500;
-	} else if (pcie_target == 2) {		/* target Gen2 */
-		target_vector = GEN2_SPEED_VECTOR;
-		target_speed = 5000;
-	} else if (pcie_target == 3) {		/* target Gen3 */
-		target_vector = GEN3_SPEED_VECTOR;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		target_speed = 8000;
 	} else {
 		/* off or invalid target - skip */
@@ -1276,7 +1189,6 @@ retry:
 	 *
 	 * Set Gen3EqPsetReqVec, leave other fields 0.
 	 */
-<<<<<<< HEAD
 	if (pset == UNSET_PSET)
 		pset = default_pset;
 	if (pset > 10) {	/* valid range is 0-10, inclusive */
@@ -1287,18 +1199,6 @@ retry:
 	dd_dev_info(dd, "%s: using EQ Pset %u\n", __func__, pset);
 	pci_write_config_dword(dd->pcidev, PCIE_CFG_REG_PL106,
 			       ((1 << pset) <<
-=======
-	if (pcie_pset == UNSET_PSET)
-		pcie_pset = default_pset;
-	if (pcie_pset > 10) {	/* valid range is 0-10, inclusive */
-		dd_dev_err(dd, "%s: Invalid Eq Pset %u, setting to %d\n",
-			   __func__, pcie_pset, default_pset);
-		pcie_pset = default_pset;
-	}
-	dd_dev_info(dd, "%s: using EQ Pset %u\n", __func__, pcie_pset);
-	pci_write_config_dword(dd->pcidev, PCIE_CFG_REG_PL106,
-			       ((1 << pcie_pset) <<
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			PCIE_CFG_REG_PL106_GEN3_EQ_PSET_REQ_VEC_SHIFT) |
 			PCIE_CFG_REG_PL106_GEN3_EQ_EVAL2MS_DISABLE_SMASK |
 			PCIE_CFG_REG_PL106_GEN3_EQ_PHASE23_EXIT_MODE_SMASK);
@@ -1328,17 +1228,10 @@ retry:
 		/* apply static CTLE tunings */
 		u8 pcie_dc, pcie_lf, pcie_hf, pcie_bw;
 
-<<<<<<< HEAD
 		pcie_dc = ctle_tunings[pset][0];
 		pcie_lf = ctle_tunings[pset][1];
 		pcie_hf = ctle_tunings[pset][2];
 		pcie_bw = ctle_tunings[pset][3];
-=======
-		pcie_dc = ctle_tunings[pcie_pset][0];
-		pcie_lf = ctle_tunings[pcie_pset][1];
-		pcie_hf = ctle_tunings[pcie_pset][2];
-		pcie_bw = ctle_tunings[pcie_pset][3];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		write_gasket_interrupt(dd, intnum++, 0x0026, 0x0200 | pcie_dc);
 		write_gasket_interrupt(dd, intnum++, 0x0026, 0x0100 | pcie_lf);
 		write_gasket_interrupt(dd, intnum++, 0x0026, 0x0000 | pcie_hf);
@@ -1387,13 +1280,8 @@ retry:
 	dd_dev_info(dd, "%s: ..old link control2: 0x%x\n", __func__,
 		    (u32)lnkctl2);
 	/* only write to parent if target is not as high as ours */
-<<<<<<< HEAD
 	if ((lnkctl2 & PCI_EXP_LNKCTL2_TLS) < target_vector) {
 		lnkctl2 &= ~PCI_EXP_LNKCTL2_TLS;
-=======
-	if ((lnkctl2 & LNKCTL2_TARGET_LINK_SPEED_MASK) < target_vector) {
-		lnkctl2 &= ~LNKCTL2_TARGET_LINK_SPEED_MASK;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		lnkctl2 |= target_vector;
 		dd_dev_info(dd, "%s: ..new link control2: 0x%x\n", __func__,
 			    (u32)lnkctl2);
@@ -1418,11 +1306,7 @@ retry:
 
 	dd_dev_info(dd, "%s: ..old link control2: 0x%x\n", __func__,
 		    (u32)lnkctl2);
-<<<<<<< HEAD
 	lnkctl2 &= ~PCI_EXP_LNKCTL2_TLS;
-=======
-	lnkctl2 &= ~LNKCTL2_TARGET_LINK_SPEED_MASK;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	lnkctl2 |= target_vector;
 	dd_dev_info(dd, "%s: ..new link control2: 0x%x\n", __func__,
 		    (u32)lnkctl2);

@@ -183,7 +183,6 @@ static inline u32 rcventry2tidinfo(u32 rcventry)
 		EXP_TID_SET(CTRL, 1 << (rcventry - pair));
 }
 
-<<<<<<< HEAD
 /**
  * hfi1_tid_group_to_idx - convert an index to a group
  * @rcd - the receive context
@@ -209,10 +208,5 @@ hfi1_idx_to_tid_group(struct hfi1_ctxtdata *rcd, u16 idx)
 int hfi1_alloc_ctxt_rcv_groups(struct hfi1_ctxtdata *rcd);
 void hfi1_free_ctxt_rcv_groups(struct hfi1_ctxtdata *rcd);
 void hfi1_exp_tid_group_init(struct hfi1_ctxtdata *rcd);
-=======
-int hfi1_alloc_ctxt_rcv_groups(struct hfi1_ctxtdata *rcd);
-void hfi1_free_ctxt_rcv_groups(struct hfi1_ctxtdata *rcd);
-void hfi1_exp_tid_group_init(struct exp_tid_set *set);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* _HFI1_EXP_RCV_H */

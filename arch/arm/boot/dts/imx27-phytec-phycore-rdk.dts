@@ -63,10 +63,7 @@
 			vcc-supply = <&reg_5v0>;
 			clocks = <&clks IMX27_CLK_DUMMY>;
 			clock-names = "main_clk";
-<<<<<<< HEAD
 			#phy-cells = <0>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 	};
 };

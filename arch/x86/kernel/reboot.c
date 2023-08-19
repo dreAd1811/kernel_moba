@@ -197,17 +197,6 @@ static const struct dmi_system_id reboot_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_PRODUCT_NAME, "MacBook5"),
 		},
 	},
-<<<<<<< HEAD
-=======
-	{	/* Handle problems with rebooting on Apple MacBook6,1 */
-		.callback = set_pci_reboot,
-		.ident = "Apple MacBook6,1",
-		.matches = {
-			DMI_MATCH(DMI_SYS_VENDOR, "Apple Inc."),
-			DMI_MATCH(DMI_PRODUCT_NAME, "MacBook6,1"),
-		},
-	},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{	/* Handle problems with rebooting on Apple MacBookPro5 */
 		.callback = set_pci_reboot,
 		.ident = "Apple MacBookPro5",
@@ -698,11 +687,7 @@ void native_machine_shutdown(void)
 	 * Even without the erratum, it still makes sense to quiet IO APIC
 	 * before disabling Local APIC.
 	 */
-<<<<<<< HEAD
 	clear_IO_APIC();
-=======
-	disable_IO_APIC();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 #ifdef CONFIG_SMP
@@ -716,10 +701,7 @@ void native_machine_shutdown(void)
 #endif
 
 	lapic_shutdown();
-<<<<<<< HEAD
 	restore_boot_irq_mode();
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_HPET_TIMER
 	hpet_disable();

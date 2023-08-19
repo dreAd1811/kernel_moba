@@ -88,15 +88,12 @@
 /* version string max length (including NULL) */
 #define WCN36XX_HAL_VERSION_LENGTH  64
 
-<<<<<<< HEAD
 /* How many frames until we start a-mpdu TX session */
 #define WCN36XX_AMPDU_START_THRESH	20
 
 #define WCN36XX_MAX_SCAN_SSIDS		9
 #define WCN36XX_MAX_SCAN_IE_LEN		500
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* message types for messages exchanged between WDI and HAL */
 enum wcn36xx_hal_host_msg_type {
 	/* Init/De-Init */
@@ -357,7 +354,6 @@ enum wcn36xx_hal_host_msg_type {
 	WCN36XX_HAL_DHCP_START_IND = 189,
 	WCN36XX_HAL_DHCP_STOP_IND = 190,
 
-<<<<<<< HEAD
 	/* Scan Offload(hw) APIs */
 	WCN36XX_HAL_START_SCAN_OFFLOAD_REQ = 204,
 	WCN36XX_HAL_START_SCAN_OFFLOAD_RSP = 205,
@@ -365,8 +361,6 @@ enum wcn36xx_hal_host_msg_type {
 	WCN36XX_HAL_STOP_SCAN_OFFLOAD_RSP = 207,
 	WCN36XX_HAL_SCAN_OFFLOAD_IND = 210,
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	WCN36XX_HAL_AVOID_FREQ_RANGE_IND = 233,
 
 	WCN36XX_HAL_PRINT_REG_INFO_IND = 259,
@@ -1134,7 +1128,6 @@ struct wcn36xx_hal_finish_scan_rsp_msg {
 
 } __packed;
 
-<<<<<<< HEAD
 enum wcn36xx_hal_scan_type {
 	WCN36XX_HAL_SCAN_TYPE_PASSIVE = 0x00,
 	WCN36XX_HAL_SCAN_TYPE_ACTIVE = WCN36XX_HAL_MAX_ENUM_SIZE
@@ -1230,8 +1223,6 @@ struct wcn36xx_hal_stop_scan_offload_rsp_msg {
 	u32 status;
 } __packed;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum wcn36xx_hal_rate_index {
 	HW_RATE_INDEX_1MBPS	= 0x82,
 	HW_RATE_INDEX_2MBPS	= 0x84,
@@ -1624,14 +1615,6 @@ struct wcn36xx_hal_edca_param_record {
 	u16 txop_limit;
 } __packed;
 
-<<<<<<< HEAD
-=======
-struct wcn36xx_hal_mac_ssid {
-	u8 length;
-	u8 ssid[32];
-} __packed;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Concurrency role. These are generic IDs that identify the various roles
  *  in the software system. */
 enum wcn36xx_hal_con_mode {
@@ -2253,7 +2236,6 @@ struct wcn36xx_hal_switch_channel_rsp_msg {
 
 } __packed;
 
-<<<<<<< HEAD
 struct wcn36xx_hal_process_ptt_msg_req_msg {
 	struct wcn36xx_hal_msg_header header;
 
@@ -2270,8 +2252,6 @@ struct wcn36xx_hal_process_ptt_msg_rsp_msg {
 	u8 ptt_msg[0];
 } __packed;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct update_edca_params_req_msg {
 	struct wcn36xx_hal_msg_header header;
 

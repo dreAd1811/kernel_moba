@@ -13,11 +13,7 @@ config MODULE_SIG_KEY
 
          If this option is unchanged from its default "certs/signing_key.pem",
          then the kernel will automatically generate the private key and
-<<<<<<< HEAD
          certificate as described in Documentation/admin-guide/module-signing.rst
-=======
-         certificate as described in Documentation/module-signing.txt
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config SYSTEM_TRUSTED_KEYRING
 	bool "Provide system-wide ring of trusted keys"

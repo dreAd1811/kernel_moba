@@ -38,10 +38,7 @@
 #include <media/v4l2-device.h>
 #include <media/v4l2-dev.h>
 #include <media/v4l2-ioctl.h>
-<<<<<<< HEAD
 #include <media/v4l2-ctrls.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <media/videobuf2-v4l2.h>
 #include <media/videobuf2-dma-sg.h>
 
@@ -85,14 +82,10 @@ struct sur40_blob {
 
 	__le32 area;       /* size in pixels/pressure (?) */
 
-<<<<<<< HEAD
 	u8 padding[24];
 
 	__le32 tag_id;     /* valid when type == 0x04 (SUR40_TAG) */
 	__le32 unknown;
-=======
-	u8 padding[32];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 } __packed;
 
@@ -157,7 +150,6 @@ struct sur40_image_header {
 #define SUR40_TOUCH	0x02
 #define SUR40_TAG	0x04
 
-<<<<<<< HEAD
 /* video controls */
 #define SUR40_BRIGHTNESS_MAX 0xff
 #define SUR40_BRIGHTNESS_MIN 0x00
@@ -192,8 +184,6 @@ module_param(gain, uint, 0644);
 MODULE_PARM_DESC(gain, "set initial gain"
 	SUR40_PARAM_RANGE(SUR40_GAIN_MIN, SUR40_GAIN_MAX));
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct v4l2_pix_format sur40_pix_format[] = {
 	{
 		.pixelformat = V4L2_TCH_FMT_TU08,
@@ -226,10 +216,7 @@ struct sur40_state {
 	struct video_device vdev;
 	struct mutex lock;
 	struct v4l2_pix_format pix_fmt;
-<<<<<<< HEAD
 	struct v4l2_ctrl_handler hdl;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct vb2_queue queue;
 	struct list_head buf_list;
@@ -239,10 +226,7 @@ struct sur40_state {
 	struct sur40_data *bulk_in_buffer;
 	size_t bulk_in_size;
 	u8 bulk_in_epaddr;
-<<<<<<< HEAD
 	u8 vsvideo;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	char phys[64];
 };
@@ -256,14 +240,11 @@ struct sur40_buffer {
 static const struct video_device sur40_video_device;
 static const struct vb2_queue sur40_queue;
 static void sur40_process_video(struct sur40_state *sur40);
-<<<<<<< HEAD
 static int sur40_s_ctrl(struct v4l2_ctrl *ctrl);
 
 static const struct v4l2_ctrl_ops sur40_ctrl_ops = {
 	.s_ctrl = sur40_s_ctrl,
 };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Note: an earlier, non-public version of this driver used USB_RECIP_ENDPOINT
@@ -284,7 +265,6 @@ static int sur40_command(struct sur40_state *dev,
 			       0x00, index, buffer, size, 1000);
 }
 
-<<<<<<< HEAD
 /* poke a byte in the panel register space */
 static int sur40_poke(struct sur40_state *dev, u8 offset, u8 value)
 {
@@ -360,8 +340,6 @@ static void sur40_set_irlevel(struct sur40_state *handle, u8 value)
 		sur40_poke(handle, 0x08+(2*i), value);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Initialization routine, called from sur40_open */
 static int sur40_init(struct sur40_state *dev)
 {
@@ -679,11 +657,7 @@ static int sur40_probe(struct usb_interface *interface,
 	int error;
 
 	/* Check if we really have the right interface. */
-<<<<<<< HEAD
 	iface_desc = &interface->altsetting[0];
-=======
-	iface_desc = interface->cur_altsetting;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (iface_desc->desc.bInterfaceClass != 0xFF)
 		return -ENODEV;
 
@@ -777,7 +751,6 @@ static int sur40_probe(struct usb_interface *interface,
 	sur40->vdev.queue = &sur40->queue;
 	video_set_drvdata(&sur40->vdev, sur40);
 
-<<<<<<< HEAD
 	/* initialize the control handler for 4 controls */
 	v4l2_ctrl_handler_init(&sur40->hdl, 4);
 	sur40->v4l2.ctrl_handler = &sur40->hdl;
@@ -808,8 +781,6 @@ static int sur40_probe(struct usb_interface *interface,
 		goto err_unreg_v4l2;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	error = video_register_device(&sur40->vdev, VFL_TYPE_TOUCH, -1);
 	if (error) {
 		dev_err(&interface->dev,
@@ -842,10 +813,7 @@ static void sur40_disconnect(struct usb_interface *interface)
 {
 	struct sur40_state *sur40 = usb_get_intfdata(interface);
 
-<<<<<<< HEAD
 	v4l2_ctrl_handler_free(&sur40->hdl);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	video_unregister_device(&sur40->vdev);
 	v4l2_device_unregister(&sur40->v4l2);
 
@@ -1039,7 +1007,6 @@ static int sur40_vidioc_g_fmt(struct file *file, void *priv,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int sur40_s_ctrl(struct v4l2_ctrl *ctrl)
 {
 	struct sur40_state *sur40  = container_of(ctrl->handler,
@@ -1065,8 +1032,6 @@ static int sur40_s_ctrl(struct v4l2_ctrl *ctrl)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int sur40_ioctl_parm(struct file *file, void *priv,
 			    struct v4l2_streamparm *p)
 {

@@ -49,13 +49,7 @@ static int stmmac_adjust_freq(struct ptp_clock_info *ptp, s32 ppb)
 	addend = neg_adj ? (addend - diff) : (addend + diff);
 
 	spin_lock_irqsave(&priv->ptp_lock, flags);
-<<<<<<< HEAD
 	stmmac_config_addend(priv, priv->ptpaddr, addend);
-=======
-
-	priv->hw->ptp->config_addend(priv->ptpaddr, addend);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irqrestore(&priv->ptp_lock, flags);
 
 	return 0;
@@ -77,12 +71,9 @@ static int stmmac_adjust_time(struct ptp_clock_info *ptp, s64 delta)
 	u32 sec, nsec;
 	u32 quotient, reminder;
 	int neg_adj = 0;
-<<<<<<< HEAD
 	bool xmac;
 
 	xmac = priv->plat->has_gmac4 || priv->plat->has_xgmac;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (delta < 0) {
 		neg_adj = 1;
@@ -94,14 +85,7 @@ static int stmmac_adjust_time(struct ptp_clock_info *ptp, s64 delta)
 	nsec = reminder;
 
 	spin_lock_irqsave(&priv->ptp_lock, flags);
-<<<<<<< HEAD
 	stmmac_adjust_systime(priv, priv->ptpaddr, sec, nsec, neg_adj, xmac);
-=======
-
-	priv->hw->ptp->adjust_systime(priv->ptpaddr, sec, nsec, neg_adj,
-				      priv->plat->has_gmac4);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irqrestore(&priv->ptp_lock, flags);
 
 	return 0;
@@ -121,19 +105,10 @@ static int stmmac_get_time(struct ptp_clock_info *ptp, struct timespec64 *ts)
 	struct stmmac_priv *priv =
 	    container_of(ptp, struct stmmac_priv, ptp_clock_ops);
 	unsigned long flags;
-<<<<<<< HEAD
 	u64 ns = 0;
 
 	spin_lock_irqsave(&priv->ptp_lock, flags);
 	stmmac_get_systime(priv, priv->ptpaddr, &ns);
-=======
-	u64 ns;
-
-	spin_lock_irqsave(&priv->ptp_lock, flags);
-
-	ns = priv->hw->ptp->get_systime(priv->ptpaddr);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irqrestore(&priv->ptp_lock, flags);
 
 	*ts = ns_to_timespec64(ns);
@@ -158,13 +133,7 @@ static int stmmac_set_time(struct ptp_clock_info *ptp,
 	unsigned long flags;
 
 	spin_lock_irqsave(&priv->ptp_lock, flags);
-<<<<<<< HEAD
 	stmmac_init_systime(priv, priv->ptpaddr, ts->tv_sec, ts->tv_nsec);
-=======
-
-	priv->hw->ptp->init_systime(priv->ptpaddr, ts->tv_sec, ts->tv_nsec);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irqrestore(&priv->ptp_lock, flags);
 
 	return 0;
@@ -173,7 +142,6 @@ static int stmmac_set_time(struct ptp_clock_info *ptp,
 static int stmmac_enable(struct ptp_clock_info *ptp,
 			 struct ptp_clock_request *rq, int on)
 {
-<<<<<<< HEAD
 	struct stmmac_priv *priv =
 	    container_of(ptp, struct stmmac_priv, ptp_clock_ops);
 	struct stmmac_pps_cfg *cfg;
@@ -211,19 +179,6 @@ static struct ptp_clock_info stmmac_ptp_clock_ops = {
 	.n_alarm = 0,
 	.n_ext_ts = 0,
 	.n_per_out = 0, /* will be overwritten in stmmac_ptp_register */
-=======
-	return -EOPNOTSUPP;
-}
-
-/* structure describing a PTP hardware clock */
-static const struct ptp_clock_info stmmac_ptp_clock_ops = {
-	.owner = THIS_MODULE,
-	.name = "stmmac ptp",
-	.max_adj = 62500000,
-	.n_alarm = 0,
-	.n_ext_ts = 0,
-	.n_per_out = 0,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.n_pins = 0,
 	.pps = 0,
 	.adjfreq = stmmac_adjust_freq,
@@ -241,7 +196,6 @@ static const struct ptp_clock_info stmmac_ptp_clock_ops = {
  */
 void stmmac_ptp_register(struct stmmac_priv *priv)
 {
-<<<<<<< HEAD
 	int i;
 
 	for (i = 0; i < priv->dma_cap.pps_out_num; i++) {
@@ -252,8 +206,6 @@ void stmmac_ptp_register(struct stmmac_priv *priv)
 
 	stmmac_ptp_clock_ops.n_per_out = priv->dma_cap.pps_out_num;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_init(&priv->ptp_lock);
 	priv->ptp_clock_ops = stmmac_ptp_clock_ops;
 

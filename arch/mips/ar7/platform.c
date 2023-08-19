@@ -346,11 +346,7 @@ static struct platform_device ar7_udc = {
 /*****************************************************************************
  * LEDs
  ****************************************************************************/
-<<<<<<< HEAD
 static const struct gpio_led default_leds[] = {
-=======
-static struct gpio_led default_leds[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{
 		.name			= "status",
 		.gpio			= 8,
@@ -358,20 +354,12 @@ static struct gpio_led default_leds[] = {
 	},
 };
 
-<<<<<<< HEAD
 static const struct gpio_led titan_leds[] = {
-=======
-static struct gpio_led titan_leds[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ .name = "status", .gpio = 8, .active_low = 1, },
 	{ .name = "wifi", .gpio = 13, .active_low = 1, },
 };
 
-<<<<<<< HEAD
 static const struct gpio_led dsl502t_leds[] = {
-=======
-static struct gpio_led dsl502t_leds[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{
 		.name			= "status",
 		.gpio			= 9,
@@ -389,11 +377,7 @@ static struct gpio_led dsl502t_leds[] = {
 	},
 };
 
-<<<<<<< HEAD
 static const struct gpio_led dg834g_leds[] = {
-=======
-static struct gpio_led dg834g_leds[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{
 		.name			= "ppp",
 		.gpio			= 6,
@@ -422,11 +406,7 @@ static struct gpio_led dg834g_leds[] = {
 	},
 };
 
-<<<<<<< HEAD
 static const struct gpio_led fb_sl_leds[] = {
-=======
-static struct gpio_led fb_sl_leds[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{
 		.name			= "1",
 		.gpio			= 7,
@@ -453,11 +433,7 @@ static struct gpio_led fb_sl_leds[] = {
 	},
 };
 
-<<<<<<< HEAD
 static const struct gpio_led fb_fon_leds[] = {
-=======
-static struct gpio_led fb_fon_leds[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{
 		.name			= "1",
 		.gpio			= 8,
@@ -483,11 +459,7 @@ static struct gpio_led fb_fon_leds[] = {
 	},
 };
 
-<<<<<<< HEAD
 static const struct gpio_led gt701_leds[] = {
-=======
-static struct gpio_led gt701_leds[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{
 		.name			= "inet:green",
 		.gpio			= 13,

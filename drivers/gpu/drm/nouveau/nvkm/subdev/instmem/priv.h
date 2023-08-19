@@ -12,16 +12,11 @@ struct nvkm_instmem_func {
 	void (*wr32)(struct nvkm_instmem *, u32 addr, u32 data);
 	int (*memory_new)(struct nvkm_instmem *, u32 size, u32 align,
 			  bool zero, struct nvkm_memory **);
-<<<<<<< HEAD
-=======
-	bool persistent;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool zero;
 };
 
 void nvkm_instmem_ctor(const struct nvkm_instmem_func *, struct nvkm_device *,
 		       int index, struct nvkm_instmem *);
-<<<<<<< HEAD
 void nvkm_instmem_boot(struct nvkm_instmem *);
 
 #include <core/memory.h>
@@ -35,6 +30,4 @@ struct nvkm_instobj {
 void nvkm_instobj_ctor(const struct nvkm_memory_func *func,
 		       struct nvkm_instmem *, struct nvkm_instobj *);
 void nvkm_instobj_dtor(struct nvkm_instmem *, struct nvkm_instobj *);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

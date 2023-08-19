@@ -26,11 +26,7 @@ ip_no_pmtu_disc - INTEGER
 	discarded. Outgoing frames are handled the same as in mode 1,
 	implicitly setting IP_PMTUDISC_DONT on every created socket.
 
-<<<<<<< HEAD
 	Mode 3 is a hardened pmtu discover mode. The kernel will only
-=======
-	Mode 3 is a hardend pmtu discover mode. The kernel will only
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	accept fragmentation-needed errors if the underlying protocol
 	can verify them besides a plain socket lookup. Current
 	protocols for which pmtu events will be honored are TCP, SCTP
@@ -85,7 +81,6 @@ fib_multipath_hash_policy - INTEGER
 	0 - Layer 3
 	1 - Layer 4
 
-<<<<<<< HEAD
 ip_forward_update_priority - INTEGER
 	Whether to update SKB priority from "TOS" field in IPv4 header after it
 	is forwarded. The new SKB priority is mapped from TOS field value
@@ -95,8 +90,6 @@ ip_forward_update_priority - INTEGER
 	0 - Do not update priority.
 	1 - Update priority.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 route/max_size - INTEGER
 	Maximum number of routes allowed in the kernel.  Increase
 	this when using large numbers of interfaces and/or routes.
@@ -310,12 +303,7 @@ tcp_ecn_fallback - BOOLEAN
 	Default: 1 (fallback enabled)
 
 tcp_fack - BOOLEAN
-<<<<<<< HEAD
 	This is a legacy option, it has no effect anymore.
-=======
-	Enable FACK congestion avoidance and fast retransmission.
-	The value is not used, if tcp_sack is not enabled.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 tcp_fin_timeout - INTEGER
 	The length of time an orphaned (no longer referenced by any
@@ -446,11 +434,7 @@ tcp_mtu_probing - INTEGER
 	  1 - Disabled by default, enabled when an ICMP black hole detected
 	  2 - Always enabled, use initial MSS of tcp_base_mss.
 
-<<<<<<< HEAD
 tcp_probe_interval - UNSIGNED INTEGER
-=======
-tcp_probe_interval - INTEGER
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	Controls how often to start TCP Packetization-Layer Path MTU
 	Discovery reprobe. The default is reprobing every 10 minutes as
 	per RFC4821.
@@ -483,14 +467,10 @@ tcp_recovery - INTEGER
 	features.
 
 	RACK: 0x1 enables the RACK loss detection for fast detection of lost
-<<<<<<< HEAD
 	      retransmissions and tail drops. It also subsumes and disables
 	      RFC6675 recovery for SACK connections.
 	RACK: 0x2 makes RACK's reordering window static (min_rtt/4).
 	RACK: 0x4 disables RACK's DUPACK threshold heuristic
-=======
-	      retransmissions and tail drops.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	Default: 0x1
 
@@ -563,7 +543,6 @@ tcp_rmem - vector of 3 INTEGERs: min, default, max
 tcp_sack - BOOLEAN
 	Enable select acknowledgments (SACKS).
 
-<<<<<<< HEAD
 tcp_comp_sack_delay_ns - LONG INTEGER
 	TCP tries to reduce number of SACK sent, using a timer
 	based on 5% of SRTT, capped by this sysctl, in nano seconds.
@@ -577,8 +556,6 @@ tcp_comp_sack_nr - INTEGER
 
 	Detault : 44
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 tcp_slow_start_after_idle - BOOLEAN
 	If set, provide RFC2861 behavior and time out the congestion
 	window after an idle period.  An idle period is defined at
@@ -659,10 +636,7 @@ tcp_fastopen_blackhole_timeout_sec - INTEGER
 	This time period will grow exponentially when more blackhole issues
 	get detected right after Fastopen is re-enabled and will reset to
 	initial value when the blackhole issue goes away.
-<<<<<<< HEAD
 	0 to disable the blackhole detection.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	By default, it is set to 1hr.
 
 tcp_fwmark_accept - BOOLEAN
@@ -721,7 +695,6 @@ tcp_tso_win_divisor - INTEGER
 	building larger TSO frames.
 	Default: 3
 
-<<<<<<< HEAD
 tcp_tw_reuse - INTEGER
 	Enable reuse of TIME-WAIT sockets for new connections when it is
 	safe from protocol viewpoint.
@@ -731,13 +704,6 @@ tcp_tw_reuse - INTEGER
 	It should not be changed without advice/request of technical
 	experts.
 	Default: 2
-=======
-tcp_tw_reuse - BOOLEAN
-	Allow to reuse TIME-WAIT sockets for new connections when it is
-	safe from protocol viewpoint. Default value is 0.
-	It should not be changed without advice/request of technical
-	experts.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 tcp_window_scaling - BOOLEAN
 	Enable window scaling as defined in RFC1323.
@@ -795,19 +761,11 @@ tcp_limit_output_bytes - INTEGER
 	Controls TCP Small Queue limit per tcp socket.
 	TCP bulk sender tends to increase packets in flight until it
 	gets losses notifications. With SNDBUF autotuning, this can
-<<<<<<< HEAD
 	result in a large amount of packets queued on the local machine
 	(e.g.: qdiscs, CPU backlog, or device) hurting latency of other
 	flows, for typical pfifo_fast qdiscs.  tcp_limit_output_bytes
 	limits the number of bytes on qdisc or device to reduce artificial
 	RTT/cwnd and reduce bufferbloat.
-=======
-	result in a large amount of packets queued in qdisc/device
-	on the local machine, hurting latency of other flows, for
-	typical pfifo_fast qdiscs.
-	tcp_limit_output_bytes limits the number of bytes on qdisc
-	or device to reduce artificial RTT/cwnd and reduce bufferbloat.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	Default: 262144
 
 tcp_challenge_ack_limit - INTEGER
@@ -841,21 +799,13 @@ udp_rmem_min - INTEGER
 	Minimal size of receive buffer used by UDP sockets in moderation.
 	Each UDP socket is able to use the size for receiving data, even if
 	total pages of UDP sockets exceed udp_mem pressure. The unit is byte.
-<<<<<<< HEAD
 	Default: 4K
-=======
-	Default: 1 page
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 udp_wmem_min - INTEGER
 	Minimal size of send buffer used by UDP sockets in moderation.
 	Each UDP socket is able to use the size for sending data, even if
 	total pages of UDP sockets exceed udp_mem pressure. The unit is byte.
-<<<<<<< HEAD
 	Default: 4K
-=======
-	Default: 1 page
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 CIPSOv4 Variables:
 
@@ -999,21 +949,12 @@ icmp_ratelimit - INTEGER
 icmp_msgs_per_sec - INTEGER
 	Limit maximal number of ICMP packets sent per second from this host.
 	Only messages whose type matches icmp_ratemask (see below) are
-<<<<<<< HEAD
 	controlled by this limit.
-=======
-	controlled by this limit. For security reasons, the precise count
-	of messages per second is randomized.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	Default: 1000
 
 icmp_msgs_burst - INTEGER
 	icmp_msgs_per_sec controls number of ICMP packets sent per second,
 	while icmp_msgs_burst controls the burst size of these packets.
-<<<<<<< HEAD
-=======
-	For security reasons, the precise burst size is randomized.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	Default: 50
 
 icmp_ratemask - INTEGER
@@ -1475,7 +1416,6 @@ flowlabel_reflect - BOOLEAN
 	FALSE: disabled
 	Default: FALSE
 
-<<<<<<< HEAD
 fib_multipath_hash_policy - INTEGER
 	Controls which hash policy to use for multipath routes.
 	Default: 0 (Layer 3)
@@ -1483,8 +1423,6 @@ fib_multipath_hash_policy - INTEGER
 	0 - Layer 3 (source and destination addresses plus flow label)
 	1 - Layer 4 (standard 5-tuple)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 anycast_src_echo_reply - BOOLEAN
 	Controls the use of anycast addresses as source addresses for ICMPv6
 	echo reply
@@ -1508,7 +1446,6 @@ mld_qrv - INTEGER
 	Default: 2 (as specified by RFC3810 9.1)
 	Minimum: 1 (as specified by RFC6636 4.5)
 
-<<<<<<< HEAD
 max_dst_opts_number - INTEGER
 	Maximum number of non-padding TLVs allowed in a Destination
 	options extension header. If this value is less than zero
@@ -1533,8 +1470,6 @@ max_hbh_length - INTEGER
 	header.
 	Default: INT_MAX (unlimited)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 IPv6 Fragmentation:
 
 ip6frag_high_thresh - INTEGER
@@ -1549,7 +1484,6 @@ ip6frag_low_thresh - INTEGER
 ip6frag_time - INTEGER
 	Time in seconds to keep an IPv6 fragment in memory.
 
-<<<<<<< HEAD
 IPv6 Segment Routing:
 
 seg6_flowlabel - INTEGER
@@ -1563,8 +1497,6 @@ seg6_flowlabel - INTEGER
 
 	Default is 0.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 conf/default/*:
 	Change the interface-specific default settings.
 
@@ -1681,14 +1613,6 @@ accept_ra_mtu - BOOLEAN
 	Functional default: enabled if accept_ra is enabled.
 			    disabled if accept_ra is disabled.
 
-<<<<<<< HEAD
-=======
-accept_ra_prefix_route - BOOLEAN
-	Set the prefix route for the autoconfigured interface address
-
-	Functional default: enabled
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 accept_redirects - BOOLEAN
 	Accept Redirects.
 
@@ -1845,13 +1769,9 @@ disable_ipv6 - BOOLEAN
 	interface and start Duplicate Address Detection, if necessary.
 
 	When this value is changed from 0 to 1 (IPv6 is being disabled),
-<<<<<<< HEAD
 	it will dynamically delete all addresses and routes on the given
 	interface. From now on it will not possible to add addresses/routes
 	to the selected interface.
-=======
-	it will dynamically delete all address on the given interface.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 accept_dad - INTEGER
 	Whether to accept DAD (Duplicate Address Detection).
@@ -1887,7 +1807,6 @@ ndisc_notify - BOOLEAN
 	1 - Generate unsolicited neighbour advertisements when device is brought
 	    up or hardware address changes.
 
-<<<<<<< HEAD
 ndisc_tclass - INTEGER
 	The IPv6 Traffic Class to use by default when sending IPv6 Neighbor
 	Discovery (Router Solicitation, Router Advertisement, Neighbor
@@ -1897,8 +1816,6 @@ ndisc_tclass - INTEGER
 	to leave cleared).
 	0 - (default)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 mldv1_unsolicited_report_interval - INTEGER
 	The interval in milliseconds in which the next unsolicited
 	MLDv1 report retransmit will take place.
@@ -1954,7 +1871,6 @@ stable_secret - IPv6 address
 
 	By default the stable secret is unset.
 
-<<<<<<< HEAD
 addr_gen_mode - INTEGER
 	Defines how link-local and autoconf addresses are generated.
 
@@ -1965,8 +1881,6 @@ addr_gen_mode - INTEGER
 	   stable_secret (RFC7217)
 	3: generate stable privacy addresses, using a random secret if unset
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 drop_unicast_in_l2_multicast - BOOLEAN
 	Drop any unicast IPv6 packets that are received in link-layer
 	multicast (or broadcast) frames.
@@ -1996,14 +1910,11 @@ ratelimit - INTEGER
 	otherwise the minimal space between responses in milliseconds.
 	Default: 1000
 
-<<<<<<< HEAD
 echo_ignore_all - BOOLEAN
 	If set non-zero, then the kernel will ignore all ICMP ECHO
 	requests sent to it over the IPv6 protocol.
 	Default: 0
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 xfrm6_gc_thresh - INTEGER
 	The threshold at which we will start garbage collecting for IPv6
 	destination cache entries.  At twice this value the system will
@@ -2273,11 +2184,7 @@ sctp_rmem - vector of 3 INTEGERs: min, default, max
 	It is guaranteed to each SCTP socket (but not association) even
 	under moderate memory pressure.
 
-<<<<<<< HEAD
 	Default: 4K
-=======
-	Default: 1 page
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 sctp_wmem  - vector of 3 INTEGERs: min, default, max
 	Currently this tunable has no effect.
@@ -2303,21 +2210,3 @@ max_dgram_qlen - INTEGER
 
 	Default: 10
 
-<<<<<<< HEAD
-=======
-
-UNDOCUMENTED:
-
-/proc/sys/net/irda/*
-	fast_poll_increase FIXME
-	warn_noreply_time FIXME
-	discovery_slots FIXME
-	slot_timeout FIXME
-	max_baud_rate FIXME
-	discovery_timeout FIXME
-	lap_keepalive_time FIXME
-	max_noreply_time FIXME
-	max_tx_data_size FIXME
-	max_tx_window FIXME
-	min_tx_turn_time FIXME
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

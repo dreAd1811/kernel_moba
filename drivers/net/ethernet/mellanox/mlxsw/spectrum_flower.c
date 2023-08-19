@@ -1,49 +1,10 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: BSD-3-Clause OR GPL-2.0
 /* Copyright (c) 2017-2018 Mellanox Technologies. All rights reserved */
-=======
-/*
- * drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
- * Copyright (c) 2017 Mellanox Technologies. All rights reserved.
- * Copyright (c) 2017 Jiri Pirko <jiri@mellanox.com>
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- * 3. Neither the names of the copyright holders nor the names of its
- *    contributors may be used to endorse or promote products derived from
- *    this software without specific prior written permission.
- *
- * Alternatively, this software may be distributed under the terms of the
- * GNU General Public License ("GPL") version 2 as published by the Free
- * Software Foundation.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/kernel.h>
 #include <linux/errno.h>
 #include <linux/netdevice.h>
-<<<<<<< HEAD
 #include <net/net_namespace.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <net/flow_dissector.h>
 #include <net/pkt_cls.h>
 #include <net/tc_act/tc_gact.h>
@@ -54,7 +15,6 @@
 #include "core_acl_flex_keys.h"
 
 static int mlxsw_sp_flower_parse_actions(struct mlxsw_sp *mlxsw_sp,
-<<<<<<< HEAD
 					 struct mlxsw_sp_acl_block *block,
 					 struct mlxsw_sp_acl_rule_info *rulei,
 					 struct tcf_exts *exts,
@@ -62,21 +22,11 @@ static int mlxsw_sp_flower_parse_actions(struct mlxsw_sp *mlxsw_sp,
 {
 	const struct tc_action *a;
 	int err, i;
-=======
-					 struct net_device *dev, bool ingress,
-					 struct mlxsw_sp_acl_rule_info *rulei,
-					 struct tcf_exts *exts)
-{
-	const struct tc_action *a;
-	LIST_HEAD(actions);
-	int err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!tcf_exts_has_actions(exts))
 		return 0;
 
 	/* Count action is inserted first */
-<<<<<<< HEAD
 	err = mlxsw_sp_acl_rulei_act_count(mlxsw_sp, rulei, extack);
 	if (err)
 		return err;
@@ -100,51 +50,24 @@ static int mlxsw_sp_flower_parse_actions(struct mlxsw_sp *mlxsw_sp,
 				NL_SET_ERR_MSG_MOD(extack, "Cannot append trap action");
 				return err;
 			}
-=======
-	err = mlxsw_sp_acl_rulei_act_count(mlxsw_sp, rulei);
-	if (err)
-		return err;
-
-	tcf_exts_to_list(exts, &actions);
-	list_for_each_entry(a, &actions, list) {
-		if (is_tcf_gact_shot(a)) {
-			err = mlxsw_sp_acl_rulei_act_drop(rulei);
-			if (err)
-				return err;
-		} else if (is_tcf_gact_trap(a)) {
-			err = mlxsw_sp_acl_rulei_act_trap(rulei);
-			if (err)
-				return err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else if (is_tcf_gact_goto_chain(a)) {
 			u32 chain_index = tcf_gact_goto_chain_index(a);
 			struct mlxsw_sp_acl_ruleset *ruleset;
 			u16 group_id;
 
-<<<<<<< HEAD
 			ruleset = mlxsw_sp_acl_ruleset_lookup(mlxsw_sp, block,
-=======
-			ruleset = mlxsw_sp_acl_ruleset_lookup(mlxsw_sp, dev,
-							      ingress,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							      chain_index,
 							      MLXSW_SP_ACL_PROFILE_FLOWER);
 			if (IS_ERR(ruleset))
 				return PTR_ERR(ruleset);
 
 			group_id = mlxsw_sp_acl_ruleset_group_id(ruleset);
-<<<<<<< HEAD
 			err = mlxsw_sp_acl_rulei_act_jump(rulei, group_id);
 			if (err) {
 				NL_SET_ERR_MSG_MOD(extack, "Cannot append jump action");
 				return err;
 			}
 		} else if (is_tcf_mirred_egress_redirect(a)) {
-=======
-			mlxsw_sp_acl_rulei_act_jump(rulei, group_id);
-		} else if (is_tcf_mirred_egress_redirect(a)) {
-			int ifindex = tcf_mirred_ifindex(a);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			struct net_device *out_dev;
 			struct mlxsw_sp_fid *fid;
 			u16 fid_index;
@@ -152,7 +75,6 @@ static int mlxsw_sp_flower_parse_actions(struct mlxsw_sp *mlxsw_sp,
 			fid = mlxsw_sp_acl_dummy_fid(mlxsw_sp);
 			fid_index = mlxsw_sp_fid_index(fid);
 			err = mlxsw_sp_acl_rulei_act_fid_set(mlxsw_sp, rulei,
-<<<<<<< HEAD
 							     fid_index, extack);
 			if (err)
 				return err;
@@ -168,18 +90,6 @@ static int mlxsw_sp_flower_parse_actions(struct mlxsw_sp *mlxsw_sp,
 			err = mlxsw_sp_acl_rulei_act_mirror(mlxsw_sp, rulei,
 							    block, out_dev,
 							    extack);
-=======
-							     fid_index);
-			if (err)
-				return err;
-
-			out_dev = __dev_get_by_index(dev_net(dev), ifindex);
-			if (out_dev == dev)
-				out_dev = NULL;
-
-			err = mlxsw_sp_acl_rulei_act_fwd(mlxsw_sp, rulei,
-							 out_dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (err)
 				return err;
 		} else if (is_tcf_vlan(a)) {
@@ -188,20 +98,11 @@ static int mlxsw_sp_flower_parse_actions(struct mlxsw_sp *mlxsw_sp,
 			u8 prio = tcf_vlan_push_prio(a);
 			u16 vid = tcf_vlan_push_vid(a);
 
-<<<<<<< HEAD
 			return mlxsw_sp_acl_rulei_act_vlan(mlxsw_sp, rulei,
 							   action, vid,
 							   proto, prio, extack);
 		} else {
 			NL_SET_ERR_MSG_MOD(extack, "Unsupported action");
-=======
-			err = mlxsw_sp_acl_rulei_act_vlan(mlxsw_sp, rulei,
-							  action, vid,
-							  proto, prio);
-			if (err)
-				return err;
-		} else {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev_err(mlxsw_sp->bus_info->dev, "Unsupported action\n");
 			return -EOPNOTSUPP;
 		}
@@ -221,19 +122,12 @@ static void mlxsw_sp_flower_parse_ipv4(struct mlxsw_sp_acl_rule_info *rulei,
 					  FLOW_DISSECTOR_KEY_IPV4_ADDRS,
 					  f->mask);
 
-<<<<<<< HEAD
 	mlxsw_sp_acl_rulei_keymask_buf(rulei, MLXSW_AFK_ELEMENT_SRC_IP_0_31,
 				       (char *) &key->src,
 				       (char *) &mask->src, 4);
 	mlxsw_sp_acl_rulei_keymask_buf(rulei, MLXSW_AFK_ELEMENT_DST_IP_0_31,
 				       (char *) &key->dst,
 				       (char *) &mask->dst, 4);
-=======
-	mlxsw_sp_acl_rulei_keymask_u32(rulei, MLXSW_AFK_ELEMENT_SRC_IP4,
-				       ntohl(key->src), ntohl(mask->src));
-	mlxsw_sp_acl_rulei_keymask_u32(rulei, MLXSW_AFK_ELEMENT_DST_IP4,
-				       ntohl(key->dst), ntohl(mask->dst));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void mlxsw_sp_flower_parse_ipv6(struct mlxsw_sp_acl_rule_info *rulei,
@@ -247,7 +141,6 @@ static void mlxsw_sp_flower_parse_ipv6(struct mlxsw_sp_acl_rule_info *rulei,
 		skb_flow_dissector_target(f->dissector,
 					  FLOW_DISSECTOR_KEY_IPV6_ADDRS,
 					  f->mask);
-<<<<<<< HEAD
 
 	mlxsw_sp_acl_rulei_keymask_buf(rulei, MLXSW_AFK_ELEMENT_SRC_IP_96_127,
 				       &key->src.s6_addr[0x0],
@@ -273,26 +166,6 @@ static void mlxsw_sp_flower_parse_ipv6(struct mlxsw_sp_acl_rule_info *rulei,
 	mlxsw_sp_acl_rulei_keymask_buf(rulei, MLXSW_AFK_ELEMENT_DST_IP_0_31,
 				       &key->dst.s6_addr[0xC],
 				       &mask->dst.s6_addr[0xC], 4);
-=======
-	size_t addr_half_size = sizeof(key->src) / 2;
-
-	mlxsw_sp_acl_rulei_keymask_buf(rulei, MLXSW_AFK_ELEMENT_SRC_IP6_HI,
-				       &key->src.s6_addr[0],
-				       &mask->src.s6_addr[0],
-				       addr_half_size);
-	mlxsw_sp_acl_rulei_keymask_buf(rulei, MLXSW_AFK_ELEMENT_SRC_IP6_LO,
-				       &key->src.s6_addr[addr_half_size],
-				       &mask->src.s6_addr[addr_half_size],
-				       addr_half_size);
-	mlxsw_sp_acl_rulei_keymask_buf(rulei, MLXSW_AFK_ELEMENT_DST_IP6_HI,
-				       &key->dst.s6_addr[0],
-				       &mask->dst.s6_addr[0],
-				       addr_half_size);
-	mlxsw_sp_acl_rulei_keymask_buf(rulei, MLXSW_AFK_ELEMENT_DST_IP6_LO,
-				       &key->dst.s6_addr[addr_half_size],
-				       &mask->dst.s6_addr[addr_half_size],
-				       addr_half_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int mlxsw_sp_flower_parse_ports(struct mlxsw_sp *mlxsw_sp,
@@ -306,10 +179,7 @@ static int mlxsw_sp_flower_parse_ports(struct mlxsw_sp *mlxsw_sp,
 		return 0;
 
 	if (ip_proto != IPPROTO_TCP && ip_proto != IPPROTO_UDP) {
-<<<<<<< HEAD
 		NL_SET_ERR_MSG_MOD(f->common.extack, "Only UDP and TCP keys are supported");
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(mlxsw_sp->bus_info->dev, "Only UDP and TCP keys are supported\n");
 		return -EINVAL;
 	}
@@ -338,10 +208,7 @@ static int mlxsw_sp_flower_parse_tcp(struct mlxsw_sp *mlxsw_sp,
 		return 0;
 
 	if (ip_proto != IPPROTO_TCP) {
-<<<<<<< HEAD
 		NL_SET_ERR_MSG_MOD(f->common.extack, "TCP keys supported only for TCP");
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(mlxsw_sp->bus_info->dev, "TCP keys supported only for TCP\n");
 		return -EINVAL;
 	}
@@ -368,10 +235,7 @@ static int mlxsw_sp_flower_parse_ip(struct mlxsw_sp *mlxsw_sp,
 		return 0;
 
 	if (n_proto != ETH_P_IP && n_proto != ETH_P_IPV6) {
-<<<<<<< HEAD
 		NL_SET_ERR_MSG_MOD(f->common.extack, "IP keys supported only for IPv4/6");
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(mlxsw_sp->bus_info->dev, "IP keys supported only for IPv4/6\n");
 		return -EINVAL;
 	}
@@ -395,11 +259,7 @@ static int mlxsw_sp_flower_parse_ip(struct mlxsw_sp *mlxsw_sp,
 }
 
 static int mlxsw_sp_flower_parse(struct mlxsw_sp *mlxsw_sp,
-<<<<<<< HEAD
 				 struct mlxsw_sp_acl_block *block,
-=======
-				 struct net_device *dev, bool ingress,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 struct mlxsw_sp_acl_rule_info *rulei,
 				 struct tc_cls_flower_offload *f)
 {
@@ -420,10 +280,7 @@ static int mlxsw_sp_flower_parse(struct mlxsw_sp *mlxsw_sp,
 	      BIT(FLOW_DISSECTOR_KEY_IP) |
 	      BIT(FLOW_DISSECTOR_KEY_VLAN))) {
 		dev_err(mlxsw_sp->bus_info->dev, "Unsupported key\n");
-<<<<<<< HEAD
 		NL_SET_ERR_MSG_MOD(f->common.extack, "Unsupported key");
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EOPNOTSUPP;
 	}
 
@@ -474,7 +331,6 @@ static int mlxsw_sp_flower_parse(struct mlxsw_sp *mlxsw_sp,
 						  f->mask);
 
 		mlxsw_sp_acl_rulei_keymask_buf(rulei,
-<<<<<<< HEAD
 					       MLXSW_AFK_ELEMENT_DMAC_32_47,
 					       key->dst, mask->dst, 2);
 		mlxsw_sp_acl_rulei_keymask_buf(rulei,
@@ -486,15 +342,6 @@ static int mlxsw_sp_flower_parse(struct mlxsw_sp *mlxsw_sp,
 		mlxsw_sp_acl_rulei_keymask_buf(rulei,
 					       MLXSW_AFK_ELEMENT_SMAC_0_31,
 					       key->src + 2, mask->src + 2, 4);
-=======
-					       MLXSW_AFK_ELEMENT_DMAC,
-					       key->dst, mask->dst,
-					       sizeof(key->dst));
-		mlxsw_sp_acl_rulei_keymask_buf(rulei,
-					       MLXSW_AFK_ELEMENT_SMAC,
-					       key->src, mask->src,
-					       sizeof(key->src));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (dissector_uses_key(f->dissector, FLOW_DISSECTOR_KEY_VLAN)) {
@@ -506,14 +353,11 @@ static int mlxsw_sp_flower_parse(struct mlxsw_sp *mlxsw_sp,
 			skb_flow_dissector_target(f->dissector,
 						  FLOW_DISSECTOR_KEY_VLAN,
 						  f->mask);
-<<<<<<< HEAD
 
 		if (mlxsw_sp_acl_block_is_egress_bound(block)) {
 			NL_SET_ERR_MSG_MOD(f->common.extack, "vlan_id key is not supported on egress");
 			return -EOPNOTSUPP;
 		}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (mask->vlan_id != 0)
 			mlxsw_sp_acl_rulei_keymask_u32(rulei,
 						       MLXSW_AFK_ELEMENT_VID,
@@ -543,7 +387,6 @@ static int mlxsw_sp_flower_parse(struct mlxsw_sp *mlxsw_sp,
 	if (err)
 		return err;
 
-<<<<<<< HEAD
 	return mlxsw_sp_flower_parse_actions(mlxsw_sp, block, rulei, f->exts,
 					     f->common.extack);
 }
@@ -552,23 +395,11 @@ int mlxsw_sp_flower_replace(struct mlxsw_sp *mlxsw_sp,
 			    struct mlxsw_sp_acl_block *block,
 			    struct tc_cls_flower_offload *f)
 {
-=======
-	return mlxsw_sp_flower_parse_actions(mlxsw_sp, dev, ingress,
-					     rulei, f->exts);
-}
-
-int mlxsw_sp_flower_replace(struct mlxsw_sp_port *mlxsw_sp_port, bool ingress,
-			    struct tc_cls_flower_offload *f)
-{
-	struct mlxsw_sp *mlxsw_sp = mlxsw_sp_port->mlxsw_sp;
-	struct net_device *dev = mlxsw_sp_port->dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mlxsw_sp_acl_rule_info *rulei;
 	struct mlxsw_sp_acl_ruleset *ruleset;
 	struct mlxsw_sp_acl_rule *rule;
 	int err;
 
-<<<<<<< HEAD
 	ruleset = mlxsw_sp_acl_ruleset_get(mlxsw_sp, block,
 					   f->common.chain_index,
 					   MLXSW_SP_ACL_PROFILE_FLOWER, NULL);
@@ -577,26 +408,13 @@ int mlxsw_sp_flower_replace(struct mlxsw_sp_port *mlxsw_sp_port, bool ingress,
 
 	rule = mlxsw_sp_acl_rule_create(mlxsw_sp, ruleset, f->cookie,
 					f->common.extack);
-=======
-	ruleset = mlxsw_sp_acl_ruleset_get(mlxsw_sp, dev, ingress,
-					   f->common.chain_index,
-					   MLXSW_SP_ACL_PROFILE_FLOWER);
-	if (IS_ERR(ruleset))
-		return PTR_ERR(ruleset);
-
-	rule = mlxsw_sp_acl_rule_create(mlxsw_sp, ruleset, f->cookie);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(rule)) {
 		err = PTR_ERR(rule);
 		goto err_rule_create;
 	}
 
 	rulei = mlxsw_sp_acl_rule_rulei(rule);
-<<<<<<< HEAD
 	err = mlxsw_sp_flower_parse(mlxsw_sp, block, rulei, f);
-=======
-	err = mlxsw_sp_flower_parse(mlxsw_sp, dev, ingress, rulei, f);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		goto err_flower_parse;
 
@@ -620,7 +438,6 @@ err_rule_create:
 	return err;
 }
 
-<<<<<<< HEAD
 void mlxsw_sp_flower_destroy(struct mlxsw_sp *mlxsw_sp,
 			     struct mlxsw_sp_acl_block *block,
 			     struct tc_cls_flower_offload *f)
@@ -631,18 +448,6 @@ void mlxsw_sp_flower_destroy(struct mlxsw_sp *mlxsw_sp,
 	ruleset = mlxsw_sp_acl_ruleset_get(mlxsw_sp, block,
 					   f->common.chain_index,
 					   MLXSW_SP_ACL_PROFILE_FLOWER, NULL);
-=======
-void mlxsw_sp_flower_destroy(struct mlxsw_sp_port *mlxsw_sp_port, bool ingress,
-			     struct tc_cls_flower_offload *f)
-{
-	struct mlxsw_sp *mlxsw_sp = mlxsw_sp_port->mlxsw_sp;
-	struct mlxsw_sp_acl_ruleset *ruleset;
-	struct mlxsw_sp_acl_rule *rule;
-
-	ruleset = mlxsw_sp_acl_ruleset_get(mlxsw_sp, mlxsw_sp_port->dev,
-					   ingress, f->common.chain_index,
-					   MLXSW_SP_ACL_PROFILE_FLOWER);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(ruleset))
 		return;
 
@@ -655,17 +460,10 @@ void mlxsw_sp_flower_destroy(struct mlxsw_sp_port *mlxsw_sp_port, bool ingress,
 	mlxsw_sp_acl_ruleset_put(mlxsw_sp, ruleset);
 }
 
-<<<<<<< HEAD
 int mlxsw_sp_flower_stats(struct mlxsw_sp *mlxsw_sp,
 			  struct mlxsw_sp_acl_block *block,
 			  struct tc_cls_flower_offload *f)
 {
-=======
-int mlxsw_sp_flower_stats(struct mlxsw_sp_port *mlxsw_sp_port, bool ingress,
-			  struct tc_cls_flower_offload *f)
-{
-	struct mlxsw_sp *mlxsw_sp = mlxsw_sp_port->mlxsw_sp;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mlxsw_sp_acl_ruleset *ruleset;
 	struct mlxsw_sp_acl_rule *rule;
 	u64 packets;
@@ -673,15 +471,9 @@ int mlxsw_sp_flower_stats(struct mlxsw_sp_port *mlxsw_sp_port, bool ingress,
 	u64 bytes;
 	int err;
 
-<<<<<<< HEAD
 	ruleset = mlxsw_sp_acl_ruleset_get(mlxsw_sp, block,
 					   f->common.chain_index,
 					   MLXSW_SP_ACL_PROFILE_FLOWER, NULL);
-=======
-	ruleset = mlxsw_sp_acl_ruleset_get(mlxsw_sp, mlxsw_sp_port->dev,
-					   ingress, f->common.chain_index,
-					   MLXSW_SP_ACL_PROFILE_FLOWER);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (WARN_ON(IS_ERR(ruleset)))
 		return -EINVAL;
 
@@ -703,7 +495,6 @@ err_rule_get_stats:
 	mlxsw_sp_acl_ruleset_put(mlxsw_sp, ruleset);
 	return err;
 }
-<<<<<<< HEAD
 
 int mlxsw_sp_flower_tmplt_create(struct mlxsw_sp *mlxsw_sp,
 				 struct mlxsw_sp_acl_block *block,
@@ -741,5 +532,3 @@ void mlxsw_sp_flower_tmplt_destroy(struct mlxsw_sp *mlxsw_sp,
 	mlxsw_sp_acl_ruleset_put(mlxsw_sp, ruleset);
 	mlxsw_sp_acl_ruleset_put(mlxsw_sp, ruleset);
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

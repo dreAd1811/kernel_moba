@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * OMAP mailbox driver
  *
@@ -10,18 +7,6 @@
  *
  * Contact: Hiroshi DOYU <Hiroshi.DOYU@nokia.com>
  *          Suman Anna <s-anna@ti.com>
-<<<<<<< HEAD
-=======
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/interrupt.h>
@@ -84,13 +69,10 @@ struct omap_mbox_queue {
 	bool full;
 };
 
-<<<<<<< HEAD
 struct omap_mbox_match_data {
 	u32 intr_type;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct omap_mbox_device {
 	struct device *dev;
 	struct mutex cfg_lock;
@@ -660,7 +642,6 @@ static const struct dev_pm_ops omap_mbox_pm_ops = {
 	SET_SYSTEM_SLEEP_PM_OPS(omap_mbox_suspend, omap_mbox_resume)
 };
 
-<<<<<<< HEAD
 static const struct omap_mbox_match_data omap2_data = { MBOX_INTR_CFG_TYPE1 };
 static const struct omap_mbox_match_data omap4_data = { MBOX_INTR_CFG_TYPE2 };
 
@@ -676,20 +657,6 @@ static const struct of_device_id omap_mailbox_of_match[] = {
 	{
 		.compatible	= "ti,omap4-mailbox",
 		.data		= &omap4_data,
-=======
-static const struct of_device_id omap_mailbox_of_match[] = {
-	{
-		.compatible	= "ti,omap2-mailbox",
-		.data		= (void *)MBOX_INTR_CFG_TYPE1,
-	},
-	{
-		.compatible	= "ti,omap3-mailbox",
-		.data		= (void *)MBOX_INTR_CFG_TYPE1,
-	},
-	{
-		.compatible	= "ti,omap4-mailbox",
-		.data		= (void *)MBOX_INTR_CFG_TYPE2,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{
 		/* end */
@@ -732,11 +699,7 @@ static int omap_mbox_probe(struct platform_device *pdev)
 	struct omap_mbox_fifo *fifo;
 	struct device_node *node = pdev->dev.of_node;
 	struct device_node *child;
-<<<<<<< HEAD
 	const struct omap_mbox_match_data *match_data;
-=======
-	const struct of_device_id *match;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 intr_type, info_count;
 	u32 num_users, num_fifos;
 	u32 tmp[3];
@@ -748,17 +711,10 @@ static int omap_mbox_probe(struct platform_device *pdev)
 		return -ENODEV;
 	}
 
-<<<<<<< HEAD
 	match_data = of_device_get_match_data(&pdev->dev);
 	if (!match_data)
 		return -ENODEV;
 	intr_type = match_data->intr_type;
-=======
-	match = of_match_device(omap_mailbox_of_match, &pdev->dev);
-	if (!match)
-		return -ENODEV;
-	intr_type = (u32)match->data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (of_property_read_u32(node, "ti,mbox-num-users", &num_users))
 		return -ENODEV;
@@ -772,11 +728,7 @@ static int omap_mbox_probe(struct platform_device *pdev)
 		return -ENODEV;
 	}
 
-<<<<<<< HEAD
 	finfoblk = devm_kcalloc(&pdev->dev, info_count, sizeof(*finfoblk),
-=======
-	finfoblk = devm_kzalloc(&pdev->dev, info_count * sizeof(*finfoblk),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				GFP_KERNEL);
 	if (!finfoblk)
 		return -ENOMEM;
@@ -820,39 +772,23 @@ static int omap_mbox_probe(struct platform_device *pdev)
 	if (IS_ERR(mdev->mbox_base))
 		return PTR_ERR(mdev->mbox_base);
 
-<<<<<<< HEAD
 	mdev->irq_ctx = devm_kcalloc(&pdev->dev, num_users, sizeof(u32),
-=======
-	mdev->irq_ctx = devm_kzalloc(&pdev->dev, num_users * sizeof(u32),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     GFP_KERNEL);
 	if (!mdev->irq_ctx)
 		return -ENOMEM;
 
 	/* allocate one extra for marking end of list */
-<<<<<<< HEAD
 	list = devm_kcalloc(&pdev->dev, info_count + 1, sizeof(*list),
-=======
-	list = devm_kzalloc(&pdev->dev, (info_count + 1) * sizeof(*list),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    GFP_KERNEL);
 	if (!list)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	chnls = devm_kcalloc(&pdev->dev, info_count + 1, sizeof(*chnls),
-=======
-	chnls = devm_kzalloc(&pdev->dev, (info_count + 1) * sizeof(*chnls),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     GFP_KERNEL);
 	if (!chnls)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	mboxblk = devm_kcalloc(&pdev->dev, info_count, sizeof(*mbox),
-=======
-	mboxblk = devm_kzalloc(&pdev->dev, info_count * sizeof(*mbox),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       GFP_KERNEL);
 	if (!mboxblk)
 		return -ENOMEM;
@@ -969,15 +905,11 @@ static int __init omap_mbox_init(void)
 	mbox_kfifo_size = max_t(unsigned int, mbox_kfifo_size,
 							sizeof(mbox_msg_t));
 
-<<<<<<< HEAD
 	err = platform_driver_register(&omap_mbox_driver);
 	if (err)
 		class_unregister(&omap_mbox_class);
 
 	return err;
-=======
-	return platform_driver_register(&omap_mbox_driver);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 subsys_initcall(omap_mbox_init);
 

@@ -35,11 +35,8 @@
 #include "intel_drv.h"
 #include "intel_frontbuffer.h"
 #include "intel_mocs.h"
-<<<<<<< HEAD
 #include "intel_workarounds.h"
 #include "i915_gemfs.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/dma-fence-array.h>
 #include <linux/kthread.h>
 #include <linux/reservation.h>
@@ -60,11 +57,7 @@ static bool cpu_write_needs_clflush(struct drm_i915_gem_object *obj)
 	if (!(obj->cache_coherent & I915_BO_CACHE_COHERENT_FOR_WRITE))
 		return true;
 
-<<<<<<< HEAD
 	return obj->pin_global; /* currently in use by HW, keep flushed */
-=======
-	return obj->pin_display;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int
@@ -72,11 +65,7 @@ insert_mappable_node(struct i915_ggtt *ggtt,
                      struct drm_mm_node *node, u32 size)
 {
 	memset(node, 0, sizeof(*node));
-<<<<<<< HEAD
 	return drm_mm_insert_node_in_range(&ggtt->vm.mm, node,
-=======
-	return drm_mm_insert_node_in_range(&ggtt->base.mm, node,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   size, 0, I915_COLOR_UNEVICTABLE,
 					   0, ggtt->mappable_end,
 					   DRM_MM_INSERT_LOW);
@@ -148,7 +137,6 @@ int i915_mutex_lock_interruptible(struct drm_device *dev)
 	return 0;
 }
 
-<<<<<<< HEAD
 static u32 __i915_gem_park(struct drm_i915_private *i915)
 {
 	GEM_TRACE("\n");
@@ -251,8 +239,6 @@ void i915_gem_unpark(struct drm_i915_private *i915)
 			   round_jiffies_up_relative(HZ));
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int
 i915_gem_get_aperture_ioctl(struct drm_device *dev, void *data,
 			    struct drm_file *file)
@@ -263,41 +249,23 @@ i915_gem_get_aperture_ioctl(struct drm_device *dev, void *data,
 	struct i915_vma *vma;
 	u64 pinned;
 
-<<<<<<< HEAD
 	pinned = ggtt->vm.reserved;
 	mutex_lock(&dev->struct_mutex);
 	list_for_each_entry(vma, &ggtt->vm.active_list, vm_link)
 		if (i915_vma_is_pinned(vma))
 			pinned += vma->node.size;
 	list_for_each_entry(vma, &ggtt->vm.inactive_list, vm_link)
-=======
-	pinned = ggtt->base.reserved;
-	mutex_lock(&dev->struct_mutex);
-	list_for_each_entry(vma, &ggtt->base.active_list, vm_link)
-		if (i915_vma_is_pinned(vma))
-			pinned += vma->node.size;
-	list_for_each_entry(vma, &ggtt->base.inactive_list, vm_link)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (i915_vma_is_pinned(vma))
 			pinned += vma->node.size;
 	mutex_unlock(&dev->struct_mutex);
 
-<<<<<<< HEAD
 	args->aper_size = ggtt->vm.total;
-=======
-	args->aper_size = ggtt->base.total;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	args->aper_available_size = args->aper_size - pinned;
 
 	return 0;
 }
 
-<<<<<<< HEAD
 static int i915_gem_object_get_pages_phys(struct drm_i915_gem_object *obj)
-=======
-static struct sg_table *
-i915_gem_object_get_pages_phys(struct drm_i915_gem_object *obj)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct address_space *mapping = obj->base.filp->f_mapping;
 	drm_dma_handle_t *phys;
@@ -305,33 +273,20 @@ i915_gem_object_get_pages_phys(struct drm_i915_gem_object *obj)
 	struct scatterlist *sg;
 	char *vaddr;
 	int i;
-<<<<<<< HEAD
 	int err;
 
 	if (WARN_ON(i915_gem_object_needs_bit17_swizzle(obj)))
 		return -EINVAL;
-=======
-
-	if (WARN_ON(i915_gem_object_needs_bit17_swizzle(obj)))
-		return ERR_PTR(-EINVAL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Always aligning to the object size, allows a single allocation
 	 * to handle all possible callers, and given typical object sizes,
 	 * the alignment of the buddy allocation will naturally match.
 	 */
 	phys = drm_pci_alloc(obj->base.dev,
-<<<<<<< HEAD
 			     roundup_pow_of_two(obj->base.size),
 			     roundup_pow_of_two(obj->base.size));
 	if (!phys)
 		return -ENOMEM;
-=======
-			     obj->base.size,
-			     roundup_pow_of_two(obj->base.size));
-	if (!phys)
-		return ERR_PTR(-ENOMEM);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vaddr = phys->vaddr;
 	for (i = 0; i < obj->base.size / PAGE_SIZE; i++) {
@@ -340,11 +295,7 @@ i915_gem_object_get_pages_phys(struct drm_i915_gem_object *obj)
 
 		page = shmem_read_mapping_page(mapping, i);
 		if (IS_ERR(page)) {
-<<<<<<< HEAD
 			err = PTR_ERR(page);
-=======
-			st = ERR_CAST(page);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto err_phys;
 		}
 
@@ -361,21 +312,13 @@ i915_gem_object_get_pages_phys(struct drm_i915_gem_object *obj)
 
 	st = kmalloc(sizeof(*st), GFP_KERNEL);
 	if (!st) {
-<<<<<<< HEAD
 		err = -ENOMEM;
-=======
-		st = ERR_PTR(-ENOMEM);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_phys;
 	}
 
 	if (sg_alloc_table(st, 1, GFP_KERNEL)) {
 		kfree(st);
-<<<<<<< HEAD
 		err = -ENOMEM;
-=======
-		st = ERR_PTR(-ENOMEM);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_phys;
 	}
 
@@ -387,7 +330,6 @@ i915_gem_object_get_pages_phys(struct drm_i915_gem_object *obj)
 	sg_dma_len(sg) = obj->base.size;
 
 	obj->phys_handle = phys;
-<<<<<<< HEAD
 
 	__i915_gem_object_set_pages(obj, st, sg->length);
 
@@ -397,24 +339,12 @@ err_phys:
 	drm_pci_free(obj->base.dev, phys);
 
 	return err;
-=======
-	return st;
-
-err_phys:
-	drm_pci_free(obj->base.dev, phys);
-	return st;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __start_cpu_write(struct drm_i915_gem_object *obj)
 {
-<<<<<<< HEAD
 	obj->read_domains = I915_GEM_DOMAIN_CPU;
 	obj->write_domain = I915_GEM_DOMAIN_CPU;
-=======
-	obj->base.read_domains = I915_GEM_DOMAIN_CPU;
-	obj->base.write_domain = I915_GEM_DOMAIN_CPU;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (cpu_write_needs_clflush(obj))
 		obj->cache_dirty = true;
 }
@@ -430,11 +360,7 @@ __i915_gem_object_release_shmem(struct drm_i915_gem_object *obj,
 		obj->mm.dirty = false;
 
 	if (needs_clflush &&
-<<<<<<< HEAD
 	    (obj->read_domains & I915_GEM_DOMAIN_CPU) == 0 &&
-=======
-	    (obj->base.read_domains & I915_GEM_DOMAIN_CPU) == 0 &&
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    !(obj->cache_coherent & I915_BO_CACHE_COHERENT_FOR_READ))
 		drm_clflush_sg(pages);
 
@@ -528,15 +454,9 @@ static long
 i915_gem_object_wait_fence(struct dma_fence *fence,
 			   unsigned int flags,
 			   long timeout,
-<<<<<<< HEAD
 			   struct intel_rps_client *rps_client)
 {
 	struct i915_request *rq;
-=======
-			   struct intel_rps_client *rps)
-{
-	struct drm_i915_gem_request *rq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	BUILD_BUG_ON(I915_WAIT_INTERRUPTIBLE != 0x1);
 
@@ -549,18 +469,11 @@ i915_gem_object_wait_fence(struct dma_fence *fence,
 					      timeout);
 
 	rq = to_request(fence);
-<<<<<<< HEAD
 	if (i915_request_completed(rq))
 		goto out;
 
 	/*
 	 * This client is about to stall waiting for the GPU. In many cases
-=======
-	if (i915_gem_request_completed(rq))
-		goto out;
-
-	/* This client is about to stall waiting for the GPU. In many cases
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * this is undesirable and limits the throughput of the system, as
 	 * many clients cannot continue processing user input/output whilst
 	 * blocked. RPS autotuning may take tens of milliseconds to respond
@@ -575,7 +488,6 @@ i915_gem_object_wait_fence(struct dma_fence *fence,
 	 * forcing the clocks too high for the whole system, we only allow
 	 * each client to waitboost once in a busy period.
 	 */
-<<<<<<< HEAD
 	if (rps_client && !i915_request_started(rq)) {
 		if (INTEL_GEN(rq->i915) >= 6)
 			gen6_rps_boost(rq, rps_client);
@@ -586,20 +498,6 @@ i915_gem_object_wait_fence(struct dma_fence *fence,
 out:
 	if (flags & I915_WAIT_LOCKED && i915_request_completed(rq))
 		i915_request_retire_upto(rq);
-=======
-	if (rps) {
-		if (INTEL_GEN(rq->i915) >= 6)
-			gen6_rps_boost(rq, rps);
-		else
-			rps = NULL;
-	}
-
-	timeout = i915_wait_request(rq, flags, timeout);
-
-out:
-	if (flags & I915_WAIT_LOCKED && i915_gem_request_completed(rq))
-		i915_gem_request_retire_upto(rq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return timeout;
 }
@@ -608,11 +506,7 @@ static long
 i915_gem_object_wait_reservation(struct reservation_object *resv,
 				 unsigned int flags,
 				 long timeout,
-<<<<<<< HEAD
 				 struct intel_rps_client *rps_client)
-=======
-				 struct intel_rps_client *rps)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned int seq = __read_seqcount_begin(&resv->seq);
 	struct dma_fence *excl;
@@ -631,11 +525,7 @@ i915_gem_object_wait_reservation(struct reservation_object *resv,
 		for (i = 0; i < count; i++) {
 			timeout = i915_gem_object_wait_fence(shared[i],
 							     flags, timeout,
-<<<<<<< HEAD
 							     rps_client);
-=======
-							     rps);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (timeout < 0)
 				break;
 
@@ -646,7 +536,6 @@ i915_gem_object_wait_reservation(struct reservation_object *resv,
 			dma_fence_put(shared[i]);
 		kfree(shared);
 
-<<<<<<< HEAD
 		/*
 		 * If both shared fences and an exclusive fence exist,
 		 * then by construction the shared fences must be later
@@ -656,14 +545,11 @@ i915_gem_object_wait_reservation(struct reservation_object *resv,
 		 * signaled, we can prune the array and recover the
 		 * floating references on the fences/requests.
 		 */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		prune_fences = count && timeout >= 0;
 	} else {
 		excl = reservation_object_get_excl_rcu(resv);
 	}
 
-<<<<<<< HEAD
 	if (excl && timeout >= 0)
 		timeout = i915_gem_object_wait_fence(excl, flags, timeout,
 						     rps_client);
@@ -672,16 +558,6 @@ i915_gem_object_wait_reservation(struct reservation_object *resv,
 
 	/*
 	 * Opportunistically prune the fences iff we know they have *all* been
-=======
-	if (excl && timeout >= 0) {
-		timeout = i915_gem_object_wait_fence(excl, flags, timeout, rps);
-		prune_fences = timeout >= 0;
-	}
-
-	dma_fence_put(excl);
-
-	/* Oportunistically prune the fences iff we know they have *all* been
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * signaled and that the reservation object has not been changed (i.e.
 	 * no new fences have been added).
 	 */
@@ -696,7 +572,6 @@ i915_gem_object_wait_reservation(struct reservation_object *resv,
 	return timeout;
 }
 
-<<<<<<< HEAD
 static void __fence_set_priority(struct dma_fence *fence,
 				 const struct i915_sched_attr *attr)
 {
@@ -704,19 +579,10 @@ static void __fence_set_priority(struct dma_fence *fence,
 	struct intel_engine_cs *engine;
 
 	if (dma_fence_is_signaled(fence) || !dma_fence_is_i915(fence))
-=======
-static void __fence_set_priority(struct dma_fence *fence, int prio)
-{
-	struct drm_i915_gem_request *rq;
-	struct intel_engine_cs *engine;
-
-	if (!dma_fence_is_i915(fence))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	rq = to_request(fence);
 	engine = rq->engine;
-<<<<<<< HEAD
 
 	local_bh_disable();
 	rcu_read_lock(); /* RCU serialisation for set-wedged protection */
@@ -728,15 +594,6 @@ static void __fence_set_priority(struct dma_fence *fence, int prio)
 
 static void fence_set_priority(struct dma_fence *fence,
 			       const struct i915_sched_attr *attr)
-=======
-	if (!engine->schedule)
-		return;
-
-	engine->schedule(rq, prio);
-}
-
-static void fence_set_priority(struct dma_fence *fence, int prio)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* Recurse once into a fence-array */
 	if (dma_fence_is_array(fence)) {
@@ -744,26 +601,16 @@ static void fence_set_priority(struct dma_fence *fence, int prio)
 		int i;
 
 		for (i = 0; i < array->num_fences; i++)
-<<<<<<< HEAD
 			__fence_set_priority(array->fences[i], attr);
 	} else {
 		__fence_set_priority(fence, attr);
-=======
-			__fence_set_priority(array->fences[i], prio);
-	} else {
-		__fence_set_priority(fence, prio);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
 int
 i915_gem_object_wait_priority(struct drm_i915_gem_object *obj,
 			      unsigned int flags,
-<<<<<<< HEAD
 			      const struct i915_sched_attr *attr)
-=======
-			      int prio)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct dma_fence *excl;
 
@@ -778,11 +625,7 @@ i915_gem_object_wait_priority(struct drm_i915_gem_object *obj,
 			return ret;
 
 		for (i = 0; i < count; i++) {
-<<<<<<< HEAD
 			fence_set_priority(shared[i], attr);
-=======
-			fence_set_priority(shared[i], prio);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dma_fence_put(shared[i]);
 		}
 
@@ -792,11 +635,7 @@ i915_gem_object_wait_priority(struct drm_i915_gem_object *obj,
 	}
 
 	if (excl) {
-<<<<<<< HEAD
 		fence_set_priority(excl, attr);
-=======
-		fence_set_priority(excl, prio);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dma_fence_put(excl);
 	}
 	return 0;
@@ -807,21 +646,13 @@ i915_gem_object_wait_priority(struct drm_i915_gem_object *obj,
  * @obj: i915 gem object
  * @flags: how to wait (under a lock, for all rendering or just for writes etc)
  * @timeout: how long to wait
-<<<<<<< HEAD
  * @rps_client: client (user process) to charge for any waitboosting
-=======
- * @rps: client (user process) to charge for any waitboosting
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 int
 i915_gem_object_wait(struct drm_i915_gem_object *obj,
 		     unsigned int flags,
 		     long timeout,
-<<<<<<< HEAD
 		     struct intel_rps_client *rps_client)
-=======
-		     struct intel_rps_client *rps)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	might_sleep();
 #if IS_ENABLED(CONFIG_LOCKDEP)
@@ -833,11 +664,7 @@ i915_gem_object_wait(struct drm_i915_gem_object *obj,
 
 	timeout = i915_gem_object_wait_reservation(obj->resv,
 						   flags, timeout,
-<<<<<<< HEAD
 						   rps_client);
-=======
-						   rps);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return timeout < 0 ? timeout : 0;
 }
 
@@ -845,11 +672,7 @@ static struct intel_rps_client *to_rps_client(struct drm_file *file)
 {
 	struct drm_i915_file_private *fpriv = file->driver_priv;
 
-<<<<<<< HEAD
 	return &fpriv->rps_client;
-=======
-	return &fpriv->rps;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int
@@ -958,7 +781,6 @@ fb_write_origin(struct drm_i915_gem_object *obj, unsigned int domain)
 		obj->frontbuffer_ggtt_origin : ORIGIN_CPU);
 }
 
-<<<<<<< HEAD
 void i915_gem_flush_ggtt_writes(struct drm_i915_private *dev_priv)
 {
 	/*
@@ -966,19 +788,6 @@ void i915_gem_flush_ggtt_writes(struct drm_i915_private *dev_priv)
 	 * from the GTT domain. Writes to it "immediately" go to main memory
 	 * as far as we know, so there's no chipset flush. It also doesn't
 	 * land in the GPU render cache.
-=======
-static void
-flush_write_domain(struct drm_i915_gem_object *obj, unsigned int flush_domains)
-{
-	struct drm_i915_private *dev_priv = to_i915(obj->base.dev);
-
-	if (!(obj->base.write_domain & flush_domains))
-		return;
-
-	/* No actual flushing is required for the GTT write domain.  Writes
-	 * to it "immediately" go to main memory as far as we know, so there's
-	 * no chipset flush.  It also doesn't land in render cache.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 *
 	 * However, we do have to enforce the order so that all writes through
 	 * the GTT land before any writes to the device, such as updates to
@@ -989,7 +798,6 @@ flush_write_domain(struct drm_i915_gem_object *obj, unsigned int flush_domains)
 	 * timing. This issue has only been observed when switching quickly
 	 * between GTT writes and CPU reads from inside the kernel on recent hw,
 	 * and it appears to only affect discrete GTT blocks (i.e. on LLC
-<<<<<<< HEAD
 	 * system agents we cannot reproduce this behaviour, until Cannonlake
 	 * that was!).
 	 */
@@ -1031,24 +839,6 @@ flush_write_domain(struct drm_i915_gem_object *obj, unsigned int flush_domains)
 
 	case I915_GEM_DOMAIN_WC:
 		wmb();
-=======
-	 * system agents we cannot reproduce this behaviour).
-	 */
-	wmb();
-
-	switch (obj->base.write_domain) {
-	case I915_GEM_DOMAIN_GTT:
-		if (!HAS_LLC(dev_priv)) {
-			intel_runtime_pm_get(dev_priv);
-			spin_lock_irq(&dev_priv->uncore.lock);
-			POSTING_READ_FW(RING_HEAD(dev_priv->engine[RCS]->mmio_base));
-			spin_unlock_irq(&dev_priv->uncore.lock);
-			intel_runtime_pm_put(dev_priv);
-		}
-
-		intel_fb_obj_flush(obj,
-				   fb_write_origin(obj, I915_GEM_DOMAIN_GTT));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case I915_GEM_DOMAIN_CPU:
@@ -1061,11 +851,7 @@ flush_write_domain(struct drm_i915_gem_object *obj, unsigned int flush_domains)
 		break;
 	}
 
-<<<<<<< HEAD
 	obj->write_domain = 0;
-=======
-	obj->base.write_domain = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline int
@@ -1165,11 +951,7 @@ int i915_gem_obj_prepare_shmem_read(struct drm_i915_gem_object *obj,
 	 * anyway again before the next pread happens.
 	 */
 	if (!obj->cache_dirty &&
-<<<<<<< HEAD
 	    !(obj->read_domains & I915_GEM_DOMAIN_CPU))
-=======
-	    !(obj->base.read_domains & I915_GEM_DOMAIN_CPU))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*needs_clflush = CLFLUSH_BEFORE;
 
 out:
@@ -1228,11 +1010,7 @@ int i915_gem_obj_prepare_shmem_write(struct drm_i915_gem_object *obj,
 		 * Same trick applies to invalidate partially written
 		 * cachelines read before writing.
 		 */
-<<<<<<< HEAD
 		if (!(obj->read_domains & I915_GEM_DOMAIN_CPU))
-=======
-		if (!(obj->base.read_domains & I915_GEM_DOMAIN_CPU))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			*needs_clflush |= CLFLUSH_BEFORE;
 	}
 
@@ -1366,7 +1144,6 @@ gtt_user_read(struct io_mapping *mapping,
 	      loff_t base, int offset,
 	      char __user *user_data, int length)
 {
-<<<<<<< HEAD
 	void __iomem *vaddr;
 	unsigned long unwritten;
 
@@ -1381,19 +1158,6 @@ gtt_user_read(struct io_mapping *mapping,
 		unwritten = copy_to_user(user_data,
 					 (void __force *)vaddr + offset,
 					 length);
-=======
-	void *vaddr;
-	unsigned long unwritten;
-
-	/* We can use the cpu mem copy function because this is X86. */
-	vaddr = (void __force *)io_mapping_map_atomic_wc(mapping, base);
-	unwritten = __copy_to_user_inatomic(user_data, vaddr + offset, length);
-	io_mapping_unmap_atomic(vaddr);
-	if (unwritten) {
-		vaddr = (void __force *)
-			io_mapping_map_wc(mapping, base, PAGE_SIZE);
-		unwritten = copy_to_user(user_data, vaddr + offset, length);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		io_mapping_unmap(vaddr);
 	}
 	return unwritten;
@@ -1417,13 +1181,9 @@ i915_gem_gtt_pread(struct drm_i915_gem_object *obj,
 
 	intel_runtime_pm_get(i915);
 	vma = i915_gem_object_ggtt_pin(obj, NULL, 0, 0,
-<<<<<<< HEAD
 				       PIN_MAPPABLE |
 				       PIN_NONFAULT |
 				       PIN_NONBLOCK);
-=======
-				       PIN_MAPPABLE | PIN_NONBLOCK);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!IS_ERR(vma)) {
 		node.start = i915_ggtt_offset(vma);
 		node.allocated = false;
@@ -1463,25 +1223,15 @@ i915_gem_gtt_pread(struct drm_i915_gem_object *obj,
 		page_length = remain < page_length ? remain : page_length;
 		if (node.allocated) {
 			wmb();
-<<<<<<< HEAD
 			ggtt->vm.insert_page(&ggtt->vm,
 					     i915_gem_object_get_dma_address(obj, offset >> PAGE_SHIFT),
 					     node.start, I915_CACHE_NONE, 0);
-=======
-			ggtt->base.insert_page(&ggtt->base,
-					       i915_gem_object_get_dma_address(obj, offset >> PAGE_SHIFT),
-					       node.start, I915_CACHE_NONE, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			wmb();
 		} else {
 			page_base += offset & PAGE_MASK;
 		}
 
-<<<<<<< HEAD
 		if (gtt_user_read(&ggtt->iomap, page_base, page_offset,
-=======
-		if (gtt_user_read(&ggtt->mappable, page_base, page_offset,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  user_data, page_length)) {
 			ret = -EFAULT;
 			break;
@@ -1496,12 +1246,7 @@ i915_gem_gtt_pread(struct drm_i915_gem_object *obj,
 out_unpin:
 	if (node.allocated) {
 		wmb();
-<<<<<<< HEAD
 		ggtt->vm.clear_range(&ggtt->vm, node.start, node.size);
-=======
-		ggtt->base.clear_range(&ggtt->base,
-				       node.start, node.size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		remove_mappable_node(&node);
 	} else {
 		i915_vma_unpin(vma);
@@ -1579,7 +1324,6 @@ ggtt_write(struct io_mapping *mapping,
 	   loff_t base, int offset,
 	   char __user *user_data, int length)
 {
-<<<<<<< HEAD
 	void __iomem *vaddr;
 	unsigned long unwritten;
 
@@ -1592,20 +1336,6 @@ ggtt_write(struct io_mapping *mapping,
 		vaddr = io_mapping_map_wc(mapping, base, PAGE_SIZE);
 		unwritten = copy_from_user((void __force *)vaddr + offset,
 					   user_data, length);
-=======
-	void *vaddr;
-	unsigned long unwritten;
-
-	/* We can use the cpu mem copy function because this is X86. */
-	vaddr = (void __force *)io_mapping_map_atomic_wc(mapping, base);
-	unwritten = __copy_from_user_inatomic_nocache(vaddr + offset,
-						      user_data, length);
-	io_mapping_unmap_atomic(vaddr);
-	if (unwritten) {
-		vaddr = (void __force *)
-			io_mapping_map_wc(mapping, base, PAGE_SIZE);
-		unwritten = copy_from_user(vaddr + offset, user_data, length);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		io_mapping_unmap(vaddr);
 	}
 
@@ -1634,7 +1364,6 @@ i915_gem_gtt_pwrite_fast(struct drm_i915_gem_object *obj,
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	if (i915_gem_object_has_struct_page(obj)) {
 		/*
 		 * Avoid waking the device up if we can fallback, as
@@ -1656,11 +1385,6 @@ i915_gem_gtt_pwrite_fast(struct drm_i915_gem_object *obj,
 				       PIN_MAPPABLE |
 				       PIN_NONFAULT |
 				       PIN_NONBLOCK);
-=======
-	intel_runtime_pm_get(i915);
-	vma = i915_gem_object_ggtt_pin(obj, NULL, 0, 0,
-				       PIN_MAPPABLE | PIN_NONBLOCK);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!IS_ERR(vma)) {
 		node.start = i915_ggtt_offset(vma);
 		node.allocated = false;
@@ -1673,11 +1397,7 @@ i915_gem_gtt_pwrite_fast(struct drm_i915_gem_object *obj,
 	if (IS_ERR(vma)) {
 		ret = insert_mappable_node(ggtt, &node, PAGE_SIZE);
 		if (ret)
-<<<<<<< HEAD
 			goto out_rpm;
-=======
-			goto out_unlock;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		GEM_BUG_ON(!node.allocated);
 	}
 
@@ -1705,15 +1425,9 @@ i915_gem_gtt_pwrite_fast(struct drm_i915_gem_object *obj,
 		page_length = remain < page_length ? remain : page_length;
 		if (node.allocated) {
 			wmb(); /* flush the write before we modify the GGTT */
-<<<<<<< HEAD
 			ggtt->vm.insert_page(&ggtt->vm,
 					     i915_gem_object_get_dma_address(obj, offset >> PAGE_SHIFT),
 					     node.start, I915_CACHE_NONE, 0);
-=======
-			ggtt->base.insert_page(&ggtt->base,
-					       i915_gem_object_get_dma_address(obj, offset >> PAGE_SHIFT),
-					       node.start, I915_CACHE_NONE, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			wmb(); /* flush modifications to the GGTT (insert_page) */
 		} else {
 			page_base += offset & PAGE_MASK;
@@ -1724,11 +1438,7 @@ i915_gem_gtt_pwrite_fast(struct drm_i915_gem_object *obj,
 		 * If the object is non-shmem backed, we retry again with the
 		 * path that handles page fault.
 		 */
-<<<<<<< HEAD
 		if (ggtt_write(&ggtt->iomap, page_base, page_offset,
-=======
-		if (ggtt_write(&ggtt->mappable, page_base, page_offset,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       user_data, page_length)) {
 			ret = -EFAULT;
 			break;
@@ -1744,24 +1454,14 @@ i915_gem_gtt_pwrite_fast(struct drm_i915_gem_object *obj,
 out_unpin:
 	if (node.allocated) {
 		wmb();
-<<<<<<< HEAD
 		ggtt->vm.clear_range(&ggtt->vm, node.start, node.size);
-=======
-		ggtt->base.clear_range(&ggtt->base,
-				       node.start, node.size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		remove_mappable_node(&node);
 	} else {
 		i915_vma_unpin(vma);
 	}
-<<<<<<< HEAD
 out_rpm:
 	intel_runtime_pm_put(i915);
 out_unlock:
-=======
-out_unlock:
-	intel_runtime_pm_put(i915);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&i915->drm.struct_mutex);
 	return ret;
 }
@@ -1919,15 +1619,12 @@ i915_gem_pwrite_ioctl(struct drm_device *dev, void *data,
 		goto err;
 	}
 
-<<<<<<< HEAD
 	/* Writes not allowed into this read-only object */
 	if (i915_gem_object_is_readonly(obj)) {
 		ret = -EINVAL;
 		goto err;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	trace_i915_gem_object_pwrite(obj, args->offset, args->size);
 
 	ret = -ENODEV;
@@ -1982,16 +1679,9 @@ static void i915_gem_object_bump_inactive_ggtt(struct drm_i915_gem_object *obj)
 	struct list_head *list;
 	struct i915_vma *vma;
 
-<<<<<<< HEAD
 	GEM_BUG_ON(!i915_gem_object_has_pinned_pages(obj));
 
 	for_each_ggtt_vma(vma, obj) {
-=======
-	list_for_each_entry(vma, &obj->vma_list, obj_link) {
-		if (!i915_vma_is_ggtt(vma))
-			break;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (i915_vma_is_active(vma))
 			continue;
 
@@ -2002,15 +1692,10 @@ static void i915_gem_object_bump_inactive_ggtt(struct drm_i915_gem_object *obj)
 	}
 
 	i915 = to_i915(obj->base.dev);
-<<<<<<< HEAD
 	spin_lock(&i915->mm.obj_lock);
 	list = obj->bind_count ? &i915->mm.bound_list : &i915->mm.unbound_list;
 	list_move_tail(&obj->mm.link, list);
 	spin_unlock(&i915->mm.obj_lock);
-=======
-	list = obj->bind_count ? &i915->mm.bound_list : &i915->mm.unbound_list;
-	list_move_tail(&obj->global_link, list);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -2056,7 +1741,6 @@ i915_gem_set_domain_ioctl(struct drm_device *dev, void *data,
 	if (err)
 		goto out;
 
-<<<<<<< HEAD
 	/*
 	 * Proxy objects do not control access to the backing storage, ergo
 	 * they cannot be used as a means to manipulate the cache domain
@@ -2070,9 +1754,6 @@ i915_gem_set_domain_ioctl(struct drm_device *dev, void *data,
 
 	/*
 	 * Flush and acquire obj->pages so that we are coherent through
-=======
-	/* Flush and acquire obj->pages so that we are coherent through
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * direct access in memory with previous cached writes through
 	 * shmemfs and that our cache domain tracking remains valid.
 	 * For example, if the obj->filp was moved to swap without us
@@ -2128,14 +1809,11 @@ i915_gem_sw_finish_ioctl(struct drm_device *dev, void *data,
 	if (!obj)
 		return -ENOENT;
 
-<<<<<<< HEAD
 	/*
 	 * Proxy objects are barred from CPU access, so there is no
 	 * need to ban sw_finish as it is a nop.
 	 */
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Pinned buffers may be scanout, so flush the cache */
 	i915_gem_object_flush_if_display(obj);
 	i915_gem_object_put(obj);
@@ -2196,7 +1874,6 @@ i915_gem_mmap_ioctl(struct drm_device *dev, void *data,
 	 * pages from.
 	 */
 	if (!obj->base.filp) {
-<<<<<<< HEAD
 		addr = -ENXIO;
 		goto err;
 	}
@@ -2204,33 +1881,21 @@ i915_gem_mmap_ioctl(struct drm_device *dev, void *data,
 	if (range_overflows(args->offset, args->size, (u64)obj->base.size)) {
 		addr = -EINVAL;
 		goto err;
-=======
-		i915_gem_object_put(obj);
-		return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	addr = vm_mmap(obj->base.filp, 0, args->size,
 		       PROT_READ | PROT_WRITE, MAP_SHARED,
 		       args->offset);
-<<<<<<< HEAD
 	if (IS_ERR_VALUE(addr))
 		goto err;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (args->flags & I915_MMAP_WC) {
 		struct mm_struct *mm = current->mm;
 		struct vm_area_struct *vma;
 
 		if (down_write_killable(&mm->mmap_sem)) {
-<<<<<<< HEAD
 			addr = -EINTR;
 			goto err;
-=======
-			i915_gem_object_put(obj);
-			return -EINTR;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		vma = find_vma(mm, addr);
 		if (vma && __vma_matches(vma, obj->base.filp, addr, args->size))
@@ -2239,17 +1904,13 @@ i915_gem_mmap_ioctl(struct drm_device *dev, void *data,
 		else
 			addr = -ENOMEM;
 		up_write(&mm->mmap_sem);
-<<<<<<< HEAD
 		if (IS_ERR_VALUE(addr))
 			goto err;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* This may race, but that's ok, it only gets set */
 		WRITE_ONCE(obj->frontbuffer_ggtt_origin, ORIGIN_CPU);
 	}
 	i915_gem_object_put(obj);
-<<<<<<< HEAD
 
 	args->addr_ptr = (uint64_t) addr;
 	return 0;
@@ -2257,14 +1918,6 @@ i915_gem_mmap_ioctl(struct drm_device *dev, void *data,
 err:
 	i915_gem_object_put(obj);
 	return addr;
-=======
-	if (IS_ERR((void *)addr))
-		return addr;
-
-	args->addr_ptr = (uint64_t) addr;
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static unsigned int tile_row_pages(struct drm_i915_gem_object *obj)
@@ -2366,15 +2019,9 @@ compute_partial_view(struct drm_i915_gem_object *obj,
  * The current feature set supported by i915_gem_fault() and thus GTT mmaps
  * is exposed via I915_PARAM_MMAP_GTT_VERSION (see i915_gem_mmap_gtt_version).
  */
-<<<<<<< HEAD
 vm_fault_t i915_gem_fault(struct vm_fault *vmf)
 {
 #define MIN_CHUNK_PAGES (SZ_1M >> PAGE_SHIFT)
-=======
-int i915_gem_fault(struct vm_fault *vmf)
-{
-#define MIN_CHUNK_PAGES ((1 << 20) >> PAGE_SHIFT) /* 1 MiB */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct vm_area_struct *area = vmf->vma;
 	struct drm_i915_gem_object *obj = to_intel_bo(area->vm_private_data);
 	struct drm_device *dev = obj->base.dev;
@@ -2383,10 +2030,6 @@ int i915_gem_fault(struct vm_fault *vmf)
 	bool write = !!(vmf->flags & FAULT_FLAG_WRITE);
 	struct i915_vma *vma;
 	pgoff_t page_offset;
-<<<<<<< HEAD
-=======
-	unsigned int flags;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	/* Sanity check that we allow writing into this object */
@@ -2426,30 +2069,16 @@ int i915_gem_fault(struct vm_fault *vmf)
 		goto err_unlock;
 	}
 
-<<<<<<< HEAD
 
 	/* Now pin it into the GTT as needed */
 	vma = i915_gem_object_ggtt_pin(obj, NULL, 0, 0,
 				       PIN_MAPPABLE |
 				       PIN_NONBLOCK |
 				       PIN_NONFAULT);
-=======
-	/* If the object is smaller than a couple of partial vma, it is
-	 * not worth only creating a single partial vma - we may as well
-	 * clear enough space for the full object.
-	 */
-	flags = PIN_MAPPABLE;
-	if (obj->base.size > 2 * MIN_CHUNK_PAGES << PAGE_SHIFT)
-		flags |= PIN_NONBLOCK | PIN_NONFAULT;
-
-	/* Now pin it into the GTT as needed */
-	vma = i915_gem_object_ggtt_pin(obj, NULL, 0, 0, flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(vma)) {
 		/* Use a partial view if it is bigger than available space */
 		struct i915_ggtt_view view =
 			compute_partial_view(obj, page_offset, MIN_CHUNK_PAGES);
-<<<<<<< HEAD
 		unsigned int flags;
 
 		flags = PIN_MAPPABLE;
@@ -2458,24 +2087,16 @@ int i915_gem_fault(struct vm_fault *vmf)
 
 		/*
 		 * Userspace is now writing through an untracked VMA, abandon
-=======
-
-		/* Userspace is now writing through an untracked VMA, abandon
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 * all hope that the hardware is able to track future writes.
 		 */
 		obj->frontbuffer_ggtt_origin = ORIGIN_CPU;
 
-<<<<<<< HEAD
 		vma = i915_gem_object_ggtt_pin(obj, &view, 0, 0, flags);
 		if (IS_ERR(vma) && !view.type) {
 			flags = PIN_MAPPABLE;
 			view.type = I915_GGTT_VIEW_PARTIAL;
 			vma = i915_gem_object_ggtt_pin(obj, &view, 0, 0, flags);
 		}
-=======
-		vma = i915_gem_object_ggtt_pin(obj, &view, 0, 0, PIN_MAPPABLE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	if (IS_ERR(vma)) {
 		ret = PTR_ERR(vma);
@@ -2486,7 +2107,6 @@ int i915_gem_fault(struct vm_fault *vmf)
 	if (ret)
 		goto err_unpin;
 
-<<<<<<< HEAD
 	ret = i915_vma_pin_fence(vma);
 	if (ret)
 		goto err_unpin;
@@ -2510,24 +2130,6 @@ int i915_gem_fault(struct vm_fault *vmf)
 
 err_fence:
 	i915_vma_unpin_fence(vma);
-=======
-	ret = i915_vma_get_fence(vma);
-	if (ret)
-		goto err_unpin;
-
-	/* Mark as being mmapped into userspace for later revocation */
-	assert_rpm_wakelock_held(dev_priv);
-	if (list_empty(&obj->userfault_link))
-		list_add(&obj->userfault_link, &dev_priv->mm.userfault_list);
-
-	/* Finally, remap it using the new GTT offset */
-	ret = remap_io_mapping(area,
-			       area->vm_start + (vma->ggtt_view.partial.offset << PAGE_SHIFT),
-			       (ggtt->mappable_base + vma->node.start) >> PAGE_SHIFT,
-			       min_t(u64, vma->size, area->vm_end - area->vm_start),
-			       &ggtt->mappable);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_unpin:
 	__i915_vma_unpin(vma);
 err_unlock:
@@ -2544,16 +2146,9 @@ err:
 		 * fail). But any other -EIO isn't ours (e.g. swap in failure)
 		 * and so needs to be reported.
 		 */
-<<<<<<< HEAD
 		if (!i915_terminally_wedged(&dev_priv->gpu_error))
 			return VM_FAULT_SIGBUS;
 		/* else: fall through */
-=======
-		if (!i915_terminally_wedged(&dev_priv->gpu_error)) {
-			ret = VM_FAULT_SIGBUS;
-			break;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case -EAGAIN:
 		/*
 		 * EAGAIN means the gpu is hung and we'll wait for the error
@@ -2568,7 +2163,6 @@ err:
 		 * EBUSY is ok: this just means that another thread
 		 * already did the job.
 		 */
-<<<<<<< HEAD
 		return VM_FAULT_NOPAGE;
 	case -ENOMEM:
 		return VM_FAULT_OOM;
@@ -2594,23 +2188,6 @@ static void __i915_gem_object_release_mmap(struct drm_i915_gem_object *obj)
 
 	for_each_ggtt_vma(vma, obj)
 		i915_vma_unset_userfault(vma);
-=======
-		ret = VM_FAULT_NOPAGE;
-		break;
-	case -ENOMEM:
-		ret = VM_FAULT_OOM;
-		break;
-	case -ENOSPC:
-	case -EFAULT:
-		ret = VM_FAULT_SIGBUS;
-		break;
-	default:
-		WARN_ONCE(ret, "unhandled error in i915_gem_fault: %i\n", ret);
-		ret = VM_FAULT_SIGBUS;
-		break;
-	}
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -2643,19 +2220,10 @@ i915_gem_release_mmap(struct drm_i915_gem_object *obj)
 	lockdep_assert_held(&i915->drm.struct_mutex);
 	intel_runtime_pm_get(i915);
 
-<<<<<<< HEAD
 	if (!obj->userfault_count)
 		goto out;
 
 	__i915_gem_object_release_mmap(obj);
-=======
-	if (list_empty(&obj->userfault_link))
-		goto out;
-
-	list_del_init(&obj->userfault_link);
-	drm_vma_node_unmap(&obj->base.vma_node,
-			   obj->base.dev->anon_inode->i_mapping);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Ensure that the CPU's PTE are revoked and there are not outstanding
 	 * memory transactions from userspace before we return. The TLB
@@ -2683,16 +2251,8 @@ void i915_gem_runtime_suspend(struct drm_i915_private *dev_priv)
 	 */
 
 	list_for_each_entry_safe(obj, on,
-<<<<<<< HEAD
 				 &dev_priv->mm.userfault_list, userfault_link)
 		__i915_gem_object_release_mmap(obj);
-=======
-				 &dev_priv->mm.userfault_list, userfault_link) {
-		list_del_init(&obj->userfault_link);
-		drm_vma_node_unmap(&obj->base.vma_node,
-				   obj->base.dev->anon_inode->i_mapping);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* The fence will be lost when the device powers down. If any were
 	 * in use by hardware (i.e. they are pinned), we should not be powering
@@ -2715,11 +2275,7 @@ void i915_gem_runtime_suspend(struct drm_i915_private *dev_priv)
 		if (!reg->vma)
 			continue;
 
-<<<<<<< HEAD
 		GEM_BUG_ON(i915_vma_has_userfault(reg->vma));
-=======
-		GEM_BUG_ON(!list_empty(&reg->vma->obj->userfault_link));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg->dirty = true;
 	}
 }
@@ -2735,13 +2291,9 @@ static int i915_gem_object_create_mmap_offset(struct drm_i915_gem_object *obj)
 
 	/* Attempt to reap some mmap space from dead objects */
 	do {
-<<<<<<< HEAD
 		err = i915_gem_wait_for_idle(dev_priv,
 					     I915_WAIT_INTERRUPTIBLE,
 					     MAX_SCHEDULE_TIMEOUT);
-=======
-		err = i915_gem_wait_for_idle(dev_priv, I915_WAIT_INTERRUPTIBLE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (err)
 			break;
 
@@ -2830,11 +2382,7 @@ void __i915_gem_object_invalidate(struct drm_i915_gem_object *obj)
 	struct address_space *mapping;
 
 	lockdep_assert_held(&obj->mm.lock);
-<<<<<<< HEAD
 	GEM_BUG_ON(i915_gem_object_has_pages(obj));
-=======
-	GEM_BUG_ON(obj->mm.pages);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (obj->mm.madv) {
 	case I915_MADV_DONTNEED:
@@ -2890,7 +2438,6 @@ static void __i915_gem_object_reset_page_iter(struct drm_i915_gem_object *obj)
 	rcu_read_unlock();
 }
 
-<<<<<<< HEAD
 static struct sg_table *
 __i915_gem_object_unset_pages(struct drm_i915_gem_object *obj)
 {
@@ -2904,30 +2451,6 @@ __i915_gem_object_unset_pages(struct drm_i915_gem_object *obj)
 	spin_lock(&i915->mm.obj_lock);
 	list_del(&obj->mm.link);
 	spin_unlock(&i915->mm.obj_lock);
-=======
-void __i915_gem_object_put_pages(struct drm_i915_gem_object *obj,
-				 enum i915_mm_subclass subclass)
-{
-	struct sg_table *pages;
-
-	if (i915_gem_object_has_pinned_pages(obj))
-		return;
-
-	GEM_BUG_ON(obj->bind_count);
-	if (!READ_ONCE(obj->mm.pages))
-		return;
-
-	/* May be called by shrinker from within get_pages() (on another bo) */
-	mutex_lock_nested(&obj->mm.lock, subclass);
-	if (unlikely(atomic_read(&obj->mm.pages_pin_count)))
-		goto unlock;
-
-	/* ->put_pages might need to allocate memory for the bit17 swizzle
-	 * array, hence protect them from being reaped by removing them from gtt
-	 * lists early. */
-	pages = fetch_and_zero(&obj->mm.pages);
-	GEM_BUG_ON(!pages);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (obj->mm.mapping) {
 		void *ptr;
@@ -2942,7 +2465,6 @@ void __i915_gem_object_put_pages(struct drm_i915_gem_object *obj,
 	}
 
 	__i915_gem_object_reset_page_iter(obj);
-<<<<<<< HEAD
 	obj->mm.page_sizes.phys = obj->mm.page_sizes.sg = 0;
 
 	return pages;
@@ -2971,9 +2493,6 @@ void __i915_gem_object_put_pages(struct drm_i915_gem_object *obj,
 	 * lists early.
 	 */
 	pages = __i915_gem_object_unset_pages(obj);
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!IS_ERR(pages))
 		obj->ops->put_pages(obj, pages);
 
@@ -3007,12 +2526,7 @@ static bool i915_sg_trim(struct sg_table *orig_st)
 	return true;
 }
 
-<<<<<<< HEAD
 static int i915_gem_object_get_pages_gtt(struct drm_i915_gem_object *obj)
-=======
-static struct sg_table *
-i915_gem_object_get_pages_gtt(struct drm_i915_gem_object *obj)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_i915_private *dev_priv = to_i915(obj->base.dev);
 	const unsigned long page_count = obj->base.size / PAGE_SIZE;
@@ -3023,12 +2537,8 @@ i915_gem_object_get_pages_gtt(struct drm_i915_gem_object *obj)
 	struct sgt_iter sgt_iter;
 	struct page *page;
 	unsigned long last_pfn = 0;	/* suppress gcc warning */
-<<<<<<< HEAD
 	unsigned int max_segment = i915_sg_segment_size();
 	unsigned int sg_page_sizes;
-=======
-	unsigned int max_segment;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gfp_t noreclaim;
 	int ret;
 
@@ -3036,34 +2546,17 @@ i915_gem_object_get_pages_gtt(struct drm_i915_gem_object *obj)
 	 * wasn't in the GTT, there shouldn't be any way it could have been in
 	 * a GPU cache
 	 */
-<<<<<<< HEAD
 	GEM_BUG_ON(obj->read_domains & I915_GEM_GPU_DOMAINS);
 	GEM_BUG_ON(obj->write_domain & I915_GEM_GPU_DOMAINS);
 
 	st = kmalloc(sizeof(*st), GFP_KERNEL);
 	if (st == NULL)
 		return -ENOMEM;
-=======
-	GEM_BUG_ON(obj->base.read_domains & I915_GEM_GPU_DOMAINS);
-	GEM_BUG_ON(obj->base.write_domain & I915_GEM_GPU_DOMAINS);
-
-	max_segment = swiotlb_max_segment();
-	if (!max_segment)
-		max_segment = rounddown(UINT_MAX, PAGE_SIZE);
-
-	st = kmalloc(sizeof(*st), GFP_KERNEL);
-	if (st == NULL)
-		return ERR_PTR(-ENOMEM);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 rebuild_st:
 	if (sg_alloc_table(st, page_count, GFP_KERNEL)) {
 		kfree(st);
-<<<<<<< HEAD
 		return -ENOMEM;
-=======
-		return ERR_PTR(-ENOMEM);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Get the list of pages out of our struct file.  They'll be pinned
@@ -3077,10 +2570,7 @@ rebuild_st:
 
 	sg = st->sgl;
 	st->nents = 0;
-<<<<<<< HEAD
 	sg_page_sizes = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < page_count; i++) {
 		const unsigned int shrink[] = {
 			I915_SHRINK_BOUND | I915_SHRINK_UNBOUND | I915_SHRINK_PURGEABLE,
@@ -3133,15 +2623,10 @@ rebuild_st:
 		if (!i ||
 		    sg->length >= max_segment ||
 		    page_to_pfn(page) != last_pfn + 1) {
-<<<<<<< HEAD
 			if (i) {
 				sg_page_sizes |= sg->length;
 				sg = sg_next(sg);
 			}
-=======
-			if (i)
-				sg = sg_next(sg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			st->nents++;
 			sg_set_page(sg, page, PAGE_SIZE, 0);
 		} else {
@@ -3152,15 +2637,10 @@ rebuild_st:
 		/* Check that the i965g/gm workaround works. */
 		WARN_ON((gfp & __GFP_DMA32) && (last_pfn >= 0x00100000UL));
 	}
-<<<<<<< HEAD
 	if (sg) { /* loop terminated early; short sg table */
 		sg_page_sizes |= sg->length;
 		sg_mark_end(sg);
 	}
-=======
-	if (sg) /* loop terminated early; short sg table */
-		sg_mark_end(sg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Trim unused sg entries to avoid wasting memory. */
 	i915_sg_trim(st);
@@ -3189,13 +2669,9 @@ rebuild_st:
 	if (i915_gem_object_needs_bit17_swizzle(obj))
 		i915_gem_object_do_bit_17_swizzle(obj, st);
 
-<<<<<<< HEAD
 	__i915_gem_object_set_pages(obj, st, sg_page_sizes);
 
 	return 0;
-=======
-	return st;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 err_sg:
 	sg_mark_end(sg);
@@ -3216,7 +2692,6 @@ err_pages:
 	if (ret == -ENOSPC)
 		ret = -ENOMEM;
 
-<<<<<<< HEAD
 	return ret;
 }
 
@@ -3228,14 +2703,6 @@ void __i915_gem_object_set_pages(struct drm_i915_gem_object *obj,
 	unsigned long supported = INTEL_INFO(i915)->page_sizes;
 	int i;
 
-=======
-	return ERR_PTR(ret);
-}
-
-void __i915_gem_object_set_pages(struct drm_i915_gem_object *obj,
-				 struct sg_table *pages)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	lockdep_assert_held(&obj->mm.lock);
 
 	obj->mm.get_page.sg_pos = pages->sgl;
@@ -3244,16 +2711,11 @@ void __i915_gem_object_set_pages(struct drm_i915_gem_object *obj,
 	obj->mm.pages = pages;
 
 	if (i915_gem_object_is_tiled(obj) &&
-<<<<<<< HEAD
 	    i915->quirks & QUIRK_PIN_SWIZZLED_PAGES) {
-=======
-	    to_i915(obj->base.dev)->quirks & QUIRK_PIN_SWIZZLED_PAGES) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		GEM_BUG_ON(obj->mm.quirked);
 		__i915_gem_object_pin_pages(obj);
 		obj->mm.quirked = true;
 	}
-<<<<<<< HEAD
 
 	GEM_BUG_ON(!sg_page_sizes);
 	obj->mm.page_sizes.phys = sg_page_sizes;
@@ -3276,38 +2738,21 @@ void __i915_gem_object_set_pages(struct drm_i915_gem_object *obj,
 	spin_lock(&i915->mm.obj_lock);
 	list_add(&obj->mm.link, &i915->mm.unbound_list);
 	spin_unlock(&i915->mm.obj_lock);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int ____i915_gem_object_get_pages(struct drm_i915_gem_object *obj)
 {
-<<<<<<< HEAD
 	int err;
-=======
-	struct sg_table *pages;
-
-	GEM_BUG_ON(i915_gem_object_has_pinned_pages(obj));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (unlikely(obj->mm.madv != I915_MADV_WILLNEED)) {
 		DRM_DEBUG("Attempting to obtain a purgeable object\n");
 		return -EFAULT;
 	}
 
-<<<<<<< HEAD
 	err = obj->ops->get_pages(obj);
 	GEM_BUG_ON(!err && !i915_gem_object_has_pages(obj));
 
 	return err;
-=======
-	pages = obj->ops->get_pages(obj);
-	if (unlikely(IS_ERR(pages)))
-		return PTR_ERR(pages);
-
-	__i915_gem_object_set_pages(obj, pages);
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Ensure that the associated pages are gathered from the backing storage
@@ -3325,13 +2770,9 @@ int __i915_gem_object_get_pages(struct drm_i915_gem_object *obj)
 	if (err)
 		return err;
 
-<<<<<<< HEAD
 	if (unlikely(!i915_gem_object_has_pages(obj))) {
 		GEM_BUG_ON(i915_gem_object_has_pinned_pages(obj));
 
-=======
-	if (unlikely(IS_ERR_OR_NULL(obj->mm.pages))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = ____i915_gem_object_get_pages(obj);
 		if (err)
 			goto unlock;
@@ -3404,12 +2845,8 @@ void *i915_gem_object_pin_map(struct drm_i915_gem_object *obj,
 	void *ptr;
 	int ret;
 
-<<<<<<< HEAD
 	if (unlikely(!i915_gem_object_has_struct_page(obj)))
 		return ERR_PTR(-ENXIO);
-=======
-	GEM_BUG_ON(!i915_gem_object_has_struct_page(obj));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = mutex_lock_interruptible(&obj->mm.lock);
 	if (ret)
@@ -3419,13 +2856,9 @@ void *i915_gem_object_pin_map(struct drm_i915_gem_object *obj,
 	type &= ~I915_MAP_OVERRIDE;
 
 	if (!atomic_inc_not_zero(&obj->mm.pages_pin_count)) {
-<<<<<<< HEAD
 		if (unlikely(!i915_gem_object_has_pages(obj))) {
 			GEM_BUG_ON(i915_gem_object_has_pinned_pages(obj));
 
-=======
-		if (unlikely(IS_ERR_OR_NULL(obj->mm.pages))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ret = ____i915_gem_object_get_pages(obj);
 			if (ret)
 				goto err_unlock;
@@ -3435,11 +2868,7 @@ void *i915_gem_object_pin_map(struct drm_i915_gem_object *obj,
 		atomic_inc(&obj->mm.pages_pin_count);
 		pinned = false;
 	}
-<<<<<<< HEAD
 	GEM_BUG_ON(!i915_gem_object_has_pages(obj));
-=======
-	GEM_BUG_ON(!obj->mm.pages);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ptr = page_unpack_bits(obj->mm.mapping, &has_type);
 	if (ptr && has_type != type) {
@@ -3494,11 +2923,7 @@ i915_gem_object_pwrite_gtt(struct drm_i915_gem_object *obj,
 	 * allows it to avoid the cost of retrieving a page (either swapin
 	 * or clearing-before-use) before it is overwritten.
 	 */
-<<<<<<< HEAD
 	if (i915_gem_object_has_pages(obj))
-=======
-	if (READ_ONCE(obj->mm.pages))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 
 	if (obj->mm.madv != I915_MADV_WILLNEED)
@@ -3553,7 +2978,6 @@ i915_gem_object_pwrite_gtt(struct drm_i915_gem_object *obj,
 	return 0;
 }
 
-<<<<<<< HEAD
 static void i915_gem_client_mark_guilty(struct drm_i915_file_private *file_priv,
 					const struct i915_gem_context *ctx)
 {
@@ -3576,19 +3000,11 @@ static void i915_gem_client_mark_guilty(struct drm_i915_file_private *file_priv,
 				 ctx->name, score,
 				 atomic_read(&file_priv->ban_score));
 	}
-=======
-static bool ban_context(const struct i915_gem_context *ctx,
-			unsigned int score)
-{
-	return (i915_gem_context_is_bannable(ctx) &&
-		score >= CONTEXT_SCORE_BAN_THRESHOLD);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void i915_gem_context_mark_guilty(struct i915_gem_context *ctx)
 {
 	unsigned int score;
-<<<<<<< HEAD
 	bool banned, bannable;
 
 	atomic_inc(&ctx->guilty_count);
@@ -3610,25 +3026,6 @@ static void i915_gem_context_mark_guilty(struct i915_gem_context *ctx)
 
 	if (!IS_ERR_OR_NULL(ctx->file_priv))
 		i915_gem_client_mark_guilty(ctx->file_priv, ctx);
-=======
-	bool banned;
-
-	atomic_inc(&ctx->guilty_count);
-
-	score = atomic_add_return(CONTEXT_SCORE_GUILTY, &ctx->ban_score);
-	banned = ban_context(ctx, score);
-	DRM_DEBUG_DRIVER("context %s marked guilty (score %d) banned? %s\n",
-			 ctx->name, score, yesno(banned));
-	if (!banned)
-		return;
-
-	i915_gem_context_set_banned(ctx);
-	if (!IS_ERR_OR_NULL(ctx->file_priv)) {
-		atomic_inc(&ctx->file_priv->context_bans);
-		DRM_DEBUG_DRIVER("client %s has had %d context banned\n",
-				 ctx->name, atomic_read(&ctx->file_priv->context_bans));
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void i915_gem_context_mark_innocent(struct i915_gem_context *ctx)
@@ -3636,7 +3033,6 @@ static void i915_gem_context_mark_innocent(struct i915_gem_context *ctx)
 	atomic_inc(&ctx->active_count);
 }
 
-<<<<<<< HEAD
 struct i915_request *
 i915_gem_find_active_request(struct intel_engine_cs *engine)
 {
@@ -3663,62 +3059,14 @@ i915_gem_find_active_request(struct intel_engine_cs *engine)
 		break;
 	}
 	spin_unlock_irqrestore(&engine->timeline.lock, flags);
-=======
-struct drm_i915_gem_request *
-i915_gem_find_active_request(struct intel_engine_cs *engine)
-{
-	struct drm_i915_gem_request *request, *active = NULL;
-	unsigned long flags;
-
-	/* We are called by the error capture and reset at a random
-	 * point in time. In particular, note that neither is crucially
-	 * ordered with an interrupt. After a hang, the GPU is dead and we
-	 * assume that no more writes can happen (we waited long enough for
-	 * all writes that were in transaction to be flushed) - adding an
-	 * extra delay for a recent interrupt is pointless. Hence, we do
-	 * not need an engine->irq_seqno_barrier() before the seqno reads.
-	 */
-	spin_lock_irqsave(&engine->timeline->lock, flags);
-	list_for_each_entry(request, &engine->timeline->requests, link) {
-		if (__i915_gem_request_completed(request,
-						 request->global_seqno))
-			continue;
-
-		GEM_BUG_ON(request->engine != engine);
-		GEM_BUG_ON(test_bit(DMA_FENCE_FLAG_SIGNALED_BIT,
-				    &request->fence.flags));
-
-		active = request;
-		break;
-	}
-	spin_unlock_irqrestore(&engine->timeline->lock, flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return active;
 }
 
-<<<<<<< HEAD
-=======
-static bool engine_stalled(struct intel_engine_cs *engine)
-{
-	if (!engine->hangcheck.stalled)
-		return false;
-
-	/* Check for possible seqno movement after hang declaration */
-	if (engine->hangcheck.seqno != intel_engine_get_seqno(engine)) {
-		DRM_DEBUG_DRIVER("%s pardoned\n", engine->name);
-		return false;
-	}
-
-	return true;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Ensure irq handler finishes, and not run again.
  * Also return the active request so that we only search for it once.
  */
-<<<<<<< HEAD
 struct i915_request *
 i915_gem_reset_prepare_engine(struct intel_engine_cs *engine)
 {
@@ -3734,39 +3082,6 @@ i915_gem_reset_prepare_engine(struct intel_engine_cs *engine)
 	intel_uncore_forcewake_get(engine->i915, FORCEWAKE_ALL);
 
 	request = engine->reset.prepare(engine);
-=======
-struct drm_i915_gem_request *
-i915_gem_reset_prepare_engine(struct intel_engine_cs *engine)
-{
-	struct drm_i915_gem_request *request = NULL;
-
-	/* Prevent the signaler thread from updating the request
-	 * state (by calling dma_fence_signal) as we are processing
-	 * the reset. The write from the GPU of the seqno is
-	 * asynchronous and the signaler thread may see a different
-	 * value to us and declare the request complete, even though
-	 * the reset routine have picked that request as the active
-	 * (incomplete) request. This conflict is not handled
-	 * gracefully!
-	 */
-	kthread_park(engine->breadcrumbs.signaler);
-
-	/* Prevent request submission to the hardware until we have
-	 * completed the reset in i915_gem_reset_finish(). If a request
-	 * is completed by one engine, it may then queue a request
-	 * to a second via its engine->irq_tasklet *just* as we are
-	 * calling engine->init_hw() and also writing the ELSP.
-	 * Turning off the engine->irq_tasklet until the reset is over
-	 * prevents the race.
-	 */
-	tasklet_kill(&engine->irq_tasklet);
-	tasklet_disable(&engine->irq_tasklet);
-
-	if (engine->irq_seqno_barrier)
-		engine->irq_seqno_barrier(engine);
-
-	request = i915_gem_find_active_request(engine);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (request && request->fence.error == -EIO)
 		request = ERR_PTR(-EIO); /* Previous reset failed! */
 
@@ -3776,11 +3091,7 @@ i915_gem_reset_prepare_engine(struct intel_engine_cs *engine)
 int i915_gem_reset_prepare(struct drm_i915_private *dev_priv)
 {
 	struct intel_engine_cs *engine;
-<<<<<<< HEAD
 	struct i915_request *request;
-=======
-	struct drm_i915_gem_request *request;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	enum intel_engine_id id;
 	int err = 0;
 
@@ -3795,15 +3106,11 @@ int i915_gem_reset_prepare(struct drm_i915_private *dev_priv)
 	}
 
 	i915_gem_revoke_fences(dev_priv);
-<<<<<<< HEAD
 	intel_uc_sanitize(dev_priv);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return err;
 }
 
-<<<<<<< HEAD
 static void engine_skip_context(struct i915_request *request)
 {
 	struct intel_engine_cs *engine = request->engine;
@@ -3832,54 +3139,6 @@ static struct i915_request *
 i915_gem_reset_request(struct intel_engine_cs *engine,
 		       struct i915_request *request,
 		       bool stalled)
-=======
-static void skip_request(struct drm_i915_gem_request *request)
-{
-	void *vaddr = request->ring->vaddr;
-	u32 head;
-
-	/* As this request likely depends on state from the lost
-	 * context, clear out all the user operations leaving the
-	 * breadcrumb at the end (so we get the fence notifications).
-	 */
-	head = request->head;
-	if (request->postfix < head) {
-		memset(vaddr + head, 0, request->ring->size - head);
-		head = 0;
-	}
-	memset(vaddr + head, 0, request->postfix - head);
-
-	dma_fence_set_error(&request->fence, -EIO);
-}
-
-static void engine_skip_context(struct drm_i915_gem_request *request)
-{
-	struct intel_engine_cs *engine = request->engine;
-	struct i915_gem_context *hung_ctx = request->ctx;
-	struct intel_timeline *timeline;
-	unsigned long flags;
-
-	timeline = i915_gem_context_lookup_timeline(hung_ctx, engine);
-
-	spin_lock_irqsave(&engine->timeline->lock, flags);
-	spin_lock(&timeline->lock);
-
-	list_for_each_entry_continue(request, &engine->timeline->requests, link)
-		if (request->ctx == hung_ctx)
-			skip_request(request);
-
-	list_for_each_entry(request, &timeline->requests, link)
-		skip_request(request);
-
-	spin_unlock(&timeline->lock);
-	spin_unlock_irqrestore(&engine->timeline->lock, flags);
-}
-
-/* Returns the request if it was guilty of the hang */
-static struct drm_i915_gem_request *
-i915_gem_reset_request(struct intel_engine_cs *engine,
-		       struct drm_i915_gem_request *request)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* The guilty request will get skipped on a hung engine.
 	 *
@@ -3902,7 +3161,6 @@ i915_gem_reset_request(struct intel_engine_cs *engine,
 	 * subsequent hangs.
 	 */
 
-<<<<<<< HEAD
 	if (i915_request_completed(request)) {
 		GEM_TRACE("%s pardoned global=%d (fence %llx:%d), current %d\n",
 			  engine->name, request->global_seqno,
@@ -3917,14 +3175,6 @@ i915_gem_reset_request(struct intel_engine_cs *engine,
 
 		/* If this context is now banned, skip all pending requests. */
 		if (i915_gem_context_is_banned(request->gem_context))
-=======
-	if (engine_stalled(engine)) {
-		i915_gem_context_mark_guilty(request->ctx);
-		skip_request(request);
-
-		/* If this context is now banned, skip all pending requests. */
-		if (i915_gem_context_is_banned(request->ctx))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			engine_skip_context(request);
 	} else {
 		/*
@@ -3934,7 +3184,6 @@ i915_gem_reset_request(struct intel_engine_cs *engine,
 		 */
 		request = i915_gem_find_active_request(engine);
 		if (request) {
-<<<<<<< HEAD
 			unsigned long flags;
 
 			i915_gem_context_mark_innocent(request->gem_context);
@@ -3946,17 +3195,6 @@ i915_gem_reset_request(struct intel_engine_cs *engine,
 			if (&request->link == &engine->timeline.requests)
 				request = NULL;
 			spin_unlock_irqrestore(&engine->timeline.lock, flags);
-=======
-			i915_gem_context_mark_innocent(request->ctx);
-			dma_fence_set_error(&request->fence, -EAGAIN);
-
-			/* Rewind the engine to replay the incomplete rq */
-			spin_lock_irq(&engine->timeline->lock);
-			request = list_prev_entry(request, link);
-			if (&request->link == &engine->timeline->requests)
-				request = NULL;
-			spin_unlock_irq(&engine->timeline->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -3964,7 +3202,6 @@ i915_gem_reset_request(struct intel_engine_cs *engine,
 }
 
 void i915_gem_reset_engine(struct intel_engine_cs *engine,
-<<<<<<< HEAD
 			   struct i915_request *request,
 			   bool stalled)
 {
@@ -3984,32 +3221,12 @@ void i915_gem_reset_engine(struct intel_engine_cs *engine,
 
 void i915_gem_reset(struct drm_i915_private *dev_priv,
 		    unsigned int stalled_mask)
-=======
-			   struct drm_i915_gem_request *request)
-{
-	engine->irq_posted = 0;
-
-	if (request)
-		request = i915_gem_reset_request(engine, request);
-
-	if (request) {
-		DRM_DEBUG_DRIVER("resetting %s to restart from tail of request 0x%x\n",
-				 engine->name, request->global_seqno);
-	}
-
-	/* Setup the CS to resume from the breadcrumb of the hung request */
-	engine->reset_hw(engine, request);
-}
-
-void i915_gem_reset(struct drm_i915_private *dev_priv)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct intel_engine_cs *engine;
 	enum intel_engine_id id;
 
 	lockdep_assert_held(&dev_priv->drm.struct_mutex);
 
-<<<<<<< HEAD
 	i915_retire_requests(dev_priv);
 
 	for_each_engine(engine, dev_priv, id) {
@@ -4043,39 +3260,13 @@ void i915_gem_reset(struct drm_i915_private *dev_priv)
 	}
 
 	i915_gem_restore_fences(dev_priv);
-=======
-	i915_gem_retire_requests(dev_priv);
-
-	for_each_engine(engine, dev_priv, id) {
-		struct i915_gem_context *ctx;
-
-		i915_gem_reset_engine(engine, engine->hangcheck.active_request);
-		ctx = fetch_and_zero(&engine->last_retired_context);
-		if (ctx)
-			engine->context_unpin(engine, ctx);
-	}
-
-	i915_gem_restore_fences(dev_priv);
-
-	if (dev_priv->gt.awake) {
-		intel_sanitize_gt_powersave(dev_priv);
-		intel_enable_gt_powersave(dev_priv);
-		if (INTEL_GEN(dev_priv) >= 6)
-			gen6_rps_busy(dev_priv);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void i915_gem_reset_finish_engine(struct intel_engine_cs *engine)
 {
-<<<<<<< HEAD
 	engine->reset.finish(engine);
 
 	intel_uncore_forcewake_put(engine->i915, FORCEWAKE_ALL);
-=======
-	tasklet_enable(&engine->irq_tasklet);
-	kthread_unpark(engine->breadcrumbs.signaler);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void i915_gem_reset_finish(struct drm_i915_private *dev_priv)
@@ -4091,7 +3282,6 @@ void i915_gem_reset_finish(struct drm_i915_private *dev_priv)
 	}
 }
 
-<<<<<<< HEAD
 static void nop_submit_request(struct i915_request *request)
 {
 	GEM_TRACE("%s fence %llx:%d -> -EIO\n",
@@ -4194,119 +3384,20 @@ void i915_gem_set_wedged(struct drm_i915_private *i915)
 	GEM_TRACE("end\n");
 
 	wake_up_all(&i915->gpu_error.reset_queue);
-=======
-static void nop_submit_request(struct drm_i915_gem_request *request)
-{
-	unsigned long flags;
-
-	GEM_BUG_ON(!i915_terminally_wedged(&request->i915->gpu_error));
-	dma_fence_set_error(&request->fence, -EIO);
-
-	spin_lock_irqsave(&request->engine->timeline->lock, flags);
-	__i915_gem_request_submit(request);
-	intel_engine_init_global_seqno(request->engine, request->global_seqno);
-	spin_unlock_irqrestore(&request->engine->timeline->lock, flags);
-}
-
-static void engine_set_wedged(struct intel_engine_cs *engine)
-{
-	struct drm_i915_gem_request *request;
-	unsigned long flags;
-
-	/* We need to be sure that no thread is running the old callback as
-	 * we install the nop handler (otherwise we would submit a request
-	 * to hardware that will never complete). In order to prevent this
-	 * race, we wait until the machine is idle before making the swap
-	 * (using stop_machine()).
-	 */
-	engine->submit_request = nop_submit_request;
-
-	/* Mark all executing requests as skipped */
-	spin_lock_irqsave(&engine->timeline->lock, flags);
-	list_for_each_entry(request, &engine->timeline->requests, link)
-		if (!i915_gem_request_completed(request))
-			dma_fence_set_error(&request->fence, -EIO);
-	spin_unlock_irqrestore(&engine->timeline->lock, flags);
-
-	/*
-	 * Clear the execlists queue up before freeing the requests, as those
-	 * are the ones that keep the context and ringbuffer backing objects
-	 * pinned in place.
-	 */
-
-	if (i915.enable_execlists) {
-		struct execlist_port *port = engine->execlist_port;
-		unsigned long flags;
-		unsigned int n;
-
-		spin_lock_irqsave(&engine->timeline->lock, flags);
-
-		for (n = 0; n < ARRAY_SIZE(engine->execlist_port); n++)
-			i915_gem_request_put(port_request(&port[n]));
-		memset(engine->execlist_port, 0, sizeof(engine->execlist_port));
-		engine->execlist_queue = RB_ROOT;
-		engine->execlist_first = NULL;
-
-		spin_unlock_irqrestore(&engine->timeline->lock, flags);
-
-		/* The port is checked prior to scheduling a tasklet, but
-		 * just in case we have suspended the tasklet to do the
-		 * wedging make sure that when it wakes, it decides there
-		 * is no work to do by clearing the irq_posted bit.
-		 */
-		clear_bit(ENGINE_IRQ_EXECLIST, &engine->irq_posted);
-	}
-
-	/* Mark all pending requests as complete so that any concurrent
-	 * (lockless) lookup doesn't try and wait upon the request as we
-	 * reset it.
-	 */
-	intel_engine_init_global_seqno(engine,
-				       intel_engine_last_submit(engine));
-}
-
-static int __i915_gem_set_wedged_BKL(void *data)
-{
-	struct drm_i915_private *i915 = data;
-	struct intel_engine_cs *engine;
-	enum intel_engine_id id;
-
-	for_each_engine(engine, i915, id)
-		engine_set_wedged(engine);
-
-	set_bit(I915_WEDGED, &i915->gpu_error.flags);
-	wake_up_all(&i915->gpu_error.reset_queue);
-
-	return 0;
-}
-
-void i915_gem_set_wedged(struct drm_i915_private *dev_priv)
-{
-	stop_machine(__i915_gem_set_wedged_BKL, dev_priv, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 bool i915_gem_unset_wedged(struct drm_i915_private *i915)
 {
-<<<<<<< HEAD
 	struct i915_timeline *tl;
-=======
-	struct i915_gem_timeline *tl;
-	int i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	lockdep_assert_held(&i915->drm.struct_mutex);
 	if (!test_bit(I915_WEDGED, &i915->gpu_error.flags))
 		return true;
 
-<<<<<<< HEAD
 	GEM_TRACE("start\n");
 
 	/*
 	 * Before unwedging, make sure that all pending operations
-=======
-	/* Before unwedging, make sure that all pending operations
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * are flushed and errored out - we may have requests waiting upon
 	 * third party fences. We marked all inflight requests as EIO, and
 	 * every execbuf since returned EIO, for consistency we want all
@@ -4316,7 +3407,6 @@ bool i915_gem_unset_wedged(struct drm_i915_private *i915)
 	 * No more can be submitted until we reset the wedged bit.
 	 */
 	list_for_each_entry(tl, &i915->gt.timelines, link) {
-<<<<<<< HEAD
 		struct i915_request *rq;
 
 		rq = i915_gem_active_peek(&tl->last_request,
@@ -4344,33 +3434,6 @@ bool i915_gem_unset_wedged(struct drm_i915_private *i915)
 
 	/*
 	 * Undo nop_submit_request. We prevent all new i915 requests from
-=======
-		for (i = 0; i < ARRAY_SIZE(tl->engine); i++) {
-			struct drm_i915_gem_request *rq;
-
-			rq = i915_gem_active_peek(&tl->engine[i].last_request,
-						  &i915->drm.struct_mutex);
-			if (!rq)
-				continue;
-
-			/* We can't use our normal waiter as we want to
-			 * avoid recursively trying to handle the current
-			 * reset. The basic dma_fence_default_wait() installs
-			 * a callback for dma_fence_signal(), which is
-			 * triggered by our nop handler (indirectly, the
-			 * callback enables the signaler thread which is
-			 * woken by the nop_submit_request() advancing the seqno
-			 * and when the seqno passes the fence, the signaler
-			 * then signals the fence waking us up).
-			 */
-			if (dma_fence_default_wait(&rq->fence, true,
-						   MAX_SCHEDULE_TIMEOUT) < 0)
-				return false;
-		}
-	}
-
-	/* Undo nop_submit_request. We prevent all new i915 requests from
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * being queued (by disallowing execbuf whilst wedged) so having
 	 * waited for all active requests above, we know the system is idle
 	 * and do not have to worry about a thread being inside
@@ -4381,11 +3444,8 @@ bool i915_gem_unset_wedged(struct drm_i915_private *i915)
 	intel_engines_reset_default_submission(i915);
 	i915_gem_contexts_lost(i915);
 
-<<<<<<< HEAD
 	GEM_TRACE("end\n");
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	smp_mb__before_atomic(); /* complete takeover before enabling execbuf */
 	clear_bit(I915_WEDGED, &i915->gpu_error.flags);
 
@@ -4401,7 +3461,6 @@ i915_gem_retire_work_handler(struct work_struct *work)
 
 	/* Come back later if the device is busy... */
 	if (mutex_trylock(&dev->struct_mutex)) {
-<<<<<<< HEAD
 		i915_retire_requests(dev_priv);
 		mutex_unlock(&dev->struct_mutex);
 	}
@@ -4496,21 +3555,6 @@ static void assert_kernel_context_is_current(struct drm_i915_private *i915)
 		GEM_BUG_ON(__i915_gem_active_peek(&engine->timeline.last_request));
 		GEM_BUG_ON(engine->last_retired_context !=
 			   to_intel_context(i915->kernel_context, engine));
-=======
-		i915_gem_retire_requests(dev_priv);
-		mutex_unlock(&dev->struct_mutex);
-	}
-
-	/* Keep the retire handler running until we are finally idle.
-	 * We do not need to do this test under locking as in the worst-case
-	 * we queue the retire worker once too often.
-	 */
-	if (READ_ONCE(dev_priv->gt.awake)) {
-		i915_queue_hangcheck(dev_priv);
-		queue_delayed_work(dev_priv->wq,
-				   &dev_priv->gt.retire_work,
-				   round_jiffies_up_relative(HZ));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -4519,17 +3563,12 @@ i915_gem_idle_work_handler(struct work_struct *work)
 {
 	struct drm_i915_private *dev_priv =
 		container_of(work, typeof(*dev_priv), gt.idle_work.work);
-<<<<<<< HEAD
 	unsigned int epoch = I915_EPOCH_INVALID;
-=======
-	struct drm_device *dev = &dev_priv->drm;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool rearm_hangcheck;
 
 	if (!READ_ONCE(dev_priv->gt.awake))
 		return;
 
-<<<<<<< HEAD
 	if (READ_ONCE(dev_priv->gt.active_requests))
 		return;
 
@@ -4560,24 +3599,11 @@ i915_gem_idle_work_handler(struct work_struct *work)
 		   intel_engines_are_idle(dev_priv),
 		   I915_IDLE_ENGINES_TIMEOUT * 1000,
 		   10, 500);
-=======
-	/*
-	 * Wait for last execlists context complete, but bail out in case a
-	 * new request is submitted.
-	 */
-	wait_for(intel_engines_are_idle(dev_priv), 10);
-	if (READ_ONCE(dev_priv->gt.active_requests))
-		return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rearm_hangcheck =
 		cancel_delayed_work_sync(&dev_priv->gpu_error.hangcheck_work);
 
-<<<<<<< HEAD
 	if (!mutex_trylock(&dev_priv->drm.struct_mutex)) {
-=======
-	if (!mutex_trylock(&dev->struct_mutex)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Currently busy, come back later */
 		mod_delayed_work(dev_priv->wq,
 				 &dev_priv->gt.idle_work,
@@ -4589,7 +3615,6 @@ i915_gem_idle_work_handler(struct work_struct *work)
 	 * New request retired after this work handler started, extend active
 	 * period until next instance of the work.
 	 */
-<<<<<<< HEAD
 	if (new_requests_since_last_retire(dev_priv))
 		goto out_unlock;
 
@@ -4600,42 +3625,12 @@ i915_gem_idle_work_handler(struct work_struct *work)
 	rearm_hangcheck = false;
 out_unlock:
 	mutex_unlock(&dev_priv->drm.struct_mutex);
-=======
-	if (work_pending(work))
-		goto out_unlock;
-
-	if (dev_priv->gt.active_requests)
-		goto out_unlock;
-
-	if (wait_for(intel_engines_are_idle(dev_priv), 10))
-		DRM_ERROR("Timeout waiting for engines to idle\n");
-
-	intel_engines_mark_idle(dev_priv);
-	i915_gem_timelines_mark_idle(dev_priv);
-
-	GEM_BUG_ON(!dev_priv->gt.awake);
-	dev_priv->gt.awake = false;
-	rearm_hangcheck = false;
-
-	if (INTEL_GEN(dev_priv) >= 6)
-		gen6_rps_idle(dev_priv);
-
-	if (NEEDS_RC6_CTX_CORRUPTION_WA(dev_priv)) {
-		i915_rc6_ctx_wa_check(dev_priv);
-		intel_uncore_forcewake_put(dev_priv, FORCEWAKE_ALL);
-	}
-
-	intel_runtime_pm_put(dev_priv);
-out_unlock:
-	mutex_unlock(&dev->struct_mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 out_rearm:
 	if (rearm_hangcheck) {
 		GEM_BUG_ON(!dev_priv->gt.awake);
 		i915_queue_hangcheck(dev_priv);
 	}
-<<<<<<< HEAD
 
 	/*
 	 * When we are idle, it is an opportune time to reap our caches.
@@ -4653,8 +3648,6 @@ out_rearm:
 			call_rcu(&s->rcu, __sleep_rcu);
 		}
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void i915_gem_close_object(struct drm_gem_object *gem, struct drm_file *file)
@@ -4670,18 +3663,11 @@ void i915_gem_close_object(struct drm_gem_object *gem, struct drm_file *file)
 		struct i915_gem_context *ctx = lut->ctx;
 		struct i915_vma *vma;
 
-<<<<<<< HEAD
 		GEM_BUG_ON(ctx->file_priv == ERR_PTR(-EBADF));
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ctx->file_priv != fpriv)
 			continue;
 
 		vma = radix_tree_delete(&ctx->handles_vma, lut->handle);
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		GEM_BUG_ON(vma->obj != obj);
 
 		/* We allow the process to have multiple handles to the same
@@ -4782,7 +3768,6 @@ i915_gem_wait_ioctl(struct drm_device *dev, void *data, struct drm_file *file)
 	return ret;
 }
 
-<<<<<<< HEAD
 static long wait_for_timeline(struct i915_timeline *tl,
 			      unsigned int flags, long timeout)
 {
@@ -4808,32 +3793,14 @@ static long wait_for_timeline(struct i915_timeline *tl,
 	i915_request_put(rq);
 
 	return timeout;
-=======
-static int wait_for_timeline(struct i915_gem_timeline *tl, unsigned int flags)
-{
-	int ret, i;
-
-	for (i = 0; i < ARRAY_SIZE(tl->engine); i++) {
-		ret = i915_gem_active_wait(&tl->engine[i].last_request, flags);
-		if (ret)
-			return ret;
-	}
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int wait_for_engines(struct drm_i915_private *i915)
 {
-<<<<<<< HEAD
 	if (wait_for(intel_engines_are_idle(i915), I915_IDLE_ENGINES_TIMEOUT)) {
 		dev_err(i915->drm.dev,
 			"Failed to idle engines, declaring wedged!\n");
 		GEM_TRACE_DUMP();
-=======
-	if (wait_for(intel_engines_are_idle(i915), 50)) {
-		DRM_ERROR("Failed to idle engines, declaring wedged!\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		i915_gem_set_wedged(i915);
 		return -EIO;
 	}
@@ -4841,35 +3808,24 @@ static int wait_for_engines(struct drm_i915_private *i915)
 	return 0;
 }
 
-<<<<<<< HEAD
 int i915_gem_wait_for_idle(struct drm_i915_private *i915,
 			   unsigned int flags, long timeout)
 {
 	GEM_TRACE("flags=%x (%s), timeout=%ld%s\n",
 		  flags, flags & I915_WAIT_LOCKED ? "locked" : "unlocked",
 		  timeout, timeout == MAX_SCHEDULE_TIMEOUT ? " (forever)" : "");
-=======
-int i915_gem_wait_for_idle(struct drm_i915_private *i915, unsigned int flags)
-{
-	int ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* If the device is asleep, we have no requests outstanding */
 	if (!READ_ONCE(i915->gt.awake))
 		return 0;
 
 	if (flags & I915_WAIT_LOCKED) {
-<<<<<<< HEAD
 		struct i915_timeline *tl;
 		int err;
-=======
-		struct i915_gem_timeline *tl;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		lockdep_assert_held(&i915->drm.struct_mutex);
 
 		list_for_each_entry(tl, &i915->gt.timelines, link) {
-<<<<<<< HEAD
 			timeout = wait_for_timeline(tl, flags, timeout);
 			if (timeout < 0)
 				return timeout;
@@ -4895,22 +3851,6 @@ int i915_gem_wait_for_idle(struct drm_i915_private *i915, unsigned int flags)
 	}
 
 	return 0;
-=======
-			ret = wait_for_timeline(tl, flags);
-			if (ret)
-				return ret;
-		}
-
-		i915_gem_retire_requests(i915);
-		GEM_BUG_ON(i915->gt.active_requests);
-
-		ret = wait_for_engines(i915);
-	} else {
-		ret = wait_for_timeline(&i915->gt.global_timeline, flags);
-	}
-
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __i915_gem_object_flush_for_display(struct drm_i915_gem_object *obj)
@@ -4922,20 +3862,12 @@ static void __i915_gem_object_flush_for_display(struct drm_i915_gem_object *obj)
 	flush_write_domain(obj, ~I915_GEM_DOMAIN_CPU);
 	if (obj->cache_dirty)
 		i915_gem_clflush_object(obj, I915_CLFLUSH_FORCE);
-<<<<<<< HEAD
 	obj->write_domain = 0;
-=======
-	obj->base.write_domain = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void i915_gem_object_flush_if_display(struct drm_i915_gem_object *obj)
 {
-<<<<<<< HEAD
 	if (!READ_ONCE(obj->pin_global))
-=======
-	if (!READ_ONCE(obj->pin_display))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	mutex_lock(&obj->base.dev->struct_mutex);
@@ -4967,11 +3899,7 @@ i915_gem_object_set_to_wc_domain(struct drm_i915_gem_object *obj, bool write)
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	if (obj->write_domain == I915_GEM_DOMAIN_WC)
-=======
-	if (obj->base.write_domain == I915_GEM_DOMAIN_WC)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	/* Flush and acquire obj->pages so that we are coherent through
@@ -4992,29 +3920,17 @@ i915_gem_object_set_to_wc_domain(struct drm_i915_gem_object *obj, bool write)
 	 * coherent writes from the GPU, by effectively invalidating the
 	 * WC domain upon first access.
 	 */
-<<<<<<< HEAD
 	if ((obj->read_domains & I915_GEM_DOMAIN_WC) == 0)
-=======
-	if ((obj->base.read_domains & I915_GEM_DOMAIN_WC) == 0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mb();
 
 	/* It should now be out of any other write domains, and we can update
 	 * the domain values for our changes.
 	 */
-<<<<<<< HEAD
 	GEM_BUG_ON((obj->write_domain & ~I915_GEM_DOMAIN_WC) != 0);
 	obj->read_domains |= I915_GEM_DOMAIN_WC;
 	if (write) {
 		obj->read_domains = I915_GEM_DOMAIN_WC;
 		obj->write_domain = I915_GEM_DOMAIN_WC;
-=======
-	GEM_BUG_ON((obj->base.write_domain & ~I915_GEM_DOMAIN_WC) != 0);
-	obj->base.read_domains |= I915_GEM_DOMAIN_WC;
-	if (write) {
-		obj->base.read_domains = I915_GEM_DOMAIN_WC;
-		obj->base.write_domain = I915_GEM_DOMAIN_WC;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		obj->mm.dirty = true;
 	}
 
@@ -5046,11 +3962,7 @@ i915_gem_object_set_to_gtt_domain(struct drm_i915_gem_object *obj, bool write)
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	if (obj->write_domain == I915_GEM_DOMAIN_GTT)
-=======
-	if (obj->base.write_domain == I915_GEM_DOMAIN_GTT)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	/* Flush and acquire obj->pages so that we are coherent through
@@ -5071,29 +3983,17 @@ i915_gem_object_set_to_gtt_domain(struct drm_i915_gem_object *obj, bool write)
 	 * coherent writes from the GPU, by effectively invalidating the
 	 * GTT domain upon first access.
 	 */
-<<<<<<< HEAD
 	if ((obj->read_domains & I915_GEM_DOMAIN_GTT) == 0)
-=======
-	if ((obj->base.read_domains & I915_GEM_DOMAIN_GTT) == 0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mb();
 
 	/* It should now be out of any other write domains, and we can update
 	 * the domain values for our changes.
 	 */
-<<<<<<< HEAD
 	GEM_BUG_ON((obj->write_domain & ~I915_GEM_DOMAIN_GTT) != 0);
 	obj->read_domains |= I915_GEM_DOMAIN_GTT;
 	if (write) {
 		obj->read_domains = I915_GEM_DOMAIN_GTT;
 		obj->write_domain = I915_GEM_DOMAIN_GTT;
-=======
-	GEM_BUG_ON((obj->base.write_domain & ~I915_GEM_DOMAIN_GTT) != 0);
-	obj->base.read_domains |= I915_GEM_DOMAIN_GTT;
-	if (write) {
-		obj->base.read_domains = I915_GEM_DOMAIN_GTT;
-		obj->base.write_domain = I915_GEM_DOMAIN_GTT;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		obj->mm.dirty = true;
 	}
 
@@ -5196,11 +4096,7 @@ restart:
 			 * dropped the fence as all snoopable access is
 			 * supposed to be linear.
 			 */
-<<<<<<< HEAD
 			for_each_ggtt_vma(vma, obj) {
-=======
-			list_for_each_entry(vma, &obj->vma_list, obj_link) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				ret = i915_vma_put_fence(vma);
 				if (ret)
 					return ret;
@@ -5302,7 +4198,6 @@ int i915_gem_set_caching_ioctl(struct drm_device *dev, void *data,
 	if (!obj)
 		return -ENOENT;
 
-<<<<<<< HEAD
 	/*
 	 * The caching mode of proxy object is handled by its generator, and
 	 * not allowed to be changed by userspace.
@@ -5312,8 +4207,6 @@ int i915_gem_set_caching_ioctl(struct drm_device *dev, void *data,
 		goto out;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (obj->cache_level == level)
 		goto out;
 
@@ -5337,43 +4230,26 @@ out:
 }
 
 /*
-<<<<<<< HEAD
  * Prepare buffer for display plane (scanout, cursors, etc). Can be called from
  * an uninterruptible phase (modesetting) and allows any flushes to be pipelined
  * (for pageflips). We only flush the caches while preparing the buffer for
  * display, the callers are responsible for frontbuffer flush.
-=======
- * Prepare buffer for display plane (scanout, cursors, etc).
- * Can be called from an uninterruptible phase (modesetting) and allows
- * any flushes to be pipelined (for pageflips).
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct i915_vma *
 i915_gem_object_pin_to_display_plane(struct drm_i915_gem_object *obj,
 				     u32 alignment,
-<<<<<<< HEAD
 				     const struct i915_ggtt_view *view,
 				     unsigned int flags)
-=======
-				     const struct i915_ggtt_view *view)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct i915_vma *vma;
 	int ret;
 
 	lockdep_assert_held(&obj->base.dev->struct_mutex);
 
-<<<<<<< HEAD
 	/* Mark the global pin early so that we account for the
 	 * display coherency whilst setting up the cache domains.
 	 */
 	obj->pin_global++;
-=======
-	/* Mark the pin_display early so that we account for the
-	 * display coherency whilst setting up the cache domains.
-	 */
-	obj->pin_display++;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* The display engine is not coherent with the LLC cache on gen6.  As
 	 * a result, we make sure that the pinning that is about to occur is
@@ -5389,11 +4265,7 @@ i915_gem_object_pin_to_display_plane(struct drm_i915_gem_object *obj,
 					      I915_CACHE_WT : I915_CACHE_NONE);
 	if (ret) {
 		vma = ERR_PTR(ret);
-<<<<<<< HEAD
 		goto err_unpin_global;
-=======
-		goto err_unpin_display;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* As the user may map the buffer once pinned in the display plane
@@ -5404,7 +4276,6 @@ i915_gem_object_pin_to_display_plane(struct drm_i915_gem_object *obj,
 	 * try to preserve the existing ABI).
 	 */
 	vma = ERR_PTR(-ENOSPC);
-<<<<<<< HEAD
 	if ((flags & PIN_MAPPABLE) == 0 &&
 	    (!view || view->type == I915_GGTT_VIEW_NORMAL))
 		vma = i915_gem_object_ggtt_pin(obj, view, 0, alignment,
@@ -5419,54 +4290,16 @@ i915_gem_object_pin_to_display_plane(struct drm_i915_gem_object *obj,
 	vma->display_alignment = max_t(u64, vma->display_alignment, alignment);
 
 	__i915_gem_object_flush_for_display(obj);
-=======
-	if (!view || view->type == I915_GGTT_VIEW_NORMAL)
-		vma = i915_gem_object_ggtt_pin(obj, view, 0, alignment,
-					       PIN_MAPPABLE | PIN_NONBLOCK);
-	if (IS_ERR(vma)) {
-		struct drm_i915_private *i915 = to_i915(obj->base.dev);
-		unsigned int flags;
-
-		/* Valleyview is definitely limited to scanning out the first
-		 * 512MiB. Lets presume this behaviour was inherited from the
-		 * g4x display engine and that all earlier gen are similarly
-		 * limited. Testing suggests that it is a little more
-		 * complicated than this. For example, Cherryview appears quite
-		 * happy to scanout from anywhere within its global aperture.
-		 */
-		flags = 0;
-		if (HAS_GMCH_DISPLAY(i915))
-			flags = PIN_MAPPABLE;
-		vma = i915_gem_object_ggtt_pin(obj, view, 0, alignment, flags);
-	}
-	if (IS_ERR(vma))
-		goto err_unpin_display;
-
-	vma->display_alignment = max_t(u64, vma->display_alignment, alignment);
-
-	/* Treat this as an end-of-frame, like intel_user_framebuffer_dirty() */
-	__i915_gem_object_flush_for_display(obj);
-	intel_fb_obj_flush(obj, ORIGIN_DIRTYFB);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* It should now be out of any other write domains, and we can update
 	 * the domain values for our changes.
 	 */
-<<<<<<< HEAD
 	obj->read_domains |= I915_GEM_DOMAIN_GTT;
 
 	return vma;
 
 err_unpin_global:
 	obj->pin_global--;
-=======
-	obj->base.read_domains |= I915_GEM_DOMAIN_GTT;
-
-	return vma;
-
-err_unpin_display:
-	obj->pin_display--;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return vma;
 }
 
@@ -5475,17 +4308,10 @@ i915_gem_object_unpin_from_display_plane(struct i915_vma *vma)
 {
 	lockdep_assert_held(&vma->vm->i915->drm.struct_mutex);
 
-<<<<<<< HEAD
 	if (WARN_ON(vma->obj->pin_global == 0))
 		return;
 
 	if (--vma->obj->pin_global == 0)
-=======
-	if (WARN_ON(vma->obj->pin_display == 0))
-		return;
-
-	if (--vma->obj->pin_display == 0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		vma->display_alignment = I915_GTT_MIN_ALIGNMENT;
 
 	/* Bump the LRU to try and avoid premature eviction whilst flipping  */
@@ -5521,25 +4347,15 @@ i915_gem_object_set_to_cpu_domain(struct drm_i915_gem_object *obj, bool write)
 	flush_write_domain(obj, ~I915_GEM_DOMAIN_CPU);
 
 	/* Flush the CPU cache if it's still invalid. */
-<<<<<<< HEAD
 	if ((obj->read_domains & I915_GEM_DOMAIN_CPU) == 0) {
 		i915_gem_clflush_object(obj, I915_CLFLUSH_SYNC);
 		obj->read_domains |= I915_GEM_DOMAIN_CPU;
-=======
-	if ((obj->base.read_domains & I915_GEM_DOMAIN_CPU) == 0) {
-		i915_gem_clflush_object(obj, I915_CLFLUSH_SYNC);
-		obj->base.read_domains |= I915_GEM_DOMAIN_CPU;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* It should now be out of any other write domains, and we can update
 	 * the domain values for our changes.
 	 */
-<<<<<<< HEAD
 	GEM_BUG_ON(obj->write_domain & ~I915_GEM_DOMAIN_CPU);
-=======
-	GEM_BUG_ON(obj->base.write_domain & ~I915_GEM_DOMAIN_CPU);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* If we're writing through the CPU, then the GPU read domains will
 	 * need to be invalidated at next use.
@@ -5566,11 +4382,7 @@ i915_gem_ring_throttle(struct drm_device *dev, struct drm_file *file)
 	struct drm_i915_private *dev_priv = to_i915(dev);
 	struct drm_i915_file_private *file_priv = file->driver_priv;
 	unsigned long recent_enough = jiffies - DRM_I915_THROTTLE_JIFFIES;
-<<<<<<< HEAD
 	struct i915_request *request, *target = NULL;
-=======
-	struct drm_i915_gem_request *request, *target = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	long ret;
 
 	/* ABI: return -EIO if already wedged */
@@ -5590,27 +4402,16 @@ i915_gem_ring_throttle(struct drm_device *dev, struct drm_file *file)
 		target = request;
 	}
 	if (target)
-<<<<<<< HEAD
 		i915_request_get(target);
-=======
-		i915_gem_request_get(target);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock(&file_priv->mm.lock);
 
 	if (target == NULL)
 		return 0;
 
-<<<<<<< HEAD
 	ret = i915_request_wait(target,
 				I915_WAIT_INTERRUPTIBLE,
 				MAX_SCHEDULE_TIMEOUT);
 	i915_request_put(target);
-=======
-	ret = i915_wait_request(target,
-				I915_WAIT_INTERRUPTIBLE,
-				MAX_SCHEDULE_TIMEOUT);
-	i915_gem_request_put(target);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret < 0 ? ret : 0;
 }
@@ -5623,31 +4424,12 @@ i915_gem_object_ggtt_pin(struct drm_i915_gem_object *obj,
 			 u64 flags)
 {
 	struct drm_i915_private *dev_priv = to_i915(obj->base.dev);
-<<<<<<< HEAD
 	struct i915_address_space *vm = &dev_priv->ggtt.vm;
-=======
-	struct i915_address_space *vm = &dev_priv->ggtt.base;
-
-	return i915_gem_object_pin(obj, vm, view, size, alignment,
-				   flags | PIN_GLOBAL);
-}
-
-struct i915_vma *
-i915_gem_object_pin(struct drm_i915_gem_object *obj,
-		    struct i915_address_space *vm,
-		    const struct i915_ggtt_view *view,
-		    u64 size,
-		    u64 alignment,
-		    u64 flags)
-{
-	struct drm_i915_private *dev_priv = to_i915(obj->base.dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct i915_vma *vma;
 	int ret;
 
 	lockdep_assert_held(&obj->base.dev->struct_mutex);
 
-<<<<<<< HEAD
 	if (flags & PIN_MAPPABLE &&
 	    (!view || view->type == I915_GGTT_VIEW_NORMAL)) {
 		/* If the required space is larger than the available
@@ -5680,52 +4462,16 @@ i915_gem_object_pin(struct drm_i915_gem_object *obj,
 			return ERR_PTR(-ENOSPC);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vma = i915_vma_instance(obj, vm, view);
 	if (unlikely(IS_ERR(vma)))
 		return vma;
 
 	if (i915_vma_misplaced(vma, size, alignment, flags)) {
-<<<<<<< HEAD
 		if (flags & PIN_NONBLOCK) {
 			if (i915_vma_is_pinned(vma) || i915_vma_is_active(vma))
 				return ERR_PTR(-ENOSPC);
 
 			if (flags & PIN_MAPPABLE &&
-=======
-		if (flags & PIN_NONBLOCK &&
-		    (i915_vma_is_pinned(vma) || i915_vma_is_active(vma)))
-			return ERR_PTR(-ENOSPC);
-
-		if (flags & PIN_MAPPABLE) {
-			/* If the required space is larger than the available
-			 * aperture, we will not able to find a slot for the
-			 * object and unbinding the object now will be in
-			 * vain. Worse, doing so may cause us to ping-pong
-			 * the object in and out of the Global GTT and
-			 * waste a lot of cycles under the mutex.
-			 */
-			if (vma->fence_size > dev_priv->ggtt.mappable_end)
-				return ERR_PTR(-E2BIG);
-
-			/* If NONBLOCK is set the caller is optimistically
-			 * trying to cache the full object within the mappable
-			 * aperture, and *must* have a fallback in place for
-			 * situations where we cannot bind the object. We
-			 * can be a little more lax here and use the fallback
-			 * more often to avoid costly migrations of ourselves
-			 * and other objects within the aperture.
-			 *
-			 * Half-the-aperture is used as a simple heuristic.
-			 * More interesting would to do search for a free
-			 * block prior to making the commitment to unbind.
-			 * That caters for the self-harm case, and with a
-			 * little more heuristics (e.g. NOFAULT, NOEVICT)
-			 * we could try to minimise harm to others.
-			 */
-			if (flags & PIN_NONBLOCK &&
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    vma->fence_size > dev_priv->ggtt.mappable_end / 2)
 				return ERR_PTR(-ENOSPC);
 		}
@@ -5742,11 +4488,7 @@ i915_gem_object_pin(struct drm_i915_gem_object *obj,
 			return ERR_PTR(ret);
 	}
 
-<<<<<<< HEAD
 	ret = i915_vma_pin(vma, size, alignment, flags | PIN_GLOBAL);
-=======
-	ret = i915_vma_pin(vma, size, alignment, flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ERR_PTR(ret);
 
@@ -5783,11 +4525,7 @@ static __always_inline unsigned int
 __busy_set_if_active(const struct dma_fence *fence,
 		     unsigned int (*flag)(unsigned int id))
 {
-<<<<<<< HEAD
 	struct i915_request *rq;
-=======
-	struct drm_i915_gem_request *rq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* We have to check the current hw status of the fence as the uABI
 	 * guarantees forward progress. We could rely on the idle worker
@@ -5800,13 +4538,8 @@ __busy_set_if_active(const struct dma_fence *fence,
 		return 0;
 
 	/* opencode to_request() in order to avoid const warnings */
-<<<<<<< HEAD
 	rq = container_of(fence, struct i915_request, fence);
 	if (i915_request_completed(rq))
-=======
-	rq = container_of(fence, struct drm_i915_gem_request, fence);
-	if (i915_gem_request_completed(rq))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	return flag(rq->engine->uabi_id);
@@ -5919,11 +4652,7 @@ i915_gem_madvise_ioctl(struct drm_device *dev, void *data,
 	if (err)
 		goto out;
 
-<<<<<<< HEAD
 	if (i915_gem_object_has_pages(obj) &&
-=======
-	if (obj->mm.pages &&
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    i915_gem_object_is_tiled(obj) &&
 	    dev_priv->quirks & QUIRK_PIN_SWIZZLED_PAGES) {
 		if (obj->mm.madv == I915_MADV_WILLNEED) {
@@ -5942,12 +4671,8 @@ i915_gem_madvise_ioctl(struct drm_device *dev, void *data,
 		obj->mm.madv = args->madv;
 
 	/* if the object is no longer attached, discard its backing storage */
-<<<<<<< HEAD
 	if (obj->mm.madv == I915_MADV_DONTNEED &&
 	    !i915_gem_object_has_pages(obj))
-=======
-	if (obj->mm.madv == I915_MADV_DONTNEED && !obj->mm.pages)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		i915_gem_object_truncate(obj);
 
 	args->retained = obj->mm.madv != __I915_MADV_PURGED;
@@ -5959,12 +4684,7 @@ out:
 }
 
 static void
-<<<<<<< HEAD
 frontbuffer_retire(struct i915_gem_active *active, struct i915_request *request)
-=======
-frontbuffer_retire(struct i915_gem_active *active,
-		   struct drm_i915_gem_request *request)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_i915_gem_object *obj =
 		container_of(active, typeof(*obj), frontbuffer_write);
@@ -5977,11 +4697,6 @@ void i915_gem_object_init(struct drm_i915_gem_object *obj,
 {
 	mutex_init(&obj->mm.lock);
 
-<<<<<<< HEAD
-=======
-	INIT_LIST_HEAD(&obj->global_link);
-	INIT_LIST_HEAD(&obj->userfault_link);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INIT_LIST_HEAD(&obj->vma_list);
 	INIT_LIST_HEAD(&obj->lut_list);
 	INIT_LIST_HEAD(&obj->batch_pool_link);
@@ -6011,7 +4726,6 @@ static const struct drm_i915_gem_object_ops i915_gem_object_ops = {
 	.pwrite = i915_gem_object_pwrite_gtt,
 };
 
-<<<<<<< HEAD
 static int i915_gem_object_create_shmem(struct drm_device *dev,
 					struct drm_gem_object *obj,
 					size_t size)
@@ -6036,8 +4750,6 @@ static int i915_gem_object_create_shmem(struct drm_device *dev,
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct drm_i915_gem_object *
 i915_gem_object_create(struct drm_i915_private *dev_priv, u64 size)
 {
@@ -6062,11 +4774,7 @@ i915_gem_object_create(struct drm_i915_private *dev_priv, u64 size)
 	if (obj == NULL)
 		return ERR_PTR(-ENOMEM);
 
-<<<<<<< HEAD
 	ret = i915_gem_object_create_shmem(&dev_priv->drm, &obj->base, size);
-=======
-	ret = drm_gem_object_init(&dev_priv->drm, &obj->base, size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto fail;
 
@@ -6083,13 +4791,8 @@ i915_gem_object_create(struct drm_i915_private *dev_priv, u64 size)
 
 	i915_gem_object_init(obj, &i915_gem_object_ops);
 
-<<<<<<< HEAD
 	obj->write_domain = I915_GEM_DOMAIN_CPU;
 	obj->read_domains = I915_GEM_DOMAIN_CPU;
-=======
-	obj->base.write_domain = I915_GEM_DOMAIN_CPU;
-	obj->base.read_domains = I915_GEM_DOMAIN_CPU;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (HAS_LLC(dev_priv))
 		/* On some devices, we can have the GPU use the LLC (the CPU
@@ -6148,38 +4851,24 @@ static void __i915_gem_free_objects(struct drm_i915_private *i915,
 {
 	struct drm_i915_gem_object *obj, *on;
 
-<<<<<<< HEAD
 	intel_runtime_pm_get(i915);
 	llist_for_each_entry_safe(obj, on, freed, freed) {
-=======
-	mutex_lock(&i915->drm.struct_mutex);
-	intel_runtime_pm_get(i915);
-	llist_for_each_entry(obj, freed, freed) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct i915_vma *vma, *vn;
 
 		trace_i915_gem_object_destroy(obj);
 
-<<<<<<< HEAD
 		mutex_lock(&i915->drm.struct_mutex);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		GEM_BUG_ON(i915_gem_object_is_active(obj));
 		list_for_each_entry_safe(vma, vn,
 					 &obj->vma_list, obj_link) {
 			GEM_BUG_ON(i915_vma_is_active(vma));
 			vma->flags &= ~I915_VMA_PIN_MASK;
-<<<<<<< HEAD
 			i915_vma_destroy(vma);
-=======
-			i915_vma_close(vma);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		GEM_BUG_ON(!list_empty(&obj->vma_list));
 		GEM_BUG_ON(!RB_EMPTY_ROOT(&obj->vma_tree));
 
-<<<<<<< HEAD
 		/* This serializes freeing with the shrinker. Since the free
 		 * is delayed, first by RCU then by the workqueue, we want the
 		 * shrinker to be able to free pages of unreferenced objects,
@@ -6198,18 +4887,6 @@ static void __i915_gem_free_objects(struct drm_i915_private *i915,
 		GEM_BUG_ON(obj->userfault_count);
 		GEM_BUG_ON(atomic_read(&obj->frontbuffer_bits));
 		GEM_BUG_ON(!list_empty(&obj->lut_list));
-=======
-		list_del(&obj->global_link);
-	}
-	intel_runtime_pm_put(i915);
-	mutex_unlock(&i915->drm.struct_mutex);
-
-	cond_resched();
-
-	llist_for_each_entry_safe(obj, on, freed, freed) {
-		GEM_BUG_ON(obj->bind_count);
-		GEM_BUG_ON(atomic_read(&obj->frontbuffer_bits));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (obj->ops->release)
 			obj->ops->release(obj);
@@ -6217,11 +4894,7 @@ static void __i915_gem_free_objects(struct drm_i915_private *i915,
 		if (WARN_ON(i915_gem_object_has_pinned_pages(obj)))
 			atomic_set(&obj->mm.pages_pin_count, 0);
 		__i915_gem_object_put_pages(obj, I915_MM_NORMAL);
-<<<<<<< HEAD
 		GEM_BUG_ON(i915_gem_object_has_pages(obj));
-=======
-		GEM_BUG_ON(obj->mm.pages);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (obj->base.import_attach)
 			drm_prime_gem_destroy(&obj->base, NULL);
@@ -6232,7 +4905,6 @@ static void __i915_gem_free_objects(struct drm_i915_private *i915,
 
 		kfree(obj->bit_17);
 		i915_gem_object_free(obj);
-<<<<<<< HEAD
 
 		GEM_BUG_ON(!atomic_read(&i915->mm.free_count));
 		atomic_dec(&i915->mm.free_count);
@@ -6241,16 +4913,12 @@ static void __i915_gem_free_objects(struct drm_i915_private *i915,
 			cond_resched();
 	}
 	intel_runtime_pm_put(i915);
-=======
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void i915_gem_flush_free_objects(struct drm_i915_private *i915)
 {
 	struct llist_node *freed;
 
-<<<<<<< HEAD
 	/* Free the oldest, most stale object to keep the free_list short */
 	freed = NULL;
 	if (!llist_empty(&i915->mm.free_list)) { /* quick test for hotpath */
@@ -6263,11 +4931,6 @@ static void i915_gem_flush_free_objects(struct drm_i915_private *i915)
 		freed->next = NULL;
 		__i915_gem_free_objects(i915, freed);
 	}
-=======
-	freed = llist_del_all(&i915->mm.free_list);
-	if (unlikely(freed))
-		__i915_gem_free_objects(i915, freed);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __i915_gem_free_work(struct work_struct *work)
@@ -6276,12 +4939,8 @@ static void __i915_gem_free_work(struct work_struct *work)
 		container_of(work, struct drm_i915_private, mm.free_work);
 	struct llist_node *freed;
 
-<<<<<<< HEAD
 	/*
 	 * All file-owned VMA should have been released by this point through
-=======
-	/* All file-owned VMA should have been released by this point through
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * i915_gem_close_object(), or earlier by i915_gem_context_close().
 	 * However, the object may also be bound into the global GTT (e.g.
 	 * older GPUs without per-process support, or for direct access through
@@ -6289,7 +4948,6 @@ static void __i915_gem_free_work(struct work_struct *work)
 	 * unbound now.
 	 */
 
-<<<<<<< HEAD
 	spin_lock(&i915->mm.free_lock);
 	while ((freed = llist_del_all(&i915->mm.free_list))) {
 		spin_unlock(&i915->mm.free_lock);
@@ -6301,13 +4959,6 @@ static void __i915_gem_free_work(struct work_struct *work)
 		spin_lock(&i915->mm.free_lock);
 	}
 	spin_unlock(&i915->mm.free_lock);
-=======
-	while ((freed = llist_del_all(&i915->mm.free_list))) {
-		__i915_gem_free_objects(i915, freed);
-		if (need_resched())
-			break;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __i915_gem_free_object_rcu(struct rcu_head *head)
@@ -6316,7 +4967,6 @@ static void __i915_gem_free_object_rcu(struct rcu_head *head)
 		container_of(head, typeof(*obj), rcu);
 	struct drm_i915_private *i915 = to_i915(obj->base.dev);
 
-<<<<<<< HEAD
 	/*
 	 * Since we require blocking on struct_mutex to unbind the freed
 	 * object from the GPU before releasing resources back to the
@@ -6329,15 +4979,6 @@ static void __i915_gem_free_object_rcu(struct rcu_head *head)
 	 */
 	if (llist_add(&obj->freed, &i915->mm.free_list))
 		queue_work(i915->wq, &i915->mm.free_work);
-=======
-	/* We can't simply use call_rcu() from i915_gem_free_object()
-	 * as we need to block whilst unbinding, and the call_rcu
-	 * task may be called from softirq context. So we take a
-	 * detour through a worker.
-	 */
-	if (llist_add(&obj->freed, &i915->mm.free_list))
-		schedule_work(&i915->mm.free_work);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void i915_gem_free_object(struct drm_gem_object *gem_obj)
@@ -6350,20 +4991,13 @@ void i915_gem_free_object(struct drm_gem_object *gem_obj)
 	if (discard_backing_storage(obj))
 		obj->mm.madv = I915_MADV_DONTNEED;
 
-<<<<<<< HEAD
 	/*
 	 * Before we free the object, make sure any pure RCU-only
-=======
-	/* Before we free the object, make sure any pure RCU-only
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * read-side critical sections are complete, e.g.
 	 * i915_gem_busy_ioctl(). For the corresponding synchronized
 	 * lookup see i915_gem_object_lookup_rcu().
 	 */
-<<<<<<< HEAD
 	atomic_inc(&to_i915(obj->base.dev)->mm.free_count);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	call_rcu(&obj->rcu, __i915_gem_free_object_rcu);
 }
 
@@ -6378,7 +5012,6 @@ void __i915_gem_object_release_unless_active(struct drm_i915_gem_object *obj)
 		i915_gem_object_put(obj);
 }
 
-<<<<<<< HEAD
 void i915_gem_sanitize(struct drm_i915_private *i915)
 {
 	int err;
@@ -6399,20 +5032,6 @@ void i915_gem_sanitize(struct drm_i915_private *i915)
 	if (i915_terminally_wedged(&i915->gpu_error))
 		i915_gem_unset_wedged(i915);
 
-=======
-static void assert_kernel_context_is_current(struct drm_i915_private *dev_priv)
-{
-	struct intel_engine_cs *engine;
-	enum intel_engine_id id;
-
-	for_each_engine(engine, dev_priv, id)
-		GEM_BUG_ON(engine->last_retired_context &&
-			   !i915_gem_context_is_kernel(engine->last_retired_context));
-}
-
-void i915_gem_sanitize(struct drm_i915_private *i915)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * If we inherit context state from the BIOS or earlier occupants
 	 * of the GPU, the GPU may be in an inconsistent state when we
@@ -6421,7 +5040,6 @@ void i915_gem_sanitize(struct drm_i915_private *i915)
 	 * it may impact the display and we are uncertain about the stability
 	 * of the reset, so this could be applied to even earlier gen.
 	 */
-<<<<<<< HEAD
 	err = -ENODEV;
 	if (INTEL_GEN(i915) >= 5 && intel_has_gpu_reset(i915))
 		err = WARN_ON(intel_gpu_reset(i915, ALL_ENGINES));
@@ -6451,33 +5069,10 @@ int i915_gem_suspend(struct drm_i915_private *i915)
 	 * that they can saved in the hibernation image. To ensure the last
 	 * context image is coherent, we have to switch away from it. That
 	 * leaves the i915->kernel_context still active when
-=======
-	if (INTEL_GEN(i915) >= 5) {
-		int reset = intel_gpu_reset(i915, ALL_ENGINES);
-		WARN_ON(reset && reset != -ENODEV);
-	}
-}
-
-int i915_gem_suspend(struct drm_i915_private *dev_priv)
-{
-	struct drm_device *dev = &dev_priv->drm;
-	int ret;
-
-	intel_runtime_pm_get(dev_priv);
-	intel_suspend_gt_powersave(dev_priv);
-
-	mutex_lock(&dev->struct_mutex);
-
-	/* We have to flush all the executing contexts to main memory so
-	 * that they can saved in the hibernation image. To ensure the last
-	 * context image is coherent, we have to switch away from it. That
-	 * leaves the dev_priv->kernel_context still active when
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * we actually suspend, and its image in memory may not match the GPU
 	 * state. Fortunately, the kernel_context is disposable and we do
 	 * not rely on its state.
 	 */
-<<<<<<< HEAD
 	if (!i915_terminally_wedged(&i915->gpu_error)) {
 		ret = i915_gem_switch_to_kernel_context(i915);
 		if (ret)
@@ -6533,38 +5128,6 @@ void i915_gem_suspend_late(struct drm_i915_private *i915)
 		&i915->mm.bound_list,
 		NULL
 	}, **phase;
-=======
-	ret = i915_gem_switch_to_kernel_context(dev_priv);
-	if (ret)
-		goto err_unlock;
-
-	ret = i915_gem_wait_for_idle(dev_priv,
-				     I915_WAIT_INTERRUPTIBLE |
-				     I915_WAIT_LOCKED);
-	if (ret && ret != -EIO)
-		goto err_unlock;
-
-	assert_kernel_context_is_current(dev_priv);
-	i915_gem_contexts_lost(dev_priv);
-	mutex_unlock(&dev->struct_mutex);
-
-	intel_guc_suspend(dev_priv);
-
-	cancel_delayed_work_sync(&dev_priv->gpu_error.hangcheck_work);
-	cancel_delayed_work_sync(&dev_priv->gt.retire_work);
-
-	/* As the idle_work is rearming if it detects a race, play safe and
-	 * repeat the flush until it is definitely idle.
-	 */
-	while (flush_delayed_work(&dev_priv->gt.idle_work))
-		;
-
-	/* Assert that we sucessfully flushed all the work and
-	 * reset the GPU back to its idle, low power state.
-	 */
-	WARN_ON(dev_priv->gt.awake);
-	WARN_ON(!intel_engines_are_idle(dev_priv));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Neither the BIOS, ourselves or any other kernel
@@ -6585,7 +5148,6 @@ void i915_gem_suspend_late(struct drm_i915_private *i915)
 	 * machines is a good idea, we don't - just in case it leaves the
 	 * machine in an unusable condition.
 	 */
-<<<<<<< HEAD
 
 	mutex_lock(&i915->drm.struct_mutex);
 	for (phase = phases; *phase; phase++) {
@@ -6637,35 +5199,6 @@ err_wedged:
 		i915_gem_set_wedged(i915);
 	}
 	goto out_unlock;
-=======
-	i915_gem_sanitize(dev_priv);
-
-	intel_runtime_pm_put(dev_priv);
-	return 0;
-
-err_unlock:
-	mutex_unlock(&dev->struct_mutex);
-	intel_runtime_pm_put(dev_priv);
-	return ret;
-}
-
-void i915_gem_resume(struct drm_i915_private *dev_priv)
-{
-	struct drm_device *dev = &dev_priv->drm;
-
-	WARN_ON(dev_priv->gt.awake);
-
-	mutex_lock(&dev->struct_mutex);
-	i915_gem_restore_gtt_mappings(dev_priv);
-
-	/* As we didn't flush the kernel context before suspend, we cannot
-	 * guarantee that the context image is complete. So let's just reset
-	 * it and start again.
-	 */
-	dev_priv->gt.resume(dev_priv);
-
-	mutex_unlock(&dev->struct_mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void i915_gem_init_swizzling(struct drm_i915_private *dev_priv)
@@ -6725,16 +5258,11 @@ static int __i915_gem_restart_engines(void *data)
 
 	for_each_engine(engine, i915, id) {
 		err = engine->init_hw(engine);
-<<<<<<< HEAD
 		if (err) {
 			DRM_ERROR("Failed to restart %s (%d)\n",
 				  engine->name, err);
 			return err;
 		}
-=======
-		if (err)
-			return err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -6768,11 +5296,8 @@ int i915_gem_init_hw(struct drm_i915_private *dev_priv)
 		}
 	}
 
-<<<<<<< HEAD
 	intel_gt_workarounds_apply(dev_priv);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i915_gem_init_swizzling(dev_priv);
 
 	/*
@@ -6784,7 +5309,6 @@ int i915_gem_init_hw(struct drm_i915_private *dev_priv)
 	init_unused_rings(dev_priv);
 
 	BUG_ON(!dev_priv->kernel_context);
-<<<<<<< HEAD
 	if (i915_terminally_wedged(&dev_priv->gpu_error)) {
 		ret = -EIO;
 		goto out;
@@ -6944,56 +5468,12 @@ err_active:
 
 	i915_gem_contexts_lost(i915);
 	goto out_ctx;
-=======
-
-	ret = i915_ppgtt_init_hw(dev_priv);
-	if (ret) {
-		DRM_ERROR("PPGTT enable HW failed %d\n", ret);
-		goto out;
-	}
-
-	/* Need to do basic initialisation of all rings first: */
-	ret = __i915_gem_restart_engines(dev_priv);
-	if (ret)
-		goto out;
-
-	intel_mocs_init_l3cc_table(dev_priv);
-
-	/* We can't enable contexts until all firmware is loaded */
-	ret = intel_uc_init_hw(dev_priv);
-	if (ret)
-		goto out;
-
-out:
-	intel_uncore_forcewake_put(dev_priv, FORCEWAKE_ALL);
-	return ret;
-}
-
-bool intel_sanitize_semaphores(struct drm_i915_private *dev_priv, int value)
-{
-	if (INTEL_INFO(dev_priv)->gen < 6)
-		return false;
-
-	/* TODO: make semaphores and Execlists play nicely together */
-	if (i915.enable_execlists)
-		return false;
-
-	if (value >= 0)
-		return value;
-
-	/* Enable semaphores on SNB when IO remapping is off */
-	if (IS_GEN6(dev_priv) && intel_vtd_active())
-		return false;
-
-	return true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int i915_gem_init(struct drm_i915_private *dev_priv)
 {
 	int ret;
 
-<<<<<<< HEAD
 	/* We need to fallback to 4K pages if host doesn't support huge gtt. */
 	if (intel_vgpu_active(dev_priv) && !intel_vgpu_has_huge_gtt(dev_priv))
 		mkwrite_device_info(dev_priv)->page_sizes =
@@ -7021,27 +5501,12 @@ int i915_gem_init(struct drm_i915_private *dev_priv)
 	if (ret)
 		goto err_uc_misc;
 
-=======
-	mutex_lock(&dev_priv->drm.struct_mutex);
-
-	dev_priv->mm.unordered_timeline = dma_fence_context_alloc(1);
-
-	if (!i915.enable_execlists) {
-		dev_priv->gt.resume = intel_legacy_submission_resume;
-		dev_priv->gt.cleanup_engine = intel_engine_cleanup;
-	} else {
-		dev_priv->gt.resume = intel_lr_context_resume;
-		dev_priv->gt.cleanup_engine = intel_logical_ring_cleanup;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* This is just a security blanket to placate dragons.
 	 * On some systems, we very sporadically observe that the first TLBs
 	 * used by the CS may be stale, despite us poking the TLB reset. If
 	 * we hold the forcewake during initialisation these problems
 	 * just magically go away.
 	 */
-<<<<<<< HEAD
 	mutex_lock(&dev_priv->drm.struct_mutex);
 	intel_uncore_forcewake_get(dev_priv, FORCEWAKE_ALL);
 
@@ -7190,42 +5655,6 @@ void i915_gem_fini(struct drm_i915_private *dev_priv)
 	i915_gem_drain_freed_objects(dev_priv);
 
 	WARN_ON(!list_empty(&dev_priv->contexts.list));
-=======
-	intel_uncore_forcewake_get(dev_priv, FORCEWAKE_ALL);
-
-	ret = i915_gem_init_userptr(dev_priv);
-	if (ret)
-		goto out_unlock;
-
-	ret = i915_gem_init_ggtt(dev_priv);
-	if (ret)
-		goto out_unlock;
-
-	ret = i915_gem_contexts_init(dev_priv);
-	if (ret)
-		goto out_unlock;
-
-	ret = intel_engines_init(dev_priv);
-	if (ret)
-		goto out_unlock;
-
-	ret = i915_gem_init_hw(dev_priv);
-	if (ret == -EIO) {
-		/* Allow engine initialisation to fail by marking the GPU as
-		 * wedged. But we only want to do this where the GPU is angry,
-		 * for all other failure, such as an allocation failure, bail.
-		 */
-		DRM_ERROR("Failed to initialize GPU, declaring it wedged\n");
-		i915_gem_set_wedged(dev_priv);
-		ret = 0;
-	}
-
-out_unlock:
-	intel_uncore_forcewake_put(dev_priv, FORCEWAKE_ALL);
-	mutex_unlock(&dev_priv->drm.struct_mutex);
-
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void i915_gem_init_mmio(struct drm_i915_private *i915)
@@ -7248,17 +5677,10 @@ i915_gem_load_init_fences(struct drm_i915_private *dev_priv)
 {
 	int i;
 
-<<<<<<< HEAD
 	if (INTEL_GEN(dev_priv) >= 7 && !IS_VALLEYVIEW(dev_priv) &&
 	    !IS_CHERRYVIEW(dev_priv))
 		dev_priv->num_fence_regs = 32;
 	else if (INTEL_GEN(dev_priv) >= 4 ||
-=======
-	if (INTEL_INFO(dev_priv)->gen >= 7 && !IS_VALLEYVIEW(dev_priv) &&
-	    !IS_CHERRYVIEW(dev_priv))
-		dev_priv->num_fence_regs = 32;
-	else if (INTEL_INFO(dev_priv)->gen >= 4 ||
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 IS_I945G(dev_priv) || IS_I945GM(dev_priv) ||
 		 IS_G33(dev_priv) || IS_PINEVIEW(dev_priv))
 		dev_priv->num_fence_regs = 16;
@@ -7282,7 +5704,6 @@ i915_gem_load_init_fences(struct drm_i915_private *dev_priv)
 	i915_gem_detect_bit_6_swizzle(dev_priv);
 }
 
-<<<<<<< HEAD
 static void i915_gem_init__mm(struct drm_i915_private *i915)
 {
 	spin_lock_init(&i915->mm.object_stat_lock);
@@ -7300,10 +5721,6 @@ static void i915_gem_init__mm(struct drm_i915_private *i915)
 }
 
 int i915_gem_init_early(struct drm_i915_private *dev_priv)
-=======
-int
-i915_gem_load_init(struct drm_i915_private *dev_priv)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int err = -ENOMEM;
 
@@ -7319,11 +5736,7 @@ i915_gem_load_init(struct drm_i915_private *dev_priv)
 	if (!dev_priv->luts)
 		goto err_vmas;
 
-<<<<<<< HEAD
 	dev_priv->requests = KMEM_CACHE(i915_request,
-=======
-	dev_priv->requests = KMEM_CACHE(drm_i915_gem_request,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					SLAB_HWCACHE_ALIGN |
 					SLAB_RECLAIM_ACCOUNT |
 					SLAB_TYPESAFE_BY_RCU);
@@ -7340,28 +5753,12 @@ i915_gem_load_init(struct drm_i915_private *dev_priv)
 	if (!dev_priv->priorities)
 		goto err_dependencies;
 
-<<<<<<< HEAD
 	INIT_LIST_HEAD(&dev_priv->gt.timelines);
 	INIT_LIST_HEAD(&dev_priv->gt.active_rings);
 	INIT_LIST_HEAD(&dev_priv->gt.closed_vma);
 
 	i915_gem_init__mm(dev_priv);
 
-=======
-	mutex_lock(&dev_priv->drm.struct_mutex);
-	INIT_LIST_HEAD(&dev_priv->gt.timelines);
-	err = i915_gem_timeline_init__global(dev_priv);
-	mutex_unlock(&dev_priv->drm.struct_mutex);
-	if (err)
-		goto err_priorities;
-
-	INIT_WORK(&dev_priv->mm.free_work, __i915_gem_free_work);
-	init_llist_head(&dev_priv->mm.free_list);
-	INIT_LIST_HEAD(&dev_priv->mm.unbound_list);
-	INIT_LIST_HEAD(&dev_priv->mm.bound_list);
-	INIT_LIST_HEAD(&dev_priv->mm.fence_list);
-	INIT_LIST_HEAD(&dev_priv->mm.userfault_list);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INIT_DELAYED_WORK(&dev_priv->gt.retire_work,
 			  i915_gem_retire_work_handler);
 	INIT_DELAYED_WORK(&dev_priv->gt.idle_work,
@@ -7373,19 +5770,12 @@ i915_gem_load_init(struct drm_i915_private *dev_priv)
 
 	spin_lock_init(&dev_priv->fb_tracking.lock);
 
-<<<<<<< HEAD
 	err = i915_gemfs_init(dev_priv);
 	if (err)
 		DRM_NOTE("Unable to create a private tmpfs mount, hugepage support will be disabled(%d).\n", err);
 
 	return 0;
 
-=======
-	return 0;
-
-err_priorities:
-	kmem_cache_destroy(dev_priv->priorities);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_dependencies:
 	kmem_cache_destroy(dev_priv->dependencies);
 err_requests:
@@ -7400,7 +5790,6 @@ err_out:
 	return err;
 }
 
-<<<<<<< HEAD
 void i915_gem_cleanup_early(struct drm_i915_private *dev_priv)
 {
 	i915_gem_drain_freed_objects(dev_priv);
@@ -7408,18 +5797,6 @@ void i915_gem_cleanup_early(struct drm_i915_private *dev_priv)
 	GEM_BUG_ON(atomic_read(&dev_priv->mm.free_count));
 	WARN_ON(dev_priv->mm.object_count);
 	WARN_ON(!list_empty(&dev_priv->gt.timelines));
-=======
-void i915_gem_load_cleanup(struct drm_i915_private *dev_priv)
-{
-	i915_gem_drain_freed_objects(dev_priv);
-	WARN_ON(!llist_empty(&dev_priv->mm.free_list));
-	WARN_ON(dev_priv->mm.object_count);
-
-	mutex_lock(&dev_priv->drm.struct_mutex);
-	i915_gem_timeline_fini(&dev_priv->gt.global_timeline);
-	WARN_ON(!list_empty(&dev_priv->gt.timelines));
-	mutex_unlock(&dev_priv->drm.struct_mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kmem_cache_destroy(dev_priv->priorities);
 	kmem_cache_destroy(dev_priv->dependencies);
@@ -7430,11 +5807,8 @@ void i915_gem_load_cleanup(struct drm_i915_private *dev_priv)
 
 	/* And ensure that our DESTROY_BY_RCU slabs are truly destroyed */
 	rcu_barrier();
-<<<<<<< HEAD
 
 	i915_gemfs_fini(dev_priv);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int i915_gem_freeze(struct drm_i915_private *dev_priv)
@@ -7447,7 +5821,6 @@ int i915_gem_freeze(struct drm_i915_private *dev_priv)
 	return 0;
 }
 
-<<<<<<< HEAD
 int i915_gem_freeze_late(struct drm_i915_private *i915)
 {
 	struct drm_i915_gem_object *obj;
@@ -7459,18 +5832,6 @@ int i915_gem_freeze_late(struct drm_i915_private *i915)
 
 	/*
 	 * Called just before we write the hibernation image.
-=======
-int i915_gem_freeze_late(struct drm_i915_private *dev_priv)
-{
-	struct drm_i915_gem_object *obj;
-	struct list_head *phases[] = {
-		&dev_priv->mm.unbound_list,
-		&dev_priv->mm.bound_list,
-		NULL
-	}, **p;
-
-	/* Called just before we write the hibernation image.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 *
 	 * We need to update the domain tracking to reflect that the CPU
 	 * will be accessing all the pages to create and restore from the
@@ -7484,7 +5845,6 @@ int i915_gem_freeze_late(struct drm_i915_private *dev_priv)
 	 * the objects as well, see i915_gem_freeze()
 	 */
 
-<<<<<<< HEAD
 	i915_gem_shrink(i915, -1UL, NULL, I915_SHRINK_UNBOUND);
 	i915_gem_drain_freed_objects(i915);
 
@@ -7494,17 +5854,6 @@ int i915_gem_freeze_late(struct drm_i915_private *dev_priv)
 			WARN_ON(i915_gem_object_set_to_cpu_domain(obj, true));
 	}
 	mutex_unlock(&i915->drm.struct_mutex);
-=======
-	i915_gem_shrink(dev_priv, -1UL, NULL, I915_SHRINK_UNBOUND);
-	i915_gem_drain_freed_objects(dev_priv);
-
-	mutex_lock(&dev_priv->drm.struct_mutex);
-	for (p = phases; *p; p++) {
-		list_for_each_entry(obj, *p, global_link)
-			__start_cpu_write(obj);
-	}
-	mutex_unlock(&dev_priv->drm.struct_mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -7512,11 +5861,7 @@ int i915_gem_freeze_late(struct drm_i915_private *dev_priv)
 void i915_gem_release(struct drm_device *dev, struct drm_file *file)
 {
 	struct drm_i915_file_private *file_priv = file->driver_priv;
-<<<<<<< HEAD
 	struct i915_request *request;
-=======
-	struct drm_i915_gem_request *request;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Clean up our request list when the client is going away, so that
 	 * later retire_requests won't dereference our soon-to-be-gone
@@ -7547,10 +5892,7 @@ int i915_gem_open(struct drm_i915_private *i915, struct drm_file *file)
 	INIT_LIST_HEAD(&file_priv->mm.request_list);
 
 	file_priv->bsd_engine = -1;
-<<<<<<< HEAD
 	file_priv->hang_timestamp = jiffies;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = i915_gem_context_open(i915, file);
 	if (ret)
@@ -7606,11 +5948,7 @@ i915_gem_object_create_from_data(struct drm_i915_private *dev_priv,
 	if (IS_ERR(obj))
 		return obj;
 
-<<<<<<< HEAD
 	GEM_BUG_ON(obj->write_domain != I915_GEM_DOMAIN_CPU);
-=======
-	GEM_BUG_ON(obj->base.write_domain != I915_GEM_DOMAIN_CPU);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	file = obj->base.filp;
 	offset = 0;
@@ -7835,12 +6173,8 @@ int i915_gem_object_attach_phys(struct drm_i915_gem_object *obj, int align)
 		goto err_unlock;
 	}
 
-<<<<<<< HEAD
 	pages = __i915_gem_object_unset_pages(obj);
 
-=======
-	pages = obj->mm.pages;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	obj->ops = &i915_gem_phys_ops;
 
 	err = ____i915_gem_object_get_pages(obj);
@@ -7857,15 +6191,11 @@ int i915_gem_object_attach_phys(struct drm_i915_gem_object *obj, int align)
 
 err_xfer:
 	obj->ops = &i915_gem_object_ops;
-<<<<<<< HEAD
 	if (!IS_ERR_OR_NULL(pages)) {
 		unsigned int sg_page_sizes = i915_sg_page_sizes(pages->sgl);
 
 		__i915_gem_object_set_pages(obj, pages, sg_page_sizes);
 	}
-=======
-	obj->mm.pages = pages;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_unlock:
 	mutex_unlock(&obj->mm.lock);
 	return err;
@@ -7875,10 +6205,7 @@ err_unlock:
 #include "selftests/scatterlist.c"
 #include "selftests/mock_gem_device.c"
 #include "selftests/huge_gem_object.c"
-<<<<<<< HEAD
 #include "selftests/huge_pages.c"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "selftests/i915_gem_object.c"
 #include "selftests/i915_gem_coherency.c"
 #endif

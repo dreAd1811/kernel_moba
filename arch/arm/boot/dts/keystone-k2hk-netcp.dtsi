@@ -1,19 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Device Tree Source for Keystone 2 Hawking Netcp driver
  *
  * Copyright (C) 2015-2017 Texas Instruments Incorporated - http://www.ti.com/
-=======
-/*
- * Device Tree Source for Keystone 2 Hawking Netcp driver
- *
- * Copyright 2015 Texas Instruments, Inc.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 qmss: qmss@2a40000 {
@@ -239,7 +228,6 @@ netcp: netcp@2000000 {
 		};
 	};
 };
-<<<<<<< HEAD
 
 sa_subsys: subsys@20c0000 {
 	compatible = "simple-bus";
@@ -260,5 +248,3 @@ sa_subsys: subsys@20c0000 {
 		clock-names = "fck";
 	};
 };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

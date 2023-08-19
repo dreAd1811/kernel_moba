@@ -81,7 +81,6 @@ static const struct i2c_device_id bmc150_accel_id[] = {
 
 MODULE_DEVICE_TABLE(i2c, bmc150_accel_id);
 
-<<<<<<< HEAD
 static const struct of_device_id bmc150_accel_of_match[] = {
 	{ .compatible = "bosch,bmc150_accel" },
 	{ .compatible = "bosch,bmi055_accel" },
@@ -97,11 +96,6 @@ static struct i2c_driver bmc150_accel_driver = {
 	.driver = {
 		.name	= "bmc150_accel_i2c",
 		.of_match_table = bmc150_accel_of_match,
-=======
-static struct i2c_driver bmc150_accel_driver = {
-	.driver = {
-		.name	= "bmc150_accel_i2c",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.acpi_match_table = ACPI_PTR(bmc150_accel_acpi_match),
 		.pm	= &bmc150_accel_pm_ops,
 	},

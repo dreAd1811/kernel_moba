@@ -391,10 +391,7 @@ static void read_bulk_callback(struct urb *urb)
 	u16 rx_stat;
 	int status = urb->status;
 	int result;
-<<<<<<< HEAD
 	unsigned long flags;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev = urb->context;
 	if (!dev)
@@ -436,15 +433,9 @@ static void read_bulk_callback(struct urb *urb)
 	netdev->stats.rx_packets++;
 	netdev->stats.rx_bytes += pkt_len;
 
-<<<<<<< HEAD
 	spin_lock_irqsave(&dev->rx_pool_lock, flags);
 	skb = pull_skb(dev);
 	spin_unlock_irqrestore(&dev->rx_pool_lock, flags);
-=======
-	spin_lock(&dev->rx_pool_lock);
-	skb = pull_skb(dev);
-	spin_unlock(&dev->rx_pool_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!skb)
 		goto resched;
 

@@ -759,11 +759,7 @@ static int xgene_ahci_probe(struct platform_device *pdev)
 					      &xgene_ahci_v2_port_info };
 	int rc;
 
-<<<<<<< HEAD
 	hpriv = ahci_platform_get_resources(pdev, 0);
-=======
-	hpriv = ahci_platform_get_resources(pdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(hpriv))
 		return PTR_ERR(hpriv);
 

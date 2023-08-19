@@ -13,14 +13,8 @@
 #include <linux/types.h>
 #include <linux/of_platform.h>
 #include <linux/mutex.h>
-<<<<<<< HEAD
 #include <linux/gpio/driver.h>
 #include <linux/io.h>
-=======
-#include <linux/gpio.h>
-#include <linux/io.h>
-#include <linux/of_gpio.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/clk.h>
 #include <linux/err.h>
 
@@ -96,7 +90,6 @@ struct xway_stp {
 };
 
 /**
-<<<<<<< HEAD
  * xway_stp_get() - gpio_chip->get - get gpios.
  * @gc:     Pointer to gpio_chip device structure.
  * @gpio:   GPIO signal number.
@@ -111,8 +104,6 @@ static int xway_stp_get(struct gpio_chip *gc, unsigned int gpio)
 }
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * xway_stp_set() - gpio_chip->set - set gpios.
  * @gc:     Pointer to gpio_chip device structure.
  * @gpio:   GPIO signal number.
@@ -237,10 +228,7 @@ static int xway_stp_probe(struct platform_device *pdev)
 	chip->gc.parent = &pdev->dev;
 	chip->gc.label = "stp-xway";
 	chip->gc.direction_output = xway_stp_dir_out;
-<<<<<<< HEAD
 	chip->gc.get = xway_stp_get;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	chip->gc.set = xway_stp_set;
 	chip->gc.request = xway_stp_request;
 	chip->gc.base = -1;

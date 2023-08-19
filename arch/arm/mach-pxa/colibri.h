@@ -46,11 +46,7 @@ static inline void colibri_pxa3xx_init_lcd(int bl_pin) {}
 extern void colibri_pxa3xx_init_eth(struct ax_plat_data *plat_data);
 #endif
 
-<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_MTD_NAND_MARVELL)
-=======
-#if defined(CONFIG_MTD_NAND_PXA3xx) || defined(CONFIG_MTD_NAND_PXA3xx_MODULE)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern void colibri_pxa3xx_init_nand(void);
 #else
 static inline void colibri_pxa3xx_init_nand(void) {}

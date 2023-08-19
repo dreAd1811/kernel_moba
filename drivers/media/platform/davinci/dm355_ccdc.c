@@ -20,17 +20,10 @@
  * pre-process the Bayer RGB data, before writing it to SDRAM.
  *
  * TODO: 1) Raw bayer parameter settings and bayer capture
-<<<<<<< HEAD
  *	 2) Split module parameter structure to module specific ioctl structs
  *	 3) add support for lense shading correction
  *	 4) investigate if enum used for user space type definition
  *	    to be replaced by #defines or integer
-=======
- * 	 2) Split module parameter structure to module specific ioctl structs
- *	 3) add support for lense shading correction
- *	 4) investigate if enum used for user space type definition
- * 	    to be replaced by #defines or integer
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #include <linux/platform_device.h>
 #include <linux/uaccess.h>
@@ -848,11 +841,7 @@ static int ccdc_set_hw_if_params(struct vpfe_hw_if_param *params)
 	return 0;
 }
 
-<<<<<<< HEAD
 static const struct ccdc_hw_device ccdc_hw_dev = {
-=======
-static struct ccdc_hw_device ccdc_hw_dev = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.name = "DM355 CCDC",
 	.owner = THIS_MODULE,
 	.hw_ops = {

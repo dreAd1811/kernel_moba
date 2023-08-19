@@ -51,11 +51,6 @@ MODULE_PARM_DESC(debug, "Print debugging information.");
 
 DVB_DEFINE_MOD_OPT_ADAPTER_NR(adapter_nr);
 
-<<<<<<< HEAD
-=======
-#define dprintk	if (debug) printk
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ngwriteb(dat, adr)         writeb((dat), dev->iomem + (adr))
 #define ngwritel(dat, adr)         writel((dat), dev->iomem + (adr))
 #define ngwriteb(dat, adr)         writeb((dat), dev->iomem + (adr))
@@ -89,10 +84,7 @@ static void event_tasklet(unsigned long data)
 static void demux_tasklet(unsigned long data)
 {
 	struct ngene_channel *chan = (struct ngene_channel *)data;
-<<<<<<< HEAD
 	struct device *pdev = &chan->dev->pci_dev->dev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct SBufferHeader *Cur = chan->nextBuffer;
 
 	spin_lock_irq(&chan->state_lock);
@@ -131,25 +123,15 @@ static void demux_tasklet(unsigned long data)
 					chan->HWState = HWSTATE_RUN;
 				}
 			} else {
-<<<<<<< HEAD
 				dev_err(pdev, "OOPS\n");
-=======
-				printk(KERN_ERR DEVICE_NAME ": OOPS\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				if (chan->HWState == HWSTATE_RUN) {
 					Cur->ngeneBuffer.SR.Flags &= ~0x40;
 					break;	/* Stop processing stream */
 				}
 			}
 			if (chan->AudioDTOUpdated) {
-<<<<<<< HEAD
 				dev_info(pdev, "Update AudioDTO = %d\n",
 					 chan->AudioDTOValue);
-=======
-				printk(KERN_INFO DEVICE_NAME
-				       ": Update AudioDTO = %d\n",
-				       chan->AudioDTOValue);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				Cur->ngeneBuffer.SR.DTOUpdate =
 					chan->AudioDTOValue;
 				chan->AudioDTOUpdated = 0;
@@ -189,10 +171,7 @@ static void demux_tasklet(unsigned long data)
 static irqreturn_t irq_handler(int irq, void *dev_id)
 {
 	struct ngene *dev = (struct ngene *)dev_id;
-<<<<<<< HEAD
 	struct device *pdev = &dev->pci_dev->dev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 icounts = 0;
 	irqreturn_t rc = IRQ_NONE;
 	u32 i = MAX_STREAM;
@@ -233,11 +212,7 @@ static irqreturn_t irq_handler(int irq, void *dev_id)
 				*(dev->EventBuffer);
 			dev->EventQueueWriteIndex = nextWriteIndex;
 		} else {
-<<<<<<< HEAD
 			dev_err(pdev, "event overflow\n");
-=======
-			printk(KERN_ERR DEVICE_NAME ": event overflow\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev->EventQueueOverflowCount += 1;
 			dev->EventQueueOverflowFlag = 1;
 		}
@@ -273,7 +248,6 @@ static irqreturn_t irq_handler(int irq, void *dev_id)
 
 static void dump_command_io(struct ngene *dev)
 {
-<<<<<<< HEAD
 	struct device *pdev = &dev->pci_dev->dev;
 	u8 buf[8], *b;
 
@@ -288,29 +262,11 @@ static void dump_command_io(struct ngene *dev)
 
 	b = dev->ngenetohost;
 	dev_err(pdev, "dev->ngenetohost (%p): %*ph\n", b, 8, b);
-=======
-	u8 buf[8], *b;
-
-	ngcpyfrom(buf, HOST_TO_NGENE, 8);
-	printk(KERN_ERR "host_to_ngene (%04x): %*ph\n", HOST_TO_NGENE, 8, buf);
-
-	ngcpyfrom(buf, NGENE_TO_HOST, 8);
-	printk(KERN_ERR "ngene_to_host (%04x): %*ph\n", NGENE_TO_HOST, 8, buf);
-
-	b = dev->hosttongene;
-	printk(KERN_ERR "dev->hosttongene (%p): %*ph\n", b, 8, b);
-
-	b = dev->ngenetohost;
-	printk(KERN_ERR "dev->ngenetohost (%p): %*ph\n", b, 8, b);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int ngene_command_mutex(struct ngene *dev, struct ngene_command *com)
 {
-<<<<<<< HEAD
 	struct device *pdev = &dev->pci_dev->dev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 	u8 *tmpCmdDoneByte;
 
@@ -358,14 +314,8 @@ static int ngene_command_mutex(struct ngene *dev, struct ngene_command *com)
 	if (!ret) {
 		/*ngwritel(0, FORCE_NMI);*/
 
-<<<<<<< HEAD
 		dev_err(pdev, "Command timeout cmd=%02x prev=%02x\n",
 			com->cmd.hdr.Opcode, dev->prev_cmd);
-=======
-		printk(KERN_ERR DEVICE_NAME
-		       ": Command timeout cmd=%02x prev=%02x\n",
-		       com->cmd.hdr.Opcode, dev->prev_cmd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dump_command_io(dev);
 		return -1;
 	}
@@ -603,10 +553,7 @@ static void clear_buffers(struct ngene_channel *chan)
 static int ngene_command_stream_control(struct ngene *dev, u8 stream,
 					u8 control, u8 mode, u8 flags)
 {
-<<<<<<< HEAD
 	struct device *pdev = &dev->pci_dev->dev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ngene_channel *chan = &dev->channel[stream];
 	struct ngene_command com;
 	u16 BsUVI = ((stream & 1) ? 0x9400 : 0x9300);
@@ -626,12 +573,7 @@ static int ngene_command_stream_control(struct ngene *dev, u8 stream,
 	com.in_len = sizeof(struct FW_STREAM_CONTROL);
 	com.out_len = 0;
 
-<<<<<<< HEAD
 	dev_dbg(pdev, "Stream=%02x, Control=%02x, Mode=%02x\n",
-=======
-	dprintk(KERN_INFO DEVICE_NAME
-		": Stream=%02x, Control=%02x, Mode=%02x\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		com.cmd.StreamControl.Stream, com.cmd.StreamControl.Control,
 		com.cmd.StreamControl.Mode);
 
@@ -753,39 +695,24 @@ static int ngene_command_stream_control(struct ngene *dev, u8 stream,
 
 void set_transfer(struct ngene_channel *chan, int state)
 {
-<<<<<<< HEAD
 	struct device *pdev = &chan->dev->pci_dev->dev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 control = 0, mode = 0, flags = 0;
 	struct ngene *dev = chan->dev;
 	int ret;
 
 	/*
-<<<<<<< HEAD
 	dev_info(pdev, "st %d\n", state);
-=======
-	printk(KERN_INFO DEVICE_NAME ": st %d\n", state);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	msleep(100);
 	*/
 
 	if (state) {
 		if (chan->running) {
-<<<<<<< HEAD
 			dev_info(pdev, "already running\n");
-=======
-			printk(KERN_INFO DEVICE_NAME ": already running\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return;
 		}
 	} else {
 		if (!chan->running) {
-<<<<<<< HEAD
 			dev_info(pdev, "already stopped\n");
-=======
-			printk(KERN_INFO DEVICE_NAME ": already stopped\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return;
 		}
 	}
@@ -796,11 +723,7 @@ void set_transfer(struct ngene_channel *chan, int state)
 	if (state) {
 		spin_lock_irq(&chan->state_lock);
 
-<<<<<<< HEAD
 		/* dev_info(pdev, "lock=%08x\n",
-=======
-		/* printk(KERN_INFO DEVICE_NAME ": lock=%08x\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  ngreadl(0x9310)); */
 		dvb_ringbuffer_flush(&dev->tsout_rbuf);
 		control = 0x80;
@@ -818,11 +741,7 @@ void set_transfer(struct ngene_channel *chan, int state)
 			chan->pBufferExchange = tsin_exchange;
 		spin_unlock_irq(&chan->state_lock);
 	}
-<<<<<<< HEAD
 		/* else dev_info(pdev, "lock=%08x\n",
-=======
-		/* else printk(KERN_INFO DEVICE_NAME ": lock=%08x\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   ngreadl(0x9310)); */
 
 	mutex_lock(&dev->stream_mutex);
@@ -833,12 +752,7 @@ void set_transfer(struct ngene_channel *chan, int state)
 	if (!ret)
 		chan->running = state;
 	else
-<<<<<<< HEAD
 		dev_err(pdev, "%s %d failed\n", __func__, state);
-=======
-		printk(KERN_ERR DEVICE_NAME ": set_transfer %d failed\n",
-		       state);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!state) {
 		spin_lock_irq(&chan->state_lock);
 		chan->pBufferExchange = NULL;
@@ -1281,10 +1195,7 @@ static int ngene_get_buffers(struct ngene *dev)
 
 static void ngene_init(struct ngene *dev)
 {
-<<<<<<< HEAD
 	struct device *pdev = &dev->pci_dev->dev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 
 	tasklet_init(&dev->event_tasklet, event_tasklet, (unsigned long)dev);
@@ -1304,20 +1215,12 @@ static void ngene_init(struct ngene *dev)
 	dev->icounts = ngreadl(NGENE_INT_COUNTS);
 
 	dev->device_version = ngreadl(DEV_VER) & 0x0f;
-<<<<<<< HEAD
 	dev_info(pdev, "Device version %d\n", dev->device_version);
-=======
-	printk(KERN_INFO DEVICE_NAME ": Device version %d\n",
-	       dev->device_version);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int ngene_load_firm(struct ngene *dev)
 {
-<<<<<<< HEAD
 	struct device *pdev = &dev->pci_dev->dev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 size;
 	const struct firmware *fw = NULL;
 	u8 *ngene_fw;
@@ -1351,34 +1254,18 @@ static int ngene_load_firm(struct ngene *dev)
 	}
 
 	if (request_firmware(&fw, fw_name, &dev->pci_dev->dev) < 0) {
-<<<<<<< HEAD
 		dev_err(pdev, "Could not load firmware file %s.\n", fw_name);
 		dev_info(pdev, "Copy %s to your hotplug directory!\n",
 			 fw_name);
-=======
-		printk(KERN_ERR DEVICE_NAME
-			": Could not load firmware file %s.\n", fw_name);
-		printk(KERN_INFO DEVICE_NAME
-			": Copy %s to your hotplug directory!\n", fw_name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -1;
 	}
 	if (size == 0)
 		size = fw->size;
 	if (size != fw->size) {
-<<<<<<< HEAD
 		dev_err(pdev, "Firmware %s has invalid size!", fw_name);
 		err = -1;
 	} else {
 		dev_info(pdev, "Loading firmware file %s.\n", fw_name);
-=======
-		printk(KERN_ERR DEVICE_NAME
-			": Firmware %s has invalid size!", fw_name);
-		err = -1;
-	} else {
-		printk(KERN_INFO DEVICE_NAME
-			": Loading firmware file %s.\n", fw_name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ngene_fw = (u8 *) fw->data;
 		err = ngene_command_load_firmware(dev, ngene_fw, size);
 	}
@@ -1471,22 +1358,14 @@ static int ngene_start(struct ngene *dev)
 #ifdef CONFIG_PCI_MSI
 	/* enable MSI if kernel and card support it */
 	if (pci_msi_enabled() && dev->card_info->msi_supported) {
-<<<<<<< HEAD
 		struct device *pdev = &dev->pci_dev->dev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		unsigned long flags;
 
 		ngwritel(0, NGENE_INT_ENABLE);
 		free_irq(dev->pci_dev->irq, dev);
 		stat = pci_enable_msi(dev->pci_dev);
 		if (stat) {
-<<<<<<< HEAD
 			dev_info(pdev, "MSI not available\n");
-=======
-			printk(KERN_INFO DEVICE_NAME
-				": MSI not available\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			flags = IRQF_SHARED;
 		} else {
 			flags = 0;
@@ -1545,7 +1424,6 @@ static void release_channel(struct ngene_channel *chan)
 
 	if (chan->fe) {
 		dvb_unregister_frontend(chan->fe);
-<<<<<<< HEAD
 
 		/* release I2C client (tuner) if needed */
 		if (chan->i2c_client_fe) {
@@ -1553,8 +1431,6 @@ static void release_channel(struct ngene_channel *chan)
 			chan->i2c_client[0] = NULL;
 		}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dvb_frontend_detach(chan->fe);
 		chan->fe = NULL;
 	}
@@ -1590,10 +1466,7 @@ static int init_channel(struct ngene_channel *chan)
 	chan->users = 0;
 	chan->type = io;
 	chan->mode = chan->type;	/* for now only one mode */
-<<<<<<< HEAD
 	chan->i2c_client_fe = 0;	/* be sure this is set to zero */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (io & NGENE_IO_TSIN) {
 		chan->fe = NULL;
@@ -1695,21 +1568,14 @@ static int init_channels(struct ngene *dev)
 	return 0;
 }
 
-<<<<<<< HEAD
 static const struct cxd2099_cfg cxd_cfgtmpl = {
 	.bitrate = 62000,
-=======
-static struct cxd2099_cfg cxd_cfg = {
-	.bitrate = 62000,
-	.adr = 0x40,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.polarity = 0,
 	.clock_mode = 0,
 };
 
 static void cxd_attach(struct ngene *dev)
 {
-<<<<<<< HEAD
 	struct device *pdev = &dev->pci_dev->dev;
 	struct ngene_ci *ci = &dev->ci;
 	struct cxd2099_cfg cxd_cfg = cxd_cfgtmpl;
@@ -1742,12 +1608,6 @@ static void cxd_attach(struct ngene *dev)
 
 err:
 	dev_err(pdev, "CXD2099AR attach failed\n");
-=======
-	struct ngene_ci *ci = &dev->ci;
-
-	ci->en = cxd2099_attach(&cxd_cfg, dev, &dev->channel[0].i2c_adapter);
-	ci->dev = dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return;
 }
 
@@ -1756,13 +1616,9 @@ static void cxd_detach(struct ngene *dev)
 	struct ngene_ci *ci = &dev->ci;
 
 	dvb_ca_en50221_release(ci->en);
-<<<<<<< HEAD
 
 	dvb_module_release(dev->channel[0].i2c_client[0]);
 	dev->channel[0].i2c_client[0] = NULL;
-=======
-	kfree(ci->en);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ci->en = NULL;
 }
 
@@ -1794,11 +1650,7 @@ void ngene_shutdown(struct pci_dev *pdev)
 	if (!dev || !shutdown_workaround)
 		return;
 
-<<<<<<< HEAD
 	dev_info(&pdev->dev, "shutdown workaround...\n");
-=======
-	printk(KERN_INFO DEVICE_NAME ": shutdown workaround...\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ngene_unlink(dev);
 	pci_disable_device(pdev);
 }
@@ -1838,11 +1690,7 @@ int ngene_probe(struct pci_dev *pci_dev, const struct pci_device_id *id)
 
 	dev->pci_dev = pci_dev;
 	dev->card_info = (struct ngene_info *)id->driver_data;
-<<<<<<< HEAD
 	dev_info(&pci_dev->dev, "Found %s\n", dev->card_info->name);
-=======
-	printk(KERN_INFO DEVICE_NAME ": Found %s\n", dev->card_info->name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pci_set_drvdata(pci_dev, dev);
 

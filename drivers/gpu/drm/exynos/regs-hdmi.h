@@ -419,17 +419,9 @@
 #define HDMI_I2S_DSD_CON		HDMI_I2S_BASE(0x01c)
 #define HDMI_I2S_MUX_CON		HDMI_I2S_BASE(0x020)
 #define HDMI_I2S_CH_ST_CON		HDMI_I2S_BASE(0x024)
-<<<<<<< HEAD
 /* n must be within range 0...(HDMI_I2S_CH_ST_MAXNUM - 1) */
 #define HDMI_I2S_CH_ST_MAXNUM		5
 #define HDMI_I2S_CH_ST(n)		HDMI_I2S_BASE(0x028 + 4 * (n))
-=======
-#define HDMI_I2S_CH_ST_0		HDMI_I2S_BASE(0x028)
-#define HDMI_I2S_CH_ST_1		HDMI_I2S_BASE(0x02c)
-#define HDMI_I2S_CH_ST_2		HDMI_I2S_BASE(0x030)
-#define HDMI_I2S_CH_ST_3		HDMI_I2S_BASE(0x034)
-#define HDMI_I2S_CH_ST_4		HDMI_I2S_BASE(0x038)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define HDMI_I2S_CH_ST_SH_0		HDMI_I2S_BASE(0x03c)
 #define HDMI_I2S_CH_ST_SH_1		HDMI_I2S_BASE(0x040)
 #define HDMI_I2S_CH_ST_SH_2		HDMI_I2S_BASE(0x044)
@@ -472,11 +464,7 @@
 
 /* I2S_PIN_SEL_1 */
 #define HDMI_I2S_SEL_SDATA1(x)		(((x) & 0x7) << 4)
-<<<<<<< HEAD
 #define HDMI_I2S_SEL_SDATA0(x)		((x) & 0x7)
-=======
-#define HDMI_I2S_SEL_SDATA2(x)		((x) & 0x7)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* I2S_PIN_SEL_2 */
 #define HDMI_I2S_SEL_SDATA3(x)		(((x) & 0x7) << 4)

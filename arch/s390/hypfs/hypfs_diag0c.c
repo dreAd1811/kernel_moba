@@ -49,12 +49,8 @@ static void *diag0c_store(unsigned int *count)
 
 	get_online_cpus();
 	cpu_count = num_online_cpus();
-<<<<<<< HEAD
 	cpu_vec = kmalloc_array(num_possible_cpus(), sizeof(*cpu_vec),
 				GFP_KERNEL);
-=======
-	cpu_vec = kmalloc(sizeof(*cpu_vec) * num_possible_cpus(), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!cpu_vec)
 		goto fail_put_online_cpus;
 	/* Note: Diag 0c needs 8 byte alignment and real storage */

@@ -163,11 +163,7 @@ static void ud_loopback(struct rvt_qp *sqp, struct rvt_swqe *swqe)
 	} else {
 		int ret;
 
-<<<<<<< HEAD
 		ret = rvt_get_rwqe(qp, false);
-=======
-		ret = hfi1_rvt_get_rwqe(qp, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret < 0) {
 			rvt_rc_error(qp, IB_WC_LOC_QP_OP_ERR);
 			goto bail_unlock;
@@ -269,13 +265,8 @@ static void ud_loopback(struct rvt_qp *sqp, struct rvt_swqe *swqe)
 	} else {
 		wc.pkey_index = 0;
 	}
-<<<<<<< HEAD
 	wc.slid = (ppd->lid | (rdma_ah_get_path_bits(ah_attr) &
 				   ((1 << ppd->lmc) - 1))) & U16_MAX;
-=======
-	wc.slid = ppd->lid | (rdma_ah_get_path_bits(ah_attr) &
-				   ((1 << ppd->lmc) - 1));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Check for loopback when the port lid is not set */
 	if (wc.slid == 0 && sqp->ibqp.qp_type == IB_QPT_GSI)
 		wc.slid = be16_to_cpu(IB_LID_PERMISSIVE);
@@ -349,7 +340,6 @@ void hfi1_make_ud_req_9B(struct rvt_qp *qp, struct hfi1_pkt_state *ps,
 	extra_bytes = -wqe->length & 3;
 	nwords = ((wqe->length + extra_bytes) >> 2) + SIZE_OF_CRC;
 	/* header size in dwords LRH+BTH+DETH = (8+12+8)/4. */
-<<<<<<< HEAD
 	ps->s_txreq->hdr_dwords = 7;
 	if (wqe->wr.opcode == IB_WR_SEND_WITH_IMM)
 		ps->s_txreq->hdr_dwords++;
@@ -360,17 +350,6 @@ void hfi1_make_ud_req_9B(struct rvt_qp *qp, struct hfi1_pkt_state *ps,
 			hfi1_make_grh(ibp, grh, rdma_ah_read_grh(ah_attr),
 				      ps->s_txreq->hdr_dwords - LRH_9B_DWORDS,
 				      nwords);
-=======
-	qp->s_hdrwords = 7;
-	if (wqe->wr.opcode == IB_WR_SEND_WITH_IMM)
-		qp->s_hdrwords++;
-
-	if (rdma_ah_get_ah_flags(ah_attr) & IB_AH_GRH) {
-		grh = &ps->s_txreq->phdr.hdr.ibh.u.l.grh;
-		qp->s_hdrwords += hfi1_make_grh(ibp, grh,
-						rdma_ah_read_grh(ah_attr),
-						qp->s_hdrwords - 2, nwords);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		lrh0 = HFI1_LRH_GRH;
 		ohdr = &ps->s_txreq->phdr.hdr.ibh.u.l.oth;
 	} else {
@@ -403,11 +382,7 @@ void hfi1_make_ud_req_9B(struct rvt_qp *qp, struct hfi1_pkt_state *ps,
 		}
 	}
 	hfi1_make_bth_deth(qp, wqe, ohdr, &pkey, extra_bytes, false);
-<<<<<<< HEAD
 	len = ps->s_txreq->hdr_dwords + nwords;
-=======
-	len = qp->s_hdrwords + nwords;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Setup the packet */
 	ps->s_txreq->phdr.hdr.hdr_type = HFI1_PKT_TYPE_9B;
@@ -424,21 +399,15 @@ void hfi1_make_ud_req_16B(struct rvt_qp *qp, struct hfi1_pkt_state *ps,
 	struct hfi1_pportdata *ppd;
 	struct hfi1_ibport *ibp;
 	u32 dlid, slid, nwords, extra_bytes;
-<<<<<<< HEAD
 	u32 dest_qp = wqe->ud_wr.remote_qpn;
 	u32 src_qp = qp->ibqp.qp_num;
 	u16 len, pkey;
 	u8 l4, sc5;
 	bool is_mgmt = false;
-=======
-	u16 len, pkey;
-	u8 l4, sc5;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ibp = to_iport(qp->ibqp.device, qp->port_num);
 	ppd = ppd_from_ibp(ibp);
 	ah_attr = &ibah_to_rvtah(wqe->ud_wr.ah)->attr;
-<<<<<<< HEAD
 
 	/*
 	 * Build 16B Management Packet if either the destination
@@ -457,15 +426,6 @@ void hfi1_make_ud_req_16B(struct rvt_qp *qp, struct hfi1_pkt_state *ps,
 
 	/* SW provides space for CRC and LT for bypass packets. */
 	extra_bytes = hfi1_get_16b_padding((ps->s_txreq->hdr_dwords << 2),
-=======
-	/* header size in dwords 16B LRH+BTH+DETH = (16+12+8)/4. */
-	qp->s_hdrwords = 9;
-	if (wqe->wr.opcode == IB_WR_SEND_WITH_IMM)
-		qp->s_hdrwords++;
-
-	/* SW provides space for CRC and LT for bypass packets. */
-	extra_bytes = hfi1_get_16b_padding((qp->s_hdrwords << 2),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   wqe->length);
 	nwords = ((wqe->length + extra_bytes + SIZE_OF_LT) >> 2) + SIZE_OF_CRC;
 
@@ -483,15 +443,10 @@ void hfi1_make_ud_req_16B(struct rvt_qp *qp, struct hfi1_pkt_state *ps,
 			grd->sgid_index = 0;
 		}
 		grh = &ps->s_txreq->phdr.hdr.opah.u.l.grh;
-<<<<<<< HEAD
 		ps->s_txreq->hdr_dwords += hfi1_make_grh(
 			ibp, grh, grd,
 			ps->s_txreq->hdr_dwords - LRH_16B_DWORDS,
 			nwords);
-=======
-		qp->s_hdrwords += hfi1_make_grh(ibp, grh, grd,
-					qp->s_hdrwords - 4, nwords);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ohdr = &ps->s_txreq->phdr.hdr.opah.u.l.oth;
 		l4 = OPA_16B_L4_IB_GLOBAL;
 	} else {
@@ -512,7 +467,6 @@ void hfi1_make_ud_req_16B(struct rvt_qp *qp, struct hfi1_pkt_state *ps,
 		slid = ppd->lid | (rdma_ah_get_path_bits(ah_attr) &
 			   ((1 << ppd->lmc) - 1));
 
-<<<<<<< HEAD
 	if (is_mgmt) {
 		l4 = OPA_16B_L4_FM;
 		pkey = hfi1_get_pkey(ibp, wqe->ud_wr.pkey_index);
@@ -523,11 +477,6 @@ void hfi1_make_ud_req_16B(struct rvt_qp *qp, struct hfi1_pkt_state *ps,
 	}
 	/* Convert dwords to flits */
 	len = (ps->s_txreq->hdr_dwords + nwords) >> 1;
-=======
-	hfi1_make_bth_deth(qp, wqe, ohdr, &pkey, extra_bytes, true);
-	/* Convert dwords to flits */
-	len = (qp->s_hdrwords + nwords) >> 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Setup the packet */
 	ps->s_txreq->phdr.hdr.hdr_type = HFI1_PKT_TYPE_16B;
@@ -561,12 +510,7 @@ int hfi1_make_ud_req(struct rvt_qp *qp, struct hfi1_pkt_state *ps)
 		if (!(ib_rvt_state_ops[qp->state] & RVT_FLUSH_SEND))
 			goto bail;
 		/* We are in the error state, flush the work request. */
-<<<<<<< HEAD
 		if (qp->s_last == READ_ONCE(qp->s_head))
-=======
-		smp_read_barrier_depends(); /* see post_one_send */
-		if (qp->s_last == ACCESS_ONCE(qp->s_head))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto bail;
 		/* If DMAs are in progress, we can't flush immediately. */
 		if (iowait_sdma_pending(&priv->s_iowait)) {
@@ -579,12 +523,7 @@ int hfi1_make_ud_req(struct rvt_qp *qp, struct hfi1_pkt_state *ps)
 	}
 
 	/* see post_one_send() */
-<<<<<<< HEAD
 	if (qp->s_cur == READ_ONCE(qp->s_head))
-=======
-	smp_read_barrier_depends();
-	if (qp->s_cur == ACCESS_ONCE(qp->s_head))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto bail;
 
 	wqe = rvt_get_swqe_ptr(qp, qp->s_cur);
@@ -647,11 +586,6 @@ int hfi1_make_ud_req(struct rvt_qp *qp, struct hfi1_pkt_state *ps)
 	priv->s_ahg->ahgcount = 0;
 	priv->s_ahg->ahgidx = 0;
 	priv->s_ahg->tx_flags = 0;
-<<<<<<< HEAD
-=======
-	/* pbc */
-	ps->s_txreq->hdr_dwords = qp->s_hdrwords + 2;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 1;
 
@@ -666,10 +600,6 @@ bail:
 bail_no_tx:
 	ps->s_txreq = NULL;
 	qp->s_flags &= ~RVT_S_BUSY;
-<<<<<<< HEAD
-=======
-	qp->s_hdrwords = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -740,12 +670,8 @@ void return_cnp_16B(struct hfi1_ibport *ibp, struct rvt_qp *qp,
 		struct ib_grh *grh = &hdr.u.l.grh;
 
 		grh->version_tclass_flow = old_grh->version_tclass_flow;
-<<<<<<< HEAD
 		grh->paylen = cpu_to_be16(
 			(hwords - LRH_16B_DWORDS + nwords) << 2);
-=======
-		grh->paylen = cpu_to_be16((hwords - 4 + nwords) << 2);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		grh->hop_limit = 0xff;
 		grh->sgid = old_grh->dgid;
 		grh->dgid = old_grh->sgid;
@@ -799,12 +725,8 @@ void return_cnp(struct hfi1_ibport *ibp, struct rvt_qp *qp, u32 remote_qpn,
 		struct ib_grh *grh = &hdr.u.l.grh;
 
 		grh->version_tclass_flow = old_grh->version_tclass_flow;
-<<<<<<< HEAD
 		grh->paylen = cpu_to_be16(
 			(hwords - LRH_9B_DWORDS + SIZE_OF_CRC) << 2);
-=======
-		grh->paylen = cpu_to_be16((hwords - 2 + SIZE_OF_CRC) << 2);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		grh->hop_limit = 0xff;
 		grh->sgid = old_grh->dgid;
 		grh->dgid = old_grh->sgid;
@@ -944,24 +866,13 @@ static int opa_smp_check(struct hfi1_ibport *ibp, u16 pkey, u8 sc5,
  */
 void hfi1_ud_rcv(struct hfi1_packet *packet)
 {
-<<<<<<< HEAD
 	u32 hdrsize = packet->hlen;
 	struct ib_wc wc;
-=======
-	struct ib_other_headers *ohdr = packet->ohdr;
-	u32 hdrsize = packet->hlen;
-	struct ib_wc wc;
-	u32 qkey;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 src_qp;
 	u16 pkey;
 	int mgmt_pkey_idx = -1;
 	struct hfi1_ibport *ibp = rcd_to_iport(packet->rcd);
 	struct hfi1_pportdata *ppd = ppd_from_ibp(ibp);
-<<<<<<< HEAD
-=======
-	struct ib_header *hdr = packet->hdr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void *data = packet->payload;
 	u32 tlen = packet->tlen;
 	struct rvt_qp *qp = packet->qp;
@@ -972,46 +883,28 @@ void hfi1_ud_rcv(struct hfi1_packet *packet)
 	u32 dlid = packet->dlid;
 	u32 slid = packet->slid;
 	u8 extra_bytes;
-<<<<<<< HEAD
 	u8 l4 = 0;
 	bool dlid_is_permissive;
 	bool slid_is_permissive;
 	bool solicited = false;
 
 	extra_bytes = packet->pad + packet->extra_byte + (SIZE_OF_CRC << 2);
-=======
-	bool dlid_is_permissive;
-	bool slid_is_permissive;
-
-	extra_bytes = packet->pad + packet->extra_byte + (SIZE_OF_CRC << 2);
-	qkey = ib_get_qkey(ohdr);
-	src_qp = ib_get_sqpn(ohdr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (packet->etype == RHF_RCV_TYPE_BYPASS) {
 		u32 permissive_lid =
 			opa_get_lid(be32_to_cpu(OPA_LID_PERMISSIVE), 16B);
 
-<<<<<<< HEAD
 		l4 = hfi1_16B_get_l4(packet->hdr);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pkey = hfi1_16B_get_pkey(packet->hdr);
 		dlid_is_permissive = (dlid == permissive_lid);
 		slid_is_permissive = (slid == permissive_lid);
 	} else {
-<<<<<<< HEAD
 		pkey = ib_bth_get_pkey(packet->ohdr);
-=======
-		hdr = packet->hdr;
-		pkey = ib_bth_get_pkey(ohdr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dlid_is_permissive = (dlid == be16_to_cpu(IB_LID_PERMISSIVE));
 		slid_is_permissive = (slid == be16_to_cpu(IB_LID_PERMISSIVE));
 	}
 	sl_from_sc = ibp->sc_to_sl[sc5];
 
-<<<<<<< HEAD
 	if (likely(l4 != OPA_16B_L4_FM)) {
 		src_qp = ib_get_sqpn(packet->ohdr);
 		solicited = ib_bth_is_solicited(packet->ohdr);
@@ -1019,8 +912,6 @@ void hfi1_ud_rcv(struct hfi1_packet *packet)
 		src_qp = hfi1_16B_get_src_qpn(packet->mgmt);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	process_ecn(qp, packet, (opcode != IB_OPCODE_CNP));
 	/*
 	 * Get the number of bytes the message was padded by
@@ -1058,14 +949,9 @@ void hfi1_ud_rcv(struct hfi1_packet *packet)
 			if (mgmt_pkey_idx < 0)
 				goto drop;
 		}
-<<<<<<< HEAD
 		if (unlikely(l4 != OPA_16B_L4_FM &&
 			     ib_get_qkey(packet->ohdr) != qp->qkey))
 			return; /* Silent drop */
-=======
-		if (unlikely(qkey != qp->qkey)) /* Silent drop */
-			return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Drop invalid MAD packets (see 13.5.3.1). */
 		if (unlikely(qp->ibqp.qp_num == 1 &&
@@ -1092,11 +978,7 @@ void hfi1_ud_rcv(struct hfi1_packet *packet)
 
 	if (qp->ibqp.qp_num > 1 &&
 	    opcode == IB_OPCODE_UD_SEND_ONLY_WITH_IMMEDIATE) {
-<<<<<<< HEAD
 		wc.ex.imm_data = packet->ohdr->u.ud.imm_data;
-=======
-		wc.ex.imm_data = ohdr->u.ud.imm_data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		wc.wc_flags = IB_WC_WITH_IMM;
 	} else if (opcode == IB_OPCODE_UD_SEND_ONLY) {
 		wc.ex.imm_data = 0;
@@ -1119,11 +1001,7 @@ void hfi1_ud_rcv(struct hfi1_packet *packet)
 	} else {
 		int ret;
 
-<<<<<<< HEAD
 		ret = rvt_get_rwqe(qp, false);
-=======
-		ret = hfi1_rvt_get_rwqe(qp, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret < 0) {
 			rvt_rc_error(qp, IB_WC_LOC_QP_OP_ERR);
 			return;
@@ -1186,11 +1064,7 @@ void hfi1_ud_rcv(struct hfi1_packet *packet)
 	}
 	if (slid_is_permissive)
 		slid = be32_to_cpu(OPA_LID_PERMISSIVE);
-<<<<<<< HEAD
 	wc.slid = slid & U16_MAX;
-=======
-	wc.slid = slid;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wc.sl = sl_from_sc;
 
 	/*
@@ -1200,13 +1074,7 @@ void hfi1_ud_rcv(struct hfi1_packet *packet)
 		dlid & ((1 << ppd_from_ibp(ibp)->lmc) - 1);
 	wc.port_num = qp->port_num;
 	/* Signal completion event if the solicited bit is set. */
-<<<<<<< HEAD
 	rvt_cq_enter(ibcq_to_rvtcq(qp->ibqp.recv_cq), &wc, solicited);
-=======
-	rvt_cq_enter(ibcq_to_rvtcq(qp->ibqp.recv_cq), &wc,
-		     (ohdr->bth[0] &
-		      cpu_to_be32(IB_BTH_SOLICITED)) != 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return;
 
 drop:

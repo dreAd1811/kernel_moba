@@ -73,16 +73,11 @@ struct sdhci_acpi_slot {
 	unsigned int	caps2;
 	mmc_pm_flag_t	pm_caps;
 	unsigned int	flags;
-<<<<<<< HEAD
 	size_t		priv_size;
 	int (*probe_slot)(struct platform_device *, const char *, const char *);
 	int (*remove_slot)(struct platform_device *);
 	int (*free_slot)(struct platform_device *pdev);
 	int (*setup_host)(struct platform_device *pdev);
-=======
-	int (*probe_slot)(struct platform_device *, const char *, const char *);
-	int (*remove_slot)(struct platform_device *);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct sdhci_acpi_host {
@@ -90,7 +85,6 @@ struct sdhci_acpi_host {
 	const struct sdhci_acpi_slot	*slot;
 	struct platform_device		*pdev;
 	bool				use_runtime_pm;
-<<<<<<< HEAD
 	unsigned long			private[0] ____cacheline_aligned;
 };
 
@@ -99,16 +93,11 @@ static inline void *sdhci_acpi_priv(struct sdhci_acpi_host *c)
 	return (void *)c->private;
 }
 
-=======
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline bool sdhci_acpi_flag(struct sdhci_acpi_host *c, unsigned int flag)
 {
 	return c->slot && (c->slot->flags & flag);
 }
 
-<<<<<<< HEAD
 #define INTEL_DSM_HS_CAPS_SDR25		BIT(0)
 #define INTEL_DSM_HS_CAPS_DDR50		BIT(1)
 #define INTEL_DSM_HS_CAPS_SDR50		BIT(2)
@@ -219,8 +208,6 @@ static int intel_start_signal_voltage_switch(struct mmc_host *mmc,
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void sdhci_acpi_int_hw_reset(struct sdhci_host *host)
 {
 	u8 reg;
@@ -401,34 +388,18 @@ out:
 	return ret;
 }
 
-<<<<<<< HEAD
 static int intel_probe_slot(struct platform_device *pdev, const char *hid,
 			    const char *uid)
 {
 	struct sdhci_acpi_host *c = platform_get_drvdata(pdev);
 	struct intel_host *intel_host = sdhci_acpi_priv(c);
 	struct sdhci_host *host = c->host;
-=======
-static int sdhci_acpi_emmc_probe_slot(struct platform_device *pdev,
-				      const char *hid, const char *uid)
-{
-	struct sdhci_acpi_host *c = platform_get_drvdata(pdev);
-	struct sdhci_host *host;
-
-	if (!c || !c->host)
-		return 0;
-
-	host = c->host;
-
-	/* Platform specific code during emmc probe slot goes here */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (hid && uid && !strcmp(hid, "80860F14") && !strcmp(uid, "1") &&
 	    sdhci_readl(host, SDHCI_CAPABILITIES) == 0x446cc8b2 &&
 	    sdhci_readl(host, SDHCI_CAPABILITIES_1) == 0x00000807)
 		host->timeout_clk = 1000; /* 1000 kHz i.e. 1 MHz */
 
-<<<<<<< HEAD
 	if (hid && !strcmp(hid, "80865ACA"))
 		host->mmc_host_ops.get_cd = bxt_get_cd;
 
@@ -436,25 +407,10 @@ static int sdhci_acpi_emmc_probe_slot(struct platform_device *pdev,
 
 	host->mmc_host_ops.start_signal_voltage_switch =
 					intel_start_signal_voltage_switch;
-=======
-	return 0;
-}
-
-static int sdhci_acpi_sdio_probe_slot(struct platform_device *pdev,
-				      const char *hid, const char *uid)
-{
-	struct sdhci_acpi_host *c = platform_get_drvdata(pdev);
-
-	if (!c || !c->host)
-		return 0;
-
-	/* Platform specific code during sdio probe slot goes here */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
 static int intel_setup_host(struct platform_device *pdev)
 {
 	struct sdhci_acpi_host *c = platform_get_drvdata(pdev);
@@ -471,23 +427,6 @@ static int intel_setup_host(struct platform_device *pdev)
 
 	if (!(intel_host->hs_caps & INTEL_DSM_HS_CAPS_SDR104))
 		c->host->mmc->caps &= ~MMC_CAP_UHS_SDR104;
-=======
-static int sdhci_acpi_sd_probe_slot(struct platform_device *pdev,
-				    const char *hid, const char *uid)
-{
-	struct sdhci_acpi_host *c = platform_get_drvdata(pdev);
-	struct sdhci_host *host;
-
-	if (!c || !c->host || !c->slot)
-		return 0;
-
-	host = c->host;
-
-	/* Platform specific code during sd probe slot goes here */
-
-	if (hid && !strcmp(hid, "80865ACA"))
-		host->mmc_host_ops.get_cd = bxt_get_cd;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -502,13 +441,9 @@ static const struct sdhci_acpi_slot sdhci_acpi_slot_int_emmc = {
 	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
 		   SDHCI_QUIRK2_STOP_WITH_TC |
 		   SDHCI_QUIRK2_CAPS_BIT63_FOR_HS400,
-<<<<<<< HEAD
 	.probe_slot	= intel_probe_slot,
 	.setup_host	= intel_setup_host,
 	.priv_size	= sizeof(struct intel_host),
-=======
-	.probe_slot	= sdhci_acpi_emmc_probe_slot,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct sdhci_acpi_slot sdhci_acpi_slot_int_sdio = {
@@ -519,13 +454,9 @@ static const struct sdhci_acpi_slot sdhci_acpi_slot_int_sdio = {
 		   MMC_CAP_WAIT_WHILE_BUSY,
 	.flags   = SDHCI_ACPI_RUNTIME_PM,
 	.pm_caps = MMC_PM_KEEP_POWER,
-<<<<<<< HEAD
 	.probe_slot	= intel_probe_slot,
 	.setup_host	= intel_setup_host,
 	.priv_size	= sizeof(struct intel_host),
-=======
-	.probe_slot	= sdhci_acpi_sdio_probe_slot,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct sdhci_acpi_slot sdhci_acpi_slot_int_sd = {
@@ -535,13 +466,9 @@ static const struct sdhci_acpi_slot sdhci_acpi_slot_int_sd = {
 	.quirks2 = SDHCI_QUIRK2_CARD_ON_NEEDS_BUS_ON |
 		   SDHCI_QUIRK2_STOP_WITH_TC,
 	.caps    = MMC_CAP_WAIT_WHILE_BUSY | MMC_CAP_AGGRESSIVE_PM,
-<<<<<<< HEAD
 	.probe_slot	= intel_probe_slot,
 	.setup_host	= intel_setup_host,
 	.priv_size	= sizeof(struct intel_host),
-=======
-	.probe_slot	= sdhci_acpi_sd_probe_slot,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct sdhci_acpi_slot sdhci_acpi_slot_qcom_sd_3v = {
@@ -555,7 +482,6 @@ static const struct sdhci_acpi_slot sdhci_acpi_slot_qcom_sd = {
 	.caps    = MMC_CAP_NONREMOVABLE,
 };
 
-<<<<<<< HEAD
 /* AMD sdhci reset dll register. */
 #define SDHCI_AMD_RESET_DLL_REGISTER    0x908
 
@@ -633,8 +559,6 @@ static const struct sdhci_acpi_slot sdhci_acpi_slot_amd_emmc = {
 	.probe_slot     = sdhci_acpi_emmc_amd_probe_slot,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct sdhci_acpi_uid_slot {
 	const char *hid;
 	const char *uid;
@@ -658,10 +582,7 @@ static const struct sdhci_acpi_uid_slot sdhci_acpi_uids[] = {
 	{ "PNP0D40"  },
 	{ "QCOM8051", NULL, &sdhci_acpi_slot_qcom_sd_3v },
 	{ "QCOM8052", NULL, &sdhci_acpi_slot_qcom_sd },
-<<<<<<< HEAD
 	{ "AMDI0040", NULL, &sdhci_acpi_slot_amd_emmc },
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ },
 };
 
@@ -678,10 +599,7 @@ static const struct acpi_device_id sdhci_acpi_ids[] = {
 	{ "PNP0D40"  },
 	{ "QCOM8051" },
 	{ "QCOM8052" },
-<<<<<<< HEAD
 	{ "AMDI0040" },
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ },
 };
 MODULE_DEVICE_TABLE(acpi, sdhci_acpi_ids);
@@ -705,19 +623,13 @@ static const struct sdhci_acpi_slot *sdhci_acpi_get_slot(const char *hid,
 static int sdhci_acpi_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
-<<<<<<< HEAD
 	const struct sdhci_acpi_slot *slot;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct acpi_device *device, *child;
 	struct sdhci_acpi_host *c;
 	struct sdhci_host *host;
 	struct resource *iomem;
 	resource_size_t len;
-<<<<<<< HEAD
 	size_t priv_size;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const char *hid;
 	const char *uid;
 	int err;
@@ -727,13 +639,9 @@ static int sdhci_acpi_probe(struct platform_device *pdev)
 		return -ENODEV;
 
 	hid = acpi_device_hid(device);
-<<<<<<< HEAD
 	uid = acpi_device_uid(device);
 
 	slot = sdhci_acpi_get_slot(hid, uid);
-=======
-	uid = device->pnp.unique_id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Power on the SDHCI controller and its children */
 	acpi_device_fix_up_power(device);
@@ -757,22 +665,14 @@ static int sdhci_acpi_probe(struct platform_device *pdev)
 	if (!devm_request_mem_region(dev, iomem->start, len, dev_name(dev)))
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	priv_size = slot ? slot->priv_size : 0;
 	host = sdhci_alloc_host(dev, sizeof(struct sdhci_acpi_host) + priv_size);
-=======
-	host = sdhci_alloc_host(dev, sizeof(struct sdhci_acpi_host));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(host))
 		return PTR_ERR(host);
 
 	c = sdhci_priv(host);
 	c->host = host;
-<<<<<<< HEAD
 	c->slot = slot;
-=======
-	c->slot = sdhci_acpi_get_slot(hid, uid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	c->pdev = pdev;
 	c->use_runtime_pm = sdhci_acpi_flag(c, SDHCI_ACPI_RUNTIME_PM);
 
@@ -781,13 +681,10 @@ static int sdhci_acpi_probe(struct platform_device *pdev)
 	host->hw_name	= "ACPI";
 	host->ops	= &sdhci_acpi_ops_dflt;
 	host->irq	= platform_get_irq(pdev, 0);
-<<<<<<< HEAD
 	if (host->irq < 0) {
 		err = -EINVAL;
 		goto err_free;
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	host->ioaddr = devm_ioremap_nocache(dev, iomem->start,
 					    resource_size(iomem));
@@ -831,7 +728,6 @@ static int sdhci_acpi_probe(struct platform_device *pdev)
 		}
 	}
 
-<<<<<<< HEAD
 	err = sdhci_setup_host(host);
 	if (err)
 		goto err_free;
@@ -846,12 +742,6 @@ static int sdhci_acpi_probe(struct platform_device *pdev)
 	if (err)
 		goto err_cleanup;
 
-=======
-	err = sdhci_add_host(host);
-	if (err)
-		goto err_free;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (c->use_runtime_pm) {
 		pm_runtime_set_active(dev);
 		pm_suspend_ignore_children(dev, 1);
@@ -864,16 +754,12 @@ static int sdhci_acpi_probe(struct platform_device *pdev)
 
 	return 0;
 
-<<<<<<< HEAD
 err_cleanup:
 	sdhci_cleanup_host(c->host);
 err_free:
 	if (c->slot && c->slot->free_slot)
 		c->slot->free_slot(pdev);
 
-=======
-err_free:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sdhci_free_host(c->host);
 	return err;
 }
@@ -895,13 +781,10 @@ static int sdhci_acpi_remove(struct platform_device *pdev)
 
 	dead = (sdhci_readl(c->host, SDHCI_INT_STATUS) == ~0);
 	sdhci_remove_host(c->host, dead);
-<<<<<<< HEAD
 
 	if (c->slot && c->slot->free_slot)
 		c->slot->free_slot(pdev);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sdhci_free_host(c->host);
 
 	return 0;

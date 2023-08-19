@@ -22,10 +22,7 @@ obj-$(CONFIG_SOC_IMX35)  += clk-imx35.o
 obj-$(CONFIG_SOC_IMX5)   += clk-imx51-imx53.o
 obj-$(CONFIG_SOC_IMX6Q)  += clk-imx6q.o
 obj-$(CONFIG_SOC_IMX6SL) += clk-imx6sl.o
-<<<<<<< HEAD
 obj-$(CONFIG_SOC_IMX6SLL) += clk-imx6sll.o
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 obj-$(CONFIG_SOC_IMX6SX) += clk-imx6sx.o
 obj-$(CONFIG_SOC_IMX6UL) += clk-imx6ul.o
 obj-$(CONFIG_SOC_IMX7D)  += clk-imx7d.o

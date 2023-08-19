@@ -28,11 +28,6 @@
 #define MEI_CL_CONNECT_TIMEOUT     15  /* HPS: Client Connect Timeout */
 #define MEI_CLIENTS_INIT_TIMEOUT   15  /* HPS: Clients Enumeration Timeout */
 
-<<<<<<< HEAD
-=======
-#define MEI_IAMTHIF_STALL_TIMER    12  /* HPS */
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MEI_PGI_TIMEOUT             1  /* PG Isolation time response 1 sec */
 #define MEI_D0I3_TIMEOUT            5  /* D0i3 set/unset max response time */
 #define MEI_HBM_TIMEOUT             1  /* 1 second */
@@ -85,15 +80,12 @@
 #define HBM_MINOR_VERSION_OS               0
 #define HBM_MAJOR_VERSION_OS               2
 
-<<<<<<< HEAD
 /*
  * MEI version with dma ring support
  */
 #define HBM_MINOR_VERSION_DR               1
 #define HBM_MAJOR_VERSION_DR               2
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Host bus message command opcode */
 #define MEI_HBM_CMD_OP_MSK                  0x7f
 /* Host bus message command RESPONSE */
@@ -136,12 +128,9 @@
 #define MEI_HBM_NOTIFY_RES_CMD              0x90
 #define MEI_HBM_NOTIFICATION_CMD            0x11
 
-<<<<<<< HEAD
 #define MEI_HBM_DMA_SETUP_REQ_CMD           0x12
 #define MEI_HBM_DMA_SETUP_RES_CMD           0x92
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * MEI Stop Reason
  * used by hbm_host_stop_request.reason
@@ -207,7 +196,6 @@ enum  mei_cl_disconnect_status {
 	MEI_CL_DISCONN_SUCCESS = MEI_HBMS_SUCCESS
 };
 
-<<<<<<< HEAD
 /**
  * struct mei_msg_hdr - MEI BUS Interface Section
  *
@@ -218,29 +206,17 @@ enum  mei_cl_disconnect_status {
  * @dma_ring: message is on dma ring
  * @internal: message is internal
  * @msg_complete: last packet of the message
-=======
-/*
- *  MEI BUS Interface Section
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct mei_msg_hdr {
 	u32 me_addr:8;
 	u32 host_addr:8;
 	u32 length:9;
-<<<<<<< HEAD
 	u32 reserved:4;
 	u32 dma_ring:1;
-=======
-	u32 reserved:5;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 internal:1;
 	u32 msg_complete:1;
 } __packed;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct mei_bus_message {
 	u8 hbm_cmd;
 	u8 data[0];
@@ -490,7 +466,6 @@ struct hbm_notification {
 	u8 reserved[1];
 } __packed;
 
-<<<<<<< HEAD
 /**
  * struct hbm_dma_mem_dscr - dma ring
  *
@@ -537,6 +512,4 @@ struct hbm_dma_setup_response {
 	u8 reserved[2];
 } __packed;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

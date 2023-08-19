@@ -697,13 +697,8 @@ tca6507_led_dt_init(struct i2c_client *client)
 	if (!count || count > NUM_LEDS)
 		return ERR_PTR(-ENODEV);
 
-<<<<<<< HEAD
 	tca_leds = devm_kcalloc(&client->dev,
 			NUM_LEDS, sizeof(struct led_info), GFP_KERNEL);
-=======
-	tca_leds = devm_kzalloc(&client->dev,
-			sizeof(struct led_info) * NUM_LEDS, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!tca_leds)
 		return ERR_PTR(-ENOMEM);
 
@@ -720,11 +715,7 @@ tca6507_led_dt_init(struct i2c_client *client)
 		if (of_property_match_string(child, "compatible", "gpio") >= 0)
 			led.flags |= TCA6507_MAKE_GPIO;
 		ret = of_property_read_u32(child, "reg", &reg);
-<<<<<<< HEAD
 		if (ret != 0 || reg >= NUM_LEDS)
-=======
-		if (ret != 0 || reg < 0 || reg >= NUM_LEDS)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 
 		tca_leds[reg] = led;

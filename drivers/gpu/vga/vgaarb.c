@@ -1,10 +1,6 @@
 /*
  * vgaarb.c: Implements the VGA arbitration. For details refer to
-<<<<<<< HEAD
  * Documentation/gpu/vgaarbiter.rst
-=======
- * Documentation/vgaarbiter.txt
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  *
  * (C) Copyright 2005 Benjamin Herrenschmidt <benh@kernel.crashing.org>
@@ -1270,20 +1266,12 @@ done:
 	return ret_val;
 }
 
-<<<<<<< HEAD
 static __poll_t vga_arb_fpoll(struct file *file, poll_table *wait)
-=======
-static unsigned int vga_arb_fpoll(struct file *file, poll_table *wait)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	pr_debug("%s\n", __func__);
 
 	poll_wait(file, &vga_wait_queue, wait);
-<<<<<<< HEAD
 	return EPOLLIN;
-=======
-	return POLLIN;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int vga_arb_open(struct inode *inode, struct file *file)
@@ -1414,7 +1402,6 @@ static struct miscdevice vga_arb_device = {
 	MISC_DYNAMIC_MINOR, "vga_arbiter", &vga_arb_device_fops
 };
 
-<<<<<<< HEAD
 static void __init vga_arb_select_default_device(void)
 {
 	struct pci_dev *pdev;
@@ -1423,31 +1410,6 @@ static void __init vga_arb_select_default_device(void)
 #if defined(CONFIG_X86) || defined(CONFIG_IA64)
 	list_for_each_entry(vgadev, &vga_list, list) {
 		struct device *dev = &vgadev->pdev->dev;
-=======
-static int __init vga_arb_device_init(void)
-{
-	int rc;
-	struct pci_dev *pdev;
-	struct vga_device *vgadev;
-
-	rc = misc_register(&vga_arb_device);
-	if (rc < 0)
-		pr_err("error %d registering device\n", rc);
-
-	bus_register_notifier(&pci_bus_type, &pci_notifier);
-
-	/* We add all pci devices satisfying vga class in the arbiter by
-	 * default */
-	pdev = NULL;
-	while ((pdev =
-		pci_get_subsys(PCI_ANY_ID, PCI_ANY_ID, PCI_ANY_ID,
-			       PCI_ANY_ID, pdev)) != NULL)
-		vga_arbiter_add_pci_device(pdev);
-
-	list_for_each_entry(vgadev, &vga_list, list) {
-		struct device *dev = &vgadev->pdev->dev;
-#if defined(CONFIG_X86) || defined(CONFIG_IA64)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * Override vga_arbiter_add_pci_device()'s I/O based detection
 		 * as it may take the wrong device (e.g. on Apple system under
@@ -1484,7 +1446,6 @@ static int __init vga_arb_device_init(void)
 				vgaarb_info(dev, "overriding boot device\n");
 			vga_set_default_device(vgadev->pdev);
 		}
-<<<<<<< HEAD
 	}
 #endif
 
@@ -1537,20 +1498,14 @@ static int __init vga_arb_device_init(void)
 	list_for_each_entry(vgadev, &vga_list, list) {
 		struct device *dev = &vgadev->pdev->dev;
 
-=======
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (vgadev->bridge_has_one_vga)
 			vgaarb_info(dev, "bridge control possible\n");
 		else
 			vgaarb_info(dev, "no bridge control possible\n");
 	}
 
-<<<<<<< HEAD
 	vga_arb_select_default_device();
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pr_info("loaded\n");
 	return rc;
 }

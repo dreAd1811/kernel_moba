@@ -35,10 +35,7 @@ typedef union {
 
 #define PTRS_PER_PTE	1024
 
-<<<<<<< HEAD
 /* This covers all VMSPLIT_* and VMSPLIT_*_OPT variants */
 #define PGD_KERNEL_START	(CONFIG_PAGE_OFFSET >> PGDIR_SHIFT)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* _ASM_X86_PGTABLE_2LEVEL_DEFS_H */

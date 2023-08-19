@@ -36,11 +36,6 @@
 #include <linux/cpu.h>
 #include <linux/sched/task_stack.h>
 
-<<<<<<< HEAD
-=======
-#include <asm/hyperv.h>
-#include <asm/hypervisor.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/mshyperv.h>
 #include <linux/notifier.h>
 #include <linux/ptrace.h>
@@ -61,11 +56,8 @@ static struct completion probe_event;
 
 static int hyperv_cpuhp_online;
 
-<<<<<<< HEAD
 static void *hv_panic_page;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int hyperv_panic_event(struct notifier_block *nb, unsigned long val,
 			      void *args)
 {
@@ -73,11 +65,7 @@ static int hyperv_panic_event(struct notifier_block *nb, unsigned long val,
 
 	regs = current_pt_regs();
 
-<<<<<<< HEAD
 	hyperv_report_panic(regs, val);
-=======
-	hyperv_report_panic(regs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return NOTIFY_DONE;
 }
 
@@ -87,11 +75,7 @@ static int hyperv_die_event(struct notifier_block *nb, unsigned long val,
 	struct die_args *die = (struct die_args *)args;
 	struct pt_regs *regs = die->regs;
 
-<<<<<<< HEAD
 	hyperv_report_panic(regs, val);
-=======
-	hyperv_report_panic(regs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return NOTIFY_DONE;
 }
 
@@ -123,25 +107,16 @@ static void print_alias_name(struct hv_device *hv_dev, char *alias_name)
 		sprintf(&alias_name[i], "%02x", hv_dev->dev_type.b[i/2]);
 }
 
-<<<<<<< HEAD
 static u8 channel_monitor_group(const struct vmbus_channel *channel)
-=======
-static u8 channel_monitor_group(struct vmbus_channel *channel)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return (u8)channel->offermsg.monitorid / 32;
 }
 
-<<<<<<< HEAD
 static u8 channel_monitor_offset(const struct vmbus_channel *channel)
-=======
-static u8 channel_monitor_offset(struct vmbus_channel *channel)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return (u8)channel->offermsg.monitorid % 32;
 }
 
-<<<<<<< HEAD
 static u32 channel_pending(const struct vmbus_channel *channel,
 			   const struct hv_monitor_page *monitor_page)
 {
@@ -156,20 +131,6 @@ static u32 channel_latency(const struct vmbus_channel *channel,
 	u8 monitor_group = channel_monitor_group(channel);
 	u8 monitor_offset = channel_monitor_offset(channel);
 
-=======
-static u32 channel_pending(struct vmbus_channel *channel,
-			   struct hv_monitor_page *monitor_page)
-{
-	u8 monitor_group = channel_monitor_group(channel);
-	return monitor_page->trigger_group[monitor_group].pending;
-}
-
-static u32 channel_latency(struct vmbus_channel *channel,
-			   struct hv_monitor_page *monitor_page)
-{
-	u8 monitor_group = channel_monitor_group(channel);
-	u8 monitor_offset = channel_monitor_offset(channel);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return monitor_page->latency[monitor_group][monitor_offset];
 }
 
@@ -249,7 +210,6 @@ static ssize_t modalias_show(struct device *dev,
 }
 static DEVICE_ATTR_RO(modalias);
 
-<<<<<<< HEAD
 #ifdef CONFIG_NUMA
 static ssize_t numa_node_show(struct device *dev,
 			      struct device_attribute *attr, char *buf)
@@ -264,8 +224,6 @@ static ssize_t numa_node_show(struct device *dev,
 static DEVICE_ATTR_RO(numa_node);
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static ssize_t server_monitor_pending_show(struct device *dev,
 					   struct device_attribute *dev_attr,
 					   char *buf)
@@ -599,12 +557,9 @@ static struct attribute *vmbus_dev_attrs[] = {
 	&dev_attr_class_id.attr,
 	&dev_attr_device_id.attr,
 	&dev_attr_modalias.attr,
-<<<<<<< HEAD
 #ifdef CONFIG_NUMA
 	&dev_attr_numa_node.attr,
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	&dev_attr_server_monitor_pending.attr,
 	&dev_attr_client_monitor_pending.attr,
 	&dev_attr_server_monitor_latency.attr,
@@ -948,11 +903,8 @@ void vmbus_on_msg_dpc(unsigned long data)
 
 	hdr = (struct vmbus_channel_message_header *)msg->u.payload;
 
-<<<<<<< HEAD
 	trace_vmbus_on_msg_dpc(hdr);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (hdr->msgtype >= CHANNELMSG_COUNT) {
 		WARN_ONCE(1, "unknown msgtype=%d\n", hdr->msgtype);
 		goto msg_handled;
@@ -1062,13 +1014,10 @@ static void vmbus_chan_sched(struct hv_per_cpu_context *hv_cpu)
 			if (channel->rescind)
 				continue;
 
-<<<<<<< HEAD
 			trace_vmbus_chan_sched(channel);
 
 			++channel->interrupts;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			switch (channel->callback_mode) {
 			case HV_CALL_ISR:
 				vmbus_channel_isr(channel);
@@ -1139,7 +1088,6 @@ static void vmbus_isr(void)
 	add_interrupt_randomness(HYPERVISOR_CALLBACK_VECTOR, 0);
 }
 
-<<<<<<< HEAD
 /*
  * Boolean to control whether to report panic messages over Hyper-V.
  *
@@ -1206,8 +1154,6 @@ static struct ctl_table hv_root_table[] = {
 	},
 	{}
 };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * vmbus_bus_init -Main vmbus driver initialization routine.
@@ -1241,11 +1187,7 @@ static int vmbus_bus_init(void)
 	 * Initialize the per-cpu interrupt state and
 	 * connect to the host.
 	 */
-<<<<<<< HEAD
 	ret = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "hyperv/vmbus:online",
-=======
-	ret = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "x86/hyperv:online",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				hv_synic_init, hv_synic_cleanup);
 	if (ret < 0)
 		goto err_alloc;
@@ -1259,7 +1201,6 @@ static int vmbus_bus_init(void)
 	 * Only register if the crash MSRs are available
 	 */
 	if (ms_hyperv.misc_features & HV_FEATURE_GUEST_CRASH_MSR_AVAILABLE) {
-<<<<<<< HEAD
 		u64 hyperv_crash_ctl;
 		/*
 		 * Sysctl registration is not fatal, since by default
@@ -1286,8 +1227,6 @@ static int vmbus_bus_init(void)
 					"allocation failed");
 		}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		register_die_notifier(&hyperv_die_block);
 		atomic_notifier_chain_register(&panic_notifier_list,
 					       &hyperv_panic_block);
@@ -1304,13 +1243,9 @@ err_alloc:
 	hv_remove_vmbus_irq();
 
 	bus_unregister(&hv_bus);
-<<<<<<< HEAD
 	free_page((unsigned long)hv_panic_page);
 	unregister_sysctl_table(hv_ctl_table_hdr);
 	hv_ctl_table_hdr = NULL;
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -1368,7 +1303,6 @@ void vmbus_driver_unregister(struct hv_driver *hv_driver)
 }
 EXPORT_SYMBOL_GPL(vmbus_driver_unregister);
 
-<<<<<<< HEAD
 
 /*
  * Called when last reference to channel is gone.
@@ -1542,8 +1476,6 @@ int vmbus_add_channel_kobj(struct hv_device *dev, struct vmbus_channel *channel)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * vmbus_device_create - Creates and registers a new child device
  * on the vmbus.
@@ -1575,12 +1507,8 @@ struct hv_device *vmbus_device_create(const uuid_le *type,
  */
 int vmbus_device_register(struct hv_device *child_device_obj)
 {
-<<<<<<< HEAD
 	struct kobject *kobj = &child_device_obj->device.kobj;
 	int ret;
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_set_name(&child_device_obj->device, "%pUl",
 		     child_device_obj->channel->offermsg.offer.if_instance.b);
@@ -1594,7 +1522,6 @@ int vmbus_device_register(struct hv_device *child_device_obj)
 	 * binding...which will eventually call vmbus_match() and vmbus_probe()
 	 */
 	ret = device_register(&child_device_obj->device);
-<<<<<<< HEAD
 	if (ret) {
 		pr_err("Unable to register child device\n");
 		return ret;
@@ -1621,15 +1548,6 @@ err_kset_unregister:
 
 err_dev_unregister:
 	device_unregister(&child_device_obj->device);
-=======
-
-	if (ret)
-		pr_err("Unable to register child device\n");
-	else
-		pr_debug("child device %s registered\n",
-			dev_name(&child_device_obj->device));
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -1642,11 +1560,8 @@ void vmbus_device_unregister(struct hv_device *device_obj)
 	pr_debug("child device %s unregistered\n",
 		dev_name(&device_obj->device));
 
-<<<<<<< HEAD
 	kset_unregister(device_obj->channels_kset);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Kick off the process of unregistering the device.
 	 * This will call vmbus_remove() and eventually vmbus_device_release()
@@ -1984,11 +1899,7 @@ static int __init hv_acpi_init(void)
 {
 	int ret, t;
 
-<<<<<<< HEAD
 	if (!hv_is_hyperv_initialized())
-=======
-	if (x86_hyper_type != X86_HYPER_MS_HYPERV)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 
 	init_completion(&probe_event);
@@ -2041,21 +1952,15 @@ static void __exit vmbus_exit(void)
 	vmbus_free_channels();
 
 	if (ms_hyperv.misc_features & HV_FEATURE_GUEST_CRASH_MSR_AVAILABLE) {
-<<<<<<< HEAD
 		kmsg_dump_unregister(&hv_kmsg_dumper);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		unregister_die_notifier(&hyperv_die_block);
 		atomic_notifier_chain_unregister(&panic_notifier_list,
 						 &hyperv_panic_block);
 	}
-<<<<<<< HEAD
 
 	free_page((unsigned long)hv_panic_page);
 	unregister_sysctl_table(hv_ctl_table_hdr);
 	hv_ctl_table_hdr = NULL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bus_unregister(&hv_bus);
 
 	cpuhp_remove_state(hyperv_cpuhp_online);

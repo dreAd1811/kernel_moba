@@ -59,38 +59,22 @@
 #include "mmap.h"
 #include "cq.h"
 #include "mad.h"
-<<<<<<< HEAD
 
 #define rvt_pr_info(rdi, fmt, ...) \
 	__rvt_pr_info(rdi->driver_f.get_pci_dev(rdi), \
 		      rvt_get_ibdev_name(rdi), \
-=======
-#include "mmap.h"
-
-#define rvt_pr_info(rdi, fmt, ...) \
-	__rvt_pr_info(rdi->driver_f.get_pci_dev(rdi), \
-		      rdi->driver_f.get_card_name(rdi), \
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		      fmt, \
 		      ##__VA_ARGS__)
 
 #define rvt_pr_warn(rdi, fmt, ...) \
 	__rvt_pr_warn(rdi->driver_f.get_pci_dev(rdi), \
-<<<<<<< HEAD
 		      rvt_get_ibdev_name(rdi), \
-=======
-		      rdi->driver_f.get_card_name(rdi), \
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		      fmt, \
 		      ##__VA_ARGS__)
 
 #define rvt_pr_err(rdi, fmt, ...) \
 	__rvt_pr_err(rdi->driver_f.get_pci_dev(rdi), \
-<<<<<<< HEAD
 		     rvt_get_ibdev_name(rdi), \
-=======
-		     rdi->driver_f.get_card_name(rdi), \
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		     fmt, \
 		     ##__VA_ARGS__)
 

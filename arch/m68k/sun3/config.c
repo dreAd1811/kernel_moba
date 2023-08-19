@@ -123,13 +123,6 @@ static void __init sun3_bootmem_alloc(unsigned long memory_start,
 	availmem = memory_start;
 
 	m68k_setup_node(0);
-<<<<<<< HEAD
-=======
-	availmem += init_bootmem(start_page, num_pages);
-	availmem = (availmem + (PAGE_SIZE-1)) & PAGE_MASK;
-
-	free_bootmem(__pa(availmem), memory_end - (availmem));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 

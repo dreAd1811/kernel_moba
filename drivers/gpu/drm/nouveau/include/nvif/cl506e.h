@@ -6,11 +6,7 @@ struct nv50_channel_dma_v0 {
 	__u8  version;
 	__u8  chid;
 	__u8  pad02[6];
-<<<<<<< HEAD
 	__u64 vmm;
-=======
-	__u64 vm;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__u64 pushbuf;
 	__u64 offset;
 };

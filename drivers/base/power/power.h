@@ -31,10 +31,7 @@ struct wake_irq {
 	struct device *dev;
 	unsigned int status;
 	int irq;
-<<<<<<< HEAD
 	const char *name;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 extern void dev_pm_arm_wake_irq(struct wake_irq *wirq);
@@ -45,45 +42,20 @@ extern void dev_pm_disable_wake_irq_check(struct device *dev);
 
 #ifdef CONFIG_PM_SLEEP
 
-<<<<<<< HEAD
 extern void device_wakeup_attach_irq(struct device *dev, struct wake_irq *wakeirq);
-=======
-extern int device_wakeup_attach_irq(struct device *dev,
-				    struct wake_irq *wakeirq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern void device_wakeup_detach_irq(struct device *dev);
 extern void device_wakeup_arm_wake_irqs(void);
 extern void device_wakeup_disarm_wake_irqs(void);
 
 #else
 
-<<<<<<< HEAD
 static inline void device_wakeup_attach_irq(struct device *dev,
 					    struct wake_irq *wakeirq) {}
-=======
-static inline int
-device_wakeup_attach_irq(struct device *dev,
-			 struct wake_irq *wakeirq)
-{
-	return 0;
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline void device_wakeup_detach_irq(struct device *dev)
 {
 }
 
-<<<<<<< HEAD
-=======
-static inline void device_wakeup_arm_wake_irqs(void)
-{
-}
-
-static inline void device_wakeup_disarm_wake_irqs(void)
-{
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_PM_SLEEP */
 
 /*
@@ -115,31 +87,6 @@ static inline void pm_runtime_remove(struct device *dev) {}
 
 static inline int dpm_sysfs_add(struct device *dev) { return 0; }
 static inline void dpm_sysfs_remove(struct device *dev) {}
-<<<<<<< HEAD
-=======
-static inline void rpm_sysfs_remove(struct device *dev) {}
-static inline int wakeup_sysfs_add(struct device *dev) { return 0; }
-static inline void wakeup_sysfs_remove(struct device *dev) {}
-static inline int pm_qos_sysfs_add(struct device *dev) { return 0; }
-static inline void pm_qos_sysfs_remove(struct device *dev) {}
-
-static inline void dev_pm_arm_wake_irq(struct wake_irq *wirq)
-{
-}
-
-static inline void dev_pm_disarm_wake_irq(struct wake_irq *wirq)
-{
-}
-
-static inline void dev_pm_enable_wake_irq_check(struct device *dev,
-						bool can_change_status)
-{
-}
-
-static inline void dev_pm_disable_wake_irq_check(struct device *dev)
-{
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif
 
@@ -207,24 +154,3 @@ static inline void device_pm_init(struct device *dev)
 	device_pm_sleep_init(dev);
 	pm_runtime_init(dev);
 }
-<<<<<<< HEAD
-=======
-
-#ifdef CONFIG_PM_SLEEP
-
-/* drivers/base/power/wakeup_stats.c */
-extern int wakeup_source_sysfs_add(struct device *parent,
-				   struct wakeup_source *ws);
-extern void wakeup_source_sysfs_remove(struct wakeup_source *ws);
-
-extern int pm_wakeup_source_sysfs_add(struct device *parent);
-
-#else /* !CONFIG_PM_SLEEP */
-
-static inline int pm_wakeup_source_sysfs_add(struct device *parent)
-{
-	return 0;
-}
-
-#endif /* CONFIG_PM_SLEEP */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

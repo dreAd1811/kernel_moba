@@ -665,11 +665,7 @@ static int cdce925_probe(struct i2c_client *client,
 	init.ops = &cdce925_pll_ops;
 	init.flags = 0;
 	init.parent_names = &parent_name;
-<<<<<<< HEAD
 	init.num_parents = 1;
-=======
-	init.num_parents = parent_name ? 1 : 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Register PLL clocks */
 	for (i = 0; i < data->chip_info->num_plls; ++i) {

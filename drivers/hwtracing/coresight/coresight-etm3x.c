@@ -1,23 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Copyright (c) 2011-2012, The Linux Foundation. All rights reserved.
  *
  * Description: CoreSight Program Flow Trace driver
-=======
-/* Copyright (c) 2011-2012, The Linux Foundation. All rights reserved.
- *
- * Description: CoreSight Program Flow Trace driver
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/kernel.h>
@@ -245,15 +230,8 @@ void etm_set_default(struct etm_config *config)
 
 	config->seq_curr_state = 0x0;
 	config->ctxid_idx = 0x0;
-<<<<<<< HEAD
 	for (i = 0; i < ETM_MAX_CTXID_CMP; i++)
 		config->ctxid_pid[i] = 0x0;
-=======
-	for (i = 0; i < ETM_MAX_CTXID_CMP; i++) {
-		config->ctxid_pid[i] = 0x0;
-		config->ctxid_vpid[i] = 0x0;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	config->ctxid_mask = 0x0;
 	/* Setting default to 1024 as per TRM recommendation */
@@ -377,18 +355,11 @@ static int etm_parse_event_config(struct etm_drvdata *drvdata,
 	return 0;
 }
 
-<<<<<<< HEAD
 static void etm_enable_hw(void *info)
 {
 	int i;
 	u32 etmcr;
 	struct etm_drvdata *drvdata = info;
-=======
-static int etm_enable_hw(struct etm_drvdata *drvdata)
-{
-	int i, rc;
-	u32 etmcr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct etm_config *config = &drvdata->config;
 
 	CS_UNLOCK(drvdata->base);
@@ -399,12 +370,6 @@ static int etm_enable_hw(struct etm_drvdata *drvdata)
 	etm_set_pwrup(drvdata);
 	/* Make sure all registers are accessible */
 	etm_os_unlock(drvdata);
-<<<<<<< HEAD
-=======
-	rc = coresight_claim_device_unlocked(drvdata->base);
-	if (rc)
-		goto done;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	etm_set_prog(drvdata);
 
@@ -453,35 +418,9 @@ static int etm_enable_hw(struct etm_drvdata *drvdata)
 	etm_writel(drvdata, 0x0, ETMVMIDCVR);
 
 	etm_clr_prog(drvdata);
-<<<<<<< HEAD
 	CS_LOCK(drvdata->base);
 
 	dev_dbg(drvdata->dev, "cpu: %d enable smp call done\n", drvdata->cpu);
-=======
-
-done:
-	if (rc)
-		etm_set_pwrdwn(drvdata);
-	CS_LOCK(drvdata->base);
-
-	dev_dbg(drvdata->dev, "cpu: %d enable smp call done: %d\n",
-		drvdata->cpu, rc);
-	return rc;
-}
-
-struct etm_enable_arg {
-	struct etm_drvdata *drvdata;
-	int rc;
-};
-
-static void etm_enable_hw_smp_call(void *info)
-{
-	struct etm_enable_arg *arg = info;
-
-	if (WARN_ON(!arg))
-		return;
-	arg->rc = etm_enable_hw(arg->drvdata);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int etm_cpu_id(struct coresight_device *csdev)
@@ -536,22 +475,14 @@ static int etm_enable_perf(struct coresight_device *csdev,
 	/* Configure the tracer based on the session's specifics */
 	etm_parse_event_config(drvdata, event);
 	/* And enable it */
-<<<<<<< HEAD
 	etm_enable_hw(drvdata);
 
 	return 0;
-=======
-	return etm_enable_hw(drvdata);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int etm_enable_sysfs(struct coresight_device *csdev)
 {
 	struct etm_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
-<<<<<<< HEAD
-=======
-	struct etm_enable_arg arg = { 0 };
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	spin_lock(&drvdata->spinlock);
@@ -561,7 +492,6 @@ static int etm_enable_sysfs(struct coresight_device *csdev)
 	 * hw configuration will take place on the local CPU during bring up.
 	 */
 	if (cpu_online(drvdata->cpu)) {
-<<<<<<< HEAD
 		ret = smp_call_function_single(drvdata->cpu,
 					       etm_enable_hw, drvdata, 1);
 		if (ret)
@@ -576,23 +506,6 @@ static int etm_enable_sysfs(struct coresight_device *csdev)
 
 err:
 	spin_unlock(&drvdata->spinlock);
-=======
-		arg.drvdata = drvdata;
-		ret = smp_call_function_single(drvdata->cpu,
-					       etm_enable_hw_smp_call, &arg, 1);
-		if (!ret)
-			ret = arg.rc;
-		if (!ret)
-			drvdata->sticky_enable = true;
-	} else {
-		ret = -ENODEV;
-	}
-
-	spin_unlock(&drvdata->spinlock);
-
-	if (!ret)
-		dev_dbg(drvdata->dev, "ETM tracing enabled\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -642,11 +555,6 @@ static void etm_disable_hw(void *info)
 	for (i = 0; i < drvdata->nr_cntr; i++)
 		config->cntr_val[i] = etm_readl(drvdata, ETMCNTVRn(i));
 
-<<<<<<< HEAD
-=======
-	coresight_disclaim_device_unlocked(drvdata->base);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	etm_set_pwrdwn(drvdata);
 	CS_LOCK(drvdata->base);
 
@@ -696,11 +604,7 @@ static void etm_disable_sysfs(struct coresight_device *csdev)
 	spin_unlock(&drvdata->spinlock);
 	cpus_read_unlock();
 
-<<<<<<< HEAD
 	dev_info(drvdata->dev, "ETM tracing disabled\n");
-=======
-	dev_dbg(drvdata->dev, "ETM tracing disabled\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void etm_disable(struct coresight_device *csdev,
@@ -988,7 +892,6 @@ static const struct dev_pm_ops etm_dev_pm_ops = {
 
 static const struct amba_id etm_ids[] = {
 	{	/* ETM 3.3 */
-<<<<<<< HEAD
 		.id	= 0x000bb921,
 		.mask	= 0x000fffff,
 		.data	= "ETM 3.3",
@@ -1016,35 +919,6 @@ static const struct amba_id etm_ids[] = {
 	{	/* PTM 1.1 Qualcomm */
 		.id	= 0x000b006f,
 		.mask	= 0x000fffff,
-=======
-		.id	= 0x0003b921,
-		.mask	= 0x0003ffff,
-		.data	= "ETM 3.3",
-	},
-	{	/* ETM 3.5 - Cortex-A5 */
-		.id	= 0x0003b955,
-		.mask	= 0x0003ffff,
-		.data	= "ETM 3.5",
-	},
-	{	/* ETM 3.5 */
-		.id	= 0x0003b956,
-		.mask	= 0x0003ffff,
-		.data	= "ETM 3.5",
-	},
-	{	/* PTM 1.0 */
-		.id	= 0x0003b950,
-		.mask	= 0x0003ffff,
-		.data	= "PTM 1.0",
-	},
-	{	/* PTM 1.1 */
-		.id	= 0x0003b95f,
-		.mask	= 0x0003ffff,
-		.data	= "PTM 1.1",
-	},
-	{	/* PTM 1.1 Qualcomm */
-		.id	= 0x0003006f,
-		.mask	= 0x0003ffff,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.data	= "PTM 1.1",
 	},
 	{ 0, 0},

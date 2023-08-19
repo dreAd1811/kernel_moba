@@ -96,7 +96,6 @@ static int mei_cl_conn_status_to_errno(enum mei_cl_connect_status status)
 }
 
 /**
-<<<<<<< HEAD
  * mei_hbm_write_message - wrapper for sending hbm messages.
  *
  * @dev: mei device
@@ -111,8 +110,6 @@ static inline int mei_hbm_write_message(struct mei_device *dev,
 }
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * mei_hbm_idle - set hbm to idle state
  *
  * @dev: the device structure
@@ -148,10 +145,7 @@ static inline void mei_hbm_hdr(struct mei_msg_hdr *hdr, size_t length)
 	hdr->me_addr = 0;
 	hdr->length = length;
 	hdr->msg_complete = 1;
-<<<<<<< HEAD
 	hdr->dma_ring = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hdr->reserved = 0;
 	hdr->internal = 0;
 }
@@ -195,11 +189,7 @@ static inline int mei_hbm_cl_write(struct mei_device *dev, struct mei_cl *cl,
 	mei_hbm_hdr(&mei_hdr, len);
 	mei_hbm_cl_hdr(cl, hbm_cmd, buf, len);
 
-<<<<<<< HEAD
 	return mei_hbm_write_message(dev, &mei_hdr, buf);
-=======
-	return mei_write_message(dev, &mei_hdr, buf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -292,11 +282,7 @@ int mei_hbm_start_req(struct mei_device *dev)
 	start_req.host_version.minor_version = HBM_MINOR_VERSION;
 
 	dev->hbm_state = MEI_HBM_IDLE;
-<<<<<<< HEAD
 	ret = mei_hbm_write_message(dev, &mei_hdr, &start_req);
-=======
-	ret = mei_write_message(dev, &mei_hdr, &start_req);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		dev_err(dev->dev, "version message write failed: ret = %d\n",
 			ret);
@@ -333,11 +319,7 @@ static int mei_hbm_enum_clients_req(struct mei_device *dev)
 	enum_req.flags |= dev->hbm_f_ie_supported ?
 			  MEI_HBM_ENUM_F_IMMEDIATE_ENUM : 0;
 
-<<<<<<< HEAD
 	ret = mei_hbm_write_message(dev, &mei_hdr, &enum_req);
-=======
-	ret = mei_write_message(dev, &mei_hdr, &enum_req);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		dev_err(dev->dev, "enumeration request write failed: ret = %d.\n",
 			ret);
@@ -406,11 +388,7 @@ static int mei_hbm_add_cl_resp(struct mei_device *dev, u8 addr, u8 status)
 	resp.me_addr = addr;
 	resp.status  = status;
 
-<<<<<<< HEAD
 	ret = mei_hbm_write_message(dev, &mei_hdr, &resp);
-=======
-	ret = mei_write_message(dev, &mei_hdr, &resp);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		dev_err(dev->dev, "add client response write failed: ret = %d\n",
 			ret);
@@ -467,11 +445,7 @@ int mei_hbm_cl_notify_req(struct mei_device *dev,
 
 	req.start = start;
 
-<<<<<<< HEAD
 	ret = mei_hbm_write_message(dev, &mei_hdr, &req);
-=======
-	ret = mei_write_message(dev, &mei_hdr, &req);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		dev_err(dev->dev, "notify request failed: ret = %d\n", ret);
 
@@ -596,11 +570,7 @@ static int mei_hbm_prop_req(struct mei_device *dev, unsigned long start_idx)
 	prop_req.hbm_cmd = HOST_CLIENT_PROPERTIES_REQ_CMD;
 	prop_req.me_addr = addr;
 
-<<<<<<< HEAD
 	ret = mei_hbm_write_message(dev, &mei_hdr, &prop_req);
-=======
-	ret = mei_write_message(dev, &mei_hdr, &prop_req);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		dev_err(dev->dev, "properties request write failed: ret = %d\n",
 			ret);
@@ -637,11 +607,7 @@ int mei_hbm_pg(struct mei_device *dev, u8 pg_cmd)
 	memset(&req, 0, len);
 	req.hbm_cmd = pg_cmd;
 
-<<<<<<< HEAD
 	ret = mei_hbm_write_message(dev, &mei_hdr, &req);
-=======
-	ret = mei_write_message(dev, &mei_hdr, &req);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		dev_err(dev->dev, "power gate command write failed.\n");
 	return ret;
@@ -667,11 +633,7 @@ static int mei_hbm_stop_req(struct mei_device *dev)
 	req.hbm_cmd = HOST_STOP_REQ_CMD;
 	req.reason = DRIVER_STOP_REQUEST;
 
-<<<<<<< HEAD
 	return mei_hbm_write_message(dev, &mei_hdr, &req);
-=======
-	return mei_write_message(dev, &mei_hdr, &req);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -1024,46 +986,30 @@ static void mei_hbm_config_features(struct mei_device *dev)
 	    dev->version.minor_version >= HBM_MINOR_VERSION_PGI)
 		dev->hbm_f_pg_supported = 1;
 
-<<<<<<< HEAD
 	dev->hbm_f_dc_supported = 0;
 	if (dev->version.major_version >= HBM_MAJOR_VERSION_DC)
 		dev->hbm_f_dc_supported = 1;
 
 	dev->hbm_f_ie_supported = 0;
-=======
-	if (dev->version.major_version >= HBM_MAJOR_VERSION_DC)
-		dev->hbm_f_dc_supported = 1;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dev->version.major_version >= HBM_MAJOR_VERSION_IE)
 		dev->hbm_f_ie_supported = 1;
 
 	/* disconnect on connect timeout instead of link reset */
-<<<<<<< HEAD
 	dev->hbm_f_dot_supported = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dev->version.major_version >= HBM_MAJOR_VERSION_DOT)
 		dev->hbm_f_dot_supported = 1;
 
 	/* Notification Event Support */
-<<<<<<< HEAD
 	dev->hbm_f_ev_supported = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dev->version.major_version >= HBM_MAJOR_VERSION_EV)
 		dev->hbm_f_ev_supported = 1;
 
 	/* Fixed Address Client Support */
-<<<<<<< HEAD
 	dev->hbm_f_fa_supported = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dev->version.major_version >= HBM_MAJOR_VERSION_FA)
 		dev->hbm_f_fa_supported = 1;
 
 	/* OS ver message Support */
-<<<<<<< HEAD
 	dev->hbm_f_os_supported = 0;
 	if (dev->version.major_version >= HBM_MAJOR_VERSION_OS)
 		dev->hbm_f_os_supported = 1;
@@ -1074,10 +1020,6 @@ static void mei_hbm_config_features(struct mei_device *dev)
 	    (dev->version.major_version == HBM_MAJOR_VERSION_DR &&
 	     dev->version.minor_version >= HBM_MINOR_VERSION_DR))
 		dev->hbm_f_dr_supported = 1;
-=======
-	if (dev->version.major_version >= HBM_MAJOR_VERSION_OS)
-		dev->hbm_f_os_supported = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**

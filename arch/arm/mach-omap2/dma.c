@@ -223,11 +223,7 @@ static struct omap_system_dma_plat_info dma_plat_info __initdata = {
 	.dma_read	= dma_read,
 };
 
-<<<<<<< HEAD
 static struct platform_device_info omap_dma_dev_info __initdata = {
-=======
-static struct platform_device_info omap_dma_dev_info = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.name = "omap-dma-engine",
 	.id = -1,
 	.dma_mask = DMA_BIT_MASK(32),

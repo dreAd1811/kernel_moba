@@ -120,11 +120,8 @@
 
 /* DMA Rx Channel X Control register defines */
 #define DMA_CONTROL_SR			BIT(0)
-<<<<<<< HEAD
 #define DMA_RBSZ_MASK			GENMASK(14, 1)
 #define DMA_RBSZ_SHIFT			1
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Interrupt status per channel */
 #define DMA_CHAN_STATUS_REB		GENMASK(21, 19)
@@ -189,10 +186,6 @@
 #define DMA_CHAN0_DBG_STAT_RPS_SHIFT	8
 
 int dwmac4_dma_reset(void __iomem *ioaddr);
-<<<<<<< HEAD
-=======
-void dwmac4_enable_dma_transmission(void __iomem *ioaddr, u32 tail_ptr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void dwmac4_enable_dma_irq(void __iomem *ioaddr, u32 chan);
 void dwmac410_enable_dma_irq(void __iomem *ioaddr, u32 chan);
 void dwmac4_disable_dma_irq(void __iomem *ioaddr, u32 chan);

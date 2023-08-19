@@ -30,10 +30,7 @@ config ARCH_OMAP16XX
 	bool "OMAP16xx Based System"
 	select ARCH_OMAP_OTG
 	select CPU_ARM926T
-<<<<<<< HEAD
 	select OMAP_DM_TIMER
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config OMAP_MUX
 	bool "OMAP multiplexing support"

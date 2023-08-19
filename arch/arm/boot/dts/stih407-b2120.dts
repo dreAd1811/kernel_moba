@@ -14,29 +14,17 @@
 	compatible = "st,stih407-b2120", "st,stih407";
 
 	chosen {
-<<<<<<< HEAD
 		bootargs = "clk_ignore_unused";
 		stdout-path = &sbc_serial0;
 	};
 
 	memory@40000000 {
-=======
-		bootargs = "console=ttyAS0,115200 clk_ignore_unused";
-		linux,stdout-path = &sbc_serial0;
-	};
-
-	memory {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		device_type = "memory";
 		reg = <0x40000000 0x80000000>;
 	};
 
 	aliases {
-<<<<<<< HEAD
 		serial0 = &sbc_serial0;
-=======
-		ttyAS0 = &sbc_serial0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ethernet0 = &ethernet0;
 	};
 

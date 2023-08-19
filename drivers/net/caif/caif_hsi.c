@@ -66,15 +66,9 @@ static const struct cfhsi_config  hsi_default_config = {
 
 static LIST_HEAD(cfhsi_list);
 
-<<<<<<< HEAD
 static void cfhsi_inactivity_tout(struct timer_list *t)
 {
 	struct cfhsi *cfhsi = from_timer(cfhsi, t, inactivity_timer);
-=======
-static void cfhsi_inactivity_tout(unsigned long arg)
-{
-	struct cfhsi *cfhsi = (struct cfhsi *)arg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	netdev_dbg(cfhsi->ndev, "%s.\n",
 		__func__);
@@ -270,10 +264,6 @@ static int cfhsi_tx_frm(struct cfhsi_desc *desc, struct cfhsi *cfhsi)
 	}
 
 	/* Create payload CAIF frames. */
-<<<<<<< HEAD
-=======
-	pfrm = desc->emb_frm + CFHSI_MAX_EMB_FRM_SZ;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	while (nfrms < CFHSI_MAX_PKTS) {
 		struct caif_payload_info *info;
 		int hpad;
@@ -746,15 +736,9 @@ out_of_sync:
 	schedule_work(&cfhsi->out_of_sync_work);
 }
 
-<<<<<<< HEAD
 static void cfhsi_rx_slowpath(struct timer_list *t)
 {
 	struct cfhsi *cfhsi = from_timer(cfhsi, t, rx_slowpath_timer);
-=======
-static void cfhsi_rx_slowpath(unsigned long arg)
-{
-	struct cfhsi *cfhsi = (struct cfhsi *)arg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	netdev_dbg(cfhsi->ndev, "%s.\n",
 		__func__);
@@ -1012,15 +996,9 @@ static void cfhsi_wake_down_cb(struct cfhsi_cb_ops *cb_ops)
 	wake_up_interruptible(&cfhsi->wake_down_wait);
 }
 
-<<<<<<< HEAD
 static void cfhsi_aggregation_tout(struct timer_list *t)
 {
 	struct cfhsi *cfhsi = from_timer(cfhsi, t, aggregation_timer);
-=======
-static void cfhsi_aggregation_tout(unsigned long arg)
-{
-	struct cfhsi *cfhsi = (struct cfhsi *)arg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	netdev_dbg(cfhsi->ndev, "%s.\n",
 		__func__);
@@ -1232,25 +1210,11 @@ static int cfhsi_open(struct net_device *ndev)
 	init_waitqueue_head(&cfhsi->flush_fifo_wait);
 
 	/* Setup the inactivity timer. */
-<<<<<<< HEAD
 	timer_setup(&cfhsi->inactivity_timer, cfhsi_inactivity_tout, 0);
 	/* Setup the slowpath RX timer. */
 	timer_setup(&cfhsi->rx_slowpath_timer, cfhsi_rx_slowpath, 0);
 	/* Setup the aggregation timer. */
 	timer_setup(&cfhsi->aggregation_timer, cfhsi_aggregation_tout, 0);
-=======
-	init_timer(&cfhsi->inactivity_timer);
-	cfhsi->inactivity_timer.data = (unsigned long)cfhsi;
-	cfhsi->inactivity_timer.function = cfhsi_inactivity_tout;
-	/* Setup the slowpath RX timer. */
-	init_timer(&cfhsi->rx_slowpath_timer);
-	cfhsi->rx_slowpath_timer.data = (unsigned long)cfhsi;
-	cfhsi->rx_slowpath_timer.function = cfhsi_rx_slowpath;
-	/* Setup the aggregation timer. */
-	init_timer(&cfhsi->aggregation_timer);
-	cfhsi->aggregation_timer.data = (unsigned long)cfhsi;
-	cfhsi->aggregation_timer.function = cfhsi_aggregation_tout;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Activate HSI interface. */
 	res = cfhsi->ops->cfhsi_up(cfhsi->ops);

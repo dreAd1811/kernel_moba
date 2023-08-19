@@ -84,10 +84,7 @@ static __always_inline bool arch_atomic_sub_and_test(int i, atomic_t *v)
 {
 	GEN_BINARY_RMWcc(LOCK_PREFIX "subl", v->counter, "er", i, "%0", e);
 }
-<<<<<<< HEAD
 #define arch_atomic_sub_and_test arch_atomic_sub_and_test
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * arch_atomic_inc - increment atomic variable
@@ -100,10 +97,7 @@ static __always_inline void arch_atomic_inc(atomic_t *v)
 	asm volatile(LOCK_PREFIX "incl %0"
 		     : "+m" (v->counter) :: "memory");
 }
-<<<<<<< HEAD
 #define arch_atomic_inc arch_atomic_inc
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * arch_atomic_dec - decrement atomic variable
@@ -116,10 +110,7 @@ static __always_inline void arch_atomic_dec(atomic_t *v)
 	asm volatile(LOCK_PREFIX "decl %0"
 		     : "+m" (v->counter) :: "memory");
 }
-<<<<<<< HEAD
 #define arch_atomic_dec arch_atomic_dec
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * arch_atomic_dec_and_test - decrement and test
@@ -133,10 +124,7 @@ static __always_inline bool arch_atomic_dec_and_test(atomic_t *v)
 {
 	GEN_UNARY_RMWcc(LOCK_PREFIX "decl", v->counter, "%0", e);
 }
-<<<<<<< HEAD
 #define arch_atomic_dec_and_test arch_atomic_dec_and_test
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * arch_atomic_inc_and_test - increment and test
@@ -150,10 +138,7 @@ static __always_inline bool arch_atomic_inc_and_test(atomic_t *v)
 {
 	GEN_UNARY_RMWcc(LOCK_PREFIX "incl", v->counter, "%0", e);
 }
-<<<<<<< HEAD
 #define arch_atomic_inc_and_test arch_atomic_inc_and_test
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * arch_atomic_add_negative - add and test if negative
@@ -168,10 +153,7 @@ static __always_inline bool arch_atomic_add_negative(int i, atomic_t *v)
 {
 	GEN_BINARY_RMWcc(LOCK_PREFIX "addl", v->counter, "er", i, "%0", s);
 }
-<<<<<<< HEAD
 #define arch_atomic_add_negative arch_atomic_add_negative
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * arch_atomic_add_return - add integer and return
@@ -197,12 +179,6 @@ static __always_inline int arch_atomic_sub_return(int i, atomic_t *v)
 	return arch_atomic_add_return(-i, v);
 }
 
-<<<<<<< HEAD
-=======
-#define arch_atomic_inc_return(v)  (arch_atomic_add_return(1, v))
-#define arch_atomic_dec_return(v)  (arch_atomic_sub_return(1, v))
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static __always_inline int arch_atomic_fetch_add(int i, atomic_t *v)
 {
 	return xadd(&v->counter, i);
@@ -280,30 +256,6 @@ static inline int arch_atomic_fetch_xor(int i, atomic_t *v)
 	return val;
 }
 
-<<<<<<< HEAD
-=======
-/**
- * __arch_atomic_add_unless - add unless the number is already a given value
- * @v: pointer of type atomic_t
- * @a: the amount to add to v...
- * @u: ...unless v is equal to u.
- *
- * Atomically adds @a to @v, so long as @v was not already @u.
- * Returns the old value of @v.
- */
-static __always_inline int __arch_atomic_add_unless(atomic_t *v, int a, int u)
-{
-	int c = arch_atomic_read(v);
-
-	do {
-		if (unlikely(c == u))
-			break;
-	} while (!arch_atomic_try_cmpxchg(v, &c, c + a));
-
-	return c;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_X86_32
 # include <asm/atomic64_32.h>
 #else

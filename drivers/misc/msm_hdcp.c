@@ -1,19 +1,6 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2018, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #define pr_fmt(fmt)	"[msm-hdcp] %s: " fmt, __func__
@@ -116,13 +103,8 @@ void msm_hdcp_cache_repeater_topology(struct device *dev,
 		   sizeof(struct HDCP_V2V1_MSG_TOPOLOGY));
 }
 
-<<<<<<< HEAD
 static ssize_t tp_show(struct device *dev, struct device_attribute *attr,
 		char *buf)
-=======
-static ssize_t msm_hdcp_1x_sysfs_rda_tp(struct device *dev,
-	struct device_attribute *attr, char *buf)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	ssize_t ret = 0;
 	struct msm_hdcp *hdcp = NULL;
@@ -160,13 +142,8 @@ static ssize_t msm_hdcp_1x_sysfs_rda_tp(struct device *dev,
 	return ret;
 }
 
-<<<<<<< HEAD
 static ssize_t tp_store(struct device *dev, struct device_attribute *attr,
 		const char *buf, size_t count)
-=======
-static ssize_t msm_hdcp_1x_sysfs_wta_tp(struct device *dev,
-	struct device_attribute *attr, const char *buf, size_t count)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int msgid = 0;
 	ssize_t ret = count;
@@ -197,13 +174,8 @@ static ssize_t msm_hdcp_1x_sysfs_wta_tp(struct device *dev,
 	return ret;
 }
 
-<<<<<<< HEAD
 static ssize_t min_level_change_store(struct device *dev,
 		struct device_attribute *attr, const char *buf, size_t count)
-=======
-static ssize_t msm_hdcp_2x_sysfs_wta_min_level_change(struct device *dev,
-	struct device_attribute *attr, const char *buf, size_t count)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int rc;
 	int min_enc_lvl;
@@ -233,17 +205,9 @@ static ssize_t msm_hdcp_2x_sysfs_wta_min_level_change(struct device *dev,
 	return ret;
 }
 
-<<<<<<< HEAD
 static DEVICE_ATTR_RW(tp);
 
 static DEVICE_ATTR_WO(min_level_change);
-=======
-static DEVICE_ATTR(tp, 0644, msm_hdcp_1x_sysfs_rda_tp,
-	msm_hdcp_1x_sysfs_wta_tp);
-
-static DEVICE_ATTR(min_level_change, 0200, NULL,
-	msm_hdcp_2x_sysfs_wta_min_level_change);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct attribute *msm_hdcp_fs_attrs[] = {
 	&dev_attr_tp.attr,

@@ -397,7 +397,6 @@
 					xoadc-ref-supply = <&pm8058_l18>;
 
 					/* Board-specific channels */
-<<<<<<< HEAD
 					mpp5@5 {
 						/* Connected to AOUT of ALS sensor */
 						reg = <0x00 0x05>;
@@ -415,25 +414,6 @@
 						reg = <0x00 0x08>;
 					};
 					mpp9@9 {
-=======
-					mpp5@05 {
-						/* Connected to AOUT of ALS sensor */
-						reg = <0x00 0x05>;
-					};
-					mpp6@06 {
-						/* Connected to test point TP43 */
-						reg = <0x00 0x06>;
-					};
-					mpp7@07 {
-						/* Connected to battery thermistor */
-						reg = <0x00 0x07>;
-					};
-					mpp8@08 {
-						/* Connected to battery ID detector */
-						reg = <0x00 0x08>;
-					};
-					mpp9@09 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						/* Connected to XO thermistor */
 						reg = <0x00 0x09>;
 					};
@@ -532,11 +512,7 @@
 				pinctrl-names = "default";
 				pinctrl-0 = <&dragon_gsbi12_i2c_pins>;
 
-<<<<<<< HEAD
 				ak8975@c {
-=======
-				ak8975@0c {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					compatible = "asahi-kasei,ak8975";
 					reg = <0x0c>;
 					/* FIXME: GPIO33 has interrupt 224 on the PM8058 */

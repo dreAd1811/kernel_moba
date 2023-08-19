@@ -8,12 +8,8 @@
  * This work is licensed under the terms of the GNU GPL, version 2.  See the
  * file "COPYING" in the main directory of this archive for more details.
  */
-<<<<<<< HEAD
 #include <linux/bits.h>
 #include <linux/compiler.h>
-=======
-#include <linux/bitops.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/byteorder.h>
 
 /*

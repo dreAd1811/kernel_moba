@@ -59,11 +59,7 @@
 
 /* Refers to the CIF 352x288 and QCIF 176x144 */
 /* 1: 288 lines, 2: 144 lines */
-<<<<<<< HEAD
 #define STV_Y_CTRL			0x15c3
-=======
-#define STV_Y_CTRL		        0x15c3
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define STV_RESET                       0x1620
 

@@ -1,11 +1,7 @@
 /*
  * LCD panel driver for Sharp LS037V7DW01
  *
-<<<<<<< HEAD
  * Copyright (C) 2013 Texas Instruments Incorporated - http://www.ti.com/
-=======
- * Copyright (C) 2013 Texas Instruments
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Author: Tomi Valkeinen <tomi.valkeinen@ti.com>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -65,17 +61,12 @@ static const struct videomode sharp_ls_vm = {
 static int sharp_ls_connect(struct omap_dss_device *dssdev)
 {
 	struct panel_drv_data *ddata = to_panel_data(dssdev);
-<<<<<<< HEAD
 	struct omap_dss_device *in;
-=======
-	struct omap_dss_device *in = ddata->in;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int r;
 
 	if (omapdss_device_is_connected(dssdev))
 		return 0;
 
-<<<<<<< HEAD
 	in = omapdss_of_find_source_for_first_ep(dssdev->dev->of_node);
 	if (IS_ERR(in)) {
 		dev_err(dssdev->dev, "failed to find video source\n");
@@ -89,12 +80,6 @@ static int sharp_ls_connect(struct omap_dss_device *dssdev)
 	}
 
 	ddata->in = in;
-=======
-	r = in->ops.dpi->connect(in, dssdev);
-	if (r)
-		return r;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -107,12 +92,9 @@ static void sharp_ls_disconnect(struct omap_dss_device *dssdev)
 		return;
 
 	in->ops.dpi->disconnect(in, dssdev);
-<<<<<<< HEAD
 
 	omap_dss_put_device(in);
 	ddata->in = NULL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int sharp_ls_enable(struct omap_dss_device *dssdev)
@@ -240,11 +222,6 @@ static  int sharp_ls_get_gpio_of(struct device *dev, int index, int val,
 static int sharp_ls_probe_of(struct platform_device *pdev)
 {
 	struct panel_drv_data *ddata = platform_get_drvdata(pdev);
-<<<<<<< HEAD
-=======
-	struct device_node *node = pdev->dev.of_node;
-	struct omap_dss_device *in;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int r;
 
 	ddata->vcc = devm_regulator_get(&pdev->dev, "envdd");
@@ -278,17 +255,6 @@ static int sharp_ls_probe_of(struct platform_device *pdev)
 	if (r)
 		return r;
 
-<<<<<<< HEAD
-=======
-	in = omapdss_of_find_source_for_first_ep(node);
-	if (IS_ERR(in)) {
-		dev_err(&pdev->dev, "failed to find video source\n");
-		return PTR_ERR(in);
-	}
-
-	ddata->in = in;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -304,12 +270,6 @@ static int sharp_ls_probe(struct platform_device *pdev)
 
 	platform_set_drvdata(pdev, ddata);
 
-<<<<<<< HEAD
-=======
-	if (!pdev->dev.of_node)
-		return -ENODEV;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	r = sharp_ls_probe_of(pdev);
 	if (r)
 		return r;
@@ -326,42 +286,22 @@ static int sharp_ls_probe(struct platform_device *pdev)
 	r = omapdss_register_display(dssdev);
 	if (r) {
 		dev_err(&pdev->dev, "Failed to register panel\n");
-<<<<<<< HEAD
 		return r;
 	}
 
 	return 0;
-=======
-		goto err_reg;
-	}
-
-	return 0;
-
-err_reg:
-	omap_dss_put_device(ddata->in);
-	return r;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int __exit sharp_ls_remove(struct platform_device *pdev)
 {
 	struct panel_drv_data *ddata = platform_get_drvdata(pdev);
 	struct omap_dss_device *dssdev = &ddata->dssdev;
-<<<<<<< HEAD
-=======
-	struct omap_dss_device *in = ddata->in;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	omapdss_unregister_display(dssdev);
 
 	sharp_ls_disable(dssdev);
 	sharp_ls_disconnect(dssdev);
 
-<<<<<<< HEAD
-=======
-	omap_dss_put_device(in);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

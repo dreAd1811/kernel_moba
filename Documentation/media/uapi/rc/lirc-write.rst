@@ -42,20 +42,14 @@ Description
 referenced by the file descriptor ``fd`` from the buffer starting at
 ``buf``.
 
-<<<<<<< HEAD
 The exact format of the data depends on what mode a driver is in, use
 :ref:`lirc_get_features` to get the supported modes and use
 :ref:`lirc_set_send_mode` set the mode.
-=======
-The exact format of the data depends on what mode a driver uses, use
-:ref:`lirc_get_features` to get the supported mode.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 When in :ref:`LIRC_MODE_PULSE <lirc-mode-PULSE>` mode, the data written to
 the chardev is a pulse/space sequence of integer values. Pulses and spaces
 are only marked implicitly by their position. The data must start and end
 with a pulse, therefore, the data must always include an uneven number of
-<<<<<<< HEAD
 samples. The write function blocks until the data has been transmitted
 by the hardware. If more data is provided than the hardware can send, the
 driver returns ``EINVAL``.
@@ -74,16 +68,6 @@ Return Value
 ============
 
 On success, the number of bytes written is returned. It is not an error if
-=======
-samples. The write function must block until the data has been transmitted
-by the hardware. If more data is provided than the hardware can send, the
-driver returns ``EINVAL``.
-
-Return Value
-============
-
-On success, the number of bytes read is returned. It is not an error if
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 this number is smaller than the number of bytes requested, or the amount
 of data required for one frame.  On error, -1 is returned, and the ``errno``
 variable is set appropriately. The generic error codes are described at the

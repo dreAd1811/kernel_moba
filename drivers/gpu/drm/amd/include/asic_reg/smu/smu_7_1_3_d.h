@@ -1246,9 +1246,6 @@
 #define ixGC_CAC_OVRD_CU                                                        0xe7
 #define ixCURRENT_PG_STATUS                                                     0xc020029c
 #define ixCURRENT_PG_STATUS_APU                                                 0xd020029c
-<<<<<<< HEAD
 #define ixPWR_SVI2_STATUS                                                       0xC0200294
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* SMU_7_1_3_D_H */

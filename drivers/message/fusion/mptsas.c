@@ -1165,10 +1165,6 @@ mptsas_schedule_target_reset(void *iocp)
 	 * issue target reset to next device in the queue
 	 */
 
-<<<<<<< HEAD
-=======
-	head = &hd->target_reset_list;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (list_empty(head))
 		return;
 
@@ -1933,11 +1929,7 @@ static enum blk_eh_timer_return mptsas_eh_timed_out(struct scsi_cmnd *sc)
 	MPT_SCSI_HOST *hd;
 	MPT_ADAPTER   *ioc;
 	VirtDevice    *vdevice;
-<<<<<<< HEAD
 	enum blk_eh_timer_return rc = BLK_EH_DONE;
-=======
-	enum blk_eh_timer_return rc = BLK_EH_NOT_HANDLED;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	hd = shost_priv(sc->device->host);
 	if (hd == NULL) {
@@ -2976,11 +2968,7 @@ out_unlock:
 	mutex_unlock(&ioc->sas_mgmt.mutex);
 out:
 	return ret;
-<<<<<<< HEAD
 }
-=======
- }
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void
 mptsas_parse_device_info(struct sas_identify *identify,
@@ -4332,21 +4320,14 @@ mptsas_hotplug_work(MPT_ADAPTER *ioc, struct fw_event_work *fw_event,
 			if (ioc->raid_data.pIocPg2->RaidVolume[i].VolumeID ==
 			    hot_plug_info->id) {
 				printk(MYIOC_s_WARN_FMT "firmware bug: unable "
-<<<<<<< HEAD
 				    "to add hidden disk - target_id matches "
-=======
-				    "to add hidden disk - target_id matchs "
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    "volume_id\n", ioc->name);
 				mptsas_free_fw_event(ioc, fw_event);
 				return;
 			}
 		}
 		mpt_findImVolumes(ioc);
-<<<<<<< HEAD
 		/* fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	case MPTSAS_ADD_DEVICE:
 		memset(&sas_device, 0, sizeof(struct mptsas_devinfo));

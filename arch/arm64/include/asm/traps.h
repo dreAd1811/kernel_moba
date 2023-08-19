@@ -19,10 +19,7 @@
 #define __ASM_TRAP_H
 
 #include <linux/list.h>
-<<<<<<< HEAD
 #include <asm/esr.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/sections.h>
 
 struct pt_regs;
@@ -38,15 +35,10 @@ struct undef_hook {
 
 void register_undef_hook(struct undef_hook *hook);
 void unregister_undef_hook(struct undef_hook *hook);
-<<<<<<< HEAD
 void force_signal_inject(int signal, int code, unsigned long address);
 void arm64_notify_segfault(unsigned long addr);
 void arm64_force_sig_info(struct siginfo *info, const char *str,
 			  struct task_struct *tsk);
-=======
-
-void arm64_notify_segfault(struct pt_regs *regs, unsigned long addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Move regs->pc to next instruction and do necessary setup before it
@@ -70,16 +62,11 @@ static inline int in_exception_text(unsigned long ptr)
 	return in ? : __in_irqentry_text(ptr);
 }
 
-<<<<<<< HEAD
-=======
-static inline void get_pct_hook_init(void) {}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int in_entry_text(unsigned long ptr)
 {
 	return ptr >= (unsigned long)&__entry_text_start &&
 	       ptr < (unsigned long)&__entry_text_end;
 }
-<<<<<<< HEAD
 
 /*
  * CPUs with the RAS extensions have an Implementation-Defined-Syndrome bit
@@ -133,6 +120,4 @@ static inline u32 arm64_ras_serror_get_severity(u32 esr)
 
 bool arm64_is_fatal_ras_serror(struct pt_regs *regs, unsigned int esr);
 void __noreturn arm64_serror_panic(struct pt_regs *regs, u32 esr);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

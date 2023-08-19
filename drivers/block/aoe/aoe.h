@@ -112,12 +112,7 @@ enum frame_flags {
 struct frame {
 	struct list_head head;
 	u32 tag;
-<<<<<<< HEAD
 	ktime_t sent;			/* high-res time packet was sent */
-=======
-	struct timeval sent;	/* high-res time packet was sent */
-	u32 sent_jiffs;		/* low-res jiffies-based sent time */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ulong waited;
 	ulong waited_total;
 	struct aoetgt *t;		/* parent target I belong to */

@@ -16,15 +16,8 @@
 		#interrupt-cells = <2>;
 		#address-cells = <1>;
 		#size-cells = <0>;
-<<<<<<< HEAD
 		spi-max-frequency = <3000000>;
 		spi-cs-high;
-=======
-		spi-max-frequency = <9600000>;
-		spi-cs-high;
-		spi-cpol;
-		spi-cpha;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		cpcap_adc: adc {
 			compatible = "motorola,mapphone-cpcap-adc";
@@ -75,7 +68,6 @@
 			};
 		};
 
-<<<<<<< HEAD
 		cpcap_audio: audio-codec {
 			#sound-dai-cells = <1>;
 
@@ -89,8 +81,6 @@
 			};
 		};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cpcap_rtc: rtc {
 			compatible = "motorola,cpcap-rtc";
 

@@ -281,17 +281,10 @@ hysdn_log_close(struct inode *ino, struct file *filep)
 /*************************************************/
 /* select/poll routine to be able using select() */
 /*************************************************/
-<<<<<<< HEAD
 static __poll_t
 hysdn_log_poll(struct file *file, poll_table *wait)
 {
 	__poll_t mask = 0;
-=======
-static unsigned int
-hysdn_log_poll(struct file *file, poll_table *wait)
-{
-	unsigned int mask = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hysdn_card *card = PDE_DATA(file_inode(file));
 	struct procdata *pd = card->proclog;
 
@@ -301,11 +294,7 @@ hysdn_log_poll(struct file *file, poll_table *wait)
 	poll_wait(file, &(pd->rd_queue), wait);
 
 	if (*((struct log_data **) file->private_data))
-<<<<<<< HEAD
 		mask |= EPOLLIN | EPOLLRDNORM;
-=======
-		mask |= POLLIN | POLLRDNORM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return mask;
 }				/* hysdn_log_poll */

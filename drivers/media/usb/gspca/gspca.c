@@ -63,7 +63,6 @@ static void PDEBUG_MODE(struct gspca_dev *gspca_dev, int debug, char *txt,
 			__u32 pixfmt, int w, int h)
 {
 	if ((pixfmt >> 24) >= '0' && (pixfmt >> 24) <= 'z') {
-<<<<<<< HEAD
 		gspca_dbg(gspca_dev, debug, "%s %c%c%c%c %dx%d\n",
 			  txt,
 			  pixfmt & 0xff,
@@ -76,20 +75,6 @@ static void PDEBUG_MODE(struct gspca_dev *gspca_dev, int debug, char *txt,
 			  txt,
 			  pixfmt,
 			  w, h);
-=======
-		PDEBUG(debug, "%s %c%c%c%c %dx%d",
-			txt,
-			pixfmt & 0xff,
-			(pixfmt >> 8) & 0xff,
-			(pixfmt >> 16) & 0xff,
-			pixfmt >> 24,
-			w, h);
-	} else {
-		PDEBUG(debug, "%s 0x%08x %dx%d",
-			txt,
-			pixfmt,
-			w, h);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -97,35 +82,6 @@ static void PDEBUG_MODE(struct gspca_dev *gspca_dev, int debug, char *txt,
 #define GSPCA_MEMORY_NO 0	/* V4L2_MEMORY_xxx starts from 1 */
 #define GSPCA_MEMORY_READ 7
 
-<<<<<<< HEAD
-=======
-#define BUF_ALL_FLAGS (V4L2_BUF_FLAG_QUEUED | V4L2_BUF_FLAG_DONE)
-
-/*
- * VMA operations.
- */
-static void gspca_vm_open(struct vm_area_struct *vma)
-{
-	struct gspca_frame *frame = vma->vm_private_data;
-
-	frame->vma_use_count++;
-	frame->v4l2_buf.flags |= V4L2_BUF_FLAG_MAPPED;
-}
-
-static void gspca_vm_close(struct vm_area_struct *vma)
-{
-	struct gspca_frame *frame = vma->vm_private_data;
-
-	if (--frame->vma_use_count <= 0)
-		frame->v4l2_buf.flags &= ~V4L2_BUF_FLAG_MAPPED;
-}
-
-static const struct vm_operations_struct gspca_vm_ops = {
-	.open		= gspca_vm_open,
-	.close		= gspca_vm_close,
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Input and interrupt endpoint handling functions
  */
@@ -140,11 +96,7 @@ static void int_irq(struct urb *urb)
 	case 0:
 		if (gspca_dev->sd_desc->int_pkt_scan(gspca_dev,
 		    urb->transfer_buffer, urb->actual_length) < 0) {
-<<<<<<< HEAD
 			gspca_err(gspca_dev, "Unknown packet received\n");
-=======
-			PERR("Unknown packet received");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		break;
 
@@ -158,12 +110,8 @@ static void int_irq(struct urb *urb)
 		break;
 
 	default:
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "URB error %i, resubmitting\n",
 			  urb->status);
-=======
-		PERR("URB error %i, resubmitting", urb->status);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		urb->status = 0;
 		ret = 0;
 	}
@@ -224,13 +172,8 @@ static int alloc_and_submit_int_urb(struct gspca_dev *gspca_dev,
 
 	buffer_len = le16_to_cpu(ep->wMaxPacketSize);
 	interval = ep->bInterval;
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "found int in endpoint: 0x%x, buffer_len=%u, interval=%u\n",
 		  ep->bEndpointAddress, buffer_len, interval);
-=======
-	PDEBUG(D_CONF, "found int in endpoint: 0x%x, buffer_len=%u, interval=%u",
-		ep->bEndpointAddress, buffer_len, interval);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev = gspca_dev->dev;
 
@@ -253,12 +196,8 @@ static int alloc_and_submit_int_urb(struct gspca_dev *gspca_dev,
 	urb->transfer_flags |= URB_NO_TRANSFER_DMA_MAP;
 	ret = usb_submit_urb(urb, GFP_KERNEL);
 	if (ret < 0) {
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "submit int URB failed with error %i\n",
 			  ret);
-=======
-		PERR("submit int URB failed with error %i", ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto error_submit;
 	}
 	gspca_dev->int_urb = urb;
@@ -344,11 +283,7 @@ static void fill_frame(struct gspca_dev *gspca_dev,
 		if (gspca_dev->frozen)
 			return;
 #endif
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "urb status: %d\n", urb->status);
-=======
-		PERR("urb status: %d", urb->status);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		urb->status = 0;
 		goto resubmit;
 	}
@@ -359,11 +294,7 @@ static void fill_frame(struct gspca_dev *gspca_dev,
 		/* check the packet status and length */
 		st = urb->iso_frame_desc[i].status;
 		if (st) {
-<<<<<<< HEAD
 			gspca_dbg(gspca_dev, D_PACK, "ISOC data error: [%d] len=%d, status=%d\n",
-=======
-			pr_err("ISOC data error: [%d] len=%d, status=%d\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       i, len, st);
 			gspca_dev->last_packet_type = DISCARD_PACKET;
 			continue;
@@ -375,24 +306,16 @@ static void fill_frame(struct gspca_dev *gspca_dev,
 		}
 
 		/* let the packet be analyzed by the subdriver */
-<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_PACK, "packet [%d] o:%d l:%d\n",
 			  i, urb->iso_frame_desc[i].offset, len);
-=======
-		PDEBUG(D_PACK, "packet [%d] o:%d l:%d",
-			i, urb->iso_frame_desc[i].offset, len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		data = (u8 *) urb->transfer_buffer
 					+ urb->iso_frame_desc[i].offset;
 		pkt_scan(gspca_dev, data, len);
 	}
 
 resubmit:
-<<<<<<< HEAD
 	if (!gspca_dev->streaming)
 		return;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* resubmit the URB */
 	st = usb_submit_urb(urb, GFP_ATOMIC);
 	if (st < 0)
@@ -408,11 +331,7 @@ static void isoc_irq(struct urb *urb)
 {
 	struct gspca_dev *gspca_dev = (struct gspca_dev *) urb->context;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_PACK, "isoc irq\n");
-=======
-	PDEBUG(D_PACK, "isoc irq");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!gspca_dev->streaming)
 		return;
 	fill_frame(gspca_dev, urb);
@@ -426,11 +345,7 @@ static void bulk_irq(struct urb *urb)
 	struct gspca_dev *gspca_dev = (struct gspca_dev *) urb->context;
 	int st;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_PACK, "bulk irq\n");
-=======
-	PDEBUG(D_PACK, "bulk irq");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!gspca_dev->streaming)
 		return;
 	switch (urb->status) {
@@ -443,30 +358,19 @@ static void bulk_irq(struct urb *urb)
 		if (gspca_dev->frozen)
 			return;
 #endif
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "urb status: %d\n", urb->status);
-=======
-		PERR("urb status: %d", urb->status);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		urb->status = 0;
 		goto resubmit;
 	}
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_PACK, "packet l:%d\n", urb->actual_length);
-=======
-	PDEBUG(D_PACK, "packet l:%d", urb->actual_length);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gspca_dev->sd_desc->pkt_scan(gspca_dev,
 				urb->transfer_buffer,
 				urb->actual_length);
 
 resubmit:
-<<<<<<< HEAD
 	if (!gspca_dev->streaming)
 		return;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* resubmit the URB */
 	if (gspca_dev->cam.bulk_nurbs != 0) {
 		st = usb_submit_urb(urb, GFP_ATOMIC);
@@ -491,7 +395,6 @@ void gspca_frame_add(struct gspca_dev *gspca_dev,
 			const u8 *data,
 			int len)
 {
-<<<<<<< HEAD
 	struct gspca_buffer *buf;
 	unsigned long flags;
 
@@ -505,31 +408,11 @@ void gspca_frame_add(struct gspca_dev *gspca_dev,
 	if (packet_type == FIRST_PACKET) {
 		/* if there is no queued buffer, discard the whole frame */
 		if (!buf) {
-=======
-	struct gspca_frame *frame;
-	int i, j;
-
-	PDEBUG(D_PACK, "add t:%d l:%d",	packet_type, len);
-
-	if (packet_type == FIRST_PACKET) {
-		i = atomic_read(&gspca_dev->fr_i);
-
-		/* if there are no queued buffer, discard the whole frame */
-		if (i == atomic_read(&gspca_dev->fr_q)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			gspca_dev->last_packet_type = DISCARD_PACKET;
 			gspca_dev->sequence++;
 			return;
 		}
-<<<<<<< HEAD
 		gspca_dev->image = vb2_plane_vaddr(&buf->vb.vb2_buf, 0);
-=======
-		j = gspca_dev->fr_queue[i];
-		frame = &gspca_dev->frame[j];
-		v4l2_get_timestamp(&frame->v4l2_buf.timestamp);
-		frame->v4l2_buf.sequence = gspca_dev->sequence++;
-		gspca_dev->image = frame->data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		gspca_dev->image_len = 0;
 	} else {
 		switch (gspca_dev->last_packet_type) {
@@ -547,17 +430,10 @@ void gspca_frame_add(struct gspca_dev *gspca_dev,
 
 	/* append the packet to the frame buffer */
 	if (len > 0) {
-<<<<<<< HEAD
 		if (gspca_dev->image_len + len > PAGE_ALIGN(gspca_dev->pixfmt.sizeimage)) {
 			gspca_err(gspca_dev, "frame overflow %d > %d\n",
 				  gspca_dev->image_len + len,
 				  PAGE_ALIGN(gspca_dev->pixfmt.sizeimage));
-=======
-		if (gspca_dev->image_len + len > gspca_dev->frsz) {
-			PERR("frame overflow %d > %d",
-				gspca_dev->image_len + len,
-				gspca_dev->frsz);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			packet_type = DISCARD_PACKET;
 		} else {
 /* !! image is NULL only when last pkt is LAST or DISCARD
@@ -577,7 +453,6 @@ void gspca_frame_add(struct gspca_dev *gspca_dev,
 	 * next first packet, wake up the application and advance
 	 * in the queue */
 	if (packet_type == LAST_PACKET) {
-<<<<<<< HEAD
 		spin_lock_irqsave(&gspca_dev->qlock, flags);
 		list_del(&buf->list);
 		spin_unlock_irqrestore(&gspca_dev->qlock, flags);
@@ -589,91 +464,17 @@ void gspca_frame_add(struct gspca_dev *gspca_dev,
 		gspca_dbg(gspca_dev, D_FRAM, "frame complete len:%d\n",
 			  gspca_dev->image_len);
 		vb2_buffer_done(&buf->vb.vb2_buf, VB2_BUF_STATE_DONE);
-=======
-		i = atomic_read(&gspca_dev->fr_i);
-		j = gspca_dev->fr_queue[i];
-		frame = &gspca_dev->frame[j];
-		frame->v4l2_buf.bytesused = gspca_dev->image_len;
-		frame->v4l2_buf.flags = (frame->v4l2_buf.flags
-					 | V4L2_BUF_FLAG_DONE)
-					& ~V4L2_BUF_FLAG_QUEUED;
-		i = (i + 1) % GSPCA_MAX_FRAMES;
-		atomic_set(&gspca_dev->fr_i, i);
-		wake_up_interruptible(&gspca_dev->wq);	/* event = new frame */
-		PDEBUG(D_FRAM, "frame complete len:%d",
-			frame->v4l2_buf.bytesused);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		gspca_dev->image = NULL;
 		gspca_dev->image_len = 0;
 	}
 }
 EXPORT_SYMBOL(gspca_frame_add);
 
-<<<<<<< HEAD
-=======
-static int frame_alloc(struct gspca_dev *gspca_dev, struct file *file,
-			enum v4l2_memory memory, unsigned int count)
-{
-	struct gspca_frame *frame;
-	unsigned int frsz;
-	int i;
-
-	frsz = gspca_dev->pixfmt.sizeimage;
-	PDEBUG(D_STREAM, "frame alloc frsz: %d", frsz);
-	frsz = PAGE_ALIGN(frsz);
-	if (count >= GSPCA_MAX_FRAMES)
-		count = GSPCA_MAX_FRAMES - 1;
-	gspca_dev->frbuf = vmalloc_32(frsz * count);
-	if (!gspca_dev->frbuf) {
-		pr_err("frame alloc failed\n");
-		return -ENOMEM;
-	}
-	gspca_dev->capt_file = file;
-	gspca_dev->memory = memory;
-	gspca_dev->frsz = frsz;
-	gspca_dev->nframes = count;
-	for (i = 0; i < count; i++) {
-		frame = &gspca_dev->frame[i];
-		frame->v4l2_buf.index = i;
-		frame->v4l2_buf.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
-		frame->v4l2_buf.flags = V4L2_BUF_FLAG_TIMESTAMP_MONOTONIC;
-		frame->v4l2_buf.field = V4L2_FIELD_NONE;
-		frame->v4l2_buf.length = frsz;
-		frame->v4l2_buf.memory = memory;
-		frame->v4l2_buf.sequence = 0;
-		frame->data = gspca_dev->frbuf + i * frsz;
-		frame->v4l2_buf.m.offset = i * frsz;
-	}
-	atomic_set(&gspca_dev->fr_q, 0);
-	atomic_set(&gspca_dev->fr_i, 0);
-	gspca_dev->fr_o = 0;
-	return 0;
-}
-
-static void frame_free(struct gspca_dev *gspca_dev)
-{
-	int i;
-
-	PDEBUG(D_STREAM, "frame free");
-	if (gspca_dev->frbuf != NULL) {
-		vfree(gspca_dev->frbuf);
-		gspca_dev->frbuf = NULL;
-		for (i = 0; i < gspca_dev->nframes; i++)
-			gspca_dev->frame[i].data = NULL;
-	}
-	gspca_dev->nframes = 0;
-	gspca_dev->frsz = 0;
-	gspca_dev->capt_file = NULL;
-	gspca_dev->memory = GSPCA_MEMORY_NO;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void destroy_urbs(struct gspca_dev *gspca_dev)
 {
 	struct urb *urb;
 	unsigned int i;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_STREAM, "kill transfer\n");
 
 	/* Killing all URBs guarantee that no URB completion
@@ -689,16 +490,6 @@ static void destroy_urbs(struct gspca_dev *gspca_dev)
 		if (!urb)
 			continue;
 		gspca_dev->urb[i] = NULL;
-=======
-	PDEBUG(D_STREAM, "kill transfer");
-	for (i = 0; i < MAX_NURBS; i++) {
-		urb = gspca_dev->urb[i];
-		if (urb == NULL)
-			break;
-
-		gspca_dev->urb[i] = NULL;
-		usb_kill_urb(urb);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		usb_free_coherent(gspca_dev->dev,
 				  urb->transfer_buffer_length,
 				  urb->transfer_buffer,
@@ -719,25 +510,6 @@ static int gspca_set_alt0(struct gspca_dev *gspca_dev)
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
-/* Note: both the queue and the usb locks should be held when calling this */
-static void gspca_stream_off(struct gspca_dev *gspca_dev)
-{
-	gspca_dev->streaming = 0;
-	gspca_dev->usb_err = 0;
-	if (gspca_dev->sd_desc->stopN)
-		gspca_dev->sd_desc->stopN(gspca_dev);
-	destroy_urbs(gspca_dev);
-	gspca_input_destroy_urb(gspca_dev);
-	gspca_set_alt0(gspca_dev);
-	gspca_input_create_urb(gspca_dev);
-	if (gspca_dev->sd_desc->stop0)
-		gspca_dev->sd_desc->stop0(gspca_dev);
-	PDEBUG(D_STREAM, "stream off OK");
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * look for an input transfer endpoint in an alternate setting.
  *
@@ -794,11 +566,7 @@ static u32 which_bandwidth(struct gspca_dev *gspca_dev)
 			bandwidth *= 30;		/* 30 fps */
 	}
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_STREAM, "min bandwidth: %d\n", bandwidth);
-=======
-	PDEBUG(D_STREAM, "min bandwidth: %d", bandwidth);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return bandwidth;
 }
 
@@ -858,13 +626,8 @@ static int build_isoc_ep_tb(struct gspca_dev *gspca_dev,
 		}
 		if (!found)
 			break;
-<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_STREAM, "alt %d bandwidth %d\n",
 			  ep_tb->alt, ep_tb->bandwidth);
-=======
-		PDEBUG(D_STREAM, "alt %d bandwidth %d",
-				ep_tb->alt, ep_tb->bandwidth);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		last_bw = ep_tb->bandwidth;
 		i++;
 		ep_tb++;
@@ -882,11 +645,7 @@ static int build_isoc_ep_tb(struct gspca_dev *gspca_dev,
 			gspca_dev->dev->speed == USB_SPEED_FULL &&
 			last_bw >= 1000000 &&
 			i > 1) {
-<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_STREAM, "dev has usb audio, skipping highest alt\n");
-=======
-		PDEBUG(D_STREAM, "dev has usb audio, skipping highest alt");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		i--;
 		ep_tb--;
 	}
@@ -926,26 +685,16 @@ static int create_urbs(struct gspca_dev *gspca_dev,
 		if (npkt == 0)
 			npkt = 32;		/* default value */
 		bsize = psize * npkt;
-<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_STREAM,
 			  "isoc %d pkts size %d = bsize:%d\n",
 			  npkt, psize, bsize);
-=======
-		PDEBUG(D_STREAM,
-			"isoc %d pkts size %d = bsize:%d",
-			npkt, psize, bsize);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		nurbs = DEF_NURBS;
 	} else {				/* bulk */
 		npkt = 0;
 		bsize = gspca_dev->cam.bulk_size;
 		if (bsize == 0)
 			bsize = psize;
-<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_STREAM, "bulk bsize:%d\n", bsize);
-=======
-		PDEBUG(D_STREAM, "bulk bsize:%d", bsize);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (gspca_dev->cam.bulk_nurbs != 0)
 			nurbs = gspca_dev->cam.bulk_nurbs;
 		else
@@ -991,7 +740,6 @@ static int create_urbs(struct gspca_dev *gspca_dev,
 	return 0;
 }
 
-<<<<<<< HEAD
 /* Note: both the queue and the usb locks should be held when calling this */
 static void gspca_stream_off(struct gspca_dev *gspca_dev)
 {
@@ -1009,8 +757,6 @@ static void gspca_stream_off(struct gspca_dev *gspca_dev)
 	gspca_dbg(gspca_dev, D_STREAM, "stream off OK\n");
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * start the USB transfer
  */
@@ -1026,10 +772,6 @@ static int gspca_init_transfer(struct gspca_dev *gspca_dev)
 	gspca_dev->image = NULL;
 	gspca_dev->image_len = 0;
 	gspca_dev->last_packet_type = DISCARD_PACKET;
-<<<<<<< HEAD
-=======
-	gspca_dev->sequence = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	gspca_dev->usb_err = 0;
 
@@ -1087,12 +829,8 @@ static int gspca_init_transfer(struct gspca_dev *gspca_dev)
 			}
 		}
 		if (!gspca_dev->cam.no_urb_create) {
-<<<<<<< HEAD
 			gspca_dbg(gspca_dev, D_STREAM, "init transfer alt %d\n",
 				  alt);
-=======
-			PDEBUG(D_STREAM, "init transfer alt %d", alt);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ret = create_urbs(gspca_dev,
 				alt_xfer(&intf->altsetting[alt], xfer,
 					 gspca_dev->xfer_ep));
@@ -1113,13 +851,8 @@ static int gspca_init_transfer(struct gspca_dev *gspca_dev)
 			destroy_urbs(gspca_dev);
 			goto out;
 		}
-<<<<<<< HEAD
 		v4l2_ctrl_handler_setup(gspca_dev->vdev.ctrl_handler);
 		gspca_dev->streaming = true;
-=======
-		gspca_dev->streaming = 1;
-		v4l2_ctrl_handler_setup(gspca_dev->vdev.ctrl_handler);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* some bulk transfers are started by the subdriver */
 		if (gspca_dev->cam.bulk && gspca_dev->cam.bulk_nurbs == 0)
@@ -1149,12 +882,8 @@ static int gspca_init_transfer(struct gspca_dev *gspca_dev)
 		/* the bandwidth is not wide enough
 		 * negotiate or try a lower alternate setting */
 retry:
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "alt %d - bandwidth not wide enough, trying again\n",
 			  alt);
-=======
-		PERR("alt %d - bandwidth not wide enough, trying again", alt);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		msleep(20);	/* wait for kill complete */
 		if (gspca_dev->sd_desc->isoc_nego) {
 			ret = gspca_dev->sd_desc->isoc_nego(gspca_dev);
@@ -1277,10 +1006,6 @@ static int vidioc_enum_fmt_vid_cap(struct file *file, void  *priv,
 
 	/* give an index to each format */
 	index = 0;
-<<<<<<< HEAD
-=======
-	j = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = gspca_dev->cam.nmodes; --i >= 0; ) {
 		fmt_tb[index] = gspca_dev->cam.cam_mode[i].pixelformat;
 		j = 0;
@@ -1367,17 +1092,9 @@ static int vidioc_try_fmt_vid_cap(struct file *file,
 			      struct v4l2_format *fmt)
 {
 	struct gspca_dev *gspca_dev = video_drvdata(file);
-<<<<<<< HEAD
 
 	if (try_fmt_vid_cap(gspca_dev, fmt) < 0)
 		return -EINVAL;
-=======
-	int ret;
-
-	ret = try_fmt_vid_cap(gspca_dev, fmt);
-	if (ret < 0)
-		return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1385,7 +1102,6 @@ static int vidioc_s_fmt_vid_cap(struct file *file, void *priv,
 			    struct v4l2_format *fmt)
 {
 	struct gspca_dev *gspca_dev = video_drvdata(file);
-<<<<<<< HEAD
 	int mode;
 
 	if (vb2_is_busy(&gspca_dev->queue))
@@ -1396,43 +1112,12 @@ static int vidioc_s_fmt_vid_cap(struct file *file, void *priv,
 		return -EINVAL;
 
 	gspca_dev->curr_mode = mode;
-=======
-	int ret;
-
-	if (mutex_lock_interruptible(&gspca_dev->queue_lock))
-		return -ERESTARTSYS;
-
-	ret = try_fmt_vid_cap(gspca_dev, fmt);
-	if (ret < 0)
-		goto out;
-
-	if (gspca_dev->nframes != 0
-	    && fmt->fmt.pix.sizeimage > gspca_dev->frsz) {
-		ret = -EINVAL;
-		goto out;
-	}
-
-	if (gspca_dev->streaming) {
-		ret = -EBUSY;
-		goto out;
-	}
-	gspca_dev->curr_mode = ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (gspca_dev->sd_desc->try_fmt)
 		/* subdriver try_fmt can modify format parameters */
 		gspca_dev->pixfmt = fmt->fmt.pix;
 	else
-<<<<<<< HEAD
 		gspca_dev->pixfmt = gspca_dev->cam.cam_mode[mode];
 	return 0;
-=======
-		gspca_dev->pixfmt = gspca_dev->cam.cam_mode[ret];
-
-	ret = 0;
-out:
-	mutex_unlock(&gspca_dev->queue_lock);
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int vidioc_enum_framesizes(struct file *file, void *priv,
@@ -1507,56 +1192,6 @@ static void gspca_release(struct v4l2_device *v4l2_device)
 	kfree(gspca_dev);
 }
 
-<<<<<<< HEAD
-=======
-static int dev_open(struct file *file)
-{
-	struct gspca_dev *gspca_dev = video_drvdata(file);
-	int ret;
-
-	PDEBUG(D_STREAM, "[%s] open", current->comm);
-
-	/* protect the subdriver against rmmod */
-	if (!try_module_get(gspca_dev->module))
-		return -ENODEV;
-
-	ret = v4l2_fh_open(file);
-	if (ret)
-		module_put(gspca_dev->module);
-	return ret;
-}
-
-static int dev_close(struct file *file)
-{
-	struct gspca_dev *gspca_dev = video_drvdata(file);
-
-	PDEBUG(D_STREAM, "[%s] close", current->comm);
-
-	/* Needed for gspca_stream_off, always lock before queue_lock! */
-	if (mutex_lock_interruptible(&gspca_dev->usb_lock))
-		return -ERESTARTSYS;
-
-	if (mutex_lock_interruptible(&gspca_dev->queue_lock)) {
-		mutex_unlock(&gspca_dev->usb_lock);
-		return -ERESTARTSYS;
-	}
-
-	/* if the file did the capture, free the streaming resources */
-	if (gspca_dev->capt_file == file) {
-		if (gspca_dev->streaming)
-			gspca_stream_off(gspca_dev);
-		frame_free(gspca_dev);
-	}
-	module_put(gspca_dev->module);
-	mutex_unlock(&gspca_dev->queue_lock);
-	mutex_unlock(&gspca_dev->usb_lock);
-
-	PDEBUG(D_STREAM, "close done");
-
-	return v4l2_fh_release(file);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int vidioc_querycap(struct file *file, void  *priv,
 			   struct v4l2_capability *cap)
 {
@@ -1606,173 +1241,9 @@ static int vidioc_s_input(struct file *file, void *priv, unsigned int i)
 {
 	if (i > 0)
 		return -EINVAL;
-<<<<<<< HEAD
 	return 0;
 }
 
-=======
-	return (0);
-}
-
-static int vidioc_reqbufs(struct file *file, void *priv,
-			  struct v4l2_requestbuffers *rb)
-{
-	struct gspca_dev *gspca_dev = video_drvdata(file);
-	int i, ret = 0, streaming;
-
-	i = rb->memory;			/* (avoid compilation warning) */
-	switch (i) {
-	case GSPCA_MEMORY_READ:			/* (internal call) */
-	case V4L2_MEMORY_MMAP:
-	case V4L2_MEMORY_USERPTR:
-		break;
-	default:
-		return -EINVAL;
-	}
-	if (mutex_lock_interruptible(&gspca_dev->queue_lock))
-		return -ERESTARTSYS;
-
-	if (gspca_dev->memory != GSPCA_MEMORY_NO
-	    && gspca_dev->memory != GSPCA_MEMORY_READ
-	    && gspca_dev->memory != rb->memory) {
-		ret = -EBUSY;
-		goto out;
-	}
-
-	/* only one file may do the capture */
-	if (gspca_dev->capt_file != NULL
-	    && gspca_dev->capt_file != file) {
-		ret = -EBUSY;
-		goto out;
-	}
-
-	/* if allocated, the buffers must not be mapped */
-	for (i = 0; i < gspca_dev->nframes; i++) {
-		if (gspca_dev->frame[i].vma_use_count) {
-			ret = -EBUSY;
-			goto out;
-		}
-	}
-
-	/* stop streaming */
-	streaming = gspca_dev->streaming;
-	if (streaming) {
-		gspca_stream_off(gspca_dev);
-
-		/* Don't restart the stream when switching from read
-		 * to mmap mode */
-		if (gspca_dev->memory == GSPCA_MEMORY_READ)
-			streaming = 0;
-	}
-
-	/* free the previous allocated buffers, if any */
-	if (gspca_dev->nframes != 0)
-		frame_free(gspca_dev);
-	if (rb->count == 0)			/* unrequest */
-		goto out;
-	ret = frame_alloc(gspca_dev, file, rb->memory, rb->count);
-	if (ret == 0) {
-		rb->count = gspca_dev->nframes;
-		if (streaming)
-			ret = gspca_init_transfer(gspca_dev);
-	}
-out:
-	mutex_unlock(&gspca_dev->queue_lock);
-	PDEBUG(D_STREAM, "reqbufs st:%d c:%d", ret, rb->count);
-	return ret;
-}
-
-static int vidioc_querybuf(struct file *file, void *priv,
-			   struct v4l2_buffer *v4l2_buf)
-{
-	struct gspca_dev *gspca_dev = video_drvdata(file);
-	struct gspca_frame *frame;
-
-	if (v4l2_buf->index >= gspca_dev->nframes)
-		return -EINVAL;
-
-	frame = &gspca_dev->frame[v4l2_buf->index];
-	memcpy(v4l2_buf, &frame->v4l2_buf, sizeof *v4l2_buf);
-	return 0;
-}
-
-static int vidioc_streamon(struct file *file, void *priv,
-			   enum v4l2_buf_type buf_type)
-{
-	struct gspca_dev *gspca_dev = video_drvdata(file);
-	int ret;
-
-	if (buf_type != V4L2_BUF_TYPE_VIDEO_CAPTURE)
-		return -EINVAL;
-	if (mutex_lock_interruptible(&gspca_dev->queue_lock))
-		return -ERESTARTSYS;
-
-	/* check the capture file */
-	if (gspca_dev->capt_file != file) {
-		ret = -EBUSY;
-		goto out;
-	}
-
-	if (gspca_dev->nframes == 0
-	    || !(gspca_dev->frame[0].v4l2_buf.flags & V4L2_BUF_FLAG_QUEUED)) {
-		ret = -EINVAL;
-		goto out;
-	}
-	if (!gspca_dev->streaming) {
-		ret = gspca_init_transfer(gspca_dev);
-		if (ret < 0)
-			goto out;
-	}
-	PDEBUG_MODE(gspca_dev, D_STREAM, "stream on OK",
-		    gspca_dev->pixfmt.pixelformat,
-		    gspca_dev->pixfmt.width, gspca_dev->pixfmt.height);
-	ret = 0;
-out:
-	mutex_unlock(&gspca_dev->queue_lock);
-	return ret;
-}
-
-static int vidioc_streamoff(struct file *file, void *priv,
-				enum v4l2_buf_type buf_type)
-{
-	struct gspca_dev *gspca_dev = video_drvdata(file);
-	int i, ret;
-
-	if (buf_type != V4L2_BUF_TYPE_VIDEO_CAPTURE)
-		return -EINVAL;
-
-	if (mutex_lock_interruptible(&gspca_dev->queue_lock))
-		return -ERESTARTSYS;
-
-	if (!gspca_dev->streaming) {
-		ret = 0;
-		goto out;
-	}
-
-	/* check the capture file */
-	if (gspca_dev->capt_file != file) {
-		ret = -EBUSY;
-		goto out;
-	}
-
-	/* stop streaming */
-	gspca_stream_off(gspca_dev);
-	/* In case another thread is waiting in dqbuf */
-	wake_up_interruptible(&gspca_dev->wq);
-
-	/* empty the transfer queues */
-	for (i = 0; i < gspca_dev->nframes; i++)
-		gspca_dev->frame[i].v4l2_buf.flags &= ~BUF_ALL_FLAGS;
-	atomic_set(&gspca_dev->fr_q, 0);
-	atomic_set(&gspca_dev->fr_i, 0);
-	gspca_dev->fr_o = 0;
-	ret = 0;
-out:
-	mutex_unlock(&gspca_dev->queue_lock);
-	return ret;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int vidioc_g_jpegcomp(struct file *file, void *priv,
 			struct v4l2_jpegcompression *jpegcomp)
 {
@@ -1796,7 +1267,6 @@ static int vidioc_g_parm(struct file *filp, void *priv,
 {
 	struct gspca_dev *gspca_dev = video_drvdata(filp);
 
-<<<<<<< HEAD
 	parm->parm.capture.readbuffers = gspca_dev->queue.min_buffers_needed;
 
 	if (!gspca_dev->sd_desc->get_streamparm)
@@ -1806,23 +1276,12 @@ static int vidioc_g_parm(struct file *filp, void *priv,
 	gspca_dev->usb_err = 0;
 	gspca_dev->sd_desc->get_streamparm(gspca_dev, parm);
 	return gspca_dev->usb_err;
-=======
-	parm->parm.capture.readbuffers = gspca_dev->nbufread;
-
-	if (gspca_dev->sd_desc->get_streamparm) {
-		gspca_dev->usb_err = 0;
-		gspca_dev->sd_desc->get_streamparm(gspca_dev, parm);
-		return gspca_dev->usb_err;
-	}
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int vidioc_s_parm(struct file *filp, void *priv,
 			struct v4l2_streamparm *parm)
 {
 	struct gspca_dev *gspca_dev = video_drvdata(filp);
-<<<<<<< HEAD
 
 	parm->parm.capture.readbuffers = gspca_dev->queue.min_buffers_needed;
 
@@ -1943,441 +1402,23 @@ static const struct v4l2_file_operations dev_fops = {
 	.read = vb2_fop_read,
 	.mmap = vb2_fop_mmap,
 	.poll = vb2_fop_poll,
-=======
-	unsigned int n;
-
-	n = parm->parm.capture.readbuffers;
-	if (n == 0 || n >= GSPCA_MAX_FRAMES)
-		parm->parm.capture.readbuffers = gspca_dev->nbufread;
-	else
-		gspca_dev->nbufread = n;
-
-	if (gspca_dev->sd_desc->set_streamparm) {
-		gspca_dev->usb_err = 0;
-		gspca_dev->sd_desc->set_streamparm(gspca_dev, parm);
-		return gspca_dev->usb_err;
-	}
-
-	return 0;
-}
-
-static int dev_mmap(struct file *file, struct vm_area_struct *vma)
-{
-	struct gspca_dev *gspca_dev = video_drvdata(file);
-	struct gspca_frame *frame;
-	struct page *page;
-	unsigned long addr, start, size;
-	int i, ret;
-
-	start = vma->vm_start;
-	size = vma->vm_end - vma->vm_start;
-	PDEBUG(D_STREAM, "mmap start:%08x size:%d", (int) start, (int) size);
-
-	if (mutex_lock_interruptible(&gspca_dev->queue_lock))
-		return -ERESTARTSYS;
-	if (gspca_dev->capt_file != file) {
-		ret = -EINVAL;
-		goto out;
-	}
-
-	frame = NULL;
-	for (i = 0; i < gspca_dev->nframes; ++i) {
-		if (gspca_dev->frame[i].v4l2_buf.memory != V4L2_MEMORY_MMAP) {
-			PDEBUG(D_STREAM, "mmap bad memory type");
-			break;
-		}
-		if ((gspca_dev->frame[i].v4l2_buf.m.offset >> PAGE_SHIFT)
-						== vma->vm_pgoff) {
-			frame = &gspca_dev->frame[i];
-			break;
-		}
-	}
-	if (frame == NULL) {
-		PDEBUG(D_STREAM, "mmap no frame buffer found");
-		ret = -EINVAL;
-		goto out;
-	}
-	if (size != frame->v4l2_buf.length) {
-		PDEBUG(D_STREAM, "mmap bad size");
-		ret = -EINVAL;
-		goto out;
-	}
-
-	/*
-	 * - VM_IO marks the area as being a mmaped region for I/O to a
-	 *   device. It also prevents the region from being core dumped.
-	 */
-	vma->vm_flags |= VM_IO;
-
-	addr = (unsigned long) frame->data;
-	while (size > 0) {
-		page = vmalloc_to_page((void *) addr);
-		ret = vm_insert_page(vma, start, page);
-		if (ret < 0)
-			goto out;
-		start += PAGE_SIZE;
-		addr += PAGE_SIZE;
-		size -= PAGE_SIZE;
-	}
-
-	vma->vm_ops = &gspca_vm_ops;
-	vma->vm_private_data = frame;
-	gspca_vm_open(vma);
-	ret = 0;
-out:
-	mutex_unlock(&gspca_dev->queue_lock);
-	return ret;
-}
-
-static int frame_ready_nolock(struct gspca_dev *gspca_dev, struct file *file,
-				enum v4l2_memory memory)
-{
-	if (!gspca_dev->present)
-		return -ENODEV;
-	if (gspca_dev->capt_file != file || gspca_dev->memory != memory ||
-			!gspca_dev->streaming)
-		return -EINVAL;
-
-	/* check if a frame is ready */
-	return gspca_dev->fr_o != atomic_read(&gspca_dev->fr_i);
-}
-
-static int frame_ready(struct gspca_dev *gspca_dev, struct file *file,
-			enum v4l2_memory memory)
-{
-	int ret;
-
-	if (mutex_lock_interruptible(&gspca_dev->queue_lock))
-		return -ERESTARTSYS;
-	ret = frame_ready_nolock(gspca_dev, file, memory);
-	mutex_unlock(&gspca_dev->queue_lock);
-	return ret;
-}
-
-/*
- * dequeue a video buffer
- *
- * If nonblock_ing is false, block until a buffer is available.
- */
-static int vidioc_dqbuf(struct file *file, void *priv,
-			struct v4l2_buffer *v4l2_buf)
-{
-	struct gspca_dev *gspca_dev = video_drvdata(file);
-	struct gspca_frame *frame;
-	int i, j, ret;
-
-	PDEBUG(D_FRAM, "dqbuf");
-
-	if (mutex_lock_interruptible(&gspca_dev->queue_lock))
-		return -ERESTARTSYS;
-
-	for (;;) {
-		ret = frame_ready_nolock(gspca_dev, file, v4l2_buf->memory);
-		if (ret < 0)
-			goto out;
-		if (ret > 0)
-			break;
-
-		mutex_unlock(&gspca_dev->queue_lock);
-
-		if (file->f_flags & O_NONBLOCK)
-			return -EAGAIN;
-
-		/* wait till a frame is ready */
-		ret = wait_event_interruptible_timeout(gspca_dev->wq,
-			frame_ready(gspca_dev, file, v4l2_buf->memory),
-			msecs_to_jiffies(3000));
-		if (ret < 0)
-			return ret;
-		if (ret == 0)
-			return -EIO;
-
-		if (mutex_lock_interruptible(&gspca_dev->queue_lock))
-			return -ERESTARTSYS;
-	}
-
-	i = gspca_dev->fr_o;
-	j = gspca_dev->fr_queue[i];
-	frame = &gspca_dev->frame[j];
-
-	gspca_dev->fr_o = (i + 1) % GSPCA_MAX_FRAMES;
-
-	frame->v4l2_buf.flags &= ~V4L2_BUF_FLAG_DONE;
-	memcpy(v4l2_buf, &frame->v4l2_buf, sizeof *v4l2_buf);
-	PDEBUG(D_FRAM, "dqbuf %d", j);
-	ret = 0;
-
-	if (gspca_dev->memory == V4L2_MEMORY_USERPTR) {
-		if (copy_to_user((__u8 __user *) frame->v4l2_buf.m.userptr,
-				 frame->data,
-				 frame->v4l2_buf.bytesused)) {
-			PERR("dqbuf cp to user failed");
-			ret = -EFAULT;
-		}
-	}
-out:
-	mutex_unlock(&gspca_dev->queue_lock);
-
-	if (ret == 0 && gspca_dev->sd_desc->dq_callback) {
-		mutex_lock(&gspca_dev->usb_lock);
-		gspca_dev->usb_err = 0;
-		if (gspca_dev->present)
-			gspca_dev->sd_desc->dq_callback(gspca_dev);
-		mutex_unlock(&gspca_dev->usb_lock);
-	}
-
-	return ret;
-}
-
-/*
- * queue a video buffer
- *
- * Attempting to queue a buffer that has already been
- * queued will return -EINVAL.
- */
-static int vidioc_qbuf(struct file *file, void *priv,
-			struct v4l2_buffer *v4l2_buf)
-{
-	struct gspca_dev *gspca_dev = video_drvdata(file);
-	struct gspca_frame *frame;
-	int i, index, ret;
-
-	PDEBUG(D_FRAM, "qbuf %d", v4l2_buf->index);
-
-	if (mutex_lock_interruptible(&gspca_dev->queue_lock))
-		return -ERESTARTSYS;
-
-	index = v4l2_buf->index;
-	if ((unsigned) index >= gspca_dev->nframes) {
-		PDEBUG(D_FRAM,
-			"qbuf idx %d >= %d", index, gspca_dev->nframes);
-		ret = -EINVAL;
-		goto out;
-	}
-	if (v4l2_buf->memory != gspca_dev->memory) {
-		PDEBUG(D_FRAM, "qbuf bad memory type");
-		ret = -EINVAL;
-		goto out;
-	}
-
-	frame = &gspca_dev->frame[index];
-	if (frame->v4l2_buf.flags & BUF_ALL_FLAGS) {
-		PDEBUG(D_FRAM, "qbuf bad state");
-		ret = -EINVAL;
-		goto out;
-	}
-
-	frame->v4l2_buf.flags |= V4L2_BUF_FLAG_QUEUED;
-
-	if (frame->v4l2_buf.memory == V4L2_MEMORY_USERPTR) {
-		frame->v4l2_buf.m.userptr = v4l2_buf->m.userptr;
-		frame->v4l2_buf.length = v4l2_buf->length;
-	}
-
-	/* put the buffer in the 'queued' queue */
-	i = atomic_read(&gspca_dev->fr_q);
-	gspca_dev->fr_queue[i] = index;
-	atomic_set(&gspca_dev->fr_q, (i + 1) % GSPCA_MAX_FRAMES);
-
-	v4l2_buf->flags |= V4L2_BUF_FLAG_QUEUED;
-	v4l2_buf->flags &= ~V4L2_BUF_FLAG_DONE;
-	ret = 0;
-out:
-	mutex_unlock(&gspca_dev->queue_lock);
-	return ret;
-}
-
-/*
- * allocate the resources for read()
- */
-static int read_alloc(struct gspca_dev *gspca_dev,
-			struct file *file)
-{
-	struct v4l2_buffer v4l2_buf;
-	int i, ret;
-
-	PDEBUG(D_STREAM, "read alloc");
-
-	if (mutex_lock_interruptible(&gspca_dev->usb_lock))
-		return -ERESTARTSYS;
-
-	if (gspca_dev->nframes == 0) {
-		struct v4l2_requestbuffers rb;
-
-		memset(&rb, 0, sizeof rb);
-		rb.count = gspca_dev->nbufread;
-		rb.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
-		rb.memory = GSPCA_MEMORY_READ;
-		ret = vidioc_reqbufs(file, gspca_dev, &rb);
-		if (ret != 0) {
-			PDEBUG(D_STREAM, "read reqbuf err %d", ret);
-			goto out;
-		}
-		memset(&v4l2_buf, 0, sizeof v4l2_buf);
-		v4l2_buf.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
-		v4l2_buf.memory = GSPCA_MEMORY_READ;
-		for (i = 0; i < gspca_dev->nbufread; i++) {
-			v4l2_buf.index = i;
-			ret = vidioc_qbuf(file, gspca_dev, &v4l2_buf);
-			if (ret != 0) {
-				PDEBUG(D_STREAM, "read qbuf err: %d", ret);
-				goto out;
-			}
-		}
-	}
-
-	/* start streaming */
-	ret = vidioc_streamon(file, gspca_dev, V4L2_BUF_TYPE_VIDEO_CAPTURE);
-	if (ret != 0)
-		PDEBUG(D_STREAM, "read streamon err %d", ret);
-out:
-	mutex_unlock(&gspca_dev->usb_lock);
-	return ret;
-}
-
-static unsigned int dev_poll(struct file *file, poll_table *wait)
-{
-	struct gspca_dev *gspca_dev = video_drvdata(file);
-	unsigned long req_events = poll_requested_events(wait);
-	int ret = 0;
-
-	PDEBUG(D_FRAM, "poll");
-
-	if (req_events & POLLPRI)
-		ret |= v4l2_ctrl_poll(file, wait);
-
-	if (req_events & (POLLIN | POLLRDNORM)) {
-		/* if reqbufs is not done, the user would use read() */
-		if (gspca_dev->memory == GSPCA_MEMORY_NO) {
-			if (read_alloc(gspca_dev, file) != 0) {
-				ret |= POLLERR;
-				goto out;
-			}
-		}
-
-		poll_wait(file, &gspca_dev->wq, wait);
-
-		/* check if an image has been received */
-		if (mutex_lock_interruptible(&gspca_dev->queue_lock) != 0) {
-			ret |= POLLERR;
-			goto out;
-		}
-		if (gspca_dev->fr_o != atomic_read(&gspca_dev->fr_i))
-			ret |= POLLIN | POLLRDNORM;
-		mutex_unlock(&gspca_dev->queue_lock);
-	}
-
-out:
-	if (!gspca_dev->present)
-		ret |= POLLHUP;
-
-	return ret;
-}
-
-static ssize_t dev_read(struct file *file, char __user *data,
-		    size_t count, loff_t *ppos)
-{
-	struct gspca_dev *gspca_dev = video_drvdata(file);
-	struct gspca_frame *frame;
-	struct v4l2_buffer v4l2_buf;
-	struct timeval timestamp;
-	int n, ret, ret2;
-
-	PDEBUG(D_FRAM, "read (%zd)", count);
-	if (gspca_dev->memory == GSPCA_MEMORY_NO) { /* first time ? */
-		ret = read_alloc(gspca_dev, file);
-		if (ret != 0)
-			return ret;
-	}
-
-	/* get a frame */
-	v4l2_get_timestamp(&timestamp);
-	timestamp.tv_sec--;
-	n = 2;
-	for (;;) {
-		memset(&v4l2_buf, 0, sizeof v4l2_buf);
-		v4l2_buf.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
-		v4l2_buf.memory = GSPCA_MEMORY_READ;
-		ret = vidioc_dqbuf(file, gspca_dev, &v4l2_buf);
-		if (ret != 0) {
-			PDEBUG(D_STREAM, "read dqbuf err %d", ret);
-			return ret;
-		}
-
-		/* if the process slept for more than 1 second,
-		 * get a newer frame */
-		frame = &gspca_dev->frame[v4l2_buf.index];
-		if (--n < 0)
-			break;			/* avoid infinite loop */
-		if (frame->v4l2_buf.timestamp.tv_sec >= timestamp.tv_sec)
-			break;
-		ret = vidioc_qbuf(file, gspca_dev, &v4l2_buf);
-		if (ret != 0) {
-			PDEBUG(D_STREAM, "read qbuf err %d", ret);
-			return ret;
-		}
-	}
-
-	/* copy the frame */
-	if (count > frame->v4l2_buf.bytesused)
-		count = frame->v4l2_buf.bytesused;
-	ret = copy_to_user(data, frame->data, count);
-	if (ret != 0) {
-		PERR("read cp to user lack %d / %zd", ret, count);
-		ret = -EFAULT;
-		goto out;
-	}
-	ret = count;
-out:
-	/* in each case, requeue the buffer */
-	ret2 = vidioc_qbuf(file, gspca_dev, &v4l2_buf);
-	if (ret2 != 0)
-		return ret2;
-	return ret;
-}
-
-static const struct v4l2_file_operations dev_fops = {
-	.owner = THIS_MODULE,
-	.open = dev_open,
-	.release = dev_close,
-	.read = dev_read,
-	.mmap = dev_mmap,
-	.unlocked_ioctl = video_ioctl2,
-	.poll	= dev_poll,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct v4l2_ioctl_ops dev_ioctl_ops = {
 	.vidioc_querycap	= vidioc_querycap,
-<<<<<<< HEAD
-=======
-	.vidioc_dqbuf		= vidioc_dqbuf,
-	.vidioc_qbuf		= vidioc_qbuf,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.vidioc_enum_fmt_vid_cap = vidioc_enum_fmt_vid_cap,
 	.vidioc_try_fmt_vid_cap	= vidioc_try_fmt_vid_cap,
 	.vidioc_g_fmt_vid_cap	= vidioc_g_fmt_vid_cap,
 	.vidioc_s_fmt_vid_cap	= vidioc_s_fmt_vid_cap,
-<<<<<<< HEAD
 	.vidioc_enum_input	= vidioc_enum_input,
 	.vidioc_g_input		= vidioc_g_input,
 	.vidioc_s_input		= vidioc_s_input,
-=======
-	.vidioc_streamon	= vidioc_streamon,
-	.vidioc_enum_input	= vidioc_enum_input,
-	.vidioc_g_input		= vidioc_g_input,
-	.vidioc_s_input		= vidioc_s_input,
-	.vidioc_reqbufs		= vidioc_reqbufs,
-	.vidioc_querybuf	= vidioc_querybuf,
-	.vidioc_streamoff	= vidioc_streamoff,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.vidioc_g_jpegcomp	= vidioc_g_jpegcomp,
 	.vidioc_s_jpegcomp	= vidioc_s_jpegcomp,
 	.vidioc_g_parm		= vidioc_g_parm,
 	.vidioc_s_parm		= vidioc_s_parm,
 	.vidioc_enum_framesizes = vidioc_enum_framesizes,
 	.vidioc_enum_frameintervals = vidioc_enum_frameintervals,
-<<<<<<< HEAD
 
 	.vidioc_reqbufs		= vb2_ioctl_reqbufs,
 	.vidioc_create_bufs	= vb2_ioctl_create_bufs,
@@ -2388,8 +1429,6 @@ static const struct v4l2_ioctl_ops dev_ioctl_ops = {
 	.vidioc_streamon	= vb2_ioctl_streamon,
 	.vidioc_streamoff	= vb2_ioctl_streamoff,
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_VIDEO_ADV_DEBUG
 	.vidioc_g_chip_info	= vidioc_g_chip_info,
 	.vidioc_g_register	= vidioc_g_register,
@@ -2420,10 +1459,7 @@ int gspca_dev_probe2(struct usb_interface *intf,
 {
 	struct gspca_dev *gspca_dev;
 	struct usb_device *dev = interface_to_usbdev(intf);
-<<<<<<< HEAD
 	struct vb2_queue *q;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	pr_info("%s-" GSPCA_VERSION " probing %04x:%04x\n",
@@ -2437,11 +1473,7 @@ int gspca_dev_probe2(struct usb_interface *intf,
 		pr_err("couldn't kzalloc gspca struct\n");
 		return -ENOMEM;
 	}
-<<<<<<< HEAD
 	gspca_dev->usb_buf = kmalloc(USB_BUF_SZ, GFP_KERNEL);
-=======
-	gspca_dev->usb_buf = kzalloc(USB_BUF_SZ, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!gspca_dev->usb_buf) {
 		pr_err("out of memory\n");
 		ret = -ENOMEM;
@@ -2472,19 +1504,13 @@ int gspca_dev_probe2(struct usb_interface *intf,
 	ret = v4l2_device_register(&intf->dev, &gspca_dev->v4l2_dev);
 	if (ret)
 		goto out;
-<<<<<<< HEAD
 	gspca_dev->present = true;
 	gspca_dev->sd_desc = sd_desc;
-=======
-	gspca_dev->sd_desc = sd_desc;
-	gspca_dev->nbufread = 2;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gspca_dev->empty_packet = -1;	/* don't check the empty packets */
 	gspca_dev->vdev = gspca_template;
 	gspca_dev->vdev.v4l2_dev = &gspca_dev->v4l2_dev;
 	video_set_drvdata(&gspca_dev->vdev, gspca_dev);
 	gspca_dev->module = module;
-<<<<<<< HEAD
 
 	mutex_init(&gspca_dev->usb_lock);
 	gspca_dev->vdev.lock = &gspca_dev->usb_lock;
@@ -2509,15 +1535,6 @@ int gspca_dev_probe2(struct usb_interface *intf,
 	INIT_LIST_HEAD(&gspca_dev->buf_list);
 	spin_lock_init(&gspca_dev->qlock);
 
-=======
-	gspca_dev->present = 1;
-
-	mutex_init(&gspca_dev->usb_lock);
-	gspca_dev->vdev.lock = &gspca_dev->usb_lock;
-	mutex_init(&gspca_dev->queue_lock);
-	init_waitqueue_head(&gspca_dev->wq);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* configure the subdriver and initialize the USB device */
 	ret = sd_desc->config(gspca_dev, id);
 	if (ret < 0)
@@ -2535,17 +1552,6 @@ int gspca_dev_probe2(struct usb_interface *intf,
 	if (ret)
 		goto out;
 
-<<<<<<< HEAD
-=======
-	/*
-	 * Don't take usb_lock for these ioctls. This improves latency if
-	 * usb_lock is taken for a long time, e.g. when changing a control
-	 * value, and a new frame is ready to be dequeued.
-	 */
-	v4l2_disable_ioctl_locking(&gspca_dev->vdev, VIDIOC_DQBUF);
-	v4l2_disable_ioctl_locking(&gspca_dev->vdev, VIDIOC_QBUF);
-	v4l2_disable_ioctl_locking(&gspca_dev->vdev, VIDIOC_QUERYBUF);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_VIDEO_ADV_DEBUG
 	if (!gspca_dev->sd_desc->get_register)
 		v4l2_disable_ioctl(&gspca_dev->vdev, VIDIOC_DBG_G_REGISTER);
@@ -2567,12 +1573,8 @@ int gspca_dev_probe2(struct usb_interface *intf,
 	}
 
 	usb_set_intfdata(intf, gspca_dev);
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_PROBE, "%s created\n",
 		  video_device_node_name(&gspca_dev->vdev));
-=======
-	PDEBUG(D_PROBE, "%s created", video_device_node_name(&gspca_dev->vdev));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	gspca_input_create_urb(gspca_dev);
 
@@ -2627,7 +1629,6 @@ void gspca_disconnect(struct usb_interface *intf)
 	struct input_dev *input_dev;
 #endif
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_PROBE, "%s disconnect\n",
 		  video_device_node_name(&gspca_dev->vdev));
 
@@ -2639,33 +1640,12 @@ void gspca_disconnect(struct usb_interface *intf)
 	vb2_queue_error(&gspca_dev->queue);
 
 #if IS_ENABLED(CONFIG_INPUT)
-=======
-	PDEBUG(D_PROBE, "%s disconnect",
-		video_device_node_name(&gspca_dev->vdev));
-
-	mutex_lock(&gspca_dev->usb_lock);
-
-	gspca_dev->present = 0;
-	destroy_urbs(gspca_dev);
-
-#if IS_ENABLED(CONFIG_INPUT)
-	gspca_input_destroy_urb(gspca_dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	input_dev = gspca_dev->input_dev;
 	if (input_dev) {
 		gspca_dev->input_dev = NULL;
 		input_unregister_device(input_dev);
 	}
 #endif
-<<<<<<< HEAD
-=======
-	/* Free subdriver's streaming resources / stop sd workqueue(s) */
-	if (gspca_dev->sd_desc->stop0 && gspca_dev->streaming)
-		gspca_dev->sd_desc->stop0(gspca_dev);
-	gspca_dev->streaming = 0;
-	gspca_dev->dev = NULL;
-	wake_up_interruptible(&gspca_dev->wq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	v4l2_device_disconnect(&gspca_dev->v4l2_dev);
 	video_unregister_device(&gspca_dev->vdev);
@@ -2684,11 +1664,7 @@ int gspca_suspend(struct usb_interface *intf, pm_message_t message)
 
 	gspca_input_destroy_urb(gspca_dev);
 
-<<<<<<< HEAD
 	if (!vb2_start_streaming_called(&gspca_dev->queue))
-=======
-	if (!gspca_dev->streaming)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	mutex_lock(&gspca_dev->usb_lock);
@@ -2720,12 +1696,7 @@ int gspca_resume(struct usb_interface *intf)
 	 * only write to the device registers on s_ctrl when streaming ->
 	 * Clear streaming to avoid setting all ctrls twice.
 	 */
-<<<<<<< HEAD
 	streaming = vb2_start_streaming_called(&gspca_dev->queue);
-=======
-	streaming = gspca_dev->streaming;
-	gspca_dev->streaming = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (streaming)
 		ret = gspca_init_transfer(gspca_dev);
 	else

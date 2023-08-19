@@ -254,11 +254,7 @@ static int nitrox_enable_msix(struct nitrox_device *ndev)
 	 * Entry 192: NPS_CORE_INT_ACTIVE
 	 */
 	nr_entries = (ndev->nr_queues * NR_RING_VECTORS) + 1;
-<<<<<<< HEAD
 	entries = kcalloc_node(nr_entries, sizeof(struct msix_entry),
-=======
-	entries = kzalloc_node(nr_entries * sizeof(struct msix_entry),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       GFP_KERNEL, ndev->node);
 	if (!entries)
 		return -ENOMEM;

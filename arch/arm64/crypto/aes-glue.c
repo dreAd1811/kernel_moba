@@ -64,7 +64,6 @@ MODULE_LICENSE("GPL v2");
 
 /* defined in aes-modes.S */
 asmlinkage void aes_ecb_encrypt(u8 out[], u8 const in[], u8 const rk[],
-<<<<<<< HEAD
 				int rounds, int blocks);
 asmlinkage void aes_ecb_decrypt(u8 out[], u8 const in[], u8 const rk[],
 				int rounds, int blocks);
@@ -76,19 +75,6 @@ asmlinkage void aes_cbc_decrypt(u8 out[], u8 const in[], u8 const rk[],
 
 asmlinkage void aes_ctr_encrypt(u8 out[], u8 const in[], u8 const rk[],
 				int rounds, int blocks, u8 ctr[]);
-=======
-				int rounds, int blocks, int first);
-asmlinkage void aes_ecb_decrypt(u8 out[], u8 const in[], u8 const rk[],
-				int rounds, int blocks, int first);
-
-asmlinkage void aes_cbc_encrypt(u8 out[], u8 const in[], u8 const rk[],
-				int rounds, int blocks, u8 iv[], int first);
-asmlinkage void aes_cbc_decrypt(u8 out[], u8 const in[], u8 const rk[],
-				int rounds, int blocks, u8 iv[], int first);
-
-asmlinkage void aes_ctr_encrypt(u8 out[], u8 const in[], u8 const rk[],
-				int rounds, int blocks, u8 ctr[], int first);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 asmlinkage void aes_xts_encrypt(u8 out[], u8 const in[], u8 const rk1[],
 				int rounds, int blocks, u8 const rk2[], u8 iv[],
@@ -147,7 +133,6 @@ static int ecb_encrypt(struct skcipher_request *req)
 {
 	struct crypto_skcipher *tfm = crypto_skcipher_reqtfm(req);
 	struct crypto_aes_ctx *ctx = crypto_skcipher_ctx(tfm);
-<<<<<<< HEAD
 	int err, rounds = 6 + ctx->key_length / 4;
 	struct skcipher_walk walk;
 	unsigned int blocks;
@@ -161,21 +146,6 @@ static int ecb_encrypt(struct skcipher_request *req)
 		kernel_neon_end();
 		err = skcipher_walk_done(&walk, walk.nbytes % AES_BLOCK_SIZE);
 	}
-=======
-	int err, first, rounds = 6 + ctx->key_length / 4;
-	struct skcipher_walk walk;
-	unsigned int blocks;
-
-	err = skcipher_walk_virt(&walk, req, true);
-
-	kernel_neon_begin();
-	for (first = 1; (blocks = (walk.nbytes / AES_BLOCK_SIZE)); first = 0) {
-		aes_ecb_encrypt(walk.dst.virt.addr, walk.src.virt.addr,
-				(u8 *)ctx->key_enc, rounds, blocks, first);
-		err = skcipher_walk_done(&walk, walk.nbytes % AES_BLOCK_SIZE);
-	}
-	kernel_neon_end();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -183,7 +153,6 @@ static int ecb_decrypt(struct skcipher_request *req)
 {
 	struct crypto_skcipher *tfm = crypto_skcipher_reqtfm(req);
 	struct crypto_aes_ctx *ctx = crypto_skcipher_ctx(tfm);
-<<<<<<< HEAD
 	int err, rounds = 6 + ctx->key_length / 4;
 	struct skcipher_walk walk;
 	unsigned int blocks;
@@ -197,21 +166,6 @@ static int ecb_decrypt(struct skcipher_request *req)
 		kernel_neon_end();
 		err = skcipher_walk_done(&walk, walk.nbytes % AES_BLOCK_SIZE);
 	}
-=======
-	int err, first, rounds = 6 + ctx->key_length / 4;
-	struct skcipher_walk walk;
-	unsigned int blocks;
-
-	err = skcipher_walk_virt(&walk, req, true);
-
-	kernel_neon_begin();
-	for (first = 1; (blocks = (walk.nbytes / AES_BLOCK_SIZE)); first = 0) {
-		aes_ecb_decrypt(walk.dst.virt.addr, walk.src.virt.addr,
-				(u8 *)ctx->key_dec, rounds, blocks, first);
-		err = skcipher_walk_done(&walk, walk.nbytes % AES_BLOCK_SIZE);
-	}
-	kernel_neon_end();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -219,7 +173,6 @@ static int cbc_encrypt(struct skcipher_request *req)
 {
 	struct crypto_skcipher *tfm = crypto_skcipher_reqtfm(req);
 	struct crypto_aes_ctx *ctx = crypto_skcipher_ctx(tfm);
-<<<<<<< HEAD
 	int err, rounds = 6 + ctx->key_length / 4;
 	struct skcipher_walk walk;
 	unsigned int blocks;
@@ -233,22 +186,6 @@ static int cbc_encrypt(struct skcipher_request *req)
 		kernel_neon_end();
 		err = skcipher_walk_done(&walk, walk.nbytes % AES_BLOCK_SIZE);
 	}
-=======
-	int err, first, rounds = 6 + ctx->key_length / 4;
-	struct skcipher_walk walk;
-	unsigned int blocks;
-
-	err = skcipher_walk_virt(&walk, req, true);
-
-	kernel_neon_begin();
-	for (first = 1; (blocks = (walk.nbytes / AES_BLOCK_SIZE)); first = 0) {
-		aes_cbc_encrypt(walk.dst.virt.addr, walk.src.virt.addr,
-				(u8 *)ctx->key_enc, rounds, blocks, walk.iv,
-				first);
-		err = skcipher_walk_done(&walk, walk.nbytes % AES_BLOCK_SIZE);
-	}
-	kernel_neon_end();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -256,7 +193,6 @@ static int cbc_decrypt(struct skcipher_request *req)
 {
 	struct crypto_skcipher *tfm = crypto_skcipher_reqtfm(req);
 	struct crypto_aes_ctx *ctx = crypto_skcipher_ctx(tfm);
-<<<<<<< HEAD
 	int err, rounds = 6 + ctx->key_length / 4;
 	struct skcipher_walk walk;
 	unsigned int blocks;
@@ -270,22 +206,6 @@ static int cbc_decrypt(struct skcipher_request *req)
 		kernel_neon_end();
 		err = skcipher_walk_done(&walk, walk.nbytes % AES_BLOCK_SIZE);
 	}
-=======
-	int err, first, rounds = 6 + ctx->key_length / 4;
-	struct skcipher_walk walk;
-	unsigned int blocks;
-
-	err = skcipher_walk_virt(&walk, req, true);
-
-	kernel_neon_begin();
-	for (first = 1; (blocks = (walk.nbytes / AES_BLOCK_SIZE)); first = 0) {
-		aes_cbc_decrypt(walk.dst.virt.addr, walk.src.virt.addr,
-				(u8 *)ctx->key_dec, rounds, blocks, walk.iv,
-				first);
-		err = skcipher_walk_done(&walk, walk.nbytes % AES_BLOCK_SIZE);
-	}
-	kernel_neon_end();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -293,7 +213,6 @@ static int ctr_encrypt(struct skcipher_request *req)
 {
 	struct crypto_skcipher *tfm = crypto_skcipher_reqtfm(req);
 	struct crypto_aes_ctx *ctx = crypto_skcipher_ctx(tfm);
-<<<<<<< HEAD
 	int err, rounds = 6 + ctx->key_length / 4;
 	struct skcipher_walk walk;
 	int blocks;
@@ -306,22 +225,6 @@ static int ctr_encrypt(struct skcipher_request *req)
 				(u8 *)ctx->key_enc, rounds, blocks, walk.iv);
 		kernel_neon_end();
 		err = skcipher_walk_done(&walk, walk.nbytes % AES_BLOCK_SIZE);
-=======
-	int err, first, rounds = 6 + ctx->key_length / 4;
-	struct skcipher_walk walk;
-	int blocks;
-
-	err = skcipher_walk_virt(&walk, req, true);
-
-	first = 1;
-	kernel_neon_begin();
-	while ((blocks = (walk.nbytes / AES_BLOCK_SIZE))) {
-		aes_ctr_encrypt(walk.dst.virt.addr, walk.src.virt.addr,
-				(u8 *)ctx->key_enc, rounds, blocks, walk.iv,
-				first);
-		err = skcipher_walk_done(&walk, walk.nbytes % AES_BLOCK_SIZE);
-		first = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	if (walk.nbytes) {
 		u8 __aligned(8) tail[AES_BLOCK_SIZE];
@@ -334,7 +237,6 @@ static int ctr_encrypt(struct skcipher_request *req)
 		 */
 		blocks = -1;
 
-<<<<<<< HEAD
 		kernel_neon_begin();
 		aes_ctr_encrypt(tail, NULL, (u8 *)ctx->key_enc, rounds,
 				blocks, walk.iv);
@@ -342,14 +244,6 @@ static int ctr_encrypt(struct skcipher_request *req)
 		crypto_xor_cpy(tdst, tsrc, tail, nbytes);
 		err = skcipher_walk_done(&walk, 0);
 	}
-=======
-		aes_ctr_encrypt(tail, NULL, (u8 *)ctx->key_enc, rounds,
-				blocks, walk.iv, first);
-		crypto_xor_cpy(tdst, tsrc, tail, nbytes);
-		err = skcipher_walk_done(&walk, 0);
-	}
-	kernel_neon_end();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return err;
 }
@@ -373,7 +267,6 @@ static int xts_encrypt(struct skcipher_request *req)
 	struct skcipher_walk walk;
 	unsigned int blocks;
 
-<<<<<<< HEAD
 	err = skcipher_walk_virt(&walk, req, false);
 
 	for (first = 1; (blocks = (walk.nbytes / AES_BLOCK_SIZE)); first = 0) {
@@ -384,18 +277,6 @@ static int xts_encrypt(struct skcipher_request *req)
 		kernel_neon_end();
 		err = skcipher_walk_done(&walk, walk.nbytes % AES_BLOCK_SIZE);
 	}
-=======
-	err = skcipher_walk_virt(&walk, req, true);
-
-	kernel_neon_begin();
-	for (first = 1; (blocks = (walk.nbytes / AES_BLOCK_SIZE)); first = 0) {
-		aes_xts_encrypt(walk.dst.virt.addr, walk.src.virt.addr,
-				(u8 *)ctx->key1.key_enc, rounds, blocks,
-				(u8 *)ctx->key2.key_enc, walk.iv, first);
-		err = skcipher_walk_done(&walk, walk.nbytes % AES_BLOCK_SIZE);
-	}
-	kernel_neon_end();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return err;
 }
@@ -408,7 +289,6 @@ static int xts_decrypt(struct skcipher_request *req)
 	struct skcipher_walk walk;
 	unsigned int blocks;
 
-<<<<<<< HEAD
 	err = skcipher_walk_virt(&walk, req, false);
 
 	for (first = 1; (blocks = (walk.nbytes / AES_BLOCK_SIZE)); first = 0) {
@@ -419,18 +299,6 @@ static int xts_decrypt(struct skcipher_request *req)
 		kernel_neon_end();
 		err = skcipher_walk_done(&walk, walk.nbytes % AES_BLOCK_SIZE);
 	}
-=======
-	err = skcipher_walk_virt(&walk, req, true);
-
-	kernel_neon_begin();
-	for (first = 1; (blocks = (walk.nbytes / AES_BLOCK_SIZE)); first = 0) {
-		aes_xts_decrypt(walk.dst.virt.addr, walk.src.virt.addr,
-				(u8 *)ctx->key1.key_dec, rounds, blocks,
-				(u8 *)ctx->key2.key_enc, walk.iv, first);
-		err = skcipher_walk_done(&walk, walk.nbytes % AES_BLOCK_SIZE);
-	}
-	kernel_neon_end();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return err;
 }
@@ -554,11 +422,7 @@ static int cmac_setkey(struct crypto_shash *tfm, const u8 *in_key,
 
 	/* encrypt the zero vector */
 	kernel_neon_begin();
-<<<<<<< HEAD
 	aes_ecb_encrypt(ctx->consts, (u8[AES_BLOCK_SIZE]){}, rk, rounds, 1);
-=======
-	aes_ecb_encrypt(ctx->consts, (u8[AES_BLOCK_SIZE]){}, rk, rounds, 1, 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kernel_neon_end();
 
 	cmac_gf128_mul_by_x(consts, consts);
@@ -587,13 +451,8 @@ static int xcbc_setkey(struct crypto_shash *tfm, const u8 *in_key,
 		return err;
 
 	kernel_neon_begin();
-<<<<<<< HEAD
 	aes_ecb_encrypt(key, ks[0], rk, rounds, 1);
 	aes_ecb_encrypt(ctx->consts, ks[1], rk, rounds, 2);
-=======
-	aes_ecb_encrypt(key, ks[0], rk, rounds, 1, 1);
-	aes_ecb_encrypt(ctx->consts, ks[1], rk, rounds, 2, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kernel_neon_end();
 
 	return cbcmac_setkey(tfm, key, sizeof(key));
@@ -708,10 +567,6 @@ static struct shash_alg mac_algs[] = { {
 	.base.cra_name		= "cmac(aes)",
 	.base.cra_driver_name	= "cmac-aes-" MODE,
 	.base.cra_priority	= PRIO,
-<<<<<<< HEAD
-=======
-	.base.cra_flags		= CRYPTO_ALG_TYPE_SHASH,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.base.cra_blocksize	= AES_BLOCK_SIZE,
 	.base.cra_ctxsize	= sizeof(struct mac_tfm_ctx) +
 				  2 * AES_BLOCK_SIZE,
@@ -727,10 +582,6 @@ static struct shash_alg mac_algs[] = { {
 	.base.cra_name		= "xcbc(aes)",
 	.base.cra_driver_name	= "xcbc-aes-" MODE,
 	.base.cra_priority	= PRIO,
-<<<<<<< HEAD
-=======
-	.base.cra_flags		= CRYPTO_ALG_TYPE_SHASH,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.base.cra_blocksize	= AES_BLOCK_SIZE,
 	.base.cra_ctxsize	= sizeof(struct mac_tfm_ctx) +
 				  2 * AES_BLOCK_SIZE,
@@ -746,10 +597,6 @@ static struct shash_alg mac_algs[] = { {
 	.base.cra_name		= "cbcmac(aes)",
 	.base.cra_driver_name	= "cbcmac-aes-" MODE,
 	.base.cra_priority	= PRIO,
-<<<<<<< HEAD
-=======
-	.base.cra_flags		= CRYPTO_ALG_TYPE_SHASH,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.base.cra_blocksize	= 1,
 	.base.cra_ctxsize	= sizeof(struct mac_tfm_ctx),
 	.base.cra_module	= THIS_MODULE,
@@ -812,10 +659,7 @@ static int __init aes_init(void)
 
 unregister_simds:
 	aes_exit();
-<<<<<<< HEAD
 	return err;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 unregister_ciphers:
 	crypto_unregister_skciphers(aes_algs, ARRAY_SIZE(aes_algs));
 	return err;

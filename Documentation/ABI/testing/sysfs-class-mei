@@ -45,7 +45,6 @@ Contact:	Tomas Winkler <tomas.winkler@intel.com>
 Description:	Display the driver HBM protocol version.
 
 		The HBM protocol version supported by the driver.
-<<<<<<< HEAD
 
 What:		/sys/class/mei/meiN/tx_queue_limit
 Date:		Jan 2018
@@ -66,5 +65,3 @@ Description:	Display the ME firmware version.
 		<platform>:<major>.<minor>.<milestone>.<build_no>.
 		There can be up to three such blocks for different
 		FW components.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

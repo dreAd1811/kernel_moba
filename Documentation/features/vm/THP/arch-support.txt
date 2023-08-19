@@ -10,7 +10,6 @@
     |         arc: |  ok  |
     |         arm: |  ok  |
     |       arm64: |  ok  |
-<<<<<<< HEAD
     |         c6x: |  ..  |
     |       h8300: |  ..  |
     |     hexagon: |  ..  |
@@ -19,37 +18,14 @@
     |  microblaze: |  ..  |
     |        mips: |  ok  |
     |       nds32: | TODO |
-=======
-    |    blackfin: |  ..  |
-    |         c6x: |  ..  |
-    |        cris: |  ..  |
-    |         frv: |  ..  |
-    |       h8300: |  ..  |
-    |     hexagon: |  ..  |
-    |        ia64: | TODO |
-    |        m32r: |  ..  |
-    |        m68k: |  ..  |
-    |       metag: | TODO |
-    |  microblaze: |  ..  |
-    |        mips: |  ok  |
-    |     mn10300: |  ..  |
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     |       nios2: |  ..  |
     |    openrisc: |  ..  |
     |      parisc: | TODO |
     |     powerpc: |  ok  |
-<<<<<<< HEAD
     |       riscv: | TODO |
     |        s390: |  ok  |
     |          sh: |  ..  |
     |       sparc: |  ok  |
-=======
-    |        s390: |  ok  |
-    |       score: |  ..  |
-    |          sh: |  ..  |
-    |       sparc: |  ok  |
-    |        tile: | TODO |
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     |          um: |  ..  |
     |   unicore32: |  ..  |
     |         x86: |  ok  |

@@ -551,10 +551,7 @@ static int acenic_probe_one(struct pci_dev *pdev,
 			       ap->name);
 			break;
 		}
-<<<<<<< HEAD
 		/* Fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case PCI_VENDOR_ID_SGI:
 		printk(KERN_INFO "%s: SGI AceNIC ", ap->name);
 		break;
@@ -1440,7 +1437,6 @@ static int ace_init(struct net_device *dev)
 	ace_set_txprd(regs, ap, 0);
 	writel(0, &regs->RxRetCsm);
 
-<<<<<<< HEAD
 	/*
 	 * Enable DMA engine now.
 	 * If we do this sooner, Mckinley box pukes.
@@ -1448,15 +1444,6 @@ static int ace_init(struct net_device *dev)
 	 * *something* even before the CPU is started.
 	 */
 	writel(1, &regs->AssistState);  /* enable DMA */
-=======
-       /*
-	* Enable DMA engine now.
-	* If we do this sooner, Mckinley box pukes.
-	* I assume it's because Tigon II DMA engine wants to check
-	* *something* even before the CPU is started.
-	*/
-       writel(1, &regs->AssistState);  /* enable DMA */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Start the NIC CPU
@@ -1947,11 +1934,7 @@ static void ace_rx_int(struct net_device *dev, u32 rxretprd, u32 rxretcsm)
 	while (idx != rxretprd) {
 		struct ring_info *rip;
 		struct sk_buff *skb;
-<<<<<<< HEAD
 		struct rx_desc *retdesc;
-=======
-		struct rx_desc *rxdesc, *retdesc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u32 skbidx;
 		int bd_flags, desc_type, mapsize;
 		u16 csum;
@@ -1977,28 +1960,16 @@ static void ace_rx_int(struct net_device *dev, u32 rxretprd, u32 rxretcsm)
 		case 0:
 			rip = &ap->skb->rx_std_skbuff[skbidx];
 			mapsize = ACE_STD_BUFSIZE;
-<<<<<<< HEAD
-=======
-			rxdesc = &ap->rx_std_ring[skbidx];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			std_count++;
 			break;
 		case BD_FLG_JUMBO:
 			rip = &ap->skb->rx_jumbo_skbuff[skbidx];
 			mapsize = ACE_JUMBO_BUFSIZE;
-<<<<<<< HEAD
-=======
-			rxdesc = &ap->rx_jumbo_ring[skbidx];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			atomic_dec(&ap->cur_jumbo_bufs);
 			break;
 		case BD_FLG_MINI:
 			rip = &ap->skb->rx_mini_skbuff[skbidx];
 			mapsize = ACE_MINI_BUFSIZE;
-<<<<<<< HEAD
-=======
-			rxdesc = &ap->rx_mini_ring[skbidx];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			mini_count++;
 			break;
 		default:

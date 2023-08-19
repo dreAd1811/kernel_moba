@@ -20,7 +20,6 @@ struct _ccu_nkmp {
 	unsigned long	p, min_p, max_p;
 };
 
-<<<<<<< HEAD
 static unsigned long ccu_nkmp_calc_rate(unsigned long parent,
 					unsigned long n, unsigned long k,
 					unsigned long m, unsigned long p)
@@ -33,8 +32,6 @@ static unsigned long ccu_nkmp_calc_rate(unsigned long parent,
 	return rate;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void ccu_nkmp_find_best(unsigned long parent, unsigned long rate,
 			       struct _ccu_nkmp *nkmp)
 {
@@ -48,13 +45,9 @@ static void ccu_nkmp_find_best(unsigned long parent, unsigned long rate,
 				for (_p = nkmp->min_p; _p <= nkmp->max_p; _p <<= 1) {
 					unsigned long tmp_rate;
 
-<<<<<<< HEAD
 					tmp_rate = ccu_nkmp_calc_rate(parent,
 								      _n, _k,
 								      _m, _p);
-=======
-					tmp_rate = parent * _n * _k / (_m * _p);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 					if (tmp_rate > rate)
 						continue;
@@ -102,11 +95,7 @@ static unsigned long ccu_nkmp_recalc_rate(struct clk_hw *hw,
 					unsigned long parent_rate)
 {
 	struct ccu_nkmp *nkmp = hw_to_ccu_nkmp(hw);
-<<<<<<< HEAD
 	unsigned long n, m, k, p, rate;
-=======
-	unsigned long n, m, k, p;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 reg;
 
 	reg = readl(nkmp->common.base + nkmp->common.reg);
@@ -132,15 +121,11 @@ static unsigned long ccu_nkmp_recalc_rate(struct clk_hw *hw,
 	p = reg >> nkmp->p.shift;
 	p &= (1 << nkmp->p.width) - 1;
 
-<<<<<<< HEAD
 	rate = ccu_nkmp_calc_rate(parent_rate, n, k, m, 1 << p);
 	if (nkmp->common.features & CCU_FEATURE_FIXED_POSTDIV)
 		rate /= nkmp->fixed_post_div;
 
 	return rate;
-=======
-	return (parent_rate * n * k >> p) / m;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static long ccu_nkmp_round_rate(struct clk_hw *hw, unsigned long rate,
@@ -149,12 +134,9 @@ static long ccu_nkmp_round_rate(struct clk_hw *hw, unsigned long rate,
 	struct ccu_nkmp *nkmp = hw_to_ccu_nkmp(hw);
 	struct _ccu_nkmp _nkmp;
 
-<<<<<<< HEAD
 	if (nkmp->common.features & CCU_FEATURE_FIXED_POSTDIV)
 		rate *= nkmp->fixed_post_div;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	_nkmp.min_n = nkmp->n.min ?: 1;
 	_nkmp.max_n = nkmp->n.max ?: 1 << nkmp->n.width;
 	_nkmp.min_k = nkmp->k.min ?: 1;
@@ -166,36 +148,26 @@ static long ccu_nkmp_round_rate(struct clk_hw *hw, unsigned long rate,
 
 	ccu_nkmp_find_best(*parent_rate, rate, &_nkmp);
 
-<<<<<<< HEAD
 	rate = ccu_nkmp_calc_rate(*parent_rate, _nkmp.n, _nkmp.k,
 				  _nkmp.m, _nkmp.p);
 	if (nkmp->common.features & CCU_FEATURE_FIXED_POSTDIV)
 		rate = rate / nkmp->fixed_post_div;
 
 	return rate;
-=======
-	return *parent_rate * _nkmp.n * _nkmp.k / (_nkmp.m * _nkmp.p);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int ccu_nkmp_set_rate(struct clk_hw *hw, unsigned long rate,
 			   unsigned long parent_rate)
 {
 	struct ccu_nkmp *nkmp = hw_to_ccu_nkmp(hw);
-<<<<<<< HEAD
 	u32 n_mask = 0, k_mask = 0, m_mask = 0, p_mask = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct _ccu_nkmp _nkmp;
 	unsigned long flags;
 	u32 reg;
 
-<<<<<<< HEAD
 	if (nkmp->common.features & CCU_FEATURE_FIXED_POSTDIV)
 		rate = rate * nkmp->fixed_post_div;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	_nkmp.min_n = nkmp->n.min ?: 1;
 	_nkmp.max_n = nkmp->n.max ?: 1 << nkmp->n.width;
 	_nkmp.min_k = nkmp->k.min ?: 1;
@@ -207,7 +179,6 @@ static int ccu_nkmp_set_rate(struct clk_hw *hw, unsigned long rate,
 
 	ccu_nkmp_find_best(parent_rate, rate, &_nkmp);
 
-<<<<<<< HEAD
 	if (nkmp->n.width)
 		n_mask = GENMASK(nkmp->n.width + nkmp->n.shift - 1,
 				 nkmp->n.shift);
@@ -230,20 +201,6 @@ static int ccu_nkmp_set_rate(struct clk_hw *hw, unsigned long rate,
 	reg |= ((_nkmp.k - nkmp->k.offset) << nkmp->k.shift) & k_mask;
 	reg |= ((_nkmp.m - nkmp->m.offset) << nkmp->m.shift) & m_mask;
 	reg |= (ilog2(_nkmp.p) << nkmp->p.shift) & p_mask;
-=======
-	spin_lock_irqsave(nkmp->common.lock, flags);
-
-	reg = readl(nkmp->common.base + nkmp->common.reg);
-	reg &= ~GENMASK(nkmp->n.width + nkmp->n.shift - 1, nkmp->n.shift);
-	reg &= ~GENMASK(nkmp->k.width + nkmp->k.shift - 1, nkmp->k.shift);
-	reg &= ~GENMASK(nkmp->m.width + nkmp->m.shift - 1, nkmp->m.shift);
-	reg &= ~GENMASK(nkmp->p.width + nkmp->p.shift - 1, nkmp->p.shift);
-
-	reg |= (_nkmp.n - nkmp->n.offset) << nkmp->n.shift;
-	reg |= (_nkmp.k - nkmp->k.offset) << nkmp->k.shift;
-	reg |= (_nkmp.m - nkmp->m.offset) << nkmp->m.shift;
-	reg |= ilog2(_nkmp.p) << nkmp->p.shift;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	writel(reg, nkmp->common.base + nkmp->common.reg);
 

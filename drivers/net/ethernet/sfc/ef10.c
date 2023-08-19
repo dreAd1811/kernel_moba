@@ -28,12 +28,6 @@ enum {
 	EFX_EF10_TEST = 1,
 	EFX_EF10_REFILL,
 };
-<<<<<<< HEAD
-=======
-
-/* The reserved RSS context value */
-#define EFX_EF10_RSS_CONTEXT_INVALID	0xffffffff
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* The maximum size of a shared RSS context */
 /* TODO: this should really be from the mcdi protocol export */
 #define EFX_EF10_MAX_SHARED_RSS_CONTEXT_SIZE 64UL
@@ -102,28 +96,15 @@ struct efx_ef10_filter_table {
 		MC_CMD_GET_PARSER_DISP_INFO_OUT_SUPPORTED_MATCHES_MAXNUM * 2];
 	unsigned int rx_match_count;
 
-<<<<<<< HEAD
 	struct rw_semaphore lock; /* Protects entries */
 	struct {
 		unsigned long spec;	/* pointer to spec plus flag bits */
 /* AUTO_OLD is used to mark and sweep MAC filters for the device address lists. */
 /* unused flag	1UL */
-=======
-	struct {
-		unsigned long spec;	/* pointer to spec plus flag bits */
-/* BUSY flag indicates that an update is in progress.  AUTO_OLD is
- * used to mark and sweep MAC filters for the device address lists.
- */
-#define EFX_EF10_FILTER_FLAG_BUSY	1UL
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define EFX_EF10_FILTER_FLAG_AUTO_OLD	2UL
 #define EFX_EF10_FILTER_FLAGS		3UL
 		u64 handle;		/* firmware handle */
 	} *entry;
-<<<<<<< HEAD
-=======
-	wait_queue_head_t waitq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Shadow of net_device address lists, guarded by mac_lock */
 	struct efx_ef10_dev_addr dev_uc_list[EFX_EF10_FILTER_DEV_UC_MAX];
 	struct efx_ef10_dev_addr dev_mc_list[EFX_EF10_FILTER_DEV_MC_MAX];
@@ -174,7 +155,6 @@ static int efx_ef10_get_warm_boot_count(struct efx_nic *efx)
 		EFX_DWORD_FIELD(reg, EFX_WORD_0) : -EIO;
 }
 
-<<<<<<< HEAD
 /* On all EF10s up to and including SFC9220 (Medford1), all PFs use BAR 0 for
  * I/O space and BAR 2(&3) for memory.  On SFC9250 (Medford2), there is no I/O
  * bar; PFs use BAR 0/1 for memory.
@@ -195,17 +175,11 @@ static unsigned int efx_ef10_vf_mem_bar(struct efx_nic *efx)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static unsigned int efx_ef10_mem_map_size(struct efx_nic *efx)
 {
 	int bar;
 
-<<<<<<< HEAD
 	bar = efx->type->mem_bar(efx);
-=======
-	bar = efx->type->mem_bar;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return resource_size(&efx->pci_dev->resource[bar]);
 }
 
@@ -254,11 +228,7 @@ static int efx_ef10_get_vf_index(struct efx_nic *efx)
 
 static int efx_ef10_init_datapath_caps(struct efx_nic *efx)
 {
-<<<<<<< HEAD
 	MCDI_DECLARE_BUF(outbuf, MC_CMD_GET_CAPABILITIES_V4_OUT_LEN);
-=======
-	MCDI_DECLARE_BUF(outbuf, MC_CMD_GET_CAPABILITIES_V2_OUT_LEN);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct efx_ef10_nic_data *nic_data = efx->nic_data;
 	size_t outlen;
 	int rc;
@@ -302,7 +272,6 @@ static int efx_ef10_init_datapath_caps(struct efx_nic *efx)
 		return -ENODEV;
 	}
 
-<<<<<<< HEAD
 	if (outlen >= MC_CMD_GET_CAPABILITIES_V3_OUT_LEN) {
 		u8 vi_window_mode = MCDI_BYTE(outbuf,
 				GET_CAPABILITIES_V3_OUT_VI_WINDOW_MODE);
@@ -367,11 +336,6 @@ static void efx_ef10_read_licensed_features(struct efx_nic *efx)
 					 LICENSING_V3_OUT_LICENSED_FEATURES);
 }
 
-=======
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int efx_ef10_get_sysclk_freq(struct efx_nic *efx)
 {
 	MCDI_DECLARE_BUF(outbuf, MC_CMD_GET_CLOCK_OUT_LEN);
@@ -701,20 +665,6 @@ static int efx_ef10_probe(struct efx_nic *efx)
 	struct efx_ef10_nic_data *nic_data;
 	int i, rc;
 
-<<<<<<< HEAD
-=======
-	/* We can have one VI for each 8K region.  However, until we
-	 * use TX option descriptors we need two TX queues per channel.
-	 */
-	efx->max_channels = min_t(unsigned int,
-				  EFX_MAX_CHANNELS,
-				  efx_ef10_mem_map_size(efx) /
-				  (EFX_VI_PAGE_SIZE * EFX_TXQ_TYPES));
-	efx->max_tx_channels = efx->max_channels;
-	if (WARN_ON(efx->max_channels == 0))
-		return -EIO;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	nic_data = kzalloc(sizeof(*nic_data), GFP_KERNEL);
 	if (!nic_data)
 		return -ENOMEM;
@@ -742,11 +692,7 @@ static int efx_ef10_probe(struct efx_nic *efx)
 	}
 	nic_data->warm_boot_count = rc;
 
-<<<<<<< HEAD
 	efx->rss_context.context_id = EFX_EF10_RSS_CONTEXT_INVALID;
-=======
-	nic_data->rx_rss_context = EFX_EF10_RSS_CONTEXT_INVALID;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	nic_data->vport_id = EVB_PORT_ID_ASSIGNED;
 
@@ -790,7 +736,6 @@ static int efx_ef10_probe(struct efx_nic *efx)
 	if (rc < 0)
 		goto fail5;
 
-<<<<<<< HEAD
 	efx_ef10_read_licensed_features(efx);
 
 	/* We can have one VI for each vi_stride-byte region.
@@ -814,11 +759,6 @@ static int efx_ef10_probe(struct efx_nic *efx)
 	    (1 << MC_CMD_GET_CAPABILITIES_OUT_RX_INCLUDE_FCS_LBN))
 		efx->net_dev->hw_features |= NETIF_F_RXFCS;
 
-=======
-	efx->rx_packet_len_offset =
-		ES_DZ_RX_PREFIX_PKTLEN_OFST - ES_DZ_RX_PREFIX_SIZE;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rc = efx_mcdi_port_get_number(efx);
 	if (rc < 0)
 		goto fail5;
@@ -836,11 +776,7 @@ static int efx_ef10_probe(struct efx_nic *efx)
 	if (rc && rc != -EPERM)
 		goto fail5;
 
-<<<<<<< HEAD
 	efx_ptp_defer_probe_with_channel(efx);
-=======
-	efx_ptp_probe(efx, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_SFC_SRIOV
 	if ((efx->pci_dev->physfn) && (!efx->pci_dev->is_physfn)) {
@@ -1010,14 +946,11 @@ static int efx_ef10_link_piobufs(struct efx_nic *efx)
 
 	/* Link a buffer to each TX queue */
 	efx_for_each_channel(channel, efx) {
-<<<<<<< HEAD
 		/* Extra channels, even those with TXQs (PTP), do not require
 		 * PIO resources.
 		 */
 		if (!channel->type->want_pio)
 			continue;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		efx_for_each_channel_tx_queue(tx_queue, channel) {
 			/* We assign the PIO buffers to queues in
 			 * reverse order to allow for the following
@@ -1060,11 +993,7 @@ static int efx_ef10_link_piobufs(struct efx_nic *efx)
 			} else {
 				tx_queue->piobuf =
 					nic_data->pio_write_base +
-<<<<<<< HEAD
 					index * efx->vi_stride + offset;
-=======
-					index * EFX_VI_PAGE_SIZE + offset;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				tx_queue->piobuf_offset = offset;
 				netif_dbg(efx, probe, efx->net_dev,
 					  "linked VI %u to PIO buffer %u offset %x addr %p\n",
@@ -1369,13 +1298,9 @@ static int efx_ef10_dimension_resources(struct efx_nic *efx)
 	void __iomem *membase;
 	int rc;
 
-<<<<<<< HEAD
 	channel_vis = max(efx->n_channels,
 			  (efx->n_tx_channels + efx->n_extra_tx_channels) *
 			  EFX_TXQ_TYPES);
-=======
-	channel_vis = max(efx->n_channels, efx->n_tx_channels * EFX_TXQ_TYPES);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef EFX_USE_PIO
 	/* Try to allocate PIO buffers if wanted and if the full
@@ -1416,33 +1341,19 @@ static int efx_ef10_dimension_resources(struct efx_nic *efx)
 	 * for writing PIO buffers through.
 	 *
 	 * The UC mapping contains (channel_vis - 1) complete VIs and the
-<<<<<<< HEAD
 	 * first 4K of the next VI.  Then the WC mapping begins with
 	 * the remainder of this last VI.
 	 */
 	uc_mem_map_size = PAGE_ALIGN((channel_vis - 1) * efx->vi_stride +
-=======
-	 * first half of the next VI.  Then the WC mapping begins with
-	 * the second half of this last VI.
-	 */
-	uc_mem_map_size = PAGE_ALIGN((channel_vis - 1) * EFX_VI_PAGE_SIZE +
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     ER_DZ_TX_PIOBUF);
 	if (nic_data->n_piobufs) {
 		/* pio_write_vi_base rounds down to give the number of complete
 		 * VIs inside the UC mapping.
 		 */
-<<<<<<< HEAD
 		pio_write_vi_base = uc_mem_map_size / efx->vi_stride;
 		wc_mem_map_size = (PAGE_ALIGN((pio_write_vi_base +
 					       nic_data->n_piobufs) *
 					      efx->vi_stride) -
-=======
-		pio_write_vi_base = uc_mem_map_size / EFX_VI_PAGE_SIZE;
-		wc_mem_map_size = (PAGE_ALIGN((pio_write_vi_base +
-					       nic_data->n_piobufs) *
-					      EFX_VI_PAGE_SIZE) -
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   uc_mem_map_size);
 		max_vis = pio_write_vi_base + nic_data->n_piobufs;
 	} else {
@@ -1514,11 +1425,7 @@ static int efx_ef10_dimension_resources(struct efx_nic *efx)
 		nic_data->pio_write_vi_base = pio_write_vi_base;
 		nic_data->pio_write_base =
 			nic_data->wc_membase +
-<<<<<<< HEAD
 			(pio_write_vi_base * efx->vi_stride + ER_DZ_TX_PIOBUF -
-=======
-			(pio_write_vi_base * EFX_VI_PAGE_SIZE + ER_DZ_TX_PIOBUF -
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 uc_mem_map_size);
 
 		rc = efx_ef10_link_piobufs(efx);
@@ -1577,13 +1484,8 @@ static int efx_ef10_init_nic(struct efx_nic *efx)
 	}
 
 	/* don't fail init if RSS setup doesn't work */
-<<<<<<< HEAD
 	rc = efx->type->rx_push_rss_config(efx, false,
 					   efx->rss_context.rx_indir_table, NULL);
-=======
-	rc = efx->type->rx_push_rss_config(efx, false, efx->rx_indir_table, NULL);
-	efx->rss_active = (rc == 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -1597,18 +1499,11 @@ static void efx_ef10_reset_mc_allocations(struct efx_nic *efx)
 
 	/* All our allocations have been reset */
 	nic_data->must_realloc_vis = true;
-<<<<<<< HEAD
 	nic_data->must_restore_rss_contexts = true;
 	nic_data->must_restore_filters = true;
 	nic_data->must_restore_piobufs = true;
 	efx_ef10_forget_old_piobufs(efx);
 	efx->rss_context.context_id = EFX_EF10_RSS_CONTEXT_INVALID;
-=======
-	nic_data->must_restore_filters = true;
-	nic_data->must_restore_piobufs = true;
-	efx_ef10_forget_old_piobufs(efx);
-	nic_data->rx_rss_context = EFX_EF10_RSS_CONTEXT_INVALID;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Driver-created vswitches and vports must be re-created */
 	nic_data->must_probe_vswitching = true;
@@ -1765,7 +1660,6 @@ static const struct efx_hw_stat_desc efx_ef10_stat_desc[EF10_STAT_COUNT] = {
 	EF10_DMA_STAT(tx_bad, VADAPTER_TX_BAD_PACKETS),
 	EF10_DMA_STAT(tx_bad_bytes, VADAPTER_TX_BAD_BYTES),
 	EF10_DMA_STAT(tx_overflow, VADAPTER_TX_OVERFLOW),
-<<<<<<< HEAD
 	EF10_DMA_STAT(fec_uncorrected_errors, FEC_UNCORRECTED_ERRORS),
 	EF10_DMA_STAT(fec_corrected_errors, FEC_CORRECTED_ERRORS),
 	EF10_DMA_STAT(fec_corrected_symbols_lane0, FEC_CORRECTED_SYMBOLS_LANE0),
@@ -1788,8 +1682,6 @@ static const struct efx_hw_stat_desc efx_ef10_stat_desc[EF10_STAT_COUNT] = {
 	EF10_DMA_STAT(ctpio_fallback, CTPIO_FALLBACK),
 	EF10_DMA_STAT(ctpio_poison, CTPIO_POISON),
 	EF10_DMA_STAT(ctpio_erase, CTPIO_ERASE),
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define HUNT_COMMON_STAT_MASK ((1ULL << EF10_STAT_port_tx_bytes) |	\
@@ -1865,7 +1757,6 @@ static const struct efx_hw_stat_desc efx_ef10_stat_desc[EF10_STAT_COUNT] = {
 	(1ULL << EF10_STAT_port_rx_dp_hlb_fetch) |			\
 	(1ULL << EF10_STAT_port_rx_dp_hlb_wait))
 
-<<<<<<< HEAD
 /* These statistics are only provided if the NIC supports MC_CMD_MAC_STATS_V2,
  * indicated by returning a value >= MC_CMD_MAC_NSTATS_V2 in
  * MC_CMD_GET_CAPABILITIES_V4_OUT_MAC_STATS_NUM_STATS.
@@ -1902,8 +1793,6 @@ static const struct efx_hw_stat_desc efx_ef10_stat_desc[EF10_STAT_COUNT] = {
 	(1ULL << (EF10_STAT_ctpio_poison - 64)) |			\
 	(1ULL << (EF10_STAT_ctpio_erase - 64)))
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static u64 efx_ef10_raw_stat_mask(struct efx_nic *efx)
 {
 	u64 raw_mask = HUNT_COMMON_STAT_MASK;
@@ -1942,7 +1831,6 @@ static void efx_ef10_get_stat_mask(struct efx_nic *efx, unsigned long *mask)
 	if (nic_data->datapath_caps &
 	    (1 << MC_CMD_GET_CAPABILITIES_OUT_EVB_LBN)) {
 		raw_mask[0] |= ~((1ULL << EF10_STAT_rx_unicast) - 1);
-<<<<<<< HEAD
 		raw_mask[1] = (1ULL << (EF10_STAT_V1_COUNT - 64)) - 1;
 	} else {
 		raw_mask[1] = 0;
@@ -1959,12 +1847,6 @@ static void efx_ef10_get_stat_mask(struct efx_nic *efx, unsigned long *mask)
 	    (nic_data->datapath_caps2 &
 	     (1 << MC_CMD_GET_CAPABILITIES_V4_OUT_CTPIO_LBN)))
 		raw_mask[1] |= EF10_CTPIO_STAT_MASK;
-=======
-		raw_mask[1] = (1ULL << (EF10_STAT_COUNT - 63)) - 1;
-	} else {
-		raw_mask[1] = 0;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #if BITS_PER_LONG == 64
 	BUILD_BUG_ON(BITS_TO_LONGS(EF10_STAT_COUNT) != 2);
@@ -2068,11 +1950,7 @@ static int efx_ef10_try_update_nic_stats_pf(struct efx_nic *efx)
 
 	dma_stats = efx->stats_buffer.addr;
 
-<<<<<<< HEAD
 	generation_end = dma_stats[efx->num_mac_stats - 1];
-=======
-	generation_end = dma_stats[MC_CMD_MAC_GENERATION_END];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (generation_end == EFX_MC_STATS_GENERATION_INVALID)
 		return 0;
 	rmb();
@@ -2120,11 +1998,7 @@ static int efx_ef10_try_update_nic_stats_vf(struct efx_nic *efx)
 	DECLARE_BITMAP(mask, EF10_STAT_COUNT);
 	__le64 generation_start, generation_end;
 	u64 *stats = nic_data->stats;
-<<<<<<< HEAD
 	u32 dma_len = efx->num_mac_stats * sizeof(u64);
-=======
-	u32 dma_len = MC_CMD_MAC_NSTATS * sizeof(u64);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct efx_buffer stats_buf;
 	__le64 *dma_stats;
 	int rc;
@@ -2149,11 +2023,7 @@ static int efx_ef10_try_update_nic_stats_vf(struct efx_nic *efx)
 	}
 
 	dma_stats = stats_buf.addr;
-<<<<<<< HEAD
 	dma_stats[efx->num_mac_stats - 1] = EFX_MC_STATS_GENERATION_INVALID;
-=======
-	dma_stats[MC_CMD_MAC_GENERATION_END] = EFX_MC_STATS_GENERATION_INVALID;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	MCDI_SET_QWORD(inbuf, MAC_STATS_IN_DMA_ADDR, stats_buf.dma_addr);
 	MCDI_POPULATE_DWORD_1(inbuf, MAC_STATS_IN_CMD,
@@ -2172,11 +2042,7 @@ static int efx_ef10_try_update_nic_stats_vf(struct efx_nic *efx)
 		goto out;
 	}
 
-<<<<<<< HEAD
 	generation_end = dma_stats[efx->num_mac_stats - 1];
-=======
-	generation_end = dma_stats[MC_CMD_MAC_GENERATION_END];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (generation_end == EFX_MC_STATS_GENERATION_INVALID) {
 		WARN_ON_ONCE(1);
 		goto out;
@@ -2244,14 +2110,9 @@ static void efx_ef10_push_irq_moderation(struct efx_channel *channel)
 	} else {
 		unsigned int ticks = efx_usecs_to_ticks(efx, usecs);
 
-<<<<<<< HEAD
 		EFX_POPULATE_DWORD_3(timer_cmd, ERF_DZ_TC_TIMER_MODE, mode,
 				     ERF_DZ_TC_TIMER_VAL, ticks,
 				     ERF_FZ_TC_TMR_REL_VAL, ticks);
-=======
-		EFX_POPULATE_DWORD_2(timer_cmd, ERF_DZ_TC_TIMER_MODE, mode,
-				     ERF_DZ_TC_TIMER_VAL, ticks);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		efx_writed_page(efx, &timer_cmd, ER_DZ_EVQ_TMR,
 				channel->channel);
 	}
@@ -2376,11 +2237,7 @@ static irqreturn_t efx_ef10_msi_interrupt(int irq, void *dev_id)
 	netif_vdbg(efx, intr, efx->net_dev,
 		   "IRQ %d on CPU %d\n", irq, raw_smp_processor_id());
 
-<<<<<<< HEAD
 	if (likely(READ_ONCE(efx->irq_soft_enabled))) {
-=======
-	if (likely(ACCESS_ONCE(efx->irq_soft_enabled))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Note test interrupts */
 		if (context->index == efx->irq_level)
 			efx->last_irq_cpu = raw_smp_processor_id();
@@ -2395,11 +2252,7 @@ static irqreturn_t efx_ef10_msi_interrupt(int irq, void *dev_id)
 static irqreturn_t efx_ef10_legacy_interrupt(int irq, void *dev_id)
 {
 	struct efx_nic *efx = dev_id;
-<<<<<<< HEAD
 	bool soft_enabled = READ_ONCE(efx->irq_soft_enabled);
-=======
-	bool soft_enabled = ACCESS_ONCE(efx->irq_soft_enabled);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct efx_channel *channel;
 	efx_dword_t reg;
 	u32 queues;
@@ -2570,7 +2423,6 @@ static void efx_ef10_tx_init(struct efx_tx_queue *tx_queue)
 	int i;
 	BUILD_BUG_ON(MC_CMD_INIT_TXQ_OUT_LEN != 0);
 
-<<<<<<< HEAD
 	/* Only attempt to enable TX timestamping if we have the license for it,
 	 * otherwise TXQ init will fail
 	 */
@@ -2590,14 +2442,6 @@ static void efx_ef10_tx_init(struct efx_tx_queue *tx_queue)
 	if (csum_offload && (nic_data->datapath_caps2 &
 			(1 << MC_CMD_GET_CAPABILITIES_V2_OUT_TX_TSO_V2_LBN)) &&
 	    !tx_queue->timestamping) {
-=======
-	/* TSOv2 is a limited resource that can only be configured on a limited
-	 * number of queues. TSO without checksum offload is not really a thing,
-	 * so we only enable it for those queues.
-	 */
-	if (csum_offload && (nic_data->datapath_caps2 &
-			(1 << MC_CMD_GET_CAPABILITIES_V2_OUT_TX_TSO_V2_LBN))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		tso_v2 = true;
 		netif_dbg(efx, hw, efx->net_dev, "Using TSOv2 for channel %u\n",
 				channel->channel);
@@ -2623,24 +2467,16 @@ static void efx_ef10_tx_init(struct efx_tx_queue *tx_queue)
 	inlen = MC_CMD_INIT_TXQ_IN_LEN(entries);
 
 	do {
-<<<<<<< HEAD
 		MCDI_POPULATE_DWORD_4(inbuf, INIT_TXQ_IN_FLAGS,
-=======
-		MCDI_POPULATE_DWORD_3(inbuf, INIT_TXQ_IN_FLAGS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				/* This flag was removed from mcdi_pcol.h for
 				 * the non-_EXT version of INIT_TXQ.  However,
 				 * firmware still honours it.
 				 */
 				INIT_TXQ_EXT_IN_FLAG_TSOV2_EN, tso_v2,
 				INIT_TXQ_IN_FLAG_IP_CSUM_DIS, !csum_offload,
-<<<<<<< HEAD
 				INIT_TXQ_IN_FLAG_TCP_CSUM_DIS, !csum_offload,
 				INIT_TXQ_EXT_IN_FLAG_TIMESTAMP,
 						tx_queue->timestamping);
-=======
-				INIT_TXQ_IN_FLAG_TCP_CSUM_DIS, !csum_offload);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		rc = efx_mcdi_rpc_quiet(efx, MC_CMD_INIT_TXQ, inbuf, inlen,
 					NULL, 0, NULL);
@@ -2666,21 +2502,13 @@ static void efx_ef10_tx_init(struct efx_tx_queue *tx_queue)
 	tx_queue->buffer[0].flags = EFX_TX_BUF_OPTION;
 	tx_queue->insert_count = 1;
 	txd = efx_tx_desc(tx_queue, 0);
-<<<<<<< HEAD
 	EFX_POPULATE_QWORD_5(*txd,
-=======
-	EFX_POPULATE_QWORD_4(*txd,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     ESF_DZ_TX_DESC_IS_OPT, true,
 			     ESF_DZ_TX_OPTION_TYPE,
 			     ESE_DZ_TX_OPTION_DESC_CRC_CSUM,
 			     ESF_DZ_TX_OPTION_UDP_TCP_CSUM, csum_offload,
-<<<<<<< HEAD
 			     ESF_DZ_TX_OPTION_IP_CSUM, csum_offload,
 			     ESF_DZ_TX_TIMESTAMP, tx_queue->timestamping);
-=======
-			     ESF_DZ_TX_OPTION_IP_CSUM, csum_offload);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tx_queue->write_count = 1;
 
 	if (tso_v2) {
@@ -2869,48 +2697,30 @@ static int efx_ef10_get_rss_flags(struct efx_nic *efx, u32 context, u32 *flags)
  * Defaults are 4-tuple for TCP and 2-tuple for UDP and other-IP, so we
  * just need to set the UDP ports flags (for both IP versions).
  */
-<<<<<<< HEAD
 static void efx_ef10_set_rss_flags(struct efx_nic *efx,
 				   struct efx_rss_context *ctx)
-=======
-static void efx_ef10_set_rss_flags(struct efx_nic *efx, u32 context)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	MCDI_DECLARE_BUF(inbuf, MC_CMD_RSS_CONTEXT_SET_FLAGS_IN_LEN);
 	u32 flags;
 
 	BUILD_BUG_ON(MC_CMD_RSS_CONTEXT_SET_FLAGS_OUT_LEN != 0);
 
-<<<<<<< HEAD
 	if (efx_ef10_get_rss_flags(efx, ctx->context_id, &flags) != 0)
 		return;
 	MCDI_SET_DWORD(inbuf, RSS_CONTEXT_SET_FLAGS_IN_RSS_CONTEXT_ID,
 		       ctx->context_id);
-=======
-	if (efx_ef10_get_rss_flags(efx, context, &flags) != 0)
-		return;
-	MCDI_SET_DWORD(inbuf, RSS_CONTEXT_SET_FLAGS_IN_RSS_CONTEXT_ID, context);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	flags |= RSS_MODE_HASH_PORTS << MC_CMD_RSS_CONTEXT_GET_FLAGS_OUT_UDP_IPV4_RSS_MODE_LBN;
 	flags |= RSS_MODE_HASH_PORTS << MC_CMD_RSS_CONTEXT_GET_FLAGS_OUT_UDP_IPV6_RSS_MODE_LBN;
 	MCDI_SET_DWORD(inbuf, RSS_CONTEXT_SET_FLAGS_IN_FLAGS, flags);
 	if (!efx_mcdi_rpc(efx, MC_CMD_RSS_CONTEXT_SET_FLAGS, inbuf, sizeof(inbuf),
 			  NULL, 0, NULL))
 		/* Succeeded, so UDP 4-tuple is now enabled */
-<<<<<<< HEAD
 		ctx->rx_hash_udp_4tuple = true;
 }
 
 static int efx_ef10_alloc_rss_context(struct efx_nic *efx, bool exclusive,
 				      struct efx_rss_context *ctx,
 				      unsigned *context_size)
-=======
-		efx->rx_hash_udp_4tuple = true;
-}
-
-static int efx_ef10_alloc_rss_context(struct efx_nic *efx, u32 *context,
-				      bool exclusive, unsigned *context_size)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	MCDI_DECLARE_BUF(inbuf, MC_CMD_RSS_CONTEXT_ALLOC_IN_LEN);
 	MCDI_DECLARE_BUF(outbuf, MC_CMD_RSS_CONTEXT_ALLOC_OUT_LEN);
@@ -2926,11 +2736,7 @@ static int efx_ef10_alloc_rss_context(struct efx_nic *efx, u32 *context,
 				    EFX_EF10_MAX_SHARED_RSS_CONTEXT_SIZE);
 
 	if (!exclusive && rss_spread == 1) {
-<<<<<<< HEAD
 		ctx->context_id = EFX_EF10_RSS_CONTEXT_INVALID;
-=======
-		*context = EFX_EF10_RSS_CONTEXT_INVALID;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (context_size)
 			*context_size = 1;
 		return 0;
@@ -2953,27 +2759,18 @@ static int efx_ef10_alloc_rss_context(struct efx_nic *efx, u32 *context,
 	if (outlen < MC_CMD_RSS_CONTEXT_ALLOC_OUT_LEN)
 		return -EIO;
 
-<<<<<<< HEAD
 	ctx->context_id = MCDI_DWORD(outbuf, RSS_CONTEXT_ALLOC_OUT_RSS_CONTEXT_ID);
-=======
-	*context = MCDI_DWORD(outbuf, RSS_CONTEXT_ALLOC_OUT_RSS_CONTEXT_ID);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (context_size)
 		*context_size = rss_spread;
 
 	if (nic_data->datapath_caps &
 	    1 << MC_CMD_GET_CAPABILITIES_OUT_ADDITIONAL_RSS_MODES_LBN)
-<<<<<<< HEAD
 		efx_ef10_set_rss_flags(efx, ctx);
-=======
-		efx_ef10_set_rss_flags(efx, *context);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
 static int efx_ef10_free_rss_context(struct efx_nic *efx, u32 context)
 {
 	MCDI_DECLARE_BUF(inbuf, MC_CMD_RSS_CONTEXT_FREE_IN_LEN);
@@ -2982,19 +2779,6 @@ static int efx_ef10_free_rss_context(struct efx_nic *efx, u32 context)
 		       context);
 	return efx_mcdi_rpc(efx, MC_CMD_RSS_CONTEXT_FREE, inbuf, sizeof(inbuf),
 			    NULL, 0, NULL);
-=======
-static void efx_ef10_free_rss_context(struct efx_nic *efx, u32 context)
-{
-	MCDI_DECLARE_BUF(inbuf, MC_CMD_RSS_CONTEXT_FREE_IN_LEN);
-	int rc;
-
-	MCDI_SET_DWORD(inbuf, RSS_CONTEXT_FREE_IN_RSS_CONTEXT_ID,
-		       context);
-
-	rc = efx_mcdi_rpc(efx, MC_CMD_RSS_CONTEXT_FREE, inbuf, sizeof(inbuf),
-			    NULL, 0, NULL);
-	WARN_ON(rc != 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int efx_ef10_populate_rss_table(struct efx_nic *efx, u32 context,
@@ -3006,7 +2790,6 @@ static int efx_ef10_populate_rss_table(struct efx_nic *efx, u32 context,
 
 	MCDI_SET_DWORD(tablebuf, RSS_CONTEXT_SET_TABLE_IN_RSS_CONTEXT_ID,
 		       context);
-<<<<<<< HEAD
 	BUILD_BUG_ON(ARRAY_SIZE(efx->rss_context.rx_indir_table) !=
 		     MC_CMD_RSS_CONTEXT_SET_TABLE_IN_INDIRECTION_TABLE_LEN);
 
@@ -3016,17 +2799,6 @@ static int efx_ef10_populate_rss_table(struct efx_nic *efx, u32 context,
 	 * The efx->rss_context.rx_hash_key loop below is similar.
 	 */
 	for (i = 0; i < ARRAY_SIZE(efx->rss_context.rx_indir_table); ++i)
-=======
-	BUILD_BUG_ON(ARRAY_SIZE(efx->rx_indir_table) !=
-		     MC_CMD_RSS_CONTEXT_SET_TABLE_IN_INDIRECTION_TABLE_LEN);
-
-	/* This iterates over the length of efx->rx_indir_table, but copies
-	 * bytes from rx_indir_table.  That's because the latter is a pointer
-	 * rather than an array, but should have the same length.
-	 * The efx->rx_hash_key loop below is similar.
-	 */
-	for (i = 0; i < ARRAY_SIZE(efx->rx_indir_table); ++i)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		MCDI_PTR(tablebuf,
 			 RSS_CONTEXT_SET_TABLE_IN_INDIRECTION_TABLE)[i] =
 				(u8) rx_indir_table[i];
@@ -3038,15 +2810,9 @@ static int efx_ef10_populate_rss_table(struct efx_nic *efx, u32 context,
 
 	MCDI_SET_DWORD(keybuf, RSS_CONTEXT_SET_KEY_IN_RSS_CONTEXT_ID,
 		       context);
-<<<<<<< HEAD
 	BUILD_BUG_ON(ARRAY_SIZE(efx->rss_context.rx_hash_key) !=
 		     MC_CMD_RSS_CONTEXT_SET_KEY_IN_TOEPLITZ_KEY_LEN);
 	for (i = 0; i < ARRAY_SIZE(efx->rss_context.rx_hash_key); ++i)
-=======
-	BUILD_BUG_ON(ARRAY_SIZE(efx->rx_hash_key) !=
-		     MC_CMD_RSS_CONTEXT_SET_KEY_IN_TOEPLITZ_KEY_LEN);
-	for (i = 0; i < ARRAY_SIZE(efx->rx_hash_key); ++i)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		MCDI_PTR(keybuf, RSS_CONTEXT_SET_KEY_IN_TOEPLITZ_KEY)[i] = key[i];
 
 	return efx_mcdi_rpc(efx, MC_CMD_RSS_CONTEXT_SET_KEY, keybuf,
@@ -3055,7 +2821,6 @@ static int efx_ef10_populate_rss_table(struct efx_nic *efx, u32 context,
 
 static void efx_ef10_rx_free_indir_table(struct efx_nic *efx)
 {
-<<<<<<< HEAD
 	int rc;
 
 	if (efx->rss_context.context_id != EFX_EF10_RSS_CONTEXT_INVALID) {
@@ -3063,40 +2828,20 @@ static void efx_ef10_rx_free_indir_table(struct efx_nic *efx)
 		WARN_ON(rc != 0);
 	}
 	efx->rss_context.context_id = EFX_EF10_RSS_CONTEXT_INVALID;
-=======
-	struct efx_ef10_nic_data *nic_data = efx->nic_data;
-
-	if (nic_data->rx_rss_context != EFX_EF10_RSS_CONTEXT_INVALID)
-		efx_ef10_free_rss_context(efx, nic_data->rx_rss_context);
-	nic_data->rx_rss_context = EFX_EF10_RSS_CONTEXT_INVALID;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int efx_ef10_rx_push_shared_rss_config(struct efx_nic *efx,
 					      unsigned *context_size)
 {
-<<<<<<< HEAD
 	struct efx_ef10_nic_data *nic_data = efx->nic_data;
 	int rc = efx_ef10_alloc_rss_context(efx, false, &efx->rss_context,
 					    context_size);
-=======
-	u32 new_rx_rss_context;
-	struct efx_ef10_nic_data *nic_data = efx->nic_data;
-	int rc = efx_ef10_alloc_rss_context(efx, &new_rx_rss_context,
-					    false, context_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (rc != 0)
 		return rc;
 
-<<<<<<< HEAD
 	nic_data->rx_rss_context_exclusive = false;
 	efx_set_default_rx_indir_table(efx, &efx->rss_context);
-=======
-	nic_data->rx_rss_context = new_rx_rss_context;
-	nic_data->rx_rss_context_exclusive = false;
-	efx_set_default_rx_indir_table(efx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -3104,7 +2849,6 @@ static int efx_ef10_rx_push_exclusive_rss_config(struct efx_nic *efx,
 						 const u32 *rx_indir_table,
 						 const u8 *key)
 {
-<<<<<<< HEAD
 	u32 old_rx_rss_context = efx->rss_context.context_id;
 	struct efx_ef10_nic_data *nic_data = efx->nic_data;
 	int rc;
@@ -3113,36 +2857,17 @@ static int efx_ef10_rx_push_exclusive_rss_config(struct efx_nic *efx,
 	    !nic_data->rx_rss_context_exclusive) {
 		rc = efx_ef10_alloc_rss_context(efx, true, &efx->rss_context,
 						NULL);
-=======
-	struct efx_ef10_nic_data *nic_data = efx->nic_data;
-	int rc;
-	u32 new_rx_rss_context;
-
-	if (nic_data->rx_rss_context == EFX_EF10_RSS_CONTEXT_INVALID ||
-	    !nic_data->rx_rss_context_exclusive) {
-		rc = efx_ef10_alloc_rss_context(efx, &new_rx_rss_context,
-						true, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (rc == -EOPNOTSUPP)
 			return rc;
 		else if (rc != 0)
 			goto fail1;
-<<<<<<< HEAD
 	}
 
 	rc = efx_ef10_populate_rss_table(efx, efx->rss_context.context_id,
-=======
-	} else {
-		new_rx_rss_context = nic_data->rx_rss_context;
-	}
-
-	rc = efx_ef10_populate_rss_table(efx, new_rx_rss_context,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 rx_indir_table, key);
 	if (rc != 0)
 		goto fail2;
 
-<<<<<<< HEAD
 	if (efx->rss_context.context_id != old_rx_rss_context &&
 	    old_rx_rss_context != EFX_EF10_RSS_CONTEXT_INVALID)
 		WARN_ON(efx_ef10_free_rss_context(efx, old_rx_rss_context) != 0);
@@ -3153,36 +2878,19 @@ static int efx_ef10_rx_push_exclusive_rss_config(struct efx_nic *efx,
 	if (key != efx->rss_context.rx_hash_key)
 		memcpy(efx->rss_context.rx_hash_key, key,
 		       efx->type->rx_hash_key_size);
-=======
-	if (nic_data->rx_rss_context != new_rx_rss_context)
-		efx_ef10_rx_free_indir_table(efx);
-	nic_data->rx_rss_context = new_rx_rss_context;
-	nic_data->rx_rss_context_exclusive = true;
-	if (rx_indir_table != efx->rx_indir_table)
-		memcpy(efx->rx_indir_table, rx_indir_table,
-		       sizeof(efx->rx_indir_table));
-	if (key != efx->rx_hash_key)
-		memcpy(efx->rx_hash_key, key, efx->type->rx_hash_key_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 
 fail2:
-<<<<<<< HEAD
 	if (old_rx_rss_context != efx->rss_context.context_id) {
 		WARN_ON(efx_ef10_free_rss_context(efx, efx->rss_context.context_id) != 0);
 		efx->rss_context.context_id = old_rx_rss_context;
 	}
-=======
-	if (new_rx_rss_context != nic_data->rx_rss_context)
-		efx_ef10_free_rss_context(efx, new_rx_rss_context);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 fail1:
 	netif_err(efx, hw, efx->net_dev, "%s: failed rc=%d\n", __func__, rc);
 	return rc;
 }
 
-<<<<<<< HEAD
 static int efx_ef10_rx_push_rss_context_config(struct efx_nic *efx,
 					       struct efx_rss_context *ctx,
 					       const u32 *rx_indir_table,
@@ -3216,18 +2924,12 @@ static int efx_ef10_rx_push_rss_context_config(struct efx_nic *efx,
 static int efx_ef10_rx_pull_rss_context_config(struct efx_nic *efx,
 					       struct efx_rss_context *ctx)
 {
-=======
-static int efx_ef10_rx_pull_rss_config(struct efx_nic *efx)
-{
-	struct efx_ef10_nic_data *nic_data = efx->nic_data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MCDI_DECLARE_BUF(inbuf, MC_CMD_RSS_CONTEXT_GET_TABLE_IN_LEN);
 	MCDI_DECLARE_BUF(tablebuf, MC_CMD_RSS_CONTEXT_GET_TABLE_OUT_LEN);
 	MCDI_DECLARE_BUF(keybuf, MC_CMD_RSS_CONTEXT_GET_KEY_OUT_LEN);
 	size_t outlen;
 	int rc, i;
 
-<<<<<<< HEAD
 	WARN_ON(!mutex_is_locked(&efx->rss_lock));
 
 	BUILD_BUG_ON(MC_CMD_RSS_CONTEXT_GET_TABLE_IN_LEN !=
@@ -3239,17 +2941,6 @@ static int efx_ef10_rx_pull_rss_config(struct efx_nic *efx)
 	MCDI_SET_DWORD(inbuf, RSS_CONTEXT_GET_TABLE_IN_RSS_CONTEXT_ID,
 		       ctx->context_id);
 	BUILD_BUG_ON(ARRAY_SIZE(ctx->rx_indir_table) !=
-=======
-	BUILD_BUG_ON(MC_CMD_RSS_CONTEXT_GET_TABLE_IN_LEN !=
-		     MC_CMD_RSS_CONTEXT_GET_KEY_IN_LEN);
-
-	if (nic_data->rx_rss_context == EFX_EF10_RSS_CONTEXT_INVALID)
-		return -ENOENT;
-
-	MCDI_SET_DWORD(inbuf, RSS_CONTEXT_GET_TABLE_IN_RSS_CONTEXT_ID,
-		       nic_data->rx_rss_context);
-	BUILD_BUG_ON(ARRAY_SIZE(efx->rx_indir_table) !=
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		     MC_CMD_RSS_CONTEXT_GET_TABLE_OUT_INDIRECTION_TABLE_LEN);
 	rc = efx_mcdi_rpc(efx, MC_CMD_RSS_CONTEXT_GET_TABLE, inbuf, sizeof(inbuf),
 			  tablebuf, sizeof(tablebuf), &outlen);
@@ -3259,7 +2950,6 @@ static int efx_ef10_rx_pull_rss_config(struct efx_nic *efx)
 	if (WARN_ON(outlen != MC_CMD_RSS_CONTEXT_GET_TABLE_OUT_LEN))
 		return -EIO;
 
-<<<<<<< HEAD
 	for (i = 0; i < ARRAY_SIZE(ctx->rx_indir_table); i++)
 		ctx->rx_indir_table[i] = MCDI_PTR(tablebuf,
 				RSS_CONTEXT_GET_TABLE_OUT_INDIRECTION_TABLE)[i];
@@ -3267,15 +2957,6 @@ static int efx_ef10_rx_pull_rss_config(struct efx_nic *efx)
 	MCDI_SET_DWORD(inbuf, RSS_CONTEXT_GET_KEY_IN_RSS_CONTEXT_ID,
 		       ctx->context_id);
 	BUILD_BUG_ON(ARRAY_SIZE(ctx->rx_hash_key) !=
-=======
-	for (i = 0; i < ARRAY_SIZE(efx->rx_indir_table); i++)
-		efx->rx_indir_table[i] = MCDI_PTR(tablebuf,
-				RSS_CONTEXT_GET_TABLE_OUT_INDIRECTION_TABLE)[i];
-
-	MCDI_SET_DWORD(inbuf, RSS_CONTEXT_GET_KEY_IN_RSS_CONTEXT_ID,
-		       nic_data->rx_rss_context);
-	BUILD_BUG_ON(ARRAY_SIZE(efx->rx_hash_key) !=
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		     MC_CMD_RSS_CONTEXT_SET_KEY_IN_TOEPLITZ_KEY_LEN);
 	rc = efx_mcdi_rpc(efx, MC_CMD_RSS_CONTEXT_GET_KEY, inbuf, sizeof(inbuf),
 			  keybuf, sizeof(keybuf), &outlen);
@@ -3285,19 +2966,13 @@ static int efx_ef10_rx_pull_rss_config(struct efx_nic *efx)
 	if (WARN_ON(outlen != MC_CMD_RSS_CONTEXT_GET_KEY_OUT_LEN))
 		return -EIO;
 
-<<<<<<< HEAD
 	for (i = 0; i < ARRAY_SIZE(ctx->rx_hash_key); ++i)
 		ctx->rx_hash_key[i] = MCDI_PTR(
-=======
-	for (i = 0; i < ARRAY_SIZE(efx->rx_hash_key); ++i)
-		efx->rx_hash_key[i] = MCDI_PTR(
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				keybuf, RSS_CONTEXT_GET_KEY_OUT_TOEPLITZ_KEY)[i];
 
 	return 0;
 }
 
-<<<<<<< HEAD
 static int efx_ef10_rx_pull_rss_config(struct efx_nic *efx)
 {
 	int rc;
@@ -3335,8 +3010,6 @@ static void efx_ef10_rx_restore_rss_contexts(struct efx_nic *efx)
 	nic_data->must_restore_rss_contexts = false;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int efx_ef10_pf_rx_push_rss_config(struct efx_nic *efx, bool user,
 					  const u32 *rx_indir_table,
 					  const u8 *key)
@@ -3347,11 +3020,7 @@ static int efx_ef10_pf_rx_push_rss_config(struct efx_nic *efx, bool user,
 		return 0;
 
 	if (!key)
-<<<<<<< HEAD
 		key = efx->rss_context.rx_hash_key;
-=======
-		key = efx->rx_hash_key;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rc = efx_ef10_rx_push_exclusive_rss_config(efx, rx_indir_table, key);
 
@@ -3360,12 +3029,8 @@ static int efx_ef10_pf_rx_push_rss_config(struct efx_nic *efx, bool user,
 		bool mismatch = false;
 		size_t i;
 
-<<<<<<< HEAD
 		for (i = 0;
 		     i < ARRAY_SIZE(efx->rss_context.rx_indir_table) && !mismatch;
-=======
-		for (i = 0; i < ARRAY_SIZE(efx->rx_indir_table) && !mismatch;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		     i++)
 			mismatch = rx_indir_table[i] !=
 				ethtool_rxfh_indir_default(i, efx->rss_spread);
@@ -3400,17 +3065,9 @@ static int efx_ef10_vf_rx_push_rss_config(struct efx_nic *efx, bool user,
 					  const u8 *key
 					  __attribute__ ((unused)))
 {
-<<<<<<< HEAD
 	if (user)
 		return -EOPNOTSUPP;
 	if (efx->rss_context.context_id != EFX_EF10_RSS_CONTEXT_INVALID)
-=======
-	struct efx_ef10_nic_data *nic_data = efx->nic_data;
-
-	if (user)
-		return -EOPNOTSUPP;
-	if (nic_data->rx_rss_context != EFX_EF10_RSS_CONTEXT_INVALID)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	return efx_ef10_rx_push_shared_rss_config(efx, NULL);
 }
@@ -3791,7 +3448,6 @@ static u16 efx_ef10_handle_rx_event_errors(struct efx_channel *channel,
 					   const efx_qword_t *event)
 {
 	struct efx_nic *efx = channel->efx;
-<<<<<<< HEAD
 	bool handled = false;
 
 	if (EFX_QWORD_FIELD(*event, ESF_DZ_RX_ECRC_ERR)) {
@@ -3801,13 +3457,6 @@ static u16 efx_ef10_handle_rx_event_errors(struct efx_channel *channel,
 			return EFX_RX_PKT_DISCARD;
 		}
 		handled = true;
-=======
-
-	if (EFX_QWORD_FIELD(*event, ESF_DZ_RX_ECRC_ERR)) {
-		if (!efx->loopback_selftest)
-			channel->n_rx_eth_crc_err += n_packets;
-		return EFX_RX_PKT_DISCARD;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	if (EFX_QWORD_FIELD(*event, ESF_DZ_RX_IPCKSUM_ERR)) {
 		if (unlikely(rx_encap_hdr != ESE_EZ_ENCAP_HDR_VXLAN &&
@@ -3829,13 +3478,8 @@ static u16 efx_ef10_handle_rx_event_errors(struct efx_channel *channel,
 		if (unlikely(rx_encap_hdr != ESE_EZ_ENCAP_HDR_VXLAN &&
 			     ((rx_l3_class != ESE_DZ_L3_CLASS_IP4 &&
 			       rx_l3_class != ESE_DZ_L3_CLASS_IP6) ||
-<<<<<<< HEAD
 			      (rx_l4_class != ESE_FZ_L4_CLASS_TCP &&
 			       rx_l4_class != ESE_FZ_L4_CLASS_UDP))))
-=======
-			      (rx_l4_class != ESE_DZ_L4_CLASS_TCP &&
-			       rx_l4_class != ESE_DZ_L4_CLASS_UDP))))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			netdev_WARN(efx->net_dev,
 				    "invalid class for RX_TCPUDP_CKSUM_ERR: event="
 				    EFX_QWORD_FMT "\n",
@@ -3872,13 +3516,8 @@ static u16 efx_ef10_handle_rx_event_errors(struct efx_channel *channel,
 				    EFX_QWORD_VAL(*event));
 		else if (unlikely((rx_l3_class != ESE_DZ_L3_CLASS_IP4 &&
 				   rx_l3_class != ESE_DZ_L3_CLASS_IP6) ||
-<<<<<<< HEAD
 				  (rx_l4_class != ESE_FZ_L4_CLASS_TCP &&
 				   rx_l4_class != ESE_FZ_L4_CLASS_UDP)))
-=======
-				  (rx_l4_class != ESE_DZ_L4_CLASS_TCP &&
-				   rx_l4_class != ESE_DZ_L4_CLASS_UDP)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			netdev_WARN(efx->net_dev,
 				    "invalid class for RX_TCP_UDP_INNER_CHKSUM_ERR: event="
 				    EFX_QWORD_FMT "\n",
@@ -3888,11 +3527,7 @@ static u16 efx_ef10_handle_rx_event_errors(struct efx_channel *channel,
 		return 0;
 	}
 
-<<<<<<< HEAD
 	WARN_ON(!handled); /* No error bits were recognised */
-=======
-	WARN_ON(1); /* No error bits were recognised */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -3909,11 +3544,7 @@ static int efx_ef10_handle_rx_event(struct efx_channel *channel,
 	bool rx_cont;
 	u16 flags = 0;
 
-<<<<<<< HEAD
 	if (unlikely(READ_ONCE(efx->reset_pending)))
-=======
-	if (unlikely(ACCESS_ONCE(efx->reset_pending)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	/* Basic packet information */
@@ -3921,11 +3552,7 @@ static int efx_ef10_handle_rx_event(struct efx_channel *channel,
 	next_ptr_lbits = EFX_QWORD_FIELD(*event, ESF_DZ_RX_DSC_PTR_LBITS);
 	rx_queue_label = EFX_QWORD_FIELD(*event, ESF_DZ_RX_QLABEL);
 	rx_l3_class = EFX_QWORD_FIELD(*event, ESF_DZ_RX_L3_CLASS);
-<<<<<<< HEAD
 	rx_l4_class = EFX_QWORD_FIELD(*event, ESF_FZ_RX_L4_CLASS);
-=======
-	rx_l4_class = EFX_QWORD_FIELD(*event, ESF_DZ_RX_L4_CLASS);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rx_cont = EFX_QWORD_FIELD(*event, ESF_DZ_RX_CONT);
 	rx_encap_hdr =
 		nic_data->datapath_caps &
@@ -4003,13 +3630,8 @@ static int efx_ef10_handle_rx_event(struct efx_channel *channel,
 							 rx_l3_class, rx_l4_class,
 							 event);
 	} else {
-<<<<<<< HEAD
 		bool tcpudp = rx_l4_class == ESE_FZ_L4_CLASS_TCP ||
 			      rx_l4_class == ESE_FZ_L4_CLASS_UDP;
-=======
-		bool tcpudp = rx_l4_class == ESE_DZ_L4_CLASS_TCP ||
-			      rx_l4_class == ESE_DZ_L4_CLASS_UDP;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		switch (rx_encap_hdr) {
 		case ESE_EZ_ENCAP_HDR_VXLAN: /* VxLAN or GENEVE */
@@ -4030,11 +3652,7 @@ static int efx_ef10_handle_rx_event(struct efx_channel *channel,
 		}
 	}
 
-<<<<<<< HEAD
 	if (rx_l4_class == ESE_FZ_L4_CLASS_TCP)
-=======
-	if (rx_l4_class == ESE_DZ_L4_CLASS_TCP)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		flags |= EFX_RX_PKT_TCP;
 
 	channel->irq_mod_score += 2 * n_packets;
@@ -4054,7 +3672,6 @@ static int efx_ef10_handle_rx_event(struct efx_channel *channel,
 	return n_packets;
 }
 
-<<<<<<< HEAD
 static u32 efx_ef10_extract_event_ts(efx_qword_t *event)
 {
 	u32 tstamp;
@@ -4067,16 +3684,12 @@ static u32 efx_ef10_extract_event_ts(efx_qword_t *event)
 }
 
 static void
-=======
-static int
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 efx_ef10_handle_tx_event(struct efx_channel *channel, efx_qword_t *event)
 {
 	struct efx_nic *efx = channel->efx;
 	struct efx_tx_queue *tx_queue;
 	unsigned int tx_ev_desc_ptr;
 	unsigned int tx_ev_q_label;
-<<<<<<< HEAD
 	unsigned int tx_ev_type;
 	u64 ts_part;
 
@@ -4145,26 +3758,6 @@ efx_ef10_handle_tx_event(struct efx_channel *channel, efx_qword_t *event)
 			  EFX_QWORD_VAL(*event));
 		break;
 	}
-=======
-	int tx_descs = 0;
-
-	if (unlikely(ACCESS_ONCE(efx->reset_pending)))
-		return 0;
-
-	if (unlikely(EFX_QWORD_FIELD(*event, ESF_DZ_TX_DROP_EVENT)))
-		return 0;
-
-	/* Transmit completion */
-	tx_ev_desc_ptr = EFX_QWORD_FIELD(*event, ESF_DZ_TX_DESCR_INDX);
-	tx_ev_q_label = EFX_QWORD_FIELD(*event, ESF_DZ_TX_QLABEL);
-	tx_queue = efx_channel_get_tx_queue(channel,
-					    tx_ev_q_label % EFX_TXQ_TYPES);
-	tx_descs = ((tx_ev_desc_ptr + 1 - tx_queue->read_count) &
-		    tx_queue->ptr_mask);
-	efx_xmit_done(tx_queue, tx_ev_desc_ptr & tx_queue->ptr_mask);
-
-	return tx_descs;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void
@@ -4226,10 +3819,6 @@ static int efx_ef10_ev_process(struct efx_channel *channel, int quota)
 	efx_qword_t event, *p_event;
 	unsigned int read_ptr;
 	int ev_code;
-<<<<<<< HEAD
-=======
-	int tx_descs = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int spent = 0;
 
 	if (quota <= 0)
@@ -4269,17 +3858,7 @@ static int efx_ef10_ev_process(struct efx_channel *channel, int quota)
 			}
 			break;
 		case ESE_DZ_EV_CODE_TX_EV:
-<<<<<<< HEAD
 			efx_ef10_handle_tx_event(channel, &event);
-=======
-			tx_descs += efx_ef10_handle_tx_event(channel, &event);
-			if (tx_descs > efx->txq_entries) {
-				spent = quota;
-				goto out;
-			} else if (++spent == quota) {
-				goto out;
-			}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		case ESE_DZ_EV_CODE_DRIVER_EV:
 			efx_ef10_handle_driver_event(channel, &event);
@@ -4420,32 +3999,6 @@ static void efx_ef10_prepare_flr(struct efx_nic *efx)
 	atomic_set(&efx->active_queues, 0);
 }
 
-<<<<<<< HEAD
-=======
-static bool efx_ef10_filter_equal(const struct efx_filter_spec *left,
-				  const struct efx_filter_spec *right)
-{
-	if ((left->match_flags ^ right->match_flags) |
-	    ((left->flags ^ right->flags) &
-	     (EFX_FILTER_FLAG_RX | EFX_FILTER_FLAG_TX)))
-		return false;
-
-	return memcmp(&left->outer_vid, &right->outer_vid,
-		      sizeof(struct efx_filter_spec) -
-		      offsetof(struct efx_filter_spec, outer_vid)) == 0;
-}
-
-static unsigned int efx_ef10_filter_hash(const struct efx_filter_spec *spec)
-{
-	BUILD_BUG_ON(offsetof(struct efx_filter_spec, outer_vid) & 3);
-	return jhash2((const u32 *)&spec->outer_vid,
-		      (sizeof(struct efx_filter_spec) -
-		       offsetof(struct efx_filter_spec, outer_vid)) / 4,
-		      0);
-	/* XXX should we randomise the initval? */
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Decide whether a filter should be exclusive or else should allow
  * delivery to additional recipients.  Currently we decide that
  * filters for specific local unicast MAC and IP addresses are
@@ -4596,10 +4149,7 @@ efx_ef10_filter_push_prep_set_match_fields(struct efx_nic *efx,
 static void efx_ef10_filter_push_prep(struct efx_nic *efx,
 				      const struct efx_filter_spec *spec,
 				      efx_dword_t *inbuf, u64 handle,
-<<<<<<< HEAD
 				      struct efx_rss_context *ctx,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      bool replacing)
 {
 	struct efx_ef10_nic_data *nic_data = efx->nic_data;
@@ -4607,7 +4157,6 @@ static void efx_ef10_filter_push_prep(struct efx_nic *efx,
 
 	memset(inbuf, 0, MC_CMD_FILTER_OP_EXT_IN_LEN);
 
-<<<<<<< HEAD
 	/* If RSS filter, caller better have given us an RSS context */
 	if (flags & EFX_FILTER_FLAG_RX_RSS) {
 		/* We don't have the ability to return an error, so we'll just
@@ -4618,13 +4167,6 @@ static void efx_ef10_filter_push_prep(struct efx_nic *efx,
 		else if (WARN_ON_ONCE(ctx->context_id == EFX_EF10_RSS_CONTEXT_INVALID))
 			flags &= ~EFX_FILTER_FLAG_RX_RSS;
 	}
-=======
-	/* Remove RSS flag if we don't have an RSS context. */
-	if (flags & EFX_FILTER_FLAG_RX_RSS &&
-	    spec->rss_context == EFX_FILTER_RSS_CONTEXT_DEFAULT &&
-	    nic_data->rx_rss_context == EFX_EF10_RSS_CONTEXT_INVALID)
-		flags &= ~EFX_FILTER_FLAG_RX_RSS;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (replacing) {
 		MCDI_SET_DWORD(inbuf, FILTER_OP_IN_OP,
@@ -4650,34 +4192,18 @@ static void efx_ef10_filter_push_prep(struct efx_nic *efx,
 		       MC_CMD_FILTER_OP_IN_RX_MODE_RSS :
 		       MC_CMD_FILTER_OP_IN_RX_MODE_SIMPLE);
 	if (flags & EFX_FILTER_FLAG_RX_RSS)
-<<<<<<< HEAD
 		MCDI_SET_DWORD(inbuf, FILTER_OP_IN_RX_CONTEXT, ctx->context_id);
 }
 
 static int efx_ef10_filter_push(struct efx_nic *efx,
 				const struct efx_filter_spec *spec, u64 *handle,
 				struct efx_rss_context *ctx, bool replacing)
-=======
-		MCDI_SET_DWORD(inbuf, FILTER_OP_IN_RX_CONTEXT,
-			       spec->rss_context !=
-			       EFX_FILTER_RSS_CONTEXT_DEFAULT ?
-			       spec->rss_context : nic_data->rx_rss_context);
-}
-
-static int efx_ef10_filter_push(struct efx_nic *efx,
-				const struct efx_filter_spec *spec,
-				u64 *handle, bool replacing)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	MCDI_DECLARE_BUF(inbuf, MC_CMD_FILTER_OP_EXT_IN_LEN);
 	MCDI_DECLARE_BUF(outbuf, MC_CMD_FILTER_OP_EXT_OUT_LEN);
 	int rc;
 
-<<<<<<< HEAD
 	efx_ef10_filter_push_prep(efx, spec, inbuf, *handle, ctx, replacing);
-=======
-	efx_ef10_filter_push_prep(efx, spec, inbuf, *handle, replacing);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rc = efx_mcdi_rpc(efx, MC_CMD_FILTER_OP, inbuf, sizeof(inbuf),
 			  outbuf, sizeof(outbuf), NULL);
 	if (rc == 0)
@@ -4762,7 +4288,6 @@ static int efx_ef10_filter_pri(struct efx_ef10_filter_table *table,
 	return -EPROTONOSUPPORT;
 }
 
-<<<<<<< HEAD
 static s32 efx_ef10_filter_insert_locked(struct efx_nic *efx,
 					 struct efx_filter_spec *spec,
 					 bool replace_equal)
@@ -4777,24 +4302,11 @@ static s32 efx_ef10_filter_insert_locked(struct efx_nic *efx,
 	bool rss_locked = false;
 	bool replacing = false;
 	unsigned int depth, i;
-=======
-static s32 efx_ef10_filter_insert(struct efx_nic *efx,
-				  struct efx_filter_spec *spec,
-				  bool replace_equal)
-{
-	struct efx_ef10_filter_table *table = efx->filter_state;
-	DECLARE_BITMAP(mc_rem_map, EFX_EF10_FILTER_SEARCH_LIMIT);
-	struct efx_filter_spec *saved_spec;
-	unsigned int match_pri, hash;
-	unsigned int priv_flags;
-	bool replacing = false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ins_index = -1;
 	DEFINE_WAIT(wait);
 	bool is_mc_recip;
 	s32 rc;
 
-<<<<<<< HEAD
 	WARN_ON(!rwsem_is_locked(&efx->filter_sem));
 	table = efx->filter_state;
 	down_write(&table->lock);
@@ -4812,24 +4324,10 @@ static s32 efx_ef10_filter_insert(struct efx_nic *efx,
 	match_pri = rc;
 
 	hash = efx_filter_spec_hash(spec);
-=======
-	/* For now, only support RX filters */
-	if ((spec->flags & (EFX_FILTER_FLAG_RX | EFX_FILTER_FLAG_TX)) !=
-	    EFX_FILTER_FLAG_RX)
-		return -EINVAL;
-
-	rc = efx_ef10_filter_pri(table, spec);
-	if (rc < 0)
-		return rc;
-	match_pri = rc;
-
-	hash = efx_ef10_filter_hash(spec);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	is_mc_recip = efx_filter_is_mc_recipient(spec);
 	if (is_mc_recip)
 		bitmap_zero(mc_rem_map, EFX_EF10_FILTER_SEARCH_LIMIT);
 
-<<<<<<< HEAD
 	if (spec->flags & EFX_FILTER_FLAG_RX_RSS) {
 		mutex_lock(&efx->rss_lock);
 		rss_locked = true;
@@ -4895,82 +4393,6 @@ static s32 efx_ef10_filter_insert(struct efx_nic *efx,
 	}
 
 	/* Create a software table entry if necessary. */
-=======
-	/* Find any existing filters with the same match tuple or
-	 * else a free slot to insert at.  If any of them are busy,
-	 * we have to wait and retry.
-	 */
-	for (;;) {
-		unsigned int depth = 1;
-		unsigned int i;
-
-		spin_lock_bh(&efx->filter_lock);
-
-		for (;;) {
-			i = (hash + depth) & (HUNT_FILTER_TBL_ROWS - 1);
-			saved_spec = efx_ef10_filter_entry_spec(table, i);
-
-			if (!saved_spec) {
-				if (ins_index < 0)
-					ins_index = i;
-			} else if (efx_ef10_filter_equal(spec, saved_spec)) {
-				if (table->entry[i].spec &
-				    EFX_EF10_FILTER_FLAG_BUSY)
-					break;
-				if (spec->priority < saved_spec->priority &&
-				    spec->priority != EFX_FILTER_PRI_AUTO) {
-					rc = -EPERM;
-					goto out_unlock;
-				}
-				if (!is_mc_recip) {
-					/* This is the only one */
-					if (spec->priority ==
-					    saved_spec->priority &&
-					    !replace_equal) {
-						rc = -EEXIST;
-						goto out_unlock;
-					}
-					ins_index = i;
-					goto found;
-				} else if (spec->priority >
-					   saved_spec->priority ||
-					   (spec->priority ==
-					    saved_spec->priority &&
-					    replace_equal)) {
-					if (ins_index < 0)
-						ins_index = i;
-					else
-						__set_bit(depth, mc_rem_map);
-				}
-			}
-
-			/* Once we reach the maximum search depth, use
-			 * the first suitable slot or return -EBUSY if
-			 * there was none
-			 */
-			if (depth == EFX_EF10_FILTER_SEARCH_LIMIT) {
-				if (ins_index < 0) {
-					rc = -EBUSY;
-					goto out_unlock;
-				}
-				goto found;
-			}
-
-			++depth;
-		}
-
-		prepare_to_wait(&table->waitq, &wait, TASK_UNINTERRUPTIBLE);
-		spin_unlock_bh(&efx->filter_lock);
-		schedule();
-	}
-
-found:
-	/* Create a software table entry if necessary, and mark it
-	 * busy.  We might yet fail to insert, but any attempt to
-	 * insert a conflicting filter while we're waiting for the
-	 * firmware must find the busy entry.
-	 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	saved_spec = efx_ef10_filter_entry_spec(table, ins_index);
 	if (saved_spec) {
 		if (spec->priority == EFX_FILTER_PRI_AUTO &&
@@ -4994,7 +4416,6 @@ found:
 		*saved_spec = *spec;
 		priv_flags = 0;
 	}
-<<<<<<< HEAD
 	efx_ef10_filter_set_entry(table, ins_index, saved_spec, priv_flags);
 
 	/* Actually insert the filter on the HW */
@@ -5008,30 +4429,6 @@ found:
 		rc = -EAGAIN;
 
 	/* Finalise the software table entry */
-=======
-	efx_ef10_filter_set_entry(table, ins_index, saved_spec,
-				  priv_flags | EFX_EF10_FILTER_FLAG_BUSY);
-
-	/* Mark lower-priority multicast recipients busy prior to removal */
-	if (is_mc_recip) {
-		unsigned int depth, i;
-
-		for (depth = 0; depth < EFX_EF10_FILTER_SEARCH_LIMIT; depth++) {
-			i = (hash + depth) & (HUNT_FILTER_TBL_ROWS - 1);
-			if (test_bit(depth, mc_rem_map))
-				table->entry[i].spec |=
-					EFX_EF10_FILTER_FLAG_BUSY;
-		}
-	}
-
-	spin_unlock_bh(&efx->filter_lock);
-
-	rc = efx_ef10_filter_push(efx, spec, &table->entry[ins_index].handle,
-				  replacing);
-
-	/* Finalise the software table entry */
-	spin_lock_bh(&efx->filter_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc == 0) {
 		if (replacing) {
 			/* Update the fields that may differ */
@@ -5047,15 +4444,12 @@ found:
 	} else if (!replacing) {
 		kfree(saved_spec);
 		saved_spec = NULL;
-<<<<<<< HEAD
 	} else {
 		/* We failed to replace, so the old filter is still present.
 		 * Roll back the software table to reflect this.  In fact the
 		 * efx_ef10_filter_set_entry() call below will do the right
 		 * thing, so nothing extra is needed here.
 		 */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	efx_ef10_filter_set_entry(table, ins_index, saved_spec, priv_flags);
 
@@ -5077,10 +4471,6 @@ found:
 			priv_flags = efx_ef10_filter_entry_flags(table, i);
 
 			if (rc == 0) {
-<<<<<<< HEAD
-=======
-				spin_unlock_bh(&efx->filter_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				MCDI_SET_DWORD(inbuf, FILTER_OP_IN_OP,
 					       MC_CMD_FILTER_OP_IN_OP_UNSUBSCRIBE);
 				MCDI_SET_QWORD(inbuf, FILTER_OP_IN_HANDLE,
@@ -5088,21 +4478,12 @@ found:
 				rc = efx_mcdi_rpc(efx, MC_CMD_FILTER_OP,
 						  inbuf, sizeof(inbuf),
 						  NULL, 0, NULL);
-<<<<<<< HEAD
-=======
-				spin_lock_bh(&efx->filter_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 
 			if (rc == 0) {
 				kfree(saved_spec);
 				saved_spec = NULL;
 				priv_flags = 0;
-<<<<<<< HEAD
-=======
-			} else {
-				priv_flags &= ~EFX_EF10_FILTER_FLAG_BUSY;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 			efx_ef10_filter_set_entry(table, i, saved_spec,
 						  priv_flags);
@@ -5113,7 +4494,6 @@ found:
 	if (rc == 0)
 		rc = efx_ef10_make_filter_id(match_pri, ins_index);
 
-<<<<<<< HEAD
 out_unlock:
 	if (rss_locked)
 		mutex_unlock(&efx->rss_lock);
@@ -5134,15 +4514,6 @@ static s32 efx_ef10_filter_insert(struct efx_nic *efx,
 	return ret;
 }
 
-=======
-	wake_up_all(&table->waitq);
-out_unlock:
-	spin_unlock_bh(&efx->filter_lock);
-	finish_wait(&table->waitq, &wait);
-	return rc;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void efx_ef10_filter_update_rx_scatter(struct efx_nic *efx)
 {
 	/* no need to do anything here on EF10 */
@@ -5152,11 +4523,8 @@ static void efx_ef10_filter_update_rx_scatter(struct efx_nic *efx)
  * If !by_index, remove by ID
  * If by_index, remove by index
  * Filter ID may come from userland and must be range-checked.
-<<<<<<< HEAD
  * Caller must hold efx->filter_sem for read, and efx->filter_state->lock
  * for write.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static int efx_ef10_filter_remove_internal(struct efx_nic *efx,
 					   unsigned int priority_mask,
@@ -5171,61 +4539,23 @@ static int efx_ef10_filter_remove_internal(struct efx_nic *efx,
 	DEFINE_WAIT(wait);
 	int rc;
 
-<<<<<<< HEAD
-=======
-	/* Find the software table entry and mark it busy.  Don't
-	 * remove it yet; any attempt to update while we're waiting
-	 * for the firmware must find the busy entry.
-	 */
-	for (;;) {
-		spin_lock_bh(&efx->filter_lock);
-		if (!(table->entry[filter_idx].spec &
-		      EFX_EF10_FILTER_FLAG_BUSY))
-			break;
-		prepare_to_wait(&table->waitq, &wait, TASK_UNINTERRUPTIBLE);
-		spin_unlock_bh(&efx->filter_lock);
-		schedule();
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spec = efx_ef10_filter_entry_spec(table, filter_idx);
 	if (!spec ||
 	    (!by_index &&
 	     efx_ef10_filter_pri(table, spec) !=
-<<<<<<< HEAD
 	     efx_ef10_filter_get_unsafe_pri(filter_id)))
 		return -ENOENT;
-=======
-	     efx_ef10_filter_get_unsafe_pri(filter_id))) {
-		rc = -ENOENT;
-		goto out_unlock;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (spec->flags & EFX_FILTER_FLAG_RX_OVER_AUTO &&
 	    priority_mask == (1U << EFX_FILTER_PRI_AUTO)) {
 		/* Just remove flags */
 		spec->flags &= ~EFX_FILTER_FLAG_RX_OVER_AUTO;
 		table->entry[filter_idx].spec &= ~EFX_EF10_FILTER_FLAG_AUTO_OLD;
-<<<<<<< HEAD
 		return 0;
 	}
 
 	if (!(priority_mask & (1U << spec->priority)))
 		return -ENOENT;
-=======
-		rc = 0;
-		goto out_unlock;
-	}
-
-	if (!(priority_mask & (1U << spec->priority))) {
-		rc = -ENOENT;
-		goto out_unlock;
-	}
-
-	table->entry[filter_idx].spec |= EFX_EF10_FILTER_FLAG_BUSY;
-	spin_unlock_bh(&efx->filter_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (spec->flags & EFX_FILTER_FLAG_RX_OVER_AUTO) {
 		/* Reset to an automatic filter */
@@ -5234,7 +4564,6 @@ static int efx_ef10_filter_remove_internal(struct efx_nic *efx,
 
 		new_spec.priority = EFX_FILTER_PRI_AUTO;
 		new_spec.flags = (EFX_FILTER_FLAG_RX |
-<<<<<<< HEAD
 				  (efx_rss_active(&efx->rss_context) ?
 				   EFX_FILTER_FLAG_RX_RSS : 0));
 		new_spec.dmaq_id = 0;
@@ -5244,17 +4573,6 @@ static int efx_ef10_filter_remove_internal(struct efx_nic *efx,
 					  &efx->rss_context,
 					  true);
 
-=======
-				  (efx_rss_enabled(efx) ?
-				   EFX_FILTER_FLAG_RX_RSS : 0));
-		new_spec.dmaq_id = 0;
-		new_spec.rss_context = EFX_FILTER_RSS_CONTEXT_DEFAULT;
-		rc = efx_ef10_filter_push(efx, &new_spec,
-					  &table->entry[filter_idx].handle,
-					  true);
-
-		spin_lock_bh(&efx->filter_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (rc == 0)
 			*spec = new_spec;
 	} else {
@@ -5269,10 +4587,6 @@ static int efx_ef10_filter_remove_internal(struct efx_nic *efx,
 		rc = efx_mcdi_rpc_quiet(efx, MC_CMD_FILTER_OP,
 					inbuf, sizeof(inbuf), NULL, 0, NULL);
 
-<<<<<<< HEAD
-=======
-		spin_lock_bh(&efx->filter_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if ((rc == 0) || (rc == -ENOENT)) {
 			/* Filter removed OK or didn't actually exist */
 			kfree(spec);
@@ -5284,14 +4598,6 @@ static int efx_ef10_filter_remove_internal(struct efx_nic *efx,
 		}
 	}
 
-<<<<<<< HEAD
-=======
-	table->entry[filter_idx].spec &= ~EFX_EF10_FILTER_FLAG_BUSY;
-	wake_up_all(&table->waitq);
-out_unlock:
-	spin_unlock_bh(&efx->filter_lock);
-	finish_wait(&table->waitq, &wait);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 
@@ -5299,7 +4605,6 @@ static int efx_ef10_filter_remove_safe(struct efx_nic *efx,
 				       enum efx_filter_priority priority,
 				       u32 filter_id)
 {
-<<<<<<< HEAD
 	struct efx_ef10_filter_table *table;
 	int rc;
 
@@ -5314,17 +4619,10 @@ static int efx_ef10_filter_remove_safe(struct efx_nic *efx,
 }
 
 /* Caller must hold efx->filter_sem for read */
-=======
-	return efx_ef10_filter_remove_internal(efx, 1U << priority,
-					       filter_id, false);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void efx_ef10_filter_remove_unsafe(struct efx_nic *efx,
 					  enum efx_filter_priority priority,
 					  u32 filter_id)
 {
-<<<<<<< HEAD
 	struct efx_ef10_filter_table *table = efx->filter_state;
 
 	if (filter_id == EFX_EF10_FILTER_ID_INVALID)
@@ -5334,11 +4632,6 @@ static void efx_ef10_filter_remove_unsafe(struct efx_nic *efx,
 	efx_ef10_filter_remove_internal(efx, 1U << priority, filter_id,
 					true);
 	up_write(&table->lock);
-=======
-	if (filter_id == EFX_EF10_FILTER_ID_INVALID)
-		return;
-	efx_ef10_filter_remove_internal(efx, 1U << priority, filter_id, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int efx_ef10_filter_get_safe(struct efx_nic *efx,
@@ -5346,7 +4639,6 @@ static int efx_ef10_filter_get_safe(struct efx_nic *efx,
 				    u32 filter_id, struct efx_filter_spec *spec)
 {
 	unsigned int filter_idx = efx_ef10_filter_get_unsafe_id(filter_id);
-<<<<<<< HEAD
 	const struct efx_filter_spec *saved_spec;
 	struct efx_ef10_filter_table *table;
 	int rc;
@@ -5354,13 +4646,6 @@ static int efx_ef10_filter_get_safe(struct efx_nic *efx,
 	down_read(&efx->filter_sem);
 	table = efx->filter_state;
 	down_read(&table->lock);
-=======
-	struct efx_ef10_filter_table *table = efx->filter_state;
-	const struct efx_filter_spec *saved_spec;
-	int rc;
-
-	spin_lock_bh(&efx->filter_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	saved_spec = efx_ef10_filter_entry_spec(table, filter_idx);
 	if (saved_spec && saved_spec->priority == priority &&
 	    efx_ef10_filter_pri(table, saved_spec) ==
@@ -5370,24 +4655,15 @@ static int efx_ef10_filter_get_safe(struct efx_nic *efx,
 	} else {
 		rc = -ENOENT;
 	}
-<<<<<<< HEAD
 	up_read(&table->lock);
 	up_read(&efx->filter_sem);
-=======
-	spin_unlock_bh(&efx->filter_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 
 static int efx_ef10_filter_clear_rx(struct efx_nic *efx,
-<<<<<<< HEAD
 				    enum efx_filter_priority priority)
 {
 	struct efx_ef10_filter_table *table;
-=======
-				     enum efx_filter_priority priority)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int priority_mask;
 	unsigned int i;
 	int rc;
@@ -5395,17 +4671,13 @@ static int efx_ef10_filter_clear_rx(struct efx_nic *efx,
 	priority_mask = (((1U << (priority + 1)) - 1) &
 			 ~(1U << EFX_FILTER_PRI_AUTO));
 
-<<<<<<< HEAD
 	down_read(&efx->filter_sem);
 	table = efx->filter_state;
 	down_write(&table->lock);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < HUNT_FILTER_TBL_ROWS; i++) {
 		rc = efx_ef10_filter_remove_internal(efx, priority_mask,
 						     i, true);
 		if (rc && rc != -ENOENT)
-<<<<<<< HEAD
 			break;
 		rc = 0;
 	}
@@ -5413,18 +4685,11 @@ static int efx_ef10_filter_clear_rx(struct efx_nic *efx,
 	up_write(&table->lock);
 	up_read(&efx->filter_sem);
 	return rc;
-=======
-			return rc;
-	}
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static u32 efx_ef10_filter_count_rx_used(struct efx_nic *efx,
 					 enum efx_filter_priority priority)
 {
-<<<<<<< HEAD
 	struct efx_ef10_filter_table *table;
 	unsigned int filter_idx;
 	s32 count = 0;
@@ -5432,25 +4697,14 @@ static u32 efx_ef10_filter_count_rx_used(struct efx_nic *efx,
 	down_read(&efx->filter_sem);
 	table = efx->filter_state;
 	down_read(&table->lock);
-=======
-	struct efx_ef10_filter_table *table = efx->filter_state;
-	unsigned int filter_idx;
-	s32 count = 0;
-
-	spin_lock_bh(&efx->filter_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (filter_idx = 0; filter_idx < HUNT_FILTER_TBL_ROWS; filter_idx++) {
 		if (table->entry[filter_idx].spec &&
 		    efx_ef10_filter_entry_spec(table, filter_idx)->priority ==
 		    priority)
 			++count;
 	}
-<<<<<<< HEAD
 	up_read(&table->lock);
 	up_read(&efx->filter_sem);
-=======
-	spin_unlock_bh(&efx->filter_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return count;
 }
 
@@ -5465,23 +4719,15 @@ static s32 efx_ef10_filter_get_rx_ids(struct efx_nic *efx,
 				      enum efx_filter_priority priority,
 				      u32 *buf, u32 size)
 {
-<<<<<<< HEAD
 	struct efx_ef10_filter_table *table;
-=======
-	struct efx_ef10_filter_table *table = efx->filter_state;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct efx_filter_spec *spec;
 	unsigned int filter_idx;
 	s32 count = 0;
 
-<<<<<<< HEAD
 	down_read(&efx->filter_sem);
 	table = efx->filter_state;
 	down_read(&table->lock);
 
-=======
-	spin_lock_bh(&efx->filter_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (filter_idx = 0; filter_idx < HUNT_FILTER_TBL_ROWS; filter_idx++) {
 		spec = efx_ef10_filter_entry_spec(table, filter_idx);
 		if (spec && spec->priority == priority) {
@@ -5495,18 +4741,13 @@ static s32 efx_ef10_filter_get_rx_ids(struct efx_nic *efx,
 					filter_idx);
 		}
 	}
-<<<<<<< HEAD
 	up_read(&table->lock);
 	up_read(&efx->filter_sem);
-=======
-	spin_unlock_bh(&efx->filter_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return count;
 }
 
 #ifdef CONFIG_RFS_ACCEL
 
-<<<<<<< HEAD
 static bool efx_ef10_filter_rfs_expire_one(struct efx_nic *efx, u32 flow_id,
 					   unsigned int filter_idx)
 {
@@ -5571,197 +4812,6 @@ out_unlock:
 	up_write(&table->lock);
 	up_read(&efx->filter_sem);
 	return ret;
-=======
-static efx_mcdi_async_completer efx_ef10_filter_rfs_insert_complete;
-
-static s32 efx_ef10_filter_rfs_insert(struct efx_nic *efx,
-				      struct efx_filter_spec *spec)
-{
-	struct efx_ef10_filter_table *table = efx->filter_state;
-	MCDI_DECLARE_BUF(inbuf, MC_CMD_FILTER_OP_EXT_IN_LEN);
-	struct efx_filter_spec *saved_spec;
-	unsigned int hash, i, depth = 1;
-	bool replacing = false;
-	int ins_index = -1;
-	u64 cookie;
-	s32 rc;
-
-	/* Must be an RX filter without RSS and not for a multicast
-	 * destination address (RFS only works for connected sockets).
-	 * These restrictions allow us to pass only a tiny amount of
-	 * data through to the completion function.
-	 */
-	EFX_WARN_ON_PARANOID(spec->flags !=
-			     (EFX_FILTER_FLAG_RX | EFX_FILTER_FLAG_RX_SCATTER));
-	EFX_WARN_ON_PARANOID(spec->priority != EFX_FILTER_PRI_HINT);
-	EFX_WARN_ON_PARANOID(efx_filter_is_mc_recipient(spec));
-
-	hash = efx_ef10_filter_hash(spec);
-
-	spin_lock_bh(&efx->filter_lock);
-
-	/* Find any existing filter with the same match tuple or else
-	 * a free slot to insert at.  If an existing filter is busy,
-	 * we have to give up.
-	 */
-	for (;;) {
-		i = (hash + depth) & (HUNT_FILTER_TBL_ROWS - 1);
-		saved_spec = efx_ef10_filter_entry_spec(table, i);
-
-		if (!saved_spec) {
-			if (ins_index < 0)
-				ins_index = i;
-		} else if (efx_ef10_filter_equal(spec, saved_spec)) {
-			if (table->entry[i].spec & EFX_EF10_FILTER_FLAG_BUSY) {
-				rc = -EBUSY;
-				goto fail_unlock;
-			}
-			if (spec->priority < saved_spec->priority) {
-				rc = -EPERM;
-				goto fail_unlock;
-			}
-			ins_index = i;
-			break;
-		}
-
-		/* Once we reach the maximum search depth, use the
-		 * first suitable slot or return -EBUSY if there was
-		 * none
-		 */
-		if (depth == EFX_EF10_FILTER_SEARCH_LIMIT) {
-			if (ins_index < 0) {
-				rc = -EBUSY;
-				goto fail_unlock;
-			}
-			break;
-		}
-
-		++depth;
-	}
-
-	/* Create a software table entry if necessary, and mark it
-	 * busy.  We might yet fail to insert, but any attempt to
-	 * insert a conflicting filter while we're waiting for the
-	 * firmware must find the busy entry.
-	 */
-	saved_spec = efx_ef10_filter_entry_spec(table, ins_index);
-	if (saved_spec) {
-		replacing = true;
-	} else {
-		saved_spec = kmalloc(sizeof(*spec), GFP_ATOMIC);
-		if (!saved_spec) {
-			rc = -ENOMEM;
-			goto fail_unlock;
-		}
-		*saved_spec = *spec;
-	}
-	efx_ef10_filter_set_entry(table, ins_index, saved_spec,
-				  EFX_EF10_FILTER_FLAG_BUSY);
-
-	spin_unlock_bh(&efx->filter_lock);
-
-	/* Pack up the variables needed on completion */
-	cookie = replacing << 31 | ins_index << 16 | spec->dmaq_id;
-
-	efx_ef10_filter_push_prep(efx, spec, inbuf,
-				  table->entry[ins_index].handle, replacing);
-	efx_mcdi_rpc_async(efx, MC_CMD_FILTER_OP, inbuf, sizeof(inbuf),
-			   MC_CMD_FILTER_OP_OUT_LEN,
-			   efx_ef10_filter_rfs_insert_complete, cookie);
-
-	return ins_index;
-
-fail_unlock:
-	spin_unlock_bh(&efx->filter_lock);
-	return rc;
-}
-
-static void
-efx_ef10_filter_rfs_insert_complete(struct efx_nic *efx, unsigned long cookie,
-				    int rc, efx_dword_t *outbuf,
-				    size_t outlen_actual)
-{
-	struct efx_ef10_filter_table *table = efx->filter_state;
-	unsigned int ins_index, dmaq_id;
-	struct efx_filter_spec *spec;
-	bool replacing;
-
-	/* Unpack the cookie */
-	replacing = cookie >> 31;
-	ins_index = (cookie >> 16) & (HUNT_FILTER_TBL_ROWS - 1);
-	dmaq_id = cookie & 0xffff;
-
-	spin_lock_bh(&efx->filter_lock);
-	spec = efx_ef10_filter_entry_spec(table, ins_index);
-	if (rc == 0) {
-		table->entry[ins_index].handle =
-			MCDI_QWORD(outbuf, FILTER_OP_OUT_HANDLE);
-		if (replacing)
-			spec->dmaq_id = dmaq_id;
-	} else if (!replacing) {
-		kfree(spec);
-		spec = NULL;
-	}
-	efx_ef10_filter_set_entry(table, ins_index, spec, 0);
-	spin_unlock_bh(&efx->filter_lock);
-
-	wake_up_all(&table->waitq);
-}
-
-static void
-efx_ef10_filter_rfs_expire_complete(struct efx_nic *efx,
-				    unsigned long filter_idx,
-				    int rc, efx_dword_t *outbuf,
-				    size_t outlen_actual);
-
-static bool efx_ef10_filter_rfs_expire_one(struct efx_nic *efx, u32 flow_id,
-					   unsigned int filter_idx)
-{
-	struct efx_ef10_filter_table *table = efx->filter_state;
-	struct efx_filter_spec *spec =
-		efx_ef10_filter_entry_spec(table, filter_idx);
-	MCDI_DECLARE_BUF(inbuf,
-			 MC_CMD_FILTER_OP_IN_HANDLE_OFST +
-			 MC_CMD_FILTER_OP_IN_HANDLE_LEN);
-
-	if (!spec ||
-	    (table->entry[filter_idx].spec & EFX_EF10_FILTER_FLAG_BUSY) ||
-	    spec->priority != EFX_FILTER_PRI_HINT ||
-	    !rps_may_expire_flow(efx->net_dev, spec->dmaq_id,
-				 flow_id, filter_idx))
-		return false;
-
-	MCDI_SET_DWORD(inbuf, FILTER_OP_IN_OP,
-		       MC_CMD_FILTER_OP_IN_OP_REMOVE);
-	MCDI_SET_QWORD(inbuf, FILTER_OP_IN_HANDLE,
-		       table->entry[filter_idx].handle);
-	if (efx_mcdi_rpc_async(efx, MC_CMD_FILTER_OP, inbuf, sizeof(inbuf), 0,
-			       efx_ef10_filter_rfs_expire_complete, filter_idx))
-		return false;
-
-	table->entry[filter_idx].spec |= EFX_EF10_FILTER_FLAG_BUSY;
-	return true;
-}
-
-static void
-efx_ef10_filter_rfs_expire_complete(struct efx_nic *efx,
-				    unsigned long filter_idx,
-				    int rc, efx_dword_t *outbuf,
-				    size_t outlen_actual)
-{
-	struct efx_ef10_filter_table *table = efx->filter_state;
-	struct efx_filter_spec *spec =
-		efx_ef10_filter_entry_spec(table, filter_idx);
-
-	spin_lock_bh(&efx->filter_lock);
-	if (rc == 0) {
-		kfree(spec);
-		efx_ef10_filter_set_entry(table, filter_idx, NULL, 0);
-	}
-	table->entry[filter_idx].spec &= ~EFX_EF10_FILTER_FLAG_BUSY;
-	wake_up_all(&table->waitq);
-	spin_unlock_bh(&efx->filter_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #endif /* CONFIG_RFS_ACCEL */
@@ -5946,12 +4996,8 @@ static int efx_ef10_filter_table_probe(struct efx_nic *efx)
 		net_dev->hw_features &= ~NETIF_F_HW_VLAN_CTAG_FILTER;
 	}
 
-<<<<<<< HEAD
 	table->entry = vzalloc(array_size(HUNT_FILTER_TBL_ROWS,
 					  sizeof(*table->entry)));
-=======
-	table->entry = vzalloc(HUNT_FILTER_TBL_ROWS * sizeof(*table->entry));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!table->entry) {
 		rc = -ENOMEM;
 		goto fail;
@@ -5961,15 +5007,9 @@ static int efx_ef10_filter_table_probe(struct efx_nic *efx)
 	table->vlan_filter =
 		!!(efx->net_dev->features & NETIF_F_HW_VLAN_CTAG_FILTER);
 	INIT_LIST_HEAD(&table->vlan_list);
-<<<<<<< HEAD
 	init_rwsem(&table->lock);
 
 	efx->filter_state = table;
-=======
-
-	efx->filter_state = table;
-	init_waitqueue_head(&table->waitq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	list_for_each_entry(vlan, &nic_data->vlan_list, list) {
 		rc = efx_ef10_filter_add_vlan(efx, vlan->vid);
@@ -5997,10 +5037,7 @@ static void efx_ef10_filter_table_restore(struct efx_nic *efx)
 	unsigned int invalid_filters = 0, failed = 0;
 	struct efx_ef10_filter_vlan *vlan;
 	struct efx_filter_spec *spec;
-<<<<<<< HEAD
 	struct efx_rss_context *ctx;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int filter_idx;
 	u32 mcdi_flags;
 	int match_pri;
@@ -6014,12 +5051,8 @@ static void efx_ef10_filter_table_restore(struct efx_nic *efx)
 	if (!table)
 		return;
 
-<<<<<<< HEAD
 	down_write(&table->lock);
 	mutex_lock(&efx->rss_lock);
-=======
-	spin_lock_bh(&efx->filter_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (filter_idx = 0; filter_idx < HUNT_FILTER_TBL_ROWS; filter_idx++) {
 		spec = efx_ef10_filter_entry_spec(table, filter_idx);
@@ -6035,7 +5068,6 @@ static void efx_ef10_filter_table_restore(struct efx_nic *efx)
 			invalid_filters++;
 			goto not_restored;
 		}
-<<<<<<< HEAD
 		if (spec->rss_context)
 			ctx = efx_find_rss_context_entry(efx, spec->rss_context);
 		else
@@ -6062,22 +5094,6 @@ static void efx_ef10_filter_table_restore(struct efx_nic *efx)
 					  ctx, false);
 		if (rc)
 			failed++;
-=======
-		if (spec->rss_context != EFX_FILTER_RSS_CONTEXT_DEFAULT &&
-		    spec->rss_context != nic_data->rx_rss_context)
-			netif_warn(efx, drv, efx->net_dev,
-				   "Warning: unable to restore a filter with specific RSS context.\n");
-
-		table->entry[filter_idx].spec |= EFX_EF10_FILTER_FLAG_BUSY;
-		spin_unlock_bh(&efx->filter_lock);
-
-		rc = efx_ef10_filter_push(efx, spec,
-					  &table->entry[filter_idx].handle,
-					  false);
-		if (rc)
-			failed++;
-		spin_lock_bh(&efx->filter_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (rc) {
 not_restored:
@@ -6089,21 +5105,11 @@ not_restored:
 
 			kfree(spec);
 			efx_ef10_filter_set_entry(table, filter_idx, NULL, 0);
-<<<<<<< HEAD
 		}
 	}
 
 	mutex_unlock(&efx->rss_lock);
 	up_write(&table->lock);
-=======
-		} else {
-			table->entry[filter_idx].spec &=
-				~EFX_EF10_FILTER_FLAG_BUSY;
-		}
-	}
-
-	spin_unlock_bh(&efx->filter_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* This can happen validly if the MC's capabilities have changed, so
 	 * is not an error.
@@ -6171,11 +5177,8 @@ static void efx_ef10_filter_mark_one_old(struct efx_nic *efx, uint16_t *id)
 	struct efx_ef10_filter_table *table = efx->filter_state;
 	unsigned int filter_idx;
 
-<<<<<<< HEAD
 	efx_rwsem_assert_write_locked(&table->lock);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (*id != EFX_EF10_FILTER_ID_INVALID) {
 		filter_idx = efx_ef10_filter_get_unsafe_id(*id);
 		if (!table->entry[filter_idx].spec)
@@ -6211,17 +5214,10 @@ static void efx_ef10_filter_mark_old(struct efx_nic *efx)
 	struct efx_ef10_filter_table *table = efx->filter_state;
 	struct efx_ef10_filter_vlan *vlan;
 
-<<<<<<< HEAD
 	down_write(&table->lock);
 	list_for_each_entry(vlan, &table->vlan_list, list)
 		_efx_ef10_filter_vlan_mark_old(efx, vlan);
 	up_write(&table->lock);
-=======
-	spin_lock_bh(&efx->filter_lock);
-	list_for_each_entry(vlan, &table->vlan_list, list)
-		_efx_ef10_filter_vlan_mark_old(efx, vlan);
-	spin_unlock_bh(&efx->filter_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void efx_ef10_filter_uc_addr_list(struct efx_nic *efx)
@@ -6294,22 +5290,14 @@ static int efx_ef10_filter_insert_addr_list(struct efx_nic *efx,
 		ids = vlan->uc;
 	}
 
-<<<<<<< HEAD
 	filter_flags = efx_rss_active(&efx->rss_context) ? EFX_FILTER_FLAG_RX_RSS : 0;
-=======
-	filter_flags = efx_rss_enabled(efx) ? EFX_FILTER_FLAG_RX_RSS : 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Insert/renew filters */
 	for (i = 0; i < addr_count; i++) {
 		EFX_WARN_ON_PARANOID(ids[i] != EFX_EF10_FILTER_ID_INVALID);
 		efx_filter_init_rx(&spec, EFX_FILTER_PRI_AUTO, filter_flags, 0);
 		efx_filter_set_eth_local(&spec, vlan->vid, addr_list[i].addr);
-<<<<<<< HEAD
 		rc = efx_ef10_filter_insert_locked(efx, &spec, true);
-=======
-		rc = efx_ef10_filter_insert(efx, &spec, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (rc < 0) {
 			if (rollback) {
 				netif_info(efx, drv, efx->net_dev,
@@ -6338,11 +5326,7 @@ static int efx_ef10_filter_insert_addr_list(struct efx_nic *efx,
 		efx_filter_init_rx(&spec, EFX_FILTER_PRI_AUTO, filter_flags, 0);
 		eth_broadcast_addr(baddr);
 		efx_filter_set_eth_local(&spec, vlan->vid, baddr);
-<<<<<<< HEAD
 		rc = efx_ef10_filter_insert_locked(efx, &spec, true);
-=======
-		rc = efx_ef10_filter_insert(efx, &spec, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (rc < 0) {
 			netif_warn(efx, drv, efx->net_dev,
 				   "Broadcast filter insert failed rc=%d\n", rc);
@@ -6375,11 +5359,7 @@ static int efx_ef10_filter_insert_def(struct efx_nic *efx,
 	int rc;
 	u16 *id;
 
-<<<<<<< HEAD
 	filter_flags = efx_rss_active(&efx->rss_context) ? EFX_FILTER_FLAG_RX_RSS : 0;
-=======
-	filter_flags = efx_rss_enabled(efx) ? EFX_FILTER_FLAG_RX_RSS : 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	efx_filter_init_rx(&spec, EFX_FILTER_PRI_AUTO, filter_flags, 0);
 
@@ -6402,11 +5382,7 @@ static int efx_ef10_filter_insert_def(struct efx_nic *efx,
 	if (vlan->vid != EFX_FILTER_VID_UNSPEC)
 		efx_filter_set_eth_local(&spec, vlan->vid, NULL);
 
-<<<<<<< HEAD
 	rc = efx_ef10_filter_insert_locked(efx, &spec, true);
-=======
-	rc = efx_ef10_filter_insert(efx, &spec, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc < 0) {
 		const char *um = multicast ? "Multicast" : "Unicast";
 		const char *encap_name = "";
@@ -6466,11 +5442,7 @@ static int efx_ef10_filter_insert_def(struct efx_nic *efx,
 					   filter_flags, 0);
 			eth_broadcast_addr(baddr);
 			efx_filter_set_eth_local(&spec, vlan->vid, baddr);
-<<<<<<< HEAD
 			rc = efx_ef10_filter_insert_locked(efx, &spec, true);
-=======
-			rc = efx_ef10_filter_insert(efx, &spec, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (rc < 0) {
 				netif_warn(efx, drv, efx->net_dev,
 					   "Broadcast filter insert failed rc=%d\n",
@@ -6522,14 +5494,7 @@ static int efx_ef10_filter_insert_def(struct efx_nic *efx,
 	return rc;
 }
 
-<<<<<<< HEAD
 /* Remove filters that weren't renewed. */
-=======
-/* Remove filters that weren't renewed.  Since nothing else changes the AUTO_OLD
- * flag or removes these filters, we don't need to hold the filter_lock while
- * scanning for these filters.
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void efx_ef10_filter_remove_old(struct efx_nic *efx)
 {
 	struct efx_ef10_filter_table *table = efx->filter_state;
@@ -6538,14 +5503,9 @@ static void efx_ef10_filter_remove_old(struct efx_nic *efx)
 	int rc;
 	int i;
 
-<<<<<<< HEAD
 	down_write(&table->lock);
 	for (i = 0; i < HUNT_FILTER_TBL_ROWS; i++) {
 		if (READ_ONCE(table->entry[i].spec) &
-=======
-	for (i = 0; i < HUNT_FILTER_TBL_ROWS; i++) {
-		if (ACCESS_ONCE(table->entry[i].spec) &
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    EFX_EF10_FILTER_FLAG_AUTO_OLD) {
 			rc = efx_ef10_filter_remove_internal(efx,
 					1U << EFX_FILTER_PRI_AUTO, i, true);
@@ -6555,10 +5515,7 @@ static void efx_ef10_filter_remove_old(struct efx_nic *efx)
 				remove_failed++;
 		}
 	}
-<<<<<<< HEAD
 	up_write(&table->lock);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (remove_failed)
 		netif_info(efx, drv, efx->net_dev,
@@ -7085,25 +6042,15 @@ static const struct efx_ef10_nvram_type_info efx_ef10_nvram_types[] = {
 	{ NVRAM_PARTITION_TYPE_LICENSE,		   0,    0, "sfc_license" },
 	{ NVRAM_PARTITION_TYPE_PHY_MIN,		   0xff, 0, "sfc_phy_fw" },
 };
-<<<<<<< HEAD
 
 static int efx_ef10_mtd_probe_partition(struct efx_nic *efx,
 					struct efx_mcdi_mtd_partition *part,
 					unsigned int type)
-=======
-#define EF10_NVRAM_PARTITION_COUNT	ARRAY_SIZE(efx_ef10_nvram_types)
-
-static int efx_ef10_mtd_probe_partition(struct efx_nic *efx,
-					struct efx_mcdi_mtd_partition *part,
-					unsigned int type,
-					unsigned long *found)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	MCDI_DECLARE_BUF(inbuf, MC_CMD_NVRAM_METADATA_IN_LEN);
 	MCDI_DECLARE_BUF(outbuf, MC_CMD_NVRAM_METADATA_OUT_LENMAX);
 	const struct efx_ef10_nvram_type_info *info;
 	size_t size, erase_size, outlen;
-<<<<<<< HEAD
 	bool protected;
 	int rc;
 
@@ -7111,16 +6058,6 @@ static int efx_ef10_mtd_probe_partition(struct efx_nic *efx,
 		if (info ==
 		    efx_ef10_nvram_types + ARRAY_SIZE(efx_ef10_nvram_types))
 			return -ENODEV;
-=======
-	int type_idx = 0;
-	bool protected;
-	int rc;
-
-	for (type_idx = 0; ; type_idx++) {
-		if (type_idx == EF10_NVRAM_PARTITION_COUNT)
-			return -ENODEV;
-		info = efx_ef10_nvram_types + type_idx;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if ((type & ~info->type_mask) == info->type)
 			break;
 	}
@@ -7133,16 +6070,6 @@ static int efx_ef10_mtd_probe_partition(struct efx_nic *efx,
 	if (protected)
 		return -ENODEV; /* hide it */
 
-<<<<<<< HEAD
-=======
-	/* If we've already exposed a partition of this type, hide this
-	 * duplicate.  All operations on MTDs are keyed by the type anyway,
-	 * so we can't act on the duplicate.
-	 */
-	if (__test_and_set_bit(type_idx, found))
-		return -EEXIST;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	part->nvram_type = type;
 
 	MCDI_SET_DWORD(inbuf, NVRAM_METADATA_IN_TYPE, type);
@@ -7171,10 +6098,6 @@ static int efx_ef10_mtd_probe_partition(struct efx_nic *efx,
 static int efx_ef10_mtd_probe(struct efx_nic *efx)
 {
 	MCDI_DECLARE_BUF(outbuf, MC_CMD_NVRAM_PARTITIONS_OUT_LENMAX);
-<<<<<<< HEAD
-=======
-	DECLARE_BITMAP(found, EF10_NVRAM_PARTITION_COUNT) = { 0 };
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct efx_mcdi_mtd_partition *parts;
 	size_t outlen, n_parts_total, i, n_parts;
 	unsigned int type;
@@ -7203,21 +6126,11 @@ static int efx_ef10_mtd_probe(struct efx_nic *efx)
 	for (i = 0; i < n_parts_total; i++) {
 		type = MCDI_ARRAY_DWORD(outbuf, NVRAM_PARTITIONS_OUT_TYPE_ID,
 					i);
-<<<<<<< HEAD
 		rc = efx_ef10_mtd_probe_partition(efx, &parts[n_parts], type);
 		if (rc == 0)
 			n_parts++;
 		else if (rc != -ENODEV)
 			goto fail;
-=======
-		rc = efx_ef10_mtd_probe_partition(efx, &parts[n_parts], type,
-						  found);
-		if (rc == -EEXIST || rc == -ENODEV)
-			continue;
-		if (rc)
-			goto fail;
-		n_parts++;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	rc = efx_mtd_add(efx, &parts[0].common, n_parts, sizeof(*parts));
@@ -7303,12 +6216,8 @@ static int efx_ef10_ptp_set_ts_sync_events(struct efx_nic *efx, bool en,
 	      efx_ef10_rx_enable_timestamping :
 	      efx_ef10_rx_disable_timestamping;
 
-<<<<<<< HEAD
 	channel = efx_ptp_channel(efx);
 	if (channel) {
-=======
-	efx_for_each_channel(channel, efx) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		int rc = set(channel, temp);
 		if (en && rc != 0) {
 			efx_ef10_ptp_set_ts_sync_events(efx, false, temp);
@@ -7666,11 +6575,7 @@ out_unlock:
 
 const struct efx_nic_type efx_hunt_a0_vf_nic_type = {
 	.is_vf = true,
-<<<<<<< HEAD
 	.mem_bar = efx_ef10_vf_mem_bar,
-=======
-	.mem_bar = EFX_MEM_VF_BAR,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.mem_map_size = efx_ef10_mem_map_size,
 	.probe = efx_ef10_probe_vf,
 	.remove = efx_ef10_remove,
@@ -7739,10 +6644,6 @@ const struct efx_nic_type efx_hunt_a0_vf_nic_type = {
 	.filter_get_rx_id_limit = efx_ef10_filter_get_rx_id_limit,
 	.filter_get_rx_ids = efx_ef10_filter_get_rx_ids,
 #ifdef CONFIG_RFS_ACCEL
-<<<<<<< HEAD
-=======
-	.filter_rfs_insert = efx_ef10_filter_rfs_insert,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.filter_rfs_expire_one = efx_ef10_filter_rfs_expire_one,
 #endif
 #ifdef CONFIG_SFC_MTD
@@ -7781,11 +6682,7 @@ const struct efx_nic_type efx_hunt_a0_vf_nic_type = {
 
 const struct efx_nic_type efx_hunt_a0_nic_type = {
 	.is_vf = false,
-<<<<<<< HEAD
 	.mem_bar = efx_ef10_pf_mem_bar,
-=======
-	.mem_bar = EFX_MEM_BAR,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.mem_map_size = efx_ef10_mem_map_size,
 	.probe = efx_ef10_probe_pf,
 	.remove = efx_ef10_remove,
@@ -7832,12 +6729,9 @@ const struct efx_nic_type efx_hunt_a0_nic_type = {
 	.tx_limit_len = efx_ef10_tx_limit_len,
 	.rx_push_rss_config = efx_ef10_pf_rx_push_rss_config,
 	.rx_pull_rss_config = efx_ef10_rx_pull_rss_config,
-<<<<<<< HEAD
 	.rx_push_rss_context_config = efx_ef10_rx_push_rss_context_config,
 	.rx_pull_rss_context_config = efx_ef10_rx_pull_rss_context_config,
 	.rx_restore_rss_contexts = efx_ef10_rx_restore_rss_contexts,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.rx_probe = efx_ef10_rx_probe,
 	.rx_init = efx_ef10_rx_init,
 	.rx_remove = efx_ef10_rx_remove,
@@ -7862,10 +6756,6 @@ const struct efx_nic_type efx_hunt_a0_nic_type = {
 	.filter_get_rx_id_limit = efx_ef10_filter_get_rx_id_limit,
 	.filter_get_rx_ids = efx_ef10_filter_get_rx_ids,
 #ifdef CONFIG_RFS_ACCEL
-<<<<<<< HEAD
-=======
-	.filter_rfs_insert = efx_ef10_filter_rfs_insert,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.filter_rfs_expire_one = efx_ef10_filter_rfs_expire_one,
 #endif
 #ifdef CONFIG_SFC_MTD

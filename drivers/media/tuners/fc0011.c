@@ -472,17 +472,10 @@ static int fc0011_get_bandwidth(struct dvb_frontend *fe, u32 *bandwidth)
 
 static const struct dvb_tuner_ops fc0011_tuner_ops = {
 	.info = {
-<<<<<<< HEAD
 		.name		  = "Fitipower FC0011",
 
 		.frequency_min_hz =   45 * MHz,
 		.frequency_max_hz = 1000 * MHz,
-=======
-		.name		= "Fitipower FC0011",
-
-		.frequency_min	= 45000000,
-		.frequency_max	= 1000000000,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 
 	.release		= fc0011_release,

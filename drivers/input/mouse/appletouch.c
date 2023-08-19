@@ -472,10 +472,7 @@ static int atp_status_check(struct urb *urb)
 				dev->info->datalen, dev->urb->actual_length);
 			dev->overflow_warned = true;
 		}
-<<<<<<< HEAD
 		/* fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case -ECONNRESET:
 	case -ENOENT:
 	case -ESHUTDOWN:
@@ -591,11 +588,7 @@ static void atp_complete_geyser_1_2(struct urb *urb)
 		/* Perform size detection, if not done already */
 		if (unlikely(!dev->size_detect_done)) {
 			atp_detect_size(dev);
-<<<<<<< HEAD
 			dev->size_detect_done = true;
-=======
-			dev->size_detect_done = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto exit;
 		}
 	}
@@ -818,17 +811,10 @@ static int atp_open(struct input_dev *input)
 {
 	struct atp *dev = input_get_drvdata(input);
 
-<<<<<<< HEAD
 	if (usb_submit_urb(dev->urb, GFP_KERNEL))
 		return -EIO;
 
 	dev->open = true;
-=======
-	if (usb_submit_urb(dev->urb, GFP_ATOMIC))
-		return -EIO;
-
-	dev->open = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -838,11 +824,7 @@ static void atp_close(struct input_dev *input)
 
 	usb_kill_urb(dev->urb);
 	cancel_work_sync(&dev->work);
-<<<<<<< HEAD
 	dev->open = false;
-=======
-	dev->open = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int atp_handle_geyser(struct atp *dev)
@@ -995,11 +977,7 @@ static int atp_recover(struct atp *dev)
 	if (error)
 		return error;
 
-<<<<<<< HEAD
 	if (dev->open && usb_submit_urb(dev->urb, GFP_KERNEL))
-=======
-	if (dev->open && usb_submit_urb(dev->urb, GFP_ATOMIC))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EIO;
 
 	return 0;
@@ -1017,11 +995,7 @@ static int atp_resume(struct usb_interface *iface)
 {
 	struct atp *dev = usb_get_intfdata(iface);
 
-<<<<<<< HEAD
 	if (dev->open && usb_submit_urb(dev->urb, GFP_KERNEL))
-=======
-	if (dev->open && usb_submit_urb(dev->urb, GFP_ATOMIC))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EIO;
 
 	return 0;

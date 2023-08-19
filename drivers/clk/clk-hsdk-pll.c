@@ -139,11 +139,7 @@ static inline void hsdk_pll_set_cfg(struct hsdk_pll_clk *clk,
 	val |= cfg->odiv << CGU_PLL_CTRL_ODIV_SHIFT;
 	val |= cfg->band << CGU_PLL_CTRL_BAND_SHIFT;
 
-<<<<<<< HEAD
 	dev_dbg(clk->dev, "write configuration: %#x\n", val);
-=======
-	dev_dbg(clk->dev, "write configurarion: %#x\n", val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	hsdk_pll_write(clk, CGU_PLL_CTRL, val);
 }
@@ -173,11 +169,7 @@ static unsigned long hsdk_pll_recalc_rate(struct clk_hw *hw,
 
 	val = hsdk_pll_read(clk, CGU_PLL_CTRL);
 
-<<<<<<< HEAD
 	dev_dbg(clk->dev, "current configuration: %#x\n", val);
-=======
-	dev_dbg(clk->dev, "current configurarion: %#x\n", val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Check if PLL is disabled */
 	if (val & CGU_PLL_CTRL_PD)

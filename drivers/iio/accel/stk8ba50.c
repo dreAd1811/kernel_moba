@@ -179,10 +179,6 @@ static int stk8ba50_data_rdy_trigger_set_state(struct iio_trigger *trig,
 
 static const struct iio_trigger_ops stk8ba50_trigger_ops = {
 	.set_trigger_state = stk8ba50_data_rdy_trigger_set_state,
-<<<<<<< HEAD
-=======
-	.owner = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int stk8ba50_set_power(struct stk8ba50_data *data, bool mode)
@@ -310,10 +306,6 @@ static int stk8ba50_write_raw(struct iio_dev *indio_dev,
 }
 
 static const struct iio_info stk8ba50_info = {
-<<<<<<< HEAD
-=======
-	.driver_module		= THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read_raw		= stk8ba50_read_raw,
 	.write_raw		= stk8ba50_write_raw,
 	.attrs			= &stk8ba50_attribute_group,

@@ -75,15 +75,11 @@ static void amdgpu_benchmark_move(struct amdgpu_device *adev, unsigned size,
 {
 	struct amdgpu_bo *dobj = NULL;
 	struct amdgpu_bo *sobj = NULL;
-<<<<<<< HEAD
 	struct amdgpu_bo_param bp;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint64_t saddr, daddr;
 	int r, n;
 	int time;
 
-<<<<<<< HEAD
 	memset(&bp, 0, sizeof(bp));
 	bp.size = size;
 	bp.byte_align = PAGE_SIZE;
@@ -93,63 +89,42 @@ static void amdgpu_benchmark_move(struct amdgpu_device *adev, unsigned size,
 	bp.resv = NULL;
 	n = AMDGPU_BENCHMARK_ITERATIONS;
 	r = amdgpu_bo_create(adev, &bp, &sobj);
-=======
-	n = AMDGPU_BENCHMARK_ITERATIONS;
-	r = amdgpu_bo_create(adev, size, PAGE_SIZE, true, sdomain, 0, NULL,
-			     NULL, 0, &sobj);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r) {
 		goto out_cleanup;
 	}
 	r = amdgpu_bo_reserve(sobj, false);
 	if (unlikely(r != 0))
 		goto out_cleanup;
-<<<<<<< HEAD
 	r = amdgpu_bo_pin(sobj, sdomain);
 	if (r) {
 		amdgpu_bo_unreserve(sobj);
 		goto out_cleanup;
 	}
 	r = amdgpu_ttm_alloc_gart(&sobj->tbo);
-=======
-	r = amdgpu_bo_pin(sobj, sdomain, &saddr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	amdgpu_bo_unreserve(sobj);
 	if (r) {
 		goto out_cleanup;
 	}
-<<<<<<< HEAD
 	saddr = amdgpu_bo_gpu_offset(sobj);
 	bp.domain = ddomain;
 	r = amdgpu_bo_create(adev, &bp, &dobj);
-=======
-	r = amdgpu_bo_create(adev, size, PAGE_SIZE, true, ddomain, 0, NULL,
-			     NULL, 0, &dobj);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r) {
 		goto out_cleanup;
 	}
 	r = amdgpu_bo_reserve(dobj, false);
 	if (unlikely(r != 0))
 		goto out_cleanup;
-<<<<<<< HEAD
 	r = amdgpu_bo_pin(dobj, ddomain);
 	if (r) {
 		amdgpu_bo_unreserve(sobj);
 		goto out_cleanup;
 	}
 	r = amdgpu_ttm_alloc_gart(&dobj->tbo);
-=======
-	r = amdgpu_bo_pin(dobj, ddomain, &daddr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	amdgpu_bo_unreserve(dobj);
 	if (r) {
 		goto out_cleanup;
 	}
-<<<<<<< HEAD
 	daddr = amdgpu_bo_gpu_offset(dobj);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (adev->mman.buffer_funcs) {
 		time = amdgpu_benchmark_do_move(adev, size, saddr, daddr, n);

@@ -2,11 +2,6 @@
 #ifndef __ASM_S390_PCI_H
 #define __ASM_S390_PCI_H
 
-<<<<<<< HEAD
-=======
-/* must be set before including asm-generic/pci.h */
-#define PCI_DMA_BUS_IS_PHYS (0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* must be set before including pci_clp.h */
 #define PCI_BAR_COUNT	6
 
@@ -56,13 +51,10 @@ struct zpci_fmb_fmt2 {
 	u64 max_work_units;
 };
 
-<<<<<<< HEAD
 struct zpci_fmb_fmt3 {
 	u64 tx_bytes;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct zpci_fmb {
 	u32 format	: 8;
 	u32 fmt_ind	: 24;
@@ -78,10 +70,7 @@ struct zpci_fmb {
 		struct zpci_fmb_fmt0 fmt0;
 		struct zpci_fmb_fmt1 fmt1;
 		struct zpci_fmb_fmt2 fmt2;
-<<<<<<< HEAD
 		struct zpci_fmb_fmt3 fmt3;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 } __packed __aligned(128);
 

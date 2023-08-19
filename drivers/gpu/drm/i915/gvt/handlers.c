@@ -55,11 +55,8 @@ unsigned long intel_gvt_get_device_type(struct intel_gvt *gvt)
 		return D_SKL;
 	else if (IS_KABYLAKE(gvt->dev_priv))
 		return D_KBL;
-<<<<<<< HEAD
 	else if (IS_BROXTON(gvt->dev_priv))
 		return D_BXT;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -142,7 +139,6 @@ static int new_mmio_info(struct intel_gvt *gvt,
 	return 0;
 }
 
-<<<<<<< HEAD
 /**
  * intel_gvt_render_mmio_to_ring_id - convert a mmio offset into ring id
  * @gvt: a GVT device
@@ -153,28 +149,16 @@ static int new_mmio_info(struct intel_gvt *gvt,
  */
 int intel_gvt_render_mmio_to_ring_id(struct intel_gvt *gvt,
 		unsigned int offset)
-=======
-static int render_mmio_to_ring_id(struct intel_gvt *gvt, unsigned int reg)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	enum intel_engine_id id;
 	struct intel_engine_cs *engine;
 
-<<<<<<< HEAD
 	offset &= ~GENMASK(11, 0);
 	for_each_engine(engine, gvt->dev_priv, id) {
 		if (engine->mmio_base == offset)
 			return id;
 	}
 	return -ENODEV;
-=======
-	reg &= ~GENMASK(11, 0);
-	for_each_engine(engine, gvt->dev_priv, id) {
-		if (engine->mmio_base == reg)
-			return id;
-	}
-	return -1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #define offset_to_fence_num(offset) \
@@ -184,11 +168,7 @@ static int render_mmio_to_ring_id(struct intel_gvt *gvt, unsigned int reg)
 	(num * 8 + i915_mmio_reg_offset(FENCE_REG_GEN6_LO(0)))
 
 
-<<<<<<< HEAD
 void enter_failsafe_mode(struct intel_vgpu *vgpu, int reason)
-=======
-static void enter_failsafe_mode(struct intel_vgpu *vgpu, int reason)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	switch (reason) {
 	case GVT_FAILSAFE_UNSUPPORTED_GUEST:
@@ -196,13 +176,10 @@ static void enter_failsafe_mode(struct intel_vgpu *vgpu, int reason)
 		break;
 	case GVT_FAILSAFE_INSUFFICIENT_RESOURCE:
 		pr_err("Graphics resource is not enough for the guest\n");
-<<<<<<< HEAD
 		break;
 	case GVT_FAILSAFE_GUEST_ERR:
 		pr_err("GVT Internal error  for the guest\n");
 		break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		break;
 	}
@@ -213,15 +190,11 @@ static void enter_failsafe_mode(struct intel_vgpu *vgpu, int reason)
 static int sanitize_fence_mmio_access(struct intel_vgpu *vgpu,
 		unsigned int fence_num, void *p_data, unsigned int bytes)
 {
-<<<<<<< HEAD
 	unsigned int max_fence = vgpu_fence_sz(vgpu);
 
 	if (fence_num >= max_fence) {
 		gvt_vgpu_err("access oob fence reg %d/%d\n",
 			     fence_num, max_fence);
-=======
-	if (fence_num >= vgpu_fence_sz(vgpu)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* When guest access oob fence regs without access
 		 * pv_info first, we treat guest not supporting GVT,
@@ -231,21 +204,12 @@ static int sanitize_fence_mmio_access(struct intel_vgpu *vgpu,
 			enter_failsafe_mode(vgpu,
 					GVT_FAILSAFE_UNSUPPORTED_GUEST);
 
-<<<<<<< HEAD
-=======
-		if (!vgpu->mmio.disable_warn_untrack) {
-			gvt_vgpu_err("found oob fence register access\n");
-			gvt_vgpu_err("total fence %d, access fence %d\n",
-					vgpu_fence_sz(vgpu), fence_num);
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		memset(p_data, 0, bytes);
 		return -EINVAL;
 	}
 	return 0;
 }
 
-<<<<<<< HEAD
 static int gamw_echo_dev_rw_ia_write(struct intel_vgpu *vgpu,
 		unsigned int offset, void *p_data, unsigned int bytes)
 {
@@ -271,8 +235,6 @@ static int gamw_echo_dev_rw_ia_write(struct intel_vgpu *vgpu,
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int fence_mmio_read(struct intel_vgpu *vgpu, unsigned int off,
 		void *p_data, unsigned int bytes)
 {
@@ -320,12 +282,8 @@ static int mul_force_wake_write(struct intel_vgpu *vgpu,
 	new = CALC_MODE_MASK_REG(old, *(u32 *)p_data);
 
 	if (IS_SKYLAKE(vgpu->gvt->dev_priv)
-<<<<<<< HEAD
 		|| IS_KABYLAKE(vgpu->gvt->dev_priv)
 		|| IS_BROXTON(vgpu->gvt->dev_priv)) {
-=======
-		|| IS_KABYLAKE(vgpu->gvt->dev_priv)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		switch (offset) {
 		case FORCEWAKE_RENDER_GEN9_REG:
 			ack_reg_offset = FORCEWAKE_ACK_RENDER_GEN9_REG;
@@ -386,18 +344,11 @@ static int gdrst_mmio_write(struct intel_vgpu *vgpu, unsigned int offset,
 		}
 	}
 
-<<<<<<< HEAD
 	/* vgpu_lock already hold by emulate mmio r/w */
 	intel_gvt_reset_vgpu_locked(vgpu, false, engine_mask);
 
 	/* sw will wait for the device to ack the reset request */
 	vgpu_vreg(vgpu, offset) = 0;
-=======
-	intel_gvt_reset_vgpu_locked(vgpu, false, engine_mask);
-
-	/* sw will wait for the device to ack the reset request */
-	 vgpu_vreg(vgpu, offset) = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -420,7 +371,6 @@ static int pch_pp_control_mmio_write(struct intel_vgpu *vgpu,
 	write_vreg(vgpu, offset, p_data, bytes);
 
 	if (vgpu_vreg(vgpu, offset) & PANEL_POWER_ON) {
-<<<<<<< HEAD
 		vgpu_vreg_t(vgpu, PCH_PP_STATUS) |= PP_ON;
 		vgpu_vreg_t(vgpu, PCH_PP_STATUS) |= PP_SEQUENCE_STATE_ON_IDLE;
 		vgpu_vreg_t(vgpu, PCH_PP_STATUS) &= ~PP_SEQUENCE_POWER_DOWN;
@@ -428,15 +378,6 @@ static int pch_pp_control_mmio_write(struct intel_vgpu *vgpu,
 
 	} else
 		vgpu_vreg_t(vgpu, PCH_PP_STATUS) &=
-=======
-		vgpu_vreg(vgpu, PCH_PP_STATUS) |= PP_ON;
-		vgpu_vreg(vgpu, PCH_PP_STATUS) |= PP_SEQUENCE_STATE_ON_IDLE;
-		vgpu_vreg(vgpu, PCH_PP_STATUS) &= ~PP_SEQUENCE_POWER_DOWN;
-		vgpu_vreg(vgpu, PCH_PP_STATUS) &= ~PP_CYCLE_DELAY_ACTIVE;
-
-	} else
-		vgpu_vreg(vgpu, PCH_PP_STATUS) &=
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			~(PP_ON | PP_SEQUENCE_POWER_DOWN
 					| PP_CYCLE_DELAY_ACTIVE);
 	return 0;
@@ -508,14 +449,10 @@ static int pipeconf_mmio_write(struct intel_vgpu *vgpu, unsigned int offset,
 		vgpu_vreg(vgpu, offset) |= I965_PIPECONF_ACTIVE;
 	else
 		vgpu_vreg(vgpu, offset) &= ~I965_PIPECONF_ACTIVE;
-<<<<<<< HEAD
 	/* vgpu_lock already hold by emulate mmio r/w */
 	mutex_unlock(&vgpu->vgpu_lock);
 	intel_gvt_check_vblank_emulation(vgpu->gvt);
 	mutex_lock(&vgpu->vgpu_lock);
-=======
-	intel_gvt_check_vblank_emulation(vgpu->gvt);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -569,7 +506,6 @@ static int force_nonpriv_write(struct intel_vgpu *vgpu,
 	unsigned int offset, void *p_data, unsigned int bytes)
 {
 	u32 reg_nonpriv = *(u32 *)p_data;
-<<<<<<< HEAD
 	int ring_id = intel_gvt_render_mmio_to_ring_id(vgpu->gvt, offset);
 	u32 ring_base;
 	struct drm_i915_private *dev_priv = vgpu->gvt->dev_priv;
@@ -592,24 +528,6 @@ static int force_nonpriv_write(struct intel_vgpu *vgpu,
 			vgpu->id, reg_nonpriv, offset);
 
 	return 0;
-=======
-	int ret = -EINVAL;
-
-	if ((bytes != 4) || ((offset & (bytes - 1)) != 0)) {
-		gvt_err("vgpu(%d) Invalid FORCE_NONPRIV offset %x(%dB)\n",
-			vgpu->id, offset, bytes);
-		return ret;
-	}
-
-	if (in_whitelist(reg_nonpriv)) {
-		ret = intel_vgpu_default_mmio_write(vgpu, offset, p_data,
-			bytes);
-	} else {
-		gvt_err("vgpu(%d) Invalid FORCE_NONPRIV write %x\n",
-			vgpu->id, reg_nonpriv);
-	}
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int ddi_buf_ctl_mmio_write(struct intel_vgpu *vgpu, unsigned int offset,
@@ -622,11 +540,7 @@ static int ddi_buf_ctl_mmio_write(struct intel_vgpu *vgpu, unsigned int offset,
 	} else {
 		vgpu_vreg(vgpu, offset) |= DDI_BUF_IS_IDLE;
 		if (offset == i915_mmio_reg_offset(DDI_BUF_CTL(PORT_E)))
-<<<<<<< HEAD
 			vgpu_vreg_t(vgpu, DP_TP_STATUS(PORT_E))
-=======
-			vgpu_vreg(vgpu, DP_TP_STATUS(PORT_E))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				&= ~DP_TP_STATUS_AUTOTRAIN_DONE;
 	}
 	return 0;
@@ -644,15 +558,9 @@ static int fdi_rx_iir_mmio_write(struct intel_vgpu *vgpu,
 
 static int fdi_auto_training_started(struct intel_vgpu *vgpu)
 {
-<<<<<<< HEAD
 	u32 ddi_buf_ctl = vgpu_vreg_t(vgpu, DDI_BUF_CTL(PORT_E));
 	u32 rx_ctl = vgpu_vreg(vgpu, _FDI_RXA_CTL);
 	u32 tx_ctl = vgpu_vreg_t(vgpu, DP_TP_CTL(PORT_E));
-=======
-	u32 ddi_buf_ctl = vgpu_vreg(vgpu, DDI_BUF_CTL(PORT_E));
-	u32 rx_ctl = vgpu_vreg(vgpu, _FDI_RXA_CTL);
-	u32 tx_ctl = vgpu_vreg(vgpu, DP_TP_CTL(PORT_E));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if ((ddi_buf_ctl & DDI_BUF_CTL_ENABLE) &&
 			(rx_ctl & FDI_RX_ENABLE) &&
@@ -693,21 +601,12 @@ static int check_fdi_rx_train_status(struct intel_vgpu *vgpu,
 	fdi_tx_check_bits = FDI_TX_ENABLE | fdi_tx_train_bits;
 
 	/* If imr bit has been masked */
-<<<<<<< HEAD
 	if (vgpu_vreg_t(vgpu, fdi_rx_imr) & fdi_iir_check_bits)
 		return 0;
 
 	if (((vgpu_vreg_t(vgpu, fdi_tx_ctl) & fdi_tx_check_bits)
 			== fdi_tx_check_bits)
 		&& ((vgpu_vreg_t(vgpu, fdi_rx_ctl) & fdi_rx_check_bits)
-=======
-	if (vgpu_vreg(vgpu, fdi_rx_imr) & fdi_iir_check_bits)
-		return 0;
-
-	if (((vgpu_vreg(vgpu, fdi_tx_ctl) & fdi_tx_check_bits)
-			== fdi_tx_check_bits)
-		&& ((vgpu_vreg(vgpu, fdi_rx_ctl) & fdi_rx_check_bits)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			== fdi_rx_check_bits))
 		return 1;
 	else
@@ -764,29 +663,17 @@ static int update_fdi_rx_iir_status(struct intel_vgpu *vgpu,
 	if (ret < 0)
 		return ret;
 	if (ret)
-<<<<<<< HEAD
 		vgpu_vreg_t(vgpu, fdi_rx_iir) |= FDI_RX_BIT_LOCK;
-=======
-		vgpu_vreg(vgpu, fdi_rx_iir) |= FDI_RX_BIT_LOCK;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = check_fdi_rx_train_status(vgpu, index, FDI_LINK_TRAIN_PATTERN2);
 	if (ret < 0)
 		return ret;
 	if (ret)
-<<<<<<< HEAD
 		vgpu_vreg_t(vgpu, fdi_rx_iir) |= FDI_RX_SYMBOL_LOCK;
 
 	if (offset == _FDI_RXA_CTL)
 		if (fdi_auto_training_started(vgpu))
 			vgpu_vreg_t(vgpu, DP_TP_STATUS(PORT_E)) |=
-=======
-		vgpu_vreg(vgpu, fdi_rx_iir) |= FDI_RX_SYMBOL_LOCK;
-
-	if (offset == _FDI_RXA_CTL)
-		if (fdi_auto_training_started(vgpu))
-			vgpu_vreg(vgpu, DP_TP_STATUS(PORT_E)) |=
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				DP_TP_STATUS_AUTOTRAIN_DONE;
 	return 0;
 }
@@ -807,11 +694,7 @@ static int dp_tp_ctl_mmio_write(struct intel_vgpu *vgpu, unsigned int offset,
 	data = (vgpu_vreg(vgpu, offset) & GENMASK(10, 8)) >> 8;
 	if (data == 0x2) {
 		status_reg = DP_TP_STATUS(index);
-<<<<<<< HEAD
 		vgpu_vreg_t(vgpu, status_reg) |= (1 << 25);
-=======
-		vgpu_vreg(vgpu, status_reg) |= (1 << 25);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return 0;
 }
@@ -875,11 +758,7 @@ static int pri_surf_mmio_write(struct intel_vgpu *vgpu, unsigned int offset,
 	};
 
 	write_vreg(vgpu, offset, p_data, bytes);
-<<<<<<< HEAD
 	vgpu_vreg_t(vgpu, surflive_reg) = vgpu_vreg(vgpu, offset);
-=======
-	vgpu_vreg(vgpu, surflive_reg) = vgpu_vreg(vgpu, offset);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	set_bit(flip_event[index], vgpu->irq.flip_done_event[index]);
 	return 0;
@@ -900,11 +779,7 @@ static int spr_surf_mmio_write(struct intel_vgpu *vgpu, unsigned int offset,
 	};
 
 	write_vreg(vgpu, offset, p_data, bytes);
-<<<<<<< HEAD
 	vgpu_vreg_t(vgpu, surflive_reg) = vgpu_vreg(vgpu, offset);
-=======
-	vgpu_vreg(vgpu, surflive_reg) = vgpu_vreg(vgpu, offset);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	set_bit(flip_event[index], vgpu->irq.flip_done_event[index]);
 	return 0;
@@ -1014,12 +889,8 @@ static int dp_aux_ch_ctl_mmio_write(struct intel_vgpu *vgpu,
 	data = vgpu_vreg(vgpu, offset);
 
 	if ((IS_SKYLAKE(vgpu->gvt->dev_priv)
-<<<<<<< HEAD
 		|| IS_KABYLAKE(vgpu->gvt->dev_priv)
 		|| IS_BROXTON(vgpu->gvt->dev_priv))
-=======
-		|| IS_KABYLAKE(vgpu->gvt->dev_priv))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		&& offset != _REG_SKL_DP_AUX_CH_CTL(port_index)) {
 		/* SKL DPB/C/D aux ctl register changed */
 		return 0;
@@ -1065,7 +936,6 @@ static int dp_aux_ch_ctl_mmio_write(struct intel_vgpu *vgpu,
 		}
 
 		/*
-<<<<<<< HEAD
 		 * Write request format: Headr (command + address + size) occupies
 		 * 4 bytes, followed by (len + 1) bytes of data. See details at
 		 * intel_dp_aux_transfer().
@@ -1074,13 +944,6 @@ static int dp_aux_ch_ctl_mmio_write(struct intel_vgpu *vgpu,
 			gvt_vgpu_err("dp_aux_header: len %d is too large\n", len);
 			return -EINVAL;
 		}
-=======
-		 * Write request format: (command + address) occupies
-		 * 3 bytes, followed by (len + 1) bytes of data.
-		 */
-		if (WARN_ON((len + 4) > AUX_BURST_SIZE))
-			return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* unpack data from vreg to buf */
 		for (t = 0; t < 4; t++) {
@@ -1144,15 +1007,10 @@ static int dp_aux_ch_ctl_mmio_write(struct intel_vgpu *vgpu,
 		/*
 		 * Read reply format: ACK (1 byte) plus (len + 1) bytes of data.
 		 */
-<<<<<<< HEAD
 		if ((len + 2) > AUX_BURST_SIZE) {
 			gvt_vgpu_err("dp_aux_header: len %d is too large\n", len);
 			return -EINVAL;
 		}
-=======
-		if (WARN_ON((len + 2) > AUX_BURST_SIZE))
-			return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* read from virtual DPCD to vreg */
 		/* first 4 bytes: [ACK][addr][addr+1][addr+2] */
@@ -1249,15 +1107,9 @@ static void write_virtual_sbi_register(struct intel_vgpu *vgpu,
 static int sbi_data_mmio_read(struct intel_vgpu *vgpu, unsigned int offset,
 		void *p_data, unsigned int bytes)
 {
-<<<<<<< HEAD
 	if (((vgpu_vreg_t(vgpu, SBI_CTL_STAT) & SBI_OPCODE_MASK) >>
 				SBI_OPCODE_SHIFT) == SBI_CMD_CRRD) {
 		unsigned int sbi_offset = (vgpu_vreg_t(vgpu, SBI_ADDR) &
-=======
-	if (((vgpu_vreg(vgpu, SBI_CTL_STAT) & SBI_OPCODE_MASK) >>
-				SBI_OPCODE_SHIFT) == SBI_CMD_CRRD) {
-		unsigned int sbi_offset = (vgpu_vreg(vgpu, SBI_ADDR) &
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				SBI_ADDR_OFFSET_MASK) >> SBI_ADDR_OFFSET_SHIFT;
 		vgpu_vreg(vgpu, offset) = read_virtual_sbi_register(vgpu,
 				sbi_offset);
@@ -1282,7 +1134,6 @@ static int sbi_ctl_mmio_write(struct intel_vgpu *vgpu, unsigned int offset,
 
 	vgpu_vreg(vgpu, offset) = data;
 
-<<<<<<< HEAD
 	if (((vgpu_vreg_t(vgpu, SBI_CTL_STAT) & SBI_OPCODE_MASK) >>
 				SBI_OPCODE_SHIFT) == SBI_CMD_CRWR) {
 		unsigned int sbi_offset = (vgpu_vreg_t(vgpu, SBI_ADDR) &
@@ -1290,15 +1141,6 @@ static int sbi_ctl_mmio_write(struct intel_vgpu *vgpu, unsigned int offset,
 
 		write_virtual_sbi_register(vgpu, sbi_offset,
 					   vgpu_vreg_t(vgpu, SBI_DATA));
-=======
-	if (((vgpu_vreg(vgpu, SBI_CTL_STAT) & SBI_OPCODE_MASK) >>
-				SBI_OPCODE_SHIFT) == SBI_CMD_CRWR) {
-		unsigned int sbi_offset = (vgpu_vreg(vgpu, SBI_ADDR) &
-				SBI_ADDR_OFFSET_MASK) >> SBI_ADDR_OFFSET_SHIFT;
-
-		write_virtual_sbi_register(vgpu, sbi_offset,
-				vgpu_vreg(vgpu, SBI_DATA));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return 0;
 }
@@ -1340,7 +1182,6 @@ static int pvinfo_mmio_read(struct intel_vgpu *vgpu, unsigned int offset,
 
 static int handle_g2v_notification(struct intel_vgpu *vgpu, int notification)
 {
-<<<<<<< HEAD
 	intel_gvt_gtt_type_t root_entry_type = GTT_TYPE_PPGTT_ROOT_L4_ENTRY;
 	struct intel_vgpu_mm *mm;
 	u64 *pdps;
@@ -1357,23 +1198,6 @@ static int handle_g2v_notification(struct intel_vgpu *vgpu, int notification)
 	case VGT_G2V_PPGTT_L3_PAGE_TABLE_DESTROY:
 	case VGT_G2V_PPGTT_L4_PAGE_TABLE_DESTROY:
 		return intel_vgpu_put_ppgtt_mm(vgpu, pdps);
-=======
-	int ret = 0;
-
-	switch (notification) {
-	case VGT_G2V_PPGTT_L3_PAGE_TABLE_CREATE:
-		ret = intel_vgpu_g2v_create_ppgtt_mm(vgpu, 3);
-		break;
-	case VGT_G2V_PPGTT_L3_PAGE_TABLE_DESTROY:
-		ret = intel_vgpu_g2v_destroy_ppgtt_mm(vgpu, 3);
-		break;
-	case VGT_G2V_PPGTT_L4_PAGE_TABLE_CREATE:
-		ret = intel_vgpu_g2v_create_ppgtt_mm(vgpu, 4);
-		break;
-	case VGT_G2V_PPGTT_L4_PAGE_TABLE_DESTROY:
-		ret = intel_vgpu_g2v_destroy_ppgtt_mm(vgpu, 4);
-		break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case VGT_G2V_EXECLIST_CONTEXT_CREATE:
 	case VGT_G2V_EXECLIST_CONTEXT_DESTROY:
 	case 1:	/* Remove this in guest driver. */
@@ -1381,11 +1205,7 @@ static int handle_g2v_notification(struct intel_vgpu *vgpu, int notification)
 	default:
 		gvt_vgpu_err("Invalid PV notification %d\n", notification);
 	}
-<<<<<<< HEAD
 	return 0;
-=======
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int send_display_ready_uevent(struct intel_vgpu *vgpu, int ready)
@@ -1422,13 +1242,8 @@ static int pvinfo_mmio_write(struct intel_vgpu *vgpu, unsigned int offset,
 		ret = handle_g2v_notification(vgpu, data);
 		break;
 	/* add xhot and yhot to handled list to avoid error log */
-<<<<<<< HEAD
 	case _vgtif_reg(cursor_x_hot):
 	case _vgtif_reg(cursor_y_hot):
-=======
-	case 0x78830:
-	case 0x78834:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case _vgtif_reg(pdp[0].lo):
 	case _vgtif_reg(pdp[0].hi):
 	case _vgtif_reg(pdp[1].lo):
@@ -1481,7 +1296,6 @@ static int power_well_ctl_mmio_write(struct intel_vgpu *vgpu,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int gen9_dbuf_ctl_mmio_write(struct intel_vgpu *vgpu,
 		unsigned int offset, void *p_data, unsigned int bytes)
 {
@@ -1495,8 +1309,6 @@ static int gen9_dbuf_ctl_mmio_write(struct intel_vgpu *vgpu,
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int fpga_dbg_mmio_write(struct intel_vgpu *vgpu,
 	unsigned int offset, void *p_data, unsigned int bytes)
 {
@@ -1588,11 +1400,7 @@ static int mailbox_write(struct intel_vgpu *vgpu, unsigned int offset,
 {
 	u32 value = *(u32 *)p_data;
 	u32 cmd = value & 0xff;
-<<<<<<< HEAD
 	u32 *data0 = &vgpu_vreg_t(vgpu, GEN6_PCODE_DATA);
-=======
-	u32 *data0 = &vgpu_vreg(vgpu, GEN6_PCODE_DATA);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (cmd) {
 	case GEN9_PCODE_READ_MEM_LATENCY:
@@ -1607,7 +1415,6 @@ static int mailbox_write(struct intel_vgpu *vgpu, unsigned int offset,
 				*data0 = 0x1e1a1100;
 			else
 				*data0 = 0x61514b3d;
-<<<<<<< HEAD
 		} else if (IS_BROXTON(vgpu->gvt->dev_priv)) {
 			/**
 			 * "Read memory latency" command on gen9.
@@ -1618,8 +1425,6 @@ static int mailbox_write(struct intel_vgpu *vgpu, unsigned int offset,
 				*data0 = 0x16080707;
 			else
 				*data0 = 0x16161616;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		break;
 	case SKL_PCODE_CDCLK_CONTROL:
@@ -1644,7 +1449,6 @@ static int mailbox_write(struct intel_vgpu *vgpu, unsigned int offset,
 	return intel_vgpu_default_mmio_write(vgpu, offset, &value, bytes);
 }
 
-<<<<<<< HEAD
 static int hws_pga_write(struct intel_vgpu *vgpu, unsigned int offset,
 		void *p_data, unsigned int bytes)
 {
@@ -1673,65 +1477,21 @@ static int hws_pga_write(struct intel_vgpu *vgpu, unsigned int offset,
 	return intel_vgpu_default_mmio_write(vgpu, offset, &value, bytes);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int skl_power_well_ctl_write(struct intel_vgpu *vgpu,
 		unsigned int offset, void *p_data, unsigned int bytes)
 {
 	u32 v = *(u32 *)p_data;
 
-<<<<<<< HEAD
 	if (IS_BROXTON(vgpu->gvt->dev_priv))
 		v &= (1 << 31) | (1 << 29);
 	else
 		v &= (1 << 31) | (1 << 29) | (1 << 9) |
 			(1 << 7) | (1 << 5) | (1 << 3) | (1 << 1);
-=======
-	v &= (1 << 31) | (1 << 29) | (1 << 9) |
-	     (1 << 7) | (1 << 5) | (1 << 3) | (1 << 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	v |= (v >> 1);
 
 	return intel_vgpu_default_mmio_write(vgpu, offset, &v, bytes);
 }
 
-<<<<<<< HEAD
-=======
-static int skl_misc_ctl_write(struct intel_vgpu *vgpu, unsigned int offset,
-		void *p_data, unsigned int bytes)
-{
-	struct drm_i915_private *dev_priv = vgpu->gvt->dev_priv;
-	u32 v = *(u32 *)p_data;
-
-	if (!IS_SKYLAKE(dev_priv) && !IS_KABYLAKE(dev_priv))
-		return intel_vgpu_default_mmio_write(vgpu,
-				offset, p_data, bytes);
-
-	switch (offset) {
-	case 0x4ddc:
-		/* bypass WaCompressedResourceSamplerPbeMediaNewHashMode */
-		vgpu_vreg(vgpu, offset) = v & ~(1 << 31);
-		break;
-	case 0x42080:
-		/* bypass WaCompressedResourceDisplayNewHashMode */
-		vgpu_vreg(vgpu, offset) = v & ~(1 << 15);
-		break;
-	case 0xe194:
-		/* bypass WaCompressedResourceSamplerPbeMediaNewHashMode */
-		vgpu_vreg(vgpu, offset) = v & ~(1 << 8);
-		break;
-	case 0x7014:
-		/* bypass WaCompressedResourceSamplerPbeMediaNewHashMode */
-		vgpu_vreg(vgpu, offset) = v & ~(1 << 13);
-		break;
-	default:
-		return -EINVAL;
-	}
-
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int skl_lcpll_write(struct intel_vgpu *vgpu, unsigned int offset,
 		void *p_data, unsigned int bytes)
 {
@@ -1746,7 +1506,6 @@ static int skl_lcpll_write(struct intel_vgpu *vgpu, unsigned int offset,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int bxt_de_pll_enable_write(struct intel_vgpu *vgpu,
 		unsigned int offset, void *p_data, unsigned int bytes)
 {
@@ -1882,46 +1641,23 @@ static int mmio_read_from_hw(struct intel_vgpu *vgpu,
 		mmio_hw_access_post(dev_priv);
 	}
 
-=======
-static int mmio_read_from_hw(struct intel_vgpu *vgpu,
-		unsigned int offset, void *p_data, unsigned int bytes)
-{
-	struct drm_i915_private *dev_priv = vgpu->gvt->dev_priv;
-
-	mmio_hw_access_pre(dev_priv);
-	vgpu_vreg(vgpu, offset) = I915_READ(_MMIO(offset));
-	mmio_hw_access_post(dev_priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return intel_vgpu_default_mmio_read(vgpu, offset, p_data, bytes);
 }
 
 static int elsp_mmio_write(struct intel_vgpu *vgpu, unsigned int offset,
 		void *p_data, unsigned int bytes)
 {
-<<<<<<< HEAD
 	int ring_id = intel_gvt_render_mmio_to_ring_id(vgpu->gvt, offset);
-=======
-	int ring_id = render_mmio_to_ring_id(vgpu->gvt, offset);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct intel_vgpu_execlist *execlist;
 	u32 data = *(u32 *)p_data;
 	int ret = 0;
 
-<<<<<<< HEAD
 	if (WARN_ON(ring_id < 0 || ring_id >= I915_NUM_ENGINES))
 		return -EINVAL;
 
 	execlist = &vgpu->submission.execlist[ring_id];
 
 	execlist->elsp_dwords.data[3 - execlist->elsp_dwords.index] = data;
-=======
-	if (WARN_ON(ring_id < 0 || ring_id > I915_NUM_ENGINES - 1))
-		return -EINVAL;
-
-	execlist = &vgpu->execlist[ring_id];
-
-	execlist->elsp_dwords.data[execlist->elsp_dwords.index] = data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (execlist->elsp_dwords.index == 3) {
 		ret = intel_vgpu_submit_execlist(vgpu, ring_id);
 		if(ret)
@@ -1938,14 +1674,9 @@ static int ring_mode_mmio_write(struct intel_vgpu *vgpu, unsigned int offset,
 		void *p_data, unsigned int bytes)
 {
 	u32 data = *(u32 *)p_data;
-<<<<<<< HEAD
 	int ring_id = intel_gvt_render_mmio_to_ring_id(vgpu->gvt, offset);
 	bool enable_execlist;
 	int ret;
-=======
-	int ring_id = render_mmio_to_ring_id(vgpu->gvt, offset);
-	bool enable_execlist;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	write_vreg(vgpu, offset, p_data, bytes);
 
@@ -1967,7 +1698,6 @@ static int ring_mode_mmio_write(struct intel_vgpu *vgpu, unsigned int offset,
 				(enable_execlist ? "enabling" : "disabling"),
 				ring_id);
 
-<<<<<<< HEAD
 		if (!enable_execlist)
 			return 0;
 
@@ -1978,10 +1708,6 @@ static int ring_mode_mmio_write(struct intel_vgpu *vgpu, unsigned int offset,
 			return ret;
 
 		intel_vgpu_start_schedule(vgpu);
-=======
-		if (enable_execlist)
-			intel_vgpu_start_schedule(vgpu);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return 0;
 }
@@ -2013,11 +1739,7 @@ static int gvt_reg_tlb_control_handler(struct intel_vgpu *vgpu,
 	default:
 		return -EINVAL;
 	}
-<<<<<<< HEAD
 	set_bit(id, (void *)vgpu->submission.tlb_handle_pending);
-=======
-	set_bit(id, (void *)vgpu->tlb_handle_pending);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -2040,11 +1762,7 @@ static int ring_reset_ctl_write(struct intel_vgpu *vgpu,
 }
 
 #define MMIO_F(reg, s, f, am, rm, d, r, w) do { \
-<<<<<<< HEAD
 	ret = new_mmio_info(gvt, i915_mmio_reg_offset(reg), \
-=======
-	ret = new_mmio_info(gvt, INTEL_GVT_MMIO_OFFSET(reg), \
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		f, s, am, rm, d, r, w); \
 	if (ret) \
 		return ret; \
@@ -2107,18 +1825,13 @@ static int init_generic_mmio_info(struct intel_gvt *gvt)
 
 	MMIO_RING_DFH(RING_HWSTAM, D_ALL, F_CMD_ACCESS, NULL, NULL);
 
-<<<<<<< HEAD
 	MMIO_DH(GEN8_GAMW_ECO_DEV_RW_IA, D_BDW_PLUS, NULL,
 		gamw_echo_dev_rw_ia_write);
 
-=======
-	MMIO_GM_RDR(RENDER_HWS_PGA_GEN7, D_ALL, NULL, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MMIO_GM_RDR(BSD_HWS_PGA_GEN7, D_ALL, NULL, NULL);
 	MMIO_GM_RDR(BLT_HWS_PGA_GEN7, D_ALL, NULL, NULL);
 	MMIO_GM_RDR(VEBOX_HWS_PGA_GEN7, D_ALL, NULL, NULL);
 
-<<<<<<< HEAD
 #define RING_REG(base) _MMIO((base) + 0x28)
 	MMIO_RING_DFH(RING_REG, D_ALL, F_CMD_ACCESS, NULL, NULL);
 #undef RING_REG
@@ -2128,30 +1841,13 @@ static int init_generic_mmio_info(struct intel_gvt *gvt)
 #undef RING_REG
 
 #define RING_REG(base) _MMIO((base) + 0x6c)
-=======
-#define RING_REG(base) (base + 0x28)
-	MMIO_RING_DFH(RING_REG, D_ALL, F_CMD_ACCESS, NULL, NULL);
-#undef RING_REG
-
-#define RING_REG(base) (base + 0x134)
-	MMIO_RING_DFH(RING_REG, D_ALL, F_CMD_ACCESS, NULL, NULL);
-#undef RING_REG
-
-#define RING_REG(base) (base + 0x6c)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MMIO_RING_DFH(RING_REG, D_ALL, 0, mmio_read_from_hw, NULL);
 #undef RING_REG
 	MMIO_DH(GEN7_SC_INSTDONE, D_BDW_PLUS, mmio_read_from_hw, NULL);
 
-<<<<<<< HEAD
 	MMIO_GM_RDR(_MMIO(0x2148), D_ALL, NULL, NULL);
 	MMIO_GM_RDR(CCID, D_ALL, NULL, NULL);
 	MMIO_GM_RDR(_MMIO(0x12198), D_ALL, NULL, NULL);
-=======
-	MMIO_GM_RDR(0x2148, D_ALL, NULL, NULL);
-	MMIO_GM_RDR(CCID, D_ALL, NULL, NULL);
-	MMIO_GM_RDR(0x12198, D_ALL, NULL, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MMIO_D(GEN7_CXT_SIZE, D_ALL);
 
 	MMIO_RING_DFH(RING_TAIL, D_ALL, F_CMD_ACCESS, NULL, NULL);
@@ -2161,11 +1857,7 @@ static int init_generic_mmio_info(struct intel_gvt *gvt)
 	MMIO_RING_GM_RDR(RING_START, D_ALL, NULL, NULL);
 
 	/* RING MODE */
-<<<<<<< HEAD
 #define RING_REG(base) _MMIO((base) + 0x29c)
-=======
-#define RING_REG(base) (base + 0x29c)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MMIO_RING_DFH(RING_REG, D_ALL, F_MODE_MASK | F_CMD_ACCESS, NULL,
 		ring_mode_mmio_write);
 #undef RING_REG
@@ -2184,7 +1876,6 @@ static int init_generic_mmio_info(struct intel_gvt *gvt)
 		NULL, NULL);
 	MMIO_DFH(CACHE_MODE_1, D_ALL, F_MODE_MASK | F_CMD_ACCESS, NULL, NULL);
 	MMIO_DFH(CACHE_MODE_0, D_ALL, F_MODE_MASK | F_CMD_ACCESS, NULL, NULL);
-<<<<<<< HEAD
 	MMIO_DFH(_MMIO(0x2124), D_ALL, F_MODE_MASK | F_CMD_ACCESS, NULL, NULL);
 
 	MMIO_DFH(_MMIO(0x20dc), D_ALL, F_MODE_MASK | F_CMD_ACCESS, NULL, NULL);
@@ -2205,33 +1896,10 @@ static int init_generic_mmio_info(struct intel_gvt *gvt)
 	MMIO_DFH(_MMIO(0x2438), D_ALL, F_CMD_ACCESS, NULL, NULL);
 	MMIO_DFH(_MMIO(0x243c), D_ALL, F_CMD_ACCESS, NULL, NULL);
 	MMIO_DFH(_MMIO(0x7018), D_ALL, F_MODE_MASK | F_CMD_ACCESS, NULL, NULL);
-=======
-	MMIO_DFH(0x2124, D_ALL, F_MODE_MASK | F_CMD_ACCESS, NULL, NULL);
-
-	MMIO_DFH(0x20dc, D_ALL, F_MODE_MASK | F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(_3D_CHICKEN3, D_ALL, F_MODE_MASK | F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0x2088, D_ALL, F_MODE_MASK | F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0x20e4, D_ALL, F_MODE_MASK | F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0x2470, D_ALL, F_MODE_MASK | F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(GAM_ECOCHK, D_ALL, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(GEN7_COMMON_SLICE_CHICKEN1, D_ALL, F_MODE_MASK | F_CMD_ACCESS,
-		NULL, NULL);
-	MMIO_DFH(COMMON_SLICE_CHICKEN2, D_ALL, F_MODE_MASK | F_CMD_ACCESS, NULL,
-		 skl_misc_ctl_write);
-	MMIO_DFH(0x9030, D_ALL, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0x20a0, D_ALL, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0x2420, D_ALL, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0x2430, D_ALL, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0x2434, D_ALL, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0x2438, D_ALL, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0x243c, D_ALL, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0x7018, D_ALL, F_MODE_MASK | F_CMD_ACCESS, NULL, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MMIO_DFH(HALF_SLICE_CHICKEN3, D_ALL, F_MODE_MASK | F_CMD_ACCESS, NULL, NULL);
 	MMIO_DFH(GEN7_HALF_SLICE_CHICKEN1, D_ALL, F_MODE_MASK | F_CMD_ACCESS, NULL, NULL);
 
 	/* display */
-<<<<<<< HEAD
 	MMIO_F(_MMIO(0x60220), 0x20, 0, 0, 0, D_ALL, NULL, NULL);
 	MMIO_D(_MMIO(0x602a0), D_ALL);
 
@@ -2239,15 +1907,6 @@ static int init_generic_mmio_info(struct intel_gvt *gvt)
 	MMIO_D(_MMIO(0x650b4), D_ALL);
 
 	MMIO_D(_MMIO(0xc4040), D_ALL);
-=======
-	MMIO_F(0x60220, 0x20, 0, 0, 0, D_ALL, NULL, NULL);
-	MMIO_D(0x602a0, D_ALL);
-
-	MMIO_D(0x65050, D_ALL);
-	MMIO_D(0x650b4, D_ALL);
-
-	MMIO_D(0xc4040, D_ALL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MMIO_D(DERRMR, D_ALL);
 
 	MMIO_D(PIPEDSL(PIPE_A), D_ALL);
@@ -2287,7 +1946,6 @@ static int init_generic_mmio_info(struct intel_gvt *gvt)
 	MMIO_D(CURBASE(PIPE_B), D_ALL);
 	MMIO_D(CURBASE(PIPE_C), D_ALL);
 
-<<<<<<< HEAD
 	MMIO_D(CUR_FBC_CTL(PIPE_A), D_ALL);
 	MMIO_D(CUR_FBC_CTL(PIPE_B), D_ALL);
 	MMIO_D(CUR_FBC_CTL(PIPE_C), D_ALL);
@@ -2300,16 +1958,6 @@ static int init_generic_mmio_info(struct intel_gvt *gvt)
 	MMIO_D(_MMIO(0x70094), D_ALL);
 	MMIO_D(_MMIO(0x70098), D_ALL);
 	MMIO_D(_MMIO(0x7009c), D_ALL);
-=======
-	MMIO_D(0x700ac, D_ALL);
-	MMIO_D(0x710ac, D_ALL);
-	MMIO_D(0x720ac, D_ALL);
-
-	MMIO_D(0x70090, D_ALL);
-	MMIO_D(0x70094, D_ALL);
-	MMIO_D(0x70098, D_ALL);
-	MMIO_D(0x7009c, D_ALL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	MMIO_D(DSPCNTR(PIPE_A), D_ALL);
 	MMIO_D(DSPADDR(PIPE_A), D_ALL);
@@ -2485,16 +2133,11 @@ static int init_generic_mmio_info(struct intel_gvt *gvt)
 	MMIO_D(BLC_PWM_PCH_CTL1, D_ALL);
 	MMIO_D(BLC_PWM_PCH_CTL2, D_ALL);
 
-<<<<<<< HEAD
 	MMIO_D(_MMIO(0x48268), D_ALL);
-=======
-	MMIO_D(0x48268, D_ALL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	MMIO_F(PCH_GMBUS0, 4 * 4, 0, 0, 0, D_ALL, gmbus_mmio_read,
 		gmbus_mmio_write);
 	MMIO_F(PCH_GPIOA, 6 * 4, F_UNALIGN, 0, 0, D_ALL, NULL, NULL);
-<<<<<<< HEAD
 	MMIO_F(_MMIO(0xe4f00), 0x28, 0, 0, 0, D_ALL, NULL, NULL);
 
 	MMIO_F(_MMIO(_PCH_DPB_AUX_CH_CTL), 6 * 4, 0, 0, 0, D_PRE_SKL, NULL,
@@ -2502,26 +2145,12 @@ static int init_generic_mmio_info(struct intel_gvt *gvt)
 	MMIO_F(_MMIO(_PCH_DPC_AUX_CH_CTL), 6 * 4, 0, 0, 0, D_PRE_SKL, NULL,
 		dp_aux_ch_ctl_mmio_write);
 	MMIO_F(_MMIO(_PCH_DPD_AUX_CH_CTL), 6 * 4, 0, 0, 0, D_PRE_SKL, NULL,
-=======
-	MMIO_F(0xe4f00, 0x28, 0, 0, 0, D_ALL, NULL, NULL);
-
-	MMIO_F(_PCH_DPB_AUX_CH_CTL, 6 * 4, 0, 0, 0, D_PRE_SKL, NULL,
-		dp_aux_ch_ctl_mmio_write);
-	MMIO_F(_PCH_DPC_AUX_CH_CTL, 6 * 4, 0, 0, 0, D_PRE_SKL, NULL,
-		dp_aux_ch_ctl_mmio_write);
-	MMIO_F(_PCH_DPD_AUX_CH_CTL, 6 * 4, 0, 0, 0, D_PRE_SKL, NULL,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dp_aux_ch_ctl_mmio_write);
 
 	MMIO_DH(PCH_ADPA, D_PRE_SKL, NULL, pch_adpa_mmio_write);
 
-<<<<<<< HEAD
 	MMIO_DH(_MMIO(_PCH_TRANSACONF), D_ALL, NULL, transconf_mmio_write);
 	MMIO_DH(_MMIO(_PCH_TRANSBCONF), D_ALL, NULL, transconf_mmio_write);
-=======
-	MMIO_DH(_PCH_TRANSACONF, D_ALL, NULL, transconf_mmio_write);
-	MMIO_DH(_PCH_TRANSBCONF, D_ALL, NULL, transconf_mmio_write);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	MMIO_DH(FDI_RX_IIR(PIPE_A), D_ALL, NULL, fdi_rx_iir_mmio_write);
 	MMIO_DH(FDI_RX_IIR(PIPE_B), D_ALL, NULL, fdi_rx_iir_mmio_write);
@@ -2533,7 +2162,6 @@ static int init_generic_mmio_info(struct intel_gvt *gvt)
 	MMIO_DH(FDI_RX_CTL(PIPE_B), D_ALL, NULL, update_fdi_rx_iir_status);
 	MMIO_DH(FDI_RX_CTL(PIPE_C), D_ALL, NULL, update_fdi_rx_iir_status);
 
-<<<<<<< HEAD
 	MMIO_D(_MMIO(_PCH_TRANS_HTOTAL_A), D_ALL);
 	MMIO_D(_MMIO(_PCH_TRANS_HBLANK_A), D_ALL);
 	MMIO_D(_MMIO(_PCH_TRANS_HSYNC_A), D_ALL);
@@ -2558,32 +2186,6 @@ static int init_generic_mmio_info(struct intel_gvt *gvt)
 	MMIO_D(_MMIO(_PCH_TRANSA_LINK_N1), D_ALL);
 	MMIO_D(_MMIO(_PCH_TRANSA_LINK_M2), D_ALL);
 	MMIO_D(_MMIO(_PCH_TRANSA_LINK_N2), D_ALL);
-=======
-	MMIO_D(_PCH_TRANS_HTOTAL_A, D_ALL);
-	MMIO_D(_PCH_TRANS_HBLANK_A, D_ALL);
-	MMIO_D(_PCH_TRANS_HSYNC_A, D_ALL);
-	MMIO_D(_PCH_TRANS_VTOTAL_A, D_ALL);
-	MMIO_D(_PCH_TRANS_VBLANK_A, D_ALL);
-	MMIO_D(_PCH_TRANS_VSYNC_A, D_ALL);
-	MMIO_D(_PCH_TRANS_VSYNCSHIFT_A, D_ALL);
-
-	MMIO_D(_PCH_TRANS_HTOTAL_B, D_ALL);
-	MMIO_D(_PCH_TRANS_HBLANK_B, D_ALL);
-	MMIO_D(_PCH_TRANS_HSYNC_B, D_ALL);
-	MMIO_D(_PCH_TRANS_VTOTAL_B, D_ALL);
-	MMIO_D(_PCH_TRANS_VBLANK_B, D_ALL);
-	MMIO_D(_PCH_TRANS_VSYNC_B, D_ALL);
-	MMIO_D(_PCH_TRANS_VSYNCSHIFT_B, D_ALL);
-
-	MMIO_D(_PCH_TRANSA_DATA_M1, D_ALL);
-	MMIO_D(_PCH_TRANSA_DATA_N1, D_ALL);
-	MMIO_D(_PCH_TRANSA_DATA_M2, D_ALL);
-	MMIO_D(_PCH_TRANSA_DATA_N2, D_ALL);
-	MMIO_D(_PCH_TRANSA_LINK_M1, D_ALL);
-	MMIO_D(_PCH_TRANSA_LINK_N1, D_ALL);
-	MMIO_D(_PCH_TRANSA_LINK_M2, D_ALL);
-	MMIO_D(_PCH_TRANSA_LINK_N2, D_ALL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	MMIO_D(TRANS_DP_CTL(PIPE_A), D_ALL);
 	MMIO_D(TRANS_DP_CTL(PIPE_B), D_ALL);
@@ -2601,46 +2203,27 @@ static int init_generic_mmio_info(struct intel_gvt *gvt)
 	MMIO_D(TVIDEO_DIP_DATA(PIPE_C), D_ALL);
 	MMIO_D(TVIDEO_DIP_GCP(PIPE_C), D_ALL);
 
-<<<<<<< HEAD
 	MMIO_D(_MMIO(_FDI_RXA_MISC), D_ALL);
 	MMIO_D(_MMIO(_FDI_RXB_MISC), D_ALL);
 	MMIO_D(_MMIO(_FDI_RXA_TUSIZE1), D_ALL);
 	MMIO_D(_MMIO(_FDI_RXA_TUSIZE2), D_ALL);
 	MMIO_D(_MMIO(_FDI_RXB_TUSIZE1), D_ALL);
 	MMIO_D(_MMIO(_FDI_RXB_TUSIZE2), D_ALL);
-=======
-	MMIO_D(_FDI_RXA_MISC, D_ALL);
-	MMIO_D(_FDI_RXB_MISC, D_ALL);
-	MMIO_D(_FDI_RXA_TUSIZE1, D_ALL);
-	MMIO_D(_FDI_RXA_TUSIZE2, D_ALL);
-	MMIO_D(_FDI_RXB_TUSIZE1, D_ALL);
-	MMIO_D(_FDI_RXB_TUSIZE2, D_ALL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	MMIO_DH(PCH_PP_CONTROL, D_ALL, NULL, pch_pp_control_mmio_write);
 	MMIO_D(PCH_PP_DIVISOR, D_ALL);
 	MMIO_D(PCH_PP_STATUS,  D_ALL);
 	MMIO_D(PCH_LVDS, D_ALL);
-<<<<<<< HEAD
 	MMIO_D(_MMIO(_PCH_DPLL_A), D_ALL);
 	MMIO_D(_MMIO(_PCH_DPLL_B), D_ALL);
 	MMIO_D(_MMIO(_PCH_FPA0), D_ALL);
 	MMIO_D(_MMIO(_PCH_FPA1), D_ALL);
 	MMIO_D(_MMIO(_PCH_FPB0), D_ALL);
 	MMIO_D(_MMIO(_PCH_FPB1), D_ALL);
-=======
-	MMIO_D(_PCH_DPLL_A, D_ALL);
-	MMIO_D(_PCH_DPLL_B, D_ALL);
-	MMIO_D(_PCH_FPA0, D_ALL);
-	MMIO_D(_PCH_FPA1, D_ALL);
-	MMIO_D(_PCH_FPB0, D_ALL);
-	MMIO_D(_PCH_FPB1, D_ALL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MMIO_D(PCH_DREF_CONTROL, D_ALL);
 	MMIO_D(PCH_RAWCLK_FREQ, D_ALL);
 	MMIO_D(PCH_DPLL_SEL, D_ALL);
 
-<<<<<<< HEAD
 	MMIO_D(_MMIO(0x61208), D_ALL);
 	MMIO_D(_MMIO(0x6120c), D_ALL);
 	MMIO_D(PCH_PP_ON_DELAYS, D_ALL);
@@ -2652,19 +2235,6 @@ static int init_generic_mmio_info(struct intel_gvt *gvt)
 	MMIO_DH(_MMIO(0xe681c), D_ALL, dpy_reg_mmio_read, NULL);
 	MMIO_DH(_MMIO(0xe6c04), D_ALL, dpy_reg_mmio_read, NULL);
 	MMIO_DH(_MMIO(0xe6e1c), D_ALL, dpy_reg_mmio_read, NULL);
-=======
-	MMIO_D(0x61208, D_ALL);
-	MMIO_D(0x6120c, D_ALL);
-	MMIO_D(PCH_PP_ON_DELAYS, D_ALL);
-	MMIO_D(PCH_PP_OFF_DELAYS, D_ALL);
-
-	MMIO_DH(0xe651c, D_ALL, dpy_reg_mmio_read, NULL);
-	MMIO_DH(0xe661c, D_ALL, dpy_reg_mmio_read, NULL);
-	MMIO_DH(0xe671c, D_ALL, dpy_reg_mmio_read, NULL);
-	MMIO_DH(0xe681c, D_ALL, dpy_reg_mmio_read, NULL);
-	MMIO_DH(0xe6c04, D_ALL, dpy_reg_mmio_read, NULL);
-	MMIO_DH(0xe6e1c, D_ALL, dpy_reg_mmio_read, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	MMIO_RO(PCH_PORT_HOTPLUG, D_ALL, 0,
 		PORTA_HOTPLUG_STATUS_MASK
@@ -2686,19 +2256,11 @@ static int init_generic_mmio_info(struct intel_gvt *gvt)
 
 	MMIO_D(SOUTH_CHICKEN1, D_ALL);
 	MMIO_DH(SOUTH_CHICKEN2, D_ALL, NULL, south_chicken2_mmio_write);
-<<<<<<< HEAD
 	MMIO_D(_MMIO(_TRANSA_CHICKEN1), D_ALL);
 	MMIO_D(_MMIO(_TRANSB_CHICKEN1), D_ALL);
 	MMIO_D(SOUTH_DSPCLK_GATE_D, D_ALL);
 	MMIO_D(_MMIO(_TRANSA_CHICKEN2), D_ALL);
 	MMIO_D(_MMIO(_TRANSB_CHICKEN2), D_ALL);
-=======
-	MMIO_D(_TRANSA_CHICKEN1, D_ALL);
-	MMIO_D(_TRANSB_CHICKEN1, D_ALL);
-	MMIO_D(SOUTH_DSPCLK_GATE_D, D_ALL);
-	MMIO_D(_TRANSA_CHICKEN2, D_ALL);
-	MMIO_D(_TRANSB_CHICKEN2, D_ALL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	MMIO_D(ILK_DPFC_CB_BASE, D_ALL);
 	MMIO_D(ILK_DPFC_CONTROL, D_ALL);
@@ -2764,7 +2326,6 @@ static int init_generic_mmio_info(struct intel_gvt *gvt)
 	MMIO_D(PREC_PAL_DATA(PIPE_C), D_ALL);
 	MMIO_F(PREC_PAL_GC_MAX(PIPE_C, 0), 4 * 3, 0, 0, 0, D_ALL, NULL, NULL);
 
-<<<<<<< HEAD
 	MMIO_D(_MMIO(0x60110), D_ALL);
 	MMIO_D(_MMIO(0x61110), D_ALL);
 	MMIO_F(_MMIO(0x70400), 0x40, 0, 0, 0, D_ALL, NULL, NULL);
@@ -2776,31 +2337,13 @@ static int init_generic_mmio_info(struct intel_gvt *gvt)
 	MMIO_F(_MMIO(0x7044c), 0xc, 0, 0, 0, D_PRE_SKL, NULL, NULL);
 	MMIO_F(_MMIO(0x7144c), 0xc, 0, 0, 0, D_PRE_SKL, NULL, NULL);
 	MMIO_F(_MMIO(0x7244c), 0xc, 0, 0, 0, D_PRE_SKL, NULL, NULL);
-=======
-	MMIO_D(0x60110, D_ALL);
-	MMIO_D(0x61110, D_ALL);
-	MMIO_F(0x70400, 0x40, 0, 0, 0, D_ALL, NULL, NULL);
-	MMIO_F(0x71400, 0x40, 0, 0, 0, D_ALL, NULL, NULL);
-	MMIO_F(0x72400, 0x40, 0, 0, 0, D_ALL, NULL, NULL);
-	MMIO_F(0x70440, 0xc, 0, 0, 0, D_PRE_SKL, NULL, NULL);
-	MMIO_F(0x71440, 0xc, 0, 0, 0, D_PRE_SKL, NULL, NULL);
-	MMIO_F(0x72440, 0xc, 0, 0, 0, D_PRE_SKL, NULL, NULL);
-	MMIO_F(0x7044c, 0xc, 0, 0, 0, D_PRE_SKL, NULL, NULL);
-	MMIO_F(0x7144c, 0xc, 0, 0, 0, D_PRE_SKL, NULL, NULL);
-	MMIO_F(0x7244c, 0xc, 0, 0, 0, D_PRE_SKL, NULL, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	MMIO_D(PIPE_WM_LINETIME(PIPE_A), D_ALL);
 	MMIO_D(PIPE_WM_LINETIME(PIPE_B), D_ALL);
 	MMIO_D(PIPE_WM_LINETIME(PIPE_C), D_ALL);
 	MMIO_D(SPLL_CTL, D_ALL);
-<<<<<<< HEAD
 	MMIO_D(_MMIO(_WRPLL_CTL1), D_ALL);
 	MMIO_D(_MMIO(_WRPLL_CTL2), D_ALL);
-=======
-	MMIO_D(_WRPLL_CTL1, D_ALL);
-	MMIO_D(_WRPLL_CTL2, D_ALL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MMIO_D(PORT_CLK_SEL(PORT_A), D_ALL);
 	MMIO_D(PORT_CLK_SEL(PORT_B), D_ALL);
 	MMIO_D(PORT_CLK_SEL(PORT_C), D_ALL);
@@ -2811,7 +2354,6 @@ static int init_generic_mmio_info(struct intel_gvt *gvt)
 	MMIO_D(TRANS_CLK_SEL(TRANSCODER_C), D_ALL);
 
 	MMIO_D(HSW_NDE_RSTWRN_OPT, D_ALL);
-<<<<<<< HEAD
 	MMIO_D(_MMIO(0x46508), D_ALL);
 
 	MMIO_D(_MMIO(0x49080), D_ALL);
@@ -2821,17 +2363,6 @@ static int init_generic_mmio_info(struct intel_gvt *gvt)
 	MMIO_F(_MMIO(0x49090), 0x14, 0, 0, 0, D_ALL, NULL, NULL);
 	MMIO_F(_MMIO(0x49190), 0x14, 0, 0, 0, D_ALL, NULL, NULL);
 	MMIO_F(_MMIO(0x49290), 0x14, 0, 0, 0, D_ALL, NULL, NULL);
-=======
-	MMIO_D(0x46508, D_ALL);
-
-	MMIO_D(0x49080, D_ALL);
-	MMIO_D(0x49180, D_ALL);
-	MMIO_D(0x49280, D_ALL);
-
-	MMIO_F(0x49090, 0x14, 0, 0, 0, D_ALL, NULL, NULL);
-	MMIO_F(0x49190, 0x14, 0, 0, 0, D_ALL, NULL, NULL);
-	MMIO_F(0x49290, 0x14, 0, 0, 0, D_ALL, NULL, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	MMIO_D(GAMMA_MODE(PIPE_A), D_ALL);
 	MMIO_D(GAMMA_MODE(PIPE_B), D_ALL);
@@ -2851,11 +2382,7 @@ static int init_generic_mmio_info(struct intel_gvt *gvt)
 	MMIO_DH(SBI_CTL_STAT, D_ALL, NULL, sbi_ctl_mmio_write);
 	MMIO_D(PIXCLK_GATE, D_ALL);
 
-<<<<<<< HEAD
 	MMIO_F(_MMIO(_DPA_AUX_CH_CTL), 6 * 4, 0, 0, 0, D_ALL, NULL,
-=======
-	MMIO_F(_DPA_AUX_CH_CTL, 6 * 4, 0, 0, 0, D_ALL, NULL,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dp_aux_ch_ctl_mmio_write);
 
 	MMIO_DH(DDI_BUF_CTL(PORT_A), D_ALL, NULL, ddi_buf_ctl_mmio_write);
@@ -2876,7 +2403,6 @@ static int init_generic_mmio_info(struct intel_gvt *gvt)
 	MMIO_DH(DP_TP_STATUS(PORT_D), D_ALL, NULL, dp_tp_status_mmio_write);
 	MMIO_DH(DP_TP_STATUS(PORT_E), D_ALL, NULL, NULL);
 
-<<<<<<< HEAD
 	MMIO_F(_MMIO(_DDI_BUF_TRANS_A), 0x50, 0, 0, 0, D_ALL, NULL, NULL);
 	MMIO_F(_MMIO(0x64e60), 0x50, 0, 0, 0, D_ALL, NULL, NULL);
 	MMIO_F(_MMIO(0x64eC0), 0x50, 0, 0, 0, D_ALL, NULL, NULL);
@@ -2896,26 +2422,6 @@ static int init_generic_mmio_info(struct intel_gvt *gvt)
 	MMIO_D(_MMIO(_TRANSB_MSA_MISC), D_ALL);
 	MMIO_D(_MMIO(_TRANSC_MSA_MISC), D_ALL);
 	MMIO_D(_MMIO(_TRANS_EDP_MSA_MISC), D_ALL);
-=======
-	MMIO_F(_DDI_BUF_TRANS_A, 0x50, 0, 0, 0, D_ALL, NULL, NULL);
-	MMIO_F(0x64e60, 0x50, 0, 0, 0, D_ALL, NULL, NULL);
-	MMIO_F(0x64eC0, 0x50, 0, 0, 0, D_ALL, NULL, NULL);
-	MMIO_F(0x64f20, 0x50, 0, 0, 0, D_ALL, NULL, NULL);
-	MMIO_F(0x64f80, 0x50, 0, 0, 0, D_ALL, NULL, NULL);
-
-	MMIO_D(HSW_AUD_CFG(PIPE_A), D_ALL);
-	MMIO_D(HSW_AUD_PIN_ELD_CP_VLD, D_ALL);
-
-	MMIO_DH(_TRANS_DDI_FUNC_CTL_A, D_ALL, NULL, NULL);
-	MMIO_DH(_TRANS_DDI_FUNC_CTL_B, D_ALL, NULL, NULL);
-	MMIO_DH(_TRANS_DDI_FUNC_CTL_C, D_ALL, NULL, NULL);
-	MMIO_DH(_TRANS_DDI_FUNC_CTL_EDP, D_ALL, NULL, NULL);
-
-	MMIO_D(_TRANSA_MSA_MISC, D_ALL);
-	MMIO_D(_TRANSB_MSA_MISC, D_ALL);
-	MMIO_D(_TRANSC_MSA_MISC, D_ALL);
-	MMIO_D(_TRANS_EDP_MSA_MISC, D_ALL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	MMIO_DH(FORCEWAKE, D_ALL, NULL, NULL);
 	MMIO_D(FORCEWAKE_ACK, D_ALL);
@@ -2981,23 +2487,15 @@ static int init_generic_mmio_info(struct intel_gvt *gvt)
 	MMIO_D(GEN6_UCGCTL1, D_ALL);
 	MMIO_D(GEN6_UCGCTL2, D_ALL);
 
-<<<<<<< HEAD
 	MMIO_F(_MMIO(0x4f000), 0x90, 0, 0, 0, D_ALL, NULL, NULL);
 
 	MMIO_D(GEN6_PCODE_DATA, D_ALL);
 	MMIO_D(_MMIO(0x13812c), D_ALL);
-=======
-	MMIO_F(0x4f000, 0x90, 0, 0, 0, D_ALL, NULL, NULL);
-
-	MMIO_D(GEN6_PCODE_DATA, D_ALL);
-	MMIO_D(0x13812c, D_ALL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MMIO_DH(GEN7_ERR_INT, D_ALL, NULL, NULL);
 	MMIO_D(HSW_EDRAM_CAP, D_ALL);
 	MMIO_D(HSW_IDICR, D_ALL);
 	MMIO_DH(GFX_FLSH_CNTL_GEN6, D_ALL, NULL, NULL);
 
-<<<<<<< HEAD
 	MMIO_D(_MMIO(0x3c), D_ALL);
 	MMIO_D(_MMIO(0x860), D_ALL);
 	MMIO_D(ECOSKPD, D_ALL);
@@ -3084,94 +2582,6 @@ static int init_generic_mmio_info(struct intel_gvt *gvt)
 
 	MMIO_DFH(_MMIO(0x1c17c), D_BDW_PLUS, F_CMD_ACCESS, NULL, NULL);
 	MMIO_DFH(_MMIO(0x1c178), D_BDW_PLUS, F_CMD_ACCESS, NULL, NULL);
-=======
-	MMIO_D(0x3c, D_ALL);
-	MMIO_D(0x860, D_ALL);
-	MMIO_D(ECOSKPD, D_ALL);
-	MMIO_D(0x121d0, D_ALL);
-	MMIO_D(GEN6_BLITTER_ECOSKPD, D_ALL);
-	MMIO_D(0x41d0, D_ALL);
-	MMIO_D(GAC_ECO_BITS, D_ALL);
-	MMIO_D(0x6200, D_ALL);
-	MMIO_D(0x6204, D_ALL);
-	MMIO_D(0x6208, D_ALL);
-	MMIO_D(0x7118, D_ALL);
-	MMIO_D(0x7180, D_ALL);
-	MMIO_D(0x7408, D_ALL);
-	MMIO_D(0x7c00, D_ALL);
-	MMIO_DH(GEN6_MBCTL, D_ALL, NULL, mbctl_write);
-	MMIO_D(0x911c, D_ALL);
-	MMIO_D(0x9120, D_ALL);
-	MMIO_DFH(GEN7_UCGCTL4, D_ALL, F_CMD_ACCESS, NULL, NULL);
-
-	MMIO_D(GAB_CTL, D_ALL);
-	MMIO_D(0x48800, D_ALL);
-	MMIO_D(0xce044, D_ALL);
-	MMIO_D(0xe6500, D_ALL);
-	MMIO_D(0xe6504, D_ALL);
-	MMIO_D(0xe6600, D_ALL);
-	MMIO_D(0xe6604, D_ALL);
-	MMIO_D(0xe6700, D_ALL);
-	MMIO_D(0xe6704, D_ALL);
-	MMIO_D(0xe6800, D_ALL);
-	MMIO_D(0xe6804, D_ALL);
-	MMIO_D(PCH_GMBUS4, D_ALL);
-	MMIO_D(PCH_GMBUS5, D_ALL);
-
-	MMIO_D(0x902c, D_ALL);
-	MMIO_D(0xec008, D_ALL);
-	MMIO_D(0xec00c, D_ALL);
-	MMIO_D(0xec008 + 0x18, D_ALL);
-	MMIO_D(0xec00c + 0x18, D_ALL);
-	MMIO_D(0xec008 + 0x18 * 2, D_ALL);
-	MMIO_D(0xec00c + 0x18 * 2, D_ALL);
-	MMIO_D(0xec008 + 0x18 * 3, D_ALL);
-	MMIO_D(0xec00c + 0x18 * 3, D_ALL);
-	MMIO_D(0xec408, D_ALL);
-	MMIO_D(0xec40c, D_ALL);
-	MMIO_D(0xec408 + 0x18, D_ALL);
-	MMIO_D(0xec40c + 0x18, D_ALL);
-	MMIO_D(0xec408 + 0x18 * 2, D_ALL);
-	MMIO_D(0xec40c + 0x18 * 2, D_ALL);
-	MMIO_D(0xec408 + 0x18 * 3, D_ALL);
-	MMIO_D(0xec40c + 0x18 * 3, D_ALL);
-	MMIO_D(0xfc810, D_ALL);
-	MMIO_D(0xfc81c, D_ALL);
-	MMIO_D(0xfc828, D_ALL);
-	MMIO_D(0xfc834, D_ALL);
-	MMIO_D(0xfcc00, D_ALL);
-	MMIO_D(0xfcc0c, D_ALL);
-	MMIO_D(0xfcc18, D_ALL);
-	MMIO_D(0xfcc24, D_ALL);
-	MMIO_D(0xfd000, D_ALL);
-	MMIO_D(0xfd00c, D_ALL);
-	MMIO_D(0xfd018, D_ALL);
-	MMIO_D(0xfd024, D_ALL);
-	MMIO_D(0xfd034, D_ALL);
-
-	MMIO_DH(FPGA_DBG, D_ALL, NULL, fpga_dbg_mmio_write);
-	MMIO_D(0x2054, D_ALL);
-	MMIO_D(0x12054, D_ALL);
-	MMIO_D(0x22054, D_ALL);
-	MMIO_D(0x1a054, D_ALL);
-
-	MMIO_D(0x44070, D_ALL);
-	MMIO_DFH(0x215c, D_BDW_PLUS, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0x2178, D_ALL, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0x217c, D_ALL, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0x12178, D_ALL, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0x1217c, D_ALL, F_CMD_ACCESS, NULL, NULL);
-
-	MMIO_F(0x2290, 8, F_CMD_ACCESS, 0, 0, D_BDW_PLUS, NULL, NULL);
-	MMIO_D(0x2b00, D_BDW_PLUS);
-	MMIO_D(0x2360, D_BDW_PLUS);
-	MMIO_F(0x5200, 32, F_CMD_ACCESS, 0, 0, D_ALL, NULL, NULL);
-	MMIO_F(0x5240, 32, F_CMD_ACCESS, 0, 0, D_ALL, NULL, NULL);
-	MMIO_F(0x5280, 16, F_CMD_ACCESS, 0, 0, D_ALL, NULL, NULL);
-
-	MMIO_DFH(0x1c17c, D_BDW_PLUS, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0x1c178, D_BDW_PLUS, F_CMD_ACCESS, NULL, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MMIO_DFH(BCS_SWCTRL, D_ALL, F_CMD_ACCESS, NULL, NULL);
 
 	MMIO_F(HS_INVOCATION_COUNT, 8, F_CMD_ACCESS, 0, 0, D_ALL, NULL, NULL);
@@ -3185,7 +2595,6 @@ static int init_generic_mmio_info(struct intel_gvt *gvt)
 	MMIO_F(CL_PRIMITIVES_COUNT, 8, F_CMD_ACCESS, 0, 0, D_ALL, NULL, NULL);
 	MMIO_F(PS_INVOCATION_COUNT, 8, F_CMD_ACCESS, 0, 0, D_ALL, NULL, NULL);
 	MMIO_F(PS_DEPTH_COUNT, 8, F_CMD_ACCESS, 0, 0, D_ALL, NULL, NULL);
-<<<<<<< HEAD
 	MMIO_DH(_MMIO(0x4260), D_BDW_PLUS, NULL, gvt_reg_tlb_control_handler);
 	MMIO_DH(_MMIO(0x4264), D_BDW_PLUS, NULL, gvt_reg_tlb_control_handler);
 	MMIO_DH(_MMIO(0x4268), D_BDW_PLUS, NULL, gvt_reg_tlb_control_handler);
@@ -3204,26 +2613,6 @@ static int init_generic_mmio_info(struct intel_gvt *gvt)
 	MMIO_DFH(_MMIO(0x1a178), D_BDW_PLUS, F_CMD_ACCESS, NULL, NULL);
 	MMIO_DFH(_MMIO(0x1a17c), D_BDW_PLUS, F_CMD_ACCESS, NULL, NULL);
 	MMIO_DFH(_MMIO(0x2217c), D_BDW_PLUS, F_CMD_ACCESS, NULL, NULL);
-=======
-	MMIO_DH(0x4260, D_BDW_PLUS, NULL, gvt_reg_tlb_control_handler);
-	MMIO_DH(0x4264, D_BDW_PLUS, NULL, gvt_reg_tlb_control_handler);
-	MMIO_DH(0x4268, D_BDW_PLUS, NULL, gvt_reg_tlb_control_handler);
-	MMIO_DH(0x426c, D_BDW_PLUS, NULL, gvt_reg_tlb_control_handler);
-	MMIO_DH(0x4270, D_BDW_PLUS, NULL, gvt_reg_tlb_control_handler);
-	MMIO_DFH(0x4094, D_BDW_PLUS, F_CMD_ACCESS, NULL, NULL);
-
-	MMIO_DFH(ARB_MODE, D_ALL, F_MODE_MASK | F_CMD_ACCESS, NULL, NULL);
-	MMIO_RING_GM_RDR(RING_BBADDR, D_ALL, NULL, NULL);
-	MMIO_DFH(0x2220, D_ALL, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0x12220, D_ALL, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0x22220, D_ALL, F_CMD_ACCESS, NULL, NULL);
-	MMIO_RING_DFH(RING_SYNC_1, D_ALL, F_CMD_ACCESS, NULL, NULL);
-	MMIO_RING_DFH(RING_SYNC_0, D_ALL, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0x22178, D_BDW_PLUS, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0x1a178, D_BDW_PLUS, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0x1a17c, D_BDW_PLUS, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0x2217c, D_BDW_PLUS, F_CMD_ACCESS, NULL, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -3297,34 +2686,21 @@ static int init_broadwell_mmio_info(struct intel_gvt *gvt)
 	MMIO_RING_DFH(RING_ACTHD_UDW, D_BDW_PLUS, F_CMD_ACCESS,
 		mmio_read_from_hw, NULL);
 
-<<<<<<< HEAD
 #define RING_REG(base) _MMIO((base) + 0xd0)
-=======
-#define RING_REG(base) (base + 0xd0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MMIO_RING_F(RING_REG, 4, F_RO, 0,
 		~_MASKED_BIT_ENABLE(RESET_CTL_REQUEST_RESET), D_BDW_PLUS, NULL,
 		ring_reset_ctl_write);
 #undef RING_REG
 
-<<<<<<< HEAD
 #define RING_REG(base) _MMIO((base) + 0x230)
 	MMIO_RING_DFH(RING_REG, D_BDW_PLUS, 0, NULL, elsp_mmio_write);
 #undef RING_REG
 
 #define RING_REG(base) _MMIO((base) + 0x234)
-=======
-#define RING_REG(base) (base + 0x230)
-	MMIO_RING_DFH(RING_REG, D_BDW_PLUS, 0, NULL, elsp_mmio_write);
-#undef RING_REG
-
-#define RING_REG(base) (base + 0x234)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MMIO_RING_F(RING_REG, 8, F_RO | F_CMD_ACCESS, 0, ~0, D_BDW_PLUS,
 		NULL, NULL);
 #undef RING_REG
 
-<<<<<<< HEAD
 #define RING_REG(base) _MMIO((base) + 0x244)
 	MMIO_RING_DFH(RING_REG, D_BDW_PLUS, F_CMD_ACCESS, NULL, NULL);
 #undef RING_REG
@@ -3334,34 +2710,16 @@ static int init_broadwell_mmio_info(struct intel_gvt *gvt)
 #undef RING_REG
 
 #define RING_REG(base) _MMIO((base) + 0x3a0)
-=======
-#define RING_REG(base) (base + 0x244)
-	MMIO_RING_DFH(RING_REG, D_BDW_PLUS, F_CMD_ACCESS, NULL, NULL);
-#undef RING_REG
-
-#define RING_REG(base) (base + 0x370)
-	MMIO_RING_F(RING_REG, 48, F_RO, 0, ~0, D_BDW_PLUS, NULL, NULL);
-#undef RING_REG
-
-#define RING_REG(base) (base + 0x3a0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MMIO_RING_DFH(RING_REG, D_BDW_PLUS, F_MODE_MASK, NULL, NULL);
 #undef RING_REG
 
 	MMIO_D(PIPEMISC(PIPE_A), D_BDW_PLUS);
 	MMIO_D(PIPEMISC(PIPE_B), D_BDW_PLUS);
 	MMIO_D(PIPEMISC(PIPE_C), D_BDW_PLUS);
-<<<<<<< HEAD
 	MMIO_D(_MMIO(0x1c1d0), D_BDW_PLUS);
 	MMIO_D(GEN6_MBCUNIT_SNPCR, D_BDW_PLUS);
 	MMIO_D(GEN7_MISCCPCTL, D_BDW_PLUS);
 	MMIO_D(_MMIO(0x1c054), D_BDW_PLUS);
-=======
-	MMIO_D(0x1c1d0, D_BDW_PLUS);
-	MMIO_D(GEN6_MBCUNIT_SNPCR, D_BDW_PLUS);
-	MMIO_D(GEN7_MISCCPCTL, D_BDW_PLUS);
-	MMIO_D(0x1c054, D_BDW_PLUS);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	MMIO_DH(GEN6_PCODE_MAILBOX, D_BDW_PLUS, NULL, mailbox_write);
 
@@ -3370,19 +2728,11 @@ static int init_broadwell_mmio_info(struct intel_gvt *gvt)
 
 	MMIO_D(GAMTARBMODE, D_BDW_PLUS);
 
-<<<<<<< HEAD
 #define RING_REG(base) _MMIO((base) + 0x270)
 	MMIO_RING_F(RING_REG, 32, 0, 0, 0, D_BDW_PLUS, NULL, NULL);
 #undef RING_REG
 
 	MMIO_RING_GM_RDR(RING_HWS_PGA, D_BDW_PLUS, NULL, hws_pga_write);
-=======
-#define RING_REG(base) (base + 0x270)
-	MMIO_RING_F(RING_REG, 32, 0, 0, 0, D_BDW_PLUS, NULL, NULL);
-#undef RING_REG
-
-	MMIO_RING_GM_RDR(RING_HWS_PGA, D_BDW_PLUS, NULL, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	MMIO_DFH(HDC_CHICKEN0, D_BDW_PLUS, F_MODE_MASK | F_CMD_ACCESS, NULL, NULL);
 
@@ -3391,18 +2741,11 @@ static int init_broadwell_mmio_info(struct intel_gvt *gvt)
 	MMIO_D(CHICKEN_PIPESL_1(PIPE_C), D_BDW_PLUS);
 
 	MMIO_D(WM_MISC, D_BDW);
-<<<<<<< HEAD
 	MMIO_D(_MMIO(BDW_EDP_PSR_BASE), D_BDW);
 
 	MMIO_D(_MMIO(0x6671c), D_BDW_PLUS);
 	MMIO_D(_MMIO(0x66c00), D_BDW_PLUS);
 	MMIO_D(_MMIO(0x66c04), D_BDW_PLUS);
-=======
-	MMIO_D(BDW_EDP_PSR_BASE, D_BDW);
-
-	MMIO_D(0x66c00, D_BDW_PLUS);
-	MMIO_D(0x66c04, D_BDW_PLUS);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	MMIO_D(HSW_GTT_CACHE_EN, D_BDW_PLUS);
 
@@ -3410,18 +2753,13 @@ static int init_broadwell_mmio_info(struct intel_gvt *gvt)
 	MMIO_D(GEN8_EU_DISABLE1, D_BDW_PLUS);
 	MMIO_D(GEN8_EU_DISABLE2, D_BDW_PLUS);
 
-<<<<<<< HEAD
 	MMIO_D(_MMIO(0xfdc), D_BDW_PLUS);
-=======
-	MMIO_D(0xfdc, D_BDW_PLUS);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MMIO_DFH(GEN8_ROW_CHICKEN, D_BDW_PLUS, F_MODE_MASK | F_CMD_ACCESS,
 		NULL, NULL);
 	MMIO_DFH(GEN7_ROW_CHICKEN2, D_BDW_PLUS, F_MODE_MASK | F_CMD_ACCESS,
 		NULL, NULL);
 	MMIO_DFH(GEN8_UCGCTL6, D_BDW_PLUS, F_CMD_ACCESS, NULL, NULL);
 
-<<<<<<< HEAD
 	MMIO_DFH(_MMIO(0xb1f0), D_BDW, F_CMD_ACCESS, NULL, NULL);
 	MMIO_DFH(_MMIO(0xb1c0), D_BDW, F_CMD_ACCESS, NULL, NULL);
 	MMIO_DFH(GEN8_L3SQCREG4, D_BDW_PLUS, F_CMD_ACCESS, NULL, NULL);
@@ -3463,50 +2801,6 @@ static int init_broadwell_mmio_info(struct intel_gvt *gvt)
 	MMIO_DFH(_MMIO(0xe2a0), D_BDW_PLUS, F_CMD_ACCESS, NULL, NULL);
 	MMIO_DFH(_MMIO(0xe2b0), D_BDW_PLUS, F_CMD_ACCESS, NULL, NULL);
 	MMIO_DFH(_MMIO(0xe2c0), D_BDW_PLUS, F_CMD_ACCESS, NULL, NULL);
-=======
-	MMIO_DFH(0xb1f0, D_BDW, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0xb1c0, D_BDW, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(GEN8_L3SQCREG4, D_BDW_PLUS, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0xb100, D_BDW, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0xb10c, D_BDW, F_CMD_ACCESS, NULL, NULL);
-	MMIO_D(0xb110, D_BDW);
-
-	MMIO_F(0x24d0, 48, F_CMD_ACCESS, 0, 0, D_BDW_PLUS,
-		NULL, force_nonpriv_write);
-
-	MMIO_D(0x44484, D_BDW_PLUS);
-	MMIO_D(0x4448c, D_BDW_PLUS);
-
-	MMIO_DFH(0x83a4, D_BDW, F_CMD_ACCESS, NULL, NULL);
-	MMIO_D(GEN8_L3_LRA_1_GPGPU, D_BDW_PLUS);
-
-	MMIO_DFH(0x8430, D_BDW, F_CMD_ACCESS, NULL, NULL);
-
-	MMIO_D(0x110000, D_BDW_PLUS);
-
-	MMIO_D(0x48400, D_BDW_PLUS);
-
-	MMIO_D(0x6e570, D_BDW_PLUS);
-	MMIO_D(0x65f10, D_BDW_PLUS);
-
-	MMIO_DFH(0xe194, D_BDW_PLUS, F_MODE_MASK | F_CMD_ACCESS, NULL,
-		 skl_misc_ctl_write);
-	MMIO_DFH(0xe188, D_BDW_PLUS, F_MODE_MASK | F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(HALF_SLICE_CHICKEN2, D_BDW_PLUS, F_MODE_MASK | F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0x2580, D_BDW_PLUS, F_MODE_MASK | F_CMD_ACCESS, NULL, NULL);
-
-	MMIO_DFH(0x2248, D_BDW, F_CMD_ACCESS, NULL, NULL);
-
-	MMIO_DFH(0xe220, D_BDW_PLUS, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0xe230, D_BDW_PLUS, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0xe240, D_BDW_PLUS, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0xe260, D_BDW_PLUS, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0xe270, D_BDW_PLUS, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0xe280, D_BDW_PLUS, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0xe2a0, D_BDW_PLUS, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0xe2b0, D_BDW_PLUS, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0xe2c0, D_BDW_PLUS, F_CMD_ACCESS, NULL, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -3522,19 +2816,11 @@ static int init_skl_mmio_info(struct intel_gvt *gvt)
 	MMIO_DH(FORCEWAKE_MEDIA_GEN9, D_SKL_PLUS, NULL, mul_force_wake_write);
 	MMIO_DH(FORCEWAKE_ACK_MEDIA_GEN9, D_SKL_PLUS, NULL, NULL);
 
-<<<<<<< HEAD
 	MMIO_F(_MMIO(_DPB_AUX_CH_CTL), 6 * 4, 0, 0, 0, D_SKL_PLUS, NULL,
 						dp_aux_ch_ctl_mmio_write);
 	MMIO_F(_MMIO(_DPC_AUX_CH_CTL), 6 * 4, 0, 0, 0, D_SKL_PLUS, NULL,
 						dp_aux_ch_ctl_mmio_write);
 	MMIO_F(_MMIO(_DPD_AUX_CH_CTL), 6 * 4, 0, 0, 0, D_SKL_PLUS, NULL,
-=======
-	MMIO_F(_DPB_AUX_CH_CTL, 6 * 4, 0, 0, 0, D_SKL_PLUS, NULL,
-						dp_aux_ch_ctl_mmio_write);
-	MMIO_F(_DPC_AUX_CH_CTL, 6 * 4, 0, 0, 0, D_SKL_PLUS, NULL,
-						dp_aux_ch_ctl_mmio_write);
-	MMIO_F(_DPD_AUX_CH_CTL, 6 * 4, 0, 0, 0, D_SKL_PLUS, NULL,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						dp_aux_ch_ctl_mmio_write);
 
 	/*
@@ -3545,7 +2831,6 @@ static int init_skl_mmio_info(struct intel_gvt *gvt)
 	MMIO_DH(HSW_PWR_WELL_CTL_DRIVER(SKL_DISP_PW_MISC_IO), D_SKL_PLUS, NULL,
 		skl_power_well_ctl_write);
 
-<<<<<<< HEAD
 	MMIO_DH(DBUF_CTL, D_SKL_PLUS, NULL, gen9_dbuf_ctl_mmio_write);
 
 	MMIO_D(_MMIO(0xa210), D_SKL_PLUS);
@@ -3568,28 +2853,6 @@ static int init_skl_mmio_info(struct intel_gvt *gvt)
 	MMIO_D(_MMIO(0x6c058), D_SKL_PLUS);
 	MMIO_D(_MMIO(0x6c05c), D_SKL_PLUS);
 	MMIO_DH(_MMIO(0x6c060), D_SKL_PLUS, dpll_status_read, NULL);
-=======
-	MMIO_D(0xa210, D_SKL_PLUS);
-	MMIO_D(GEN9_MEDIA_PG_IDLE_HYSTERESIS, D_SKL_PLUS);
-	MMIO_D(GEN9_RENDER_PG_IDLE_HYSTERESIS, D_SKL_PLUS);
-	MMIO_DFH(GEN9_GAMT_ECO_REG_RW_IA, D_SKL_PLUS, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DH(0x4ddc, D_SKL_PLUS, NULL, skl_misc_ctl_write);
-	MMIO_DH(0x42080, D_SKL_PLUS, NULL, skl_misc_ctl_write);
-	MMIO_D(0x45504, D_SKL_PLUS);
-	MMIO_D(0x45520, D_SKL_PLUS);
-	MMIO_D(0x46000, D_SKL_PLUS);
-	MMIO_DH(0x46010, D_SKL | D_KBL, NULL, skl_lcpll_write);
-	MMIO_DH(0x46014, D_SKL | D_KBL, NULL, skl_lcpll_write);
-	MMIO_D(0x6C040, D_SKL | D_KBL);
-	MMIO_D(0x6C048, D_SKL | D_KBL);
-	MMIO_D(0x6C050, D_SKL | D_KBL);
-	MMIO_D(0x6C044, D_SKL | D_KBL);
-	MMIO_D(0x6C04C, D_SKL | D_KBL);
-	MMIO_D(0x6C054, D_SKL | D_KBL);
-	MMIO_D(0x6c058, D_SKL | D_KBL);
-	MMIO_D(0x6c05c, D_SKL | D_KBL);
-	MMIO_DH(0X6c060, D_SKL | D_KBL, dpll_status_read, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	MMIO_DH(SKL_PS_WIN_POS(PIPE_A, 0), D_SKL_PLUS, NULL, pf_write);
 	MMIO_DH(SKL_PS_WIN_POS(PIPE_A, 1), D_SKL_PLUS, NULL, pf_write);
@@ -3678,7 +2941,6 @@ static int init_skl_mmio_info(struct intel_gvt *gvt)
 	MMIO_DH(PLANE_NV12_BUF_CFG(PIPE_C, 2), D_SKL_PLUS, NULL, NULL);
 	MMIO_DH(PLANE_NV12_BUF_CFG(PIPE_C, 3), D_SKL_PLUS, NULL, NULL);
 
-<<<<<<< HEAD
 	MMIO_DH(_MMIO(_REG_701C0(PIPE_A, 1)), D_SKL_PLUS, NULL, NULL);
 	MMIO_DH(_MMIO(_REG_701C0(PIPE_A, 2)), D_SKL_PLUS, NULL, NULL);
 	MMIO_DH(_MMIO(_REG_701C0(PIPE_A, 3)), D_SKL_PLUS, NULL, NULL);
@@ -3966,107 +3228,6 @@ static int init_bxt_mmio_info(struct intel_gvt *gvt)
 	MMIO_D(GEN8_L3SQCREG1, D_BXT);
 
 	MMIO_DFH(GEN9_CTX_PREEMPT_REG, D_BXT, F_CMD_ACCESS, NULL, NULL);
-=======
-	MMIO_DH(_REG_701C0(PIPE_A, 1), D_SKL_PLUS, NULL, NULL);
-	MMIO_DH(_REG_701C0(PIPE_A, 2), D_SKL_PLUS, NULL, NULL);
-	MMIO_DH(_REG_701C0(PIPE_A, 3), D_SKL_PLUS, NULL, NULL);
-	MMIO_DH(_REG_701C0(PIPE_A, 4), D_SKL_PLUS, NULL, NULL);
-
-	MMIO_DH(_REG_701C0(PIPE_B, 1), D_SKL_PLUS, NULL, NULL);
-	MMIO_DH(_REG_701C0(PIPE_B, 2), D_SKL_PLUS, NULL, NULL);
-	MMIO_DH(_REG_701C0(PIPE_B, 3), D_SKL_PLUS, NULL, NULL);
-	MMIO_DH(_REG_701C0(PIPE_B, 4), D_SKL_PLUS, NULL, NULL);
-
-	MMIO_DH(_REG_701C0(PIPE_C, 1), D_SKL_PLUS, NULL, NULL);
-	MMIO_DH(_REG_701C0(PIPE_C, 2), D_SKL_PLUS, NULL, NULL);
-	MMIO_DH(_REG_701C0(PIPE_C, 3), D_SKL_PLUS, NULL, NULL);
-	MMIO_DH(_REG_701C0(PIPE_C, 4), D_SKL_PLUS, NULL, NULL);
-
-	MMIO_DH(_REG_701C4(PIPE_A, 1), D_SKL_PLUS, NULL, NULL);
-	MMIO_DH(_REG_701C4(PIPE_A, 2), D_SKL_PLUS, NULL, NULL);
-	MMIO_DH(_REG_701C4(PIPE_A, 3), D_SKL_PLUS, NULL, NULL);
-	MMIO_DH(_REG_701C4(PIPE_A, 4), D_SKL_PLUS, NULL, NULL);
-
-	MMIO_DH(_REG_701C4(PIPE_B, 1), D_SKL_PLUS, NULL, NULL);
-	MMIO_DH(_REG_701C4(PIPE_B, 2), D_SKL_PLUS, NULL, NULL);
-	MMIO_DH(_REG_701C4(PIPE_B, 3), D_SKL_PLUS, NULL, NULL);
-	MMIO_DH(_REG_701C4(PIPE_B, 4), D_SKL_PLUS, NULL, NULL);
-
-	MMIO_DH(_REG_701C4(PIPE_C, 1), D_SKL_PLUS, NULL, NULL);
-	MMIO_DH(_REG_701C4(PIPE_C, 2), D_SKL_PLUS, NULL, NULL);
-	MMIO_DH(_REG_701C4(PIPE_C, 3), D_SKL_PLUS, NULL, NULL);
-	MMIO_DH(_REG_701C4(PIPE_C, 4), D_SKL_PLUS, NULL, NULL);
-
-	MMIO_D(0x70380, D_SKL_PLUS);
-	MMIO_D(0x71380, D_SKL_PLUS);
-	MMIO_D(0x72380, D_SKL_PLUS);
-	MMIO_D(0x7039c, D_SKL_PLUS);
-
-	MMIO_D(0x8f074, D_SKL | D_KBL);
-	MMIO_D(0x8f004, D_SKL | D_KBL);
-	MMIO_D(0x8f034, D_SKL | D_KBL);
-
-	MMIO_D(0xb11c, D_SKL | D_KBL);
-
-	MMIO_D(0x51000, D_SKL | D_KBL);
-	MMIO_D(0x6c00c, D_SKL_PLUS);
-
-	MMIO_F(0xc800, 0x7f8, F_CMD_ACCESS, 0, 0, D_SKL | D_KBL, NULL, NULL);
-	MMIO_F(0xb020, 0x80, F_CMD_ACCESS, 0, 0, D_SKL | D_KBL, NULL, NULL);
-
-	MMIO_D(0xd08, D_SKL_PLUS);
-	MMIO_DFH(0x20e0, D_SKL_PLUS, F_MODE_MASK, NULL, NULL);
-	MMIO_DFH(0x20ec, D_SKL_PLUS, F_MODE_MASK | F_CMD_ACCESS, NULL, NULL);
-
-	/* TRTT */
-	MMIO_DFH(0x4de0, D_SKL | D_KBL, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0x4de4, D_SKL | D_KBL, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0x4de8, D_SKL | D_KBL, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0x4dec, D_SKL | D_KBL, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0x4df0, D_SKL | D_KBL, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(0x4df4, D_SKL | D_KBL, F_CMD_ACCESS, NULL, gen9_trtte_write);
-	MMIO_DH(0x4dfc, D_SKL | D_KBL, NULL, gen9_trtt_chicken_write);
-
-	MMIO_D(0x45008, D_SKL | D_KBL);
-
-	MMIO_D(0x46430, D_SKL | D_KBL);
-
-	MMIO_D(0x46520, D_SKL | D_KBL);
-
-	MMIO_D(0xc403c, D_SKL | D_KBL);
-	MMIO_D(0xb004, D_SKL_PLUS);
-	MMIO_DH(DMA_CTRL, D_SKL_PLUS, NULL, dma_ctrl_write);
-
-	MMIO_D(0x65900, D_SKL_PLUS);
-	MMIO_D(0x1082c0, D_SKL | D_KBL);
-	MMIO_D(0x4068, D_SKL | D_KBL);
-	MMIO_D(0x67054, D_SKL | D_KBL);
-	MMIO_D(0x6e560, D_SKL | D_KBL);
-	MMIO_D(0x6e554, D_SKL | D_KBL);
-	MMIO_D(0x2b20, D_SKL | D_KBL);
-	MMIO_D(0x65f00, D_SKL | D_KBL);
-	MMIO_D(0x65f08, D_SKL | D_KBL);
-	MMIO_D(0x320f0, D_SKL | D_KBL);
-
-	MMIO_D(0x70034, D_SKL_PLUS);
-	MMIO_D(0x71034, D_SKL_PLUS);
-	MMIO_D(0x72034, D_SKL_PLUS);
-
-	MMIO_D(_PLANE_KEYVAL_1(PIPE_A), D_SKL_PLUS);
-	MMIO_D(_PLANE_KEYVAL_1(PIPE_B), D_SKL_PLUS);
-	MMIO_D(_PLANE_KEYVAL_1(PIPE_C), D_SKL_PLUS);
-	MMIO_D(_PLANE_KEYMSK_1(PIPE_A), D_SKL_PLUS);
-	MMIO_D(_PLANE_KEYMSK_1(PIPE_B), D_SKL_PLUS);
-	MMIO_D(_PLANE_KEYMSK_1(PIPE_C), D_SKL_PLUS);
-
-	MMIO_D(0x44500, D_SKL_PLUS);
-	MMIO_DFH(GEN9_CSFE_CHICKEN1_RCS, D_SKL_PLUS, F_CMD_ACCESS, NULL, NULL);
-	MMIO_DFH(GEN8_HDC_CHICKEN1, D_SKL | D_KBL, F_MODE_MASK | F_CMD_ACCESS,
-		NULL, NULL);
-
-	MMIO_D(0x4ab8, D_KBL);
-	MMIO_D(0x2248, D_SKL_PLUS | D_KBL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -4082,13 +3243,8 @@ static struct gvt_mmio_block *find_mmio_block(struct intel_gvt *gvt,
 	for (i = 0; i < num; i++, block++) {
 		if (!(device & block->device))
 			continue;
-<<<<<<< HEAD
 		if (offset >= i915_mmio_reg_offset(block->offset) &&
 		    offset < i915_mmio_reg_offset(block->offset) + block->size)
-=======
-		if (offset >= INTEL_GVT_MMIO_OFFSET(block->offset) &&
-		    offset < INTEL_GVT_MMIO_OFFSET(block->offset) + block->size)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return block;
 	}
 	return NULL;
@@ -4163,7 +3319,6 @@ int intel_gvt_setup_mmio_info(struct intel_gvt *gvt)
 		ret = init_skl_mmio_info(gvt);
 		if (ret)
 			goto err;
-<<<<<<< HEAD
 	} else if (IS_BROXTON(dev_priv)) {
 		ret = init_broadwell_mmio_info(gvt);
 		if (ret)
@@ -4174,25 +3329,17 @@ int intel_gvt_setup_mmio_info(struct intel_gvt *gvt)
 		ret = init_bxt_mmio_info(gvt);
 		if (ret)
 			goto err;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	gvt->mmio.mmio_block = mmio_blocks;
 	gvt->mmio.num_mmio_block = ARRAY_SIZE(mmio_blocks);
 
-<<<<<<< HEAD
-=======
-	gvt_dbg_mmio("traced %u virtual mmio registers\n",
-		     gvt->mmio.num_tracked_mmio);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 err:
 	intel_gvt_clean_mmio_info(gvt);
 	return ret;
 }
 
-<<<<<<< HEAD
 /**
  * intel_gvt_for_each_tracked_mmio - iterate each tracked mmio
  * @gvt: a GVT device
@@ -4227,8 +3374,6 @@ int intel_gvt_for_each_tracked_mmio(struct intel_gvt *gvt,
 	}
 	return 0;
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * intel_vgpu_default_mmio_read - default MMIO read handler
@@ -4265,7 +3410,6 @@ int intel_vgpu_default_mmio_write(struct intel_vgpu *vgpu, unsigned int offset,
 }
 
 /**
-<<<<<<< HEAD
  * intel_vgpu_mask_mmio_write - write mask register
  * @vgpu: a vGPU
  * @offset: access offset
@@ -4290,8 +3434,6 @@ int intel_vgpu_mask_mmio_write(struct intel_vgpu *vgpu, unsigned int offset,
 }
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * intel_gvt_in_force_nonpriv_whitelist - if a mmio is in whitelist to be
  * force-nopriv register
  *
@@ -4346,13 +3488,7 @@ int intel_vgpu_mmio_reg_rw(struct intel_vgpu *vgpu, unsigned int offset,
 	 */
 	mmio_info = find_mmio_info(gvt, offset);
 	if (!mmio_info) {
-<<<<<<< HEAD
 		gvt_dbg_mmio("untracked MMIO %08x len %d\n", offset, bytes);
-=======
-		if (!vgpu->mmio.disable_warn_untrack)
-			gvt_vgpu_err("untracked MMIO %08x len %d\n",
-				     offset, bytes);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto default_rw;
 	}
 

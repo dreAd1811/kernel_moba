@@ -89,11 +89,7 @@ static ssize_t guest_collect_vpd(struct cxl *adapter, struct cxl_afu *afu,
 		mod = 0;
 	}
 
-<<<<<<< HEAD
 	vpd_buf = kcalloc(entries, sizeof(unsigned long *), GFP_KERNEL);
-=======
-	vpd_buf = kzalloc(entries * sizeof(unsigned long *), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!vpd_buf)
 		return -ENOMEM;
 
@@ -629,12 +625,6 @@ static int guest_attach_process(struct cxl_context *ctx, bool kernel, u64 wed, u
 {
 	pr_devel("in %s\n", __func__);
 
-<<<<<<< HEAD
-=======
-	if (ctx->real_mode)
-		return -EPERM;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ctx->kernel = kernel;
 	if (ctx->afu->current_mode == CXL_MODE_DIRECTED)
 		return attach_afu_directed(ctx, wed, amr);
@@ -925,14 +915,6 @@ static int afu_properties_look_ok(struct cxl_afu *afu)
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
-=======
-	if (afu->crs_len < 0) {
-		dev_err(&afu->dev, "Unexpected configuration record size value\n");
-		return -EINVAL;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1038,11 +1020,8 @@ err1:
 
 void cxl_guest_remove_afu(struct cxl_afu *afu)
 {
-<<<<<<< HEAD
 	pr_devel("in %s - AFU(%d)\n", __func__, afu->slice);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!afu)
 		return;
 

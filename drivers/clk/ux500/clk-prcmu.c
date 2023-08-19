@@ -258,17 +258,9 @@ static struct clk *clk_reg_prcmu(const char *name,
 		return ERR_PTR(-EINVAL);
 	}
 
-<<<<<<< HEAD
 	clk = kzalloc(sizeof(*clk), GFP_KERNEL);
 	if (!clk)
 		return ERR_PTR(-ENOMEM);
-=======
-	clk = kzalloc(sizeof(struct clk_prcmu), GFP_KERNEL);
-	if (!clk) {
-		pr_err("clk_prcmu: %s could not allocate clk\n", __func__);
-		return ERR_PTR(-ENOMEM);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	clk->cg_sel = cg_sel;
 	clk->is_prepared = 1;

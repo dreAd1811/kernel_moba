@@ -61,11 +61,7 @@ void blk_execute_rq_nowait(struct request_queue *q, struct gendisk *bd_disk,
 	 * be reused after dying flag is set
 	 */
 	if (q->mq_ops) {
-<<<<<<< HEAD
 		blk_mq_sched_insert_request(rq, at_head, true, false);
-=======
-		blk_mq_sched_insert_request(rq, at_head, true, false, false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 

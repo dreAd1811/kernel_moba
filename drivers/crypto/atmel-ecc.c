@@ -186,14 +186,10 @@ static int atmel_ecc_init_ecdh_cmd(struct atmel_ecc_cmd *cmd,
 	 * always be the same. Use a macro for the key size to avoid unnecessary
 	 * computations.
 	 */
-<<<<<<< HEAD
 	copied = sg_copy_to_buffer(pubkey,
 				   sg_nents_for_len(pubkey,
 						    ATMEL_ECC_PUBKEY_SIZE),
 				   cmd->data, ATMEL_ECC_PUBKEY_SIZE);
-=======
-	copied = sg_copy_to_buffer(pubkey, 1, cmd->data, ATMEL_ECC_PUBKEY_SIZE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (copied != ATMEL_ECC_PUBKEY_SIZE)
 		return -EINVAL;
 
@@ -275,28 +271,17 @@ static void atmel_ecdh_done(struct atmel_ecc_work_data *work_data, void *areq,
 	struct kpp_request *req = areq;
 	struct atmel_ecdh_ctx *ctx = work_data->ctx;
 	struct atmel_ecc_cmd *cmd = &work_data->cmd;
-<<<<<<< HEAD
 	size_t copied, n_sz;
-=======
-	size_t copied;
-	size_t n_sz = ctx->n_sz;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (status)
 		goto free_work_data;
 
-<<<<<<< HEAD
 	/* might want less than we've got */
 	n_sz = min_t(size_t, ctx->n_sz, req->dst_len);
 
 	/* copy the shared secret */
 	copied = sg_copy_from_buffer(req->dst, sg_nents_for_len(req->dst, n_sz),
 				     &cmd->data[RSP_DATA_IDX], n_sz);
-=======
-	/* copy the shared secret */
-	copied = sg_copy_from_buffer(req->dst, 1, &cmd->data[RSP_DATA_IDX],
-				     n_sz);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (copied != n_sz)
 		status = -EINVAL;
 
@@ -460,11 +445,7 @@ static int atmel_ecdh_generate_public_key(struct kpp_request *req)
 {
 	struct crypto_kpp *tfm = crypto_kpp_reqtfm(req);
 	struct atmel_ecdh_ctx *ctx = kpp_tfm_ctx(tfm);
-<<<<<<< HEAD
 	size_t copied, nbytes;
-=======
-	size_t copied;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = 0;
 
 	if (ctx->do_fallback) {
@@ -472,7 +453,6 @@ static int atmel_ecdh_generate_public_key(struct kpp_request *req)
 		return crypto_kpp_generate_public_key(req);
 	}
 
-<<<<<<< HEAD
 	/* might want less than we've got */
 	nbytes = min_t(size_t, ATMEL_ECC_PUBKEY_SIZE, req->dst_len);
 
@@ -481,12 +461,6 @@ static int atmel_ecdh_generate_public_key(struct kpp_request *req)
 				     sg_nents_for_len(req->dst, nbytes),
 				     ctx->public_key, nbytes);
 	if (copied != nbytes)
-=======
-	/* public key was saved at private key generation */
-	copied = sg_copy_from_buffer(req->dst, 1, ctx->public_key,
-				     ATMEL_ECC_PUBKEY_SIZE);
-	if (copied != ATMEL_ECC_PUBKEY_SIZE)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -EINVAL;
 
 	return ret;
@@ -505,13 +479,10 @@ static int atmel_ecdh_compute_shared_secret(struct kpp_request *req)
 		return crypto_kpp_compute_shared_secret(req);
 	}
 
-<<<<<<< HEAD
 	/* must have exactly two points to be on the curve */
 	if (req->src_len != ATMEL_ECC_PUBKEY_SIZE)
 		return -EINVAL;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gfp = (req->base.flags & CRYPTO_TFM_REQ_MAY_SLEEP) ? GFP_KERNEL :
 							     GFP_ATOMIC;
 
@@ -596,13 +567,6 @@ static int atmel_ecdh_init_tfm(struct crypto_kpp *tfm)
 	}
 
 	crypto_kpp_set_flags(fallback, crypto_kpp_get_flags(tfm));
-<<<<<<< HEAD
-=======
-
-	dev_info(&ctx->client->dev, "Using '%s' as fallback implementation.\n",
-		 crypto_tfm_alg_driver_name(crypto_kpp_tfm(fallback)));
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ctx->fallback = fallback;
 
 	return 0;

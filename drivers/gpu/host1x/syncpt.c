@@ -54,19 +54,11 @@ static void host1x_syncpt_base_free(struct host1x_syncpt_base *base)
 }
 
 static struct host1x_syncpt *host1x_syncpt_alloc(struct host1x *host,
-<<<<<<< HEAD
 						 struct host1x_client *client,
 						 unsigned long flags)
 {
 	struct host1x_syncpt *sp = host->syncpt;
 	unsigned int i;
-=======
-						 struct device *dev,
-						 unsigned long flags)
-{
-	int i;
-	struct host1x_syncpt *sp = host->syncpt;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	char *name;
 
 	mutex_lock(&host->syncpt_mutex);
@@ -84,19 +76,11 @@ static struct host1x_syncpt *host1x_syncpt_alloc(struct host1x *host,
 	}
 
 	name = kasprintf(GFP_KERNEL, "%02u-%s", sp->id,
-<<<<<<< HEAD
 			 client ? dev_name(client->dev) : NULL);
 	if (!name)
 		goto free_base;
 
 	sp->client = client;
-=======
-			dev ? dev_name(dev) : NULL);
-	if (!name)
-		goto free_base;
-
-	sp->dev = dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sp->name = name;
 
 	if (flags & HOST1X_SYNCPT_CLIENT_MANAGED)
@@ -271,11 +255,7 @@ int host1x_syncpt_wait(struct host1x_syncpt *sp, u32 thresh, long timeout,
 	}
 
 	/* schedule a wakeup when the syncpoint value is reached */
-<<<<<<< HEAD
 	err = host1x_intr_add_action(sp->host, sp, thresh,
-=======
-	err = host1x_intr_add_action(sp->host, sp->id, thresh,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     HOST1X_INTR_ACTION_WAKEUP_INTERRUPTIBLE,
 				     &wq, waiter, &ref);
 	if (err)
@@ -393,15 +373,6 @@ bool host1x_syncpt_is_expired(struct host1x_syncpt *sp, u32 thresh)
 		return (s32)(current_val - thresh) >= 0;
 }
 
-<<<<<<< HEAD
-=======
-/* remove a wait pointed to by patch_addr */
-int host1x_syncpt_patch_wait(struct host1x_syncpt *sp, void *patch_addr)
-{
-	return host1x_hw_syncpt_patch_wait(sp->host, sp, patch_addr);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int host1x_syncpt_init(struct host1x *host)
 {
 	struct host1x_syncpt_base *bases;
@@ -421,7 +392,6 @@ int host1x_syncpt_init(struct host1x *host)
 	for (i = 0; i < host->info->nb_pts; i++) {
 		syncpt[i].id = i;
 		syncpt[i].host = host;
-<<<<<<< HEAD
 
 		/*
 		 * Unassign syncpt from channels for purposes of Tegra186
@@ -429,8 +399,6 @@ int host1x_syncpt_init(struct host1x *host)
 		 * accessing it until it is reassigned.
 		 */
 		host1x_hw_syncpt_assign_to_channel(host, &syncpt[i], NULL);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	for (i = 0; i < host->info->nb_bases; i++)
@@ -441,10 +409,7 @@ int host1x_syncpt_init(struct host1x *host)
 	host->bases = bases;
 
 	host1x_syncpt_restore(host);
-<<<<<<< HEAD
 	host1x_hw_syncpt_enable_protection(host);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Allocate sync point to use for clearing waits for expired fences */
 	host->nop_sp = host1x_syncpt_alloc(host, NULL, 0);
@@ -456,11 +421,7 @@ int host1x_syncpt_init(struct host1x *host)
 
 /**
  * host1x_syncpt_request() - request a syncpoint
-<<<<<<< HEAD
  * @client: client requesting the syncpoint
-=======
- * @dev: device requesting the syncpoint
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @flags: flags
  *
  * host1x client drivers can use this function to allocate a syncpoint for
@@ -468,21 +429,12 @@ int host1x_syncpt_init(struct host1x *host)
  * use by the client exclusively. When no longer using a syncpoint, a host1x
  * client driver needs to release it using host1x_syncpt_free().
  */
-<<<<<<< HEAD
 struct host1x_syncpt *host1x_syncpt_request(struct host1x_client *client,
 					    unsigned long flags)
 {
 	struct host1x *host = dev_get_drvdata(client->parent->parent);
 
 	return host1x_syncpt_alloc(host, client, flags);
-=======
-struct host1x_syncpt *host1x_syncpt_request(struct device *dev,
-					    unsigned long flags)
-{
-	struct host1x *host = dev_get_drvdata(dev->parent);
-
-	return host1x_syncpt_alloc(host, dev, flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(host1x_syncpt_request);
 
@@ -506,11 +458,7 @@ void host1x_syncpt_free(struct host1x_syncpt *sp)
 	host1x_syncpt_base_free(sp->base);
 	kfree(sp->name);
 	sp->base = NULL;
-<<<<<<< HEAD
 	sp->client = NULL;
-=======
-	sp->dev = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sp->name = NULL;
 	sp->client_managed = false;
 

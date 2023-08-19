@@ -7,34 +7,20 @@
  */
 
 #include <linux/clk.h>
-<<<<<<< HEAD
 #include <linux/delay.h>
 #include <linux/errno.h>
 #include <linux/gpio/consumer.h>
-=======
-#include <linux/errno.h>
-#include <linux/gpio/consumer.h>
-#include <linux/delay.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/hwmon.h>
 #include <linux/hwmon-sysfs.h>
 #include <linux/io.h>
 #include <linux/kernel.h>
 #include <linux/module.h>
-<<<<<<< HEAD
 #include <linux/of_device.h>
 #include <linux/of_platform.h>
 #include <linux/platform_device.h>
 #include <linux/regmap.h>
 #include <linux/reset.h>
 #include <linux/sysfs.h>
-=======
-#include <linux/of_platform.h>
-#include <linux/of_device.h>
-#include <linux/platform_device.h>
-#include <linux/sysfs.h>
-#include <linux/regmap.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/thermal.h>
 
 /* ASPEED PWM & FAN Tach Register Definition */
@@ -176,11 +162,7 @@
  * 11: reserved.
  */
 #define M_TACH_MODE 0x02 /* 10b */
-<<<<<<< HEAD
 #define M_TACH_UNIT 0x0210
-=======
-#define M_TACH_UNIT 0x00c0
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define INIT_FAN_CTRL 0xFF
 
 /* How long we sleep in us while waiting for an RPM result. */
@@ -200,10 +182,7 @@ struct aspeed_cooling_device {
 
 struct aspeed_pwm_tacho_data {
 	struct regmap *regmap;
-<<<<<<< HEAD
 	struct reset_control *rst;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long clk_freq;
 	bool pwm_present[8];
 	bool fan_tach_present[16];
@@ -901,11 +880,6 @@ static int aspeed_create_fan(struct device *dev,
 	ret = of_property_read_u32(child, "reg", &pwm_port);
 	if (ret)
 		return ret;
-<<<<<<< HEAD
-=======
-	if (pwm_port >= ARRAY_SIZE(pwm_port_params))
-		return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	aspeed_create_pwm_port(priv, (u8)pwm_port);
 
 	ret = of_property_count_u8_elems(child, "cooling-levels");
@@ -920,11 +894,7 @@ static int aspeed_create_fan(struct device *dev,
 	count = of_property_count_u8_elems(child, "aspeed,fan-tach-ch");
 	if (count < 1)
 		return -EINVAL;
-<<<<<<< HEAD
 	fan_tach_ch = devm_kcalloc(dev, count, sizeof(*fan_tach_ch),
-=======
-	fan_tach_ch = devm_kzalloc(dev, sizeof(*fan_tach_ch) * count,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   GFP_KERNEL);
 	if (!fan_tach_ch)
 		return -ENOMEM;
@@ -937,7 +907,6 @@ static int aspeed_create_fan(struct device *dev,
 	return 0;
 }
 
-<<<<<<< HEAD
 static void aspeed_pwm_tacho_remove(void *data)
 {
 	struct aspeed_pwm_tacho_data *priv = data;
@@ -945,8 +914,6 @@ static void aspeed_pwm_tacho_remove(void *data)
 	reset_control_assert(priv->rst);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int aspeed_pwm_tacho_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
@@ -973,7 +940,6 @@ static int aspeed_pwm_tacho_probe(struct platform_device *pdev)
 			&aspeed_pwm_tacho_regmap_config);
 	if (IS_ERR(priv->regmap))
 		return PTR_ERR(priv->regmap);
-<<<<<<< HEAD
 
 	priv->rst = devm_reset_control_get_exclusive(dev, NULL);
 	if (IS_ERR(priv->rst)) {
@@ -987,8 +953,6 @@ static int aspeed_pwm_tacho_probe(struct platform_device *pdev)
 	if (ret)
 		return ret;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	regmap_write(priv->regmap, ASPEED_PTCR_TACH_SOURCE, 0);
 	regmap_write(priv->regmap, ASPEED_PTCR_TACH_SOURCE_EXT, 0);
 

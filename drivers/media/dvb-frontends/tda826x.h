@@ -24,29 +24,17 @@
 #define __DVB_TDA826X_H__
 
 #include <linux/i2c.h>
-<<<<<<< HEAD
 #include <media/dvb_frontend.h>
-=======
-#include "dvb_frontend.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * Attach a tda826x tuner to the supplied frontend structure.
  *
-<<<<<<< HEAD
  * @fe: Frontend to attach to.
  * @addr: i2c address of the tuner.
  * @i2c: i2c adapter to use.
  * @has_loopthrough: Set to 1 if the card has a loopthrough RF connector.
  *
  * return: FE pointer on success, NULL on failure.
-=======
- * @param fe Frontend to attach to.
- * @param addr i2c address of the tuner.
- * @param i2c i2c adapter to use.
- * @param has_loopthrough Set to 1 if the card has a loopthrough RF connector.
- * @return FE pointer on success, NULL on failure.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #if IS_REACHABLE(CONFIG_DVB_TDA826X)
 extern struct dvb_frontend* tda826x_attach(struct dvb_frontend *fe, int addr,

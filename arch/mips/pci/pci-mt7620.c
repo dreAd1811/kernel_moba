@@ -33,7 +33,6 @@
 #define RALINK_GPIOMODE			0x60
 
 #define PPLL_CFG1			0x9c
-<<<<<<< HEAD
 
 #define PPLL_DRV			0xa0
 #define PDRV_SW_SET			BIT(31)
@@ -41,16 +40,6 @@
 #define LC_CKDRVOHZ			BIT(18)
 #define LC_CKDRVHZ			BIT(17)
 #define LC_CKTEST			BIT(16)
-=======
-#define PDRV_SW_SET			BIT(23)
-
-#define PPLL_DRV			0xa0
-#define PDRV_SW_SET			(1<<31)
-#define LC_CKDRVPD			(1<<19)
-#define LC_CKDRVOHZ			(1<<18)
-#define LC_CKDRVHZ			(1<<17)
-#define LC_CKTEST			(1<<16)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* PCI Bridge registers */
 #define RALINK_PCI_PCICFG_ADDR		0x00
@@ -76,11 +65,7 @@
 #define PCIEPHY0_CFG			0x90
 
 #define RALINK_PCIEPHY_P0_CTL_OFFSET	0x7498
-<<<<<<< HEAD
 #define RALINK_PCIE0_CLK_EN		BIT(26)
-=======
-#define RALINK_PCIE0_CLK_EN		(1 << 26)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define BUSY				0x80000000
 #define WAITRETRY_MAX			10
@@ -330,10 +315,7 @@ static int mt7620_pci_probe(struct platform_device *pdev)
 		break;
 
 	case MT762X_SOC_MT7628AN:
-<<<<<<< HEAD
 	case MT762X_SOC_MT7688:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (mt7628_pci_hw_init(pdev))
 			return -1;
 		break;

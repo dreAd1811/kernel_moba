@@ -91,22 +91,14 @@
 			reboot-offset = <0x4>;
 		};
 
-<<<<<<< HEAD
 		global_timer@a000200 {
-=======
-		global_timer@0a000200 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "arm,cortex-a9-global-timer";
 			reg = <0x0a000200 0x100>;
 			interrupts = <1 11 0xf04>;
 			clocks = <&hisi_refclk144mhz>;
 		};
 
-<<<<<<< HEAD
 		local_timer@a000600 {
-=======
-		local_timer@0a000600 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "arm,cortex-a9-twd-timer";
 			reg = <0x0a000600 0x100>;
 			interrupts = <1 13 0xf04>;

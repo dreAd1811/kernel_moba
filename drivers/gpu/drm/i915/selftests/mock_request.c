@@ -25,28 +25,16 @@
 #include "mock_engine.h"
 #include "mock_request.h"
 
-<<<<<<< HEAD
 struct i915_request *
-=======
-struct drm_i915_gem_request *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 mock_request(struct intel_engine_cs *engine,
 	     struct i915_gem_context *context,
 	     unsigned long delay)
 {
-<<<<<<< HEAD
 	struct i915_request *request;
 	struct mock_request *mock;
 
 	/* NB the i915->requests slab cache is enlarged to fit mock_request */
 	request = i915_request_alloc(engine, context);
-=======
-	struct drm_i915_gem_request *request;
-	struct mock_request *mock;
-
-	/* NB the i915->requests slab cache is enlarged to fit mock_request */
-	request = i915_gem_request_alloc(engine, context);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(request))
 		return NULL;
 
@@ -56,11 +44,7 @@ mock_request(struct intel_engine_cs *engine,
 	return &mock->base;
 }
 
-<<<<<<< HEAD
 bool mock_cancel_request(struct i915_request *request)
-=======
-bool mock_cancel_request(struct drm_i915_gem_request *request)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mock_request *mock = container_of(request, typeof(*mock), base);
 	struct mock_engine *engine =
@@ -73,11 +57,7 @@ bool mock_cancel_request(struct drm_i915_gem_request *request)
 	spin_unlock_irq(&engine->hw_lock);
 
 	if (was_queued)
-<<<<<<< HEAD
 		i915_request_unsubmit(request);
-=======
-		i915_gem_request_unsubmit(request);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return was_queued;
 }

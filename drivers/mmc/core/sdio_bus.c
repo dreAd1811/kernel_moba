@@ -29,13 +29,6 @@
 #include "sdio_cis.h"
 #include "sdio_bus.h"
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_MMC_EMBEDDED_SDIO
-#include <linux/mmc/host.h>
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define to_sdio_driver(d)	container_of(d, struct sdio_driver, drv)
 
 /* show configuration fields */
@@ -146,11 +139,7 @@ static int sdio_bus_probe(struct device *dev)
 		return -ENODEV;
 
 	ret = dev_pm_domain_attach(dev, false);
-<<<<<<< HEAD
 	if (ret)
-=======
-	if (ret == -EPROBE_DEFER)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 
 	/* Unbound SDIO functions are always suspended.
@@ -275,18 +264,7 @@ static void sdio_release_func(struct device *dev)
 {
 	struct sdio_func *func = dev_to_sdio_func(dev);
 
-<<<<<<< HEAD
 	sdio_free_func_cis(func);
-=======
-#ifdef CONFIG_MMC_EMBEDDED_SDIO
-	/*
-	 * If this device is embedded then we never allocated
-	 * cis tables for this func
-	 */
-	if (!func->card->host->embedded_sdio_data.funcs)
-#endif
-		sdio_free_func_cis(func);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kfree(func->info);
 	kfree(func->tmpbuf);

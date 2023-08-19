@@ -452,10 +452,6 @@ void handle_unaligned(struct pt_regs *regs)
 	unsigned long newbase = R1(regs->iir)?regs->gr[R1(regs->iir)]:0;
 	int modify = 0;
 	int ret = ERR_NOTHANDLED;
-<<<<<<< HEAD
-=======
-	struct siginfo si;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	register int flop=0;	/* true if this is a flop */
 
 	__inc_irq_stat(irq_unaligned_count);
@@ -693,31 +689,15 @@ void handle_unaligned(struct pt_regs *regs)
 
 		if (ret == ERR_PAGEFAULT)
 		{
-<<<<<<< HEAD
 			force_sig_fault(SIGSEGV, SEGV_MAPERR,
 					(void __user *)regs->ior, current);
-=======
-			si.si_signo = SIGSEGV;
-			si.si_errno = 0;
-			si.si_code = SEGV_MAPERR;
-			si.si_addr = (void __user *)regs->ior;
-			force_sig_info(SIGSEGV, &si, current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		else
 		{
 force_sigbus:
 			/* couldn't handle it ... */
-<<<<<<< HEAD
 			force_sig_fault(SIGBUS, BUS_ADRALN,
 					(void __user *)regs->ior, current);
-=======
-			si.si_signo = SIGBUS;
-			si.si_errno = 0;
-			si.si_code = BUS_ADRALN;
-			si.si_addr = (void __user *)regs->ior;
-			force_sig_info(SIGBUS, &si, current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		
 		return;

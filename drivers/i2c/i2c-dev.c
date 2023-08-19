@@ -35,10 +35,7 @@
 #include <linux/notifier.h>
 #include <linux/slab.h>
 #include <linux/uaccess.h>
-<<<<<<< HEAD
 #include <linux/compat.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * An i2c_dev represents an i2c_adapter ... an I2C or SMBus master, not a
@@ -51,11 +48,7 @@
 struct i2c_dev {
 	struct list_head list;
 	struct i2c_adapter *adap;
-<<<<<<< HEAD
 	struct device *dev;
-=======
-	struct device dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct cdev cdev;
 };
 
@@ -99,22 +92,12 @@ static struct i2c_dev *get_free_i2c_dev(struct i2c_adapter *adap)
 	return i2c_dev;
 }
 
-<<<<<<< HEAD
 static void put_i2c_dev(struct i2c_dev *i2c_dev)
-=======
-static void put_i2c_dev(struct i2c_dev *i2c_dev, bool del_cdev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	spin_lock(&i2c_dev_list_lock);
 	list_del(&i2c_dev->list);
 	spin_unlock(&i2c_dev_list_lock);
-<<<<<<< HEAD
 	kfree(i2c_dev);
-=======
-	if (del_cdev)
-		cdev_device_del(&i2c_dev->cdev, &i2c_dev->dev);
-	put_device(&i2c_dev->dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static ssize_t name_show(struct device *dev,
@@ -256,7 +239,6 @@ static int i2cdev_check_addr(struct i2c_adapter *adapter, unsigned int addr)
 }
 
 static noinline int i2cdev_ioctl_rdwr(struct i2c_client *client,
-<<<<<<< HEAD
 		unsigned nmsgs, struct i2c_msg *msgs)
 {
 	u8 __user **data_ptrs;
@@ -265,51 +247,17 @@ static noinline int i2cdev_ioctl_rdwr(struct i2c_client *client,
 	data_ptrs = kmalloc_array(nmsgs, sizeof(u8 __user *), GFP_KERNEL);
 	if (data_ptrs == NULL) {
 		kfree(msgs);
-=======
-		unsigned long arg)
-{
-	struct i2c_rdwr_ioctl_data rdwr_arg;
-	struct i2c_msg *rdwr_pa;
-	u8 __user **data_ptrs;
-	int i, res;
-
-	if (copy_from_user(&rdwr_arg,
-			   (struct i2c_rdwr_ioctl_data __user *)arg,
-			   sizeof(rdwr_arg)))
-		return -EFAULT;
-
-	/* Put an arbitrary limit on the number of messages that can
-	 * be sent at once */
-	if (rdwr_arg.nmsgs > I2C_RDWR_IOCTL_MAX_MSGS)
-		return -EINVAL;
-
-	rdwr_pa = memdup_user(rdwr_arg.msgs,
-			      rdwr_arg.nmsgs * sizeof(struct i2c_msg));
-	if (IS_ERR(rdwr_pa))
-		return PTR_ERR(rdwr_pa);
-
-	data_ptrs = kmalloc(rdwr_arg.nmsgs * sizeof(u8 __user *), GFP_KERNEL);
-	if (data_ptrs == NULL) {
-		kfree(rdwr_pa);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOMEM;
 	}
 
 	res = 0;
-<<<<<<< HEAD
 	for (i = 0; i < nmsgs; i++) {
 		/* Limit the size of the message to a sane amount */
 		if (msgs[i].len > 8192) {
-=======
-	for (i = 0; i < rdwr_arg.nmsgs; i++) {
-		/* Limit the size of the message to a sane amount */
-		if (rdwr_pa[i].len > 8192) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			res = -EINVAL;
 			break;
 		}
 
-<<<<<<< HEAD
 		data_ptrs[i] = (u8 __user *)msgs[i].buf;
 		msgs[i].buf = memdup_user(data_ptrs[i], msgs[i].len);
 		if (IS_ERR(msgs[i].buf)) {
@@ -318,14 +266,6 @@ static noinline int i2cdev_ioctl_rdwr(struct i2c_client *client,
 		}
 		/* memdup_user allocates with GFP_KERNEL, so DMA is ok */
 		msgs[i].flags |= I2C_M_DMA_SAFE;
-=======
-		data_ptrs[i] = (u8 __user *)rdwr_pa[i].buf;
-		rdwr_pa[i].buf = memdup_user(data_ptrs[i], rdwr_pa[i].len);
-		if (IS_ERR(rdwr_pa[i].buf)) {
-			res = PTR_ERR(rdwr_pa[i].buf);
-			break;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/*
 		 * If the message length is received from the slave (similar
@@ -338,34 +278,22 @@ static noinline int i2cdev_ioctl_rdwr(struct i2c_client *client,
 		 * greater (for example to account for a checksum byte at
 		 * the end of the message.)
 		 */
-<<<<<<< HEAD
 		if (msgs[i].flags & I2C_M_RECV_LEN) {
 			if (!(msgs[i].flags & I2C_M_RD) ||
 			    msgs[i].len < 1 || msgs[i].buf[0] < 1 ||
 			    msgs[i].len < msgs[i].buf[0] +
-=======
-		if (rdwr_pa[i].flags & I2C_M_RECV_LEN) {
-			if (!(rdwr_pa[i].flags & I2C_M_RD) ||
-			    rdwr_pa[i].buf[0] < 1 ||
-			    rdwr_pa[i].len < rdwr_pa[i].buf[0] +
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					     I2C_SMBUS_BLOCK_MAX) {
 				i++;
 				res = -EINVAL;
 				break;
 			}
 
-<<<<<<< HEAD
 			msgs[i].len = msgs[i].buf[0];
-=======
-			rdwr_pa[i].len = rdwr_pa[i].buf[0];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 	if (res < 0) {
 		int j;
 		for (j = 0; j < i; ++j)
-<<<<<<< HEAD
 			kfree(msgs[j].buf);
 		kfree(data_ptrs);
 		kfree(msgs);
@@ -383,30 +311,10 @@ static noinline int i2cdev_ioctl_rdwr(struct i2c_client *client,
 	}
 	kfree(data_ptrs);
 	kfree(msgs);
-=======
-			kfree(rdwr_pa[j].buf);
-		kfree(data_ptrs);
-		kfree(rdwr_pa);
-		return res;
-	}
-
-	res = i2c_transfer(client->adapter, rdwr_pa, rdwr_arg.nmsgs);
-	while (i-- > 0) {
-		if (res >= 0 && (rdwr_pa[i].flags & I2C_M_RD)) {
-			if (copy_to_user(data_ptrs[i], rdwr_pa[i].buf,
-					 rdwr_pa[i].len))
-				res = -EFAULT;
-		}
-		kfree(rdwr_pa[i].buf);
-	}
-	kfree(data_ptrs);
-	kfree(rdwr_pa);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return res;
 }
 
 static noinline int i2cdev_ioctl_smbus(struct i2c_client *client,
-<<<<<<< HEAD
 		u8 read_write, u8 command, u32 size,
 		union i2c_smbus_data __user *data)
 {
@@ -425,53 +333,20 @@ static noinline int i2cdev_ioctl_smbus(struct i2c_client *client,
 		dev_dbg(&client->adapter->dev,
 			"size out of range (%x) in ioctl I2C_SMBUS.\n",
 			size);
-=======
-		unsigned long arg)
-{
-	struct i2c_smbus_ioctl_data data_arg;
-	union i2c_smbus_data temp = {};
-	int datasize, res;
-
-	if (copy_from_user(&data_arg,
-			   (struct i2c_smbus_ioctl_data __user *) arg,
-			   sizeof(struct i2c_smbus_ioctl_data)))
-		return -EFAULT;
-	if ((data_arg.size != I2C_SMBUS_BYTE) &&
-	    (data_arg.size != I2C_SMBUS_QUICK) &&
-	    (data_arg.size != I2C_SMBUS_BYTE_DATA) &&
-	    (data_arg.size != I2C_SMBUS_WORD_DATA) &&
-	    (data_arg.size != I2C_SMBUS_PROC_CALL) &&
-	    (data_arg.size != I2C_SMBUS_BLOCK_DATA) &&
-	    (data_arg.size != I2C_SMBUS_I2C_BLOCK_BROKEN) &&
-	    (data_arg.size != I2C_SMBUS_I2C_BLOCK_DATA) &&
-	    (data_arg.size != I2C_SMBUS_BLOCK_PROC_CALL)) {
-		dev_dbg(&client->adapter->dev,
-			"size out of range (%x) in ioctl I2C_SMBUS.\n",
-			data_arg.size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 	/* Note that I2C_SMBUS_READ and I2C_SMBUS_WRITE are 0 and 1,
 	   so the check is valid if size==I2C_SMBUS_QUICK too. */
-<<<<<<< HEAD
 	if ((read_write != I2C_SMBUS_READ) &&
 	    (read_write != I2C_SMBUS_WRITE)) {
 		dev_dbg(&client->adapter->dev,
 			"read_write out of range (%x) in ioctl I2C_SMBUS.\n",
 			read_write);
-=======
-	if ((data_arg.read_write != I2C_SMBUS_READ) &&
-	    (data_arg.read_write != I2C_SMBUS_WRITE)) {
-		dev_dbg(&client->adapter->dev,
-			"read_write out of range (%x) in ioctl I2C_SMBUS.\n",
-			data_arg.read_write);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
 	/* Note that command values are always valid! */
 
-<<<<<<< HEAD
 	if ((size == I2C_SMBUS_QUICK) ||
 	    ((size == I2C_SMBUS_BYTE) &&
 	    (read_write == I2C_SMBUS_WRITE)))
@@ -481,23 +356,11 @@ static noinline int i2cdev_ioctl_smbus(struct i2c_client *client,
 				      command, size, NULL);
 
 	if (data == NULL) {
-=======
-	if ((data_arg.size == I2C_SMBUS_QUICK) ||
-	    ((data_arg.size == I2C_SMBUS_BYTE) &&
-	    (data_arg.read_write == I2C_SMBUS_WRITE)))
-		/* These are special: we do not use data */
-		return i2c_smbus_xfer(client->adapter, client->addr,
-				      client->flags, data_arg.read_write,
-				      data_arg.command, data_arg.size, NULL);
-
-	if (data_arg.data == NULL) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_dbg(&client->adapter->dev,
 			"data is NULL pointer in ioctl I2C_SMBUS.\n");
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 	if ((size == I2C_SMBUS_BYTE_DATA) ||
 	    (size == I2C_SMBUS_BYTE))
 		datasize = sizeof(data->byte);
@@ -527,37 +390,6 @@ static noinline int i2cdev_ioctl_smbus(struct i2c_client *client,
 		     (size == I2C_SMBUS_BLOCK_PROC_CALL) ||
 		     (read_write == I2C_SMBUS_READ))) {
 		if (copy_to_user(data, &temp, datasize))
-=======
-	if ((data_arg.size == I2C_SMBUS_BYTE_DATA) ||
-	    (data_arg.size == I2C_SMBUS_BYTE))
-		datasize = sizeof(data_arg.data->byte);
-	else if ((data_arg.size == I2C_SMBUS_WORD_DATA) ||
-		 (data_arg.size == I2C_SMBUS_PROC_CALL))
-		datasize = sizeof(data_arg.data->word);
-	else /* size == smbus block, i2c block, or block proc. call */
-		datasize = sizeof(data_arg.data->block);
-
-	if ((data_arg.size == I2C_SMBUS_PROC_CALL) ||
-	    (data_arg.size == I2C_SMBUS_BLOCK_PROC_CALL) ||
-	    (data_arg.size == I2C_SMBUS_I2C_BLOCK_DATA) ||
-	    (data_arg.read_write == I2C_SMBUS_WRITE)) {
-		if (copy_from_user(&temp, data_arg.data, datasize))
-			return -EFAULT;
-	}
-	if (data_arg.size == I2C_SMBUS_I2C_BLOCK_BROKEN) {
-		/* Convert old I2C block commands to the new
-		   convention. This preserves binary compatibility. */
-		data_arg.size = I2C_SMBUS_I2C_BLOCK_DATA;
-		if (data_arg.read_write == I2C_SMBUS_READ)
-			temp.block[0] = I2C_SMBUS_BLOCK_MAX;
-	}
-	res = i2c_smbus_xfer(client->adapter, client->addr, client->flags,
-	      data_arg.read_write, data_arg.command, data_arg.size, &temp);
-	if (!res && ((data_arg.size == I2C_SMBUS_PROC_CALL) ||
-		     (data_arg.size == I2C_SMBUS_BLOCK_PROC_CALL) ||
-		     (data_arg.read_write == I2C_SMBUS_READ))) {
-		if (copy_to_user(data_arg.data, &temp, datasize))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EFAULT;
 	}
 	return res;
@@ -605,7 +437,6 @@ static long i2cdev_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 		funcs = i2c_get_functionality(client->adapter);
 		return put_user(funcs, (unsigned long __user *)arg);
 
-<<<<<<< HEAD
 	case I2C_RDWR: {
 		struct i2c_rdwr_ioctl_data rdwr_arg;
 		struct i2c_msg *rdwr_pa;
@@ -639,14 +470,6 @@ static long i2cdev_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 					  data_arg.size,
 					  data_arg.data);
 	}
-=======
-	case I2C_RDWR:
-		return i2cdev_ioctl_rdwr(client, arg);
-
-	case I2C_SMBUS:
-		return i2cdev_ioctl_smbus(client, arg);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case I2C_RETRIES:
 		if (arg > INT_MAX)
 			return -EINVAL;
@@ -673,7 +496,6 @@ static long i2cdev_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 	return 0;
 }
 
-<<<<<<< HEAD
 #ifdef CONFIG_COMPAT
 
 struct i2c_smbus_ioctl_data32 {
@@ -758,8 +580,6 @@ static long compat_i2cdev_ioctl(struct file *file, unsigned int cmd, unsigned lo
 #define compat_i2cdev_ioctl NULL
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int i2cdev_open(struct inode *inode, struct file *file)
 {
 	unsigned int minor = iminor(inode);
@@ -807,10 +627,7 @@ static const struct file_operations i2cdev_fops = {
 	.read		= i2cdev_read,
 	.write		= i2cdev_write,
 	.unlocked_ioctl	= i2cdev_ioctl,
-<<<<<<< HEAD
 	.compat_ioctl	= compat_i2cdev_ioctl,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.open		= i2cdev_open,
 	.release	= i2cdev_release,
 };
@@ -819,17 +636,6 @@ static const struct file_operations i2cdev_fops = {
 
 static struct class *i2c_dev_class;
 
-<<<<<<< HEAD
-=======
-static void i2cdev_dev_release(struct device *dev)
-{
-	struct i2c_dev *i2c_dev;
-
-	i2c_dev = container_of(dev, struct i2c_dev, dev);
-	kfree(i2c_dev);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int i2cdev_attach_adapter(struct device *dev, void *dummy)
 {
 	struct i2c_adapter *adap;
@@ -846,7 +652,6 @@ static int i2cdev_attach_adapter(struct device *dev, void *dummy)
 
 	cdev_init(&i2c_dev->cdev, &i2cdev_fops);
 	i2c_dev->cdev.owner = THIS_MODULE;
-<<<<<<< HEAD
 	res = cdev_add(&i2c_dev->cdev, MKDEV(I2C_MAJOR, adap->nr), 1);
 	if (res)
 		goto error_cdev;
@@ -858,33 +663,16 @@ static int i2cdev_attach_adapter(struct device *dev, void *dummy)
 	if (IS_ERR(i2c_dev->dev)) {
 		res = PTR_ERR(i2c_dev->dev);
 		goto error;
-=======
-
-	device_initialize(&i2c_dev->dev);
-	i2c_dev->dev.devt = MKDEV(I2C_MAJOR, adap->nr);
-	i2c_dev->dev.class = i2c_dev_class;
-	i2c_dev->dev.parent = &adap->dev;
-	i2c_dev->dev.release = i2cdev_dev_release;
-	dev_set_name(&i2c_dev->dev, "i2c-%d", adap->nr);
-
-	res = cdev_device_add(&i2c_dev->cdev, &i2c_dev->dev);
-	if (res) {
-		put_i2c_dev(i2c_dev, false);
-		return res;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	pr_debug("i2c-dev: adapter [%s] registered as minor %d\n",
 		 adap->name, adap->nr);
 	return 0;
-<<<<<<< HEAD
 error:
 	cdev_del(&i2c_dev->cdev);
 error_cdev:
 	put_i2c_dev(i2c_dev);
 	return res;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int i2cdev_detach_adapter(struct device *dev, void *dummy)
@@ -900,13 +688,9 @@ static int i2cdev_detach_adapter(struct device *dev, void *dummy)
 	if (!i2c_dev) /* attach_adapter must have failed */
 		return 0;
 
-<<<<<<< HEAD
 	cdev_del(&i2c_dev->cdev);
 	put_i2c_dev(i2c_dev);
 	device_destroy(i2c_dev_class, MKDEV(I2C_MAJOR, adap->nr));
-=======
-	put_i2c_dev(i2c_dev, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pr_debug("i2c-dev: adapter [%s] unregistered\n", adap->name);
 	return 0;

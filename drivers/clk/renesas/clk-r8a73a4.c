@@ -71,11 +71,7 @@ r8a73a4_cpg_register_clock(struct device_node *np, struct r8a73a4_cpg *cpg,
 
 
 	if (!strcmp(name, "main")) {
-<<<<<<< HEAD
 		u32 ckscr = readl(cpg->reg + CPG_CKSCR);
-=======
-		u32 ckscr = clk_readl(cpg->reg + CPG_CKSCR);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		switch ((ckscr >> 28) & 3) {
 		case 0:	/* extal1 */
@@ -99,22 +95,14 @@ r8a73a4_cpg_register_clock(struct device_node *np, struct r8a73a4_cpg *cpg,
 		 * clock implementation and we currently have no need to change
 		 * the multiplier value.
 		 */
-<<<<<<< HEAD
 		u32 value = readl(cpg->reg + CPG_PLL0CR);
-=======
-		u32 value = clk_readl(cpg->reg + CPG_PLL0CR);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		parent_name = "main";
 		mult = ((value >> 24) & 0x7f) + 1;
 		if (value & BIT(20))
 			div = 2;
 	} else if (!strcmp(name, "pll1")) {
-<<<<<<< HEAD
 		u32 value = readl(cpg->reg + CPG_PLL1CR);
-=======
-		u32 value = clk_readl(cpg->reg + CPG_PLL1CR);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		parent_name = "main";
 		/* XXX: enable bit? */
@@ -137,11 +125,7 @@ r8a73a4_cpg_register_clock(struct device_node *np, struct r8a73a4_cpg *cpg,
 		default:
 			return ERR_PTR(-EINVAL);
 		}
-<<<<<<< HEAD
 		value = readl(cpg->reg + cr);
-=======
-		value = clk_readl(cpg->reg + cr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		switch ((value >> 5) & 7) {
 		case 0:
 			parent_name = "main";
@@ -177,12 +161,7 @@ r8a73a4_cpg_register_clock(struct device_node *np, struct r8a73a4_cpg *cpg,
 			shift = 0;
 		}
 		div *= 32;
-<<<<<<< HEAD
 		mult = 0x20 - ((readl(cpg->reg + CPG_FRQCRC) >> shift) & 0x1f);
-=======
-		mult = 0x20 - ((clk_readl(cpg->reg + CPG_FRQCRC) >> shift)
-		       & 0x1f);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		struct div4_clk *c;
 

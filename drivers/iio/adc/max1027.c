@@ -381,19 +381,11 @@ static irqreturn_t max1027_trigger_handler(int irq, void *private)
 }
 
 static const struct iio_trigger_ops max1027_trigger_ops = {
-<<<<<<< HEAD
-=======
-	.owner = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.validate_device = &iio_trigger_validate_own_device,
 	.set_trigger_state = &max1027_set_trigger_state,
 };
 
 static const struct iio_info max1027_info = {
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read_raw = &max1027_read_raw,
 	.validate_trigger = &max1027_validate_trigger,
 	.debugfs_reg_access = &max1027_debugfs_reg_access,
@@ -430,13 +422,8 @@ static int max1027_probe(struct spi_device *spi)
 	indio_dev->num_channels = st->info->num_channels;
 	indio_dev->available_scan_masks = st->info->available_scan_masks;
 
-<<<<<<< HEAD
 	st->buffer = devm_kmalloc_array(&indio_dev->dev,
 				  indio_dev->num_channels, 2,
-=======
-	st->buffer = devm_kmalloc(&indio_dev->dev,
-				  indio_dev->num_channels * 2,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  GFP_KERNEL);
 	if (st->buffer == NULL) {
 		dev_err(&indio_dev->dev, "Can't allocate buffer\n");
@@ -473,17 +460,6 @@ static int max1027_probe(struct spi_device *spi)
 		goto fail_dev_register;
 	}
 
-<<<<<<< HEAD
-=======
-	/* Internal reset */
-	st->reg = MAX1027_RST_REG;
-	ret = spi_write(st->spi, &st->reg, 1);
-	if (ret < 0) {
-		dev_err(&indio_dev->dev, "Failed to reset the ADC\n");
-		return ret;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Disable averaging */
 	st->reg = MAX1027_AVG_REG;
 	ret = spi_write(st->spi, &st->reg, 1);

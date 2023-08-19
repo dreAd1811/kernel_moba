@@ -731,13 +731,6 @@ struct radeon_doorbell {
 
 int radeon_doorbell_get(struct radeon_device *rdev, u32 *page);
 void radeon_doorbell_free(struct radeon_device *rdev, u32 doorbell);
-<<<<<<< HEAD
-=======
-void radeon_doorbell_get_kfd_info(struct radeon_device *rdev,
-				  phys_addr_t *aperture_base,
-				  size_t *aperture_size,
-				  size_t *start_offset);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * IRQS.
@@ -1660,13 +1653,10 @@ struct radeon_pm {
 	struct radeon_dpm       dpm;
 };
 
-<<<<<<< HEAD
 #define RADEON_PCIE_SPEED_25 1
 #define RADEON_PCIE_SPEED_50 2
 #define RADEON_PCIE_SPEED_80 4
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int radeon_pm_get_type_index(struct radeon_device *rdev,
 			     enum radeon_pm_state_type ps_type,
 			     int instance);
@@ -2401,10 +2391,7 @@ struct radeon_device {
 	struct radeon_dummy_page	dummy_page;
 	bool				shutdown;
 	bool				need_dma32;
-<<<<<<< HEAD
 	bool				need_swiotlb;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool				accel_working;
 	bool				fastfb_working; /* IGP feature*/
 	bool				needs_reset, in_reset;
@@ -2456,11 +2443,6 @@ struct radeon_device {
 	struct radeon_atcs		atcs;
 	/* srbm instance registers */
 	struct mutex			srbm_mutex;
-<<<<<<< HEAD
-=======
-	/* GRBM index mutex. Protects concurrents access to GRBM index */
-	struct mutex			grbm_idx_mutex;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* clock, powergating flags */
 	u32 cg_flags;
 	u32 pg_flags;
@@ -2473,12 +2455,6 @@ struct radeon_device {
 	u64 vram_pin_size;
 	u64 gart_pin_size;
 
-<<<<<<< HEAD
-=======
-	/* amdkfd interface */
-	struct kfd_dev		*kfd;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mutex	mn_lock;
 	DECLARE_HASHTABLE(mn_hash, 7);
 };

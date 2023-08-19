@@ -377,7 +377,6 @@ static const struct of_device_id fsl_pq_mdio_match[] = {
 };
 MODULE_DEVICE_TABLE(of, fsl_pq_mdio_match);
 
-<<<<<<< HEAD
 static void set_tbipa(const u32 tbipa_val, struct platform_device *pdev,
 		      uint32_t __iomem * (*get_tbipa)(void __iomem *),
 		      void __iomem *reg_map, struct resource *reg_res)
@@ -410,8 +409,6 @@ static void set_tbipa(const u32 tbipa_val, struct platform_device *pdev,
 		iounmap(tbipa);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int fsl_pq_mdio_probe(struct platform_device *pdev)
 {
 	const struct of_device_id *id =
@@ -485,11 +482,6 @@ static int fsl_pq_mdio_probe(struct platform_device *pdev)
 
 		if (tbi) {
 			const u32 *prop = of_get_property(tbi, "reg", NULL);
-<<<<<<< HEAD
-=======
-			uint32_t __iomem *tbipa;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (!prop) {
 				dev_err(&pdev->dev,
 					"missing 'reg' property in node %pOF\n",
@@ -497,25 +489,8 @@ static int fsl_pq_mdio_probe(struct platform_device *pdev)
 				err = -EBUSY;
 				goto error;
 			}
-<<<<<<< HEAD
 			set_tbipa(*prop, pdev,
 				  data->get_tbipa, priv->map, &res);
-=======
-
-			tbipa = data->get_tbipa(priv->map);
-
-			/*
-			 * Add consistency check to make sure TBI is contained
-			 * within the mapped range (not because we would get a
-			 * segfault, rather to catch bugs in computing TBI
-			 * address). Print error message but continue anyway.
-			 */
-			if ((void *)tbipa > priv->map + resource_size(&res) - 4)
-				dev_err(&pdev->dev, "invalid register map (should be at least 0x%04zx to contain TBI address)\n",
-					((void *)tbipa - priv->map) + 4);
-
-			iowrite32be(be32_to_cpup(prop), tbipa);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 

@@ -1,10 +1,6 @@
 /* Broadcom NetXtreme-C/E network driver.
  *
-<<<<<<< HEAD
  * Copyright (c) 2016-2018 Broadcom Limited
-=======
- * Copyright (c) 2016 Broadcom Limited
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -105,7 +101,6 @@ static int bnxt_unregister_dev(struct bnxt_en_dev *edev, int ulp_id)
 	return 0;
 }
 
-<<<<<<< HEAD
 static void bnxt_fill_msix_vecs(struct bnxt *bp, struct bnxt_msix_entry *ent)
 {
 	struct bnxt_en_dev *edev = bp->edev;
@@ -120,20 +115,14 @@ static void bnxt_fill_msix_vecs(struct bnxt *bp, struct bnxt_msix_entry *ent)
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int bnxt_req_msix_vecs(struct bnxt_en_dev *edev, int ulp_id,
 			      struct bnxt_msix_entry *ent, int num_msix)
 {
 	struct net_device *dev = edev->net;
 	struct bnxt *bp = netdev_priv(dev);
 	int max_idx, max_cp_rings;
-<<<<<<< HEAD
 	int avail_msix, idx;
 	int rc = 0;
-=======
-	int avail_msix, i, idx;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ASSERT_RTNL();
 	if (ulp_id != BNXT_ROCE_ULP)
@@ -142,23 +131,16 @@ static int bnxt_req_msix_vecs(struct bnxt_en_dev *edev, int ulp_id,
 	if (!(bp->flags & BNXT_FLAG_USING_MSIX))
 		return -ENODEV;
 
-<<<<<<< HEAD
 	if (edev->ulp_tbl[ulp_id].msix_requested)
 		return -EAGAIN;
 
 	max_cp_rings = bnxt_get_max_func_cp_rings(bp);
 	avail_msix = bnxt_get_avail_msix(bp, num_msix);
-=======
-	max_cp_rings = bnxt_get_max_func_cp_rings(bp);
-	max_idx = min_t(int, bp->total_irqs, max_cp_rings);
-	avail_msix = max_idx - bp->cp_nr_rings;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!avail_msix)
 		return -ENOMEM;
 	if (avail_msix > num_msix)
 		avail_msix = num_msix;
 
-<<<<<<< HEAD
 	if (BNXT_NEW_RM(bp)) {
 		idx = bp->cp_nr_rings;
 	} else {
@@ -188,17 +170,6 @@ static int bnxt_req_msix_vecs(struct bnxt_en_dev *edev, int ulp_id,
 	}
 	bnxt_fill_msix_vecs(bp, ent);
 	edev->flags |= BNXT_EN_FLAG_MSIX_REQUESTED;
-=======
-	idx = max_idx - avail_msix;
-	for (i = 0; i < avail_msix; i++) {
-		ent[i].vector = bp->irq_tbl[idx + i].vector;
-		ent[i].ring_idx = idx + i;
-		ent[i].db_offset = (idx + i) * 0x80;
-	}
-	bnxt_set_max_func_irqs(bp, max_idx - avail_msix);
-	bnxt_set_max_func_cp_rings(bp, max_cp_rings - avail_msix);
-	edev->ulp_tbl[ulp_id].msix_requested = avail_msix;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return avail_msix;
 }
 
@@ -206,16 +177,11 @@ static int bnxt_free_msix_vecs(struct bnxt_en_dev *edev, int ulp_id)
 {
 	struct net_device *dev = edev->net;
 	struct bnxt *bp = netdev_priv(dev);
-<<<<<<< HEAD
-=======
-	int max_cp_rings, msix_requested;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ASSERT_RTNL();
 	if (ulp_id != BNXT_ROCE_ULP)
 		return -EINVAL;
 
-<<<<<<< HEAD
 	if (!(edev->flags & BNXT_EN_FLAG_MSIX_REQUESTED))
 		return 0;
 
@@ -247,29 +213,6 @@ int bnxt_get_ulp_msix_base(struct bnxt *bp)
 			return edev->ulp_tbl[BNXT_ROCE_ULP].msix_base;
 	}
 	return 0;
-=======
-	max_cp_rings = bnxt_get_max_func_cp_rings(bp);
-	msix_requested = edev->ulp_tbl[ulp_id].msix_requested;
-	bnxt_set_max_func_cp_rings(bp, max_cp_rings + msix_requested);
-	edev->ulp_tbl[ulp_id].msix_requested = 0;
-	bnxt_set_max_func_irqs(bp, bp->total_irqs);
-	return 0;
-}
-
-void bnxt_subtract_ulp_resources(struct bnxt *bp, int ulp_id)
-{
-	ASSERT_RTNL();
-	if (bnxt_ulp_registered(bp->edev, ulp_id)) {
-		struct bnxt_en_dev *edev = bp->edev;
-		unsigned int msix_req, max;
-
-		msix_req = edev->ulp_tbl[ulp_id].msix_requested;
-		max = bnxt_get_max_func_cp_rings(bp);
-		bnxt_set_max_func_cp_rings(bp, max - msix_req);
-		max = bnxt_get_max_func_stat_ctxs(bp);
-		bnxt_set_max_func_stat_ctxs(bp, max - 1);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int bnxt_send_msg(struct bnxt_en_dev *edev, int ulp_id,
@@ -390,7 +333,6 @@ void bnxt_ulp_shutdown(struct bnxt *bp)
 	}
 }
 
-<<<<<<< HEAD
 void bnxt_ulp_irq_stop(struct bnxt *bp)
 {
 	struct bnxt_en_dev *edev = bp->edev;
@@ -443,8 +385,6 @@ void bnxt_ulp_irq_restart(struct bnxt *bp, int err)
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void bnxt_ulp_async_events(struct bnxt *bp, struct hwrm_async_event_cmpl *cmpl)
 {
 	u16 event_id = le16_to_cpu(cmpl->event_id);

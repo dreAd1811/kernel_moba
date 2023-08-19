@@ -185,10 +185,6 @@ static const struct iio_buffer_setup_ops ad7766_buffer_setup_ops = {
 };
 
 static const struct iio_info ad7766_info = {
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read_raw = &ad7766_read_raw,
 };
 
@@ -211,10 +207,6 @@ static int ad7766_set_trigger_state(struct iio_trigger *trig, bool enable)
 }
 
 static const struct iio_trigger_ops ad7766_trigger_ops = {
-<<<<<<< HEAD
-=======
-	.owner = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.set_trigger_state = ad7766_set_trigger_state,
 	.validate_device = iio_trigger_validate_own_device,
 };

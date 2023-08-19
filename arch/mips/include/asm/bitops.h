@@ -456,10 +456,7 @@ static inline void __clear_bit_unlock(unsigned long nr, volatile unsigned long *
 {
 	smp_mb__before_llsc();
 	__clear_bit(nr, addr);
-<<<<<<< HEAD
 	nudge_writes();
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*

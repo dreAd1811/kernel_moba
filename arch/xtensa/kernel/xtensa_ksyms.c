@@ -41,16 +41,12 @@
 EXPORT_SYMBOL(memset);
 EXPORT_SYMBOL(memcpy);
 EXPORT_SYMBOL(memmove);
-<<<<<<< HEAD
 EXPORT_SYMBOL(__memset);
 EXPORT_SYMBOL(__memcpy);
 EXPORT_SYMBOL(__memmove);
 #ifndef CONFIG_GENERIC_STRNCPY_FROM_USER
 EXPORT_SYMBOL(__strncpy_user);
 #endif
-=======
-EXPORT_SYMBOL(__strncpy_user);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 EXPORT_SYMBOL(clear_page);
 EXPORT_SYMBOL(copy_page);
 
@@ -91,21 +87,13 @@ void __xtensa_libgcc_window_spill(void)
 }
 EXPORT_SYMBOL(__xtensa_libgcc_window_spill);
 
-<<<<<<< HEAD
 unsigned long __sync_fetch_and_and_4(unsigned long *p, unsigned long v)
-=======
-unsigned int __sync_fetch_and_and_4(volatile void *p, unsigned int v)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	BUG();
 }
 EXPORT_SYMBOL(__sync_fetch_and_and_4);
 
-<<<<<<< HEAD
 unsigned long __sync_fetch_and_or_4(unsigned long *p, unsigned long v)
-=======
-unsigned int __sync_fetch_and_or_4(volatile void *p, unsigned int v)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	BUG();
 }

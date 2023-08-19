@@ -1007,14 +1007,9 @@ static void usb_8dev_disconnect(struct usb_interface *intf)
 		netdev_info(priv->netdev, "device disconnected\n");
 
 		unregister_netdev(priv->netdev);
-<<<<<<< HEAD
 		free_candev(priv->netdev);
 
 		unlink_all_urbs(priv);
-=======
-		unlink_all_urbs(priv);
-		free_candev(priv->netdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 }

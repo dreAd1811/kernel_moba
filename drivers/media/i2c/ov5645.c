@@ -605,7 +605,6 @@ static int ov5645_write_reg(struct ov5645 *ov5645, u16 reg, u8 val)
 	regbuf[2] = val;
 
 	ret = i2c_master_send(ov5645->i2c_client, regbuf, 3);
-<<<<<<< HEAD
 	if (ret < 0) {
 		dev_err(ov5645->dev, "%s: write reg error %d: reg=%x, val=%x\n",
 			__func__, ret, reg, val);
@@ -613,13 +612,6 @@ static int ov5645_write_reg(struct ov5645 *ov5645, u16 reg, u8 val)
 	}
 
 	return 0;
-=======
-	if (ret < 0)
-		dev_err(ov5645->dev, "%s: write reg error %d: reg=%x, val=%x\n",
-			__func__, ret, reg, val);
-
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int ov5645_read_reg(struct ov5645 *ov5645, u16 reg, u8 *val)
@@ -970,26 +962,6 @@ __ov5645_get_pad_crop(struct ov5645 *ov5645, struct v4l2_subdev_pad_config *cfg,
 	}
 }
 
-<<<<<<< HEAD
-=======
-static const struct ov5645_mode_info *
-ov5645_find_nearest_mode(unsigned int width, unsigned int height)
-{
-	int i;
-
-	for (i = ARRAY_SIZE(ov5645_mode_info_data) - 1; i >= 0; i--) {
-		if (ov5645_mode_info_data[i].width <= width &&
-		    ov5645_mode_info_data[i].height <= height)
-			break;
-	}
-
-	if (i < 0)
-		i = 0;
-
-	return &ov5645_mode_info_data[i];
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ov5645_set_format(struct v4l2_subdev *sd,
 			     struct v4l2_subdev_pad_config *cfg,
 			     struct v4l2_subdev_format *format)
@@ -1003,16 +975,11 @@ static int ov5645_set_format(struct v4l2_subdev *sd,
 	__crop = __ov5645_get_pad_crop(ov5645, cfg, format->pad,
 			format->which);
 
-<<<<<<< HEAD
 	new_mode = v4l2_find_nearest_size(ov5645_mode_info_data,
 			       ARRAY_SIZE(ov5645_mode_info_data),
 			       width, height,
 			       format->format.width, format->format.height);
 
-=======
-	new_mode = ov5645_find_nearest_mode(format->format.width,
-					    format->format.height);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__crop->width = new_mode->width;
 	__crop->height = new_mode->height;
 

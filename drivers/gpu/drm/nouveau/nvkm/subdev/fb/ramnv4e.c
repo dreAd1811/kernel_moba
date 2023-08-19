@@ -29,9 +29,5 @@ nv4e_ram_new(struct nvkm_fb *fb, struct nvkm_ram **pram)
 	struct nvkm_device *device = fb->subdev.device;
 	u32 size = nvkm_rd32(device, 0x10020c) & 0xff000000;
 	return nvkm_ram_new_(&nv04_ram_func, fb, NVKM_RAM_TYPE_UNKNOWN,
-<<<<<<< HEAD
 			     size, pram);
-=======
-			     size, 0, pram);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

@@ -23,7 +23,6 @@
  *
  * Authors: Alex Deucher
  */
-<<<<<<< HEAD
 
 /**
  * DOC: PRIME Buffer Sharing
@@ -50,14 +49,6 @@ static const struct dma_buf_ops amdgpu_dmabuf_ops;
  * Returns:
  * A scatter/gather table for the pinned pages of the buffer object's memory.
  */
-=======
-#include <drm/drmP.h>
-
-#include "amdgpu.h"
-#include <drm/amdgpu_drm.h>
-#include <linux/dma-buf.h>
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct sg_table *amdgpu_gem_prime_get_sg_table(struct drm_gem_object *obj)
 {
 	struct amdgpu_bo *bo = gem_to_amdgpu_bo(obj);
@@ -66,7 +57,6 @@ struct sg_table *amdgpu_gem_prime_get_sg_table(struct drm_gem_object *obj)
 	return drm_prime_pages_to_sg(bo->tbo.ttm->pages, npages);
 }
 
-<<<<<<< HEAD
 /**
  * amdgpu_gem_prime_vmap - &dma_buf_ops.vmap implementation
  * @obj: GEM buffer object
@@ -76,8 +66,6 @@ struct sg_table *amdgpu_gem_prime_get_sg_table(struct drm_gem_object *obj)
  * Returns:
  * The virtual address of the mapping or an error pointer.
  */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void *amdgpu_gem_prime_vmap(struct drm_gem_object *obj)
 {
 	struct amdgpu_bo *bo = gem_to_amdgpu_bo(obj);
@@ -91,7 +79,6 @@ void *amdgpu_gem_prime_vmap(struct drm_gem_object *obj)
 	return bo->dma_buf_vmap.virtual;
 }
 
-<<<<<<< HEAD
 /**
  * amdgpu_gem_prime_vunmap - &dma_buf_ops.vunmap implementation
  * @obj: GEM buffer object
@@ -99,8 +86,6 @@ void *amdgpu_gem_prime_vmap(struct drm_gem_object *obj)
  *
  * Tears down the in-kernel virtual mapping of the buffer object's memory.
  */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void amdgpu_gem_prime_vunmap(struct drm_gem_object *obj, void *vaddr)
 {
 	struct amdgpu_bo *bo = gem_to_amdgpu_bo(obj);
@@ -108,7 +93,6 @@ void amdgpu_gem_prime_vunmap(struct drm_gem_object *obj, void *vaddr)
 	ttm_bo_kunmap(&bo->dma_buf_vmap);
 }
 
-<<<<<<< HEAD
 /**
  * amdgpu_gem_prime_mmap - &drm_driver.gem_prime_mmap implementation
  * @obj: GEM buffer object
@@ -167,8 +151,6 @@ int amdgpu_gem_prime_mmap(struct drm_gem_object *obj, struct vm_area_struct *vma
  * A new GEM buffer object of the given DRM device, representing the memory
  * described by the given DMA-buf attachment and scatter/gather table.
  */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct drm_gem_object *
 amdgpu_gem_prime_import_sg_table(struct drm_device *dev,
 				 struct dma_buf_attachment *attach,
@@ -177,7 +159,6 @@ amdgpu_gem_prime_import_sg_table(struct drm_device *dev,
 	struct reservation_object *resv = attach->dmabuf->resv;
 	struct amdgpu_device *adev = dev->dev_private;
 	struct amdgpu_bo *bo;
-<<<<<<< HEAD
 	struct amdgpu_bo_param bp;
 	int ret;
 
@@ -324,59 +305,10 @@ static void amdgpu_gem_map_detach(struct dma_buf *dma_buf,
 	struct drm_gem_object *obj = dma_buf->priv;
 	struct amdgpu_bo *bo = gem_to_amdgpu_bo(obj);
 	struct amdgpu_device *adev = amdgpu_ttm_adev(bo->tbo.bdev);
-=======
-	int ret;
-
-	ww_mutex_lock(&resv->lock, NULL);
-	ret = amdgpu_bo_create(adev, attach->dmabuf->size, PAGE_SIZE, false,
-			       AMDGPU_GEM_DOMAIN_GTT, 0, sg, resv, 0, &bo);
-	ww_mutex_unlock(&resv->lock);
-	if (ret)
-		return ERR_PTR(ret);
-
-	bo->prime_shared_count = 1;
-	return &bo->gem_base;
-}
-
-int amdgpu_gem_prime_pin(struct drm_gem_object *obj)
-{
-	struct amdgpu_bo *bo = gem_to_amdgpu_bo(obj);
-	long ret = 0;
-
-	ret = amdgpu_bo_reserve(bo, false);
-	if (unlikely(ret != 0))
-		return ret;
-
-	/*
-	 * Wait for all shared fences to complete before we switch to future
-	 * use of exclusive fence on this prime shared bo.
-	 */
-	ret = reservation_object_wait_timeout_rcu(bo->tbo.resv, true, false,
-						  MAX_SCHEDULE_TIMEOUT);
-	if (unlikely(ret < 0)) {
-		DRM_DEBUG_PRIME("Fence wait failed: %li\n", ret);
-		amdgpu_bo_unreserve(bo);
-		return ret;
-	}
-
-	/* pin buffer into GTT */
-	ret = amdgpu_bo_pin(bo, AMDGPU_GEM_DOMAIN_GTT, NULL);
-	if (likely(ret == 0))
-		bo->prime_shared_count++;
-
-	amdgpu_bo_unreserve(bo);
-	return ret;
-}
-
-void amdgpu_gem_prime_unpin(struct drm_gem_object *obj)
-{
-	struct amdgpu_bo *bo = gem_to_amdgpu_bo(obj);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = 0;
 
 	ret = amdgpu_bo_reserve(bo, true);
 	if (unlikely(ret != 0))
-<<<<<<< HEAD
 		goto error;
 
 	amdgpu_bo_unpin(bo);
@@ -395,16 +327,6 @@ error:
  * Returns:
  * The buffer object's reservation object.
  */
-=======
-		return;
-
-	amdgpu_bo_unpin(bo);
-	if (bo->prime_shared_count)
-		bo->prime_shared_count--;
-	amdgpu_bo_unreserve(bo);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct reservation_object *amdgpu_gem_prime_res_obj(struct drm_gem_object *obj)
 {
 	struct amdgpu_bo *bo = gem_to_amdgpu_bo(obj);
@@ -412,7 +334,6 @@ struct reservation_object *amdgpu_gem_prime_res_obj(struct drm_gem_object *obj)
 	return bo->tbo.resv;
 }
 
-<<<<<<< HEAD
 /**
  * amdgpu_gem_begin_cpu_access - &dma_buf_ops.begin_cpu_access implementation
  * @dma_buf: shared DMA buffer
@@ -479,14 +400,11 @@ static const struct dma_buf_ops amdgpu_dmabuf_ops = {
  * Returns:
  * Shared DMA buffer representing the GEM buffer object from the given device.
  */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct dma_buf *amdgpu_gem_prime_export(struct drm_device *dev,
 					struct drm_gem_object *gobj,
 					int flags)
 {
 	struct amdgpu_bo *bo = gem_to_amdgpu_bo(gobj);
-<<<<<<< HEAD
 	struct dma_buf *buf;
 
 	if (amdgpu_ttm_tt_get_usermm(bo->tbo.ttm) ||
@@ -531,11 +449,4 @@ struct drm_gem_object *amdgpu_gem_prime_import(struct drm_device *dev,
 	}
 
 	return drm_gem_prime_import(dev, dma_buf);
-=======
-
-	if (amdgpu_ttm_tt_get_usermm(bo->tbo.ttm))
-		return ERR_PTR(-EPERM);
-
-	return drm_gem_prime_export(dev, gobj, flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

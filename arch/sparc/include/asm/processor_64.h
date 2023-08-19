@@ -200,7 +200,6 @@ unsigned long get_wchan(struct task_struct *task);
  * To make a long story short, we are trying to yield the current cpu
  * strand during busy loops.
  */
-<<<<<<< HEAD
 #ifdef	BUILD_VDSO
 #define	cpu_relax()	asm volatile("\n99:\n\t"			\
 				     "rd	%%ccr, %%g0\n\t"	\
@@ -208,8 +207,6 @@ unsigned long get_wchan(struct task_struct *task);
 				     "rd	%%ccr, %%g0\n\t"	\
 				     ::: "memory")
 #else /* ! BUILD_VDSO */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define cpu_relax()	asm volatile("\n99:\n\t"			\
 				     "rd	%%ccr, %%g0\n\t"	\
 				     "rd	%%ccr, %%g0\n\t"	\
@@ -221,10 +218,7 @@ unsigned long get_wchan(struct task_struct *task);
 				     "nop\n\t"				\
 				     ".previous"			\
 				     ::: "memory")
-<<<<<<< HEAD
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Prefetch support.  This is tuned for UltraSPARC-III and later.
  * UltraSPARC-I will treat these as nops, and UltraSPARC-II has

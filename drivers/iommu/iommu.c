@@ -34,7 +34,6 @@
 #include <linux/debugfs.h>
 #include <linux/property.h>
 #include <trace/events/iommu.h>
-<<<<<<< HEAD
 
 static struct kset *iommu_group_kset;
 static DEFINE_IDA(iommu_group_ida);
@@ -43,17 +42,6 @@ static unsigned int iommu_def_domain_type = IOMMU_DOMAIN_IDENTITY;
 #else
 static unsigned int iommu_def_domain_type = IOMMU_DOMAIN_DMA;
 #endif
-=======
-#ifdef CONFIG_MSM_TZ_SMMU
-#include <soc/qcom/msm_tz_smmu.h>
-#endif
-
-#include "iommu-debug.h"
-
-static struct kset *iommu_group_kset;
-static DEFINE_IDA(iommu_group_ida);
-static unsigned int iommu_def_domain_type = IOMMU_DOMAIN_DMA;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct iommu_callback_data {
 	const struct iommu_ops *ops;
@@ -121,29 +109,6 @@ void iommu_device_unregister(struct iommu_device *iommu)
 	spin_unlock(&iommu_device_lock);
 }
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_MSM_TZ_SMMU
-void *arm_smmu_get_by_addr(void __iomem *addr)
-{
-	struct iommu_device *iommu;
-	unsigned long flags;
-	void *smmu = NULL;
-
-	spin_lock_irqsave(&iommu_device_lock, flags);
-	list_for_each_entry(iommu, &iommu_device_list, list) {
-		smmu = get_smmu_from_addr(iommu, addr);
-		if (!smmu)
-			continue;
-		break;
-	}
-	spin_unlock_irqrestore(&iommu_device_lock, flags);
-
-	return smmu;
-}
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct iommu_domain *__iommu_domain_alloc(struct bus_type *bus,
 						 unsigned type);
 static int __iommu_attach_device(struct iommu_domain *domain,
@@ -156,17 +121,11 @@ static void __iommu_detach_group(struct iommu_domain *domain,
 static int __init iommu_set_def_domain_type(char *str)
 {
 	bool pt;
-<<<<<<< HEAD
 	int ret;
 
 	ret = kstrtobool(str, &pt);
 	if (ret)
 		return ret;
-=======
-
-	if (!str || strtobool(str, &pt))
-		return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	iommu_def_domain_type = pt ? IOMMU_DOMAIN_IDENTITY : IOMMU_DOMAIN_DMA;
 	return 0;
@@ -342,7 +301,6 @@ static ssize_t iommu_group_show_resv_regions(struct iommu_group *group,
 	return (str - buf);
 }
 
-<<<<<<< HEAD
 static ssize_t iommu_group_show_type(struct iommu_group *group,
 				     char *buf)
 {
@@ -369,18 +327,13 @@ static ssize_t iommu_group_show_type(struct iommu_group *group,
 	return strlen(type);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static IOMMU_GROUP_ATTR(name, S_IRUGO, iommu_group_show_name, NULL);
 
 static IOMMU_GROUP_ATTR(reserved_regions, 0444,
 			iommu_group_show_resv_regions, NULL);
 
-<<<<<<< HEAD
 static IOMMU_GROUP_ATTR(type, 0444, iommu_group_show_type, NULL);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void iommu_group_release(struct kobject *kobj)
 {
 	struct iommu_group *group = to_iommu_group(kobj);
@@ -406,10 +359,6 @@ static struct kobj_type iommu_group_ktype = {
 
 /**
  * iommu_group_alloc - Allocate a new group
-<<<<<<< HEAD
-=======
- * @name: Optional name to associate with group, visible in sysfs
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This function is called by an iommu driver to allocate a new iommu
  * group.  The iommu group represents the minimum granularity of the iommu.
@@ -444,11 +393,7 @@ struct iommu_group *iommu_group_alloc(void)
 				   NULL, "%d", group->id);
 	if (ret) {
 		ida_simple_remove(&iommu_group_ida, group->id);
-<<<<<<< HEAD
 		kfree(group);
-=======
-		kobject_put(&group->kobj);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ERR_PTR(ret);
 	}
 
@@ -470,13 +415,10 @@ struct iommu_group *iommu_group_alloc(void)
 	if (ret)
 		return ERR_PTR(ret);
 
-<<<<<<< HEAD
 	ret = iommu_group_create_file(group, &iommu_group_attr_type);
 	if (ret)
 		return ERR_PTR(ret);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pr_debug("Allocated group %d\n", group->id);
 
 	return group;
@@ -710,10 +652,6 @@ err_put_group:
 	mutex_unlock(&group->mutex);
 	dev->iommu_group = NULL;
 	kobject_put(group->devices_kobj);
-<<<<<<< HEAD
-=======
-	sysfs_remove_link(group->devices_kobj, device->name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_free_name:
 	kfree(device->name);
 err_remove_link:
@@ -1380,10 +1318,6 @@ EXPORT_SYMBOL_GPL(iommu_domain_alloc);
 
 void iommu_domain_free(struct iommu_domain *domain)
 {
-<<<<<<< HEAD
-=======
-	iommu_debug_domain_remove(domain);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	domain->ops->domain_free(domain);
 }
 EXPORT_SYMBOL_GPL(iommu_domain_free);
@@ -1402,10 +1336,6 @@ static int __iommu_attach_device(struct iommu_domain *domain,
 	ret = domain->ops->attach_dev(domain, dev);
 	if (!ret) {
 		trace_attach_device_to_domain(dev);
-<<<<<<< HEAD
-=======
-		iommu_debug_attach_device(domain, dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (!strnlen(domain->name, IOMMU_DOMAIN_NAME_LEN)) {
 			strlcpy(domain->name, dev_name(dev),
@@ -1421,12 +1351,9 @@ int iommu_attach_device(struct iommu_domain *domain, struct device *dev)
 	int ret;
 
 	group = iommu_group_get(dev);
-<<<<<<< HEAD
 	if (!group)
 		return -ENODEV;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Lock the group to make sure the device-count doesn't
 	 * change while we are attaching
@@ -1465,11 +1392,8 @@ void iommu_detach_device(struct iommu_domain *domain, struct device *dev)
 	struct iommu_group *group;
 
 	group = iommu_group_get(dev);
-<<<<<<< HEAD
 	if (!group)
 		return;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&group->mutex);
 	if (iommu_group_device_count(group) != 1) {
@@ -1524,12 +1448,6 @@ static int __iommu_attach_group(struct iommu_domain *domain,
 {
 	int ret;
 
-<<<<<<< HEAD
-=======
-	if (group->default_domain && group->domain != group->default_domain)
-		return -EBUSY;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = __iommu_group_for_each_dev(group, domain,
 					 iommu_group_do_attach_device);
 	if (ret == 0)
@@ -1559,7 +1477,6 @@ static int iommu_group_do_detach_device(struct device *dev, void *data)
 	return 0;
 }
 
-<<<<<<< HEAD
 /*
  * Although upstream implements detaching the default_domain as a noop,
  * the "SID switch" secure usecase require complete removal of SIDS/SMRS
@@ -1572,30 +1489,6 @@ static void __iommu_detach_group(struct iommu_domain *domain,
 					   iommu_group_do_detach_device);
 	group->domain = NULL;
 	return;
-=======
-static void __iommu_detach_group(struct iommu_domain *domain,
-				 struct iommu_group *group)
-{
-	int ret;
-
-	if (!group->default_domain) {
-		__iommu_group_for_each_dev(group, domain,
-					   iommu_group_do_detach_device);
-		group->domain = NULL;
-		return;
-	}
-
-	if (group->domain == group->default_domain)
-		return;
-
-	/* Detach by re-attaching to the default domain */
-	ret = __iommu_group_for_each_dev(group, group->default_domain,
-					 iommu_group_do_attach_device);
-	if (ret != 0)
-		WARN_ON(1);
-	else
-		group->domain = group->default_domain;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void iommu_detach_group(struct iommu_domain *domain, struct iommu_group *group)
@@ -1746,17 +1639,10 @@ static size_t __iommu_unmap(struct iommu_domain *domain,
 
 	if (unlikely(ops->unmap == NULL ||
 		     domain->pgsize_bitmap == 0UL))
-<<<<<<< HEAD
 		return 0;
 
 	if (unlikely(!(domain->type & __IOMMU_DOMAIN_PAGING)))
 		return 0;
-=======
-		return -ENODEV;
-
-	if (unlikely(!(domain->type & __IOMMU_DOMAIN_PAGING)))
-		return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* find out the minimum page size supported */
 	min_pagesz = 1 << __ffs(domain->pgsize_bitmap);
@@ -1769,11 +1655,7 @@ static size_t __iommu_unmap(struct iommu_domain *domain,
 	if (!IS_ALIGNED(iova | size, min_pagesz)) {
 		pr_err("unaligned: iova 0x%lx size 0x%zx min_pagesz 0x%x\n",
 		       iova, size, min_pagesz);
-<<<<<<< HEAD
 		return 0;
-=======
-		return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	pr_debug("unmap this: iova 0x%lx size 0x%zx\n", iova, size);
@@ -1833,11 +1715,7 @@ size_t iommu_map_sg(struct iommu_domain *domain,
 EXPORT_SYMBOL(iommu_map_sg);
 
 size_t default_iommu_map_sg(struct iommu_domain *domain, unsigned long iova,
-<<<<<<< HEAD
 		    struct scatterlist *sg, unsigned int nents, int prot)
-=======
-			 struct scatterlist *sg, unsigned int nents, int prot)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct scatterlist *s;
 	size_t mapped = 0;
@@ -1949,15 +1827,7 @@ static int __init iommu_init(void)
 					       NULL, kernel_kobj);
 	BUG_ON(!iommu_group_kset);
 
-<<<<<<< HEAD
 	iommu_debugfs_setup();
-=======
-	iommu_debugfs_top = debugfs_create_dir("iommu", NULL);
-	if (!iommu_debugfs_top) {
-		pr_err("Couldn't create iommu debugfs directory\n");
-		return -ENODEV;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -2059,34 +1929,6 @@ void iommu_trigger_fault(struct iommu_domain *domain, unsigned long flags)
 		domain->ops->trigger_fault(domain, flags);
 }
 
-<<<<<<< HEAD
-=======
-/**
- * iommu_reg_read() - read an IOMMU register
- *
- * Reads the IOMMU register at the given offset.
- */
-unsigned long iommu_reg_read(struct iommu_domain *domain, unsigned long offset)
-{
-	if (domain->ops->reg_read)
-		return domain->ops->reg_read(domain, offset);
-	return 0;
-}
-
-/**
- * iommu_reg_write() - write an IOMMU register
- *
- * Writes the given value to the IOMMU register at the given offset.
- */
-void iommu_reg_write(struct iommu_domain *domain, unsigned long offset,
-		     unsigned long val)
-{
-	if (domain->ops->reg_write)
-		domain->ops->reg_write(domain, offset, val);
-}
-
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct iommu_resv_region *iommu_alloc_resv_region(phys_addr_t start,
 						  size_t length, int prot,
 						  enum iommu_resv_type type)
@@ -2113,15 +1955,9 @@ int iommu_request_dm_for_dev(struct device *dev)
 	int ret;
 
 	/* Device must already be in a group before calling this function */
-<<<<<<< HEAD
 	group = iommu_group_get_for_dev(dev);
 	if (IS_ERR(group))
 		return PTR_ERR(group);
-=======
-	group = iommu_group_get(dev);
-	if (!group)
-		return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&group->mutex);
 

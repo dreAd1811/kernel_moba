@@ -58,17 +58,8 @@
 /* Ensure that addr is below task's addr_limit */
 #define __addr_ok(addr) ((unsigned long) addr < get_fs())
 
-<<<<<<< HEAD
 #define access_ok(type, addr, size) \
 	__range_ok((unsigned long)addr, (unsigned long)size)
-=======
-#define access_ok(type, addr, size)						\
-({ 									\
-	unsigned long __ao_addr = (unsigned long)(addr);		\
-	unsigned long __ao_size = (unsigned long)(size);		\
-	__range_ok(__ao_addr, __ao_size);				\
-})
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * These are the main single-value transfer routines.  They automatically

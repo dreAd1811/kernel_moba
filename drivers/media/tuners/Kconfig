@@ -26,7 +26,6 @@ config MEDIA_TUNER_SIMPLE
 	help
 	  Say Y here to include support for various simple tuners.
 
-<<<<<<< HEAD
 config MEDIA_TUNER_TDA18250
 	tristate "NXP TDA18250 silicon tuner"
 	depends on MEDIA_SUPPORT && I2C
@@ -34,8 +33,6 @@ config MEDIA_TUNER_TDA18250
 	help
 	  Say Y here to include support for TDA18250 tuner.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config MEDIA_TUNER_TDA8290
 	tristate "TDA 8290/8295 + 8275(a)/18271 tuner combo"
 	depends on MEDIA_SUPPORT && I2C
@@ -287,7 +284,6 @@ config MEDIA_TUNER_QM1D1C0042
 	default m if !MEDIA_SUBDRV_AUTOSELECT
 	help
 	  Sharp QM1D1C0042 trellis coded 8PSK tuner driver.
-<<<<<<< HEAD
 
 config MEDIA_TUNER_QM1D1B0004
 	tristate "Sharp QM1D1B0004 tuner"
@@ -295,6 +291,4 @@ config MEDIA_TUNER_QM1D1B0004
 	default m if !MEDIA_SUBDRV_AUTOSELECT
 	help
 	  Sharp QM1D1B0004 ISDB-S tuner driver.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 endmenu

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 /*
-=======
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Driver for Infineon tua6100 PLL.
  *
  * (c) 2006 Andrew de Quincey
@@ -32,11 +28,7 @@
 #define __DVB_TUA6100_H__
 
 #include <linux/i2c.h>
-<<<<<<< HEAD
 #include <media/dvb_frontend.h>
-=======
-#include "dvb_frontend.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #if IS_REACHABLE(CONFIG_DVB_TUA6100)
 extern struct dvb_frontend *tua6100_attach(struct dvb_frontend *fe, int addr, struct i2c_adapter *i2c);

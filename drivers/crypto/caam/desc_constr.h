@@ -109,11 +109,7 @@ static inline void init_job_desc_shared(u32 * const desc, dma_addr_t ptr,
 	append_ptr(desc, ptr);
 }
 
-<<<<<<< HEAD
 static inline void append_data(u32 * const desc, const void *data, int len)
-=======
-static inline void append_data(u32 * const desc, void *data, int len)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 *offset = desc_end(desc);
 
@@ -176,11 +172,7 @@ static inline void append_cmd_ptr_extlen(u32 * const desc, dma_addr_t ptr,
 	append_cmd(desc, len);
 }
 
-<<<<<<< HEAD
 static inline void append_cmd_data(u32 * const desc, const void *data, int len,
-=======
-static inline void append_cmd_data(u32 * const desc, void *data, int len,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   u32 command)
 {
 	append_cmd(desc, command | IMMEDIATE | len);
@@ -279,11 +271,7 @@ APPEND_SEQ_PTR_INTLEN(in, IN)
 APPEND_SEQ_PTR_INTLEN(out, OUT)
 
 #define APPEND_CMD_PTR_TO_IMM(cmd, op) \
-<<<<<<< HEAD
 static inline void append_##cmd##_as_imm(u32 * const desc, const void *data, \
-=======
-static inline void append_##cmd##_as_imm(u32 * const desc, void *data, \
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 unsigned int len, u32 options) \
 { \
 	PRINT_POS; \
@@ -324,11 +312,7 @@ APPEND_CMD_PTR_LEN(seq_out_ptr, SEQ_OUT_PTR, u32)
  * from length of immediate data provided, e.g., split keys
  */
 #define APPEND_CMD_PTR_TO_IMM2(cmd, op) \
-<<<<<<< HEAD
 static inline void append_##cmd##_as_imm(u32 * const desc, const void *data, \
-=======
-static inline void append_##cmd##_as_imm(u32 * const desc, void *data, \
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 unsigned int data_len, \
 					 unsigned int len, u32 options) \
 { \
@@ -468,11 +452,7 @@ struct alginfo {
 	unsigned int keylen_pad;
 	union {
 		dma_addr_t key_dma;
-<<<<<<< HEAD
 		const void *key_virt;
-=======
-		void *key_virt;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 	bool key_inline;
 };
@@ -516,7 +496,6 @@ static inline int desc_inline_query(unsigned int sd_base_len,
 	return (rem_bytes >= 0) ? 0 : -1;
 }
 
-<<<<<<< HEAD
 /**
  * append_proto_dkp - Derived Key Protocol (DKP): key -> split key
  * @desc: pointer to buffer used for descriptor construction
@@ -558,6 +537,4 @@ static inline void append_proto_dkp(u32 * const desc, struct alginfo *adata)
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* DESC_CONSTR_H */

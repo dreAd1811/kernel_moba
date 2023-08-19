@@ -347,11 +347,7 @@ static int bpck_test_proto( PIA *pi, char * scratch, int verbose )
 
 static void bpck_read_eeprom ( PIA *pi, char * buf )
 
-<<<<<<< HEAD
 {       int i, j, k, p, v, f, om, od;
-=======
-{       int i,j,k,n,p,v,f, om, od;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	bpck_force_spp(pi);
 
@@ -360,10 +356,6 @@ static void bpck_read_eeprom ( PIA *pi, char * buf )
 
 	bpck_connect(pi);
 	
-<<<<<<< HEAD
-=======
-	n = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	WR(4,0);
 	for (i=0;i<64;i++) {
 	    WR(6,8);  

@@ -58,11 +58,8 @@ struct meson_cvbs_enci_mode {
 };
 
 /* HDMI Clock parameters */
-<<<<<<< HEAD
 enum drm_mode_status
 meson_venc_hdmi_supported_mode(const struct drm_display_mode *mode);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 bool meson_venc_hdmi_supported_vic(int vic);
 bool meson_venc_hdmi_venc_repeat(int vic);
 

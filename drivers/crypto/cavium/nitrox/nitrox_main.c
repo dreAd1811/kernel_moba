@@ -183,11 +183,7 @@ static void nitrox_remove_from_devlist(struct nitrox_device *ndev)
 
 struct nitrox_device *nitrox_get_first_device(void)
 {
-<<<<<<< HEAD
 	struct nitrox_device *ndev = NULL;
-=======
-	struct nitrox_device *ndev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&devlist_lock);
 	list_for_each_entry(ndev, &ndevlist, list) {
@@ -195,11 +191,7 @@ struct nitrox_device *nitrox_get_first_device(void)
 			break;
 	}
 	mutex_unlock(&devlist_lock);
-<<<<<<< HEAD
 	if (!ndev)
-=======
-	if (&ndev->list == &ndevlist)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return NULL;
 
 	refcount_inc(&ndev->refcnt);

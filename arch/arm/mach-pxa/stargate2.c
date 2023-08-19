@@ -25,7 +25,6 @@
 #include <linux/mtd/plat-ram.h>
 #include <linux/mtd/partitions.h>
 
-<<<<<<< HEAD
 #include <linux/platform_data/i2c-pxa.h>
 #include <linux/platform_data/pcf857x.h>
 #include <linux/smc91x.h>
@@ -33,14 +32,6 @@
 #include <linux/gpio.h>
 #include <linux/leds.h>
 #include <linux/property.h>
-=======
-#include <linux/i2c/pxa-i2c.h>
-#include <linux/platform_data/pcf857x.h>
-#include <linux/platform_data/at24.h>
-#include <linux/smc91x.h>
-#include <linux/gpio.h>
-#include <linux/leds.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/types.h>
 #include <asm/setup.h>
@@ -62,10 +53,6 @@
 #include <linux/spi/spi.h>
 #include <linux/spi/pxa2xx_spi.h>
 #include <linux/mfd/da903x.h>
-<<<<<<< HEAD
-=======
-#include <linux/platform_data/sht15.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "devices.h"
 #include "generic.h"
@@ -150,7 +137,6 @@ static unsigned long sg2_im2_unified_pin_config[] __initdata = {
 	GPIO10_GPIO, /* large basic connector pin 23 */
 };
 
-<<<<<<< HEAD
 static struct gpiod_lookup_table sht15_gpiod_table = {
 	.dev_id = "sht15",
 	.table = {
@@ -158,22 +144,11 @@ static struct gpiod_lookup_table sht15_gpiod_table = {
 		GPIO_LOOKUP("gpio-pxa", 100, "data", GPIO_ACTIVE_HIGH),
 		GPIO_LOOKUP("gpio-pxa", 98, "clk", GPIO_ACTIVE_HIGH),
 	},
-=======
-static struct sht15_platform_data platform_data_sht15 = {
-	.gpio_data =  100,
-	.gpio_sck  =  98,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct platform_device sht15 = {
 	.name = "sht15",
 	.id = -1,
-<<<<<<< HEAD
-=======
-	.dev = {
-		.platform_data = &platform_data_sht15,
-	},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct regulator_consumer_supply stargate2_sensor_3_con[] = {
@@ -634,10 +609,7 @@ static void __init imote2_init(void)
 
 	imote2_stargate2_init();
 
-<<<<<<< HEAD
 	gpiod_add_lookup_table(&sht15_gpiod_table);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	platform_add_devices(imote2_devices, ARRAY_SIZE(imote2_devices));
 
 	i2c_register_board_info(0, imote2_i2c_board_info,
@@ -823,15 +795,9 @@ static struct pcf857x_platform_data platform_data_pcf857x = {
 	.context = NULL,
 };
 
-<<<<<<< HEAD
 static const struct property_entry pca9500_eeprom_properties[] = {
 	PROPERTY_ENTRY_U32("pagesize", 4),
 	{ }
-=======
-static struct at24_platform_data pca9500_eeprom_pdata = {
-	.byte_len = 256,
-	.page_size = 4,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -969,11 +935,7 @@ static struct i2c_board_info __initdata stargate2_i2c_board_info[] = {
 	}, {
 		.type = "24c02",
 		.addr = 0x57,
-<<<<<<< HEAD
 		.properties = pca9500_eeprom_properties,
-=======
-		.platform_data = &pca9500_eeprom_pdata,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}, {
 		.type = "max1238",
 		.addr = 0x35,
@@ -1028,10 +990,7 @@ static void __init stargate2_init(void)
 
 	imote2_stargate2_init();
 
-<<<<<<< HEAD
 	gpiod_add_lookup_table(&sht15_gpiod_table);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	platform_add_devices(ARRAY_AND_SIZE(stargate2_devices));
 
 	i2c_register_board_info(0, ARRAY_AND_SIZE(stargate2_i2c_board_info));

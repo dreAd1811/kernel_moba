@@ -1,22 +1,9 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * STM32 Low-Power Timer parent driver.
  * Copyright (C) STMicroelectronics 2017
  * Author: Fabrice Gasnier <fabrice.gasnier@st.com>
  * Inspired by Benjamin Gaignard's stm32-timers driver
-=======
-/*
- * STM32 Low-Power Timer parent driver.
- *
- * Copyright (C) STMicroelectronics 2017
- *
- * Author: Fabrice Gasnier <fabrice.gasnier@st.com>
- *
- * Inspired by Benjamin Gaignard's stm32-timers driver
- *
- * License terms:  GNU General Public License (GPL), version 2
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/mfd/stm32-lptimer.h>

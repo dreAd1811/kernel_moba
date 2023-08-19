@@ -1,10 +1,6 @@
 /*
  * Copyright (C) 2010-2011 Neil Brown
-<<<<<<< HEAD
  * Copyright (C) 2010-2018 Red Hat, Inc. All rights reserved.
-=======
- * Copyright (C) 2010-2017 Red Hat, Inc. All rights reserved.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This file is released under the GPL.
  */
@@ -16,11 +12,7 @@
 #include "raid1.h"
 #include "raid5.h"
 #include "raid10.h"
-<<<<<<< HEAD
 #include "md-bitmap.h"
-=======
-#include "bitmap.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/device-mapper.h>
 
@@ -113,11 +105,6 @@ struct raid_dev {
 #define CTR_FLAG_JOURNAL_DEV		(1 << __CTR_FLAG_JOURNAL_DEV)
 #define CTR_FLAG_JOURNAL_MODE		(1 << __CTR_FLAG_JOURNAL_MODE)
 
-<<<<<<< HEAD
-=======
-#define RESUME_STAY_FROZEN_FLAGS (CTR_FLAG_DELTA_DISKS | CTR_FLAG_DATA_OFFSET)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Definitions of various constructor flags to
  * be used in checks of valid / invalid flags
@@ -220,11 +207,8 @@ struct raid_dev {
 #define RT_FLAG_UPDATE_SBS		3
 #define RT_FLAG_RESHAPE_RS		4
 #define RT_FLAG_RS_SUSPENDED		5
-<<<<<<< HEAD
 #define RT_FLAG_RS_IN_SYNC		6
 #define RT_FLAG_RS_RESYNCING		7
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Array elements of 64 bit needed for rebuild/failed disk bits */
 #define DISKS_ARRAY_ELEMS ((MAX_RAID_DEVICES + (sizeof(uint64_t) * 8 - 1)) / sizeof(uint64_t) / 8)
@@ -241,10 +225,6 @@ struct rs_layout {
 struct raid_set {
 	struct dm_target *ti;
 
-<<<<<<< HEAD
-=======
-	uint32_t bitmap_loaded;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t stripe_cache_entries;
 	unsigned long ctr_flags;
 	unsigned long runtime_flags;
@@ -759,11 +739,7 @@ static struct raid_set *raid_set_alloc(struct dm_target *ti, struct raid_type *r
 		return ERR_PTR(-EINVAL);
 	}
 
-<<<<<<< HEAD
 	rs = kzalloc(struct_size(rs, dev, raid_devs), GFP_KERNEL);
-=======
-	rs = kzalloc(sizeof(*rs) + raid_devs * sizeof(rs->dev[0]), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!rs) {
 		ti->error = "Cannot allocate raid context";
 		return ERR_PTR(-ENOMEM);
@@ -800,10 +776,7 @@ static struct raid_set *raid_set_alloc(struct dm_target *ti, struct raid_type *r
 	return rs;
 }
 
-<<<<<<< HEAD
 /* Free all @rs allocations */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void raid_set_free(struct raid_set *rs)
 {
 	int i;
@@ -1033,11 +1006,7 @@ static int validate_raid_redundancy(struct raid_set *rs)
 		    !rs->dev[i].rdev.sb_page)
 			rebuild_cnt++;
 
-<<<<<<< HEAD
 	switch (rs->md.level) {
-=======
-	switch (rs->raid_type->level) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case 0:
 		break;
 	case 1:
@@ -1052,14 +1021,11 @@ static int validate_raid_redundancy(struct raid_set *rs)
 		break;
 	case 10:
 		copies = raid10_md_layout_to_copies(rs->md.new_layout);
-<<<<<<< HEAD
 		if (copies < 2) {
 			DMERR("Bogus raid10 data copies < 2!");
 			return -EINVAL;
 		}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (rebuild_cnt < copies)
 			break;
 
@@ -1381,31 +1347,18 @@ static int parse_raid_params(struct raid_set *rs, struct dm_arg_set *as,
 			 * In device-mapper, we specify things in sectors, but
 			 * MD records this value in kB
 			 */
-<<<<<<< HEAD
 			if (value < 0 || value / 2 > COUNTER_MAX) {
-=======
-			value /= 2;
-			if (value > COUNTER_MAX) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				rs->ti->error = "Max write-behind limit out of range";
 				return -EINVAL;
 			}
 
-<<<<<<< HEAD
 			rs->md.bitmap_info.max_write_behind = value / 2;
-=======
-			rs->md.bitmap_info.max_write_behind = value;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else if (!strcasecmp(key, dm_raid_arg_name_by_flag(CTR_FLAG_DAEMON_SLEEP))) {
 			if (test_and_set_bit(__CTR_FLAG_DAEMON_SLEEP, &rs->ctr_flags)) {
 				rs->ti->error = "Only one daemon_sleep argument pair allowed";
 				return -EINVAL;
 			}
-<<<<<<< HEAD
 			if (value < 0) {
-=======
-			if (!value || (value > MAX_SCHEDULE_TIMEOUT)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				rs->ti->error = "daemon sleep period out of range";
 				return -EINVAL;
 			}
@@ -1447,52 +1400,33 @@ static int parse_raid_params(struct raid_set *rs, struct dm_arg_set *as,
 				return -EINVAL;
 			}
 
-<<<<<<< HEAD
 			if (value < 0) {
 				rs->ti->error = "Bogus stripe cache entries value";
 				return -EINVAL;
 			}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rs->stripe_cache_entries = value;
 		} else if (!strcasecmp(key, dm_raid_arg_name_by_flag(CTR_FLAG_MIN_RECOVERY_RATE))) {
 			if (test_and_set_bit(__CTR_FLAG_MIN_RECOVERY_RATE, &rs->ctr_flags)) {
 				rs->ti->error = "Only one min_recovery_rate argument pair allowed";
 				return -EINVAL;
 			}
-<<<<<<< HEAD
 
 			if (value < 0) {
 				rs->ti->error = "min_recovery_rate out of range";
 				return -EINVAL;
 			}
 			rs->md.sync_speed_min = value;
-=======
-			if (value > INT_MAX) {
-				rs->ti->error = "min_recovery_rate out of range";
-				return -EINVAL;
-			}
-			rs->md.sync_speed_min = (int)value;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else if (!strcasecmp(key, dm_raid_arg_name_by_flag(CTR_FLAG_MAX_RECOVERY_RATE))) {
 			if (test_and_set_bit(__CTR_FLAG_MAX_RECOVERY_RATE, &rs->ctr_flags)) {
 				rs->ti->error = "Only one max_recovery_rate argument pair allowed";
 				return -EINVAL;
 			}
-<<<<<<< HEAD
 
 			if (value < 0) {
 				rs->ti->error = "max_recovery_rate out of range";
 				return -EINVAL;
 			}
 			rs->md.sync_speed_max = value;
-=======
-			if (value > INT_MAX) {
-				rs->ti->error = "max_recovery_rate out of range";
-				return -EINVAL;
-			}
-			rs->md.sync_speed_max = (int)value;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else if (!strcasecmp(key, dm_raid_arg_name_by_flag(CTR_FLAG_REGION_SIZE))) {
 			if (test_and_set_bit(__CTR_FLAG_REGION_SIZE, &rs->ctr_flags)) {
 				rs->ti->error = "Only one region_size argument pair allowed";
@@ -1538,15 +1472,12 @@ static int parse_raid_params(struct raid_set *rs, struct dm_arg_set *as,
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 	if (rs->md.sync_speed_max &&
 	    rs->md.sync_speed_min > rs->md.sync_speed_max) {
 		rs->ti->error = "Bogus recovery rates";
 		return -EINVAL;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (validate_region_size(rs, region_size))
 		return -EINVAL;
 
@@ -1665,7 +1596,6 @@ static sector_t __rdev_sectors(struct raid_set *rs)
 	return 0;
 }
 
-<<<<<<< HEAD
 /* Check that calculated dev_sectors fits all component devices. */
 static int _check_data_dev_sectors(struct raid_set *rs)
 {
@@ -1684,8 +1614,6 @@ static int _check_data_dev_sectors(struct raid_set *rs)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Calculate the sectors per device and per array used for @rs */
 static int rs_set_dev_and_array_sectors(struct raid_set *rs, bool use_mddev)
 {
@@ -1735,11 +1663,7 @@ static int rs_set_dev_and_array_sectors(struct raid_set *rs, bool use_mddev)
 	mddev->array_sectors = array_sectors;
 	mddev->dev_sectors = dev_sectors;
 
-<<<<<<< HEAD
 	return _check_data_dev_sectors(rs);
-=======
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 bad:
 	rs->ti->error = "Target length not divisible by number of data devices";
 	return -EINVAL;
@@ -1977,11 +1901,7 @@ static bool rs_reshape_requested(struct raid_set *rs)
 	if (rs_takeover_requested(rs))
 		return false;
 
-<<<<<<< HEAD
 	if (rs_is_raid0(rs))
-=======
-	if (!mddev->level)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return false;
 
 	change = mddev->new_layout != mddev->layout ||
@@ -1989,11 +1909,7 @@ static bool rs_reshape_requested(struct raid_set *rs)
 		 rs->delta_disks;
 
 	/* Historical case to support raid1 reshape without delta disks */
-<<<<<<< HEAD
 	if (rs_is_raid1(rs)) {
-=======
-	if (mddev->level == 1) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (rs->delta_disks)
 			return !!rs->delta_disks;
 
@@ -2001,11 +1917,7 @@ static bool rs_reshape_requested(struct raid_set *rs)
 		       mddev->raid_disks != rs->raid_disks;
 	}
 
-<<<<<<< HEAD
 	if (rs_is_raid10(rs))
-=======
-	if (mddev->level == 10)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return change &&
 		       !__is_raid10_far(mddev->new_layout) &&
 		       rs->delta_disks >= 0;
@@ -2469,11 +2381,7 @@ static int super_init_validation(struct raid_set *rs, struct md_rdev *rdev)
 			DMERR("new device%s provided without 'rebuild'",
 			      new_devs > 1 ? "s" : "");
 			return -EINVAL;
-<<<<<<< HEAD
 		} else if (!test_bit(__CTR_FLAG_REBUILD, &rs->ctr_flags) && rs_is_recovering(rs)) {
-=======
-		} else if (rs_is_recovering(rs)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			DMERR("'rebuild' specified while raid set is not in-sync (recovery_cp=%llu)",
 			      (unsigned long long) mddev->recovery_cp);
 			return -EINVAL;
@@ -2567,11 +2475,7 @@ static int super_validate(struct raid_set *rs, struct md_rdev *rdev)
 	}
 
 	/* Enable bitmap creation for RAID levels != 0 */
-<<<<<<< HEAD
 	mddev->bitmap_info.offset = rt_is_raid0(rs->raid_type) ? 0 : to_sector(4096);
-=======
-	mddev->bitmap_info.offset = (rt_is_raid0(rs->raid_type) || rs->journal_dev.dev) ? 0 : to_sector(4096);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mddev->bitmap_info.default_offset = mddev->bitmap_info.offset;
 
 	if (!test_and_clear_bit(FirstUse, &rdev->flags)) {
@@ -2722,11 +2626,7 @@ static int rs_adjust_data_offsets(struct raid_set *rs)
 		return 0;
 	}
 
-<<<<<<< HEAD
 	/* HM FIXME: get In_Sync raid_dev? */
-=======
-	/* HM FIXME: get InSync raid_dev? */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rdev = &rs->dev[0].rdev;
 
 	if (rs->delta_disks < 0) {
@@ -2781,17 +2681,12 @@ static int rs_adjust_data_offsets(struct raid_set *rs)
 	 * Make sure we got a minimum amount of free sectors per device
 	 */
 	if (rs->data_offset &&
-<<<<<<< HEAD
 	    to_sector(i_size_read(rdev->bdev->bd_inode)) - rs->md.dev_sectors < MIN_FREE_RESHAPE_SPACE) {
-=======
-	    to_sector(i_size_read(rdev->bdev->bd_inode)) - rdev->sectors < MIN_FREE_RESHAPE_SPACE) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rs->ti->error = data_offset ? "No space for forward reshape" :
 					      "No space for backward reshape";
 		return -ENOSPC;
 	}
 out:
-<<<<<<< HEAD
 	/*
 	 * Raise recovery_cp in case data_offset != 0 to
 	 * avoid false recovery positives in the constructor.
@@ -2799,8 +2694,6 @@ out:
 	if (rs->md.recovery_cp < rs->md.dev_sectors)
 		rs->md.recovery_cp += rs->dev[0].rdev.data_offset;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Adjust data offsets on all rdevs but on any raid4/5/6 journal device */
 	rdev_for_each(rdev, &rs->md) {
 		if (!test_bit(Journal, &rdev->flags)) {
@@ -2837,22 +2730,14 @@ static int rs_setup_takeover(struct raid_set *rs)
 	sector_t new_data_offset = rs->dev[0].rdev.data_offset ? 0 : rs->data_offset;
 
 	if (rt_is_raid10(rs->raid_type)) {
-<<<<<<< HEAD
 		if (rs_is_raid0(rs)) {
-=======
-		if (mddev->level == 0) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* Userpace reordered disks -> adjust raid_disk indexes */
 			__reorder_raid_disk_indexes(rs);
 
 			/* raid0 -> raid10_far layout */
 			mddev->layout = raid10_format_to_md_layout(rs, ALGORITHM_RAID10_FAR,
 								   rs->raid10_copies);
-<<<<<<< HEAD
 		} else if (rs_is_raid1(rs))
-=======
-		} else if (mddev->level == 1)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* raid1 -> raid10_near layout */
 			mddev->layout = raid10_format_to_md_layout(rs, ALGORITHM_RAID10_NEAR,
 								   rs->raid_disks);
@@ -2940,7 +2825,6 @@ static int rs_prepare_reshape(struct raid_set *rs)
 	return 0;
 }
 
-<<<<<<< HEAD
 /* Get reshape sectors from data_offsets or raid set */
 static sector_t _get_reshape_sectors(struct raid_set *rs)
 {
@@ -2958,8 +2842,6 @@ static sector_t _get_reshape_sectors(struct raid_set *rs)
 	return max(reshape_sectors, (sector_t) rs->data_offset);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  *
  * - change raid layout
@@ -2971,10 +2853,7 @@ static int rs_setup_reshape(struct raid_set *rs)
 {
 	int r = 0;
 	unsigned int cur_raid_devs, d;
-<<<<<<< HEAD
 	sector_t reshape_sectors = _get_reshape_sectors(rs);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mddev *mddev = &rs->md;
 	struct md_rdev *rdev;
 
@@ -2991,21 +2870,13 @@ static int rs_setup_reshape(struct raid_set *rs)
 	/*
 	 * Adjust array size:
 	 *
-<<<<<<< HEAD
 	 * - in case of adding disk(s), array size has
-=======
-	 * - in case of adding disks, array size has
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 *   to grow after the disk adding reshape,
 	 *   which'll hapen in the event handler;
 	 *   reshape will happen forward, so space has to
 	 *   be available at the beginning of each disk
 	 *
-<<<<<<< HEAD
 	 * - in case of removing disk(s), array size
-=======
-	 * - in case of removing disks, array size
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 *   has to shrink before starting the reshape,
 	 *   which'll happen here;
 	 *   reshape will happen backward, so space has to
@@ -3036,11 +2907,7 @@ static int rs_setup_reshape(struct raid_set *rs)
 			rdev->recovery_offset = rs_is_raid1(rs) ? 0 : MaxSector;
 		}
 
-<<<<<<< HEAD
 		mddev->reshape_backwards = 0; /* adding disk(s) -> forward reshape */
-=======
-		mddev->reshape_backwards = 0; /* adding disks -> forward reshape */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Remove disk(s) */
 	} else if (rs->delta_disks < 0) {
@@ -3073,7 +2940,6 @@ static int rs_setup_reshape(struct raid_set *rs)
 		mddev->reshape_backwards = rs->dev[0].rdev.data_offset ? 0 : 1;
 	}
 
-<<<<<<< HEAD
 	/*
 	 * Adjust device size for forward reshape
 	 * because md_finish_reshape() reduces it.
@@ -3083,8 +2949,6 @@ static int rs_setup_reshape(struct raid_set *rs)
 			if (!test_bit(Journal, &rdev->flags))
 				rdev->sectors += reshape_sectors;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return r;
 }
 
@@ -3098,20 +2962,10 @@ static void configure_discard_support(struct raid_set *rs)
 	bool raid456;
 	struct dm_target *ti = rs->ti;
 
-<<<<<<< HEAD
 	/*
 	 * XXX: RAID level 4,5,6 require zeroing for safety.
 	 */
 	raid456 = rs_is_raid456(rs);
-=======
-	/* Assume discards not supported until after checks below. */
-	ti->discards_supported = false;
-
-	/*
-	 * XXX: RAID level 4,5,6 require zeroing for safety.
-	 */
-	raid456 = (rs->md.level == 4 || rs->md.level == 5 || rs->md.level == 6);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < rs->raid_disks; i++) {
 		struct request_queue *q;
@@ -3132,21 +2986,11 @@ static void configure_discard_support(struct raid_set *rs)
 		}
 	}
 
-<<<<<<< HEAD
-=======
-	/* All RAID members properly support discards */
-	ti->discards_supported = true;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * RAID1 and RAID10 personalities require bio splitting,
 	 * RAID0/4/5/6 don't and process large discard bios properly.
 	 */
-<<<<<<< HEAD
 	ti->split_discard_bios = !!(rs_is_raid1(rs) || rs_is_raid10(rs));
-=======
-	ti->split_discard_bios = !!(rs->md.level == 1 || rs->md.level == 10);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ti->num_discard_bios = 1;
 }
 
@@ -3166,17 +3010,10 @@ static void configure_discard_support(struct raid_set *rs)
 static int raid_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 {
 	int r;
-<<<<<<< HEAD
 	bool resize = false;
 	struct raid_type *rt;
 	unsigned int num_raid_params, num_raid_devs;
 	sector_t calculated_dev_sectors, rdev_sectors, reshape_sectors;
-=======
-	bool resize;
-	struct raid_type *rt;
-	unsigned int num_raid_params, num_raid_devs;
-	sector_t calculated_dev_sectors, rdev_sectors;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct raid_set *rs = NULL;
 	const char *arg;
 	struct rs_layout rs_layout;
@@ -3259,14 +3096,10 @@ static int raid_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 		goto bad;
 	}
 
-<<<<<<< HEAD
 
 	reshape_sectors = _get_reshape_sectors(rs);
 	if (calculated_dev_sectors != rdev_sectors)
 		resize = calculated_dev_sectors != (reshape_sectors ? rdev_sectors - reshape_sectors : rdev_sectors);
-=======
-	resize = calculated_dev_sectors != rdev_sectors;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	INIT_WORK(&rs->md.event_work, do_table_event);
 	ti->private = rs;
@@ -3355,7 +3188,6 @@ static int raid_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 			goto bad;
 		}
 
-<<<<<<< HEAD
 		/* Out-of-place space has to be available to allow for a reshape unless raid1! */
 		if (reshape_sectors || rs_is_raid1(rs)) {
 			/*
@@ -3372,21 +3204,6 @@ static int raid_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 			/* Reshaping ain't recovery, so disable recovery */
 			rs_setup_recovery(rs, MaxSector);
 		}
-=======
-		/*
-		  * We can only prepare for a reshape here, because the
-		  * raid set needs to run to provide the repective reshape
-		  * check functions via its MD personality instance.
-		  *
-		  * So do the reshape check after md_run() succeeded.
-		  */
-		r = rs_prepare_reshape(rs);
-		if (r)
-			return r;
-
-		/* Reshaping ain't recovery, so disable recovery */
-		rs_setup_recovery(rs, MaxSector);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rs_set_cur(rs);
 	} else {
 		/* May not set recovery when a device rebuild is requested */
@@ -3407,28 +3224,20 @@ static int raid_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	/* Start raid set read-only and assumed clean to change in raid_resume() */
 	rs->md.ro = 1;
 	rs->md.in_sync = 1;
-<<<<<<< HEAD
 
 	/* Keep array frozen */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	set_bit(MD_RECOVERY_FROZEN, &rs->md.recovery);
 
 	/* Has to be held on running the array */
 	mddev_lock_nointr(&rs->md);
 	r = md_run(&rs->md);
 	rs->md.in_sync = 0; /* Assume already marked dirty */
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r) {
 		ti->error = "Failed to run raid array";
 		mddev_unlock(&rs->md);
 		goto bad;
 	}
 
-<<<<<<< HEAD
 	r = md_start(&rs->md);
 
 	if (r) {
@@ -3441,12 +3250,6 @@ static int raid_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	dm_table_add_target_callbacks(ti->table, &rs->callbacks);
 
 	/* If raid4/5/6 journal mode explicitly requested (only possible with journal dev) -> set it */
-=======
-	rs->callbacks.congested_fn = raid_is_congested;
-	dm_table_add_target_callbacks(ti->table, &rs->callbacks);
-
-	/* If raid4/5/6 journal mode explictely requested (only possible with journal dev) -> set it */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (test_bit(__CTR_FLAG_JOURNAL_MODE, &rs->ctr_flags)) {
 		r = r5c_journal_mode_set(&rs->md, rs->journal_dev.mode);
 		if (r) {
@@ -3490,10 +3293,7 @@ static int raid_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	mddev_unlock(&rs->md);
 	return 0;
 
-<<<<<<< HEAD
 bad_md_start:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 bad_journal_mode_set:
 bad_stripe_cache:
 bad_check_reshape:
@@ -3534,7 +3334,6 @@ static int raid_map(struct dm_target *ti, struct bio *bio)
 	return DM_MAPIO_SUBMITTED;
 }
 
-<<<<<<< HEAD
 /* Return sync state string for @state */
 enum sync_state { st_frozen, st_reshape, st_resync, st_check, st_repair, st_recover, st_idle };
 static const char *sync_str(enum sync_state state)
@@ -3582,32 +3381,6 @@ static enum sync_state decipher_sync_action(struct mddev *mddev, unsigned long r
 	}
 
 	return st_idle;
-=======
-/* Return string describing the current sync action of @mddev */
-static const char *decipher_sync_action(struct mddev *mddev)
-{
-	if (test_bit(MD_RECOVERY_FROZEN, &mddev->recovery))
-		return "frozen";
-
-	if (test_bit(MD_RECOVERY_RUNNING, &mddev->recovery) ||
-	    (!mddev->ro && test_bit(MD_RECOVERY_NEEDED, &mddev->recovery))) {
-		if (test_bit(MD_RECOVERY_RESHAPE, &mddev->recovery))
-			return "reshape";
-
-		if (test_bit(MD_RECOVERY_SYNC, &mddev->recovery)) {
-			if (!test_bit(MD_RECOVERY_REQUESTED, &mddev->recovery))
-				return "resync";
-			else if (test_bit(MD_RECOVERY_CHECK, &mddev->recovery))
-				return "check";
-			return "repair";
-		}
-
-		if (test_bit(MD_RECOVERY_RECOVER, &mddev->recovery))
-			return "recover";
-	}
-
-	return "idle";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -3620,11 +3393,7 @@ static const char *decipher_sync_action(struct mddev *mddev)
  *  'A' = Alive and in-sync raid set component _or_ alive raid4/5/6 'write_through' journal device
  *  '-' = Non-existing device (i.e. uspace passed '- -' into the ctr)
  */
-<<<<<<< HEAD
 static const char *__raid_dev_status(struct raid_set *rs, struct md_rdev *rdev)
-=======
-static const char *__raid_dev_status(struct raid_set *rs, struct md_rdev *rdev, bool array_in_sync)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (!rdev->bdev)
 		return "-";
@@ -3632,19 +3401,14 @@ static const char *__raid_dev_status(struct raid_set *rs, struct md_rdev *rdev, 
 		return "D";
 	else if (test_bit(Journal, &rdev->flags))
 		return (rs->journal_dev.mode == R5C_JOURNAL_MODE_WRITE_THROUGH) ? "A" : "a";
-<<<<<<< HEAD
 	else if (test_bit(RT_FLAG_RS_RESYNCING, &rs->runtime_flags) ||
 		 (!test_bit(RT_FLAG_RS_IN_SYNC, &rs->runtime_flags) &&
 		  !test_bit(In_sync, &rdev->flags)))
-=======
-	else if (!array_in_sync || !test_bit(In_sync, &rdev->flags))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return "a";
 	else
 		return "A";
 }
 
-<<<<<<< HEAD
 /* Helper to return resync/reshape progress for @rs and runtime flags for raid set in sync / resynching */
 static sector_t rs_get_progress(struct raid_set *rs, unsigned long recovery,
 				sector_t resync_max_sectors)
@@ -3698,61 +3462,11 @@ static sector_t rs_get_progress(struct raid_set *rs, unsigned long recovery,
 			set_bit(RT_FLAG_RS_RESYNCING, &rs->runtime_flags);
 
 		else if (state == st_check || state == st_repair)
-=======
-/* Helper to return resync/reshape progress for @rs and @array_in_sync */
-static sector_t rs_get_progress(struct raid_set *rs,
-				sector_t resync_max_sectors, bool *array_in_sync)
-{
-	sector_t r, curr_resync_completed;
-	struct mddev *mddev = &rs->md;
-
-	curr_resync_completed = mddev->curr_resync_completed ?: mddev->recovery_cp;
-	*array_in_sync = false;
-
-	if (rs_is_raid0(rs)) {
-		r = resync_max_sectors;
-		*array_in_sync = true;
-
-	} else {
-		r = mddev->reshape_position;
-
-		/* Reshape is relative to the array size */
-		if (test_bit(MD_RECOVERY_RESHAPE, &mddev->recovery) ||
-		    r != MaxSector) {
-			if (r == MaxSector) {
-				*array_in_sync = true;
-				r = resync_max_sectors;
-			} else {
-				/* Got to reverse on backward reshape */
-				if (mddev->reshape_backwards)
-					r = mddev->array_sectors - r;
-
-				/* Devide by # of data stripes */
-				sector_div(r, mddev_data_stripes(rs));
-			}
-
-		/* Sync is relative to the component device size */
-		} else if (test_bit(MD_RECOVERY_RUNNING, &mddev->recovery))
-			r = curr_resync_completed;
-		else
-			r = mddev->recovery_cp;
-
-		if ((r == MaxSector) ||
-		    (test_bit(MD_RECOVERY_DONE, &mddev->recovery) &&
-		     (mddev->curr_resync_completed == resync_max_sectors))) {
-			/*
-			 * Sync complete.
-			 */
-			*array_in_sync = true;
-			r = resync_max_sectors;
-		} else if (test_bit(MD_RECOVERY_REQUESTED, &mddev->recovery)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/*
 			 * If "check" or "repair" is occurring, the raid set has
 			 * undergone an initial sync and the health characters
 			 * should not be 'a' anymore.
 			 */
-<<<<<<< HEAD
 			set_bit(RT_FLAG_RS_IN_SYNC, &rs->runtime_flags);
 
 		else {
@@ -3766,19 +3480,11 @@ static sector_t rs_get_progress(struct raid_set *rs,
 				set_bit(RT_FLAG_RS_RESYNCING, &rs->runtime_flags);
 
 			/*
-=======
-			*array_in_sync = true;
-		} else {
-			struct md_rdev *rdev;
-
-			/*
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 * The raid set may be doing an initial sync, or it may
 			 * be rebuilding individual components.	 If all the
 			 * devices are In_sync, then it is the raid set that is
 			 * being initialized.
 			 */
-<<<<<<< HEAD
 			set_bit(RT_FLAG_RS_IN_SYNC, &rs->runtime_flags);
 			rdev_for_each(rdev, mddev)
 				if (!test_bit(Journal, &rdev->flags) &&
@@ -3790,19 +3496,6 @@ static sector_t rs_get_progress(struct raid_set *rs,
 	}
 
 	return min(r, resync_max_sectors);
-=======
-			rdev_for_each(rdev, mddev)
-				if (!test_bit(Journal, &rdev->flags) &&
-				    !test_bit(In_sync, &rdev->flags))
-					*array_in_sync = true;
-#if 0
-			r = 0; /* HM FIXME: TESTME: https://bugzilla.redhat.com/show_bug.cgi?id=1210637 ? */
-#endif
-		}
-	}
-
-	return r;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Helper to return @dev name or "-" if !@dev */
@@ -3818,11 +3511,7 @@ static void raid_status(struct dm_target *ti, status_type_t type,
 	struct mddev *mddev = &rs->md;
 	struct r5conf *conf = mddev->private;
 	int i, max_nr_stripes = conf ? conf->max_nr_stripes : 0;
-<<<<<<< HEAD
 	unsigned long recovery;
-=======
-	bool array_in_sync;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int raid_param_cnt = 1; /* at least 1 for chunksize */
 	unsigned int sz = 0;
 	unsigned int rebuild_disks;
@@ -3842,7 +3531,6 @@ static void raid_status(struct dm_target *ti, status_type_t type,
 
 		/* Access most recent mddev properties for status output */
 		smp_rmb();
-<<<<<<< HEAD
 		recovery = rs->md.recovery;
 		/* Get sensible max sectors even if raid set not yet started */
 		resync_max_sectors = test_bit(RT_FLAG_RS_PRERESUMED, &rs->runtime_flags) ?
@@ -3855,19 +3543,6 @@ static void raid_status(struct dm_target *ti, status_type_t type,
 		/* HM FIXME: do we want another state char for raid0? It shows 'D'/'A'/'-' now */
 		for (i = 0; i < rs->raid_disks; i++)
 			DMEMIT(__raid_dev_status(rs, &rs->dev[i].rdev));
-=======
-		/* Get sensible max sectors even if raid set not yet started */
-		resync_max_sectors = test_bit(RT_FLAG_RS_PRERESUMED, &rs->runtime_flags) ?
-				      mddev->resync_max_sectors : mddev->dev_sectors;
-		progress = rs_get_progress(rs, resync_max_sectors, &array_in_sync);
-		resync_mismatches = (mddev->last_sync_action && !strcasecmp(mddev->last_sync_action, "check")) ?
-				    atomic64_read(&mddev->resync_mismatches) : 0;
-		sync_action = decipher_sync_action(&rs->md);
-
-		/* HM FIXME: do we want another state char for raid0? It shows 'D'/'A'/'-' now */
-		for (i = 0; i < rs->raid_disks; i++)
-			DMEMIT(__raid_dev_status(rs, &rs->dev[i].rdev, array_in_sync));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/*
 		 * In-sync/Reshape ratio:
@@ -3918,11 +3593,7 @@ static void raid_status(struct dm_target *ti, status_type_t type,
 		 * v1.10.0+:
 		 */
 		DMEMIT(" %s", test_bit(__CTR_FLAG_JOURNAL_DEV, &rs->ctr_flags) ?
-<<<<<<< HEAD
 			      __raid_dev_status(rs, &rs->journal_dev.rdev) : "-");
-=======
-			      __raid_dev_status(rs, &rs->journal_dev.rdev, 0) : "-");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case STATUSTYPE_TABLE:
@@ -4000,12 +3671,8 @@ static void raid_status(struct dm_target *ti, status_type_t type,
 	}
 }
 
-<<<<<<< HEAD
 static int raid_message(struct dm_target *ti, unsigned int argc, char **argv,
 			char *result, unsigned maxlen)
-=======
-static int raid_message(struct dm_target *ti, unsigned int argc, char **argv)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct raid_set *rs = ti->private;
 	struct mddev *mddev = &rs->md;
@@ -4083,37 +3750,19 @@ static void raid_io_hints(struct dm_target *ti, struct queue_limits *limits)
 	blk_limits_io_opt(limits, chunk_size * mddev_data_stripes(rs));
 }
 
-<<<<<<< HEAD
-=======
-static void raid_presuspend(struct dm_target *ti)
-{
-	struct raid_set *rs = ti->private;
-
-	md_stop_writes(&rs->md);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void raid_postsuspend(struct dm_target *ti)
 {
 	struct raid_set *rs = ti->private;
 
 	if (!test_and_set_bit(RT_FLAG_RS_SUSPENDED, &rs->runtime_flags)) {
-<<<<<<< HEAD
 		/* Writes have to be stopped before suspending to avoid deadlocks. */
 		if (!test_bit(MD_RECOVERY_FROZEN, &rs->md.recovery))
 			md_stop_writes(&rs->md);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mddev_lock_nointr(&rs->md);
 		mddev_suspend(&rs->md);
 		mddev_unlock(&rs->md);
 	}
-<<<<<<< HEAD
-=======
-
-	rs->md.ro = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void attempt_restore_of_faulty_devices(struct raid_set *rs)
@@ -4206,11 +3855,7 @@ static int __load_dirty_region_bitmap(struct raid_set *rs)
 	/* Try loading the bitmap unless "raid0", which does not have one */
 	if (!rs_is_raid0(rs) &&
 	    !test_and_set_bit(RT_FLAG_RS_BITMAP_LOADED, &rs->runtime_flags)) {
-<<<<<<< HEAD
 		r = md_bitmap_load(&rs->md);
-=======
-		r = bitmap_load(&rs->md);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (r)
 			DMERR("Failed to load bitmap");
 	}
@@ -4243,23 +3888,13 @@ static int rs_start_reshape(struct raid_set *rs)
 	struct mddev *mddev = &rs->md;
 	struct md_personality *pers = mddev->pers;
 
-<<<<<<< HEAD
 	/* Don't allow the sync thread to work until the table gets reloaded. */
 	set_bit(MD_RECOVERY_WAIT, &mddev->recovery);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	r = rs_setup_reshape(rs);
 	if (r)
 		return r;
 
-<<<<<<< HEAD
-=======
-	/* Need to be resumed to be able to start reshape, recovery is frozen until raid_resume() though */
-	if (test_and_clear_bit(RT_FLAG_RS_SUSPENDED, &rs->runtime_flags))
-		mddev_resume(mddev);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Check any reshape constraints enforced by the personalility
 	 *
@@ -4283,13 +3918,6 @@ static int rs_start_reshape(struct raid_set *rs)
 		}
 	}
 
-<<<<<<< HEAD
-=======
-	/* Suspend because a resume will happen in raid_resume() */
-	set_bit(RT_FLAG_RS_SUSPENDED, &rs->runtime_flags);
-	mddev_suspend(mddev);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Now reshape got set up, update superblocks to
 	 * reflect the fact so that a table reload will
@@ -4306,11 +3934,7 @@ static int raid_preresume(struct dm_target *ti)
 	struct raid_set *rs = ti->private;
 	struct mddev *mddev = &rs->md;
 
-<<<<<<< HEAD
 	/* This is a resume after a suspend of the set -> it's already started. */
-=======
-	/* This is a resume after a suspend of the set -> it's already started */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (test_and_set_bit(RT_FLAG_RS_PRERESUMED, &rs->runtime_flags))
 		return 0;
 
@@ -4331,13 +3955,8 @@ static int raid_preresume(struct dm_target *ti)
 	/* Resize bitmap to adjust to changed region size (aka MD bitmap chunksize) */
 	if (test_bit(RT_FLAG_RS_BITMAP_LOADED, &rs->runtime_flags) && mddev->bitmap &&
 	    mddev->bitmap_info.chunksize != to_bytes(rs->requested_bitmap_chunk_sectors)) {
-<<<<<<< HEAD
 		r = md_bitmap_resize(mddev->bitmap, mddev->dev_sectors,
 				     to_bytes(rs->requested_bitmap_chunk_sectors), 0);
-=======
-		r = bitmap_resize(mddev->bitmap, mddev->dev_sectors,
-				  to_bytes(rs->requested_bitmap_chunk_sectors), 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (r)
 			DMERR("Failed to resize bitmap");
 	}
@@ -4351,11 +3970,7 @@ static int raid_preresume(struct dm_target *ti)
 	}
 
 	/* Check for any reshape request unless new raid set */
-<<<<<<< HEAD
 	if (test_bit(RT_FLAG_RESHAPE_RS, &rs->runtime_flags)) {
-=======
-	if (test_and_clear_bit(RT_FLAG_RESHAPE_RS, &rs->runtime_flags)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Initiate a reshape. */
 		rs_set_rdev_sectors(rs);
 		mddev_lock_nointr(mddev);
@@ -4383,7 +3998,6 @@ static void raid_resume(struct dm_target *ti)
 		attempt_restore_of_faulty_devices(rs);
 	}
 
-<<<<<<< HEAD
 	if (test_and_clear_bit(RT_FLAG_RS_SUSPENDED, &rs->runtime_flags)) {
 		/* Only reduce raid set size before running a disk removing reshape. */
 		if (mddev->delta_disks < 0)
@@ -4393,27 +4007,6 @@ static void raid_resume(struct dm_target *ti)
 		clear_bit(MD_RECOVERY_FROZEN, &mddev->recovery);
 		mddev->ro = 0;
 		mddev->in_sync = 0;
-=======
-	mddev->ro = 0;
-	mddev->in_sync = 0;
-
-	/* Only reduce raid set size before running a disk removing reshape. */
-	if (mddev->delta_disks < 0)
-		rs_set_capacity(rs);
-
-	/*
-	 * Keep the RAID set frozen if reshape/rebuild flags are set.
-	 * The RAID set is unfrozen once the next table load/resume,
-	 * which clears the reshape/rebuild flags, occurs.
-	 * This ensures that the constructor for the inactive table
-	 * retrieves an up-to-date reshape_position.
-	 */
-	if (!(rs->ctr_flags & RESUME_STAY_FROZEN_FLAGS))
-		clear_bit(MD_RECOVERY_FROZEN, &mddev->recovery);
-
-	if (test_and_clear_bit(RT_FLAG_RS_SUSPENDED, &rs->runtime_flags)) {
-		mddev_lock_nointr(mddev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mddev_resume(mddev);
 		mddev_unlock(mddev);
 	}
@@ -4421,11 +4014,7 @@ static void raid_resume(struct dm_target *ti)
 
 static struct target_type raid_target = {
 	.name = "raid",
-<<<<<<< HEAD
 	.version = {1, 14, 0},
-=======
-	.version = {1, 13, 0},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.module = THIS_MODULE,
 	.ctr = raid_ctr,
 	.dtr = raid_dtr,
@@ -4434,10 +4023,6 @@ static struct target_type raid_target = {
 	.message = raid_message,
 	.iterate_devices = raid_iterate_devices,
 	.io_hints = raid_io_hints,
-<<<<<<< HEAD
-=======
-	.presuspend = raid_presuspend,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.postsuspend = raid_postsuspend,
 	.preresume = raid_preresume,
 	.resume = raid_resume,

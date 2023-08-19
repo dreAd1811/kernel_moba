@@ -43,11 +43,7 @@ struct tegra_dfll_soc_data {
 
 int tegra_dfll_register(struct platform_device *pdev,
 			struct tegra_dfll_soc_data *soc);
-<<<<<<< HEAD
 struct tegra_dfll_soc_data *tegra_dfll_unregister(struct platform_device *pdev);
-=======
-int tegra_dfll_unregister(struct platform_device *pdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int tegra_dfll_runtime_suspend(struct device *dev);
 int tegra_dfll_runtime_resume(struct device *dev);
 

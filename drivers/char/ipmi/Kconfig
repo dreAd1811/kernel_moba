@@ -25,24 +25,17 @@ if IPMI_HANDLER
 config IPMI_PANIC_EVENT
        bool 'Generate a panic event to all BMCs on a panic'
        help
-<<<<<<< HEAD
 	 When a panic occurs, this will cause the IPMI message handler to,
 	 by default, generate an IPMI event describing the panic to each
 	 interface registered with the message handler.  This is always
 	 available, the module parameter for ipmi_msghandler named
 	 panic_op can be set to "event" to chose this value, this config
 	 simply causes the default value to be set to "event".
-=======
-         When a panic occurs, this will cause the IPMI message handler to
-	 generate an IPMI event describing the panic to each interface
-	 registered with the message handler.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config IPMI_PANIC_STRING
 	bool 'Generate OEM events containing the panic string'
 	depends on IPMI_PANIC_EVENT
 	help
-<<<<<<< HEAD
 	  When a panic occurs, this will cause the IPMI message handler to,
 	  by default, generate IPMI OEM type f0 events holding the IPMB
 	  address of the panic generator (byte 4 of the event), a sequence
@@ -54,15 +47,6 @@ config IPMI_PANIC_STRING
 	  the module parameter for ipmi_msghandler named panic_op can
 	  be set to "string" to chose this value, this config simply
 	  causes the default value to be set to "string".
-=======
-	  When a panic occurs, this will cause the IPMI message handler to
-	  generate IPMI OEM type f0 events holding the IPMB address of the
-	  panic generator (byte 4 of the event), a sequence number for the
-	  string (byte 5 of the event) and part of the string (the rest of the
-	  event).  Bytes 1, 2, and 3 are the normal usage for an OEM event.
-	  You can fetch these events and use the sequence numbers to piece the
-	  string together.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config IPMI_DEVICE_INTERFACE
        tristate 'Device interface for IPMI'
@@ -104,7 +88,6 @@ config IPMI_POWEROFF
 
 endif # IPMI_HANDLER
 
-<<<<<<< HEAD
 config IPMI_KCS_BMC
 	tristate
 
@@ -135,8 +118,6 @@ config NPCM7XX_KCS_IPMI_BMC
 	  This support is also available as a module.  If so, the module
 	  will be called kcs_bmc_npcm7xx.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config ASPEED_BT_IPMI_BMC
 	depends on ARCH_ASPEED || COMPILE_TEST
        depends on REGMAP && REGMAP_MMIO && MFD_SYSCON

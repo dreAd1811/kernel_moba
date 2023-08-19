@@ -1,10 +1,7 @@
 /*
  * extcon-axp288.c - X-Power AXP288 PMIC extcon cable detection driver
  *
-<<<<<<< HEAD
  * Copyright (c) 2017-2018 Hans de Goede <hdegoede@redhat.com>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Copyright (C) 2015 Intel Corporation
  * Author: Ramakrishna Pallala <ramakrishna.pallala@intel.com>
  *
@@ -18,10 +15,7 @@
  * GNU General Public License for more details.
  */
 
-<<<<<<< HEAD
 #include <linux/acpi.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/module.h>
 #include <linux/kernel.h>
 #include <linux/io.h>
@@ -30,7 +24,6 @@
 #include <linux/platform_device.h>
 #include <linux/property.h>
 #include <linux/notifier.h>
-<<<<<<< HEAD
 #include <linux/extcon-provider.h>
 #include <linux/regmap.h>
 #include <linux/mfd/axp20x.h>
@@ -39,13 +32,6 @@
 
 #include <asm/cpu_device_id.h>
 #include <asm/intel-family.h>
-=======
-#include <linux/extcon.h>
-#include <linux/regmap.h>
-#include <linux/gpio.h>
-#include <linux/gpio/consumer.h>
-#include <linux/mfd/axp20x.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Power source status register */
 #define PS_STAT_VBUS_TRIGGER		BIT(0)
@@ -98,14 +84,6 @@ enum axp288_extcon_reg {
 	AXP288_BC_DET_STAT_REG		= 0x2f,
 };
 
-<<<<<<< HEAD
-=======
-enum axp288_mux_select {
-	EXTCON_GPIO_MUX_SEL_PMIC = 0,
-	EXTCON_GPIO_MUX_SEL_SOC,
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum axp288_extcon_irq {
 	VBUS_FALLING_IRQ = 0,
 	VBUS_RISING_IRQ,
@@ -126,7 +104,6 @@ struct axp288_extcon_info {
 	struct device *dev;
 	struct regmap *regmap;
 	struct regmap_irq_chip_data *regmap_irqc;
-<<<<<<< HEAD
 	struct usb_role_switch *role_sw;
 	struct work_struct role_work;
 	int irq[EXTCON_IRQ_END];
@@ -144,17 +121,6 @@ static const struct x86_cpu_id cherry_trail_cpu_ids[] = {
 
 /* Power up/down reason string array */
 static const char * const axp288_pwr_up_down_info[] = {
-=======
-	struct gpio_desc *gpio_mux_cntl;
-	int irq[EXTCON_IRQ_END];
-	struct extcon_dev *edev;
-	struct notifier_block extcon_nb;
-	unsigned int previous_cable;
-};
-
-/* Power up/down reason string array */
-static char *axp288_pwr_up_down_info[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	"Last wake caused by user pressing the power button",
 	"Last wake caused by a charger insertion",
 	"Last wake caused by a battery insertion",
@@ -172,11 +138,7 @@ static char *axp288_pwr_up_down_info[] = {
  */
 static void axp288_extcon_log_rsi(struct axp288_extcon_info *info)
 {
-<<<<<<< HEAD
 	const char * const *rsi;
-=======
-	char **rsi;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int val, i, clear_mask = 0;
 	int ret;
 
@@ -192,7 +154,6 @@ static void axp288_extcon_log_rsi(struct axp288_extcon_info *info)
 	regmap_write(info->regmap, AXP288_PS_BOOT_REASON_REG, clear_mask);
 }
 
-<<<<<<< HEAD
 /*
  * The below code to control the USB role-switch on devices with an AXP288
  * may seem out of place, but there are 2 reasons why this is the best place
@@ -256,26 +217,11 @@ static bool axp288_get_vbus_attach(struct axp288_extcon_info *info)
 static int axp288_handle_chrg_det_event(struct axp288_extcon_info *info)
 {
 	int ret, stat, cfg;
-=======
-static int axp288_handle_chrg_det_event(struct axp288_extcon_info *info)
-{
-	int ret, stat, cfg, pwr_stat;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 chrg_type;
 	unsigned int cable = info->previous_cable;
 	bool vbus_attach = false;
 
-<<<<<<< HEAD
 	vbus_attach = axp288_get_vbus_attach(info);
-=======
-	ret = regmap_read(info->regmap, AXP288_PS_STAT_REG, &pwr_stat);
-	if (ret < 0) {
-		dev_err(info->dev, "failed to read vbus status\n");
-		return ret;
-	}
-
-	vbus_attach = (pwr_stat & PS_STAT_VBUS_VALID);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!vbus_attach)
 		goto no_vbus;
 
@@ -308,28 +254,11 @@ static int axp288_handle_chrg_det_event(struct axp288_extcon_info *info)
 		cable = EXTCON_CHG_USB_DCP;
 		break;
 	default:
-<<<<<<< HEAD
 		dev_warn(info->dev, "unknown (reserved) bc detect result\n");
 		cable = EXTCON_CHG_USB_SDP;
 	}
 
 no_vbus:
-=======
-		dev_warn(info->dev,
-			"disconnect or unknown or ID event\n");
-	}
-
-no_vbus:
-	/*
-	 * If VBUS is absent Connect D+/D- lines to PMIC for BC
-	 * detection. Else connect them to SOC for USB communication.
-	 */
-	if (info->gpio_mux_cntl)
-		gpiod_set_value(info->gpio_mux_cntl,
-			vbus_attach ? EXTCON_GPIO_MUX_SEL_SOC
-					: EXTCON_GPIO_MUX_SEL_PMIC);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	extcon_set_state_sync(info->edev, info->previous_cable, false);
 	if (info->previous_cable == EXTCON_CHG_USB_SDP)
 		extcon_set_state_sync(info->edev, EXTCON_USB, false);
@@ -343,15 +272,12 @@ no_vbus:
 		info->previous_cable = cable;
 	}
 
-<<<<<<< HEAD
 	if (info->role_sw && info->vbus_attach != vbus_attach) {
 		info->vbus_attach = vbus_attach;
 		/* Setting the role can take a while */
 		queue_work(system_long_wq, &info->role_work);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 dev_det_ret:
@@ -361,7 +287,6 @@ dev_det_ret:
 	return ret;
 }
 
-<<<<<<< HEAD
 static int axp288_extcon_id_evt(struct notifier_block *nb,
 				unsigned long event, void *param)
 {
@@ -374,8 +299,6 @@ static int axp288_extcon_id_evt(struct notifier_block *nb,
 	return NOTIFY_OK;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static irqreturn_t axp288_extcon_isr(int irq, void *data)
 {
 	struct axp288_extcon_info *info = data;
@@ -397,7 +320,6 @@ static void axp288_extcon_enable(struct axp288_extcon_info *info)
 					BC_GLOBAL_RUN, BC_GLOBAL_RUN);
 }
 
-<<<<<<< HEAD
 static void axp288_put_role_sw(void *data)
 {
 	struct axp288_extcon_info *info = data;
@@ -406,20 +328,13 @@ static void axp288_put_role_sw(void *data)
 	usb_role_switch_put(info->role_sw);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int axp288_extcon_probe(struct platform_device *pdev)
 {
 	struct axp288_extcon_info *info;
 	struct axp20x_dev *axp20x = dev_get_drvdata(pdev->dev.parent);
-<<<<<<< HEAD
 	struct device *dev = &pdev->dev;
 	const char *name;
 	int ret, i, pirq;
-=======
-	struct axp288_extcon_pdata *pdata = pdev->dev.platform_data;
-	int ret, i, pirq, gpio;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	info = devm_kzalloc(&pdev->dev, sizeof(*info), GFP_KERNEL);
 	if (!info)
@@ -429,7 +344,6 @@ static int axp288_extcon_probe(struct platform_device *pdev)
 	info->regmap = axp20x->regmap;
 	info->regmap_irqc = axp20x->regmap_irqc;
 	info->previous_cable = EXTCON_NONE;
-<<<<<<< HEAD
 	INIT_WORK(&info->role_work, axp288_usb_role_work);
 	info->id_nb.notifier_call = axp288_extcon_id_evt;
 
@@ -457,13 +371,6 @@ static int axp288_extcon_probe(struct platform_device *pdev)
 
 	info->vbus_attach = axp288_get_vbus_attach(info);
 
-=======
-	if (pdata)
-		info->gpio_mux_cntl = pdata->gpio_mux_cntl;
-
-	platform_set_drvdata(pdev, info);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	axp288_extcon_log_rsi(info);
 
 	/* Initialize extcon device */
@@ -481,29 +388,11 @@ static int axp288_extcon_probe(struct platform_device *pdev)
 		return ret;
 	}
 
-<<<<<<< HEAD
 	for (i = 0; i < EXTCON_IRQ_END; i++) {
 		pirq = platform_get_irq(pdev, i);
 		if (pirq < 0)
 			return pirq;
 
-=======
-	/* Set up gpio control for USB Mux */
-	if (info->gpio_mux_cntl) {
-		gpio = desc_to_gpio(info->gpio_mux_cntl);
-		ret = devm_gpio_request(&pdev->dev, gpio, "USB_MUX");
-		if (ret < 0) {
-			dev_err(&pdev->dev,
-				"failed to request the gpio=%d\n", gpio);
-			return ret;
-		}
-		gpiod_direction_output(info->gpio_mux_cntl,
-						EXTCON_GPIO_MUX_SEL_PMIC);
-	}
-
-	for (i = 0; i < EXTCON_IRQ_END; i++) {
-		pirq = platform_get_irq(pdev, i);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		info->irq[i] = regmap_irq_get_virq(info->regmap_irqc, pirq);
 		if (info->irq[i] < 0) {
 			dev_err(&pdev->dev,
@@ -523,7 +412,6 @@ static int axp288_extcon_probe(struct platform_device *pdev)
 		}
 	}
 
-<<<<<<< HEAD
 	if (info->id_extcon) {
 		ret = devm_extcon_register_notifier_all(dev, info->id_extcon,
 							&info->id_nb);
@@ -537,8 +425,6 @@ static int axp288_extcon_probe(struct platform_device *pdev)
 		flush_work(&info->role_work);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Start charger cable type detection */
 	axp288_extcon_enable(info);
 
@@ -558,7 +444,6 @@ static struct platform_driver axp288_extcon_driver = {
 		.name = "axp288_extcon",
 	},
 };
-<<<<<<< HEAD
 
 static struct device_connection axp288_extcon_role_sw_conn = {
 	.endpoint[0] = "axp288_extcon",
@@ -586,10 +471,5 @@ module_exit(axp288_extcon_exit);
 
 MODULE_AUTHOR("Ramakrishna Pallala <ramakrishna.pallala@intel.com>");
 MODULE_AUTHOR("Hans de Goede <hdegoede@redhat.com>");
-=======
-module_platform_driver(axp288_extcon_driver);
-
-MODULE_AUTHOR("Ramakrishna Pallala <ramakrishna.pallala@intel.com>");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_DESCRIPTION("X-Powers AXP288 extcon driver");
 MODULE_LICENSE("GPL v2");

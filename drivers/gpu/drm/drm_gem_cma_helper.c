@@ -112,11 +112,7 @@ struct drm_gem_cma_object *drm_gem_cma_create(struct drm_device *drm,
 	cma_obj->vaddr = dma_alloc_wc(drm->dev, size, &cma_obj->paddr,
 				      GFP_KERNEL | __GFP_NOWARN);
 	if (!cma_obj->vaddr) {
-<<<<<<< HEAD
 		dev_dbg(drm->dev, "failed to allocate buffer with size %zu\n",
-=======
-		dev_err(drm->dev, "failed to allocate buffer with size %zu\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			size);
 		ret = -ENOMEM;
 		goto error;
@@ -401,7 +397,6 @@ unsigned long drm_gem_cma_get_unmapped_area(struct file *filp,
 EXPORT_SYMBOL_GPL(drm_gem_cma_get_unmapped_area);
 #endif
 
-<<<<<<< HEAD
 /**
  * drm_gem_cma_print_info() - Print &drm_gem_cma_object info for debugfs
  * @p: DRM printer
@@ -420,33 +415,6 @@ void drm_gem_cma_print_info(struct drm_printer *p, unsigned int indent,
 	drm_printf_indent(p, indent, "vaddr=%p\n", cma_obj->vaddr);
 }
 EXPORT_SYMBOL(drm_gem_cma_print_info);
-=======
-#ifdef CONFIG_DEBUG_FS
-/**
- * drm_gem_cma_describe - describe a CMA GEM object for debugfs
- * @cma_obj: CMA GEM object
- * @m: debugfs file handle
- *
- * This function can be used to dump a human-readable representation of the
- * CMA GEM object into a synthetic file.
- */
-void drm_gem_cma_describe(struct drm_gem_cma_object *cma_obj,
-			  struct seq_file *m)
-{
-	struct drm_gem_object *obj = &cma_obj->base;
-	uint64_t off;
-
-	off = drm_vma_node_start(&obj->vma_node);
-
-	seq_printf(m, "%2d (%2d) %08llx %pad %p %zu",
-			obj->name, kref_read(&obj->refcount),
-			off, &cma_obj->paddr, cma_obj->vaddr, obj->size);
-
-	seq_printf(m, "\n");
-}
-EXPORT_SYMBOL_GPL(drm_gem_cma_describe);
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * drm_gem_cma_prime_get_sg_table - provide a scatter/gather table of pinned
@@ -507,7 +475,6 @@ drm_gem_cma_prime_import_sg_table(struct drm_device *dev,
 {
 	struct drm_gem_cma_object *cma_obj;
 
-<<<<<<< HEAD
 	if (sgt->nents != 1) {
 		/* check if the entries in the sg_table are contiguous */
 		dma_addr_t next_addr = sg_dma_address(sgt->sgl);
@@ -528,10 +495,6 @@ drm_gem_cma_prime_import_sg_table(struct drm_device *dev,
 			next_addr = sg_dma_address(s) + sg_dma_len(s);
 		}
 	}
-=======
-	if (sgt->nents != 1)
-		return ERR_PTR(-EINVAL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Create a CMA GEM buffer. */
 	cma_obj = __drm_gem_cma_create(dev, attach->dmabuf->size);

@@ -22,11 +22,7 @@
 #include <linux/irq.h>
 #include <linux/interrupt.h>
 #include <linux/io.h>
-<<<<<<< HEAD
 #include <linux/gpio/driver.h>
-=======
-#include <linux/gpio.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/of_device.h>
 #include <linux/platform_device.h>
 #include <linux/module.h>
@@ -145,22 +141,14 @@ static void tegra_gpio_disable(struct tegra_gpio_info *tgi, unsigned int gpio)
 
 static int tegra_gpio_request(struct gpio_chip *chip, unsigned int offset)
 {
-<<<<<<< HEAD
 	return pinctrl_gpio_request(offset);
-=======
-	return pinctrl_request_gpio(offset);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void tegra_gpio_free(struct gpio_chip *chip, unsigned int offset)
 {
 	struct tegra_gpio_info *tgi = gpiochip_get_data(chip);
 
-<<<<<<< HEAD
 	pinctrl_gpio_free(offset);
-=======
-	pinctrl_free_gpio(offset);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tegra_gpio_disable(tgi, offset);
 }
 
@@ -219,11 +207,7 @@ static int tegra_gpio_get_direction(struct gpio_chip *chip,
 
 	oe = tegra_gpio_readl(tgi, GPIO_OE(tgi, offset));
 
-<<<<<<< HEAD
 	return !(oe & pin_mask);
-=======
-	return (oe & pin_mask) ? GPIOF_DIR_OUT : GPIOF_DIR_IN;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int tegra_gpio_set_debounce(struct gpio_chip *chip, unsigned int offset,
@@ -339,16 +323,6 @@ static int tegra_gpio_irq_set_type(struct irq_data *d, unsigned int type)
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
-=======
-	ret = gpiochip_lock_as_irq(&tgi->gc, gpio);
-	if (ret) {
-		dev_err(tgi->dev,
-			"unable to lock Tegra GPIO %u as IRQ\n", gpio);
-		return ret;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_irqsave(&bank->lvl_lock[port], flags);
 
 	val = tegra_gpio_readl(tgi, GPIO_INT_LVL(tgi, gpio));
@@ -361,7 +335,6 @@ static int tegra_gpio_irq_set_type(struct irq_data *d, unsigned int type)
 	tegra_gpio_mask_write(tgi, GPIO_MSK_OE(tgi, gpio), gpio, 0);
 	tegra_gpio_enable(tgi, gpio);
 
-<<<<<<< HEAD
 	ret = gpiochip_lock_as_irq(&tgi->gc, gpio);
 	if (ret) {
 		dev_err(tgi->dev,
@@ -370,8 +343,6 @@ static int tegra_gpio_irq_set_type(struct irq_data *d, unsigned int type)
 		return ret;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (type & (IRQ_TYPE_LEVEL_LOW | IRQ_TYPE_LEVEL_HIGH))
 		irq_set_handler_locked(d, handle_level_irq);
 	else if (type & (IRQ_TYPE_EDGE_FALLING | IRQ_TYPE_EDGE_RISING))
@@ -386,10 +357,6 @@ static void tegra_gpio_irq_shutdown(struct irq_data *d)
 	struct tegra_gpio_info *tgi = bank->tgi;
 	unsigned int gpio = d->hwirq;
 
-<<<<<<< HEAD
-=======
-	tegra_gpio_irq_mask(d);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gpiochip_unlock_as_irq(&tgi->gc, gpio);
 }
 
@@ -540,11 +507,7 @@ static int tegra_gpio_irq_set_wake(struct irq_data *d, unsigned int enable)
 #include <linux/debugfs.h>
 #include <linux/seq_file.h>
 
-<<<<<<< HEAD
 static int tegra_dbg_gpio_show(struct seq_file *s, void *unused)
-=======
-static int dbg_gpio_show(struct seq_file *s, void *unused)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct tegra_gpio_info *tgi = s->private;
 	unsigned int i, j;
@@ -568,30 +531,12 @@ static int dbg_gpio_show(struct seq_file *s, void *unused)
 	return 0;
 }
 
-<<<<<<< HEAD
 DEFINE_SHOW_ATTRIBUTE(tegra_dbg_gpio);
-=======
-static int dbg_gpio_open(struct inode *inode, struct file *file)
-{
-	return single_open(file, dbg_gpio_show, inode->i_private);
-}
-
-static const struct file_operations debug_fops = {
-	.open		= dbg_gpio_open,
-	.read		= seq_read,
-	.llseek		= seq_lseek,
-	.release	= single_release,
-};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void tegra_gpio_debuginit(struct tegra_gpio_info *tgi)
 {
 	(void) debugfs_create_file("tegra_gpio", 0444,
-<<<<<<< HEAD
 				   NULL, tgi, &tegra_dbg_gpio_fops);
-=======
-					NULL, tgi, &debug_fops);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #else
@@ -606,15 +551,6 @@ static const struct dev_pm_ops tegra_gpio_pm_ops = {
 	SET_SYSTEM_SLEEP_PM_OPS(tegra_gpio_suspend, tegra_gpio_resume)
 };
 
-<<<<<<< HEAD
-=======
-/*
- * This lock class tells lockdep that GPIO irqs are in a different category
- * than their parents, so it won't report false recursion.
- */
-static struct lock_class_key gpio_lock_class;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int tegra_gpio_probe(struct platform_device *pdev)
 {
 	struct tegra_gpio_info *tgi;
@@ -719,10 +655,6 @@ static int tegra_gpio_probe(struct platform_device *pdev)
 
 		bank = &tgi->bank_info[GPIO_BANK(gpio)];
 
-<<<<<<< HEAD
-=======
-		irq_set_lockdep_class(irq, &gpio_lock_class);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		irq_set_chip_data(irq, bank);
 		irq_set_chip_and_handler(irq, &tgi->ic, handle_simple_irq);
 	}

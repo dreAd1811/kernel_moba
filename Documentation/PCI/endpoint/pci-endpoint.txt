@@ -44,11 +44,7 @@ by the PCI controller driver.
 	 * clear_bar: ops to reset the BAR
 	 * alloc_addr_space: ops to allocate in PCI controller address space
 	 * free_addr_space: ops to free the allocated address space
-<<<<<<< HEAD
 	 * raise_irq: ops to raise a legacy, MSI or MSI-X interrupt
-=======
-	 * raise_irq: ops to raise a legacy or MSI interrupt
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * start: ops to start the PCI link
 	 * stop: ops to stop the PCI link
 
@@ -100,11 +96,7 @@ by the PCI endpoint function driver.
 *) pci_epc_raise_irq()
 
    The PCI endpoint function driver should use pci_epc_raise_irq() to raise
-<<<<<<< HEAD
    Legacy Interrupt, MSI or MSI-X Interrupt.
-=======
-   Legacy Interrupt or MSI Interrupt.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 *) pci_epc_mem_alloc_addr()
 

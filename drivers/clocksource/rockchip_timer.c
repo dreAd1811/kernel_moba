@@ -274,11 +274,7 @@ static int __init rk_clksrc_init(struct device_node *np)
 		TIMER_NAME, rk_clksrc->freq, 250, 32,
 		clocksource_mmio_readl_down);
 	if (ret) {
-<<<<<<< HEAD
 		pr_err("Failed to register clocksource\n");
-=======
-		pr_err("Failed to register clocksource");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out_clocksource;
 	}
 

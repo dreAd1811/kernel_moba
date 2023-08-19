@@ -1,34 +1,13 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
 /*
  * Copyright (C) 2015-2018 Etnaviv Project
-=======
-/*
- * Copyright (C) 2015 Etnaviv Project
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License version 2 as published by
- * the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
- * more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program.  If not, see <http://www.gnu.org/licenses/>.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #ifndef __ETNAVIV_MMU_H__
 #define __ETNAVIV_MMU_H__
 
-<<<<<<< HEAD
 #define ETNAVIV_PROT_READ	(1 << 0)
 #define ETNAVIV_PROT_WRITE	(1 << 1)
-=======
-#include <linux/iommu.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum etnaviv_iommu_version {
 	ETNAVIV_IOMMU_V1 = 0,
@@ -37,7 +16,6 @@ enum etnaviv_iommu_version {
 
 struct etnaviv_gpu;
 struct etnaviv_vram_mapping;
-<<<<<<< HEAD
 struct etnaviv_iommu_domain;
 
 struct etnaviv_iommu_domain_ops {
@@ -58,22 +36,11 @@ struct etnaviv_iommu_domain {
 	u64 size;
 
 	const struct etnaviv_iommu_domain_ops *ops;
-=======
-
-struct etnaviv_iommu_ops {
-	struct iommu_ops ops;
-	size_t (*dump_size)(struct iommu_domain *);
-	void (*dump)(struct iommu_domain *, void *);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct etnaviv_iommu {
 	struct etnaviv_gpu *gpu;
-<<<<<<< HEAD
 	struct etnaviv_iommu_domain *domain;
-=======
-	struct iommu_domain *domain;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	enum etnaviv_iommu_version version;
 
@@ -81,34 +48,16 @@ struct etnaviv_iommu {
 	struct mutex lock;
 	struct list_head mappings;
 	struct drm_mm mm;
-<<<<<<< HEAD
 	bool need_flush;
-=======
-	u32 last_iova;
-	unsigned int flush_seq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct etnaviv_gem_object;
 
-<<<<<<< HEAD
-=======
-int etnaviv_iommu_attach(struct etnaviv_iommu *iommu, const char **names,
-	int cnt);
-int etnaviv_iommu_map(struct etnaviv_iommu *iommu, u32 iova,
-	struct sg_table *sgt, unsigned len, int prot);
-int etnaviv_iommu_unmap(struct etnaviv_iommu *iommu, u32 iova,
-	struct sg_table *sgt, unsigned len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int etnaviv_iommu_map_gem(struct etnaviv_iommu *mmu,
 	struct etnaviv_gem_object *etnaviv_obj, u32 memory_base,
 	struct etnaviv_vram_mapping *mapping);
 void etnaviv_iommu_unmap_gem(struct etnaviv_iommu *mmu,
 	struct etnaviv_vram_mapping *mapping);
-<<<<<<< HEAD
-=======
-void etnaviv_iommu_destroy(struct etnaviv_iommu *iommu);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int etnaviv_iommu_get_suballoc_va(struct etnaviv_gpu *gpu, dma_addr_t paddr,
 				  struct drm_mm_node *vram_node, size_t size,
@@ -121,10 +70,7 @@ size_t etnaviv_iommu_dump_size(struct etnaviv_iommu *iommu);
 void etnaviv_iommu_dump(struct etnaviv_iommu *iommu, void *buf);
 
 struct etnaviv_iommu *etnaviv_iommu_new(struct etnaviv_gpu *gpu);
-<<<<<<< HEAD
 void etnaviv_iommu_destroy(struct etnaviv_iommu *iommu);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void etnaviv_iommu_restore(struct etnaviv_gpu *gpu);
 
 #endif /* __ETNAVIV_MMU_H__ */

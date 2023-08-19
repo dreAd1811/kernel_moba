@@ -163,21 +163,12 @@ struct bnxt_qplib_rcfw {
 	unsigned long		*cmdq_bitmap;
 	u32			bmap_size;
 	unsigned long		flags;
-<<<<<<< HEAD
 #define FIRMWARE_INITIALIZED_FLAG	0
 #define FIRMWARE_FIRST_FLAG		31
 #define FIRMWARE_TIMED_OUT		3
 	wait_queue_head_t	waitq;
 	int			(*aeq_handler)(struct bnxt_qplib_rcfw *,
 					       void *, void *);
-=======
-#define FIRMWARE_INITIALIZED_FLAG	BIT(0)
-#define FIRMWARE_FIRST_FLAG		BIT(31)
-#define FIRMWARE_TIMED_OUT		BIT(3)
-	wait_queue_head_t	waitq;
-	int			(*aeq_handler)(struct bnxt_qplib_rcfw *,
-					       struct creq_func_event *);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32			seq_num;
 
 	/* Bar region info */
@@ -204,26 +195,16 @@ struct bnxt_qplib_rcfw {
 void bnxt_qplib_free_rcfw_channel(struct bnxt_qplib_rcfw *rcfw);
 int bnxt_qplib_alloc_rcfw_channel(struct pci_dev *pdev,
 				  struct bnxt_qplib_rcfw *rcfw, int qp_tbl_sz);
-<<<<<<< HEAD
 void bnxt_qplib_rcfw_stop_irq(struct bnxt_qplib_rcfw *rcfw, bool kill);
 void bnxt_qplib_disable_rcfw_channel(struct bnxt_qplib_rcfw *rcfw);
 int bnxt_qplib_rcfw_start_irq(struct bnxt_qplib_rcfw *rcfw, int msix_vector,
 			      bool need_init);
-=======
-void bnxt_qplib_disable_rcfw_channel(struct bnxt_qplib_rcfw *rcfw);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int bnxt_qplib_enable_rcfw_channel(struct pci_dev *pdev,
 				   struct bnxt_qplib_rcfw *rcfw,
 				   int msix_vector,
 				   int cp_bar_reg_off, int virt_fn,
-<<<<<<< HEAD
 				   int (*aeq_handler)(struct bnxt_qplib_rcfw *,
 						      void *aeqe, void *obj));
-=======
-				   int (*aeq_handler)
-					(struct bnxt_qplib_rcfw *,
-					 struct creq_func_event *));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct bnxt_qplib_rcfw_sbuf *bnxt_qplib_rcfw_alloc_sbuf(
 				struct bnxt_qplib_rcfw *rcfw,

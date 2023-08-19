@@ -501,11 +501,7 @@ static void __init octeon_fdt_set_phy(int eth, int phy_addr)
 	if (phy_addr >= 256 && alt_phy > 0) {
 		const struct fdt_property *phy_prop;
 		struct fdt_property *alt_prop;
-<<<<<<< HEAD
 		u32 phy_handle_name;
-=======
-		fdt32_t phy_handle_name;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Use the alt phy node instead.*/
 		phy_prop = fdt_get_property(initial_boot_params, eth, "phy-handle", NULL);
@@ -1073,10 +1069,6 @@ end_led:
 
 static int __init octeon_publish_devices(void)
 {
-<<<<<<< HEAD
 	return of_platform_populate(NULL, octeon_ids, NULL, NULL);
-=======
-	return of_platform_bus_probe(NULL, octeon_ids, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 arch_initcall(octeon_publish_devices);

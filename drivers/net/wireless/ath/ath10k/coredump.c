@@ -1,9 +1,6 @@
 /*
  * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
-<<<<<<< HEAD
  * Copyright (c) 2018, The Linux Foundation. All rights reserved.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -620,11 +617,7 @@ static const struct ath10k_mem_region qca6174_hw30_mem_regions[] = {
 	{
 		.type = ATH10K_MEM_REGION_TYPE_DRAM,
 		.start = 0x400000,
-<<<<<<< HEAD
 		.len = 0xa8000,
-=======
-		.len = 0x90000,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.name = "DRAM",
 		.section_table = {
 			.sections = NULL,
@@ -708,7 +701,6 @@ static const struct ath10k_mem_region qca988x_hw20_mem_regions[] = {
 	},
 };
 
-<<<<<<< HEAD
 static const struct ath10k_mem_region qca99x0_hw20_mem_regions[] = {
 	{
 		.type = ATH10K_MEM_REGION_TYPE_DRAM,
@@ -875,8 +867,6 @@ static const struct ath10k_mem_region qca9984_hw10_mem_regions[] = {
 	},
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct ath10k_hw_mem_layout hw_mem_layouts[] = {
 	{
 		.hw_id = QCA6174_HW_1_0_VERSION,
@@ -934,7 +924,6 @@ static const struct ath10k_hw_mem_layout hw_mem_layouts[] = {
 			.size = ARRAY_SIZE(qca988x_hw20_mem_regions),
 		},
 	},
-<<<<<<< HEAD
 	{
 		.hw_id = QCA9984_HW_1_0_DEV_VERSION,
 		.region_table = {
@@ -957,8 +946,6 @@ static const struct ath10k_hw_mem_layout hw_mem_layouts[] = {
 		},
 	},
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static u32 ath10k_coredump_get_ramdump_size(struct ath10k *ar)

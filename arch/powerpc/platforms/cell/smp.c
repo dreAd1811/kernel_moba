@@ -83,11 +83,7 @@ static inline int smp_startup_cpu(unsigned int lcpu)
 	pcpu = get_hard_smp_processor_id(lcpu);
 
 	/* Fixup atomic count: it exited inside IRQ handler. */
-<<<<<<< HEAD
 	task_thread_info(paca_ptrs[lcpu]->__current)->preempt_count	= 0;
-=======
-	task_thread_info(paca[lcpu].__current)->preempt_count	= 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * If the RTAS start-cpu token does not exist then presume the
@@ -130,11 +126,7 @@ static int smp_cell_kick_cpu(int nr)
 	 * cpu_start field to become non-zero After we set cpu_start,
 	 * the processor will continue on to secondary_start
 	 */
-<<<<<<< HEAD
 	paca_ptrs[nr]->cpu_start = 1;
-=======
-	paca[nr].cpu_start = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

@@ -11,10 +11,7 @@
  */
 
 #include <linux/component.h>
-<<<<<<< HEAD
 #include <linux/kfifo.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/of_graph.h>
 #include <linux/of_reserved_mem.h>
 
@@ -26,22 +23,10 @@
 #include <drm/drm_of.h>
 
 #include "sun4i_drv.h"
-<<<<<<< HEAD
 #include "sun4i_frontend.h"
 #include "sun4i_framebuffer.h"
 #include "sun4i_tcon.h"
 #include "sun8i_tcon_top.h"
-=======
-#include "sun4i_framebuffer.h"
-#include "sun4i_tcon.h"
-
-static void sun4i_drv_lastclose(struct drm_device *dev)
-{
-	struct sun4i_drv *drv = dev->dev_private;
-
-	drm_fbdev_cma_restore_mode(drv->fbdev);
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 DEFINE_DRM_GEM_CMA_FOPS(sun4i_drv_fops);
 
@@ -49,11 +34,7 @@ static struct drm_driver sun4i_drv_driver = {
 	.driver_features	= DRIVER_GEM | DRIVER_MODESET | DRIVER_PRIME | DRIVER_ATOMIC,
 
 	/* Generic Operations */
-<<<<<<< HEAD
 	.lastclose		= drm_fb_helper_lastclose,
-=======
-	.lastclose		= sun4i_drv_lastclose,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.fops			= &sun4i_drv_fops,
 	.name			= "sun4i-drm",
 	.desc			= "Allwinner sun4i Display Engine",
@@ -114,10 +95,7 @@ static int sun4i_drv_bind(struct device *dev)
 
 	dev_set_drvdata(dev, drm);
 	drm->dev_private = drv;
-<<<<<<< HEAD
 	INIT_LIST_HEAD(&drv->frontend_list);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INIT_LIST_HEAD(&drv->engine_list);
 	INIT_LIST_HEAD(&drv->tcon_list);
 
@@ -127,14 +105,6 @@ static int sun4i_drv_bind(struct device *dev)
 		goto free_drm;
 	}
 
-<<<<<<< HEAD
-=======
-	/* drm_vblank_init calls kcalloc, which can fail */
-	ret = drm_vblank_init(drm, 1);
-	if (ret)
-		goto free_mem_region;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drm_mode_config_init(drm);
 
 	ret = component_bind_all(drm->dev, drm);
@@ -143,30 +113,20 @@ static int sun4i_drv_bind(struct device *dev)
 		goto cleanup_mode_config;
 	}
 
-<<<<<<< HEAD
 	/* drm_vblank_init calls kcalloc, which can fail */
 	ret = drm_vblank_init(drm, drm->mode_config.num_crtc);
 	if (ret)
 		goto cleanup_mode_config;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drm->irq_enabled = true;
 
 	/* Remove early framebuffers (ie. simplefb) */
 	sun4i_remove_framebuffers();
 
 	/* Create our framebuffer */
-<<<<<<< HEAD
 	ret = sun4i_framebuffer_init(drm);
 	if (ret) {
 		dev_err(drm->dev, "Couldn't create our framebuffer\n");
-=======
-	drv->fbdev = sun4i_framebuffer_init(drm);
-	if (IS_ERR(drv->fbdev)) {
-		dev_err(drm->dev, "Couldn't create our framebuffer\n");
-		ret = PTR_ERR(drv->fbdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto cleanup_mode_config;
 	}
 
@@ -184,16 +144,9 @@ finish_poll:
 	sun4i_framebuffer_free(drm);
 cleanup_mode_config:
 	drm_mode_config_cleanup(drm);
-<<<<<<< HEAD
 	of_reserved_mem_device_release(dev);
 free_drm:
 	drm_dev_put(drm);
-=======
-free_mem_region:
-	of_reserved_mem_device_release(dev);
-free_drm:
-	drm_dev_unref(drm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -205,16 +158,11 @@ static void sun4i_drv_unbind(struct device *dev)
 	drm_kms_helper_poll_fini(drm);
 	sun4i_framebuffer_free(drm);
 	drm_mode_config_cleanup(drm);
-<<<<<<< HEAD
 
 	component_unbind_all(dev, NULL);
 	of_reserved_mem_device_release(dev);
 
 	drm_dev_put(drm);
-=======
-	of_reserved_mem_device_release(dev);
-	drm_dev_unref(drm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct component_master_ops sun4i_drv_master_ops = {
@@ -229,7 +177,6 @@ static bool sun4i_drv_node_is_connector(struct device_node *node)
 
 static bool sun4i_drv_node_is_frontend(struct device_node *node)
 {
-<<<<<<< HEAD
 	return of_device_is_compatible(node, "allwinner,sun4i-a10-display-frontend") ||
 		of_device_is_compatible(node, "allwinner,sun5i-a13-display-frontend") ||
 		of_device_is_compatible(node, "allwinner,sun6i-a31-display-frontend") ||
@@ -249,16 +196,10 @@ static bool sun4i_drv_node_is_supported_frontend(struct device_node *node)
 		return !!of_match_node(sun4i_frontend_of_table, node);
 
 	return false;
-=======
-	return of_device_is_compatible(node, "allwinner,sun5i-a13-display-frontend") ||
-		of_device_is_compatible(node, "allwinner,sun6i-a31-display-frontend") ||
-		of_device_is_compatible(node, "allwinner,sun8i-a33-display-frontend");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool sun4i_drv_node_is_tcon(struct device_node *node)
 {
-<<<<<<< HEAD
 	return !!of_match_node(sun4i_tcon_of_table, node);
 }
 
@@ -282,13 +223,6 @@ static bool sun4i_drv_node_is_tcon_top(struct device_node *node)
 {
 	return IS_ENABLED(CONFIG_DRM_SUN8I_TCON_TOP) &&
 		!!of_match_node(sun8i_tcon_top_of_table, node);
-=======
-	return of_device_is_compatible(node, "allwinner,sun5i-a13-tcon") ||
-		of_device_is_compatible(node, "allwinner,sun6i-a31-tcon") ||
-		of_device_is_compatible(node, "allwinner,sun6i-a31s-tcon") ||
-		of_device_is_compatible(node, "allwinner,sun8i-a33-tcon") ||
-		of_device_is_compatible(node, "allwinner,sun8i-v3s-tcon");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int compare_of(struct device *dev, void *data)
@@ -300,7 +234,6 @@ static int compare_of(struct device *dev, void *data)
 	return dev->of_node == data;
 }
 
-<<<<<<< HEAD
 /*
  * The encoder drivers use drm_of_find_possible_crtcs to get upstream
  * crtcs from the device tree using of_graph. For the results to be
@@ -397,19 +330,6 @@ static int sun4i_drv_add_endpoints(struct device *dev,
 	 * disabled, we should just follow through and parse its
 	 * child, but without adding it to the component list.
 	 * Otherwise, we obviously want to add it to the list.
-=======
-static int sun4i_drv_add_endpoints(struct device *dev,
-				   struct component_match **match,
-				   struct device_node *node)
-{
-	struct device_node *port, *ep, *remote;
-	int count = 0;
-
-	/*
-	 * We don't support the frontend for now, so we will never
-	 * have a device bound. Just skip over it, but we still want
-	 * the rest our pipeline to be added.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	if (!sun4i_drv_node_is_frontend(node) &&
 	    !of_device_is_available(node))
@@ -422,7 +342,6 @@ static int sun4i_drv_add_endpoints(struct device *dev,
 	if (sun4i_drv_node_is_connector(node))
 		return 0;
 
-<<<<<<< HEAD
 	/*
 	 * If the device is either just a regular device, or an
 	 * enabled frontend supported by the driver, we add it to our
@@ -432,16 +351,12 @@ static int sun4i_drv_add_endpoints(struct device *dev,
 	      sun4i_drv_node_is_deu(node)) ||
 	    (sun4i_drv_node_is_supported_frontend(node) &&
 	     of_device_is_available(node))) {
-=======
-	if (!sun4i_drv_node_is_frontend(node)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Add current component */
 		DRM_DEBUG_DRIVER("Adding component %pOF\n", node);
 		drm_of_component_match_add(dev, match, compare_of, node);
 		count++;
 	}
 
-<<<<<<< HEAD
 	/* each node has at least one output */
 	sun4i_drv_traverse_endpoints(list, node, 1);
 
@@ -449,47 +364,6 @@ static int sun4i_drv_add_endpoints(struct device *dev,
 	if (sun4i_drv_node_is_tcon_top(node)) {
 		sun4i_drv_traverse_endpoints(list, node, 3);
 		sun4i_drv_traverse_endpoints(list, node, 5);
-=======
-	/* Inputs are listed first, then outputs */
-	port = of_graph_get_port_by_id(node, 1);
-	if (!port) {
-		DRM_DEBUG_DRIVER("No output to bind\n");
-		return count;
-	}
-
-	for_each_available_child_of_node(port, ep) {
-		remote = of_graph_get_remote_port_parent(ep);
-		if (!remote) {
-			DRM_DEBUG_DRIVER("Error retrieving the output node\n");
-			continue;
-		}
-
-		/*
-		 * If the node is our TCON, the first port is used for
-		 * panel or bridges, and will not be part of the
-		 * component framework.
-		 */
-		if (sun4i_drv_node_is_tcon(node)) {
-			struct of_endpoint endpoint;
-
-			if (of_graph_parse_endpoint(ep, &endpoint)) {
-				DRM_DEBUG_DRIVER("Couldn't parse endpoint\n");
-				of_node_put(remote);
-				continue;
-			}
-
-			if (!endpoint.id) {
-				DRM_DEBUG_DRIVER("Endpoint is our panel... skipping\n");
-				of_node_put(remote);
-				continue;
-			}
-		}
-
-		/* Walk down our tree */
-		count += sun4i_drv_add_endpoints(dev, match, remote);
-
-		of_node_put(remote);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return count;
@@ -498,16 +372,11 @@ static int sun4i_drv_add_endpoints(struct device *dev,
 static int sun4i_drv_probe(struct platform_device *pdev)
 {
 	struct component_match *match = NULL;
-<<<<<<< HEAD
 	struct device_node *np = pdev->dev.of_node, *endpoint;
 	struct endpoint_list list;
 	int i, ret, count = 0;
 
 	INIT_KFIFO(list.fifo);
-=======
-	struct device_node *np = pdev->dev.of_node;
-	int i, count = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0;; i++) {
 		struct device_node *pipeline = of_parse_phandle(np,
@@ -516,7 +385,6 @@ static int sun4i_drv_probe(struct platform_device *pdev)
 		if (!pipeline)
 			break;
 
-<<<<<<< HEAD
 		kfifo_put(&list.fifo, pipeline);
 	}
 
@@ -530,14 +398,6 @@ static int sun4i_drv_probe(struct platform_device *pdev)
 			return ret;
 
 		count += ret;
-=======
-		count += sun4i_drv_add_endpoints(&pdev->dev, &match,
-						pipeline);
-		of_node_put(pipeline);
-
-		DRM_DEBUG_DRIVER("Queued %d outputs on pipeline %d\n",
-				 count, i);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (count)
@@ -550,34 +410,23 @@ static int sun4i_drv_probe(struct platform_device *pdev)
 
 static int sun4i_drv_remove(struct platform_device *pdev)
 {
-<<<<<<< HEAD
 	component_master_del(&pdev->dev, &sun4i_drv_master_ops);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 static const struct of_device_id sun4i_drv_of_table[] = {
-<<<<<<< HEAD
 	{ .compatible = "allwinner,sun4i-a10-display-engine" },
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ .compatible = "allwinner,sun5i-a10s-display-engine" },
 	{ .compatible = "allwinner,sun5i-a13-display-engine" },
 	{ .compatible = "allwinner,sun6i-a31-display-engine" },
 	{ .compatible = "allwinner,sun6i-a31s-display-engine" },
-<<<<<<< HEAD
 	{ .compatible = "allwinner,sun7i-a20-display-engine" },
 	{ .compatible = "allwinner,sun8i-a33-display-engine" },
 	{ .compatible = "allwinner,sun8i-a83t-display-engine" },
 	{ .compatible = "allwinner,sun8i-h3-display-engine" },
 	{ .compatible = "allwinner,sun8i-v3s-display-engine" },
 	{ .compatible = "allwinner,sun9i-a80-display-engine" },
-=======
-	{ .compatible = "allwinner,sun8i-a33-display-engine" },
-	{ .compatible = "allwinner,sun8i-v3s-display-engine" },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ }
 };
 MODULE_DEVICE_TABLE(of, sun4i_drv_of_table);

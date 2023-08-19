@@ -127,11 +127,7 @@ enum vxge_hw_status {
 	VXGE_HW_ERR_INVALID_TCODE 		  = VXGE_HW_BASE_ERR + 14,
 	VXGE_HW_ERR_INVALID_BLOCK_SIZE		  = VXGE_HW_BASE_ERR + 15,
 	VXGE_HW_ERR_INVALID_STATE		  = VXGE_HW_BASE_ERR + 16,
-<<<<<<< HEAD
 	VXGE_HW_ERR_PRIVILEGED_OPERATION	  = VXGE_HW_BASE_ERR + 17,
-=======
-	VXGE_HW_ERR_PRIVILAGED_OPEARATION	  = VXGE_HW_BASE_ERR + 17,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	VXGE_HW_ERR_INVALID_PORT 		  = VXGE_HW_BASE_ERR + 18,
 	VXGE_HW_ERR_FIFO		 	  = VXGE_HW_BASE_ERR + 19,
 	VXGE_HW_ERR_VPATH			  = VXGE_HW_BASE_ERR + 20,
@@ -2069,11 +2065,7 @@ vxge_hw_vpath_strip_fcs_check(struct __vxge_hw_device *hldev, u64 vpath_mask);
 	if ((level >= VXGE_ERR && VXGE_COMPONENT_LL & VXGE_DEBUG_ERR_MASK) ||  \
 	    (level >= VXGE_TRACE && VXGE_COMPONENT_LL & VXGE_DEBUG_TRACE_MASK))\
 		if ((mask & VXGE_DEBUG_MASK) == mask)			       \
-<<<<<<< HEAD
 			printk(fmt "\n", __VA_ARGS__);			       \
-=======
-			printk(fmt "\n", ##__VA_ARGS__);		       \
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } while (0)
 #else
 #define vxge_debug_ll(level, mask, fmt, ...)

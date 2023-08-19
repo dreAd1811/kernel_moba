@@ -42,19 +42,11 @@
 #include <linux/spinlock.h>
 #include <linux/timer.h>
 #include <linux/clk.h>
-<<<<<<< HEAD
-=======
-#include <linux/scatterlist.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/io.h>
 #include <asm/irq.h>
 
 #include <asm/types.h>
-<<<<<<< HEAD
-=======
-#include <asm/io.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/uaccess.h>
 
 #define DRIVER_NAME "goldfish_mmc"
@@ -225,13 +217,8 @@ static void goldfish_mmc_xfer_done(struct goldfish_mmc_host *host,
 			 * We don't really have DMA, so we need
 			 * to copy from our platform driver buffer
 			 */
-<<<<<<< HEAD
 			sg_copy_from_buffer(data->sg, 1, host->virt_base,
 					data->sg->length);
-=======
-			uint8_t *dest = (uint8_t *)sg_virt(data->sg);
-			memcpy(dest, host->virt_base, data->sg->length);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		host->data->bytes_xfered += data->sg->length;
 		dma_unmap_sg(mmc_dev(host->mmc), data->sg, host->sg_len,
@@ -406,13 +393,8 @@ static void goldfish_mmc_prepare_data(struct goldfish_mmc_host *host,
 		 * We don't really have DMA, so we need to copy to our
 		 * platform driver buffer
 		 */
-<<<<<<< HEAD
 		sg_copy_to_buffer(data->sg, 1, host->virt_base,
 				data->sg->length);
-=======
-		const uint8_t *src = (uint8_t *)sg_virt(data->sg);
-		memcpy(host->virt_base, src, data->sg->length);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 

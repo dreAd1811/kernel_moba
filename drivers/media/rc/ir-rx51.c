@@ -22,10 +22,6 @@
 #include <linux/hrtimer.h>
 
 #include <media/rc-core.h>
-<<<<<<< HEAD
-=======
-#include <linux/platform_data/media/ir-rx51.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define WBUF_LEN 256
 
@@ -34,10 +30,6 @@ struct ir_rx51 {
 	struct pwm_device *pwm;
 	struct hrtimer timer;
 	struct device	     *dev;
-<<<<<<< HEAD
-=======
-	struct ir_rx51_platform_data *pdata;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wait_queue_head_t     wqueue;
 
 	unsigned int	freq;		/* carrier frequency */
@@ -136,16 +128,9 @@ static int ir_rx51_tx(struct rc_dev *dev, unsigned int *buffer,
 		ir_rx51->wbuf[count] = -1; /* Insert termination mark */
 
 	/*
-<<<<<<< HEAD
 	 * REVISIT: Adjust latency requirements so the device doesn't go in too
 	 * deep sleep states with pm_qos_add_request().
 	 */
-=======
-	 * Adjust latency requirements so the device doesn't go in too
-	 * deep sleep states
-	 */
-	ir_rx51->pdata->set_max_mpu_wakeup_lat(ir_rx51->dev, 50);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ir_rx51_on(ir_rx51);
 	ir_rx51->wbuf_index = 1;
@@ -158,12 +143,7 @@ static int ir_rx51_tx(struct rc_dev *dev, unsigned int *buffer,
 	 */
 	wait_event_interruptible(ir_rx51->wqueue, ir_rx51->wbuf_index < 0);
 
-<<<<<<< HEAD
 	/* REVISIT: Remove pm_qos constraint, we can sleep again */
-=======
-	/* We can sleep again */
-	ir_rx51->pdata->set_max_mpu_wakeup_lat(ir_rx51->dev, -1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return count;
 }
@@ -260,16 +240,6 @@ static int ir_rx51_probe(struct platform_device *dev)
 	struct pwm_device *pwm;
 	struct rc_dev *rcdev;
 
-<<<<<<< HEAD
-=======
-	ir_rx51.pdata = dev->dev.platform_data;
-
-	if (!ir_rx51.pdata) {
-		dev_err(&dev->dev, "Platform Data is missing\n");
-		return -ENXIO;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pwm = pwm_get(&dev->dev, NULL);
 	if (IS_ERR(pwm)) {
 		int err = PTR_ERR(pwm);

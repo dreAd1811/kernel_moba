@@ -26,7 +26,6 @@
 #define __NR_syscall 4000
 #endif
 
-<<<<<<< HEAD
 static inline bool mips_syscall_is_indirect(struct task_struct *task,
 					    struct pt_regs *regs)
 {
@@ -36,15 +35,12 @@ static inline bool mips_syscall_is_indirect(struct task_struct *task,
 		(regs->regs[2] == __NR_syscall);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline long syscall_get_nr(struct task_struct *task,
 				  struct pt_regs *regs)
 {
 	return current_thread_info()->syscall;
 }
 
-<<<<<<< HEAD
 static inline void mips_syscall_update_nr(struct task_struct *task,
 					  struct pt_regs *regs)
 {
@@ -58,8 +54,6 @@ static inline void mips_syscall_update_nr(struct task_struct *task,
 		task_thread_info(task)->syscall = regs->regs[2];
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline unsigned long mips_get_syscall_arg(unsigned long *arg,
 	struct task_struct *task, struct pt_regs *regs, unsigned int n)
 {
@@ -126,16 +120,9 @@ static inline void syscall_get_arguments(struct task_struct *task,
 					 unsigned long *args)
 {
 	int ret;
-<<<<<<< HEAD
 
 	/* O32 ABI syscall() */
 	if (mips_syscall_is_indirect(task, regs))
-=======
-	/* O32 ABI syscall() - Either 64-bit with O32 or 32-bit */
-	if ((IS_ENABLED(CONFIG_32BIT) ||
-	    test_tsk_thread_flag(task, TIF_32BIT_REGS)) &&
-	    (regs->regs[2] == __NR_syscall))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		i++;
 
 	while (n--)

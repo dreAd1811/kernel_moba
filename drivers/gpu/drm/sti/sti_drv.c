@@ -1,14 +1,7 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Copyright (C) STMicroelectronics SA 2014
  * Author: Benjamin Gaignard <benjamin.gaignard@st.com> for STMicroelectronics.
-=======
-/*
- * Copyright (C) STMicroelectronics SA 2014
- * Author: Benjamin Gaignard <benjamin.gaignard@st.com> for STMicroelectronics.
- * License terms:  GNU General Public License (GPL), version 2
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <drm/drmP.h>
@@ -23,11 +16,8 @@
 #include <drm/drm_atomic_helper.h>
 #include <drm/drm_crtc_helper.h>
 #include <drm/drm_gem_cma_helper.h>
-<<<<<<< HEAD
 #include <drm/drm_gem_framebuffer_helper.h>
 #include <drm/drm_fb_helper.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <drm/drm_fb_cma_helper.h>
 #include <drm/drm_of.h>
 
@@ -129,44 +119,10 @@ err:
 	return ret;
 }
 
-<<<<<<< HEAD
 static const struct drm_mode_config_funcs sti_mode_config_funcs = {
 	.fb_create = drm_gem_fb_create,
 	.output_poll_changed = drm_fb_helper_output_poll_changed,
 	.atomic_check = drm_atomic_helper_check,
-=======
-static int sti_atomic_check(struct drm_device *dev,
-			    struct drm_atomic_state *state)
-{
-	int ret;
-
-	ret = drm_atomic_helper_check_modeset(dev, state);
-	if (ret)
-		return ret;
-
-	ret = drm_atomic_normalize_zpos(dev, state);
-	if (ret)
-		return ret;
-
-	ret = drm_atomic_helper_check_planes(dev, state);
-	if (ret)
-		return ret;
-
-	return ret;
-}
-
-static void sti_output_poll_changed(struct drm_device *ddev)
-{
-	struct sti_private *private = ddev->dev_private;
-
-	drm_fbdev_cma_hotplug_event(private->fbdev);
-}
-
-static const struct drm_mode_config_funcs sti_mode_config_funcs = {
-	.fb_create = drm_fb_cma_create,
-	.output_poll_changed = sti_output_poll_changed,
-	.atomic_check = sti_atomic_check,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.atomic_commit = drm_atomic_helper_commit,
 };
 
@@ -184,11 +140,8 @@ static void sti_mode_config_init(struct drm_device *dev)
 	dev->mode_config.max_height = STI_MAX_FB_HEIGHT;
 
 	dev->mode_config.funcs = &sti_mode_config_funcs;
-<<<<<<< HEAD
 
 	dev->mode_config.normalize_zpos = true;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 DEFINE_DRM_GEM_CMA_FOPS(sti_driver_fops);
@@ -253,15 +206,7 @@ static void sti_cleanup(struct drm_device *ddev)
 {
 	struct sti_private *private = ddev->dev_private;
 
-<<<<<<< HEAD
 	drm_fb_cma_fbdev_fini(ddev);
-=======
-	if (private->fbdev) {
-		drm_fbdev_cma_fini(private->fbdev);
-		private->fbdev = NULL;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drm_kms_helper_poll_fini(ddev);
 	component_unbind_all(ddev->dev, ddev);
 	kfree(private);
@@ -271,11 +216,6 @@ static void sti_cleanup(struct drm_device *ddev)
 static int sti_bind(struct device *dev)
 {
 	struct drm_device *ddev;
-<<<<<<< HEAD
-=======
-	struct sti_private *private;
-	struct drm_fbdev_cma *fbdev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	ddev = drm_dev_alloc(&sti_driver, dev);
@@ -284,11 +224,7 @@ static int sti_bind(struct device *dev)
 
 	ret = sti_init(ddev);
 	if (ret)
-<<<<<<< HEAD
 		goto err_drm_dev_put;
-=======
-		goto err_drm_dev_unref;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = component_bind_all(ddev->dev, ddev);
 	if (ret)
@@ -300,22 +236,10 @@ static int sti_bind(struct device *dev)
 
 	drm_mode_config_reset(ddev);
 
-<<<<<<< HEAD
 	if (ddev->mode_config.num_connector) {
 		ret = drm_fb_cma_fbdev_init(ddev, 32, 0);
 		if (ret)
 			DRM_DEBUG_DRIVER("Warning: fails to create fbdev\n");
-=======
-	private = ddev->dev_private;
-	if (ddev->mode_config.num_connector) {
-		fbdev = drm_fbdev_cma_init(ddev, 32,
-					   ddev->mode_config.num_connector);
-		if (IS_ERR(fbdev)) {
-			DRM_DEBUG_DRIVER("Warning: fails to create fbdev\n");
-			fbdev = NULL;
-		}
-		private->fbdev = fbdev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -324,13 +248,8 @@ err_register:
 	drm_mode_config_cleanup(ddev);
 err_cleanup:
 	sti_cleanup(ddev);
-<<<<<<< HEAD
 err_drm_dev_put:
 	drm_dev_put(ddev);
-=======
-err_drm_dev_unref:
-	drm_dev_unref(ddev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -340,11 +259,7 @@ static void sti_unbind(struct device *dev)
 
 	drm_dev_unregister(ddev);
 	sti_cleanup(ddev);
-<<<<<<< HEAD
 	drm_dev_put(ddev);
-=======
-	drm_dev_unref(ddev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct component_master_ops sti_ops = {

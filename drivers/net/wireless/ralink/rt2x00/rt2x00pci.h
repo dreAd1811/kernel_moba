@@ -28,15 +28,6 @@
 #include <linux/pci.h>
 
 /*
-<<<<<<< HEAD
-=======
- * This variable should be used with the
- * pci_driver structure initialization.
- */
-#define PCI_DEVICE_DATA(__ops)	.driver_data = (kernel_ulong_t)(__ops)
-
-/*
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * PCI driver handlers.
  */
 int rt2x00pci_probe(struct pci_dev *pci_dev, const struct rt2x00_ops *ops);

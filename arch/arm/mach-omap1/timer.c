@@ -27,11 +27,7 @@
 #include <linux/platform_device.h>
 #include <linux/platform_data/dmtimer-omap.h>
 
-<<<<<<< HEAD
 #include <clocksource/timer-ti-dm.h>
-=======
-#include <plat/dmtimer.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "soc.h"
 

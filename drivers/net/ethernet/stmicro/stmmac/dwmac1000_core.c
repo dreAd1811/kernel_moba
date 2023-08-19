@@ -27,10 +27,7 @@
 #include <linux/ethtool.h>
 #include <net/dsa.h>
 #include <asm/io.h>
-<<<<<<< HEAD
 #include "stmmac.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "stmmac_pcs.h"
 #include "dwmac1000.h"
 
@@ -78,11 +75,6 @@ static void dwmac1000_core_init(struct mac_device_info *hw,
 	/* Mask GMAC interrupts */
 	value = GMAC_INT_DEFAULT_MASK;
 
-<<<<<<< HEAD
-=======
-	if (hw->pmt)
-		value &= ~GMAC_INT_DISABLE_PMT;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (hw->pcs)
 		value &= ~GMAC_INT_DISABLE_PCS;
 
@@ -225,11 +217,7 @@ static void dwmac1000_set_filter(struct mac_device_info *hw,
 			reg++;
 		}
 
-<<<<<<< HEAD
 		while (reg <= perfect_addr_number) {
-=======
-		while (reg < perfect_addr_number) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			writel(0, ioaddr + GMAC_ADDR_HIGH(reg));
 			writel(0, ioaddr + GMAC_ADDR_LOW(reg));
 			reg++;
@@ -517,11 +505,7 @@ static void dwmac1000_debug(void __iomem *ioaddr, struct stmmac_extra_stats *x,
 		x->mac_gmii_rx_proto_engine++;
 }
 
-<<<<<<< HEAD
 const struct stmmac_ops dwmac1000_ops = {
-=======
-static const struct stmmac_ops dwmac1000_ops = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.core_init = dwmac1000_core_init,
 	.set_mac = stmmac_set_mac,
 	.rx_ipc = dwmac1000_rx_ipc_enable,
@@ -542,7 +526,6 @@ static const struct stmmac_ops dwmac1000_ops = {
 	.pcs_get_adv_lp = dwmac1000_get_adv_lp,
 };
 
-<<<<<<< HEAD
 int dwmac1000_setup(struct stmmac_priv *priv)
 {
 	struct mac_device_info *mac = priv->hw;
@@ -553,33 +536,11 @@ int dwmac1000_setup(struct stmmac_priv *priv)
 	mac->pcsr = priv->ioaddr;
 	mac->multicast_filter_bins = priv->plat->multicast_filter_bins;
 	mac->unicast_filter_entries = priv->plat->unicast_filter_entries;
-=======
-struct mac_device_info *dwmac1000_setup(void __iomem *ioaddr, int mcbins,
-					int perfect_uc_entries,
-					int *synopsys_id)
-{
-	struct mac_device_info *mac;
-	u32 hwid = readl(ioaddr + GMAC_VERSION);
-
-	mac = kzalloc(sizeof(const struct mac_device_info), GFP_KERNEL);
-	if (!mac)
-		return NULL;
-
-	mac->pcsr = ioaddr;
-	mac->multicast_filter_bins = mcbins;
-	mac->unicast_filter_entries = perfect_uc_entries;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mac->mcast_bits_log2 = 0;
 
 	if (mac->multicast_filter_bins)
 		mac->mcast_bits_log2 = ilog2(mac->multicast_filter_bins);
 
-<<<<<<< HEAD
-=======
-	mac->mac = &dwmac1000_ops;
-	mac->dma = &dwmac1000_dma_ops;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mac->link.duplex = GMAC_CONTROL_DM;
 	mac->link.speed10 = GMAC_CONTROL_PS;
 	mac->link.speed100 = GMAC_CONTROL_PS | GMAC_CONTROL_FES;
@@ -594,12 +555,5 @@ struct mac_device_info *dwmac1000_setup(void __iomem *ioaddr, int mcbins,
 	mac->mii.clk_csr_shift = 2;
 	mac->mii.clk_csr_mask = GENMASK(5, 2);
 
-<<<<<<< HEAD
 	return 0;
-=======
-	/* Get and dump the chip ID */
-	*synopsys_id = stmmac_get_synopsys_id(hwid);
-
-	return mac;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

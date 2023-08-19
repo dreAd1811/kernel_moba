@@ -149,7 +149,6 @@ enum ptp_packet_state {
 /* Maximum parts-per-billion adjustment that is acceptable */
 #define MAX_PPB			1000000
 
-<<<<<<< HEAD
 /* Precalculate scale word to avoid long long division at runtime */
 /* This is equivalent to 2^66 / 10^9. */
 #define PPB_SCALE_WORD  ((1LL << (57)) / 1953125LL)
@@ -158,20 +157,6 @@ enum ptp_packet_state {
 #define PPB_SHIFT_FP40		26
 /* ... and FP44. */
 #define PPB_SHIFT_FP44		22
-=======
-/* Number of bits required to hold the above */
-#define	MAX_PPB_BITS		20
-
-/* Number of extra bits allowed when calculating fractional ns.
- * EXTRA_BITS + MC_CMD_PTP_IN_ADJUST_BITS + MAX_PPB_BITS should
- * be less than 63.
- */
-#define	PPB_EXTRA_BITS		2
-
-/* Precalculate scale word to avoid long long division at runtime */
-#define	PPB_SCALE_WORD	((1LL << (PPB_EXTRA_BITS + MC_CMD_PTP_IN_ADJUST_BITS +\
-			MAX_PPB_BITS)) / 1000000000LL)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define PTP_SYNC_ATTEMPTS	4
 
@@ -229,13 +214,8 @@ struct efx_ptp_timeset {
  * @channel: The PTP channel (Siena only)
  * @rx_ts_inline: Flag for whether RX timestamps are inline (else they are
  *	separate events)
-<<<<<<< HEAD
  * @rxq: Receive SKB queue (awaiting timestamps)
  * @txq: Transmit SKB queue
-=======
- * @rxq: Receive queue (awaiting timestamps)
- * @txq: Transmit queue
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @evt_list: List of MC receive events awaiting packets
  * @evt_free_list: List of free events
  * @evt_lock: Lock for manipulating evt_list and evt_free_list
@@ -249,7 +229,6 @@ struct efx_ptp_timeset {
  * @config: Current timestamp configuration
  * @enabled: PTP operation enabled
  * @mode: Mode in which PTP operating (PTP version)
-<<<<<<< HEAD
  * @ns_to_nic_time: Function to convert from scalar nanoseconds to NIC time
  * @nic_to_kernel_time: Function to convert from NIC to kernel time
  * @nic_time.minor_max: Wrap point for NIC minor times
@@ -273,26 +252,13 @@ struct efx_ptp_timeset {
  *                             transmit timestamps
  * @ts_corrections.general_rx: Required driver correction of general packet
  *                             receive timestamps
-=======
- * @time_format: Time format supported by this NIC
- * @ns_to_nic_time: Function to convert from scalar nanoseconds to NIC time
- * @nic_to_kernel_time: Function to convert from NIC to kernel time
- * @min_synchronisation_ns: Minimum acceptable corrected sync window
- * @ts_corrections.tx: Required driver correction of transmit timestamps
- * @ts_corrections.rx: Required driver correction of receive timestamps
- * @ts_corrections.pps_out: PPS output error (information only)
- * @ts_corrections.pps_in: Required driver correction of PPS input timestamps
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @evt_frags: Partly assembled PTP events
  * @evt_frag_idx: Current fragment number
  * @evt_code: Last event code
  * @start: Address at which MC indicates ready for synchronisation
  * @host_time_pps: Host time at last PPS
-<<<<<<< HEAD
  * @adjfreq_ppb_shift: Shift required to convert scaled parts-per-billion
  * frequency adjustment into a fixed point fractional nanosecond format.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @current_adjfreq: Current ppb adjustment.
  * @phc_clock: Pointer to registered phc device (if primary function)
  * @phc_clock_info: Registration structure for phc device
@@ -311,10 +277,7 @@ struct efx_ptp_timeset {
  * @oversize_sync_windows: Number of corrected sync windows that are too large
  * @rx_no_timestamp: Number of packets received without a timestamp.
  * @timeset: Last set of synchronisation statistics.
-<<<<<<< HEAD
  * @xmit_skb: Transmit SKB function.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct efx_ptp_data {
 	struct efx_nic *efx;
@@ -335,7 +298,6 @@ struct efx_ptp_data {
 	struct hwtstamp_config config;
 	bool enabled;
 	unsigned int mode;
-<<<<<<< HEAD
 	void (*ns_to_nic_time)(s64 ns, u32 *nic_major, u32 *nic_minor);
 	ktime_t (*nic_to_kernel_time)(u32 nic_major, u32 nic_minor,
 				      s32 correction);
@@ -354,28 +316,13 @@ struct efx_ptp_data {
 		s32 pps_in;
 		s32 general_tx;
 		s32 general_rx;
-=======
-	unsigned int time_format;
-	void (*ns_to_nic_time)(s64 ns, u32 *nic_major, u32 *nic_minor);
-	ktime_t (*nic_to_kernel_time)(u32 nic_major, u32 nic_minor,
-				      s32 correction);
-	unsigned int min_synchronisation_ns;
-	struct {
-		s32 tx;
-		s32 rx;
-		s32 pps_out;
-		s32 pps_in;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} ts_corrections;
 	efx_qword_t evt_frags[MAX_EVENT_FRAGS];
 	int evt_frag_idx;
 	int evt_code;
 	struct efx_buffer start;
 	struct pps_event_time host_time_pps;
-<<<<<<< HEAD
 	unsigned int adjfreq_ppb_shift;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	s64 current_adjfreq;
 	struct ptp_clock *phc_clock;
 	struct ptp_clock_info phc_clock_info;
@@ -395,10 +342,7 @@ struct efx_ptp_data {
 	unsigned int rx_no_timestamp;
 	struct efx_ptp_timeset
 	timeset[MC_CMD_PTP_OUT_SYNCHRONIZE_TIMESET_MAXNUM];
-<<<<<<< HEAD
 	void (*xmit_skb)(struct efx_nic *efx, struct sk_buff *skb);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int efx_phc_adjfreq(struct ptp_clock_info *ptp, s32 delta);
@@ -409,7 +353,6 @@ static int efx_phc_settime(struct ptp_clock_info *ptp,
 static int efx_phc_enable(struct ptp_clock_info *ptp,
 			  struct ptp_clock_request *request, int on);
 
-<<<<<<< HEAD
 bool efx_ptp_use_mac_tx_timestamps(struct efx_nic *efx)
 {
 	struct efx_ef10_nic_data *nic_data = efx->nic_data;
@@ -428,8 +371,6 @@ static bool efx_ptp_want_txqs(struct efx_channel *channel)
 	return efx_ptp_use_mac_tx_timestamps(channel->efx);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define PTP_SW_STAT(ext_name, field_name)				\
 	{ #ext_name, 0, offsetof(struct efx_ptp_data, field_name) }
 #define PTP_MC_STAT(ext_name, mcdi_name)				\
@@ -572,7 +513,6 @@ static ktime_t efx_ptp_s27_to_ktime_correction(u32 nic_major, u32 nic_minor,
 	return efx_ptp_s27_to_ktime(nic_major, nic_minor);
 }
 
-<<<<<<< HEAD
 /* For Medford2 platforms the time is in seconds and quarter nanoseconds. */
 static void efx_ptp_ns_to_s_qns(s64 ns, u32 *nic_major, u32 *nic_minor)
 {
@@ -656,8 +596,6 @@ ktime_t efx_ptp_nic_to_kernel_time(struct efx_tx_queue *tx_queue)
 	return kt;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Get PTP attributes and set up time conversions */
 static int efx_ptp_get_attributes(struct efx_nic *efx)
 {
@@ -689,7 +627,6 @@ static int efx_ptp_get_attributes(struct efx_nic *efx)
 		return rc;
 	}
 
-<<<<<<< HEAD
 	switch (fmt) {
 	case MC_CMD_PTP_OUT_GET_ATTRIBUTES_SECONDS_27FRACTION:
 		ptp->ns_to_nic_time = efx_ptp_ns_to_s27;
@@ -733,34 +670,12 @@ static int efx_ptp_get_attributes(struct efx_nic *efx)
 	 */
 	if (rc == 0 &&
 	    out_len >= MC_CMD_PTP_OUT_GET_ATTRIBUTES_CAPABILITIES_OFST)
-=======
-	if (fmt == MC_CMD_PTP_OUT_GET_ATTRIBUTES_SECONDS_27FRACTION) {
-		ptp->ns_to_nic_time = efx_ptp_ns_to_s27;
-		ptp->nic_to_kernel_time = efx_ptp_s27_to_ktime_correction;
-	} else if (fmt == MC_CMD_PTP_OUT_GET_ATTRIBUTES_SECONDS_NANOSECONDS) {
-		ptp->ns_to_nic_time = efx_ptp_ns_to_s_ns;
-		ptp->nic_to_kernel_time = efx_ptp_s_ns_to_ktime_correction;
-	} else {
-		return -ERANGE;
-	}
-
-	ptp->time_format = fmt;
-
-	/* MC_CMD_PTP_OP_GET_ATTRIBUTES is an extended version of an older
-	 * operation MC_CMD_PTP_OP_GET_TIME_FORMAT that also returns a value
-	 * to use for the minimum acceptable corrected synchronization window.
-	 * If we have the extra information store it. For older firmware that
-	 * does not implement the extended command use the default value.
-	 */
-	if (rc == 0 && out_len >= MC_CMD_PTP_OUT_GET_ATTRIBUTES_LEN)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ptp->min_synchronisation_ns =
 			MCDI_DWORD(outbuf,
 				   PTP_OUT_GET_ATTRIBUTES_SYNC_WINDOW_MIN);
 	else
 		ptp->min_synchronisation_ns = DEFAULT_MIN_SYNCHRONISATION_NS;
 
-<<<<<<< HEAD
 	if (rc == 0 &&
 	    out_len >= MC_CMD_PTP_OUT_GET_ATTRIBUTES_LEN)
 		ptp->capabilities = MCDI_DWORD(outbuf,
@@ -777,8 +692,6 @@ static int efx_ptp_get_attributes(struct efx_nic *efx)
 	else
 		ptp->adjfreq_ppb_shift = PPB_SHIFT_FP40;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -786,14 +699,9 @@ static int efx_ptp_get_attributes(struct efx_nic *efx)
 static int efx_ptp_get_timestamp_corrections(struct efx_nic *efx)
 {
 	MCDI_DECLARE_BUF(inbuf, MC_CMD_PTP_IN_GET_TIMESTAMP_CORRECTIONS_LEN);
-<<<<<<< HEAD
 	MCDI_DECLARE_BUF(outbuf, MC_CMD_PTP_OUT_GET_TIMESTAMP_CORRECTIONS_V2_LEN);
 	int rc;
 	size_t out_len;
-=======
-	MCDI_DECLARE_BUF(outbuf, MC_CMD_PTP_OUT_GET_TIMESTAMP_CORRECTIONS_LEN);
-	int rc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Get the timestamp corrections from the NIC. If this operation is
 	 * not supported (older NICs) then no correction is required.
@@ -803,25 +711,16 @@ static int efx_ptp_get_timestamp_corrections(struct efx_nic *efx)
 	MCDI_SET_DWORD(inbuf, PTP_IN_PERIPH_ID, 0);
 
 	rc = efx_mcdi_rpc_quiet(efx, MC_CMD_PTP, inbuf, sizeof(inbuf),
-<<<<<<< HEAD
 				outbuf, sizeof(outbuf), &out_len);
 	if (rc == 0) {
 		efx->ptp_data->ts_corrections.ptp_tx = MCDI_DWORD(outbuf,
 			PTP_OUT_GET_TIMESTAMP_CORRECTIONS_TRANSMIT);
 		efx->ptp_data->ts_corrections.ptp_rx = MCDI_DWORD(outbuf,
-=======
-				outbuf, sizeof(outbuf), NULL);
-	if (rc == 0) {
-		efx->ptp_data->ts_corrections.tx = MCDI_DWORD(outbuf,
-			PTP_OUT_GET_TIMESTAMP_CORRECTIONS_TRANSMIT);
-		efx->ptp_data->ts_corrections.rx = MCDI_DWORD(outbuf,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			PTP_OUT_GET_TIMESTAMP_CORRECTIONS_RECEIVE);
 		efx->ptp_data->ts_corrections.pps_out = MCDI_DWORD(outbuf,
 			PTP_OUT_GET_TIMESTAMP_CORRECTIONS_PPS_OUT);
 		efx->ptp_data->ts_corrections.pps_in = MCDI_DWORD(outbuf,
 			PTP_OUT_GET_TIMESTAMP_CORRECTIONS_PPS_IN);
-<<<<<<< HEAD
 
 		if (out_len >= MC_CMD_PTP_OUT_GET_TIMESTAMP_CORRECTIONS_V2_LEN) {
 			efx->ptp_data->ts_corrections.general_tx = MCDI_DWORD(
@@ -843,13 +742,6 @@ static int efx_ptp_get_timestamp_corrections(struct efx_nic *efx)
 		efx->ptp_data->ts_corrections.pps_in = 0;
 		efx->ptp_data->ts_corrections.general_tx = 0;
 		efx->ptp_data->ts_corrections.general_rx = 0;
-=======
-	} else if (rc == -EINVAL) {
-		efx->ptp_data->ts_corrections.tx = 0;
-		efx->ptp_data->ts_corrections.rx = 0;
-		efx->ptp_data->ts_corrections.pps_out = 0;
-		efx->ptp_data->ts_corrections.pps_in = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		efx_mcdi_display_error(efx, MC_CMD_PTP, sizeof(inbuf), outbuf,
 				       sizeof(outbuf), rc);
@@ -938,27 +830,15 @@ static void efx_ptp_send_times(struct efx_nic *efx,
 	struct pps_event_time now;
 	struct timespec64 limit;
 	struct efx_ptp_data *ptp = efx->ptp_data;
-<<<<<<< HEAD
 	int *mc_running = ptp->start.addr;
 
 	pps_get_ts(&now);
-=======
-	struct timespec64 start;
-	int *mc_running = ptp->start.addr;
-
-	pps_get_ts(&now);
-	start = now.ts_real;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	limit = now.ts_real;
 	timespec64_add_ns(&limit, SYNCHRONISE_PERIOD_NS);
 
 	/* Write host time for specified period or until MC is done */
 	while ((timespec64_compare(&now.ts_real, &limit) < 0) &&
-<<<<<<< HEAD
 	       READ_ONCE(*mc_running)) {
-=======
-	       ACCESS_ONCE(*mc_running)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct timespec64 update_time;
 		unsigned int host_time;
 
@@ -968,11 +848,7 @@ static void efx_ptp_send_times(struct efx_nic *efx,
 		do {
 			pps_get_ts(&now);
 		} while ((timespec64_compare(&now.ts_real, &update_time) < 0) &&
-<<<<<<< HEAD
 			 READ_ONCE(*mc_running));
-=======
-			 ACCESS_ONCE(*mc_running));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Synchronise NIC with single word of time only */
 		host_time = (now.ts_real.tv_sec << MC_NANOSECOND_BITS |
@@ -1136,22 +1012,14 @@ static int efx_ptp_synchronize(struct efx_nic *efx, unsigned int num_readings)
 		       ptp->start.dma_addr);
 
 	/* Clear flag that signals MC ready */
-<<<<<<< HEAD
 	WRITE_ONCE(*start, 0);
-=======
-	ACCESS_ONCE(*start) = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rc = efx_mcdi_rpc_start(efx, MC_CMD_PTP, synch_buf,
 				MC_CMD_PTP_IN_SYNCHRONIZE_LEN);
 	EFX_WARN_ON_ONCE_PARANOID(rc);
 
 	/* Wait for start from MCDI (or timeout) */
 	timeout = jiffies + msecs_to_jiffies(MAX_SYNCHRONISE_WAIT_MS);
-<<<<<<< HEAD
 	while (!READ_ONCE(*start) && (time_before(jiffies, timeout))) {
-=======
-	while (!ACCESS_ONCE(*start) && (time_before(jiffies, timeout))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		udelay(20);	/* Usually start MCDI execution quickly */
 		loops++;
 	}
@@ -1161,11 +1029,7 @@ static int efx_ptp_synchronize(struct efx_nic *efx, unsigned int num_readings)
 	if (!time_before(jiffies, timeout))
 		++ptp->sync_timeouts;
 
-<<<<<<< HEAD
 	if (READ_ONCE(*start))
-=======
-	if (ACCESS_ONCE(*start))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		efx_ptp_send_times(efx, &last_time);
 
 	/* Collect results */
@@ -1191,7 +1055,6 @@ static int efx_ptp_synchronize(struct efx_nic *efx, unsigned int num_readings)
 	return rc;
 }
 
-<<<<<<< HEAD
 /* Transmit a PTP packet via the dedicated hardware timestamped queue. */
 static void efx_ptp_xmit_skb_queue(struct efx_nic *efx, struct sk_buff *skb)
 {
@@ -1210,10 +1073,6 @@ static void efx_ptp_xmit_skb_queue(struct efx_nic *efx, struct sk_buff *skb)
 
 /* Transmit a PTP packet, via the MCDI interface, to the wire. */
 static void efx_ptp_xmit_skb_mc(struct efx_nic *efx, struct sk_buff *skb)
-=======
-/* Transmit a PTP packet, via the MCDI interface, to the wire. */
-static int efx_ptp_xmit_skb(struct efx_nic *efx, struct sk_buff *skb)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct efx_ptp_data *ptp_data = efx->ptp_data;
 	struct skb_shared_hwtstamps timestamps;
@@ -1249,26 +1108,16 @@ static int efx_ptp_xmit_skb(struct efx_nic *efx, struct sk_buff *skb)
 	timestamps.hwtstamp = ptp_data->nic_to_kernel_time(
 		MCDI_DWORD(txtime, PTP_OUT_TRANSMIT_MAJOR),
 		MCDI_DWORD(txtime, PTP_OUT_TRANSMIT_MINOR),
-<<<<<<< HEAD
 		ptp_data->ts_corrections.ptp_tx);
-=======
-		ptp_data->ts_corrections.tx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	skb_tstamp_tx(skb, &timestamps);
 
 	rc = 0;
 
 fail:
-<<<<<<< HEAD
 	dev_kfree_skb_any(skb);
 
 	return;
-=======
-	dev_kfree_skb(skb);
-
-	return rc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void efx_ptp_drop_time_expired_events(struct efx_nic *efx)
@@ -1538,11 +1387,7 @@ static void efx_ptp_worker(struct work_struct *work)
 	efx_ptp_process_events(efx, &tempq);
 
 	while ((skb = skb_dequeue(&ptp_data->txq)))
-<<<<<<< HEAD
 		ptp_data->xmit_skb(efx, skb);
-=======
-		efx_ptp_xmit_skb(efx, skb);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	while ((skb = __skb_dequeue(&tempq)))
 		efx_ptp_process_rx(efx, skb);
@@ -1592,7 +1437,6 @@ int efx_ptp_probe(struct efx_nic *efx, struct efx_channel *channel)
 		goto fail2;
 	}
 
-<<<<<<< HEAD
 	if (efx_ptp_use_mac_tx_timestamps(efx)) {
 		ptp->xmit_skb = efx_ptp_xmit_skb_queue;
 		/* Request sync events on this channel. */
@@ -1601,8 +1445,6 @@ int efx_ptp_probe(struct efx_nic *efx, struct efx_channel *channel)
 		ptp->xmit_skb = efx_ptp_xmit_skb_mc;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INIT_WORK(&ptp->work, efx_ptp_worker);
 	ptp->config.flags = 0;
 	ptp->config.tx_type = HWTSTAMP_TX_OFF;
@@ -1667,15 +1509,11 @@ fail1:
 static int efx_ptp_probe_channel(struct efx_channel *channel)
 {
 	struct efx_nic *efx = channel->efx;
-<<<<<<< HEAD
 	int rc;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	channel->irq_moderation_us = 0;
 	channel->rx_queue.core_index = 0;
 
-<<<<<<< HEAD
 	rc = efx_ptp_probe(efx, channel);
 	/* Failure to probe PTP is not fatal; this channel will just not be
 	 * used for anything.
@@ -1686,9 +1524,6 @@ static int efx_ptp_probe_channel(struct efx_channel *channel)
 		netif_warn(efx, drv, efx->net_dev,
 			   "Failed to probe PTP, rc=%d\n", rc);
 	return 0;
-=======
-	return efx_ptp_probe(efx, channel);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void efx_ptp_remove(struct efx_nic *efx)
@@ -1699,12 +1534,7 @@ void efx_ptp_remove(struct efx_nic *efx)
 	(void)efx_ptp_disable(efx);
 
 	cancel_work_sync(&efx->ptp_data->work);
-<<<<<<< HEAD
 	cancel_work_sync(&efx->ptp_data->pps_work);
-=======
-	if (efx->ptp_data->pps_workwq)
-		cancel_work_sync(&efx->ptp_data->pps_work);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	skb_queue_purge(&efx->ptp_data->rxq);
 	skb_queue_purge(&efx->ptp_data->txq);
@@ -1718,10 +1548,7 @@ void efx_ptp_remove(struct efx_nic *efx)
 
 	efx_nic_free_buffer(efx, &efx->ptp_data->start);
 	kfree(efx->ptp_data);
-<<<<<<< HEAD
 	efx->ptp_data = NULL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void efx_ptp_remove_channel(struct efx_channel *channel)
@@ -1938,7 +1765,6 @@ void efx_ptp_get_ts_info(struct efx_nic *efx, struct ethtool_ts_info *ts_info)
 	ts_info->so_timestamping |= (SOF_TIMESTAMPING_TX_HARDWARE |
 				     SOF_TIMESTAMPING_RX_HARDWARE |
 				     SOF_TIMESTAMPING_RAW_HARDWARE);
-<<<<<<< HEAD
 	/* Check licensed features.  If we don't have the license for TX
 	 * timestamps, the NIC will not support them.
 	 */
@@ -1950,8 +1776,6 @@ void efx_ptp_get_ts_info(struct efx_nic *efx, struct ethtool_ts_info *ts_info)
 			ts_info->so_timestamping &=
 				~SOF_TIMESTAMPING_TX_HARDWARE;
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (primary && primary->ptp_data && primary->ptp_data->phc_clock)
 		ts_info->phc_index =
 			ptp_clock_index(primary->ptp_data->phc_clock);
@@ -2031,11 +1855,7 @@ static void ptp_event_rx(struct efx_nic *efx, struct efx_ptp_data *ptp)
 		evt->hwtimestamp = efx->ptp_data->nic_to_kernel_time(
 			EFX_QWORD_FIELD(ptp->evt_frags[0], MCDI_EVENT_DATA),
 			EFX_QWORD_FIELD(ptp->evt_frags[1], MCDI_EVENT_DATA),
-<<<<<<< HEAD
 			ptp->ts_corrections.ptp_rx);
-=======
-			ptp->ts_corrections.rx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		evt->expiry = jiffies + msecs_to_jiffies(PKT_EVENT_LIFETIME_MS);
 		list_add_tail(&evt->link, &ptp->evt_list);
 
@@ -2070,17 +1890,11 @@ void efx_ptp_event(struct efx_nic *efx, efx_qword_t *ev)
 	int code = EFX_QWORD_FIELD(*ev, MCDI_EVENT_CODE);
 
 	if (!ptp) {
-<<<<<<< HEAD
 		if (!efx->ptp_warned) {
 			netif_warn(efx, drv, efx->net_dev,
 				   "Received PTP event but PTP not set up\n");
 			efx->ptp_warned = true;
 		}
-=======
-		if (net_ratelimit())
-			netif_warn(efx, drv, efx->net_dev,
-				   "Received PTP event but PTP not set up\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -2123,7 +1937,6 @@ void efx_ptp_event(struct efx_nic *efx, efx_qword_t *ev)
 
 void efx_time_sync_event(struct efx_channel *channel, efx_qword_t *ev)
 {
-<<<<<<< HEAD
 	struct efx_nic *efx = channel->efx;
 	struct efx_ptp_data *ptp = efx->ptp_data;
 
@@ -2138,11 +1951,6 @@ void efx_time_sync_event(struct efx_channel *channel, efx_qword_t *ev)
 		(MCDI_EVENT_FIELD(*ev, PTP_TIME_MINOR_MS_8BITS) & 0xFC)
 			<< ptp->nic_time.sync_event_minor_shift;
 
-=======
-	channel->sync_timestamp_major = MCDI_EVENT_FIELD(*ev, PTP_TIME_MAJOR);
-	channel->sync_timestamp_minor =
-		MCDI_EVENT_FIELD(*ev, PTP_TIME_MINOR_26_19) << 19;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* if sync events have been disabled then we want to silently ignore
 	 * this event, so throw away result.
 	 */
@@ -2150,18 +1958,6 @@ void efx_time_sync_event(struct efx_channel *channel, efx_qword_t *ev)
 		       SYNC_EVENTS_VALID);
 }
 
-<<<<<<< HEAD
-=======
-/* make some assumptions about the time representation rather than abstract it,
- * since we currently only support one type of inline timestamping and only on
- * EF10.
- */
-#define MINOR_TICKS_PER_SECOND 0x8000000
-/* Fuzz factor for sync events to be out of order with RX events */
-#define FUZZ (MINOR_TICKS_PER_SECOND / 10)
-#define EXPECTED_SYNC_EVENTS_PER_SECOND 4
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline u32 efx_rx_buf_timestamp_minor(struct efx_nic *efx, const u8 *eh)
 {
 #if defined(CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS)
@@ -2179,30 +1975,19 @@ void __efx_rx_skb_attach_timestamp(struct efx_channel *channel,
 				   struct sk_buff *skb)
 {
 	struct efx_nic *efx = channel->efx;
-<<<<<<< HEAD
 	struct efx_ptp_data *ptp = efx->ptp_data;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 pkt_timestamp_major, pkt_timestamp_minor;
 	u32 diff, carry;
 	struct skb_shared_hwtstamps *timestamps;
 
-<<<<<<< HEAD
 	if (channel->sync_events_state != SYNC_EVENTS_VALID)
 		return;
 
 	pkt_timestamp_minor = efx_rx_buf_timestamp_minor(efx, skb_mac_header(skb));
-=======
-	pkt_timestamp_minor = (efx_rx_buf_timestamp_minor(efx,
-							  skb_mac_header(skb)) +
-			       (u32) efx->ptp_data->ts_corrections.rx) &
-			      (MINOR_TICKS_PER_SECOND - 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* get the difference between the packet and sync timestamps,
 	 * modulo one second
 	 */
-<<<<<<< HEAD
 	diff = pkt_timestamp_minor - channel->sync_timestamp_minor;
 	if (pkt_timestamp_minor < channel->sync_timestamp_minor)
 		diff += ptp->nic_time.minor_max;
@@ -2212,25 +1997,11 @@ void __efx_rx_skb_attach_timestamp(struct efx_channel *channel,
 		1 : 0;
 
 	if (diff <= ptp->nic_time.sync_event_diff_max) {
-=======
-	diff = (pkt_timestamp_minor - channel->sync_timestamp_minor) &
-		(MINOR_TICKS_PER_SECOND - 1);
-	/* do we roll over a second boundary and need to carry the one? */
-	carry = channel->sync_timestamp_minor + diff > MINOR_TICKS_PER_SECOND ?
-		1 : 0;
-
-	if (diff <= MINOR_TICKS_PER_SECOND / EXPECTED_SYNC_EVENTS_PER_SECOND +
-		    FUZZ) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* packet is ahead of the sync event by a quarter of a second or
 		 * less (allowing for fuzz)
 		 */
 		pkt_timestamp_major = channel->sync_timestamp_major + carry;
-<<<<<<< HEAD
 	} else if (diff >= ptp->nic_time.sync_event_diff_min) {
-=======
-	} else if (diff >= MINOR_TICKS_PER_SECOND - FUZZ) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* packet is behind the sync event but within the fuzz factor.
 		 * This means the RX packet and sync event crossed as they were
 		 * placed on the event queue, which can sometimes happen.
@@ -2252,13 +2023,9 @@ void __efx_rx_skb_attach_timestamp(struct efx_channel *channel,
 	/* attach the timestamps to the skb */
 	timestamps = skb_hwtstamps(skb);
 	timestamps->hwtstamp =
-<<<<<<< HEAD
 		ptp->nic_to_kernel_time(pkt_timestamp_major,
 					pkt_timestamp_minor,
 					ptp->ts_corrections.general_rx);
-=======
-		efx_ptp_s27_to_ktime(pkt_timestamp_major, pkt_timestamp_minor);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int efx_phc_adjfreq(struct ptp_clock_info *ptp, s32 delta)
@@ -2276,16 +2043,10 @@ static int efx_phc_adjfreq(struct ptp_clock_info *ptp, s32 delta)
 	else if (delta < -MAX_PPB)
 		delta = -MAX_PPB;
 
-<<<<<<< HEAD
 	/* Convert ppb to fixed point ns taking care to round correctly. */
 	adjustment_ns = ((s64)delta * PPB_SCALE_WORD +
 			 (1 << (ptp_data->adjfreq_ppb_shift - 1))) >>
 			ptp_data->adjfreq_ppb_shift;
-=======
-	/* Convert ppb to fixed point ns. */
-	adjustment_ns = (((s64)delta * PPB_SCALE_WORD) >>
-			 (PPB_EXTRA_BITS + MAX_PPB_BITS));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	MCDI_SET_DWORD(inadj, PTP_IN_OP, MC_CMD_PTP_OP_ADJUST);
 	MCDI_SET_DWORD(inadj, PTP_IN_PERIPH_ID, 0);
@@ -2392,10 +2153,7 @@ static const struct efx_channel_type efx_ptp_channel_type = {
 	.get_name		= efx_ptp_get_channel_name,
 	/* no copy operation; there is no need to reallocate this channel */
 	.receive_skb		= efx_ptp_rx,
-<<<<<<< HEAD
 	.want_txqs		= efx_ptp_want_txqs,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.keep_eventq		= false,
 };
 

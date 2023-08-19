@@ -51,7 +51,6 @@
 				status = "okay";
 			};
 
-<<<<<<< HEAD
 			tcb0: timer@fffa0000 {
 				timer@0 {
 					compatible = "atmel,tcb-timer";
@@ -64,8 +63,6 @@
 				};
 			};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			usart0: serial@fffb0000 {
 				pinctrl-0 =
 					<&pinctrl_usart0
@@ -214,11 +211,7 @@
 		status = "okay";
 
 		24c512@50 {
-<<<<<<< HEAD
 			compatible = "atmel,24c512";
-=======
-			compatible = "24c512";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			reg = <0x50>;
 		};
 

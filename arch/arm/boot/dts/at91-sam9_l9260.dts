@@ -32,7 +32,6 @@
 
 	ahb {
 		apb {
-<<<<<<< HEAD
 			tcb0: timer@fffa0000 {
 				timer@0 {
 					compatible = "atmel,tcb-timer";
@@ -45,8 +44,6 @@
 				};
 			};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			mmc0: mmc@fffa8000 {
 				pinctrl-0 = <
 					&pinctrl_board_mmc0

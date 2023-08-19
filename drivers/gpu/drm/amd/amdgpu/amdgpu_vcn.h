@@ -45,7 +45,6 @@
 #define VCN_ENC_CMD_REG_WRITE		0x0000000b
 #define VCN_ENC_CMD_REG_WAIT		0x0000000c
 
-<<<<<<< HEAD
 enum engine_status_constants {
 	UVD_PGFSM_STATUS__UVDM_UVDU_PWR_ON = 0x2AAAA0,
 	UVD_PGFSM_CONFIG__UVDM_UVDU_PWR_ON = 0x00000002,
@@ -57,8 +56,6 @@ enum engine_status_constants {
 	UVD_STATUS__RBC_BUSY = 0x1,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct amdgpu_vcn {
 	struct amdgpu_bo	*vcpu_bo;
 	void			*cpu_addr;
@@ -69,14 +66,8 @@ struct amdgpu_vcn {
 	const struct firmware	*fw;	/* VCN firmware */
 	struct amdgpu_ring	ring_dec;
 	struct amdgpu_ring	ring_enc[AMDGPU_VCN_MAX_ENC_RINGS];
-<<<<<<< HEAD
 	struct amdgpu_ring	ring_jpeg;
 	struct amdgpu_irq_src	irq;
-=======
-	struct amdgpu_irq_src	irq;
-	struct amd_sched_entity entity_dec;
-	struct amd_sched_entity entity_enc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned		num_enc_rings;
 };
 
@@ -93,10 +84,7 @@ int amdgpu_vcn_dec_ring_test_ib(struct amdgpu_ring *ring, long timeout);
 int amdgpu_vcn_enc_ring_test_ring(struct amdgpu_ring *ring);
 int amdgpu_vcn_enc_ring_test_ib(struct amdgpu_ring *ring, long timeout);
 
-<<<<<<< HEAD
 int amdgpu_vcn_jpeg_ring_test_ring(struct amdgpu_ring *ring);
 int amdgpu_vcn_jpeg_ring_test_ib(struct amdgpu_ring *ring, long timeout);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

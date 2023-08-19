@@ -46,10 +46,6 @@ struct radeon_device;
 #define to_radeon_crtc(x) container_of(x, struct radeon_crtc, base)
 #define to_radeon_connector(x) container_of(x, struct radeon_connector, base)
 #define to_radeon_encoder(x) container_of(x, struct radeon_encoder, base)
-<<<<<<< HEAD
-=======
-#define to_radeon_framebuffer(x) container_of(x, struct radeon_framebuffer, base)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define RADEON_MAX_HPD_PINS 7
 #define RADEON_MAX_CRTCS 6
@@ -577,14 +573,6 @@ struct radeon_connector {
 	int enabled_attribs;
 };
 
-<<<<<<< HEAD
-=======
-struct radeon_framebuffer {
-	struct drm_framebuffer base;
-	struct drm_gem_object *obj;
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ENCODER_MODE_IS_DP(em) (((em) == ATOM_ENCODER_MODE_DP) || \
 				((em) == ATOM_ENCODER_MODE_DP_MST))
 
@@ -768,13 +756,6 @@ extern u8 radeon_dp_getsinktype(struct radeon_connector *radeon_connector);
 extern bool radeon_dp_getdpcd(struct radeon_connector *radeon_connector);
 extern int radeon_dp_get_panel_mode(struct drm_encoder *encoder,
 				    struct drm_connector *connector);
-<<<<<<< HEAD
-=======
-extern int radeon_dp_get_dp_link_config(struct drm_connector *connector,
-					const u8 *dpcd,
-					unsigned pix_clock,
-					unsigned *dp_lanes, unsigned *dp_rate);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern void radeon_dp_set_rx_power_state(struct drm_connector *connector,
 					 u8 power_state);
 extern void radeon_dp_aux_init(struct radeon_connector *radeon_connector);
@@ -945,11 +926,7 @@ radeon_combios_encoder_crtc_scratch_regs(struct drm_encoder *encoder, int crtc);
 extern void
 radeon_combios_encoder_dpms_scratch_regs(struct drm_encoder *encoder, bool on);
 int radeon_framebuffer_init(struct drm_device *dev,
-<<<<<<< HEAD
 			     struct drm_framebuffer *rfb,
-=======
-			     struct radeon_framebuffer *rfb,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     const struct drm_mode_fb_cmd2 *mode_cmd,
 			     struct drm_gem_object *obj);
 
@@ -1001,12 +978,6 @@ int radeon_fbdev_init(struct radeon_device *rdev);
 void radeon_fbdev_fini(struct radeon_device *rdev);
 void radeon_fbdev_set_suspend(struct radeon_device *rdev, int state);
 bool radeon_fbdev_robj_is_fb(struct radeon_device *rdev, struct radeon_bo *robj);
-<<<<<<< HEAD
-=======
-void radeon_fbdev_restore_mode(struct radeon_device *rdev);
-
-void radeon_fb_output_poll_changed(struct radeon_device *rdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void radeon_crtc_handle_vblank(struct radeon_device *rdev, int crtc_id);
 

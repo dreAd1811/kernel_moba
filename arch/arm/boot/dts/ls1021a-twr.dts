@@ -143,11 +143,7 @@
 };
 
 &enet0 {
-<<<<<<< HEAD
 	tbi-handle = <&tbi1>;
-=======
-	tbi-handle = <&tbi0>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	phy-handle = <&sgmii_phy2>;
 	phy-connection-type = "sgmii";
 	status = "okay";
@@ -226,26 +222,14 @@
 	sgmii_phy2: ethernet-phy@2 {
 		reg = <0x2>;
 	};
-<<<<<<< HEAD
 	tbi1: tbi-phy@1f {
-=======
-	tbi0: tbi-phy@1f {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x1f>;
 		device_type = "tbi-phy";
 	};
 };
 
-<<<<<<< HEAD
 &esdhc {
         status = "okay";
-=======
-&mdio1 {
-	tbi1: tbi-phy@1f {
-		reg = <0x1f>;
-		device_type = "tbi-phy";
-	};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &sai1 {
@@ -263,7 +247,6 @@
 &uart1 {
 	status = "okay";
 };
-<<<<<<< HEAD
 
 &can0 {
 	status = "okay";
@@ -280,5 +263,3 @@
 &can3 {
 	status = "disabled";
 };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

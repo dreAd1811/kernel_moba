@@ -419,11 +419,7 @@ static void xenvif_rx_extra_slot(struct xenvif_queue *queue,
 	BUG();
 }
 
-<<<<<<< HEAD
 static void xenvif_rx_skb(struct xenvif_queue *queue)
-=======
-void xenvif_rx_skb(struct xenvif_queue *queue)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct xenvif_pkt_state pkt;
 

@@ -49,11 +49,8 @@ static void pcibios_scanbus(struct pci_channel *hose)
 	for (i = 0; i < hose->nr_resources; i++) {
 		res = hose->resources + i;
 		offset = 0;
-<<<<<<< HEAD
 		if (res->flags & IORESOURCE_DISABLED)
 			continue;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (res->flags & IORESOURCE_IO)
 			offset = hose->io_offset;
 		else if (res->flags & IORESOURCE_MEM)
@@ -107,12 +104,9 @@ int register_pci_controller(struct pci_channel *hose)
 	for (i = 0; i < hose->nr_resources; i++) {
 		struct resource *res = hose->resources + i;
 
-<<<<<<< HEAD
 		if (res->flags & IORESOURCE_DISABLED)
 			continue;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (res->flags & IORESOURCE_IO) {
 			if (request_resource(&ioport_resource, res) < 0)
 				goto out;
@@ -166,11 +160,6 @@ static int __init pcibios_init(void)
 	for (hose = hose_head; hose; hose = hose->next)
 		pcibios_scanbus(hose);
 
-<<<<<<< HEAD
-=======
-	dma_debug_add_bus(&pci_bus_type);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pci_initialized = 1;
 
 	return 0;

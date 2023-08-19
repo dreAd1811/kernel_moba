@@ -18,10 +18,7 @@
 #include <linux/device.h>
 #include <linux/interrupt.h>
 #include <linux/module.h>
-<<<<<<< HEAD
 #include <linux/mod_devicetable.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/dma-mapping.h>
 #include <linux/platform_device.h>
 #include <linux/videodev2.h>
@@ -90,10 +87,6 @@ struct vdoa_data {
 	struct device		*dev;
 	struct clk		*vdoa_clk;
 	void __iomem		*regs;
-<<<<<<< HEAD
-=======
-	int			irq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct vdoa_q_data {
@@ -300,10 +293,7 @@ static int vdoa_probe(struct platform_device *pdev)
 {
 	struct vdoa_data *vdoa;
 	struct resource *res;
-<<<<<<< HEAD
 	int ret;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(32));
 
@@ -327,21 +317,12 @@ static int vdoa_probe(struct platform_device *pdev)
 	res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
 	if (!res)
 		return -EINVAL;
-<<<<<<< HEAD
 	ret = devm_request_threaded_irq(&pdev->dev, res->start, NULL,
 					vdoa_irq_handler, IRQF_ONESHOT,
 					"vdoa", vdoa);
 	if (ret < 0) {
 		dev_err(vdoa->dev, "Failed to get irq\n");
 		return ret;
-=======
-	vdoa->irq = devm_request_threaded_irq(&pdev->dev, res->start, NULL,
-					vdoa_irq_handler, IRQF_ONESHOT,
-					"vdoa", vdoa);
-	if (vdoa->irq < 0) {
-		dev_err(vdoa->dev, "Failed to get irq\n");
-		return vdoa->irq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	platform_set_drvdata(pdev, vdoa);

@@ -1,11 +1,7 @@
 /* Broadcom NetXtreme-C/E network driver.
  *
  * Copyright (c) 2014-2016 Broadcom Corporation
-<<<<<<< HEAD
  * Copyright (c) 2016-2018 Broadcom Limited
-=======
- * Copyright (c) 2016-2017 Broadcom Limited
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -103,18 +99,11 @@ int bnxt_set_vf_spoofchk(struct net_device *dev, int vf_id, bool setting)
 	if (old_setting == setting)
 		return 0;
 
-<<<<<<< HEAD
 	func_flags = vf->func_flags;
 	if (setting)
 		func_flags |= FUNC_CFG_REQ_FLAGS_SRC_MAC_ADDR_CHECK_ENABLE;
 	else
 		func_flags |= FUNC_CFG_REQ_FLAGS_SRC_MAC_ADDR_CHECK_DISABLE;
-=======
-	if (setting)
-		func_flags = FUNC_CFG_REQ_FLAGS_SRC_MAC_ADDR_CHECK_ENABLE;
-	else
-		func_flags = FUNC_CFG_REQ_FLAGS_SRC_MAC_ADDR_CHECK_DISABLE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*TODO: if the driver supports VLAN filter on guest VLAN,
 	 * the spoof check should also include vlan anti-spoofing
 	 */
@@ -123,10 +112,7 @@ int bnxt_set_vf_spoofchk(struct net_device *dev, int vf_id, bool setting)
 	req.flags = cpu_to_le32(func_flags);
 	rc = hwrm_send_message(bp, &req, sizeof(req), HWRM_CMD_TIMEOUT);
 	if (!rc) {
-<<<<<<< HEAD
 		vf->func_flags = func_flags;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (setting)
 			vf->flags |= BNXT_VF_SPOOFCHK;
 		else
@@ -135,7 +121,6 @@ int bnxt_set_vf_spoofchk(struct net_device *dev, int vf_id, bool setting)
 	return rc;
 }
 
-<<<<<<< HEAD
 int bnxt_set_vf_trust(struct net_device *dev, int vf_id, bool trusted)
 {
 	struct bnxt *bp = netdev_priv(dev);
@@ -153,8 +138,6 @@ int bnxt_set_vf_trust(struct net_device *dev, int vf_id, bool trusted)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int bnxt_get_vf_config(struct net_device *dev, int vf_id,
 		       struct ifla_vf_info *ivi)
 {
@@ -169,14 +152,10 @@ int bnxt_get_vf_config(struct net_device *dev, int vf_id,
 	ivi->vf = vf_id;
 	vf = &bp->pf.vf[vf_id];
 
-<<<<<<< HEAD
 	if (is_valid_ether_addr(vf->mac_addr))
 		memcpy(&ivi->mac, vf->mac_addr, ETH_ALEN);
 	else
 		memcpy(&ivi->mac, vf->vf_mac_addr, ETH_ALEN);
-=======
-	memcpy(&ivi->mac, vf->mac_addr, ETH_ALEN);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ivi->max_tx_rate = vf->max_tx_rate;
 	ivi->min_tx_rate = vf->min_tx_rate;
 	ivi->vlan = vf->vlan;
@@ -185,10 +164,7 @@ int bnxt_get_vf_config(struct net_device *dev, int vf_id,
 	else
 		ivi->qos = 0;
 	ivi->spoofchk = !!(vf->flags & BNXT_VF_SPOOFCHK);
-<<<<<<< HEAD
 	ivi->trusted = !!(vf->flags & BNXT_VF_TRUST);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!(vf->flags & BNXT_VF_LINK_FORCED))
 		ivi->linkstate = IFLA_VF_LINK_STATE_AUTO;
 	else if (vf->flags & BNXT_VF_LINK_UP)
@@ -221,10 +197,7 @@ int bnxt_set_vf_mac(struct net_device *dev, int vf_id, u8 *mac)
 	memcpy(vf->mac_addr, mac, ETH_ALEN);
 	bnxt_hwrm_cmd_hdr_init(bp, &req, HWRM_FUNC_CFG, -1, -1);
 	req.fid = cpu_to_le16(vf->fw_fid);
-<<<<<<< HEAD
 	req.flags = cpu_to_le32(vf->func_flags);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	req.enables = cpu_to_le32(FUNC_CFG_REQ_ENABLES_DFLT_MAC_ADDR);
 	memcpy(req.dflt_mac_addr, mac, ETH_ALEN);
 	return hwrm_send_message(bp, &req, sizeof(req), HWRM_CMD_TIMEOUT);
@@ -262,10 +235,7 @@ int bnxt_set_vf_vlan(struct net_device *dev, int vf_id, u16 vlan_id, u8 qos,
 
 	bnxt_hwrm_cmd_hdr_init(bp, &req, HWRM_FUNC_CFG, -1, -1);
 	req.fid = cpu_to_le16(vf->fw_fid);
-<<<<<<< HEAD
 	req.flags = cpu_to_le32(vf->func_flags);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	req.dflt_vlan = cpu_to_le16(vlan_tag);
 	req.enables = cpu_to_le32(FUNC_CFG_REQ_ENABLES_DFLT_VLAN);
 	rc = hwrm_send_message(bp, &req, sizeof(req), HWRM_CMD_TIMEOUT);
@@ -304,10 +274,7 @@ int bnxt_set_vf_bw(struct net_device *dev, int vf_id, int min_tx_rate,
 		return 0;
 	bnxt_hwrm_cmd_hdr_init(bp, &req, HWRM_FUNC_CFG, -1, -1);
 	req.fid = cpu_to_le16(vf->fw_fid);
-<<<<<<< HEAD
 	req.flags = cpu_to_le32(vf->func_flags);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	req.enables = cpu_to_le32(FUNC_CFG_REQ_ENABLES_MAX_BW);
 	req.max_bw = cpu_to_le32(max_tx_rate);
 	req.enables |= cpu_to_le32(FUNC_CFG_REQ_ENABLES_MIN_BW);
@@ -403,10 +370,6 @@ static void bnxt_free_vf_resources(struct bnxt *bp)
 		}
 	}
 
-<<<<<<< HEAD
-=======
-	bp->pf.active_vfs = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(bp->pf.vf);
 	bp->pf.vf = NULL;
 }
@@ -474,7 +437,6 @@ static int bnxt_hwrm_func_buf_rgtr(struct bnxt *bp)
 	return hwrm_send_message(bp, &req, sizeof(req), HWRM_CMD_TIMEOUT);
 }
 
-<<<<<<< HEAD
 /* Only called by PF to reserve resources for VFs, returns actual number of
  * VFs configured, or < 0 on error.
  */
@@ -572,26 +534,18 @@ static int bnxt_hwrm_func_vf_resc_cfg(struct bnxt *bp, int num_vfs)
 /* Only called by PF to reserve resources for VFs, returns actual number of
  * VFs configured, or < 0 on error.
  */
-=======
-/* only call by PF to reserve resources for VF */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int bnxt_hwrm_func_cfg(struct bnxt *bp, int num_vfs)
 {
 	u32 rc = 0, mtu, i;
 	u16 vf_tx_rings, vf_rx_rings, vf_cp_rings, vf_stat_ctx, vf_vnics;
-<<<<<<< HEAD
 	struct bnxt_hw_resc *hw_resc = &bp->hw_resc;
 	u16 vf_ring_grps, max_stat_ctxs;
-=======
-	u16 vf_ring_grps;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct hwrm_func_cfg_input req = {0};
 	struct bnxt_pf_info *pf = &bp->pf;
 	int total_vf_tx_rings = 0;
 
 	bnxt_hwrm_cmd_hdr_init(bp, &req, HWRM_FUNC_CFG, -1, -1);
 
-<<<<<<< HEAD
 	max_stat_ctxs = hw_resc->max_stat_ctxs;
 
 	/* Remaining rings are distributed equally amongs VF's for now */
@@ -607,19 +561,6 @@ static int bnxt_hwrm_func_cfg(struct bnxt *bp, int num_vfs)
 	vf_ring_grps = (hw_resc->max_hw_ring_grps - bp->rx_nr_rings) / num_vfs;
 	vf_tx_rings = (hw_resc->max_tx_rings - bp->tx_nr_rings) / num_vfs;
 	vf_vnics = (hw_resc->max_vnics - bp->nr_vnics) / num_vfs;
-=======
-	/* Remaining rings are distributed equally amongs VF's for now */
-	vf_cp_rings = (pf->max_cp_rings - bp->cp_nr_rings) / num_vfs;
-	vf_stat_ctx = (pf->max_stat_ctxs - bp->num_stat_ctxs) / num_vfs;
-	if (bp->flags & BNXT_FLAG_AGG_RINGS)
-		vf_rx_rings = (pf->max_rx_rings - bp->rx_nr_rings * 2) /
-			      num_vfs;
-	else
-		vf_rx_rings = (pf->max_rx_rings - bp->rx_nr_rings) / num_vfs;
-	vf_ring_grps = (bp->pf.max_hw_ring_grps - bp->rx_nr_rings) / num_vfs;
-	vf_tx_rings = (pf->max_tx_rings - bp->tx_nr_rings) / num_vfs;
-	vf_vnics = (pf->max_vnics - bp->nr_vnics) / num_vfs;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vf_vnics = min_t(u16, vf_vnics, vf_rx_rings);
 
 	req.enables = cpu_to_le32(FUNC_CFG_REQ_ENABLES_MTU |
@@ -666,7 +607,6 @@ static int bnxt_hwrm_func_cfg(struct bnxt *bp, int num_vfs)
 		total_vf_tx_rings += vf_tx_rsvd;
 	}
 	mutex_unlock(&bp->hwrm_cmd_lock);
-<<<<<<< HEAD
 	if (rc)
 		rc = -ENOMEM;
 	if (pf->active_vfs) {
@@ -678,21 +618,10 @@ static int bnxt_hwrm_func_cfg(struct bnxt *bp, int num_vfs)
 		hw_resc->max_stat_ctxs -= vf_stat_ctx * num_vfs;
 		hw_resc->max_vnics -= vf_vnics * num_vfs;
 		rc = pf->active_vfs;
-=======
-	if (!rc) {
-		pf->max_tx_rings -= total_vf_tx_rings;
-		pf->max_rx_rings -= vf_rx_rings * num_vfs;
-		pf->max_hw_ring_grps -= vf_ring_grps * num_vfs;
-		pf->max_cp_rings -= vf_cp_rings * num_vfs;
-		pf->max_rsscos_ctxs -= num_vfs;
-		pf->max_stat_ctxs -= vf_stat_ctx * num_vfs;
-		pf->max_vnics -= vf_vnics * num_vfs;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return rc;
 }
 
-<<<<<<< HEAD
 static int bnxt_func_cfg(struct bnxt *bp, int num_vfs)
 {
 	if (BNXT_NEW_RM(bp))
@@ -701,16 +630,11 @@ static int bnxt_func_cfg(struct bnxt *bp, int num_vfs)
 		return bnxt_hwrm_func_cfg(bp, num_vfs);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int bnxt_sriov_enable(struct bnxt *bp, int *num_vfs)
 {
 	int rc = 0, vfs_supported;
 	int min_rx_rings, min_tx_rings, min_rss_ctxs;
-<<<<<<< HEAD
 	struct bnxt_hw_resc *hw_resc = &bp->hw_resc;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int tx_ok = 0, rx_ok = 0, rss_ok = 0;
 	int avail_cp, avail_stat;
 
@@ -720,13 +644,8 @@ static int bnxt_sriov_enable(struct bnxt *bp, int *num_vfs)
 	 */
 	vfs_supported = *num_vfs;
 
-<<<<<<< HEAD
 	avail_cp = bnxt_get_max_func_cp_rings_for_en(bp) - bp->cp_nr_rings;
 	avail_stat = hw_resc->max_stat_ctxs - bp->num_stat_ctxs;
-=======
-	avail_cp = bp->pf.max_cp_rings - bp->cp_nr_rings;
-	avail_stat = bp->pf.max_stat_ctxs - bp->num_stat_ctxs;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	avail_cp = min_t(int, avail_cp, avail_stat);
 
 	while (vfs_supported) {
@@ -735,7 +654,6 @@ static int bnxt_sriov_enable(struct bnxt *bp, int *num_vfs)
 		min_rss_ctxs = vfs_supported;
 
 		if (bp->flags & BNXT_FLAG_AGG_RINGS) {
-<<<<<<< HEAD
 			if (hw_resc->max_rx_rings - bp->rx_nr_rings * 2 >=
 			    min_rx_rings)
 				rx_ok = 1;
@@ -754,25 +672,6 @@ static int bnxt_sriov_enable(struct bnxt *bp, int *num_vfs)
 
 		if (hw_resc->max_rsscos_ctxs - bp->rsscos_nr_ctxs >=
 		    min_rss_ctxs)
-=======
-			if (bp->pf.max_rx_rings - bp->rx_nr_rings * 2 >=
-			    min_rx_rings)
-				rx_ok = 1;
-		} else {
-			if (bp->pf.max_rx_rings - bp->rx_nr_rings >=
-			    min_rx_rings)
-				rx_ok = 1;
-		}
-		if (bp->pf.max_vnics - bp->nr_vnics < min_rx_rings ||
-		    avail_cp < min_rx_rings)
-			rx_ok = 0;
-
-		if (bp->pf.max_tx_rings - bp->tx_nr_rings >= min_tx_rings &&
-		    avail_cp >= min_tx_rings)
-			tx_ok = 1;
-
-		if (bp->pf.max_rsscos_ctxs - bp->rsscos_nr_ctxs >= min_rss_ctxs)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rss_ok = 1;
 
 		if (tx_ok && rx_ok && rss_ok)
@@ -797,7 +696,6 @@ static int bnxt_sriov_enable(struct bnxt *bp, int *num_vfs)
 		goto err_out1;
 
 	/* Reserve resources for VFs */
-<<<<<<< HEAD
 	rc = bnxt_func_cfg(bp, *num_vfs);
 	if (rc != *num_vfs) {
 		if (rc <= 0) {
@@ -808,11 +706,6 @@ static int bnxt_sriov_enable(struct bnxt *bp, int *num_vfs)
 		netdev_warn(bp->dev, "Only able to reserve resources for %d VFs.\n", rc);
 		*num_vfs = rc;
 	}
-=======
-	rc = bnxt_hwrm_func_cfg(bp, *num_vfs);
-	if (rc)
-		goto err_out2;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Register buffers for VFs */
 	rc = bnxt_hwrm_func_buf_rgtr(bp);
@@ -862,10 +755,7 @@ void bnxt_sriov_disable(struct bnxt *bp)
 
 	bnxt_free_vf_resources(bp);
 
-<<<<<<< HEAD
 	bp->pf.active_vfs = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Reclaim all resources for the PF. */
 	rtnl_lock();
 	bnxt_restore_pf_fw_resources(bp);
@@ -925,12 +815,9 @@ static int bnxt_hwrm_fwd_resp(struct bnxt *bp, struct bnxt_vf_info *vf,
 	struct hwrm_fwd_resp_input req = {0};
 	struct hwrm_fwd_resp_output *resp = bp->hwrm_cmd_resp_addr;
 
-<<<<<<< HEAD
 	if (BNXT_FWD_RESP_SIZE_ERR(msg_size))
 		return -EINVAL;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bnxt_hwrm_cmd_hdr_init(bp, &req, HWRM_FWD_RESP, -1, -1);
 
 	/* Set the new target id */
@@ -967,12 +854,9 @@ static int bnxt_hwrm_fwd_err_resp(struct bnxt *bp, struct bnxt_vf_info *vf,
 	struct hwrm_reject_fwd_resp_input req = {0};
 	struct hwrm_reject_fwd_resp_output *resp = bp->hwrm_cmd_resp_addr;
 
-<<<<<<< HEAD
 	if (BNXT_REJ_FWD_RESP_SIZE_ERR(msg_size))
 		return -EINVAL;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bnxt_hwrm_cmd_hdr_init(bp, &req, HWRM_REJECT_FWD_RESP, -1, -1);
 	/* Set the new target id */
 	req.target_id = cpu_to_le16(vf->fw_fid);
@@ -1005,12 +889,9 @@ static int bnxt_hwrm_exec_fwd_resp(struct bnxt *bp, struct bnxt_vf_info *vf,
 	struct hwrm_exec_fwd_resp_input req = {0};
 	struct hwrm_exec_fwd_resp_output *resp = bp->hwrm_cmd_resp_addr;
 
-<<<<<<< HEAD
 	if (BNXT_EXEC_FWD_RESP_SIZE_ERR(msg_size))
 		return -EINVAL;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bnxt_hwrm_cmd_hdr_init(bp, &req, HWRM_EXEC_FWD_RESP, -1, -1);
 	/* Set the new target id */
 	req.target_id = cpu_to_le16(vf->fw_fid);
@@ -1036,7 +917,6 @@ exec_fwd_resp_exit:
 	return rc;
 }
 
-<<<<<<< HEAD
 static int bnxt_vf_configure_mac(struct bnxt *bp, struct bnxt_vf_info *vf)
 {
 	u32 msg_size = sizeof(struct hwrm_func_vf_cfg_input);
@@ -1059,14 +939,11 @@ static int bnxt_vf_configure_mac(struct bnxt *bp, struct bnxt_vf_info *vf)
 	return bnxt_hwrm_exec_fwd_resp(bp, vf, msg_size);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int bnxt_vf_validate_set_mac(struct bnxt *bp, struct bnxt_vf_info *vf)
 {
 	u32 msg_size = sizeof(struct hwrm_cfa_l2_filter_alloc_input);
 	struct hwrm_cfa_l2_filter_alloc_input *req =
 		(struct hwrm_cfa_l2_filter_alloc_input *)vf->hwrm_cmd_req_addr;
-<<<<<<< HEAD
 	bool mac_ok = false;
 
 	if (!is_valid_ether_addr((const u8 *)req->l2_addr))
@@ -1097,14 +974,6 @@ static int bnxt_vf_validate_set_mac(struct bnxt *bp, struct bnxt_vf_info *vf)
 	if (mac_ok)
 		return bnxt_hwrm_exec_fwd_resp(bp, vf, msg_size);
 	return bnxt_hwrm_fwd_err_resp(bp, vf, msg_size);
-=======
-
-	if (!is_valid_ether_addr(vf->mac_addr) ||
-	    ether_addr_equal((const u8 *)req->l2_addr, vf->mac_addr))
-		return bnxt_hwrm_exec_fwd_resp(bp, vf, msg_size);
-	else
-		return bnxt_hwrm_fwd_err_resp(bp, vf, msg_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int bnxt_vf_set_link(struct bnxt *bp, struct bnxt_vf_info *vf)
@@ -1125,13 +994,9 @@ static int bnxt_vf_set_link(struct bnxt *bp, struct bnxt_vf_info *vf)
 		memcpy(&phy_qcfg_resp, &bp->link_info.phy_qcfg_resp,
 		       sizeof(phy_qcfg_resp));
 		mutex_unlock(&bp->hwrm_cmd_lock);
-<<<<<<< HEAD
 		phy_qcfg_resp.resp_len = cpu_to_le16(sizeof(phy_qcfg_resp));
 		phy_qcfg_resp.seq_id = phy_qcfg_req->seq_id;
 		phy_qcfg_resp.valid = 1;
-=======
-		phy_qcfg_resp.seq_id = phy_qcfg_req->seq_id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (vf->flags & BNXT_VF_LINK_UP) {
 			/* if physical link is down, force link up on VF */
@@ -1172,12 +1037,9 @@ static int bnxt_vf_req_validate_snd(struct bnxt *bp, struct bnxt_vf_info *vf)
 	u32 req_type = le16_to_cpu(encap_req->req_type);
 
 	switch (req_type) {
-<<<<<<< HEAD
 	case HWRM_FUNC_VF_CFG:
 		rc = bnxt_vf_configure_mac(bp, vf);
 		break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case HWRM_CFA_L2_FILTER_ALLOC:
 		rc = bnxt_vf_validate_set_mac(bp, vf);
 		break;
@@ -1242,11 +1104,7 @@ update_vf_mac_exit:
 	mutex_unlock(&bp->hwrm_cmd_lock);
 }
 
-<<<<<<< HEAD
 int bnxt_approve_mac(struct bnxt *bp, u8 *mac, bool strict)
-=======
-int bnxt_approve_mac(struct bnxt *bp, u8 *mac)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct hwrm_func_vf_cfg_input req = {0};
 	int rc = 0;
@@ -1264,7 +1122,6 @@ int bnxt_approve_mac(struct bnxt *bp, u8 *mac)
 	memcpy(req.dflt_mac_addr, mac, ETH_ALEN);
 	rc = hwrm_send_message(bp, &req, sizeof(req), HWRM_CMD_TIMEOUT);
 mac_done:
-<<<<<<< HEAD
 	if (rc && strict) {
 		rc = -EADDRNOTAVAIL;
 		netdev_warn(bp->dev, "VF MAC address %pM not approved by the PF\n",
@@ -1272,14 +1129,6 @@ mac_done:
 		return rc;
 	}
 	return 0;
-=======
-	if (rc) {
-		rc = -EADDRNOTAVAIL;
-		netdev_warn(bp->dev, "VF MAC address %pM not approved by the PF\n",
-			    mac);
-	}
-	return rc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #else
 
@@ -1296,11 +1145,7 @@ void bnxt_update_vf_mac(struct bnxt *bp)
 {
 }
 
-<<<<<<< HEAD
 int bnxt_approve_mac(struct bnxt *bp, u8 *mac, bool strict)
-=======
-int bnxt_approve_mac(struct bnxt *bp, u8 *mac)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return 0;
 }

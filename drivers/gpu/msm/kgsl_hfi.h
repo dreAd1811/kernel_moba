@@ -1,29 +1,10 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0-only */
 /*
  * Copyright (c) 2017-2019, The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2017-2018, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #ifndef __KGSL_HFI_H
 #define __KGSL_HFI_H
 
-<<<<<<< HEAD
-=======
-#include <linux/types.h>
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define HFI_QUEUE_SIZE			SZ_4K /* bytes, must be base 4dw */
 #define MAX_RCVD_PAYLOAD_SIZE		16		/* dwords */
 #define MAX_RCVD_SIZE			(MAX_RCVD_PAYLOAD_SIZE + 3) /* dwords */
@@ -115,10 +96,7 @@ struct hfi_queue_table;
 #define HFI_VALUE_LOG_EVENT_ON		112
 #define HFI_VALUE_LOG_EVENT_OFF		113
 #define HFI_VALUE_DCVS_OBJ		114
-<<<<<<< HEAD
 #define HFI_VALUE_LM_CS0		115
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define HFI_VALUE_GLOBAL_TOKEN		0xFFFFFFFF
 
@@ -148,14 +126,6 @@ struct hfi_queue_table_header {
  * @queue_size: size of the queue
  * @msg_size: size of the message if each message has fixed size.
  *	Otherwise, 0 means variable size of message in the queue.
-<<<<<<< HEAD
-=======
- * @drop_cnt: count of dropped messages
- * @rx_wm: receiver watermark
- * @tx_wm: sender watermark
- * @rx_req: receiver request
- * @tx_req: sender request
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @read_index: read index of the queue
  * @write_index: write index of the queue
  */
@@ -165,19 +135,11 @@ struct hfi_queue_header {
 	uint32_t type;
 	uint32_t queue_size;
 	uint32_t msg_size;
-<<<<<<< HEAD
 	uint32_t unused0;
 	uint32_t unused1;
 	uint32_t unused2;
 	uint32_t unused3;
 	uint32_t unused4;
-=======
-	uint32_t drop_cnt;
-	uint32_t rx_wm;
-	uint32_t tx_wm;
-	uint32_t rx_req;
-	uint32_t tx_req;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t read_index;
 	uint32_t write_index;
 };
@@ -241,17 +203,6 @@ struct hfi_fw_version_cmd {
 	uint32_t supported_ver;
 };
 
-<<<<<<< HEAD
-=======
-/* H2F */
-struct hfi_lmconfig_cmd {
-	uint32_t hdr;
-	uint32_t limit_conf;
-	uint32_t bcl_conf;
-	uint32_t lm_enable_bitmask;
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ARC_VOTE_GET_PRI(_v) ((_v) & 0xFF)
 #define ARC_VOTE_GET_SEC(_v) (((_v) >> 8) & 0xFF)
 #define ARC_VOTE_GET_VLVL(_v) (((_v) >> 16) & 0xFFFF)
@@ -642,10 +593,6 @@ struct pending_cmd {
  * @hfi_interrupt_num: number of GMU asserted HFI interrupt
  * @cmdq_mutex: mutex to protect command queue access from multiple senders
  * @tasklet: the thread handling received messages from GMU
-<<<<<<< HEAD
-=======
- * @version: HFI version number provided
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @seqnum: atomic counter that is incremented for each message sent. The
  *	value of the counter is used as sequence number for HFI message
  * @bwtbl_cmd: HFI BW table buffer
@@ -656,10 +603,6 @@ struct kgsl_hfi {
 	int hfi_interrupt_num;
 	struct mutex cmdq_mutex;
 	struct tasklet_struct tasklet;
-<<<<<<< HEAD
-=======
-	uint32_t version;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	atomic_t seqnum;
 	struct hfi_bwtable_cmd bwtbl_cmd;
 	struct hfi_acd_table_cmd acd_tbl_cmd;
@@ -673,12 +616,7 @@ int hfi_start(struct kgsl_device *device, struct gmu_device *gmu,
 		uint32_t boot_state);
 void hfi_stop(struct gmu_device *gmu);
 void hfi_receiver(unsigned long data);
-<<<<<<< HEAD
 void hfi_init(struct gmu_device *gmu);
-=======
-void hfi_init(struct kgsl_hfi *hfi, struct gmu_memdesc *mem_addr,
-		uint32_t queue_sz_bytes);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* hfi_send_req is only for external (to HFI) requests */
 int hfi_send_req(struct gmu_device *gmu, unsigned int id, void *data);

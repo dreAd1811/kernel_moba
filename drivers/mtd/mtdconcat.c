@@ -333,48 +333,6 @@ concat_write_oob(struct mtd_info *mtd, loff_t to, struct mtd_oob_ops *ops)
 	return -EINVAL;
 }
 
-<<<<<<< HEAD
-=======
-static void concat_erase_callback(struct erase_info *instr)
-{
-	wake_up((wait_queue_head_t *) instr->priv);
-}
-
-static int concat_dev_erase(struct mtd_info *mtd, struct erase_info *erase)
-{
-	int err;
-	wait_queue_head_t waitq;
-	DECLARE_WAITQUEUE(wait, current);
-
-	/*
-	 * This code was stol^H^H^H^Hinspired by mtdchar.c
-	 */
-	init_waitqueue_head(&waitq);
-
-	erase->mtd = mtd;
-	erase->callback = concat_erase_callback;
-	erase->priv = (unsigned long) &waitq;
-
-	/*
-	 * FIXME: Allow INTERRUPTIBLE. Which means
-	 * not having the wait_queue head on the stack.
-	 */
-	err = mtd_erase(mtd, erase);
-	if (!err) {
-		set_current_state(TASK_UNINTERRUPTIBLE);
-		add_wait_queue(&waitq, &wait);
-		if (erase->state != MTD_ERASE_DONE
-		    && erase->state != MTD_ERASE_FAILED)
-			schedule();
-		remove_wait_queue(&waitq, &wait);
-		set_current_state(TASK_RUNNING);
-
-		err = (erase->state == MTD_ERASE_FAILED) ? -EIO : 0;
-	}
-	return err;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int concat_erase(struct mtd_info *mtd, struct erase_info *instr)
 {
 	struct mtd_concat *concat = CONCAT(mtd);
@@ -469,11 +427,7 @@ static int concat_erase(struct mtd_info *mtd, struct erase_info *instr)
 			erase->len = length;
 
 		length -= erase->len;
-<<<<<<< HEAD
 		if ((err = mtd_erase(subdev, erase))) {
-=======
-		if ((err = concat_dev_erase(subdev, erase))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* sanity check: should never happen since
 			 * block alignment has been checked above */
 			BUG_ON(err == -EINVAL);
@@ -492,20 +446,9 @@ static int concat_erase(struct mtd_info *mtd, struct erase_info *instr)
 		erase->addr = 0;
 		offset += subdev->size;
 	}
-<<<<<<< HEAD
 	kfree(erase);
 
 	return err;
-=======
-	instr->state = erase->state;
-	kfree(erase);
-	if (err)
-		return err;
-
-	if (instr->callback)
-		instr->callback(instr);
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int concat_lock(struct mtd_info *mtd, loff_t ofs, uint64_t len)
@@ -657,35 +600,6 @@ static int concat_block_markbad(struct mtd_info *mtd, loff_t ofs)
 }
 
 /*
-<<<<<<< HEAD
-=======
- * try to support NOMMU mmaps on concatenated devices
- * - we don't support subdev spanning as we can't guarantee it'll work
- */
-static unsigned long concat_get_unmapped_area(struct mtd_info *mtd,
-					      unsigned long len,
-					      unsigned long offset,
-					      unsigned long flags)
-{
-	struct mtd_concat *concat = CONCAT(mtd);
-	int i;
-
-	for (i = 0; i < concat->num_subdev; i++) {
-		struct mtd_info *subdev = concat->subdev[i];
-
-		if (offset >= subdev->size) {
-			offset -= subdev->size;
-			continue;
-		}
-
-		return mtd_get_unmapped_area(subdev, len, offset, flags);
-	}
-
-	return (unsigned long) -ENOSYS;
-}
-
-/*
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * This function constructs a virtual MTD device by concatenating
  * num_devs MTD devices. A pointer to the new device object is
  * stored to *new_dev upon success. This function does _not_
@@ -806,10 +720,6 @@ struct mtd_info *mtd_concat_create(struct mtd_info *subdev[],	/* subdevices to c
 	concat->mtd._unlock = concat_unlock;
 	concat->mtd._suspend = concat_suspend;
 	concat->mtd._resume = concat_resume;
-<<<<<<< HEAD
-=======
-	concat->mtd._get_unmapped_area = concat_get_unmapped_area;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Combine the erase block size info of the subdevices:
@@ -868,14 +778,9 @@ struct mtd_info *mtd_concat_create(struct mtd_info *subdev[],	/* subdevices to c
 		concat->mtd.erasesize = max_erasesize;
 		concat->mtd.numeraseregions = num_erase_region;
 		concat->mtd.eraseregions = erase_region_p =
-<<<<<<< HEAD
 		    kmalloc_array(num_erase_region,
 				  sizeof(struct mtd_erase_region_info),
 				  GFP_KERNEL);
-=======
-		    kmalloc(num_erase_region *
-			    sizeof (struct mtd_erase_region_info), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!erase_region_p) {
 			kfree(concat);
 			printk

@@ -94,13 +94,10 @@ static void dwmac4_dma_init_tx_chan(void __iomem *ioaddr,
 
 	value = readl(ioaddr + DMA_CHAN_TX_CONTROL(chan));
 	value = value | (txpbl << DMA_BUS_MODE_PBL_SHIFT);
-<<<<<<< HEAD
 
 	/* Enable OSP to get best performance */
 	value |= DMA_CONTROL_OSP;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	writel(value, ioaddr + DMA_CHAN_TX_CONTROL(chan));
 
 	writel(dma_tx_phy, ioaddr + DMA_CHAN_TX_BASE_ADDR(chan));
@@ -123,12 +120,7 @@ static void dwmac4_dma_init_channel(void __iomem *ioaddr,
 }
 
 static void dwmac4_dma_init(void __iomem *ioaddr,
-<<<<<<< HEAD
 			    struct stmmac_dma_cfg *dma_cfg, int atds)
-=======
-			    struct stmmac_dma_cfg *dma_cfg,
-			    u32 dma_tx, u32 dma_rx, int atds)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 value = readl(ioaddr + DMA_SYS_BUS_MODE);
 
@@ -232,11 +224,7 @@ static void dwmac4_dma_rx_chan_op_mode(void __iomem *ioaddr, int mode,
 	/* Enable flow control only if each channel gets 4 KiB or more FIFO and
 	 * only if channel is not an AVB channel.
 	 */
-<<<<<<< HEAD
 	if ((fifosz >= 4096) && (qmode != MTL_QUEUE_AVB)) {
-=======
-	if (fifosz >= 4096 && qmode != MTL_QUEUE_AVB) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		unsigned int rfd, rfa;
 
 		mtl_rx_op |= MTL_OP_MODE_EHFC;
@@ -385,16 +373,12 @@ static void dwmac4_get_hw_feature(void __iomem *ioaddr,
 		((hw_cap & GMAC_HW_FEAT_RXQCNT) >> 0) + 1;
 	dma_cap->number_tx_queues =
 		((hw_cap & GMAC_HW_FEAT_TXQCNT) >> 6) + 1;
-<<<<<<< HEAD
 	/* PPS output */
 	dma_cap->pps_out_num = (hw_cap & GMAC_HW_FEAT_PPSOUTNUM) >> 24;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* IEEE 1588-2002 */
 	dma_cap->time_stamp = 0;
 
-<<<<<<< HEAD
 	/* MAC HW feature3 */
 	hw_cap = readl(ioaddr + GMAC_HW_FEATURE3);
 
@@ -403,10 +387,6 @@ static void dwmac4_get_hw_feature(void __iomem *ioaddr,
 	dma_cap->frpes = (hw_cap & GMAC_HW_FEAT_FRPES) >> 13;
 	dma_cap->frpbs = (hw_cap & GMAC_HW_FEAT_FRPBS) >> 11;
 	dma_cap->frpsel = (hw_cap & GMAC_HW_FEAT_FRPSEL) >> 10;
-=======
-	/* Number of PPS outputs */
-	dma_cap->pps_out_num = ((hw_cap >> 24) & GMAC_PPSOUTNUM_MASK);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Enable/disable TSO feature and set MSS */
@@ -427,7 +407,6 @@ static void dwmac4_enable_tso(void __iomem *ioaddr, bool en, u32 chan)
 	}
 }
 
-<<<<<<< HEAD
 static void dwmac4_qmode(void __iomem *ioaddr, u32 channel, u8 qmode)
 {
 	u32 mtl_tx_op = readl(ioaddr + MTL_CHAN_TX_OP_MODE(channel));
@@ -449,23 +428,6 @@ static void dwmac4_set_bfsize(void __iomem *ioaddr, int bfsize, u32 chan)
 	value |= (bfsize << DMA_RBSZ_SHIFT) & DMA_RBSZ_MASK;
 
 	writel(value, ioaddr + DMA_CHAN_RX_CONTROL(chan));
-=======
-static void dwmac4_dma_rx_chan_fep(void __iomem *ioaddr, bool en, u32 chan)
-{
-	u32 value;
-
-	if (en) {
-		/* enable FEP */
-		value = readl_relaxed(ioaddr + MTL_CHAN_RX_OP_MODE(chan));
-		writel_relaxed(value | MTL_OP_MODE_FEP,
-			       ioaddr + MTL_CHAN_RX_OP_MODE(chan));
-	} else {
-		/* disable FEP */
-		value = readl_relaxed(ioaddr + MTL_CHAN_RX_OP_MODE(chan));
-		writel_relaxed(value & ~MTL_OP_MODE_FEP,
-			       ioaddr + MTL_CHAN_RX_OP_MODE(chan));
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 const struct stmmac_dma_ops dwmac4_dma_ops = {
@@ -492,12 +454,8 @@ const struct stmmac_dma_ops dwmac4_dma_ops = {
 	.set_rx_tail_ptr = dwmac4_set_rx_tail_ptr,
 	.set_tx_tail_ptr = dwmac4_set_tx_tail_ptr,
 	.enable_tso = dwmac4_enable_tso,
-<<<<<<< HEAD
 	.qmode = dwmac4_qmode,
 	.set_bfsize = dwmac4_set_bfsize,
-=======
-	.enable_rx_fep = dwmac4_dma_rx_chan_fep,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 const struct stmmac_dma_ops dwmac410_dma_ops = {
@@ -524,10 +482,6 @@ const struct stmmac_dma_ops dwmac410_dma_ops = {
 	.set_rx_tail_ptr = dwmac4_set_rx_tail_ptr,
 	.set_tx_tail_ptr = dwmac4_set_tx_tail_ptr,
 	.enable_tso = dwmac4_enable_tso,
-<<<<<<< HEAD
 	.qmode = dwmac4_qmode,
 	.set_bfsize = dwmac4_set_bfsize,
-=======
-	.enable_rx_fep = dwmac4_dma_rx_chan_fep,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

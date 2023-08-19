@@ -603,11 +603,7 @@ static struct uni_table_desc *nx_get_table_desc(const u8 *unirom, int section)
 
 static int
 netxen_nic_validate_header(struct netxen_adapter *adapter)
-<<<<<<< HEAD
 {
-=======
- {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const u8 *unirom = adapter->fw->data;
 	struct uni_table_desc *directory = (struct uni_table_desc *) &unirom[0];
 	u32 fw_file_size = adapter->fw->size;

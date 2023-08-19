@@ -24,17 +24,10 @@ enum lowpan_lltypes.
 
 Example to evaluate the private usually you can do:
 
-<<<<<<< HEAD
 static inline struct lowpan_priv_foobar *
 lowpan_foobar_priv(struct net_device *dev)
 {
 	return (struct lowpan_priv_foobar *)lowpan_priv(dev)->priv;
-=======
-static inline sturct lowpan_priv_foobar *
-lowpan_foobar_priv(struct net_device *dev)
-{
-	return (sturct lowpan_priv_foobar *)lowpan_priv(dev)->priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 switch (dev->type) {

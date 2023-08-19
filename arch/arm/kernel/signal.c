@@ -19,20 +19,12 @@
 #include <asm/elf.h>
 #include <asm/cacheflush.h>
 #include <asm/traps.h>
-<<<<<<< HEAD
 #include <asm/unistd.h>
 #include <asm/vfp.h>
 
 #include "signal.h"
 
 extern const unsigned long sigreturn_codes[17];
-=======
-#include <asm/ucontext.h>
-#include <asm/unistd.h>
-#include <asm/vfp.h>
-
-extern const unsigned long sigreturn_codes[7];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static unsigned long signal_return_offset;
 
@@ -180,18 +172,6 @@ static int restore_vfp_context(char __user **auxp)
 /*
  * Do a signal return; undo the signal stack.  These are aligned to 64-bit.
  */
-<<<<<<< HEAD
-=======
-struct sigframe {
-	struct ucontext uc;
-	unsigned long retcode[2];
-};
-
-struct rt_sigframe {
-	struct siginfo info;
-	struct sigframe sig;
-};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int restore_sigframe(struct pt_regs *regs, struct sigframe __user *sf)
 {
@@ -386,7 +366,6 @@ setup_return(struct pt_regs *regs, struct ksignal *ksig,
 	     unsigned long __user *rc, void __user *frame)
 {
 	unsigned long handler = (unsigned long)ksig->ka.sa.sa_handler;
-<<<<<<< HEAD
 	unsigned long handler_fdpic_GOT = 0;
 	unsigned long retcode;
 	unsigned int idx, thumb = 0;
@@ -401,11 +380,6 @@ setup_return(struct pt_regs *regs, struct ksignal *ksig,
 		    __get_user(handler_fdpic_GOT, &fdpic_func_desc[1]))
 			return 1;
 	}
-=======
-	unsigned long retcode;
-	int thumb = 0;
-	unsigned long cpsr = regs->ARM_cpsr & ~(PSR_f | PSR_E_BIT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cpsr |= PSR_ENDSTATE;
 
@@ -445,7 +419,6 @@ setup_return(struct pt_regs *regs, struct ksignal *ksig,
 
 	if (ksig->ka.sa.sa_flags & SA_RESTORER) {
 		retcode = (unsigned long)ksig->ka.sa.sa_restorer;
-<<<<<<< HEAD
 		if (fdpic) {
 			/*
 			 * We need code to load the function descriptor.
@@ -466,11 +439,6 @@ setup_return(struct pt_regs *regs, struct ksignal *ksig,
 		}
 	} else {
 		idx = thumb << 1;
-=======
-	} else {
-		unsigned int idx = thumb << 1;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ksig->ka.sa.sa_flags & SA_SIGINFO)
 			idx += 3;
 
@@ -482,10 +450,7 @@ setup_return(struct pt_regs *regs, struct ksignal *ksig,
 		    __put_user(sigreturn_codes[idx+1], rc+1))
 			return 1;
 
-<<<<<<< HEAD
 rc_finish:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_MMU
 		if (cpsr & MODE32_BIT) {
 			struct mm_struct *mm = current->mm;
@@ -505,11 +470,7 @@ rc_finish:
 			 * the return code written onto the stack.
 			 */
 			flush_icache_range((unsigned long)rc,
-<<<<<<< HEAD
 					   (unsigned long)(rc + 3));
-=======
-					   (unsigned long)(rc + 2));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			retcode = ((unsigned long)rc) + thumb;
 		}
@@ -519,11 +480,8 @@ rc_finish:
 	regs->ARM_sp = (unsigned long)frame;
 	regs->ARM_lr = retcode;
 	regs->ARM_pc = handler;
-<<<<<<< HEAD
 	if (fdpic)
 		regs->ARM_r9 = handler_fdpic_GOT;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	regs->ARM_cpsr = cpsr;
 
 	return 0;
@@ -591,15 +549,12 @@ static void handle_signal(struct ksignal *ksig, struct pt_regs *regs)
 	int ret;
 
 	/*
-<<<<<<< HEAD
 	 * Increment event counter and perform fixup for the pre-signal
 	 * frame.
 	 */
 	rseq_signal_deliver(ksig, regs);
 
 	/*
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * Set up the stack frame
 	 */
 	if (ksig->ka.sa.sa_flags & SA_SIGINFO)
@@ -719,10 +674,7 @@ do_work_pending(struct pt_regs *regs, unsigned int thread_flags, int syscall)
 			} else {
 				clear_thread_flag(TIF_NOTIFY_RESUME);
 				tracehook_notify_resume(regs);
-<<<<<<< HEAD
 				rseq_handle_notify_resume(NULL, regs);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		}
 		local_irq_disable();
@@ -766,7 +718,6 @@ asmlinkage void addr_limit_check_failed(void)
 {
 	addr_limit_user_check();
 }
-<<<<<<< HEAD
 
 #ifdef CONFIG_DEBUG_RSEQ
 asmlinkage void do_rseq_syscall(struct pt_regs *regs)
@@ -774,5 +725,3 @@ asmlinkage void do_rseq_syscall(struct pt_regs *regs)
 	rseq_syscall(regs);
 }
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

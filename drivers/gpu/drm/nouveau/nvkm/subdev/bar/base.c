@@ -30,7 +30,6 @@ nvkm_bar_flush(struct nvkm_bar *bar)
 		bar->func->flush(bar);
 }
 
-<<<<<<< HEAD
 struct nvkm_vmm *
 nvkm_bar_bar1_vmm(struct nvkm_device *device)
 {
@@ -88,21 +87,6 @@ nvkm_bar_init(struct nvkm_subdev *subdev)
 	if (bar->func->init)
 		bar->func->init(bar);
 	return 0;
-=======
-struct nvkm_vm *
-nvkm_bar_kmap(struct nvkm_bar *bar)
-{
-	/* disallow kmap() until after vm has been bootstrapped */
-	if (bar && bar->func->kmap && bar->subdev.oneinit)
-		return bar->func->kmap(bar);
-	return NULL;
-}
-
-int
-nvkm_bar_umap(struct nvkm_bar *bar, u64 size, int type, struct nvkm_vma *vma)
-{
-	return bar->func->umap(bar, size, type, vma);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int
@@ -112,24 +96,11 @@ nvkm_bar_oneinit(struct nvkm_subdev *subdev)
 	return bar->func->oneinit(bar);
 }
 
-<<<<<<< HEAD
-=======
-static int
-nvkm_bar_init(struct nvkm_subdev *subdev)
-{
-	struct nvkm_bar *bar = nvkm_bar(subdev);
-	return bar->func->init(bar);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void *
 nvkm_bar_dtor(struct nvkm_subdev *subdev)
 {
 	struct nvkm_bar *bar = nvkm_bar(subdev);
-<<<<<<< HEAD
 	nvkm_bar_bar2_fini(subdev->device);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return bar->func->dtor(bar);
 }
 
@@ -138,10 +109,7 @@ nvkm_bar = {
 	.dtor = nvkm_bar_dtor,
 	.oneinit = nvkm_bar_oneinit,
 	.init = nvkm_bar_init,
-<<<<<<< HEAD
 	.fini = nvkm_bar_fini,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 void

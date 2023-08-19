@@ -342,11 +342,7 @@ out:
 	return retval;
 }
 
-<<<<<<< HEAD
 static __poll_t hpet_poll(struct file *file, poll_table * wait)
-=======
-static unsigned int hpet_poll(struct file *file, poll_table * wait)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long v;
 	struct hpet_dev *devp;
@@ -363,11 +359,7 @@ static unsigned int hpet_poll(struct file *file, poll_table * wait)
 	spin_unlock_irq(&hpet_lock);
 
 	if (v != 0)
-<<<<<<< HEAD
 		return EPOLLIN | EPOLLRDNORM;
-=======
-		return POLLIN | POLLRDNORM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -586,10 +578,6 @@ hpet_ioctl_common(struct hpet_dev *devp, unsigned int cmd, unsigned long arg,
 		  struct hpet_info *info)
 {
 	struct hpet_timer __iomem *timer;
-<<<<<<< HEAD
-=======
-	struct hpet __iomem *hpet;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct hpets *hpetp;
 	int err;
 	unsigned long v;
@@ -601,10 +589,6 @@ hpet_ioctl_common(struct hpet_dev *devp, unsigned int cmd, unsigned long arg,
 	case HPET_DPI:
 	case HPET_IRQFREQ:
 		timer = devp->hd_timer;
-<<<<<<< HEAD
-=======
-		hpet = devp->hd_hpet;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		hpetp = devp->hd_hpets;
 		break;
 	case HPET_IE_ON:

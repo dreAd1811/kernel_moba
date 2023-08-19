@@ -272,18 +272,9 @@ static int gluebi_erase(struct mtd_info *mtd, struct erase_info *instr)
 	if (err)
 		goto out_err;
 
-<<<<<<< HEAD
 	return 0;
 
 out_err:
-=======
-	instr->state = MTD_ERASE_DONE;
-	mtd_erase_callback(instr);
-	return 0;
-
-out_err:
-	instr->state = MTD_ERASE_FAILED;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	instr->fail_addr = (long long)lnum * mtd->erasesize;
 	return err;
 }

@@ -30,14 +30,9 @@ static inline int init_new_context(struct task_struct *tsk,
 		test_thread_flag(TIF_PGSTE) ||
 		(current->mm && current->mm->context.alloc_pgste);
 	mm->context.has_pgste = 0;
-<<<<<<< HEAD
 	mm->context.uses_skeys = 0;
 	mm->context.uses_cmm = 0;
 	mm->context.allow_gmap_hpage_1m = 0;
-=======
-	mm->context.use_skey = 0;
-	mm->context.use_cmma = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 	switch (mm->context.asce_limit) {
 	case _REGION2_SIZE:
@@ -65,11 +60,6 @@ static inline int init_new_context(struct task_struct *tsk,
 		/* forked 2-level compat task, set new asce with new mm->pgd */
 		mm->context.asce = __pa(mm->pgd) | _ASCE_TABLE_LENGTH |
 				   _ASCE_USER_BITS | _ASCE_TYPE_SEGMENT;
-<<<<<<< HEAD
-=======
-		/* pgd_alloc() did not increase mm->nr_pmds */
-		mm_inc_nr_pmds(mm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	crst_table_init((unsigned long *) mm->pgd, pgd_entry_type(mm));
 	return 0;
@@ -80,42 +70,19 @@ static inline int init_new_context(struct task_struct *tsk,
 static inline void set_user_asce(struct mm_struct *mm)
 {
 	S390_lowcore.user_asce = mm->context.asce;
-<<<<<<< HEAD
 	__ctl_load(S390_lowcore.user_asce, 1, 1);
 	clear_cpu_flag(CIF_ASCE_PRIMARY);
-=======
-	if (current->thread.mm_segment.ar4)
-		__ctl_load(S390_lowcore.user_asce, 7, 7);
-	set_cpu_flag(CIF_ASCE_PRIMARY);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void clear_user_asce(void)
 {
 	S390_lowcore.user_asce = S390_lowcore.kernel_asce;
-<<<<<<< HEAD
 	__ctl_load(S390_lowcore.kernel_asce, 1, 1);
 	set_cpu_flag(CIF_ASCE_PRIMARY);
 }
 
 mm_segment_t enable_sacf_uaccess(void);
 void disable_sacf_uaccess(mm_segment_t old_fs);
-=======
-
-	__ctl_load(S390_lowcore.user_asce, 1, 1);
-	__ctl_load(S390_lowcore.user_asce, 7, 7);
-}
-
-static inline void load_kernel_asce(void)
-{
-	unsigned long asce;
-
-	__ctl_store(asce, 1, 1);
-	if (asce != S390_lowcore.kernel_asce)
-		__ctl_load(S390_lowcore.kernel_asce, 1, 1);
-	set_cpu_flag(CIF_ASCE_PRIMARY);
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline void switch_mm(struct mm_struct *prev, struct mm_struct *next,
 			     struct task_struct *tsk)
@@ -123,7 +90,6 @@ static inline void switch_mm(struct mm_struct *prev, struct mm_struct *next,
 	int cpu = smp_processor_id();
 
 	S390_lowcore.user_asce = next->context.asce;
-<<<<<<< HEAD
 	cpumask_set_cpu(cpu, &next->context.cpu_attach_mask);
 	/* Clear previous user-ASCE from CR1 and CR7 */
 	if (!test_cpu_flag(CIF_ASCE_PRIMARY)) {
@@ -136,15 +102,6 @@ static inline void switch_mm(struct mm_struct *prev, struct mm_struct *next,
 	}
 	if (prev != next)
 		cpumask_clear_cpu(cpu, &prev->context.cpu_attach_mask);
-=======
-	if (prev == next)
-		return;
-	cpumask_set_cpu(cpu, &next->context.cpu_attach_mask);
-	/* Clear old ASCE by loading the kernel ASCE. */
-	__ctl_load(S390_lowcore.kernel_asce, 1, 1);
-	__ctl_load(S390_lowcore.kernel_asce, 7, 7);
-	cpumask_clear_cpu(cpu, &prev->context.cpu_attach_mask);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #define finish_arch_post_lock_switch finish_arch_post_lock_switch
@@ -153,10 +110,6 @@ static inline void finish_arch_post_lock_switch(void)
 	struct task_struct *tsk = current;
 	struct mm_struct *mm = tsk->mm;
 
-<<<<<<< HEAD
-=======
-	load_kernel_asce();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (mm) {
 		preempt_disable();
 		while (atomic_read(&mm->context.flush_count))

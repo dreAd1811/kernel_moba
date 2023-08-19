@@ -1,20 +1,9 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Front panel driver for Linux
  * Copyright (C) 2000-2008, Willy Tarreau <w@1wt.eu>
  * Copyright (C) 2016-2017 Glider bvba
  *
-<<<<<<< HEAD
-=======
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version
- * 2 of the License, or (at your option) any later version.
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * This code drives an LCD module (/dev/lcd), and a keypad (/dev/keypad)
  * connected to a parallel printer port.
  *
@@ -1379,11 +1368,7 @@ static void panel_process_inputs(void)
 				break;
 			input->rise_timer = 0;
 			input->state = INPUT_ST_RISING;
-<<<<<<< HEAD
 			/* fall through */
-=======
-			/* no break here, fall through */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case INPUT_ST_RISING:
 			if ((phys_curr & input->mask) != input->value) {
 				input->state = INPUT_ST_LOW;
@@ -1396,30 +1381,18 @@ static void panel_process_inputs(void)
 			}
 			input->high_timer = 0;
 			input->state = INPUT_ST_HIGH;
-<<<<<<< HEAD
 			/* fall through */
 		case INPUT_ST_HIGH:
 			if (input_state_high(input))
 				break;
 			/* fall through */
-=======
-			/* no break here, fall through */
-		case INPUT_ST_HIGH:
-			if (input_state_high(input))
-				break;
-			/* no break here, fall through */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case INPUT_ST_FALLING:
 			input_state_falling(input);
 		}
 	}
 }
 
-<<<<<<< HEAD
 static void panel_scan_timer(struct timer_list *unused)
-=======
-static void panel_scan_timer(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (keypad.enabled && keypad_initialized) {
 		if (spin_trylock_irq(&pprt_lock)) {
@@ -1444,11 +1417,7 @@ static void init_scan_timer(void)
 	if (scan_timer.function)
 		return;		/* already started */
 
-<<<<<<< HEAD
 	timer_setup(&scan_timer, panel_scan_timer, 0);
-=======
-	setup_timer(&scan_timer, (void *)&panel_scan_timer, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	scan_timer.expires = jiffies + INPUT_POLL_TIME;
 	add_timer(&scan_timer);
 }

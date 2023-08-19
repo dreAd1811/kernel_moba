@@ -25,7 +25,6 @@
 #include <asm/kvm_arm.h>
 #include <asm/cputype.h>
 
-<<<<<<< HEAD
 /* arm64 compatibility macros */
 #define PSR_AA32_MODE_ABT	ABT_MODE
 #define PSR_AA32_MODE_UND	UND_MODE
@@ -53,10 +52,6 @@ static inline void vcpu_write_spsr(struct kvm_vcpu *vcpu, unsigned long v)
 {
 	*__vcpu_spsr(vcpu) = v;
 }
-=======
-unsigned long *vcpu_reg(struct kvm_vcpu *vcpu, u8 reg_num);
-unsigned long *vcpu_spsr(struct kvm_vcpu *vcpu);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline unsigned long vcpu_get_reg(struct kvm_vcpu *vcpu,
 					 u8 reg_num)
@@ -72,7 +67,6 @@ static inline void vcpu_set_reg(struct kvm_vcpu *vcpu, u8 reg_num,
 
 bool kvm_condition_valid32(const struct kvm_vcpu *vcpu);
 void kvm_skip_instr32(struct kvm_vcpu *vcpu, bool is_wide_instr);
-<<<<<<< HEAD
 void kvm_inject_undef32(struct kvm_vcpu *vcpu);
 void kvm_inject_dabt32(struct kvm_vcpu *vcpu, unsigned long addr);
 void kvm_inject_pabt32(struct kvm_vcpu *vcpu, unsigned long addr);
@@ -92,12 +86,6 @@ static inline void kvm_inject_pabt(struct kvm_vcpu *vcpu, unsigned long addr)
 {
 	kvm_inject_pabt32(vcpu, addr);
 }
-=======
-void kvm_inject_undefined(struct kvm_vcpu *vcpu);
-void kvm_inject_vabt(struct kvm_vcpu *vcpu);
-void kvm_inject_dabt(struct kvm_vcpu *vcpu, unsigned long addr);
-void kvm_inject_pabt(struct kvm_vcpu *vcpu, unsigned long addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline bool kvm_condition_valid(const struct kvm_vcpu *vcpu)
 {
@@ -114,7 +102,6 @@ static inline void vcpu_reset_hcr(struct kvm_vcpu *vcpu)
 	vcpu->arch.hcr = HCR_GUEST_MASK;
 }
 
-<<<<<<< HEAD
 static inline unsigned long *vcpu_hcr(const struct kvm_vcpu *vcpu)
 {
 	return (unsigned long *)&vcpu->arch.hcr;
@@ -128,25 +115,11 @@ static inline void vcpu_clear_wfe_traps(struct kvm_vcpu *vcpu)
 static inline void vcpu_set_wfe_traps(struct kvm_vcpu *vcpu)
 {
 	vcpu->arch.hcr |= HCR_TWE;
-=======
-static inline unsigned long vcpu_get_hcr(const struct kvm_vcpu *vcpu)
-{
-	return vcpu->arch.hcr;
-}
-
-static inline void vcpu_set_hcr(struct kvm_vcpu *vcpu, unsigned long hcr)
-{
-	vcpu->arch.hcr = hcr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline bool vcpu_mode_is_32bit(const struct kvm_vcpu *vcpu)
 {
-<<<<<<< HEAD
 	return true;
-=======
-	return 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline unsigned long *vcpu_pc(struct kvm_vcpu *vcpu)
@@ -173,11 +146,7 @@ static inline bool mode_has_spsr(struct kvm_vcpu *vcpu)
 static inline bool vcpu_mode_priv(struct kvm_vcpu *vcpu)
 {
 	unsigned long cpsr_mode = vcpu->arch.ctxt.gp_regs.usr_regs.ARM_cpsr & MODE_MASK;
-<<<<<<< HEAD
 	return cpsr_mode > USR_MODE;
-=======
-	return cpsr_mode > USR_MODE;;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline u32 kvm_vcpu_get_hsr(const struct kvm_vcpu *vcpu)
@@ -220,14 +189,6 @@ static inline bool kvm_vcpu_dabt_issext(struct kvm_vcpu *vcpu)
 	return kvm_vcpu_get_hsr(vcpu) & HSR_SSE;
 }
 
-<<<<<<< HEAD
-=======
-static inline bool kvm_vcpu_dabt_issf(const struct kvm_vcpu *vcpu)
-{
-	return false;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int kvm_vcpu_dabt_get_rd(struct kvm_vcpu *vcpu)
 {
 	return (kvm_vcpu_get_hsr(vcpu) & HSR_SRT_MASK) >> HSR_SRT_SHIFT;
@@ -287,11 +248,7 @@ static inline u8 kvm_vcpu_trap_get_fault_type(struct kvm_vcpu *vcpu)
 
 static inline bool kvm_vcpu_dabt_isextabt(struct kvm_vcpu *vcpu)
 {
-<<<<<<< HEAD
 	switch (kvm_vcpu_trap_get_fault(vcpu)) {
-=======
-	switch (kvm_vcpu_trap_get_fault_type(vcpu)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case FSC_SEA:
 	case FSC_SEA_TTW0:
 	case FSC_SEA_TTW1:

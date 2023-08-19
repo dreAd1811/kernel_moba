@@ -98,10 +98,6 @@ static const struct iio_chan_spec ltc2473_channel[] = {
 
 static const struct iio_info ltc2471_info = {
 	.read_raw = ltc2471_read_raw,
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int ltc2471_i2c_probe(struct i2c_client *client,

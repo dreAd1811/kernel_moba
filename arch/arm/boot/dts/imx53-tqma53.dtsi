@@ -16,11 +16,7 @@
 	model = "TQ TQMa53";
 	compatible = "tq,tqma53", "fsl,imx53";
 
-<<<<<<< HEAD
 	memory@70000000 {
-=======
-	memory {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x70000000 0x40000000>; /* Up to 1GiB */
 	};
 

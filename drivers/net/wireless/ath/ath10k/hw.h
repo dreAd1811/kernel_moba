@@ -85,19 +85,11 @@ enum qca9377_chip_id_rev {
 	QCA9377_HW_1_1_CHIP_ID_REV = 0x1,
 };
 
-<<<<<<< HEAD
 #define QCA6174_HW_2_1_FW_DIR		ATH10K_FW_DIR "/QCA6174/hw2.1"
 #define QCA6174_HW_2_1_BOARD_DATA_FILE	"board.bin"
 #define QCA6174_HW_2_1_PATCH_LOAD_ADDR	0x1234
 
 #define QCA6174_HW_3_0_FW_DIR		ATH10K_FW_DIR "/QCA6174/hw3.0"
-=======
-#define QCA6174_HW_2_1_FW_DIR		"ath10k/QCA6174/hw2.1"
-#define QCA6174_HW_2_1_BOARD_DATA_FILE	"board.bin"
-#define QCA6174_HW_2_1_PATCH_LOAD_ADDR	0x1234
-
-#define QCA6174_HW_3_0_FW_DIR		"ath10k/QCA6174/hw3.0"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define QCA6174_HW_3_0_BOARD_DATA_FILE	"board.bin"
 #define QCA6174_HW_3_0_PATCH_LOAD_ADDR	0x1234
 
@@ -117,10 +109,6 @@ enum qca9377_chip_id_rev {
 #define QCA9984_HW_1_0_CHIP_ID_REV	0x0
 #define QCA9984_HW_1_0_FW_DIR		ATH10K_FW_DIR "/QCA9984/hw1.0"
 #define QCA9984_HW_1_0_BOARD_DATA_FILE "board.bin"
-<<<<<<< HEAD
-=======
-#define QCA9984_HW_1_0_EBOARD_DATA_FILE "eboard.bin"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define QCA9984_HW_1_0_PATCH_LOAD_ADDR	0x1234
 
 /* QCA9888 2.0 defines */
@@ -233,10 +221,6 @@ enum ath10k_fw_htt_op_version {
 enum ath10k_bd_ie_type {
 	/* contains sub IEs of enum ath10k_bd_ie_board_type */
 	ATH10K_BD_IE_BOARD = 0,
-<<<<<<< HEAD
-=======
-	ATH10K_BD_IE_BOARD_EXT = 1,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum ath10k_bd_ie_board_type {
@@ -359,17 +343,9 @@ struct ath10k_hw_ce_ctrl1_upd {
 };
 
 struct ath10k_hw_ce_regs {
-<<<<<<< HEAD
 	u32 sr_base_addr;
 	u32 sr_size_addr;
 	u32 dr_base_addr;
-=======
-	u32 sr_base_addr_lo;
-	u32 sr_base_addr_hi;
-	u32 sr_size_addr;
-	u32 dr_base_addr_lo;
-	u32 dr_base_addr_hi;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 dr_size_addr;
 	u32 ce_cmd_addr;
 	u32 misc_ie_addr;
@@ -407,13 +383,8 @@ extern const struct ath10k_hw_values qca99x0_values;
 extern const struct ath10k_hw_values qca9888_values;
 extern const struct ath10k_hw_values qca4019_values;
 extern const struct ath10k_hw_values wcn3990_values;
-<<<<<<< HEAD
 extern const struct ath10k_hw_ce_regs wcn3990_ce_regs;
 extern const struct ath10k_hw_ce_regs qcax_ce_regs;
-=======
-extern struct ath10k_hw_ce_regs wcn3990_ce_regs;
-extern struct ath10k_hw_ce_regs qcax_ce_regs;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void ath10k_hw_fill_survey_time(struct ath10k *ar, struct survey_info *survey,
 				u32 cc, u32 rcc, u32 cc_prev, u32 rcc_prev);
@@ -568,11 +539,6 @@ struct ath10k_hw_params {
 		const char *dir;
 		const char *board;
 		size_t board_size;
-<<<<<<< HEAD
-=======
-		const char *eboard;
-		size_t ext_board_size;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		size_t board_ext_size;
 	} fw;
 
@@ -621,15 +587,8 @@ struct ath10k_hw_params {
 	/* target supporting retention restore on ddr */
 	bool rri_on_ddr;
 
-<<<<<<< HEAD
 	/* Number of bytes to be the offset for each FFT sample */
 	int spectral_bin_offset;
-=======
-	/* targets which require hw filter reset during boot up,
-	 * to avoid it sending spurious acks.
-	 */
-	bool hw_filter_reset_required;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct htt_rx_desc;
@@ -740,10 +699,7 @@ ath10k_rx_desc_get_l3_pad_bytes(struct ath10k_hw_params *hw,
 #define TARGET_TLV_NUM_TIDS			((TARGET_TLV_NUM_PEERS) * 2)
 #define TARGET_TLV_NUM_MSDU_DESC		(1024 + 32)
 #define TARGET_TLV_NUM_WOW_PATTERNS		22
-<<<<<<< HEAD
 #define TARGET_TLV_MGMT_NUM_MSDU_DESC		(50)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Target specific defines for WMI-HL-1.0 firmware */
 #define TARGET_HL_10_TLV_NUM_PEERS		14

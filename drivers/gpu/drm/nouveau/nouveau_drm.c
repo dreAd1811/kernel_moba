@@ -38,11 +38,8 @@
 #include <core/tegra.h>
 
 #include <nvif/driver.h>
-<<<<<<< HEAD
 #include <nvif/fifo.h>
 #include <nvif/user.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <nvif/class.h>
 #include <nvif/cl0002.h>
@@ -120,7 +117,6 @@ nouveau_name(struct drm_device *dev)
 		return nouveau_platform_name(to_platform_device(dev->dev));
 }
 
-<<<<<<< HEAD
 static inline bool
 nouveau_cli_work_ready(struct dma_fence *fence)
 {
@@ -183,22 +179,12 @@ nouveau_cli_fini(struct nouveau_cli *cli)
 	mutex_lock(&cli->drm->master.lock);
 	nvif_client_fini(&cli->base);
 	mutex_unlock(&cli->drm->master.lock);
-=======
-static void
-nouveau_cli_fini(struct nouveau_cli *cli)
-{
-	nvkm_vm_ref(NULL, &nvxx_client(&cli->base)->vm, NULL);
-	usif_client_fini(cli);
-	nvif_device_fini(&cli->device);
-	nvif_client_fini(&cli->base);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int
 nouveau_cli_init(struct nouveau_drm *drm, const char *sname,
 		 struct nouveau_cli *cli)
 {
-<<<<<<< HEAD
 	static const struct nvif_mclass
 	mems[] = {
 		{ NVIF_CLASS_MEM_GF100, -1 },
@@ -222,13 +208,10 @@ nouveau_cli_init(struct nouveau_drm *drm, const char *sname,
 		{ NVIF_CLASS_VMM_NV04 , -1 },
 		{}
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 device = nouveau_name(drm->dev);
 	int ret;
 
 	snprintf(cli->name, sizeof(cli->name), "%s", sname);
-<<<<<<< HEAD
 	cli->drm = drm;
 	mutex_init(&cli->mutex);
 	usif_client_init(cli);
@@ -248,21 +231,6 @@ nouveau_cli_init(struct nouveau_drm *drm, const char *sname,
 	}
 	if (ret) {
 		NV_PRINTK(err, cli, "Client allocation failed: %d\n", ret);
-=======
-	cli->dev = drm->dev;
-	mutex_init(&cli->mutex);
-	usif_client_init(cli);
-
-	if (cli == &drm->client) {
-		ret = nvif_driver_init(NULL, nouveau_config, nouveau_debug,
-				       cli->name, device, &cli->base);
-	} else {
-		ret = nvif_client_init(&drm->client.base, cli->name, device,
-				       &cli->base);
-	}
-	if (ret) {
-		NV_ERROR(drm, "Client allocation failed: %d\n", ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto done;
 	}
 
@@ -272,7 +240,6 @@ nouveau_cli_init(struct nouveau_drm *drm, const char *sname,
 			       }, sizeof(struct nv_device_v0),
 			       &cli->device);
 	if (ret) {
-<<<<<<< HEAD
 		NV_PRINTK(err, cli, "Device allocation failed: %d\n", ret);
 		goto done;
 	}
@@ -309,12 +276,6 @@ nouveau_cli_init(struct nouveau_drm *drm, const char *sname,
 
 	cli->mem = &mems[ret];
 	return 0;
-=======
-		NV_ERROR(drm, "Device allocation failed: %d\n", ret);
-		goto done;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 done:
 	if (ret)
 		nouveau_cli_fini(cli);
@@ -350,7 +311,6 @@ nouveau_accel_init(struct nouveau_drm *drm)
 	if (nouveau_noaccel)
 		return;
 
-<<<<<<< HEAD
 	ret = nouveau_channels_init(drm);
 	if (ret)
 		return;
@@ -361,8 +321,6 @@ nouveau_accel_init(struct nouveau_drm *drm)
 			return;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* initialise synchronisation routines */
 	/*XXX: this is crap, but the fence/channel stuff is a little
 	 *     backwards in some places.  this will be fixed.
@@ -394,10 +352,7 @@ nouveau_accel_init(struct nouveau_drm *drm)
 		case KEPLER_CHANNEL_GPFIFO_B:
 		case MAXWELL_CHANNEL_GPFIFO_A:
 		case PASCAL_CHANNEL_GPFIFO_A:
-<<<<<<< HEAD
 		case VOLTA_CHANNEL_GPFIFO_A:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ret = nvc0_fence_create(drm);
 			break;
 		default:
@@ -414,22 +369,12 @@ nouveau_accel_init(struct nouveau_drm *drm)
 
 	if (device->info.family >= NV_DEVICE_INFO_V0_KEPLER) {
 		ret = nouveau_channel_new(drm, &drm->client.device,
-<<<<<<< HEAD
 					  nvif_fifo_runlist_ce(device), 0,
 					  &drm->cechan);
 		if (ret)
 			NV_ERROR(drm, "failed to create ce channel, %d\n", ret);
 
 		arg0 = nvif_fifo_runlist(device, NV_DEVICE_INFO_ENGINE_GR);
-=======
-					  NVA06F_V0_ENGINE_CE0 |
-					  NVA06F_V0_ENGINE_CE1,
-					  0, &drm->cechan);
-		if (ret)
-			NV_ERROR(drm, "failed to create ce channel, %d\n", ret);
-
-		arg0 = NVA06F_V0_ENGINE_GR;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		arg1 = 1;
 	} else
 	if (device->info.chipset >= 0xa3 &&
@@ -455,7 +400,6 @@ nouveau_accel_init(struct nouveau_drm *drm)
 		return;
 	}
 
-<<<<<<< HEAD
 	if (device->info.family < NV_DEVICE_INFO_V0_TESLA) {
 		ret = nvif_object_init(&drm->channel->user, NVDRM_NVSW,
 				       nouveau_abi16_swclass(drm), NULL, 0,
@@ -481,43 +425,11 @@ nouveau_accel_init(struct nouveau_drm *drm)
 
 		if (ret) {
 			NV_ERROR(drm, "failed to allocate sw class, %d\n", ret);
-=======
-	ret = nvif_object_init(&drm->channel->user, NVDRM_NVSW,
-			       nouveau_abi16_swclass(drm), NULL, 0, &drm->nvsw);
-	if (ret == 0) {
-		ret = RING_SPACE(drm->channel, 2);
-		if (ret == 0) {
-			if (device->info.family < NV_DEVICE_INFO_V0_FERMI) {
-				BEGIN_NV04(drm->channel, NvSubSw, 0, 1);
-				OUT_RING  (drm->channel, NVDRM_NVSW);
-			} else
-			if (device->info.family < NV_DEVICE_INFO_V0_KEPLER) {
-				BEGIN_NVC0(drm->channel, FermiSw, 0, 1);
-				OUT_RING  (drm->channel, 0x001f0000);
-			}
-		}
-
-		ret = nvif_notify_init(&drm->nvsw, nouveau_flip_complete,
-				       false, NV04_NVSW_NTFY_UEVENT,
-				       NULL, 0, 0, &drm->flip);
-		if (ret == 0)
-			ret = nvif_notify_get(&drm->flip);
-		if (ret) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			nouveau_accel_fini(drm);
 			return;
 		}
 	}
 
-<<<<<<< HEAD
-=======
-	if (ret) {
-		NV_ERROR(drm, "failed to allocate software object, %d\n", ret);
-		nouveau_accel_fini(drm);
-		return;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (device->info.family < NV_DEVICE_INFO_V0_FERMI) {
 		ret = nvkm_gpuobj_new(nvxx_device(&drm->client.device), 32, 0,
 				      false, NULL, &drm->notify);
@@ -613,39 +525,6 @@ static int nouveau_drm_probe(struct pci_dev *pdev,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-#define PCI_CLASS_MULTIMEDIA_HD_AUDIO 0x0403
-
-static void
-nouveau_get_hdmi_dev(struct nouveau_drm *drm)
-{
-	struct pci_dev *pdev = drm->dev->pdev;
-
-	if (!pdev) {
-		NV_DEBUG(drm, "not a PCI device; no HDMI\n");
-		drm->hdmi_device = NULL;
-		return;
-	}
-
-	/* subfunction one is a hdmi audio device? */
-	drm->hdmi_device = pci_get_bus_and_slot((unsigned int)pdev->bus->number,
-						PCI_DEVFN(PCI_SLOT(pdev->devfn), 1));
-
-	if (!drm->hdmi_device) {
-		NV_DEBUG(drm, "hdmi device not found %d %d %d\n", pdev->bus->number, PCI_SLOT(pdev->devfn), 1);
-		return;
-	}
-
-	if ((drm->hdmi_device->class >> 8) != PCI_CLASS_MULTIMEDIA_HD_AUDIO) {
-		NV_DEBUG(drm, "possible hdmi device not audio %d\n", drm->hdmi_device->class);
-		pci_dev_put(drm->hdmi_device);
-		drm->hdmi_device = NULL;
-		return;
-	}
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int
 nouveau_drm_load(struct drm_device *dev, unsigned long flags)
 {
@@ -657,13 +536,10 @@ nouveau_drm_load(struct drm_device *dev, unsigned long flags)
 	dev->dev_private = drm;
 	drm->dev = dev;
 
-<<<<<<< HEAD
 	ret = nouveau_cli_init(drm, "DRM-master", &drm->master);
 	if (ret)
 		return ret;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = nouveau_cli_init(drm, "DRM", &drm->client);
 	if (ret)
 		return ret;
@@ -676,11 +552,6 @@ nouveau_drm_load(struct drm_device *dev, unsigned long flags)
 	INIT_LIST_HEAD(&drm->clients);
 	spin_lock_init(&drm->tile.lock);
 
-<<<<<<< HEAD
-=======
-	nouveau_get_hdmi_dev(drm);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* workaround an odd issue on nvc1 by disabling the device's
 	 * nosnoop capability.  hopefully won't cause issues until a
 	 * better fix is found - assuming there is one...
@@ -690,24 +561,6 @@ nouveau_drm_load(struct drm_device *dev, unsigned long flags)
 
 	nouveau_vga_init(drm);
 
-<<<<<<< HEAD
-=======
-	if (drm->client.device.info.family >= NV_DEVICE_INFO_V0_TESLA) {
-		if (!nvxx_device(&drm->client.device)->mmu) {
-			ret = -ENOSYS;
-			goto fail_device;
-		}
-
-		ret = nvkm_vm_new(nvxx_device(&drm->client.device),
-				  0, (1ULL << 40), 0x1000, NULL,
-				  &drm->client.vm);
-		if (ret)
-			goto fail_device;
-
-		nvxx_client(&drm->client.base)->vm = drm->client.vm;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = nouveau_ttm_init(drm);
 	if (ret)
 		goto fail_ttm;
@@ -739,15 +592,8 @@ nouveau_drm_load(struct drm_device *dev, unsigned long flags)
 		pm_runtime_allow(dev->dev);
 		pm_runtime_mark_last_busy(dev->dev);
 		pm_runtime_put(dev->dev);
-<<<<<<< HEAD
 	}
 
-=======
-	} else {
-		/* enable polling for external displays */
-		drm_kms_helper_poll_enable(dev);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 fail_dispinit:
@@ -758,13 +604,8 @@ fail_bios:
 	nouveau_ttm_fini(drm);
 fail_ttm:
 	nouveau_vga_fini(drm);
-<<<<<<< HEAD
 	nouveau_cli_fini(&drm->client);
 	nouveau_cli_fini(&drm->master);
-=======
-fail_device:
-	nouveau_cli_fini(&drm->client);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(drm);
 	return ret;
 }
@@ -794,14 +635,8 @@ nouveau_drm_unload(struct drm_device *dev)
 	nouveau_ttm_fini(drm);
 	nouveau_vga_fini(drm);
 
-<<<<<<< HEAD
 	nouveau_cli_fini(&drm->client);
 	nouveau_cli_fini(&drm->master);
-=======
-	if (drm->hdmi_device)
-		pci_dev_put(drm->hdmi_device);
-	nouveau_cli_fini(&drm->client);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(drm);
 }
 
@@ -870,11 +705,7 @@ nouveau_do_suspend(struct drm_device *dev, bool runtime)
 	}
 
 	NV_DEBUG(drm, "suspending object tree...\n");
-<<<<<<< HEAD
 	ret = nvif_client_suspend(&drm->master.base);
-=======
-	ret = nvif_client_suspend(&drm->client.base);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto fail_client;
 
@@ -898,11 +729,7 @@ nouveau_do_resume(struct drm_device *dev, bool runtime)
 	struct nouveau_drm *drm = nouveau_drm(dev);
 
 	NV_DEBUG(drm, "resuming object tree...\n");
-<<<<<<< HEAD
 	nvif_client_resume(&drm->master.base);
-=======
-	nvif_client_resume(&drm->client.base);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	NV_DEBUG(drm, "resuming fence...\n");
 	if (drm->fence && nouveau_fence(drm)->resume)
@@ -1006,10 +833,6 @@ nouveau_pmops_runtime_suspend(struct device *dev)
 		return -EBUSY;
 	}
 
-<<<<<<< HEAD
-=======
-	drm_kms_helper_poll_disable(drm_dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	nouveau_switcheroo_optimus_dsm();
 	ret = nouveau_do_suspend(drm_dev, true);
 	pci_save_state(pdev);
@@ -1055,37 +878,11 @@ nouveau_pmops_runtime_resume(struct device *dev)
 static int
 nouveau_pmops_runtime_idle(struct device *dev)
 {
-<<<<<<< HEAD
-=======
-	struct pci_dev *pdev = to_pci_dev(dev);
-	struct drm_device *drm_dev = pci_get_drvdata(pdev);
-	struct nouveau_drm *drm = nouveau_drm(drm_dev);
-	struct drm_crtc *crtc;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!nouveau_pmops_runtime()) {
 		pm_runtime_forbid(dev);
 		return -EBUSY;
 	}
 
-<<<<<<< HEAD
-=======
-	/* if we have a hdmi audio device - make sure it has a driver loaded */
-	if (drm->hdmi_device) {
-		if (!drm->hdmi_device->driver) {
-			DRM_DEBUG_DRIVER("failing to power off - no HDMI audio driver loaded\n");
-			pm_runtime_mark_last_busy(dev);
-			return -EBUSY;
-		}
-	}
-
-	list_for_each_entry(crtc, &drm->dev->mode_config.crtc_list, head) {
-		if (crtc->enabled) {
-			DRM_DEBUG_DRIVER("failing to power off - crtc active\n");
-			return -EBUSY;
-		}
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pm_runtime_mark_last_busy(dev);
 	pm_runtime_autosuspend(dev);
 	/* we don't want the main rpm_idle to call suspend - we want to autosuspend */
@@ -1119,18 +916,6 @@ nouveau_drm_open(struct drm_device *dev, struct drm_file *fpriv)
 
 	cli->base.super = false;
 
-<<<<<<< HEAD
-=======
-	if (drm->client.device.info.family >= NV_DEVICE_INFO_V0_TESLA) {
-		ret = nvkm_vm_new(nvxx_device(&drm->client.device), 0,
-				  (1ULL << 40), 0x1000, NULL, &cli->vm);
-		if (ret)
-			goto done;
-
-		nvxx_client(&cli->base)->vm = cli->vm;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	fpriv->driver_priv = cli;
 
 	mutex_lock(&drm->client.mutex);

@@ -24,10 +24,6 @@
  */
 
 #include <drm/drmP.h>
-<<<<<<< HEAD
-=======
-#include <trace/events/dma_fence.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "virtgpu_drv.h"
 
 static const char *virtio_get_driver_name(struct dma_fence *f)
@@ -40,37 +36,20 @@ static const char *virtio_get_timeline_name(struct dma_fence *f)
 	return "controlq";
 }
 
-<<<<<<< HEAD
 static bool virtio_signaled(struct dma_fence *f)
 {
 	struct virtio_gpu_fence *fence = to_virtio_fence(f);
 
 	if (atomic64_read(&fence->drv->last_seq) >= fence->seq)
-=======
-static bool virtio_enable_signaling(struct dma_fence *f)
-{
-	return true;
-}
-
-bool virtio_fence_signaled(struct dma_fence *f)
-{
-	struct virtio_gpu_fence *fence = to_virtio_fence(f);
-
-	if (atomic64_read(&fence->drv->last_seq) >= fence->f.seqno)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return true;
 	return false;
 }
 
 static void virtio_fence_value_str(struct dma_fence *f, char *str, int size)
 {
-<<<<<<< HEAD
 	struct virtio_gpu_fence *fence = to_virtio_fence(f);
 
 	snprintf(str, size, "%llu", fence->seq);
-=======
-	snprintf(str, size, "%llu", (long long unsigned int) f->seqno);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void virtio_timeline_value_str(struct dma_fence *f, char *str, int size)
@@ -83,50 +62,18 @@ static void virtio_timeline_value_str(struct dma_fence *f, char *str, int size)
 static const struct dma_fence_ops virtio_fence_ops = {
 	.get_driver_name     = virtio_get_driver_name,
 	.get_timeline_name   = virtio_get_timeline_name,
-<<<<<<< HEAD
 	.signaled            = virtio_signaled,
-=======
-	.enable_signaling    = virtio_enable_signaling,
-	.signaled            = virtio_fence_signaled,
-	.wait                = dma_fence_default_wait,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.fence_value_str     = virtio_fence_value_str,
 	.timeline_value_str  = virtio_timeline_value_str,
 };
 
-<<<<<<< HEAD
 int virtio_gpu_fence_emit(struct virtio_gpu_device *vgdev,
 			  struct virtio_gpu_ctrl_hdr *cmd_hdr,
 			  struct virtio_gpu_fence **fence)
-=======
-struct virtio_gpu_fence *virtio_gpu_fence_alloc(struct virtio_gpu_device *vgdev)
-{
-	struct virtio_gpu_fence_driver *drv = &vgdev->fence_drv;
-	struct virtio_gpu_fence *fence = kzalloc(sizeof(struct virtio_gpu_fence),
-							GFP_KERNEL);
-	if (!fence)
-		return fence;
-
-	fence->drv = drv;
-
-	/* This only partially initializes the fence because the seqno is
-	 * unknown yet.  The fence must not be used outside of the driver
-	 * until virtio_gpu_fence_emit is called.
-	 */
-	dma_fence_init(&fence->f, &virtio_fence_ops, &drv->lock, drv->context, 0);
-
-	return fence;
-}
-
-void virtio_gpu_fence_emit(struct virtio_gpu_device *vgdev,
-			  struct virtio_gpu_ctrl_hdr *cmd_hdr,
-			  struct virtio_gpu_fence *fence)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct virtio_gpu_fence_driver *drv = &vgdev->fence_drv;
 	unsigned long irq_flags;
 
-<<<<<<< HEAD
 	*fence = kmalloc(sizeof(struct virtio_gpu_fence), GFP_ATOMIC);
 	if ((*fence) == NULL)
 		return -ENOMEM;
@@ -143,18 +90,6 @@ void virtio_gpu_fence_emit(struct virtio_gpu_device *vgdev,
 	cmd_hdr->flags |= cpu_to_le32(VIRTIO_GPU_FLAG_FENCE);
 	cmd_hdr->fence_id = cpu_to_le64((*fence)->seq);
 	return 0;
-=======
-	spin_lock_irqsave(&drv->lock, irq_flags);
-	fence->f.seqno = ++drv->sync_seq;
-	dma_fence_get(&fence->f);
-	list_add_tail(&fence->node, &drv->fences);
-	spin_unlock_irqrestore(&drv->lock, irq_flags);
-
-	trace_dma_fence_emit(&fence->f);
-
-	cmd_hdr->flags |= cpu_to_le32(VIRTIO_GPU_FLAG_FENCE);
-	cmd_hdr->fence_id = cpu_to_le64(fence->f.seqno);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void virtio_gpu_fence_event_process(struct virtio_gpu_device *vgdev,
@@ -167,11 +102,7 @@ void virtio_gpu_fence_event_process(struct virtio_gpu_device *vgdev,
 	spin_lock_irqsave(&drv->lock, irq_flags);
 	atomic64_set(&vgdev->fence_drv.last_seq, last_seq);
 	list_for_each_entry_safe(fence, tmp, &drv->fences, node) {
-<<<<<<< HEAD
 		if (last_seq < fence->seq)
-=======
-		if (last_seq < fence->f.seqno)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 		dma_fence_signal_locked(&fence->f);
 		list_del(&fence->node);

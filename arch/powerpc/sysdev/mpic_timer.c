@@ -47,12 +47,6 @@
 #define MAX_TICKS_CASCADE		(~0U)
 #define TIMER_OFFSET(num)		(1 << (TIMERS_PER_GROUP - 1 - num))
 
-<<<<<<< HEAD
-=======
-/* tv_usec should be less than ONE_SECOND, otherwise use tv_sec */
-#define ONE_SECOND			1000000
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct timer_regs {
 	u32	gtccr;
 	u32	res0[3];
@@ -93,31 +87,13 @@ static struct cascade_priv cascade_timer[] = {
 static LIST_HEAD(timer_group_list);
 
 static void convert_ticks_to_time(struct timer_group_priv *priv,
-<<<<<<< HEAD
 		const u64 ticks, time64_t *time)
 {
 	*time = (u64)div_u64(ticks, priv->timerfreq);
-=======
-		const u64 ticks, struct timeval *time)
-{
-	u64 tmp_sec;
-
-	time->tv_sec = (__kernel_time_t)div_u64(ticks, priv->timerfreq);
-	tmp_sec = (u64)time->tv_sec * (u64)priv->timerfreq;
-
-	time->tv_usec = 0;
-
-	if (tmp_sec <= ticks)
-		time->tv_usec = (__kernel_suseconds_t)
-			div_u64((ticks - tmp_sec) * 1000000, priv->timerfreq);
-
-	return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* the time set by the user is converted to "ticks" */
 static int convert_time_to_ticks(struct timer_group_priv *priv,
-<<<<<<< HEAD
 		time64_t time, u64 *ticks)
 {
 	u64 max_value;		/* prevent u64 overflow */
@@ -128,35 +104,6 @@ static int convert_time_to_ticks(struct timer_group_priv *priv,
 		return -EINVAL;
 
 	*ticks = (u64)time * (u64)priv->timerfreq;
-=======
-		const struct timeval *time, u64 *ticks)
-{
-	u64 max_value;		/* prevent u64 overflow */
-	u64 tmp = 0;
-
-	u64 tmp_sec;
-	u64 tmp_ms;
-	u64 tmp_us;
-
-	max_value = div_u64(ULLONG_MAX, priv->timerfreq);
-
-	if (time->tv_sec > max_value ||
-			(time->tv_sec == max_value && time->tv_usec > 0))
-		return -EINVAL;
-
-	tmp_sec = (u64)time->tv_sec * (u64)priv->timerfreq;
-	tmp += tmp_sec;
-
-	tmp_ms = time->tv_usec / 1000;
-	tmp_ms = div_u64((u64)tmp_ms * (u64)priv->timerfreq, 1000);
-	tmp += tmp_ms;
-
-	tmp_us = time->tv_usec % 1000;
-	tmp_us = div_u64((u64)tmp_us * (u64)priv->timerfreq, 1000000);
-	tmp += tmp_us;
-
-	*ticks = tmp;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -245,11 +192,7 @@ static struct mpic_timer *get_cascade_timer(struct timer_group_priv *priv,
 	return allocated_timer;
 }
 
-<<<<<<< HEAD
 static struct mpic_timer *get_timer(time64_t time)
-=======
-static struct mpic_timer *get_timer(const struct timeval *time)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct timer_group_priv *priv;
 	struct mpic_timer *timer;
@@ -303,11 +246,7 @@ static struct mpic_timer *get_timer(const struct timeval *time)
  * @handle: the timer to be started.
  *
  * It will do ->fn(->dev) callback from the hardware interrupt at
-<<<<<<< HEAD
  * the 'time64_t' point in the future.
-=======
- * the ->timeval point in the future.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 void mpic_start_timer(struct mpic_timer *handle)
 {
@@ -349,11 +288,7 @@ EXPORT_SYMBOL(mpic_stop_timer);
  *
  * Query timer remaining time.
  */
-<<<<<<< HEAD
 void mpic_get_remain_time(struct mpic_timer *handle, time64_t *time)
-=======
-void mpic_get_remain_time(struct mpic_timer *handle, struct timeval *time)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct timer_group_priv *priv = container_of(handle,
 			struct timer_group_priv, timer[handle->num]);
@@ -425,11 +360,7 @@ EXPORT_SYMBOL(mpic_free_timer);
  * else "handle" on success.
  */
 struct mpic_timer *mpic_request_timer(irq_handler_t fn, void *dev,
-<<<<<<< HEAD
 				      time64_t time)
-=======
-					const struct timeval *time)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mpic_timer *allocated_timer;
 	int ret;
@@ -437,15 +368,7 @@ struct mpic_timer *mpic_request_timer(irq_handler_t fn, void *dev,
 	if (list_empty(&timer_group_list))
 		return NULL;
 
-<<<<<<< HEAD
 	if (time < 0)
-=======
-	if (!(time->tv_sec + time->tv_usec) ||
-			time->tv_sec < 0 || time->tv_usec < 0)
-		return NULL;
-
-	if (time->tv_usec > ONE_SECOND)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return NULL;
 
 	allocated_timer = get_timer(time);

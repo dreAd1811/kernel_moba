@@ -27,14 +27,9 @@
 #include <linux/delay.h>
 #include <linux/err.h>
 #include <linux/errno.h>
-<<<<<<< HEAD
 #include <linux/gpio/consumer.h>
 #include <linux/i2c.h>
 #include <linux/i2c-smbus.h>
-=======
-#include <linux/gpio.h>
-#include <linux/i2c.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/idr.h>
 #include <linux/init.h>
 #include <linux/irqflags.h>
@@ -63,47 +58,29 @@
 #define I2C_ADDR_7BITS_MAX	0x77
 #define I2C_ADDR_7BITS_COUNT	(I2C_ADDR_7BITS_MAX + 1)
 
-<<<<<<< HEAD
 #define I2C_ADDR_DEVICE_ID	0x7c
 
 /*
  * core_lock protects i2c_adapter_idr, and guarantees that device detection,
  * deletion of detected devices are serialized
-=======
-/*
- * core_lock protects i2c_adapter_idr, and guarantees that device detection,
- * deletion of detected devices, and attach_adapter calls are serialized
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static DEFINE_MUTEX(core_lock);
 static DEFINE_IDR(i2c_adapter_idr);
 
 static int i2c_detect(struct i2c_adapter *adapter, struct i2c_driver *driver);
 
-<<<<<<< HEAD
 static DEFINE_STATIC_KEY_FALSE(i2c_trace_msg_key);
-=======
-static struct static_key i2c_trace_msg = STATIC_KEY_INIT_FALSE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool is_registered;
 
 int i2c_transfer_trace_reg(void)
 {
-<<<<<<< HEAD
 	static_branch_inc(&i2c_trace_msg_key);
-=======
-	static_key_slow_inc(&i2c_trace_msg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 void i2c_transfer_trace_unreg(void)
 {
-<<<<<<< HEAD
 	static_branch_dec(&i2c_trace_msg_key);
-=======
-	static_key_slow_dec(&i2c_trace_msg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 const struct i2c_device_id *i2c_match_id(const struct i2c_device_id *id,
@@ -149,13 +126,10 @@ static int i2c_device_uevent(struct device *dev, struct kobj_uevent_env *env)
 	struct i2c_client *client = to_i2c_client(dev);
 	int rc;
 
-<<<<<<< HEAD
 	rc = of_device_uevent_modalias(dev, env);
 	if (rc != -ENODEV)
 		return rc;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rc = acpi_device_uevent_modalias(dev, env);
 	if (rc != -ENODEV)
 		return rc;
@@ -166,25 +140,16 @@ static int i2c_device_uevent(struct device *dev, struct kobj_uevent_env *env)
 /* i2c bus recovery routines */
 static int get_scl_gpio_value(struct i2c_adapter *adap)
 {
-<<<<<<< HEAD
 	return gpiod_get_value_cansleep(adap->bus_recovery_info->scl_gpiod);
-=======
-	return gpio_get_value(adap->bus_recovery_info->scl_gpio);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void set_scl_gpio_value(struct i2c_adapter *adap, int val)
 {
-<<<<<<< HEAD
 	gpiod_set_value_cansleep(adap->bus_recovery_info->scl_gpiod, val);
-=======
-	gpio_set_value(adap->bus_recovery_info->scl_gpio, val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int get_sda_gpio_value(struct i2c_adapter *adap)
 {
-<<<<<<< HEAD
 	return gpiod_get_value_cansleep(adap->bus_recovery_info->sda_gpiod);
 }
 
@@ -207,44 +172,6 @@ static int i2c_generic_bus_free(struct i2c_adapter *adap)
 		return ret;
 
 	return ret ? 0 : -EBUSY;
-=======
-	return gpio_get_value(adap->bus_recovery_info->sda_gpio);
-}
-
-static int i2c_get_gpios_for_recovery(struct i2c_adapter *adap)
-{
-	struct i2c_bus_recovery_info *bri = adap->bus_recovery_info;
-	struct device *dev = &adap->dev;
-	int ret = 0;
-
-	ret = gpio_request_one(bri->scl_gpio, GPIOF_OPEN_DRAIN |
-			GPIOF_OUT_INIT_HIGH, "i2c-scl");
-	if (ret) {
-		dev_warn(dev, "Can't get SCL gpio: %d\n", bri->scl_gpio);
-		return ret;
-	}
-
-	if (bri->get_sda) {
-		if (gpio_request_one(bri->sda_gpio, GPIOF_IN, "i2c-sda")) {
-			/* work without SDA polling */
-			dev_warn(dev, "Can't get SDA gpio: %d. Not using SDA polling\n",
-					bri->sda_gpio);
-			bri->get_sda = NULL;
-		}
-	}
-
-	return ret;
-}
-
-static void i2c_put_gpios_for_recovery(struct i2c_adapter *adap)
-{
-	struct i2c_bus_recovery_info *bri = adap->bus_recovery_info;
-
-	if (bri->get_sda)
-		gpio_free(bri->sda_gpio);
-
-	gpio_free(bri->scl_gpio);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -255,22 +182,14 @@ static void i2c_put_gpios_for_recovery(struct i2c_adapter *adap)
 #define RECOVERY_NDELAY		5000
 #define RECOVERY_CLK_CNT	9
 
-<<<<<<< HEAD
 int i2c_generic_scl_recovery(struct i2c_adapter *adap)
 {
 	struct i2c_bus_recovery_info *bri = adap->bus_recovery_info;
 	int i = 0, scl = 1, ret = 0;
-=======
-static int i2c_generic_recovery(struct i2c_adapter *adap)
-{
-	struct i2c_bus_recovery_info *bri = adap->bus_recovery_info;
-	int i = 0, val = 1, ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (bri->prepare_recovery)
 		bri->prepare_recovery(adap);
 
-<<<<<<< HEAD
 	/*
 	 * If we can set SDA, we will always create a STOP to ensure additional
 	 * pulses will do no harm. This is achieved by letting SDA follow SCL
@@ -282,23 +201,12 @@ static int i2c_generic_recovery(struct i2c_adapter *adap)
 	if (bri->set_sda)
 		bri->set_sda(adap, scl);
 	ndelay(RECOVERY_NDELAY / 2);
-=======
-	bri->set_scl(adap, val);
-	ndelay(RECOVERY_NDELAY);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * By this time SCL is high, as we need to give 9 falling-rising edges
 	 */
 	while (i++ < RECOVERY_CLK_CNT * 2) {
-<<<<<<< HEAD
 		if (scl) {
-=======
-		if (val) {
-			/* Break if SDA is high */
-			if (bri->get_sda && bri->get_sda(adap))
-					break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* SCL shouldn't be low here */
 			if (!bri->get_scl(adap)) {
 				dev_err(&adap->dev,
@@ -308,7 +216,6 @@ static int i2c_generic_recovery(struct i2c_adapter *adap)
 			}
 		}
 
-<<<<<<< HEAD
 		scl = !scl;
 		bri->set_scl(adap, scl);
 		/* Creating STOP again, see above */
@@ -328,45 +235,13 @@ static int i2c_generic_recovery(struct i2c_adapter *adap)
 	if (ret == -EOPNOTSUPP)
 		ret = 0;
 
-=======
-		val = !val;
-		bri->set_scl(adap, val);
-		ndelay(RECOVERY_NDELAY);
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (bri->unprepare_recovery)
 		bri->unprepare_recovery(adap);
 
 	return ret;
 }
-<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(i2c_generic_scl_recovery);
 
-=======
-
-int i2c_generic_scl_recovery(struct i2c_adapter *adap)
-{
-	return i2c_generic_recovery(adap);
-}
-EXPORT_SYMBOL_GPL(i2c_generic_scl_recovery);
-
-int i2c_generic_gpio_recovery(struct i2c_adapter *adap)
-{
-	int ret;
-
-	ret = i2c_get_gpios_for_recovery(adap);
-	if (ret)
-		return ret;
-
-	ret = i2c_generic_recovery(adap);
-	i2c_put_gpios_for_recovery(adap);
-
-	return ret;
-}
-EXPORT_SYMBOL_GPL(i2c_generic_gpio_recovery);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int i2c_recover_bus(struct i2c_adapter *adap)
 {
 	if (!adap->bus_recovery_info)
@@ -390,7 +265,6 @@ static void i2c_init_recovery(struct i2c_adapter *adap)
 		goto err;
 	}
 
-<<<<<<< HEAD
 	if (bri->scl_gpiod && bri->recover_bus == i2c_generic_scl_recovery) {
 		bri->get_scl = get_scl_gpio_value;
 		bri->set_scl = set_scl_gpio_value;
@@ -404,35 +278,15 @@ static void i2c_init_recovery(struct i2c_adapter *adap)
 	}
 
 	if (bri->recover_bus == i2c_generic_scl_recovery) {
-=======
-	/* Generic GPIO recovery */
-	if (bri->recover_bus == i2c_generic_gpio_recovery) {
-		if (!gpio_is_valid(bri->scl_gpio)) {
-			err_str = "invalid SCL gpio";
-			goto err;
-		}
-
-		if (gpio_is_valid(bri->sda_gpio))
-			bri->get_sda = get_sda_gpio_value;
-		else
-			bri->get_sda = NULL;
-
-		bri->get_scl = get_scl_gpio_value;
-		bri->set_scl = set_scl_gpio_value;
-	} else if (bri->recover_bus == i2c_generic_scl_recovery) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Generic SCL recovery */
 		if (!bri->set_scl || !bri->get_scl) {
 			err_str = "no {get|set}_scl() found";
 			goto err;
 		}
-<<<<<<< HEAD
 		if (!bri->set_sda && !bri->get_sda) {
 			err_str = "either get_sda() or set_sda() needed";
 			goto err;
 		}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return;
@@ -452,14 +306,7 @@ static int i2c_smbus_host_notify_to_irq(const struct i2c_client *client)
 	if (client->flags & I2C_CLIENT_TEN)
 		return -EINVAL;
 
-<<<<<<< HEAD
 	irq = irq_create_mapping(adap->host_notify_domain, client->addr);
-=======
-	irq = irq_find_mapping(adap->host_notify_domain, client->addr);
-	if (!irq)
-		irq = irq_create_mapping(adap->host_notify_domain,
-					 client->addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return irq > 0 ? irq : -ENXIO;
 }
@@ -480,11 +327,8 @@ static int i2c_device_probe(struct device *dev)
 
 		if (client->flags & I2C_CLIENT_HOST_NOTIFY) {
 			dev_dbg(dev, "Using Host Notify IRQ\n");
-<<<<<<< HEAD
 			/* Keep adapter active when Host Notify is required */
 			pm_runtime_get_sync(&client->adapter->dev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			irq = i2c_smbus_host_notify_to_irq(client);
 		} else if (dev->of_node) {
 			irq = of_irq_get_byname(dev->of_node, "irq");
@@ -540,11 +384,7 @@ static int i2c_device_probe(struct device *dev)
 		goto err_clear_wakeup_irq;
 
 	status = dev_pm_domain_attach(&client->dev, true);
-<<<<<<< HEAD
 	if (status)
-=======
-	if (status == -EPROBE_DEFER)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_clear_wakeup_irq;
 
 	/*
@@ -592,13 +432,10 @@ static int i2c_device_remove(struct device *dev)
 	dev_pm_clear_wake_irq(&client->dev);
 	device_init_wakeup(&client->dev, false);
 
-<<<<<<< HEAD
 	client->irq = client->init_irq;
 	if (client->flags & I2C_CLIENT_HOST_NOTIFY)
 		pm_runtime_put(&client->adapter->dev);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return status;
 }
 
@@ -633,13 +470,10 @@ show_modalias(struct device *dev, struct device_attribute *attr, char *buf)
 	struct i2c_client *client = to_i2c_client(dev);
 	int len;
 
-<<<<<<< HEAD
 	len = of_device_modalias(dev, buf, PAGE_SIZE);
 	if (len != -ENODEV)
 		return len;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	len = acpi_device_modalias(dev, buf, PAGE_SIZE -1);
 	if (len != -ENODEV)
 		return len;
@@ -708,11 +542,7 @@ static unsigned short i2c_encode_flags_to_addr(struct i2c_client *client)
 
 /* This is a permissive address validity check, I2C address map constraints
  * are purposely not enforced, except for the general call address. */
-<<<<<<< HEAD
 static int i2c_check_addr_validity(unsigned int addr, unsigned short flags)
-=======
-int i2c_check_addr_validity(unsigned addr, unsigned short flags)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (flags & I2C_CLIENT_TEN) {
 		/* 10-bit address, all values are valid */
@@ -838,7 +668,6 @@ static void i2c_adapter_unlock_bus(struct i2c_adapter *adapter,
 }
 
 static void i2c_dev_set_name(struct i2c_adapter *adap,
-<<<<<<< HEAD
 			     struct i2c_client *client,
 			     struct i2c_board_info const *info)
 {
@@ -849,12 +678,6 @@ static void i2c_dev_set_name(struct i2c_adapter *adap,
 		return;
 	}
 
-=======
-			     struct i2c_client *client)
-{
-	struct acpi_device *adev = ACPI_COMPANION(&client->dev);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (adev) {
 		dev_set_name(&client->dev, "i2c-%s", acpi_dev_name(adev));
 		return;
@@ -919,7 +742,6 @@ i2c_new_device(struct i2c_adapter *adap, struct i2c_board_info const *info)
 	client->adapter = adap;
 
 	client->dev.platform_data = info->platform_data;
-<<<<<<< HEAD
 	client->flags = info->flags;
 	client->addr = info->addr;
 
@@ -928,19 +750,6 @@ i2c_new_device(struct i2c_adapter *adap, struct i2c_board_info const *info)
 		client->init_irq = i2c_dev_irq_from_resources(info->resources,
 							 info->num_resources);
 	client->irq = client->init_irq;
-=======
-
-	if (info->archdata)
-		client->dev.archdata = *info->archdata;
-
-	client->flags = info->flags;
-	client->addr = info->addr;
-
-	client->irq = info->irq;
-	if (!client->irq)
-		client->irq = i2c_dev_irq_from_resources(info->resources,
-							 info->num_resources);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	strlcpy(client->name, info->type, sizeof(client->name));
 
@@ -959,17 +768,10 @@ i2c_new_device(struct i2c_adapter *adap, struct i2c_board_info const *info)
 	client->dev.parent = &client->adapter->dev;
 	client->dev.bus = &i2c_bus_type;
 	client->dev.type = &i2c_client_type;
-<<<<<<< HEAD
 	client->dev.of_node = of_node_get(info->of_node);
 	client->dev.fwnode = info->fwnode;
 
 	i2c_dev_set_name(adap, client, info);
-=======
-	client->dev.of_node = info->of_node;
-	client->dev.fwnode = info->fwnode;
-
-	i2c_dev_set_name(adap, client);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (info->properties) {
 		status = device_add_properties(&client->dev, info->properties);
@@ -977,11 +779,7 @@ i2c_new_device(struct i2c_adapter *adap, struct i2c_board_info const *info)
 			dev_err(&adap->dev,
 				"Failed to add properties to client %s: %d\n",
 				client->name, status);
-<<<<<<< HEAD
 			goto out_err_put_of_node;
-=======
-			goto out_err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -997,11 +795,8 @@ i2c_new_device(struct i2c_adapter *adap, struct i2c_board_info const *info)
 out_free_props:
 	if (info->properties)
 		device_remove_properties(&client->dev);
-<<<<<<< HEAD
 out_err_put_of_node:
 	of_node_put(info->of_node);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out_err:
 	dev_err(&adap->dev,
 		"Failed to register i2c client %s at 0x%02x (%d)\n",
@@ -1020,12 +815,9 @@ EXPORT_SYMBOL_GPL(i2c_new_device);
  */
 void i2c_unregister_device(struct i2c_client *client)
 {
-<<<<<<< HEAD
 	if (!client)
 		return;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (client->dev.of_node) {
 		of_node_clear_flag(client->dev.of_node, OF_POPULATED);
 		of_node_put(client->dev.of_node);
@@ -1336,18 +1128,6 @@ static int i2c_do_add_adapter(struct i2c_driver *driver,
 	/* Detect supported devices on that bus, and instantiate them */
 	i2c_detect(adap, driver);
 
-<<<<<<< HEAD
-=======
-	/* Let legacy drivers scan this bus for matching devices */
-	if (driver->attach_adapter) {
-		dev_warn(&adap->dev, "%s: attach_adapter method is deprecated\n",
-			 driver->driver.name);
-		dev_warn(&adap->dev,
-			 "Please use another way to instantiate your i2c_client\n");
-		/* We ignore the return code; if it fails, too bad */
-		driver->attach_adapter(adap);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1483,13 +1263,10 @@ static int i2c_register_adapter(struct i2c_adapter *adap)
 		goto out_list;
 	}
 
-<<<<<<< HEAD
 	res = of_i2c_setup_smbus_alert(adap);
 	if (res)
 		goto out_reg;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_dbg(&adap->dev, "adapter [%s] registered\n", adap->name);
 
 	pm_runtime_no_callbacks(&adap->dev);
@@ -1521,13 +1298,10 @@ static int i2c_register_adapter(struct i2c_adapter *adap)
 
 	return 0;
 
-<<<<<<< HEAD
 out_reg:
 	init_completion(&adap->dev_released);
 	device_unregister(&adap->dev);
 	wait_for_completion(&adap->dev_released);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out_list:
 	mutex_lock(&core_lock);
 	idr_remove(&i2c_adapter_idr, adap->nr);
@@ -1655,12 +1429,7 @@ static int __unregister_client(struct device *dev, void *dummy)
 static int __unregister_dummy(struct device *dev, void *dummy)
 {
 	struct i2c_client *client = i2c_verify_client(dev);
-<<<<<<< HEAD
 	i2c_unregister_device(client);
-=======
-	if (client)
-		i2c_unregister_device(client);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1802,11 +1571,8 @@ void i2c_parse_fw_timings(struct device *dev, struct i2c_timings *t, bool use_de
 	ret = device_property_read_u32(dev, "i2c-sda-falling-time-ns", &t->sda_fall_ns);
 	if (ret && use_defaults)
 		t->sda_fall_ns = t->scl_fall_ns;
-<<<<<<< HEAD
 
 	device_property_read_u32(dev, "i2c-sda-hold-time-ns", &t->sda_hold_ns);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(i2c_parse_fw_timings);
 
@@ -2070,7 +1836,6 @@ static int i2c_check_for_quirks(struct i2c_adapter *adap, struct i2c_msg *msgs, 
 		if (msgs[i].flags & I2C_M_RD) {
 			if (do_len_check && i2c_quirk_exceeded(len, q->max_read_len))
 				return i2c_quirk_error(adap, &msgs[i], "msg too long");
-<<<<<<< HEAD
 
 			if (q->flags & I2C_AQ_NO_ZERO_LEN_READ && len == 0)
 				return i2c_quirk_error(adap, &msgs[i], "no zero length");
@@ -2080,11 +1845,6 @@ static int i2c_check_for_quirks(struct i2c_adapter *adap, struct i2c_msg *msgs, 
 
 			if (q->flags & I2C_AQ_NO_ZERO_LEN_WRITE && len == 0)
 				return i2c_quirk_error(adap, &msgs[i], "no zero length");
-=======
-		} else {
-			if (do_len_check && i2c_quirk_exceeded(len, q->max_write_len))
-				return i2c_quirk_error(adap, &msgs[i], "msg too long");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -2108,7 +1868,6 @@ int __i2c_transfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
 	unsigned long orig_jiffies;
 	int ret, try;
 
-<<<<<<< HEAD
 	if (WARN_ON(!msgs || num < 1))
 		return -EINVAL;
 
@@ -2121,16 +1880,6 @@ int __i2c_transfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
 	 * being executed when not needed.
 	 */
 	if (static_branch_unlikely(&i2c_trace_msg_key)) {
-=======
-	if (adap->quirks && i2c_check_for_quirks(adap, msgs, num))
-		return -EOPNOTSUPP;
-
-	/* i2c_trace_msg gets enabled when tracepoint i2c_transfer gets
-	 * enabled.  This is an efficient way of keeping the for-loop from
-	 * being executed when not needed.
-	 */
-	if (static_key_false(&i2c_trace_msg)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		int i;
 		for (i = 0; i < num; i++)
 			if (msgs[i].flags & I2C_M_RD)
@@ -2149,20 +1898,12 @@ int __i2c_transfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
 			break;
 	}
 
-<<<<<<< HEAD
 	if (static_branch_unlikely(&i2c_trace_msg_key)) {
-=======
-	if (static_key_false(&i2c_trace_msg)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		int i;
 		for (i = 0; i < ret; i++)
 			if (msgs[i].flags & I2C_M_RD)
 				trace_i2c_reply(adap, &msgs[i], i);
-<<<<<<< HEAD
 		trace_i2c_result(adap, num, ret);
-=======
-		trace_i2c_result(adap, i, ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return ret;
@@ -2234,7 +1975,6 @@ int i2c_transfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
 EXPORT_SYMBOL(i2c_transfer);
 
 /**
-<<<<<<< HEAD
  * i2c_transfer_buffer_flags - issue a single I2C message transferring data
  *			       to/from a buffer
  * @client: Handle to slave device
@@ -2295,65 +2035,6 @@ int i2c_get_device_id(const struct i2c_client *client,
 	return 0;
 }
 EXPORT_SYMBOL_GPL(i2c_get_device_id);
-=======
- * i2c_master_send - issue a single I2C message in master transmit mode
- * @client: Handle to slave device
- * @buf: Data that will be written to the slave
- * @count: How many bytes to write, must be less than 64k since msg.len is u16
- *
- * Returns negative errno, or else the number of bytes written.
- */
-int i2c_master_send(const struct i2c_client *client, const char *buf, int count)
-{
-	int ret;
-	struct i2c_adapter *adap = client->adapter;
-	struct i2c_msg msg;
-
-	msg.addr = client->addr;
-	msg.flags = client->flags & I2C_M_TEN;
-	msg.len = count;
-	msg.buf = (char *)buf;
-
-	ret = i2c_transfer(adap, &msg, 1);
-
-	/*
-	 * If everything went ok (i.e. 1 msg transmitted), return #bytes
-	 * transmitted, else error code.
-	 */
-	return (ret == 1) ? count : ret;
-}
-EXPORT_SYMBOL(i2c_master_send);
-
-/**
- * i2c_master_recv - issue a single I2C message in master receive mode
- * @client: Handle to slave device
- * @buf: Where to store data read from slave
- * @count: How many bytes to read, must be less than 64k since msg.len is u16
- *
- * Returns negative errno, or else the number of bytes read.
- */
-int i2c_master_recv(const struct i2c_client *client, char *buf, int count)
-{
-	struct i2c_adapter *adap = client->adapter;
-	struct i2c_msg msg;
-	int ret;
-
-	msg.addr = client->addr;
-	msg.flags = client->flags & I2C_M_TEN;
-	msg.flags |= I2C_M_RD;
-	msg.len = count;
-	msg.buf = buf;
-
-	ret = i2c_transfer(adap, &msg, 1);
-
-	/*
-	 * If everything went ok (i.e. 1 msg received), return #bytes received,
-	 * else error code.
-	 */
-	return (ret == 1) ? count : ret;
-}
-EXPORT_SYMBOL(i2c_master_recv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* ----------------------------------------------------
  * the i2c address scanning function
@@ -2586,7 +2267,6 @@ void i2c_put_adapter(struct i2c_adapter *adap)
 }
 EXPORT_SYMBOL(i2c_put_adapter);
 
-<<<<<<< HEAD
 /**
  * i2c_get_dma_safe_msg_buf() - get a DMA safe buffer for the given i2c_msg
  * @msg: the message to be checked
@@ -2634,8 +2314,6 @@ void i2c_put_dma_safe_msg_buf(u8 *buf, struct i2c_msg *msg, bool xferred)
 }
 EXPORT_SYMBOL_GPL(i2c_put_dma_safe_msg_buf);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_AUTHOR("Simon G. Vogl <simon@tk.uni-linz.ac.at>");
 MODULE_DESCRIPTION("I2C-Bus main module");
 MODULE_LICENSE("GPL");

@@ -1143,12 +1143,8 @@ static int go7007_usb_probe(struct usb_interface *intf,
 	usb->intr_urb = usb_alloc_urb(0, GFP_KERNEL);
 	if (usb->intr_urb == NULL)
 		goto allocfail;
-<<<<<<< HEAD
 	usb->intr_urb->transfer_buffer = kmalloc_array(2, sizeof(u16),
 						       GFP_KERNEL);
-=======
-	usb->intr_urb->transfer_buffer = kmalloc(2*sizeof(u16), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (usb->intr_urb->transfer_buffer == NULL)
 		goto allocfail;
 

@@ -1,33 +1,5 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
 /* Copyright(c) 1999 - 2018 Intel Corporation. */
-=======
-/*******************************************************************************
-
-  Intel 82599 Virtual Function driver
-  Copyright(c) 1999 - 2015 Intel Corporation.
-
-  This program is free software; you can redistribute it and/or modify it
-  under the terms and conditions of the GNU General Public License,
-  version 2, as published by the Free Software Foundation.
-
-  This program is distributed in the hope it will be useful, but WITHOUT
-  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-  more details.
-
-  You should have received a copy of the GNU General Public License along with
-  this program; if not, see <http://www.gnu.org/licenses/>.
-
-  The full GNU General Public License is included in this distribution in
-  the file called "COPYING".
-
-  Contact Information:
-  e1000-devel Mailing List <e1000-devel@lists.sourceforge.net>
-  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497
-
-*******************************************************************************/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifndef _IXGBEVF_H_
 #define _IXGBEVF_H_
@@ -39,10 +11,7 @@
 #include <linux/netdevice.h>
 #include <linux/if_vlan.h>
 #include <linux/u64_stats_sync.h>
-<<<<<<< HEAD
 #include <net/xdp.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "vf.h"
 
@@ -59,15 +28,11 @@
 struct ixgbevf_tx_buffer {
 	union ixgbe_adv_tx_desc *next_to_watch;
 	unsigned long time_stamp;
-<<<<<<< HEAD
 	union {
 		struct sk_buff *skb;
 		/* XDP uses address ptr on irq_clean */
 		void *data;
 	};
-=======
-	struct sk_buff *skb;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int bytecount;
 	unsigned short gso_segs;
 	__be16 protocol;
@@ -79,16 +44,12 @@ struct ixgbevf_tx_buffer {
 struct ixgbevf_rx_buffer {
 	dma_addr_t dma;
 	struct page *page;
-<<<<<<< HEAD
 #if (BITS_PER_LONG > 32) || (PAGE_SIZE >= 65536)
 	__u32 page_offset;
 #else
 	__u16 page_offset;
 #endif
 	__u16 pagecnt_bias;
-=======
-	unsigned int page_offset;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct ixgbevf_stats {
@@ -105,15 +66,11 @@ struct ixgbevf_tx_queue_stats {
 struct ixgbevf_rx_queue_stats {
 	u64 alloc_rx_page_failed;
 	u64 alloc_rx_buff_failed;
-<<<<<<< HEAD
 	u64 alloc_rx_page;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 csum_err;
 };
 
 enum ixgbevf_ring_state_t {
-<<<<<<< HEAD
 	__IXGBEVF_RX_3K_BUFFER,
 	__IXGBEVF_RX_BUILD_SKB_ENABLED,
 	__IXGBEVF_TX_DETECT_HANG,
@@ -134,22 +91,6 @@ struct ixgbevf_ring {
 	struct ixgbevf_q_vector *q_vector;	/* backpointer to q_vector */
 	struct net_device *netdev;
 	struct bpf_prog *xdp_prog;
-=======
-	__IXGBEVF_TX_DETECT_HANG,
-	__IXGBEVF_HANG_CHECK_ARMED,
-};
-
-#define check_for_tx_hang(ring) \
-	test_bit(__IXGBEVF_TX_DETECT_HANG, &(ring)->state)
-#define set_check_for_tx_hang(ring) \
-	set_bit(__IXGBEVF_TX_DETECT_HANG, &(ring)->state)
-#define clear_check_for_tx_hang(ring) \
-	clear_bit(__IXGBEVF_TX_DETECT_HANG, &(ring)->state)
-
-struct ixgbevf_ring {
-	struct ixgbevf_ring *next;
-	struct net_device *netdev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct device *dev;
 	void *desc;			/* descriptor ring memory */
 	dma_addr_t dma;			/* phys. address of descriptor ring */
@@ -170,11 +111,7 @@ struct ixgbevf_ring {
 		struct ixgbevf_tx_queue_stats tx_stats;
 		struct ixgbevf_rx_queue_stats rx_stats;
 	};
-<<<<<<< HEAD
 	struct xdp_rxq_info xdp_rxq;
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 hw_csum_rx_error;
 	u8 __iomem *tail;
 	struct sk_buff *skb;
@@ -184,21 +121,14 @@ struct ixgbevf_ring {
 	 */
 	u16 reg_idx;
 	int queue_index; /* needed for multiqueue queue management */
-<<<<<<< HEAD
 } ____cacheline_internodealigned_in_smp;
-=======
-};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* How many Rx Buffers do we bundle into one write to the hardware ? */
 #define IXGBEVF_RX_BUFFER_WRITE	16	/* Must be power of 2 */
 
 #define MAX_RX_QUEUES IXGBE_VF_MAX_RX_QUEUES
 #define MAX_TX_QUEUES IXGBE_VF_MAX_TX_QUEUES
-<<<<<<< HEAD
 #define MAX_XDP_QUEUES IXGBE_VF_MAX_TX_QUEUES
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define IXGBEVF_MAX_RSS_QUEUES		2
 #define IXGBEVF_82599_RETA_SIZE		128	/* 128 entries */
 #define IXGBEVF_X550_VFRETA_SIZE	64	/* 64 entries */
@@ -215,7 +145,6 @@ struct ixgbevf_ring {
 /* Supported Rx Buffer Sizes */
 #define IXGBEVF_RXBUFFER_256	256    /* Used for packet split */
 #define IXGBEVF_RXBUFFER_2048	2048
-<<<<<<< HEAD
 #define IXGBEVF_RXBUFFER_3072	3072
 
 #define IXGBEVF_RX_HDR_SIZE	IXGBEVF_RXBUFFER_256
@@ -230,14 +159,6 @@ struct ixgbevf_ring {
 #define IXGBEVF_MAX_FRAME_BUILD_SKB	IXGBEVF_RXBUFFER_2048
 #endif
 
-=======
-
-#define IXGBEVF_RX_HDR_SIZE	IXGBEVF_RXBUFFER_256
-#define IXGBEVF_RX_BUFSZ	IXGBEVF_RXBUFFER_2048
-
-#define MAXIMUM_ETHERNET_VLAN_SIZE (VLAN_ETH_FRAME_LEN + ETH_FCS_LEN)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define IXGBE_TX_FLAGS_CSUM		BIT(0)
 #define IXGBE_TX_FLAGS_VLAN		BIT(1)
 #define IXGBE_TX_FLAGS_TSO		BIT(2)
@@ -246,7 +167,6 @@ struct ixgbevf_ring {
 #define IXGBE_TX_FLAGS_VLAN_PRIO_MASK	0x0000e000
 #define IXGBE_TX_FLAGS_VLAN_SHIFT	16
 
-<<<<<<< HEAD
 #define ring_uses_large_buffer(ring) \
 	test_bit(__IXGBEVF_RX_3K_BUFFER, &(ring)->state)
 #define set_ring_uses_large_buffer(ring) \
@@ -291,8 +211,6 @@ static inline unsigned int ixgbevf_rx_pg_order(struct ixgbevf_ring *ring)
 #define clear_check_for_tx_hang(ring) \
 	clear_bit(__IXGBEVF_TX_DETECT_HANG, &(ring)->state)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct ixgbevf_ring_container {
 	struct ixgbevf_ring *ring;	/* pointer to linked list of rings */
 	unsigned int total_bytes;	/* total bytes processed this int */
@@ -317,15 +235,11 @@ struct ixgbevf_q_vector {
 	u16 itr; /* Interrupt throttle rate written to EITR */
 	struct napi_struct napi;
 	struct ixgbevf_ring_container rx, tx;
-<<<<<<< HEAD
 	struct rcu_head rcu;    /* to avoid race with update stats on free */
 	char name[IFNAMSIZ + 9];
 
 	/* for dynamic allocation of rings associated with this q_vector */
 	struct ixgbevf_ring ring[0] ____cacheline_internodealigned_in_smp;
-=======
-	char name[IFNAMSIZ + 9];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_NET_RX_BUSY_POLL
 	unsigned int state;
 #define IXGBEVF_QV_STATE_IDLE		0
@@ -397,12 +311,9 @@ static inline void ixgbevf_write_tail(struct ixgbevf_ring *ring, u32 value)
 #define MIN_MSIX_Q_VECTORS	1
 #define MIN_MSIX_COUNT		(MIN_MSIX_Q_VECTORS + NON_Q_VECTORS)
 
-<<<<<<< HEAD
 #define IXGBEVF_RX_DMA_ATTR \
 	(DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_WEAK_ORDERING)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* board specific private data structure */
 struct ixgbevf_adapter {
 	/* this field must be first, see ixgbevf_process_skb_fields */
@@ -418,13 +329,10 @@ struct ixgbevf_adapter {
 	u32 eims_enable_mask;
 	u32 eims_other;
 
-<<<<<<< HEAD
 	/* XDP */
 	int num_xdp_queues;
 	struct ixgbevf_ring *xdp_ring[MAX_XDP_QUEUES];
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* TX */
 	int num_tx_queues;
 	struct ixgbevf_ring *tx_ring[MAX_TX_QUEUES]; /* One per active queue */
@@ -437,23 +345,15 @@ struct ixgbevf_adapter {
 	u64 hw_csum_rx_error;
 	u64 hw_rx_no_dma_resources;
 	int num_msix_vectors;
-<<<<<<< HEAD
 	u64 alloc_rx_page_failed;
 	u64 alloc_rx_buff_failed;
 	u64 alloc_rx_page;
-=======
-	u32 alloc_rx_page_failed;
-	u32 alloc_rx_buff_failed;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct msix_entry *msix_entries;
 
 	/* OS defined structs */
 	struct net_device *netdev;
-<<<<<<< HEAD
 	struct bpf_prog *xdp_prog;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct pci_dev *pdev;
 
 	/* structs defined in ixgbe_vf.h */
@@ -467,10 +367,7 @@ struct ixgbevf_adapter {
 	unsigned long state;
 	u64 tx_busy;
 	unsigned int tx_ring_count;
-<<<<<<< HEAD
 	unsigned int xdp_ring_count;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int rx_ring_count;
 
 	u8 __iomem *io_addr; /* Mainly for iounmap use */
@@ -485,11 +382,8 @@ struct ixgbevf_adapter {
 
 	u32 *rss_key;
 	u8 rss_indir_tbl[IXGBEVF_X550_VFRETA_SIZE];
-<<<<<<< HEAD
 	u32 flags;
 #define IXGBEVF_FLAGS_LEGACY_RX		BIT(1)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum ixbgevf_state_t {
@@ -547,12 +441,8 @@ void ixgbevf_down(struct ixgbevf_adapter *adapter);
 void ixgbevf_reinit_locked(struct ixgbevf_adapter *adapter);
 void ixgbevf_reset(struct ixgbevf_adapter *adapter);
 void ixgbevf_set_ethtool_ops(struct net_device *netdev);
-<<<<<<< HEAD
 int ixgbevf_setup_rx_resources(struct ixgbevf_adapter *adapter,
 			       struct ixgbevf_ring *rx_ring);
-=======
-int ixgbevf_setup_rx_resources(struct ixgbevf_ring *);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int ixgbevf_setup_tx_resources(struct ixgbevf_ring *);
 void ixgbevf_free_rx_resources(struct ixgbevf_ring *);
 void ixgbevf_free_tx_resources(struct ixgbevf_ring *);

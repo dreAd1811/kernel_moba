@@ -53,7 +53,6 @@
 
 #define SERDES_START_WAIT_TIMES			100
 
-<<<<<<< HEAD
 int emac_sgmii_init(struct emac_adapter *adpt)
 {
 	if (!(adpt->phy.sgmii_ops && adpt->phy.sgmii_ops->init))
@@ -94,8 +93,6 @@ void emac_sgmii_reset(struct emac_adapter *adpt)
 	adpt->phy.sgmii_ops->reset(adpt);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Initialize the SGMII link between the internal and external PHYs. */
 static void emac_sgmii_link_init(struct emac_adapter *adpt)
 {
@@ -111,17 +108,10 @@ static void emac_sgmii_link_init(struct emac_adapter *adpt)
 	writel(val, phy->base + EMAC_SGMII_PHY_AUTONEG_CFG2);
 }
 
-<<<<<<< HEAD
 static int emac_sgmii_irq_clear(struct emac_adapter *adpt, u8 irq_bits)
 {
 	struct emac_sgmii *phy = &adpt->phy;
 	u8 status;
-=======
-static int emac_sgmii_irq_clear(struct emac_adapter *adpt, u32 irq_bits)
-{
-	struct emac_sgmii *phy = &adpt->phy;
-	u32 status;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	writel_relaxed(irq_bits, phy->base + EMAC_SGMII_PHY_INTERRUPT_CLEAR);
 	writel_relaxed(IRQ_GLOBAL_CLEAR, phy->base + EMAC_SGMII_PHY_IRQ_CMD);
@@ -136,14 +126,8 @@ static int emac_sgmii_irq_clear(struct emac_adapter *adpt, u32 irq_bits)
 				      EMAC_SGMII_PHY_INTERRUPT_STATUS,
 				      status, !(status & irq_bits), 1,
 				      SGMII_PHY_IRQ_CLR_WAIT_TIME)) {
-<<<<<<< HEAD
 		net_err_ratelimited("%s: failed to clear SGMII irq: status:0x%x bits:0x%x\n",
 				    adpt->netdev->name, status, irq_bits);
-=======
-		netdev_err(adpt->netdev,
-			   "error: failed clear SGMII irq: status:0x%x bits:0x%x\n",
-			   status, irq_bits);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EIO;
 	}
 
@@ -164,11 +148,7 @@ static irqreturn_t emac_sgmii_interrupt(int irq, void *data)
 {
 	struct emac_adapter *adpt = data;
 	struct emac_sgmii *phy = &adpt->phy;
-<<<<<<< HEAD
 	u8 status;
-=======
-	u32 status;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	status = readl(phy->base + EMAC_SGMII_PHY_INTERRUPT_STATUS);
 	status &= SGMII_ISR_MASK;
@@ -198,15 +178,8 @@ static irqreturn_t emac_sgmii_interrupt(int irq, void *data)
 		atomic_set(&phy->decode_error_count, 0);
 	}
 
-<<<<<<< HEAD
 	if (emac_sgmii_irq_clear(adpt, status))
 		schedule_work(&adpt->work_thread);
-=======
-	if (emac_sgmii_irq_clear(adpt, status)) {
-		netdev_warn(adpt->netdev, "failed to clear SGMII interrupt\n");
-		schedule_work(&adpt->work_thread);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return IRQ_HANDLED;
 }
@@ -230,33 +203,21 @@ static void emac_sgmii_reset_prepare(struct emac_adapter *adpt)
 	msleep(50);
 }
 
-<<<<<<< HEAD
 static void emac_sgmii_common_reset(struct emac_adapter *adpt)
-=======
-void emac_sgmii_reset(struct emac_adapter *adpt)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret;
 
 	emac_sgmii_reset_prepare(adpt);
 	emac_sgmii_link_init(adpt);
 
-<<<<<<< HEAD
 	ret = emac_sgmii_init(adpt);
-=======
-	ret = adpt->phy.initialize(adpt);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		netdev_err(adpt->netdev,
 			   "could not reinitialize internal PHY (error=%i)\n",
 			   ret);
 }
 
-<<<<<<< HEAD
 static int emac_sgmii_common_open(struct emac_adapter *adpt)
-=======
-static int emac_sgmii_open(struct emac_adapter *adpt)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct emac_sgmii *sgmii = &adpt->phy;
 	int ret;
@@ -280,18 +241,13 @@ static int emac_sgmii_open(struct emac_adapter *adpt)
 	return 0;
 }
 
-<<<<<<< HEAD
 static void emac_sgmii_common_close(struct emac_adapter *adpt)
-=======
-static int emac_sgmii_close(struct emac_adapter *adpt)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct emac_sgmii *sgmii = &adpt->phy;
 
 	/* Make sure interrupts are disabled */
 	writel(0, sgmii->base + EMAC_SGMII_PHY_INTERRUPT_MASK);
 	free_irq(sgmii->irq, adpt);
-<<<<<<< HEAD
 }
 
 /* The error interrupts are only valid after the link is up */
@@ -313,13 +269,10 @@ static int emac_sgmii_common_link_change(struct emac_adapter *adpt, bool linkup)
 		writel(0, sgmii->base + EMAC_SGMII_PHY_INTERRUPT_MASK);
 		synchronize_irq(sgmii->irq);
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
 static struct sgmii_ops fsm9900_ops = {
 	.init = emac_sgmii_init_fsm9900,
 	.open = emac_sgmii_common_open,
@@ -345,34 +298,6 @@ static struct sgmii_ops qdf2400_ops = {
 	.reset = emac_sgmii_common_reset,
 };
 #endif
-=======
-/* The error interrupts are only valid after the link is up */
-static int emac_sgmii_link_up(struct emac_adapter *adpt)
-{
-	struct emac_sgmii *sgmii = &adpt->phy;
-	int ret;
-
-	/* Clear and enable interrupts */
-	ret = emac_sgmii_irq_clear(adpt, 0xff);
-	if (ret)
-		return ret;
-
-	writel(SGMII_ISR_MASK, sgmii->base + EMAC_SGMII_PHY_INTERRUPT_MASK);
-
-	return 0;
-}
-
-static int emac_sgmii_link_down(struct emac_adapter *adpt)
-{
-	struct emac_sgmii *sgmii = &adpt->phy;
-
-	/* Disable interrupts */
-	writel(0, sgmii->base + EMAC_SGMII_PHY_INTERRUPT_MASK);
-	synchronize_irq(sgmii->irq);
-
-	return 0;
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int emac_sgmii_acpi_match(struct device *dev, void *data)
 {
@@ -384,11 +309,7 @@ static int emac_sgmii_acpi_match(struct device *dev, void *data)
 		{}
 	};
 	const struct acpi_device_id *id = acpi_match_device(match_table, dev);
-<<<<<<< HEAD
 	struct sgmii_ops **ops = data;
-=======
-	emac_sgmii_function *initialize = data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (id) {
 		acpi_handle handle = ACPI_HANDLE(dev);
@@ -409,17 +330,10 @@ static int emac_sgmii_acpi_match(struct device *dev, void *data)
 
 		switch (hrv) {
 		case 1:
-<<<<<<< HEAD
 			*ops = &qdf2432_ops;
 			return 1;
 		case 2:
 			*ops = &qdf2400_ops;
-=======
-			*initialize = emac_sgmii_init_qdf2432;
-			return 1;
-		case 2:
-			*initialize = emac_sgmii_init_qdf2400;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return 1;
 		}
 	}
@@ -431,34 +345,15 @@ static int emac_sgmii_acpi_match(struct device *dev, void *data)
 static const struct of_device_id emac_sgmii_dt_match[] = {
 	{
 		.compatible = "qcom,fsm9900-emac-sgmii",
-<<<<<<< HEAD
 		.data = &fsm9900_ops,
 	},
 	{
 		.compatible = "qcom,qdf2432-emac-sgmii",
 		.data = &qdf2432_ops,
-=======
-		.data = emac_sgmii_init_fsm9900,
-	},
-	{
-		.compatible = "qcom,qdf2432-emac-sgmii",
-		.data = emac_sgmii_init_qdf2432,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{}
 };
 
-<<<<<<< HEAD
-=======
-/* Dummy function for systems without an internal PHY. This avoids having
- * to check for NULL pointers before calling the functions.
- */
-static int emac_sgmii_dummy(struct emac_adapter *adpt)
-{
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int emac_sgmii_config(struct platform_device *pdev, struct emac_adapter *adpt)
 {
 	struct platform_device *sgmii_pdev = NULL;
@@ -469,29 +364,11 @@ int emac_sgmii_config(struct platform_device *pdev, struct emac_adapter *adpt)
 	if (has_acpi_companion(&pdev->dev)) {
 		struct device *dev;
 
-<<<<<<< HEAD
 		dev = device_find_child(&pdev->dev, &phy->sgmii_ops,
-=======
-		dev = device_find_child(&pdev->dev, &phy->initialize,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					emac_sgmii_acpi_match);
 
 		if (!dev) {
 			dev_warn(&pdev->dev, "cannot find internal phy node\n");
-<<<<<<< HEAD
-=======
-			/* There is typically no internal PHY on emulation
-			 * systems, so if we can't find the node, assume
-			 * we are on an emulation system and stub-out
-			 * support for the internal PHY.  These systems only
-			 * use ACPI.
-			 */
-			phy->open = emac_sgmii_dummy;
-			phy->close = emac_sgmii_dummy;
-			phy->link_up = emac_sgmii_dummy;
-			phy->link_down = emac_sgmii_dummy;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return 0;
 		}
 
@@ -507,10 +384,7 @@ int emac_sgmii_config(struct platform_device *pdev, struct emac_adapter *adpt)
 		}
 
 		sgmii_pdev = of_find_device_by_node(np);
-<<<<<<< HEAD
 		of_node_put(np);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!sgmii_pdev) {
 			dev_err(&pdev->dev, "invalid internal-phy property\n");
 			return -ENODEV;
@@ -523,20 +397,9 @@ int emac_sgmii_config(struct platform_device *pdev, struct emac_adapter *adpt)
 			goto error_put_device;
 		}
 
-<<<<<<< HEAD
 		phy->sgmii_ops = (struct sgmii_ops *)match->data;
 	}
 
-=======
-		phy->initialize = (emac_sgmii_function)match->data;
-	}
-
-	phy->open = emac_sgmii_open;
-	phy->close = emac_sgmii_close;
-	phy->link_up = emac_sgmii_link_up;
-	phy->link_down = emac_sgmii_link_down;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Base address is the first address */
 	res = platform_get_resource(sgmii_pdev, IORESOURCE_MEM, 0);
 	if (!res) {
@@ -560,11 +423,7 @@ int emac_sgmii_config(struct platform_device *pdev, struct emac_adapter *adpt)
 		}
 	}
 
-<<<<<<< HEAD
 	ret = emac_sgmii_init(adpt);
-=======
-	ret = phy->initialize(adpt);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto error;
 

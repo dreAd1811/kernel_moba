@@ -8,10 +8,7 @@
  * Copyright(c) 2012 - 2014 Intel Corporation. All rights reserved.
  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
-<<<<<<< HEAD
  * Copyright (C) 2018 Intel Corporation
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of version 2 of the GNU General Public License as
@@ -34,10 +31,7 @@
  * Copyright(c) 2012 - 2014 Intel Corporation. All rights reserved.
  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
-<<<<<<< HEAD
  * Copyright (C) 2018 Intel Corporation
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -196,7 +190,6 @@ struct iwl_nvm_get_info_general {
 } __packed; /* GRP_REGULATORY_NVM_GET_INFO_GENERAL_S_VER_1 */
 
 /**
-<<<<<<< HEAD
  * enum iwl_nvm_mac_sku_flags - flags in &iwl_nvm_get_info_sku
  * @NVM_MAC_SKU_FLAGS_BAND_2_4_ENABLED: true if 2.4 band enabled
  * @NVM_MAC_SKU_FLAGS_BAND_5_2_ENABLED: true if 5.2 band enabled
@@ -229,24 +222,6 @@ enum iwl_nvm_mac_sku_flags {
 struct iwl_nvm_get_info_sku {
 	__le32 mac_sku_flags;
 } __packed; /* REGULATORY_NVM_GET_INFO_MAC_SKU_SECTION_S_VER_2 */
-=======
- * struct iwl_nvm_get_info_sku - mac information
- * @enable_24g: band 2.4G enabled
- * @enable_5g: band 5G enabled
- * @enable_11n: 11n enabled
- * @enable_11ac: 11ac enabled
- * @mimo_disable: MIMO enabled
- * @ext_crypto: Extended crypto enabled
- */
-struct iwl_nvm_get_info_sku {
-	__le32 enable_24g;
-	__le32 enable_5g;
-	__le32 enable_11n;
-	__le32 enable_11ac;
-	__le32 mimo_disable;
-	__le32 ext_crypto;
-} __packed; /* GRP_REGULATORY_NVM_GET_INFO_MAC_SKU_SECTION_S_VER_1 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * struct iwl_nvm_get_info_phy - phy information
@@ -284,11 +259,7 @@ struct iwl_nvm_get_info_rsp {
 	struct iwl_nvm_get_info_sku mac_sku;
 	struct iwl_nvm_get_info_phy phy_sku;
 	struct iwl_nvm_get_info_regulatory regulatory;
-<<<<<<< HEAD
 } __packed; /* GRP_REGULATORY_NVM_GET_INFO_CMD_RSP_S_VER_2 */
-=======
-} __packed; /* GRP_REGULATORY_NVM_GET_INFO_CMD_RSP_S_VER_1 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * struct iwl_nvm_access_complete_cmd - NVM_ACCESS commands are completed
@@ -358,7 +329,6 @@ struct iwl_mcc_update_resp_v1  {
 } __packed; /* LAR_UPDATE_MCC_CMD_RESP_S_VER_1 */
 
 /**
-<<<<<<< HEAD
  * enum iwl_geo_information - geographic information.
  * @GEO_NO_INFO: no special info for this geo profile.
  * @GEO_WMM_ETSI_5GHZ_INFO: this geo profile limits the WMM params
@@ -370,8 +340,6 @@ enum iwl_geo_information {
 };
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * struct iwl_mcc_update_resp - response to MCC_UPDATE_CMD.
  * Contains the new channel control profile map, if changed, and the new MCC
  * (mobile country code).
@@ -381,12 +349,8 @@ enum iwl_geo_information {
  * @cap: capabilities for all channels which matches the MCC
  * @source_id: the MCC source, see iwl_mcc_source
  * @time: time elapsed from the MCC test start (in 30 seconds TU)
-<<<<<<< HEAD
  * @geo_info: geographic specific profile information
  *	see &enum iwl_geo_information.
-=======
- * @reserved: reserved.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @n_channels: number of channels in @channels_data (may be 14, 39, 50 or 51
  *		channels, depending on platform)
  * @channels: channel control data map, DWORD for each channel. Only the first
@@ -398,17 +362,10 @@ struct iwl_mcc_update_resp {
 	u8 cap;
 	u8 source_id;
 	__le16 time;
-<<<<<<< HEAD
 	__le16 geo_info;
 	__le32 n_channels;
 	__le32 channels[0];
 } __packed; /* LAR_UPDATE_MCC_CMD_RESP_S_VER_3 */
-=======
-	__le16 reserved;
-	__le32 n_channels;
-	__le32 channels[0];
-} __packed; /* LAR_UPDATE_MCC_CMD_RESP_S_VER_2 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * struct iwl_mcc_chub_notif - chub notifies of mcc change

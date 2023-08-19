@@ -69,11 +69,7 @@
 
 #include <trace/events/block.h>
 #include "md.h"
-<<<<<<< HEAD
 #include "md-bitmap.h"
-=======
-#include "bitmap.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "md-cluster.h"
 
 #ifndef MODULE
@@ -88,11 +84,8 @@ static void autostart_arrays(int part);
 static LIST_HEAD(pers_list);
 static DEFINE_SPINLOCK(pers_lock);
 
-<<<<<<< HEAD
 static struct kobj_type md_ktype;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct md_cluster_operations *md_cluster_ops;
 EXPORT_SYMBOL(md_cluster_ops);
 struct module *md_cluster_mod;
@@ -193,29 +186,15 @@ static int start_readonly;
  */
 static bool create_on_open = true;
 
-<<<<<<< HEAD
-=======
-/* bio_clone_mddev
- * like bio_clone_bioset, but with a local bio set
- */
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct bio *bio_alloc_mddev(gfp_t gfp_mask, int nr_iovecs,
 			    struct mddev *mddev)
 {
 	struct bio *b;
 
-<<<<<<< HEAD
 	if (!mddev || !bioset_initialized(&mddev->bio_set))
 		return bio_alloc(gfp_mask, nr_iovecs);
 
 	b = bio_alloc_bioset(gfp_mask, nr_iovecs, &mddev->bio_set);
-=======
-	if (!mddev || !mddev->bio_set)
-		return bio_alloc(gfp_mask, nr_iovecs);
-
-	b = bio_alloc_bioset(gfp_mask, nr_iovecs, mddev->bio_set);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!b)
 		return NULL;
 	return b;
@@ -224,17 +203,10 @@ EXPORT_SYMBOL_GPL(bio_alloc_mddev);
 
 static struct bio *md_bio_alloc_sync(struct mddev *mddev)
 {
-<<<<<<< HEAD
 	if (!mddev || !bioset_initialized(&mddev->sync_set))
 		return bio_alloc(GFP_NOIO, 1);
 
 	return bio_alloc_bioset(GFP_NOIO, 1, &mddev->sync_set);
-=======
-	if (!mddev || !mddev->sync_set)
-		return bio_alloc(GFP_NOIO, 1);
-
-	return bio_alloc_bioset(GFP_NOIO, 1, mddev->sync_set);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -341,10 +313,7 @@ EXPORT_SYMBOL(md_handle_request);
 static blk_qc_t md_make_request(struct request_queue *q, struct bio *bio)
 {
 	const int rw = bio_data_dir(bio);
-<<<<<<< HEAD
 	const int sgrp = op_stat_group(bio_op(bio));
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mddev *mddev = q->queuedata;
 	unsigned int sectors;
 	int cpu;
@@ -373,13 +342,8 @@ static blk_qc_t md_make_request(struct request_queue *q, struct bio *bio)
 	md_handle_request(mddev, bio);
 
 	cpu = part_stat_lock();
-<<<<<<< HEAD
 	part_stat_inc(cpu, &mddev->gendisk->part0, ios[sgrp]);
 	part_stat_add(cpu, &mddev->gendisk->part0, sectors[sgrp], sectors);
-=======
-	part_stat_inc(cpu, &mddev->gendisk->part0, ios[rw]);
-	part_stat_add(cpu, &mddev->gendisk->part0, sectors[rw], sectors);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	part_stat_unlock();
 
 	return BLK_QC_T_NONE;
@@ -469,10 +433,7 @@ static void submit_flushes(struct work_struct *ws)
 	struct mddev *mddev = container_of(ws, struct mddev, flush_work);
 	struct md_rdev *rdev;
 
-<<<<<<< HEAD
 	mddev->start_flush = ktime_get_boottime();
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INIT_WORK(&mddev->flush_work, md_submit_flush_data);
 	atomic_set(&mddev->flush_pending, 1);
 	rcu_read_lock();
@@ -513,7 +474,6 @@ static void md_submit_flush_data(struct work_struct *ws)
 	 * could wait for this and below md_handle_request could wait for those
 	 * bios because of suspend check
 	 */
-<<<<<<< HEAD
 	mddev->last_flush = mddev->start_flush;
 	mddev->flush_bio = NULL;
 	wake_up(&mddev->sb_wait);
@@ -522,15 +482,6 @@ static void md_submit_flush_data(struct work_struct *ws)
 		/* an empty barrier - all done */
 		bio_endio(bio);
 	} else {
-=======
-	mddev->flush_bio = NULL;
-	wake_up(&mddev->sb_wait);
-
-	if (bio->bi_iter.bi_size == 0)
-		/* an empty barrier - all done */
-		bio_endio(bio);
-	else {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bio->bi_opf &= ~REQ_PREFLUSH;
 		md_handle_request(mddev, bio);
 	}
@@ -538,7 +489,6 @@ static void md_submit_flush_data(struct work_struct *ws)
 
 void md_flush_request(struct mddev *mddev, struct bio *bio)
 {
-<<<<<<< HEAD
 	ktime_t start = ktime_get_boottime();
 	spin_lock_irq(&mddev->lock);
 	wait_event_lock_irq(mddev->sb_wait,
@@ -565,17 +515,6 @@ void md_flush_request(struct mddev *mddev, struct bio *bio)
 			mddev->pers->make_request(mddev, bio);
 		}
 	}
-=======
-	spin_lock_irq(&mddev->lock);
-	wait_event_lock_irq(mddev->sb_wait,
-			    !mddev->flush_bio,
-			    mddev->lock);
-	mddev->flush_bio = bio;
-	spin_unlock_irq(&mddev->lock);
-
-	INIT_WORK(&mddev->flush_work, submit_flushes);
-	queue_work(md_wq, &mddev->flush_work);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(md_flush_request);
 
@@ -589,11 +528,6 @@ static void mddev_delayed_delete(struct work_struct *ws);
 
 static void mddev_put(struct mddev *mddev)
 {
-<<<<<<< HEAD
-=======
-	struct bio_set *bs = NULL, *sync_bs = NULL;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!atomic_dec_and_lock(&mddev->active, &all_mddevs_lock))
 		return;
 	if (!mddev->raid_disks && list_empty(&mddev->disks) &&
@@ -601,7 +535,6 @@ static void mddev_put(struct mddev *mddev)
 		/* Array is not configured at all, and not held active,
 		 * so destroy it */
 		list_del_init(&mddev->all_mddevs);
-<<<<<<< HEAD
 
 		/*
 		 * Call queue_work inside the spinlock so that
@@ -619,45 +552,12 @@ static void md_safemode_timeout(struct timer_list *t);
 void mddev_init(struct mddev *mddev)
 {
 	kobject_init(&mddev->kobj, &md_ktype);
-=======
-		bs = mddev->bio_set;
-		sync_bs = mddev->sync_set;
-		mddev->bio_set = NULL;
-		mddev->sync_set = NULL;
-		if (mddev->gendisk) {
-			/* We did a probe so need to clean up.  Call
-			 * queue_work inside the spinlock so that
-			 * flush_workqueue() after mddev_find will
-			 * succeed in waiting for the work to be done.
-			 */
-			INIT_WORK(&mddev->del_work, mddev_delayed_delete);
-			queue_work(md_misc_wq, &mddev->del_work);
-		} else
-			kfree(mddev);
-	}
-	spin_unlock(&all_mddevs_lock);
-	if (bs)
-		bioset_free(bs);
-	if (sync_bs)
-		bioset_free(sync_bs);
-}
-
-static void md_safemode_timeout(unsigned long data);
-
-void mddev_init(struct mddev *mddev)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_init(&mddev->open_mutex);
 	mutex_init(&mddev->reconfig_mutex);
 	mutex_init(&mddev->bitmap_info.mutex);
 	INIT_LIST_HEAD(&mddev->disks);
 	INIT_LIST_HEAD(&mddev->all_mddevs);
-<<<<<<< HEAD
 	timer_setup(&mddev->safemode_timer, md_safemode_timeout, 0);
-=======
-	setup_timer(&mddev->safemode_timer, md_safemode_timeout,
-		    (unsigned long) mddev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	atomic_set(&mddev->active, 1);
 	atomic_set(&mddev->openers, 0);
 	atomic_set(&mddev->active_io, 0);
@@ -818,11 +718,7 @@ static struct md_rdev *find_rdev(struct mddev *mddev, dev_t dev)
 	return NULL;
 }
 
-<<<<<<< HEAD
 struct md_rdev *md_find_rdev_rcu(struct mddev *mddev, dev_t dev)
-=======
-static struct md_rdev *find_rdev_rcu(struct mddev *mddev, dev_t dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct md_rdev *rdev;
 
@@ -832,10 +728,7 @@ static struct md_rdev *find_rdev_rcu(struct mddev *mddev, dev_t dev)
 
 	return NULL;
 }
-<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(md_find_rdev_rcu);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct md_personality *find_pers(int level, char *clevel)
 {
@@ -1282,11 +1175,6 @@ static int super_90_validate(struct mddev *mddev, struct md_rdev *rdev)
 			mddev->new_layout = mddev->layout;
 			mddev->new_chunk_sectors = mddev->chunk_sectors;
 		}
-<<<<<<< HEAD
-=======
-		if (mddev->level == 0)
-			mddev->layout = -1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (sb->state & (1<<MD_SB_CLEAN))
 			mddev->recovery_cp = MaxSector;
@@ -1703,13 +1591,6 @@ static int super_1_load(struct md_rdev *rdev, struct md_rdev *refdev, int minor_
 		rdev->ppl.sector = rdev->sb_start + rdev->ppl.offset;
 	}
 
-<<<<<<< HEAD
-=======
-	if ((le32_to_cpu(sb->feature_map) & MD_FEATURE_RAID0_LAYOUT) &&
-	    sb->level != 0)
-		return -EINVAL;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!refdev) {
 		ret = 1;
 	} else {
@@ -1820,13 +1701,6 @@ static int super_1_validate(struct mddev *mddev, struct md_rdev *rdev)
 			mddev->new_chunk_sectors = mddev->chunk_sectors;
 		}
 
-<<<<<<< HEAD
-=======
-		if (mddev->level == 0 &&
-		    !(le32_to_cpu(sb->feature_map) & MD_FEATURE_RAID0_LAYOUT))
-			mddev->layout = -1;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (le32_to_cpu(sb->feature_map) & MD_FEATURE_JOURNAL)
 			set_bit(MD_HAS_JOURNAL, &mddev->flags);
 
@@ -2263,11 +2137,7 @@ int md_integrity_register(struct mddev *mddev)
 			       bdev_get_integrity(reference->bdev));
 
 	pr_debug("md: data integrity enabled on %s\n", mdname(mddev));
-<<<<<<< HEAD
 	if (bioset_integrity_create(&mddev->bio_set, BIO_POOL_SIZE)) {
-=======
-	if (bioset_integrity_create(mddev->bio_set, BIO_POOL_SIZE)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_err("md: failed to create integrity pool for %s\n",
 		       mdname(mddev));
 		return -EINVAL;
@@ -2482,11 +2352,7 @@ static void export_array(struct mddev *mddev)
 
 static bool set_in_sync(struct mddev *mddev)
 {
-<<<<<<< HEAD
 	lockdep_assert_held(&mddev->lock);
-=======
-	WARN_ON_ONCE(NR_CPUS != 1 && !spin_is_locked(&mddev->lock));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!mddev->in_sync) {
 		mddev->sync_checkers++;
 		spin_unlock(&mddev->lock);
@@ -2605,7 +2471,6 @@ repeat:
 		}
 	}
 
-<<<<<<< HEAD
 	/*
 	 * First make sure individual recovery_offsets are correct
 	 * curr_resync_completed can only be used during recovery.
@@ -2618,12 +2483,6 @@ repeat:
 		    test_bit(MD_RECOVERY_RUNNING, &mddev->recovery) &&
 		    test_bit(MD_RECOVERY_RECOVER, &mddev->recovery) &&
 		    !test_bit(MD_RECOVERY_RESHAPE, &mddev->recovery) &&
-=======
-	/* First make sure individual recovery_offsets are correct */
-	rdev_for_each(rdev, mddev) {
-		if (rdev->raid_disk >= 0 &&
-		    mddev->delta_disks >= 0 &&
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    !test_bit(Journal, &rdev->flags) &&
 		    !test_bit(In_sync, &rdev->flags) &&
 		    mddev->curr_resync_completed > rdev->recovery_offset)
@@ -2715,11 +2574,7 @@ repeat:
 	if (mddev->queue)
 		blk_add_trace_msg(mddev->queue, "md md_update_sb");
 rewrite:
-<<<<<<< HEAD
 	md_bitmap_update_sb(mddev->bitmap);
-=======
-	bitmap_update_sb(mddev->bitmap);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rdev_for_each(rdev, mddev) {
 		char b[BDEVNAME_SIZE];
 
@@ -2843,11 +2698,7 @@ state_show(struct md_rdev *rdev, char *page)
 {
 	char *sep = ",";
 	size_t len = 0;
-<<<<<<< HEAD
 	unsigned long flags = READ_ONCE(rdev->flags);
-=======
-	unsigned long flags = ACCESS_ONCE(rdev->flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (test_bit(Faulty, &flags) ||
 	    (!test_bit(ExternalBbl, &flags) &&
@@ -4538,17 +4389,10 @@ bitmap_store(struct mddev *mddev, const char *buf, size_t len)
 			if (buf == end) break;
 		}
 		if (*end && !isspace(*end)) break;
-<<<<<<< HEAD
 		md_bitmap_dirty_bits(mddev->bitmap, chunk, end_chunk);
 		buf = skip_spaces(end);
 	}
 	md_bitmap_unplug(mddev->bitmap); /* flush the bits to disk */
-=======
-		bitmap_dirty_bits(mddev->bitmap, chunk, end_chunk);
-		buf = skip_spaces(end);
-	}
-	bitmap_unplug(mddev->bitmap); /* flush the bits to disk */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	mddev_unlock(mddev);
 	return len;
@@ -5379,7 +5223,6 @@ static void md_free(struct kobject *ko)
 	if (mddev->sysfs_state)
 		sysfs_put(mddev->sysfs_state);
 
-<<<<<<< HEAD
 	if (mddev->gendisk)
 		del_gendisk(mddev->gendisk);
 	if (mddev->queue)
@@ -5390,16 +5233,6 @@ static void md_free(struct kobject *ko)
 
 	bioset_exit(&mddev->bio_set);
 	bioset_exit(&mddev->sync_set);
-=======
-	if (mddev->queue)
-		blk_cleanup_queue(mddev->queue);
-	if (mddev->gendisk) {
-		del_gendisk(mddev->gendisk);
-		put_disk(mddev->gendisk);
-	}
-	percpu_ref_exit(&mddev->writes_pending);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(mddev);
 }
 
@@ -5533,12 +5366,7 @@ static int md_alloc(dev_t dev, char *name)
 	mutex_lock(&mddev->open_mutex);
 	add_disk(disk);
 
-<<<<<<< HEAD
 	error = kobject_add(&mddev->kobj, &disk_to_dev(disk)->kobj, "%s", "md");
-=======
-	error = kobject_init_and_add(&mddev->kobj, &md_ktype,
-				     &disk_to_dev(disk)->kobj, "%s", "md");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (error) {
 		/* This isn't possible, but as kobject_init_and_add is marked
 		 * __must_check, we must do something with the result
@@ -5597,15 +5425,9 @@ static int add_named_array(const char *val, const struct kernel_param *kp)
 	return -EINVAL;
 }
 
-<<<<<<< HEAD
 static void md_safemode_timeout(struct timer_list *t)
 {
 	struct mddev *mddev = from_timer(mddev, t, safemode_timer);
-=======
-static void md_safemode_timeout(unsigned long data)
-{
-	struct mddev *mddev = (struct mddev *) data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mddev->safemode = 1;
 	if (mddev->external)
@@ -5693,7 +5515,6 @@ int md_run(struct mddev *mddev)
 		sysfs_notify_dirent_safe(rdev->sysfs_state);
 	}
 
-<<<<<<< HEAD
 	if (!bioset_initialized(&mddev->bio_set)) {
 		err = bioset_init(&mddev->bio_set, BIO_POOL_SIZE, 0, BIOSET_NEED_BVECS);
 		if (err)
@@ -5703,19 +5524,6 @@ int md_run(struct mddev *mddev)
 		err = bioset_init(&mddev->sync_set, BIO_POOL_SIZE, 0, BIOSET_NEED_BVECS);
 		if (err)
 			return err;
-=======
-	if (mddev->bio_set == NULL) {
-		mddev->bio_set = bioset_create(BIO_POOL_SIZE, 0, BIOSET_NEED_BVECS);
-		if (!mddev->bio_set)
-			return -ENOMEM;
-	}
-	if (mddev->sync_set == NULL) {
-		mddev->sync_set = bioset_create(BIO_POOL_SIZE, 0, BIOSET_NEED_BVECS);
-		if (!mddev->sync_set) {
-			err = -ENOMEM;
-			goto abort;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	spin_lock(&pers_lock);
@@ -5780,14 +5588,6 @@ int md_run(struct mddev *mddev)
 	if (start_readonly && mddev->ro == 0)
 		mddev->ro = 2; /* read-only, but switch on first write */
 
-<<<<<<< HEAD
-=======
-	/*
-	 * NOTE: some pers->run(), for example r5l_recovery_log(), wakes
-	 * up mddev->thread. It is important to initialize critical
-	 * resources for mddev->thread BEFORE calling pers->run().
-	 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = pers->run(mddev);
 	if (err)
 		pr_warn("md: pers->run() failed ...\n");
@@ -5804,11 +5604,7 @@ int md_run(struct mddev *mddev)
 	    (mddev->bitmap_info.file || mddev->bitmap_info.offset)) {
 		struct bitmap *bitmap;
 
-<<<<<<< HEAD
 		bitmap = md_bitmap_create(mddev, -1);
-=======
-		bitmap = bitmap_create(mddev, -1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (IS_ERR(bitmap)) {
 			err = PTR_ERR(bitmap);
 			pr_warn("%s: failed to create bitmap (%d)\n",
@@ -5823,11 +5619,7 @@ int md_run(struct mddev *mddev)
 			pers->free(mddev, mddev->private);
 		mddev->private = NULL;
 		module_put(pers->owner);
-<<<<<<< HEAD
 		md_bitmap_destroy(mddev);
-=======
-		bitmap_destroy(mddev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto abort;
 	}
 	if (mddev->queue) {
@@ -5843,15 +5635,9 @@ int md_run(struct mddev *mddev)
 		if (mddev->degraded)
 			nonrot = false;
 		if (nonrot)
-<<<<<<< HEAD
 			blk_queue_flag_set(QUEUE_FLAG_NONROT, mddev->queue);
 		else
 			blk_queue_flag_clear(QUEUE_FLAG_NONROT, mddev->queue);
-=======
-			queue_flag_set_unlocked(QUEUE_FLAG_NONROT, mddev->queue);
-		else
-			queue_flag_clear_unlocked(QUEUE_FLAG_NONROT, mddev->queue);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mddev->queue->backing_dev_info->congested_data = mddev;
 		mddev->queue->backing_dev_info->congested_fn = md_congested;
 	}
@@ -5895,20 +5681,8 @@ int md_run(struct mddev *mddev)
 	return 0;
 
 abort:
-<<<<<<< HEAD
 	bioset_exit(&mddev->bio_set);
 	bioset_exit(&mddev->sync_set);
-=======
-	if (mddev->bio_set) {
-		bioset_free(mddev->bio_set);
-		mddev->bio_set = NULL;
-	}
-	if (mddev->sync_set) {
-		bioset_free(mddev->sync_set);
-		mddev->sync_set = NULL;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 EXPORT_SYMBOL_GPL(md_run);
@@ -5921,27 +5695,18 @@ static int do_md_run(struct mddev *mddev)
 	err = md_run(mddev);
 	if (err)
 		goto out;
-<<<<<<< HEAD
 	err = md_bitmap_load(mddev);
 	if (err) {
 		md_bitmap_destroy(mddev);
-=======
-	err = bitmap_load(mddev);
-	if (err) {
-		bitmap_destroy(mddev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out;
 	}
 
 	if (mddev_is_clustered(mddev))
 		md_allow_write(mddev);
 
-<<<<<<< HEAD
 	/* run start up tasks that require md_thread */
 	md_start(mddev);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	md_wakeup_thread(mddev->thread);
 	md_wakeup_thread(mddev->sync_thread); /* possibly kick off a reshape */
 
@@ -5958,7 +5723,6 @@ out:
 	return err;
 }
 
-<<<<<<< HEAD
 int md_start(struct mddev *mddev)
 {
 	int ret = 0;
@@ -5974,8 +5738,6 @@ int md_start(struct mddev *mddev)
 }
 EXPORT_SYMBOL_GPL(md_start);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int restart_array(struct mddev *mddev)
 {
 	struct gendisk *disk = mddev->gendisk;
@@ -6082,11 +5844,7 @@ static void __md_stop_writes(struct mddev *mddev)
 		mddev->pers->quiesce(mddev, 1);
 		mddev->pers->quiesce(mddev, 0);
 	}
-<<<<<<< HEAD
 	md_bitmap_flush(mddev);
-=======
-	bitmap_flush(mddev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (mddev->ro == 0 &&
 	    ((!mddev->in_sync && !mddev_is_clustered(mddev)) ||
@@ -6108,11 +5866,7 @@ EXPORT_SYMBOL_GPL(md_stop_writes);
 
 static void mddev_detach(struct mddev *mddev)
 {
-<<<<<<< HEAD
 	md_bitmap_wait_behind_writes(mddev);
-=======
-	bitmap_wait_behind_writes(mddev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (mddev->pers && mddev->pers->quiesce) {
 		mddev->pers->quiesce(mddev, 1);
 		mddev->pers->quiesce(mddev, 0);
@@ -6125,11 +5879,7 @@ static void mddev_detach(struct mddev *mddev)
 static void __md_stop(struct mddev *mddev)
 {
 	struct md_personality *pers = mddev->pers;
-<<<<<<< HEAD
 	md_bitmap_destroy(mddev);
-=======
-	bitmap_destroy(mddev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mddev_detach(mddev);
 	/* Ensure ->event_work is done */
 	flush_workqueue(md_misc_wq);
@@ -6150,13 +5900,8 @@ void md_stop(struct mddev *mddev)
 	 * This is called from dm-raid
 	 */
 	__md_stop(mddev);
-<<<<<<< HEAD
 	bioset_exit(&mddev->bio_set);
 	bioset_exit(&mddev->sync_set);
-=======
-	if (mddev->bio_set)
-		bioset_free(mddev->bio_set);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 EXPORT_SYMBOL_GPL(md_stop);
@@ -6945,7 +6690,6 @@ static int set_bitmap_file(struct mddev *mddev, int fd)
 		if (fd >= 0) {
 			struct bitmap *bitmap;
 
-<<<<<<< HEAD
 			bitmap = md_bitmap_create(mddev, -1);
 			mddev_suspend(mddev);
 			if (!IS_ERR(bitmap)) {
@@ -6955,27 +6699,12 @@ static int set_bitmap_file(struct mddev *mddev, int fd)
 				err = PTR_ERR(bitmap);
 			if (err) {
 				md_bitmap_destroy(mddev);
-=======
-			bitmap = bitmap_create(mddev, -1);
-			mddev_suspend(mddev);
-			if (!IS_ERR(bitmap)) {
-				mddev->bitmap = bitmap;
-				err = bitmap_load(mddev);
-			} else
-				err = PTR_ERR(bitmap);
-			if (err) {
-				bitmap_destroy(mddev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				fd = -1;
 			}
 			mddev_resume(mddev);
 		} else if (fd < 0) {
 			mddev_suspend(mddev);
-<<<<<<< HEAD
 			md_bitmap_destroy(mddev);
-=======
-			bitmap_destroy(mddev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			mddev_resume(mddev);
 		}
 	}
@@ -7048,12 +6777,6 @@ static int set_array_info(struct mddev *mddev, mdu_array_info_t *info)
 	mddev->external	     = 0;
 
 	mddev->layout        = info->layout;
-<<<<<<< HEAD
-=======
-	if (mddev->level == 0)
-		/* Cannot trust RAID0 layout info here */
-		mddev->layout = -1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mddev->chunk_sectors = info->chunk_size >> 9;
 
 	if (mddev->persistent) {
@@ -7085,11 +6808,7 @@ static int set_array_info(struct mddev *mddev, mdu_array_info_t *info)
 
 void md_set_array_sectors(struct mddev *mddev, sector_t array_sectors)
 {
-<<<<<<< HEAD
 	lockdep_assert_held(&mddev->reconfig_mutex);
-=======
-	WARN(!mddev_is_locked(mddev), "%s: unlocked mddev!\n", __func__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (mddev->external_size)
 		return;
@@ -7271,7 +6990,6 @@ static int update_array_info(struct mddev *mddev, mdu_array_info_t *info)
 				mddev->bitmap_info.default_offset;
 			mddev->bitmap_info.space =
 				mddev->bitmap_info.default_space;
-<<<<<<< HEAD
 			bitmap = md_bitmap_create(mddev, -1);
 			mddev_suspend(mddev);
 			if (!IS_ERR(bitmap)) {
@@ -7281,17 +6999,6 @@ static int update_array_info(struct mddev *mddev, mdu_array_info_t *info)
 				rv = PTR_ERR(bitmap);
 			if (rv)
 				md_bitmap_destroy(mddev);
-=======
-			bitmap = bitmap_create(mddev, -1);
-			mddev_suspend(mddev);
-			if (!IS_ERR(bitmap)) {
-				mddev->bitmap = bitmap;
-				rv = bitmap_load(mddev);
-			} else
-				rv = PTR_ERR(bitmap);
-			if (rv)
-				bitmap_destroy(mddev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			mddev_resume(mddev);
 		} else {
 			/* remove the bitmap */
@@ -7316,11 +7023,7 @@ static int update_array_info(struct mddev *mddev, mdu_array_info_t *info)
 				md_cluster_ops->leave(mddev);
 			}
 			mddev_suspend(mddev);
-<<<<<<< HEAD
 			md_bitmap_destroy(mddev);
-=======
-			bitmap_destroy(mddev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			mddev_resume(mddev);
 			mddev->bitmap_info.offset = 0;
 		}
@@ -7340,11 +7043,7 @@ static int set_disk_faulty(struct mddev *mddev, dev_t dev)
 		return -ENODEV;
 
 	rcu_read_lock();
-<<<<<<< HEAD
 	rdev = md_find_rdev_rcu(mddev, dev);
-=======
-	rdev = find_rdev_rcu(mddev, dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!rdev)
 		err =  -ENODEV;
 	else {
@@ -7732,12 +7431,7 @@ static int md_open(struct block_device *bdev, fmode_t mode)
 		 */
 		mddev_put(mddev);
 		/* Wait until bdev->bd_disk is definitely gone */
-<<<<<<< HEAD
 		flush_workqueue(md_misc_wq);
-=======
-		if (work_pending(&mddev->del_work))
-			flush_workqueue(md_misc_wq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Then retry the open from the top */
 		return -ERESTARTSYS;
 	}
@@ -7957,7 +7651,6 @@ static int status_resync(struct seq_file *seq, struct mddev *mddev)
 		if (test_bit(MD_RECOVERY_DONE, &mddev->recovery))
 			/* Still cleaning up */
 			resync = max_sectors;
-<<<<<<< HEAD
 	} else if (resync > max_sectors)
 		resync = max_sectors;
 	else
@@ -7981,12 +7674,6 @@ static int status_resync(struct seq_file *seq, struct mddev *mddev)
 				seq_printf(seq, "\tresync=REMOTE");
 			return 1;
 		}
-=======
-	} else
-		resync -= atomic_read(&mddev->recovery_active);
-
-	if (resync == 0) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (mddev->recovery_cp < MaxSector) {
 			seq_printf(seq, "\tresync=PENDING");
 			return 1;
@@ -8224,11 +7911,7 @@ static int md_seq_show(struct seq_file *seq, void *v)
 		} else
 			seq_printf(seq, "\n       ");
 
-<<<<<<< HEAD
 		md_bitmap_status(seq, mddev->bitmap);
-=======
-		bitmap_status(seq, mddev->bitmap);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		seq_printf(seq, "\n");
 	}
@@ -8259,7 +7942,6 @@ static int md_seq_open(struct inode *inode, struct file *file)
 }
 
 static int md_unloading;
-<<<<<<< HEAD
 static __poll_t mdstat_poll(struct file *filp, poll_table *wait)
 {
 	struct seq_file *seq = filp->private_data;
@@ -8274,22 +7956,6 @@ static __poll_t mdstat_poll(struct file *filp, poll_table *wait)
 
 	if (seq->poll_event != atomic_read(&md_event_count))
 		mask |= EPOLLERR | EPOLLPRI;
-=======
-static unsigned int mdstat_poll(struct file *filp, poll_table *wait)
-{
-	struct seq_file *seq = filp->private_data;
-	int mask;
-
-	if (md_unloading)
-		return POLLIN|POLLRDNORM|POLLERR|POLLPRI;
-	poll_wait(filp, &md_event_waiters, wait);
-
-	/* always allow read */
-	mask = POLLIN | POLLRDNORM;
-
-	if (seq->poll_event != atomic_read(&md_event_count))
-		mask |= POLLERR | POLLPRI;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return mask;
 }
 
@@ -8382,12 +8048,7 @@ static int is_mddev_idle(struct mddev *mddev, int init)
 	rcu_read_lock();
 	rdev_for_each_rcu(rdev, mddev) {
 		struct gendisk *disk = rdev->bdev->bd_contains->bd_disk;
-<<<<<<< HEAD
 		curr_events = (int)part_stat_read_accum(&disk->part0, sectors) -
-=======
-		curr_events = (int)part_stat_read(&disk->part0, sectors[0]) +
-			      (int)part_stat_read(&disk->part0, sectors[1]) -
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      atomic_read(&disk->sync_io);
 		/* sync IO will cause sync_io to increase before the disk_stats
 		 * as sync_io is counted when a request starts, and
@@ -8581,12 +8242,8 @@ void md_do_sync(struct md_thread *thread)
 	int ret;
 
 	/* just incase thread restarts... */
-<<<<<<< HEAD
 	if (test_bit(MD_RECOVERY_DONE, &mddev->recovery) ||
 	    test_bit(MD_RECOVERY_WAIT, &mddev->recovery))
-=======
-	if (test_bit(MD_RECOVERY_DONE, &mddev->recovery))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	if (mddev->ro) {/* never try to sync a read-only array */
 		set_bit(MD_RECOVERY_INTR, &mddev->recovery);
@@ -8923,7 +8580,6 @@ void md_do_sync(struct md_thread *thread)
 		} else {
 			if (!test_bit(MD_RECOVERY_INTR, &mddev->recovery))
 				mddev->curr_resync = MaxSector;
-<<<<<<< HEAD
 			if (!test_bit(MD_RECOVERY_RESHAPE, &mddev->recovery) &&
 			    test_bit(MD_RECOVERY_RECOVER, &mddev->recovery)) {
 				rcu_read_lock();
@@ -8937,18 +8593,6 @@ void md_do_sync(struct md_thread *thread)
 						rdev->recovery_offset = mddev->curr_resync;
 				rcu_read_unlock();
 			}
-=======
-			rcu_read_lock();
-			rdev_for_each_rcu(rdev, mddev)
-				if (rdev->raid_disk >= 0 &&
-				    mddev->delta_disks >= 0 &&
-				    !test_bit(Journal, &rdev->flags) &&
-				    !test_bit(Faulty, &rdev->flags) &&
-				    !test_bit(In_sync, &rdev->flags) &&
-				    rdev->recovery_offset < mddev->curr_resync)
-					rdev->recovery_offset = mddev->curr_resync;
-			rcu_read_unlock();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
  skip:
@@ -9134,30 +8778,11 @@ static void md_start_sync(struct work_struct *ws)
  */
 void md_check_recovery(struct mddev *mddev)
 {
-<<<<<<< HEAD
-=======
-	if (test_bit(MD_ALLOW_SB_UPDATE, &mddev->flags) && mddev->sb_flags) {
-		/* Write superblock - thread that called mddev_suspend()
-		 * holds reconfig_mutex for us.
-		 */
-		set_bit(MD_UPDATING_SB, &mddev->flags);
-		smp_mb__after_atomic();
-		if (test_bit(MD_ALLOW_SB_UPDATE, &mddev->flags))
-			md_update_sb(mddev, 0);
-		clear_bit_unlock(MD_UPDATING_SB, &mddev->flags);
-		wake_up(&mddev->sb_wait);
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (mddev->suspended)
 		return;
 
 	if (mddev->bitmap)
-<<<<<<< HEAD
 		md_bitmap_daemon_work(mddev);
-=======
-		bitmap_daemon_work(mddev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (signal_pending(current)) {
 		if (mddev->pers->sync_request && !mddev->external) {
@@ -9295,11 +8920,7 @@ void md_check_recovery(struct mddev *mddev)
 				 * which has the bitmap stored on all devices.
 				 * So make sure all bitmap pages get written
 				 */
-<<<<<<< HEAD
 				md_bitmap_write_all(mddev->bitmap);
-=======
-				bitmap_write_all(mddev->bitmap);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 			INIT_WORK(&mddev->del_work, md_start_sync);
 			queue_work(md_misc_wq, &mddev->del_work);
@@ -9317,7 +8938,6 @@ void md_check_recovery(struct mddev *mddev)
 	unlock:
 		wake_up(&mddev->sb_wait);
 		mddev_unlock(mddev);
-<<<<<<< HEAD
 	} else if (test_bit(MD_ALLOW_SB_UPDATE, &mddev->flags) && mddev->sb_flags) {
 		/* Write superblock - thread that called mddev_suspend()
 		 * holds reconfig_mutex for us.
@@ -9328,8 +8948,6 @@ void md_check_recovery(struct mddev *mddev)
 			md_update_sb(mddev, 0);
 		clear_bit_unlock(MD_UPDATING_SB, &mddev->flags);
 		wake_up(&mddev->sb_wait);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 EXPORT_SYMBOL(md_check_recovery);
@@ -9551,11 +9169,7 @@ static void check_sb_changes(struct mddev *mddev, struct md_rdev *rdev)
 		if (ret)
 			pr_info("md-cluster: resize failed\n");
 		else
-<<<<<<< HEAD
 			md_bitmap_update_sb(mddev->bitmap);
-=======
-			bitmap_update_sb(mddev->bitmap);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Check for change of roles in the active devices */
@@ -9678,15 +9292,10 @@ void md_reload_sb(struct mddev *mddev, int nr)
 	check_sb_changes(mddev, rdev);
 
 	/* Read all rdev's to update recovery_offset */
-<<<<<<< HEAD
 	rdev_for_each_rcu(rdev, mddev) {
 		if (!test_bit(Faulty, &rdev->flags))
 			read_rdev(mddev, rdev);
 	}
-=======
-	rdev_for_each_rcu(rdev, mddev)
-		read_rdev(mddev, rdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(md_reload_sb);
 

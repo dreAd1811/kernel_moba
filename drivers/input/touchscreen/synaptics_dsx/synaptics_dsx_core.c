@@ -3,11 +3,7 @@
  *
  * Copyright (C) 2012-2016 Synaptics Incorporated. All rights reserved.
  *
-<<<<<<< HEAD
  * Copyright (c) 2018-2020 The Linux Foundation. All rights reserved.
-=======
- * Copyright (c) 2018 The Linux Foundation. All rights reserved.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Copyright (C) 2012 Alexandra Chin <alexandra.chin@tw.synaptics.com>
  * Copyright (C) 2012 Scott Lin <scott.lin@tw.synaptics.com>
  *
@@ -50,7 +46,6 @@
 #include <linux/input/mt.h>
 #endif
 
-<<<<<<< HEAD
 #include <linux/init.h>
 #include <linux/cdev.h>
 #include <linux/fs.h>
@@ -71,11 +66,6 @@
 /*HQ modifiy for JD2020-428 finger down by limengxia at 2019/03/07 strat*/
 int hq_finger_down;
 /*HQ modifiy for JD2020-428 finger down by limengxia at 2019/03/07 end*/
-=======
-#include <linux/msm_drm_notify.h>
-#include <linux/completion.h>
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define INPUT_PHYS_NAME "synaptics_dsx/touch_input"
 #define STYLUS_PHYS_NAME "synaptics_dsx/stylus"
 
@@ -85,11 +75,8 @@ int hq_finger_down;
 #define TYPE_B_PROTOCOL
 #endif
 
-<<<<<<< HEAD
 #define KEY_WAKEUP_ZUI KEY_FINANCE
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
 #define USE_DATA_SERVER
 */
@@ -159,7 +146,6 @@ static int synaptics_rmi4_free_fingers(struct synaptics_rmi4_data *rmi4_data);
 static int synaptics_rmi4_reinit_device(struct synaptics_rmi4_data *rmi4_data);
 static int synaptics_rmi4_reset_device(struct synaptics_rmi4_data *rmi4_data,
 		bool rebuild);
-<<<<<<< HEAD
 
 #ifdef CONFIG_DRM
 static int synaptics_rmi4_drm_notifier_cb(struct notifier_block *self,
@@ -170,40 +156,20 @@ struct drm_panel *active_panel;
 
 #ifdef CONFIG_HAS_EARLYSUSPEND
 #ifndef CONFIG_DRM
-=======
-#ifdef CONFIG_FB
-static int synaptics_rmi4_dsi_panel_notifier_cb(struct notifier_block *self,
-		unsigned long event, void *data);
-#endif
-
-#ifdef CONFIG_HAS_EARLYSUSPEND
-#ifndef CONFIG_FB
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define USE_EARLYSUSPEND
 #endif
 #endif
 
 #ifdef USE_EARLYSUSPEND
-<<<<<<< HEAD
 static void synaptics_rmi4_early_suspend(struct early_suspend *h);
 
 static void synaptics_rmi4_late_resume(struct early_suspend *h);
-=======
-static int synaptics_rmi4_early_suspend(struct early_suspend *h);
-
-static int synaptics_rmi4_late_resume(struct early_suspend *h);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 static int synaptics_rmi4_suspend(struct device *dev);
 
 static int synaptics_rmi4_resume(struct device *dev);
 
-<<<<<<< HEAD
-=======
-static void synaptics_rmi4_defer_probe(struct work_struct *work);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static ssize_t synaptics_rmi4_f01_reset_store(struct device *dev,
 		struct device_attribute *attr, const char *buf, size_t count);
 
@@ -741,7 +707,6 @@ static struct siginfo interrupt_signal;
 #endif
 
 static struct device_attribute attrs[] = {
-<<<<<<< HEAD
 	__ATTR(reset, (S_IWUSR | S_IWGRP),
 			synaptics_rmi4_show_error,
 			synaptics_rmi4_f01_reset_store),
@@ -765,31 +730,6 @@ static struct device_attribute attrs[] = {
 			synaptics_rmi4_wake_gesture_store),
 #ifdef USE_DATA_SERVER
 	__ATTR(synad_pid, (S_IWUSR | S_IWGRP),
-=======
-	__ATTR(reset, 0220,
-			synaptics_rmi4_show_error,
-			synaptics_rmi4_f01_reset_store),
-	__ATTR(productinfo, 0444,
-			synaptics_rmi4_f01_productinfo_show,
-			synaptics_rmi4_store_error),
-	__ATTR(buildid, 0444,
-			synaptics_rmi4_f01_buildid_show,
-			synaptics_rmi4_store_error),
-	__ATTR(flashprog, 0444,
-			synaptics_rmi4_f01_flashprog_show,
-			synaptics_rmi4_store_error),
-	__ATTR(0dbutton, 0664,
-			synaptics_rmi4_0dbutton_show,
-			synaptics_rmi4_0dbutton_store),
-	__ATTR(suspend, 0220,
-			synaptics_rmi4_show_error,
-			synaptics_rmi4_suspend_store),
-	__ATTR(wake_gesture, 0664,
-			synaptics_rmi4_wake_gesture_show,
-			synaptics_rmi4_wake_gesture_store),
-#ifdef USE_DATA_SERVER
-	__ATTR(synad_pid, 0220,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			synaptics_rmi4_show_error,
 			synaptics_rmi4_synad_pid_store),
 #endif
@@ -798,16 +738,11 @@ static struct device_attribute attrs[] = {
 static struct kobj_attribute virtual_key_map_attr = {
 	.attr = {
 		.name = VIRTUAL_KEY_MAP_FILE_NAME,
-<<<<<<< HEAD
 		.mode = S_IRUGO,
-=======
-		.mode = 0444,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.show = synaptics_rmi4_virtual_key_map_show,
 };
 
-<<<<<<< HEAD
 #if SYNA_TOUCH_EXT_PROC
 #include <linux/proc_fs.h>
 #define SYNA_INFO_PROC_FILE "fts_info"
@@ -847,8 +782,6 @@ int32_t syna_extra_proc_init(void)
 }
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static ssize_t synaptics_rmi4_f01_reset_store(struct device *dev,
 		struct device_attribute *attr, const char *buf, size_t count)
 {
@@ -856,11 +789,7 @@ static ssize_t synaptics_rmi4_f01_reset_store(struct device *dev,
 	unsigned int reset;
 	struct synaptics_rmi4_data *rmi4_data = dev_get_drvdata(dev);
 
-<<<<<<< HEAD
 	if (sscanf(buf, "%u", &reset) != 1)
-=======
-	if (kstrtouint(buf, 10, &reset) != 1)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	if (reset != 1)
@@ -940,11 +869,7 @@ static ssize_t synaptics_rmi4_0dbutton_store(struct device *dev,
 
 	rmi = &(rmi4_data->rmi4_mod_info);
 
-<<<<<<< HEAD
 	if (sscanf(buf, "%u", &input) != 1)
-=======
-	if (kstrtouint(buf, 10, &input) != 1)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	input = input > 0 ? 1 : 0;
@@ -990,11 +915,7 @@ static ssize_t synaptics_rmi4_suspend_store(struct device *dev,
 {
 	unsigned int input;
 
-<<<<<<< HEAD
 	if (sscanf(buf, "%u", &input) != 1)
-=======
-	if (kstrtouint(buf, 10, &input) != 1)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	if (input == 1)
@@ -1022,11 +943,7 @@ static ssize_t synaptics_rmi4_wake_gesture_store(struct device *dev,
 	unsigned int input;
 	struct synaptics_rmi4_data *rmi4_data = dev_get_drvdata(dev);
 
-<<<<<<< HEAD
 	if (sscanf(buf, "%u", &input) != 1)
-=======
-	if (kstrtouint(buf, 10, &input) != 1)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	input = input > 0 ? 1 : 0;
@@ -1043,11 +960,7 @@ static ssize_t synaptics_rmi4_synad_pid_store(struct device *dev,
 {
 	unsigned int input;
 
-<<<<<<< HEAD
 	if (sscanf(buf, "%u", &input) != 1)
-=======
-	if (kstrtouint(buf, 10, &input) != 1)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	synad_pid = input;
@@ -1083,11 +996,7 @@ static ssize_t synaptics_rmi4_virtual_key_map_show(struct kobject *kobj,
 	return count;
 }
 
-<<<<<<< HEAD
 static void synaptics_rmi4_f11_wg(struct synaptics_rmi4_data *rmi4_data,
-=======
-static int synaptics_rmi4_f11_wg(struct synaptics_rmi4_data *rmi4_data,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bool enable)
 {
 	int retval;
@@ -1110,11 +1019,7 @@ static int synaptics_rmi4_f11_wg(struct synaptics_rmi4_data *rmi4_data,
 		dev_err(rmi4_data->pdev->dev.parent,
 				"%s: Failed to change reporting mode\n",
 				__func__);
-<<<<<<< HEAD
 		return;
-=======
-		return retval;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	reporting_control = (reporting_control & ~MASK_3BIT);
@@ -1131,7 +1036,6 @@ static int synaptics_rmi4_f11_wg(struct synaptics_rmi4_data *rmi4_data,
 		dev_err(rmi4_data->pdev->dev.parent,
 				"%s: Failed to change reporting mode\n",
 				__func__);
-<<<<<<< HEAD
 		return;
 	}
 
@@ -1139,15 +1043,6 @@ static int synaptics_rmi4_f11_wg(struct synaptics_rmi4_data *rmi4_data,
 }
 
 static void synaptics_rmi4_f12_wg(struct synaptics_rmi4_data *rmi4_data,
-=======
-		return retval;
-	}
-
-	return retval;
-}
-
-static int synaptics_rmi4_f12_wg(struct synaptics_rmi4_data *rmi4_data,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bool enable)
 {
 	int retval;
@@ -1175,7 +1070,6 @@ static int synaptics_rmi4_f12_wg(struct synaptics_rmi4_data *rmi4_data,
 		dev_err(rmi4_data->pdev->dev.parent,
 				"%s: Failed to change reporting mode\n",
 				__func__);
-<<<<<<< HEAD
 		return;
 	}
 
@@ -1183,15 +1077,6 @@ static int synaptics_rmi4_f12_wg(struct synaptics_rmi4_data *rmi4_data,
 		reporting_control[2] = F12_WAKEUP_GESTURE_MODE;
 	else
 		reporting_control[2] = F12_CONTINUOUS_MODE;
-=======
-		return retval;
-	}
-
-	if (enable)
-		reporting_control[rmi4_data->set_wakeup_gesture] = F12_WAKEUP_GESTURE_MODE;
-	else
-		reporting_control[rmi4_data->set_wakeup_gesture] = F12_CONTINUOUS_MODE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	retval = synaptics_rmi4_reg_write(rmi4_data,
 			fhandler->full_addr.ctrl_base + offset,
@@ -1201,17 +1086,10 @@ static int synaptics_rmi4_f12_wg(struct synaptics_rmi4_data *rmi4_data,
 		dev_err(rmi4_data->pdev->dev.parent,
 				"%s: Failed to change reporting mode\n",
 				__func__);
-<<<<<<< HEAD
 		return;
 	}
 
 	return;
-=======
-		return retval;
-	}
-
-	return retval;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void synaptics_rmi4_wakeup_gesture(struct synaptics_rmi4_data *rmi4_data,
@@ -1221,7 +1099,6 @@ static void synaptics_rmi4_wakeup_gesture(struct synaptics_rmi4_data *rmi4_data,
 		synaptics_rmi4_f11_wg(rmi4_data, enable);
 	else if (rmi4_data->f12_wakeup_gesture)
 		synaptics_rmi4_f12_wg(rmi4_data, enable);
-<<<<<<< HEAD
 
 	return;
 }
@@ -1415,10 +1292,6 @@ void synaptics_rmi4_report_rate240_switch(struct synaptics_rmi4_data *rmi4_data,
 #endif
 
 
-=======
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int synaptics_rmi4_f11_abs_report(struct synaptics_rmi4_data *rmi4_data,
 		struct synaptics_rmi4_fn *fhandler)
 {
@@ -1463,7 +1336,6 @@ static int synaptics_rmi4_f11_abs_report(struct synaptics_rmi4_data *rmi4_data,
 			return 0;
 
 		if (detected_gestures) {
-<<<<<<< HEAD
 			input_report_key(rmi4_data->input_dev, KEY_WAKEUP_ZUI, 1);
 			input_sync(rmi4_data->input_dev);
 			input_report_key(rmi4_data->input_dev, KEY_WAKEUP_ZUI, 0);
@@ -1471,15 +1343,6 @@ static int synaptics_rmi4_f11_abs_report(struct synaptics_rmi4_data *rmi4_data,
 			rmi4_data->suspend = false;
 		}
 		synaptics_rmi4_wakeup_gesture(rmi4_data, false);
-=======
-			input_report_key(rmi4_data->input_dev, KEY_WAKEUP, 1);
-			input_sync(rmi4_data->input_dev);
-			input_report_key(rmi4_data->input_dev, KEY_WAKEUP, 0);
-			input_sync(rmi4_data->input_dev);
-			rmi4_data->suspend = false;
-		}
-/*		synaptics_rmi4_wakeup_gesture(rmi4_data, false); */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 
@@ -1589,7 +1452,6 @@ exit:
 	return touch_count;
 }
 
-<<<<<<< HEAD
 int zui_finger_touch = 0;
 int zui_atr_key_touch = 0;
 int zui_atr_key_touch_0 = 0;
@@ -1606,8 +1468,6 @@ int synaptics_get_finger_match(void)
 	return synaptics_fp_match;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int synaptics_rmi4_f12_abs_report(struct synaptics_rmi4_data *rmi4_data,
 		struct synaptics_rmi4_fn *fhandler)
 {
@@ -1619,12 +1479,9 @@ static int synaptics_rmi4_f12_abs_report(struct synaptics_rmi4_data *rmi4_data,
 	unsigned char finger_status;
 	unsigned char size_of_2d_data;
 	unsigned char gesture_type;
-<<<<<<< HEAD
 /*HQ modifiy for JD2020-428 finger down by limengxia at 2019/03/07 strat*/
 	u8 finger_reg[1];
 /*HQ modifiy for JD2020-428 finger down by limengxia at 2019/03/07 end*/
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned short data_addr;
 	int x;
 	int y;
@@ -1667,7 +1524,6 @@ static int synaptics_rmi4_f12_abs_report(struct synaptics_rmi4_data *rmi4_data,
 
 		gesture_type = rmi4_data->gesture_detection[0];
 
-<<<<<<< HEAD
 		if (gesture_type == 0x3) {
 			pr_info("syna double tap wakeup\n");
 			input_report_key(rmi4_data->input_dev, KEY_WAKEUP_ZUI, 1);
@@ -1676,20 +1532,10 @@ static int synaptics_rmi4_f12_abs_report(struct synaptics_rmi4_data *rmi4_data,
 			input_sync(rmi4_data->input_dev);
 	   		//synaptics_rmi4_wakeup_gesture(rmi4_data, false);
 			//rmi4_data->suspend = false;
-=======
-		if (gesture_type && gesture_type != F12_UDG_DETECT) {
-			input_report_key(rmi4_data->input_dev, KEY_WAKEUP, 1);
-			input_sync(rmi4_data->input_dev);
-			input_report_key(rmi4_data->input_dev, KEY_WAKEUP, 0);
-			input_sync(rmi4_data->input_dev);
-			/* synaptics_rmi4_wakeup_gesture(rmi4_data, false); */
-			/* rmi4_data->suspend = false; */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		return 0;
 	}
-<<<<<<< HEAD
 /*HQ modifiy for JD2020-428 finger down by limengxia at 2019/03/07 strat*/
 	if (1) {
 		retval = synaptics_rmi4_reg_read(rmi4_data,
@@ -1710,9 +1556,6 @@ static int synaptics_rmi4_f12_abs_report(struct synaptics_rmi4_data *rmi4_data,
 		}
 	}
 /*HQ modifiy for JD2020-428 finger down by limengxia at 2019/03/07 end*/
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Determine the total number of fingers to process */
 	if (extra_data->data15_size) {
 		retval = synaptics_rmi4_reg_read(rmi4_data,
@@ -1828,7 +1671,6 @@ static int synaptics_rmi4_f12_abs_report(struct synaptics_rmi4_data *rmi4_data,
 					ABS_MT_POSITION_Y, y);
 #ifdef REPORT_2D_W
 			if (rmi4_data->wedge_sensor) {
-<<<<<<< HEAD
 				#if 1
 				input_report_abs(rmi4_data->input_dev,
 						ABS_MT_TOUCH_MAJOR, wx);
@@ -1855,16 +1697,6 @@ static int synaptics_rmi4_f12_abs_report(struct synaptics_rmi4_data *rmi4_data,
                                         input_report_abs(rmi4_data->input_dev,
                                                         ABS_MT_TOUCH_MAJOR, SYNAPTICS_FP_NOT_MATCH);
 				#endif
-=======
-				input_report_abs(rmi4_data->input_dev,
-						ABS_MT_TOUCH_MAJOR, wx);
-				input_report_abs(rmi4_data->input_dev,
-						ABS_MT_TOUCH_MINOR, wx);
-			} else {
-				input_report_abs(rmi4_data->input_dev,
-						ABS_MT_TOUCH_MAJOR,
-						max(wx, wy));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				input_report_abs(rmi4_data->input_dev,
 						ABS_MT_TOUCH_MINOR,
 						min(wx, wy));
@@ -1906,7 +1738,6 @@ static int synaptics_rmi4_f12_abs_report(struct synaptics_rmi4_data *rmi4_data,
 #ifndef TYPE_B_PROTOCOL
 			input_mt_sync(rmi4_data->input_dev);
 #endif
-<<<<<<< HEAD
 #ifdef CONFIG_HAPTIC_CALLBACK
 /* Haptic TP event notify start */
 			rmi4_data->tp_event.i = finger;
@@ -1916,9 +1747,6 @@ static int synaptics_rmi4_f12_abs_report(struct synaptics_rmi4_data *rmi4_data,
 			touch_event_call_notifier(11, &rmi4_data->tp_event);
 /* Haptic Tp event notify end */
 #endif
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev_dbg(rmi4_data->pdev->dev.parent,
 					"%s: Finger %d: status = 0x%02x, x = %d, y = %d, wx = %d, wy = %d\n",
 					__func__, finger,
@@ -1973,7 +1801,6 @@ static int synaptics_rmi4_f12_abs_report(struct synaptics_rmi4_data *rmi4_data,
 			input_mt_report_slot_state(rmi4_data->input_dev,
 					MT_TOOL_FINGER, 0);
 #endif
-<<<<<<< HEAD
 #ifdef CONFIG_HAPTIC_CALLBACK
 /* Haptic TP event notify start */
 			dev_dbg(rmi4_data->pdev->dev.parent,
@@ -1983,20 +1810,14 @@ static int synaptics_rmi4_f12_abs_report(struct synaptics_rmi4_data *rmi4_data,
 			touch_event_call_notifier(10, &rmi4_data->tp_event);
 /* Haptic Tp event notify end */
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 	}
 
-<<<<<<< HEAD
 	zui_finger_touch =1;
 	if ((touch_count == 0) && (zui_atr_key_touch == 0)){
 		zui_finger_touch = 0;
 
-=======
-	if (touch_count == 0) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		finger_presence = 0;
 #ifdef F12_DATA_15_WORKAROUND
 		objects_already_present = 0;
@@ -2008,7 +1829,6 @@ static int synaptics_rmi4_f12_abs_report(struct synaptics_rmi4_data *rmi4_data,
 #ifndef TYPE_B_PROTOCOL
 		input_mt_sync(rmi4_data->input_dev);
 #endif
-<<<<<<< HEAD
 #ifdef CONFIG_HAPTIC_CALLBACK
 /* Haptic TP event notify start */
 		rmi4_data->tp_event.i = 0;
@@ -2016,9 +1836,6 @@ static int synaptics_rmi4_f12_abs_report(struct synaptics_rmi4_data *rmi4_data,
 		touch_event_call_notifier(0, &rmi4_data->tp_event);
 /* Haptic Tp event notify end */
 #endif
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (rmi4_data->stylus_enable) {
 			stylus_presence = 0;
 			input_report_key(rmi4_data->stylus_dev,
@@ -2040,11 +1857,7 @@ static int synaptics_rmi4_f12_abs_report(struct synaptics_rmi4_data *rmi4_data,
 	return touch_count;
 }
 
-<<<<<<< HEAD
 static void synaptics_rmi4_f1a_report(struct synaptics_rmi4_data *rmi4_data,
-=======
-static int synaptics_rmi4_f1a_report(struct synaptics_rmi4_data *rmi4_data,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct synaptics_rmi4_fn *fhandler)
 {
 	int retval;
@@ -2080,11 +1893,7 @@ static int synaptics_rmi4_f1a_report(struct synaptics_rmi4_data *rmi4_data,
 		dev_err(rmi4_data->pdev->dev.parent,
 				"%s: Failed to read button data registers\n",
 				__func__);
-<<<<<<< HEAD
 		return;
-=======
-		return retval;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	data = f1a->button_data_buffer;
@@ -2149,11 +1958,7 @@ static int synaptics_rmi4_f1a_report(struct synaptics_rmi4_data *rmi4_data,
 
 	mutex_unlock(&(rmi4_data->rmi4_report_mutex));
 
-<<<<<<< HEAD
 	return;
-=======
-	return retval;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void synaptics_rmi4_report_touch(struct synaptics_rmi4_data *rmi4_data,
@@ -2196,17 +2001,11 @@ static void synaptics_rmi4_report_touch(struct synaptics_rmi4_data *rmi4_data,
 	default:
 		break;
 	}
-<<<<<<< HEAD
 
 	return;
 }
 
 static void synaptics_rmi4_sensor_report(struct synaptics_rmi4_data *rmi4_data,
-=======
-}
-
-static int synaptics_rmi4_sensor_report(struct synaptics_rmi4_data *rmi4_data,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bool report)
 {
 	int retval;
@@ -2232,11 +2031,7 @@ static int synaptics_rmi4_sensor_report(struct synaptics_rmi4_data *rmi4_data,
 		dev_err(rmi4_data->pdev->dev.parent,
 				"%s: Failed to read interrupt status\n",
 				__func__);
-<<<<<<< HEAD
 		return;
-=======
-		return retval;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	status.data[0] = data[0];
@@ -2247,11 +2042,7 @@ static int synaptics_rmi4_sensor_report(struct synaptics_rmi4_data *rmi4_data,
 			dev_err(rmi4_data->pdev->dev.parent,
 					"%s: Failed to check status\n",
 					__func__);
-<<<<<<< HEAD
 			return;
-=======
-			return retval;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		retval = synaptics_rmi4_reg_read(rmi4_data,
 				rmi4_data->f01_data_base_addr,
@@ -2261,11 +2052,7 @@ static int synaptics_rmi4_sensor_report(struct synaptics_rmi4_data *rmi4_data,
 			dev_err(rmi4_data->pdev->dev.parent,
 					"%s: Failed to read device status\n",
 					__func__);
-<<<<<<< HEAD
 			return;
-=======
-			return retval;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 	if (status.unconfigured && !status.flash_prog) {
@@ -2279,11 +2066,7 @@ static int synaptics_rmi4_sensor_report(struct synaptics_rmi4_data *rmi4_data,
 	}
 
 	if (!report)
-<<<<<<< HEAD
 		return;
-=======
-		return retval;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Traverse the function handler list and service the source(s)
@@ -2312,11 +2095,7 @@ static int synaptics_rmi4_sensor_report(struct synaptics_rmi4_data *rmi4_data,
 	}
 	mutex_unlock(&exp_data.mutex);
 
-<<<<<<< HEAD
 	return;
-=======
-	return retval;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static irqreturn_t synaptics_rmi4_irq(int irq, void *data)
@@ -2374,13 +2153,8 @@ static int synaptics_rmi4_irq_enable(struct synaptics_rmi4_data *rmi4_data,
 {
 	int retval = 0;
 	unsigned char data[MAX_INTR_REGISTERS];
-<<<<<<< HEAD
 	//const struct synaptics_dsx_board_data *bdata =
 	//		rmi4_data->hw_if->board_data;
-=======
-	const struct synaptics_dsx_board_data *bdata =
-			rmi4_data->hw_if->board_data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&(rmi4_data->rmi4_irq_enable_mutex));
 
@@ -2413,16 +2187,10 @@ static int synaptics_rmi4_irq_enable(struct synaptics_rmi4_data *rmi4_data,
 			goto exit;
 		}
 
-<<<<<<< HEAD
 		//retval = request_threaded_irq(rmi4_data->irq, NULL,
 		//		synaptics_rmi4_irq, bdata->irq_flags,
 		//		PLATFORM_DRIVER_NAME, rmi4_data);
 		enable_irq(rmi4_data->irq);
-=======
-		retval = request_threaded_irq(rmi4_data->irq, NULL,
-				synaptics_rmi4_irq, bdata->irq_flags,
-				PLATFORM_DRIVER_NAME, rmi4_data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (retval < 0) {
 			dev_err(rmi4_data->pdev->dev.parent,
 					"%s: Failed to create irq thread\n",
@@ -2437,23 +2205,14 @@ static int synaptics_rmi4_irq_enable(struct synaptics_rmi4_data *rmi4_data,
 		rmi4_data->irq_enabled = true;
 	} else {
 		if (rmi4_data->irq_enabled) {
-<<<<<<< HEAD
 			disable_irq_nosync(rmi4_data->irq);
 			//free_irq(rmi4_data->irq, rmi4_data);
-=======
-			disable_irq(rmi4_data->irq);
-			free_irq(rmi4_data->irq, rmi4_data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rmi4_data->irq_enabled = false;
 		}
 	}
 
 exit:
 	mutex_unlock(&(rmi4_data->rmi4_irq_enable_mutex));
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return retval;
 }
 
@@ -2475,11 +2234,8 @@ static void synaptics_rmi4_set_intr_mask(struct synaptics_rmi4_fn *fhandler,
 			ii < (fd->intr_src_count + intr_offset);
 			ii++)
 		fhandler->intr_mask |= 1 << ii;
-<<<<<<< HEAD
 
 	return;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int synaptics_rmi4_f01_init(struct synaptics_rmi4_data *rmi4_data,
@@ -3043,24 +2799,8 @@ static int synaptics_rmi4_f12_init(struct synaptics_rmi4_data *rmi4_data,
 			ctrl_23_size++;
 		else if (retval < 0)
 			goto exit;
-<<<<<<< HEAD
 	}
 
-=======
-
-	}
-
-	retval = synaptics_rmi4_f12_find_sub(rmi4_data,
-			fhandler, query_5->data, sizeof(query_5->data),
-			6, 20, 0);
-	if (retval == 1)
-		rmi4_data->set_wakeup_gesture = 2;
-	else if (retval == 0)
-		rmi4_data->set_wakeup_gesture = 0;
-	else if (retval < 0)
-		goto exit;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	retval = synaptics_rmi4_reg_read(rmi4_data,
 			fhandler->full_addr.ctrl_base + ctrl_23_offset,
 			ctrl_23->data,
@@ -3432,11 +3172,8 @@ static void synaptics_rmi4_f1a_kfree(struct synaptics_rmi4_fn *fhandler)
 		kfree(f1a);
 		fhandler->data = NULL;
 	}
-<<<<<<< HEAD
 
 	return;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int synaptics_rmi4_f1a_init(struct synaptics_rmi4_data *rmi4_data,
@@ -3493,11 +3230,8 @@ static void synaptics_rmi4_empty_fn_list(struct synaptics_rmi4_data *rmi4_data)
 		}
 	}
 	INIT_LIST_HEAD(&rmi->support_fn_list);
-<<<<<<< HEAD
 
 	return;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int synaptics_rmi4_check_status(struct synaptics_rmi4_data *rmi4_data,
@@ -3545,11 +3279,7 @@ static int synaptics_rmi4_check_status(struct synaptics_rmi4_data *rmi4_data,
 	return 0;
 }
 
-<<<<<<< HEAD
 static void synaptics_rmi4_set_configured(struct synaptics_rmi4_data *rmi4_data)
-=======
-static int synaptics_rmi4_set_configured(struct synaptics_rmi4_data *rmi4_data)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int retval;
 	unsigned char device_ctrl;
@@ -3562,11 +3292,7 @@ static int synaptics_rmi4_set_configured(struct synaptics_rmi4_data *rmi4_data)
 		dev_err(rmi4_data->pdev->dev.parent,
 				"%s: Failed to set configured\n",
 				__func__);
-<<<<<<< HEAD
 		return;
-=======
-		return retval;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	rmi4_data->no_sleep_setting = device_ctrl & NO_SLEEP_ON;
@@ -3582,11 +3308,7 @@ static int synaptics_rmi4_set_configured(struct synaptics_rmi4_data *rmi4_data)
 				__func__);
 	}
 
-<<<<<<< HEAD
 	return;
-=======
-	return retval;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int synaptics_rmi4_alloc_fh(struct synaptics_rmi4_fn **fhandler,
@@ -3905,19 +3627,12 @@ flash_prog_mode:
 		}
 	}
 
-<<<<<<< HEAD
 /*
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rmi4_data->f11_wakeup_gesture || rmi4_data->f12_wakeup_gesture)
 		rmi4_data->enable_wakeup_gesture = WAKEUP_GESTURE;
 	else
 		rmi4_data->enable_wakeup_gesture = false;
-<<<<<<< HEAD
 */
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	synaptics_rmi4_set_configured(rmi4_data);
 
 	return 0;
@@ -3929,11 +3644,7 @@ static int synaptics_rmi4_gpio_setup(int gpio, bool config, int dir, int state)
 	unsigned char buf[16];
 
 	if (config) {
-<<<<<<< HEAD
 		snprintf(buf, sizeof(buf), "dsx_gpio_%u\n", gpio);
-=======
-		snprintf(buf, PAGE_SIZE, "dsx_gpio_%u\n", gpio);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		retval = gpio_request(gpio, buf);
 		if (retval) {
@@ -4002,7 +3713,6 @@ static void synaptics_rmi4_set_params(struct synaptics_rmi4_data *rmi4_data)
 #endif
 
 #ifdef TYPE_B_PROTOCOL
-<<<<<<< HEAD
 
 	zui_num_of_fingers = rmi4_data->num_of_fingers;
 	zui_num_of_fingers = zui_num_of_fingers + ZUI_NUM_OF_SLOT;
@@ -4014,14 +3724,6 @@ static void synaptics_rmi4_set_params(struct synaptics_rmi4_data *rmi4_data)
 #else
 	input_mt_init_slots(rmi4_data->input_dev,
 			zui_num_of_fingers);
-=======
-#ifdef KERNEL_ABOVE_3_6
-	input_mt_init_slots(rmi4_data->input_dev,
-			rmi4_data->num_of_fingers, INPUT_MT_DIRECT);
-#else
-	input_mt_init_slots(rmi4_data->input_dev,
-			rmi4_data->num_of_fingers);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 #endif
 
@@ -4057,17 +3759,11 @@ static void synaptics_rmi4_set_params(struct synaptics_rmi4_data *rmi4_data)
 	}
 
 	if (rmi4_data->f11_wakeup_gesture || rmi4_data->f12_wakeup_gesture) {
-<<<<<<< HEAD
 		set_bit(KEY_WAKEUP_ZUI, rmi4_data->input_dev->keybit);
 		input_set_capability(rmi4_data->input_dev, EV_KEY, KEY_WAKEUP_ZUI);
 	}
 
 	return;
-=======
-		set_bit(KEY_WAKEUP, rmi4_data->input_dev->keybit);
-		input_set_capability(rmi4_data->input_dev, EV_KEY, KEY_WAKEUP);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int synaptics_rmi4_set_input_dev(struct synaptics_rmi4_data *rmi4_data)
@@ -4236,11 +3932,7 @@ static int synaptics_rmi4_set_gpio(struct synaptics_rmi4_data *rmi4_data)
 		gpio_set_value(bdata->reset_gpio, !bdata->reset_on_state);
 		msleep(bdata->reset_delay_ms);
 	}
-<<<<<<< HEAD
 	//printk("HQ add for probe line = %d fun = %s bdata->reset_gpio =%d bdata->power_gpio = %d bdata->irq_gpio = %d \n",__LINE__,__func__,bdata->reset_gpio,bdata->power_gpio,bdata->irq_gpio);
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 err_gpio_reset:
@@ -4254,61 +3946,6 @@ err_gpio_irq:
 	return retval;
 }
 
-<<<<<<< HEAD
-=======
-static int synaptics_dsx_pinctrl_init(struct synaptics_rmi4_data *rmi4_data)
-{
-	int retval;
-
-	/* Get pinctrl if target uses pinctrl */
-	rmi4_data->ts_pinctrl = devm_pinctrl_get((rmi4_data->pdev->dev.parent));
-	if (IS_ERR_OR_NULL(rmi4_data->ts_pinctrl)) {
-		retval = PTR_ERR(rmi4_data->ts_pinctrl);
-		dev_err(rmi4_data->pdev->dev.parent,
-			"Target does not use pinctrl %d\n", retval);
-		goto err_pinctrl_get;
-	}
-
-	rmi4_data->pinctrl_state_active
-		= pinctrl_lookup_state(rmi4_data->ts_pinctrl, "pmx_ts_active");
-	if (IS_ERR_OR_NULL(rmi4_data->pinctrl_state_active)) {
-		retval = PTR_ERR(rmi4_data->pinctrl_state_active);
-		dev_err(rmi4_data->pdev->dev.parent,
-			"Can not lookup %s pinstate %d\n",
-			PINCTRL_STATE_ACTIVE, retval);
-		goto err_pinctrl_lookup;
-	}
-
-	rmi4_data->pinctrl_state_suspend
-		= pinctrl_lookup_state(rmi4_data->ts_pinctrl, "pmx_ts_suspend");
-	if (IS_ERR_OR_NULL(rmi4_data->pinctrl_state_suspend)) {
-		retval = PTR_ERR(rmi4_data->pinctrl_state_suspend);
-		dev_err(rmi4_data->pdev->dev.parent,
-			"Can not lookup %s pinstate %d\n",
-			PINCTRL_STATE_SUSPEND, retval);
-		goto err_pinctrl_lookup;
-	}
-
-	rmi4_data->pinctrl_state_release
-		= pinctrl_lookup_state(rmi4_data->ts_pinctrl, "pmx_ts_release");
-	if (IS_ERR_OR_NULL(rmi4_data->pinctrl_state_release)) {
-		retval = PTR_ERR(rmi4_data->pinctrl_state_release);
-		dev_err(rmi4_data->pdev->dev.parent,
-			"Can not lookup %s pinstate %d\n",
-			PINCTRL_STATE_RELEASE, retval);
-	}
-
-	return 0;
-
-err_pinctrl_lookup:
-	devm_pinctrl_put(rmi4_data->ts_pinctrl);
-err_pinctrl_get:
-	rmi4_data->ts_pinctrl = NULL;
-	return retval;
-}
-
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int synaptics_rmi4_get_reg(struct synaptics_rmi4_data *rmi4_data,
 		bool get)
 {
@@ -4320,11 +3957,7 @@ static int synaptics_rmi4_get_reg(struct synaptics_rmi4_data *rmi4_data,
 		retval = 0;
 		goto regulator_put;
 	}
-<<<<<<< HEAD
 	//printk("HQ add for probe line = %d fun = %s bdata->pwr_reg_name =%s \n",__LINE__,__func__,bdata->pwr_reg_name);
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if ((bdata->pwr_reg_name != NULL) && (*bdata->pwr_reg_name != 0)) {
 		rmi4_data->pwr_reg = regulator_get(rmi4_data->pdev->dev.parent,
 				bdata->pwr_reg_name);
@@ -4336,30 +3969,7 @@ static int synaptics_rmi4_get_reg(struct synaptics_rmi4_data *rmi4_data,
 			goto regulator_put;
 		}
 	}
-<<<<<<< HEAD
 	//printk("HQ add for probe line = %d fun = %s bdata->bus_reg_name =%s \n",__LINE__,__func__,bdata->bus_reg_name);
-=======
-
-	retval = regulator_set_load(rmi4_data->pwr_reg,
-		20000);
-	if (retval < 0) {
-		dev_err(rmi4_data->pdev->dev.parent,
-			"%s: Failed to set regulator current avdd\n",
-				__func__);
-		goto regulator_put;
-	}
-
-	retval = regulator_set_voltage(rmi4_data->pwr_reg,
-			3000000,
-			3000000);
-	if (retval < 0) {
-		dev_err(rmi4_data->pdev->dev.parent,
-				"%s: Failed to set regulator voltage avdd\n",
-				__func__);
-		goto regulator_put;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if ((bdata->bus_reg_name != NULL) && (*bdata->bus_reg_name != 0)) {
 		rmi4_data->bus_reg = regulator_get(rmi4_data->pdev->dev.parent,
 				bdata->bus_reg_name);
@@ -4372,28 +3982,6 @@ static int synaptics_rmi4_get_reg(struct synaptics_rmi4_data *rmi4_data,
 		}
 	}
 
-<<<<<<< HEAD
-=======
-	retval = regulator_set_load(rmi4_data->bus_reg,
-		62000);
-	if (retval < 0) {
-		dev_err(rmi4_data->pdev->dev.parent,
-				"%s: Failed to set regulator current vdd\n",
-				__func__);
-		goto regulator_put;
-	}
-
-	retval = regulator_set_voltage(rmi4_data->bus_reg,
-			1800000,
-			1800000);
-	if (retval < 0) {
-		dev_err(rmi4_data->pdev->dev.parent,
-				"%s: Failed to set regulator voltage avdd\n",
-				__func__);
-		goto regulator_put;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 regulator_put:
@@ -4422,11 +4010,7 @@ static int synaptics_rmi4_enable_reg(struct synaptics_rmi4_data *rmi4_data,
 		goto disable_pwr_reg;
 	}
 
-<<<<<<< HEAD
 	if (rmi4_data->bus_reg) {
-=======
-	if (rmi4_data->bus_reg && rmi4_data->vdd_status == 0) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		retval = regulator_enable(rmi4_data->bus_reg);
 		if (retval < 0) {
 			dev_err(rmi4_data->pdev->dev.parent,
@@ -4434,16 +4018,9 @@ static int synaptics_rmi4_enable_reg(struct synaptics_rmi4_data *rmi4_data,
 					__func__);
 			goto exit;
 		}
-<<<<<<< HEAD
 	}
 
 	if (rmi4_data->pwr_reg) {
-=======
-		rmi4_data->vdd_status = 1;
-	}
-
-	if (rmi4_data->pwr_reg && rmi4_data->avdd_status == 0) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		retval = regulator_enable(rmi4_data->pwr_reg);
 		if (retval < 0) {
 			dev_err(rmi4_data->pdev->dev.parent,
@@ -4451,35 +4028,18 @@ static int synaptics_rmi4_enable_reg(struct synaptics_rmi4_data *rmi4_data,
 					__func__);
 			goto disable_bus_reg;
 		}
-<<<<<<< HEAD
-=======
-		rmi4_data->avdd_status = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		msleep(bdata->power_delay_ms);
 	}
 
 	return 0;
 
 disable_pwr_reg:
-<<<<<<< HEAD
 	if (rmi4_data->pwr_reg)
 		regulator_disable(rmi4_data->pwr_reg);
 
 disable_bus_reg:
 	if (rmi4_data->bus_reg)
 		regulator_disable(rmi4_data->bus_reg);
-=======
-	if (rmi4_data->pwr_reg && rmi4_data->avdd_status == 1) {
-		regulator_disable(rmi4_data->pwr_reg);
-		rmi4_data->avdd_status = 0;
-	}
-
-disable_bus_reg:
-	if (rmi4_data->bus_reg && rmi4_data->vdd_status == 1) {
-		regulator_disable(rmi4_data->bus_reg);
-		rmi4_data->vdd_status = 0;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 exit:
 	return retval;
@@ -4498,7 +4058,6 @@ static int synaptics_rmi4_free_fingers(struct synaptics_rmi4_data *rmi4_data)
 				MT_TOOL_FINGER, 0);
 	}
 #endif
-<<<<<<< HEAD
 	if (zui_atr_key_touch == 0 || rmi4_data->is_sleep) {
 		input_report_key(rmi4_data->input_dev,
 				BTN_TOUCH, 0);
@@ -4509,12 +4068,6 @@ static int synaptics_rmi4_free_fingers(struct synaptics_rmi4_data *rmi4_data)
 			"syna super voice key is Down, don't report UP\n");
 	}
 
-=======
-	input_report_key(rmi4_data->input_dev,
-			BTN_TOUCH, 0);
-	input_report_key(rmi4_data->input_dev,
-			BTN_TOOL_FINGER, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifndef TYPE_B_PROTOCOL
 	input_mt_sync(rmi4_data->input_dev);
 #endif
@@ -4660,22 +4213,16 @@ static void synaptics_rmi4_rebuild_work(struct work_struct *work)
 				exp_fhandler->exp_fn->init(rmi4_data);
 	}
 
-<<<<<<< HEAD
 	retval = 0;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 exit:
 	synaptics_rmi4_irq_enable(rmi4_data, true, false);
 
 	mutex_unlock(&exp_data.mutex);
 
 	mutex_unlock(&(rmi4_data->rmi4_reset_mutex));
-<<<<<<< HEAD
 
 	return;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int synaptics_rmi4_reinit_device(struct synaptics_rmi4_data *rmi4_data)
@@ -4778,11 +4325,7 @@ exit:
 #ifdef FB_READY_RESET
 static void synaptics_rmi4_reset_work(struct work_struct *work)
 {
-<<<<<<< HEAD
 	int retval;
-=======
-	int retval = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int timeout;
 	struct synaptics_rmi4_data *rmi4_data =
 			container_of(work, struct synaptics_rmi4_data,
@@ -4797,11 +4340,7 @@ static void synaptics_rmi4_reset_work(struct work_struct *work)
 			dev_err(rmi4_data->pdev->dev.parent,
 					"%s: Timed out waiting for FB ready\n",
 					__func__);
-<<<<<<< HEAD
 			return;
-=======
-			goto err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -4815,7 +4354,6 @@ static void synaptics_rmi4_reset_work(struct work_struct *work)
 	}
 
 	mutex_unlock(&rmi4_data->rmi4_exp_init_mutex);
-<<<<<<< HEAD
 
 	return;
 }
@@ -4862,18 +4400,6 @@ static void synaptics_rmi4_esd_watchdog_work(struct work_struct *work)
 }
 #endif
 static void synaptics_rmi4_sleep_enable(struct synaptics_rmi4_data *rmi4_data,
-=======
-err:
-
-	dev_err(rmi4_data->pdev->dev.parent,
-		"%s: Timed out waiting for FB ready\n",
-		__func__);
-
-}
-#endif
-
-static int synaptics_rmi4_sleep_enable(struct synaptics_rmi4_data *rmi4_data,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bool enable)
 {
 	int retval;
@@ -4888,11 +4414,7 @@ static int synaptics_rmi4_sleep_enable(struct synaptics_rmi4_data *rmi4_data,
 		dev_err(rmi4_data->pdev->dev.parent,
 				"%s: Failed to read device control\n",
 				__func__);
-<<<<<<< HEAD
 		return;
-=======
-		return retval;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	device_ctrl = device_ctrl & ~MASK_3BIT;
@@ -4909,20 +4431,12 @@ static int synaptics_rmi4_sleep_enable(struct synaptics_rmi4_data *rmi4_data,
 		dev_err(rmi4_data->pdev->dev.parent,
 				"%s: Failed to write device control\n",
 				__func__);
-<<<<<<< HEAD
 		return;
-=======
-		return retval;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	rmi4_data->sensor_sleep = enable;
 
-<<<<<<< HEAD
 	return;
-=======
-	return retval;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void synaptics_rmi4_exp_fn_work(struct work_struct *work)
@@ -4954,11 +4468,8 @@ static void synaptics_rmi4_exp_fn_work(struct work_struct *work)
 	mutex_unlock(&exp_data.mutex);
 	mutex_unlock(&rmi4_data->rmi4_reset_mutex);
 	mutex_unlock(&rmi4_data->rmi4_exp_init_mutex);
-<<<<<<< HEAD
 
 	return;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void synaptics_rmi4_new_function(struct synaptics_rmi4_exp_fn *exp_fn,
@@ -5002,7 +4513,6 @@ exit:
 				&exp_data.work,
 				msecs_to_jiffies(EXP_FN_WORK_DELAY_MS));
 	}
-<<<<<<< HEAD
 
 	return;
 }
@@ -5106,18 +4616,6 @@ static int synaptics_rmi4_probe(struct platform_device *pdev)
 	const struct synaptics_dsx_hw_interface *hw_if;
 	const struct synaptics_dsx_board_data *bdata;
 //printk("HQ add for probe line = %d fun = %s \n",__LINE__,__func__);
-=======
-}
-EXPORT_SYMBOL(synaptics_rmi4_new_function);
-
-static int synaptics_rmi4_probe(struct platform_device *pdev)
-{
-	int retval;
-	struct synaptics_rmi4_data *rmi4_data;
-	const struct synaptics_dsx_hw_interface *hw_if;
-	const struct synaptics_dsx_board_data *bdata;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hw_if = pdev->dev.platform_data;
 	if (!hw_if) {
 		dev_err(&pdev->dev,
@@ -5125,11 +4623,7 @@ static int synaptics_rmi4_probe(struct platform_device *pdev)
 				__func__);
 		return -EINVAL;
 	}
-<<<<<<< HEAD
 //printk("HQ add for probe line = %d fun = %s \n",__LINE__,__func__);
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bdata = hw_if->board_data;
 	if (!bdata) {
 		dev_err(&pdev->dev,
@@ -5137,11 +4631,7 @@ static int synaptics_rmi4_probe(struct platform_device *pdev)
 				__func__);
 		return -EINVAL;
 	}
-<<<<<<< HEAD
 //printk("HQ add for probe line = %d fun = %s \n",__LINE__,__func__);
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rmi4_data = kzalloc(sizeof(*rmi4_data), GFP_KERNEL);
 	if (!rmi4_data) {
 		dev_err(&pdev->dev,
@@ -5149,19 +4639,12 @@ static int synaptics_rmi4_probe(struct platform_device *pdev)
 				__func__);
 		return -ENOMEM;
 	}
-<<<<<<< HEAD
 //printk("HQ add for probe line = %d fun = %s \n",__LINE__,__func__);
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rmi4_data->pdev = pdev;
 	rmi4_data->current_page = MASK_8BIT;
 	rmi4_data->hw_if = hw_if;
 	rmi4_data->suspend = false;
-<<<<<<< HEAD
 	rmi4_data->is_sleep = false;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rmi4_data->irq_enabled = false;
 	rmi4_data->fingers_on_2d = false;
 
@@ -5178,75 +4661,10 @@ static int synaptics_rmi4_probe(struct platform_device *pdev)
 
 	platform_set_drvdata(pdev, rmi4_data);
 
-<<<<<<< HEAD
 	zui_rmi4_data = rmi4_data;
 
 	vir_button_map = bdata->vir_button_map;
 	//printk("HQ add for probe line = %d fun = %s \n",__LINE__,__func__);
-=======
-	vir_button_map = bdata->vir_button_map;
-
-	rmi4_data->initialized = false;
-#ifdef CONFIG_FB
-	rmi4_data->fb_notifier.notifier_call =
-					synaptics_rmi4_dsi_panel_notifier_cb;
-	retval = msm_drm_register_client(&rmi4_data->fb_notifier);
-	if (retval < 0) {
-		dev_err(&pdev->dev,
-				"%s: Failed to register fb notifier client\n",
-				__func__);
-		goto err_drm_reg;
-	}
-#endif
-
-	rmi4_data->rmi4_probe_wq = create_singlethread_workqueue(
-						"Synaptics_rmi4_probe_wq");
-	if (!rmi4_data->rmi4_probe_wq) {
-		dev_err(&pdev->dev,
-				"%s: Failed to create probe workqueue\n",
-				__func__);
-		goto err_probe_wq;
-	}
-	INIT_WORK(&rmi4_data->rmi4_probe_work, synaptics_rmi4_defer_probe);
-	queue_work(rmi4_data->rmi4_probe_wq, &rmi4_data->rmi4_probe_work);
-
-	return retval;
-
-err_probe_wq:
-#ifdef CONFIG_FB
-	msm_drm_unregister_client(&rmi4_data->fb_notifier);
-#endif
-
-err_drm_reg:
-	kfree(rmi4_data);
-
-	return retval;
-}
-
-static void synaptics_rmi4_defer_probe(struct work_struct *work)
-{
-	int retval;
-	unsigned char attr_count;
-	struct synaptics_rmi4_data *rmi4_data = container_of(work,
-				struct synaptics_rmi4_data, rmi4_probe_work);
-	struct platform_device *pdev;
-	const struct synaptics_dsx_hw_interface *hw_if;
-	const struct synaptics_dsx_board_data *bdata;
-
-	pdev = rmi4_data->pdev;
-	hw_if = rmi4_data->hw_if;
-	bdata = hw_if->board_data;
-
-	init_completion(&rmi4_data->drm_init_done);
-	retval = wait_for_completion_interruptible(&rmi4_data->drm_init_done);
-	if (retval < 0) {
-		dev_err(&pdev->dev,
-				"%s: Wait for DRM init was interrupted\n",
-				__func__);
-		goto err_drm_init_wait;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	retval = synaptics_rmi4_get_reg(rmi4_data, true);
 	if (retval < 0) {
 		dev_err(&pdev->dev,
@@ -5254,11 +4672,7 @@ static void synaptics_rmi4_defer_probe(struct work_struct *work)
 				__func__);
 		goto err_get_reg;
 	}
-<<<<<<< HEAD
 	//printk("HQ add for probe line = %d fun = %s \n",__LINE__,__func__);
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	retval = synaptics_rmi4_enable_reg(rmi4_data, true);
 	if (retval < 0) {
 		dev_err(&pdev->dev,
@@ -5266,11 +4680,7 @@ static void synaptics_rmi4_defer_probe(struct work_struct *work)
 				__func__);
 		goto err_enable_reg;
 	}
-<<<<<<< HEAD
 	//printk("HQ add for probe line = %d fun = %s \n",__LINE__,__func__);
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	retval = synaptics_rmi4_set_gpio(rmi4_data);
 	if (retval < 0) {
 		dev_err(&pdev->dev,
@@ -5278,27 +4688,7 @@ static void synaptics_rmi4_defer_probe(struct work_struct *work)
 				__func__);
 		goto err_set_gpio;
 	}
-<<<<<<< HEAD
 	//printk("HQ add for probe line = %d fun = %s \n",__LINE__,__func__);
-=======
-
-	retval = synaptics_dsx_pinctrl_init(rmi4_data);
-		if (!retval && rmi4_data->ts_pinctrl) {
-			/*
-			* Pinctrl handle is optional. If pinctrl handle is found
-			* let pins to be configured in active state. If not
-			* found continue further without error.
-			*/
-			retval = pinctrl_select_state(rmi4_data->ts_pinctrl,
-					rmi4_data->pinctrl_state_active);
-			if (retval < 0) {
-				dev_err(&pdev->dev,
-					"%s: Failed to select %s pinstate %d\n",
-					__func__, PINCTRL_STATE_ACTIVE, retval);
-			}
-		}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (hw_if->ui_hw_init) {
 		retval = hw_if->ui_hw_init(rmi4_data);
 		if (retval < 0) {
@@ -5308,11 +4698,7 @@ static void synaptics_rmi4_defer_probe(struct work_struct *work)
 			goto err_ui_hw_init;
 		}
 	}
-<<<<<<< HEAD
 	//printk("HQ add for probe line = %d fun = %s \n",__LINE__,__func__);
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	retval = synaptics_rmi4_set_input_dev(rmi4_data);
 	if (retval < 0) {
 		dev_err(&pdev->dev,
@@ -5321,7 +4707,6 @@ static void synaptics_rmi4_defer_probe(struct work_struct *work)
 		goto err_set_input_dev;
 	}
 
-<<<<<<< HEAD
 #ifdef CONFIG_DRM
 /*
 	rmi4_data->drm_notifier.notifier_call = synaptics_rmi4_drm_notifier_cb;
@@ -5347,8 +4732,6 @@ static void synaptics_rmi4_defer_probe(struct work_struct *work)
 	}
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef USE_EARLYSUSPEND
 	rmi4_data->early_suspend.level = EARLY_SUSPEND_LEVEL_BLANK_SCREEN + 1;
 	rmi4_data->early_suspend.suspend = synaptics_rmi4_early_suspend;
@@ -5361,7 +4744,6 @@ static void synaptics_rmi4_defer_probe(struct work_struct *work)
 		INIT_LIST_HEAD(&exp_data.list);
 		exp_data.initialized = true;
 	}
-<<<<<<< HEAD
 	//printk("HQ add for probe line = %d fun = %s \n",__LINE__,__func__);
 	rmi4_data->irq = gpio_to_irq(bdata->irq_gpio);
 	//printk("HQ add for probe line = %d fun = %s \n",__LINE__,__func__);
@@ -5378,10 +4760,6 @@ static void synaptics_rmi4_defer_probe(struct work_struct *work)
         }
 
 	disable_irq_nosync(rmi4_data->irq);
-=======
-
-	rmi4_data->irq = gpio_to_irq(bdata->irq_gpio);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	retval = synaptics_rmi4_irq_enable(rmi4_data, true, false);
 	if (retval < 0) {
@@ -5410,11 +4788,7 @@ static void synaptics_rmi4_defer_probe(struct work_struct *work)
 			}
 		}
 	}
-<<<<<<< HEAD
 	//printk("HQ add for probe line = %d fun = %s \n",__LINE__,__func__);
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (attr_count = 0; attr_count < ARRAY_SIZE(attrs); attr_count++) {
 		retval = sysfs_create_file(&rmi4_data->input_dev->dev.kobj,
 				&attrs[attr_count].attr);
@@ -5425,21 +4799,14 @@ static void synaptics_rmi4_defer_probe(struct work_struct *work)
 			goto err_sysfs;
 		}
 	}
-<<<<<<< HEAD
 	//printk("HQ add for probe line = %d fun = %s \n",__LINE__,__func__);
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef USE_DATA_SERVER
 	memset(&interrupt_signal, 0, sizeof(interrupt_signal));
 	interrupt_signal.si_signo = SIGIO;
 	interrupt_signal.si_code = SI_USER;
 #endif
-<<<<<<< HEAD
 	platform_device_register(&hwinfo_device);
 	syna_test_node_init(&hwinfo_device);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rmi4_data->rb_workqueue =
 			create_singlethread_workqueue("dsx_rebuild_workqueue");
@@ -5459,7 +4826,6 @@ static void synaptics_rmi4_defer_probe(struct work_struct *work)
 	INIT_WORK(&rmi4_data->reset_work, synaptics_rmi4_reset_work);
 	queue_work(rmi4_data->reset_workqueue, &rmi4_data->reset_work);
 #endif
-<<<<<<< HEAD
 #ifdef ESD_WATCHDOG
 	rmi4_data->esd_watchdog_workqueue =
 			create_singlethread_workqueue("dsx_esd_watchdog_workqueue");
@@ -5472,11 +4838,6 @@ static void synaptics_rmi4_defer_probe(struct work_struct *work)
 #endif
 
 	return retval;
-=======
-	rmi4_data->initialized = true;
-
-	return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 err_sysfs:
 	for (attr_count--; attr_count >= 0; attr_count--) {
@@ -5494,13 +4855,10 @@ err_virtual_buttons:
 	synaptics_rmi4_irq_enable(rmi4_data, false, false);
 
 err_enable_irq:
-<<<<<<< HEAD
 #ifdef CONFIG_DRM
 	//msm_drm_unregister_client(&rmi4_data->drm_notifier);
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef USE_EARLYSUSPEND
 	unregister_early_suspend(&rmi4_data->early_suspend);
 #endif
@@ -5513,11 +4871,8 @@ err_enable_irq:
 		rmi4_data->stylus_dev = NULL;
 	}
 
-<<<<<<< HEAD
 
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_set_input_dev:
 	synaptics_rmi4_gpio_setup(bdata->irq_gpio, false, 0, 0);
 
@@ -5526,40 +4881,18 @@ err_set_input_dev:
 
 	if (bdata->power_gpio >= 0)
 		synaptics_rmi4_gpio_setup(bdata->power_gpio, false, 0, 0);
-<<<<<<< HEAD
 err_drm_reg:
 	if (active_panel)
 		drm_panel_notifier_unregister(active_panel,
 				&rmi4_data->drm_notifier);
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_ui_hw_init:
 err_set_gpio:
 	synaptics_rmi4_enable_reg(rmi4_data, false);
 
-<<<<<<< HEAD
-=======
-	if (rmi4_data->ts_pinctrl) {
-		if (IS_ERR_OR_NULL(rmi4_data->pinctrl_state_release)) {
-			devm_pinctrl_put(rmi4_data->ts_pinctrl);
-			rmi4_data->ts_pinctrl = NULL;
-		} else {
-			if (pinctrl_select_state(
-					rmi4_data->ts_pinctrl,
-					rmi4_data->pinctrl_state_release))
-				dev_err(&pdev->dev,
-					"%s: Failed to select %s pinstate\n",
-					__func__, PINCTRL_STATE_RELEASE);
-		}
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_enable_reg:
 	synaptics_rmi4_get_reg(rmi4_data, false);
 
 err_get_reg:
-<<<<<<< HEAD
 	kfree(rmi4_data);
 
 	return retval;
@@ -5657,19 +4990,6 @@ void zui_input_report_atr_key_2(int x, int y, int press)
 {
         zui_input_report_atr_key_base(x, y, press, 2);
 }
-=======
-err_drm_init_wait:
-#ifdef CONFIG_FB
-	msm_drm_unregister_client(&rmi4_data->fb_notifier);
-#endif
-	cancel_work_sync(&rmi4_data->rmi4_probe_work);
-	destroy_workqueue(rmi4_data->rmi4_probe_wq);
-	kfree(rmi4_data);
-
-	return;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int synaptics_rmi4_remove(struct platform_device *pdev)
 {
 	unsigned char attr_count;
@@ -5683,14 +5003,11 @@ static int synaptics_rmi4_remove(struct platform_device *pdev)
 	destroy_workqueue(rmi4_data->reset_workqueue);
 #endif
 
-<<<<<<< HEAD
 #ifdef ESD_WATCHDOG
 		cancel_delayed_work(&rmi4_data->esd_watchdog_work);
 		flush_workqueue(rmi4_data->esd_watchdog_workqueue);
 		destroy_workqueue(rmi4_data->esd_watchdog_workqueue);
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cancel_delayed_work_sync(&exp_data.work);
 	flush_workqueue(exp_data.workqueue);
 	destroy_workqueue(exp_data.workqueue);
@@ -5712,7 +5029,6 @@ static int synaptics_rmi4_remove(struct platform_device *pdev)
 
 	synaptics_rmi4_irq_enable(rmi4_data, false, false);
 
-<<<<<<< HEAD
 	free_irq(rmi4_data->irq, rmi4_data);
 
 #ifdef CONFIG_DRM
@@ -5720,10 +5036,6 @@ static int synaptics_rmi4_remove(struct platform_device *pdev)
 	if (active_panel)
 		drm_panel_notifier_unregister(active_panel,
 				&rmi4_data->drm_notifier);
-=======
-#ifdef CONFIG_FB
-	msm_drm_unregister_client(&rmi4_data->fb_notifier);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 #ifdef USE_EARLYSUSPEND
@@ -5746,35 +5058,14 @@ static int synaptics_rmi4_remove(struct platform_device *pdev)
 	if (bdata->power_gpio >= 0)
 		synaptics_rmi4_gpio_setup(bdata->power_gpio, false, 0, 0);
 
-<<<<<<< HEAD
 	synaptics_rmi4_enable_reg(rmi4_data, false);
 	synaptics_rmi4_get_reg(rmi4_data, false);
 
-=======
-	if (rmi4_data->ts_pinctrl) {
-			if (IS_ERR_OR_NULL(rmi4_data->pinctrl_state_release)) {
-				devm_pinctrl_put(rmi4_data->ts_pinctrl);
-				rmi4_data->ts_pinctrl = NULL;
-			} else {
-				pinctrl_select_state(
-					rmi4_data->ts_pinctrl,
-					rmi4_data->pinctrl_state_release);
-			}
-		}
-
-	synaptics_rmi4_enable_reg(rmi4_data, false);
-	synaptics_rmi4_get_reg(rmi4_data, false);
-
-	cancel_work_sync(&rmi4_data->rmi4_probe_work);
-	destroy_workqueue(rmi4_data->rmi4_probe_wq);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(rmi4_data);
 
 	return 0;
 }
 
-<<<<<<< HEAD
 #ifdef CONFIG_DRM
 int drm_syna_ts_resume(void *data)
 {
@@ -5799,42 +5090,6 @@ static int synaptics_rmi4_drm_notifier_cb(struct notifier_block *self,
 				rmi4_data->fb_ready = false;
 			} else if (*transition == DRM_PANEL_BLANK_UNBLANK) {
 				kthread_run(drm_syna_ts_resume,&rmi4_data->pdev->dev,"syna_tp_resume");
-=======
-#ifdef CONFIG_FB
-static int synaptics_rmi4_dsi_panel_notifier_cb(struct notifier_block *self,
-		unsigned long event, void *data)
-{
-	int transition;
-	struct msm_drm_notifier *evdata = data;
-	struct synaptics_rmi4_data *rmi4_data =
-			container_of(self, struct synaptics_rmi4_data,
-			fb_notifier);
-
-	if (!evdata || (evdata->id != 0))
-		return 0;
-
-	if (evdata && evdata->data && rmi4_data) {
-		if (event == MSM_DRM_EARLY_EVENT_BLANK) {
-			transition = *(int *)evdata->data;
-			if (transition == MSM_DRM_BLANK_POWERDOWN) {
-				if (rmi4_data->initialized)
-					synaptics_rmi4_suspend(
-							&rmi4_data->pdev->dev);
-				rmi4_data->fb_ready = false;
-			}
-		}
-	}
-
-	if (evdata && evdata->data && rmi4_data) {
-		if (event == MSM_DRM_EVENT_BLANK) {
-			transition = *(int *)evdata->data;
-			if (transition == MSM_DRM_BLANK_UNBLANK) {
-				if (rmi4_data->initialized)
-					synaptics_rmi4_resume(
-							&rmi4_data->pdev->dev);
-				else
-					complete(&rmi4_data->drm_init_done);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				rmi4_data->fb_ready = true;
 			}
 		}
@@ -5845,11 +5100,7 @@ static int synaptics_rmi4_dsi_panel_notifier_cb(struct notifier_block *self,
 #endif
 
 #ifdef USE_EARLYSUSPEND
-<<<<<<< HEAD
 static void synaptics_rmi4_early_suspend(struct early_suspend *h)
-=======
-static int synaptics_rmi4_early_suspend(struct early_suspend *h)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct synaptics_rmi4_exp_fhandler *exp_fhandler;
 	struct synaptics_rmi4_data *rmi4_data =
@@ -5858,11 +5109,7 @@ static int synaptics_rmi4_early_suspend(struct early_suspend *h)
 	unsigned char device_ctrl;
 
 	if (rmi4_data->stay_awake)
-<<<<<<< HEAD
 		return;
-=======
-		return retval;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (rmi4_data->enable_wakeup_gesture) {
 		if (rmi4_data->no_sleep_setting) {
@@ -5911,17 +5158,10 @@ exit:
 
 	rmi4_data->suspend = true;
 
-<<<<<<< HEAD
 	return;
 }
 
 static void synaptics_rmi4_late_resume(struct early_suspend *h)
-=======
-	return retval;
-}
-
-static int synaptics_rmi4_late_resume(struct early_suspend *h)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 #ifdef FB_READY_RESET
 	int retval;
@@ -5932,11 +5172,7 @@ static int synaptics_rmi4_late_resume(struct early_suspend *h)
 			early_suspend);
 
 	if (rmi4_data->stay_awake)
-<<<<<<< HEAD
 		return;
-=======
-		return retval;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (rmi4_data->enable_wakeup_gesture) {
 		disable_irq_wake(rmi4_data->irq);
@@ -5971,11 +5207,7 @@ exit:
 
 	rmi4_data->suspend = false;
 
-<<<<<<< HEAD
 	return;
-=======
-	return retval;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #endif
 
@@ -5984,7 +5216,6 @@ static int synaptics_rmi4_suspend(struct device *dev)
 	struct synaptics_rmi4_exp_fhandler *exp_fhandler;
 	struct synaptics_rmi4_data *rmi4_data = dev_get_drvdata(dev);
 	unsigned char device_ctrl;
-<<<<<<< HEAD
 
 	if (rmi4_data->stay_awake)
 		return 0;
@@ -5993,14 +5224,6 @@ static int synaptics_rmi4_suspend(struct device *dev)
 	cancel_delayed_work(&rmi4_data->esd_watchdog_work);
 #endif
 	rmi4_data->is_sleep = true;
-=======
-	const struct synaptics_dsx_board_data *bdata =
-			rmi4_data->hw_if->board_data;
-
-	if (rmi4_data->stay_awake)
-		return 0;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rmi4_data->enable_wakeup_gesture) {
 		if (rmi4_data->no_sleep_setting) {
 			synaptics_rmi4_reg_read(rmi4_data,
@@ -6039,16 +5262,6 @@ static int synaptics_rmi4_suspend(struct device *dev)
 		synaptics_rmi4_free_fingers(rmi4_data);
 	}
 
-<<<<<<< HEAD
-=======
-	if (bdata->reset_gpio >= 0) {
-		gpio_set_value(bdata->reset_gpio, bdata->reset_on_state);
-		msleep(bdata->reset_active_ms);
-	}
-
-	synaptics_rmi4_enable_reg(rmi4_data, false);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 exit:
 	mutex_lock(&exp_data.mutex);
 	if (!list_empty(&exp_data.list)) {
@@ -6070,7 +5283,6 @@ static int synaptics_rmi4_resume(struct device *dev)
 #endif
 	struct synaptics_rmi4_exp_fhandler *exp_fhandler;
 	struct synaptics_rmi4_data *rmi4_data = dev_get_drvdata(dev);
-<<<<<<< HEAD
 	//printk("HQ add for synaptics TP line = %d fun = %s \n",__LINE__,__func__);
 	if (rmi4_data->stay_awake)
 		return 0;
@@ -6083,30 +5295,6 @@ static int synaptics_rmi4_resume(struct device *dev)
 		goto exit;
 	}
 
-=======
-
-	const struct synaptics_dsx_board_data *bdata =
-			rmi4_data->hw_if->board_data;
-	if (rmi4_data->stay_awake)
-		return 0;
-
-	if (rmi4_data->enable_wakeup_gesture) {
-		disable_irq_wake(rmi4_data->irq);
-		synaptics_rmi4_wakeup_gesture(rmi4_data, false);
-		goto exit;
-	}
-
-	synaptics_rmi4_enable_reg(rmi4_data, true);
-
-	if (bdata->reset_gpio >= 0) {
-		gpio_set_value(bdata->reset_gpio, bdata->reset_on_state);
-		msleep(bdata->reset_active_ms);
-		gpio_set_value(bdata->reset_gpio, !bdata->reset_on_state);
-		msleep(bdata->reset_delay_ms);
-	}
-
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rmi4_data->current_page = MASK_8BIT;
 
 	synaptics_rmi4_sleep_enable(rmi4_data, false);
@@ -6129,7 +5317,6 @@ exit:
 	}
 	mutex_unlock(&exp_data.mutex);
 
-<<<<<<< HEAD
 #ifdef ESD_WATCHDOG
 	queue_delayed_work(rmi4_data->esd_watchdog_workqueue, &rmi4_data->esd_watchdog_work,msecs_to_jiffies(1));
 #endif
@@ -6138,20 +5325,12 @@ exit:
 
 	if (synaptics_report_rate240 == 1)
 		synaptics_rmi4_report_rate240_switch(rmi4_data, synaptics_report_rate240);
-=======
-	rmi4_data->suspend = false;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 #ifdef CONFIG_PM
 static const struct dev_pm_ops synaptics_rmi4_dev_pm_ops = {
-<<<<<<< HEAD
 #ifndef CONFIG_DRM
-=======
-#ifndef CONFIG_FB
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.suspend = synaptics_rmi4_suspend,
 	.resume = synaptics_rmi4_resume,
 #endif
@@ -6173,19 +5352,11 @@ static struct platform_driver synaptics_rmi4_driver = {
 static int __init synaptics_rmi4_init(void)
 {
 	int retval;
-<<<<<<< HEAD
 	//printk("HQ add for synaptics_rmi4_init\n");
 	retval = synaptics_rmi4_bus_init();
 	if (retval)
 		return retval;
 //printk("HQ add for probe line = %d fun = %s \n",__LINE__,__func__);
-=======
-
-	retval = synaptics_rmi4_bus_init();
-	if (retval)
-		return retval;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return platform_driver_register(&synaptics_rmi4_driver);
 }
 
@@ -6196,11 +5367,7 @@ static void __exit synaptics_rmi4_exit(void)
 	synaptics_rmi4_bus_exit();
 }
 
-<<<<<<< HEAD
 late_initcall(synaptics_rmi4_init);
-=======
-module_init(synaptics_rmi4_init);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 module_exit(synaptics_rmi4_exit);
 
 MODULE_AUTHOR("Synaptics, Inc.");

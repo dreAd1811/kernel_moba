@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2016-2019, The Linux Foundation. All rights reserved.
@@ -13,30 +12,6 @@
 #include "kgsl_device.h"
 #include "kgsl_pool.h"
 #include "kgsl_sharedmem.h"
-=======
-/* Copyright (c) 2016-2017, 2019-2020, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- */
-
-#include <linux/vmalloc.h>
-#include <asm/cacheflush.h>
-#include <linux/slab.h>
-#include <linux/highmem.h>
-#include <linux/version.h>
-
-#include "kgsl.h"
-#include "kgsl_device.h"
-#include "kgsl_pool.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define KGSL_MAX_POOLS 4
 #define KGSL_MAX_POOL_ORDER 8
@@ -49,10 +24,7 @@
  * @reserved_pages: Number of pages reserved at init for the pool
  * @allocation_allowed: Tells if reserved pool gets exhausted, can we allocate
  * from system memory
-<<<<<<< HEAD
  * @max_pages: Limit on number of pages this pool can hold
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @list_lock: Spinlock for page list in the pool
  * @page_list: List of pages held/reserved in this pool
  */
@@ -61,10 +33,7 @@ struct kgsl_page_pool {
 	int page_count;
 	unsigned int reserved_pages;
 	bool allocation_allowed;
-<<<<<<< HEAD
 	unsigned int max_pages;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spinlock_t list_lock;
 	struct list_head page_list;
 };
@@ -114,13 +83,8 @@ _kgsl_pool_add_page(struct kgsl_page_pool *pool, struct page *p)
 	list_add_tail(&p->lru, &pool->page_list);
 	pool->page_count++;
 	spin_unlock(&pool->list_lock);
-<<<<<<< HEAD
 	mod_node_page_state(page_pgdat(p), NR_INDIRECTLY_RECLAIMABLE_BYTES,
 				(PAGE_SIZE << pool->pool_order));
-=======
-	mod_node_page_state(page_pgdat(p), NR_KERNEL_MISC_RECLAIMABLE,
-				(1 << pool->pool_order));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Returns a page from specified pool */
@@ -136,16 +100,8 @@ _kgsl_pool_get_page(struct kgsl_page_pool *pool)
 		list_del(&p->lru);
 	}
 	spin_unlock(&pool->list_lock);
-<<<<<<< HEAD
 	mod_node_page_state(page_pgdat(p), NR_INDIRECTLY_RECLAIMABLE_BYTES,
 				-(PAGE_SIZE << pool->pool_order));
-=======
-
-	if (p != NULL)
-		mod_node_page_state(page_pgdat(p),
-				NR_KERNEL_MISC_RECLAIMABLE,
-				-(1 << pool->pool_order));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return p;
 }
 
@@ -340,7 +296,6 @@ static int kgsl_pool_get_retry_order(unsigned int order)
 	return 0;
 }
 
-<<<<<<< HEAD
 static unsigned int kgsl_gfp_mask(unsigned int page_order)
 {
 	unsigned int gfp_mask = __GFP_HIGHMEM;
@@ -357,8 +312,6 @@ static unsigned int kgsl_gfp_mask(unsigned int page_order)
 	return gfp_mask;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * kgsl_pool_alloc_page() - Allocate a page of requested size
  * @page_size: Size of the page to be allocated
@@ -485,11 +438,7 @@ void kgsl_pool_free_page(struct page *page)
 	if (!kgsl_pool_max_pages ||
 			(kgsl_pool_size_total() < kgsl_pool_max_pages)) {
 		pool = _kgsl_get_pool_from_order(page_order);
-<<<<<<< HEAD
 		if (pool && (pool->page_count < pool->max_pages)) {
-=======
-		if (pool != NULL) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			_kgsl_pool_add_page(pool, page);
 			return;
 		}
@@ -520,21 +469,14 @@ bool kgsl_pool_avaialable(int page_size)
 static void kgsl_pool_reserve_pages(void)
 {
 	int i, j;
-<<<<<<< HEAD
 	unsigned int page_count;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < kgsl_num_pools; i++) {
 		struct page *page;
 
-<<<<<<< HEAD
 		page_count = min_t(unsigned int, kgsl_pools[i].max_pages,
 				kgsl_pools[i].reserved_pages);
 		for (j = 0; j < page_count; j++) {
-=======
-		for (j = 0; j < kgsl_pools[i].reserved_pages; j++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			int order = kgsl_pools[i].pool_order;
 			gfp_t gfp_mask = kgsl_gfp_mask(order);
 
@@ -566,12 +508,9 @@ static unsigned long
 kgsl_pool_shrink_count_objects(struct shrinker *shrinker,
 					struct shrink_control *sc)
 {
-<<<<<<< HEAD
 	/* Trigger mem_workqueue flush to free memory */
 	kgsl_schedule_work(&kgsl_driver.mem_work);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Return total pool size as everything in pool can be freed */
 	return kgsl_pool_size_total();
 }
@@ -585,19 +524,11 @@ static struct shrinker kgsl_pool_shrinker = {
 };
 
 static void kgsl_pool_config(unsigned int order, unsigned int reserved_pages,
-<<<<<<< HEAD
 		bool allocation_allowed, unsigned int max_pages)
 {
 #ifdef CONFIG_ALLOC_BUFFERS_IN_4K_CHUNKS
 	if (order > 0) {
 		pr_err("kgsl: pool order:%d not supprted\n", order);
-=======
-		bool allocation_allowed)
-{
-#ifdef CONFIG_ALLOC_BUFFERS_IN_4K_CHUNKS
-	if (order > 0) {
-		pr_info("%s: Pool order:%d not supprted.!!\n", __func__, order);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 #endif
@@ -608,10 +539,7 @@ static void kgsl_pool_config(unsigned int order, unsigned int reserved_pages,
 	kgsl_pools[kgsl_num_pools].pool_order = order;
 	kgsl_pools[kgsl_num_pools].reserved_pages = reserved_pages;
 	kgsl_pools[kgsl_num_pools].allocation_allowed = allocation_allowed;
-<<<<<<< HEAD
 	kgsl_pools[kgsl_num_pools].max_pages = max_pages;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_init(&kgsl_pools[kgsl_num_pools].list_lock);
 	INIT_LIST_HEAD(&kgsl_pools[kgsl_num_pools].page_list);
 	kgsl_num_pools++;
@@ -620,11 +548,7 @@ static void kgsl_pool_config(unsigned int order, unsigned int reserved_pages,
 static void kgsl_of_parse_mempools(struct device_node *node)
 {
 	struct device_node *child;
-<<<<<<< HEAD
 	unsigned int page_size, reserved_pages = 0, max_pages = UINT_MAX;
-=======
-	unsigned int page_size, reserved_pages = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool allocation_allowed;
 
 	for_each_child_of_node(node, child) {
@@ -646,22 +570,16 @@ static void kgsl_of_parse_mempools(struct device_node *node)
 		allocation_allowed = of_property_read_bool(child,
 				"qcom,mempool-allocate");
 
-<<<<<<< HEAD
 		of_property_read_u32(child, "qcom,mempool-max-pages",
 				&max_pages);
 
 		kgsl_pool_config(ilog2(page_size >> PAGE_SHIFT), reserved_pages,
 				allocation_allowed, max_pages);
-=======
-		kgsl_pool_config(ilog2(page_size >> PAGE_SHIFT), reserved_pages,
-				allocation_allowed);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
 static void kgsl_of_get_mempools(struct device_node *parent)
 {
-<<<<<<< HEAD
 	struct device_node *node = NULL;
 
 	/*
@@ -678,11 +596,6 @@ static void kgsl_of_get_mempools(struct device_node *parent)
 		node = of_find_compatible_node(parent, NULL,
 				"qcom,gpu-mempools");
 
-=======
-	struct device_node *node;
-
-	node = of_find_compatible_node(parent, NULL, "qcom,gpu-mempools");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (node != NULL) {
 		/* Get Max pages limit for mempool */
 		of_property_read_u32(node, "qcom,mempool-max-pages",

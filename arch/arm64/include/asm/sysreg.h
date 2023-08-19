@@ -60,13 +60,7 @@
 #ifndef CONFIG_BROKEN_GAS_INST
 
 #ifdef __ASSEMBLY__
-<<<<<<< HEAD
 #define __emit_inst(x)			.inst (x)
-=======
-// The space separator is omitted so that __emit_inst(x) can be parsed as
-// either an assembler directive or an assembler macro argument.
-#define __emit_inst(x)			.inst(x)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 #define __emit_inst(x)			".inst " __stringify((x)) "\n\t"
 #endif
@@ -170,12 +164,9 @@
 #define SYS_ID_AA64DFR0_EL1		sys_reg(3, 0, 0, 5, 0)
 #define SYS_ID_AA64DFR1_EL1		sys_reg(3, 0, 0, 5, 1)
 
-<<<<<<< HEAD
 #define SYS_ID_AA64AFR0_EL1		sys_reg(3, 0, 0, 5, 4)
 #define SYS_ID_AA64AFR1_EL1		sys_reg(3, 0, 0, 5, 5)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SYS_ID_AA64ISAR0_EL1		sys_reg(3, 0, 0, 6, 0)
 #define SYS_ID_AA64ISAR1_EL1		sys_reg(3, 0, 0, 6, 1)
 
@@ -198,7 +189,6 @@
 #define SYS_AFSR0_EL1			sys_reg(3, 0, 5, 1, 0)
 #define SYS_AFSR1_EL1			sys_reg(3, 0, 5, 1, 1)
 #define SYS_ESR_EL1			sys_reg(3, 0, 5, 2, 0)
-<<<<<<< HEAD
 
 #define SYS_ERRIDR_EL1			sys_reg(3, 0, 5, 3, 0)
 #define SYS_ERRSELR_EL1			sys_reg(3, 0, 5, 3, 1)
@@ -305,18 +295,12 @@
 
 /*** End of Statistical Profiling Extension ***/
 
-=======
-#define SYS_FAR_EL1			sys_reg(3, 0, 6, 0, 0)
-#define SYS_PAR_EL1			sys_reg(3, 0, 7, 4, 0)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SYS_PMINTENSET_EL1		sys_reg(3, 0, 9, 14, 1)
 #define SYS_PMINTENCLR_EL1		sys_reg(3, 0, 9, 14, 2)
 
 #define SYS_MAIR_EL1			sys_reg(3, 0, 10, 2, 0)
 #define SYS_AMAIR_EL1			sys_reg(3, 0, 10, 3, 0)
 
-<<<<<<< HEAD
 #define SYS_LORSA_EL1			sys_reg(3, 0, 10, 4, 0)
 #define SYS_LOREA_EL1			sys_reg(3, 0, 10, 4, 1)
 #define SYS_LORN_EL1			sys_reg(3, 0, 10, 4, 2)
@@ -325,9 +309,6 @@
 
 #define SYS_VBAR_EL1			sys_reg(3, 0, 12, 0, 0)
 #define SYS_DISR_EL1			sys_reg(3, 0, 12, 1, 1)
-=======
-#define SYS_VBAR_EL1			sys_reg(3, 0, 12, 0, 0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define SYS_ICC_IAR0_EL1		sys_reg(3, 0, 12, 8, 0)
 #define SYS_ICC_EOIR0_EL1		sys_reg(3, 0, 12, 8, 1)
@@ -346,11 +327,8 @@
 #define SYS_ICC_DIR_EL1			sys_reg(3, 0, 12, 11, 1)
 #define SYS_ICC_RPR_EL1			sys_reg(3, 0, 12, 11, 3)
 #define SYS_ICC_SGI1R_EL1		sys_reg(3, 0, 12, 11, 5)
-<<<<<<< HEAD
 #define SYS_ICC_ASGI1R_EL1		sys_reg(3, 0, 12, 11, 6)
 #define SYS_ICC_SGI0R_EL1		sys_reg(3, 0, 12, 11, 7)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SYS_ICC_IAR1_EL1		sys_reg(3, 0, 12, 12, 0)
 #define SYS_ICC_EOIR1_EL1		sys_reg(3, 0, 12, 12, 1)
 #define SYS_ICC_HPPIR1_EL1		sys_reg(3, 0, 12, 12, 2)
@@ -408,15 +386,10 @@
 
 #define SYS_DACR32_EL2			sys_reg(3, 4, 3, 0, 0)
 #define SYS_IFSR32_EL2			sys_reg(3, 4, 5, 0, 1)
-<<<<<<< HEAD
 #define SYS_VSESR_EL2			sys_reg(3, 4, 5, 2, 3)
 #define SYS_FPEXC32_EL2			sys_reg(3, 4, 5, 3, 0)
 
 #define SYS_VDISR_EL2			sys_reg(3, 4, 12, 1,  1)
-=======
-#define SYS_FPEXC32_EL2			sys_reg(3, 4, 5, 3, 0)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define __SYS__AP0Rx_EL2(x)		sys_reg(3, 4, 12, 8, x)
 #define SYS_ICH_AP0R0_EL2		__SYS__AP0Rx_EL2(0)
 #define SYS_ICH_AP0R1_EL2		__SYS__AP0Rx_EL2(1)
@@ -461,10 +434,7 @@
 /* Common SCTLR_ELx flags. */
 #define SCTLR_ELx_DSSBS	(1UL << 44)
 #define SCTLR_ELx_EE    (1 << 25)
-<<<<<<< HEAD
 #define SCTLR_ELx_IESB	(1 << 21)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SCTLR_ELx_WXN	(1 << 19)
 #define SCTLR_ELx_I	(1 << 12)
 #define SCTLR_ELx_SA	(1 << 3)
@@ -472,13 +442,8 @@
 #define SCTLR_ELx_A	(1 << 1)
 #define SCTLR_ELx_M	1
 
-<<<<<<< HEAD
 #define SCTLR_ELx_FLAGS	(SCTLR_ELx_M  | SCTLR_ELx_A | SCTLR_ELx_C | \
 			 SCTLR_ELx_SA | SCTLR_ELx_I | SCTLR_ELx_IESB)
-=======
-#define SCTLR_ELx_FLAGS	(SCTLR_ELx_M | SCTLR_ELx_A | SCTLR_ELx_C | \
-			 SCTLR_ELx_SA | SCTLR_ELx_I)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* SCTLR_EL2 specific flags. */
 #define SCTLR_EL2_RES1	((1 << 4)  | (1 << 5)  | (1 << 11) | (1 << 16) | \
@@ -486,13 +451,8 @@
 			 (1 << 29))
 #define SCTLR_EL2_RES0	((1 << 6)  | (1 << 7)  | (1 << 8)  | (1 << 9)  | \
 			 (1 << 10) | (1 << 13) | (1 << 14) | (1 << 15) | \
-<<<<<<< HEAD
 			 (1 << 17) | (1 << 20) | (1 << 24) | (1 << 26) | \
 			 (1 << 27) | (1 << 30) | (1 << 31) | \
-=======
-			 (1 << 17) | (1 << 20) | (1 << 21) | (1 << 24) | \
-			 (1 << 26) | (1 << 27) | (1 << 30) | (1 << 31) | \
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 (0xffffefffUL << 32))
 
 #ifdef CONFIG_CPU_BIG_ENDIAN
@@ -504,11 +464,7 @@
 #endif
 
 /* SCTLR_EL2 value used for the hyp-stub */
-<<<<<<< HEAD
 #define SCTLR_EL2_SET	(SCTLR_ELx_IESB   | ENDIAN_SET_EL2   | SCTLR_EL2_RES1)
-=======
-#define SCTLR_EL2_SET	(ENDIAN_SET_EL2   | SCTLR_EL2_RES1)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SCTLR_EL2_CLEAR	(SCTLR_ELx_M      | SCTLR_ELx_A    | SCTLR_ELx_C   | \
 			 SCTLR_ELx_SA     | SCTLR_ELx_I    | SCTLR_ELx_WXN | \
 			 SCTLR_ELx_DSSBS | ENDIAN_CLEAR_EL2 | SCTLR_EL2_RES0)
@@ -534,11 +490,7 @@
 #define SCTLR_EL1_RES1	((1 << 11) | (1 << 20) | (1 << 22) | (1 << 28) | \
 			 (1 << 29))
 #define SCTLR_EL1_RES0  ((1 << 6)  | (1 << 10) | (1 << 13) | (1 << 17) | \
-<<<<<<< HEAD
 			 (1 << 27) | (1 << 30) | (1 << 31) | \
-=======
-			 (1 << 21) | (1 << 27) | (1 << 30) | (1 << 31) | \
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 (0xffffefffUL << 32))
 
 #ifdef CONFIG_CPU_BIG_ENDIAN
@@ -552,13 +504,8 @@
 #define SCTLR_EL1_SET	(SCTLR_ELx_M    | SCTLR_ELx_C    | SCTLR_ELx_SA   |\
 			 SCTLR_EL1_SA0  | SCTLR_EL1_SED  | SCTLR_ELx_I    |\
 			 SCTLR_EL1_DZE  | SCTLR_EL1_UCT  | SCTLR_EL1_NTWI |\
-<<<<<<< HEAD
 			 SCTLR_EL1_NTWE | SCTLR_ELx_IESB | SCTLR_EL1_SPAN |\
 			 ENDIAN_SET_EL1 | SCTLR_EL1_UCI  | SCTLR_EL1_RES1)
-=======
-			 SCTLR_EL1_NTWE | SCTLR_EL1_SPAN | ENDIAN_SET_EL1 |\
-			 SCTLR_EL1_UCI  | SCTLR_EL1_RES1)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SCTLR_EL1_CLEAR	(SCTLR_ELx_A   | SCTLR_EL1_CP15BEN | SCTLR_EL1_ITD    |\
 			 SCTLR_EL1_UMA | SCTLR_ELx_WXN     | ENDIAN_CLEAR_EL1 |\
 			 SCTLR_ELx_DSSBS | SCTLR_EL1_RES0)
@@ -590,14 +537,9 @@
 /* id_aa64pfr0 */
 #define ID_AA64PFR0_CSV3_SHIFT		60
 #define ID_AA64PFR0_CSV2_SHIFT		56
-<<<<<<< HEAD
 #define ID_AA64PFR0_DIT_SHIFT		48
 #define ID_AA64PFR0_SVE_SHIFT		32
 #define ID_AA64PFR0_RAS_SHIFT		28
-=======
-#define ID_AA64PFR0_SVE_SHIFT		32
-#define ID_AA64PFR0_DIT_SHIFT		48
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ID_AA64PFR0_GIC_SHIFT		24
 #define ID_AA64PFR0_ASIMD_SHIFT		20
 #define ID_AA64PFR0_FP_SHIFT		16
@@ -607,10 +549,7 @@
 #define ID_AA64PFR0_EL0_SHIFT		0
 
 #define ID_AA64PFR0_SVE			0x1
-<<<<<<< HEAD
 #define ID_AA64PFR0_RAS_V1		0x1
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ID_AA64PFR0_FP_NI		0xf
 #define ID_AA64PFR0_FP_SUPPORTED	0x0
 #define ID_AA64PFR0_ASIMD_NI		0xf
@@ -642,7 +581,6 @@
 #define ID_AA64MMFR0_TGRAN64_SUPPORTED	0x0
 #define ID_AA64MMFR0_TGRAN16_NI		0x0
 #define ID_AA64MMFR0_TGRAN16_SUPPORTED	0x1
-<<<<<<< HEAD
 #define ID_AA64MMFR0_PARANGE_48		0x5
 #define ID_AA64MMFR0_PARANGE_52		0x6
 
@@ -651,8 +589,6 @@
 #else
 #define ID_AA64MMFR0_PARANGE_MAX	ID_AA64MMFR0_PARANGE_48
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* id_aa64mmfr1 */
 #define ID_AA64MMFR1_PAN_SHIFT		20
@@ -666,10 +602,7 @@
 #define ID_AA64MMFR1_VMIDBITS_16	2
 
 /* id_aa64mmfr2 */
-<<<<<<< HEAD
 #define ID_AA64MMFR2_FWB_SHIFT		40
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ID_AA64MMFR2_AT_SHIFT		32
 #define ID_AA64MMFR2_LVA_SHIFT		16
 #define ID_AA64MMFR2_IESB_SHIFT		12
@@ -781,21 +714,13 @@
 #define DEFINE_MRS_S						\
 	__DEFINE_MRS_MSR_S_REGNUM				\
 "	.macro	mrs_s, rt, sreg\n"				\
-<<<<<<< HEAD
 	__emit_inst(0xd5200000|(\\sreg)|(.L__reg_num_\\rt))	\
-=======
-"	.inst 0xd5200000|(\\sreg)|(.L__reg_num_\\rt)\n"	\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 "	.endm\n"
 
 #define DEFINE_MSR_S						\
 	__DEFINE_MRS_MSR_S_REGNUM				\
 "	.macro	msr_s, sreg, rt\n"				\
-<<<<<<< HEAD
 	__emit_inst(0xd5000000|(\\sreg)|(.L__reg_num_\\rt))	\
-=======
-"	.inst 0xd5000000|(\\sreg)|(.L__reg_num_\\rt)\n"		\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 "	.endm\n"
 
 #define UNDEFINE_MRS_S						\
@@ -804,7 +729,6 @@
 #define UNDEFINE_MSR_S						\
 "	.purgem	msr_s\n"
 
-<<<<<<< HEAD
 #define __mrs_s(v, r)						\
 	DEFINE_MRS_S						\
 "	mrs_s " v ", " __stringify(r) "\n"			\
@@ -814,17 +738,6 @@
 	DEFINE_MSR_S						\
 "	msr_s " __stringify(r) ", " v "\n"			\
 	UNDEFINE_MSR_S
-=======
-#define __mrs_s(r, v)						\
-	DEFINE_MRS_S						\
-"	mrs_s %0, " __stringify(r) "\n"				\
-	UNDEFINE_MRS_S : "=r" (v)
-
-#define __msr_s(r, v)						\
-	DEFINE_MSR_S						\
-"	msr_s " __stringify(r) ", %x0\n"			\
-	UNDEFINE_MSR_S : : "rZ" (v)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Unlike read_cpuid, calls to read_sysreg are never expected to be
@@ -850,7 +763,6 @@
  * For registers without architectural names, or simply unsupported by
  * GAS.
  */
-<<<<<<< HEAD
 #define read_sysreg_s(r) ({						\
 	u64 __val;							\
 	asm volatile(__mrs_s("%0", r) : "=r" (__val));			\
@@ -860,17 +772,6 @@
 #define write_sysreg_s(v, r) do {					\
 	u64 __val = (u64)(v);						\
 	asm volatile(__msr_s(r, "%x0") : : "rZ" (__val));		\
-=======
-#define read_sysreg_s(r) ({					\
-	u64 __val;						\
-	asm volatile(__mrs_s(r, __val));			\
-	__val;							\
-})
-
-#define write_sysreg_s(v, r) do {				\
-	u64 __val = (u64)(v);					\
-	asm volatile(__msr_s(r, __val));			\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } while (0)
 
 /*
@@ -884,19 +785,6 @@
 		write_sysreg(__scs_new, sysreg);			\
 } while (0)
 
-<<<<<<< HEAD
-=======
-static inline void config_sctlr_el1(u32 clear, u32 set)
-{
-	u32 val;
-
-	val = read_sysreg(sctlr_el1);
-	val &= ~clear;
-	val |= set;
-	write_sysreg(val, sctlr_el1);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 #endif	/* __ASM_SYSREG_H */

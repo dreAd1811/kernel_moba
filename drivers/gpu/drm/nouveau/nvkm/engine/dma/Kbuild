@@ -3,17 +3,11 @@ nvkm-y += nvkm/engine/dma/nv04.o
 nvkm-y += nvkm/engine/dma/nv50.o
 nvkm-y += nvkm/engine/dma/gf100.o
 nvkm-y += nvkm/engine/dma/gf119.o
-<<<<<<< HEAD
 nvkm-y += nvkm/engine/dma/gv100.o
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 nvkm-y += nvkm/engine/dma/user.o
 nvkm-y += nvkm/engine/dma/usernv04.o
 nvkm-y += nvkm/engine/dma/usernv50.o
 nvkm-y += nvkm/engine/dma/usergf100.o
 nvkm-y += nvkm/engine/dma/usergf119.o
-<<<<<<< HEAD
 nvkm-y += nvkm/engine/dma/usergv100.o
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

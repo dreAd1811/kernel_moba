@@ -24,10 +24,7 @@
 #include <linux/module.h>
 #include <linux/firmware.h>
 #include <linux/regmap.h>
-<<<<<<< HEAD
 #include <asm/unaligned.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <net/bluetooth/bluetooth.h>
 #include <net/bluetooth/hci_core.h>
@@ -47,22 +44,13 @@ int btintel_check_bdaddr(struct hci_dev *hdev)
 			     HCI_INIT_TIMEOUT);
 	if (IS_ERR(skb)) {
 		int err = PTR_ERR(skb);
-<<<<<<< HEAD
 		bt_dev_err(hdev, "Reading Intel device address failed (%d)",
 			   err);
-=======
-		BT_ERR("%s: Reading Intel device address failed (%d)",
-		       hdev->name, err);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return err;
 	}
 
 	if (skb->len != sizeof(*bda)) {
-<<<<<<< HEAD
 		bt_dev_err(hdev, "Intel device address length mismatch");
-=======
-		BT_ERR("%s: Intel device address length mismatch", hdev->name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree_skb(skb);
 		return -EIO;
 	}
@@ -75,13 +63,8 @@ int btintel_check_bdaddr(struct hci_dev *hdev)
 	 * and that in turn can cause problems with Bluetooth operation.
 	 */
 	if (!bacmp(&bda->bdaddr, BDADDR_INTEL)) {
-<<<<<<< HEAD
 		bt_dev_err(hdev, "Found Intel default device address (%pMR)",
 			   &bda->bdaddr);
-=======
-		BT_ERR("%s: Found Intel default device address (%pMR)",
-		       hdev->name, &bda->bdaddr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		set_bit(HCI_QUIRK_INVALID_BDADDR, &hdev->quirks);
 	}
 
@@ -93,11 +76,7 @@ EXPORT_SYMBOL_GPL(btintel_check_bdaddr);
 
 int btintel_enter_mfg(struct hci_dev *hdev)
 {
-<<<<<<< HEAD
 	static const u8 param[] = { 0x01, 0x00 };
-=======
-	const u8 param[] = { 0x01, 0x00 };
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct sk_buff *skb;
 
 	skb = __hci_cmd_sync(hdev, 0xfc11, 2, param, HCI_CMD_TIMEOUT);
@@ -145,13 +124,8 @@ int btintel_set_bdaddr(struct hci_dev *hdev, const bdaddr_t *bdaddr)
 	skb = __hci_cmd_sync(hdev, 0xfc31, 6, bdaddr, HCI_INIT_TIMEOUT);
 	if (IS_ERR(skb)) {
 		err = PTR_ERR(skb);
-<<<<<<< HEAD
 		bt_dev_err(hdev, "Changing Intel device address failed (%d)",
 			   err);
-=======
-		BT_ERR("%s: Changing Intel device address failed (%d)",
-		       hdev->name, err);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return err;
 	}
 	kfree_skb(skb);
@@ -181,13 +155,8 @@ int btintel_set_diag(struct hci_dev *hdev, bool enable)
 		err = PTR_ERR(skb);
 		if (err == -ENODATA)
 			goto done;
-<<<<<<< HEAD
 		bt_dev_err(hdev, "Changing Intel diagnostic mode failed (%d)",
 			   err);
-=======
-		BT_ERR("%s: Changing Intel diagnostic mode failed (%d)",
-		       hdev->name, err);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return err;
 	}
 	kfree_skb(skb);
@@ -221,52 +190,30 @@ void btintel_hw_error(struct hci_dev *hdev, u8 code)
 	struct sk_buff *skb;
 	u8 type = 0x00;
 
-<<<<<<< HEAD
 	bt_dev_err(hdev, "Hardware error 0x%2.2x", code);
 
 	skb = __hci_cmd_sync(hdev, HCI_OP_RESET, 0, NULL, HCI_INIT_TIMEOUT);
 	if (IS_ERR(skb)) {
 		bt_dev_err(hdev, "Reset after hardware error failed (%ld)",
 			   PTR_ERR(skb));
-=======
-	BT_ERR("%s: Hardware error 0x%2.2x", hdev->name, code);
-
-	skb = __hci_cmd_sync(hdev, HCI_OP_RESET, 0, NULL, HCI_INIT_TIMEOUT);
-	if (IS_ERR(skb)) {
-		BT_ERR("%s: Reset after hardware error failed (%ld)",
-		       hdev->name, PTR_ERR(skb));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 	kfree_skb(skb);
 
 	skb = __hci_cmd_sync(hdev, 0xfc22, 1, &type, HCI_INIT_TIMEOUT);
 	if (IS_ERR(skb)) {
-<<<<<<< HEAD
 		bt_dev_err(hdev, "Retrieving Intel exception info failed (%ld)",
 			   PTR_ERR(skb));
-=======
-		BT_ERR("%s: Retrieving Intel exception info failed (%ld)",
-		       hdev->name, PTR_ERR(skb));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
 	if (skb->len != 13) {
-<<<<<<< HEAD
 		bt_dev_err(hdev, "Exception info size mismatch");
-=======
-		BT_ERR("%s: Exception info size mismatch", hdev->name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree_skb(skb);
 		return;
 	}
 
-<<<<<<< HEAD
 	bt_dev_err(hdev, "Exception info %s", (char *)(skb->data + 1));
-=======
-	BT_ERR("%s: Exception info %s", hdev->name, (char *)(skb->data + 1));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kfree_skb(skb);
 }
@@ -287,16 +234,10 @@ void btintel_version_info(struct hci_dev *hdev, struct intel_version *ver)
 		return;
 	}
 
-<<<<<<< HEAD
 	bt_dev_info(hdev, "%s revision %u.%u build %u week %u %u",
 		    variant, ver->fw_revision >> 4, ver->fw_revision & 0x0f,
 		    ver->fw_build_num, ver->fw_build_ww,
 		    2000 + ver->fw_build_yy);
-=======
-	BT_INFO("%s: %s revision %u.%u build %u week %u %u", hdev->name,
-		variant, ver->fw_revision >> 4, ver->fw_revision & 0x0f,
-		ver->fw_build_num, ver->fw_build_ww, 2000 + ver->fw_build_yy);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(btintel_version_info);
 
@@ -382,12 +323,7 @@ int btintel_set_event_mask(struct hci_dev *hdev, bool debug)
 	skb = __hci_cmd_sync(hdev, 0xfc52, 8, mask, HCI_INIT_TIMEOUT);
 	if (IS_ERR(skb)) {
 		err = PTR_ERR(skb);
-<<<<<<< HEAD
 		bt_dev_err(hdev, "Setting Intel event mask failed (%d)", err);
-=======
-		BT_ERR("%s: Setting Intel event mask failed (%d)",
-		       hdev->name, err);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return err;
 	}
 	kfree_skb(skb);
@@ -634,7 +570,6 @@ struct regmap *btintel_regmap_init(struct hci_dev *hdev, u16 opcode_read,
 }
 EXPORT_SYMBOL_GPL(btintel_regmap_init);
 
-<<<<<<< HEAD
 int btintel_send_intel_reset(struct hci_dev *hdev, u32 boot_param)
 {
 	struct intel_reset params = { 0x00, 0x01, 0x00, 0x01, 0x00000000 };
@@ -789,8 +724,6 @@ done:
 }
 EXPORT_SYMBOL_GPL(btintel_download_firmware);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_AUTHOR("Marcel Holtmann <marcel@holtmann.org>");
 MODULE_DESCRIPTION("Bluetooth support for Intel devices ver " VERSION);
 MODULE_VERSION(VERSION);

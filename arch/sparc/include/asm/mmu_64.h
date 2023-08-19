@@ -90,7 +90,6 @@ struct tsb_config {
 #define MM_NUM_TSBS	1
 #endif
 
-<<<<<<< HEAD
 /* ADI tags are stored when a page is swapped out and the storage for
  * tags is allocated dynamically. There is a tag storage descriptor
  * associated with each set of tag storage pages. Tag storage descriptors
@@ -105,8 +104,6 @@ typedef struct {
 	unsigned long	tag_users;	/* number of references to descriptor */
 } tag_storage_desc_t;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 typedef struct {
 	spinlock_t		lock;
 	unsigned long		sparc64_ctx_val;
@@ -114,13 +111,10 @@ typedef struct {
 	unsigned long		thp_pte_count;
 	struct tsb_config	tsb_block[MM_NUM_TSBS];
 	struct hv_tsb_descr	tsb_descr[MM_NUM_TSBS];
-<<<<<<< HEAD
 	void			*vdso;
 	bool			adi;
 	tag_storage_desc_t	*tag_store;
 	spinlock_t		tag_lock;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } mm_context_t;
 
 #endif /* !__ASSEMBLY__ */

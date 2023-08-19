@@ -1556,11 +1556,6 @@ static bool usb_cmd_send_packet(struct ieee80211_hw *hw, struct sk_buff *skb)
    * This is maybe necessary:
    * rtlpriv->cfg->ops->fill_tx_cmddesc(hw, buffer, 1, 1, skb);
    */
-<<<<<<< HEAD
-=======
-	dev_kfree_skb(skb);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return true;
 }
 
@@ -2011,11 +2006,7 @@ static void rtl92cu_update_hal_rate_table(struct ieee80211_hw *hw,
 
 static void rtl92cu_update_hal_rate_mask(struct ieee80211_hw *hw,
 					 struct ieee80211_sta *sta,
-<<<<<<< HEAD
 					 u8 rssi_level, bool update_bw)
-=======
-					 u8 rssi_level)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rtl_priv *rtlpriv = rtl_priv(hw);
 	struct rtl_phy *rtlphy = &(rtlpriv->phy);
@@ -2162,20 +2153,12 @@ static void rtl92cu_update_hal_rate_mask(struct ieee80211_hw *hw,
 
 void rtl92cu_update_hal_rate_tbl(struct ieee80211_hw *hw,
 				 struct ieee80211_sta *sta,
-<<<<<<< HEAD
 				 u8 rssi_level, bool update_bw)
-=======
-				 u8 rssi_level)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rtl_priv *rtlpriv = rtl_priv(hw);
 
 	if (rtlpriv->dm.useramask)
-<<<<<<< HEAD
 		rtl92cu_update_hal_rate_mask(hw, sta, rssi_level, update_bw);
-=======
-		rtl92cu_update_hal_rate_mask(hw, sta, rssi_level);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		rtl92cu_update_hal_rate_table(hw, sta);
 }

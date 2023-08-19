@@ -34,11 +34,7 @@
 #ifndef _ASM_STACKPROTECTOR_H
 #define _ASM_STACKPROTECTOR_H 1
 
-<<<<<<< HEAD
 #ifdef CONFIG_STACKPROTECTOR
-=======
-#ifdef CONFIG_CC_STACKPROTECTOR
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/tsc.h>
 #include <asm/processor.h>
@@ -59,18 +55,8 @@
 /*
  * Initialize the stackprotector canary value.
  *
-<<<<<<< HEAD
  * NOTE: this must only be called from functions that never return,
  * and it must always be inlined.
-=======
- * NOTE: this must only be called from functions that never return
- * and it must always be inlined.
- *
- * In addition, it should be called from a compilation unit for which
- * stack protector is disabled. Alternatively, the caller should not end
- * with a function call which gets tail-call optimized as that would
- * lead to checking a modified canary value.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static __always_inline void boot_init_stack_canary(void)
 {
@@ -119,11 +105,7 @@ static inline void load_stack_canary_segment(void)
 #endif
 }
 
-<<<<<<< HEAD
 #else	/* STACKPROTECTOR */
-=======
-#else	/* CC_STACKPROTECTOR */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define GDT_STACK_CANARY_INIT
 
@@ -139,9 +121,5 @@ static inline void load_stack_canary_segment(void)
 #endif
 }
 
-<<<<<<< HEAD
 #endif	/* STACKPROTECTOR */
-=======
-#endif	/* CC_STACKPROTECTOR */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif	/* _ASM_STACKPROTECTOR_H */

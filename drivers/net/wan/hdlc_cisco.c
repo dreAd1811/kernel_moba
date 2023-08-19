@@ -54,10 +54,7 @@ struct cisco_state {
 	cisco_proto settings;
 
 	struct timer_list timer;
-<<<<<<< HEAD
 	struct net_device *dev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spinlock_t lock;
 	unsigned long last_poll;
 	int up;
@@ -261,18 +258,10 @@ rx_error:
 
 
 
-<<<<<<< HEAD
 static void cisco_timer(struct timer_list *t)
 {
 	struct cisco_state *st = from_timer(st, t, timer);
 	struct net_device *dev = st->dev;
-=======
-static void cisco_timer(unsigned long arg)
-{
-	struct net_device *dev = (struct net_device *)arg;
-	hdlc_device *hdlc = dev_to_hdlc(dev);
-	struct cisco_state *st = state(hdlc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock(&st->lock);
 	if (st->up &&
@@ -287,11 +276,6 @@ static void cisco_timer(unsigned long arg)
 	spin_unlock(&st->lock);
 
 	st->timer.expires = jiffies + st->settings.interval * HZ;
-<<<<<<< HEAD
-=======
-	st->timer.function = cisco_timer;
-	st->timer.data = arg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	add_timer(&st->timer);
 }
 
@@ -307,16 +291,9 @@ static void cisco_start(struct net_device *dev)
 	st->up = st->txseq = st->rxseq = 0;
 	spin_unlock_irqrestore(&st->lock, flags);
 
-<<<<<<< HEAD
 	st->dev = dev;
 	timer_setup(&st->timer, cisco_timer, 0);
 	st->timer.expires = jiffies + HZ; /* First poll after 1 s */
-=======
-	init_timer(&st->timer);
-	st->timer.expires = jiffies + HZ; /* First poll after 1 s */
-	st->timer.function = cisco_timer;
-	st->timer.data = (unsigned long)dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	add_timer(&st->timer);
 }
 

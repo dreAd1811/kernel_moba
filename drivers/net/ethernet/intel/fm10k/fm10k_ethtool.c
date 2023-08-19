@@ -1,47 +1,21 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /* Copyright(c) 2013 - 2018 Intel Corporation. */
-=======
-/* Intel(R) Ethernet Switch Host Interface Driver
- * Copyright(c) 2013 - 2017 Intel Corporation.
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms and conditions of the GNU General Public License,
- * version 2, as published by the Free Software Foundation.
- *
- * This program is distributed in the hope it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
- * more details.
- *
- * The full GNU General Public License is included in this distribution in
- * the file called "COPYING".
- *
- * Contact Information:
- * e1000-devel Mailing List <e1000-devel@lists.sourceforge.net>
- * Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/vmalloc.h>
 
 #include "fm10k.h"
 
 struct fm10k_stats {
-<<<<<<< HEAD
 	/* The stat_string is expected to be a format string formatted using
 	 * vsnprintf by fm10k_add_stat_strings. Every member of a stats array
 	 * should use the same format specifiers as they will be formatted
 	 * using the same variadic arguments.
 	 */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	char stat_string[ETH_GSTRING_LEN];
 	int sizeof_stat;
 	int stat_offset;
 };
 
-<<<<<<< HEAD
 #define FM10K_STAT_FIELDS(_type, _name, _stat) { \
 	.stat_string = _name, \
 	.sizeof_stat = FIELD_SIZEOF(_type, _stat), \
@@ -53,14 +27,6 @@ struct fm10k_stats {
 	FM10K_STAT_FIELDS(struct net_device_stats, __stringify(_net_stat), \
 			  _net_stat)
 
-=======
-#define FM10K_NETDEV_STAT(_net_stat) { \
-	.stat_string = #_net_stat, \
-	.sizeof_stat = FIELD_SIZEOF(struct net_device_stats, _net_stat), \
-	.stat_offset = offsetof(struct net_device_stats, _net_stat) \
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct fm10k_stats fm10k_gstrings_net_stats[] = {
 	FM10K_NETDEV_STAT(tx_packets),
 	FM10K_NETDEV_STAT(tx_bytes),
@@ -78,17 +44,9 @@ static const struct fm10k_stats fm10k_gstrings_net_stats[] = {
 
 #define FM10K_NETDEV_STATS_LEN	ARRAY_SIZE(fm10k_gstrings_net_stats)
 
-<<<<<<< HEAD
 /* General interface statistics */
 #define FM10K_STAT(_name, _stat) \
 	FM10K_STAT_FIELDS(struct fm10k_intfc, _name, _stat)
-=======
-#define FM10K_STAT(_name, _stat) { \
-	.stat_string = _name, \
-	.sizeof_stat = FIELD_SIZEOF(struct fm10k_intfc, _stat), \
-	.stat_offset = offsetof(struct fm10k_intfc, _stat) \
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static const struct fm10k_stats fm10k_gstrings_global_stats[] = {
 	FM10K_STAT("tx_restart_queue", restart_queue),
@@ -125,17 +83,9 @@ static const struct fm10k_stats fm10k_gstrings_pf_stats[] = {
 	FM10K_STAT("nodesc_drop", stats.nodesc_drop.count),
 };
 
-<<<<<<< HEAD
 /* mailbox statistics */
 #define FM10K_MBX_STAT(_name, _stat) \
 	FM10K_STAT_FIELDS(struct fm10k_mbx_info, _name, _stat)
-=======
-#define FM10K_MBX_STAT(_name, _stat) { \
-	.stat_string = _name, \
-	.sizeof_stat = FIELD_SIZEOF(struct fm10k_mbx_info, _stat), \
-	.stat_offset = offsetof(struct fm10k_mbx_info, _stat) \
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static const struct fm10k_stats fm10k_gstrings_mbx_stats[] = {
 	FM10K_MBX_STAT("mbx_tx_busy", tx_busy),
@@ -149,7 +99,6 @@ static const struct fm10k_stats fm10k_gstrings_mbx_stats[] = {
 	FM10K_MBX_STAT("mbx_rx_mbmem_pushed", rx_mbmem_pushed),
 };
 
-<<<<<<< HEAD
 /* per-queue ring statistics */
 #define FM10K_QUEUE_STAT(_name, _stat) \
 	FM10K_STAT_FIELDS(struct fm10k_ring, _name, _stat)
@@ -157,17 +106,6 @@ static const struct fm10k_stats fm10k_gstrings_mbx_stats[] = {
 static const struct fm10k_stats fm10k_gstrings_queue_stats[] = {
 	FM10K_QUEUE_STAT("%s_queue_%u_packets", stats.packets),
 	FM10K_QUEUE_STAT("%s_queue_%u_bytes", stats.bytes),
-=======
-#define FM10K_QUEUE_STAT(_name, _stat) { \
-	.stat_string = _name, \
-	.sizeof_stat = FIELD_SIZEOF(struct fm10k_ring, _stat), \
-	.stat_offset = offsetof(struct fm10k_ring, _stat) \
-}
-
-static const struct fm10k_stats fm10k_gstrings_queue_stats[] = {
-	FM10K_QUEUE_STAT("packets", stats.packets),
-	FM10K_QUEUE_STAT("bytes", stats.bytes),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define FM10K_GLOBAL_STATS_LEN ARRAY_SIZE(fm10k_gstrings_global_stats)
@@ -197,19 +135,12 @@ enum {
 static const char fm10k_prv_flags[FM10K_PRV_FLAG_LEN][ETH_GSTRING_LEN] = {
 };
 
-<<<<<<< HEAD
 static void __fm10k_add_stat_strings(u8 **p, const struct fm10k_stats stats[],
 				     const unsigned int size, ...)
-=======
-static void fm10k_add_stat_strings(u8 **p, const char *prefix,
-				   const struct fm10k_stats stats[],
-				   const unsigned int size)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned int i;
 
 	for (i = 0; i < size; i++) {
-<<<<<<< HEAD
 		va_list args;
 
 		va_start(args, size);
@@ -222,20 +153,11 @@ static void fm10k_add_stat_strings(u8 **p, const char *prefix,
 #define fm10k_add_stat_strings(p, stats, ...) \
 	__fm10k_add_stat_strings(p, stats, ARRAY_SIZE(stats), ## __VA_ARGS__)
 
-=======
-		snprintf(*p, ETH_GSTRING_LEN, "%s%s",
-			 prefix, stats[i].stat_string);
-		*p += ETH_GSTRING_LEN;
-	}
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void fm10k_get_stat_strings(struct net_device *dev, u8 *data)
 {
 	struct fm10k_intfc *interface = netdev_priv(dev);
 	unsigned int i;
 
-<<<<<<< HEAD
 	fm10k_add_stat_strings(&data, fm10k_gstrings_net_stats);
 
 	fm10k_add_stat_strings(&data, fm10k_gstrings_global_stats);
@@ -251,33 +173,6 @@ static void fm10k_get_stat_strings(struct net_device *dev, u8 *data)
 
 		fm10k_add_stat_strings(&data, fm10k_gstrings_queue_stats,
 				       "rx", i);
-=======
-	fm10k_add_stat_strings(&data, "", fm10k_gstrings_net_stats,
-			       FM10K_NETDEV_STATS_LEN);
-
-	fm10k_add_stat_strings(&data, "", fm10k_gstrings_global_stats,
-			       FM10K_GLOBAL_STATS_LEN);
-
-	fm10k_add_stat_strings(&data, "", fm10k_gstrings_mbx_stats,
-			       FM10K_MBX_STATS_LEN);
-
-	if (interface->hw.mac.type != fm10k_mac_vf)
-		fm10k_add_stat_strings(&data, "", fm10k_gstrings_pf_stats,
-				       FM10K_PF_STATS_LEN);
-
-	for (i = 0; i < interface->hw.mac.max_queues; i++) {
-		char prefix[ETH_GSTRING_LEN];
-
-		snprintf(prefix, ETH_GSTRING_LEN, "tx_queue_%u_", i);
-		fm10k_add_stat_strings(&data, prefix,
-				       fm10k_gstrings_queue_stats,
-				       FM10K_QUEUE_STATS_LEN);
-
-		snprintf(prefix, ETH_GSTRING_LEN, "rx_queue_%u_", i);
-		fm10k_add_stat_strings(&data, prefix,
-				       fm10k_gstrings_queue_stats,
-				       FM10K_QUEUE_STATS_LEN);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -322,15 +217,9 @@ static int fm10k_get_sset_count(struct net_device *dev, int sset)
 	}
 }
 
-<<<<<<< HEAD
 static void __fm10k_add_ethtool_stats(u64 **data, void *pointer,
 				      const struct fm10k_stats stats[],
 				      const unsigned int size)
-=======
-static void fm10k_add_ethtool_stats(u64 **data, void *pointer,
-				    const struct fm10k_stats stats[],
-				    const unsigned int size)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned int i;
 	char *p;
@@ -359,22 +248,16 @@ static void fm10k_add_ethtool_stats(u64 **data, void *pointer,
 			*((*data)++) = *(u8 *)p;
 			break;
 		default:
-<<<<<<< HEAD
 			WARN_ONCE(1, "unexpected stat size for %s",
 				  stats[i].stat_string);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			*((*data)++) = 0;
 		}
 	}
 }
 
-<<<<<<< HEAD
 #define fm10k_add_ethtool_stats(data, pointer, stats) \
 	__fm10k_add_ethtool_stats(data, pointer, stats, ARRAY_SIZE(stats))
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void fm10k_get_ethtool_stats(struct net_device *netdev,
 				    struct ethtool_stats __always_unused *stats,
 				    u64 *data)
@@ -385,7 +268,6 @@ static void fm10k_get_ethtool_stats(struct net_device *netdev,
 
 	fm10k_update_stats(interface);
 
-<<<<<<< HEAD
 	fm10k_add_ethtool_stats(&data, net_stats, fm10k_gstrings_net_stats);
 
 	fm10k_add_ethtool_stats(&data, interface, fm10k_gstrings_global_stats);
@@ -396,22 +278,6 @@ static void fm10k_get_ethtool_stats(struct net_device *netdev,
 	if (interface->hw.mac.type != fm10k_mac_vf) {
 		fm10k_add_ethtool_stats(&data, interface,
 					fm10k_gstrings_pf_stats);
-=======
-	fm10k_add_ethtool_stats(&data, net_stats, fm10k_gstrings_net_stats,
-				FM10K_NETDEV_STATS_LEN);
-
-	fm10k_add_ethtool_stats(&data, interface, fm10k_gstrings_global_stats,
-				FM10K_GLOBAL_STATS_LEN);
-
-	fm10k_add_ethtool_stats(&data, &interface->hw.mbx,
-				fm10k_gstrings_mbx_stats,
-				FM10K_MBX_STATS_LEN);
-
-	if (interface->hw.mac.type != fm10k_mac_vf) {
-		fm10k_add_ethtool_stats(&data, interface,
-					fm10k_gstrings_pf_stats,
-					FM10K_PF_STATS_LEN);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	for (i = 0; i < interface->hw.mac.max_queues; i++) {
@@ -419,21 +285,11 @@ static void fm10k_get_ethtool_stats(struct net_device *netdev,
 
 		ring = interface->tx_ring[i];
 		fm10k_add_ethtool_stats(&data, ring,
-<<<<<<< HEAD
 					fm10k_gstrings_queue_stats);
 
 		ring = interface->rx_ring[i];
 		fm10k_add_ethtool_stats(&data, ring,
 					fm10k_gstrings_queue_stats);
-=======
-					fm10k_gstrings_queue_stats,
-					FM10K_QUEUE_STATS_LEN);
-
-		ring = interface->rx_ring[i];
-		fm10k_add_ethtool_stats(&data, ring,
-					fm10k_gstrings_queue_stats,
-					FM10K_QUEUE_STATS_LEN);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -702,11 +558,7 @@ static int fm10k_set_ringparam(struct net_device *netdev,
 
 	/* allocate temporary buffer to store rings in */
 	i = max_t(int, interface->num_tx_queues, interface->num_rx_queues);
-<<<<<<< HEAD
 	temp_ring = vmalloc(array_size(i, sizeof(struct fm10k_ring)));
-=======
-	temp_ring = vmalloc(i * sizeof(struct fm10k_ring));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!temp_ring) {
 		err = -ENOMEM;

@@ -159,14 +159,9 @@ Start_ISAC:
 }
 
 static void
-<<<<<<< HEAD
 SaphirWatchDog(struct timer_list *t)
 {
 	struct IsdnCardState *cs = from_timer(cs, t, hw.saphir.timer);
-=======
-SaphirWatchDog(struct IsdnCardState *cs)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u_long flags;
 
 	spin_lock_irqsave(&cs->lock, flags);
@@ -274,13 +269,7 @@ int setup_saphir(struct IsdnCard *card)
 	       cs->irq, cs->hw.saphir.cfg_reg);
 
 	setup_isac(cs);
-<<<<<<< HEAD
 	timer_setup(&cs->hw.saphir.timer, SaphirWatchDog, 0);
-=======
-	cs->hw.saphir.timer.function = (void *) SaphirWatchDog;
-	cs->hw.saphir.timer.data = (long) cs;
-	init_timer(&cs->hw.saphir.timer);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cs->hw.saphir.timer.expires = jiffies + 4 * HZ;
 	add_timer(&cs->hw.saphir.timer);
 	if (saphir_reset(cs)) {

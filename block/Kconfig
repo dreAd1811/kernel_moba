@@ -114,11 +114,7 @@ config BLK_DEV_THROTTLING
 	one needs to mount and use blkio cgroup controller for creating
 	cgroups and specifying per device IO rate policies.
 
-<<<<<<< HEAD
 	See Documentation/cgroup-v1/blkio-controller.txt for more information.
-=======
-	See Documentation/cgroups/blkio-controller.txt for more information.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config BLK_DEV_THROTTLING_LOW
 	bool "Block throttling .low limit interface support (EXPERIMENTAL)"
@@ -153,7 +149,6 @@ config BLK_WBT
 	dynamically on an algorithm loosely based on CoDel, factoring in
 	the realtime performance of the disk.
 
-<<<<<<< HEAD
 config BLK_CGROUP_IOLATENCY
 	bool "Enable support for latency based cgroup IO protection"
 	depends on BLK_CGROUP=y
@@ -166,8 +161,6 @@ config BLK_CGROUP_IOLATENCY
 
 	Note, this is an experimental interface and could be changed someday.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config BLK_WBT_SQ
 	bool "Single queue writeback throttling"
 	default n
@@ -196,13 +189,10 @@ config BLK_DEBUG_FS
 	Unless you are building a kernel for a tiny system, you should
 	say Y here.
 
-<<<<<<< HEAD
 config BLK_DEBUG_FS_ZONED
        bool
        default BLK_DEBUG_FS && BLK_DEV_ZONED
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config BLK_SED_OPAL
 	bool "Logic for interfacing with Opal enabled SEDs"
 	---help---
@@ -210,26 +200,6 @@ config BLK_SED_OPAL
 	Enabling this option enables users to setup/unlock/lock
 	Locking ranges for SED devices using the Opal protocol.
 
-<<<<<<< HEAD
-=======
-config BLK_INLINE_ENCRYPTION
-	bool "Enable inline encryption support in block layer"
-	help
-	  Build the blk-crypto subsystem. Enabling this lets the
-	  block layer handle encryption, so users can take
-	  advantage of inline encryption hardware if present.
-
-config BLK_INLINE_ENCRYPTION_FALLBACK
-	bool "Enable crypto API fallback for blk-crypto"
-	depends on BLK_INLINE_ENCRYPTION
-	select CRYPTO
-	select CRYPTO_BLKCIPHER
-	help
-	  Enabling this lets the block layer handle inline encryption
-	  by falling back to the kernel crypto API when inline
-	  encryption hardware is not present.
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 menu "Partition Types"
 
 source "block/partitions/Kconfig"

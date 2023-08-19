@@ -236,11 +236,7 @@ void ath10k_pci_hif_power_down(struct ath10k *ar);
 int ath10k_pci_alloc_pipes(struct ath10k *ar);
 void ath10k_pci_free_pipes(struct ath10k *ar);
 void ath10k_pci_free_pipes(struct ath10k *ar);
-<<<<<<< HEAD
 void ath10k_pci_rx_replenish_retry(struct timer_list *t);
-=======
-void ath10k_pci_rx_replenish_retry(unsigned long ptr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void ath10k_pci_ce_deinit(struct ath10k *ar);
 void ath10k_pci_init_napi(struct ath10k *ar);
 int ath10k_pci_init_pipes(struct ath10k *ar);

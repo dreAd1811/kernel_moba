@@ -184,11 +184,7 @@ is done when dirty_ratio is reached.
 DO_CPU:
 
 Enable CPU frequency scaling when in laptop mode. (Requires CPUFreq to be setup.
-<<<<<<< HEAD
 See Documentation/admin-guide/pm/cpufreq.rst for more info. Disabled by default.)
-=======
-See Documentation/cpu-freq/user-guide.txt for more info. Disabled by default.)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 CPU_MAXFREQ:
 
@@ -291,11 +287,7 @@ MINIMUM_BATTERY_MINUTES=10
 
 # Should the maximum CPU frequency be adjusted down while on battery?
 # Requires CPUFreq to be setup.
-<<<<<<< HEAD
 # See Documentation/admin-guide/pm/cpufreq.rst for more info
-=======
-# See Documentation/cpu-freq/user-guide.txt for more info
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #DO_CPU=0
 
 # When on battery what is the maximum CPU speed that the system should
@@ -386,11 +378,7 @@ BATT_HD=${BATT_HD:-'4'}
 DIRTY_RATIO=${DIRTY_RATIO:-'40'}
 
 # cpu frequency scaling
-<<<<<<< HEAD
 # See Documentation/admin-guide/pm/cpufreq.rst for more info
-=======
-# See Documentation/cpu-freq/user-guide.txt for more info
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 DO_CPU=${CPU_MANAGE:-'0'}
 CPU_MAXFREQ=${CPU_MAXFREQ:-'slowest'}
 

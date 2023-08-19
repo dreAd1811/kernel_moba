@@ -67,10 +67,7 @@
 #include <asm/init.h>
 #include <asm/pat.h>
 #include <asm/smp.h>
-<<<<<<< HEAD
 #include <asm/tlb.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/xen/hypercall.h>
 #include <asm/xen/hypervisor.h>
@@ -120,11 +117,8 @@ DEFINE_PER_CPU(unsigned long, xen_current_cr3);	 /* actual vcpu cr3 */
 
 static phys_addr_t xen_pt_base, xen_pt_size __initdata;
 
-<<<<<<< HEAD
 static DEFINE_STATIC_KEY_FALSE(xen_struct_pages_ready);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Just beyond the highest usermode address.  STACK_TOP_MAX has a
  * redzone above it, so round it up to a PGD boundary.
@@ -164,7 +158,6 @@ void make_lowmem_page_readwrite(void *vaddr)
 }
 
 
-<<<<<<< HEAD
 /*
  * During early boot all page table pages are pinned, but we do not have struct
  * pages, so return true until struct pages are ready.
@@ -177,13 +170,6 @@ static bool xen_page_pinned(void *ptr)
 		return PagePinned(page);
 	}
 	return true;
-=======
-static bool xen_page_pinned(void *ptr)
-{
-	struct page *page = virt_to_page(ptr);
-
-	return PagePinned(page);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void xen_extend_mmu_update(const struct mmu_update *update)
@@ -339,11 +325,7 @@ void xen_ptep_modify_prot_commit(struct mm_struct *mm, unsigned long addr,
 static pteval_t pte_mfn_to_pfn(pteval_t val)
 {
 	if (val & _PAGE_PRESENT) {
-<<<<<<< HEAD
 		unsigned long mfn = (val & XEN_PTE_MFN_MASK) >> PAGE_SHIFT;
-=======
-		unsigned long mfn = (val & PTE_PFN_MASK) >> PAGE_SHIFT;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		unsigned long pfn = mfn_to_pfn(mfn);
 
 		pteval_t flags = val & PTE_FLAGS_MASK;
@@ -565,7 +547,6 @@ static void xen_set_p4d(p4d_t *ptr, p4d_t val)
 
 	xen_mc_issue(PARAVIRT_LAZY_MMU);
 }
-<<<<<<< HEAD
 
 #if CONFIG_PGTABLE_LEVELS >= 5
 __visible p4dval_t xen_p4d_val(p4d_t p4d)
@@ -582,8 +563,6 @@ __visible p4d_t xen_make_p4d(p4dval_t p4d)
 }
 PV_CALLEE_SAVE_REGS_THUNK(xen_make_p4d);
 #endif  /* CONFIG_PGTABLE_LEVELS >= 5 */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif	/* CONFIG_X86_64 */
 
 static int xen_pmd_walk(struct mm_struct *mm, pmd_t *pmd,
@@ -867,14 +846,6 @@ void xen_mm_pin_all(void)
 	spin_unlock(&pgd_lock);
 }
 
-<<<<<<< HEAD
-=======
-/*
- * The init_mm pagetable is really pinned as soon as its created, but
- * that's before we have page structures to store the bits.  So do all
- * the book-keeping now.
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __init xen_mark_pinned(struct mm_struct *mm, struct page *page,
 				  enum pt_level level)
 {
@@ -882,7 +853,6 @@ static int __init xen_mark_pinned(struct mm_struct *mm, struct page *page,
 	return 0;
 }
 
-<<<<<<< HEAD
 /*
  * The init_mm pagetable is really pinned as soon as its created, but
  * that's before we have page structures to store the bits.  So do all
@@ -895,10 +865,6 @@ static void __init xen_after_bootmem(void)
 #ifdef CONFIG_X86_64
 	SetPagePinned(virt_to_page(level3_user_vsyscall));
 #endif
-=======
-static void __init xen_mark_init_mm_pinned(void)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	xen_pgd_walk(&init_mm, xen_mark_pinned, FIXADDR_TOP);
 }
 
@@ -1265,12 +1231,7 @@ static void __init xen_pagetable_p2m_free(void)
 	 * We roundup to the PMD, which means that if anybody at this stage is
 	 * using the __ka address of xen_start_info or
 	 * xen_start_info->shared_info they are in going to crash. Fortunatly
-<<<<<<< HEAD
 	 * we have already revectored in xen_setup_kernel_pagetable.
-=======
-	 * we have already revectored in xen_setup_kernel_pagetable and in
-	 * xen_setup_shared_info.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	size = roundup(size, PMD_SIZE);
 
@@ -1331,12 +1292,7 @@ static void __init xen_pagetable_init(void)
 
 	/* Remap memory freed due to conflicts with E820 map */
 	xen_remap_memory();
-<<<<<<< HEAD
 	xen_setup_mfn_list_list();
-=======
-
-	xen_setup_shared_info();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 static void xen_write_cr2(unsigned long cr2)
 {
@@ -1396,32 +1352,18 @@ static void xen_flush_tlb_others(const struct cpumask *cpus,
 {
 	struct {
 		struct mmuext_op op;
-<<<<<<< HEAD
 		DECLARE_BITMAP(mask, NR_CPUS);
 	} *args;
 	struct multicall_space mcs;
 	const size_t mc_entry_size = sizeof(args->op) +
 		sizeof(args->mask[0]) * BITS_TO_LONGS(num_possible_cpus());
-=======
-#ifdef CONFIG_SMP
-		DECLARE_BITMAP(mask, num_processors);
-#else
-		DECLARE_BITMAP(mask, NR_CPUS);
-#endif
-	} *args;
-	struct multicall_space mcs;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	trace_xen_mmu_flush_tlb_others(cpus, info->mm, info->start, info->end);
 
 	if (cpumask_empty(cpus))
 		return;		/* nothing to do */
 
-<<<<<<< HEAD
 	mcs = xen_mc_entry(mc_entry_size);
-=======
-	mcs = xen_mc_entry(sizeof(*args));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	args = mcs.args;
 	args->op.arg2.vcpumask = to_cpumask(args->mask);
 
@@ -1692,23 +1634,15 @@ static inline void __set_pfn_prot(unsigned long pfn, pgprot_t prot)
 static inline void xen_alloc_ptpage(struct mm_struct *mm, unsigned long pfn,
 				    unsigned level)
 {
-<<<<<<< HEAD
 	bool pinned = xen_page_pinned(mm->pgd);
-=======
-	bool pinned = PagePinned(virt_to_page(mm->pgd));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	trace_xen_mmu_alloc_ptpage(mm, pfn, level, pinned);
 
 	if (pinned) {
 		struct page *page = pfn_to_page(pfn);
 
-<<<<<<< HEAD
 		if (static_branch_likely(&xen_struct_pages_ready))
 			SetPagePinned(page);
-=======
-		SetPagePinned(page);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (!PageHighMem(page)) {
 			xen_mc_batch();
@@ -1813,11 +1747,7 @@ static unsigned long __init m2p(phys_addr_t maddr)
 {
 	phys_addr_t paddr;
 
-<<<<<<< HEAD
 	maddr &= XEN_PTE_MFN_MASK;
-=======
-	maddr &= PTE_PFN_MASK;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	paddr = mfn_to_pfn(maddr >> PAGE_SHIFT) << PAGE_SHIFT;
 
 	return paddr;
@@ -2135,10 +2065,6 @@ void __init xen_relocate_p2m(void)
 	pud_t *pud;
 	pgd_t *pgd;
 	unsigned long *new_p2m;
-<<<<<<< HEAD
-=======
-	int save_pud;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	size = PAGE_ALIGN(xen_start_info->nr_pages * sizeof(unsigned long));
 	n_pte = roundup(size, PAGE_SIZE) >> PAGE_SHIFT;
@@ -2168,10 +2094,6 @@ void __init xen_relocate_p2m(void)
 
 	pgd = __va(read_cr3_pa());
 	new_p2m = (unsigned long *)(2 * PGDIR_SIZE);
-<<<<<<< HEAD
-=======
-	save_pud = n_pud;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (idx_pud = 0; idx_pud < n_pud; idx_pud++) {
 		pud = early_memremap(pud_phys, PAGE_SIZE);
 		clear_page(pud);
@@ -2251,11 +2173,8 @@ void __init xen_relocate_p2m(void)
 #else	/* !CONFIG_X86_64 */
 static RESERVE_BRK_ARRAY(pmd_t, initial_kernel_pmd, PTRS_PER_PMD);
 static RESERVE_BRK_ARRAY(pmd_t, swapper_kernel_pmd, PTRS_PER_PMD);
-<<<<<<< HEAD
 RESERVE_BRK(fixup_kernel_pmd, PAGE_SIZE);
 RESERVE_BRK(fixup_kernel_pte, PAGE_SIZE);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void __init xen_write_cr3_init(unsigned long cr3)
 {
@@ -2460,13 +2379,7 @@ static void __init xen_post_allocator_init(void)
 
 #ifdef CONFIG_X86_64
 	pv_mmu_ops.write_cr3 = &xen_write_cr3;
-<<<<<<< HEAD
 #endif
-=======
-	SetPagePinned(virt_to_page(level3_user_vsyscall));
-#endif
-	xen_mark_init_mm_pinned();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void xen_leave_lazy_mmu(void)
@@ -2488,10 +2401,7 @@ static const struct pv_mmu_ops xen_mmu_ops __initconst = {
 	.flush_tlb_kernel = xen_flush_tlb,
 	.flush_tlb_one_user = xen_flush_tlb_one_user,
 	.flush_tlb_others = xen_flush_tlb_others,
-<<<<<<< HEAD
 	.tlb_remove_table = tlb_remove_table,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	.pgd_alloc = xen_pgd_alloc,
 	.pgd_free = xen_pgd_free,
@@ -2531,14 +2441,11 @@ static const struct pv_mmu_ops xen_mmu_ops __initconst = {
 
 	.alloc_pud = xen_alloc_pmd_init,
 	.release_pud = xen_release_pmd_init,
-<<<<<<< HEAD
 
 #if CONFIG_PGTABLE_LEVELS >= 5
 	.p4d_val = PV_CALLEE_SAVE(xen_p4d_val),
 	.make_p4d = PV_CALLEE_SAVE(xen_make_p4d),
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif	/* CONFIG_X86_64 */
 
 	.activate_mm = xen_activate_mm,
@@ -2557,10 +2464,7 @@ static const struct pv_mmu_ops xen_mmu_ops __initconst = {
 void __init xen_init_mmu_ops(void)
 {
 	x86_init.paging.pagetable_init = xen_pagetable_init;
-<<<<<<< HEAD
 	x86_init.hyper.init_after_bootmem = xen_after_bootmem;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pv_mmu_ops = xen_mmu_ops;
 

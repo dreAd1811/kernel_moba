@@ -14,7 +14,6 @@
 #include <linux/i2c.h>
 #include <linux/slab.h>
 #include <linux/of.h>
-<<<<<<< HEAD
 #include <linux/regmap.h>
 
 #include "st_lsm6dsx.h"
@@ -22,55 +21,11 @@
 static const struct regmap_config st_lsm6dsx_i2c_regmap_config = {
 	.reg_bits = 8,
 	.val_bits = 8,
-=======
-
-#include "st_lsm6dsx.h"
-
-static int st_lsm6dsx_i2c_read(struct device *dev, u8 addr, int len, u8 *data)
-{
-	struct i2c_client *client = to_i2c_client(dev);
-	struct i2c_msg msg[2];
-
-	msg[0].addr = client->addr;
-	msg[0].flags = client->flags;
-	msg[0].len = 1;
-	msg[0].buf = &addr;
-
-	msg[1].addr = client->addr;
-	msg[1].flags = client->flags | I2C_M_RD;
-	msg[1].len = len;
-	msg[1].buf = data;
-
-	return i2c_transfer(client->adapter, msg, 2);
-}
-
-static int st_lsm6dsx_i2c_write(struct device *dev, u8 addr, int len, u8 *data)
-{
-	struct i2c_client *client = to_i2c_client(dev);
-	struct i2c_msg msg;
-	u8 send[len + 1];
-
-	send[0] = addr;
-	memcpy(&send[1], data, len * sizeof(u8));
-
-	msg.addr = client->addr;
-	msg.flags = client->flags;
-	msg.len = len + 1;
-	msg.buf = send;
-
-	return i2c_transfer(client->adapter, &msg, 1);
-}
-
-static const struct st_lsm6dsx_transfer_function st_lsm6dsx_transfer_fn = {
-	.read = st_lsm6dsx_i2c_read,
-	.write = st_lsm6dsx_i2c_write,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int st_lsm6dsx_i2c_probe(struct i2c_client *client,
 				const struct i2c_device_id *id)
 {
-<<<<<<< HEAD
 	int hw_id = id->driver_data;
 	struct regmap *regmap;
 
@@ -83,11 +38,6 @@ static int st_lsm6dsx_i2c_probe(struct i2c_client *client,
 
 	return st_lsm6dsx_probe(&client->dev, client->irq,
 				hw_id, id->name, regmap);
-=======
-	return st_lsm6dsx_probe(&client->dev, client->irq,
-				(int)id->driver_data, id->name,
-				&st_lsm6dsx_transfer_fn);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct of_device_id st_lsm6dsx_i2c_of_match[] = {
@@ -107,13 +57,10 @@ static const struct of_device_id st_lsm6dsx_i2c_of_match[] = {
 		.compatible = "st,lsm6dsm",
 		.data = (void *)ST_LSM6DSM_ID,
 	},
-<<<<<<< HEAD
 	{
 		.compatible = "st,ism330dlc",
 		.data = (void *)ST_ISM330DLC_ID,
 	},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{},
 };
 MODULE_DEVICE_TABLE(of, st_lsm6dsx_i2c_of_match);
@@ -123,10 +70,7 @@ static const struct i2c_device_id st_lsm6dsx_i2c_id_table[] = {
 	{ ST_LSM6DS3H_DEV_NAME, ST_LSM6DS3H_ID },
 	{ ST_LSM6DSL_DEV_NAME, ST_LSM6DSL_ID },
 	{ ST_LSM6DSM_DEV_NAME, ST_LSM6DSM_ID },
-<<<<<<< HEAD
 	{ ST_ISM330DLC_DEV_NAME, ST_ISM330DLC_ID },
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{},
 };
 MODULE_DEVICE_TABLE(i2c, st_lsm6dsx_i2c_id_table);

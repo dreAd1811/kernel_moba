@@ -8,10 +8,7 @@
 #define _ASM_S390_UNISTD_H_
 
 #include <uapi/asm/unistd.h>
-<<<<<<< HEAD
 #include <asm/unistd_nr.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define __IGNORE_time
 #define __IGNORE_pkey_mprotect

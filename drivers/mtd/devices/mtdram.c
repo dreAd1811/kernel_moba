@@ -13,10 +13,7 @@
 #include <linux/slab.h>
 #include <linux/ioport.h>
 #include <linux/vmalloc.h>
-<<<<<<< HEAD
 #include <linux/mm.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/init.h>
 #include <linux/mtd/mtd.h>
 #include <linux/mtd/mtdram.h>
@@ -63,12 +60,7 @@ static int ram_erase(struct mtd_info *mtd, struct erase_info *instr)
 	if (check_offs_len(mtd, instr->addr, instr->len))
 		return -EINVAL;
 	memset((char *)mtd->priv + instr->addr, 0xff, instr->len);
-<<<<<<< HEAD
 
-=======
-	instr->state = MTD_ERASE_DONE;
-	mtd_erase_callback(instr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -77,7 +69,6 @@ static int ram_point(struct mtd_info *mtd, loff_t from, size_t len,
 {
 	*virt = mtd->priv + from;
 	*retlen = len;
-<<<<<<< HEAD
 
 	if (phys) {
 		/* limit retlen to the number of contiguous physical pages */
@@ -99,8 +90,6 @@ static int ram_point(struct mtd_info *mtd, loff_t from, size_t len,
 		}
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -109,22 +98,6 @@ static int ram_unpoint(struct mtd_info *mtd, loff_t from, size_t len)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-/*
- * Allow NOMMU mmap() to directly map the device (if not NULL)
- * - return the address to which the offset maps
- * - return -ENOSYS to indicate refusal to do the mapping
- */
-static unsigned long ram_get_unmapped_area(struct mtd_info *mtd,
-					   unsigned long len,
-					   unsigned long offset,
-					   unsigned long flags)
-{
-	return (unsigned long) mtd->priv + offset;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ram_read(struct mtd_info *mtd, loff_t from, size_t len,
 		size_t *retlen, u_char *buf)
 {
@@ -169,10 +142,6 @@ int mtdram_init_device(struct mtd_info *mtd, void *mapped_address,
 	mtd->_erase = ram_erase;
 	mtd->_point = ram_point;
 	mtd->_unpoint = ram_unpoint;
-<<<<<<< HEAD
-=======
-	mtd->_get_unmapped_area = ram_get_unmapped_area;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mtd->_read = ram_read;
 	mtd->_write = ram_write;
 

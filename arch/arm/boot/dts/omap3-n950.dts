@@ -51,7 +51,6 @@
 	};
 };
 
-<<<<<<< HEAD
 &omap3_pmx_core {
 	dsi_pins: pinmux_dsi_pins {
 		pinctrl-single,pins = <
@@ -72,8 +71,6 @@
 	};
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &i2c2 {
 	smia_1: camera@10 {
 		compatible = "nokia,smia";
@@ -83,10 +80,7 @@
 		clocks = <&isp 0>;
 		clock-frequency = <9600000>;
 		nokia,nvm-size = <(16 * 64)>;
-<<<<<<< HEAD
 		flash-leds = <&as3645a_flash &as3645a_indicator>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		port {
 			smia_1_1: endpoint {
 				link-frequencies = /bits/ 64 <210000000 333600000 398400000>;
@@ -212,7 +206,6 @@
 	st,max-limit-y = <32>;
 	st,max-limit-z = <32>;
 };
-<<<<<<< HEAD
 
 &dss {
 	status = "ok";
@@ -281,5 +274,3 @@
 		};
 	};
 };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

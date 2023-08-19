@@ -66,7 +66,6 @@ static struct bin_attribute firmware_attr = {
 	.mmap = NULL,
 };
 
-<<<<<<< HEAD
 static int mmio_snapshot_handler(struct intel_gvt *gvt, u32 offset, void *data)
 {
 	struct drm_i915_private *dev_priv = gvt->dev_priv;
@@ -79,26 +78,11 @@ static int expose_firmware_sysfs(struct intel_gvt *gvt)
 {
 	struct intel_gvt_device_info *info = &gvt->device_info;
 	struct pci_dev *pdev = gvt->dev_priv->drm.pdev;
-=======
-static int expose_firmware_sysfs(struct intel_gvt *gvt)
-{
-	struct drm_i915_private *dev_priv = gvt->dev_priv;
-	struct intel_gvt_device_info *info = &gvt->device_info;
-	struct pci_dev *pdev = gvt->dev_priv->drm.pdev;
-	struct intel_gvt_mmio_info *e;
-	struct gvt_mmio_block *block = gvt->mmio.mmio_block;
-	int num = gvt->mmio.num_mmio_block;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct gvt_firmware_header *h;
 	void *firmware;
 	void *p;
 	unsigned long size, crc32_start;
-<<<<<<< HEAD
 	int i, ret;
-=======
-	int i, j;
-	int ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	size = sizeof(*h) + info->mmio_size + info->cfg_space_size;
 	firmware = vzalloc(size);
@@ -123,20 +107,8 @@ static int expose_firmware_sysfs(struct intel_gvt *gvt)
 
 	p = firmware + h->mmio_offset;
 
-<<<<<<< HEAD
 	/* Take a snapshot of hw mmio registers. */
 	intel_gvt_for_each_tracked_mmio(gvt, mmio_snapshot_handler, p);
-=======
-	hash_for_each(gvt->mmio.mmio_info_table, i, e, node)
-		*(u32 *)(p + e->offset) = I915_READ_NOTRACE(_MMIO(e->offset));
-
-	for (i = 0; i < num; i++, block++) {
-		for (j = 0; j < block->size; j += 4)
-			*(u32 *)(p + INTEL_GVT_MMIO_OFFSET(block->offset) + j) =
-				I915_READ_NOTRACE(_MMIO(INTEL_GVT_MMIO_OFFSET(
-							block->offset) + j));
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memcpy(gvt->firmware.mmio, p, info->mmio_size);
 
@@ -190,11 +162,7 @@ static int verify_firmware(struct intel_gvt *gvt,
 
 	h = (struct gvt_firmware_header *)fw->data;
 
-<<<<<<< HEAD
 	crc32_start = offsetofend(struct gvt_firmware_header, crc32);
-=======
-	crc32_start = offsetof(struct gvt_firmware_header, crc32) + 4;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mem = fw->data + crc32_start;
 
 #define VERIFY(s, a, b) do { \

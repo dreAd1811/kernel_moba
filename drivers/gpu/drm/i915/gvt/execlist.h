@@ -37,13 +37,6 @@
 
 struct execlist_ctx_descriptor_format {
 	union {
-<<<<<<< HEAD
-=======
-		u32 udw;
-		u32 context_id;
-	};
-	union {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u32 ldw;
 		struct {
 			u32 valid                  : 1;
@@ -57,13 +50,10 @@ struct execlist_ctx_descriptor_format {
 			u32 lrca                   : 20;
 		};
 	};
-<<<<<<< HEAD
 	union {
 		u32 udw;
 		u32 context_id;
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct execlist_status_format {
@@ -156,22 +146,11 @@ struct execlist_ring_context {
 	u32 nop4;
 	u32 lri_cmd_2;
 	struct execlist_mmio_pair ctx_timestamp;
-<<<<<<< HEAD
 	/*
 	 * pdps[8]={ pdp3_UDW, pdp3_LDW, pdp2_UDW, pdp2_LDW,
 	 *           pdp1_UDW, pdp1_LDW, pdp0_UDW, pdp0_LDW}
 	 */
 	struct execlist_mmio_pair pdps[8];
-=======
-	struct execlist_mmio_pair pdp3_UDW;
-	struct execlist_mmio_pair pdp3_LDW;
-	struct execlist_mmio_pair pdp2_UDW;
-	struct execlist_mmio_pair pdp2_LDW;
-	struct execlist_mmio_pair pdp1_UDW;
-	struct execlist_mmio_pair pdp1_LDW;
-	struct execlist_mmio_pair pdp0_UDW;
-	struct execlist_mmio_pair pdp0_LDW;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct intel_vgpu_elsp_dwords {

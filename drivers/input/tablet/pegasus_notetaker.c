@@ -41,10 +41,7 @@
 #include <linux/usb/input.h>
 #include <linux/slab.h>
 #include <linux/workqueue.h>
-<<<<<<< HEAD
 #include <linux/mutex.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* USB HID defines */
 #define USB_REQ_GET_REPORT		0x01
@@ -80,14 +77,11 @@ struct pegasus {
 	struct usb_device *usbdev;
 	struct usb_interface *intf;
 	struct urb *irq;
-<<<<<<< HEAD
 
 	/* serialize access to open/suspend */
 	struct mutex pm_mutex;
 	bool is_open;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	char name[128];
 	char phys[64];
 	struct work_struct init;
@@ -228,10 +222,7 @@ static int pegasus_open(struct input_dev *dev)
 	if (error)
 		return error;
 
-<<<<<<< HEAD
 	mutex_lock(&pegasus->pm_mutex);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pegasus->irq->dev = pegasus->usbdev;
 	if (usb_submit_urb(pegasus->irq, GFP_KERNEL)) {
 		error = -EIO;
@@ -242,21 +233,15 @@ static int pegasus_open(struct input_dev *dev)
 	if (error)
 		goto err_kill_urb;
 
-<<<<<<< HEAD
 	pegasus->is_open = true;
 	mutex_unlock(&pegasus->pm_mutex);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 err_kill_urb:
 	usb_kill_urb(pegasus->irq);
 	cancel_work_sync(&pegasus->init);
 err_autopm_put:
-<<<<<<< HEAD
 	mutex_unlock(&pegasus->pm_mutex);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	usb_autopm_put_interface(pegasus->intf);
 	return error;
 }
@@ -265,17 +250,12 @@ static void pegasus_close(struct input_dev *dev)
 {
 	struct pegasus *pegasus = input_get_drvdata(dev);
 
-<<<<<<< HEAD
 	mutex_lock(&pegasus->pm_mutex);
 	usb_kill_urb(pegasus->irq);
 	cancel_work_sync(&pegasus->init);
 	pegasus->is_open = false;
 	mutex_unlock(&pegasus->pm_mutex);
 
-=======
-	usb_kill_urb(pegasus->irq);
-	cancel_work_sync(&pegasus->init);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	usb_autopm_put_interface(pegasus->intf);
 }
 
@@ -294,11 +274,7 @@ static int pegasus_probe(struct usb_interface *intf,
 		return -ENODEV;
 
 	/* Sanity check that the device has an endpoint */
-<<<<<<< HEAD
 	if (intf->altsetting[0].desc.bNumEndpoints < 1) {
-=======
-	if (intf->cur_altsetting->desc.bNumEndpoints < 1) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(&intf->dev, "Invalid number of endpoints\n");
 		return -EINVAL;
 	}
@@ -312,11 +288,8 @@ static int pegasus_probe(struct usb_interface *intf,
 		goto err_free_mem;
 	}
 
-<<<<<<< HEAD
 	mutex_init(&pegasus->pm_mutex);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pegasus->usbdev = dev;
 	pegasus->dev = input_dev;
 	pegasus->intf = intf;
@@ -431,17 +404,10 @@ static int pegasus_suspend(struct usb_interface *intf, pm_message_t message)
 {
 	struct pegasus *pegasus = usb_get_intfdata(intf);
 
-<<<<<<< HEAD
 	mutex_lock(&pegasus->pm_mutex);
 	usb_kill_urb(pegasus->irq);
 	cancel_work_sync(&pegasus->init);
 	mutex_unlock(&pegasus->pm_mutex);
-=======
-	mutex_lock(&pegasus->dev->mutex);
-	usb_kill_urb(pegasus->irq);
-	cancel_work_sync(&pegasus->init);
-	mutex_unlock(&pegasus->dev->mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -451,17 +417,10 @@ static int pegasus_resume(struct usb_interface *intf)
 	struct pegasus *pegasus = usb_get_intfdata(intf);
 	int retval = 0;
 
-<<<<<<< HEAD
 	mutex_lock(&pegasus->pm_mutex);
 	if (pegasus->is_open && usb_submit_urb(pegasus->irq, GFP_NOIO) < 0)
 		retval = -EIO;
 	mutex_unlock(&pegasus->pm_mutex);
-=======
-	mutex_lock(&pegasus->dev->mutex);
-	if (pegasus->dev->users && usb_submit_urb(pegasus->irq, GFP_NOIO) < 0)
-		retval = -EIO;
-	mutex_unlock(&pegasus->dev->mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return retval;
 }
@@ -471,23 +430,14 @@ static int pegasus_reset_resume(struct usb_interface *intf)
 	struct pegasus *pegasus = usb_get_intfdata(intf);
 	int retval = 0;
 
-<<<<<<< HEAD
 	mutex_lock(&pegasus->pm_mutex);
 	if (pegasus->is_open) {
-=======
-	mutex_lock(&pegasus->dev->mutex);
-	if (pegasus->dev->users) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		retval = pegasus_set_mode(pegasus, PEN_MODE_XY,
 					  NOTETAKER_LED_MOUSE);
 		if (!retval && usb_submit_urb(pegasus->irq, GFP_NOIO) < 0)
 			retval = -EIO;
 	}
-<<<<<<< HEAD
 	mutex_unlock(&pegasus->pm_mutex);
-=======
-	mutex_unlock(&pegasus->dev->mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return retval;
 }

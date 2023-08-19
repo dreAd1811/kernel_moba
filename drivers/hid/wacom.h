@@ -205,24 +205,6 @@ static inline void wacom_schedule_work(struct wacom_wac *wacom_wac,
 	}
 }
 
-<<<<<<< HEAD
-=======
-/*
- * Convert a signed 32-bit integer to an unsigned n-bit integer. Undoes
- * the normally-helpful work of 'hid_snto32' for fields that use signed
- * ranges for questionable reasons.
- */
-static inline __u32 wacom_s32tou(s32 value, __u8 n)
-{
-	switch (n) {
-	case 8:  return ((__u8)value);
-	case 16: return ((__u16)value);
-	case 32: return ((__u32)value);
-	}
-	return value & (1 << (n - 1)) ? value & (~(~0U << n)) : value;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern const struct hid_device_id wacom_ids[];
 
 void wacom_wac_irq(struct wacom_wac *wacom_wac, size_t len);

@@ -8,10 +8,7 @@
  * Copyright(c) 2012 - 2014 Intel Corporation. All rights reserved.
  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
-<<<<<<< HEAD
  * Copyright(c) 2018        Intel Corporation
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of version 2 of the GNU General Public License as
@@ -34,10 +31,7 @@
  * Copyright(c) 2012 - 2014 Intel Corporation. All rights reserved.
  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
-<<<<<<< HEAD
  * Copyright(c) 2018        Intel Corporation
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -587,7 +581,6 @@ enum iwl_umac_scan_general_flags {
 	IWL_UMAC_SCAN_GEN_FLAGS_RRM_ENABLED		= BIT(8),
 	IWL_UMAC_SCAN_GEN_FLAGS_MATCH			= BIT(9),
 	IWL_UMAC_SCAN_GEN_FLAGS_EXTENDED_DWELL		= BIT(10),
-<<<<<<< HEAD
 	/* Extended dwell is obselete when adaptive dwell is used, making this
 	 * bit reusable. Hence, probe request defer is used only when adaptive
 	 * dwell is supported. */
@@ -605,10 +598,6 @@ enum iwl_umac_scan_general_flags {
  */
 enum iwl_umac_scan_general_flags2 {
 	IWL_UMAC_SCAN_GEN_FLAGS2_NOTIF_PER_CHNL	= BIT(0),
-=======
-	IWL_UMAC_SCAN_GEN_FLAGS_LMAC2_FRAGMENTED	= BIT(11),
-	IWL_UMAC_SCAN_GEN_FLAGS_ADAPTIVE_DWELL		= BIT(13),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -657,7 +646,6 @@ struct iwl_scan_req_umac_tail {
 } __packed;
 
 /**
-<<<<<<< HEAD
  * struct iwl_scan_umac_chan_param
  * @flags: channel flags &enum iwl_scan_channel_flags
  * @count: num of channels in scan request
@@ -670,8 +658,6 @@ struct iwl_scan_umac_chan_param {
 } __packed; /*SCAN_CHANNEL_PARAMS_API_S_VER_1 */
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * struct iwl_scan_req_umac
  * @flags: &enum iwl_umac_scan_flags
  * @uid: scan id, &enum iwl_umac_scan_uid_offsets
@@ -679,39 +665,24 @@ struct iwl_scan_umac_chan_param {
  * @general_flags: &enum iwl_umac_scan_general_flags
  * @scan_start_mac_id: report the scan start TSF time according to this mac TSF
  * @extended_dwell: dwell time for channels 1, 6 and 11
-<<<<<<< HEAD
  * @active_dwell: dwell time for active scan per LMAC
  * @passive_dwell: dwell time for passive scan per LMAC
-=======
- * @active_dwell: dwell time for active scan
- * @passive_dwell: dwell time for passive scan
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @fragmented_dwell: dwell time for fragmented passive scan
  * @adwell_default_n_aps: for adaptive dwell the default number of APs
  *	per channel
  * @adwell_default_n_aps_social: for adaptive dwell the default
  *	number of APs per social (1,6,11) channel
-<<<<<<< HEAD
  * @general_flags2: &enum iwl_umac_scan_general_flags2
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @adwell_max_budget: for adaptive dwell the maximal budget of TU to be added
  *	to total scan time
  * @max_out_time: max out of serving channel time, per LMAC - for CDB there
  *	are 2 LMACs
  * @suspend_time: max suspend time, per LMAC - for CDB there are 2 LMACs
  * @scan_priority: scan internal prioritization &enum iwl_scan_priority
-<<<<<<< HEAD
  * @num_of_fragments: Number of fragments needed for full coverage per band.
  *	Relevant only for fragmented scan.
  * @channel: &struct iwl_scan_umac_chan_param
  * @reserved: for future use and alignment
-=======
- * @channel_flags: &enum iwl_scan_channel_flags
- * @n_channels: num of channels in scan request
- * @reserved: for future use and alignment
- * @reserved2: for future use and alignment
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @reserved3: for future use and alignment
  * @data: &struct iwl_scan_channel_cfg_umac and
  *	&struct iwl_scan_req_umac_tail
@@ -732,14 +703,7 @@ struct iwl_scan_req_umac {
 			__le32 max_out_time;
 			__le32 suspend_time;
 			__le32 scan_priority;
-<<<<<<< HEAD
 			struct iwl_scan_umac_chan_param channel;
-=======
-			/* SCAN_CHANNEL_PARAMS_API_S_VER_1 */
-			u8 channel_flags;
-			u8 n_channels;
-			__le16 reserved2;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			u8 data[];
 		} v1; /* SCAN_REQUEST_CMD_UMAC_API_S_VER_1 */
 		struct {
@@ -750,14 +714,7 @@ struct iwl_scan_req_umac {
 			__le32 max_out_time[SCAN_TWO_LMACS];
 			__le32 suspend_time[SCAN_TWO_LMACS];
 			__le32 scan_priority;
-<<<<<<< HEAD
 			struct iwl_scan_umac_chan_param channel;
-=======
-			/* SCAN_CHANNEL_PARAMS_API_S_VER_1 */
-			u8 channel_flags;
-			u8 n_channels;
-			__le16 reserved2;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			u8 data[];
 		} v6; /* SCAN_REQUEST_CMD_UMAC_API_S_VER_6 */
 		struct {
@@ -771,7 +728,6 @@ struct iwl_scan_req_umac {
 			__le32 max_out_time[SCAN_TWO_LMACS];
 			__le32 suspend_time[SCAN_TWO_LMACS];
 			__le32 scan_priority;
-<<<<<<< HEAD
 			struct iwl_scan_umac_chan_param channel;
 			u8 data[];
 		} v7; /* SCAN_REQUEST_CMD_UMAC_API_S_VER_7 */
@@ -797,23 +753,6 @@ struct iwl_scan_req_umac {
 #define IWL_SCAN_REQ_UMAC_SIZE_V7 48
 #define IWL_SCAN_REQ_UMAC_SIZE_V6 44
 #define IWL_SCAN_REQ_UMAC_SIZE_V1 36
-=======
-			/* SCAN_CHANNEL_PARAMS_API_S_VER_1 */
-			u8 channel_flags;
-			u8 n_channels;
-			__le16 reserved2;
-			u8 data[];
-		} v7; /* SCAN_REQUEST_CMD_UMAC_API_S_VER_7 */
-	};
-} __packed;
-
-#define IWL_SCAN_REQ_UMAC_SIZE_V7 sizeof(struct iwl_scan_req_umac)
-#define IWL_SCAN_REQ_UMAC_SIZE_V6 (sizeof(struct iwl_scan_req_umac) - \
-				   2 * sizeof(u8) - sizeof(__le16))
-#define IWL_SCAN_REQ_UMAC_SIZE_V1 (sizeof(struct iwl_scan_req_umac) - \
-				   2 * sizeof(__le32) - 2 * sizeof(u8) - \
-				   sizeof(__le16))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * struct iwl_umac_scan_abort

@@ -53,11 +53,8 @@ enum vgt_g2v_type {
  * VGT capabilities type
  */
 #define VGT_CAPS_FULL_48BIT_PPGTT	BIT(2)
-<<<<<<< HEAD
 #define VGT_CAPS_HWSP_EMULATION		BIT(3)
 #define VGT_CAPS_HUGE_GTT		BIT(4)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct vgt_if {
 	u64 magic;		/* VGT_MAGIC */
@@ -97,14 +94,10 @@ struct vgt_if {
 	u32 rsv5[4];
 
 	u32 g2v_notify;
-<<<<<<< HEAD
 	u32 rsv6[5];
 
 	u32 cursor_x_hot;
 	u32 cursor_y_hot;
-=======
-	u32 rsv6[7];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct {
 		u32 lo;

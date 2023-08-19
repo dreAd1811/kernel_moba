@@ -3,11 +3,7 @@ Date:		January 1, 2010
 KernelVersion:	2.6.33
 Contact:	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Description:	Some Samsung laptops have different "performance levels"
-<<<<<<< HEAD
 		that can be modified by a function key, and by this
-=======
-		that are can be modified by a function key, and by this
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sysfs file.  These values don't always make a whole lot
 		of sense, but some users like to modify them to keep
 		their fans quiet at all costs.  Reading from this file

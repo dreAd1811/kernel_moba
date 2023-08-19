@@ -28,10 +28,7 @@ extern unsigned char c6x_fuse_mac[6];
 extern void machine_init(unsigned long dt_ptr);
 extern void time_init(void);
 
-<<<<<<< HEAD
 extern void coherent_mem_init(u32 start, u32 size);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* !__ASSEMBLY__ */
 #endif /* _ASM_C6X_SETUP_H */

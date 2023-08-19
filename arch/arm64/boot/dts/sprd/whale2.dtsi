@@ -6,11 +6,8 @@
  * SPDX-License-Identifier: (GPL-2.0+ OR MIT)
  */
 
-<<<<<<< HEAD
 #include <dt-bindings/clock/sprd,sc9860-clk.h>
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 / {
 	interrupt-parent = <&gic>;
 	#address-cells = <2>;
@@ -22,7 +19,6 @@
 		#size-cells = <2>;
 		ranges;
 
-<<<<<<< HEAD
 		ap_ahb_regs: syscon@20210000 {
 			compatible = "syscon";
 			reg = <0 0x20210000 0 0x10000>;
@@ -68,8 +64,6 @@
 			reg = <0 0x70b00000 0 0x40000>;
 		};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ap-apb {
 			compatible = "simple-bus";
 			#address-cells = <1>;
@@ -113,7 +107,6 @@
 			};
 		};
 
-<<<<<<< HEAD
 		ap-ahb {
 			compatible = "simple-bus";
 			#address-cells = <2>;
@@ -270,14 +263,5 @@
 		#clock-cells = <0>;
 		clock-frequency = <100000000>;
 		clock-output-names = "ext-rco-100m";
-=======
-	};
-
-	ext_26m: ext-26m {
-		compatible = "fixed-clock";
-		#clock-cells = <0>;
-		clock-frequency = <26000000>;
-		clock-output-names = "ext_26m";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };

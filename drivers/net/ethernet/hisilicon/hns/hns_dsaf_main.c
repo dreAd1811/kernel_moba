@@ -28,11 +28,7 @@
 #include "hns_dsaf_rcb.h"
 #include "hns_dsaf_misc.h"
 
-<<<<<<< HEAD
 const static char *g_dsaf_mode_match[DSAF_MODE_MAX] = {
-=======
-const char *g_dsaf_mode_match[DSAF_MODE_MAX] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	[DSAF_MODE_DISABLE_2PORT_64VM] = "2port-64vf",
 	[DSAF_MODE_DISABLE_6PORT_0VM] = "6port-16rss",
 	[DSAF_MODE_DISABLE_6PORT_16VM] = "6port-16vf",
@@ -46,11 +42,7 @@ static const struct acpi_device_id hns_dsaf_acpi_match[] = {
 };
 MODULE_DEVICE_TABLE(acpi, hns_dsaf_acpi_match);
 
-<<<<<<< HEAD
 static int hns_dsaf_get_cfg(struct dsaf_device *dsaf_dev)
-=======
-int hns_dsaf_get_cfg(struct dsaf_device *dsaf_dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret, i;
 	u32 desc_num;
@@ -1023,12 +1015,8 @@ static void hns_dsaf_tcam_mc_invld(struct dsaf_device *dsaf_dev, u32 address)
 	spin_unlock_bh(&dsaf_dev->tcam_lock);
 }
 
-<<<<<<< HEAD
 static void
 hns_dsaf_tcam_addr_get(struct dsaf_drv_tbl_tcam_key *mac_key, u8 *addr)
-=======
-void hns_dsaf_tcam_addr_get(struct dsaf_drv_tbl_tcam_key *mac_key, u8 *addr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	addr[0] = mac_key->high.bits.mac_0;
 	addr[1] = mac_key->high.bits.mac_1;
@@ -1475,13 +1463,8 @@ static int hns_dsaf_init(struct dsaf_device *dsaf_dev)
 		return ret;
 
 	/* malloc mem for tcam mac key(vlan+mac) */
-<<<<<<< HEAD
 	priv->soft_mac_tbl = vzalloc(array_size(DSAF_TCAM_SUM,
 						sizeof(*priv->soft_mac_tbl)));
-=======
-	priv->soft_mac_tbl = vzalloc(sizeof(*priv->soft_mac_tbl)
-		  * DSAF_TCAM_SUM);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!priv->soft_mac_tbl) {
 		ret = -ENOMEM;
 		goto remove_hw;
@@ -1743,7 +1726,6 @@ int hns_dsaf_rm_mac_addr(
 				      mac_entry->addr);
 }
 
-<<<<<<< HEAD
 static void hns_dsaf_setup_mc_mask(struct dsaf_device *dsaf_dev,
 				   u8 port_num, u8 *mask, u8 *addr)
 {
@@ -1753,8 +1735,6 @@ static void hns_dsaf_setup_mc_mask(struct dsaf_device *dsaf_dev,
 		memcpy(mask, dsaf_dev->mac_cb[port_num]->mc_mask, ETH_ALEN);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void hns_dsaf_mc_mask_bit_clear(char *dst, const char *src)
 {
 	u16 *a = (u16 *)dst;
@@ -1780,15 +1760,8 @@ int hns_dsaf_add_mac_mc_port(struct dsaf_device *dsaf_dev,
 	struct dsaf_tbl_tcam_mcast_cfg mac_data;
 	struct dsaf_drv_priv *priv = hns_dsaf_dev_priv(dsaf_dev);
 	struct dsaf_drv_soft_mac_tbl *soft_mac_entry = priv->soft_mac_tbl;
-<<<<<<< HEAD
 	struct dsaf_tbl_tcam_data tcam_data;
 	u8 mc_addr[ETH_ALEN];
-=======
-	struct dsaf_drv_tbl_tcam_key tmp_mac_key;
-	struct dsaf_tbl_tcam_data tcam_data;
-	u8 mc_addr[ETH_ALEN];
-	u8 *mc_mask;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int mskid;
 
 	/*chechk mac addr */
@@ -1799,18 +1772,12 @@ int hns_dsaf_add_mac_mc_port(struct dsaf_device *dsaf_dev,
 	}
 
 	ether_addr_copy(mc_addr, mac_entry->addr);
-<<<<<<< HEAD
 	if (!AE_IS_VER1(dsaf_dev->dsaf_ver)) {
 		u8 mc_mask[ETH_ALEN];
 
 		/* prepare for key data setting */
 		hns_dsaf_setup_mc_mask(dsaf_dev, mac_entry->in_port_num,
 				       mc_mask, mac_entry->addr);
-=======
-	mc_mask = dsaf_dev->mac_cb[mac_entry->in_port_num]->mc_mask;
-	if (!AE_IS_VER1(dsaf_dev->dsaf_ver)) {
-		/* prepare for key data setting */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		hns_dsaf_mc_mask_bit_clear(mc_addr, mc_mask);
 
 		/* config key mask */
@@ -1849,13 +1816,6 @@ int hns_dsaf_add_mac_mc_port(struct dsaf_device *dsaf_dev,
 		/* if exist, add in */
 		hns_dsaf_tcam_mc_get(dsaf_dev, entry_index, &tcam_data,
 				     &mac_data);
-<<<<<<< HEAD
-=======
-
-		tmp_mac_key.high.val =
-			le32_to_cpu(tcam_data.tbl_tcam_data_high);
-		tmp_mac_key.low.val = le32_to_cpu(tcam_data.tbl_tcam_data_low);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* config hardware entry */
@@ -1965,16 +1925,9 @@ int hns_dsaf_del_mac_mc_port(struct dsaf_device *dsaf_dev,
 	struct dsaf_tbl_tcam_data tcam_data;
 	int mskid;
 	const u8 empty_msk[sizeof(mac_data.tbl_mcast_port_msk)] = {0};
-<<<<<<< HEAD
 	struct dsaf_drv_tbl_tcam_key mask_key;
 	struct dsaf_tbl_tcam_data *pmask_key = NULL;
 	u8 mc_addr[ETH_ALEN];
-=======
-	struct dsaf_drv_tbl_tcam_key mask_key, tmp_mac_key;
-	struct dsaf_tbl_tcam_data *pmask_key = NULL;
-	u8 mc_addr[ETH_ALEN];
-	u8 *mc_mask;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!(void *)mac_entry) {
 		dev_err(dsaf_dev->dev,
@@ -1991,7 +1944,6 @@ int hns_dsaf_del_mac_mc_port(struct dsaf_device *dsaf_dev,
 
 	/* always mask vlan_id field */
 	ether_addr_copy(mc_addr, mac_entry->addr);
-<<<<<<< HEAD
 
 	if (!AE_IS_VER1(dsaf_dev->dsaf_ver)) {
 		u8 mc_mask[ETH_ALEN];
@@ -2003,16 +1955,6 @@ int hns_dsaf_del_mac_mc_port(struct dsaf_device *dsaf_dev,
 
 		/* config key mask */
 		hns_dsaf_set_mac_key(dsaf_dev, &mask_key, 0x00, 0xff, mc_mask);
-=======
-	mc_mask = dsaf_dev->mac_cb[mac_entry->in_port_num]->mc_mask;
-
-	if (!AE_IS_VER1(dsaf_dev->dsaf_ver)) {
-		/* prepare for key data setting */
-		hns_dsaf_mc_mask_bit_clear(mc_addr, mc_mask);
-
-		/* config key mask */
-		hns_dsaf_set_mac_key(dsaf_dev, &mask_key, 0x00, 0xff, mc_addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		mask_key.high.val = le32_to_cpu(mask_key.high.val);
 		mask_key.low.val = le32_to_cpu(mask_key.low.val);
@@ -2046,12 +1988,6 @@ int hns_dsaf_del_mac_mc_port(struct dsaf_device *dsaf_dev,
 	/* read entry */
 	hns_dsaf_tcam_mc_get(dsaf_dev, entry_index, &tcam_data, &mac_data);
 
-<<<<<<< HEAD
-=======
-	tmp_mac_key.high.val = le32_to_cpu(tcam_data.tbl_tcam_data_high);
-	tmp_mac_key.low.val = le32_to_cpu(tcam_data.tbl_tcam_data_low);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*del the port*/
 	if (mac_entry->port_num < DSAF_SERVICE_NW_NUM) {
 		mskid = mac_entry->port_num;
@@ -2218,14 +2154,9 @@ static void hns_dsaf_pfc_unit_cnt(struct dsaf_device *dsaf_dev, int  mac_id,
  * @dsaf_id: dsa fabric id
  * @xge_ge_work_mode
  */
-<<<<<<< HEAD
 static void
 hns_dsaf_port_work_rate_cfg(struct dsaf_device *dsaf_dev, int mac_id,
 			    enum dsaf_port_rate_mode rate_mode)
-=======
-void hns_dsaf_port_work_rate_cfg(struct dsaf_device *dsaf_dev, int mac_id,
-				 enum dsaf_port_rate_mode rate_mode)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 port_work_mode;
 

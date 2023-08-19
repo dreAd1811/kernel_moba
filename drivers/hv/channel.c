@@ -29,17 +29,13 @@
 #include <linux/hyperv.h>
 #include <linux/uio.h>
 #include <linux/interrupt.h>
-<<<<<<< HEAD
 #include <asm/page.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "hyperv_vmbus.h"
 
 #define NUM_PAGES_SPANNED(addr, len) \
 ((PAGE_ALIGN(addr + len) >> PAGE_SHIFT) - (addr >> PAGE_SHIFT))
 
-<<<<<<< HEAD
 static unsigned long virt_to_hvpfn(void *addr)
 {
 	phys_addr_t paddr;
@@ -53,8 +49,6 @@ static unsigned long virt_to_hvpfn(void *addr)
 	return  paddr >> PAGE_SHIFT;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * vmbus_setevent- Trigger an event notification on the specified
  * channel.
@@ -63,11 +57,8 @@ void vmbus_setevent(struct vmbus_channel *channel)
 {
 	struct hv_monitor_page *monitorpage;
 
-<<<<<<< HEAD
 	trace_vmbus_setevent(channel);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * For channels marked as in "low latency" mode
 	 * bypass the monitor page mechanism.
@@ -210,11 +201,8 @@ int vmbus_open(struct vmbus_channel *newchannel, u32 send_ringbuffer_size,
 	ret = vmbus_post_msg(open_msg,
 			     sizeof(struct vmbus_channel_open_channel), true);
 
-<<<<<<< HEAD
 	trace_vmbus_open(open_msg, ret);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret != 0) {
 		err = ret;
 		goto error_clean_msglist;
@@ -264,25 +252,18 @@ int vmbus_send_tl_connect_request(const uuid_le *shv_guest_servie_id,
 				  const uuid_le *shv_host_servie_id)
 {
 	struct vmbus_channel_tl_connect_request conn_msg;
-<<<<<<< HEAD
 	int ret;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memset(&conn_msg, 0, sizeof(conn_msg));
 	conn_msg.header.msgtype = CHANNELMSG_TL_CONNECT_REQUEST;
 	conn_msg.guest_endpoint_id = *shv_guest_servie_id;
 	conn_msg.host_service_id = *shv_host_servie_id;
 
-<<<<<<< HEAD
 	ret = vmbus_post_msg(&conn_msg, sizeof(conn_msg), true);
 
 	trace_vmbus_send_tl_connect_request(&conn_msg, ret);
 
 	return ret;
-=======
-	return vmbus_post_msg(&conn_msg, sizeof(conn_msg), true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(vmbus_send_tl_connect_request);
 
@@ -331,13 +312,8 @@ static int create_gpadl_header(void *kbuffer, u32 size,
 		gpadl_header->range[0].byte_offset = 0;
 		gpadl_header->range[0].byte_count = size;
 		for (i = 0; i < pfncount; i++)
-<<<<<<< HEAD
 			gpadl_header->range[0].pfn_array[i] = virt_to_hvpfn(
 				kbuffer + PAGE_SIZE * i);
-=======
-			gpadl_header->range[0].pfn_array[i] = slow_virt_to_phys(
-				kbuffer + PAGE_SIZE * i) >> PAGE_SHIFT;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*msginfo = msgheader;
 
 		pfnsum = pfncount;
@@ -388,14 +364,8 @@ static int create_gpadl_header(void *kbuffer, u32 size,
 			 * so the hypervisor guarantees that this is ok.
 			 */
 			for (i = 0; i < pfncurr; i++)
-<<<<<<< HEAD
 				gpadl_body->pfn[i] = virt_to_hvpfn(
 					kbuffer + PAGE_SIZE * (pfnsum + i));
-=======
-				gpadl_body->pfn[i] = slow_virt_to_phys(
-					kbuffer + PAGE_SIZE * (pfnsum + i)) >>
-					PAGE_SHIFT;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			/* add to msg header */
 			list_add_tail(&msgbody->msglistentry,
@@ -423,13 +393,8 @@ static int create_gpadl_header(void *kbuffer, u32 size,
 		gpadl_header->range[0].byte_offset = 0;
 		gpadl_header->range[0].byte_count = size;
 		for (i = 0; i < pagecount; i++)
-<<<<<<< HEAD
 			gpadl_header->range[0].pfn_array[i] = virt_to_hvpfn(
 				kbuffer + PAGE_SIZE * i);
-=======
-			gpadl_header->range[0].pfn_array[i] = slow_virt_to_phys(
-				kbuffer + PAGE_SIZE * i) >> PAGE_SHIFT;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		*msginfo = msgheader;
 	}
@@ -490,12 +455,9 @@ int vmbus_establish_gpadl(struct vmbus_channel *channel, void *kbuffer,
 
 	ret = vmbus_post_msg(gpadlmsg, msginfo->msgsize -
 			     sizeof(*msginfo), true);
-<<<<<<< HEAD
 
 	trace_vmbus_establish_gpadl_header(gpadlmsg, ret);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret != 0)
 		goto cleanup;
 
@@ -511,12 +473,9 @@ int vmbus_establish_gpadl(struct vmbus_channel *channel, void *kbuffer,
 		ret = vmbus_post_msg(gpadl_body,
 				     submsginfo->msgsize - sizeof(*submsginfo),
 				     true);
-<<<<<<< HEAD
 
 		trace_vmbus_establish_gpadl_body(gpadl_body, ret);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret != 0)
 			goto cleanup;
 
@@ -588,11 +547,8 @@ int vmbus_teardown_gpadl(struct vmbus_channel *channel, u32 gpadl_handle)
 	ret = vmbus_post_msg(msg, sizeof(struct vmbus_channel_gpadl_teardown),
 			     true);
 
-<<<<<<< HEAD
 	trace_vmbus_teardown_gpadl(msg, ret);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto post_msg_err;
 
@@ -681,11 +637,8 @@ static int vmbus_close_internal(struct vmbus_channel *channel)
 	ret = vmbus_post_msg(msg, sizeof(struct vmbus_channel_close_channel),
 			     true);
 
-<<<<<<< HEAD
 	trace_vmbus_close_internal(msg, ret);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		pr_err("Close failed: close post msg return is %d\n", ret);
 		/*
@@ -846,10 +799,7 @@ int vmbus_sendpacket_pagebuffer(struct vmbus_channel *channel,
 	desc.dataoffset8 = descsize >> 3; /* in 8-bytes granularity */
 	desc.length8 = (u16)(packetlen_aligned >> 3);
 	desc.transactionid = requestid;
-<<<<<<< HEAD
 	desc.reserved = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	desc.rangecount = pagecount;
 
 	for (i = 0; i < pagecount; i++) {
@@ -893,10 +843,7 @@ int vmbus_sendpacket_mpb_desc(struct vmbus_channel *channel,
 	desc->dataoffset8 = desc_size >> 3; /* in 8-bytes granularity */
 	desc->length8 = (u16)(packetlen_aligned >> 3);
 	desc->transactionid = requestid;
-<<<<<<< HEAD
 	desc->reserved = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	desc->rangecount = 1;
 
 	bufferlist[0].iov_base = desc;

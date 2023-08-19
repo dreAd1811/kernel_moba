@@ -351,9 +351,6 @@
 
 #define QTN_PEARL_IPC_IRQ_WORD(irq)	(BIT(irq) | BIT(irq + 16))
 #define QTN_PEARL_LHOST_IPC_IRQ		(6)
-<<<<<<< HEAD
 #define QTN_PEARL_LHOST_EP_RESET	(7)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* __PEARL_PCIE_H */

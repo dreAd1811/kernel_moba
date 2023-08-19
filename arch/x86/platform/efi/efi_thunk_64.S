@@ -33,11 +33,7 @@ ENTRY(efi64_thunk)
 	 * Switch to 1:1 mapped 32-bit stack pointer.
 	 */
 	movq	%rsp, efi_saved_sp(%rip)
-<<<<<<< HEAD
 	movq	efi_scratch(%rip), %rsp
-=======
-	movq	efi_scratch+25(%rip), %rsp
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Calculate the physical address of the kernel text.

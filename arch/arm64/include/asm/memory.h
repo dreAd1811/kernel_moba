@@ -29,15 +29,6 @@
 #include <asm/sizes.h>
 
 /*
-<<<<<<< HEAD
-=======
- * Allow for constants defined here to be used from assembly code
- * by prepending the UL suffix only with actual C code compilation.
- */
-#define UL(x) _AC(x, UL)
-
-/*
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Size of the PCI I/O space. This must remain a power of two so that
  * IO_SPACE_LIMIT acts as a mask for the low bits of I/O addresses.
  */
@@ -83,7 +74,6 @@
 #define KERNEL_END        _end
 
 /*
-<<<<<<< HEAD
  * KASAN requires 1/8th of the kernel virtual address space for the shadow
  * region. KASAN can bloat the stack significantly, so double the (minimum)
  * stack size when KASAN is in use, and then double it again if KASAN_EXTRA is
@@ -91,14 +81,6 @@
  */
 #ifdef CONFIG_KASAN
 #define KASAN_SHADOW_SCALE_SHIFT 3
-=======
- * Generic and tag-based KASAN require 1/8th and 1/16th of the kernel virtual
- * address space for the shadow region respectively. They can bloat the stack
- * significantly, so double the (minimum) stack size when they are in use,
- * and then double it again if KASAN_EXTRA is on
- */
-#ifdef CONFIG_KASAN
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define KASAN_SHADOW_SIZE	(UL(1) << (VA_BITS - KASAN_SHADOW_SCALE_SHIFT))
 #ifdef CONFIG_KASAN_EXTRA
 #define KASAN_THREAD_SHIFT	2
@@ -178,7 +160,6 @@
 #define MT_S2_NORMAL		0xf
 #define MT_S2_DEVICE_nGnRE	0x1
 
-<<<<<<< HEAD
 /*
  * Memory types for Stage-2 translation when ID_AA64MMFR2_EL1.FWB is 0001
  * Stage-2 enforces Normal-WB and Device-nGnRE
@@ -186,8 +167,6 @@
 #define MT_S2_FWB_NORMAL	6
 #define MT_S2_FWB_DEVICE_nGnRE	1
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_ARM64_4K_PAGES
 #define IOREMAP_MAX_ORDER	(PUD_SHIFT)
 #else
@@ -242,39 +221,6 @@ static inline unsigned long kaslr_offset(void)
 #define PHYS_PFN_OFFSET	(PHYS_OFFSET >> PAGE_SHIFT)
 
 /*
-<<<<<<< HEAD
-=======
- * When dealing with data aborts, watchpoints, or instruction traps we may end
- * up with a tagged userland pointer. Clear the tag to get a sane pointer to
- * pass on to access_ok(), for instance.
- */
-#define __untagged_addr(addr)	\
-	((__force __typeof__(addr))sign_extend64((__force u64)(addr), 55))
-
-#define untagged_addr(addr)	({					\
-	u64 __addr = (__force u64)(addr);					\
-	__addr &= __untagged_addr(__addr);				\
-	(__force __typeof__(addr))__addr;				\
-})
-
-#ifdef CONFIG_KASAN_SW_TAGS
-#define __tag_shifted(tag)	((u64)(tag) << 56)
-#define __tag_reset(addr)	__untagged_addr(addr)
-#define __tag_get(addr)		(__u8)((u64)(addr) >> 56)
-#else
-#define __tag_shifted(tag)	0UL
-#define __tag_reset(addr)	(addr)
-#define __tag_get(addr)		0
-#endif
-
-static inline const void *__tag_set(const void *addr, u8 tag)
-{
-	u64 __addr = (u64)addr & ~__tag_shifted(0xff);
-	return (const void *)(__addr | __tag_shifted(tag));
-}
-
-/*
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Physical vs virtual RAM address space conversion.  These are
  * private definitions which should NOT be used outside memory.h
  * files.  Use virt_to_phys/phys_to_virt/__pa/__va instead.
@@ -345,25 +291,6 @@ static inline void *phys_to_virt(phys_addr_t x)
 #define sym_to_pfn(x)	    __phys_to_pfn(__pa_symbol(x))
 
 /*
-<<<<<<< HEAD
-=======
- * With non-canonical CFI jump tables, the compiler replaces function
- * address references with the address of the function's CFI jump
- * table entry. This results in __pa_symbol(function) returning the
- * physical address of the jump table entry, which can lead to address
- * space confusion since the jump table points to the function's
- * virtual address. Therefore, use inline assembly to ensure we are
- * always taking the address of the actual function.
- */
-#define __pa_function(x) ({						\
-	unsigned long addr;						\
-	asm("adrp %0, " __stringify(x) "\n\t"				\
-	    "add  %0, %0, :lo12:" __stringify(x) : "=r" (addr));	\
-	__pa_symbol(addr);						\
-})
-
-/*
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *  virt_to_page(k)	convert a _valid_ virtual address to struct page *
  *  virt_addr_valid(k)	indicates whether a virtual address is valid
  */
@@ -376,18 +303,7 @@ static inline void *phys_to_virt(phys_addr_t x)
 #define __virt_to_pgoff(kaddr)	(((u64)(kaddr) & ~PAGE_OFFSET) / PAGE_SIZE * sizeof(struct page))
 #define __page_to_voff(kaddr)	(((u64)(kaddr) & ~VMEMMAP_START) * PAGE_SIZE / sizeof(struct page))
 
-<<<<<<< HEAD
 #define page_to_virt(page)	((void *)((__page_to_voff(page)) | PAGE_OFFSET))
-=======
-#define page_to_virt(page)	({					\
-	unsigned long __addr =						\
-		((__page_to_voff(page)) | PAGE_OFFSET);			\
-	const void *__addr_tag =					\
-		__tag_set((void *)__addr, page_kasan_tag(page));	\
-	((void *)__addr_tag);						\
-})
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define virt_to_page(vaddr)	((struct page *)((__virt_to_pgoff(vaddr)) | VMEMMAP_START))
 
 #define _virt_addr_valid(kaddr)	pfn_valid((((u64)(kaddr) & ~PAGE_OFFSET) \
@@ -395,16 +311,9 @@ static inline void *phys_to_virt(phys_addr_t x)
 #endif
 #endif
 
-<<<<<<< HEAD
 #define _virt_addr_is_linear(kaddr)	(((u64)(kaddr)) >= PAGE_OFFSET)
 #define virt_addr_valid(kaddr)		(_virt_addr_is_linear(kaddr) && \
 					 _virt_addr_valid(kaddr))
-=======
-#define _virt_addr_is_linear(kaddr)	\
-	(__tag_reset((u64)(kaddr)) >= PAGE_OFFSET)
-#define virt_addr_valid(kaddr)		\
-	(_virt_addr_is_linear(kaddr) && _virt_addr_valid(kaddr))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm-generic/memory_model.h>
 

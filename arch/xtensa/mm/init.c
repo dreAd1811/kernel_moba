@@ -156,20 +156,16 @@ void __init mem_init(void)
 
 	mem_init_print_info(NULL);
 	pr_info("virtual kernel memory layout:\n"
-<<<<<<< HEAD
 #ifdef CONFIG_KASAN
 		"    kasan   : 0x%08lx - 0x%08lx  (%5lu MB)\n"
 #endif
 #ifdef CONFIG_MMU
 		"    vmalloc : 0x%08lx - 0x%08lx  (%5lu MB)\n"
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_HIGHMEM
 		"    pkmap   : 0x%08lx - 0x%08lx  (%5lu kB)\n"
 		"    fixmap  : 0x%08lx - 0x%08lx  (%5lu kB)\n"
 #endif
-<<<<<<< HEAD
 		"    lowmem  : 0x%08lx - 0x%08lx  (%5lu MB)\n"
 		"    .text   : 0x%08lx - 0x%08lx  (%5lu kB)\n"
 		"    .rodata : 0x%08lx - 0x%08lx  (%5lu kB)\n"
@@ -183,30 +179,17 @@ void __init mem_init(void)
 #ifdef CONFIG_MMU
 		VMALLOC_START, VMALLOC_END,
 		(VMALLOC_END - VMALLOC_START) >> 20,
-=======
-#ifdef CONFIG_MMU
-		"    vmalloc : 0x%08lx - 0x%08lx  (%5lu MB)\n"
-#endif
-		"    lowmem  : 0x%08lx - 0x%08lx  (%5lu MB)\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_HIGHMEM
 		PKMAP_BASE, PKMAP_BASE + LAST_PKMAP * PAGE_SIZE,
 		(LAST_PKMAP*PAGE_SIZE) >> 10,
 		FIXADDR_START, FIXADDR_TOP,
 		(FIXADDR_TOP - FIXADDR_START) >> 10,
 #endif
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_MMU
-		VMALLOC_START, VMALLOC_END,
-		(VMALLOC_END - VMALLOC_START) >> 20,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		PAGE_OFFSET, PAGE_OFFSET +
 		(max_low_pfn - min_low_pfn) * PAGE_SIZE,
 #else
 		min_low_pfn * PAGE_SIZE, max_low_pfn * PAGE_SIZE,
 #endif
-<<<<<<< HEAD
 		((max_low_pfn - min_low_pfn) * PAGE_SIZE) >> 20,
 		(unsigned long)_text, (unsigned long)_etext,
 		(unsigned long)(_etext - _text) >> 10,
@@ -218,9 +201,6 @@ void __init mem_init(void)
 		(unsigned long)(__init_end - __init_begin) >> 10,
 		(unsigned long)__bss_start, (unsigned long)__bss_stop,
 		(unsigned long)(__bss_stop - __bss_start) >> 10);
-=======
-		((max_low_pfn - min_low_pfn) * PAGE_SIZE) >> 20);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #ifdef CONFIG_BLK_DEV_INITRD

@@ -152,11 +152,7 @@ static void sd_isoc_irq(struct urb *urb)
 	u8 *data;
 	int i, st;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_PACK, "sd isoc irq\n");
-=======
-	PDEBUG(D_PACK, "sd isoc irq");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!gspca_dev->streaming)
 		return;
 	if (urb->status != 0) {
@@ -184,15 +180,9 @@ static void sd_isoc_irq(struct urb *urb)
 		/* check the packet status and length */
 		if (urb0->iso_frame_desc[i].actual_length != SD_PKT_SZ
 		    || urb->iso_frame_desc[i].actual_length != SD_PKT_SZ) {
-<<<<<<< HEAD
 			gspca_err(gspca_dev, "ISOC bad lengths %d / %d\n",
 				  urb0->iso_frame_desc[i].actual_length,
 				  urb->iso_frame_desc[i].actual_length);
-=======
-			PERR("ISOC bad lengths %d / %d",
-				urb0->iso_frame_desc[i].actual_length,
-				urb->iso_frame_desc[i].actual_length);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			gspca_dev->last_packet_type = DISCARD_PACKET;
 			continue;
 		}

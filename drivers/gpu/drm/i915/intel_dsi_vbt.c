@@ -181,11 +181,7 @@ static const u8 *mipi_exec_send_packet(struct intel_dsi *intel_dsi,
 		break;
 	}
 
-<<<<<<< HEAD
 	vlv_dsi_wait_for_fifo_empty(intel_dsi, port);
-=======
-	wait_for_dsi_fifo_empty(intel_dsi, port);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 out:
 	data += len;
@@ -651,14 +647,11 @@ bool intel_dsi_vbt_init(struct intel_dsi *intel_dsi, u16 panel_id)
 	/* prepare count */
 	prepare_cnt = DIV_ROUND_UP(ths_prepare_ns * ui_den, ui_num * mul);
 
-<<<<<<< HEAD
 	if (prepare_cnt > PREPARE_CNT_MAX) {
 		DRM_DEBUG_KMS("prepare count too high %u\n", prepare_cnt);
 		prepare_cnt = PREPARE_CNT_MAX;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* exit zero count */
 	exit_zero_cnt = DIV_ROUND_UP(
 				(ths_prepare_hszero - ths_prepare_ns) * ui_den,
@@ -674,55 +667,29 @@ bool intel_dsi_vbt_init(struct intel_dsi *intel_dsi, u16 panel_id)
 	if (exit_zero_cnt < (55 * ui_den / ui_num) && (55 * ui_den) % ui_num)
 		exit_zero_cnt += 1;
 
-<<<<<<< HEAD
 	if (exit_zero_cnt > EXIT_ZERO_CNT_MAX) {
 		DRM_DEBUG_KMS("exit zero count too high %u\n", exit_zero_cnt);
 		exit_zero_cnt = EXIT_ZERO_CNT_MAX;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* clk zero count */
 	clk_zero_cnt = DIV_ROUND_UP(
 				(tclk_prepare_clkzero -	ths_prepare_ns)
 				* ui_den, ui_num * mul);
 
-<<<<<<< HEAD
 	if (clk_zero_cnt > CLK_ZERO_CNT_MAX) {
 		DRM_DEBUG_KMS("clock zero count too high %u\n", clk_zero_cnt);
 		clk_zero_cnt = CLK_ZERO_CNT_MAX;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* trail count */
 	tclk_trail_ns = max(mipi_config->tclk_trail, mipi_config->ths_trail);
 	trail_cnt = DIV_ROUND_UP(tclk_trail_ns * ui_den, ui_num * mul);
 
-<<<<<<< HEAD
 	if (trail_cnt > TRAIL_CNT_MAX) {
 		DRM_DEBUG_KMS("trail count too high %u\n", trail_cnt);
 		trail_cnt = TRAIL_CNT_MAX;
 	}
-=======
-	if (prepare_cnt > PREPARE_CNT_MAX ||
-		exit_zero_cnt > EXIT_ZERO_CNT_MAX ||
-		clk_zero_cnt > CLK_ZERO_CNT_MAX ||
-		trail_cnt > TRAIL_CNT_MAX)
-		DRM_DEBUG_DRIVER("Values crossing maximum limits, restricting to max values\n");
-
-	if (prepare_cnt > PREPARE_CNT_MAX)
-		prepare_cnt = PREPARE_CNT_MAX;
-
-	if (exit_zero_cnt > EXIT_ZERO_CNT_MAX)
-		exit_zero_cnt = EXIT_ZERO_CNT_MAX;
-
-	if (clk_zero_cnt > CLK_ZERO_CNT_MAX)
-		clk_zero_cnt = CLK_ZERO_CNT_MAX;
-
-	if (trail_cnt > TRAIL_CNT_MAX)
-		trail_cnt = TRAIL_CNT_MAX;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* B080 */
 	intel_dsi->dphy_reg = exit_zero_cnt << 24 | trail_cnt << 16 |

@@ -25,10 +25,7 @@
 #define _INTEL_LRC_H_
 
 #include "intel_ringbuffer.h"
-<<<<<<< HEAD
 #include "i915_gem_context.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define GEN8_LR_CONTEXT_ALIGN I915_GTT_MIN_ALIGNMENT
 
@@ -40,20 +37,14 @@
 #define	  CTX_CTRL_INHIBIT_SYN_CTX_SWITCH	(1 << 3)
 #define	  CTX_CTRL_ENGINE_CTX_RESTORE_INHIBIT	(1 << 0)
 #define   CTX_CTRL_RS_CTX_ENABLE                (1 << 1)
-<<<<<<< HEAD
 #define	  CTX_CTRL_ENGINE_CTX_SAVE_INHIBIT	(1 << 2)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define RING_CONTEXT_STATUS_BUF_BASE(engine)	_MMIO((engine)->mmio_base + 0x370)
 #define RING_CONTEXT_STATUS_BUF_LO(engine, i)	_MMIO((engine)->mmio_base + 0x370 + (i) * 8)
 #define RING_CONTEXT_STATUS_BUF_HI(engine, i)	_MMIO((engine)->mmio_base + 0x370 + (i) * 8 + 4)
 #define RING_CONTEXT_STATUS_PTR(engine)		_MMIO((engine)->mmio_base + 0x3a0)
-<<<<<<< HEAD
 #define RING_EXECLIST_SQ_CONTENTS(engine)	_MMIO((engine)->mmio_base + 0x510)
 #define RING_EXECLIST_CONTROL(engine)		_MMIO((engine)->mmio_base + 0x550)
 #define	  EL_CTRL_LOAD				(1 << 0)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* The docs specify that the write pointer wraps around after 5h, "After status
  * is written out to the last available status QW at offset 5h, this pointer
@@ -74,10 +65,7 @@
 enum {
 	INTEL_CONTEXT_SCHEDULE_IN = 0,
 	INTEL_CONTEXT_SCHEDULE_OUT,
-<<<<<<< HEAD
 	INTEL_CONTEXT_SCHEDULE_PREEMPTED,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Logical Rings */
@@ -87,7 +75,6 @@ int logical_xcs_ring_init(struct intel_engine_cs *engine);
 
 /* Logical Ring Contexts */
 
-<<<<<<< HEAD
 /*
  * We allocate a header at the start of the context image for our own
  * use, therefore the actual location of the logical state is offset
@@ -111,27 +98,12 @@ int logical_xcs_ring_init(struct intel_engine_cs *engine);
  * the size of the header is synonymous with the start of the PPHWSP.
  */
 #define LRC_HEADER_PAGES LRC_PPHWSP_PN
-=======
-/* One extra page is added before LRC for GuC as shared data */
-#define LRC_GUCSHR_PN	(0)
-#define LRC_PPHWSP_PN	(LRC_GUCSHR_PN + 1)
-#define LRC_STATE_PN	(LRC_PPHWSP_PN + 1)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct drm_i915_private;
 struct i915_gem_context;
 
 void intel_lr_context_resume(struct drm_i915_private *dev_priv);
-<<<<<<< HEAD
 
 void intel_execlists_set_default_submission(struct intel_engine_cs *engine);
-=======
-uint64_t intel_lr_context_descriptor(struct i915_gem_context *ctx,
-				     struct intel_engine_cs *engine);
-
-/* Execlists */
-int intel_sanitize_enable_execlists(struct drm_i915_private *dev_priv,
-				    int enable_execlists);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* _INTEL_LRC_H_ */

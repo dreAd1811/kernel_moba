@@ -43,20 +43,14 @@ ENTRY(unsigned_movw)
 	ret
 ENDPROC(unsigned_movw)
 
-<<<<<<< HEAD
 	.align	12
 	.space	0xff8
-=======
-#ifndef CONFIG_ARM64_ERRATUM_843419
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 ENTRY(relative_adrp)
 	adrp	x0, sym64_rel
 	add	x0, x0, #:lo12:sym64_rel
 	ret
 ENDPROC(relative_adrp)
 
-<<<<<<< HEAD
 	.align	12
 	.space	0xffc
 ENTRY(relative_adrp_far)
@@ -64,9 +58,6 @@ ENTRY(relative_adrp_far)
 	add	x0, x0, #:lo12:memstart_addr
 	ret
 ENDPROC(relative_adrp_far)
-=======
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 ENTRY(relative_adr)
 	adr	x0, sym64_rel

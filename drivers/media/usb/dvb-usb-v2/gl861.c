@@ -4,24 +4,16 @@
  *	under the terms of the GNU General Public License as published by the
  *	Free Software Foundation, version 2.
  *
-<<<<<<< HEAD
  * see Documentation/media/dvb-drivers/dvb-usb.rst for more information
  */
 #include <linux/string.h>
 
-=======
- * see Documentation/dvb/README.dvb-usb for more information
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "gl861.h"
 
 #include "zl10353.h"
 #include "qt1010.h"
-<<<<<<< HEAD
 #include "tc90522.h"
 #include "dvb-pll.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 DVB_DEFINE_MOD_OPT_ADAPTER_NR(adapter_nr);
 
@@ -32,16 +24,12 @@ static int gl861_i2c_msg(struct dvb_usb_device *d, u8 addr,
 	u16 value = addr << (8 + 1);
 	int wo = (rbuf == NULL || rlen == 0); /* write-only */
 	u8 req, type;
-<<<<<<< HEAD
 	u8 *buf;
 	int ret;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (wo) {
 		req = GL861_REQ_I2C_WRITE;
 		type = GL861_WRITE;
-<<<<<<< HEAD
 		buf = kmemdup(wbuf, wlen, GFP_KERNEL);
 	} else { /* rw */
 		req = GL861_REQ_I2C_READ;
@@ -50,12 +38,6 @@ static int gl861_i2c_msg(struct dvb_usb_device *d, u8 addr,
 	}
 	if (!buf)
 		return -ENOMEM;
-=======
-	} else { /* rw */
-		req = GL861_REQ_I2C_READ;
-		type = GL861_READ;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (wlen) {
 	case 1:
@@ -68,7 +50,6 @@ static int gl861_i2c_msg(struct dvb_usb_device *d, u8 addr,
 	default:
 		dev_err(&d->udev->dev, "%s: wlen=%d, aborting\n",
 				KBUILD_MODNAME, wlen);
-<<<<<<< HEAD
 		kfree(buf);
 		return -EINVAL;
 	}
@@ -83,15 +64,6 @@ static int gl861_i2c_msg(struct dvb_usb_device *d, u8 addr,
 
 	kfree(buf);
 	return ret;
-=======
-		return -EINVAL;
-	}
-
-	msleep(1); /* avoid I2C errors */
-
-	return usb_control_msg(d->udev, usb_rcvctrlpipe(d->udev, 0), req, type,
-			       value, index, rbuf, rlen, 2000);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* I2C */
@@ -193,7 +165,6 @@ static struct dvb_usb_device_properties gl861_props = {
 	}
 };
 
-<<<<<<< HEAD
 
 /*
  * For Friio
@@ -659,18 +630,13 @@ static struct dvb_usb_device_properties friio_props = {
 	}
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct usb_device_id gl861_id_table[] = {
 	{ DVB_USB_DEVICE(USB_VID_MSI, USB_PID_MSI_MEGASKY580_55801,
 		&gl861_props, "MSI Mega Sky 55801 DVB-T USB2.0", NULL) },
 	{ DVB_USB_DEVICE(USB_VID_ALINK, USB_VID_ALINK_DTU,
 		&gl861_props, "A-LINK DTU DVB-T USB2.0", NULL) },
-<<<<<<< HEAD
 	{ DVB_USB_DEVICE(USB_VID_774, USB_PID_FRIIO_WHITE,
 		&friio_props, "774 Friio White ISDB-T USB2.0", NULL) },
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ }
 };
 MODULE_DEVICE_TABLE(usb, gl861_id_table);

@@ -1388,11 +1388,7 @@ static void __init _samsung_clk_register_pll(struct samsung_clk_provider *ctx,
 	pll->lock_reg = base + pll_clk->lock_offset;
 	pll->con_reg = base + pll_clk->con_offset;
 
-<<<<<<< HEAD
 	ret = clk_hw_register(ctx->dev, &pll->hw);
-=======
-	ret = clk_hw_register(NULL, &pll->hw);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		pr_err("%s: failed to register pll clock %s : %d\n",
 			__func__, pll_clk->name, ret);
@@ -1401,18 +1397,6 @@ static void __init _samsung_clk_register_pll(struct samsung_clk_provider *ctx,
 	}
 
 	samsung_clk_add_lookup(ctx, &pll->hw, pll_clk->id);
-<<<<<<< HEAD
-=======
-
-	if (!pll_clk->alias)
-		return;
-
-	ret = clk_hw_register_clkdev(&pll->hw, pll_clk->alias,
-				     pll_clk->dev_name);
-	if (ret)
-		pr_err("%s: failed to register lookup for %s : %d",
-			__func__, pll_clk->name, ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void __init samsung_clk_register_pll(struct samsung_clk_provider *ctx,

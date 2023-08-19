@@ -119,10 +119,7 @@
 #include <linux/kmod.h>
 #include <linux/mdio.h>
 #include <linux/phy.h>
-<<<<<<< HEAD
 #include <linux/ethtool.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "xgbe.h"
 #include "xgbe-common.h"
@@ -274,7 +271,6 @@ struct xgbe_sfp_eeprom {
 	u8 vendor[32];
 };
 
-<<<<<<< HEAD
 #define XGBE_SFP_DIAGS_SUPPORTED(_x)			\
 	((_x)->extd[XGBE_SFP_EXTD_SFF_8472] &&		\
 	 !((_x)->extd[XGBE_SFP_EXTD_DIAG] & XGBE_SFP_EXTD_DIAG_ADDR_CHANGE))
@@ -284,8 +280,6 @@ struct xgbe_sfp_eeprom {
 #define XGBE_SFP_EEPROM_MAX		(XGBE_SFP_EEPROM_BASE_LEN +	\
 					 XGBE_SFP_EEPROM_DIAG_LEN)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define XGBE_BEL_FUSE_VENDOR	"BEL-FUSE        "
 #define XGBE_BEL_FUSE_PARTNO	"1GBT-SFP06      "
 
@@ -343,11 +337,6 @@ struct xgbe_phy_data {
 
 	unsigned int mdio_addr;
 
-<<<<<<< HEAD
-=======
-	unsigned int comm_owned;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* SFP Support */
 	enum xgbe_sfp_comm sfp_comm;
 	unsigned int sfp_mux_address;
@@ -364,10 +353,6 @@ struct xgbe_phy_data {
 	unsigned int sfp_rx_los;
 	unsigned int sfp_tx_fault;
 	unsigned int sfp_mod_absent;
-<<<<<<< HEAD
-=======
-	unsigned int sfp_diags;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int sfp_changed;
 	unsigned int sfp_phy_avail;
 	unsigned int sfp_cable_len;
@@ -404,15 +389,6 @@ static enum xgbe_an_mode xgbe_phy_an_mode(struct xgbe_prv_data *pdata);
 static int xgbe_phy_i2c_xfer(struct xgbe_prv_data *pdata,
 			     struct xgbe_i2c_op *i2c_op)
 {
-<<<<<<< HEAD
-=======
-	struct xgbe_phy_data *phy_data = pdata->phy_data;
-
-	/* Be sure we own the bus */
-	if (WARN_ON(!phy_data->comm_owned))
-		return -EIO;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return pdata->i2c_if.i2c_xfer(pdata, i2c_op);
 }
 
@@ -574,13 +550,6 @@ static int xgbe_phy_sfp_get_mux(struct xgbe_prv_data *pdata)
 
 static void xgbe_phy_put_comm_ownership(struct xgbe_prv_data *pdata)
 {
-<<<<<<< HEAD
-=======
-	struct xgbe_phy_data *phy_data = pdata->phy_data;
-
-	phy_data->comm_owned = 0;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&xgbe_phy_comm_lock);
 }
 
@@ -590,12 +559,6 @@ static int xgbe_phy_get_comm_ownership(struct xgbe_prv_data *pdata)
 	unsigned long timeout;
 	unsigned int mutex_id;
 
-<<<<<<< HEAD
-=======
-	if (phy_data->comm_owned)
-		return 0;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* The I2C and MDIO/GPIO bus is multiplexed between multiple devices,
 	 * the driver needs to take the software mutex and then the hardware
 	 * mutexes before being able to use the busses.
@@ -624,10 +587,6 @@ static int xgbe_phy_get_comm_ownership(struct xgbe_prv_data *pdata)
 		XP_IOWRITE(pdata, XP_I2C_MUTEX, mutex_id);
 		XP_IOWRITE(pdata, XP_MDIO_MUTEX, mutex_id);
 
-<<<<<<< HEAD
-=======
-		phy_data->comm_owned = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 
@@ -901,12 +860,9 @@ static bool xgbe_phy_finisar_phy_quirks(struct xgbe_prv_data *pdata)
 	struct xgbe_phy_data *phy_data = pdata->phy_data;
 	unsigned int phy_id = phy_data->phydev->phy_id;
 
-<<<<<<< HEAD
 	if (phy_data->port_mode != XGBE_PORT_MODE_SFP)
 		return false;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if ((phy_id & 0xfffffff0) != 0x01ff0cc0)
 		return false;
 
@@ -932,7 +888,6 @@ static bool xgbe_phy_finisar_phy_quirks(struct xgbe_prv_data *pdata)
 	return true;
 }
 
-<<<<<<< HEAD
 static bool xgbe_phy_belfuse_phy_quirks(struct xgbe_prv_data *pdata)
 {
 	struct xgbe_phy_data *phy_data = pdata->phy_data;
@@ -1010,10 +965,6 @@ static void xgbe_phy_external_phy_quirks(struct xgbe_prv_data *pdata)
 	if (xgbe_phy_belfuse_phy_quirks(pdata))
 		return;
 
-=======
-static void xgbe_phy_external_phy_quirks(struct xgbe_prv_data *pdata)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (xgbe_phy_finisar_phy_quirks(pdata))
 		return;
 }
@@ -1030,12 +981,9 @@ static int xgbe_phy_find_phy_device(struct xgbe_prv_data *pdata)
 	if (phy_data->phydev)
 		return 0;
 
-<<<<<<< HEAD
 	/* Clear the extra AN flag */
 	pdata->an_again = 0;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Check for the use of an external PHY */
 	if (phy_data->phydev_mode == XGBE_MDIO_MODE_NONE)
 		return 0;
@@ -1160,40 +1108,6 @@ static bool xgbe_phy_check_sfp_mod_absent(struct xgbe_phy_data *phy_data)
 	return false;
 }
 
-<<<<<<< HEAD
-=======
-static bool xgbe_phy_belfuse_parse_quirks(struct xgbe_prv_data *pdata)
-{
-	struct xgbe_phy_data *phy_data = pdata->phy_data;
-	struct xgbe_sfp_eeprom *sfp_eeprom = &phy_data->sfp_eeprom;
-
-	if (memcmp(&sfp_eeprom->base[XGBE_SFP_BASE_VENDOR_NAME],
-		   XGBE_BEL_FUSE_VENDOR, XGBE_SFP_BASE_VENDOR_NAME_LEN))
-		return false;
-
-	if (!memcmp(&sfp_eeprom->base[XGBE_SFP_BASE_VENDOR_PN],
-		    XGBE_BEL_FUSE_PARTNO, XGBE_SFP_BASE_VENDOR_PN_LEN)) {
-		phy_data->sfp_base = XGBE_SFP_BASE_1000_SX;
-		phy_data->sfp_cable = XGBE_SFP_CABLE_ACTIVE;
-		phy_data->sfp_speed = XGBE_SFP_SPEED_1000;
-		if (phy_data->sfp_changed)
-			netif_dbg(pdata, drv, pdata->netdev,
-				  "Bel-Fuse SFP quirk in place\n");
-		return true;
-	}
-
-	return false;
-}
-
-static bool xgbe_phy_sfp_parse_quirks(struct xgbe_prv_data *pdata)
-{
-	if (xgbe_phy_belfuse_parse_quirks(pdata))
-		return true;
-
-	return false;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void xgbe_phy_sfp_parse_eeprom(struct xgbe_prv_data *pdata)
 {
 	struct xgbe_phy_data *phy_data = pdata->phy_data;
@@ -1212,12 +1126,6 @@ static void xgbe_phy_sfp_parse_eeprom(struct xgbe_prv_data *pdata)
 	phy_data->sfp_tx_fault = xgbe_phy_check_sfp_tx_fault(phy_data);
 	phy_data->sfp_rx_los = xgbe_phy_check_sfp_rx_los(phy_data);
 
-<<<<<<< HEAD
-=======
-	if (xgbe_phy_sfp_parse_quirks(pdata))
-		return;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Assume ACTIVE cable unless told it is PASSIVE */
 	if (sfp_base[XGBE_SFP_BASE_CABLE] & XGBE_SFP_BASE_CABLE_PASSIVE) {
 		phy_data->sfp_cable = XGBE_SFP_CABLE_PASSIVE;
@@ -1359,16 +1267,6 @@ static int xgbe_phy_sfp_read_eeprom(struct xgbe_prv_data *pdata)
 
 		memcpy(&phy_data->sfp_eeprom, &sfp_eeprom, sizeof(sfp_eeprom));
 
-<<<<<<< HEAD
-=======
-		if (sfp_eeprom.extd[XGBE_SFP_EXTD_SFF_8472]) {
-			u8 diag_type = sfp_eeprom.extd[XGBE_SFP_EXTD_DIAG];
-
-			if (!(diag_type & XGBE_SFP_EXTD_DIAG_ADDR_CHANGE))
-				phy_data->sfp_diags = 1;
-		}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		xgbe_phy_free_phy_device(pdata);
 	} else {
 		phy_data->sfp_changed = 0;
@@ -1418,10 +1316,6 @@ static void xgbe_phy_sfp_reset(struct xgbe_phy_data *phy_data)
 	phy_data->sfp_rx_los = 0;
 	phy_data->sfp_tx_fault = 0;
 	phy_data->sfp_mod_absent = 1;
-<<<<<<< HEAD
-=======
-	phy_data->sfp_diags = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	phy_data->sfp_base = XGBE_SFP_BASE_UNKNOWN;
 	phy_data->sfp_cable = XGBE_SFP_CABLE_UNKNOWN;
 	phy_data->sfp_speed = XGBE_SFP_SPEED_UNKNOWN;
@@ -1464,7 +1358,6 @@ put:
 	xgbe_phy_put_comm_ownership(pdata);
 }
 
-<<<<<<< HEAD
 static int xgbe_phy_module_eeprom(struct xgbe_prv_data *pdata,
 				  struct ethtool_eeprom *eeprom, u8 *data)
 {
@@ -1589,8 +1482,6 @@ static int xgbe_phy_module_info(struct xgbe_prv_data *pdata,
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void xgbe_phy_phydev_flowctrl(struct xgbe_prv_data *pdata)
 {
 	struct ethtool_link_ksettings *lks = &pdata->phy.lks;
@@ -1876,13 +1767,10 @@ static void xgbe_phy_an_advertising(struct xgbe_prv_data *pdata,
 	XGBE_CLR_ADV(dlks, 1000baseKX_Full);
 	XGBE_CLR_ADV(dlks, 10000baseKR_Full);
 
-<<<<<<< HEAD
 	/* Advertise FEC support is present */
 	if (pdata->fec_ability & MDIO_PMA_10GBR_FECABLE_ABLE)
 		XGBE_SET_ADV(dlks, 10000baseR_FEC);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (phy_data->port_mode) {
 	case XGBE_PORT_MODE_BACKPLANE:
 		XGBE_SET_ADV(dlks, 10000baseKR_Full);
@@ -2693,7 +2581,6 @@ static int xgbe_phy_link_status(struct xgbe_prv_data *pdata, int *an_restart)
 static void xgbe_phy_sfp_gpio_setup(struct xgbe_prv_data *pdata)
 {
 	struct xgbe_phy_data *phy_data = pdata->phy_data;
-<<<<<<< HEAD
 
 	phy_data->sfp_gpio_address = XGBE_GPIO_ADDRESS_PCA9555 +
 				     XP_GET_BITS(pdata->pp3, XP_PROP_3,
@@ -2709,24 +2596,6 @@ static void xgbe_phy_sfp_gpio_setup(struct xgbe_prv_data *pdata)
 	phy_data->sfp_gpio_mod_absent = XP_GET_BITS(pdata->pp3, XP_PROP_3,
 						    GPIO_MOD_ABS);
 	phy_data->sfp_gpio_rate_select = XP_GET_BITS(pdata->pp3, XP_PROP_3,
-=======
-	unsigned int reg;
-
-	reg = XP_IOREAD(pdata, XP_PROP_3);
-
-	phy_data->sfp_gpio_address = XGBE_GPIO_ADDRESS_PCA9555 +
-				     XP_GET_BITS(reg, XP_PROP_3, GPIO_ADDR);
-
-	phy_data->sfp_gpio_mask = XP_GET_BITS(reg, XP_PROP_3, GPIO_MASK);
-
-	phy_data->sfp_gpio_rx_los = XP_GET_BITS(reg, XP_PROP_3,
-						GPIO_RX_LOS);
-	phy_data->sfp_gpio_tx_fault = XP_GET_BITS(reg, XP_PROP_3,
-						  GPIO_TX_FAULT);
-	phy_data->sfp_gpio_mod_absent = XP_GET_BITS(reg, XP_PROP_3,
-						    GPIO_MOD_ABS);
-	phy_data->sfp_gpio_rate_select = XP_GET_BITS(reg, XP_PROP_3,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						     GPIO_RATE_SELECT);
 
 	if (netif_msg_probe(pdata)) {
@@ -2748,30 +2617,17 @@ static void xgbe_phy_sfp_gpio_setup(struct xgbe_prv_data *pdata)
 static void xgbe_phy_sfp_comm_setup(struct xgbe_prv_data *pdata)
 {
 	struct xgbe_phy_data *phy_data = pdata->phy_data;
-<<<<<<< HEAD
 	unsigned int mux_addr_hi, mux_addr_lo;
 
 	mux_addr_hi = XP_GET_BITS(pdata->pp4, XP_PROP_4, MUX_ADDR_HI);
 	mux_addr_lo = XP_GET_BITS(pdata->pp4, XP_PROP_4, MUX_ADDR_LO);
-=======
-	unsigned int reg, mux_addr_hi, mux_addr_lo;
-
-	reg = XP_IOREAD(pdata, XP_PROP_4);
-
-	mux_addr_hi = XP_GET_BITS(reg, XP_PROP_4, MUX_ADDR_HI);
-	mux_addr_lo = XP_GET_BITS(reg, XP_PROP_4, MUX_ADDR_LO);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (mux_addr_lo == XGBE_SFP_DIRECT)
 		return;
 
 	phy_data->sfp_comm = XGBE_SFP_COMM_PCA9545;
 	phy_data->sfp_mux_address = (mux_addr_hi << 2) + mux_addr_lo;
-<<<<<<< HEAD
 	phy_data->sfp_mux_channel = XP_GET_BITS(pdata->pp4, XP_PROP_4,
 						MUX_CHAN);
-=======
-	phy_data->sfp_mux_channel = XP_GET_BITS(reg, XP_PROP_4, MUX_CHAN);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (netif_msg_probe(pdata)) {
 		dev_dbg(pdata->dev, "SFP: mux_address=%#x\n",
@@ -2894,20 +2750,11 @@ static bool xgbe_phy_redrv_error(struct xgbe_phy_data *phy_data)
 static int xgbe_phy_mdio_reset_setup(struct xgbe_prv_data *pdata)
 {
 	struct xgbe_phy_data *phy_data = pdata->phy_data;
-<<<<<<< HEAD
-=======
-	unsigned int reg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (phy_data->conn_type != XGBE_CONN_TYPE_MDIO)
 		return 0;
 
-<<<<<<< HEAD
 	phy_data->mdio_reset = XP_GET_BITS(pdata->pp3, XP_PROP_3, MDIO_RESET);
-=======
-	reg = XP_IOREAD(pdata, XP_PROP_3);
-	phy_data->mdio_reset = XP_GET_BITS(reg, XP_PROP_3, MDIO_RESET);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (phy_data->mdio_reset) {
 	case XGBE_MDIO_RESET_NONE:
 	case XGBE_MDIO_RESET_I2C_GPIO:
@@ -2921,21 +2768,12 @@ static int xgbe_phy_mdio_reset_setup(struct xgbe_prv_data *pdata)
 
 	if (phy_data->mdio_reset == XGBE_MDIO_RESET_I2C_GPIO) {
 		phy_data->mdio_reset_addr = XGBE_GPIO_ADDRESS_PCA9555 +
-<<<<<<< HEAD
 					    XP_GET_BITS(pdata->pp3, XP_PROP_3,
 							MDIO_RESET_I2C_ADDR);
 		phy_data->mdio_reset_gpio = XP_GET_BITS(pdata->pp3, XP_PROP_3,
 							MDIO_RESET_I2C_GPIO);
 	} else if (phy_data->mdio_reset == XGBE_MDIO_RESET_INT_GPIO) {
 		phy_data->mdio_reset_gpio = XP_GET_BITS(pdata->pp3, XP_PROP_3,
-=======
-					    XP_GET_BITS(reg, XP_PROP_3,
-							MDIO_RESET_I2C_ADDR);
-		phy_data->mdio_reset_gpio = XP_GET_BITS(reg, XP_PROP_3,
-							MDIO_RESET_I2C_GPIO);
-	} else if (phy_data->mdio_reset == XGBE_MDIO_RESET_INT_GPIO) {
-		phy_data->mdio_reset_gpio = XP_GET_BITS(reg, XP_PROP_3,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							MDIO_RESET_INT_GPIO);
 	}
 
@@ -3025,18 +2863,9 @@ static bool xgbe_phy_conn_type_mismatch(struct xgbe_prv_data *pdata)
 
 static bool xgbe_phy_port_enabled(struct xgbe_prv_data *pdata)
 {
-<<<<<<< HEAD
 	if (!XP_GET_BITS(pdata->pp0, XP_PROP_0, PORT_SPEEDS))
 		return false;
 	if (!XP_GET_BITS(pdata->pp0, XP_PROP_0, CONN_TYPE))
-=======
-	unsigned int reg;
-
-	reg = XP_IOREAD(pdata, XP_PROP_0);
-	if (!XP_GET_BITS(reg, XP_PROP_0, PORT_SPEEDS))
-		return false;
-	if (!XP_GET_BITS(reg, XP_PROP_0, CONN_TYPE))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return false;
 
 	return true;
@@ -3245,10 +3074,6 @@ static int xgbe_phy_init(struct xgbe_prv_data *pdata)
 	struct ethtool_link_ksettings *lks = &pdata->phy.lks;
 	struct xgbe_phy_data *phy_data;
 	struct mii_bus *mii;
-<<<<<<< HEAD
-=======
-	unsigned int reg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	/* Check if enabled */
@@ -3267,20 +3092,11 @@ static int xgbe_phy_init(struct xgbe_prv_data *pdata)
 		return -ENOMEM;
 	pdata->phy_data = phy_data;
 
-<<<<<<< HEAD
 	phy_data->port_mode = XP_GET_BITS(pdata->pp0, XP_PROP_0, PORT_MODE);
 	phy_data->port_id = XP_GET_BITS(pdata->pp0, XP_PROP_0, PORT_ID);
 	phy_data->port_speeds = XP_GET_BITS(pdata->pp0, XP_PROP_0, PORT_SPEEDS);
 	phy_data->conn_type = XP_GET_BITS(pdata->pp0, XP_PROP_0, CONN_TYPE);
 	phy_data->mdio_addr = XP_GET_BITS(pdata->pp0, XP_PROP_0, MDIO_ADDR);
-=======
-	reg = XP_IOREAD(pdata, XP_PROP_0);
-	phy_data->port_mode = XP_GET_BITS(reg, XP_PROP_0, PORT_MODE);
-	phy_data->port_id = XP_GET_BITS(reg, XP_PROP_0, PORT_ID);
-	phy_data->port_speeds = XP_GET_BITS(reg, XP_PROP_0, PORT_SPEEDS);
-	phy_data->conn_type = XP_GET_BITS(reg, XP_PROP_0, CONN_TYPE);
-	phy_data->mdio_addr = XP_GET_BITS(reg, XP_PROP_0, MDIO_ADDR);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (netif_msg_probe(pdata)) {
 		dev_dbg(pdata->dev, "port mode=%u\n", phy_data->port_mode);
 		dev_dbg(pdata->dev, "port id=%u\n", phy_data->port_id);
@@ -3289,20 +3105,11 @@ static int xgbe_phy_init(struct xgbe_prv_data *pdata)
 		dev_dbg(pdata->dev, "mdio addr=%u\n", phy_data->mdio_addr);
 	}
 
-<<<<<<< HEAD
 	phy_data->redrv = XP_GET_BITS(pdata->pp4, XP_PROP_4, REDRV_PRESENT);
 	phy_data->redrv_if = XP_GET_BITS(pdata->pp4, XP_PROP_4, REDRV_IF);
 	phy_data->redrv_addr = XP_GET_BITS(pdata->pp4, XP_PROP_4, REDRV_ADDR);
 	phy_data->redrv_lane = XP_GET_BITS(pdata->pp4, XP_PROP_4, REDRV_LANE);
 	phy_data->redrv_model = XP_GET_BITS(pdata->pp4, XP_PROP_4, REDRV_MODEL);
-=======
-	reg = XP_IOREAD(pdata, XP_PROP_4);
-	phy_data->redrv = XP_GET_BITS(reg, XP_PROP_4, REDRV_PRESENT);
-	phy_data->redrv_if = XP_GET_BITS(reg, XP_PROP_4, REDRV_IF);
-	phy_data->redrv_addr = XP_GET_BITS(reg, XP_PROP_4, REDRV_ADDR);
-	phy_data->redrv_lane = XP_GET_BITS(reg, XP_PROP_4, REDRV_LANE);
-	phy_data->redrv_model = XP_GET_BITS(reg, XP_PROP_4, REDRV_MODEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (phy_data->redrv && netif_msg_probe(pdata)) {
 		dev_dbg(pdata->dev, "redrv present\n");
 		dev_dbg(pdata->dev, "redrv i/f=%u\n", phy_data->redrv_if);
@@ -3574,10 +3381,7 @@ void xgbe_init_function_ptrs_phy_v2(struct xgbe_phy_if *phy_if)
 
 	phy_impl->kr_training_pre	= xgbe_phy_kr_training_pre;
 	phy_impl->kr_training_post	= xgbe_phy_kr_training_post;
-<<<<<<< HEAD
 
 	phy_impl->module_info		= xgbe_phy_module_info;
 	phy_impl->module_eeprom		= xgbe_phy_module_eeprom;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

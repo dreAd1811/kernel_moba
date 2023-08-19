@@ -1,25 +1,7 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: ISC
 /*
  * Copyright (c) 2012-2017 Qualcomm Atheros, Inc.
  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
-=======
-/*
- * Copyright (c) 2012-2017 Qualcomm Atheros, Inc.
- * Copyright (c) 2018-2021, The Linux Foundation. All rights reserved.
- *
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- *
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/module.h>
@@ -30,14 +12,9 @@
 #include "wil6210.h"
 #include <linux/rtnetlink.h>
 #include <linux/pm_runtime.h>
-<<<<<<< HEAD
 #include "ipa.h"
 
 int n_msi = 3;
-=======
-
-static int n_msi = 3;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 module_param(n_msi, int, 0444);
 MODULE_PARM_DESC(n_msi, " Use MSI interrupt: 0 - use INTx, 1 - single, or 3 - (default) ");
 
@@ -45,17 +22,8 @@ bool ftm_mode;
 module_param(ftm_mode, bool, 0444);
 MODULE_PARM_DESC(ftm_mode, " Set factory test mode, default - false");
 
-<<<<<<< HEAD
 static int wil6210_pm_notify(struct notifier_block *notify_block,
 			     unsigned long mode, void *unused);
-=======
-#ifdef CONFIG_PM
-#ifdef CONFIG_PM_SLEEP
-static int wil6210_pm_notify(struct notifier_block *notify_block,
-			     unsigned long mode, void *unused);
-#endif /* CONFIG_PM_SLEEP */
-#endif /* CONFIG_PM */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static
 int wil_set_capabilities(struct wil6210_priv *wil)
@@ -130,13 +98,10 @@ int wil_set_capabilities(struct wil6210_priv *wil)
 		set_bit(hw_capa_no_flash, wil->hw_capa);
 		wil->use_enhanced_dma_hw = true;
 		wil->use_rx_hw_reordering = true;
-<<<<<<< HEAD
 		wil->use_compressed_rx_status = true;
 		if (wil_ipa_offload())
 			/* IPA offload must use single MSI */
 			n_msi = 1;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		wil_fw_name = ftm_mode ? WIL_FW_NAME_FTM_TALYN :
 			      WIL_FW_NAME_TALYN;
 		if (wil_fw_verify_file_exists(wil, wil_fw_name))
@@ -170,11 +135,8 @@ int wil_set_capabilities(struct wil6210_priv *wil)
 		       min(sizeof(wil->platform_capa), sizeof(platform_capa)));
 	}
 
-<<<<<<< HEAD
 	wil_info(wil, "platform_capa 0x%lx\n", *wil->platform_capa);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* extract FW capabilities from file without loading the FW */
 	wil_request_firmware(wil, wil->wil_fw_name, false);
 	wil_refresh_fw_capabilities(wil);
@@ -209,11 +171,7 @@ static void wil_remove_all_additional_vifs(struct wil6210_priv *wil)
 	struct wil6210_vif *vif;
 	int i;
 
-<<<<<<< HEAD
 	for (i = 1; i < GET_MAX_VIFS(wil); i++) {
-=======
-	for (i = 1; i < wil->max_vifs; i++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		vif = wil->vifs[i];
 		if (vif) {
 			wil_vif_prepare_stop(vif);
@@ -264,14 +222,11 @@ static int wil_if_pcie_enable(struct wil6210_priv *wil)
 
 	wil->n_msi = n_msi;
 
-<<<<<<< HEAD
 	if (wil->n_msi == 0 && wil_ipa_offload()) {
 		wil_err(wil, "IPA offload cannot use INTx\n");
 		rc = -ENODEV;
 		goto stop_master;
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (wil->n_msi == 0 && msi_only) {
 		wil_err(wil, "Interrupt pin not routed, unable to use INTx\n");
 		rc = -ENODEV;
@@ -432,7 +387,6 @@ static int wil_platform_rop_notify(void *wil_handle,
 		set_bit(wil_status_resetting, wil->status);
 		set_bit(wil_status_pci_linkdown, wil->status);
 
-<<<<<<< HEAD
 		if (wil->fw_state == WIL_FW_STATE_READY)
 			wil_nl_60g_fw_state_change(wil,
 						   WIL_FW_STATE_ERROR);
@@ -440,8 +394,6 @@ static int wil_platform_rop_notify(void *wil_handle,
 			wil_nl_60g_fw_state_change(wil,
 					WIL_FW_STATE_ERROR_BEFORE_READY);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		schedule_work(&wil->pci_linkdown_recovery_worker);
 		break;
 	default:
@@ -576,21 +528,13 @@ static int wil_pcie_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 	}
 	/* rollback to bus_disable */
 
-<<<<<<< HEAD
 	wil_clear_fw_log_addr(wil);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rc = wil_if_add(wil);
 	if (rc) {
 		wil_err(wil, "wil_if_add failed: %d\n", rc);
 		goto bus_disable;
 	}
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_PM
-#ifdef CONFIG_PM_SLEEP
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* in case of WMI-only FW, perform full reset and FW loading */
 	if (test_bit(WMI_FW_CAPABILITY_WMI_ONLY, wil->fw_capabilities)) {
 		wil_dbg_misc(wil, "Loading WMI only FW\n");
@@ -599,7 +543,6 @@ static int wil_pcie_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 		mutex_unlock(&wil->mutex);
 		if (rc) {
 			wil_err(wil, "failed to load WMI only FW\n");
-<<<<<<< HEAD
 			/* ignore the error to allow debugging */
 		}
 	}
@@ -607,24 +550,12 @@ static int wil_pcie_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 	if (IS_ENABLED(CONFIG_PM))
 		wil->pm_notify.notifier_call = wil6210_pm_notify;
 
-=======
-			goto if_remove;
-		}
-	}
-
-	wil->pm_notify.notifier_call = wil6210_pm_notify;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rc = register_pm_notifier(&wil->pm_notify);
 	if (rc)
 		/* Do not fail the driver initialization, as suspend can
 		 * be prevented in a later phase if needed
 		 */
 		wil_err(wil, "register_pm_notifier failed: %d\n", rc);
-<<<<<<< HEAD
-=======
-#endif /* CONFIG_PM_SLEEP */
-#endif /* CONFIG_PM */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	wil6210_debugfs_init(wil);
 	wil6210_sysfs_init(wil);
@@ -633,11 +564,6 @@ static int wil_pcie_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 
 	return 0;
 
-<<<<<<< HEAD
-=======
-if_remove:
-	wil_if_remove(wil);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 bus_disable:
 	wil_if_pcie_disable(wil);
 err_iounmap:
@@ -661,15 +587,7 @@ static void wil_pcie_remove(struct pci_dev *pdev)
 
 	wil_dbg_misc(wil, "pcie_remove\n");
 
-<<<<<<< HEAD
 	unregister_pm_notifier(&wil->pm_notify);
-=======
-#ifdef CONFIG_PM
-#ifdef CONFIG_PM_SLEEP
-	unregister_pm_notifier(&wil->pm_notify);
-#endif /* CONFIG_PM_SLEEP */
-#endif /* CONFIG_PM */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	wil_pm_runtime_forbid(wil);
 
@@ -696,12 +614,6 @@ static const struct pci_device_id wil6210_pcie_ids[] = {
 };
 MODULE_DEVICE_TABLE(pci, wil6210_pcie_ids);
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_PM
-#ifdef CONFIG_PM_SLEEP
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int wil6210_suspend(struct device *dev, bool is_runtime)
 {
 	int rc = 0;
@@ -820,31 +732,17 @@ static int wil6210_pm_notify(struct notifier_block *notify_block,
 	return rc;
 }
 
-<<<<<<< HEAD
 static int __maybe_unused wil6210_pm_suspend(struct device *dev)
-=======
-static int wil6210_pm_suspend(struct device *dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return wil6210_suspend(dev, false);
 }
 
-<<<<<<< HEAD
 static int __maybe_unused wil6210_pm_resume(struct device *dev)
 {
 	return wil6210_resume(dev, false);
 }
 
 static int __maybe_unused wil6210_pm_runtime_idle(struct device *dev)
-=======
-static int wil6210_pm_resume(struct device *dev)
-{
-	return wil6210_resume(dev, false);
-}
-#endif /* CONFIG_PM_SLEEP */
-
-static int wil6210_pm_runtime_idle(struct device *dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct pci_dev *pdev = to_pci_dev(dev);
 	struct wil6210_priv *wil = pci_get_drvdata(pdev);
@@ -854,20 +752,12 @@ static int wil6210_pm_runtime_idle(struct device *dev)
 	return wil_can_suspend(wil, true);
 }
 
-<<<<<<< HEAD
 static int __maybe_unused wil6210_pm_runtime_resume(struct device *dev)
-=======
-static int wil6210_pm_runtime_resume(struct device *dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return wil6210_resume(dev, true);
 }
 
-<<<<<<< HEAD
 static int __maybe_unused wil6210_pm_runtime_suspend(struct device *dev)
-=======
-static int wil6210_pm_runtime_suspend(struct device *dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct pci_dev *pdev = to_pci_dev(dev);
 	struct wil6210_priv *wil = pci_get_drvdata(pdev);
@@ -879,10 +769,6 @@ static int wil6210_pm_runtime_suspend(struct device *dev)
 
 	return wil6210_suspend(dev, true);
 }
-<<<<<<< HEAD
-=======
-#endif /* CONFIG_PM */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static const struct dev_pm_ops wil6210_pm_ops = {
 	SET_SYSTEM_SLEEP_PM_OPS(wil6210_pm_suspend, wil6210_pm_resume)

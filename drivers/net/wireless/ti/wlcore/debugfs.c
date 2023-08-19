@@ -26,10 +26,7 @@
 #include <linux/skbuff.h>
 #include <linux/slab.h>
 #include <linux/module.h>
-<<<<<<< HEAD
 #include <linux/pm_runtime.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "wlcore.h"
 #include "debug.h"
@@ -69,17 +66,11 @@ void wl1271_debugfs_update_stats(struct wl1271 *wl)
 	if (unlikely(wl->state != WLCORE_STATE_ON))
 		goto out;
 
-<<<<<<< HEAD
 	ret = pm_runtime_get_sync(wl->dev);
 	if (ret < 0) {
 		pm_runtime_put_noidle(wl->dev);
 		goto out;
 	}
-=======
-	ret = wl1271_ps_elp_wakeup(wl);
-	if (ret < 0)
-		goto out;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!wl->plt &&
 	    time_after(jiffies, wl->stats.fw_stats_update +
@@ -88,12 +79,8 @@ void wl1271_debugfs_update_stats(struct wl1271 *wl)
 		wl->stats.fw_stats_update = jiffies;
 	}
 
-<<<<<<< HEAD
 	pm_runtime_mark_last_busy(wl->dev);
 	pm_runtime_put_autosuspend(wl->dev);
-=======
-	wl1271_ps_elp_sleep(wl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 out:
 	mutex_unlock(&wl->mutex);
@@ -135,28 +122,18 @@ static void chip_op_handler(struct wl1271 *wl, unsigned long value,
 		return;
 	}
 
-<<<<<<< HEAD
 	ret = pm_runtime_get_sync(wl->dev);
 	if (ret < 0) {
 		pm_runtime_put_noidle(wl->dev);
 
 		return;
 	}
-=======
-	ret = wl1271_ps_elp_wakeup(wl);
-	if (ret < 0)
-		return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	chip_op = arg;
 	chip_op(wl);
 
-<<<<<<< HEAD
 	pm_runtime_mark_last_busy(wl->dev);
 	pm_runtime_put_autosuspend(wl->dev);
-=======
-	wl1271_ps_elp_sleep(wl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 
@@ -323,17 +300,11 @@ static ssize_t dynamic_ps_timeout_write(struct file *file,
 	if (unlikely(wl->state != WLCORE_STATE_ON))
 		goto out;
 
-<<<<<<< HEAD
 	ret = pm_runtime_get_sync(wl->dev);
 	if (ret < 0) {
 		pm_runtime_put_noidle(wl->dev);
 		goto out;
 	}
-=======
-	ret = wl1271_ps_elp_wakeup(wl);
-	if (ret < 0)
-		goto out;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* In case we're already in PSM, trigger it again to set new timeout
 	 * immediately without waiting for re-association
@@ -344,12 +315,8 @@ static ssize_t dynamic_ps_timeout_write(struct file *file,
 			wl1271_ps_set_mode(wl, wlvif, STATION_AUTO_PS_MODE);
 	}
 
-<<<<<<< HEAD
 	pm_runtime_mark_last_busy(wl->dev);
 	pm_runtime_put_autosuspend(wl->dev);
-=======
-	wl1271_ps_elp_sleep(wl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 out:
 	mutex_unlock(&wl->mutex);
@@ -403,17 +370,11 @@ static ssize_t forced_ps_write(struct file *file,
 	if (unlikely(wl->state != WLCORE_STATE_ON))
 		goto out;
 
-<<<<<<< HEAD
 	ret = pm_runtime_get_sync(wl->dev);
 	if (ret < 0) {
 		pm_runtime_put_noidle(wl->dev);
 		goto out;
 	}
-=======
-	ret = wl1271_ps_elp_wakeup(wl);
-	if (ret < 0)
-		goto out;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* In case we're already in PSM, trigger it again to switch mode
 	 * immediately without waiting for re-association
@@ -426,12 +387,8 @@ static ssize_t forced_ps_write(struct file *file,
 			wl1271_ps_set_mode(wl, wlvif, ps_mode);
 	}
 
-<<<<<<< HEAD
 	pm_runtime_mark_last_busy(wl->dev);
 	pm_runtime_put_autosuspend(wl->dev);
-=======
-	wl1271_ps_elp_sleep(wl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 out:
 	mutex_unlock(&wl->mutex);
@@ -895,28 +852,18 @@ static ssize_t rx_streaming_interval_write(struct file *file,
 
 	wl->conf.rx_streaming.interval = value;
 
-<<<<<<< HEAD
 	ret = pm_runtime_get_sync(wl->dev);
 	if (ret < 0) {
 		pm_runtime_put_noidle(wl->dev);
 		goto out;
 	}
-=======
-	ret = wl1271_ps_elp_wakeup(wl);
-	if (ret < 0)
-		goto out;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	wl12xx_for_each_wlvif_sta(wl, wlvif) {
 		wl1271_recalc_rx_streaming(wl, wlvif);
 	}
 
-<<<<<<< HEAD
 	pm_runtime_mark_last_busy(wl->dev);
 	pm_runtime_put_autosuspend(wl->dev);
-=======
-	wl1271_ps_elp_sleep(wl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	mutex_unlock(&wl->mutex);
 	return count;
@@ -963,28 +910,18 @@ static ssize_t rx_streaming_always_write(struct file *file,
 
 	wl->conf.rx_streaming.always = value;
 
-<<<<<<< HEAD
 	ret = pm_runtime_get_sync(wl->dev);
 	if (ret < 0) {
 		pm_runtime_put_noidle(wl->dev);
 		goto out;
 	}
-=======
-	ret = wl1271_ps_elp_wakeup(wl);
-	if (ret < 0)
-		goto out;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	wl12xx_for_each_wlvif_sta(wl, wlvif) {
 		wl1271_recalc_rx_streaming(wl, wlvif);
 	}
 
-<<<<<<< HEAD
 	pm_runtime_mark_last_busy(wl->dev);
 	pm_runtime_put_autosuspend(wl->dev);
-=======
-	wl1271_ps_elp_sleep(wl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	mutex_unlock(&wl->mutex);
 	return count;
@@ -1023,28 +960,18 @@ static ssize_t beacon_filtering_write(struct file *file,
 
 	mutex_lock(&wl->mutex);
 
-<<<<<<< HEAD
 	ret = pm_runtime_get_sync(wl->dev);
 	if (ret < 0) {
 		pm_runtime_put_noidle(wl->dev);
 		goto out;
 	}
-=======
-	ret = wl1271_ps_elp_wakeup(wl);
-	if (ret < 0)
-		goto out;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	wl12xx_for_each_wlvif(wl, wlvif) {
 		ret = wl1271_acx_beacon_filter_opt(wl, wlvif, !!value);
 	}
 
-<<<<<<< HEAD
 	pm_runtime_mark_last_busy(wl->dev);
 	pm_runtime_put_autosuspend(wl->dev);
-=======
-	wl1271_ps_elp_sleep(wl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	mutex_unlock(&wl->mutex);
 	return count;
@@ -1115,29 +1042,19 @@ static ssize_t sleep_auth_write(struct file *file,
 		goto out;
 	}
 
-<<<<<<< HEAD
 	ret = pm_runtime_get_sync(wl->dev);
 	if (ret < 0) {
 		pm_runtime_put_noidle(wl->dev);
 		goto out;
 	}
-=======
-	ret = wl1271_ps_elp_wakeup(wl);
-	if (ret < 0)
-		goto out;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = wl1271_acx_sleep_auth(wl, value);
 	if (ret < 0)
 		goto out_sleep;
 
 out_sleep:
-<<<<<<< HEAD
 	pm_runtime_mark_last_busy(wl->dev);
 	pm_runtime_put_autosuspend(wl->dev);
-=======
-	wl1271_ps_elp_sleep(wl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	mutex_unlock(&wl->mutex);
 	return count;
@@ -1192,11 +1109,7 @@ static ssize_t dev_mem_read(struct file *file,
 	 * Don't fail if elp_wakeup returns an error, so the device's memory
 	 * could be read even if the FW crashed
 	 */
-<<<<<<< HEAD
 	pm_runtime_get_sync(wl->dev);
-=======
-	wl1271_ps_elp_wakeup(wl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* store current partition and switch partition */
 	memcpy(&old_part, &wl->curr_part, sizeof(old_part));
@@ -1215,12 +1128,8 @@ read_err:
 		goto part_err;
 
 part_err:
-<<<<<<< HEAD
 	pm_runtime_mark_last_busy(wl->dev);
 	pm_runtime_put_autosuspend(wl->dev);
-=======
-	wl1271_ps_elp_sleep(wl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 skip_read:
 	mutex_unlock(&wl->mutex);
@@ -1282,11 +1191,7 @@ static ssize_t dev_mem_write(struct file *file, const char __user *user_buf,
 	 * Don't fail if elp_wakeup returns an error, so the device's memory
 	 * could be read even if the FW crashed
 	 */
-<<<<<<< HEAD
 	pm_runtime_get_sync(wl->dev);
-=======
-	wl1271_ps_elp_wakeup(wl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* store current partition and switch partition */
 	memcpy(&old_part, &wl->curr_part, sizeof(old_part));
@@ -1305,12 +1210,8 @@ write_err:
 		goto part_err;
 
 part_err:
-<<<<<<< HEAD
 	pm_runtime_mark_last_busy(wl->dev);
 	pm_runtime_put_autosuspend(wl->dev);
-=======
-	wl1271_ps_elp_sleep(wl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 skip_write:
 	mutex_unlock(&wl->mutex);
@@ -1374,14 +1275,9 @@ static ssize_t fw_logger_write(struct file *file,
 	}
 
 	mutex_lock(&wl->mutex);
-<<<<<<< HEAD
 	ret = pm_runtime_get_sync(wl->dev);
 	if (ret < 0) {
 		pm_runtime_put_noidle(wl->dev);
-=======
-	ret = wl1271_ps_elp_wakeup(wl);
-	if (ret < 0) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		count = ret;
 		goto out;
 	}
@@ -1390,12 +1286,8 @@ static ssize_t fw_logger_write(struct file *file,
 
 	ret = wl12xx_cmd_config_fwlog(wl);
 
-<<<<<<< HEAD
 	pm_runtime_mark_last_busy(wl->dev);
 	pm_runtime_put_autosuspend(wl->dev);
-=======
-	wl1271_ps_elp_sleep(wl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 out:
 	mutex_unlock(&wl->mutex);

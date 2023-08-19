@@ -1,11 +1,7 @@
 /*
  * Analog Devices ADF7242 Low-Power IEEE 802.15.4 Transceiver
  *
-<<<<<<< HEAD
  * Copyright 2009-2017 Analog Devices Inc.
-=======
- * Copyright 2009-2015 Analog Devices Inc.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Licensed under the GPL-2 or later.
  *
@@ -279,11 +275,8 @@ struct adf7242_local {
 	struct spi_message stat_msg;
 	struct spi_transfer stat_xfer;
 	struct dentry *debugfs_root;
-<<<<<<< HEAD
 	struct delayed_work work;
 	struct workqueue_struct *wqueue;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 	int tx_stat;
 	bool promiscuous;
@@ -320,13 +313,8 @@ static int adf7242_status(struct adf7242_local *lp, u8 *stat)
 	return status;
 }
 
-<<<<<<< HEAD
 static int adf7242_wait_status(struct adf7242_local *lp, unsigned int status,
 			       unsigned int mask, int line)
-=======
-static int adf7242_wait_status(struct adf7242_local *lp, unsigned status,
-			       unsigned mask, int line)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int cnt = 0, ret = 0;
 	u8 stat;
@@ -358,25 +346,18 @@ static int adf7242_wait_status(struct adf7242_local *lp, unsigned status,
 	return ret;
 }
 
-<<<<<<< HEAD
 static int adf7242_wait_rc_ready(struct adf7242_local *lp, int line)
-=======
-static int adf7242_wait_ready(struct adf7242_local *lp, int line)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return adf7242_wait_status(lp, STAT_RC_READY | STAT_SPI_READY,
 				   STAT_RC_READY | STAT_SPI_READY, line);
 }
 
-<<<<<<< HEAD
 static int adf7242_wait_spi_ready(struct adf7242_local *lp, int line)
 {
 	return adf7242_wait_status(lp, STAT_SPI_READY,
 				   STAT_SPI_READY, line);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int adf7242_write_fbuf(struct adf7242_local *lp, u8 *data, u8 len)
 {
 	u8 *buf = lp->buf;
@@ -396,11 +377,7 @@ static int adf7242_write_fbuf(struct adf7242_local *lp, u8 *data, u8 len)
 	spi_message_add_tail(&xfer_head, &msg);
 	spi_message_add_tail(&xfer_buf, &msg);
 
-<<<<<<< HEAD
 	adf7242_wait_spi_ready(lp, __LINE__);
-=======
-	adf7242_wait_ready(lp, __LINE__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&lp->bmux);
 	buf[0] = CMD_SPI_PKT_WR;
@@ -432,11 +409,7 @@ static int adf7242_read_fbuf(struct adf7242_local *lp,
 	spi_message_add_tail(&xfer_head, &msg);
 	spi_message_add_tail(&xfer_buf, &msg);
 
-<<<<<<< HEAD
 	adf7242_wait_spi_ready(lp, __LINE__);
-=======
-	adf7242_wait_ready(lp, __LINE__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&lp->bmux);
 	if (packet_read) {
@@ -467,11 +440,7 @@ static int adf7242_read_reg(struct adf7242_local *lp, u16 addr, u8 *data)
 		.rx_buf = lp->buf_read_rx,
 	};
 
-<<<<<<< HEAD
 	adf7242_wait_spi_ready(lp, __LINE__);
-=======
-	adf7242_wait_ready(lp, __LINE__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&lp->bmux);
 	lp->buf_read_tx[0] = CMD_SPI_MEM_RD(addr);
@@ -501,11 +470,7 @@ static int adf7242_write_reg(struct adf7242_local *lp, u16 addr, u8 data)
 {
 	int status;
 
-<<<<<<< HEAD
 	adf7242_wait_spi_ready(lp, __LINE__);
-=======
-	adf7242_wait_ready(lp, __LINE__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&lp->bmux);
 	lp->buf_reg_tx[0] = CMD_SPI_MEM_WR(addr);
@@ -520,22 +485,14 @@ static int adf7242_write_reg(struct adf7242_local *lp, u16 addr, u8 data)
 	return status;
 }
 
-<<<<<<< HEAD
 static int adf7242_cmd(struct adf7242_local *lp, unsigned int cmd)
-=======
-static int adf7242_cmd(struct adf7242_local *lp, unsigned cmd)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int status;
 
 	dev_vdbg(&lp->spi->dev, "%s : CMD=0x%X\n", __func__, cmd);
 
 	if (cmd != CMD_RC_PC_RESET_NO_WAIT)
-<<<<<<< HEAD
 		adf7242_wait_rc_ready(lp, __LINE__);
-=======
-		adf7242_wait_ready(lp, __LINE__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&lp->bmux);
 	lp->buf_cmd = cmd;
@@ -608,7 +565,6 @@ static int adf7242_verify_firmware(struct adf7242_local *lp,
 	return 0;
 }
 
-<<<<<<< HEAD
 static void adf7242_clear_irqstat(struct adf7242_local *lp)
 {
 	adf7242_write_reg(lp, REG_IRQ1_SRC1, IRQ_CCA_COMPLETE | IRQ_SFD_RX |
@@ -641,8 +597,6 @@ static void adf7242_rx_cal_work(struct work_struct *work)
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int adf7242_set_txpower(struct ieee802154_hw *hw, int mbm)
 {
 	struct adf7242_local *lp = hw->priv;
@@ -746,37 +700,22 @@ static int adf7242_start(struct ieee802154_hw *hw)
 	struct adf7242_local *lp = hw->priv;
 
 	adf7242_cmd(lp, CMD_RC_PHY_RDY);
-<<<<<<< HEAD
 	adf7242_clear_irqstat(lp);
 	enable_irq(lp->spi->irq);
 	set_bit(FLAG_START, &lp->flags);
 
 	return adf7242_cmd_rx(lp);
-=======
-	adf7242_write_reg(lp, REG_IRQ1_SRC1, 0xFF);
-	enable_irq(lp->spi->irq);
-	set_bit(FLAG_START, &lp->flags);
-
-	return adf7242_cmd(lp, CMD_RC_RX);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void adf7242_stop(struct ieee802154_hw *hw)
 {
 	struct adf7242_local *lp = hw->priv;
 
-<<<<<<< HEAD
 	disable_irq(lp->spi->irq);
 	cancel_delayed_work_sync(&lp->work);
 	adf7242_cmd(lp, CMD_RC_IDLE);
 	clear_bit(FLAG_START, &lp->flags);
 	adf7242_clear_irqstat(lp);
-=======
-	adf7242_cmd(lp, CMD_RC_IDLE);
-	clear_bit(FLAG_START, &lp->flags);
-	disable_irq(lp->spi->irq);
-	adf7242_write_reg(lp, REG_IRQ1_SRC1, 0xFF);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int adf7242_channel(struct ieee802154_hw *hw, u8 page, u8 channel)
@@ -799,14 +738,10 @@ static int adf7242_channel(struct ieee802154_hw *hw, u8 page, u8 channel)
 	adf7242_write_reg(lp, REG_CH_FREQ1, freq >> 8);
 	adf7242_write_reg(lp, REG_CH_FREQ2, freq >> 16);
 
-<<<<<<< HEAD
 	if (test_bit(FLAG_START, &lp->flags))
 		return adf7242_cmd_rx(lp);
 	else
 		return adf7242_cmd(lp, CMD_RC_PHY_RDY);
-=======
-	return adf7242_cmd(lp, CMD_RC_RX);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int adf7242_set_hw_addr_filt(struct ieee802154_hw *hw,
@@ -898,7 +833,6 @@ static int adf7242_xmit(struct ieee802154_hw *hw, struct sk_buff *skb)
 	struct adf7242_local *lp = hw->priv;
 	int ret;
 
-<<<<<<< HEAD
 	/* ensure existing instances of the IRQ handler have completed */
 	disable_irq(lp->spi->irq);
 	set_bit(FLAG_XMIT, &lp->flags);
@@ -906,11 +840,6 @@ static int adf7242_xmit(struct ieee802154_hw *hw, struct sk_buff *skb)
 	reinit_completion(&lp->tx_complete);
 	adf7242_cmd(lp, CMD_RC_PHY_RDY);
 	adf7242_clear_irqstat(lp);
-=======
-	set_bit(FLAG_XMIT, &lp->flags);
-	reinit_completion(&lp->tx_complete);
-	adf7242_cmd(lp, CMD_RC_PHY_RDY);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = adf7242_write_fbuf(lp, skb->data, skb->len);
 	if (ret)
@@ -919,10 +848,7 @@ static int adf7242_xmit(struct ieee802154_hw *hw, struct sk_buff *skb)
 	ret = adf7242_cmd(lp, CMD_RC_CSMACA);
 	if (ret)
 		goto err;
-<<<<<<< HEAD
 	enable_irq(lp->spi->irq);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = wait_for_completion_interruptible_timeout(&lp->tx_complete,
 							HZ / 10);
@@ -945,11 +871,7 @@ static int adf7242_xmit(struct ieee802154_hw *hw, struct sk_buff *skb)
 
 err:
 	clear_bit(FLAG_XMIT, &lp->flags);
-<<<<<<< HEAD
 	adf7242_cmd_rx(lp);
-=======
-	adf7242_cmd(lp, CMD_RC_RX);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -973,11 +895,7 @@ static int adf7242_rx(struct adf7242_local *lp)
 
 	skb = dev_alloc_skb(len);
 	if (!skb) {
-<<<<<<< HEAD
 		adf7242_cmd_rx(lp);
-=======
-		adf7242_cmd(lp, CMD_RC_RX);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOMEM;
 	}
 
@@ -985,22 +903,14 @@ static int adf7242_rx(struct adf7242_local *lp)
 	ret = adf7242_read_fbuf(lp, data, len, true);
 	if (ret < 0) {
 		kfree_skb(skb);
-<<<<<<< HEAD
 		adf7242_cmd_rx(lp);
-=======
-		adf7242_cmd(lp, CMD_RC_RX);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
 	lqi = data[len - 2];
 	lp->rssi = data[len - 1];
 
-<<<<<<< HEAD
 	ret = adf7242_cmd_rx(lp);
-=======
-	adf7242_cmd(lp, CMD_RC_RX);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	skb_trim(skb, len - 2);	/* Don't put RSSI/LQI or CRC into the frame */
 
@@ -1009,11 +919,7 @@ static int adf7242_rx(struct adf7242_local *lp)
 	dev_dbg(&lp->spi->dev, "%s: ret=%d len=%d lqi=%d rssi=%d\n",
 		__func__, ret, (int)len, (int)lqi, lp->rssi);
 
-<<<<<<< HEAD
 	return ret;
-=======
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct ieee802154_ops adf7242_ops = {
@@ -1049,18 +955,12 @@ static void adf7242_debug(struct adf7242_local *lp, u8 irq1)
 		irq1 & IRQ_FRAME_VALID ? "IRQ_FRAME_VALID\n" : "",
 		irq1 & IRQ_ADDRESS_VALID ? "IRQ_ADDRESS_VALID\n" : "");
 
-<<<<<<< HEAD
 	dev_dbg(&lp->spi->dev, "%s STATUS = %X:\n%s\n%s\n%s\n%s\n%s%s%s%s%s\n",
 		__func__, stat,
 		stat & STAT_SPI_READY ? "SPI_READY" : "SPI_BUSY",
 		stat & STAT_IRQ_STATUS ? "IRQ_PENDING" : "IRQ_CLEAR",
 		stat & STAT_RC_READY ? "RC_READY" : "RC_BUSY",
 		stat & STAT_CCA_RESULT ? "CHAN_IDLE" : "CHAN_BUSY",
-=======
-	dev_dbg(&lp->spi->dev, "%s STATUS = %X:\n%s\n%s%s%s%s%s\n",
-		__func__, stat,
-		stat & STAT_RC_READY ? "RC_READY" : "RC_BUSY",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		(stat & 0xf) == RC_STATUS_IDLE ? "RC_STATUS_IDLE" : "",
 		(stat & 0xf) == RC_STATUS_MEAS ? "RC_STATUS_MEAS" : "",
 		(stat & 0xf) == RC_STATUS_PHY_RDY ? "RC_STATUS_PHY_RDY" : "",
@@ -1072,21 +972,11 @@ static void adf7242_debug(struct adf7242_local *lp, u8 irq1)
 static irqreturn_t adf7242_isr(int irq, void *data)
 {
 	struct adf7242_local *lp = data;
-<<<<<<< HEAD
 	unsigned int xmit;
 	u8 irq1;
 
 	mod_delayed_work(lp->wqueue, &lp->work, msecs_to_jiffies(400));
 	adf7242_read_reg(lp, REG_IRQ1_SRC1, &irq1);
-=======
-	unsigned xmit;
-	u8 irq1;
-
-	adf7242_wait_status(lp, RC_STATUS_PHY_RDY, RC_STATUS_MASK, __LINE__);
-
-	adf7242_read_reg(lp, REG_IRQ1_SRC1, &irq1);
-	adf7242_write_reg(lp, REG_IRQ1_SRC1, irq1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!(irq1 & (IRQ_RX_PKT_RCVD | IRQ_CSMA_CA)))
 		dev_err(&lp->spi->dev, "%s :ERROR IRQ1 = 0x%X\n",
@@ -1097,12 +987,9 @@ static irqreturn_t adf7242_isr(int irq, void *data)
 	xmit = test_bit(FLAG_XMIT, &lp->flags);
 
 	if (xmit && (irq1 & IRQ_CSMA_CA)) {
-<<<<<<< HEAD
 		adf7242_wait_status(lp, RC_STATUS_PHY_RDY,
 				    RC_STATUS_MASK, __LINE__);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ADF7242_REPORT_CSMA_CA_STAT) {
 			u8 astat;
 
@@ -1123,10 +1010,7 @@ static irqreturn_t adf7242_isr(int irq, void *data)
 			lp->tx_stat = SUCCESS;
 		}
 		complete(&lp->tx_complete);
-<<<<<<< HEAD
 		adf7242_clear_irqstat(lp);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (!xmit && (irq1 & IRQ_RX_PKT_RCVD) &&
 		   (irq1 & IRQ_FRAME_VALID)) {
 		adf7242_rx(lp);
@@ -1135,18 +1019,12 @@ static irqreturn_t adf7242_isr(int irq, void *data)
 		dev_dbg(&lp->spi->dev, "%s:%d : ERROR IRQ1 = 0x%X\n",
 			__func__, __LINE__, irq1);
 		adf7242_cmd(lp, CMD_RC_PHY_RDY);
-<<<<<<< HEAD
 		adf7242_cmd_rx(lp);
-=======
-		adf7242_write_reg(lp, REG_IRQ1_SRC1, 0xFF);
-		adf7242_cmd(lp, CMD_RC_RX);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		/* This can only be xmit without IRQ, likely a RX packet.
 		 * we get an TX IRQ shortly - do nothing or let the xmit
 		 * timeout handle this
 		 */
-<<<<<<< HEAD
 
 		dev_dbg(&lp->spi->dev, "%s:%d : ERROR IRQ1 = 0x%X, xmit %d\n",
 			__func__, __LINE__, irq1, xmit);
@@ -1154,11 +1032,6 @@ static irqreturn_t adf7242_isr(int irq, void *data)
 				    RC_STATUS_MASK, __LINE__);
 		complete(&lp->tx_complete);
 		adf7242_clear_irqstat(lp);
-=======
-		dev_dbg(&lp->spi->dev, "%s:%d : ERROR IRQ1 = 0x%X, xmit %d\n",
-			__func__, __LINE__, irq1, xmit);
-		complete(&lp->tx_complete);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return IRQ_HANDLED;
@@ -1178,11 +1051,7 @@ static int adf7242_soft_reset(struct adf7242_local *lp, int line)
 	adf7242_set_promiscuous_mode(lp->hw, lp->promiscuous);
 	adf7242_set_csma_params(lp->hw, lp->min_be, lp->max_be,
 				lp->max_cca_retries);
-<<<<<<< HEAD
 	adf7242_clear_irqstat(lp);
-=======
-	adf7242_write_reg(lp, REG_IRQ1_SRC1, 0xFF);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (test_bit(FLAG_START, &lp->flags)) {
 		enable_irq(lp->spi->irq);
@@ -1248,11 +1117,7 @@ static int adf7242_hw_init(struct adf7242_local *lp)
 	adf7242_write_reg(lp, REG_IRQ1_EN0, 0);
 	adf7242_write_reg(lp, REG_IRQ1_EN1, IRQ_RX_PKT_RCVD | IRQ_CSMA_CA);
 
-<<<<<<< HEAD
 	adf7242_clear_irqstat(lp);
-=======
-	adf7242_write_reg(lp, REG_IRQ1_SRC1, 0xFF);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adf7242_write_reg(lp, REG_IRQ1_SRC0, 0xFF);
 
 	adf7242_cmd(lp, CMD_RC_IDLE);
@@ -1278,16 +1143,11 @@ static int adf7242_stats_show(struct seq_file *file, void *offset)
 		   irq1 & IRQ_FRAME_VALID ? "IRQ_FRAME_VALID\n" : "",
 		   irq1 & IRQ_ADDRESS_VALID ? "IRQ_ADDRESS_VALID\n" : "");
 
-<<<<<<< HEAD
 	seq_printf(file, "STATUS = %X:\n%s\n%s\n%s\n%s\n%s%s%s%s%s\n", stat,
 		   stat & STAT_SPI_READY ? "SPI_READY" : "SPI_BUSY",
 		   stat & STAT_IRQ_STATUS ? "IRQ_PENDING" : "IRQ_CLEAR",
 		   stat & STAT_RC_READY ? "RC_READY" : "RC_BUSY",
 		   stat & STAT_CCA_RESULT ? "CHAN_IDLE" : "CHAN_BUSY",
-=======
-	seq_printf(file, "STATUS = %X:\n%s\n%s%s%s%s%s\n", stat,
-		   stat & STAT_RC_READY ? "RC_READY" : "RC_BUSY",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		   (stat & 0xf) == RC_STATUS_IDLE ? "RC_STATUS_IDLE" : "",
 		   (stat & 0xf) == RC_STATUS_MEAS ? "RC_STATUS_MEAS" : "",
 		   (stat & 0xf) == RC_STATUS_PHY_RDY ? "RC_STATUS_PHY_RDY" : "",
@@ -1405,7 +1265,6 @@ static int adf7242_probe(struct spi_device *spi)
 	spi_message_add_tail(&lp->stat_xfer, &lp->stat_msg);
 
 	spi_set_drvdata(spi, lp);
-<<<<<<< HEAD
 	INIT_DELAYED_WORK(&lp->work, adf7242_rx_cal_work);
 	lp->wqueue = alloc_ordered_workqueue(dev_name(&spi->dev),
 					     WQ_MEM_RECLAIM);
@@ -1413,8 +1272,6 @@ static int adf7242_probe(struct spi_device *spi)
 		ret = -ENOMEM;
 		goto err_hw_init;
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = adf7242_hw_init(lp);
 	if (ret)
@@ -1455,15 +1312,10 @@ static int adf7242_remove(struct spi_device *spi)
 {
 	struct adf7242_local *lp = spi_get_drvdata(spi);
 
-<<<<<<< HEAD
 	debugfs_remove_recursive(lp->debugfs_root);
 
 	cancel_delayed_work_sync(&lp->work);
 	destroy_workqueue(lp->wqueue);
-=======
-	if (!IS_ERR_OR_NULL(lp->debugfs_root))
-		debugfs_remove_recursive(lp->debugfs_root);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ieee802154_unregister_hw(lp->hw);
 	mutex_destroy(&lp->bmux);
@@ -1474,20 +1326,14 @@ static int adf7242_remove(struct spi_device *spi)
 
 static const struct of_device_id adf7242_of_match[] = {
 	{ .compatible = "adi,adf7242", },
-<<<<<<< HEAD
 	{ .compatible = "adi,adf7241", },
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ },
 };
 MODULE_DEVICE_TABLE(of, adf7242_of_match);
 
 static const struct spi_device_id adf7242_device_id[] = {
 	{ .name = "adf7242", },
-<<<<<<< HEAD
 	{ .name = "adf7241", },
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ },
 };
 MODULE_DEVICE_TABLE(spi, adf7242_device_id);

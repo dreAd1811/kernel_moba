@@ -13,20 +13,14 @@
  */
 
 #include <linux/bug.h>
-<<<<<<< HEAD
 #include <linux/bitfield.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/clk.h>
 #include <linux/clk-provider.h>
 #include <linux/device.h>
 #include <linux/err.h>
 #include <linux/init.h>
 #include <linux/io.h>
-<<<<<<< HEAD
 #include <linux/pm.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/slab.h>
 #include <linux/sys_soc.h>
 
@@ -37,7 +31,6 @@
 #define CPG_PLL2CR		0x002c
 #define CPG_PLL4CR		0x01f4
 
-<<<<<<< HEAD
 struct cpg_simple_notifier {
 	struct notifier_block nb;
 	void __iomem *reg;
@@ -202,8 +195,6 @@ static struct clk * __init cpg_z_clk_register(const char *name,
 
 	return clk;
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * SDn Clock
@@ -230,13 +221,8 @@ struct sd_div_table {
 
 struct sd_clock {
 	struct clk_hw hw;
-<<<<<<< HEAD
 	const struct sd_div_table *div_table;
 	struct cpg_simple_notifier csn;
-=======
-	void __iomem *reg;
-	const struct sd_div_table *div_table;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int div_num;
 	unsigned int div_min;
 	unsigned int div_max;
@@ -277,20 +263,12 @@ static const struct sd_div_table cpg_sd_div_table[] = {
 static int cpg_sd_clock_enable(struct clk_hw *hw)
 {
 	struct sd_clock *clock = to_sd_clock(hw);
-<<<<<<< HEAD
 	u32 val = readl(clock->csn.reg);
-=======
-	u32 val = readl(clock->reg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	val &= ~(CPG_SD_STP_MASK);
 	val |= clock->div_table[clock->cur_div_idx].val & CPG_SD_STP_MASK;
 
-<<<<<<< HEAD
 	writel(val, clock->csn.reg);
-=======
-	writel(val, clock->reg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -299,22 +277,14 @@ static void cpg_sd_clock_disable(struct clk_hw *hw)
 {
 	struct sd_clock *clock = to_sd_clock(hw);
 
-<<<<<<< HEAD
 	writel(readl(clock->csn.reg) | CPG_SD_STP_MASK, clock->csn.reg);
-=======
-	writel(readl(clock->reg) | CPG_SD_STP_MASK, clock->reg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int cpg_sd_clock_is_enabled(struct clk_hw *hw)
 {
 	struct sd_clock *clock = to_sd_clock(hw);
 
-<<<<<<< HEAD
 	return !(readl(clock->csn.reg) & CPG_SD_STP_MASK);
-=======
-	return !(readl(clock->reg) & CPG_SD_STP_MASK);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static unsigned long cpg_sd_clock_recalc_rate(struct clk_hw *hw,
@@ -366,17 +336,10 @@ static int cpg_sd_clock_set_rate(struct clk_hw *hw, unsigned long rate,
 
 	clock->cur_div_idx = i;
 
-<<<<<<< HEAD
 	val = readl(clock->csn.reg);
 	val &= ~(CPG_SD_STP_MASK | CPG_SD_FC_MASK);
 	val |= clock->div_table[i].val & (CPG_SD_STP_MASK | CPG_SD_FC_MASK);
 	writel(val, clock->csn.reg);
-=======
-	val = readl(clock->reg);
-	val &= ~(CPG_SD_STP_MASK | CPG_SD_FC_MASK);
-	val |= clock->div_table[i].val & (CPG_SD_STP_MASK | CPG_SD_FC_MASK);
-	writel(val, clock->reg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -391,13 +354,8 @@ static const struct clk_ops cpg_sd_clock_ops = {
 };
 
 static struct clk * __init cpg_sd_clk_register(const struct cpg_core_clk *core,
-<<<<<<< HEAD
 	void __iomem *base, const char *parent_name,
 	struct raw_notifier_head *notifiers)
-=======
-					       void __iomem *base,
-					       const char *parent_name)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct clk_init_data init;
 	struct sd_clock *clock;
@@ -415,20 +373,12 @@ static struct clk * __init cpg_sd_clk_register(const struct cpg_core_clk *core,
 	init.parent_names = &parent_name;
 	init.num_parents = 1;
 
-<<<<<<< HEAD
 	clock->csn.reg = base + core->offset;
-=======
-	clock->reg = base + core->offset;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clock->hw.init = &init;
 	clock->div_table = cpg_sd_div_table;
 	clock->div_num = ARRAY_SIZE(cpg_sd_div_table);
 
-<<<<<<< HEAD
 	sd_fc = readl(clock->csn.reg) & CPG_SD_FC_MASK;
-=======
-	sd_fc = readl(clock->reg) & CPG_SD_FC_MASK;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < clock->div_num; i++)
 		if (sd_fc == (clock->div_table[i].val & CPG_SD_FC_MASK))
 			break;
@@ -449,7 +399,6 @@ static struct clk * __init cpg_sd_clk_register(const struct cpg_core_clk *core,
 
 	clk = clk_register(NULL, &clock->hw);
 	if (IS_ERR(clk))
-<<<<<<< HEAD
 		goto free_clock;
 
 	cpg_simple_notifier_register(notifiers, &clock->csn);
@@ -457,10 +406,6 @@ static struct clk * __init cpg_sd_clk_register(const struct cpg_core_clk *core,
 
 free_clock:
 	kfree(clock);
-=======
-		kfree(clock);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return clk;
 }
 
@@ -491,12 +436,8 @@ static const struct soc_device_attribute cpg_quirks_match[] __initconst = {
 
 struct clk * __init rcar_gen3_cpg_clk_register(struct device *dev,
 	const struct cpg_core_clk *core, const struct cpg_mssr_info *info,
-<<<<<<< HEAD
 	struct clk **clks, void __iomem *base,
 	struct raw_notifier_head *notifiers)
-=======
-	struct clk **clks, void __iomem *base)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	const struct clk *parent;
 	unsigned int mult = 1;
@@ -562,7 +503,6 @@ struct clk * __init rcar_gen3_cpg_clk_register(struct device *dev,
 		break;
 
 	case CLK_TYPE_GEN3_SD:
-<<<<<<< HEAD
 		return cpg_sd_clk_register(core, base, __clk_get_name(parent),
 					   notifiers);
 
@@ -576,33 +516,19 @@ struct clk * __init rcar_gen3_cpg_clk_register(struct device *dev,
 
 			csn->reg = base + CPG_RCKCR;
 
-=======
-		return cpg_sd_clk_register(core, base, __clk_get_name(parent));
-
-	case CLK_TYPE_GEN3_R:
-		if (cpg_quirks & RCKCR_CKSEL) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/*
 			 * RINT is default.
 			 * Only if EXTALR is populated, we switch to it.
 			 */
-<<<<<<< HEAD
 			value = readl(csn->reg) & 0x3f;
-=======
-			value = readl(base + CPG_RCKCR) & 0x3f;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			if (clk_get_rate(clks[cpg_clk_extalr])) {
 				parent = clks[cpg_clk_extalr];
 				value |= BIT(15);
 			}
 
-<<<<<<< HEAD
 			writel(value, csn->reg);
 			cpg_simple_notifier_register(notifiers, csn);
-=======
-			writel(value, base + CPG_RCKCR);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 
@@ -629,7 +555,6 @@ struct clk * __init rcar_gen3_cpg_clk_register(struct device *dev,
 		mult = 1;
 		break;
 
-<<<<<<< HEAD
 	case CLK_TYPE_GEN3_Z:
 		return cpg_z_clk_register(core->name, __clk_get_name(parent),
 					  base, CPG_FRQCRC_ZFC_MASK);
@@ -638,8 +563,6 @@ struct clk * __init rcar_gen3_cpg_clk_register(struct device *dev,
 		return cpg_z_clk_register(core->name, __clk_get_name(parent),
 					  base, CPG_FRQCRC_Z2FC_MASK);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		return ERR_PTR(-EINVAL);
 	}

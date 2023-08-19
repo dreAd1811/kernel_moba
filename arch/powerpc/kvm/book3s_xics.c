@@ -1039,11 +1039,7 @@ static void xics_debugfs_init(struct kvmppc_xics *xics)
 		return;
 	}
 
-<<<<<<< HEAD
 	xics->dentry = debugfs_create_file(name, 0444, powerpc_debugfs_root,
-=======
-	xics->dentry = debugfs_create_file(name, S_IRUGO, powerpc_debugfs_root,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   xics, &xics_debug_fops);
 
 	pr_debug("%s: created %s\n", __func__, name);

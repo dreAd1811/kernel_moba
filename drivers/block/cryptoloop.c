@@ -43,16 +43,9 @@ cryptoloop_init(struct loop_device *lo, const struct loop_info64 *info)
 	int cipher_len;
 	int mode_len;
 	char cms[LO_NAME_SIZE];			/* cipher-mode string */
-<<<<<<< HEAD
 	char *mode;
 	char *cmsp = cms;			/* c-m string pointer */
 	struct crypto_sync_skcipher *tfm;
-=======
-	char *cipher;
-	char *mode;
-	char *cmsp = cms;			/* c-m string pointer */
-	struct crypto_skcipher *tfm;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* encryption breaks for non sector aligned offsets */
 
@@ -62,10 +55,6 @@ cryptoloop_init(struct loop_device *lo, const struct loop_info64 *info)
 	strncpy(cms, info->lo_crypt_name, LO_NAME_SIZE);
 	cms[LO_NAME_SIZE - 1] = 0;
 
-<<<<<<< HEAD
-=======
-	cipher = cmsp;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cipher_len = strcspn(cmsp, "-");
 
 	mode = cmsp + cipher_len;
@@ -91,7 +80,6 @@ cryptoloop_init(struct loop_device *lo, const struct loop_info64 *info)
 	*cmsp++ = ')';
 	*cmsp = 0;
 
-<<<<<<< HEAD
 	tfm = crypto_alloc_sync_skcipher(cms, 0, 0);
 	if (IS_ERR(tfm))
 		return PTR_ERR(tfm);
@@ -99,15 +87,6 @@ cryptoloop_init(struct loop_device *lo, const struct loop_info64 *info)
 	err = crypto_sync_skcipher_setkey(tfm, info->lo_encrypt_key,
 					  info->lo_encrypt_key_size);
 
-=======
-	tfm = crypto_alloc_skcipher(cms, 0, CRYPTO_ALG_ASYNC);
-	if (IS_ERR(tfm))
-		return PTR_ERR(tfm);
-
-	err = crypto_skcipher_setkey(tfm, info->lo_encrypt_key,
-				     info->lo_encrypt_key_size);
-	
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err != 0)
 		goto out_free_tfm;
 
@@ -115,11 +94,7 @@ cryptoloop_init(struct loop_device *lo, const struct loop_info64 *info)
 	return 0;
 
  out_free_tfm:
-<<<<<<< HEAD
 	crypto_free_sync_skcipher(tfm);
-=======
-	crypto_free_skcipher(tfm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
  out:
 	return err;
@@ -134,13 +109,8 @@ cryptoloop_transfer(struct loop_device *lo, int cmd,
 		    struct page *loop_page, unsigned loop_off,
 		    int size, sector_t IV)
 {
-<<<<<<< HEAD
 	struct crypto_sync_skcipher *tfm = lo->key_data;
 	SYNC_SKCIPHER_REQUEST_ON_STACK(req, tfm);
-=======
-	struct crypto_skcipher *tfm = lo->key_data;
-	SKCIPHER_REQUEST_ON_STACK(req, tfm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct scatterlist sg_out;
 	struct scatterlist sg_in;
 
@@ -149,11 +119,7 @@ cryptoloop_transfer(struct loop_device *lo, int cmd,
 	unsigned in_offs, out_offs;
 	int err;
 
-<<<<<<< HEAD
 	skcipher_request_set_sync_tfm(req, tfm);
-=======
-	skcipher_request_set_tfm(req, tfm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	skcipher_request_set_callback(req, CRYPTO_TFM_REQ_MAY_SLEEP,
 				      NULL, NULL);
 
@@ -209,15 +175,9 @@ cryptoloop_ioctl(struct loop_device *lo, int cmd, unsigned long arg)
 static int
 cryptoloop_release(struct loop_device *lo)
 {
-<<<<<<< HEAD
 	struct crypto_sync_skcipher *tfm = lo->key_data;
 	if (tfm != NULL) {
 		crypto_free_sync_skcipher(tfm);
-=======
-	struct crypto_skcipher *tfm = lo->key_data;
-	if (tfm != NULL) {
-		crypto_free_skcipher(tfm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		lo->key_data = NULL;
 		return 0;
 	}

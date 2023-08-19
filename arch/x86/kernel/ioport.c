@@ -23,11 +23,7 @@
 /*
  * this changes the io permissions bitmap in the current task.
  */
-<<<<<<< HEAD
 long ksys_ioperm(unsigned long from, unsigned long num, int turn_on)
-=======
-asmlinkage long sys_ioperm(unsigned long from, unsigned long num, int turn_on)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct thread_struct *t = &current->thread;
 	struct tss_struct *tss;
@@ -100,14 +96,11 @@ asmlinkage long sys_ioperm(unsigned long from, unsigned long num, int turn_on)
 	return 0;
 }
 
-<<<<<<< HEAD
 SYSCALL_DEFINE3(ioperm, unsigned long, from, unsigned long, num, int, turn_on)
 {
 	return ksys_ioperm(from, num, turn_on);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * sys_iopl has to be used when you want to access the IO ports
  * beyond the 0x3ff range: to get the full 65536 ports bitmapped

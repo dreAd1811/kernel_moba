@@ -250,10 +250,7 @@ void proc_coredump_connector(struct task_struct *task)
 {
 	struct cn_msg *msg;
 	struct proc_event *ev;
-<<<<<<< HEAD
 	struct task_struct *parent;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__u8 buffer[CN_PROC_MSG_SIZE] __aligned(8);
 
 	if (atomic_read(&proc_event_num_listeners) < 1)
@@ -267,7 +264,6 @@ void proc_coredump_connector(struct task_struct *task)
 	ev->event_data.coredump.process_pid = task->pid;
 	ev->event_data.coredump.process_tgid = task->tgid;
 
-<<<<<<< HEAD
 	rcu_read_lock();
 	if (pid_alive(task)) {
 		parent = rcu_dereference(task->real_parent);
@@ -276,8 +272,6 @@ void proc_coredump_connector(struct task_struct *task)
 	}
 	rcu_read_unlock();
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memcpy(&msg->id, &cn_proc_event_id, sizeof(msg->id));
 	msg->ack = 0; /* not used */
 	msg->len = sizeof(*ev);
@@ -289,10 +283,7 @@ void proc_exit_connector(struct task_struct *task)
 {
 	struct cn_msg *msg;
 	struct proc_event *ev;
-<<<<<<< HEAD
 	struct task_struct *parent;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__u8 buffer[CN_PROC_MSG_SIZE] __aligned(8);
 
 	if (atomic_read(&proc_event_num_listeners) < 1)
@@ -308,7 +299,6 @@ void proc_exit_connector(struct task_struct *task)
 	ev->event_data.exit.exit_code = task->exit_code;
 	ev->event_data.exit.exit_signal = task->exit_signal;
 
-<<<<<<< HEAD
 	rcu_read_lock();
 	if (pid_alive(task)) {
 		parent = rcu_dereference(task->real_parent);
@@ -317,8 +307,6 @@ void proc_exit_connector(struct task_struct *task)
 	}
 	rcu_read_unlock();
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memcpy(&msg->id, &cn_proc_event_id, sizeof(msg->id));
 	msg->ack = 0; /* not used */
 	msg->len = sizeof(*ev);

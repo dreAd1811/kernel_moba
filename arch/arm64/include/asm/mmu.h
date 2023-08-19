@@ -17,18 +17,12 @@
 #define __ASM_MMU_H
 
 #define MMCF_AARCH32	0x1	/* mm context flag for AArch32 executables */
-<<<<<<< HEAD
 #define USER_ASID_BIT	48
 #define USER_ASID_FLAG	(UL(1) << USER_ASID_BIT)
 #define TTBR_ASID_MASK	(UL(0xffff) << 48)
 
 #define BP_HARDEN_EL2_SLOTS 4
 
-=======
-#define USER_ASID_FLAG	(UL(1) << 48)
-#define TTBR_ASID_MASK	(UL(0xffff) << 48)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifndef __ASSEMBLY__
 
 typedef struct {
@@ -57,7 +51,6 @@ struct bp_hardening_data {
 	bp_hardening_cb_t	fn;
 };
 
-<<<<<<< HEAD
 #if (defined(CONFIG_HARDEN_BRANCH_PREDICTOR) ||	\
      defined(CONFIG_HARDEN_EL2_VECTORS))
 extern char __bp_harden_hyp_vecs_start[], __bp_harden_hyp_vecs_end[];
@@ -65,11 +58,6 @@ extern atomic_t arm64_el2_vector_last_slot;
 #endif  /* CONFIG_HARDEN_BRANCH_PREDICTOR || CONFIG_HARDEN_EL2_VECTORS */
 
 #ifdef CONFIG_HARDEN_BRANCH_PREDICTOR
-=======
-#ifdef CONFIG_HARDEN_BRANCH_PREDICTOR
-extern char __bp_harden_hyp_vecs_start[], __bp_harden_hyp_vecs_end[];
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 DECLARE_PER_CPU_READ_MOSTLY(struct bp_hardening_data, bp_hardening_data);
 
 static inline struct bp_hardening_data *arm64_get_bp_hardening_data(void)

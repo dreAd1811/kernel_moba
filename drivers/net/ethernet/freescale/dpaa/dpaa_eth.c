@@ -354,11 +354,7 @@ static int dpaa_setup_tc(struct net_device *net_dev, enum tc_setup_type type,
 	u8 num_tc;
 	int i;
 
-<<<<<<< HEAD
 	if (type != TC_SETUP_QDISC_MQPRIO)
-=======
-	if (type != TC_SETUP_MQPRIO)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EOPNOTSUPP;
 
 	mqprio->hw = TC_MQPRIO_HW_OFFLOAD_TCS;
@@ -392,20 +388,12 @@ out:
 
 static struct mac_device *dpaa_mac_dev_get(struct platform_device *pdev)
 {
-<<<<<<< HEAD
 	struct dpaa_eth_data *eth_data;
 	struct device *dpaa_dev;
-=======
-	struct platform_device *of_dev;
-	struct dpaa_eth_data *eth_data;
-	struct device *dpaa_dev, *dev;
-	struct device_node *mac_node;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mac_device *mac_dev;
 
 	dpaa_dev = &pdev->dev;
 	eth_data = dpaa_dev->platform_data;
-<<<<<<< HEAD
 	if (!eth_data) {
 		dev_err(dpaa_dev, "eth_data missing\n");
 		return ERR_PTR(-ENODEV);
@@ -413,28 +401,6 @@ static struct mac_device *dpaa_mac_dev_get(struct platform_device *pdev)
 	mac_dev = eth_data->mac_dev;
 	if (!mac_dev) {
 		dev_err(dpaa_dev, "mac_dev missing\n");
-=======
-	if (!eth_data)
-		return ERR_PTR(-ENODEV);
-
-	mac_node = eth_data->mac_node;
-
-	of_dev = of_find_device_by_node(mac_node);
-	if (!of_dev) {
-		dev_err(dpaa_dev, "of_find_device_by_node(%pOF) failed\n",
-			mac_node);
-		of_node_put(mac_node);
-		return ERR_PTR(-EINVAL);
-	}
-	of_node_put(mac_node);
-
-	dev = &of_dev->dev;
-
-	mac_dev = dev_get_drvdata(dev);
-	if (!mac_dev) {
-		dev_err(dpaa_dev, "dev_get_drvdata(%s) failed\n",
-			dev_name(dev));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ERR_PTR(-EINVAL);
 	}
 
@@ -491,7 +457,6 @@ static void dpaa_set_rx_mode(struct net_device *net_dev)
 				  err);
 	}
 
-<<<<<<< HEAD
 	if (!!(net_dev->flags & IFF_ALLMULTI) != priv->mac_dev->allmulti) {
 		priv->mac_dev->allmulti = !priv->mac_dev->allmulti;
 		err = priv->mac_dev->set_allmulti(priv->mac_dev->fman_mac,
@@ -502,8 +467,6 @@ static void dpaa_set_rx_mode(struct net_device *net_dev)
 				  err);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = priv->mac_dev->set_multi(net_dev, priv->mac_dev);
 	if (err < 0)
 		netif_err(priv, drv, net_dev, "mac_dev->set_multi() = %d\n",
@@ -704,11 +667,7 @@ static struct dpaa_fq *dpaa_fq_alloc(struct device *dev,
 	struct dpaa_fq *dpaa_fq;
 	int i;
 
-<<<<<<< HEAD
 	dpaa_fq = devm_kcalloc(dev, count, sizeof(*dpaa_fq),
-=======
-	dpaa_fq = devm_kzalloc(dev, sizeof(*dpaa_fq) * count,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       GFP_KERNEL);
 	if (!dpaa_fq)
 		return NULL;
@@ -1212,11 +1171,7 @@ static int dpaa_eth_init_tx_port(struct fman_port *port, struct dpaa_fq *errq,
 	buf_prefix_content.priv_data_size = buf_layout->priv_data_size;
 	buf_prefix_content.pass_prs_result = true;
 	buf_prefix_content.pass_hash_result = true;
-<<<<<<< HEAD
 	buf_prefix_content.pass_time_stamp = true;
-=======
-	buf_prefix_content.pass_time_stamp = false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	buf_prefix_content.data_align = DPAA_FD_DATA_ALIGNMENT;
 
 	params.specific_params.non_rx_params.err_fqid = errq->fqid;
@@ -1258,11 +1213,7 @@ static int dpaa_eth_init_rx_port(struct fman_port *port, struct dpaa_bp **bps,
 	buf_prefix_content.priv_data_size = buf_layout->priv_data_size;
 	buf_prefix_content.pass_prs_result = true;
 	buf_prefix_content.pass_hash_result = true;
-<<<<<<< HEAD
 	buf_prefix_content.pass_time_stamp = true;
-=======
-	buf_prefix_content.pass_time_stamp = false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	buf_prefix_content.data_align = DPAA_FD_DATA_ALIGNMENT;
 
 	rx_p = &params.specific_params.rx_params;
@@ -1659,23 +1610,16 @@ static struct sk_buff *dpaa_cleanup_tx_fd(const struct dpaa_priv *priv,
 {
 	const enum dma_data_direction dma_dir = DMA_TO_DEVICE;
 	struct device *dev = priv->net_dev->dev.parent;
-<<<<<<< HEAD
 	struct skb_shared_hwtstamps shhwtstamps;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dma_addr_t addr = qm_fd_addr(fd);
 	const struct qm_sg_entry *sgt;
 	struct sk_buff **skbh, *skb;
 	int nr_frags, i;
-<<<<<<< HEAD
 	u64 ns;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	skbh = (struct sk_buff **)phys_to_virt(addr);
 	skb = *skbh;
 
-<<<<<<< HEAD
 	if (priv->tx_tstamp && skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) {
 		memset(&shhwtstamps, 0, sizeof(shhwtstamps));
 
@@ -1688,8 +1632,6 @@ static struct sk_buff *dpaa_cleanup_tx_fd(const struct dpaa_priv *priv,
 		}
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(qm_fd_get_format(fd) == qm_fd_sg)) {
 		nr_frags = skb_shinfo(skb)->nr_frags;
 		dma_unmap_single(dev, addr,
@@ -1806,10 +1748,7 @@ static struct sk_buff *sg_fd_to_skb(const struct dpaa_priv *priv,
 
 	/* Iterate through the SGT entries and add data buffers to the skb */
 	sgt = vaddr + fd_off;
-<<<<<<< HEAD
 	skb = NULL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < DPAA_SGT_MAX_ENTRIES; i++) {
 		/* Extension bit is not supported */
 		WARN_ON(qm_sg_entry_is_ext(&sgt[i]));
@@ -1827,11 +1766,7 @@ static struct sk_buff *sg_fd_to_skb(const struct dpaa_priv *priv,
 		count_ptr = this_cpu_ptr(dpaa_bp->percpu_count);
 		dma_unmap_single(dpaa_bp->dev, sg_addr, dpaa_bp->size,
 				 DMA_FROM_DEVICE);
-<<<<<<< HEAD
 		if (!skb) {
-=======
-		if (i == 0) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			sz = dpaa_bp->size +
 				SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
 			skb = build_skb(sg_vaddr, sz);
@@ -2111,21 +2046,13 @@ static inline int dpaa_xmit(struct dpaa_priv *priv,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int dpaa_start_xmit(struct sk_buff *skb, struct net_device *net_dev)
-=======
-static netdev_tx_t
-dpaa_start_xmit(struct sk_buff *skb, struct net_device *net_dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	const int queue_mapping = skb_get_queue_mapping(skb);
 	bool nonlinear = skb_is_nonlinear(skb);
 	struct rtnl_link_stats64 *percpu_stats;
 	struct dpaa_percpu_priv *percpu_priv;
-<<<<<<< HEAD
 	struct netdev_queue *txq;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct dpaa_priv *priv;
 	struct qm_fd fd;
 	int offset = 0;
@@ -2153,7 +2080,6 @@ dpaa_start_xmit(struct sk_buff *skb, struct net_device *net_dev)
 	/* MAX_SKB_FRAGS is equal or larger than our dpaa_SGT_MAX_ENTRIES;
 	 * make sure we don't feed FMan with more fragments than it supports.
 	 */
-<<<<<<< HEAD
 	if (unlikely(nonlinear &&
 		     (skb_shinfo(skb)->nr_frags >= DPAA_SGT_MAX_ENTRIES))) {
 		/* If the egress skb contains more fragments than we support
@@ -2166,31 +2092,16 @@ dpaa_start_xmit(struct sk_buff *skb, struct net_device *net_dev)
 	}
 
 	if (nonlinear) {
-=======
-	if (nonlinear &&
-	    likely(skb_shinfo(skb)->nr_frags < DPAA_SGT_MAX_ENTRIES)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Just create a S/G fd based on the skb */
 		err = skb_to_sg_fd(priv, skb, &fd);
 		percpu_priv->tx_frag_skbuffs++;
 	} else {
-<<<<<<< HEAD
 		/* Create a contig FD from this skb */
-=======
-		/* If the egress skb contains more fragments than we support
-		 * we have no choice but to linearize it ourselves.
-		 */
-		if (unlikely(nonlinear) && __skb_linearize(skb))
-			goto enomem;
-
-		/* Finally, create a contig FD from this skb */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = skb_to_contig_fd(priv, skb, &fd, &offset);
 	}
 	if (unlikely(err < 0))
 		goto skb_to_fd_failed;
 
-<<<<<<< HEAD
 	txq = netdev_get_tx_queue(net_dev, queue_mapping);
 
 	/* LLTX requires to do our own update of trans_start */
@@ -2201,8 +2112,6 @@ dpaa_start_xmit(struct sk_buff *skb, struct net_device *net_dev)
 		skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (likely(dpaa_xmit(priv, percpu_stats, queue_mapping, &fd) == 0))
 		return NETDEV_TX_OK;
 
@@ -2334,19 +2243,8 @@ static enum qman_cb_dqrr_result rx_error_dqrr(struct qman_portal *portal,
 	if (dpaa_eth_napi_schedule(percpu_priv, portal))
 		return qman_cb_dqrr_stop;
 
-<<<<<<< HEAD
 	dpaa_eth_refill_bpools(priv);
 	dpaa_rx_error(net_dev, priv, percpu_priv, &dq->fd, fq->fqid);
-=======
-	if (dpaa_eth_refill_bpools(priv))
-		/* Unable to refill the buffer pool due to insufficient
-		 * system memory. Just release the frame back into the pool,
-		 * otherwise we'll soon end up with an empty buffer pool.
-		 */
-		dpaa_fd_release(net_dev, &dq->fd);
-	else
-		dpaa_rx_error(net_dev, priv, percpu_priv, &dq->fd, fq->fqid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return qman_cb_dqrr_consume;
 }
@@ -2355,10 +2253,7 @@ static enum qman_cb_dqrr_result rx_default_dqrr(struct qman_portal *portal,
 						struct qman_fq *fq,
 						const struct qm_dqrr_entry *dq)
 {
-<<<<<<< HEAD
 	struct skb_shared_hwtstamps *shhwtstamps;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct rtnl_link_stats64 *percpu_stats;
 	struct dpaa_percpu_priv *percpu_priv;
 	const struct qm_fd *fd = &dq->fd;
@@ -2372,10 +2267,7 @@ static enum qman_cb_dqrr_result rx_default_dqrr(struct qman_portal *portal,
 	struct sk_buff *skb;
 	int *count_ptr;
 	void *vaddr;
-<<<<<<< HEAD
 	u64 ns;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	fd_status = be32_to_cpu(fd->status);
 	fd_format = qm_fd_get_format(fd);
@@ -2440,7 +2332,6 @@ static enum qman_cb_dqrr_result rx_default_dqrr(struct qman_portal *portal,
 	if (!skb)
 		return qman_cb_dqrr_consume;
 
-<<<<<<< HEAD
 	if (priv->rx_tstamp) {
 		shhwtstamps = skb_hwtstamps(skb);
 		memset(shhwtstamps, 0, sizeof(*shhwtstamps));
@@ -2451,8 +2342,6 @@ static enum qman_cb_dqrr_result rx_default_dqrr(struct qman_portal *portal,
 			dev_warn(net_dev->dev.parent, "fman_port_get_tstamp failed!\n");
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	skb->protocol = eth_type_trans(skb, net_dev);
 
 	if (net_dev->features & NETIF_F_RXHASH && priv->keygen_in_use &&
@@ -2581,7 +2470,6 @@ static void dpaa_eth_napi_disable(struct dpaa_priv *priv)
 	}
 }
 
-<<<<<<< HEAD
 static void dpaa_adjust_link(struct net_device *net_dev)
 {
 	struct mac_device *mac_dev;
@@ -2620,8 +2508,6 @@ static int dpaa_phy_init(struct net_device *net_dev)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int dpaa_open(struct net_device *net_dev)
 {
 	struct mac_device *mac_dev;
@@ -2632,18 +2518,9 @@ static int dpaa_open(struct net_device *net_dev)
 	mac_dev = priv->mac_dev;
 	dpaa_eth_napi_enable(priv);
 
-<<<<<<< HEAD
 	err = dpaa_phy_init(net_dev);
 	if (err)
 		goto phy_init_failed;
-=======
-	net_dev->phydev = mac_dev->init_phy(net_dev, priv->mac_dev);
-	if (!net_dev->phydev) {
-		netif_err(priv, ifup, net_dev, "init_phy() failed\n");
-		err = -ENODEV;
-		goto phy_init_failed;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < ARRAY_SIZE(mac_dev->port); i++) {
 		err = fman_port_enable(mac_dev->port[i]);
@@ -2684,7 +2561,6 @@ static int dpaa_eth_stop(struct net_device *net_dev)
 	return err;
 }
 
-<<<<<<< HEAD
 static int dpaa_ts_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
 {
 	struct dpaa_priv *priv = netdev_priv(dev);
@@ -2737,13 +2613,6 @@ static int dpaa_ioctl(struct net_device *net_dev, struct ifreq *rq, int cmd)
 		return dpaa_ts_ioctl(net_dev, rq, cmd);
 
 	return ret;
-=======
-static int dpaa_ioctl(struct net_device *net_dev, struct ifreq *rq, int cmd)
-{
-	if (!net_dev->phydev)
-		return -EINVAL;
-	return phy_mii_ioctl(net_dev->phydev, rq, cmd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct net_device_ops dpaa_ops = {
@@ -2889,22 +2758,14 @@ static inline u16 dpaa_get_headroom(struct dpaa_buffer_layout *bl)
 	headroom = (u16)(bl->priv_data_size + DPAA_PARSE_RESULTS_SIZE +
 		DPAA_TIME_STAMP_SIZE + DPAA_HASH_RESULTS_SIZE);
 
-<<<<<<< HEAD
 	return DPAA_FD_DATA_ALIGNMENT ? ALIGN(headroom,
 					      DPAA_FD_DATA_ALIGNMENT) :
 					headroom;
-=======
-	return ALIGN(headroom, DPAA_FD_DATA_ALIGNMENT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int dpaa_eth_probe(struct platform_device *pdev)
 {
 	struct dpaa_bp *dpaa_bps[DPAA_BPS_NUM] = {NULL};
-<<<<<<< HEAD
-=======
-	struct dpaa_percpu_priv *percpu_priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct net_device *net_dev = NULL;
 	struct dpaa_fq *dpaa_fq, *tmp;
 	struct dpaa_priv *priv = NULL;
@@ -2913,7 +2774,6 @@ static int dpaa_eth_probe(struct platform_device *pdev)
 	int err = 0, i, channel;
 	struct device *dev;
 
-<<<<<<< HEAD
 	/* device used for DMA mapping */
 	dev = pdev->dev.parent;
 	err = dma_coerce_mask_and_coherent(dev, DMA_BIT_MASK(40));
@@ -2921,9 +2781,6 @@ static int dpaa_eth_probe(struct platform_device *pdev)
 		dev_err(dev, "dma_coerce_mask_and_coherent() failed\n");
 		return err;
 	}
-=======
-	dev = &pdev->dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Allocate this early, so we can store relevant information in
 	 * the private area
@@ -2931,11 +2788,7 @@ static int dpaa_eth_probe(struct platform_device *pdev)
 	net_dev = alloc_etherdev_mq(sizeof(*priv), DPAA_ETH_TXQ_NUM);
 	if (!net_dev) {
 		dev_err(dev, "alloc_etherdev_mq() failed\n");
-<<<<<<< HEAD
 		return -ENOMEM;
-=======
-		goto alloc_etherdev_mq_failed;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Do this here, so we can be verbose early */
@@ -2951,11 +2804,7 @@ static int dpaa_eth_probe(struct platform_device *pdev)
 	if (IS_ERR(mac_dev)) {
 		dev_err(dev, "dpaa_mac_dev_get() failed\n");
 		err = PTR_ERR(mac_dev);
-<<<<<<< HEAD
 		goto free_netdev;
-=======
-		goto mac_probe_failed;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* If fsl_fm_max_frm is set to a higher value than the all-common 1500,
@@ -2973,7 +2822,6 @@ static int dpaa_eth_probe(struct platform_device *pdev)
 	priv->buf_layout[RX].priv_data_size = DPAA_RX_PRIV_DATA_SIZE; /* Rx */
 	priv->buf_layout[TX].priv_data_size = DPAA_TX_PRIV_DATA_SIZE; /* Tx */
 
-<<<<<<< HEAD
 	/* bp init */
 	for (i = 0; i < DPAA_BPS_NUM; i++) {
 		dpaa_bps[i] = dpaa_bp_alloc(dev);
@@ -2981,23 +2829,6 @@ static int dpaa_eth_probe(struct platform_device *pdev)
 			err = PTR_ERR(dpaa_bps[i]);
 			goto free_dpaa_bps;
 		}
-=======
-	/* device used for DMA mapping */
-	set_dma_ops(dev, get_dma_ops(&pdev->dev));
-	err = dma_coerce_mask_and_coherent(dev, DMA_BIT_MASK(40));
-	if (err) {
-		dev_err(dev, "dma_coerce_mask_and_coherent() failed\n");
-		goto dev_mask_failed;
-	}
-
-	/* bp init */
-	for (i = 0; i < DPAA_BPS_NUM; i++) {
-		int err;
-
-		dpaa_bps[i] = dpaa_bp_alloc(dev);
-		if (IS_ERR(dpaa_bps[i]))
-			return PTR_ERR(dpaa_bps[i]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* the raw size of the buffers used for reception */
 		dpaa_bps[i]->raw_size = bpool_buffer_raw_size(i, DPAA_BPS_NUM);
 		/* avoid runtime computations by keeping the usable size here */
@@ -3005,16 +2836,8 @@ static int dpaa_eth_probe(struct platform_device *pdev)
 		dpaa_bps[i]->dev = dev;
 
 		err = dpaa_bp_alloc_pool(dpaa_bps[i]);
-<<<<<<< HEAD
 		if (err < 0)
 			goto free_dpaa_bps;
-=======
-		if (err < 0) {
-			dpaa_bps_free(priv);
-			priv->dpaa_bps[i] = NULL;
-			goto bp_create_failed;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		priv->dpaa_bps[i] = dpaa_bps[i];
 	}
 
@@ -3025,11 +2848,7 @@ static int dpaa_eth_probe(struct platform_device *pdev)
 	err = dpaa_alloc_all_fqs(dev, &priv->dpaa_fq_list, &port_fqs);
 	if (err < 0) {
 		dev_err(dev, "dpaa_alloc_all_fqs() failed\n");
-<<<<<<< HEAD
 		goto free_dpaa_bps;
-=======
-		goto fq_probe_failed;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	priv->mac_dev = mac_dev;
@@ -3038,20 +2857,12 @@ static int dpaa_eth_probe(struct platform_device *pdev)
 	if (channel < 0) {
 		dev_err(dev, "dpaa_get_channel() failed\n");
 		err = channel;
-<<<<<<< HEAD
 		goto free_dpaa_bps;
-=======
-		goto get_channel_failed;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	priv->channel = (u16)channel;
 
-<<<<<<< HEAD
 	/* Walk the CPUs with affine portals
-=======
-	/* Start a thread that will walk the CPUs with affine portals
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * and add this pool channel to each's dequeue mask.
 	 */
 	dpaa_eth_add_channel(priv->channel);
@@ -3066,32 +2877,20 @@ static int dpaa_eth_probe(struct platform_device *pdev)
 	err = dpaa_eth_cgr_init(priv);
 	if (err < 0) {
 		dev_err(dev, "Error initializing CGR\n");
-<<<<<<< HEAD
 		goto free_dpaa_bps;
-=======
-		goto tx_cgr_init_failed;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	err = dpaa_ingress_cgr_init(priv);
 	if (err < 0) {
 		dev_err(dev, "Error initializing ingress CGR\n");
-<<<<<<< HEAD
 		goto delete_egress_cgr;
-=======
-		goto rx_cgr_init_failed;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Add the FQs to the interface, and make them active */
 	list_for_each_entry_safe(dpaa_fq, tmp, &priv->dpaa_fq_list, list) {
 		err = dpaa_fq_init(dpaa_fq, false);
 		if (err < 0)
-<<<<<<< HEAD
 			goto free_dpaa_fqs;
-=======
-			goto fq_alloc_failed;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	priv->tx_headroom = dpaa_get_headroom(&priv->buf_layout[TX]);
@@ -3101,11 +2900,7 @@ static int dpaa_eth_probe(struct platform_device *pdev)
 	err = dpaa_eth_init_ports(mac_dev, dpaa_bps, DPAA_BPS_NUM, &port_fqs,
 				  &priv->buf_layout[0], dev);
 	if (err)
-<<<<<<< HEAD
 		goto free_dpaa_fqs;
-=======
-		goto init_ports_failed;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Rx traffic distribution based on keygen hashing defaults to on */
 	priv->keygen_in_use = true;
@@ -3114,15 +2909,7 @@ static int dpaa_eth_probe(struct platform_device *pdev)
 	if (!priv->percpu_priv) {
 		dev_err(dev, "devm_alloc_percpu() failed\n");
 		err = -ENOMEM;
-<<<<<<< HEAD
 		goto free_dpaa_fqs;
-=======
-		goto alloc_percpu_failed;
-	}
-	for_each_possible_cpu(i) {
-		percpu_priv = per_cpu_ptr(priv->percpu_priv, i);
-		memset(percpu_priv, 0, sizeof(*percpu_priv));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	priv->num_tc = 1;
@@ -3131,19 +2918,11 @@ static int dpaa_eth_probe(struct platform_device *pdev)
 	/* Initialize NAPI */
 	err = dpaa_napi_add(net_dev);
 	if (err < 0)
-<<<<<<< HEAD
 		goto delete_dpaa_napi;
 
 	err = dpaa_netdev_init(net_dev, &dpaa_ops, tx_timeout);
 	if (err < 0)
 		goto delete_dpaa_napi;
-=======
-		goto napi_add_failed;
-
-	err = dpaa_netdev_init(net_dev, &dpaa_ops, tx_timeout);
-	if (err < 0)
-		goto netdev_init_failed;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dpaa_eth_sysfs_init(&net_dev->dev);
 
@@ -3152,7 +2931,6 @@ static int dpaa_eth_probe(struct platform_device *pdev)
 
 	return 0;
 
-<<<<<<< HEAD
 delete_dpaa_napi:
 	dpaa_napi_del(net_dev);
 free_dpaa_fqs:
@@ -3168,34 +2946,6 @@ free_netdev:
 	dev_set_drvdata(dev, NULL);
 	free_netdev(net_dev);
 
-=======
-netdev_init_failed:
-napi_add_failed:
-	dpaa_napi_del(net_dev);
-alloc_percpu_failed:
-init_ports_failed:
-	dpaa_fq_free(dev, &priv->dpaa_fq_list);
-fq_alloc_failed:
-	qman_delete_cgr_safe(&priv->ingress_cgr);
-	qman_release_cgrid(priv->ingress_cgr.cgrid);
-rx_cgr_init_failed:
-	qman_delete_cgr_safe(&priv->cgr_data.cgr);
-	qman_release_cgrid(priv->cgr_data.cgr.cgrid);
-tx_cgr_init_failed:
-get_channel_failed:
-	dpaa_bps_free(priv);
-bp_create_failed:
-fq_probe_failed:
-dev_mask_failed:
-mac_probe_failed:
-	dev_set_drvdata(dev, NULL);
-	free_netdev(net_dev);
-alloc_etherdev_mq_failed:
-	for (i = 0; i < DPAA_BPS_NUM && dpaa_bps[i]; i++) {
-		if (atomic_read(&dpaa_bps[i]->refs) == 0)
-			devm_kfree(dev, dpaa_bps[i]);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -3206,11 +2956,7 @@ static int dpaa_remove(struct platform_device *pdev)
 	struct device *dev;
 	int err;
 
-<<<<<<< HEAD
 	dev = pdev->dev.parent;
-=======
-	dev = &pdev->dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	net_dev = dev_get_drvdata(dev);
 
 	priv = netdev_priv(net_dev);

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2002,2007-2019, The Linux Foundation. All rights reserved.
@@ -6,23 +5,6 @@
 
 #include <linux/slab.h>
 
-=======
-/* Copyright (c) 2002,2007-2018,2020 The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- */
-
-#include <linux/ioctl.h>
-#include "kgsl_device.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "adreno.h"
 #include "adreno_a5xx.h"
 
@@ -86,11 +68,7 @@ long adreno_ioctl_perfcounter_get(struct kgsl_device_private *dev_priv,
 	 * active count inside that function.
 	 */
 
-<<<<<<< HEAD
 	result = adreno_perfcntr_active_oob_get(device);
-=======
-	result = adreno_perfcntr_active_oob_get(adreno_dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (result) {
 		mutex_unlock(&device->mutex);
 		return (long)result;
@@ -109,11 +87,7 @@ long adreno_ioctl_perfcounter_get(struct kgsl_device_private *dev_priv,
 				get->countable, PERFCOUNTER_FLAG_NONE);
 	}
 
-<<<<<<< HEAD
 	adreno_perfcntr_active_oob_put(device);
-=======
-	adreno_perfcntr_active_oob_put(adreno_dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_unlock(&device->mutex);
 
@@ -186,11 +160,7 @@ static long adreno_ioctl_preemption_counters_query(
 		levels_to_copy = gpudev->num_prio_levels;
 
 	if (copy_to_user((void __user *) (uintptr_t) read->counters,
-<<<<<<< HEAD
 			adreno_dev->preempt.counters.hostptr,
-=======
-			adreno_dev->preempt.scratch.hostptr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			levels_to_copy * size_level))
 		return -EFAULT;
 
@@ -208,20 +178,12 @@ long adreno_ioctl_helper(struct kgsl_device_private *dev_priv,
 	long ret;
 	int i;
 
-<<<<<<< HEAD
-=======
-	static DEFINE_RATELIMIT_STATE(_rs,
-			DEFAULT_RATELIMIT_INTERVAL,
-			DEFAULT_RATELIMIT_BURST);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < len; i++) {
 		if (_IOC_NR(cmd) == _IOC_NR(cmds[i].cmd))
 			break;
 	}
 
 	if (i == len) {
-<<<<<<< HEAD
 		dev_err(dev_priv->device->dev,
 			     "invalid ioctl code 0x%08X\n", cmd);
 		return -ENOIOCTLCMD;
@@ -231,17 +193,6 @@ long adreno_ioctl_helper(struct kgsl_device_private *dev_priv,
 		dev_err_ratelimited(dev_priv->device->dev,
 			"data too big for ioctl 0x%08x: %d/%zu\n",
 			cmd, _IOC_SIZE(cmds[i].cmd), sizeof(data));
-=======
-		KGSL_DRV_INFO(dev_priv->device,
-			"invalid ioctl code 0x%08X\n", cmd);
-		return -ENOIOCTLCMD;
-	}
-
-	if (WARN_ON(_IOC_SIZE(cmds[i].cmd) > sizeof(data))) {
-		if (__ratelimit(&_rs))
-			WARN(1, "data too big for ioctl 0x%08X: %d/%zu\n",
-				cmd, _IOC_SIZE(cmds[i].cmd), sizeof(data));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 

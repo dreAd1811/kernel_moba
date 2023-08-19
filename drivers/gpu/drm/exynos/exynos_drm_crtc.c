@@ -95,7 +95,6 @@ static enum drm_mode_status exynos_crtc_mode_valid(struct drm_crtc *crtc,
 	return MODE_OK;
 }
 
-<<<<<<< HEAD
 static bool exynos_crtc_mode_fixup(struct drm_crtc *crtc,
 		const struct drm_display_mode *mode,
 		struct drm_display_mode *adjusted_mode)
@@ -113,10 +112,6 @@ static bool exynos_crtc_mode_fixup(struct drm_crtc *crtc,
 static const struct drm_crtc_helper_funcs exynos_crtc_helper_funcs = {
 	.mode_valid	= exynos_crtc_mode_valid,
 	.mode_fixup	= exynos_crtc_mode_fixup,
-=======
-static const struct drm_crtc_helper_funcs exynos_crtc_helper_funcs = {
-	.mode_valid	= exynos_crtc_mode_valid,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.atomic_check	= exynos_crtc_atomic_check,
 	.atomic_begin	= exynos_crtc_atomic_begin,
 	.atomic_flush	= exynos_crtc_atomic_flush,
@@ -222,11 +217,7 @@ struct exynos_drm_crtc *exynos_drm_crtc_get_by_type(struct drm_device *drm_dev,
 		if (to_exynos_crtc(crtc)->type == out_type)
 			return to_exynos_crtc(crtc);
 
-<<<<<<< HEAD
 	return ERR_PTR(-ENODEV);
-=======
-	return ERR_PTR(-EPERM);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int exynos_drm_set_possible_crtcs(struct drm_encoder *encoder,

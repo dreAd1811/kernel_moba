@@ -37,27 +37,17 @@
 
 #include "en_accel/ipsec_rxtx.h"
 #include "en_accel/ipsec.h"
-<<<<<<< HEAD
 #include "accel/accel.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "en.h"
 
 enum {
 	MLX5E_IPSEC_RX_SYNDROME_DECRYPTED = 0x11,
 	MLX5E_IPSEC_RX_SYNDROME_AUTH_FAILED = 0x12,
-<<<<<<< HEAD
 	MLX5E_IPSEC_RX_SYNDROME_BAD_PROTO = 0x17,
 };
 
 struct mlx5e_ipsec_rx_metadata {
 	unsigned char   nexthdr;
-=======
-};
-
-struct mlx5e_ipsec_rx_metadata {
-	unsigned char   reserved;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__be32		sa_handle;
 } __packed;
 
@@ -187,7 +177,6 @@ static void mlx5e_ipsec_set_swp(struct sk_buff *skb,
 	}
 }
 
-<<<<<<< HEAD
 void mlx5e_ipsec_set_iv_esn(struct sk_buff *skb, struct xfrm_state *x,
 			    struct xfrm_offload *xo)
 {
@@ -212,9 +201,6 @@ void mlx5e_ipsec_set_iv_esn(struct sk_buff *skb, struct xfrm_state *x,
 
 void mlx5e_ipsec_set_iv(struct sk_buff *skb, struct xfrm_state *x,
 			struct xfrm_offload *xo)
-=======
-static void mlx5e_ipsec_set_iv(struct sk_buff *skb, struct xfrm_offload *xo)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int iv_offset;
 	__be64 seqno;
@@ -266,10 +252,7 @@ struct sk_buff *mlx5e_ipsec_handle_tx_skb(struct net_device *netdev,
 	struct mlx5e_priv *priv = netdev_priv(netdev);
 	struct xfrm_offload *xo = xfrm_offload(skb);
 	struct mlx5e_ipsec_metadata *mdata;
-<<<<<<< HEAD
 	struct mlx5e_ipsec_sa_entry *sa_entry;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct xfrm_state *x;
 
 	if (!xo)
@@ -299,21 +282,13 @@ struct sk_buff *mlx5e_ipsec_handle_tx_skb(struct net_device *netdev,
 			goto drop;
 		}
 	mdata = mlx5e_ipsec_add_metadata(skb);
-<<<<<<< HEAD
 	if (IS_ERR(mdata)) {
-=======
-	if (unlikely(IS_ERR(mdata))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		atomic64_inc(&priv->ipsec->sw_stats.ipsec_tx_drop_metadata);
 		goto drop;
 	}
 	mlx5e_ipsec_set_swp(skb, &wqe->eth, x->props.mode, xo);
-<<<<<<< HEAD
 	sa_entry = (struct mlx5e_ipsec_sa_entry *)x->xso.offload_handle;
 	sa_entry->set_iv_op(skb, x, xo);
-=======
-	mlx5e_ipsec_set_iv(skb, xo);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlx5e_ipsec_set_metadata(skb, mdata, xo);
 
 	return skb;
@@ -353,23 +328,17 @@ mlx5e_ipsec_build_sp(struct net_device *netdev, struct sk_buff *skb,
 	switch (mdata->syndrome) {
 	case MLX5E_IPSEC_RX_SYNDROME_DECRYPTED:
 		xo->status = CRYPTO_SUCCESS;
-<<<<<<< HEAD
 		if (likely(priv->ipsec->no_trailer)) {
 			xo->flags |= XFRM_ESP_NO_TRAILER;
 			xo->proto = mdata->content.rx.nexthdr;
 		}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case MLX5E_IPSEC_RX_SYNDROME_AUTH_FAILED:
 		xo->status = CRYPTO_TUNNEL_ESP_AUTH_FAILED;
 		break;
-<<<<<<< HEAD
 	case MLX5E_IPSEC_RX_SYNDROME_BAD_PROTO:
 		xo->status = CRYPTO_INVALID_PROTOCOL;
 		break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		atomic64_inc(&priv->ipsec->sw_stats.ipsec_rx_drop_syndrome);
 		return NULL;
@@ -378,28 +347,12 @@ mlx5e_ipsec_build_sp(struct net_device *netdev, struct sk_buff *skb,
 }
 
 struct sk_buff *mlx5e_ipsec_handle_rx_skb(struct net_device *netdev,
-<<<<<<< HEAD
 					  struct sk_buff *skb, u32 *cqe_bcnt)
 {
 	struct mlx5e_ipsec_metadata *mdata;
 	struct xfrm_state *xs;
 
 	if (!is_metadata_hdr_valid(skb))
-=======
-					  struct sk_buff *skb)
-{
-	struct mlx5e_ipsec_metadata *mdata;
-	struct ethhdr *old_eth;
-	struct ethhdr *new_eth;
-	struct xfrm_state *xs;
-	__be16 *ethtype;
-
-	/* Detect inline metadata */
-	if (skb->len < ETH_HLEN + MLX5E_METADATA_ETHER_LEN)
-		return skb;
-	ethtype = (__be16 *)(skb->data + ETH_ALEN * 2);
-	if (*ethtype != cpu_to_be16(MLX5E_METADATA_ETHER_TYPE))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return skb;
 
 	/* Use the metadata */
@@ -410,17 +363,8 @@ struct sk_buff *mlx5e_ipsec_handle_rx_skb(struct net_device *netdev,
 		return NULL;
 	}
 
-<<<<<<< HEAD
 	remove_metadata_hdr(skb);
 	*cqe_bcnt -= MLX5E_METADATA_ETHER_LEN;
-=======
-	/* Remove the metadata from the buffer */
-	old_eth = (struct ethhdr *)skb->data;
-	new_eth = (struct ethhdr *)(skb->data + MLX5E_METADATA_ETHER_LEN);
-	memmove(new_eth, old_eth, 2 * ETH_ALEN);
-	/* Ethertype is already in its new place */
-	skb_pull_inline(skb, MLX5E_METADATA_ETHER_LEN);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return skb;
 }

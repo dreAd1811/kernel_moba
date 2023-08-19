@@ -417,19 +417,10 @@ struct vxge_tx_priv {
 	module_param(p, int, 0)
 
 static inline
-<<<<<<< HEAD
 void vxge_os_timer(struct timer_list *timer, void (*func)(struct timer_list *),
 		   unsigned long timeout)
 {
 	timer_setup(timer, func, 0);
-=======
-void vxge_os_timer(struct timer_list *timer, void (*func)(unsigned long data),
-		   struct vxgedev *vdev, unsigned long timeout)
-{
-	init_timer(timer);
-	timer->function = func;
-	timer->data = (unsigned long)vdev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mod_timer(timer, jiffies + timeout);
 }
 
@@ -461,77 +452,49 @@ int vxge_fw_upgrade(struct vxgedev *vdev, char *fw_name, int override);
 
 #if (VXGE_DEBUG_LL_CONFIG & VXGE_DEBUG_MASK)
 #define vxge_debug_ll_config(level, fmt, ...) \
-<<<<<<< HEAD
 	vxge_debug_ll(level, VXGE_DEBUG_LL_CONFIG, fmt, __VA_ARGS__)
-=======
-	vxge_debug_ll(level, VXGE_DEBUG_LL_CONFIG, fmt, ##__VA_ARGS__)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 #define vxge_debug_ll_config(level, fmt, ...)
 #endif
 
 #if (VXGE_DEBUG_INIT & VXGE_DEBUG_MASK)
 #define vxge_debug_init(level, fmt, ...) \
-<<<<<<< HEAD
 	vxge_debug_ll(level, VXGE_DEBUG_INIT, fmt, __VA_ARGS__)
-=======
-	vxge_debug_ll(level, VXGE_DEBUG_INIT, fmt, ##__VA_ARGS__)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 #define vxge_debug_init(level, fmt, ...)
 #endif
 
 #if (VXGE_DEBUG_TX & VXGE_DEBUG_MASK)
 #define vxge_debug_tx(level, fmt, ...) \
-<<<<<<< HEAD
 	vxge_debug_ll(level, VXGE_DEBUG_TX, fmt, __VA_ARGS__)
-=======
-	vxge_debug_ll(level, VXGE_DEBUG_TX, fmt, ##__VA_ARGS__)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 #define vxge_debug_tx(level, fmt, ...)
 #endif
 
 #if (VXGE_DEBUG_RX & VXGE_DEBUG_MASK)
 #define vxge_debug_rx(level, fmt, ...) \
-<<<<<<< HEAD
 	vxge_debug_ll(level, VXGE_DEBUG_RX, fmt, __VA_ARGS__)
-=======
-	vxge_debug_ll(level, VXGE_DEBUG_RX, fmt, ##__VA_ARGS__)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 #define vxge_debug_rx(level, fmt, ...)
 #endif
 
 #if (VXGE_DEBUG_MEM & VXGE_DEBUG_MASK)
 #define vxge_debug_mem(level, fmt, ...) \
-<<<<<<< HEAD
 	vxge_debug_ll(level, VXGE_DEBUG_MEM, fmt, __VA_ARGS__)
-=======
-	vxge_debug_ll(level, VXGE_DEBUG_MEM, fmt, ##__VA_ARGS__)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 #define vxge_debug_mem(level, fmt, ...)
 #endif
 
 #if (VXGE_DEBUG_ENTRYEXIT & VXGE_DEBUG_MASK)
 #define vxge_debug_entryexit(level, fmt, ...) \
-<<<<<<< HEAD
 	vxge_debug_ll(level, VXGE_DEBUG_ENTRYEXIT, fmt, __VA_ARGS__)
-=======
-	vxge_debug_ll(level, VXGE_DEBUG_ENTRYEXIT, fmt, ##__VA_ARGS__)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 #define vxge_debug_entryexit(level, fmt, ...)
 #endif
 
 #if (VXGE_DEBUG_INTR & VXGE_DEBUG_MASK)
 #define vxge_debug_intr(level, fmt, ...) \
-<<<<<<< HEAD
 	vxge_debug_ll(level, VXGE_DEBUG_INTR, fmt, __VA_ARGS__)
-=======
-	vxge_debug_ll(level, VXGE_DEBUG_INTR, fmt, ##__VA_ARGS__)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 #define vxge_debug_intr(level, fmt, ...)
 #endif

@@ -98,14 +98,7 @@ static int sun8i_a23_apb0_clk_probe(struct platform_device *pdev)
 		return PTR_ERR(reg);
 
 	clk = sun8i_a23_apb0_register(np, reg);
-<<<<<<< HEAD
 	return PTR_ERR_OR_ZERO(clk);
-=======
-	if (IS_ERR(clk))
-		return PTR_ERR(clk);
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct of_device_id sun8i_a23_apb0_clk_dt_ids[] = {

@@ -12,10 +12,7 @@
 #include <linux/sysfs.h>
 #include <linux/spi/spi.h>
 #include <linux/regulator/consumer.h>
-<<<<<<< HEAD
 #include <linux/gpio/consumer.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/err.h>
 #include <linux/module.h>
 #include <linux/delay.h>
@@ -272,12 +269,9 @@ struct ad9523_state {
 	struct regulator		*reg;
 	struct ad9523_platform_data	*pdata;
 	struct iio_chan_spec		ad9523_channels[AD9523_NUM_CHAN];
-<<<<<<< HEAD
 	struct gpio_desc		*pwrdown_gpio;
 	struct gpio_desc		*reset_gpio;
 	struct gpio_desc		*sync_gpio;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	unsigned long		vcxo_freq;
 	unsigned long		vco_freq;
@@ -285,7 +279,6 @@ struct ad9523_state {
 	unsigned char		vco_out_map[AD9523_NUM_CHAN_ALT_CLK_SRC];
 
 	/*
-<<<<<<< HEAD
 	 * Lock for accessing device registers. Some operations require
 	 * multiple consecutive R/W operations, during which the device
 	 * shouldn't be interrupted.  The buffers are also shared across
@@ -295,8 +288,6 @@ struct ad9523_state {
 	struct mutex		lock;
 
 	/*
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * DMA (thus cache coherency maintenance) requires the
 	 * transfer buffers to live in their own cache lines.
 	 */
@@ -522,10 +513,7 @@ static ssize_t ad9523_store(struct device *dev,
 {
 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
 	struct iio_dev_attr *this_attr = to_iio_dev_attr(attr);
-<<<<<<< HEAD
 	struct ad9523_state *st = iio_priv(indio_dev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool state;
 	int ret;
 
@@ -536,11 +524,7 @@ static ssize_t ad9523_store(struct device *dev,
 	if (!state)
 		return len;
 
-<<<<<<< HEAD
 	mutex_lock(&st->lock);
-=======
-	mutex_lock(&indio_dev->mlock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch ((u32)this_attr->address) {
 	case AD9523_SYNC:
 		ret = ad9523_sync(indio_dev);
@@ -551,11 +535,7 @@ static ssize_t ad9523_store(struct device *dev,
 	default:
 		ret = -ENODEV;
 	}
-<<<<<<< HEAD
 	mutex_unlock(&st->lock);
-=======
-	mutex_unlock(&indio_dev->mlock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret ? ret : len;
 }
@@ -566,26 +546,16 @@ static ssize_t ad9523_show(struct device *dev,
 {
 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
 	struct iio_dev_attr *this_attr = to_iio_dev_attr(attr);
-<<<<<<< HEAD
 	struct ad9523_state *st = iio_priv(indio_dev);
 	int ret;
 
 	mutex_lock(&st->lock);
-=======
-	int ret;
-
-	mutex_lock(&indio_dev->mlock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = ad9523_read(indio_dev, AD9523_READBACK_0);
 	if (ret >= 0) {
 		ret = sprintf(buf, "%d\n", !!(ret & (1 <<
 			(u32)this_attr->address)));
 	}
-<<<<<<< HEAD
 	mutex_unlock(&st->lock);
-=======
-	mutex_unlock(&indio_dev->mlock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -668,15 +638,9 @@ static int ad9523_read_raw(struct iio_dev *indio_dev,
 	unsigned int code;
 	int ret;
 
-<<<<<<< HEAD
 	mutex_lock(&st->lock);
 	ret = ad9523_read(indio_dev, AD9523_CHANNEL_CLOCK_DIST(chan->channel));
 	mutex_unlock(&st->lock);
-=======
-	mutex_lock(&indio_dev->mlock);
-	ret = ad9523_read(indio_dev, AD9523_CHANNEL_CLOCK_DIST(chan->channel));
-	mutex_unlock(&indio_dev->mlock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ret < 0)
 		return ret;
@@ -710,11 +674,7 @@ static int ad9523_write_raw(struct iio_dev *indio_dev,
 	unsigned int reg;
 	int ret, tmp, code;
 
-<<<<<<< HEAD
 	mutex_lock(&st->lock);
-=======
-	mutex_lock(&indio_dev->mlock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = ad9523_read(indio_dev, AD9523_CHANNEL_CLOCK_DIST(chan->channel));
 	if (ret < 0)
 		goto out;
@@ -760,11 +720,7 @@ static int ad9523_write_raw(struct iio_dev *indio_dev,
 
 	ad9523_io_update(indio_dev);
 out:
-<<<<<<< HEAD
 	mutex_unlock(&st->lock);
-=======
-	mutex_unlock(&indio_dev->mlock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -772,16 +728,10 @@ static int ad9523_reg_access(struct iio_dev *indio_dev,
 			      unsigned int reg, unsigned int writeval,
 			      unsigned int *readval)
 {
-<<<<<<< HEAD
 	struct ad9523_state *st = iio_priv(indio_dev);
 	int ret;
 
 	mutex_lock(&st->lock);
-=======
-	int ret;
-
-	mutex_lock(&indio_dev->mlock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (readval == NULL) {
 		ret = ad9523_write(indio_dev, reg | AD9523_R1B, writeval);
 		ad9523_io_update(indio_dev);
@@ -794,11 +744,7 @@ static int ad9523_reg_access(struct iio_dev *indio_dev,
 	}
 
 out_unlock:
-<<<<<<< HEAD
 	mutex_unlock(&st->lock);
-=======
-	mutex_unlock(&indio_dev->mlock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -808,10 +754,6 @@ static const struct iio_info ad9523_info = {
 	.write_raw = &ad9523_write_raw,
 	.debugfs_reg_access = &ad9523_reg_access,
 	.attrs = &ad9523_attribute_group,
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int ad9523_setup(struct iio_dev *indio_dev)
@@ -1041,11 +983,8 @@ static int ad9523_probe(struct spi_device *spi)
 
 	st = iio_priv(indio_dev);
 
-<<<<<<< HEAD
 	mutex_init(&st->lock);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	st->reg = devm_regulator_get(&spi->dev, "vcc");
 	if (!IS_ERR(st->reg)) {
 		ret = regulator_enable(st->reg);
@@ -1053,7 +992,6 @@ static int ad9523_probe(struct spi_device *spi)
 			return ret;
 	}
 
-<<<<<<< HEAD
 	st->pwrdown_gpio = devm_gpiod_get_optional(&spi->dev, "powerdown",
 		GPIOD_OUT_HIGH);
 	if (IS_ERR(st->pwrdown_gpio)) {
@@ -1080,8 +1018,6 @@ static int ad9523_probe(struct spi_device *spi)
 		goto error_disable_reg;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spi_set_drvdata(spi, indio_dev);
 	st->spi = spi;
 	st->pdata = pdata;

@@ -25,25 +25,16 @@
 #include <linux/spinlock.h>
 #include <linux/bootmem.h>
 #include <linux/ioport.h>
-<<<<<<< HEAD
 #include <linux/mc146818rtc.h>
 #include <linux/efi.h>
 #include <linux/export.h>
-=======
-#include <linux/init.h>
-#include <linux/mc146818rtc.h>
-#include <linux/efi.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/uaccess.h>
 #include <linux/io.h>
 #include <linux/reboot.h>
 #include <linux/slab.h>
 #include <linux/ucs2_string.h>
-<<<<<<< HEAD
 #include <linux/mem_encrypt.h>
 #include <linux/sched/task.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/setup.h>
 #include <asm/page.h>
@@ -92,14 +83,8 @@ pgd_t * __init efi_call_phys_prolog(void)
 	int n_pgds, i, j;
 
 	if (!efi_enabled(EFI_OLD_MEMMAP)) {
-<<<<<<< HEAD
 		efi_switch_mm(&efi_mm);
 		return NULL;
-=======
-		save_pgd = (pgd_t *)__read_cr3();
-		write_cr3((unsigned long)efi_scratch.efi_pgt);
-		goto out;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	early_code_mapping_set_exec(1);
@@ -171,12 +156,7 @@ void __init efi_call_phys_epilog(pgd_t *save_pgd)
 	pud_t *pud;
 
 	if (!efi_enabled(EFI_OLD_MEMMAP)) {
-<<<<<<< HEAD
 		efi_switch_mm(efi_scratch.prev_mm);
-=======
-		write_cr3((unsigned long)save_pgd);
-		__flush_tlb_all();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -210,11 +190,7 @@ void __init efi_call_phys_epilog(pgd_t *save_pgd)
 	early_code_mapping_set_exec(0);
 }
 
-<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(efi_mm);
-=======
-static pgd_t *efi_pgd;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * We need our own copy of the higher levels of the page tables
@@ -227,11 +203,7 @@ static pgd_t *efi_pgd;
  */
 int __init efi_alloc_page_tables(void)
 {
-<<<<<<< HEAD
 	pgd_t *pgd, *efi_pgd;
-=======
-	pgd_t *pgd;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	p4d_t *p4d;
 	pud_t *pud;
 	gfp_t gfp_mask;
@@ -253,23 +225,16 @@ int __init efi_alloc_page_tables(void)
 
 	pud = pud_alloc(&init_mm, p4d, EFI_VA_END);
 	if (!pud) {
-<<<<<<< HEAD
 		if (pgtable_l5_enabled())
-=======
-		if (CONFIG_PGTABLE_LEVELS > 4)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			free_page((unsigned long) pgd_page_vaddr(*pgd));
 		free_pages((unsigned long)efi_pgd, PGD_ALLOCATION_ORDER);
 		return -ENOMEM;
 	}
 
-<<<<<<< HEAD
 	efi_mm.pgd = efi_pgd;
 	mm_init_cpumask(&efi_mm);
 	init_new_context(NULL, &efi_mm);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -282,10 +247,7 @@ void efi_sync_low_kernel_mappings(void)
 	pgd_t *pgd_k, *pgd_efi;
 	p4d_t *p4d_k, *p4d_efi;
 	pud_t *pud_k, *pud_efi;
-<<<<<<< HEAD
 	pgd_t *efi_pgd = efi_mm.pgd;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (efi_enabled(EFI_OLD_MEMMAP))
 		return;
@@ -298,13 +260,8 @@ void efi_sync_low_kernel_mappings(void)
 	 * only span a single PGD entry and that the entry also maps
 	 * other important kernel regions.
 	 */
-<<<<<<< HEAD
 	MAYBE_BUILD_BUG_ON(pgd_index(EFI_VA_END) != pgd_index(MODULES_END));
 	MAYBE_BUILD_BUG_ON((EFI_VA_START & PGDIR_MASK) !=
-=======
-	BUILD_BUG_ON(pgd_index(EFI_VA_END) != pgd_index(MODULES_END));
-	BUILD_BUG_ON((EFI_VA_START & PGDIR_MASK) !=
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			(EFI_VA_END & PGDIR_MASK));
 
 	pgd_efi = efi_pgd + pgd_index(PAGE_OFFSET);
@@ -384,27 +341,12 @@ int __init efi_setup_page_tables(unsigned long pa_memmap, unsigned num_pages)
 	unsigned long pfn, text, pf;
 	struct page *page;
 	unsigned npages;
-<<<<<<< HEAD
 	pgd_t *pgd = efi_mm.pgd;
-=======
-	pgd_t *pgd;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (efi_enabled(EFI_OLD_MEMMAP))
 		return 0;
 
 	/*
-<<<<<<< HEAD
-=======
-	 * Since the PGD is encrypted, set the encryption mask so that when
-	 * this value is loaded into cr3 the PGD will be decrypted during
-	 * the pagetable walk.
-	 */
-	efi_scratch.efi_pgt = (pgd_t *)__sme_pa(efi_pgd);
-	pgd = efi_pgd;
-
-	/*
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * It can happen that the physical address of new_memmap lands in memory
 	 * which is not mapped in the EFI page table. Therefore we need to go
 	 * and ident-map those pages containing the map before calling
@@ -417,11 +359,6 @@ int __init efi_setup_page_tables(unsigned long pa_memmap, unsigned num_pages)
 		return 1;
 	}
 
-<<<<<<< HEAD
-=======
-	efi_scratch.use_pgd = true;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Certain firmware versions are way too sentimential and still believe
 	 * they are exclusive and unquestionable owners of the first physical page,
@@ -433,15 +370,11 @@ int __init efi_setup_page_tables(unsigned long pa_memmap, unsigned num_pages)
 	 * as trim_bios_range() will reserve the first page and isolate it away
 	 * from memory allocators anyway.
 	 */
-<<<<<<< HEAD
 	pf = _PAGE_RW;
 	if (sev_active())
 		pf |= _PAGE_ENC;
 
 	if (kernel_map_pages_in_pgd(pgd, 0x0, 0x0, 1, pf)) {
-=======
-	if (kernel_map_pages_in_pgd(pgd, 0x0, 0x0, 1, _PAGE_RW)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_err("Failed to create 1:1 mapping for the first page!\n");
 		return 1;
 	}
@@ -456,20 +389,11 @@ int __init efi_setup_page_tables(unsigned long pa_memmap, unsigned num_pages)
 		return 0;
 
 	page = alloc_page(GFP_KERNEL|__GFP_DMA32);
-<<<<<<< HEAD
 	if (!page)
 		panic("Unable to allocate EFI runtime stack < 4GB\n");
 
 	efi_scratch.phys_stack = virt_to_phys(page_address(page));
 	efi_scratch.phys_stack += PAGE_SIZE; /* stack grows down */
-=======
-	if (!page) {
-		pr_err("Unable to allocate EFI runtime stack < 4GB\n");
-		return 1;
-	}
-
-	efi_scratch.phys_stack = page_to_phys(page + 1); /* stack grows down */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	npages = (_etext - _text) >> PAGE_SHIFT;
 	text = __pa(_text);
@@ -488,21 +412,14 @@ static void __init __map_region(efi_memory_desc_t *md, u64 va)
 {
 	unsigned long flags = _PAGE_RW;
 	unsigned long pfn;
-<<<<<<< HEAD
 	pgd_t *pgd = efi_mm.pgd;
-=======
-	pgd_t *pgd = efi_pgd;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!(md->attribute & EFI_MEMORY_WB))
 		flags |= _PAGE_PCD;
 
-<<<<<<< HEAD
 	if (sev_active() && md->type != EFI_MEMORY_MAPPED_IO)
 		flags |= _PAGE_ENC;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pfn = md->phys_addr >> PAGE_SHIFT;
 	if (kernel_map_pages_in_pgd(pgd, pfn, va, md->num_pages, flags))
 		pr_warn("Error mapping PA 0x%llx -> VA 0x%llx!\n",
@@ -599,11 +516,7 @@ void __init parse_efi_setup(u64 phys_addr, u32 data_len)
 static int __init efi_update_mappings(efi_memory_desc_t *md, unsigned long pf)
 {
 	unsigned long pfn;
-<<<<<<< HEAD
 	pgd_t *pgd = efi_mm.pgd;
-=======
-	pgd_t *pgd = efi_pgd;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err1, err2;
 
 	/* Update the 1:1 mapping */
@@ -633,12 +546,9 @@ static int __init efi_update_mem_attr(struct mm_struct *mm, efi_memory_desc_t *m
 	if (!(md->attribute & EFI_MEMORY_RO))
 		pf |= _PAGE_RW;
 
-<<<<<<< HEAD
 	if (sev_active())
 		pf |= _PAGE_ENC;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return efi_update_mappings(md, pf);
 }
 
@@ -690,12 +600,9 @@ void __init efi_runtime_update_mappings(void)
 			(md->type != EFI_RUNTIME_SERVICES_CODE))
 			pf |= _PAGE_RW;
 
-<<<<<<< HEAD
 		if (sev_active())
 			pf |= _PAGE_ENC;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		efi_update_mappings(md, pf);
 	}
 }
@@ -706,7 +613,6 @@ void __init efi_dump_pagetable(void)
 	if (efi_enabled(EFI_OLD_MEMMAP))
 		ptdump_walk_pgd_level(NULL, swapper_pg_dir);
 	else
-<<<<<<< HEAD
 		ptdump_walk_pgd_level(NULL, efi_mm.pgd);
 #endif
 }
@@ -732,15 +638,6 @@ extern efi_status_t efi64_thunk(u32, ...);
 
 static DEFINE_SPINLOCK(efi_runtime_lock);
 
-=======
-		ptdump_walk_pgd_level(NULL, efi_pgd);
-#endif
-}
-
-#ifdef CONFIG_EFI_MIXED
-extern efi_status_t efi64_thunk(u32, ...);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define runtime_service32(func)						 \
 ({									 \
 	u32 table = (u32)(unsigned long)efi.systab;			 \
@@ -762,25 +659,14 @@ extern efi_status_t efi64_thunk(u32, ...);
 #define efi_thunk(f, ...)						\
 ({									\
 	efi_status_t __s;						\
-<<<<<<< HEAD
 	u32 __func;							\
 									\
-=======
-	unsigned long __flags;						\
-	u32 __func;							\
-									\
-	local_irq_save(__flags);					\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	arch_efi_call_virt_setup();					\
 									\
 	__func = runtime_service32(f);					\
 	__s = efi64_thunk(__func, __VA_ARGS__);				\
 									\
 	arch_efi_call_virt_teardown();					\
-<<<<<<< HEAD
-=======
-	local_irq_restore(__flags);					\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 									\
 	__s;								\
 })
@@ -799,24 +685,13 @@ efi_status_t efi_thunk_set_virtual_address_map(
 	efi_sync_low_kernel_mappings();
 	local_irq_save(flags);
 
-<<<<<<< HEAD
 	efi_switch_mm(&efi_mm);
-=======
-	efi_scratch.prev_cr3 = __read_cr3();
-	write_cr3((unsigned long)efi_scratch.efi_pgt);
-	__flush_tlb_all();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	func = (u32)(unsigned long)phys_set_virtual_address_map;
 	status = efi64_thunk(func, memory_map_size, descriptor_size,
 			     descriptor_version, virtual_map);
 
-<<<<<<< HEAD
 	efi_switch_mm(efi_scratch.prev_mm);
-=======
-	write_cr3(efi_scratch.prev_cr3);
-	__flush_tlb_all();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	local_irq_restore(flags);
 
 	return status;
@@ -826,25 +701,17 @@ static efi_status_t efi_thunk_get_time(efi_time_t *tm, efi_time_cap_t *tc)
 {
 	efi_status_t status;
 	u32 phys_tm, phys_tc;
-<<<<<<< HEAD
 	unsigned long flags;
 
 	spin_lock(&rtc_lock);
 	spin_lock_irqsave(&efi_runtime_lock, flags);
-=======
-
-	spin_lock(&rtc_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	phys_tm = virt_to_phys_or_null(tm);
 	phys_tc = virt_to_phys_or_null(tc);
 
 	status = efi_thunk(get_time, phys_tm, phys_tc);
 
-<<<<<<< HEAD
 	spin_unlock_irqrestore(&efi_runtime_lock, flags);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock(&rtc_lock);
 
 	return status;
@@ -854,24 +721,16 @@ static efi_status_t efi_thunk_set_time(efi_time_t *tm)
 {
 	efi_status_t status;
 	u32 phys_tm;
-<<<<<<< HEAD
 	unsigned long flags;
 
 	spin_lock(&rtc_lock);
 	spin_lock_irqsave(&efi_runtime_lock, flags);
-=======
-
-	spin_lock(&rtc_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	phys_tm = virt_to_phys_or_null(tm);
 
 	status = efi_thunk(set_time, phys_tm);
 
-<<<<<<< HEAD
 	spin_unlock_irqrestore(&efi_runtime_lock, flags);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock(&rtc_lock);
 
 	return status;
@@ -883,15 +742,10 @@ efi_thunk_get_wakeup_time(efi_bool_t *enabled, efi_bool_t *pending,
 {
 	efi_status_t status;
 	u32 phys_enabled, phys_pending, phys_tm;
-<<<<<<< HEAD
 	unsigned long flags;
 
 	spin_lock(&rtc_lock);
 	spin_lock_irqsave(&efi_runtime_lock, flags);
-=======
-
-	spin_lock(&rtc_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	phys_enabled = virt_to_phys_or_null(enabled);
 	phys_pending = virt_to_phys_or_null(pending);
@@ -900,10 +754,7 @@ efi_thunk_get_wakeup_time(efi_bool_t *enabled, efi_bool_t *pending,
 	status = efi_thunk(get_wakeup_time, phys_enabled,
 			     phys_pending, phys_tm);
 
-<<<<<<< HEAD
 	spin_unlock_irqrestore(&efi_runtime_lock, flags);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock(&rtc_lock);
 
 	return status;
@@ -914,24 +765,16 @@ efi_thunk_set_wakeup_time(efi_bool_t enabled, efi_time_t *tm)
 {
 	efi_status_t status;
 	u32 phys_tm;
-<<<<<<< HEAD
 	unsigned long flags;
 
 	spin_lock(&rtc_lock);
 	spin_lock_irqsave(&efi_runtime_lock, flags);
-=======
-
-	spin_lock(&rtc_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	phys_tm = virt_to_phys_or_null(tm);
 
 	status = efi_thunk(set_wakeup_time, enabled, phys_tm);
 
-<<<<<<< HEAD
 	spin_unlock_irqrestore(&efi_runtime_lock, flags);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock(&rtc_lock);
 
 	return status;
@@ -949,12 +792,9 @@ efi_thunk_get_variable(efi_char16_t *name, efi_guid_t *vendor,
 	efi_status_t status;
 	u32 phys_name, phys_vendor, phys_attr;
 	u32 phys_data_size, phys_data;
-<<<<<<< HEAD
 	unsigned long flags;
 
 	spin_lock_irqsave(&efi_runtime_lock, flags);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	phys_data_size = virt_to_phys_or_null(data_size);
 	phys_vendor = virt_to_phys_or_null(vendor);
@@ -965,11 +805,8 @@ efi_thunk_get_variable(efi_char16_t *name, efi_guid_t *vendor,
 	status = efi_thunk(get_variable, phys_name, phys_vendor,
 			   phys_attr, phys_data_size, phys_data);
 
-<<<<<<< HEAD
 	spin_unlock_irqrestore(&efi_runtime_lock, flags);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return status;
 }
 
@@ -979,12 +816,9 @@ efi_thunk_set_variable(efi_char16_t *name, efi_guid_t *vendor,
 {
 	u32 phys_name, phys_vendor, phys_data;
 	efi_status_t status;
-<<<<<<< HEAD
 	unsigned long flags;
 
 	spin_lock_irqsave(&efi_runtime_lock, flags);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	phys_name = virt_to_phys_or_null_size(name, efi_name_size(name));
 	phys_vendor = virt_to_phys_or_null(vendor);
@@ -994,7 +828,6 @@ efi_thunk_set_variable(efi_char16_t *name, efi_guid_t *vendor,
 	status = efi_thunk(set_variable, phys_name, phys_vendor,
 			   attr, data_size, phys_data);
 
-<<<<<<< HEAD
 	spin_unlock_irqrestore(&efi_runtime_lock, flags);
 
 	return status;
@@ -1022,8 +855,6 @@ efi_thunk_set_variable_nonblocking(efi_char16_t *name, efi_guid_t *vendor,
 
 	spin_unlock_irqrestore(&efi_runtime_lock, flags);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return status;
 }
 
@@ -1034,12 +865,9 @@ efi_thunk_get_next_variable(unsigned long *name_size,
 {
 	efi_status_t status;
 	u32 phys_name_size, phys_name, phys_vendor;
-<<<<<<< HEAD
 	unsigned long flags;
 
 	spin_lock_irqsave(&efi_runtime_lock, flags);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	phys_name_size = virt_to_phys_or_null(name_size);
 	phys_vendor = virt_to_phys_or_null(vendor);
@@ -1048,11 +876,8 @@ efi_thunk_get_next_variable(unsigned long *name_size,
 	status = efi_thunk(get_next_variable, phys_name_size,
 			   phys_name, phys_vendor);
 
-<<<<<<< HEAD
 	spin_unlock_irqrestore(&efi_runtime_lock, flags);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return status;
 }
 
@@ -1061,21 +886,15 @@ efi_thunk_get_next_high_mono_count(u32 *count)
 {
 	efi_status_t status;
 	u32 phys_count;
-<<<<<<< HEAD
 	unsigned long flags;
 
 	spin_lock_irqsave(&efi_runtime_lock, flags);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	phys_count = virt_to_phys_or_null(count);
 	status = efi_thunk(get_next_high_mono_count, phys_count);
 
-<<<<<<< HEAD
 	spin_unlock_irqrestore(&efi_runtime_lock, flags);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return status;
 }
 
@@ -1084,21 +903,15 @@ efi_thunk_reset_system(int reset_type, efi_status_t status,
 		       unsigned long data_size, efi_char16_t *data)
 {
 	u32 phys_data;
-<<<<<<< HEAD
 	unsigned long flags;
 
 	spin_lock_irqsave(&efi_runtime_lock, flags);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	phys_data = virt_to_phys_or_null_size(data, data_size);
 
 	efi_thunk(reset_system, reset_type, status, data_size, phys_data);
-<<<<<<< HEAD
 
 	spin_unlock_irqrestore(&efi_runtime_lock, flags);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static efi_status_t
@@ -1120,19 +933,13 @@ efi_thunk_query_variable_info(u32 attr, u64 *storage_space,
 {
 	efi_status_t status;
 	u32 phys_storage, phys_remaining, phys_max;
-<<<<<<< HEAD
 	unsigned long flags;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (efi.runtime_version < EFI_2_00_SYSTEM_TABLE_REVISION)
 		return EFI_UNSUPPORTED;
 
-<<<<<<< HEAD
 	spin_lock_irqsave(&efi_runtime_lock, flags);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	phys_storage = virt_to_phys_or_null(storage_space);
 	phys_remaining = virt_to_phys_or_null(remaining_space);
 	phys_max = virt_to_phys_or_null(max_variable_size);
@@ -1140,7 +947,6 @@ efi_thunk_query_variable_info(u32 attr, u64 *storage_space,
 	status = efi_thunk(query_variable_info, attr, phys_storage,
 			   phys_remaining, phys_max);
 
-<<<<<<< HEAD
 	spin_unlock_irqrestore(&efi_runtime_lock, flags);
 
 	return status;
@@ -1170,8 +976,6 @@ efi_thunk_query_variable_info_nonblocking(u32 attr, u64 *storage_space,
 
 	spin_unlock_irqrestore(&efi_runtime_lock, flags);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return status;
 }
 
@@ -1197,17 +1001,11 @@ void efi_thunk_runtime_setup(void)
 	efi.get_variable = efi_thunk_get_variable;
 	efi.get_next_variable = efi_thunk_get_next_variable;
 	efi.set_variable = efi_thunk_set_variable;
-<<<<<<< HEAD
 	efi.set_variable_nonblocking = efi_thunk_set_variable_nonblocking;
 	efi.get_next_high_mono_count = efi_thunk_get_next_high_mono_count;
 	efi.reset_system = efi_thunk_reset_system;
 	efi.query_variable_info = efi_thunk_query_variable_info;
 	efi.query_variable_info_nonblocking = efi_thunk_query_variable_info_nonblocking;
-=======
-	efi.get_next_high_mono_count = efi_thunk_get_next_high_mono_count;
-	efi.reset_system = efi_thunk_reset_system;
-	efi.query_variable_info = efi_thunk_query_variable_info;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	efi.update_capsule = efi_thunk_update_capsule;
 	efi.query_capsule_caps = efi_thunk_query_capsule_caps;
 }

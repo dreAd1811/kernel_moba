@@ -21,10 +21,7 @@
 
 /* Enables debugging of low-level hash table routines - careful! */
 #undef DEBUG
-<<<<<<< HEAD
 #define pr_fmt(fmt) "lpar: " fmt
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/kernel.h>
 #include <linux/dma-mapping.h>
@@ -40,10 +37,6 @@
 #include <asm/machdep.h>
 #include <asm/mmu_context.h>
 #include <asm/iommu.h>
-<<<<<<< HEAD
-=======
-#include <asm/tlbflush.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/tlb.h>
 #include <asm/prom.h>
 #include <asm/cputable.h>
@@ -55,10 +48,6 @@
 #include <asm/kexec.h>
 #include <asm/fadump.h>
 #include <asm/asm-prototypes.h>
-<<<<<<< HEAD
-=======
-#include <asm/debugfs.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "pseries.h"
 
@@ -104,41 +93,25 @@ void vpa_init(int cpu)
 		return;
 	}
 
-<<<<<<< HEAD
 #ifdef CONFIG_PPC_BOOK3S_64
-=======
-#ifdef CONFIG_PPC_STD_MMU_64
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * PAPR says this feature is SLB-Buffer but firmware never
 	 * reports that.  All SPLPAR support SLB shadow buffer.
 	 */
 	if (!radix_enabled() && firmware_has_feature(FW_FEATURE_SPLPAR)) {
-<<<<<<< HEAD
 		addr = __pa(paca_ptrs[cpu]->slb_shadow_ptr);
-=======
-		addr = __pa(paca[cpu].slb_shadow_ptr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = register_slb_shadow(hwcpu, addr);
 		if (ret)
 			pr_err("WARNING: SLB shadow buffer registration for "
 			       "cpu %d (hw %d) of area %lx failed with %ld\n",
 			       cpu, hwcpu, addr, ret);
 	}
-<<<<<<< HEAD
 #endif /* CONFIG_PPC_BOOK3S_64 */
-=======
-#endif /* CONFIG_PPC_STD_MMU_64 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Register dispatch trace log, if one has been allocated.
 	 */
-<<<<<<< HEAD
 	pp = paca_ptrs[cpu];
-=======
-	pp = &paca[cpu];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dtl = pp->dispatch_log;
 	if (dtl) {
 		pp->dtl_ridx = 0;
@@ -156,11 +129,7 @@ void vpa_init(int cpu)
 	}
 }
 
-<<<<<<< HEAD
 #ifdef CONFIG_PPC_BOOK3S_64
-=======
-#ifdef CONFIG_PPC_STD_MMU_64
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static long pSeries_lpar_hpte_insert(unsigned long hpte_group,
 				     unsigned long vpn, unsigned long pa,
@@ -196,12 +165,7 @@ static long pSeries_lpar_hpte_insert(unsigned long hpte_group,
 
 	lpar_rc = plpar_pte_enter(flags, hpte_group, hpte_v, hpte_r, &slot);
 	if (unlikely(lpar_rc == H_PTEG_FULL)) {
-<<<<<<< HEAD
 		pr_devel("Hash table group is full\n");
-=======
-		if (!(vflags & HPTE_V_BOLTED))
-			pr_devel(" full\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -1;
 	}
 
@@ -211,12 +175,7 @@ static long pSeries_lpar_hpte_insert(unsigned long hpte_group,
 	 * or we will loop forever, so return -2 in this case.
 	 */
 	if (unlikely(lpar_rc != H_SUCCESS)) {
-<<<<<<< HEAD
 		pr_err("Failed hash pte insert with error %ld\n", lpar_rc);
-=======
-		if (!(vflags & HPTE_V_BOLTED))
-			pr_devel(" lpar err %ld\n", lpar_rc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -2;
 	}
 	if (!(vflags & HPTE_V_BOLTED))
@@ -279,16 +238,11 @@ static void manual_hpte_clear_all(void)
          */
 	for (i = 0; i < hpte_count; i += 4) {
 		lpar_rc = plpar_pte_read_4_raw(0, i, (void *)ptes);
-<<<<<<< HEAD
 		if (lpar_rc != H_SUCCESS) {
 			pr_info("Failed to read hash page table at %ld err %ld\n",
 				i, lpar_rc);
 			continue;
 		}
-=======
-		if (lpar_rc != H_SUCCESS)
-			continue;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		for (j = 0; j < 4; j++){
 			if ((ptes[j].pteh & HPTE_V_VRMA_MASK) ==
 				HPTE_V_VRMA_MASK)
@@ -353,23 +307,14 @@ static long pSeries_lpar_hpte_updatepp(unsigned long slot,
 
 	want_v = hpte_encode_avpn(vpn, psize, ssize);
 
-<<<<<<< HEAD
-=======
-	pr_devel("    update: avpnv=%016lx, hash=%016lx, f=%lx, psize: %d ...",
-		 want_v, slot, flags, psize);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	flags = (newpp & 7) | H_AVPN;
 	if (mmu_has_feature(MMU_FTR_KERNEL_RO))
 		/* Move pp0 into bit 8 (IBM 55) */
 		flags |= (newpp & HPTE_R_PP0) >> 55;
 
-<<<<<<< HEAD
 	pr_devel("    update: avpnv=%016lx, hash=%016lx, f=%lx, psize: %d ...",
 		 want_v, slot, flags, psize);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	lpar_rc = plpar_pte_protect(flags, slot, want_v);
 
 	if (lpar_rc == H_NOT_FOUND) {
@@ -396,16 +341,11 @@ static long __pSeries_lpar_hpte_find(unsigned long want_v, unsigned long hpte_gr
 	for (i = 0; i < HPTES_PER_GROUP; i += 4, hpte_group += 4) {
 
 		lpar_rc = plpar_pte_read_4(0, hpte_group, (void *)ptes);
-<<<<<<< HEAD
 		if (lpar_rc != H_SUCCESS) {
 			pr_info("Failed to read hash page table at %ld err %ld\n",
 				hpte_group, lpar_rc);
 			continue;
 		}
-=======
-		if (lpar_rc != H_SUCCESS)
-			continue;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		for (j = 0; j < 4; j++) {
 			if (HPTE_V_COMPARE(ptes[j].pteh, want_v) &&
@@ -676,13 +616,8 @@ static int __init disable_bulk_remove(char *str)
 {
 	if (strcmp(str, "off") == 0 &&
 	    firmware_has_feature(FW_FEATURE_BULK_REMOVE)) {
-<<<<<<< HEAD
 		pr_info("Disabling BULK_REMOVE firmware feature");
 		powerpc_firmware_features &= ~FW_FEATURE_BULK_REMOVE;
-=======
-			printk(KERN_INFO "Disabling BULK_REMOVE firmware feature");
-			powerpc_firmware_features &= ~FW_FEATURE_BULK_REMOVE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return 1;
 }
@@ -731,12 +666,7 @@ static int pseries_lpar_resize_hpt(unsigned long shift)
 	if (!firmware_has_feature(FW_FEATURE_HPT_RESIZE))
 		return -ENODEV;
 
-<<<<<<< HEAD
 	pr_info("Attempting to resize HPT to shift %lu\n", shift);
-=======
-	printk(KERN_INFO "lpar: Attempting to resize HPT to shift %lu\n",
-	       shift);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	t0 = ktime_get();
 
@@ -748,12 +678,7 @@ static int pseries_lpar_resize_hpt(unsigned long shift)
 			/* prepare with shift==0 cancels an in-progress resize */
 			rc = plpar_resize_hpt_prepare(0, 0);
 			if (rc != H_SUCCESS)
-<<<<<<< HEAD
 				pr_warn("Unexpected error %d cancelling timed out HPT resize\n",
-=======
-				printk(KERN_WARNING
-				       "lpar: Unexpected error %d cancelling timed out HPT resize\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       rc);
 			return -ETIMEDOUT;
 		}
@@ -771,13 +696,7 @@ static int pseries_lpar_resize_hpt(unsigned long shift)
 	case H_RESOURCE:
 		return -EPERM;
 	default:
-<<<<<<< HEAD
 		pr_warn("Unexpected error %d from H_RESIZE_HPT_PREPARE\n", rc);
-=======
-		printk(KERN_WARNING
-		       "lpar: Unexpected error %d from H_RESIZE_HPT_PREPARE\n",
-		       rc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EIO;
 	}
 
@@ -791,37 +710,19 @@ static int pseries_lpar_resize_hpt(unsigned long shift)
 	if (rc != 0) {
 		switch (state.commit_rc) {
 		case H_PTEG_FULL:
-<<<<<<< HEAD
 			pr_warn("Hash collision while resizing HPT\n");
 			return -ENOSPC;
 
 		default:
 			pr_warn("Unexpected error %d from H_RESIZE_HPT_COMMIT\n",
 				state.commit_rc);
-=======
-			printk(KERN_WARNING
-			       "lpar: Hash collision while resizing HPT\n");
-			return -ENOSPC;
-
-		default:
-			printk(KERN_WARNING
-			       "lpar: Unexpected error %d from H_RESIZE_HPT_COMMIT\n",
-			       state.commit_rc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EIO;
 		};
 	}
 
-<<<<<<< HEAD
 	pr_info("HPT resize to shift %lu complete (%lld ms / %lld ms)\n",
 		shift, (long long) ktime_ms_delta(t1, t0),
 		(long long) ktime_ms_delta(t2, t1));
-=======
-	printk(KERN_INFO
-	       "lpar: HPT resize to shift %lu complete (%lld ms / %lld ms)\n",
-	       shift, (long long) ktime_ms_delta(t1, t0),
-	       (long long) ktime_ms_delta(t2, t1));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -885,21 +786,13 @@ static int __init cmo_free_hint(char *str)
 	parm = strstrip(str);
 
 	if (strcasecmp(parm, "no") == 0 || strcasecmp(parm, "off") == 0) {
-<<<<<<< HEAD
 		pr_info("%s: CMO free page hinting is not active.\n", __func__);
-=======
-		printk(KERN_INFO "cmo_free_hint: CMO free page hinting is not active.\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cmo_free_hint_flag = 0;
 		return 1;
 	}
 
 	cmo_free_hint_flag = 1;
-<<<<<<< HEAD
 	pr_info("%s: CMO free page hinting is active.\n", __func__);
-=======
-	printk(KERN_INFO "cmo_free_hint: CMO free page hinting is active.\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (strcasecmp(parm, "yes") == 0 || strcasecmp(parm, "on") == 0)
 		return 1;
@@ -936,17 +829,10 @@ void arch_free_page(struct page *page, int order)
 EXPORT_SYMBOL(arch_free_page);
 
 #endif /* CONFIG_PPC_SMLPAR */
-<<<<<<< HEAD
 #endif /* CONFIG_PPC_BOOK3S_64 */
 
 #ifdef CONFIG_TRACEPOINTS
 #ifdef CONFIG_JUMP_LABEL
-=======
-#endif /* CONFIG_PPC_STD_MMU_64 */
-
-#ifdef CONFIG_TRACEPOINTS
-#ifdef HAVE_JUMP_LABEL
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct static_key hcall_tracepoint_key = STATIC_KEY_INIT;
 
 int hcall_tracepoint_regfunc(void)
@@ -1017,12 +903,7 @@ out:
 	local_irq_restore(flags);
 }
 
-<<<<<<< HEAD
 void __trace_hcall_exit(long opcode, long retval, unsigned long *retbuf)
-=======
-void __trace_hcall_exit(long opcode, unsigned long retval,
-			unsigned long *retbuf)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long flags;
 	unsigned int *depth;
@@ -1151,59 +1032,3 @@ static int __init reserve_vrma_context_id(void)
 	return 0;
 }
 machine_device_initcall(pseries, reserve_vrma_context_id);
-<<<<<<< HEAD
-=======
-
-#ifdef CONFIG_DEBUG_FS
-/* debugfs file interface for vpa data */
-static ssize_t vpa_file_read(struct file *filp, char __user *buf, size_t len,
-			      loff_t *pos)
-{
-	int cpu = (long)filp->private_data;
-	struct lppaca *lppaca = &lppaca_of(cpu);
-
-	return simple_read_from_buffer(buf, len, pos, lppaca,
-				sizeof(struct lppaca));
-}
-
-static const struct file_operations vpa_fops = {
-	.open		= simple_open,
-	.read		= vpa_file_read,
-	.llseek		= default_llseek,
-};
-
-static int __init vpa_debugfs_init(void)
-{
-	char name[16];
-	long i;
-	struct dentry *vpa_dir;
-
-	if (!firmware_has_feature(FW_FEATURE_SPLPAR))
-		return 0;
-
-	vpa_dir = debugfs_create_dir("vpa", powerpc_debugfs_root);
-	if (!vpa_dir) {
-		pr_warn("%s: can't create vpa root dir\n", __func__);
-		return -ENOMEM;
-	}
-
-	/* set up the per-cpu vpa file*/
-	for_each_possible_cpu(i) {
-		struct dentry *d;
-
-		sprintf(name, "cpu-%ld", i);
-
-		d = debugfs_create_file(name, 0400, vpa_dir, (void *)i,
-					&vpa_fops);
-		if (!d) {
-			pr_warn("%s: can't create per-cpu vpa file\n",
-					__func__);
-			return -ENOMEM;
-		}
-	}
-
-	return 0;
-}
-machine_arch_initcall(pseries, vpa_debugfs_init);
-#endif /* CONFIG_DEBUG_FS */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

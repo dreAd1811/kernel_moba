@@ -13,31 +13,20 @@
  * under the terms of the GNU General Public License version 2 as published by
  * the Free Software Foundation.
  */
-<<<<<<< HEAD
 #include <linux/gpio/consumer.h>
 #include <linux/gpio/driver.h>
-=======
-#include <linux/gpio.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/interrupt.h>
 #include <linux/irq.h>
 #include <linux/module.h>
 #include <linux/io.h>
-<<<<<<< HEAD
 #include <linux/platform_data/ams-delta-fiq.h>
 #include <linux/platform_device.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <mach/board-ams-delta.h>
 
 #include <asm/fiq.h>
 
-<<<<<<< HEAD
 #include "ams-delta-fiq.h"
-=======
-#include <mach/ams-delta-fiq.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct fiq_handler fh = {
 	.name	= "ams-delta-fiq"
@@ -48,7 +37,6 @@ static struct fiq_handler fh = {
  * The FIQ and IRQ isrs can both read and write it.
  * It is structured as a header section several 32bit slots,
  * followed by the circular buffer where the FIQ isr stores
-<<<<<<< HEAD
  * keystrokes received from the qwerty keyboard.  See
  * <linux/platform_data/ams-delta-fiq.h> for details of offsets.
  */
@@ -67,22 +55,6 @@ static irqreturn_t deferred_fiq(int irq, void *dev_id)
 {
 	struct irq_data *d;
 	int gpio, irq_num, fiq_count;
-=======
- * keystrokes received from the qwerty keyboard.
- * See ams-delta-fiq.h for details of offsets.
- */
-unsigned int fiq_buffer[1024];
-EXPORT_SYMBOL(fiq_buffer);
-
-static unsigned int irq_counter[16];
-
-static irqreturn_t deferred_fiq(int irq, void *dev_id)
-{
-	int gpio, irq_num, fiq_count;
-	struct irq_chip *irq_chip;
-
-	irq_chip = irq_get_chip(gpio_to_irq(AMS_DELTA_GPIO_PIN_KEYBRD_CLK));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * For each handled GPIO interrupt, keep calling its interrupt handler
@@ -90,37 +62,19 @@ static irqreturn_t deferred_fiq(int irq, void *dev_id)
 	 */
 	for (gpio = AMS_DELTA_GPIO_PIN_KEYBRD_CLK;
 			gpio <= AMS_DELTA_GPIO_PIN_HOOK_SWITCH; gpio++) {
-<<<<<<< HEAD
 		d = irq_data[gpio];
 		irq_num = d->irq;
-=======
-		irq_num = gpio_to_irq(gpio);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		fiq_count = fiq_buffer[FIQ_CNT_INT_00 + gpio];
 
 		if (irq_counter[gpio] < fiq_count &&
 				gpio != AMS_DELTA_GPIO_PIN_KEYBRD_CLK) {
-<<<<<<< HEAD
-=======
-			struct irq_data *d = irq_get_irq_data(irq_num);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/*
 			 * handle_simple_irq() that OMAP GPIO edge
 			 * interrupts default to since commit 80ac93c27441
 			 * requires interrupt already acked and unmasked.
 			 */
-<<<<<<< HEAD
 			if (!WARN_ON_ONCE(!irq_chip->irq_unmask))
 				irq_chip->irq_unmask(d);
-=======
-			if (irq_chip) {
-				if (irq_chip->irq_ack)
-					irq_chip->irq_ack(d);
-				if (irq_chip->irq_unmask)
-					irq_chip->irq_unmask(d);
-			}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		for (; irq_counter[gpio] < fiq_count; irq_counter[gpio]++)
 			generic_handle_irq(irq_num);
@@ -128,22 +82,16 @@ static irqreturn_t deferred_fiq(int irq, void *dev_id)
 	return IRQ_HANDLED;
 }
 
-<<<<<<< HEAD
 void __init ams_delta_init_fiq(struct gpio_chip *chip,
 			       struct platform_device *serio)
 {
 	struct gpio_desc *gpiod, *data = NULL, *clk = NULL;
-=======
-void __init ams_delta_init_fiq(void)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void *fiqhandler_start;
 	unsigned int fiqhandler_length;
 	struct pt_regs FIQ_regs;
 	unsigned long val, offset;
 	int i, retval;
 
-<<<<<<< HEAD
 	/* Store irq_chip location for IRQ handler use */
 	irq_chip = chip->irq.chip;
 	if (!irq_chip) {
@@ -184,8 +132,6 @@ void __init ams_delta_init_fiq(void)
 	if (!data || !clk)
 		goto out_gpio;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	fiqhandler_start = &qwerty_fiqin_start;
 	fiqhandler_length = &qwerty_fiqin_end - &qwerty_fiqin_start;
 	pr_info("Installing fiq handler from %p, length 0x%x\n",
@@ -195,11 +141,7 @@ void __init ams_delta_init_fiq(void)
 	if (retval) {
 		pr_err("ams_delta_init_fiq(): couldn't claim FIQ, ret=%d\n",
 				retval);
-<<<<<<< HEAD
 		goto out_gpio;
-=======
-		return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	retval = request_irq(INT_DEFERRED_FIQ, deferred_fiq,
@@ -207,11 +149,7 @@ void __init ams_delta_init_fiq(void)
 	if (retval < 0) {
 		pr_err("Failed to get deferred_fiq IRQ, ret=%d\n", retval);
 		release_fiq(&fh);
-<<<<<<< HEAD
 		goto out_gpio;
-=======
-		return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	/*
 	 * Since no set_type() method is provided by OMAP irq chip,
@@ -261,7 +199,6 @@ void __init ams_delta_init_fiq(void)
 	offset = IRQ_ILR0_REG_OFFSET + (INT_GPIO_BANK1 - NR_IRQS_LEGACY) * 0x4;
 	val = omap_readl(OMAP_IH1_BASE + offset) | 1;
 	omap_writel(val, OMAP_IH1_BASE + offset);
-<<<<<<< HEAD
 
 	/* Initialize serio device IRQ resource and platform_data */
 	serio->resource[0].start = gpiod_to_irq(clk);
@@ -287,6 +224,4 @@ out_gpio:
 		gpiochip_free_own_desc(data);
 	if (clk)
 		gpiochip_free_own_desc(clk);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

@@ -103,20 +103,11 @@ struct drm_connector *tilcdc_encoder_find_connector(struct drm_device *ddev,
 						    struct drm_encoder *encoder)
 {
 	struct drm_connector *connector;
-<<<<<<< HEAD
 
 	list_for_each_entry(connector, &ddev->mode_config.connector_list, head) {
 		if (drm_connector_has_possible_encoder(connector, encoder))
 			return connector;
 	}
-=======
-	int i;
-
-	list_for_each_entry(connector, &ddev->mode_config.connector_list, head)
-		for (i = 0; i < DRM_CONNECTOR_MAX_ENCODER; i++)
-			if (connector->encoder_ids[i] == encoder->base.id)
-				return connector;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_err(ddev->dev, "No connector found for %s encoder (id %d)\n",
 		encoder->name, encoder->base.id);
@@ -196,7 +187,6 @@ int tilcdc_attach_bridge(struct drm_device *ddev, struct drm_bridge *bridge)
 int tilcdc_attach_external_device(struct drm_device *ddev)
 {
 	struct tilcdc_drm_private *priv = ddev->dev_private;
-<<<<<<< HEAD
 	struct drm_bridge *bridge;
 	struct drm_panel *panel;
 	int ret;
@@ -207,20 +197,6 @@ int tilcdc_attach_external_device(struct drm_device *ddev)
 		return 0;
 	else if (ret)
 		return ret;
-=======
-	struct device_node *remote_node;
-	struct drm_bridge *bridge;
-	int ret;
-
-	remote_node = of_graph_get_remote_node(ddev->dev->of_node, 0, 0);
-	if (!remote_node)
-		return 0;
-
-	bridge = of_drm_find_bridge(remote_node);
-	of_node_put(remote_node);
-	if (!bridge)
-		return -EPROBE_DEFER;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	priv->external_encoder = devm_kzalloc(ddev->dev,
 					      sizeof(*priv->external_encoder),
@@ -236,7 +212,6 @@ int tilcdc_attach_external_device(struct drm_device *ddev)
 		return ret;
 	}
 
-<<<<<<< HEAD
 	if (panel) {
 		bridge = devm_drm_panel_bridge_add(ddev->dev, panel,
 						   DRM_MODE_CONNECTOR_DPI);
@@ -254,12 +229,6 @@ int tilcdc_attach_external_device(struct drm_device *ddev)
 
 err_encoder_cleanup:
 	drm_encoder_cleanup(priv->external_encoder);
-=======
-	ret = tilcdc_attach_bridge(ddev, bridge);
-	if (ret)
-		drm_encoder_cleanup(priv->external_encoder);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 

@@ -413,21 +413,13 @@ that case.
 
 /* The rest of these values should never change. */
 
-<<<<<<< HEAD
 static void hamachi_timer(struct timer_list *t);
-=======
-static void hamachi_timer(unsigned long data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum capability_flags {CanHaveMII=1, };
 static const struct chip_info {
 	u16	vendor_id, device_id, device_id_mask, pad;
 	const char *name;
-<<<<<<< HEAD
 	void (*media_timer)(struct timer_list *t);
-=======
-	void (*media_timer)(unsigned long data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int flags;
 } chip_tbl[] = {
 	{0x1318, 0x0911, 0xffff, 0, "Hamachi GNIC-II", hamachi_timer, 0},
@@ -555,11 +547,7 @@ static int mdio_read(struct net_device *dev, int phy_id, int location);
 static void mdio_write(struct net_device *dev, int phy_id, int location, int value);
 static int hamachi_open(struct net_device *dev);
 static int netdev_ioctl(struct net_device *dev, struct ifreq *rq, int cmd);
-<<<<<<< HEAD
 static void hamachi_timer(struct timer_list *t);
-=======
-static void hamachi_timer(unsigned long data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void hamachi_tx_timeout(struct net_device *dev);
 static void hamachi_init_ring(struct net_device *dev);
 static netdev_tx_t hamachi_start_xmit(struct sk_buff *skb,
@@ -991,15 +979,8 @@ static int hamachi_open(struct net_device *dev)
 			   dev->name, readw(ioaddr + RxStatus), readw(ioaddr + TxStatus));
 	}
 	/* Set the timer to check for link beat. */
-<<<<<<< HEAD
 	timer_setup(&hmp->timer, hamachi_timer, 0);
 	hmp->timer.expires = RUN_AT((24*HZ)/10);			/* 2.4 sec. */
-=======
-	init_timer(&hmp->timer);
-	hmp->timer.expires = RUN_AT((24*HZ)/10);			/* 2.4 sec. */
-	hmp->timer.data = (unsigned long)dev;
-	hmp->timer.function = hamachi_timer;				/* timer handler */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	add_timer(&hmp->timer);
 
 	return 0;
@@ -1036,17 +1017,10 @@ static inline int hamachi_tx(struct net_device *dev)
 	return 0;
 }
 
-<<<<<<< HEAD
 static void hamachi_timer(struct timer_list *t)
 {
 	struct hamachi_private *hmp = from_timer(hmp, t, timer);
 	struct net_device *dev = hmp->mii_if.dev;
-=======
-static void hamachi_timer(unsigned long data)
-{
-	struct net_device *dev = (struct net_device *)data;
-	struct hamachi_private *hmp = netdev_priv(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void __iomem *ioaddr = hmp->base;
 	int next_tick = 10*HZ;
 

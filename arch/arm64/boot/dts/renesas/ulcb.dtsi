@@ -1,19 +1,9 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Device Tree Source for the R-Car Gen3 ULCB board
  *
  * Copyright (C) 2016 Renesas Electronics Corp.
  * Copyright (C) 2016 Cogent Embedded, Inc.
-<<<<<<< HEAD
-=======
- *
- * This file is licensed under the terms of the GNU General Public License
- * version 2.  This program is licensed "as is" without any warranty of any
- * kind, whether express or implied.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <dt-bindings/gpio/gpio.h>
@@ -38,11 +28,7 @@
 		 */
 		compatible = "fixed-clock";
 		#clock-cells = <0>;
-<<<<<<< HEAD
 		clock-frequency = <12288000>;
-=======
-		clock-frequency = <11289600>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	hdmi0-out {
@@ -157,10 +143,7 @@
 	pinctrl-0 = <&avb_pins>;
 	pinctrl-names = "default";
 	phy-handle = <&phy0>;
-<<<<<<< HEAD
 	phy-mode = "rgmii-txid";
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 
 	phy0: ethernet-phy@0 {
@@ -168,7 +151,6 @@
 		reg = <0>;
 		interrupt-parent = <&gpio2>;
 		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
-<<<<<<< HEAD
 		reset-gpios = <&gpio2 10 GPIO_ACTIVE_LOW>;
 	};
 };
@@ -177,11 +159,6 @@
 	status = "okay";
 };
 
-=======
-	};
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &ehci1 {
 	status = "okay";
 };
@@ -263,7 +240,6 @@
 
 &i2c_dvfs {
 	status = "okay";
-<<<<<<< HEAD
 
 	pmic: pmic@30 {
 		pinctrl-0 = <&irq0_pins>;
@@ -290,8 +266,6 @@
 			};
 		};
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &ohci1 {
@@ -304,22 +278,12 @@
 
 	avb_pins: avb {
 		mux {
-<<<<<<< HEAD
 			groups = "avb_link", "avb_mdio", "avb_mii";
 			function = "avb";
 		};
 
 		pins_mdio {
 			groups = "avb_mdio";
-=======
-			groups = "avb_link", "avb_phy_int", "avb_mdc",
-				 "avb_mii";
-			function = "avb";
-		};
-
-		pins_mdc {
-			groups = "avb_mdc";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			drive-strength = <24>;
 		};
 
@@ -335,14 +299,11 @@
 		function = "i2c2";
 	};
 
-<<<<<<< HEAD
 	irq0_pins: irq0 {
 		groups = "intc_ex_irq0";
 		function = "intc_ex";
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	scif2_pins: scif2 {
 		groups = "scif2_data_a";
 		function = "scif2";
@@ -366,21 +327,13 @@
 	};
 
 	sdhi2_pins: sd2 {
-<<<<<<< HEAD
 		groups = "sdhi2_data8", "sdhi2_ctrl", "sdhi2_ds";
-=======
-		groups = "sdhi2_data8", "sdhi2_ctrl";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		function = "sdhi2";
 		power-source = <3300>;
 	};
 
 	sdhi2_pins_uhs: sd2_uhs {
-<<<<<<< HEAD
 		groups = "sdhi2_data8", "sdhi2_ctrl", "sdhi2_ds";
-=======
-		groups = "sdhi2_data8", "sdhi2_ctrl";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		function = "sdhi2";
 		power-source = <1800>;
 	};
@@ -491,11 +444,7 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
 &rwdt {
-=======
-&wdt0 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	timeout-sec = <60>;
 	status = "okay";
 };

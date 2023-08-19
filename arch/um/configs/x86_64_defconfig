@@ -69,8 +69,4 @@ CONFIG_PROC_KCORE=y
 CONFIG_TMPFS=y
 CONFIG_NLS=y
 CONFIG_DEBUG_INFO=y
-<<<<<<< HEAD
-=======
-CONFIG_FRAME_WARN=1024
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 CONFIG_DEBUG_KERNEL=y

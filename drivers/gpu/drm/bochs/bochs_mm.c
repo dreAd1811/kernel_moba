@@ -176,15 +176,8 @@ static struct ttm_backend_func bochs_tt_backend_func = {
 	.destroy = &bochs_ttm_backend_destroy,
 };
 
-<<<<<<< HEAD
 static struct ttm_tt *bochs_ttm_tt_create(struct ttm_buffer_object *bo,
 					  uint32_t page_flags)
-=======
-static struct ttm_tt *bochs_ttm_tt_create(struct ttm_bo_device *bdev,
-					  unsigned long size,
-					  uint32_t page_flags,
-					  struct page *dummy_read_page)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ttm_tt *tt;
 
@@ -192,26 +185,15 @@ static struct ttm_tt *bochs_ttm_tt_create(struct ttm_bo_device *bdev,
 	if (tt == NULL)
 		return NULL;
 	tt->func = &bochs_tt_backend_func;
-<<<<<<< HEAD
 	if (ttm_tt_init(tt, bo, page_flags)) {
-=======
-	if (ttm_tt_init(tt, bdev, size, page_flags, dummy_read_page)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(tt);
 		return NULL;
 	}
 	return tt;
 }
 
-<<<<<<< HEAD
 static struct ttm_bo_driver bochs_bo_driver = {
 	.ttm_tt_create = bochs_ttm_tt_create,
-=======
-struct ttm_bo_driver bochs_bo_driver = {
-	.ttm_tt_create = bochs_ttm_tt_create,
-	.ttm_tt_populate = ttm_pool_populate,
-	.ttm_tt_unpopulate = ttm_pool_unpopulate,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.init_mem_type = bochs_bo_init_mem_type,
 	.eviction_valuable = ttm_bo_eviction_valuable,
 	.evict_flags = bochs_bo_evict_flags,
@@ -219,10 +201,6 @@ struct ttm_bo_driver bochs_bo_driver = {
 	.verify_access = bochs_bo_verify_access,
 	.io_mem_reserve = &bochs_ttm_io_mem_reserve,
 	.io_mem_free = &bochs_ttm_io_mem_free,
-<<<<<<< HEAD
-=======
-	.io_mem_pfn = ttm_bo_default_io_mem_pfn,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int bochs_mm_init(struct bochs_device *bochs)
@@ -300,10 +278,7 @@ static inline u64 bochs_bo_gpu_offset(struct bochs_bo *bo)
 
 int bochs_bo_pin(struct bochs_bo *bo, u32 pl_flag, u64 *gpu_addr)
 {
-<<<<<<< HEAD
 	struct ttm_operation_ctx ctx = { false, false };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i, ret;
 
 	if (bo->pin_count) {
@@ -316,11 +291,7 @@ int bochs_bo_pin(struct bochs_bo *bo, u32 pl_flag, u64 *gpu_addr)
 	bochs_ttm_placement(bo, pl_flag);
 	for (i = 0; i < bo->placement.num_placement; i++)
 		bo->placements[i].flags |= TTM_PL_FLAG_NO_EVICT;
-<<<<<<< HEAD
 	ret = ttm_bo_validate(&bo->bo, &bo->placement, &ctx);
-=======
-	ret = ttm_bo_validate(&bo->bo, &bo->placement, false, false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -332,10 +303,7 @@ int bochs_bo_pin(struct bochs_bo *bo, u32 pl_flag, u64 *gpu_addr)
 
 int bochs_bo_unpin(struct bochs_bo *bo)
 {
-<<<<<<< HEAD
 	struct ttm_operation_ctx ctx = { false, false };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i, ret;
 
 	if (!bo->pin_count) {
@@ -349,11 +317,7 @@ int bochs_bo_unpin(struct bochs_bo *bo)
 
 	for (i = 0; i < bo->placement.num_placement; i++)
 		bo->placements[i].flags &= ~TTM_PL_FLAG_NO_EVICT;
-<<<<<<< HEAD
 	ret = ttm_bo_validate(&bo->bo, &bo->placement, &ctx);
-=======
-	ret = ttm_bo_validate(&bo->bo, &bo->placement, false, false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -403,11 +367,7 @@ static int bochs_bo_create(struct drm_device *dev, int size, int align,
 
 	ret = ttm_bo_init(&bochs->ttm.bdev, &bochsbo->bo, size,
 			  ttm_bo_type_device, &bochsbo->placement,
-<<<<<<< HEAD
 			  align >> PAGE_SHIFT, false, acc_size,
-=======
-			  align >> PAGE_SHIFT, false, NULL, acc_size,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  NULL, NULL, bochs_bo_ttm_destroy);
 	if (ret)
 		return ret;

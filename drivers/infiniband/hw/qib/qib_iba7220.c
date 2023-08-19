@@ -1042,17 +1042,11 @@ done:
 	return iserr;
 }
 
-<<<<<<< HEAD
 static void reenable_7220_chase(struct timer_list *t)
 {
 	struct qib_chippport_specific *cpspec = from_timer(cpspec, t,
 							 chase_timer);
 	struct qib_pportdata *ppd = &cpspec->pportdata;
-=======
-static void reenable_7220_chase(unsigned long opaque)
-{
-	struct qib_pportdata *ppd = (struct qib_pportdata *)opaque;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ppd->cpspec->chase_timer.expires = 0;
 	qib_set_ib_7220_lstate(ppd, QLOGIC_IB_IBCC_LINKCMD_DOWN,
@@ -1102,10 +1096,6 @@ static void handle_7220_errors(struct qib_devdata *dd, u64 errs)
 	char *msg;
 	u64 ignore_this_time = 0;
 	u64 iserr = 0;
-<<<<<<< HEAD
-=======
-	int log_idx;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct qib_pportdata *ppd = dd->pport;
 	u64 mask;
 
@@ -1116,13 +1106,6 @@ static void handle_7220_errors(struct qib_devdata *dd, u64 errs)
 	/* do these first, they are most important */
 	if (errs & ERR_MASK(HardwareErr))
 		qib_7220_handle_hwerrors(dd, msg, sizeof(dd->cspec->emsgbuf));
-<<<<<<< HEAD
-=======
-	else
-		for (log_idx = 0; log_idx < QIB_EEP_LOG_CNT; ++log_idx)
-			if (errs & dd->eep_st_masks[log_idx].errs_to_log)
-				qib_inc_eeprom_err(dd, log_idx, 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (errs & QLOGIC_IB_E_SDMAERRS)
 		sdma_7220_errors(ppd, errs);
@@ -1316,10 +1299,6 @@ static void qib_7220_handle_hwerrors(struct qib_devdata *dd, char *msg,
 	u32 bits, ctrl;
 	int isfatal = 0;
 	char *bitsmsg;
-<<<<<<< HEAD
-=======
-	int log_idx;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	hwerrs = qib_read_kreg64(dd, kr_hwerrstatus);
 	if (!hwerrs)
@@ -1343,13 +1322,6 @@ static void qib_7220_handle_hwerrors(struct qib_devdata *dd, char *msg,
 
 	hwerrs &= dd->cspec->hwerrmask;
 
-<<<<<<< HEAD
-=======
-	/* We log some errors to EEPROM, check if we have any of those. */
-	for (log_idx = 0; log_idx < QIB_EEP_LOG_CNT; ++log_idx)
-		if (hwerrs & dd->eep_st_masks[log_idx].hwerrs_to_log)
-			qib_inc_eeprom_err(dd, log_idx, 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (hwerrs & ~(TXEMEMPARITYERR_PIOBUF | TXEMEMPARITYERR_PIOPBC |
 		       RXE_PARITY))
 		qib_devinfo(dd->pcidev,
@@ -1683,11 +1655,7 @@ static void qib_7220_quiet_serdes(struct qib_pportdata *ppd)
 		       dd->control | QLOGIC_IB_C_FREEZEMODE);
 
 	ppd->cpspec->chase_end = 0;
-<<<<<<< HEAD
 	if (ppd->cpspec->chase_timer.function) /* if initted */
-=======
-	if (ppd->cpspec->chase_timer.data) /* if initted */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		del_timer_sync(&ppd->cpspec->chase_timer);
 
 	if (ppd->cpspec->ibsymdelta || ppd->cpspec->iblnkerrdelta ||
@@ -1804,18 +1772,6 @@ static void qib_setup_7220_setextled(struct qib_pportdata *ppd, u32 on)
 		qib_write_kreg(dd, kr_rcvpktledcnt, ledblink);
 }
 
-<<<<<<< HEAD
-=======
-static void qib_7220_free_irq(struct qib_devdata *dd)
-{
-	if (dd->cspec->irq) {
-		free_irq(dd->cspec->irq, dd);
-		dd->cspec->irq = 0;
-	}
-	qib_nomsi(dd);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * qib_setup_7220_cleanup - clean up any per-chip chip-specific stuff
  * @dd: the qlogic_ib device
@@ -1825,11 +1781,7 @@ static void qib_7220_free_irq(struct qib_devdata *dd)
  */
 static void qib_setup_7220_cleanup(struct qib_devdata *dd)
 {
-<<<<<<< HEAD
 	qib_free_irq(dd);
-=======
-	qib_7220_free_irq(dd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(dd->cspec->cntrs);
 	kfree(dd->cspec->portcntrs);
 }
@@ -2057,7 +2009,6 @@ bail:
  */
 static void qib_setup_7220_interrupt(struct qib_devdata *dd)
 {
-<<<<<<< HEAD
 	int ret;
 
 	ret = pci_request_irq(dd->pcidev, 0, qib_7220intr, NULL, dd,
@@ -2066,22 +2017,6 @@ static void qib_setup_7220_interrupt(struct qib_devdata *dd)
 		qib_dev_err(dd, "Couldn't setup %s interrupt (irq=%d): %d\n",
 			    dd->pcidev->msi_enabled ?  "MSI" : "INTx",
 			    pci_irq_vector(dd->pcidev, 0), ret);
-=======
-	if (!dd->cspec->irq)
-		qib_dev_err(dd,
-			"irq is 0, BIOS error?  Interrupts won't work\n");
-	else {
-		int ret = request_irq(dd->cspec->irq, qib_7220intr,
-			dd->msi_lo ? 0 : IRQF_SHARED,
-			QIB_DRV_NAME, dd);
-
-		if (ret)
-			qib_dev_err(dd,
-				"Couldn't setup %s interrupt (irq=%d): %d\n",
-				dd->msi_lo ?  "MSI" : "INTx",
-				dd->cspec->irq, ret);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -3212,26 +3147,16 @@ static void init_7220_cntrnames(struct qib_devdata *dd)
 		dd->cspec->cntrnamelen = sizeof(cntr7220names) - 1;
 	else
 		dd->cspec->cntrnamelen = 1 + s - cntr7220names;
-<<<<<<< HEAD
 	dd->cspec->cntrs = kmalloc_array(dd->cspec->ncntrs, sizeof(u64),
 					 GFP_KERNEL);
-=======
-	dd->cspec->cntrs = kmalloc(dd->cspec->ncntrs
-		* sizeof(u64), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0, s = (char *)portcntr7220names; s; i++)
 		s = strchr(s + 1, '\n');
 	dd->cspec->nportcntrs = i - 1;
 	dd->cspec->portcntrnamelen = sizeof(portcntr7220names) - 1;
-<<<<<<< HEAD
 	dd->cspec->portcntrs = kmalloc_array(dd->cspec->nportcntrs,
 					     sizeof(u64),
 					     GFP_KERNEL);
-=======
-	dd->cspec->portcntrs = kmalloc(dd->cspec->nportcntrs
-		* sizeof(u64), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static u32 qib_read_7220cntrs(struct qib_devdata *dd, loff_t pos, char **namep,
@@ -3316,15 +3241,9 @@ done:
  * need traffic_wds done the way it is
  * called from add_timer
  */
-<<<<<<< HEAD
 static void qib_get_7220_faststats(struct timer_list *t)
 {
 	struct qib_devdata *dd = from_timer(dd, t, stats_timer);
-=======
-static void qib_get_7220_faststats(unsigned long opaque)
-{
-	struct qib_devdata *dd = (struct qib_devdata *) opaque;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct qib_pportdata *ppd = dd->pport;
 	unsigned long flags;
 	u64 traffic_wds;
@@ -3361,25 +3280,12 @@ static int qib_7220_intr_fallback(struct qib_devdata *dd)
 		return 0;
 
 	qib_devinfo(dd->pcidev,
-<<<<<<< HEAD
 		    "MSI interrupt not detected, trying INTx interrupts\n");
 
 	qib_free_irq(dd);
 	dd->msi_lo = 0;
 	if (pci_alloc_irq_vectors(dd->pcidev, 1, 1, PCI_IRQ_LEGACY) < 0)
 		qib_dev_err(dd, "Failed to enable INTx\n");
-=======
-		"MSI interrupt not detected, trying INTx interrupts\n");
-	qib_7220_free_irq(dd);
-	qib_enable_intx(dd);
-	/*
-	 * Some newer kernels require free_irq before disable_msi,
-	 * and irq can be changed during disable and INTx enable
-	 * and we need to therefore use the pcidev->irq value,
-	 * not our saved MSI value.
-	 */
-	dd->cspec->irq = dd->pcidev->irq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	qib_setup_7220_interrupt(dd);
 	return 1;
 }
@@ -3611,10 +3517,6 @@ static void autoneg_7220_work(struct work_struct *work)
 {
 	struct qib_pportdata *ppd;
 	struct qib_devdata *dd;
-<<<<<<< HEAD
-=======
-	u64 startms;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 i;
 	unsigned long flags;
 
@@ -3622,11 +3524,6 @@ static void autoneg_7220_work(struct work_struct *work)
 			    autoneg_work.work)->pportdata;
 	dd = ppd->dd;
 
-<<<<<<< HEAD
-=======
-	startms = jiffies_to_msecs(jiffies);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Busy wait for this first part, it should be at most a
 	 * few hundred usec, since we scheduled ourselves for 2msec.
@@ -4071,10 +3968,7 @@ static int qib_init_7220_variables(struct qib_devdata *dd)
 	dd->num_pports = 1;
 
 	dd->cspec = (struct qib_chip_specific *)(cpspec + dd->num_pports);
-<<<<<<< HEAD
 	dd->cspec->dd = dd;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ppd->cpspec = cpspec;
 
 	spin_lock_init(&dd->cspec->sdepb_lock);
@@ -4113,19 +4007,6 @@ static int qib_init_7220_variables(struct qib_devdata *dd)
 	dd->flags |= qib_special_trigger ?
 		QIB_USE_SPCL_TRIG : QIB_HAS_SEND_DMA;
 
-<<<<<<< HEAD
-=======
-	/*
-	 * EEPROM error log 0 is TXE Parity errors. 1 is RXE Parity.
-	 * 2 is Some Misc, 3 is reserved for future.
-	 */
-	dd->eep_st_masks[0].hwerrs_to_log = HWE_MASK(TXEMemParityErr);
-
-	dd->eep_st_masks[1].hwerrs_to_log = HWE_MASK(RXEMemParityErr);
-
-	dd->eep_st_masks[2].errs_to_log = ERR_MASK(ResetNegated);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	init_waitqueue_head(&cpspec->autoneg_wait);
 	INIT_DELAYED_WORK(&cpspec->autoneg_work, autoneg_7220_work);
 
@@ -4150,12 +4031,7 @@ static int qib_init_7220_variables(struct qib_devdata *dd)
 	if (!qib_mini_init)
 		qib_write_kreg(dd, kr_rcvbthqp, QIB_KD_QP);
 
-<<<<<<< HEAD
 	timer_setup(&ppd->cpspec->chase_timer, reenable_7220_chase, 0);
-=======
-	setup_timer(&ppd->cpspec->chase_timer, reenable_7220_chase,
-		    (unsigned long)ppd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	qib_num_cfg_vls = 1; /* if any 7220's, only one VL */
 
@@ -4180,13 +4056,7 @@ static int qib_init_7220_variables(struct qib_devdata *dd)
 	dd->rhdrhead_intr_off = 1ULL << 32;
 
 	/* setup the stats timer; the add_timer is done at end of init */
-<<<<<<< HEAD
 	timer_setup(&dd->stats_timer, qib_get_7220_faststats, 0);
-=======
-	init_timer(&dd->stats_timer);
-	dd->stats_timer.function = qib_get_7220_faststats;
-	dd->stats_timer.data = (unsigned long) dd;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dd->stats_timer.expires = jiffies + ACTIVITY_TIMER * HZ;
 
 	/*
@@ -4624,11 +4494,7 @@ struct qib_devdata *qib_init_iba7220_funcs(struct pci_dev *pdev,
 	dd->f_bringup_serdes    = qib_7220_bringup_serdes;
 	dd->f_cleanup           = qib_setup_7220_cleanup;
 	dd->f_clear_tids        = qib_7220_clear_tids;
-<<<<<<< HEAD
 	dd->f_free_irq          = qib_free_irq;
-=======
-	dd->f_free_irq          = qib_7220_free_irq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dd->f_get_base_info     = qib_7220_get_base_info;
 	dd->f_get_msgheader     = qib_7220_get_msgheader;
 	dd->f_getsendbuf        = qib_7220_getsendbuf;
@@ -4711,12 +4577,6 @@ struct qib_devdata *qib_init_iba7220_funcs(struct pci_dev *pdev,
 		qib_dev_err(dd,
 			"Failed to setup PCIe or interrupts; continuing anyway\n");
 
-<<<<<<< HEAD
-=======
-	/* save IRQ for possible later use */
-	dd->cspec->irq = pdev->irq;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (qib_read_kreg64(dd, kr_hwerrstatus) &
 	    QLOGIC_IB_HWE_SERDESPLLFAILED)
 		qib_write_kreg(dd, kr_hwerrclear,

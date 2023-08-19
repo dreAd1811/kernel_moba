@@ -7,11 +7,7 @@ The MAX2175 driver implements the following driver-specific controls:
 -------------------------------
     Enable/Disable I2S output of the tuner. This is a private control
     that can be accessed only using the subdev interface.
-<<<<<<< HEAD
     Refer to Documentation/media/kapi/v4l2-controls.rst for more details.
-=======
-    Refer to Documentation/media/kapi/v4l2-controls for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 .. flat-table::
     :header-rows:  0

@@ -57,14 +57,11 @@
 		status = "disabled";
 	};
 
-<<<<<<< HEAD
 	axp_adc: adc {
 		compatible = "x-powers,axp221-adc";
 		#io-channel-cells = <1>;
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	battery_power_supply: battery-power-supply {
 		compatible = "x-powers,axp221-battery-power-supply";
 		status = "disabled";

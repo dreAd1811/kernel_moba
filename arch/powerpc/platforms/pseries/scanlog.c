@@ -179,11 +179,7 @@ static int __init scanlog_init(void)
 	if (!scanlog_buffer)
 		goto err;
 
-<<<<<<< HEAD
 	ent = proc_create("powerpc/rtas/scan-log-dump", 0400, NULL,
-=======
-	ent = proc_create("powerpc/rtas/scan-log-dump", S_IRUSR, NULL,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  &scanlog_fops);
 	if (!ent)
 		goto err;

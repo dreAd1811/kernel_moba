@@ -193,11 +193,7 @@ static void hp_sdc_take(int irq, void *dev_id, uint8_t status, uint8_t data)
 	curr->seq[curr->idx++] = status;
 	curr->seq[curr->idx++] = data;
 	hp_sdc.rqty -= 2;
-<<<<<<< HEAD
 	hp_sdc.rtime = ktime_get();
-=======
-	do_gettimeofday(&hp_sdc.rtv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (hp_sdc.rqty <= 0) {
 		/* All data has been gathered. */
@@ -310,20 +306,10 @@ static void hp_sdc_tasklet(unsigned long foo)
 	write_lock_irq(&hp_sdc.rtq_lock);
 
 	if (hp_sdc.rcurr >= 0) {
-<<<<<<< HEAD
 		ktime_t now = ktime_get();
 
 		if (ktime_after(now, ktime_add_us(hp_sdc.rtime,
 						  HP_SDC_MAX_REG_DELAY))) {
-=======
-		struct timeval tv;
-
-		do_gettimeofday(&tv);
-		if (tv.tv_sec > hp_sdc.rtv.tv_sec)
-			tv.tv_usec += USEC_PER_SEC;
-
-		if (tv.tv_usec - hp_sdc.rtv.tv_usec > HP_SDC_MAX_REG_DELAY) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			hp_sdc_transaction *curr;
 			uint8_t tmp;
 
@@ -332,13 +318,8 @@ static void hp_sdc_tasklet(unsigned long foo)
 			 * we'll need to figure out a way to communicate
 			 * it back to the application. and be less verbose.
 			 */
-<<<<<<< HEAD
 			printk(KERN_WARNING PREFIX "read timeout (%lldus)!\n",
 			       ktime_us_delta(now, hp_sdc.rtime));
-=======
-			printk(KERN_WARNING PREFIX "read timeout (%ius)!\n",
-			       (int)(tv.tv_usec - hp_sdc.rtv.tv_usec));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			curr->idx += hp_sdc.rqty;
 			hp_sdc.rqty = 0;
 			tmp = curr->seq[curr->actidx];
@@ -567,11 +548,7 @@ unsigned long hp_sdc_put(void)
 
 			/* Start a new read */
 			hp_sdc.rqty = curr->seq[curr->idx];
-<<<<<<< HEAD
 			hp_sdc.rtime = ktime_get();
-=======
-			do_gettimeofday(&hp_sdc.rtv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			curr->idx++;
 			/* Still need to lock here in case of spurious irq. */
 			write_lock_irq(&hp_sdc.rtq_lock);
@@ -814,11 +791,7 @@ int hp_sdc_release_cooked_irq(hp_sdc_irqhook *callback)
 
 /************************* Keepalive timer task *********************/
 
-<<<<<<< HEAD
 static void hp_sdc_kicker(struct timer_list *unused)
-=======
-static void hp_sdc_kicker(unsigned long data)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	tasklet_schedule(&hp_sdc.task);
 	/* Re-insert the periodic task. */
@@ -911,13 +884,8 @@ static int __init hp_sdc_init(void)
 			"HP SDC NMI", &hp_sdc))
 		goto err2;
 
-<<<<<<< HEAD
 	printk(KERN_INFO PREFIX "HP SDC at 0x%p, IRQ %d (NMI IRQ %d)\n",
 	       (void *)hp_sdc.base_io, hp_sdc.irq, hp_sdc.nmi);
-=======
-	pr_info(PREFIX "HP SDC at 0x%08lx, IRQ %d (NMI IRQ %d)\n",
-	       hp_sdc.base_io, hp_sdc.irq, hp_sdc.nmi);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	hp_sdc_status_in8();
 	hp_sdc_data_in8();
@@ -938,14 +906,8 @@ static int __init hp_sdc_init(void)
 	down(&s_sync); /* Wait for t_sync to complete */
 
 	/* Create the keepalive task */
-<<<<<<< HEAD
 	timer_setup(&hp_sdc.kicker, hp_sdc_kicker, 0);
 	hp_sdc.kicker.expires = jiffies + HZ;
-=======
-	init_timer(&hp_sdc.kicker);
-	hp_sdc.kicker.expires = jiffies + HZ;
-	hp_sdc.kicker.function = &hp_sdc_kicker;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	add_timer(&hp_sdc.kicker);
 
 	hp_sdc.dev_err = 0;

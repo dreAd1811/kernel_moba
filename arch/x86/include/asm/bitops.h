@@ -36,33 +36,17 @@
  * bit 0 is the LSB of addr; bit 32 is the LSB of (addr+1).
  */
 
-<<<<<<< HEAD
 #define RLONG_ADDR(x)			 "m" (*(volatile long *) (x))
 #define WBYTE_ADDR(x)			"+m" (*(volatile char *) (x))
 
 #define ADDR				RLONG_ADDR(addr)
-=======
-#if __GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 1)
-/* Technically wrong, but this avoids compilation errors on some gcc
-   versions. */
-#define BITOP_ADDR(x) "=m" (*(volatile long *) (x))
-#else
-#define BITOP_ADDR(x) "+m" (*(volatile long *) (x))
-#endif
-
-#define ADDR				BITOP_ADDR(addr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * We do the locked ops that don't return the old value as
  * a mask operation on a byte.
  */
 #define IS_IMMEDIATE(nr)		(__builtin_constant_p(nr))
-<<<<<<< HEAD
 #define CONST_MASK_ADDR(nr, addr)	WBYTE_ADDR((void *)(addr) + ((nr)>>3))
-=======
-#define CONST_MASK_ADDR(nr, addr)	BITOP_ADDR((void *)(addr) + ((nr)>>3))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CONST_MASK(nr)			(1 << ((nr) & 7))
 
 /**
@@ -90,11 +74,7 @@ set_bit(long nr, volatile unsigned long *addr)
 			: "memory");
 	} else {
 		asm volatile(LOCK_PREFIX __ASM_SIZE(bts) " %1,%0"
-<<<<<<< HEAD
 			: : RLONG_ADDR(addr), "Ir" (nr) : "memory");
-=======
-			: BITOP_ADDR(addr) : "Ir" (nr) : "memory");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -109,11 +89,7 @@ set_bit(long nr, volatile unsigned long *addr)
  */
 static __always_inline void __set_bit(long nr, volatile unsigned long *addr)
 {
-<<<<<<< HEAD
 	asm volatile(__ASM_SIZE(bts) " %1,%0" : : ADDR, "Ir" (nr) : "memory");
-=======
-	asm volatile(__ASM_SIZE(bts) " %1,%0" : ADDR : "Ir" (nr) : "memory");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -135,12 +111,7 @@ clear_bit(long nr, volatile unsigned long *addr)
 			: "iq" ((u8)~CONST_MASK(nr)));
 	} else {
 		asm volatile(LOCK_PREFIX __ASM_SIZE(btr) " %1,%0"
-<<<<<<< HEAD
 			: : RLONG_ADDR(addr), "Ir" (nr) : "memory");
-=======
-			: BITOP_ADDR(addr)
-			: "Ir" (nr));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -160,11 +131,7 @@ static __always_inline void clear_bit_unlock(long nr, volatile unsigned long *ad
 
 static __always_inline void __clear_bit(long nr, volatile unsigned long *addr)
 {
-<<<<<<< HEAD
 	asm volatile(__ASM_SIZE(btr) " %1,%0" : : ADDR, "Ir" (nr) : "memory");
-=======
-	asm volatile(__ASM_SIZE(btr) " %1,%0" : ADDR : "Ir" (nr));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static __always_inline bool clear_bit_unlock_is_negative_byte(long nr, volatile unsigned long *addr)
@@ -172,11 +139,7 @@ static __always_inline bool clear_bit_unlock_is_negative_byte(long nr, volatile 
 	bool negative;
 	asm volatile(LOCK_PREFIX "andb %2,%1"
 		CC_SET(s)
-<<<<<<< HEAD
 		: CC_OUT(s) (negative), WBYTE_ADDR(addr)
-=======
-		: CC_OUT(s) (negative), ADDR
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		: "ir" ((char) ~(1 << nr)) : "memory");
 	return negative;
 }
@@ -192,19 +155,9 @@ static __always_inline bool clear_bit_unlock_is_negative_byte(long nr, volatile 
  * __clear_bit() is non-atomic and implies release semantics before the memory
  * operation. It can be used for an unlock if no other CPUs can concurrently
  * modify other bits in the word.
-<<<<<<< HEAD
  */
 static __always_inline void __clear_bit_unlock(long nr, volatile unsigned long *addr)
 {
-=======
- *
- * No memory barrier is required here, because x86 cannot reorder stores past
- * older loads. Same principle as spin_unlock.
- */
-static __always_inline void __clear_bit_unlock(long nr, volatile unsigned long *addr)
-{
-	barrier();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__clear_bit(nr, addr);
 }
 
@@ -219,11 +172,7 @@ static __always_inline void __clear_bit_unlock(long nr, volatile unsigned long *
  */
 static __always_inline void __change_bit(long nr, volatile unsigned long *addr)
 {
-<<<<<<< HEAD
 	asm volatile(__ASM_SIZE(btc) " %1,%0" : : ADDR, "Ir" (nr) : "memory");
-=======
-	asm volatile(__ASM_SIZE(btc) " %1,%0" : ADDR : "Ir" (nr));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -243,12 +192,7 @@ static __always_inline void change_bit(long nr, volatile unsigned long *addr)
 			: "iq" ((u8)CONST_MASK(nr)));
 	} else {
 		asm volatile(LOCK_PREFIX __ASM_SIZE(btc) " %1,%0"
-<<<<<<< HEAD
 			: : RLONG_ADDR(addr), "Ir" (nr) : "memory");
-=======
-			: BITOP_ADDR(addr)
-			: "Ir" (nr));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -294,13 +238,8 @@ static __always_inline bool __test_and_set_bit(long nr, volatile unsigned long *
 
 	asm(__ASM_SIZE(bts) " %2,%1"
 	    CC_SET(c)
-<<<<<<< HEAD
 	    : CC_OUT(c) (oldbit)
 	    : ADDR, "Ir" (nr) : "memory");
-=======
-	    : CC_OUT(c) (oldbit), ADDR
-	    : "Ir" (nr));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return oldbit;
 }
 
@@ -340,13 +279,8 @@ static __always_inline bool __test_and_clear_bit(long nr, volatile unsigned long
 
 	asm volatile(__ASM_SIZE(btr) " %2,%1"
 		     CC_SET(c)
-<<<<<<< HEAD
 		     : CC_OUT(c) (oldbit)
 		     : ADDR, "Ir" (nr) : "memory");
-=======
-		     : CC_OUT(c) (oldbit), ADDR
-		     : "Ir" (nr));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return oldbit;
 }
 
@@ -357,13 +291,8 @@ static __always_inline bool __test_and_change_bit(long nr, volatile unsigned lon
 
 	asm volatile(__ASM_SIZE(btc) " %2,%1"
 		     CC_SET(c)
-<<<<<<< HEAD
 		     : CC_OUT(c) (oldbit)
 		     : ADDR, "Ir" (nr) : "memory");
-=======
-		     : CC_OUT(c) (oldbit), ADDR
-		     : "Ir" (nr) : "memory");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return oldbit;
 }
@@ -395,11 +324,7 @@ static __always_inline bool variable_test_bit(long nr, volatile const unsigned l
 	asm volatile(__ASM_SIZE(bt) " %2,%1"
 		     CC_SET(c)
 		     : CC_OUT(c) (oldbit)
-<<<<<<< HEAD
 		     : "m" (*(unsigned long *)addr), "Ir" (nr) : "memory");
-=======
-		     : "m" (*(unsigned long *)addr), "Ir" (nr));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return oldbit;
 }

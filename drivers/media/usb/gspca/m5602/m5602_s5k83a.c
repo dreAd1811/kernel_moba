@@ -187,11 +187,7 @@ int s5k83a_probe(struct sd *sd)
 		return -ENODEV;
 	}
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_PROBE, "Probing for a s5k83a sensor\n");
-=======
-	PDEBUG(D_PROBE, "Probing for a s5k83a sensor");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Preinit the sensor */
 	for (i = 0; i < ARRAY_SIZE(preinit_s5k83a) && !err; i++) {

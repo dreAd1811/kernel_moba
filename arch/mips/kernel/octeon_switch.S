@@ -61,11 +61,7 @@
 #endif
 3:
 
-<<<<<<< HEAD
 #if defined(CONFIG_STACKPROTECTOR) && !defined(CONFIG_SMP)
-=======
-#if defined(CONFIG_CC_STACKPROTECTOR) && !defined(CONFIG_SMP)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	PTR_LA	t8, __stack_chk_guard
 	LONG_L	t9, TASK_STACK_CANARY(a1)
 	LONG_S	t9, 0(t8)

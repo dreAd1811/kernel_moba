@@ -1,19 +1,9 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * handling kvm guest interrupts
  *
  * Copyright IBM Corp. 2008, 2015
  *
-<<<<<<< HEAD
-=======
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (version 2 only)
- * as published by the Free Software Foundation.
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *    Author(s): Carsten Otte <cotte@de.ibm.com>
  */
 
@@ -46,11 +36,7 @@ static int sca_ext_call_pending(struct kvm_vcpu *vcpu, int *src_id)
 {
 	int c, scn;
 
-<<<<<<< HEAD
 	if (!kvm_s390_test_cpuflags(vcpu, CPUSTAT_ECALL_PEND))
-=======
-	if (!(atomic_read(&vcpu->arch.sie_block->cpuflags) & CPUSTAT_ECALL_PEND))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	BUG_ON(!kvm_s390_use_sca_entries());
@@ -115,29 +101,17 @@ static int sca_inject_ext_call(struct kvm_vcpu *vcpu, int src_id)
 		/* another external call is pending */
 		return -EBUSY;
 	}
-<<<<<<< HEAD
 	kvm_s390_set_cpuflags(vcpu, CPUSTAT_ECALL_PEND);
-=======
-	atomic_or(CPUSTAT_ECALL_PEND, &vcpu->arch.sie_block->cpuflags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 static void sca_clear_ext_call(struct kvm_vcpu *vcpu)
 {
-<<<<<<< HEAD
-=======
-	struct kvm_s390_local_interrupt *li = &vcpu->arch.local_int;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc, expect;
 
 	if (!kvm_s390_use_sca_entries())
 		return;
-<<<<<<< HEAD
 	kvm_s390_clear_cpuflags(vcpu, CPUSTAT_ECALL_PEND);
-=======
-	atomic_andnot(CPUSTAT_ECALL_PEND, li->cpuflags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	read_lock(&vcpu->kvm->arch.sca_lock);
 	if (vcpu->kvm->arch.use_esca) {
 		struct esca_block *sca = vcpu->kvm->arch.sca;
@@ -185,11 +159,7 @@ static int psw_interrupts_disabled(struct kvm_vcpu *vcpu)
 static int ckc_interrupts_enabled(struct kvm_vcpu *vcpu)
 {
 	if (psw_extint_disabled(vcpu) ||
-<<<<<<< HEAD
 	    !(vcpu->arch.sie_block->gcr[0] & CR0_CLOCK_COMPARATOR_SUBMASK))
-=======
-	    !(vcpu->arch.sie_block->gcr[0] & 0x800ul))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	if (guestdbg_enabled(vcpu) && guestdbg_sstep_enabled(vcpu))
 		/* No timer interrupts when single stepping */
@@ -202,11 +172,7 @@ static int ckc_irq_pending(struct kvm_vcpu *vcpu)
 	const u64 now = kvm_s390_get_tod_clock_fast(vcpu->kvm);
 	const u64 ckc = vcpu->arch.sie_block->ckc;
 
-<<<<<<< HEAD
 	if (vcpu->arch.sie_block->gcr[0] & CR0_CLOCK_COMPARATOR_SIGN) {
-=======
-	if (vcpu->arch.sie_block->gcr[0] & 0x0020000000000000ul) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if ((s64)ckc >= (s64)now)
 			return 0;
 	} else if (ckc >= now) {
@@ -218,11 +184,7 @@ static int ckc_irq_pending(struct kvm_vcpu *vcpu)
 static int cpu_timer_interrupts_enabled(struct kvm_vcpu *vcpu)
 {
 	return !psw_extint_disabled(vcpu) &&
-<<<<<<< HEAD
 	       (vcpu->arch.sie_block->gcr[0] & CR0_CPU_TIMER_SUBMASK);
-=======
-	       (vcpu->arch.sie_block->gcr[0] & 0x400ul);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int cpu_timer_irq_pending(struct kvm_vcpu *vcpu)
@@ -232,34 +194,21 @@ static int cpu_timer_irq_pending(struct kvm_vcpu *vcpu)
 	return kvm_s390_get_cpu_timer(vcpu) >> 63;
 }
 
-<<<<<<< HEAD
-=======
-static inline int is_ioirq(unsigned long irq_type)
-{
-	return ((irq_type >= IRQ_PEND_IO_ISC_0) &&
-		(irq_type <= IRQ_PEND_IO_ISC_7));
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static uint64_t isc_to_isc_bits(int isc)
 {
 	return (0x80 >> isc) << 24;
 }
 
-<<<<<<< HEAD
 static inline u32 isc_to_int_word(u8 isc)
 {
 	return ((u32)isc << 27) | 0x80000000;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline u8 int_word_to_isc(u32 int_word)
 {
 	return (int_word & 0x38000000) >> 27;
 }
 
-<<<<<<< HEAD
 /*
  * To use atomic bitmap functions, we have to provide a bitmap address
  * that is u64 aligned. However, the ipm might be u32 aligned.
@@ -308,12 +257,6 @@ static inline int isc_to_irq_type(unsigned long isc)
 static inline int irq_type_to_isc(unsigned long irq_type)
 {
 	return IRQ_PEND_IO_ISC_0 - irq_type;
-=======
-static inline unsigned long pending_irqs(struct kvm_vcpu *vcpu)
-{
-	return vcpu->kvm->arch.float_int.pending_irqs |
-	       vcpu->arch.local_int.pending_irqs;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static unsigned long disable_iscs(struct kvm_vcpu *vcpu,
@@ -323,11 +266,7 @@ static unsigned long disable_iscs(struct kvm_vcpu *vcpu,
 
 	for (i = 0; i <= MAX_ISC; i++)
 		if (!(vcpu->arch.sie_block->gcr[6] & isc_to_isc_bits(i)))
-<<<<<<< HEAD
 			active_mask &= ~(1UL << (isc_to_irq_type(i)));
-=======
-			active_mask &= ~(1UL << (IRQ_PEND_IO_ISC_0 + i));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return active_mask;
 }
@@ -346,7 +285,6 @@ static unsigned long deliverable_irqs(struct kvm_vcpu *vcpu)
 		active_mask &= ~IRQ_PEND_IO_MASK;
 	else
 		active_mask = disable_iscs(vcpu, active_mask);
-<<<<<<< HEAD
 	if (!(vcpu->arch.sie_block->gcr[0] & CR0_EXTERNAL_CALL_SUBMASK))
 		__clear_bit(IRQ_PEND_EXT_EXTERNAL, &active_mask);
 	if (!(vcpu->arch.sie_block->gcr[0] & CR0_EMERGENCY_SIGNAL_SUBMASK))
@@ -356,17 +294,6 @@ static unsigned long deliverable_irqs(struct kvm_vcpu *vcpu)
 	if (!(vcpu->arch.sie_block->gcr[0] & CR0_CPU_TIMER_SUBMASK))
 		__clear_bit(IRQ_PEND_EXT_CPU_TIMER, &active_mask);
 	if (!(vcpu->arch.sie_block->gcr[0] & CR0_SERVICE_SIGNAL_SUBMASK))
-=======
-	if (!(vcpu->arch.sie_block->gcr[0] & 0x2000ul))
-		__clear_bit(IRQ_PEND_EXT_EXTERNAL, &active_mask);
-	if (!(vcpu->arch.sie_block->gcr[0] & 0x4000ul))
-		__clear_bit(IRQ_PEND_EXT_EMERGENCY, &active_mask);
-	if (!(vcpu->arch.sie_block->gcr[0] & 0x800ul))
-		__clear_bit(IRQ_PEND_EXT_CLOCK_COMP, &active_mask);
-	if (!(vcpu->arch.sie_block->gcr[0] & 0x400ul))
-		__clear_bit(IRQ_PEND_EXT_CPU_TIMER, &active_mask);
-	if (!(vcpu->arch.sie_block->gcr[0] & 0x200ul))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__clear_bit(IRQ_PEND_EXT_SERVICE, &active_mask);
 	if (psw_mchk_disabled(vcpu))
 		active_mask &= ~IRQ_PEND_MCHK_MASK;
@@ -390,35 +317,20 @@ static unsigned long deliverable_irqs(struct kvm_vcpu *vcpu)
 
 static void __set_cpu_idle(struct kvm_vcpu *vcpu)
 {
-<<<<<<< HEAD
 	kvm_s390_set_cpuflags(vcpu, CPUSTAT_WAIT);
 	set_bit(vcpu->vcpu_id, vcpu->kvm->arch.float_int.idle_mask);
-=======
-	atomic_or(CPUSTAT_WAIT, &vcpu->arch.sie_block->cpuflags);
-	set_bit(vcpu->vcpu_id, vcpu->arch.local_int.float_int->idle_mask);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __unset_cpu_idle(struct kvm_vcpu *vcpu)
 {
-<<<<<<< HEAD
 	kvm_s390_clear_cpuflags(vcpu, CPUSTAT_WAIT);
 	clear_bit(vcpu->vcpu_id, vcpu->kvm->arch.float_int.idle_mask);
-=======
-	atomic_andnot(CPUSTAT_WAIT, &vcpu->arch.sie_block->cpuflags);
-	clear_bit(vcpu->vcpu_id, vcpu->arch.local_int.float_int->idle_mask);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __reset_intercept_indicators(struct kvm_vcpu *vcpu)
 {
-<<<<<<< HEAD
 	kvm_s390_clear_cpuflags(vcpu, CPUSTAT_IO_INT | CPUSTAT_EXT_INT |
 				      CPUSTAT_STOP_INT);
-=======
-	atomic_andnot(CPUSTAT_IO_INT | CPUSTAT_EXT_INT | CPUSTAT_STOP_INT,
-		    &vcpu->arch.sie_block->cpuflags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vcpu->arch.sie_block->lctl = 0x0000;
 	vcpu->arch.sie_block->ictl &= ~(ICTL_LPSW | ICTL_STCTL | ICTL_PINT);
 
@@ -429,26 +341,12 @@ static void __reset_intercept_indicators(struct kvm_vcpu *vcpu)
 	}
 }
 
-<<<<<<< HEAD
 static void set_intercept_indicators_io(struct kvm_vcpu *vcpu)
 {
 	if (!(pending_irqs_no_gisa(vcpu) & IRQ_PEND_IO_MASK))
 		return;
 	else if (psw_ioint_disabled(vcpu))
 		kvm_s390_set_cpuflags(vcpu, CPUSTAT_IO_INT);
-=======
-static void __set_cpuflag(struct kvm_vcpu *vcpu, u32 flag)
-{
-	atomic_or(flag, &vcpu->arch.sie_block->cpuflags);
-}
-
-static void set_intercept_indicators_io(struct kvm_vcpu *vcpu)
-{
-	if (!(pending_irqs(vcpu) & IRQ_PEND_IO_MASK))
-		return;
-	else if (psw_ioint_disabled(vcpu))
-		__set_cpuflag(vcpu, CPUSTAT_IO_INT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		vcpu->arch.sie_block->lctl |= LCTL_CR6;
 }
@@ -458,11 +356,7 @@ static void set_intercept_indicators_ext(struct kvm_vcpu *vcpu)
 	if (!(pending_irqs(vcpu) & IRQ_PEND_EXT_MASK))
 		return;
 	if (psw_extint_disabled(vcpu))
-<<<<<<< HEAD
 		kvm_s390_set_cpuflags(vcpu, CPUSTAT_EXT_INT);
-=======
-		__set_cpuflag(vcpu, CPUSTAT_EXT_INT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		vcpu->arch.sie_block->lctl |= LCTL_CR0;
 }
@@ -480,11 +374,7 @@ static void set_intercept_indicators_mchk(struct kvm_vcpu *vcpu)
 static void set_intercept_indicators_stop(struct kvm_vcpu *vcpu)
 {
 	if (kvm_s390_is_stop_irq_pending(vcpu))
-<<<<<<< HEAD
 		kvm_s390_set_cpuflags(vcpu, CPUSTAT_STOP_INT);
-=======
-		__set_cpuflag(vcpu, CPUSTAT_STOP_INT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Set interception request for non-deliverable interrupts */
@@ -501,10 +391,7 @@ static int __must_check __deliver_cpu_timer(struct kvm_vcpu *vcpu)
 	struct kvm_s390_local_interrupt *li = &vcpu->arch.local_int;
 	int rc;
 
-<<<<<<< HEAD
 	vcpu->stat.deliver_cputm++;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	trace_kvm_s390_deliver_interrupt(vcpu->vcpu_id, KVM_S390_INT_CPU_TIMER,
 					 0, 0);
 
@@ -524,10 +411,7 @@ static int __must_check __deliver_ckc(struct kvm_vcpu *vcpu)
 	struct kvm_s390_local_interrupt *li = &vcpu->arch.local_int;
 	int rc;
 
-<<<<<<< HEAD
 	vcpu->stat.deliver_ckc++;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	trace_kvm_s390_deliver_interrupt(vcpu->vcpu_id, KVM_S390_INT_CLOCK_COMP,
 					 0, 0);
 
@@ -713,10 +597,7 @@ static int __must_check __deliver_machine_check(struct kvm_vcpu *vcpu)
 		trace_kvm_s390_deliver_interrupt(vcpu->vcpu_id,
 						 KVM_S390_MCHK,
 						 mchk.cr14, mchk.mcic);
-<<<<<<< HEAD
 		vcpu->stat.deliver_machine_check++;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rc = __write_machine_check(vcpu, &mchk);
 	}
 	return rc;
@@ -832,11 +713,7 @@ static int __must_check __deliver_prog(struct kvm_vcpu *vcpu)
 	ilen = pgm_info.flags & KVM_S390_PGM_FLAGS_ILC_MASK;
 	VCPU_EVENT(vcpu, 3, "deliver: program irq code 0x%x, ilen:%d",
 		   pgm_info.code, ilen);
-<<<<<<< HEAD
 	vcpu->stat.deliver_program++;
-=======
-	vcpu->stat.deliver_program_int++;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	trace_kvm_s390_deliver_interrupt(vcpu->vcpu_id, KVM_S390_PROGRAM_INT,
 					 pgm_info.code, 0);
 
@@ -1025,11 +902,7 @@ static int __must_check __deliver_virtio(struct kvm_vcpu *vcpu)
 		VCPU_EVENT(vcpu, 4,
 			   "deliver: virtio parm: 0x%x,parm64: 0x%llx",
 			   inti->ext.ext_params, inti->ext.ext_params2);
-<<<<<<< HEAD
 		vcpu->stat.deliver_virtio++;
-=======
-		vcpu->stat.deliver_virtio_interrupt++;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		trace_kvm_s390_deliver_interrupt(vcpu->vcpu_id,
 				inti->type,
 				inti->ext.ext_params,
@@ -1061,7 +934,6 @@ static int __must_check __deliver_virtio(struct kvm_vcpu *vcpu)
 	return rc ? -EFAULT : 0;
 }
 
-<<<<<<< HEAD
 static int __do_deliver_io(struct kvm_vcpu *vcpu, struct kvm_s390_io_info *io)
 {
 	int rc;
@@ -1079,30 +951,21 @@ static int __do_deliver_io(struct kvm_vcpu *vcpu, struct kvm_s390_io_info *io)
 	return rc ? -EFAULT : 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __must_check __deliver_io(struct kvm_vcpu *vcpu,
 				     unsigned long irq_type)
 {
 	struct list_head *isc_list;
 	struct kvm_s390_float_interrupt *fi;
 	struct kvm_s390_interrupt_info *inti = NULL;
-<<<<<<< HEAD
 	struct kvm_s390_io_info io;
 	u32 isc;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc = 0;
 
 	fi = &vcpu->kvm->arch.float_int;
 
 	spin_lock(&fi->lock);
-<<<<<<< HEAD
 	isc = irq_type_to_isc(irq_type);
 	isc_list = &fi->lists[isc];
-=======
-	isc_list = &fi->lists[irq_type - IRQ_PEND_IO_ISC_0];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	inti = list_first_entry_or_null(isc_list,
 					struct kvm_s390_interrupt_info,
 					list);
@@ -1115,11 +978,7 @@ static int __must_check __deliver_io(struct kvm_vcpu *vcpu,
 			inti->io.subchannel_id >> 1 & 0x3,
 			inti->io.subchannel_nr);
 
-<<<<<<< HEAD
 		vcpu->stat.deliver_io++;
-=======
-		vcpu->stat.deliver_io_int++;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		trace_kvm_s390_deliver_interrupt(vcpu->vcpu_id,
 				inti->type,
 				((__u32)inti->io.subchannel_id << 16) |
@@ -1134,7 +993,6 @@ static int __must_check __deliver_io(struct kvm_vcpu *vcpu,
 	spin_unlock(&fi->lock);
 
 	if (inti) {
-<<<<<<< HEAD
 		rc = __do_deliver_io(vcpu, &(inti->io));
 		kfree(inti);
 		goto out;
@@ -1162,46 +1020,6 @@ out:
 	return rc;
 }
 
-=======
-		rc  = put_guest_lc(vcpu, inti->io.subchannel_id,
-				(u16 *)__LC_SUBCHANNEL_ID);
-		rc |= put_guest_lc(vcpu, inti->io.subchannel_nr,
-				(u16 *)__LC_SUBCHANNEL_NR);
-		rc |= put_guest_lc(vcpu, inti->io.io_int_parm,
-				(u32 *)__LC_IO_INT_PARM);
-		rc |= put_guest_lc(vcpu, inti->io.io_int_word,
-				(u32 *)__LC_IO_INT_WORD);
-		rc |= write_guest_lc(vcpu, __LC_IO_OLD_PSW,
-				&vcpu->arch.sie_block->gpsw,
-				sizeof(psw_t));
-		rc |= read_guest_lc(vcpu, __LC_IO_NEW_PSW,
-				&vcpu->arch.sie_block->gpsw,
-				sizeof(psw_t));
-		kfree(inti);
-	}
-
-	return rc ? -EFAULT : 0;
-}
-
-typedef int (*deliver_irq_t)(struct kvm_vcpu *vcpu);
-
-static const deliver_irq_t deliver_irq_funcs[] = {
-	[IRQ_PEND_MCHK_EX]        = __deliver_machine_check,
-	[IRQ_PEND_MCHK_REP]       = __deliver_machine_check,
-	[IRQ_PEND_PROG]           = __deliver_prog,
-	[IRQ_PEND_EXT_EMERGENCY]  = __deliver_emergency_signal,
-	[IRQ_PEND_EXT_EXTERNAL]   = __deliver_external_call,
-	[IRQ_PEND_EXT_CLOCK_COMP] = __deliver_ckc,
-	[IRQ_PEND_EXT_CPU_TIMER]  = __deliver_cpu_timer,
-	[IRQ_PEND_RESTART]        = __deliver_restart,
-	[IRQ_PEND_SET_PREFIX]     = __deliver_set_prefix,
-	[IRQ_PEND_PFAULT_INIT]    = __deliver_pfault_init,
-	[IRQ_PEND_EXT_SERVICE]    = __deliver_service,
-	[IRQ_PEND_PFAULT_DONE]    = __deliver_pfault_done,
-	[IRQ_PEND_VIRTIO]         = __deliver_virtio,
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Check whether an external call is pending (deliverable or not) */
 int kvm_s390_ext_call_pending(struct kvm_vcpu *vcpu)
 {
@@ -1224,11 +1042,7 @@ int kvm_s390_vcpu_has_irq(struct kvm_vcpu *vcpu, int exclude_stop)
 	/* external call pending and deliverable */
 	if (kvm_s390_ext_call_pending(vcpu) &&
 	    !psw_extint_disabled(vcpu) &&
-<<<<<<< HEAD
 	    (vcpu->arch.sie_block->gcr[0] & CR0_EXTERNAL_CALL_SUBMASK))
-=======
-	    (vcpu->arch.sie_block->gcr[0] & 0x2000ul))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 1;
 
 	if (!exclude_stop && kvm_s390_is_stop_irq_pending(vcpu))
@@ -1248,11 +1062,7 @@ static u64 __calculate_sltime(struct kvm_vcpu *vcpu)
 	u64 cputm, sltime = 0;
 
 	if (ckc_interrupts_enabled(vcpu)) {
-<<<<<<< HEAD
 		if (vcpu->arch.sie_block->gcr[0] & CR0_CLOCK_COMPARATOR_SIGN) {
-=======
-		if (vcpu->arch.sie_block->gcr[0] & 0x0020000000000000ul) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if ((s64)now < (s64)ckc)
 				sltime = tod_to_ns((s64)ckc - (s64)now);
 		} else if (now < ckc) {
@@ -1323,26 +1133,19 @@ void kvm_s390_vcpu_wakeup(struct kvm_vcpu *vcpu)
 	 * in kvm_vcpu_block without having the waitqueue set (polling)
 	 */
 	vcpu->valid_wakeup = true;
-<<<<<<< HEAD
 	/*
 	 * This is mostly to document, that the read in swait_active could
 	 * be moved before other stores, leading to subtle races.
 	 * All current users do not store or use an atomic like update
 	 */
 	smp_mb__after_atomic();
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (swait_active(&vcpu->wq)) {
 		/*
 		 * The vcpu gave up the cpu voluntarily, mark it as a good
 		 * yield-candidate.
 		 */
 		vcpu->preempted = true;
-<<<<<<< HEAD
 		swake_up_one(&vcpu->wq);
-=======
-		swake_up(&vcpu->wq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		vcpu->stat.halt_wakeup++;
 	}
 	/*
@@ -1386,10 +1189,6 @@ void kvm_s390_clear_local_irqs(struct kvm_vcpu *vcpu)
 int __must_check kvm_s390_deliver_pending_interrupts(struct kvm_vcpu *vcpu)
 {
 	struct kvm_s390_local_interrupt *li = &vcpu->arch.local_int;
-<<<<<<< HEAD
-=======
-	deliver_irq_t func;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc = 0;
 	unsigned long irq_type;
 	unsigned long irqs;
@@ -1407,7 +1206,6 @@ int __must_check kvm_s390_deliver_pending_interrupts(struct kvm_vcpu *vcpu)
 		set_bit(IRQ_PEND_EXT_CPU_TIMER, &li->pending_irqs);
 
 	while ((irqs = deliverable_irqs(vcpu)) && !rc) {
-<<<<<<< HEAD
 		/* bits are in the reverse order of interrupt priority */
 		irq_type = find_last_bit(&irqs, IRQ_PEND_COUNT);
 		switch (irq_type) {
@@ -1461,20 +1259,6 @@ int __must_check kvm_s390_deliver_pending_interrupts(struct kvm_vcpu *vcpu)
 		default:
 			WARN_ONCE(1, "Unknown pending irq type %ld", irq_type);
 			clear_bit(irq_type, &li->pending_irqs);
-=======
-		/* bits are in the order of interrupt priority */
-		irq_type = find_first_bit(&irqs, IRQ_PEND_COUNT);
-		if (is_ioirq(irq_type)) {
-			rc = __deliver_io(vcpu, irq_type);
-		} else {
-			func = deliver_irq_funcs[irq_type];
-			if (!func) {
-				WARN_ON_ONCE(func == NULL);
-				clear_bit(irq_type, &li->pending_irqs);
-				continue;
-			}
-			rc = func(vcpu);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -1487,10 +1271,7 @@ static int __inject_prog(struct kvm_vcpu *vcpu, struct kvm_s390_irq *irq)
 {
 	struct kvm_s390_local_interrupt *li = &vcpu->arch.local_int;
 
-<<<<<<< HEAD
 	vcpu->stat.inject_program++;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	VCPU_EVENT(vcpu, 3, "inject: program irq code 0x%x", irq->u.pgm.code);
 	trace_kvm_s390_inject_vcpu(vcpu->vcpu_id, KVM_S390_PROGRAM_INT,
 				   irq->u.pgm.code, 0);
@@ -1532,10 +1313,7 @@ static int __inject_pfault_init(struct kvm_vcpu *vcpu, struct kvm_s390_irq *irq)
 {
 	struct kvm_s390_local_interrupt *li = &vcpu->arch.local_int;
 
-<<<<<<< HEAD
 	vcpu->stat.inject_pfault_init++;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	VCPU_EVENT(vcpu, 4, "inject: pfault init parameter block at 0x%llx",
 		   irq->u.ext.ext_params2);
 	trace_kvm_s390_inject_vcpu(vcpu->vcpu_id, KVM_S390_INT_PFAULT_INIT,
@@ -1544,11 +1322,7 @@ static int __inject_pfault_init(struct kvm_vcpu *vcpu, struct kvm_s390_irq *irq)
 
 	li->irq.ext = irq->u.ext;
 	set_bit(IRQ_PEND_PFAULT_INIT, &li->pending_irqs);
-<<<<<<< HEAD
 	kvm_s390_set_cpuflags(vcpu, CPUSTAT_EXT_INT);
-=======
-	atomic_or(CPUSTAT_EXT_INT, li->cpuflags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1558,10 +1332,7 @@ static int __inject_extcall(struct kvm_vcpu *vcpu, struct kvm_s390_irq *irq)
 	struct kvm_s390_extcall_info *extcall = &li->irq.extcall;
 	uint16_t src_id = irq->u.extcall.code;
 
-<<<<<<< HEAD
 	vcpu->stat.inject_external_call++;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	VCPU_EVENT(vcpu, 4, "inject: external call source-cpu:%u",
 		   src_id);
 	trace_kvm_s390_inject_vcpu(vcpu->vcpu_id, KVM_S390_INT_EXTERNAL_CALL,
@@ -1577,11 +1348,7 @@ static int __inject_extcall(struct kvm_vcpu *vcpu, struct kvm_s390_irq *irq)
 	if (test_and_set_bit(IRQ_PEND_EXT_EXTERNAL, &li->pending_irqs))
 		return -EBUSY;
 	*extcall = irq->u.extcall;
-<<<<<<< HEAD
 	kvm_s390_set_cpuflags(vcpu, CPUSTAT_EXT_INT);
-=======
-	atomic_or(CPUSTAT_EXT_INT, li->cpuflags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1590,10 +1357,7 @@ static int __inject_set_prefix(struct kvm_vcpu *vcpu, struct kvm_s390_irq *irq)
 	struct kvm_s390_local_interrupt *li = &vcpu->arch.local_int;
 	struct kvm_s390_prefix_info *prefix = &li->irq.prefix;
 
-<<<<<<< HEAD
 	vcpu->stat.inject_set_prefix++;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	VCPU_EVENT(vcpu, 3, "inject: set prefix to %x",
 		   irq->u.prefix.address);
 	trace_kvm_s390_inject_vcpu(vcpu->vcpu_id, KVM_S390_SIGP_SET_PREFIX,
@@ -1614,10 +1378,7 @@ static int __inject_sigp_stop(struct kvm_vcpu *vcpu, struct kvm_s390_irq *irq)
 	struct kvm_s390_stop_info *stop = &li->irq.stop;
 	int rc = 0;
 
-<<<<<<< HEAD
 	vcpu->stat.inject_stop_signal++;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	trace_kvm_s390_inject_vcpu(vcpu->vcpu_id, KVM_S390_SIGP_STOP, 0, 0);
 
 	if (irq->u.stop.flags & ~KVM_S390_STOP_SUPP_FLAGS)
@@ -1633,11 +1394,7 @@ static int __inject_sigp_stop(struct kvm_vcpu *vcpu, struct kvm_s390_irq *irq)
 	if (test_and_set_bit(IRQ_PEND_SIGP_STOP, &li->pending_irqs))
 		return -EBUSY;
 	stop->flags = irq->u.stop.flags;
-<<<<<<< HEAD
 	kvm_s390_set_cpuflags(vcpu, CPUSTAT_STOP_INT);
-=======
-	__set_cpuflag(vcpu, CPUSTAT_STOP_INT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1646,10 +1403,7 @@ static int __inject_sigp_restart(struct kvm_vcpu *vcpu,
 {
 	struct kvm_s390_local_interrupt *li = &vcpu->arch.local_int;
 
-<<<<<<< HEAD
 	vcpu->stat.inject_restart++;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	VCPU_EVENT(vcpu, 3, "%s", "inject: restart int");
 	trace_kvm_s390_inject_vcpu(vcpu->vcpu_id, KVM_S390_RESTART, 0, 0);
 
@@ -1662,10 +1416,7 @@ static int __inject_sigp_emergency(struct kvm_vcpu *vcpu,
 {
 	struct kvm_s390_local_interrupt *li = &vcpu->arch.local_int;
 
-<<<<<<< HEAD
 	vcpu->stat.inject_emergency_signal++;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	VCPU_EVENT(vcpu, 4, "inject: emergency from cpu %u",
 		   irq->u.emerg.code);
 	trace_kvm_s390_inject_vcpu(vcpu->vcpu_id, KVM_S390_INT_EMERGENCY,
@@ -1677,11 +1428,7 @@ static int __inject_sigp_emergency(struct kvm_vcpu *vcpu,
 
 	set_bit(irq->u.emerg.code, li->sigp_emerg_pending);
 	set_bit(IRQ_PEND_EXT_EMERGENCY, &li->pending_irqs);
-<<<<<<< HEAD
 	kvm_s390_set_cpuflags(vcpu, CPUSTAT_EXT_INT);
-=======
-	atomic_or(CPUSTAT_EXT_INT, li->cpuflags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1690,10 +1437,7 @@ static int __inject_mchk(struct kvm_vcpu *vcpu, struct kvm_s390_irq *irq)
 	struct kvm_s390_local_interrupt *li = &vcpu->arch.local_int;
 	struct kvm_s390_mchk_info *mchk = &li->irq.mchk;
 
-<<<<<<< HEAD
 	vcpu->stat.inject_mchk++;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	VCPU_EVENT(vcpu, 3, "inject: machine check mcic 0x%llx",
 		   irq->u.mchk.mcic);
 	trace_kvm_s390_inject_vcpu(vcpu->vcpu_id, KVM_S390_MCHK, 0,
@@ -1724,20 +1468,13 @@ static int __inject_ckc(struct kvm_vcpu *vcpu)
 {
 	struct kvm_s390_local_interrupt *li = &vcpu->arch.local_int;
 
-<<<<<<< HEAD
 	vcpu->stat.inject_ckc++;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	VCPU_EVENT(vcpu, 3, "%s", "inject: clock comparator external");
 	trace_kvm_s390_inject_vcpu(vcpu->vcpu_id, KVM_S390_INT_CLOCK_COMP,
 				   0, 0);
 
 	set_bit(IRQ_PEND_EXT_CLOCK_COMP, &li->pending_irqs);
-<<<<<<< HEAD
 	kvm_s390_set_cpuflags(vcpu, CPUSTAT_EXT_INT);
-=======
-	atomic_or(CPUSTAT_EXT_INT, li->cpuflags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1745,20 +1482,13 @@ static int __inject_cpu_timer(struct kvm_vcpu *vcpu)
 {
 	struct kvm_s390_local_interrupt *li = &vcpu->arch.local_int;
 
-<<<<<<< HEAD
 	vcpu->stat.inject_cputm++;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	VCPU_EVENT(vcpu, 3, "%s", "inject: cpu timer external");
 	trace_kvm_s390_inject_vcpu(vcpu->vcpu_id, KVM_S390_INT_CPU_TIMER,
 				   0, 0);
 
 	set_bit(IRQ_PEND_EXT_CPU_TIMER, &li->pending_irqs);
-<<<<<<< HEAD
 	kvm_s390_set_cpuflags(vcpu, CPUSTAT_EXT_INT);
-=======
-	atomic_or(CPUSTAT_EXT_INT, li->cpuflags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1780,11 +1510,7 @@ static struct kvm_s390_interrupt_info *get_io_int(struct kvm *kvm,
 		list_del_init(&iter->list);
 		fi->counters[FIRQ_CNTR_IO] -= 1;
 		if (list_empty(isc_list))
-<<<<<<< HEAD
 			clear_bit(isc_to_irq_type(isc), &fi->pending_irqs);
-=======
-			clear_bit(IRQ_PEND_IO_ISC_0 + isc, &fi->pending_irqs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_unlock(&fi->lock);
 		return iter;
 	}
@@ -1792,17 +1518,8 @@ static struct kvm_s390_interrupt_info *get_io_int(struct kvm *kvm,
 	return NULL;
 }
 
-<<<<<<< HEAD
 static struct kvm_s390_interrupt_info *get_top_io_int(struct kvm *kvm,
 						      u64 isc_mask, u32 schid)
-=======
-/*
- * Dequeue and return an I/O interrupt matching any of the interruption
- * subclasses as designated by the isc mask in cr6 and the schid (if != 0).
- */
-struct kvm_s390_interrupt_info *kvm_s390_get_io_int(struct kvm *kvm,
-						    u64 isc_mask, u32 schid)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct kvm_s390_interrupt_info *inti = NULL;
 	int isc;
@@ -1814,7 +1531,6 @@ struct kvm_s390_interrupt_info *kvm_s390_get_io_int(struct kvm *kvm,
 	return inti;
 }
 
-<<<<<<< HEAD
 static int get_top_gisa_isc(struct kvm *kvm, u64 isc_mask, u32 schid)
 {
 	unsigned long active_mask;
@@ -1885,8 +1601,6 @@ out:
 	return inti;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SCCB_MASK 0xFFFFFFF8
 #define SCCB_EVENT_PENDING 0x3
 
@@ -1895,10 +1609,7 @@ static int __inject_service(struct kvm *kvm,
 {
 	struct kvm_s390_float_interrupt *fi = &kvm->arch.float_int;
 
-<<<<<<< HEAD
 	kvm->stat.inject_service_signal++;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock(&fi->lock);
 	fi->srv_signal.ext_params |= inti->ext.ext_params & SCCB_EVENT_PENDING;
 	/*
@@ -1924,10 +1635,7 @@ static int __inject_virtio(struct kvm *kvm,
 {
 	struct kvm_s390_float_interrupt *fi = &kvm->arch.float_int;
 
-<<<<<<< HEAD
 	kvm->stat.inject_virtio++;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock(&fi->lock);
 	if (fi->counters[FIRQ_CNTR_VIRTIO] >= KVM_S390_MAX_VIRTIO_IRQS) {
 		spin_unlock(&fi->lock);
@@ -1945,10 +1653,7 @@ static int __inject_pfault_done(struct kvm *kvm,
 {
 	struct kvm_s390_float_interrupt *fi = &kvm->arch.float_int;
 
-<<<<<<< HEAD
 	kvm->stat.inject_pfault_done++;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock(&fi->lock);
 	if (fi->counters[FIRQ_CNTR_PFAULT] >=
 		(ASYNC_PF_PER_VCPU * KVM_MAX_VCPUS)) {
@@ -1968,10 +1673,7 @@ static int __inject_float_mchk(struct kvm *kvm,
 {
 	struct kvm_s390_float_interrupt *fi = &kvm->arch.float_int;
 
-<<<<<<< HEAD
 	kvm->stat.inject_float_mchk++;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock(&fi->lock);
 	fi->mchk.cr14 |= inti->mchk.cr14 & (1UL << CR_PENDING_SUBCLASS);
 	fi->mchk.mcic |= inti->mchk.mcic;
@@ -1987,7 +1689,6 @@ static int __inject_io(struct kvm *kvm, struct kvm_s390_interrupt_info *inti)
 	struct list_head *list;
 	int isc;
 
-<<<<<<< HEAD
 	kvm->stat.inject_io++;
 	isc = int_word_to_isc(inti->io.io_int_word);
 
@@ -1998,8 +1699,6 @@ static int __inject_io(struct kvm *kvm, struct kvm_s390_interrupt_info *inti)
 		return 0;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	fi = &kvm->arch.float_int;
 	spin_lock(&fi->lock);
 	if (fi->counters[FIRQ_CNTR_IO] >= KVM_S390_MAX_FLOAT_IRQS) {
@@ -2015,16 +1714,9 @@ static int __inject_io(struct kvm *kvm, struct kvm_s390_interrupt_info *inti)
 			inti->io.subchannel_id >> 8,
 			inti->io.subchannel_id >> 1 & 0x3,
 			inti->io.subchannel_nr);
-<<<<<<< HEAD
 	list = &fi->lists[FIRQ_LIST_IO_ISC_0 + isc];
 	list_add_tail(&inti->list, list);
 	set_bit(isc_to_irq_type(isc), &fi->pending_irqs);
-=======
-	isc = int_word_to_isc(inti->io.io_int_word);
-	list = &fi->lists[FIRQ_LIST_IO_ISC_0 + isc];
-	list_add_tail(&inti->list, list);
-	set_bit(IRQ_PEND_IO_ISC_0 + isc, &fi->pending_irqs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock(&fi->lock);
 	return 0;
 }
@@ -2035,10 +1727,6 @@ static int __inject_io(struct kvm *kvm, struct kvm_s390_interrupt_info *inti)
 static void __floating_irq_kick(struct kvm *kvm, u64 type)
 {
 	struct kvm_s390_float_interrupt *fi = &kvm->arch.float_int;
-<<<<<<< HEAD
-=======
-	struct kvm_s390_local_interrupt *li;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct kvm_vcpu *dst_vcpu;
 	int sigcpu, online_vcpus, nr_tries = 0;
 
@@ -2060,7 +1748,6 @@ static void __floating_irq_kick(struct kvm *kvm, u64 type)
 	dst_vcpu = kvm_get_vcpu(kvm, sigcpu);
 
 	/* make the VCPU drop out of the SIE, or wake it up if sleeping */
-<<<<<<< HEAD
 	switch (type) {
 	case KVM_S390_MCHK:
 		kvm_s390_set_cpuflags(dst_vcpu, CPUSTAT_STOP_INT);
@@ -2073,22 +1760,6 @@ static void __floating_irq_kick(struct kvm *kvm, u64 type)
 		kvm_s390_set_cpuflags(dst_vcpu, CPUSTAT_EXT_INT);
 		break;
 	}
-=======
-	li = &dst_vcpu->arch.local_int;
-	spin_lock(&li->lock);
-	switch (type) {
-	case KVM_S390_MCHK:
-		atomic_or(CPUSTAT_STOP_INT, li->cpuflags);
-		break;
-	case KVM_S390_INT_IO_MIN...KVM_S390_INT_IO_MAX:
-		atomic_or(CPUSTAT_IO_INT, li->cpuflags);
-		break;
-	default:
-		atomic_or(CPUSTAT_EXT_INT, li->cpuflags);
-		break;
-	}
-	spin_unlock(&li->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kvm_s390_vcpu_wakeup(dst_vcpu);
 }
 
@@ -2337,10 +2008,7 @@ void kvm_s390_clear_float_irqs(struct kvm *kvm)
 	for (i = 0; i < FIRQ_MAX_COUNT; i++)
 		fi->counters[i] = 0;
 	spin_unlock(&fi->lock);
-<<<<<<< HEAD
 	kvm_s390_gisa_clear(kvm);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int get_all_floating_irqs(struct kvm *kvm, u8 __user *usrbuf, u64 len)
@@ -2368,7 +2036,6 @@ static int get_all_floating_irqs(struct kvm *kvm, u8 __user *usrbuf, u64 len)
 
 	max_irqs = len / sizeof(struct kvm_s390_irq);
 
-<<<<<<< HEAD
 	if (kvm->arch.gisa &&
 	    kvm_s390_gisa_get_ipm(kvm->arch.gisa)) {
 		for (i = 0; i <= MAX_ISC; i++) {
@@ -2385,8 +2052,6 @@ static int get_all_floating_irqs(struct kvm *kvm, u8 __user *usrbuf, u64 len)
 			}
 		}
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	fi = &kvm->arch.float_int;
 	spin_lock(&fi->lock);
 	for (i = 0; i < FIRQ_LIST_COUNT; i++) {
@@ -2425,10 +2090,7 @@ static int get_all_floating_irqs(struct kvm *kvm, u8 __user *usrbuf, u64 len)
 
 out:
 	spin_unlock(&fi->lock);
-<<<<<<< HEAD
 out_nolock:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ret && n > 0) {
 		if (copy_to_user(usrbuf, buf, sizeof(struct kvm_s390_irq) * n))
 			ret = -EFAULT;
@@ -2447,11 +2109,7 @@ static int flic_ais_mode_get_all(struct kvm *kvm, struct kvm_device_attr *attr)
 		return -EINVAL;
 
 	if (!test_kvm_facility(kvm, 72))
-<<<<<<< HEAD
 		return -ENOTSUPP;
-=======
-		return -EOPNOTSUPP;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&fi->ais_lock);
 	ais.simm = fi->simm;
@@ -2736,11 +2394,8 @@ static int clear_io_irq(struct kvm *kvm, struct kvm_device_attr *attr)
 		return -EINVAL;
 	if (copy_from_user(&schid, (void __user *) attr->addr, sizeof(schid)))
 		return -EFAULT;
-<<<<<<< HEAD
 	if (!schid)
 		return -EINVAL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(kvm_s390_get_io_int(kvm, isc_mask, schid));
 	/*
 	 * If userspace is conforming to the architecture, we can have at most
@@ -2757,11 +2412,7 @@ static int modify_ais_mode(struct kvm *kvm, struct kvm_device_attr *attr)
 	int ret = 0;
 
 	if (!test_kvm_facility(kvm, 72))
-<<<<<<< HEAD
 		return -ENOTSUPP;
-=======
-		return -EOPNOTSUPP;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (copy_from_user(&req, (void __user *)attr->addr, sizeof(req)))
 		return -EFAULT;
@@ -2800,11 +2451,7 @@ static int kvm_s390_inject_airq(struct kvm *kvm,
 	struct kvm_s390_interrupt s390int = {
 		.type = KVM_S390_INT_IO(1, 0, 0, 0),
 		.parm = 0,
-<<<<<<< HEAD
 		.parm64 = isc_to_int_word(adapter->isc),
-=======
-		.parm64 = (adapter->isc << 27) | 0x80000000,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 	int ret = 0;
 
@@ -2845,11 +2492,7 @@ static int flic_ais_mode_set_all(struct kvm *kvm, struct kvm_device_attr *attr)
 	struct kvm_s390_ais_all ais;
 
 	if (!test_kvm_facility(kvm, 72))
-<<<<<<< HEAD
 		return -ENOTSUPP;
-=======
-		return -EOPNOTSUPP;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (copy_from_user(&ais, (void __user *)attr->addr, sizeof(ais)))
 		return -EFAULT;
@@ -3061,19 +2704,11 @@ void kvm_s390_reinject_machine_check(struct kvm_vcpu *vcpu,
 
 	mci.val = mcck_info->mcic;
 	if (mci.sr)
-<<<<<<< HEAD
 		cr14 |= CR14_RECOVERY_SUBMASK;
 	if (mci.dg)
 		cr14 |= CR14_DEGRADATION_SUBMASK;
 	if (mci.w)
 		cr14 |= CR14_WARNING_SUBMASK;
-=======
-		cr14 |= MCCK_CR14_RECOVERY_SUB_MASK;
-	if (mci.dg)
-		cr14 |= MCCK_CR14_DEGRAD_SUB_MASK;
-	if (mci.w)
-		cr14 |= MCCK_CR14_WARN_SUB_MASK;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mchk = mci.ck ? &inti.mchk : &irq.u.mchk;
 	mchk->cr14 = cr14;
@@ -3258,7 +2893,6 @@ int kvm_s390_get_irq_state(struct kvm_vcpu *vcpu, __u8 __user *buf, int len)
 
 	return n;
 }
-<<<<<<< HEAD
 
 void kvm_s390_gisa_clear(struct kvm *kvm)
 {
@@ -3284,5 +2918,3 @@ void kvm_s390_gisa_destroy(struct kvm *kvm)
 		return;
 	kvm->arch.gisa = NULL;
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -30,21 +30,11 @@
  * Address valid if:
  *  - "addr" doesn't have any high-bits set
  *  - AND "size" doesn't have any high-bits set
-<<<<<<< HEAD
  *  - AND "addr+size" doesn't have any high-bits set
  *  - OR we are in kernel mode.
  */
 #define __access_ok(addr, size) \
 	((get_fs().seg & (addr | size | (addr+size))) == 0)
-=======
- *  - AND "addr+size-(size != 0)" doesn't have any high-bits set
- *  - OR we are in kernel mode.
- */
-#define __access_ok(addr, size) ({				\
-	unsigned long __ao_a = (addr), __ao_b = (size);		\
-	unsigned long __ao_end = __ao_a + __ao_b - !!__ao_b;	\
-	(get_fs().seg & (__ao_a | __ao_b | __ao_end)) == 0; })
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define access_ok(type, addr, size)			\
 ({							\

@@ -62,11 +62,7 @@ disabled, fcntl(fd, F_NOTIFY, ...) will return -EINVAL.
 
 Example
 -------
-<<<<<<< HEAD
 See tools/testing/selftests/filesystems/dnotify_test.c for an example.
-=======
-See Documentation/filesystems/dnotify_test.c for an example.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 NOTE
 ----

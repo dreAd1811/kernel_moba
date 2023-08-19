@@ -1,14 +1,8 @@
-<<<<<<< HEAD
 # SPDX-License-Identifier: GPL-2.0-only
 
 config CNSS_GENL
 	tristate "CNSS Generic Netlink Socket Driver"
 	help
-=======
-config CNSS_GENL
-	tristate "CNSS Generic Netlink Socket Driver"
-	---help---
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	  This module creates generic netlink family "CLD80211". This can be
 	  used by cld driver and userspace utilities to communicate over
 	  netlink sockets. This module creates different multicast groups to

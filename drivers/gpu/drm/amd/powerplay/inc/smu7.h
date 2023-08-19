@@ -82,7 +82,6 @@
 #define SCRATCH_B_CURR_SAMU_INDEX_MASK  (0x7<<SCRATCH_B_CURR_SAMU_INDEX_SHIFT)
 
 
-<<<<<<< HEAD
 /* Voltage Regulator Configuration */
 /* VR Config info is contained in dpmTable */
 
@@ -102,8 +101,6 @@
 #define VR_SMIO_PATTERN_2        4
 #define VR_STATIC_VOLTAGE        5
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct SMU7_PIDController
 {
     uint32_t Ki;

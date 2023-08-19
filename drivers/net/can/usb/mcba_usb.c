@@ -864,11 +864,7 @@ static int mcba_usb_probe(struct usb_interface *intf,
 		goto cleanup_unregister_candev;
 	}
 
-<<<<<<< HEAD
 	dev_info(&intf->dev, "Microchip CAN BUS Analyzer connected\n");
-=======
-	dev_info(&intf->dev, "Microchip CAN BUS analizer connected\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 
@@ -891,14 +887,9 @@ static void mcba_usb_disconnect(struct usb_interface *intf)
 	netdev_info(priv->netdev, "device disconnected\n");
 
 	unregister_candev(priv->netdev);
-<<<<<<< HEAD
 	free_candev(priv->netdev);
 
 	mcba_urb_unlink(priv);
-=======
-	mcba_urb_unlink(priv);
-	free_candev(priv->netdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct usb_driver mcba_usb_driver = {

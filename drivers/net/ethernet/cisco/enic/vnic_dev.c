@@ -1071,11 +1071,7 @@ struct vnic_dev *vnic_dev_register(struct vnic_dev *vdev,
 	unsigned int num_bars)
 {
 	if (!vdev) {
-<<<<<<< HEAD
 		vdev = kzalloc(sizeof(struct vnic_dev), GFP_KERNEL);
-=======
-		vdev = kzalloc(sizeof(struct vnic_dev), GFP_ATOMIC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!vdev)
 			return NULL;
 	}
@@ -1273,7 +1269,6 @@ int vnic_dev_overlay_offload_cfg(struct vnic_dev *vdev, u8 overlay,
 }
 
 int vnic_dev_get_supported_feature_ver(struct vnic_dev *vdev, u8 feature,
-<<<<<<< HEAD
 				       u64 *supported_versions, u64 *a1)
 {
 	u64 a0 = feature;
@@ -1281,22 +1276,11 @@ int vnic_dev_get_supported_feature_ver(struct vnic_dev *vdev, u8 feature,
 	int ret;
 
 	ret = vnic_dev_cmd(vdev, CMD_GET_SUPP_FEATURE_VER, &a0, a1, wait);
-=======
-				       u64 *supported_versions)
-{
-	u64 a0 = feature;
-	int wait = 1000;
-	u64 a1 = 0;
-	int ret;
-
-	ret = vnic_dev_cmd(vdev, CMD_GET_SUPP_FEATURE_VER, &a0, &a1, wait);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ret)
 		*supported_versions = a0;
 
 	return ret;
 }
-<<<<<<< HEAD
 
 int vnic_dev_capable_rss_hash_type(struct vnic_dev *vdev, u8 *rss_hash_type)
 {
@@ -1318,5 +1302,3 @@ int vnic_dev_capable_rss_hash_type(struct vnic_dev *vdev, u8 *rss_hash_type)
 
 	return 0;
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

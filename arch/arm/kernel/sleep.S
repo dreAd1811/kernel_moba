@@ -120,17 +120,6 @@ ENDPROC(cpu_resume_after_mmu)
 	.text
 	.align
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_MCPM
-	.arm
-THUMB(	.thumb			)
-ENTRY(cpu_resume_no_hyp)
-ARM_BE8(setend be)			@ ensure we are in BE mode
-	b	no_hyp
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_MMU
 	.arm
 ENTRY(cpu_resume_arm)
@@ -146,10 +135,6 @@ ARM_BE8(setend be)			@ ensure we are in BE mode
 	bl	__hyp_stub_install_secondary
 #endif
 	safe_svcmode_maskall r1
-<<<<<<< HEAD
-=======
-no_hyp:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mov	r1, #0
 	ALT_SMP(mrc p15, 0, r0, c0, c0, 5)
 	ALT_UP_B(1f)
@@ -179,12 +164,6 @@ ENDPROC(cpu_resume)
 #ifdef CONFIG_MMU
 ENDPROC(cpu_resume_arm)
 #endif
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_MCPM
-ENDPROC(cpu_resume_no_hyp)
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	.align 2
 _sleep_save_sp:

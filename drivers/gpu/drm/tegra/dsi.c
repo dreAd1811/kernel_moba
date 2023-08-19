@@ -65,11 +65,6 @@ struct tegra_dsi {
 	struct clk *clk;
 
 	struct drm_info_list *debugfs_files;
-<<<<<<< HEAD
-=======
-	struct drm_minor *minor;
-	struct dentry *debugfs;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	unsigned long flags;
 	enum mipi_dsi_pixel_format format;
@@ -125,7 +120,6 @@ static inline void tegra_dsi_writel(struct tegra_dsi *dsi, u32 value,
 	writel(value, dsi->regs + (offset << 2));
 }
 
-<<<<<<< HEAD
 #define DEBUGFS_REG32(_name) { .name = #_name, .offset = _name }
 
 static const struct debugfs_reg32 tegra_dsi_regs[] = {
@@ -202,18 +196,13 @@ static const struct debugfs_reg32 tegra_dsi_regs[] = {
 	DEBUGFS_REG32(DSI_INIT_SEQ_DATA_15),
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int tegra_dsi_show_regs(struct seq_file *s, void *data)
 {
 	struct drm_info_node *node = s->private;
 	struct tegra_dsi *dsi = node->info_ent->data;
 	struct drm_crtc *crtc = dsi->output.encoder.crtc;
 	struct drm_device *drm = node->minor->dev;
-<<<<<<< HEAD
 	unsigned int i;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err = 0;
 
 	drm_modeset_lock_all(drm);
@@ -223,102 +212,12 @@ static int tegra_dsi_show_regs(struct seq_file *s, void *data)
 		goto unlock;
 	}
 
-<<<<<<< HEAD
 	for (i = 0; i < ARRAY_SIZE(tegra_dsi_regs); i++) {
 		unsigned int offset = tegra_dsi_regs[i].offset;
 
 		seq_printf(s, "%-32s %#05x %08x\n", tegra_dsi_regs[i].name,
 			   offset, tegra_dsi_readl(dsi, offset));
 	}
-=======
-#define DUMP_REG(name)						\
-	seq_printf(s, "%-32s %#05x %08x\n", #name, name,	\
-		   tegra_dsi_readl(dsi, name))
-
-	DUMP_REG(DSI_INCR_SYNCPT);
-	DUMP_REG(DSI_INCR_SYNCPT_CONTROL);
-	DUMP_REG(DSI_INCR_SYNCPT_ERROR);
-	DUMP_REG(DSI_CTXSW);
-	DUMP_REG(DSI_RD_DATA);
-	DUMP_REG(DSI_WR_DATA);
-	DUMP_REG(DSI_POWER_CONTROL);
-	DUMP_REG(DSI_INT_ENABLE);
-	DUMP_REG(DSI_INT_STATUS);
-	DUMP_REG(DSI_INT_MASK);
-	DUMP_REG(DSI_HOST_CONTROL);
-	DUMP_REG(DSI_CONTROL);
-	DUMP_REG(DSI_SOL_DELAY);
-	DUMP_REG(DSI_MAX_THRESHOLD);
-	DUMP_REG(DSI_TRIGGER);
-	DUMP_REG(DSI_TX_CRC);
-	DUMP_REG(DSI_STATUS);
-
-	DUMP_REG(DSI_INIT_SEQ_CONTROL);
-	DUMP_REG(DSI_INIT_SEQ_DATA_0);
-	DUMP_REG(DSI_INIT_SEQ_DATA_1);
-	DUMP_REG(DSI_INIT_SEQ_DATA_2);
-	DUMP_REG(DSI_INIT_SEQ_DATA_3);
-	DUMP_REG(DSI_INIT_SEQ_DATA_4);
-	DUMP_REG(DSI_INIT_SEQ_DATA_5);
-	DUMP_REG(DSI_INIT_SEQ_DATA_6);
-	DUMP_REG(DSI_INIT_SEQ_DATA_7);
-
-	DUMP_REG(DSI_PKT_SEQ_0_LO);
-	DUMP_REG(DSI_PKT_SEQ_0_HI);
-	DUMP_REG(DSI_PKT_SEQ_1_LO);
-	DUMP_REG(DSI_PKT_SEQ_1_HI);
-	DUMP_REG(DSI_PKT_SEQ_2_LO);
-	DUMP_REG(DSI_PKT_SEQ_2_HI);
-	DUMP_REG(DSI_PKT_SEQ_3_LO);
-	DUMP_REG(DSI_PKT_SEQ_3_HI);
-	DUMP_REG(DSI_PKT_SEQ_4_LO);
-	DUMP_REG(DSI_PKT_SEQ_4_HI);
-	DUMP_REG(DSI_PKT_SEQ_5_LO);
-	DUMP_REG(DSI_PKT_SEQ_5_HI);
-
-	DUMP_REG(DSI_DCS_CMDS);
-
-	DUMP_REG(DSI_PKT_LEN_0_1);
-	DUMP_REG(DSI_PKT_LEN_2_3);
-	DUMP_REG(DSI_PKT_LEN_4_5);
-	DUMP_REG(DSI_PKT_LEN_6_7);
-
-	DUMP_REG(DSI_PHY_TIMING_0);
-	DUMP_REG(DSI_PHY_TIMING_1);
-	DUMP_REG(DSI_PHY_TIMING_2);
-	DUMP_REG(DSI_BTA_TIMING);
-
-	DUMP_REG(DSI_TIMEOUT_0);
-	DUMP_REG(DSI_TIMEOUT_1);
-	DUMP_REG(DSI_TO_TALLY);
-
-	DUMP_REG(DSI_PAD_CONTROL_0);
-	DUMP_REG(DSI_PAD_CONTROL_CD);
-	DUMP_REG(DSI_PAD_CD_STATUS);
-	DUMP_REG(DSI_VIDEO_MODE_CONTROL);
-	DUMP_REG(DSI_PAD_CONTROL_1);
-	DUMP_REG(DSI_PAD_CONTROL_2);
-	DUMP_REG(DSI_PAD_CONTROL_3);
-	DUMP_REG(DSI_PAD_CONTROL_4);
-
-	DUMP_REG(DSI_GANGED_MODE_CONTROL);
-	DUMP_REG(DSI_GANGED_MODE_START);
-	DUMP_REG(DSI_GANGED_MODE_SIZE);
-
-	DUMP_REG(DSI_RAW_DATA_BYTE_COUNT);
-	DUMP_REG(DSI_ULTRA_LOW_POWER_CONTROL);
-
-	DUMP_REG(DSI_INIT_SEQ_DATA_8);
-	DUMP_REG(DSI_INIT_SEQ_DATA_9);
-	DUMP_REG(DSI_INIT_SEQ_DATA_10);
-	DUMP_REG(DSI_INIT_SEQ_DATA_11);
-	DUMP_REG(DSI_INIT_SEQ_DATA_12);
-	DUMP_REG(DSI_INIT_SEQ_DATA_13);
-	DUMP_REG(DSI_INIT_SEQ_DATA_14);
-	DUMP_REG(DSI_INIT_SEQ_DATA_15);
-
-#undef DUMP_REG
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 unlock:
 	drm_modeset_unlock_all(drm);
@@ -329,7 +228,6 @@ static struct drm_info_list debugfs_files[] = {
 	{ "regs", tegra_dsi_show_regs, 0, NULL },
 };
 
-<<<<<<< HEAD
 static int tegra_dsi_late_register(struct drm_connector *connector)
 {
 	struct tegra_output *output = connector_to_output(connector);
@@ -351,53 +249,15 @@ static int tegra_dsi_late_register(struct drm_connector *connector)
 	if (err < 0)
 		goto free;
 
-=======
-static int tegra_dsi_debugfs_init(struct tegra_dsi *dsi,
-				  struct drm_minor *minor)
-{
-	const char *name = dev_name(dsi->dev);
-	unsigned int i;
-	int err;
-
-	dsi->debugfs = debugfs_create_dir(name, minor->debugfs_root);
-	if (!dsi->debugfs)
-		return -ENOMEM;
-
-	dsi->debugfs_files = kmemdup(debugfs_files, sizeof(debugfs_files),
-				     GFP_KERNEL);
-	if (!dsi->debugfs_files) {
-		err = -ENOMEM;
-		goto remove;
-	}
-
-	for (i = 0; i < ARRAY_SIZE(debugfs_files); i++)
-		dsi->debugfs_files[i].data = dsi;
-
-	err = drm_debugfs_create_files(dsi->debugfs_files,
-				       ARRAY_SIZE(debugfs_files),
-				       dsi->debugfs, minor);
-	if (err < 0)
-		goto free;
-
-	dsi->minor = minor;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 free:
 	kfree(dsi->debugfs_files);
 	dsi->debugfs_files = NULL;
-<<<<<<< HEAD
-=======
-remove:
-	debugfs_remove(dsi->debugfs);
-	dsi->debugfs = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return err;
 }
 
-<<<<<<< HEAD
 static void tegra_dsi_early_unregister(struct drm_connector *connector)
 {
 	struct tegra_output *output = connector_to_output(connector);
@@ -408,19 +268,6 @@ static void tegra_dsi_early_unregister(struct drm_connector *connector)
 				 connector->dev->primary);
 	kfree(dsi->debugfs_files);
 	dsi->debugfs_files = NULL;
-=======
-static void tegra_dsi_debugfs_exit(struct tegra_dsi *dsi)
-{
-	drm_debugfs_remove_files(dsi->debugfs_files, ARRAY_SIZE(debugfs_files),
-				 dsi->minor);
-	dsi->minor = NULL;
-
-	kfree(dsi->debugfs_files);
-	dsi->debugfs_files = NULL;
-
-	debugfs_remove(dsi->debugfs);
-	dsi->debugfs = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #define PKT_ID0(id)	((((id) & 0x3f) <<  3) | (1 <<  9))
@@ -962,11 +809,8 @@ static const struct drm_connector_funcs tegra_dsi_connector_funcs = {
 	.destroy = tegra_output_connector_destroy,
 	.atomic_duplicate_state = tegra_dsi_connector_duplicate_state,
 	.atomic_destroy_state = drm_atomic_helper_connector_destroy_state,
-<<<<<<< HEAD
 	.late_register = tegra_dsi_late_register,
 	.early_unregister = tegra_dsi_early_unregister,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static enum drm_mode_status
@@ -1208,11 +1052,7 @@ static int tegra_dsi_init(struct host1x_client *client)
 		drm_encoder_helper_add(&dsi->output.encoder,
 				       &tegra_dsi_encoder_helper_funcs);
 
-<<<<<<< HEAD
 		drm_connector_attach_encoder(&dsi->output.connector,
-=======
-		drm_mode_connector_attach_encoder(&dsi->output.connector,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						  &dsi->output.encoder);
 		drm_connector_register(&dsi->output.connector);
 
@@ -1224,15 +1064,6 @@ static int tegra_dsi_init(struct host1x_client *client)
 		dsi->output.encoder.possible_crtcs = 0x3;
 	}
 
-<<<<<<< HEAD
-=======
-	if (IS_ENABLED(CONFIG_DEBUG_FS)) {
-		err = tegra_dsi_debugfs_init(dsi, drm->primary);
-		if (err < 0)
-			dev_err(dsi->dev, "debugfs setup failed: %d\n", err);
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1242,14 +1073,6 @@ static int tegra_dsi_exit(struct host1x_client *client)
 
 	tegra_output_exit(&dsi->output);
 
-<<<<<<< HEAD
-=======
-	if (IS_ENABLED(CONFIG_DEBUG_FS))
-		tegra_dsi_debugfs_exit(dsi);
-
-	regulator_disable(dsi->vdd);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1588,12 +1411,9 @@ static int tegra_dsi_host_attach(struct mipi_dsi_host *host,
 		struct tegra_output *output = &dsi->output;
 
 		output->panel = of_drm_find_panel(device->dev.of_node);
-<<<<<<< HEAD
 		if (IS_ERR(output->panel))
 			output->panel = NULL;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (output->panel && output->connector.dev) {
 			drm_panel_attach(output->panel, &output->connector);
 			drm_helper_hpd_irq_event(output->connector.dev);

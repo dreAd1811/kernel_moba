@@ -415,18 +415,10 @@ exit:
 
 static const struct dvb_tuner_ops fc0012_tuner_ops = {
 	.info = {
-<<<<<<< HEAD
 		.name              = "Fitipower FC0012",
 
 		.frequency_min_hz  =  37 * MHz,	/* estimate */
 		.frequency_max_hz  = 862 * MHz,	/* estimate */
-=======
-		.name           = "Fitipower FC0012",
-
-		.frequency_min  = 37000000,	/* estimate */
-		.frequency_max  = 862000000,	/* estimate */
-		.frequency_step = 0,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 
 	.release	= fc0012_release,

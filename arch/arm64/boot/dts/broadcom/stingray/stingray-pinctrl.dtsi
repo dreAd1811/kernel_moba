@@ -32,11 +32,7 @@
 
 #include <dt-bindings/pinctrl/brcm,pinctrl-stingray.h>
 
-<<<<<<< HEAD
 		pinconf: pinconf@140000 {
-=======
-		pinconf: pinconf@00140000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "pinconf-single";
 			reg = <0x00140000 0x250>;
 			pinctrl-single,register-width = <32>;
@@ -44,26 +40,15 @@
 			/* pinconf functions */
 		};
 
-<<<<<<< HEAD
 		pinmux: pinmux@14029c {
 			compatible = "pinctrl-single";
 			reg = <0x0014029c 0x250>;
-=======
-		pinmux: pinmux@0014029c {
-			compatible = "pinctrl-single";
-			reg = <0x0014029c 0x26c>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			#address-cells = <1>;
 			#size-cells = <1>;
 			pinctrl-single,register-width = <32>;
 			pinctrl-single,function-mask = <0xf>;
 			pinctrl-single,gpio-range = <
-<<<<<<< HEAD
 				&range 0 154 MODE_GPIO
-=======
-				&range 0  91 MODE_GPIO
-				&range 95 60 MODE_GPIO
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				>;
 			range: gpio-range {
 				#pinctrl-single,gpio-range-cells = <3>;

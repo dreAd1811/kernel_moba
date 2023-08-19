@@ -35,10 +35,6 @@
 struct ipu_crtc {
 	struct device		*dev;
 	struct drm_crtc		base;
-<<<<<<< HEAD
-=======
-	struct imx_drm_crtc	*imx_crtc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* plane[0] is the full plane, plane[1] is the partial plane */
 	struct ipu_plane	*plane[2];
@@ -118,11 +114,7 @@ static void imx_drm_crtc_reset(struct drm_crtc *crtc)
 
 	if (crtc->state) {
 		if (crtc->state->mode_blob)
-<<<<<<< HEAD
 			drm_property_blob_put(crtc->state->mode_blob);
-=======
-			drm_property_unreference_blob(crtc->state->mode_blob);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		state = to_imx_crtc_state(crtc->state);
 		memset(state, 0, sizeof(*state));
@@ -220,11 +212,7 @@ static bool ipu_crtc_mode_fixup(struct drm_crtc *crtc,
 static int ipu_crtc_atomic_check(struct drm_crtc *crtc,
 				 struct drm_crtc_state *state)
 {
-<<<<<<< HEAD
 	u32 primary_plane_mask = drm_plane_mask(crtc->primary);
-=======
-	u32 primary_plane_mask = 1 << drm_plane_index(crtc->primary);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (state->active && (primary_plane_mask & state->plane_mask) == 0)
 		return -EINVAL;

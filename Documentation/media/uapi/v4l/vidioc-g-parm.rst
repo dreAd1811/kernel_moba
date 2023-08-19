@@ -66,11 +66,7 @@ union holding separate parameters for input and output devices.
       -
       - The buffer (stream) type, same as struct
 	:c:type:`v4l2_format` ``type``, set by the
-<<<<<<< HEAD
 	application. See :c:type:`v4l2_buf_type`.
-=======
-	application. See :c:type:`v4l2_buf_type`
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     * - union
       - ``parm``
       -
@@ -79,21 +75,13 @@ union holding separate parameters for input and output devices.
       - struct :c:type:`v4l2_captureparm`
       - ``capture``
       - Parameters for capture devices, used when ``type`` is
-<<<<<<< HEAD
 	``V4L2_BUF_TYPE_VIDEO_CAPTURE`` or
 	``V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE``.
-=======
-	``V4L2_BUF_TYPE_VIDEO_CAPTURE``.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     * -
       - struct :c:type:`v4l2_outputparm`
       - ``output``
       - Parameters for output devices, used when ``type`` is
-<<<<<<< HEAD
 	``V4L2_BUF_TYPE_VIDEO_OUTPUT`` or ``V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE``.
-=======
-	``V4L2_BUF_TYPE_VIDEO_OUTPUT``.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     * -
       - __u8
       - ``raw_data``\ [200]

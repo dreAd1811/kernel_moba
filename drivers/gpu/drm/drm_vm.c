@@ -100,11 +100,7 @@ static pgprot_t drm_dma_prot(uint32_t map_type, struct vm_area_struct *vma)
  * map, get the page, increment the use count and return it.
  */
 #if IS_ENABLED(CONFIG_AGP)
-<<<<<<< HEAD
 static vm_fault_t drm_vm_fault(struct vm_fault *vmf)
-=======
-static int drm_vm_fault(struct vm_fault *vmf)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct vm_area_struct *vma = vmf->vma;
 	struct drm_file *priv = vma->vm_file->private_data;
@@ -177,11 +173,7 @@ vm_fault_error:
 	return VM_FAULT_SIGBUS;	/* Disallow mremap */
 }
 #else
-<<<<<<< HEAD
 static vm_fault_t drm_vm_fault(struct vm_fault *vmf)
-=======
-static int drm_vm_fault(struct vm_fault *vmf)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return VM_FAULT_SIGBUS;
 }
@@ -197,11 +189,7 @@ static int drm_vm_fault(struct vm_fault *vmf)
  * Get the mapping, find the real physical page to map, get the page, and
  * return it.
  */
-<<<<<<< HEAD
 static vm_fault_t drm_vm_shm_fault(struct vm_fault *vmf)
-=======
-static int drm_vm_shm_fault(struct vm_fault *vmf)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct vm_area_struct *vma = vmf->vma;
 	struct drm_local_map *map = vma->vm_private_data;
@@ -303,11 +291,7 @@ static void drm_vm_shm_close(struct vm_area_struct *vma)
  *
  * Determine the page number from the page offset and get it from drm_device_dma::pagelist.
  */
-<<<<<<< HEAD
 static vm_fault_t drm_vm_dma_fault(struct vm_fault *vmf)
-=======
-static int drm_vm_dma_fault(struct vm_fault *vmf)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct vm_area_struct *vma = vmf->vma;
 	struct drm_file *priv = vma->vm_file->private_data;
@@ -342,11 +326,7 @@ static int drm_vm_dma_fault(struct vm_fault *vmf)
  *
  * Determine the map offset from the page offset and get it from drm_sg_mem::pagelist.
  */
-<<<<<<< HEAD
 static vm_fault_t drm_vm_sg_fault(struct vm_fault *vmf)
-=======
-static int drm_vm_sg_fault(struct vm_fault *vmf)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct vm_area_struct *vma = vmf->vma;
 	struct drm_local_map *map = vma->vm_private_data;

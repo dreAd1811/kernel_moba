@@ -2,20 +2,14 @@
  * HID driver for Corsair devices
  *
  * Supported devices:
-<<<<<<< HEAD
  *  - Vengeance K70 Keyboard
  *  - K70 RAPIDFIRE Keyboard
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *  - Vengeance K90 Keyboard
  *  - Scimitar PRO RGB Gaming Mouse
  *
  * Copyright (c) 2015 Clement Vuchener
  * Copyright (c) 2017 Oscar Campos
-<<<<<<< HEAD
  * Copyright (c) 2017 Aaron Bottegal
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /*
@@ -682,11 +676,7 @@ static int corsair_input_mapping(struct hid_device *dev,
 }
 
 /*
-<<<<<<< HEAD
  * The report descriptor of some of the Corsair gaming mice is
-=======
- * The report descriptor of Corsair Scimitar RGB Pro gaming mouse is
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * non parseable as they define two consecutive Logical Minimum for
  * the Usage Page (Consumer) in rdescs bytes 75 and 77 being 77 0x16
  * that should be obviousy 0x26 for Logical Magimum of 16 bits. This
@@ -694,12 +684,8 @@ static int corsair_input_mapping(struct hid_device *dev,
  * Minimum being larger than Logical Maximum.
  *
  * This driver fixes the report descriptor for:
-<<<<<<< HEAD
  * - USB ID 1b1c:1b34, sold as GLAIVE RGB Gaming mouse
  * - USB ID 1b1c:1b3e, sold as Scimitar RGB Pro Gaming mouse
-=======
- * - USB ID b1c:1b3e, sold as Scimitar RGB Pro Gaming mouse
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 static __u8 *corsair_mouse_report_fixup(struct hid_device *hdev, __u8 *rdesc,
@@ -709,7 +695,6 @@ static __u8 *corsair_mouse_report_fixup(struct hid_device *hdev, __u8 *rdesc,
 
 	if (intf->cur_altsetting->desc.bInterfaceNumber == 1) {
 		/*
-<<<<<<< HEAD
 		 * Corsair GLAIVE RGB and Scimitar RGB Pro report descriptor is
 		 * broken and defines two different Logical Minimum for the
 		 * Consumer Application. The byte 77 should be a 0x26 defining
@@ -718,15 +703,6 @@ static __u8 *corsair_mouse_report_fixup(struct hid_device *hdev, __u8 *rdesc,
 		 */
 		switch (hdev->product) {
 		case USB_DEVICE_ID_CORSAIR_GLAIVE_RGB:
-=======
-		 * Corsair Scimitar RGB Pro report descriptor is broken and
-		 * defines two different Logical Minimum for the Consumer
-		 * Application. The byte 77 should be a 0x26 defining a 16
-		 * bits integer for the Logical Maximum but it is a 0x16
-		 * instead (Logical Minimum)
-		 */
-		switch (hdev->product) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case USB_DEVICE_ID_CORSAIR_SCIMITAR_PRO_RGB:
 			if (*rsize >= 172 && rdesc[75] == 0x15 && rdesc[77] == 0x16
 			&& rdesc[78] == 0xff && rdesc[79] == 0x0f) {
@@ -745,7 +721,6 @@ static const struct hid_device_id corsair_devices[] = {
 		.driver_data = CORSAIR_USE_K90_MACRO |
 			       CORSAIR_USE_K90_BACKLIGHT },
 	{ HID_USB_DEVICE(USB_VENDOR_ID_CORSAIR,
-<<<<<<< HEAD
             USB_DEVICE_ID_CORSAIR_GLAIVE_RGB) },
 	{ HID_USB_DEVICE(USB_VENDOR_ID_CORSAIR,
             USB_DEVICE_ID_CORSAIR_SCIMITAR_PRO_RGB) },
@@ -754,9 +729,6 @@ static const struct hid_device_id corsair_devices[] = {
 	 */
 	{ HID_USB_DEVICE(USB_VENDOR_ID_CORSAIR,
             USB_DEVICE_ID_CORSAIR_K70R) },
-=======
-            USB_DEVICE_ID_CORSAIR_SCIMITAR_PRO_RGB) },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{}
 };
 

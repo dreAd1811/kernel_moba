@@ -125,14 +125,9 @@
  * ELF register definitions..
  */
 
-<<<<<<< HEAD
 #include <linux/compat.h>
 
 #include <asm/ptrace.h>
-=======
-#include <asm/ptrace.h>
-#include <asm/compat.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/syscall.h>
 #include <asm/user.h>
 
@@ -142,10 +137,6 @@ typedef s390_regs elf_gregset_t;
 typedef s390_fp_regs compat_elf_fpregset_t;
 typedef s390_compat_regs compat_elf_gregset_t;
 
-<<<<<<< HEAD
-=======
-#include <linux/compat.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/sched/mm.h>	/* for task_struct */
 #include <asm/mmu_context.h>
 

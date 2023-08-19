@@ -70,13 +70,8 @@ static struct ring_pair_cb *hns_ae_get_ring_pair(struct hnae_queue *q)
 	return container_of(q, struct ring_pair_cb, q);
 }
 
-<<<<<<< HEAD
 static struct hnae_handle *hns_ae_get_handle(struct hnae_ae_dev *dev,
 					     u32 port_id)
-=======
-struct hnae_handle *hns_ae_get_handle(struct hnae_ae_dev *dev,
-				      u32 port_id)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int vfnum_per_port;
 	int qnum_per_vf;
@@ -367,11 +362,7 @@ static int hns_ae_start(struct hnae_handle *handle)
 	return 0;
 }
 
-<<<<<<< HEAD
 static void hns_ae_stop(struct hnae_handle *handle)
-=======
-void hns_ae_stop(struct hnae_handle *handle)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct hns_mac_cb *mac_cb = hns_get_mac_cb(handle);
 
@@ -402,11 +393,7 @@ static void hns_ae_reset(struct hnae_handle *handle)
 	}
 }
 
-<<<<<<< HEAD
 static void hns_ae_toggle_ring_irq(struct hnae_ring *ring, u32 mask)
-=======
-void hns_ae_toggle_ring_irq(struct hnae_ring *ring, u32 mask)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 flag;
 
@@ -655,13 +642,8 @@ static void hns_ae_get_coalesce_range(struct hnae_handle *handle,
 	*rx_usecs_high  = HNS_RCB_RX_USECS_HIGH;
 }
 
-<<<<<<< HEAD
 static void hns_ae_update_stats(struct hnae_handle *handle,
 				struct net_device_stats *net_stats)
-=======
-void hns_ae_update_stats(struct hnae_handle *handle,
-			 struct net_device_stats *net_stats)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int port;
 	int idx;
@@ -743,11 +725,7 @@ void hns_ae_update_stats(struct hnae_handle *handle,
 	net_stats->multicast = mac_cb->hw_stats.rx_mc_pkts;
 }
 
-<<<<<<< HEAD
 static void hns_ae_get_stats(struct hnae_handle *handle, u64 *data)
-=======
-void hns_ae_get_stats(struct hnae_handle *handle, u64 *data)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int idx;
 	struct hns_mac_cb *mac_cb;
@@ -779,13 +757,8 @@ void hns_ae_get_stats(struct hnae_handle *handle, u64 *data)
 		hns_dsaf_get_stats(vf_cb->dsaf_dev, p, vf_cb->port_index);
 }
 
-<<<<<<< HEAD
 static void hns_ae_get_strings(struct hnae_handle *handle,
 			       u32 stringset, u8 *data)
-=======
-void hns_ae_get_strings(struct hnae_handle *handle,
-			u32 stringset, u8 *data)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int port;
 	int idx;
@@ -817,11 +790,7 @@ void hns_ae_get_strings(struct hnae_handle *handle,
 		hns_dsaf_get_strings(stringset, p, port, dsaf_dev);
 }
 
-<<<<<<< HEAD
 static int hns_ae_get_sset_count(struct hnae_handle *handle, int stringset)
-=======
-int hns_ae_get_sset_count(struct hnae_handle *handle, int stringset)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 sset_count = 0;
 	struct hns_mac_cb *mac_cb;
@@ -867,11 +836,7 @@ static int hns_ae_config_loopback(struct hnae_handle *handle,
 	return ret;
 }
 
-<<<<<<< HEAD
 static void hns_ae_update_led_status(struct hnae_handle *handle)
-=======
-void hns_ae_update_led_status(struct hnae_handle *handle)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct hns_mac_cb *mac_cb;
 
@@ -883,13 +848,8 @@ void hns_ae_update_led_status(struct hnae_handle *handle)
 	hns_set_led_opt(mac_cb);
 }
 
-<<<<<<< HEAD
 static int hns_ae_cpld_set_led_id(struct hnae_handle *handle,
 				  enum hnae_led_state status)
-=======
-int hns_ae_cpld_set_led_id(struct hnae_handle *handle,
-			   enum hnae_led_state status)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct hns_mac_cb *mac_cb;
 
@@ -900,11 +860,7 @@ int hns_ae_cpld_set_led_id(struct hnae_handle *handle,
 	return hns_cpld_led_set_id(mac_cb, status);
 }
 
-<<<<<<< HEAD
 static void hns_ae_get_regs(struct hnae_handle *handle, void *data)
-=======
-void hns_ae_get_regs(struct hnae_handle *handle, void *data)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 *p = data;
 	int i;
@@ -929,11 +885,7 @@ void hns_ae_get_regs(struct hnae_handle *handle, void *data)
 		hns_dsaf_get_regs(vf_cb->dsaf_dev, vf_cb->port_index, p);
 }
 
-<<<<<<< HEAD
 static int hns_ae_get_regs_len(struct hnae_handle *handle)
-=======
-int hns_ae_get_regs_len(struct hnae_handle *handle)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 total_num;
 	struct hnae_vf_cb *vf_cb = hns_ae_get_vf_cb(handle);

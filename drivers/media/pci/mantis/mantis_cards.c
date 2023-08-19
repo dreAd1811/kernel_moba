@@ -27,19 +27,11 @@
 #include <linux/interrupt.h>
 #include <media/rc-map.h>
 
-<<<<<<< HEAD
 #include <media/dmxdev.h>
 #include <media/dvbdev.h>
 #include <media/dvb_demux.h>
 #include <media/dvb_frontend.h>
 #include <media/dvb_net.h>
-=======
-#include "dmxdev.h"
-#include "dvbdev.h"
-#include "dvb_demux.h"
-#include "dvb_frontend.h"
-#include "dvb_net.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "mantis_common.h"
 
@@ -179,21 +171,11 @@ static int mantis_pci_probe(struct pci_dev *pdev,
 	struct mantis_pci_drvdata *drvdata;
 	struct mantis_pci *mantis;
 	struct mantis_hwconfig *config;
-<<<<<<< HEAD
 	int err;
 
 	mantis = kzalloc(sizeof(*mantis), GFP_KERNEL);
 	if (!mantis)
 		return -ENOMEM;
-=======
-	int err = 0;
-
-	mantis = kzalloc(sizeof(struct mantis_pci), GFP_KERNEL);
-	if (mantis == NULL) {
-		printk(KERN_ERR "%s ERROR: Out of memory\n", __func__);
-		return -ENOMEM;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	drvdata			= (void *)pci_id->driver_data;
 	mantis->num		= devs;

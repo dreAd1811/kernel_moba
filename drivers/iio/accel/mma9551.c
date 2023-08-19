@@ -332,10 +332,6 @@ static const struct iio_chan_spec mma9551_channels[] = {
 };
 
 static const struct iio_info mma9551_info = {
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read_raw = mma9551_read_raw,
 	.read_event_config = mma9551_read_event_config,
 	.write_event_config = mma9551_write_event_config,

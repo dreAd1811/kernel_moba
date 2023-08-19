@@ -251,13 +251,8 @@ static int hdcs_set_exposure(struct gspca_dev *gspca_dev, __s32 val)
 		if (err < 0)
 			return err;
 	}
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Writing exposure %d, rowexp %d, srowexp %d\n",
 		  val, rowexp, srowexp);
-=======
-	PDEBUG(D_CONF, "Writing exposure %d, rowexp %d, srowexp %d",
-	       val, rowexp, srowexp);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -281,11 +276,7 @@ static int hdcs_set_gains(struct sd *sd, u8 g)
 
 static int hdcs_set_gain(struct gspca_dev *gspca_dev, __s32 val)
 {
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Writing gain %d\n", val);
-=======
-	PDEBUG(D_CONF, "Writing gain %d", val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return hdcs_set_gains((struct sd *) gspca_dev,
 			       val & 0xff);
 }
@@ -474,11 +465,7 @@ static int hdcs_start(struct sd *sd)
 {
 	struct gspca_dev *gspca_dev = (struct gspca_dev *)sd;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_STREAM, "Starting stream\n");
-=======
-	PDEBUG(D_STREAM, "Starting stream");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return hdcs_set_state(sd, HDCS_STATE_RUN);
 }
@@ -487,11 +474,7 @@ static int hdcs_stop(struct sd *sd)
 {
 	struct gspca_dev *gspca_dev = (struct gspca_dev *)sd;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_STREAM, "Halting stream\n");
-=======
-	PDEBUG(D_STREAM, "Halting stream");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return hdcs_set_state(sd, HDCS_STATE_SLEEP);
 }

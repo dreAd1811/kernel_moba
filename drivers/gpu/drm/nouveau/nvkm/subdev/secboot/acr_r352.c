@@ -414,7 +414,6 @@ acr_r352_ls_write_wpr(struct acr_r352 *acr, struct list_head *imgs,
 {
 	struct ls_ucode_img *_img;
 	u32 pos = 0;
-<<<<<<< HEAD
 	u32 max_desc_size = 0;
 	u8 *gdesc;
 
@@ -429,8 +428,6 @@ acr_r352_ls_write_wpr(struct acr_r352 *acr, struct list_head *imgs,
 	gdesc = kmalloc(max_desc_size, GFP_KERNEL);
 	if (!gdesc)
 		return -ENOMEM;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	nvkm_kmap(wpr_blob);
 
@@ -438,10 +435,6 @@ acr_r352_ls_write_wpr(struct acr_r352 *acr, struct list_head *imgs,
 		struct ls_ucode_img_r352 *img = ls_ucode_img_r352(_img);
 		const struct acr_r352_ls_func *ls_func =
 					    acr->func->ls_func[_img->falcon_id];
-<<<<<<< HEAD
-=======
-		u8 gdesc[ls_func->bl_desc_size];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		nvkm_gpuobj_memcpy_to(wpr_blob, pos, &img->wpr_header,
 				      sizeof(img->wpr_header));
@@ -467,11 +460,8 @@ acr_r352_ls_write_wpr(struct acr_r352 *acr, struct list_head *imgs,
 
 	nvkm_done(wpr_blob);
 
-<<<<<<< HEAD
 	kfree(gdesc);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -796,15 +786,11 @@ acr_r352_load(struct nvkm_acr *_acr, struct nvkm_falcon *falcon,
 	struct fw_bl_desc *hsbl_desc;
 	void *bl, *blob_data, *hsbl_code, *hsbl_data;
 	u32 code_size;
-<<<<<<< HEAD
 	u8 *bl_desc;
 
 	bl_desc = kzalloc(bl_desc_size, GFP_KERNEL);
 	if (!bl_desc)
 		return -ENOMEM;
-=======
-	u8 bl_desc[bl_desc_size];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Find the bootloader descriptor for our blob and copy it */
 	if (blob == acr->load_blob) {
@@ -815,10 +801,7 @@ acr_r352_load(struct nvkm_acr *_acr, struct nvkm_falcon *falcon,
 		bl = acr->hsbl_unload_blob;
 	} else {
 		nvkm_error(_acr->subdev, "invalid secure boot blob!\n");
-<<<<<<< HEAD
 		kfree(bl_desc);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -839,10 +822,6 @@ acr_r352_load(struct nvkm_acr *_acr, struct nvkm_falcon *falcon,
 			      code_size, hsbl_desc->start_tag, 0, false);
 
 	/* Generate the BL header */
-<<<<<<< HEAD
-=======
-	memset(bl_desc, 0, bl_desc_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	acr->func->generate_hs_bl_desc(load_hdr, bl_desc, offset);
 
 	/*
@@ -851,10 +830,7 @@ acr_r352_load(struct nvkm_acr *_acr, struct nvkm_falcon *falcon,
 	nvkm_falcon_load_dmem(falcon, bl_desc, hsbl_desc->dmem_load_off,
 			      bl_desc_size, 0);
 
-<<<<<<< HEAD
 	kfree(bl_desc);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return hsbl_desc->start_tag << 8;
 }
 

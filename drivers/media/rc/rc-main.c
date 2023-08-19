@@ -1,31 +1,12 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 // rc-main.c - Remote Controller core module
 //
 // Copyright (C) 2009-2010 by Mauro Carvalho Chehab
-=======
-/* rc-main.c - Remote Controller core module
- *
- * Copyright (C) 2009-2010 by Mauro Carvalho Chehab
- *
- * This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation version 2 of the License.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
 #include <media/rc-core.h>
-<<<<<<< HEAD
 #include <linux/bsearch.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/spinlock.h>
 #include <linux/delay.h>
 #include <linux/input.h>
@@ -39,17 +20,12 @@
 /* Sizes are in bytes, 256 bytes allows for 32 entries on x64 */
 #define IR_TAB_MIN_SIZE	256
 #define IR_TAB_MAX_SIZE	8192
-<<<<<<< HEAD
-=======
-#define RC_DEV_MAX	256
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static const struct {
 	const char *name;
 	unsigned int repeat_period;
 	unsigned int scancode_bits;
 } protocols[] = {
-<<<<<<< HEAD
 	[RC_PROTO_UNKNOWN] = { .name = "unknown", .repeat_period = 125 },
 	[RC_PROTO_OTHER] = { .name = "other", .repeat_period = 125 },
 	[RC_PROTO_RC5] = { .name = "rc-5",
@@ -94,50 +70,6 @@ static const struct {
 	[RC_PROTO_CEC] = { .name = "cec", .repeat_period = 0 },
 	[RC_PROTO_IMON] = { .name = "imon",
 		.scancode_bits = 0x7fffffff, .repeat_period = 114 },
-=======
-	[RC_PROTO_UNKNOWN] = { .name = "unknown", .repeat_period = 250 },
-	[RC_PROTO_OTHER] = { .name = "other", .repeat_period = 250 },
-	[RC_PROTO_RC5] = { .name = "rc-5",
-		.scancode_bits = 0x1f7f, .repeat_period = 250 },
-	[RC_PROTO_RC5X_20] = { .name = "rc-5x-20",
-		.scancode_bits = 0x1f7f3f, .repeat_period = 250 },
-	[RC_PROTO_RC5_SZ] = { .name = "rc-5-sz",
-		.scancode_bits = 0x2fff, .repeat_period = 250 },
-	[RC_PROTO_JVC] = { .name = "jvc",
-		.scancode_bits = 0xffff, .repeat_period = 250 },
-	[RC_PROTO_SONY12] = { .name = "sony-12",
-		.scancode_bits = 0x1f007f, .repeat_period = 250 },
-	[RC_PROTO_SONY15] = { .name = "sony-15",
-		.scancode_bits = 0xff007f, .repeat_period = 250 },
-	[RC_PROTO_SONY20] = { .name = "sony-20",
-		.scancode_bits = 0x1fff7f, .repeat_period = 250 },
-	[RC_PROTO_NEC] = { .name = "nec",
-		.scancode_bits = 0xffff, .repeat_period = 250 },
-	[RC_PROTO_NECX] = { .name = "nec-x",
-		.scancode_bits = 0xffffff, .repeat_period = 250 },
-	[RC_PROTO_NEC32] = { .name = "nec-32",
-		.scancode_bits = 0xffffffff, .repeat_period = 250 },
-	[RC_PROTO_SANYO] = { .name = "sanyo",
-		.scancode_bits = 0x1fffff, .repeat_period = 250 },
-	[RC_PROTO_MCIR2_KBD] = { .name = "mcir2-kbd",
-		.scancode_bits = 0xffff, .repeat_period = 250 },
-	[RC_PROTO_MCIR2_MSE] = { .name = "mcir2-mse",
-		.scancode_bits = 0x1fffff, .repeat_period = 250 },
-	[RC_PROTO_RC6_0] = { .name = "rc-6-0",
-		.scancode_bits = 0xffff, .repeat_period = 250 },
-	[RC_PROTO_RC6_6A_20] = { .name = "rc-6-6a-20",
-		.scancode_bits = 0xfffff, .repeat_period = 250 },
-	[RC_PROTO_RC6_6A_24] = { .name = "rc-6-6a-24",
-		.scancode_bits = 0xffffff, .repeat_period = 250 },
-	[RC_PROTO_RC6_6A_32] = { .name = "rc-6-6a-32",
-		.scancode_bits = 0xffffffff, .repeat_period = 250 },
-	[RC_PROTO_RC6_MCE] = { .name = "rc-6-mce",
-		.scancode_bits = 0xffff7fff, .repeat_period = 250 },
-	[RC_PROTO_SHARP] = { .name = "sharp",
-		.scancode_bits = 0x1fff, .repeat_period = 250 },
-	[RC_PROTO_XMP] = { .name = "xmp", .repeat_period = 250 },
-	[RC_PROTO_CEC] = { .name = "cec", .repeat_period = 550 },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Used to keep track of known keymaps */
@@ -226,15 +158,11 @@ static struct rc_map_list empty_map = {
 
 /**
  * ir_create_table() - initializes a scancode table
-<<<<<<< HEAD
  * @dev:	the rc_dev device
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @rc_map:	the rc_map to initialize
  * @name:	name to assign to the table
  * @rc_proto:	ir type to assign to the new table
  * @size:	initial size of the table
-<<<<<<< HEAD
  *
  * This routine will initialize the rc_map and will allocate
  * memory to hold at least the specified number of elements.
@@ -242,14 +170,6 @@ static struct rc_map_list empty_map = {
  * return:	zero on success or a negative error code
  */
 static int ir_create_table(struct rc_dev *dev, struct rc_map *rc_map,
-=======
- * @return:	zero on success or a negative error code
- *
- * This routine will initialize the rc_map and will allocate
- * memory to hold at least the specified number of elements.
- */
-static int ir_create_table(struct rc_map *rc_map,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   const char *name, u64 rc_proto, size_t size)
 {
 	rc_map->name = kstrdup(name, GFP_KERNEL);
@@ -265,13 +185,8 @@ static int ir_create_table(struct rc_map *rc_map,
 		return -ENOMEM;
 	}
 
-<<<<<<< HEAD
 	dev_dbg(&dev->dev, "Allocated space for %u keycode entries (%u bytes)\n",
 		rc_map->size, rc_map->alloc);
-=======
-	IR_dprintk(1, "Allocated space for %u keycode entries (%u bytes)\n",
-		   rc_map->size, rc_map->alloc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -293,7 +208,6 @@ static void ir_free_table(struct rc_map *rc_map)
 
 /**
  * ir_resize_table() - resizes a scancode table if necessary
-<<<<<<< HEAD
  * @dev:	the rc_dev device
  * @rc_map:	the rc_map to resize
  * @gfp_flags:	gfp flags to use when allocating memory
@@ -305,16 +219,6 @@ static void ir_free_table(struct rc_map *rc_map)
  */
 static int ir_resize_table(struct rc_dev *dev, struct rc_map *rc_map,
 			   gfp_t gfp_flags)
-=======
- * @rc_map:	the rc_map to resize
- * @gfp_flags:	gfp flags to use when allocating memory
- * @return:	zero on success or a negative error code
- *
- * This routine will shrink the rc_map if it has lots of
- * unused entries and grow it if it is full.
- */
-static int ir_resize_table(struct rc_map *rc_map, gfp_t gfp_flags)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned int oldalloc = rc_map->alloc;
 	unsigned int newalloc = oldalloc;
@@ -327,36 +231,21 @@ static int ir_resize_table(struct rc_map *rc_map, gfp_t gfp_flags)
 			return -ENOMEM;
 
 		newalloc *= 2;
-<<<<<<< HEAD
 		dev_dbg(&dev->dev, "Growing table to %u bytes\n", newalloc);
-=======
-		IR_dprintk(1, "Growing table to %u bytes\n", newalloc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if ((rc_map->len * 3 < rc_map->size) && (oldalloc > IR_TAB_MIN_SIZE)) {
 		/* Less than 1/3 of entries in use -> shrink keytable */
 		newalloc /= 2;
-<<<<<<< HEAD
 		dev_dbg(&dev->dev, "Shrinking table to %u bytes\n", newalloc);
-=======
-		IR_dprintk(1, "Shrinking table to %u bytes\n", newalloc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (newalloc == oldalloc)
 		return 0;
 
 	newscan = kmalloc(newalloc, gfp_flags);
-<<<<<<< HEAD
 	if (!newscan)
 		return -ENOMEM;
-=======
-	if (!newscan) {
-		IR_dprintk(1, "Failed to kmalloc %u bytes\n", newalloc);
-		return -ENOMEM;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memcpy(newscan, rc_map->scan, rc_map->len * sizeof(struct rc_map_table));
 	rc_map->scan = newscan;
@@ -371,7 +260,6 @@ static int ir_resize_table(struct rc_map *rc_map, gfp_t gfp_flags)
  * @dev:	the struct rc_dev device descriptor
  * @rc_map:	scancode table to be adjusted
  * @index:	index of the mapping that needs to be updated
-<<<<<<< HEAD
  * @new_keycode: the desired keycode
  *
  * This routine is used to update scancode->keycode mapping at given
@@ -379,13 +267,6 @@ static int ir_resize_table(struct rc_map *rc_map, gfp_t gfp_flags)
  *
  * return:	previous keycode assigned to the mapping
  *
-=======
- * @keycode:	the desired keycode
- * @return:	previous keycode assigned to the mapping
- *
- * This routine is used to update scancode->keycode mapping at given
- * position.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static unsigned int ir_update_mapping(struct rc_dev *dev,
 				      struct rc_map *rc_map,
@@ -397,28 +278,16 @@ static unsigned int ir_update_mapping(struct rc_dev *dev,
 
 	/* Did the user wish to remove the mapping? */
 	if (new_keycode == KEY_RESERVED || new_keycode == KEY_UNKNOWN) {
-<<<<<<< HEAD
 		dev_dbg(&dev->dev, "#%d: Deleting scan 0x%04x\n",
 			index, rc_map->scan[index].scancode);
-=======
-		IR_dprintk(1, "#%d: Deleting scan 0x%04x\n",
-			   index, rc_map->scan[index].scancode);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rc_map->len--;
 		memmove(&rc_map->scan[index], &rc_map->scan[index+ 1],
 			(rc_map->len - index) * sizeof(struct rc_map_table));
 	} else {
-<<<<<<< HEAD
 		dev_dbg(&dev->dev, "#%d: %s scan 0x%04x with key 0x%04x\n",
 			index,
 			old_keycode == KEY_RESERVED ? "New" : "Replacing",
 			rc_map->scan[index].scancode, new_keycode);
-=======
-		IR_dprintk(1, "#%d: %s scan 0x%04x with key 0x%04x\n",
-			   index,
-			   old_keycode == KEY_RESERVED ? "New" : "Replacing",
-			   rc_map->scan[index].scancode, new_keycode);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rc_map->scan[index].keycode = new_keycode;
 		__set_bit(new_keycode, dev->input_dev->keybit);
 	}
@@ -435,11 +304,7 @@ static unsigned int ir_update_mapping(struct rc_dev *dev,
 		}
 
 		/* Possibly shrink the keytable, failure is not a problem */
-<<<<<<< HEAD
 		ir_resize_table(dev, rc_map, GFP_ATOMIC);
-=======
-		ir_resize_table(rc_map, GFP_ATOMIC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return old_keycode;
@@ -452,21 +317,13 @@ static unsigned int ir_update_mapping(struct rc_dev *dev,
  * @scancode:	the desired scancode
  * @resize:	controls whether we allowed to resize the table to
  *		accommodate not yet present scancodes
-<<<<<<< HEAD
-=======
- * @return:	index of the mapping containing scancode in question
- *		or -1U in case of failure.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This routine is used to locate given scancode in rc_map.
  * If scancode is not yet present the routine will allocate a new slot
  * for it.
-<<<<<<< HEAD
  *
  * return:	index of the mapping containing scancode in question
  *		or -1U in case of failure.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static unsigned int ir_establish_scancode(struct rc_dev *dev,
 					  struct rc_map *rc_map,
@@ -498,11 +355,7 @@ static unsigned int ir_establish_scancode(struct rc_dev *dev,
 
 	/* No previous mapping found, we might need to grow the table */
 	if (rc_map->size == rc_map->len) {
-<<<<<<< HEAD
 		if (!resize || ir_resize_table(dev, rc_map, GFP_ATOMIC))
-=======
-		if (!resize || ir_resize_table(rc_map, GFP_ATOMIC))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -1U;
 	}
 
@@ -520,20 +373,12 @@ static unsigned int ir_establish_scancode(struct rc_dev *dev,
 /**
  * ir_setkeycode() - set a keycode in the scancode->keycode table
  * @idev:	the struct input_dev device descriptor
-<<<<<<< HEAD
  * @ke:		Input keymap entry
  * @old_keycode: result
  *
  * This routine is used to handle evdev EVIOCSKEY ioctl.
  *
  * return:	-EINVAL if the keycode could not be inserted, otherwise zero.
-=======
- * @scancode:	the desired scancode
- * @keycode:	result
- * @return:	-EINVAL if the keycode could not be inserted, otherwise zero.
- *
- * This routine is used to handle evdev EVIOCSKEY ioctl.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static int ir_setkeycode(struct input_dev *idev,
 			 const struct input_keymap_entry *ke,
@@ -576,19 +421,11 @@ out:
 /**
  * ir_setkeytable() - sets several entries in the scancode->keycode table
  * @dev:	the struct rc_dev device descriptor
-<<<<<<< HEAD
  * @from:	the struct rc_map to copy entries from
  *
  * This routine is used to handle table initialization.
  *
  * return:	-ENOMEM if all keycodes could not be inserted, otherwise zero.
-=======
- * @to:		the struct rc_map to copy entries to
- * @from:	the struct rc_map to copy entries from
- * @return:	-ENOMEM if all keycodes could not be inserted, otherwise zero.
- *
- * This routine is used to handle table initialization.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static int ir_setkeytable(struct rc_dev *dev,
 			  const struct rc_map *from)
@@ -597,22 +434,11 @@ static int ir_setkeytable(struct rc_dev *dev,
 	unsigned int i, index;
 	int rc;
 
-<<<<<<< HEAD
 	rc = ir_create_table(dev, rc_map, from->name, from->rc_proto,
 			     from->size);
 	if (rc)
 		return rc;
 
-=======
-	rc = ir_create_table(rc_map, from->name,
-			     from->rc_proto, from->size);
-	if (rc)
-		return rc;
-
-	IR_dprintk(1, "Allocated space for %u keycode entries (%u bytes)\n",
-		   rc_map->size, rc_map->alloc);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < from->size; i++) {
 		index = ir_establish_scancode(dev, rc_map,
 					      from->scan[i].scancode, false);
@@ -631,7 +457,6 @@ static int ir_setkeytable(struct rc_dev *dev,
 	return rc;
 }
 
-<<<<<<< HEAD
 static int rc_map_cmp(const void *key, const void *elt)
 {
 	const unsigned int *scancode = key;
@@ -644,29 +469,19 @@ static int rc_map_cmp(const void *key, const void *elt)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * ir_lookup_by_scancode() - locate mapping by scancode
  * @rc_map:	the struct rc_map to search
  * @scancode:	scancode to look for in the table
-<<<<<<< HEAD
  *
  * This routine performs binary search in RC keykeymap table for
  * given scancode.
  *
  * return:	index in the table, -1U if not found
-=======
- * @return:	index in the table, -1U if not found
- *
- * This routine performs binary search in RC keykeymap table for
- * given scancode.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static unsigned int ir_lookup_by_scancode(const struct rc_map *rc_map,
 					  unsigned int scancode)
 {
-<<<<<<< HEAD
 	struct rc_map_table *res;
 
 	res = bsearch(&scancode, rc_map->scan, rc_map->len,
@@ -675,41 +490,16 @@ static unsigned int ir_lookup_by_scancode(const struct rc_map *rc_map,
 		return -1U;
 	else
 		return res - rc_map->scan;
-=======
-	int start = 0;
-	int end = rc_map->len - 1;
-	int mid;
-
-	while (start <= end) {
-		mid = (start + end) / 2;
-		if (rc_map->scan[mid].scancode < scancode)
-			start = mid + 1;
-		else if (rc_map->scan[mid].scancode > scancode)
-			end = mid - 1;
-		else
-			return mid;
-	}
-
-	return -1U;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
  * ir_getkeycode() - get a keycode from the scancode->keycode table
  * @idev:	the struct input_dev device descriptor
-<<<<<<< HEAD
  * @ke:		Input keymap entry
  *
  * This routine is used to handle evdev EVIOCGKEY ioctl.
  *
  * return:	always returns zero.
-=======
- * @scancode:	the desired scancode
- * @keycode:	used to return the keycode, if found, or KEY_RESERVED
- * @return:	always returns zero.
- *
- * This routine is used to handle evdev EVIOCGKEY ioctl.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static int ir_getkeycode(struct input_dev *idev,
 			 struct input_keymap_entry *ke)
@@ -766,19 +556,12 @@ out:
  * rc_g_keycode_from_table() - gets the keycode that corresponds to a scancode
  * @dev:	the struct rc_dev descriptor of the device
  * @scancode:	the scancode to look for
-<<<<<<< HEAD
-=======
- * @return:	the corresponding keycode, or KEY_RESERVED
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This routine is used by drivers which need to convert a scancode to a
  * keycode. Normally it should not be used since drivers should have no
  * interest in keycodes.
-<<<<<<< HEAD
  *
  * return:	the corresponding keycode, or KEY_RESERVED
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 u32 rc_g_keycode_from_table(struct rc_dev *dev, u32 scancode)
 {
@@ -796,13 +579,8 @@ u32 rc_g_keycode_from_table(struct rc_dev *dev, u32 scancode)
 	spin_unlock_irqrestore(&rc_map->lock, flags);
 
 	if (keycode != KEY_RESERVED)
-<<<<<<< HEAD
 		dev_dbg(&dev->dev, "%s: scancode 0x%04x keycode 0x%02x\n",
 			dev->device_name, scancode, keycode);
-=======
-		IR_dprintk(1, "%s: scancode 0x%04x keycode 0x%02x\n",
-			   dev->device_name, scancode, keycode);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return keycode;
 }
@@ -821,12 +599,8 @@ static void ir_do_keyup(struct rc_dev *dev, bool sync)
 	if (!dev->keypressed)
 		return;
 
-<<<<<<< HEAD
 	dev_dbg(&dev->dev, "keyup key 0x%04x\n", dev->last_keycode);
 	del_timer(&dev->timer_repeat);
-=======
-	IR_dprintk(1, "keyup key 0x%04x\n", dev->last_keycode);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	input_report_key(dev->input_dev, dev->last_keycode, 0);
 	led_trigger_event(led_feedback, LED_OFF);
 	if (sync)
@@ -853,25 +627,15 @@ EXPORT_SYMBOL_GPL(rc_keyup);
 
 /**
  * ir_timer_keyup() - generates a keyup event after a timeout
-<<<<<<< HEAD
  *
  * @t:		a pointer to the struct timer_list
-=======
- * @cookie:	a pointer to the struct rc_dev for the device
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This routine will generate a keyup event some time after a keydown event
  * is generated when no further activity has been detected.
  */
-<<<<<<< HEAD
 static void ir_timer_keyup(struct timer_list *t)
 {
 	struct rc_dev *dev = from_timer(dev, t, timer_keyup);
-=======
-static void ir_timer_keyup(unsigned long cookie)
-{
-	struct rc_dev *dev = (struct rc_dev *)cookie;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 
 	/*
@@ -891,7 +655,6 @@ static void ir_timer_keyup(unsigned long cookie)
 }
 
 /**
-<<<<<<< HEAD
  * ir_timer_repeat() - generates a repeat event after a timeout
  *
  * @t:		a pointer to the struct timer_list
@@ -925,8 +688,6 @@ static unsigned int repeat_period(int protocol)
 }
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * rc_repeat() - signals that a key is still pressed
  * @dev:	the struct rc_dev descriptor of the device
  *
@@ -937,7 +698,6 @@ static unsigned int repeat_period(int protocol)
 void rc_repeat(struct rc_dev *dev)
 {
 	unsigned long flags;
-<<<<<<< HEAD
 	unsigned int timeout = nsecs_to_jiffies(dev->timeout) +
 		msecs_to_jiffies(repeat_period(dev->last_protocol));
 	struct lirc_scancode sc = {
@@ -960,22 +720,6 @@ void rc_repeat(struct rc_dev *dev)
 		mod_timer(&dev->timer_keyup, dev->keyup_jiffies);
 	}
 
-=======
-	unsigned int timeout = protocols[dev->last_protocol].repeat_period;
-
-	spin_lock_irqsave(&dev->keylock, flags);
-
-	if (!dev->keypressed)
-		goto out;
-
-	input_event(dev->input_dev, EV_MSC, MSC_SCAN, dev->last_scancode);
-	input_sync(dev->input_dev);
-
-	dev->keyup_jiffies = jiffies + msecs_to_jiffies(timeout);
-	mod_timer(&dev->timer_keyup, dev->keyup_jiffies);
-
-out:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irqrestore(&dev->keylock, flags);
 }
 EXPORT_SYMBOL_GPL(rc_repeat);
@@ -998,7 +742,6 @@ static void ir_do_keydown(struct rc_dev *dev, enum rc_proto protocol,
 			  dev->last_protocol != protocol ||
 			  dev->last_scancode != scancode ||
 			  dev->last_toggle   != toggle);
-<<<<<<< HEAD
 	struct lirc_scancode sc = {
 		.scancode = scancode, .rc_proto = protocol,
 		.flags = toggle ? LIRC_SCANCODE_FLAG_TOGGLE : 0,
@@ -1007,15 +750,12 @@ static void ir_do_keydown(struct rc_dev *dev, enum rc_proto protocol,
 
 	if (dev->allowed_protocols != RC_PROTO_BIT_CEC)
 		ir_lirc_scancode_event(dev, &sc);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (new_event && dev->keypressed)
 		ir_do_keyup(dev, false);
 
 	input_event(dev->input_dev, EV_MSC, MSC_SCAN, scancode);
 
-<<<<<<< HEAD
 	dev->last_protocol = protocol;
 	dev->last_scancode = scancode;
 	dev->last_toggle = toggle;
@@ -1027,24 +767,11 @@ static void ir_do_keydown(struct rc_dev *dev, enum rc_proto protocol,
 
 		dev_dbg(&dev->dev, "%s: key down event, key 0x%04x, protocol 0x%04x, scancode 0x%08x\n",
 			dev->device_name, keycode, protocol, scancode);
-=======
-	if (new_event && keycode != KEY_RESERVED) {
-		/* Register a keypress */
-		dev->keypressed = true;
-		dev->last_protocol = protocol;
-		dev->last_scancode = scancode;
-		dev->last_toggle = toggle;
-		dev->last_keycode = keycode;
-
-		IR_dprintk(1, "%s: key down event, key 0x%04x, protocol 0x%04x, scancode 0x%08x\n",
-			   dev->device_name, keycode, protocol, scancode);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		input_report_key(dev->input_dev, keycode, 1);
 
 		led_trigger_event(led_feedback, LED_FULL);
 	}
 
-<<<<<<< HEAD
 	/*
 	 * For CEC, start sending repeat messages as soon as the first
 	 * repeated message is sent, as long as REP_DELAY = 0 and REP_PERIOD
@@ -1061,8 +788,6 @@ static void ir_do_keydown(struct rc_dev *dev, enum rc_proto protocol,
 			  msecs_to_jiffies(dev->input_dev->rep[REP_PERIOD]));
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	input_sync(dev->input_dev);
 }
 
@@ -1087,13 +812,8 @@ void rc_keydown(struct rc_dev *dev, enum rc_proto protocol, u32 scancode,
 	ir_do_keydown(dev, protocol, scancode, keycode, toggle);
 
 	if (dev->keypressed) {
-<<<<<<< HEAD
 		dev->keyup_jiffies = jiffies + nsecs_to_jiffies(dev->timeout) +
 			msecs_to_jiffies(repeat_period(protocol));
-=======
-		dev->keyup_jiffies = jiffies +
-			msecs_to_jiffies(protocols[protocol].repeat_period);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mod_timer(&dev->timer_keyup, dev->keyup_jiffies);
 	}
 	spin_unlock_irqrestore(&dev->keylock, flags);
@@ -1125,7 +845,6 @@ void rc_keydown_notimeout(struct rc_dev *dev, enum rc_proto protocol,
 EXPORT_SYMBOL_GPL(rc_keydown_notimeout);
 
 /**
-<<<<<<< HEAD
  * rc_validate_scancode() - checks that a scancode is valid for a protocol.
  *	For nec, it should do the opposite of ir_nec_bytes_to_scancode()
  * @proto:	protocol
@@ -1171,18 +890,12 @@ bool rc_validate_scancode(enum rc_proto proto, u32 scancode)
 }
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * rc_validate_filter() - checks that the scancode and mask are valid and
  *			  provides sensible defaults
  * @dev:	the struct rc_dev descriptor of the device
  * @filter:	the scancode and mask
-<<<<<<< HEAD
  *
  * return:	0 or -EINVAL if the filter is not valid
-=======
- * @return:	0 or -EINVAL if the filter is not valid
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static int rc_validate_filter(struct rc_dev *dev,
 			      struct rc_scancode_filter *filter)
@@ -1195,31 +908,8 @@ static int rc_validate_filter(struct rc_dev *dev,
 
 	mask = protocols[protocol].scancode_bits;
 
-<<<<<<< HEAD
 	if (!rc_validate_scancode(protocol, s))
 		return -EINVAL;
-=======
-	switch (protocol) {
-	case RC_PROTO_NECX:
-		if ((((s >> 16) ^ ~(s >> 8)) & 0xff) == 0)
-			return -EINVAL;
-		break;
-	case RC_PROTO_NEC32:
-		if ((((s >> 24) ^ ~(s >> 16)) & 0xff) == 0)
-			return -EINVAL;
-		break;
-	case RC_PROTO_RC6_MCE:
-		if ((s & 0xffff0000) != 0x800f0000)
-			return -EINVAL;
-		break;
-	case RC_PROTO_RC6_6A_32:
-		if ((s & 0xffff0000) == 0x800f0000)
-			return -EINVAL;
-		break;
-	default:
-		break;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	filter->data &= mask;
 	filter->mask &= mask;
@@ -1242,7 +932,6 @@ int rc_open(struct rc_dev *rdev)
 
 	mutex_lock(&rdev->lock);
 
-<<<<<<< HEAD
 	if (!rdev->registered) {
 		rval = -ENODEV;
 	} else {
@@ -1252,22 +941,11 @@ int rc_open(struct rc_dev *rdev)
 		if (rval)
 			rdev->users--;
 	}
-=======
-	if (!rdev->users++ && rdev->open != NULL)
-		rval = rdev->open(rdev);
-
-	if (rval)
-		rdev->users--;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_unlock(&rdev->lock);
 
 	return rval;
 }
-<<<<<<< HEAD
-=======
-EXPORT_SYMBOL_GPL(rc_open);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int ir_open(struct input_dev *idev)
 {
@@ -1281,20 +959,12 @@ void rc_close(struct rc_dev *rdev)
 	if (rdev) {
 		mutex_lock(&rdev->lock);
 
-<<<<<<< HEAD
 		if (!--rdev->users && rdev->close && rdev->registered)
-=======
-		if (!--rdev->users && rdev->close != NULL)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rdev->close(rdev);
 
 		mutex_unlock(&rdev->lock);
 	}
 }
-<<<<<<< HEAD
-=======
-EXPORT_SYMBOL_GPL(rc_close);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void ir_close(struct input_dev *idev)
 {
@@ -1347,10 +1017,7 @@ static const struct {
 	  RC_PROTO_BIT_MCIR2_MSE, "mce_kbd",	"ir-mce_kbd-decoder"	},
 	{ RC_PROTO_BIT_XMP,	"xmp",		"ir-xmp-decoder"	},
 	{ RC_PROTO_BIT_CEC,	"cec",		NULL			},
-<<<<<<< HEAD
 	{ RC_PROTO_BIT_IMON,	"imon",		"ir-imon-decoder"	},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -1373,26 +1040,6 @@ struct rc_filter_attribute {
 		.mask = (_mask),					\
 	}
 
-<<<<<<< HEAD
-=======
-static bool lirc_is_present(void)
-{
-#if defined(CONFIG_LIRC_MODULE)
-	struct module *lirc;
-
-	mutex_lock(&module_mutex);
-	lirc = find_module("lirc_dev");
-	mutex_unlock(&module_mutex);
-
-	return lirc ? true : false;
-#elif defined(CONFIG_LIRC)
-	return true;
-#else
-	return false;
-#endif
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * show_protocols() - shows the current IR protocol(s)
  * @device:	the device descriptor
@@ -1424,13 +1071,8 @@ static ssize_t show_protocols(struct device *device,
 
 	mutex_unlock(&dev->lock);
 
-<<<<<<< HEAD
 	dev_dbg(&dev->dev, "%s: allowed - 0x%llx, enabled - 0x%llx\n",
 		__func__, (long long)allowed, (long long)enabled);
-=======
-	IR_dprintk(1, "%s: allowed - 0x%llx, enabled - 0x%llx\n",
-		   __func__, (long long)allowed, (long long)enabled);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < ARRAY_SIZE(proto_names); i++) {
 		if (allowed & enabled & proto_names[i].type)
@@ -1442,15 +1084,10 @@ static ssize_t show_protocols(struct device *device,
 			allowed &= ~proto_names[i].type;
 	}
 
-<<<<<<< HEAD
 #ifdef CONFIG_LIRC
 	if (dev->driver_type == RC_DRIVER_IR_RAW)
 		tmp += sprintf(tmp, "[lirc] ");
 #endif
-=======
-	if (dev->driver_type == RC_DRIVER_IR_RAW && lirc_is_present())
-		tmp += sprintf(tmp, "[lirc] ");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (tmp != buf)
 		tmp--;
@@ -1461,10 +1098,7 @@ static ssize_t show_protocols(struct device *device,
 
 /**
  * parse_protocol_change() - parses a protocol change request
-<<<<<<< HEAD
  * @dev:	rc_dev device
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @protocols:	pointer to the bitmask of current protocols
  * @buf:	pointer to the buffer with a list of changes
  *
@@ -1474,12 +1108,8 @@ static ssize_t show_protocols(struct device *device,
  * Writing "none" will disable all protocols.
  * Returns the number of changes performed or a negative error code.
  */
-<<<<<<< HEAD
 static int parse_protocol_change(struct rc_dev *dev, u64 *protocols,
 				 const char *buf)
-=======
-static int parse_protocol_change(u64 *protocols, const char *buf)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	const char *tmp;
 	unsigned count = 0;
@@ -1515,12 +1145,8 @@ static int parse_protocol_change(u64 *protocols, const char *buf)
 			if (!strcasecmp(tmp, "lirc"))
 				mask = 0;
 			else {
-<<<<<<< HEAD
 				dev_dbg(&dev->dev, "Unknown protocol: '%s'\n",
 					tmp);
-=======
-				IR_dprintk(1, "Unknown protocol: '%s'\n", tmp);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				return -EINVAL;
 			}
 		}
@@ -1536,22 +1162,14 @@ static int parse_protocol_change(u64 *protocols, const char *buf)
 	}
 
 	if (!count) {
-<<<<<<< HEAD
 		dev_dbg(&dev->dev, "Protocol not specified\n");
-=======
-		IR_dprintk(1, "Protocol not specified\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
 	return count;
 }
 
-<<<<<<< HEAD
 void ir_raw_load_modules(u64 *protocols)
-=======
-static void ir_raw_load_modules(u64 *protocols)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u64 available;
 	int i, ret;
@@ -1617,20 +1235,12 @@ static ssize_t store_protocols(struct device *device,
 	u64 old_protocols, new_protocols;
 	ssize_t rc;
 
-<<<<<<< HEAD
 	dev_dbg(&dev->dev, "Normal protocol change requested\n");
-=======
-	IR_dprintk(1, "Normal protocol change requested\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	current_protocols = &dev->enabled_protocols;
 	filter = &dev->scancode_filter;
 
 	if (!dev->change_protocol) {
-<<<<<<< HEAD
 		dev_dbg(&dev->dev, "Protocol switching not supported\n");
-=======
-		IR_dprintk(1, "Protocol switching not supported\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -1638,7 +1248,6 @@ static ssize_t store_protocols(struct device *device,
 
 	old_protocols = *current_protocols;
 	new_protocols = old_protocols;
-<<<<<<< HEAD
 	rc = parse_protocol_change(dev, &new_protocols, buf);
 	if (rc < 0)
 		goto out;
@@ -1657,26 +1266,6 @@ static ssize_t store_protocols(struct device *device,
 		*current_protocols = new_protocols;
 		dev_dbg(&dev->dev, "Protocols changed to 0x%llx\n",
 			(long long)new_protocols);
-=======
-	rc = parse_protocol_change(&new_protocols, buf);
-	if (rc < 0)
-		goto out;
-
-	rc = dev->change_protocol(dev, &new_protocols);
-	if (rc < 0) {
-		IR_dprintk(1, "Error setting protocols to 0x%llx\n",
-			   (long long)new_protocols);
-		goto out;
-	}
-
-	if (dev->driver_type == RC_DRIVER_IR_RAW)
-		ir_raw_load_modules(&new_protocols);
-
-	if (new_protocols != old_protocols) {
-		*current_protocols = new_protocols;
-		IR_dprintk(1, "Protocols changed to 0x%llx\n",
-			   (long long)new_protocols);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/*
@@ -1864,13 +1453,8 @@ static ssize_t show_wakeup_protocols(struct device *device,
 
 	mutex_unlock(&dev->lock);
 
-<<<<<<< HEAD
 	dev_dbg(&dev->dev, "%s: allowed - 0x%llx, enabled - %d\n",
 		__func__, (long long)allowed, enabled);
-=======
-	IR_dprintk(1, "%s: allowed - 0x%llx, enabled - %d\n",
-		   __func__, (long long)allowed, enabled);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < ARRAY_SIZE(protocols); i++) {
 		if (allowed & (1ULL << i)) {
@@ -1945,11 +1529,7 @@ static ssize_t store_wakeup_protocols(struct device *device,
 
 	if (dev->wakeup_protocol != protocol) {
 		dev->wakeup_protocol = protocol;
-<<<<<<< HEAD
 		dev_dbg(&dev->dev, "Wakeup protocol changed to %d\n", protocol);
-=======
-		IR_dprintk(1, "Wakeup protocol changed to %d\n", protocol);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (protocol == RC_PROTO_RC6_MCE)
 			dev->scancode_wakeup_filter.data = 0x800f0000;
@@ -1991,11 +1571,8 @@ static int rc_dev_uevent(struct device *device, struct kobj_uevent_env *env)
 		ADD_HOTPLUG_VAR("NAME=%s", dev->rc_map.name);
 	if (dev->driver_name)
 		ADD_HOTPLUG_VAR("DRV_NAME=%s", dev->driver_name);
-<<<<<<< HEAD
 	if (dev->device_name)
 		ADD_HOTPLUG_VAR("DEV_NAME=%s", dev->device_name);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -2003,14 +1580,10 @@ static int rc_dev_uevent(struct device *device, struct kobj_uevent_env *env)
 /*
  * Static device attribute struct with the sysfs attributes for IR's
  */
-<<<<<<< HEAD
 static struct device_attribute dev_attr_ro_protocols =
 __ATTR(protocols, 0444, show_protocols, NULL);
 static struct device_attribute dev_attr_rw_protocols =
 __ATTR(protocols, 0644, show_protocols, store_protocols);
-=======
-static DEVICE_ATTR(protocols, 0644, show_protocols, store_protocols);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static DEVICE_ATTR(wakeup_protocols, 0644, show_wakeup_protocols,
 		   store_wakeup_protocols);
 static RC_FILTER_ATTR(filter, S_IRUGO|S_IWUSR,
@@ -2022,7 +1595,6 @@ static RC_FILTER_ATTR(wakeup_filter, S_IRUGO|S_IWUSR,
 static RC_FILTER_ATTR(wakeup_filter_mask, S_IRUGO|S_IWUSR,
 		      show_filter, store_filter, RC_FILTER_WAKEUP, true);
 
-<<<<<<< HEAD
 static struct attribute *rc_dev_rw_protocol_attrs[] = {
 	&dev_attr_rw_protocols.attr,
 	NULL,
@@ -2039,15 +1611,6 @@ static struct attribute *rc_dev_ro_protocol_attrs[] = {
 
 static const struct attribute_group rc_dev_ro_protocol_attr_grp = {
 	.attrs	= rc_dev_ro_protocol_attrs,
-=======
-static struct attribute *rc_dev_protocol_attrs[] = {
-	&dev_attr_protocols.attr,
-	NULL,
-};
-
-static const struct attribute_group rc_dev_protocol_attr_grp = {
-	.attrs	= rc_dev_protocol_attrs,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct attribute *rc_dev_filter_attrs[] = {
@@ -2071,11 +1634,7 @@ static const struct attribute_group rc_dev_wakeup_filter_attr_grp = {
 	.attrs	= rc_dev_wakeup_filter_attrs,
 };
 
-<<<<<<< HEAD
 static const struct device_type rc_dev_type = {
-=======
-static struct device_type rc_dev_type = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.release	= rc_dev_release,
 	.uevent		= rc_dev_uevent,
 };
@@ -2099,14 +1658,9 @@ struct rc_dev *rc_allocate_device(enum rc_driver_type type)
 		dev->input_dev->setkeycode = ir_setkeycode;
 		input_set_drvdata(dev->input_dev, dev);
 
-<<<<<<< HEAD
 		dev->timeout = IR_DEFAULT_TIMEOUT;
 		timer_setup(&dev->timer_keyup, ir_timer_keyup, 0);
 		timer_setup(&dev->timer_repeat, ir_timer_repeat, 0);
-=======
-		setup_timer(&dev->timer_keyup, ir_timer_keyup,
-			    (unsigned long)dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		spin_lock_init(&dev->rc_map.lock);
 		spin_lock_init(&dev->keylock);
@@ -2190,15 +1744,12 @@ static int rc_prepare_rx_device(struct rc_dev *dev)
 
 	rc_proto = BIT_ULL(rc_map->rc_proto);
 
-<<<<<<< HEAD
 	if (dev->driver_type == RC_DRIVER_SCANCODE && !dev->change_protocol)
 		dev->enabled_protocols = dev->allowed_protocols;
 
 	if (dev->driver_type == RC_DRIVER_IR_RAW)
 		ir_raw_load_modules(&rc_proto);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dev->change_protocol) {
 		rc = dev->change_protocol(dev, &rc_proto);
 		if (rc < 0)
@@ -2206,12 +1757,6 @@ static int rc_prepare_rx_device(struct rc_dev *dev)
 		dev->enabled_protocols = rc_proto;
 	}
 
-<<<<<<< HEAD
-=======
-	if (dev->driver_type == RC_DRIVER_IR_RAW)
-		ir_raw_load_modules(&rc_proto);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	set_bit(EV_KEY, dev->input_dev->evbit);
 	set_bit(EV_REP, dev->input_dev->evbit);
 	set_bit(EV_MSC, dev->input_dev->evbit);
@@ -2249,14 +1794,10 @@ static int rc_setup_rx_device(struct rc_dev *dev)
 	 * to avoid wrong repetition of the keycodes. Note that this must be
 	 * set after the call to input_register_device().
 	 */
-<<<<<<< HEAD
 	if (dev->allowed_protocols == RC_PROTO_BIT_CEC)
 		dev->input_dev->rep[REP_DELAY] = 0;
 	else
 		dev->input_dev->rep[REP_DELAY] = 500;
-=======
-	dev->input_dev->rep[REP_DELAY] = 500;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * As a repeat event on protocols like RC-5 and NEC take as long as
@@ -2300,27 +1841,17 @@ int rc_register_device(struct rc_dev *dev)
 	dev_set_drvdata(&dev->dev, dev);
 
 	dev->dev.groups = dev->sysfs_groups;
-<<<<<<< HEAD
 	if (dev->driver_type == RC_DRIVER_SCANCODE && !dev->change_protocol)
 		dev->sysfs_groups[attr++] = &rc_dev_ro_protocol_attr_grp;
 	else if (dev->driver_type != RC_DRIVER_IR_RAW_TX)
 		dev->sysfs_groups[attr++] = &rc_dev_rw_protocol_attr_grp;
-=======
-	if (dev->driver_type != RC_DRIVER_IR_RAW_TX)
-		dev->sysfs_groups[attr++] = &rc_dev_protocol_attr_grp;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dev->s_filter)
 		dev->sysfs_groups[attr++] = &rc_dev_filter_attr_grp;
 	if (dev->s_wakeup_filter)
 		dev->sysfs_groups[attr++] = &rc_dev_wakeup_filter_attr_grp;
 	dev->sysfs_groups[attr++] = NULL;
 
-<<<<<<< HEAD
 	if (dev->driver_type == RC_DRIVER_IR_RAW) {
-=======
-	if (dev->driver_type == RC_DRIVER_IR_RAW ||
-	    dev->driver_type == RC_DRIVER_IR_RAW_TX) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rc = ir_raw_event_prepare(dev);
 		if (rc < 0)
 			goto out_minor;
@@ -2341,31 +1872,21 @@ int rc_register_device(struct rc_dev *dev)
 		 dev->device_name ?: "Unspecified device", path ?: "N/A");
 	kfree(path);
 
-<<<<<<< HEAD
 	dev->registered = true;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dev->driver_type != RC_DRIVER_IR_RAW_TX) {
 		rc = rc_setup_rx_device(dev);
 		if (rc)
 			goto out_dev;
 	}
 
-<<<<<<< HEAD
 	/* Ensure that the lirc kfifo is setup before we start the thread */
 	if (dev->allowed_protocols != RC_PROTO_BIT_CEC) {
 		rc = ir_lirc_register(dev);
-=======
-	if (dev->driver_type == RC_DRIVER_IR_RAW ||
-	    dev->driver_type == RC_DRIVER_IR_RAW_TX) {
-		rc = ir_raw_event_register(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (rc < 0)
 			goto out_rx;
 	}
 
-<<<<<<< HEAD
 	if (dev->driver_type == RC_DRIVER_IR_RAW) {
 		rc = ir_raw_event_register(dev);
 		if (rc < 0)
@@ -2380,14 +1901,6 @@ int rc_register_device(struct rc_dev *dev)
 out_lirc:
 	if (dev->allowed_protocols != RC_PROTO_BIT_CEC)
 		ir_lirc_unregister(dev);
-=======
-	IR_dprintk(1, "Registered rc%u (driver: %s)\n",
-		   dev->minor,
-		   dev->driver_name ? dev->driver_name : "unknown");
-
-	return 0;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out_rx:
 	rc_free_rx_device(dev);
 out_dev:
@@ -2438,7 +1951,6 @@ void rc_unregister_device(struct rc_dev *dev)
 		ir_raw_event_unregister(dev);
 
 	del_timer_sync(&dev->timer_keyup);
-<<<<<<< HEAD
 	del_timer_sync(&dev->timer_repeat);
 
 	rc_free_rx_device(dev);
@@ -2456,11 +1968,6 @@ void rc_unregister_device(struct rc_dev *dev)
 	if (dev->allowed_protocols != RC_PROTO_BIT_CEC)
 		ir_lirc_unregister(dev);
 
-=======
-
-	rc_free_rx_device(dev);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	device_del(&dev->dev);
 
 	ida_simple_remove(&rc_ida, dev->minor);
@@ -2483,7 +1990,6 @@ static int __init rc_core_init(void)
 		return rc;
 	}
 
-<<<<<<< HEAD
 	rc = lirc_dev_init();
 	if (rc) {
 		pr_err("rc_core: unable to init lirc\n");
@@ -2491,8 +1997,6 @@ static int __init rc_core_init(void)
 		return 0;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	led_trigger_register_simple("rc-feedback", &led_feedback);
 	rc_map_register(&empty_map);
 
@@ -2501,10 +2005,7 @@ static int __init rc_core_init(void)
 
 static void __exit rc_core_exit(void)
 {
-<<<<<<< HEAD
 	lirc_dev_exit();
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	class_unregister(&rc_class);
 	led_trigger_unregister_simple(led_feedback);
 	rc_map_unregister(&empty_map);
@@ -2513,14 +2014,5 @@ static void __exit rc_core_exit(void)
 subsys_initcall(rc_core_init);
 module_exit(rc_core_exit);
 
-<<<<<<< HEAD
 MODULE_AUTHOR("Mauro Carvalho Chehab");
 MODULE_LICENSE("GPL v2");
-=======
-int rc_core_debug;    /* ir_debug level (0,1,2) */
-EXPORT_SYMBOL_GPL(rc_core_debug);
-module_param_named(debug, rc_core_debug, int, 0644);
-
-MODULE_AUTHOR("Mauro Carvalho Chehab");
-MODULE_LICENSE("GPL");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

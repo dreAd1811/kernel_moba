@@ -311,11 +311,7 @@ int ov9650_probe(struct sd *sd)
 		return -ENODEV;
 	}
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_PROBE, "Probing for an ov9650 sensor\n");
-=======
-	PDEBUG(D_PROBE, "Probing for an ov9650 sensor");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Run the pre-init before probing the sensor */
 	for (i = 0; i < ARRAY_SIZE(preinit_ov9650) && !err; i++) {
@@ -509,11 +505,7 @@ int ov9650_start(struct sd *sd)
 
 	switch (width) {
 	case 640:
-<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_CONF, "Configuring camera for VGA mode\n");
-=======
-		PDEBUG(D_CONF, "Configuring camera for VGA mode");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		data = OV9650_VGA_SELECT | OV9650_RGB_SELECT |
 		       OV9650_RAW_RGB_SELECT;
@@ -521,11 +513,7 @@ int ov9650_start(struct sd *sd)
 		break;
 
 	case 352:
-<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_CONF, "Configuring camera for CIF mode\n");
-=======
-		PDEBUG(D_CONF, "Configuring camera for CIF mode");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		data = OV9650_CIF_SELECT | OV9650_RGB_SELECT |
 				OV9650_RAW_RGB_SELECT;
@@ -533,11 +521,7 @@ int ov9650_start(struct sd *sd)
 		break;
 
 	case 320:
-<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_CONF, "Configuring camera for QVGA mode\n");
-=======
-		PDEBUG(D_CONF, "Configuring camera for QVGA mode");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		data = OV9650_QVGA_SELECT | OV9650_RGB_SELECT |
 				OV9650_RAW_RGB_SELECT;
@@ -545,11 +529,7 @@ int ov9650_start(struct sd *sd)
 		break;
 
 	case 176:
-<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_CONF, "Configuring camera for QCIF mode\n");
-=======
-		PDEBUG(D_CONF, "Configuring camera for QCIF mode");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		data = OV9650_QCIF_SELECT | OV9650_RGB_SELECT |
 			OV9650_RAW_RGB_SELECT;
@@ -578,11 +558,7 @@ static int ov9650_set_exposure(struct gspca_dev *gspca_dev, __s32 val)
 	u8 i2c_data;
 	int err;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Set exposure to %d\n", val);
-=======
-	PDEBUG(D_CONF, "Set exposure to %d", val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* The 6 MSBs */
 	i2c_data = (val >> 10) & 0x3f;
@@ -610,11 +586,7 @@ static int ov9650_set_gain(struct gspca_dev *gspca_dev, __s32 val)
 	u8 i2c_data;
 	struct sd *sd = (struct sd *) gspca_dev;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Setting gain to %d\n", val);
-=======
-	PDEBUG(D_CONF, "Setting gain to %d", val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* The 2 MSB */
 	/* Read the OV9650_VREF register first to avoid
@@ -642,11 +614,7 @@ static int ov9650_set_red_balance(struct gspca_dev *gspca_dev, __s32 val)
 	u8 i2c_data;
 	struct sd *sd = (struct sd *) gspca_dev;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Set red gain to %d\n", val);
-=======
-	PDEBUG(D_CONF, "Set red gain to %d", val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	i2c_data = val & 0xff;
 	err = m5602_write_sensor(sd, OV9650_RED, &i2c_data, 1);
@@ -659,11 +627,7 @@ static int ov9650_set_blue_balance(struct gspca_dev *gspca_dev, __s32 val)
 	u8 i2c_data;
 	struct sd *sd = (struct sd *) gspca_dev;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Set blue gain to %d\n", val);
-=======
-	PDEBUG(D_CONF, "Set blue gain to %d", val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	i2c_data = val & 0xff;
 	err = m5602_write_sensor(sd, OV9650_BLUE, &i2c_data, 1);
@@ -678,11 +642,7 @@ static int ov9650_set_hvflip(struct gspca_dev *gspca_dev)
 	int hflip = sd->hflip->val;
 	int vflip = sd->vflip->val;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Set hvflip to %d %d\n", hflip, vflip);
-=======
-	PDEBUG(D_CONF, "Set hvflip to %d %d", hflip, vflip);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (dmi_check_system(ov9650_flip_dmi_table))
 		vflip = !vflip;
@@ -706,11 +666,7 @@ static int ov9650_set_auto_exposure(struct gspca_dev *gspca_dev,
 	u8 i2c_data;
 	struct sd *sd = (struct sd *) gspca_dev;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Set auto exposure control to %d\n", val);
-=======
-	PDEBUG(D_CONF, "Set auto exposure control to %d", val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = m5602_read_sensor(sd, OV9650_COM8, &i2c_data, 1);
 	if (err < 0)
@@ -729,11 +685,7 @@ static int ov9650_set_auto_white_balance(struct gspca_dev *gspca_dev,
 	u8 i2c_data;
 	struct sd *sd = (struct sd *) gspca_dev;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Set auto white balance to %d\n", val);
-=======
-	PDEBUG(D_CONF, "Set auto white balance to %d", val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = m5602_read_sensor(sd, OV9650_COM8, &i2c_data, 1);
 	if (err < 0)
@@ -751,11 +703,7 @@ static int ov9650_set_auto_gain(struct gspca_dev *gspca_dev, __s32 val)
 	u8 i2c_data;
 	struct sd *sd = (struct sd *) gspca_dev;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Set auto gain control to %d\n", val);
-=======
-	PDEBUG(D_CONF, "Set auto gain control to %d", val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = m5602_read_sensor(sd, OV9650_COM8, &i2c_data, 1);
 	if (err < 0)

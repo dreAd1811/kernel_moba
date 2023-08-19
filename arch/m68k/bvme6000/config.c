@@ -41,7 +41,6 @@ static void bvme6000_get_model(char *model);
 extern void bvme6000_sched_init(irq_handler_t handler);
 extern u32 bvme6000_gettimeoffset(void);
 extern int bvme6000_hwclk (int, struct rtc_time *);
-<<<<<<< HEAD
 extern void bvme6000_reset (void);
 void bvme6000_set_vectors (void);
 
@@ -50,12 +49,6 @@ void bvme6000_set_vectors (void);
 
 static irq_handler_t tick_handler;
 
-=======
-extern int bvme6000_set_clock_mmss (unsigned long);
-extern void bvme6000_reset (void);
-void bvme6000_set_vectors (void);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int __init bvme6000_parse_bootinfo(const struct bi_record *bi)
 {
@@ -119,10 +112,6 @@ void __init config_bvme6000(void)
     mach_init_IRQ        = bvme6000_init_IRQ;
     arch_gettimeoffset   = bvme6000_gettimeoffset;
     mach_hwclk           = bvme6000_hwclk;
-<<<<<<< HEAD
-=======
-    mach_set_clock_mmss	 = bvme6000_set_clock_mmss;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     mach_reset		 = bvme6000_reset;
     mach_get_model       = bvme6000_get_model;
 
@@ -168,27 +157,12 @@ irqreturn_t bvme6000_abort_int (int irq, void *dev_id)
 
 static irqreturn_t bvme6000_timer_int (int irq, void *dev_id)
 {
-<<<<<<< HEAD
     volatile RtcPtr_t rtc = (RtcPtr_t)BVME_RTC_BASE;
     unsigned char msr = rtc->msr & 0xc0;
 
     rtc->msr = msr | 0x20;		/* Ack the interrupt */
 
     return tick_handler(irq, dev_id);
-=======
-    irq_handler_t timer_routine = dev_id;
-    unsigned long flags;
-    volatile RtcPtr_t rtc = (RtcPtr_t)BVME_RTC_BASE;
-    unsigned char msr;
-
-    local_irq_save(flags);
-    msr = rtc->msr & 0xc0;
-    rtc->msr = msr | 0x20;		/* Ack the interrupt */
-    timer_routine(0, NULL);
-    local_irq_restore(flags);
-
-    return IRQ_HANDLED;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -207,14 +181,9 @@ void bvme6000_sched_init (irq_handler_t timer_routine)
 
     rtc->msr = 0;	/* Ensure timer registers accessible */
 
-<<<<<<< HEAD
     tick_handler = timer_routine;
     if (request_irq(BVME_IRQ_RTC, bvme6000_timer_int, 0,
 				"timer", bvme6000_timer_int))
-=======
-    if (request_irq(BVME_IRQ_RTC, bvme6000_timer_int, 0, "timer",
-                    timer_routine))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	panic ("Couldn't register timer int");
 
     rtc->t1cr_omr = 0x04;	/* Mode 2, ext clk */
@@ -334,49 +303,3 @@ int bvme6000_hwclk(int op, struct rtc_time *t)
 
 	return 0;
 }
-<<<<<<< HEAD
-=======
-
-/*
- * Set the minutes and seconds from seconds value 'nowtime'.  Fail if
- * clock is out by > 30 minutes.  Logic lifted from atari code.
- * Algorithm is to wait for the 10ms register to change, and then to
- * wait a short while, and then set it.
- */
-
-int bvme6000_set_clock_mmss (unsigned long nowtime)
-{
-	int retval = 0;
-	short real_seconds = nowtime % 60, real_minutes = (nowtime / 60) % 60;
-	unsigned char rtc_minutes, rtc_tenms;
-	volatile RtcPtr_t rtc = (RtcPtr_t)BVME_RTC_BASE;
-	unsigned char msr = rtc->msr & 0xc0;
-	unsigned long flags;
-	volatile int i;
-
-	rtc->msr = 0;		/* Ensure clock accessible */
-	rtc_minutes = bcd2bin (rtc->bcd_min);
-
-	if ((rtc_minutes < real_minutes
-		? real_minutes - rtc_minutes
-			: rtc_minutes - real_minutes) < 30)
-	{
-		local_irq_save(flags);
-		rtc_tenms = rtc->bcd_tenms;
-		while (rtc_tenms == rtc->bcd_tenms)
-			;
-		for (i = 0; i < 1000; i++)
-			;
-		rtc->bcd_min = bin2bcd(real_minutes);
-		rtc->bcd_sec = bin2bcd(real_seconds);
-		local_irq_restore(flags);
-	}
-	else
-		retval = -1;
-
-	rtc->msr = msr;
-
-	return retval;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

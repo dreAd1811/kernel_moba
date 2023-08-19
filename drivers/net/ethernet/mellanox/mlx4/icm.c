@@ -44,20 +44,12 @@
 
 /*
  * We allocate in as big chunks as we can, up to a maximum of 256 KB
-<<<<<<< HEAD
  * per chunk. Note that the chunks are not necessarily in contiguous
  * physical memory.
  */
 enum {
 	MLX4_ICM_ALLOC_SIZE	= 1 << 18,
 	MLX4_TABLE_CHUNK_SIZE	= 1 << 18,
-=======
- * per chunk.
- */
-enum {
-	MLX4_ICM_ALLOC_SIZE	= 1 << 18,
-	MLX4_TABLE_CHUNK_SIZE	= 1 << 18
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void mlx4_free_icm_pages(struct mlx4_dev *dev, struct mlx4_icm_chunk *chunk)
@@ -65,21 +57,12 @@ static void mlx4_free_icm_pages(struct mlx4_dev *dev, struct mlx4_icm_chunk *chu
 	int i;
 
 	if (chunk->nsg > 0)
-<<<<<<< HEAD
 		pci_unmap_sg(dev->persist->pdev, chunk->sg, chunk->npages,
 			     PCI_DMA_BIDIRECTIONAL);
 
 	for (i = 0; i < chunk->npages; ++i)
 		__free_pages(sg_page(&chunk->sg[i]),
 			     get_order(chunk->sg[i].length));
-=======
-		pci_unmap_sg(dev->persist->pdev, chunk->mem, chunk->npages,
-			     PCI_DMA_BIDIRECTIONAL);
-
-	for (i = 0; i < chunk->npages; ++i)
-		__free_pages(sg_page(&chunk->mem[i]),
-			     get_order(chunk->mem[i].length));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void mlx4_free_icm_coherent(struct mlx4_dev *dev, struct mlx4_icm_chunk *chunk)
@@ -88,15 +71,9 @@ static void mlx4_free_icm_coherent(struct mlx4_dev *dev, struct mlx4_icm_chunk *
 
 	for (i = 0; i < chunk->npages; ++i)
 		dma_free_coherent(&dev->persist->pdev->dev,
-<<<<<<< HEAD
 				  chunk->buf[i].size,
 				  chunk->buf[i].addr,
 				  chunk->buf[i].dma_addr);
-=======
-				  chunk->mem[i].length,
-				  lowmem_page_address(sg_page(&chunk->mem[i])),
-				  sg_dma_address(&chunk->mem[i]));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void mlx4_free_icm(struct mlx4_dev *dev, struct mlx4_icm *icm, int coherent)
@@ -134,7 +111,6 @@ static int mlx4_alloc_icm_pages(struct scatterlist *mem, int order,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int mlx4_alloc_icm_coherent(struct device *dev, struct mlx4_icm_buf *buf,
 				   int order, gfp_t gfp_mask)
 {
@@ -150,24 +126,6 @@ static int mlx4_alloc_icm_coherent(struct device *dev, struct mlx4_icm_buf *buf,
 	}
 
 	buf->size = PAGE_SIZE << order;
-=======
-static int mlx4_alloc_icm_coherent(struct device *dev, struct scatterlist *mem,
-				    int order, gfp_t gfp_mask)
-{
-	void *buf = dma_alloc_coherent(dev, PAGE_SIZE << order,
-				       &sg_dma_address(mem), gfp_mask);
-	if (!buf)
-		return -ENOMEM;
-
-	if (offset_in_page(buf)) {
-		dma_free_coherent(dev, PAGE_SIZE << order,
-				  buf, sg_dma_address(mem));
-		return -ENOMEM;
-	}
-
-	sg_set_buf(mem, buf, PAGE_SIZE << order);
-	sg_dma_len(mem) = PAGE_SIZE << order;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -177,10 +135,7 @@ struct mlx4_icm *mlx4_alloc_icm(struct mlx4_dev *dev, int npages,
 	struct mlx4_icm *icm;
 	struct mlx4_icm_chunk *chunk = NULL;
 	int cur_order;
-<<<<<<< HEAD
 	gfp_t mask;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	/* We use sg_set_buf for coherent allocs, which assumes low memory */
@@ -203,43 +158,27 @@ struct mlx4_icm *mlx4_alloc_icm(struct mlx4_dev *dev, int npages,
 
 	while (npages > 0) {
 		if (!chunk) {
-<<<<<<< HEAD
 			chunk = kzalloc_node(sizeof(*chunk),
-=======
-			chunk = kmalloc_node(sizeof(*chunk),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					     gfp_mask & ~(__GFP_HIGHMEM |
 							  __GFP_NOWARN),
 					     dev->numa_node);
 			if (!chunk) {
-<<<<<<< HEAD
 				chunk = kzalloc(sizeof(*chunk),
-=======
-				chunk = kmalloc(sizeof(*chunk),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						gfp_mask & ~(__GFP_HIGHMEM |
 							     __GFP_NOWARN));
 				if (!chunk)
 					goto fail;
 			}
-<<<<<<< HEAD
 			chunk->coherent = coherent;
 
 			if (!coherent)
 				sg_init_table(chunk->sg, MLX4_ICM_CHUNK_LEN);
-=======
-
-			sg_init_table(chunk->mem, MLX4_ICM_CHUNK_LEN);
-			chunk->npages = 0;
-			chunk->nsg    = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			list_add_tail(&chunk->list, &icm->chunk_list);
 		}
 
 		while (1 << cur_order > npages)
 			--cur_order;
 
-<<<<<<< HEAD
 		mask = gfp_mask;
 		if (cur_order)
 			mask &= ~__GFP_DIRECT_RECLAIM;
@@ -251,15 +190,6 @@ struct mlx4_icm *mlx4_alloc_icm(struct mlx4_dev *dev, int npages,
 		else
 			ret = mlx4_alloc_icm_pages(&chunk->sg[chunk->npages],
 						   cur_order, mask,
-=======
-		if (coherent)
-			ret = mlx4_alloc_icm_coherent(&dev->persist->pdev->dev,
-						      &chunk->mem[chunk->npages],
-						      cur_order, gfp_mask);
-		else
-			ret = mlx4_alloc_icm_pages(&chunk->mem[chunk->npages],
-						   cur_order, gfp_mask,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						   dev->numa_node);
 
 		if (ret) {
@@ -274,11 +204,7 @@ struct mlx4_icm *mlx4_alloc_icm(struct mlx4_dev *dev, int npages,
 		if (coherent)
 			++chunk->nsg;
 		else if (chunk->npages == MLX4_ICM_CHUNK_LEN) {
-<<<<<<< HEAD
 			chunk->nsg = pci_map_sg(dev->persist->pdev, chunk->sg,
-=======
-			chunk->nsg = pci_map_sg(dev->persist->pdev, chunk->mem,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						chunk->npages,
 						PCI_DMA_BIDIRECTIONAL);
 
@@ -293,11 +219,7 @@ struct mlx4_icm *mlx4_alloc_icm(struct mlx4_dev *dev, int npages,
 	}
 
 	if (!coherent && chunk) {
-<<<<<<< HEAD
 		chunk->nsg = pci_map_sg(dev->persist->pdev, chunk->sg,
-=======
-		chunk->nsg = pci_map_sg(dev->persist->pdev, chunk->mem,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					chunk->npages,
 					PCI_DMA_BIDIRECTIONAL);
 
@@ -397,11 +319,7 @@ void *mlx4_table_find(struct mlx4_icm_table *table, u32 obj,
 	u64 idx;
 	struct mlx4_icm_chunk *chunk;
 	struct mlx4_icm *icm;
-<<<<<<< HEAD
 	void *addr = NULL;
-=======
-	struct page *page = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!table->lowmem)
 		return NULL;
@@ -417,7 +335,6 @@ void *mlx4_table_find(struct mlx4_icm_table *table, u32 obj,
 
 	list_for_each_entry(chunk, &icm->chunk_list, list) {
 		for (i = 0; i < chunk->npages; ++i) {
-<<<<<<< HEAD
 			dma_addr_t dma_addr;
 			size_t len;
 
@@ -446,20 +363,11 @@ void *mlx4_table_find(struct mlx4_icm_table *table, u32 obj,
 				dma_offset -= len;
 			}
 
-=======
-			if (dma_handle && dma_offset >= 0) {
-				if (sg_dma_len(&chunk->mem[i]) > dma_offset)
-					*dma_handle = sg_dma_address(&chunk->mem[i]) +
-						dma_offset;
-				dma_offset -= sg_dma_len(&chunk->mem[i]);
-			}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/*
 			 * DMA mapping can merge pages but not split them,
 			 * so if we found the page, dma_handle has already
 			 * been assigned to.
 			 */
-<<<<<<< HEAD
 			if (len > offset)
 				goto out;
 			offset -= len;
@@ -470,19 +378,6 @@ void *mlx4_table_find(struct mlx4_icm_table *table, u32 obj,
 out:
 	mutex_unlock(&table->mutex);
 	return addr ? addr + offset : NULL;
-=======
-			if (chunk->mem[i].length > offset) {
-				page = sg_page(&chunk->mem[i]);
-				goto out;
-			}
-			offset -= chunk->mem[i].length;
-		}
-	}
-
-out:
-	mutex_unlock(&table->mutex);
-	return page ? lowmem_page_address(page) + offset : NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int mlx4_table_get_range(struct mlx4_dev *dev, struct mlx4_icm_table *table,
@@ -529,17 +424,11 @@ int mlx4_init_icm_table(struct mlx4_dev *dev, struct mlx4_icm_table *table,
 	u64 size;
 
 	obj_per_chunk = MLX4_TABLE_CHUNK_SIZE / obj_size;
-<<<<<<< HEAD
 	if (WARN_ON(!obj_per_chunk))
 		return -EINVAL;
 	num_icm = (nobj + obj_per_chunk - 1) / obj_per_chunk;
 
 	table->icm      = kvcalloc(num_icm, sizeof(*table->icm), GFP_KERNEL);
-=======
-	num_icm = (nobj + obj_per_chunk - 1) / obj_per_chunk;
-
-	table->icm      = kcalloc(num_icm, sizeof(*table->icm), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!table->icm)
 		return -ENOMEM;
 	table->virt     = virt;
@@ -585,11 +474,7 @@ err:
 			mlx4_free_icm(dev, table->icm[i], use_coherent);
 		}
 
-<<<<<<< HEAD
 	kvfree(table->icm);
-=======
-	kfree(table->icm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return -ENOMEM;
 }
@@ -605,9 +490,5 @@ void mlx4_cleanup_icm_table(struct mlx4_dev *dev, struct mlx4_icm_table *table)
 			mlx4_free_icm(dev, table->icm[i], table->coherent);
 		}
 
-<<<<<<< HEAD
 	kvfree(table->icm);
-=======
-	kfree(table->icm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

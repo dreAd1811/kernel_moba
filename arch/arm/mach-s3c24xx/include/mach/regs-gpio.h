@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
 /*
  * Copyright (c) 2003-2004 Simtec Electronics <linux@simtec.co.uk>
@@ -6,19 +5,6 @@
  *
  * S3C2410 GPIO register definitions
  */
-=======
-/* arch/arm/mach-s3c2410/include/mach/regs-gpio.h
- *
- * Copyright (c) 2003-2004 Simtec Electronics <linux@simtec.co.uk>
- *	http://www.simtec.co.uk/products/SWLINUX/
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
- *
- * S3C2410 GPIO register definitions
-*/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 #ifndef __ASM_ARCH_REGS_GPIO_H

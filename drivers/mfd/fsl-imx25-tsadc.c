@@ -84,12 +84,7 @@ static int mx25_tsadc_setup_irq(struct platform_device *pdev,
 		return -ENOMEM;
 	}
 
-<<<<<<< HEAD
 	irq_set_chained_handler_and_data(irq, mx25_tsadc_irq_handler, tsadc);
-=======
-	irq_set_chained_handler(irq, mx25_tsadc_irq_handler);
-	irq_set_handler_data(irq, tsadc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

@@ -154,32 +154,6 @@ free_and_exit:
 }
 
 /*
-<<<<<<< HEAD
-=======
- * Proc device dump read handler.
- *
- * This function is called when the 'device_dump' file is opened for
- * reading.
- * This function dumps driver information and firmware memory segments
- * (ex. DTCM, ITCM, SQRAM etc.) for
- * debugging.
- */
-static ssize_t
-mwifiex_device_dump_read(struct file *file, char __user *ubuf,
-			 size_t count, loff_t *ppos)
-{
-	struct mwifiex_private *priv = file->private_data;
-
-	if (!priv->adapter->if_ops.device_dump)
-		return -EIO;
-
-	priv->adapter->if_ops.device_dump(priv->adapter);
-
-	return 0;
-}
-
-/*
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Proc getlog file read handler.
  *
  * This function is called when the 'getlog' file is opened for reading
@@ -299,7 +273,6 @@ mwifiex_histogram_read(struct file *file, char __user *ubuf,
 		     "total samples = %d\n",
 		     atomic_read(&phist_data->num_samples));
 
-<<<<<<< HEAD
 	p += sprintf(p, "rx rates (in Mbps): 0=1M   1=2M");
 	p += sprintf(p, "2=5.5M  3=11M   4=6M   5=9M  6=12M\n");
 	p += sprintf(p, "7=18M  8=24M  9=36M  10=48M  11=54M");
@@ -309,15 +282,6 @@ mwifiex_histogram_read(struct file *file, char __user *ubuf,
 		p += sprintf(p, "44-53=MCS0-9(VHT:BW20)");
 		p += sprintf(p, "54-63=MCS0-9(VHT:BW40)");
 		p += sprintf(p, "64-73=MCS0-9(VHT:BW80)\n\n");
-=======
-	p += sprintf(p,
-		     "rx rates (in Mbps): 0=1M   1=2M 2=5.5M  3=11M   4=6M   5=9M  6=12M\n"
-		     "7=18M  8=24M  9=36M  10=48M  11=54M 12-27=MCS0-15(BW20) 28-43=MCS0-15(BW40)\n");
-
-	if (ISSUPP_11ACENABLED(priv->adapter->fw_cap_info)) {
-		p += sprintf(p,
-			     "44-53=MCS0-9(VHT:BW20) 54-63=MCS0-9(VHT:BW40) 64-73=MCS0-9(VHT:BW80)\n\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		p += sprintf(p, "\n");
 	}
@@ -346,11 +310,7 @@ mwifiex_histogram_read(struct file *file, char __user *ubuf,
 	for (i = 0; i < MWIFIEX_MAX_NOISE_FLR; i++) {
 		value = atomic_read(&phist_data->noise_flr[i]);
 		if (value)
-<<<<<<< HEAD
 			p += sprintf(p, "noise_flr[-%02ddBm] = %d\n",
-=======
-			p += sprintf(p, "noise_flr[%02ddBm] = %d\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				(int)(i-128), value);
 	}
 	for (i = 0; i < MWIFIEX_MAX_SIG_STRENGTH; i++) {
@@ -853,11 +813,7 @@ mwifiex_hscfg_write(struct file *file, const char __user *ubuf,
 			      MWIFIEX_SYNC_CMD, &hscfg);
 
 	mwifiex_enable_hs(priv->adapter);
-<<<<<<< HEAD
 	clear_bit(MWIFIEX_IS_HS_ENABLING, &priv->adapter->work_flags);
-=======
-	priv->adapter->hs_enabling = false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = count;
 done:
 	kfree(buf);
@@ -996,10 +952,6 @@ static const struct file_operations mwifiex_dfs_##name##_fops = {       \
 MWIFIEX_DFS_FILE_READ_OPS(info);
 MWIFIEX_DFS_FILE_READ_OPS(debug);
 MWIFIEX_DFS_FILE_READ_OPS(getlog);
-<<<<<<< HEAD
-=======
-MWIFIEX_DFS_FILE_READ_OPS(device_dump);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MWIFIEX_DFS_FILE_OPS(regrdwr);
 MWIFIEX_DFS_FILE_OPS(rdeeprom);
 MWIFIEX_DFS_FILE_OPS(memrw);
@@ -1030,11 +982,7 @@ mwifiex_dev_debugfs_init(struct mwifiex_private *priv)
 	MWIFIEX_DFS_ADD_FILE(getlog);
 	MWIFIEX_DFS_ADD_FILE(regrdwr);
 	MWIFIEX_DFS_ADD_FILE(rdeeprom);
-<<<<<<< HEAD
 
-=======
-	MWIFIEX_DFS_ADD_FILE(device_dump);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MWIFIEX_DFS_ADD_FILE(memrw);
 	MWIFIEX_DFS_ADD_FILE(hscfg);
 	MWIFIEX_DFS_ADD_FILE(histogram);

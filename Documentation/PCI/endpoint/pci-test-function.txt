@@ -20,11 +20,8 @@ The PCI endpoint test device has the following registers:
 	5) PCI_ENDPOINT_TEST_DST_ADDR
 	6) PCI_ENDPOINT_TEST_SIZE
 	7) PCI_ENDPOINT_TEST_CHECKSUM
-<<<<<<< HEAD
 	8) PCI_ENDPOINT_TEST_IRQ_TYPE
 	9) PCI_ENDPOINT_TEST_IRQ_NUMBER
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 *) PCI_ENDPOINT_TEST_MAGIC
 
@@ -39,17 +36,10 @@ that the endpoint device must perform.
 Bitfield Description:
   Bit 0		: raise legacy IRQ
   Bit 1		: raise MSI IRQ
-<<<<<<< HEAD
   Bit 2		: raise MSI-X IRQ
   Bit 3		: read command (read data from RC buffer)
   Bit 4		: write command (write data to RC buffer)
   Bit 5		: copy command (copy data from one RC buffer to another
-=======
-  Bit 2 - 7	: MSI interrupt number
-  Bit 8		: read command (read data from RC buffer)
-  Bit 9		: write command (write data to RC buffer)
-  Bit 10	: copy command (copy data from one RC buffer to another
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		  RC buffer)
 
 *) PCI_ENDPOINT_TEST_STATUS
@@ -76,7 +66,6 @@ COPY/READ command.
 
 This register contains the destination address (RC buffer address) for
 the COPY/WRITE command.
-<<<<<<< HEAD
 
 *) PCI_ENDPOINT_TEST_IRQ_TYPE
 
@@ -96,5 +85,3 @@ Admissible values:
  - Legacy	: 0
  - MSI		: [1 .. 32]
  - MSI-X	: [1 .. 2048]
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

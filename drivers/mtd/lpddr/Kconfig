@@ -13,17 +13,10 @@ config MTD_QINFO_PROBE
 	depends on MTD_LPDDR
 	tristate "Detect flash chips by QINFO probe"
 	help
-<<<<<<< HEAD
 	  Device Information for LPDDR chips is offered through the Overlay
 	  Window QINFO interface, permits software to be used for entire
 	  families of devices. This serves similar purpose of CFI on legacy
 	  Flash products
-=======
-	    Device Information for LPDDR chips is offered through the Overlay
-	    Window QINFO interface, permits software to be used for entire
-	    families of devices. This serves similar purpose of CFI on legacy
-	    Flash products
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config MTD_LPDDR2_NVM
 	# ARM dependency is only for writel_relaxed()

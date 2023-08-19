@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 OR MIT */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**************************************************************************
  *
  * Copyright (c) 2006-2009 VMware, Inc., Palo Alto, CA., USA
@@ -40,10 +37,7 @@
 #include <linux/mm.h>
 #include <linux/module.h>
 #include <linux/slab.h>
-<<<<<<< HEAD
 #include <linux/swap.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define TTM_MEMORY_ALLOC_RETRIES 4
 
@@ -174,7 +168,6 @@ static struct kobj_type ttm_mem_zone_kobj_type = {
 	.default_attrs = ttm_mem_zone_attrs,
 };
 
-<<<<<<< HEAD
 static struct attribute ttm_mem_global_lower_mem_limit = {
 	.name = "lower_mem_limit",
 	.mode = S_IRUGO | S_IWUSR
@@ -236,18 +229,6 @@ static const struct sysfs_ops ttm_mem_global_ops = {
 static struct kobj_type ttm_mem_glob_kobj_type = {
 	.sysfs_ops = &ttm_mem_global_ops,
 	.default_attrs = ttm_mem_global_attrs,
-=======
-static void ttm_mem_global_kobj_release(struct kobject *kobj)
-{
-	struct ttm_mem_global *glob =
-		container_of(kobj, struct ttm_mem_global, kobj);
-
-	kfree(glob);
-}
-
-static struct kobj_type ttm_mem_glob_kobj_type = {
-	.release = &ttm_mem_global_kobj_release,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static bool ttm_zones_above_swap_target(struct ttm_mem_global *glob,
@@ -283,7 +264,6 @@ static bool ttm_zones_above_swap_target(struct ttm_mem_global *glob,
  */
 
 static void ttm_shrink(struct ttm_mem_global *glob, bool from_wq,
-<<<<<<< HEAD
 			uint64_t extra, struct ttm_operation_ctx *ctx)
 {
 	int ret;
@@ -311,37 +291,6 @@ static void ttm_shrink_work(struct work_struct *work)
 	    container_of(work, struct ttm_mem_global, work);
 
 	ttm_shrink(glob, true, 0ULL, &ctx);
-=======
-		       uint64_t extra)
-{
-	int ret;
-	struct ttm_mem_shrink *shrink;
-
-	spin_lock(&glob->lock);
-	if (glob->shrink == NULL)
-		goto out;
-
-	while (ttm_zones_above_swap_target(glob, from_wq, extra)) {
-		shrink = glob->shrink;
-		spin_unlock(&glob->lock);
-		ret = shrink->do_shrink(shrink);
-		spin_lock(&glob->lock);
-		if (unlikely(ret != 0))
-			goto out;
-	}
-out:
-	spin_unlock(&glob->lock);
-}
-
-
-
-static void ttm_shrink_work(struct work_struct *work)
-{
-	struct ttm_mem_global *glob =
-	    container_of(work, struct ttm_mem_global, work);
-
-	ttm_shrink(glob, true, 0ULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int ttm_mem_init_kernel_zone(struct ttm_mem_global *glob,
@@ -479,12 +428,9 @@ int ttm_mem_global_init(struct ttm_mem_global *glob)
 
 	si_meminfo(&si);
 
-<<<<<<< HEAD
 	/* set it as 0 by default to keep original behavior of OOM */
 	glob->lower_mem_limit = 0;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = ttm_mem_init_kernel_zone(glob, &si);
 	if (unlikely(ret != 0))
 		goto out_no_zone;
@@ -579,7 +525,6 @@ void ttm_mem_global_free(struct ttm_mem_global *glob,
 }
 EXPORT_SYMBOL(ttm_mem_global_free);
 
-<<<<<<< HEAD
 /*
  * check if the available mem is under lower memory limit
  *
@@ -609,8 +554,6 @@ ttm_check_under_lowerlimit(struct ttm_mem_global *glob,
 }
 EXPORT_SYMBOL(ttm_check_under_lowerlimit);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ttm_mem_global_reserve(struct ttm_mem_global *glob,
 				  struct ttm_mem_zone *single_zone,
 				  uint64_t amount, bool reserve)
@@ -654,11 +597,7 @@ out_unlock:
 static int ttm_mem_global_alloc_zone(struct ttm_mem_global *glob,
 				     struct ttm_mem_zone *single_zone,
 				     uint64_t memory,
-<<<<<<< HEAD
 				     struct ttm_operation_ctx *ctx)
-=======
-				     bool no_wait, bool interruptible)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int count = TTM_MEMORY_ALLOC_RETRIES;
 
@@ -666,56 +605,32 @@ static int ttm_mem_global_alloc_zone(struct ttm_mem_global *glob,
 					       single_zone,
 					       memory, true)
 			!= 0)) {
-<<<<<<< HEAD
 		if (ctx->no_wait_gpu)
 			return -ENOMEM;
 		if (unlikely(count-- == 0))
 			return -ENOMEM;
 		ttm_shrink(glob, false, memory + (memory >> 2) + 16, ctx);
-=======
-		if (no_wait)
-			return -ENOMEM;
-		if (unlikely(count-- == 0))
-			return -ENOMEM;
-		ttm_shrink(glob, false, memory + (memory >> 2) + 16);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
 }
 
 int ttm_mem_global_alloc(struct ttm_mem_global *glob, uint64_t memory,
-<<<<<<< HEAD
 			 struct ttm_operation_ctx *ctx)
-=======
-			 bool no_wait, bool interruptible)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/**
 	 * Normal allocations of kernel memory are registered in
 	 * all zones.
 	 */
 
-<<<<<<< HEAD
 	return ttm_mem_global_alloc_zone(glob, NULL, memory, ctx);
-=======
-	return ttm_mem_global_alloc_zone(glob, NULL, memory, no_wait,
-					 interruptible);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(ttm_mem_global_alloc);
 
 int ttm_mem_global_alloc_page(struct ttm_mem_global *glob,
-<<<<<<< HEAD
 			      struct page *page, uint64_t size,
 			      struct ttm_operation_ctx *ctx)
 {
-=======
-			      struct page *page,
-			      bool no_wait, bool interruptible)
-{
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ttm_mem_zone *zone = NULL;
 
 	/**
@@ -730,19 +645,11 @@ int ttm_mem_global_alloc_page(struct ttm_mem_global *glob,
 	if (glob->zone_dma32 && page_to_pfn(page) > 0x00100000UL)
 		zone = glob->zone_kernel;
 #endif
-<<<<<<< HEAD
 	return ttm_mem_global_alloc_zone(glob, zone, size, ctx);
 }
 
 void ttm_mem_global_free_page(struct ttm_mem_global *glob, struct page *page,
 			      uint64_t size)
-=======
-	return ttm_mem_global_alloc_zone(glob, zone, PAGE_SIZE, no_wait,
-					 interruptible);
-}
-
-void ttm_mem_global_free_page(struct ttm_mem_global *glob, struct page *page)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ttm_mem_zone *zone = NULL;
 
@@ -753,16 +660,9 @@ void ttm_mem_global_free_page(struct ttm_mem_global *glob, struct page *page)
 	if (glob->zone_dma32 && page_to_pfn(page) > 0x00100000UL)
 		zone = glob->zone_kernel;
 #endif
-<<<<<<< HEAD
 	ttm_mem_global_free_zone(glob, zone, size);
 }
 
-=======
-	ttm_mem_global_free_zone(glob, zone, PAGE_SIZE);
-}
-
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 size_t ttm_round_pot(size_t size)
 {
 	if ((size & (size - 1)) == 0)

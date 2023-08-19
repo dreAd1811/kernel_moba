@@ -1,23 +1,6 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Copyright (C) 2015-2018 Etnaviv Project
-=======
-/*
- * Copyright (C) 2015 Etnaviv Project
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License version 2 as published by
- * the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
- * more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program.  If not, see <http://www.gnu.org/licenses/>.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/spinlock.h>
@@ -30,12 +13,9 @@
 #include "etnaviv_gpu.h"
 #include "etnaviv_mmu.h"
 
-<<<<<<< HEAD
 static struct lock_class_key etnaviv_shm_lock_class;
 static struct lock_class_key etnaviv_userptr_lock_class;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void etnaviv_gem_scatter_map(struct etnaviv_gem_object *etnaviv_obj)
 {
 	struct drm_device *dev = etnaviv_obj->base.dev;
@@ -189,18 +169,13 @@ int etnaviv_gem_mmap(struct file *filp, struct vm_area_struct *vma)
 	return obj->ops->mmap(obj, vma);
 }
 
-<<<<<<< HEAD
 vm_fault_t etnaviv_gem_fault(struct vm_fault *vmf)
-=======
-int etnaviv_gem_fault(struct vm_fault *vmf)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct vm_area_struct *vma = vmf->vma;
 	struct drm_gem_object *obj = vma->vm_private_data;
 	struct etnaviv_gem_object *etnaviv_obj = to_etnaviv_bo(obj);
 	struct page **pages, *page;
 	pgoff_t pgoff;
-<<<<<<< HEAD
 	int err;
 
 	/*
@@ -211,31 +186,13 @@ int etnaviv_gem_fault(struct vm_fault *vmf)
 	err = mutex_lock_interruptible(&etnaviv_obj->lock);
 	if (err)
 		return VM_FAULT_NOPAGE;
-=======
-	int ret;
-
-	/*
-	 * Make sure we don't parallel update on a fault, nor move or remove
-	 * something from beneath our feet.  Note that vm_insert_page() is
-	 * specifically coded to take care of this, so we don't have to.
-	 */
-	ret = mutex_lock_interruptible(&etnaviv_obj->lock);
-	if (ret)
-		goto out;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* make sure we have pages attached now */
 	pages = etnaviv_gem_get_pages(etnaviv_obj);
 	mutex_unlock(&etnaviv_obj->lock);
 
 	if (IS_ERR(pages)) {
-<<<<<<< HEAD
 		err = PTR_ERR(pages);
 		return vmf_error(err);
-=======
-		ret = PTR_ERR(pages);
-		goto out;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* We don't use vmf->pgoff since that has the fake offset: */
@@ -246,29 +203,7 @@ int etnaviv_gem_fault(struct vm_fault *vmf)
 	VERB("Inserting %p pfn %lx, pa %lx", (void *)vmf->address,
 	     page_to_pfn(page), page_to_pfn(page) << PAGE_SHIFT);
 
-<<<<<<< HEAD
 	return vmf_insert_page(vma, vmf->address, page);
-=======
-	ret = vm_insert_page(vma, vmf->address, page);
-
-out:
-	switch (ret) {
-	case -EAGAIN:
-	case 0:
-	case -ERESTARTSYS:
-	case -EINTR:
-	case -EBUSY:
-		/*
-		 * EBUSY is ok: this just means that another thread
-		 * already did the job.
-		 */
-		return VM_FAULT_NOPAGE;
-	case -ENOMEM:
-		return VM_FAULT_OOM;
-	default:
-		return VM_FAULT_SIGBUS;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int etnaviv_gem_mmap_offset(struct drm_gem_object *obj, u64 *offset)
@@ -621,11 +556,7 @@ void etnaviv_gem_free_object(struct drm_gem_object *obj)
 	kfree(etnaviv_obj);
 }
 
-<<<<<<< HEAD
 void etnaviv_gem_obj_add(struct drm_device *dev, struct drm_gem_object *obj)
-=======
-int etnaviv_gem_obj_add(struct drm_device *dev, struct drm_gem_object *obj)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct etnaviv_drm_private *priv = dev->dev_private;
 	struct etnaviv_gem_object *etnaviv_obj = to_etnaviv_bo(obj);
@@ -633,11 +564,6 @@ int etnaviv_gem_obj_add(struct drm_device *dev, struct drm_gem_object *obj)
 	mutex_lock(&priv->gem_lock);
 	list_add_tail(&etnaviv_obj->gem_node, &priv->gem_list);
 	mutex_unlock(&priv->gem_lock);
-<<<<<<< HEAD
-=======
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int etnaviv_gem_new_impl(struct drm_device *dev, u32 size, u32 flags,
@@ -685,14 +611,9 @@ static int etnaviv_gem_new_impl(struct drm_device *dev, u32 size, u32 flags,
 	return 0;
 }
 
-<<<<<<< HEAD
 /* convenience method to construct a GEM buffer object, and userspace handle */
 int etnaviv_gem_new_handle(struct drm_device *dev, struct drm_file *file,
 	u32 size, u32 flags, u32 *handle)
-=======
-static struct drm_gem_object *__etnaviv_gem_new(struct drm_device *dev,
-		u32 size, u32 flags)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_gem_object *obj = NULL;
 	int ret;
@@ -704,11 +625,8 @@ static struct drm_gem_object *__etnaviv_gem_new(struct drm_device *dev,
 	if (ret)
 		goto fail;
 
-<<<<<<< HEAD
 	lockdep_set_class(&to_etnaviv_bo(obj)->lock, &etnaviv_shm_lock_class);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = drm_gem_object_init(dev, obj, size);
 	if (ret == 0) {
 		struct address_space *mapping;
@@ -716,11 +634,7 @@ static struct drm_gem_object *__etnaviv_gem_new(struct drm_device *dev,
 		/*
 		 * Our buffers are kept pinned, so allocating them
 		 * from the MOVABLE zone is a really bad idea, and
-<<<<<<< HEAD
 		 * conflicts with CMA. See comments above new_inode()
-=======
-		 * conflicts with CMA.  See coments above new_inode()
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 * why this is required _and_ expected if you're
 		 * going to pin these pages.
 		 */
@@ -732,68 +646,17 @@ static struct drm_gem_object *__etnaviv_gem_new(struct drm_device *dev,
 	if (ret)
 		goto fail;
 
-<<<<<<< HEAD
 	etnaviv_gem_obj_add(dev, obj);
-=======
-	return obj;
-
-fail:
-	drm_gem_object_put_unlocked(obj);
-	return ERR_PTR(ret);
-}
-
-/* convenience method to construct a GEM buffer object, and userspace handle */
-int etnaviv_gem_new_handle(struct drm_device *dev, struct drm_file *file,
-		u32 size, u32 flags, u32 *handle)
-{
-	struct drm_gem_object *obj;
-	int ret;
-
-	obj = __etnaviv_gem_new(dev, size, flags);
-	if (IS_ERR(obj))
-		return PTR_ERR(obj);
-
-	ret = etnaviv_gem_obj_add(dev, obj);
-	if (ret < 0) {
-		drm_gem_object_put_unlocked(obj);
-		return ret;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = drm_gem_handle_create(file, obj, handle);
 
 	/* drop reference from allocate - handle holds it now */
-<<<<<<< HEAD
 fail:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drm_gem_object_put_unlocked(obj);
 
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
-struct drm_gem_object *etnaviv_gem_new(struct drm_device *dev,
-		u32 size, u32 flags)
-{
-	struct drm_gem_object *obj;
-	int ret;
-
-	obj = __etnaviv_gem_new(dev, size, flags);
-	if (IS_ERR(obj))
-		return obj;
-
-	ret = etnaviv_gem_obj_add(dev, obj);
-	if (ret < 0) {
-		drm_gem_object_put_unlocked(obj);
-		return ERR_PTR(ret);
-	}
-
-	return obj;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int etnaviv_gem_new_private(struct drm_device *dev, size_t size, u32 flags,
 	struct reservation_object *robj, const struct etnaviv_gem_ops *ops,
 	struct etnaviv_gem_object **res)
@@ -812,7 +675,6 @@ int etnaviv_gem_new_private(struct drm_device *dev, size_t size, u32 flags,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int etnaviv_gem_userptr_get_pages(struct etnaviv_gem_object *etnaviv_obj)
 {
 	struct page **pvec = NULL;
@@ -848,141 +710,6 @@ static int etnaviv_gem_userptr_get_pages(struct etnaviv_gem_object *etnaviv_obj)
 	etnaviv_obj->pages = pvec;
 
 	return 0;
-=======
-struct get_pages_work {
-	struct work_struct work;
-	struct mm_struct *mm;
-	struct task_struct *task;
-	struct etnaviv_gem_object *etnaviv_obj;
-};
-
-static struct page **etnaviv_gem_userptr_do_get_pages(
-	struct etnaviv_gem_object *etnaviv_obj, struct mm_struct *mm, struct task_struct *task)
-{
-	int ret = 0, pinned, npages = etnaviv_obj->base.size >> PAGE_SHIFT;
-	struct page **pvec;
-	uintptr_t ptr;
-	unsigned int flags = 0;
-
-	pvec = kvmalloc_array(npages, sizeof(struct page *), GFP_KERNEL);
-	if (!pvec)
-		return ERR_PTR(-ENOMEM);
-
-	if (!etnaviv_obj->userptr.ro)
-		flags |= FOLL_WRITE;
-
-	pinned = 0;
-	ptr = etnaviv_obj->userptr.ptr;
-
-	down_read(&mm->mmap_sem);
-	while (pinned < npages) {
-		ret = get_user_pages_remote(task, mm, ptr, npages - pinned,
-					    flags, pvec + pinned, NULL, NULL);
-		if (ret < 0)
-			break;
-
-		ptr += ret * PAGE_SIZE;
-		pinned += ret;
-	}
-	up_read(&mm->mmap_sem);
-
-	if (ret < 0) {
-		release_pages(pvec, pinned, 0);
-		kvfree(pvec);
-		return ERR_PTR(ret);
-	}
-
-	return pvec;
-}
-
-static void __etnaviv_gem_userptr_get_pages(struct work_struct *_work)
-{
-	struct get_pages_work *work = container_of(_work, typeof(*work), work);
-	struct etnaviv_gem_object *etnaviv_obj = work->etnaviv_obj;
-	struct page **pvec;
-
-	pvec = etnaviv_gem_userptr_do_get_pages(etnaviv_obj, work->mm, work->task);
-
-	mutex_lock(&etnaviv_obj->lock);
-	if (IS_ERR(pvec)) {
-		etnaviv_obj->userptr.work = ERR_CAST(pvec);
-	} else {
-		etnaviv_obj->userptr.work = NULL;
-		etnaviv_obj->pages = pvec;
-	}
-
-	mutex_unlock(&etnaviv_obj->lock);
-	drm_gem_object_put_unlocked(&etnaviv_obj->base);
-
-	mmput(work->mm);
-	put_task_struct(work->task);
-	kfree(work);
-}
-
-static int etnaviv_gem_userptr_get_pages(struct etnaviv_gem_object *etnaviv_obj)
-{
-	struct page **pvec = NULL;
-	struct get_pages_work *work;
-	struct mm_struct *mm;
-	int ret, pinned, npages = etnaviv_obj->base.size >> PAGE_SHIFT;
-
-	if (etnaviv_obj->userptr.work) {
-		if (IS_ERR(etnaviv_obj->userptr.work)) {
-			ret = PTR_ERR(etnaviv_obj->userptr.work);
-			etnaviv_obj->userptr.work = NULL;
-		} else {
-			ret = -EAGAIN;
-		}
-		return ret;
-	}
-
-	mm = get_task_mm(etnaviv_obj->userptr.task);
-	pinned = 0;
-	if (mm == current->mm) {
-		pvec = kvmalloc_array(npages, sizeof(struct page *), GFP_KERNEL);
-		if (!pvec) {
-			mmput(mm);
-			return -ENOMEM;
-		}
-
-		pinned = __get_user_pages_fast(etnaviv_obj->userptr.ptr, npages,
-					       !etnaviv_obj->userptr.ro, pvec);
-		if (pinned < 0) {
-			kvfree(pvec);
-			mmput(mm);
-			return pinned;
-		}
-
-		if (pinned == npages) {
-			etnaviv_obj->pages = pvec;
-			mmput(mm);
-			return 0;
-		}
-	}
-
-	release_pages(pvec, pinned, 0);
-	kvfree(pvec);
-
-	work = kmalloc(sizeof(*work), GFP_KERNEL);
-	if (!work) {
-		mmput(mm);
-		return -ENOMEM;
-	}
-
-	get_task_struct(current);
-	drm_gem_object_get(&etnaviv_obj->base);
-
-	work->mm = mm;
-	work->task = current;
-	work->etnaviv_obj = etnaviv_obj;
-
-	etnaviv_obj->userptr.work = &work->work;
-	INIT_WORK(&work->work, __etnaviv_gem_userptr_get_pages);
-
-	etnaviv_queue_work(etnaviv_obj->base.dev, &work->work);
-
-	return -EAGAIN;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void etnaviv_gem_userptr_release(struct etnaviv_gem_object *etnaviv_obj)
@@ -995,16 +722,9 @@ static void etnaviv_gem_userptr_release(struct etnaviv_gem_object *etnaviv_obj)
 	if (etnaviv_obj->pages) {
 		int npages = etnaviv_obj->base.size >> PAGE_SHIFT;
 
-<<<<<<< HEAD
 		release_pages(etnaviv_obj->pages, npages);
 		kvfree(etnaviv_obj->pages);
 	}
-=======
-		release_pages(etnaviv_obj->pages, npages, 0);
-		kvfree(etnaviv_obj->pages);
-	}
-	put_task_struct(etnaviv_obj->userptr.task);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int etnaviv_gem_userptr_mmap_obj(struct etnaviv_gem_object *etnaviv_obj,
@@ -1031,7 +751,6 @@ int etnaviv_gem_new_userptr(struct drm_device *dev, struct drm_file *file,
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	lockdep_set_class(&etnaviv_obj->lock, &etnaviv_userptr_lock_class);
 
 	etnaviv_obj->userptr.ptr = ptr;
@@ -1042,19 +761,6 @@ int etnaviv_gem_new_userptr(struct drm_device *dev, struct drm_file *file,
 
 	ret = drm_gem_handle_create(file, &etnaviv_obj->base, handle);
 
-=======
-	etnaviv_obj->userptr.ptr = ptr;
-	etnaviv_obj->userptr.task = current;
-	etnaviv_obj->userptr.ro = !(flags & ETNA_USERPTR_WRITE);
-	get_task_struct(current);
-
-	ret = etnaviv_gem_obj_add(dev, &etnaviv_obj->base);
-	if (ret)
-		goto unreference;
-
-	ret = drm_gem_handle_create(file, &etnaviv_obj->base, handle);
-unreference:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* drop reference from allocate - handle holds it now */
 	drm_gem_object_put_unlocked(&etnaviv_obj->base);
 	return ret;

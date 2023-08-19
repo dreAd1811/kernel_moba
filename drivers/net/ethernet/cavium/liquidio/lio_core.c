@@ -29,7 +29,6 @@
 /* OOM task polling interval */
 #define LIO_OOM_POLL_INTERVAL_MS 250
 
-<<<<<<< HEAD
 #define OCTNIC_MAX_SG  MAX_SKB_FRAGS
 
 /**
@@ -186,8 +185,6 @@ int lio_setup_glists(struct octeon_device *oct, struct lio *lio, int num_iqs)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int liquidio_set_feature(struct net_device *netdev, int cmd, u16 param1)
 {
 	struct lio *lio = GET_LIO(netdev);
@@ -250,11 +247,7 @@ void octeon_update_tx_completion_counters(void *buf, int reqtype,
 	*bytes_compl += skb->len;
 }
 
-<<<<<<< HEAD
 int octeon_report_sent_bytes_to_bql(void *buf, int reqtype)
-=======
-void octeon_report_sent_bytes_to_bql(void *buf, int reqtype)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct octnet_buf_free_info *finfo;
 	struct sk_buff *skb;
@@ -275,20 +268,13 @@ void octeon_report_sent_bytes_to_bql(void *buf, int reqtype)
 		break;
 
 	default:
-<<<<<<< HEAD
 		return 0;
-=======
-		return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	txq = netdev_get_tx_queue(skb->dev, skb_get_queue_mapping(skb));
 	netdev_tx_sent_queue(txq, skb->len);
-<<<<<<< HEAD
 
 	return netif_xmit_stopped(txq);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void liquidio_link_ctrl_cmd_completion(void *nctrl_ptr)
@@ -313,10 +299,7 @@ void liquidio_link_ctrl_cmd_completion(void *nctrl_ptr)
 	switch (nctrl->ncmd.s.cmd) {
 	case OCTNET_CMD_CHANGE_DEVFLAGS:
 	case OCTNET_CMD_SET_MULTI_LIST:
-<<<<<<< HEAD
 	case OCTNET_CMD_SET_UC_LIST:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case OCTNET_CMD_CHANGE_MACADDR:
@@ -337,18 +320,6 @@ void liquidio_link_ctrl_cmd_completion(void *nctrl_ptr)
 		}
 		break;
 
-<<<<<<< HEAD
-=======
-	case OCTNET_CMD_CHANGE_MTU:
-		/* If command is successful, change the MTU. */
-		netif_info(lio, probe, lio->netdev, "MTU Changed from %d to %d\n",
-			   netdev->mtu, nctrl->ncmd.s.param1);
-		netdev->mtu = nctrl->ncmd.s.param1;
-		queue_delayed_work(lio->link_status_wq.wq,
-				   &lio->link_status_wq.wk.work, 0);
-		break;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case OCTNET_CMD_GPIO_ACCESS:
 		netif_info(lio, probe, lio->netdev, "LED Flashing visual identification\n");
 
@@ -562,29 +533,12 @@ static void lio_update_txq_status(struct octeon_device *oct, int iq_num)
 		return;
 
 	lio = GET_LIO(netdev);
-<<<<<<< HEAD
 	if (__netif_subqueue_stopped(netdev, iq->q_index) &&
 	    lio->linfo.link.s.link_up &&
 	    (!octnet_iq_is_full(oct, iq_num))) {
 		netif_wake_subqueue(netdev, iq->q_index);
 		INCR_INSTRQUEUE_PKT_COUNT(lio->oct_dev, iq_num,
 					  tx_restart, 1);
-=======
-	if (netif_is_multiqueue(netdev)) {
-		if (__netif_subqueue_stopped(netdev, iq->q_index) &&
-		    lio->linfo.link.s.link_up &&
-		    (!octnet_iq_is_full(oct, iq_num))) {
-			netif_wake_subqueue(netdev, iq->q_index);
-			INCR_INSTRQUEUE_PKT_COUNT(lio->oct_dev, iq_num,
-						  tx_restart, 1);
-		}
-	} else if (netif_queue_stopped(netdev) &&
-		   lio->linfo.link.s.link_up &&
-		   (!octnet_iq_is_full(oct, lio->txq))) {
-		INCR_INSTRQUEUE_PKT_COUNT(lio->oct_dev, lio->txq,
-					  tx_restart, 1);
-		netif_wake_queue(netdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -652,10 +606,6 @@ liquidio_push_packet(u32 octeon_id __attribute__((unused)),
 	if (netdev) {
 		struct lio *lio = GET_LIO(netdev);
 		struct octeon_device *oct = lio->oct_dev;
-<<<<<<< HEAD
-=======
-		int packet_was_received;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Do not proceed if the interface is not in RUNNING state. */
 		if (!ifstate_check(lio, LIO_IFSTATE_RUNNING)) {
@@ -758,26 +708,11 @@ liquidio_push_packet(u32 octeon_id __attribute__((unused)),
 			__vlan_hwaccel_put_tag(skb, htons(ETH_P_8021Q), vtag);
 		}
 
-<<<<<<< HEAD
 		napi_gro_receive(napi, skb);
 
 		droq->stats.rx_bytes_received += len -
 			rh->r_dh.len * BYTES_PER_DHLEN_UNIT;
 		droq->stats.rx_pkts_received++;
-=======
-		packet_was_received = (napi_gro_receive(napi, skb) != GRO_DROP);
-
-		if (packet_was_received) {
-			droq->stats.rx_bytes_received += len;
-			droq->stats.rx_pkts_received++;
-		} else {
-			droq->stats.rx_dropped++;
-			netif_info(lio, rx_err, lio->netdev,
-				   "droq:%d  error rx_dropped:%llu\n",
-				   droq->q_no, droq->stats.rx_dropped);
-		}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		recv_buffer_free(skb);
 	}
@@ -840,13 +775,7 @@ static int liquidio_napi_poll(struct napi_struct *napi, int budget)
 	iq_no = droq->q_no;
 
 	/* Handle Droq descriptors */
-<<<<<<< HEAD
 	work_done = octeon_droq_process_poll_pkts(oct, droq, budget);
-=======
-	work_done = octeon_process_droq_poll_cmd(oct, droq->q_no,
-						 POLL_EVENT_PROCESS_PKTS,
-						 budget);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Flush the instruction queue */
 	iq = oct->instr_queue[iq_no];
@@ -877,12 +806,7 @@ static int liquidio_napi_poll(struct napi_struct *napi, int budget)
 		tx_done = 1;
 		napi_complete_done(napi, work_done);
 
-<<<<<<< HEAD
 		octeon_enable_irq(droq->oct_dev, droq->q_no);
-=======
-		octeon_process_droq_poll_cmd(droq->oct_dev, droq->q_no,
-					     POLL_EVENT_ENABLE_INTR, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 
@@ -1112,13 +1036,8 @@ int octeon_setup_interrupt(struct octeon_device *oct, u32 num_ioqs)
 	int num_ioq_vectors;
 	int irqret, err;
 
-<<<<<<< HEAD
 	if (oct->msix_on) {
 		oct->num_msix_irqs = num_ioqs;
-=======
-	oct->num_msix_irqs = num_ioqs;
-	if (oct->msix_on) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (OCTEON_CN23XX_PF(oct)) {
 			num_interrupts = MAX_IOQ_INTERRUPTS_PER_PF + 1;
 
@@ -1298,7 +1217,6 @@ int octeon_setup_interrupt(struct octeon_device *oct, u32 num_ioqs)
 	}
 	return 0;
 }
-<<<<<<< HEAD
 
 static void liquidio_change_mtu_completion(struct octeon_device *oct,
 					   u32 status, void *buf)
@@ -1759,5 +1677,3 @@ int liquidio_get_speed(struct lio *lio)
 
 	return retval;
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

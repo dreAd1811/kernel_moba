@@ -47,13 +47,10 @@
 	model = "Xunlong Orange Pi Plus / Plus 2";
 	compatible = "xunlong,orangepi-plus", "allwinner,sun8i-h3";
 
-<<<<<<< HEAD
 	aliases {
 		ethernet0 = &emac;
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	reg_gmac_3v3: gmac-3v3 {
 		compatible = "regulator-fixed";
 		regulator-name = "gmac-3v3";
@@ -81,7 +78,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
 &emac {
 	pinctrl-names = "default";
 	pinctrl-0 = <&emac_rgmii_pins>;
@@ -99,8 +95,6 @@
 	};
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &mmc2 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&mmc2_8bit_pins>;
@@ -119,11 +113,7 @@
 };
 
 &pio {
-<<<<<<< HEAD
 	usb3_vbus_pin_a: usb3_vbus_pin {
-=======
-	usb3_vbus_pin_a: usb3_vbus_pin@0 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pins = "PG11";
 		function = "gpio_out";
 	};

@@ -6,7 +6,6 @@
  *
  */
 
-<<<<<<< HEAD
 /**
  * split_key_len - Compute MDHA split key length for a given algorithm
  * @hash: Hashing algorithm selection, one of OP_ALG_ALGSEL_* - MD5, SHA1,
@@ -37,8 +36,6 @@ static inline u32 split_key_pad_len(u32 hash)
 	return ALIGN(split_key_len(hash), 16);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct split_key_result {
 	struct completion completion;
 	int err;

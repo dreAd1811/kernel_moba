@@ -155,7 +155,6 @@ static int wl12xx_sdio_power_on(struct wl12xx_sdio_glue *glue)
 	struct mmc_card *card = func->card;
 
 	ret = pm_runtime_get_sync(&card->dev);
-<<<<<<< HEAD
 	if (ret < 0) {
 		pm_runtime_put_noidle(&card->dev);
 		dev_err(glue->dev, "%s: failed to get_sync(%d)\n",
@@ -175,35 +174,10 @@ static int wl12xx_sdio_power_on(struct wl12xx_sdio_glue *glue)
 	sdio_release_host(func);
 
 	return 0;
-=======
-	if (ret) {
-		/*
-		 * Runtime PM might be temporarily disabled, or the device
-		 * might have a positive reference counter. Make sure it is
-		 * really powered on.
-		 */
-		ret = mmc_power_restore_host(card->host);
-		if (ret < 0) {
-			pm_runtime_put_sync(&card->dev);
-			goto out;
-		}
-	}
-
-	sdio_claim_host(func);
-	sdio_enable_func(func);
-	sdio_release_host(func);
-
-out:
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int wl12xx_sdio_power_off(struct wl12xx_sdio_glue *glue)
 {
-<<<<<<< HEAD
-=======
-	int ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct sdio_func *func = dev_to_sdio_func(glue->dev);
 	struct mmc_card *card = func->card;
 
@@ -211,22 +185,9 @@ static int wl12xx_sdio_power_off(struct wl12xx_sdio_glue *glue)
 	sdio_disable_func(func);
 	sdio_release_host(func);
 
-<<<<<<< HEAD
 	/* Let runtime PM know the card is powered off */
 	pm_runtime_put(&card->dev);
 	return 0;
-=======
-	/* Power off the card manually in case it wasn't powered off above */
-	ret = mmc_power_save_host(card->host);
-	if (ret < 0)
-		goto out;
-
-	/* Let runtime PM know the card is powered off */
-	pm_runtime_put_sync(&card->dev);
-
-out:
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int wl12xx_sdio_set_power(struct device *child, bool enable)
@@ -505,11 +466,7 @@ static void __exit wl1271_exit(void)
 module_init(wl1271_init);
 module_exit(wl1271_exit);
 
-<<<<<<< HEAD
 module_param(dump, bool, 0600);
-=======
-module_param(dump, bool, S_IRUSR | S_IWUSR);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_PARM_DESC(dump, "Enable sdio read/write dumps.");
 
 MODULE_LICENSE("GPL");

@@ -20,10 +20,7 @@
 #include <linux/io.h>
 #include <linux/serial_core.h>
 #include <linux/serial_reg.h>
-<<<<<<< HEAD
 #include <asm/setup.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void __iomem *serial8250_base;
 static unsigned int serial8250_reg_shift;

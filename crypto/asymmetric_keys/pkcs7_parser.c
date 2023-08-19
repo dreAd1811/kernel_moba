@@ -11,25 +11,18 @@
 
 #define pr_fmt(fmt) "PKCS7: "fmt
 #include <linux/kernel.h>
-<<<<<<< HEAD
 #include <linux/module.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/export.h>
 #include <linux/slab.h>
 #include <linux/err.h>
 #include <linux/oid_registry.h>
 #include <crypto/public_key.h>
 #include "pkcs7_parser.h"
-<<<<<<< HEAD
 #include "pkcs7.asn1.h"
 
 MODULE_DESCRIPTION("PKCS#7 parser");
 MODULE_AUTHOR("Red Hat, Inc.");
 MODULE_LICENSE("GPL");
-=======
-#include "pkcs7-asn1.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct pkcs7_parse_context {
 	struct pkcs7_message	*msg;		/* Message being constructed */
@@ -155,15 +148,10 @@ struct pkcs7_message *pkcs7_parse_message(const void *data, size_t datalen)
 	}
 
 	ret = pkcs7_check_authattrs(ctx->msg);
-<<<<<<< HEAD
 	if (ret < 0) {
 		msg = ERR_PTR(ret);
 		goto out;
 	}
-=======
-	if (ret < 0)
-		goto out;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	msg = ctx->msg;
 	ctx->msg = NULL;

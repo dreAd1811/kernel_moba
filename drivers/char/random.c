@@ -651,11 +651,7 @@ static void credit_entropy_bits(struct entropy_store *r, int nbits)
 		return;
 
 retry:
-<<<<<<< HEAD
 	entropy_count = orig = READ_ONCE(r->entropy_count);
-=======
-	entropy_count = orig = ACCESS_ONCE(r->entropy_count);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (nfrac < 0) {
 		/* Debit */
 		entropy_count += nfrac;
@@ -724,12 +720,8 @@ retry:
 		}
 
 		/* should we wake readers? */
-<<<<<<< HEAD
 		if (entropy_bits >= random_read_wakeup_bits &&
 		    wq_has_sleeper(&random_read_wait)) {
-=======
-		if (entropy_bits >= random_read_wakeup_bits) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			wake_up_interruptible(&random_read_wait);
 			kill_fasync(&fasync, SIGIO, POLL_IN);
 		}
@@ -785,7 +777,6 @@ static struct crng_state **crng_node_pool __read_mostly;
 #endif
 
 static void invalidate_batched_entropy(void);
-<<<<<<< HEAD
 static void numa_crng_init(void);
 
 static bool trust_cpu __ro_after_init = IS_ENABLED(CONFIG_RANDOM_TRUST_CPU);
@@ -794,16 +785,11 @@ static int __init parse_trust_cpu(char *arg)
 	return kstrtobool(arg, &trust_cpu);
 }
 early_param("random.trust_cpu", parse_trust_cpu);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void crng_initialize(struct crng_state *crng)
 {
 	int		i;
-<<<<<<< HEAD
 	int		arch_init = 1;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long	rv;
 
 	memcpy(&crng->state[0], "expand 32-byte k", 16);
@@ -814,7 +800,6 @@ static void crng_initialize(struct crng_state *crng)
 		_get_random_bytes(&crng->state[4], sizeof(__u32) * 12);
 	for (i = 4; i < 16; i++) {
 		if (!arch_get_random_seed_long(&rv) &&
-<<<<<<< HEAD
 		    !arch_get_random_long(&rv)) {
 			rv = random_get_entropy();
 			arch_init = 0;
@@ -827,12 +812,6 @@ static void crng_initialize(struct crng_state *crng)
 		crng_init = 2;
 		pr_notice("random: crng done (trusting CPU's manufacturer)\n");
 	}
-=======
-		    !arch_get_random_long(&rv))
-			rv = random_get_entropy();
-		crng->state[i] ^= rv;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	crng->init_time = jiffies - CRNG_RESEED_INTERVAL - 1;
 }
 
@@ -1109,10 +1088,6 @@ static ssize_t extract_crng_user(void __user *buf, size_t nbytes)
 struct timer_rand_state {
 	cycles_t last_time;
 	long last_delta, last_delta2;
-<<<<<<< HEAD
-=======
-	unsigned dont_count_entropy:1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define INIT_TIMER_RAND_STATE { INITIAL_JIFFIES, };
@@ -1163,11 +1138,6 @@ static void add_timer_randomness(struct timer_rand_state *state, unsigned num)
 	} sample;
 	long delta, delta2, delta3;
 
-<<<<<<< HEAD
-=======
-	preempt_disable();
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sample.jiffies = jiffies;
 	sample.cycles = random_get_entropy();
 	sample.num = num;
@@ -1179,7 +1149,6 @@ static void add_timer_randomness(struct timer_rand_state *state, unsigned num)
 	 * We take into account the first, second and third-order deltas
 	 * in order to make our estimate.
 	 */
-<<<<<<< HEAD
 	delta = sample.jiffies - state->last_time;
 	state->last_time = sample.jiffies;
 
@@ -1206,38 +1175,6 @@ static void add_timer_randomness(struct timer_rand_state *state, unsigned num)
 	 * and limit entropy entimate to 12 bits.
 	 */
 	credit_entropy_bits(r, min_t(int, fls(delta>>1), 11));
-=======
-
-	if (!state->dont_count_entropy) {
-		delta = sample.jiffies - state->last_time;
-		state->last_time = sample.jiffies;
-
-		delta2 = delta - state->last_delta;
-		state->last_delta = delta;
-
-		delta3 = delta2 - state->last_delta2;
-		state->last_delta2 = delta2;
-
-		if (delta < 0)
-			delta = -delta;
-		if (delta2 < 0)
-			delta2 = -delta2;
-		if (delta3 < 0)
-			delta3 = -delta3;
-		if (delta > delta2)
-			delta = delta2;
-		if (delta > delta3)
-			delta = delta3;
-
-		/*
-		 * delta is now minimum absolute delta.
-		 * Round down by 1 bit on general principles,
-		 * and limit entropy entimate to 12 bits.
-		 */
-		credit_entropy_bits(r, min_t(int, fls(delta>>1), 11));
-	}
-	preempt_enable();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void add_input_randomness(unsigned int type, unsigned int code,
@@ -1443,11 +1380,7 @@ static size_t account(struct entropy_store *r, size_t nbytes, int min,
 
 	/* Can we pull enough? */
 retry:
-<<<<<<< HEAD
 	entropy_count = orig = READ_ONCE(r->entropy_count);
-=======
-	entropy_count = orig = ACCESS_ONCE(r->entropy_count);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ibytes = nbytes;
 	/* never pull more than available */
 	have_bytes = entropy_count >> (ENTROPY_SHIFT + 3);
@@ -1738,7 +1671,6 @@ int wait_for_random_bytes(void)
 EXPORT_SYMBOL(wait_for_random_bytes);
 
 /*
-<<<<<<< HEAD
  * Returns whether or not the urandom pool has been seeded and thus guaranteed
  * to supply cryptographically secure random numbers. This applies to: the
  * /dev/urandom device, the get_random_bytes function, and the get_random_{u32,
@@ -1754,8 +1686,6 @@ bool rng_is_initialized(void)
 EXPORT_SYMBOL(rng_is_initialized);
 
 /*
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Add a callback function that will be invoked when the nonblocking
  * pool is initialised.
  *
@@ -1822,7 +1752,6 @@ EXPORT_SYMBOL(del_random_ready_callback);
  * key known by the NSA).  So it's useful if we need the speed, but
  * only if we're willing to trust the hardware manufacturer not to
  * have put in a back door.
-<<<<<<< HEAD
  *
  * Return number of bytes filled in.
  */
@@ -1848,32 +1777,6 @@ int __must_check get_random_bytes_arch(void *buf, int nbytes)
 }
 EXPORT_SYMBOL(get_random_bytes_arch);
 
-=======
- */
-void get_random_bytes_arch(void *buf, int nbytes)
-{
-	char *p = buf;
-
-	trace_get_random_bytes_arch(nbytes, _RET_IP_);
-	while (nbytes) {
-		unsigned long v;
-		int chunk = min(nbytes, (int)sizeof(unsigned long));
-
-		if (!arch_get_random_long(&v))
-			break;
-		
-		memcpy(p, &v, chunk);
-		p += chunk;
-		nbytes -= chunk;
-	}
-
-	if (nbytes)
-		get_random_bytes(p, nbytes);
-}
-EXPORT_SYMBOL(get_random_bytes_arch);
-
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * init_std_data - initialize pool with system data
  *
@@ -2001,31 +1904,18 @@ urandom_read(struct file *file, char __user *buf, size_t nbytes, loff_t *ppos)
 	return ret;
 }
 
-<<<<<<< HEAD
 static __poll_t
 random_poll(struct file *file, poll_table * wait)
 {
 	__poll_t mask;
-=======
-static unsigned int
-random_poll(struct file *file, poll_table * wait)
-{
-	unsigned int mask;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	poll_wait(file, &random_read_wait, wait);
 	poll_wait(file, &random_write_wait, wait);
 	mask = 0;
 	if (ENTROPY_BITS(&input_pool) >= random_read_wakeup_bits)
-<<<<<<< HEAD
 		mask |= EPOLLIN | EPOLLRDNORM;
 	if (ENTROPY_BITS(&input_pool) < random_write_wakeup_bits)
 		mask |= EPOLLOUT | EPOLLWRNORM;
-=======
-		mask |= POLLIN | POLLRDNORM;
-	if (ENTROPY_BITS(&input_pool) < random_write_wakeup_bits)
-		mask |= POLLOUT | POLLWRNORM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return mask;
 }
 
@@ -2329,19 +2219,11 @@ struct batched_entropy {
 
 /*
  * Get a random word for internal kernel use only. The quality of the random
-<<<<<<< HEAD
  * number is either as good as RDRAND or as good as /dev/urandom, with the
  * goal of being quite fast and not depleting entropy. In order to ensure
  * that the randomness provided by this function is okay, the function
  * wait_for_random_bytes() should be called and return 0 at least once
  * at any point prior.
-=======
- * number is good as /dev/urandom, but there is no backtrack protection, with
- * the goal of being quite fast and not depleting entropy. In order to ensure
- * that the randomness provided by this function is okay, the function
- * wait_for_random_bytes() should be called and return 0 at least once at any
- * point prior.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static DEFINE_PER_CPU(struct batched_entropy, batched_entropy_u64) = {
 	.batch_lock	= __SPIN_LOCK_UNLOCKED(batched_entropy_u64.lock),
@@ -2354,7 +2236,6 @@ u64 get_random_u64(void)
 	struct batched_entropy *batch;
 	static void *previous;
 
-<<<<<<< HEAD
 #if BITS_PER_LONG == 64
 	if (arch_get_random_long((unsigned long *)&ret))
 		return ret;
@@ -2364,8 +2245,6 @@ u64 get_random_u64(void)
 	    return ret;
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	warn_unseeded_randomness(&previous);
 
 	batch = raw_cpu_ptr(&batched_entropy_u64);
@@ -2390,12 +2269,9 @@ u32 get_random_u32(void)
 	struct batched_entropy *batch;
 	static void *previous;
 
-<<<<<<< HEAD
 	if (arch_get_random_int(&ret))
 		return ret;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	warn_unseeded_randomness(&previous);
 
 	batch = raw_cpu_ptr(&batched_entropy_u32);

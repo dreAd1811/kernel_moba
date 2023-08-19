@@ -431,13 +431,8 @@ int cxd2820r_get_tune_settings_t(struct dvb_frontend *fe,
 	struct dvb_frontend_tune_settings *s)
 {
 	s->min_delay_ms = 500;
-<<<<<<< HEAD
 	s->step_size = fe->ops.info.frequency_stepsize_hz * 2;
 	s->max_drift = (fe->ops.info.frequency_stepsize_hz * 2) + 1;
-=======
-	s->step_size = fe->ops.info.frequency_stepsize * 2;
-	s->max_drift = (fe->ops.info.frequency_stepsize * 2) + 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

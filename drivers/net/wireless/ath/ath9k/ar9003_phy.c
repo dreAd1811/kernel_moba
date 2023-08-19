@@ -1800,11 +1800,8 @@ static void ar9003_hw_spectral_scan_config(struct ath_hw *ah,
 
 static void ar9003_hw_spectral_scan_trigger(struct ath_hw *ah)
 {
-<<<<<<< HEAD
 	REG_SET_BIT(ah, AR_PHY_SPECTRAL_SCAN,
 		    AR_PHY_SPECTRAL_SCAN_ENABLE);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Activate spectral scan */
 	REG_SET_BIT(ah, AR_PHY_SPECTRAL_SCAN,
 		    AR_PHY_SPECTRAL_SCAN_ACTIVE);

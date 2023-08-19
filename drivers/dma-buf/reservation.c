@@ -46,11 +46,7 @@
  * write-side updates.
  */
 
-<<<<<<< HEAD
 DEFINE_WD_CLASS(reservation_ww_class);
-=======
-DEFINE_WW_CLASS(reservation_ww_class);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 EXPORT_SYMBOL(reservation_ww_class);
 
 struct lock_class_key reservation_seqcount_class;
@@ -108,12 +104,8 @@ reservation_object_add_shared_inplace(struct reservation_object *obj,
 				      struct reservation_object_list *fobj,
 				      struct dma_fence *fence)
 {
-<<<<<<< HEAD
 	struct dma_fence *signaled = NULL;
 	u32 i, signaled_idx;
-=======
-	u32 i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dma_fence_get(fence);
 
@@ -135,21 +127,17 @@ reservation_object_add_shared_inplace(struct reservation_object *obj,
 			dma_fence_put(old_fence);
 			return;
 		}
-<<<<<<< HEAD
 
 		if (!signaled && dma_fence_is_signaled(old_fence)) {
 			signaled = old_fence;
 			signaled_idx = i;
 		}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/*
 	 * memory barrier is added by write_seqcount_begin,
 	 * fobj->shared_count is protected by this lock too
 	 */
-<<<<<<< HEAD
 	if (signaled) {
 		RCU_INIT_POINTER(fobj->shared[signaled_idx], fence);
 	} else {
@@ -162,13 +150,6 @@ reservation_object_add_shared_inplace(struct reservation_object *obj,
 	preempt_enable();
 
 	dma_fence_put(signaled);
-=======
-	RCU_INIT_POINTER(fobj->shared[fobj->shared_count], fence);
-	fobj->shared_count++;
-
-	write_seqcount_end(&obj->seq);
-	preempt_enable();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void
@@ -177,12 +158,7 @@ reservation_object_add_shared_replace(struct reservation_object *obj,
 				      struct reservation_object_list *fobj,
 				      struct dma_fence *fence)
 {
-<<<<<<< HEAD
 	unsigned i, j, k;
-=======
-	unsigned i;
-	struct dma_fence *old_fence = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dma_fence_get(fence);
 
@@ -198,19 +174,12 @@ reservation_object_add_shared_replace(struct reservation_object *obj,
 	 * references from the old struct are carried over to
 	 * the new.
 	 */
-<<<<<<< HEAD
 	for (i = 0, j = 0, k = fobj->shared_max; i < old->shared_count; ++i) {
-=======
-	fobj->shared_count = old->shared_count;
-
-	for (i = 0; i < old->shared_count; ++i) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct dma_fence *check;
 
 		check = rcu_dereference_protected(old->shared[i],
 						reservation_object_held(obj));
 
-<<<<<<< HEAD
 		if (check->context == fence->context ||
 		    dma_fence_is_signaled(check))
 			RCU_INIT_POINTER(fobj->shared[--k], check);
@@ -220,18 +189,6 @@ reservation_object_add_shared_replace(struct reservation_object *obj,
 	fobj->shared_count = j;
 	RCU_INIT_POINTER(fobj->shared[fobj->shared_count], fence);
 	fobj->shared_count++;
-=======
-		if (!old_fence && check->context == fence->context) {
-			old_fence = check;
-			RCU_INIT_POINTER(fobj->shared[i], fence);
-		} else
-			RCU_INIT_POINTER(fobj->shared[i], check);
-	}
-	if (!old_fence) {
-		RCU_INIT_POINTER(fobj->shared[fobj->shared_count], fence);
-		fobj->shared_count++;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 done:
 	preempt_disable();
@@ -244,7 +201,6 @@ done:
 	write_seqcount_end(&obj->seq);
 	preempt_enable();
 
-<<<<<<< HEAD
 	if (!old)
 		return;
 
@@ -257,12 +213,6 @@ done:
 		dma_fence_put(f);
 	}
 	kfree_rcu(old, rcu);
-=======
-	if (old)
-		kfree_rcu(old, rcu);
-
-	dma_fence_put(old_fence);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -281,16 +231,9 @@ void reservation_object_add_shared_fence(struct reservation_object *obj,
 	old = reservation_object_get_list(obj);
 	obj->staged = NULL;
 
-<<<<<<< HEAD
 	if (!fobj)
 		reservation_object_add_shared_inplace(obj, old, fence);
 	else
-=======
-	if (!fobj) {
-		BUG_ON(old->shared_count >= old->shared_max);
-		reservation_object_add_shared_inplace(obj, old, fence);
-	} else
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reservation_object_add_shared_replace(obj, old, fobj, fence);
 }
 EXPORT_SYMBOL(reservation_object_add_shared_fence);
@@ -391,11 +334,7 @@ retry:
 				continue;
 			}
 
-<<<<<<< HEAD
 			rcu_assign_pointer(dst_list->shared[dst_list->shared_count++], fence);
-=======
-			dst_list->shared[dst_list->shared_count++] = fence;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	} else {
 		dst_list = NULL;
@@ -435,14 +374,9 @@ EXPORT_SYMBOL(reservation_object_copy_fences);
  * @pshared: the array of shared fence ptrs returned (array is krealloc'd to
  * the required size, and must be freed by caller)
  *
-<<<<<<< HEAD
  * Retrieve all fences from the reservation object. If the pointer for the
  * exclusive fence is not specified the fence is put into the array of the
  * shared fences as well. Returns either zero or -ENOMEM.
-=======
- * RETURNS
- * Zero or -errno
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 int reservation_object_get_fences_rcu(struct reservation_object *obj,
 				      struct dma_fence **pfence_excl,
@@ -456,13 +390,8 @@ int reservation_object_get_fences_rcu(struct reservation_object *obj,
 
 	do {
 		struct reservation_object_list *fobj;
-<<<<<<< HEAD
 		unsigned int i, seq;
 		size_t sz = 0;
-=======
-		unsigned seq;
-		unsigned int i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		shared_count = i = 0;
 
@@ -474,7 +403,6 @@ int reservation_object_get_fences_rcu(struct reservation_object *obj,
 			goto unlock;
 
 		fobj = rcu_dereference(obj->fence);
-<<<<<<< HEAD
 		if (fobj)
 			sz += sizeof(*shared) * fobj->shared_max;
 
@@ -483,11 +411,6 @@ int reservation_object_get_fences_rcu(struct reservation_object *obj,
 
 		if (sz) {
 			struct dma_fence **nshared;
-=======
-		if (fobj) {
-			struct dma_fence **nshared;
-			size_t sz = sizeof(*shared) * fobj->shared_max;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			nshared = krealloc(shared, sz,
 					   GFP_NOWAIT | __GFP_NOWARN);
@@ -507,18 +430,12 @@ int reservation_object_get_fences_rcu(struct reservation_object *obj,
 				break;
 			}
 			shared = nshared;
-<<<<<<< HEAD
 			shared_count = fobj ? fobj->shared_count : 0;
-=======
-			shared_count = fobj->shared_count;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			for (i = 0; i < shared_count; ++i) {
 				shared[i] = rcu_dereference(fobj->shared[i]);
 				if (!dma_fence_get_rcu(shared[i]))
 					break;
 			}
-<<<<<<< HEAD
 
 			if (!pfence_excl && fence_excl) {
 				shared[i] = fence_excl;
@@ -526,8 +443,6 @@ int reservation_object_get_fences_rcu(struct reservation_object *obj,
 				++i;
 				++shared_count;
 			}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		if (i != shared_count || read_seqcount_retry(&obj->seq, seq)) {
@@ -549,12 +464,8 @@ unlock:
 
 	*pshared_count = shared_count;
 	*pshared = shared;
-<<<<<<< HEAD
 	if (pfence_excl)
 		*pfence_excl = fence_excl;
-=======
-	*pfence_excl = fence_excl;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }

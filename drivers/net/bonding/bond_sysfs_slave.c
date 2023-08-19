@@ -25,13 +25,8 @@ const struct slave_attribute slave_attr_##_name = {		\
 		 .mode = _mode },				\
 	.show	= _show,					\
 };
-<<<<<<< HEAD
 #define SLAVE_ATTR_RO(_name)					\
 	SLAVE_ATTR(_name, 0444, _name##_show)
-=======
-#define SLAVE_ATTR_RO(_name) \
-	SLAVE_ATTR(_name, S_IRUGO, _name##_show)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static ssize_t state_show(struct slave *slave, char *buf)
 {
@@ -158,15 +153,8 @@ int bond_sysfs_slave_add(struct slave *slave)
 
 	err = kobject_init_and_add(&slave->kobj, &slave_ktype,
 				   &(slave->dev->dev.kobj), "bonding_slave");
-<<<<<<< HEAD
 	if (err)
 		return err;
-=======
-	if (err) {
-		kobject_put(&slave->kobj);
-		return err;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (a = slave_attrs; *a; ++a) {
 		err = sysfs_create_file(&slave->kobj, &((*a)->attr));

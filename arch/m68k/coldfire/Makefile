@@ -35,12 +35,8 @@ obj-$(CONFIG_NETtel)	+= nettel.o
 obj-$(CONFIG_CLEOPATRA)	+= nettel.o
 obj-$(CONFIG_FIREBEE)	+= firebee.o
 obj-$(CONFIG_MCF8390)	+= mcf8390.o
-<<<<<<< HEAD
 obj-$(CONFIG_AMCORE)	+= amcore.o
 obj-$(CONFIG_STMARK2)	+= stmark2.o
-=======
-obj-$(CONFIG_AMCORE)    += amcore.o
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 obj-$(CONFIG_PCI)	+= pci.o
 

@@ -308,10 +308,7 @@ static void lapbeth_setup(struct net_device *dev)
 	dev->netdev_ops	     = &lapbeth_netdev_ops;
 	dev->needs_free_netdev = true;
 	dev->type            = ARPHRD_X25;
-<<<<<<< HEAD
 	dev->hard_header_len = 3;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev->mtu             = 1000;
 	dev->addr_len        = 0;
 }
@@ -332,17 +329,6 @@ static int lapbeth_new_device(struct net_device *dev)
 	if (!ndev)
 		goto out;
 
-<<<<<<< HEAD
-=======
-	/* When transmitting data:
-	 * first this driver removes a pseudo header of 1 byte,
-	 * then the lapb module prepends an LAPB header of at most 3 bytes,
-	 * then this driver prepends a length field of 2 bytes,
-	 * then the underlying Ethernet device prepends its own header.
-	 */
-	ndev->hard_header_len = -1 + 3 + 2 + dev->hard_header_len;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	lapbeth = netdev_priv(ndev);
 	lapbeth->axdev = ndev;
 

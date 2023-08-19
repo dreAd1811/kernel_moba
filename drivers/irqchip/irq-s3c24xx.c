@@ -156,11 +156,7 @@ static int s3c_irq_type(struct irq_data *data, unsigned int type)
 		irq_set_handler(data->irq, handle_level_irq);
 		break;
 	default:
-<<<<<<< HEAD
 		pr_err("No such irq type %d\n", type);
-=======
-		pr_err("No such irq type %d", type);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -208,11 +204,7 @@ static int s3c_irqext_type_set(void __iomem *gpcon_reg,
 			break;
 
 		default:
-<<<<<<< HEAD
 			pr_err("No such irq type %d\n", type);
-=======
-			pr_err("No such irq type %d", type);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EINVAL;
 	}
 
@@ -258,11 +250,7 @@ static int s3c_irqext0_type(struct irq_data *data, unsigned int type)
 	void __iomem *gpcon_reg;
 	unsigned long gpcon_offset, extint_offset;
 
-<<<<<<< HEAD
 	if (data->hwirq <= 3) {
-=======
-	if ((data->hwirq >= 0) && (data->hwirq <= 3)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		gpcon_reg = S3C2410_GPFCON;
 		extint_reg = S3C24XX_EXTINT0;
 		gpcon_offset = (data->hwirq) * 2;
@@ -1273,11 +1261,7 @@ static int __init s3c_init_intc_of(struct device_node *np,
 			return -ENOMEM;
 
 		intc->domain = domain;
-<<<<<<< HEAD
 		intc->irqs = kcalloc(32, sizeof(struct s3c_irq_data),
-=======
-		intc->irqs = kzalloc(sizeof(struct s3c_irq_data) * 32,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     GFP_KERNEL);
 		if (!intc->irqs) {
 			kfree(intc);

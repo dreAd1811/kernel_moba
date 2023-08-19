@@ -25,15 +25,9 @@ static bool node_has_compatible(struct device_node *pp)
 	return of_get_property(pp, "compatible", NULL);
 }
 
-<<<<<<< HEAD
 static int parse_fixed_partitions(struct mtd_info *master,
 				  const struct mtd_partition **pparts,
 				  struct mtd_part_parser_data *data)
-=======
-static int parse_ofpart_partitions(struct mtd_info *master,
-				   const struct mtd_partition **pparts,
-				   struct mtd_part_parser_data *data)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mtd_partition *parts;
 	struct device_node *mtd_node;
@@ -77,11 +71,7 @@ static int parse_ofpart_partitions(struct mtd_info *master,
 	if (nr_parts == 0)
 		return 0;
 
-<<<<<<< HEAD
 	parts = kcalloc(nr_parts, sizeof(*parts), GFP_KERNEL);
-=======
-	parts = kzalloc(nr_parts * sizeof(*parts), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!parts)
 		return -ENOMEM;
 
@@ -150,7 +140,6 @@ ofpart_none:
 	return ret;
 }
 
-<<<<<<< HEAD
 static const struct of_device_id parse_ofpart_match_table[] = {
 	{ .compatible = "fixed-partitions" },
 	{},
@@ -161,11 +150,6 @@ static struct mtd_part_parser ofpart_parser = {
 	.parse_fn = parse_fixed_partitions,
 	.name = "fixed-partitions",
 	.of_match_table = parse_ofpart_match_table,
-=======
-static struct mtd_part_parser ofpart_parser = {
-	.parse_fn = parse_ofpart_partitions,
-	.name = "ofpart",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int parse_ofoldpart_partitions(struct mtd_info *master,
@@ -193,11 +177,7 @@ static int parse_ofoldpart_partitions(struct mtd_info *master,
 
 	nr_parts = plen / sizeof(part[0]);
 
-<<<<<<< HEAD
 	parts = kcalloc(nr_parts, sizeof(*parts), GFP_KERNEL);
-=======
-	parts = kzalloc(nr_parts * sizeof(*parts), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!parts)
 		return -ENOMEM;
 
@@ -256,8 +236,5 @@ MODULE_AUTHOR("Vitaly Wool, David Gibson");
  * with the same name. Since we provide the ofoldpart parser, we should have
  * the corresponding alias.
  */
-<<<<<<< HEAD
 MODULE_ALIAS("fixed-partitions");
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_ALIAS("ofoldpart");

@@ -9,18 +9,12 @@
  * your option) any later version.
  */
 
-<<<<<<< HEAD
 #include <linux/dmi.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/init.h>
 #include <linux/syscore_ops.h>
 
 #include <asm/dma.h>
-<<<<<<< HEAD
 #include <asm/x86_init.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * This module just handles suspend/resume issues with the
@@ -57,7 +51,6 @@ static struct syscore_ops i8237_syscore_ops = {
 
 static int __init i8237A_init_ops(void)
 {
-<<<<<<< HEAD
 	/*
 	 * From SKL PCH onwards, the legacy DMA device is removed in which the
 	 * I/O ports (81h-83h, 87h, 89h-8Bh, 8Fh) related to it are removed
@@ -81,8 +74,6 @@ static int __init i8237A_init_ops(void)
 	if (x86_pnpbios_disabled() && dmi_get_bios_year() >= 2017)
 		return -ENODEV;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	register_syscore_ops(&i8237_syscore_ops);
 	return 0;
 }

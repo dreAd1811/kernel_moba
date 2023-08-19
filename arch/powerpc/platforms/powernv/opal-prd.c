@@ -147,21 +147,13 @@ static bool opal_msg_queue_empty(void)
 	return ret;
 }
 
-<<<<<<< HEAD
 static __poll_t opal_prd_poll(struct file *file,
-=======
-static unsigned int opal_prd_poll(struct file *file,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct poll_table_struct *wait)
 {
 	poll_wait(file, &opal_prd_msg_wait, wait);
 
 	if (!opal_msg_queue_empty())
-<<<<<<< HEAD
 		return EPOLLIN | EPOLLRDNORM;
-=======
-		return POLLIN | POLLRDNORM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

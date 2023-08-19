@@ -79,7 +79,6 @@ struct stop_sprs {
 	u64 mmcra;
 };
 
-<<<<<<< HEAD
 #define PNV_IDLE_NAME_LEN    16
 struct pnv_idle_states_t {
 	char name[PNV_IDLE_NAME_LEN];
@@ -93,8 +92,6 @@ struct pnv_idle_states_t {
 
 extern struct pnv_idle_states_t *pnv_idle_states;
 extern int nr_pnv_idle_states;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern u32 pnv_fastsleep_workaround_at_entry[];
 extern u32 pnv_fastsleep_workaround_at_exit[];
 

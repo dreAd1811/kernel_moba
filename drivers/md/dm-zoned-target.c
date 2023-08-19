@@ -51,21 +51,12 @@ struct dmz_target {
 	struct dmz_reclaim	*reclaim;
 
 	/* For chunk work */
-<<<<<<< HEAD
 	struct radix_tree_root	chunk_rxtree;
 	struct workqueue_struct *chunk_wq;
 	struct mutex		chunk_lock;
 
 	/* For cloned BIOs to zones */
 	struct bio_set		bio_set;
-=======
-	struct mutex		chunk_lock;
-	struct radix_tree_root	chunk_rxtree;
-	struct workqueue_struct *chunk_wq;
-
-	/* For cloned BIOs to zones */
-	struct bio_set		*bio_set;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* For flush */
 	spinlock_t		flush_lock;
@@ -88,11 +79,6 @@ static inline void dmz_bio_endio(struct bio *bio, blk_status_t status)
 
 	if (status != BLK_STS_OK && bio->bi_status == BLK_STS_OK)
 		bio->bi_status = status;
-<<<<<<< HEAD
-=======
-	if (bio->bi_status != BLK_STS_OK)
-		bioctx->target->dev->flags |= DMZ_CHECK_BDEV;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (atomic_dec_and_test(&bioctx->ref)) {
 		struct dm_zone *zone = bioctx->zone;
@@ -132,11 +118,7 @@ static int dmz_submit_bio(struct dmz_target *dmz, struct dm_zone *zone,
 	struct dmz_bioctx *bioctx = dm_per_bio_data(bio, sizeof(struct dmz_bioctx));
 	struct bio *clone;
 
-<<<<<<< HEAD
 	clone = bio_clone_fast(bio, GFP_NOIO, &dmz->bio_set);
-=======
-	clone = bio_clone_fast(bio, GFP_NOIO, dmz->bio_set);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!clone)
 		return -ENOMEM;
 
@@ -582,17 +564,12 @@ out:
 }
 
 /*
-<<<<<<< HEAD
  * Check the backing device availability. If it's on the way out,
-=======
- * Check if the backing device is being removed. If it's on the way out,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * start failing I/O. Reclaim and metadata components also call this
  * function to cleanly abort operation in the event of such failure.
  */
 bool dmz_bdev_is_dying(struct dmz_dev *dmz_dev)
 {
-<<<<<<< HEAD
 	struct gendisk *disk;
 
 	if (!(dmz_dev->flags & DMZ_BDEV_DYING)) {
@@ -607,51 +584,12 @@ bool dmz_bdev_is_dying(struct dmz_dev *dmz_dev)
 				dmz_dev->flags |= DMZ_BDEV_DYING;
 			}
 		}
-=======
-	if (dmz_dev->flags & DMZ_BDEV_DYING)
-		return true;
-
-	if (dmz_dev->flags & DMZ_CHECK_BDEV)
-		return !dmz_check_bdev(dmz_dev);
-
-	if (blk_queue_dying(bdev_get_queue(dmz_dev->bdev))) {
-		dmz_dev_warn(dmz_dev, "Backing device queue dying");
-		dmz_dev->flags |= DMZ_BDEV_DYING;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return dmz_dev->flags & DMZ_BDEV_DYING;
 }
 
 /*
-<<<<<<< HEAD
-=======
- * Check the backing device availability. This detects such events as
- * backing device going offline due to errors, media removals, etc.
- * This check is less efficient than dmz_bdev_is_dying() and should
- * only be performed as a part of error handling.
- */
-bool dmz_check_bdev(struct dmz_dev *dmz_dev)
-{
-	struct gendisk *disk;
-
-	dmz_dev->flags &= ~DMZ_CHECK_BDEV;
-
-	if (dmz_bdev_is_dying(dmz_dev))
-		return false;
-
-	disk = dmz_dev->bdev->bd_disk;
-	if (disk->fops->check_events &&
-	    disk->fops->check_events(disk, 0) & DISK_EVENT_MEDIA_CHANGE) {
-		dmz_dev_warn(dmz_dev, "Backing device offline");
-		dmz_dev->flags |= DMZ_BDEV_DYING;
-	}
-
-	return !(dmz_dev->flags & DMZ_BDEV_DYING);
-}
-
-/*
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Process a new BIO.
  */
 static int dmz_map(struct dm_target *ti, struct bio *bio)
@@ -829,11 +767,7 @@ static int dmz_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	}
 
 	/* Set target (no write same support) */
-<<<<<<< HEAD
 	ti->max_io_len = dev->zone_nr_sectors << 9;
-=======
-	ti->max_io_len = dev->zone_nr_sectors;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ti->num_flush_bios = 1;
 	ti->num_discard_bios = 1;
 	ti->num_write_zeroes_bios = 1;
@@ -846,16 +780,9 @@ static int dmz_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	ti->len = (sector_t)dmz_nr_chunks(dmz->metadata) << dev->zone_nr_sectors_shift;
 
 	/* Zone BIO */
-<<<<<<< HEAD
 	ret = bioset_init(&dmz->bio_set, DMZ_MIN_BIOS, 0, 0);
 	if (ret) {
 		ti->error = "Create BIO set failed";
-=======
-	dmz->bio_set = bioset_create(DMZ_MIN_BIOS, 0, 0);
-	if (!dmz->bio_set) {
-		ti->error = "Create BIO set failed";
-		ret = -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_meta;
 	}
 
@@ -900,12 +827,8 @@ err_fwq:
 err_cwq:
 	destroy_workqueue(dmz->chunk_wq);
 err_bio:
-<<<<<<< HEAD
 	mutex_destroy(&dmz->chunk_lock);
 	bioset_exit(&dmz->bio_set);
-=======
-	bioset_free(dmz->bio_set);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_meta:
 	dmz_dtr_metadata(dmz->metadata);
 err_dev:
@@ -935,19 +858,12 @@ static void dmz_dtr(struct dm_target *ti)
 
 	dmz_dtr_metadata(dmz->metadata);
 
-<<<<<<< HEAD
 	bioset_exit(&dmz->bio_set);
 
 	dmz_put_zoned_device(ti);
 
 	mutex_destroy(&dmz->chunk_lock);
 
-=======
-	bioset_free(dmz->bio_set);
-
-	dmz_put_zoned_device(ti);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(dmz);
 }
 
@@ -982,22 +898,12 @@ static void dmz_io_hints(struct dm_target *ti, struct queue_limits *limits)
 /*
  * Pass on ioctl to the backend device.
  */
-<<<<<<< HEAD
 static int dmz_prepare_ioctl(struct dm_target *ti, struct block_device **bdev)
 {
 	struct dmz_target *dmz = ti->private;
 
 	if (dmz_bdev_is_dying(dmz->dev))
 		return -ENODEV;
-=======
-static int dmz_prepare_ioctl(struct dm_target *ti,
-			     struct block_device **bdev, fmode_t *mode)
-{
-	struct dmz_target *dmz = ti->private;
-
-	if (!dmz_check_bdev(dmz->dev))
-		return -EIO;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	*bdev = dmz->dev->bdev;
 

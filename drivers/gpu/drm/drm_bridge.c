@@ -67,25 +67,12 @@ static LIST_HEAD(bridge_list);
  * drm_bridge_add - add the given bridge to the global bridge list
  *
  * @bridge: bridge control structure
-<<<<<<< HEAD
  */
 void drm_bridge_add(struct drm_bridge *bridge)
-=======
- *
- * RETURNS:
- * Unconditionally returns Zero.
- */
-int drm_bridge_add(struct drm_bridge *bridge)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	mutex_lock(&bridge_lock);
 	list_add_tail(&bridge->list, &bridge_list);
 	mutex_unlock(&bridge_lock);
-<<<<<<< HEAD
-=======
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(drm_bridge_add);
 
@@ -170,35 +157,6 @@ void drm_bridge_detach(struct drm_bridge *bridge)
 }
 
 /**
-<<<<<<< HEAD
-=======
- * drm_bridge_connector_init - call bridge's connector_init callback to allow
- *                     the bridge to update connector's behavior.
- * @bridge: bridge control structure
- * @connector: connector control structure
- *
- * Calls ->connector_init() &drm_bridge_funcs op for the bridge.
- *
- * RETURNS:
- * Zero on success, error code on failure
- */
-int drm_bridge_connector_init(struct drm_bridge *bridge,
-	struct drm_connector *connector)
-{
-	int ret = 0;
-
-	if (!bridge || !connector)
-		return -EINVAL;
-
-	if (bridge->funcs->connector_init)
-		ret = bridge->funcs->connector_init(bridge, connector);
-
-	return ret;
-}
-EXPORT_SYMBOL(drm_bridge_connector_init);
-
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * DOC: bridge callbacks
  *
  * The &drm_bridge_funcs ops are populated by the bridge driver. The DRM

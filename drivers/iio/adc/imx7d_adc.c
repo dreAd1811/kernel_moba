@@ -412,10 +412,6 @@ static int imx7d_adc_reg_access(struct iio_dev *indio_dev,
 }
 
 static const struct iio_info imx7d_adc_iio_info = {
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read_raw = &imx7d_adc_read_raw,
 	.debugfs_reg_access = &imx7d_adc_reg_access,
 };
@@ -608,9 +604,5 @@ static struct platform_driver imx7d_adc_driver = {
 module_platform_driver(imx7d_adc_driver);
 
 MODULE_AUTHOR("Haibo Chen <haibo.chen@freescale.com>");
-<<<<<<< HEAD
 MODULE_DESCRIPTION("Freescale IMX7D ADC driver");
-=======
-MODULE_DESCRIPTION("Freeacale IMX7D ADC driver");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_LICENSE("GPL v2");

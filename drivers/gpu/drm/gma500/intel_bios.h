@@ -34,11 +34,7 @@ struct vbt_header {
 	u8 reserved0;
 	u32 bdb_offset;			/**< from beginning of VBT */
 	u32 aim_offset[4];		/**< from beginning of VBT */
-<<<<<<< HEAD
 } __packed;
-=======
-} __attribute__((packed));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 struct bdb_header {
@@ -65,11 +61,7 @@ struct vbios_data {
 	u8 rsvd4; /* popup memory size */
 	u8 resize_pci_bios;
 	u8 rsvd5; /* is crt already on ddc2 */
-<<<<<<< HEAD
 } __packed;
-=======
-} __attribute__((packed));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * There are several types of BIOS data blocks (BDBs), each block has
@@ -141,11 +133,7 @@ struct bdb_general_features {
 	u8 dp_ssc_enb:1;	/* PCH attached eDP supports SSC */
 	u8 dp_ssc_freq:1;	/* SSC freq for PCH attached eDP */
 	u8 rsvd11:3; /* finish byte */
-<<<<<<< HEAD
 } __packed;
-=======
-} __attribute__((packed));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* pre-915 */
 #define GPIO_PIN_DVI_LVDS	0x03 /* "DVI/LVDS DDC GPIO pins" */
@@ -225,11 +213,7 @@ struct child_device_config {
 	u8  dvo2_wiring;
 	u16 extended_type;
 	u8  dvo_function;
-<<<<<<< HEAD
 } __packed;
-=======
-} __attribute__((packed));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 struct bdb_general_definitions {
@@ -272,11 +256,7 @@ struct bdb_lvds_options {
 	u8 lvds_edid:1;
 	u8 rsvd2:1;
 	u8 rsvd4;
-<<<<<<< HEAD
 } __packed;
-=======
-} __attribute__((packed));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct bdb_lvds_backlight {
 	u8 type:2;
@@ -288,11 +268,7 @@ struct bdb_lvds_backlight {
 	u8 i2caddr;
 	u8 brightnesscmd;
 	/*FIXME: more...*/
-<<<<<<< HEAD
 } __packed;
-=======
-} __attribute__((packed));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* LFP pointer table contains entries to the struct below */
 struct bdb_lvds_lfp_data_ptr {
@@ -302,20 +278,12 @@ struct bdb_lvds_lfp_data_ptr {
 	u8 dvo_table_size;
 	u16 panel_pnp_id_offset;
 	u8 pnp_table_size;
-<<<<<<< HEAD
 } __packed;
-=======
-} __attribute__((packed));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct bdb_lvds_lfp_data_ptrs {
 	u8 lvds_entries; /* followed by one or more lvds_data_ptr structs */
 	struct bdb_lvds_lfp_data_ptr ptr[16];
-<<<<<<< HEAD
 } __packed;
-=======
-} __attribute__((packed));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* LFP data has 3 blocks per entry */
 struct lvds_fp_timing {
@@ -332,11 +300,7 @@ struct lvds_fp_timing {
 	u32 pfit_reg;
 	u32 pfit_reg_val;
 	u16 terminator;
-<<<<<<< HEAD
 } __packed;
-=======
-} __attribute__((packed));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct lvds_dvo_timing {
 	u16 clock;		/**< In 10khz */
@@ -364,11 +328,7 @@ struct lvds_dvo_timing {
 	u8 vsync_positive:1;
 	u8 hsync_positive:1;
 	u8 rsvd2:1;
-<<<<<<< HEAD
 } __packed;
-=======
-} __attribute__((packed));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct lvds_pnp_id {
 	u16 mfg_name;
@@ -376,29 +336,17 @@ struct lvds_pnp_id {
 	u32 serial;
 	u8 mfg_week;
 	u8 mfg_year;
-<<<<<<< HEAD
 } __packed;
-=======
-} __attribute__((packed));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct bdb_lvds_lfp_data_entry {
 	struct lvds_fp_timing fp_timing;
 	struct lvds_dvo_timing dvo_timing;
 	struct lvds_pnp_id pnp_id;
-<<<<<<< HEAD
 } __packed;
 
 struct bdb_lvds_lfp_data {
 	struct bdb_lvds_lfp_data_entry data[16];
 } __packed;
-=======
-} __attribute__((packed));
-
-struct bdb_lvds_lfp_data {
-	struct bdb_lvds_lfp_data_entry data[16];
-} __attribute__((packed));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct aimdb_header {
 	char signature[16];
@@ -406,20 +354,12 @@ struct aimdb_header {
 	u16 aimdb_version;
 	u16 aimdb_header_size;
 	u16 aimdb_size;
-<<<<<<< HEAD
 } __packed;
-=======
-} __attribute__((packed));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct aimdb_block {
 	u8 aimdb_id;
 	u16 aimdb_size;
-<<<<<<< HEAD
 } __packed;
-=======
-} __attribute__((packed));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct vch_panel_data {
 	u16 fp_timing_offset;
@@ -430,20 +370,12 @@ struct vch_panel_data {
 	u8 text_fitting_size;
 	u16 graphics_fitting_offset;
 	u8 graphics_fitting_size;
-<<<<<<< HEAD
 } __packed;
-=======
-} __attribute__((packed));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct vch_bdb_22 {
 	struct aimdb_block aimdb_block;
 	struct vch_panel_data panels[16];
-<<<<<<< HEAD
 } __packed;
-=======
-} __attribute__((packed));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct bdb_sdvo_lvds_options {
 	u8 panel_backlight;
@@ -459,11 +391,7 @@ struct bdb_sdvo_lvds_options {
 	u8 panel_misc_bits_2;
 	u8 panel_misc_bits_3;
 	u8 panel_misc_bits_4;
-<<<<<<< HEAD
 } __packed;
-=======
-} __attribute__((packed));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define BDB_DRIVER_FEATURE_NO_LVDS		0
 #define BDB_DRIVER_FEATURE_INT_LVDS		1
@@ -508,11 +436,7 @@ struct bdb_driver_features {
 
 	u8 hdmi_termination;
 	u8 custom_vbt_version;
-<<<<<<< HEAD
 } __packed;
-=======
-} __attribute__((packed));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define EDP_18BPP	0
 #define EDP_24BPP	1

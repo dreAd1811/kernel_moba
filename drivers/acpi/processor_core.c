@@ -205,10 +205,7 @@ phys_cpuid_t acpi_get_phys_id(acpi_handle handle, int type, u32 acpi_id)
 
 	return phys_id;
 }
-<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(acpi_get_phys_id);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int acpi_map_cpuid(phys_cpuid_t phys_id, u32 acpi_id)
 {

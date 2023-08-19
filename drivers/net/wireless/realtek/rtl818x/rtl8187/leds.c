@@ -146,11 +146,7 @@ static int rtl8187_register_led(struct ieee80211_hw *dev,
 	led->dev = dev;
 	led->ledpin = ledpin;
 	led->is_radio = is_radio;
-<<<<<<< HEAD
 	strncpy(led->name, name, sizeof(led->name));
-=======
-	strlcpy(led->name, name, sizeof(led->name));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	led->led_dev.name = led->name;
 	led->led_dev.default_trigger = default_trigger;

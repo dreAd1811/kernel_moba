@@ -355,22 +355,15 @@ static int axxia_i2c_xfer_msg(struct axxia_i2c_dev *idev, struct i2c_msg *msg)
 		 *   addr_2: addr[7:0]
 		 */
 		addr_1 = 0xF0 | ((msg->addr >> 7) & 0x06);
-<<<<<<< HEAD
 		if (i2c_m_rd(msg))
 			addr_1 |= 1;	/* Set the R/nW bit of the address */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		addr_2 = msg->addr & 0xFF;
 	} else {
 		/* 7-bit address
 		 *   addr_1: addr[6:0] | (R/nW)
 		 *   addr_2: dont care
 		 */
-<<<<<<< HEAD
 		addr_1 = i2c_8bit_addr_from_msg(msg);
-=======
-		addr_1 = (msg->addr << 1) & 0xFF;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		addr_2 = 0;
 	}
 
@@ -378,10 +371,6 @@ static int axxia_i2c_xfer_msg(struct axxia_i2c_dev *idev, struct i2c_msg *msg)
 		/* I2C read transfer */
 		rx_xfer = i2c_m_recv_len(msg) ? I2C_SMBUS_BLOCK_MAX : msg->len;
 		tx_xfer = 0;
-<<<<<<< HEAD
-=======
-		addr_1 |= 1;	/* Set the R/nW bit of the address */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		/* I2C write transfer */
 		rx_xfer = 0;
@@ -562,7 +551,6 @@ static int axxia_i2c_probe(struct platform_device *pdev)
 	if (idev->bus_clk_rate == 0)
 		idev->bus_clk_rate = 100000;	/* default clock rate */
 
-<<<<<<< HEAD
 	ret = clk_prepare_enable(idev->i2c_clk);
 	if (ret) {
 		dev_err(&pdev->dev, "failed to enable clock\n");
@@ -573,29 +561,13 @@ static int axxia_i2c_probe(struct platform_device *pdev)
 	if (ret) {
 		dev_err(&pdev->dev, "failed to initialize\n");
 		goto error_disable_clk;
-=======
-	ret = axxia_i2c_init(idev);
-	if (ret) {
-		dev_err(&pdev->dev, "failed to initialize\n");
-		return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ret = devm_request_irq(&pdev->dev, irq, axxia_i2c_isr, 0,
 			       pdev->name, idev);
 	if (ret) {
 		dev_err(&pdev->dev, "failed to claim IRQ%d\n", irq);
-<<<<<<< HEAD
 		goto error_disable_clk;
-=======
-		return ret;
-	}
-
-	ret = clk_prepare_enable(idev->i2c_clk);
-	if (ret) {
-		dev_err(&pdev->dev, "failed to enable clock\n");
-		return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	i2c_set_adapdata(&idev->adapter, idev);
@@ -610,7 +582,6 @@ static int axxia_i2c_probe(struct platform_device *pdev)
 	platform_set_drvdata(pdev, idev);
 
 	ret = i2c_add_adapter(&idev->adapter);
-<<<<<<< HEAD
 	if (ret)
 		goto error_disable_clk;
 
@@ -619,14 +590,6 @@ static int axxia_i2c_probe(struct platform_device *pdev)
 error_disable_clk:
 	clk_disable_unprepare(idev->i2c_clk);
 	return ret;
-=======
-	if (ret) {
-		clk_disable_unprepare(idev->i2c_clk);
-		return ret;
-	}
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int axxia_i2c_remove(struct platform_device *pdev)

@@ -161,7 +161,6 @@
 
 #define ARM_V7S_TCR_PD1			BIT(5)
 
-<<<<<<< HEAD
 #ifdef CONFIG_ZONE_DMA32
 #define ARM_V7S_TABLE_GFP_DMA GFP_DMA32
 #define ARM_V7S_TABLE_SLAB_FLAGS SLAB_CACHE_DMA32
@@ -170,8 +169,6 @@
 #define ARM_V7S_TABLE_SLAB_FLAGS SLAB_CACHE_DMA
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 typedef u32 arm_v7s_iopte;
 
 static bool selftest_running;
@@ -209,7 +206,6 @@ static void *__arm_v7s_alloc_table(int lvl, gfp_t gfp,
 	void *table = NULL;
 
 	if (lvl == 1)
-<<<<<<< HEAD
 		table = (void *)__get_free_pages(
 			__GFP_ZERO | ARM_V7S_TABLE_GFP_DMA, get_order(size));
 	else if (lvl == 2)
@@ -220,15 +216,6 @@ static void *__arm_v7s_alloc_table(int lvl, gfp_t gfp,
 		dev_err(dev, "Page table does not fit in PTE: %pa", &phys);
 		goto out_free;
 	}
-=======
-		table = (void *)__get_dma_pages(__GFP_ZERO, get_order(size));
-	else if (lvl == 2)
-		table = kmem_cache_zalloc(data->l2_tables, gfp | GFP_DMA);
-	phys = virt_to_phys(table);
-	if (phys != (arm_v7s_iopte)phys)
-		/* Doesn't fit in PTE */
-		goto out_free;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (table && !(cfg->quirks & IO_PGTABLE_QUIRK_NO_DMA)) {
 		dma = dma_map_single(dev, table, size, DMA_TO_DEVICE);
 		if (dma_mapping_error(dev, dma))
@@ -387,13 +374,8 @@ static bool arm_v7s_pte_is_cont(arm_v7s_iopte pte, int lvl)
 	return false;
 }
 
-<<<<<<< HEAD
 static size_t __arm_v7s_unmap(struct arm_v7s_io_pgtable *, unsigned long,
 			      size_t, int, arm_v7s_iopte *);
-=======
-static int __arm_v7s_unmap(struct arm_v7s_io_pgtable *, unsigned long,
-			   size_t, int, arm_v7s_iopte *);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int arm_v7s_init_pte(struct arm_v7s_io_pgtable *data,
 			    unsigned long iova, phys_addr_t paddr, int prot,
@@ -576,16 +558,10 @@ static arm_v7s_iopte arm_v7s_split_cont(struct arm_v7s_io_pgtable *data,
 	return pte;
 }
 
-<<<<<<< HEAD
 static size_t arm_v7s_split_blk_unmap(struct arm_v7s_io_pgtable *data,
 				      unsigned long iova, size_t size,
 				      arm_v7s_iopte blk_pte,
 				      arm_v7s_iopte *ptep)
-=======
-static int arm_v7s_split_blk_unmap(struct arm_v7s_io_pgtable *data,
-				   unsigned long iova, size_t size,
-				   arm_v7s_iopte blk_pte, arm_v7s_iopte *ptep)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct io_pgtable_cfg *cfg = &data->iop.cfg;
 	arm_v7s_iopte pte, *tablep;
@@ -626,15 +602,9 @@ static int arm_v7s_split_blk_unmap(struct arm_v7s_io_pgtable *data,
 	return size;
 }
 
-<<<<<<< HEAD
 static size_t __arm_v7s_unmap(struct arm_v7s_io_pgtable *data,
 			      unsigned long iova, size_t size, int lvl,
 			      arm_v7s_iopte *ptep)
-=======
-static int __arm_v7s_unmap(struct arm_v7s_io_pgtable *data,
-			    unsigned long iova, size_t size, int lvl,
-			    arm_v7s_iopte *ptep)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	arm_v7s_iopte pte[ARM_V7S_CONT_PAGES];
 	struct io_pgtable *iop = &data->iop;
@@ -704,31 +674,15 @@ static int __arm_v7s_unmap(struct arm_v7s_io_pgtable *data,
 	return __arm_v7s_unmap(data, iova, size, lvl + 1, ptep);
 }
 
-<<<<<<< HEAD
 static size_t arm_v7s_unmap(struct io_pgtable_ops *ops, unsigned long iova,
 			    size_t size)
 {
 	struct arm_v7s_io_pgtable *data = io_pgtable_ops_to_data(ops);
-=======
-static int arm_v7s_unmap(struct io_pgtable_ops *ops, unsigned long iova,
-			 size_t size)
-{
-	struct arm_v7s_io_pgtable *data = io_pgtable_ops_to_data(ops);
-	size_t unmapped;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (WARN_ON(upper_32_bits(iova)))
 		return 0;
 
-<<<<<<< HEAD
 	return __arm_v7s_unmap(data, iova, size, 1, data->pgd);
-=======
-	unmapped = __arm_v7s_unmap(data, iova, size, 1, data->pgd);
-	if (unmapped)
-		io_pgtable_tlb_sync(&data->iop);
-
-	return unmapped;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static phys_addr_t arm_v7s_iova_to_phys(struct io_pgtable_ops *ops,
@@ -786,11 +740,7 @@ static struct io_pgtable *arm_v7s_alloc_pgtable(struct io_pgtable_cfg *cfg,
 	data->l2_tables = kmem_cache_create("io-pgtable_armv7s_l2",
 					    ARM_V7S_TABLE_SIZE(2),
 					    ARM_V7S_TABLE_SIZE(2),
-<<<<<<< HEAD
 					    ARM_V7S_TABLE_SLAB_FLAGS, NULL);
-=======
-					    SLAB_CACHE_DMA, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!data->l2_tables)
 		goto out_free_data;
 
@@ -965,12 +915,7 @@ static int __init arm_v7s_do_selftests(void)
 
 	/* Full unmap */
 	iova = 0;
-<<<<<<< HEAD
 	for_each_set_bit(i, &cfg.pgsize_bitmap, BITS_PER_LONG) {
-=======
-	i = find_first_bit(&cfg.pgsize_bitmap, BITS_PER_LONG);
-	while (i != BITS_PER_LONG) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		size = 1UL << i;
 
 		if (ops->unmap(ops, iova, size) != size)
@@ -987,11 +932,6 @@ static int __init arm_v7s_do_selftests(void)
 			return __FAIL(ops);
 
 		iova += SZ_16M;
-<<<<<<< HEAD
-=======
-		i++;
-		i = find_next_bit(&cfg.pgsize_bitmap, BITS_PER_LONG, i);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	free_io_pgtable_ops(ops);

@@ -1,20 +1,9 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+ OR MIT
 //
 // Device Tree Source for UniPhier PXs2 Gentil Board
 //
 // Copyright (C) 2015-2016 Socionext Inc.
 //   Author: Masahiro Yamada <yamada.masahiro@socionext.com>
-=======
-/*
- * Device Tree Source for UniPhier PXs2 Gentil Board
- *
- * Copyright (C) 2015-2016 Socionext Inc.
- *   Author: Masahiro Yamada <yamada.masahiro@socionext.com>
- *
- * SPDX-License-Identifier: (GPL-2.0+ OR MIT)
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /dts-v1/;
 #include "uniphier-pxs2.dtsi"
@@ -43,15 +32,12 @@
 		device_type = "memory";
 		reg = <0x80000000 0x80000000>;
 	};
-<<<<<<< HEAD
 
 	sound {
 		compatible = "audio-graph-card";
 		label = "UniPhier PXs2";
 		dais = <&i2s_port2>;
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &serial2 {
@@ -68,7 +54,6 @@
 	};
 };
 
-<<<<<<< HEAD
 &i2s_aux {
 	dai-format = "i2s";
 	remote-endpoint = <&wm_speaker>;
@@ -100,8 +85,4 @@
 	ethphy: ethphy@1 {
 		reg = <1>;
 	};
-=======
-&i2c2 {
-	status = "okay";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

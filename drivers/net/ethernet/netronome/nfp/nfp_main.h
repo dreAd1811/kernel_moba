@@ -39,27 +39,17 @@
 #ifndef NFP_MAIN_H
 #define NFP_MAIN_H
 
-<<<<<<< HEAD
 #include <linux/ethtool.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/list.h>
 #include <linux/types.h>
 #include <linux/msi.h>
 #include <linux/mutex.h>
 #include <linux/pci.h>
 #include <linux/workqueue.h>
-<<<<<<< HEAD
 #include <net/devlink.h>
 
 struct dentry;
 struct device;
-=======
-
-struct dentry;
-struct device;
-struct devlink_ops;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct pci_dev;
 
 struct nfp_cpp;
@@ -70,7 +60,6 @@ struct nfp_mip;
 struct nfp_net;
 struct nfp_nsp_identify;
 struct nfp_port;
-<<<<<<< HEAD
 struct nfp_rtsym;
 struct nfp_rtsym_table;
 struct nfp_shared_buf;
@@ -85,9 +74,6 @@ struct nfp_dumpspec {
 	u32 size;
 	u8 data[0];
 };
-=======
-struct nfp_rtsym_table;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * struct nfp_pf - NFP PF-specific device structure
@@ -103,10 +89,7 @@ struct nfp_rtsym_table;
  * @vf_cfg_mem:		Pointer to mapped VF configuration area
  * @vfcfg_tbl2_area:	Pointer to the CPP area for the VF config table
  * @vfcfg_tbl2:		Pointer to mapped VF config table
-<<<<<<< HEAD
  * @mbox:		RTSym of per-PCI PF mailbox (under devlink lock)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @irq_entries:	Array of MSI-X entries for all vNICs
  * @limit_vfs:		Number of VFs supported by firmware (~0 for PCI limit)
  * @num_vfs:		Number of SR-IOV VFs enabled
@@ -115,12 +98,9 @@ struct nfp_rtsym_table;
  * @mip:		MIP handle
  * @rtbl:		RTsym table
  * @hwinfo:		HWInfo table
-<<<<<<< HEAD
  * @dumpspec:		Debug dump specification
  * @dump_flag:		Store dump flag between set_dump and get_dump_flag
  * @dump_len:		Store dump length between set_dump and get_dump_flag
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @eth_tbl:		NSP ETH table
  * @nspi:		NSP identification info
  * @hwmon_dev:		pointer to hwmon device
@@ -131,11 +111,8 @@ struct nfp_rtsym_table;
  * @ports:		Linked list of port structures (struct nfp_port)
  * @wq:			Workqueue for running works which need to grab @lock
  * @port_refresh_work:	Work entry for taking netdevs out
-<<<<<<< HEAD
  * @shared_bufs:	Array of shared buffer structures if FW has any SBs
  * @num_shared_bufs:	Number of elements in @shared_bufs
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @lock:		Protects all fields which may change after probe
  */
 struct nfp_pf {
@@ -155,11 +132,8 @@ struct nfp_pf {
 	struct nfp_cpp_area *vfcfg_tbl2_area;
 	u8 __iomem *vfcfg_tbl2;
 
-<<<<<<< HEAD
 	const struct nfp_rtsym *mbox;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct msix_entry *irq_entries;
 
 	unsigned int limit_vfs;
@@ -172,12 +146,9 @@ struct nfp_pf {
 	const struct nfp_mip *mip;
 	struct nfp_rtsym_table *rtbl;
 	struct nfp_hwinfo *hwinfo;
-<<<<<<< HEAD
 	struct nfp_dumpspec *dumpspec;
 	u32 dump_flag;
 	u32 dump_len;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct nfp_eth_table *eth_tbl;
 	struct nfp_nsp_identify *nspi;
 
@@ -194,12 +165,9 @@ struct nfp_pf {
 	struct workqueue_struct *wq;
 	struct work_struct port_refresh_work;
 
-<<<<<<< HEAD
 	struct nfp_shared_buf *shared_bufs;
 	unsigned int num_shared_bufs;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mutex lock;
 };
 
@@ -213,7 +181,6 @@ void nfp_net_pci_remove(struct nfp_pf *pf);
 int nfp_hwmon_register(struct nfp_pf *pf);
 void nfp_hwmon_unregister(struct nfp_pf *pf);
 
-<<<<<<< HEAD
 void
 nfp_net_get_mac_addr(struct nfp_pf *pf, struct net_device *netdev,
 		     struct nfp_port *port);
@@ -246,10 +213,4 @@ int nfp_shared_buf_pool_get(struct nfp_pf *pf, unsigned int sb, u16 pool_index,
 int nfp_shared_buf_pool_set(struct nfp_pf *pf, unsigned int sb,
 			    u16 pool_index, u32 size,
 			    enum devlink_sb_threshold_type threshold_type);
-=======
-void nfp_net_get_mac_addr(struct nfp_pf *pf, struct nfp_port *port);
-
-bool nfp_ctrl_tx(struct nfp_net *nn, struct sk_buff *skb);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* NFP_MAIN_H */

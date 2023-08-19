@@ -375,11 +375,7 @@ static void reset_device(MGSLPC_INFO *info);
 static void hdlc_mode(MGSLPC_INFO *info);
 static void async_mode(MGSLPC_INFO *info);
 
-<<<<<<< HEAD
 static void tx_timeout(struct timer_list *t);
-=======
-static void tx_timeout(unsigned long context);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int carrier_raised(struct tty_port *port);
 static void dtr_rts(struct tty_port *port, int onoff);
@@ -1293,11 +1289,7 @@ static int startup(MGSLPC_INFO * info, struct tty_struct *tty)
 
 	memset(&info->icount, 0, sizeof(info->icount));
 
-<<<<<<< HEAD
 	timer_setup(&info->tx_timer, tx_timeout, 0);
-=======
-	setup_timer(&info->tx_timer, tx_timeout, (unsigned long)info);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Allocate and claim adapter resources */
 	retval = claim_resources(info);
@@ -2624,22 +2616,6 @@ static int mgslpc_proc_show(struct seq_file *m, void *v)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-static int mgslpc_proc_open(struct inode *inode, struct file *file)
-{
-	return single_open(file, mgslpc_proc_show, NULL);
-}
-
-static const struct file_operations mgslpc_proc_fops = {
-	.owner		= THIS_MODULE,
-	.open		= mgslpc_proc_open,
-	.read		= seq_read,
-	.llseek		= seq_lseek,
-	.release	= single_release,
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int rx_alloc_buffers(MGSLPC_INFO *info)
 {
 	/* each buffer has header and data */
@@ -2826,11 +2802,7 @@ static const struct tty_operations mgslpc_ops = {
 	.tiocmget = tiocmget,
 	.tiocmset = tiocmset,
 	.get_icount = mgslpc_get_icount,
-<<<<<<< HEAD
 	.proc_show = mgslpc_proc_show,
-=======
-	.proc_fops = &mgslpc_proc_fops,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int __init synclink_cs_init(void)
@@ -3861,15 +3833,9 @@ static void trace_block(MGSLPC_INFO *info,const char* data, int count, int xmit)
 /* HDLC frame time out
  * update stats and do tx completion processing
  */
-<<<<<<< HEAD
 static void tx_timeout(struct timer_list *t)
 {
 	MGSLPC_INFO *info = from_timer(info, t, tx_timer);
-=======
-static void tx_timeout(unsigned long context)
-{
-	MGSLPC_INFO *info = (MGSLPC_INFO*)context;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 
 	if (debug_level >= DEBUG_LEVEL_INFO)

@@ -1,20 +1,10 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Google Snow Rev 5+ board device tree source
  *
  * Copyright (c) 2012 Google, Inc
  * Copyright (c) 2015 Samsung Electronics Co., Ltd.
  *             http://www.samsung.com
-<<<<<<< HEAD
-=======
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /dts-v1/;
@@ -30,17 +20,6 @@
 
 		samsung,model = "Snow-I2S-MAX98090";
 		samsung,audio-codec = <&max98090>;
-<<<<<<< HEAD
-=======
-
-		cpu {
-			sound-dai = <&i2s0 0>;
-		};
-
-		codec {
-			sound-dai = <&max98090 0>, <&hdmi>;
-		};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };
 
@@ -52,12 +31,6 @@
 		interrupt-parent = <&gpx0>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&max98090_irq>;
-<<<<<<< HEAD
-=======
-		clocks = <&pmu_system_controller 0>;
-		clock-names = "mclk";
-		#sound-dai-cells = <1>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };
 

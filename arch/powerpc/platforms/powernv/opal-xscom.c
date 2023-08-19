@@ -46,11 +46,7 @@ static scom_map_t opal_scom_map(struct device_node *dev, u64 reg, u64 count)
 			__func__, dev);
 		return SCOM_MAP_INVALID;
 	}
-<<<<<<< HEAD
 	m = kmalloc(sizeof(*m), GFP_KERNEL);
-=======
-	m = kmalloc(sizeof(struct opal_scom_map), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!m)
 		return NULL;
 	m->chip = be32_to_cpup(gcid);

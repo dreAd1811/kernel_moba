@@ -690,13 +690,7 @@ The USB devices are now exported via debugfs:
 This file is handy for status viewing tools in user mode, which can scan
 the text format and ignore most of it. More detailed device status
 (including class and vendor status) is available from device-specific
-<<<<<<< HEAD
 files. For information about the current format of this file, see below.
-=======
-files. For information about the current format of this file, see the
-``Documentation/usb/proc_usb_info.txt`` file in your Linux kernel
-sources.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 This file, in combination with the poll() system call, can also be used
 to detect when devices are added or removed::

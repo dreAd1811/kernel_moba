@@ -28,11 +28,7 @@ static ssize_t pblk_sysfs_luns_show(struct pblk *pblk, char *page)
 	ssize_t sz = 0;
 	int i;
 
-<<<<<<< HEAD
 	for (i = 0; i < geo->all_luns; i++) {
-=======
-	for (i = 0; i < geo->nr_luns; i++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		int active = 1;
 
 		rlun = &pblk->luns[i];
@@ -43,13 +39,8 @@ static ssize_t pblk_sysfs_luns_show(struct pblk *pblk, char *page)
 		sz += snprintf(page + sz, PAGE_SIZE - sz,
 				"pblk: pos:%d, ch:%d, lun:%d - %d\n",
 					i,
-<<<<<<< HEAD
 					rlun->bppa.a.ch,
 					rlun->bppa.a.lun,
-=======
-					rlun->bppa.g.ch,
-					rlun->bppa.g.lun,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					active);
 	}
 
@@ -58,20 +49,12 @@ static ssize_t pblk_sysfs_luns_show(struct pblk *pblk, char *page)
 
 static ssize_t pblk_sysfs_rate_limiter(struct pblk *pblk, char *page)
 {
-<<<<<<< HEAD
 	int free_blocks, free_user_blocks, total_blocks;
 	int rb_user_max, rb_user_cnt;
 	int rb_gc_max, rb_gc_cnt, rb_budget, rb_state;
 
 	free_blocks = pblk_rl_nr_free_blks(&pblk->rl);
 	free_user_blocks = pblk_rl_nr_user_free_blks(&pblk->rl);
-=======
-	int free_blocks, total_blocks;
-	int rb_user_max, rb_user_cnt;
-	int rb_gc_max, rb_gc_cnt, rb_budget, rb_state;
-
-	free_blocks = atomic_read(&pblk->rl.free_blocks);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rb_user_max = pblk->rl.rb_user_max;
 	rb_user_cnt = atomic_read(&pblk->rl.rb_user_cnt);
 	rb_gc_max = pblk->rl.rb_gc_max;
@@ -82,26 +65,16 @@ static ssize_t pblk_sysfs_rate_limiter(struct pblk *pblk, char *page)
 	total_blocks = pblk->rl.total_blocks;
 
 	return snprintf(page, PAGE_SIZE,
-<<<<<<< HEAD
 		"u:%u/%u,gc:%u/%u(%u)(stop:<%u,full:>%u,free:%d/%d/%d)-%d\n",
-=======
-		"u:%u/%u,gc:%u/%u(%u/%u)(stop:<%u,full:>%u,free:%d/%d)-%d\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				rb_user_cnt,
 				rb_user_max,
 				rb_gc_cnt,
 				rb_gc_max,
 				rb_state,
 				rb_budget,
-<<<<<<< HEAD
 				pblk->rl.high,
 				free_blocks,
 				free_user_blocks,
-=======
-				pblk->rl.low,
-				pblk->rl.high,
-				free_blocks,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				total_blocks,
 				READ_ONCE(pblk->rl.rb_user_active));
 }
@@ -142,7 +115,6 @@ static ssize_t pblk_sysfs_ppaf(struct pblk *pblk, char *page)
 	struct nvm_geo *geo = &dev->geo;
 	ssize_t sz = 0;
 
-<<<<<<< HEAD
 	if (geo->version == NVM_OCSSD_SPEC_12) {
 		struct nvm_addrf_12 *ppaf = (struct nvm_addrf_12 *)&pblk->addrf;
 		struct nvm_addrf_12 *gppaf = (struct nvm_addrf_12 *)&geo->addrf;
@@ -184,26 +156,6 @@ static ssize_t pblk_sysfs_ppaf(struct pblk *pblk, char *page)
 			gppaf->chk_offset, gppaf->chk_len,
 			gppaf->sec_offset, gppaf->sec_len);
 	}
-=======
-	sz = snprintf(page, PAGE_SIZE - sz,
-		"g:(b:%d)blk:%d/%d,pg:%d/%d,lun:%d/%d,ch:%d/%d,pl:%d/%d,sec:%d/%d\n",
-		pblk->ppaf_bitsize,
-		pblk->ppaf.blk_offset, geo->ppaf.blk_len,
-		pblk->ppaf.pg_offset, geo->ppaf.pg_len,
-		pblk->ppaf.lun_offset, geo->ppaf.lun_len,
-		pblk->ppaf.ch_offset, geo->ppaf.ch_len,
-		pblk->ppaf.pln_offset, geo->ppaf.pln_len,
-		pblk->ppaf.sec_offset, geo->ppaf.sect_len);
-
-	sz += snprintf(page + sz, PAGE_SIZE - sz,
-		"d:blk:%d/%d,pg:%d/%d,lun:%d/%d,ch:%d/%d,pl:%d/%d,sec:%d/%d\n",
-		geo->ppaf.blk_offset, geo->ppaf.blk_len,
-		geo->ppaf.pg_offset, geo->ppaf.pg_len,
-		geo->ppaf.lun_offset, geo->ppaf.lun_len,
-		geo->ppaf.ch_offset, geo->ppaf.ch_len,
-		geo->ppaf.pln_offset, geo->ppaf.pln_len,
-		geo->ppaf.sect_offset, geo->ppaf.sect_len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return sz;
 }
@@ -221,11 +173,8 @@ static ssize_t pblk_sysfs_lines(struct pblk *pblk, char *page)
 	int free_line_cnt = 0, closed_line_cnt = 0, emeta_line_cnt = 0;
 	int d_line_cnt = 0, l_line_cnt = 0;
 	int gc_full = 0, gc_high = 0, gc_mid = 0, gc_low = 0, gc_empty = 0;
-<<<<<<< HEAD
 	int gc_werr = 0;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int bad = 0, cor = 0;
 	int msecs = 0, cur_sec = 0, vsc = 0, sec_in_line = 0;
 	int map_weight = 0, meta_weight = 0;
@@ -290,7 +239,6 @@ static ssize_t pblk_sysfs_lines(struct pblk *pblk, char *page)
 		gc_empty++;
 	}
 
-<<<<<<< HEAD
 	list_for_each_entry(line, &l_mg->gc_werr_list, list) {
 		if (line->type == PBLK_LINETYPE_DATA)
 			d_line_cnt++;
@@ -300,8 +248,6 @@ static ssize_t pblk_sysfs_lines(struct pblk *pblk, char *page)
 		gc_werr++;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_for_each_entry(line, &l_mg->bad_list, list)
 		bad++;
 	list_for_each_entry(line, &l_mg->corrupt_list, list)
@@ -316,7 +262,6 @@ static ssize_t pblk_sysfs_lines(struct pblk *pblk, char *page)
 		sec_in_line = l_mg->data_line->sec_in_line;
 		meta_weight = bitmap_weight(&l_mg->meta_bitmap,
 							PBLK_DATA_LINES);
-<<<<<<< HEAD
 
 		spin_lock(&l_mg->data_line->lock);
 		if (l_mg->data_line->map_bitmap)
@@ -325,28 +270,16 @@ static ssize_t pblk_sysfs_lines(struct pblk *pblk, char *page)
 		else
 			map_weight = 0;
 		spin_unlock(&l_mg->data_line->lock);
-=======
-		map_weight = bitmap_weight(l_mg->data_line->map_bitmap,
-							lm->sec_per_line);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	spin_unlock(&l_mg->free_lock);
 
 	if (nr_free_lines != free_line_cnt)
-<<<<<<< HEAD
 		pblk_err(pblk, "corrupted free line list:%d/%d\n",
-=======
-		pr_err("pblk: corrupted free line list:%d/%d\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						nr_free_lines, free_line_cnt);
 
 	sz = snprintf(page, PAGE_SIZE - sz,
 		"line: nluns:%d, nblks:%d, nsecs:%d\n",
-<<<<<<< HEAD
 		geo->all_luns, lm->blk_per_line, lm->sec_per_line);
-=======
-		geo->nr_luns, lm->blk_per_line, lm->sec_per_line);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sz += snprintf(page + sz, PAGE_SIZE - sz,
 		"lines:d:%d,l:%d-f:%d,m:%d/%d,c:%d,b:%d,co:%d(d:%d,l:%d)t:%d\n",
@@ -359,15 +292,9 @@ static ssize_t pblk_sysfs_lines(struct pblk *pblk, char *page)
 					l_mg->nr_lines);
 
 	sz += snprintf(page + sz, PAGE_SIZE - sz,
-<<<<<<< HEAD
 		"GC: full:%d, high:%d, mid:%d, low:%d, empty:%d, werr: %d, queue:%d\n",
 			gc_full, gc_high, gc_mid, gc_low, gc_empty, gc_werr,
 			atomic_read(&pblk->gc.read_inflight_gc));
-=======
-		"GC: full:%d, high:%d, mid:%d, low:%d, empty:%d, queue:%d\n",
-			gc_full, gc_high, gc_mid, gc_low, gc_empty,
-			atomic_read(&pblk->gc.inflight_gc));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sz += snprintf(page + sz, PAGE_SIZE - sz,
 		"data (%d) cur:%d, left:%d, vsc:%d, s:%d, map:%d/%d (%d)\n",
@@ -401,11 +328,7 @@ static ssize_t pblk_sysfs_lines_info(struct pblk *pblk, char *page)
 				"blk_line:%d, sec_line:%d, sec_blk:%d\n",
 					lm->blk_per_line,
 					lm->sec_per_line,
-<<<<<<< HEAD
 					geo->clba);
-=======
-					geo->sec_per_blk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return sz;
 }
@@ -415,7 +338,6 @@ static ssize_t pblk_sysfs_get_sec_per_write(struct pblk *pblk, char *page)
 	return snprintf(page, PAGE_SIZE, "%d\n", pblk->sec_per_write);
 }
 
-<<<<<<< HEAD
 static ssize_t pblk_get_write_amp(u64 user, u64 gc, u64 pad,
 				  char *page)
 {
@@ -514,17 +436,6 @@ static ssize_t pblk_sysfs_stats_debug(struct pblk *pblk, char *page)
 			atomic_long_read(&pblk->inflight_reads),
 			atomic_long_read(&pblk->req_writes),
 			(u64)atomic64_read(&pblk->nr_flush),
-=======
-#ifdef CONFIG_NVM_DEBUG
-static ssize_t pblk_sysfs_stats_debug(struct pblk *pblk, char *page)
-{
-	return snprintf(page, PAGE_SIZE,
-		"%lu\t%lu\t%lu\t%lu\t%lu\t%lu\t%lu\t%lu\t%lu\t%lu\t%lu\t%lu\t%lu\n",
-			atomic_long_read(&pblk->inflight_writes),
-			atomic_long_read(&pblk->inflight_reads),
-			atomic_long_read(&pblk->req_writes),
-			atomic_long_read(&pblk->nr_flush),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			atomic_long_read(&pblk->padded_writes),
 			atomic_long_read(&pblk->padded_wb),
 			atomic_long_read(&pblk->sub_writes),
@@ -578,7 +489,6 @@ static ssize_t pblk_sysfs_set_sec_per_write(struct pblk *pblk,
 	return len;
 }
 
-<<<<<<< HEAD
 static ssize_t pblk_sysfs_set_write_amp_trip(struct pblk *pblk,
 			const char *page, size_t len)
 {
@@ -629,8 +539,6 @@ static ssize_t pblk_sysfs_set_padding_dist(struct pblk *pblk,
 	return len;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct attribute sys_write_luns = {
 	.name = "write_luns",
 	.mode = 0444,
@@ -681,7 +589,6 @@ static struct attribute sys_max_sec_per_write = {
 	.mode = 0644,
 };
 
-<<<<<<< HEAD
 static struct attribute sys_write_amp_mileage = {
 	.name = "write_amp_mileage",
 	.mode = 0444,
@@ -698,9 +605,6 @@ static struct attribute sys_padding_dist = {
 };
 
 #ifdef CONFIG_NVM_PBLK_DEBUG
-=======
-#ifdef CONFIG_NVM_DEBUG
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct attribute sys_stats_debug_attr = {
 	.name = "stats",
 	.mode = 0444,
@@ -718,14 +622,10 @@ static struct attribute *pblk_attrs[] = {
 	&sys_stats_ppaf_attr,
 	&sys_lines_attr,
 	&sys_lines_info_attr,
-<<<<<<< HEAD
 	&sys_write_amp_mileage,
 	&sys_write_amp_trip,
 	&sys_padding_dist,
 #ifdef CONFIG_NVM_PBLK_DEBUG
-=======
-#ifdef CONFIG_NVM_DEBUG
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	&sys_stats_debug_attr,
 #endif
 	NULL,
@@ -754,7 +654,6 @@ static ssize_t pblk_sysfs_show(struct kobject *kobj, struct attribute *attr,
 		return pblk_sysfs_lines_info(pblk, buf);
 	else if (strcmp(attr->name, "max_sec_per_write") == 0)
 		return pblk_sysfs_get_sec_per_write(pblk, buf);
-<<<<<<< HEAD
 	else if (strcmp(attr->name, "write_amp_mileage") == 0)
 		return pblk_sysfs_get_write_amp_mileage(pblk, buf);
 	else if (strcmp(attr->name, "write_amp_trip") == 0)
@@ -762,9 +661,6 @@ static ssize_t pblk_sysfs_show(struct kobject *kobj, struct attribute *attr,
 	else if (strcmp(attr->name, "padding_dist") == 0)
 		return pblk_sysfs_get_padding_dist(pblk, buf);
 #ifdef CONFIG_NVM_PBLK_DEBUG
-=======
-#ifdef CONFIG_NVM_DEBUG
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else if (strcmp(attr->name, "stats") == 0)
 		return pblk_sysfs_stats_debug(pblk, buf);
 #endif
@@ -780,14 +676,10 @@ static ssize_t pblk_sysfs_store(struct kobject *kobj, struct attribute *attr,
 		return pblk_sysfs_gc_force(pblk, buf, len);
 	else if (strcmp(attr->name, "max_sec_per_write") == 0)
 		return pblk_sysfs_set_sec_per_write(pblk, buf, len);
-<<<<<<< HEAD
 	else if (strcmp(attr->name, "write_amp_trip") == 0)
 		return pblk_sysfs_set_write_amp_trip(pblk, buf, len);
 	else if (strcmp(attr->name, "padding_dist") == 0)
 		return pblk_sysfs_set_padding_dist(pblk, buf, len);
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -811,12 +703,7 @@ int pblk_sysfs_init(struct gendisk *tdisk)
 					kobject_get(&parent_dev->kobj),
 					"%s", "pblk");
 	if (ret) {
-<<<<<<< HEAD
 		pblk_err(pblk, "could not register\n");
-=======
-		pr_err("pblk: could not register %s/pblk\n",
-						tdisk->disk_name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 

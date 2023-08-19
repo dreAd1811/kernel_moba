@@ -1,14 +1,7 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0 OR MIT
 /**************************************************************************
  *
  * Copyright 2009-2015 VMware, Inc., Palo Alto, CA., USA
-=======
-/**************************************************************************
- *
- * Copyright © 2009-2015 VMware, Inc., Palo Alto, CA., USA
- * All Rights Reserved.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
@@ -40,13 +33,10 @@
 #include "vmwgfx_binding.h"
 #include "device_include/svga3d_surfacedefs.h"
 
-<<<<<<< HEAD
 #define SVGA3D_FLAGS_64(upper32, lower32) (((uint64_t)upper32 << 32) | lower32)
 #define SVGA3D_FLAGS_UPPER_32(svga3d_flags) (svga3d_flags >> 32)
 #define SVGA3D_FLAGS_LOWER_32(svga3d_flags) \
 	(svga3d_flags & ((uint64_t)U32_MAX))
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * struct vmw_user_surface - User-space visible surface resource
@@ -95,7 +85,6 @@ static int vmw_gb_surface_unbind(struct vmw_resource *res,
 				 bool readback,
 				 struct ttm_validate_buffer *val_buf);
 static int vmw_gb_surface_destroy(struct vmw_resource *res);
-<<<<<<< HEAD
 static int
 vmw_gb_surface_define_internal(struct drm_device *dev,
 			       struct drm_vmw_gb_surface_create_ext_req *req,
@@ -106,9 +95,6 @@ vmw_gb_surface_reference_internal(struct drm_device *dev,
 				  struct drm_vmw_surface_arg *req,
 				  struct drm_vmw_gb_surface_ref_ext_rep *rep,
 				  struct drm_file *file_priv);
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static const struct vmw_user_resource_conv user_surface_conv = {
 	.object_type = VMW_RES_SURFACE,
@@ -251,16 +237,12 @@ static void vmw_surface_define_encode(const struct vmw_surface *srf,
 	cmd->header.id = SVGA_3D_CMD_SURFACE_DEFINE;
 	cmd->header.size = cmd_len;
 	cmd->body.sid = srf->res.id;
-<<<<<<< HEAD
 	/*
 	 * Downcast of surfaceFlags, was upcasted when received from user-space,
 	 * since driver internally stores as 64 bit.
 	 * For legacy surface define only 32 bit flag is supported.
 	 */
 	cmd->body.surfaceFlags = (SVGA3dSurface1Flags)srf->flags;
-=======
-	cmd->body.surfaceFlags = srf->flags;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cmd->body.format = srf->format;
 	for (i = 0; i < DRM_VMW_MAX_SURFACE_FACES; ++i)
 		cmd->body.face[i].numMipLevels = srf->mip_levels[i];
@@ -381,10 +363,6 @@ static void vmw_hw_surface_destroy(struct vmw_resource *res)
 		dev_priv->used_memory_size -= res->backup_size;
 		mutex_unlock(&dev_priv->cmdbuf_mutex);
 	}
-<<<<<<< HEAD
-=======
-	vmw_fifo_resource_dec(dev_priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -446,11 +424,8 @@ static int vmw_legacy_srf_create(struct vmw_resource *res)
 
 	vmw_surface_define_encode(srf, cmd);
 	vmw_fifo_commit(dev_priv, submit_size);
-<<<<<<< HEAD
 	vmw_fifo_resource_inc(dev_priv);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Surface memory usage accounting.
 	 */
@@ -511,11 +486,7 @@ static int vmw_legacy_srf_dma(struct vmw_resource *res,
 	(void) vmw_execbuf_fence_commands(NULL, dev_priv,
 					  &fence, NULL);
 
-<<<<<<< HEAD
 	vmw_bo_fence_single(val_buf->bo, fence);
-=======
-	vmw_fence_single_bo(val_buf->bo, fence);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (likely(fence != NULL))
 		vmw_fence_obj_unreference(&fence);
@@ -606,10 +577,7 @@ static int vmw_legacy_srf_destroy(struct vmw_resource *res)
 	 */
 
 	vmw_resource_release_id(res);
-<<<<<<< HEAD
 	vmw_fifo_resource_dec(dev_priv);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -631,21 +599,11 @@ static int vmw_surface_init(struct vmw_private *dev_priv,
 	struct vmw_resource *res = &srf->res;
 
 	BUG_ON(!res_free);
-<<<<<<< HEAD
-=======
-	if (!dev_priv->has_mob)
-		vmw_fifo_resource_inc(dev_priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = vmw_resource_init(dev_priv, res, true, res_free,
 				(dev_priv->has_mob) ? &vmw_gb_surface_func :
 				&vmw_legacy_surface_func);
 
 	if (unlikely(ret != 0)) {
-<<<<<<< HEAD
-=======
-		if (!dev_priv->has_mob)
-			vmw_fifo_resource_dec(dev_priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		res_free(res);
 		return ret;
 	}
@@ -758,13 +716,10 @@ int vmw_surface_define_ioctl(struct drm_device *dev, void *data,
 	struct drm_vmw_surface_create_req *req = &arg->req;
 	struct drm_vmw_surface_arg *rep = &arg->rep;
 	struct ttm_object_file *tfile = vmw_fpriv(file_priv)->tfile;
-<<<<<<< HEAD
 	struct ttm_operation_ctx ctx = {
 		.interruptible = true,
 		.no_wait_gpu = false
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 	int i, j;
 	uint32_t cur_bo_offset;
@@ -806,11 +761,7 @@ int vmw_surface_define_ioctl(struct drm_device *dev, void *data,
 		return ret;
 
 	ret = ttm_mem_global_alloc(vmw_mem_glob(dev_priv),
-<<<<<<< HEAD
 				   size, &ctx);
-=======
-				   size, false, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(ret != 0)) {
 		if (ret != -ERESTARTSYS)
 			DRM_ERROR("Out of graphics memory for surface"
@@ -827,12 +778,8 @@ int vmw_surface_define_ioctl(struct drm_device *dev, void *data,
 	srf = &user_srf->srf;
 	res = &srf->res;
 
-<<<<<<< HEAD
 	/* Driver internally stores as 64-bit flags */
 	srf->flags = (SVGA3dSurfaceAllFlags)req->flags;
-=======
-	srf->flags = req->flags;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	srf->format = req->format;
 	srf->scanout = req->scanout;
 
@@ -857,11 +804,8 @@ int vmw_surface_define_ioctl(struct drm_device *dev, void *data,
 	srf->base_size = *srf->sizes;
 	srf->autogen_filter = SVGA3D_TEX_FILTER_NONE;
 	srf->multisample_count = 0;
-<<<<<<< HEAD
 	srf->multisample_pattern = SVGA3D_MS_PATTERN_NONE;
 	srf->quality_level = SVGA3D_MS_QUALITY_NONE;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cur_bo_offset = 0;
 	cur_offset = srf->offsets;
@@ -919,21 +863,12 @@ int vmw_surface_define_ioctl(struct drm_device *dev, void *data,
 	if (dev_priv->has_mob && req->shareable) {
 		uint32_t backup_handle;
 
-<<<<<<< HEAD
 		ret = vmw_user_bo_alloc(dev_priv, tfile,
 					res->backup_size,
 					true,
 					&backup_handle,
 					&res->backup,
 					&user_srf->backup_base);
-=======
-		ret = vmw_user_dmabuf_alloc(dev_priv, tfile,
-					    res->backup_size,
-					    true,
-					    &backup_handle,
-					    &res->backup,
-					    &user_srf->backup_base);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (unlikely(ret != 0)) {
 			vmw_resource_unreference(&res);
 			goto out_unlock;
@@ -992,11 +927,7 @@ vmw_surface_handle_reference(struct vmw_private *dev_priv,
 		if (unlikely(drm_is_render_client(file_priv)))
 			require_exist = true;
 
-<<<<<<< HEAD
 		if (READ_ONCE(vmw_fpriv(file_priv)->locked_master)) {
-=======
-		if (ACCESS_ONCE(vmw_fpriv(file_priv)->locked_master)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			DRM_ERROR("Locked master refused legacy "
 				  "surface reference.\n");
 			return -EACCES;
@@ -1080,12 +1011,8 @@ int vmw_surface_reference_ioctl(struct drm_device *dev, void *data,
 	user_srf = container_of(base, struct vmw_user_surface, prime.base);
 	srf = &user_srf->srf;
 
-<<<<<<< HEAD
 	/* Downcast of flags when sending back to user space */
 	rep->flags = (uint32_t)srf->flags;
-=======
-	rep->flags = srf->flags;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rep->format = srf->format;
 	memcpy(rep->mip_levels, srf->mip_levels, sizeof(srf->mip_levels));
 	user_sizes = (struct drm_vmw_size __user *)(unsigned long)
@@ -1126,13 +1053,10 @@ static int vmw_gb_surface_create(struct vmw_resource *res)
 		SVGA3dCmdHeader header;
 		SVGA3dCmdDefineGBSurface_v2 body;
 	} *cmd2;
-<<<<<<< HEAD
 	struct {
 		SVGA3dCmdHeader header;
 		SVGA3dCmdDefineGBSurface_v3 body;
 	} *cmd3;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (likely(res->id != -1))
 		return 0;
@@ -1149,15 +1073,11 @@ static int vmw_gb_surface_create(struct vmw_resource *res)
 		goto out_no_fifo;
 	}
 
-<<<<<<< HEAD
 	if (dev_priv->has_sm4_1 && srf->array_size > 0) {
 		cmd_id = SVGA_3D_CMD_DEFINE_GB_SURFACE_V3;
 		cmd_len = sizeof(cmd3->body);
 		submit_len = sizeof(*cmd3);
 	} else if (srf->array_size > 0) {
-=======
-	if (srf->array_size > 0) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* has_dx checked on creation time. */
 		cmd_id = SVGA_3D_CMD_DEFINE_GB_SURFACE_V2;
 		cmd_len = sizeof(cmd2->body);
@@ -1170,10 +1090,7 @@ static int vmw_gb_surface_create(struct vmw_resource *res)
 
 	cmd = vmw_fifo_reserve(dev_priv, submit_len);
 	cmd2 = (typeof(cmd2))cmd;
-<<<<<<< HEAD
 	cmd3 = (typeof(cmd3))cmd;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(!cmd)) {
 		DRM_ERROR("Failed reserving FIFO space for surface "
 			  "creation.\n");
@@ -1181,7 +1098,6 @@ static int vmw_gb_surface_create(struct vmw_resource *res)
 		goto out_no_fifo;
 	}
 
-<<<<<<< HEAD
 	if (dev_priv->has_sm4_1 && srf->array_size > 0) {
 		cmd3->header.id = cmd_id;
 		cmd3->header.size = cmd_len;
@@ -1198,18 +1114,11 @@ static int vmw_gb_surface_create(struct vmw_resource *res)
 		cmd3->body.size.depth = srf->base_size.depth;
 		cmd3->body.arraySize = srf->array_size;
 	} else if (srf->array_size > 0) {
-=======
-	if (srf->array_size > 0) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cmd2->header.id = cmd_id;
 		cmd2->header.size = cmd_len;
 		cmd2->body.sid = srf->res.id;
 		cmd2->body.surfaceFlags = srf->flags;
-<<<<<<< HEAD
 		cmd2->body.format = srf->format;
-=======
-		cmd2->body.format = cpu_to_le32(srf->format);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cmd2->body.numMipLevels = srf->mip_levels[0];
 		cmd2->body.multisampleCount = srf->multisample_count;
 		cmd2->body.autogenFilter = srf->autogen_filter;
@@ -1222,11 +1131,7 @@ static int vmw_gb_surface_create(struct vmw_resource *res)
 		cmd->header.size = cmd_len;
 		cmd->body.sid = srf->res.id;
 		cmd->body.surfaceFlags = srf->flags;
-<<<<<<< HEAD
 		cmd->body.format = srf->format;
-=======
-		cmd->body.format = cpu_to_le32(srf->format);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cmd->body.numMipLevels = srf->mip_levels[0];
 		cmd->body.multisampleCount = srf->multisample_count;
 		cmd->body.autogenFilter = srf->autogen_filter;
@@ -1351,11 +1256,7 @@ static int vmw_gb_surface_unbind(struct vmw_resource *res,
 	(void) vmw_execbuf_fence_commands(NULL, dev_priv,
 					  &fence, NULL);
 
-<<<<<<< HEAD
 	vmw_bo_fence_single(val_buf->bo, fence);
-=======
-	vmw_fence_single_bo(val_buf->bo, fence);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (likely(fence != NULL))
 		vmw_fence_obj_unreference(&fence);
@@ -1401,24 +1302,15 @@ static int vmw_gb_surface_destroy(struct vmw_resource *res)
 
 /**
  * vmw_gb_surface_define_ioctl - Ioctl function implementing
-<<<<<<< HEAD
  * the user surface define functionality.
  *
  * @dev: Pointer to a struct drm_device.
  * @data: Pointer to data copied from / to user-space.
  * @file_priv: Pointer to a drm file private structure.
-=======
- *                               the user surface define functionality.
- *
- * @dev:            Pointer to a struct drm_device.
- * @data:           Pointer to data copied from / to user-space.
- * @file_priv:      Pointer to a drm file private structure.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 int vmw_gb_surface_define_ioctl(struct drm_device *dev, void *data,
 				struct drm_file *file_priv)
 {
-<<<<<<< HEAD
 	union drm_vmw_gb_surface_create_arg *arg =
 	    (union drm_vmw_gb_surface_create_arg *)data;
 	struct drm_vmw_gb_surface_create_rep *rep = &arg->rep;
@@ -1681,25 +1573,15 @@ vmw_gb_surface_define_internal(struct drm_device *dev,
 			       struct drm_vmw_gb_surface_create_rep *rep,
 			       struct drm_file *file_priv)
 {
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct vmw_private *dev_priv = vmw_priv(dev);
 	struct vmw_user_surface *user_srf;
 	struct vmw_surface *srf;
 	struct vmw_resource *res;
 	struct vmw_resource *tmp;
-<<<<<<< HEAD
-=======
-	union drm_vmw_gb_surface_create_arg *arg =
-	    (union drm_vmw_gb_surface_create_arg *)data;
-	struct drm_vmw_gb_surface_create_req *req = &arg->req;
-	struct drm_vmw_gb_surface_create_rep *rep = &arg->rep;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ttm_object_file *tfile = vmw_fpriv(file_priv)->tfile;
 	int ret;
 	uint32_t size;
 	uint32_t backup_handle = 0;
-<<<<<<< HEAD
 	SVGA3dSurfaceAllFlags svga3d_flags_64 =
 		SVGA3D_FLAGS_64(req->svga3d_flags_upper_32_bits,
 				req->base.svga3d_flags);
@@ -1727,13 +1609,6 @@ vmw_gb_surface_define_internal(struct drm_device *dev,
 		return -EINVAL;
 
 	if (req->base.mip_levels > DRM_VMW_MAX_MIP_LEVELS)
-=======
-
-	if (req->multisample_count != 0)
-		return -EINVAL;
-
-	if (req->mip_levels > DRM_VMW_MAX_MIP_LEVELS)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	if (unlikely(vmw_user_surface_size == 0))
@@ -1744,7 +1619,6 @@ vmw_gb_surface_define_internal(struct drm_device *dev,
 
 	/* Define a surface based on the parameters. */
 	ret = vmw_surface_gb_priv_define(dev,
-<<<<<<< HEAD
 					 size,
 					 svga3d_flags_64,
 					 req->base.format,
@@ -1757,17 +1631,6 @@ vmw_gb_surface_define_internal(struct drm_device *dev,
 					 req->multisample_pattern,
 					 req->quality_level,
 					 &srf);
-=======
-			size,
-			req->svga3d_flags,
-			req->format,
-			req->drm_surface_flags & drm_vmw_surface_flag_scanout,
-			req->mip_levels,
-			req->multisample_count,
-			req->array_size,
-			req->base_size,
-			&srf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(ret != 0))
 		return ret;
 
@@ -1781,7 +1644,6 @@ vmw_gb_surface_define_internal(struct drm_device *dev,
 
 	res = &user_srf->srf.res;
 
-<<<<<<< HEAD
 	if (req->base.buffer_handle != SVGA3D_INVALID_ID) {
 		ret = vmw_user_bo_lookup(tfile, req->base.buffer_handle,
 					 &res->backup,
@@ -1806,32 +1668,6 @@ vmw_gb_surface_define_internal(struct drm_device *dev,
 					&backup_handle,
 					&res->backup,
 					&user_srf->backup_base);
-=======
-
-	if (req->buffer_handle != SVGA3D_INVALID_ID) {
-		ret = vmw_user_dmabuf_lookup(tfile, req->buffer_handle,
-					     &res->backup,
-					     &user_srf->backup_base);
-		if (ret == 0) {
-			if (res->backup->base.num_pages * PAGE_SIZE <
-			    res->backup_size) {
-				DRM_ERROR("Surface backup buffer is too small.\n");
-				vmw_dmabuf_unreference(&res->backup);
-				ret = -EINVAL;
-				goto out_unlock;
-			} else {
-				backup_handle = req->buffer_handle;
-			}
-		}
-	} else if (req->drm_surface_flags & drm_vmw_surface_flag_create_buffer)
-		ret = vmw_user_dmabuf_alloc(dev_priv, tfile,
-					    res->backup_size,
-					    req->drm_surface_flags &
-					    drm_vmw_surface_flag_shareable,
-					    &backup_handle,
-					    &res->backup,
-					    &user_srf->backup_base);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (unlikely(ret != 0)) {
 		vmw_resource_unreference(&res);
@@ -1840,11 +1676,7 @@ vmw_gb_surface_define_internal(struct drm_device *dev,
 
 	tmp = vmw_resource_reference(res);
 	ret = ttm_prime_object_init(tfile, res->backup_size, &user_srf->prime,
-<<<<<<< HEAD
 				    req->base.drm_surface_flags &
-=======
-				    req->drm_surface_flags &
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    drm_vmw_surface_flag_shareable,
 				    VMW_RES_SURFACE,
 				    &vmw_user_surface_base_release, NULL);
@@ -1876,7 +1708,6 @@ out_unlock:
 }
 
 /**
-<<<<<<< HEAD
  * vmw_gb_surface_reference_internal - Ioctl function implementing
  * the user surface reference functionality.
  *
@@ -1892,23 +1723,6 @@ vmw_gb_surface_reference_internal(struct drm_device *dev,
 				  struct drm_file *file_priv)
 {
 	struct vmw_private *dev_priv = vmw_priv(dev);
-=======
- * vmw_gb_surface_reference_ioctl - Ioctl function implementing
- *                                  the user surface reference functionality.
- *
- * @dev:            Pointer to a struct drm_device.
- * @data:           Pointer to data copied from / to user-space.
- * @file_priv:      Pointer to a drm file private structure.
- */
-int vmw_gb_surface_reference_ioctl(struct drm_device *dev, void *data,
-				   struct drm_file *file_priv)
-{
-	struct vmw_private *dev_priv = vmw_priv(dev);
-	union drm_vmw_gb_surface_reference_arg *arg =
-	    (union drm_vmw_gb_surface_reference_arg *)data;
-	struct drm_vmw_surface_arg *req = &arg->req;
-	struct drm_vmw_gb_surface_ref_rep *rep = &arg->rep;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ttm_object_file *tfile = vmw_fpriv(file_priv)->tfile;
 	struct vmw_surface *srf;
 	struct vmw_user_surface *user_srf;
@@ -1929,12 +1743,7 @@ int vmw_gb_surface_reference_ioctl(struct drm_device *dev, void *data,
 	}
 
 	mutex_lock(&dev_priv->cmdbuf_mutex); /* Protect res->backup */
-<<<<<<< HEAD
 	ret = vmw_user_bo_reference(tfile, srf->res.backup, &backup_handle);
-=======
-	ret = vmw_user_dmabuf_reference(tfile, srf->res.backup,
-					&backup_handle);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&dev_priv->cmdbuf_mutex);
 
 	if (unlikely(ret != 0)) {
@@ -1945,7 +1754,6 @@ int vmw_gb_surface_reference_ioctl(struct drm_device *dev, void *data,
 		goto out_bad_resource;
 	}
 
-<<<<<<< HEAD
 	rep->creq.base.svga3d_flags = SVGA3D_FLAGS_LOWER_32(srf->flags);
 	rep->creq.base.format = srf->format;
 	rep->creq.base.mip_levels = srf->mip_levels[0];
@@ -1955,17 +1763,6 @@ int vmw_gb_surface_reference_ioctl(struct drm_device *dev, void *data,
 	rep->creq.base.array_size = srf->array_size;
 	rep->creq.base.buffer_handle = backup_handle;
 	rep->creq.base.base_size = srf->base_size;
-=======
-	rep->creq.svga3d_flags = srf->flags;
-	rep->creq.format = srf->format;
-	rep->creq.mip_levels = srf->mip_levels[0];
-	rep->creq.drm_surface_flags = 0;
-	rep->creq.multisample_count = srf->multisample_count;
-	rep->creq.autogen_filter = srf->autogen_filter;
-	rep->creq.array_size = srf->array_size;
-	rep->creq.buffer_handle = backup_handle;
-	rep->creq.base_size = srf->base_size;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rep->crep.handle = user_srf->prime.base.hash.key;
 	rep->crep.backup_size = srf->res.backup_size;
 	rep->crep.buffer_handle = backup_handle;
@@ -1973,7 +1770,6 @@ int vmw_gb_surface_reference_ioctl(struct drm_device *dev, void *data,
 		drm_vma_node_offset_addr(&srf->res.backup->base.vma_node);
 	rep->crep.buffer_size = srf->res.backup->base.num_pages * PAGE_SIZE;
 
-<<<<<<< HEAD
 	rep->creq.version = drm_vmw_gb_surface_v1;
 	rep->creq.svga3d_flags_upper_32_bits =
 		SVGA3D_FLAGS_UPPER_32(srf->flags);
@@ -1981,161 +1777,8 @@ int vmw_gb_surface_reference_ioctl(struct drm_device *dev, void *data,
 	rep->creq.quality_level = srf->quality_level;
 	rep->creq.must_be_zero = 0;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out_bad_resource:
 	ttm_base_object_unref(&base);
 
 	return ret;
 }
-<<<<<<< HEAD
-=======
-
-/**
- * vmw_surface_gb_priv_define - Define a private GB surface
- *
- * @dev:  Pointer to a struct drm_device
- * @user_accounting_size:  Used to track user-space memory usage, set
- *                         to 0 for kernel mode only memory
- * @svga3d_flags: SVGA3d surface flags for the device
- * @format: requested surface format
- * @for_scanout: true if inteded to be used for scanout buffer
- * @num_mip_levels:  number of MIP levels
- * @multisample_count:
- * @array_size: Surface array size.
- * @size: width, heigh, depth of the surface requested
- * @user_srf_out: allocated user_srf.  Set to NULL on failure.
- *
- * GB surfaces allocated by this function will not have a user mode handle, and
- * thus will only be visible to vmwgfx.  For optimization reasons the
- * surface may later be given a user mode handle by another function to make
- * it available to user mode drivers.
- */
-int vmw_surface_gb_priv_define(struct drm_device *dev,
-			       uint32_t user_accounting_size,
-			       uint32_t svga3d_flags,
-			       SVGA3dSurfaceFormat format,
-			       bool for_scanout,
-			       uint32_t num_mip_levels,
-			       uint32_t multisample_count,
-			       uint32_t array_size,
-			       struct drm_vmw_size size,
-			       struct vmw_surface **srf_out)
-{
-	struct vmw_private *dev_priv = vmw_priv(dev);
-	struct vmw_user_surface *user_srf;
-	struct vmw_surface *srf;
-	int ret;
-	u32 num_layers;
-
-	*srf_out = NULL;
-
-	if (for_scanout) {
-		uint32_t max_width, max_height;
-
-		if (!svga3dsurface_is_screen_target_format(format)) {
-			DRM_ERROR("Invalid Screen Target surface format.");
-			return -EINVAL;
-		}
-
-		max_width = min(dev_priv->texture_max_width,
-				dev_priv->stdu_max_width);
-		max_height = min(dev_priv->texture_max_height,
-				 dev_priv->stdu_max_height);
-
-		if (size.width > max_width || size.height > max_height) {
-			DRM_ERROR("%ux%u\n, exceeds max surface size %ux%u",
-				  size.width, size.height,
-				  max_width, max_height);
-			return -EINVAL;
-		}
-	} else {
-		const struct svga3d_surface_desc *desc;
-
-		desc = svga3dsurface_get_desc(format);
-		if (unlikely(desc->block_desc == SVGA3DBLOCKDESC_NONE)) {
-			DRM_ERROR("Invalid surface format.\n");
-			return -EINVAL;
-		}
-	}
-
-	/* array_size must be null for non-GL3 host. */
-	if (array_size > 0 && !dev_priv->has_dx) {
-		DRM_ERROR("Tried to create DX surface on non-DX host.\n");
-		return -EINVAL;
-	}
-
-	ret = ttm_read_lock(&dev_priv->reservation_sem, true);
-	if (unlikely(ret != 0))
-		return ret;
-
-	ret = ttm_mem_global_alloc(vmw_mem_glob(dev_priv),
-				   user_accounting_size, false, true);
-	if (unlikely(ret != 0)) {
-		if (ret != -ERESTARTSYS)
-			DRM_ERROR("Out of graphics memory for surface"
-				  " creation.\n");
-		goto out_unlock;
-	}
-
-	user_srf = kzalloc(sizeof(*user_srf), GFP_KERNEL);
-	if (unlikely(!user_srf)) {
-		ret = -ENOMEM;
-		goto out_no_user_srf;
-	}
-
-	*srf_out  = &user_srf->srf;
-	user_srf->size = user_accounting_size;
-	user_srf->prime.base.shareable = false;
-	user_srf->prime.base.tfile     = NULL;
-
-	srf = &user_srf->srf;
-	srf->flags             = svga3d_flags;
-	srf->format            = format;
-	srf->scanout           = for_scanout;
-	srf->mip_levels[0]     = num_mip_levels;
-	srf->num_sizes         = 1;
-	srf->sizes             = NULL;
-	srf->offsets           = NULL;
-	srf->base_size         = size;
-	srf->autogen_filter    = SVGA3D_TEX_FILTER_NONE;
-	srf->array_size        = array_size;
-	srf->multisample_count = multisample_count;
-
-	if (array_size)
-		num_layers = array_size;
-	else if (svga3d_flags & SVGA3D_SURFACE_CUBEMAP)
-		num_layers = SVGA3D_MAX_SURFACE_FACES;
-	else
-		num_layers = 1;
-
-	srf->res.backup_size   =
-		svga3dsurface_get_serialized_size(srf->format,
-						  srf->base_size,
-						  srf->mip_levels[0],
-						  num_layers);
-
-	if (srf->flags & SVGA3D_SURFACE_BIND_STREAM_OUTPUT)
-		srf->res.backup_size += sizeof(SVGA3dDXSOState);
-
-	if (dev_priv->active_display_unit == vmw_du_screen_target &&
-	    for_scanout)
-		srf->flags |= SVGA3D_SURFACE_SCREENTARGET;
-
-	/*
-	 * From this point, the generic resource management functions
-	 * destroy the object on failure.
-	 */
-	ret = vmw_surface_init(dev_priv, srf, vmw_user_surface_free);
-
-	ttm_read_unlock(&dev_priv->reservation_sem);
-	return ret;
-
-out_no_user_srf:
-	ttm_mem_global_free(vmw_mem_glob(dev_priv), user_accounting_size);
-
-out_unlock:
-	ttm_read_unlock(&dev_priv->reservation_sem);
-	return ret;
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

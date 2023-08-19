@@ -27,10 +27,7 @@
 #include <drm/amdgpu_drm.h>
 #include "amdgpu.h"
 #include "amdgpu_atombios.h"
-<<<<<<< HEAD
 #include "amdgpu_atomfirmware.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "amdgpu_i2c.h"
 
 #include "atom.h"
@@ -340,7 +337,6 @@ bool amdgpu_atombios_get_connector_info_from_object_table(struct amdgpu_device *
 		path_size += le16_to_cpu(path->usSize);
 
 		if (device_support & le16_to_cpu(path->usDeviceTag)) {
-<<<<<<< HEAD
 			uint8_t con_obj_id, con_obj_num, con_obj_type;
 
 			con_obj_id =
@@ -352,11 +348,6 @@ bool amdgpu_atombios_get_connector_info_from_object_table(struct amdgpu_device *
 			con_obj_type =
 			    (le16_to_cpu(path->usConnObjectId) &
 			     OBJECT_TYPE_MASK) >> OBJECT_TYPE_SHIFT;
-=======
-			uint8_t con_obj_id =
-			    (le16_to_cpu(path->usConnObjectId) & OBJECT_ID_MASK)
-			    >> OBJECT_ID_SHIFT;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			/* Skip TV/CV support */
 			if ((le16_to_cpu(path->usDeviceTag) ==
@@ -381,7 +372,6 @@ bool amdgpu_atombios_get_connector_info_from_object_table(struct amdgpu_device *
 			router.ddc_valid = false;
 			router.cd_valid = false;
 			for (j = 0; j < ((le16_to_cpu(path->usSize) - 8) / 2); j++) {
-<<<<<<< HEAD
 				uint8_t grph_obj_id, grph_obj_num, grph_obj_type;
 
 				grph_obj_id =
@@ -391,9 +381,6 @@ bool amdgpu_atombios_get_connector_info_from_object_table(struct amdgpu_device *
 				    (le16_to_cpu(path->usGraphicObjIds[j]) &
 				     ENUM_ID_MASK) >> ENUM_ID_SHIFT;
 				grph_obj_type =
-=======
-				uint8_t grph_obj_type =
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    (le16_to_cpu(path->usGraphicObjIds[j]) &
 				     OBJECT_TYPE_MASK) >> OBJECT_TYPE_SHIFT;
 
@@ -704,21 +691,12 @@ int amdgpu_atombios_get_clock_info(struct amdgpu_device *adev)
 			le32_to_cpu(firmware_info->info_21.ulDefaultDispEngineClkFreq);
 		/* set a reasonable default for DP */
 		if (adev->clock.default_dispclk < 53900) {
-<<<<<<< HEAD
 			DRM_DEBUG("Changing default dispclk from %dMhz to 600Mhz\n",
 				  adev->clock.default_dispclk / 100);
 			adev->clock.default_dispclk = 60000;
 		} else if (adev->clock.default_dispclk <= 60000) {
 			DRM_DEBUG("Changing default dispclk from %dMhz to 625Mhz\n",
 				  adev->clock.default_dispclk / 100);
-=======
-			DRM_INFO("Changing default dispclk from %dMhz to 600Mhz\n",
-				 adev->clock.default_dispclk / 100);
-			adev->clock.default_dispclk = 60000;
-		} else if (adev->clock.default_dispclk <= 60000) {
-			DRM_INFO("Changing default dispclk from %dMhz to 625Mhz\n",
-				 adev->clock.default_dispclk / 100);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			adev->clock.default_dispclk = 62500;
 		}
 		adev->clock.dp_extclk =
@@ -1722,11 +1700,7 @@ void amdgpu_atombios_scratch_regs_lock(struct amdgpu_device *adev, bool lock)
 	WREG32(adev->bios_scratch_reg_offset + 6, bios_6_scratch);
 }
 
-<<<<<<< HEAD
 static void amdgpu_atombios_scratch_regs_init(struct amdgpu_device *adev)
-=======
-void amdgpu_atombios_scratch_regs_init(struct amdgpu_device *adev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	uint32_t bios_2_scratch, bios_6_scratch;
 
@@ -1748,31 +1722,6 @@ void amdgpu_atombios_scratch_regs_init(struct amdgpu_device *adev)
 	WREG32(adev->bios_scratch_reg_offset + 6, bios_6_scratch);
 }
 
-<<<<<<< HEAD
-=======
-void amdgpu_atombios_scratch_regs_save(struct amdgpu_device *adev)
-{
-	int i;
-
-	for (i = 0; i < AMDGPU_BIOS_NUM_SCRATCH; i++)
-		adev->bios_scratch[i] = RREG32(adev->bios_scratch_reg_offset + i);
-}
-
-void amdgpu_atombios_scratch_regs_restore(struct amdgpu_device *adev)
-{
-	int i;
-
-	/*
-	 * VBIOS will check ASIC_INIT_COMPLETE bit to decide if
-	 * execute ASIC_Init posting via driver
-	 */
-	adev->bios_scratch[7] &= ~ATOM_S7_ASIC_INIT_COMPLETE_MASK;
-
-	for (i = 0; i < AMDGPU_BIOS_NUM_SCRATCH; i++)
-		WREG32(adev->bios_scratch_reg_offset + i, adev->bios_scratch[i]);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void amdgpu_atombios_scratch_regs_engine_hung(struct amdgpu_device *adev,
 					      bool hung)
 {
@@ -1828,22 +1777,15 @@ void amdgpu_atombios_copy_swap(u8 *dst, u8 *src, u8 num_bytes, bool to_le)
 #endif
 }
 
-<<<<<<< HEAD
 static int amdgpu_atombios_allocate_fb_scratch(struct amdgpu_device *adev)
-=======
-int amdgpu_atombios_allocate_fb_scratch(struct amdgpu_device *adev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct atom_context *ctx = adev->mode_info.atom_context;
 	int index = GetIndexIntoMasterTable(DATA, VRAM_UsageByFirmware);
 	uint16_t data_offset;
 	int usage_bytes = 0;
 	struct _ATOM_VRAM_USAGE_BY_FIRMWARE *firmware_usage;
-<<<<<<< HEAD
 	u64 start_addr;
 	u64 size;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (amdgpu_atom_parse_data_header(ctx, index, NULL, NULL, NULL, &data_offset)) {
 		firmware_usage = (struct _ATOM_VRAM_USAGE_BY_FIRMWARE *)(ctx->bios + data_offset);
@@ -1852,7 +1794,6 @@ int amdgpu_atombios_allocate_fb_scratch(struct amdgpu_device *adev)
 			  le32_to_cpu(firmware_usage->asFirmwareVramReserveInfo[0].ulStartAddrUsedByFirmware),
 			  le16_to_cpu(firmware_usage->asFirmwareVramReserveInfo[0].usFirmwareUseInKb));
 
-<<<<<<< HEAD
 		start_addr = firmware_usage->asFirmwareVramReserveInfo[0].ulStartAddrUsedByFirmware;
 		size = firmware_usage->asFirmwareVramReserveInfo[0].usFirmwareUseInKb;
 
@@ -1868,9 +1809,6 @@ int amdgpu_atombios_allocate_fb_scratch(struct amdgpu_device *adev)
 		} else {
 			usage_bytes = le16_to_cpu(firmware_usage->asFirmwareVramReserveInfo[0].usFirmwareUseInKb) * 1024;
 		}
-=======
-		usage_bytes = le16_to_cpu(firmware_usage->asFirmwareVramReserveInfo[0].usFirmwareUseInKb) * 1024;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	ctx->scratch_size_bytes = 0;
 	if (usage_bytes == 0)
@@ -1882,7 +1820,6 @@ int amdgpu_atombios_allocate_fb_scratch(struct amdgpu_device *adev)
 	ctx->scratch_size_bytes = usage_bytes;
 	return 0;
 }
-<<<<<<< HEAD
 
 /* ATOM accessor methods */
 /*
@@ -2114,5 +2051,3 @@ int amdgpu_atombios_init(struct amdgpu_device *adev)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

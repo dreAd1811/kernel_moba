@@ -593,7 +593,6 @@ static int __init pcc_cpufreq_init(void)
 		return ret;
 	}
 
-<<<<<<< HEAD
 	if (num_present_cpus() > 4) {
 		pcc_cpufreq_driver.flags |= CPUFREQ_NO_AUTO_DYNAMIC_SWITCHING;
 		pr_err("%s: Too many CPUs, dynamic performance scaling disabled\n",
@@ -603,8 +602,6 @@ static int __init pcc_cpufreq_init(void)
 		pr_err("%s: and complain to the system vendor\n", __func__);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = cpufreq_register_driver(&pcc_cpufreq_driver);
 
 	return ret;

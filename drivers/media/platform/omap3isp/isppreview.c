@@ -25,11 +25,7 @@
 #include "isppreview.h"
 
 /* Default values in Office Fluorescent Light for RGBtoRGB Blending */
-<<<<<<< HEAD
 static const struct omap3isp_prev_rgbtorgb flr_rgb2rgb = {
-=======
-static struct omap3isp_prev_rgbtorgb flr_rgb2rgb = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{	/* RGB-RGB Matrix */
 		{0x01E2, 0x0F30, 0x0FEE},
 		{0x0F9B, 0x01AC, 0x0FB9},
@@ -39,11 +35,7 @@ static struct omap3isp_prev_rgbtorgb flr_rgb2rgb = {
 };
 
 /* Default values in Office Fluorescent Light for RGB to YUV Conversion*/
-<<<<<<< HEAD
 static const struct omap3isp_prev_csc flr_prev_csc = {
-=======
-static struct omap3isp_prev_csc flr_prev_csc = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{	/* CSC Coef Matrix */
 		{66, 129, 25},
 		{-38, -75, 112},
@@ -898,11 +890,7 @@ static int preview_config(struct isp_prev_device *prev,
 		params = &prev->params.params[!!(active & bit)];
 
 		if (cfg->flag & bit) {
-<<<<<<< HEAD
 			void __user *from = *(void __user **)
-=======
-			void __user *from = *(void * __user *)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				((void *)cfg + attr->config_offset);
 			void *to = (void *)params + attr->param_offset;
 			size_t size = attr->param_size;

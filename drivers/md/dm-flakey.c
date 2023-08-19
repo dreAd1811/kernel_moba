@@ -213,11 +213,7 @@ static int flakey_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	devname = dm_shift_arg(&as);
 
 	r = -EINVAL;
-<<<<<<< HEAD
 	if (sscanf(dm_shift_arg(&as), "%llu%c", &tmpll, &dummy) != 1 || tmpll != (sector_t)tmpll) {
-=======
-	if (sscanf(dm_shift_arg(&as), "%llu%c", &tmpll, &dummy) != 1) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ti->error = "Invalid device sector";
 		goto bad;
 	}
@@ -291,7 +287,6 @@ static void flakey_map_bio(struct dm_target *ti, struct bio *bio)
 
 static void corrupt_bio_data(struct bio *bio, struct flakey_c *fc)
 {
-<<<<<<< HEAD
 	unsigned bio_bytes = bio_cur_bytes(bio);
 	char *data = bio_data(bio);
 
@@ -306,33 +301,6 @@ static void corrupt_bio_data(struct bio *bio, struct flakey_c *fc)
 			bio, fc->corrupt_bio_value, fc->corrupt_bio_byte,
 			(bio_data_dir(bio) == WRITE) ? 'w' : 'r', bio->bi_opf,
 			(unsigned long long)bio->bi_iter.bi_sector, bio_bytes);
-=======
-	unsigned int corrupt_bio_byte = fc->corrupt_bio_byte - 1;
-
-	struct bvec_iter iter;
-	struct bio_vec bvec;
-
-	if (!bio_has_data(bio))
-		return;
-
-	/*
-	 * Overwrite the Nth byte of the bio's data, on whichever page
-	 * it falls.
-	 */
-	bio_for_each_segment(bvec, bio, iter) {
-		if (bio_iter_len(bio, iter) > corrupt_bio_byte) {
-			char *segment = (page_address(bio_iter_page(bio, iter))
-					 + bio_iter_offset(bio, iter));
-			segment[corrupt_bio_byte] = fc->corrupt_bio_value;
-			DMDEBUG("Corrupting data bio=%p by writing %u to byte %u "
-				"(rw=%c bi_opf=%u bi_sector=%llu size=%u)\n",
-				bio, fc->corrupt_bio_value, fc->corrupt_bio_byte,
-				(bio_data_dir(bio) == WRITE) ? 'w' : 'r', bio->bi_opf,
-				(unsigned long long)bio->bi_iter.bi_sector, bio->bi_iter.bi_size);
-			break;
-		}
-		corrupt_bio_byte -= bio_iter_len(bio, iter);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -474,12 +442,7 @@ static void flakey_status(struct dm_target *ti, status_type_t type,
 	}
 }
 
-<<<<<<< HEAD
 static int flakey_prepare_ioctl(struct dm_target *ti, struct block_device **bdev)
-=======
-static int flakey_prepare_ioctl(struct dm_target *ti,
-		struct block_device **bdev, fmode_t *mode)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct flakey_c *fc = ti->private;
 

@@ -19,13 +19,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
-<<<<<<< HEAD
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-=======
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
- * USA
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  */
 
@@ -228,7 +222,6 @@ void simd_skcipher_free(struct simd_skcipher_alg *salg)
 }
 EXPORT_SYMBOL_GPL(simd_skcipher_free);
 
-<<<<<<< HEAD
 int simd_register_skciphers_compat(struct skcipher_alg *algs, int count,
 				   struct simd_skcipher_alg **simd_algs)
 {
@@ -279,6 +272,4 @@ void simd_unregister_skciphers(struct skcipher_alg *algs, int count,
 }
 EXPORT_SYMBOL_GPL(simd_unregister_skciphers);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_LICENSE("GPL");

@@ -63,12 +63,6 @@ struct thread_info {
 	.addr_limit	= KERNEL_DS,		\
 }
 
-<<<<<<< HEAD
-=======
-#define init_thread_info	(init_thread_union.thread_info)
-#define init_stack		(init_thread_union.stack)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* how to get the current stack pointer from C */
 register unsigned long current_stack_pointer asm("r15") __used;
 

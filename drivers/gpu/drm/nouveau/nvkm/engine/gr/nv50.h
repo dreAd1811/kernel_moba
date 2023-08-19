@@ -20,10 +20,7 @@ u64 nv50_gr_units(struct nvkm_gr *);
 int g84_gr_tlb_flush(struct nvkm_gr *);
 
 #define nv50_gr_chan(p) container_of((p), struct nv50_gr_chan, object)
-<<<<<<< HEAD
 #include <core/object.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct nv50_gr_chan {
 	struct nvkm_object object;

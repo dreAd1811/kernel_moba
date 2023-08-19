@@ -22,7 +22,6 @@
  * Authors: Ben Skeggs <bskeggs@redhat.com>
  */
 #include "channv50.h"
-<<<<<<< HEAD
 
 int
 gp102_disp_oimm_new(const struct nvkm_oclass *oclass, void *argv, u32 argc,
@@ -31,18 +30,3 @@ gp102_disp_oimm_new(const struct nvkm_oclass *oclass, void *argv, u32 argc,
 	return nv50_disp_oimm_new_(&gf119_disp_pioc_func, disp, 9, 13,
 				   oclass, argv, argc, pobject);
 }
-=======
-#include "rootnv50.h"
-
-#include <nvif/class.h>
-
-const struct nv50_disp_pioc_oclass
-gp102_disp_oimm_oclass = {
-	.base.oclass = GK104_DISP_OVERLAY,
-	.base.minver = 0,
-	.base.maxver = 0,
-	.ctor = nv50_disp_oimm_new,
-	.func = &gf119_disp_pioc_func,
-	.chid = { 9, 13 },
-};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

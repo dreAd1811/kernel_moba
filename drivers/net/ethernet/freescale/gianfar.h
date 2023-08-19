@@ -1372,10 +1372,4 @@ struct filer_table {
 	struct gfar_filer_entry fe[MAX_FILER_CACHE_IDX + 20];
 };
 
-<<<<<<< HEAD
-=======
-/* The gianfar_ptp module will set this variable */
-extern int gfar_phc_index;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __GIANFAR_H */

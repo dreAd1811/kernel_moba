@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Freescale MXS I2C bus driver
  *
@@ -11,15 +8,6 @@
  * based on a (non-working) driver which was:
  *
  * Copyright (C) 2009-2010 Freescale Semiconductor, Inc. All Rights Reserved.
-<<<<<<< HEAD
-=======
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/slab.h>
@@ -187,16 +175,10 @@ static int mxs_i2c_dma_setup_xfer(struct i2c_adapter *adap,
 	struct dma_async_tx_descriptor *desc;
 	struct mxs_i2c_dev *i2c = i2c_get_adapdata(adap);
 
-<<<<<<< HEAD
 	i2c->addr_data = i2c_8bit_addr_from_msg(msg);
 
 	if (msg->flags & I2C_M_RD) {
 		i2c->dma_read = true;
-=======
-	if (msg->flags & I2C_M_RD) {
-		i2c->dma_read = 1;
-		i2c->addr_data = (msg->addr << 1) | I2C_SMBUS_READ;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/*
 		 * SELECT command.
@@ -253,12 +235,7 @@ static int mxs_i2c_dma_setup_xfer(struct i2c_adapter *adap,
 			goto read_init_dma_fail;
 		}
 	} else {
-<<<<<<< HEAD
 		i2c->dma_read = false;
-=======
-		i2c->dma_read = 0;
-		i2c->addr_data = (msg->addr << 1) | I2C_SMBUS_WRITE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/*
 		 * WRITE command.
@@ -389,11 +366,7 @@ static int mxs_i2c_pio_setup_xfer(struct i2c_adapter *adap,
 			struct i2c_msg *msg, uint32_t flags)
 {
 	struct mxs_i2c_dev *i2c = i2c_get_adapdata(adap);
-<<<<<<< HEAD
 	uint32_t addr_data = i2c_8bit_addr_from_msg(msg);
-=======
-	uint32_t addr_data = msg->addr << 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t data = 0;
 	int i, ret, xlen = 0, xmit = 0;
 	uint32_t start;
@@ -433,11 +406,6 @@ static int mxs_i2c_pio_setup_xfer(struct i2c_adapter *adap,
 		 */
 		BUG_ON(msg->len > 4);
 
-<<<<<<< HEAD
-=======
-		addr_data |= I2C_SMBUS_READ;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* SELECT command. */
 		mxs_i2c_pio_trigger_write_cmd(i2c, MXS_CMD_I2C_SELECT,
 					      addr_data);
@@ -475,10 +443,6 @@ static int mxs_i2c_pio_setup_xfer(struct i2c_adapter *adap,
 		 * fast enough. It is possible to transfer arbitrary amount
 		 * of data using PIO write.
 		 */
-<<<<<<< HEAD
-=======
-		addr_data |= I2C_SMBUS_WRITE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/*
 		 * The LSB of data buffer is the first byte blasted across
@@ -603,12 +567,6 @@ static int mxs_i2c_xfer_msg(struct i2c_adapter *adap, struct i2c_msg *msg,
 	dev_dbg(i2c->dev, "addr: 0x%04x, len: %d, flags: 0x%x, stop: %d\n",
 		msg->addr, msg->len, msg->flags, stop);
 
-<<<<<<< HEAD
-=======
-	if (msg->len == 0)
-		return -EINVAL;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * The MX28 I2C IP block can only do PIO READ for transfer of to up
 	 * 4 bytes of length. The write transfer is not limited as it can use
@@ -722,13 +680,10 @@ static const struct i2c_algorithm mxs_i2c_algo = {
 	.functionality = mxs_i2c_func,
 };
 
-<<<<<<< HEAD
 static const struct i2c_adapter_quirks mxs_i2c_quirks = {
 	.flags = I2C_AQ_NO_ZERO_LEN,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void mxs_i2c_derive_timing(struct mxs_i2c_dev *i2c, uint32_t speed)
 {
 	/* The I2C block clock runs at 24MHz */
@@ -900,10 +855,7 @@ static int mxs_i2c_probe(struct platform_device *pdev)
 	strlcpy(adap->name, "MXS I2C adapter", sizeof(adap->name));
 	adap->owner = THIS_MODULE;
 	adap->algo = &mxs_i2c_algo;
-<<<<<<< HEAD
 	adap->quirks = &mxs_i2c_quirks;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adap->dev.parent = dev;
 	adap->nr = pdev->id;
 	adap->dev.of_node = pdev->dev.of_node;

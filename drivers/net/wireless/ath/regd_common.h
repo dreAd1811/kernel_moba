@@ -46,10 +46,7 @@ enum EnumRd {
 	ETSI5_WORLD = 0x39,
 	ETSI6_WORLD = 0x34,
 	ETSI8_WORLD = 0x3D,
-<<<<<<< HEAD
 	ETSI9_WORLD = 0x3E,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ETSI_RESERVED = 0x33,
 
 	MKK1_MKKA = 0x40,
@@ -189,10 +186,7 @@ static struct reg_dmn_pair_mapping regDomainPairs[] = {
 	{ETSI5_WORLD, CTL_ETSI, CTL_ETSI},
 	{ETSI6_WORLD, CTL_ETSI, CTL_ETSI},
 	{ETSI8_WORLD, CTL_ETSI, CTL_ETSI},
-<<<<<<< HEAD
 	{ETSI9_WORLD, CTL_ETSI, CTL_ETSI},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* XXX: For ETSI3_ETSIA, Was NO_CTL meant for the 2 GHz band ? */
 	{ETSI3_ETSIA, CTL_ETSI, CTL_ETSI},
@@ -305,31 +299,18 @@ static struct reg_dmn_pair_mapping regDomainPairs[] = {
 static struct country_code_to_enum_rd allCountries[] = {
 	{CTRY_DEBUG, NO_ENUMRD, "DB"},
 	{CTRY_DEFAULT, FCC1_FCCA, "CO"},
-<<<<<<< HEAD
 	{CTRY_ALBANIA, ETSI1_WORLD, "AL"},
 	{CTRY_ALGERIA, APL13_WORLD, "DZ"},
 	{CTRY_ARGENTINA, FCC3_WORLD, "AR"},
 	{CTRY_ARMENIA, ETSI4_WORLD, "AM"},
 	{CTRY_ARUBA, ETSI1_WORLD, "AW"},
 	{CTRY_AUSTRALIA, FCC3_WORLD, "AU"},
-=======
-	{CTRY_ALBANIA, NULL1_WORLD, "AL"},
-	{CTRY_ALGERIA, NULL1_WORLD, "DZ"},
-	{CTRY_ARGENTINA, FCC3_WORLD, "AR"},
-	{CTRY_ARMENIA, ETSI4_WORLD, "AM"},
-	{CTRY_ARUBA, ETSI1_WORLD, "AW"},
-	{CTRY_AUSTRALIA, FCC2_WORLD, "AU"},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{CTRY_AUSTRALIA2, FCC6_WORLD, "AU"},
 	{CTRY_AUSTRIA, ETSI1_WORLD, "AT"},
 	{CTRY_AZERBAIJAN, ETSI4_WORLD, "AZ"},
 	{CTRY_BAHAMAS, FCC3_WORLD, "BS"},
 	{CTRY_BAHRAIN, APL6_WORLD, "BH"},
-<<<<<<< HEAD
 	{CTRY_BANGLADESH, APL1_WORLD, "BD"},
-=======
-	{CTRY_BANGLADESH, NULL1_WORLD, "BD"},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{CTRY_BARBADOS, FCC2_WORLD, "BB"},
 	{CTRY_BELARUS, ETSI1_WORLD, "BY"},
 	{CTRY_BELGIUM, ETSI1_WORLD, "BE"},
@@ -339,31 +320,18 @@ static struct country_code_to_enum_rd allCountries[] = {
 	{CTRY_BOLIVIA, APL1_ETSIC, "BO"},
 	{CTRY_BOSNIA_HERZ, ETSI1_WORLD, "BA"},
 	{CTRY_BRAZIL, FCC3_WORLD, "BR"},
-<<<<<<< HEAD
 	{CTRY_BRUNEI_DARUSSALAM, APL6_WORLD, "BN"},
 	{CTRY_BULGARIA, ETSI1_WORLD, "BG"},
-=======
-	{CTRY_BRUNEI_DARUSSALAM, APL1_WORLD, "BN"},
-	{CTRY_BULGARIA, ETSI6_WORLD, "BG"},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{CTRY_CAMBODIA, ETSI1_WORLD, "KH"},
 	{CTRY_CANADA, FCC3_FCCA, "CA"},
 	{CTRY_CANADA2, FCC6_FCCA, "CA"},
 	{CTRY_CHILE, APL6_WORLD, "CL"},
 	{CTRY_CHINA, APL1_WORLD, "CN"},
-<<<<<<< HEAD
 	{CTRY_COLOMBIA, FCC3_WORLD, "CO"},
 	{CTRY_COSTA_RICA, FCC1_WORLD, "CR"},
 	{CTRY_CROATIA, ETSI1_WORLD, "HR"},
 	{CTRY_CYPRUS, ETSI1_WORLD, "CY"},
 	{CTRY_CZECH, ETSI1_WORLD, "CZ"},
-=======
-	{CTRY_COLOMBIA, FCC1_FCCA, "CO"},
-	{CTRY_COSTA_RICA, FCC1_WORLD, "CR"},
-	{CTRY_CROATIA, ETSI1_WORLD, "HR"},
-	{CTRY_CYPRUS, ETSI1_WORLD, "CY"},
-	{CTRY_CZECH, ETSI3_WORLD, "CZ"},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{CTRY_DENMARK, ETSI1_WORLD, "DK"},
 	{CTRY_DOMINICAN_REPUBLIC, FCC1_FCCA, "DO"},
 	{CTRY_ECUADOR, FCC1_WORLD, "EC"},
@@ -380,11 +348,7 @@ static struct country_code_to_enum_rd allCountries[] = {
 	{CTRY_GUAM, FCC1_FCCA, "GU"},
 	{CTRY_GUATEMALA, FCC1_FCCA, "GT"},
 	{CTRY_HAITI, ETSI1_WORLD, "HT"},
-<<<<<<< HEAD
 	{CTRY_HONDURAS, FCC3_WORLD, "HN"},
-=======
-	{CTRY_HONDURAS, NULL1_WORLD, "HN"},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{CTRY_HONG_KONG, FCC3_WORLD, "HK"},
 	{CTRY_HUNGARY, ETSI1_WORLD, "HU"},
 	{CTRY_ICELAND, ETSI1_WORLD, "IS"},
@@ -392,11 +356,7 @@ static struct country_code_to_enum_rd allCountries[] = {
 	{CTRY_INDONESIA, NULL1_WORLD, "ID"},
 	{CTRY_IRAN, APL1_WORLD, "IR"},
 	{CTRY_IRELAND, ETSI1_WORLD, "IE"},
-<<<<<<< HEAD
 	{CTRY_ISRAEL, ETSI3_WORLD, "IL"},
-=======
-	{CTRY_ISRAEL, NULL1_WORLD, "IL"},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{CTRY_ITALY, ETSI1_WORLD, "IT"},
 	{CTRY_JAMAICA, FCC3_WORLD, "JM"},
 
@@ -461,10 +421,7 @@ static struct country_code_to_enum_rd allCountries[] = {
 
 	{CTRY_JORDAN, ETSI2_WORLD, "JO"},
 	{CTRY_KAZAKHSTAN, NULL1_WORLD, "KZ"},
-<<<<<<< HEAD
 	{CTRY_KENYA, APL1_WORLD, "KE"},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{CTRY_KOREA_NORTH, APL9_WORLD, "KP"},
 	{CTRY_KOREA_ROC, APL9_WORLD, "KR"},
 	{CTRY_KOREA_ROC2, APL2_WORLD, "K2"},
@@ -476,7 +433,6 @@ static struct country_code_to_enum_rd allCountries[] = {
 	{CTRY_LITHUANIA, ETSI1_WORLD, "LT"},
 	{CTRY_LUXEMBOURG, ETSI1_WORLD, "LU"},
 	{CTRY_MACAU, FCC2_WORLD, "MO"},
-<<<<<<< HEAD
 	{CTRY_MACEDONIA, ETSI1_WORLD, "MK"},
 	{CTRY_MALAYSIA, FCC1_WORLD, "MY"},
 	{CTRY_MALTA, ETSI1_WORLD, "MT"},
@@ -484,55 +440,30 @@ static struct country_code_to_enum_rd allCountries[] = {
 	{CTRY_MEXICO, FCC1_FCCA, "MX"},
 	{CTRY_MONACO, ETSI4_WORLD, "MC"},
 	{CTRY_MONTENEGRO, ETSI1_WORLD, "ME"},
-=======
-	{CTRY_MACEDONIA, NULL1_WORLD, "MK"},
-	{CTRY_MALAYSIA, APL8_WORLD, "MY"},
-	{CTRY_MALTA, ETSI1_WORLD, "MT"},
-	{CTRY_MEXICO, FCC1_FCCA, "MX"},
-	{CTRY_MONACO, ETSI4_WORLD, "MC"},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{CTRY_MOROCCO, APL4_WORLD, "MA"},
 	{CTRY_NEPAL, APL1_WORLD, "NP"},
 	{CTRY_NETHERLANDS, ETSI1_WORLD, "NL"},
 	{CTRY_NETHERLANDS_ANTILLES, ETSI1_WORLD, "AN"},
-<<<<<<< HEAD
 	{CTRY_NEW_ZEALAND, FCC3_ETSIC, "NZ"},
 	{CTRY_NICARAGUA, FCC3_FCCA, "NI"},
-=======
-	{CTRY_NEW_ZEALAND, FCC2_ETSIC, "NZ"},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{CTRY_NORWAY, ETSI1_WORLD, "NO"},
 	{CTRY_OMAN, FCC3_WORLD, "OM"},
 	{CTRY_PAKISTAN, NULL1_WORLD, "PK"},
 	{CTRY_PANAMA, FCC1_FCCA, "PA"},
 	{CTRY_PAPUA_NEW_GUINEA, FCC1_WORLD, "PG"},
-<<<<<<< HEAD
 	{CTRY_PARAGUAY, FCC3_WORLD, "PY"},
 	{CTRY_PERU, FCC3_WORLD, "PE"},
 	{CTRY_PHILIPPINES, FCC3_WORLD, "PH"},
-=======
-	{CTRY_PERU, APL1_WORLD, "PE"},
-	{CTRY_PHILIPPINES, APL1_WORLD, "PH"},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{CTRY_POLAND, ETSI1_WORLD, "PL"},
 	{CTRY_PORTUGAL, ETSI1_WORLD, "PT"},
 	{CTRY_PUERTO_RICO, FCC1_FCCA, "PR"},
 	{CTRY_QATAR, APL1_WORLD, "QA"},
-<<<<<<< HEAD
 	{CTRY_ROMANIA, ETSI1_WORLD, "RO"},
 	{CTRY_RUSSIA, ETSI8_WORLD, "RU"},
 	{CTRY_SAUDI_ARABIA, NULL1_WORLD, "SA"},
 	{CTRY_SERBIA, ETSI1_WORLD, "RS"},
 	{CTRY_SERBIA_MONTENEGRO, ETSI1_WORLD, "CS"},
 	{CTRY_SINGAPORE, FCC3_WORLD, "SG"},
-=======
-	{CTRY_ROMANIA, NULL1_WORLD, "RO"},
-	{CTRY_RUSSIA, NULL1_WORLD, "RU"},
-	{CTRY_SAUDI_ARABIA, NULL1_WORLD, "SA"},
-	{CTRY_SERBIA, ETSI1_WORLD, "RS"},
-	{CTRY_SERBIA_MONTENEGRO, ETSI1_WORLD, "CS"},
-	{CTRY_SINGAPORE, APL6_WORLD, "SG"},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{CTRY_SLOVAKIA, ETSI1_WORLD, "SK"},
 	{CTRY_SLOVENIA, ETSI1_WORLD, "SI"},
 	{CTRY_SOUTH_AFRICA, FCC3_WORLD, "ZA"},
@@ -548,11 +479,7 @@ static struct country_code_to_enum_rd allCountries[] = {
 	{CTRY_TUNISIA, ETSI3_WORLD, "TN"},
 	{CTRY_TURKEY, ETSI3_WORLD, "TR"},
 	{CTRY_UGANDA, FCC3_WORLD, "UG"},
-<<<<<<< HEAD
 	{CTRY_UKRAINE, ETSI9_WORLD, "UA"},
-=======
-	{CTRY_UKRAINE, NULL1_WORLD, "UA"},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{CTRY_UAE, NULL1_WORLD, "AE"},
 	{CTRY_UNITED_KINGDOM, ETSI1_WORLD, "GB"},
 	{CTRY_UNITED_STATES, FCC3_FCCA, "US"},
@@ -565,11 +492,7 @@ static struct country_code_to_enum_rd allCountries[] = {
 	{CTRY_VENEZUELA, APL2_ETSIC, "VE"},
 	{CTRY_VIET_NAM, NULL1_WORLD, "VN"},
 	{CTRY_YEMEN, NULL1_WORLD, "YE"},
-<<<<<<< HEAD
 	{CTRY_ZIMBABWE, ETSI1_WORLD, "ZW"},
-=======
-	{CTRY_ZIMBABWE, NULL1_WORLD, "ZW"},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #endif

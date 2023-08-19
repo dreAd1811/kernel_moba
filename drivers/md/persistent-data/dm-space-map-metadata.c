@@ -11,10 +11,7 @@
 #include <linux/list.h>
 #include <linux/slab.h>
 #include <linux/device-mapper.h>
-<<<<<<< HEAD
 #include <linux/kernel.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DM_MSG_PREFIX "space map metadata"
 
@@ -115,11 +112,7 @@ static bool brb_empty(struct bop_ring_buffer *brb)
 static unsigned brb_next(struct bop_ring_buffer *brb, unsigned old)
 {
 	unsigned r = old + 1;
-<<<<<<< HEAD
 	return r >= ARRAY_SIZE(brb->bops) ? 0 : r;
-=======
-	return (r >= (sizeof(brb->bops) / sizeof(*brb->bops))) ? 0 : r;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int brb_push(struct bop_ring_buffer *brb,
@@ -455,14 +448,7 @@ static int sm_metadata_new_block_(struct dm_space_map *sm, dm_block_t *b)
 	enum allocation_event ev;
 	struct sm_metadata *smm = container_of(sm, struct sm_metadata, sm);
 
-<<<<<<< HEAD
 	r = sm_ll_find_free_block(&smm->old_ll, smm->begin, smm->old_ll.nr_blocks, b);
-=======
-	/*
-	 * Any block we allocate has to be free in both the old and current ll.
-	 */
-	r = sm_ll_find_common_free_block(&smm->old_ll, &smm->ll, smm->begin, smm->ll.nr_blocks, b);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r)
 		return r;
 

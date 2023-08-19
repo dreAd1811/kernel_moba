@@ -22,10 +22,7 @@
 #include "pmc.h"
 
 #define PMC_MAX_IDS 128
-<<<<<<< HEAD
 #define PMC_MAX_PCKS 8
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int of_at91_get_clk_range(struct device_node *np, const char *propname,
 			  struct clk_range *range)
@@ -54,10 +51,7 @@ EXPORT_SYMBOL_GPL(of_at91_get_clk_range);
 static struct regmap *pmcreg;
 
 static u8 registered_ids[PMC_MAX_IDS];
-<<<<<<< HEAD
 static u8 registered_pcks[PMC_MAX_PCKS];
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct
 {
@@ -74,7 +68,6 @@ static struct
 	u32 pcr[PMC_MAX_IDS];
 	u32 audio_pll0;
 	u32 audio_pll1;
-<<<<<<< HEAD
 	u32 pckr[PMC_MAX_PCKS];
 } pmc_cache;
 
@@ -82,10 +75,6 @@ static struct
  * As Peripheral ID 0 is invalid on AT91 chips, the identifier is stored
  * without alteration in the table, and 0 is for unused clocks.
  */
-=======
-} pmc_cache;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void pmc_register_id(u8 id)
 {
 	int i;
@@ -100,7 +89,6 @@ void pmc_register_id(u8 id)
 	}
 }
 
-<<<<<<< HEAD
 /*
  * As Programmable Clock 0 is valid on AT91 chips, there is an offset
  * of 1 between the stored value and the real clock ID.
@@ -125,13 +113,6 @@ static int pmc_suspend(void)
 	u8 num;
 
 	regmap_read(pmcreg, AT91_PMC_SCSR, &pmc_cache.scsr);
-=======
-static int pmc_suspend(void)
-{
-	int i;
-
-	regmap_read(pmcreg, AT91_PMC_IMR, &pmc_cache.scsr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	regmap_read(pmcreg, AT91_PMC_PCSR, &pmc_cache.pcsr0);
 	regmap_read(pmcreg, AT91_CKGR_UCKR, &pmc_cache.uckr);
 	regmap_read(pmcreg, AT91_CKGR_MOR, &pmc_cache.mor);
@@ -148,13 +129,10 @@ static int pmc_suspend(void)
 		regmap_read(pmcreg, AT91_PMC_PCR,
 			    &pmc_cache.pcr[registered_ids[i]]);
 	}
-<<<<<<< HEAD
 	for (i = 0; registered_pcks[i]; i++) {
 		num = registered_pcks[i] - 1;
 		regmap_read(pmcreg, AT91_PMC_PCKR(num), &pmc_cache.pckr[num]);
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -171,10 +149,7 @@ static bool pmc_ready(unsigned int mask)
 static void pmc_resume(void)
 {
 	int i;
-<<<<<<< HEAD
 	u8 num;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 tmp;
 	u32 mask = AT91_PMC_MCKRDY | AT91_PMC_LOCKA;
 
@@ -185,11 +160,7 @@ static void pmc_resume(void)
 	if (pmc_cache.pllar != tmp)
 		pr_warn("PLLAR was not configured properly by the firmware\n");
 
-<<<<<<< HEAD
 	regmap_write(pmcreg, AT91_PMC_SCER, pmc_cache.scsr);
-=======
-	regmap_write(pmcreg, AT91_PMC_IMR, pmc_cache.scsr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	regmap_write(pmcreg, AT91_PMC_PCER, pmc_cache.pcsr0);
 	regmap_write(pmcreg, AT91_CKGR_UCKR, pmc_cache.uckr);
 	regmap_write(pmcreg, AT91_CKGR_MOR, pmc_cache.mor);
@@ -203,13 +174,10 @@ static void pmc_resume(void)
 			     pmc_cache.pcr[registered_ids[i]] |
 			     AT91_PMC_PCR_CMD);
 	}
-<<<<<<< HEAD
 	for (i = 0; registered_pcks[i]; i++) {
 		num = registered_pcks[i] - 1;
 		regmap_write(pmcreg, AT91_PMC_PCKR(num), pmc_cache.pckr[num]);
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (pmc_cache.uckr & AT91_PMC_UPLLEN)
 		mask |= AT91_PMC_LOCKU;

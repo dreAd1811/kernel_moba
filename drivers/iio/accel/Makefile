@@ -4,11 +4,8 @@
 #
 
 # When adding new entries keep the list in alphabetical order
-<<<<<<< HEAD
 obj-$(CONFIG_ADIS16201) += adis16201.o
 obj-$(CONFIG_ADIS16209) += adis16209.o
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 obj-$(CONFIG_ADXL345) += adxl345_core.o
 obj-$(CONFIG_ADXL345_I2C) += adxl345_i2c.o
 obj-$(CONFIG_ADXL345_SPI) += adxl345_spi.o
@@ -49,11 +46,8 @@ obj-$(CONFIG_SCA3000)		+= sca3000.o
 obj-$(CONFIG_STK8312)		+= stk8312.o
 obj-$(CONFIG_STK8BA50)		+= stk8ba50.o
 
-<<<<<<< HEAD
 obj-$(CONFIG_IIO_CROS_EC_ACCEL_LEGACY) += cros_ec_accel_legacy.o
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 obj-$(CONFIG_IIO_SSP_SENSORS_COMMONS) += ssp_accel_sensor.o
 
 obj-$(CONFIG_IIO_ST_ACCEL_3AXIS) += st_accel.o

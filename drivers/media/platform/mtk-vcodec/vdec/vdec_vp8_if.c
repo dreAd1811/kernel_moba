@@ -155,10 +155,6 @@ struct vdec_vp8_vpu_inst {
  * @reg_base		   : HW register base address
  * @frm_cnt		   : decode frame count
  * @ctx			   : V4L2 context
-<<<<<<< HEAD
-=======
- * @dev			   : platform device
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @vpu			   : VPU instance for decoder
  * @vsi			   : VPU share information
  */

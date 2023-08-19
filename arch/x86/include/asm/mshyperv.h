@@ -6,43 +6,16 @@
 #include <linux/atomic.h>
 #include <linux/nmi.h>
 #include <asm/io.h>
-<<<<<<< HEAD
 #include <asm/hyperv-tlfs.h>
 #include <asm/nospec-branch.h>
 
 #define VP_INVAL	U32_MAX
-=======
-#include <asm/hyperv.h>
-#include <asm/nospec-branch.h>
-
-/*
- * The below CPUID leaves are present if VersionAndFeatures.HypervisorPresent
- * is set by CPUID(HVCPUID_VERSION_FEATURES).
- */
-enum hv_cpuid_function {
-	HVCPUID_VERSION_FEATURES		= 0x00000001,
-	HVCPUID_VENDOR_MAXFUNCTION		= 0x40000000,
-	HVCPUID_INTERFACE			= 0x40000001,
-
-	/*
-	 * The remaining functions depend on the value of
-	 * HVCPUID_INTERFACE
-	 */
-	HVCPUID_VERSION				= 0x40000002,
-	HVCPUID_FEATURES			= 0x40000003,
-	HVCPUID_ENLIGHTENMENT_INFO		= 0x40000004,
-	HVCPUID_IMPLEMENTATION_LIMITS		= 0x40000005,
-};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct ms_hyperv_info {
 	u32 features;
 	u32 misc_features;
 	u32 hints;
-<<<<<<< HEAD
 	u32 nested_features;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 max_vp_index;
 	u32 max_lp_index;
 };
@@ -50,61 +23,7 @@ struct ms_hyperv_info {
 extern struct ms_hyperv_info ms_hyperv;
 
 /*
-<<<<<<< HEAD
  * Generate the guest ID.
-=======
- * Declare the MSR used to setup pages used to communicate with the hypervisor.
- */
-union hv_x64_msr_hypercall_contents {
-	u64 as_uint64;
-	struct {
-		u64 enable:1;
-		u64 reserved:11;
-		u64 guest_physical_address:52;
-	};
-};
-
-/*
- * TSC page layout.
- */
-
-struct ms_hyperv_tsc_page {
-	volatile u32 tsc_sequence;
-	u32 reserved1;
-	volatile u64 tsc_scale;
-	volatile s64 tsc_offset;
-	u64 reserved2[509];
-};
-
-/*
- * The guest OS needs to register the guest ID with the hypervisor.
- * The guest ID is a 64 bit entity and the structure of this ID is
- * specified in the Hyper-V specification:
- *
- * msdn.microsoft.com/en-us/library/windows/hardware/ff542653%28v=vs.85%29.aspx
- *
- * While the current guideline does not specify how Linux guest ID(s)
- * need to be generated, our plan is to publish the guidelines for
- * Linux and other guest operating systems that currently are hosted
- * on Hyper-V. The implementation here conforms to this yet
- * unpublished guidelines.
- *
- *
- * Bit(s)
- * 63 - Indicates if the OS is Open Source or not; 1 is Open Source
- * 62:56 - Os Type; Linux is 0x100
- * 55:48 - Distro specific identification
- * 47:16 - Linux kernel version number
- * 15:0  - Distro specific identification
- *
- *
- */
-
-#define HV_LINUX_VENDOR_ID              0x8100
-
-/*
- * Generate the guest ID based on the guideline described above.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 static inline  __u64 generate_guest_id(__u64 d_info1, __u64 kernel_version,
@@ -157,15 +76,10 @@ static inline void vmbus_signal_eom(struct hv_message *msg, u32 old_msg_type)
 	}
 }
 
-<<<<<<< HEAD
 #define hv_init_timer(timer, tick) \
 	wrmsrl(HV_X64_MSR_STIMER0_COUNT + (2*timer), tick)
 #define hv_init_timer_config(timer, val) \
 	wrmsrl(HV_X64_MSR_STIMER0_CONFIG + (2*timer), val)
-=======
-#define hv_init_timer(timer, tick) wrmsrl(timer, tick)
-#define hv_init_timer_config(config, val) wrmsrl(config, val)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define hv_get_simp(val) rdmsrl(HV_X64_MSR_SIMP, val)
 #define hv_set_simp(val) wrmsrl(HV_X64_MSR_SIMP, val)
@@ -178,7 +92,6 @@ static inline void vmbus_signal_eom(struct hv_message *msg, u32 old_msg_type)
 
 #define hv_get_vp_index(index) rdmsrl(HV_X64_MSR_VP_INDEX, index)
 
-<<<<<<< HEAD
 #define hv_get_synint_state(int_num, val) \
 	rdmsrl(HV_X64_MSR_SINT0 + int_num, val)
 #define hv_set_synint_state(int_num, val) \
@@ -189,12 +102,6 @@ static inline void vmbus_signal_eom(struct hv_message *msg, u32 old_msg_type)
 
 void hyperv_callback_vector(void);
 void hyperv_reenlightenment_vector(void);
-=======
-#define hv_get_synint_state(int_num, val) rdmsrl(int_num, val)
-#define hv_set_synint_state(int_num, val) wrmsrl(int_num, val)
-
-void hyperv_callback_vector(void);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_TRACING
 #define trace_hyperv_callback_vector hyperv_callback_vector
 #endif
@@ -207,7 +114,6 @@ void hv_remove_kexec_handler(void);
 void hv_setup_crash_handler(void (*handler)(struct pt_regs *regs));
 void hv_remove_crash_handler(void);
 
-<<<<<<< HEAD
 /*
  * Routines for stimer0 Direct Mode handling.
  * On x86/x64, there are no percpu actions to take.
@@ -225,11 +131,6 @@ static inline void hv_disable_stimer0_percpu_irq(int irq) {}
 extern struct clocksource *hyperv_cs;
 extern void *hv_hypercall_pg;
 extern void  __percpu  **hyperv_pcpu_input_arg;
-=======
-#if IS_ENABLED(CONFIG_HYPERV)
-extern struct clocksource *hyperv_cs;
-extern void *hv_hypercall_pg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline u64 hv_do_hypercall(u64 control, void *input, void *output)
 {
@@ -269,17 +170,6 @@ static inline u64 hv_do_hypercall(u64 control, void *input, void *output)
 	return hv_status;
 }
 
-<<<<<<< HEAD
-=======
-#define HV_HYPERCALL_RESULT_MASK	GENMASK_ULL(15, 0)
-#define HV_HYPERCALL_FAST_BIT		BIT(16)
-#define HV_HYPERCALL_VARHEAD_OFFSET	17
-#define HV_HYPERCALL_REP_COMP_OFFSET	32
-#define HV_HYPERCALL_REP_COMP_MASK	GENMASK_ULL(43, 32)
-#define HV_HYPERCALL_REP_START_OFFSET	48
-#define HV_HYPERCALL_REP_START_MASK	GENMASK_ULL(59, 48)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Fast hypercall with 8 bytes of input and no output */
 static inline u64 hv_do_fast_hypercall8(u16 code, u64 input1)
 {
@@ -311,7 +201,6 @@ static inline u64 hv_do_fast_hypercall8(u16 code, u64 input1)
 		return hv_status;
 }
 
-<<<<<<< HEAD
 /* Fast hypercall with 16 bytes of input */
 static inline u64 hv_do_fast_hypercall16(u16 code, u64 input1, u64 input2)
 {
@@ -346,8 +235,6 @@ static inline u64 hv_do_fast_hypercall16(u16 code, u64 input1, u64 input2)
 		return hv_status;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Rep hypercalls. Callers of this functions are supposed to ensure that
  * rep_count and varhead_size comply with Hyper-V hypercall definition.
@@ -388,7 +275,6 @@ static inline u64 hv_do_rep_hypercall(u16 code, u16 rep_count, u16 varhead_size,
  */
 extern u32 *hv_vp_index;
 extern u32 hv_max_vp_index;
-<<<<<<< HEAD
 extern struct hv_vp_assist_page **hv_vp_assist_page;
 
 static inline struct hv_vp_assist_page *hv_get_vp_assist_page(unsigned int cpu)
@@ -398,8 +284,6 @@ static inline struct hv_vp_assist_page *hv_get_vp_assist_page(unsigned int cpu)
 
 	return hv_vp_assist_page[cpu];
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * hv_cpu_number_to_vp_number() - Map CPU to VP.
@@ -417,7 +301,6 @@ static inline int hv_cpu_number_to_vp_number(int cpu_number)
 	return hv_vp_index[cpu_number];
 }
 
-<<<<<<< HEAD
 static inline int cpumask_to_vpset(struct hv_vpset *vpset,
 				    const struct cpumask *cpus)
 {
@@ -485,33 +368,14 @@ static inline struct hv_vp_assist_page *hv_get_vp_assist_page(unsigned int cpu)
 	return NULL;
 }
 static inline int hyperv_flush_guest_mapping(u64 as) { return -1; }
-=======
-void hyperv_init(void);
-void hyperv_setup_mmu_ops(void);
-void hyper_alloc_mmu(void);
-void hyperv_report_panic(struct pt_regs *regs);
-bool hv_is_hypercall_page_setup(void);
-void hyperv_cleanup(void);
-#else /* CONFIG_HYPERV */
-static inline void hyperv_init(void) {}
-static inline bool hv_is_hypercall_page_setup(void) { return false; }
-static inline void hyperv_cleanup(void) {}
-static inline void hyperv_setup_mmu_ops(void) {}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_HYPERV */
 
 #ifdef CONFIG_HYPERV_TSCPAGE
 struct ms_hyperv_tsc_page *hv_get_tsc_page(void);
-<<<<<<< HEAD
 static inline u64 hv_read_tsc_page_tsc(const struct ms_hyperv_tsc_page *tsc_pg,
 				       u64 *cur_tsc)
 {
 	u64 scale, offset;
-=======
-static inline u64 hv_read_tsc_page(const struct ms_hyperv_tsc_page *tsc_pg)
-{
-	u64 scale, offset, cur_tsc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 sequence;
 
 	/*
@@ -542,11 +406,7 @@ static inline u64 hv_read_tsc_page(const struct ms_hyperv_tsc_page *tsc_pg)
 
 		scale = READ_ONCE(tsc_pg->tsc_scale);
 		offset = READ_ONCE(tsc_pg->tsc_offset);
-<<<<<<< HEAD
 		*cur_tsc = rdtsc_ordered();
-=======
-		cur_tsc = rdtsc_ordered();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/*
 		 * Make sure we read sequence after we read all other values
@@ -556,7 +416,6 @@ static inline u64 hv_read_tsc_page(const struct ms_hyperv_tsc_page *tsc_pg)
 
 	} while (READ_ONCE(tsc_pg->tsc_sequence) != sequence);
 
-<<<<<<< HEAD
 	return mul_u64_u64_shr(*cur_tsc, scale, 64) + offset;
 }
 
@@ -565,9 +424,6 @@ static inline u64 hv_read_tsc_page(const struct ms_hyperv_tsc_page *tsc_pg)
 	u64 cur_tsc;
 
 	return hv_read_tsc_page_tsc(tsc_pg, &cur_tsc);
-=======
-	return mul_u64_u64_shr(cur_tsc, scale, 64) + offset;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #else
@@ -575,7 +431,6 @@ static inline struct ms_hyperv_tsc_page *hv_get_tsc_page(void)
 {
 	return NULL;
 }
-<<<<<<< HEAD
 
 static inline u64 hv_read_tsc_page_tsc(const struct ms_hyperv_tsc_page *tsc_pg,
 				       u64 *cur_tsc)
@@ -583,7 +438,5 @@ static inline u64 hv_read_tsc_page_tsc(const struct ms_hyperv_tsc_page *tsc_pg,
 	BUG();
 	return U64_MAX;
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 #endif

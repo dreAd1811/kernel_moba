@@ -246,30 +246,18 @@ void ndlc_recv(struct llt_ndlc *ndlc, struct sk_buff *skb)
 }
 EXPORT_SYMBOL(ndlc_recv);
 
-<<<<<<< HEAD
 static void ndlc_t1_timeout(struct timer_list *t)
 {
 	struct llt_ndlc *ndlc = from_timer(ndlc, t, t1_timer);
-=======
-static void ndlc_t1_timeout(unsigned long data)
-{
-	struct llt_ndlc *ndlc = (struct llt_ndlc *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pr_debug("\n");
 
 	schedule_work(&ndlc->sm_work);
 }
 
-<<<<<<< HEAD
 static void ndlc_t2_timeout(struct timer_list *t)
 {
 	struct llt_ndlc *ndlc = from_timer(ndlc, t, t2_timer);
-=======
-static void ndlc_t2_timeout(unsigned long data)
-{
-	struct llt_ndlc *ndlc = (struct llt_ndlc *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pr_debug("\n");
 
@@ -294,18 +282,8 @@ int ndlc_probe(void *phy_id, struct nfc_phy_ops *phy_ops, struct device *dev,
 	*ndlc_id = ndlc;
 
 	/* initialize timers */
-<<<<<<< HEAD
 	timer_setup(&ndlc->t1_timer, ndlc_t1_timeout, 0);
 	timer_setup(&ndlc->t2_timer, ndlc_t2_timeout, 0);
-=======
-	init_timer(&ndlc->t1_timer);
-	ndlc->t1_timer.data = (unsigned long)ndlc;
-	ndlc->t1_timer.function = ndlc_t1_timeout;
-
-	init_timer(&ndlc->t2_timer);
-	ndlc->t2_timer.data = (unsigned long)ndlc;
-	ndlc->t2_timer.function = ndlc_t2_timeout;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	skb_queue_head_init(&ndlc->rcv_q);
 	skb_queue_head_init(&ndlc->send_q);

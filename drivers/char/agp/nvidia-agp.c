@@ -340,7 +340,6 @@ static int agp_nvidia_probe(struct pci_dev *pdev,
 	u8 cap_ptr;
 
 	nvidia_private.dev_1 =
-<<<<<<< HEAD
 		pci_get_domain_bus_and_slot(pci_domain_nr(pdev->bus),
 					    (unsigned int)pdev->bus->number,
 					    PCI_DEVFN(0, 1));
@@ -352,13 +351,6 @@ static int agp_nvidia_probe(struct pci_dev *pdev,
 		pci_get_domain_bus_and_slot(pci_domain_nr(pdev->bus),
 					    (unsigned int)pdev->bus->number,
 					    PCI_DEVFN(30, 0));
-=======
-		pci_get_bus_and_slot((unsigned int)pdev->bus->number, PCI_DEVFN(0, 1));
-	nvidia_private.dev_2 =
-		pci_get_bus_and_slot((unsigned int)pdev->bus->number, PCI_DEVFN(0, 2));
-	nvidia_private.dev_3 =
-		pci_get_bus_and_slot((unsigned int)pdev->bus->number, PCI_DEVFN(30, 0));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!nvidia_private.dev_1 || !nvidia_private.dev_2 || !nvidia_private.dev_3) {
 		printk(KERN_INFO PFX "Detected an NVIDIA nForce/nForce2 "

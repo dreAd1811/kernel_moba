@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /*
  * OMAP Display Subsystem Base
  *
@@ -14,25 +13,16 @@
  * General Public License for more details.
  */
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/of.h>
 #include <linux/of_graph.h>
 #include <linux/list.h>
-<<<<<<< HEAD
 
 #include "dss.h"
 #include "omapdss.h"
 
 static struct dss_device *dss_device;
-=======
-#include "omapdss.h"
-
-static bool dss_initialized;
-static const struct dispc_ops *ops;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct list_head omapdss_comp_list;
 
@@ -42,7 +32,6 @@ struct omapdss_comp_node {
 	bool dss_core_component;
 };
 
-<<<<<<< HEAD
 struct dss_device *omapdss_get_dss(void)
 {
 	return dss_device;
@@ -64,29 +53,6 @@ EXPORT_SYMBOL(dispc_get_dispc);
 const struct dispc_ops *dispc_get_ops(struct dss_device *dss)
 {
 	return dss->dispc_ops;
-=======
-void omapdss_set_is_initialized(bool set)
-{
-	dss_initialized = set;
-}
-EXPORT_SYMBOL(omapdss_set_is_initialized);
-
-bool omapdss_is_initialized(void)
-{
-	return dss_initialized;
-}
-EXPORT_SYMBOL(omapdss_is_initialized);
-
-void dispc_set_ops(const struct dispc_ops *o)
-{
-	ops = o;
-}
-EXPORT_SYMBOL(dispc_set_ops);
-
-const struct dispc_ops *dispc_get_ops(void)
-{
-	return ops;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(dispc_get_ops);
 

@@ -170,13 +170,9 @@ static int bnx2x_send_msg2pf(struct bnx2x *bp, u8 *done, dma_addr_t msg_mapping)
 	wmb();
 
 	/* Trigger the PF FW */
-<<<<<<< HEAD
 	writeb_relaxed(1, &zone_data->trigger.vf_pf_channel.addr_valid);
 
 	mmiowb();
-=======
-	writeb(1, &zone_data->trigger.vf_pf_channel.addr_valid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Wait for PF to complete */
 	while ((tout >= 0) && (!*done)) {
@@ -2118,21 +2114,6 @@ static void bnx2x_vf_mbx_request(struct bnx2x *bp, struct bnx2x_virtf *vf,
 {
 	int i;
 
-<<<<<<< HEAD
-=======
-	if (vf->state == VF_LOST) {
-		/* Just ack the FW and return if VFs are lost
-		 * in case of parity error. VFs are supposed to be timedout
-		 * on waiting for PF response.
-		 */
-		DP(BNX2X_MSG_IOV,
-		   "VF 0x%x lost, not handling the request\n", vf->abs_vfid);
-
-		storm_memset_vf_mbx_ack(bp, vf->abs_vfid);
-		return;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* check if tlv type is known */
 	if (bnx2x_tlv_supported(mbx->first_tlv.tl.type)) {
 		/* Lock the per vf op mutex and note the locker's identity.

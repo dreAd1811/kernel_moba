@@ -127,7 +127,6 @@ nv50_pior = {
 int
 nv50_pior_new(struct nvkm_disp *disp, int id)
 {
-<<<<<<< HEAD
 	return nvkm_ior_new_(&nv50_pior, disp, PIOR, id);
 }
 
@@ -138,10 +137,3 @@ nv50_pior_cnt(struct nvkm_disp *disp, unsigned long *pmask)
 	*pmask = (nvkm_rd32(device, 0x610184) & 0x70000000) >> 28;
 	return 3;
 }
-=======
-	struct nvkm_device *device = disp->engine.subdev.device;
-	if (!(nvkm_rd32(device, 0x610184) & (0x10000000 << id)))
-		return 0;
-	return nvkm_ior_new_(&nv50_pior, disp, PIOR, id);
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

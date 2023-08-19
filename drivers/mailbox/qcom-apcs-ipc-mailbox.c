@@ -18,10 +18,7 @@
 #include <linux/of.h>
 #include <linux/of_platform.h>
 #include <linux/platform_device.h>
-<<<<<<< HEAD
 #include <linux/regmap.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/mailbox_controller.h>
 
 #define QCOM_APCS_IPC_BITS	32
@@ -30,7 +27,6 @@ struct qcom_apcs_ipc {
 	struct mbox_controller mbox;
 	struct mbox_chan mbox_chans[QCOM_APCS_IPC_BITS];
 
-<<<<<<< HEAD
 	struct regmap *regmap;
 	unsigned long offset;
 	struct platform_device *clk;
@@ -42,10 +38,6 @@ static const struct regmap_config apcs_regmap_config = {
 	.val_bits = 32,
 	.max_register = 0x1000,
 	.fast_io = true,
-=======
-	void __iomem *reg;
-	unsigned long offset;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int qcom_apcs_ipc_send_data(struct mbox_chan *chan, void *data)
@@ -54,13 +46,7 @@ static int qcom_apcs_ipc_send_data(struct mbox_chan *chan, void *data)
 						  struct qcom_apcs_ipc, mbox);
 	unsigned long idx = (unsigned long)chan->con_priv;
 
-<<<<<<< HEAD
 	return regmap_write(apcs->regmap, apcs->offset, BIT(idx));
-=======
-	writel(BIT(idx), apcs->reg);
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct mbox_chan_ops qcom_apcs_ipc_ops = {
@@ -70,23 +56,17 @@ static const struct mbox_chan_ops qcom_apcs_ipc_ops = {
 static int qcom_apcs_ipc_probe(struct platform_device *pdev)
 {
 	struct qcom_apcs_ipc *apcs;
-<<<<<<< HEAD
 	struct regmap *regmap;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct resource *res;
 	unsigned long offset;
 	void __iomem *base;
 	unsigned long i;
 	int ret;
-<<<<<<< HEAD
 	const struct of_device_id apcs_clk_match_table[] = {
 		{ .compatible = "qcom,msm8916-apcs-kpss-global", },
 		{ .compatible = "qcom,qcs404-apcs-apps-global", },
 		{}
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	apcs = devm_kzalloc(&pdev->dev, sizeof(*apcs), GFP_KERNEL);
 	if (!apcs)
@@ -99,7 +79,6 @@ static int qcom_apcs_ipc_probe(struct platform_device *pdev)
 	if (IS_ERR(base))
 		return PTR_ERR(base);
 
-<<<<<<< HEAD
 	regmap = devm_regmap_init_mmio(&pdev->dev, base, &apcs_regmap_config);
 	if (IS_ERR(regmap))
 		return PTR_ERR(regmap);
@@ -108,11 +87,6 @@ static int qcom_apcs_ipc_probe(struct platform_device *pdev)
 
 	apcs->regmap = regmap;
 	apcs->offset = offset;
-=======
-	offset = (unsigned long)of_device_get_match_data(&pdev->dev);
-
-	apcs->reg = base + offset;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Initialize channel identifiers */
 	for (i = 0; i < ARRAY_SIZE(apcs->mbox_chans); i++)
@@ -129,7 +103,6 @@ static int qcom_apcs_ipc_probe(struct platform_device *pdev)
 		return ret;
 	}
 
-<<<<<<< HEAD
 	if (of_match_device(apcs_clk_match_table, &pdev->dev)) {
 		apcs->clk = platform_device_register_data(&pdev->dev,
 							  "qcom-apcs-msm8916-clk",
@@ -138,8 +111,6 @@ static int qcom_apcs_ipc_probe(struct platform_device *pdev)
 			dev_err(&pdev->dev, "failed to register APCS clk\n");
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	platform_set_drvdata(pdev, apcs);
 
 	return 0;
@@ -148,15 +119,10 @@ static int qcom_apcs_ipc_probe(struct platform_device *pdev)
 static int qcom_apcs_ipc_remove(struct platform_device *pdev)
 {
 	struct qcom_apcs_ipc *apcs = platform_get_drvdata(pdev);
-<<<<<<< HEAD
 	struct platform_device *clk = apcs->clk;
 
 	mbox_controller_unregister(&apcs->mbox);
 	platform_device_unregister(clk);
-=======
-
-	mbox_controller_unregister(&apcs->mbox);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -165,7 +131,6 @@ static int qcom_apcs_ipc_remove(struct platform_device *pdev)
 static const struct of_device_id qcom_apcs_ipc_of_match[] = {
 	{ .compatible = "qcom,msm8916-apcs-kpss-global", .data = (void *)8 },
 	{ .compatible = "qcom,msm8996-apcs-hmss-global", .data = (void *)16 },
-<<<<<<< HEAD
 	{ .compatible = "qcom,msm8998-apcs-hmss-global", .data = (void *)8 },
 	{ .compatible = "qcom,sdm845-apss-shared", .data = (void *)12 },
 	{ .compatible = "qcom,sm8150-apcs-hmss-global", .data = (void *) 12 },
@@ -173,15 +138,6 @@ static const struct of_device_id qcom_apcs_ipc_of_match[] = {
 	{ .compatible = "qcom,kona-spcs-global", .data = (void *)0 },
 	{ .compatible = "qcom,bengal-apcs-hmss-global", .data = (void *)8 },
 	{ .compatible = "qcom,scuba-apcs-hmss-global", .data = (void *)8 },
-=======
-	{ .compatible = "qcom,sm8150-apcs-hmss-global", .data = (void *)12 },
-	{ .compatible = "qcom,sm8150-spcs-global", .data = (void *)0 },
-	{ .compatible = "qcom,sdxprairie-apcs-gcc", .data = (void *)8 },
-	{ .compatible = "qcom,trinket-apcs-hmss-global", .data = (void *)8 },
-	{ .compatible = "qcom,atoll-apcs-hmss-global", .data = (void *)12 },
-	{ .compatible = "qcom,atoll-apcs-hmss-ipc2", .data = (void *)0 },
-	{ .compatible = "qcom,sdm660-apcs-hmss-global", .data = (void *)8 },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{}
 };
 MODULE_DEVICE_TABLE(of, qcom_apcs_ipc_of_match);

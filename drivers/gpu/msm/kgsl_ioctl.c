@@ -1,28 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2008-2019, The Linux Foundation. All rights reserved.
  */
 
-=======
-/* Copyright (c) 2008-2017, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- */
-
-#include <linux/ioctl.h>
-#include <linux/compat.h>
-#include <linux/uaccess.h>
-#include <linux/fs.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "kgsl_device.h"
 #include "kgsl_sync.h"
 
@@ -144,26 +124,13 @@ long kgsl_ioctl_helper(struct file *filep, unsigned int cmd, unsigned long arg,
 	unsigned int nr = _IOC_NR(cmd);
 	long ret;
 
-<<<<<<< HEAD
-=======
-	static DEFINE_RATELIMIT_STATE(_rs,
-			DEFAULT_RATELIMIT_INTERVAL,
-			DEFAULT_RATELIMIT_BURST);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (nr >= len || cmds[nr].func == NULL)
 		return -ENOIOCTLCMD;
 
 	if (_IOC_SIZE(cmds[nr].cmd) > sizeof(data)) {
-<<<<<<< HEAD
 		dev_err_ratelimited(dev_priv->device->dev,
 			"data too big for ioctl 0x%08x: %d/%zu\n",
 			cmd, _IOC_SIZE(cmds[nr].cmd), sizeof(data));
-=======
-		if (__ratelimit(&_rs))
-			WARN(1, "data too big for ioctl 0x%08X: %d/%zu\n",
-				cmd, _IOC_SIZE(cmds[nr].cmd), sizeof(data));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -201,11 +168,7 @@ long kgsl_ioctl(struct file *filep, unsigned int cmd, unsigned long arg)
 		else if (device->ftbl->ioctl != NULL)
 			return device->ftbl->ioctl(dev_priv, cmd, arg);
 
-<<<<<<< HEAD
 		dev_err(device->dev, "invalid ioctl code 0x%08X\n", cmd);
-=======
-		KGSL_DRV_INFO(device, "invalid ioctl code 0x%08X\n", cmd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return ret;

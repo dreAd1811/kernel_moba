@@ -35,7 +35,6 @@
 #define AXP20X_GPIO10_IN_RANGE_GPIO1_VAL(x)	(((x) & BIT(0)) << 1)
 
 #define AXP20X_ADC_RATE_MASK			GENMASK(7, 6)
-<<<<<<< HEAD
 #define AXP813_V_I_ADC_RATE_MASK		GENMASK(5, 4)
 #define AXP813_ADC_RATE_MASK			(AXP20X_ADC_RATE_MASK | AXP813_V_I_ADC_RATE_MASK)
 #define AXP20X_ADC_RATE_HZ(x)			((ilog2((x) / 25) << 6) & AXP20X_ADC_RATE_MASK)
@@ -43,10 +42,6 @@
 #define AXP813_TS_GPIO0_ADC_RATE_HZ(x)		AXP20X_ADC_RATE_HZ(x)
 #define AXP813_V_I_ADC_RATE_HZ(x)		((ilog2((x) / 100) << 4) & AXP813_V_I_ADC_RATE_MASK)
 #define AXP813_ADC_RATE_HZ(x)			(AXP20X_ADC_RATE_HZ(x) | AXP813_V_I_ADC_RATE_HZ(x))
-=======
-#define AXP20X_ADC_RATE_HZ(x)			((ilog2((x) / 25) << 6) & AXP20X_ADC_RATE_MASK)
-#define AXP22X_ADC_RATE_HZ(x)			((ilog2((x) / 100) << 6) & AXP20X_ADC_RATE_MASK)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define AXP20X_ADC_CHANNEL(_channel, _name, _type, _reg)	\
 	{							\
@@ -105,15 +100,12 @@ enum axp22x_adc_channel_i {
 	AXP22X_BATT_DISCHRG_I,
 };
 
-<<<<<<< HEAD
 enum axp813_adc_channel_v {
 	AXP813_TS_IN = 0,
 	AXP813_GPIO0_V,
 	AXP813_BATT_V,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct iio_map axp20x_maps[] = {
 	{
 		.consumer_dev_name = "axp20x-usb-power-supply",
@@ -216,7 +208,6 @@ static const struct iio_chan_spec axp22x_adc_channels[] = {
 			   AXP20X_BATT_DISCHRG_I_H),
 };
 
-<<<<<<< HEAD
 static const struct iio_chan_spec axp813_adc_channels[] = {
 	{
 		.type = IIO_TEMP,
@@ -236,8 +227,6 @@ static const struct iio_chan_spec axp813_adc_channels[] = {
 			   AXP20X_BATT_DISCHRG_I_H),
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int axp20x_adc_raw(struct iio_dev *indio_dev,
 			  struct iio_chan_spec const *chan, int *val)
 {
@@ -284,7 +273,6 @@ static int axp22x_adc_raw(struct iio_dev *indio_dev,
 	return IIO_VAL_INT;
 }
 
-<<<<<<< HEAD
 static int axp813_adc_raw(struct iio_dev *indio_dev,
 			  struct iio_chan_spec const *chan, int *val)
 {
@@ -297,8 +285,6 @@ static int axp813_adc_raw(struct iio_dev *indio_dev,
 	return IIO_VAL_INT;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int axp20x_adc_scale_voltage(int channel, int *val, int *val2)
 {
 	switch (channel) {
@@ -329,7 +315,6 @@ static int axp20x_adc_scale_voltage(int channel, int *val, int *val2)
 	}
 }
 
-<<<<<<< HEAD
 static int axp813_adc_scale_voltage(int channel, int *val, int *val2)
 {
 	switch (channel) {
@@ -348,8 +333,6 @@ static int axp813_adc_scale_voltage(int channel, int *val, int *val2)
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int axp20x_adc_scale_current(int channel, int *val, int *val2)
 {
 	switch (channel) {
@@ -419,7 +402,6 @@ static int axp22x_adc_scale(struct iio_chan_spec const *chan, int *val,
 	}
 }
 
-<<<<<<< HEAD
 static int axp813_adc_scale(struct iio_chan_spec const *chan, int *val,
 			    int *val2)
 {
@@ -440,8 +422,6 @@ static int axp813_adc_scale(struct iio_chan_spec const *chan, int *val,
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int axp20x_adc_offset_voltage(struct iio_dev *indio_dev, int channel,
 				     int *val)
 {
@@ -465,11 +445,7 @@ static int axp20x_adc_offset_voltage(struct iio_dev *indio_dev, int channel,
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 	*val = *val ? 700000 : 0;
-=======
-	*val = !!(*val) * 700000;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return IIO_VAL_INT;
 }
@@ -529,7 +505,6 @@ static int axp22x_read_raw(struct iio_dev *indio_dev,
 	}
 }
 
-<<<<<<< HEAD
 static int axp813_read_raw(struct iio_dev *indio_dev,
 			   struct iio_chan_spec const *chan, int *val,
 			   int *val2, long mask)
@@ -550,8 +525,6 @@ static int axp813_read_raw(struct iio_dev *indio_dev,
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int axp20x_write_raw(struct iio_dev *indio_dev,
 			    struct iio_chan_spec const *chan, int val, int val2,
 			    long mask)
@@ -569,28 +542,17 @@ static int axp20x_write_raw(struct iio_dev *indio_dev,
 	if (val != 0 && val != 700000)
 		return -EINVAL;
 
-<<<<<<< HEAD
 	val = val ? 1 : 0;
 
 	switch (chan->channel) {
 	case AXP20X_GPIO0_V:
 		reg = AXP20X_GPIO10_IN_RANGE_GPIO0;
 		regval = AXP20X_GPIO10_IN_RANGE_GPIO0_VAL(val);
-=======
-	switch (chan->channel) {
-	case AXP20X_GPIO0_V:
-		reg = AXP20X_GPIO10_IN_RANGE_GPIO0;
-		regval = AXP20X_GPIO10_IN_RANGE_GPIO0_VAL(!!val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case AXP20X_GPIO1_V:
 		reg = AXP20X_GPIO10_IN_RANGE_GPIO1;
-<<<<<<< HEAD
 		regval = AXP20X_GPIO10_IN_RANGE_GPIO1_VAL(val);
-=======
-		regval = AXP20X_GPIO10_IN_RANGE_GPIO1_VAL(!!val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	default:
@@ -604,15 +566,10 @@ static int axp20x_write_raw(struct iio_dev *indio_dev,
 static const struct iio_info axp20x_adc_iio_info = {
 	.read_raw = axp20x_read_raw,
 	.write_raw = axp20x_write_raw,
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct iio_info axp22x_adc_iio_info = {
 	.read_raw = axp22x_read_raw,
-<<<<<<< HEAD
 };
 
 static const struct iio_info axp813_adc_iio_info = {
@@ -638,19 +595,6 @@ static int axp813_adc_rate(struct axp20x_adc_iio *info, int rate)
 	return regmap_update_bits(info->regmap, AXP813_ADC_RATE,
 				 AXP813_ADC_RATE_MASK,
 				 AXP813_ADC_RATE_HZ(rate));
-=======
-	.driver_module = THIS_MODULE,
-};
-
-static int axp20x_adc_rate(int rate)
-{
-	return AXP20X_ADC_RATE_HZ(rate);
-}
-
-static int axp22x_adc_rate(int rate)
-{
-	return AXP22X_ADC_RATE_HZ(rate);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 struct axp_data {
@@ -658,12 +602,8 @@ struct axp_data {
 	int				num_channels;
 	struct iio_chan_spec const	*channels;
 	unsigned long			adc_en1_mask;
-<<<<<<< HEAD
 	int				(*adc_rate)(struct axp20x_adc_iio *info,
 						    int rate);
-=======
-	int				(*adc_rate)(int rate);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool				adc_en2;
 	struct iio_map			*maps;
 };
@@ -688,7 +628,6 @@ static const struct axp_data axp22x_data = {
 	.maps = axp22x_maps,
 };
 
-<<<<<<< HEAD
 static const struct axp_data axp813_data = {
 	.iio_info = &axp813_adc_iio_info,
 	.num_channels = ARRAY_SIZE(axp813_adc_channels),
@@ -711,11 +650,6 @@ static const struct platform_device_id axp20x_adc_id_match[] = {
 	{ .name = "axp20x-adc", .driver_data = (kernel_ulong_t)&axp20x_data, },
 	{ .name = "axp22x-adc", .driver_data = (kernel_ulong_t)&axp22x_data, },
 	{ .name = "axp813-adc", .driver_data = (kernel_ulong_t)&axp813_data, },
-=======
-static const struct platform_device_id axp20x_adc_id_match[] = {
-	{ .name = "axp20x-adc", .driver_data = (kernel_ulong_t)&axp20x_data, },
-	{ .name = "axp22x-adc", .driver_data = (kernel_ulong_t)&axp22x_data, },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ /* sentinel */ },
 };
 MODULE_DEVICE_TABLE(platform, axp20x_adc_id_match);
@@ -741,7 +675,6 @@ static int axp20x_probe(struct platform_device *pdev)
 	indio_dev->dev.of_node = pdev->dev.of_node;
 	indio_dev->modes = INDIO_DIRECT_MODE;
 
-<<<<<<< HEAD
 	if (!pdev->dev.of_node) {
 		const struct platform_device_id *id;
 
@@ -752,9 +685,6 @@ static int axp20x_probe(struct platform_device *pdev)
 
 		info->data = (struct axp_data *)of_device_get_match_data(dev);
 	}
-=======
-	info->data = (struct axp_data *)platform_get_device_id(pdev)->driver_data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	indio_dev->name = platform_get_device_id(pdev)->name;
 	indio_dev->info = info->data->iio_info;
@@ -770,12 +700,7 @@ static int axp20x_probe(struct platform_device *pdev)
 				   AXP20X_ADC_EN2_MASK, AXP20X_ADC_EN2_MASK);
 
 	/* Configure ADCs rate */
-<<<<<<< HEAD
 	info->data->adc_rate(info, 100);
-=======
-	regmap_update_bits(info->regmap, AXP20X_ADC_RATE, AXP20X_ADC_RATE_MASK,
-			   info->data->adc_rate(100));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = iio_map_array_register(indio_dev, info->data->maps);
 	if (ret < 0) {
@@ -822,10 +747,7 @@ static int axp20x_remove(struct platform_device *pdev)
 static struct platform_driver axp20x_adc_driver = {
 	.driver = {
 		.name = "axp20x-adc",
-<<<<<<< HEAD
 		.of_match_table = of_match_ptr(axp20x_adc_of_match),
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.id_table = axp20x_adc_id_match,
 	.probe = axp20x_probe,

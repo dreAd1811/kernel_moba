@@ -98,7 +98,6 @@ int mlx5_query_mcam_reg(struct mlx5_core_dev *dev, u32 *mcam, u8 feature_group,
 	return mlx5_core_access_reg(dev, in, sz, mcam, sz, MLX5_REG_MCAM, 0, 0);
 }
 
-<<<<<<< HEAD
 int mlx5_query_qcam_reg(struct mlx5_core_dev *mdev, u32 *qcam,
 			u8 feature_group, u8 access_reg_group)
 {
@@ -111,8 +110,6 @@ int mlx5_query_qcam_reg(struct mlx5_core_dev *mdev, u32 *qcam,
 	return mlx5_core_access_reg(mdev, in, sz, qcam, sz, MLX5_REG_QCAM, 0, 0);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct mlx5_reg_pcap {
 	u8			rsvd0;
 	u8			port_num;
@@ -482,7 +479,6 @@ int mlx5_core_query_ib_ppcnt(struct mlx5_core_dev *dev,
 }
 EXPORT_SYMBOL_GPL(mlx5_core_query_ib_ppcnt);
 
-<<<<<<< HEAD
 static int mlx5_query_pfcc_reg(struct mlx5_core_dev *dev, u32 *out,
 			       u32 out_size)
 {
@@ -494,8 +490,6 @@ static int mlx5_query_pfcc_reg(struct mlx5_core_dev *dev, u32 *out,
 				    out_size, MLX5_REG_PFCC, 0, 0);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int mlx5_set_port_pause(struct mlx5_core_dev *dev, u32 rx_pause, u32 tx_pause)
 {
 	u32 in[MLX5_ST_SZ_DW(pfcc_reg)] = {0};
@@ -513,20 +507,10 @@ EXPORT_SYMBOL_GPL(mlx5_set_port_pause);
 int mlx5_query_port_pause(struct mlx5_core_dev *dev,
 			  u32 *rx_pause, u32 *tx_pause)
 {
-<<<<<<< HEAD
 	u32 out[MLX5_ST_SZ_DW(pfcc_reg)];
 	int err;
 
 	err = mlx5_query_pfcc_reg(dev, out, sizeof(out));
-=======
-	u32 in[MLX5_ST_SZ_DW(pfcc_reg)] = {0};
-	u32 out[MLX5_ST_SZ_DW(pfcc_reg)];
-	int err;
-
-	MLX5_SET(pfcc_reg, in, local_port, 1);
-	err = mlx5_core_access_reg(dev, in, sizeof(in), out,
-				   sizeof(out), MLX5_REG_PFCC, 0, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		return err;
 
@@ -540,7 +524,6 @@ int mlx5_query_port_pause(struct mlx5_core_dev *dev,
 }
 EXPORT_SYMBOL_GPL(mlx5_query_port_pause);
 
-<<<<<<< HEAD
 int mlx5_set_port_stall_watermark(struct mlx5_core_dev *dev,
 				  u16 stall_critical_watermark,
 				  u16 stall_minor_watermark)
@@ -584,8 +567,6 @@ int mlx5_query_port_stall_watermark(struct mlx5_core_dev *dev,
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int mlx5_set_port_pfc(struct mlx5_core_dev *dev, u8 pfc_en_tx, u8 pfc_en_rx)
 {
 	u32 in[MLX5_ST_SZ_DW(pfcc_reg)] = {0};
@@ -604,20 +585,10 @@ EXPORT_SYMBOL_GPL(mlx5_set_port_pfc);
 
 int mlx5_query_port_pfc(struct mlx5_core_dev *dev, u8 *pfc_en_tx, u8 *pfc_en_rx)
 {
-<<<<<<< HEAD
 	u32 out[MLX5_ST_SZ_DW(pfcc_reg)];
 	int err;
 
 	err = mlx5_query_pfcc_reg(dev, out, sizeof(out));
-=======
-	u32 in[MLX5_ST_SZ_DW(pfcc_reg)] = {0};
-	u32 out[MLX5_ST_SZ_DW(pfcc_reg)];
-	int err;
-
-	MLX5_SET(pfcc_reg, in, local_port, 1);
-	err = mlx5_core_access_reg(dev, in, sizeof(in), out,
-				   sizeof(out), MLX5_REG_PFCC, 0, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		return err;
 
@@ -1044,7 +1015,6 @@ int mlx5_set_mtppse(struct mlx5_core_dev *mdev, u8 pin, u8 arm, u8 mode)
 	return mlx5_core_access_reg(mdev, in, sizeof(in), out,
 				    sizeof(out), MLX5_REG_MTPPSE, 0, 1);
 }
-<<<<<<< HEAD
 
 int mlx5_set_trust_state(struct mlx5_core_dev *mdev, u8 trust_state)
 {
@@ -1144,5 +1114,3 @@ out:
 	kfree(out);
 	return err;
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -789,10 +789,6 @@ static int ofdpa_flow_tbl_add(struct ofdpa_port *ofdpa_port,
 			       ofdpa_flags_nowait(flags),
 			       ofdpa_cmd_flow_tbl_add,
 			       found, NULL, NULL);
-<<<<<<< HEAD
-=======
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int ofdpa_flow_tbl_del(struct ofdpa_port *ofdpa_port,
@@ -1986,15 +1982,9 @@ err_out:
 	return err;
 }
 
-<<<<<<< HEAD
 static void ofdpa_fdb_cleanup(struct timer_list *t)
 {
 	struct ofdpa *ofdpa = from_timer(ofdpa, t, fdb_cleanup_timer);
-=======
-static void ofdpa_fdb_cleanup(unsigned long data)
-{
-	struct ofdpa *ofdpa = (struct ofdpa *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ofdpa_port *ofdpa_port;
 	struct ofdpa_fdb_tbl_entry *entry;
 	struct hlist_node *tmp;
@@ -2377,12 +2367,7 @@ static int ofdpa_init(struct rocker *rocker)
 	hash_init(ofdpa->neigh_tbl);
 	spin_lock_init(&ofdpa->neigh_tbl_lock);
 
-<<<<<<< HEAD
 	timer_setup(&ofdpa->fdb_cleanup_timer, ofdpa_fdb_cleanup, 0);
-=======
-	setup_timer(&ofdpa->fdb_cleanup_timer, ofdpa_fdb_cleanup,
-		    (unsigned long) ofdpa);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mod_timer(&ofdpa->fdb_cleanup_timer, jiffies);
 
 	ofdpa->ageing_time = BR_DEFAULT_AGEING_TIME;

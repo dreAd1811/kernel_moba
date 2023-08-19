@@ -3,10 +3,7 @@
  * Copyright(c) 2003 - 2014 Intel Corporation. All rights reserved.
  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
-<<<<<<< HEAD
  * Copyright(c) 2018 Intel Corporation
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Portions of this file are derived from the ipw3945 project, as well
  * as portions of the ieee80211 subsystem header files.
@@ -21,12 +18,7 @@
  * more details.
  *
  * You should have received a copy of the GNU General Public License along with
-<<<<<<< HEAD
  * this program.
-=======
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * The full GNU General Public License is included in this distribution in the
  * file called LICENSE.
@@ -44,10 +36,7 @@
 #include "iwl-io.h"
 #include "internal.h"
 #include "iwl-op-mode.h"
-<<<<<<< HEAD
 #include "iwl-context-info-gen3.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /******************************************************************************
  *
@@ -178,16 +167,12 @@ static inline __le32 iwl_pcie_dma_addr2rbd_ptr(dma_addr_t dma_addr)
  */
 int iwl_pcie_rx_stop(struct iwl_trans *trans)
 {
-<<<<<<< HEAD
 	if (trans->cfg->device_family >= IWL_DEVICE_FAMILY_22560) {
 		/* TODO: remove this for 22560 once fw does it */
 		iwl_write_prph(trans, RFH_RXF_DMA_CFG_GEN3, 0);
 		return iwl_poll_prph_bit(trans, RFH_GEN_STATUS_GEN3,
 					 RXF_DMA_IDLE, RXF_DMA_IDLE, 1000);
 	} else if (trans->cfg->mq_rx_supported) {
-=======
-	if (trans->cfg->mq_rx_supported) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		iwl_write_prph(trans, RFH_RXF_DMA_CFG, 0);
 		return iwl_poll_prph_bit(trans, RFH_GEN_STATUS,
 					   RXF_DMA_IDLE, RXF_DMA_IDLE, 1000);
@@ -222,26 +207,18 @@ static void iwl_pcie_rxq_inc_wr_ptr(struct iwl_trans *trans,
 			IWL_DEBUG_INFO(trans, "Rx queue requesting wakeup, GP1 = 0x%x\n",
 				       reg);
 			iwl_set_bit(trans, CSR_GP_CNTRL,
-<<<<<<< HEAD
 				    BIT(trans->cfg->csr->flag_mac_access_req));
-=======
-				    CSR_GP_CNTRL_REG_FLAG_MAC_ACCESS_REQ);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rxq->need_update = true;
 			return;
 		}
 	}
 
 	rxq->write_actual = round_down(rxq->write, 8);
-<<<<<<< HEAD
 	if (trans->cfg->device_family >= IWL_DEVICE_FAMILY_22560)
 		iwl_write32(trans, HBUS_TARG_WRPTR,
 			    (rxq->write_actual |
 			     ((FIRST_RX_QUEUE + rxq->id) << 16)));
 	else if (trans->cfg->mq_rx_supported)
-=======
-	if (trans->cfg->mq_rx_supported)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		iwl_write32(trans, RFH_Q_FRBDCB_WIDX_TRG(rxq->id),
 			    rxq->write_actual);
 	else
@@ -265,7 +242,6 @@ static void iwl_pcie_rxq_check_wrptr(struct iwl_trans *trans)
 	}
 }
 
-<<<<<<< HEAD
 static void iwl_pcie_restock_bd(struct iwl_trans *trans,
 				struct iwl_rxq *rxq,
 				struct iwl_rx_mem_buffer *rxb)
@@ -285,8 +261,6 @@ static void iwl_pcie_restock_bd(struct iwl_trans *trans,
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * iwl_pcie_rxmq_restock - restock implementation for multi-queue rx
  */
@@ -308,11 +282,6 @@ static void iwl_pcie_rxmq_restock(struct iwl_trans *trans,
 
 	spin_lock(&rxq->lock);
 	while (rxq->free_count) {
-<<<<<<< HEAD
-=======
-		__le64 *bd = (__le64 *)rxq->bd;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Get next free Rx buffer, remove from free list */
 		rxb = list_first_entry(&rxq->rx_free, struct iwl_rx_mem_buffer,
 				       list);
@@ -321,11 +290,7 @@ static void iwl_pcie_rxmq_restock(struct iwl_trans *trans,
 		/* 12 first bits are expected to be empty */
 		WARN_ON(rxb->page_dma & DMA_BIT_MASK(12));
 		/* Point to Rx buffer via next RBD in circular buffer */
-<<<<<<< HEAD
 		iwl_pcie_restock_bd(trans, rxq, rxb);
-=======
-		bd[rxq->write] = cpu_to_le64(rxb->page_dma | rxb->vid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rxq->write = (rxq->write + 1) & MQ_RX_TABLE_MASK;
 		rxq->free_count--;
 	}
@@ -452,13 +417,8 @@ static struct page *iwl_pcie_rx_alloc_page(struct iwl_trans *trans,
  * iwl_pcie_rxq_restock. The latter function will update the HW to use the newly
  * allocated buffers.
  */
-<<<<<<< HEAD
 void iwl_pcie_rxq_alloc_rbs(struct iwl_trans *trans, gfp_t priority,
 			    struct iwl_rxq *rxq)
-=======
-static void iwl_pcie_rxq_alloc_rbs(struct iwl_trans *trans, gfp_t priority,
-				   struct iwl_rxq *rxq)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
 	struct iwl_rx_mem_buffer *rxb;
@@ -514,11 +474,7 @@ static void iwl_pcie_rxq_alloc_rbs(struct iwl_trans *trans, gfp_t priority,
 	}
 }
 
-<<<<<<< HEAD
 void iwl_pcie_free_rbs_pool(struct iwl_trans *trans)
-=======
-static void iwl_pcie_free_rbs_pool(struct iwl_trans *trans)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
 	int i;
@@ -683,7 +639,6 @@ void iwl_pcie_rx_allocator_work(struct work_struct *data)
 	iwl_pcie_rx_allocator(trans_pcie->trans);
 }
 
-<<<<<<< HEAD
 static int iwl_pcie_free_bd_size(struct iwl_trans *trans, bool use_rx_td)
 {
 	struct iwl_rx_transfer_desc *rx_td;
@@ -826,20 +781,11 @@ err:
 	return -ENOMEM;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int iwl_pcie_rx_alloc(struct iwl_trans *trans)
 {
 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
 	struct iwl_rb_allocator *rba = &trans_pcie->rba;
-<<<<<<< HEAD
 	int i, ret;
-=======
-	struct device *dev = trans->dev;
-	int i;
-	int free_size = trans->cfg->mq_rx_supported ? sizeof(__le64) :
-						      sizeof(__le32);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (WARN_ON(trans_pcie->rxq))
 		return -EINVAL;
@@ -854,73 +800,11 @@ static int iwl_pcie_rx_alloc(struct iwl_trans *trans)
 	for (i = 0; i < trans->num_rx_queues; i++) {
 		struct iwl_rxq *rxq = &trans_pcie->rxq[i];
 
-<<<<<<< HEAD
 		ret = iwl_pcie_alloc_rxq_dma(trans, rxq);
 		if (ret)
 			return ret;
 	}
 	return 0;
-=======
-		spin_lock_init(&rxq->lock);
-		if (trans->cfg->mq_rx_supported)
-			rxq->queue_size = MQ_RX_TABLE_SIZE;
-		else
-			rxq->queue_size = RX_QUEUE_SIZE;
-
-		/*
-		 * Allocate the circular buffer of Read Buffer Descriptors
-		 * (RBDs)
-		 */
-		rxq->bd = dma_zalloc_coherent(dev,
-					     free_size * rxq->queue_size,
-					     &rxq->bd_dma, GFP_KERNEL);
-		if (!rxq->bd)
-			goto err;
-
-		if (trans->cfg->mq_rx_supported) {
-			rxq->used_bd = dma_zalloc_coherent(dev,
-							   sizeof(__le32) *
-							   rxq->queue_size,
-							   &rxq->used_bd_dma,
-							   GFP_KERNEL);
-			if (!rxq->used_bd)
-				goto err;
-		}
-
-		/*Allocate the driver's pointer to receive buffer status */
-		rxq->rb_stts = dma_zalloc_coherent(dev, sizeof(*rxq->rb_stts),
-						   &rxq->rb_stts_dma,
-						   GFP_KERNEL);
-		if (!rxq->rb_stts)
-			goto err;
-	}
-	return 0;
-
-err:
-	for (i = 0; i < trans->num_rx_queues; i++) {
-		struct iwl_rxq *rxq = &trans_pcie->rxq[i];
-
-		if (rxq->bd)
-			dma_free_coherent(dev, free_size * rxq->queue_size,
-					  rxq->bd, rxq->bd_dma);
-		rxq->bd_dma = 0;
-		rxq->bd = NULL;
-
-		if (rxq->rb_stts)
-			dma_free_coherent(trans->dev,
-					  sizeof(struct iwl_rb_status),
-					  rxq->rb_stts, rxq->rb_stts_dma);
-
-		if (rxq->used_bd)
-			dma_free_coherent(dev, sizeof(__le32) * rxq->queue_size,
-					  rxq->used_bd, rxq->used_bd_dma);
-		rxq->used_bd_dma = 0;
-		rxq->used_bd = NULL;
-	}
-	kfree(trans_pcie->rxq);
-
-	return -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void iwl_pcie_rx_hw_init(struct iwl_trans *trans, struct iwl_rxq *rxq)
@@ -1024,12 +908,9 @@ static void iwl_pcie_rx_mq_hw_init(struct iwl_trans *trans)
 	int i;
 
 	switch (trans_pcie->rx_buf_size) {
-<<<<<<< HEAD
 	case IWL_AMSDU_2K:
 		rb_size = RFH_RXF_DMA_RB_SIZE_2K;
 		break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case IWL_AMSDU_4K:
 		rb_size = RFH_RXF_DMA_RB_SIZE_4K;
 		break;
@@ -1110,11 +991,7 @@ static void iwl_pcie_rx_mq_hw_init(struct iwl_trans *trans)
 	iwl_pcie_enable_rx_wake(trans, true);
 }
 
-<<<<<<< HEAD
 void iwl_pcie_rx_init_rxb_lists(struct iwl_rxq *rxq)
-=======
-static void iwl_pcie_rx_init_rxb_lists(struct iwl_rxq *rxq)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	lockdep_assert_held(&rxq->lock);
 
@@ -1124,11 +1001,7 @@ static void iwl_pcie_rx_init_rxb_lists(struct iwl_rxq *rxq)
 	rxq->used_count = 0;
 }
 
-<<<<<<< HEAD
 int iwl_pcie_dummy_napi_poll(struct napi_struct *napi, int budget)
-=======
-static int iwl_pcie_dummy_napi_poll(struct napi_struct *napi, int budget)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	WARN_ON(1);
 	return 0;
@@ -1177,13 +1050,9 @@ static int _iwl_pcie_rx_init(struct iwl_trans *trans)
 		rxq->read = 0;
 		rxq->write = 0;
 		rxq->write_actual = 0;
-<<<<<<< HEAD
 		memset(rxq->rb_stts, 0,
 		       (trans->cfg->device_family >= IWL_DEVICE_FAMILY_22560) ?
 		       sizeof(__le16) : sizeof(struct iwl_rb_status));
-=======
-		memset(rxq->rb_stts, 0, sizeof(*rxq->rb_stts));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		iwl_pcie_rx_init_rxb_lists(rxq);
 
@@ -1254,11 +1123,6 @@ void iwl_pcie_rx_free(struct iwl_trans *trans)
 {
 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
 	struct iwl_rb_allocator *rba = &trans_pcie->rba;
-<<<<<<< HEAD
-=======
-	int free_size = trans->cfg->mq_rx_supported ? sizeof(__le64) :
-					      sizeof(__le32);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 
 	/*
@@ -1277,31 +1141,7 @@ void iwl_pcie_rx_free(struct iwl_trans *trans)
 	for (i = 0; i < trans->num_rx_queues; i++) {
 		struct iwl_rxq *rxq = &trans_pcie->rxq[i];
 
-<<<<<<< HEAD
 		iwl_pcie_free_rxq_dma(trans, rxq);
-=======
-		if (rxq->bd)
-			dma_free_coherent(trans->dev,
-					  free_size * rxq->queue_size,
-					  rxq->bd, rxq->bd_dma);
-		rxq->bd_dma = 0;
-		rxq->bd = NULL;
-
-		if (rxq->rb_stts)
-			dma_free_coherent(trans->dev,
-					  sizeof(struct iwl_rb_status),
-					  rxq->rb_stts, rxq->rb_stts_dma);
-		else
-			IWL_DEBUG_INFO(trans,
-				       "Free rxq->rb_stts which is NULL\n");
-
-		if (rxq->used_bd)
-			dma_free_coherent(trans->dev,
-					  sizeof(__le32) * rxq->queue_size,
-					  rxq->used_bd, rxq->used_bd_dma);
-		rxq->used_bd_dma = 0;
-		rxq->used_bd = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (rxq->napi.poll)
 			netif_napi_del(&rxq->napi);
@@ -1467,11 +1307,8 @@ static void iwl_pcie_rx_handle_rb(struct iwl_trans *trans,
 		}
 
 		page_stolen |= rxcb._page_stolen;
-<<<<<<< HEAD
 		if (trans->cfg->device_family >= IWL_DEVICE_FAMILY_22560)
 			break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		offset += ALIGN(len, FH_RSCSR_FRAME_ALIGN);
 	}
 
@@ -1506,7 +1343,6 @@ static void iwl_pcie_rx_handle_rb(struct iwl_trans *trans,
 		iwl_pcie_rx_reuse_rbd(trans, rxb, rxq, emergency);
 }
 
-<<<<<<< HEAD
 static struct iwl_rx_mem_buffer *iwl_pcie_get_rxb(struct iwl_trans *trans,
 						  struct iwl_rxq *rxq, int i)
 {
@@ -1546,8 +1382,6 @@ out_err:
 	return NULL;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * iwl_pcie_rx_handle - Main entry function for receiving responses from fw
  */
@@ -1567,11 +1401,7 @@ restart:
 	spin_lock(&rxq->lock);
 	/* uCode's read index (stored in shared DRAM) indicates the last Rx
 	 * buffer that the driver may process (last buffer filled by ucode). */
-<<<<<<< HEAD
 	r = le16_to_cpu(iwl_get_closed_rb_stts(trans, rxq)) & 0x0FFF;
-=======
-	r = le16_to_cpu(ACCESS_ONCE(rxq->rb_stts->closed_rb_num)) & 0x0FFF;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i = rxq->read;
 
 	/* W/A 9000 device step A0 wrap-around bug */
@@ -1595,36 +1425,9 @@ restart:
 			emergency = true;
 		}
 
-<<<<<<< HEAD
 		rxb = iwl_pcie_get_rxb(trans, rxq, i);
 		if (!rxb)
 			goto out;
-=======
-		if (trans->cfg->mq_rx_supported) {
-			/*
-			 * used_bd is a 32 bit but only 12 are used to retrieve
-			 * the vid
-			 */
-			u16 vid = le32_to_cpu(rxq->used_bd[i]) & 0x0FFF;
-
-			if (WARN(!vid ||
-				 vid > ARRAY_SIZE(trans_pcie->global_table),
-				 "Invalid rxb index from HW %u\n", (u32)vid)) {
-				iwl_force_nmi(trans);
-				goto out;
-			}
-			rxb = trans_pcie->global_table[vid - 1];
-			if (WARN(rxb->invalid,
-				 "Invalid rxb from HW %u\n", (u32)vid)) {
-				iwl_force_nmi(trans);
-				goto out;
-			}
-			rxb->invalid = true;
-		} else {
-			rxb = rxq->queue[i];
-			rxq->queue[i] = NULL;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		IWL_DEBUG_RX(trans, "Q %d: HW = %d, SW = %d\n", rxq->id, r, i);
 		iwl_pcie_rx_handle_rb(trans, rxq, rxb, emergency);
@@ -1662,12 +1465,9 @@ restart:
 out:
 	/* Backtrack one entry */
 	rxq->read = i;
-<<<<<<< HEAD
 	/* update cr tail with the rxq read pointer */
 	if (trans->cfg->device_family >= IWL_DEVICE_FAMILY_22560)
 		*rxq->cr_tail = cpu_to_le16(r);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock(&rxq->lock);
 
 	/*
@@ -1699,23 +1499,6 @@ static struct iwl_trans_pcie *iwl_pcie_get_trans_pcie(struct msix_entry *entry)
 	return container_of(entries, struct iwl_trans_pcie, msix_entries[0]);
 }
 
-<<<<<<< HEAD
-=======
-static inline void iwl_pcie_clear_irq(struct iwl_trans *trans,
-				      struct msix_entry *entry)
-{
-	/*
-	 * Before sending the interrupt the HW disables it to prevent
-	 * a nested interrupt. This is done by writing 1 to the corresponding
-	 * bit in the mask register. After handling the interrupt, it should be
-	 * re-enabled by clearing this bit. This register is defined as
-	 * write 1 clear (W1C) register, meaning that it's being clear
-	 * by writing 1 to the bit.
-	 */
-	iwl_write32(trans, CSR_MSIX_AUTOMASK_ST_AD, BIT(entry->entry));
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * iwl_pcie_rx_msix_handle - Main entry function for receiving responses from fw
  * This interrupt handler should be used with RSS queue only.
@@ -2013,11 +1796,8 @@ irqreturn_t iwl_pcie_irq_handler(int irq, void *dev_id)
 			 */
 			iwl_pcie_rxmq_restock(trans, trans_pcie->rxq);
 		}
-<<<<<<< HEAD
 
 		handled |= CSR_INT_BIT_ALIVE;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Safely ignore these bits for debug checks below */
@@ -2136,12 +1916,9 @@ irqreturn_t iwl_pcie_irq_handler(int irq, void *dev_id)
 	/* Re-enable RF_KILL if it occurred */
 	else if (handled & CSR_INT_BIT_RF_KILL)
 		iwl_enable_rfkill_int(trans);
-<<<<<<< HEAD
 	/* Re-enable the ALIVE / Rx interrupt if it occurred */
 	else if (handled & (CSR_INT_BIT_ALIVE | CSR_INT_BIT_FH_RX))
 		iwl_enable_fw_load_int_ctx_info(trans);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock(&trans_pcie->irq_lock);
 
 out:
@@ -2327,12 +2104,8 @@ irqreturn_t iwl_pcie_irq_msix_handler(int irq, void *dev_id)
 
 	/* Error detected by uCode */
 	if ((inta_fh & MSIX_FH_INT_CAUSES_FH_ERR) ||
-<<<<<<< HEAD
 	    (inta_hw & MSIX_HW_INT_CAUSES_REG_SW_ERR) ||
 	    (inta_hw & MSIX_HW_INT_CAUSES_REG_SW_ERR_V2)) {
-=======
-	    (inta_hw & MSIX_HW_INT_CAUSES_REG_SW_ERR)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		IWL_ERR(trans,
 			"Microcode SW error detected. Restarting 0x%X.\n",
 			inta_fh);
@@ -2364,7 +2137,6 @@ irqreturn_t iwl_pcie_irq_msix_handler(int irq, void *dev_id)
 		}
 	}
 
-<<<<<<< HEAD
 	if (trans->cfg->device_family >= IWL_DEVICE_FAMILY_22560 &&
 	    inta_hw & MSIX_HW_INT_CAUSES_REG_IPC) {
 		/* Reflect IML transfer status */
@@ -2377,10 +2149,6 @@ irqreturn_t iwl_pcie_irq_msix_handler(int irq, void *dev_id)
 		}
 	} else if (inta_hw & MSIX_HW_INT_CAUSES_REG_WAKEUP) {
 		/* uCode wakes up after power-down sleep */
-=======
-	/* uCode wakes up after power-down sleep */
-	if (inta_hw & MSIX_HW_INT_CAUSES_REG_WAKEUP) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		IWL_DEBUG_ISR(trans, "Wakeup interrupt\n");
 		iwl_pcie_rxq_check_wrptr(trans);
 		iwl_pcie_txq_check_wrptrs(trans);

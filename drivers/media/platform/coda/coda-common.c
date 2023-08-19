@@ -128,12 +128,8 @@ void coda_write_base(struct coda_ctx *ctx, struct coda_q_data *q_data,
 /*
  * Arrays of codecs supported by each given version of Coda:
  *  i.MX27 -> codadx6
-<<<<<<< HEAD
  *  i.MX51 -> codahx4
  *  i.MX53 -> coda7
-=======
- *  i.MX5x -> coda7
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *  i.MX6  -> coda960
  * Use V4L2_PIX_FMT_YUV420 as placeholder for all supported YUV 4:2:0 variants
  */
@@ -142,7 +138,6 @@ static const struct coda_codec codadx6_codecs[] = {
 	CODA_CODEC(CODADX6_MODE_ENCODE_MP4,  V4L2_PIX_FMT_YUV420, V4L2_PIX_FMT_MPEG4, 720, 576),
 };
 
-<<<<<<< HEAD
 static const struct coda_codec codahx4_codecs[] = {
 	CODA_CODEC(CODA7_MODE_ENCODE_H264, V4L2_PIX_FMT_YUV420, V4L2_PIX_FMT_H264,   720, 576),
 	CODA_CODEC(CODA7_MODE_DECODE_H264, V4L2_PIX_FMT_H264,   V4L2_PIX_FMT_YUV420, 1920, 1088),
@@ -150,8 +145,6 @@ static const struct coda_codec codahx4_codecs[] = {
 	CODA_CODEC(CODA7_MODE_DECODE_MP4,  V4L2_PIX_FMT_MPEG4,  V4L2_PIX_FMT_YUV420, 1280, 720),
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct coda_codec coda7_codecs[] = {
 	CODA_CODEC(CODA7_MODE_ENCODE_H264, V4L2_PIX_FMT_YUV420, V4L2_PIX_FMT_H264,   1280, 720),
 	CODA_CODEC(CODA7_MODE_ENCODE_MP4,  V4L2_PIX_FMT_YUV420, V4L2_PIX_FMT_MPEG4,  1280, 720),
@@ -249,14 +242,11 @@ static const struct coda_video_device *codadx6_video_devices[] = {
 	&coda_bit_encoder,
 };
 
-<<<<<<< HEAD
 static const struct coda_video_device *codahx4_video_devices[] = {
 	&coda_bit_encoder,
 	&coda_bit_decoder,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct coda_video_device *coda7_video_devices[] = {
 	&coda_bit_jpeg_encoder,
 	&coda_bit_jpeg_decoder,
@@ -355,11 +345,8 @@ const char *coda_product_name(int product)
 	switch (product) {
 	case CODA_DX6:
 		return "CodaDx6";
-<<<<<<< HEAD
 	case CODA_HX4:
 		return "CodaHx4";
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case CODA_7541:
 		return "CODA7541";
 	case CODA_960:
@@ -514,13 +501,8 @@ static int coda_try_fmt_vdoa(struct coda_ctx *ctx, struct v4l2_format *f,
 		return 0;
 	}
 
-<<<<<<< HEAD
 	err = vdoa_context_configure(NULL, round_up(f->fmt.pix.width, 16),
 				     f->fmt.pix.height, f->fmt.pix.pixelformat);
-=======
-	err = vdoa_context_configure(NULL, f->fmt.pix.width, f->fmt.pix.height,
-				     f->fmt.pix.pixelformat);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err) {
 		*use_vdoa = false;
 		return 0;
@@ -587,11 +569,6 @@ static int coda_try_fmt(struct coda_ctx *ctx, const struct coda_codec *codec,
 					f->fmt.pix.height * 2;
 		break;
 	case V4L2_PIX_FMT_JPEG:
-<<<<<<< HEAD
-=======
-		f->fmt.pix.colorspace = V4L2_COLORSPACE_JPEG;
-		/* fallthrough */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case V4L2_PIX_FMT_H264:
 	case V4L2_PIX_FMT_MPEG4:
 	case V4L2_PIX_FMT_MPEG2:
@@ -766,12 +743,8 @@ static int coda_s_fmt(struct coda_ctx *ctx, struct v4l2_format *f,
 	if (ctx->tiled_map_type == GDI_TILED_FRAME_MB_RASTER_MAP &&
 	    !coda_try_fmt_vdoa(ctx, f, &ctx->use_vdoa) &&
 	    ctx->use_vdoa)
-<<<<<<< HEAD
 		vdoa_context_configure(ctx->vdoa,
 				       round_up(f->fmt.pix.width, 16),
-=======
-		vdoa_context_configure(ctx->vdoa, f->fmt.pix.width,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       f->fmt.pix.height,
 				       f->fmt.pix.pixelformat);
 	else
@@ -804,7 +777,6 @@ static int coda_s_fmt_vid_cap(struct file *file, void *priv,
 	r.width = q_data_src->width;
 	r.height = q_data_src->height;
 
-<<<<<<< HEAD
 	ret = coda_s_fmt(ctx, f, &r);
 	if (ret)
 		return ret;
@@ -818,23 +790,14 @@ static int coda_s_fmt_vid_cap(struct file *file, void *priv,
 	ctx->quantization = f->fmt.pix.quantization;
 
 	return 0;
-=======
-	return coda_s_fmt(ctx, f, &r);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int coda_s_fmt_vid_out(struct file *file, void *priv,
 			      struct v4l2_format *f)
 {
 	struct coda_ctx *ctx = fh_to_ctx(priv);
-<<<<<<< HEAD
 	struct v4l2_format f_cap;
 	struct vb2_queue *dst_vq;
-=======
-	struct coda_q_data *q_data_src;
-	struct v4l2_format f_cap;
-	struct v4l2_rect r;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	ret = coda_try_fmt_vid_out(file, priv, f);
@@ -845,18 +808,14 @@ static int coda_s_fmt_vid_out(struct file *file, void *priv,
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	if (ctx->inst_type != CODA_INST_DECODER)
 		return 0;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ctx->colorspace = f->fmt.pix.colorspace;
 	ctx->xfer_func = f->fmt.pix.xfer_func;
 	ctx->ycbcr_enc = f->fmt.pix.ycbcr_enc;
 	ctx->quantization = f->fmt.pix.quantization;
 
-<<<<<<< HEAD
 	dst_vq = v4l2_m2m_get_vq(ctx->fh.m2m_ctx, V4L2_BUF_TYPE_VIDEO_CAPTURE);
 	if (!dst_vq)
 		return -EINVAL;
@@ -870,29 +829,13 @@ static int coda_s_fmt_vid_out(struct file *file, void *priv,
 	if (vb2_is_busy(dst_vq))
 		return 0;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memset(&f_cap, 0, sizeof(f_cap));
 	f_cap.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
 	coda_g_fmt(file, priv, &f_cap);
 	f_cap.fmt.pix.width = f->fmt.pix.width;
 	f_cap.fmt.pix.height = f->fmt.pix.height;
 
-<<<<<<< HEAD
 	return coda_s_fmt_vid_cap(file, priv, &f_cap);
-=======
-	ret = coda_try_fmt_vid_cap(file, priv, &f_cap);
-	if (ret)
-		return ret;
-
-	q_data_src = get_q_data(ctx, V4L2_BUF_TYPE_VIDEO_OUTPUT);
-	r.left = 0;
-	r.top = 0;
-	r.width = q_data_src->width;
-	r.height = q_data_src->height;
-
-	return coda_s_fmt(ctx, &f_cap, &r);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int coda_reqbufs(struct file *file, void *priv,
@@ -990,7 +933,6 @@ static int coda_g_selection(struct file *file, void *fh,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int coda_s_selection(struct file *file, void *fh,
 			    struct v4l2_selection *s)
 {
@@ -1025,8 +967,6 @@ static int coda_s_selection(struct file *file, void *fh,
 	return coda_g_selection(file, fh, s);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int coda_try_encoder_cmd(struct file *file, void *fh,
 				struct v4l2_encoder_cmd *ec)
 {
@@ -1242,10 +1182,7 @@ static const struct v4l2_ioctl_ops coda_ioctl_ops = {
 	.vidioc_streamoff	= v4l2_m2m_ioctl_streamoff,
 
 	.vidioc_g_selection	= coda_g_selection,
-<<<<<<< HEAD
 	.vidioc_s_selection	= coda_s_selection,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	.vidioc_try_encoder_cmd	= coda_try_encoder_cmd,
 	.vidioc_encoder_cmd	= coda_encoder_cmd,
@@ -1395,34 +1332,10 @@ static void coda_job_abort(void *priv)
 		 "Aborting task\n");
 }
 
-<<<<<<< HEAD
-=======
-static void coda_lock(void *m2m_priv)
-{
-	struct coda_ctx *ctx = m2m_priv;
-	struct coda_dev *pcdev = ctx->dev;
-
-	mutex_lock(&pcdev->dev_mutex);
-}
-
-static void coda_unlock(void *m2m_priv)
-{
-	struct coda_ctx *ctx = m2m_priv;
-	struct coda_dev *pcdev = ctx->dev;
-
-	mutex_unlock(&pcdev->dev_mutex);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct v4l2_m2m_ops coda_m2m_ops = {
 	.device_run	= coda_device_run,
 	.job_ready	= coda_job_ready,
 	.job_abort	= coda_job_abort,
-<<<<<<< HEAD
-=======
-	.lock		= coda_lock,
-	.unlock		= coda_unlock,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void set_default_params(struct coda_ctx *ctx)
@@ -1517,7 +1430,6 @@ static int coda_buf_prepare(struct vb2_buffer *vb)
 	return 0;
 }
 
-<<<<<<< HEAD
 static void coda_update_menu_ctrl(struct v4l2_ctrl *ctrl, int value)
 {
 	if (!ctrl)
@@ -1584,8 +1496,6 @@ static void coda_update_h264_level_ctrl(struct coda_ctx *ctx)
 		 level_names[level]);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void coda_buf_queue(struct vb2_buffer *vb)
 {
 	struct vb2_v4l2_buffer *vbuf = to_vb2_v4l2_buffer(vb);
@@ -1614,16 +1524,11 @@ static void coda_buf_queue(struct vb2_buffer *vb)
 			 * whether to enable reordering during sequence
 			 * initialization.
 			 */
-<<<<<<< HEAD
 			if (!ctx->params.h264_profile_idc) {
 				coda_sps_parse_profile(ctx, vb);
 				coda_update_h264_profile_ctrl(ctx);
 				coda_update_h264_level_ctrl(ctx);
 			}
-=======
-			if (!ctx->params.h264_profile_idc)
-				coda_sps_parse_profile(ctx, vb);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		mutex_lock(&ctx->bitstream_mutex);
@@ -1719,21 +1624,12 @@ static int coda_start_streaming(struct vb2_queue *q, unsigned int count)
 		goto out;
 
 	q_data_dst = get_q_data(ctx, V4L2_BUF_TYPE_VIDEO_CAPTURE);
-<<<<<<< HEAD
 	if ((q_data_src->rect.width != q_data_dst->width &&
 	     round_up(q_data_src->rect.width, 16) != q_data_dst->width) ||
 	    (q_data_src->rect.height != q_data_dst->height &&
 	     round_up(q_data_src->rect.height, 16) != q_data_dst->height)) {
 		v4l2_err(v4l2_dev, "can't convert %dx%d to %dx%d\n",
 			 q_data_src->rect.width, q_data_src->rect.height,
-=======
-	if ((q_data_src->width != q_data_dst->width &&
-	     round_up(q_data_src->width, 16) != q_data_dst->width) ||
-	    (q_data_src->height != q_data_dst->height &&
-	     round_up(q_data_src->height, 16) != q_data_dst->height)) {
-		v4l2_err(v4l2_dev, "can't convert %dx%d to %dx%d\n",
-			 q_data_src->width, q_data_src->height,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 q_data_dst->width, q_data_dst->height);
 		ret = -EINVAL;
 		goto err;
@@ -1842,10 +1738,7 @@ static void coda_stop_streaming(struct vb2_queue *q)
 			ctx->bitstream.vaddr, ctx->bitstream.size);
 		ctx->runcounter = 0;
 		ctx->aborting = 0;
-<<<<<<< HEAD
 		ctx->hold = false;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (!ctx->streamon_out && !ctx->streamon_cap)
@@ -2001,12 +1894,8 @@ static void coda_encode_ctrls(struct coda_ctx *ctx)
 		V4L2_CID_MPEG_VIDEO_H264_PROFILE,
 		V4L2_MPEG_VIDEO_H264_PROFILE_BASELINE, 0x0,
 		V4L2_MPEG_VIDEO_H264_PROFILE_BASELINE);
-<<<<<<< HEAD
 	if (ctx->dev->devtype->product == CODA_HX4 ||
 	    ctx->dev->devtype->product == CODA_7541) {
-=======
-	if (ctx->dev->devtype->product == CODA_7541) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		v4l2_ctrl_new_std_menu(&ctx->ctrls, &coda_ctrl_ops,
 			V4L2_CID_MPEG_VIDEO_H264_LEVEL,
 			V4L2_MPEG_VIDEO_H264_LEVEL_3_1,
@@ -2034,12 +1923,8 @@ static void coda_encode_ctrls(struct coda_ctx *ctx)
 		V4L2_CID_MPEG_VIDEO_MPEG4_PROFILE,
 		V4L2_MPEG_VIDEO_MPEG4_PROFILE_SIMPLE, 0x0,
 		V4L2_MPEG_VIDEO_MPEG4_PROFILE_SIMPLE);
-<<<<<<< HEAD
 	if (ctx->dev->devtype->product == CODA_HX4 ||
 	    ctx->dev->devtype->product == CODA_7541 ||
-=======
-	if (ctx->dev->devtype->product == CODA_7541 ||
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    ctx->dev->devtype->product == CODA_960) {
 		v4l2_ctrl_new_std_menu(&ctx->ctrls, &coda_ctrl_ops,
 			V4L2_CID_MPEG_VIDEO_MPEG4_LEVEL,
@@ -2082,7 +1967,6 @@ static void coda_jpeg_encode_ctrls(struct coda_ctx *ctx)
 		V4L2_CID_JPEG_RESTART_INTERVAL, 0, 100, 1, 0);
 }
 
-<<<<<<< HEAD
 static void coda_decode_ctrls(struct coda_ctx *ctx)
 {
 	u64 mask;
@@ -2124,8 +2008,6 @@ static void coda_decode_ctrls(struct coda_ctx *ctx)
 		ctx->h264_level_ctrl->flags |= V4L2_CTRL_FLAG_READ_ONLY;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int coda_ctrls_setup(struct coda_ctx *ctx)
 {
 	v4l2_ctrl_handler_init(&ctx->ctrls, 2);
@@ -2139,12 +2021,9 @@ static int coda_ctrls_setup(struct coda_ctx *ctx)
 			coda_jpeg_encode_ctrls(ctx);
 		else
 			coda_encode_ctrls(ctx);
-<<<<<<< HEAD
 	} else {
 		if (ctx->cvd->src_formats[0] == V4L2_PIX_FMT_H264)
 			coda_decode_ctrls(ctx);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (ctx->ctrls.error) {
@@ -2171,15 +2050,12 @@ static int coda_queue_init(struct coda_ctx *ctx, struct vb2_queue *vq)
 	 * that videobuf2 will keep the value of bytesused intact.
 	 */
 	vq->allow_zero_bytesused = 1;
-<<<<<<< HEAD
 	/*
 	 * We might be fine with no buffers on some of the queues, but that
 	 * would need to be reflected in job_ready(). Currently we expect all
 	 * queues to have at least one buffer queued.
 	 */
 	vq->min_buffers_needed = 1;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vq->dev = &ctx->dev->plat_dev->dev;
 
 	return vb2_queue_init(vq);
@@ -2293,10 +2169,7 @@ static int coda_open(struct file *file)
 		if (enable_bwb || ctx->inst_type == CODA_INST_ENCODER)
 			ctx->frame_mem_ctrl = CODA9_FRAME_ENABLE_BWB;
 		/* fallthrough */
-<<<<<<< HEAD
 	case CODA_HX4:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case CODA_7541:
 		ctx->reg_idx = 0;
 		break;
@@ -2350,15 +2223,9 @@ static int coda_open(struct file *file)
 	INIT_LIST_HEAD(&ctx->buffer_meta_list);
 	spin_lock_init(&ctx->buffer_meta_lock);
 
-<<<<<<< HEAD
 	mutex_lock(&dev->dev_mutex);
 	list_add(&ctx->list, &dev->instances);
 	mutex_unlock(&dev->dev_mutex);
-=======
-	coda_lock(ctx);
-	list_add(&ctx->list, &dev->instances);
-	coda_unlock(ctx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	v4l2_dbg(1, coda_debug, &dev->v4l2_dev, "Created instance %d (%p)\n",
 		 ctx->idx, ctx);
@@ -2406,15 +2273,9 @@ static int coda_release(struct file *file)
 		flush_work(&ctx->seq_end_work);
 	}
 
-<<<<<<< HEAD
 	mutex_lock(&dev->dev_mutex);
 	list_del(&ctx->list);
 	mutex_unlock(&dev->dev_mutex);
-=======
-	coda_lock(ctx);
-	list_del(&ctx->list);
-	coda_unlock(ctx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ctx->dev->devtype->product == CODA_DX6)
 		coda_free_aux_buf(dev, &ctx->workbuf);
@@ -2487,12 +2348,8 @@ static int coda_hw_init(struct coda_dev *dev)
 
 	/* Tell the BIT where to find everything it needs */
 	if (dev->devtype->product == CODA_960 ||
-<<<<<<< HEAD
 	    dev->devtype->product == CODA_7541 ||
 	    dev->devtype->product == CODA_HX4) {
-=======
-	    dev->devtype->product == CODA_7541) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		coda_write(dev, dev->tempbuf.paddr,
 				CODA_REG_BIT_TEMP_BUF_ADDR);
 		coda_write(dev, 0, CODA_REG_BIT_BIT_STREAM_PARAM);
@@ -2697,10 +2554,7 @@ put_pm:
 
 enum coda_platform {
 	CODA_IMX27,
-<<<<<<< HEAD
 	CODA_IMX51,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	CODA_IMX53,
 	CODA_IMX6Q,
 	CODA_IMX6DL,
@@ -2721,7 +2575,6 @@ static const struct coda_devtype coda_devdata[] = {
 		.workbuf_size = 288 * 1024 + FMO_SLICE_SAVE_BUF_SIZE * 8 * 1024,
 		.iram_size    = 0xb000,
 	},
-<<<<<<< HEAD
 	[CODA_IMX51] = {
 		.firmware     = {
 			"vpu_fw_imx51.bin",
@@ -2737,8 +2590,6 @@ static const struct coda_devtype coda_devdata[] = {
 		.tempbuf_size = 304 * 1024,
 		.iram_size    = 0x14000,
 	},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	[CODA_IMX53] = {
 		.firmware     = {
 			"vpu_fw_imx53.bin",
@@ -2795,10 +2646,7 @@ MODULE_DEVICE_TABLE(platform, coda_platform_ids);
 #ifdef CONFIG_OF
 static const struct of_device_id coda_dt_ids[] = {
 	{ .compatible = "fsl,imx27-vpu", .data = &coda_devdata[CODA_IMX27] },
-<<<<<<< HEAD
 	{ .compatible = "fsl,imx51-vpu", .data = &coda_devdata[CODA_IMX51] },
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ .compatible = "fsl,imx53-vpu", .data = &coda_devdata[CODA_IMX53] },
 	{ .compatible = "fsl,imx6q-vpu", .data = &coda_devdata[CODA_IMX6Q] },
 	{ .compatible = "fsl,imx6dl-vpu", .data = &coda_devdata[CODA_IMX6DL] },

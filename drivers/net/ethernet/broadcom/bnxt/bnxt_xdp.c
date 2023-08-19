@@ -94,13 +94,9 @@ bool bnxt_rx_xdp(struct bnxt *bp, struct bnxt_rx_ring_info *rxr, u16 cons,
 
 	xdp.data_hard_start = *data_ptr - offset;
 	xdp.data = *data_ptr;
-<<<<<<< HEAD
 	xdp_set_data_meta_invalid(&xdp);
 	xdp.data_end = *data_ptr + *len;
 	xdp.rxq = &rxr->xdp_rxq;
-=======
-	xdp.data_end = *data_ptr + *len;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	orig_data = xdp.data;
 	mapping = rx_buf->mapping - bp->rx_dma_offset;
 
@@ -117,17 +113,10 @@ bool bnxt_rx_xdp(struct bnxt *bp, struct bnxt_rx_ring_info *rxr, u16 cons,
 	if (tx_avail != bp->tx_ring_size)
 		*event &= ~BNXT_RX_EVENT;
 
-<<<<<<< HEAD
 	*len = xdp.data_end - xdp.data;
 	if (orig_data != xdp.data) {
 		offset = xdp.data - xdp.data_hard_start;
 		*data_ptr = xdp.data_hard_start + offset;
-=======
-	if (orig_data != xdp.data) {
-		offset = xdp.data - xdp.data_hard_start;
-		*data_ptr = xdp.data_hard_start + offset;
-		*len = xdp.data_end - xdp.data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	switch (act) {
 	case XDP_PASS:
@@ -220,11 +209,7 @@ static int bnxt_xdp_set(struct bnxt *bp, struct bpf_prog *prog)
 	return 0;
 }
 
-<<<<<<< HEAD
 int bnxt_xdp(struct net_device *dev, struct netdev_bpf *xdp)
-=======
-int bnxt_xdp(struct net_device *dev, struct netdev_xdp *xdp)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct bnxt *bp = netdev_priv(dev);
 	int rc;
@@ -234,10 +219,6 @@ int bnxt_xdp(struct net_device *dev, struct netdev_xdp *xdp)
 		rc = bnxt_xdp_set(bp, xdp->prog);
 		break;
 	case XDP_QUERY_PROG:
-<<<<<<< HEAD
-=======
-		xdp->prog_attached = !!bp->xdp_prog;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		xdp->prog_id = bp->xdp_prog ? bp->xdp_prog->aux->id : 0;
 		rc = 0;
 		break;

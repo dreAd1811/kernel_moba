@@ -34,11 +34,8 @@
 #include <asm/nvram.h>
 #include <asm/smu.h>
 
-<<<<<<< HEAD
 #include "pmac.h"
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #undef DEBUG
 
 #ifdef DEBUG
@@ -47,15 +44,11 @@
 #define DBG(x...)
 #endif
 
-<<<<<<< HEAD
 /*
  * Offset between Unix time (1970-based) and Mac time (1904-based). Cuda and PMU
  * times wrap in 2040. If we need to handle later times, the read_time functions
  * need to be changed to interpret wrapped times as post-2040.
  */
-=======
-/* Apparently the RTC stores seconds since 1 Jan 1904 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define RTC_OFFSET	2082844800
 
 /*
@@ -97,37 +90,11 @@ long __init pmac_time_init(void)
 	return delta;
 }
 
-<<<<<<< HEAD
 #ifdef CONFIG_ADB_CUDA
 static time64_t cuda_get_time(void)
 {
 	struct adb_request req;
 	time64_t now;
-=======
-#if defined(CONFIG_ADB_CUDA) || defined(CONFIG_ADB_PMU)
-static void to_rtc_time(unsigned long now, struct rtc_time *tm)
-{
-	to_tm(now, tm);
-	tm->tm_year -= 1900;
-	tm->tm_mon -= 1;
-}
-#endif
-
-#if defined(CONFIG_ADB_CUDA) || defined(CONFIG_ADB_PMU) || \
-    defined(CONFIG_PMAC_SMU)
-static unsigned long from_rtc_time(struct rtc_time *tm)
-{
-	return mktime(tm->tm_year+1900, tm->tm_mon+1, tm->tm_mday,
-		      tm->tm_hour, tm->tm_min, tm->tm_sec);
-}
-#endif
-
-#ifdef CONFIG_ADB_CUDA
-static unsigned long cuda_get_time(void)
-{
-	struct adb_request req;
-	unsigned int now;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (cuda_request(&req, NULL, 2, CUDA_PACKET, CUDA_GET_TIME) < 0)
 		return 0;
@@ -136,7 +103,6 @@ static unsigned long cuda_get_time(void)
 	if (req.reply_len != 7)
 		printk(KERN_ERR "cuda_get_time: got %d byte reply\n",
 		       req.reply_len);
-<<<<<<< HEAD
 	now = (u32)((req.reply[3] << 24) + (req.reply[4] << 16) +
 		    (req.reply[5] << 8) + req.reply[6]);
 	/* it's either after year 2040, or the RTC has gone backwards */
@@ -153,21 +119,6 @@ static int cuda_set_rtc_time(struct rtc_time *tm)
 	struct adb_request req;
 
 	nowtime = lower_32_bits(rtc_tm_to_time64(tm) + RTC_OFFSET);
-=======
-	now = (req.reply[3] << 24) + (req.reply[4] << 16)
-		+ (req.reply[5] << 8) + req.reply[6];
-	return ((unsigned long)now) - RTC_OFFSET;
-}
-
-#define cuda_get_rtc_time(tm)	to_rtc_time(cuda_get_time(), (tm))
-
-static int cuda_set_rtc_time(struct rtc_time *tm)
-{
-	unsigned int nowtime;
-	struct adb_request req;
-
-	nowtime = from_rtc_time(tm) + RTC_OFFSET;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (cuda_request(&req, NULL, 6, CUDA_PACKET, CUDA_SET_TIME,
 			 nowtime >> 24, nowtime >> 16, nowtime >> 8,
 			 nowtime) < 0)
@@ -187,17 +138,10 @@ static int cuda_set_rtc_time(struct rtc_time *tm)
 #endif
 
 #ifdef CONFIG_ADB_PMU
-<<<<<<< HEAD
 static time64_t pmu_get_time(void)
 {
 	struct adb_request req;
 	time64_t now;
-=======
-static unsigned long pmu_get_time(void)
-{
-	struct adb_request req;
-	unsigned int now;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (pmu_request(&req, NULL, 1, PMU_READ_RTC) < 0)
 		return 0;
@@ -205,7 +149,6 @@ static unsigned long pmu_get_time(void)
 	if (req.reply_len != 4)
 		printk(KERN_ERR "pmu_get_time: got %d byte reply from PMU\n",
 		       req.reply_len);
-<<<<<<< HEAD
 	now = (u32)((req.reply[0] << 24) + (req.reply[1] << 16)	+
 		    (req.reply[2] << 8) + req.reply[3]);
 
@@ -223,21 +166,6 @@ static int pmu_set_rtc_time(struct rtc_time *tm)
 	struct adb_request req;
 
 	nowtime = lower_32_bits(rtc_tm_to_time64(tm) + RTC_OFFSET);
-=======
-	now = (req.reply[0] << 24) + (req.reply[1] << 16)
-		+ (req.reply[2] << 8) + req.reply[3];
-	return ((unsigned long)now) - RTC_OFFSET;
-}
-
-#define pmu_get_rtc_time(tm)	to_rtc_time(pmu_get_time(), (tm))
-
-static int pmu_set_rtc_time(struct rtc_time *tm)
-{
-	unsigned int nowtime;
-	struct adb_request req;
-
-	nowtime = from_rtc_time(tm) + RTC_OFFSET;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (pmu_request(&req, NULL, 5, PMU_SET_RTC, nowtime >> 24,
 			nowtime >> 16, nowtime >> 8, nowtime) < 0)
 		return -ENXIO;
@@ -255,21 +183,13 @@ static int pmu_set_rtc_time(struct rtc_time *tm)
 #endif
 
 #ifdef CONFIG_PMAC_SMU
-<<<<<<< HEAD
 static time64_t smu_get_time(void)
-=======
-static unsigned long smu_get_time(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rtc_time tm;
 
 	if (smu_get_rtc_time(&tm, 1))
 		return 0;
-<<<<<<< HEAD
 	return rtc_tm_to_time64(&tm);
-=======
-	return from_rtc_time(&tm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #else
@@ -279,11 +199,7 @@ static unsigned long smu_get_time(void)
 #endif
 
 /* Can't be __init, it's called when suspending and resuming */
-<<<<<<< HEAD
 time64_t pmac_get_boot_time(void)
-=======
-unsigned long pmac_get_boot_time(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* Get the time from the RTC, used only at boot time */
 	switch (sys_ctrler) {
@@ -335,11 +251,7 @@ int pmac_set_rtc_time(struct rtc_time *tm)
  * Calibrate the decrementer register using VIA timer 1.
  * This is used both on powermacs and CHRP machines.
  */
-<<<<<<< HEAD
 static int __init via_calibrate_decr(void)
-=======
-int __init via_calibrate_decr(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct device_node *vias;
 	volatile unsigned char __iomem *via;

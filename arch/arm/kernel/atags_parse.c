@@ -196,16 +196,8 @@ setup_machine_tags(phys_addr_t __atags_pointer, unsigned int machine_nr)
 			break;
 		}
 
-<<<<<<< HEAD
 	if (!mdesc)
 		return NULL;
-=======
-	if (!mdesc) {
-		early_print("\nError: unrecognized/unsupported machine ID"
-			    " (r1 = 0x%08x).\n\n", machine_nr);
-		dump_machine_table(); /* does not return */
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (__atags_pointer)
 		tags = phys_to_virt(__atags_pointer);

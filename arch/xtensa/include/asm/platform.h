@@ -75,7 +75,6 @@ extern void platform_calibrate_ccount (void);
  */
 void cpu_reset(void) __attribute__((noreturn));
 
-<<<<<<< HEAD
 /*
  * Memory caching is platform-dependent in noMMU xtensa configurations.
  * The following set of functions should be implemented in platform code
@@ -103,6 +102,4 @@ void *platform_vaddr_to_uncached(void *p);
  */
 void *platform_vaddr_to_cached(void *p);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif	/* _XTENSA_PLATFORM_H */

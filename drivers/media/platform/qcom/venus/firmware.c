@@ -76,11 +76,7 @@ int venus_boot(struct device *dev, const char *fwname)
 	}
 
 	ret = qcom_mdt_load(dev, mdt, fwname, VENUS_PAS_ID, mem_va, mem_phys,
-<<<<<<< HEAD
 			    mem_size, NULL);
-=======
-			    mem_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	release_firmware(mdt);
 

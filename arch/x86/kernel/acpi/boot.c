@@ -36,10 +36,7 @@
 #include <linux/ioport.h>
 #include <linux/pci.h>
 #include <linux/efi-bgrt.h>
-<<<<<<< HEAD
 #include <linux/serial_core.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/e820/api.h>
 #include <asm/irqdomain.h>
@@ -72,14 +69,9 @@ int acpi_ioapic;
 int acpi_strict;
 int acpi_disable_cmcff;
 
-<<<<<<< HEAD
 /* ACPI SCI override configuration */
 u8 acpi_sci_flags __initdata;
 u32 acpi_sci_override_gsi __initdata = INVALID_ACPI_IRQ;
-=======
-u8 acpi_sci_flags __initdata;
-int acpi_sci_override_gsi __initdata;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int acpi_skip_timer_override __initdata;
 int acpi_use_timer_override __initdata;
 int acpi_fix_pin2_polarity __initdata;
@@ -122,11 +114,6 @@ static u32 isa_irq_to_gsi[NR_IRQS_LEGACY] __read_mostly = {
 	0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
 };
 
-<<<<<<< HEAD
-=======
-#define	ACPI_INVALID_GSI		INT_MIN
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * This is just a simple wrapper around early_memremap(),
  * with sanity checks for phys == 0 and size == 0.
@@ -213,11 +200,7 @@ acpi_parse_x2apic(struct acpi_subtable_header *header, const unsigned long end)
 {
 	struct acpi_madt_local_x2apic *processor = NULL;
 #ifdef CONFIG_X86_X2APIC
-<<<<<<< HEAD
 	u32 apic_id;
-=======
-	int apic_id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 enabled;
 #endif
 
@@ -243,7 +226,6 @@ acpi_parse_x2apic(struct acpi_subtable_header *header, const unsigned long end)
 	 * to not preallocating memory for all NR_CPUS
 	 * when we use CPU hotplug.
 	 */
-<<<<<<< HEAD
 	if (!apic->apic_id_valid(apic_id)) {
 		if (enabled)
 			pr_warn(PREFIX "x2apic entry ignored\n");
@@ -251,12 +233,6 @@ acpi_parse_x2apic(struct acpi_subtable_header *header, const unsigned long end)
 	}
 
 	acpi_register_lapic(apic_id, processor->uid, enabled);
-=======
-	if (!apic->apic_id_valid(apic_id) && enabled)
-		printk(KERN_WARNING PREFIX "x2apic entry ignored\n");
-	else
-		acpi_register_lapic(apic_id, processor->uid, enabled);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 	printk(KERN_WARNING PREFIX "x2apic entry ignored\n");
 #endif
@@ -403,11 +379,7 @@ static void __init mp_override_legacy_irq(u8 bus_irq, u8 polarity, u8 trigger,
 	 * and acpi_isa_irq_to_gsi() may give wrong result.
 	 */
 	if (gsi < nr_legacy_irqs() && isa_irq_to_gsi[gsi] == gsi)
-<<<<<<< HEAD
 		isa_irq_to_gsi[gsi] = INVALID_ACPI_IRQ;
-=======
-		isa_irq_to_gsi[gsi] = ACPI_INVALID_GSI;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	isa_irq_to_gsi[bus_irq] = gsi;
 }
 
@@ -655,7 +627,6 @@ int acpi_gsi_to_irq(u32 gsi, unsigned int *irqp)
 	}
 
 	rc = acpi_get_override_irq(gsi, &trigger, &polarity);
-<<<<<<< HEAD
 	if (rc)
 		return rc;
 
@@ -667,30 +638,13 @@ int acpi_gsi_to_irq(u32 gsi, unsigned int *irqp)
 
 	*irqp = irq;
 	return 0;
-=======
-	if (rc == 0) {
-		trigger = trigger ? ACPI_LEVEL_SENSITIVE : ACPI_EDGE_SENSITIVE;
-		polarity = polarity ? ACPI_ACTIVE_LOW : ACPI_ACTIVE_HIGH;
-		irq = acpi_register_gsi(NULL, gsi, trigger, polarity);
-		if (irq >= 0) {
-			*irqp = irq;
-			return 0;
-		}
-	}
-
-	return -1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(acpi_gsi_to_irq);
 
 int acpi_isa_irq_to_gsi(unsigned isa_irq, u32 *gsi)
 {
 	if (isa_irq < nr_legacy_irqs() &&
-<<<<<<< HEAD
 	    isa_irq_to_gsi[isa_irq] != INVALID_ACPI_IRQ) {
-=======
-	    isa_irq_to_gsi[isa_irq] != ACPI_INVALID_GSI) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*gsi = isa_irq_to_gsi[isa_irq];
 		return 0;
 	}
@@ -729,12 +683,7 @@ static int acpi_register_gsi_ioapic(struct device *dev, u32 gsi,
 	mutex_lock(&acpi_ioapic_lock);
 	irq = mp_map_gsi_to_irq(gsi, IOAPIC_MAP_ALLOC, &info);
 	/* Don't set up the ACPI SCI because it's already set up */
-<<<<<<< HEAD
 	if (irq >= 0 && enable_update_mptable && gsi != acpi_gbl_FADT.sci_interrupt)
-=======
-	if (irq >= 0 && enable_update_mptable &&
-	    acpi_gbl_FADT.sci_interrupt != gsi)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mp_config_acpi_gsi(dev, gsi, trigger, polarity);
 	mutex_unlock(&acpi_ioapic_lock);
 #endif
@@ -1033,14 +982,11 @@ static int __init acpi_parse_fadt(struct acpi_table_header *table)
 		x86_platform.legacy.rtc = 0;
 	}
 
-<<<<<<< HEAD
 	if (acpi_gbl_FADT.boot_flags & ACPI_FADT_NO_VGA) {
 		pr_debug("ACPI: probing for VGA not safe\n");
 		x86_platform.legacy.no_vga = 1;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_X86_PM_TIMER
 	/* detect the location of the ACPI PM Timer */
 	if (acpi_gbl_FADT.header.revision >= FADT2_REVISION_ID) {
@@ -1271,14 +1217,9 @@ static int __init acpi_parse_madt_ioapic_entries(void)
 	/*
 	 * If BIOS did not supply an INT_SRC_OVR for the SCI
 	 * pretend we got one so we can set the SCI flags.
-<<<<<<< HEAD
 	 * But ignore setting up SCI on hardware reduced platforms.
 	 */
 	if (acpi_sci_override_gsi == INVALID_ACPI_IRQ && !acpi_gbl_reduced_hardware)
-=======
-	 */
-	if (!acpi_sci_override_gsi)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		acpi_sci_ioapic_setup(acpi_gbl_FADT.sci_interrupt, 0, 0,
 				      acpi_gbl_FADT.sci_interrupt);
 
@@ -1442,7 +1383,6 @@ static int __init dmi_ignore_irq0_timer_override(const struct dmi_system_id *d)
  *
  * We initialize the Hardware-reduced ACPI model here:
  */
-<<<<<<< HEAD
 void __init acpi_generic_reduced_hw_init(void)
 {
 	/*
@@ -1458,19 +1398,6 @@ static void __init acpi_reduced_hw_init(void)
 {
 	if (acpi_gbl_reduced_hardware)
 		x86_init.acpi.reduced_hw_early_init();
-=======
-static void __init acpi_reduced_hw_init(void)
-{
-	if (acpi_gbl_reduced_hardware) {
-		/*
-		 * Override x86_init functions and bypass legacy pic
-		 * in Hardware-reduced ACPI mode
-		 */
-		x86_init.timers.timer_init	= x86_init_noop;
-		x86_init.irqs.pre_vector_init	= x86_init_noop;
-		legacy_pic			= &null_legacy_pic;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -1710,11 +1637,8 @@ int __init acpi_boot_init(void)
 	if (!acpi_noirq)
 		x86_init.pci.init = pci_acpi_init;
 
-<<<<<<< HEAD
 	/* Do not enable ACPI SPCR console by default */
 	acpi_parse_spcr(earlycon_acpi_spcr_enable, false);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1828,11 +1752,7 @@ int __acpi_acquire_global_lock(unsigned int *lock)
 		new = (((old & ~0x3) + 2) + ((old >> 1) & 0x1));
 		val = cmpxchg(lock, old, new);
 	} while (unlikely (val != old));
-<<<<<<< HEAD
 	return (new < 3) ? -1 : 0;
-=======
-	return ((new & 0x3) < 3) ? -1 : 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int __acpi_release_global_lock(unsigned int *lock)

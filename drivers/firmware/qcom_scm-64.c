@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 /* Copyright (c) 2015, The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2015,2020 The Linux Foundation. All rights reserved.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -162,11 +158,7 @@ static int qcom_scm_call(struct device *dev, u32 svc_id, u32 cmd_id,
 		kfree(args_virt);
 	}
 
-<<<<<<< HEAD
 	if (res->a0 < 0)
-=======
-	if ((long)res->a0 < 0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return qcom_scm_remap_error(res->a0);
 
 	return 0;
@@ -474,7 +466,6 @@ int __qcom_scm_iommu_secure_ptbl_init(struct device *dev, u64 addr, u32 size,
 
 	return ret;
 }
-<<<<<<< HEAD
 
 int __qcom_scm_set_dload_mode(struct device *dev, bool enable)
 {
@@ -519,5 +510,3 @@ int __qcom_scm_io_writel(struct device *dev, phys_addr_t addr, unsigned int val)
 	return qcom_scm_call(dev, QCOM_SCM_SVC_IO, QCOM_SCM_IO_WRITE,
 			     &desc, &res);
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

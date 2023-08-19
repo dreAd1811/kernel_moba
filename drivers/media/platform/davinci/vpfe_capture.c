@@ -26,13 +26,8 @@
  *
  *
  *    decoder(TVP5146/		YUV/
-<<<<<<< HEAD
  *	     MT9T001)   -->  Raw Bayer RGB ---> MUX -> VPFE (CCDC/ISIF)
  *				data input              |      |
-=======
- * 	     MT9T001)   -->  Raw Bayer RGB ---> MUX -> VPFE (CCDC/ISIF)
- *    				data input              |      |
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *							V      |
  *						      SDRAM    |
  *							       V
@@ -52,11 +47,7 @@
  *    block such as IPIPE (on DM355 only).
  *
  *    Features supported
-<<<<<<< HEAD
  *		- MMAP IO
-=======
- *  		- MMAP IO
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *		- Capture using TVP5146 over BT.656
  *		- support for interfacing decoders using sub device model
  *		- Work with DM355 or DM6446 CCDC to do Raw Bayer RGB/YUV
@@ -124,11 +115,7 @@ static struct vpfe_config_params config_params = {
 };
 
 /* ccdc device registered */
-<<<<<<< HEAD
 static const struct ccdc_hw_device *ccdc_dev;
-=======
-static struct ccdc_hw_device *ccdc_dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* lock for accessing ccdc information */
 static DEFINE_MUTEX(ccdc_lock);
 /* ccdc configuration */
@@ -216,11 +203,7 @@ static const struct vpfe_pixel_format *vpfe_lookup_pix_format(u32 pix_format)
  * vpfe_register_ccdc_device. CCDC module calls this to
  * register with vpfe capture
  */
-<<<<<<< HEAD
 int vpfe_register_ccdc_device(const struct ccdc_hw_device *dev)
-=======
-int vpfe_register_ccdc_device(struct ccdc_hw_device *dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret = 0;
 	printk(KERN_NOTICE "vpfe_register_ccdc_device: %s\n", dev->name);
@@ -276,11 +259,7 @@ EXPORT_SYMBOL(vpfe_register_ccdc_device);
  * vpfe_unregister_ccdc_device. CCDC module calls this to
  * unregister with vpfe capture
  */
-<<<<<<< HEAD
 void vpfe_unregister_ccdc_device(const struct ccdc_hw_device *dev)
-=======
-void vpfe_unregister_ccdc_device(struct ccdc_hw_device *dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (!dev) {
 		printk(KERN_ERR "invalid ccdc device ptr\n");
@@ -751,11 +730,7 @@ static int vpfe_mmap(struct file *file, struct vm_area_struct *vma)
 /*
  * vpfe_poll: It is used for select/poll system call
  */
-<<<<<<< HEAD
 static __poll_t vpfe_poll(struct file *file, poll_table *wait)
-=======
-static unsigned int vpfe_poll(struct file *file, poll_table *wait)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct vpfe_device *vpfe_dev = video_drvdata(file);
 
@@ -1534,11 +1509,7 @@ static int vpfe_streamon(struct file *file, void *priv,
 unlock_out:
 	mutex_unlock(&vpfe_dev->lock);
 streamoff:
-<<<<<<< HEAD
 	videobuf_streamoff(&vpfe_dev->buffer_queue);
-=======
-	ret = videobuf_streamoff(&vpfe_dev->buffer_queue);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -1823,11 +1794,7 @@ static int vpfe_probe(struct platform_device *pdev)
 	vfd->fops		= &vpfe_fops;
 	vfd->ioctl_ops		= &vpfe_ioctl_ops;
 	vfd->tvnorms		= 0;
-<<<<<<< HEAD
 	vfd->v4l2_dev		= &vpfe_dev->v4l2_dev;
-=======
-	vfd->v4l2_dev 		= &vpfe_dev->v4l2_dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	snprintf(vfd->name, sizeof(vfd->name),
 		 "%s_V%d.%d.%d",
 		 CAPTURE_DRV_NAME,

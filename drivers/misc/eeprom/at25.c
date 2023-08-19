@@ -94,26 +94,17 @@ static int at25_ee_read(void *priv, unsigned int offset,
 	switch (at25->addrlen) {
 	default:	/* case 3 */
 		*cp++ = offset >> 16;
-<<<<<<< HEAD
 		/* fall through */
 	case 2:
 		*cp++ = offset >> 8;
 		/* fall through */
-=======
-	case 2:
-		*cp++ = offset >> 8;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case 1:
 	case 0:	/* can't happen: for better codegen */
 		*cp++ = offset >> 0;
 	}
 
 	spi_message_init(&m);
-<<<<<<< HEAD
 	memset(t, 0, sizeof(t));
-=======
-	memset(t, 0, sizeof t);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	t[0].tx_buf = command;
 	t[0].len = at25->addrlen + 1;
@@ -191,15 +182,10 @@ static int at25_ee_write(void *priv, unsigned int off, void *val, size_t count)
 		switch (at25->addrlen) {
 		default:	/* case 3 */
 			*cp++ = offset >> 16;
-<<<<<<< HEAD
 			/* fall through */
 		case 2:
 			*cp++ = offset >> 8;
 			/* fall through */
-=======
-		case 2:
-			*cp++ = offset >> 8;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case 1:
 		case 0:	/* can't happen: for better codegen */
 			*cp++ = offset >> 0;
@@ -294,12 +280,9 @@ static int at25_fw_to_chip(struct device *dev, struct spi_eeprom *chip)
 			return -ENODEV;
 		}
 		switch (val) {
-<<<<<<< HEAD
 		case 9:
 			chip->flags |= EE_INSTR_BIT3_IS_ADDR;
 			/* fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case 8:
 			chip->flags |= EE_ADDR1;
 			break;

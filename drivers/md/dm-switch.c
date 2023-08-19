@@ -114,12 +114,8 @@ static int alloc_region_table(struct dm_target *ti, unsigned nr_paths)
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 	sctx->region_table = vmalloc(array_size(nr_slots,
 						sizeof(region_table_slot_t)));
-=======
-	sctx->region_table = vmalloc(nr_slots * sizeof(region_table_slot_t));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!sctx->region_table) {
 		ti->error = "Cannot allocate region table";
 		return -ENOMEM;
@@ -149,11 +145,7 @@ static unsigned switch_region_table_read(struct switch_ctx *sctx, unsigned long 
 
 	switch_get_position(sctx, region_nr, &region_index, &bit);
 
-<<<<<<< HEAD
 	return (READ_ONCE(sctx->region_table[region_index]) >> bit) &
-=======
-	return (ACCESS_ONCE(sctx->region_table[region_index]) >> bit) &
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		((1 << sctx->region_table_entry_bits) - 1);
 }
 
@@ -475,12 +467,8 @@ static int process_set_region_mappings(struct switch_ctx *sctx,
  *
  * Only set_region_mappings is supported.
  */
-<<<<<<< HEAD
 static int switch_message(struct dm_target *ti, unsigned argc, char **argv,
 			  char *result, unsigned maxlen)
-=======
-static int switch_message(struct dm_target *ti, unsigned argc, char **argv)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	static DEFINE_MUTEX(message_mutex);
 
@@ -525,12 +513,7 @@ static void switch_status(struct dm_target *ti, status_type_t type,
  *
  * Passthrough all ioctls to the path for sector 0
  */
-<<<<<<< HEAD
 static int switch_prepare_ioctl(struct dm_target *ti, struct block_device **bdev)
-=======
-static int switch_prepare_ioctl(struct dm_target *ti,
-		struct block_device **bdev, fmode_t *mode)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct switch_ctx *sctx = ti->private;
 	unsigned path_nr;
@@ -538,10 +521,6 @@ static int switch_prepare_ioctl(struct dm_target *ti,
 	path_nr = switch_get_path_nr(sctx, 0);
 
 	*bdev = sctx->path_list[path_nr].dmdev->bdev;
-<<<<<<< HEAD
-=======
-	*mode = sctx->path_list[path_nr].dmdev->mode;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Only pass ioctls through if the device sizes match exactly.

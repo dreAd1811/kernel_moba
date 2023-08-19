@@ -97,12 +97,7 @@ static int rbtx4939_flash_probe(struct platform_device *dev)
 		goto err_out;
 	}
 	info->mtd->dev.parent = &dev->dev;
-<<<<<<< HEAD
 	err = mtd_device_register(info->mtd, pdata->parts, pdata->nr_parts);
-=======
-	err = mtd_device_parse_register(info->mtd, NULL, NULL, pdata->parts,
-					pdata->nr_parts);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (err)
 		goto err_out;

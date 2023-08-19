@@ -141,19 +141,12 @@ asm volatile ("\n"					\
 	case 4:								\
 		__get_user_asm(__gu_err, x, ptr, u32, l, r, -EFAULT);	\
 		break;							\
-<<<<<<< HEAD
 	case 8: {							\
 		const void *__gu_ptr = (ptr);				\
 		union {							\
 			u64 l;						\
 			__typeof__(*(ptr)) t;				\
 		} __gu_val;						\
-=======
-/*	case 8:	disabled because gcc-4.1 has a broken typeof		\
- 	    {								\
- 		const void *__gu_ptr = (ptr);				\
- 		u64 __gu_val;						\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		asm volatile ("\n"					\
 			"1:	"MOVES".l	(%2)+,%1\n"		\
 			"2:	"MOVES".l	(%2),%R1\n"		\
@@ -171,7 +164,6 @@ asm volatile ("\n"					\
 			"	.long	1b,10b\n"			\
 			"	.long	2b,10b\n"			\
 			"	.previous"				\
-<<<<<<< HEAD
 			: "+d" (__gu_err), "=&r" (__gu_val.l),		\
 			  "+a" (__gu_ptr)				\
 			: "i" (-EFAULT)					\
@@ -179,15 +171,6 @@ asm volatile ("\n"					\
 		(x) = __gu_val.t;					\
 		break;							\
 	}								\
-=======
-			: "+d" (__gu_err), "=&r" (__gu_val),		\
-			  "+a" (__gu_ptr)				\
-			: "i" (-EFAULT)					\
-			: "memory");					\
-		(x) = (__force typeof(*(ptr)))__gu_val;			\
-		break;							\
-	    }	*/							\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:							\
 		__gu_err = __get_user_bad();				\
 		break;							\

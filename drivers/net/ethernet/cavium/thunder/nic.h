@@ -263,7 +263,6 @@ struct nicvf_drv_stats {
 	struct u64_stats_sync   syncp;
 };
 
-<<<<<<< HEAD
 struct cavium_ptp;
 
 struct xcast_addr_list {
@@ -277,8 +276,6 @@ struct nicvf_work {
 	struct xcast_addr_list *mc;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct nicvf {
 	struct nicvf		*pnicvf;
 	struct net_device	*netdev;
@@ -327,7 +324,6 @@ struct nicvf {
 	struct nicvf_pfc	pfc;
 	struct tasklet_struct	qs_err_task;
 	struct work_struct	reset_task;
-<<<<<<< HEAD
 	struct nicvf_work       rx_mode_work;
 	/* spinlock to protect workqueue arguments from concurrent access */
 	spinlock_t              rx_mode_wq_lock;
@@ -358,8 +354,6 @@ struct nicvf {
 	 * packet that requires timestamping to the hardware for transmitting.
 	 */
 	atomic_t		tx_ptp_skbs;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Interrupt coalescing settings */
 	u32			cq_coalesce_usecs;
@@ -420,17 +414,12 @@ struct nicvf {
 #define	NIC_MBOX_MSG_LOOPBACK		0x16	/* Set interface in loopback */
 #define	NIC_MBOX_MSG_RESET_STAT_COUNTER 0x17	/* Reset statistics counters */
 #define	NIC_MBOX_MSG_PFC		0x18	/* Pause frame control */
-<<<<<<< HEAD
 #define	NIC_MBOX_MSG_PTP_CFG		0x19	/* HW packet timestamp */
 #define	NIC_MBOX_MSG_CFG_DONE		0xF0	/* VF configuration done */
 #define	NIC_MBOX_MSG_SHUTDOWN		0xF1	/* VF is being shutdown */
 #define	NIC_MBOX_MSG_RESET_XCAST	0xF2    /* Reset DCAM filtering mode */
 #define	NIC_MBOX_MSG_ADD_MCAST		0xF3    /* Add MAC to DCAM filters */
 #define	NIC_MBOX_MSG_SET_XCAST		0xF4    /* Set MCAST/BCAST RX mode */
-=======
-#define	NIC_MBOX_MSG_CFG_DONE		0xF0	/* VF configuration done */
-#define	NIC_MBOX_MSG_SHUTDOWN		0xF1	/* VF is being shutdown */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct nic_cfg_msg {
 	u8    msg;
@@ -579,7 +568,6 @@ struct pfc {
 	u8    fc_tx;
 };
 
-<<<<<<< HEAD
 struct set_ptp {
 	u8    msg;
 	bool  enable;
@@ -593,8 +581,6 @@ struct xcast {
 	} data;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* 128 bit shared memory between PF and each VF */
 union nic_mbx {
 	struct { u8 msg; }	msg;
@@ -614,11 +600,8 @@ union nic_mbx {
 	struct set_loopback	lbk;
 	struct reset_stat_cfg	reset_stat;
 	struct pfc		pfc;
-<<<<<<< HEAD
 	struct set_ptp		ptp;
 	struct xcast            xcast;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define NIC_NODE_ID_MASK	0x03

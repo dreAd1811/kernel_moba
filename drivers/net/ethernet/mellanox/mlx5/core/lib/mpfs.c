@@ -33,13 +33,8 @@
 #include <linux/etherdevice.h>
 #include <linux/mlx5/driver.h>
 #include <linux/mlx5/mlx5_ifc.h>
-<<<<<<< HEAD
 #include <linux/mlx5/eswitch.h>
 #include "mlx5_core.h"
-=======
-#include "mlx5_core.h"
-#include "eswitch.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "lib/mpfs.h"
 
 /* HW L2 Table (MPFS) management */

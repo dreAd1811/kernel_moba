@@ -15,11 +15,8 @@ The acquisition orders for mutexes are as follows:
 
 On x86, vcpu->mutex is taken outside kvm->arch.hyperv.hv_lock.
 
-<<<<<<< HEAD
 For spinlocks, kvm_lock is taken outside kvm->mmu_lock.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Everything else is a leaf: no other lock is taken inside the critical
 sections.
 
@@ -172,11 +169,7 @@ which time it will be set using the Dirty tracking mechanism described above.
 ------------
 
 Name:		kvm_lock
-<<<<<<< HEAD
 Type:		spinlock_t
-=======
-Type:		mutex
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Arch:		any
 Protects:	- vm_list
 

@@ -462,12 +462,7 @@ int __init acpi_numa_init(void)
 					srat_proc, ARRAY_SIZE(srat_proc), 0);
 
 		cnt = acpi_table_parse_srat(ACPI_SRAT_TYPE_MEMORY_AFFINITY,
-<<<<<<< HEAD
 					    acpi_parse_memory_affinity, 0);
-=======
-					    acpi_parse_memory_affinity,
-					    NR_NODE_MEMBLKS);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* SLIT: System Locality Information Table */

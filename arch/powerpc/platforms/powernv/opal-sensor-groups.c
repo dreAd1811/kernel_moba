@@ -32,7 +32,6 @@ static struct sensor_group {
 	struct sg_attr *sgattrs;
 } *sgs;
 
-<<<<<<< HEAD
 int sensor_group_enable(u32 handle, bool enable)
 {
 	struct opal_msg msg;
@@ -61,8 +60,6 @@ out:
 }
 EXPORT_SYMBOL_GPL(sensor_group_enable);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static ssize_t sg_store(struct kobject *kobj, struct kobj_attribute *attr,
 			const char *buf, size_t count)
 {
@@ -197,21 +194,13 @@ void __init opal_sensor_groups_init(void)
 		if (!nr_attrs)
 			continue;
 
-<<<<<<< HEAD
 		sgs[i].sgattrs = kcalloc(nr_attrs, sizeof(*sgs[i].sgattrs),
-=======
-		sgs[i].sgattrs = kcalloc(nr_attrs, sizeof(struct sg_attr),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 GFP_KERNEL);
 		if (!sgs[i].sgattrs)
 			goto out_sgs_sgattrs;
 
 		sgs[i].sg.attrs = kcalloc(nr_attrs + 1,
-<<<<<<< HEAD
 					  sizeof(*sgs[i].sg.attrs),
-=======
-					  sizeof(struct attribute *),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  GFP_KERNEL);
 
 		if (!sgs[i].sg.attrs) {

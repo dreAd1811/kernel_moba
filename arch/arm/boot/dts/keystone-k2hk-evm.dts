@@ -1,19 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Keystone 2 Kepler/Hawking EVM device tree
  *
  * Copyright (C) 2013-2017 Texas Instruments Incorporated - http://www.ti.com/
-=======
-/*
- * Copyright 2013-2014 Texas Instruments, Inc.
- *
- * Keystone 2 Kepler/Hawking EVM device tree
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 /dts-v1/;
 
@@ -37,7 +26,6 @@
 		};
 	};
 
-<<<<<<< HEAD
 	leds {
 		compatible = "gpio-leds";
 		debug1_1 {
@@ -63,9 +51,6 @@
 };
 
 &soc0 {
-=======
-	soc {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		clocks {
 			refclksys: refclksys {
 				#clock-cells = <0>;
@@ -102,33 +87,6 @@
 				clock-output-names = "refclk-ddr3b";
 			};
 		};
-<<<<<<< HEAD
-=======
-	};
-
-	leds {
-		compatible = "gpio-leds";
-		debug1_1 {
-			label = "keystone:green:debug1";
-			gpios = <&gpio0 12 GPIO_ACTIVE_HIGH>; /* 12 */
-		};
-
-		debug1_2 {
-			label = "keystone:red:debug1";
-			gpios = <&gpio0 13 GPIO_ACTIVE_HIGH>; /* 13 */
-		};
-
-		debug2 {
-			label = "keystone:blue:debug2";
-			gpios = <&gpio0 14 GPIO_ACTIVE_HIGH>; /* 14 */
-		};
-
-		debug3 {
-			label = "keystone:blue:debug3";
-			gpios = <&gpio0 15 GPIO_ACTIVE_HIGH>; /* 15 */
-		};
-	};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &usb_phy {
@@ -197,11 +155,7 @@
 
 &i2c0 {
 	dtt@50 {
-<<<<<<< HEAD
 		compatible = "atmel,24c1024";
-=======
-		compatible = "at,24c1024";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x50>;
 	};
 };

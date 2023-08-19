@@ -25,11 +25,7 @@
 #include <linux/slab.h>
 #include <linux/string.h>
 
-<<<<<<< HEAD
 #include <media/dvb_frontend.h>
-=======
-#include "dvb_frontend.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "stb6100.h"
 
 static unsigned int verbose;
@@ -531,14 +527,8 @@ static int stb6100_set_params(struct dvb_frontend *fe)
 static const struct dvb_tuner_ops stb6100_ops = {
 	.info = {
 		.name			= "STB6100 Silicon Tuner",
-<<<<<<< HEAD
 		.frequency_min_hz	=  950 * MHz,
 		.frequency_max_hz	= 2150 * MHz,
-=======
-		.frequency_min		= 950000,
-		.frequency_max		= 2150000,
-		.frequency_step		= 0,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 
 	.init		= stb6100_init,

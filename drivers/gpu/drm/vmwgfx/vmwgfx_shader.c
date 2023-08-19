@@ -1,14 +1,7 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0 OR MIT
 /**************************************************************************
  *
  * Copyright 2009-2015 VMware, Inc., Palo Alto, CA., USA
-=======
-/**************************************************************************
- *
- * Copyright © 2009-2015 VMware, Inc., Palo Alto, CA., USA
- * All Rights Reserved.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
@@ -166,11 +159,7 @@ static int vmw_gb_shader_init(struct vmw_private *dev_priv,
 			      SVGA3dShaderType type,
 			      uint8_t num_input_sig,
 			      uint8_t num_output_sig,
-<<<<<<< HEAD
 			      struct vmw_buffer_object *byte_code,
-=======
-			      struct vmw_dma_buffer *byte_code,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      void (*res_free) (struct vmw_resource *res))
 {
 	struct vmw_shader *shader = vmw_res_to_shader(res);
@@ -189,11 +178,7 @@ static int vmw_gb_shader_init(struct vmw_private *dev_priv,
 
 	res->backup_size = size;
 	if (byte_code) {
-<<<<<<< HEAD
 		res->backup = vmw_bo_reference(byte_code);
-=======
-		res->backup = vmw_dmabuf_reference(byte_code);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		res->backup_offset = offset;
 	}
 	shader->size = size;
@@ -321,11 +306,7 @@ static int vmw_gb_shader_unbind(struct vmw_resource *res,
 	(void) vmw_execbuf_fence_commands(NULL, dev_priv,
 					  &fence, NULL);
 
-<<<<<<< HEAD
 	vmw_bo_fence_single(val_buf->bo, fence);
-=======
-	vmw_fence_single_bo(val_buf->bo, fence);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (likely(fence != NULL))
 		vmw_fence_obj_unreference(&fence);
@@ -556,11 +537,7 @@ static int vmw_dx_shader_unbind(struct vmw_resource *res,
 
 	(void) vmw_execbuf_fence_commands(NULL, dev_priv,
 					  &fence, NULL);
-<<<<<<< HEAD
 	vmw_bo_fence_single(val_buf->bo, fence);
-=======
-	vmw_fence_single_bo(val_buf->bo, fence);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (likely(fence != NULL))
 		vmw_fence_obj_unreference(&fence);
@@ -630,13 +607,10 @@ int vmw_dx_shader_add(struct vmw_cmdbuf_res_manager *man,
 	struct vmw_dx_shader *shader;
 	struct vmw_resource *res;
 	struct vmw_private *dev_priv = ctx->dev_priv;
-<<<<<<< HEAD
 	struct ttm_operation_ctx ttm_opt_ctx = {
 		.interruptible = true,
 		.no_wait_gpu = false
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	if (!vmw_shader_dx_size)
@@ -646,11 +620,7 @@ int vmw_dx_shader_add(struct vmw_cmdbuf_res_manager *man,
 		return -EINVAL;
 
 	ret = ttm_mem_global_alloc(vmw_mem_glob(dev_priv), vmw_shader_dx_size,
-<<<<<<< HEAD
 				   &ttm_opt_ctx);
-=======
-				   false, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		if (ret != -ERESTARTSYS)
 			DRM_ERROR("Out of graphics memory for shader "
@@ -753,11 +723,7 @@ int vmw_shader_destroy_ioctl(struct drm_device *dev, void *data,
 }
 
 static int vmw_user_shader_alloc(struct vmw_private *dev_priv,
-<<<<<<< HEAD
 				 struct vmw_buffer_object *buffer,
-=======
-				 struct vmw_dma_buffer *buffer,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 size_t shader_size,
 				 size_t offset,
 				 SVGA3dShaderType shader_type,
@@ -768,13 +734,10 @@ static int vmw_user_shader_alloc(struct vmw_private *dev_priv,
 {
 	struct vmw_user_shader *ushader;
 	struct vmw_resource *res, *tmp;
-<<<<<<< HEAD
 	struct ttm_operation_ctx ctx = {
 		.interruptible = true,
 		.no_wait_gpu = false
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	/*
@@ -787,11 +750,7 @@ static int vmw_user_shader_alloc(struct vmw_private *dev_priv,
 
 	ret = ttm_mem_global_alloc(vmw_mem_glob(dev_priv),
 				   vmw_user_shader_size,
-<<<<<<< HEAD
 				   &ctx);
-=======
-				   false, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(ret != 0)) {
 		if (ret != -ERESTARTSYS)
 			DRM_ERROR("Out of graphics memory for shader "
@@ -842,24 +801,17 @@ out:
 
 
 static struct vmw_resource *vmw_shader_alloc(struct vmw_private *dev_priv,
-<<<<<<< HEAD
 					     struct vmw_buffer_object *buffer,
-=======
-					     struct vmw_dma_buffer *buffer,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					     size_t shader_size,
 					     size_t offset,
 					     SVGA3dShaderType shader_type)
 {
 	struct vmw_shader *shader;
 	struct vmw_resource *res;
-<<<<<<< HEAD
 	struct ttm_operation_ctx ctx = {
 		.interruptible = true,
 		.no_wait_gpu = false
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	/*
@@ -872,11 +824,7 @@ static struct vmw_resource *vmw_shader_alloc(struct vmw_private *dev_priv,
 
 	ret = ttm_mem_global_alloc(vmw_mem_glob(dev_priv),
 				   vmw_shader_size,
-<<<<<<< HEAD
 				   &ctx);
-=======
-				   false, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(ret != 0)) {
 		if (ret != -ERESTARTSYS)
 			DRM_ERROR("Out of graphics memory for shader "
@@ -914,20 +862,12 @@ static int vmw_shader_define(struct drm_device *dev, struct drm_file *file_priv,
 {
 	struct vmw_private *dev_priv = vmw_priv(dev);
 	struct ttm_object_file *tfile = vmw_fpriv(file_priv)->tfile;
-<<<<<<< HEAD
 	struct vmw_buffer_object *buffer = NULL;
-=======
-	struct vmw_dma_buffer *buffer = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	SVGA3dShaderType shader_type;
 	int ret;
 
 	if (buffer_handle != SVGA3D_INVALID_ID) {
-<<<<<<< HEAD
 		ret = vmw_user_bo_lookup(tfile, buffer_handle,
-=======
-		ret = vmw_user_dmabuf_lookup(tfile, buffer_handle,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					     &buffer, NULL);
 		if (unlikely(ret != 0)) {
 			DRM_ERROR("Could not find buffer for shader "
@@ -966,11 +906,7 @@ static int vmw_shader_define(struct drm_device *dev, struct drm_file *file_priv,
 
 	ttm_read_unlock(&dev_priv->reservation_sem);
 out_bad_arg:
-<<<<<<< HEAD
 	vmw_bo_unreference(&buffer);
-=======
-	vmw_dmabuf_unreference(&buffer);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -1046,12 +982,8 @@ int vmw_compat_shader_add(struct vmw_private *dev_priv,
 			  size_t size,
 			  struct list_head *list)
 {
-<<<<<<< HEAD
 	struct ttm_operation_ctx ctx = { false, true };
 	struct vmw_buffer_object *buf;
-=======
-	struct vmw_dma_buffer *buf;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ttm_bo_kmap_obj map;
 	bool is_iomem;
 	int ret;
@@ -1065,13 +997,8 @@ int vmw_compat_shader_add(struct vmw_private *dev_priv,
 	if (unlikely(!buf))
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	ret = vmw_bo_init(dev_priv, buf, size, &vmw_sys_ne_placement,
 			      true, vmw_bo_bo_free);
-=======
-	ret = vmw_dmabuf_init(dev_priv, buf, size, &vmw_sys_ne_placement,
-			      true, vmw_dmabuf_bo_free);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(ret != 0))
 		goto out;
 
@@ -1091,11 +1018,7 @@ int vmw_compat_shader_add(struct vmw_private *dev_priv,
 	WARN_ON(is_iomem);
 
 	ttm_bo_kunmap(&map);
-<<<<<<< HEAD
 	ret = ttm_bo_validate(&buf->base, &vmw_sys_placement, &ctx);
-=======
-	ret = ttm_bo_validate(&buf->base, &vmw_sys_placement, false, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	WARN_ON(ret != 0);
 	ttm_bo_unreserve(&buf->base);
 
@@ -1108,11 +1031,7 @@ int vmw_compat_shader_add(struct vmw_private *dev_priv,
 				 res, list);
 	vmw_resource_unreference(&res);
 no_reserve:
-<<<<<<< HEAD
 	vmw_bo_unreference(&buf);
-=======
-	vmw_dmabuf_unreference(&buf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	return ret;
 }

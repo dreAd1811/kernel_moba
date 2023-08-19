@@ -1433,7 +1433,6 @@
 #define      FLD_AC97_SHUTDOWN        0x00000001
 
 /* Cx231xx redefine */
-<<<<<<< HEAD
 #define      QPSK_IAGC_CTL1		0x94c
 #define      QPSK_IAGC_CTL2		0x950
 #define      QPSK_FEPR_FREQ		0x954
@@ -1444,18 +1443,6 @@
 #define      QPSK_MF_FAGC_CTL		0x968
 #define      QPSK_EQ_CTL		0x96c
 #define      QPSK_LOCK_CTL		0x970
-=======
-#define      QPSK_IAGC_CTL1  		0x94c
-#define      QPSK_IAGC_CTL2  		0x950
-#define      QPSK_FEPR_FREQ  		0x954
-#define      QPSK_BTL_CTL1  		0x958
-#define      QPSK_BTL_CTL2  		0x95c
-#define      QPSK_CTL_CTL1  		0x960
-#define      QPSK_CTL_CTL2  		0x964
-#define      QPSK_MF_FAGC_CTL 		0x968
-#define      QPSK_EQ_CTL  		0x96c
-#define      QPSK_LOCK_CTL  		0x970
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*****************************************************************************/
 #define      FM1_DFT_CTL              0x9a8

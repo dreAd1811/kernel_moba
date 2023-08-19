@@ -819,10 +819,7 @@ hfcsusb_rx_frame(struct usb_fifo *fifo, __u8 *data, unsigned int len,
 	int		fifon = fifo->fifonum;
 	int		i;
 	int		hdlc = 0;
-<<<<<<< HEAD
 	unsigned long	flags;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (debug & DBG_HFC_CALL_TRACE)
 		printk(KERN_DEBUG "%s: %s: fifo(%i) len(%i) "
@@ -839,11 +836,7 @@ hfcsusb_rx_frame(struct usb_fifo *fifo, __u8 *data, unsigned int len,
 		return;
 	}
 
-<<<<<<< HEAD
 	spin_lock_irqsave(&hw->lock, flags);
-=======
-	spin_lock(&hw->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (fifo->dch) {
 		rx_skb = fifo->dch->rx_skb;
 		maxlen = fifo->dch->maxlen;
@@ -852,11 +845,7 @@ hfcsusb_rx_frame(struct usb_fifo *fifo, __u8 *data, unsigned int len,
 	if (fifo->bch) {
 		if (test_bit(FLG_RX_OFF, &fifo->bch->Flags)) {
 			fifo->bch->dropcnt += len;
-<<<<<<< HEAD
 			spin_unlock_irqrestore(&hw->lock, flags);
-=======
-			spin_unlock(&hw->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return;
 		}
 		maxlen = bchannel_get_rxbuf(fifo->bch, len);
@@ -866,11 +855,7 @@ hfcsusb_rx_frame(struct usb_fifo *fifo, __u8 *data, unsigned int len,
 				skb_trim(rx_skb, 0);
 			pr_warning("%s.B%d: No bufferspace for %d bytes\n",
 				   hw->name, fifo->bch->nr, len);
-<<<<<<< HEAD
 			spin_unlock_irqrestore(&hw->lock, flags);
-=======
-			spin_unlock(&hw->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return;
 		}
 		maxlen = fifo->bch->maxlen;
@@ -894,11 +879,7 @@ hfcsusb_rx_frame(struct usb_fifo *fifo, __u8 *data, unsigned int len,
 			} else {
 				printk(KERN_DEBUG "%s: %s: No mem for rx_skb\n",
 				       hw->name, __func__);
-<<<<<<< HEAD
 				spin_unlock_irqrestore(&hw->lock, flags);
-=======
-				spin_unlock(&hw->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				return;
 			}
 		}
@@ -908,11 +889,7 @@ hfcsusb_rx_frame(struct usb_fifo *fifo, __u8 *data, unsigned int len,
 			       "for fifo(%d) HFCUSB_D_RX\n",
 			       hw->name, __func__, fifon);
 			skb_trim(rx_skb, 0);
-<<<<<<< HEAD
 			spin_unlock_irqrestore(&hw->lock, flags);
-=======
-			spin_unlock(&hw->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return;
 		}
 	}
@@ -966,11 +943,7 @@ hfcsusb_rx_frame(struct usb_fifo *fifo, __u8 *data, unsigned int len,
 		/* deliver transparent data to layer2 */
 		recv_Bchannel(fifo->bch, MISDN_ID_ANY, false);
 	}
-<<<<<<< HEAD
 	spin_unlock_irqrestore(&hw->lock, flags);
-=======
-	spin_unlock(&hw->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void
@@ -1007,15 +980,11 @@ rx_iso_complete(struct urb *urb)
 	__u8 *buf;
 	static __u8 eof[8];
 	__u8 s0_state;
-<<<<<<< HEAD
 	unsigned long flags;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	fifon = fifo->fifonum;
 	status = urb->status;
 
-<<<<<<< HEAD
 	spin_lock_irqsave(&hw->lock, flags);
 	if (fifo->stop_gracefull) {
 		fifo->stop_gracefull = 0;
@@ -1024,16 +993,6 @@ rx_iso_complete(struct urb *urb)
 		return;
 	}
 	spin_unlock_irqrestore(&hw->lock, flags);
-=======
-	spin_lock(&hw->lock);
-	if (fifo->stop_gracefull) {
-		fifo->stop_gracefull = 0;
-		fifo->active = 0;
-		spin_unlock(&hw->lock);
-		return;
-	}
-	spin_unlock(&hw->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * ISO transfer only partially completed,
@@ -1139,7 +1098,6 @@ rx_int_complete(struct urb *urb)
 	struct usb_fifo *fifo = (struct usb_fifo *) urb->context;
 	struct hfcsusb *hw = fifo->hw;
 	static __u8 eof[8];
-<<<<<<< HEAD
 	unsigned long flags;
 
 	spin_lock_irqsave(&hw->lock, flags);
@@ -1150,17 +1108,6 @@ rx_int_complete(struct urb *urb)
 		return;
 	}
 	spin_unlock_irqrestore(&hw->lock, flags);
-=======
-
-	spin_lock(&hw->lock);
-	if (fifo->stop_gracefull) {
-		fifo->stop_gracefull = 0;
-		fifo->active = 0;
-		spin_unlock(&hw->lock);
-		return;
-	}
-	spin_unlock(&hw->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	fifon = fifo->fifonum;
 	if ((!fifo->active) || (urb->status)) {
@@ -1228,7 +1175,6 @@ tx_iso_complete(struct urb *urb)
 	int *tx_idx;
 	int frame_complete, fifon, status, fillempty = 0;
 	__u8 threshbit, *p;
-<<<<<<< HEAD
 	unsigned long flags;
 
 	spin_lock_irqsave(&hw->lock, flags);
@@ -1236,14 +1182,6 @@ tx_iso_complete(struct urb *urb)
 		fifo->stop_gracefull = 0;
 		fifo->active = 0;
 		spin_unlock_irqrestore(&hw->lock, flags);
-=======
-
-	spin_lock(&hw->lock);
-	if (fifo->stop_gracefull) {
-		fifo->stop_gracefull = 0;
-		fifo->active = 0;
-		spin_unlock(&hw->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -1261,11 +1199,7 @@ tx_iso_complete(struct urb *urb)
 	} else {
 		printk(KERN_DEBUG "%s: %s: neither BCH nor DCH\n",
 		       hw->name, __func__);
-<<<<<<< HEAD
 		spin_unlock_irqrestore(&hw->lock, flags);
-=======
-		spin_unlock(&hw->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -1445,11 +1379,7 @@ tx_iso_complete(struct urb *urb)
 			       hw->name, __func__,
 			       symbolic(urb_errlist, status), status, fifon);
 	}
-<<<<<<< HEAD
 	spin_unlock_irqrestore(&hw->lock, flags);
-=======
-	spin_unlock(&hw->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*

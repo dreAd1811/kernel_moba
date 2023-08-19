@@ -55,10 +55,7 @@ int dtsec_set_exception(struct fman_mac *dtsec,
 int dtsec_add_hash_mac_address(struct fman_mac *dtsec, enet_addr_t *eth_addr);
 int dtsec_del_hash_mac_address(struct fman_mac *dtsec, enet_addr_t *eth_addr);
 int dtsec_get_version(struct fman_mac *dtsec, u32 *mac_version);
-<<<<<<< HEAD
 int dtsec_set_allmulti(struct fman_mac *dtsec, bool enable);
 int dtsec_set_tstamp(struct fman_mac *dtsec, bool enable);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* __DTSEC_H */

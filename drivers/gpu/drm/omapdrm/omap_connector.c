@@ -1,11 +1,5 @@
 /*
-<<<<<<< HEAD
  * Copyright (C) 2011 Texas Instruments Incorporated - http://www.ti.com/
-=======
- * drivers/gpu/drm/omapdrm/omap_connector.c
- *
- * Copyright (C) 2011 Texas Instruments
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Author: Rob Clark <rob@ti.com>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -132,22 +126,14 @@ static int omap_connector_get_modes(struct drm_connector *connector)
 
 		if ((dssdrv->read_edid(dssdev, edid, MAX_EDID) > 0) &&
 				drm_edid_is_valid(edid)) {
-<<<<<<< HEAD
 			drm_connector_update_edid_property(
-=======
-			drm_mode_connector_update_edid_property(
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					connector, edid);
 			n = drm_add_edid_modes(connector, edid);
 
 			omap_connector->hdmi_mode =
 				drm_detect_hdmi_monitor(edid);
 		} else {
-<<<<<<< HEAD
 			drm_connector_update_edid_property(
-=======
-			drm_mode_connector_update_edid_property(
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					connector, NULL);
 		}
 
@@ -167,15 +153,12 @@ static int omap_connector_get_modes(struct drm_connector *connector)
 		drm_mode_set_name(mode);
 		drm_mode_probed_add(connector, mode);
 
-<<<<<<< HEAD
 		if (dssdrv->get_size) {
 			dssdrv->get_size(dssdev,
 					 &connector->display_info.width_mm,
 					 &connector->display_info.height_mm);
 		}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		n = 1;
 	}
 

@@ -3,7 +3,6 @@
 #ifndef __BUDGET_DVB__
 #define __BUDGET_DVB__
 
-<<<<<<< HEAD
 #include <media/dvb_frontend.h>
 #include <media/dvbdev.h>
 #include <media/demux.h>
@@ -11,15 +10,6 @@
 #include <media/dmxdev.h>
 #include "dvb_filter.h"
 #include <media/dvb_net.h>
-=======
-#include "dvb_frontend.h"
-#include "dvbdev.h"
-#include "demux.h"
-#include "dvb_demux.h"
-#include "dmxdev.h"
-#include "dvb_filter.h"
-#include "dvb_net.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/module.h>
 #include <linux/mutex.h>

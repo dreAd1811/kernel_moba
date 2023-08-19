@@ -57,22 +57,15 @@ __invalid:
 	 * x0: HYP pgd
 	 * x1: HYP stack
 	 * x2: HYP vectors
-<<<<<<< HEAD
 	 * x3: per-CPU offset
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 __do_hyp_init:
 	/* Check for a stub HVC call */
 	cmp	x0, #HVC_STUB_HCALL_NR
 	b.lo	__kvm_handle_stub_hvc
 
-<<<<<<< HEAD
 	phys_to_ttbr x4, x0
 	msr	ttbr0_el2, x4
-=======
-	msr	ttbr0_el2, x0
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mrs	x4, tcr_el1
 	ldr	x5, =TCR_EL2_MASK
@@ -80,7 +73,6 @@ __do_hyp_init:
 	mov	x5, #TCR_EL2_RES1
 	orr	x4, x4, x5
 
-<<<<<<< HEAD
 	/*
 	 * The ID map may be configured to use an extended virtual address
 	 * range. This is only the case if system RAM is out of range for the
@@ -92,40 +84,16 @@ __do_hyp_init:
 	 * between translation tables *and* update TCR_EL2.T0SZ at the same
 	 * time. Bottom line: we need to use the extended range with *both* our
 	 * translation tables.
-=======
-#ifndef CONFIG_ARM64_VA_BITS_48
-	/*
-	 * If we are running with VA_BITS < 48, we may be running with an extra
-	 * level of translation in the ID map. This is only the case if system
-	 * RAM is out of range for the currently configured page size and number
-	 * of translation levels, in which case we will also need the extra
-	 * level for the HYP ID map, or we won't be able to enable the EL2 MMU.
-	 *
-	 * However, at EL2, there is only one TTBR register, and we can't switch
-	 * between translation tables *and* update TCR_EL2.T0SZ at the same
-	 * time. Bottom line: we need the extra level in *both* our translation
-	 * tables.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 *
 	 * So use the same T0SZ value we use for the ID map.
 	 */
 	ldr_l	x5, idmap_t0sz
 	bfi	x4, x5, TCR_T0SZ_OFFSET, TCR_TxSZ_WIDTH
-<<<<<<< HEAD
 
 	/*
 	 * Set the PS bits in TCR_EL2.
 	 */
 	tcr_compute_pa_size x4, #TCR_EL2_PS_SHIFT, x5, x6
-=======
-#endif
-	/*
-	 * Read the PARange bits from ID_AA64MMFR0_EL1 and set the PS bits in
-	 * TCR_EL2.
-	 */
-	mrs	x5, ID_AA64MMFR0_EL1
-	bfi	x4, x5, #16, #3
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	msr	tcr_el2, x4
 
@@ -150,19 +118,10 @@ CPU_BE(	orr	x4, x4, #SCTLR_ELx_EE)
 	/* Set the stack and new vectors */
 	kern_hyp_va	x1
 	mov	sp, x1
-<<<<<<< HEAD
 	msr	vbar_el2, x2
 
 	/* Set tpidr_el2 for use by HYP */
 	msr	tpidr_el2, x3
-=======
-	kern_hyp_va	x2
-	msr	vbar_el2, x2
-
-	/* copy tpidr_el1 into tpidr_el2 for use by HYP */
-	mrs	x1, tpidr_el1
-	msr	tpidr_el2, x1
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Hello, World! */
 	eret
@@ -185,23 +144,11 @@ ENTRY(__kvm_handle_stub_hvc)
 
 1:	cmp	x0, #HVC_RESET_VECTORS
 	b.ne	1f
-<<<<<<< HEAD
 reset:
 	/*
 	 * Reset kvm back to the hyp stub. Do not clobber x0-x4 in
 	 * case we coming via HVC_SOFT_RESTART.
 	 */
-=======
-
-	/*
-	 * Set the HVC_RESET_VECTORS return code before entering the common
-	 * path so that we do not clobber x0-x2 in case we are coming via
-	 * HVC_SOFT_RESTART.
-	 */
-	mov	x0, xzr
-reset:
-	/* Reset kvm back to the hyp stub. */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mrs	x5, sctlr_el2
 	ldr	x6, =SCTLR_ELx_FLAGS
 	bic	x5, x5, x6		// Clear SCTL_M and etc
@@ -212,10 +159,7 @@ reset:
 	/* Install stub vectors */
 	adr_l	x5, __hyp_stub_vectors
 	msr	vbar_el2, x5
-<<<<<<< HEAD
 	mov	x0, xzr
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	eret
 
 1:	/* Bad stub call */

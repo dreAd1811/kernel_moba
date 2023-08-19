@@ -1,25 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
  */
 
-=======
-/* Copyright (c) 2018, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- */
-
-#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* -------------------------------------------------------------------------
  * Includes
  * -------------------------------------------------------------------------
@@ -34,7 +17,6 @@
  * Function Definitions - Debug
  * -------------------------------------------------------------------------
  */
-<<<<<<< HEAD
 void npu_dump_ipc_packet(struct npu_device *npu_dev, void *cmd_ptr)
 {
 	int32_t *ptr = (int32_t *)cmd_ptr;
@@ -139,16 +121,4 @@ void npu_dump_debug_info(struct npu_device *npu_dev)
 
 	npu_dump_dbg_registers(npu_dev);
 	npu_dump_all_ipc_queue(npu_dev);
-=======
-void npu_dump_debug_timeout_stats(struct npu_device *npu_dev)
-{
-	uint32_t reg_val;
-
-	reg_val = REGR(npu_dev, REG_FW_JOB_CNT_START);
-	pr_info("fw jobs execute started count = %d\n", reg_val);
-	reg_val = REGR(npu_dev, REG_FW_JOB_CNT_END);
-	pr_info("fw jobs execute finished count = %d\n", reg_val);
-	reg_val = REGR(npu_dev, REG_NPU_FW_DEBUG_DATA);
-	pr_info("fw jobs aco parser debug = %d\n", reg_val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

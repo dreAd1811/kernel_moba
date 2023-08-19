@@ -27,10 +27,7 @@
 
 #include <media/drv-intf/saa7146_vv.h>
 #include <linux/module.h>
-<<<<<<< HEAD
 #include <linux/kernel.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int debug;
 module_param(debug, int, 0);
@@ -191,7 +188,6 @@ static struct {
 
 static struct saa7146_standard hexium_standards[] = {
 	{
-<<<<<<< HEAD
 		.name	= "PAL",	.id	= V4L2_STD_PAL,
 		.v_offset	= 16,	.v_field	= 288,
 		.h_offset	= 1,	.h_pixels	= 680,
@@ -205,21 +201,6 @@ static struct saa7146_standard hexium_standards[] = {
 		.name	= "SECAM",	.id	= V4L2_STD_SECAM,
 		.v_offset	= 16,	.v_field	= 288,
 		.h_offset	= 1,	.h_pixels	= 720,
-=======
-		.name	= "PAL", 	.id	= V4L2_STD_PAL,
-		.v_offset	= 16,	.v_field 	= 288,
-		.h_offset	= 1,	.h_pixels 	= 680,
-		.v_max_out	= 576,	.h_max_out	= 768,
-	}, {
-		.name	= "NTSC", 	.id	= V4L2_STD_NTSC,
-		.v_offset	= 16,	.v_field 	= 240,
-		.h_offset	= 1,	.h_pixels 	= 640,
-		.v_max_out	= 480,	.h_max_out	= 640,
-	}, {
-		.name	= "SECAM", 	.id	= V4L2_STD_SECAM,
-		.v_offset	= 16,	.v_field 	= 288,
-		.h_offset	= 1,	.h_pixels 	= 720,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.v_max_out	= 576,	.h_max_out	= 768,
 	}
 };
@@ -239,17 +220,9 @@ static int hexium_probe(struct saa7146_dev *dev)
 		return -EFAULT;
 	}
 
-<<<<<<< HEAD
 	hexium = kzalloc(sizeof(*hexium), GFP_KERNEL);
 	if (!hexium)
 		return -ENOMEM;
-=======
-	hexium = kzalloc(sizeof(struct hexium), GFP_KERNEL);
-	if (NULL == hexium) {
-		pr_err("hexium_probe: not enough kernel memory\n");
-		return -ENOMEM;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* enable i2c-port pins */
 	saa7146_write(dev, MC1, (MASK_08 | MASK_24 | MASK_10 | MASK_26));
@@ -293,13 +266,9 @@ static int hexium_probe(struct saa7146_dev *dev)
 
 	/* check if this is an old hexium Orion card by looking at
 	   a saa7110 at address 0x4e */
-<<<<<<< HEAD
 	err = i2c_smbus_xfer(&hexium->i2c_adapter, 0x4e, 0, I2C_SMBUS_READ,
 			     0x00, I2C_SMBUS_BYTE_DATA, &data);
 	if (err == 0) {
-=======
-	if (0 == (err = i2c_smbus_xfer(&hexium->i2c_adapter, 0x4e, 0, I2C_SMBUS_READ, 0x00, I2C_SMBUS_BYTE_DATA, &data))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_info("device is a Hexium HV-PCI6/Orion (old)\n");
 		/* we store the pointer in our private data field */
 		dev->ext_priv = hexium;
@@ -491,11 +460,7 @@ static struct saa7146_ext_vv vv_data = {
 	.inputs = HEXIUM_INPUTS,
 	.capabilities = 0,
 	.stds = &hexium_standards[0],
-<<<<<<< HEAD
 	.num_stds = ARRAY_SIZE(hexium_standards),
-=======
-	.num_stds = sizeof(hexium_standards) / sizeof(struct saa7146_standard),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.std_callback = &std_callback,
 };
 

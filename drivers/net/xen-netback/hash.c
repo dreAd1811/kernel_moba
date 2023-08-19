@@ -324,12 +324,8 @@ u32 xenvif_set_hash_mapping_size(struct xenvif *vif, u32 size)
 		return XEN_NETIF_CTRL_STATUS_INVALID_PARAMETER;
 
 	vif->hash.size = size;
-<<<<<<< HEAD
 	memset(vif->hash.mapping[vif->hash.mapping_sel], 0,
 	       sizeof(u32) * size);
-=======
-	memset(vif->hash.mapping, 0, sizeof(u32) * size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return XEN_NETIF_CTRL_STATUS_SUCCESS;
 }
@@ -337,30 +333,20 @@ u32 xenvif_set_hash_mapping_size(struct xenvif *vif, u32 size)
 u32 xenvif_set_hash_mapping(struct xenvif *vif, u32 gref, u32 len,
 			    u32 off)
 {
-<<<<<<< HEAD
 	u32 *mapping = vif->hash.mapping[!vif->hash.mapping_sel];
 	unsigned int nr = 1;
 	struct gnttab_copy copy_op[2] = {{
-=======
-	u32 *mapping = vif->hash.mapping;
-	struct gnttab_copy copy_op = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.source.u.ref = gref,
 		.source.domid = vif->domid,
 		.dest.domid = DOMID_SELF,
 		.len = len * sizeof(*mapping),
 		.flags = GNTCOPY_source_gref
-<<<<<<< HEAD
 	}};
-=======
-	};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if ((off + len < off) || (off + len > vif->hash.size) ||
 	    len > XEN_PAGE_SIZE / sizeof(*mapping))
 		return XEN_NETIF_CTRL_STATUS_INVALID_PARAMETER;
 
-<<<<<<< HEAD
 	copy_op[0].dest.u.gmfn = virt_to_gfn(mapping + off);
 	copy_op[0].dest.offset = xen_offset_in_page(mapping + off);
 	if (copy_op[0].dest.offset + copy_op[0].len > XEN_PAGE_SIZE) {
@@ -383,25 +369,12 @@ u32 xenvif_set_hash_mapping(struct xenvif *vif, u32 gref, u32 len,
 		    copy_op[nr - 1].status != GNTST_okay)
 			return XEN_NETIF_CTRL_STATUS_INVALID_PARAMETER;
 	}
-=======
-	copy_op.dest.u.gmfn = virt_to_gfn(mapping + off);
-	copy_op.dest.offset = xen_offset_in_page(mapping + off);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	while (len-- != 0)
 		if (mapping[off++] >= vif->num_queues)
 			return XEN_NETIF_CTRL_STATUS_INVALID_PARAMETER;
 
-<<<<<<< HEAD
 	vif->hash.mapping_sel = !vif->hash.mapping_sel;
-=======
-	if (copy_op.len != 0) {
-		gnttab_batch_copy(&copy_op, 1);
-
-		if (copy_op.status != GNTST_okay)
-			return XEN_NETIF_CTRL_STATUS_INVALID_PARAMETER;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return XEN_NETIF_CTRL_STATUS_SUCCESS;
 }
@@ -454,11 +427,8 @@ void xenvif_dump_hash_info(struct xenvif *vif, struct seq_file *m)
 	}
 
 	if (vif->hash.size != 0) {
-<<<<<<< HEAD
 		const u32 *mapping = vif->hash.mapping[vif->hash.mapping_sel];
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		seq_puts(m, "\nHash Mapping:\n");
 
 		for (i = 0; i < vif->hash.size; ) {
@@ -471,11 +441,7 @@ void xenvif_dump_hash_info(struct xenvif *vif, struct seq_file *m)
 			seq_printf(m, "[%4u - %4u]: ", i, i + n - 1);
 
 			for (j = 0; j < n; j++, i++)
-<<<<<<< HEAD
 				seq_printf(m, "%4u ", mapping[i]);
-=======
-				seq_printf(m, "%4u ", vif->hash.mapping[i]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			seq_puts(m, "\n");
 		}

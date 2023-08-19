@@ -1634,10 +1634,6 @@ il3945_hw_reg_set_txpower(struct il_priv *il, s8 power)
 {
 	struct il_channel_info *ch_info;
 	s8 max_power;
-<<<<<<< HEAD
-=======
-	u8 a_band;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 i;
 
 	if (il->tx_power_user_lmt == power) {
@@ -1653,10 +1649,6 @@ il3945_hw_reg_set_txpower(struct il_priv *il, s8 power)
 
 	for (i = 0; i < il->channel_count; i++) {
 		ch_info = &il->channel_info[i];
-<<<<<<< HEAD
-=======
-		a_band = il_is_channel_a_band(ch_info);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* find minimum power of all user and regulatory constraints
 		 *    (does not consider h/w clipping limitations) */

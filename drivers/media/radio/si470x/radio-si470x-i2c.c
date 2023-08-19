@@ -43,10 +43,6 @@ static const struct i2c_device_id si470x_i2c_id[] = {
 MODULE_DEVICE_TABLE(i2c, si470x_i2c_id);
 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**************************************************************************
  * Module Parameters
  **************************************************************************/
@@ -93,11 +89,7 @@ MODULE_PARM_DESC(max_rds_errors, "RDS maximum block errors: *1*");
 /*
  * si470x_get_register - read register
  */
-<<<<<<< HEAD
 static int si470x_get_register(struct si470x_device *radio, int regnr)
-=======
-int si470x_get_register(struct si470x_device *radio, int regnr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	__be16 buf[READ_REG_NUM];
 	struct i2c_msg msgs[1] = {
@@ -121,11 +113,7 @@ int si470x_get_register(struct si470x_device *radio, int regnr)
 /*
  * si470x_set_register - write register
  */
-<<<<<<< HEAD
 static int si470x_set_register(struct si470x_device *radio, int regnr)
-=======
-int si470x_set_register(struct si470x_device *radio, int regnr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i;
 	__be16 buf[WRITE_REG_NUM];
@@ -186,11 +174,7 @@ static int si470x_get_all_registers(struct si470x_device *radio)
 /*
  * si470x_fops_open - file open
  */
-<<<<<<< HEAD
 static int si470x_fops_open(struct file *file)
-=======
-int si470x_fops_open(struct file *file)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct si470x_device *radio = video_drvdata(file);
 	int retval = v4l2_fh_open(file);
@@ -222,11 +206,7 @@ done:
 /*
  * si470x_fops_release - file release
  */
-<<<<<<< HEAD
 static int si470x_fops_release(struct file *file)
-=======
-int si470x_fops_release(struct file *file)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct si470x_device *radio = video_drvdata(file);
 
@@ -246,13 +226,8 @@ int si470x_fops_release(struct file *file)
 /*
  * si470x_vidioc_querycap - query device capabilities
  */
-<<<<<<< HEAD
 static int si470x_vidioc_querycap(struct file *file, void *priv,
 				  struct v4l2_capability *capability)
-=======
-int si470x_vidioc_querycap(struct file *file, void *priv,
-		struct v4l2_capability *capability)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	strlcpy(capability->driver, DRIVER_NAME, sizeof(capability->driver));
 	strlcpy(capability->card, DRIVER_CARD, sizeof(capability->card));
@@ -386,7 +361,6 @@ static int si470x_i2c_probe(struct i2c_client *client,
 	mutex_init(&radio->lock);
 	init_completion(&radio->completion);
 
-<<<<<<< HEAD
 	radio->get_register = si470x_get_register;
 	radio->set_register = si470x_set_register;
 	radio->fops_open = si470x_fops_open;
@@ -416,32 +390,20 @@ static int si470x_i2c_probe(struct i2c_client *client,
 	radio->videodev.lock = &radio->lock;
 	radio->videodev.v4l2_dev = &radio->v4l2_dev;
 	radio->videodev.release = video_device_release_empty;
-=======
-	/* video device initialization */
-	radio->videodev = si470x_viddev_template;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	video_set_drvdata(&radio->videodev, radio);
 
 	/* power up : need 110ms */
 	radio->registers[POWERCFG] = POWERCFG_ENABLE;
 	if (si470x_set_register(radio, POWERCFG) < 0) {
 		retval = -EIO;
-<<<<<<< HEAD
 		goto err_ctrl;
-=======
-		goto err_radio;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	msleep(110);
 
 	/* get device and chip versions */
 	if (si470x_get_all_registers(radio) < 0) {
 		retval = -EIO;
-<<<<<<< HEAD
 		goto err_ctrl;
-=======
-		goto err_radio;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	dev_info(&client->dev, "DeviceID=0x%4.4hx ChipID=0x%4.4hx\n",
 			radio->registers[DEVICEID], radio->registers[SI_CHIPID]);
@@ -471,11 +433,7 @@ static int si470x_i2c_probe(struct i2c_client *client,
 	radio->buffer = kmalloc(radio->buf_size, GFP_KERNEL);
 	if (!radio->buffer) {
 		retval = -EIO;
-<<<<<<< HEAD
 		goto err_ctrl;
-=======
-		goto err_radio;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* rds buffer configuration */
@@ -505,13 +463,10 @@ err_all:
 	free_irq(client->irq, radio);
 err_rds:
 	kfree(radio->buffer);
-<<<<<<< HEAD
 err_ctrl:
 	v4l2_ctrl_handler_free(&radio->hdl);
 err_dev:
 	v4l2_device_unregister(&radio->v4l2_dev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_radio:
 	kfree(radio);
 err_initial:
@@ -528,15 +483,8 @@ static int si470x_i2c_remove(struct i2c_client *client)
 
 	free_irq(client->irq, radio);
 	video_unregister_device(&radio->videodev);
-<<<<<<< HEAD
 	kfree(radio);
 
-=======
-
-	v4l2_ctrl_handler_free(&radio->hdl);
-	v4l2_device_unregister(&radio->v4l2_dev);
-	kfree(radio);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

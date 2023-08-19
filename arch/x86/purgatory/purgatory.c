@@ -11,15 +11,9 @@
  */
 
 #include <linux/bug.h>
-<<<<<<< HEAD
 #include <linux/sha256.h>
 #include <asm/purgatory.h>
 
-=======
-#include <asm/purgatory.h>
-
-#include "sha256.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "../boot/string.h"
 
 unsigned long purgatory_backup_dest __section(.kexec-purgatory);
@@ -76,12 +70,9 @@ void purgatory(void)
 	}
 	copy_backup_region();
 }
-<<<<<<< HEAD
 
 /*
  * Defined in order to reuse memcpy() and memset() from
  * arch/x86/boot/compressed/string.c
  */
 void warn(const char *msg) {}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

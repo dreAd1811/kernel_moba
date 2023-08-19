@@ -52,11 +52,7 @@ enum emulation_result {
 	EMULATE_EXIT_USER,    /* emulation requires exit to user-space */
 };
 
-<<<<<<< HEAD
 enum instruction_fetch_type {
-=======
-enum instruction_type {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INST_GENERIC,
 	INST_SC,		/* system call */
 };
@@ -85,13 +81,10 @@ extern int kvmppc_handle_loads(struct kvm_run *run, struct kvm_vcpu *vcpu,
 extern int kvmppc_handle_vsx_load(struct kvm_run *run, struct kvm_vcpu *vcpu,
 				unsigned int rt, unsigned int bytes,
 			int is_default_endian, int mmio_sign_extend);
-<<<<<<< HEAD
 extern int kvmppc_handle_vmx_load(struct kvm_run *run, struct kvm_vcpu *vcpu,
 		unsigned int rt, unsigned int bytes, int is_default_endian);
 extern int kvmppc_handle_vmx_store(struct kvm_run *run, struct kvm_vcpu *vcpu,
 		unsigned int rs, unsigned int bytes, int is_default_endian);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern int kvmppc_handle_store(struct kvm_run *run, struct kvm_vcpu *vcpu,
 			       u64 val, unsigned int bytes,
 			       int is_default_endian);
@@ -100,11 +93,7 @@ extern int kvmppc_handle_vsx_store(struct kvm_run *run, struct kvm_vcpu *vcpu,
 				int is_default_endian);
 
 extern int kvmppc_load_last_inst(struct kvm_vcpu *vcpu,
-<<<<<<< HEAD
 				 enum instruction_fetch_type type, u32 *inst);
-=======
-				 enum instruction_type type, u32 *inst);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 extern int kvmppc_ld(struct kvm_vcpu *vcpu, ulong *eaddr, int size, void *ptr,
 		     bool data);
@@ -183,10 +172,7 @@ extern int kvmppc_allocate_hpt(struct kvm_hpt_info *info, u32 order);
 extern void kvmppc_set_hpt(struct kvm *kvm, struct kvm_hpt_info *info);
 extern long kvmppc_alloc_reset_hpt(struct kvm *kvm, int order);
 extern void kvmppc_free_hpt(struct kvm_hpt_info *info);
-<<<<<<< HEAD
 extern void kvmppc_rmap_reset(struct kvm *kvm);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern long kvmppc_prepare_vrma(struct kvm *kvm,
 				struct kvm_userspace_memory_region *mem);
 extern void kvmppc_map_vrma(struct kvm_vcpu *vcpu,
@@ -196,12 +182,9 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
 		struct iommu_group *grp);
 extern void kvm_spapr_tce_release_iommu_group(struct kvm *kvm,
 		struct iommu_group *grp);
-<<<<<<< HEAD
 extern int kvmppc_switch_mmu_to_hpt(struct kvm *kvm);
 extern int kvmppc_switch_mmu_to_radix(struct kvm *kvm);
 extern void kvmppc_setup_partition_table(struct kvm *kvm);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 extern long kvm_vm_ioctl_create_spapr_tce(struct kvm *kvm,
 				struct kvm_create_spapr_tce_64 *args);
@@ -282,11 +265,8 @@ union kvmppc_one_reg {
 	vector128 vval;
 	u64	vsxval[2];
 	u32	vsx32val[4];
-<<<<<<< HEAD
 	u16	vsx16val[8];
 	u8	vsx8val[16];
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct {
 		u64	addr;
 		u64	length;
@@ -317,10 +297,6 @@ struct kvmppc_ops {
 				     const struct kvm_userspace_memory_region *mem,
 				     const struct kvm_memory_slot *old,
 				     const struct kvm_memory_slot *new);
-<<<<<<< HEAD
-=======
-	int (*unmap_hva)(struct kvm *kvm, unsigned long hva);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int (*unmap_hva_range)(struct kvm *kvm, unsigned long start,
 			   unsigned long end);
 	int (*age_hva)(struct kvm *kvm, unsigned long start, unsigned long end);
@@ -350,21 +326,14 @@ struct kvmppc_ops {
 	int (*get_rmmu_info)(struct kvm *kvm, struct kvm_ppc_rmmu_info *info);
 	int (*set_smt_mode)(struct kvm *kvm, unsigned long mode,
 			    unsigned long flags);
-<<<<<<< HEAD
 	void (*giveup_ext)(struct kvm_vcpu *vcpu, ulong msr);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 extern struct kvmppc_ops *kvmppc_hv_ops;
 extern struct kvmppc_ops *kvmppc_pr_ops;
 
 static inline int kvmppc_get_last_inst(struct kvm_vcpu *vcpu,
-<<<<<<< HEAD
 				enum instruction_fetch_type type, u32 *inst)
-=======
-					enum instruction_type type, u32 *inst)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret = EMULATE_DONE;
 	u32 fetched_inst;
@@ -469,24 +438,15 @@ struct openpic;
 extern void kvm_cma_reserve(void) __init;
 static inline void kvmppc_set_xics_phys(int cpu, unsigned long addr)
 {
-<<<<<<< HEAD
 	paca_ptrs[cpu]->kvm_hstate.xics_phys = (void __iomem *)addr;
-=======
-	paca[cpu].kvm_hstate.xics_phys = (void __iomem *)addr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void kvmppc_set_xive_tima(int cpu,
 					unsigned long phys_addr,
 					void __iomem *virt_addr)
 {
-<<<<<<< HEAD
 	paca_ptrs[cpu]->kvm_hstate.xive_tima_phys = (void __iomem *)phys_addr;
 	paca_ptrs[cpu]->kvm_hstate.xive_tima_virt = virt_addr;
-=======
-	paca[cpu].kvm_hstate.xive_tima_phys = (void __iomem *)phys_addr;
-	paca[cpu].kvm_hstate.xive_tima_virt = virt_addr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline u32 kvmppc_get_xics_latch(void)
@@ -500,11 +460,7 @@ static inline u32 kvmppc_get_xics_latch(void)
 
 static inline void kvmppc_set_host_ipi(int cpu, u8 host_ipi)
 {
-<<<<<<< HEAD
 	paca_ptrs[cpu]->kvm_hstate.host_ipi = host_ipi;
-=======
-	paca[cpu].kvm_hstate.host_ipi = host_ipi;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void kvmppc_fast_vcpu_kick(struct kvm_vcpu *vcpu)
@@ -923,11 +879,7 @@ static inline void kvmppc_fix_ee_before_entry(void)
 
 	/* Only need to enable IRQs by hard enabling them after this */
 	local_paca->irq_happened = 0;
-<<<<<<< HEAD
 	irq_soft_mask_set(IRQS_ENABLED);
-=======
-	local_paca->soft_enabled = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 }
 

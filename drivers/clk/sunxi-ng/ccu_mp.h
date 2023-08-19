@@ -33,7 +33,6 @@ struct ccu_mp {
 	struct ccu_div_internal		m;
 	struct ccu_div_internal		p;
 	struct ccu_mux_internal	mux;
-<<<<<<< HEAD
 
 	unsigned int		fixed_post_div;
 
@@ -61,11 +60,6 @@ struct ccu_mp {
 		}							\
 	}
 
-=======
-	struct ccu_common	common;
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SUNXI_CCU_MP_WITH_MUX_GATE(_struct, _name, _parents, _reg,	\
 				   _mshift, _mwidth,			\
 				   _pshift, _pwidth,			\

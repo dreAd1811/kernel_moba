@@ -179,13 +179,10 @@ void qed_resc_free(struct qed_dev *cdev)
 			qed_iscsi_free(p_hwfn);
 			qed_ooo_free(p_hwfn);
 		}
-<<<<<<< HEAD
 
 		if (QED_IS_RDMA_PERSONALITY(p_hwfn))
 			qed_rdma_info_free(p_hwfn);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		qed_iov_free(p_hwfn);
 		qed_l2_free(p_hwfn);
 		qed_dmae_info_free(p_hwfn);
@@ -222,11 +219,8 @@ static u32 qed_get_pq_flags(struct qed_hwfn *p_hwfn)
 		break;
 	case QED_PCI_ETH_ROCE:
 		flags |= PQ_FLAGS_MCOS | PQ_FLAGS_OFLD | PQ_FLAGS_LLT;
-<<<<<<< HEAD
 		if (IS_QED_MULTI_TC_ROCE(p_hwfn))
 			flags |= PQ_FLAGS_MTC;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case QED_PCI_ETH_IWARP:
 		flags |= PQ_FLAGS_MCOS | PQ_FLAGS_ACK | PQ_FLAGS_OOO |
@@ -242,26 +236,17 @@ static u32 qed_get_pq_flags(struct qed_hwfn *p_hwfn)
 }
 
 /* Getters for resource amounts necessary for qm initialization */
-<<<<<<< HEAD
 static u8 qed_init_qm_get_num_tcs(struct qed_hwfn *p_hwfn)
-=======
-u8 qed_init_qm_get_num_tcs(struct qed_hwfn *p_hwfn)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return p_hwfn->hw_info.num_hw_tc;
 }
 
-<<<<<<< HEAD
 static u16 qed_init_qm_get_num_vfs(struct qed_hwfn *p_hwfn)
-=======
-u16 qed_init_qm_get_num_vfs(struct qed_hwfn *p_hwfn)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return IS_QED_SRIOV(p_hwfn->cdev) ?
 	       p_hwfn->cdev->p_iov_info->total_vfs : 0;
 }
 
-<<<<<<< HEAD
 static u8 qed_init_qm_get_num_mtc_tcs(struct qed_hwfn *p_hwfn)
 {
 	u32 pq_flags = qed_get_pq_flags(p_hwfn);
@@ -275,11 +260,6 @@ static u8 qed_init_qm_get_num_mtc_tcs(struct qed_hwfn *p_hwfn)
 #define NUM_DEFAULT_RLS 1
 
 static u16 qed_init_qm_get_num_pf_rls(struct qed_hwfn *p_hwfn)
-=======
-#define NUM_DEFAULT_RLS 1
-
-u16 qed_init_qm_get_num_pf_rls(struct qed_hwfn *p_hwfn)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u16 num_pf_rls, num_vfs = qed_init_qm_get_num_vfs(p_hwfn);
 
@@ -297,11 +277,7 @@ u16 qed_init_qm_get_num_pf_rls(struct qed_hwfn *p_hwfn)
 	return num_pf_rls;
 }
 
-<<<<<<< HEAD
 static u16 qed_init_qm_get_num_vports(struct qed_hwfn *p_hwfn)
-=======
-u16 qed_init_qm_get_num_vports(struct qed_hwfn *p_hwfn)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 pq_flags = qed_get_pq_flags(p_hwfn);
 
@@ -313,11 +289,7 @@ u16 qed_init_qm_get_num_vports(struct qed_hwfn *p_hwfn)
 }
 
 /* calc amount of PQs according to the requested flags */
-<<<<<<< HEAD
 static u16 qed_init_qm_get_num_pqs(struct qed_hwfn *p_hwfn)
-=======
-u16 qed_init_qm_get_num_pqs(struct qed_hwfn *p_hwfn)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 pq_flags = qed_get_pq_flags(p_hwfn);
 
@@ -326,16 +298,11 @@ u16 qed_init_qm_get_num_pqs(struct qed_hwfn *p_hwfn)
 	       (!!(PQ_FLAGS_MCOS & pq_flags)) *
 	       qed_init_qm_get_num_tcs(p_hwfn) +
 	       (!!(PQ_FLAGS_LB & pq_flags)) + (!!(PQ_FLAGS_OOO & pq_flags)) +
-<<<<<<< HEAD
 	       (!!(PQ_FLAGS_ACK & pq_flags)) +
 	       (!!(PQ_FLAGS_OFLD & pq_flags)) *
 	       qed_init_qm_get_num_mtc_tcs(p_hwfn) +
 	       (!!(PQ_FLAGS_LLT & pq_flags)) *
 	       qed_init_qm_get_num_mtc_tcs(p_hwfn) +
-=======
-	       (!!(PQ_FLAGS_ACK & pq_flags)) + (!!(PQ_FLAGS_OFLD & pq_flags)) +
-	       (!!(PQ_FLAGS_LLT & pq_flags)) +
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	       (!!(PQ_FLAGS_VFS & pq_flags)) * qed_init_qm_get_num_vfs(p_hwfn);
 }
 
@@ -350,13 +317,8 @@ static void qed_init_qm_params(struct qed_hwfn *p_hwfn)
 	qm_info->start_vport = (u8) RESC_START(p_hwfn, QED_VPORT);
 
 	/* rate limiting and weighted fair queueing are always enabled */
-<<<<<<< HEAD
 	qm_info->vport_rl_en = true;
 	qm_info->vport_wfq_en = true;
-=======
-	qm_info->vport_rl_en = 1;
-	qm_info->vport_wfq_en = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* TC config is different for AH 4 port */
 	four_port = p_hwfn->cdev->num_ports_in_engine == MAX_NUM_PORTS_K2;
@@ -451,7 +413,6 @@ static void qed_init_qm_advance_vport(struct qed_hwfn *p_hwfn)
 /* defines for pq init */
 #define PQ_INIT_DEFAULT_WRR_GROUP       1
 #define PQ_INIT_DEFAULT_TC              0
-<<<<<<< HEAD
 
 void qed_hw_info_set_offload_tc(struct qed_hw_info *p_info, u8 tc)
 {
@@ -471,9 +432,6 @@ static u32 qed_get_offload_tc(struct qed_hwfn *p_hwfn)
 
 	return PQ_INIT_DEFAULT_TC;
 }
-=======
-#define PQ_INIT_OFLD_TC                 (p_hwfn->hw_info.offload_tc)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void qed_init_qm_pq(struct qed_hwfn *p_hwfn,
 			   struct qed_qm_info *qm_info,
@@ -486,10 +444,7 @@ static void qed_init_qm_pq(struct qed_hwfn *p_hwfn,
 		       "pq overflow! pq %d, max pq %d\n", pq_idx, max_pq);
 
 	/* init pq params */
-<<<<<<< HEAD
 	qm_info->qm_pq_params[pq_idx].port_id = p_hwfn->port_id;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	qm_info->qm_pq_params[pq_idx].vport_id = qm_info->start_vport +
 	    qm_info->num_vports;
 	qm_info->qm_pq_params[pq_idx].tc_id = tc;
@@ -546,15 +501,9 @@ static u16 *qed_init_qm_get_idx_from_flags(struct qed_hwfn *p_hwfn,
 	case PQ_FLAGS_ACK:
 		return &qm_info->pure_ack_pq;
 	case PQ_FLAGS_OFLD:
-<<<<<<< HEAD
 		return &qm_info->first_ofld_pq;
 	case PQ_FLAGS_LLT:
 		return &qm_info->first_llt_pq;
-=======
-		return &qm_info->offload_pq;
-	case PQ_FLAGS_LLT:
-		return &qm_info->low_latency_pq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case PQ_FLAGS_VFS:
 		return &qm_info->first_vf_pq;
 	default:
@@ -614,7 +563,6 @@ u16 qed_get_cm_pq_idx_vf(struct qed_hwfn *p_hwfn, u16 vf)
 	return qed_get_cm_pq_idx(p_hwfn, PQ_FLAGS_VFS) + (vf % max_vf);
 }
 
-<<<<<<< HEAD
 u16 qed_get_cm_pq_idx_ofld_mtc(struct qed_hwfn *p_hwfn, u8 tc)
 {
 	u16 first_ofld_pq, pq_offset;
@@ -635,16 +583,6 @@ u16 qed_get_cm_pq_idx_llt_mtc(struct qed_hwfn *p_hwfn, u8 tc)
 		    tc : PQ_INIT_DEFAULT_TC;
 
 	return first_llt_pq + pq_offset;
-=======
-u16 qed_get_cm_pq_idx_rl(struct qed_hwfn *p_hwfn, u8 rl)
-{
-	u16 max_rl = qed_init_qm_get_num_pf_rls(p_hwfn);
-
-	if (rl > max_rl)
-		DP_ERR(p_hwfn, "rl %d must be smaller than %d\n", rl, max_rl);
-
-	return qed_get_cm_pq_idx(p_hwfn, PQ_FLAGS_RLS) + rl;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Functions for creating specific types of pqs */
@@ -678,7 +616,6 @@ static void qed_init_qm_pure_ack_pq(struct qed_hwfn *p_hwfn)
 		return;
 
 	qed_init_qm_set_idx(p_hwfn, PQ_FLAGS_ACK, qm_info->num_pqs);
-<<<<<<< HEAD
 	qed_init_qm_pq(p_hwfn, qm_info, qed_get_offload_tc(p_hwfn),
 		       PQ_INIT_SHARE_VPORT);
 }
@@ -695,9 +632,6 @@ static void qed_init_qm_mtc_pqs(struct qed_hwfn *p_hwfn)
 			       qed_is_offload_tc_set(p_hwfn) ?
 			       p_hwfn->hw_info.offload_tc : tc,
 			       PQ_INIT_SHARE_VPORT);
-=======
-	qed_init_qm_pq(p_hwfn, qm_info, PQ_INIT_OFLD_TC, PQ_INIT_SHARE_VPORT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void qed_init_qm_offload_pq(struct qed_hwfn *p_hwfn)
@@ -708,11 +642,7 @@ static void qed_init_qm_offload_pq(struct qed_hwfn *p_hwfn)
 		return;
 
 	qed_init_qm_set_idx(p_hwfn, PQ_FLAGS_OFLD, qm_info->num_pqs);
-<<<<<<< HEAD
 	qed_init_qm_mtc_pqs(p_hwfn);
-=======
-	qed_init_qm_pq(p_hwfn, qm_info, PQ_INIT_OFLD_TC, PQ_INIT_SHARE_VPORT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void qed_init_qm_low_latency_pq(struct qed_hwfn *p_hwfn)
@@ -723,11 +653,7 @@ static void qed_init_qm_low_latency_pq(struct qed_hwfn *p_hwfn)
 		return;
 
 	qed_init_qm_set_idx(p_hwfn, PQ_FLAGS_LLT, qm_info->num_pqs);
-<<<<<<< HEAD
 	qed_init_qm_mtc_pqs(p_hwfn);
-=======
-	qed_init_qm_pq(p_hwfn, qm_info, PQ_INIT_OFLD_TC, PQ_INIT_SHARE_VPORT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void qed_init_qm_mcos_pqs(struct qed_hwfn *p_hwfn)
@@ -768,12 +694,8 @@ static void qed_init_qm_rl_pqs(struct qed_hwfn *p_hwfn)
 
 	qed_init_qm_set_idx(p_hwfn, PQ_FLAGS_RLS, qm_info->num_pqs);
 	for (pf_rls_idx = 0; pf_rls_idx < num_pf_rls; pf_rls_idx++)
-<<<<<<< HEAD
 		qed_init_qm_pq(p_hwfn, qm_info, qed_get_offload_tc(p_hwfn),
 			       PQ_INIT_PF_RL);
-=======
-		qed_init_qm_pq(p_hwfn, qm_info, PQ_INIT_OFLD_TC, PQ_INIT_PF_RL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void qed_init_qm_pq_params(struct qed_hwfn *p_hwfn)
@@ -814,7 +736,6 @@ static int qed_init_qm_sanity(struct qed_hwfn *p_hwfn)
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 	if (qed_init_qm_get_num_pqs(p_hwfn) <= RESC_NUM(p_hwfn, QED_PQ))
 		return 0;
 
@@ -828,14 +749,6 @@ static int qed_init_qm_sanity(struct qed_hwfn *p_hwfn)
 
 	DP_ERR(p_hwfn, "requested amount of pqs exceeds resource\n");
 	return -EINVAL;
-=======
-	if (qed_init_qm_get_num_pqs(p_hwfn) > RESC_NUM(p_hwfn, QED_PQ)) {
-		DP_ERR(p_hwfn, "requested amount of pqs exceeds resource\n");
-		return -EINVAL;
-	}
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void qed_dp_init_qm_params(struct qed_hwfn *p_hwfn)
@@ -849,7 +762,6 @@ static void qed_dp_init_qm_params(struct qed_hwfn *p_hwfn)
 	/* top level params */
 	DP_VERBOSE(p_hwfn,
 		   NETIF_MSG_HW,
-<<<<<<< HEAD
 		   "qm init top level params: start_pq %d, start_vport %d, pure_lb_pq %d, offload_pq %d, llt_pq %d, pure_ack_pq %d\n",
 		   qm_info->start_pq,
 		   qm_info->start_vport,
@@ -857,13 +769,6 @@ static void qed_dp_init_qm_params(struct qed_hwfn *p_hwfn)
 		   qm_info->first_ofld_pq,
 		   qm_info->first_llt_pq,
 		   qm_info->pure_ack_pq);
-=======
-		   "qm init top level params: start_pq %d, start_vport %d, pure_lb_pq %d, offload_pq %d, pure_ack_pq %d\n",
-		   qm_info->start_pq,
-		   qm_info->start_vport,
-		   qm_info->pure_lb_pq,
-		   qm_info->offload_pq, qm_info->pure_ack_pq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DP_VERBOSE(p_hwfn,
 		   NETIF_MSG_HW,
 		   "ooo_pq %d, first_vf_pq %d, num_pqs %d, num_vf_pqs %d, num_vports %d, max_phys_tcs_per_port %d\n",
@@ -916,14 +821,9 @@ static void qed_dp_init_qm_params(struct qed_hwfn *p_hwfn)
 		pq = &(qm_info->qm_pq_params[i]);
 		DP_VERBOSE(p_hwfn,
 			   NETIF_MSG_HW,
-<<<<<<< HEAD
 			   "pq idx %d, port %d, vport_id %d, tc %d, wrr_grp %d, rl_valid %d\n",
 			   qm_info->start_pq + i,
 			   pq->port_id,
-=======
-			   "pq idx %d, vport_id %d, tc %d, wrr_grp %d, rl_valid %d\n",
-			   qm_info->start_pq + i,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   pq->vport_id,
 			   pq->tc_id, pq->wrr_group, pq->rl_valid);
 	}
@@ -953,11 +853,7 @@ static void qed_init_qm_info(struct qed_hwfn *p_hwfn)
 /* This function reconfigures the QM pf on the fly.
  * For this purpose we:
  * 1. reconfigure the QM database
-<<<<<<< HEAD
  * 2. set new values to runtime array
-=======
- * 2. set new values to runtime arrat
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * 3. send an sdm_qm_cmd through the rbc interface to stop the QM
  * 4. activate init tool in QM_PF stage
  * 5. send an sdm_qm_cmd through rbc interface to release the QM
@@ -983,11 +879,7 @@ int qed_qm_reconf(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt)
 	qed_init_clear_rt_data(p_hwfn);
 
 	/* prepare QM portion of runtime array */
-<<<<<<< HEAD
 	qed_qm_init_pf(p_hwfn, p_ptt, false);
-=======
-	qed_qm_init_pf(p_hwfn, p_ptt);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* activate init tool on runtime array */
 	rc = qed_init_run(p_hwfn, p_ptt, PHASE_QM_PF, p_hwfn->rel_pf_id,
@@ -1015,46 +907,26 @@ static int qed_alloc_qm_data(struct qed_hwfn *p_hwfn)
 	if (rc)
 		goto alloc_err;
 
-<<<<<<< HEAD
 	qm_info->qm_pq_params = kcalloc(qed_init_qm_get_num_pqs(p_hwfn),
 					sizeof(*qm_info->qm_pq_params),
-=======
-	qm_info->qm_pq_params = kzalloc(sizeof(*qm_info->qm_pq_params) *
-					qed_init_qm_get_num_pqs(p_hwfn),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					GFP_KERNEL);
 	if (!qm_info->qm_pq_params)
 		goto alloc_err;
 
-<<<<<<< HEAD
 	qm_info->qm_vport_params = kcalloc(qed_init_qm_get_num_vports(p_hwfn),
 					   sizeof(*qm_info->qm_vport_params),
-=======
-	qm_info->qm_vport_params = kzalloc(sizeof(*qm_info->qm_vport_params) *
-					   qed_init_qm_get_num_vports(p_hwfn),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   GFP_KERNEL);
 	if (!qm_info->qm_vport_params)
 		goto alloc_err;
 
-<<<<<<< HEAD
 	qm_info->qm_port_params = kcalloc(p_hwfn->cdev->num_ports_in_engine,
 					  sizeof(*qm_info->qm_port_params),
-=======
-	qm_info->qm_port_params = kzalloc(sizeof(*qm_info->qm_port_params) *
-					  p_hwfn->cdev->num_ports_in_engine,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  GFP_KERNEL);
 	if (!qm_info->qm_port_params)
 		goto alloc_err;
 
-<<<<<<< HEAD
 	qm_info->wfq_data = kcalloc(qed_init_qm_get_num_vports(p_hwfn),
 				    sizeof(*qm_info->wfq_data),
-=======
-	qm_info->wfq_data = kzalloc(sizeof(*qm_info->wfq_data) *
-				    qed_init_qm_get_num_vports(p_hwfn),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    GFP_KERNEL);
 	if (!qm_info->wfq_data)
 		goto alloc_err;
@@ -1225,15 +1097,12 @@ int qed_resc_alloc(struct qed_dev *cdev)
 				goto alloc_err;
 		}
 
-<<<<<<< HEAD
 		if (QED_IS_RDMA_PERSONALITY(p_hwfn)) {
 			rc = qed_rdma_info_alloc(p_hwfn);
 			if (rc)
 				goto alloc_err;
 		}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* DMA info initialization */
 		rc = qed_dmae_info_alloc(p_hwfn);
 		if (rc)
@@ -1328,11 +1197,7 @@ int qed_final_cleanup(struct qed_hwfn *p_hwfn,
 	}
 
 	DP_VERBOSE(p_hwfn, QED_MSG_IOV,
-<<<<<<< HEAD
 		   "Sending final cleanup for PFVF[%d] [Command %08x]\n",
-=======
-		   "Sending final cleanup for PFVF[%d] [Command %08x\n]",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		   id, command);
 
 	qed_wr(p_hwfn, p_ptt, XSDM_REG_OPERATION_GEN, command);
@@ -1383,25 +1248,10 @@ static int qed_calc_hw_mode(struct qed_hwfn *p_hwfn)
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 	if (test_bit(QED_MF_OVLAN_CLSS, &p_hwfn->cdev->mf_bits))
 		hw_mode |= 1 << MODE_MF_SD;
 	else
 		hw_mode |= 1 << MODE_MF_SI;
-=======
-	switch (p_hwfn->cdev->mf_mode) {
-	case QED_MF_DEFAULT:
-	case QED_MF_NPAR:
-		hw_mode |= 1 << MODE_MF_SI;
-		break;
-	case QED_MF_OVLAN:
-		hw_mode |= 1 << MODE_MF_SD;
-		break;
-	default:
-		DP_NOTICE(p_hwfn, "Unsupported MF mode, init as DEFAULT\n");
-		hw_mode |= 1 << MODE_MF_SI;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	hw_mode |= 1 << MODE_ASIC;
 
@@ -1519,15 +1369,9 @@ static int qed_hw_init_common(struct qed_hwfn *p_hwfn,
 
 	if (p_hwfn->mcp_info) {
 		if (p_hwfn->mcp_info->func_info.bandwidth_max)
-<<<<<<< HEAD
 			qm_info->pf_rl_en = true;
 		if (p_hwfn->mcp_info->func_info.bandwidth_min)
 			qm_info->pf_wfq_en = true;
-=======
-			qm_info->pf_rl_en = 1;
-		if (p_hwfn->mcp_info->func_info.bandwidth_min)
-			qm_info->pf_wfq_en = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	memset(&params, 0, sizeof(params));
@@ -1754,14 +1598,11 @@ static int qed_hw_init_pf(struct qed_hwfn *p_hwfn,
 		STORE_RT_REG(p_hwfn, NIG_REG_LLH_FUNC_TAG_EN_RT_OFFSET, 1);
 		STORE_RT_REG(p_hwfn, NIG_REG_LLH_FUNC_TAG_VALUE_RT_OFFSET,
 			     p_hwfn->hw_info.ovlan);
-<<<<<<< HEAD
 
 		DP_VERBOSE(p_hwfn, NETIF_MSG_HW,
 			   "Configuring LLH_FUNC_FILTER_HDR_SEL\n");
 		STORE_RT_REG(p_hwfn, NIG_REG_LLH_FUNC_FILTER_HDR_SEL_RT_OFFSET,
 			     1);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Enable classification by MAC if needed */
@@ -1772,11 +1613,7 @@ static int qed_hw_init_pf(struct qed_hwfn *p_hwfn,
 			     NIG_REG_LLH_FUNC_TAGMAC_CLS_TYPE_RT_OFFSET, 1);
 	}
 
-<<<<<<< HEAD
 	/* Protocol Configuration */
-=======
-	/* Protocl Configuration  */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	STORE_RT_REG(p_hwfn, PRS_REG_SEARCH_TCP_RT_OFFSET,
 		     (p_hwfn->hw_info.personality == QED_PCI_ISCSI) ? 1 : 0);
 	STORE_RT_REG(p_hwfn, PRS_REG_SEARCH_FCOE_RT_OFFSET,
@@ -1788,14 +1625,11 @@ static int qed_hw_init_pf(struct qed_hwfn *p_hwfn,
 	if (rc)
 		return rc;
 
-<<<<<<< HEAD
 	/* Sanity check before the PF init sequence that uses DMAE */
 	rc = qed_dmae_sanity(p_hwfn, p_ptt, "pf_phase");
 	if (rc)
 		return rc;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* PF Init sequence */
 	rc = qed_init_run(p_hwfn, p_ptt, PHASE_PF, rel_pf_id, hw_mode);
 	if (rc)
@@ -1819,10 +1653,6 @@ static int qed_hw_init_pf(struct qed_hwfn *p_hwfn,
 
 		/* send function start command */
 		rc = qed_sp_pf_start(p_hwfn, p_ptt, p_tunn,
-<<<<<<< HEAD
-=======
-				     p_hwfn->cdev->mf_mode,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     allow_npar_tx_switch);
 		if (rc) {
 			DP_NOTICE(p_hwfn, "Function start ramrod failed\n");
@@ -1897,11 +1727,7 @@ static int qed_vf_start(struct qed_hwfn *p_hwfn,
 		qed_vf_pf_tunnel_param_update(p_hwfn, p_params->p_tunn);
 	}
 
-<<<<<<< HEAD
 	p_hwfn->b_int_enabled = true;
-=======
-	p_hwfn->b_int_enabled = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -1909,18 +1735,11 @@ static int qed_vf_start(struct qed_hwfn *p_hwfn,
 int qed_hw_init(struct qed_dev *cdev, struct qed_hw_init_params *p_params)
 {
 	struct qed_load_req_params load_req_params;
-<<<<<<< HEAD
 	u32 load_code, resp, param, drv_mb_param;
 	bool b_default_mtu = true;
 	struct qed_hwfn *p_hwfn;
 	int rc = 0, mfw_rc, i;
 	u16 ether_type;
-=======
-	u32 load_code, param, drv_mb_param;
-	bool b_default_mtu = true;
-	struct qed_hwfn *p_hwfn;
-	int rc = 0, mfw_rc, i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if ((p_params->int_mode == QED_INT_MODE_MSI) && (cdev->num_hwfns > 1)) {
 		DP_NOTICE(cdev, "MSI mode is not supported for CMT devices\n");
@@ -1954,7 +1773,6 @@ int qed_hw_init(struct qed_dev *cdev, struct qed_hw_init_params *p_params)
 		if (rc)
 			return rc;
 
-<<<<<<< HEAD
 		if (IS_PF(cdev) && (test_bit(QED_MF_8021Q_TAGGING,
 					     &cdev->mf_bits) ||
 				    test_bit(QED_MF_8021AD_TAGGING,
@@ -1973,8 +1791,6 @@ int qed_hw_init(struct qed_dev *cdev, struct qed_hw_init_params *p_params)
 				     ether_type);
 		}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		qed_fill_load_req_params(&load_req_params,
 					 p_params->p_drv_load_params);
 		rc = qed_mcp_load_req(p_hwfn, p_hwfn->p_main_ptt,
@@ -2002,22 +1818,14 @@ int qed_hw_init(struct qed_dev *cdev, struct qed_hw_init_params *p_params)
 						p_hwfn->hw_info.hw_mode);
 			if (rc)
 				break;
-<<<<<<< HEAD
 		/* Fall through */
-=======
-		/* Fall into */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case FW_MSG_CODE_DRV_LOAD_PORT:
 			rc = qed_hw_init_port(p_hwfn, p_hwfn->p_main_ptt,
 					      p_hwfn->hw_info.hw_mode);
 			if (rc)
 				break;
 
-<<<<<<< HEAD
 		/* Fall through */
-=======
-		/* Fall into */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case FW_MSG_CODE_DRV_LOAD_FUNCTION:
 			rc = qed_hw_init_pf(p_hwfn, p_hwfn->p_main_ptt,
 					    p_params->p_tunn,
@@ -2073,7 +1881,6 @@ int qed_hw_init(struct qed_dev *cdev, struct qed_hw_init_params *p_params)
 
 	if (IS_PF(cdev)) {
 		p_hwfn = QED_LEADING_HWFN(cdev);
-<<<<<<< HEAD
 
 		/* Get pre-negotiated values for stag, bandwidth etc. */
 		DP_VERBOSE(p_hwfn,
@@ -2087,8 +1894,6 @@ int qed_hw_init(struct qed_dev *cdev, struct qed_hw_init_params *p_params)
 			DP_NOTICE(p_hwfn,
 				  "Failed to send GET_OEM_UPDATES attention request\n");
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		drv_mb_param = STORM_FW_VERSION;
 		rc = qed_mcp_cmd(p_hwfn, p_hwfn->p_main_ptt,
 				 DRV_MSG_CODE_OV_UPDATE_STORM_FW_VER,
@@ -2315,16 +2120,8 @@ int qed_hw_start_fastpath(struct qed_hwfn *p_hwfn)
 	if (!p_ptt)
 		return -EAGAIN;
 
-<<<<<<< HEAD
 	if (p_hwfn->p_rdma_info &&
 	    p_hwfn->p_rdma_info->active && p_hwfn->b_rdma_enabled_in_prs)
-=======
-	/* If roce info is allocated it means roce is initialized and should
-	 * be enabled in searcher.
-	 */
-	if (p_hwfn->p_rdma_info &&
-	    p_hwfn->b_rdma_enabled_in_prs)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		qed_wr(p_hwfn, p_ptt, p_hwfn->rdma_prs_search_reg, 0x1);
 
 	/* Re-open incoming traffic */
@@ -2526,11 +2323,7 @@ qed_hw_set_soft_resc_size(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt)
 			/* No need for a case for QED_CMDQS_CQS since
 			 * CNQ/CMDQS are the same resource.
 			 */
-<<<<<<< HEAD
 			resc_max_val = NUM_OF_GLOBAL_QUEUES;
-=======
-			resc_max_val = NUM_OF_CMDQS_CQS;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		case QED_RDMA_STATS_QUEUE:
 			resc_max_val = b_ah ? RDMA_NUM_STATISTIC_COUNTERS_K2
@@ -2605,11 +2398,7 @@ int qed_hw_get_dflt_resc(struct qed_hwfn *p_hwfn,
 	case QED_RDMA_CNQ_RAM:
 	case QED_CMDQS_CQS:
 		/* CNQ/CMDQS are the same resource */
-<<<<<<< HEAD
 		*p_resc_num = NUM_OF_GLOBAL_QUEUES / num_funcs;
-=======
-		*p_resc_num = NUM_OF_CMDQS_CQS / num_funcs;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case QED_RDMA_STATS_QUEUE:
 		*p_resc_num = (b_ah ? RDMA_NUM_STATISTIC_COUNTERS_K2 :
@@ -2974,7 +2763,6 @@ static int qed_hw_get_nvm_info(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt)
 		   link->pause.autoneg,
 		   p_caps->default_eee, p_caps->eee_lpi_timer);
 
-<<<<<<< HEAD
 	if (IS_LEAD_HWFN(p_hwfn)) {
 		struct qed_dev *cdev = p_hwfn->cdev;
 
@@ -3026,33 +2814,6 @@ static int qed_hw_get_nvm_info(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt)
 		p_hwfn->cdev->mf_bits);
 
 	/* Read device capabilities information from shmem */
-=======
-	/* Read Multi-function information from shmem */
-	addr = MCP_REG_SCRATCH + nvm_cfg1_offset +
-	       offsetof(struct nvm_cfg1, glob) +
-	       offsetof(struct nvm_cfg1_glob, generic_cont0);
-
-	generic_cont0 = qed_rd(p_hwfn, p_ptt, addr);
-
-	mf_mode = (generic_cont0 & NVM_CFG1_GLOB_MF_MODE_MASK) >>
-		  NVM_CFG1_GLOB_MF_MODE_OFFSET;
-
-	switch (mf_mode) {
-	case NVM_CFG1_GLOB_MF_MODE_MF_ALLOWED:
-		p_hwfn->cdev->mf_mode = QED_MF_OVLAN;
-		break;
-	case NVM_CFG1_GLOB_MF_MODE_NPAR1_0:
-		p_hwfn->cdev->mf_mode = QED_MF_NPAR;
-		break;
-	case NVM_CFG1_GLOB_MF_MODE_DEFAULT:
-		p_hwfn->cdev->mf_mode = QED_MF_DEFAULT;
-		break;
-	}
-	DP_INFO(p_hwfn, "Multi function mode is %08x\n",
-		p_hwfn->cdev->mf_mode);
-
-	/* Read Multi-function information from shmem */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	addr = MCP_REG_SCRATCH + nvm_cfg1_offset +
 		offsetof(struct nvm_cfg1, glob) +
 		offsetof(struct nvm_cfg1_glob, device_capabilities);
@@ -3140,11 +2901,7 @@ static void qed_hw_info_port_num_bb(struct qed_hwfn *p_hwfn,
 {
 	u32 port_mode;
 
-<<<<<<< HEAD
 	port_mode = qed_rd(p_hwfn, p_ptt, CNIG_REG_NW_PORT_MODE_BB);
-=======
-	port_mode = qed_rd(p_hwfn, p_ptt, CNIG_REG_NW_PORT_MODE_BB_B0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (port_mode < 3) {
 		p_hwfn->cdev->num_ports_in_engine = 1;
@@ -3249,11 +3006,8 @@ qed_get_hw_info(struct qed_hwfn *p_hwfn,
 		qed_mcp_cmd_port_init(p_hwfn, p_ptt);
 
 		qed_get_eee_caps(p_hwfn, p_ptt);
-<<<<<<< HEAD
 
 		qed_mcp_read_ufp_config(p_hwfn, p_ptt);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (qed_mcp_is_init(p_hwfn)) {
@@ -3263,12 +3017,9 @@ qed_get_hw_info(struct qed_hwfn *p_hwfn,
 		p_hwfn->hw_info.personality = protocol;
 	}
 
-<<<<<<< HEAD
 	if (QED_IS_ROCE_PERSONALITY(p_hwfn))
 		p_hwfn->hw_info.multi_tc_roce_en = 1;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	p_hwfn->hw_info.num_hw_tc = NUM_PHYS_TCS_4PORT_K2;
 	p_hwfn->hw_info.num_active_tc = 1;
 
@@ -3336,15 +3087,12 @@ static int qed_get_dev_info(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt)
 	return 0;
 }
 
-<<<<<<< HEAD
 static void qed_nvm_info_free(struct qed_hwfn *p_hwfn)
 {
 	kfree(p_hwfn->nvm_info.image_att);
 	p_hwfn->nvm_info.image_att = NULL;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int qed_hw_prepare_single(struct qed_hwfn *p_hwfn,
 				 void __iomem *p_regview,
 				 void __iomem *p_doorbells,
@@ -3410,7 +3158,6 @@ static int qed_hw_prepare_single(struct qed_hwfn *p_hwfn,
 			DP_NOTICE(p_hwfn, "Failed to initiate PF FLR\n");
 	}
 
-<<<<<<< HEAD
 	/* NVRAM info initialization and population */
 	if (IS_LEAD_HWFN(p_hwfn)) {
 		rc = qed_mcp_nvm_info_populate(p_hwfn);
@@ -3430,14 +3177,6 @@ static int qed_hw_prepare_single(struct qed_hwfn *p_hwfn,
 err3:
 	if (IS_LEAD_HWFN(p_hwfn))
 		qed_nvm_info_free(p_hwfn);
-=======
-	/* Allocate the init RT array and initialize the init-ops engine */
-	rc = qed_init_alloc(p_hwfn);
-	if (rc)
-		goto err2;
-
-	return rc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err2:
 	if (IS_LEAD_HWFN(p_hwfn))
 		qed_iov_free_hw_info(p_hwfn->cdev);
@@ -3498,10 +3237,7 @@ int qed_hw_prepare(struct qed_dev *cdev,
 		if (rc) {
 			if (IS_PF(cdev)) {
 				qed_init_free(p_hwfn);
-<<<<<<< HEAD
 				qed_nvm_info_free(p_hwfn);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				qed_mcp_free(p_hwfn);
 				qed_hw_hwfn_free(p_hwfn);
 			}
@@ -3534,11 +3270,8 @@ void qed_hw_remove(struct qed_dev *cdev)
 	}
 
 	qed_iov_free_hw_info(cdev);
-<<<<<<< HEAD
 
 	qed_nvm_info_free(p_hwfn);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void qed_chain_free_next_ptr(struct qed_dev *cdev,
@@ -3583,7 +3316,6 @@ static void qed_chain_free_single(struct qed_dev *cdev,
 
 static void qed_chain_free_pbl(struct qed_dev *cdev, struct qed_chain *p_chain)
 {
-<<<<<<< HEAD
 	void **pp_virt_addr_tbl = p_chain->pbl.pp_virt_addr_tbl;
 	u32 page_cnt = p_chain->page_cnt, i, pbl_size;
 	u8 *p_pbl_virt = p_chain->pbl_sp.p_virt_table;
@@ -3596,29 +3328,14 @@ static void qed_chain_free_pbl(struct qed_dev *cdev, struct qed_chain *p_chain)
 
 	for (i = 0; i < page_cnt; i++) {
 		if (!pp_virt_addr_tbl[i])
-=======
-	struct addr_tbl_entry *pp_addr_tbl = p_chain->pbl.pp_addr_tbl;
-	u32 page_cnt = p_chain->page_cnt, i, pbl_size;
-
-	if (!pp_addr_tbl)
-		return;
-
-	for (i = 0; i < page_cnt; i++) {
-		if (!pp_addr_tbl[i].virt_addr || !pp_addr_tbl[i].dma_map)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 
 		dma_free_coherent(&cdev->pdev->dev,
 				  QED_CHAIN_PAGE_SIZE,
-<<<<<<< HEAD
 				  pp_virt_addr_tbl[i],
 				  *(dma_addr_t *)p_pbl_virt);
 
 		p_pbl_virt += QED_CHAIN_PBL_ENTRY_SIZE;
-=======
-				  pp_addr_tbl[i].virt_addr,
-				  pp_addr_tbl[i].dma_map);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	pbl_size = page_cnt * QED_CHAIN_PBL_ENTRY_SIZE;
@@ -3628,15 +3345,9 @@ static void qed_chain_free_pbl(struct qed_dev *cdev, struct qed_chain *p_chain)
 				  pbl_size,
 				  p_chain->pbl_sp.p_virt_table,
 				  p_chain->pbl_sp.p_phys_table);
-<<<<<<< HEAD
 out:
 	vfree(p_chain->pbl.pp_virt_addr_tbl);
 	p_chain->pbl.pp_virt_addr_tbl = NULL;
-=======
-
-	vfree(p_chain->pbl.pp_addr_tbl);
-	p_chain->pbl.pp_addr_tbl = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void qed_chain_free(struct qed_dev *cdev, struct qed_chain *p_chain)
@@ -3737,7 +3448,6 @@ qed_chain_alloc_pbl(struct qed_dev *cdev,
 {
 	u32 page_cnt = p_chain->page_cnt, size, i;
 	dma_addr_t p_phys = 0, p_pbl_phys = 0;
-<<<<<<< HEAD
 	void **pp_virt_addr_tbl = NULL;
 	u8 *p_pbl_virt = NULL;
 	void *p_virt = NULL;
@@ -3745,25 +3455,12 @@ qed_chain_alloc_pbl(struct qed_dev *cdev,
 	size = page_cnt * sizeof(*pp_virt_addr_tbl);
 	pp_virt_addr_tbl = vzalloc(size);
 	if (!pp_virt_addr_tbl)
-=======
-	struct addr_tbl_entry *pp_addr_tbl;
-	u8 *p_pbl_virt = NULL;
-	void *p_virt = NULL;
-
-	size = page_cnt * sizeof(*pp_addr_tbl);
-	pp_addr_tbl =  vzalloc(size);
-	if (!pp_addr_tbl)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOMEM;
 
 	/* The allocation of the PBL table is done with its full size, since it
 	 * is expected to be successive.
 	 * qed_chain_init_pbl_mem() is called even in a case of an allocation
-<<<<<<< HEAD
 	 * failure, since pp_virt_addr_tbl was previously allocated, and it
-=======
-	 * failure, since tbl was previously allocated, and it
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * should be saved to allow its freeing during the error flow.
 	 */
 	size = page_cnt * QED_CHAIN_PBL_ENTRY_SIZE;
@@ -3777,12 +3474,8 @@ qed_chain_alloc_pbl(struct qed_dev *cdev,
 		p_chain->b_external_pbl = true;
 	}
 
-<<<<<<< HEAD
 	qed_chain_init_pbl_mem(p_chain, p_pbl_virt, p_pbl_phys,
 			       pp_virt_addr_tbl);
-=======
-	qed_chain_init_pbl_mem(p_chain, p_pbl_virt, p_pbl_phys, pp_addr_tbl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!p_pbl_virt)
 		return -ENOMEM;
 
@@ -3801,12 +3494,7 @@ qed_chain_alloc_pbl(struct qed_dev *cdev,
 		/* Fill the PBL table with the physical address of the page */
 		*(dma_addr_t *)p_pbl_virt = p_phys;
 		/* Keep the virtual address of the page */
-<<<<<<< HEAD
 		p_chain->pbl.pp_virt_addr_tbl[i] = p_virt;
-=======
-		p_chain->pbl.pp_addr_tbl[i].virt_addr = p_virt;
-		p_chain->pbl.pp_addr_tbl[i].dma_map = p_phys;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		p_pbl_virt += QED_CHAIN_PBL_ENTRY_SIZE;
 	}
@@ -3936,11 +3624,7 @@ int qed_llh_add_mac_filter(struct qed_hwfn *p_hwfn,
 	u32 high = 0, low = 0, en;
 	int i;
 
-<<<<<<< HEAD
 	if (!test_bit(QED_MF_LLH_MAC_CLSS, &p_hwfn->cdev->mf_bits))
-=======
-	if (!(IS_MF_SI(p_hwfn) || IS_MF_DEFAULT(p_hwfn)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	qed_llh_mac_to_filter(&high, &low, p_filter);
@@ -3985,11 +3669,7 @@ void qed_llh_remove_mac_filter(struct qed_hwfn *p_hwfn,
 	u32 high = 0, low = 0;
 	int i;
 
-<<<<<<< HEAD
 	if (!test_bit(QED_MF_LLH_MAC_CLSS, &p_hwfn->cdev->mf_bits))
-=======
-	if (!(IS_MF_SI(p_hwfn) || IS_MF_DEFAULT(p_hwfn)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	qed_llh_mac_to_filter(&high, &low, p_filter);
@@ -4031,11 +3711,7 @@ qed_llh_add_protocol_filter(struct qed_hwfn *p_hwfn,
 	u32 high = 0, low = 0, en;
 	int i;
 
-<<<<<<< HEAD
 	if (!test_bit(QED_MF_LLH_PROTO_CLSS, &p_hwfn->cdev->mf_bits))
-=======
-	if (!(IS_MF_SI(p_hwfn) || IS_MF_DEFAULT(p_hwfn)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	switch (type) {
@@ -4133,11 +3809,7 @@ qed_llh_remove_protocol_filter(struct qed_hwfn *p_hwfn,
 	u32 high = 0, low = 0;
 	int i;
 
-<<<<<<< HEAD
 	if (!test_bit(QED_MF_LLH_PROTO_CLSS, &p_hwfn->cdev->mf_bits))
-=======
-	if (!(IS_MF_SI(p_hwfn) || IS_MF_DEFAULT(p_hwfn)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	switch (type) {

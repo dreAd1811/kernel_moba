@@ -31,33 +31,20 @@ static inline void led_toggle(void)
 }
 
 static struct timer_list led_blink_timer;
-<<<<<<< HEAD
 static unsigned long led_blink_timer_timeout;
 
 static void led_blink(struct timer_list *unused)
 {
 	unsigned long timeout = led_blink_timer_timeout;
 
-=======
-
-static void led_blink(unsigned long timeout)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	led_toggle();
 
 	/* reschedule */
 	if (!timeout) { /* blink according to load */
 		led_blink_timer.expires = jiffies +
 			((1 + (avenrun[0] >> FSHIFT)) * HZ);
-<<<<<<< HEAD
 	} else { /* blink at user specified interval */
 		led_blink_timer.expires = jiffies + (timeout * HZ);
-=======
-		led_blink_timer.data = 0;
-	} else { /* blink at user specified interval */
-		led_blink_timer.expires = jiffies + (timeout * HZ);
-		led_blink_timer.data = timeout;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	add_timer(&led_blink_timer);
 }
@@ -102,17 +89,11 @@ static ssize_t led_proc_write(struct file *file, const char __user *buffer,
 	} else if (!strcmp(buf, "toggle")) {
 		led_toggle();
 	} else if ((*buf > '0') && (*buf <= '9')) {
-<<<<<<< HEAD
 		led_blink_timer_timeout = simple_strtoul(buf, NULL, 10);
 		led_blink(&led_blink_timer);
 	} else if (!strcmp(buf, "load")) {
 		led_blink_timer_timeout = 0;
 		led_blink(&led_blink_timer);
-=======
-		led_blink(simple_strtoul(buf, NULL, 10));
-	} else if (!strcmp(buf, "load")) {
-		led_blink(0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		auxio_set_led(AUXIO_LED_OFF);
 	}
@@ -137,12 +118,7 @@ static struct proc_dir_entry *led;
 
 static int __init led_init(void)
 {
-<<<<<<< HEAD
 	timer_setup(&led_blink_timer, led_blink, 0);
-=======
-	init_timer(&led_blink_timer);
-	led_blink_timer.function = led_blink;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	led = proc_create("led", 0, NULL, &led_proc_fops);
 	if (!led)

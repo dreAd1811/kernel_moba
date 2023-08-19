@@ -1341,11 +1341,7 @@ int zd_chip_control_leds(struct zd_chip *chip, enum led_status status)
 	case ZD_LED_SCANNING:
 		ioreqs[0].value = FW_LINK_OFF;
 		ioreqs[1].value = v[1] & ~other_led;
-<<<<<<< HEAD
 		if ((u32)ktime_get_seconds() % 3 == 0) {
-=======
-		if (get_seconds() % 3 == 0) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ioreqs[1].value &= ~chip->link_led;
 		} else {
 			ioreqs[1].value |= chip->link_led;

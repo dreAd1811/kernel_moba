@@ -32,12 +32,6 @@ int mem_init_done;
 #ifndef CONFIG_MMU
 unsigned int __page_offset;
 EXPORT_SYMBOL(__page_offset);
-<<<<<<< HEAD
-=======
-
-#else
-static int init_bootmem_done;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_MMU */
 
 char *klimit = _end;
@@ -120,10 +114,6 @@ static void __init paging_init(void)
 
 void __init setup_memory(void)
 {
-<<<<<<< HEAD
-=======
-	unsigned long map_size;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct memblock_region *reg;
 
 #ifndef CONFIG_MMU
@@ -180,20 +170,6 @@ void __init setup_memory(void)
 	pr_info("%s: max_low_pfn: %#lx\n", __func__, max_low_pfn);
 	pr_info("%s: max_pfn: %#lx\n", __func__, max_pfn);
 
-<<<<<<< HEAD
-=======
-	/*
-	 * Find an area to use for the bootmem bitmap.
-	 * We look for the first area which is at least
-	 * 128kB in length (128kB is enough for a bitmap
-	 * for 4GB of memory, using 4kB pages), plus 1 page
-	 * (in case the address isn't page-aligned).
-	 */
-	map_size = init_bootmem_node(NODE_DATA(0),
-		PFN_UP(TOPHYS((u32)klimit)), min_low_pfn, max_low_pfn);
-	memblock_reserve(PFN_UP(TOPHYS((u32)klimit)) << PAGE_SHIFT, map_size);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Add active regions with valid PFNs */
 	for_each_memblock(memory, reg) {
 		unsigned long start_pfn, end_pfn;
@@ -205,38 +181,9 @@ void __init setup_memory(void)
 				  &memblock.memory, 0);
 	}
 
-<<<<<<< HEAD
 	/* XXX need to clip this if using highmem? */
 	sparse_memory_present_with_active_regions(0);
 
-=======
-	/* free bootmem is whole main memory */
-	free_bootmem_with_active_regions(0, max_low_pfn);
-
-	/* reserve allocate blocks */
-	for_each_memblock(reserved, reg) {
-		unsigned long top = reg->base + reg->size - 1;
-
-		pr_debug("reserved - 0x%08x-0x%08x, %lx, %lx\n",
-			 (u32) reg->base, (u32) reg->size, top,
-						memory_start + lowmem_size - 1);
-
-		if (top <= (memory_start + lowmem_size - 1)) {
-			reserve_bootmem(reg->base, reg->size, BOOTMEM_DEFAULT);
-		} else if (reg->base < (memory_start + lowmem_size - 1)) {
-			unsigned long trunc_size = memory_start + lowmem_size -
-								reg->base;
-			reserve_bootmem(reg->base, trunc_size, BOOTMEM_DEFAULT);
-		}
-	}
-
-	/* XXX need to clip this if using highmem? */
-	sparse_memory_present_with_active_regions(0);
-
-#ifdef CONFIG_MMU
-	init_bootmem_done = 1;
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	paging_init();
 }
 
@@ -413,42 +360,16 @@ asmlinkage void __init mmu_init(void)
 /* This is only called until mem_init is done. */
 void __init *early_get_page(void)
 {
-<<<<<<< HEAD
 	/*
 	 * Mem start + kernel_tlb -> here is limit
 	 * because of mem mapping from head.S
 	 */
 	return __va(memblock_alloc_base(PAGE_SIZE, PAGE_SIZE,
 				memory_start + kernel_tlb));
-=======
-	void *p;
-	if (init_bootmem_done) {
-		p = alloc_bootmem_pages(PAGE_SIZE);
-	} else {
-		/*
-		 * Mem start + kernel_tlb -> here is limit
-		 * because of mem mapping from head.S
-		 */
-		p = __va(memblock_alloc_base(PAGE_SIZE, PAGE_SIZE,
-					memory_start + kernel_tlb));
-	}
-	return p;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #endif /* CONFIG_MMU */
 
-<<<<<<< HEAD
-=======
-void * __ref alloc_maybe_bootmem(size_t size, gfp_t mask)
-{
-	if (mem_init_done)
-		return kmalloc(size, mask);
-	else
-		return alloc_bootmem(size);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void * __ref zalloc_maybe_bootmem(size_t size, gfp_t mask)
 {
 	void *p;

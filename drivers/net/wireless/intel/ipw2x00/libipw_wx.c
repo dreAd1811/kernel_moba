@@ -479,10 +479,6 @@ int libipw_wx_get_encode(struct libipw_device *ieee,
 {
 	struct iw_point *erq = &(wrqu->encoding);
 	int len, key;
-<<<<<<< HEAD
-=======
-	struct lib80211_crypt_data *crypt;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct libipw_security *sec = &ieee->sec;
 
 	LIBIPW_DEBUG_WX("GET_ENCODE\n");
@@ -495,10 +491,6 @@ int libipw_wx_get_encode(struct libipw_device *ieee,
 	} else
 		key = ieee->crypt_info.tx_keyidx;
 
-<<<<<<< HEAD
-=======
-	crypt = ieee->crypt_info.crypt[key];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	erq->flags = key + 1;
 
 	if (!sec->enabled) {

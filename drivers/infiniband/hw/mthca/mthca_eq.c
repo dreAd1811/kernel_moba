@@ -479,24 +479,15 @@ static int mthca_create_eq(struct mthca_dev *dev,
 	eq->nent = roundup_pow_of_two(max(nent, 2));
 	npages = ALIGN(eq->nent * MTHCA_EQ_ENTRY_SIZE, PAGE_SIZE) / PAGE_SIZE;
 
-<<<<<<< HEAD
 	eq->page_list = kmalloc_array(npages, sizeof(*eq->page_list),
 				      GFP_KERNEL);
-=======
-	eq->page_list = kmalloc(npages * sizeof *eq->page_list,
-				GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!eq->page_list)
 		goto err_out;
 
 	for (i = 0; i < npages; ++i)
 		eq->page_list[i].buf = NULL;
 
-<<<<<<< HEAD
 	dma_list = kmalloc_array(npages, sizeof(*dma_list), GFP_KERNEL);
-=======
-	dma_list = kmalloc(npages * sizeof *dma_list, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!dma_list)
 		goto err_out_free;
 

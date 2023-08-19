@@ -125,18 +125,11 @@ int qed_selftest_nvram(struct qed_dev *cdev)
 	}
 
 	/* Acquire from MFW the amount of available images */
-<<<<<<< HEAD
 	rc = qed_mcp_bist_nvm_get_num_images(p_hwfn, p_ptt, &num_images);
 	if (rc || !num_images) {
 		DP_ERR(p_hwfn, "Failed getting number of images\n");
 		rc = -EINVAL;
 		goto err0;
-=======
-	rc = qed_mcp_bist_nvm_test_get_num_images(p_hwfn, p_ptt, &num_images);
-	if (rc || !num_images) {
-		DP_ERR(p_hwfn, "Failed getting number of images\n");
-		return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Iterate over images and validate CRC */
@@ -144,13 +137,8 @@ int qed_selftest_nvram(struct qed_dev *cdev)
 		/* This mailbox returns information about the image required for
 		 * reading it.
 		 */
-<<<<<<< HEAD
 		rc = qed_mcp_bist_nvm_get_image_att(p_hwfn, p_ptt,
 						    &image_att, i);
-=======
-		rc = qed_mcp_bist_nvm_test_get_image_att(p_hwfn, p_ptt,
-							 &image_att, i);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (rc) {
 			DP_ERR(p_hwfn,
 			       "Failed getting image index %d attributes\n",

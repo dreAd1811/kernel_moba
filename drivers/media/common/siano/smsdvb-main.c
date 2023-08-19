@@ -26,17 +26,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <linux/init.h>
 #include <asm/div64.h>
 
-<<<<<<< HEAD
 #include <media/dmxdev.h>
 #include <media/dvbdev.h>
 #include <media/dvb_demux.h>
 #include <media/dvb_frontend.h>
-=======
-#include "dmxdev.h"
-#include "dvbdev.h"
-#include "dvb_demux.h"
-#include "dvb_frontend.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "sms-cards.h"
 
@@ -278,11 +271,7 @@ static void smsdvb_update_per_slices(struct smsdvb_client_t *client,
 	c->post_bit_count.stat[0].uvalue += p->ber_bit_count;
 
 	/* Legacy PER/BER */
-<<<<<<< HEAD
 	tmp = p->ets_packets * 65535ULL;
-=======
-	tmp = p->ets_packets * 65535;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (p->ts_packets + p->ets_packets)
 		do_div(tmp, p->ts_packets + p->ets_packets);
 	client->legacy_per = tmp;
@@ -1058,15 +1047,9 @@ static void smsdvb_release(struct dvb_frontend *fe)
 static const struct dvb_frontend_ops smsdvb_fe_ops = {
 	.info = {
 		.name			= "Siano Mobile Digital MDTV Receiver",
-<<<<<<< HEAD
 		.frequency_min_hz	=  44250 * kHz,
 		.frequency_max_hz	= 867250 * kHz,
 		.frequency_stepsize_hz	=    250 * kHz,
-=======
-		.frequency_min		= 44250000,
-		.frequency_max		= 867250000,
-		.frequency_stepsize	= 250000,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.caps = FE_CAN_INVERSION_AUTO |
 			FE_CAN_FEC_1_2 | FE_CAN_FEC_2_3 | FE_CAN_FEC_3_4 |
 			FE_CAN_FEC_5_6 | FE_CAN_FEC_7_8 | FE_CAN_FEC_AUTO |

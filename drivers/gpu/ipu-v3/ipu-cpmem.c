@@ -12,10 +12,7 @@
 #include <linux/types.h>
 #include <linux/bitrev.h>
 #include <linux/io.h>
-<<<<<<< HEAD
 #include <linux/sizes.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <drm/drm_fourcc.h>
 #include "ipu-prv.h"
 
@@ -191,15 +188,12 @@ static int v4l2_pix_fmt_to_drm_fourcc(u32 pixelformat)
 	case V4L2_PIX_FMT_RGB32:
 		/* R G B A <=> [32:0] A:B:G:R */
 		return DRM_FORMAT_XBGR8888;
-<<<<<<< HEAD
 	case V4L2_PIX_FMT_XBGR32:
 		/* B G R X <=> [32:0] X:R:G:B */
 		return DRM_FORMAT_XRGB8888;
 	case V4L2_PIX_FMT_XRGB32:
 		/* X R G B <=> [32:0] B:G:R:X */
 		return DRM_FORMAT_BGRX8888;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case V4L2_PIX_FMT_UYVY:
 		return DRM_FORMAT_UYVY;
 	case V4L2_PIX_FMT_YUYV:
@@ -281,7 +275,6 @@ EXPORT_SYMBOL_GPL(ipu_cpmem_set_uv_offset);
 
 void ipu_cpmem_interlaced_scan(struct ipuv3_channel *ch, int stride)
 {
-<<<<<<< HEAD
 	u32 ilo, sly;
 
 	if (stride < 0) {
@@ -296,11 +289,6 @@ void ipu_cpmem_interlaced_scan(struct ipuv3_channel *ch, int stride)
 	ipu_ch_param_write_field(ch, IPU_FIELD_SO, 1);
 	ipu_ch_param_write_field(ch, IPU_FIELD_ILO, ilo);
 	ipu_ch_param_write_field(ch, IPU_FIELD_SLY, sly);
-=======
-	ipu_ch_param_write_field(ch, IPU_FIELD_SO, 1);
-	ipu_ch_param_write_field(ch, IPU_FIELD_ILO, stride / 8);
-	ipu_ch_param_write_field(ch, IPU_FIELD_SLY, (stride * 2) - 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 EXPORT_SYMBOL_GPL(ipu_cpmem_interlaced_scan);
 
@@ -559,28 +547,17 @@ static const struct ipu_rgb def_bgra_16 = {
 
 #define Y_OFFSET(pix, x, y)	((x) + pix->width * (y))
 #define U_OFFSET(pix, x, y)	((pix->width * pix->height) +		\
-<<<<<<< HEAD
 				 (pix->width * ((y) / 2) / 2) + (x) / 2)
 #define V_OFFSET(pix, x, y)	((pix->width * pix->height) +		\
 				 (pix->width * pix->height / 4) +	\
 				 (pix->width * ((y) / 2) / 2) + (x) / 2)
-=======
-				 (pix->width * (y) / 4) + (x) / 2)
-#define V_OFFSET(pix, x, y)	((pix->width * pix->height) +		\
-				 (pix->width * pix->height / 4) +	\
-				 (pix->width * (y) / 4) + (x) / 2)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define U2_OFFSET(pix, x, y)	((pix->width * pix->height) +		\
 				 (pix->width * (y) / 2) + (x) / 2)
 #define V2_OFFSET(pix, x, y)	((pix->width * pix->height) +		\
 				 (pix->width * pix->height / 2) +	\
 				 (pix->width * (y) / 2) + (x) / 2)
 #define UV_OFFSET(pix, x, y)	((pix->width * pix->height) +	\
-<<<<<<< HEAD
 				 (pix->width * ((y) / 2)) + (x))
-=======
-				 (pix->width * (y) / 2) + (x))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define UV2_OFFSET(pix, x, y)	((pix->width * pix->height) +	\
 				 (pix->width * y) + (x))
 
@@ -816,11 +793,8 @@ int ipu_cpmem_set_image(struct ipuv3_channel *ch, struct ipu_image *image)
 		break;
 	case V4L2_PIX_FMT_RGB32:
 	case V4L2_PIX_FMT_BGR32:
-<<<<<<< HEAD
 	case V4L2_PIX_FMT_XRGB32:
 	case V4L2_PIX_FMT_XBGR32:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		offset = image->rect.left * 4 +
 			image->rect.top * pix->bytesperline;
 		break;
@@ -833,20 +807,14 @@ int ipu_cpmem_set_image(struct ipuv3_channel *ch, struct ipu_image *image)
 	case V4L2_PIX_FMT_SGBRG8:
 	case V4L2_PIX_FMT_SGRBG8:
 	case V4L2_PIX_FMT_SRGGB8:
-<<<<<<< HEAD
 	case V4L2_PIX_FMT_GREY:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		offset = image->rect.left + image->rect.top * pix->bytesperline;
 		break;
 	case V4L2_PIX_FMT_SBGGR16:
 	case V4L2_PIX_FMT_SGBRG16:
 	case V4L2_PIX_FMT_SGRBG16:
 	case V4L2_PIX_FMT_SRGGB16:
-<<<<<<< HEAD
 	case V4L2_PIX_FMT_Y16:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		offset = image->rect.left * 2 +
 			 image->rect.top * pix->bytesperline;
 		break;

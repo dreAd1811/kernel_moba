@@ -10,11 +10,8 @@
 
 #include "vdso.h"
 
-<<<<<<< HEAD
 #include <asm/isa-rev.h>
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/elfnote.h>
 #include <linux/version.h>
 
@@ -45,15 +42,7 @@ __mips_abiflags:
 	.byte	__mips		/* isa_level */
 
 	/* isa_rev */
-<<<<<<< HEAD
 	.byte	MIPS_ISA_REV
-=======
-#ifdef __mips_isa_rev
-	.byte	__mips_isa_rev
-#else
-	.byte	0
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* gpr_size */
 #ifdef __mips64
@@ -63,11 +52,7 @@ __mips_abiflags:
 #endif
 
 	/* cpr1_size */
-<<<<<<< HEAD
 #if (MIPS_ISA_REV >= 6) || defined(__mips64)
-=======
-#if (defined(__mips_isa_rev) && __mips_isa_rev >= 6) || defined(__mips64)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.byte	2		/* AFL_REG_64 */
 #else
 	.byte	1		/* AFL_REG_32 */

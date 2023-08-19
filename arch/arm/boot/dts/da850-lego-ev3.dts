@@ -33,17 +33,9 @@
 	 */
 	gpio_keys {
 		compatible = "gpio-keys";
-<<<<<<< HEAD
 		label = "EV3 Brick Buttons";
 		pinctrl-names = "default";
 		pinctrl-0 = <&button_bias>;
-=======
-		#address-cells = <1>;
-		#size-cells = <0>;
-		label = "EV3 Brick Buttons";
-		pinctrl-names = "default";
-		pinctrl-0 = <&button_pins>, <&button_bias>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		center {
 			label = "Center";
@@ -87,11 +79,6 @@
 	 */
 	leds {
 		compatible = "gpio-leds";
-<<<<<<< HEAD
-=======
-		pinctrl-names = "default";
-		pinctrl-0 = <&led_pins>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		left_green {
 			label = "led0:green:brick-status";
@@ -128,11 +115,6 @@
 	gpio-poweroff {
 		compatible = "gpio-poweroff";
 		gpios = <&gpio 107 GPIO_ACTIVE_LOW>;
-<<<<<<< HEAD
-=======
-		pinctrl-names = "default";
-		pinctrl-0 = <&system_power_pin>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	sound {
@@ -148,11 +130,6 @@
 	 * the sensor (input) ports, the motor (output) ports and the A/DC.
 	 */
 	vcc5v: regulator1 {
-<<<<<<< HEAD
-=======
-		pinctrl-names = "default";
-		pinctrl-0 = <&vcc5v_pins>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "regulator-fixed";
 		regulator-name = "vcc5v";
 		regulator-min-microvolt = <5000000>;
@@ -180,11 +157,6 @@
 	 * This is the amplifier for the speaker.
 	 */
 	amp: regulator3 {
-<<<<<<< HEAD
-=======
-		pinctrl-names = "default";
-		pinctrl-0 = <&amp_pins>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "regulator-fixed";
 		regulator-name = "amp";
 		gpio = <&gpio 111 GPIO_ACTIVE_HIGH>;
@@ -195,17 +167,11 @@
 	 * The EV3 can use 6-AA batteries or a rechargeable Li-ion battery pack.
 	 */
 	battery {
-<<<<<<< HEAD
-=======
-		pinctrl-names = "default";
-		pinctrl-0 = <&battery_pins>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "lego,ev3-battery";
 		io-channels = <&adc 4>, <&adc 3>;
 		io-channel-names = "voltage", "current";
 		rechargeable-gpios = <&gpio 136 GPIO_ACTIVE_LOW>;
 	};
-<<<<<<< HEAD
 
 	bt_slow_clk: bt-clock {
 		pinctrl-names = "default";
@@ -236,87 +202,15 @@
 
 &ref_clk {
 	clock-frequency = <24000000>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &pmx_core {
 	status = "okay";
 
-<<<<<<< HEAD
 	ev3_lcd_pins: pinmux_lcd {
 		pinctrl-single,bits = <
 			/* SIMO, CLK */
 			0x14 0x00100100 0x00f00f00
-=======
-	mmc0_cd_pin: pinmux_mmc0_cd {
-		pinctrl-single,bits = <
-			/* GP5[14] */
-			0x2C 0x00000080 0x000000f0
-		>;
-	};
-
-	button_pins: pinmux_button_pins {
-		pinctrl-single,bits = <
-			/* GP1[13] */
-			0x8 0x00000800 0x00000f00
-			/* GP6[10] */
-			0x34 0x00800000 0x00f00000
-			/* GP6[6] */
-			0x38 0x00000080 0x000000f0
-			/* GP7[12], GP7[14], GP7[15] */
-			0x40 0x00808800 0x00f0ff00
-		>;
-	};
-
-	led_pins: pinmux_led_pins {
-		pinctrl-single,bits = <
-			/* GP6[12], GP6[13], GP6[14] */
-			0x34 0x00008880 0x0000fff0
-			/* GP6[7] */
-			0x38 0x00000008 0x0000000f
-		>;
-	};
-
-	system_power_pin: pinmux_system_power {
-		pinctrl-single,bits = <
-			/* GP6[11] */
-			0x34 0x00080000 0x000f0000
-		>;
-	};
-
-	vcc5v_pins: pinmux_vcc5v {
-		pinctrl-single,bits = <
-			/* GP6[5] */
-			0x40 0x00000080 0x000000f0
-			/* GP6[3] */
-			0x4c 0x00008000 0x0000f000
-		>;
-	};
-
-	amp_pins: pinmux_amp_pins {
-		pinctrl-single,bits = <
-			/* GP6[15] */
-			0x34 0x00000008 0x0000000f
-		>;
-	};
-
-	battery_pins: pinmux_battery_pins {
-		pinctrl-single,bits = <
-			/* GP0[6] */
-			0x04 0x00000080 0x000000f0
-			/* GP8[8] */
-			0x4c 0x00000080 0x000000f0
-		>;
-	};
-
-	ev3_lcd_pins: pinmux_lcd {
-		pinctrl-single,bits = <
-			/* SIMO, GP2[11], GP2[12], CLK */
-			0x14 0x00188100 0x00ffff00
-			/* GP5[0] */
-			0x30 0x80000000 0xf0000000
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		>;
 	};
 };
@@ -331,7 +225,6 @@
 			bias-disable;
 		};
 	};
-<<<<<<< HEAD
 
 	bt_clock_bias: bt-clock-bias-groups {
 		disable {
@@ -346,8 +239,6 @@
 			bias-disable;
 		};
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Input port 1 */
@@ -357,7 +248,6 @@
 	pinctrl-0 = <&serial1_rxtx_pins>;
 };
 
-<<<<<<< HEAD
 &serial2 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&serial2_rxtx_pins>, <&serial2_rtscts_pins>, <&bt_pic_bias>;
@@ -374,8 +264,6 @@
 	};
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &rtc0 {
 	status = "okay";
 };
@@ -390,7 +278,6 @@
 	 * EEPROM contains the first stage bootloader, HW ID and Bluetooth MAC.
 	 */
 	eeprom@50 {
-<<<<<<< HEAD
 		compatible = "microchip,24c128", "atmel,24c128";
 		pagesize = <64>;
 		read-only;
@@ -401,12 +288,6 @@
 		bdaddr: bdaddr@3f06 {
 			reg = <0x3f06 0x06>;
 		};
-=======
-		compatible = "microchip,24c128";
-		pagesize = <64>;
-		read-only;
-		reg = <0x50>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };
 
@@ -420,11 +301,7 @@
 	bus-width = <4>;
 	cd-gpios = <&gpio 94 GPIO_ACTIVE_LOW>;
 	pinctrl-names = "default";
-<<<<<<< HEAD
 	pinctrl-0 = <&mmc0_pins>;
-=======
-	pinctrl-0 = <&mmc0_pins>, <&mmc0_cd_pin>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &spi0 {
@@ -495,13 +372,10 @@
 	};
 };
 
-<<<<<<< HEAD
 &ecap2 {
 	status = "okay";
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &ehrpwm0 {
 	status = "okay";
 };
@@ -515,7 +389,6 @@
 		gpios = <6 GPIO_ACTIVE_HIGH>;
 		output-high;
 	};
-<<<<<<< HEAD
 
 	/* Don't impede Bluetooth clock signal */
 	bt_clock_en {
@@ -549,8 +422,6 @@
 		gpios = <87 GPIO_ACTIVE_HIGH>;
 		input;
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &usb_phy {

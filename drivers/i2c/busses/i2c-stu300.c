@@ -127,11 +127,7 @@ enum stu300_error {
 
 /*
  * The number of address send athemps tried before giving up.
-<<<<<<< HEAD
  * If the first one fails it seems like 5 to 8 attempts are required.
-=======
- * If the first one failes it seems like 5 to 8 attempts are required.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #define NUM_ADDR_RESEND_ATTEMPTS 12
 
@@ -606,7 +602,6 @@ static int stu300_send_address(struct stu300_dev *dev,
 	u32 val;
 	int ret;
 
-<<<<<<< HEAD
 	if (msg->flags & I2C_M_TEN) {
 		/* This is probably how 10 bit addresses look */
 		val = (0xf0 | (((u32) msg->addr & 0x300) >> 7)) &
@@ -625,22 +620,6 @@ static int stu300_send_address(struct stu300_dev *dev,
 			dev_dbg(&dev->pdev->dev, "write resend\n");
 	}
 
-=======
-	if (msg->flags & I2C_M_TEN)
-		/* This is probably how 10 bit addresses look */
-		val = (0xf0 | (((u32) msg->addr & 0x300) >> 7)) &
-			I2C_DR_D_MASK;
-	else
-		val = ((msg->addr << 1) & I2C_DR_D_MASK);
-
-	if (msg->flags & I2C_M_RD) {
-		/* This is the direction bit */
-		val |= 0x01;
-		if (resend)
-			dev_dbg(&dev->pdev->dev, "read resend\n");
-	} else if (resend)
-		dev_dbg(&dev->pdev->dev, "write resend\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	stu300_wr8(val, dev->virtbase + I2C_DR);
 
 	/* For 10bit addressing, await 10bit request (EVENT 9) */
@@ -694,15 +673,6 @@ static int stu300_xfer_msg(struct i2c_adapter *adap,
 			msg->addr, msg->len, msg->flags, stop);
 	}
 
-<<<<<<< HEAD
-=======
-	/* Zero-length messages are not supported by this hardware */
-	if (msg->len == 0) {
-		ret = -EINVAL;
-		goto exit_disable;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * For some reason, sending the address sometimes fails when running
 	 * on  the 13 MHz clock. No interrupt arrives. This is a work around,
@@ -887,13 +857,10 @@ static const struct i2c_algorithm stu300_algo = {
 	.functionality	= stu300_func,
 };
 
-<<<<<<< HEAD
 static const struct i2c_adapter_quirks stu300_quirks = {
 	.flags = I2C_AQ_NO_ZERO_LEN,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int stu300_probe(struct platform_device *pdev)
 {
 	struct stu300_dev *dev;
@@ -951,11 +918,8 @@ static int stu300_probe(struct platform_device *pdev)
 	adap->algo = &stu300_algo;
 	adap->dev.parent = &pdev->dev;
 	adap->dev.of_node = pdev->dev.of_node;
-<<<<<<< HEAD
 	adap->quirks = &stu300_quirks;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i2c_set_adapdata(adap, dev);
 
 	/* i2c device drivers may be active on return from add_adapter() */

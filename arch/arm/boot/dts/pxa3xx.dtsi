@@ -8,13 +8,10 @@
 	 (gpio <= 98) ? (0x0400 + 4 * (gpio - 27)) :	\
 	 (gpio <= 127) ? (0x0600 + 4 * (gpio - 99)) :	\
 	 0)
-<<<<<<< HEAD
 #define MFP_PIN_PXA300_2(gpio)				\
 	((gpio <= 1) ? (0x674 + 4 * gpio) :		\
 	 (gpio <= 6) ? (0x2dc + 4 * gpio) :		\
 	 0)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define MFP_PIN_PXA310(gpio)				\
 	((gpio <= 2) ? (0x00b4 + 4 * gpio) :		\
@@ -25,14 +22,11 @@
 	 (gpio <= 262) ? 0 :				\
 	 (gpio <= 268) ? (0x052c + 4 * (gpio - 263)) :	\
 	 0)
-<<<<<<< HEAD
 #define MFP_PIN_PXA310_2(gpio)				\
 	((gpio <= 1) ? (0x674 + 4 * gpio) :		\
 	 (gpio <= 6) ? (0x2dc + 4 * gpio) :		\
 	 (gpio <= 10) ? (0x52c + 4 * gpio) :		\
 	 0)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define MFP_PIN_PXA320(gpio)				\
 	((gpio <= 4) ? (0x0124 + 4 * gpio) :		\
@@ -45,13 +39,10 @@
 	 (gpio <= 98) ? (0x04f0 + 4 * (gpio - 74)) :	\
 	 (gpio <= 127) ? (0x0600 + 4 * (gpio - 99)) :	\
 	 0)
-<<<<<<< HEAD
 #define MFP_PIN_PXA320_2(gpio)				\
 	((gpio <= 3) ? (0x674 + 4 * gpio) :		\
 	 (gpio <= 5) ? (0x284 + 4 * gpio) :		\
 	 0)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * MFP Alternate functions for pins having a gpio.
@@ -139,7 +130,6 @@
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
 		nand_controller: nand-controller@43100000 {
 			compatible = "marvell,pxa3xx-nand-controller";
 			reg = <0x43100000 90>;
@@ -150,17 +140,6 @@
 			dma-names = "data";
 			#address-cells = <1>;
 			#size-cells = <0>;
-=======
-		nand0: nand@43100000 {
-			compatible = "marvell,pxa3xx-nand";
-			reg = <0x43100000 90>;
-			interrupts = <45>;
-			clocks = <&clks CLK_NAND>;
-			dmas = <&pdma 97 3>;
-			dma-names = "data";
-			#address-cells = <1>;
-			#size-cells = <1>;	
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 
@@ -183,10 +162,7 @@
 			compatible = "intel,pxa3xx-gpio";
 			reg = <0x40e00000 0x10000>;
 			clocks = <&clks CLK_GPIO>;
-<<<<<<< HEAD
 			gpio-ranges = <&pinctrl 0 0 128>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			interrupt-names = "gpio0", "gpio1", "gpio_mux";
 			interrupts = <8 9 10>;
 			gpio-controller;
@@ -199,11 +175,7 @@
 			compatible = "marvell,pxa-mmc";
 			reg = <0x41100000 0x1000>;
 			interrupts = <23>;
-<<<<<<< HEAD
 			clocks = <&clks CLK_MMC1>;
-=======
-			clocks = <&clks CLK_MMC>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dmas = <&pdma 21 3
 				&pdma 22 3>;
 			dma-names = "rx", "tx";
@@ -214,11 +186,7 @@
 			compatible = "marvell,pxa-mmc";
 			reg = <0x42000000 0x1000>;
 			interrupts = <41>;
-<<<<<<< HEAD
 			clocks = <&clks CLK_MMC2>;
-=======
-			clocks = <&clks CLK_MMC1>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dmas = <&pdma 93 3
 				&pdma 94 3>;
 			dma-names = "rx", "tx";
@@ -229,22 +197,14 @@
 			compatible = "marvell,pxa-mmc";
 			reg = <0x42500000 0x1000>;
 			interrupts = <55>;
-<<<<<<< HEAD
 			clocks = <&clks CLK_MMC3>;
-=======
-			clocks = <&clks CLK_MMC2>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dmas = <&pdma 46 3
 				&pdma 47 3>;
 			dma-names = "rx", "tx";
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
 		pxa3xx_ohci: usb@4c000000 {
-=======
-		usb0: usb@4c000000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "marvell,pxa-ohci";
 			reg = <0x4c000000 0x10000>;
 			interrupts = <3>;
@@ -283,7 +243,6 @@
 			clocks = <&clks CLK_PWM1>;
 			status = "disabled";
 		};
-<<<<<<< HEAD
 
 		ssp1: ssp@41000000 {
 			compatible = "mrvl,pxa3xx-ssp";
@@ -316,8 +275,6 @@
 			clocks = <&clks CLK_SSP4>;
 			status = "disabled";
 		};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	clocks {

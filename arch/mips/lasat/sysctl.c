@@ -73,7 +73,6 @@ int proc_dolasatrtc(struct ctl_table *table, int write,
 	if (r)
 		return r;
 
-<<<<<<< HEAD
 	if (write) {
 		/*
 		 * Due to the RTC hardware limitation, we can not actually
@@ -84,10 +83,6 @@ int proc_dolasatrtc(struct ctl_table *table, int write,
 
 		update_persistent_clock64(ts);
 	}
-=======
-	if (write)
-		rtc_mips_set_mmss(rtctmp);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

@@ -90,16 +90,6 @@ config MPC837x_RDB
 	help
 	  This option enables support for the MPC837x RDB and WLAN Boards.
 
-<<<<<<< HEAD
-=======
-config SBC834x
-	bool "Wind River SBC834x"
-	select DEFAULT_UIMAGE
-	select PPC_MPC834x
-	help
-	  This option enables support for the Wind River SBC834x board.
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config ASP834x
 	bool "Analogue & Micro ASP 834x"
 	select PPC_MPC834x

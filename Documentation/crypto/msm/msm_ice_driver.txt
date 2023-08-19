@@ -229,13 +229,7 @@ Further Improvements
 Currently, Due to PFE use case, ICE driver is dependent upon dm-req-crypt to
 provide the keys as part of request structure. This couples ICE driver with
 dm-req-crypt based solution. It is under discussion to expose an IOCTL based
-<<<<<<< HEAD
 and registration based interface APIs from ICE driver. ICE driver would use
 these two interfaces to find out if any key exists for current request. If
 yes, choose the right key index received from IOCTL or registration based
-=======
-and registeration based interface APIs from ICE driver. ICE driver would use
-these two interfaces to find out if any key exists for current request. If
-yes, choose the right key index received from IOCTL or registeration based
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 APIs. If not, dont set any crypto parameter in the request.

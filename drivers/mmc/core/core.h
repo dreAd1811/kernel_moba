@@ -17,15 +17,9 @@
 struct mmc_host;
 struct mmc_card;
 struct mmc_request;
-<<<<<<< HEAD
 struct mmc_queue;
 
 #define MMC_CMD_RETRIES        3
-=======
-
-#define MMC_CMD_RETRIES        3
-#define MMC_CMDQ_WAIT_EVENT_TIMEOUT_MS	    60000
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct mmc_bus_ops {
 	void (*remove)(struct mmc_host *);
@@ -33,7 +27,6 @@ struct mmc_bus_ops {
 	int (*pre_suspend)(struct mmc_host *);
 	int (*suspend)(struct mmc_host *);
 	int (*resume)(struct mmc_host *);
-<<<<<<< HEAD
 	int (*deferred_resume)(struct mmc_host *host);
 	int (*runtime_suspend)(struct mmc_host *);
 	int (*runtime_resume)(struct mmc_host *);
@@ -44,18 +37,6 @@ struct mmc_bus_ops {
 	int (*change_bus_speed)(struct mmc_host *host, unsigned long *freq);
 	int (*change_bus_speed_deferred)(struct mmc_host *host,
 							unsigned long *freq);
-=======
-	int (*runtime_suspend)(struct mmc_host *);
-	int (*runtime_resume)(struct mmc_host *);
-	int (*power_save)(struct mmc_host *);
-	int (*power_restore)(struct mmc_host *);
-	int (*alive)(struct mmc_host *);
-	int (*shutdown)(struct mmc_host *);
-	int (*reset)(struct mmc_host *);
-	int (*change_bus_speed)(struct mmc_host *, unsigned long *);
-	int (*pre_hibernate)(struct mmc_host *);
-	int (*post_hibernate)(struct mmc_host *);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 void mmc_attach_bus(struct mmc_host *host, const struct mmc_bus_ops *ops);
@@ -68,25 +49,13 @@ void mmc_init_erase(struct mmc_card *card);
 
 void mmc_set_chip_select(struct mmc_host *host, int mode);
 void mmc_set_clock(struct mmc_host *host, unsigned int hz);
-<<<<<<< HEAD
-=======
-int mmc_clk_update_freq(struct mmc_host *host,
-		unsigned long freq, enum mmc_load state);
-void mmc_gate_clock(struct mmc_host *host);
-void mmc_ungate_clock(struct mmc_host *host);
-void mmc_set_ungated(struct mmc_host *host);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void mmc_set_bus_mode(struct mmc_host *host, unsigned int mode);
 void mmc_set_bus_width(struct mmc_host *host, unsigned int width);
 u32 mmc_select_voltage(struct mmc_host *host, u32 ocr);
 int mmc_set_uhs_voltage(struct mmc_host *host, u32 ocr);
-<<<<<<< HEAD
 int mmc_host_set_uhs_voltage(struct mmc_host *host);
 int mmc_set_signal_voltage(struct mmc_host *host, int signal_voltage);
 void mmc_set_initial_signal_voltage(struct mmc_host *host);
-=======
-int mmc_set_signal_voltage(struct mmc_host *host, int signal_voltage);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void mmc_set_timing(struct mmc_host *host, unsigned int timing);
 void mmc_set_driver_type(struct mmc_host *host, unsigned int drv_type);
 int mmc_select_drive_strength(struct mmc_card *card, unsigned int max_dtr,
@@ -95,7 +64,6 @@ void mmc_power_up(struct mmc_host *host, u32 ocr);
 void mmc_power_off(struct mmc_host *host);
 void mmc_power_cycle(struct mmc_host *host, u32 ocr);
 void mmc_set_initial_state(struct mmc_host *host);
-<<<<<<< HEAD
 int mmc_clk_update_freq(struct mmc_host *host,
 		unsigned long freq, enum mmc_load state);
 
@@ -105,19 +73,6 @@ static inline void mmc_delay(unsigned int ms)
 		usleep_range(ms * 1000, ms * 1250);
 	else
 		msleep(ms);
-=======
-
-static inline void mmc_delay(unsigned int ms)
-{
-	if (ms < 1000 / HZ) {
-		cond_resched();
-		mdelay(ms);
-	} else if (ms < jiffies_to_msecs(2)) {
-		usleep_range(ms * 1000, (ms + 1) * 1000);
-	} else {
-		msleep(ms);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void mmc_rescan(struct work_struct *work);
@@ -141,25 +96,17 @@ void mmc_remove_host_debugfs(struct mmc_host *host);
 void mmc_add_card_debugfs(struct mmc_card *card);
 void mmc_remove_card_debugfs(struct mmc_card *card);
 
-<<<<<<< HEAD
-=======
-void mmc_init_context_info(struct mmc_host *host);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern bool mmc_can_scale_clk(struct mmc_host *host);
 extern int mmc_init_clk_scaling(struct mmc_host *host);
 extern int mmc_suspend_clk_scaling(struct mmc_host *host);
 extern int mmc_resume_clk_scaling(struct mmc_host *host);
 extern int mmc_exit_clk_scaling(struct mmc_host *host);
-<<<<<<< HEAD
 extern void mmc_deferred_scaling(struct mmc_host *host);
 extern void mmc_cqe_clk_scaling_start_busy(struct mmc_queue *mq,
 	struct mmc_host *host, bool lock_needed);
 extern void mmc_cqe_clk_scaling_stop_busy(struct mmc_host *host,
 			bool lock_needed, bool is_cqe_dcmd);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern unsigned long mmc_get_max_frequency(struct mmc_host *host);
 
 int mmc_execute_tuning(struct mmc_card *card);
@@ -177,15 +124,7 @@ static inline void mmc_unregister_pm_notifier(struct mmc_host *host) { }
 void mmc_wait_for_req_done(struct mmc_host *host, struct mmc_request *mrq);
 bool mmc_is_req_done(struct mmc_host *host, struct mmc_request *mrq);
 
-<<<<<<< HEAD
 int mmc_start_request(struct mmc_host *host, struct mmc_request *mrq);
-=======
-struct mmc_async_req;
-
-struct mmc_async_req *mmc_start_areq(struct mmc_host *host,
-				     struct mmc_async_req *areq,
-				     enum mmc_blk_status *ret_stat);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int mmc_erase(struct mmc_card *card, unsigned int from, unsigned int nr,
 		unsigned int arg);
@@ -202,18 +141,11 @@ int mmc_set_blocklen(struct mmc_card *card, unsigned int blocklen);
 int mmc_set_blockcount(struct mmc_card *card, unsigned int blockcount,
 			bool is_rel_write);
 
-<<<<<<< HEAD
 int __mmc_claim_host(struct mmc_host *host, struct mmc_ctx *ctx,
 		     atomic_t *abort);
 void mmc_release_host(struct mmc_host *host);
 void mmc_get_card(struct mmc_card *card, struct mmc_ctx *ctx);
 void mmc_put_card(struct mmc_card *card, struct mmc_ctx *ctx);
-=======
-int __mmc_claim_host(struct mmc_host *host, atomic_t *abort);
-void mmc_release_host(struct mmc_host *host);
-void mmc_get_card(struct mmc_card *card);
-void mmc_put_card(struct mmc_card *card);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  *	mmc_claim_host - exclusively claim a host
@@ -223,7 +155,6 @@ void mmc_put_card(struct mmc_card *card);
  */
 static inline void mmc_claim_host(struct mmc_host *host)
 {
-<<<<<<< HEAD
 	__mmc_claim_host(host, NULL, NULL);
 }
 
@@ -260,9 +191,6 @@ static inline void mmc_post_req(struct mmc_host *host, struct mmc_request *mrq,
 {
 	if (host->ops->post_req)
 		host->ops->post_req(host, mrq, err);
-=======
-	__mmc_claim_host(host, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #endif

@@ -151,11 +151,7 @@ nouveau_conn_atomic_set_property(struct drm_connector *connector,
 				/* ... except prior to G80, where the code
 				 * doesn't support such things.
 				 */
-<<<<<<< HEAD
 				if (disp->disp.object.oclass < NV50_DISP)
-=======
-				if (disp->disp.oclass < NV50_DISP)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					return -EINVAL;
 				break;
 			default:
@@ -264,11 +260,7 @@ nouveau_conn_reset(struct drm_connector *connector)
 	asyc->procamp.color_vibrance = 150;
 	asyc->procamp.vibrant_hue = 90;
 
-<<<<<<< HEAD
 	if (nouveau_display(connector->dev)->disp.object.oclass < NV50_DISP) {
-=======
-	if (nouveau_display(connector->dev)->disp.oclass < NV50_DISP) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		switch (connector->connector_type) {
 		case DRM_MODE_CONNECTOR_LVDS:
 			/* See note in nouveau_conn_atomic_set_property(). */
@@ -322,11 +314,7 @@ nouveau_conn_attach_properties(struct drm_connector *connector)
 	case DRM_MODE_CONNECTOR_TV:
 		break;
 	case DRM_MODE_CONNECTOR_VGA:
-<<<<<<< HEAD
 		if (disp->disp.object.oclass < NV50_DISP)
-=======
-		if (disp->disp.oclass < NV50_DISP)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break; /* Can only scale on DFPs. */
 		/* Fall-through. */
 	default:
@@ -375,27 +363,11 @@ module_param_named(hdmimhz, nouveau_hdmimhz, int, 0400);
 struct nouveau_encoder *
 find_encoder(struct drm_connector *connector, int type)
 {
-<<<<<<< HEAD
 	struct nouveau_encoder *nv_encoder;
 	struct drm_encoder *enc;
 	int i;
 
 	drm_connector_for_each_possible_encoder(connector, enc, i) {
-=======
-	struct drm_device *dev = connector->dev;
-	struct nouveau_encoder *nv_encoder;
-	struct drm_encoder *enc;
-	int i, id;
-
-	for (i = 0; i < DRM_CONNECTOR_MAX_ENCODER; i++) {
-		id = connector->encoder_ids[i];
-		if (!id)
-			break;
-
-		enc = drm_encoder_find(dev, NULL, id);
-		if (!enc)
-			continue;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		nv_encoder = nouveau_encoder(enc);
 
 		if (type == DCB_OUTPUT_ANY ||
@@ -437,7 +409,6 @@ static struct nouveau_encoder *
 nouveau_connector_ddc_detect(struct drm_connector *connector)
 {
 	struct drm_device *dev = connector->dev;
-<<<<<<< HEAD
 	struct nouveau_encoder *nv_encoder = NULL, *found = NULL;
 	struct drm_encoder *encoder;
 	int i, ret;
@@ -477,68 +448,6 @@ nouveau_connector_ddc_detect(struct drm_connector *connector)
 	}
 
 	return found;
-=======
-	struct nouveau_connector *nv_connector = nouveau_connector(connector);
-	struct nouveau_drm *drm = nouveau_drm(dev);
-	struct nvkm_gpio *gpio = nvxx_gpio(&drm->client.device);
-	struct nouveau_encoder *nv_encoder;
-	struct drm_encoder *encoder;
-	int i, panel = -ENODEV;
-
-	/* eDP panels need powering on by us (if the VBIOS doesn't default it
-	 * to on) before doing any AUX channel transactions.  LVDS panel power
-	 * is handled by the SOR itself, and not required for LVDS DDC.
-	 */
-	if (nv_connector->type == DCB_CONNECTOR_eDP) {
-		panel = nvkm_gpio_get(gpio, 0, DCB_GPIO_PANEL_POWER, 0xff);
-		if (panel == 0) {
-			nvkm_gpio_set(gpio, 0, DCB_GPIO_PANEL_POWER, 0xff, 1);
-			msleep(300);
-		}
-	}
-
-	for (i = 0; nv_encoder = NULL, i < DRM_CONNECTOR_MAX_ENCODER; i++) {
-		int id = connector->encoder_ids[i];
-		if (id == 0)
-			break;
-
-		encoder = drm_encoder_find(dev, NULL, id);
-		if (!encoder)
-			continue;
-		nv_encoder = nouveau_encoder(encoder);
-
-		if (nv_encoder->dcb->type == DCB_OUTPUT_DP) {
-			int ret = nouveau_dp_detect(nv_encoder);
-			if (ret == NOUVEAU_DP_MST)
-				return NULL;
-			if (ret == NOUVEAU_DP_SST)
-				break;
-		} else
-		if ((vga_switcheroo_handler_flags() &
-		     VGA_SWITCHEROO_CAN_SWITCH_DDC) &&
-		    nv_encoder->dcb->type == DCB_OUTPUT_LVDS &&
-		    nv_encoder->i2c) {
-			int ret;
-			vga_switcheroo_lock_ddc(dev->pdev);
-			ret = nvkm_probe_i2c(nv_encoder->i2c, 0x50);
-			vga_switcheroo_unlock_ddc(dev->pdev);
-			if (ret)
-				break;
-		} else
-		if (nv_encoder->i2c) {
-			if (nvkm_probe_i2c(nv_encoder->i2c, 0x50))
-				break;
-		}
-	}
-
-	/* eDP panel not detected, restore panel power GPIO to previous
-	 * state to avoid confusing the SOR for other output types.
-	 */
-	if (!nv_encoder && panel == 0)
-		nvkm_gpio_set(gpio, 0, DCB_GPIO_PANEL_POWER, 0xff, panel);
-
-	return nv_encoder;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct nouveau_encoder *
@@ -627,11 +536,7 @@ nouveau_connector_detect(struct drm_connector *connector, bool force)
 
 	/* Cleanup the previous EDID block. */
 	if (nv_connector->edid) {
-<<<<<<< HEAD
 		drm_connector_update_edid_property(connector, NULL);
-=======
-		drm_mode_connector_update_edid_property(connector, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(nv_connector->edid);
 		nv_connector->edid = NULL;
 	}
@@ -660,11 +565,7 @@ nouveau_connector_detect(struct drm_connector *connector, bool force)
 		else
 			nv_connector->edid = drm_get_edid(connector, i2c);
 
-<<<<<<< HEAD
 		drm_connector_update_edid_property(connector,
-=======
-		drm_mode_connector_update_edid_property(connector,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							nv_connector->edid);
 		if (!nv_connector->edid) {
 			NV_ERROR(drm, "DDC responded, but no EDID for %s\n",
@@ -744,11 +645,7 @@ nouveau_connector_detect_lvds(struct drm_connector *connector, bool force)
 
 	/* Cleanup the previous EDID block. */
 	if (nv_connector->edid) {
-<<<<<<< HEAD
 		drm_connector_update_edid_property(connector, NULL);
-=======
-		drm_mode_connector_update_edid_property(connector, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(nv_connector->edid);
 		nv_connector->edid = NULL;
 	}
@@ -812,11 +709,7 @@ out:
 		status = connector_status_unknown;
 #endif
 
-<<<<<<< HEAD
 	drm_connector_update_edid_property(connector, nv_connector->edid);
-=======
-	drm_mode_connector_update_edid_property(connector, nv_connector->edid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	nouveau_connector_set_encoder(connector, nv_encoder);
 	return status;
 }
@@ -1085,11 +978,7 @@ get_tmds_link_bandwidth(struct drm_connector *connector, bool hdmi)
 		return 112000;
 }
 
-<<<<<<< HEAD
 static enum drm_mode_status
-=======
-static int
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 nouveau_connector_mode_valid(struct drm_connector *connector,
 			     struct drm_display_mode *mode)
 {
@@ -1432,11 +1321,7 @@ nouveau_connector_create(struct drm_device *dev, int index)
 	}
 
 	/* HDMI 3D support */
-<<<<<<< HEAD
 	if ((disp->disp.object.oclass >= G82_DISP)
-=======
-	if ((disp->disp.oclass >= G82_DISP)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    && ((type == DRM_MODE_CONNECTOR_DisplayPort)
 		|| (type == DRM_MODE_CONNECTOR_eDP)
 		|| (type == DRM_MODE_CONNECTOR_HDMIA)))
@@ -1458,11 +1343,7 @@ nouveau_connector_create(struct drm_device *dev, int index)
 	case DCB_CONNECTOR_LVDS_SPWG:
 	case DCB_CONNECTOR_eDP:
 		/* see note in nouveau_connector_set_property() */
-<<<<<<< HEAD
 		if (disp->disp.object.oclass < NV50_DISP) {
-=======
-		if (disp->disp.oclass < NV50_DISP) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			nv_connector->scaling_mode = DRM_MODE_SCALE_FULLSCREEN;
 			break;
 		}
@@ -1485,13 +1366,8 @@ nouveau_connector_create(struct drm_device *dev, int index)
 		break;
 	}
 
-<<<<<<< HEAD
 	ret = nvif_notify_init(&disp->disp.object, nouveau_connector_hotplug,
 			       true, NV04_DISP_NTFY_CONN,
-=======
-	ret = nvif_notify_init(&disp->disp, nouveau_connector_hotplug, true,
-			       NV04_DISP_NTFY_CONN,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       &(struct nvif_notify_conn_req_v0) {
 				.mask = NVIF_NOTIFY_CONN_V0_ANY,
 				.conn = index,

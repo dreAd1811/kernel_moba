@@ -12,9 +12,3 @@ are configurable at compile, boot or run time.
    spectre
    l1tf
    mds
-<<<<<<< HEAD
-=======
-   tsx_async_abort
-   multihit.rst
-   special-register-buffer-data-sampling.rst
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

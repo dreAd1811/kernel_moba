@@ -45,21 +45,12 @@ static DEFINE_SPINLOCK(idt77105_priv_lock);
 #define PUT(val,reg) dev->ops->phy_put(dev,val,IDT77105_##reg)
 #define GET(reg) dev->ops->phy_get(dev,IDT77105_##reg)
 
-<<<<<<< HEAD
 static void idt77105_stats_timer_func(struct timer_list *);
 static void idt77105_restart_timer_func(struct timer_list *);
 
 
 static DEFINE_TIMER(stats_timer, idt77105_stats_timer_func);
 static DEFINE_TIMER(restart_timer, idt77105_restart_timer_func);
-=======
-static void idt77105_stats_timer_func(unsigned long);
-static void idt77105_restart_timer_func(unsigned long);
-
-
-static DEFINE_TIMER(stats_timer, idt77105_stats_timer_func, 0, 0);
-static DEFINE_TIMER(restart_timer, idt77105_restart_timer_func, 0, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int start_timer = 1;
 static struct idt77105_priv *idt77105_all = NULL;
 
@@ -89,11 +80,7 @@ static u16 get_counter(struct atm_dev *dev, int counter)
  * a separate copy of the stats allows implementation of
  * an ioctl which gathers the stats *without* zero'ing them.
  */
-<<<<<<< HEAD
 static void idt77105_stats_timer_func(struct timer_list *unused)
-=======
-static void idt77105_stats_timer_func(unsigned long dummy)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct idt77105_priv *walk;
 	struct atm_dev *dev;
@@ -122,11 +109,7 @@ static void idt77105_stats_timer_func(unsigned long dummy)
  * interrupts need to be disabled when the cable is pulled out
  * to avoid lots of spurious cell error interrupts.
  */
-<<<<<<< HEAD
 static void idt77105_restart_timer_func(struct timer_list *unused)
-=======
-static void idt77105_restart_timer_func(unsigned long dummy)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct idt77105_priv *walk;
 	struct atm_dev *dev;
@@ -323,17 +306,9 @@ static int idt77105_start(struct atm_dev *dev)
 	if (start_timer) {
 		start_timer = 0;
                 
-<<<<<<< HEAD
 		stats_timer.expires = jiffies+IDT77105_STATS_TIMER_PERIOD;
 		add_timer(&stats_timer);
                 
-=======
-		setup_timer(&stats_timer, idt77105_stats_timer_func, 0UL);
-		stats_timer.expires = jiffies+IDT77105_STATS_TIMER_PERIOD;
-		add_timer(&stats_timer);
-                
-		setup_timer(&restart_timer, idt77105_restart_timer_func, 0UL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		restart_timer.expires = jiffies+IDT77105_RESTART_TIMER_PERIOD;
 		add_timer(&restart_timer);
 	}

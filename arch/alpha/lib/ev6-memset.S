@@ -18,11 +18,7 @@
  * The algorithm for the leading and trailing quadwords remains the same,
  * however the loop has been unrolled to enable better memory throughput,
  * and the code has been replicated for each of the entry points: __memset
-<<<<<<< HEAD
  * and __memset16 to permit better scheduling to eliminate the stalling
-=======
- * and __memsetw to permit better scheduling to eliminate the stalling
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * encountered during the mask replication.
  * A future enhancement might be to put in a byte store loop for really
  * small (say < 32 bytes) memset()s.  Whether or not that change would be
@@ -38,11 +34,7 @@
 	.globl memset
 	.globl __memset
 	.globl ___memset
-<<<<<<< HEAD
 	.globl __memset16
-=======
-	.globl __memsetw
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.globl __constant_c_memset
 
 	.ent ___memset
@@ -423,15 +415,9 @@ end:
 	 * to mask stalls.  Note that entry point names also had to change
 	 */
 	.align 5
-<<<<<<< HEAD
 	.ent __memset16
 
 __memset16:
-=======
-	.ent __memsetw
-
-__memsetw:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.frame $30,0,$26,0
 	.prologue 0
 
@@ -610,13 +596,8 @@ end_w:
 	nop
 	ret $31,($26),1		# L0 :
 
-<<<<<<< HEAD
 	.end __memset16
 	EXPORT_SYMBOL(__memset16)
-=======
-	.end __memsetw
-	EXPORT_SYMBOL(__memsetw)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 memset = ___memset
 __memset = ___memset

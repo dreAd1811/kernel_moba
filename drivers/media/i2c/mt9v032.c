@@ -294,7 +294,6 @@ static int mt9v032_power_on(struct mt9v032 *mt9v032)
 	/* Reset the chip and stop data read out */
 	ret = regmap_write(map, MT9V032_RESET, 1);
 	if (ret < 0)
-<<<<<<< HEAD
 		goto err;
 
 	ret = regmap_write(map, MT9V032_RESET, 0);
@@ -311,16 +310,6 @@ static int mt9v032_power_on(struct mt9v032 *mt9v032)
 err:
 	clk_disable_unprepare(mt9v032->clk);
 	return ret;
-=======
-		return ret;
-
-	ret = regmap_write(map, MT9V032_RESET, 0);
-	if (ret < 0)
-		return ret;
-
-	return regmap_write(map, MT9V032_CHIP_CONTROL,
-			    MT9V032_CHIP_CONTROL_MASTER_MODE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void mt9v032_power_off(struct mt9v032 *mt9v032)
@@ -442,19 +431,10 @@ static int mt9v032_enum_mbus_code(struct v4l2_subdev *subdev,
 				  struct v4l2_subdev_pad_config *cfg,
 				  struct v4l2_subdev_mbus_code_enum *code)
 {
-<<<<<<< HEAD
 	if (code->index > 0)
 		return -EINVAL;
 
 	code->code = MEDIA_BUS_FMT_SGRBG10_1X10;
-=======
-	struct mt9v032 *mt9v032 = to_mt9v032(subdev);
-
-	if (code->index > 0)
-		return -EINVAL;
-
-	code->code = mt9v032->format.code;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -462,15 +442,7 @@ static int mt9v032_enum_frame_size(struct v4l2_subdev *subdev,
 				   struct v4l2_subdev_pad_config *cfg,
 				   struct v4l2_subdev_frame_size_enum *fse)
 {
-<<<<<<< HEAD
 	if (fse->index >= 3 || fse->code != MEDIA_BUS_FMT_SGRBG10_1X10)
-=======
-	struct mt9v032 *mt9v032 = to_mt9v032(subdev);
-
-	if (fse->index >= 3)
-		return -EINVAL;
-	if (mt9v032->format.code != fse->code)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	fse->min_width = MT9V032_WINDOW_WIDTH_DEF / (1 << fse->index);
@@ -912,12 +884,9 @@ static int mt9v032_registered(struct v4l2_subdev *subdev)
 
 	/* Read and check the sensor version */
 	ret = regmap_read(mt9v032->regmap, MT9V032_CHIP_VERSION, &version);
-<<<<<<< HEAD
 
 	mt9v032_power_off(mt9v032);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0) {
 		dev_err(&client->dev, "Failed reading chip version\n");
 		return ret;
@@ -936,11 +905,6 @@ static int mt9v032_registered(struct v4l2_subdev *subdev)
 		return -ENODEV;
 	}
 
-<<<<<<< HEAD
-=======
-	mt9v032_power_off(mt9v032);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_info(&client->dev, "%s detected at address 0x%02x\n",
 		 mt9v032->version->name, client->addr);
 
@@ -1198,10 +1162,7 @@ static int mt9v032_probe(struct i2c_client *client,
 	mt9v032->subdev.internal_ops = &mt9v032_subdev_internal_ops;
 	mt9v032->subdev.flags |= V4L2_SUBDEV_FL_HAS_DEVNODE;
 
-<<<<<<< HEAD
 	mt9v032->subdev.entity.function = MEDIA_ENT_F_CAM_SENSOR;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mt9v032->pad.flags = MEDIA_PAD_FL_SOURCE;
 	ret = media_entity_pads_init(&mt9v032->subdev.entity, 1, &mt9v032->pad);
 	if (ret < 0)

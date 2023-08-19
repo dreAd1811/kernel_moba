@@ -33,13 +33,8 @@
 #include <asm/intel_rdt_sched.h>
 #include "intel_rdt.h"
 
-<<<<<<< HEAD
 #define MBA_IS_LINEAR	0x4
 #define MBA_MAX_MBPS	U32_MAX
-=======
-#define MAX_MBA_BW	100u
-#define MBA_IS_LINEAR	0x4
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Mutex to protect rdtgroup access. */
 DEFINE_MUTEX(rdtgroup_mutex);
@@ -183,11 +178,7 @@ struct rdt_resource rdt_resources_all[] = {
 		.msr_update		= mba_wrmsr,
 		.cache_level		= 3,
 		.parse_ctrlval		= parse_bw,
-<<<<<<< HEAD
 		.format_str		= "%d=%*u",
-=======
-		.format_str		= "%d=%*d",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.fflags			= RFTYPE_RES_MB,
 	},
 };
@@ -239,7 +230,6 @@ static inline void cache_alloc_hsw_probe(void)
 	rdt_alloc_capable = true;
 }
 
-<<<<<<< HEAD
 bool is_mba_sc(struct rdt_resource *r)
 {
 	if (!r)
@@ -248,8 +238,6 @@ bool is_mba_sc(struct rdt_resource *r)
 	return r->membw.mba_sc;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * rdt_get_mb_table() - get a mapping of bandwidth(b/w) percentage values
  * exposed to user interface and the h/w understandable delay values.
@@ -361,11 +349,7 @@ static int get_cache_id(int cpu, int level)
  * that can be written to QOS_MSRs.
  * There are currently no SKUs which support non linear delay values.
  */
-<<<<<<< HEAD
 u32 delay_bw_map(unsigned long bw, struct rdt_resource *r)
-=======
-static u32 delay_bw_map(unsigned long bw, struct rdt_resource *r)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (r->membw.delay_linear)
 		return MAX_MBA_BW - bw;
@@ -455,7 +439,6 @@ struct rdt_domain *rdt_find_domain(struct rdt_resource *r, int id,
 	return NULL;
 }
 
-<<<<<<< HEAD
 void setup_default_ctrlval(struct rdt_resource *r, u32 *dc, u32 *dm)
 {
 	int i;
@@ -476,19 +459,11 @@ static int domain_setup_ctrlval(struct rdt_resource *r, struct rdt_domain *d)
 {
 	struct msr_param m;
 	u32 *dc, *dm;
-=======
-static int domain_setup_ctrlval(struct rdt_resource *r, struct rdt_domain *d)
-{
-	struct msr_param m;
-	u32 *dc;
-	int i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dc = kmalloc_array(r->num_closid, sizeof(*d->ctrl_val), GFP_KERNEL);
 	if (!dc)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	dm = kmalloc_array(r->num_closid, sizeof(*d->mbps_val), GFP_KERNEL);
 	if (!dm) {
 		kfree(dc);
@@ -498,17 +473,6 @@ static int domain_setup_ctrlval(struct rdt_resource *r, struct rdt_domain *d)
 	d->ctrl_val = dc;
 	d->mbps_val = dm;
 	setup_default_ctrlval(r, dc, dm);
-=======
-	d->ctrl_val = dc;
-
-	/*
-	 * Initialize the Control MSRs to having no control.
-	 * For Cache Allocation: Set all bits in cbm
-	 * For Memory Allocation: Set b/w requested to 100
-	 */
-	for (i = 0; i < r->num_closid; i++, dc++)
-		*dc = r->default_ctrl;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	m.low = 0;
 	m.high = r->num_closid;
@@ -591,11 +555,6 @@ static void domain_add_cpu(int cpu, struct rdt_resource *r)
 	d->id = id;
 	cpumask_set_cpu(cpu, &d->cpu_mask);
 
-<<<<<<< HEAD
-=======
-	rdt_domain_reconfigure_cdp(r);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r->alloc_capable && domain_setup_ctrlval(r, d)) {
 		kfree(d);
 		return;
@@ -636,11 +595,7 @@ static void domain_remove_cpu(int cpu, struct rdt_resource *r)
 		if (static_branch_unlikely(&rdt_mon_enable_key))
 			rmdir_mondata_subdir_allrdtgrp(r, d->id);
 		list_del(&d->list);
-<<<<<<< HEAD
 		if (is_mbm_enabled())
-=======
-		if (r->mon_capable && is_mbm_enabled())
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			cancel_delayed_work(&d->mbm_over);
 		if (is_llc_occupancy_enabled() &&  has_busy_rmid(r, d)) {
 			/*
@@ -656,10 +611,7 @@ static void domain_remove_cpu(int cpu, struct rdt_resource *r)
 		}
 
 		kfree(d->ctrl_val);
-<<<<<<< HEAD
 		kfree(d->mbps_val);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(d->rmid_busy_llc);
 		kfree(d->mbm_total);
 		kfree(d->mbm_local);
@@ -763,10 +715,7 @@ enum {
 	RDT_FLAG_L3_CAT,
 	RDT_FLAG_L3_CDP,
 	RDT_FLAG_L2_CAT,
-<<<<<<< HEAD
 	RDT_FLAG_L2_CDP,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	RDT_FLAG_MBA,
 };
 
@@ -789,10 +738,7 @@ static struct rdt_options rdt_options[]  __initdata = {
 	RDT_OPT(RDT_FLAG_L3_CAT,    "l3cat",	X86_FEATURE_CAT_L3),
 	RDT_OPT(RDT_FLAG_L3_CDP,    "l3cdp",	X86_FEATURE_CDP_L3),
 	RDT_OPT(RDT_FLAG_L2_CAT,    "l2cat",	X86_FEATURE_CAT_L2),
-<<<<<<< HEAD
 	RDT_OPT(RDT_FLAG_L2_CDP,    "l2cdp",	X86_FEATURE_CDP_L2),
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	RDT_OPT(RDT_FLAG_MBA,	    "mba",	X86_FEATURE_MBA),
 };
 #define NUM_RDT_OPTIONS ARRAY_SIZE(rdt_options)
@@ -913,11 +859,8 @@ static __init bool get_rdt_resources(void)
 	return (rdt_mon_capable || rdt_alloc_capable);
 }
 
-<<<<<<< HEAD
 static enum cpuhp_state rdt_online;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __init intel_rdt_late_init(void)
 {
 	struct rdt_resource *r;
@@ -939,10 +882,7 @@ static int __init intel_rdt_late_init(void)
 		cpuhp_remove_state(state);
 		return ret;
 	}
-<<<<<<< HEAD
 	rdt_online = state;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for_each_alloc_capable_rdt_resource(r)
 		pr_info("Intel RDT %s allocation detected\n", r->name);
@@ -954,7 +894,6 @@ static int __init intel_rdt_late_init(void)
 }
 
 late_initcall(intel_rdt_late_init);
-<<<<<<< HEAD
 
 static void __exit intel_rdt_exit(void)
 {
@@ -963,5 +902,3 @@ static void __exit intel_rdt_exit(void)
 }
 
 __exitcall(intel_rdt_exit);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

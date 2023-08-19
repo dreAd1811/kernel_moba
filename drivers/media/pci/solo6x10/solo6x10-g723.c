@@ -223,15 +223,9 @@ static snd_pcm_uframes_t snd_solo_pcm_pointer(struct snd_pcm_substream *ss)
 	return idx * G723_FRAMES_PER_PAGE;
 }
 
-<<<<<<< HEAD
 static int snd_solo_pcm_copy_user(struct snd_pcm_substream *ss, int channel,
 				  unsigned long pos, void __user *dst,
 				  unsigned long count)
-=======
-static int __snd_solo_pcm_copy(struct snd_pcm_substream *ss,
-			       unsigned long pos, void *dst,
-			       unsigned long count, bool in_kernel)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct solo_snd_pcm *solo_pcm = snd_pcm_substream_chip(ss);
 	struct solo_dev *solo_dev = solo_pcm->solo_dev;
@@ -248,14 +242,7 @@ static int __snd_solo_pcm_copy(struct snd_pcm_substream *ss,
 		if (err)
 			return err;
 
-<<<<<<< HEAD
 		if (copy_to_user(dst, solo_pcm->g723_buf, G723_PERIOD_BYTES))
-=======
-		if (in_kernel)
-			memcpy(dst, solo_pcm->g723_buf, G723_PERIOD_BYTES);
-		else if (copy_to_user((void __user *)dst,
-				      solo_pcm->g723_buf, G723_PERIOD_BYTES))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EFAULT;
 		dst += G723_PERIOD_BYTES;
 	}
@@ -263,21 +250,10 @@ static int __snd_solo_pcm_copy(struct snd_pcm_substream *ss,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-static int snd_solo_pcm_copy_user(struct snd_pcm_substream *ss, int channel,
-				  unsigned long pos, void __user *dst,
-				  unsigned long count)
-{
-	return __snd_solo_pcm_copy(ss, pos, (void *)dst, count, false);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int snd_solo_pcm_copy_kernel(struct snd_pcm_substream *ss, int channel,
 				    unsigned long pos, void *dst,
 				    unsigned long count)
 {
-<<<<<<< HEAD
 	struct solo_snd_pcm *solo_pcm = snd_pcm_substream_chip(ss);
 	struct solo_dev *solo_dev = solo_pcm->solo_dev;
 	int err, i;
@@ -298,9 +274,6 @@ static int snd_solo_pcm_copy_kernel(struct snd_pcm_substream *ss, int channel,
 	}
 
 	return 0;
-=======
-	return __snd_solo_pcm_copy(ss, pos, dst, count, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct snd_pcm_ops snd_solo_pcm_ops = {

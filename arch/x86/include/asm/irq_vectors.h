@@ -34,14 +34,6 @@
  * (0x80 is the syscall vector, 0x30-0x3f are for ISA)
  */
 #define FIRST_EXTERNAL_VECTOR		0x20
-<<<<<<< HEAD
-=======
-/*
- * We start allocating at 0x21 to spread out vectors evenly between
- * priority levels. (0x80 is the syscall vector)
- */
-#define VECTOR_OFFSET_START		1
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Reserve the lowest usable vector (and hence lowest priority)  0x20 for
@@ -105,7 +97,6 @@
 #define POSTED_INTR_NESTED_VECTOR	0xf0
 #endif
 
-<<<<<<< HEAD
 #define MANAGED_IRQ_SHUTDOWN_VECTOR	0xef
 
 #if IS_ENABLED(CONFIG_HYPERV)
@@ -114,14 +105,6 @@
 #endif
 
 #define LOCAL_TIMER_VECTOR		0xec
-=======
-/*
- * Local APIC timer IRQ vector is on a different priority level,
- * to work around the 'lost local interrupt if more than 2 IRQ
- * sources per level' errata.
- */
-#define LOCAL_TIMER_VECTOR		0xef
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define NR_VECTORS			 256
 
@@ -131,11 +114,6 @@
 #define FIRST_SYSTEM_VECTOR		NR_VECTORS
 #endif
 
-<<<<<<< HEAD
-=======
-#define FPU_IRQ				  13
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Size the maximum number of interrupts.
  *

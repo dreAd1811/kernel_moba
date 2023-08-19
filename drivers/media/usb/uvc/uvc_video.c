@@ -30,19 +30,11 @@
  * UVC Controls
  */
 
-<<<<<<< HEAD
 static int __uvc_query_ctrl(struct uvc_device *dev, u8 query, u8 unit,
 			u8 intfnum, u8 cs, void *data, u16 size,
 			int timeout)
 {
 	u8 type = USB_TYPE_CLASS | USB_RECIP_INTERFACE;
-=======
-static int __uvc_query_ctrl(struct uvc_device *dev, __u8 query, __u8 unit,
-			__u8 intfnum, __u8 cs, void *data, __u16 size,
-			int timeout)
-{
-	__u8 type = USB_TYPE_CLASS | USB_RECIP_INTERFACE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int pipe;
 
 	pipe = (query & 0x80) ? usb_rcvctrlpipe(dev->udev, 0)
@@ -53,11 +45,7 @@ static int __uvc_query_ctrl(struct uvc_device *dev, __u8 query, __u8 unit,
 			unit << 8 | intfnum, data, size, timeout);
 }
 
-<<<<<<< HEAD
 static const char *uvc_query_name(u8 query)
-=======
-static const char *uvc_query_name(__u8 query)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	switch (query) {
 	case UVC_SET_CUR:
@@ -81,7 +69,6 @@ static const char *uvc_query_name(__u8 query)
 	}
 }
 
-<<<<<<< HEAD
 int uvc_query_ctrl(struct uvc_device *dev, u8 query, u8 unit,
 			u8 intfnum, u8 cs, void *data, u16 size)
 {
@@ -137,23 +124,6 @@ int uvc_query_ctrl(struct uvc_device *dev, u8 query, u8 unit,
 	}
 
 	return -EPIPE;
-=======
-int uvc_query_ctrl(struct uvc_device *dev, __u8 query, __u8 unit,
-			__u8 intfnum, __u8 cs, void *data, __u16 size)
-{
-	int ret;
-
-	ret = __uvc_query_ctrl(dev, query, unit, intfnum, cs, data, size,
-				UVC_CTRL_CONTROL_TIMEOUT);
-	if (ret != size) {
-		uvc_printk(KERN_ERR, "Failed to query (%s) UVC control %u on "
-			"unit %u: %d (exp. %u).\n", uvc_query_name(query), cs,
-			unit, ret, size);
-		return -EIO;
-	}
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void uvc_fixup_video_ctrl(struct uvc_streaming *stream,
@@ -248,17 +218,10 @@ static size_t uvc_video_ctrl_size(struct uvc_streaming *stream)
 }
 
 static int uvc_get_video_ctrl(struct uvc_streaming *stream,
-<<<<<<< HEAD
 	struct uvc_streaming_control *ctrl, int probe, u8 query)
 {
 	u16 size = uvc_video_ctrl_size(stream);
 	u8 *data;
-=======
-	struct uvc_streaming_control *ctrl, int probe, __u8 query)
-{
-	__u16 size = uvc_video_ctrl_size(stream);
-	__u8 *data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	if ((stream->dev->quirks & UVC_QUIRK_PROBE_DEF) &&
@@ -281,11 +244,7 @@ static int uvc_get_video_ctrl(struct uvc_streaming *stream,
 		uvc_warn_once(stream->dev, UVC_WARN_MINMAX, "UVC non "
 			"compliance - GET_MIN/MAX(PROBE) incorrectly "
 			"supported. Enabling workaround.\n");
-<<<<<<< HEAD
 		memset(ctrl, 0, sizeof(*ctrl));
-=======
-		memset(ctrl, 0, sizeof *ctrl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ctrl->wCompQuality = le16_to_cpup((__le16 *)data);
 		ret = 0;
 		goto out;
@@ -348,13 +307,8 @@ out:
 static int uvc_set_video_ctrl(struct uvc_streaming *stream,
 	struct uvc_streaming_control *ctrl, int probe)
 {
-<<<<<<< HEAD
 	u16 size = uvc_video_ctrl_size(stream);
 	u8 *data;
-=======
-	__u16 size = uvc_video_ctrl_size(stream);
-	__u8 *data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	data = kzalloc(size, GFP_KERNEL);
@@ -399,11 +353,7 @@ int uvc_probe_video(struct uvc_streaming *stream,
 	struct uvc_streaming_control *probe)
 {
 	struct uvc_streaming_control probe_min, probe_max;
-<<<<<<< HEAD
 	u16 bandwidth;
-=======
-	__u16 bandwidth;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int i;
 	int ret;
 
@@ -471,41 +421,24 @@ static int uvc_commit_video(struct uvc_streaming *stream,
  * Clocks and timestamps
  */
 
-<<<<<<< HEAD
 static inline ktime_t uvc_video_get_time(void)
 {
 	if (uvc_clock_param == CLOCK_MONOTONIC)
 		return ktime_get();
 	else
 		return ktime_get_real();
-=======
-static inline void uvc_video_get_ts(struct timespec *ts)
-{
-	if (uvc_clock_param == CLOCK_MONOTONIC)
-		ktime_get_ts(ts);
-	else
-		ktime_get_real_ts(ts);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void
 uvc_video_clock_decode(struct uvc_streaming *stream, struct uvc_buffer *buf,
-<<<<<<< HEAD
 		       const u8 *data, int len)
-=======
-		       const __u8 *data, int len)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct uvc_clock_sample *sample;
 	unsigned int header_size;
 	bool has_pts = false;
 	bool has_scr = false;
 	unsigned long flags;
-<<<<<<< HEAD
 	ktime_t time;
-=======
-	struct timespec ts;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 host_sof;
 	u16 dev_sof;
 
@@ -555,11 +488,7 @@ uvc_video_clock_decode(struct uvc_streaming *stream, struct uvc_buffer *buf,
 	stream->clock.last_sof = dev_sof;
 
 	host_sof = usb_get_current_frame_number(stream->dev->udev);
-<<<<<<< HEAD
 	time = uvc_video_get_time();
-=======
-	uvc_video_get_ts(&ts);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* The UVC specification allows device implementations that can't obtain
 	 * the USB frame number to keep their own frame counters as long as they
@@ -596,11 +525,7 @@ uvc_video_clock_decode(struct uvc_streaming *stream, struct uvc_buffer *buf,
 	sample->dev_stc = get_unaligned_le32(&data[header_size - 6]);
 	sample->dev_sof = dev_sof;
 	sample->host_sof = host_sof;
-<<<<<<< HEAD
 	sample->host_time = time;
-=======
-	sample->host_ts = ts;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Update the sliding window head and count. */
 	stream->clock.head = (stream->clock.head + 1) % stream->clock.size;
@@ -628,13 +553,8 @@ static int uvc_video_clock_init(struct uvc_streaming *stream)
 	spin_lock_init(&clock->lock);
 	clock->size = 32;
 
-<<<<<<< HEAD
 	clock->samples = kmalloc_array(clock->size, sizeof(*clock->samples),
 				       GFP_KERNEL);
-=======
-	clock->samples = kmalloc(clock->size * sizeof(*clock->samples),
-				 GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (clock->samples == NULL)
 		return -ENOMEM;
 
@@ -745,21 +665,12 @@ void uvc_video_clock_update(struct uvc_streaming *stream,
 	struct uvc_clock_sample *first;
 	struct uvc_clock_sample *last;
 	unsigned long flags;
-<<<<<<< HEAD
 	u64 timestamp;
-=======
-	struct timespec ts;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 delta_stc;
 	u32 y1, y2;
 	u32 x1, x2;
 	u32 mean;
 	u32 sof;
-<<<<<<< HEAD
-=======
-	u32 div;
-	u32 rem;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 y;
 
 	if (!uvc_hw_timestamps_param)
@@ -814,14 +725,8 @@ void uvc_video_clock_update(struct uvc_streaming *stream,
 	if (x1 == x2)
 		goto done;
 
-<<<<<<< HEAD
 	y1 = NSEC_PER_SEC;
 	y2 = (u32)ktime_to_ns(ktime_sub(last->host_time, first->host_time)) + y1;
-=======
-	ts = timespec_sub(last->host_ts, first->host_ts);
-	y1 = NSEC_PER_SEC;
-	y2 = (ts.tv_sec + 1) * NSEC_PER_SEC + ts.tv_nsec;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Interpolated and host SOF timestamps can wrap around at slightly
 	 * different times. Handle this by adding or removing 2048 to or from
@@ -838,36 +743,18 @@ void uvc_video_clock_update(struct uvc_streaming *stream,
 	  - (u64)y2 * (u64)x1;
 	y = div_u64(y, x2 - x1);
 
-<<<<<<< HEAD
 	timestamp = ktime_to_ns(first->host_time) + y - y1;
-=======
-	div = div_u64_rem(y, NSEC_PER_SEC, &rem);
-	ts.tv_sec = first->host_ts.tv_sec - 1 + div;
-	ts.tv_nsec = first->host_ts.tv_nsec + rem;
-	if (ts.tv_nsec >= NSEC_PER_SEC) {
-		ts.tv_sec++;
-		ts.tv_nsec -= NSEC_PER_SEC;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	uvc_trace(UVC_TRACE_CLOCK, "%s: SOF %u.%06llu y %llu ts %llu "
 		  "buf ts %llu (x1 %u/%u/%u x2 %u/%u/%u y1 %u y2 %u)\n",
 		  stream->dev->name,
 		  sof >> 16, div_u64(((u64)sof & 0xffff) * 1000000LLU, 65536),
-<<<<<<< HEAD
 		  y, timestamp, vbuf->vb2_buf.timestamp,
-=======
-		  y, timespec_to_ns(&ts), vbuf->vb2_buf.timestamp,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		  x1, first->host_sof, first->dev_sof,
 		  x2, last->host_sof, last->dev_sof, y1, y2);
 
 	/* Update the V4L2 buffer. */
-<<<<<<< HEAD
 	vbuf->vb2_buf.timestamp = timestamp;
-=======
-	vbuf->vb2_buf.timestamp = timespec_to_ns(&ts);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 done:
 	spin_unlock_irqrestore(&clock->lock, flags);
@@ -878,11 +765,7 @@ done:
  */
 
 static void uvc_video_stats_decode(struct uvc_streaming *stream,
-<<<<<<< HEAD
 		const u8 *data, int len)
-=======
-		const __u8 *data, int len)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned int header_size;
 	bool has_pts = false;
@@ -893,11 +776,7 @@ static void uvc_video_stats_decode(struct uvc_streaming *stream,
 
 	if (stream->stats.stream.nb_frames == 0 &&
 	    stream->stats.frame.nb_packets == 0)
-<<<<<<< HEAD
 		stream->stats.stream.start_ts = ktime_get();
-=======
-		ktime_get_ts(&stream->stats.stream.start_ts);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (data[1] & (UVC_STREAM_PTS | UVC_STREAM_SCR)) {
 	case UVC_STREAM_PTS | UVC_STREAM_SCR:
@@ -1037,7 +916,6 @@ size_t uvc_video_stats_dump(struct uvc_streaming *stream, char *buf,
 {
 	unsigned int scr_sof_freq;
 	unsigned int duration;
-<<<<<<< HEAD
 	size_t count = 0;
 
 	/* Compute the SCR.SOF frequency estimate. At the nominal 1kHz SOF
@@ -1045,18 +923,6 @@ size_t uvc_video_stats_dump(struct uvc_streaming *stream, char *buf,
 	 */
 	duration = ktime_ms_delta(stream->stats.stream.stop_ts,
 				  stream->stats.stream.start_ts);
-=======
-	struct timespec ts;
-	size_t count = 0;
-
-	ts = timespec_sub(stream->stats.stream.stop_ts,
-			  stream->stats.stream.start_ts);
-
-	/* Compute the SCR.SOF frequency estimate. At the nominal 1kHz SOF
-	 * frequency this will not overflow before more than 1h.
-	 */
-	duration = ts.tv_sec * 1000 + ts.tv_nsec / 1000000;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (duration != 0)
 		scr_sof_freq = stream->stats.stream.scr_sof_count * 1000
 			     / duration;
@@ -1097,11 +963,7 @@ static void uvc_video_stats_start(struct uvc_streaming *stream)
 
 static void uvc_video_stats_stop(struct uvc_streaming *stream)
 {
-<<<<<<< HEAD
 	stream->stats.stream.stop_ts = ktime_get();
-=======
-	ktime_get_ts(&stream->stats.stream.stop_ts);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* ------------------------------------------------------------------------
@@ -1144,15 +1006,9 @@ static void uvc_video_stats_stop(struct uvc_streaming *stream)
  * uvc_video_decode_end will never be called with a NULL buffer.
  */
 static int uvc_video_decode_start(struct uvc_streaming *stream,
-<<<<<<< HEAD
 		struct uvc_buffer *buf, const u8 *data, int len)
 {
 	u8 fid;
-=======
-		struct uvc_buffer *buf, const __u8 *data, int len)
-{
-	__u8 fid;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Sanity checks:
 	 * - packet must be at least 2 bytes long
@@ -1202,11 +1058,6 @@ static int uvc_video_decode_start(struct uvc_streaming *stream,
 	 * when the EOF bit is set to force synchronisation on the next packet.
 	 */
 	if (buf->state != UVC_BUF_STATE_ACTIVE) {
-<<<<<<< HEAD
-=======
-		struct timespec ts;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (fid == stream->last_fid) {
 			uvc_trace(UVC_TRACE_FRAME, "Dropping payload (out of "
 				"sync).\n");
@@ -1216,17 +1067,9 @@ static int uvc_video_decode_start(struct uvc_streaming *stream,
 			return -ENODATA;
 		}
 
-<<<<<<< HEAD
 		buf->buf.field = V4L2_FIELD_NONE;
 		buf->buf.sequence = stream->sequence;
 		buf->buf.vb2_buf.timestamp = ktime_to_ns(uvc_video_get_time());
-=======
-		uvc_video_get_ts(&ts);
-
-		buf->buf.field = V4L2_FIELD_NONE;
-		buf->buf.sequence = stream->sequence;
-		buf->buf.vb2_buf.timestamp = timespec_to_ns(&ts);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* TODO: Handle PTS and SCR. */
 		buf->state = UVC_BUF_STATE_ACTIVE;
@@ -1260,11 +1103,7 @@ static int uvc_video_decode_start(struct uvc_streaming *stream,
 }
 
 static void uvc_video_decode_data(struct uvc_streaming *stream,
-<<<<<<< HEAD
 		struct uvc_buffer *buf, const u8 *data, int len)
-=======
-		struct uvc_buffer *buf, const __u8 *data, int len)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned int maxlen, nbytes;
 	void *mem;
@@ -1282,20 +1121,13 @@ static void uvc_video_decode_data(struct uvc_streaming *stream,
 	/* Complete the current frame if the buffer size was exceeded. */
 	if (len > maxlen) {
 		uvc_trace(UVC_TRACE_FRAME, "Frame complete (overflow).\n");
-<<<<<<< HEAD
 		buf->error = 1;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		buf->state = UVC_BUF_STATE_READY;
 	}
 }
 
 static void uvc_video_decode_end(struct uvc_streaming *stream,
-<<<<<<< HEAD
 		struct uvc_buffer *buf, const u8 *data, int len)
-=======
-		struct uvc_buffer *buf, const __u8 *data, int len)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* Mark the buffer as done if the EOF marker is set. */
 	if (data[1] & UVC_STREAM_EOF && buf->bytesused != 0) {
@@ -1320,11 +1152,7 @@ static void uvc_video_decode_end(struct uvc_streaming *stream,
  * video buffer to the transfer buffer.
  */
 static int uvc_video_encode_header(struct uvc_streaming *stream,
-<<<<<<< HEAD
 		struct uvc_buffer *buf, u8 *data, int len)
-=======
-		struct uvc_buffer *buf, __u8 *data, int len)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	data[0] = 2;	/* Header length */
 	data[1] = UVC_STREAM_EOH | UVC_STREAM_EOF
@@ -1333,11 +1161,7 @@ static int uvc_video_encode_header(struct uvc_streaming *stream,
 }
 
 static int uvc_video_encode_data(struct uvc_streaming *stream,
-<<<<<<< HEAD
 		struct uvc_buffer *buf, u8 *data, int len)
-=======
-		struct uvc_buffer *buf, __u8 *data, int len)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct uvc_video_queue *queue = &stream->queue;
 	unsigned int nbytes;
@@ -1356,7 +1180,6 @@ static int uvc_video_encode_data(struct uvc_streaming *stream,
 }
 
 /* ------------------------------------------------------------------------
-<<<<<<< HEAD
  * Metadata
  */
 
@@ -1436,8 +1259,6 @@ static void uvc_video_decode_meta(struct uvc_streaming *stream,
 }
 
 /* ------------------------------------------------------------------------
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * URB handling
  */
 
@@ -1455,7 +1276,6 @@ static void uvc_video_validate_buffer(const struct uvc_streaming *stream,
 /*
  * Completion handler for video URBs.
  */
-<<<<<<< HEAD
 
 static void uvc_video_next_buffers(struct uvc_streaming *stream,
 		struct uvc_buffer **video_buf, struct uvc_buffer **meta_buf)
@@ -1481,10 +1301,6 @@ static void uvc_video_next_buffers(struct uvc_streaming *stream,
 
 static void uvc_video_decode_isoc(struct urb *urb, struct uvc_streaming *stream,
 			struct uvc_buffer *buf, struct uvc_buffer *meta_buf)
-=======
-static void uvc_video_decode_isoc(struct urb *urb, struct uvc_streaming *stream,
-	struct uvc_buffer *buf)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u8 *mem;
 	int ret, i;
@@ -1504,26 +1320,15 @@ static void uvc_video_decode_isoc(struct urb *urb, struct uvc_streaming *stream,
 		do {
 			ret = uvc_video_decode_start(stream, buf, mem,
 				urb->iso_frame_desc[i].actual_length);
-<<<<<<< HEAD
 			if (ret == -EAGAIN)
 				uvc_video_next_buffers(stream, &buf, &meta_buf);
-=======
-			if (ret == -EAGAIN) {
-				uvc_video_validate_buffer(stream, buf);
-				buf = uvc_queue_next_buffer(&stream->queue,
-							    buf);
-			}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} while (ret == -EAGAIN);
 
 		if (ret < 0)
 			continue;
 
-<<<<<<< HEAD
 		uvc_video_decode_meta(stream, meta_buf, mem, ret);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Decode the payload data. */
 		uvc_video_decode_data(stream, buf, mem + ret,
 			urb->iso_frame_desc[i].actual_length - ret);
@@ -1532,24 +1337,13 @@ static void uvc_video_decode_isoc(struct urb *urb, struct uvc_streaming *stream,
 		uvc_video_decode_end(stream, buf, mem,
 			urb->iso_frame_desc[i].actual_length);
 
-<<<<<<< HEAD
 		if (buf->state == UVC_BUF_STATE_READY)
 			uvc_video_next_buffers(stream, &buf, &meta_buf);
-=======
-		if (buf->state == UVC_BUF_STATE_READY) {
-			uvc_video_validate_buffer(stream, buf);
-			buf = uvc_queue_next_buffer(&stream->queue, buf);
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
 static void uvc_video_decode_bulk(struct urb *urb, struct uvc_streaming *stream,
-<<<<<<< HEAD
 			struct uvc_buffer *buf, struct uvc_buffer *meta_buf)
-=======
-	struct uvc_buffer *buf)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u8 *mem;
 	int len, ret;
@@ -1572,12 +1366,7 @@ static void uvc_video_decode_bulk(struct urb *urb, struct uvc_streaming *stream,
 		do {
 			ret = uvc_video_decode_start(stream, buf, mem, len);
 			if (ret == -EAGAIN)
-<<<<<<< HEAD
 				uvc_video_next_buffers(stream, &buf, &meta_buf);
-=======
-				buf = uvc_queue_next_buffer(&stream->queue,
-							    buf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} while (ret == -EAGAIN);
 
 		/* If an error occurred skip the rest of the payload. */
@@ -1587,11 +1376,8 @@ static void uvc_video_decode_bulk(struct urb *urb, struct uvc_streaming *stream,
 			memcpy(stream->bulk.header, mem, ret);
 			stream->bulk.header_size = ret;
 
-<<<<<<< HEAD
 			uvc_video_decode_meta(stream, meta_buf, mem, ret);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			mem += ret;
 			len -= ret;
 		}
@@ -1615,11 +1401,7 @@ static void uvc_video_decode_bulk(struct urb *urb, struct uvc_streaming *stream,
 			uvc_video_decode_end(stream, buf, stream->bulk.header,
 				stream->bulk.payload_size);
 			if (buf->state == UVC_BUF_STATE_READY)
-<<<<<<< HEAD
 				uvc_video_next_buffers(stream, &buf, &meta_buf);
-=======
-				uvc_queue_next_buffer(&stream->queue, buf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		stream->bulk.header_size = 0;
@@ -1629,11 +1411,7 @@ static void uvc_video_decode_bulk(struct urb *urb, struct uvc_streaming *stream,
 }
 
 static void uvc_video_encode_bulk(struct urb *urb, struct uvc_streaming *stream,
-<<<<<<< HEAD
 	struct uvc_buffer *buf, struct uvc_buffer *meta_buf)
-=======
-	struct uvc_buffer *buf)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u8 *mem = urb->transfer_buffer;
 	int len = stream->urb_size, ret;
@@ -1679,14 +1457,10 @@ static void uvc_video_complete(struct urb *urb)
 {
 	struct uvc_streaming *stream = urb->context;
 	struct uvc_video_queue *queue = &stream->queue;
-<<<<<<< HEAD
 	struct uvc_video_queue *qmeta = &stream->meta.queue;
 	struct vb2_queue *vb2_qmeta = stream->meta.vdev.queue;
 	struct uvc_buffer *buf = NULL;
 	struct uvc_buffer *buf_meta = NULL;
-=======
-	struct uvc_buffer *buf = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 	int ret;
 
@@ -1705,11 +1479,8 @@ static void uvc_video_complete(struct urb *urb)
 	case -ECONNRESET:	/* usb_unlink_urb() called. */
 	case -ESHUTDOWN:	/* The endpoint is being disabled. */
 		uvc_queue_cancel(queue, urb->status == -ESHUTDOWN);
-<<<<<<< HEAD
 		if (vb2_qmeta)
 			uvc_queue_cancel(qmeta, urb->status == -ESHUTDOWN);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -1719,7 +1490,6 @@ static void uvc_video_complete(struct urb *urb)
 				       queue);
 	spin_unlock_irqrestore(&queue->irqlock, flags);
 
-<<<<<<< HEAD
 	if (vb2_qmeta) {
 		spin_lock_irqsave(&qmeta->irqlock, flags);
 		if (!list_empty(&qmeta->irqqueue))
@@ -1729,9 +1499,6 @@ static void uvc_video_complete(struct urb *urb)
 	}
 
 	stream->decode(urb, stream, buf, buf_meta);
-=======
-	stream->decode(urb, stream, buf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if ((ret = usb_submit_urb(urb, GFP_ATOMIC)) < 0) {
 		uvc_printk(KERN_ERR, "Failed to resubmit video URB (%d).\n",
@@ -1860,21 +1627,13 @@ static unsigned int uvc_endpoint_max_bpi(struct usb_device *dev,
 	case USB_SPEED_HIGH:
 		psize = usb_endpoint_maxp(&ep->desc);
 		mult = usb_endpoint_maxp_mult(&ep->desc);
-<<<<<<< HEAD
 		return psize * mult;
-=======
-		return (psize & 0x07ff) * mult;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case USB_SPEED_WIRELESS:
 		psize = usb_endpoint_maxp(&ep->desc);
 		return psize;
 	default:
 		psize = usb_endpoint_maxp(&ep->desc);
-<<<<<<< HEAD
 		return psize;
-=======
-		return psize & 0x07ff;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 

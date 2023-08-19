@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 The cluster MD is a shared-device RAID for a cluster, it supports
 two levels: raid1 and raid10 (limited support).
-=======
-The cluster MD is a shared-device RAID for a cluster.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 1. On-disk format

@@ -24,15 +24,6 @@
 #define MAX_CPU_FEATURES	(8 * sizeof(elf_hwcap))
 #define cpu_feature(x)		ilog2(HWCAP_ ## x)
 
-<<<<<<< HEAD
-=======
-#define ARM64_SSBD_UNKNOWN		-1
-#define ARM64_SSBD_FORCE_DISABLE	0
-#define ARM64_SSBD_KERNEL		1
-#define ARM64_SSBD_FORCE_ENABLE		2
-#define ARM64_SSBD_MITIGATED		3
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifndef __ASSEMBLY__
 
 #include <linux/bug.h>
@@ -69,12 +60,9 @@ enum ftr_type {
 #define FTR_VISIBLE	true	/* Feature visible to the user space */
 #define FTR_HIDDEN	false	/* Feature is hidden from the user */
 
-<<<<<<< HEAD
 #define FTR_VISIBLE_IF_IS_ENABLED(config)		\
 	(IS_ENABLED(config) ? FTR_VISIBLE : FTR_HIDDEN)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct arm64_ftr_bits {
 	bool		sign;	/* Value is signed ? */
 	bool		visible;
@@ -319,13 +307,10 @@ struct arm64_cpu_capabilities {
 	union {
 		struct {	/* To be used for erratum handling only */
 			struct midr_range midr_range;
-<<<<<<< HEAD
 			const struct arm64_midr_revidr {
 				u32 midr_rv;		/* revision/variant */
 				u32 revidr_mask;
 			} * const fixed_revs;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		const struct midr_range *midr_range_list;
@@ -337,7 +322,6 @@ struct arm64_cpu_capabilities {
 			bool sign;
 			unsigned long hwcap;
 		};
-<<<<<<< HEAD
 		/*
 		 * A list of "matches/cpu_enable" pair for the same
 		 * "capability" of the same "type" as described by the parent.
@@ -350,8 +334,6 @@ struct arm64_cpu_capabilities {
 		 * method is robust against being called multiple times.
 		 */
 		const struct arm64_cpu_capabilities *match_list;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };
 
@@ -482,7 +464,6 @@ static inline bool id_aa64pfr0_32bit_el0(u64 pfr0)
 	return val == ID_AA64PFR0_EL0_32BIT_64BIT;
 }
 
-<<<<<<< HEAD
 static inline bool id_aa64pfr0_sve(u64 pfr0)
 {
 	u32 val = cpuid_feature_extract_unsigned_field(pfr0, ID_AA64PFR0_SVE_SHIFT);
@@ -490,8 +471,6 @@ static inline bool id_aa64pfr0_sve(u64 pfr0)
 	return val > 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void __init setup_cpu_features(void);
 void check_local_cpu_capabilities(void);
 
@@ -524,7 +503,6 @@ static inline bool system_uses_ttbr0_pan(void)
 		!cpus_have_const_cap(ARM64_HAS_PAN);
 }
 
-<<<<<<< HEAD
 static inline bool system_supports_sve(void)
 {
 	return IS_ENABLED(CONFIG_ARM64_SVE) &&
@@ -542,8 +520,6 @@ static inline bool system_supports_cnp(void)
 #define ARM64_SSBD_FORCE_ENABLE		2
 #define ARM64_SSBD_MITIGATED		3
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int arm64_get_ssbd_state(void)
 {
 #ifdef CONFIG_ARM64_SSBD

@@ -31,10 +31,7 @@
 #include <linux/io.h>
 #include <linux/gfp.h>
 #include <linux/atomic.h>
-<<<<<<< HEAD
 #include <linux/dma-direct.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/mtrr.h>
 #include <asm/pgtable.h>
 #include <asm/proto.h>
@@ -483,7 +480,6 @@ static void *
 gart_alloc_coherent(struct device *dev, size_t size, dma_addr_t *dma_addr,
 		    gfp_t flag, unsigned long attrs)
 {
-<<<<<<< HEAD
 	void *vaddr;
 
 	vaddr = dma_direct_alloc(dev, size, dma_addr, flag, attrs);
@@ -499,32 +495,6 @@ gart_alloc_coherent(struct device *dev, size_t size, dma_addr_t *dma_addr,
 	return vaddr;
 out_free:
 	dma_direct_free(dev, size, vaddr, *dma_addr, attrs);
-=======
-	dma_addr_t paddr;
-	unsigned long align_mask;
-	struct page *page;
-
-	if (force_iommu && !(flag & GFP_DMA)) {
-		flag &= ~(__GFP_DMA | __GFP_HIGHMEM | __GFP_DMA32);
-		page = alloc_pages(flag | __GFP_ZERO, get_order(size));
-		if (!page)
-			return NULL;
-
-		align_mask = (1UL << get_order(size)) - 1;
-		paddr = dma_map_area(dev, page_to_phys(page), size,
-				     DMA_BIDIRECTIONAL, align_mask);
-
-		flush_gart();
-		if (paddr != bad_dma_addr) {
-			*dma_addr = paddr;
-			return page_address(page);
-		}
-		__free_pages(page, get_order(size));
-	} else
-		return dma_generic_alloc_coherent(dev, size, dma_addr, flag,
-						  attrs);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return NULL;
 }
 
@@ -534,11 +504,7 @@ gart_free_coherent(struct device *dev, size_t size, void *vaddr,
 		   dma_addr_t dma_addr, unsigned long attrs)
 {
 	gart_unmap_page(dev, dma_addr, size, DMA_BIDIRECTIONAL, 0);
-<<<<<<< HEAD
 	dma_direct_free(dev, size, vaddr, dma_addr, attrs);
-=======
-	dma_generic_free_coherent(dev, size, vaddr, dma_addr, attrs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int gart_mapping_error(struct device *dev, dma_addr_t dma_addr)
@@ -730,11 +696,7 @@ static const struct dma_map_ops gart_dma_ops = {
 	.alloc				= gart_alloc_coherent,
 	.free				= gart_free_coherent,
 	.mapping_error			= gart_mapping_error,
-<<<<<<< HEAD
 	.dma_supported			= dma_direct_supported,
-=======
-	.dma_supported			= x86_dma_supported,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void gart_iommu_shutdown(void)

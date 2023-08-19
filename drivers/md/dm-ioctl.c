@@ -1344,12 +1344,8 @@ static int table_load(struct file *filp, struct dm_ioctl *param, size_t param_si
 			goto err_unlock_md_type;
 		}
 	} else if (!is_valid_type(dm_get_md_type(md), dm_table_get_type(t))) {
-<<<<<<< HEAD
 		DMWARN("can't change device type (old=%u vs new=%u) after initial table load.",
 		       dm_get_md_type(md), dm_table_get_type(t));
-=======
-		DMWARN("can't change device type after initial table load.");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		r = -EINVAL;
 		goto err_unlock_md_type;
 	}
@@ -1600,11 +1596,7 @@ static int target_message(struct file *filp, struct dm_ioctl *param, size_t para
 		DMWARN("Target message sector outside device.");
 		r = -EINVAL;
 	} else if (ti->type->message)
-<<<<<<< HEAD
 		r = ti->type->message(ti, argc, argv, result, maxlen);
-=======
-		r = ti->type->message(ti, argc, argv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else {
 		DMWARN("Target type does not support messages");
 		r = -EINVAL;
@@ -1932,26 +1924,15 @@ static int dm_release(struct inode *inode, struct file *filp)
 	return 0;
 }
 
-<<<<<<< HEAD
 static __poll_t dm_poll(struct file *filp, poll_table *wait)
 {
 	struct dm_file *priv = filp->private_data;
 	__poll_t mask = 0;
-=======
-static unsigned dm_poll(struct file *filp, poll_table *wait)
-{
-	struct dm_file *priv = filp->private_data;
-	unsigned mask = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	poll_wait(filp, &dm_global_eventq, wait);
 
 	if ((int)(atomic_read(&dm_global_event_nr) - priv->global_event_nr) > 0)
-<<<<<<< HEAD
 		mask |= EPOLLIN;
-=======
-		mask |= POLLIN;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return mask;
 }

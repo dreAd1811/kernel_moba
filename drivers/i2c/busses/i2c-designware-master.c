@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-or-later
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Synopsys DesignWare I2C adapter driver (master only).
  *
@@ -10,41 +7,18 @@
  * Copyright (C) 2006 Texas Instruments.
  * Copyright (C) 2007 MontaVista Software Inc.
  * Copyright (C) 2009 Provigent Ltd.
-<<<<<<< HEAD
-=======
- *
- * ----------------------------------------------------------------------------
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * ----------------------------------------------------------------------------
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #include <linux/delay.h>
 #include <linux/err.h>
 #include <linux/errno.h>
 #include <linux/export.h>
-<<<<<<< HEAD
 #include <linux/gpio/consumer.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/i2c.h>
 #include <linux/interrupt.h>
 #include <linux/io.h>
 #include <linux/module.h>
 #include <linux/pm_runtime.h>
-<<<<<<< HEAD
 #include <linux/reset.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "i2c-designware-core.h"
 
@@ -58,7 +32,6 @@ static void i2c_dw_configure_fifo_master(struct dw_i2c_dev *dev)
 	dw_writel(dev, dev->master_cfg, DW_IC_CON);
 }
 
-<<<<<<< HEAD
 static int i2c_dw_set_timings_master(struct dw_i2c_dev *dev)
 {
 	const char *mode_str, *fp_str = "";
@@ -169,8 +142,6 @@ out:
 	return ret;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * i2c_dw_init() - Initialize the designware I2C master hardware
  * @dev: device private data
@@ -181,19 +152,12 @@ out:
  */
 static int i2c_dw_init_master(struct dw_i2c_dev *dev)
 {
-<<<<<<< HEAD
-=======
-	u32 hcnt, lcnt;
-	u32 reg, comp_param1;
-	u32 sda_falling_time, scl_falling_time;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	ret = i2c_dw_acquire_lock(dev);
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	/* Disable the adapter */
 	__i2c_dw_disable(dev);
 
@@ -214,111 +178,6 @@ static int i2c_dw_init_master(struct dw_i2c_dev *dev)
 	/* Write SDA hold time if supported */
 	if (dev->sda_hold_time)
 		dw_writel(dev, dev->sda_hold_time, DW_IC_SDA_HOLD);
-=======
-	reg = dw_readl(dev, DW_IC_COMP_TYPE);
-	if (reg == ___constant_swab32(DW_IC_COMP_TYPE_VALUE)) {
-		/* Configure register endianess access */
-		dev->flags |= ACCESS_SWAP;
-	} else if (reg == (DW_IC_COMP_TYPE_VALUE & 0x0000ffff)) {
-		/* Configure register access mode 16bit */
-		dev->flags |= ACCESS_16BIT;
-	} else if (reg != DW_IC_COMP_TYPE_VALUE) {
-		dev_err(dev->dev,
-			"Unknown Synopsys component type: 0x%08x\n", reg);
-		i2c_dw_release_lock(dev);
-		return -ENODEV;
-	}
-
-	comp_param1 = dw_readl(dev, DW_IC_COMP_PARAM_1);
-
-	/* Disable the adapter */
-	__i2c_dw_enable_and_wait(dev, false);
-
-	/* Set standard and fast speed deviders for high/low periods */
-
-	sda_falling_time = dev->sda_falling_time ?: 300; /* ns */
-	scl_falling_time = dev->scl_falling_time ?: 300; /* ns */
-
-	/* Set SCL timing parameters for standard-mode */
-	if (dev->ss_hcnt && dev->ss_lcnt) {
-		hcnt = dev->ss_hcnt;
-		lcnt = dev->ss_lcnt;
-	} else {
-		hcnt = i2c_dw_scl_hcnt(i2c_dw_clk_rate(dev),
-					4000,	/* tHD;STA = tHIGH = 4.0 us */
-					sda_falling_time,
-					0,	/* 0: DW default, 1: Ideal */
-					0);	/* No offset */
-		lcnt = i2c_dw_scl_lcnt(i2c_dw_clk_rate(dev),
-					4700,	/* tLOW = 4.7 us */
-					scl_falling_time,
-					0);	/* No offset */
-	}
-	dw_writel(dev, hcnt, DW_IC_SS_SCL_HCNT);
-	dw_writel(dev, lcnt, DW_IC_SS_SCL_LCNT);
-	dev_dbg(dev->dev, "Standard-mode HCNT:LCNT = %d:%d\n", hcnt, lcnt);
-
-	/* Set SCL timing parameters for fast-mode or fast-mode plus */
-	if ((dev->clk_freq == 1000000) && dev->fp_hcnt && dev->fp_lcnt) {
-		hcnt = dev->fp_hcnt;
-		lcnt = dev->fp_lcnt;
-	} else if (dev->fs_hcnt && dev->fs_lcnt) {
-		hcnt = dev->fs_hcnt;
-		lcnt = dev->fs_lcnt;
-	} else {
-		hcnt = i2c_dw_scl_hcnt(i2c_dw_clk_rate(dev),
-					600,	/* tHD;STA = tHIGH = 0.6 us */
-					sda_falling_time,
-					0,	/* 0: DW default, 1: Ideal */
-					0);	/* No offset */
-		lcnt = i2c_dw_scl_lcnt(i2c_dw_clk_rate(dev),
-					1300,	/* tLOW = 1.3 us */
-					scl_falling_time,
-					0);	/* No offset */
-	}
-	dw_writel(dev, hcnt, DW_IC_FS_SCL_HCNT);
-	dw_writel(dev, lcnt, DW_IC_FS_SCL_LCNT);
-	dev_dbg(dev->dev, "Fast-mode HCNT:LCNT = %d:%d\n", hcnt, lcnt);
-
-	if ((dev->master_cfg & DW_IC_CON_SPEED_MASK) ==
-		DW_IC_CON_SPEED_HIGH) {
-		if ((comp_param1 & DW_IC_COMP_PARAM_1_SPEED_MODE_MASK)
-			!= DW_IC_COMP_PARAM_1_SPEED_MODE_HIGH) {
-			dev_err(dev->dev, "High Speed not supported!\n");
-			dev->master_cfg &= ~DW_IC_CON_SPEED_MASK;
-			dev->master_cfg |= DW_IC_CON_SPEED_FAST;
-		} else if (dev->hs_hcnt && dev->hs_lcnt) {
-			hcnt = dev->hs_hcnt;
-			lcnt = dev->hs_lcnt;
-			dw_writel(dev, hcnt, DW_IC_HS_SCL_HCNT);
-			dw_writel(dev, lcnt, DW_IC_HS_SCL_LCNT);
-			dev_dbg(dev->dev, "HighSpeed-mode HCNT:LCNT = %d:%d\n",
-				hcnt, lcnt);
-		}
-	}
-
-	/* Configure SDA Hold Time if required */
-	reg = dw_readl(dev, DW_IC_COMP_VERSION);
-	if (reg >= DW_IC_SDA_HOLD_MIN_VERS) {
-		if (!dev->sda_hold_time) {
-			/* Keep previous hold time setting if no one set it */
-			dev->sda_hold_time = dw_readl(dev, DW_IC_SDA_HOLD);
-		}
-		/*
-		 * Workaround for avoiding TX arbitration lost in case I2C
-		 * slave pulls SDA down "too quickly" after falling egde of
-		 * SCL by enabling non-zero SDA RX hold. Specification says it
-		 * extends incoming SDA low to high transition while SCL is
-		 * high but it apprears to help also above issue.
-		 */
-		if (!(dev->sda_hold_time & DW_IC_SDA_HOLD_RX_MASK))
-			dev->sda_hold_time |= 1 << DW_IC_SDA_HOLD_RX_SHIFT;
-		dw_writel(dev, dev->sda_hold_time, DW_IC_SDA_HOLD);
-	} else {
-		dev_warn(dev->dev,
-			"Hardware too old to adjust SDA hold time.\n");
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	i2c_dw_configure_fifo_master(dev);
 	i2c_dw_release_lock(dev);
@@ -332,11 +191,7 @@ static void i2c_dw_xfer_init(struct dw_i2c_dev *dev)
 	u32 ic_con, ic_tar = 0;
 
 	/* Disable the adapter */
-<<<<<<< HEAD
 	__i2c_dw_disable(dev);
-=======
-	__i2c_dw_enable_and_wait(dev, false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* If the slave address is ten bit address, enable 10BITADDR */
 	ic_con = dw_readl(dev, DW_IC_CON);
@@ -365,11 +220,7 @@ static void i2c_dw_xfer_init(struct dw_i2c_dev *dev)
 	i2c_dw_disable_int(dev);
 
 	/* Enable the adapter */
-<<<<<<< HEAD
 	__i2c_dw_enable(dev);
-=======
-	__i2c_dw_enable(dev, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Dummy read to avoid the register getting stuck on Bay Trail */
 	dw_readl(dev, DW_IC_ENABLE_STATUS);
@@ -413,16 +264,6 @@ i2c_dw_xfer_msg(struct dw_i2c_dev *dev)
 			break;
 		}
 
-<<<<<<< HEAD
-=======
-		if (msgs[dev->msg_write_idx].len == 0) {
-			dev_err(dev->dev,
-				"%s: invalid message length\n", __func__);
-			dev->msg_err = -EINVAL;
-			break;
-		}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!(dev->status & STATUS_WRITE_IN_PROGRESS)) {
 			/* new i2c_msg */
 			buf = msgs[dev->msg_write_idx].buf;
@@ -611,10 +452,7 @@ i2c_dw_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[], int num)
 	if (!wait_for_completion_timeout(&dev->cmd_complete, adap->timeout)) {
 		dev_err(dev->dev, "controller timed out\n");
 		/* i2c_dw_init implicitly disables the adapter */
-<<<<<<< HEAD
 		i2c_recover_bus(&dev->adapter);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		i2c_dw_init_master(dev);
 		ret = -ETIMEDOUT;
 		goto done;
@@ -628,11 +466,7 @@ i2c_dw_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[], int num)
 	 * additional interrupts are a hardware bug or this driver doesn't
 	 * handle them correctly yet.
 	 */
-<<<<<<< HEAD
 	__i2c_dw_disable_nowait(dev);
-=======
-	__i2c_dw_enable(dev, false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (dev->msg_err) {
 		ret = dev->msg_err;
@@ -672,13 +506,10 @@ static const struct i2c_algorithm i2c_dw_algo = {
 	.functionality = i2c_dw_func,
 };
 
-<<<<<<< HEAD
 static const struct i2c_adapter_quirks i2c_dw_quirks = {
 	.flags = I2C_AQ_NO_ZERO_LEN,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static u32 i2c_dw_read_clear_intrbits(struct dw_i2c_dev *dev)
 {
 	u32 stat;
@@ -796,7 +627,6 @@ static irqreturn_t i2c_dw_isr(int this_irq, void *dev_id)
 	return IRQ_HANDLED;
 }
 
-<<<<<<< HEAD
 static void i2c_dw_prepare_recovery(struct i2c_adapter *adap)
 {
 	struct dw_i2c_dev *dev = i2c_get_adapdata(adap);
@@ -847,8 +677,6 @@ static int i2c_dw_init_recovery_info(struct dw_i2c_dev *dev)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int i2c_dw_probe(struct dw_i2c_dev *dev)
 {
 	struct i2c_adapter *adap = &dev->adapter;
@@ -861,7 +689,6 @@ int i2c_dw_probe(struct dw_i2c_dev *dev)
 	dev->disable = i2c_dw_disable;
 	dev->disable_int = i2c_dw_disable_int;
 
-<<<<<<< HEAD
 	ret = i2c_dw_set_reg_access(dev);
 	if (ret)
 		return ret;
@@ -870,8 +697,6 @@ int i2c_dw_probe(struct dw_i2c_dev *dev)
 	if (ret)
 		return ret;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = dev->init(dev);
 	if (ret)
 		return ret;
@@ -880,18 +705,11 @@ int i2c_dw_probe(struct dw_i2c_dev *dev)
 		 "Synopsys DesignWare I2C adapter");
 	adap->retries = 3;
 	adap->algo = &i2c_dw_algo;
-<<<<<<< HEAD
 	adap->quirks = &i2c_dw_quirks;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adap->dev.parent = dev->dev;
 	i2c_set_adapdata(adap, dev);
 
 	if (dev->pm_disabled) {
-<<<<<<< HEAD
-=======
-		dev_pm_syscore_device(dev->dev, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		irq_flags = IRQF_NO_SUSPEND;
 	} else {
 		irq_flags = IRQF_SHARED | IRQF_COND_SUSPEND;
@@ -906,13 +724,10 @@ int i2c_dw_probe(struct dw_i2c_dev *dev)
 		return ret;
 	}
 
-<<<<<<< HEAD
 	ret = i2c_dw_init_recovery_info(dev);
 	if (ret)
 		return ret;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Increment PM usage count during adapter registration in order to
 	 * avoid possible spurious runtime suspend when adapter device is

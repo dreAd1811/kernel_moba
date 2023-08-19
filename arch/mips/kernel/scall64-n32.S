@@ -434,9 +434,6 @@ EXPORT(sysn32_call_table)
 	PTR	sys_pkey_alloc
 	PTR	sys_pkey_free
 	PTR	sys_statx			/* 6330 */
-<<<<<<< HEAD
 	PTR	sys_rseq
 	PTR	compat_sys_io_pgetevents
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.size	sysn32_call_table,.-sysn32_call_table

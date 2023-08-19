@@ -18,11 +18,7 @@
 #ifndef _FC0013_H_
 #define _FC0013_H_
 
-<<<<<<< HEAD
 #include <media/dvb_frontend.h>
-=======
-#include "dvb_frontend.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "fc001x-common.h"
 
 #if IS_REACHABLE(CONFIG_MEDIA_TUNER_FC0013)

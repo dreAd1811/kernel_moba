@@ -19,10 +19,7 @@
 #include <asm/cpu.h>
 #include <asm/cputype.h>
 #include <asm/cpufeature.h>
-<<<<<<< HEAD
 #include <asm/fpsimd.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/elf.h>
 
 #include <linux/bitops.h>
@@ -336,12 +333,7 @@ static void cpuinfo_detect_icache_policy(struct cpuinfo_arm64 *info)
 		set_bit(ICACHEF_ALIASING, &__icache_flags);
 	}
 
-<<<<<<< HEAD
 	pr_info("Detected %s I-cache on CPU%d\n", icache_policy_str[l1ip], cpu);
-=======
-	pr_debug("Detected %s I-cache on CPU%d\n", icache_policy_str[l1ip],
-			cpu);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __cpuinfo_store_cpu(struct cpuinfo_arm64 *info)
@@ -361,10 +353,7 @@ static void __cpuinfo_store_cpu(struct cpuinfo_arm64 *info)
 	info->reg_id_aa64mmfr2 = read_cpuid(ID_AA64MMFR2_EL1);
 	info->reg_id_aa64pfr0 = read_cpuid(ID_AA64PFR0_EL1);
 	info->reg_id_aa64pfr1 = read_cpuid(ID_AA64PFR1_EL1);
-<<<<<<< HEAD
 	info->reg_id_aa64zfr0 = read_cpuid(ID_AA64ZFR0_EL1);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Update the 32bit ID registers only if AArch32 is implemented */
 	if (id_aa64pfr0_32bit_el0(info->reg_id_aa64pfr0)) {
@@ -387,13 +376,10 @@ static void __cpuinfo_store_cpu(struct cpuinfo_arm64 *info)
 		info->reg_mvfr2 = read_cpuid(MVFR2_EL1);
 	}
 
-<<<<<<< HEAD
 	if (IS_ENABLED(CONFIG_ARM64_SVE) &&
 	    id_aa64pfr0_sve(info->reg_id_aa64pfr0))
 		info->reg_zcr = read_zcr_features();
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cpuinfo_detect_icache_policy(info);
 }
 
@@ -406,11 +392,7 @@ void cpuinfo_store_cpu(void)
 
 void __init cpuinfo_store_boot_cpu(void)
 {
-<<<<<<< HEAD
 	struct cpuinfo_arm64 *info = &per_cpu(cpu_data, 0);
-=======
-	struct cpuinfo_arm64 *info = &per_cpu(cpu_data, logical_bootcpu_id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__cpuinfo_store_cpu(info);
 
 	boot_cpu_data = *info;

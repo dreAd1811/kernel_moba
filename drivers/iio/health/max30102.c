@@ -3,12 +3,9 @@
  *
  * Copyright (C) 2017 Matt Ranostay <matt@ranostay.consulting>
  *
-<<<<<<< HEAD
  * Support for MAX30105 optical particle sensor
  * Copyright (C) 2017 Peter Meerwald-Stadler <pmeerw@pmeerw.net>
  *
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -19,10 +16,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
-<<<<<<< HEAD
  * 7-bit I2C chip address: 0x57
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * TODO: proximity power saving feature
  */
 
@@ -42,7 +36,6 @@
 
 #define MAX30102_REGMAP_NAME	"max30102_regmap"
 #define MAX30102_DRV_NAME	"max30102"
-<<<<<<< HEAD
 #define MAX30102_PART_NUMBER	0x15
 
 enum max30102_chip_id {
@@ -55,8 +48,6 @@ enum max3012_led_idx {
 	MAX30102_LED_IR,
 	MAX30105_LED_GREEN,
 };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define MAX30102_REG_INT_STATUS			0x00
 #define MAX30102_REG_INT_STATUS_PWR_RDY		BIT(0)
@@ -77,11 +68,7 @@ enum max3012_led_idx {
 #define MAX30102_REG_FIFO_OVR_CTR		0x05
 #define MAX30102_REG_FIFO_RD_PTR		0x06
 #define MAX30102_REG_FIFO_DATA			0x07
-<<<<<<< HEAD
 #define MAX30102_REG_FIFO_DATA_BYTES		3
-=======
-#define MAX30102_REG_FIFO_DATA_ENTRY_LEN	6
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define MAX30102_REG_FIFO_CONFIG		0x08
 #define MAX30102_REG_FIFO_CONFIG_AVG_4SAMPLES	BIT(1)
@@ -89,7 +76,6 @@ enum max3012_led_idx {
 #define MAX30102_REG_FIFO_CONFIG_AFULL		BIT(0)
 
 #define MAX30102_REG_MODE_CONFIG		0x09
-<<<<<<< HEAD
 #define MAX30102_REG_MODE_CONFIG_MODE_NONE	0x00
 #define MAX30102_REG_MODE_CONFIG_MODE_HR	0x02 /* red LED */
 #define MAX30102_REG_MODE_CONFIG_MODE_HR_SPO2	0x03 /* red + IR LED */
@@ -102,13 +88,6 @@ enum max3012_led_idx {
 #define MAX30102_REG_MODE_CONTROL_SLOT_MASK	(GENMASK(6, 4) | GENMASK(2, 0))
 #define MAX30102_REG_MODE_CONTROL_SLOT_SHIFT	4
 
-=======
-#define MAX30102_REG_MODE_CONFIG_MODE_SPO2_EN	BIT(0)
-#define MAX30102_REG_MODE_CONFIG_MODE_HR_EN	BIT(1)
-#define MAX30102_REG_MODE_CONFIG_MODE_MASK	0x03
-#define MAX30102_REG_MODE_CONFIG_PWR		BIT(7)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MAX30102_REG_SPO2_CONFIG		0x0a
 #define MAX30102_REG_SPO2_CONFIG_PULSE_411_US	0x03
 #define MAX30102_REG_SPO2_CONFIG_SR_400HZ	0x03
@@ -119,10 +98,7 @@ enum max3012_led_idx {
 
 #define MAX30102_REG_RED_LED_CONFIG		0x0c
 #define MAX30102_REG_IR_LED_CONFIG		0x0d
-<<<<<<< HEAD
 #define MAX30105_REG_GREEN_LED_CONFIG		0x0e
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define MAX30102_REG_TEMP_CONFIG		0x21
 #define MAX30102_REG_TEMP_CONFIG_TEMP_EN	BIT(0)
@@ -130,27 +106,18 @@ enum max3012_led_idx {
 #define MAX30102_REG_TEMP_INTEGER		0x1f
 #define MAX30102_REG_TEMP_FRACTION		0x20
 
-<<<<<<< HEAD
 #define MAX30102_REG_REV_ID			0xfe
 #define MAX30102_REG_PART_ID			0xff
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct max30102_data {
 	struct i2c_client *client;
 	struct iio_dev *indio_dev;
 	struct mutex lock;
 	struct regmap *regmap;
-<<<<<<< HEAD
 	enum max30102_chip_id chip_id;
 
 	u8 buffer[12];
 	__be32 processed_buffer[3]; /* 3 x 18-bit (padded to 32-bits) */
-=======
-
-	u8 buffer[8];
-	__be32 processed_buffer[2]; /* 2 x 18-bit (padded to 32-bits) */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct regmap_config max30102_regmap_config = {
@@ -160,7 +127,6 @@ static const struct regmap_config max30102_regmap_config = {
 	.val_bits = 8,
 };
 
-<<<<<<< HEAD
 static const unsigned long max30102_scan_masks[] = {
 	BIT(MAX30102_LED_RED) | BIT(MAX30102_LED_IR),
 	0
@@ -190,39 +156,6 @@ static const unsigned long max30105_scan_masks[] = {
 static const struct iio_chan_spec max30102_channels[] = {
 	MAX30102_INTENSITY_CHANNEL(MAX30102_LED_RED, IIO_MOD_LIGHT_RED),
 	MAX30102_INTENSITY_CHANNEL(MAX30102_LED_IR, IIO_MOD_LIGHT_IR),
-=======
-static const unsigned long max30102_scan_masks[] = {0x3, 0};
-
-static const struct iio_chan_spec max30102_channels[] = {
-	{
-		.type = IIO_INTENSITY,
-		.channel2 = IIO_MOD_LIGHT_RED,
-		.modified = 1,
-
-		.scan_index = 0,
-		.scan_type = {
-			.sign = 'u',
-			.shift = 8,
-			.realbits = 18,
-			.storagebits = 32,
-			.endianness = IIO_BE,
-		},
-	},
-	{
-		.type = IIO_INTENSITY,
-		.channel2 = IIO_MOD_LIGHT_IR,
-		.modified = 1,
-
-		.scan_index = 1,
-		.scan_type = {
-			.sign = 'u',
-			.shift = 8,
-			.realbits = 18,
-			.storagebits = 32,
-			.endianness = IIO_BE,
-		},
-	},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{
 		.type = IIO_TEMP,
 		.info_mask_separate =
@@ -231,7 +164,6 @@ static const struct iio_chan_spec max30102_channels[] = {
 	},
 };
 
-<<<<<<< HEAD
 static const struct iio_chan_spec max30105_channels[] = {
 	MAX30102_INTENSITY_CHANNEL(MAX30102_LED_RED, IIO_MOD_LIGHT_RED),
 	MAX30102_INTENSITY_CHANNEL(MAX30102_LED_IR, IIO_MOD_LIGHT_IR),
@@ -299,32 +231,14 @@ static int max30102_buffer_postenable(struct iio_dev *indio_dev)
 	}
 
 	return max30102_set_powermode(data, reg, true);
-=======
-static int max30102_set_powermode(struct max30102_data *data, bool state)
-{
-	return regmap_update_bits(data->regmap, MAX30102_REG_MODE_CONFIG,
-				  MAX30102_REG_MODE_CONFIG_PWR,
-				  state ? 0 : MAX30102_REG_MODE_CONFIG_PWR);
-}
-
-static int max30102_buffer_postenable(struct iio_dev *indio_dev)
-{
-	struct max30102_data *data = iio_priv(indio_dev);
-
-	return max30102_set_powermode(data, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int max30102_buffer_predisable(struct iio_dev *indio_dev)
 {
 	struct max30102_data *data = iio_priv(indio_dev);
 
-<<<<<<< HEAD
 	return max30102_set_powermode(data, MAX30102_REG_MODE_CONFIG_MODE_NONE,
 				      false);
-=======
-	return max30102_set_powermode(data, false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct iio_buffer_setup_ops max30102_buffer_setup_ops = {
@@ -348,7 +262,6 @@ static inline int max30102_fifo_count(struct max30102_data *data)
 	return 0;
 }
 
-<<<<<<< HEAD
 #define MAX30102_COPY_DATA(i) \
 	memcpy(&data->processed_buffer[(i)], \
 	       &buffer[(i) * MAX30102_REG_FIFO_DATA_BYTES], \
@@ -356,16 +269,12 @@ static inline int max30102_fifo_count(struct max30102_data *data)
 
 static int max30102_read_measurement(struct max30102_data *data,
 				     unsigned int measurements)
-=======
-static int max30102_read_measurement(struct max30102_data *data)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret;
 	u8 *buffer = (u8 *) &data->buffer;
 
 	ret = i2c_smbus_read_i2c_block_data(data->client,
 					    MAX30102_REG_FIFO_DATA,
-<<<<<<< HEAD
 					    measurements *
 					    MAX30102_REG_FIFO_DATA_BYTES,
 					    buffer);
@@ -384,36 +293,20 @@ static int max30102_read_measurement(struct max30102_data *data)
 
 	return (ret == measurements * MAX30102_REG_FIFO_DATA_BYTES) ?
 	       0 : -EINVAL;
-=======
-					    MAX30102_REG_FIFO_DATA_ENTRY_LEN,
-					    buffer);
-
-	memcpy(&data->processed_buffer[0], &buffer[0], 3);
-	memcpy(&data->processed_buffer[1], &buffer[3], 3);
-
-	return (ret == MAX30102_REG_FIFO_DATA_ENTRY_LEN) ? 0 : -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static irqreturn_t max30102_interrupt_handler(int irq, void *private)
 {
 	struct iio_dev *indio_dev = private;
 	struct max30102_data *data = iio_priv(indio_dev);
-<<<<<<< HEAD
 	unsigned int measurements = bitmap_weight(indio_dev->active_scan_mask,
 						  indio_dev->masklength);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret, cnt = 0;
 
 	mutex_lock(&data->lock);
 
 	while (cnt || (cnt = max30102_fifo_count(data)) > 0) {
-<<<<<<< HEAD
 		ret = max30102_read_measurement(data, measurements);
-=======
-		ret = max30102_read_measurement(data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			break;
 
@@ -459,7 +352,6 @@ static int max30102_led_init(struct max30102_data *data)
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	if (data->chip_id == max30105) {
 		ret = of_property_read_u32(np,
 			"maxim,green-led-current-microamp", &val);
@@ -483,8 +375,6 @@ static int max30102_led_init(struct max30102_data *data)
 			return ret;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = of_property_read_u32(np, "maxim,ir-led-current-microamp", &val);
 	if (ret) {
 		dev_info(dev, "no ir-led-current-microamp set\n");
@@ -495,11 +385,7 @@ static int max30102_led_init(struct max30102_data *data)
 
 	ret = max30102_get_current_idx(val, &reg);
 	if (ret) {
-<<<<<<< HEAD
 		dev_err(dev, "invalid IR LED current setting %d\n", val);
-=======
-		dev_err(dev, "invalid IR LED current setting %d", val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
@@ -515,11 +401,7 @@ static int max30102_chip_init(struct max30102_data *data)
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	/* configure 18-bit HR + SpO2 readings at 400Hz */
-=======
-	/* enable 18-bit HR + SPO2 readings at 400Hz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = regmap_write(data->regmap, MAX30102_REG_SPO2_CONFIG,
 				(MAX30102_REG_SPO2_CONFIG_ADC_4096_STEPS
 				 << MAX30102_REG_SPO2_CONFIG_ADC_MASK_SHIFT) |
@@ -529,17 +411,6 @@ static int max30102_chip_init(struct max30102_data *data)
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
-=======
-	/* enable SPO2 mode */
-	ret = regmap_update_bits(data->regmap, MAX30102_REG_MODE_CONFIG,
-				 MAX30102_REG_MODE_CONFIG_MODE_MASK,
-				 MAX30102_REG_MODE_CONFIG_MODE_HR_EN |
-				 MAX30102_REG_MODE_CONFIG_MODE_SPO2_EN);
-	if (ret)
-		return ret;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* average 4 samples + generate FIFO interrupt */
 	ret = regmap_write(data->regmap, MAX30102_REG_FIFO_CONFIG,
 				(MAX30102_REG_FIFO_CONFIG_AVG_4SAMPLES
@@ -579,11 +450,7 @@ static int max30102_get_temp(struct max30102_data *data, int *val, bool en)
 	int ret;
 
 	if (en) {
-<<<<<<< HEAD
 		ret = max30102_set_power(data, true);
-=======
-		ret = max30102_set_powermode(data, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			return ret;
 	}
@@ -600,11 +467,7 @@ static int max30102_get_temp(struct max30102_data *data, int *val, bool en)
 
 out:
 	if (en)
-<<<<<<< HEAD
 		max30102_set_power(data, false);
-=======
-		max30102_set_powermode(data, false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -644,10 +507,6 @@ static int max30102_read_raw(struct iio_dev *indio_dev,
 }
 
 static const struct iio_info max30102_info = {
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read_raw = max30102_read_raw,
 };
 
@@ -658,10 +517,7 @@ static int max30102_probe(struct i2c_client *client,
 	struct iio_buffer *buffer;
 	struct iio_dev *indio_dev;
 	int ret;
-<<<<<<< HEAD
 	unsigned int reg;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
 	if (!indio_dev)
@@ -674,14 +530,7 @@ static int max30102_probe(struct i2c_client *client,
 	iio_device_attach_buffer(indio_dev, buffer);
 
 	indio_dev->name = MAX30102_DRV_NAME;
-<<<<<<< HEAD
 	indio_dev->info = &max30102_info;
-=======
-	indio_dev->channels = max30102_channels;
-	indio_dev->info = &max30102_info;
-	indio_dev->num_channels = ARRAY_SIZE(max30102_channels);
-	indio_dev->available_scan_masks = max30102_scan_masks;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	indio_dev->modes = (INDIO_BUFFER_SOFTWARE | INDIO_DIRECT_MODE);
 	indio_dev->setup_ops = &max30102_buffer_setup_ops;
 	indio_dev->dev.parent = &client->dev;
@@ -689,15 +538,11 @@ static int max30102_probe(struct i2c_client *client,
 	data = iio_priv(indio_dev);
 	data->indio_dev = indio_dev;
 	data->client = client;
-<<<<<<< HEAD
 	data->chip_id = id->driver_data;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_init(&data->lock);
 	i2c_set_clientdata(client, indio_dev);
 
-<<<<<<< HEAD
 	switch (data->chip_id) {
 	case max30105:
 		indio_dev->channels = max30105_channels;
@@ -737,14 +582,6 @@ static int max30102_probe(struct i2c_client *client,
 				     false);
 	if (ret)
 		return ret;
-=======
-	data->regmap = devm_regmap_init_i2c(client, &max30102_regmap_config);
-	if (IS_ERR(data->regmap)) {
-		dev_err(&client->dev, "regmap initialization failed.\n");
-		return PTR_ERR(data->regmap);
-	}
-	max30102_set_powermode(data, false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = max30102_chip_init(data);
 	if (ret)
@@ -773,32 +610,21 @@ static int max30102_remove(struct i2c_client *client)
 	struct max30102_data *data = iio_priv(indio_dev);
 
 	iio_device_unregister(indio_dev);
-<<<<<<< HEAD
 	max30102_set_power(data, false);
-=======
-	max30102_set_powermode(data, false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
 static const struct i2c_device_id max30102_id[] = {
-<<<<<<< HEAD
 	{ "max30102", max30102 },
 	{ "max30105", max30105 },
-=======
-	{ "max30102", 0 },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{}
 };
 MODULE_DEVICE_TABLE(i2c, max30102_id);
 
 static const struct of_device_id max30102_dt_ids[] = {
 	{ .compatible = "maxim,max30102" },
-<<<<<<< HEAD
 	{ .compatible = "maxim,max30105" },
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ }
 };
 MODULE_DEVICE_TABLE(of, max30102_dt_ids);
@@ -815,9 +641,5 @@ static struct i2c_driver max30102_driver = {
 module_i2c_driver(max30102_driver);
 
 MODULE_AUTHOR("Matt Ranostay <matt@ranostay.consulting>");
-<<<<<<< HEAD
 MODULE_DESCRIPTION("MAX30102 heart rate/pulse oximeter and MAX30105 particle sensor driver");
-=======
-MODULE_DESCRIPTION("MAX30102 heart rate and pulse oximeter sensor");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_LICENSE("GPL");

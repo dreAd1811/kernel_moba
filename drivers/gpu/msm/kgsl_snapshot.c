@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2012-2020, The Linux Foundation. All rights reserved.
@@ -12,33 +11,6 @@
 #include "kgsl_device.h"
 #include "kgsl_sharedmem.h"
 #include "kgsl_snapshot.h"
-=======
-/* Copyright (c) 2012-2019, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
-
-#include <linux/export.h>
-#include <linux/time.h>
-#include <linux/sysfs.h>
-#include <linux/utsname.h>
-#include <linux/sched.h>
-#include <linux/idr.h>
-
-#include "kgsl.h"
-#include "kgsl_log.h"
-#include "kgsl_device.h"
-#include "kgsl_sharedmem.h"
-#include "kgsl_snapshot.h"
-#include "adreno_cp_parser.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void kgsl_snapshot_save_frozen_objs(struct work_struct *work);
 
@@ -99,53 +71,6 @@ done:
 	return size;
 }
 
-<<<<<<< HEAD
-=======
-/* idr_for_each function to count the number of contexts */
-
-static int snapshot_context_count(int id, void *ptr, void *data)
-{
-	int *count = data;
-	*count = *count + 1;
-
-	return 0;
-}
-
-/*
- * To simplify the iterator loop use a global pointer instead of trying
- * to pass around double star references to the snapshot data
- */
-
-static u8 *_ctxtptr;
-
-static int snapshot_context_info(int id, void *ptr, void *data)
-{
-	struct kgsl_snapshot_linux_context_v2 *header =
-		(struct kgsl_snapshot_linux_context_v2 *)_ctxtptr;
-	struct kgsl_context *context = ptr;
-	struct kgsl_device *device;
-
-	device = context->device;
-
-	header->id = id;
-
-	/* Future-proof for per-context timestamps - for now, just
-	 * return the global timestamp for all contexts
-	 */
-
-	kgsl_readtimestamp(device, context, KGSL_TIMESTAMP_QUEUED,
-		&header->timestamp_queued);
-	kgsl_readtimestamp(device, context, KGSL_TIMESTAMP_CONSUMED,
-		&header->timestamp_consumed);
-	kgsl_readtimestamp(device, context, KGSL_TIMESTAMP_RETIRED,
-		&header->timestamp_retired);
-
-	_ctxtptr += sizeof(struct kgsl_snapshot_linux_context_v2);
-
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Snapshot the Linux specific information */
 static size_t snapshot_os(struct kgsl_device *device,
 	u8 *buf, size_t remain, void *priv)
@@ -153,16 +78,10 @@ static size_t snapshot_os(struct kgsl_device *device,
 	struct kgsl_snapshot_linux_v2 *header =
 		(struct kgsl_snapshot_linux_v2 *)buf;
 	struct kgsl_pwrctrl *pwr = &device->pwrctrl;
-<<<<<<< HEAD
 	int ctxtcount = 0, id;
 	size_t size = sizeof(*header);
 	struct kgsl_context *context;
 	struct kgsl_snapshot_linux_context_v2 *ctxhdr;
-=======
-	int ctxtcount = 0;
-	size_t size = sizeof(*header);
-	struct kgsl_context *context;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Figure out how many active contexts there are - these will
@@ -170,12 +89,8 @@ static size_t snapshot_os(struct kgsl_device *device,
 	 */
 
 	read_lock(&device->context_lock);
-<<<<<<< HEAD
 	idr_for_each_entry(&device->context_idr, context, id)
 		ctxtcount++;
-=======
-	idr_for_each(&device->context_idr, snapshot_context_count, &ctxtcount);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	read_unlock(&device->context_lock);
 
 	size += ctxtcount * sizeof(struct kgsl_snapshot_linux_context_v2);
@@ -202,12 +117,8 @@ static size_t snapshot_os(struct kgsl_device *device,
 	/* Remember the power information */
 	header->power_flags = pwr->power_flags;
 	header->power_level = pwr->active_pwrlevel;
-<<<<<<< HEAD
 	header->power_interval_timeout =
 		jiffies_to_msecs(pwr->interval_timeout);
-=======
-	header->power_interval_timeout = pwr->interval_timeout;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	header->grpclk = kgsl_get_clkrate(pwr->grp_clks[0]);
 
 	/*
@@ -224,10 +135,7 @@ static size_t snapshot_os(struct kgsl_device *device,
 
 	/* And the PID for the task leader */
 	if (context) {
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		header->pid = context->tid;
 		strlcpy(header->comm, context->proc_priv->comm,
 				sizeof(header->comm));
@@ -237,7 +145,6 @@ static size_t snapshot_os(struct kgsl_device *device,
 
 	header->ctxtcount = ctxtcount;
 
-<<<<<<< HEAD
 	/* append information for each context */
 	read_lock(&device->context_lock);
 
@@ -261,13 +168,6 @@ static size_t snapshot_os(struct kgsl_device *device,
 
 		ctxhdr++;
 	}
-=======
-	_ctxtptr = buf + sizeof(*header);
-	/* append information for each context */
-
-	read_lock(&device->context_lock);
-	idr_for_each(&device->context_idr, snapshot_context_info, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	read_unlock(&device->context_lock);
 
 	/* Return the size of the data segment */
@@ -305,12 +205,8 @@ static size_t snapshot_os_no_ctxt(struct kgsl_device *device,
 	/* Remember the power information */
 	header->power_flags = pwr->power_flags;
 	header->power_level = pwr->active_pwrlevel;
-<<<<<<< HEAD
 	header->power_interval_timeout =
 		jiffies_to_msecs(pwr->interval_timeout);
-=======
-	header->power_interval_timeout = pwr->interval_timeout;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	header->grpclk = kgsl_get_clkrate(pwr->grp_clks[0]);
 
 	/* Return the size of the data segment */
@@ -450,12 +346,8 @@ int kgsl_snapshot_get_object(struct kgsl_snapshot *snapshot,
 	}
 
 	if (size + offset > entry->memdesc.size) {
-<<<<<<< HEAD
 		dev_err(snapshot->device->dev,
 			"snapshot: invalid size for GPU buffer 0x%016llx\n",
-=======
-		KGSL_CORE_ERR("Invalid size for GPU buffer 0x%016llX\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			gpuaddr);
 		goto err_put;
 	}
@@ -689,10 +581,7 @@ void kgsl_snapshot_add_section(struct kgsl_device *device, u16 id,
 static void kgsl_free_snapshot(struct kgsl_snapshot *snapshot)
 {
 	struct kgsl_snapshot_object *obj, *tmp;
-<<<<<<< HEAD
 	struct kgsl_device *device = snapshot->device;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	wait_for_completion(&snapshot->dump_gate);
 
@@ -704,7 +593,6 @@ static void kgsl_free_snapshot(struct kgsl_snapshot *snapshot)
 		vfree(snapshot->mempool);
 
 	kfree(snapshot);
-<<<<<<< HEAD
 	dev_err(device->dev, "snapshot: objects released\n");
 }
 
@@ -747,9 +635,6 @@ static void set_isdb_breakpoint_registers(struct kgsl_device *device)
 	isdb_write(device->qdss_gfx_virt, 0x3000);
 	isdb_write(device->qdss_gfx_virt, 0x4000);
 	isdb_write(device->qdss_gfx_virt, 0x5000);
-=======
-	KGSL_CORE_ERR("snapshot: objects released\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -769,17 +654,11 @@ void kgsl_device_snapshot(struct kgsl_device *device,
 	struct timespec boot;
 	phys_addr_t pa;
 
-<<<<<<< HEAD
 	set_isdb_breakpoint_registers(device);
 
 	if (device->snapshot_memory.ptr == NULL) {
 		dev_err(device->dev,
 			     "snapshot: no snapshot memory available\n");
-=======
-	if (device->snapshot_memory.ptr == NULL) {
-		KGSL_DRV_ERR(device,
-			"snapshot: no snapshot memory available\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -868,7 +747,6 @@ void kgsl_device_snapshot(struct kgsl_device *device,
 
 	/* Store the instance in the device until it gets dumped */
 	device->snapshot = snapshot;
-<<<<<<< HEAD
 	snapshot->device = device;
 
 	/* log buffer info to aid in ramdump fault tolerance */
@@ -879,14 +757,6 @@ void kgsl_device_snapshot(struct kgsl_device *device,
 	if (device->skip_ib_capture)
 		BUG_ON(device->force_panic);
 
-=======
-
-	/* log buffer info to aid in ramdump fault tolerance */
-	pa = __pa(device->snapshot_memory.ptr);
-	KGSL_DRV_ERR(device, "%s snapshot created at pa %pa++0x%zx\n",
-			gmu_fault ? "GMU" : "GPU", &pa, snapshot->size);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sysfs_notify(&device->snapshot_kobj, NULL, "timestamp");
 
 	/*
@@ -974,12 +844,6 @@ static ssize_t snapshot_show(struct file *filep, struct kobject *kobj,
 	struct snapshot_obj_itr itr;
 	int ret = 0;
 
-<<<<<<< HEAD
-=======
-	if (device == NULL)
-		return 0;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&device->mutex);
 	snapshot = device->snapshot;
 	if (snapshot != NULL) {
@@ -1069,22 +933,14 @@ done:
 /* Show the total number of hangs since device boot */
 static ssize_t faultcount_show(struct kgsl_device *device, char *buf)
 {
-<<<<<<< HEAD
 	return scnprintf(buf, PAGE_SIZE, "%d\n", device->snapshot_faultcount);
-=======
-	return snprintf(buf, PAGE_SIZE, "%d\n", device->snapshot_faultcount);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Reset the total number of hangs since device boot */
 static ssize_t faultcount_store(struct kgsl_device *device, const char *buf,
 	size_t count)
 {
-<<<<<<< HEAD
 	if (count)
-=======
-	if (device && count > 0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		device->snapshot_faultcount = 0;
 
 	return count;
@@ -1093,18 +949,13 @@ static ssize_t faultcount_store(struct kgsl_device *device, const char *buf,
 /* Show the force_panic request status */
 static ssize_t force_panic_show(struct kgsl_device *device, char *buf)
 {
-<<<<<<< HEAD
 	return scnprintf(buf, PAGE_SIZE, "%d\n", device->force_panic);
-=======
-	return snprintf(buf, PAGE_SIZE, "%d\n", device->force_panic);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Store the panic request value to force_panic */
 static ssize_t force_panic_store(struct kgsl_device *device, const char *buf,
 	size_t count)
 {
-<<<<<<< HEAD
 	if (strtobool(buf, &device->force_panic))
 		return -EINVAL;
 	return count;
@@ -1124,31 +975,13 @@ static ssize_t skip_ib_capture_store(struct kgsl_device *device,
 
 	ret = kstrtobool(buf, &device->skip_ib_capture);
 	return ret ? ret : count;
-=======
-	unsigned int val = 0;
-	int ret;
-
-	if (device && count > 0)
-		device->force_panic = 0;
-
-	ret = kgsl_sysfs_store(buf, &val);
-
-	if (!ret && device)
-		device->force_panic = (bool)val;
-
-	return (ssize_t) ret < 0 ? ret : count;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Show the prioritize_unrecoverable status */
 static ssize_t prioritize_unrecoverable_show(
 		struct kgsl_device *device, char *buf)
 {
-<<<<<<< HEAD
 	return scnprintf(buf, PAGE_SIZE, "%d\n",
-=======
-	return snprintf(buf, PAGE_SIZE, "%d\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			device->prioritize_unrecoverable);
 }
 
@@ -1156,31 +989,16 @@ static ssize_t prioritize_unrecoverable_show(
 static ssize_t prioritize_unrecoverable_store(
 		struct kgsl_device *device, const char *buf, size_t count)
 {
-<<<<<<< HEAD
 	if (strtobool(buf, &device->prioritize_unrecoverable))
 		return -EINVAL;
 
 	return count;
-=======
-	unsigned int val = 0;
-	int ret = 0;
-
-	ret = kgsl_sysfs_store(buf, &val);
-	if (!ret && device)
-		device->prioritize_unrecoverable = (bool) val;
-
-	return (ssize_t) ret < 0 ? ret : count;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Show the snapshot_crashdumper request status */
 static ssize_t snapshot_crashdumper_show(struct kgsl_device *device, char *buf)
 {
-<<<<<<< HEAD
 	return scnprintf(buf, PAGE_SIZE, "%d\n", device->snapshot_crashdumper);
-=======
-	return snprintf(buf, PAGE_SIZE, "%d\n", device->snapshot_crashdumper);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 
@@ -1188,24 +1006,9 @@ static ssize_t snapshot_crashdumper_show(struct kgsl_device *device, char *buf)
 static ssize_t snapshot_crashdumper_store(struct kgsl_device *device,
 	const char *buf, size_t count)
 {
-<<<<<<< HEAD
 	if (strtobool(buf, &device->snapshot_crashdumper))
 		return -EINVAL;
 	return count;
-=======
-	unsigned int val = 0;
-	int ret;
-
-	if (device && count > 0)
-		device->snapshot_crashdumper = 1;
-
-	ret = kgsl_sysfs_store(buf, &val);
-
-	if (!ret && device)
-		device->snapshot_crashdumper = (bool)val;
-
-	return (ssize_t) ret < 0 ? ret : count;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Show the timestamp of the last collected snapshot */
@@ -1216,41 +1019,21 @@ static ssize_t timestamp_show(struct kgsl_device *device, char *buf)
 	mutex_lock(&device->mutex);
 	timestamp = device->snapshot ? device->snapshot->timestamp : 0;
 	mutex_unlock(&device->mutex);
-<<<<<<< HEAD
 	return scnprintf(buf, PAGE_SIZE, "%lu\n", timestamp);
-=======
-	return snprintf(buf, PAGE_SIZE, "%lu\n", timestamp);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static ssize_t snapshot_legacy_show(struct kgsl_device *device, char *buf)
 {
-<<<<<<< HEAD
 	return scnprintf(buf, PAGE_SIZE, "%d\n", device->snapshot_legacy);
-=======
-	return snprintf(buf, PAGE_SIZE, "%d\n", device->snapshot_legacy);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static ssize_t snapshot_legacy_store(struct kgsl_device *device,
 	const char *buf, size_t count)
 {
-<<<<<<< HEAD
 	if (strtobool(buf, &device->snapshot_legacy))
 		return -EINVAL;
 
 	return count;
-=======
-	unsigned int val = 0;
-	int ret;
-
-	ret = kgsl_sysfs_store(buf, &val);
-
-	if (!ret && device)
-		device->snapshot_legacy = (bool)val;
-
-	return (ssize_t) ret < 0 ? ret : count;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct bin_attribute snapshot_attr = {
@@ -1276,11 +1059,8 @@ static SNAPSHOT_ATTR(snapshot_crashdumper, 0644, snapshot_crashdumper_show,
 	snapshot_crashdumper_store);
 static SNAPSHOT_ATTR(snapshot_legacy, 0644, snapshot_legacy_show,
 	snapshot_legacy_store);
-<<<<<<< HEAD
 static SNAPSHOT_ATTR(skip_ib_capture, 0644, skip_ib_capture_show,
 		skip_ib_capture_store);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static ssize_t snapshot_sysfs_show(struct kobject *kobj,
 	struct attribute *attr, char *buf)
@@ -1302,19 +1082,10 @@ static ssize_t snapshot_sysfs_store(struct kobject *kobj,
 {
 	struct kgsl_snapshot_attribute *pattr = to_snapshot_attr(attr);
 	struct kgsl_device *device = kobj_to_device(kobj);
-<<<<<<< HEAD
 	ssize_t ret = -EIO;
 
 	if (pattr->store)
 		ret = pattr->store(device, buf, count);
-=======
-	ssize_t ret;
-
-	if (device && pattr->store)
-		ret = pattr->store(device, buf, count);
-	else
-		ret = -EIO;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -1328,7 +1099,6 @@ static struct kobj_type ktype_snapshot = {
 	.sysfs_ops = &snapshot_sysfs_ops,
 };
 
-<<<<<<< HEAD
 static const struct attribute *snapshot_attrs[] = {
 	&attr_timestamp.attr,
 	&attr_faultcount.attr,
@@ -1340,8 +1110,6 @@ static const struct attribute *snapshot_attrs[] = {
 	NULL,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * kgsl_device_snapshot_init() - add resources for the device GPU snapshot
  * @device: The device to initialize
@@ -1353,16 +1121,10 @@ int kgsl_device_snapshot_init(struct kgsl_device *device)
 {
 	int ret;
 
-<<<<<<< HEAD
 	device->snapshot_memory.size = KGSL_SNAPSHOT_MEMSIZE;
 
 	of_property_read_u32(device->pdev->dev.of_node,
 		"qcom,snapshot-size", &device->snapshot_memory.size);
-=======
-	if (kgsl_property_read_u32(device, "qcom,snapshot-size",
-		(unsigned int *) &(device->snapshot_memory.size)))
-		device->snapshot_memory.size = KGSL_SNAPSHOT_MEMSIZE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Choosing a memory size of 0 is essentially the same as disabling
@@ -1376,10 +1138,7 @@ int kgsl_device_snapshot_init(struct kgsl_device *device)
 	 * that we can at least fit the snapshot header in the requested
 	 * region
 	 */
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (device->snapshot_memory.size < sizeof(struct kgsl_snapshot_header))
 		device->snapshot_memory.size =
 			sizeof(struct kgsl_snapshot_header);
@@ -1392,15 +1151,9 @@ int kgsl_device_snapshot_init(struct kgsl_device *device)
 
 	device->snapshot = NULL;
 	device->snapshot_faultcount = 0;
-<<<<<<< HEAD
 	device->force_panic = false;
 	device->snapshot_crashdumper = true;
 	device->snapshot_legacy = false;
-=======
-	device->force_panic = 0;
-	device->snapshot_crashdumper = 1;
-	device->snapshot_legacy = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Set this to false so that we only ever keep the first snapshot around
@@ -1412,7 +1165,6 @@ int kgsl_device_snapshot_init(struct kgsl_device *device)
 	ret = kobject_init_and_add(&device->snapshot_kobj, &ktype_snapshot,
 		&device->dev->kobj, "snapshot");
 	if (ret)
-<<<<<<< HEAD
 		return ret;
 
 	ret = sysfs_create_bin_file(&device->snapshot_kobj, &snapshot_attr);
@@ -1421,41 +1173,6 @@ int kgsl_device_snapshot_init(struct kgsl_device *device)
 
 	ret = sysfs_create_files(&device->snapshot_kobj, snapshot_attrs);
 
-=======
-		goto done;
-
-	ret = sysfs_create_bin_file(&device->snapshot_kobj, &snapshot_attr);
-	if (ret)
-		goto done;
-
-	ret  = sysfs_create_file(&device->snapshot_kobj, &attr_timestamp.attr);
-	if (ret)
-		goto done;
-
-	ret  = sysfs_create_file(&device->snapshot_kobj, &attr_faultcount.attr);
-	if (ret)
-		goto done;
-
-	ret  = sysfs_create_file(&device->snapshot_kobj,
-			&attr_force_panic.attr);
-	if (ret)
-		goto done;
-
-	ret = sysfs_create_file(&device->snapshot_kobj,
-			&attr_prioritize_unrecoverable.attr);
-	if (ret)
-		goto done;
-
-	ret  = sysfs_create_file(&device->snapshot_kobj,
-			&attr_snapshot_crashdumper.attr);
-	if (ret)
-		goto done;
-
-	ret  = sysfs_create_file(&device->snapshot_kobj,
-			&attr_snapshot_legacy.attr);
-
-done:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 EXPORT_SYMBOL(kgsl_device_snapshot_init);
@@ -1470,11 +1187,7 @@ EXPORT_SYMBOL(kgsl_device_snapshot_init);
 void kgsl_device_snapshot_close(struct kgsl_device *device)
 {
 	sysfs_remove_bin_file(&device->snapshot_kobj, &snapshot_attr);
-<<<<<<< HEAD
 	sysfs_remove_files(&device->snapshot_kobj, snapshot_attrs);
-=======
-	sysfs_remove_file(&device->snapshot_kobj, &attr_timestamp.attr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kobject_put(&device->snapshot_kobj);
 
@@ -1483,13 +1196,8 @@ void kgsl_device_snapshot_close(struct kgsl_device *device)
 	device->snapshot_memory.ptr = NULL;
 	device->snapshot_memory.size = 0;
 	device->snapshot_faultcount = 0;
-<<<<<<< HEAD
 	device->force_panic = false;
 	device->snapshot_crashdumper = true;
-=======
-	device->force_panic = 0;
-	device->snapshot_crashdumper = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(kgsl_device_snapshot_close);
 
@@ -1530,12 +1238,8 @@ static size_t _mempool_add_object(struct kgsl_snapshot *snapshot, u8 *data,
 	size = obj->size;
 
 	if (!kgsl_memdesc_map(&obj->entry->memdesc)) {
-<<<<<<< HEAD
 		dev_err(snapshot->device->dev,
 			"snapshot: failed to map GPU object\n");
-=======
-		KGSL_CORE_ERR("snapshot: failed to map GPU object\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 
@@ -1573,20 +1277,10 @@ static void kgsl_snapshot_save_frozen_objs(struct work_struct *work)
 {
 	struct kgsl_snapshot *snapshot = container_of(work,
 				struct kgsl_snapshot, work);
-<<<<<<< HEAD
-=======
-	struct kgsl_device *device = kgsl_get_device(KGSL_DEVICE_3D0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct kgsl_snapshot_object *obj, *tmp;
 	size_t size = 0;
 	void *ptr;
 
-<<<<<<< HEAD
-=======
-	if (IS_ERR_OR_NULL(device))
-		return;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (snapshot->gmu_fault)
 		goto gmu_only;
 
@@ -1628,28 +1322,16 @@ done:
 	snapshot->process = NULL;
 
 	if (snapshot->ib1base && !snapshot->ib1dumped)
-<<<<<<< HEAD
 		dev_err(snapshot->device->dev,
 				"snapshot: Active IB1:%016llx not dumped\n",
 				snapshot->ib1base);
 	else if (snapshot->ib2base && !snapshot->ib2dumped)
 		dev_err(snapshot->device->dev,
-=======
-		KGSL_DRV_ERR(device,
-				"snapshot: Active IB1:%016llx not dumped\n",
-				snapshot->ib1base);
-	else if (snapshot->ib2base && !snapshot->ib2dumped)
-		KGSL_DRV_ERR(device,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       "snapshot: Active IB2:%016llx not dumped\n",
 				snapshot->ib2base);
 
 gmu_only:
 	complete_all(&snapshot->dump_gate);
-<<<<<<< HEAD
 	BUG_ON(!snapshot->device->skip_ib_capture &
 				snapshot->device->force_panic);
-=======
-	BUG_ON(device->force_panic);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

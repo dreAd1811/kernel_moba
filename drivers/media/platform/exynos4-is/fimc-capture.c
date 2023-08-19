@@ -146,10 +146,7 @@ static int fimc_stop_capture(struct fimc_dev *fimc, bool suspend)
 
 /**
  * fimc_capture_config_update - apply the camera interface configuration
-<<<<<<< HEAD
  * @ctx: FIMC capture context
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * To be called from within the interrupt handler with fimc.slock
  * spinlock held. It updates the camera pixel crop, rotation and
@@ -673,7 +670,6 @@ static void fimc_capture_try_selection(struct fimc_ctx *ctx,
 		return;
 	}
 	if (target == V4L2_SEL_TGT_COMPOSE) {
-<<<<<<< HEAD
 		u32 tmp_min_h = ffs(sink->width) - 3;
 		u32 tmp_min_v = ffs(sink->height) - 1;
 
@@ -681,12 +677,6 @@ static void fimc_capture_try_selection(struct fimc_ctx *ctx,
 			align_h = 1;
 		max_sc_h = min(SCALER_MAX_HRATIO, 1 << tmp_min_h);
 		max_sc_v = min(SCALER_MAX_VRATIO, 1 << tmp_min_v);
-=======
-		if (ctx->rotation != 90 && ctx->rotation != 270)
-			align_h = 1;
-		max_sc_h = min(SCALER_MAX_HRATIO, 1 << (ffs(sink->width) - 3));
-		max_sc_v = min(SCALER_MAX_VRATIO, 1 << (ffs(sink->height) - 1));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		min_sz = var->min_out_pixsize;
 	} else {
 		u32 depth = fimc_get_format_depth(sink->fmt);
@@ -872,10 +862,7 @@ static int fimc_pipeline_try_format(struct fimc_ctx *ctx,
  * fimc_get_sensor_frame_desc - query the sensor for media bus frame parameters
  * @sensor: pointer to the sensor subdev
  * @plane_fmt: provides plane sizes corresponding to the frame layout entries
-<<<<<<< HEAD
  * @num_planes: number of planes
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @try: true to set the frame parameters, false to query only
  *
  * This function is used by this driver only for compressed/blob data formats.
@@ -1119,10 +1106,7 @@ static int fimc_cap_g_input(struct file *file, void *priv, unsigned int *i)
 /**
  * fimc_pipeline_validate - check for formats inconsistencies
  *                          between source and sink pad of each link
-<<<<<<< HEAD
  * @fimc:	the FIMC device this context applies to
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Return 0 if all formats match or -EPIPE otherwise.
  */

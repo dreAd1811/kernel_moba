@@ -14,32 +14,20 @@
 #include <linux/dmi.h>
 #include <linux/slab.h>
 #include <linux/module.h>
-<<<<<<< HEAD
 #include <linux/i2c.h>
 #include <linux/input.h>
 #include <linux/input/mt.h>
 #include <linux/platform_device.h>
-=======
-#include <linux/input.h>
-#include <linux/input/mt.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/serio.h>
 #include <linux/libps2.h>
 #include <asm/unaligned.h>
 #include "psmouse.h"
 #include "elantech.h"
-<<<<<<< HEAD
 #include "elan_i2c.h"
 
 #define elantech_debug(fmt, ...)					\
 	do {								\
 		if (etd->info.debug)					\
-=======
-
-#define elantech_debug(fmt, ...)					\
-	do {								\
-		if (etd->debug)						\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			psmouse_printk(KERN_DEBUG, psmouse,		\
 					fmt, ##__VA_ARGS__);		\
 	} while (0)
@@ -50,11 +38,7 @@
 static int synaptics_send_cmd(struct psmouse *psmouse, unsigned char c,
 				unsigned char *param)
 {
-<<<<<<< HEAD
 	if (ps2_sliced_command(&psmouse->ps2dev, c) ||
-=======
-	if (psmouse_sliced_command(psmouse, c) ||
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    ps2_command(&psmouse->ps2dev, param, PSMOUSE_CMD_GETINFO)) {
 		psmouse_err(psmouse, "%s query 0x%02x failed.\n", __func__, c);
 		return -1;
@@ -124,17 +108,10 @@ static int elantech_read_reg(struct psmouse *psmouse, unsigned char reg,
 	if (reg > 0x11 && reg < 0x20)
 		return -1;
 
-<<<<<<< HEAD
 	switch (etd->info.hw_version) {
 	case 1:
 		if (ps2_sliced_command(&psmouse->ps2dev, ETP_REGISTER_READ) ||
 		    ps2_sliced_command(&psmouse->ps2dev, reg) ||
-=======
-	switch (etd->hw_version) {
-	case 1:
-		if (psmouse_sliced_command(psmouse, ETP_REGISTER_READ) ||
-		    psmouse_sliced_command(psmouse, reg) ||
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    ps2_command(&psmouse->ps2dev, param, PSMOUSE_CMD_GETINFO)) {
 			rc = -1;
 		}
@@ -163,11 +140,7 @@ static int elantech_read_reg(struct psmouse *psmouse, unsigned char reg,
 
 	if (rc)
 		psmouse_err(psmouse, "failed to read register 0x%02x.\n", reg);
-<<<<<<< HEAD
 	else if (etd->info.hw_version != 4)
-=======
-	else if (etd->hw_version != 4)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*val = param[0];
 	else
 		*val = param[1];
@@ -190,19 +163,11 @@ static int elantech_write_reg(struct psmouse *psmouse, unsigned char reg,
 	if (reg > 0x11 && reg < 0x20)
 		return -1;
 
-<<<<<<< HEAD
 	switch (etd->info.hw_version) {
 	case 1:
 		if (ps2_sliced_command(&psmouse->ps2dev, ETP_REGISTER_WRITE) ||
 		    ps2_sliced_command(&psmouse->ps2dev, reg) ||
 		    ps2_sliced_command(&psmouse->ps2dev, val) ||
-=======
-	switch (etd->hw_version) {
-	case 1:
-		if (psmouse_sliced_command(psmouse, ETP_REGISTER_WRITE) ||
-		    psmouse_sliced_command(psmouse, reg) ||
-		    psmouse_sliced_command(psmouse, val) ||
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    ps2_command(&psmouse->ps2dev, NULL, PSMOUSE_CMD_SETSCALE11)) {
 			rc = -1;
 		}
@@ -275,11 +240,7 @@ static void elantech_report_absolute_v1(struct psmouse *psmouse)
 	unsigned char *packet = psmouse->packet;
 	int fingers;
 
-<<<<<<< HEAD
 	if (etd->info.fw_version < 0x020000) {
-=======
-	if (etd->fw_version < 0x020000) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * byte 0:  D   U  p1  p2   1  p3   R   L
 		 * byte 1:  f   0  th  tw  x9  x8  y9  y8
@@ -294,11 +255,7 @@ static void elantech_report_absolute_v1(struct psmouse *psmouse)
 		fingers = (packet[0] & 0xc0) >> 6;
 	}
 
-<<<<<<< HEAD
 	if (etd->info.jumpy_cursor) {
-=======
-	if (etd->jumpy_cursor) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (fingers != 1) {
 			etd->single_finger_reports = 0;
 		} else if (etd->single_finger_reports < 2) {
@@ -325,19 +282,11 @@ static void elantech_report_absolute_v1(struct psmouse *psmouse)
 	input_report_key(dev, BTN_TOOL_FINGER, fingers == 1);
 	input_report_key(dev, BTN_TOOL_DOUBLETAP, fingers == 2);
 	input_report_key(dev, BTN_TOOL_TRIPLETAP, fingers == 3);
-<<<<<<< HEAD
 
 	psmouse_report_standard_buttons(dev, packet[0]);
 
 	if (etd->info.fw_version < 0x020000 &&
 	    (etd->info.capabilities[0] & ETP_CAP_HAS_ROCKER)) {
-=======
-	input_report_key(dev, BTN_LEFT, packet[0] & 0x01);
-	input_report_key(dev, BTN_RIGHT, packet[0] & 0x02);
-
-	if (etd->fw_version < 0x020000 &&
-	    (etd->capabilities[0] & ETP_CAP_HAS_ROCKER)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* rocker up */
 		input_report_key(dev, BTN_FORWARD, packet[0] & 0x40);
 		/* rocker down */
@@ -391,11 +340,7 @@ static void elantech_report_absolute_v2(struct psmouse *psmouse)
 		 */
 		if (packet[3] & 0x80)
 			fingers = 4;
-<<<<<<< HEAD
 		/* fall through */
-=======
-		/* pass through... */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case 1:
 		/*
 		 * byte 1:  .   .   .   .  x11 x10 x9  x8
@@ -448,14 +393,8 @@ static void elantech_report_absolute_v2(struct psmouse *psmouse)
 	input_report_key(dev, BTN_TOOL_DOUBLETAP, fingers == 2);
 	input_report_key(dev, BTN_TOOL_TRIPLETAP, fingers == 3);
 	input_report_key(dev, BTN_TOOL_QUADTAP, fingers == 4);
-<<<<<<< HEAD
 	psmouse_report_standard_buttons(dev, packet[0]);
 	if (etd->info.reports_pressure) {
-=======
-	input_report_key(dev, BTN_LEFT, packet[0] & 0x01);
-	input_report_key(dev, BTN_RIGHT, packet[0] & 0x02);
-	if (etd->reports_pressure) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		input_report_abs(dev, ABS_PRESSURE, pres);
 		input_report_abs(dev, ABS_TOOL_WIDTH, width);
 	}
@@ -497,13 +436,7 @@ static void elantech_report_trackpoint(struct psmouse *psmouse,
 		x = packet[4] - (int)((packet[1]^0x80) << 1);
 		y = (int)((packet[2]^0x80) << 1) - packet[5];
 
-<<<<<<< HEAD
 		psmouse_report_standard_buttons(tp_dev, packet[0]);
-=======
-		input_report_key(tp_dev, BTN_LEFT, packet[0] & 0x01);
-		input_report_key(tp_dev, BTN_RIGHT, packet[0] & 0x02);
-		input_report_key(tp_dev, BTN_MIDDLE, packet[0] & 0x04);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		input_report_rel(tp_dev, REL_X, x);
 		input_report_rel(tp_dev, REL_Y, y);
@@ -514,11 +447,7 @@ static void elantech_report_trackpoint(struct psmouse *psmouse,
 
 	default:
 		/* Dump unexpected packet sequences if debug=1 (default) */
-<<<<<<< HEAD
 		if (etd->info.debug == 1)
-=======
-		if (etd->debug == 1)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			elantech_packet_dump(psmouse);
 
 		break;
@@ -597,19 +526,10 @@ static void elantech_report_absolute_v3(struct psmouse *psmouse,
 	input_report_key(dev, BTN_TOOL_TRIPLETAP, fingers == 3);
 
 	/* For clickpads map both buttons to BTN_LEFT */
-<<<<<<< HEAD
 	if (etd->info.fw_version & 0x001000)
 		input_report_key(dev, BTN_LEFT, packet[0] & 0x03);
 	else
 		psmouse_report_standard_buttons(dev, packet[0]);
-=======
-	if (etd->fw_version & 0x001000) {
-		input_report_key(dev, BTN_LEFT, packet[0] & 0x03);
-	} else {
-		input_report_key(dev, BTN_LEFT, packet[0] & 0x01);
-		input_report_key(dev, BTN_RIGHT, packet[0] & 0x02);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	input_report_abs(dev, ABS_PRESSURE, pres);
 	input_report_abs(dev, ABS_TOOL_WIDTH, width);
@@ -624,20 +544,10 @@ static void elantech_input_sync_v4(struct psmouse *psmouse)
 	unsigned char *packet = psmouse->packet;
 
 	/* For clickpads map both buttons to BTN_LEFT */
-<<<<<<< HEAD
 	if (etd->info.fw_version & 0x001000)
 		input_report_key(dev, BTN_LEFT, packet[0] & 0x03);
 	else
 		psmouse_report_standard_buttons(dev, packet[0]);
-=======
-	if (etd->fw_version & 0x001000) {
-		input_report_key(dev, BTN_LEFT, packet[0] & 0x03);
-	} else {
-		input_report_key(dev, BTN_LEFT, packet[0] & 0x01);
-		input_report_key(dev, BTN_RIGHT, packet[0] & 0x02);
-		input_report_key(dev, BTN_MIDDLE, packet[0] & 0x04);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	input_mt_report_pointer_emulation(dev, true);
 	input_sync(dev);
@@ -762,11 +672,7 @@ static int elantech_packet_check_v1(struct psmouse *psmouse)
 	unsigned char p1, p2, p3;
 
 	/* Parity bits are placed differently */
-<<<<<<< HEAD
 	if (etd->info.fw_version < 0x020000) {
-=======
-	if (etd->fw_version < 0x020000) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* byte 0:  D   U  p1  p2   1  p3   R   L */
 		p1 = (packet[0] & 0x20) >> 5;
 		p2 = (packet[0] & 0x10) >> 4;
@@ -811,11 +717,7 @@ static int elantech_packet_check_v2(struct psmouse *psmouse)
 	 * With all three cases, if the constant bits are not exactly what I
 	 * expected, I consider them invalid.
 	 */
-<<<<<<< HEAD
 	if (etd->info.reports_pressure)
-=======
-	if (etd->reports_pressure)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return (packet[0] & 0x0c) == 0x04 &&
 		       (packet[3] & 0x0f) == 0x02;
 
@@ -852,11 +754,7 @@ static int elantech_packet_check_v3(struct psmouse *psmouse)
 	 * If the hardware flag 'crc_enabled' is set the packets have
 	 * different signatures.
 	 */
-<<<<<<< HEAD
 	if (etd->info.crc_enabled) {
-=======
-	if (etd->crc_enabled) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if ((packet[3] & 0x09) == 0x08)
 			return PACKET_V3_HEAD;
 
@@ -887,11 +785,7 @@ static int elantech_packet_check_v4(struct psmouse *psmouse)
 		return PACKET_TRACKPOINT;
 
 	/* This represents the version of IC body. */
-<<<<<<< HEAD
 	ic_version = (etd->info.fw_version & 0x0f0000) >> 16;
-=======
-	ic_version = (etd->fw_version & 0x0f0000) >> 16;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Sanity check based on the constant bits of a packet.
@@ -900,15 +794,9 @@ static int elantech_packet_check_v4(struct psmouse *psmouse)
 	 * the IC body, but are the same for every packet,
 	 * regardless of the type.
 	 */
-<<<<<<< HEAD
 	if (etd->info.crc_enabled)
 		sanity_check = ((packet[3] & 0x08) == 0x00);
 	else if (ic_version == 7 && etd->info.samples[1] == 0x2A)
-=======
-	if (etd->crc_enabled)
-		sanity_check = ((packet[3] & 0x08) == 0x00);
-	else if (ic_version == 7 && etd->samples[1] == 0x2A)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sanity_check = ((packet[3] & 0x1c) == 0x10);
 	else
 		sanity_check = ((packet[0] & 0x08) == 0x00 &&
@@ -942,21 +830,12 @@ static psmouse_ret_t elantech_process_byte(struct psmouse *psmouse)
 	if (psmouse->pktcnt < psmouse->pktsize)
 		return PSMOUSE_GOOD_DATA;
 
-<<<<<<< HEAD
 	if (etd->info.debug > 1)
 		elantech_packet_dump(psmouse);
 
 	switch (etd->info.hw_version) {
 	case 1:
 		if (etd->info.paritycheck && !elantech_packet_check_v1(psmouse))
-=======
-	if (etd->debug > 1)
-		elantech_packet_dump(psmouse);
-
-	switch (etd->hw_version) {
-	case 1:
-		if (etd->paritycheck && !elantech_packet_check_v1(psmouse))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return PSMOUSE_BAD_DATA;
 
 		elantech_report_absolute_v1(psmouse);
@@ -967,11 +846,7 @@ static psmouse_ret_t elantech_process_byte(struct psmouse *psmouse)
 		if (elantech_debounce_check_v2(psmouse))
 			return PSMOUSE_FULL_PACKET;
 
-<<<<<<< HEAD
 		if (etd->info.paritycheck && !elantech_packet_check_v2(psmouse))
-=======
-		if (etd->paritycheck && !elantech_packet_check_v2(psmouse))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return PSMOUSE_BAD_DATA;
 
 		elantech_report_absolute_v2(psmouse);
@@ -1044,11 +919,7 @@ static int elantech_set_absolute_mode(struct psmouse *psmouse)
 	int tries = ETP_READ_BACK_TRIES;
 	int rc = 0;
 
-<<<<<<< HEAD
 	switch (etd->info.hw_version) {
-=======
-	switch (etd->hw_version) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case 1:
 		etd->reg_10 = 0x16;
 		etd->reg_11 = 0x8f;
@@ -1071,11 +942,7 @@ static int elantech_set_absolute_mode(struct psmouse *psmouse)
 		break;
 
 	case 3:
-<<<<<<< HEAD
 		if (etd->info.set_hw_resolution)
-=======
-		if (etd->set_hw_resolution)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			etd->reg_10 = 0x0b;
 		else
 			etd->reg_10 = 0x01;
@@ -1112,11 +979,7 @@ static int elantech_set_absolute_mode(struct psmouse *psmouse)
 		if (rc) {
 			psmouse_err(psmouse,
 				    "failed to read back register 0x10.\n");
-<<<<<<< HEAD
 		} else if (etd->info.hw_version == 1 &&
-=======
-		} else if (etd->hw_version == 1 &&
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   !(val & ETP_R10_ABSOLUTE_MODE)) {
 			psmouse_err(psmouse,
 				    "touchpad refuses to switch to absolute mode.\n");
@@ -1137,18 +1000,11 @@ static int elantech_set_range(struct psmouse *psmouse,
 			      unsigned int *width)
 {
 	struct elantech_data *etd = psmouse->private;
-<<<<<<< HEAD
 	struct elantech_device_info *info = &etd->info;
 	unsigned char param[3];
 	unsigned char traces;
 
 	switch (info->hw_version) {
-=======
-	unsigned char param[3];
-	unsigned char traces;
-
-	switch (etd->hw_version) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case 1:
 		*x_min = ETP_XMIN_V1;
 		*y_min = ETP_YMIN_V1;
@@ -1157,15 +1013,9 @@ static int elantech_set_range(struct psmouse *psmouse,
 		break;
 
 	case 2:
-<<<<<<< HEAD
 		if (info->fw_version == 0x020800 ||
 		    info->fw_version == 0x020b00 ||
 		    info->fw_version == 0x020030) {
-=======
-		if (etd->fw_version == 0x020800 ||
-		    etd->fw_version == 0x020b00 ||
-		    etd->fw_version == 0x020030) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			*x_min = ETP_XMIN_V2;
 			*y_min = ETP_YMIN_V2;
 			*x_max = ETP_XMAX_V2;
@@ -1174,22 +1024,14 @@ static int elantech_set_range(struct psmouse *psmouse,
 			int i;
 			int fixed_dpi;
 
-<<<<<<< HEAD
 			i = (info->fw_version > 0x020800 &&
 			     info->fw_version < 0x020900) ? 1 : 2;
 
 			if (info->send_cmd(psmouse, ETP_FW_ID_QUERY, param))
-=======
-			i = (etd->fw_version > 0x020800 &&
-			     etd->fw_version < 0x020900) ? 1 : 2;
-
-			if (etd->send_cmd(psmouse, ETP_FW_ID_QUERY, param))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				return -1;
 
 			fixed_dpi = param[1] & 0x10;
 
-<<<<<<< HEAD
 			if (((info->fw_version >> 16) == 0x14) && fixed_dpi) {
 				if (info->send_cmd(psmouse, ETP_SAMPLE_QUERY, param))
 					return -1;
@@ -1205,33 +1047,12 @@ static int elantech_set_range(struct psmouse *psmouse,
 			} else {
 				*x_max = (info->capabilities[1] - i) * 64;
 				*y_max = (info->capabilities[2] - i) * 64;
-=======
-			if (((etd->fw_version >> 16) == 0x14) && fixed_dpi) {
-				if (etd->send_cmd(psmouse, ETP_SAMPLE_QUERY, param))
-					return -1;
-
-				*x_max = (etd->capabilities[1] - i) * param[1] / 2;
-				*y_max = (etd->capabilities[2] - i) * param[2] / 2;
-			} else if (etd->fw_version == 0x040216) {
-				*x_max = 819;
-				*y_max = 405;
-			} else if (etd->fw_version == 0x040219 || etd->fw_version == 0x040215) {
-				*x_max = 900;
-				*y_max = 500;
-			} else {
-				*x_max = (etd->capabilities[1] - i) * 64;
-				*y_max = (etd->capabilities[2] - i) * 64;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		}
 		break;
 
 	case 3:
-<<<<<<< HEAD
 		if (info->send_cmd(psmouse, ETP_FW_ID_QUERY, param))
-=======
-		if (etd->send_cmd(psmouse, ETP_FW_ID_QUERY, param))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -1;
 
 		*x_max = (0x0f & param[0]) << 8 | param[1];
@@ -1239,20 +1060,12 @@ static int elantech_set_range(struct psmouse *psmouse,
 		break;
 
 	case 4:
-<<<<<<< HEAD
 		if (info->send_cmd(psmouse, ETP_FW_ID_QUERY, param))
-=======
-		if (etd->send_cmd(psmouse, ETP_FW_ID_QUERY, param))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -1;
 
 		*x_max = (0x0f & param[0]) << 8 | param[1];
 		*y_max = (0xf0 & param[0]) << 4 | param[2];
-<<<<<<< HEAD
 		traces = info->capabilities[1];
-=======
-		traces = etd->capabilities[1];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if ((traces < 2) || (traces > *x_max))
 			return -1;
 
@@ -1274,12 +1087,8 @@ static unsigned int elantech_convert_res(unsigned int val)
 
 static int elantech_get_resolution_v4(struct psmouse *psmouse,
 				      unsigned int *x_res,
-<<<<<<< HEAD
 				      unsigned int *y_res,
 				      unsigned int *bus)
-=======
-				      unsigned int *y_res)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned char param[3];
 
@@ -1288,10 +1097,7 @@ static int elantech_get_resolution_v4(struct psmouse *psmouse,
 
 	*x_res = elantech_convert_res(param[1] & 0x0f);
 	*y_res = elantech_convert_res((param[1] & 0xf0) >> 4);
-<<<<<<< HEAD
 	*bus = param[2];
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -1342,11 +1148,7 @@ static void elantech_set_buttonpad_prop(struct psmouse *psmouse)
 	struct input_dev *dev = psmouse->dev;
 	struct elantech_data *etd = psmouse->private;
 
-<<<<<<< HEAD
 	if (etd->info.fw_version & 0x001000) {
-=======
-	if (etd->fw_version & 0x001000) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__set_bit(INPUT_PROP_BUTTONPAD, dev->propbit);
 		__clear_bit(BTN_RIGHT, dev->keybit);
 	}
@@ -1399,13 +1201,8 @@ static int elantech_set_input_params(struct psmouse *psmouse)
 {
 	struct input_dev *dev = psmouse->dev;
 	struct elantech_data *etd = psmouse->private;
-<<<<<<< HEAD
 	struct elantech_device_info *info = &etd->info;
 	unsigned int x_min = 0, y_min = 0, x_max = 0, y_max = 0, width = 0;
-=======
-	unsigned int x_min = 0, y_min = 0, x_max = 0, y_max = 0, width = 0;
-	unsigned int x_res = 31, y_res = 31;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (elantech_set_range(psmouse, &x_min, &y_min, &x_max, &y_max, &width))
 		return -1;
@@ -1426,19 +1223,11 @@ static int elantech_set_input_params(struct psmouse *psmouse)
 	__set_bit(BTN_TOOL_DOUBLETAP, dev->keybit);
 	__set_bit(BTN_TOOL_TRIPLETAP, dev->keybit);
 
-<<<<<<< HEAD
 	switch (info->hw_version) {
 	case 1:
 		/* Rocker button */
 		if (info->fw_version < 0x020000 &&
 		    (info->capabilities[0] & ETP_CAP_HAS_ROCKER)) {
-=======
-	switch (etd->hw_version) {
-	case 1:
-		/* Rocker button */
-		if (etd->fw_version < 0x020000 &&
-		    (etd->capabilities[0] & ETP_CAP_HAS_ROCKER)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			__set_bit(BTN_FORWARD, dev->keybit);
 			__set_bit(BTN_BACK, dev->keybit);
 		}
@@ -1451,19 +1240,11 @@ static int elantech_set_input_params(struct psmouse *psmouse)
 		__set_bit(INPUT_PROP_SEMI_MT, dev->propbit);
 		/* fall through */
 	case 3:
-<<<<<<< HEAD
 		if (info->hw_version == 3)
 			elantech_set_buttonpad_prop(psmouse);
 		input_set_abs_params(dev, ABS_X, x_min, x_max, 0, 0);
 		input_set_abs_params(dev, ABS_Y, y_min, y_max, 0, 0);
 		if (info->reports_pressure) {
-=======
-		if (etd->hw_version == 3)
-			elantech_set_buttonpad_prop(psmouse);
-		input_set_abs_params(dev, ABS_X, x_min, x_max, 0, 0);
-		input_set_abs_params(dev, ABS_Y, y_min, y_max, 0, 0);
-		if (etd->reports_pressure) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			input_set_abs_params(dev, ABS_PRESSURE, ETP_PMIN_V2,
 					     ETP_PMAX_V2, 0, 0);
 			input_set_abs_params(dev, ABS_TOOL_WIDTH, ETP_WMIN_V2,
@@ -1475,16 +1256,6 @@ static int elantech_set_input_params(struct psmouse *psmouse)
 		break;
 
 	case 4:
-<<<<<<< HEAD
-=======
-		if (elantech_get_resolution_v4(psmouse, &x_res, &y_res)) {
-			/*
-			 * if query failed, print a warning and leave the values
-			 * zero to resemble synaptics.c behavior.
-			 */
-			psmouse_warn(psmouse, "couldn't query resolution data.\n");
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		elantech_set_buttonpad_prop(psmouse);
 		__set_bit(BTN_TOOL_QUADTAP, dev->keybit);
 		/* For X to recognize me as touchpad. */
@@ -1513,19 +1284,11 @@ static int elantech_set_input_params(struct psmouse *psmouse)
 		break;
 	}
 
-<<<<<<< HEAD
 	input_abs_set_res(dev, ABS_X, info->x_res);
 	input_abs_set_res(dev, ABS_Y, info->y_res);
 	if (info->hw_version > 1) {
 		input_abs_set_res(dev, ABS_MT_POSITION_X, info->x_res);
 		input_abs_set_res(dev, ABS_MT_POSITION_Y, info->y_res);
-=======
-	input_abs_set_res(dev, ABS_X, x_res);
-	input_abs_set_res(dev, ABS_Y, y_res);
-	if (etd->hw_version > 1) {
-		input_abs_set_res(dev, ABS_MT_POSITION_X, x_res);
-		input_abs_set_res(dev, ABS_MT_POSITION_Y, y_res);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	etd->y_max = y_max;
@@ -1573,11 +1336,7 @@ static ssize_t elantech_set_int_attr(struct psmouse *psmouse,
 		return err;
 
 	/* Do we need to preserve some bits for version 2 hardware too? */
-<<<<<<< HEAD
 	if (etd->info.hw_version == 1) {
-=======
-	if (etd->hw_version == 1) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (attr->reg == 0x10)
 			/* Force absolute mode always on */
 			value |= ETP_R10_ABSOLUTE_MODE;
@@ -1597,16 +1356,11 @@ static ssize_t elantech_set_int_attr(struct psmouse *psmouse,
 		.field_offset = offsetof(struct elantech_data, _name),	\
 		.reg = _register,					\
 	};								\
-<<<<<<< HEAD
 	PSMOUSE_DEFINE_ATTR(_name, 0644,				\
-=======
-	PSMOUSE_DEFINE_ATTR(_name, S_IWUSR | S_IRUGO,			\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    &elantech_attr_##_name,			\
 			    elantech_show_int_attr,			\
 			    elantech_set_int_attr)
 
-<<<<<<< HEAD
 #define ELANTECH_INFO_ATTR(_name)					       \
 	static struct elantech_attr_data elantech_attr_##_name = {	       \
 		.field_offset = offsetof(struct elantech_data, info) +	       \
@@ -1618,8 +1372,6 @@ static ssize_t elantech_set_int_attr(struct psmouse *psmouse,
 			    elantech_show_int_attr,			       \
 			    elantech_set_int_attr)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 ELANTECH_INT_ATTR(reg_07, 0x07);
 ELANTECH_INT_ATTR(reg_10, 0x10);
 ELANTECH_INT_ATTR(reg_11, 0x11);
@@ -1630,15 +1382,9 @@ ELANTECH_INT_ATTR(reg_23, 0x23);
 ELANTECH_INT_ATTR(reg_24, 0x24);
 ELANTECH_INT_ATTR(reg_25, 0x25);
 ELANTECH_INT_ATTR(reg_26, 0x26);
-<<<<<<< HEAD
 ELANTECH_INFO_ATTR(debug);
 ELANTECH_INFO_ATTR(paritycheck);
 ELANTECH_INFO_ATTR(crc_enabled);
-=======
-ELANTECH_INT_ATTR(debug, 0);
-ELANTECH_INT_ATTR(paritycheck, 0);
-ELANTECH_INT_ATTR(crc_enabled, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct attribute *elantech_attrs[] = {
 	&psmouse_attr_reg_07.dattr.attr,
@@ -1753,15 +1499,12 @@ static void elantech_disconnect(struct psmouse *psmouse)
 {
 	struct elantech_data *etd = psmouse->private;
 
-<<<<<<< HEAD
 	/*
 	 * We might have left a breadcrumb when trying to
 	 * set up SMbus companion.
 	 */
 	psmouse_smbus_cleanup(psmouse);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (etd->tp_dev)
 		input_unregister_device(etd->tp_dev);
 	sysfs_remove_group(&psmouse->ps2dev.serio->dev.kobj,
@@ -1881,7 +1624,6 @@ static const struct dmi_system_id no_hw_res_dmi_table[] = {
 /*
  * determine hardware version and set some properties according to it.
  */
-<<<<<<< HEAD
 static int elantech_set_properties(struct elantech_device_info *info)
 {
 	/* This represents the version of IC body. */
@@ -1890,21 +1632,10 @@ static int elantech_set_properties(struct elantech_device_info *info)
 	/* Early version of Elan touchpads doesn't obey the rule. */
 	if (info->fw_version < 0x020030 || info->fw_version == 0x020600)
 		info->hw_version = 1;
-=======
-static int elantech_set_properties(struct elantech_data *etd)
-{
-	/* This represents the version of IC body. */
-	int ver = (etd->fw_version & 0x0f0000) >> 16;
-
-	/* Early version of Elan touchpads doesn't obey the rule. */
-	if (etd->fw_version < 0x020030 || etd->fw_version == 0x020600)
-		etd->hw_version = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else {
 		switch (ver) {
 		case 2:
 		case 4:
-<<<<<<< HEAD
 			info->hw_version = 2;
 			break;
 		case 5:
@@ -1912,15 +1643,6 @@ static int elantech_set_properties(struct elantech_data *etd)
 			break;
 		case 6 ... 15:
 			info->hw_version = 4;
-=======
-			etd->hw_version = 2;
-			break;
-		case 5:
-			etd->hw_version = 3;
-			break;
-		case 6 ... 15:
-			etd->hw_version = 4;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		default:
 			return -1;
@@ -1928,26 +1650,17 @@ static int elantech_set_properties(struct elantech_data *etd)
 	}
 
 	/* decide which send_cmd we're gonna use early */
-<<<<<<< HEAD
 	info->send_cmd = info->hw_version >= 3 ? elantech_send_cmd :
 						 synaptics_send_cmd;
 
 	/* Turn on packet checking by default */
 	info->paritycheck = 1;
-=======
-	etd->send_cmd = etd->hw_version >= 3 ? elantech_send_cmd :
-					       synaptics_send_cmd;
-
-	/* Turn on packet checking by default */
-	etd->paritycheck = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * This firmware suffers from misreporting coordinates when
 	 * a touch action starts causing the mouse cursor or scrolled page
 	 * to jump. Enable a workaround.
 	 */
-<<<<<<< HEAD
 	info->jumpy_cursor =
 		(info->fw_version == 0x020022 || info->fw_version == 0x020600);
 
@@ -1957,76 +1670,33 @@ static int elantech_set_properties(struct elantech_data *etd)
 
 		if (info->fw_version >= 0x020800)
 			info->reports_pressure = true;
-=======
-	etd->jumpy_cursor =
-		(etd->fw_version == 0x020022 || etd->fw_version == 0x020600);
-
-	if (etd->hw_version > 1) {
-		/* For now show extra debug information */
-		etd->debug = 1;
-
-		if (etd->fw_version >= 0x020800)
-			etd->reports_pressure = true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/*
 	 * The signatures of v3 and v4 packets change depending on the
 	 * value of this hardware flag.
 	 */
-<<<<<<< HEAD
 	info->crc_enabled = (info->fw_version & 0x4000) == 0x4000 ||
 			     dmi_check_system(elantech_dmi_force_crc_enabled);
 
 	/* Enable real hardware resolution on hw_version 3 ? */
 	info->set_hw_resolution = !dmi_check_system(no_hw_res_dmi_table);
-=======
-	etd->crc_enabled = (etd->fw_version & 0x4000) == 0x4000 ||
-			   dmi_check_system(elantech_dmi_force_crc_enabled);
-
-	/* Enable real hardware resolution on hw_version 3 ? */
-	etd->set_hw_resolution = !dmi_check_system(no_hw_res_dmi_table);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
 static int elantech_query_info(struct psmouse *psmouse,
 			       struct elantech_device_info *info)
 {
 	unsigned char param[3];
 
 	memset(info, 0, sizeof(*info));
-=======
-/*
- * Initialize the touchpad and create sysfs entries
- */
-int elantech_init(struct psmouse *psmouse)
-{
-	struct elantech_data *etd;
-	int i;
-	int error = -EINVAL;
-	unsigned char param[3];
-	struct input_dev *tp_dev;
-
-	psmouse->private = etd = kzalloc(sizeof(struct elantech_data), GFP_KERNEL);
-	if (!etd)
-		return -ENOMEM;
-
-	psmouse_reset(psmouse);
-
-	etd->parity[0] = 1;
-	for (i = 1; i < 256; i++)
-		etd->parity[i] = etd->parity[i & (i - 1)] ^ 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Do the version query again so we can store the result
 	 */
 	if (synaptics_send_cmd(psmouse, ETP_FW_VERSION_QUERY, param)) {
 		psmouse_err(psmouse, "failed to query firmware version.\n");
-<<<<<<< HEAD
 		return -EINVAL;
 	}
 	info->fw_version = (param[0] << 16) | (param[1] << 8) | param[2];
@@ -2062,41 +1732,6 @@ int elantech_init(struct psmouse *psmouse)
 	}
 
 	if (info->samples[1] == 0x74 && info->hw_version == 0x03) {
-=======
-		goto init_fail;
-	}
-	etd->fw_version = (param[0] << 16) | (param[1] << 8) | param[2];
-
-	if (elantech_set_properties(etd)) {
-		psmouse_err(psmouse, "unknown hardware version, aborting...\n");
-		goto init_fail;
-	}
-	psmouse_info(psmouse,
-		     "assuming hardware version %d (with firmware version 0x%02x%02x%02x)\n",
-		     etd->hw_version, param[0], param[1], param[2]);
-
-	if (etd->send_cmd(psmouse, ETP_CAPABILITIES_QUERY,
-	    etd->capabilities)) {
-		psmouse_err(psmouse, "failed to query capabilities.\n");
-		goto init_fail;
-	}
-	psmouse_info(psmouse,
-		     "Synaptics capabilities query result 0x%02x, 0x%02x, 0x%02x.\n",
-		     etd->capabilities[0], etd->capabilities[1],
-		     etd->capabilities[2]);
-
-	if (etd->hw_version != 1) {
-		if (etd->send_cmd(psmouse, ETP_SAMPLE_QUERY, etd->samples)) {
-			psmouse_err(psmouse, "failed to query sample data\n");
-			goto init_fail;
-		}
-		psmouse_info(psmouse,
-			     "Elan sample query result %02x, %02x, %02x\n",
-			     etd->samples[0], etd->samples[1], etd->samples[2]);
-	}
-
-	if (etd->samples[1] == 0x74 && etd->hw_version == 0x03) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * This module has a bug which makes absolute mode
 		 * unusable, so let's abort so we'll be using standard
@@ -2104,7 +1739,6 @@ int elantech_init(struct psmouse *psmouse)
 		 */
 		psmouse_info(psmouse,
 			     "absolute mode broken, forcing standard PS/2 protocol\n");
-<<<<<<< HEAD
 		return -ENODEV;
 	}
 
@@ -2287,22 +1921,13 @@ static int elantech_setup_ps2(struct psmouse *psmouse,
 	for (i = 1; i < 256; i++)
 		etd->parity[i] = etd->parity[i & (i - 1)] ^ 1;
 
-=======
-		goto init_fail;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (elantech_set_absolute_mode(psmouse)) {
 		psmouse_err(psmouse,
 			    "failed to put touchpad into absolute mode.\n");
 		goto init_fail;
 	}
 
-<<<<<<< HEAD
 	if (info->fw_version == 0x381f17) {
-=======
-	if (etd->fw_version == 0x381f17) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		etd->original_set_rate = psmouse->set_rate;
 		psmouse->set_rate = elantech_set_rate_restore_reg_07;
 	}
@@ -2321,12 +1946,7 @@ static int elantech_setup_ps2(struct psmouse *psmouse,
 		goto init_fail;
 	}
 
-<<<<<<< HEAD
 	if (info->has_trackpoint) {
-=======
-	/* The MSB indicates the presence of the trackpoint */
-	if ((etd->capabilities[0] & 0x80) == 0x80) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		tp_dev = input_allocate_device();
 
 		if (!tp_dev) {
@@ -2362,11 +1982,7 @@ static int elantech_setup_ps2(struct psmouse *psmouse,
 	psmouse->protocol_handler = elantech_process_byte;
 	psmouse->disconnect = elantech_disconnect;
 	psmouse->reconnect = elantech_reconnect;
-<<<<<<< HEAD
 	psmouse->pktsize = info->hw_version > 1 ? 6 : 4;
-=======
-	psmouse->pktsize = etd->hw_version > 1 ? 6 : 4;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
  init_fail_tp_reg:
@@ -2375,7 +1991,6 @@ static int elantech_setup_ps2(struct psmouse *psmouse,
 	sysfs_remove_group(&psmouse->ps2dev.serio->dev.kobj,
 			   &elantech_attr_group);
  init_fail:
-<<<<<<< HEAD
 	kfree(etd);
 	return error;
 }
@@ -2443,9 +2058,3 @@ int elantech_init(struct psmouse *psmouse)
 	psmouse_reset(psmouse);
 	return error;
 }
-=======
-	psmouse_reset(psmouse);
-	kfree(etd);
-	return error;
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

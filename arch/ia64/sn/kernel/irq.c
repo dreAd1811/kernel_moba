@@ -474,12 +474,8 @@ void __init sn_irq_lh_init(void)
 {
 	int i;
 
-<<<<<<< HEAD
 	sn_irq_lh = kmalloc_array(NR_IRQS, sizeof(struct list_head *),
 				  GFP_KERNEL);
-=======
-	sn_irq_lh = kmalloc(sizeof(struct list_head *) * NR_IRQS, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!sn_irq_lh)
 		panic("SN PCI INIT: Failed to allocate memory for PCI init\n");
 

@@ -557,12 +557,8 @@ init_send(struct BCState *bcs)
 {
 	int i;
 
-<<<<<<< HEAD
 	bcs->hw.hfc.send = kmalloc_array(32, sizeof(unsigned int), GFP_ATOMIC);
 	if (!bcs->hw.hfc.send) {
-=======
-	if (!(bcs->hw.hfc.send = kmalloc(32 * sizeof(unsigned int), GFP_ATOMIC))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		printk(KERN_WARNING
 		       "HiSax: No memory for hfc.send\n");
 		return;

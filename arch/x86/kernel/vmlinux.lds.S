@@ -36,7 +36,6 @@ OUTPUT_FORMAT(CONFIG_OUTPUT_FORMAT, CONFIG_OUTPUT_FORMAT, CONFIG_OUTPUT_FORMAT)
 #ifdef CONFIG_X86_32
 OUTPUT_ARCH(i386)
 ENTRY(phys_startup_32)
-<<<<<<< HEAD
 jiffies = jiffies_64;
 #else
 OUTPUT_ARCH(i386:x86-64)
@@ -44,15 +43,6 @@ ENTRY(phys_startup_64)
 jiffies_64 = jiffies;
 #endif
 
-=======
-#else
-OUTPUT_ARCH(i386:x86-64)
-ENTRY(phys_startup_64)
-#endif
-
-jiffies = jiffies_64;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #if defined(CONFIG_X86_64)
 /*
  * On 64-bit, align RODATA to 2MB so we retain large page mappings for
@@ -65,25 +55,16 @@ jiffies = jiffies_64;
  * so we can enable protection checks as well as retain 2MB large page
  * mappings for kernel text.
  */
-<<<<<<< HEAD
 #define X86_ALIGN_RODATA_BEGIN	. = ALIGN(HPAGE_SIZE);
 
 #define X86_ALIGN_RODATA_END					\
 		. = ALIGN(HPAGE_SIZE);				\
 		__end_rodata_hpage_align = .;			\
 		__end_rodata_aligned = .;
-=======
-#define X64_ALIGN_RODATA_BEGIN	. = ALIGN(HPAGE_SIZE);
-
-#define X64_ALIGN_RODATA_END					\
-		. = ALIGN(HPAGE_SIZE);				\
-		__end_rodata_hpage_align = .;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define ALIGN_ENTRY_TEXT_BEGIN	. = ALIGN(PMD_SIZE);
 #define ALIGN_ENTRY_TEXT_END	. = ALIGN(PMD_SIZE);
 
-<<<<<<< HEAD
 /*
  * This section contains data which will be mapped as decrypted. Memory
  * encryption operates on a page basis. Make this section PMD-aligned
@@ -111,15 +92,6 @@ jiffies = jiffies_64;
 #define ALIGN_ENTRY_TEXT_BEGIN
 #define ALIGN_ENTRY_TEXT_END
 #define BSS_DECRYPTED
-=======
-#else
-
-#define X64_ALIGN_RODATA_BEGIN
-#define X64_ALIGN_RODATA_END
-
-#define ALIGN_ENTRY_TEXT_BEGIN
-#define ALIGN_ENTRY_TEXT_END
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif
 
@@ -151,10 +123,6 @@ SECTIONS
 		_stext = .;
 		/* bootstrapping code */
 		HEAD_TEXT
-<<<<<<< HEAD
-=======
-		. = ALIGN(8);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		TEXT_TEXT
 		SCHED_TEXT
 		CPUIDLE_TEXT
@@ -170,19 +138,11 @@ SECTIONS
 
 #ifdef CONFIG_X86_64
 		. = ALIGN(PAGE_SIZE);
-<<<<<<< HEAD
 		__entry_trampoline_start = .;
 		_entry_trampoline = .;
 		*(.entry_trampoline)
 		. = ALIGN(PAGE_SIZE);
 		__entry_trampoline_end = .;
-=======
-		VMLINUX_SYMBOL(__entry_trampoline_start) = .;
-		_entry_trampoline = .;
-		*(.entry_trampoline)
-		. = ALIGN(PAGE_SIZE);
-		VMLINUX_SYMBOL(__entry_trampoline_end) = .;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ASSERT(. - _entry_trampoline == PAGE_SIZE, "entry trampoline is too big");
 #endif
 
@@ -192,37 +152,19 @@ SECTIONS
 		__indirect_thunk_end = .;
 #endif
 
-<<<<<<< HEAD
 		/* End of text section */
 		_etext = .;
-=======
-#ifdef CONFIG_CFI_CLANG
-		. = ALIGN(PAGE_SIZE);
-		__cfi_jt_start = .;
-		*(.text..L.cfi.jumptable .text..L.cfi.jumptable.*)
-		__cfi_jt_end = .;
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} :text = 0x9090
 
 	NOTES :text :note
 
 	EXCEPTION_TABLE(16) :text = 0x9090
 
-<<<<<<< HEAD
 	/* .text should occupy whole number of pages */
 	. = ALIGN(PAGE_SIZE);
 	X86_ALIGN_RODATA_BEGIN
 	RO_DATA(PAGE_SIZE)
 	X86_ALIGN_RODATA_END
-=======
-	/* End of text section, which should occupy whole number of pages */
-	_etext = .;
-	. = ALIGN(PAGE_SIZE);
-	X64_ALIGN_RODATA_BEGIN
-	RO_DATA(PAGE_SIZE)
-	X64_ALIGN_RODATA_END
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Data */
 	.data : AT(ADDR(.data) - LOAD_OFFSET) {
@@ -278,11 +220,7 @@ SECTIONS
 		. = __vvar_beginning_hack + PAGE_SIZE;
 	} :data
 
-<<<<<<< HEAD
 	. = ALIGN(__vvar_page + PAGE_SIZE, PAGE_SIZE);
-=======
-       . = ALIGN(__vvar_page + PAGE_SIZE, PAGE_SIZE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Init code and data - will be freed after init */
 	. = ALIGN(PAGE_SIZE);
@@ -435,10 +373,7 @@ SECTIONS
 		__bss_start = .;
 		*(.bss..page_aligned)
 		*(BSS_MAIN)
-<<<<<<< HEAD
 		BSS_DECRYPTED
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		. = ALIGN(PAGE_SIZE);
 		__bss_stop = .;
 	}
@@ -454,13 +389,8 @@ SECTIONS
 	. = ALIGN(PAGE_SIZE);		/* keep VO_INIT_SIZE page aligned */
 	_end = .;
 
-<<<<<<< HEAD
 	STABS_DEBUG
 	DWARF_DEBUG
-=======
-        STABS_DEBUG
-        DWARF_DEBUG
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Sections to be discarded */
 	DISCARDS
@@ -505,10 +435,3 @@ INIT_PER_CPU(irq_stack_union);
            "kexec control code size is too big");
 #endif
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_CFI_CLANG
-. = ASSERT((__cfi_jt_end - __cfi_jt_start > 0),
-	   "CFI jump table is empty");
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

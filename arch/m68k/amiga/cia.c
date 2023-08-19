@@ -88,26 +88,10 @@ static irqreturn_t cia_handler(int irq, void *dev_id)
 	struct ciabase *base = dev_id;
 	int mach_irq;
 	unsigned char ints;
-<<<<<<< HEAD
 
 	mach_irq = base->cia_irq;
 	ints = cia_set_irq(base, CIA_ICR_ALL);
 	amiga_custom.intreq = base->int_mask;
-=======
-	unsigned long flags;
-
-	/* Interrupts get disabled while the timer irq flag is cleared and
-	 * the timer interrupt serviced.
-	 */
-	mach_irq = base->cia_irq;
-	local_irq_save(flags);
-	ints = cia_set_irq(base, CIA_ICR_ALL);
-	amiga_custom.intreq = base->int_mask;
-	if (ints & 1)
-		generic_handle_irq(mach_irq);
-	local_irq_restore(flags);
-	mach_irq++, ints >>= 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (; ints; mach_irq++, ints >>= 1) {
 		if (ints & 1)
 			generic_handle_irq(mach_irq);

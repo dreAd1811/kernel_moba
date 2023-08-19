@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+ OR MIT
 //
 // Device Tree Source for UniPhier LD11 Global Board
@@ -9,19 +8,6 @@
 
 /dts-v1/;
 #include <dt-bindings/gpio/uniphier-gpio.h>
-=======
-/*
- * Device Tree Source for UniPhier LD11 Global Board
- *
- * Copyright (C) 2016-2017 Socionext Inc.
- *   Author: Masahiro Yamada <yamada.masahiro@socionext.com>
- *           Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
- *
- * SPDX-License-Identifier: (GPL-2.0+ OR MIT)
- */
-
-/dts-v1/;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "uniphier-ld11.dtsi"
 
 / {
@@ -50,7 +36,6 @@
 		device_type = "memory";
 		reg = <0 0x80000000 0 0x40000000>;
 	};
-<<<<<<< HEAD
 
 	dvdd_reg: reg-fixed {
 		compatible = "regulator-fixed";
@@ -99,8 +84,6 @@
 			};
 		};
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &serial0 {
@@ -111,7 +94,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
 &i2s_hpcmout1 {
 	dai-format = "i2s";
 	remote-endpoint = <&tas_speaker>;
@@ -149,11 +131,6 @@
 		};
 	};
 
-=======
-&i2c0 {
-	status = "okay";
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	eeprom@50 {
 		compatible = "st,24c64", "atmel,24c64";
 		reg = <0x50>;
@@ -173,7 +150,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
 &eth {
 	status = "okay";
 	phy-handle = <&ethphy>;
@@ -185,8 +161,6 @@
 	};
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &nand {
 	status = "okay";
 };

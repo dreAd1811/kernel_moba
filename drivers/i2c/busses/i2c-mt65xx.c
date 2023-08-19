@@ -27,10 +27,7 @@
 #include <linux/mm.h>
 #include <linux/module.h>
 #include <linux/of_address.h>
-<<<<<<< HEAD
 #include <linux/of_device.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/of_irq.h>
 #include <linux/platform_device.h>
 #include <linux/scatterlist.h>
@@ -65,10 +62,7 @@
 #define I2C_DMA_HARD_RST		0x0002
 #define I2C_DMA_4G_MODE			0x0001
 
-<<<<<<< HEAD
 #define I2C_DEFAULT_CLK_DIV		5
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define I2C_DEFAULT_SPEED		100000	/* hz */
 #define MAX_FS_MODE_SPEED		400000
 #define MAX_HS_MODE_SPEED		3400000
@@ -135,10 +129,7 @@ enum I2C_REGS_OFFSET {
 	OFFSET_DEBUGSTAT = 0x64,
 	OFFSET_DEBUGCTRL = 0x68,
 	OFFSET_TRANSFER_LEN_AUX = 0x6c,
-<<<<<<< HEAD
 	OFFSET_CLOCK_DIV = 0x70,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct mtk_i2c_compatible {
@@ -148,10 +139,7 @@ struct mtk_i2c_compatible {
 	unsigned char auto_restart: 1;
 	unsigned char aux_len_reg: 1;
 	unsigned char support_33bits: 1;
-<<<<<<< HEAD
 	unsigned char timing_adjust: 1;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct mtk_i2c {
@@ -192,7 +180,6 @@ static const struct i2c_adapter_quirks mt7622_i2c_quirks = {
 	.max_num_msgs = 255,
 };
 
-<<<<<<< HEAD
 static const struct mtk_i2c_compatible mt2712_compat = {
 	.pmic_i2c = 0,
 	.dcm = 1,
@@ -202,8 +189,6 @@ static const struct mtk_i2c_compatible mt2712_compat = {
 	.timing_adjust = 1,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct mtk_i2c_compatible mt6577_compat = {
 	.quirks = &mt6577_i2c_quirks,
 	.pmic_i2c = 0,
@@ -211,10 +196,7 @@ static const struct mtk_i2c_compatible mt6577_compat = {
 	.auto_restart = 0,
 	.aux_len_reg = 0,
 	.support_33bits = 0,
-<<<<<<< HEAD
 	.timing_adjust = 0,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct mtk_i2c_compatible mt6589_compat = {
@@ -224,10 +206,7 @@ static const struct mtk_i2c_compatible mt6589_compat = {
 	.auto_restart = 0,
 	.aux_len_reg = 0,
 	.support_33bits = 0,
-<<<<<<< HEAD
 	.timing_adjust = 0,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct mtk_i2c_compatible mt7622_compat = {
@@ -237,10 +216,7 @@ static const struct mtk_i2c_compatible mt7622_compat = {
 	.auto_restart = 1,
 	.aux_len_reg = 1,
 	.support_33bits = 0,
-<<<<<<< HEAD
 	.timing_adjust = 0,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct mtk_i2c_compatible mt8173_compat = {
@@ -249,17 +225,11 @@ static const struct mtk_i2c_compatible mt8173_compat = {
 	.auto_restart = 1,
 	.aux_len_reg = 1,
 	.support_33bits = 1,
-<<<<<<< HEAD
 	.timing_adjust = 0,
 };
 
 static const struct of_device_id mtk_i2c_of_match[] = {
 	{ .compatible = "mediatek,mt2712-i2c", .data = &mt2712_compat },
-=======
-};
-
-static const struct of_device_id mtk_i2c_of_match[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ .compatible = "mediatek,mt6577-i2c", .data = &mt6577_compat },
 	{ .compatible = "mediatek,mt6589-i2c", .data = &mt6589_compat },
 	{ .compatible = "mediatek,mt7622-i2c", .data = &mt7622_compat },
@@ -319,12 +289,9 @@ static void mtk_i2c_init_hw(struct mtk_i2c *i2c)
 	if (i2c->dev_comp->dcm)
 		writew(I2C_DCM_DISABLE, i2c->base + OFFSET_DCM_EN);
 
-<<<<<<< HEAD
 	if (i2c->dev_comp->timing_adjust)
 		writew(I2C_DEFAULT_CLK_DIV - 1, i2c->base + OFFSET_CLOCK_DIV);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	writew(i2c->timing_reg, i2c->base + OFFSET_TIMING);
 	writew(i2c->high_speed_reg, i2c->base + OFFSET_HS);
 
@@ -768,10 +735,6 @@ static int mtk_i2c_parse_dt(struct device_node *np, struct mtk_i2c *i2c)
 
 static int mtk_i2c_probe(struct platform_device *pdev)
 {
-<<<<<<< HEAD
-=======
-	const struct of_device_id *of_id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = 0;
 	struct mtk_i2c *i2c;
 	struct clk *clk;
@@ -782,13 +745,6 @@ static int mtk_i2c_probe(struct platform_device *pdev)
 	if (!i2c)
 		return -ENOMEM;
 
-<<<<<<< HEAD
-=======
-	ret = mtk_i2c_parse_dt(pdev->dev.of_node, i2c);
-	if (ret)
-		return -EINVAL;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 	i2c->base = devm_ioremap_resource(&pdev->dev, res);
 	if (IS_ERR(i2c->base))
@@ -805,15 +761,7 @@ static int mtk_i2c_probe(struct platform_device *pdev)
 
 	init_completion(&i2c->msg_complete);
 
-<<<<<<< HEAD
 	i2c->dev_comp = of_device_get_match_data(&pdev->dev);
-=======
-	of_id = of_match_node(mtk_i2c_of_match, pdev->dev.of_node);
-	if (!of_id)
-		return -EINVAL;
-
-	i2c->dev_comp = of_id->data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i2c->adap.dev.of_node = pdev->dev.of_node;
 	i2c->dev = &pdev->dev;
 	i2c->adap.dev.parent = &pdev->dev;
@@ -823,7 +771,6 @@ static int mtk_i2c_probe(struct platform_device *pdev)
 	i2c->adap.timeout = 2 * HZ;
 	i2c->adap.retries = 1;
 
-<<<<<<< HEAD
 	ret = mtk_i2c_parse_dt(pdev->dev.of_node, i2c);
 	if (ret)
 		return -EINVAL;
@@ -831,8 +778,6 @@ static int mtk_i2c_probe(struct platform_device *pdev)
 	if (i2c->dev_comp->timing_adjust)
 		i2c->clk_src_div *= I2C_DEFAULT_CLK_DIV;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (i2c->have_pmic && !i2c->dev_comp->pmic_i2c)
 		return -EINVAL;
 
@@ -912,7 +857,6 @@ static int mtk_i2c_remove(struct platform_device *pdev)
 #ifdef CONFIG_PM_SLEEP
 static int mtk_i2c_resume(struct device *dev)
 {
-<<<<<<< HEAD
 	int ret;
 	struct mtk_i2c *i2c = dev_get_drvdata(dev);
 
@@ -926,12 +870,6 @@ static int mtk_i2c_resume(struct device *dev)
 
 	mtk_i2c_clock_disable(i2c);
 
-=======
-	struct mtk_i2c *i2c = dev_get_drvdata(dev);
-
-	mtk_i2c_init_hw(i2c);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 #endif

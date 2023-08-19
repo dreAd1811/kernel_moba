@@ -197,11 +197,7 @@ void qed_int_disable_post_isr_release(struct qed_dev *cdev);
 #define QED_SB_EVENT_MASK       0x0003
 
 #define SB_ALIGNED_SIZE(p_hwfn)	\
-<<<<<<< HEAD
 	ALIGNED_TYPE_SIZE(struct status_block_e4, p_hwfn)
-=======
-	ALIGNED_TYPE_SIZE(struct status_block, p_hwfn)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define QED_SB_INVALID_IDX      0xffff
 

@@ -50,14 +50,11 @@ static const struct efuse_map RTL8712_SDIO_EFUSE_TABLE[] = {
 	{11, 0, 0, 28}
 };
 
-<<<<<<< HEAD
 static const struct rtl_efuse_ops efuse_ops = {
 	.efuse_onebyte_read = efuse_one_byte_read,
 	.efuse_logical_map_read = efuse_shadow_read,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void efuse_shadow_read_1byte(struct ieee80211_hw *hw, u16 offset,
 				    u8 *value);
 static void efuse_shadow_read_2byte(struct ieee80211_hw *hw, u16 offset,
@@ -261,7 +258,6 @@ void read_efuse(struct ieee80211_hw *hw, u16 _offset, u16 _size_byte, u8 *pbuf)
 	}
 
 	/* allocate memory for efuse_tbl and efuse_word */
-<<<<<<< HEAD
 	efuse_tbl = kzalloc(rtlpriv->cfg->maps[EFUSE_HWSET_MAX_SIZE],
 			    GFP_ATOMIC);
 	if (!efuse_tbl)
@@ -271,17 +267,6 @@ void read_efuse(struct ieee80211_hw *hw, u16 _offset, u16 _size_byte, u8 *pbuf)
 		goto out;
 	for (i = 0; i < EFUSE_MAX_WORD_UNIT; i++) {
 		efuse_word[i] = kcalloc(efuse_max_section, sizeof(u16),
-=======
-	efuse_tbl = kzalloc(rtlpriv->cfg->maps[EFUSE_HWSET_MAX_SIZE] *
-			    sizeof(u8), GFP_ATOMIC);
-	if (!efuse_tbl)
-		return;
-	efuse_word = kzalloc(EFUSE_MAX_WORD_UNIT * sizeof(u16 *), GFP_ATOMIC);
-	if (!efuse_word)
-		goto out;
-	for (i = 0; i < EFUSE_MAX_WORD_UNIT; i++) {
-		efuse_word[i] = kzalloc(efuse_max_section * sizeof(u16),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					GFP_ATOMIC);
 		if (!efuse_word[i])
 			goto done;
@@ -1384,7 +1369,6 @@ void rtl_fill_dummy(u8 *pfwbuf, u32 *pfwlen)
 	*pfwlen = fwlen;
 }
 EXPORT_SYMBOL_GPL(rtl_fill_dummy);
-<<<<<<< HEAD
 
 void rtl_efuse_ops_init(struct ieee80211_hw *hw)
 {
@@ -1393,5 +1377,3 @@ void rtl_efuse_ops_init(struct ieee80211_hw *hw)
 	rtlpriv->efuse.efuse_ops = &efuse_ops;
 }
 EXPORT_SYMBOL_GPL(rtl_efuse_ops_init);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

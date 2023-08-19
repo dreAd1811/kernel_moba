@@ -141,11 +141,7 @@
 		compatible = "ti,wl1271";
 		reg = <2>;
 		interrupt-parent = <&gpio5>;
-<<<<<<< HEAD
 		interrupts = <17 IRQ_TYPE_EDGE_RISING>; /* gpio 145 */
-=======
-		interrupts = <17 IRQ_TYPE_LEVEL_HIGH>; /* gpio 145 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ref-clock-frequency = <38400000>;
 	};
 };

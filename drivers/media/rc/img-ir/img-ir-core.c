@@ -92,16 +92,9 @@ static int img_ir_probe(struct platform_device *pdev)
 
 	/* Private driver data */
 	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
-<<<<<<< HEAD
 	if (!priv)
 		return -ENOMEM;
 
-=======
-	if (!priv) {
-		dev_err(&pdev->dev, "cannot allocate device data\n");
-		return -ENOMEM;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	platform_set_drvdata(pdev, priv);
 	priv->dev = &pdev->dev;
 	spin_lock_init(&priv->lock);

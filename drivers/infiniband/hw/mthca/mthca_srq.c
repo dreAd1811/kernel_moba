@@ -155,11 +155,7 @@ static int mthca_alloc_srq_buf(struct mthca_dev *dev, struct mthca_pd *pd,
 	if (pd->ibpd.uobject)
 		return 0;
 
-<<<<<<< HEAD
 	srq->wrid = kmalloc_array(srq->max, sizeof(u64), GFP_KERNEL);
-=======
-	srq->wrid = kmalloc(srq->max * sizeof (u64), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!srq->wrid)
 		return -ENOMEM;
 
@@ -476,13 +472,8 @@ void mthca_free_srq_wqe(struct mthca_srq *srq, u32 wqe_addr)
 	spin_unlock(&srq->lock);
 }
 
-<<<<<<< HEAD
 int mthca_tavor_post_srq_recv(struct ib_srq *ibsrq, const struct ib_recv_wr *wr,
 			      const struct ib_recv_wr **bad_wr)
-=======
-int mthca_tavor_post_srq_recv(struct ib_srq *ibsrq, struct ib_recv_wr *wr,
-			      struct ib_recv_wr **bad_wr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mthca_dev *dev = to_mdev(ibsrq->device);
 	struct mthca_srq *srq = to_msrq(ibsrq);
@@ -581,13 +572,8 @@ int mthca_tavor_post_srq_recv(struct ib_srq *ibsrq, struct ib_recv_wr *wr,
 	return err;
 }
 
-<<<<<<< HEAD
 int mthca_arbel_post_srq_recv(struct ib_srq *ibsrq, const struct ib_recv_wr *wr,
 			      const struct ib_recv_wr **bad_wr)
-=======
-int mthca_arbel_post_srq_recv(struct ib_srq *ibsrq, struct ib_recv_wr *wr,
-			      struct ib_recv_wr **bad_wr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mthca_dev *dev = to_mdev(ibsrq->device);
 	struct mthca_srq *srq = to_msrq(ibsrq);

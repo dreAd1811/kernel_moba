@@ -57,11 +57,7 @@ void vrtc_cmos_write(unsigned char val, unsigned char reg)
 }
 EXPORT_SYMBOL_GPL(vrtc_cmos_write);
 
-<<<<<<< HEAD
 void vrtc_get_time(struct timespec64 *now)
-=======
-void vrtc_get_time(struct timespec *now)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u8 sec, min, hour, mday, mon;
 	unsigned long flags;
@@ -87,30 +83,18 @@ void vrtc_get_time(struct timespec *now)
 	pr_info("vRTC: sec: %d min: %d hour: %d day: %d "
 		"mon: %d year: %d\n", sec, min, hour, mday, mon, year);
 
-<<<<<<< HEAD
 	now->tv_sec = mktime64(year, mon, mday, hour, min, sec);
 	now->tv_nsec = 0;
 }
 
 int vrtc_set_mmss(const struct timespec64 *now)
-=======
-	now->tv_sec = mktime(year, mon, mday, hour, min, sec);
-	now->tv_nsec = 0;
-}
-
-int vrtc_set_mmss(const struct timespec *now)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long flags;
 	struct rtc_time tm;
 	int year;
 	int retval = 0;
 
-<<<<<<< HEAD
 	rtc_time64_to_tm(now->tv_sec, &tm);
-=======
-	rtc_time_to_tm(now->tv_sec, &tm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!rtc_valid_tm(&tm) && tm.tm_year >= 72) {
 		/*
 		 * tm.year is the number of years since 1900, and the
@@ -126,13 +110,8 @@ int vrtc_set_mmss(const struct timespec *now)
 		vrtc_cmos_write(tm.tm_sec, RTC_SECONDS);
 		spin_unlock_irqrestore(&rtc_lock, flags);
 	} else {
-<<<<<<< HEAD
 		pr_err("%s: Invalid vRTC value: write of %llx to vRTC failed\n",
 			__func__, (s64)now->tv_sec);
-=======
-		pr_err("%s: Invalid vRTC value: write of %lx to vRTC failed\n",
-			__func__, now->tv_sec);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		retval = -EINVAL;
 	}
 	return retval;

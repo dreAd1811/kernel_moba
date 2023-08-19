@@ -23,11 +23,8 @@ wil6210-y += ethtool.o
 wil6210-y += wil_crash_dump.o
 wil6210-y += p2p.o
 wil6210-y += ftm.o
-<<<<<<< HEAD
 wil6210-$(CONFIG_WIL6210_IPA) += ipa.o
 wil6210-y += config.o
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 # for tracing framework to find trace.h
 CFLAGS_trace.o := -I$(src)

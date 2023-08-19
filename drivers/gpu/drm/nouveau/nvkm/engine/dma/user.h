@@ -16,9 +16,6 @@ int gf100_dmaobj_new(struct nvkm_dma *, const struct nvkm_oclass *, void *, u32,
 		     struct nvkm_dmaobj **);
 int gf119_dmaobj_new(struct nvkm_dma *, const struct nvkm_oclass *, void *, u32,
 		     struct nvkm_dmaobj **);
-<<<<<<< HEAD
 int gv100_dmaobj_new(struct nvkm_dma *, const struct nvkm_oclass *, void *, u32,
 		     struct nvkm_dmaobj **);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

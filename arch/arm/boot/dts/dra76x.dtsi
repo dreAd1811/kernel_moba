@@ -11,7 +11,6 @@
 / {
 	compatible = "ti,dra762", "ti,dra7";
 
-<<<<<<< HEAD
 	ocp {
 		target-module@42c01900 {
 			compatible = "ti,sysc-dra7-mcan", "ti,sysc";
@@ -43,8 +42,6 @@
 		};
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* MCAN interrupts are hard-wired to irqs 67, 68 */
@@ -52,7 +49,6 @@
 	ti,irqs-skip = <10 67 68 133 139 140>;
 };
 
-<<<<<<< HEAD
 &scm_conf_clocks {
 	dpll_gmac_h14x2_ctrl_ck: dpll_gmac_h14x2_ctrl_ck@3fc {
 		#clock-cells = <0>;
@@ -84,9 +80,4 @@
 		ti,bit-shift = <27>;
 		reg = <0x3fc>;
 	};
-=======
-&mmc3 {
-	/* dra76x is not affected by i887 */
-	max-frequency = <96000000>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

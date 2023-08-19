@@ -143,11 +143,7 @@ static void s3c2440_cpufreq_setdivs(struct s3c_cpufreq_config *cfg)
 {
 	unsigned long clkdiv, camdiv;
 
-<<<<<<< HEAD
 	s3c_freq_dbg("%s: divisors: h=%d, p=%d\n", __func__,
-=======
-	s3c_freq_dbg("%s: divsiors: h=%d, p=%d\n", __func__,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		     cfg->divs.h_divisor, cfg->divs.p_divisor);
 
 	clkdiv = __raw_readl(S3C2410_CLKDIVN);

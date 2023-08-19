@@ -241,7 +241,6 @@ int mv88e6185_g1_ppu_disable(struct mv88e6xxx_chip *chip)
 	return mv88e6185_g1_wait_ppu_disabled(chip);
 }
 
-<<<<<<< HEAD
 /* Offset 0x10: IP-PRI Mapping Register 0
  * Offset 0x11: IP-PRI Mapping Register 1
  * Offset 0x12: IP-PRI Mapping Register 2
@@ -300,8 +299,6 @@ int mv88e6085_g1_ieee_pri_map(struct mv88e6xxx_chip *chip)
 	return mv88e6xxx_g1_write(chip, MV88E6XXX_G1_IEEE_PRI, 0xfa41);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Offset 0x1a: Monitor Control */
 /* Offset 0x1a: Monitor & MGMT Control on some devices */
 
@@ -374,14 +371,6 @@ int mv88e6390_g1_set_cpu_port(struct mv88e6xxx_chip *chip, int port)
 {
 	u16 ptr = MV88E6390_G1_MONITOR_MGMT_CTL_PTR_CPU_DEST;
 
-<<<<<<< HEAD
-=======
-	/* Use the default high priority for management frames sent to
-	 * the CPU.
-	 */
-	port |= MV88E6390_G1_MONITOR_MGMT_CTL_PTR_CPU_DEST_MGMTPRI;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return mv88e6390_g1_monitor_write(chip, ptr, port);
 }
 
@@ -419,7 +408,6 @@ int mv88e6390_g1_mgmt_rsvd2cpu(struct mv88e6xxx_chip *chip)
 
 /* Offset 0x1c: Global Control 2 */
 
-<<<<<<< HEAD
 static int mv88e6xxx_g1_ctl2_mask(struct mv88e6xxx_chip *chip, u16 mask,
 				  u16 val)
 {
@@ -473,22 +461,6 @@ int mv88e6xxx_g1_set_device_number(struct mv88e6xxx_chip *chip, int index)
 	return mv88e6xxx_g1_ctl2_mask(chip,
 				      MV88E6XXX_G1_CTL2_DEVICE_NUMBER_MASK,
 				      index);
-=======
-int mv88e6390_g1_stats_set_histogram(struct mv88e6xxx_chip *chip)
-{
-	u16 val;
-	int err;
-
-	err = mv88e6xxx_g1_read(chip, MV88E6XXX_G1_CTL2, &val);
-	if (err)
-		return err;
-
-	val |= MV88E6XXX_G1_CTL2_HIST_RX_TX;
-
-	err = mv88e6xxx_g1_write(chip, MV88E6XXX_G1_CTL2, val);
-
-	return err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Offset 0x1d: Statistics Operation 2 */
@@ -499,7 +471,6 @@ int mv88e6xxx_g1_stats_wait(struct mv88e6xxx_chip *chip)
 				 MV88E6XXX_G1_STATS_OP_BUSY);
 }
 
-<<<<<<< HEAD
 int mv88e6095_g1_stats_set_histogram(struct mv88e6xxx_chip *chip)
 {
 	u16 val;
@@ -516,8 +487,6 @@ int mv88e6095_g1_stats_set_histogram(struct mv88e6xxx_chip *chip)
 	return err;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int mv88e6xxx_g1_stats_snapshot(struct mv88e6xxx_chip *chip, int port)
 {
 	int err;
@@ -588,7 +557,6 @@ void mv88e6xxx_g1_stats_read(struct mv88e6xxx_chip *chip, int stat, u32 *val)
 
 	*val = value | reg;
 }
-<<<<<<< HEAD
 
 int mv88e6xxx_g1_stats_clear(struct mv88e6xxx_chip *chip)
 {
@@ -610,5 +578,3 @@ int mv88e6xxx_g1_stats_clear(struct mv88e6xxx_chip *chip)
 	/* Wait for the flush to complete. */
 	return mv88e6xxx_g1_stats_wait(chip);
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

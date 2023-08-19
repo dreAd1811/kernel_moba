@@ -4,34 +4,20 @@
  * Copyright (C) 2016 CoreOS, Inc
  * Copyright (C) 2017 Google, Inc.
  *     Matthew Garrett <mjg59@google.com>
-<<<<<<< HEAD
  *     Thiebaud Weksteen <tweek@google.com>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This file is part of the Linux kernel, and is made available under the
  * terms of the GNU General Public License version 2.
  */
 #include <linux/efi.h>
-<<<<<<< HEAD
 #include <linux/tpm_eventlog.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/efi.h>
 
 #include "efistub.h"
 
-<<<<<<< HEAD
 #ifdef CONFIG_RESET_ATTACK_MITIGATION
 static const efi_char16_t efi_MemoryOverWriteRequest_name[] =
 	L"MemoryOverwriteRequestControl";
-=======
-static const efi_char16_t efi_MemoryOverWriteRequest_name[] = {
-	'M', 'e', 'm', 'o', 'r', 'y', 'O', 'v', 'e', 'r', 'w', 'r', 'i', 't',
-	'e', 'R', 'e', 'q', 'u', 'e', 's', 't', 'C', 'o', 'n', 't', 'r', 'o',
-	'l', 0
-};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define MEMORY_ONLY_RESET_CONTROL_GUID \
 	EFI_GUID(0xe20939be, 0x32d4, 0x41be, 0xa1, 0x50, 0x89, 0x7f, 0x85, 0xd4, 0x98, 0x29)
@@ -70,7 +56,6 @@ void efi_enable_reset_attack_mitigation(efi_system_table_t *sys_table_arg)
 		    EFI_VARIABLE_BOOTSERVICE_ACCESS |
 		    EFI_VARIABLE_RUNTIME_ACCESS, sizeof(val), &val);
 }
-<<<<<<< HEAD
 
 #endif
 
@@ -149,5 +134,3 @@ void efi_retrieve_tpm2_eventlog(efi_system_table_t *sys_table_arg)
 	/* Only try to retrieve the logs in 1.2 format. */
 	efi_retrieve_tpm2_eventlog_1_2(sys_table_arg);
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

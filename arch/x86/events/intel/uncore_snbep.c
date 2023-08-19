@@ -1029,10 +1029,7 @@ void snbep_uncore_cpu_init(void)
 enum {
 	SNBEP_PCI_QPI_PORT0_FILTER,
 	SNBEP_PCI_QPI_PORT1_FILTER,
-<<<<<<< HEAD
 	BDX_PCI_QPI_PORT2_FILTER,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	HSWEP_PCI_PCU_3,
 };
 
@@ -1061,11 +1058,7 @@ static void snbep_qpi_enable_event(struct intel_uncore_box *box, struct perf_eve
 
 	if (reg1->idx != EXTRA_REG_NONE) {
 		int idx = box->pmu->pmu_idx + SNBEP_PCI_QPI_PORT0_FILTER;
-<<<<<<< HEAD
 		int pkg = box->pkgid;
-=======
-		int pkg = topology_phys_to_logical_pkg(box->pci_phys_id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct pci_dev *filter_pdev = uncore_extra_pci_dev[pkg].dev[idx];
 
 		if (filter_pdev) {
@@ -3038,7 +3031,6 @@ static struct intel_uncore_type bdx_uncore_cbox = {
 	.format_group		= &hswep_uncore_cbox_format_group,
 };
 
-<<<<<<< HEAD
 static struct intel_uncore_type bdx_uncore_sbox = {
 	.name			= "sbox",
 	.num_counters		= 4,
@@ -3055,16 +3047,11 @@ static struct intel_uncore_type bdx_uncore_sbox = {
 
 #define BDX_MSR_UNCORE_SBOX	3
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct intel_uncore_type *bdx_msr_uncores[] = {
 	&bdx_uncore_ubox,
 	&bdx_uncore_cbox,
 	&hswep_uncore_pcu,
-<<<<<<< HEAD
 	&bdx_uncore_sbox,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	NULL,
 };
 
@@ -3076,16 +3063,12 @@ static struct event_constraint bdx_uncore_pcu_constraints[] = {
 
 void bdx_uncore_cpu_init(void)
 {
-<<<<<<< HEAD
 	int pkg = topology_phys_to_logical_pkg(boot_cpu_data.phys_proc_id);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (bdx_uncore_cbox.num_boxes > boot_cpu_data.x86_max_cores)
 		bdx_uncore_cbox.num_boxes = boot_cpu_data.x86_max_cores;
 	uncore_msr_uncores = bdx_msr_uncores;
 
-<<<<<<< HEAD
 	/* BDX-DE doesn't have SBOX */
 	if (boot_cpu_data.x86_model == 86) {
 		uncore_msr_uncores[BDX_MSR_UNCORE_SBOX] = NULL;
@@ -3099,8 +3082,6 @@ void bdx_uncore_cpu_init(void)
 		if (((capid4 >> 6) & 0x3) == 0)
 			bdx_msr_uncores[BDX_MSR_UNCORE_SBOX] = NULL;
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hswep_uncore_pcu.constraints = bdx_uncore_pcu_constraints;
 }
 
@@ -3308,7 +3289,6 @@ static const struct pci_device_id bdx_uncore_pci_ids[] = {
 	},
 	{ /* QPI Port 0 filter  */
 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x6f86),
-<<<<<<< HEAD
 		.driver_data = UNCORE_PCI_DEV_DATA(UNCORE_EXTRA_PCI_DEV,
 						   SNBEP_PCI_QPI_PORT0_FILTER),
 	},
@@ -3326,17 +3306,6 @@ static const struct pci_device_id bdx_uncore_pci_ids[] = {
 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x6fc0),
 		.driver_data = UNCORE_PCI_DEV_DATA(UNCORE_EXTRA_PCI_DEV,
 						   HSWEP_PCI_PCU_3),
-=======
-		.driver_data = UNCORE_PCI_DEV_DATA(UNCORE_EXTRA_PCI_DEV, 0),
-	},
-	{ /* QPI Port 1 filter  */
-		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x6f96),
-		.driver_data = UNCORE_PCI_DEV_DATA(UNCORE_EXTRA_PCI_DEV, 1),
-	},
-	{ /* QPI Port 2 filter  */
-		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x6f46),
-		.driver_data = UNCORE_PCI_DEV_DATA(UNCORE_EXTRA_PCI_DEV, 2),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{ /* end: all zeroes */ }
 };
@@ -3417,10 +3386,7 @@ static struct extra_reg skx_uncore_cha_extra_regs[] = {
 	SNBEP_CBO_EVENT_EXTRA_REG(0x9134, 0xffff, 0x4),
 	SNBEP_CBO_EVENT_EXTRA_REG(0x35, 0xff, 0x8),
 	SNBEP_CBO_EVENT_EXTRA_REG(0x36, 0xff, 0x8),
-<<<<<<< HEAD
 	SNBEP_CBO_EVENT_EXTRA_REG(0x38, 0xff, 0x3),
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	EVENT_EXTRA_END
 };
 
@@ -3562,7 +3528,6 @@ static struct intel_uncore_type skx_uncore_iio = {
 	.format_group		= &skx_uncore_iio_format_group,
 };
 
-<<<<<<< HEAD
 enum perf_uncore_iio_freerunning_type_id {
 	SKX_IIO_MSR_IOCLK			= 0,
 	SKX_IIO_MSR_BW				= 1,
@@ -3645,8 +3610,6 @@ static struct intel_uncore_type skx_uncore_iio_free_running = {
 	.format_group		= &skx_uncore_iio_freerunning_format_group,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct attribute *skx_uncore_formats_attr[] = {
 	&format_attr_event.attr,
 	&format_attr_umask.attr,
@@ -3720,10 +3683,7 @@ static struct intel_uncore_type *skx_msr_uncores[] = {
 	&skx_uncore_ubox,
 	&skx_uncore_chabox,
 	&skx_uncore_iio,
-<<<<<<< HEAD
 	&skx_uncore_iio_free_running,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	&skx_uncore_irp,
 	&skx_uncore_pcu,
 	NULL,

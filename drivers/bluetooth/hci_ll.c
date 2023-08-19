@@ -53,7 +53,6 @@
 #include <net/bluetooth/bluetooth.h>
 #include <net/bluetooth/hci_core.h>
 #include <linux/gpio/consumer.h>
-<<<<<<< HEAD
 #include <linux/nvmem-consumer.h>
 
 #include "hci_uart.h"
@@ -62,27 +61,12 @@
 #define HCI_VS_WRITE_BD_ADDR			0xfc06
 #define HCI_VS_UPDATE_UART_HCI_BAUDRATE		0xff36
 
-=======
-
-#include "hci_uart.h"
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* HCILL commands */
 #define HCILL_GO_TO_SLEEP_IND	0x30
 #define HCILL_GO_TO_SLEEP_ACK	0x31
 #define HCILL_WAKE_UP_IND	0x32
 #define HCILL_WAKE_UP_ACK	0x33
 
-<<<<<<< HEAD
-=======
-/* HCILL receiver States */
-#define HCILL_W4_PACKET_TYPE	0
-#define HCILL_W4_EVENT_HDR	1
-#define HCILL_W4_ACL_HDR	2
-#define HCILL_W4_SCO_HDR	3
-#define HCILL_W4_DATA		4
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* HCILL states */
 enum hcill_states_e {
 	HCILL_ASLEEP,
@@ -91,30 +75,15 @@ enum hcill_states_e {
 	HCILL_AWAKE_TO_ASLEEP
 };
 
-<<<<<<< HEAD
-=======
-struct hcill_cmd {
-	u8 cmd;
-} __packed;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct ll_device {
 	struct hci_uart hu;
 	struct serdev_device *serdev;
 	struct gpio_desc *enable_gpio;
 	struct clk *ext_clk;
-<<<<<<< HEAD
 	bdaddr_t bdaddr;
 };
 
 struct ll_struct {
-=======
-};
-
-struct ll_struct {
-	unsigned long rx_state;
-	unsigned long rx_count;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct sk_buff *rx_skb;
 	struct sk_buff_head txq;
 	spinlock_t hcill_lock;		/* HCILL state lock	*/
@@ -131,10 +100,6 @@ static int send_hcill_cmd(u8 cmd, struct hci_uart *hu)
 	int err = 0;
 	struct sk_buff *skb = NULL;
 	struct ll_struct *ll = hu->priv;
-<<<<<<< HEAD
-=======
-	struct hcill_cmd *hcill_packet;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	BT_DBG("hu %p cmd 0x%x", hu, cmd);
 
@@ -147,12 +112,7 @@ static int send_hcill_cmd(u8 cmd, struct hci_uart *hu)
 	}
 
 	/* prepare packet */
-<<<<<<< HEAD
 	skb_put_u8(skb, cmd);
-=======
-	hcill_packet = skb_put(skb, 1);
-	hcill_packet->cmd = cmd;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* send packet */
 	skb_queue_tail(&ll->txq, skb);
@@ -181,10 +141,6 @@ static int ll_open(struct hci_uart *hu)
 
 	if (hu->serdev) {
 		struct ll_device *lldev = serdev_device_get_drvdata(hu->serdev);
-<<<<<<< HEAD
-=======
-		serdev_device_open(hu->serdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!IS_ERR(lldev->ext_clk))
 			clk_prepare_enable(lldev->ext_clk);
 	}
@@ -222,11 +178,6 @@ static int ll_close(struct hci_uart *hu)
 		gpiod_set_value_cansleep(lldev->enable_gpio, 0);
 
 		clk_disable_unprepare(lldev->ext_clk);
-<<<<<<< HEAD
-=======
-
-		serdev_device_close(hu->serdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	hu->priv = NULL;
@@ -279,11 +230,7 @@ static void ll_device_want_to_wakeup(struct hci_uart *hu)
 		 * perfectly safe to always send one.
 		 */
 		BT_DBG("dual wake-up-indication");
-<<<<<<< HEAD
 		/* fall through */
-=======
-		/* deliberate fall-through - do not add break */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case HCILL_ASLEEP:
 		/* acknowledge device wake up */
 		if (send_hcill_cmd(HCILL_WAKE_UP_ACK, hu) < 0) {
@@ -414,7 +361,6 @@ static int ll_enqueue(struct hci_uart *hu, struct sk_buff *skb)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int ll_recv_frame(struct hci_dev *hdev, struct sk_buff *skb)
 {
 	struct hci_uart *hu = hci_get_drvdata(hdev);
@@ -482,37 +428,10 @@ static const struct h4_recv_pkt ll_recv_pkts[] = {
 	{ LL_RECV_WAKE_ACK,  .recv = ll_recv_frame  },
 };
 
-=======
-static inline int ll_check_data_len(struct hci_dev *hdev, struct ll_struct *ll, int len)
-{
-	int room = skb_tailroom(ll->rx_skb);
-
-	BT_DBG("len %d room %d", len, room);
-
-	if (!len) {
-		hci_recv_frame(hdev, ll->rx_skb);
-	} else if (len > room) {
-		BT_ERR("Data length is too large");
-		kfree_skb(ll->rx_skb);
-	} else {
-		ll->rx_state = HCILL_W4_DATA;
-		ll->rx_count = len;
-		return len;
-	}
-
-	ll->rx_state = HCILL_W4_PACKET_TYPE;
-	ll->rx_skb   = NULL;
-	ll->rx_count = 0;
-
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Recv data */
 static int ll_recv(struct hci_uart *hu, const void *data, int count)
 {
 	struct ll_struct *ll = hu->priv;
-<<<<<<< HEAD
 
 	if (!test_bit(HCI_UART_REGISTERED, &hu->flags))
 		return -EUNATCH;
@@ -524,129 +443,6 @@ static int ll_recv(struct hci_uart *hu, const void *data, int count)
 		bt_dev_err(hu->hdev, "Frame reassembly failed (%d)", err);
 		ll->rx_skb = NULL;
 		return err;
-=======
-	const char *ptr;
-	struct hci_event_hdr *eh;
-	struct hci_acl_hdr   *ah;
-	struct hci_sco_hdr   *sh;
-	int len, type, dlen;
-
-	BT_DBG("hu %p count %d rx_state %ld rx_count %ld", hu, count, ll->rx_state, ll->rx_count);
-
-	ptr = data;
-	while (count) {
-		if (ll->rx_count) {
-			len = min_t(unsigned int, ll->rx_count, count);
-			skb_put_data(ll->rx_skb, ptr, len);
-			ll->rx_count -= len; count -= len; ptr += len;
-
-			if (ll->rx_count)
-				continue;
-
-			switch (ll->rx_state) {
-			case HCILL_W4_DATA:
-				BT_DBG("Complete data");
-				hci_recv_frame(hu->hdev, ll->rx_skb);
-
-				ll->rx_state = HCILL_W4_PACKET_TYPE;
-				ll->rx_skb = NULL;
-				continue;
-
-			case HCILL_W4_EVENT_HDR:
-				eh = hci_event_hdr(ll->rx_skb);
-
-				BT_DBG("Event header: evt 0x%2.2x plen %d", eh->evt, eh->plen);
-
-				ll_check_data_len(hu->hdev, ll, eh->plen);
-				continue;
-
-			case HCILL_W4_ACL_HDR:
-				ah = hci_acl_hdr(ll->rx_skb);
-				dlen = __le16_to_cpu(ah->dlen);
-
-				BT_DBG("ACL header: dlen %d", dlen);
-
-				ll_check_data_len(hu->hdev, ll, dlen);
-				continue;
-
-			case HCILL_W4_SCO_HDR:
-				sh = hci_sco_hdr(ll->rx_skb);
-
-				BT_DBG("SCO header: dlen %d", sh->dlen);
-
-				ll_check_data_len(hu->hdev, ll, sh->dlen);
-				continue;
-			}
-		}
-
-		/* HCILL_W4_PACKET_TYPE */
-		switch (*ptr) {
-		case HCI_EVENT_PKT:
-			BT_DBG("Event packet");
-			ll->rx_state = HCILL_W4_EVENT_HDR;
-			ll->rx_count = HCI_EVENT_HDR_SIZE;
-			type = HCI_EVENT_PKT;
-			break;
-
-		case HCI_ACLDATA_PKT:
-			BT_DBG("ACL packet");
-			ll->rx_state = HCILL_W4_ACL_HDR;
-			ll->rx_count = HCI_ACL_HDR_SIZE;
-			type = HCI_ACLDATA_PKT;
-			break;
-
-		case HCI_SCODATA_PKT:
-			BT_DBG("SCO packet");
-			ll->rx_state = HCILL_W4_SCO_HDR;
-			ll->rx_count = HCI_SCO_HDR_SIZE;
-			type = HCI_SCODATA_PKT;
-			break;
-
-		/* HCILL signals */
-		case HCILL_GO_TO_SLEEP_IND:
-			BT_DBG("HCILL_GO_TO_SLEEP_IND packet");
-			ll_device_want_to_sleep(hu);
-			ptr++; count--;
-			continue;
-
-		case HCILL_GO_TO_SLEEP_ACK:
-			/* shouldn't happen */
-			BT_ERR("received HCILL_GO_TO_SLEEP_ACK (in state %ld)", ll->hcill_state);
-			ptr++; count--;
-			continue;
-
-		case HCILL_WAKE_UP_IND:
-			BT_DBG("HCILL_WAKE_UP_IND packet");
-			ll_device_want_to_wakeup(hu);
-			ptr++; count--;
-			continue;
-
-		case HCILL_WAKE_UP_ACK:
-			BT_DBG("HCILL_WAKE_UP_ACK packet");
-			ll_device_woke_up(hu);
-			ptr++; count--;
-			continue;
-
-		default:
-			BT_ERR("Unknown HCI packet type %2.2x", (__u8)*ptr);
-			hu->hdev->stat.err_rx++;
-			ptr++; count--;
-			continue;
-		}
-
-		ptr++; count--;
-
-		/* Allocate packet */
-		ll->rx_skb = bt_skb_alloc(HCI_MAX_FRAME_SIZE, GFP_ATOMIC);
-		if (!ll->rx_skb) {
-			BT_ERR("Can't allocate mem for new packet");
-			ll->rx_state = HCILL_W4_PACKET_TYPE;
-			ll->rx_count = 0;
-			return -ENOMEM;
-		}
-
-		hci_skb_pkt_type(ll->rx_skb) = type;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return count;
@@ -745,11 +541,7 @@ static int download_firmware(struct ll_device *lldev)
 		case ACTION_SEND_COMMAND:	/* action send */
 			bt_dev_dbg(lldev->hu.hdev, "S");
 			cmd = (struct hci_command *)action_ptr;
-<<<<<<< HEAD
 			if (cmd->opcode == HCI_VS_UPDATE_UART_HCI_BAUDRATE) {
-=======
-			if (cmd->opcode == 0xff36) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				/* ignore remote change
 				 * baud rate HCI VS command
 				 */
@@ -757,19 +549,11 @@ static int download_firmware(struct ll_device *lldev)
 				break;
 			}
 			if (cmd->prefix != 1)
-<<<<<<< HEAD
 				bt_dev_dbg(lldev->hu.hdev, "command type %d", cmd->prefix);
 
 			skb = __hci_cmd_sync(lldev->hu.hdev, cmd->opcode, cmd->plen, &cmd->speed, HCI_INIT_TIMEOUT);
 			if (IS_ERR(skb)) {
 				bt_dev_err(lldev->hu.hdev, "send command failed");
-=======
-				bt_dev_dbg(lldev->hu.hdev, "command type %d\n", cmd->prefix);
-
-			skb = __hci_cmd_sync(lldev->hu.hdev, cmd->opcode, cmd->plen, &cmd->speed, HCI_INIT_TIMEOUT);
-			if (IS_ERR(skb)) {
-				bt_dev_err(lldev->hu.hdev, "send command failed\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				err = PTR_ERR(skb);
 				goto out_rel_fw;
 			}
@@ -781,11 +565,7 @@ static int download_firmware(struct ll_device *lldev)
 			break;
 		case ACTION_DELAY:	/* sleep */
 			bt_dev_info(lldev->hu.hdev, "sleep command in scr");
-<<<<<<< HEAD
 			msleep(((struct bts_action_delay *)action_ptr)->msec);
-=======
-			mdelay(((struct bts_action_delay *)action_ptr)->msec);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 		len -= (sizeof(struct bts_action) +
@@ -800,7 +580,6 @@ out_rel_fw:
 	return err;
 }
 
-<<<<<<< HEAD
 static int ll_set_bdaddr(struct hci_dev *hdev, const bdaddr_t *bdaddr)
 {
 	bdaddr_t bdaddr_swapped;
@@ -819,8 +598,6 @@ static int ll_set_bdaddr(struct hci_dev *hdev, const bdaddr_t *bdaddr)
 	return PTR_ERR_OR_ZERO(skb);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ll_setup(struct hci_uart *hu)
 {
 	int err, retry = 3;
@@ -833,7 +610,6 @@ static int ll_setup(struct hci_uart *hu)
 
 	lldev = serdev_device_get_drvdata(serdev);
 
-<<<<<<< HEAD
 	hu->hdev->set_bdaddr = ll_set_bdaddr;
 
 	serdev_device_set_flow_control(serdev, true);
@@ -848,16 +624,6 @@ static int ll_setup(struct hci_uart *hu)
 			bt_dev_err(hu->hdev, "Failed to get CTS");
 			return err;
 		}
-=======
-	serdev_device_set_flow_control(serdev, true);
-
-	do {
-		/* Configure BT_EN to HIGH state */
-		gpiod_set_value_cansleep(lldev->enable_gpio, 0);
-		msleep(5);
-		gpiod_set_value_cansleep(lldev->enable_gpio, 1);
-		msleep(100);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		err = download_firmware(lldev);
 		if (!err)
@@ -870,7 +636,6 @@ static int ll_setup(struct hci_uart *hu)
 	if (err)
 		return err;
 
-<<<<<<< HEAD
 	/* Set BD address if one was specified at probe */
 	if (!bacmp(&lldev->bdaddr, BDADDR_NONE)) {
 		/* This means that there was an error getting the BD address
@@ -883,8 +648,6 @@ static int ll_setup(struct hci_uart *hu)
 			set_bit(HCI_QUIRK_INVALID_BDADDR, &hu->hdev->quirks);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Operational speed if any */
 	if (hu->oper_speed)
 		speed = hu->oper_speed;
@@ -894,16 +657,12 @@ static int ll_setup(struct hci_uart *hu)
 		speed = 0;
 
 	if (speed) {
-<<<<<<< HEAD
 		__le32 speed_le = cpu_to_le32(speed);
 		struct sk_buff *skb;
 
 		skb = __hci_cmd_sync(hu->hdev, HCI_VS_UPDATE_UART_HCI_BAUDRATE,
 				     sizeof(speed_le), &speed_le,
 				     HCI_INIT_TIMEOUT);
-=======
-		struct sk_buff *skb = __hci_cmd_sync(hu->hdev, 0xff36, sizeof(speed), &speed, HCI_INIT_TIMEOUT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!IS_ERR(skb)) {
 			kfree_skb(skb);
 			serdev_device_set_baudrate(serdev, speed);
@@ -919,10 +678,7 @@ static int hci_ti_probe(struct serdev_device *serdev)
 {
 	struct hci_uart *hu;
 	struct ll_device *lldev;
-<<<<<<< HEAD
 	struct nvmem_cell *bdaddr_cell;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 max_speed = 3000000;
 
 	lldev = devm_kzalloc(&serdev->dev, sizeof(struct ll_device), GFP_KERNEL);
@@ -944,7 +700,6 @@ static int hci_ti_probe(struct serdev_device *serdev)
 	of_property_read_u32(serdev->dev.of_node, "max-speed", &max_speed);
 	hci_uart_set_speeds(hu, 115200, max_speed);
 
-<<<<<<< HEAD
 	/* optional BD address from nvram */
 	bdaddr_cell = nvmem_cell_get(&serdev->dev, "bd-address");
 	if (IS_ERR(bdaddr_cell)) {
@@ -991,8 +746,6 @@ static int hci_ti_probe(struct serdev_device *serdev)
 		kfree(bdaddr);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return hci_uart_register_device(hu, &llp);
 }
 
@@ -1004,10 +757,7 @@ static void hci_ti_remove(struct serdev_device *serdev)
 }
 
 static const struct of_device_id hci_ti_of_match[] = {
-<<<<<<< HEAD
 	{ .compatible = "ti,cc2560" },
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ .compatible = "ti,wl1271-st" },
 	{ .compatible = "ti,wl1273-st" },
 	{ .compatible = "ti,wl1281-st" },

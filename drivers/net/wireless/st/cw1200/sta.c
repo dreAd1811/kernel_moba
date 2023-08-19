@@ -2112,16 +2112,9 @@ void cw1200_multicast_stop_work(struct work_struct *work)
 	}
 }
 
-<<<<<<< HEAD
 void cw1200_mcast_timeout(struct timer_list *t)
 {
 	struct cw1200_common *priv = from_timer(priv, t, mcast_timeout);
-=======
-void cw1200_mcast_timeout(unsigned long arg)
-{
-	struct cw1200_common *priv =
-		(struct cw1200_common *)arg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	wiphy_warn(priv->hw->wiphy,
 		   "Multicast delivery timeout.\n");

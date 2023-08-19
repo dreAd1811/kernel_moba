@@ -43,10 +43,6 @@ struct i2c_acpi_lookup {
 	int index;
 	u32 speed;
 	u32 min_speed;
-<<<<<<< HEAD
-=======
-	u32 force_speed;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int i2c_acpi_fill_info(struct acpi_resource *ares, void *data)
@@ -244,22 +240,6 @@ i2c_acpi_match_device(const struct acpi_device_id *matches,
 	return acpi_match_device(matches, &client->dev);
 }
 
-<<<<<<< HEAD
-=======
-static const struct acpi_device_id i2c_acpi_force_400khz_device_ids[] = {
-	/*
-	 * These Silead touchscreen controllers only work at 400KHz, for
-	 * some reason they do not work at 100KHz. On some devices the ACPI
-	 * tables list another device at their bus as only being capable
-	 * of 100KHz, testing has shown that these other devices work fine
-	 * at 400KHz (as can be expected of any recent i2c hw) so we force
-	 * the speed of the bus to 400 KHz if a Silead device is present.
-	 */
-	{ "MSSL1680", 0 },
-	{}
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static acpi_status i2c_acpi_lookup_speed(acpi_handle handle, u32 level,
 					   void *data, void **return_value)
 {
@@ -278,12 +258,6 @@ static acpi_status i2c_acpi_lookup_speed(acpi_handle handle, u32 level,
 	if (lookup->speed <= lookup->min_speed)
 		lookup->min_speed = lookup->speed;
 
-<<<<<<< HEAD
-=======
-	if (acpi_match_device_ids(adev, i2c_acpi_force_400khz_device_ids) == 0)
-		lookup->force_speed = 400000;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return AE_OK;
 }
 
@@ -321,20 +295,7 @@ u32 i2c_acpi_find_bus_speed(struct device *dev)
 		return 0;
 	}
 
-<<<<<<< HEAD
 	return lookup.min_speed != UINT_MAX ? lookup.min_speed : 0;
-=======
-	if (lookup.force_speed) {
-		if (lookup.force_speed != lookup.min_speed)
-			dev_warn(dev, FW_BUG "DSDT uses known not-working I2C bus speed %d, forcing it to %d\n",
-				 lookup.min_speed, lookup.force_speed);
-		return lookup.force_speed;
-	} else if (lookup.min_speed != UINT_MAX) {
-		return lookup.min_speed;
-	} else {
-		return 0;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(i2c_acpi_find_bus_speed);
 
@@ -365,25 +326,10 @@ static struct i2c_adapter *i2c_acpi_find_adapter_by_handle(acpi_handle handle)
 static struct i2c_client *i2c_acpi_find_client_by_adev(struct acpi_device *adev)
 {
 	struct device *dev;
-<<<<<<< HEAD
 
 	dev = bus_find_device(&i2c_bus_type, NULL, adev,
 			      i2c_acpi_find_match_device);
 	return dev ? i2c_verify_client(dev) : NULL;
-=======
-	struct i2c_client *client;
-
-	dev = bus_find_device(&i2c_bus_type, NULL, adev,
-			      i2c_acpi_find_match_device);
-	if (!dev)
-		return NULL;
-
-	client = i2c_verify_client(dev);
-	if (!client)
-		put_device(dev);
-
-	return client;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int i2c_acpi_notify(struct notifier_block *nb, unsigned long value,
@@ -499,7 +445,6 @@ static int acpi_gsb_i2c_read_bytes(struct i2c_client *client,
 	msgs[1].buf = buffer;
 
 	ret = i2c_transfer(client->adapter, msgs, ARRAY_SIZE(msgs));
-<<<<<<< HEAD
 	if (ret < 0) {
 		/* Getting a NACK is unfortunately normal with some DSTDs */
 		if (ret == -EREMOTEIO)
@@ -515,12 +460,6 @@ static int acpi_gsb_i2c_read_bytes(struct i2c_client *client,
 	} else {
 		ret = -EIO;
 	}
-=======
-	if (ret < 0)
-		dev_err(&client->adapter->dev, "i2c read failed\n");
-	else
-		memcpy(data, buffer, data_len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kfree(buffer);
 	return ret;
@@ -660,11 +599,6 @@ i2c_acpi_space_handler(u32 function, acpi_physical_address command,
 		if (action == ACPI_READ) {
 			status = acpi_gsb_i2c_read_bytes(client, command,
 					gsb->data, info->access_length);
-<<<<<<< HEAD
-=======
-			if (status > 0)
-				status = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else {
 			status = acpi_gsb_i2c_write_bytes(client, command,
 					gsb->data, info->access_length);

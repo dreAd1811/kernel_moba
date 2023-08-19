@@ -114,12 +114,8 @@ static const struct m5mols_resolution m5mols_reg_res[] = {
 
 /**
  * m5mols_swap_byte - an byte array to integer conversion function
-<<<<<<< HEAD
  * @data: byte array
  * @length: size in bytes of I2C packet defined in the M-5MOLS datasheet
-=======
- * @size: size in bytes of I2C packet defined in the M-5MOLS datasheet
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Convert I2C data byte array with performing any required byte
  * reordering to assure proper values for each data type, regardless
@@ -137,14 +133,9 @@ static u32 m5mols_swap_byte(u8 *data, u8 length)
 
 /**
  * m5mols_read -  I2C read function
-<<<<<<< HEAD
  * @sd: sub-device, as pointed by struct v4l2_subdev
  * @size: desired size of I2C packet
  * @reg: combination of size, category and command for the I2C packet
-=======
- * @reg: combination of size, category and command for the I2C packet
- * @size: desired size of I2C packet
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @val: read value
  *
  * Returns 0 on success, or else negative errno.
@@ -243,10 +234,7 @@ int m5mols_read_u32(struct v4l2_subdev *sd, u32 reg, u32 *val)
 
 /**
  * m5mols_write - I2C command write function
-<<<<<<< HEAD
  * @sd: sub-device, as pointed by struct v4l2_subdev
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @reg: combination of size, category and command for the I2C packet
  * @val: value to write
  *
@@ -299,10 +287,7 @@ int m5mols_write(struct v4l2_subdev *sd, u32 reg, u32 val)
 
 /**
  * m5mols_busy_wait - Busy waiting with I2C register polling
-<<<<<<< HEAD
  * @sd: sub-device, as pointed by struct v4l2_subdev
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @reg: the I2C_REG() address of an 8-bit status register to check
  * @value: expected status register value
  * @mask: bit mask for the read status register value
@@ -335,11 +320,8 @@ int m5mols_busy_wait(struct v4l2_subdev *sd, u32 reg, u32 value, u32 mask,
 
 /**
  * m5mols_enable_interrupt - Clear interrupt pending bits and unmask interrupts
-<<<<<<< HEAD
  * @sd: sub-device, as pointed by struct v4l2_subdev
  * @reg: combination of size, category and command for the I2C packet
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Before writing desired interrupt value the INT_FACTOR register should
  * be read to clear pending interrupts.
@@ -373,11 +355,8 @@ int m5mols_wait_interrupt(struct v4l2_subdev *sd, u8 irq_mask, u32 timeout)
 
 /**
  * m5mols_reg_mode - Write the mode and check busy status
-<<<<<<< HEAD
  * @sd: sub-device, as pointed by struct v4l2_subdev
  * @mode: the required operation mode
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * It always accompanies a little delay changing the M-5MOLS mode, so it is
  * needed checking current busy status to guarantee right mode.
@@ -393,10 +372,7 @@ static int m5mols_reg_mode(struct v4l2_subdev *sd, u8 mode)
 
 /**
  * m5mols_set_mode - set the M-5MOLS controller mode
-<<<<<<< HEAD
  * @info: M-5MOLS driver data structure
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @mode: the required operation mode
  *
  * The commands of M-5MOLS are grouped into specific modes. Each functionality
@@ -454,10 +430,7 @@ int m5mols_set_mode(struct m5mols_info *info, u8 mode)
 
 /**
  * m5mols_get_version - retrieve full revisions information of M-5MOLS
-<<<<<<< HEAD
  * @sd: sub-device, as pointed by struct v4l2_subdev
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * The version information includes revisions of hardware and firmware,
  * AutoFocus alghorithm version and the version string.
@@ -526,10 +499,7 @@ static enum m5mols_restype __find_restype(u32 code)
 
 /**
  * __find_resolution - Lookup preset and type of M-5MOLS's resolution
-<<<<<<< HEAD
  * @sd: sub-device, as pointed by struct v4l2_subdev
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @mf: pixel format to find/negotiate the resolution preset for
  * @type: M-5MOLS resolution type
  * @resolution:	M-5MOLS resolution preset register value
@@ -703,10 +673,7 @@ static const struct v4l2_subdev_pad_ops m5mols_pad_ops = {
 
 /**
  * m5mols_restore_controls - Apply current control values to the registers
-<<<<<<< HEAD
  * @info: M-5MOLS driver data structure
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * m5mols_do_scenemode() handles all parameters for which there is yet no
  * individual control. It should be replaced at some point by setting each
@@ -731,10 +698,7 @@ int m5mols_restore_controls(struct m5mols_info *info)
 
 /**
  * m5mols_start_monitor - Start the monitor mode
-<<<<<<< HEAD
  * @info: M-5MOLS driver data structure
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Before applying the controls setup the resolution and frame rate
  * in PARAMETER mode, and then switch over to MONITOR mode.
@@ -838,10 +802,7 @@ int __attribute__ ((weak)) m5mols_update_fw(struct v4l2_subdev *sd,
 
 /**
  * m5mols_fw_start - M-5MOLS internal ARM controller initialization
-<<<<<<< HEAD
  * @sd: sub-device, as pointed by struct v4l2_subdev
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Execute the M-5MOLS internal ARM controller initialization sequence.
  * This function should be called after the supply voltage has been
@@ -897,11 +858,8 @@ static int m5mols_auto_focus_stop(struct m5mols_info *info)
 
 /**
  * m5mols_s_power - Main sensor power control function
-<<<<<<< HEAD
  * @sd: sub-device, as pointed by struct v4l2_subdev
  * @on: if true, powers on the device; powers off otherwise.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * To prevent breaking the lens when the sensor is powered off the Soft-Landing
  * algorithm is called where available. The Soft-Landing algorithm availability

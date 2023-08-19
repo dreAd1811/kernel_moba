@@ -5,11 +5,7 @@
  *
  * (c) 2003-04 Gerd Knorr <kraxel@bytesex.org> [SuSE Labs]
  *
-<<<<<<< HEAD
  * (c) 2005-2006 Mauro Carvalho Chehab <mchehab@kernel.org>
-=======
- * (c) 2005-2006 Mauro Carvalho Chehab <mchehab@infradead.org>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *	- Multituner support
  *	- video_ioctl2 conversion
  *	- PAL/M fixes
@@ -810,13 +806,8 @@ static int vidioc_s_fmt_vid_cap(struct file *file, void *priv,
 	return 0;
 }
 
-<<<<<<< HEAD
 int cx88_querycap(struct file *file, struct cx88_core *core,
 		  struct v4l2_capability *cap)
-=======
-void cx88_querycap(struct file *file, struct cx88_core *core,
-		   struct v4l2_capability *cap)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct video_device *vdev = video_devdata(file);
 
@@ -834,20 +825,14 @@ void cx88_querycap(struct file *file, struct cx88_core *core,
 	case VFL_TYPE_VBI:
 		cap->device_caps |= V4L2_CAP_VBI_CAPTURE;
 		break;
-<<<<<<< HEAD
 	default:
 		return -EINVAL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	cap->capabilities = cap->device_caps | V4L2_CAP_VIDEO_CAPTURE |
 		V4L2_CAP_VBI_CAPTURE | V4L2_CAP_DEVICE_CAPS;
 	if (core->board.radio.type == CX88_RADIO)
 		cap->capabilities |= V4L2_CAP_RADIO;
-<<<<<<< HEAD
 	return 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(cx88_querycap);
 
@@ -859,12 +844,7 @@ static int vidioc_querycap(struct file *file, void  *priv,
 
 	strcpy(cap->driver, "cx8800");
 	sprintf(cap->bus_info, "PCI:%s", pci_name(dev->pci));
-<<<<<<< HEAD
 	return cx88_querycap(file, core, cap);
-=======
-	cx88_querycap(file, core, cap);
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int vidioc_enum_fmt_vid_cap(struct file *file, void  *priv,
@@ -1332,11 +1312,7 @@ static int cx8800_initdev(struct pci_dev *pci_dev,
 	core = cx88_core_get(dev->pci);
 	if (!core) {
 		err = -EINVAL;
-<<<<<<< HEAD
 		goto fail_free;
-=======
-		goto fail_disable;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	dev->core = core;
 
@@ -1382,11 +1358,7 @@ static int cx8800_initdev(struct pci_dev *pci_dev,
 				       cc->step, cc->default_value);
 		if (!vc) {
 			err = core->audio_hdl.error;
-<<<<<<< HEAD
 			goto fail_core;
-=======
-			goto fail_irq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		vc->priv = (void *)cc;
 	}
@@ -1400,11 +1372,7 @@ static int cx8800_initdev(struct pci_dev *pci_dev,
 				       cc->step, cc->default_value);
 		if (!vc) {
 			err = core->video_hdl.error;
-<<<<<<< HEAD
 			goto fail_core;
-=======
-			goto fail_irq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		vc->priv = (void *)cc;
 		if (vc->id == V4L2_CID_CHROMA_AGC)
@@ -1567,22 +1535,11 @@ static int cx8800_initdev(struct pci_dev *pci_dev,
 
 fail_unreg:
 	cx8800_unregister_video(dev);
-<<<<<<< HEAD
 	free_irq(pci_dev->irq, dev);
 	mutex_unlock(&core->lock);
 fail_core:
 	core->v4ldev = NULL;
 	cx88_core_put(core, dev->pci);
-=======
-	mutex_unlock(&core->lock);
-fail_irq:
-	free_irq(pci_dev->irq, dev);
-fail_core:
-	core->v4ldev = NULL;
-	cx88_core_put(core, dev->pci);
-fail_disable:
-	pci_disable_device(pci_dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 fail_free:
 	kfree(dev);
 	return err;

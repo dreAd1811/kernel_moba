@@ -10,10 +10,6 @@ menuconfig ARCH_MVEBU
 	select ZONE_DMA if ARM_LPAE
 	select GPIOLIB
 	select PCI_QUIRKS if PCI
-<<<<<<< HEAD
-=======
-	select OF_ADDRESS_PCI
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 if ARCH_MVEBU
 

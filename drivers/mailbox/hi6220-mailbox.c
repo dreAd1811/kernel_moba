@@ -282,7 +282,6 @@ static int hi6220_mbox_probe(struct platform_device *pdev)
 
 	mbox->dev = dev;
 	mbox->chan_num = MBOX_CHAN_MAX;
-<<<<<<< HEAD
 	mbox->mchan = devm_kcalloc(dev,
 		mbox->chan_num, sizeof(*mbox->mchan), GFP_KERNEL);
 	if (!mbox->mchan)
@@ -290,15 +289,6 @@ static int hi6220_mbox_probe(struct platform_device *pdev)
 
 	mbox->chan = devm_kcalloc(dev,
 		mbox->chan_num, sizeof(*mbox->chan), GFP_KERNEL);
-=======
-	mbox->mchan = devm_kzalloc(dev,
-		mbox->chan_num * sizeof(*mbox->mchan), GFP_KERNEL);
-	if (!mbox->mchan)
-		return -ENOMEM;
-
-	mbox->chan = devm_kzalloc(dev,
-		mbox->chan_num * sizeof(*mbox->chan), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!mbox->chan)
 		return -ENOMEM;
 

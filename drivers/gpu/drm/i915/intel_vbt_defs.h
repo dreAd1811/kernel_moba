@@ -149,31 +149,19 @@ struct bdb_general_features {
 	u8 ssc_freq:1;
 	u8 enable_lfp_on_override:1;
 	u8 disable_ssc_ddt:1;
-<<<<<<< HEAD
 	u8 underscan_vga_timings:1;
 	u8 display_clock_mode:1;
 	u8 vbios_hotplug_support:1;
-=======
-	u8 rsvd7:1;
-	u8 display_clock_mode:1;
-	u8 rsvd8:1; /* finish byte */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
         /* bits 3 */
 	u8 disable_smooth_vision:1;
 	u8 single_dvi:1;
-<<<<<<< HEAD
 	u8 rotate_180:1;					/* 181 */
 	u8 fdi_rx_polarity_inverted:1;
 	u8 vbios_extended_mode:1;				/* 160 */
 	u8 copy_ilfp_dtd_to_sdvo_lvds_dtd:1;			/* 160 */
 	u8 panel_best_fit_timing:1;				/* 160 */
 	u8 ignore_strap_state:1;				/* 160 */
-=======
-	u8 rsvd9:1;
-	u8 fdi_rx_polarity_inverted:1;
-	u8 rsvd10:4; /* finish byte */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
         /* bits 4 */
 	u8 legacy_monitor_detect;
@@ -182,16 +170,10 @@ struct bdb_general_features {
 	u8 int_crt_support:1;
 	u8 int_tv_support:1;
 	u8 int_efp_support:1;
-<<<<<<< HEAD
 	u8 dp_ssc_enable:1;	/* PCH attached eDP supports SSC */
 	u8 dp_ssc_freq:1;	/* SSC freq for PCH attached eDP */
 	u8 dp_ssc_dongle_supported:1;
 	u8 rsvd11:2; /* finish byte */
-=======
-	u8 dp_ssc_enb:1;	/* PCH attached eDP supports SSC */
-	u8 dp_ssc_freq:1;	/* SSC freq for PCH attached eDP */
-	u8 rsvd11:3; /* finish byte */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } __packed;
 
 /* pre-915 */
@@ -228,7 +210,6 @@ struct bdb_general_features {
 #define DEVICE_TYPE_LFP_LVDS_DUAL	0x5162
 #define DEVICE_TYPE_LFP_LVDS_DUAL_HDCP	0x51e2
 
-<<<<<<< HEAD
 /* Add the device class for LFP, TV, HDMI */
 #define DEVICE_TYPE_INT_LFP		0x1022
 #define DEVICE_TYPE_INT_TV		0x1009
@@ -279,8 +260,6 @@ struct bdb_general_features {
 	 DEVICE_TYPE_DIGITAL_OUTPUT |		\
 	 DEVICE_TYPE_ANALOG_OUTPUT)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DEVICE_CFG_NONE		0x00
 #define DEVICE_CFG_12BIT_DVOB	0x01
 #define DEVICE_CFG_12BIT_DVOC	0x02
@@ -301,15 +280,11 @@ struct bdb_general_features {
 #define DEVICE_WIRE_DVOB_MASTER 0x0d
 #define DEVICE_WIRE_DVOC_MASTER 0x0e
 
-<<<<<<< HEAD
 /* dvo_port pre BDB 155 */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DEVICE_PORT_DVOA	0x00 /* none on 845+ */
 #define DEVICE_PORT_DVOB	0x01
 #define DEVICE_PORT_DVOC	0x02
 
-<<<<<<< HEAD
 /* dvo_port BDB 155+ */
 #define DVO_PORT_HDMIA		0
 #define DVO_PORT_HDMIB		1
@@ -454,75 +429,6 @@ struct child_device_config {
 	u8 hdmi_iboost_level:4;					/* 196 */
 	u8 dp_max_link_rate:2;					/* 216 CNL+ */
 	u8 dp_max_link_rate_reserved:6;				/* 216 */
-=======
-/*
- * We used to keep this struct but without any version control. We should avoid
- * using it in the future, but it should be safe to keep using it in the old
- * code. Do not change; we rely on its size.
- */
-struct old_child_dev_config {
-	u16 handle;
-	u16 device_type;
-	u8  device_id[10]; /* ascii string */
-	u16 addin_offset;
-	u8  dvo_port; /* See Device_PORT_* above */
-	u8  i2c_pin;
-	u8  slave_addr;
-	u8  ddc_pin;
-	u16 edid_ptr;
-	u8  dvo_cfg; /* See DEVICE_CFG_* above */
-	u8  dvo2_port;
-	u8  i2c2_pin;
-	u8  slave2_addr;
-	u8  ddc2_pin;
-	u8  capabilities;
-	u8  dvo_wiring;/* See DEVICE_WIRE_* above */
-	u8  dvo2_wiring;
-	u16 extended_type;
-	u8  dvo_function;
-} __packed;
-
-/* This one contains field offsets that are known to be common for all BDB
- * versions. Notice that the meaning of the contents contents may still change,
- * but at least the offsets are consistent. */
-
-struct common_child_dev_config {
-	u16 handle;
-	u16 device_type;
-	u8 not_common1[12];
-	u8 dvo_port;
-	u8 not_common2[2];
-	u8 ddc_pin;
-	u16 edid_ptr;
-	u8 dvo_cfg; /* See DEVICE_CFG_* above */
-	u8 efp_routed:1;
-	u8 lane_reversal:1;
-	u8 lspcon:1;
-	u8 iboost:1;
-	u8 hpd_invert:1;
-	u8 flag_reserved:3;
-	u8 hdmi_support:1;
-	u8 dp_support:1;
-	u8 tmds_support:1;
-	u8 support_reserved:5;
-	u8 aux_channel;
-	u8 not_common3[11];
-	u8 iboost_level;
-} __packed;
-
-
-/* This field changes depending on the BDB version, so the most reliable way to
- * read it is by checking the BDB version and reading the raw pointer. */
-union child_device_config {
-	/* This one is safe to be used anywhere, but the code should still check
-	 * the BDB version. */
-	u8 raw[33];
-	/* This one should only be kept for legacy code. */
-	struct old_child_dev_config old;
-	/* This one should also be safe to use anywhere, even without version
-	 * checks. */
-	struct common_child_dev_config common;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } __packed;
 
 struct bdb_general_definitions {
@@ -550,11 +456,7 @@ struct bdb_general_definitions {
 	 * number = (block_size - sizeof(bdb_general_definitions))/
 	 *	     defs->child_dev_size;
 	 */
-<<<<<<< HEAD
 	u8 devices[0];
-=======
-	uint8_t devices[0];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } __packed;
 
 /* Mask for DRRS / Panel Channel / SSC / BLT control bits extraction */
@@ -741,11 +643,7 @@ struct bdb_sdvo_lvds_options {
 #define BDB_DRIVER_FEATURE_NO_LVDS		0
 #define BDB_DRIVER_FEATURE_INT_LVDS		1
 #define BDB_DRIVER_FEATURE_SDVO_LVDS		2
-<<<<<<< HEAD
 #define BDB_DRIVER_FEATURE_INT_SDVO_LVDS	3
-=======
-#define BDB_DRIVER_FEATURE_EDP			3
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct bdb_driver_features {
 	u8 boot_dev_algorithm:1;
@@ -819,18 +717,13 @@ struct bdb_driver_features {
 #define EDP_VSWING_1_2V		3
 
 
-<<<<<<< HEAD
 struct edp_fast_link_params {
-=======
-struct edp_link_params {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 rate:4;
 	u8 lanes:4;
 	u8 preemphasis:4;
 	u8 vswing:4;
 } __packed;
 
-<<<<<<< HEAD
 struct edp_pwm_delays {
 	u16 pwm_on_to_backlight_enable;
 	u16 backlight_disable_to_pwm_off;
@@ -856,18 +749,6 @@ struct bdb_edp {
 	struct edp_pwm_delays pwm_delays[16];			/* 186 */
 	u16 full_link_params_provided;				/* 199 */
 	struct edp_full_link_params full_link_params[16];	/* 199 */
-=======
-struct bdb_edp {
-	struct edp_power_seq power_seqs[16];
-	u32 color_depth;
-	struct edp_link_params link_params[16];
-	u32 sdrrs_msa_timing_delay;
-
-	/* ith bit indicates enabled/disabled for (i+1)th panel */
-	u16 edp_s3d_feature;
-	u16 edp_t3_optimization;
-	u64 edp_vswing_preemph;		/* v173 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } __packed;
 
 struct psr_table {
@@ -1011,84 +892,6 @@ struct bdb_psr {
 #define   SWF14_APM_STANDBY	0x1
 #define   SWF14_APM_RESTORE	0x0
 
-<<<<<<< HEAD
-=======
-/* Add the device class for LFP, TV, HDMI */
-#define	 DEVICE_TYPE_INT_LFP	0x1022
-#define	 DEVICE_TYPE_INT_TV	0x1009
-#define	 DEVICE_TYPE_HDMI	0x60D2
-#define	 DEVICE_TYPE_DP		0x68C6
-#define	 DEVICE_TYPE_DP_DUAL_MODE	0x60D6
-#define	 DEVICE_TYPE_eDP	0x78C6
-
-#define  DEVICE_TYPE_CLASS_EXTENSION	(1 << 15)
-#define  DEVICE_TYPE_POWER_MANAGEMENT	(1 << 14)
-#define  DEVICE_TYPE_HOTPLUG_SIGNALING	(1 << 13)
-#define  DEVICE_TYPE_INTERNAL_CONNECTOR	(1 << 12)
-#define  DEVICE_TYPE_NOT_HDMI_OUTPUT	(1 << 11)
-#define  DEVICE_TYPE_MIPI_OUTPUT	(1 << 10)
-#define  DEVICE_TYPE_COMPOSITE_OUTPUT	(1 << 9)
-#define  DEVICE_TYPE_DUAL_CHANNEL	(1 << 8)
-#define  DEVICE_TYPE_HIGH_SPEED_LINK	(1 << 6)
-#define  DEVICE_TYPE_LVDS_SINGALING	(1 << 5)
-#define  DEVICE_TYPE_TMDS_DVI_SIGNALING	(1 << 4)
-#define  DEVICE_TYPE_VIDEO_SIGNALING	(1 << 3)
-#define  DEVICE_TYPE_DISPLAYPORT_OUTPUT	(1 << 2)
-#define  DEVICE_TYPE_DIGITAL_OUTPUT	(1 << 1)
-#define  DEVICE_TYPE_ANALOG_OUTPUT	(1 << 0)
-
-/*
- * Bits we care about when checking for DEVICE_TYPE_eDP
- * Depending on the system, the other bits may or may not
- * be set for eDP outputs.
- */
-#define DEVICE_TYPE_eDP_BITS \
-	(DEVICE_TYPE_INTERNAL_CONNECTOR | \
-	 DEVICE_TYPE_MIPI_OUTPUT | \
-	 DEVICE_TYPE_COMPOSITE_OUTPUT | \
-	 DEVICE_TYPE_DUAL_CHANNEL | \
-	 DEVICE_TYPE_LVDS_SINGALING | \
-	 DEVICE_TYPE_TMDS_DVI_SIGNALING | \
-	 DEVICE_TYPE_VIDEO_SIGNALING | \
-	 DEVICE_TYPE_DISPLAYPORT_OUTPUT | \
-	 DEVICE_TYPE_ANALOG_OUTPUT)
-
-#define DEVICE_TYPE_DP_DUAL_MODE_BITS \
-	(DEVICE_TYPE_INTERNAL_CONNECTOR | \
-	 DEVICE_TYPE_MIPI_OUTPUT | \
-	 DEVICE_TYPE_COMPOSITE_OUTPUT | \
-	 DEVICE_TYPE_LVDS_SINGALING | \
-	 DEVICE_TYPE_TMDS_DVI_SIGNALING | \
-	 DEVICE_TYPE_VIDEO_SIGNALING | \
-	 DEVICE_TYPE_DISPLAYPORT_OUTPUT | \
-	 DEVICE_TYPE_DIGITAL_OUTPUT | \
-	 DEVICE_TYPE_ANALOG_OUTPUT)
-
-/* define the DVO port for HDMI output type */
-#define		DVO_B		1
-#define		DVO_C		2
-#define		DVO_D		3
-
-/* Possible values for the "DVO Port" field for versions >= 155: */
-#define DVO_PORT_HDMIA	0
-#define DVO_PORT_HDMIB	1
-#define DVO_PORT_HDMIC	2
-#define DVO_PORT_HDMID	3
-#define DVO_PORT_LVDS	4
-#define DVO_PORT_TV	5
-#define DVO_PORT_CRT	6
-#define DVO_PORT_DPB	7
-#define DVO_PORT_DPC	8
-#define DVO_PORT_DPD	9
-#define DVO_PORT_DPA	10
-#define DVO_PORT_DPE	11
-#define DVO_PORT_HDMIE	12
-#define DVO_PORT_MIPIA	21
-#define DVO_PORT_MIPIB	22
-#define DVO_PORT_MIPIC	23
-#define DVO_PORT_MIPID	24
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Block 52 contains MIPI configuration block
  * 6 * bdb_mipi_config, followed by 6 pps data block
  * block below

@@ -443,12 +443,6 @@ static int qat_dh_set_params(struct qat_dh_ctx *ctx, struct dh *params)
 	struct qat_crypto_instance *inst = ctx->inst;
 	struct device *dev = &GET_DEV(inst->accel_dev);
 
-<<<<<<< HEAD
-=======
-	if (unlikely(!params->p || !params->g))
-		return -EINVAL;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (qat_dh_check_params_length(params->p_size << 3))
 		return -EINVAL;
 
@@ -465,16 +459,8 @@ static int qat_dh_set_params(struct qat_dh_ctx *ctx, struct dh *params)
 	}
 
 	ctx->g = dma_zalloc_coherent(dev, ctx->p_size, &ctx->dma_g, GFP_KERNEL);
-<<<<<<< HEAD
 	if (!ctx->g)
 		return -ENOMEM;
-=======
-	if (!ctx->g) {
-		dma_free_coherent(dev, ctx->p_size, ctx->p, ctx->dma_p);
-		ctx->p = NULL;
-		return -ENOMEM;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memcpy(ctx->g + (ctx->p_size - params->g_size), params->g,
 	       params->g_size);
 
@@ -515,34 +501,22 @@ static int qat_dh_set_secret(struct crypto_kpp *tfm, const void *buf,
 
 	ret = qat_dh_set_params(ctx, &params);
 	if (ret < 0)
-<<<<<<< HEAD
 		goto err_clear_ctx;
-=======
-		return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ctx->xa = dma_zalloc_coherent(dev, ctx->p_size, &ctx->dma_xa,
 				      GFP_KERNEL);
 	if (!ctx->xa) {
-<<<<<<< HEAD
 		ret = -ENOMEM;
 		goto err_clear_ctx;
-=======
-		qat_dh_clear_ctx(dev, ctx);
-		return -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	memcpy(ctx->xa + (ctx->p_size - params.key_size), params.key,
 	       params.key_size);
 
 	return 0;
-<<<<<<< HEAD
 
 err_clear_ctx:
 	qat_dh_clear_ctx(dev, ctx);
 	return ret;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static unsigned int qat_dh_max_size(struct crypto_kpp *tfm)
@@ -995,12 +969,8 @@ unmap_src:
 	return ret;
 }
 
-<<<<<<< HEAD
 static int qat_rsa_set_n(struct qat_rsa_ctx *ctx, const char *value,
 			 size_t vlen)
-=======
-int qat_rsa_set_n(struct qat_rsa_ctx *ctx, const char *value, size_t vlen)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct qat_crypto_instance *inst = ctx->inst;
 	struct device *dev = &GET_DEV(inst->accel_dev);
@@ -1031,12 +1001,8 @@ err:
 	return ret;
 }
 
-<<<<<<< HEAD
 static int qat_rsa_set_e(struct qat_rsa_ctx *ctx, const char *value,
 			 size_t vlen)
-=======
-int qat_rsa_set_e(struct qat_rsa_ctx *ctx, const char *value, size_t vlen)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct qat_crypto_instance *inst = ctx->inst;
 	struct device *dev = &GET_DEV(inst->accel_dev);
@@ -1060,12 +1026,8 @@ int qat_rsa_set_e(struct qat_rsa_ctx *ctx, const char *value, size_t vlen)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int qat_rsa_set_d(struct qat_rsa_ctx *ctx, const char *value,
 			 size_t vlen)
-=======
-int qat_rsa_set_d(struct qat_rsa_ctx *ctx, const char *value, size_t vlen)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct qat_crypto_instance *inst = ctx->inst;
 	struct device *dev = &GET_DEV(inst->accel_dev);

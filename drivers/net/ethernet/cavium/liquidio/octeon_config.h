@@ -37,11 +37,8 @@
 #define   MAX_OCTEON_LINKS	       MAX_OCTEON_NICIF
 #define   MAX_OCTEON_MULTICAST_ADDR    32
 
-<<<<<<< HEAD
 #define   MAX_OCTEON_FILL_COUNT        8
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* CN6xxx IQ configuration macros */
 #define   CN6XXX_MAX_INPUT_QUEUES      32
 #define   CN6XXX_MAX_IQ_DESCRIPTORS    2048

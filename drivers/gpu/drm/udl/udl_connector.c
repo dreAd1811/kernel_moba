@@ -14,7 +14,6 @@
 #include <drm/drm_crtc.h>
 #include <drm/drm_edid.h>
 #include <drm/drm_crtc_helper.h>
-<<<<<<< HEAD
 #include "udl_connector.h"
 #include "udl_drv.h"
 
@@ -91,51 +90,10 @@ static bool udl_get_edid(struct udl_device *udl, u8 **result_buff,
 	kfree(block_buff);
 
 	return false;
-=======
-#include "udl_drv.h"
-
-/* dummy connector to just get EDID,
-   all UDL appear to have a DVI-D */
-
-static u8 *udl_get_edid(struct udl_device *udl)
-{
-	u8 *block;
-	char *rbuf;
-	int ret, i;
-
-	block = kmalloc(EDID_LENGTH, GFP_KERNEL);
-	if (block == NULL)
-		return NULL;
-
-	rbuf = kmalloc(2, GFP_KERNEL);
-	if (rbuf == NULL)
-		goto error;
-
-	for (i = 0; i < EDID_LENGTH; i++) {
-		ret = usb_control_msg(udl->udev,
-				      usb_rcvctrlpipe(udl->udev, 0), (0x02),
-				      (0x80 | (0x02 << 5)), i << 8, 0xA1, rbuf, 2,
-				      HZ);
-		if (ret < 1) {
-			DRM_ERROR("Read EDID byte %d failed err %x\n", i, ret);
-			goto error;
-		}
-		block[i] = rbuf[1];
-	}
-
-	kfree(rbuf);
-	return block;
-
-error:
-	kfree(block);
-	kfree(rbuf);
-	return NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int udl_get_modes(struct drm_connector *connector)
 {
-<<<<<<< HEAD
 	struct udl_drm_connector *udl_connector =
 					container_of(connector,
 					struct udl_drm_connector,
@@ -148,33 +106,6 @@ static int udl_get_modes(struct drm_connector *connector)
 }
 
 static enum drm_mode_status udl_mode_valid(struct drm_connector *connector,
-=======
-	struct udl_device *udl = connector->dev->dev_private;
-	struct edid *edid;
-	int ret;
-
-	edid = (struct edid *)udl_get_edid(udl);
-	if (!edid) {
-		drm_mode_connector_update_edid_property(connector, NULL);
-		return 0;
-	}
-
-	/*
-	 * We only read the main block, but if the monitor reports extension
-	 * blocks then the drm edid code expects them to be present, so patch
-	 * the extension count to 0.
-	 */
-	edid->checksum += edid->extensions;
-	edid->extensions = 0;
-
-	drm_mode_connector_update_edid_property(connector, edid);
-	ret = drm_add_edid_modes(connector, edid);
-	kfree(edid);
-	return ret;
-}
-
-static int udl_mode_valid(struct drm_connector *connector,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  struct drm_display_mode *mode)
 {
 	struct udl_device *udl = connector->dev->dev_private;
@@ -190,7 +121,6 @@ static int udl_mode_valid(struct drm_connector *connector,
 static enum drm_connector_status
 udl_detect(struct drm_connector *connector, bool force)
 {
-<<<<<<< HEAD
 	u8 *edid_buff = NULL;
 	int edid_buff_size = 0;
 	struct udl_device *udl = connector->dev->dev_private;
@@ -211,10 +141,6 @@ udl_detect(struct drm_connector *connector, bool force)
 
 	udl_connector->edid = (struct edid *)edid_buff;
 	
-=======
-	if (drm_dev_is_unplugged(connector->dev))
-		return connector_status_disconnected;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return connector_status_connected;
 }
 
@@ -234,7 +160,6 @@ static int udl_connector_set_property(struct drm_connector *connector,
 
 static void udl_connector_destroy(struct drm_connector *connector)
 {
-<<<<<<< HEAD
 	struct udl_drm_connector *udl_connector =
 					container_of(connector,
 					struct udl_drm_connector,
@@ -243,10 +168,6 @@ static void udl_connector_destroy(struct drm_connector *connector)
 	drm_connector_unregister(connector);
 	drm_connector_cleanup(connector);
 	kfree(udl_connector->edid);
-=======
-	drm_connector_unregister(connector);
-	drm_connector_cleanup(connector);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(connector);
 }
 
@@ -266,7 +187,6 @@ static const struct drm_connector_funcs udl_connector_funcs = {
 
 int udl_connector_init(struct drm_device *dev, struct drm_encoder *encoder)
 {
-<<<<<<< HEAD
 	struct udl_drm_connector *udl_connector;
 	struct drm_connector *connector;
 
@@ -283,19 +203,6 @@ int udl_connector_init(struct drm_device *dev, struct drm_encoder *encoder)
 	drm_connector_attach_encoder(connector, encoder);
 	connector->polled = DRM_CONNECTOR_POLL_HPD |
 		DRM_CONNECTOR_POLL_CONNECT | DRM_CONNECTOR_POLL_DISCONNECT;
-=======
-	struct drm_connector *connector;
-
-	connector = kzalloc(sizeof(struct drm_connector), GFP_KERNEL);
-	if (!connector)
-		return -ENOMEM;
-
-	drm_connector_init(dev, connector, &udl_connector_funcs, DRM_MODE_CONNECTOR_DVII);
-	drm_connector_helper_add(connector, &udl_connector_helper_funcs);
-
-	drm_connector_register(connector);
-	drm_mode_connector_attach_encoder(connector, encoder);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

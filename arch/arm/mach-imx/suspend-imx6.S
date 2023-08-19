@@ -333,7 +333,6 @@ resume:
 
 	ret	lr
 ENDPROC(imx6_suspend)
-<<<<<<< HEAD
 
 /*
  * The following code must assume it is running from physical address
@@ -348,5 +347,3 @@ ENTRY(v7_cpu_resume)
 #endif
 	b	cpu_resume
 ENDPROC(v7_cpu_resume)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

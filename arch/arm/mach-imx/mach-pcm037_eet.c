@@ -56,16 +56,8 @@ static struct spi_board_info pcm037_spi_dev[] = {
 };
 
 /* Platform Data for MXC CSPI */
-<<<<<<< HEAD
 static const struct spi_imx_master pcm037_spi1_pdata __initconst = {
 	.num_chipselect = 2,
-=======
-static int pcm037_spi1_cs[] = { MXC_SPI_CS(0), MXC_SPI_CS(1), };
-
-static const struct spi_imx_master pcm037_spi1_pdata __initconst = {
-	.chipselect = pcm037_spi1_cs,
-	.num_chipselect = ARRAY_SIZE(pcm037_spi1_cs),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* GPIO-keys input device */

@@ -1,29 +1,9 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * tc358743 - Toshiba HDMI to CSI-2 bridge
  *
  * Copyright 2015 Cisco Systems, Inc. and/or its affiliates. All rights
  * reserved.
-<<<<<<< HEAD
-=======
- *
- * This program is free software; you may redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 2 of the License.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
- * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
- * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /*
@@ -46,10 +26,7 @@
 #include <linux/workqueue.h>
 #include <linux/v4l2-dv-timings.h>
 #include <linux/hdmi.h>
-<<<<<<< HEAD
 #include <media/cec.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <media/v4l2-dv-timings.h>
 #include <media/v4l2-device.h>
 #include <media/v4l2-ctrls.h>
@@ -74,10 +51,7 @@ MODULE_LICENSE("GPL");
 
 #define I2C_MAX_XFER_SIZE  (EDID_BLOCK_SIZE + 2)
 
-<<<<<<< HEAD
 #define POLL_INTERVAL_CEC_MS	10
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define POLL_INTERVAL_MS	1000
 
 static const struct v4l2_dv_timings_cap tc358743_timings_cap = {
@@ -121,11 +95,8 @@ struct tc358743_state {
 	u8 csi_lanes_in_use;
 
 	struct gpio_desc *reset_gpio;
-<<<<<<< HEAD
 
 	struct cec_adapter *cec_adap;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void tc358743_enable_interrupts(struct v4l2_subdev *sd,
@@ -615,10 +586,7 @@ static void tc358743_set_ref_clk(struct v4l2_subdev *sd)
 	struct tc358743_platform_data *pdata = &state->pdata;
 	u32 sys_freq;
 	u32 lockdet_ref;
-<<<<<<< HEAD
 	u32 cec_freq;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 fh_min;
 	u16 fh_max;
 
@@ -650,7 +618,6 @@ static void tc358743_set_ref_clk(struct v4l2_subdev *sd)
 	i2c_wr8_and_or(sd, NCO_F0_MOD, ~MASK_NCO_F0_MOD,
 			(pdata->refclk_hz == 27000000) ?
 			MASK_NCO_F0_MOD_27MHZ : 0x0);
-<<<<<<< HEAD
 
 	/*
 	 * Trial and error suggests that the default register value
@@ -660,8 +627,6 @@ static void tc358743_set_ref_clk(struct v4l2_subdev *sd)
 	cec_freq = (656 * sys_freq) / 4200;
 	i2c_wr16(sd, CECHCLK, cec_freq);
 	i2c_wr16(sd, CECLCLK, cec_freq);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void tc358743_set_csi_color_space(struct v4l2_subdev *sd)
@@ -850,7 +815,6 @@ static void tc358743_initial_setup(struct v4l2_subdev *sd)
 	struct tc358743_state *state = to_state(sd);
 	struct tc358743_platform_data *pdata = &state->pdata;
 
-<<<<<<< HEAD
 	/*
 	 * IR is not supported by this driver.
 	 * CEC is only enabled if needed.
@@ -862,13 +826,6 @@ static void tc358743_initial_setup(struct v4l2_subdev *sd)
 #ifdef CONFIG_VIDEO_TC358743_CEC
 	tc358743_reset(sd, MASK_CECRST);
 #endif
-=======
-	/* CEC and IR are not supported by this driver */
-	i2c_wr16_and_or(sd, SYSCTL, ~(MASK_CECRST | MASK_IRRST),
-			(MASK_CECRST | MASK_IRRST));
-
-	tc358743_reset(sd, MASK_CTXRST | MASK_HDMIRST);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tc358743_sleep_mode(sd, false);
 
 	i2c_wr16(sd, FIFOCTL, pdata->fifo_level);
@@ -892,7 +849,6 @@ static void tc358743_initial_setup(struct v4l2_subdev *sd)
 	i2c_wr8(sd, VOUT_SET3, MASK_VOUT_EXTCNT);
 }
 
-<<<<<<< HEAD
 /* --------------- CEC --------------- */
 
 #ifdef CONFIG_VIDEO_TC358743_CEC
@@ -1020,8 +976,6 @@ static void tc358743_cec_isr(struct v4l2_subdev *sd, u16 intstatus,
 
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* --------------- IRQ --------------- */
 
 static void tc358743_format_change(struct v4l2_subdev *sd)
@@ -1289,15 +1243,9 @@ static int tc358743_log_status(struct v4l2_subdev *sd)
 	u8 vi_status3 =  i2c_rd8(sd, VI_STATUS3);
 	const int deep_color_mode[4] = { 8, 10, 12, 16 };
 	static const char * const input_color_space[] = {
-<<<<<<< HEAD
 		"RGB", "YCbCr 601", "opRGB", "YCbCr 709", "NA (4)",
 		"xvYCC 601", "NA(6)", "xvYCC 709", "NA(8)", "sYCC601",
 		"NA(10)", "NA(11)", "NA(12)", "opYCC 601"};
-=======
-		"RGB", "YCbCr 601", "Adobe RGB", "YCbCr 709", "NA (4)",
-		"xvYCC 601", "NA(6)", "xvYCC 709", "NA(8)", "sYCC601",
-		"NA(10)", "NA(11)", "NA(12)", "Adobe YCC 601"};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	v4l2_info(sd, "-----Chip status-----\n");
 	v4l2_info(sd, "Chip ID: 0x%02x\n",
@@ -1482,7 +1430,6 @@ static int tc358743_isr(struct v4l2_subdev *sd, u32 status, bool *handled)
 		intstatus &= ~MASK_HDMI_INT;
 	}
 
-<<<<<<< HEAD
 #ifdef CONFIG_VIDEO_TC358743_CEC
 	if (intstatus & (MASK_CEC_RINT | MASK_CEC_TINT)) {
 		tc358743_cec_isr(sd, intstatus, handled);
@@ -1492,8 +1439,6 @@ static int tc358743_isr(struct v4l2_subdev *sd, u32 status, bool *handled)
 	}
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (intstatus & MASK_CSI_INT) {
 		u32 csi_int = i2c_rd32(sd, CSI_INT);
 
@@ -1523,7 +1468,6 @@ static irqreturn_t tc358743_irq_handler(int irq, void *dev_id)
 	return handled ? IRQ_HANDLED : IRQ_NONE;
 }
 
-<<<<<<< HEAD
 static void tc358743_irq_poll_timer(struct timer_list *t)
 {
 	struct tc358743_state *state = from_timer(state, t, timer);
@@ -1536,15 +1480,6 @@ static void tc358743_irq_poll_timer(struct timer_list *t)
 	 */
 	msecs = state->cec_adap ? POLL_INTERVAL_CEC_MS : POLL_INTERVAL_MS;
 	mod_timer(&state->timer, jiffies + msecs_to_jiffies(msecs));
-=======
-static void tc358743_irq_poll_timer(unsigned long arg)
-{
-	struct tc358743_state *state = (struct tc358743_state *)arg;
-
-	schedule_work(&state->work_i2c_poll);
-
-	mod_timer(&state->timer, jiffies + msecs_to_jiffies(POLL_INTERVAL_MS));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void tc358743_work_i2c_poll(struct work_struct *work)
@@ -1701,11 +1636,7 @@ static int tc358743_s_stream(struct v4l2_subdev *sd, int enable)
 {
 	enable_stream(sd, enable);
 	if (!enable) {
-<<<<<<< HEAD
 		/* Put all lanes in LP-11 state (STOPSTATE) */
-=======
-		/* Put all lanes in PL-11 state (STOPSTATE) */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		tc358743_set_csi(sd);
 	}
 
@@ -1838,11 +1769,8 @@ static int tc358743_s_edid(struct v4l2_subdev *sd,
 {
 	struct tc358743_state *state = to_state(sd);
 	u16 edid_len = edid->blocks * EDID_BLOCK_SIZE;
-<<<<<<< HEAD
 	u16 pa;
 	int err;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 
 	v4l2_dbg(2, debug, sd, "%s, pad %d, start block %d, blocks %d\n",
@@ -1860,15 +1788,12 @@ static int tc358743_s_edid(struct v4l2_subdev *sd,
 		edid->blocks = EDID_NUM_BLOCKS_MAX;
 		return -E2BIG;
 	}
-<<<<<<< HEAD
 	pa = cec_get_edid_phys_addr(edid->edid, edid->blocks * 128, NULL);
 	err = v4l2_phys_addr_validate(pa, &pa, NULL);
 	if (err)
 		return err;
 
 	cec_phys_addr_invalidate(state->cec_adap);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tc358743_disable_edid(sd);
 
@@ -1885,11 +1810,8 @@ static int tc358743_s_edid(struct v4l2_subdev *sd,
 
 	state->edid_blocks_written = edid->blocks;
 
-<<<<<<< HEAD
 	cec_s_phys_addr(state->cec_adap, pa, false);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (tx_5v_power_present(sd))
 		tc358743_enable_edid(sd);
 
@@ -1996,12 +1918,8 @@ static int tc358743_probe_of(struct tc358743_state *state)
 	endpoint = v4l2_fwnode_endpoint_alloc_parse(of_fwnode_handle(ep));
 	if (IS_ERR(endpoint)) {
 		dev_err(dev, "failed to parse endpoint\n");
-<<<<<<< HEAD
 		ret = PTR_ERR(endpoint);
 		goto put_node;
-=======
-		return PTR_ERR(endpoint);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (endpoint->bus_type != V4L2_MBUS_CSI2 ||
@@ -2011,14 +1929,11 @@ static int tc358743_probe_of(struct tc358743_state *state)
 		goto free_endpoint;
 	}
 
-<<<<<<< HEAD
 	if (endpoint->bus.mipi_csi2.num_data_lanes > 4) {
 		dev_err(dev, "invalid number of lanes\n");
 		goto free_endpoint;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	state->bus = endpoint->bus.mipi_csi2;
 
 	ret = clk_prepare_enable(refclk);
@@ -2099,11 +2014,8 @@ disable_clk:
 	clk_disable_unprepare(refclk);
 free_endpoint:
 	v4l2_fwnode_endpoint_free(endpoint);
-<<<<<<< HEAD
 put_node:
 	of_node_put(ep);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 #else
@@ -2121,10 +2033,7 @@ static int tc358743_probe(struct i2c_client *client,
 	struct tc358743_state *state;
 	struct tc358743_platform_data *pdata = client->dev.platform_data;
 	struct v4l2_subdev *sd;
-<<<<<<< HEAD
 	u16 irq_mask = MASK_HDMI_MSK | MASK_CSI_MSK;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	if (!i2c_check_functionality(client->adapter, I2C_FUNC_SMBUS_BYTE_DATA))
@@ -2187,10 +2096,7 @@ static int tc358743_probe(struct i2c_client *client,
 	}
 
 	state->pad.flags = MEDIA_PAD_FL_SOURCE;
-<<<<<<< HEAD
 	sd->entity.function = MEDIA_ENT_F_VID_IF_BRIDGE;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = media_entity_pads_init(&sd->entity, 1, &state->pad);
 	if (err < 0)
 		goto err_hdl;
@@ -2207,7 +2113,6 @@ static int tc358743_probe(struct i2c_client *client,
 	INIT_DELAYED_WORK(&state->delayed_work_enable_hotplug,
 			tc358743_delayed_work_enable_hotplug);
 
-<<<<<<< HEAD
 #ifdef CONFIG_VIDEO_TC358743_CEC
 	state->cec_adap = cec_allocate_adapter(&tc358743_cec_adap_ops,
 		state, dev_name(&client->dev),
@@ -2219,8 +2124,6 @@ static int tc358743_probe(struct i2c_client *client,
 	irq_mask |= MASK_CEC_RMSK | MASK_CEC_TMSK;
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tc358743_initial_setup(sd);
 
 	tc358743_s_dv_timings(sd, &default_timing);
@@ -2240,18 +2143,12 @@ static int tc358743_probe(struct i2c_client *client,
 	} else {
 		INIT_WORK(&state->work_i2c_poll,
 			  tc358743_work_i2c_poll);
-<<<<<<< HEAD
 		timer_setup(&state->timer, tc358743_irq_poll_timer, 0);
-=======
-		state->timer.data = (unsigned long)state;
-		state->timer.function = tc358743_irq_poll_timer;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		state->timer.expires = jiffies +
 				       msecs_to_jiffies(POLL_INTERVAL_MS);
 		add_timer(&state->timer);
 	}
 
-<<<<<<< HEAD
 	err = cec_register_adapter(state->cec_adap, &client->dev);
 	if (err < 0) {
 		pr_err("%s: failed to register the cec device\n", __func__);
@@ -2262,10 +2159,6 @@ static int tc358743_probe(struct i2c_client *client,
 
 	tc358743_enable_interrupts(sd, tx_5v_power_present(sd));
 	i2c_wr16(sd, INTMASK, ~irq_mask);
-=======
-	tc358743_enable_interrupts(sd, tx_5v_power_present(sd));
-	i2c_wr16(sd, INTMASK, ~(MASK_HDMI_MSK | MASK_CSI_MSK) & 0xffff);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = v4l2_ctrl_handler_setup(sd->ctrl_handler);
 	if (err)
@@ -2277,10 +2170,7 @@ static int tc358743_probe(struct i2c_client *client,
 	return 0;
 
 err_work_queues:
-<<<<<<< HEAD
 	cec_unregister_adapter(state->cec_adap);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!state->i2c_client->irq)
 		flush_work(&state->work_i2c_poll);
 	cancel_delayed_work(&state->delayed_work_enable_hotplug);
@@ -2301,10 +2191,7 @@ static int tc358743_remove(struct i2c_client *client)
 		flush_work(&state->work_i2c_poll);
 	}
 	cancel_delayed_work(&state->delayed_work_enable_hotplug);
-<<<<<<< HEAD
 	cec_unregister_adapter(state->cec_adap);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	v4l2_async_unregister_subdev(sd);
 	v4l2_device_unregister_subdev(sd);
 	mutex_destroy(&state->confctl_mutex);

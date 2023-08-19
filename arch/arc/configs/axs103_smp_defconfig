@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-CONFIG_DEFAULT_HOSTNAME="ARCLinux"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 CONFIG_SYSVIPC=y
 CONFIG_POSIX_MQUEUE=y
 # CONFIG_CROSS_MEMORY_ATTACH is not set
@@ -46,10 +42,6 @@ CONFIG_IP_PNP_RARP=y
 CONFIG_DEVTMPFS=y
 # CONFIG_STANDALONE is not set
 # CONFIG_PREVENT_FIRMWARE_BUILD is not set
-<<<<<<< HEAD
-=======
-# CONFIG_FIRMWARE_IN_KERNEL is not set
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 CONFIG_BLK_DEV_LOOP=y
 CONFIG_SCSI=y
 CONFIG_BLK_DEV_SD=y
@@ -71,10 +63,6 @@ CONFIG_MOUSE_PS2_TOUCHKIT=y
 CONFIG_MOUSE_SERIAL=y
 CONFIG_MOUSE_SYNAPTICS_USB=y
 # CONFIG_LEGACY_PTYS is not set
-<<<<<<< HEAD
-=======
-# CONFIG_DEVKMEM is not set
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 CONFIG_SERIAL_8250=y
 CONFIG_SERIAL_8250_CONSOLE=y
 CONFIG_SERIAL_8250_DW=y

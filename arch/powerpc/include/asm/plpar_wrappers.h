@@ -2,11 +2,8 @@
 #ifndef _ASM_POWERPC_PLPAR_WRAPPERS_H
 #define _ASM_POWERPC_PLPAR_WRAPPERS_H
 
-<<<<<<< HEAD
 #ifdef CONFIG_PPC_PSERIES
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/string.h>
 #include <linux/irqflags.h>
 
@@ -14,17 +11,6 @@
 #include <asm/paca.h>
 #include <asm/page.h>
 
-<<<<<<< HEAD
-=======
-/* Get state of physical CPU from query_cpu_stopped */
-int smp_query_cpu_stopped(unsigned int pcpu);
-#define QCSS_STOPPED 0
-#define QCSS_STOPPING 1
-#define QCSS_NOT_STOPPED 2
-#define QCSS_HARDWARE_ERROR -1
-#define QCSS_HARDWARE_BUSY -2
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline long poll_pending(void)
 {
 	return plpar_hcall_norets(H_POLL_PENDING);
@@ -53,17 +39,10 @@ static inline long extended_cede_processor(unsigned long latency_hint)
 	set_cede_latency_hint(latency_hint);
 
 	rc = cede_processor();
-<<<<<<< HEAD
 #ifdef CONFIG_PPC_IRQ_SOFT_MASK_DEBUG
 	/* Ensure that H_CEDE returns with IRQs on */
 	if (WARN_ON(!(mfmsr() & MSR_EE)))
 		__hard_irq_enable();
-=======
-#ifdef CONFIG_TRACE_IRQFLAGS
-		/* Ensure that H_CEDE returns with IRQs on */
-		if (WARN_ON(!(mfmsr() & MSR_EE)))
-			__hard_irq_enable();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 	set_cede_latency_hint(old_latency_hint);
@@ -326,29 +305,17 @@ static inline long enable_little_endian_exceptions(void)
 	return plpar_set_mode(1, H_SET_MODE_RESOURCE_LE, 0, 0);
 }
 
-<<<<<<< HEAD
 static inline long plpar_set_ciabr(unsigned long ciabr)
-=======
-static inline long plapr_set_ciabr(unsigned long ciabr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return plpar_set_mode(0, H_SET_MODE_RESOURCE_SET_CIABR, ciabr, 0);
 }
 
-<<<<<<< HEAD
 static inline long plpar_set_watchpoint0(unsigned long dawr0, unsigned long dawrx0)
-=======
-static inline long plapr_set_watchpoint0(unsigned long dawr0, unsigned long dawrx0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return plpar_set_mode(0, H_SET_MODE_RESOURCE_SET_DAWR, dawr0, dawrx0);
 }
 
-<<<<<<< HEAD
 static inline long plpar_signal_sys_reset(long cpu)
-=======
-static inline long plapr_signal_sys_reset(long cpu)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return plpar_hcall_norets(H_SIGNAL_SYS_RESET, cpu);
 }
@@ -367,7 +334,6 @@ static inline long plpar_get_cpu_characteristics(struct h_cpu_char_result *p)
 	return rc;
 }
 
-<<<<<<< HEAD
 #else /* !CONFIG_PPC_PSERIES */
 
 static inline long plpar_set_ciabr(unsigned long ciabr)
@@ -376,6 +342,4 @@ static inline long plpar_set_ciabr(unsigned long ciabr)
 }
 #endif /* CONFIG_PPC_PSERIES */
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* _ASM_POWERPC_PLPAR_WRAPPERS_H */

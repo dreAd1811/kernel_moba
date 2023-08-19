@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2018-2020, The Linux Foundation. All rights reserved.
@@ -12,27 +11,6 @@
 #include "kgsl_gmu.h"
 #include "kgsl_hfi.h"
 #include "kgsl_trace.h"
-=======
-/* Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- */
-
-#include "kgsl_device.h"
-#include "kgsl_hfi.h"
-#include "kgsl_gmu.h"
-#include "adreno.h"
-#include "kgsl_trace.h"
-#include "kgsl_pwrctrl.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define HFI_QUEUE_OFFSET(i)		\
 		(ALIGN(sizeof(struct hfi_queue_table), SZ_16) + \
@@ -55,17 +33,6 @@
 #define CMD_MSG_HDR(id, size) CREATE_MSG_HDR(id, size, HFI_MSG_CMD)
 #define ACK_MSG_HDR(id, size) CREATE_MSG_HDR(id, size, HFI_MSG_ACK)
 
-<<<<<<< HEAD
-=======
-#define HFI_VER_MAJOR(hfi) (((hfi)->version >> 28) & 0xF)
-#define HFI_VER_MINOR(hfi) (((hfi)->version >> 5) & 0x7FFFFF)
-#define HFI_VER_BRANCH(hfi) ((hfi)->version & 0x1F)
-#define HFI_VERSION(major, minor, branch) \
-	((((major) & 0xF) << 28) | \
-	 (((minor) & 0x7FFFFF) << 5) | \
-	 ((branch) & 0x1F))
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void hfi_process_queue(struct gmu_device *gmu, uint32_t queue_idx,
 	struct pending_cmd *ret_cmd);
 
@@ -85,16 +52,8 @@ static int hfi_queue_read(struct gmu_device *gmu, uint32_t queue_idx,
 	if (hdr->status == HFI_QUEUE_STATUS_DISABLED)
 		return -EINVAL;
 
-<<<<<<< HEAD
 	if (hdr->read_index == hdr->write_index)
 		return -ENODATA;
-=======
-	if (hdr->read_index == hdr->write_index) {
-		hdr->rx_req = 1;
-		result = -ENODATA;
-		goto done;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Clear the output data before populating */
 	memset(output, 0, max_size);
@@ -127,11 +86,7 @@ static int hfi_queue_read(struct gmu_device *gmu, uint32_t queue_idx,
 		result = -ENODATA;
 	}
 
-<<<<<<< HEAD
 	if (GMU_VER_MAJOR(gmu->ver.hfi) >= 2)
-=======
-	if (HFI_VER_MAJOR(&gmu->hfi) >= 2)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		read = ALIGN(read, SZ_4) % hdr->queue_size;
 
 	hdr->read_index = read;
@@ -177,10 +132,6 @@ static int hfi_queue_write(struct gmu_device *gmu, uint32_t queue_idx,
 			"Insufficient bufsize %d for msg id=%d of size %d\n",
 			empty_space, id, size);
 
-<<<<<<< HEAD
-=======
-		hdr->drop_cnt++;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_unlock(&hfi->cmdq_mutex);
 		return -ENOSPC;
 	}
@@ -193,11 +144,7 @@ static int hfi_queue_write(struct gmu_device *gmu, uint32_t queue_idx,
 	}
 
 	/* Cookify any non used data at the end of the write buffer */
-<<<<<<< HEAD
 	if (GMU_VER_MAJOR(gmu->ver.hfi) >= 2) {
-=======
-	if (HFI_VER_MAJOR(&gmu->hfi) >= 2) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		for (; write % 4; write = (write + 1) % hdr->queue_size)
 			queue[write] = 0xFAFAFAFA;
 	}
@@ -225,18 +172,11 @@ static int hfi_queue_write(struct gmu_device *gmu, uint32_t queue_idx,
 
 
 /* Sizes of the queue and message are in unit of dwords */
-<<<<<<< HEAD
 void hfi_init(struct gmu_device *gmu)
 {
 	struct kgsl_hfi *hfi = &gmu->hfi;
 	struct adreno_device *adreno_dev = ADRENO_DEVICE(hfi->kgsldev);
 	struct gmu_memdesc *mem_addr = gmu->hfi_mem;
-=======
-void hfi_init(struct kgsl_hfi *hfi, struct gmu_memdesc *mem_addr,
-		uint32_t queue_sz_bytes)
-{
-	struct adreno_device *adreno_dev = ADRENO_DEVICE(hfi->kgsldev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 	struct hfi_queue_table *tbl;
 	struct hfi_queue_header *hdr;
@@ -271,31 +211,15 @@ void hfi_init(struct kgsl_hfi *hfi, struct gmu_memdesc *mem_addr,
 	tbl->qtbl_hdr.num_q = HFI_QUEUE_MAX;
 	tbl->qtbl_hdr.num_active_q = HFI_QUEUE_MAX;
 
-<<<<<<< HEAD
 	memset(&tbl->qhdr[0], 0, sizeof(tbl->qhdr));
 
 	/* Fill Individual Queue Headers */
-=======
-	/* Fill I dividual Queue Headers */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < HFI_QUEUE_MAX; i++) {
 		hdr = &tbl->qhdr[i];
 		hdr->start_addr = GMU_QUEUE_START_ADDR(mem_addr, i);
 		hdr->type = QUEUE_HDR_TYPE(queue[i].idx, queue[i].pri, 0,  0);
 		hdr->status = queue[i].status;
-<<<<<<< HEAD
 		hdr->queue_size = HFI_QUEUE_SIZE >> 2; /* convert to dwords */
-=======
-		hdr->queue_size = queue_sz_bytes >> 2; /* convert to dwords */
-		hdr->msg_size = 0;
-		hdr->drop_cnt = 0;
-		hdr->rx_wm = 0x1;
-		hdr->tx_wm = 0x1;
-		hdr->rx_req = 0x1;
-		hdr->tx_req = 0x0;
-		hdr->read_index = 0x0;
-		hdr->write_index = 0x0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	mutex_init(&hfi->cmdq_mutex);
@@ -341,16 +265,12 @@ static int poll_adreno_gmu_reg(struct adreno_device *adreno_dev,
 	unsigned int mask, unsigned int timeout_ms)
 {
 	unsigned int val;
-<<<<<<< HEAD
 	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
 	struct gmu_device *gmu = KGSL_GMU_DEVICE(device);
 	unsigned long timeout = jiffies + msecs_to_jiffies(timeout_ms);
 	u64 ao_pre_poll, ao_post_poll;
 
 	ao_pre_poll = gmu_core_dev_read_ao_counter(device);
-=======
-	unsigned long timeout = jiffies + msecs_to_jiffies(timeout_ms);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	while (time_is_after_jiffies(timeout)) {
 		adreno_read_gmureg(adreno_dev, offset_name, &val);
@@ -359,22 +279,16 @@ static int poll_adreno_gmu_reg(struct adreno_device *adreno_dev,
 		usleep_range(10, 100);
 	}
 
-<<<<<<< HEAD
 	ao_post_poll = gmu_core_dev_read_ao_counter(device);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Check one last time */
 	adreno_read_gmureg(adreno_dev, offset_name, &val);
 	if ((val & mask) == expected_val)
 		return 0;
 
-<<<<<<< HEAD
 	dev_err(&gmu->pdev->dev, "kgsl hfi poll timeout: always on: %lld ms\n",
 		div_u64((ao_post_poll - ao_pre_poll) * 52, USEC_PER_SEC));
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return -ETIMEDOUT;
 }
 
@@ -416,11 +330,8 @@ static int hfi_send_cmd(struct gmu_device *gmu, uint32_t queue_idx,
 	return rc;
 }
 
-<<<<<<< HEAD
 #define HFI_ACK_ERROR 0xffffffff
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int hfi_send_generic_req(struct gmu_device *gmu, uint32_t queue,
 		void *cmd)
 {
@@ -430,7 +341,6 @@ static int hfi_send_generic_req(struct gmu_device *gmu, uint32_t queue,
 	memset(&ret_cmd, 0, sizeof(ret_cmd));
 
 	rc = hfi_send_cmd(gmu, queue, cmd, &ret_cmd);
-<<<<<<< HEAD
 
 	if (!rc && ret_cmd.results[2] == HFI_ACK_ERROR) {
 		dev_err(&gmu->pdev->dev, "HFI ACK failure: Req 0x%8.8X\n",
@@ -439,18 +349,6 @@ static int hfi_send_generic_req(struct gmu_device *gmu, uint32_t queue,
 	}
 
 	return rc;
-=======
-	if (rc)
-		return rc;
-
-	if (ret_cmd.results[2])
-		dev_err(&gmu->pdev->dev,
-				"HFI ACK failure: Req 0x%8.8X Error 0x%X\n",
-				ret_cmd.results[1],
-				ret_cmd.results[2]);
-
-	return ret_cmd.results[2] ? -EINVAL : 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int hfi_send_gmu_init(struct gmu_device *gmu, uint32_t boot_state)
@@ -542,11 +440,7 @@ static int hfi_send_dcvstbl_v1(struct gmu_device *gmu)
 	struct hfi_dcvstable_v1_cmd cmd = {
 		.hdr = CMD_MSG_HDR(H2F_MSG_PERF_TBL, sizeof(cmd)),
 		.gpu_level_num = gmu->num_gpupwrlevels,
-<<<<<<< HEAD
 		.gmu_level_num = GMU_PWR_LEVELS,
-=======
-		.gmu_level_num = gmu->num_gmupwrlevels,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 	int i;
 
@@ -556,17 +450,10 @@ static int hfi_send_dcvstbl_v1(struct gmu_device *gmu)
 		cmd.gx_votes[i].freq = gmu->gpu_freqs[i] / 1000;
 	}
 
-<<<<<<< HEAD
 	cmd.cx_votes[0].vote = gmu->rpmh_votes.cx_votes[0];
 	cmd.cx_votes[0].freq = 0;
 	cmd.cx_votes[1].vote = gmu->rpmh_votes.cx_votes[1];
 	cmd.cx_votes[1].freq = GMU_FREQUENCY / 1000;
-=======
-	for (i = 0; i < gmu->num_gmupwrlevels; i++) {
-		cmd.cx_votes[i].vote = gmu->rpmh_votes.cx_votes[i];
-		cmd.cx_votes[i].freq = gmu->gmu_freqs[i] / 1000;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return hfi_send_generic_req(gmu, HFI_CMD_ID, &cmd);
 }
@@ -597,11 +484,7 @@ static int hfi_send_dcvstbl(struct gmu_device *gmu)
 	struct hfi_dcvstable_cmd cmd = {
 		.hdr = CMD_MSG_HDR(H2F_MSG_PERF_TBL, sizeof(cmd)),
 		.gpu_level_num = gmu->num_gpupwrlevels,
-<<<<<<< HEAD
 		.gmu_level_num = GMU_PWR_LEVELS,
-=======
-		.gmu_level_num = gmu->num_gmupwrlevels,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 	int i;
 
@@ -613,17 +496,10 @@ static int hfi_send_dcvstbl(struct gmu_device *gmu)
 		cmd.gx_votes[i].freq = gmu->gpu_freqs[i] / 1000;
 	}
 
-<<<<<<< HEAD
 	cmd.cx_votes[0].vote = gmu->rpmh_votes.cx_votes[0];
 	cmd.cx_votes[0].freq = 0;
 	cmd.cx_votes[1].vote = gmu->rpmh_votes.cx_votes[1];
 	cmd.cx_votes[1].freq = GMU_FREQUENCY / 1000;
-=======
-	for (i = 0; i < gmu->num_gmupwrlevels; i++) {
-		cmd.cx_votes[i].vote = gmu->rpmh_votes.cx_votes[i];
-		cmd.cx_votes[i].freq = gmu->gmu_freqs[i] / 1000;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return hfi_send_generic_req(gmu, HFI_CMD_ID, &cmd);
 }
@@ -705,11 +581,7 @@ static void hfi_process_queue(struct gmu_device *gmu, uint32_t queue_idx,
 
 	while (hfi_queue_read(gmu, queue_idx, rcvd, sizeof(rcvd)) > 0) {
 		/* Special case if we're v1 */
-<<<<<<< HEAD
 		if (GMU_VER_MAJOR(gmu->ver.hfi) < 2) {
-=======
-		if (HFI_VER_MAJOR(&gmu->hfi) < 2) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			hfi_v1_receiver(gmu, rcvd, ret_cmd);
 			continue;
 		}
@@ -747,31 +619,16 @@ static int hfi_verify_fw_version(struct kgsl_device *device,
 		struct gmu_device *gmu)
 {
 	struct adreno_device *adreno_dev = ADRENO_DEVICE(device);
-<<<<<<< HEAD
 	const struct adreno_a6xx_core *a6xx_core = to_a6xx_core(adreno_dev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int result;
 	unsigned int ver, major, minor;
 
 	/* GMU version is already known, so don't waste time finding again */
-<<<<<<< HEAD
 	if (gmu->ver.core != 0)
 		return 0;
 
 	major = a6xx_core->gmu_major;
 	minor = a6xx_core->gmu_minor;
-=======
-	if (gmu->ver != ~0U)
-		return 0;
-
-	/* Read the HFI version from the register */
-	adreno_read_gmureg(adreno_dev,
-		ADRENO_REG_GMU_HFI_VERSION_INFO, &gmu->hfi.version);
-
-	major = adreno_dev->gpucore->gpmu_major;
-	minor = adreno_dev->gpucore->gpmu_minor;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	result = hfi_get_fw_version(gmu, GMU_VERSION(major, minor), &ver);
 	if (result) {
@@ -792,16 +649,11 @@ static int hfi_verify_fw_version(struct kgsl_device *device,
 				GMU_VER_MINOR(ver), minor);
 
 	/* Save the gmu version information */
-<<<<<<< HEAD
 	gmu->ver.core = ver;
-=======
-	gmu->ver = ver;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
 static int hfi_send_lm_feature_ctrl(struct gmu_device *gmu,
 		struct adreno_device *adreno_dev)
 {
@@ -825,8 +677,6 @@ static int hfi_send_lm_feature_ctrl(struct gmu_device *gmu,
 	return ret;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int hfi_send_acd_feature_ctrl(struct gmu_device *gmu,
 		struct adreno_device *adreno_dev)
 {
@@ -867,12 +717,8 @@ int hfi_start(struct kgsl_device *device,
 		}
 	}
 
-<<<<<<< HEAD
 	/* This is legacy HFI message for A630 and A615 family firmware */
 	if (adreno_is_a630(adreno_dev) || adreno_is_a615_family(adreno_dev)) {
-=======
-	if (!adreno_is_a640(adreno_dev) && !adreno_is_a680(adreno_dev)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		result = hfi_send_gmu_init(gmu, boot_state);
 		if (result)
 			return result;
@@ -882,11 +728,7 @@ int hfi_start(struct kgsl_device *device,
 	if (result)
 		return result;
 
-<<<<<<< HEAD
 	if (GMU_VER_MAJOR(gmu->ver.hfi) < 2)
-=======
-	if (HFI_VER_MAJOR(&gmu->hfi) < 2)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		result = hfi_send_dcvstbl_v1(gmu);
 	else
 		result = hfi_send_dcvstbl(gmu);
@@ -902,7 +744,6 @@ int hfi_start(struct kgsl_device *device,
 	 * we are sending no more HFIs until the next boot otherwise
 	 * send H2F_MSG_CORE_FW_START and features for A640 devices
 	 */
-<<<<<<< HEAD
 	if (GMU_VER_MAJOR(gmu->ver.hfi) >= 2) {
 		if (ADRENO_FEATURE(adreno_dev, ADRENO_ECP)) {
 			result = hfi_send_feature_ctrl(gmu,
@@ -910,29 +751,14 @@ int hfi_start(struct kgsl_device *device,
 			if (result)
 				return result;
 		}
-=======
-	if (HFI_VER_MAJOR(&gmu->hfi) >= 2) {
-		result = hfi_send_feature_ctrl(gmu, HFI_FEATURE_ECP, 0, 0);
-		if (result)
-			return result;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		result = hfi_send_acd_feature_ctrl(gmu, adreno_dev);
 		if (result)
 			return result;
 
-<<<<<<< HEAD
 		result = hfi_send_lm_feature_ctrl(gmu, adreno_dev);
 		if (result)
 			return result;
-=======
-		if (test_bit(ADRENO_LM_CTRL, &adreno_dev->pwrctrl_flag)) {
-			result = hfi_send_feature_ctrl(gmu, HFI_FEATURE_LM, 1,
-					device->pwrctrl.throttle_mask);
-			if (result)
-				return result;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		result = hfi_send_core_fw_start(gmu);
 		if (result)
@@ -969,11 +795,7 @@ void hfi_stop(struct gmu_device *gmu)
 
 		if (hdr->read_index != hdr->write_index)
 			dev_err(&gmu->pdev->dev,
-<<<<<<< HEAD
 			"HFI queue[%d] is not empty before close: rd=%d,wt=%d\n",
-=======
-			"HFI queue[%d] is not empty before close: rd=%d,wt=%d",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				i, hdr->read_index, hdr->write_index);
 	}
 
@@ -984,16 +806,6 @@ void hfi_stop(struct gmu_device *gmu)
 int hfi_send_req(struct gmu_device *gmu, unsigned int id, void *data)
 {
 	switch (id) {
-<<<<<<< HEAD
-=======
-	case H2F_MSG_LM_CFG: {
-		struct hfi_lmconfig_cmd *cmd = data;
-
-		cmd->hdr = CMD_MSG_HDR(H2F_MSG_LM_CFG, sizeof(*cmd));
-
-		return hfi_send_generic_req(gmu, HFI_CMD_ID, &cmd);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case H2F_MSG_GX_BW_PERF_VOTE: {
 		struct hfi_gx_bw_perf_vote_cmd *cmd = data;
 
@@ -1041,10 +853,6 @@ irqreturn_t hfi_irq_handler(int irq, void *data)
 	struct kgsl_device *device = data;
 	struct gmu_device *gmu = KGSL_GMU_DEVICE(device);
 	struct kgsl_hfi *hfi = &gmu->hfi;
-<<<<<<< HEAD
-=======
-	struct adreno_device *adreno_dev = ADRENO_DEVICE(device);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int status = 0;
 
 	adreno_read_gmureg(ADRENO_DEVICE(device),
@@ -1054,19 +862,10 @@ irqreturn_t hfi_irq_handler(int irq, void *data)
 
 	if (status & HFI_IRQ_DBGQ_MASK)
 		tasklet_hi_schedule(&hfi->tasklet);
-<<<<<<< HEAD
 	if (status & HFI_IRQ_CM3_FAULT_MASK)
 		dev_err_ratelimited(&gmu->pdev->dev,
 				"GMU CM3 fault interrupt received\n");
 
-=======
-	if (status & HFI_IRQ_CM3_FAULT_MASK) {
-		dev_err_ratelimited(&gmu->pdev->dev,
-				"GMU CM3 fault interrupt received\n");
-		adreno_set_gpu_fault(adreno_dev, ADRENO_GMU_FAULT);
-		adreno_dispatcher_schedule(device);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (status & ~HFI_IRQ_MASK)
 		dev_err_ratelimited(&gmu->pdev->dev,
 				"Unhandled HFI interrupts 0x%lx\n",

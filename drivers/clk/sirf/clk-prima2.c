@@ -42,11 +42,7 @@ static struct clk_dmn clk_mmc45 = {
 	},
 };
 
-<<<<<<< HEAD
 static const struct clk_init_data clk_nand_init = {
-=======
-static struct clk_init_data clk_nand_init = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.name = "nand",
 	.ops = &ios_ops,
 	.parent_names = std_clk_io_parents,

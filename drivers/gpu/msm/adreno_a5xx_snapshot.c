@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2015-2019, The Linux Foundation. All rights reserved.
@@ -7,28 +6,6 @@
 #include "adreno.h"
 #include "adreno_a5xx.h"
 #include "adreno_snapshot.h"
-=======
-/* Copyright (c) 2015-2019, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- */
-
-#include <linux/io.h>
-#include "kgsl.h"
-#include "adreno.h"
-#include "kgsl_snapshot.h"
-#include "adreno_snapshot.h"
-#include "a5xx_reg.h"
-#include "adreno_a5xx.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum a5xx_rbbm_debbus_id {
 	A5XX_RBBM_DBGBUS_CP          = 0x1,
@@ -654,11 +631,7 @@ static void a5xx_snapshot_shader(struct kgsl_device *device,
 	struct a5xx_shader_block_info info;
 
 	/* Shader blocks can only be read by the crash dumper */
-<<<<<<< HEAD
 	if (!crash_dump_valid)
-=======
-	if (crash_dump_valid == false)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	for (i = 0; i < ARRAY_SIZE(a5xx_shader_blocks); i++) {
@@ -718,11 +691,7 @@ static size_t a5xx_snapshot_registers(struct kgsl_device *device, u8 *buf,
 	unsigned int j, k;
 	unsigned int count = 0;
 
-<<<<<<< HEAD
 	if (!crash_dump_valid)
-=======
-	if (crash_dump_valid == false)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return a5xx_legacy_snapshot_registers(device, buf, remain,
 				regs->regs, regs->size);
 
@@ -758,11 +727,7 @@ out:
 }
 
 /* Snapshot a preemption record buffer */
-<<<<<<< HEAD
 static size_t snapshot_preemption_record(struct kgsl_device *device, u8 *buf,
-=======
-size_t a5xx_snapshot_preemption(struct kgsl_device *device, u8 *buf,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	size_t remain, void *priv)
 {
 	struct kgsl_memdesc *memdesc = priv;
@@ -827,11 +792,7 @@ static void _a5xx_do_crashdump(struct kgsl_device *device)
 	kgsl_regwrite(device, A5XX_CP_CNTL, 0);
 
 	if (!(reg & 0x4)) {
-<<<<<<< HEAD
 		dev_err(device->dev, "Crash dump timed out: 0x%X\n", reg);
-=======
-		KGSL_CORE_ERR("Crash dump timed out: 0x%X\n", reg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -892,12 +853,8 @@ void a5xx_snapshot(struct adreno_device *adreno_dev,
 	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
 	struct adreno_gpudev *gpudev = ADRENO_GPU_DEVICE(adreno_dev);
 	struct adreno_snapshot_data *snap_data = gpudev->snapshot_data;
-<<<<<<< HEAD
 	unsigned int i;
 	struct adreno_ringbuffer *rb;
-=======
-	unsigned int reg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct registers regs;
 
 	/* Disable Clock gating temporarily for the debug bus to work */
@@ -949,19 +906,6 @@ void a5xx_snapshot(struct adreno_device *adreno_dev,
 		A5XX_CP_DRAW_STATE_ADDR, A5XX_CP_DRAW_STATE_DATA,
 		0, 1 << A5XX_CP_DRAW_STATE_ADDR_WIDTH);
 
-<<<<<<< HEAD
-=======
-	/*
-	 * CP needs to be halted on a530v1 before reading CP_PFP_UCODE_DBG_DATA
-	 * and CP_PM4_UCODE_DBG_DATA registers
-	 */
-	if (adreno_is_a530v1(adreno_dev)) {
-		adreno_readreg(adreno_dev, ADRENO_REG_CP_ME_CNTL, &reg);
-		reg |= (1 << 27) | (1 << 28);
-		adreno_writereg(adreno_dev, ADRENO_REG_CP_ME_CNTL, reg);
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* ME_UCODE Cache */
 	kgsl_snapshot_indexed_registers(device, snapshot,
 		A5XX_CP_ME_UCODE_DBG_ADDR, A5XX_CP_ME_UCODE_DBG_DATA,
@@ -999,7 +943,6 @@ void a5xx_snapshot(struct adreno_device *adreno_dev,
 	/* Debug bus */
 	a5xx_snapshot_debugbus(device, snapshot);
 
-<<<<<<< HEAD
 	/* Preemption record */
 	if (adreno_is_preemption_enabled(adreno_dev)) {
 		FOR_EACH_RINGBUFFER(adreno_dev, rb, i) {
@@ -1010,8 +953,6 @@ void a5xx_snapshot(struct adreno_device *adreno_dev,
 		}
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int _a5xx_crashdump_init_shader(struct a5xx_shader_block *block,

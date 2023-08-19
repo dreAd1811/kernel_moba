@@ -62,33 +62,19 @@ MODULE_LICENSE("Dual BSD/GPL");
 enum {
 	IB_UVERBS_MAJOR       = 231,
 	IB_UVERBS_BASE_MINOR  = 192,
-<<<<<<< HEAD
 	IB_UVERBS_MAX_DEVICES = RDMA_MAX_PORTS,
 	IB_UVERBS_NUM_FIXED_MINOR = 32,
 	IB_UVERBS_NUM_DYNAMIC_MINOR = IB_UVERBS_MAX_DEVICES - IB_UVERBS_NUM_FIXED_MINOR,
-=======
-	IB_UVERBS_MAX_DEVICES = 32
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define IB_UVERBS_BASE_DEV	MKDEV(IB_UVERBS_MAJOR, IB_UVERBS_BASE_MINOR)
 
-<<<<<<< HEAD
 static dev_t dynamic_uverbs_dev;
 static struct class *uverbs_class;
 
 static DECLARE_BITMAP(dev_map, IB_UVERBS_MAX_DEVICES);
 
 static ssize_t (*uverbs_cmd_table[])(struct ib_uverbs_file *file,
-=======
-static struct class *uverbs_class;
-
-static DEFINE_SPINLOCK(map_lock);
-static DECLARE_BITMAP(dev_map, IB_UVERBS_MAX_DEVICES);
-
-static ssize_t (*uverbs_cmd_table[])(struct ib_uverbs_file *file,
-				     struct ib_device *ib_dev,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     const char __user *buf, int in_len,
 				     int out_len) = {
 	[IB_USER_VERBS_CMD_GET_CONTEXT]		= ib_uverbs_get_context,
@@ -129,10 +115,6 @@ static ssize_t (*uverbs_cmd_table[])(struct ib_uverbs_file *file,
 };
 
 static int (*uverbs_ex_cmd_table[])(struct ib_uverbs_file *file,
-<<<<<<< HEAD
-=======
-				    struct ib_device *ib_dev,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    struct ib_udata *ucore,
 				    struct ib_udata *uhw) = {
 	[IB_USER_VERBS_EX_CMD_CREATE_FLOW]	= ib_uverbs_ex_create_flow,
@@ -146,16 +128,12 @@ static int (*uverbs_ex_cmd_table[])(struct ib_uverbs_file *file,
 	[IB_USER_VERBS_EX_CMD_CREATE_RWQ_IND_TBL] = ib_uverbs_ex_create_rwq_ind_table,
 	[IB_USER_VERBS_EX_CMD_DESTROY_RWQ_IND_TBL] = ib_uverbs_ex_destroy_rwq_ind_table,
 	[IB_USER_VERBS_EX_CMD_MODIFY_QP]        = ib_uverbs_ex_modify_qp,
-<<<<<<< HEAD
 	[IB_USER_VERBS_EX_CMD_MODIFY_CQ]        = ib_uverbs_ex_modify_cq,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void ib_uverbs_add_one(struct ib_device *device);
 static void ib_uverbs_remove_one(struct ib_device *device, void *client_data);
 
-<<<<<<< HEAD
 /*
  * Must be called with the ufile->device->disassociate_srcu held, and the lock
  * must be held until use of the ucontext is finished.
@@ -180,8 +158,6 @@ struct ib_ucontext *ib_uverbs_get_ucontext(struct ib_uverbs_file *ufile)
 }
 EXPORT_SYMBOL(ib_uverbs_get_ucontext);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int uverbs_dealloc_mw(struct ib_mw *mw)
 {
 	struct ib_pd *pd = mw->pd;
@@ -198,10 +174,7 @@ static void ib_uverbs_release_dev(struct kobject *kobj)
 	struct ib_uverbs_device *dev =
 		container_of(kobj, struct ib_uverbs_device, kobj);
 
-<<<<<<< HEAD
 	uverbs_destroy_api(dev->uapi);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cleanup_srcu_struct(&dev->disassociate_srcu);
 	kfree(dev);
 }
@@ -232,11 +205,7 @@ void ib_uverbs_release_ucq(struct ib_uverbs_file *file,
 		}
 		spin_unlock_irq(&ev_file->ev_queue.lock);
 
-<<<<<<< HEAD
 		uverbs_uobject_put(&ev_file->uobj);
-=======
-		uverbs_uobject_put(&ev_file->uobj_file.uobj);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	spin_lock_irq(&file->async_file->ev_queue.lock);
@@ -272,23 +241,6 @@ void ib_uverbs_detach_umcast(struct ib_qp *qp,
 	}
 }
 
-<<<<<<< HEAD
-=======
-static int ib_uverbs_cleanup_ucontext(struct ib_uverbs_file *file,
-				      struct ib_ucontext *context,
-				      bool device_removed)
-{
-	context->closing = 1;
-	uverbs_cleanup_ucontext(context, device_removed);
-	put_pid(context->tgid);
-
-	ib_rdmacg_uncharge(&context->cg_obj, context->device,
-			   RDMACG_RESOURCE_HCA_HANDLE);
-
-	return context->device->dealloc_ucontext(context);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void ib_uverbs_comp_dev(struct ib_uverbs_device *dev)
 {
 	complete(&dev->comp);
@@ -301,11 +253,8 @@ void ib_uverbs_release_file(struct kref *ref)
 	struct ib_device *ib_dev;
 	int srcu_key;
 
-<<<<<<< HEAD
 	release_ufile_idr_uobject(file);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	srcu_key = srcu_read_lock(&file->device->disassociate_srcu);
 	ib_dev = srcu_dereference(file->device->ib_dev,
 				  &file->device->disassociate_srcu);
@@ -316,12 +265,9 @@ void ib_uverbs_release_file(struct kref *ref)
 	if (atomic_dec_and_test(&file->device->refcount))
 		ib_uverbs_comp_dev(file->device);
 
-<<<<<<< HEAD
 	if (file->async_file)
 		kref_put(&file->async_file->ref,
 			 ib_uverbs_release_async_event_file);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kobject_put(&file->device->kobj);
 	kfree(file);
 }
@@ -404,58 +350,34 @@ static ssize_t ib_uverbs_comp_event_read(struct file *filp, char __user *buf,
 		filp->private_data;
 
 	return ib_uverbs_event_read(&comp_ev_file->ev_queue,
-<<<<<<< HEAD
 				    comp_ev_file->uobj.ufile, filp,
-=======
-				    comp_ev_file->uobj_file.ufile, filp,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    buf, count, pos,
 				    sizeof(struct ib_uverbs_comp_event_desc));
 }
 
-<<<<<<< HEAD
 static __poll_t ib_uverbs_event_poll(struct ib_uverbs_event_queue *ev_queue,
 					 struct file *filp,
 					 struct poll_table_struct *wait)
 {
 	__poll_t pollflags = 0;
-=======
-static unsigned int ib_uverbs_event_poll(struct ib_uverbs_event_queue *ev_queue,
-					 struct file *filp,
-					 struct poll_table_struct *wait)
-{
-	unsigned int pollflags = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	poll_wait(filp, &ev_queue->poll_wait, wait);
 
 	spin_lock_irq(&ev_queue->lock);
 	if (!list_empty(&ev_queue->event_list))
-<<<<<<< HEAD
 		pollflags = EPOLLIN | EPOLLRDNORM;
-=======
-		pollflags = POLLIN | POLLRDNORM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irq(&ev_queue->lock);
 
 	return pollflags;
 }
 
-<<<<<<< HEAD
 static __poll_t ib_uverbs_async_event_poll(struct file *filp,
-=======
-static unsigned int ib_uverbs_async_event_poll(struct file *filp,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					       struct poll_table_struct *wait)
 {
 	return ib_uverbs_event_poll(filp->private_data, filp, wait);
 }
 
-<<<<<<< HEAD
 static __poll_t ib_uverbs_comp_event_poll(struct file *filp,
-=======
-static unsigned int ib_uverbs_comp_event_poll(struct file *filp,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					      struct poll_table_struct *wait)
 {
 	struct ib_uverbs_completion_event_file *comp_ev_file =
@@ -510,13 +432,9 @@ static int ib_uverbs_async_event_close(struct inode *inode, struct file *filp)
 
 static int ib_uverbs_comp_event_close(struct inode *inode, struct file *filp)
 {
-<<<<<<< HEAD
 	struct ib_uobject *uobj = filp->private_data;
 	struct ib_uverbs_completion_event_file *file = container_of(
 		uobj, struct ib_uverbs_completion_event_file, uobj);
-=======
-	struct ib_uverbs_completion_event_file *file = filp->private_data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ib_uverbs_event *entry, *tmp;
 
 	spin_lock_irq(&file->ev_queue.lock);
@@ -567,11 +485,7 @@ void ib_uverbs_comp_handler(struct ib_cq *cq, void *cq_context)
 		return;
 	}
 
-<<<<<<< HEAD
 	entry = kmalloc(sizeof(*entry), GFP_ATOMIC);
-=======
-	entry = kmalloc(sizeof *entry, GFP_ATOMIC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!entry) {
 		spin_unlock_irqrestore(&ev_queue->lock, flags);
 		return;
@@ -604,11 +518,7 @@ static void ib_uverbs_async_handler(struct ib_uverbs_file *file,
 		return;
 	}
 
-<<<<<<< HEAD
 	entry = kmalloc(sizeof(*entry), GFP_ATOMIC);
-=======
-	entry = kmalloc(sizeof *entry, GFP_ATOMIC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!entry) {
 		spin_unlock_irqrestore(&file->async_file->ev_queue.lock, flags);
 		return;
@@ -633,11 +543,7 @@ void ib_uverbs_cq_event_handler(struct ib_event *event, void *context_ptr)
 	struct ib_ucq_object *uobj = container_of(event->element.cq->uobject,
 						  struct ib_ucq_object, uobject);
 
-<<<<<<< HEAD
 	ib_uverbs_async_handler(uobj->uobject.ufile, uobj->uobject.user_handle,
-=======
-	ib_uverbs_async_handler(uobj->uverbs_file, uobj->uobject.user_handle,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				event->event, &uobj->async_list,
 				&uobj->async_events_reported);
 }
@@ -746,7 +652,6 @@ err_put_refs:
 	return filp;
 }
 
-<<<<<<< HEAD
 static bool verify_command_mask(struct ib_uverbs_file *ufile, u32 command,
 				bool extended)
 {
@@ -754,27 +659,11 @@ static bool verify_command_mask(struct ib_uverbs_file *ufile, u32 command,
 		return ufile->uverbs_cmd_mask & BIT_ULL(command);
 
 	return ufile->uverbs_ex_cmd_mask & BIT_ULL(command);
-=======
-static int verify_command_mask(struct ib_device *ib_dev, __u32 command)
-{
-	u64 mask;
-
-	if (command <= IB_USER_VERBS_CMD_OPEN_QP)
-		mask = ib_dev->uverbs_cmd_mask;
-	else
-		mask = ib_dev->uverbs_ex_cmd_mask;
-
-	if (mask & ((u64)1 << command))
-		return 0;
-
-	return -1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool verify_command_idx(u32 command, bool extended)
 {
 	if (extended)
-<<<<<<< HEAD
 		return command < ARRAY_SIZE(uverbs_ex_cmd_table) &&
 		       uverbs_ex_cmd_table[command];
 
@@ -832,31 +721,17 @@ static ssize_t verify_hdr(struct ib_uverbs_cmd_hdr *hdr,
 		return -EINVAL;
 
 	return 0;
-=======
-		return command < ARRAY_SIZE(uverbs_ex_cmd_table);
-
-	return command < ARRAY_SIZE(uverbs_cmd_table);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static ssize_t ib_uverbs_write(struct file *filp, const char __user *buf,
 			     size_t count, loff_t *pos)
 {
 	struct ib_uverbs_file *file = filp->private_data;
-<<<<<<< HEAD
 	struct ib_uverbs_ex_cmd_hdr ex_hdr;
 	struct ib_uverbs_cmd_hdr hdr;
 	bool extended;
 	int srcu_key;
 	u32 command;
-=======
-	struct ib_device *ib_dev;
-	struct ib_uverbs_cmd_hdr hdr;
-	bool extended_command;
-	__u32 command;
-	__u32 flags;
-	int srcu_key;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ssize_t ret;
 
 	if (!ib_safe_file_access(filp)) {
@@ -865,7 +740,6 @@ static ssize_t ib_uverbs_write(struct file *filp, const char __user *buf,
 		return -EACCES;
 	}
 
-<<<<<<< HEAD
 	if (count < sizeof(hdr))
 		return -EINVAL;
 
@@ -890,44 +764,10 @@ static ssize_t ib_uverbs_write(struct file *filp, const char __user *buf,
 	srcu_key = srcu_read_lock(&file->device->disassociate_srcu);
 
 	if (!verify_command_mask(file, command, extended)) {
-=======
-	if (count < sizeof hdr)
-		return -EINVAL;
-
-	if (copy_from_user(&hdr, buf, sizeof hdr))
-		return -EFAULT;
-
-	srcu_key = srcu_read_lock(&file->device->disassociate_srcu);
-	ib_dev = srcu_dereference(file->device->ib_dev,
-				  &file->device->disassociate_srcu);
-	if (!ib_dev) {
-		ret = -EIO;
-		goto out;
-	}
-
-	if (hdr.command & ~(__u32)(IB_USER_VERBS_CMD_FLAGS_MASK |
-				   IB_USER_VERBS_CMD_COMMAND_MASK)) {
-		ret = -EINVAL;
-		goto out;
-	}
-
-	command = hdr.command & IB_USER_VERBS_CMD_COMMAND_MASK;
-	flags = (hdr.command &
-		 IB_USER_VERBS_CMD_FLAGS_MASK) >> IB_USER_VERBS_CMD_FLAGS_SHIFT;
-
-	extended_command = flags & IB_USER_VERBS_CMD_FLAG_EXTENDED;
-	if (!verify_command_idx(command, extended_command)) {
-		ret = -EINVAL;
-		goto out;
-	}
-
-	if (verify_command_mask(ib_dev, command)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -EOPNOTSUPP;
 		goto out;
 	}
 
-<<<<<<< HEAD
 	buf += sizeof(hdr);
 
 	if (!extended) {
@@ -952,105 +792,6 @@ static ssize_t ib_uverbs_write(struct file *filp, const char __user *buf,
 
 		ret = uverbs_ex_cmd_table[command](file, &ucore, &uhw);
 		ret = (ret) ? : count;
-=======
-	if (!file->ucontext &&
-	    command != IB_USER_VERBS_CMD_GET_CONTEXT) {
-		ret = -EINVAL;
-		goto out;
-	}
-
-	if (!flags) {
-		if (!uverbs_cmd_table[command]) {
-			ret = -EINVAL;
-			goto out;
-		}
-
-		if (hdr.in_words * 4 != count) {
-			ret = -EINVAL;
-			goto out;
-		}
-
-		ret = uverbs_cmd_table[command](file, ib_dev,
-						 buf + sizeof(hdr),
-						 hdr.in_words * 4,
-						 hdr.out_words * 4);
-
-	} else if (flags == IB_USER_VERBS_CMD_FLAG_EXTENDED) {
-		struct ib_uverbs_ex_cmd_hdr ex_hdr;
-		struct ib_udata ucore;
-		struct ib_udata uhw;
-		size_t written_count = count;
-
-		if (!uverbs_ex_cmd_table[command]) {
-			ret = -ENOSYS;
-			goto out;
-		}
-
-		if (!file->ucontext) {
-			ret = -EINVAL;
-			goto out;
-		}
-
-		if (count < (sizeof(hdr) + sizeof(ex_hdr))) {
-			ret = -EINVAL;
-			goto out;
-		}
-
-		if (copy_from_user(&ex_hdr, buf + sizeof(hdr), sizeof(ex_hdr))) {
-			ret = -EFAULT;
-			goto out;
-		}
-
-		count -= sizeof(hdr) + sizeof(ex_hdr);
-		buf += sizeof(hdr) + sizeof(ex_hdr);
-
-		if ((hdr.in_words + ex_hdr.provider_in_words) * 8 != count) {
-			ret = -EINVAL;
-			goto out;
-		}
-
-		if (ex_hdr.cmd_hdr_reserved) {
-			ret = -EINVAL;
-			goto out;
-		}
-
-		if (ex_hdr.response) {
-			if (!hdr.out_words && !ex_hdr.provider_out_words) {
-				ret = -EINVAL;
-				goto out;
-			}
-
-			if (!access_ok(VERIFY_WRITE,
-				       (void __user *) (unsigned long) ex_hdr.response,
-				       (hdr.out_words + ex_hdr.provider_out_words) * 8)) {
-				ret = -EFAULT;
-				goto out;
-			}
-		} else {
-			if (hdr.out_words || ex_hdr.provider_out_words) {
-				ret = -EINVAL;
-				goto out;
-			}
-		}
-
-		INIT_UDATA_BUF_OR_NULL(&ucore, buf, (unsigned long) ex_hdr.response,
-				       hdr.in_words * 8, hdr.out_words * 8);
-
-		INIT_UDATA_BUF_OR_NULL(&uhw,
-				       buf + ucore.inlen,
-				       (unsigned long) ex_hdr.response + ucore.outlen,
-				       ex_hdr.provider_in_words * 8,
-				       ex_hdr.provider_out_words * 8);
-
-		ret = uverbs_ex_cmd_table[command](file,
-						   ib_dev,
-						   &ucore,
-						   &uhw);
-		if (!ret)
-			ret = written_count;
-	} else {
-		ret = -ENOSYS;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 out:
@@ -1061,16 +802,11 @@ out:
 static int ib_uverbs_mmap(struct file *filp, struct vm_area_struct *vma)
 {
 	struct ib_uverbs_file *file = filp->private_data;
-<<<<<<< HEAD
 	struct ib_ucontext *ucontext;
-=======
-	struct ib_device *ib_dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = 0;
 	int srcu_key;
 
 	srcu_key = srcu_read_lock(&file->device->disassociate_srcu);
-<<<<<<< HEAD
 	ucontext = ib_uverbs_get_ucontext(file);
 	if (IS_ERR(ucontext)) {
 		ret = PTR_ERR(ucontext);
@@ -1078,19 +814,6 @@ static int ib_uverbs_mmap(struct file *filp, struct vm_area_struct *vma)
 	}
 
 	ret = ucontext->device->mmap(ucontext, vma);
-=======
-	ib_dev = srcu_dereference(file->device->ib_dev,
-				  &file->device->disassociate_srcu);
-	if (!ib_dev) {
-		ret = -EIO;
-		goto out;
-	}
-
-	if (!file->ucontext)
-		ret = -ENODEV;
-	else
-		ret = ib_dev->mmap(file->ucontext, vma);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	srcu_read_unlock(&file->device->disassociate_srcu, srcu_key);
 	return ret;
@@ -1150,22 +873,12 @@ static int ib_uverbs_open(struct inode *inode, struct file *filp)
 	}
 
 	file->device	 = dev;
-<<<<<<< HEAD
 	kref_init(&file->ref);
 	mutex_init(&file->ucontext_lock);
 
 	spin_lock_init(&file->uobjects_lock);
 	INIT_LIST_HEAD(&file->uobjects);
 	init_rwsem(&file->hw_destroy_rwsem);
-=======
-	spin_lock_init(&file->idr_lock);
-	idr_init(&file->idr);
-	file->ucontext	 = NULL;
-	file->async_file = NULL;
-	kref_init(&file->ref);
-	mutex_init(&file->mutex);
-	mutex_init(&file->cleanup_mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	filp->private_data = file;
 	kobject_get(&dev->kobj);
@@ -1173,14 +886,11 @@ static int ib_uverbs_open(struct inode *inode, struct file *filp)
 	mutex_unlock(&dev->lists_mutex);
 	srcu_read_unlock(&dev->disassociate_srcu, srcu_key);
 
-<<<<<<< HEAD
 	file->uverbs_cmd_mask = ib_dev->uverbs_cmd_mask;
 	file->uverbs_ex_cmd_mask = ib_dev->uverbs_ex_cmd_mask;
 
 	setup_ufile_idr_uobject(file);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return nonseekable_open(inode, filp);
 
 err_module:
@@ -1199,17 +909,7 @@ static int ib_uverbs_close(struct inode *inode, struct file *filp)
 {
 	struct ib_uverbs_file *file = filp->private_data;
 
-<<<<<<< HEAD
 	uverbs_destroy_ufile_hw(file, RDMA_REMOVE_CLOSE);
-=======
-	mutex_lock(&file->cleanup_mutex);
-	if (file->ucontext) {
-		ib_uverbs_cleanup_ucontext(file, file->ucontext, false);
-		file->ucontext = NULL;
-	}
-	mutex_unlock(&file->cleanup_mutex);
-	idr_destroy(&file->idr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&file->device->lists_mutex);
 	if (!file->is_closed) {
@@ -1218,13 +918,6 @@ static int ib_uverbs_close(struct inode *inode, struct file *filp)
 	}
 	mutex_unlock(&file->device->lists_mutex);
 
-<<<<<<< HEAD
-=======
-	if (file->async_file)
-		kref_put(&file->async_file->ref,
-			 ib_uverbs_release_async_event_file);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kref_put(&file->ref, ib_uverbs_release_file);
 
 	return 0;
@@ -1236,14 +929,8 @@ static const struct file_operations uverbs_fops = {
 	.open	 = ib_uverbs_open,
 	.release = ib_uverbs_close,
 	.llseek	 = no_llseek,
-<<<<<<< HEAD
 	.unlocked_ioctl = ib_uverbs_ioctl,
 	.compat_ioctl = ib_uverbs_ioctl,
-=======
-#if IS_ENABLED(CONFIG_INFINIBAND_EXP_USER_ACCESS)
-	.unlocked_ioctl = ib_uverbs_ioctl,
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct file_operations uverbs_mmap_fops = {
@@ -1253,14 +940,8 @@ static const struct file_operations uverbs_mmap_fops = {
 	.open	 = ib_uverbs_open,
 	.release = ib_uverbs_close,
 	.llseek	 = no_llseek,
-<<<<<<< HEAD
 	.unlocked_ioctl = ib_uverbs_ioctl,
 	.compat_ioctl = ib_uverbs_ioctl,
-=======
-#if IS_ENABLED(CONFIG_INFINIBAND_EXP_USER_ACCESS)
-	.unlocked_ioctl = ib_uverbs_ioctl,
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct ib_client uverbs_client = {
@@ -1313,7 +994,6 @@ static DEVICE_ATTR(abi_version, S_IRUGO, show_dev_abi_version, NULL);
 static CLASS_ATTR_STRING(abi_version, S_IRUGO,
 			 __stringify(IB_USER_VERBS_ABI_VERSION));
 
-<<<<<<< HEAD
 static int ib_uverbs_create_uapi(struct ib_device *device,
 				 struct ib_uverbs_device *uverbs_dev)
 {
@@ -1325,34 +1005,6 @@ static int ib_uverbs_create_uapi(struct ib_device *device,
 
 	uverbs_dev->uapi = uapi;
 	return 0;
-=======
-static dev_t overflow_maj;
-static DECLARE_BITMAP(overflow_map, IB_UVERBS_MAX_DEVICES);
-
-/*
- * If we have more than IB_UVERBS_MAX_DEVICES, dynamically overflow by
- * requesting a new major number and doubling the number of max devices we
- * support. It's stupid, but simple.
- */
-static int find_overflow_devnum(void)
-{
-	int ret;
-
-	if (!overflow_maj) {
-		ret = alloc_chrdev_region(&overflow_maj, 0, IB_UVERBS_MAX_DEVICES,
-					  "infiniband_verbs");
-		if (ret) {
-			pr_err("user_verbs: couldn't register dynamic device number\n");
-			return ret;
-		}
-	}
-
-	ret = find_first_zero_bit(overflow_map, IB_UVERBS_MAX_DEVICES);
-	if (ret >= IB_UVERBS_MAX_DEVICES)
-		return -1;
-
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void ib_uverbs_add_one(struct ib_device *device)
@@ -1365,11 +1017,7 @@ static void ib_uverbs_add_one(struct ib_device *device)
 	if (!device->alloc_ucontext)
 		return;
 
-<<<<<<< HEAD
 	uverbs_dev = kzalloc(sizeof(*uverbs_dev), GFP_KERNEL);
-=======
-	uverbs_dev = kzalloc(sizeof *uverbs_dev, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!uverbs_dev)
 		return;
 
@@ -1388,7 +1036,6 @@ static void ib_uverbs_add_one(struct ib_device *device)
 	INIT_LIST_HEAD(&uverbs_dev->uverbs_file_list);
 	INIT_LIST_HEAD(&uverbs_dev->uverbs_events_file_list);
 
-<<<<<<< HEAD
 	devnum = find_first_zero_bit(dev_map, IB_UVERBS_MAX_DEVICES);
 	if (devnum >= IB_UVERBS_MAX_DEVICES)
 		goto err;
@@ -1398,36 +1045,13 @@ static void ib_uverbs_add_one(struct ib_device *device)
 		base = dynamic_uverbs_dev + devnum - IB_UVERBS_NUM_FIXED_MINOR;
 	else
 		base = IB_UVERBS_BASE_DEV + devnum;
-=======
-	spin_lock(&map_lock);
-	devnum = find_first_zero_bit(dev_map, IB_UVERBS_MAX_DEVICES);
-	if (devnum >= IB_UVERBS_MAX_DEVICES) {
-		spin_unlock(&map_lock);
-		devnum = find_overflow_devnum();
-		if (devnum < 0)
-			goto err;
-
-		spin_lock(&map_lock);
-		uverbs_dev->devnum = devnum + IB_UVERBS_MAX_DEVICES;
-		base = devnum + overflow_maj;
-		set_bit(devnum, overflow_map);
-	} else {
-		uverbs_dev->devnum = devnum;
-		base = devnum + IB_UVERBS_BASE_DEV;
-		set_bit(devnum, dev_map);
-	}
-	spin_unlock(&map_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rcu_assign_pointer(uverbs_dev->ib_dev, device);
 	uverbs_dev->num_comp_vectors = device->num_comp_vectors;
 
-<<<<<<< HEAD
 	if (ib_uverbs_create_uapi(device, uverbs_dev))
 		goto err_uapi;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cdev_init(&uverbs_dev->cdev, NULL);
 	uverbs_dev->cdev.owner = THIS_MODULE;
 	uverbs_dev->cdev.ops = device->mmap ? &uverbs_mmap_fops : &uverbs_fops;
@@ -1447,42 +1071,16 @@ static void ib_uverbs_add_one(struct ib_device *device)
 	if (device_create_file(uverbs_dev->dev, &dev_attr_abi_version))
 		goto err_class;
 
-<<<<<<< HEAD
-=======
-	if (!device->specs_root) {
-		const struct uverbs_object_tree_def *default_root[] = {
-			uverbs_default_get_objects()};
-
-		uverbs_dev->specs_root = uverbs_alloc_spec_tree(1,
-								default_root);
-		if (IS_ERR(uverbs_dev->specs_root))
-			goto err_class;
-
-		device->specs_root = uverbs_dev->specs_root;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ib_set_client_data(device, &uverbs_client, uverbs_dev);
 
 	return;
 
 err_class:
 	device_destroy(uverbs_class, uverbs_dev->cdev.dev);
-<<<<<<< HEAD
 err_cdev:
 	cdev_del(&uverbs_dev->cdev);
 err_uapi:
 	clear_bit(devnum, dev_map);
-=======
-
-err_cdev:
-	cdev_del(&uverbs_dev->cdev);
-	if (uverbs_dev->devnum < IB_UVERBS_MAX_DEVICES)
-		clear_bit(devnum, dev_map);
-	else
-		clear_bit(devnum, overflow_map);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err:
 	if (atomic_dec_and_test(&uverbs_dev->refcount))
 		ib_uverbs_comp_dev(uverbs_dev);
@@ -1499,27 +1097,18 @@ static void ib_uverbs_free_hw_resources(struct ib_uverbs_device *uverbs_dev,
 	struct ib_event event;
 
 	/* Pending running commands to terminate */
-<<<<<<< HEAD
 	uverbs_disassociate_api_pre(uverbs_dev);
-=======
-	synchronize_srcu(&uverbs_dev->disassociate_srcu);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	event.event = IB_EVENT_DEVICE_FATAL;
 	event.element.port_num = 0;
 	event.device = ib_dev;
 
 	mutex_lock(&uverbs_dev->lists_mutex);
 	while (!list_empty(&uverbs_dev->uverbs_file_list)) {
-<<<<<<< HEAD
-=======
-		struct ib_ucontext *ucontext;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		file = list_first_entry(&uverbs_dev->uverbs_file_list,
 					struct ib_uverbs_file, list);
 		file->is_closed = 1;
 		list_del(&file->list);
 		kref_get(&file->ref);
-<<<<<<< HEAD
 
 		/* We must release the mutex before going ahead and calling
 		 * uverbs_cleanup_ufile, as it might end up indirectly calling
@@ -1533,35 +1122,6 @@ static void ib_uverbs_free_hw_resources(struct ib_uverbs_device *uverbs_dev,
 		kref_put(&file->ref, ib_uverbs_release_file);
 
 		mutex_lock(&uverbs_dev->lists_mutex);
-=======
-		mutex_unlock(&uverbs_dev->lists_mutex);
-
-
-		mutex_lock(&file->cleanup_mutex);
-		ucontext = file->ucontext;
-		file->ucontext = NULL;
-		mutex_unlock(&file->cleanup_mutex);
-
-		/* At this point ib_uverbs_close cannot be running
-		 * ib_uverbs_cleanup_ucontext
-		 */
-		if (ucontext) {
-			/* We must release the mutex before going ahead and
-			 * calling disassociate_ucontext. disassociate_ucontext
-			 * might end up indirectly calling uverbs_close,
-			 * for example due to freeing the resources
-			 * (e.g mmput).
-			 */
-			ib_uverbs_event_handler(&file->event_handler, &event);
-			ib_dev->disassociate_ucontext(ucontext);
-			mutex_lock(&file->cleanup_mutex);
-			ib_uverbs_cleanup_ucontext(file, ucontext, true);
-			mutex_unlock(&file->cleanup_mutex);
-		}
-
-		mutex_lock(&uverbs_dev->lists_mutex);
-		kref_put(&file->ref, ib_uverbs_release_file);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	while (!list_empty(&uverbs_dev->uverbs_events_file_list)) {
@@ -1583,11 +1143,8 @@ static void ib_uverbs_free_hw_resources(struct ib_uverbs_device *uverbs_dev,
 		kill_fasync(&event_file->ev_queue.async_queue, SIGIO, POLL_IN);
 	}
 	mutex_unlock(&uverbs_dev->lists_mutex);
-<<<<<<< HEAD
 
 	uverbs_disassociate_api(uverbs_dev->uapi);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void ib_uverbs_remove_one(struct ib_device *device, void *client_data)
@@ -1601,15 +1158,7 @@ static void ib_uverbs_remove_one(struct ib_device *device, void *client_data)
 	dev_set_drvdata(uverbs_dev->dev, NULL);
 	device_destroy(uverbs_class, uverbs_dev->cdev.dev);
 	cdev_del(&uverbs_dev->cdev);
-<<<<<<< HEAD
 	clear_bit(uverbs_dev->devnum, dev_map);
-=======
-
-	if (uverbs_dev->devnum < IB_UVERBS_MAX_DEVICES)
-		clear_bit(uverbs_dev->devnum, dev_map);
-	else
-		clear_bit(uverbs_dev->devnum - IB_UVERBS_MAX_DEVICES, overflow_map);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (device->disassociate_ucontext) {
 		/* We disassociate HW resources and immediately return.
@@ -1623,10 +1172,6 @@ static void ib_uverbs_remove_one(struct ib_device *device, void *client_data)
 		 * cdev was deleted, however active clients can still issue
 		 * commands and close their open files.
 		 */
-<<<<<<< HEAD
-=======
-		rcu_assign_pointer(uverbs_dev->ib_dev, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ib_uverbs_free_hw_resources(uverbs_dev, device);
 		wait_clients = 0;
 	}
@@ -1635,13 +1180,6 @@ static void ib_uverbs_remove_one(struct ib_device *device, void *client_data)
 		ib_uverbs_comp_dev(uverbs_dev);
 	if (wait_clients)
 		wait_for_completion(&uverbs_dev->comp);
-<<<<<<< HEAD
-=======
-	if (uverbs_dev->specs_root) {
-		uverbs_free_spec_tree(uverbs_dev->specs_root);
-		device->specs_root = NULL;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kobject_put(&uverbs_dev->kobj);
 }
@@ -1657,19 +1195,14 @@ static int __init ib_uverbs_init(void)
 {
 	int ret;
 
-<<<<<<< HEAD
 	ret = register_chrdev_region(IB_UVERBS_BASE_DEV,
 				     IB_UVERBS_NUM_FIXED_MINOR,
-=======
-	ret = register_chrdev_region(IB_UVERBS_BASE_DEV, IB_UVERBS_MAX_DEVICES,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     "infiniband_verbs");
 	if (ret) {
 		pr_err("user_verbs: couldn't register device number\n");
 		goto out;
 	}
 
-<<<<<<< HEAD
 	ret = alloc_chrdev_region(&dynamic_uverbs_dev, 0,
 				  IB_UVERBS_NUM_DYNAMIC_MINOR,
 				  "infiniband_verbs");
@@ -1678,8 +1211,6 @@ static int __init ib_uverbs_init(void)
 		goto out_alloc;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uverbs_class = class_create(THIS_MODULE, "infiniband_verbs");
 	if (IS_ERR(uverbs_class)) {
 		ret = PTR_ERR(uverbs_class);
@@ -1707,16 +1238,12 @@ out_class:
 	class_destroy(uverbs_class);
 
 out_chrdev:
-<<<<<<< HEAD
 	unregister_chrdev_region(dynamic_uverbs_dev,
 				 IB_UVERBS_NUM_DYNAMIC_MINOR);
 
 out_alloc:
 	unregister_chrdev_region(IB_UVERBS_BASE_DEV,
 				 IB_UVERBS_NUM_FIXED_MINOR);
-=======
-	unregister_chrdev_region(IB_UVERBS_BASE_DEV, IB_UVERBS_MAX_DEVICES);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 out:
 	return ret;
@@ -1726,16 +1253,10 @@ static void __exit ib_uverbs_cleanup(void)
 {
 	ib_unregister_client(&uverbs_client);
 	class_destroy(uverbs_class);
-<<<<<<< HEAD
 	unregister_chrdev_region(IB_UVERBS_BASE_DEV,
 				 IB_UVERBS_NUM_FIXED_MINOR);
 	unregister_chrdev_region(dynamic_uverbs_dev,
 				 IB_UVERBS_NUM_DYNAMIC_MINOR);
-=======
-	unregister_chrdev_region(IB_UVERBS_BASE_DEV, IB_UVERBS_MAX_DEVICES);
-	if (overflow_maj)
-		unregister_chrdev_region(overflow_maj, IB_UVERBS_MAX_DEVICES);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 module_init(ib_uverbs_init);

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 // ChromeOS Embedded Controller extcon
 //
@@ -6,25 +5,6 @@
 // Author: Benson Leung <bleung@chromium.org>
 
 #include <linux/extcon-provider.h>
-=======
-/**
- * drivers/extcon/extcon-usbc-cros-ec - ChromeOS Embedded Controller extcon
- *
- * Copyright (C) 2017 Google, Inc
- * Author: Benson Leung <bleung@chromium.org>
- *
- * This software is licensed under the terms of the GNU General Public
- * License version 2, as published by the Free Software Foundation, and
- * may be copied, distributed, and modified under those terms.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
-
-#include <linux/extcon.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/kernel.h>
 #include <linux/mfd/cros_ec.h>
 #include <linux/module.h>
@@ -44,35 +24,26 @@ struct cros_ec_extcon_info {
 
 	struct notifier_block notifier;
 
-<<<<<<< HEAD
 	unsigned int dr; /* data role */
 	bool pr; /* power role (true if VBUS enabled) */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool dp; /* DisplayPort enabled */
 	bool mux; /* SuperSpeed (usb3) enabled */
 	unsigned int power_type;
 };
 
 static const unsigned int usb_type_c_cable[] = {
-<<<<<<< HEAD
 	EXTCON_USB,
 	EXTCON_USB_HOST,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	EXTCON_DISP_DP,
 	EXTCON_NONE,
 };
 
-<<<<<<< HEAD
 enum usb_data_roles {
 	DR_NONE,
 	DR_HOST,
 	DR_DEVICE,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * cros_ec_pd_command() - Send a command to the EC.
  * @info: pointer to struct cros_ec_extcon_info
@@ -179,10 +150,7 @@ static int cros_ec_usb_get_role(struct cros_ec_extcon_info *info,
 	pd_control.port = info->port_id;
 	pd_control.role = USB_PD_CTRL_ROLE_NO_CHANGE;
 	pd_control.mux = USB_PD_CTRL_MUX_NO_CHANGE;
-<<<<<<< HEAD
 	pd_control.swap = USB_PD_CTRL_SWAP_NONE;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = cros_ec_pd_command(info, EC_CMD_USB_PD_CONTROL, 1,
 				 &pd_control, sizeof(pd_control),
 				 &resp, sizeof(resp));
@@ -216,7 +184,6 @@ static int cros_ec_pd_get_num_ports(struct cros_ec_extcon_info *info)
 	return resp.num_ports;
 }
 
-<<<<<<< HEAD
 static const char *cros_ec_usb_role_string(unsigned int role)
 {
 	return role == DR_NONE ? "DISCONNECTED" :
@@ -276,18 +243,13 @@ static bool cros_ec_usb_power_type_is_wall_wart(unsigned int type,
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int extcon_cros_ec_detect_cable(struct cros_ec_extcon_info *info,
 				       bool force)
 {
 	struct device *dev = info->dev;
 	int role, power_type;
-<<<<<<< HEAD
 	unsigned int dr = DR_NONE;
 	bool pr = false;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool polarity = false;
 	bool dp = false;
 	bool mux = false;
@@ -306,18 +268,12 @@ static int extcon_cros_ec_detect_cable(struct cros_ec_extcon_info *info,
 			dev_err(dev, "failed getting role err = %d\n", role);
 			return role;
 		}
-<<<<<<< HEAD
 		dev_dbg(dev, "disconnected\n");
 	} else {
 		int pd_mux_state;
 
 		dr = (role & PD_CTRL_RESP_ROLE_DATA) ? DR_HOST : DR_DEVICE;
 		pr = (role & PD_CTRL_RESP_ROLE_POWER);
-=======
-	} else {
-		int pd_mux_state;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pd_mux_state = cros_ec_usb_get_pd_mux_state(info);
 		if (pd_mux_state < 0)
 			pd_mux_state = USB_PD_MUX_USB_ENABLED;
@@ -325,7 +281,6 @@ static int extcon_cros_ec_detect_cable(struct cros_ec_extcon_info *info,
 		dp = pd_mux_state & USB_PD_MUX_DP_ENABLED;
 		mux = pd_mux_state & USB_PD_MUX_USB_ENABLED;
 		hpd = pd_mux_state & USB_PD_MUX_HPD_IRQ;
-<<<<<<< HEAD
 
 		dev_dbg(dev,
 			"connected role 0x%x pwr type %d dr %d pr %d pol %d mux %d dp %d hpd %d\n",
@@ -349,18 +304,10 @@ static int extcon_cros_ec_detect_cable(struct cros_ec_extcon_info *info,
 			cros_ec_usb_role_string(dr));
 		info->dr = dr;
 		info->pr = pr;
-=======
-	}
-
-	if (force || info->dp != dp || info->mux != mux ||
-		info->power_type != power_type) {
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		info->dp = dp;
 		info->mux = mux;
 		info->power_type = power_type;
 
-<<<<<<< HEAD
 		if (dr == DR_DEVICE)
 			device_connected = true;
 		else if (dr == DR_HOST)
@@ -390,13 +337,6 @@ static int extcon_cros_ec_detect_cable(struct cros_ec_extcon_info *info,
 		extcon_set_property(info->edev, EXTCON_USB_HOST,
 				    EXTCON_PROP_USB_SS,
 				    (union extcon_property_value)(int)mux);
-=======
-		extcon_set_state(info->edev, EXTCON_DISP_DP, dp);
-
-		extcon_set_property(info->edev, EXTCON_DISP_DP,
-				    EXTCON_PROP_USB_TYPEC_POLARITY,
-				    (union extcon_property_value)(int)polarity);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		extcon_set_property(info->edev, EXTCON_DISP_DP,
 				    EXTCON_PROP_USB_SS,
 				    (union extcon_property_value)(int)mux);
@@ -404,11 +344,8 @@ static int extcon_cros_ec_detect_cable(struct cros_ec_extcon_info *info,
 				    EXTCON_PROP_DISP_HPD,
 				    (union extcon_property_value)(int)hpd);
 
-<<<<<<< HEAD
 		extcon_sync(info->edev, EXTCON_USB);
 		extcon_sync(info->edev, EXTCON_USB_HOST);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		extcon_sync(info->edev, EXTCON_DISP_DP);
 
 	} else if (hpd) {
@@ -494,7 +431,6 @@ static int extcon_cros_ec_probe(struct platform_device *pdev)
 		return ret;
 	}
 
-<<<<<<< HEAD
 	extcon_set_property_capability(info->edev, EXTCON_USB,
 				       EXTCON_PROP_USB_VBUS);
 	extcon_set_property_capability(info->edev, EXTCON_USB_HOST,
@@ -509,21 +445,14 @@ static int extcon_cros_ec_probe(struct platform_device *pdev)
 				       EXTCON_PROP_USB_SS);
 	extcon_set_property_capability(info->edev, EXTCON_USB_HOST,
 				       EXTCON_PROP_USB_SS);
-=======
-	extcon_set_property_capability(info->edev, EXTCON_DISP_DP,
-				       EXTCON_PROP_USB_TYPEC_POLARITY);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	extcon_set_property_capability(info->edev, EXTCON_DISP_DP,
 				       EXTCON_PROP_USB_SS);
 	extcon_set_property_capability(info->edev, EXTCON_DISP_DP,
 				       EXTCON_PROP_DISP_HPD);
 
-<<<<<<< HEAD
 	info->dr = DR_NONE;
 	info->pr = false;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	platform_set_drvdata(pdev, info);
 
 	/* Get PD events from the EC */
@@ -609,8 +538,4 @@ module_platform_driver(extcon_cros_ec_driver);
 
 MODULE_DESCRIPTION("ChromeOS Embedded Controller extcon driver");
 MODULE_AUTHOR("Benson Leung <bleung@chromium.org>");
-<<<<<<< HEAD
 MODULE_LICENSE("GPL v2");
-=======
-MODULE_LICENSE("GPL");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -84,11 +84,7 @@
 	cs-gpios = <&gpio4 28 GPIO_ACTIVE_LOW>;
 	status = "okay";
 
-<<<<<<< HEAD
 	ads7846@0 {
-=======
-	ads7846 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "ti,ads7846";
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_touch>;

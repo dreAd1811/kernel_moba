@@ -41,11 +41,7 @@
 #include <linux/init.h>
 #include <linux/firmware.h>
 
-<<<<<<< HEAD
 #include <media/dvb_frontend.h>
-=======
-#include "dvb_frontend.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "cx24116.h"
 
 static int debug;
@@ -225,25 +221,13 @@ static int cx24116_writereg(struct cx24116_state *state, int reg, int data)
 static int cx24116_writeregN(struct cx24116_state *state, int reg,
 			     const u8 *data, u16 len)
 {
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret = -EREMOTEIO;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct i2c_msg msg;
 	u8 *buf;
 
 	buf = kmalloc(len + 1, GFP_KERNEL);
-<<<<<<< HEAD
 	if (!buf)
 		return -ENOMEM;
-=======
-	if (buf == NULL) {
-		printk("Unable to kmalloc\n");
-		ret = -ENOMEM;
-		goto error;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	*(buf) = reg;
 	memcpy(buf + 1, data, len);
@@ -264,10 +248,6 @@ static int cx24116_writeregN(struct cx24116_state *state, int reg,
 		ret = -EREMOTEIO;
 	}
 
-<<<<<<< HEAD
-=======
-error:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(buf);
 
 	return ret;
@@ -983,11 +963,7 @@ static int cx24116_send_diseqc_msg(struct dvb_frontend *fe,
 
 	/* Validate length */
 	if (d->msg_len > sizeof(d->msg))
-<<<<<<< HEAD
 		return -EINVAL;
-=======
-                return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Dump DiSEqC message */
 	if (debug) {
@@ -1141,25 +1117,15 @@ static const struct dvb_frontend_ops cx24116_ops;
 struct dvb_frontend *cx24116_attach(const struct cx24116_config *config,
 	struct i2c_adapter *i2c)
 {
-<<<<<<< HEAD
 	struct cx24116_state *state;
-=======
-	struct cx24116_state *state = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	dprintk("%s\n", __func__);
 
 	/* allocate memory for the internal state */
-<<<<<<< HEAD
 	state = kzalloc(sizeof(*state), GFP_KERNEL);
 	if (state == NULL)
 		return NULL;
-=======
-	state = kzalloc(sizeof(struct cx24116_state), GFP_KERNEL);
-	if (state == NULL)
-		goto error1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	state->config = config;
 	state->i2c = i2c;
@@ -1168,14 +1134,9 @@ struct dvb_frontend *cx24116_attach(const struct cx24116_config *config,
 	ret = (cx24116_readreg(state, 0xFF) << 8) |
 		cx24116_readreg(state, 0xFE);
 	if (ret != 0x0501) {
-<<<<<<< HEAD
 		kfree(state);
 		printk(KERN_INFO "Invalid probe, probably not a CX24116 device\n");
 		return NULL;
-=======
-		printk(KERN_INFO "Invalid probe, probably not a CX24116 device\n");
-		goto error2;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* create dvb_frontend */
@@ -1183,12 +1144,6 @@ struct dvb_frontend *cx24116_attach(const struct cx24116_config *config,
 		sizeof(struct dvb_frontend_ops));
 	state->frontend.demodulator_priv = state;
 	return &state->frontend;
-<<<<<<< HEAD
-=======
-
-error2: kfree(state);
-error1: return NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(cx24116_attach);
 
@@ -1501,11 +1456,7 @@ static int cx24116_tune(struct dvb_frontend *fe, bool re_tune,
 	return cx24116_read_status(fe, status);
 }
 
-<<<<<<< HEAD
 static enum dvbfe_algo cx24116_get_algo(struct dvb_frontend *fe)
-=======
-static int cx24116_get_algo(struct dvb_frontend *fe)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return DVBFE_ALGO_HW;
 }
@@ -1514,17 +1465,10 @@ static const struct dvb_frontend_ops cx24116_ops = {
 	.delsys = { SYS_DVBS, SYS_DVBS2 },
 	.info = {
 		.name = "Conexant CX24116/CX24118",
-<<<<<<< HEAD
 		.frequency_min_hz = 950 * MHz,
 		.frequency_max_hz = 2150 * MHz,
 		.frequency_stepsize_hz = 1011 * kHz,
 		.frequency_tolerance_hz = 5 * MHz,
-=======
-		.frequency_min = 950000,
-		.frequency_max = 2150000,
-		.frequency_stepsize = 1011, /* kHz for QPSK frontends */
-		.frequency_tolerance = 5000,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.symbol_rate_min = 1000000,
 		.symbol_rate_max = 45000000,
 		.caps = FE_CAN_INVERSION_AUTO |

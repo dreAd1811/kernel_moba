@@ -48,10 +48,7 @@
 #include "nouveau_bo.h"
 #include "nouveau_fbcon.h"
 #include "nouveau_chan.h"
-<<<<<<< HEAD
 #include "nouveau_vmm.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "nouveau_crtc.h"
 
@@ -59,13 +56,10 @@ MODULE_PARM_DESC(nofbaccel, "Disable fbcon acceleration");
 int nouveau_nofbaccel = 0;
 module_param_named(nofbaccel, nouveau_nofbaccel, int, 0400);
 
-<<<<<<< HEAD
 MODULE_PARM_DESC(fbcon_bpp, "fbcon bits-per-pixel (default: auto)");
 static int nouveau_fbcon_bpp;
 module_param_named(fbcon_bpp, nouveau_fbcon_bpp, int, 0400);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void
 nouveau_fbcon_fillrect(struct fb_info *info, const struct fb_fillrect *rect)
 {
@@ -359,11 +353,7 @@ nouveau_fbcon_create(struct drm_fb_helper *helper,
 
 	chan = nouveau_nofbaccel ? NULL : drm->channel;
 	if (chan && device->info.family >= NV_DEVICE_INFO_V0_TESLA) {
-<<<<<<< HEAD
 		ret = nouveau_vma_new(nvbo, &drm->client.vmm, &fb->vma);
-=======
-		ret = nouveau_bo_vma_add(nvbo, drm->client.vm, &fb->vma);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret) {
 			NV_ERROR(drm, "failed to map fb into chan: %d\n", ret);
 			chan = NULL;
@@ -417,11 +407,7 @@ nouveau_fbcon_create(struct drm_fb_helper *helper,
 
 out_unlock:
 	if (chan)
-<<<<<<< HEAD
 		nouveau_vma_del(&fb->vma);
-=======
-		nouveau_bo_vma_del(fb->nvbo, &fb->vma);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	nouveau_bo_unmap(fb->nvbo);
 out_unpin:
 	nouveau_bo_unpin(fb->nvbo);
@@ -431,17 +417,6 @@ out:
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
-void
-nouveau_fbcon_output_poll_changed(struct drm_device *dev)
-{
-	struct nouveau_drm *drm = nouveau_drm(dev);
-	if (drm->fbcon)
-		drm_fb_helper_hotplug_event(&drm->fbcon->helper);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int
 nouveau_fbcon_destroy(struct drm_device *dev, struct nouveau_fbdev *fbcon)
 {
@@ -450,19 +425,11 @@ nouveau_fbcon_destroy(struct drm_device *dev, struct nouveau_fbdev *fbcon)
 	drm_fb_helper_unregister_fbi(&fbcon->helper);
 	drm_fb_helper_fini(&fbcon->helper);
 
-<<<<<<< HEAD
 	if (nouveau_fb && nouveau_fb->nvbo) {
 		nouveau_vma_del(&nouveau_fb->vma);
 		nouveau_bo_unmap(nouveau_fb->nvbo);
 		nouveau_bo_unpin(nouveau_fb->nvbo);
 		drm_framebuffer_put(&nouveau_fb->base);
-=======
-	if (nouveau_fb->nvbo) {
-		nouveau_bo_vma_del(nouveau_fb->nvbo, &nouveau_fb->vma);
-		nouveau_bo_unmap(nouveau_fb->nvbo);
-		nouveau_bo_unpin(nouveau_fb->nvbo);
-		drm_framebuffer_unreference(&nouveau_fb->base);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -499,10 +466,7 @@ nouveau_fbcon_set_suspend_work(struct work_struct *work)
 	console_unlock();
 
 	if (state == FBINFO_STATE_RUNNING) {
-<<<<<<< HEAD
 		nouveau_fbcon_hotplug_resume(drm->fbcon);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pm_runtime_mark_last_busy(drm->dev->dev);
 		pm_runtime_put_sync(drm->dev->dev);
 	}
@@ -524,7 +488,6 @@ nouveau_fbcon_set_suspend(struct drm_device *dev, int state)
 	schedule_work(&drm->fbcon_work);
 }
 
-<<<<<<< HEAD
 void
 nouveau_fbcon_output_poll_changed(struct drm_device *dev)
 {
@@ -580,18 +543,12 @@ nouveau_fbcon_hotplug_resume(struct nouveau_fbdev *fbcon)
 	mutex_unlock(&fbcon->hotplug_lock);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int
 nouveau_fbcon_init(struct drm_device *dev)
 {
 	struct nouveau_drm *drm = nouveau_drm(dev);
 	struct nouveau_fbdev *fbcon;
-<<<<<<< HEAD
 	int preferred_bpp = nouveau_fbcon_bpp;
-=======
-	int preferred_bpp;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	if (!dev->mode_config.num_crtc ||
@@ -604,10 +561,7 @@ nouveau_fbcon_init(struct drm_device *dev)
 
 	drm->fbcon = fbcon;
 	INIT_WORK(&drm->fbcon_work, nouveau_fbcon_set_suspend_work);
-<<<<<<< HEAD
 	mutex_init(&fbcon->hotplug_lock);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	drm_fb_helper_prepare(dev, &fbcon->helper, &nouveau_fbcon_helper_funcs);
 
@@ -619,7 +573,6 @@ nouveau_fbcon_init(struct drm_device *dev)
 	if (ret)
 		goto fini;
 
-<<<<<<< HEAD
 	if (preferred_bpp != 8 && preferred_bpp != 16 && preferred_bpp != 32) {
 		if (drm->client.device.info.ram_size <= 32 * 1024 * 1024)
 			preferred_bpp = 8;
@@ -629,15 +582,6 @@ nouveau_fbcon_init(struct drm_device *dev)
 		else
 			preferred_bpp = 32;
 	}
-=======
-	if (drm->client.device.info.ram_size <= 32 * 1024 * 1024)
-		preferred_bpp = 8;
-	else
-	if (drm->client.device.info.ram_size <= 64 * 1024 * 1024)
-		preferred_bpp = 16;
-	else
-		preferred_bpp = 32;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* disable all the possible outputs/crtcs before entering KMS mode */
 	if (!drm_drv_uses_atomic_modeset(dev))

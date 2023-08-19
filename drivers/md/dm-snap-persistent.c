@@ -14,17 +14,10 @@
 #include <linux/export.h>
 #include <linux/slab.h>
 #include <linux/dm-io.h>
-<<<<<<< HEAD
 #include <linux/dm-bufio.h>
 
 #define DM_MSG_PREFIX "persistent snapshot"
 #define DM_CHUNK_SIZE_DEFAULT_SECTORS 32	/* 16KB */
-=======
-#include "dm-bufio.h"
-
-#define DM_MSG_PREFIX "persistent snapshot"
-#define DM_CHUNK_SIZE_DEFAULT_SECTORS 32U	/* 16KB */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DM_PREFETCH_CHUNKS		12
 

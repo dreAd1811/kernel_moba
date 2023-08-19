@@ -381,11 +381,7 @@ struct atom_rom_hw_function_header
 struct atom_master_list_of_data_tables_v2_1{
   uint16_t utilitypipeline;               /* Offest for the utility to get parser info,Don't change this position!*/
   uint16_t multimedia_info;               
-<<<<<<< HEAD
   uint16_t smc_dpm_info;
-=======
-  uint16_t sw_datatable2;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
   uint16_t sw_datatable3;                 
   uint16_t firmwareinfo;                  /* Shared by various SW components */
   uint16_t sw_datatable5;
@@ -505,7 +501,6 @@ enum atom_cooling_solution_id{
   LIQUID_COOLING = 0x01
 };
 
-<<<<<<< HEAD
 struct atom_firmware_info_v3_2 {
   struct atom_common_table_header table_header;
   uint32_t firmware_revision;
@@ -532,8 +527,6 @@ struct atom_firmware_info_v3_2 {
   uint32_t zfbstartaddrin16mb;
   uint32_t reserved2[3];
 };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* 
   ***************************************************************************
@@ -1050,7 +1043,6 @@ struct atom_14nm_combphy_tmds_vs_set
   uint8_t margin_deemph_lane0__deemph_sel_val;         
 };
 
-<<<<<<< HEAD
 struct atom_i2c_reg_info {
   uint8_t ucI2cRegIndex;
   uint8_t ucI2cRegVal;
@@ -1064,8 +1056,6 @@ struct atom_hdmi_retimer_redriver_set {
   struct atom_i2c_reg_info Hdmi6GhzRegSetting[3];    //For 6G Hz use.
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct atom_integrated_system_info_v1_11
 {
   struct  atom_common_table_header  table_header;
@@ -1084,11 +1074,7 @@ struct atom_integrated_system_info_v1_11
   uint16_t  dpphy_override;                   // bit vector, enum of atom_sysinfo_dpphy_override_def
   uint16_t  lvds_misc;                        // enum of atom_sys_info_lvds_misc_def
   uint16_t  backlight_pwm_hz;                 // pwm frequency in hz
-<<<<<<< HEAD
   uint8_t   memorytype;                       // enum of atom_dmi_t17_mem_type_def, APU memory type indication.
-=======
-  uint8_t   memorytype;                       // enum of atom_sys_mem_type
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
   uint8_t   umachannelnumber;                 // number of memory channels
   uint8_t   pwr_on_digon_to_de;               /* all pwr sequence numbers below are in uint of 4ms */
   uint8_t   pwr_on_de_to_vary_bl;
@@ -1098,18 +1084,14 @@ struct atom_integrated_system_info_v1_11
   uint8_t   pwr_on_vary_bl_to_blon;
   uint8_t   pwr_down_bloff_to_vary_bloff;
   uint8_t   min_allowed_bl_level;
-<<<<<<< HEAD
   uint8_t   htc_hyst_limit;
   uint8_t   htc_tmp_limit;
   uint8_t   reserved1;
   uint8_t   reserved2;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
   struct atom_external_display_connection_info extdispconninfo;
   struct atom_14nm_dpphy_dvihdmi_tuningset dvi_tuningset;
   struct atom_14nm_dpphy_dvihdmi_tuningset hdmi_tuningset;
   struct atom_14nm_dpphy_dvihdmi_tuningset hdmi6g_tuningset;
-<<<<<<< HEAD
   struct atom_14nm_dpphy_dp_tuningset dp_tuningset;        // rbr 1.62G dp tuning set
   struct atom_14nm_dpphy_dp_tuningset dp_hbr3_tuningset;   // HBR3 dp tuning set
   struct atom_camera_data  camera_info;
@@ -1121,12 +1103,6 @@ struct atom_integrated_system_info_v1_11
   struct atom_14nm_dpphy_dp_tuningset dp_hbr2_tuningset;   //hbr2 5.4G dp turnig set
   struct atom_14nm_dpphy_dp_tuningset edp_tuningset;       //edp tuning set
   uint32_t  reserved[66];
-=======
-  struct atom_14nm_dpphy_dp_tuningset dp_tuningset;
-  struct atom_14nm_dpphy_dp_tuningset dp_hbr3_tuningset;
-  struct atom_camera_data  camera_info;
-  uint32_t  reserved[138];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 
@@ -1226,7 +1202,6 @@ struct  atom_gfx_info_v2_2
   uint32_t rlc_gpu_timer_refclk; 
 };
 
-<<<<<<< HEAD
 struct  atom_gfx_info_v2_3 {
   struct  atom_common_table_header  table_header;
   uint8_t gfxip_min_ver;
@@ -1285,9 +1260,6 @@ struct  atom_gfx_info_v2_4 {
   uint32_t sram_rm_fuses_val;
   uint32_t sram_custom_rm_fuses_val;
 };
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* 
   ***************************************************************************
@@ -1316,7 +1288,6 @@ struct atom_smu_info_v3_1
   uint8_t  fw_ctf_polarity;         // GPIO polarity for CTF
 };
 
-<<<<<<< HEAD
 struct atom_smu_info_v3_2 {
   struct   atom_common_table_header  table_header;
   uint8_t  smuip_min_ver;
@@ -1474,9 +1445,6 @@ struct atom_smc_dpm_info_v4_1
 
 	uint32_t boardreserved[9];
 };
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* 
   ***************************************************************************
@@ -2058,7 +2026,6 @@ enum atom_smu9_syspll0_clock_id
   SMU9_SYSPLL0_DISPCLK_ID  = 11,      //	DISPCLK
 };
 
-<<<<<<< HEAD
 enum atom_smu11_syspll_id {
   SMU11_SYSPLL0_ID            = 0,
   SMU11_SYSPLL1_0_ID          = 1,
@@ -2106,8 +2073,6 @@ enum atom_smu11_syspll3_1_clock_id {
   SMU11_SYSPLL3_1_LCLK_ID = 2,         //	LCLK
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct  atom_get_smu_clock_info_output_parameters_v3_1
 {
   union {

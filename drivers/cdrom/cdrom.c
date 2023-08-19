@@ -283,10 +283,7 @@
 #include <linux/blkdev.h>
 #include <linux/times.h>
 #include <linux/uaccess.h>
-<<<<<<< HEAD
 #include <scsi/scsi_common.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <scsi/scsi_request.h>
 
 /* used to tell the module to turn on full debugging messages */
@@ -350,17 +347,10 @@ static LIST_HEAD(cdrom_list);
 int cdrom_dummy_generic_packet(struct cdrom_device_info *cdi,
 			       struct packet_command *cgc)
 {
-<<<<<<< HEAD
 	if (cgc->sshdr) {
 		cgc->sshdr->sense_key = 0x05;
 		cgc->sshdr->asc = 0x20;
 		cgc->sshdr->ascq = 0x00;
-=======
-	if (cgc->sense) {
-		cgc->sense->sense_key = 0x05;
-		cgc->sense->asc = 0x20;
-		cgc->sense->ascq = 0x00;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	cgc->stat = -EIO;
@@ -421,17 +411,10 @@ static int cdrom_get_disc_info(struct cdrom_device_info *cdi,
  * hack to have the capability flags defined const, while we can still
  * change it here without gcc complaining at every line.
  */
-<<<<<<< HEAD
 #define ENSURE(call, bits)			\
 do {						\
 	if (cdo->call == NULL)			\
 		*change_capability &= ~(bits);	\
-=======
-#define ENSURE(cdo, call, bits)					\
-do {								\
-	if (cdo->call == NULL)					\
-		WARN_ON_ONCE((cdo)->capability & (bits));	\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } while (0)
 
 /*
@@ -607,10 +590,7 @@ int register_cdrom(struct cdrom_device_info *cdi)
 {
 	static char banner_printed;
 	const struct cdrom_device_ops *cdo = cdi->ops;
-<<<<<<< HEAD
 	int *change_capability = (int *)&cdo->capability; /* hack */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cd_dbg(CD_OPEN, "entering register_cdrom\n");
 
@@ -622,7 +602,6 @@ int register_cdrom(struct cdrom_device_info *cdi)
 		cdrom_sysctl_register();
 	}
 
-<<<<<<< HEAD
 	ENSURE(drive_status, CDC_DRIVE_STATUS);
 	if (cdo->check_events == NULL && cdo->media_changed == NULL)
 		*change_capability = ~(CDC_MEDIA_CHANGED | CDC_SELECT_DISC);
@@ -633,18 +612,6 @@ int register_cdrom(struct cdrom_device_info *cdi)
 	ENSURE(get_mcn, CDC_MCN);
 	ENSURE(reset, CDC_RESET);
 	ENSURE(generic_packet, CDC_GENERIC_PACKET);
-=======
-	ENSURE(cdo, drive_status, CDC_DRIVE_STATUS);
-	if (cdo->check_events == NULL && cdo->media_changed == NULL)
-		WARN_ON_ONCE(cdo->capability & (CDC_MEDIA_CHANGED | CDC_SELECT_DISC));
-	ENSURE(cdo, tray_move, CDC_CLOSE_TRAY | CDC_OPEN_TRAY);
-	ENSURE(cdo, lock_door, CDC_LOCK);
-	ENSURE(cdo, select_speed, CDC_SELECT_SPEED);
-	ENSURE(cdo, get_last_session, CDC_MULTI_SESSION);
-	ENSURE(cdo, get_mcn, CDC_MCN);
-	ENSURE(cdo, reset, CDC_RESET);
-	ENSURE(cdo, generic_packet, CDC_GENERIC_PACKET);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cdi->mc_flags = 0;
 	cdi->options = CDO_USE_FFLAGS;
 
@@ -1030,15 +997,6 @@ static void cdrom_count_tracks(struct cdrom_device_info *cdi, tracktype *tracks)
 	tracks->xa = 0;
 	tracks->error = 0;
 	cd_dbg(CD_COUNT_TRACKS, "entering cdrom_count_tracks\n");
-<<<<<<< HEAD
-=======
-
-	if (!CDROM_CAN(CDC_PLAY_AUDIO)) {
-		tracks->error = CDS_NO_INFO;
-		return;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Grab the TOC header so we can see how many tracks there are */
 	ret = cdi->ops->audio_ioctl(cdi, CDROMREADTOCHDR, &header);
 	if (ret) {
@@ -1205,12 +1163,7 @@ int cdrom_open(struct cdrom_device_info *cdi, struct block_device *bdev,
 		ret = open_for_data(cdi);
 		if (ret)
 			goto err;
-<<<<<<< HEAD
 		cdrom_mmc3_profile(cdi);
-=======
-		if (CDROM_CAN(CDC_GENERIC_PACKET))
-			cdrom_mmc3_profile(cdi);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (mode & FMODE_WRITE) {
 			ret = -EROFS;
 			if (cdrom_open_write(cdi))
@@ -2181,11 +2134,7 @@ static int cdrom_read_cdda_old(struct cdrom_device_info *cdi, __u8 __user *ubuf,
 	 */
 	nr = nframes;
 	do {
-<<<<<<< HEAD
 		cgc.buffer = kmalloc_array(nr, CD_FRAMESIZE_RAW, GFP_KERNEL);
-=======
-		cgc.buffer = kmalloc(CD_FRAMESIZE_RAW * nr, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (cgc.buffer)
 			break;
 
@@ -2245,11 +2194,7 @@ static int cdrom_read_cdda_bpc(struct cdrom_device_info *cdi, __u8 __user *ubuf,
 
 		len = nr * CD_FRAMESIZE_RAW;
 
-<<<<<<< HEAD
 		rq = blk_get_request(q, REQ_OP_SCSI_IN, 0);
-=======
-		rq = blk_get_request(q, REQ_OP_SCSI_IN, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (IS_ERR(rq)) {
 			ret = PTR_ERR(rq);
 			break;
@@ -2279,18 +2224,12 @@ static int cdrom_read_cdda_bpc(struct cdrom_device_info *cdi, __u8 __user *ubuf,
 
 		blk_execute_rq(q, cdi->disk, rq, 0);
 		if (scsi_req(rq)->result) {
-<<<<<<< HEAD
 			struct scsi_sense_hdr sshdr;
 
 			ret = -EIO;
 			scsi_normalize_sense(req->sense, req->sense_len,
 					     &sshdr);
 			cdi->last_sense = sshdr.sense_key;
-=======
-			struct request_sense *s = req->sense;
-			ret = -EIO;
-			cdi->last_sense = s->sense_key;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		if (blk_rq_unmap_user(bio))
@@ -2944,12 +2883,6 @@ int cdrom_get_last_written(struct cdrom_device_info *cdi, long *last_written)
 	   it doesn't give enough information or fails. then we return
 	   the toc contents. */
 use_toc:
-<<<<<<< HEAD
-=======
-	if (!CDROM_CAN(CDC_PLAY_AUDIO))
-		return -ENOSYS;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	toc.cdte_format = CDROM_MSF;
 	toc.cdte_track = CDROM_LEADOUT;
 	if ((ret = cdi->ops->audio_ioctl(cdi, CDROMREADTOCENTRY, &toc)))
@@ -3015,11 +2948,7 @@ static noinline int mmc_ioctl_cdrom_read_data(struct cdrom_device_info *cdi,
 					      struct packet_command *cgc,
 					      int cmd)
 {
-<<<<<<< HEAD
 	struct scsi_sense_hdr sshdr;
-=======
-	struct request_sense sense;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct cdrom_msf msf;
 	int blocksize = 0, format = 0, lba;
 	int ret;
@@ -3047,7 +2976,6 @@ static noinline int mmc_ioctl_cdrom_read_data(struct cdrom_device_info *cdi,
 	if (cgc->buffer == NULL)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	memset(&sshdr, 0, sizeof(sshdr));
 	cgc->sshdr = &sshdr;
 	cgc->data_direction = CGC_DATA_READ;
@@ -3055,15 +2983,6 @@ static noinline int mmc_ioctl_cdrom_read_data(struct cdrom_device_info *cdi,
 	if (ret && sshdr.sense_key == 0x05 &&
 	    sshdr.asc == 0x20 &&
 	    sshdr.ascq == 0x00) {
-=======
-	memset(&sense, 0, sizeof(sense));
-	cgc->sense = &sense;
-	cgc->data_direction = CGC_DATA_READ;
-	ret = cdrom_read_block(cdi, cgc, lba, 1, format, blocksize);
-	if (ret && sense.sense_key == 0x05 &&
-	    sense.asc == 0x20 &&
-	    sense.ascq == 0x00) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * SCSI-II devices are not required to support
 		 * READ_CD, so let's try switching block size
@@ -3072,11 +2991,7 @@ static noinline int mmc_ioctl_cdrom_read_data(struct cdrom_device_info *cdi,
 		ret = cdrom_switch_blocksize(cdi, blocksize);
 		if (ret)
 			goto out;
-<<<<<<< HEAD
 		cgc->sshdr = NULL;
-=======
-		cgc->sense = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = cdrom_read_cd(cdi, cgc, lba, blocksize, 1);
 		ret |= cdrom_switch_blocksize(cdi, blocksize);
 	}

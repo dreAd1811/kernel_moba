@@ -23,13 +23,9 @@
 #include <asm/reg.h>
 #include <asm/switch_to.h>
 #include <asm/time.h>
-<<<<<<< HEAD
 #include <asm/tm.h>
 #include "book3s.h"
 #include <asm/asm-prototypes.h>
-=======
-#include "book3s.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define OP_19_XOP_RFID		18
 #define OP_19_XOP_RFI		50
@@ -53,15 +49,12 @@
 #define OP_31_XOP_EIOIO		854
 #define OP_31_XOP_SLBMFEE	915
 
-<<<<<<< HEAD
 #define OP_31_XOP_TBEGIN	654
 #define OP_31_XOP_TABORT	910
 
 #define OP_31_XOP_TRECLAIM	942
 #define OP_31_XOP_TRCHKPT	1006
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* DCBZ is actually 1014, but we patch it to 1010 so we get a trap */
 #define OP_31_XOP_DCBZ		1010
 
@@ -102,7 +95,6 @@ static bool spr_allowed(struct kvm_vcpu *vcpu, enum priv_level level)
 	return true;
 }
 
-<<<<<<< HEAD
 #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
 static inline void kvmppc_copyto_vcpu_tm(struct kvm_vcpu *vcpu)
 {
@@ -254,8 +246,6 @@ void kvmppc_emulate_tabort(struct kvm_vcpu *vcpu, int ra_val)
 
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int kvmppc_core_emulate_op_pr(struct kvm_run *run, struct kvm_vcpu *vcpu,
 			      unsigned int inst, int *advance)
 {
@@ -286,7 +276,6 @@ int kvmppc_core_emulate_op_pr(struct kvm_run *run, struct kvm_vcpu *vcpu,
 	case 19:
 		switch (get_xop(inst)) {
 		case OP_19_XOP_RFID:
-<<<<<<< HEAD
 		case OP_19_XOP_RFI: {
 			unsigned long srr1 = kvmppc_get_srr1(vcpu);
 #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
@@ -309,13 +298,6 @@ int kvmppc_core_emulate_op_pr(struct kvm_run *run, struct kvm_vcpu *vcpu,
 			*advance = 0;
 			break;
 		}
-=======
-		case OP_19_XOP_RFI:
-			kvmppc_set_pc(vcpu, kvmppc_get_srr0(vcpu));
-			kvmppc_set_msr(vcpu, kvmppc_get_srr1(vcpu));
-			*advance = 0;
-			break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		default:
 			emulated = EMULATE_FAIL;
@@ -498,7 +480,6 @@ int kvmppc_core_emulate_op_pr(struct kvm_run *run, struct kvm_vcpu *vcpu,
 
 			break;
 		}
-<<<<<<< HEAD
 #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
 		case OP_31_XOP_TBEGIN:
 		{
@@ -633,8 +614,6 @@ int kvmppc_core_emulate_op_pr(struct kvm_run *run, struct kvm_vcpu *vcpu,
 			break;
 		}
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		default:
 			emulated = EMULATE_FAIL;
 		}
@@ -796,7 +775,6 @@ int kvmppc_core_emulate_mtspr_pr(struct kvm_vcpu *vcpu, int sprn, ulong spr_val)
 		break;
 #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
 	case SPRN_TFHAR:
-<<<<<<< HEAD
 	case SPRN_TEXASR:
 	case SPRN_TFIAR:
 		if (!cpu_has_feature(CPU_FTR_TM))
@@ -829,15 +807,6 @@ int kvmppc_core_emulate_mtspr_pr(struct kvm_vcpu *vcpu, int sprn, ulong spr_val)
 			mtspr(SPRN_TFIAR, spr_val);
 		tm_disable();
 
-=======
-		vcpu->arch.tfhar = spr_val;
-		break;
-	case SPRN_TEXASR:
-		vcpu->arch.texasr = spr_val;
-		break;
-	case SPRN_TFIAR:
-		vcpu->arch.tfiar = spr_val;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 #endif
 #endif
@@ -984,7 +953,6 @@ int kvmppc_core_emulate_mfspr_pr(struct kvm_vcpu *vcpu, int sprn, ulong *spr_val
 		break;
 #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
 	case SPRN_TFHAR:
-<<<<<<< HEAD
 	case SPRN_TEXASR:
 	case SPRN_TFIAR:
 		if (!cpu_has_feature(CPU_FTR_TM))
@@ -1004,15 +972,6 @@ int kvmppc_core_emulate_mfspr_pr(struct kvm_vcpu *vcpu, int sprn, ulong *spr_val
 		else if (sprn == SPRN_TFIAR)
 			*spr_val = mfspr(SPRN_TFIAR);
 		tm_disable();
-=======
-		*spr_val = vcpu->arch.tfhar;
-		break;
-	case SPRN_TEXASR:
-		*spr_val = vcpu->arch.texasr;
-		break;
-	case SPRN_TFIAR:
-		*spr_val = vcpu->arch.tfiar;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 #endif
 #endif

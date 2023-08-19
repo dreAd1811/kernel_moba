@@ -42,7 +42,6 @@ struct intel_vgpu;
 #define D_BDW   (1 << 0)
 #define D_SKL	(1 << 1)
 #define D_KBL	(1 << 2)
-<<<<<<< HEAD
 #define D_BXT	(1 << 3)
 
 #define D_GEN9PLUS	(D_SKL | D_KBL | D_BXT)
@@ -53,17 +52,6 @@ struct intel_vgpu;
 
 #define D_PRE_SKL	(D_BDW)
 #define D_ALL		(D_BDW | D_SKL | D_KBL | D_BXT)
-=======
-
-#define D_GEN9PLUS	(D_SKL | D_KBL)
-#define D_GEN8PLUS	(D_BDW | D_SKL | D_KBL)
-
-#define D_SKL_PLUS	(D_SKL | D_KBL)
-#define D_BDW_PLUS	(D_BDW | D_SKL | D_KBL)
-
-#define D_PRE_SKL	(D_BDW)
-#define D_ALL		(D_BDW | D_SKL | D_KBL)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 typedef int (*gvt_mmio_func)(struct intel_vgpu *, unsigned int, void *,
 			     unsigned int);
@@ -78,28 +66,16 @@ struct intel_gvt_mmio_info {
 	struct hlist_node node;
 };
 
-<<<<<<< HEAD
 int intel_gvt_render_mmio_to_ring_id(struct intel_gvt *gvt,
 		unsigned int reg);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 unsigned long intel_gvt_get_device_type(struct intel_gvt *gvt);
 bool intel_gvt_match_device(struct intel_gvt *gvt, unsigned long device);
 
 int intel_gvt_setup_mmio_info(struct intel_gvt *gvt);
 void intel_gvt_clean_mmio_info(struct intel_gvt *gvt);
-<<<<<<< HEAD
 int intel_gvt_for_each_tracked_mmio(struct intel_gvt *gvt,
 	int (*handler)(struct intel_gvt *gvt, u32 offset, void *data),
 	void *data);
-=======
-
-#define INTEL_GVT_MMIO_OFFSET(reg) ({ \
-	typeof(reg) __reg = reg; \
-	u32 *offset = (u32 *)&__reg; \
-	*offset; \
-})
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int intel_vgpu_init_mmio(struct intel_vgpu *vgpu);
 void intel_vgpu_reset_mmio(struct intel_vgpu *vgpu, bool dmlr);
@@ -123,9 +99,6 @@ bool intel_gvt_in_force_nonpriv_whitelist(struct intel_gvt *gvt,
 int intel_vgpu_mmio_reg_rw(struct intel_vgpu *vgpu, unsigned int offset,
 			   void *pdata, unsigned int bytes, bool is_read);
 
-<<<<<<< HEAD
 int intel_vgpu_mask_mmio_write(struct intel_vgpu *vgpu, unsigned int offset,
 				  void *p_data, unsigned int bytes);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

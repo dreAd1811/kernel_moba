@@ -64,20 +64,10 @@ struct uml_param {
         int (*setup_func)(char *, int *);
 };
 
-<<<<<<< HEAD
-=======
-extern initcall_t __uml_initcall_start, __uml_initcall_end;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern initcall_t __uml_postsetup_start, __uml_postsetup_end;
 extern const char *__uml_help_start, *__uml_help_end;
 #endif
 
-<<<<<<< HEAD
-=======
-#define __uml_initcall(fn)					  	\
-	static initcall_t __uml_initcall_##fn __uml_init_call = fn
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define __uml_exitcall(fn)						\
 	static exitcall_t __uml_exitcall_##fn __uml_exit_call = fn
 
@@ -114,10 +104,6 @@ extern struct uml_param __uml_setup_start, __uml_setup_end;
  */
 #define __uml_init_setup	__used __section(.uml.setup.init)
 #define __uml_setup_help	__used __section(.uml.help.init)
-<<<<<<< HEAD
-=======
-#define __uml_init_call		__used __section(.uml.initcall.init)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define __uml_postsetup_call	__used __section(.uml.postsetup.init)
 #define __uml_exit_call		__used __section(.uml.exitcall.exit)
 

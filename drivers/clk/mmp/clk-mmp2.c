@@ -83,31 +83,19 @@ void __init mmp2_clk_init(phys_addr_t mpmu_phys, phys_addr_t apmu_phys,
 	void __iomem *apbc_base;
 
 	mpmu_base = ioremap(mpmu_phys, SZ_4K);
-<<<<<<< HEAD
 	if (!mpmu_base) {
-=======
-	if (mpmu_base == NULL) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_err("error to ioremap MPMU base\n");
 		return;
 	}
 
 	apmu_base = ioremap(apmu_phys, SZ_4K);
-<<<<<<< HEAD
 	if (!apmu_base) {
-=======
-	if (apmu_base == NULL) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_err("error to ioremap APMU base\n");
 		return;
 	}
 
 	apbc_base = ioremap(apbc_phys, SZ_4K);
-<<<<<<< HEAD
 	if (!apbc_base) {
-=======
-	if (apbc_base == NULL) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_err("error to ioremap APBC base\n");
 		return;
 	}

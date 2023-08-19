@@ -228,39 +228,11 @@ ath10k_ce_shadow_dest_ring_write_index_set(struct ath10k *ar,
 }
 
 static inline void ath10k_ce_src_ring_base_addr_set(struct ath10k *ar,
-<<<<<<< HEAD
 						    u32 ce_ctrl_addr,
 						    unsigned int addr)
 {
 	ath10k_ce_write32(ar, ce_ctrl_addr +
 			  ar->hw_ce_regs->sr_base_addr, addr);
-=======
-						    u32 ce_id,
-						    u64 addr)
-{
-	struct ath10k_ce *ce = ath10k_ce_priv(ar);
-	struct ath10k_ce_pipe *ce_state = &ce->ce_states[ce_id];
-	u32 ce_ctrl_addr = ath10k_ce_base_address(ar, ce_id);
-	u32 addr_lo = lower_32_bits(addr);
-
-	ath10k_ce_write32(ar, ce_ctrl_addr +
-			  ar->hw_ce_regs->sr_base_addr_lo, addr_lo);
-
-	if (ce_state->ops->ce_set_src_ring_base_addr_hi) {
-		ce_state->ops->ce_set_src_ring_base_addr_hi(ar, ce_ctrl_addr,
-							    addr);
-	}
-}
-
-static void ath10k_ce_set_src_ring_base_addr_hi(struct ath10k *ar,
-						u32 ce_ctrl_addr,
-						u64 addr)
-{
-	u32 addr_hi = upper_32_bits(addr) & CE_DESC_ADDR_HI_MASK;
-
-	ath10k_ce_write32(ar, ce_ctrl_addr +
-			  ar->hw_ce_regs->sr_base_addr_hi, addr_hi);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void ath10k_ce_src_ring_size_set(struct ath10k *ar,
@@ -341,44 +313,11 @@ static inline u32 ath10k_ce_dest_ring_read_index_get(struct ath10k *ar,
 }
 
 static inline void ath10k_ce_dest_ring_base_addr_set(struct ath10k *ar,
-<<<<<<< HEAD
 						     u32 ce_ctrl_addr,
 						     u32 addr)
 {
 	ath10k_ce_write32(ar, ce_ctrl_addr +
 			  ar->hw_ce_regs->dr_base_addr, addr);
-=======
-						     u32 ce_id,
-						     u64 addr)
-{
-	struct ath10k_ce *ce = ath10k_ce_priv(ar);
-	struct ath10k_ce_pipe *ce_state = &ce->ce_states[ce_id];
-	u32 ce_ctrl_addr = ath10k_ce_base_address(ar, ce_id);
-	u32 addr_lo = lower_32_bits(addr);
-
-	ath10k_ce_write32(ar, ce_ctrl_addr +
-			  ar->hw_ce_regs->dr_base_addr_lo, addr_lo);
-
-	if (ce_state->ops->ce_set_dest_ring_base_addr_hi) {
-		ce_state->ops->ce_set_dest_ring_base_addr_hi(ar, ce_ctrl_addr,
-							     addr);
-	}
-}
-
-static void ath10k_ce_set_dest_ring_base_addr_hi(struct ath10k *ar,
-						 u32 ce_ctrl_addr,
-						 u64 addr)
-{
-	u32 addr_hi = upper_32_bits(addr) & CE_DESC_ADDR_HI_MASK;
-	u32 reg_value;
-
-	reg_value = ath10k_ce_read32(ar, ce_ctrl_addr +
-				     ar->hw_ce_regs->dr_base_addr_hi);
-	reg_value &= ~CE_DESC_ADDR_HI_MASK;
-	reg_value |= addr_hi;
-	ath10k_ce_write32(ar, ce_ctrl_addr +
-			  ar->hw_ce_regs->dr_base_addr_hi, reg_value);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void ath10k_ce_dest_ring_size_set(struct ath10k *ar,
@@ -561,19 +500,8 @@ static int _ath10k_ce_send_nolock(struct ath10k_ce_pipe *ce_state,
 	write_index = CE_RING_IDX_INCR(nentries_mask, write_index);
 
 	/* WORKAROUND */
-<<<<<<< HEAD
 	if (!(flags & CE_SEND_FLAG_GATHER))
 		ath10k_ce_src_ring_write_index_set(ar, ctrl_addr, write_index);
-=======
-	if (!(flags & CE_SEND_FLAG_GATHER)) {
-		if (ar->hw_params.shadow_reg_support)
-			ath10k_ce_shadow_src_ring_write_index_set(ar, ce_state,
-								  write_index);
-		else
-			ath10k_ce_src_ring_write_index_set(ar, ctrl_addr,
-							   write_index);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	src_ring->write_index = write_index;
 exit:
@@ -629,11 +557,7 @@ static int _ath10k_ce_send_nolock_64(struct ath10k_ce_pipe *ce_state,
 
 	addr = (__le32 *)&sdesc.addr;
 
-<<<<<<< HEAD
 	flags |= upper_32_bits(buffer) & CE_DESC_FLAGS_GET_MASK;
-=======
-	flags |= upper_32_bits(buffer) & CE_DESC_ADDR_HI_MASK;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	addr[0] = __cpu_to_le32(buffer);
 	addr[1] = __cpu_to_le32(flags);
 	if (flags & CE_SEND_FLAG_GATHER)
@@ -651,7 +575,6 @@ static int _ath10k_ce_send_nolock_64(struct ath10k_ce_pipe *ce_state,
 	/* Update Source Ring Write Index */
 	write_index = CE_RING_IDX_INCR(nentries_mask, write_index);
 
-<<<<<<< HEAD
 	if (!(flags & CE_SEND_FLAG_GATHER)) {
 		if (ar->hw_params.shadow_reg_support)
 			ath10k_ce_shadow_src_ring_write_index_set(ar, ce_state,
@@ -660,10 +583,6 @@ static int _ath10k_ce_send_nolock_64(struct ath10k_ce_pipe *ce_state,
 			ath10k_ce_src_ring_write_index_set(ar, ctrl_addr,
 							   write_index);
 	}
-=======
-	if (!(flags & CE_SEND_FLAG_GATHER))
-		ath10k_ce_src_ring_write_index_set(ar, ctrl_addr, write_index);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	src_ring->write_index = write_index;
 exit:
@@ -812,11 +731,7 @@ static int __ath10k_ce_rx_post_buf_64(struct ath10k_ce_pipe *pipe,
 		return -ENOSPC;
 
 	desc->addr = __cpu_to_le64(paddr);
-<<<<<<< HEAD
 	desc->addr &= __cpu_to_le64(CE_DESC_37BIT_ADDR_MASK);
-=======
-	desc->addr &= __cpu_to_le64(CE_DESC_ADDR_MASK);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	desc->nbytes = 0;
 
@@ -1421,11 +1336,7 @@ static int ath10k_ce_init_src_ring(struct ath10k *ar,
 		ath10k_ce_src_ring_write_index_get(ar, ctrl_addr);
 	src_ring->write_index &= src_ring->nentries_mask;
 
-<<<<<<< HEAD
 	ath10k_ce_src_ring_base_addr_set(ar, ctrl_addr,
-=======
-	ath10k_ce_src_ring_base_addr_set(ar, ce_id,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 src_ring->base_addr_ce_space);
 	ath10k_ce_src_ring_size_set(ar, ctrl_addr, nentries);
 	ath10k_ce_src_ring_dmax_set(ar, ctrl_addr, attr->src_sz_max);
@@ -1464,11 +1375,7 @@ static int ath10k_ce_init_dest_ring(struct ath10k *ar,
 		ath10k_ce_dest_ring_write_index_get(ar, ctrl_addr);
 	dest_ring->write_index &= dest_ring->nentries_mask;
 
-<<<<<<< HEAD
 	ath10k_ce_dest_ring_base_addr_set(ar, ctrl_addr,
-=======
-	ath10k_ce_dest_ring_base_addr_set(ar, ce_id,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  dest_ring->base_addr_ce_space);
 	ath10k_ce_dest_ring_size_set(ar, ctrl_addr, nentries);
 	ath10k_ce_dest_ring_byte_swap_set(ar, ctrl_addr, 0);
@@ -1487,20 +1394,12 @@ static int ath10k_ce_alloc_shadow_base(struct ath10k *ar,
 				       u32 nentries)
 {
 	src_ring->shadow_base_unaligned = kcalloc(nentries,
-<<<<<<< HEAD
 						  sizeof(struct ce_desc_64),
-=======
-						  sizeof(struct ce_desc),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						  GFP_KERNEL);
 	if (!src_ring->shadow_base_unaligned)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	src_ring->shadow_base = (struct ce_desc_64 *)
-=======
-	src_ring->shadow_base = (struct ce_desc *)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			PTR_ALIGN(src_ring->shadow_base_unaligned,
 				  CE_DESC_RING_ALIGN);
 	return 0;
@@ -1554,11 +1453,7 @@ ath10k_ce_alloc_src_ring(struct ath10k *ar, unsigned int ce_id,
 		ret = ath10k_ce_alloc_shadow_base(ar, src_ring, nentries);
 		if (ret) {
 			dma_free_coherent(ar->dev,
-<<<<<<< HEAD
 					  (nentries * sizeof(struct ce_desc_64) +
-=======
-					  (nentries * sizeof(struct ce_desc) +
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   CE_DESC_RING_ALIGN),
 					  src_ring->base_addr_owner_space_unaligned,
 					  base_addr);
@@ -1617,11 +1512,7 @@ ath10k_ce_alloc_src_ring_64(struct ath10k *ar, unsigned int ce_id,
 		ret = ath10k_ce_alloc_shadow_base(ar, src_ring, nentries);
 		if (ret) {
 			dma_free_coherent(ar->dev,
-<<<<<<< HEAD
 					  (nentries * sizeof(struct ce_desc_64) +
-=======
-					  (nentries * sizeof(struct ce_desc) +
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   CE_DESC_RING_ALIGN),
 					  src_ring->base_addr_owner_space_unaligned,
 					  base_addr);
@@ -1768,11 +1659,7 @@ static void ath10k_ce_deinit_src_ring(struct ath10k *ar, unsigned int ce_id)
 {
 	u32 ctrl_addr = ath10k_ce_base_address(ar, ce_id);
 
-<<<<<<< HEAD
 	ath10k_ce_src_ring_base_addr_set(ar, ctrl_addr, 0);
-=======
-	ath10k_ce_src_ring_base_addr_set(ar, ce_id, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ath10k_ce_src_ring_size_set(ar, ctrl_addr, 0);
 	ath10k_ce_src_ring_dmax_set(ar, ctrl_addr, 0);
 	ath10k_ce_src_ring_highmark_set(ar, ctrl_addr, 0);
@@ -1782,11 +1669,7 @@ static void ath10k_ce_deinit_dest_ring(struct ath10k *ar, unsigned int ce_id)
 {
 	u32 ctrl_addr = ath10k_ce_base_address(ar, ce_id);
 
-<<<<<<< HEAD
 	ath10k_ce_dest_ring_base_addr_set(ar, ctrl_addr, 0);
-=======
-	ath10k_ce_dest_ring_base_addr_set(ar, ce_id, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ath10k_ce_dest_ring_size_set(ar, ctrl_addr, 0);
 	ath10k_ce_dest_ring_highmark_set(ar, ctrl_addr, 0);
 }
@@ -1918,11 +1801,6 @@ static const struct ath10k_ce_ops ce_ops = {
 	.ce_extract_desc_data = ath10k_ce_extract_desc_data,
 	.ce_free_pipe = _ath10k_ce_free_pipe,
 	.ce_send_nolock = _ath10k_ce_send_nolock,
-<<<<<<< HEAD
-=======
-	.ce_set_src_ring_base_addr_hi = NULL,
-	.ce_set_dest_ring_base_addr_hi = NULL,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct ath10k_ce_ops ce_64_ops = {
@@ -1935,11 +1813,6 @@ static const struct ath10k_ce_ops ce_64_ops = {
 	.ce_extract_desc_data = ath10k_ce_extract_desc_data_64,
 	.ce_free_pipe = _ath10k_ce_free_pipe_64,
 	.ce_send_nolock = _ath10k_ce_send_nolock_64,
-<<<<<<< HEAD
-=======
-	.ce_set_src_ring_base_addr_hi = ath10k_ce_set_src_ring_base_addr_hi,
-	.ce_set_dest_ring_base_addr_hi = ath10k_ce_set_dest_ring_base_addr_hi,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void ath10k_ce_set_ops(struct ath10k *ar,
@@ -2035,11 +1908,7 @@ void ath10k_ce_alloc_rri(struct ath10k *ar)
 			  lower_32_bits(ce->paddr_rri));
 	ath10k_ce_write32(ar, ar->hw_ce_regs->ce_rri_high,
 			  (upper_32_bits(ce->paddr_rri) &
-<<<<<<< HEAD
 			  CE_DESC_FLAGS_GET_MASK));
-=======
-			  CE_DESC_ADDR_HI_MASK));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < CE_COUNT; i++) {
 		ctrl1_regs = ar->hw_ce_regs->ctrl1_regs->addr;

@@ -284,15 +284,8 @@ static int sdhci_bcm_kona_probe(struct platform_device *pdev)
 	sdhci_bcm_kona_sd_init(host);
 
 	ret = sdhci_add_host(host);
-<<<<<<< HEAD
 	if (ret)
 		goto err_reset;
-=======
-	if (ret) {
-		dev_err(dev, "Failed sdhci_add_host\n");
-		goto err_reset;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* if device is eMMC, emulate card insert right here */
 	if (!mmc_card_is_removable(host->mmc)) {

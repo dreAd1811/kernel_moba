@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
  * Amlogic Meson8b, Meson8m2 and GXBB DWMAC glue layer
-=======
- * Amlogic Meson8b and GXBB DWMAC glue layer
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Copyright (C) 2016 Martin Blumenstingl <martin.blumenstingl@googlemail.com>
  *
@@ -22,10 +18,7 @@
 #include <linux/io.h>
 #include <linux/ioport.h>
 #include <linux/module.h>
-<<<<<<< HEAD
 #include <linux/of_device.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/of_net.h>
 #include <linux/mfd/syscon.h>
 #include <linux/platform_device.h>
@@ -37,13 +30,10 @@
 
 #define PRG_ETH0_RGMII_MODE		BIT(0)
 
-<<<<<<< HEAD
 #define PRG_ETH0_EXT_PHY_MODE_MASK	GENMASK(2, 0)
 #define PRG_ETH0_EXT_RGMII_MODE		1
 #define PRG_ETH0_EXT_RMII_MODE		4
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* mux to choose between fclk_div2 (bit unset) and mpll2 (bit set) */
 #define PRG_ETH0_CLK_M250_SEL_SHIFT	4
 #define PRG_ETH0_CLK_M250_SEL_MASK	GENMASK(4, 4)
@@ -55,20 +45,13 @@
 #define PRG_ETH0_CLK_M250_DIV_SHIFT	7
 #define PRG_ETH0_CLK_M250_DIV_WIDTH	3
 
-<<<<<<< HEAD
 #define PRG_ETH0_RGMII_TX_CLK_EN	10
-=======
-/* divides the result of m25_sel by either 5 (bit unset) or 10 (bit set) */
-#define PRG_ETH0_CLK_M25_DIV_SHIFT	10
-#define PRG_ETH0_CLK_M25_DIV_WIDTH	1
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define PRG_ETH0_INVERTED_RMII_CLK	BIT(11)
 #define PRG_ETH0_TX_AND_PHY_REF_CLK	BIT(12)
 
 #define MUX_CLK_NUM_PARENTS		2
 
-<<<<<<< HEAD
 struct meson8b_dwmac;
 
 struct meson8b_dwmac_data {
@@ -90,26 +73,6 @@ struct meson8b_dwmac_clk_configs {
 	struct clk_divider	m250_div;
 	struct clk_fixed_factor	fixed_div2;
 	struct clk_gate		rgmii_tx_en;
-=======
-struct meson8b_dwmac {
-	struct platform_device	*pdev;
-
-	void __iomem		*regs;
-
-	phy_interface_t		phy_mode;
-
-	struct clk_mux		m250_mux;
-	struct clk		*m250_mux_clk;
-	struct clk		*m250_mux_parent[MUX_CLK_NUM_PARENTS];
-
-	struct clk_divider	m250_div;
-	struct clk		*m250_div_clk;
-
-	struct clk_divider	m25_div;
-	struct clk		*m25_div_clk;
-
-	u32			tx_delay_ns;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void meson8b_dwmac_mask_bits(struct meson8b_dwmac *dwmac, u32 reg,
@@ -124,7 +87,6 @@ static void meson8b_dwmac_mask_bits(struct meson8b_dwmac *dwmac, u32 reg,
 	writel(data, dwmac->regs + reg);
 }
 
-<<<<<<< HEAD
 static struct clk *meson8b_dwmac_register_clk(struct meson8b_dwmac *dwmac,
 					      const char *name_suffix,
 					      const char **parent_names,
@@ -160,42 +122,20 @@ static int meson8b_init_rgmii_tx_clk(struct meson8b_dwmac *dwmac)
 	clk_configs = devm_kzalloc(dev, sizeof(*clk_configs), GFP_KERNEL);
 	if (!clk_configs)
 		return -ENOMEM;
-=======
-static int meson8b_init_clk(struct meson8b_dwmac *dwmac)
-{
-	struct clk_init_data init;
-	int i, ret;
-	struct device *dev = &dwmac->pdev->dev;
-	char clk_name[32];
-	const char *clk_div_parents[1];
-	const char *mux_parent_names[MUX_CLK_NUM_PARENTS];
-	static const struct clk_div_table clk_25m_div_table[] = {
-		{ .val = 0, .div = 5 },
-		{ .val = 1, .div = 10 },
-		{ /* sentinel */ },
-	};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* get the mux parents from DT */
 	for (i = 0; i < MUX_CLK_NUM_PARENTS; i++) {
 		char name[16];
 
 		snprintf(name, sizeof(name), "clkin%d", i);
-<<<<<<< HEAD
 		clk = devm_clk_get(dev, name);
 		if (IS_ERR(clk)) {
 			ret = PTR_ERR(clk);
-=======
-		dwmac->m250_mux_parent[i] = devm_clk_get(dev, name);
-		if (IS_ERR(dwmac->m250_mux_parent[i])) {
-			ret = PTR_ERR(dwmac->m250_mux_parent[i]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (ret != -EPROBE_DEFER)
 				dev_err(dev, "Missing clock %s\n", name);
 			return ret;
 		}
 
-<<<<<<< HEAD
 		mux_parent_names[i] = __clk_get_name(clk);
 	}
 
@@ -293,71 +233,6 @@ static int meson_axg_set_phy_mode(struct meson8b_dwmac *dwmac)
 			phy_modes(dwmac->phy_mode));
 		return -EINVAL;
 	}
-=======
-		mux_parent_names[i] =
-			__clk_get_name(dwmac->m250_mux_parent[i]);
-	}
-
-	/* create the m250_mux */
-	snprintf(clk_name, sizeof(clk_name), "%s#m250_sel", dev_name(dev));
-	init.name = clk_name;
-	init.ops = &clk_mux_ops;
-	init.flags = CLK_SET_RATE_PARENT;
-	init.parent_names = mux_parent_names;
-	init.num_parents = MUX_CLK_NUM_PARENTS;
-
-	dwmac->m250_mux.reg = dwmac->regs + PRG_ETH0;
-	dwmac->m250_mux.shift = PRG_ETH0_CLK_M250_SEL_SHIFT;
-	dwmac->m250_mux.mask = PRG_ETH0_CLK_M250_SEL_MASK;
-	dwmac->m250_mux.flags = 0;
-	dwmac->m250_mux.table = NULL;
-	dwmac->m250_mux.hw.init = &init;
-
-	dwmac->m250_mux_clk = devm_clk_register(dev, &dwmac->m250_mux.hw);
-	if (WARN_ON(IS_ERR(dwmac->m250_mux_clk)))
-		return PTR_ERR(dwmac->m250_mux_clk);
-
-	/* create the m250_div */
-	snprintf(clk_name, sizeof(clk_name), "%s#m250_div", dev_name(dev));
-	init.name = devm_kstrdup(dev, clk_name, GFP_KERNEL);
-	init.ops = &clk_divider_ops;
-	init.flags = CLK_SET_RATE_PARENT;
-	clk_div_parents[0] = __clk_get_name(dwmac->m250_mux_clk);
-	init.parent_names = clk_div_parents;
-	init.num_parents = ARRAY_SIZE(clk_div_parents);
-
-	dwmac->m250_div.reg = dwmac->regs + PRG_ETH0;
-	dwmac->m250_div.shift = PRG_ETH0_CLK_M250_DIV_SHIFT;
-	dwmac->m250_div.width = PRG_ETH0_CLK_M250_DIV_WIDTH;
-	dwmac->m250_div.hw.init = &init;
-	dwmac->m250_div.flags = CLK_DIVIDER_ONE_BASED |
-				CLK_DIVIDER_ALLOW_ZERO |
-				CLK_DIVIDER_ROUND_CLOSEST;
-
-	dwmac->m250_div_clk = devm_clk_register(dev, &dwmac->m250_div.hw);
-	if (WARN_ON(IS_ERR(dwmac->m250_div_clk)))
-		return PTR_ERR(dwmac->m250_div_clk);
-
-	/* create the m25_div */
-	snprintf(clk_name, sizeof(clk_name), "%s#m25_div", dev_name(dev));
-	init.name = devm_kstrdup(dev, clk_name, GFP_KERNEL);
-	init.ops = &clk_divider_ops;
-	init.flags = CLK_IS_BASIC | CLK_SET_RATE_PARENT;
-	clk_div_parents[0] = __clk_get_name(dwmac->m250_div_clk);
-	init.parent_names = clk_div_parents;
-	init.num_parents = ARRAY_SIZE(clk_div_parents);
-
-	dwmac->m25_div.reg = dwmac->regs + PRG_ETH0;
-	dwmac->m25_div.shift = PRG_ETH0_CLK_M25_DIV_SHIFT;
-	dwmac->m25_div.width = PRG_ETH0_CLK_M25_DIV_WIDTH;
-	dwmac->m25_div.table = clk_25m_div_table;
-	dwmac->m25_div.hw.init = &init;
-	dwmac->m25_div.flags = CLK_DIVIDER_ALLOW_ZERO;
-
-	dwmac->m25_div_clk = devm_clk_register(dev, &dwmac->m25_div.hw);
-	if (WARN_ON(IS_ERR(dwmac->m25_div_clk)))
-		return PTR_ERR(dwmac->m25_div_clk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -365,10 +240,6 @@ static int meson_axg_set_phy_mode(struct meson8b_dwmac *dwmac)
 static int meson8b_init_prg_eth(struct meson8b_dwmac *dwmac)
 {
 	int ret;
-<<<<<<< HEAD
-=======
-	unsigned long clk_rate;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 tx_dly_val = 0;
 
 	switch (dwmac->phy_mode) {
@@ -383,23 +254,12 @@ static int meson8b_init_prg_eth(struct meson8b_dwmac *dwmac)
 
 	case PHY_INTERFACE_MODE_RGMII_ID:
 	case PHY_INTERFACE_MODE_RGMII_TXID:
-<<<<<<< HEAD
-=======
-		/* Generate a 25MHz clock for the PHY */
-		clk_rate = 25 * 1000 * 1000;
-
-		/* enable RGMII mode */
-		meson8b_dwmac_mask_bits(dwmac, PRG_ETH0, PRG_ETH0_RGMII_MODE,
-					PRG_ETH0_RGMII_MODE);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* only relevant for RMII mode -> disable in RGMII mode */
 		meson8b_dwmac_mask_bits(dwmac, PRG_ETH0,
 					PRG_ETH0_INVERTED_RMII_CLK, 0);
 
 		meson8b_dwmac_mask_bits(dwmac, PRG_ETH0, PRG_ETH0_TXDLY_MASK,
 					tx_dly_val << PRG_ETH0_TXDLY_SHIFT);
-<<<<<<< HEAD
 
 		/* Configure the 125MHz RGMII TX clock, the IP block changes
 		 * the output automatically (= without us having to configure
@@ -426,18 +286,6 @@ static int meson8b_init_prg_eth(struct meson8b_dwmac *dwmac)
 		break;
 
 	case PHY_INTERFACE_MODE_RMII:
-=======
-		break;
-
-	case PHY_INTERFACE_MODE_RMII:
-		/* Use the rate of the mux clock for the internal RMII PHY */
-		clk_rate = clk_get_rate(dwmac->m250_mux_clk);
-
-		/* disable RGMII mode -> enables RMII mode */
-		meson8b_dwmac_mask_bits(dwmac, PRG_ETH0, PRG_ETH0_RGMII_MODE,
-					0);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* invert internal clk_rmii_i to generate 25/2.5 tx_rx_clk */
 		meson8b_dwmac_mask_bits(dwmac, PRG_ETH0,
 					PRG_ETH0_INVERTED_RMII_CLK,
@@ -450,32 +298,11 @@ static int meson8b_init_prg_eth(struct meson8b_dwmac *dwmac)
 		break;
 
 	default:
-<<<<<<< HEAD
 		dev_err(dwmac->dev, "unsupported phy-mode %s\n",
-=======
-		dev_err(&dwmac->pdev->dev, "unsupported phy-mode %s\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			phy_modes(dwmac->phy_mode));
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
-=======
-	ret = clk_prepare_enable(dwmac->m25_div_clk);
-	if (ret) {
-		dev_err(&dwmac->pdev->dev, "failed to enable the PHY clock\n");
-		return ret;
-	}
-
-	ret = clk_set_rate(dwmac->m25_div_clk, clk_rate);
-	if (ret) {
-		clk_disable_unprepare(dwmac->m25_div_clk);
-
-		dev_err(&dwmac->pdev->dev, "failed to set PHY clock\n");
-		return ret;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* enable TX_CLK and PHY_REF_CLK generator */
 	meson8b_dwmac_mask_bits(dwmac, PRG_ETH0, PRG_ETH0_TX_AND_PHY_REF_CLK,
 				PRG_ETH0_TX_AND_PHY_REF_CLK);
@@ -505,15 +332,12 @@ static int meson8b_dwmac_probe(struct platform_device *pdev)
 		goto err_remove_config_dt;
 	}
 
-<<<<<<< HEAD
 	dwmac->data = (const struct meson8b_dwmac_data *)
 		of_device_get_match_data(&pdev->dev);
 	if (!dwmac->data) {
 		ret = -EINVAL;
 		goto err_remove_config_dt;
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
 	dwmac->regs = devm_ioremap_resource(&pdev->dev, res);
 	if (IS_ERR(dwmac->regs)) {
@@ -521,15 +345,9 @@ static int meson8b_dwmac_probe(struct platform_device *pdev)
 		goto err_remove_config_dt;
 	}
 
-<<<<<<< HEAD
 	dwmac->dev = &pdev->dev;
 	dwmac->phy_mode = of_get_phy_mode(pdev->dev.of_node);
 	if (dwmac->phy_mode < 0) {
-=======
-	dwmac->pdev = pdev;
-	dwmac->phy_mode = of_get_phy_mode(pdev->dev.of_node);
-	if ((int)dwmac->phy_mode < 0) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(&pdev->dev, "missing phy-mode property\n");
 		ret = -EINVAL;
 		goto err_remove_config_dt;
@@ -540,15 +358,11 @@ static int meson8b_dwmac_probe(struct platform_device *pdev)
 				 &dwmac->tx_delay_ns))
 		dwmac->tx_delay_ns = 2;
 
-<<<<<<< HEAD
 	ret = meson8b_init_rgmii_tx_clk(dwmac);
 	if (ret)
 		goto err_remove_config_dt;
 
 	ret = dwmac->data->set_phy_mode(dwmac);
-=======
-	ret = meson8b_init_clk(dwmac);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto err_remove_config_dt;
 
@@ -560,26 +374,16 @@ static int meson8b_dwmac_probe(struct platform_device *pdev)
 
 	ret = stmmac_dvr_probe(&pdev->dev, plat_dat, &stmmac_res);
 	if (ret)
-<<<<<<< HEAD
 		goto err_remove_config_dt;
 
 	return 0;
 
-=======
-		goto err_clk_disable;
-
-	return 0;
-
-err_clk_disable:
-	clk_disable_unprepare(dwmac->m25_div_clk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_remove_config_dt:
 	stmmac_remove_config_dt(pdev, plat_dat);
 
 	return ret;
 }
 
-<<<<<<< HEAD
 static const struct meson8b_dwmac_data meson8b_dwmac_data = {
 	.set_phy_mode = meson8b_set_phy_mode,
 };
@@ -605,31 +409,13 @@ static const struct of_device_id meson8b_dwmac_match[] = {
 		.compatible = "amlogic,meson-axg-dwmac",
 		.data = &meson_axg_dwmac_data,
 	},
-=======
-static int meson8b_dwmac_remove(struct platform_device *pdev)
-{
-	struct meson8b_dwmac *dwmac = get_stmmac_bsp_priv(&pdev->dev);
-
-	clk_disable_unprepare(dwmac->m25_div_clk);
-
-	return stmmac_pltfr_remove(pdev);
-}
-
-static const struct of_device_id meson8b_dwmac_match[] = {
-	{ .compatible = "amlogic,meson8b-dwmac" },
-	{ .compatible = "amlogic,meson-gxbb-dwmac" },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ }
 };
 MODULE_DEVICE_TABLE(of, meson8b_dwmac_match);
 
 static struct platform_driver meson8b_dwmac_driver = {
 	.probe  = meson8b_dwmac_probe,
-<<<<<<< HEAD
 	.remove = stmmac_pltfr_remove,
-=======
-	.remove = meson8b_dwmac_remove,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.driver = {
 		.name           = "meson8b-dwmac",
 		.pm		= &stmmac_pltfr_pm_ops,
@@ -639,9 +425,5 @@ static struct platform_driver meson8b_dwmac_driver = {
 module_platform_driver(meson8b_dwmac_driver);
 
 MODULE_AUTHOR("Martin Blumenstingl <martin.blumenstingl@googlemail.com>");
-<<<<<<< HEAD
 MODULE_DESCRIPTION("Amlogic Meson8b, Meson8m2 and GXBB DWMAC glue layer");
-=======
-MODULE_DESCRIPTION("Amlogic Meson8b and GXBB DWMAC glue layer");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_LICENSE("GPL v2");

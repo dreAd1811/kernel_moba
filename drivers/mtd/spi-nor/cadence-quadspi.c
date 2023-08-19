@@ -18,11 +18,8 @@
 #include <linux/clk.h>
 #include <linux/completion.h>
 #include <linux/delay.h>
-<<<<<<< HEAD
 #include <linux/dma-mapping.h>
 #include <linux/dmaengine.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/err.h>
 #include <linux/errno.h>
 #include <linux/interrupt.h>
@@ -36,10 +33,7 @@
 #include <linux/of_device.h>
 #include <linux/of.h>
 #include <linux/platform_device.h>
-<<<<<<< HEAD
 #include <linux/pm_runtime.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/sched.h>
 #include <linux/spi/spi.h>
 #include <linux/timer.h>
@@ -66,10 +60,7 @@ struct cqspi_flash_pdata {
 	u8		data_width;
 	u8		cs;
 	bool		registered;
-<<<<<<< HEAD
 	bool		use_direct_mode;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct cqspi_st {
@@ -80,7 +71,6 @@ struct cqspi_st {
 
 	void __iomem		*iobase;
 	void __iomem		*ahb_base;
-<<<<<<< HEAD
 	resource_size_t		ahb_size;
 	struct completion	transfer_complete;
 	struct mutex		bus_mutex;
@@ -89,11 +79,6 @@ struct cqspi_st {
 	struct completion	rx_dma_complete;
 	dma_addr_t		mmap_phys_base;
 
-=======
-	struct completion	transfer_complete;
-	struct mutex		bus_mutex;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int			current_cs;
 	int			current_page_size;
 	int			current_erase_size;
@@ -102,10 +87,7 @@ struct cqspi_st {
 	bool			is_decoded_cs;
 	u32			fifo_depth;
 	u32			fifo_width;
-<<<<<<< HEAD
 	bool			rclk_en;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32			trigger_address;
 	u32			wr_delay;
 	struct cqspi_flash_pdata f_pdata[CQSPI_MAX_CHIPSELECT];
@@ -129,10 +111,7 @@ struct cqspi_st {
 /* Register map */
 #define CQSPI_REG_CONFIG			0x00
 #define CQSPI_REG_CONFIG_ENABLE_MASK		BIT(0)
-<<<<<<< HEAD
 #define CQSPI_REG_CONFIG_ENB_DIR_ACC_CTRL	BIT(7)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CQSPI_REG_CONFIG_DECODE_MASK		BIT(9)
 #define CQSPI_REG_CONFIG_CHIPSELECT_LSB		10
 #define CQSPI_REG_CONFIG_DMA_MASK		BIT(15)
@@ -480,12 +459,7 @@ static int cqspi_command_write_addr(struct spi_nor *nor,
 	return cqspi_exec_flash_cmd(cqspi, reg);
 }
 
-<<<<<<< HEAD
 static int cqspi_read_setup(struct spi_nor *nor)
-=======
-static int cqspi_indirect_read_setup(struct spi_nor *nor,
-				     const unsigned int from_addr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct cqspi_flash_pdata *f_pdata = nor->priv;
 	struct cqspi_st *cqspi = f_pdata->cqspi;
@@ -493,11 +467,6 @@ static int cqspi_indirect_read_setup(struct spi_nor *nor,
 	unsigned int dummy_clk = 0;
 	unsigned int reg;
 
-<<<<<<< HEAD
-=======
-	writel(from_addr, reg_base + CQSPI_REG_INDIRECTRDSTARTADDR);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	reg = nor->read_opcode << CQSPI_REG_RD_INSTR_OPCODE_LSB;
 	reg |= cqspi_calc_rdreg(nor, nor->read_opcode);
 
@@ -530,13 +499,8 @@ static int cqspi_indirect_read_setup(struct spi_nor *nor,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int cqspi_indirect_read_execute(struct spi_nor *nor, u8 *rxbuf,
 				       loff_t from_addr, const size_t n_rx)
-=======
-static int cqspi_indirect_read_execute(struct spi_nor *nor,
-				       u8 *rxbuf, const unsigned n_rx)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct cqspi_flash_pdata *f_pdata = nor->priv;
 	struct cqspi_st *cqspi = f_pdata->cqspi;
@@ -548,10 +512,7 @@ static int cqspi_indirect_read_execute(struct spi_nor *nor,
 	u8 *rxbuf_end = rxbuf + n_rx;
 	int ret = 0;
 
-<<<<<<< HEAD
 	writel(from_addr, reg_base + CQSPI_REG_INDIRECTRDSTARTADDR);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	writel(remaining, reg_base + CQSPI_REG_INDIRECTRDBYTES);
 
 	/* Clear all interrupts. */
@@ -564,7 +525,6 @@ static int cqspi_indirect_read_execute(struct spi_nor *nor,
 	       reg_base + CQSPI_REG_INDIRECTRD);
 
 	while (remaining > 0) {
-<<<<<<< HEAD
 		if (!wait_for_completion_timeout(&cqspi->transfer_complete,
 				msecs_to_jiffies(CQSPI_READ_TIMEOUT_MS)))
 			ret = -ETIMEDOUT;
@@ -573,17 +533,6 @@ static int cqspi_indirect_read_execute(struct spi_nor *nor,
 
 		if (ret && bytes_to_read == 0) {
 			dev_err(nor->dev, "Indirect read timeout, no bytes\n");
-=======
-		ret = wait_for_completion_timeout(&cqspi->transfer_complete,
-						  msecs_to_jiffies
-						  (CQSPI_READ_TIMEOUT_MS));
-
-		bytes_to_read = cqspi_get_rd_sram_level(cqspi);
-
-		if (!ret && bytes_to_read == 0) {
-			dev_err(nor->dev, "Indirect read timeout, no bytes\n");
-			ret = -ETIMEDOUT;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto failrd;
 		}
 
@@ -642,12 +591,7 @@ failrd:
 	return ret;
 }
 
-<<<<<<< HEAD
 static int cqspi_write_setup(struct spi_nor *nor)
-=======
-static int cqspi_indirect_write_setup(struct spi_nor *nor,
-				      const unsigned int to_addr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned int reg;
 	struct cqspi_flash_pdata *f_pdata = nor->priv;
@@ -660,11 +604,6 @@ static int cqspi_indirect_write_setup(struct spi_nor *nor,
 	reg = cqspi_calc_rdreg(nor, nor->program_opcode);
 	writel(reg, reg_base + CQSPI_REG_RD_INSTR);
 
-<<<<<<< HEAD
-=======
-	writel(to_addr, reg_base + CQSPI_REG_INDIRECTWRSTARTADDR);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	reg = readl(reg_base + CQSPI_REG_SIZE);
 	reg &= ~CQSPI_REG_SIZE_ADDRESS_MASK;
 	reg |= (nor->addr_width - 1);
@@ -672,13 +611,8 @@ static int cqspi_indirect_write_setup(struct spi_nor *nor,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int cqspi_indirect_write_execute(struct spi_nor *nor, loff_t to_addr,
 					const u8 *txbuf, const size_t n_tx)
-=======
-static int cqspi_indirect_write_execute(struct spi_nor *nor,
-					const u8 *txbuf, const unsigned n_tx)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	const unsigned int page_size = nor->page_size;
 	struct cqspi_flash_pdata *f_pdata = nor->priv;
@@ -688,10 +622,7 @@ static int cqspi_indirect_write_execute(struct spi_nor *nor,
 	unsigned int write_bytes;
 	int ret;
 
-<<<<<<< HEAD
 	writel(to_addr, reg_base + CQSPI_REG_INDIRECTWRSTARTADDR);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	writel(remaining, reg_base + CQSPI_REG_INDIRECTWRBYTES);
 
 	/* Clear all interrupts. */
@@ -731,15 +662,8 @@ static int cqspi_indirect_write_execute(struct spi_nor *nor,
 			txbuf += mod_bytes;
 		}
 
-<<<<<<< HEAD
 		if (!wait_for_completion_timeout(&cqspi->transfer_complete,
 					msecs_to_jiffies(CQSPI_TIMEOUT_MS))) {
-=======
-		ret = wait_for_completion_timeout(&cqspi->transfer_complete,
-						  msecs_to_jiffies
-						  (CQSPI_TIMEOUT_MS));
-		if (!ret) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev_err(nor->dev, "Indirect write timeout\n");
 			ret = -ETIMEDOUT;
 			goto failwr;
@@ -896,11 +820,7 @@ static void cqspi_config_baudrate_div(struct cqspi_st *cqspi)
 }
 
 static void cqspi_readdata_capture(struct cqspi_st *cqspi,
-<<<<<<< HEAD
 				   const bool bypass,
-=======
-				   const unsigned int bypass,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   const unsigned int delay)
 {
 	void __iomem *reg_base = cqspi->iobase;
@@ -964,12 +884,8 @@ static void cqspi_configure(struct spi_nor *nor)
 		cqspi->sclk = sclk;
 		cqspi_config_baudrate_div(cqspi);
 		cqspi_delay(nor);
-<<<<<<< HEAD
 		cqspi_readdata_capture(cqspi, !cqspi->rclk_en,
 				       f_pdata->read_delay);
-=======
-		cqspi_readdata_capture(cqspi, 1, f_pdata->read_delay);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (switch_cs || switch_ck)
@@ -1008,18 +924,14 @@ static int cqspi_set_protocol(struct spi_nor *nor, const int read)
 static ssize_t cqspi_write(struct spi_nor *nor, loff_t to,
 			   size_t len, const u_char *buf)
 {
-<<<<<<< HEAD
 	struct cqspi_flash_pdata *f_pdata = nor->priv;
 	struct cqspi_st *cqspi = f_pdata->cqspi;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	ret = cqspi_set_protocol(nor, 0);
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	ret = cqspi_write_setup(nor);
 	if (ret)
 		return ret;
@@ -1030,20 +942,12 @@ static ssize_t cqspi_write(struct spi_nor *nor, loff_t to,
 	} else {
 		ret = cqspi_indirect_write_execute(nor, to, buf, len);
 	}
-=======
-	ret = cqspi_indirect_write_setup(nor, to);
-	if (ret)
-		return ret;
-
-	ret = cqspi_indirect_write_execute(nor, buf, len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	return len;
 }
 
-<<<<<<< HEAD
 static void cqspi_rx_dma_callback(void *param)
 {
 	struct cqspi_st *cqspi = param;
@@ -1112,18 +1016,12 @@ static ssize_t cqspi_read(struct spi_nor *nor, loff_t from,
 			  size_t len, u_char *buf)
 {
 	struct cqspi_flash_pdata *f_pdata = nor->priv;
-=======
-static ssize_t cqspi_read(struct spi_nor *nor, loff_t from,
-			  size_t len, u_char *buf)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	ret = cqspi_set_protocol(nor, 1);
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	ret = cqspi_read_setup(nor);
 	if (ret)
 		return ret;
@@ -1132,13 +1030,6 @@ static ssize_t cqspi_read(struct spi_nor *nor, loff_t from,
 		ret = cqspi_direct_read_execute(nor, buf, from, len);
 	else
 		ret = cqspi_indirect_read_execute(nor, buf, from, len);
-=======
-	ret = cqspi_indirect_read_setup(nor, from);
-	if (ret)
-		return ret;
-
-	ret = cqspi_indirect_read_execute(nor, buf, len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -1266,21 +1157,15 @@ static int cqspi_of_get_pdata(struct platform_device *pdev)
 		return -ENXIO;
 	}
 
-<<<<<<< HEAD
 	cqspi->rclk_en = of_property_read_bool(np, "cdns,rclk-en");
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 static void cqspi_controller_init(struct cqspi_st *cqspi)
 {
-<<<<<<< HEAD
 	u32 reg;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cqspi_controller_enable(cqspi, 0);
 
 	/* Configure the remap address register, no remap */
@@ -1303,7 +1188,6 @@ static void cqspi_controller_init(struct cqspi_st *cqspi)
 	writel(cqspi->fifo_depth * cqspi->fifo_width / 8,
 	       cqspi->iobase + CQSPI_REG_INDIRECTWRWATERMARK);
 
-<<<<<<< HEAD
 	/* Enable Direct Access Controller */
 	reg = readl(cqspi->iobase + CQSPI_REG_CONFIG);
 	reg |= CQSPI_REG_CONFIG_ENB_DIR_ACC_CTRL;
@@ -1327,11 +1211,6 @@ static void cqspi_request_mmap_dma(struct cqspi_st *cqspi)
 	init_completion(&cqspi->rx_dma_complete);
 }
 
-=======
-	cqspi_controller_enable(cqspi, 1);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int cqspi_setup_flash(struct cqspi_st *cqspi, struct device_node *np)
 {
 	const struct spi_nor_hwcaps hwcaps = {
@@ -1404,7 +1283,6 @@ static int cqspi_setup_flash(struct cqspi_st *cqspi, struct device_node *np)
 			goto err;
 
 		f_pdata->registered = true;
-<<<<<<< HEAD
 
 		if (mtd->size <= cqspi->ahb_size) {
 			f_pdata->use_direct_mode = true;
@@ -1414,8 +1292,6 @@ static int cqspi_setup_flash(struct cqspi_st *cqspi, struct device_node *np)
 			if (!cqspi->rx_chan)
 				cqspi_request_mmap_dma(cqspi);
 		}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -1475,11 +1351,8 @@ static int cqspi_probe(struct platform_device *pdev)
 		dev_err(dev, "Cannot remap AHB address.\n");
 		return PTR_ERR(cqspi->ahb_base);
 	}
-<<<<<<< HEAD
 	cqspi->mmap_phys_base = (dma_addr_t)res_ahb->start;
 	cqspi->ahb_size = resource_size(res_ahb);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	init_completion(&cqspi->transfer_complete);
 
@@ -1490,7 +1363,6 @@ static int cqspi_probe(struct platform_device *pdev)
 		return -ENXIO;
 	}
 
-<<<<<<< HEAD
 	pm_runtime_enable(dev);
 	ret = pm_runtime_get_sync(dev);
 	if (ret < 0) {
@@ -1502,12 +1374,6 @@ static int cqspi_probe(struct platform_device *pdev)
 	if (ret) {
 		dev_err(dev, "Cannot enable QSPI clock.\n");
 		goto probe_clk_failed;
-=======
-	ret = clk_prepare_enable(cqspi->clk);
-	if (ret) {
-		dev_err(dev, "Cannot enable QSPI clock.\n");
-		return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	cqspi->master_ref_clk_hz = clk_get_rate(cqspi->clk);
@@ -1535,7 +1401,6 @@ static int cqspi_probe(struct platform_device *pdev)
 	}
 
 	return ret;
-<<<<<<< HEAD
 probe_setup_failed:
 	cqspi_controller_enable(cqspi, 0);
 probe_irq_failed:
@@ -1543,12 +1408,6 @@ probe_irq_failed:
 probe_clk_failed:
 	pm_runtime_put_sync(dev);
 	pm_runtime_disable(dev);
-=======
-probe_irq_failed:
-	cqspi_controller_enable(cqspi, 0);
-probe_setup_failed:
-	clk_disable_unprepare(cqspi->clk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -1563,7 +1422,6 @@ static int cqspi_remove(struct platform_device *pdev)
 
 	cqspi_controller_enable(cqspi, 0);
 
-<<<<<<< HEAD
 	if (cqspi->rx_chan)
 		dma_release_channel(cqspi->rx_chan);
 
@@ -1572,10 +1430,6 @@ static int cqspi_remove(struct platform_device *pdev)
 	pm_runtime_put_sync(&pdev->dev);
 	pm_runtime_disable(&pdev->dev);
 
-=======
-	clk_disable_unprepare(cqspi->clk);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

@@ -26,15 +26,7 @@ extern void irq_ctx_init(int cpu);
 
 struct irq_desc;
 
-<<<<<<< HEAD
 extern void fixup_irqs(void);
-=======
-#ifdef CONFIG_HOTPLUG_CPU
-#include <linux/cpumask.h>
-extern int check_irq_vectors_for_cpu_disable(void);
-extern void fixup_irqs(void);
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_HAVE_KVM
 extern void kvm_set_posted_intr_wakeup_handler(void (*handler)(void));

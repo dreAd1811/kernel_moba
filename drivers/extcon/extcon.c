@@ -36,11 +36,7 @@
 
 #define SUPPORTED_CABLE_MAX	32
 
-<<<<<<< HEAD
 static const struct __extcon_info {
-=======
-struct __extcon_info {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int type;
 	unsigned int id;
 	const char *name;
@@ -885,20 +881,6 @@ int extcon_set_property_capability(struct extcon_dev *edev, unsigned int id,
 }
 EXPORT_SYMBOL_GPL(extcon_set_property_capability);
 
-<<<<<<< HEAD
-=======
-int extcon_set_mutually_exclusive(struct extcon_dev *edev,
-				const u32 *exclusive)
-{
-	if (!edev)
-		return -EINVAL;
-
-	edev->mutually_exclusive = exclusive;
-	return 0;
-}
-EXPORT_SYMBOL(extcon_set_mutually_exclusive);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * extcon_get_extcon_dev() - Get the extcon device instance from the name.
  * @extcon_name:	the extcon name provided with extcon_dev_register()
@@ -1192,14 +1174,9 @@ int extcon_dev_register(struct extcon_dev *edev)
 		char *str;
 		struct extcon_cable *cable;
 
-<<<<<<< HEAD
 		edev->cables = kcalloc(edev->max_supported,
 				       sizeof(struct extcon_cable),
 				       GFP_KERNEL);
-=======
-		edev->cables = kzalloc(sizeof(struct extcon_cable) *
-				       edev->max_supported, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!edev->cables) {
 			ret = -ENOMEM;
 			goto err_sysfs_alloc;
@@ -1208,11 +1185,7 @@ int extcon_dev_register(struct extcon_dev *edev)
 			cable = &edev->cables[index];
 
 			snprintf(buf, 10, "cable.%d", index);
-<<<<<<< HEAD
 			str = kzalloc(strlen(buf) + 1,
-=======
-			str = kzalloc(sizeof(char) * (strlen(buf) + 1),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      GFP_KERNEL);
 			if (!str) {
 				for (index--; index >= 0; index--) {
@@ -1253,27 +1226,17 @@ int extcon_dev_register(struct extcon_dev *edev)
 		for (index = 0; edev->mutually_exclusive[index]; index++)
 			;
 
-<<<<<<< HEAD
 		edev->attrs_muex = kcalloc(index + 1,
 					   sizeof(struct attribute *),
 					   GFP_KERNEL);
-=======
-		edev->attrs_muex = kzalloc(sizeof(struct attribute *) *
-					   (index + 1), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!edev->attrs_muex) {
 			ret = -ENOMEM;
 			goto err_muex;
 		}
 
-<<<<<<< HEAD
 		edev->d_attrs_muex = kcalloc(index,
 					     sizeof(struct device_attribute),
 					     GFP_KERNEL);
-=======
-		edev->d_attrs_muex = kzalloc(sizeof(struct device_attribute) *
-					     index, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!edev->d_attrs_muex) {
 			ret = -ENOMEM;
 			kfree(edev->attrs_muex);
@@ -1282,11 +1245,7 @@ int extcon_dev_register(struct extcon_dev *edev)
 
 		for (index = 0; edev->mutually_exclusive[index]; index++) {
 			sprintf(buf, "0x%x", edev->mutually_exclusive[index]);
-<<<<<<< HEAD
 			name = kzalloc(strlen(buf) + 1,
-=======
-			name = kzalloc(sizeof(char) * (strlen(buf) + 1),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       GFP_KERNEL);
 			if (!name) {
 				for (index--; index >= 0; index--) {
@@ -1312,14 +1271,9 @@ int extcon_dev_register(struct extcon_dev *edev)
 
 	if (edev->max_supported) {
 		edev->extcon_dev_type.groups =
-<<<<<<< HEAD
 			kcalloc(edev->max_supported + 2,
 				sizeof(struct attribute_group *),
 				GFP_KERNEL);
-=======
-			kzalloc(sizeof(struct attribute_group *) *
-				(edev->max_supported + 2), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!edev->extcon_dev_type.groups) {
 			ret = -ENOMEM;
 			goto err_alloc_groups;
@@ -1441,7 +1395,6 @@ void extcon_dev_unregister(struct extcon_dev *edev)
 EXPORT_SYMBOL_GPL(extcon_dev_unregister);
 
 #ifdef CONFIG_OF
-<<<<<<< HEAD
 
 /*
  * extcon_find_edev_by_node - Find the extcon device from devicetree.
@@ -1464,8 +1417,6 @@ out:
 	return edev;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * extcon_get_edev_by_phandle - Get the extcon device from devicetree.
  * @dev		: the instance to the given device
@@ -1493,7 +1444,6 @@ struct extcon_dev *extcon_get_edev_by_phandle(struct device *dev, int index)
 		return ERR_PTR(-ENODEV);
 	}
 
-<<<<<<< HEAD
 	edev = extcon_find_edev_by_node(node);
 	of_node_put(node);
 
@@ -1507,34 +1457,14 @@ struct extcon_dev *extcon_find_edev_by_node(struct device_node *node)
 	return ERR_PTR(-ENOSYS);
 }
 
-=======
-	mutex_lock(&extcon_dev_list_lock);
-	list_for_each_entry(edev, &extcon_dev_list, entry) {
-		if (edev->dev.parent && edev->dev.parent->of_node == node) {
-			mutex_unlock(&extcon_dev_list_lock);
-			of_node_put(node);
-			return edev;
-		}
-	}
-	mutex_unlock(&extcon_dev_list_lock);
-	of_node_put(node);
-
-	return ERR_PTR(-EPROBE_DEFER);
-}
-#else
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct extcon_dev *extcon_get_edev_by_phandle(struct device *dev, int index)
 {
 	return ERR_PTR(-ENOSYS);
 }
-<<<<<<< HEAD
 
 #endif /* CONFIG_OF */
 
 EXPORT_SYMBOL_GPL(extcon_find_edev_by_node);
-=======
-#endif /* CONFIG_OF */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 EXPORT_SYMBOL_GPL(extcon_get_edev_by_phandle);
 
 /**

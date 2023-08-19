@@ -31,7 +31,6 @@ enum {
 #define	POWER8_MMCRA_IFM3		0x00000000C0000000UL
 #define	POWER8_MMCRA_BHRB_MASK		0x00000000C0000000UL
 
-<<<<<<< HEAD
 /*
  * Raw event encoding for PowerISA v2.07 (Power8):
  *
@@ -96,8 +95,6 @@ enum {
  *
  */
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* PowerISA v2.07 format attribute structure*/
 extern struct attribute_group isa207_pmu_format_group;
 

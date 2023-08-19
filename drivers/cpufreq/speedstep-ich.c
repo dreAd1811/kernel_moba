@@ -304,13 +304,9 @@ static int speedstep_cpu_init(struct cpufreq_policy *policy)
 	if (gf.ret)
 		return gf.ret;
 
-<<<<<<< HEAD
 	policy->freq_table = speedstep_freqs;
 
 	return 0;
-=======
-	return cpufreq_table_validate_and_show(policy, speedstep_freqs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 

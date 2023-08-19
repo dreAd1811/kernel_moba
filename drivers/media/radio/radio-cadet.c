@@ -30,11 +30,7 @@
  *		Changed API to V4L2
  */
 
-<<<<<<< HEAD
 #include <linux/module.h>	/* Modules			*/
-=======
-#include <linux/module.h>	/* Modules 			*/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/init.h>		/* Initdata			*/
 #include <linux/ioport.h>	/* request_region		*/
 #include <linux/delay.h>	/* udelay			*/
@@ -285,15 +281,9 @@ static bool cadet_has_rds_data(struct cadet *dev)
 }
 
 
-<<<<<<< HEAD
 static void cadet_handler(struct timer_list *t)
 {
 	struct cadet *dev = from_timer(dev, t, readtimer);
-=======
-static void cadet_handler(unsigned long data)
-{
-	struct cadet *dev = (void *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Service the RDS fifo */
 	if (mutex_trylock(&dev->lock)) {
@@ -319,10 +309,6 @@ static void cadet_handler(unsigned long data)
 	/*
 	 * Clean up and exit
 	 */
-<<<<<<< HEAD
-=======
-	setup_timer(&dev->readtimer, cadet_handler, data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev->readtimer.expires = jiffies + msecs_to_jiffies(50);
 	add_timer(&dev->readtimer);
 }
@@ -331,11 +317,7 @@ static void cadet_start_rds(struct cadet *dev)
 {
 	dev->rdsstat = 1;
 	outb(0x80, dev->io);        /* Select RDS fifo */
-<<<<<<< HEAD
 	timer_setup(&dev->readtimer, cadet_handler, 0);
-=======
-	setup_timer(&dev->readtimer, cadet_handler, (unsigned long)dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev->readtimer.expires = jiffies + msecs_to_jiffies(50);
 	add_timer(&dev->readtimer);
 }
@@ -499,7 +481,6 @@ static int cadet_release(struct file *file)
 	return 0;
 }
 
-<<<<<<< HEAD
 static __poll_t cadet_poll(struct file *file, struct poll_table_struct *wait)
 {
 	struct cadet *dev = video_drvdata(file);
@@ -508,27 +489,13 @@ static __poll_t cadet_poll(struct file *file, struct poll_table_struct *wait)
 
 	poll_wait(file, &dev->read_queue, wait);
 	if (dev->rdsstat == 0 && (req_events & (EPOLLIN | EPOLLRDNORM))) {
-=======
-static unsigned int cadet_poll(struct file *file, struct poll_table_struct *wait)
-{
-	struct cadet *dev = video_drvdata(file);
-	unsigned long req_events = poll_requested_events(wait);
-	unsigned int res = v4l2_ctrl_poll(file, wait);
-
-	poll_wait(file, &dev->read_queue, wait);
-	if (dev->rdsstat == 0 && (req_events & (POLLIN | POLLRDNORM))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_lock(&dev->lock);
 		if (dev->rdsstat == 0)
 			cadet_start_rds(dev);
 		mutex_unlock(&dev->lock);
 	}
 	if (cadet_has_rds_data(dev))
-<<<<<<< HEAD
 		res |= EPOLLIN | EPOLLRDNORM;
-=======
-		res |= POLLIN | POLLRDNORM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return res;
 }
 
@@ -536,11 +503,7 @@ static unsigned int cadet_poll(struct file *file, struct poll_table_struct *wait
 static const struct v4l2_file_operations cadet_fops = {
 	.owner		= THIS_MODULE,
 	.open		= cadet_open,
-<<<<<<< HEAD
 	.release	= cadet_release,
-=======
-	.release       	= cadet_release,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read		= cadet_read,
 	.unlocked_ioctl	= video_ioctl2,
 	.poll		= cadet_poll,

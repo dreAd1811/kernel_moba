@@ -127,11 +127,7 @@ static int emif_regdump_show(struct seq_file *s, void *unused)
 
 	for (i = 0; i < EMIF_MAX_NUM_FREQUENCIES && regs_cache[i]; i++) {
 		do_emif_regdump_show(s, emif, regs_cache[i]);
-<<<<<<< HEAD
 		seq_putc(s, '\n');
-=======
-		seq_printf(s, "\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;

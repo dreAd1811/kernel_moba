@@ -1,19 +1,6 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0-only */
 /*
  * Copyright (c) 2017-2019, The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2018, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #ifndef NPU_HW_H
@@ -25,16 +12,11 @@
  */
 #define NPU_HW_VERSION (0x00000000)
 #define NPU_MASTERn_IPC_IRQ_OUT(n) (0x00001004+0x1000*(n))
-<<<<<<< HEAD
 #define NPU_CACHEMAP0_ATTR_IDn(n) (0x00000800+0x4*(n))
 #define NPU_CACHEMAP0_ATTR_METADATA_IDn(n) (0x00000814+0x4*(n))
 #define NPU_CACHEMAP1_ATTR_IDn(n) (0x00000830+0x4*(n))
 #define NPU_CACHEMAP1_ATTR_METADATA_IDn(n) (0x00000844+0x4*(n))
 #define NPU_CACHEMAP_SCID_MASK 0x0000001F
-=======
-#define NPU_CACHE_ATTR_IDn___POR 0x00011100
-#define NPU_CACHE_ATTR_IDn(n) (0x00000800+0x4*(n))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define NPU_MASTERn_IPC_IRQ_IN_CTRL(n) (0x00001008+0x1000*(n))
 #define NPU_MASTER0_IPC_IRQ_IN_CTRL__IRQ_SOURCE_SELECT___S 4
 #define NPU_MASTERn_IPC_IRQ_OUT_CTRL(n) (0x00001004+0x1000*(n))
@@ -59,16 +41,12 @@
 #define NPU_GPR2 (0x00000108)
 #define NPU_GPR3 (0x0000010C)
 #define NPU_GPR4 (0x00000110)
-<<<<<<< HEAD
 #define NPU_GPR5 (0x00000114)
 #define NPU_GPR11 (0x0000012c)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define NPU_GPR13 (0x00000134)
 #define NPU_GPR14 (0x00000138)
 #define NPU_GPR15 (0x0000013C)
 
-<<<<<<< HEAD
 #define NPU_QDSP6SS_IPC 0x00088000
 #define NPU_QDSP6SS_IPC1 0x00088004
 
@@ -96,13 +74,5 @@
 
 #define TCSR_NPU_CPC_PWR_ON (0x0003700C)
 #define NPU_CPC_PWR_ON (1 << 0)
-=======
-#define BWMON2_SAMPLING_WINDOW (0x000003A8)
-#define BWMON2_BYTE_COUNT_THRESHOLD_HIGH (0x000003AC)
-#define BWMON2_BYTE_COUNT_THRESHOLD_MEDIUM (0x000003B0)
-#define BWMON2_BYTE_COUNT_THRESHOLD_LOW (0x000003B4)
-#define BWMON2_ZONE_ACTIONS (0x000003B8)
-#define BWMON2_ZONE_COUNT_THRESHOLD (0x000003BC)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* NPU_HW_H */

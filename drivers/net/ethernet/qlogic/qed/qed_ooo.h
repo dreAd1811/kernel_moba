@@ -83,11 +83,7 @@ struct qed_ooo_info {
 	u16 cid_base;
 };
 
-<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_QED_OOO)
-=======
-#if IS_ENABLED(CONFIG_QED_ISCSI)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void qed_ooo_save_history_entry(struct qed_hwfn *p_hwfn,
 				struct qed_ooo_info *p_ooo_info,
 				struct ooo_opaque *p_cqe);

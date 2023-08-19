@@ -81,12 +81,6 @@ static inline bool security_ftr_enabled(unsigned long feature)
 // Software required to flush count cache on context switch
 #define SEC_FTR_FLUSH_COUNT_CACHE	0x0000000000000400ull
 
-<<<<<<< HEAD
-=======
-// Software required to flush link stack on context switch
-#define SEC_FTR_FLUSH_LINK_STACK	0x0000000000001000ull
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 // Features enabled by default
 #define SEC_FTR_DEFAULT \

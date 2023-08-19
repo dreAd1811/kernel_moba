@@ -28,10 +28,7 @@
 
 #include <subdev/bios.h>
 #include <subdev/bios/init.h>
-<<<<<<< HEAD
 #include <subdev/gpio.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <subdev/i2c.h>
 
 #include <nvif/event.h>
@@ -508,11 +505,7 @@ done:
 	return ret;
 }
 
-<<<<<<< HEAD
 static bool
-=======
-static void
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 nvkm_dp_enable(struct nvkm_dp *dp, bool enable)
 {
 	struct nvkm_i2c_aux *aux = dp->aux;
@@ -526,11 +519,7 @@ nvkm_dp_enable(struct nvkm_dp *dp, bool enable)
 
 		if (!nvkm_rdaux(aux, DPCD_RC00_DPCD_REV, dp->dpcd,
 				sizeof(dp->dpcd)))
-<<<<<<< HEAD
 			return true;
-=======
-			return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (dp->present) {
@@ -540,10 +529,7 @@ nvkm_dp_enable(struct nvkm_dp *dp, bool enable)
 	}
 
 	atomic_set(&dp->lt.done, 0);
-<<<<<<< HEAD
 	return false;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int
@@ -584,7 +570,6 @@ nvkm_dp_fini(struct nvkm_outp *outp)
 static void
 nvkm_dp_init(struct nvkm_outp *outp)
 {
-<<<<<<< HEAD
 	struct nvkm_gpio *gpio = outp->disp->engine.subdev.device->gpio;
 	struct nvkm_dp *dp = nvkm_dp(outp);
 
@@ -617,11 +602,6 @@ nvkm_dp_init(struct nvkm_outp *outp)
 		nvkm_dp_enable(dp, true);
 	}
 
-=======
-	struct nvkm_dp *dp = nvkm_dp(outp);
-	nvkm_notify_put(&dp->outp.conn->hpd);
-	nvkm_dp_enable(dp, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	nvkm_notify_get(&dp->hpd);
 }
 

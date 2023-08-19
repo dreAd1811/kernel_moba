@@ -1,18 +1,5 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /* Copyright (c) 2014-2020, The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2014-2020, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/slab.h>
@@ -65,7 +52,6 @@ struct diag_md_info diag_md[NUM_DIAG_MD_DEV] = {
 		.md_info_inited = 0,
 		.tbl = NULL,
 		.ops = NULL,
-<<<<<<< HEAD
 	},
 	{
 		.id = DIAG_MD_SMUX,
@@ -75,8 +61,6 @@ struct diag_md_info diag_md[NUM_DIAG_MD_DEV] = {
 		.md_info_inited = 0,
 		.tbl = NULL,
 		.ops = NULL,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 #endif
 };
@@ -106,7 +90,6 @@ void diag_md_open_all(void)
 }
 void diag_md_open_device(int id)
 {
-<<<<<<< HEAD
 
 	struct diag_md_info *ch = NULL;
 
@@ -115,15 +98,6 @@ void diag_md_open_device(int id)
 			return;
 		if (ch->ops && ch->ops->open)
 			ch->ops->open(ch->ctx, DIAG_MEMORY_DEVICE_MODE);
-=======
-	struct diag_md_info *ch = NULL;
-
-	ch = &diag_md[id];
-	if (!ch->md_info_inited)
-		return;
-	if (ch->ops && ch->ops->open)
-		ch->ops->open(ch->ctx, DIAG_MEMORY_DEVICE_MODE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 }
 void diag_md_close_all(void)
@@ -171,7 +145,6 @@ void diag_md_close_device(int id)
 	struct diag_md_info *ch = NULL;
 	struct diag_buf_tbl_t *entry = NULL;
 
-<<<<<<< HEAD
 		ch = &diag_md[id];
 		if (!ch->md_info_inited)
 			return;
@@ -202,36 +175,6 @@ void diag_md_close_device(int id)
 		}
 		spin_unlock_irqrestore(&ch->lock, flags);
 
-=======
-	ch = &diag_md[id];
-	if (!ch->md_info_inited)
-		return;
-
-	if (ch->ops && ch->ops->close)
-		ch->ops->close(ch->ctx, DIAG_MEMORY_DEVICE_MODE);
-
-	/*
-	 * When we close the Memory device mode, make sure we flush the
-	 * internal buffers in the table so that there are no stale
-	 * entries.
-	 * Give Write_done notifications to buffers with packets
-	 * indicated valid length.
-	 */
-	spin_lock_irqsave(&ch->lock, flags);
-	for (j = 0; j < ch->num_tbl_entries; j++) {
-		entry = &ch->tbl[j];
-		if (entry->len <= 0)
-			continue;
-		if (ch->ops && ch->ops->write_done)
-			ch->ops->write_done(entry->buf, entry->len,
-					    entry->ctx,
-					    DIAG_MEMORY_DEVICE_MODE);
-		entry->buf = NULL;
-		entry->len = 0;
-		entry->ctx = 0;
-	}
-	spin_unlock_irqrestore(&ch->lock, flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	diag_ws_reset(DIAG_WS_MUX);
 }
 
@@ -267,11 +210,7 @@ int diag_md_write(int id, unsigned char *buf, int len, int ctx)
 {
 	int i, peripheral, pid = 0;
 	uint8_t found = 0;
-<<<<<<< HEAD
 	unsigned long flags, flags_sec;
-=======
-	unsigned long flags, flags_sec = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct diag_md_info *ch = NULL;
 	struct diag_md_session_t *session_info = NULL;
 
@@ -467,7 +406,6 @@ int diag_md_copy_to_user(char __user *buf, int *pret, size_t buf_size,
 
 			task_s = get_pid_task(pid_struct, PIDTYPE_PID);
 			if (task_s) {
-<<<<<<< HEAD
 				spin_lock_irqsave(&ch->lock, flags);
 				entry = &ch->tbl[j];
 				if (entry->len <= 0 || entry->buf == NULL) {
@@ -500,28 +438,6 @@ int diag_md_copy_to_user(char __user *buf, int *pret, size_t buf_size,
 					}
 					ret += entry->len;
 				}
-=======
-
-				/* Copy the length of data being passed */
-				err = copy_to_user(buf + ret,
-						(void *)&(entry->len),
-						sizeof(int));
-				if (err) {
-					put_task_struct(task_s);
-					goto drop_data;
-				}
-				ret += sizeof(int);
-
-				/* Copy the actual data being passed */
-				err = copy_to_user(buf + ret,
-						(void *)entry->buf,
-						entry->len);
-				if (err) {
-					put_task_struct(task_s);
-					goto drop_data;
-				}
-				ret += entry->len;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				put_task_struct(task_s);
 			}
 
@@ -533,14 +449,11 @@ int diag_md_copy_to_user(char __user *buf, int *pret, size_t buf_size,
 			num_data++;
 drop_data:
 			spin_lock_irqsave(&ch->lock, flags);
-<<<<<<< HEAD
 			entry = &ch->tbl[j];
 			if (entry->len <= 0 || entry->buf == NULL) {
 				spin_unlock_irqrestore(&ch->lock, flags);
 				continue;
 			}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (ch->ops && ch->ops->write_done)
 				ch->ops->write_done(entry->buf, entry->len,
 						    entry->ctx,

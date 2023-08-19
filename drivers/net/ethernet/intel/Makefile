@@ -14,7 +14,4 @@ obj-$(CONFIG_I40E) += i40e/
 obj-$(CONFIG_IXGB) += ixgb/
 obj-$(CONFIG_I40EVF) += i40evf/
 obj-$(CONFIG_FM10K) += fm10k/
-<<<<<<< HEAD
 obj-$(CONFIG_ICE) += ice/
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

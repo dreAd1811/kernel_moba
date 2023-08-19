@@ -18,11 +18,7 @@ shortcut for ``print_hex_dump(KERN_DEBUG)``.
 
 For ``print_hex_dump_debug()``/``print_hex_dump_bytes()``, format string is
 its ``prefix_str`` argument, if it is constant string; or ``hexdump``
-<<<<<<< HEAD
 in case ``prefix_str`` is built dynamically.
-=======
-in case ``prefix_str`` is build dynamically.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Dynamic debug has even more useful features:
 
@@ -58,12 +54,6 @@ If you make a mistake with the syntax, the write will fail thus::
 				<debugfs>/dynamic_debug/control
   -bash: echo: write error: Invalid argument
 
-<<<<<<< HEAD
-=======
-Note, for systems without 'debugfs' enabled, the control file can be
-found in ``/proc/dynamic_debug/control``.
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Viewing Dynamic Debug Behaviour
 ===============================
 
@@ -207,13 +197,8 @@ line
     line number matches the callsite line number exactly.  A
     range of line numbers matches any callsite between the first
     and last line number inclusive.  An empty first number means
-<<<<<<< HEAD
     the first line in the file, an empty last line number means the
     last line number in the file.  Examples::
-=======
-    the first line in the file, an empty line number means the
-    last number in the file.  Examples::
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	line 1603           // exactly line 1603
 	line 1600-1605      // the six lines from line 1600 to line 1605

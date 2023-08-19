@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 OR MIT */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**************************************************************************
  *
  * Copyright (c) 2006-2009 VMware, Inc., Palo Alto, CA., USA
@@ -54,10 +51,7 @@ struct ttm_agp_backend {
 static int ttm_agp_bind(struct ttm_tt *ttm, struct ttm_mem_reg *bo_mem)
 {
 	struct ttm_agp_backend *agp_be = container_of(ttm, struct ttm_agp_backend, ttm);
-<<<<<<< HEAD
 	struct page *dummy_read_page = ttm->bdev->glob->dummy_read_page;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_mm_node *node = bo_mem->mm_node;
 	struct agp_memory *mem;
 	int ret, cached = (bo_mem->placement & TTM_PL_FLAG_CACHED);
@@ -72,11 +66,7 @@ static int ttm_agp_bind(struct ttm_tt *ttm, struct ttm_mem_reg *bo_mem)
 		struct page *page = ttm->pages[i];
 
 		if (!page)
-<<<<<<< HEAD
 			page = dummy_read_page;
-=======
-			page = ttm->dummy_read_page;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		mem->pages[mem->page_count++] = page;
 	}
@@ -121,16 +111,9 @@ static struct ttm_backend_func ttm_agp_func = {
 	.destroy = ttm_agp_destroy,
 };
 
-<<<<<<< HEAD
 struct ttm_tt *ttm_agp_tt_create(struct ttm_buffer_object *bo,
 				 struct agp_bridge_data *bridge,
 				 uint32_t page_flags)
-=======
-struct ttm_tt *ttm_agp_tt_create(struct ttm_bo_device *bdev,
-				 struct agp_bridge_data *bridge,
-				 unsigned long size, uint32_t page_flags,
-				 struct page *dummy_read_page)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ttm_agp_backend *agp_be;
 
@@ -142,11 +125,7 @@ struct ttm_tt *ttm_agp_tt_create(struct ttm_bo_device *bdev,
 	agp_be->bridge = bridge;
 	agp_be->ttm.func = &ttm_agp_func;
 
-<<<<<<< HEAD
 	if (ttm_tt_init(&agp_be->ttm, bo, page_flags)) {
-=======
-	if (ttm_tt_init(&agp_be->ttm, bdev, size, page_flags, dummy_read_page)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(agp_be);
 		return NULL;
 	}
@@ -155,20 +134,12 @@ struct ttm_tt *ttm_agp_tt_create(struct ttm_bo_device *bdev,
 }
 EXPORT_SYMBOL(ttm_agp_tt_create);
 
-<<<<<<< HEAD
 int ttm_agp_tt_populate(struct ttm_tt *ttm, struct ttm_operation_ctx *ctx)
-=======
-int ttm_agp_tt_populate(struct ttm_tt *ttm)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (ttm->state != tt_unpopulated)
 		return 0;
 
-<<<<<<< HEAD
 	return ttm_pool_populate(ttm, ctx);
-=======
-	return ttm_pool_populate(ttm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(ttm_agp_tt_populate);
 

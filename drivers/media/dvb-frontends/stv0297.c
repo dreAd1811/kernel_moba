@@ -27,11 +27,7 @@
 #include <linux/jiffies.h>
 #include <linux/slab.h>
 
-<<<<<<< HEAD
 #include <media/dvb_frontend.h>
-=======
-#include "dvb_frontend.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "stv0297.h"
 
 struct stv0297_state {
@@ -698,15 +694,9 @@ static const struct dvb_frontend_ops stv0297_ops = {
 	.delsys = { SYS_DVBC_ANNEX_A },
 	.info = {
 		 .name = "ST STV0297 DVB-C",
-<<<<<<< HEAD
 		 .frequency_min_hz = 47 * MHz,
 		 .frequency_max_hz = 862 * MHz,
 		 .frequency_stepsize_hz = 62500,
-=======
-		 .frequency_min = 47000000,
-		 .frequency_max = 862000000,
-		 .frequency_stepsize = 62500,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 .symbol_rate_min = 870000,
 		 .symbol_rate_max = 11700000,
 		 .caps = FE_CAN_QAM_16 | FE_CAN_QAM_32 | FE_CAN_QAM_64 |

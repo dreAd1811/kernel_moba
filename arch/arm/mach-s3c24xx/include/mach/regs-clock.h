@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
 /*
  * Copyright (c) 2003-2006 Simtec Electronics <linux@simtec.co.uk>
@@ -6,19 +5,6 @@
  *
  * S3C2410 clock register definitions
  */
-=======
-/* arch/arm/mach-s3c2410/include/mach/regs-clock.h
- *
- * Copyright (c) 2003-2006 Simtec Electronics <linux@simtec.co.uk>
- *	http://armlinux.simtec.co.uk/
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
- *
- * S3C2410 clock register definitions
-*/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifndef __ASM_ARM_REGS_CLOCK
 #define __ASM_ARM_REGS_CLOCK

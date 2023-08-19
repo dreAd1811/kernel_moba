@@ -33,7 +33,6 @@ static const char * const trackpoint_variants[] = {
  */
 static int trackpoint_power_on_reset(struct ps2dev *ps2dev)
 {
-<<<<<<< HEAD
 	u8 param[2] = { TP_POR };
 	int err;
 
@@ -43,20 +42,6 @@ static int trackpoint_power_on_reset(struct ps2dev *ps2dev)
 
 	/* Check for success response -- 0xAA00 */
 	if (param[0] != 0xAA || param[1] != 0x00)
-=======
-	u8 results[2];
-	int tries = 0;
-
-	/* Issue POR command, and repeat up to once if 0xFC00 received */
-	do {
-		if (ps2_command(ps2dev, NULL, MAKE_PS2_CMD(0, 0, TP_COMMAND)) ||
-		    ps2_command(ps2dev, results, MAKE_PS2_CMD(0, 2, TP_POR)))
-			return -1;
-	} while (results[0] == 0xFC && results[1] == 0x00 && ++tries < 2);
-
-	/* Check for success response -- 0xAA00 */
-	if (results[0] != 0xAA || results[1] != 0x00)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 
 	return 0;
@@ -67,41 +52,20 @@ static int trackpoint_power_on_reset(struct ps2dev *ps2dev)
  */
 static int trackpoint_read(struct ps2dev *ps2dev, u8 loc, u8 *results)
 {
-<<<<<<< HEAD
 	results[0] = loc;
 
 	return ps2_command(ps2dev, results, MAKE_PS2_CMD(1, 1, TP_COMMAND));
-=======
-	if (ps2_command(ps2dev, NULL, MAKE_PS2_CMD(0, 0, TP_COMMAND)) ||
-	    ps2_command(ps2dev, results, MAKE_PS2_CMD(0, 1, loc))) {
-		return -1;
-	}
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int trackpoint_write(struct ps2dev *ps2dev, u8 loc, u8 val)
 {
-<<<<<<< HEAD
 	u8 param[3] = { TP_WRITE_MEM, loc, val };
 
 	return ps2_command(ps2dev, param, MAKE_PS2_CMD(3, 0, TP_COMMAND));
-=======
-	if (ps2_command(ps2dev, NULL, MAKE_PS2_CMD(0, 0, TP_COMMAND)) ||
-	    ps2_command(ps2dev, NULL, MAKE_PS2_CMD(0, 0, TP_WRITE_MEM)) ||
-	    ps2_command(ps2dev, NULL, MAKE_PS2_CMD(0, 0, loc)) ||
-	    ps2_command(ps2dev, NULL, MAKE_PS2_CMD(0, 0, val))) {
-		return -1;
-	}
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int trackpoint_toggle_bit(struct ps2dev *ps2dev, u8 loc, u8 mask)
 {
-<<<<<<< HEAD
 	u8 param[3] = { TP_TOGGLE, loc, mask };
 
 	/* Bad things will happen if the loc param isn't in this range */
@@ -109,26 +73,11 @@ static int trackpoint_toggle_bit(struct ps2dev *ps2dev, u8 loc, u8 mask)
 		return -EINVAL;
 
 	return ps2_command(ps2dev, param, MAKE_PS2_CMD(3, 0, TP_COMMAND));
-=======
-	/* Bad things will happen if the loc param isn't in this range */
-	if (loc < 0x20 || loc >= 0x2F)
-		return -1;
-
-	if (ps2_command(ps2dev, NULL, MAKE_PS2_CMD(0, 0, TP_COMMAND)) ||
-	    ps2_command(ps2dev, NULL, MAKE_PS2_CMD(0, 0, TP_TOGGLE)) ||
-	    ps2_command(ps2dev, NULL, MAKE_PS2_CMD(0, 0, loc)) ||
-	    ps2_command(ps2dev, NULL, MAKE_PS2_CMD(0, 0, mask))) {
-		return -1;
-	}
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int trackpoint_update_bit(struct ps2dev *ps2dev,
 				 u8 loc, u8 mask, u8 value)
 {
-<<<<<<< HEAD
 	int retval;
 	u8 data;
 
@@ -136,12 +85,6 @@ static int trackpoint_update_bit(struct ps2dev *ps2dev,
 	if (retval)
 		return retval;
 
-=======
-	int retval = 0;
-	u8 data;
-
-	trackpoint_read(ps2dev, loc, &data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (((data & mask) == mask) != !!value)
 		retval = trackpoint_toggle_bit(ps2dev, loc, mask);
 
@@ -186,15 +129,9 @@ static ssize_t trackpoint_set_int_attr(struct psmouse *psmouse, void *data,
 		return err;
 
 	*field = value;
-<<<<<<< HEAD
 	err = trackpoint_write(&psmouse->ps2dev, attr->command, value);
 
 	return err ?: count;
-=======
-	trackpoint_write(&psmouse->ps2dev, attr->command, value);
-
-	return count;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #define TRACKPOINT_INT_ATTR(_name, _command, _default)				\
@@ -225,18 +162,11 @@ static ssize_t trackpoint_set_bit_attr(struct psmouse *psmouse, void *data,
 
 	if (*field != value) {
 		*field = value;
-<<<<<<< HEAD
 		err = trackpoint_toggle_bit(&psmouse->ps2dev,
 					    attr->command, attr->mask);
 	}
 
 	return err ?: count;
-=======
-		trackpoint_toggle_bit(&psmouse->ps2dev, attr->command, attr->mask);
-	}
-
-	return count;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 

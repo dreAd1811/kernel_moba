@@ -4,24 +4,12 @@
 
 #ifndef __ASSEMBLY__
 
-<<<<<<< HEAD
 #ifdef CONFIG_KASAN
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/linkage.h>
 #include <asm/memory.h>
 #include <asm/pgtable-types.h>
 
-<<<<<<< HEAD
-=======
-#define arch_kasan_set_tag(addr, tag)	__tag_set(addr, tag)
-#define arch_kasan_reset_tag(addr)	__tag_reset(addr)
-#define arch_kasan_get_tag(addr)	__tag_get(addr)
-
-#ifdef CONFIG_KASAN
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * KASAN_SHADOW_START: beginning of the kernel virtual addresses.
  * KASAN_SHADOW_END: KASAN_SHADOW_START + 1/N of kernel virtual addresses,

@@ -32,10 +32,7 @@
 
 #include <linux/file.h>
 #include <linux/anon_inodes.h>
-<<<<<<< HEAD
 #include <linux/sched/mm.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <rdma/ib_verbs.h>
 #include <rdma/uverbs_types.h>
 #include <linux/rcupdate.h>
@@ -45,54 +42,6 @@
 #include "core_priv.h"
 #include "rdma_core.h"
 
-<<<<<<< HEAD
-=======
-int uverbs_ns_idx(u16 *id, unsigned int ns_count)
-{
-	int ret = (*id & UVERBS_ID_NS_MASK) >> UVERBS_ID_NS_SHIFT;
-
-	if (ret >= ns_count)
-		return -EINVAL;
-
-	*id &= ~UVERBS_ID_NS_MASK;
-	return ret;
-}
-
-const struct uverbs_object_spec *uverbs_get_object(const struct ib_device *ibdev,
-						   uint16_t object)
-{
-	const struct uverbs_root_spec *object_hash = ibdev->specs_root;
-	const struct uverbs_object_spec_hash *objects;
-	int ret = uverbs_ns_idx(&object, object_hash->num_buckets);
-
-	if (ret < 0)
-		return NULL;
-
-	objects = object_hash->object_buckets[ret];
-
-	if (object >= objects->num_objects)
-		return NULL;
-
-	return objects->objects[object];
-}
-
-const struct uverbs_method_spec *uverbs_get_method(const struct uverbs_object_spec *object,
-						   uint16_t method)
-{
-	const struct uverbs_method_spec_hash *methods;
-	int ret = uverbs_ns_idx(&method, object->num_buckets);
-
-	if (ret < 0)
-		return NULL;
-
-	methods = object->method_buckets[ret];
-	if (method >= methods->num_methods)
-		return NULL;
-
-	return methods->methods[method];
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void uverbs_uobject_get(struct ib_uobject *uobject)
 {
 	kref_get(&uobject->ref);
@@ -103,11 +52,7 @@ static void uverbs_uobject_free(struct kref *ref)
 	struct ib_uobject *uobj =
 		container_of(ref, struct ib_uobject, ref);
 
-<<<<<<< HEAD
 	if (uobj->uapi_object->type_class->needs_kfree_rcu)
-=======
-	if (uobj->type->type_class->needs_kfree_rcu)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree_rcu(uobj, rcu);
 	else
 		kfree(uobj);
@@ -118,12 +63,8 @@ void uverbs_uobject_put(struct ib_uobject *uobject)
 	kref_put(&uobject->ref, uverbs_uobject_free);
 }
 
-<<<<<<< HEAD
 static int uverbs_try_lock_object(struct ib_uobject *uobj,
 				  enum rdma_lookup_mode mode)
-=======
-static int uverbs_try_lock_object(struct ib_uobject *uobj, bool exclusive)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/*
 	 * When a shared access is required, we use a positive counter. Each
@@ -136,7 +77,6 @@ static int uverbs_try_lock_object(struct ib_uobject *uobj, bool exclusive)
 	 * concurrently, setting the counter to zero is enough for releasing
 	 * this lock.
 	 */
-<<<<<<< HEAD
 	switch (mode) {
 	case UVERBS_LOOKUP_READ:
 		return atomic_fetch_add_unless(&uobj->usecnt, 1, -1) == -1 ?
@@ -332,28 +272,12 @@ static struct ib_uobject *alloc_uobj(struct ib_uverbs_file *ufile,
 		return ERR_CAST(ucontext);
 
 	uobj = kzalloc(obj->type_attrs->obj_size, GFP_KERNEL);
-=======
-	if (!exclusive)
-		return __atomic_add_unless(&uobj->usecnt, 1, -1) == -1 ?
-			-EBUSY : 0;
-
-	/* lock is either WRITE or DESTROY - should be exclusive */
-	return atomic_cmpxchg(&uobj->usecnt, 0, -1) == 0 ? 0 : -EBUSY;
-}
-
-static struct ib_uobject *alloc_uobj(struct ib_ucontext *context,
-				     const struct uverbs_obj_type *type)
-{
-	struct ib_uobject *uobj = kzalloc(type->obj_size, GFP_KERNEL);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!uobj)
 		return ERR_PTR(-ENOMEM);
 	/*
 	 * user_handle should be filled by the handler,
 	 * The object is added to the list in the commit stage.
 	 */
-<<<<<<< HEAD
 	uobj->ufile = ufile;
 	uobj->context = ucontext;
 	INIT_LIST_HEAD(&uobj->list);
@@ -364,11 +288,6 @@ static struct ib_uobject *alloc_uobj(struct ib_ucontext *context,
 	 * rdma_alloc_commit_uobject
 	 */
 	atomic_set(&uobj->usecnt, -1);
-=======
-	uobj->context = context;
-	uobj->type = type;
-	atomic_set(&uobj->usecnt, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kref_init(&uobj->ref);
 
 	return uobj;
@@ -379,37 +298,24 @@ static int idr_add_uobj(struct ib_uobject *uobj)
 	int ret;
 
 	idr_preload(GFP_KERNEL);
-<<<<<<< HEAD
 	spin_lock(&uobj->ufile->idr_lock);
-=======
-	spin_lock(&uobj->context->ufile->idr_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * We start with allocating an idr pointing to NULL. This represents an
 	 * object which isn't initialized yet. We'll replace it later on with
 	 * the real object once we commit.
 	 */
-<<<<<<< HEAD
 	ret = idr_alloc(&uobj->ufile->idr, NULL, 0,
-=======
-	ret = idr_alloc(&uobj->context->ufile->idr, NULL, 0,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			min_t(unsigned long, U32_MAX - 1, INT_MAX), GFP_NOWAIT);
 	if (ret >= 0)
 		uobj->id = ret;
 
-<<<<<<< HEAD
 	spin_unlock(&uobj->ufile->idr_lock);
-=======
-	spin_unlock(&uobj->context->ufile->idr_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	idr_preload_end();
 
 	return ret < 0 ? ret : 0;
 }
 
-<<<<<<< HEAD
 /* Returns the ib_uobject or an error. The caller should check for IS_ERR. */
 static struct ib_uobject *
 lookup_get_idr_uobject(const struct uverbs_api_object *obj,
@@ -425,29 +331,6 @@ lookup_get_idr_uobject(const struct uverbs_api_object *obj,
 	rcu_read_lock();
 	/* object won't be released as we're protected in rcu */
 	uobj = idr_find(&ufile->idr, idrno);
-=======
-/*
- * It only removes it from the uobjects list, uverbs_uobject_put() is still
- * required.
- */
-static void uverbs_idr_remove_uobj(struct ib_uobject *uobj)
-{
-	spin_lock(&uobj->context->ufile->idr_lock);
-	idr_remove(&uobj->context->ufile->idr, uobj->id);
-	spin_unlock(&uobj->context->ufile->idr_lock);
-}
-
-/* Returns the ib_uobject or an error. The caller should check for IS_ERR. */
-static struct ib_uobject *lookup_get_idr_uobject(const struct uverbs_obj_type *type,
-						 struct ib_ucontext *ucontext,
-						 int id, bool exclusive)
-{
-	struct ib_uobject *uobj;
-
-	rcu_read_lock();
-	/* object won't be released as we're protected in rcu */
-	uobj = idr_find(&ucontext->ufile->idr, id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!uobj) {
 		uobj = ERR_PTR(-ENOENT);
 		goto free;
@@ -467,7 +350,6 @@ free:
 	return uobj;
 }
 
-<<<<<<< HEAD
 static struct ib_uobject *
 lookup_get_fd_uobject(const struct uverbs_api_object *obj,
 		      struct ib_uverbs_file *ufile, s64 id,
@@ -490,21 +372,6 @@ lookup_get_fd_uobject(const struct uverbs_api_object *obj,
 		container_of(obj->type_attrs, struct uverbs_obj_fd_type, type);
 
 	f = fget(fdno);
-=======
-static struct ib_uobject *lookup_get_fd_uobject(const struct uverbs_obj_type *type,
-						struct ib_ucontext *ucontext,
-						int id, bool exclusive)
-{
-	struct file *f;
-	struct ib_uobject *uobject;
-	const struct uverbs_obj_fd_type *fd_type =
-		container_of(type, struct uverbs_obj_fd_type, type);
-
-	if (exclusive)
-		return ERR_PTR(-EOPNOTSUPP);
-
-	f = fget(id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!f)
 		return ERR_PTR(-EBADF);
 
@@ -523,20 +390,13 @@ static struct ib_uobject *lookup_get_fd_uobject(const struct uverbs_obj_type *ty
 	return uobject;
 }
 
-<<<<<<< HEAD
 struct ib_uobject *rdma_lookup_get_uobject(const struct uverbs_api_object *obj,
 					   struct ib_uverbs_file *ufile, s64 id,
 					   enum rdma_lookup_mode mode)
-=======
-struct ib_uobject *rdma_lookup_get_uobject(const struct uverbs_obj_type *type,
-					   struct ib_ucontext *ucontext,
-					   int id, bool exclusive)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ib_uobject *uobj;
 	int ret;
 
-<<<<<<< HEAD
 	if (!obj)
 		return ERR_PTR(-EINVAL);
 
@@ -545,18 +405,10 @@ struct ib_uobject *rdma_lookup_get_uobject(const struct uverbs_obj_type *type,
 		return uobj;
 
 	if (uobj->uapi_object != obj) {
-=======
-	uobj = type->type_class->lookup_get(type, ucontext, id, exclusive);
-	if (IS_ERR(uobj))
-		return uobj;
-
-	if (uobj->type != type) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -EINVAL;
 		goto free;
 	}
 
-<<<<<<< HEAD
 	/*
 	 * If we have been disassociated block every command except for
 	 * DESTROY based commands.
@@ -575,39 +427,18 @@ struct ib_uobject *rdma_lookup_get_uobject(const struct uverbs_obj_type *type,
 	return uobj;
 free:
 	obj->type_class->lookup_put(uobj, mode);
-=======
-	ret = uverbs_try_lock_object(uobj, exclusive);
-	if (ret) {
-		WARN(ucontext->cleanup_reason,
-		     "ib_uverbs: Trying to lookup_get while cleanup context\n");
-		goto free;
-	}
-
-	return uobj;
-free:
-	uobj->type->type_class->lookup_put(uobj, exclusive);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uverbs_uobject_put(uobj);
 	return ERR_PTR(ret);
 }
 
-<<<<<<< HEAD
 static struct ib_uobject *
 alloc_begin_idr_uobject(const struct uverbs_api_object *obj,
 			struct ib_uverbs_file *ufile)
-=======
-static struct ib_uobject *alloc_begin_idr_uobject(const struct uverbs_obj_type *type,
-						  struct ib_ucontext *ucontext)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret;
 	struct ib_uobject *uobj;
 
-<<<<<<< HEAD
 	uobj = alloc_uobj(ufile, obj);
-=======
-	uobj = alloc_uobj(ucontext, type);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(uobj))
 		return uobj;
 
@@ -615,11 +446,7 @@ static struct ib_uobject *alloc_begin_idr_uobject(const struct uverbs_obj_type *
 	if (ret)
 		goto uobj_put;
 
-<<<<<<< HEAD
 	ret = ib_rdmacg_try_charge(&uobj->cg_obj, uobj->context->device,
-=======
-	ret = ib_rdmacg_try_charge(&uobj->cg_obj, ucontext->device,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   RDMACG_RESOURCE_HCA_OBJECT);
 	if (ret)
 		goto idr_remove;
@@ -627,77 +454,37 @@ static struct ib_uobject *alloc_begin_idr_uobject(const struct uverbs_obj_type *
 	return uobj;
 
 idr_remove:
-<<<<<<< HEAD
 	spin_lock(&ufile->idr_lock);
 	idr_remove(&ufile->idr, uobj->id);
 	spin_unlock(&ufile->idr_lock);
-=======
-	uverbs_idr_remove_uobj(uobj);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 uobj_put:
 	uverbs_uobject_put(uobj);
 	return ERR_PTR(ret);
 }
 
-<<<<<<< HEAD
 static struct ib_uobject *
 alloc_begin_fd_uobject(const struct uverbs_api_object *obj,
 		       struct ib_uverbs_file *ufile)
 {
 	int new_fd;
 	struct ib_uobject *uobj;
-=======
-static struct ib_uobject *alloc_begin_fd_uobject(const struct uverbs_obj_type *type,
-						 struct ib_ucontext *ucontext)
-{
-	const struct uverbs_obj_fd_type *fd_type =
-		container_of(type, struct uverbs_obj_fd_type, type);
-	int new_fd;
-	struct ib_uobject *uobj;
-	struct ib_uobject_file *uobj_file;
-	struct file *filp;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	new_fd = get_unused_fd_flags(O_CLOEXEC);
 	if (new_fd < 0)
 		return ERR_PTR(new_fd);
 
-<<<<<<< HEAD
 	uobj = alloc_uobj(ufile, obj);
-=======
-	uobj = alloc_uobj(ucontext, type);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(uobj)) {
 		put_unused_fd(new_fd);
 		return uobj;
 	}
 
-<<<<<<< HEAD
 	uobj->id = new_fd;
 	uobj->ufile = ufile;
-=======
-	uobj_file = container_of(uobj, struct ib_uobject_file, uobj);
-	filp = anon_inode_getfile(fd_type->name,
-				  fd_type->fops,
-				  uobj_file,
-				  fd_type->flags);
-	if (IS_ERR(filp)) {
-		put_unused_fd(new_fd);
-		uverbs_uobject_put(uobj);
-		return (void *)filp;
-	}
-
-	uobj_file->uobj.id = new_fd;
-	uobj_file->uobj.object = filp;
-	uobj_file->ufile = ucontext->ufile;
-	INIT_LIST_HEAD(&uobj->list);
-	kref_get(&uobj_file->ufile->ref);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return uobj;
 }
 
-<<<<<<< HEAD
 struct ib_uobject *rdma_alloc_begin_uobject(const struct uverbs_api_object *obj,
 					    struct ib_uverbs_file *ufile)
 {
@@ -738,32 +525,10 @@ static int __must_check destroy_hw_idr_uobject(struct ib_uobject *uobj,
 	const struct uverbs_obj_idr_type *idr_type =
 		container_of(uobj->uapi_object->type_attrs,
 			     struct uverbs_obj_idr_type, type);
-=======
-struct ib_uobject *rdma_alloc_begin_uobject(const struct uverbs_obj_type *type,
-					    struct ib_ucontext *ucontext)
-{
-	return type->type_class->alloc_begin(type, ucontext);
-}
-
-static void uverbs_uobject_add(struct ib_uobject *uobject)
-{
-	mutex_lock(&uobject->context->uobjects_lock);
-	list_add(&uobject->list, &uobject->context->uobjects);
-	mutex_unlock(&uobject->context->uobjects_lock);
-}
-
-static int __must_check remove_commit_idr_uobject(struct ib_uobject *uobj,
-						  enum rdma_remove_reason why)
-{
-	const struct uverbs_obj_idr_type *idr_type =
-		container_of(uobj->type, struct uverbs_obj_idr_type,
-			     type);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = idr_type->destroy_object(uobj, why);
 
 	/*
 	 * We can only fail gracefully if the user requested to destroy the
-<<<<<<< HEAD
 	 * object or when a retry may be called upon an error.
 	 * In the rest of the cases, just remove whatever you can.
 	 */
@@ -786,23 +551,10 @@ static void remove_handle_idr_uobject(struct ib_uobject *uobj)
 	spin_unlock(&uobj->ufile->idr_lock);
 	/* Matches the kref in alloc_commit_idr_uobject */
 	uverbs_uobject_put(uobj);
-=======
-	 * object. In the rest of the cases, just remove whatever you can.
-	 */
-	if (why == RDMA_REMOVE_DESTROY && ret)
-		return ret;
-
-	ib_rdmacg_uncharge(&uobj->cg_obj, uobj->context->device,
-			   RDMACG_RESOURCE_HCA_OBJECT);
-	uverbs_idr_remove_uobj(uobj);
-
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void alloc_abort_fd_uobject(struct ib_uobject *uobj)
 {
-<<<<<<< HEAD
 	put_unused_fd(uobj->id);
 }
 
@@ -907,175 +659,10 @@ int __must_check rdma_alloc_commit_uobject(struct ib_uobject *uobj)
 
 	/* Matches the down_read in rdma_alloc_begin_uobject */
 	up_read(&ufile->hw_destroy_rwsem);
-=======
-	struct ib_uobject_file *uobj_file =
-		container_of(uobj, struct ib_uobject_file, uobj);
-	struct file *filp = uobj->object;
-	int id = uobj_file->uobj.id;
-
-	/* Unsuccessful NEW */
-	fput(filp);
-	put_unused_fd(id);
-}
-
-static int __must_check remove_commit_fd_uobject(struct ib_uobject *uobj,
-						 enum rdma_remove_reason why)
-{
-	const struct uverbs_obj_fd_type *fd_type =
-		container_of(uobj->type, struct uverbs_obj_fd_type, type);
-	struct ib_uobject_file *uobj_file =
-		container_of(uobj, struct ib_uobject_file, uobj);
-	int ret = fd_type->context_closed(uobj_file, why);
-
-	if (why == RDMA_REMOVE_DESTROY && ret)
-		return ret;
-
-	if (why == RDMA_REMOVE_DURING_CLEANUP) {
-		alloc_abort_fd_uobject(uobj);
-		return ret;
-	}
-
-	uobj_file->uobj.context = NULL;
-	return ret;
-}
-
-static void assert_uverbs_usecnt(struct ib_uobject *uobj, bool exclusive)
-{
-#ifdef CONFIG_LOCKDEP
-	if (exclusive)
-		WARN_ON(atomic_read(&uobj->usecnt) != -1);
-	else
-		WARN_ON(atomic_read(&uobj->usecnt) <= 0);
-#endif
-}
-
-static int __must_check _rdma_remove_commit_uobject(struct ib_uobject *uobj,
-						    enum rdma_remove_reason why)
-{
-	int ret;
-	struct ib_ucontext *ucontext = uobj->context;
-
-	ret = uobj->type->type_class->remove_commit(uobj, why);
-	if (ret && why == RDMA_REMOVE_DESTROY) {
-		/* We couldn't remove the object, so just unlock the uobject */
-		atomic_set(&uobj->usecnt, 0);
-		uobj->type->type_class->lookup_put(uobj, true);
-	} else {
-		mutex_lock(&ucontext->uobjects_lock);
-		list_del(&uobj->list);
-		mutex_unlock(&ucontext->uobjects_lock);
-		/* put the ref we took when we created the object */
-		uverbs_uobject_put(uobj);
-	}
-
-	return ret;
-}
-
-/* This is called only for user requested DESTROY reasons */
-int __must_check rdma_remove_commit_uobject(struct ib_uobject *uobj)
-{
-	int ret;
-	struct ib_ucontext *ucontext = uobj->context;
-
-	/* put the ref count we took at lookup_get */
-	uverbs_uobject_put(uobj);
-	/* Cleanup is running. Calling this should have been impossible */
-	if (!down_read_trylock(&ucontext->cleanup_rwsem)) {
-		WARN(true, "ib_uverbs: Cleanup is running while removing an uobject\n");
-		return 0;
-	}
-	assert_uverbs_usecnt(uobj, true);
-	ret = _rdma_remove_commit_uobject(uobj, RDMA_REMOVE_DESTROY);
-
-	up_read(&ucontext->cleanup_rwsem);
-	return ret;
-}
-
-static int null_obj_type_class_remove_commit(struct ib_uobject *uobj,
-					     enum rdma_remove_reason why)
-{
-	return 0;
-}
-
-static const struct uverbs_obj_type null_obj_type = {
-	.type_class = &((const struct uverbs_obj_type_class){
-			.remove_commit = null_obj_type_class_remove_commit,
-			/* be cautious */
-			.needs_kfree_rcu = true}),
-};
-
-int rdma_explicit_destroy(struct ib_uobject *uobject)
-{
-	int ret;
-	struct ib_ucontext *ucontext = uobject->context;
-
-	/* Cleanup is running. Calling this should have been impossible */
-	if (!down_read_trylock(&ucontext->cleanup_rwsem)) {
-		WARN(true, "ib_uverbs: Cleanup is running while removing an uobject\n");
-		return 0;
-	}
-	assert_uverbs_usecnt(uobject, true);
-	ret = uobject->type->type_class->remove_commit(uobject,
-						       RDMA_REMOVE_DESTROY);
-	if (ret)
-		goto out;
-
-	uobject->type = &null_obj_type;
-
-out:
-	up_read(&ucontext->cleanup_rwsem);
-	return ret;
-}
-
-static void alloc_commit_idr_uobject(struct ib_uobject *uobj)
-{
-	uverbs_uobject_add(uobj);
-	spin_lock(&uobj->context->ufile->idr_lock);
-	/*
-	 * We already allocated this IDR with a NULL object, so
-	 * this shouldn't fail.
-	 */
-	WARN_ON(idr_replace(&uobj->context->ufile->idr,
-			    uobj, uobj->id));
-	spin_unlock(&uobj->context->ufile->idr_lock);
-}
-
-static void alloc_commit_fd_uobject(struct ib_uobject *uobj)
-{
-	struct ib_uobject_file *uobj_file =
-		container_of(uobj, struct ib_uobject_file, uobj);
-
-	uverbs_uobject_add(&uobj_file->uobj);
-	fd_install(uobj_file->uobj.id, uobj->object);
-	/* This shouldn't be used anymore. Use the file object instead */
-	uobj_file->uobj.id = 0;
-	/* Get another reference as we export this to the fops */
-	uverbs_uobject_get(&uobj_file->uobj);
-}
-
-int rdma_alloc_commit_uobject(struct ib_uobject *uobj)
-{
-	/* Cleanup is running. Calling this should have been impossible */
-	if (!down_read_trylock(&uobj->context->cleanup_rwsem)) {
-		int ret;
-
-		WARN(true, "ib_uverbs: Cleanup is running while allocating an uobject\n");
-		ret = uobj->type->type_class->remove_commit(uobj,
-							    RDMA_REMOVE_DURING_CLEANUP);
-		if (ret)
-			pr_warn("ib_uverbs: cleanup of idr object %d failed\n",
-				uobj->id);
-		return ret;
-	}
-
-	uobj->type->type_class->alloc_commit(uobj);
-	up_read(&uobj->context->cleanup_rwsem);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
 /*
  * This consumes the kref for uobj. It is up to the caller to unwind the HW
  * object and anything else connected to uobj before calling this.
@@ -1102,52 +689,20 @@ static void lookup_put_fd_uobject(struct ib_uobject *uobj,
 	struct file *filp = uobj->object;
 
 	WARN_ON(mode != UVERBS_LOOKUP_READ);
-=======
-static void alloc_abort_idr_uobject(struct ib_uobject *uobj)
-{
-	uverbs_idr_remove_uobj(uobj);
-	ib_rdmacg_uncharge(&uobj->cg_obj, uobj->context->device,
-			   RDMACG_RESOURCE_HCA_OBJECT);
-	uverbs_uobject_put(uobj);
-}
-
-void rdma_alloc_abort_uobject(struct ib_uobject *uobj)
-{
-	uobj->type->type_class->alloc_abort(uobj);
-}
-
-static void lookup_put_idr_uobject(struct ib_uobject *uobj, bool exclusive)
-{
-}
-
-static void lookup_put_fd_uobject(struct ib_uobject *uobj, bool exclusive)
-{
-	struct file *filp = uobj->object;
-
-	WARN_ON(exclusive);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* This indirectly calls uverbs_close_fd and free the object */
 	fput(filp);
 }
 
-<<<<<<< HEAD
 void rdma_lookup_put_uobject(struct ib_uobject *uobj,
 			     enum rdma_lookup_mode mode)
 {
 	assert_uverbs_usecnt(uobj, mode);
 	uobj->uapi_object->type_class->lookup_put(uobj, mode);
-=======
-void rdma_lookup_put_uobject(struct ib_uobject *uobj, bool exclusive)
-{
-	assert_uverbs_usecnt(uobj, exclusive);
-	uobj->type->type_class->lookup_put(uobj, exclusive);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * In order to unlock an object, either decrease its usecnt for
 	 * read access or zero it in case of exclusive access. See
 	 * uverbs_try_lock_object for locking schema information.
 	 */
-<<<<<<< HEAD
 	switch (mode) {
 	case UVERBS_LOOKUP_READ:
 		atomic_dec(&uobj->usecnt);
@@ -1190,28 +745,14 @@ void release_ufile_idr_uobject(struct ib_uverbs_file *ufile)
 	idr_destroy(&ufile->idr);
 }
 
-=======
-	if (!exclusive)
-		atomic_dec(&uobj->usecnt);
-	else
-		atomic_set(&uobj->usecnt, 0);
-
-	uverbs_uobject_put(uobj);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 const struct uverbs_obj_type_class uverbs_idr_class = {
 	.alloc_begin = alloc_begin_idr_uobject,
 	.lookup_get = lookup_get_idr_uobject,
 	.alloc_commit = alloc_commit_idr_uobject,
 	.alloc_abort = alloc_abort_idr_uobject,
 	.lookup_put = lookup_put_idr_uobject,
-<<<<<<< HEAD
 	.destroy_hw = destroy_hw_idr_uobject,
 	.remove_handle = remove_handle_idr_uobject,
-=======
-	.remove_commit = remove_commit_idr_uobject,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * When we destroy an object, we first just lock it for WRITE and
 	 * actually DESTROY it in the finalize stage. So, the problematic
@@ -1227,7 +768,6 @@ const struct uverbs_obj_type_class uverbs_idr_class = {
 	 */
 	.needs_kfree_rcu = true,
 };
-<<<<<<< HEAD
 EXPORT_SYMBOL(uverbs_idr_class);
 
 void uverbs_close_fd(struct file *f)
@@ -1404,105 +944,6 @@ void uverbs_destroy_ufile_hw(struct ib_uverbs_file *ufile,
 done:
 	up_write(&ufile->hw_destroy_rwsem);
 	mutex_unlock(&ufile->ucontext_lock);
-=======
-
-static void _uverbs_close_fd(struct ib_uobject_file *uobj_file)
-{
-	struct ib_ucontext *ucontext;
-	struct ib_uverbs_file *ufile = uobj_file->ufile;
-	int ret;
-
-	mutex_lock(&uobj_file->ufile->cleanup_mutex);
-
-	/* uobject was either already cleaned up or is cleaned up right now anyway */
-	if (!uobj_file->uobj.context ||
-	    !down_read_trylock(&uobj_file->uobj.context->cleanup_rwsem))
-		goto unlock;
-
-	ucontext = uobj_file->uobj.context;
-	ret = _rdma_remove_commit_uobject(&uobj_file->uobj, RDMA_REMOVE_CLOSE);
-	up_read(&ucontext->cleanup_rwsem);
-	if (ret)
-		pr_warn("uverbs: unable to clean up uobject file in uverbs_close_fd.\n");
-unlock:
-	mutex_unlock(&ufile->cleanup_mutex);
-}
-
-void uverbs_close_fd(struct file *f)
-{
-	struct ib_uobject_file *uobj_file = f->private_data;
-	struct kref *uverbs_file_ref = &uobj_file->ufile->ref;
-
-	_uverbs_close_fd(uobj_file);
-	uverbs_uobject_put(&uobj_file->uobj);
-	kref_put(uverbs_file_ref, ib_uverbs_release_file);
-}
-
-void uverbs_cleanup_ucontext(struct ib_ucontext *ucontext, bool device_removed)
-{
-	enum rdma_remove_reason reason = device_removed ?
-		RDMA_REMOVE_DRIVER_REMOVE : RDMA_REMOVE_CLOSE;
-	unsigned int cur_order = 0;
-
-	ucontext->cleanup_reason = reason;
-	/*
-	 * Waits for all remove_commit and alloc_commit to finish. Logically, We
-	 * want to hold this forever as the context is going to be destroyed,
-	 * but we'll release it since it causes a "held lock freed" BUG message.
-	 */
-	down_write(&ucontext->cleanup_rwsem);
-
-	while (!list_empty(&ucontext->uobjects)) {
-		struct ib_uobject *obj, *next_obj;
-		unsigned int next_order = UINT_MAX;
-
-		/*
-		 * This shouldn't run while executing other commands on this
-		 * context. Thus, the only thing we should take care of is
-		 * releasing a FD while traversing this list. The FD could be
-		 * closed and released from the _release fop of this FD.
-		 * In order to mitigate this, we add a lock.
-		 * We take and release the lock per order traversal in order
-		 * to let other threads (which might still use the FDs) chance
-		 * to run.
-		 */
-		mutex_lock(&ucontext->uobjects_lock);
-		list_for_each_entry_safe(obj, next_obj, &ucontext->uobjects,
-					 list) {
-			if (obj->type->destroy_order == cur_order) {
-				int ret;
-
-				/*
-				 * if we hit this WARN_ON, that means we are
-				 * racing with a lookup_get.
-				 */
-				WARN_ON(uverbs_try_lock_object(obj, true));
-				ret = obj->type->type_class->remove_commit(obj,
-									   reason);
-				list_del(&obj->list);
-				if (ret)
-					pr_warn("ib_uverbs: failed to remove uobject id %d order %u\n",
-						obj->id, cur_order);
-				/* put the ref we took when we created the object */
-				uverbs_uobject_put(obj);
-			} else {
-				next_order = min(next_order,
-						 obj->type->destroy_order);
-			}
-		}
-		mutex_unlock(&ucontext->uobjects_lock);
-		cur_order = next_order;
-	}
-	up_write(&ucontext->cleanup_rwsem);
-}
-
-void uverbs_initialize_ucontext(struct ib_ucontext *ucontext)
-{
-	ucontext->cleanup_reason = 0;
-	mutex_init(&ucontext->uobjects_lock);
-	INIT_LIST_HEAD(&ucontext->uobjects);
-	init_rwsem(&ucontext->cleanup_rwsem);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 const struct uverbs_obj_type_class uverbs_fd_class = {
@@ -1511,7 +952,6 @@ const struct uverbs_obj_type_class uverbs_fd_class = {
 	.alloc_commit = alloc_commit_fd_uobject,
 	.alloc_abort = alloc_abort_fd_uobject,
 	.lookup_put = lookup_put_fd_uobject,
-<<<<<<< HEAD
 	.destroy_hw = destroy_hw_fd_uobject,
 	.remove_handle = remove_handle_fd_uobject,
 	.needs_kfree_rcu = false,
@@ -1539,25 +979,6 @@ uverbs_get_uobject_from_file(u16 object_id,
 					       UVERBS_LOOKUP_WRITE);
 	case UVERBS_ACCESS_NEW:
 		return rdma_alloc_begin_uobject(obj, ufile);
-=======
-	.remove_commit = remove_commit_fd_uobject,
-	.needs_kfree_rcu = false,
-};
-
-struct ib_uobject *uverbs_get_uobject_from_context(const struct uverbs_obj_type *type_attrs,
-						   struct ib_ucontext *ucontext,
-						   enum uverbs_obj_access access,
-						   int id)
-{
-	switch (access) {
-	case UVERBS_ACCESS_READ:
-		return rdma_lookup_get_uobject(type_attrs, ucontext, id, false);
-	case UVERBS_ACCESS_DESTROY:
-	case UVERBS_ACCESS_WRITE:
-		return rdma_lookup_get_uobject(type_attrs, ucontext, id, true);
-	case UVERBS_ACCESS_NEW:
-		return rdma_alloc_begin_uobject(type_attrs, ucontext);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		WARN_ON(true);
 		return ERR_PTR(-EOPNOTSUPP);
@@ -1578,7 +999,6 @@ int uverbs_finalize_object(struct ib_uobject *uobj,
 
 	switch (access) {
 	case UVERBS_ACCESS_READ:
-<<<<<<< HEAD
 		rdma_lookup_put_uobject(uobj, UVERBS_LOOKUP_READ);
 		break;
 	case UVERBS_ACCESS_WRITE:
@@ -1587,18 +1007,6 @@ int uverbs_finalize_object(struct ib_uobject *uobj,
 	case UVERBS_ACCESS_DESTROY:
 		if (uobj)
 			rdma_lookup_put_uobject(uobj, UVERBS_LOOKUP_DESTROY);
-=======
-		rdma_lookup_put_uobject(uobj, false);
-		break;
-	case UVERBS_ACCESS_WRITE:
-		rdma_lookup_put_uobject(uobj, true);
-		break;
-	case UVERBS_ACCESS_DESTROY:
-		if (commit)
-			ret = rdma_remove_commit_uobject(uobj);
-		else
-			rdma_lookup_put_uobject(uobj, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case UVERBS_ACCESS_NEW:
 		if (commit)
@@ -1613,46 +1021,3 @@ int uverbs_finalize_object(struct ib_uobject *uobj,
 
 	return ret;
 }
-<<<<<<< HEAD
-=======
-
-int uverbs_finalize_objects(struct uverbs_attr_bundle *attrs_bundle,
-			    struct uverbs_attr_spec_hash * const *spec_hash,
-			    size_t num,
-			    bool commit)
-{
-	unsigned int i;
-	int ret = 0;
-
-	for (i = 0; i < num; i++) {
-		struct uverbs_attr_bundle_hash *curr_bundle =
-			&attrs_bundle->hash[i];
-		const struct uverbs_attr_spec_hash *curr_spec_bucket =
-			spec_hash[i];
-		unsigned int j;
-
-		for (j = 0; j < curr_bundle->num_attrs; j++) {
-			struct uverbs_attr *attr;
-			const struct uverbs_attr_spec *spec;
-
-			if (!uverbs_attr_is_valid_in_hash(curr_bundle, j))
-				continue;
-
-			attr = &curr_bundle->attrs[j];
-			spec = &curr_spec_bucket->attrs[j];
-
-			if (spec->type == UVERBS_ATTR_TYPE_IDR ||
-			    spec->type == UVERBS_ATTR_TYPE_FD) {
-				int current_ret;
-
-				current_ret = uverbs_finalize_object(attr->obj_attr.uobject,
-								     spec->obj.access,
-								     commit);
-				if (!ret)
-					ret = current_ret;
-			}
-		}
-	}
-	return ret;
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

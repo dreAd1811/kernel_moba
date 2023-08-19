@@ -80,7 +80,6 @@ struct spinlock;
 /* Maximum possible number of NPUs in a system. */
 #define NV_MAX_NPUS 8
 
-<<<<<<< HEAD
 /*
  * One bit per slice. We have lower slices which cover 256MB segments
  * upto 4G range. That gets us 16 low slices. For the rest we track slices
@@ -104,26 +103,18 @@ typedef struct {
 		mm_context_id_t id;
 		mm_context_id_t extended_id[TASK_SIZE_USER64/TASK_CONTEXT_SIZE];
 	};
-=======
-typedef struct {
-	mm_context_id_t id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 user_psize;		/* page size index */
 
 	/* Number of bits in the mm_cpumask */
 	atomic_t active_cpus;
 
-<<<<<<< HEAD
 	/* Number of users of the external (Nest) MMU */
 	atomic_t copros;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* NPU NMMU context */
 	struct npu_context *npu_context;
 
 #ifdef CONFIG_PPC_MM_SLICES
-<<<<<<< HEAD
 	 /* SLB page size encodings*/
 	unsigned char low_slices_psize[BITS_PER_LONG / BITS_PER_BYTE];
 	unsigned char high_slices_psize[SLICE_ARRAY_SIZE];
@@ -136,11 +127,6 @@ typedef struct {
 	struct slice_mask mask_16m;
 	struct slice_mask mask_16g;
 # endif
-=======
-	u64 low_slices_psize;	/* SLB page size encodings */
-	unsigned char high_slices_psize[SLICE_ARRAY_SIZE];
-	unsigned long addr_limit;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 	u16 sllp;		/* SLB page size encoding */
 #endif
@@ -148,7 +134,6 @@ typedef struct {
 #ifdef CONFIG_PPC_SUBPAGE_PROT
 	struct subpage_prot_table spt;
 #endif /* CONFIG_PPC_SUBPAGE_PROT */
-<<<<<<< HEAD
 	/*
 	 * pagetable fragment support
 	 */
@@ -167,15 +152,6 @@ typedef struct {
 	u32 pkey_allocation_map;
 	s16 execute_only_pkey; /* key holding execute-only protection */
 #endif
-=======
-#ifdef CONFIG_PPC_64K_PAGES
-	/* for 4K PTE fragment support */
-	void *pte_frag;
-#endif
-#ifdef CONFIG_SPAPR_TCE_IOMMU
-	struct list_head iommu_group_mem_list;
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } mm_context_t;
 
 /*
@@ -232,7 +208,6 @@ extern void radix_init_pseries(void);
 static inline void radix_init_pseries(void) { };
 #endif
 
-<<<<<<< HEAD
 static inline int get_ea_context(mm_context_t *ctx, unsigned long ea)
 {
 	int index = ea >> MAX_EA_BITS_PER_CONTEXT;
@@ -253,7 +228,5 @@ static inline unsigned long get_user_vsid(mm_context_t *ctx,
 	return get_vsid(context, ea, ssize);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __ASSEMBLY__ */
 #endif /* _ASM_POWERPC_BOOK3S_64_MMU_H_ */

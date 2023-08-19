@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #
 # Copyright 2017 Advanced Micro Devices, Inc.
 #
@@ -20,29 +19,17 @@
 # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 #
-=======
-# SPDX-License-Identifier: GPL-2.0
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 subdir-ccflags-y += \
 		-I$(FULL_AMD_PATH)/powerplay/inc/  \
 		-I$(FULL_AMD_PATH)/include/asic_reg  \
 		-I$(FULL_AMD_PATH)/include  \
 		-I$(FULL_AMD_PATH)/powerplay/smumgr\
-<<<<<<< HEAD
 		-I$(FULL_AMD_PATH)/powerplay/hwmgr
 
 AMD_PP_PATH = ../powerplay
 
 PP_LIBS = smumgr hwmgr
-=======
-		-I$(FULL_AMD_PATH)/powerplay/hwmgr \
-		-I$(FULL_AMD_PATH)/powerplay/eventmgr
-
-AMD_PP_PATH = ../powerplay
-
-PP_LIBS = smumgr hwmgr eventmgr
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 AMD_POWERPLAY = $(addsuffix /Makefile,$(addprefix $(FULL_AMD_PATH)/powerplay/,$(PP_LIBS)))
 

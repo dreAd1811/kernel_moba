@@ -62,13 +62,8 @@ ath9k_common-y:=	common.o \
 			common-init.o \
 			common-beacon.o \
 
-<<<<<<< HEAD
 ath9k_common-$(CONFIG_ATH9K_COMMON_DEBUG) += common-debug.o
 ath9k_common-$(CONFIG_ATH9K_COMMON_SPECTRAL) += common-spectral.o
-=======
-ath9k_common-$(CONFIG_ATH9K_COMMON_DEBUG) += common-debug.o \
-					     common-spectral.o
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 ath9k_htc-y +=	htc_hst.o \
 		hif_usb.o \

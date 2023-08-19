@@ -968,11 +968,7 @@ static int cvm_mmc_of_parse(struct device *dev, struct cvm_mmc_slot *slot)
 	}
 
 	ret = mmc_regulator_get_supply(mmc);
-<<<<<<< HEAD
 	if (ret)
-=======
-	if (ret == -EPROBE_DEFER)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	/*
 	 * Legacy Octeon firmware has no regulator entry, fall-back to

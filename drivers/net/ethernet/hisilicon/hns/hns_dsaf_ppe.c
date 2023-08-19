@@ -73,11 +73,7 @@ hns_ppe_common_get_ioaddr(struct ppe_common_cb *ppe_common)
  * comm_index: common index
  * retuen 0 - success , negative --fail
  */
-<<<<<<< HEAD
 static int hns_ppe_common_get_cfg(struct dsaf_device *dsaf_dev, int comm_index)
-=======
-int hns_ppe_common_get_cfg(struct dsaf_device *dsaf_dev, int comm_index)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ppe_common_cb *ppe_common;
 	int ppe_num;
@@ -108,12 +104,8 @@ int hns_ppe_common_get_cfg(struct dsaf_device *dsaf_dev, int comm_index)
 	return 0;
 }
 
-<<<<<<< HEAD
 static void
 hns_ppe_common_free_cfg(struct dsaf_device *dsaf_dev, u32 comm_index)
-=======
-void hns_ppe_common_free_cfg(struct dsaf_device *dsaf_dev, u32 comm_index)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	dsaf_dev->ppe_common[comm_index] = NULL;
 }
@@ -212,15 +204,9 @@ static int hns_ppe_common_init_hw(struct ppe_common_cb *ppe_common)
 	enum dsaf_mode dsaf_mode = dsaf_dev->dsaf_mode;
 
 	dsaf_dev->misc_op->ppe_comm_srst(dsaf_dev, 0);
-<<<<<<< HEAD
 	msleep(100);
 	dsaf_dev->misc_op->ppe_comm_srst(dsaf_dev, 1);
 	msleep(100);
-=======
-	mdelay(100);
-	dsaf_dev->misc_op->ppe_comm_srst(dsaf_dev, 1);
-	mdelay(100);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ppe_common->ppe_mode == PPE_COMMON_MODE_SERVICE) {
 		switch (dsaf_mode) {
@@ -375,11 +361,7 @@ static void hns_ppe_uninit_hw(struct hns_ppe_cb *ppe_cb)
 	}
 }
 
-<<<<<<< HEAD
 static void hns_ppe_uninit_ex(struct ppe_common_cb *ppe_common)
-=======
-void hns_ppe_uninit_ex(struct ppe_common_cb *ppe_common)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 i;
 

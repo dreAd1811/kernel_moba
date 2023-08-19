@@ -78,21 +78,13 @@ static int pasemi_system_reset_exception(struct pt_regs *regs)
 static int __init pasemi_idle_init(void)
 {
 #ifndef CONFIG_PPC_PASEMI_CPUFREQ
-<<<<<<< HEAD
 	pr_warn("No cpufreq driver, powersavings modes disabled\n");
-=======
-	printk(KERN_WARNING "No cpufreq driver, powersavings modes disabled\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	current_mode = 0;
 #endif
 
 	ppc_md.system_reset_exception = pasemi_system_reset_exception;
 	ppc_md.power_save = modes[current_mode].entry;
-<<<<<<< HEAD
 	pr_info("Using PA6T idle loop (%s)\n", modes[current_mode].name);
-=======
-	printk(KERN_INFO "Using PA6T idle loop (%s)\n", modes[current_mode].name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

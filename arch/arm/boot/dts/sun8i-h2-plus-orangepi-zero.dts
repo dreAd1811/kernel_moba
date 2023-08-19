@@ -56,11 +56,8 @@
 
 	aliases {
 		serial0 = &uart0;
-<<<<<<< HEAD
 		/* ethernet0 is the H3 emac, defined in sun8i-h3.dtsi */
 		ethernet0 = &emac;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ethernet1 = &xr819;
 	};
 
@@ -92,7 +89,6 @@
 		gpio = <&pio 0 20 GPIO_ACTIVE_HIGH>;
 	};
 
-<<<<<<< HEAD
 	reg_vdd_cpux: vdd-cpux-regulator {
 		compatible = "regulator-gpio";
 		regulator-name = "vdd-cpux";
@@ -110,8 +106,6 @@
 			  1300000 1>;
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wifi_pwrseq: wifi_pwrseq {
 		compatible = "mmc-pwrseq-simple";
 		reset-gpios = <&r_pio 0 7 GPIO_ACTIVE_LOW>;
@@ -119,13 +113,10 @@
 	};
 };
 
-<<<<<<< HEAD
 &cpu0 {
 	cpu-supply = <&reg_vdd_cpux>;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &ehci0 {
 	status = "okay";
 };
@@ -134,7 +125,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
 &emac {
 	phy-handle = <&int_mii_phy>;
 	phy-mode = "mii";
@@ -146,24 +136,10 @@
 	vmmc-supply = <&reg_vcc3v3>;
 	bus-width = <4>;
 	cd-gpios = <&pio 5 6 GPIO_ACTIVE_LOW>; /* PF6 */
-=======
-&mmc0 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&mmc0_pins_a>;
-	vmmc-supply = <&reg_vcc3v3>;
-	bus-width = <4>;
-	cd-gpios = <&pio 5 6 GPIO_ACTIVE_HIGH>; /* PF6 */
-	cd-inverted;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
 &mmc1 {
-<<<<<<< HEAD
-=======
-	pinctrl-names = "default";
-	pinctrl-0 = <&mmc1_pins_a>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vmmc-supply = <&reg_vcc_wifi>;
 	mmc-pwrseq = <&wifi_pwrseq>;
 	bus-width = <4>;
@@ -179,13 +155,6 @@
 	};
 };
 
-<<<<<<< HEAD
-=======
-&mmc1_pins_a {
-	bias-pull-up;
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &ohci0 {
 	status = "okay";
 };

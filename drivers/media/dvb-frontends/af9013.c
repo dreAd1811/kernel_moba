@@ -23,10 +23,7 @@
 struct af9013_state {
 	struct i2c_client *client;
 	struct regmap *regmap;
-<<<<<<< HEAD
 	struct i2c_mux_core *muxc;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct dvb_frontend fe;
 	u32 clk;
 	u8 tuner;
@@ -37,7 +34,6 @@ struct af9013_state {
 	u8 api_version[4];
 	u8 gpio[4];
 
-<<<<<<< HEAD
 	u32 bandwidth_hz;
 	enum fe_status fe_status;
 	/* RF and IF AGC limits used for signal strength calc */
@@ -52,22 +48,6 @@ struct af9013_state {
 	u32 dvbv3_ber;
 	u32 dvbv3_ucblocks;
 	bool first_tune;
-=======
-	/* tuner/demod RF and IF AGC limits used for signal strength calc */
-	u8 signal_strength_en, rf_50, rf_80, if_50, if_80;
-	u16 signal_strength;
-	u32 ber;
-	u32 ucblocks;
-	u16 snr;
-	u32 bandwidth_hz;
-	enum fe_status fe_status;
-	unsigned long set_frontend_jiffies;
-	unsigned long read_status_jiffies;
-	bool first_tune;
-	bool i2c_gate_state;
-	unsigned int statistics_step:3;
-	struct delayed_work statistics_work;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int af9013_set_gpio(struct af9013_state *state, u8 gpio, u8 gpioval)
@@ -122,235 +102,6 @@ err:
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
-static int af9013_statistics_ber_unc_start(struct dvb_frontend *fe)
-{
-	struct af9013_state *state = fe->demodulator_priv;
-	struct i2c_client *client = state->client;
-	int ret;
-
-	dev_dbg(&client->dev, "\n");
-
-	/* reset and start BER counter */
-	ret = regmap_update_bits(state->regmap, 0xd391, 0x10, 0x10);
-	if (ret)
-		goto err;
-
-	return 0;
-err:
-	dev_dbg(&client->dev, "failed %d\n", ret);
-	return ret;
-}
-
-static int af9013_statistics_ber_unc_result(struct dvb_frontend *fe)
-{
-	struct af9013_state *state = fe->demodulator_priv;
-	struct i2c_client *client = state->client;
-	int ret;
-	unsigned int utmp;
-	u8 buf[5];
-
-	dev_dbg(&client->dev, "\n");
-
-	/* check if error bit count is ready */
-	ret = regmap_read(state->regmap, 0xd391, &utmp);
-	if (ret)
-		goto err;
-
-	if (!((utmp >> 4) & 0x01)) {
-		dev_dbg(&client->dev, "not ready\n");
-		return 0;
-	}
-
-	ret = regmap_bulk_read(state->regmap, 0xd387, buf, 5);
-	if (ret)
-		goto err;
-
-	state->ber = (buf[2] << 16) | (buf[1] << 8) | buf[0];
-	state->ucblocks += (buf[4] << 8) | buf[3];
-
-	return 0;
-err:
-	dev_dbg(&client->dev, "failed %d\n", ret);
-	return ret;
-}
-
-static int af9013_statistics_snr_start(struct dvb_frontend *fe)
-{
-	struct af9013_state *state = fe->demodulator_priv;
-	struct i2c_client *client = state->client;
-	int ret;
-
-	dev_dbg(&client->dev, "\n");
-
-	/* start SNR meas */
-	ret = regmap_update_bits(state->regmap, 0xd2e1, 0x08, 0x08);
-	if (ret)
-		goto err;
-
-	return 0;
-err:
-	dev_dbg(&client->dev, "failed %d\n", ret);
-	return ret;
-}
-
-static int af9013_statistics_snr_result(struct dvb_frontend *fe)
-{
-	struct af9013_state *state = fe->demodulator_priv;
-	struct i2c_client *client = state->client;
-	struct dtv_frontend_properties *c = &fe->dtv_property_cache;
-	int ret, i, len;
-	unsigned int utmp;
-	u8 buf[3];
-	u32 snr_val;
-	const struct af9013_snr *uninitialized_var(snr_lut);
-
-	dev_dbg(&client->dev, "\n");
-
-	/* check if SNR ready */
-	ret = regmap_read(state->regmap, 0xd2e1, &utmp);
-	if (ret)
-		goto err;
-
-	if (!((utmp >> 3) & 0x01)) {
-		dev_dbg(&client->dev, "not ready\n");
-		return 0;
-	}
-
-	/* read value */
-	ret = regmap_bulk_read(state->regmap, 0xd2e3, buf, 3);
-	if (ret)
-		goto err;
-
-	snr_val = (buf[2] << 16) | (buf[1] << 8) | buf[0];
-
-	/* read current modulation */
-	ret = regmap_read(state->regmap, 0xd3c1, &utmp);
-	if (ret)
-		goto err;
-
-	switch ((utmp >> 6) & 3) {
-	case 0:
-		len = ARRAY_SIZE(qpsk_snr_lut);
-		snr_lut = qpsk_snr_lut;
-		break;
-	case 1:
-		len = ARRAY_SIZE(qam16_snr_lut);
-		snr_lut = qam16_snr_lut;
-		break;
-	case 2:
-		len = ARRAY_SIZE(qam64_snr_lut);
-		snr_lut = qam64_snr_lut;
-		break;
-	default:
-		goto err;
-	}
-
-	for (i = 0; i < len; i++) {
-		utmp = snr_lut[i].snr;
-
-		if (snr_val < snr_lut[i].val)
-			break;
-	}
-	state->snr = utmp * 10; /* dB/10 */
-
-	c->cnr.stat[0].svalue = 1000 * utmp;
-	c->cnr.stat[0].scale = FE_SCALE_DECIBEL;
-
-	return 0;
-err:
-	dev_dbg(&client->dev, "failed %d\n", ret);
-	return ret;
-}
-
-static int af9013_statistics_signal_strength(struct dvb_frontend *fe)
-{
-	struct af9013_state *state = fe->demodulator_priv;
-	struct i2c_client *client = state->client;
-	int ret = 0;
-	u8 buf[2], rf_gain, if_gain;
-	int signal_strength;
-
-	dev_dbg(&client->dev, "\n");
-
-	if (!state->signal_strength_en)
-		return 0;
-
-	ret = regmap_bulk_read(state->regmap, 0xd07c, buf, 2);
-	if (ret)
-		goto err;
-
-	rf_gain = buf[0];
-	if_gain = buf[1];
-
-	signal_strength = (0xffff / \
-		(9 * (state->rf_50 + state->if_50) - \
-		11 * (state->rf_80 + state->if_80))) * \
-		(10 * (rf_gain + if_gain) - \
-		11 * (state->rf_80 + state->if_80));
-	if (signal_strength < 0)
-		signal_strength = 0;
-	else if (signal_strength > 0xffff)
-		signal_strength = 0xffff;
-
-	state->signal_strength = signal_strength;
-
-	return 0;
-err:
-	dev_dbg(&client->dev, "failed %d\n", ret);
-	return ret;
-}
-
-static void af9013_statistics_work(struct work_struct *work)
-{
-	struct af9013_state *state = container_of(work,
-		struct af9013_state, statistics_work.work);
-	unsigned int next_msec;
-
-	/* update only signal strength when demod is not locked */
-	if (!(state->fe_status & FE_HAS_LOCK)) {
-		state->statistics_step = 0;
-		state->ber = 0;
-		state->snr = 0;
-	}
-
-	switch (state->statistics_step) {
-	default:
-		state->statistics_step = 0;
-		/* fall-through */
-	case 0:
-		af9013_statistics_signal_strength(&state->fe);
-		state->statistics_step++;
-		next_msec = 300;
-		break;
-	case 1:
-		af9013_statistics_snr_start(&state->fe);
-		state->statistics_step++;
-		next_msec = 200;
-		break;
-	case 2:
-		af9013_statistics_ber_unc_start(&state->fe);
-		state->statistics_step++;
-		next_msec = 1000;
-		break;
-	case 3:
-		af9013_statistics_snr_result(&state->fe);
-		state->statistics_step++;
-		next_msec = 400;
-		break;
-	case 4:
-		af9013_statistics_ber_unc_result(&state->fe);
-		state->statistics_step++;
-		next_msec = 100;
-		break;
-	}
-
-	schedule_delayed_work(&state->statistics_work,
-		msecs_to_jiffies(next_msec));
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int af9013_get_tune_settings(struct dvb_frontend *fe,
 	struct dvb_frontend_tune_settings *fesettings)
 {
@@ -775,23 +526,17 @@ static int af9013_read_status(struct dvb_frontend *fe, enum fe_status *status)
 {
 	struct af9013_state *state = fe->demodulator_priv;
 	struct i2c_client *client = state->client;
-<<<<<<< HEAD
 	struct dtv_frontend_properties *c = &fe->dtv_property_cache;
 	int ret, stmp1;
 	unsigned int utmp, utmp1, utmp2, utmp3, utmp4;
 	u8 buf[7];
 
 	dev_dbg(&client->dev, "\n");
-=======
-	int ret;
-	unsigned int utmp;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Return status from the cache if it is younger than 2000ms with the
 	 * exception of last tune is done during 4000ms.
 	 */
-<<<<<<< HEAD
 	if (time_is_after_jiffies(state->read_status_jiffies + msecs_to_jiffies(2000)) &&
 	    time_is_before_jiffies(state->set_frontend_jiffies + msecs_to_jiffies(4000))) {
 		*status = state->fe_status;
@@ -1048,41 +793,6 @@ static int af9013_read_status(struct dvb_frontend *fe, enum fe_status *status)
 		c->block_count.stat[0].scale = FE_SCALE_NOT_AVAILABLE;
 		break;
 	}
-=======
-	if (time_is_after_jiffies(
-		state->read_status_jiffies + msecs_to_jiffies(2000)) &&
-		time_is_before_jiffies(
-		state->set_frontend_jiffies + msecs_to_jiffies(4000))
-	) {
-			*status = state->fe_status;
-			return 0;
-	} else {
-		*status = 0;
-	}
-
-	/* MPEG2 lock */
-	ret = regmap_read(state->regmap, 0xd507, &utmp);
-	if (ret)
-		goto err;
-
-	if ((utmp >> 6) & 0x01)
-		*status |= FE_HAS_SIGNAL | FE_HAS_CARRIER | FE_HAS_VITERBI |
-			FE_HAS_SYNC | FE_HAS_LOCK;
-
-	if (!*status) {
-		/* TPS lock */
-		ret = regmap_read(state->regmap, 0xd330, &utmp);
-		if (ret)
-			goto err;
-
-		if ((utmp >> 3) & 0x01)
-			*status |= FE_HAS_SIGNAL | FE_HAS_CARRIER |
-				FE_HAS_VITERBI;
-	}
-
-	state->fe_status = *status;
-	state->read_status_jiffies = jiffies;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 err:
@@ -1093,52 +803,36 @@ err:
 static int af9013_read_snr(struct dvb_frontend *fe, u16 *snr)
 {
 	struct af9013_state *state = fe->demodulator_priv;
-<<<<<<< HEAD
 
 	*snr = state->dvbv3_snr;
 
-=======
-	*snr = state->snr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 static int af9013_read_signal_strength(struct dvb_frontend *fe, u16 *strength)
 {
 	struct af9013_state *state = fe->demodulator_priv;
-<<<<<<< HEAD
 
 	*strength = state->dvbv3_strength;
 
-=======
-	*strength = state->signal_strength;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 static int af9013_read_ber(struct dvb_frontend *fe, u32 *ber)
 {
 	struct af9013_state *state = fe->demodulator_priv;
-<<<<<<< HEAD
 
 	*ber = state->dvbv3_ber;
 
-=======
-	*ber = state->ber;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 static int af9013_read_ucblocks(struct dvb_frontend *fe, u32 *ucblocks)
 {
 	struct af9013_state *state = fe->demodulator_priv;
-<<<<<<< HEAD
 
 	*ucblocks = state->dvbv3_ucblocks;
 
-=======
-	*ucblocks = state->ucblocks;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1149,11 +843,7 @@ static int af9013_init(struct dvb_frontend *fe)
 	int ret, i, len;
 	unsigned int utmp;
 	u8 buf[3];
-<<<<<<< HEAD
 	const struct af9013_reg_mask_val *tab;
-=======
-	const struct af9013_reg_bit *init;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_dbg(&client->dev, "\n");
 
@@ -1208,7 +898,6 @@ static int af9013_init(struct dvb_frontend *fe)
 	if (ret)
 		goto err;
 
-<<<<<<< HEAD
 	/* Demod core settings */
 	dev_dbg(&client->dev, "load demod core settings\n");
 	len = ARRAY_SIZE(demod_init_tab);
@@ -1216,42 +905,20 @@ static int af9013_init(struct dvb_frontend *fe)
 	for (i = 0; i < len; i++) {
 		ret = regmap_update_bits(state->regmap, tab[i].reg, tab[i].mask,
 					 tab[i].val);
-=======
-	/* load OFSM settings */
-	dev_dbg(&client->dev, "load ofsm settings\n");
-	len = ARRAY_SIZE(ofsm_init);
-	init = ofsm_init;
-	for (i = 0; i < len; i++) {
-		u16 reg = init[i].addr;
-		u8 mask = GENMASK(init[i].pos + init[i].len - 1, init[i].pos);
-		u8 val = init[i].val << init[i].pos;
-
-		ret = regmap_update_bits(state->regmap, reg, mask, val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			goto err;
 	}
 
-<<<<<<< HEAD
 	/* Demod tuner specific settings */
 	dev_dbg(&client->dev, "load tuner specific settings\n");
 	switch (state->tuner) {
 	case AF9013_TUNER_MXL5003D:
 		len = ARRAY_SIZE(tuner_init_tab_mxl5003d);
 		tab = tuner_init_tab_mxl5003d;
-=======
-	/* load tuner specific settings */
-	dev_dbg(&client->dev, "load tuner specific settings\n");
-	switch (state->tuner) {
-	case AF9013_TUNER_MXL5003D:
-		len = ARRAY_SIZE(tuner_init_mxl5003d);
-		init = tuner_init_mxl5003d;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case AF9013_TUNER_MXL5005D:
 	case AF9013_TUNER_MXL5005R:
 	case AF9013_TUNER_MXL5007T:
-<<<<<<< HEAD
 		len = ARRAY_SIZE(tuner_init_tab_mxl5005);
 		tab = tuner_init_tab_mxl5005;
 		break;
@@ -1285,55 +952,12 @@ static int af9013_init(struct dvb_frontend *fe)
 	default:
 		len = ARRAY_SIZE(tuner_init_tab_unknown);
 		tab = tuner_init_tab_unknown;
-=======
-		len = ARRAY_SIZE(tuner_init_mxl5005);
-		init = tuner_init_mxl5005;
-		break;
-	case AF9013_TUNER_ENV77H11D5:
-		len = ARRAY_SIZE(tuner_init_env77h11d5);
-		init = tuner_init_env77h11d5;
-		break;
-	case AF9013_TUNER_MT2060:
-		len = ARRAY_SIZE(tuner_init_mt2060);
-		init = tuner_init_mt2060;
-		break;
-	case AF9013_TUNER_MC44S803:
-		len = ARRAY_SIZE(tuner_init_mc44s803);
-		init = tuner_init_mc44s803;
-		break;
-	case AF9013_TUNER_QT1010:
-	case AF9013_TUNER_QT1010A:
-		len = ARRAY_SIZE(tuner_init_qt1010);
-		init = tuner_init_qt1010;
-		break;
-	case AF9013_TUNER_MT2060_2:
-		len = ARRAY_SIZE(tuner_init_mt2060_2);
-		init = tuner_init_mt2060_2;
-		break;
-	case AF9013_TUNER_TDA18271:
-	case AF9013_TUNER_TDA18218:
-		len = ARRAY_SIZE(tuner_init_tda18271);
-		init = tuner_init_tda18271;
-		break;
-	case AF9013_TUNER_UNKNOWN:
-	default:
-		len = ARRAY_SIZE(tuner_init_unknown);
-		init = tuner_init_unknown;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 
 	for (i = 0; i < len; i++) {
-<<<<<<< HEAD
 		ret = regmap_update_bits(state->regmap, tab[i].reg, tab[i].mask,
 					 tab[i].val);
-=======
-		u16 reg = init[i].addr;
-		u8 mask = GENMASK(init[i].pos + init[i].len - 1, init[i].pos);
-		u8 val = init[i].val << init[i].pos;
-
-		ret = regmap_update_bits(state->regmap, reg, mask, val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			goto err;
 	}
@@ -1352,54 +976,7 @@ static int af9013_init(struct dvb_frontend *fe)
 	if (ret)
 		goto err;
 
-<<<<<<< HEAD
 	state->first_tune = true;
-=======
-	/* check if we support signal strength */
-	if (!state->signal_strength_en) {
-		ret = regmap_read(state->regmap, 0x9bee, &utmp);
-		if (ret)
-			goto err;
-
-		state->signal_strength_en = (utmp >> 0) & 0x01;
-	}
-
-	/* read values needed for signal strength calculation */
-	if (state->signal_strength_en && !state->rf_50) {
-		ret = regmap_bulk_read(state->regmap, 0x9bbd, &state->rf_50, 1);
-		if (ret)
-			goto err;
-		ret = regmap_bulk_read(state->regmap, 0x9bd0, &state->rf_80, 1);
-		if (ret)
-			goto err;
-		ret = regmap_bulk_read(state->regmap, 0x9be2, &state->if_50, 1);
-		if (ret)
-			goto err;
-		ret = regmap_bulk_read(state->regmap, 0x9be4, &state->if_80, 1);
-		if (ret)
-			goto err;
-	}
-
-	/* SNR */
-	ret = regmap_write(state->regmap, 0xd2e2, 0x01);
-	if (ret)
-		goto err;
-
-	/* BER / UCB */
-	buf[0] = (10000 >> 0) & 0xff;
-	buf[1] = (10000 >> 8) & 0xff;
-	ret = regmap_bulk_write(state->regmap, 0xd385, buf, 2);
-	if (ret)
-		goto err;
-
-	/* enable FEC monitor */
-	ret = regmap_update_bits(state->regmap, 0xd392, 0x02, 0x02);
-	if (ret)
-		goto err;
-
-	state->first_tune = true;
-	schedule_delayed_work(&state->statistics_work, msecs_to_jiffies(400));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 err:
@@ -1416,12 +993,6 @@ static int af9013_sleep(struct dvb_frontend *fe)
 
 	dev_dbg(&client->dev, "\n");
 
-<<<<<<< HEAD
-=======
-	/* stop statistics polling */
-	cancel_delayed_work_sync(&state->statistics_work);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* disable lock led */
 	ret = regmap_update_bits(state->regmap, 0xd730, 0x01, 0x00);
 	if (ret)
@@ -1459,48 +1030,6 @@ err:
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
-static int af9013_i2c_gate_ctrl(struct dvb_frontend *fe, int enable)
-{
-	int ret;
-	struct af9013_state *state = fe->demodulator_priv;
-	struct i2c_client *client = state->client;
-
-	dev_dbg(&client->dev, "enable %d\n", enable);
-
-	/* gate already open or close */
-	if (state->i2c_gate_state == enable)
-		return 0;
-
-	if (state->ts_mode == AF9013_TS_MODE_USB)
-		ret = regmap_update_bits(state->regmap, 0xd417, 0x08,
-					 enable << 3);
-	else
-		ret = regmap_update_bits(state->regmap, 0xd607, 0x04,
-					 enable << 2);
-	if (ret)
-		goto err;
-
-	state->i2c_gate_state = enable;
-
-	return 0;
-err:
-	dev_dbg(&client->dev, "failed %d\n", ret);
-	return ret;
-}
-
-static void af9013_release(struct dvb_frontend *fe)
-{
-	struct af9013_state *state = fe->demodulator_priv;
-	struct i2c_client *client = state->client;
-
-	dev_dbg(&client->dev, "\n");
-
-	i2c_unregister_device(client);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct dvb_frontend_ops af9013_ops;
 
 static int af9013_download_firmware(struct af9013_state *state)
@@ -1603,57 +1132,13 @@ err:
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
-/*
- * XXX: That is wrapper to af9013_probe() via driver core in order to provide
- * proper I2C client for legacy media attach binding.
- * New users must use I2C client binding directly!
- */
-struct dvb_frontend *af9013_attach(const struct af9013_config *config,
-				   struct i2c_adapter *i2c)
-{
-	struct i2c_client *client;
-	struct i2c_board_info board_info;
-	struct af9013_platform_data pdata;
-
-	pdata.clk = config->clock;
-	pdata.tuner = config->tuner;
-	pdata.if_frequency = config->if_frequency;
-	pdata.ts_mode = config->ts_mode;
-	pdata.ts_output_pin = 7;
-	pdata.spec_inv = config->spec_inv;
-	memcpy(&pdata.api_version, config->api_version, sizeof(pdata.api_version));
-	memcpy(&pdata.gpio, config->gpio, sizeof(pdata.gpio));
-	pdata.attach_in_use = true;
-
-	memset(&board_info, 0, sizeof(board_info));
-	strlcpy(board_info.type, "af9013", sizeof(board_info.type));
-	board_info.addr = config->i2c_addr;
-	board_info.platform_data = &pdata;
-	client = i2c_new_device(i2c, &board_info);
-	if (!client || !client->dev.driver)
-		return NULL;
-
-	return pdata.get_dvb_frontend(client);
-}
-EXPORT_SYMBOL(af9013_attach);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct dvb_frontend_ops af9013_ops = {
 	.delsys = { SYS_DVBT },
 	.info = {
 		.name = "Afatech AF9013",
-<<<<<<< HEAD
 		.frequency_min_hz = 174 * MHz,
 		.frequency_max_hz = 862 * MHz,
 		.frequency_stepsize_hz = 250 * kHz,
-=======
-		.frequency_min = 174000000,
-		.frequency_max = 862000000,
-		.frequency_stepsize = 250000,
-		.frequency_tolerance = 0,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.caps =	FE_CAN_FEC_1_2 |
 			FE_CAN_FEC_2_3 |
 			FE_CAN_FEC_3_4 |
@@ -1671,11 +1156,6 @@ static const struct dvb_frontend_ops af9013_ops = {
 			FE_CAN_MUTE_TS
 	},
 
-<<<<<<< HEAD
-=======
-	.release = af9013_release,
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.init = af9013_init,
 	.sleep = af9013_sleep,
 
@@ -1688,7 +1168,6 @@ static const struct dvb_frontend_ops af9013_ops = {
 	.read_signal_strength = af9013_read_signal_strength,
 	.read_ber = af9013_read_ber,
 	.read_ucblocks = af9013_read_ucblocks,
-<<<<<<< HEAD
 };
 
 static int af9013_pid_filter_ctrl(struct dvb_frontend *fe, int onoff)
@@ -1741,12 +1220,6 @@ err:
 	return ret;
 }
 
-=======
-
-	.i2c_gate_ctrl = af9013_i2c_gate_ctrl,
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct dvb_frontend *af9013_get_dvb_frontend(struct i2c_client *client)
 {
 	struct af9013_state *state = i2c_get_clientdata(client);
@@ -1756,7 +1229,6 @@ static struct dvb_frontend *af9013_get_dvb_frontend(struct i2c_client *client)
 	return &state->fe;
 }
 
-<<<<<<< HEAD
 static struct i2c_adapter *af9013_get_i2c_adapter(struct i2c_client *client)
 {
 	struct af9013_state *state = i2c_get_clientdata(client);
@@ -1816,11 +1288,6 @@ err:
 /* Own I2C access routines needed for regmap as chip uses extra command byte */
 static int af9013_wregs(struct i2c_client *client, u8 cmd, u16 reg,
 			const u8 *val, int len, u8 lock)
-=======
-/* Own I2C access routines needed for regmap as chip uses extra command byte */
-static int af9013_wregs(struct i2c_client *client, u8 cmd, u16 reg,
-			const u8 *val, int len)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret;
 	u8 buf[21];
@@ -1842,16 +1309,12 @@ static int af9013_wregs(struct i2c_client *client, u8 cmd, u16 reg,
 	buf[1] = (reg >> 0) & 0xff;
 	buf[2] = cmd;
 	memcpy(&buf[3], val, len);
-<<<<<<< HEAD
 
 	if (lock)
 		i2c_lock_bus(client->adapter, I2C_LOCK_SEGMENT);
 	ret = __i2c_transfer(client->adapter, msg, 1);
 	if (lock)
 		i2c_unlock_bus(client->adapter, I2C_LOCK_SEGMENT);
-=======
-	ret = i2c_transfer(client->adapter, msg, 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0) {
 		goto err;
 	} else if (ret != 1) {
@@ -1866,11 +1329,7 @@ err:
 }
 
 static int af9013_rregs(struct i2c_client *client, u8 cmd, u16 reg,
-<<<<<<< HEAD
 			u8 *val, int len, u8 lock)
-=======
-			u8 *val, int len)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret;
 	u8 buf[3];
@@ -1891,16 +1350,12 @@ static int af9013_rregs(struct i2c_client *client, u8 cmd, u16 reg,
 	buf[0] = (reg >> 8) & 0xff;
 	buf[1] = (reg >> 0) & 0xff;
 	buf[2] = cmd;
-<<<<<<< HEAD
 
 	if (lock)
 		i2c_lock_bus(client->adapter, I2C_LOCK_SEGMENT);
 	ret = __i2c_transfer(client->adapter, msg, 2);
 	if (lock)
 		i2c_unlock_bus(client->adapter, I2C_LOCK_SEGMENT);
-=======
-	ret = i2c_transfer(client->adapter, msg, 2);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0) {
 		goto err;
 	} else if (ret != 2) {
@@ -1920,7 +1375,6 @@ static int af9013_regmap_write(void *context, const void *data, size_t count)
 	struct af9013_state *state = i2c_get_clientdata(client);
 	int ret, i;
 	u8 cmd;
-<<<<<<< HEAD
 	u8 lock = !((u8 *)data)[0];
 	u16 reg = ((u8 *)data)[1] << 8 | ((u8 *)data)[2] << 0;
 	u8 *val = &((u8 *)data)[3];
@@ -1929,36 +1383,19 @@ static int af9013_regmap_write(void *context, const void *data, size_t count)
 	if (state->ts_mode == AF9013_TS_MODE_USB && (reg & 0xff00) != 0xae00) {
 		cmd = 0 << 7|0 << 6|(len - 1) << 2|1 << 1|1 << 0;
 		ret = af9013_wregs(client, cmd, reg, val, len, lock);
-=======
-	u16 reg = ((u8 *)data)[0] << 8|((u8 *)data)[1] << 0;
-	u8 *val = &((u8 *)data)[2];
-	const unsigned int len = count - 2;
-
-	if (state->ts_mode == AF9013_TS_MODE_USB && (reg & 0xff00) != 0xae00) {
-		cmd = 0 << 7|0 << 6|(len - 1) << 2|1 << 1|1 << 0;
-		ret = af9013_wregs(client, cmd, reg, val, len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			goto err;
 	} else if (reg >= 0x5100 && reg < 0x8fff) {
 		/* Firmware download */
 		cmd = 1 << 7|1 << 6|(len - 1) << 2|1 << 1|1 << 0;
-<<<<<<< HEAD
 		ret = af9013_wregs(client, cmd, reg, val, len, lock);
-=======
-		ret = af9013_wregs(client, cmd, reg, val, len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			goto err;
 	} else {
 		cmd = 0 << 7|0 << 6|(1 - 1) << 2|1 << 1|1 << 0;
 		for (i = 0; i < len; i++) {
-<<<<<<< HEAD
 			ret = af9013_wregs(client, cmd, reg + i, val + i, 1,
 					   lock);
-=======
-			ret = af9013_wregs(client, cmd, reg + i, val + i, 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (ret)
 				goto err;
 		}
@@ -1977,33 +1414,21 @@ static int af9013_regmap_read(void *context, const void *reg_buf,
 	struct af9013_state *state = i2c_get_clientdata(client);
 	int ret, i;
 	u8 cmd;
-<<<<<<< HEAD
 	u8 lock = !((u8 *)reg_buf)[0];
 	u16 reg = ((u8 *)reg_buf)[1] << 8 | ((u8 *)reg_buf)[2] << 0;
-=======
-	u16 reg = ((u8 *)reg_buf)[0] << 8|((u8 *)reg_buf)[1] << 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 *val = &((u8 *)val_buf)[0];
 	const unsigned int len = val_size;
 
 	if (state->ts_mode == AF9013_TS_MODE_USB && (reg & 0xff00) != 0xae00) {
 		cmd = 0 << 7|0 << 6|(len - 1) << 2|1 << 1|0 << 0;
-<<<<<<< HEAD
 		ret = af9013_rregs(client, cmd, reg, val_buf, len, lock);
-=======
-		ret = af9013_rregs(client, cmd, reg, val_buf, len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			goto err;
 	} else {
 		cmd = 0 << 7|0 << 6|(1 - 1) << 2|1 << 1|0 << 0;
 		for (i = 0; i < len; i++) {
-<<<<<<< HEAD
 			ret = af9013_rregs(client, cmd, reg + i, val + i, 1,
 					   lock);
-=======
-			ret = af9013_rregs(client, cmd, reg + i, val + i, 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (ret)
 				goto err;
 		}
@@ -2028,14 +1453,9 @@ static int af9013_probe(struct i2c_client *client,
 		.write = af9013_regmap_write,
 	};
 	static const struct regmap_config regmap_config = {
-<<<<<<< HEAD
 		/* Actual reg is 16 bits, see i2c adapter lock */
 		.reg_bits = 24,
 		.val_bits = 8,
-=======
-		.reg_bits    =  16,
-		.val_bits    =  8,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	state = kzalloc(sizeof(*state), GFP_KERNEL);
@@ -2044,11 +1464,8 @@ static int af9013_probe(struct i2c_client *client,
 		goto err;
 	}
 
-<<<<<<< HEAD
 	dev_dbg(&client->dev, "\n");
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Setup the state */
 	state->client = client;
 	i2c_set_clientdata(client, state);
@@ -2060,17 +1477,12 @@ static int af9013_probe(struct i2c_client *client,
 	state->spec_inv = pdata->spec_inv;
 	memcpy(&state->api_version, pdata->api_version, sizeof(state->api_version));
 	memcpy(&state->gpio, pdata->gpio, sizeof(state->gpio));
-<<<<<<< HEAD
-=======
-	INIT_DELAYED_WORK(&state->statistics_work, af9013_statistics_work);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	state->regmap = regmap_init(&client->dev, &regmap_bus, client,
 				  &regmap_config);
 	if (IS_ERR(state->regmap)) {
 		ret = PTR_ERR(state->regmap);
 		goto err_kfree;
 	}
-<<<<<<< HEAD
 	/* Create mux i2c adapter */
 	state->muxc = i2c_mux_alloc(client->adapter, &client->dev, 1, 0, 0,
 				    af9013_select, af9013_deselect);
@@ -2082,53 +1494,33 @@ static int af9013_probe(struct i2c_client *client,
 	ret = i2c_mux_add_adapter(state->muxc, 0, 0, 0);
 	if (ret)
 		goto err_regmap_exit;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Download firmware */
 	if (state->ts_mode != AF9013_TS_MODE_USB) {
 		ret = af9013_download_firmware(state);
 		if (ret)
-<<<<<<< HEAD
 			goto err_i2c_mux_del_adapters;
-=======
-			goto err_regmap_exit;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Firmware version */
 	ret = regmap_bulk_read(state->regmap, 0x5103, firmware_version,
 			       sizeof(firmware_version));
 	if (ret)
-<<<<<<< HEAD
 		goto err_i2c_mux_del_adapters;
-=======
-		goto err_regmap_exit;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Set GPIOs */
 	for (i = 0; i < sizeof(state->gpio); i++) {
 		ret = af9013_set_gpio(state, i, state->gpio[i]);
 		if (ret)
-<<<<<<< HEAD
 			goto err_i2c_mux_del_adapters;
-=======
-			goto err_regmap_exit;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Create dvb frontend */
 	memcpy(&state->fe.ops, &af9013_ops, sizeof(state->fe.ops));
-<<<<<<< HEAD
-=======
-	if (!pdata->attach_in_use)
-		state->fe.ops.release = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	state->fe.demodulator_priv = state;
 
 	/* Setup callbacks */
 	pdata->get_dvb_frontend = af9013_get_dvb_frontend;
-<<<<<<< HEAD
 	pdata->get_i2c_adapter = af9013_get_i2c_adapter;
 	pdata->pid_filter = af9013_pid_filter;
 	pdata->pid_filter_ctrl = af9013_pid_filter_ctrl;
@@ -2141,23 +1533,14 @@ static int af9013_probe(struct i2c_client *client,
 	c->post_bit_count.len = 1;
 	c->block_error.len = 1;
 	c->block_count.len = 1;
-=======
-
-	/* Init stats to indicate which stats are supported */
-	c = &state->fe.dtv_property_cache;
-	c->cnr.len = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_info(&client->dev, "Afatech AF9013 successfully attached\n");
 	dev_info(&client->dev, "firmware version: %d.%d.%d.%d\n",
 		 firmware_version[0], firmware_version[1],
 		 firmware_version[2], firmware_version[3]);
 	return 0;
-<<<<<<< HEAD
 err_i2c_mux_del_adapters:
 	i2c_mux_del_adapters(state->muxc);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_regmap_exit:
 	regmap_exit(state->regmap);
 err_kfree:
@@ -2173,12 +1556,7 @@ static int af9013_remove(struct i2c_client *client)
 
 	dev_dbg(&client->dev, "\n");
 
-<<<<<<< HEAD
 	i2c_mux_del_adapters(state->muxc);
-=======
-	/* Stop statistics polling */
-	cancel_delayed_work_sync(&state->statistics_work);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	regmap_exit(state->regmap);
 

@@ -590,10 +590,6 @@ const struct ccp_vdata ccpv3_platform = {
 	.setup = NULL,
 	.perform = &ccp3_actions,
 	.offset = 0,
-<<<<<<< HEAD
-=======
-	.rsamax = CCP_RSA_MAX_WIDTH,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 const struct ccp_vdata ccpv3 = {

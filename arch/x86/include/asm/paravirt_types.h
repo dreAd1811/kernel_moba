@@ -54,10 +54,7 @@ struct desc_struct;
 struct task_struct;
 struct cpumask;
 struct flush_tlb_info;
-<<<<<<< HEAD
 struct mmu_gather;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Wrapper type for pointers to code which uses the non-standard
@@ -226,11 +223,8 @@ struct pv_mmu_ops {
 	void (*flush_tlb_others)(const struct cpumask *cpus,
 				 const struct flush_tlb_info *info);
 
-<<<<<<< HEAD
 	void (*tlb_remove_table)(struct mmu_gather *tlb, void *table);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Hooks for allocating and freeing a pagetable top-level */
 	int  (*pgd_alloc)(struct mm_struct *mm);
 	void (*pgd_free)(struct mm_struct *mm, pgd_t *pgd);

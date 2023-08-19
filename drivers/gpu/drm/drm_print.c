@@ -23,17 +23,13 @@
  * Rob Clark <robdclark@gmail.com>
  */
 
-<<<<<<< HEAD
 #define DEBUG /* for pr_debug() */
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <stdarg.h>
 #include <linux/seq_file.h>
 #include <drm/drmP.h>
 #include <drm/drm_print.h>
 
-<<<<<<< HEAD
 void __drm_puts_coredump(struct drm_printer *p, const char *str)
 {
 	struct drm_print_iterator *iterator = p->arg;
@@ -128,8 +124,6 @@ void __drm_puts_seq_file(struct drm_printer *p, const char *str)
 }
 EXPORT_SYMBOL(__drm_puts_seq_file);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void __drm_printfn_seq_file(struct drm_printer *p, struct va_format *vaf)
 {
 	seq_printf(p->arg, "%pV", vaf);
@@ -149,7 +143,6 @@ void __drm_printfn_debug(struct drm_printer *p, struct va_format *vaf)
 EXPORT_SYMBOL(__drm_printfn_debug);
 
 /**
-<<<<<<< HEAD
  * drm_puts - print a const string to a &drm_printer stream
  * @p: the &drm printer
  * @str: const string
@@ -167,15 +160,12 @@ void drm_puts(struct drm_printer *p, const char *str)
 EXPORT_SYMBOL(drm_puts);
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * drm_printf - print to a &drm_printer stream
  * @p: the &drm_printer
  * @f: format string
  */
 void drm_printf(struct drm_printer *p, const char *f, ...)
 {
-<<<<<<< HEAD
 	va_list args;
 
 	va_start(args, f);
@@ -263,15 +253,3 @@ void drm_err(const char *format, ...)
 	va_end(args);
 }
 EXPORT_SYMBOL(drm_err);
-=======
-	struct va_format vaf;
-	va_list args;
-
-	va_start(args, f);
-	vaf.fmt = f;
-	vaf.va = &args;
-	p->printfn(p, &vaf);
-	va_end(args);
-}
-EXPORT_SYMBOL(drm_printf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

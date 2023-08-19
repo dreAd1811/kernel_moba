@@ -1,40 +1,14 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2013-2019, The Linux Foundation. All rights reserved.
  */
 
 #include <linux/ctype.h>
-=======
-/* Copyright (c) 2013-2018,2020, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- */
-#include <linux/fs.h>
-#include <linux/kernel.h>
-#include <linux/ctype.h>
-#include <linux/slab.h>
-#include <linux/delay.h>
-#include <linux/uaccess.h>
-#include <linux/vmalloc.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/debugfs.h>
 #include <linux/sched/signal.h>
 
 #include "adreno.h"
 #include "adreno_profile.h"
-<<<<<<< HEAD
-=======
-#include "kgsl_sharedmem.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "adreno_pm4types.h"
 
 #define ASSIGNS_STR_FORMAT "%.8s:%u "
@@ -90,31 +64,6 @@
 #define SIZE_PIPE_ENTRY(cnt) (50 + (cnt) * 62)
 #define SIZE_LOG_ENTRY(cnt) (6 + (cnt) * 5)
 
-<<<<<<< HEAD
-=======
-static inline uint _ib_start(struct adreno_device *adreno_dev,
-			 unsigned int *cmds)
-{
-	unsigned int *start = cmds;
-
-	*cmds++ = cp_packet(adreno_dev, CP_NOP, 1);
-	*cmds++ = KGSL_START_OF_PROFILE_IDENTIFIER;
-
-	return cmds - start;
-}
-
-static inline uint _ib_end(struct adreno_device *adreno_dev,
-			  unsigned int *cmds)
-{
-	unsigned int *start = cmds;
-
-	*cmds++ = cp_packet(adreno_dev, CP_NOP, 1);
-	*cmds++ = KGSL_END_OF_PROFILE_IDENTIFIER;
-
-	return cmds - start;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline uint _ib_cmd_mem_write(struct adreno_device *adreno_dev,
 			uint *cmds, uint64_t gpuaddr, uint val, uint *off)
 {
@@ -169,12 +118,7 @@ static int _build_pre_ib_cmds(struct adreno_device *adreno_dev,
 	ibcmds = ib_offset + ((unsigned int *) profile->shared_buffer.hostptr);
 	start = ibcmds;
 
-<<<<<<< HEAD
 	ibcmds += cp_identifier(adreno_dev, ibcmds, START_PROFILE_IDENTIFIER);
-=======
-	/* start of profile identifier */
-	ibcmds += _ib_start(adreno_dev, ibcmds);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Write ringbuffer commands to save the following to memory:
@@ -187,11 +131,7 @@ static int _build_pre_ib_cmds(struct adreno_device *adreno_dev,
 	ibcmds += _ib_cmd_mem_write(adreno_dev, ibcmds, gpuaddr + data_offset,
 			drawctxt->base.id, &data_offset);
 	ibcmds += _ib_cmd_mem_write(adreno_dev, ibcmds, gpuaddr + data_offset,
-<<<<<<< HEAD
 			drawctxt->base.proc_priv->pid, &data_offset);
-=======
-			pid_nr(drawctxt->base.proc_priv->pid), &data_offset);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ibcmds += _ib_cmd_mem_write(adreno_dev, ibcmds, gpuaddr + data_offset,
 			drawctxt->base.tid, &data_offset);
 	ibcmds += _ib_cmd_mem_write(adreno_dev, ibcmds, gpuaddr + data_offset,
@@ -213,13 +153,8 @@ static int _build_pre_ib_cmds(struct adreno_device *adreno_dev,
 		data_offset += sizeof(unsigned int) * 2;
 	}
 
-<<<<<<< HEAD
 
 	ibcmds += cp_identifier(adreno_dev, ibcmds, END_PROFILE_IDENTIFIER);
-=======
-	/* end of profile identifier */
-	ibcmds += _ib_end(adreno_dev, ibcmds);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return _create_ib_ref(adreno_dev, &profile->shared_buffer, rbcmds,
 			ibcmds - start, ib_offset * sizeof(unsigned int));
@@ -238,14 +173,9 @@ static int _build_post_ib_cmds(struct adreno_device *adreno_dev,
 
 	ibcmds = ib_offset + ((unsigned int *) profile->shared_buffer.hostptr);
 	start = ibcmds;
-<<<<<<< HEAD
 
 	/* start of profile identifier */
 	ibcmds += cp_identifier(adreno_dev, ibcmds, START_PROFILE_IDENTIFIER);
-=======
-	/* start of profile identifier */
-	ibcmds += _ib_start(adreno_dev, ibcmds);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* skip over pre_ib preamble */
 	data_offset += sizeof(unsigned int) * 6;
@@ -263,11 +193,7 @@ static int _build_post_ib_cmds(struct adreno_device *adreno_dev,
 	}
 
 	/* end of profile identifier */
-<<<<<<< HEAD
 	ibcmds += cp_identifier(adreno_dev, ibcmds, END_PROFILE_IDENTIFIER);
-=======
-	ibcmds += _ib_end(adreno_dev, ibcmds);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return _create_ib_ref(adreno_dev, &profile->shared_buffer, rbcmds,
 			ibcmds - start, ib_offset * sizeof(unsigned int));
@@ -597,11 +523,7 @@ static ssize_t profile_assignments_read(struct file *filep,
 		return 0;
 	}
 
-<<<<<<< HEAD
 	buf = kzalloc(max_size, GFP_KERNEL);
-=======
-	buf = kmalloc(max_size, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!buf) {
 		mutex_unlock(&device->mutex);
 		return -ENOMEM;
@@ -611,11 +533,7 @@ static ssize_t profile_assignments_read(struct file *filep,
 
 	/* copy all assingments from list to str */
 	list_for_each_entry(entry, &profile->assignments_list, list) {
-<<<<<<< HEAD
 		len = scnprintf(pos, max_size, ASSIGNS_STR_FORMAT,
-=======
-		len = snprintf(pos, max_size, ASSIGNS_STR_FORMAT,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				entry->name, entry->countable);
 
 		max_size -= len;
@@ -623,11 +541,7 @@ static ssize_t profile_assignments_read(struct file *filep,
 	}
 
 	size = simple_read_from_buffer(ubuf, max, ppos, buf,
-<<<<<<< HEAD
 			pos - buf);
-=======
-			strlen(buf));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kfree(buf);
 
@@ -777,11 +691,7 @@ static ssize_t profile_assignments_write(struct file *filep,
 		goto error_unlock;
 	}
 
-<<<<<<< HEAD
 	ret = adreno_perfcntr_active_oob_get(device);
-=======
-	ret = adreno_perfcntr_active_oob_get(adreno_dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		size = ret;
 		goto error_unlock;
@@ -828,11 +738,7 @@ static ssize_t profile_assignments_write(struct file *filep,
 	size = len;
 
 error_put:
-<<<<<<< HEAD
 	adreno_perfcntr_active_oob_put(device);
-=======
-	adreno_perfcntr_active_oob_put(adreno_dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 error_unlock:
 	mutex_unlock(&device->mutex);
 error_free:
@@ -905,11 +811,7 @@ static int _pipe_print_results(struct adreno_device *adreno_dev,
 		log_buf_wrapinc(profile->log_buffer, &log_ptr);
 		ts = *log_ptr;
 		log_buf_wrapinc(profile->log_buffer, &log_ptr);
-<<<<<<< HEAD
 		len = scnprintf(pipe_hdr_buf, sizeof(pipe_hdr_buf) - 1,
-=======
-		len = snprintf(pipe_hdr_buf, sizeof(pipe_hdr_buf) - 1,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				"%u %u %u %.5s %u ",
 				pid, tid, ctxt_id, api_str, ts);
 		size = simple_read_from_buffer(usr_buf,
@@ -962,11 +864,7 @@ static int _pipe_print_results(struct adreno_device *adreno_dev,
 			pc_start = (((uint64_t) start_hi) << 32) | start_lo;
 			pc_end = (((uint64_t) end_hi) << 32) | end_lo;
 
-<<<<<<< HEAD
 			len = scnprintf(pipe_cntr_buf,
-=======
-			len = snprintf(pipe_cntr_buf,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					sizeof(pipe_cntr_buf) - 1,
 					"%.8s:%u %llu %llu%c",
 					grp_name, cnt_reg, pc_start,
@@ -1110,11 +1008,7 @@ static const struct file_operations profile_assignments_fops = {
 	.llseek = noop_llseek,
 };
 
-<<<<<<< HEAD
 DEFINE_DEBUGFS_ATTRIBUTE(profile_enable_fops,
-=======
-DEFINE_SIMPLE_ATTRIBUTE(profile_enable_fops,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			profile_enable_get,
 			profile_enable_set, "%llu\n");
 

@@ -389,11 +389,7 @@ int i915_gem_dmabuf_mock_selftests(void)
 
 	err = i915_subtests(tests, i915);
 
-<<<<<<< HEAD
 	drm_dev_put(&i915->drm);
-=======
-	drm_dev_unref(&i915->drm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 

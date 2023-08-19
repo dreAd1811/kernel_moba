@@ -107,26 +107,16 @@ int mlx5_destroy_scheduling_element_cmd(struct mlx5_core_dev *dev, u8 hierarchy,
  * If the table is full, return NULL
  */
 static struct mlx5_rl_entry *find_rl_entry(struct mlx5_rl_table *table,
-<<<<<<< HEAD
 					   struct mlx5_rate_limit *rl)
-=======
-					   u32 rate)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlx5_rl_entry *ret_entry = NULL;
 	bool empty_found = false;
 	int i;
 
 	for (i = 0; i < table->max_size; i++) {
-<<<<<<< HEAD
 		if (mlx5_rl_are_equal(&table->rl_entry[i].rl, rl))
 			return &table->rl_entry[i];
 		if (!empty_found && !table->rl_entry[i].rl.rate) {
-=======
-		if (table->rl_entry[i].rate == rate)
-			return &table->rl_entry[i];
-		if (!empty_found && !table->rl_entry[i].rate) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			empty_found = true;
 			ret_entry = &table->rl_entry[i];
 		}
@@ -136,12 +126,8 @@ static struct mlx5_rl_entry *find_rl_entry(struct mlx5_rl_table *table,
 }
 
 static int mlx5_set_pp_rate_limit_cmd(struct mlx5_core_dev *dev,
-<<<<<<< HEAD
 				      u16 index,
 				      struct mlx5_rate_limit *rl)
-=======
-				   u32 rate, u16 index)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 in[MLX5_ST_SZ_DW(set_pp_rate_limit_in)]   = {0};
 	u32 out[MLX5_ST_SZ_DW(set_pp_rate_limit_out)] = {0};
@@ -149,13 +135,9 @@ static int mlx5_set_pp_rate_limit_cmd(struct mlx5_core_dev *dev,
 	MLX5_SET(set_pp_rate_limit_in, in, opcode,
 		 MLX5_CMD_OP_SET_PP_RATE_LIMIT);
 	MLX5_SET(set_pp_rate_limit_in, in, rate_limit_index, index);
-<<<<<<< HEAD
 	MLX5_SET(set_pp_rate_limit_in, in, rate_limit, rl->rate);
 	MLX5_SET(set_pp_rate_limit_in, in, burst_upper_bound, rl->max_burst_sz);
 	MLX5_SET(set_pp_rate_limit_in, in, typical_packet_size, rl->typical_pkt_sz);
-=======
-	MLX5_SET(set_pp_rate_limit_in, in, rate_limit, rate);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return mlx5_cmd_exec(dev, in, sizeof(in), out, sizeof(out));
 }
 
@@ -167,7 +149,6 @@ bool mlx5_rl_is_in_range(struct mlx5_core_dev *dev, u32 rate)
 }
 EXPORT_SYMBOL(mlx5_rl_is_in_range);
 
-<<<<<<< HEAD
 bool mlx5_rl_are_equal(struct mlx5_rate_limit *rl_0,
 		       struct mlx5_rate_limit *rl_1)
 {
@@ -179,9 +160,6 @@ EXPORT_SYMBOL(mlx5_rl_are_equal);
 
 int mlx5_rl_add_rate(struct mlx5_core_dev *dev, u16 *index,
 		     struct mlx5_rate_limit *rl)
-=======
-int mlx5_rl_add_rate(struct mlx5_core_dev *dev, u32 rate, u16 *index)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlx5_rl_table *table = &dev->priv.rl_table;
 	struct mlx5_rl_entry *entry;
@@ -189,24 +167,14 @@ int mlx5_rl_add_rate(struct mlx5_core_dev *dev, u32 rate, u16 *index)
 
 	mutex_lock(&table->rl_lock);
 
-<<<<<<< HEAD
 	if (!rl->rate || !mlx5_rl_is_in_range(dev, rl->rate)) {
 		mlx5_core_err(dev, "Invalid rate: %u, should be %u to %u\n",
 			      rl->rate, table->min_rate, table->max_rate);
-=======
-	if (!rate || !mlx5_rl_is_in_range(dev, rate)) {
-		mlx5_core_err(dev, "Invalid rate: %u, should be %u to %u\n",
-			      rate, table->min_rate, table->max_rate);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = -EINVAL;
 		goto out;
 	}
 
-<<<<<<< HEAD
 	entry = find_rl_entry(table, rl);
-=======
-	entry = find_rl_entry(table, rate);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!entry) {
 		mlx5_core_err(dev, "Max number of %u rates reached\n",
 			      table->max_size);
@@ -218,7 +186,6 @@ int mlx5_rl_add_rate(struct mlx5_core_dev *dev, u32 rate, u16 *index)
 		entry->refcount++;
 	} else {
 		/* new rate limit */
-<<<<<<< HEAD
 		err = mlx5_set_pp_rate_limit_cmd(dev, entry->index, rl);
 		if (err) {
 			mlx5_core_err(dev, "Failed configuring rate limit(err %d): \
@@ -228,15 +195,6 @@ int mlx5_rl_add_rate(struct mlx5_core_dev *dev, u32 rate, u16 *index)
 			goto out;
 		}
 		entry->rl = *rl;
-=======
-		err = mlx5_set_pp_rate_limit_cmd(dev, rate, entry->index);
-		if (err) {
-			mlx5_core_err(dev, "Failed configuring rate: %u (%d)\n",
-				      rate, err);
-			goto out;
-		}
-		entry->rate = rate;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		entry->refcount = 1;
 	}
 	*index = entry->index;
@@ -247,7 +205,6 @@ out:
 }
 EXPORT_SYMBOL(mlx5_rl_add_rate);
 
-<<<<<<< HEAD
 void mlx5_rl_remove_rate(struct mlx5_core_dev *dev, struct mlx5_rate_limit *rl)
 {
 	struct mlx5_rl_table *table = &dev->priv.rl_table;
@@ -264,34 +221,14 @@ void mlx5_rl_remove_rate(struct mlx5_core_dev *dev, struct mlx5_rate_limit *rl)
 		mlx5_core_warn(dev, "Rate %u, max_burst_sz %u typical_pkt_sz %u \
 			       are not configured\n",
 			       rl->rate, rl->max_burst_sz, rl->typical_pkt_sz);
-=======
-void mlx5_rl_remove_rate(struct mlx5_core_dev *dev, u32 rate)
-{
-	struct mlx5_rl_table *table = &dev->priv.rl_table;
-	struct mlx5_rl_entry *entry = NULL;
-
-	/* 0 is a reserved value for unlimited rate */
-	if (rate == 0)
-		return;
-
-	mutex_lock(&table->rl_lock);
-	entry = find_rl_entry(table, rate);
-	if (!entry || !entry->refcount) {
-		mlx5_core_warn(dev, "Rate %u is not configured\n", rate);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out;
 	}
 
 	entry->refcount--;
 	if (!entry->refcount) {
 		/* need to remove rate */
-<<<<<<< HEAD
 		mlx5_set_pp_rate_limit_cmd(dev, entry->index, &reset_rl);
 		entry->rl = reset_rl;
-=======
-		mlx5_set_pp_rate_limit_cmd(dev, 0, entry->index);
-		entry->rate = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 out:
@@ -338,23 +275,14 @@ int mlx5_init_rl_table(struct mlx5_core_dev *dev)
 void mlx5_cleanup_rl_table(struct mlx5_core_dev *dev)
 {
 	struct mlx5_rl_table *table = &dev->priv.rl_table;
-<<<<<<< HEAD
 	struct mlx5_rate_limit rl = {0};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 
 	/* Clear all configured rates */
 	for (i = 0; i < table->max_size; i++)
-<<<<<<< HEAD
 		if (table->rl_entry[i].rl.rate)
 			mlx5_set_pp_rate_limit_cmd(dev, table->rl_entry[i].index,
 						   &rl);
-=======
-		if (table->rl_entry[i].rate)
-			mlx5_set_pp_rate_limit_cmd(dev, 0,
-						   table->rl_entry[i].index);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kfree(dev->priv.rl_table.rl_entry);
 }

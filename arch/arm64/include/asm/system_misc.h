@@ -46,22 +46,6 @@ extern void __show_regs(struct pt_regs *);
 extern void (*arm_pm_restart)(enum reboot_mode reboot_mode, const char *cmd);
 extern char* (*arch_read_hardware_id)(void);
 
-<<<<<<< HEAD
-=======
-const char * __init arch_read_machine_name(void);
-
-#define show_unhandled_signals_ratelimited()				\
-({									\
-	static DEFINE_RATELIMIT_STATE(_rs,				\
-				      DEFAULT_RATELIMIT_INTERVAL,	\
-				      DEFAULT_RATELIMIT_BURST);		\
-	bool __show_ratelimited = false;				\
-	if (show_unhandled_signals && __ratelimit(&_rs))		\
-		__show_ratelimited = true;				\
-	__show_ratelimited;						\
-})
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int handle_guest_sea(phys_addr_t addr, unsigned int esr);
 
 #endif	/* __ASSEMBLY__ */

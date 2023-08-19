@@ -2579,10 +2579,7 @@ err_out_unmap_bars:
 	for (i = 0; i < 3; ++i)
 		if (dev->bar[i])
 			iounmap(dev->bar[i]);
-<<<<<<< HEAD
 	kfree(dev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 err_out_free_regions:
 	pci_release_regions(pdev);

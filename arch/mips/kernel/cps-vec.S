@@ -235,10 +235,7 @@ LEAF(mips_cps_core_init)
 	has_mt	t0, 3f
 
 	.set	push
-<<<<<<< HEAD
 	.set	MIPS_ISA_LEVEL_RAW
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.set	mt
 
 	/* Only allow 1 TC per VPE to execute... */
@@ -391,26 +388,16 @@ LEAF(mips_cps_boot_vpes)
 
 #elif defined(CONFIG_MIPS_MT)
 
-<<<<<<< HEAD
-=======
-	.set	push
-	.set	mt
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* If the core doesn't support MT then return */
 	has_mt	t0, 5f
 
 	/* Enter VPE configuration state */
-<<<<<<< HEAD
 	.set	push
 	.set	MIPS_ISA_LEVEL_RAW
 	.set	mt
 	dvpe
 	.set	pop
 
-=======
-	dvpe
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	PTR_LA	t1, 1f
 	jr.hb	t1
 	 nop
@@ -436,13 +423,10 @@ LEAF(mips_cps_boot_vpes)
 	mtc0	t0, CP0_VPECONTROL
 	ehb
 
-<<<<<<< HEAD
 	.set	push
 	.set	MIPS_ISA_LEVEL_RAW
 	.set	mt
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Skip the VPE if its TC is not halted */
 	mftc0	t0, CP0_TCHALT
 	beqz	t0, 2f
@@ -516,11 +500,8 @@ LEAF(mips_cps_boot_vpes)
 	ehb
 	evpe
 
-<<<<<<< HEAD
 	.set	pop
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Check whether this VPE is meant to be running */
 	li	t0, 1
 	sll	t0, t0, a1
@@ -535,11 +516,7 @@ LEAF(mips_cps_boot_vpes)
 1:	jr.hb	t0
 	 nop
 
-<<<<<<< HEAD
 2:
-=======
-2:	.set	pop
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* CONFIG_MIPS_MT_SMP */
 

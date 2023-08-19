@@ -116,10 +116,7 @@ bool acpi_scan_is_offline(struct acpi_device *adev, bool uevent)
 {
 	struct acpi_device_physical_node *pn;
 	bool offline = true;
-<<<<<<< HEAD
 	char *envp[] = { "EVENT=offline", NULL };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * acpi_container_offline() calls this for all of the container's
@@ -130,11 +127,7 @@ bool acpi_scan_is_offline(struct acpi_device *adev, bool uevent)
 	list_for_each_entry(pn, &adev->physical_node_list, node)
 		if (device_supports_offline(pn->dev) && !pn->dev->offline) {
 			if (uevent)
-<<<<<<< HEAD
 				kobject_uevent_env(&pn->dev->kobj, KOBJ_CHANGE, envp);
-=======
-				kobject_uevent(&pn->dev->kobj, KOBJ_CHANGE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			offline = false;
 			break;
@@ -928,18 +921,12 @@ static void acpi_bus_init_power_state(struct acpi_device *device, int state)
 
 		if (buffer.length && package
 		    && package->type == ACPI_TYPE_PACKAGE
-<<<<<<< HEAD
 		    && package->package.count) {
 			int err = acpi_extract_power_resources(package, 0,
 							       &ps->resources);
 			if (!err)
 				device->power.flags.power_resources = 1;
 		}
-=======
-		    && package->package.count)
-			acpi_extract_power_resources(package, 0, &ps->resources);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ACPI_FREE(buffer.pointer);
 	}
 
@@ -986,37 +973,14 @@ static void acpi_bus_get_power_flags(struct acpi_device *device)
 		acpi_bus_init_power_state(device, i);
 
 	INIT_LIST_HEAD(&device->power.states[ACPI_STATE_D3_COLD].resources);
-<<<<<<< HEAD
 	if (!list_empty(&device->power.states[ACPI_STATE_D3_HOT].resources))
 		device->power.states[ACPI_STATE_D3_COLD].flags.valid = 1;
 
 	/* Set defaults for D0 and D3hot states (always valid) */
-=======
-
-	/* Set the defaults for D0 and D3hot (always supported). */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	device->power.states[ACPI_STATE_D0].flags.valid = 1;
 	device->power.states[ACPI_STATE_D0].power = 100;
 	device->power.states[ACPI_STATE_D3_HOT].flags.valid = 1;
 
-<<<<<<< HEAD
-=======
-	/*
-	 * Use power resources only if the D0 list of them is populated, because
-	 * some platforms may provide _PR3 only to indicate D3cold support and
-	 * in those cases the power resources list returned by it may be bogus.
-	 */
-	if (!list_empty(&device->power.states[ACPI_STATE_D0].resources)) {
-		device->power.flags.power_resources = 1;
-		/*
-		 * D3cold is supported if the D3hot list of power resources is
-		 * not empty.
-		 */
-		if (!list_empty(&device->power.states[ACPI_STATE_D3_HOT].resources))
-			device->power.states[ACPI_STATE_D3_COLD].flags.valid = 1;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (acpi_bus_init_power(device))
 		device->flags.power_manageable = 0;
 }
@@ -1548,35 +1512,19 @@ static void acpi_init_coherency(struct acpi_device *adev)
 	adev->flags.coherent_dma = cca;
 }
 
-<<<<<<< HEAD
 static int acpi_check_serial_bus_slave(struct acpi_resource *ares, void *data)
 {
 	bool *is_serial_bus_slave_p = data;
-=======
-static int acpi_check_spi_i2c_slave(struct acpi_resource *ares, void *data)
-{
-	bool *is_spi_i2c_slave_p = data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ares->type != ACPI_RESOURCE_TYPE_SERIAL_BUS)
 		return 1;
 
-<<<<<<< HEAD
 	*is_serial_bus_slave_p = true;
-=======
-	/*
-	 * devices that are connected to UART still need to be enumerated to
-	 * platform bus
-	 */
-	if (ares->data.common_serial_bus.type != ACPI_RESOURCE_SERIAL_TYPE_UART)
-		*is_spi_i2c_slave_p = true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	 /* no need to do more checking */
 	return -1;
 }
 
-<<<<<<< HEAD
 static bool acpi_is_indirect_io_slave(struct acpi_device *device)
 {
 	struct acpi_device *parent = device->parent;
@@ -1607,17 +1555,10 @@ static bool acpi_device_enumeration_by_parent(struct acpi_device *device)
 
 	if (acpi_is_indirect_io_slave(device))
 		return true;
-=======
-static bool acpi_is_spi_i2c_slave(struct acpi_device *device)
-{
-	struct list_head resource_list;
-	bool is_spi_i2c_slave = false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Macs use device properties in lieu of _CRS resources */
 	if (x86_apple_machine &&
 	    (fwnode_property_present(&device->fwnode, "spiSclkPeriod") ||
-<<<<<<< HEAD
 	     fwnode_property_present(&device->fwnode, "i2cAddress") ||
 	     fwnode_property_present(&device->fwnode, "baud")))
 		return true;
@@ -1633,17 +1574,6 @@ static bool acpi_is_spi_i2c_slave(struct acpi_device *device)
 	acpi_dev_free_resource_list(&resource_list);
 
 	return is_serial_bus_slave;
-=======
-	     fwnode_property_present(&device->fwnode, "i2cAddress")))
-		return true;
-
-	INIT_LIST_HEAD(&resource_list);
-	acpi_dev_get_resources(device, &resource_list, acpi_check_spi_i2c_slave,
-			       &is_spi_i2c_slave);
-	acpi_dev_free_resource_list(&resource_list);
-
-	return is_spi_i2c_slave;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void acpi_init_device_object(struct acpi_device *device, acpi_handle handle,
@@ -1661,12 +1591,8 @@ void acpi_init_device_object(struct acpi_device *device, acpi_handle handle,
 	acpi_bus_get_flags(device);
 	device->flags.match_driver = false;
 	device->flags.initialized = true;
-<<<<<<< HEAD
 	device->flags.enumeration_by_parent =
 		acpi_device_enumeration_by_parent(device);
-=======
-	device->flags.spi_i2c_slave = acpi_is_spi_i2c_slave(device);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	acpi_device_clear_enumerated(device);
 	device_initialize(&device->dev);
 	dev_set_uevent_suppress(&device->dev, true);
@@ -1965,17 +1891,10 @@ static acpi_status acpi_bus_check_add(acpi_handle handle, u32 lvl_not_used,
 static void acpi_default_enumeration(struct acpi_device *device)
 {
 	/*
-<<<<<<< HEAD
 	 * Do not enumerate devices with enumeration_by_parent flag set as
 	 * they will be enumerated by their respective parents.
 	 */
 	if (!device->flags.enumeration_by_parent) {
-=======
-	 * Do not enumerate SPI/I2C slaves as they will be enumerated by their
-	 * respective parents.
-	 */
-	if (!device->flags.spi_i2c_slave) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		acpi_create_platform_device(device, NULL);
 		acpi_device_set_enumerated(device);
 	} else {
@@ -2072,11 +1991,7 @@ static void acpi_bus_attach(struct acpi_device *device)
 		return;
 
 	device->flags.match_driver = true;
-<<<<<<< HEAD
 	if (ret > 0 && !device->flags.enumeration_by_parent) {
-=======
-	if (ret > 0 && !device->flags.spi_i2c_slave) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		acpi_device_set_enumerated(device);
 		goto ok;
 	}
@@ -2085,17 +2000,10 @@ static void acpi_bus_attach(struct acpi_device *device)
 	if (ret < 0)
 		return;
 
-<<<<<<< HEAD
 	if (device->pnp.type.platform_id || device->flags.enumeration_by_parent)
 		acpi_default_enumeration(device);
 	else
 		acpi_device_set_enumerated(device);
-=======
-	if (!device->pnp.type.platform_id && !device->flags.spi_i2c_slave)
-		acpi_device_set_enumerated(device);
-	else
-		acpi_default_enumeration(device);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
  ok:
 	list_for_each_entry(child, &device->children, node)
@@ -2275,18 +2183,11 @@ int __init acpi_scan_init(void)
 	acpi_cmos_rtc_init();
 	acpi_container_init();
 	acpi_memory_hotplug_init();
-<<<<<<< HEAD
 	acpi_watchdog_init();
 	acpi_pnp_init();
 	acpi_int340x_thermal_init();
 	acpi_amba_init();
 	acpi_init_lpit();
-=======
-	acpi_pnp_init();
-	acpi_int340x_thermal_init();
-	acpi_amba_init();
-	acpi_watchdog_init();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	acpi_scan_add_handler(&generic_device_handler);
 

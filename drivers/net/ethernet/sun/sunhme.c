@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* sunhme.c: Sparc HME/BigMac 10/100baseT half/full duplex auto switching,
  *           auto carrier detecting ethernet driver.  Also known as the
  *           "Happy Meal Ethernet" found on SunSwift SBUS cards.
@@ -689,15 +686,9 @@ static int is_lucent_phy(struct happy_meal *hp)
 	return ret;
 }
 
-<<<<<<< HEAD
 static void happy_meal_timer(struct timer_list *t)
 {
 	struct happy_meal *hp = from_timer(hp, t, happy_timer);
-=======
-static void happy_meal_timer(unsigned long data)
-{
-	struct happy_meal *hp = (struct happy_meal *) data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void __iomem *tregs = hp->tcvregs;
 	int restart_timer = 0;
 
@@ -1423,11 +1414,6 @@ force_link:
 
 	hp->timer_ticks = 0;
 	hp->happy_timer.expires = jiffies + (12 * HZ)/10;  /* 1.2 sec. */
-<<<<<<< HEAD
-=======
-	hp->happy_timer.data = (unsigned long) hp;
-	hp->happy_timer.function = happy_meal_timer;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	add_timer(&hp->happy_timer);
 }
 
@@ -2832,11 +2818,7 @@ static int happy_meal_sbus_probe_one(struct platform_device *op, int is_qfe)
 	hp->timer_state = asleep;
 	hp->timer_ticks = 0;
 
-<<<<<<< HEAD
 	timer_setup(&hp->happy_timer, happy_meal_timer, 0);
-=======
-	init_timer(&hp->happy_timer);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	hp->dev = dev;
 	dev->netdev_ops = &hme_netdev_ops;
@@ -3150,11 +3132,7 @@ static int happy_meal_pci_probe(struct pci_dev *pdev,
 	hp->timer_state = asleep;
 	hp->timer_ticks = 0;
 
-<<<<<<< HEAD
 	timer_setup(&hp->happy_timer, happy_meal_timer, 0);
-=======
-	init_timer(&hp->happy_timer);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	hp->irq = pdev->irq;
 	hp->dev = dev;

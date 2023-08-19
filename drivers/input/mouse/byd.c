@@ -227,10 +227,7 @@
 
 struct byd_data {
 	struct timer_list timer;
-<<<<<<< HEAD
 	struct psmouse *psmouse;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	s32 abs_x;
 	s32 abs_y;
 	typeof(jiffies) last_touch_time;
@@ -255,17 +252,10 @@ static void byd_report_input(struct psmouse *psmouse)
 	input_sync(dev);
 }
 
-<<<<<<< HEAD
 static void byd_clear_touch(struct timer_list *t)
 {
 	struct byd_data *priv = from_timer(priv, t, timer);
 	struct psmouse *psmouse = priv->psmouse;
-=======
-static void byd_clear_touch(unsigned long data)
-{
-	struct psmouse *psmouse = (struct psmouse *)data;
-	struct byd_data *priv = psmouse->private;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	serio_pause_rx(psmouse->ps2dev.serio);
 	priv->touch = false;
@@ -489,12 +479,8 @@ int byd_init(struct psmouse *psmouse)
 	if (!priv)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	priv->psmouse = psmouse;
 	timer_setup(&priv->timer, byd_clear_touch, 0);
-=======
-	setup_timer(&priv->timer, byd_clear_touch, (unsigned long) psmouse);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	psmouse->private = priv;
 	psmouse->disconnect = byd_disconnect;

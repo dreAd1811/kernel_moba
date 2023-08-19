@@ -33,33 +33,21 @@
 void (*cpu_wait)(void);
 EXPORT_SYMBOL(cpu_wait);
 
-<<<<<<< HEAD
 static void __cpuidle r3081_wait(void)
-=======
-static void r3081_wait(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long cfg = read_c0_conf();
 	write_c0_conf(cfg | R30XX_CONF_HALT);
 	local_irq_enable();
 }
 
-<<<<<<< HEAD
 static void __cpuidle r39xx_wait(void)
-=======
-static void r39xx_wait(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (!need_resched())
 		write_c0_conf(read_c0_conf() | TX39_CONF_HALT);
 	local_irq_enable();
 }
 
-<<<<<<< HEAD
 void __cpuidle r4k_wait(void)
-=======
-void r4k_wait(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	local_irq_enable();
 	__r4k_wait();
@@ -72,11 +60,7 @@ void r4k_wait(void)
  * interrupt is requested" restriction in the MIPS32/MIPS64 architecture makes
  * using this version a gamble.
  */
-<<<<<<< HEAD
 void __cpuidle r4k_wait_irqoff(void)
-=======
-void r4k_wait_irqoff(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (!need_resched())
 		__asm__(
@@ -91,11 +75,7 @@ void r4k_wait_irqoff(void)
  * The RM7000 variant has to handle erratum 38.	 The workaround is to not
  * have any pending stores when the WAIT instruction is executed.
  */
-<<<<<<< HEAD
 static void __cpuidle rm7k_wait_irqoff(void)
-=======
-static void rm7k_wait_irqoff(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (!need_resched())
 		__asm__(
@@ -116,11 +96,7 @@ static void rm7k_wait_irqoff(void)
  * since coreclock (and the cp0 counter) stops upon executing it. Only an
  * interrupt can wake it, so they must be enabled before entering idle modes.
  */
-<<<<<<< HEAD
 static void __cpuidle au1k_wait(void)
-=======
-static void au1k_wait(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long c0status = read_c0_status() | 1;	/* irqs on */
 

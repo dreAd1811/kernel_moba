@@ -26,39 +26,27 @@
 
 #include <asm/machdep.h>
 
-<<<<<<< HEAD
 /*
  * Offset between Unix time (1970-based) and Mac time (1904-based). Cuda and PMU
  * times wrap in 2040. If we need to handle later times, the read_time functions
  * need to be changed to interpret wrapped times as post-2040.
  */
-=======
-/* Offset between Unix time (1970-based) and Mac time (1904-based) */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define RTC_OFFSET 2082844800
 
 static void (*rom_reset)(void);
 
 #ifdef CONFIG_ADB_CUDA
-<<<<<<< HEAD
 static time64_t cuda_read_time(void)
 {
 	struct adb_request req;
 	time64_t time;
-=======
-static long cuda_read_time(void)
-{
-	struct adb_request req;
-	long time;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (cuda_request(&req, NULL, 2, CUDA_PACKET, CUDA_GET_TIME) < 0)
 		return 0;
 	while (!req.complete)
 		cuda_poll();
 
-<<<<<<< HEAD
 	time = (u32)((req.reply[3] << 24) | (req.reply[4] << 16) |
 		     (req.reply[5] << 8) | req.reply[6]);
 
@@ -73,20 +61,6 @@ static void cuda_write_time(time64_t time)
 	if (cuda_request(&req, NULL, 6, CUDA_PACKET, CUDA_SET_TIME,
 			 (data >> 24) & 0xFF, (data >> 16) & 0xFF,
 			 (data >> 8) & 0xFF, data & 0xFF) < 0)
-=======
-	time = (req.reply[3] << 24) | (req.reply[4] << 16)
-		| (req.reply[5] << 8) | req.reply[6];
-	return time - RTC_OFFSET;
-}
-
-static void cuda_write_time(long data)
-{
-	struct adb_request req;
-	data += RTC_OFFSET;
-	if (cuda_request(&req, NULL, 6, CUDA_PACKET, CUDA_SET_TIME,
-			(data >> 24) & 0xFF, (data >> 16) & 0xFF,
-			(data >> 8) & 0xFF, data & 0xFF) < 0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	while (!req.complete)
 		cuda_poll();
@@ -95,14 +69,9 @@ static void cuda_write_time(long data)
 static __u8 cuda_read_pram(int offset)
 {
 	struct adb_request req;
-<<<<<<< HEAD
 
 	if (cuda_request(&req, NULL, 4, CUDA_PACKET, CUDA_GET_PRAM,
 			 (offset >> 8) & 0xFF, offset & 0xFF) < 0)
-=======
-	if (cuda_request(&req, NULL, 4, CUDA_PACKET, CUDA_GET_PRAM,
-			(offset >> 8) & 0xFF, offset & 0xFF) < 0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	while (!req.complete)
 		cuda_poll();
@@ -112,19 +81,13 @@ static __u8 cuda_read_pram(int offset)
 static void cuda_write_pram(int offset, __u8 data)
 {
 	struct adb_request req;
-<<<<<<< HEAD
 
 	if (cuda_request(&req, NULL, 5, CUDA_PACKET, CUDA_SET_PRAM,
 			 (offset >> 8) & 0xFF, offset & 0xFF, data) < 0)
-=======
-	if (cuda_request(&req, NULL, 5, CUDA_PACKET, CUDA_SET_PRAM,
-			(offset >> 8) & 0xFF, offset & 0xFF, data) < 0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	while (!req.complete)
 		cuda_poll();
 }
-<<<<<<< HEAD
 #endif /* CONFIG_ADB_CUDA */
 
 #ifdef CONFIG_ADB_PMU
@@ -148,54 +111,17 @@ static void pmu_write_time(time64_t time)
 	struct adb_request req;
 	u32 data = lower_32_bits(time + RTC_OFFSET);
 
-=======
-#else
-#define cuda_read_time() 0
-#define cuda_write_time(n)
-#define cuda_read_pram NULL
-#define cuda_write_pram NULL
-#endif
-
-#ifdef CONFIG_ADB_PMU68K
-static long pmu_read_time(void)
-{
-	struct adb_request req;
-	long time;
-
-	if (pmu_request(&req, NULL, 1, PMU_READ_RTC) < 0)
-		return 0;
-	while (!req.complete)
-		pmu_poll();
-
-	time = (req.reply[1] << 24) | (req.reply[2] << 16)
-		| (req.reply[3] << 8) | req.reply[4];
-	return time - RTC_OFFSET;
-}
-
-static void pmu_write_time(long data)
-{
-	struct adb_request req;
-	data += RTC_OFFSET;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (pmu_request(&req, NULL, 5, PMU_SET_RTC,
 			(data >> 24) & 0xFF, (data >> 16) & 0xFF,
 			(data >> 8) & 0xFF, data & 0xFF) < 0)
 		return;
-<<<<<<< HEAD
 	pmu_wait_complete(&req);
-=======
-	while (!req.complete)
-		pmu_poll();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static __u8 pmu_read_pram(int offset)
 {
 	struct adb_request req;
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (pmu_request(&req, NULL, 3, PMU_READ_NVRAM,
 			(offset >> 8) & 0xFF, offset & 0xFF) < 0)
 		return 0;
@@ -207,26 +133,14 @@ static __u8 pmu_read_pram(int offset)
 static void pmu_write_pram(int offset, __u8 data)
 {
 	struct adb_request req;
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (pmu_request(&req, NULL, 4, PMU_WRITE_NVRAM,
 			(offset >> 8) & 0xFF, offset & 0xFF, data) < 0)
 		return;
 	while (!req.complete)
 		pmu_poll();
 }
-<<<<<<< HEAD
 #endif /* CONFIG_ADB_PMU */
-=======
-#else
-#define pmu_read_time() 0
-#define pmu_write_time(n)
-#define pmu_read_pram NULL
-#define pmu_write_pram NULL
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * VIA PRAM/RTC access routines
@@ -237,13 +151,8 @@ static void pmu_write_pram(int offset, __u8 data)
 
 static __u8 via_pram_readbyte(void)
 {
-<<<<<<< HEAD
 	int i, reg;
 	__u8 data;
-=======
-	int	i,reg;
-	__u8	data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	reg = via1[vBufB] & ~VIA1B_vRTCClk;
 
@@ -269,11 +178,7 @@ static __u8 via_pram_readbyte(void)
 
 static void via_pram_writebyte(__u8 data)
 {
-<<<<<<< HEAD
 	int i, reg, bit;
-=======
-	int	i,reg,bit;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	reg = via1[vBufB] & ~(VIA1B_vRTCClk | VIA1B_vRTCData);
 
@@ -299,11 +204,7 @@ static void via_pram_writebyte(__u8 data)
 static void via_pram_command(int command, __u8 *data)
 {
 	unsigned long flags;
-<<<<<<< HEAD
 	int is_read;
-=======
-	int	is_read;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	local_irq_save(flags);
 
@@ -348,19 +249,11 @@ static void via_write_pram(int offset, __u8 data)
  * is basically any machine with Mac II-style ADB.
  */
 
-<<<<<<< HEAD
 static time64_t via_read_time(void)
 {
 	union {
 		__u8 cdata[4];
 		__u32 idata;
-=======
-static long via_read_time(void)
-{
-	union {
-		__u8 cdata[4];
-		long idata;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} result, last_result;
 	int count = 1;
 
@@ -381,11 +274,7 @@ static long via_read_time(void)
 		via_pram_command(0x8D, &result.cdata[0]);
 
 		if (result.idata == last_result.idata)
-<<<<<<< HEAD
 			return (time64_t)result.idata - RTC_OFFSET;
-=======
-			return result.idata - RTC_OFFSET;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (++count > 10)
 			break;
@@ -393,13 +282,8 @@ static long via_read_time(void)
 		last_result.idata = result.idata;
 	}
 
-<<<<<<< HEAD
 	pr_err("%s: failed to read a stable value; got 0x%08x then 0x%08x\n",
 	       __func__, last_result.idata, result.idata);
-=======
-	pr_err("via_read_time: failed to read a stable value; got 0x%08lx then 0x%08lx\n",
-	       last_result.idata, result.idata);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -411,7 +295,6 @@ static long via_read_time(void)
  * is basically any machine with Mac II-style ADB.
  */
 
-<<<<<<< HEAD
 static void via_write_time(time64_t time)
 {
 	union {
@@ -419,26 +302,13 @@ static void via_write_time(time64_t time)
 		__u32 idata;
 	} data;
 	__u8 temp;
-=======
-static void via_write_time(long time)
-{
-	union {
-		__u8  cdata[4];
-		long  idata;
-	} data;
-	__u8	temp;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Clear the write protect bit */
 
 	temp = 0x55;
 	via_pram_command(0x35, &temp);
 
-<<<<<<< HEAD
 	data.idata = lower_32_bits(time + RTC_OFFSET);
-=======
-	data.idata = time + RTC_OFFSET;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	via_pram_command(0x01, &data.cdata[3]);
 	via_pram_command(0x05, &data.cdata[2]);
 	via_pram_command(0x09, &data.cdata[1]);
@@ -463,30 +333,16 @@ static void via_shutdown(void)
 	}
 }
 
-<<<<<<< HEAD
-=======
-/*
- * FIXME: not sure how this is supposed to work exactly...
- */
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void oss_shutdown(void)
 {
 	oss->rom_ctrl = OSS_POWEROFF;
 }
 
 #ifdef CONFIG_ADB_CUDA
-<<<<<<< HEAD
 static void cuda_restart(void)
 {
 	struct adb_request req;
 
-=======
-
-static void cuda_restart(void)
-{
-	struct adb_request req;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (cuda_request(&req, NULL, 2, CUDA_PACKET, CUDA_RESET_SYSTEM) < 0)
 		return;
 	while (!req.complete)
@@ -496,10 +352,7 @@ static void cuda_restart(void)
 static void cuda_shutdown(void)
 {
 	struct adb_request req;
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (cuda_request(&req, NULL, 2, CUDA_PACKET, CUDA_POWERDOWN) < 0)
 		return;
 
@@ -516,46 +369,8 @@ static void cuda_shutdown(void)
 	while (!req.complete)
 		cuda_poll();
 }
-<<<<<<< HEAD
 #endif /* CONFIG_ADB_CUDA */
 
-=======
-
-#endif /* CONFIG_ADB_CUDA */
-
-#ifdef CONFIG_ADB_PMU68K
-
-void pmu_restart(void)
-{
-	struct adb_request req;
-	if (pmu_request(&req, NULL,
-			2, PMU_SET_INTR_MASK, PMU_INT_ADB|PMU_INT_TICK) < 0)
-		return;
-	while (!req.complete)
-		pmu_poll();
-	if (pmu_request(&req, NULL, 1, PMU_RESET) < 0)
-		return;
-	while (!req.complete)
-		pmu_poll();
-}
-
-void pmu_shutdown(void)
-{
-	struct adb_request req;
-	if (pmu_request(&req, NULL,
-			2, PMU_SET_INTR_MASK, PMU_INT_ADB|PMU_INT_TICK) < 0)
-		return;
-	while (!req.complete)
-		pmu_poll();
-	if (pmu_request(&req, NULL, 5, PMU_SHUTDOWN, 'M', 'A', 'T', 'T') < 0)
-		return;
-	while (!req.complete)
-		pmu_poll();
-}
-
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  *-------------------------------------------------------------------
  * Below this point are the generic routines; they'll dispatch to the
@@ -568,7 +383,6 @@ void mac_pram_read(int offset, __u8 *buffer, int len)
 	__u8 (*func)(int);
 	int i;
 
-<<<<<<< HEAD
 	switch (macintosh_config->adb_type) {
 	case MAC_ADB_IOP:
 	case MAC_ADB_II:
@@ -589,20 +403,6 @@ void mac_pram_read(int offset, __u8 *buffer, int len)
 	default:
 		return;
 	}
-=======
-	switch(macintosh_config->adb_type) {
-	case MAC_ADB_PB1:
-	case MAC_ADB_PB2:
-		func = pmu_read_pram; break;
-	case MAC_ADB_EGRET:
-	case MAC_ADB_CUDA:
-		func = cuda_read_pram; break;
-	default:
-		func = via_read_pram;
-	}
-	if (!func)
-		return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0 ; i < len ; i++) {
 		buffer[i] = (*func)(offset++);
 	}
@@ -613,7 +413,6 @@ void mac_pram_write(int offset, __u8 *buffer, int len)
 	void (*func)(int, __u8);
 	int i;
 
-<<<<<<< HEAD
 	switch (macintosh_config->adb_type) {
 	case MAC_ADB_IOP:
 	case MAC_ADB_II:
@@ -634,20 +433,6 @@ void mac_pram_write(int offset, __u8 *buffer, int len)
 	default:
 		return;
 	}
-=======
-	switch(macintosh_config->adb_type) {
-	case MAC_ADB_PB1:
-	case MAC_ADB_PB2:
-		func = pmu_write_pram; break;
-	case MAC_ADB_EGRET:
-	case MAC_ADB_CUDA:
-		func = cuda_write_pram; break;
-	default:
-		func = via_write_pram;
-	}
-	if (!func)
-		return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0 ; i < len ; i++) {
 		(*func)(offset++, buffer[i]);
 	}
@@ -664,14 +449,8 @@ void mac_poweroff(void)
 	           macintosh_config->adb_type == MAC_ADB_CUDA) {
 		cuda_shutdown();
 #endif
-<<<<<<< HEAD
 #ifdef CONFIG_ADB_PMU
 	} else if (macintosh_config->adb_type == MAC_ADB_PB2) {
-=======
-#ifdef CONFIG_ADB_PMU68K
-	} else if (macintosh_config->adb_type == MAC_ADB_PB1
-		|| macintosh_config->adb_type == MAC_ADB_PB2) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pmu_shutdown();
 #endif
 	}
@@ -711,14 +490,8 @@ void mac_reset(void)
 	           macintosh_config->adb_type == MAC_ADB_CUDA) {
 		cuda_restart();
 #endif
-<<<<<<< HEAD
 #ifdef CONFIG_ADB_PMU
 	} else if (macintosh_config->adb_type == MAC_ADB_PB2) {
-=======
-#ifdef CONFIG_ADB_PMU68K
-	} else if (macintosh_config->adb_type == MAC_ADB_PB1
-		|| macintosh_config->adb_type == MAC_ADB_PB2) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pmu_restart();
 #endif
 	} else if (CPU_IS_030) {
@@ -736,10 +509,7 @@ void mac_reset(void)
 		unsigned long phys = virt_to_phys(mac_reset);
 		unsigned long addr = (phys&0xFF000000)|0x8777;
 		unsigned long offset = phys-virt;
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		local_irq_disable(); /* lets not screw this up, ok? */
 		__asm__ __volatile__(".chip 68030\n\t"
 				     "pmove %0,%/tt0\n\t"
@@ -747,11 +517,7 @@ void mac_reset(void)
 				     : : "m" (addr));
 		/* Now jump to physical address so we can disable MMU */
 		__asm__ __volatile__(
-<<<<<<< HEAD
 		    ".chip 68030\n\t"
-=======
-                    ".chip 68030\n\t"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    "lea %/pc@(1f),%/a0\n\t"
 		    "addl %0,%/a0\n\t"/* fixup target address and stack ptr */
 		    "addl %0,%/sp\n\t"
@@ -789,22 +555,15 @@ void mac_reset(void)
  * This function translates seconds since 1970 into a proper date.
  *
  * Algorithm cribbed from glibc2.1, __offtime().
-<<<<<<< HEAD
  *
  * This is roughly same as rtc_time64_to_tm(), which we should probably
  * use here, but it's only available when CONFIG_RTC_LIB is enabled.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #define SECS_PER_MINUTE (60)
 #define SECS_PER_HOUR  (SECS_PER_MINUTE * 60)
 #define SECS_PER_DAY   (SECS_PER_HOUR * 24)
 
-<<<<<<< HEAD
 static void unmktime(time64_t time, long offset,
-=======
-static void unmktime(unsigned long time, long offset,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		     int *yearp, int *monp, int *dayp,
 		     int *hourp, int *minp, int *secp)
 {
@@ -816,18 +575,10 @@ static void unmktime(unsigned long time, long offset,
 		/* Leap years.  */
 		{ 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366 }
 	};
-<<<<<<< HEAD
 	int days, rem, y, wday, yday;
 	const unsigned short int *ip;
 
 	days = div_u64_rem(time, SECS_PER_DAY, &rem);
-=======
-	long int days, rem, y, wday, yday;
-	const unsigned short int *ip;
-
-	days = time / SECS_PER_DAY;
-	rem = time % SECS_PER_DAY;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rem += offset;
 	while (rem < 0) {
 		rem += SECS_PER_DAY;
@@ -857,14 +608,8 @@ static void unmktime(unsigned long time, long offset,
 		long int yg = y + days / 365 - (days % 365 < 0);
 
 		/* Adjust DAYS and Y to match the guessed year.  */
-<<<<<<< HEAD
 		days -= (yg - y) * 365 +
 			LEAPS_THRU_END_OF(yg - 1) - LEAPS_THRU_END_OF(y - 1);
-=======
-		days -= ((yg - y) * 365
-			 + LEAPS_THRU_END_OF (yg - 1)
-			 - LEAPS_THRU_END_OF (y - 1));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		y = yg;
 	}
 	*yearp = y - 1900;
@@ -884,7 +629,6 @@ static void unmktime(unsigned long time, long offset,
 
 int mac_hwclk(int op, struct rtc_time *t)
 {
-<<<<<<< HEAD
 	time64_t now;
 
 	if (!op) { /* read */
@@ -895,33 +639,16 @@ int mac_hwclk(int op, struct rtc_time *t)
 			now = via_read_time();
 			break;
 #ifdef CONFIG_ADB_CUDA
-=======
-	unsigned long now;
-
-	if (!op) { /* read */
-		switch (macintosh_config->adb_type) {
-		case MAC_ADB_II:
-		case MAC_ADB_IOP:
-			now = via_read_time();
-			break;
-		case MAC_ADB_PB1:
-		case MAC_ADB_PB2:
-			now = pmu_read_time();
-			break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case MAC_ADB_EGRET:
 		case MAC_ADB_CUDA:
 			now = cuda_read_time();
 			break;
-<<<<<<< HEAD
 #endif
 #ifdef CONFIG_ADB_PMU
 		case MAC_ADB_PB2:
 			now = pmu_read_time();
 			break;
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		default:
 			now = 0;
 		}
@@ -938,7 +665,6 @@ int mac_hwclk(int op, struct rtc_time *t)
 		         __func__, t->tm_year + 1900, t->tm_mon + 1, t->tm_mday,
 		         t->tm_hour, t->tm_min, t->tm_sec);
 
-<<<<<<< HEAD
 		now = mktime64(t->tm_year + 1900, t->tm_mon + 1, t->tm_mday,
 			       t->tm_hour, t->tm_min, t->tm_sec);
 
@@ -949,21 +675,10 @@ int mac_hwclk(int op, struct rtc_time *t)
 			via_write_time(now);
 			break;
 #ifdef CONFIG_ADB_CUDA
-=======
-		now = mktime(t->tm_year + 1900, t->tm_mon + 1, t->tm_mday,
-			     t->tm_hour, t->tm_min, t->tm_sec);
-
-		switch (macintosh_config->adb_type) {
-		case MAC_ADB_II:
-		case MAC_ADB_IOP:
-			via_write_time(now);
-			break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case MAC_ADB_EGRET:
 		case MAC_ADB_CUDA:
 			cuda_write_time(now);
 			break;
-<<<<<<< HEAD
 #endif
 #ifdef CONFIG_ADB_PMU
 		case MAC_ADB_PB2:
@@ -972,32 +687,7 @@ int mac_hwclk(int op, struct rtc_time *t)
 #endif
 		default:
 			return -ENODEV;
-=======
-		case MAC_ADB_PB1:
-		case MAC_ADB_PB2:
-			pmu_write_time(now);
-			break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 	return 0;
 }
-<<<<<<< HEAD
-=======
-
-/*
- * Set minutes/seconds in the hardware clock
- */
-
-int mac_set_clock_mmss (unsigned long nowtime)
-{
-	struct rtc_time now;
-
-	mac_hwclk(0, &now);
-	now.tm_sec = nowtime % 60;
-	now.tm_min = (nowtime / 60) % 60;
-	mac_hwclk(1, &now);
-
-	return 0;
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

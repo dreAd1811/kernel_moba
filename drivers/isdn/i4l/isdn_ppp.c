@@ -50,11 +50,7 @@ static struct ippp_ccp_reset *isdn_ppp_ccp_reset_alloc(struct ippp_struct *is);
 static void isdn_ppp_ccp_reset_free(struct ippp_struct *is);
 static void isdn_ppp_ccp_reset_free_state(struct ippp_struct *is,
 					  unsigned char id);
-<<<<<<< HEAD
 static void isdn_ppp_ccp_timer_callback(struct timer_list *t);
-=======
-static void isdn_ppp_ccp_timer_callback(unsigned long closure);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct ippp_ccp_reset_state *isdn_ppp_ccp_reset_alloc_state(struct ippp_struct *is,
 								   unsigned char id);
 static void isdn_ppp_ccp_reset_trans(struct ippp_struct *is,
@@ -689,17 +685,10 @@ isdn_ppp_ioctl(int min, struct file *file, unsigned int cmd, unsigned long arg)
 	return 0;
 }
 
-<<<<<<< HEAD
 __poll_t
 isdn_ppp_poll(struct file *file, poll_table *wait)
 {
 	__poll_t mask;
-=======
-unsigned int
-isdn_ppp_poll(struct file *file, poll_table *wait)
-{
-	u_int mask;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ippp_buf_queue *bf, *bl;
 	u_long flags;
 	struct ippp_struct *is;
@@ -715,21 +704,12 @@ isdn_ppp_poll(struct file *file, poll_table *wait)
 
 	if (!(is->state & IPPP_OPEN)) {
 		if (is->state == IPPP_CLOSEWAIT)
-<<<<<<< HEAD
 			return EPOLLHUP;
 		printk(KERN_DEBUG "isdn_ppp: device not open\n");
 		return EPOLLERR;
 	}
 	/* we're always ready to send .. */
 	mask = EPOLLOUT | EPOLLWRNORM;
-=======
-			return POLLHUP;
-		printk(KERN_DEBUG "isdn_ppp: device not open\n");
-		return POLLERR;
-	}
-	/* we're always ready to send .. */
-	mask = POLLOUT | POLLWRNORM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irqsave(&is->buflock, flags);
 	bl = is->last;
@@ -739,11 +719,7 @@ isdn_ppp_poll(struct file *file, poll_table *wait)
 	 */
 	if (bf->next != bl || (is->state & IPPP_NOBLOCK)) {
 		is->state &= ~IPPP_NOBLOCK;
-<<<<<<< HEAD
 		mask |= EPOLLIN | EPOLLRDNORM;
-=======
-		mask |= POLLIN | POLLRDNORM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	spin_unlock_irqrestore(&is->buflock, flags);
 	return mask;
@@ -2351,17 +2327,10 @@ static void isdn_ppp_ccp_reset_free_state(struct ippp_struct *is,
 
 /* The timer callback function which is called when a ResetReq has timed out,
    aka has never been answered by a ResetAck */
-<<<<<<< HEAD
 static void isdn_ppp_ccp_timer_callback(struct timer_list *t)
 {
 	struct ippp_ccp_reset_state *rs =
 		from_timer(rs, t, timer);
-=======
-static void isdn_ppp_ccp_timer_callback(unsigned long closure)
-{
-	struct ippp_ccp_reset_state *rs =
-		(struct ippp_ccp_reset_state *)closure;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!rs) {
 		printk(KERN_ERR "ippp_ccp: timer cb with zero closure.\n");
@@ -2407,12 +2376,7 @@ static struct ippp_ccp_reset_state *isdn_ppp_ccp_reset_alloc_state(struct ippp_s
 		rs->state = CCPResetIdle;
 		rs->is = is;
 		rs->id = id;
-<<<<<<< HEAD
 		timer_setup(&rs->timer, isdn_ppp_ccp_timer_callback, 0);
-=======
-		setup_timer(&rs->timer, isdn_ppp_ccp_timer_callback,
-			    (unsigned long)rs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		is->reset->rs[id] = rs;
 	}
 	return rs;

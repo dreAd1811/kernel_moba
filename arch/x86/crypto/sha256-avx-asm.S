@@ -341,13 +341,8 @@ a = TMP_
 .endm
 
 ########################################################################
-<<<<<<< HEAD
 ## void sha256_transform_avx(void *input_data, UINT32 digest[8], UINT64 num_blks)
 ## arg 1 : pointer to digest
-=======
-## void sha256_transform_avx(state sha256_state *state, const u8 *data, int blocks)
-## arg 1 : pointer to state
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 ## arg 2 : pointer to input data
 ## arg 3 : Num blocks
 ########################################################################

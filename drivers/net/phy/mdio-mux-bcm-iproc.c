@@ -13,11 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * version 2 (GPLv2) along with this source code.
  */
-<<<<<<< HEAD
 #include <linux/clk.h>
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/platform_device.h>
 #include <linux/device.h>
 #include <linux/of_mdio.h>
@@ -26,7 +22,6 @@
 #include <linux/mdio-mux.h>
 #include <linux/delay.h>
 
-<<<<<<< HEAD
 #define MDIO_RATE_ADJ_EXT_OFFSET	0x000
 #define MDIO_RATE_ADJ_INT_OFFSET	0x004
 #define MDIO_RATE_ADJ_DIVIDENT_SHIFT	16
@@ -34,8 +29,6 @@
 #define MDIO_SCAN_CTRL_OFFSET		0x008
 #define MDIO_SCAN_CTRL_OVRIDE_EXT_MSTR	28
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MDIO_PARAM_OFFSET		0x23c
 #define MDIO_PARAM_MIIM_CYCLE		29
 #define MDIO_PARAM_INTERNAL_SEL		25
@@ -60,18 +53,14 @@
 
 #define MDIO_REG_ADDR_SPACE_SIZE	0x250
 
-<<<<<<< HEAD
 #define MDIO_OPERATING_FREQUENCY	11000000
 #define MDIO_RATE_ADJ_DIVIDENT		1
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct iproc_mdiomux_desc {
 	void *mux_handle;
 	void __iomem *base;
 	struct device *dev;
 	struct mii_bus *mii_bus;
-<<<<<<< HEAD
 	struct clk *core_clk;
 };
 
@@ -98,10 +87,6 @@ static void mdio_mux_iproc_config(struct iproc_mdiomux_desc *md)
 	}
 }
 
-=======
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int iproc_mdio_wait_for_idle(void __iomem *base, bool result)
 {
 	unsigned int timeout = 1000; /* loop for 1s */
@@ -234,17 +219,12 @@ static int mdio_mux_iproc_probe(struct platform_device *pdev)
 		return PTR_ERR(md->base);
 	}
 
-<<<<<<< HEAD
 	md->mii_bus = devm_mdiobus_alloc(&pdev->dev);
-=======
-	md->mii_bus = mdiobus_alloc();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!md->mii_bus) {
 		dev_err(&pdev->dev, "mdiomux bus alloc failed\n");
 		return -ENOMEM;
 	}
 
-<<<<<<< HEAD
 	md->core_clk = devm_clk_get(&pdev->dev, NULL);
 	if (md->core_clk == ERR_PTR(-ENOENT) ||
 	    md->core_clk == ERR_PTR(-EINVAL))
@@ -258,8 +238,6 @@ static int mdio_mux_iproc_probe(struct platform_device *pdev)
 		return rc;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bus = md->mii_bus;
 	bus->priv = md;
 	bus->name = "iProc MDIO mux bus";
@@ -273,11 +251,7 @@ static int mdio_mux_iproc_probe(struct platform_device *pdev)
 	rc = mdiobus_register(bus);
 	if (rc) {
 		dev_err(&pdev->dev, "mdiomux registration failed\n");
-<<<<<<< HEAD
 		goto out_clk;
-=======
-		goto out;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	platform_set_drvdata(pdev, md);
@@ -289,23 +263,15 @@ static int mdio_mux_iproc_probe(struct platform_device *pdev)
 		goto out_register;
 	}
 
-<<<<<<< HEAD
 	mdio_mux_iproc_config(md);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_info(md->dev, "iProc mdiomux registered\n");
 	return 0;
 
 out_register:
 	mdiobus_unregister(bus);
-<<<<<<< HEAD
 out_clk:
 	clk_disable_unprepare(md->core_clk);
-=======
-out:
-	mdiobus_free(bus);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 
@@ -315,16 +281,11 @@ static int mdio_mux_iproc_remove(struct platform_device *pdev)
 
 	mdio_mux_uninit(md->mux_handle);
 	mdiobus_unregister(md->mii_bus);
-<<<<<<< HEAD
 	clk_disable_unprepare(md->core_clk);
-=======
-	mdiobus_free(md->mii_bus);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
 #ifdef CONFIG_PM_SLEEP
 static int mdio_mux_iproc_suspend(struct device *dev)
 {
@@ -351,8 +312,6 @@ static int mdio_mux_iproc_resume(struct device *dev)
 static SIMPLE_DEV_PM_OPS(mdio_mux_iproc_pm_ops,
 			 mdio_mux_iproc_suspend, mdio_mux_iproc_resume);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct of_device_id mdio_mux_iproc_match[] = {
 	{
 		.compatible = "brcm,mdio-mux-iproc",
@@ -365,10 +324,7 @@ static struct platform_driver mdiomux_iproc_driver = {
 	.driver = {
 		.name		= "mdio-mux-iproc",
 		.of_match_table = mdio_mux_iproc_match,
-<<<<<<< HEAD
 		.pm		= &mdio_mux_iproc_pm_ops,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.probe		= mdio_mux_iproc_probe,
 	.remove		= mdio_mux_iproc_remove,

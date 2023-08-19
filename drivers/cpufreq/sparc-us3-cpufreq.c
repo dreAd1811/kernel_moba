@@ -136,14 +136,9 @@ static int __init us3_freq_cpu_init(struct cpufreq_policy *policy)
 
 	policy->cpuinfo.transition_latency = 0;
 	policy->cur = clock_tick;
-<<<<<<< HEAD
 	policy->freq_table = table;
 
 	return 0;
-=======
-
-	return cpufreq_table_validate_and_show(policy, table);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int us3_freq_cpu_exit(struct cpufreq_policy *policy)

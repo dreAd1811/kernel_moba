@@ -29,11 +29,7 @@
 #include "md.h"
 #include "raid10.h"
 #include "raid0.h"
-<<<<<<< HEAD
 #include "md-bitmap.h"
-=======
-#include "bitmap.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * RAID10 provides a combination of RAID0 and RAID1 functionality.
@@ -140,19 +136,13 @@ static void r10bio_pool_free(void *r10_bio, void *data)
 	kfree(r10_bio);
 }
 
-<<<<<<< HEAD
 #define RESYNC_SECTORS (RESYNC_BLOCK_SIZE >> 9)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* amount of memory to reserve for resync requests */
 #define RESYNC_WINDOW (1024*1024)
 /* maximum number of concurrent requests, memory permitting */
 #define RESYNC_DEPTH (32*1024*1024/RESYNC_BLOCK_SIZE)
-<<<<<<< HEAD
 #define CLUSTER_RESYNC_WINDOW (32 * RESYNC_WINDOW)
 #define CLUSTER_RESYNC_WINDOW_SECTORS (CLUSTER_RESYNC_WINDOW >> 9)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * When performing a resync, we need to read and compare, so
@@ -185,11 +175,7 @@ static void * r10buf_pool_alloc(gfp_t gfp_flags, void *data)
 		nalloc_rp = nalloc;
 	else
 		nalloc_rp = nalloc * 2;
-<<<<<<< HEAD
 	rps = kmalloc_array(nalloc_rp, sizeof(struct resync_pages), gfp_flags);
-=======
-	rps = kmalloc(sizeof(struct resync_pages) * nalloc_rp, gfp_flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!rps)
 		goto out_free_r10bio;
 
@@ -243,11 +229,7 @@ static void * r10buf_pool_alloc(gfp_t gfp_flags, void *data)
 
 out_free_pages:
 	while (--j >= 0)
-<<<<<<< HEAD
 		resync_free_pages(&rps[j * 2]);
-=======
-		resync_free_pages(&rps[j]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	j = 0;
 out_free_bio:
@@ -273,17 +255,11 @@ static void r10buf_pool_free(void *__r10_bio, void *data)
 	for (j = conf->copies; j--; ) {
 		struct bio *bio = r10bio->devs[j].bio;
 
-<<<<<<< HEAD
 		if (bio) {
 			rp = get_resync_pages(bio);
 			resync_free_pages(rp);
 			bio_put(bio);
 		}
-=======
-		rp = get_resync_pages(bio);
-		resync_free_pages(rp);
-		bio_put(bio);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		bio = r10bio->devs[j].repl_bio;
 		if (bio)
@@ -317,22 +293,14 @@ static void free_r10bio(struct r10bio *r10_bio)
 	struct r10conf *conf = r10_bio->mddev->private;
 
 	put_all_bios(conf, r10_bio);
-<<<<<<< HEAD
 	mempool_free(r10_bio, &conf->r10bio_pool);
-=======
-	mempool_free(r10_bio, conf->r10bio_pool);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void put_buf(struct r10bio *r10_bio)
 {
 	struct r10conf *conf = r10_bio->mddev->private;
 
-<<<<<<< HEAD
 	mempool_free(r10_bio, &conf->r10buf_pool);
-=======
-	mempool_free(r10_bio, conf->r10buf_pool);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	lower_barrier(conf);
 }
@@ -420,19 +388,11 @@ static void raid10_end_read_request(struct bio *bio)
 {
 	int uptodate = !bio->bi_status;
 	struct r10bio *r10_bio = bio->bi_private;
-<<<<<<< HEAD
 	int slot;
-=======
-	int slot, dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct md_rdev *rdev;
 	struct r10conf *conf = r10_bio->mddev->private;
 
 	slot = r10_bio->read_slot;
-<<<<<<< HEAD
-=======
-	dev = r10_bio->devs[slot].devnum;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rdev = r10_bio->devs[slot].rdev;
 	/*
 	 * this branch is our 'one mirror IO has finished' event handler:
@@ -480,17 +440,10 @@ static void raid10_end_read_request(struct bio *bio)
 static void close_write(struct r10bio *r10_bio)
 {
 	/* clear the bitmap if all writes complete successfully */
-<<<<<<< HEAD
 	md_bitmap_endwrite(r10_bio->mddev->bitmap, r10_bio->sector,
 			   r10_bio->sectors,
 			   !test_bit(R10BIO_Degraded, &r10_bio->state),
 			   0);
-=======
-	bitmap_endwrite(r10_bio->mddev->bitmap, r10_bio->sector,
-			r10_bio->sectors,
-			!test_bit(R10BIO_Degraded, &r10_bio->state),
-			0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	md_write_end(r10_bio->mddev);
 }
 
@@ -799,10 +752,6 @@ static struct md_rdev *read_balance(struct r10conf *conf,
 
 	raid10_find_phys(conf, r10_bio);
 	rcu_read_lock();
-<<<<<<< HEAD
-=======
-	sectors = r10_bio->sectors;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	best_slot = -1;
 	best_rdev = NULL;
 	best_dist = MaxSector;
@@ -815,16 +764,11 @@ static struct md_rdev *read_balance(struct r10conf *conf,
 	 * the resync window. We take the first readable disk when
 	 * above the resync window.
 	 */
-<<<<<<< HEAD
 	if ((conf->mddev->recovery_cp < MaxSector
 	     && (this_sector + sectors >= conf->next_resync)) ||
 	    (mddev_is_clustered(conf->mddev) &&
 	     md_cluster_ops->area_resyncing(conf->mddev, READ, this_sector,
 					    this_sector + sectors)))
-=======
-	if (conf->mddev->recovery_cp < MaxSector
-	    && (this_sector + sectors >= conf->next_resync))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		do_balance = 0;
 
 	for (slot = 0; slot < conf->copies ; slot++) {
@@ -958,7 +902,6 @@ static void flush_pending_writes(struct r10conf *conf)
 		bio = bio_list_get(&conf->pending_bio_list);
 		conf->pending_count = 0;
 		spin_unlock_irq(&conf->device_lock);
-<<<<<<< HEAD
 
 		/*
 		 * As this is called in a wait_event() loop (see freeze_array),
@@ -975,12 +918,6 @@ static void flush_pending_writes(struct r10conf *conf)
 		/* flush any pending bitmap writes to disk
 		 * before proceeding w/ I/O */
 		md_bitmap_unplug(conf->mddev->bitmap);
-=======
-		blk_start_plug(&plug);
-		/* flush any pending bitmap writes to disk
-		 * before proceeding w/ I/O */
-		bitmap_unplug(conf->mddev->bitmap);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		wake_up(&conf->wait_barrier);
 
 		while (bio) { /* submit pending writes */
@@ -1165,11 +1102,7 @@ static void raid10_unplug(struct blk_plug_cb *cb, bool from_schedule)
 
 	/* we aren't scheduling, so we can do the write-out directly. */
 	bio = bio_list_get(&plug->pending);
-<<<<<<< HEAD
 	md_bitmap_unplug(mddev->bitmap);
-=======
-	bitmap_unplug(mddev->bitmap);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wake_up(&conf->wait_barrier);
 
 	while (bio) { /* submit pending writes */
@@ -1273,11 +1206,7 @@ static void raid10_read_request(struct mddev *mddev, struct bio *bio,
 				   (unsigned long long)r10_bio->sector);
 	if (max_sectors < bio_sectors(bio)) {
 		struct bio *split = bio_split(bio, max_sectors,
-<<<<<<< HEAD
 					      gfp, &conf->bio_split);
-=======
-					      gfp, conf->bio_split);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bio_chain(split, bio);
 		allow_barrier(conf);
 		generic_make_request(bio);
@@ -1288,11 +1217,7 @@ static void raid10_read_request(struct mddev *mddev, struct bio *bio,
 	}
 	slot = r10_bio->read_slot;
 
-<<<<<<< HEAD
 	read_bio = bio_clone_fast(bio, gfp, &mddev->bio_set);
-=======
-	read_bio = bio_clone_fast(bio, gfp, mddev->bio_set);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	r10_bio->devs[slot].bio = read_bio;
 	r10_bio->devs[slot].rdev = rdev;
@@ -1340,11 +1265,7 @@ static void raid10_write_one_disk(struct mddev *mddev, struct r10bio *r10_bio,
 	} else
 		rdev = conf->mirrors[devnum].rdev;
 
-<<<<<<< HEAD
 	mbio = bio_clone_fast(bio, GFP_NOIO, &mddev->bio_set);
-=======
-	mbio = bio_clone_fast(bio, GFP_NOIO, mddev->bio_set);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (replacement)
 		r10_bio->devs[n_copy].repl_bio = mbio;
 	else
@@ -1396,7 +1317,6 @@ static void raid10_write_request(struct mddev *mddev, struct bio *bio,
 	sector_t sectors;
 	int max_sectors;
 
-<<<<<<< HEAD
 	if ((mddev_is_clustered(mddev) &&
 	     md_cluster_ops->area_resyncing(mddev, WRITE,
 					    bio->bi_iter.bi_sector,
@@ -1413,8 +1333,6 @@ static void raid10_write_request(struct mddev *mddev, struct bio *bio,
 		finish_wait(&conf->wait_barrier, &w);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Register the new request and wait if the reconstruction
 	 * thread has put up a bar for new requests.
@@ -1595,11 +1513,7 @@ retry_write:
 
 	if (r10_bio->sectors < bio_sectors(bio)) {
 		struct bio *split = bio_split(bio, r10_bio->sectors,
-<<<<<<< HEAD
 					      GFP_NOIO, &conf->bio_split);
-=======
-					      GFP_NOIO, conf->bio_split);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bio_chain(split, bio);
 		allow_barrier(conf);
 		generic_make_request(bio);
@@ -1609,11 +1523,7 @@ retry_write:
 	}
 
 	atomic_set(&r10_bio->remaining, 1);
-<<<<<<< HEAD
 	md_bitmap_startwrite(mddev->bitmap, r10_bio->sector, r10_bio->sectors, 0);
-=======
-	bitmap_startwrite(mddev->bitmap, r10_bio->sector, r10_bio->sectors, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < conf->copies; i++) {
 		if (r10_bio->devs[i].bio)
@@ -1629,11 +1539,7 @@ static void __make_request(struct mddev *mddev, struct bio *bio, int sectors)
 	struct r10conf *conf = mddev->private;
 	struct r10bio *r10_bio;
 
-<<<<<<< HEAD
 	r10_bio = mempool_alloc(&conf->r10bio_pool, GFP_NOIO);
-=======
-	r10_bio = mempool_alloc(conf->r10bio_pool, GFP_NOIO);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	r10_bio->master_bio = bio;
 	r10_bio->sectors = sectors;
@@ -1832,12 +1738,7 @@ static void close_sync(struct r10conf *conf)
 	wait_barrier(conf);
 	allow_barrier(conf);
 
-<<<<<<< HEAD
 	mempool_exit(&conf->r10buf_pool);
-=======
-	mempool_destroy(conf->r10buf_pool);
-	conf->r10buf_pool = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int raid10_spare_active(struct mddev *mddev)
@@ -1950,11 +1851,7 @@ static int raid10_add_disk(struct mddev *mddev, struct md_rdev *rdev)
 		break;
 	}
 	if (mddev->queue && blk_queue_discard(bdev_get_queue(rdev->bdev)))
-<<<<<<< HEAD
 		blk_queue_flag_set(QUEUE_FLAG_DISCARD, mddev->queue);
-=======
-		queue_flag_set_unlocked(QUEUE_FLAG_DISCARD, mddev->queue);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	print_conf(conf);
 	return err;
@@ -2472,11 +2369,7 @@ static void fix_read_error(struct r10conf *conf, struct mddev *mddev, struct r10
 {
 	int sect = 0; /* Offset from r10_bio->sector */
 	int sectors = r10_bio->sectors;
-<<<<<<< HEAD
 	struct md_rdev *rdev;
-=======
-	struct md_rdev*rdev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int max_read_errors = atomic_read(&mddev->max_corr_read_errors);
 	int d = r10_bio->devs[r10_bio->read_slot].devnum;
 
@@ -2696,11 +2589,7 @@ static int narrow_write_error(struct r10bio *r10_bio, int i)
 		if (sectors > sect_to_write)
 			sectors = sect_to_write;
 		/* Write at 'sector' for 'sectors' */
-<<<<<<< HEAD
 		wbio = bio_clone_fast(bio, GFP_NOIO, &mddev->bio_set);
-=======
-		wbio = bio_clone_fast(bio, GFP_NOIO, mddev->bio_set);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bio_trim(wbio, sector - bio->bi_iter.bi_sector, sectors);
 		wsector = r10_bio->devs[i].addr + (sector - r10_bio->sector);
 		wbio->bi_iter.bi_sector = wsector +
@@ -2728,10 +2617,6 @@ static void handle_read_error(struct mddev *mddev, struct r10bio *r10_bio)
 	struct bio *bio;
 	struct r10conf *conf = mddev->private;
 	struct md_rdev *rdev = r10_bio->devs[slot].rdev;
-<<<<<<< HEAD
-=======
-	sector_t bio_last_sector;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* we got a read error. Maybe the drive is bad.  Maybe just
 	 * the block and we can fix it.
@@ -2742,10 +2627,6 @@ static void handle_read_error(struct mddev *mddev, struct r10bio *r10_bio)
 	 * frozen.
 	 */
 	bio = r10_bio->devs[slot].bio;
-<<<<<<< HEAD
-=======
-	bio_last_sector = r10_bio->devs[slot].addr + rdev->data_offset + r10_bio->sectors;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bio_put(bio);
 	r10_bio->devs[slot].bio = NULL;
 
@@ -2941,43 +2822,25 @@ static void raid10d(struct md_thread *thread)
 
 static int init_resync(struct r10conf *conf)
 {
-<<<<<<< HEAD
 	int ret, buffs, i;
 
 	buffs = RESYNC_WINDOW / RESYNC_BLOCK_SIZE;
 	BUG_ON(mempool_initialized(&conf->r10buf_pool));
-=======
-	int buffs;
-	int i;
-
-	buffs = RESYNC_WINDOW / RESYNC_BLOCK_SIZE;
-	BUG_ON(conf->r10buf_pool);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	conf->have_replacement = 0;
 	for (i = 0; i < conf->geo.raid_disks; i++)
 		if (conf->mirrors[i].replacement)
 			conf->have_replacement = 1;
-<<<<<<< HEAD
 	ret = mempool_init(&conf->r10buf_pool, buffs,
 			   r10buf_pool_alloc, r10buf_pool_free, conf);
 	if (ret)
 		return ret;
-=======
-	conf->r10buf_pool = mempool_create(buffs, r10buf_pool_alloc, r10buf_pool_free, conf);
-	if (!conf->r10buf_pool)
-		return -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	conf->next_resync = 0;
 	return 0;
 }
 
 static struct r10bio *raid10_alloc_init_r10buf(struct r10conf *conf)
 {
-<<<<<<< HEAD
 	struct r10bio *r10bio = mempool_alloc(&conf->r10buf_pool, GFP_NOIO);
-=======
-	struct r10bio *r10bio = mempool_alloc(conf->r10buf_pool, GFP_NOIO);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct rsync_pages *rp;
 	struct bio *bio;
 	int nalloc;
@@ -3005,7 +2868,6 @@ static struct r10bio *raid10_alloc_init_r10buf(struct r10conf *conf)
 }
 
 /*
-<<<<<<< HEAD
  * Set cluster_sync_high since we need other nodes to add the
  * range [cluster_sync_low, cluster_sync_high] to suspend list.
  */
@@ -3043,8 +2905,6 @@ static void raid10_set_cluster_sync_high(struct r10conf *conf)
 }
 
 /*
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * perform a "sync" on one "block"
  *
  * We need to make sure that no normal I/O request - particularly write
@@ -3091,11 +2951,7 @@ static sector_t raid10_sync_request(struct mddev *mddev, sector_t sector_nr,
 	sector_t chunk_mask = conf->geo.chunk_mask;
 	int page_idx = 0;
 
-<<<<<<< HEAD
 	if (!mempool_initialized(&conf->r10buf_pool))
-=======
-	if (!conf->r10buf_pool)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (init_resync(conf))
 			return 0;
 
@@ -3120,12 +2976,9 @@ static sector_t raid10_sync_request(struct mddev *mddev, sector_t sector_nr,
 	    test_bit(MD_RECOVERY_RESHAPE, &mddev->recovery))
 		max_sector = mddev->resync_max_sectors;
 	if (sector_nr >= max_sector) {
-<<<<<<< HEAD
 		conf->cluster_sync_low = 0;
 		conf->cluster_sync_high = 0;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* If we aborted, we need to abort the
 		 * sync on the 'current' bitmap chucks (there can
 		 * be several when recovering multiple devices).
@@ -3143,7 +2996,6 @@ static sector_t raid10_sync_request(struct mddev *mddev, sector_t sector_nr,
 
 		if (mddev->curr_resync < max_sector) { /* aborted */
 			if (test_bit(MD_RECOVERY_SYNC, &mddev->recovery))
-<<<<<<< HEAD
 				md_bitmap_end_sync(mddev->bitmap, mddev->curr_resync,
 						   &sync_blocks, 1);
 			else for (i = 0; i < conf->geo.raid_disks; i++) {
@@ -3151,15 +3003,6 @@ static sector_t raid10_sync_request(struct mddev *mddev, sector_t sector_nr,
 					raid10_find_virt(conf, mddev->curr_resync, i);
 				md_bitmap_end_sync(mddev->bitmap, sect,
 						   &sync_blocks, 1);
-=======
-				bitmap_end_sync(mddev->bitmap, mddev->curr_resync,
-						&sync_blocks, 1);
-			else for (i = 0; i < conf->geo.raid_disks; i++) {
-				sector_t sect =
-					raid10_find_virt(conf, mddev->curr_resync, i);
-				bitmap_end_sync(mddev->bitmap, sect,
-						&sync_blocks, 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		} else {
 			/* completed sync */
@@ -3180,11 +3023,7 @@ static sector_t raid10_sync_request(struct mddev *mddev, sector_t sector_nr,
 			}
 			conf->fullsync = 0;
 		}
-<<<<<<< HEAD
 		md_bitmap_close_sync(mddev->bitmap);
-=======
-		bitmap_close_sync(mddev->bitmap);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		close_sync(conf);
 		*skipped = 1;
 		return sectors_skipped;
@@ -3278,13 +3117,8 @@ static sector_t raid10_sync_request(struct mddev *mddev, sector_t sector_nr,
 			 * we only need to recover the block if it is set in
 			 * the bitmap
 			 */
-<<<<<<< HEAD
 			must_sync = md_bitmap_start_sync(mddev->bitmap, sect,
 							 &sync_blocks, 1);
-=======
-			must_sync = bitmap_start_sync(mddev->bitmap, sect,
-						      &sync_blocks, 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (sync_blocks < max_sync)
 				max_sync = sync_blocks;
 			if (!must_sync &&
@@ -3329,13 +3163,8 @@ static sector_t raid10_sync_request(struct mddev *mddev, sector_t sector_nr,
 				}
 			}
 
-<<<<<<< HEAD
 			must_sync = md_bitmap_start_sync(mddev->bitmap, sect,
 							 &sync_blocks, still_degraded);
-=======
-			must_sync = bitmap_start_sync(mddev->bitmap, sect,
-						      &sync_blocks, still_degraded);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			any_working = 0;
 			for (j=0; j<conf->copies;j++) {
@@ -3504,7 +3333,6 @@ static sector_t raid10_sync_request(struct mddev *mddev, sector_t sector_nr,
 		/* resync. Schedule a read for every block at this virt offset */
 		int count = 0;
 
-<<<<<<< HEAD
 		/*
 		 * Since curr_resync_completed could probably not update in
 		 * time, and we will set cluster_sync_low based on it.
@@ -3518,12 +3346,6 @@ static sector_t raid10_sync_request(struct mddev *mddev, sector_t sector_nr,
 
 		if (!md_bitmap_start_sync(mddev->bitmap, sector_nr,
 					  &sync_blocks, mddev->degraded) &&
-=======
-		bitmap_cond_end_sync(mddev->bitmap, sector_nr, 0);
-
-		if (!bitmap_start_sync(mddev->bitmap, sector_nr,
-				       &sync_blocks, mddev->degraded) &&
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    !conf->fullsync && !test_bit(MD_RECOVERY_REQUESTED,
 						 &mddev->recovery)) {
 			/* We can skip this block */
@@ -3654,7 +3476,6 @@ static sector_t raid10_sync_request(struct mddev *mddev, sector_t sector_nr,
 	} while (++page_idx < RESYNC_PAGES);
 	r10_bio->sectors = nr_sectors;
 
-<<<<<<< HEAD
 	if (mddev_is_clustered(mddev) &&
 	    test_bit(MD_RECOVERY_SYNC, &mddev->recovery)) {
 		/* It is resync not recovery */
@@ -3701,8 +3522,6 @@ static sector_t raid10_sync_request(struct mddev *mddev, sector_t sector_nr,
 		}
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	while (biolist) {
 		bio = biolist;
 		biolist = biolist->bi_next;
@@ -3873,13 +3692,8 @@ static struct r10conf *setup_conf(struct mddev *mddev)
 		goto out;
 
 	/* FIXME calc properly */
-<<<<<<< HEAD
 	conf->mirrors = kcalloc(mddev->raid_disks + max(0, -mddev->delta_disks),
 				sizeof(struct raid10_info),
-=======
-	conf->mirrors = kzalloc(sizeof(struct raid10_info)*(mddev->raid_disks +
-							    max(0,-mddev->delta_disks)),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				GFP_KERNEL);
 	if (!conf->mirrors)
 		goto out;
@@ -3890,7 +3704,6 @@ static struct r10conf *setup_conf(struct mddev *mddev)
 
 	conf->geo = geo;
 	conf->copies = copies;
-<<<<<<< HEAD
 	err = mempool_init(&conf->r10bio_pool, NR_RAID10_BIOS, r10bio_pool_alloc,
 			   r10bio_pool_free, conf);
 	if (err)
@@ -3898,15 +3711,6 @@ static struct r10conf *setup_conf(struct mddev *mddev)
 
 	err = bioset_init(&conf->bio_split, BIO_POOL_SIZE, 0, 0);
 	if (err)
-=======
-	conf->r10bio_pool = mempool_create(NR_RAID10_BIOS, r10bio_pool_alloc,
-					   r10bio_pool_free, conf);
-	if (!conf->r10bio_pool)
-		goto out;
-
-	conf->bio_split = bioset_create(BIO_POOL_SIZE, 0, 0);
-	if (!conf->bio_split)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out;
 
 	calc_sectors(conf, mddev->dev_sectors);
@@ -3934,10 +3738,7 @@ static struct r10conf *setup_conf(struct mddev *mddev)
 	init_waitqueue_head(&conf->wait_barrier);
 	atomic_set(&conf->nr_pending, 0);
 
-<<<<<<< HEAD
 	err = -ENOMEM;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	conf->thread = md_register_thread(raid10d, mddev, "raid10");
 	if (!conf->thread)
 		goto out;
@@ -3947,18 +3748,10 @@ static struct r10conf *setup_conf(struct mddev *mddev)
 
  out:
 	if (conf) {
-<<<<<<< HEAD
 		mempool_exit(&conf->r10bio_pool);
 		kfree(conf->mirrors);
 		safe_put_page(conf->tmppage);
 		bioset_exit(&conf->bio_split);
-=======
-		mempool_destroy(conf->r10bio_pool);
-		kfree(conf->mirrors);
-		safe_put_page(conf->tmppage);
-		if (conf->bio_split)
-			bioset_free(conf->bio_split);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(conf);
 	}
 	return ERR_PTR(err);
@@ -3988,7 +3781,6 @@ static int raid10_run(struct mddev *mddev)
 	if (!conf)
 		goto out;
 
-<<<<<<< HEAD
 	if (mddev_is_clustered(conf->mddev)) {
 		int fc, fo;
 
@@ -4001,8 +3793,6 @@ static int raid10_run(struct mddev *mddev)
 		}
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mddev->thread = conf->thread;
 	conf->thread = NULL;
 
@@ -4061,17 +3851,10 @@ static int raid10_run(struct mddev *mddev)
 
 	if (mddev->queue) {
 		if (discard_supported)
-<<<<<<< HEAD
 			blk_queue_flag_set(QUEUE_FLAG_DISCARD,
 						mddev->queue);
 		else
 			blk_queue_flag_clear(QUEUE_FLAG_DISCARD,
-=======
-			queue_flag_set_unlocked(QUEUE_FLAG_DISCARD,
-						mddev->queue);
-		else
-			queue_flag_clear_unlocked(QUEUE_FLAG_DISCARD,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						  mddev->queue);
 	}
 	/* need to check that every block has at least one working mirror */
@@ -4184,11 +3967,7 @@ static int raid10_run(struct mddev *mddev)
 
 out_free_conf:
 	md_unregister_thread(&mddev->thread);
-<<<<<<< HEAD
 	mempool_exit(&conf->r10bio_pool);
-=======
-	mempool_destroy(conf->r10bio_pool);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	safe_put_page(conf->tmppage);
 	kfree(conf->mirrors);
 	kfree(conf);
@@ -4201,21 +3980,12 @@ static void raid10_free(struct mddev *mddev, void *priv)
 {
 	struct r10conf *conf = priv;
 
-<<<<<<< HEAD
 	mempool_exit(&conf->r10bio_pool);
-=======
-	mempool_destroy(conf->r10bio_pool);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	safe_put_page(conf->tmppage);
 	kfree(conf->mirrors);
 	kfree(conf->mirrors_old);
 	kfree(conf->mirrors_new);
-<<<<<<< HEAD
 	bioset_exit(&conf->bio_split);
-=======
-	if (conf->bio_split)
-		bioset_free(conf->bio_split);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(conf);
 }
 
@@ -4258,11 +4028,7 @@ static int raid10_resize(struct mddev *mddev, sector_t sectors)
 	    mddev->array_sectors > size)
 		return -EINVAL;
 	if (mddev->bitmap) {
-<<<<<<< HEAD
 		int ret = md_bitmap_resize(mddev->bitmap, size, 0, 0);
-=======
-		int ret = bitmap_resize(mddev->bitmap, size, 0, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			return ret;
 	}
@@ -4376,18 +4142,10 @@ static int raid10_check_reshape(struct mddev *mddev)
 	conf->mirrors_new = NULL;
 	if (mddev->delta_disks > 0) {
 		/* allocate new 'mirrors' list */
-<<<<<<< HEAD
 		conf->mirrors_new =
 			kcalloc(mddev->raid_disks + mddev->delta_disks,
 				sizeof(struct raid10_info),
 				GFP_KERNEL);
-=======
-		conf->mirrors_new = kzalloc(
-			sizeof(struct raid10_info)
-			*(mddev->raid_disks +
-			  mddev->delta_disks),
-			GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!conf->mirrors_new)
 			return -ENOMEM;
 	}
@@ -4535,16 +4293,9 @@ static int raid10_start_reshape(struct mddev *mddev)
 	spin_unlock_irq(&conf->device_lock);
 
 	if (mddev->delta_disks && mddev->bitmap) {
-<<<<<<< HEAD
 		ret = md_bitmap_resize(mddev->bitmap,
 				       raid10_size(mddev, 0, conf->geo.raid_disks),
 				       0, 0);
-=======
-		ret = bitmap_resize(mddev->bitmap,
-				    raid10_size(mddev, 0,
-						conf->geo.raid_disks),
-				    0, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			goto abort;
 	}
@@ -4804,11 +4555,7 @@ read_more:
 		 * on all the target devices.
 		 */
 		// FIXME
-<<<<<<< HEAD
 		mempool_free(r10_bio, &conf->r10buf_pool);
-=======
-		mempool_free(r10_bio, conf->r10buf_pool);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		set_bit(MD_RECOVERY_INTR, &mddev->recovery);
 		return sectors_done;
 	}

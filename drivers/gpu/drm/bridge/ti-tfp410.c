@@ -62,11 +62,7 @@ static int tfp410_get_modes(struct drm_connector *connector)
 		goto fallback;
 	}
 
-<<<<<<< HEAD
 	drm_connector_update_edid_property(connector, edid);
-=======
-	drm_mode_connector_update_edid_property(connector, edid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = drm_add_edid_modes(connector, edid);
 
@@ -141,11 +137,7 @@ static int tfp410_attach(struct drm_bridge *bridge)
 		return ret;
 	}
 
-<<<<<<< HEAD
 	drm_connector_attach_encoder(&dvi->connector,
-=======
-	drm_mode_connector_attach_encoder(&dvi->connector,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  bridge->encoder);
 
 	return 0;

@@ -1,33 +1,5 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /* Copyright(c) 2013 - 2018 Intel Corporation. */
-=======
-/*******************************************************************************
- *
- * Intel Ethernet Controller XL710 Family Linux Driver
- * Copyright(c) 2013 - 2016 Intel Corporation.
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms and conditions of the GNU General Public License,
- * version 2, as published by the Free Software Foundation.
- *
- * This program is distributed in the hope it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
- * more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * The full GNU General Public License is included in this distribution in
- * the file called "COPYING".
- *
- * Contact Information:
- * e1000-devel Mailing List <e1000-devel@lists.sourceforge.net>
- * Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497
- *
- ******************************************************************************/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "i40e.h"
 
@@ -36,13 +8,8 @@
 /**
  * i40e_vc_vf_broadcast
  * @pf: pointer to the PF structure
-<<<<<<< HEAD
  * @v_opcode: operation code
  * @v_retval: return value
-=======
- * @opcode: operation code
- * @retval: return value
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @msg: pointer to the msg buffer
  * @msglen: msg length
  *
@@ -91,20 +58,12 @@ static void i40e_vc_notify_vf_link_state(struct i40e_vf *vf)
 	if (vf->link_forced) {
 		pfe.event_data.link_event.link_status = vf->link_up;
 		pfe.event_data.link_event.link_speed =
-<<<<<<< HEAD
 			(vf->link_up ? VIRTCHNL_LINK_SPEED_40GB : 0);
-=======
-			(vf->link_up ? I40E_LINK_SPEED_40GB : 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		pfe.event_data.link_event.link_status =
 			ls->link_info & I40E_AQ_LINK_UP;
 		pfe.event_data.link_event.link_speed =
-<<<<<<< HEAD
 			i40e_virtchnl_link_speed(ls->link_speed);
-=======
-			(enum virtchnl_link_speed)ls->link_speed;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	i40e_aq_send_msg_to_vf(hw, abs_vf_id, VIRTCHNL_OP_EVENT,
 			       0, (u8 *)&pfe, sizeof(pfe), NULL);
@@ -172,7 +131,6 @@ void i40e_vc_notify_vf_reset(struct i40e_vf *vf)
 
 /**
  * i40e_vc_disable_vf
-<<<<<<< HEAD
  * @vf: pointer to the VF info
  *
  * Disable the VF through a SW reset.
@@ -197,17 +155,6 @@ static inline void i40e_vc_disable_vf(struct i40e_vf *vf)
 	dev_warn(&vf->pf->pdev->dev,
 		 "Failed to initiate reset for VF %d after 200 milliseconds\n",
 		 vf->vf_id);
-=======
- * @pf: pointer to the PF info
- * @vf: pointer to the VF info
- *
- * Disable the VF through a SW reset
- **/
-static inline void i40e_vc_disable_vf(struct i40e_pf *pf, struct i40e_vf *vf)
-{
-	i40e_vc_notify_vf_reset(vf);
-	i40e_reset_vf(vf, false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -288,7 +235,6 @@ static u16 i40e_vc_get_pf_queue_id(struct i40e_vf *vf, u16 vsi_id,
 }
 
 /**
-<<<<<<< HEAD
  * i40e_get_real_pf_qid
  * @vf: pointer to the VF info
  * @vsi_id: vsi id
@@ -321,8 +267,6 @@ static u16 i40e_get_real_pf_qid(struct i40e_vf *vf, u16 vsi_id, u16 queue_id)
 }
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * i40e_config_irq_link_list
  * @vf: pointer to the VF info
  * @vsi_id: id of VSI as given by the FW
@@ -338,11 +282,7 @@ static void i40e_config_irq_link_list(struct i40e_vf *vf, u16 vsi_id,
 	struct i40e_hw *hw = &pf->hw;
 	u16 vsi_queue_id, pf_queue_id;
 	enum i40e_queue_type qtype;
-<<<<<<< HEAD
 	u16 next_q, vector_id, size;
-=======
-	u16 next_q, vector_id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 reg, reg_idx;
 	u16 itr_idx = 0;
 
@@ -372,7 +312,6 @@ static void i40e_config_irq_link_list(struct i40e_vf *vf, u16 vsi_id,
 				     vsi_queue_id + 1));
 	}
 
-<<<<<<< HEAD
 	size = I40E_MAX_VSI_QP * I40E_VIRTCHNL_SUPPORTED_QTYPES;
 	next_q = find_first_bit(&linklistmap, size);
 	if (unlikely(next_q == size))
@@ -381,23 +320,11 @@ static void i40e_config_irq_link_list(struct i40e_vf *vf, u16 vsi_id,
 	vsi_queue_id = next_q / I40E_VIRTCHNL_SUPPORTED_QTYPES;
 	qtype = next_q % I40E_VIRTCHNL_SUPPORTED_QTYPES;
 	pf_queue_id = i40e_get_real_pf_qid(vf, vsi_id, vsi_queue_id);
-=======
-	next_q = find_first_bit(&linklistmap,
-				(I40E_MAX_VSI_QP *
-				 I40E_VIRTCHNL_SUPPORTED_QTYPES));
-	vsi_queue_id = next_q / I40E_VIRTCHNL_SUPPORTED_QTYPES;
-	qtype = next_q % I40E_VIRTCHNL_SUPPORTED_QTYPES;
-	pf_queue_id = i40e_vc_get_pf_queue_id(vf, vsi_id, vsi_queue_id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	reg = ((qtype << I40E_VPINT_LNKLSTN_FIRSTQ_TYPE_SHIFT) | pf_queue_id);
 
 	wr32(hw, reg_idx, reg);
 
-<<<<<<< HEAD
 	while (next_q < size) {
-=======
-	while (next_q < (I40E_MAX_VSI_QP * I40E_VIRTCHNL_SUPPORTED_QTYPES)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		switch (qtype) {
 		case I40E_QUEUE_TYPE_RX:
 			reg_idx = I40E_QINT_RQCTL(pf_queue_id);
@@ -411,7 +338,6 @@ static void i40e_config_irq_link_list(struct i40e_vf *vf, u16 vsi_id,
 			break;
 		}
 
-<<<<<<< HEAD
 		next_q = find_next_bit(&linklistmap, size, next_q + 1);
 		if (next_q < size) {
 			vsi_queue_id = next_q / I40E_VIRTCHNL_SUPPORTED_QTYPES;
@@ -419,18 +345,6 @@ static void i40e_config_irq_link_list(struct i40e_vf *vf, u16 vsi_id,
 			pf_queue_id = i40e_get_real_pf_qid(vf,
 							   vsi_id,
 							   vsi_queue_id);
-=======
-		next_q = find_next_bit(&linklistmap,
-				       (I40E_MAX_VSI_QP *
-					I40E_VIRTCHNL_SUPPORTED_QTYPES),
-				       next_q + 1);
-		if (next_q <
-		    (I40E_MAX_VSI_QP * I40E_VIRTCHNL_SUPPORTED_QTYPES)) {
-			vsi_queue_id = next_q / I40E_VIRTCHNL_SUPPORTED_QTYPES;
-			qtype = next_q % I40E_VIRTCHNL_SUPPORTED_QTYPES;
-			pf_queue_id = i40e_vc_get_pf_queue_id(vf, vsi_id,
-							      vsi_queue_id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else {
 			pf_queue_id = I40E_QUEUE_END_OF_LIST;
 			qtype = 0;
@@ -532,12 +446,9 @@ static int i40e_config_iwarp_qvlist(struct i40e_vf *vf,
 	       (sizeof(struct virtchnl_iwarp_qv_info) *
 						(qvlist_info->num_vectors - 1));
 	vf->qvlist_info = kzalloc(size, GFP_KERNEL);
-<<<<<<< HEAD
 	if (!vf->qvlist_info)
 		return -ENOMEM;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vf->qvlist_info->num_vectors = qvlist_info->num_vectors;
 
 	msix_vf = pf->hw.func_caps.num_msix_vectors_vf;
@@ -736,11 +647,7 @@ static int i40e_config_vsi_rx_queue(struct i40e_vf *vf, u16 vsi_id,
 	rx_ctx.dsize = 1;
 
 	/* default values */
-<<<<<<< HEAD
 	rx_ctx.lrxqthresh = 1;
-=======
-	rx_ctx.lrxqthresh = 2;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rx_ctx.crcstrip = 1;
 	rx_ctx.prefena = 1;
 	rx_ctx.l2tsel = 1;
@@ -772,34 +679,20 @@ error_param:
 /**
  * i40e_alloc_vsi_res
  * @vf: pointer to the VF info
-<<<<<<< HEAD
  * @idx: VSI index, applies only for ADq mode, zero otherwise
  *
  * alloc VF vsi context & resources
  **/
 static int i40e_alloc_vsi_res(struct i40e_vf *vf, u8 idx)
-=======
- * @type: type of VSI to allocate
- *
- * alloc VF vsi context & resources
- **/
-static int i40e_alloc_vsi_res(struct i40e_vf *vf, enum i40e_vsi_type type)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct i40e_mac_filter *f = NULL;
 	struct i40e_pf *pf = vf->pf;
 	struct i40e_vsi *vsi;
-<<<<<<< HEAD
 	u64 max_tx_rate = 0;
 	int ret = 0;
 
 	vsi = i40e_vsi_setup(pf, I40E_VSI_SRIOV, pf->vsi[pf->lan_vsi]->seid,
 			     vf->vf_id);
-=======
-	int ret = 0;
-
-	vsi = i40e_vsi_setup(pf, type, pf->vsi[pf->lan_vsi]->seid, vf->vf_id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!vsi) {
 		dev_err(&pf->pdev->dev,
@@ -808,12 +701,8 @@ static int i40e_alloc_vsi_res(struct i40e_vf *vf, enum i40e_vsi_type type)
 		ret = -ENOENT;
 		goto error_alloc_vsi_res;
 	}
-<<<<<<< HEAD
 
 	if (!idx) {
-=======
-	if (type == I40E_VSI_SRIOV) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u64 hena = i40e_pf_get_default_rss_hena(pf);
 		u8 broadcast[ETH_ALEN];
 
@@ -845,7 +734,6 @@ static int i40e_alloc_vsi_res(struct i40e_vf *vf, enum i40e_vsi_type type)
 		spin_unlock_bh(&vsi->mac_filter_hash_lock);
 		wr32(&pf->hw, I40E_VFQF_HENA1(0, vf->vf_id), (u32)hena);
 		wr32(&pf->hw, I40E_VFQF_HENA1(1, vf->vf_id), (u32)(hena >> 32));
-<<<<<<< HEAD
 		/* program mac filter only for VF VSI */
 		ret = i40e_sync_vsi_filters(vsi);
 		if (ret)
@@ -869,19 +757,6 @@ static int i40e_alloc_vsi_res(struct i40e_vf *vf, enum i40e_vsi_type type)
 		max_tx_rate = div_u64(max_tx_rate, I40E_BW_CREDIT_DIVISOR);
 		ret = i40e_aq_config_vsi_bw_limit(&pf->hw, vsi->seid,
 						  max_tx_rate, 0, NULL);
-=======
-	}
-
-	/* program mac filter */
-	ret = i40e_sync_vsi_filters(vsi);
-	if (ret)
-		dev_err(&pf->pdev->dev, "Unable to program ucast filters\n");
-
-	/* Set VF bandwidth if specified */
-	if (vf->tx_rate) {
-		ret = i40e_aq_config_vsi_bw_limit(&pf->hw, vsi->seid,
-						  vf->tx_rate / 50, 0, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			dev_err(&pf->pdev->dev, "Unable to set tx rate, VF %d, error code %d.\n",
 				vf->vf_id, ret);
@@ -892,7 +767,6 @@ error_alloc_vsi_res:
 }
 
 /**
-<<<<<<< HEAD
  * i40e_map_pf_queues_to_vsi
  * @vf: pointer to the VF info
  *
@@ -979,8 +853,6 @@ static void i40e_map_pf_to_vf_queues(struct i40e_vf *vf)
 }
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * i40e_enable_vf_mappings
  * @vf: pointer to the VF info
  *
@@ -990,12 +862,7 @@ static void i40e_enable_vf_mappings(struct i40e_vf *vf)
 {
 	struct i40e_pf *pf = vf->pf;
 	struct i40e_hw *hw = &pf->hw;
-<<<<<<< HEAD
 	u32 reg;
-=======
-	u32 reg, total_queue_pairs = 0;
-	int j;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Tell the hardware we're using noncontiguous mapping. HW requires
 	 * that VF queues be mapped using this method, even when they are
@@ -1008,35 +875,8 @@ static void i40e_enable_vf_mappings(struct i40e_vf *vf)
 	reg = I40E_VPLAN_MAPENA_TXRX_ENA_MASK;
 	wr32(hw, I40E_VPLAN_MAPENA(vf->vf_id), reg);
 
-<<<<<<< HEAD
 	i40e_map_pf_to_vf_queues(vf);
 	i40e_map_pf_queues_to_vsi(vf);
-=======
-	/* map PF queues to VF queues */
-	for (j = 0; j < pf->vsi[vf->lan_vsi_idx]->alloc_queue_pairs; j++) {
-		u16 qid = i40e_vc_get_pf_queue_id(vf, vf->lan_vsi_id, j);
-
-		reg = (qid & I40E_VPLAN_QTABLE_QINDEX_MASK);
-		wr32(hw, I40E_VPLAN_QTABLE(total_queue_pairs, vf->vf_id), reg);
-		total_queue_pairs++;
-	}
-
-	/* map PF queues to VSI */
-	for (j = 0; j < 7; j++) {
-		if (j * 2 >= pf->vsi[vf->lan_vsi_idx]->alloc_queue_pairs) {
-			reg = 0x07FF07FF;	/* unused */
-		} else {
-			u16 qid = i40e_vc_get_pf_queue_id(vf, vf->lan_vsi_id,
-							  j * 2);
-			reg = qid;
-			qid = i40e_vc_get_pf_queue_id(vf, vf->lan_vsi_id,
-						      (j * 2) + 1);
-			reg |= qid << 16;
-		}
-		i40e_write_rx_ctl(hw, I40E_VSILAN_QTABLE(j, vf->lan_vsi_id),
-				  reg);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	i40e_flush(hw);
 }
@@ -1072,18 +912,13 @@ static void i40e_free_vf_res(struct i40e_vf *vf)
 	struct i40e_pf *pf = vf->pf;
 	struct i40e_hw *hw = &pf->hw;
 	u32 reg_idx, reg;
-<<<<<<< HEAD
 	int i, j, msix_vf;
-=======
-	int i, msix_vf;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Start by disabling VF's configuration API to prevent the OS from
 	 * accessing the VF's VSI after it's freed / invalidated.
 	 */
 	clear_bit(I40E_VF_STATE_INIT, &vf->vf_states);
 
-<<<<<<< HEAD
 	/* It's possible the VF had requeuested more queues than the default so
 	 * do the accounting here when we're about to free them.
 	 */
@@ -1092,8 +927,6 @@ static void i40e_free_vf_res(struct i40e_vf *vf)
 				   I40E_DEFAULT_QUEUES_PER_VF;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* free vsi & disconnect it from the parent uplink */
 	if (vf->lan_vsi_idx) {
 		i40e_vsi_release(pf->vsi[vf->lan_vsi_idx]);
@@ -1101,7 +934,6 @@ static void i40e_free_vf_res(struct i40e_vf *vf)
 		vf->lan_vsi_id = 0;
 		vf->num_mac = 0;
 	}
-<<<<<<< HEAD
 
 	/* do the accounting and remove additional ADq VSI's */
 	if (vf->adq_enabled && vf->ch[0].vsi_idx) {
@@ -1116,8 +948,6 @@ static void i40e_free_vf_res(struct i40e_vf *vf)
 			vf->ch[j].vsi_id = 0;
 		}
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	msix_vf = pf->hw.func_caps.num_msix_vectors_vf;
 
 	/* disable interrupts so the VF starts in a known state */
@@ -1149,12 +979,8 @@ static void i40e_free_vf_res(struct i40e_vf *vf)
 	}
 	/* reset some of the state variables keeping track of the resources */
 	vf->num_queue_pairs = 0;
-<<<<<<< HEAD
 	clear_bit(I40E_VF_STATE_MC_PROMISC, &vf->vf_states);
 	clear_bit(I40E_VF_STATE_UC_PROMISC, &vf->vf_states);
-=======
-	vf->vf_states = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -1167,7 +993,6 @@ static int i40e_alloc_vf_res(struct i40e_vf *vf)
 {
 	struct i40e_pf *pf = vf->pf;
 	int total_queue_pairs = 0;
-<<<<<<< HEAD
 	int ret, idx;
 
 	if (vf->num_req_queues &&
@@ -1178,17 +1003,10 @@ static int i40e_alloc_vf_res(struct i40e_vf *vf)
 
 	/* allocate hw vsi context & associated resources */
 	ret = i40e_alloc_vsi_res(vf, 0);
-=======
-	int ret;
-
-	/* allocate hw vsi context & associated resources */
-	ret = i40e_alloc_vsi_res(vf, I40E_VSI_SRIOV);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto error_alloc;
 	total_queue_pairs += pf->vsi[vf->lan_vsi_idx]->alloc_queue_pairs;
 
-<<<<<<< HEAD
 	/* allocate additional VSIs based on tc information for ADq */
 	if (vf->adq_enabled) {
 		if (pf->queues_left >=
@@ -1217,8 +1035,6 @@ static int i40e_alloc_vf_res(struct i40e_vf *vf)
 		pf->queues_left -=
 			total_queue_pairs - I40E_DEFAULT_QUEUES_PER_VF;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (vf->trusted)
 		set_bit(I40E_VIRTCHNL_VF_CAP_PRIVILEGE, &vf->vf_caps);
 	else
@@ -1371,15 +1187,9 @@ static void i40e_cleanup_reset_vf(struct i40e_vf *vf)
  * @vf: pointer to the VF structure
  * @flr: VFLR was issued or not
  *
-<<<<<<< HEAD
  * Returns true if the VF is reset, false otherwise.
  **/
 bool i40e_reset_vf(struct i40e_vf *vf, bool flr)
-=======
- * reset the VF
- **/
-void i40e_reset_vf(struct i40e_vf *vf, bool flr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct i40e_pf *pf = vf->pf;
 	struct i40e_hw *hw = &pf->hw;
@@ -1387,17 +1197,11 @@ void i40e_reset_vf(struct i40e_vf *vf, bool flr)
 	u32 reg;
 	int i;
 
-<<<<<<< HEAD
 	/* If the VFs have been disabled, this means something else is
 	 * resetting the VF, so we shouldn't continue.
 	 */
 	if (test_and_set_bit(__I40E_VF_DISABLE, pf->state))
 		return false;
-=======
-	/* If VFs have been disabled, there is no need to reset */
-	if (test_and_set_bit(__I40E_VF_DISABLE, pf->state))
-		return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	i40e_trigger_vf_reset(vf, flr);
 
@@ -1434,11 +1238,8 @@ void i40e_reset_vf(struct i40e_vf *vf, bool flr)
 
 	i40e_flush(hw);
 	clear_bit(__I40E_VF_DISABLE, pf->state);
-<<<<<<< HEAD
 
 	return true;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -1450,15 +1251,10 @@ void i40e_reset_vf(struct i40e_vf *vf, bool flr)
  * VF, then do all the waiting in one chunk, and finally finish restoring each
  * VF after the wait. This is useful during PF routines which need to reset
  * all VFs, as otherwise it must perform these resets in a serialized fashion.
-<<<<<<< HEAD
  *
  * Returns true if any VFs were reset, and false otherwise.
  **/
 bool i40e_reset_all_vfs(struct i40e_pf *pf, bool flr)
-=======
- **/
-void i40e_reset_all_vfs(struct i40e_pf *pf, bool flr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct i40e_hw *hw = &pf->hw;
 	struct i40e_vf *vf;
@@ -1467,19 +1263,11 @@ void i40e_reset_all_vfs(struct i40e_pf *pf, bool flr)
 
 	/* If we don't have any VFs, then there is nothing to reset */
 	if (!pf->num_alloc_vfs)
-<<<<<<< HEAD
 		return false;
 
 	/* If VFs have been disabled, there is no need to reset */
 	if (test_and_set_bit(__I40E_VF_DISABLE, pf->state))
 		return false;
-=======
-		return;
-
-	/* If VFs have been disabled, there is no need to reset */
-	if (test_and_set_bit(__I40E_VF_DISABLE, pf->state))
-		return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Begin reset on all VFs at once */
 	for (v = 0; v < pf->num_alloc_vfs; v++)
@@ -1554,11 +1342,8 @@ void i40e_reset_all_vfs(struct i40e_pf *pf, bool flr)
 
 	i40e_flush(hw);
 	clear_bit(__I40E_VF_DISABLE, pf->state);
-<<<<<<< HEAD
 
 	return true;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -1692,11 +1477,7 @@ err_alloc:
 		i40e_free_vfs(pf);
 err_iov:
 	/* Re-enable interrupt 0. */
-<<<<<<< HEAD
 	i40e_irq_dynamic_enable_icr0(pf);
-=======
-	i40e_irq_dynamic_enable_icr0(pf, false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -1765,12 +1546,7 @@ int i40e_pci_sriov_configure(struct pci_dev *pdev, int num_vfs)
 	if (num_vfs) {
 		if (!(pf->flags & I40E_FLAG_VEB_MODE_ENABLED)) {
 			pf->flags |= I40E_FLAG_VEB_MODE_ENABLED;
-<<<<<<< HEAD
 			i40e_do_reset_safe(pf, I40E_PF_RESET_FLAG);
-=======
-			i40e_do_reset_safe(pf,
-					   BIT_ULL(__I40E_PF_RESET_REQUESTED));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		return i40e_pci_sriov_enable(pdev, num_vfs);
 	}
@@ -1778,11 +1554,7 @@ int i40e_pci_sriov_configure(struct pci_dev *pdev, int num_vfs)
 	if (!pci_vfs_assigned(pf->pdev)) {
 		i40e_free_vfs(pf);
 		pf->flags &= ~I40E_FLAG_VEB_MODE_ENABLED;
-<<<<<<< HEAD
 		i40e_do_reset_safe(pf, I40E_PF_RESET_FLAG);
-=======
-		i40e_do_reset_safe(pf, BIT_ULL(__I40E_PF_RESET_REQUESTED));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		dev_warn(&pdev->dev, "Unable to free VFs because some are assigned to VMs.\n");
 		return -EINVAL;
@@ -1867,10 +1639,7 @@ static int i40e_vc_send_resp_to_vf(struct i40e_vf *vf,
 /**
  * i40e_vc_get_version_msg
  * @vf: pointer to the VF info
-<<<<<<< HEAD
  * @msg: pointer to the msg buffer
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * called from the VF to request the API version used by the PF
  **/
@@ -1890,7 +1659,6 @@ static int i40e_vc_get_version_msg(struct i40e_vf *vf, u8 *msg)
 }
 
 /**
-<<<<<<< HEAD
  * i40e_del_qch - delete all the additional VSIs created as a part of ADq
  * @vf: pointer to VF structure
  **/
@@ -1915,12 +1683,6 @@ static void i40e_del_qch(struct i40e_vf *vf)
  * i40e_vc_get_vf_resources_msg
  * @vf: pointer to the VF info
  * @msg: pointer to the msg buffer
-=======
- * i40e_vc_get_vf_resources_msg
- * @vf: pointer to the VF info
- * @msg: pointer to the msg buffer
- * @msglen: msg length
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * called from the VF to request its resources
  **/
@@ -1964,11 +1726,8 @@ static int i40e_vc_get_vf_resources_msg(struct i40e_vf *vf, u8 *msg)
 	    (vf->driver_caps & VIRTCHNL_VF_OFFLOAD_IWARP)) {
 		vfres->vf_cap_flags |= VIRTCHNL_VF_OFFLOAD_IWARP;
 		set_bit(I40E_VF_STATE_IWARPENA, &vf->vf_states);
-<<<<<<< HEAD
 	} else {
 		clear_bit(I40E_VF_STATE_IWARPENA, &vf->vf_states);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (vf->driver_caps & VIRTCHNL_VF_OFFLOAD_RSS_PF) {
@@ -2011,15 +1770,12 @@ static int i40e_vc_get_vf_resources_msg(struct i40e_vf *vf, u8 *msg)
 					VIRTCHNL_VF_OFFLOAD_WB_ON_ITR;
 	}
 
-<<<<<<< HEAD
 	if (vf->driver_caps & VIRTCHNL_VF_OFFLOAD_REQ_QUEUES)
 		vfres->vf_cap_flags |= VIRTCHNL_VF_OFFLOAD_REQ_QUEUES;
 
 	if (vf->driver_caps & VIRTCHNL_VF_OFFLOAD_ADQ)
 		vfres->vf_cap_flags |= VIRTCHNL_VF_OFFLOAD_ADQ;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vfres->num_vsis = num_vsis;
 	vfres->num_queue_pairs = vf->num_queue_pairs;
 	vfres->max_vectors = pf->hw.func_caps.num_msix_vectors_vf;
@@ -2050,11 +1806,6 @@ err:
 /**
  * i40e_vc_reset_vf_msg
  * @vf: pointer to the VF info
-<<<<<<< HEAD
-=======
- * @msg: pointer to the msg buffer
- * @msglen: msg length
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * called from the VF to reset itself,
  * unlike other virtchnl messages, PF driver
@@ -2247,32 +1998,21 @@ static int i40e_vc_config_queues_msg(struct i40e_vf *vf, u8 *msg, u16 msglen)
 	    (struct virtchnl_vsi_queue_config_info *)msg;
 	struct virtchnl_queue_pair_info *qpi;
 	struct i40e_pf *pf = vf->pf;
-<<<<<<< HEAD
 	u16 vsi_id, vsi_queue_id = 0;
 	i40e_status aq_ret = 0;
 	int i, j = 0, idx = 0;
 
 	vsi_id = qci->vsi_id;
-=======
-	u16 vsi_id, vsi_queue_id;
-	i40e_status aq_ret = 0;
-	int i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!test_bit(I40E_VF_STATE_ACTIVE, &vf->vf_states)) {
 		aq_ret = I40E_ERR_PARAM;
 		goto error_param;
 	}
 
-<<<<<<< HEAD
-=======
-	vsi_id = qci->vsi_id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!i40e_vc_isvalid_vsi_id(vf, vsi_id)) {
 		aq_ret = I40E_ERR_PARAM;
 		goto error_param;
 	}
-<<<<<<< HEAD
 
 	for (i = 0; i < qci->num_queue_pairs; i++) {
 		qpi = &qci->qpair[i];
@@ -2289,15 +2029,6 @@ static int i40e_vc_config_queues_msg(struct i40e_vf *vf, u8 *msg, u16 msglen)
 		}
 
 		if (!i40e_vc_isvalid_queue_id(vf, vsi_id, vsi_queue_id)) {
-=======
-	for (i = 0; i < qci->num_queue_pairs; i++) {
-		qpi = &qci->qpair[i];
-		vsi_queue_id = qpi->txq.queue_id;
-		if ((qpi->txq.vsi_id != vsi_id) ||
-		    (qpi->rxq.vsi_id != vsi_id) ||
-		    (qpi->rxq.queue_id != vsi_queue_id) ||
-		    !i40e_vc_isvalid_queue_id(vf, vsi_id, vsi_queue_id)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			aq_ret = I40E_ERR_PARAM;
 			goto error_param;
 		}
@@ -2309,7 +2040,6 @@ static int i40e_vc_config_queues_msg(struct i40e_vf *vf, u8 *msg, u16 msglen)
 			aq_ret = I40E_ERR_PARAM;
 			goto error_param;
 		}
-<<<<<<< HEAD
 
 		/* For ADq there can be up to 4 VSIs with max 4 queues each.
 		 * VF does not know about these additional VSIs and all
@@ -2337,11 +2067,6 @@ static int i40e_vc_config_queues_msg(struct i40e_vf *vf, u8 *msg, u16 msglen)
 			pf->vsi[vf->ch[i].vsi_idx]->num_queue_pairs =
 			       vf->ch[i].num_qps;
 	}
-=======
-	}
-	/* set vsi num_queue_pairs in use to num configured by VF */
-	pf->vsi[vf->lan_vsi_idx]->num_queue_pairs = qci->num_queue_pairs;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 error_param:
 	/* send the response to the VF */
@@ -2350,7 +2075,6 @@ error_param:
 }
 
 /**
-<<<<<<< HEAD
  * i40e_validate_queue_map
  * @vsi_id: vsi id
  * @queuemap: Tx or Rx queue map
@@ -2378,8 +2102,6 @@ static int i40e_validate_queue_map(struct i40e_vf *vf, u16 vsi_id,
 }
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * i40e_vc_config_irq_map_msg
  * @vf: pointer to the VF info
  * @msg: pointer to the msg buffer
@@ -2393,14 +2115,8 @@ static int i40e_vc_config_irq_map_msg(struct i40e_vf *vf, u8 *msg, u16 msglen)
 	struct virtchnl_irq_map_info *irqmap_info =
 	    (struct virtchnl_irq_map_info *)msg;
 	struct virtchnl_vector_map *map;
-<<<<<<< HEAD
 	u16 vsi_id, vector_id;
 	i40e_status aq_ret = 0;
-=======
-	u16 vsi_id, vsi_queue_id, vector_id;
-	i40e_status aq_ret = 0;
-	unsigned long tempmap;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 
 	if (!test_bit(I40E_VF_STATE_ACTIVE, &vf->vf_states)) {
@@ -2410,10 +2126,6 @@ static int i40e_vc_config_irq_map_msg(struct i40e_vf *vf, u8 *msg, u16 msglen)
 
 	for (i = 0; i < irqmap_info->num_vectors; i++) {
 		map = &irqmap_info->vecmap[i];
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		vector_id = map->vector_id;
 		vsi_id = map->vsi_id;
 		/* validate msg params */
@@ -2423,7 +2135,6 @@ static int i40e_vc_config_irq_map_msg(struct i40e_vf *vf, u8 *msg, u16 msglen)
 			goto error_param;
 		}
 
-<<<<<<< HEAD
 		if (i40e_validate_queue_map(vf, vsi_id, map->rxq_map)) {
 			aq_ret = I40E_ERR_PARAM;
 			goto error_param;
@@ -2432,25 +2143,6 @@ static int i40e_vc_config_irq_map_msg(struct i40e_vf *vf, u8 *msg, u16 msglen)
 		if (i40e_validate_queue_map(vf, vsi_id, map->txq_map)) {
 			aq_ret = I40E_ERR_PARAM;
 			goto error_param;
-=======
-		/* lookout for the invalid queue index */
-		tempmap = map->rxq_map;
-		for_each_set_bit(vsi_queue_id, &tempmap, I40E_MAX_VSI_QP) {
-			if (!i40e_vc_isvalid_queue_id(vf, vsi_id,
-						      vsi_queue_id)) {
-				aq_ret = I40E_ERR_PARAM;
-				goto error_param;
-			}
-		}
-
-		tempmap = map->txq_map;
-		for_each_set_bit(vsi_queue_id, &tempmap, I40E_MAX_VSI_QP) {
-			if (!i40e_vc_isvalid_queue_id(vf, vsi_id,
-						      vsi_queue_id)) {
-				aq_ret = I40E_ERR_PARAM;
-				goto error_param;
-			}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		i40e_config_irq_link_list(vf, vsi_id, map);
@@ -2462,7 +2154,6 @@ error_param:
 }
 
 /**
-<<<<<<< HEAD
  * i40e_ctrl_vf_tx_rings
  * @vsi: the SRIOV VSI being configured
  * @q_map: bit map of the queues to be enabled
@@ -2508,8 +2199,6 @@ static int i40e_ctrl_vf_rx_rings(struct i40e_vsi *vsi, unsigned long q_map,
 }
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * i40e_vc_enable_queues_msg
  * @vf: pointer to the VF info
  * @msg: pointer to the msg buffer
@@ -2524,10 +2213,7 @@ static int i40e_vc_enable_queues_msg(struct i40e_vf *vf, u8 *msg, u16 msglen)
 	struct i40e_pf *pf = vf->pf;
 	u16 vsi_id = vqs->vsi_id;
 	i40e_status aq_ret = 0;
-<<<<<<< HEAD
 	int i;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!test_bit(I40E_VF_STATE_ACTIVE, &vf->vf_states)) {
 		aq_ret = I40E_ERR_PARAM;
@@ -2544,7 +2230,6 @@ static int i40e_vc_enable_queues_msg(struct i40e_vf *vf, u8 *msg, u16 msglen)
 		goto error_param;
 	}
 
-<<<<<<< HEAD
 	/* Use the queue bit map sent by the VF */
 	if (i40e_ctrl_vf_rx_rings(pf->vsi[vf->lan_vsi_idx], vqs->rx_queues,
 				  true)) {
@@ -2566,10 +2251,6 @@ static int i40e_vc_enable_queues_msg(struct i40e_vf *vf, u8 *msg, u16 msglen)
 		}
 	}
 
-=======
-	if (i40e_vsi_start_rings(pf->vsi[vf->lan_vsi_idx]))
-		aq_ret = I40E_ERR_TIMEOUT;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 error_param:
 	/* send the response to the VF */
 	return i40e_vc_send_resp_to_vf(vf, VIRTCHNL_OP_ENABLE_QUEUES,
@@ -2607,7 +2288,6 @@ static int i40e_vc_disable_queues_msg(struct i40e_vf *vf, u8 *msg, u16 msglen)
 		goto error_param;
 	}
 
-<<<<<<< HEAD
 	/* Use the queue bit map sent by the VF */
 	if (i40e_ctrl_vf_tx_rings(pf->vsi[vf->lan_vsi_idx], vqs->tx_queues,
 				  false)) {
@@ -2619,10 +2299,6 @@ static int i40e_vc_disable_queues_msg(struct i40e_vf *vf, u8 *msg, u16 msglen)
 		aq_ret = I40E_ERR_TIMEOUT;
 		goto error_param;
 	}
-=======
-	i40e_vsi_stop_rings(pf->vsi[vf->lan_vsi_idx]);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 error_param:
 	/* send the response to the VF */
 	return i40e_vc_send_resp_to_vf(vf, VIRTCHNL_OP_DISABLE_QUEUES,
@@ -2630,7 +2306,6 @@ error_param:
 }
 
 /**
-<<<<<<< HEAD
  * i40e_vc_request_queues_msg
  * @vf: pointer to the VF info
  * @msg: pointer to the msg buffer
@@ -2682,8 +2357,6 @@ static int i40e_vc_request_queues_msg(struct i40e_vf *vf, u8 *msg, int msglen)
 }
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * i40e_vc_get_stats_msg
  * @vf: pointer to the VF info
  * @msg: pointer to the msg buffer
@@ -2735,7 +2408,6 @@ error_param:
 /**
  * i40e_check_vf_permission
  * @vf: pointer to the VF info
-<<<<<<< HEAD
  * @al: MAC address list from virtchnl
  *
  * Check that the given list of MAC addresses is allowed. Will return -EPERM
@@ -2777,27 +2449,6 @@ static inline int i40e_check_vf_permission(struct i40e_vf *vf,
 			return I40E_ERR_INVALID_MAC_ADDR;
 		}
 
-=======
- * @macaddr: pointer to the MAC Address being checked
- *
- * Check if the VF has permission to add or delete unicast MAC address
- * filters and return error code -EPERM if not.  Then check if the
- * address filter requested is broadcast or zero and if so return
- * an invalid MAC address error code.
- **/
-static inline int i40e_check_vf_permission(struct i40e_vf *vf, u8 *macaddr)
-{
-	struct i40e_pf *pf = vf->pf;
-	int ret = 0;
-
-	if (is_broadcast_ether_addr(macaddr) ||
-		   is_zero_ether_addr(macaddr)) {
-		dev_err(&pf->pdev->dev, "invalid VF MAC addr %pM\n", macaddr);
-		ret = I40E_ERR_INVALID_MAC_ADDR;
-	} else if (vf->pf_set_mac && !is_multicast_ether_addr(macaddr) &&
-		   !test_bit(I40E_VIRTCHNL_VF_CAP_PRIVILEGE, &vf->vf_caps) &&
-		   !ether_addr_equal(macaddr, vf->default_lan_addr.addr)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* If the host VMM administrator has set the VF MAC address
 		 * administratively via the ndo_set_vf_mac command then deny
 		 * permission to the VF to add or delete unicast MAC addresses.
@@ -2805,7 +2456,6 @@ static inline int i40e_check_vf_permission(struct i40e_vf *vf, u8 *macaddr)
 		 * The VF may request to set the MAC address filter already
 		 * assigned to it so do not return an error in that case.
 		 */
-<<<<<<< HEAD
 		if (!test_bit(I40E_VIRTCHNL_VF_CAP_PRIVILEGE, &vf->vf_caps) &&
 		    !is_multicast_ether_addr(addr) && vf->pf_set_mac &&
 		    !ether_addr_equal(addr, vf->default_lan_addr.addr)) {
@@ -2816,18 +2466,6 @@ static inline int i40e_check_vf_permission(struct i40e_vf *vf, u8 *macaddr)
 	}
 
 	return 0;
-=======
-		dev_err(&pf->pdev->dev,
-			"VF attempting to override administratively set MAC address, reload the VF driver to resume normal operation\n");
-		ret = -EPERM;
-	} else if ((vf->num_mac >= I40E_VC_MAX_MAC_ADDR_PER_VF) &&
-		   !test_bit(I40E_VIRTCHNL_VF_CAP_PRIVILEGE, &vf->vf_caps)) {
-		dev_err(&pf->pdev->dev,
-			"VF is not trusted, switch the VF to trusted to add more functionality\n");
-		ret = -EPERM;
-	}
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -2854,14 +2492,6 @@ static int i40e_vc_add_mac_addr_msg(struct i40e_vf *vf, u8 *msg, u16 msglen)
 		goto error_param;
 	}
 
-<<<<<<< HEAD
-=======
-	for (i = 0; i < al->num_elements; i++) {
-		ret = i40e_check_vf_permission(vf, al->list[i].addr);
-		if (ret)
-			goto error_param;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vsi = pf->vsi[vf->lan_vsi_idx];
 
 	/* Lock once, because all function inside for loop accesses VSI's
@@ -2869,21 +2499,17 @@ static int i40e_vc_add_mac_addr_msg(struct i40e_vf *vf, u8 *msg, u16 msglen)
 	 */
 	spin_lock_bh(&vsi->mac_filter_hash_lock);
 
-<<<<<<< HEAD
 	ret = i40e_check_vf_permission(vf, al);
 	if (ret) {
 		spin_unlock_bh(&vsi->mac_filter_hash_lock);
 		goto error_param;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* add new addresses to the list */
 	for (i = 0; i < al->num_elements; i++) {
 		struct i40e_mac_filter *f;
 
 		f = i40e_find_mac(vsi, al->list[i].addr);
-<<<<<<< HEAD
 		if (!f) {
 			f = i40e_add_mac_filter(vsi, al->list[i].addr);
 
@@ -2897,20 +2523,6 @@ static int i40e_vc_add_mac_addr_msg(struct i40e_vf *vf, u8 *msg, u16 msglen)
 			} else {
 				vf->num_mac++;
 			}
-=======
-		if (!f)
-			f = i40e_add_mac_filter(vsi, al->list[i].addr);
-
-		if (!f) {
-			dev_err(&pf->pdev->dev,
-				"Unable to add MAC filter %pM for VF %d\n",
-				 al->list[i].addr, vf->vf_id);
-			ret = I40E_ERR_PARAM;
-			spin_unlock_bh(&vsi->mac_filter_hash_lock);
-			goto error_param;
-		} else {
-			vf->num_mac++;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 	spin_unlock_bh(&vsi->mac_filter_hash_lock);
@@ -2959,19 +2571,6 @@ static int i40e_vc_del_mac_addr_msg(struct i40e_vf *vf, u8 *msg, u16 msglen)
 			ret = I40E_ERR_INVALID_MAC_ADDR;
 			goto error_param;
 		}
-<<<<<<< HEAD
-=======
-
-		if (vf->pf_set_mac &&
-		    ether_addr_equal(al->list[i].addr,
-				     vf->default_lan_addr.addr)) {
-			dev_err(&pf->pdev->dev,
-				"MAC addr %pM has been set by PF, cannot delete it for VF %d, reset VF to change MAC addr\n",
-				vf->default_lan_addr.addr, vf->vf_id);
-			ret = I40E_ERR_PARAM;
-			goto error_param;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	vsi = pf->vsi[vf->lan_vsi_idx];
 
@@ -3381,7 +2980,6 @@ err:
 }
 
 /**
-<<<<<<< HEAD
  * i40e_validate_cloud_filter
  * @mask: mask for TC filter
  * @data: data for TC filter
@@ -4001,24 +3599,12 @@ err:
  * @v_retval: unused return value code
  * @msg: pointer to the msg buffer
  * @msglen: msg length
-=======
- * i40e_vc_process_vf_msg
- * @pf: pointer to the PF structure
- * @vf_id: source VF id
- * @msg: pointer to the msg buffer
- * @msglen: msg length
- * @msghndl: msg handle
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * called from the common aeq/arq handler to
  * process request from VF
  **/
 int i40e_vc_process_vf_msg(struct i40e_pf *pf, s16 vf_id, u32 v_opcode,
-<<<<<<< HEAD
 			   u32 __always_unused v_retval, u8 *msg, u16 msglen)
-=======
-			   u32 v_retval, u8 *msg, u16 msglen)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct i40e_hw *hw = &pf->hw;
 	int local_vf_id = vf_id - (s16)hw->func_caps.vf_base_id;
@@ -4068,10 +3654,7 @@ int i40e_vc_process_vf_msg(struct i40e_pf *pf, s16 vf_id, u32 v_opcode,
 		break;
 	case VIRTCHNL_OP_GET_VF_RESOURCES:
 		ret = i40e_vc_get_vf_resources_msg(vf, msg);
-<<<<<<< HEAD
 		i40e_vc_notify_vf_link_state(vf);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case VIRTCHNL_OP_RESET_VF:
 		i40e_vc_reset_vf_msg(vf);
@@ -4135,7 +3718,6 @@ int i40e_vc_process_vf_msg(struct i40e_pf *pf, s16 vf_id, u32 v_opcode,
 	case VIRTCHNL_OP_DISABLE_VLAN_STRIPPING:
 		ret = i40e_vc_disable_vlan_stripping(vf, msg, msglen);
 		break;
-<<<<<<< HEAD
 	case VIRTCHNL_OP_REQUEST_QUEUES:
 		ret = i40e_vc_request_queues_msg(vf, msg, msglen);
 		break;
@@ -4151,9 +3733,6 @@ int i40e_vc_process_vf_msg(struct i40e_pf *pf, s16 vf_id, u32 v_opcode,
 	case VIRTCHNL_OP_DEL_CLOUD_FILTER:
 		ret = i40e_vc_del_cloud_filter(vf, msg);
 		break;
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case VIRTCHNL_OP_UNKNOWN:
 	default:
 		dev_err(&pf->pdev->dev, "Unsupported opcode %d from VF %d\n",
@@ -4297,11 +3876,7 @@ int i40e_ndo_set_vf_mac(struct net_device *netdev, int vf_id, u8 *mac)
 	}
 
 	/* Force the VF driver stop so it has to reload with new MAC address */
-<<<<<<< HEAD
 	i40e_vc_disable_vf(vf);
-=======
-	i40e_vc_disable_vf(pf, vf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_info(&pf->pdev->dev, "Reload the VF driver to make this change effective.\n");
 
 error_param:
@@ -4309,7 +3884,6 @@ error_param:
 }
 
 /**
-<<<<<<< HEAD
  * i40e_vsi_has_vlans - True if VSI has configured VLANs
  * @vsi: pointer to the vsi
  *
@@ -4338,8 +3912,6 @@ static bool i40e_vsi_has_vlans(struct i40e_vsi *vsi)
 }
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * i40e_ndo_set_vf_port_vlan
  * @netdev: network interface device structure
  * @vf_id: VF identifier
@@ -4391,14 +3963,7 @@ int i40e_ndo_set_vf_port_vlan(struct net_device *netdev, int vf_id,
 		/* duplicate request, so just return success */
 		goto error_pvid;
 
-<<<<<<< HEAD
 	if (i40e_vsi_has_vlans(vsi)) {
-=======
-	/* Locked once because multiple functions below iterate list */
-	spin_lock_bh(&vsi->mac_filter_hash_lock);
-
-	if (le16_to_cpu(vsi->info.pvid) == 0 && i40e_is_vsi_in_vlan(vsi)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(&pf->pdev->dev,
 			"VF %d has already configured VLAN filters and the administrator is requesting a port VLAN override.\nPlease unload and reload the VF driver for this change to take effect.\n",
 			vf_id);
@@ -4406,21 +3971,14 @@ int i40e_ndo_set_vf_port_vlan(struct net_device *netdev, int vf_id,
 		 * the right thing by reconfiguring his network correctly
 		 * and then reloading the VF driver.
 		 */
-<<<<<<< HEAD
 		i40e_vc_disable_vf(vf);
-=======
-		i40e_vc_disable_vf(pf, vf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* During reset the VF got a new VSI, so refresh the pointer. */
 		vsi = pf->vsi[vf->lan_vsi_idx];
 	}
 
-<<<<<<< HEAD
 	/* Locked once because multiple functions below iterate list */
 	spin_lock_bh(&vsi->mac_filter_hash_lock);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Check for condition where there was already a port VLAN ID
 	 * filter set and now it is being deleted by setting it to zero.
 	 * Additionally check for the condition where there was a port
@@ -4493,21 +4051,12 @@ error_pvid:
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
-#define I40E_BW_CREDIT_DIVISOR 50     /* 50Mbps per BW credit */
-#define I40E_MAX_BW_INACTIVE_ACCUM 4  /* device can accumulate 4 credits max */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * i40e_ndo_set_vf_bw
  * @netdev: network interface device structure
  * @vf_id: VF identifier
-<<<<<<< HEAD
  * @min_tx_rate: Minimum Tx rate
  * @max_tx_rate: Maximum Tx rate
-=======
- * @tx_rate: Tx rate
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * configure VF Tx rate
  **/
@@ -4518,10 +4067,6 @@ int i40e_ndo_set_vf_bw(struct net_device *netdev, int vf_id, int min_tx_rate,
 	struct i40e_pf *pf = np->vsi->back;
 	struct i40e_vsi *vsi;
 	struct i40e_vf *vf;
-<<<<<<< HEAD
-=======
-	int speed = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = 0;
 
 	/* validate the request */
@@ -4546,55 +4091,10 @@ int i40e_ndo_set_vf_bw(struct net_device *netdev, int vf_id, int min_tx_rate,
 		goto error;
 	}
 
-<<<<<<< HEAD
 	ret = i40e_set_bw_limit(vsi, vsi->seid, max_tx_rate);
 	if (ret)
 		goto error;
 
-=======
-	switch (pf->hw.phy.link_info.link_speed) {
-	case I40E_LINK_SPEED_40GB:
-		speed = 40000;
-		break;
-	case I40E_LINK_SPEED_25GB:
-		speed = 25000;
-		break;
-	case I40E_LINK_SPEED_20GB:
-		speed = 20000;
-		break;
-	case I40E_LINK_SPEED_10GB:
-		speed = 10000;
-		break;
-	case I40E_LINK_SPEED_1GB:
-		speed = 1000;
-		break;
-	default:
-		break;
-	}
-
-	if (max_tx_rate > speed) {
-		dev_err(&pf->pdev->dev, "Invalid max tx rate %d specified for VF %d.\n",
-			max_tx_rate, vf->vf_id);
-		ret = -EINVAL;
-		goto error;
-	}
-
-	if ((max_tx_rate < 50) && (max_tx_rate > 0)) {
-		dev_warn(&pf->pdev->dev, "Setting max Tx rate to minimum usable value of 50Mbps.\n");
-		max_tx_rate = 50;
-	}
-
-	/* Tx rate credits are in values of 50Mbps, 0 is disabled*/
-	ret = i40e_aq_config_vsi_bw_limit(&pf->hw, vsi->seid,
-					  max_tx_rate / I40E_BW_CREDIT_DIVISOR,
-					  I40E_MAX_BW_INACTIVE_ACCUM, NULL);
-	if (ret) {
-		dev_err(&pf->pdev->dev, "Unable to set max tx rate, error code %d.\n",
-			ret);
-		ret = -EIO;
-		goto error;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vf->tx_rate = max_tx_rate;
 error:
 	return ret;
@@ -4701,11 +4201,7 @@ int i40e_ndo_set_vf_link_state(struct net_device *netdev, int vf_id, int link)
 		vf->link_forced = true;
 		vf->link_up = true;
 		pfe.event_data.link_event.link_status = true;
-<<<<<<< HEAD
 		pfe.event_data.link_event.link_speed = I40E_LINK_SPEED_40GB;
-=======
-		pfe.event_data.link_event.link_speed = VIRTCHNL_LINK_SPEED_40GB;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case IFLA_VF_LINK_STATE_DISABLE:
 		vf->link_forced = true;
@@ -4807,16 +4303,10 @@ int i40e_ndo_set_vf_trust(struct net_device *netdev, int vf_id, bool setting)
 
 	vf = &pf->vf[vf_id];
 
-<<<<<<< HEAD
-=======
-	if (!vf)
-		return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (setting == vf->trusted)
 		goto out;
 
 	vf->trusted = setting;
-<<<<<<< HEAD
 	i40e_vc_disable_vf(vf);
 	dev_info(&pf->pdev->dev, "VF %u is now %strusted\n",
 		 vf_id, setting ? "" : "un");
@@ -4830,12 +4320,6 @@ int i40e_ndo_set_vf_trust(struct net_device *netdev, int vf_id, bool setting)
 		}
 	}
 
-=======
-	i40e_vc_notify_vf_reset(vf);
-	i40e_reset_vf(vf, false);
-	dev_info(&pf->pdev->dev, "VF %u is now %strusted\n",
-		 vf_id, setting ? "" : "un");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	return ret;
 }

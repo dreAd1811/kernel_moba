@@ -16,11 +16,7 @@ static int __init gate_vma_init(void)
 	if (!FIXADDR_USER_START)
 		return 0;
 
-<<<<<<< HEAD
 	vma_init(&gate_vma, NULL);
-=======
-	gate_vma.vm_mm = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gate_vma.vm_start = FIXADDR_USER_START;
 	gate_vma.vm_end = FIXADDR_USER_END;
 	gate_vma.vm_flags = VM_READ | VM_MAYREAD | VM_EXEC | VM_MAYEXEC;

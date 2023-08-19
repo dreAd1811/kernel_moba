@@ -30,11 +30,7 @@ config MLXSW_CORE_THERMAL
 
 config MLXSW_PCI
 	tristate "PCI bus implementation for Mellanox Technologies Switch ASICs"
-<<<<<<< HEAD
 	depends on PCI && HAS_IOMEM && MLXSW_CORE
-=======
-	depends on PCI && HAS_DMA && HAS_IOMEM && MLXSW_CORE
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default m
 	---help---
 	  This is PCI bus implementation for Mellanox Technologies Switch ASICs.
@@ -80,12 +76,9 @@ config MLXSW_SPECTRUM
 	depends on PSAMPLE || PSAMPLE=n
 	depends on BRIDGE || BRIDGE=n
 	depends on IPV6 || IPV6=n
-<<<<<<< HEAD
 	depends on NET_IPGRE || NET_IPGRE=n
 	depends on IPV6_GRE || IPV6_GRE=n
 	select GENERIC_ALLOCATOR
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select PARMAN
 	select MLXFW
 	default m

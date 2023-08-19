@@ -13,7 +13,6 @@
 			compatible = "brcm,bcm2836-l1-intc";
 			reg = <0x40000000 0x100>;
 			interrupt-controller;
-<<<<<<< HEAD
 			#interrupt-cells = <2>;
 			interrupt-parent = <&local_intc>;
 		};
@@ -23,33 +22,15 @@
 		compatible = "arm,cortex-a7-pmu";
 		interrupt-parent = <&local_intc>;
 		interrupts = <9 IRQ_TYPE_LEVEL_HIGH>;
-=======
-			#interrupt-cells = <1>;
-			interrupt-parent = <&local_intc>;
-		};
-
-		arm-pmu {
-			compatible = "arm,cortex-a7-pmu";
-			interrupt-parent = <&local_intc>;
-			interrupts = <9>;
-		};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	timer {
 		compatible = "arm,armv7-timer";
 		interrupt-parent = <&local_intc>;
-<<<<<<< HEAD
 		interrupts = <0 IRQ_TYPE_LEVEL_HIGH>, // PHYS_SECURE_PPI
 			     <1 IRQ_TYPE_LEVEL_HIGH>, // PHYS_NONSECURE_PPI
 			     <3 IRQ_TYPE_LEVEL_HIGH>, // VIRT_PPI
 			     <2 IRQ_TYPE_LEVEL_HIGH>; // HYP_PPI
-=======
-		interrupts = <0>, // PHYS_SECURE_PPI
-			     <1>, // PHYS_NONSECURE_PPI
-			     <3>, // VIRT_PPI
-			     <2>; // HYP_PPI
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		always-on;
 	};
 
@@ -95,11 +76,7 @@
 	compatible = "brcm,bcm2836-armctrl-ic";
 	reg = <0x7e00b200 0x200>;
 	interrupt-parent = <&local_intc>;
-<<<<<<< HEAD
 	interrupts = <8 IRQ_TYPE_LEVEL_HIGH>;
-=======
-	interrupts = <8>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &cpu_thermal {

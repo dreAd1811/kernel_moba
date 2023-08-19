@@ -233,11 +233,7 @@ static int __maybe_unused regulator_haptic_resume(struct device *dev)
 
 	haptic->suspended = false;
 
-<<<<<<< HEAD
 	magnitude = READ_ONCE(haptic->magnitude);
-=======
-	magnitude = ACCESS_ONCE(haptic->magnitude);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (magnitude)
 		regulator_haptic_set_voltage(haptic, magnitude);
 

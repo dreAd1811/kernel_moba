@@ -442,13 +442,8 @@ static int sti_mbox_probe(struct platform_device *pdev)
 	if (!mbox)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	chans = devm_kcalloc(&pdev->dev,
 			     STI_MBOX_CHAN_MAX, sizeof(*chans), GFP_KERNEL);
-=======
-	chans = devm_kzalloc(&pdev->dev,
-			     sizeof(*chans) * STI_MBOX_CHAN_MAX, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!chans)
 		return -ENOMEM;
 

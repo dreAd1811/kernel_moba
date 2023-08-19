@@ -32,10 +32,6 @@
 #include <linux/platform_data/omapdss.h>
 #include "omap_hwmod.h"
 #include "omap_device.h"
-<<<<<<< HEAD
-=======
-#include "omap-pm.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "common.h"
 
 #include "soc.h"
@@ -134,14 +130,6 @@ static void omap_dsi_disable_pads(int dsi_id, unsigned lane_mask)
 		omap4_dsi_mux_pads(dsi_id, 0);
 }
 
-<<<<<<< HEAD
-=======
-static int omap_dss_set_min_bus_tput(struct device *dev, unsigned long tput)
-{
-	return omap_pm_set_min_bus_tput(dev, OCP_INITIATOR_AGENT, tput);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static enum omapdss_version __init omap_display_get_version(void)
 {
 	if (cpu_is_omap24xx())
@@ -180,10 +168,6 @@ static int __init omapdss_init_fbdev(void)
 	static struct omap_dss_board_info board_data = {
 		.dsi_enable_pads = omap_dsi_enable_pads,
 		.dsi_disable_pads = omap_dsi_disable_pads,
-<<<<<<< HEAD
-=======
-		.set_min_bus_tput = omap_dss_set_min_bus_tput,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 	struct device_node *node;
 	int r;
@@ -406,11 +390,7 @@ static struct device_node * __init omapdss_find_dss_of_node(void)
 	return NULL;
 }
 
-<<<<<<< HEAD
 static int __init omapdss_init_of(void)
-=======
-int __init omapdss_init_of(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int r;
 	struct device_node *node;
@@ -440,7 +420,4 @@ int __init omapdss_init_of(void)
 
 	return omapdss_init_fbdev();
 }
-<<<<<<< HEAD
 omap_device_initcall(omapdss_init_of);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

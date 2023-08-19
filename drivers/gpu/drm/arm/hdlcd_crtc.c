@@ -229,12 +229,8 @@ static const struct drm_crtc_helper_funcs hdlcd_crtc_helper_funcs = {
 static int hdlcd_plane_atomic_check(struct drm_plane *plane,
 				    struct drm_plane_state *state)
 {
-<<<<<<< HEAD
 	int i;
 	struct drm_crtc *crtc;
-=======
-	struct drm_rect clip = { 0 };
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_crtc_state *crtc_state;
 	u32 src_h = state->src_h >> 16;
 
@@ -244,7 +240,6 @@ static int hdlcd_plane_atomic_check(struct drm_plane *plane,
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 	for_each_new_crtc_in_state(state->state, crtc, crtc_state, i) {
 		/* we cannot disable the plane while the CRTC is active */
 		if (!state->fb && crtc_state->active)
@@ -256,25 +251,6 @@ static int hdlcd_plane_atomic_check(struct drm_plane *plane,
 	}
 
 	return 0;
-=======
-	if (!state->fb || !state->crtc)
-		return 0;
-
-	crtc_state = drm_atomic_get_existing_crtc_state(state->state,
-							state->crtc);
-	if (!crtc_state) {
-		DRM_DEBUG_KMS("Invalid crtc state\n");
-		return -EINVAL;
-	}
-
-	clip.x2 = crtc_state->adjusted_mode.hdisplay;
-	clip.y2 = crtc_state->adjusted_mode.vdisplay;
-
-	return drm_plane_helper_check_state(state, &clip,
-					    DRM_PLANE_HELPER_NO_SCALING,
-					    DRM_PLANE_HELPER_NO_SCALING,
-					    false, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void hdlcd_plane_atomic_update(struct drm_plane *plane,
@@ -303,23 +279,10 @@ static const struct drm_plane_helper_funcs hdlcd_plane_helper_funcs = {
 	.atomic_update = hdlcd_plane_atomic_update,
 };
 
-<<<<<<< HEAD
 static const struct drm_plane_funcs hdlcd_plane_funcs = {
 	.update_plane		= drm_atomic_helper_update_plane,
 	.disable_plane		= drm_atomic_helper_disable_plane,
 	.destroy		= drm_plane_cleanup,
-=======
-static void hdlcd_plane_destroy(struct drm_plane *plane)
-{
-	drm_plane_helper_disable(plane);
-	drm_plane_cleanup(plane);
-}
-
-static const struct drm_plane_funcs hdlcd_plane_funcs = {
-	.update_plane		= drm_atomic_helper_update_plane,
-	.disable_plane		= drm_atomic_helper_disable_plane,
-	.destroy		= hdlcd_plane_destroy,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.reset			= drm_atomic_helper_plane_reset,
 	.atomic_duplicate_state = drm_atomic_helper_plane_duplicate_state,
 	.atomic_destroy_state	= drm_atomic_helper_plane_destroy_state,
@@ -343,14 +306,8 @@ static struct drm_plane *hdlcd_plane_init(struct drm_device *drm)
 				       formats, ARRAY_SIZE(formats),
 				       NULL,
 				       DRM_PLANE_TYPE_PRIMARY, NULL);
-<<<<<<< HEAD
 	if (ret)
 		return ERR_PTR(ret);
-=======
-	if (ret) {
-		return ERR_PTR(ret);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	drm_plane_helper_add(plane, &hdlcd_plane_helper_funcs);
 	hdlcd->plane = plane;
@@ -370,15 +327,8 @@ int hdlcd_setup_crtc(struct drm_device *drm)
 
 	ret = drm_crtc_init_with_planes(drm, &hdlcd->crtc, primary, NULL,
 					&hdlcd_crtc_funcs, NULL);
-<<<<<<< HEAD
 	if (ret)
 		return ret;
-=======
-	if (ret) {
-		hdlcd_plane_destroy(primary);
-		return ret;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	drm_crtc_helper_add(&hdlcd->crtc, &hdlcd_crtc_helper_funcs);
 	return 0;

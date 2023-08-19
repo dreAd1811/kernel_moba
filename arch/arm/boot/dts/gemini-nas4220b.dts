@@ -14,11 +14,7 @@
 	#address-cells = <1>;
 	#size-cells = <1>;
 
-<<<<<<< HEAD
 	memory@0 { /* 128 MB */
-=======
-	memory { /* 128 MB */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		device_type = "memory";
 		reg = <0x00000000 0x8000000>;
 	};
@@ -30,30 +26,17 @@
 
 	gpio_keys {
 		compatible = "gpio-keys";
-<<<<<<< HEAD
 
 		button-setup {
 			debounce-interval = <50>;
-=======
-		#address-cells = <1>;
-		#size-cells = <0>;
-
-		button@29 {
-			debounce_interval = <50>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			wakeup-source;
 			linux,code = <KEY_SETUP>;
 			label = "Backup button";
 			/* Conflict with TVC */
 			gpios = <&gpio1 29 GPIO_ACTIVE_LOW>;
 		};
-<<<<<<< HEAD
 		button-restart {
 			debounce-interval = <50>;
-=======
-		button@31 {
-			debounce_interval = <50>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			wakeup-source;
 			linux,code = <KEY_RESTART>;
 			label = "Softreset button";
@@ -64,21 +47,13 @@
 
 	leds {
 		compatible = "gpio-leds";
-<<<<<<< HEAD
 		led-orange-hdd {
-=======
-		led@28 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "nas4220b:orange:hdd";
 			/* Conflict with TVC */
 			gpios = <&gpio1 28 GPIO_ACTIVE_HIGH>;
 			default-state = "on";
 		};
-<<<<<<< HEAD
 		led-green-os {
-=======
-		led@30 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "nas4220b:green:os";
 			/* Conflict with TVC */
 			gpios = <&gpio1 30 GPIO_ACTIVE_HIGH>;
@@ -87,7 +62,6 @@
 		};
 	};
 
-<<<<<<< HEAD
 	mdio0: ethernet-phy {
 		compatible = "virtual,mdio-gpio";
 		gpios = <&gpio0 22 GPIO_ACTIVE_HIGH>, /* MDC */
@@ -101,8 +75,6 @@
 		};
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	soc {
 		flash@30000000 {
 			status = "okay";
@@ -155,7 +127,6 @@
 						groups = "gpio1dgrp";
 					};
 				};
-<<<<<<< HEAD
 				pinctrl-gmii {
 					mux {
 						function = "gmii";
@@ -200,8 +171,6 @@
 						drive-strength = <16>;
 					};
 				};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 		};
 
@@ -216,7 +185,6 @@
 			pinctrl-0 = <&gpio1_default_pins>;
 		};
 
-<<<<<<< HEAD
 		ethernet@60000000 {
 			status = "okay";
 
@@ -236,10 +204,5 @@
 		ata@63400000 {
 			status = "okay";
 		};
-=======
-		ata@63000000 {
-			status = "okay";
-		};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };

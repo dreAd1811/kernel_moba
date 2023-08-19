@@ -20,7 +20,6 @@ Below are the essential guides that every developer should read.
    :maxdepth: 1
 
    howto
-<<<<<<< HEAD
    code-of-conduct
    code-of-conduct-interpretation
    development-process
@@ -30,14 +29,6 @@ Below are the essential guides that every developer should read.
    email-clients
    kernel-enforcement-statement
    kernel-driver-statement
-=======
-   code-of-conflict
-   development-process
-   submitting-patches
-   coding-style
-   email-clients
-   kernel-enforcement-statement
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Other guides to the community that are of interest to most developers are: 
 
@@ -62,10 +53,7 @@ lack of a better place.
    adding-syscalls
    magic-number
    volatile-considered-harmful
-<<<<<<< HEAD
    clang-format
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 .. only::  subproject and html
 

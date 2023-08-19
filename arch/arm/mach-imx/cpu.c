@@ -68,10 +68,7 @@ void __init imx_aips_allow_unprivileged_access(
 
 	for_each_compatible_node(np, NULL, compat) {
 		aips_base_addr = of_iomap(np, 0);
-<<<<<<< HEAD
 		WARN_ON(!aips_base_addr);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		imx_set_aips(aips_base_addr);
 	}
 }
@@ -139,12 +136,9 @@ struct device * __init imx_soc_device_init(void)
 	case MXC_CPU_IMX6ULL:
 		soc_id = "i.MX6ULL";
 		break;
-<<<<<<< HEAD
 	case MXC_CPU_IMX6SLL:
 		soc_id = "i.MX6SLL";
 		break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case MXC_CPU_IMX7D:
 		soc_id = "i.MX7D";
 		break;

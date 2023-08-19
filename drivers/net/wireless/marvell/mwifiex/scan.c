@@ -483,12 +483,8 @@ mwifiex_scan_create_channel_list(struct mwifiex_private *priv,
 				scan_chan_list[chan_idx].max_scan_time =
 					cpu_to_le16((u16) user_scan_in->
 					chan_list[0].scan_time);
-<<<<<<< HEAD
 			else if ((ch->flags & IEEE80211_CHAN_NO_IR) ||
 				 (ch->flags & IEEE80211_CHAN_RADAR))
-=======
-			else if (ch->flags & IEEE80211_CHAN_NO_IR)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				scan_chan_list[chan_idx].max_scan_time =
 					cpu_to_le16(adapter->passive_scan_time);
 			else
@@ -508,19 +504,12 @@ mwifiex_scan_create_channel_list(struct mwifiex_private *priv,
 			scan_chan_list[chan_idx].chan_scan_mode_bitmap
 					|= MWIFIEX_DISABLE_CHAN_FILT;
 
-<<<<<<< HEAD
 			if (filtered_scan &&
 			    !((ch->flags & IEEE80211_CHAN_NO_IR) ||
 			      (ch->flags & IEEE80211_CHAN_RADAR)))
 				scan_chan_list[chan_idx].max_scan_time =
 				cpu_to_le16(adapter->specific_scan_time);
 
-=======
-			if (filtered_scan) {
-				scan_chan_list[chan_idx].max_scan_time =
-				cpu_to_le16(adapter->specific_scan_time);
-			}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			chan_idx++;
 		}
 
@@ -1339,10 +1328,7 @@ int mwifiex_update_bss_desc_with_ie(struct mwifiex_adapter *adapter,
 
 		case WLAN_EID_CHANNEL_SWITCH:
 			bss_entry->chan_sw_ie_present = true;
-<<<<<<< HEAD
 			/* fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case WLAN_EID_PWR_CAPABILITY:
 		case WLAN_EID_TPC_REPORT:
 		case WLAN_EID_QUIET:
@@ -1533,12 +1519,8 @@ int mwifiex_scan_networks(struct mwifiex_private *priv,
 		return -EBUSY;
 	}
 
-<<<<<<< HEAD
 	if (test_bit(MWIFIEX_SURPRISE_REMOVED, &adapter->work_flags) ||
 	    test_bit(MWIFIEX_IS_CMD_TIMEDOUT, &adapter->work_flags)) {
-=======
-	if (adapter->surprise_removed || adapter->is_cmd_timedout) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mwifiex_dbg(adapter, ERROR,
 			    "Ignore scan. Card removed or firmware in bad state\n");
 		return -EFAULT;
@@ -1924,7 +1906,6 @@ mwifiex_parse_single_response_buf(struct mwifiex_private *priv, u8 **bss_info,
 					    ETH_ALEN))
 					mwifiex_update_curr_bss_params(priv,
 								       bss);
-<<<<<<< HEAD
 				cfg80211_put_bss(priv->wdev.wiphy, bss);
 			}
 
@@ -1934,19 +1915,6 @@ mwifiex_parse_single_response_buf(struct mwifiex_private *priv, u8 **bss_info,
 					    "radar or passive channel %d\n",
 					    channel);
 				mwifiex_save_hidden_ssid_channels(priv, bss);
-=======
-
-				if ((chan->flags & IEEE80211_CHAN_RADAR) ||
-				    (chan->flags & IEEE80211_CHAN_NO_IR)) {
-					mwifiex_dbg(adapter, INFO,
-						    "radar or passive channel %d\n",
-						    channel);
-					mwifiex_save_hidden_ssid_channels(priv,
-									  bss);
-				}
-
-				cfg80211_put_bss(priv->wdev.wiphy, bss);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		}
 	} else {
@@ -1997,11 +1965,6 @@ mwifiex_active_scan_req_for_passive_chan(struct mwifiex_private *priv)
 	if (!user_scan_cfg)
 		return -ENOMEM;
 
-<<<<<<< HEAD
-=======
-	memset(user_scan_cfg, 0, sizeof(*user_scan_cfg));
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (id = 0; id < MWIFIEX_USER_SCAN_CHAN_MAX; id++) {
 		if (!priv->hidden_chan[id].chan_number)
 			break;
@@ -2012,12 +1975,8 @@ mwifiex_active_scan_req_for_passive_chan(struct mwifiex_private *priv)
 
 	adapter->active_scan_triggered = true;
 	if (priv->scan_request->flags & NL80211_SCAN_FLAG_RANDOM_ADDR)
-<<<<<<< HEAD
 		ether_addr_copy(user_scan_cfg->random_mac,
 				priv->scan_request->mac_addr);
-=======
-		ether_addr_copy(user_scan_cfg->random_mac, priv->random_mac);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	user_scan_cfg->num_ssids = priv->scan_request->n_ssids;
 	user_scan_cfg->ssid_list = priv->scan_request->ssids;
 
@@ -2933,16 +2892,6 @@ mwifiex_cmd_append_vsie_tlv(struct mwifiex_private *priv,
 			vs_param_set->header.len =
 				cpu_to_le16((((u16) priv->vs_ie[id].ie[1])
 				& 0x00FF) + 2);
-<<<<<<< HEAD
-=======
-			if (le16_to_cpu(vs_param_set->header.len) >
-				MWIFIEX_MAX_VSIE_LEN) {
-				mwifiex_dbg(priv->adapter, ERROR,
-					    "Invalid param length!\n");
-				break;
-			}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			memcpy(vs_param_set->ie, priv->vs_ie[id].ie,
 			       le16_to_cpu(vs_param_set->header.len));
 			*buffer += le16_to_cpu(vs_param_set->header.len) +

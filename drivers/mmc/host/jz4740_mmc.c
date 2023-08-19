@@ -1,10 +1,7 @@
 /*
  *  Copyright (C) 2009-2010, Lars-Peter Clausen <lars@metafoo.de>
-<<<<<<< HEAD
  *  Copyright (C) 2013, Imagination Technologies
  *
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *  JZ4740 SD/MMC controller driver
  *
  *  This program is free software; you can redistribute  it and/or modify it
@@ -18,7 +15,6 @@
  *
  */
 
-<<<<<<< HEAD
 #include <linux/bitops.h>
 #include <linux/clk.h>
 #include <linux/delay.h>
@@ -38,26 +34,6 @@
 #include <linux/scatterlist.h>
 
 #include <asm/cacheflush.h>
-=======
-#include <linux/mmc/host.h>
-#include <linux/mmc/slot-gpio.h>
-#include <linux/err.h>
-#include <linux/io.h>
-#include <linux/irq.h>
-#include <linux/interrupt.h>
-#include <linux/module.h>
-#include <linux/pinctrl/consumer.h>
-#include <linux/platform_device.h>
-#include <linux/delay.h>
-#include <linux/scatterlist.h>
-#include <linux/clk.h>
-
-#include <linux/bitops.h>
-#include <linux/gpio.h>
-#include <asm/cacheflush.h>
-#include <linux/dma-mapping.h>
-#include <linux/dmaengine.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/mach-jz4740/dma.h>
 #include <asm/mach-jz4740/jz4740_mmc.h>
@@ -78,10 +54,7 @@
 #define JZ_REG_MMC_RESP_FIFO	0x34
 #define JZ_REG_MMC_RXFIFO	0x38
 #define JZ_REG_MMC_TXFIFO	0x3C
-<<<<<<< HEAD
 #define JZ_REG_MMC_DMAC		0x44
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define JZ_MMC_STRPCL_EXIT_MULTIPLE BIT(7)
 #define JZ_MMC_STRPCL_EXIT_TRANSFER BIT(6)
@@ -135,7 +108,6 @@
 #define JZ_MMC_IRQ_PRG_DONE BIT(1)
 #define JZ_MMC_IRQ_DATA_TRAN_DONE BIT(0)
 
-<<<<<<< HEAD
 #define JZ_MMC_DMAC_DMA_SEL BIT(1)
 #define JZ_MMC_DMAC_DMA_EN BIT(0)
 
@@ -147,11 +119,6 @@ enum jz4740_mmc_version {
 	JZ_MMC_JZ4780,
 };
 
-=======
-
-#define JZ_MMC_CLK_RATE 24000000
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum jz4740_mmc_state {
 	JZ4740_MMC_STATE_READ_RESPONSE,
 	JZ4740_MMC_STATE_TRANSFER_DATA,
@@ -170,11 +137,8 @@ struct jz4740_mmc_host {
 	struct jz4740_mmc_platform_data *pdata;
 	struct clk *clk;
 
-<<<<<<< HEAD
 	enum jz4740_mmc_version version;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int irq;
 	int card_detect_irq;
 
@@ -187,11 +151,7 @@ struct jz4740_mmc_host {
 
 	uint32_t cmdat;
 
-<<<<<<< HEAD
 	uint32_t irq_mask;
-=======
-	uint16_t irq_mask;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spinlock_t lock;
 
@@ -213,7 +173,6 @@ struct jz4740_mmc_host {
 #define JZ4740_MMC_FIFO_HALF_SIZE 8
 };
 
-<<<<<<< HEAD
 static void jz4740_mmc_write_irq_mask(struct jz4740_mmc_host *host,
 				      uint32_t val)
 {
@@ -240,8 +199,6 @@ static uint32_t jz4740_mmc_read_irq_reg(struct jz4740_mmc_host *host)
 		return readw(host->base + JZ_REG_MMC_IREG);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*----------------------------------------------------------------------------*/
 /* DMA infrastructure */
 
@@ -256,7 +213,6 @@ static void jz4740_mmc_release_dma_channels(struct jz4740_mmc_host *host)
 
 static int jz4740_mmc_acquire_dma_channels(struct jz4740_mmc_host *host)
 {
-<<<<<<< HEAD
 	host->dma_tx = dma_request_chan(mmc_dev(host->mmc), "tx");
 	if (IS_ERR(host->dma_tx)) {
 		dev_err(mmc_dev(host->mmc), "Failed to get dma_tx channel\n");
@@ -268,36 +224,12 @@ static int jz4740_mmc_acquire_dma_channels(struct jz4740_mmc_host *host)
 		dev_err(mmc_dev(host->mmc), "Failed to get dma_rx channel\n");
 		dma_release_channel(host->dma_tx);
 		return PTR_ERR(host->dma_rx);
-=======
-	dma_cap_mask_t mask;
-
-	dma_cap_zero(mask);
-	dma_cap_set(DMA_SLAVE, mask);
-
-	host->dma_tx = dma_request_channel(mask, NULL, host);
-	if (!host->dma_tx) {
-		dev_err(mmc_dev(host->mmc), "Failed to get dma_tx channel\n");
-		return -ENODEV;
-	}
-
-	host->dma_rx = dma_request_channel(mask, NULL, host);
-	if (!host->dma_rx) {
-		dev_err(mmc_dev(host->mmc), "Failed to get dma_rx channel\n");
-		goto free_master_write;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Initialize DMA pre request cookie */
 	host->next_data.cookie = 1;
 
 	return 0;
-<<<<<<< HEAD
-=======
-
-free_master_write:
-	dma_release_channel(host->dma_tx);
-	return -ENODEV;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline struct dma_chan *jz4740_mmc_get_dma_chan(struct jz4740_mmc_host *host,
@@ -463,11 +395,7 @@ static void jz4740_mmc_set_irq_enabled(struct jz4740_mmc_host *host,
 	else
 		host->irq_mask |= irq;
 
-<<<<<<< HEAD
 	jz4740_mmc_write_irq_mask(host, host->irq_mask);
-=======
-	writew(host->irq_mask, host->base + JZ_REG_MMC_IMASK);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irqrestore(&host->lock, flags);
 }
 
@@ -519,17 +447,10 @@ static unsigned int jz4740_mmc_poll_irq(struct jz4740_mmc_host *host,
 	unsigned int irq)
 {
 	unsigned int timeout = 0x800;
-<<<<<<< HEAD
 	uint32_t status;
 
 	do {
 		status = jz4740_mmc_read_irq_reg(host);
-=======
-	uint16_t status;
-
-	do {
-		status = readw(host->base + JZ_REG_MMC_IREG);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} while (!(status & irq) && --timeout);
 
 	if (timeout == 0) {
@@ -629,11 +550,7 @@ static bool jz4740_mmc_read_data(struct jz4740_mmc_host *host,
 	void __iomem *fifo_addr = host->base + JZ_REG_MMC_RXFIFO;
 	uint32_t *buf;
 	uint32_t d;
-<<<<<<< HEAD
 	uint32_t status;
-=======
-	uint16_t status;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	size_t i, j;
 	unsigned int timeout;
 
@@ -701,15 +618,9 @@ poll_timeout:
 	return true;
 }
 
-<<<<<<< HEAD
 static void jz4740_mmc_timeout(struct timer_list *t)
 {
 	struct jz4740_mmc_host *host = from_timer(host, t, timeout_timer);
-=======
-static void jz4740_mmc_timeout(unsigned long data)
-{
-	struct jz4740_mmc_host *host = (struct jz4740_mmc_host *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!test_and_clear_bit(0, &host->waiting))
 		return;
@@ -775,7 +686,6 @@ static void jz4740_mmc_send_command(struct jz4740_mmc_host *host,
 		cmdat |= JZ_MMC_CMDAT_DATA_EN;
 		if (cmd->data->flags & MMC_DATA_WRITE)
 			cmdat |= JZ_MMC_CMDAT_WRITE;
-<<<<<<< HEAD
 		if (host->use_dma) {
 			/*
 			 * The 4780's MMC controller has integrated DMA ability
@@ -795,10 +705,6 @@ static void jz4740_mmc_send_command(struct jz4740_mmc_host *host,
 		} else if (host->version >= JZ_MMC_JZ4780) {
 			writel(0, host->base + JZ_REG_MMC_DMAC);
 		}
-=======
-		if (host->use_dma)
-			cmdat |= JZ_MMC_CMDAT_DMA_EN;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		writew(cmd->data->blksz, host->base + JZ_REG_MMC_BLKLEN);
 		writew(cmd->data->blocks, host->base + JZ_REG_MMC_NOB);
@@ -879,11 +785,7 @@ static irqreturn_t jz_mmc_irq_worker(int irq, void *devid)
 			host->state = JZ4740_MMC_STATE_SEND_STOP;
 			break;
 		}
-<<<<<<< HEAD
 		jz4740_mmc_write_irq_reg(host, JZ_MMC_IRQ_DATA_TRAN_DONE);
-=======
-		writew(JZ_MMC_IRQ_DATA_TRAN_DONE, host->base + JZ_REG_MMC_IREG);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	case JZ4740_MMC_STATE_SEND_STOP:
 		if (!req->stop)
@@ -913,16 +815,10 @@ static irqreturn_t jz_mmc_irq(int irq, void *devid)
 {
 	struct jz4740_mmc_host *host = devid;
 	struct mmc_command *cmd = host->cmd;
-<<<<<<< HEAD
 	uint32_t irq_reg, status, tmp;
 
 	status = readl(host->base + JZ_REG_MMC_STATUS);
 	irq_reg = jz4740_mmc_read_irq_reg(host);
-=======
-	uint16_t irq_reg, status, tmp;
-
-	irq_reg = readw(host->base + JZ_REG_MMC_IREG);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tmp = irq_reg;
 	irq_reg &= ~host->irq_mask;
@@ -931,17 +827,10 @@ static irqreturn_t jz_mmc_irq(int irq, void *devid)
 		JZ_MMC_IRQ_PRG_DONE | JZ_MMC_IRQ_DATA_TRAN_DONE);
 
 	if (tmp != irq_reg)
-<<<<<<< HEAD
 		jz4740_mmc_write_irq_reg(host, tmp & ~irq_reg);
 
 	if (irq_reg & JZ_MMC_IRQ_SDIO) {
 		jz4740_mmc_write_irq_reg(host, JZ_MMC_IRQ_SDIO);
-=======
-		writew(tmp & ~irq_reg, host->base + JZ_REG_MMC_IREG);
-
-	if (irq_reg & JZ_MMC_IRQ_SDIO) {
-		writew(JZ_MMC_IRQ_SDIO, host->base + JZ_REG_MMC_IREG);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mmc_signal_sdio_irq(host->mmc);
 		irq_reg &= ~JZ_MMC_IRQ_SDIO;
 	}
@@ -950,11 +839,6 @@ static irqreturn_t jz_mmc_irq(int irq, void *devid)
 		if (test_and_clear_bit(0, &host->waiting)) {
 			del_timer(&host->timeout_timer);
 
-<<<<<<< HEAD
-=======
-			status = readl(host->base + JZ_REG_MMC_STATUS);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (status & JZ_MMC_STATUS_TIMEOUT_RES) {
 					cmd->error = -ETIMEDOUT;
 			} else if (status & JZ_MMC_STATUS_CRC_RES_ERR) {
@@ -967,11 +851,7 @@ static irqreturn_t jz_mmc_irq(int irq, void *devid)
 			}
 
 			jz4740_mmc_set_irq_enabled(host, irq_reg, false);
-<<<<<<< HEAD
 			jz4740_mmc_write_irq_reg(host, irq_reg);
-=======
-			writew(irq_reg, host->base + JZ_REG_MMC_IREG);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			return IRQ_WAKE_THREAD;
 		}
@@ -986,11 +866,7 @@ static int jz4740_mmc_set_clock_rate(struct jz4740_mmc_host *host, int rate)
 	int real_rate;
 
 	jz4740_mmc_clock_disable(host);
-<<<<<<< HEAD
 	clk_set_rate(host->clk, host->mmc->f_max);
-=======
-	clk_set_rate(host->clk, JZ_MMC_CLK_RATE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	real_rate = clk_get_rate(host->clk);
 
@@ -1009,13 +885,7 @@ static void jz4740_mmc_request(struct mmc_host *mmc, struct mmc_request *req)
 
 	host->req = req;
 
-<<<<<<< HEAD
 	jz4740_mmc_write_irq_reg(host, ~0);
-=======
-	writew(0xffff, host->base + JZ_REG_MMC_IREG);
-
-	writew(JZ_MMC_IRQ_END_CMD_RES, host->base + JZ_REG_MMC_IREG);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	jz4740_mmc_set_irq_enabled(host, JZ_MMC_IRQ_END_CMD_RES, true);
 
 	host->state = JZ4740_MMC_STATE_READ_RESPONSE;
@@ -1033,11 +903,7 @@ static void jz4740_mmc_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
 	switch (ios->power_mode) {
 	case MMC_POWER_UP:
 		jz4740_mmc_reset(host);
-<<<<<<< HEAD
 		if (host->pdata && gpio_is_valid(host->pdata->gpio_power))
-=======
-		if (gpio_is_valid(host->pdata->gpio_power))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			gpio_set_value(host->pdata->gpio_power,
 					!host->pdata->power_active_low);
 		host->cmdat |= JZ_MMC_CMDAT_INIT;
@@ -1046,11 +912,7 @@ static void jz4740_mmc_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
 	case MMC_POWER_ON:
 		break;
 	default:
-<<<<<<< HEAD
 		if (host->pdata && gpio_is_valid(host->pdata->gpio_power))
-=======
-		if (gpio_is_valid(host->pdata->gpio_power))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			gpio_set_value(host->pdata->gpio_power,
 					host->pdata->power_active_low);
 		clk_disable_unprepare(host->clk);
@@ -1110,11 +972,7 @@ static int jz4740_mmc_request_gpio(struct device *dev, int gpio,
 static int jz4740_mmc_request_gpios(struct mmc_host *mmc,
 	struct platform_device *pdev)
 {
-<<<<<<< HEAD
 	struct jz4740_mmc_platform_data *pdata = dev_get_platdata(&pdev->dev);
-=======
-	struct jz4740_mmc_platform_data *pdata = pdev->dev.platform_data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = 0;
 
 	if (!pdata)
@@ -1125,7 +983,6 @@ static int jz4740_mmc_request_gpios(struct mmc_host *mmc,
 	if (!pdata->read_only_active_low)
 		mmc->caps2 |= MMC_CAP2_RO_ACTIVE_HIGH;
 
-<<<<<<< HEAD
 	/*
 	 * Get optional card detect and write protect GPIOs,
 	 * only back out on probe deferral.
@@ -1137,19 +994,6 @@ static int jz4740_mmc_request_gpios(struct mmc_host *mmc,
 	ret = mmc_gpiod_request_ro(mmc, "wp", 0, false, 0, NULL);
 	if (ret == -EPROBE_DEFER)
 		return ret;
-=======
-	if (gpio_is_valid(pdata->gpio_card_detect)) {
-		ret = mmc_gpio_request_cd(mmc, pdata->gpio_card_detect, 0);
-		if (ret)
-			return ret;
-	}
-
-	if (gpio_is_valid(pdata->gpio_read_only)) {
-		ret = mmc_gpio_request_ro(mmc, pdata->gpio_read_only);
-		if (ret)
-			return ret;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return jz4740_mmc_request_gpio(&pdev->dev, pdata->gpio_power,
 			"MMC read only", true, pdata->power_active_low);
@@ -1157,11 +1001,7 @@ static int jz4740_mmc_request_gpios(struct mmc_host *mmc,
 
 static void jz4740_mmc_free_gpios(struct platform_device *pdev)
 {
-<<<<<<< HEAD
 	struct jz4740_mmc_platform_data *pdata = dev_get_platdata(&pdev->dev);
-=======
-	struct jz4740_mmc_platform_data *pdata = pdev->dev.platform_data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!pdata)
 		return;
@@ -1170,7 +1010,6 @@ static void jz4740_mmc_free_gpios(struct platform_device *pdev)
 		gpio_free(pdata->gpio_power);
 }
 
-<<<<<<< HEAD
 static const struct of_device_id jz4740_mmc_of_match[] = {
 	{ .compatible = "ingenic,jz4740-mmc", .data = (void *) JZ_MMC_JZ4740 },
 	{ .compatible = "ingenic,jz4780-mmc", .data = (void *) JZ_MMC_JZ4780 },
@@ -1178,23 +1017,15 @@ static const struct of_device_id jz4740_mmc_of_match[] = {
 };
 MODULE_DEVICE_TABLE(of, jz4740_mmc_of_match);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int jz4740_mmc_probe(struct platform_device* pdev)
 {
 	int ret;
 	struct mmc_host *mmc;
 	struct jz4740_mmc_host *host;
-<<<<<<< HEAD
 	const struct of_device_id *match;
 	struct jz4740_mmc_platform_data *pdata;
 
 	pdata = dev_get_platdata(&pdev->dev);
-=======
-	struct jz4740_mmc_platform_data *pdata;
-
-	pdata = pdev->dev.platform_data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mmc = mmc_alloc_host(sizeof(struct jz4740_mmc_host), &pdev->dev);
 	if (!mmc) {
@@ -1205,7 +1036,6 @@ static int jz4740_mmc_probe(struct platform_device* pdev)
 	host = mmc_priv(mmc);
 	host->pdata = pdata;
 
-<<<<<<< HEAD
 	match = of_match_device(jz4740_mmc_of_match, &pdev->dev);
 	if (match) {
 		host->version = (enum jz4740_mmc_version)match->data;
@@ -1227,8 +1057,6 @@ static int jz4740_mmc_probe(struct platform_device* pdev)
 			goto err_free_host;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	host->irq = platform_get_irq(pdev, 0);
 	if (host->irq < 0) {
 		ret = host->irq;
@@ -1251,24 +1079,11 @@ static int jz4740_mmc_probe(struct platform_device* pdev)
 		goto err_free_host;
 	}
 
-<<<<<<< HEAD
 	mmc->ops = &jz4740_mmc_ops;
 	if (!mmc->f_max)
 		mmc->f_max = JZ_MMC_CLK_RATE;
 	mmc->f_min = mmc->f_max / 128;
 	mmc->ocr_avail = MMC_VDD_32_33 | MMC_VDD_33_34;
-=======
-	ret = jz4740_mmc_request_gpios(mmc, pdev);
-	if (ret)
-		goto err_release_dma;
-
-	mmc->ops = &jz4740_mmc_ops;
-	mmc->f_min = JZ_MMC_CLK_RATE / 128;
-	mmc->f_max = JZ_MMC_CLK_RATE;
-	mmc->ocr_avail = MMC_VDD_32_33 | MMC_VDD_33_34;
-	mmc->caps = (pdata && pdata->data_1bit) ? 0 : MMC_CAP_4_BIT_DATA;
-	mmc->caps |= MMC_CAP_SDIO_IRQ;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mmc->max_blk_size = (1 << 10) - 1;
 	mmc->max_blk_count = (1 << 15) - 1;
@@ -1280,13 +1095,9 @@ static int jz4740_mmc_probe(struct platform_device* pdev)
 	host->mmc = mmc;
 	host->pdev = pdev;
 	spin_lock_init(&host->lock);
-<<<<<<< HEAD
 	host->irq_mask = ~0;
 
 	jz4740_mmc_reset(host);
-=======
-	host->irq_mask = 0xffff;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = request_threaded_irq(host->irq, jz_mmc_irq, jz_mmc_irq_worker, 0,
 			dev_name(&pdev->dev), host);
@@ -1295,7 +1106,6 @@ static int jz4740_mmc_probe(struct platform_device* pdev)
 		goto err_free_gpios;
 	}
 
-<<<<<<< HEAD
 	jz4740_mmc_clock_disable(host);
 	timer_setup(&host->timeout_timer, jz4740_mmc_timeout, 0);
 
@@ -1303,27 +1113,13 @@ static int jz4740_mmc_probe(struct platform_device* pdev)
 	if (ret == -EPROBE_DEFER)
 		goto err_free_irq;
 	host->use_dma = !ret;
-=======
-	jz4740_mmc_reset(host);
-	jz4740_mmc_clock_disable(host);
-	setup_timer(&host->timeout_timer, jz4740_mmc_timeout,
-			(unsigned long)host);
-
-	host->use_dma = true;
-	if (host->use_dma && jz4740_mmc_acquire_dma_channels(host) != 0)
-		host->use_dma = false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	platform_set_drvdata(pdev, host);
 	ret = mmc_add_host(mmc);
 
 	if (ret) {
 		dev_err(&pdev->dev, "Failed to add mmc host: %d\n", ret);
-<<<<<<< HEAD
 		goto err_release_dma;
-=======
-		goto err_free_irq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	dev_info(&pdev->dev, "JZ SD/MMC card driver registered\n");
 
@@ -1333,22 +1129,13 @@ static int jz4740_mmc_probe(struct platform_device* pdev)
 
 	return 0;
 
-<<<<<<< HEAD
 err_release_dma:
 	if (host->use_dma)
 		jz4740_mmc_release_dma_channels(host);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_free_irq:
 	free_irq(host->irq, host);
 err_free_gpios:
 	jz4740_mmc_free_gpios(pdev);
-<<<<<<< HEAD
-=======
-err_release_dma:
-	if (host->use_dma)
-		jz4740_mmc_release_dma_channels(host);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_free_host:
 	mmc_free_host(mmc);
 
@@ -1401,10 +1188,7 @@ static struct platform_driver jz4740_mmc_driver = {
 	.remove = jz4740_mmc_remove,
 	.driver = {
 		.name = "jz4740-mmc",
-<<<<<<< HEAD
 		.of_match_table = of_match_ptr(jz4740_mmc_of_match),
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.pm = JZ4740_MMC_PM_OPS,
 	},
 };

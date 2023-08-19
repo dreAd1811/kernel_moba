@@ -127,11 +127,7 @@ static const struct mssr_mod_clk r8a77995_mod_clks[] __initconst = {
 	DEF_MOD("usb-dmac1",		 331,	R8A77995_CLK_S3D1),
 	DEF_MOD("rwdt",			 402,	R8A77995_CLK_R),
 	DEF_MOD("intc-ex",		 407,	R8A77995_CLK_CP),
-<<<<<<< HEAD
 	DEF_MOD("intc-ap",		 408,	R8A77995_CLK_S1D2),
-=======
-	DEF_MOD("intc-ap",		 408,	R8A77995_CLK_S3D1),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DEF_MOD("audmac0",		 502,	R8A77995_CLK_S3D1),
 	DEF_MOD("hscif3",		 517,	R8A77995_CLK_S3D1C),
 	DEF_MOD("hscif0",		 520,	R8A77995_CLK_S3D1C),
@@ -145,13 +141,8 @@ static const struct mssr_mod_clk r8a77995_mod_clks[] __initconst = {
 	DEF_MOD("vspbs",		 627,	R8A77995_CLK_S0D1),
 	DEF_MOD("ehci0",		 703,	R8A77995_CLK_S3D2),
 	DEF_MOD("hsusb",		 704,	R8A77995_CLK_S3D2),
-<<<<<<< HEAD
 	DEF_MOD("du1",			 723,	R8A77995_CLK_S2D1),
 	DEF_MOD("du0",			 724,	R8A77995_CLK_S2D1),
-=======
-	DEF_MOD("du1",			 723,	R8A77995_CLK_S1D1),
-	DEF_MOD("du0",			 724,	R8A77995_CLK_S1D1),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DEF_MOD("lvds",			 727,	R8A77995_CLK_S2D1),
 	DEF_MOD("vin7",			 804,	R8A77995_CLK_S1D2),
 	DEF_MOD("vin6",			 805,	R8A77995_CLK_S1D2),

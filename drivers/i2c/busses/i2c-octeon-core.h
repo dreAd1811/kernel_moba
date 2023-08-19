@@ -43,11 +43,7 @@
 #define TWSI_CTL_AAK		0x04	/* Assert ACK */
 
 /* Status values */
-<<<<<<< HEAD
 #define STAT_BUS_ERROR		0x00
-=======
-#define STAT_ERROR		0x00
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define STAT_START		0x08
 #define STAT_REP_START		0x10
 #define STAT_TXADDR_ACK		0x18

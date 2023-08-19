@@ -281,11 +281,7 @@ samsung_keypad_parse_dt(struct device *dev)
 
 	key_count = of_get_child_count(np);
 	keymap_data->keymap_size = key_count;
-<<<<<<< HEAD
 	keymap = devm_kcalloc(dev, key_count, sizeof(uint32_t), GFP_KERNEL);
-=======
-	keymap = devm_kzalloc(dev, sizeof(uint32_t) * key_count, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!keymap) {
 		dev_err(dev, "could not allocate memory for keymap\n");
 		return ERR_PTR(-ENOMEM);

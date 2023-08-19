@@ -5,13 +5,8 @@
  */
 #include "dm-block-manager.h"
 #include "dm-persistent-data-internal.h"
-<<<<<<< HEAD
 
 #include <linux/dm-bufio.h>
-=======
-#include "../dm-bufio.h"
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/crc32c.h>
 #include <linux/module.h>
 #include <linux/slab.h>

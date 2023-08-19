@@ -6,7 +6,6 @@
 #ifdef CONFIG_SPARSEMEM
 /*
  * SECTION_SIZE_BITS		2^N: how big each section will be
-<<<<<<< HEAD
  * MAX_PHYSMEM_BITS		2^N: how much memory we can have in that space
  */
 #define SECTION_SIZE_BITS       24
@@ -21,24 +20,11 @@
 #else
 #define MAX_PHYSMEM_BITS        46
 #endif
-=======
- * MAX_PHYSADDR_BITS		2^N: how much physical address space we have
- * MAX_PHYSMEM_BITS		2^N: how much memory we can have in that space
- */
-#define SECTION_SIZE_BITS       24
-
-#define MAX_PHYSADDR_BITS       46
-#define MAX_PHYSMEM_BITS        46
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* CONFIG_SPARSEMEM */
 
 #ifdef CONFIG_MEMORY_HOTPLUG
-<<<<<<< HEAD
 extern int create_section_mapping(unsigned long start, unsigned long end, int nid);
-=======
-extern int create_section_mapping(unsigned long start, unsigned long end);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern int remove_section_mapping(unsigned long start, unsigned long end);
 
 #ifdef CONFIG_PPC_BOOK3S_64

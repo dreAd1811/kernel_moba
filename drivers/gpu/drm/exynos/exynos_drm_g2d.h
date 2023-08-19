@@ -14,12 +14,9 @@ extern int exynos_g2d_set_cmdlist_ioctl(struct drm_device *dev, void *data,
 					struct drm_file *file_priv);
 extern int exynos_g2d_exec_ioctl(struct drm_device *dev, void *data,
 				 struct drm_file *file_priv);
-<<<<<<< HEAD
 
 extern int g2d_open(struct drm_device *drm_dev, struct drm_file *file);
 extern void g2d_close(struct drm_device *drm_dev, struct drm_file *file);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 static inline int exynos_g2d_get_ver_ioctl(struct drm_device *dev, void *data,
 					   struct drm_file *file_priv)
@@ -39,7 +36,6 @@ static inline int exynos_g2d_exec_ioctl(struct drm_device *dev, void *data,
 {
 	return -ENODEV;
 }
-<<<<<<< HEAD
 
 int g2d_open(struct drm_device *drm_dev, struct drm_file *file)
 {
@@ -48,6 +44,4 @@ int g2d_open(struct drm_device *drm_dev, struct drm_file *file)
 
 void g2d_close(struct drm_device *drm_dev, struct drm_file *file)
 { }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

@@ -32,10 +32,7 @@
 
 #include <linux/irq.h>
 #include "en.h"
-<<<<<<< HEAD
 #include "en/xdp.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline bool mlx5e_channel_no_affinity_change(struct mlx5e_channel *c)
 {
@@ -48,7 +45,6 @@ static inline bool mlx5e_channel_no_affinity_change(struct mlx5e_channel *c)
 	return cpumask_test_cpu(current_cpu, aff);
 }
 
-<<<<<<< HEAD
 static void mlx5e_handle_tx_dim(struct mlx5e_txqsq *sq)
 {
 	struct mlx5e_sq_stats *stats = sq->stats;
@@ -75,21 +71,15 @@ static void mlx5e_handle_rx_dim(struct mlx5e_rq *rq)
 	net_dim(&rq->dim, dim_sample);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int mlx5e_napi_poll(struct napi_struct *napi, int budget)
 {
 	struct mlx5e_channel *c = container_of(napi, struct mlx5e_channel,
 					       napi);
-<<<<<<< HEAD
 	struct mlx5e_ch_stats *ch_stats = c->stats;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool busy = false;
 	int work_done = 0;
 	int i;
 
-<<<<<<< HEAD
 	ch_stats->poll++;
 
 	for (i = 0; i < c->num_tc; i++)
@@ -97,11 +87,6 @@ int mlx5e_napi_poll(struct napi_struct *napi, int budget)
 
 	busy |= mlx5e_poll_xdpsq_cq(&c->xdpsq.cq);
 
-=======
-	for (i = 0; i < c->num_tc; i++)
-		busy |= mlx5e_poll_tx_cq(&c->sq[i].cq, budget);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (c->xdp)
 		busy |= mlx5e_poll_xdpsq_cq(&c->rq.xdpsq.cq);
 
@@ -115,10 +100,7 @@ int mlx5e_napi_poll(struct napi_struct *napi, int budget)
 	if (busy) {
 		if (likely(mlx5e_channel_no_affinity_change(c)))
 			return budget;
-<<<<<<< HEAD
 		ch_stats->aff_change++;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (budget && work_done == budget)
 			work_done--;
 	}
@@ -126,7 +108,6 @@ int mlx5e_napi_poll(struct napi_struct *napi, int budget)
 	if (unlikely(!napi_complete_done(napi, work_done)))
 		return work_done;
 
-<<<<<<< HEAD
 	ch_stats->arm++;
 
 	for (i = 0; i < c->num_tc; i++) {
@@ -139,16 +120,6 @@ int mlx5e_napi_poll(struct napi_struct *napi, int budget)
 	mlx5e_cq_arm(&c->rq.cq);
 	mlx5e_cq_arm(&c->icosq.cq);
 	mlx5e_cq_arm(&c->xdpsq.cq);
-=======
-	for (i = 0; i < c->num_tc; i++)
-		mlx5e_cq_arm(&c->sq[i].cq);
-
-	if (MLX5E_TEST_BIT(c->rq.state, MLX5E_RQ_STATE_AM))
-		mlx5e_rx_am(&c->rq);
-
-	mlx5e_cq_arm(&c->rq.cq);
-	mlx5e_cq_arm(&c->icosq.cq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return work_done;
 }
@@ -157,14 +128,9 @@ void mlx5e_completion_event(struct mlx5_core_cq *mcq)
 {
 	struct mlx5e_cq *cq = container_of(mcq, struct mlx5e_cq, mcq);
 
-<<<<<<< HEAD
 	napi_schedule(cq->napi);
 	cq->event_ctr++;
 	cq->channel->stats->events++;
-=======
-	cq->event_ctr++;
-	napi_schedule(cq->napi);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void mlx5e_cq_error_event(struct mlx5_core_cq *mcq, enum mlx5_event event)

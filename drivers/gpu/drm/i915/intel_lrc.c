@@ -136,15 +136,11 @@
 #include <drm/drmP.h>
 #include <drm/i915_drm.h>
 #include "i915_drv.h"
-<<<<<<< HEAD
 #include "i915_gem_render_state.h"
 #include "i915_vgpu.h"
 #include "intel_lrc_reg.h"
 #include "intel_mocs.h"
 #include "intel_workarounds.h"
-=======
-#include "intel_mocs.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define RING_EXECLIST_QFULL		(1 << 0x2)
 #define RING_EXECLIST1_VALID		(1 << 0x3)
@@ -161,7 +157,6 @@
 #define GEN8_CTX_STATUS_LITE_RESTORE	(1 << 15)
 
 #define GEN8_CTX_STATUS_COMPLETED_MASK \
-<<<<<<< HEAD
 	 (GEN8_CTX_STATUS_COMPLETE | GEN8_CTX_STATUS_PREEMPTED)
 
 /* Typical size of the average request (2 pipecontrols and a MI_BB) */
@@ -172,74 +167,11 @@
 static int execlists_context_deferred_alloc(struct i915_gem_context *ctx,
 					    struct intel_engine_cs *engine,
 					    struct intel_context *ce);
-=======
-	 (GEN8_CTX_STATUS_ACTIVE_IDLE | \
-	  GEN8_CTX_STATUS_PREEMPTED | \
-	  GEN8_CTX_STATUS_ELEMENT_SWITCH)
-
-#define CTX_LRI_HEADER_0		0x01
-#define CTX_CONTEXT_CONTROL		0x02
-#define CTX_RING_HEAD			0x04
-#define CTX_RING_TAIL			0x06
-#define CTX_RING_BUFFER_START		0x08
-#define CTX_RING_BUFFER_CONTROL		0x0a
-#define CTX_BB_HEAD_U			0x0c
-#define CTX_BB_HEAD_L			0x0e
-#define CTX_BB_STATE			0x10
-#define CTX_SECOND_BB_HEAD_U		0x12
-#define CTX_SECOND_BB_HEAD_L		0x14
-#define CTX_SECOND_BB_STATE		0x16
-#define CTX_BB_PER_CTX_PTR		0x18
-#define CTX_RCS_INDIRECT_CTX		0x1a
-#define CTX_RCS_INDIRECT_CTX_OFFSET	0x1c
-#define CTX_LRI_HEADER_1		0x21
-#define CTX_CTX_TIMESTAMP		0x22
-#define CTX_PDP3_UDW			0x24
-#define CTX_PDP3_LDW			0x26
-#define CTX_PDP2_UDW			0x28
-#define CTX_PDP2_LDW			0x2a
-#define CTX_PDP1_UDW			0x2c
-#define CTX_PDP1_LDW			0x2e
-#define CTX_PDP0_UDW			0x30
-#define CTX_PDP0_LDW			0x32
-#define CTX_LRI_HEADER_2		0x41
-#define CTX_R_PWR_CLK_STATE		0x42
-#define CTX_GPGPU_CSR_BASE_ADDRESS	0x44
-
-#define CTX_REG(reg_state, pos, reg, val) do { \
-	(reg_state)[(pos)+0] = i915_mmio_reg_offset(reg); \
-	(reg_state)[(pos)+1] = (val); \
-} while (0)
-
-#define ASSIGN_CTX_PDP(ppgtt, reg_state, n) do {		\
-	const u64 _addr = i915_page_dir_dma_addr((ppgtt), (n));	\
-	reg_state[CTX_PDP ## n ## _UDW+1] = upper_32_bits(_addr); \
-	reg_state[CTX_PDP ## n ## _LDW+1] = lower_32_bits(_addr); \
-} while (0)
-
-#define ASSIGN_CTX_PML4(ppgtt, reg_state) do { \
-	reg_state[CTX_PDP0_UDW + 1] = upper_32_bits(px_dma(&ppgtt->pml4)); \
-	reg_state[CTX_PDP0_LDW + 1] = lower_32_bits(px_dma(&ppgtt->pml4)); \
-} while (0)
-
-#define GEN8_CTX_RCS_INDIRECT_CTX_OFFSET_DEFAULT	0x17
-#define GEN9_CTX_RCS_INDIRECT_CTX_OFFSET_DEFAULT	0x26
-#define GEN10_CTX_RCS_INDIRECT_CTX_OFFSET_DEFAULT	0x19
-
-/* Typical size of the average request (2 pipecontrols and a MI_BB) */
-#define EXECLISTS_REQUEST_SIZE 64 /* bytes */
-
-#define WA_TAIL_DWORDS 2
-
-static int execlists_context_deferred_alloc(struct i915_gem_context *ctx,
-					    struct intel_engine_cs *engine);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void execlists_init_reg_state(u32 *reg_state,
 				     struct i915_gem_context *ctx,
 				     struct intel_engine_cs *engine,
 				     struct intel_ring *ring);
 
-<<<<<<< HEAD
 static inline struct i915_priolist *to_priolist(struct rb_node *rb)
 {
 	return rb_entry(rb, struct i915_priolist, node);
@@ -260,46 +192,6 @@ static inline bool need_preempt(const struct intel_engine_cs *engine,
 }
 
 /*
-=======
-/**
- * intel_sanitize_enable_execlists() - sanitize i915.enable_execlists
- * @dev_priv: i915 device private
- * @enable_execlists: value of i915.enable_execlists module parameter.
- *
- * Only certain platforms support Execlists (the prerequisites being
- * support for Logical Ring Contexts and Aliasing PPGTT or better).
- *
- * Return: 1 if Execlists is supported and has to be enabled.
- */
-int intel_sanitize_enable_execlists(struct drm_i915_private *dev_priv, int enable_execlists)
-{
-	/* On platforms with execlist available, vGPU will only
-	 * support execlist mode, no ring buffer mode.
-	 */
-	if (HAS_LOGICAL_RING_CONTEXTS(dev_priv) && intel_vgpu_active(dev_priv))
-		return 1;
-
-	if (INTEL_GEN(dev_priv) >= 9)
-		return 1;
-
-	if (enable_execlists == 0)
-		return 0;
-
-	if (HAS_LOGICAL_RING_CONTEXTS(dev_priv) &&
-	    USES_PPGTT(dev_priv) &&
-	    i915.use_mmio_flip >= 0)
-		return 1;
-
-	return 0;
-}
-
-/**
- * intel_lr_context_descriptor_update() - calculate & cache the descriptor
- * 					  descriptor for a pinned context
- * @ctx: Context to work on
- * @engine: Engine the descriptor will be used with
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * The context descriptor encodes various attributes of a context,
  * including its GTT address and some flags. Because it's fairly
  * expensive to calculate, we'll just do it once and cache the result,
@@ -309,7 +201,6 @@ int intel_sanitize_enable_execlists(struct drm_i915_private *dev_priv, int enabl
  *
  *      bits  0-11:    flags, GEN8_CTX_* (cached in ctx->desc_template)
  *      bits 12-31:    LRCA, GTT address of (the HWSP of) this context
-<<<<<<< HEAD
  *      bits 32-52:    ctx ID, a globally unique tag (highest bit used by GuC)
  *      bits 53-54:    mbz, reserved for use by hardware
  *      bits 55-63:    group ID, currently unused and set to 0
@@ -364,30 +255,10 @@ intel_lr_context_descriptor_update(struct i915_gem_context *ctx,
 		GEM_BUG_ON(ctx->hw_id >= BIT(GEN8_CTX_ID_WIDTH));
 		desc |= (u64)ctx->hw_id << GEN8_CTX_ID_SHIFT;	/* bits 32-52 */
 	}
-=======
- *      bits 32-52:    ctx ID, a globally unique tag
- *      bits 53-54:    mbz, reserved for use by hardware
- *      bits 55-63:    group ID, currently unused and set to 0
- */
-static void
-intel_lr_context_descriptor_update(struct i915_gem_context *ctx,
-				   struct intel_engine_cs *engine)
-{
-	struct intel_context *ce = &ctx->engine[engine->id];
-	u64 desc;
-
-	BUILD_BUG_ON(MAX_CONTEXT_HW_ID > (1<<GEN8_CTX_ID_WIDTH));
-
-	desc = ctx->desc_template;				/* bits  0-11 */
-	desc |= i915_ggtt_offset(ce->state) + LRC_PPHWSP_PN * PAGE_SIZE;
-								/* bits 12-31 */
-	desc |= (u64)ctx->hw_id << GEN8_CTX_ID_SHIFT;		/* bits 32-52 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ce->lrc_desc = desc;
 }
 
-<<<<<<< HEAD
 static struct i915_priolist *
 lookup_priolist(struct intel_engine_cs *engine, int prio)
 {
@@ -495,17 +366,6 @@ execlists_unwind_incomplete_requests(struct intel_engine_execlists *execlists)
 
 static inline void
 execlists_context_status_change(struct i915_request *rq, unsigned long status)
-=======
-uint64_t intel_lr_context_descriptor(struct i915_gem_context *ctx,
-				     struct intel_engine_cs *engine)
-{
-	return ctx->engine[engine->id].lrc_desc;
-}
-
-static inline void
-execlists_context_status_change(struct drm_i915_gem_request *rq,
-				unsigned long status)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/*
 	 * Only used when GVT-g is enabled now. When GVT-g is disabled,
@@ -518,7 +378,6 @@ execlists_context_status_change(struct drm_i915_gem_request *rq,
 				   status, rq);
 }
 
-<<<<<<< HEAD
 inline void
 execlists_user_begin(struct intel_engine_execlists *execlists,
 		     const struct execlist_port *port)
@@ -547,8 +406,6 @@ execlists_context_schedule_out(struct i915_request *rq, unsigned long status)
 	trace_i915_request_out(rq);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void
 execlists_update_context_pdps(struct i915_hw_ppgtt *ppgtt, u32 *reg_state)
 {
@@ -558,19 +415,11 @@ execlists_update_context_pdps(struct i915_hw_ppgtt *ppgtt, u32 *reg_state)
 	ASSIGN_CTX_PDP(ppgtt, reg_state, 0);
 }
 
-<<<<<<< HEAD
 static u64 execlists_update_context(struct i915_request *rq)
 {
 	struct intel_context *ce = rq->hw_context;
 	struct i915_hw_ppgtt *ppgtt =
 		rq->gem_context->ppgtt ?: rq->i915->mm.aliasing_ppgtt;
-=======
-static u64 execlists_update_context(struct drm_i915_gem_request *rq)
-{
-	struct intel_context *ce = &rq->ctx->engine[rq->engine->id];
-	struct i915_hw_ppgtt *ppgtt =
-		rq->ctx->ppgtt ?: rq->i915->mm.aliasing_ppgtt;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 *reg_state = ce->lrc_reg_state;
 
 	reg_state[CTX_RING_TAIL+1] = intel_ring_set_tail(rq->ring, rq->tail);
@@ -581,11 +430,7 @@ static u64 execlists_update_context(struct drm_i915_gem_request *rq)
 	 * PML4 is allocated during ppgtt init, so this is not needed
 	 * in 48-bit mode.
 	 */
-<<<<<<< HEAD
 	if (ppgtt && !i915_vm_is_48bit(&ppgtt->vm))
-=======
-	if (ppgtt && !i915_vm_is_48bit(&ppgtt->base))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		execlists_update_context_pdps(ppgtt, reg_state);
 
 	/*
@@ -607,7 +452,6 @@ static u64 execlists_update_context(struct drm_i915_gem_request *rq)
 	return ce->lrc_desc;
 }
 
-<<<<<<< HEAD
 static inline void write_desc(struct intel_engine_execlists *execlists, u64 desc, u32 port)
 {
 	if (execlists->ctrl_reg) {
@@ -643,17 +487,6 @@ static void execlists_submit_ports(struct intel_engine_cs *engine)
 	 */
 	for (n = execlists_num_ports(execlists); n--; ) {
 		struct i915_request *rq;
-=======
-static void execlists_submit_ports(struct intel_engine_cs *engine)
-{
-	struct execlist_port *port = engine->execlist_port;
-	u32 __iomem *elsp =
-		engine->i915->regs + i915_mmio_reg_offset(RING_ELSP(engine));
-	unsigned int n;
-
-	for (n = ARRAY_SIZE(engine->execlist_port); n--; ) {
-		struct drm_i915_gem_request *rq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		unsigned int count;
 		u64 desc;
 
@@ -661,7 +494,6 @@ static void execlists_submit_ports(struct intel_engine_cs *engine)
 		if (rq) {
 			GEM_BUG_ON(count > !n);
 			if (!count++)
-<<<<<<< HEAD
 				execlists_context_schedule_in(rq);
 			port_set(&port[n], port_pack(rq, count));
 			desc = execlists_update_context(rq);
@@ -674,18 +506,11 @@ static void execlists_submit_ports(struct intel_engine_cs *engine)
 				  rq->fence.context, rq->fence.seqno,
 				  intel_engine_get_seqno(engine),
 				  rq_prio(rq));
-=======
-				execlists_context_status_change(rq, INTEL_CONTEXT_SCHEDULE_IN);
-			port_set(&port[n], port_pack(rq, count));
-			desc = execlists_update_context(rq);
-			GEM_DEBUG_EXEC(port[n].context_id = upper_32_bits(desc));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else {
 			GEM_BUG_ON(!n);
 			desc = 0;
 		}
 
-<<<<<<< HEAD
 		write_desc(execlists, desc, n);
 	}
 
@@ -704,21 +529,6 @@ static bool ctx_single_port_submission(const struct intel_context *ce)
 
 static bool can_merge_ctx(const struct intel_context *prev,
 			  const struct intel_context *next)
-=======
-		writel(upper_32_bits(desc), elsp);
-		writel(lower_32_bits(desc), elsp);
-	}
-}
-
-static bool ctx_single_port_submission(const struct i915_gem_context *ctx)
-{
-	return (IS_ENABLED(CONFIG_DRM_I915_GVT) &&
-		i915_gem_context_force_single_submission(ctx));
-}
-
-static bool can_merge_ctx(const struct i915_gem_context *prev,
-			  const struct i915_gem_context *next)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (prev != next)
 		return false;
@@ -729,17 +539,11 @@ static bool can_merge_ctx(const struct i915_gem_context *prev,
 	return true;
 }
 
-<<<<<<< HEAD
 static void port_assign(struct execlist_port *port, struct i915_request *rq)
-=======
-static void port_assign(struct execlist_port *port,
-			struct drm_i915_gem_request *rq)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	GEM_BUG_ON(rq == port_request(port));
 
 	if (port_isset(port))
-<<<<<<< HEAD
 		i915_request_put(port_request(port));
 
 	port_set(port, port_pack(i915_request_get(rq), port_count(port)));
@@ -789,16 +593,10 @@ static void complete_preempt_context(struct intel_engine_execlists *execlists)
 	__unwind_incomplete_requests(container_of(execlists,
 						  struct intel_engine_cs,
 						  execlists));
-=======
-		i915_gem_request_put(port_request(port));
-
-	port_set(port, port_pack(i915_gem_request_get(rq), port_count(port)));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void execlists_dequeue(struct intel_engine_cs *engine)
 {
-<<<<<<< HEAD
 	struct intel_engine_execlists * const execlists = &engine->execlists;
 	struct execlist_port *port = execlists->port;
 	const struct execlist_port * const last_port =
@@ -809,26 +607,6 @@ static void execlists_dequeue(struct intel_engine_cs *engine)
 
 	/*
 	 * Hardware submission is through 2 ports. Conceptually each port
-=======
-	struct drm_i915_gem_request *last;
-	struct execlist_port *port = engine->execlist_port;
-	struct rb_node *rb;
-	bool submit = false;
-
-	last = port_request(port);
-	if (last)
-		/* WaIdleLiteRestore:bdw,skl
-		 * Apply the wa NOOPs to prevent ring:HEAD == req:TAIL
-		 * as we resubmit the request. See gen8_emit_breadcrumb()
-		 * for where we prepare the padding after the end of the
-		 * request.
-		 */
-		last->tail = last->wa_tail;
-
-	GEM_BUG_ON(port_isset(&port[1]));
-
-	/* Hardware submission is through 2 ports. Conceptually each port
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * has a (RING_START, RING_HEAD, RING_TAIL) tuple. RING_START is
 	 * static for a context, and unique to each, so we only execute
 	 * requests belonging to a single context from each ring. RING_HEAD
@@ -849,7 +627,6 @@ static void execlists_dequeue(struct intel_engine_cs *engine)
 	 * and context switches) submission.
 	 */
 
-<<<<<<< HEAD
 	if (last) {
 		/*
 		 * Don't resubmit or switch until all outstanding
@@ -916,16 +693,6 @@ static void execlists_dequeue(struct intel_engine_cs *engine)
 		struct i915_request *rq, *rn;
 
 		list_for_each_entry_safe(rq, rn, &p->requests, sched.link) {
-=======
-	spin_lock_irq(&engine->timeline->lock);
-	rb = engine->execlist_first;
-	GEM_BUG_ON(rb_first(&engine->execlist_queue) != rb);
-	while (rb) {
-		struct i915_priolist *p = rb_entry(rb, typeof(*p), node);
-		struct drm_i915_gem_request *rq, *rn;
-
-		list_for_each_entry_safe(rq, rn, &p->requests, priotree.link) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/*
 			 * Can we combine this request with the current port?
 			 * It has to be the same context/ringbuffer and not
@@ -937,26 +704,16 @@ static void execlists_dequeue(struct intel_engine_cs *engine)
 			 * second request, and so we never need to tell the
 			 * hardware about the first.
 			 */
-<<<<<<< HEAD
 			if (last &&
 			    !can_merge_ctx(rq->hw_context, last->hw_context)) {
-=======
-			if (last && !can_merge_ctx(rq->ctx, last->ctx)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				/*
 				 * If we are on the second port and cannot
 				 * combine this request with the last, then we
 				 * are done.
 				 */
-<<<<<<< HEAD
 				if (port == last_port) {
 					__list_del_many(&p->requests,
 							&rq->sched.link);
-=======
-				if (port != engine->execlist_port) {
-					__list_del_many(&p->requests,
-							&rq->priotree.link);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					goto done;
 				}
 
@@ -967,7 +724,6 @@ static void execlists_dequeue(struct intel_engine_cs *engine)
 				 * the same context (even though a different
 				 * request) to the second port.
 				 */
-<<<<<<< HEAD
 				if (ctx_single_port_submission(last->hw_context) ||
 				    ctx_single_port_submission(rq->hw_context)) {
 					__list_del_many(&p->requests,
@@ -976,21 +732,10 @@ static void execlists_dequeue(struct intel_engine_cs *engine)
 				}
 
 				GEM_BUG_ON(last->hw_context == rq->hw_context);
-=======
-				if (ctx_single_port_submission(last->ctx) ||
-				    ctx_single_port_submission(rq->ctx)) {
-					__list_del_many(&p->requests,
-							&rq->priotree.link);
-					goto done;
-				}
-
-				GEM_BUG_ON(last->ctx == rq->ctx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 				if (submit)
 					port_assign(port, last);
 				port++;
-<<<<<<< HEAD
 
 				GEM_BUG_ON(port_isset(port));
 			}
@@ -998,30 +743,15 @@ static void execlists_dequeue(struct intel_engine_cs *engine)
 			INIT_LIST_HEAD(&rq->sched.link);
 			__i915_request_submit(rq);
 			trace_i915_request_in(rq, port_index(port, execlists));
-=======
-			}
-
-			INIT_LIST_HEAD(&rq->priotree.link);
-			rq->priotree.priority = INT_MAX;
-
-			__i915_gem_request_submit(rq);
-			trace_i915_gem_request_in(rq, port_index(port, engine));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			last = rq;
 			submit = true;
 		}
 
-<<<<<<< HEAD
 		rb_erase_cached(&p->node, &execlists->queue);
-=======
-		rb = rb_next(rb);
-		rb_erase(&p->node, &engine->execlist_queue);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		INIT_LIST_HEAD(&p->requests);
 		if (p->priority != I915_PRIORITY_NORMAL)
 			kmem_cache_free(engine->i915->priorities, p);
 	}
-<<<<<<< HEAD
 
 done:
 	/*
@@ -1343,30 +1073,12 @@ static void __execlists_submission_tasklet(struct intel_engine_cs *const engine)
 	process_csb(engine);
 	if (!execlists_is_active(&engine->execlists, EXECLISTS_ACTIVE_PREEMPT))
 		execlists_dequeue(engine);
-=======
-done:
-	engine->execlist_first = rb;
-	if (submit)
-		port_assign(port, last);
-	spin_unlock_irq(&engine->timeline->lock);
-
-	if (submit)
-		execlists_submit_ports(engine);
-}
-
-static bool execlists_elsp_ready(const struct intel_engine_cs *engine)
-{
-	const struct execlist_port *port = engine->execlist_port;
-
-	return port_count(&port[0]) + port_count(&port[1]) < 2;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
  * Check the unread Context Status Buffers and manage the submission of new
  * contexts to the ELSP accordingly.
  */
-<<<<<<< HEAD
 static void execlists_submission_tasklet(unsigned long data)
 {
 	struct intel_engine_cs * const engine = (struct intel_engine_cs *)data;
@@ -1417,185 +1129,11 @@ static void submit_queue(struct intel_engine_cs *engine, int prio)
 }
 
 static void execlists_submit_request(struct i915_request *request)
-=======
-static void intel_lrc_irq_handler(unsigned long data)
-{
-	struct intel_engine_cs *engine = (struct intel_engine_cs *)data;
-	struct execlist_port *port = engine->execlist_port;
-	struct drm_i915_private *dev_priv = engine->i915;
-
-	/* We can skip acquiring intel_runtime_pm_get() here as it was taken
-	 * on our behalf by the request (see i915_gem_mark_busy()) and it will
-	 * not be relinquished until the device is idle (see
-	 * i915_gem_idle_work_handler()). As a precaution, we make sure
-	 * that all ELSP are drained i.e. we have processed the CSB,
-	 * before allowing ourselves to idle and calling intel_runtime_pm_put().
-	 */
-	GEM_BUG_ON(!dev_priv->gt.awake);
-
-	intel_uncore_forcewake_get(dev_priv, engine->fw_domains);
-
-	/* Prefer doing test_and_clear_bit() as a two stage operation to avoid
-	 * imposing the cost of a locked atomic transaction when submitting a
-	 * new request (outside of the context-switch interrupt).
-	 */
-	while (test_bit(ENGINE_IRQ_EXECLIST, &engine->irq_posted)) {
-		u32 __iomem *csb_mmio =
-			dev_priv->regs + i915_mmio_reg_offset(RING_CONTEXT_STATUS_PTR(engine));
-		u32 __iomem *buf =
-			dev_priv->regs + i915_mmio_reg_offset(RING_CONTEXT_STATUS_BUF_LO(engine, 0));
-		unsigned int head, tail;
-
-		/* The write will be ordered by the uncached read (itself
-		 * a memory barrier), so we do not need another in the form
-		 * of a locked instruction. The race between the interrupt
-		 * handler and the split test/clear is harmless as we order
-		 * our clear before the CSB read. If the interrupt arrived
-		 * first between the test and the clear, we read the updated
-		 * CSB and clear the bit. If the interrupt arrives as we read
-		 * the CSB or later (i.e. after we had cleared the bit) the bit
-		 * is set and we do a new loop.
-		 */
-		__clear_bit(ENGINE_IRQ_EXECLIST, &engine->irq_posted);
-		head = readl(csb_mmio);
-		tail = GEN8_CSB_WRITE_PTR(head);
-		head = GEN8_CSB_READ_PTR(head);
-		while (head != tail) {
-			struct drm_i915_gem_request *rq;
-			unsigned int status;
-			unsigned int count;
-
-			if (++head == GEN8_CSB_ENTRIES)
-				head = 0;
-
-			/* We are flying near dragons again.
-			 *
-			 * We hold a reference to the request in execlist_port[]
-			 * but no more than that. We are operating in softirq
-			 * context and so cannot hold any mutex or sleep. That
-			 * prevents us stopping the requests we are processing
-			 * in port[] from being retired simultaneously (the
-			 * breadcrumb will be complete before we see the
-			 * context-switch). As we only hold the reference to the
-			 * request, any pointer chasing underneath the request
-			 * is subject to a potential use-after-free. Thus we
-			 * store all of the bookkeeping within port[] as
-			 * required, and avoid using unguarded pointers beneath
-			 * request itself. The same applies to the atomic
-			 * status notifier.
-			 */
-
-			status = readl(buf + 2 * head);
-			if (!(status & GEN8_CTX_STATUS_COMPLETED_MASK))
-				continue;
-
-			/* Check the context/desc id for this event matches */
-			GEM_DEBUG_BUG_ON(readl(buf + 2 * head + 1) !=
-					 port->context_id);
-
-			rq = port_unpack(port, &count);
-			GEM_BUG_ON(count == 0);
-			if (--count == 0) {
-				GEM_BUG_ON(status & GEN8_CTX_STATUS_PREEMPTED);
-				GEM_BUG_ON(!i915_gem_request_completed(rq));
-				execlists_context_status_change(rq, INTEL_CONTEXT_SCHEDULE_OUT);
-
-				trace_i915_gem_request_out(rq);
-				i915_gem_request_put(rq);
-
-				port[0] = port[1];
-				memset(&port[1], 0, sizeof(port[1]));
-			} else {
-				port_set(port, port_pack(rq, count));
-			}
-
-			/* After the final element, the hw should be idle */
-			GEM_BUG_ON(port_count(port) == 0 &&
-				   !(status & GEN8_CTX_STATUS_ACTIVE_IDLE));
-		}
-
-		writel(_MASKED_FIELD(GEN8_CSB_READ_PTR_MASK, head << 8),
-		       csb_mmio);
-	}
-
-	if (execlists_elsp_ready(engine))
-		execlists_dequeue(engine);
-
-	intel_uncore_forcewake_put(dev_priv, engine->fw_domains);
-}
-
-static bool
-insert_request(struct intel_engine_cs *engine,
-	       struct i915_priotree *pt,
-	       int prio)
-{
-	struct i915_priolist *p;
-	struct rb_node **parent, *rb;
-	bool first = true;
-
-	if (unlikely(engine->no_priolist))
-		prio = I915_PRIORITY_NORMAL;
-
-find_priolist:
-	/* most positive priority is scheduled first, equal priorities fifo */
-	rb = NULL;
-	parent = &engine->execlist_queue.rb_node;
-	while (*parent) {
-		rb = *parent;
-		p = rb_entry(rb, typeof(*p), node);
-		if (prio > p->priority) {
-			parent = &rb->rb_left;
-		} else if (prio < p->priority) {
-			parent = &rb->rb_right;
-			first = false;
-		} else {
-			list_add_tail(&pt->link, &p->requests);
-			return false;
-		}
-	}
-
-	if (prio == I915_PRIORITY_NORMAL) {
-		p = &engine->default_priolist;
-	} else {
-		p = kmem_cache_alloc(engine->i915->priorities, GFP_ATOMIC);
-		/* Convert an allocation failure to a priority bump */
-		if (unlikely(!p)) {
-			prio = I915_PRIORITY_NORMAL; /* recurses just once */
-
-			/* To maintain ordering with all rendering, after an
-			 * allocation failure we have to disable all scheduling.
-			 * Requests will then be executed in fifo, and schedule
-			 * will ensure that dependencies are emitted in fifo.
-			 * There will be still some reordering with existing
-			 * requests, so if userspace lied about their
-			 * dependencies that reordering may be visible.
-			 */
-			engine->no_priolist = true;
-			goto find_priolist;
-		}
-	}
-
-	p->priority = prio;
-	rb_link_node(&p->node, rb, parent);
-	rb_insert_color(&p->node, &engine->execlist_queue);
-
-	INIT_LIST_HEAD(&p->requests);
-	list_add_tail(&pt->link, &p->requests);
-
-	if (first)
-		engine->execlist_first = &p->node;
-
-	return first;
-}
-
-static void execlists_submit_request(struct drm_i915_gem_request *request)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct intel_engine_cs *engine = request->engine;
 	unsigned long flags;
 
 	/* Will be called from irq-context when using foreign fences. */
-<<<<<<< HEAD
 	spin_lock_irqsave(&engine->timeline.lock, flags);
 
 	queue_request(engine, &request->sched, rq_prio(request));
@@ -1617,45 +1155,17 @@ static struct intel_engine_cs *
 sched_lock_engine(struct i915_sched_node *node, struct intel_engine_cs *locked)
 {
 	struct intel_engine_cs *engine = sched_to_request(node)->engine;
-=======
-	spin_lock_irqsave(&engine->timeline->lock, flags);
-
-	if (insert_request(engine,
-			   &request->priotree,
-			   request->priotree.priority)) {
-		if (execlists_elsp_ready(engine))
-			tasklet_hi_schedule(&engine->irq_tasklet);
-	}
-
-	GEM_BUG_ON(!engine->execlist_first);
-	GEM_BUG_ON(list_empty(&request->priotree.link));
-
-	spin_unlock_irqrestore(&engine->timeline->lock, flags);
-}
-
-static struct intel_engine_cs *
-pt_lock_engine(struct i915_priotree *pt, struct intel_engine_cs *locked)
-{
-	struct intel_engine_cs *engine =
-		container_of(pt, struct drm_i915_gem_request, priotree)->engine;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	GEM_BUG_ON(!locked);
 
 	if (engine != locked) {
-<<<<<<< HEAD
 		spin_unlock(&locked->timeline.lock);
 		spin_lock(&engine->timeline.lock);
-=======
-		spin_unlock(&locked->timeline->lock);
-		spin_lock(&engine->timeline->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return engine;
 }
 
-<<<<<<< HEAD
 static void execlists_schedule(struct i915_request *request,
 			       const struct i915_sched_attr *attr)
 {
@@ -1672,22 +1182,11 @@ static void execlists_schedule(struct i915_request *request,
 		return;
 
 	if (prio <= READ_ONCE(request->sched.attr.priority))
-=======
-static void execlists_schedule(struct drm_i915_gem_request *request, int prio)
-{
-	struct intel_engine_cs *engine;
-	struct i915_dependency *dep, *p;
-	struct i915_dependency stack;
-	LIST_HEAD(dfs);
-
-	if (prio <= READ_ONCE(request->priotree.priority))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	/* Need BKL in order to use the temporary link inside i915_dependency */
 	lockdep_assert_held(&request->i915->drm.struct_mutex);
 
-<<<<<<< HEAD
 	stack.signaler = &request->sched;
 	list_add(&stack.dfs_link, &dfs);
 
@@ -1699,18 +1198,6 @@ static void execlists_schedule(struct drm_i915_gem_request *request, int prio)
 	 *	list_for_each_entry(dep, &node->signalers_list, signal_link)
 	 *		update_priorities(dep->signal, prio)
 	 *	queue_request(node);
-=======
-	stack.signaler = &request->priotree;
-	list_add(&stack.dfs_link, &dfs);
-
-	/* Recursively bump all dependent priorities to match the new request.
-	 *
-	 * A naive approach would be to use recursion:
-	 * static void update_priorities(struct i915_priotree *pt, prio) {
-	 *	list_for_each_entry(dep, &pt->signalers_list, signal_link)
-	 *		update_priorities(dep->signal, prio)
-	 *	insert_request(pt);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * }
 	 * but that may have unlimited recursion depth and so runs a very
 	 * real risk of overunning the kernel stack. Instead, we build
@@ -1721,23 +1208,15 @@ static void execlists_schedule(struct drm_i915_gem_request *request, int prio)
 	 * end result is a topological list of requests in reverse order, the
 	 * last element in the list is the request we must execute first.
 	 */
-<<<<<<< HEAD
 	list_for_each_entry(dep, &dfs, dfs_link) {
 		struct i915_sched_node *node = dep->signaler;
 
 		/*
 		 * Within an engine, there can be no cycle, but we may
-=======
-	list_for_each_entry_safe(dep, p, &dfs, dfs_link) {
-		struct i915_priotree *pt = dep->signaler;
-
-		/* Within an engine, there can be no cycle, but we may
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 * refer to the same dependency chain multiple times
 		 * (redundant dependencies are not eliminated) and across
 		 * engines.
 		 */
-<<<<<<< HEAD
 		list_for_each_entry(p, &node->signalers_list, signal_link) {
 			GEM_BUG_ON(p == dep); /* no cycles! */
 
@@ -1752,37 +1231,18 @@ static void execlists_schedule(struct drm_i915_gem_request *request, int prio)
 
 	/*
 	 * If we didn't need to bump any existing priorities, and we haven't
-=======
-		list_for_each_entry(p, &pt->signalers_list, signal_link) {
-			GEM_BUG_ON(p->signaler->priority < pt->priority);
-			if (prio > READ_ONCE(p->signaler->priority))
-				list_move_tail(&p->dfs_link, &dfs);
-		}
-
-		list_safe_reset_next(dep, p, dfs_link);
-	}
-
-	/* If we didn't need to bump any existing priorities, and we haven't
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * yet submitted this request (i.e. there is no potential race with
 	 * execlists_submit_request()), we can set our own priority and skip
 	 * acquiring the engine locks.
 	 */
-<<<<<<< HEAD
 	if (request->sched.attr.priority == I915_PRIORITY_INVALID) {
 		GEM_BUG_ON(!list_empty(&request->sched.link));
 		request->sched.attr = *attr;
-=======
-	if (request->priotree.priority == INT_MIN) {
-		GEM_BUG_ON(!list_empty(&request->priotree.link));
-		request->priotree.priority = prio;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (stack.dfs_link.next == stack.dfs_link.prev)
 			return;
 		__list_del_entry(&stack.dfs_link);
 	}
 
-<<<<<<< HEAD
 	last = NULL;
 	engine = request->engine;
 	spin_lock_irq(&engine->timeline.lock);
@@ -1858,61 +1318,11 @@ static int __context_pin(struct i915_gem_context *ctx, struct i915_vma *vma)
 		if (err)
 			return err;
 	}
-=======
-	engine = request->engine;
-	spin_lock_irq(&engine->timeline->lock);
-
-	/* Fifo and depth-first replacement ensure our deps execute before us */
-	list_for_each_entry_safe_reverse(dep, p, &dfs, dfs_link) {
-		struct i915_priotree *pt = dep->signaler;
-
-		INIT_LIST_HEAD(&dep->dfs_link);
-
-		engine = pt_lock_engine(pt, engine);
-
-		if (prio <= pt->priority)
-			continue;
-
-		pt->priority = prio;
-		if (!list_empty(&pt->link)) {
-			__list_del_entry(&pt->link);
-			insert_request(engine, pt, prio);
-		}
-	}
-
-	spin_unlock_irq(&engine->timeline->lock);
-
-	/* XXX Do we need to preempt to make room for us and our deps? */
-}
-
-static struct intel_ring *
-execlists_context_pin(struct intel_engine_cs *engine,
-		      struct i915_gem_context *ctx)
-{
-	struct intel_context *ce = &ctx->engine[engine->id];
-	unsigned int flags;
-	void *vaddr;
-	int ret;
-
-	lockdep_assert_held(&ctx->i915->drm.struct_mutex);
-
-	if (likely(ce->pin_count++))
-		goto out;
-	GEM_BUG_ON(!ce->pin_count); /* no overflow please! */
-
-	if (!ce->state) {
-		ret = execlists_context_deferred_alloc(ctx, engine);
-		if (ret)
-			goto err;
-	}
-	GEM_BUG_ON(!ce->state);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	flags = PIN_GLOBAL | PIN_HIGH;
 	if (ctx->ggtt_offset_bias)
 		flags |= PIN_OFFSET_BIAS | ctx->ggtt_offset_bias;
 
-<<<<<<< HEAD
 	return i915_vma_pin(vma, 0, GEN8_LR_CONTEXT_ALIGN, flags);
 }
 
@@ -1930,9 +1340,6 @@ __execlists_context_pin(struct intel_engine_cs *engine,
 	GEM_BUG_ON(!ce->state);
 
 	ret = __context_pin(ctx, ce->state);
-=======
-	ret = i915_vma_pin(ce->state, 0, GEN8_LR_CONTEXT_ALIGN, flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto err;
 
@@ -1946,30 +1353,17 @@ __execlists_context_pin(struct intel_engine_cs *engine,
 	if (ret)
 		goto unpin_map;
 
-<<<<<<< HEAD
 	intel_lr_context_descriptor_update(ctx, engine, ce);
-=======
-	intel_lr_context_descriptor_update(ctx, engine);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ce->lrc_reg_state = vaddr + LRC_STATE_PN * PAGE_SIZE;
 	ce->lrc_reg_state[CTX_RING_BUFFER_START+1] =
 		i915_ggtt_offset(ce->ring->vma);
-<<<<<<< HEAD
 	GEM_BUG_ON(!intel_ring_offset_valid(ce->ring, ce->ring->head));
 	ce->lrc_reg_state[CTX_RING_HEAD+1] = ce->ring->head;
 
 	ce->state->obj->pin_global++;
 	i915_gem_context_get(ctx);
 	return ce;
-=======
-
-	ce->state->obj->mm.dirty = true;
-
-	i915_gem_context_get(ctx);
-out:
-	return ce->ring;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 unpin_map:
 	i915_gem_object_unpin_map(ce->state->obj);
@@ -1980,7 +1374,6 @@ err:
 	return ERR_PTR(ret);
 }
 
-<<<<<<< HEAD
 static const struct intel_context_ops execlists_context_ops = {
 	.unpin = execlists_context_unpin,
 	.destroy = execlists_context_destroy,
@@ -2008,35 +1401,6 @@ static int execlists_request_alloc(struct i915_request *request)
 	int ret;
 
 	GEM_BUG_ON(!request->hw_context->pin_count);
-=======
-static void execlists_context_unpin(struct intel_engine_cs *engine,
-				    struct i915_gem_context *ctx)
-{
-	struct intel_context *ce = &ctx->engine[engine->id];
-
-	lockdep_assert_held(&ctx->i915->drm.struct_mutex);
-	GEM_BUG_ON(ce->pin_count == 0);
-
-	if (--ce->pin_count)
-		return;
-
-	intel_ring_unpin(ce->ring);
-
-	i915_gem_object_unpin_map(ce->state->obj);
-	i915_vma_unpin(ce->state);
-
-	i915_gem_context_put(ctx);
-}
-
-static int execlists_request_alloc(struct drm_i915_gem_request *request)
-{
-	struct intel_engine_cs *engine = request->engine;
-	struct intel_context *ce = &request->ctx->engine[engine->id];
-	u32 *cs;
-	int ret;
-
-	GEM_BUG_ON(!ce->pin_count);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Flush enough space to reduce the likelihood of waiting after
 	 * we start building the request - in which case we will just
@@ -2044,36 +1408,9 @@ static int execlists_request_alloc(struct drm_i915_gem_request *request)
 	 */
 	request->reserved_space += EXECLISTS_REQUEST_SIZE;
 
-<<<<<<< HEAD
 	ret = intel_ring_wait_for_space(request->ring, request->reserved_space);
 	if (ret)
 		return ret;
-=======
-	if (i915.enable_guc_submission) {
-		/*
-		 * Check that the GuC has space for the request before
-		 * going any further, as the i915_add_request() call
-		 * later on mustn't fail ...
-		 */
-		ret = i915_guc_wq_reserve(request);
-		if (ret)
-			goto err;
-	}
-
-	cs = intel_ring_begin(request, 0);
-	if (IS_ERR(cs)) {
-		ret = PTR_ERR(cs);
-		goto err_unreserve;
-	}
-
-	if (!ce->initialised) {
-		ret = engine->init_context(request);
-		if (ret)
-			goto err_unreserve;
-
-		ce->initialised = true;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Note that after this point, we have committed to using
 	 * this request as it is being used to both track the
@@ -2084,15 +1421,6 @@ static int execlists_request_alloc(struct drm_i915_gem_request *request)
 
 	request->reserved_space -= EXECLISTS_REQUEST_SIZE;
 	return 0;
-<<<<<<< HEAD
-=======
-
-err_unreserve:
-	if (i915.enable_guc_submission)
-		i915_guc_wq_unreserve(request);
-err:
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -2170,11 +1498,8 @@ static u32 *gen8_init_indirectctx_bb(struct intel_engine_cs *engine, u32 *batch)
 				       i915_ggtt_offset(engine->scratch) +
 				       2 * CACHELINE_BYTES);
 
-<<<<<<< HEAD
 	*batch++ = MI_ARB_ON_OFF | MI_ARB_ENABLE;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Pad to end of cacheline */
 	while ((unsigned long)batch % CACHELINE_BYTES)
 		*batch++ = MI_NOOP;
@@ -2188,7 +1513,6 @@ static u32 *gen8_init_indirectctx_bb(struct intel_engine_cs *engine, u32 *batch)
 	return batch;
 }
 
-<<<<<<< HEAD
 struct lri {
 	i915_reg_t reg;
 	u32 value;
@@ -2204,29 +1528,12 @@ static u32 *emit_lri(u32 *batch, const struct lri *lri, unsigned int count)
 		*batch++ = lri->value;
 	} while (lri++, --count);
 	*batch++ = MI_NOOP;
-=======
-/*
- *  This batch is started immediately after indirect_ctx batch. Since we ensure
- *  that indirect_ctx ends on a cacheline this batch is aligned automatically.
- *
- *  The number of DWORDS written are returned using this field.
- *
- *  This batch is terminated with MI_BATCH_BUFFER_END and so we need not add padding
- *  to align it with cacheline as padding after MI_BATCH_BUFFER_END is redundant.
- */
-static u32 *gen8_init_perctx_bb(struct intel_engine_cs *engine, u32 *batch)
-{
-	/* WaDisableCtxRestoreArbitration:bdw,chv */
-	*batch++ = MI_ARB_ON_OFF | MI_ARB_ENABLE;
-	*batch++ = MI_BATCH_BUFFER_END;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return batch;
 }
 
 static u32 *gen9_init_indirectctx_bb(struct intel_engine_cs *engine, u32 *batch)
 {
-<<<<<<< HEAD
 	static const struct lri lri[] = {
 		/* WaDisableGatherAtSetShaderCommonSlice:skl,bxt,kbl,glk */
 		{
@@ -2268,36 +1575,6 @@ static u32 *gen9_init_indirectctx_bb(struct intel_engine_cs *engine, u32 *batch)
 					       i915_ggtt_offset(engine->scratch)
 					       + 2 * CACHELINE_BYTES);
 	}
-=======
-	/* WaFlushCoherentL3CacheLinesAtContextSwitch:skl,bxt,glk */
-	batch = gen8_emit_flush_coherentl3_wa(engine, batch);
-
-	*batch++ = MI_LOAD_REGISTER_IMM(3);
-
-	/* WaDisableGatherAtSetShaderCommonSlice:skl,bxt,kbl,glk */
-	*batch++ = i915_mmio_reg_offset(COMMON_SLICE_CHICKEN2);
-	*batch++ = _MASKED_BIT_DISABLE(
-			GEN9_DISABLE_GATHER_AT_SET_SHADER_COMMON_SLICE);
-
-	/* BSpec: 11391 */
-	*batch++ = i915_mmio_reg_offset(FF_SLICE_CHICKEN);
-	*batch++ = _MASKED_BIT_ENABLE(FF_SLICE_CHICKEN_CL_PROVOKING_VERTEX_FIX);
-
-	/* BSpec: 11299 */
-	*batch++ = i915_mmio_reg_offset(_3D_CHICKEN3);
-	*batch++ = _MASKED_BIT_ENABLE(_3D_CHICKEN_SF_PROVOKING_VERTEX_FIX);
-
-	*batch++ = MI_NOOP;
-
-	/* WaClearSlmSpaceAtContextSwitch:skl,bxt,kbl,glk,cfl */
-	batch = gen8_emit_pipe_control(batch,
-				       PIPE_CONTROL_FLUSH_L3 |
-				       PIPE_CONTROL_GLOBAL_GTT_IVB |
-				       PIPE_CONTROL_CS_STALL |
-				       PIPE_CONTROL_QW_WRITE,
-				       i915_ggtt_offset(engine->scratch) +
-				       2 * CACHELINE_BYTES);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* WaMediaPoolStateCmdInWABB:bxt,glk */
 	if (HAS_POOLED_EU(engine->i915)) {
@@ -2322,11 +1599,8 @@ static u32 *gen9_init_indirectctx_bb(struct intel_engine_cs *engine, u32 *batch)
 		*batch++ = 0;
 	}
 
-<<<<<<< HEAD
 	*batch++ = MI_ARB_ON_OFF | MI_ARB_ENABLE;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Pad to end of cacheline */
 	while ((unsigned long)batch % CACHELINE_BYTES)
 		*batch++ = MI_NOOP;
@@ -2334,7 +1608,6 @@ static u32 *gen9_init_indirectctx_bb(struct intel_engine_cs *engine, u32 *batch)
 	return batch;
 }
 
-<<<<<<< HEAD
 static u32 *
 gen10_init_indirectctx_bb(struct intel_engine_cs *engine, u32 *batch)
 {
@@ -2365,11 +1638,6 @@ gen10_init_indirectctx_bb(struct intel_engine_cs *engine, u32 *batch)
 	/* Pad to end of cacheline */
 	while ((unsigned long)batch % CACHELINE_BYTES)
 		*batch++ = MI_NOOP;
-=======
-static u32 *gen9_init_perctx_bb(struct intel_engine_cs *engine, u32 *batch)
-{
-	*batch++ = MI_BATCH_BUFFER_END;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return batch;
 }
@@ -2386,11 +1654,7 @@ static int lrc_setup_wa_ctx(struct intel_engine_cs *engine)
 	if (IS_ERR(obj))
 		return PTR_ERR(obj);
 
-<<<<<<< HEAD
 	vma = i915_vma_instance(obj, &engine->i915->ggtt.vm, NULL);
-=======
-	vma = i915_vma_instance(obj, &engine->i915->ggtt.base, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(vma)) {
 		err = PTR_ERR(vma);
 		goto err;
@@ -2426,7 +1690,6 @@ static int intel_init_workaround_bb(struct intel_engine_cs *engine)
 	unsigned int i;
 	int ret;
 
-<<<<<<< HEAD
 	if (GEM_WARN_ON(engine->id != RCS))
 		return -EINVAL;
 
@@ -2444,19 +1707,6 @@ static int intel_init_workaround_bb(struct intel_engine_cs *engine)
 	case 8:
 		wa_bb_fn[0] = gen8_init_indirectctx_bb;
 		wa_bb_fn[1] = NULL;
-=======
-	if (WARN_ON(engine->id != RCS || !engine->scratch))
-		return -EINVAL;
-
-	switch (INTEL_GEN(engine->i915)) {
-	case 9:
-		wa_bb_fn[0] = gen9_init_indirectctx_bb;
-		wa_bb_fn[1] = gen9_init_perctx_bb;
-		break;
-	case 8:
-		wa_bb_fn[0] = gen8_init_indirectctx_bb;
-		wa_bb_fn[1] = gen8_init_perctx_bb;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		MISSING_CASE(INTEL_GEN(engine->i915));
@@ -2479,7 +1729,6 @@ static int intel_init_workaround_bb(struct intel_engine_cs *engine)
 	 */
 	for (i = 0; i < ARRAY_SIZE(wa_bb_fn); i++) {
 		wa_bb[i]->offset = batch_ptr - batch;
-<<<<<<< HEAD
 		if (GEM_WARN_ON(!IS_ALIGNED(wa_bb[i]->offset,
 					    CACHELINE_BYTES))) {
 			ret = -EINVAL;
@@ -2487,13 +1736,6 @@ static int intel_init_workaround_bb(struct intel_engine_cs *engine)
 		}
 		if (wa_bb_fn[i])
 			batch_ptr = wa_bb_fn[i](engine, batch_ptr);
-=======
-		if (WARN_ON(!IS_ALIGNED(wa_bb[i]->offset, CACHELINE_BYTES))) {
-			ret = -EINVAL;
-			break;
-		}
-		batch_ptr = wa_bb_fn[i](engine, batch_ptr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		wa_bb[i]->size = batch_ptr - (batch + wa_bb[i]->offset);
 	}
 
@@ -2506,7 +1748,6 @@ static int intel_init_workaround_bb(struct intel_engine_cs *engine)
 	return ret;
 }
 
-<<<<<<< HEAD
 static void enable_execlists(struct intel_engine_cs *engine)
 {
 	struct drm_i915_private *dev_priv = engine->i915;
@@ -2551,22 +1792,6 @@ static bool unexpected_starting_state(struct intel_engine_cs *engine)
 
 static int gen8_init_common_ring(struct intel_engine_cs *engine)
 {
-=======
-static u8 gtiir[] = {
-	[RCS] = 0,
-	[BCS] = 0,
-	[VCS] = 1,
-	[VCS2] = 1,
-	[VECS] = 3,
-};
-
-static int gen8_init_common_ring(struct intel_engine_cs *engine)
-{
-	struct drm_i915_private *dev_priv = engine->i915;
-	struct execlist_port *port = engine->execlist_port;
-	unsigned int n;
-	bool submit;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	ret = intel_mocs_init_engine(engine);
@@ -2574,7 +1799,6 @@ static int gen8_init_common_ring(struct intel_engine_cs *engine)
 		return ret;
 
 	intel_engine_reset_breadcrumbs(engine);
-<<<<<<< HEAD
 
 	if (GEM_SHOW_DEBUG() && unexpected_starting_state(engine)) {
 		struct drm_printer p = drm_debug_printer(__func__);
@@ -2583,51 +1807,6 @@ static int gen8_init_common_ring(struct intel_engine_cs *engine)
 	}
 
 	enable_execlists(engine);
-=======
-	intel_engine_init_hangcheck(engine);
-
-	I915_WRITE(RING_HWSTAM(engine->mmio_base), 0xffffffff);
-	I915_WRITE(RING_MODE_GEN7(engine),
-		   _MASKED_BIT_ENABLE(GFX_RUN_LIST_ENABLE));
-	I915_WRITE(RING_HWS_PGA(engine->mmio_base),
-		   engine->status_page.ggtt_offset);
-	POSTING_READ(RING_HWS_PGA(engine->mmio_base));
-
-	DRM_DEBUG_DRIVER("Execlists enabled for %s\n", engine->name);
-
-	GEM_BUG_ON(engine->id >= ARRAY_SIZE(gtiir));
-
-	/*
-	 * Clear any pending interrupt state.
-	 *
-	 * We do it twice out of paranoia that some of the IIR are double
-	 * buffered, and if we only reset it once there may still be
-	 * an interrupt pending.
-	 */
-	I915_WRITE(GEN8_GT_IIR(gtiir[engine->id]),
-		   GT_CONTEXT_SWITCH_INTERRUPT << engine->irq_shift);
-	I915_WRITE(GEN8_GT_IIR(gtiir[engine->id]),
-		   GT_CONTEXT_SWITCH_INTERRUPT << engine->irq_shift);
-	clear_bit(ENGINE_IRQ_EXECLIST, &engine->irq_posted);
-
-	/* After a GPU reset, we may have requests to replay */
-	submit = false;
-	for (n = 0; n < ARRAY_SIZE(engine->execlist_port); n++) {
-		if (!port_isset(&port[n]))
-			break;
-
-		DRM_DEBUG_DRIVER("Restarting %s:%d from 0x%x\n",
-				 engine->name, n,
-				 port_request(&port[n])->global_seqno);
-
-		/* Discard the current inflight count */
-		port_set(&port[n], port_request(&port[n]));
-		submit = true;
-	}
-
-	if (submit && !i915.enable_guc_submission)
-		execlists_submit_ports(engine);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -2641,11 +1820,8 @@ static int gen8_init_render_ring(struct intel_engine_cs *engine)
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	intel_whitelist_workarounds_apply(engine);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* We need to disable the AsyncFlip performance optimisations in order
 	 * to use MI_WAIT_FOR_EVENT within the CS. It should already be
 	 * programmed to '1' on all products.
@@ -2656,11 +1832,7 @@ static int gen8_init_render_ring(struct intel_engine_cs *engine)
 
 	I915_WRITE(INSTPM, _MASKED_BIT_ENABLE(INSTPM_FORCE_ORDERING));
 
-<<<<<<< HEAD
 	return 0;
-=======
-	return init_workarounds_ring(engine);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int gen9_init_render_ring(struct intel_engine_cs *engine)
@@ -2671,7 +1843,6 @@ static int gen9_init_render_ring(struct intel_engine_cs *engine)
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	intel_whitelist_workarounds_apply(engine);
 
 	return 0;
@@ -2750,17 +1921,6 @@ static void execlists_reset(struct intel_engine_cs *engine,
 		  intel_engine_get_seqno(engine));
 
 	spin_lock_irqsave(&engine->timeline.lock, flags);
-=======
-	return init_workarounds_ring(engine);
-}
-
-static void reset_common_ring(struct intel_engine_cs *engine,
-			      struct drm_i915_gem_request *request)
-{
-	struct execlist_port *port = engine->execlist_port;
-	struct intel_context *ce;
-	unsigned int n;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Catch up with any missed context-switch interrupts.
@@ -2771,7 +1931,6 @@ static void reset_common_ring(struct intel_engine_cs *engine,
 	 * guessing the missed context-switch events by looking at what
 	 * requests were completed.
 	 */
-<<<<<<< HEAD
 	execlists_cancel_port_requests(execlists);
 
 	/* Push back any incomplete requests for replay after the reset. */
@@ -2784,24 +1943,6 @@ static void reset_common_ring(struct intel_engine_cs *engine,
 
 	/*
 	 * If the request was innocent, we leave the request in the ELSP
-=======
-	if (!request) {
-		for (n = 0; n < ARRAY_SIZE(engine->execlist_port); n++)
-			i915_gem_request_put(port_request(&port[n]));
-		memset(engine->execlist_port, 0, sizeof(engine->execlist_port));
-		return;
-	}
-
-	if (request->ctx != port_request(port)->ctx) {
-		i915_gem_request_put(port_request(port));
-		port[0] = port[1];
-		memset(&port[1], 0, sizeof(port[1]));
-	}
-
-	GEM_BUG_ON(request->ctx != port_request(port)->ctx);
-
-	/* If the request was innocent, we leave the request in the ELSP
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * and will try to replay it on restarting. The context image may
 	 * have been corrupted by the reset, in which case we may have
 	 * to service a new GPU hang, but more likely we can continue on
@@ -2811,25 +1952,17 @@ static void reset_common_ring(struct intel_engine_cs *engine,
 	 * and have to at least restore the RING register in the context
 	 * image back to the expected values to skip over the guilty request.
 	 */
-<<<<<<< HEAD
 	if (!request || request->fence.error != -EIO)
 		return;
 
 	/*
 	 * We want a simple context + ring to execute the breadcrumb update.
-=======
-	if (request->fence.error != -EIO)
-		return;
-
-	/* We want a simple context + ring to execute the breadcrumb update.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * We cannot rely on the context being intact across the GPU hang,
 	 * so clear it and rebuild just what we need for the breadcrumb.
 	 * All pending requests for this context will be zapped, and any
 	 * future request will be after userspace has had the opportunity
 	 * to recreate its own state.
 	 */
-<<<<<<< HEAD
 	regs = request->hw_context->lrc_reg_state;
 	if (engine->pinned_default_state) {
 		memcpy(regs, /* skip restoring the vanilla PPHWSP */
@@ -2877,40 +2010,11 @@ static int intel_logical_ring_emit_pdps(struct i915_request *rq)
 {
 	struct i915_hw_ppgtt *ppgtt = rq->gem_context->ppgtt;
 	struct intel_engine_cs *engine = rq->engine;
-=======
-	ce = &request->ctx->engine[engine->id];
-	execlists_init_reg_state(ce->lrc_reg_state,
-				 request->ctx, engine, ce->ring);
-
-	/* Move the RING_HEAD onto the breadcrumb, past the hanging batch */
-	ce->lrc_reg_state[CTX_RING_BUFFER_START+1] =
-		i915_ggtt_offset(ce->ring->vma);
-	ce->lrc_reg_state[CTX_RING_HEAD+1] = request->postfix;
-
-	request->ring->head = request->postfix;
-	intel_ring_update_space(request->ring);
-
-	/* Reset WaIdleLiteRestore:bdw,skl as well */
-	request->tail =
-		intel_ring_wrap(request->ring,
-				request->wa_tail - WA_TAIL_DWORDS*sizeof(u32));
-	assert_ring_tail_valid(request->ring, request->tail);
-}
-
-static int intel_logical_ring_emit_pdps(struct drm_i915_gem_request *req)
-{
-	struct i915_hw_ppgtt *ppgtt = req->ctx->ppgtt;
-	struct intel_engine_cs *engine = req->engine;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const int num_lri_cmds = GEN8_3LVL_PDPES * 2;
 	u32 *cs;
 	int i;
 
-<<<<<<< HEAD
 	cs = intel_ring_begin(rq, num_lri_cmds * 2 + 2);
-=======
-	cs = intel_ring_begin(req, num_lri_cmds * 2 + 2);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(cs))
 		return PTR_ERR(cs);
 
@@ -2925,20 +2029,12 @@ static int intel_logical_ring_emit_pdps(struct drm_i915_gem_request *req)
 	}
 
 	*cs++ = MI_NOOP;
-<<<<<<< HEAD
 	intel_ring_advance(rq, cs);
-=======
-	intel_ring_advance(req, cs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
 static int gen8_emit_bb_start(struct i915_request *rq,
-=======
-static int gen8_emit_bb_start(struct drm_i915_gem_request *req,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      u64 offset, u32 len,
 			      const unsigned int flags)
 {
@@ -2951,7 +2047,6 @@ static int gen8_emit_bb_start(struct drm_i915_gem_request *req,
 	 * it is unsafe in case of lite-restore (because the ctx is
 	 * not idle). PML4 is allocated during ppgtt init so this is
 	 * not needed in 48-bit.*/
-<<<<<<< HEAD
 	if (rq->gem_context->ppgtt &&
 	    (intel_engine_flag(rq->engine) & rq->gem_context->ppgtt->pd_dirty_rings) &&
 	    !i915_vm_is_48bit(&rq->gem_context->ppgtt->vm) &&
@@ -2986,38 +2081,16 @@ static int gen8_emit_bb_start(struct drm_i915_gem_request *req,
 	 */
 	*cs++ = MI_ARB_ON_OFF | MI_ARB_ENABLE;
 
-=======
-	if (req->ctx->ppgtt &&
-	    (intel_engine_flag(req->engine) & req->ctx->ppgtt->pd_dirty_rings) &&
-	    !i915_vm_is_48bit(&req->ctx->ppgtt->base) &&
-	    !intel_vgpu_active(req->i915)) {
-		ret = intel_logical_ring_emit_pdps(req);
-		if (ret)
-			return ret;
-
-		req->ctx->ppgtt->pd_dirty_rings &= ~intel_engine_flag(req->engine);
-	}
-
-	cs = intel_ring_begin(req, 4);
-	if (IS_ERR(cs))
-		return PTR_ERR(cs);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* FIXME(BDW): Address space and security selectors. */
 	*cs++ = MI_BATCH_BUFFER_START_GEN8 |
 		(flags & I915_DISPATCH_SECURE ? 0 : BIT(8)) |
 		(flags & I915_DISPATCH_RS ? MI_BATCH_RESOURCE_STREAMER : 0);
 	*cs++ = lower_32_bits(offset);
 	*cs++ = upper_32_bits(offset);
-<<<<<<< HEAD
 
 	*cs++ = MI_ARB_ON_OFF | MI_ARB_DISABLE;
 	*cs++ = MI_NOOP;
 	intel_ring_advance(rq, cs);
-=======
-	*cs++ = MI_NOOP;
-	intel_ring_advance(req, cs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -3036,11 +2109,7 @@ static void gen8_logical_ring_disable_irq(struct intel_engine_cs *engine)
 	I915_WRITE_IMR(engine, ~engine->irq_keep_mask);
 }
 
-<<<<<<< HEAD
 static int gen8_emit_flush(struct i915_request *request, u32 mode)
-=======
-static int gen8_emit_flush(struct drm_i915_gem_request *request, u32 mode)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 cmd, *cs;
 
@@ -3072,11 +2141,7 @@ static int gen8_emit_flush(struct drm_i915_gem_request *request, u32 mode)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int gen8_emit_flush_render(struct i915_request *request,
-=======
-static int gen8_emit_flush_render(struct drm_i915_gem_request *request,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  u32 mode)
 {
 	struct intel_engine_cs *engine = request->engine;
@@ -3151,89 +2216,44 @@ static int gen8_emit_flush_render(struct drm_i915_gem_request *request,
  * used as a workaround for not being allowed to do lite
  * restore with HEAD==TAIL (WaIdleLiteRestore).
  */
-<<<<<<< HEAD
 static void gen8_emit_wa_tail(struct i915_request *request, u32 *cs)
 {
 	/* Ensure there's always at least one preemption point per-request. */
 	*cs++ = MI_ARB_CHECK;
-=======
-static void gen8_emit_wa_tail(struct drm_i915_gem_request *request, u32 *cs)
-{
-	*cs++ = MI_NOOP;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	*cs++ = MI_NOOP;
 	request->wa_tail = intel_ring_offset(request, cs);
 }
 
-<<<<<<< HEAD
 static void gen8_emit_breadcrumb(struct i915_request *request, u32 *cs)
-=======
-static void gen8_emit_breadcrumb(struct drm_i915_gem_request *request, u32 *cs)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* w/a: bit 5 needs to be zero for MI_FLUSH_DW address. */
 	BUILD_BUG_ON(I915_GEM_HWS_INDEX_ADDR & (1 << 5));
 
-<<<<<<< HEAD
 	cs = gen8_emit_ggtt_write(cs, request->global_seqno,
 				  intel_hws_seqno_address(request->engine));
 	*cs++ = MI_USER_INTERRUPT;
 	*cs++ = MI_ARB_ON_OFF | MI_ARB_ENABLE;
-=======
-	*cs++ = (MI_FLUSH_DW + 1) | MI_FLUSH_DW_OP_STOREDW;
-	*cs++ = intel_hws_seqno_address(request->engine) | MI_FLUSH_DW_USE_GTT;
-	*cs++ = 0;
-	*cs++ = request->global_seqno;
-	*cs++ = MI_USER_INTERRUPT;
-	*cs++ = MI_NOOP;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	request->tail = intel_ring_offset(request, cs);
 	assert_ring_tail_valid(request->ring, request->tail);
 
 	gen8_emit_wa_tail(request, cs);
 }
-<<<<<<< HEAD
 static const int gen8_emit_breadcrumb_sz = 6 + WA_TAIL_DWORDS;
 
 static void gen8_emit_breadcrumb_rcs(struct i915_request *request, u32 *cs)
-=======
-
-static const int gen8_emit_breadcrumb_sz = 6 + WA_TAIL_DWORDS;
-
-static void gen8_emit_breadcrumb_render(struct drm_i915_gem_request *request,
-					u32 *cs)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* We're using qword write, seqno should be aligned to 8 bytes. */
 	BUILD_BUG_ON(I915_GEM_HWS_INDEX & 1);
 
-<<<<<<< HEAD
 	cs = gen8_emit_ggtt_write_rcs(cs, request->global_seqno,
 				      intel_hws_seqno_address(request->engine));
 	*cs++ = MI_USER_INTERRUPT;
 	*cs++ = MI_ARB_ON_OFF | MI_ARB_ENABLE;
-=======
-	/* w/a for post sync ops following a GPGPU operation we
-	 * need a prior CS_STALL, which is emitted by the flush
-	 * following the batch.
-	 */
-	*cs++ = GFX_OP_PIPE_CONTROL(6);
-	*cs++ = PIPE_CONTROL_GLOBAL_GTT_IVB | PIPE_CONTROL_CS_STALL |
-		PIPE_CONTROL_QW_WRITE;
-	*cs++ = intel_hws_seqno_address(request->engine);
-	*cs++ = 0;
-	*cs++ = request->global_seqno;
-	/* We're thrashing one dword of HWS. */
-	*cs++ = 0;
-	*cs++ = MI_USER_INTERRUPT;
-	*cs++ = MI_NOOP;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	request->tail = intel_ring_offset(request, cs);
 	assert_ring_tail_valid(request->ring, request->tail);
 
 	gen8_emit_wa_tail(request, cs);
 }
-<<<<<<< HEAD
 static const int gen8_emit_breadcrumb_rcs_sz = 8 + WA_TAIL_DWORDS;
 
 static int gen8_init_rcs_context(struct i915_request *rq)
@@ -3245,20 +2265,6 @@ static int gen8_init_rcs_context(struct i915_request *rq)
 		return ret;
 
 	ret = intel_rcs_context_init_mocs(rq);
-=======
-
-static const int gen8_emit_breadcrumb_render_sz = 8 + WA_TAIL_DWORDS;
-
-static int gen8_init_rcs_context(struct drm_i915_gem_request *req)
-{
-	int ret;
-
-	ret = intel_ring_workarounds_emit(req);
-	if (ret)
-		return ret;
-
-	ret = intel_rcs_context_init_mocs(req);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Failing to program the MOCS is non-fatal.The system will not
 	 * run at peak performance. So generate an error and carry on.
@@ -3266,11 +2272,7 @@ static int gen8_init_rcs_context(struct drm_i915_gem_request *req)
 	if (ret)
 		DRM_ERROR("MOCS failed to program: expect performance issues.\n");
 
-<<<<<<< HEAD
 	return i915_gem_render_state_emit(rq);
-=======
-	return i915_gem_render_state_emit(req);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -3285,14 +2287,9 @@ void intel_logical_ring_cleanup(struct intel_engine_cs *engine)
 	 * Tasklet cannot be active at this point due intel_mark_active/idle
 	 * so this is just for documentation.
 	 */
-<<<<<<< HEAD
 	if (WARN_ON(test_bit(TASKLET_STATE_SCHED,
 			     &engine->execlists.tasklet.state)))
 		tasklet_kill(&engine->execlists.tasklet);
-=======
-	if (WARN_ON(test_bit(TASKLET_STATE_SCHED, &engine->irq_tasklet.state)))
-		tasklet_kill(&engine->irq_tasklet);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_priv = engine->i915;
 
@@ -3303,27 +2300,15 @@ void intel_logical_ring_cleanup(struct intel_engine_cs *engine)
 	if (engine->cleanup)
 		engine->cleanup(engine);
 
-<<<<<<< HEAD
 	intel_engine_cleanup_common(engine);
 
 	lrc_destroy_wa_ctx(engine);
 
-=======
-	if (engine->status_page.vma) {
-		i915_gem_object_unpin_map(engine->status_page.vma->obj);
-		engine->status_page.vma = NULL;
-	}
-
-	intel_engine_cleanup_common(engine);
-
-	lrc_destroy_wa_ctx(engine);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	engine->i915 = NULL;
 	dev_priv->engine[engine->id] = NULL;
 	kfree(engine);
 }
 
-<<<<<<< HEAD
 void intel_execlists_set_default_submission(struct intel_engine_cs *engine)
 {
 	engine->submit_request = execlists_submit_request;
@@ -3345,13 +2330,6 @@ void intel_execlists_set_default_submission(struct intel_engine_cs *engine)
 		I915_SCHEDULER_CAP_PRIORITY;
 	if (intel_engine_has_preemption(engine))
 		engine->i915->caps.scheduler |= I915_SCHEDULER_CAP_PREEMPTION;
-=======
-static void execlists_set_default_submission(struct intel_engine_cs *engine)
-{
-	engine->submit_request = execlists_submit_request;
-	engine->schedule = execlists_schedule;
-	engine->irq_tasklet.func = intel_lrc_irq_handler;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void
@@ -3359,27 +2337,18 @@ logical_ring_default_vfuncs(struct intel_engine_cs *engine)
 {
 	/* Default vfuncs which can be overriden by each engine. */
 	engine->init_hw = gen8_init_common_ring;
-<<<<<<< HEAD
 
 	engine->reset.prepare = execlists_reset_prepare;
 	engine->reset.reset = execlists_reset;
 	engine->reset.finish = execlists_reset_finish;
 
 	engine->context_pin = execlists_context_pin;
-=======
-	engine->reset_hw = reset_common_ring;
-
-	engine->context_pin = execlists_context_pin;
-	engine->context_unpin = execlists_context_unpin;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	engine->request_alloc = execlists_request_alloc;
 
 	engine->emit_flush = gen8_emit_flush;
 	engine->emit_breadcrumb = gen8_emit_breadcrumb;
 	engine->emit_breadcrumb_sz = gen8_emit_breadcrumb_sz;
 
-<<<<<<< HEAD
 	engine->set_default_submission = intel_execlists_set_default_submission;
 
 	if (INTEL_GEN(engine->i915) < 11) {
@@ -3393,19 +2362,12 @@ logical_ring_default_vfuncs(struct intel_engine_cs *engine)
 		 * until a more refined solution exists.
 		 */
 	}
-=======
-	engine->set_default_submission = execlists_set_default_submission;
-
-	engine->irq_enable = gen8_logical_ring_enable_irq;
-	engine->irq_disable = gen8_logical_ring_disable_irq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	engine->emit_bb_start = gen8_emit_bb_start;
 }
 
 static inline void
 logical_ring_default_irqs(struct intel_engine_cs *engine)
 {
-<<<<<<< HEAD
 	unsigned int shift = 0;
 
 	if (INTEL_GEN(engine->i915) < 11) {
@@ -3420,75 +2382,25 @@ logical_ring_default_irqs(struct intel_engine_cs *engine)
 		shift = irq_shifts[engine->id];
 	}
 
-=======
-	unsigned shift = engine->irq_shift;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	engine->irq_enable_mask = GT_RENDER_USER_INTERRUPT << shift;
 	engine->irq_keep_mask = GT_CONTEXT_SWITCH_INTERRUPT << shift;
 }
 
-<<<<<<< HEAD
 static void
 logical_ring_setup(struct intel_engine_cs *engine)
 {
-=======
-static int
-lrc_setup_hws(struct intel_engine_cs *engine, struct i915_vma *vma)
-{
-	const int hws_offset = LRC_PPHWSP_PN * PAGE_SIZE;
-	void *hws;
-
-	/* The HWSP is part of the default context object in LRC mode. */
-	hws = i915_gem_object_pin_map(vma->obj, I915_MAP_WB);
-	if (IS_ERR(hws))
-		return PTR_ERR(hws);
-
-	engine->status_page.page_addr = hws + hws_offset;
-	engine->status_page.ggtt_offset = i915_ggtt_offset(vma) + hws_offset;
-	engine->status_page.vma = vma;
-
-	return 0;
-}
-
-static void
-logical_ring_setup(struct intel_engine_cs *engine)
-{
-	struct drm_i915_private *dev_priv = engine->i915;
-	enum forcewake_domains fw_domains;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	intel_engine_setup_common(engine);
 
 	/* Intentionally left blank. */
 	engine->buffer = NULL;
 
-<<<<<<< HEAD
 	tasklet_init(&engine->execlists.tasklet,
 		     execlists_submission_tasklet, (unsigned long)engine);
-=======
-	fw_domains = intel_uncore_forcewake_for_reg(dev_priv,
-						    RING_ELSP(engine),
-						    FW_REG_WRITE);
-
-	fw_domains |= intel_uncore_forcewake_for_reg(dev_priv,
-						     RING_CONTEXT_STATUS_PTR(engine),
-						     FW_REG_READ | FW_REG_WRITE);
-
-	fw_domains |= intel_uncore_forcewake_for_reg(dev_priv,
-						     RING_CONTEXT_STATUS_BUF_BASE(engine),
-						     FW_REG_READ);
-
-	engine->fw_domains = fw_domains;
-
-	tasklet_init(&engine->irq_tasklet,
-		     intel_lrc_irq_handler, (unsigned long)engine);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	logical_ring_default_vfuncs(engine);
 	logical_ring_default_irqs(engine);
 }
 
-<<<<<<< HEAD
 static bool csb_force_mmio(struct drm_i915_private *i915)
 {
 	/* Older GVT emulation depends upon intercepting CSB mmio */
@@ -3499,19 +2411,12 @@ static int logical_ring_init(struct intel_engine_cs *engine)
 {
 	struct drm_i915_private *i915 = engine->i915;
 	struct intel_engine_execlists * const execlists = &engine->execlists;
-=======
-static int
-logical_ring_init(struct intel_engine_cs *engine)
-{
-	struct i915_gem_context *dctx = engine->i915->kernel_context;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	ret = intel_engine_init_common(engine);
 	if (ret)
 		goto error;
 
-<<<<<<< HEAD
 	if (HAS_LOGICAL_RING_ELSQ(i915)) {
 		execlists->submit_reg = i915->regs +
 			i915_mmio_reg_offset(RING_EXECLIST_SQ_CONTENTS(engine));
@@ -3551,15 +2456,6 @@ logical_ring_init(struct intel_engine_cs *engine)
 	}
 	reset_csb_pointers(execlists);
 
-=======
-	/* And setup the hardware status page. */
-	ret = lrc_setup_hws(engine, dctx->engine[engine->id].state);
-	if (ret) {
-		DRM_ERROR("Failed to set up hws %s: %d\n", engine->name, ret);
-		goto error;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 error:
@@ -3584,13 +2480,8 @@ int logical_render_ring_init(struct intel_engine_cs *engine)
 		engine->init_hw = gen8_init_render_ring;
 	engine->init_context = gen8_init_rcs_context;
 	engine->emit_flush = gen8_emit_flush_render;
-<<<<<<< HEAD
 	engine->emit_breadcrumb = gen8_emit_breadcrumb_rcs;
 	engine->emit_breadcrumb_sz = gen8_emit_breadcrumb_rcs_sz;
-=======
-	engine->emit_breadcrumb = gen8_emit_breadcrumb_render;
-	engine->emit_breadcrumb_sz = gen8_emit_breadcrumb_render_sz;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = intel_engine_create_scratch(engine, PAGE_SIZE);
 	if (ret)
@@ -3644,11 +2535,7 @@ make_rpcs(struct drm_i915_private *dev_priv)
 
 	if (INTEL_INFO(dev_priv)->sseu.has_subslice_pg) {
 		rpcs |= GEN8_RPCS_SS_CNT_ENABLE;
-<<<<<<< HEAD
 		rpcs |= hweight8(INTEL_INFO(dev_priv)->sseu.subslice_mask[0]) <<
-=======
-		rpcs |= hweight8(INTEL_INFO(dev_priv)->sseu.subslice_mask) <<
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			GEN8_RPCS_SS_CNT_SHIFT;
 		rpcs |= GEN8_RPCS_ENABLE;
 	}
@@ -3672,13 +2559,10 @@ static u32 intel_lr_indirect_ctx_offset(struct intel_engine_cs *engine)
 	default:
 		MISSING_CASE(INTEL_GEN(engine->i915));
 		/* fall through */
-<<<<<<< HEAD
 	case 11:
 		indirect_ctx_offset =
 			GEN11_CTX_RCS_INDIRECT_CTX_OFFSET_DEFAULT;
 		break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case 10:
 		indirect_ctx_offset =
 			GEN10_CTX_RCS_INDIRECT_CTX_OFFSET_DEFAULT;
@@ -3704,11 +2588,7 @@ static void execlists_init_reg_state(u32 *regs,
 	struct drm_i915_private *dev_priv = engine->i915;
 	struct i915_hw_ppgtt *ppgtt = ctx->ppgtt ?: dev_priv->mm.aliasing_ppgtt;
 	u32 base = engine->mmio_base;
-<<<<<<< HEAD
 	bool rcs = engine->class == RENDER_CLASS;
-=======
-	bool rcs = engine->id == RCS;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* A context is actually a big batch buffer with several
 	 * MI_LOAD_REGISTER_IMM commands followed by (reg, value) pairs. The
@@ -3721,14 +2601,9 @@ static void execlists_init_reg_state(u32 *regs,
 				 MI_LRI_FORCE_POSTED;
 
 	CTX_REG(regs, CTX_CONTEXT_CONTROL, RING_CONTEXT_CONTROL(engine),
-<<<<<<< HEAD
 		_MASKED_BIT_DISABLE(CTX_CTRL_ENGINE_CTX_RESTORE_INHIBIT |
 				    CTX_CTRL_ENGINE_CTX_SAVE_INHIBIT) |
 		_MASKED_BIT_ENABLE(CTX_CTRL_INHIBIT_SYN_CTX_SWITCH |
-=======
-		_MASKED_BIT_ENABLE(CTX_CTRL_INHIBIT_SYN_CTX_SWITCH |
-				   CTX_CTRL_ENGINE_CTX_RESTORE_INHIBIT |
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   (HAS_RESOURCE_STREAMER(dev_priv) ?
 				   CTX_CTRL_RS_CTX_ENABLE : 0)));
 	CTX_REG(regs, CTX_RING_HEAD, RING_HEAD(base), 0);
@@ -3743,22 +2618,12 @@ static void execlists_init_reg_state(u32 *regs,
 	CTX_REG(regs, CTX_SECOND_BB_HEAD_L, RING_SBBADDR(base), 0);
 	CTX_REG(regs, CTX_SECOND_BB_STATE, RING_SBBSTATE(base), 0);
 	if (rcs) {
-<<<<<<< HEAD
 		struct i915_ctx_workarounds *wa_ctx = &engine->wa_ctx;
 
 		CTX_REG(regs, CTX_RCS_INDIRECT_CTX, RING_INDIRECT_CTX(base), 0);
 		CTX_REG(regs, CTX_RCS_INDIRECT_CTX_OFFSET,
 			RING_INDIRECT_CTX_OFFSET(base), 0);
 		if (wa_ctx->indirect_ctx.size) {
-=======
-		CTX_REG(regs, CTX_BB_PER_CTX_PTR, RING_BB_PER_CTX_PTR(base), 0);
-		CTX_REG(regs, CTX_RCS_INDIRECT_CTX, RING_INDIRECT_CTX(base), 0);
-		CTX_REG(regs, CTX_RCS_INDIRECT_CTX_OFFSET,
-			RING_INDIRECT_CTX_OFFSET(base), 0);
-
-		if (engine->wa_ctx.vma) {
-			struct i915_ctx_workarounds *wa_ctx = &engine->wa_ctx;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			u32 ggtt_offset = i915_ggtt_offset(wa_ctx->vma);
 
 			regs[CTX_RCS_INDIRECT_CTX + 1] =
@@ -3767,14 +2632,11 @@ static void execlists_init_reg_state(u32 *regs,
 
 			regs[CTX_RCS_INDIRECT_CTX_OFFSET + 1] =
 				intel_lr_indirect_ctx_offset(engine) << 6;
-<<<<<<< HEAD
 		}
 
 		CTX_REG(regs, CTX_BB_PER_CTX_PTR, RING_BB_PER_CTX_PTR(base), 0);
 		if (wa_ctx->per_ctx.size) {
 			u32 ggtt_offset = i915_ggtt_offset(wa_ctx->vma);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			regs[CTX_BB_PER_CTX_PTR + 1] =
 				(ggtt_offset + wa_ctx->per_ctx.offset) | 0x01;
@@ -3794,11 +2656,7 @@ static void execlists_init_reg_state(u32 *regs,
 	CTX_REG(regs, CTX_PDP0_UDW, GEN8_RING_PDP_UDW(engine, 0), 0);
 	CTX_REG(regs, CTX_PDP0_LDW, GEN8_RING_PDP_LDW(engine, 0), 0);
 
-<<<<<<< HEAD
 	if (ppgtt && i915_vm_is_48bit(&ppgtt->vm)) {
-=======
-	if (ppgtt && i915_vm_is_48bit(&ppgtt->base)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* 64b PPGTT (48bit canonical)
 		 * PDP0_DESCRIPTOR contains the base address to PML4 and
 		 * other PDP Descriptors are ignored.
@@ -3822,10 +2680,7 @@ populate_lr_context(struct i915_gem_context *ctx,
 		    struct intel_ring *ring)
 {
 	void *vaddr;
-<<<<<<< HEAD
 	u32 *regs;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	ret = i915_gem_object_set_to_cpu_domain(ctx_obj, true);
@@ -3842,7 +2697,6 @@ populate_lr_context(struct i915_gem_context *ctx,
 	}
 	ctx_obj->mm.dirty = true;
 
-<<<<<<< HEAD
 	if (engine->default_state) {
 		/*
 		 * We only want to copy over the template context state;
@@ -3907,49 +2761,11 @@ static int execlists_context_deferred_alloc(struct i915_gem_context *ctx,
 		return PTR_ERR(ctx_obj);
 
 	vma = i915_vma_instance(ctx_obj, &ctx->i915->ggtt.vm, NULL);
-=======
-	/* The second page of the context object contains some fields which must
-	 * be set up prior to the first execution. */
-
-	execlists_init_reg_state(vaddr + LRC_STATE_PN * PAGE_SIZE,
-				 ctx, engine, ring);
-
-	i915_gem_object_unpin_map(ctx_obj);
-
-	return 0;
-}
-
-static int execlists_context_deferred_alloc(struct i915_gem_context *ctx,
-					    struct intel_engine_cs *engine)
-{
-	struct drm_i915_gem_object *ctx_obj;
-	struct intel_context *ce = &ctx->engine[engine->id];
-	struct i915_vma *vma;
-	uint32_t context_size;
-	struct intel_ring *ring;
-	int ret;
-
-	WARN_ON(ce->state);
-
-	context_size = round_up(engine->context_size, I915_GTT_PAGE_SIZE);
-
-	/* One extra page as the sharing data between driver and GuC */
-	context_size += PAGE_SIZE * LRC_PPHWSP_PN;
-
-	ctx_obj = i915_gem_object_create(ctx->i915, context_size);
-	if (IS_ERR(ctx_obj)) {
-		DRM_DEBUG_DRIVER("Alloc LRC backing obj failed.\n");
-		return PTR_ERR(ctx_obj);
-	}
-
-	vma = i915_vma_instance(ctx_obj, &ctx->i915->ggtt.base, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(vma)) {
 		ret = PTR_ERR(vma);
 		goto error_deref_obj;
 	}
 
-<<<<<<< HEAD
 	timeline = i915_timeline_create(ctx->i915, ctx->name);
 	if (IS_ERR(timeline)) {
 		ret = PTR_ERR(timeline);
@@ -3958,9 +2774,6 @@ static int execlists_context_deferred_alloc(struct i915_gem_context *ctx,
 
 	ring = intel_engine_create_ring(engine, timeline, ctx->ring_size);
 	i915_timeline_put(timeline);
-=======
-	ring = intel_engine_create_ring(engine, ctx->ring_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(ring)) {
 		ret = PTR_ERR(ring);
 		goto error_deref_obj;
@@ -3974,10 +2787,6 @@ static int execlists_context_deferred_alloc(struct i915_gem_context *ctx,
 
 	ce->ring = ring;
 	ce->state = vma;
-<<<<<<< HEAD
-=======
-	ce->initialised |= engine->init_context == NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 
@@ -4006,12 +2815,8 @@ void intel_lr_context_resume(struct drm_i915_private *dev_priv)
 	 */
 	list_for_each_entry(ctx, &dev_priv->contexts.list, link) {
 		for_each_engine(engine, dev_priv, id) {
-<<<<<<< HEAD
 			struct intel_context *ce =
 				to_intel_context(ctx, engine);
-=======
-			struct intel_context *ce = &ctx->engine[engine->id];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			u32 *reg;
 
 			if (!ce->state)
@@ -4033,10 +2838,7 @@ void intel_lr_context_resume(struct drm_i915_private *dev_priv)
 		}
 	}
 }
-<<<<<<< HEAD
 
 #if IS_ENABLED(CONFIG_DRM_I915_SELFTEST)
 #include "selftests/intel_lrc.c"
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

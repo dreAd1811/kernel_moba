@@ -39,16 +39,12 @@
 #include <linux/export.h>
 #include <linux/vmalloc.h>
 #include <linux/hugetlb.h>
-<<<<<<< HEAD
 #include <linux/interval_tree_generic.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <rdma/ib_verbs.h>
 #include <rdma/ib_umem.h>
 #include <rdma/ib_umem_odp.h>
 
-<<<<<<< HEAD
 /*
  * The ib_umem list keeps track of memory regions for which the HW
  * device request to receive notification when the related memory
@@ -81,8 +77,6 @@ static u64 node_last(struct umem_odp_node *n)
 INTERVAL_TREE_DEFINE(struct umem_odp_node, rb, u64, __subtree_last,
 		     node_start, node_last, static, rbt_ib_umem)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void ib_umem_notifier_start_account(struct ib_umem *item)
 {
 	mutex_lock(&item->odp_data->umem_mutex);
@@ -192,10 +186,7 @@ static void ib_umem_notifier_release(struct mmu_notifier *mn,
 	rbt_ib_umem_for_each_in_range(&context->umem_tree, 0,
 				      ULLONG_MAX,
 				      ib_umem_notifier_release_trampoline,
-<<<<<<< HEAD
 				      true,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      NULL);
 	up_read(&context->umem_rwsem);
 }
@@ -217,7 +208,6 @@ static int invalidate_range_start_trampoline(struct ib_umem *item, u64 start,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int ib_umem_notifier_invalidate_range_start(struct mmu_notifier *mn,
 						    struct mm_struct *mm,
 						    unsigned long start,
@@ -243,24 +233,6 @@ static int ib_umem_notifier_invalidate_range_start(struct mmu_notifier *mn,
 	up_read(&context->umem_rwsem);
 
 	return ret;
-=======
-static void ib_umem_notifier_invalidate_range_start(struct mmu_notifier *mn,
-						    struct mm_struct *mm,
-						    unsigned long start,
-						    unsigned long end)
-{
-	struct ib_ucontext *context = container_of(mn, struct ib_ucontext, mn);
-
-	if (!context->invalidate_range)
-		return;
-
-	ib_ucontext_notifier_start_account(context);
-	down_read(&context->umem_rwsem);
-	rbt_ib_umem_for_each_in_range(&context->umem_tree, start,
-				      end,
-				      invalidate_range_start_trampoline, NULL);
-	up_read(&context->umem_rwsem);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int invalidate_range_end_trampoline(struct ib_umem *item, u64 start,
@@ -280,7 +252,6 @@ static void ib_umem_notifier_invalidate_range_end(struct mmu_notifier *mn,
 	if (!context->invalidate_range)
 		return;
 
-<<<<<<< HEAD
 	/*
 	 * TODO: we currently bail out if there is any sleepable work to be done
 	 * in ib_umem_notifier_invalidate_range_start so we shouldn't really block
@@ -290,12 +261,6 @@ static void ib_umem_notifier_invalidate_range_end(struct mmu_notifier *mn,
 	rbt_ib_umem_for_each_in_range(&context->umem_tree, start,
 				      end,
 				      invalidate_range_end_trampoline, true, NULL);
-=======
-	down_read(&context->umem_rwsem);
-	rbt_ib_umem_for_each_in_range(&context->umem_tree, start,
-				      end,
-				      invalidate_range_end_trampoline, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	up_read(&context->umem_rwsem);
 	ib_ucontext_notifier_end_account(context);
 }
@@ -335,23 +300,15 @@ struct ib_umem *ib_alloc_odp_umem(struct ib_ucontext *context,
 	mutex_init(&odp_data->umem_mutex);
 	init_completion(&odp_data->notifier_completion);
 
-<<<<<<< HEAD
 	odp_data->page_list =
 		vzalloc(array_size(pages, sizeof(*odp_data->page_list)));
-=======
-	odp_data->page_list = vzalloc(pages * sizeof(*odp_data->page_list));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!odp_data->page_list) {
 		ret = -ENOMEM;
 		goto out_odp_data;
 	}
 
-<<<<<<< HEAD
 	odp_data->dma_list =
 		vzalloc(array_size(pages, sizeof(*odp_data->dma_list)));
-=======
-	odp_data->dma_list = vzalloc(pages * sizeof(*odp_data->dma_list));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!odp_data->dma_list) {
 		ret = -ENOMEM;
 		goto out_page_list;
@@ -399,12 +356,7 @@ int ib_umem_odp_get(struct ib_ucontext *context, struct ib_umem *umem,
 		vma = find_vma(mm, ib_umem_start(umem));
 		if (!vma || !is_vm_hugetlb_page(vma)) {
 			up_read(&mm->mmap_sem);
-<<<<<<< HEAD
 			return -EINVAL;
-=======
-			ret_val = -EINVAL;
-			goto out_mm;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		h = hstate_vma(vma);
 		umem->page_shift = huge_page_shift(h);
@@ -436,27 +388,17 @@ int ib_umem_odp_get(struct ib_ucontext *context, struct ib_umem *umem,
 	init_completion(&umem->odp_data->notifier_completion);
 
 	if (ib_umem_num_pages(umem)) {
-<<<<<<< HEAD
 		umem->odp_data->page_list =
 			vzalloc(array_size(sizeof(*umem->odp_data->page_list),
 					   ib_umem_num_pages(umem)));
-=======
-		umem->odp_data->page_list = vzalloc(ib_umem_num_pages(umem) *
-					    sizeof(*umem->odp_data->page_list));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!umem->odp_data->page_list) {
 			ret_val = -ENOMEM;
 			goto out_odp_data;
 		}
 
-<<<<<<< HEAD
 		umem->odp_data->dma_list =
 			vzalloc(array_size(sizeof(*umem->odp_data->dma_list),
 					   ib_umem_num_pages(umem)));
-=======
-		umem->odp_data->dma_list = vzalloc(ib_umem_num_pages(umem) *
-					  sizeof(*umem->odp_data->dma_list));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!umem->odp_data->dma_list) {
 			ret_val = -ENOMEM;
 			goto out_page_list;
@@ -747,11 +689,7 @@ int ib_umem_odp_map_dma_pages(struct ib_umem *umem, u64 user_virt, u64 bcnt,
 
 	while (bcnt > 0) {
 		const size_t gup_num_pages = min_t(size_t,
-<<<<<<< HEAD
 				(bcnt + BIT(page_shift) - 1) >> page_shift,
-=======
-				ALIGN(bcnt, PAGE_SIZE) / PAGE_SIZE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				PAGE_SIZE / sizeof(struct page *));
 
 		down_read(&owning_mm->mmap_sem);
@@ -868,7 +806,6 @@ void ib_umem_odp_unmap_dma_pages(struct ib_umem *umem, u64 virt,
 	mutex_unlock(&umem->odp_data->umem_mutex);
 }
 EXPORT_SYMBOL(ib_umem_odp_unmap_dma_pages);
-<<<<<<< HEAD
 
 /* @last is not a part of the interval. See comment for function
  * node_last.
@@ -912,5 +849,3 @@ struct ib_umem_odp *rbt_ib_umem_lookup(struct rb_root_cached *root,
 
 }
 EXPORT_SYMBOL(rbt_ib_umem_lookup);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

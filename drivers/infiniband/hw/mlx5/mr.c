@@ -47,7 +47,6 @@ enum {
 
 #define MLX5_UMR_ALIGN 2048
 
-<<<<<<< HEAD
 static void clean_mr(struct mlx5_ib_dev *dev, struct mlx5_ib_mr *mr);
 static void dereg_mr(struct mlx5_ib_dev *dev, struct mlx5_ib_mr *mr);
 static int mr_cache_max_order(struct mlx5_ib_dev *dev);
@@ -58,13 +57,6 @@ static bool umr_can_use_indirect_mkey(struct mlx5_ib_dev *dev)
 	return !MLX5_CAP_GEN(dev->mdev, umr_indirect_mkey_disabled);
 }
 
-=======
-static int clean_mr(struct mlx5_ib_dev *dev, struct mlx5_ib_mr *mr);
-static int dereg_mr(struct mlx5_ib_dev *dev, struct mlx5_ib_mr *mr);
-static int mr_cache_max_order(struct mlx5_ib_dev *dev);
-static int unreg_umr(struct mlx5_ib_dev *dev, struct mlx5_ib_mr *mr);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int destroy_mkey(struct mlx5_ib_dev *dev, struct mlx5_ib_mr *mr)
 {
 	int err = mlx5_core_destroy_mkey(dev->mdev, &mr->mmkey);
@@ -202,13 +194,9 @@ static int add_keys(struct mlx5_ib_dev *dev, int c, int num)
 
 		MLX5_SET(mkc, mkc, free, 1);
 		MLX5_SET(mkc, mkc, umr_en, 1);
-<<<<<<< HEAD
 		MLX5_SET(mkc, mkc, access_mode_1_0, ent->access_mode & 0x3);
 		MLX5_SET(mkc, mkc, access_mode_4_2,
 			 (ent->access_mode >> 2) & 0x7);
-=======
-		MLX5_SET(mkc, mkc, access_mode, ent->access_mode);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		MLX5_SET(mkc, mkc, qpn, 0xffffff);
 		MLX5_SET(mkc, mkc, translations_octword_size, ent->xlt);
@@ -239,21 +227,15 @@ static void remove_keys(struct mlx5_ib_dev *dev, int c, int num)
 {
 	struct mlx5_mr_cache *cache = &dev->cache;
 	struct mlx5_cache_ent *ent = &cache->ent[c];
-<<<<<<< HEAD
 	struct mlx5_ib_mr *tmp_mr;
 	struct mlx5_ib_mr *mr;
 	LIST_HEAD(del_list);
-=======
-	struct mlx5_ib_mr *mr;
-	int err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 
 	for (i = 0; i < num; i++) {
 		spin_lock_irq(&ent->lock);
 		if (list_empty(&ent->head)) {
 			spin_unlock_irq(&ent->lock);
-<<<<<<< HEAD
 			break;
 		}
 		mr = list_first_entry(&ent->head, struct mlx5_ib_mr, list);
@@ -271,20 +253,6 @@ static void remove_keys(struct mlx5_ib_dev *dev, int c, int num)
 	list_for_each_entry_safe(mr, tmp_mr, &del_list, list) {
 		list_del(&mr->list);
 		kfree(mr);
-=======
-			return;
-		}
-		mr = list_first_entry(&ent->head, struct mlx5_ib_mr, list);
-		list_del(&mr->list);
-		ent->cur--;
-		ent->size--;
-		spin_unlock_irq(&ent->lock);
-		err = destroy_mkey(dev, mr);
-		if (err)
-			mlx5_ib_warn(dev, "failed destroy mkey\n");
-		else
-			kfree(mr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -293,28 +261,16 @@ static ssize_t size_write(struct file *filp, const char __user *buf,
 {
 	struct mlx5_cache_ent *ent = filp->private_data;
 	struct mlx5_ib_dev *dev = ent->dev;
-<<<<<<< HEAD
 	char lbuf[20] = {0};
-=======
-	char lbuf[20];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 var;
 	int err;
 	int c;
 
-<<<<<<< HEAD
 	count = min(count, sizeof(lbuf) - 1);
 	if (copy_from_user(lbuf, buf, count))
 		return -EFAULT;
 
 	c = order2idx(dev, ent->order);
-=======
-	if (copy_from_user(lbuf, buf, sizeof(lbuf)))
-		return -EFAULT;
-
-	c = order2idx(dev, ent->order);
-	lbuf[sizeof(lbuf) - 1] = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (sscanf(lbuf, "%u", &var) != 1)
 		return -EINVAL;
@@ -344,26 +300,11 @@ static ssize_t size_read(struct file *filp, char __user *buf, size_t count,
 	char lbuf[20];
 	int err;
 
-<<<<<<< HEAD
-=======
-	if (*pos)
-		return 0;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = snprintf(lbuf, sizeof(lbuf), "%d\n", ent->size);
 	if (err < 0)
 		return err;
 
-<<<<<<< HEAD
 	return simple_read_from_buffer(buf, count, pos, lbuf, err);
-=======
-	if (copy_to_user(buf, lbuf, err))
-		return -EFAULT;
-
-	*pos += err;
-
-	return err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct file_operations size_fops = {
@@ -378,28 +319,16 @@ static ssize_t limit_write(struct file *filp, const char __user *buf,
 {
 	struct mlx5_cache_ent *ent = filp->private_data;
 	struct mlx5_ib_dev *dev = ent->dev;
-<<<<<<< HEAD
 	char lbuf[20] = {0};
-=======
-	char lbuf[20];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 var;
 	int err;
 	int c;
 
-<<<<<<< HEAD
 	count = min(count, sizeof(lbuf) - 1);
 	if (copy_from_user(lbuf, buf, count))
 		return -EFAULT;
 
 	c = order2idx(dev, ent->order);
-=======
-	if (copy_from_user(lbuf, buf, sizeof(lbuf)))
-		return -EFAULT;
-
-	c = order2idx(dev, ent->order);
-	lbuf[sizeof(lbuf) - 1] = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (sscanf(lbuf, "%u", &var) != 1)
 		return -EINVAL;
@@ -425,26 +354,11 @@ static ssize_t limit_read(struct file *filp, char __user *buf, size_t count,
 	char lbuf[20];
 	int err;
 
-<<<<<<< HEAD
-=======
-	if (*pos)
-		return 0;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = snprintf(lbuf, sizeof(lbuf), "%d\n", ent->limit);
 	if (err < 0)
 		return err;
 
-<<<<<<< HEAD
 	return simple_read_from_buffer(buf, count, pos, lbuf, err);
-=======
-	if (copy_to_user(buf, lbuf, err))
-		return -EFAULT;
-
-	*pos += err;
-
-	return err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct file_operations limit_fops = {
@@ -543,11 +457,7 @@ struct mlx5_ib_mr *mlx5_mr_cache_alloc(struct mlx5_ib_dev *dev, int entry)
 
 	if (entry < 0 || entry >= MAX_MR_CACHE_ENTRIES) {
 		mlx5_ib_err(dev, "cache entry %d is out of range\n", entry);
-<<<<<<< HEAD
 		return NULL;
-=======
-		return ERR_PTR(-EINVAL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ent = &cache->ent[entry];
@@ -624,12 +534,9 @@ void mlx5_mr_cache_free(struct mlx5_ib_dev *dev, struct mlx5_ib_mr *mr)
 	int shrink = 0;
 	int c;
 
-<<<<<<< HEAD
 	if (!mr->allocated_from_cache)
 		return;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	c = order2idx(dev, mr->order);
 	WARN_ON(c < 0 || c >= MAX_MR_CACHE_ENTRIES);
 
@@ -658,21 +565,15 @@ static void clean_keys(struct mlx5_ib_dev *dev, int c)
 {
 	struct mlx5_mr_cache *cache = &dev->cache;
 	struct mlx5_cache_ent *ent = &cache->ent[c];
-<<<<<<< HEAD
 	struct mlx5_ib_mr *tmp_mr;
 	struct mlx5_ib_mr *mr;
 	LIST_HEAD(del_list);
-=======
-	struct mlx5_ib_mr *mr;
-	int err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cancel_delayed_work(&ent->dwork);
 	while (1) {
 		spin_lock_irq(&ent->lock);
 		if (list_empty(&ent->head)) {
 			spin_unlock_irq(&ent->lock);
-<<<<<<< HEAD
 			break;
 		}
 		mr = list_first_entry(&ent->head, struct mlx5_ib_mr, list);
@@ -690,30 +591,12 @@ static void clean_keys(struct mlx5_ib_dev *dev, int c)
 	list_for_each_entry_safe(mr, tmp_mr, &del_list, list) {
 		list_del(&mr->list);
 		kfree(mr);
-=======
-			return;
-		}
-		mr = list_first_entry(&ent->head, struct mlx5_ib_mr, list);
-		list_del(&mr->list);
-		ent->cur--;
-		ent->size--;
-		spin_unlock_irq(&ent->lock);
-		err = destroy_mkey(dev, mr);
-		if (err)
-			mlx5_ib_warn(dev, "failed destroy mkey\n");
-		else
-			kfree(mr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
 static void mlx5_mr_cache_debugfs_cleanup(struct mlx5_ib_dev *dev)
 {
-<<<<<<< HEAD
 	if (!mlx5_debugfs_root || dev->rep)
-=======
-	if (!mlx5_debugfs_root)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	debugfs_remove_recursive(dev->cache.root);
@@ -726,11 +609,7 @@ static int mlx5_mr_cache_debugfs_init(struct mlx5_ib_dev *dev)
 	struct mlx5_cache_ent *ent;
 	int i;
 
-<<<<<<< HEAD
 	if (!mlx5_debugfs_root || dev->rep)
-=======
-	if (!mlx5_debugfs_root)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	cache->root = debugfs_create_dir("mr_cache", dev->mdev->priv.dbg_root);
@@ -772,15 +651,9 @@ err:
 	return -ENOMEM;
 }
 
-<<<<<<< HEAD
 static void delay_time_func(struct timer_list *t)
 {
 	struct mlx5_ib_dev *dev = from_timer(dev, t, delay_timer);
-=======
-static void delay_time_func(unsigned long ctx)
-{
-	struct mlx5_ib_dev *dev = (struct mlx5_ib_dev *)ctx;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev->fill_delay = 0;
 }
@@ -799,11 +672,7 @@ int mlx5_mr_cache_init(struct mlx5_ib_dev *dev)
 		return -ENOMEM;
 	}
 
-<<<<<<< HEAD
 	timer_setup(&dev->delay_timer, delay_time_func, 0);
-=======
-	setup_timer(&dev->delay_timer, delay_time_func, (unsigned long)dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < MAX_MR_CACHE_ENTRIES; i++) {
 		ent = &cache->ent[i];
 		INIT_LIST_HEAD(&ent->head);
@@ -829,10 +698,7 @@ int mlx5_mr_cache_init(struct mlx5_ib_dev *dev)
 			   MLX5_IB_UMR_OCTOWORD;
 		ent->access_mode = MLX5_MKC_ACCESS_MODE_MTT;
 		if ((dev->mdev->profile->mask & MLX5_PROF_MASK_MR_CACHE) &&
-<<<<<<< HEAD
 		    !dev->rep &&
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    mlx5_core_is_pf(dev->mdev))
 			ent->limit = dev->mdev->profile->mr_cache[i].limit;
 		else
@@ -883,12 +749,9 @@ int mlx5_mr_cache_cleanup(struct mlx5_ib_dev *dev)
 {
 	int i;
 
-<<<<<<< HEAD
 	if (!dev->cache.wq)
 		return 0;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev->cache.stopped = 1;
 	flush_workqueue(dev->cache.wq);
 
@@ -926,11 +789,7 @@ struct ib_mr *mlx5_ib_get_dma_mr(struct ib_pd *pd, int acc)
 
 	mkc = MLX5_ADDR_OF(create_mkey_in, in, memory_key_mkey_entry);
 
-<<<<<<< HEAD
 	MLX5_SET(mkc, mkc, access_mode_1_0, MLX5_MKC_ACCESS_MODE_PA);
-=======
-	MLX5_SET(mkc, mkc, access_mode, MLX5_MKC_ACCESS_MODE_PA);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MLX5_SET(mkc, mkc, a, !!(acc & IB_ACCESS_REMOTE_ATOMIC));
 	MLX5_SET(mkc, mkc, rw, !!(acc & IB_ACCESS_REMOTE_WRITE));
 	MLX5_SET(mkc, mkc, rr, !!(acc & IB_ACCESS_REMOTE_READ));
@@ -1035,11 +894,7 @@ static int mlx5_ib_post_send_wait(struct mlx5_ib_dev *dev,
 				  struct mlx5_umr_wr *umrwr)
 {
 	struct umr_common *umrc = &dev->umrc;
-<<<<<<< HEAD
 	const struct ib_send_wr *bad;
-=======
-	struct ib_send_wr *bad;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 	struct mlx5_ib_umr_context umr_context;
 
@@ -1104,14 +959,10 @@ static inline int populate_xlt(struct mlx5_ib_mr *mr, int idx, int npages,
 {
 	struct mlx5_ib_dev *dev = mr->dev;
 	struct ib_umem *umem = mr->umem;
-<<<<<<< HEAD
 
 	if (flags & MLX5_IB_UPD_XLT_INDIRECT) {
 		if (!umr_can_use_indirect_mkey(dev))
 			return -EPERM;
-=======
-	if (flags & MLX5_IB_UPD_XLT_INDIRECT) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mlx5_odp_populate_klm(xlt, idx, npages, mr, flags);
 		return npages;
 	}
@@ -1141,10 +992,6 @@ int mlx5_ib_update_xlt(struct mlx5_ib_mr *mr, u64 idx, int npages,
 {
 	struct mlx5_ib_dev *dev = mr->dev;
 	struct device *ddev = dev->ib_dev.dev.parent;
-<<<<<<< HEAD
-=======
-	struct mlx5_ib_ucontext *uctx = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int size;
 	void *xlt;
 	dma_addr_t dma;
@@ -1160,14 +1007,11 @@ int mlx5_ib_update_xlt(struct mlx5_ib_mr *mr, u64 idx, int npages,
 	size_t pages_to_map = 0;
 	size_t pages_iter = 0;
 	gfp_t gfp;
-<<<<<<< HEAD
 	bool use_emergency_page = false;
 
 	if ((flags & MLX5_IB_UPD_XLT_INDIRECT) &&
 	    !umr_can_use_indirect_mkey(dev))
 		return -EPERM;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* UMR copies MTTs in units of MLX5_UMR_MTT_ALIGNMENT bytes,
 	 * so we need to align the offset and length accordingly
@@ -1194,20 +1038,11 @@ int mlx5_ib_update_xlt(struct mlx5_ib_mr *mr, u64 idx, int npages,
 	}
 
 	if (!xlt) {
-<<<<<<< HEAD
 		mlx5_ib_warn(dev, "Using XLT emergency buffer\n");
 		xlt = (void *)mlx5_ib_get_xlt_emergency_page();
 		size = PAGE_SIZE;
 		memset(xlt, 0, size);
 		use_emergency_page = true;
-=======
-		uctx = to_mucontext(mr->ibmr.pd->uobject->context);
-		mlx5_ib_warn(dev, "Using XLT emergency buffer\n");
-		size = PAGE_SIZE;
-		xlt = (void *)uctx->upd_xlt_page;
-		mutex_lock(&uctx->upd_xlt_page_mutex);
-		memset(xlt, 0, size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	pages_iter = size / desc_size;
 	dma = dma_map_single(ddev, xlt, size, DMA_TO_DEVICE);
@@ -1271,13 +1106,8 @@ int mlx5_ib_update_xlt(struct mlx5_ib_mr *mr, u64 idx, int npages,
 	dma_unmap_single(ddev, dma, size, DMA_TO_DEVICE);
 
 free_xlt:
-<<<<<<< HEAD
 	if (use_emergency_page)
 		mlx5_ib_put_xlt_emergency_page();
-=======
-	if (uctx)
-		mutex_unlock(&uctx->upd_xlt_page_mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		free_pages((unsigned long)xlt, get_order(size));
 
@@ -1329,11 +1159,7 @@ static struct mlx5_ib_mr *reg_create(struct ib_mr *ibmr, struct ib_pd *pd,
 
 	mkc = MLX5_ADDR_OF(create_mkey_in, in, memory_key_mkey_entry);
 	MLX5_SET(mkc, mkc, free, !populate);
-<<<<<<< HEAD
 	MLX5_SET(mkc, mkc, access_mode_1_0, MLX5_MKC_ACCESS_MODE_MTT);
-=======
-	MLX5_SET(mkc, mkc, access_mode, MLX5_MKC_ACCESS_MODE_MTT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MLX5_SET(mkc, mkc, a, !!(access_flags & IB_ACCESS_REMOTE_ATOMIC));
 	MLX5_SET(mkc, mkc, rw, !!(access_flags & IB_ACCESS_REMOTE_WRITE));
 	MLX5_SET(mkc, mkc, rr, !!(access_flags & IB_ACCESS_REMOTE_READ));
@@ -1389,7 +1215,6 @@ static void set_mr_fileds(struct mlx5_ib_dev *dev, struct mlx5_ib_mr *mr,
 	mr->access_flags = access_flags;
 }
 
-<<<<<<< HEAD
 static struct ib_mr *mlx5_ib_get_memic_mr(struct ib_pd *pd, u64 memic_addr,
 					  u64 length, int acc)
 {
@@ -1464,34 +1289,22 @@ struct ib_mr *mlx5_ib_reg_dm_mr(struct ib_pd *pd, struct ib_dm *dm,
 				    attr->access_flags);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct ib_mr *mlx5_ib_reg_user_mr(struct ib_pd *pd, u64 start, u64 length,
 				  u64 virt_addr, int access_flags,
 				  struct ib_udata *udata)
 {
 	struct mlx5_ib_dev *dev = to_mdev(pd->device);
 	struct mlx5_ib_mr *mr = NULL;
-<<<<<<< HEAD
 	bool use_umr;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ib_umem *umem;
 	int page_shift;
 	int npages;
 	int ncont;
 	int order;
 	int err;
-<<<<<<< HEAD
 
 	if (!IS_ENABLED(CONFIG_INFINIBAND_USER_MEM))
 		return ERR_PTR(-EOPNOTSUPP);
-=======
-	bool use_umr = true;
-
-	if (!IS_ENABLED(CONFIG_INFINIBAND_USER_MEM))
-		return ERR_PTR(-EINVAL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mlx5_ib_dbg(dev, "start 0x%llx, virt_addr 0x%llx, length 0x%llx, access_flags 0x%x\n",
 		    start, virt_addr, length, access_flags);
@@ -1515,7 +1328,6 @@ struct ib_mr *mlx5_ib_reg_user_mr(struct ib_pd *pd, u64 start, u64 length,
 	if (err < 0)
 		return ERR_PTR(err);
 
-<<<<<<< HEAD
 	use_umr = !MLX5_CAP_GEN(dev->mdev, umr_modify_entity_size_disabled) &&
 		  (!MLX5_CAP_GEN(dev->mdev, umr_modify_atomic_disabled) ||
 		   !MLX5_CAP_GEN(dev->mdev, atomic));
@@ -1525,23 +1337,12 @@ struct ib_mr *mlx5_ib_reg_user_mr(struct ib_pd *pd, u64 start, u64 length,
 					 page_shift, order, access_flags);
 		if (PTR_ERR(mr) == -EAGAIN) {
 			mlx5_ib_dbg(dev, "cache empty for order %d\n", order);
-=======
-	if (order <= mr_cache_max_order(dev)) {
-		mr = alloc_mr_from_cache(pd, umem, virt_addr, length, ncont,
-					 page_shift, order, access_flags);
-		if (PTR_ERR(mr) == -EAGAIN) {
-			mlx5_ib_dbg(dev, "cache empty for order %d", order);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			mr = NULL;
 		}
 	} else if (!MLX5_CAP_GEN(dev->mdev, umr_extended_translation_offset)) {
 		if (access_flags & IB_ACCESS_ON_DEMAND) {
 			err = -EINVAL;
-<<<<<<< HEAD
 			pr_err("Got MR registration for ODP MR > 512MB, not supported for Connect-IB\n");
-=======
-			pr_err("Got MR registration for ODP MR > 512MB, not supported for Connect-IB");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto error;
 		}
 		use_umr = false;
@@ -1583,13 +1384,9 @@ struct ib_mr *mlx5_ib_reg_user_mr(struct ib_pd *pd, u64 start, u64 length,
 		}
 	}
 
-<<<<<<< HEAD
 #ifdef CONFIG_INFINIBAND_ON_DEMAND_PAGING
 	mr->live = 1;
 #endif
-=======
-	mr->live = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return &mr->ibmr;
 error:
 	ib_umem_release(umem);
@@ -1681,46 +1478,24 @@ int mlx5_ib_rereg_user_mr(struct ib_mr *ib_mr, int flags, u64 start,
 		mr->umem = NULL;
 		err = mr_umem_get(pd, addr, len, access_flags, &mr->umem,
 				  &npages, &page_shift, &ncont, &order);
-<<<<<<< HEAD
 		if (err)
 			goto err;
-=======
-		if (err < 0) {
-			clean_mr(dev, mr);
-			return err;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (flags & IB_MR_REREG_TRANS && !use_umr_mtt_update(mr, addr, len)) {
 		/*
 		 * UMR can't be used - MKey needs to be replaced.
 		 */
-<<<<<<< HEAD
 		if (mr->allocated_from_cache)
 			err = unreg_umr(dev, mr);
 		else
 			err = destroy_mkey(dev, mr);
 		if (err)
 			goto err;
-=======
-		if (mr->allocated_from_cache) {
-			err = unreg_umr(dev, mr);
-			if (err)
-				mlx5_ib_warn(dev, "Failed to unregister MR\n");
-		} else {
-			err = destroy_mkey(dev, mr);
-			if (err)
-				mlx5_ib_warn(dev, "Failed to destroy MKey\n");
-		}
-		if (err)
-			return err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		mr = reg_create(ib_mr, pd, addr, len, mr->umem, ncont,
 				page_shift, access_flags, true);
 
-<<<<<<< HEAD
 		if (IS_ERR(mr)) {
 			err = PTR_ERR(mr);
 			mr = to_mmr(ib_mr);
@@ -1731,13 +1506,6 @@ int mlx5_ib_rereg_user_mr(struct ib_mr *ib_mr, int flags, u64 start,
 #ifdef CONFIG_INFINIBAND_ON_DEMAND_PAGING
 		mr->live = 1;
 #endif
-=======
-		if (IS_ERR(mr))
-			return PTR_ERR(mr);
-
-		mr->allocated_from_cache = 0;
-		mr->live = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		/*
 		 * Send a UMR WQE
@@ -1760,18 +1528,8 @@ int mlx5_ib_rereg_user_mr(struct ib_mr *ib_mr, int flags, u64 start,
 			err = rereg_umr(pd, mr, access_flags, flags);
 		}
 
-<<<<<<< HEAD
 		if (err)
 			goto err;
-=======
-		if (err) {
-			mlx5_ib_warn(dev, "Failed to rereg UMR\n");
-			ib_umem_release(mr->umem);
-			mr->umem = NULL;
-			clean_mr(dev, mr);
-			return err;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	set_mr_fileds(dev, mr, npages, len, access_flags);
@@ -1780,7 +1538,6 @@ int mlx5_ib_rereg_user_mr(struct ib_mr *ib_mr, int flags, u64 start,
 	update_odp_mr(mr);
 #endif
 	return 0;
-<<<<<<< HEAD
 
 err:
 	if (mr->umem) {
@@ -1789,8 +1546,6 @@ err:
 	}
 	clean_mr(dev, mr);
 	return err;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int
@@ -1839,16 +1594,9 @@ mlx5_free_priv_descs(struct mlx5_ib_mr *mr)
 	}
 }
 
-<<<<<<< HEAD
 static void clean_mr(struct mlx5_ib_dev *dev, struct mlx5_ib_mr *mr)
 {
 	int allocated_from_cache = mr->allocated_from_cache;
-=======
-static int clean_mr(struct mlx5_ib_dev *dev, struct mlx5_ib_mr *mr)
-{
-	int allocated_from_cache = mr->allocated_from_cache;
-	int err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (mr->sig) {
 		if (mlx5_core_destroy_psv(dev->mdev,
@@ -1863,7 +1611,6 @@ static int clean_mr(struct mlx5_ib_dev *dev, struct mlx5_ib_mr *mr)
 		mr->sig = NULL;
 	}
 
-<<<<<<< HEAD
 	if (!allocated_from_cache) {
 		destroy_mkey(dev, mr);
 		mlx5_free_priv_descs(mr);
@@ -1871,25 +1618,6 @@ static int clean_mr(struct mlx5_ib_dev *dev, struct mlx5_ib_mr *mr)
 }
 
 static void dereg_mr(struct mlx5_ib_dev *dev, struct mlx5_ib_mr *mr)
-=======
-	mlx5_free_priv_descs(mr);
-
-	if (!allocated_from_cache) {
-		u32 key = mr->mmkey.key;
-
-		err = destroy_mkey(dev, mr);
-		if (err) {
-			mlx5_ib_warn(dev, "failed to destroy mkey 0x%x (%d)\n",
-				     key, err);
-			return err;
-		}
-	}
-
-	return 0;
-}
-
-static int dereg_mr(struct mlx5_ib_dev *dev, struct mlx5_ib_mr *mr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int npages = mr->npages;
 	struct ib_umem *umem = mr->umem;
@@ -1918,7 +1646,6 @@ static int dereg_mr(struct mlx5_ib_dev *dev, struct mlx5_ib_mr *mr)
 		umem = NULL;
 	}
 #endif
-<<<<<<< HEAD
 	clean_mr(dev, mr);
 
 	/*
@@ -1926,40 +1653,18 @@ static int dereg_mr(struct mlx5_ib_dev *dev, struct mlx5_ib_mr *mr)
 	 * remove the DMA mapping.
 	 */
 	mlx5_mr_cache_free(dev, mr);
-=======
-
-	clean_mr(dev, mr);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (umem) {
 		ib_umem_release(umem);
 		atomic_sub(npages, &dev->mdev->priv.reg_pages);
 	}
-<<<<<<< HEAD
 	if (!mr->allocated_from_cache)
 		kfree(mr);
-=======
-
-	if (!mr->allocated_from_cache)
-		kfree(mr);
-	else
-		mlx5_mr_cache_free(dev, mr);
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int mlx5_ib_dereg_mr(struct ib_mr *ibmr)
 {
-<<<<<<< HEAD
 	dereg_mr(to_mdev(ibmr->device), to_mmr(ibmr));
 	return 0;
-=======
-	struct mlx5_ib_dev *dev = to_mdev(ibmr->device);
-	struct mlx5_ib_mr *mr = to_mmr(ibmr);
-
-	return dereg_mr(dev, mr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 struct ib_mr *mlx5_ib_alloc_mr(struct ib_pd *pd,
@@ -2040,12 +1745,8 @@ struct ib_mr *mlx5_ib_alloc_mr(struct ib_pd *pd,
 		goto err_free_in;
 	}
 
-<<<<<<< HEAD
 	MLX5_SET(mkc, mkc, access_mode_1_0, mr->access_mode & 0x3);
 	MLX5_SET(mkc, mkc, access_mode_4_2, (mr->access_mode >> 2) & 0x7);
-=======
-	MLX5_SET(mkc, mkc, access_mode, mr->access_mode);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MLX5_SET(mkc, mkc, umr_en, 1);
 
 	mr->ibmr.device = pd->device;
@@ -2126,11 +1827,7 @@ struct ib_mw *mlx5_ib_alloc_mw(struct ib_pd *pd, enum ib_mw_type type,
 	MLX5_SET(mkc, mkc, pd, to_mpd(pd)->pdn);
 	MLX5_SET(mkc, mkc, umr_en, 1);
 	MLX5_SET(mkc, mkc, lr, 1);
-<<<<<<< HEAD
 	MLX5_SET(mkc, mkc, access_mode_1_0, MLX5_MKC_ACCESS_MODE_KLMS);
-=======
-	MLX5_SET(mkc, mkc, access_mode, MLX5_MKC_ACCESS_MODE_KLMS);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MLX5_SET(mkc, mkc, en_rinval, !!((type == IB_MW_TYPE_2)));
 	MLX5_SET(mkc, mkc, qpn, 0xffffff);
 

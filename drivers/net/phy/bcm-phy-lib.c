@@ -346,13 +346,6 @@ void bcm_phy_get_strings(struct phy_device *phydev, u8 *data)
 }
 EXPORT_SYMBOL_GPL(bcm_phy_get_strings);
 
-<<<<<<< HEAD
-=======
-#ifndef UINT64_MAX
-#define UINT64_MAX              (u64)(~((u64)0))
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Caller is supposed to provide appropriate storage for the library code to
  * access the shadow copy
  */
@@ -365,11 +358,7 @@ static u64 bcm_phy_get_stat(struct phy_device *phydev, u64 *shadow,
 
 	val = phy_read(phydev, stat.reg);
 	if (val < 0) {
-<<<<<<< HEAD
 		ret = U64_MAX;
-=======
-		ret = UINT64_MAX;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		val >>= stat.shift;
 		val = val & ((1 << stat.bits) - 1);

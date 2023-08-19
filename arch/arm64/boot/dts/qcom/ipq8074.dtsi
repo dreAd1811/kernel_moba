@@ -24,11 +24,7 @@
 		ranges = <0 0 0 0xffffffff>;
 		compatible = "simple-bus";
 
-<<<<<<< HEAD
 		tlmm: pinctrl@1000000 {
-=======
-		pinctrl@1000000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "qcom,ipq8074-pinctrl";
 			reg = <0x1000000 0x300000>;
 			interrupts = <GIC_SPI 208 IRQ_TYPE_LEVEL_HIGH>;
@@ -36,7 +32,6 @@
 			#gpio-cells = <0x2>;
 			interrupt-controller;
 			#interrupt-cells = <0x2>;
-<<<<<<< HEAD
 
 			serial_4_pins: serial4-pinmux {
 				pins = "gpio23", "gpio24";
@@ -76,8 +71,6 @@
 				drive-strength = <8>;
 				bias-disable;
 			};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		intc: interrupt-controller@b000000 {
@@ -168,7 +161,6 @@
 			clocks = <&gcc GCC_BLSP1_UART5_APPS_CLK>,
 				 <&gcc GCC_BLSP1_AHB_CLK>;
 			clock-names = "core", "iface";
-<<<<<<< HEAD
 			pinctrl-0 = <&serial_4_pins>;
 			pinctrl-names = "default";
 			status = "disabled";
@@ -439,8 +431,6 @@
 				      "axi_s",
 				      "ahb",
 				      "axi_m_sticky";
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 	};
@@ -494,11 +484,7 @@
 
 	pmu {
 		compatible = "arm,armv8-pmuv3";
-<<<<<<< HEAD
 		interrupts = <GIC_PPI 7 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_HIGH)>;
-=======
-		interrupts = <GIC_PPI 7 GIC_CPU_MASK_SIMPLE(4)>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	clocks {

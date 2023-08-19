@@ -53,10 +53,6 @@ static const struct cpg_core_clk r8a7792_core_clks[] __initconst = {
 	DEF_FIXED(".pll1_div2", CLK_PLL1_DIV2, CLK_PLL1, 2, 1),
 
 	/* Core Clock Outputs */
-<<<<<<< HEAD
-=======
-	DEF_BASE("lb",   R8A7792_CLK_LB,   CLK_TYPE_GEN2_LB,   CLK_PLL1),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DEF_BASE("qspi", R8A7792_CLK_QSPI, CLK_TYPE_GEN2_QSPI, CLK_PLL1_DIV2),
 
 	DEF_FIXED("z",      R8A7792_CLK_Z,     CLK_PLL0,          1, 1),
@@ -66,10 +62,7 @@ static const struct cpg_core_clk r8a7792_core_clks[] __initconst = {
 	DEF_FIXED("hp",     R8A7792_CLK_HP,    CLK_PLL1,         12, 1),
 	DEF_FIXED("i",      R8A7792_CLK_I,     CLK_PLL1,          3, 1),
 	DEF_FIXED("b",      R8A7792_CLK_B,     CLK_PLL1,         12, 1),
-<<<<<<< HEAD
 	DEF_FIXED("lb",     R8A7792_CLK_LB,    CLK_PLL1,         24, 1),
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DEF_FIXED("p",      R8A7792_CLK_P,     CLK_PLL1,         24, 1),
 	DEF_FIXED("cl",     R8A7792_CLK_CL,    CLK_PLL1,         48, 1),
 	DEF_FIXED("m2",     R8A7792_CLK_M2,    CLK_PLL1,          8, 1),
@@ -105,10 +98,7 @@ static const struct mssr_mod_clk r8a7792_mod_clks[] __initconst = {
 	DEF_MOD("tpu0",			 304,	R8A7792_CLK_CP),
 	DEF_MOD("sdhi0",		 314,	R8A7792_CLK_SD),
 	DEF_MOD("cmt1",			 329,	R8A7792_CLK_R),
-<<<<<<< HEAD
 	DEF_MOD("rwdt",			 402,	R8A7792_CLK_R),
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DEF_MOD("irqc",			 407,	R8A7792_CLK_CP),
 	DEF_MOD("intc-sys",		 408,	R8A7792_CLK_ZS),
 	DEF_MOD("audio-dmac0",		 502,	R8A7792_CLK_HP),
@@ -165,10 +155,7 @@ static const struct mssr_mod_clk r8a7792_mod_clks[] __initconst = {
 };
 
 static const unsigned int r8a7792_crit_mod_clks[] __initconst = {
-<<<<<<< HEAD
 	MOD_CLK_ID(402),	/* RWDT */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MOD_CLK_ID(408),	/* INTC-SYS (GIC) */
 };
 

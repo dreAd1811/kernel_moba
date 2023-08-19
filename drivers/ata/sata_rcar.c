@@ -17,11 +17,7 @@
 #include <linux/libata.h>
 #include <linux/of_device.h>
 #include <linux/platform_device.h>
-<<<<<<< HEAD
 #include <linux/pm_runtime.h>
-=======
-#include <linux/clk.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/err.h>
 
 #define DRV_NAME "sata_rcar"
@@ -113,11 +109,8 @@
 #define SATAINTMASK_ERRMSK		BIT(2)
 #define SATAINTMASK_ERRCRTMSK		BIT(1)
 #define SATAINTMASK_ATAMSK		BIT(0)
-<<<<<<< HEAD
 #define SATAINTMASK_ALL_GEN1		0x7ff
 #define SATAINTMASK_ALL_GEN2		0xfff
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define SATA_RCAR_INT_MASK		(SATAINTMASK_SERRMSK | \
 					 SATAINTMASK_ATAMSK)
@@ -155,20 +148,13 @@
 enum sata_rcar_type {
 	RCAR_GEN1_SATA,
 	RCAR_GEN2_SATA,
-<<<<<<< HEAD
 	RCAR_GEN3_SATA,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	RCAR_R8A7790_ES1_SATA,
 };
 
 struct sata_rcar_priv {
 	void __iomem *base;
-<<<<<<< HEAD
 	u32 sataint_mask;
-=======
-	struct clk *clk;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	enum sata_rcar_type type;
 };
 
@@ -242,11 +228,7 @@ static void sata_rcar_freeze(struct ata_port *ap)
 	struct sata_rcar_priv *priv = ap->host->private_data;
 
 	/* mask */
-<<<<<<< HEAD
 	iowrite32(priv->sataint_mask, priv->base + SATAINTMASK_REG);
-=======
-	iowrite32(0x7ff, priv->base + SATAINTMASK_REG);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ata_sff_freeze(ap);
 }
@@ -262,11 +244,7 @@ static void sata_rcar_thaw(struct ata_port *ap)
 	ata_sff_thaw(ap);
 
 	/* unmask */
-<<<<<<< HEAD
 	iowrite32(priv->sataint_mask & ~SATA_RCAR_INT_MASK, base + SATAINTMASK_REG);
-=======
-	iowrite32(0x7ff & ~SATA_RCAR_INT_MASK, base + SATAINTMASK_REG);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void sata_rcar_ioread16_rep(void __iomem *reg, void *buffer, int count)
@@ -760,11 +738,7 @@ static irqreturn_t sata_rcar_interrupt(int irq, void *dev_instance)
 	if (!sataintstat)
 		goto done;
 	/* ack */
-<<<<<<< HEAD
 	iowrite32(~sataintstat & priv->sataint_mask, base + SATAINTSTAT_REG);
-=======
-	iowrite32(~sataintstat & 0x7ff, base + SATAINTSTAT_REG);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ap = host->ports[0];
 
@@ -813,34 +787,11 @@ static void sata_rcar_setup_port(struct ata_host *host)
 	ioaddr->command_addr	= ioaddr->cmd_addr + (ATA_REG_CMD << 2);
 }
 
-<<<<<<< HEAD
 static void sata_rcar_init_module(struct sata_rcar_priv *priv)
 {
 	void __iomem *base = priv->base;
 	u32 val;
 
-=======
-static void sata_rcar_init_controller(struct ata_host *host)
-{
-	struct sata_rcar_priv *priv = host->private_data;
-	void __iomem *base = priv->base;
-	u32 val;
-
-	/* reset and setup phy */
-	switch (priv->type) {
-	case RCAR_GEN1_SATA:
-		sata_rcar_gen1_phy_init(priv);
-		break;
-	case RCAR_GEN2_SATA:
-	case RCAR_R8A7790_ES1_SATA:
-		sata_rcar_gen2_phy_init(priv);
-		break;
-	default:
-		dev_warn(host->dev, "SATA phy is not initialized\n");
-		break;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* SATA-IP reset state */
 	val = ioread32(base + ATAPI_CONTROL1_REG);
 	val |= ATAPI_CONTROL1_RESET;
@@ -860,17 +811,12 @@ static void sata_rcar_init_controller(struct ata_host *host)
 
 	/* ack and mask */
 	iowrite32(0, base + SATAINTSTAT_REG);
-<<<<<<< HEAD
 	iowrite32(priv->sataint_mask, base + SATAINTMASK_REG);
 
-=======
-	iowrite32(0x7ff, base + SATAINTMASK_REG);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* enable interrupts */
 	iowrite32(ATAPI_INT_ENABLE_SATAINT, base + ATAPI_INT_ENABLE_REG);
 }
 
-<<<<<<< HEAD
 static void sata_rcar_init_controller(struct ata_host *host)
 {
 	struct sata_rcar_priv *priv = host->private_data;
@@ -897,8 +843,6 @@ static void sata_rcar_init_controller(struct ata_host *host)
 	sata_rcar_init_module(priv);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct of_device_id sata_rcar_match[] = {
 	{
 		/* Deprecated by "renesas,sata-r8a7779" */
@@ -927,11 +871,7 @@ static const struct of_device_id sata_rcar_match[] = {
 	},
 	{
 		.compatible = "renesas,sata-r8a7795",
-<<<<<<< HEAD
 		.data = (void *)RCAR_GEN3_SATA
-=======
-		.data = (void *)RCAR_GEN2_SATA
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{
 		.compatible = "renesas,rcar-gen2-sata",
@@ -939,11 +879,7 @@ static const struct of_device_id sata_rcar_match[] = {
 	},
 	{
 		.compatible = "renesas,rcar-gen3-sata",
-<<<<<<< HEAD
 		.data = (void *)RCAR_GEN3_SATA
-=======
-		.data = (void *)RCAR_GEN2_SATA
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{ },
 };
@@ -951,11 +887,7 @@ MODULE_DEVICE_TABLE(of, sata_rcar_match);
 
 static int sata_rcar_probe(struct platform_device *pdev)
 {
-<<<<<<< HEAD
 	struct device *dev = &pdev->dev;
-=======
-	const struct of_device_id *of_id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ata_host *host;
 	struct sata_rcar_priv *priv;
 	struct resource *mem;
@@ -968,7 +900,6 @@ static int sata_rcar_probe(struct platform_device *pdev)
 	if (!irq)
 		return -EINVAL;
 
-<<<<<<< HEAD
 	priv = devm_kzalloc(dev, sizeof(struct sata_rcar_priv), GFP_KERNEL);
 	if (!priv)
 		return -ENOMEM;
@@ -985,49 +916,15 @@ static int sata_rcar_probe(struct platform_device *pdev)
 		dev_err(dev, "ata_host_alloc failed\n");
 		ret = -ENOMEM;
 		goto err_pm_put;
-=======
-	priv = devm_kzalloc(&pdev->dev, sizeof(struct sata_rcar_priv),
-			   GFP_KERNEL);
-	if (!priv)
-		return -ENOMEM;
-
-	of_id = of_match_device(sata_rcar_match, &pdev->dev);
-	if (!of_id)
-		return -ENODEV;
-
-	priv->type = (enum sata_rcar_type)of_id->data;
-	priv->clk = devm_clk_get(&pdev->dev, NULL);
-	if (IS_ERR(priv->clk)) {
-		dev_err(&pdev->dev, "failed to get access to sata clock\n");
-		return PTR_ERR(priv->clk);
-	}
-
-	ret = clk_prepare_enable(priv->clk);
-	if (ret)
-		return ret;
-
-	host = ata_host_alloc(&pdev->dev, 1);
-	if (!host) {
-		dev_err(&pdev->dev, "ata_host_alloc failed\n");
-		ret = -ENOMEM;
-		goto cleanup;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	host->private_data = priv;
 
 	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-<<<<<<< HEAD
 	priv->base = devm_ioremap_resource(dev, mem);
 	if (IS_ERR(priv->base)) {
 		ret = PTR_ERR(priv->base);
 		goto err_pm_put;
-=======
-	priv->base = devm_ioremap_resource(&pdev->dev, mem);
-	if (IS_ERR(priv->base)) {
-		ret = PTR_ERR(priv->base);
-		goto cleanup;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* setup port */
@@ -1041,16 +938,10 @@ static int sata_rcar_probe(struct platform_device *pdev)
 	if (!ret)
 		return 0;
 
-<<<<<<< HEAD
 err_pm_put:
 	pm_runtime_put(dev);
 err_pm_disable:
 	pm_runtime_disable(dev);
-=======
-cleanup:
-	clk_disable_unprepare(priv->clk);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -1066,16 +957,10 @@ static int sata_rcar_remove(struct platform_device *pdev)
 	iowrite32(0, base + ATAPI_INT_ENABLE_REG);
 	/* ack and mask */
 	iowrite32(0, base + SATAINTSTAT_REG);
-<<<<<<< HEAD
 	iowrite32(priv->sataint_mask, base + SATAINTMASK_REG);
 
 	pm_runtime_put(&pdev->dev);
 	pm_runtime_disable(&pdev->dev);
-=======
-	iowrite32(0x7ff, base + SATAINTMASK_REG);
-
-	clk_disable_unprepare(priv->clk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -1093,15 +978,9 @@ static int sata_rcar_suspend(struct device *dev)
 		/* disable interrupts */
 		iowrite32(0, base + ATAPI_INT_ENABLE_REG);
 		/* mask */
-<<<<<<< HEAD
 		iowrite32(priv->sataint_mask, base + SATAINTMASK_REG);
 
 		pm_runtime_put(dev);
-=======
-		iowrite32(0x7ff, base + SATAINTMASK_REG);
-
-		clk_disable_unprepare(priv->clk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return ret;
@@ -1114,7 +993,6 @@ static int sata_rcar_resume(struct device *dev)
 	void __iomem *base = priv->base;
 	int ret;
 
-<<<<<<< HEAD
 	ret = pm_runtime_get_sync(dev);
 	if (ret < 0)
 		return ret;
@@ -1130,17 +1008,6 @@ static int sata_rcar_resume(struct device *dev)
 		iowrite32(ATAPI_INT_ENABLE_SATAINT,
 			  base + ATAPI_INT_ENABLE_REG);
 	}
-=======
-	ret = clk_prepare_enable(priv->clk);
-	if (ret)
-		return ret;
-
-	/* ack and mask */
-	iowrite32(0, base + SATAINTSTAT_REG);
-	iowrite32(0x7ff, base + SATAINTMASK_REG);
-	/* enable interrupts */
-	iowrite32(ATAPI_INT_ENABLE_SATAINT, base + ATAPI_INT_ENABLE_REG);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ata_host_resume(host);
 
@@ -1150,18 +1017,10 @@ static int sata_rcar_resume(struct device *dev)
 static int sata_rcar_restore(struct device *dev)
 {
 	struct ata_host *host = dev_get_drvdata(dev);
-<<<<<<< HEAD
 	int ret;
 
 	ret = pm_runtime_get_sync(dev);
 	if (ret < 0)
-=======
-	struct sata_rcar_priv *priv = host->private_data;
-	int ret;
-
-	ret = clk_prepare_enable(priv->clk);
-	if (ret)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 
 	sata_rcar_setup_port(host);

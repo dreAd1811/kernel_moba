@@ -435,11 +435,7 @@ EXPORT_SYMBOL(il_send_cmd_pdu_async);
 
 /* default: IL_LED_BLINK(0) using blinking idx table */
 static int led_mode;
-<<<<<<< HEAD
 module_param(led_mode, int, 0444);
-=======
-module_param(led_mode, int, S_IRUGO);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_PARM_DESC(led_mode,
 		 "0=system default, " "1=On(RF On)/Off(RF Off), 2=blinking");
 
@@ -721,11 +717,7 @@ il_eeprom_init(struct il_priv *il)
 	u32 gp = _il_rd(il, CSR_EEPROM_GP);
 	int sz;
 	int ret;
-<<<<<<< HEAD
 	u16 addr;
-=======
-	int addr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* allocate eeprom */
 	sz = il->cfg->eeprom_size;
@@ -930,11 +922,7 @@ il_init_channel_map(struct il_priv *il)
 	D_EEPROM("Parsing data for %d channels.\n", il->channel_count);
 
 	il->channel_info =
-<<<<<<< HEAD
 	    kcalloc(il->channel_count, sizeof(struct il_channel_info),
-=======
-	    kzalloc(sizeof(struct il_channel_info) * il->channel_count,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    GFP_KERNEL);
 	if (!il->channel_info) {
 		IL_ERR("Could not allocate channel_info\n");
@@ -3053,15 +3041,9 @@ il_tx_queue_init(struct il_priv *il, u32 txq_id)
 	}
 
 	txq->meta =
-<<<<<<< HEAD
 	    kcalloc(actual_slots, sizeof(struct il_cmd_meta), GFP_KERNEL);
 	txq->cmd =
 	    kcalloc(actual_slots, sizeof(struct il_device_cmd *), GFP_KERNEL);
-=======
-	    kzalloc(sizeof(struct il_cmd_meta) * actual_slots, GFP_KERNEL);
-	txq->cmd =
-	    kzalloc(sizeof(struct il_device_cmd *) * actual_slots, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!txq->meta || !txq->cmd)
 		goto out_free_arrays;
@@ -3390,11 +3372,7 @@ MODULE_LICENSE("GPL");
  * default: bt_coex_active = true (BT_COEX_ENABLE)
  */
 static bool bt_coex_active = true;
-<<<<<<< HEAD
 module_param(bt_coex_active, bool, 0444);
-=======
-module_param(bt_coex_active, bool, S_IRUGO);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_PARM_DESC(bt_coex_active, "enable wifi/bluetooth co-exist");
 
 u32 il_debug_level;
@@ -3477,11 +3455,7 @@ il_init_geos(struct il_priv *il)
 	}
 
 	channels =
-<<<<<<< HEAD
 	    kcalloc(il->channel_count, sizeof(struct ieee80211_channel),
-=======
-	    kzalloc(sizeof(struct ieee80211_channel) * il->channel_count,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    GFP_KERNEL);
 	if (!channels)
 		return -ENOMEM;
@@ -4680,14 +4654,9 @@ il_alloc_txq_mem(struct il_priv *il)
 {
 	if (!il->txq)
 		il->txq =
-<<<<<<< HEAD
 		    kcalloc(il->cfg->num_of_queues,
 			    sizeof(struct il_tx_queue),
 			    GFP_KERNEL);
-=======
-		    kzalloc(sizeof(struct il_tx_queue) *
-			    il->cfg->num_of_queues, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!il->txq) {
 		IL_ERR("Not enough memory for txq\n");
 		return -ENOMEM;
@@ -4876,15 +4845,9 @@ il_check_stuck_queue(struct il_priv *il, int cnt)
  * we reset the firmware. If everything is fine just rearm the timer.
  */
 void
-<<<<<<< HEAD
 il_bg_watchdog(struct timer_list *t)
 {
 	struct il_priv *il = from_timer(il, t, watchdog);
-=======
-il_bg_watchdog(unsigned long data)
-{
-	struct il_priv *il = (struct il_priv *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int cnt;
 	unsigned long timeout;
 

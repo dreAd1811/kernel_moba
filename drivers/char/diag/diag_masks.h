@@ -1,18 +1,5 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
 /* Copyright (c) 2013-2015, 2017-2019 The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2013-2015, 2017-2019 The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #ifndef DIAG_MASKS_H
@@ -26,11 +13,8 @@ struct diag_log_mask_t {
 	uint32_t num_items_tools;
 	uint32_t range;
 	uint32_t range_tools;
-<<<<<<< HEAD
 	uint8_t id_valid;
 	uint32_t sub_id;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mutex lock;
 	uint8_t *ptr;
 };
@@ -46,11 +30,8 @@ struct diag_msg_mask_t {
 	uint32_t ssid_last_tools;
 	uint32_t range;
 	uint32_t range_tools;
-<<<<<<< HEAD
 	uint8_t id_valid;
 	uint32_t sub_id;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mutex lock;
 	uint32_t *ptr;
 };
@@ -158,13 +139,10 @@ struct diag_log_mask_userspace_t {
 #define MSG_MASK_CTRL_HEADER_LEN	11
 #define EVENT_MASK_CTRL_HEADER_LEN	7
 
-<<<<<<< HEAD
 #define LOG_MASK_CTRL_HEADER_LEN_SUB	18
 #define MSG_MASK_CTRL_HEADER_LEN_SUB	18
 #define EVENT_MASK_CTRL_HEADER_LEN_SUB	14
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define LOG_STATUS_SUCCESS	0
 #define LOG_STATUS_INVALID	1
 #define LOG_STATUS_FAIL		2
@@ -185,7 +163,6 @@ extern struct diag_mask_info msg_bt_mask;
 extern struct diag_mask_info log_mask;
 extern struct diag_mask_info event_mask;
 
-<<<<<<< HEAD
 #define MAX_SIM_NUM 2
 #define INVALID_INDEX -1
 #define LEGACY_MASK_CMD 0
@@ -293,8 +270,6 @@ struct diag_event_mask_req_sub_t {
 } __packed;
 
 int diag_check_subid_mask_index(uint32_t subid, int pid);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int diag_masks_init(void);
 void diag_masks_exit(void);
 int diag_log_mask_copy(struct diag_mask_info *dest,
@@ -311,11 +286,7 @@ int diag_process_apps_masks(unsigned char *buf, int len, int pid);
 void diag_send_updates_peripheral(uint8_t peripheral);
 
 extern int diag_create_msg_mask_table_entry(struct diag_msg_mask_t *msg_mask,
-<<<<<<< HEAD
 			struct diag_ssid_range_t *range, int subid_index);
-=======
-					    struct diag_ssid_range_t *range);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern int diag_copy_to_user_msg_mask(char __user *buf, size_t count,
 				      struct diag_md_session_t *info);
 extern int diag_copy_to_user_log_mask(char __user *buf, size_t count,

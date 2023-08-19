@@ -32,11 +32,7 @@
 #include <linux/apm-emulation.h>
 #include <linux/i2c.h>
 #include <linux/platform_data/pca953x.h>
-<<<<<<< HEAD
 #include <linux/platform_data/i2c-pxa.h>
-=======
-#include <linux/i2c/pxa-i2c.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/regulator/userspace-consumer.h>
 
 #include <asm/mach-types.h>
@@ -350,10 +346,6 @@ struct platform_nand_data em_x270_nand_platdata = {
 		.chip_delay = 20,
 	},
 	.ctrl = {
-<<<<<<< HEAD
-=======
-		.hwcontrol = 0,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.dev_ready = em_x270_nand_device_ready,
 		.select_chip = 0,
 		.cmd_ctrl = em_x270_nand_cmd_ctl,

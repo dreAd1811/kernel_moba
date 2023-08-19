@@ -793,15 +793,9 @@ struct fe_priv {
 	/* rx specific fields.
 	 * Locking: Within irq hander or disable_irq+spin_lock(&np->lock);
 	 */
-<<<<<<< HEAD
 	union ring_type get_rx, put_rx, last_rx;
 	struct nv_skb_map *get_rx_ctx, *put_rx_ctx;
 	struct nv_skb_map *last_rx_ctx;
-=======
-	union ring_type get_rx, put_rx, first_rx, last_rx;
-	struct nv_skb_map *get_rx_ctx, *put_rx_ctx;
-	struct nv_skb_map *first_rx_ctx, *last_rx_ctx;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct nv_skb_map *rx_skb;
 
 	union ring_type rx_ring;
@@ -828,15 +822,9 @@ struct fe_priv {
 	/*
 	 * tx specific fields.
 	 */
-<<<<<<< HEAD
 	union ring_type get_tx, put_tx, last_tx;
 	struct nv_skb_map *get_tx_ctx, *put_tx_ctx;
 	struct nv_skb_map *last_tx_ctx;
-=======
-	union ring_type get_tx, put_tx, first_tx, last_tx;
-	struct nv_skb_map *get_tx_ctx, *put_tx_ctx;
-	struct nv_skb_map *first_tx_ctx, *last_tx_ctx;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct nv_skb_map *tx_skb;
 
 	union ring_type tx_ring;
@@ -1036,7 +1024,6 @@ static void free_rings(struct net_device *dev)
 
 	if (!nv_optimized(np)) {
 		if (np->rx_ring.orig)
-<<<<<<< HEAD
 			dma_free_coherent(&np->pci_dev->dev,
 					  sizeof(struct ring_desc) *
 					  (np->rx_ring_size +
@@ -1049,14 +1036,6 @@ static void free_rings(struct net_device *dev)
 					  (np->rx_ring_size +
 					  np->tx_ring_size),
 					  np->rx_ring.ex, np->ring_addr);
-=======
-			pci_free_consistent(np->pci_dev, sizeof(struct ring_desc) * (np->rx_ring_size + np->tx_ring_size),
-					    np->rx_ring.orig, np->ring_addr);
-	} else {
-		if (np->rx_ring.ex)
-			pci_free_consistent(np->pci_dev, sizeof(struct ring_desc_ex) * (np->rx_ring_size + np->tx_ring_size),
-					    np->rx_ring.ex, np->ring_addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	kfree(np->rx_skb);
 	kfree(np->tx_skb);
@@ -1833,16 +1812,11 @@ static int nv_alloc_rx(struct net_device *dev)
 	struct ring_desc *less_rx;
 
 	less_rx = np->get_rx.orig;
-<<<<<<< HEAD
 	if (less_rx-- == np->rx_ring.orig)
-=======
-	if (less_rx-- == np->first_rx.orig)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		less_rx = np->last_rx.orig;
 
 	while (np->put_rx.orig != less_rx) {
 		struct sk_buff *skb = netdev_alloc_skb(dev, np->rx_buf_sz + NV_RX_ALLOC_PAD);
-<<<<<<< HEAD
 		if (likely(skb)) {
 			np->put_rx_ctx->skb = skb;
 			np->put_rx_ctx->dma = dma_map_single(&np->pci_dev->dev,
@@ -1851,16 +1825,6 @@ static int nv_alloc_rx(struct net_device *dev)
 							     DMA_FROM_DEVICE);
 			if (unlikely(dma_mapping_error(&np->pci_dev->dev,
 						       np->put_rx_ctx->dma))) {
-=======
-		if (skb) {
-			np->put_rx_ctx->skb = skb;
-			np->put_rx_ctx->dma = pci_map_single(np->pci_dev,
-							     skb->data,
-							     skb_tailroom(skb),
-							     PCI_DMA_FROMDEVICE);
-			if (pci_dma_mapping_error(np->pci_dev,
-						  np->put_rx_ctx->dma)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				kfree_skb(skb);
 				goto packet_dropped;
 			}
@@ -1869,15 +1833,9 @@ static int nv_alloc_rx(struct net_device *dev)
 			wmb();
 			np->put_rx.orig->flaglen = cpu_to_le32(np->rx_buf_sz | NV_RX_AVAIL);
 			if (unlikely(np->put_rx.orig++ == np->last_rx.orig))
-<<<<<<< HEAD
 				np->put_rx.orig = np->rx_ring.orig;
 			if (unlikely(np->put_rx_ctx++ == np->last_rx_ctx))
 				np->put_rx_ctx = np->rx_skb;
-=======
-				np->put_rx.orig = np->first_rx.orig;
-			if (unlikely(np->put_rx_ctx++ == np->last_rx_ctx))
-				np->put_rx_ctx = np->first_rx_ctx;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else {
 packet_dropped:
 			u64_stats_update_begin(&np->swstats_rx_syncp);
@@ -1895,16 +1853,11 @@ static int nv_alloc_rx_optimized(struct net_device *dev)
 	struct ring_desc_ex *less_rx;
 
 	less_rx = np->get_rx.ex;
-<<<<<<< HEAD
 	if (less_rx-- == np->rx_ring.ex)
-=======
-	if (less_rx-- == np->first_rx.ex)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		less_rx = np->last_rx.ex;
 
 	while (np->put_rx.ex != less_rx) {
 		struct sk_buff *skb = netdev_alloc_skb(dev, np->rx_buf_sz + NV_RX_ALLOC_PAD);
-<<<<<<< HEAD
 		if (likely(skb)) {
 			np->put_rx_ctx->skb = skb;
 			np->put_rx_ctx->dma = dma_map_single(&np->pci_dev->dev,
@@ -1913,16 +1866,6 @@ static int nv_alloc_rx_optimized(struct net_device *dev)
 							     DMA_FROM_DEVICE);
 			if (unlikely(dma_mapping_error(&np->pci_dev->dev,
 						       np->put_rx_ctx->dma))) {
-=======
-		if (skb) {
-			np->put_rx_ctx->skb = skb;
-			np->put_rx_ctx->dma = pci_map_single(np->pci_dev,
-							     skb->data,
-							     skb_tailroom(skb),
-							     PCI_DMA_FROMDEVICE);
-			if (pci_dma_mapping_error(np->pci_dev,
-						  np->put_rx_ctx->dma)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				kfree_skb(skb);
 				goto packet_dropped;
 			}
@@ -1932,15 +1875,9 @@ static int nv_alloc_rx_optimized(struct net_device *dev)
 			wmb();
 			np->put_rx.ex->flaglen = cpu_to_le32(np->rx_buf_sz | NV_RX2_AVAIL);
 			if (unlikely(np->put_rx.ex++ == np->last_rx.ex))
-<<<<<<< HEAD
 				np->put_rx.ex = np->rx_ring.ex;
 			if (unlikely(np->put_rx_ctx++ == np->last_rx_ctx))
 				np->put_rx_ctx = np->rx_skb;
-=======
-				np->put_rx.ex = np->first_rx.ex;
-			if (unlikely(np->put_rx_ctx++ == np->last_rx_ctx))
-				np->put_rx_ctx = np->first_rx_ctx;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else {
 packet_dropped:
 			u64_stats_update_begin(&np->swstats_rx_syncp);
@@ -1953,16 +1890,9 @@ packet_dropped:
 }
 
 /* If rx bufs are exhausted called after 50ms to attempt to refresh */
-<<<<<<< HEAD
 static void nv_do_rx_refill(struct timer_list *t)
 {
 	struct fe_priv *np = from_timer(np, t, oom_kick);
-=======
-static void nv_do_rx_refill(unsigned long data)
-{
-	struct net_device *dev = (struct net_device *) data;
-	struct fe_priv *np = netdev_priv(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Just reschedule NAPI rx processing */
 	napi_schedule(&np->napi);
@@ -1973,23 +1903,15 @@ static void nv_init_rx(struct net_device *dev)
 	struct fe_priv *np = netdev_priv(dev);
 	int i;
 
-<<<<<<< HEAD
 	np->get_rx = np->rx_ring;
 	np->put_rx = np->rx_ring;
-=======
-	np->get_rx = np->put_rx = np->first_rx = np->rx_ring;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!nv_optimized(np))
 		np->last_rx.orig = &np->rx_ring.orig[np->rx_ring_size-1];
 	else
 		np->last_rx.ex = &np->rx_ring.ex[np->rx_ring_size-1];
-<<<<<<< HEAD
 	np->get_rx_ctx = np->rx_skb;
 	np->put_rx_ctx = np->rx_skb;
-=======
-	np->get_rx_ctx = np->put_rx_ctx = np->first_rx_ctx = np->rx_skb;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	np->last_rx_ctx = &np->rx_skb[np->rx_ring_size-1];
 
 	for (i = 0; i < np->rx_ring_size; i++) {
@@ -2012,23 +1934,15 @@ static void nv_init_tx(struct net_device *dev)
 	struct fe_priv *np = netdev_priv(dev);
 	int i;
 
-<<<<<<< HEAD
 	np->get_tx = np->tx_ring;
 	np->put_tx = np->tx_ring;
-=======
-	np->get_tx = np->put_tx = np->first_tx = np->tx_ring;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!nv_optimized(np))
 		np->last_tx.orig = &np->tx_ring.orig[np->tx_ring_size-1];
 	else
 		np->last_tx.ex = &np->tx_ring.ex[np->tx_ring_size-1];
-<<<<<<< HEAD
 	np->get_tx_ctx = np->tx_skb;
 	np->put_tx_ctx = np->tx_skb;
-=======
-	np->get_tx_ctx = np->put_tx_ctx = np->first_tx_ctx = np->tx_skb;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	np->last_tx_ctx = &np->tx_skb[np->tx_ring_size-1];
 	netdev_reset_queue(np->dev);
 	np->tx_pkts_in_progress = 0;
@@ -2072,7 +1986,6 @@ static void nv_unmap_txskb(struct fe_priv *np, struct nv_skb_map *tx_skb)
 {
 	if (tx_skb->dma) {
 		if (tx_skb->dma_single)
-<<<<<<< HEAD
 			dma_unmap_single(&np->pci_dev->dev, tx_skb->dma,
 					 tx_skb->dma_len,
 					 DMA_TO_DEVICE);
@@ -2080,15 +1993,6 @@ static void nv_unmap_txskb(struct fe_priv *np, struct nv_skb_map *tx_skb)
 			dma_unmap_page(&np->pci_dev->dev, tx_skb->dma,
 				       tx_skb->dma_len,
 				       DMA_TO_DEVICE);
-=======
-			pci_unmap_single(np->pci_dev, tx_skb->dma,
-					 tx_skb->dma_len,
-					 PCI_DMA_TODEVICE);
-		else
-			pci_unmap_page(np->pci_dev, tx_skb->dma,
-				       tx_skb->dma_len,
-				       PCI_DMA_TODEVICE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		tx_skb->dma = 0;
 	}
 }
@@ -2152,17 +2056,10 @@ static void nv_drain_rx(struct net_device *dev)
 		}
 		wmb();
 		if (np->rx_skb[i].skb) {
-<<<<<<< HEAD
 			dma_unmap_single(&np->pci_dev->dev, np->rx_skb[i].dma,
 					 (skb_end_pointer(np->rx_skb[i].skb) -
 					 np->rx_skb[i].skb->data),
 					 DMA_FROM_DEVICE);
-=======
-			pci_unmap_single(np->pci_dev, np->rx_skb[i].dma,
-					 (skb_end_pointer(np->rx_skb[i].skb) -
-					  np->rx_skb[i].skb->data),
-					 PCI_DMA_FROMDEVICE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev_kfree_skb(np->rx_skb[i].skb);
 			np->rx_skb[i].skb = NULL;
 		}
@@ -2333,22 +2230,12 @@ static netdev_tx_t nv_start_xmit(struct sk_buff *skb, struct net_device *dev)
 
 	/* setup the header buffer */
 	do {
-<<<<<<< HEAD
 		bcnt = (size > NV_TX2_TSO_MAX_SIZE) ? NV_TX2_TSO_MAX_SIZE : size;
 		np->put_tx_ctx->dma = dma_map_single(&np->pci_dev->dev,
 						     skb->data + offset, bcnt,
 						     DMA_TO_DEVICE);
 		if (unlikely(dma_mapping_error(&np->pci_dev->dev,
 					       np->put_tx_ctx->dma))) {
-=======
-		prev_tx = put_tx;
-		prev_tx_ctx = np->put_tx_ctx;
-		bcnt = (size > NV_TX2_TSO_MAX_SIZE) ? NV_TX2_TSO_MAX_SIZE : size;
-		np->put_tx_ctx->dma = pci_map_single(np->pci_dev, skb->data + offset, bcnt,
-						PCI_DMA_TODEVICE);
-		if (pci_dma_mapping_error(np->pci_dev,
-					  np->put_tx_ctx->dma)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* on DMA mapping error - drop the packet */
 			dev_kfree_skb_any(skb);
 			u64_stats_update_begin(&np->swstats_tx_syncp);
@@ -2365,15 +2252,9 @@ static netdev_tx_t nv_start_xmit(struct sk_buff *skb, struct net_device *dev)
 		offset += bcnt;
 		size -= bcnt;
 		if (unlikely(put_tx++ == np->last_tx.orig))
-<<<<<<< HEAD
 			put_tx = np->tx_ring.orig;
 		if (unlikely(np->put_tx_ctx++ == np->last_tx_ctx))
 			np->put_tx_ctx = np->tx_skb;
-=======
-			put_tx = np->first_tx.orig;
-		if (unlikely(np->put_tx_ctx++ == np->last_tx_ctx))
-			np->put_tx_ctx = np->first_tx_ctx;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} while (size);
 
 	/* setup the fragments */
@@ -2383,11 +2264,6 @@ static netdev_tx_t nv_start_xmit(struct sk_buff *skb, struct net_device *dev)
 		offset = 0;
 
 		do {
-<<<<<<< HEAD
-=======
-			prev_tx = put_tx;
-			prev_tx_ctx = np->put_tx_ctx;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (!start_tx_ctx)
 				start_tx_ctx = tmp_tx_ctx = np->put_tx_ctx;
 
@@ -2397,22 +2273,14 @@ static netdev_tx_t nv_start_xmit(struct sk_buff *skb, struct net_device *dev)
 							frag, offset,
 							bcnt,
 							DMA_TO_DEVICE);
-<<<<<<< HEAD
 			if (unlikely(dma_mapping_error(&np->pci_dev->dev,
 						       np->put_tx_ctx->dma))) {
-=======
-			if (dma_mapping_error(&np->pci_dev->dev, np->put_tx_ctx->dma)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 				/* Unwind the mapped fragments */
 				do {
 					nv_unmap_txskb(np, start_tx_ctx);
 					if (unlikely(tmp_tx_ctx++ == np->last_tx_ctx))
-<<<<<<< HEAD
 						tmp_tx_ctx = np->tx_skb;
-=======
-						tmp_tx_ctx = np->first_tx_ctx;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				} while (tmp_tx_ctx != np->put_tx_ctx);
 				dev_kfree_skb_any(skb);
 				np->put_tx_ctx = start_tx_ctx;
@@ -2430,7 +2298,6 @@ static netdev_tx_t nv_start_xmit(struct sk_buff *skb, struct net_device *dev)
 			offset += bcnt;
 			frag_size -= bcnt;
 			if (unlikely(put_tx++ == np->last_tx.orig))
-<<<<<<< HEAD
 				put_tx = np->tx_ring.orig;
 			if (unlikely(np->put_tx_ctx++ == np->last_tx_ctx))
 				np->put_tx_ctx = np->tx_skb;
@@ -2447,14 +2314,6 @@ static netdev_tx_t nv_start_xmit(struct sk_buff *skb, struct net_device *dev)
 	else
 		prev_tx_ctx = np->put_tx_ctx - 1;
 
-=======
-				put_tx = np->first_tx.orig;
-			if (unlikely(np->put_tx_ctx++ == np->last_tx_ctx))
-				np->put_tx_ctx = np->first_tx_ctx;
-		} while (frag_size);
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* set last fragment flag  */
 	prev_tx->flaglen |= cpu_to_le32(tx_flags_extra);
 
@@ -2528,22 +2387,12 @@ static netdev_tx_t nv_start_xmit_optimized(struct sk_buff *skb,
 
 	/* setup the header buffer */
 	do {
-<<<<<<< HEAD
 		bcnt = (size > NV_TX2_TSO_MAX_SIZE) ? NV_TX2_TSO_MAX_SIZE : size;
 		np->put_tx_ctx->dma = dma_map_single(&np->pci_dev->dev,
 						     skb->data + offset, bcnt,
 						     DMA_TO_DEVICE);
 		if (unlikely(dma_mapping_error(&np->pci_dev->dev,
 					       np->put_tx_ctx->dma))) {
-=======
-		prev_tx = put_tx;
-		prev_tx_ctx = np->put_tx_ctx;
-		bcnt = (size > NV_TX2_TSO_MAX_SIZE) ? NV_TX2_TSO_MAX_SIZE : size;
-		np->put_tx_ctx->dma = pci_map_single(np->pci_dev, skb->data + offset, bcnt,
-						PCI_DMA_TODEVICE);
-		if (pci_dma_mapping_error(np->pci_dev,
-					  np->put_tx_ctx->dma)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* on DMA mapping error - drop the packet */
 			dev_kfree_skb_any(skb);
 			u64_stats_update_begin(&np->swstats_tx_syncp);
@@ -2561,15 +2410,9 @@ static netdev_tx_t nv_start_xmit_optimized(struct sk_buff *skb,
 		offset += bcnt;
 		size -= bcnt;
 		if (unlikely(put_tx++ == np->last_tx.ex))
-<<<<<<< HEAD
 			put_tx = np->tx_ring.ex;
 		if (unlikely(np->put_tx_ctx++ == np->last_tx_ctx))
 			np->put_tx_ctx = np->tx_skb;
-=======
-			put_tx = np->first_tx.ex;
-		if (unlikely(np->put_tx_ctx++ == np->last_tx_ctx))
-			np->put_tx_ctx = np->first_tx_ctx;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} while (size);
 
 	/* setup the fragments */
@@ -2579,11 +2422,6 @@ static netdev_tx_t nv_start_xmit_optimized(struct sk_buff *skb,
 		offset = 0;
 
 		do {
-<<<<<<< HEAD
-=======
-			prev_tx = put_tx;
-			prev_tx_ctx = np->put_tx_ctx;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			bcnt = (frag_size > NV_TX2_TSO_MAX_SIZE) ? NV_TX2_TSO_MAX_SIZE : frag_size;
 			if (!start_tx_ctx)
 				start_tx_ctx = tmp_tx_ctx = np->put_tx_ctx;
@@ -2593,22 +2431,14 @@ static netdev_tx_t nv_start_xmit_optimized(struct sk_buff *skb,
 							bcnt,
 							DMA_TO_DEVICE);
 
-<<<<<<< HEAD
 			if (unlikely(dma_mapping_error(&np->pci_dev->dev,
 						       np->put_tx_ctx->dma))) {
-=======
-			if (dma_mapping_error(&np->pci_dev->dev, np->put_tx_ctx->dma)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 				/* Unwind the mapped fragments */
 				do {
 					nv_unmap_txskb(np, start_tx_ctx);
 					if (unlikely(tmp_tx_ctx++ == np->last_tx_ctx))
-<<<<<<< HEAD
 						tmp_tx_ctx = np->tx_skb;
-=======
-						tmp_tx_ctx = np->first_tx_ctx;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				} while (tmp_tx_ctx != np->put_tx_ctx);
 				dev_kfree_skb_any(skb);
 				np->put_tx_ctx = start_tx_ctx;
@@ -2626,7 +2456,6 @@ static netdev_tx_t nv_start_xmit_optimized(struct sk_buff *skb,
 			offset += bcnt;
 			frag_size -= bcnt;
 			if (unlikely(put_tx++ == np->last_tx.ex))
-<<<<<<< HEAD
 				put_tx = np->tx_ring.ex;
 			if (unlikely(np->put_tx_ctx++ == np->last_tx_ctx))
 				np->put_tx_ctx = np->tx_skb;
@@ -2643,14 +2472,6 @@ static netdev_tx_t nv_start_xmit_optimized(struct sk_buff *skb,
 	else
 		prev_tx_ctx = np->put_tx_ctx - 1;
 
-=======
-				put_tx = np->first_tx.ex;
-			if (unlikely(np->put_tx_ctx++ == np->last_tx_ctx))
-				np->put_tx_ctx = np->first_tx_ctx;
-		} while (frag_size);
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* set last fragment flag  */
 	prev_tx->flaglen |= cpu_to_le32(NV_TX2_LASTPACKET);
 
@@ -2746,11 +2567,7 @@ static int nv_tx_done(struct net_device *dev, int limit)
 
 		if (np->desc_ver == DESC_VER_1) {
 			if (flags & NV_TX_LASTPACKET) {
-<<<<<<< HEAD
 				if (unlikely(flags & NV_TX_ERROR)) {
-=======
-				if (flags & NV_TX_ERROR) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					if ((flags & NV_TX_RETRYERROR)
 					    && !(flags & NV_TX_RETRYCOUNT_MASK))
 						nv_legacybackoff_reseed(dev);
@@ -2767,11 +2584,7 @@ static int nv_tx_done(struct net_device *dev, int limit)
 			}
 		} else {
 			if (flags & NV_TX2_LASTPACKET) {
-<<<<<<< HEAD
 				if (unlikely(flags & NV_TX2_ERROR)) {
-=======
-				if (flags & NV_TX2_ERROR) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					if ((flags & NV_TX2_RETRYERROR)
 					    && !(flags & NV_TX2_RETRYCOUNT_MASK))
 						nv_legacybackoff_reseed(dev);
@@ -2788,15 +2601,9 @@ static int nv_tx_done(struct net_device *dev, int limit)
 			}
 		}
 		if (unlikely(np->get_tx.orig++ == np->last_tx.orig))
-<<<<<<< HEAD
 			np->get_tx.orig = np->tx_ring.orig;
 		if (unlikely(np->get_tx_ctx++ == np->last_tx_ctx))
 			np->get_tx_ctx = np->tx_skb;
-=======
-			np->get_tx.orig = np->first_tx.orig;
-		if (unlikely(np->get_tx_ctx++ == np->last_tx_ctx))
-			np->get_tx_ctx = np->first_tx_ctx;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	netdev_completed_queue(np->dev, tx_work, bytes_compl);
@@ -2823,11 +2630,7 @@ static int nv_tx_done_optimized(struct net_device *dev, int limit)
 		nv_unmap_txskb(np, np->get_tx_ctx);
 
 		if (flags & NV_TX2_LASTPACKET) {
-<<<<<<< HEAD
 			if (unlikely(flags & NV_TX2_ERROR)) {
-=======
-			if (flags & NV_TX2_ERROR) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				if ((flags & NV_TX2_RETRYERROR)
 				    && !(flags & NV_TX2_RETRYCOUNT_MASK)) {
 					if (np->driver_data & DEV_HAS_GEAR_MODE)
@@ -2852,15 +2655,9 @@ static int nv_tx_done_optimized(struct net_device *dev, int limit)
 		}
 
 		if (unlikely(np->get_tx.ex++ == np->last_tx.ex))
-<<<<<<< HEAD
 			np->get_tx.ex = np->tx_ring.ex;
 		if (unlikely(np->get_tx_ctx++ == np->last_tx_ctx))
 			np->get_tx_ctx = np->tx_skb;
-=======
-			np->get_tx.ex = np->first_tx.ex;
-		if (unlikely(np->get_tx_ctx++ == np->last_tx_ctx))
-			np->get_tx_ctx = np->first_tx_ctx;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	netdev_completed_queue(np->dev, tx_work, bytes_cleaned);
@@ -3038,15 +2835,9 @@ static int nv_rx_process(struct net_device *dev, int limit)
 		 * TODO: check if a prefetch of the first cacheline improves
 		 * the performance.
 		 */
-<<<<<<< HEAD
 		dma_unmap_single(&np->pci_dev->dev, np->get_rx_ctx->dma,
 				 np->get_rx_ctx->dma_len,
 				 DMA_FROM_DEVICE);
-=======
-		pci_unmap_single(np->pci_dev, np->get_rx_ctx->dma,
-				np->get_rx_ctx->dma_len,
-				PCI_DMA_FROMDEVICE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		skb = np->get_rx_ctx->skb;
 		np->get_rx_ctx->skb = NULL;
 
@@ -3122,15 +2913,9 @@ static int nv_rx_process(struct net_device *dev, int limit)
 		u64_stats_update_end(&np->swstats_rx_syncp);
 next_pkt:
 		if (unlikely(np->get_rx.orig++ == np->last_rx.orig))
-<<<<<<< HEAD
 			np->get_rx.orig = np->rx_ring.orig;
 		if (unlikely(np->get_rx_ctx++ == np->last_rx_ctx))
 			np->get_rx_ctx = np->rx_skb;
-=======
-			np->get_rx.orig = np->first_rx.orig;
-		if (unlikely(np->get_rx_ctx++ == np->last_rx_ctx))
-			np->get_rx_ctx = np->first_rx_ctx;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		rx_work++;
 	}
@@ -3156,15 +2941,9 @@ static int nv_rx_process_optimized(struct net_device *dev, int limit)
 		 * TODO: check if a prefetch of the first cacheline improves
 		 * the performance.
 		 */
-<<<<<<< HEAD
 		dma_unmap_single(&np->pci_dev->dev, np->get_rx_ctx->dma,
 				 np->get_rx_ctx->dma_len,
 				 DMA_FROM_DEVICE);
-=======
-		pci_unmap_single(np->pci_dev, np->get_rx_ctx->dma,
-				np->get_rx_ctx->dma_len,
-				PCI_DMA_FROMDEVICE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		skb = np->get_rx_ctx->skb;
 		np->get_rx_ctx->skb = NULL;
 
@@ -3223,15 +3002,9 @@ static int nv_rx_process_optimized(struct net_device *dev, int limit)
 		}
 next_pkt:
 		if (unlikely(np->get_rx.ex++ == np->last_rx.ex))
-<<<<<<< HEAD
 			np->get_rx.ex = np->rx_ring.ex;
 		if (unlikely(np->get_rx_ctx++ == np->last_rx_ctx))
 			np->get_rx_ctx = np->rx_skb;
-=======
-			np->get_rx.ex = np->first_rx.ex;
-		if (unlikely(np->get_rx_ctx++ == np->last_rx_ctx))
-			np->get_rx_ctx = np->first_rx_ctx;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		rx_work++;
 	}
@@ -4313,17 +4086,10 @@ static void nv_free_irq(struct net_device *dev)
 	}
 }
 
-<<<<<<< HEAD
 static void nv_do_nic_poll(struct timer_list *t)
 {
 	struct fe_priv *np = from_timer(np, t, nic_poll);
 	struct net_device *dev = np->dev;
-=======
-static void nv_do_nic_poll(unsigned long data)
-{
-	struct net_device *dev = (struct net_device *) data;
-	struct fe_priv *np = netdev_priv(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 __iomem *base = get_hwbase(dev);
 	u32 mask = 0;
 	unsigned long flags;
@@ -4431,7 +4197,6 @@ static void nv_do_nic_poll(unsigned long data)
 #ifdef CONFIG_NET_POLL_CONTROLLER
 static void nv_poll_controller(struct net_device *dev)
 {
-<<<<<<< HEAD
 	struct fe_priv *np = netdev_priv(dev);
 
 	nv_do_nic_poll(&np->nic_poll);
@@ -4444,18 +4209,6 @@ static void nv_do_stats_poll(struct timer_list *t)
 {
 	struct fe_priv *np = from_timer(np, t, stats_poll);
 	struct net_device *dev = np->dev;
-=======
-	nv_do_nic_poll((unsigned long) dev);
-}
-#endif
-
-static void nv_do_stats_poll(unsigned long data)
-	__acquires(&netdev_priv(dev)->hwstats_lock)
-	__releases(&netdev_priv(dev)->hwstats_lock)
-{
-	struct net_device *dev = (struct net_device *) data;
-	struct fe_priv *np = netdev_priv(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* If lock is currently taken, the stats are being refreshed
 	 * and hence fresh enough */
@@ -4865,7 +4618,6 @@ static int nv_set_ringparam(struct net_device *dev, struct ethtool_ringparam* ri
 
 	/* allocate new rings */
 	if (!nv_optimized(np)) {
-<<<<<<< HEAD
 		rxtx_ring = dma_alloc_coherent(&np->pci_dev->dev,
 					       sizeof(struct ring_desc) *
 					       (ring->rx_pending +
@@ -4882,23 +4634,10 @@ static int nv_set_ringparam(struct net_device *dev, struct ethtool_ringparam* ri
 				  GFP_KERNEL);
 	tx_skbuff = kmalloc_array(ring->tx_pending, sizeof(struct nv_skb_map),
 				  GFP_KERNEL);
-=======
-		rxtx_ring = pci_alloc_consistent(np->pci_dev,
-					    sizeof(struct ring_desc) * (ring->rx_pending + ring->tx_pending),
-					    &ring_addr);
-	} else {
-		rxtx_ring = pci_alloc_consistent(np->pci_dev,
-					    sizeof(struct ring_desc_ex) * (ring->rx_pending + ring->tx_pending),
-					    &ring_addr);
-	}
-	rx_skbuff = kmalloc(sizeof(struct nv_skb_map) * ring->rx_pending, GFP_KERNEL);
-	tx_skbuff = kmalloc(sizeof(struct nv_skb_map) * ring->tx_pending, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!rxtx_ring || !rx_skbuff || !tx_skbuff) {
 		/* fall back to old rings */
 		if (!nv_optimized(np)) {
 			if (rxtx_ring)
-<<<<<<< HEAD
 				dma_free_coherent(&np->pci_dev->dev,
 						  sizeof(struct ring_desc) *
 						  (ring->rx_pending +
@@ -4911,14 +4650,6 @@ static int nv_set_ringparam(struct net_device *dev, struct ethtool_ringparam* ri
 						  (ring->rx_pending +
 						  ring->tx_pending),
 						  rxtx_ring, ring_addr);
-=======
-				pci_free_consistent(np->pci_dev, sizeof(struct ring_desc) * (ring->rx_pending + ring->tx_pending),
-						    rxtx_ring, ring_addr);
-		} else {
-			if (rxtx_ring)
-				pci_free_consistent(np->pci_dev, sizeof(struct ring_desc_ex) * (ring->rx_pending + ring->tx_pending),
-						    rxtx_ring, ring_addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		kfree(rx_skbuff);
@@ -5378,19 +5109,11 @@ static int nv_loopback_test(struct net_device *dev)
 		ret = 0;
 		goto out;
 	}
-<<<<<<< HEAD
 	test_dma_addr = dma_map_single(&np->pci_dev->dev, tx_skb->data,
 				       skb_tailroom(tx_skb),
 				       DMA_FROM_DEVICE);
 	if (unlikely(dma_mapping_error(&np->pci_dev->dev,
 				       test_dma_addr))) {
-=======
-	test_dma_addr = pci_map_single(np->pci_dev, tx_skb->data,
-				       skb_tailroom(tx_skb),
-				       PCI_DMA_FROMDEVICE);
-	if (pci_dma_mapping_error(np->pci_dev,
-				  test_dma_addr)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_kfree_skb_any(tx_skb);
 		goto out;
 	}
@@ -5445,15 +5168,9 @@ static int nv_loopback_test(struct net_device *dev)
 		}
 	}
 
-<<<<<<< HEAD
 	dma_unmap_single(&np->pci_dev->dev, test_dma_addr,
 			 (skb_end_pointer(tx_skb) - tx_skb->data),
 			 DMA_TO_DEVICE);
-=======
-	pci_unmap_single(np->pci_dev, test_dma_addr,
-		       (skb_end_pointer(tx_skb) - tx_skb->data),
-		       PCI_DMA_TODEVICE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_kfree_skb_any(tx_skb);
  out:
 	/* stop engines */
@@ -5796,17 +5513,9 @@ static int nv_open(struct net_device *dev)
 	/* One manual link speed update: Interrupts are enabled, future link
 	 * speed changes cause interrupts and are handled by nv_link_irq().
 	 */
-<<<<<<< HEAD
 	readl(base + NvRegMIIStatus);
 	writel(NVREG_MIISTAT_MASK_ALL, base + NvRegMIIStatus);
 
-=======
-	{
-		u32 miistat;
-		miistat = readl(base + NvRegMIIStatus);
-		writel(NVREG_MIISTAT_MASK_ALL, base + NvRegMIIStatus);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* set linkspeed to invalid value, thus force nv_update_linkspeed
 	 * to init hw */
 	np->linkspeed = 0;
@@ -5955,16 +5664,9 @@ static int nv_probe(struct pci_dev *pci_dev, const struct pci_device_id *id)
 	u64_stats_init(&np->swstats_rx_syncp);
 	u64_stats_init(&np->swstats_tx_syncp);
 
-<<<<<<< HEAD
 	timer_setup(&np->oom_kick, nv_do_rx_refill, 0);
 	timer_setup(&np->nic_poll, nv_do_nic_poll, 0);
 	timer_setup(&np->stats_poll, nv_do_stats_poll, TIMER_DEFERRABLE);
-=======
-	setup_timer(&np->oom_kick, nv_do_rx_refill, (unsigned long)dev);
-	setup_timer(&np->nic_poll, nv_do_nic_poll, (unsigned long)dev);
-	setup_deferrable_timer(&np->stats_poll, nv_do_stats_poll,
-			       (unsigned long)dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = pci_enable_device(pci_dev);
 	if (err)
@@ -6070,33 +5772,21 @@ static int nv_probe(struct pci_dev *pci_dev, const struct pci_device_id *id)
 	np->tx_ring_size = TX_RING_DEFAULT;
 
 	if (!nv_optimized(np)) {
-<<<<<<< HEAD
 		np->rx_ring.orig = dma_alloc_coherent(&pci_dev->dev,
 						      sizeof(struct ring_desc) *
 						      (np->rx_ring_size +
 						      np->tx_ring_size),
 						      &np->ring_addr,
 						      GFP_KERNEL);
-=======
-		np->rx_ring.orig = pci_alloc_consistent(pci_dev,
-					sizeof(struct ring_desc) * (np->rx_ring_size + np->tx_ring_size),
-					&np->ring_addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!np->rx_ring.orig)
 			goto out_unmap;
 		np->tx_ring.orig = &np->rx_ring.orig[np->rx_ring_size];
 	} else {
-<<<<<<< HEAD
 		np->rx_ring.ex = dma_alloc_coherent(&pci_dev->dev,
 						    sizeof(struct ring_desc_ex) *
 						    (np->rx_ring_size +
 						    np->tx_ring_size),
 						    &np->ring_addr, GFP_KERNEL);
-=======
-		np->rx_ring.ex = pci_alloc_consistent(pci_dev,
-					sizeof(struct ring_desc_ex) * (np->rx_ring_size + np->tx_ring_size),
-					&np->ring_addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!np->rx_ring.ex)
 			goto out_unmap;
 		np->tx_ring.ex = &np->rx_ring.ex[np->rx_ring_size];

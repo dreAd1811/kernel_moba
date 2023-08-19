@@ -26,11 +26,7 @@
 			interrupt-names = "mc";
 		};
 
-<<<<<<< HEAD
 		davinci_emac: ethernet@5c000000 {
-=======
-		davinci_emac: ethernet@0x5c000000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "ti,am3517-emac";
 			ti,hwmods = "davinci_emac";
 			status = "disabled";
@@ -43,17 +39,11 @@
 			ti,davinci-ctrl-ram-size = <0x2000>;
 			ti,davinci-rmii-en = /bits/ 8 <1>;
 			local-mac-address = [ 00 00 00 00 00 00 ];
-<<<<<<< HEAD
 			clocks = <&emac_ick>;
 			clock-names = "ick";
 		};
 
 		davinci_mdio: ethernet@5c030000 {
-=======
-		};
-
-		davinci_mdio: ethernet@0x5c030000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "ti,davinci_mdio";
 			ti,hwmods = "davinci_mdio";
 			status = "disabled";
@@ -61,11 +51,8 @@
 			bus_freq = <1000000>;
 			#address-cells = <1>;
 			#size-cells = <0>;
-<<<<<<< HEAD
 			clocks = <&emac_fck>;
 			clock-names = "fck";
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		uart4: serial@4809e000 {
@@ -121,12 +108,5 @@
 	status = "disabled";
 };
 
-<<<<<<< HEAD
-=======
-&smartreflex_mpu_iva {
-	status = "disabled";
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /include/ "am35xx-clocks.dtsi"
 /include/ "omap36xx-am35xx-omap3430es2plus-clocks.dtsi"

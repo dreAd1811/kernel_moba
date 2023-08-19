@@ -98,7 +98,6 @@ static int compat_agpioc_reserve_wrap(struct agp_file_private *priv, void __user
 		if (ureserve.seg_count >= 16384)
 			return -EINVAL;
 
-<<<<<<< HEAD
 		usegment = kmalloc_array(ureserve.seg_count,
 					 sizeof(*usegment),
 					 GFP_KERNEL);
@@ -108,13 +107,6 @@ static int compat_agpioc_reserve_wrap(struct agp_file_private *priv, void __user
 		ksegment = kmalloc_array(kreserve.seg_count,
 					 sizeof(*ksegment),
 					 GFP_KERNEL);
-=======
-		usegment = kmalloc(sizeof(*usegment) * ureserve.seg_count, GFP_KERNEL);
-		if (!usegment)
-			return -ENOMEM;
-
-		ksegment = kmalloc(sizeof(*ksegment) * kreserve.seg_count, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!ksegment) {
 			kfree(usegment);
 			return -ENOMEM;

@@ -27,10 +27,7 @@
 #include <linux/of_dma.h>
 #include <linux/err.h>
 #include <linux/pm_runtime.h>
-<<<<<<< HEAD
 #include <linux/bug.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "dmaengine.h"
 #define PL330_MAX_CHAN		8
@@ -1053,25 +1050,16 @@ static bool _start(struct pl330_thread *thrd)
 
 		if (_state(thrd) == PL330_STATE_KILLING)
 			UNTIL(thrd, PL330_STATE_STOPPED)
-<<<<<<< HEAD
 		/* fall through */
 
 	case PL330_STATE_FAULTING:
 		_stop(thrd);
 		/* fall through */
-=======
-
-	case PL330_STATE_FAULTING:
-		_stop(thrd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	case PL330_STATE_KILLING:
 	case PL330_STATE_COMPLETING:
 		UNTIL(thrd, PL330_STATE_STOPPED)
-<<<<<<< HEAD
 		/* fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	case PL330_STATE_STOPPED:
 		return _trigger(thrd);
@@ -1114,7 +1102,6 @@ static inline int _ldst_memtomem(unsigned dry_run, u8 buf[],
 	return off;
 }
 
-<<<<<<< HEAD
 static u32 _emit_load(unsigned int dry_run, u8 buf[],
 	enum pl330_cond cond, enum dma_transfer_direction direction,
 	u8 peri)
@@ -1205,53 +1192,6 @@ static inline int _ldst_peripheral(struct pl330_dmac *pl330,
 			pxs->desc->peri);
 		off += _emit_store(dry_run, &buf[off], cond, pxs->desc->rqtype,
 			pxs->desc->peri);
-=======
-static inline int _ldst_devtomem(struct pl330_dmac *pl330, unsigned dry_run,
-				 u8 buf[], const struct _xfer_spec *pxs,
-				 int cyc)
-{
-	int off = 0;
-	enum pl330_cond cond;
-
-	if (pl330->quirks & PL330_QUIRK_BROKEN_NO_FLUSHP)
-		cond = BURST;
-	else
-		cond = SINGLE;
-
-	while (cyc--) {
-		off += _emit_WFP(dry_run, &buf[off], cond, pxs->desc->peri);
-		off += _emit_LDP(dry_run, &buf[off], cond, pxs->desc->peri);
-		off += _emit_ST(dry_run, &buf[off], ALWAYS);
-
-		if (!(pl330->quirks & PL330_QUIRK_BROKEN_NO_FLUSHP))
-			off += _emit_FLUSHP(dry_run, &buf[off],
-					    pxs->desc->peri);
-	}
-
-	return off;
-}
-
-static inline int _ldst_memtodev(struct pl330_dmac *pl330,
-				 unsigned dry_run, u8 buf[],
-				 const struct _xfer_spec *pxs, int cyc)
-{
-	int off = 0;
-	enum pl330_cond cond;
-
-	if (pl330->quirks & PL330_QUIRK_BROKEN_NO_FLUSHP)
-		cond = BURST;
-	else
-		cond = SINGLE;
-
-	while (cyc--) {
-		off += _emit_WFP(dry_run, &buf[off], cond, pxs->desc->peri);
-		off += _emit_LD(dry_run, &buf[off], ALWAYS);
-		off += _emit_STP(dry_run, &buf[off], cond, pxs->desc->peri);
-
-		if (!(pl330->quirks & PL330_QUIRK_BROKEN_NO_FLUSHP))
-			off += _emit_FLUSHP(dry_run, &buf[off],
-					    pxs->desc->peri);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return off;
@@ -1261,7 +1201,6 @@ static int _bursts(struct pl330_dmac *pl330, unsigned dry_run, u8 buf[],
 		const struct _xfer_spec *pxs, int cyc)
 {
 	int off = 0;
-<<<<<<< HEAD
 	enum pl330_cond cond = BRST_LEN(pxs->ccr) > 1 ? BURST : SINGLE;
 
 	switch (pxs->desc->rqtype) {
@@ -1321,21 +1260,6 @@ static int _dregs(struct pl330_dmac *pl330, unsigned int dry_run, u8 buf[],
 	default:
 		/* this code should be unreachable */
 		WARN_ON(1);
-=======
-
-	switch (pxs->desc->rqtype) {
-	case DMA_MEM_TO_DEV:
-		off += _ldst_memtodev(pl330, dry_run, &buf[off], pxs, cyc);
-		break;
-	case DMA_DEV_TO_MEM:
-		off += _ldst_devtomem(pl330, dry_run, &buf[off], pxs, cyc);
-		break;
-	case DMA_MEM_TO_MEM:
-		off += _ldst_memtomem(dry_run, &buf[off], pxs, cyc);
-		break;
-	default:
-		off += 0x40000000; /* Scare off the Client */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 
@@ -1431,11 +1355,8 @@ static inline int _setup_loops(struct pl330_dmac *pl330,
 	struct pl330_xfer *x = &pxs->desc->px;
 	u32 ccr = pxs->ccr;
 	unsigned long c, bursts = BYTE_TO_BURST(x->bytes, ccr);
-<<<<<<< HEAD
 	int num_dregs = (x->bytes - BURST_TO_BYTE(bursts, ccr)) /
 		BRST_SIZE(ccr);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int off = 0;
 
 	while (bursts) {
@@ -1443,10 +1364,7 @@ static inline int _setup_loops(struct pl330_dmac *pl330,
 		off += _loop(pl330, dry_run, &buf[off], &c, pxs);
 		bursts -= c;
 	}
-<<<<<<< HEAD
 	off += _dregs(pl330, dry_run, &buf[off], pxs, num_dregs);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return off;
 }
@@ -1478,10 +1396,6 @@ static int _setup_req(struct pl330_dmac *pl330, unsigned dry_run,
 		      struct _xfer_spec *pxs)
 {
 	struct _pl330_req *req = &thrd->req[index];
-<<<<<<< HEAD
-=======
-	struct pl330_xfer *x;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 *buf = req->mc_cpu;
 	int off = 0;
 
@@ -1490,14 +1404,6 @@ static int _setup_req(struct pl330_dmac *pl330, unsigned dry_run,
 	/* DMAMOV CCR, ccr */
 	off += _emit_MOV(dry_run, &buf[off], CCR, pxs->ccr);
 
-<<<<<<< HEAD
-=======
-	x = &pxs->desc->px;
-	/* Error if xfer length is not aligned at burst size */
-	if (x->bytes % (BRST_SIZE(pxs->ccr) * BRST_LEN(pxs->ccr)))
-		return -EINVAL;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	off += _setup_xfer(pl330, dry_run, &buf[off], pxs);
 
 	/* DMASEV peripheral/event */
@@ -1555,7 +1461,6 @@ static int pl330_submit_req(struct pl330_thread *thrd,
 	u32 ccr;
 	int ret = 0;
 
-<<<<<<< HEAD
 	switch (desc->rqtype) {
 	case DMA_MEM_TO_DEV:
 		break;
@@ -1570,8 +1475,6 @@ static int pl330_submit_req(struct pl330_thread *thrd,
 		return -ENOTSUPP;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (pl330->state == DYING
 		|| pl330->dmac_tbd.reset_chan & (1 << thrd->id)) {
 		dev_info(thrd->dmac->ddma.dev, "%s:%d\n",
@@ -1883,11 +1786,6 @@ static inline void _free_event(struct pl330_thread *thrd, int ev)
 
 static void pl330_release_channel(struct pl330_thread *thrd)
 {
-<<<<<<< HEAD
-=======
-	struct pl330_dmac *pl330;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!thrd || thrd->free)
 		return;
 
@@ -1896,11 +1794,6 @@ static void pl330_release_channel(struct pl330_thread *thrd)
 	dma_pl330_rqcb(thrd->req[1 - thrd->lstenq].desc, PL330_ERR_ABORT);
 	dma_pl330_rqcb(thrd->req[thrd->lstenq].desc, PL330_ERR_ABORT);
 
-<<<<<<< HEAD
-=======
-	pl330 = thrd->dmac;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	_free_event(thrd, thrd->ev);
 	thrd->free = true;
 }
@@ -1976,11 +1869,7 @@ static int dmac_alloc_threads(struct pl330_dmac *pl330)
 	int i;
 
 	/* Allocate 1 Manager and 'chans' Channel threads */
-<<<<<<< HEAD
 	pl330->channels = kcalloc(1 + chans, sizeof(*thrd),
-=======
-	pl330->channels = kzalloc((1 + chans) * sizeof(*thrd),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					GFP_KERNEL);
 	if (!pl330->channels)
 		return -ENOMEM;
@@ -2323,7 +2212,6 @@ static bool pl330_prep_slave_fifo(struct dma_pl330_chan *pch,
 	return true;
 }
 
-<<<<<<< HEAD
 static int fixup_burst_len(int max_burst_len, int quirks)
 {
 	if (quirks & PL330_QUIRK_BROKEN_NO_FLUSHP)
@@ -2336,8 +2224,6 @@ static int fixup_burst_len(int max_burst_len, int quirks)
 		return max_burst_len;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int pl330_config(struct dma_chan *chan,
 			struct dma_slave_config *slave_config)
 {
@@ -2349,25 +2235,15 @@ static int pl330_config(struct dma_chan *chan,
 			pch->fifo_addr = slave_config->dst_addr;
 		if (slave_config->dst_addr_width)
 			pch->burst_sz = __ffs(slave_config->dst_addr_width);
-<<<<<<< HEAD
 		pch->burst_len = fixup_burst_len(slave_config->dst_maxburst,
 			pch->dmac->quirks);
-=======
-		if (slave_config->dst_maxburst)
-			pch->burst_len = slave_config->dst_maxburst;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (slave_config->direction == DMA_DEV_TO_MEM) {
 		if (slave_config->src_addr)
 			pch->fifo_addr = slave_config->src_addr;
 		if (slave_config->src_addr_width)
 			pch->burst_sz = __ffs(slave_config->src_addr_width);
-<<<<<<< HEAD
 		pch->burst_len = fixup_burst_len(slave_config->src_maxburst,
 			pch->dmac->quirks);
-=======
-		if (slave_config->src_maxburst)
-			pch->burst_len = slave_config->src_maxburst;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -2635,12 +2511,8 @@ static inline void _init_desc(struct dma_pl330_desc *desc)
 }
 
 /* Returns the number of descriptors added to the DMAC pool */
-<<<<<<< HEAD
 static int add_desc(struct list_head *pool, spinlock_t *lock,
 		    gfp_t flg, int count)
-=======
-static int add_desc(struct pl330_dmac *pl330, gfp_t flg, int count)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct dma_pl330_desc *desc;
 	unsigned long flags;
@@ -2650,7 +2522,6 @@ static int add_desc(struct pl330_dmac *pl330, gfp_t flg, int count)
 	if (!desc)
 		return 0;
 
-<<<<<<< HEAD
 	spin_lock_irqsave(lock, flags);
 
 	for (i = 0; i < count; i++) {
@@ -2659,41 +2530,20 @@ static int add_desc(struct pl330_dmac *pl330, gfp_t flg, int count)
 	}
 
 	spin_unlock_irqrestore(lock, flags);
-=======
-	spin_lock_irqsave(&pl330->pool_lock, flags);
-
-	for (i = 0; i < count; i++) {
-		_init_desc(&desc[i]);
-		list_add_tail(&desc[i].node, &pl330->desc_pool);
-	}
-
-	spin_unlock_irqrestore(&pl330->pool_lock, flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return count;
 }
 
-<<<<<<< HEAD
 static struct dma_pl330_desc *pluck_desc(struct list_head *pool,
 					 spinlock_t *lock)
-=======
-static struct dma_pl330_desc *pluck_desc(struct pl330_dmac *pl330)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct dma_pl330_desc *desc = NULL;
 	unsigned long flags;
 
-<<<<<<< HEAD
 	spin_lock_irqsave(lock, flags);
 
 	if (!list_empty(pool)) {
 		desc = list_entry(pool->next,
-=======
-	spin_lock_irqsave(&pl330->pool_lock, flags);
-
-	if (!list_empty(&pl330->desc_pool)) {
-		desc = list_entry(pl330->desc_pool.next,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				struct dma_pl330_desc, node);
 
 		list_del_init(&desc->node);
@@ -2702,11 +2552,7 @@ static struct dma_pl330_desc *pluck_desc(struct pl330_dmac *pl330)
 		desc->txd.callback = NULL;
 	}
 
-<<<<<<< HEAD
 	spin_unlock_irqrestore(lock, flags);
-=======
-	spin_unlock_irqrestore(&pl330->pool_lock, flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return desc;
 }
@@ -2718,7 +2564,6 @@ static struct dma_pl330_desc *pl330_get_desc(struct dma_pl330_chan *pch)
 	struct dma_pl330_desc *desc;
 
 	/* Pluck one desc from the pool of DMAC */
-<<<<<<< HEAD
 	desc = pluck_desc(&pl330->desc_pool, &pl330->pool_lock);
 
 	/* If the DMAC pool is empty, alloc new */
@@ -2731,22 +2576,6 @@ static struct dma_pl330_desc *pl330_get_desc(struct dma_pl330_chan *pch)
 
 		desc = pluck_desc(&pool, &lock);
 		WARN_ON(!desc || !list_empty(&pool));
-=======
-	desc = pluck_desc(pl330);
-
-	/* If the DMAC pool is empty, alloc new */
-	if (!desc) {
-		if (!add_desc(pl330, GFP_ATOMIC, 1))
-			return NULL;
-
-		/* Try again */
-		desc = pluck_desc(pl330);
-		if (!desc) {
-			dev_err(pch->dmac->ddma.dev,
-				"%s:%d ALERT!\n", __func__, __LINE__);
-			return NULL;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Initialize the descriptor */
@@ -2809,19 +2638,8 @@ static inline int get_burst_len(struct dma_pl330_desc *desc, size_t len)
 	burst_len >>= desc->rqcfg.brst_size;
 
 	/* src/dst_burst_len can't be more than 16 */
-<<<<<<< HEAD
 	if (burst_len > PL330_MAX_BURST)
 		burst_len = PL330_MAX_BURST;
-=======
-	if (burst_len > 16)
-		burst_len = 16;
-
-	while (burst_len > 1) {
-		if (!(len % (burst_len << desc->rqcfg.brst_size)))
-			break;
-		burst_len--;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return burst_len;
 }
@@ -2893,11 +2711,7 @@ static struct dma_async_tx_descriptor *pl330_prep_dma_cyclic(
 
 		desc->rqtype = direction;
 		desc->rqcfg.brst_size = pch->burst_sz;
-<<<<<<< HEAD
 		desc->rqcfg.brst_len = pch->burst_len;
-=======
-		desc->rqcfg.brst_len = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		desc->bytes_requested = period_len;
 		fill_px(&desc->px, dst, src, period_len);
 
@@ -3042,11 +2856,7 @@ pl330_prep_slave_sg(struct dma_chan *chan, struct scatterlist *sgl,
 		}
 
 		desc->rqcfg.brst_size = pch->burst_sz;
-<<<<<<< HEAD
 		desc->rqcfg.brst_len = pch->burst_len;
-=======
-		desc->rqcfg.brst_len = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		desc->rqtype = direction;
 		desc->bytes_requested = sg_dma_len(sg);
 	}
@@ -3173,12 +2983,8 @@ pl330_probe(struct amba_device *adev, const struct amba_id *id)
 	spin_lock_init(&pl330->pool_lock);
 
 	/* Create a descriptor pool of default size */
-<<<<<<< HEAD
 	if (!add_desc(&pl330->desc_pool, &pl330->pool_lock,
 		      GFP_KERNEL, NR_DEFAULT_DESC))
-=======
-	if (!add_desc(pl330, GFP_KERNEL, NR_DEFAULT_DESC))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_warn(&adev->dev, "unable to allocate desc\n");
 
 	INIT_LIST_HEAD(&pd->channels);
@@ -3188,11 +2994,7 @@ pl330_probe(struct amba_device *adev, const struct amba_id *id)
 
 	pl330->num_peripherals = num_chan;
 
-<<<<<<< HEAD
 	pl330->peripherals = kcalloc(num_chan, sizeof(*pch), GFP_KERNEL);
-=======
-	pl330->peripherals = kzalloc(num_chan * sizeof(*pch), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!pl330->peripherals) {
 		ret = -ENOMEM;
 		goto probe_err2;

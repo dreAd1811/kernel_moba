@@ -264,10 +264,6 @@ static int init_fw_ctxt(struct hinic_hwdev *hwdev)
 	struct hinic_hwif *hwif = hwdev->hwif;
 	struct pci_dev *pdev = hwif->pdev;
 	struct hinic_cmd_fw_ctxt fw_ctxt;
-<<<<<<< HEAD
-=======
-	struct hinic_pfhwdev *pfhwdev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 out_size;
 	int err;
 
@@ -279,11 +275,6 @@ static int init_fw_ctxt(struct hinic_hwdev *hwdev)
 	fw_ctxt.func_idx = HINIC_HWIF_FUNC_IDX(hwif);
 	fw_ctxt.rx_buf_sz = HINIC_RX_BUF_SZ;
 
-<<<<<<< HEAD
-=======
-	pfhwdev = container_of(hwdev, struct hinic_pfhwdev, hwdev);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = hinic_port_msg_cmd(hwdev, HINIC_PORT_CMD_FWCTXT_INIT,
 				 &fw_ctxt, sizeof(fw_ctxt),
 				 &fw_ctxt, &out_size);
@@ -318,10 +309,6 @@ static int set_hw_ioctxt(struct hinic_hwdev *hwdev, unsigned int rq_depth,
 	}
 
 	hw_ioctxt.func_idx = HINIC_HWIF_FUNC_IDX(hwif);
-<<<<<<< HEAD
-=======
-	hw_ioctxt.ppf_idx = HINIC_HWIF_PPF_IDX(hwif);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	hw_ioctxt.set_cmdq_depth = HW_IOCTXT_SET_CMDQ_DEPTH_DEFAULT;
 	hw_ioctxt.cmdq_depth = 0;
@@ -382,7 +369,6 @@ static int wait_for_db_state(struct hinic_hwdev *hwdev)
 	return -EFAULT;
 }
 
-<<<<<<< HEAD
 static int wait_for_io_stopped(struct hinic_hwdev *hwdev)
 {
 	struct hinic_cmd_io_status cmd_io_status;
@@ -427,8 +413,6 @@ static int wait_for_io_stopped(struct hinic_hwdev *hwdev)
 	return -ETIMEDOUT;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * clear_io_resource - set the IO resources as not active in the NIC
  * @hwdev: the NIC HW device
@@ -448,16 +432,11 @@ static int clear_io_resources(struct hinic_hwdev *hwdev)
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 	err = wait_for_io_stopped(hwdev);
 	if (err) {
 		dev_err(&pdev->dev, "IO has not stopped yet\n");
 		return err;
 	}
-=======
-	/* sleep 100ms to wait for firmware stopping I/O */
-	msleep(100);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cmd_clear_io_res.func_idx = HINIC_HWIF_FUNC_IDX(hwif);
 

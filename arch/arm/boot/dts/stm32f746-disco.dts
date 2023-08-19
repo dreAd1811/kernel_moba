@@ -42,13 +42,9 @@
 
 /dts-v1/;
 #include "stm32f746.dtsi"
-<<<<<<< HEAD
 #include "stm32f746-pinctrl.dtsi"
 #include <dt-bindings/input/input.h>
 #include <dt-bindings/gpio/gpio.h>
-=======
-#include <dt-bindings/input/input.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 / {
 	model = "STMicroelectronics STM32F746-DISCO board";
@@ -67,7 +63,6 @@
 		serial0 = &usart1;
 	};
 
-<<<<<<< HEAD
 	usbotg_hs_phy: usb-phy {
 		#phy-cells = <0>;
 		compatible = "usb-nop-xceiv";
@@ -89,15 +84,12 @@
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &clk_hse {
 	clock-frequency = <25000000>;
 };
 
-<<<<<<< HEAD
 &i2c1 {
 	pinctrl-0 = <&i2c1_pins_b>;
 	pinctrl-names = "default";
@@ -117,14 +109,11 @@
 	bus-width = <4>;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &usart1 {
 	pinctrl-0 = <&usart1_pins_b>;
 	pinctrl-names = "default";
 	status = "okay";
 };
-<<<<<<< HEAD
 
 &usbotg_fs {
 	dr_mode = "host";
@@ -141,5 +130,3 @@
 	pinctrl-names = "default";
 	status = "okay";
 };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

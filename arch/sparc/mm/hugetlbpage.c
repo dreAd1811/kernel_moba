@@ -182,7 +182,6 @@ pte_t arch_make_huge_pte(pte_t entry, struct vm_area_struct *vma,
 			 struct page *page, int writeable)
 {
 	unsigned int shift = huge_page_shift(hstate_vma(vma));
-<<<<<<< HEAD
 	pte_t pte;
 
 	pte = hugepage_shift_to_tte(entry, shift);
@@ -197,10 +196,6 @@ pte_t arch_make_huge_pte(pte_t entry, struct vm_area_struct *vma,
 #else
 	return pte;
 #endif
-=======
-
-	return hugepage_shift_to_tte(entry, shift);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static unsigned int sun4v_huge_tte_to_shift(pte_t entry)
@@ -414,11 +409,7 @@ static void hugetlb_free_pte_range(struct mmu_gather *tlb, pmd_t *pmd,
 
 	pmd_clear(pmd);
 	pte_free_tlb(tlb, token, addr);
-<<<<<<< HEAD
 	mm_dec_nr_ptes(tlb->mm);
-=======
-	atomic_long_dec(&tlb->mm->nr_ptes);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void hugetlb_free_pmd_range(struct mmu_gather *tlb, pud_t *pud,
@@ -493,10 +484,7 @@ static void hugetlb_free_pud_range(struct mmu_gather *tlb, pgd_t *pgd,
 	pud = pud_offset(pgd, start);
 	pgd_clear(pgd);
 	pud_free_tlb(tlb, pud, start);
-<<<<<<< HEAD
 	mm_dec_nr_puds(tlb->mm);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void hugetlb_free_pgd_range(struct mmu_gather *tlb,

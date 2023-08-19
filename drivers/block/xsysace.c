@@ -770,15 +770,9 @@ static void ace_fsm_tasklet(unsigned long data)
 	spin_unlock_irqrestore(&ace->lock, flags);
 }
 
-<<<<<<< HEAD
 static void ace_stall_timer(struct timer_list *t)
 {
 	struct ace_device *ace = from_timer(ace, t, stall_timer);
-=======
-static void ace_stall_timer(unsigned long data)
-{
-	struct ace_device *ace = (void *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 
 	dev_warn(ace->dev,
@@ -990,11 +984,7 @@ static int ace_setup(struct ace_device *ace)
 	 * Initialize the state machine tasklet and stall timer
 	 */
 	tasklet_init(&ace->fsm_tasklet, ace_fsm_tasklet, (unsigned long)ace);
-<<<<<<< HEAD
 	timer_setup(&ace->stall_timer, ace_stall_timer, 0);
-=======
-	setup_timer(&ace->stall_timer, ace_stall_timer, (unsigned long)ace);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Initialize the request queue

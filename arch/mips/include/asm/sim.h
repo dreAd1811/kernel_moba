@@ -39,11 +39,6 @@ __asm__(								\
 	".end\t__" #symbol "\n\t"					\
 	".size\t__" #symbol",. - __" #symbol)
 
-<<<<<<< HEAD
-=======
-#define nabi_no_regargs
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_32BIT */
 
 #ifdef CONFIG_64BIT
@@ -70,19 +65,6 @@ __asm__(								\
 	".end\t__" #symbol "\n\t"					\
 	".size\t__" #symbol",. - __" #symbol)
 
-<<<<<<< HEAD
-=======
-#define nabi_no_regargs							\
-	unsigned long __dummy0,						\
-	unsigned long __dummy1,						\
-	unsigned long __dummy2,						\
-	unsigned long __dummy3,						\
-	unsigned long __dummy4,						\
-	unsigned long __dummy5,						\
-	unsigned long __dummy6,						\
-	unsigned long __dummy7,
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_64BIT */
 
 #endif /* _ASM_SIM_H */

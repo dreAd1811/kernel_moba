@@ -26,19 +26,11 @@
 #include <asm/irq.h>
 #include <linux/interrupt.h>
 
-<<<<<<< HEAD
 #include <media/dmxdev.h>
 #include <media/dvbdev.h>
 #include <media/dvb_demux.h>
 #include <media/dvb_frontend.h>
 #include <media/dvb_net.h>
-=======
-#include "dmxdev.h"
-#include "dvbdev.h"
-#include "dvb_demux.h"
-#include "dvb_frontend.h"
-#include "dvb_net.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "mantis_common.h"
 #include "hopper_vp3028.h"
@@ -80,11 +72,7 @@ static irqreturn_t hopper_irq_handler(int irq, void *dev_id)
 	struct mantis_ca *ca;
 
 	mantis = (struct mantis_pci *) dev_id;
-<<<<<<< HEAD
 	if (unlikely(!mantis)) {
-=======
-	if (unlikely(mantis == NULL)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dprintk(MANTIS_ERROR, 1, "Mantis == NULL");
 		return IRQ_NONE;
 	}
@@ -173,18 +161,10 @@ static int hopper_pci_probe(struct pci_dev *pdev,
 	struct mantis_pci_drvdata *drvdata;
 	struct mantis_pci *mantis;
 	struct mantis_hwconfig *config;
-<<<<<<< HEAD
 	int err;
 
 	mantis = kzalloc(sizeof(*mantis), GFP_KERNEL);
 	if (!mantis) {
-=======
-	int err = 0;
-
-	mantis = kzalloc(sizeof(struct mantis_pci), GFP_KERNEL);
-	if (mantis == NULL) {
-		printk(KERN_ERR "%s ERROR: Out of memory\n", __func__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = -ENOMEM;
 		goto fail0;
 	}

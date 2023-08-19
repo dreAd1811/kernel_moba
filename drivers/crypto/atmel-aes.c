@@ -36,10 +36,7 @@
 #include <crypto/scatterwalk.h>
 #include <crypto/algapi.h>
 #include <crypto/aes.h>
-<<<<<<< HEAD
 #include <crypto/gcm.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <crypto/xts.h>
 #include <crypto/internal/aead.h>
 #include <linux/platform_data/crypto-atmel.h>
@@ -80,19 +77,11 @@
 				 AES_FLAGS_ENCRYPT |		\
 				 AES_FLAGS_GTAGEN)
 
-<<<<<<< HEAD
-=======
-#define AES_FLAGS_INIT		BIT(2)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define AES_FLAGS_BUSY		BIT(3)
 #define AES_FLAGS_DUMP_REG	BIT(4)
 #define AES_FLAGS_OWN_SHA	BIT(5)
 
-<<<<<<< HEAD
 #define AES_FLAGS_PERSISTENT	AES_FLAGS_BUSY
-=======
-#define AES_FLAGS_PERSISTENT	(AES_FLAGS_INIT | AES_FLAGS_BUSY)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define ATMEL_AES_QUEUE_LENGTH	50
 
@@ -102,10 +91,7 @@
 struct atmel_aes_caps {
 	bool			has_dualbuff;
 	bool			has_cfb64;
-<<<<<<< HEAD
 	bool			has_ctr32;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool			has_gcm;
 	bool			has_xts;
 	bool			has_authenc;
@@ -124,10 +110,7 @@ struct atmel_aes_base_ctx {
 	int			keylen;
 	u32			key[AES_KEYSIZE_256 / sizeof(u32)];
 	u16			block_size;
-<<<<<<< HEAD
 	bool			is_aead;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct atmel_aes_ctx {
@@ -174,10 +157,7 @@ struct atmel_aes_authenc_ctx {
 
 struct atmel_aes_reqctx {
 	unsigned long		mode;
-<<<<<<< HEAD
 	u32			lastc[AES_BLOCK_SIZE / sizeof(u32)];
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #ifdef CONFIG_CRYPTO_DEV_ATMEL_AUTHENC
@@ -470,16 +450,8 @@ static int atmel_aes_hw_init(struct atmel_aes_dev *dd)
 	if (err)
 		return err;
 
-<<<<<<< HEAD
 	atmel_aes_write(dd, AES_CR, AES_CR_SWRST);
 	atmel_aes_write(dd, AES_MR, 0xE << AES_MR_CKEY_OFFSET);
-=======
-	if (!(dd->flags & AES_FLAGS_INIT)) {
-		atmel_aes_write(dd, AES_CR, AES_CR_SWRST);
-		atmel_aes_write(dd, AES_MR, 0xE << AES_MR_CKEY_OFFSET);
-		dd->flags |= AES_FLAGS_INIT;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -524,18 +496,13 @@ static void atmel_aes_authenc_complete(struct atmel_aes_dev *dd, int err);
 static inline int atmel_aes_complete(struct atmel_aes_dev *dd, int err)
 {
 #ifdef CONFIG_CRYPTO_DEV_ATMEL_AUTHENC
-<<<<<<< HEAD
 	if (dd->ctx->is_aead)
 		atmel_aes_authenc_complete(dd, err);
-=======
-	atmel_aes_authenc_complete(dd, err);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 	clk_disable(dd->iclk);
 	dd->flags &= ~AES_FLAGS_BUSY;
 
-<<<<<<< HEAD
 	if (!dd->ctx->is_aead) {
 		struct ablkcipher_request *req =
 			ablkcipher_request_cast(dd->areq);
@@ -557,8 +524,6 @@ static inline int atmel_aes_complete(struct atmel_aes_dev *dd, int err)
 		}
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dd->is_async)
 		dd->areq->complete(dd->areq, err);
 
@@ -1046,14 +1011,8 @@ static int atmel_aes_ctr_transfer(struct atmel_aes_dev *dd)
 	struct atmel_aes_ctr_ctx *ctx = atmel_aes_ctr_ctx_cast(dd->ctx);
 	struct ablkcipher_request *req = ablkcipher_request_cast(dd->areq);
 	struct scatterlist *src, *dst;
-<<<<<<< HEAD
 	u32 ctr, blocks;
 	size_t datalen;
-=======
-	size_t datalen;
-	u32 ctr;
-	u16 blocks, start, end;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool use_dma, fragmented = false;
 
 	/* Check for transfer completion. */
@@ -1065,7 +1024,6 @@ static int atmel_aes_ctr_transfer(struct atmel_aes_dev *dd)
 	datalen = req->nbytes - ctx->offset;
 	blocks = DIV_ROUND_UP(datalen, AES_BLOCK_SIZE);
 	ctr = be32_to_cpu(ctx->iv[3]);
-<<<<<<< HEAD
 	if (dd->caps.has_ctr32) {
 		/* Check 32bit counter overflow. */
 		u32 start = ctr;
@@ -1087,19 +1045,6 @@ static int atmel_aes_ctr_transfer(struct atmel_aes_dev *dd)
 			fragmented = true;
 		}
 	}
-=======
-
-	/* Check 16bit counter overflow. */
-	start = ctr & 0xffff;
-	end = start + blocks - 1;
-
-	if (blocks >> 16 || end < start) {
-		ctr |= 0xffff;
-		datalen = AES_BLOCK_SIZE * (0x10000 - start);
-		fragmented = true;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	use_dma = (datalen >= ATMEL_AES_DMA_THRESHOLD);
 
 	/* Jump to offset. */
@@ -1147,19 +1092,11 @@ static int atmel_aes_ctr_start(struct atmel_aes_dev *dd)
 
 static int atmel_aes_crypt(struct ablkcipher_request *req, unsigned long mode)
 {
-<<<<<<< HEAD
 	struct crypto_ablkcipher *ablkcipher = crypto_ablkcipher_reqtfm(req);
 	struct atmel_aes_base_ctx *ctx = crypto_ablkcipher_ctx(ablkcipher);
 	struct atmel_aes_reqctx *rctx;
 	struct atmel_aes_dev *dd;
 
-=======
-	struct atmel_aes_base_ctx *ctx;
-	struct atmel_aes_reqctx *rctx;
-	struct atmel_aes_dev *dd;
-
-	ctx = crypto_ablkcipher_ctx(crypto_ablkcipher_reqtfm(req));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (mode & AES_FLAGS_OPMODE_MASK) {
 	case AES_FLAGS_CFB8:
 		ctx->block_size = CFB8_BLOCK_SIZE;
@@ -1181,10 +1118,7 @@ static int atmel_aes_crypt(struct ablkcipher_request *req, unsigned long mode)
 		ctx->block_size = AES_BLOCK_SIZE;
 		break;
 	}
-<<<<<<< HEAD
 	ctx->is_aead = false;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dd = atmel_aes_find_dev(ctx);
 	if (!dd)
@@ -1193,7 +1127,6 @@ static int atmel_aes_crypt(struct ablkcipher_request *req, unsigned long mode)
 	rctx = ablkcipher_request_ctx(req);
 	rctx->mode = mode;
 
-<<<<<<< HEAD
 	if (!(mode & AES_FLAGS_ENCRYPT) && (req->src == req->dst)) {
 		int ivsize = crypto_ablkcipher_ivsize(ablkcipher);
 
@@ -1201,8 +1134,6 @@ static int atmel_aes_crypt(struct ablkcipher_request *req, unsigned long mode)
 			(req->nbytes - ivsize), ivsize, 0);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return atmel_aes_handle_queue(dd, &req->base);
 }
 
@@ -1334,13 +1265,6 @@ static int atmel_aes_ctr_cra_init(struct crypto_tfm *tfm)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-static void atmel_aes_cra_exit(struct crypto_tfm *tfm)
-{
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct crypto_alg aes_algs[] = {
 {
 	.cra_name		= "ecb(aes)",
@@ -1353,10 +1277,6 @@ static struct crypto_alg aes_algs[] = {
 	.cra_type		= &crypto_ablkcipher_type,
 	.cra_module		= THIS_MODULE,
 	.cra_init		= atmel_aes_cra_init,
-<<<<<<< HEAD
-=======
-	.cra_exit		= atmel_aes_cra_exit,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.cra_u.ablkcipher = {
 		.min_keysize	= AES_MIN_KEY_SIZE,
 		.max_keysize	= AES_MAX_KEY_SIZE,
@@ -1376,10 +1296,6 @@ static struct crypto_alg aes_algs[] = {
 	.cra_type		= &crypto_ablkcipher_type,
 	.cra_module		= THIS_MODULE,
 	.cra_init		= atmel_aes_cra_init,
-<<<<<<< HEAD
-=======
-	.cra_exit		= atmel_aes_cra_exit,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.cra_u.ablkcipher = {
 		.min_keysize	= AES_MIN_KEY_SIZE,
 		.max_keysize	= AES_MAX_KEY_SIZE,
@@ -1400,10 +1316,6 @@ static struct crypto_alg aes_algs[] = {
 	.cra_type		= &crypto_ablkcipher_type,
 	.cra_module		= THIS_MODULE,
 	.cra_init		= atmel_aes_cra_init,
-<<<<<<< HEAD
-=======
-	.cra_exit		= atmel_aes_cra_exit,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.cra_u.ablkcipher = {
 		.min_keysize	= AES_MIN_KEY_SIZE,
 		.max_keysize	= AES_MAX_KEY_SIZE,
@@ -1424,10 +1336,6 @@ static struct crypto_alg aes_algs[] = {
 	.cra_type		= &crypto_ablkcipher_type,
 	.cra_module		= THIS_MODULE,
 	.cra_init		= atmel_aes_cra_init,
-<<<<<<< HEAD
-=======
-	.cra_exit		= atmel_aes_cra_exit,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.cra_u.ablkcipher = {
 		.min_keysize	= AES_MIN_KEY_SIZE,
 		.max_keysize	= AES_MAX_KEY_SIZE,
@@ -1448,10 +1356,6 @@ static struct crypto_alg aes_algs[] = {
 	.cra_type		= &crypto_ablkcipher_type,
 	.cra_module		= THIS_MODULE,
 	.cra_init		= atmel_aes_cra_init,
-<<<<<<< HEAD
-=======
-	.cra_exit		= atmel_aes_cra_exit,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.cra_u.ablkcipher = {
 		.min_keysize	= AES_MIN_KEY_SIZE,
 		.max_keysize	= AES_MAX_KEY_SIZE,
@@ -1472,10 +1376,6 @@ static struct crypto_alg aes_algs[] = {
 	.cra_type		= &crypto_ablkcipher_type,
 	.cra_module		= THIS_MODULE,
 	.cra_init		= atmel_aes_cra_init,
-<<<<<<< HEAD
-=======
-	.cra_exit		= atmel_aes_cra_exit,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.cra_u.ablkcipher = {
 		.min_keysize	= AES_MIN_KEY_SIZE,
 		.max_keysize	= AES_MAX_KEY_SIZE,
@@ -1496,10 +1396,6 @@ static struct crypto_alg aes_algs[] = {
 	.cra_type		= &crypto_ablkcipher_type,
 	.cra_module		= THIS_MODULE,
 	.cra_init		= atmel_aes_cra_init,
-<<<<<<< HEAD
-=======
-	.cra_exit		= atmel_aes_cra_exit,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.cra_u.ablkcipher = {
 		.min_keysize	= AES_MIN_KEY_SIZE,
 		.max_keysize	= AES_MAX_KEY_SIZE,
@@ -1520,10 +1416,6 @@ static struct crypto_alg aes_algs[] = {
 	.cra_type		= &crypto_ablkcipher_type,
 	.cra_module		= THIS_MODULE,
 	.cra_init		= atmel_aes_ctr_cra_init,
-<<<<<<< HEAD
-=======
-	.cra_exit		= atmel_aes_cra_exit,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.cra_u.ablkcipher = {
 		.min_keysize	= AES_MIN_KEY_SIZE,
 		.max_keysize	= AES_MAX_KEY_SIZE,
@@ -1546,10 +1438,6 @@ static struct crypto_alg aes_cfb64_alg = {
 	.cra_type		= &crypto_ablkcipher_type,
 	.cra_module		= THIS_MODULE,
 	.cra_init		= atmel_aes_cra_init,
-<<<<<<< HEAD
-=======
-	.cra_exit		= atmel_aes_cra_exit,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.cra_u.ablkcipher = {
 		.min_keysize	= AES_MIN_KEY_SIZE,
 		.max_keysize	= AES_MAX_KEY_SIZE,
@@ -1660,11 +1548,7 @@ static int atmel_aes_gcm_start(struct atmel_aes_dev *dd)
 	if (err)
 		return atmel_aes_complete(dd, err);
 
-<<<<<<< HEAD
 	if (likely(ivsize == GCM_AES_IV_SIZE)) {
-=======
-	if (likely(ivsize == 12)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		memcpy(ctx->j0, iv, ivsize);
 		ctx->j0[3] = cpu_to_be32(1);
 		return atmel_aes_gcm_process(dd);
@@ -1871,10 +1755,7 @@ static int atmel_aes_gcm_crypt(struct aead_request *req,
 
 	ctx = crypto_aead_ctx(crypto_aead_reqtfm(req));
 	ctx->block_size = AES_BLOCK_SIZE;
-<<<<<<< HEAD
 	ctx->is_aead = true;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dd = atmel_aes_find_dev(ctx);
 	if (!dd)
@@ -1944,26 +1825,13 @@ static int atmel_aes_gcm_init(struct crypto_aead *tfm)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-static void atmel_aes_gcm_exit(struct crypto_aead *tfm)
-{
-
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct aead_alg aes_gcm_alg = {
 	.setkey		= atmel_aes_gcm_setkey,
 	.setauthsize	= atmel_aes_gcm_setauthsize,
 	.encrypt	= atmel_aes_gcm_encrypt,
 	.decrypt	= atmel_aes_gcm_decrypt,
 	.init		= atmel_aes_gcm_init,
-<<<<<<< HEAD
 	.ivsize		= GCM_AES_IV_SIZE,
-=======
-	.exit		= atmel_aes_gcm_exit,
-	.ivsize		= 12,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.maxauthsize	= AES_BLOCK_SIZE,
 
 	.base = {
@@ -2098,10 +1966,6 @@ static struct crypto_alg aes_xts_alg = {
 	.cra_type		= &crypto_ablkcipher_type,
 	.cra_module		= THIS_MODULE,
 	.cra_init		= atmel_aes_xts_cra_init,
-<<<<<<< HEAD
-=======
-	.cra_exit		= atmel_aes_cra_exit,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.cra_u.ablkcipher = {
 		.min_keysize	= 2 * AES_MIN_KEY_SIZE,
 		.max_keysize	= 2 * AES_MAX_KEY_SIZE,
@@ -2369,10 +2233,7 @@ static int atmel_aes_authenc_crypt(struct aead_request *req,
 
 	rctx->base.mode = mode;
 	ctx->block_size = AES_BLOCK_SIZE;
-<<<<<<< HEAD
 	ctx->is_aead = true;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dd = atmel_aes_find_dev(ctx);
 	if (!dd)
@@ -2532,10 +2393,6 @@ static int atmel_aes_dma_init(struct atmel_aes_dev *dd,
 			      struct crypto_platform_data *pdata)
 {
 	struct at_dma_slave *slave;
-<<<<<<< HEAD
-=======
-	int err = -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dma_cap_mask_t mask;
 
 	dma_cap_zero(mask);
@@ -2560,11 +2417,7 @@ err_dma_out:
 	dma_release_channel(dd->src.chan);
 err_dma_in:
 	dev_warn(dd->dev, "no DMA channel available\n");
-<<<<<<< HEAD
 	return -ENODEV;
-=======
-	return err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void atmel_aes_dma_cleanup(struct atmel_aes_dev *dd)
@@ -2693,10 +2546,7 @@ static void atmel_aes_get_cap(struct atmel_aes_dev *dd)
 {
 	dd->caps.has_dualbuff = 0;
 	dd->caps.has_cfb64 = 0;
-<<<<<<< HEAD
 	dd->caps.has_ctr32 = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dd->caps.has_gcm = 0;
 	dd->caps.has_xts = 0;
 	dd->caps.has_authenc = 0;
@@ -2707,10 +2557,7 @@ static void atmel_aes_get_cap(struct atmel_aes_dev *dd)
 	case 0x500:
 		dd->caps.has_dualbuff = 1;
 		dd->caps.has_cfb64 = 1;
-<<<<<<< HEAD
 		dd->caps.has_ctr32 = 1;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dd->caps.has_gcm = 1;
 		dd->caps.has_xts = 1;
 		dd->caps.has_authenc = 1;
@@ -2719,10 +2566,7 @@ static void atmel_aes_get_cap(struct atmel_aes_dev *dd)
 	case 0x200:
 		dd->caps.has_dualbuff = 1;
 		dd->caps.has_cfb64 = 1;
-<<<<<<< HEAD
 		dd->caps.has_ctr32 = 1;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dd->caps.has_gcm = 1;
 		dd->caps.max_burst_size = 4;
 		break;
@@ -2758,24 +2602,13 @@ static struct crypto_platform_data *atmel_aes_of_init(struct platform_device *pd
 	}
 
 	pdata = devm_kzalloc(&pdev->dev, sizeof(*pdata), GFP_KERNEL);
-<<<<<<< HEAD
 	if (!pdata)
 		return ERR_PTR(-ENOMEM);
-=======
-	if (!pdata) {
-		dev_err(&pdev->dev, "could not allocate memory for pdata\n");
-		return ERR_PTR(-ENOMEM);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pdata->dma_slave = devm_kzalloc(&pdev->dev,
 					sizeof(*(pdata->dma_slave)),
 					GFP_KERNEL);
 	if (!pdata->dma_slave) {
-<<<<<<< HEAD
-=======
-		dev_err(&pdev->dev, "could not allocate memory for dma_slave\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		devm_kfree(&pdev->dev, pdata);
 		return ERR_PTR(-ENOMEM);
 	}
@@ -2813,10 +2646,6 @@ static int atmel_aes_probe(struct platform_device *pdev)
 
 	aes_dd = devm_kzalloc(&pdev->dev, sizeof(*aes_dd), GFP_KERNEL);
 	if (aes_dd == NULL) {
-<<<<<<< HEAD
-=======
-		dev_err(dev, "unable to alloc data struct.\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = -ENOMEM;
 		goto aes_dd_err;
 	}
@@ -2835,11 +2664,6 @@ static int atmel_aes_probe(struct platform_device *pdev)
 
 	crypto_init_queue(&aes_dd->queue, ATMEL_AES_QUEUE_LENGTH);
 
-<<<<<<< HEAD
-=======
-	aes_dd->irq = -1;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Get the base address */
 	aes_res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 	if (!aes_res) {

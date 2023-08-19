@@ -73,11 +73,8 @@ static struct wcn36xx_cfg_val wcn36xx_cfg_vals[] = {
 	WCN36XX_CFG_VAL(TX_PWR_CTRL_ENABLE, 1),
 	WCN36XX_CFG_VAL(ENABLE_CLOSE_LOOP, 1),
 	WCN36XX_CFG_VAL(ENABLE_LPWR_IMG_TRANSITION, 0),
-<<<<<<< HEAD
 	WCN36XX_CFG_VAL(BTC_STATIC_LEN_LE_BT, 120000),
 	WCN36XX_CFG_VAL(BTC_STATIC_LEN_LE_WLAN, 30000),
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	WCN36XX_CFG_VAL(MAX_ASSOC_LIMIT, 10),
 	WCN36XX_CFG_VAL(ENABLE_MCC_ADAPTIVE_SCHEDULER, 0),
 };
@@ -253,33 +250,23 @@ static void wcn36xx_smd_set_sta_params(struct wcn36xx *wcn,
 
 static int wcn36xx_smd_send_and_wait(struct wcn36xx *wcn, size_t len)
 {
-<<<<<<< HEAD
 	int ret;
 	unsigned long start;
 	struct wcn36xx_hal_msg_header *hdr =
 		(struct wcn36xx_hal_msg_header *)wcn->hal_buf;
 	u16 req_type = hdr->msg_type;
 
-=======
-	int ret = 0;
-	unsigned long start;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wcn36xx_dbg_dump(WCN36XX_DBG_SMD_DUMP, "HAL >>> ", wcn->hal_buf, len);
 
 	init_completion(&wcn->hal_rsp_compl);
 	start = jiffies;
 	ret = rpmsg_send(wcn->smd_channel, wcn->hal_buf, len);
 	if (ret) {
-<<<<<<< HEAD
 		wcn36xx_err("HAL TX failed for req %d\n", req_type);
-=======
-		wcn36xx_err("HAL TX failed\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out;
 	}
 	if (wait_for_completion_timeout(&wcn->hal_rsp_compl,
 		msecs_to_jiffies(HAL_MSG_TIMEOUT)) <= 0) {
-<<<<<<< HEAD
 		wcn36xx_err("Timeout! No SMD response to req %d in %dms\n",
 			    req_type, HAL_MSG_TIMEOUT);
 		ret = -ETIME;
@@ -288,14 +275,6 @@ static int wcn36xx_smd_send_and_wait(struct wcn36xx *wcn, size_t len)
 	wcn36xx_dbg(WCN36XX_DBG_SMD,
 		    "SMD command (req %d, rsp %d) completed in %dms\n",
 		    req_type, hdr->msg_type,
-=======
-		wcn36xx_err("Timeout! No SMD response in %dms\n",
-			    HAL_MSG_TIMEOUT);
-		ret = -ETIME;
-		goto out;
-	}
-	wcn36xx_dbg(WCN36XX_DBG_SMD, "SMD command completed in %dms",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    jiffies_to_msecs(jiffies - start));
 out:
 	return ret;
@@ -319,7 +298,6 @@ static void init_hal_msg(struct wcn36xx_hal_msg_header *hdr,
 		msg_body.header.len = sizeof(msg_body);			\
 	} while (0)							\
 
-<<<<<<< HEAD
 #define INIT_HAL_PTT_MSG(p_msg_body, ppt_msg_len) \
 	do { \
 		memset(p_msg_body, 0, sizeof(*p_msg_body) + ppt_msg_len); \
@@ -328,23 +306,18 @@ static void init_hal_msg(struct wcn36xx_hal_msg_header *hdr,
 		p_msg_body->header.len = sizeof(*p_msg_body) + ppt_msg_len; \
 	} while (0)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define PREPARE_HAL_BUF(send_buf, msg_body) \
 	do {							\
 		memset(send_buf, 0, msg_body.header.len);	\
 		memcpy(send_buf, &msg_body, sizeof(msg_body));	\
 	} while (0)						\
 
-<<<<<<< HEAD
 #define PREPARE_HAL_PTT_MSG_BUF(send_buf, p_msg_body) \
 	do {							\
 		memset(send_buf, 0, p_msg_body->header.len); \
 		memcpy(send_buf, p_msg_body, p_msg_body->header.len); \
 	} while (0)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int wcn36xx_smd_rsp_status_check(void *buf, size_t len)
 {
 	struct wcn36xx_fw_msg_status_rsp *rsp;
@@ -456,7 +429,6 @@ static int wcn36xx_smd_start_rsp(struct wcn36xx *wcn, void *buf, size_t len)
 	wcn->fw_minor = rsp->start_rsp_params.version.minor;
 	wcn->fw_major = rsp->start_rsp_params.version.major;
 
-<<<<<<< HEAD
 	if (wcn->first_boot) {
 		wcn->first_boot = false;
 		wcn36xx_info("firmware WLAN version '%s' and CRM version '%s'\n",
@@ -468,28 +440,13 @@ static int wcn36xx_smd_start_rsp(struct wcn36xx *wcn, void *buf, size_t len)
 			     rsp->start_rsp_params.stations,
 			     rsp->start_rsp_params.bssids);
 	}
-=======
-	wcn36xx_info("firmware WLAN version '%s' and CRM version '%s'\n",
-		     wcn->wlan_version, wcn->crm_version);
-
-	wcn36xx_info("firmware API %u.%u.%u.%u, %u stations, %u bssids\n",
-		     wcn->fw_major, wcn->fw_minor,
-		     wcn->fw_version, wcn->fw_revision,
-		     rsp->start_rsp_params.stations,
-		     rsp->start_rsp_params.bssids);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 int wcn36xx_smd_start(struct wcn36xx *wcn)
 {
 	struct wcn36xx_hal_mac_start_req_msg msg_body, *body;
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 	size_t len;
 
@@ -536,11 +493,7 @@ out:
 int wcn36xx_smd_stop(struct wcn36xx *wcn)
 {
 	struct wcn36xx_hal_mac_stop_req_msg msg_body;
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&wcn->hal_mutex);
 	INIT_HAL_MSG(msg_body, WCN36XX_HAL_STOP_REQ);
@@ -567,11 +520,7 @@ out:
 int wcn36xx_smd_init_scan(struct wcn36xx *wcn, enum wcn36xx_hal_sys_mode mode)
 {
 	struct wcn36xx_hal_init_scan_req_msg msg_body;
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&wcn->hal_mutex);
 	INIT_HAL_MSG(msg_body, WCN36XX_HAL_INIT_SCAN_REQ);
@@ -600,11 +549,7 @@ out:
 int wcn36xx_smd_start_scan(struct wcn36xx *wcn, u8 scan_channel)
 {
 	struct wcn36xx_hal_start_scan_req_msg msg_body;
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&wcn->hal_mutex);
 	INIT_HAL_MSG(msg_body, WCN36XX_HAL_START_SCAN_REQ);
@@ -634,11 +579,7 @@ out:
 int wcn36xx_smd_end_scan(struct wcn36xx *wcn, u8 scan_channel)
 {
 	struct wcn36xx_hal_end_scan_req_msg msg_body;
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&wcn->hal_mutex);
 	INIT_HAL_MSG(msg_body, WCN36XX_HAL_END_SCAN_REQ);
@@ -669,11 +610,7 @@ int wcn36xx_smd_finish_scan(struct wcn36xx *wcn,
 			    enum wcn36xx_hal_sys_mode mode)
 {
 	struct wcn36xx_hal_finish_scan_req_msg msg_body;
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&wcn->hal_mutex);
 	INIT_HAL_MSG(msg_body, WCN36XX_HAL_FINISH_SCAN_REQ);
@@ -700,7 +637,6 @@ out:
 	return ret;
 }
 
-<<<<<<< HEAD
 int wcn36xx_smd_start_hw_scan(struct wcn36xx *wcn, struct ieee80211_vif *vif,
 			      struct cfg80211_scan_request *req)
 {
@@ -797,12 +733,6 @@ static int wcn36xx_smd_switch_channel_rsp(void *buf, size_t len)
 {
 	struct wcn36xx_hal_switch_channel_rsp_msg *rsp;
 	int ret;
-=======
-static int wcn36xx_smd_switch_channel_rsp(void *buf, size_t len)
-{
-	struct wcn36xx_hal_switch_channel_rsp_msg *rsp;
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = wcn36xx_smd_rsp_status_check(buf, len);
 	if (ret)
@@ -817,11 +747,7 @@ int wcn36xx_smd_switch_channel(struct wcn36xx *wcn,
 			       struct ieee80211_vif *vif, int ch)
 {
 	struct wcn36xx_hal_switch_channel_req_msg msg_body;
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&wcn->hal_mutex);
 	INIT_HAL_MSG(msg_body, WCN36XX_HAL_CH_SWITCH_REQ);
@@ -848,7 +774,6 @@ out:
 	return ret;
 }
 
-<<<<<<< HEAD
 static int wcn36xx_smd_process_ptt_msg_rsp(void *buf, size_t len,
 					   void **p_ptt_rsp_msg)
 {
@@ -914,8 +839,6 @@ out_nomem:
 	return ret;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int wcn36xx_smd_update_scan_params_rsp(void *buf, size_t len)
 {
 	struct wcn36xx_hal_update_scan_params_resp *rsp;
@@ -937,11 +860,7 @@ int wcn36xx_smd_update_scan_params(struct wcn36xx *wcn,
 				   u8 *channels, size_t channel_count)
 {
 	struct wcn36xx_hal_update_scan_params_req_ex msg_body;
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&wcn->hal_mutex);
 	INIT_HAL_MSG(msg_body, WCN36XX_HAL_UPDATE_SCAN_PARAM_REQ);
@@ -1012,11 +931,7 @@ static int wcn36xx_smd_add_sta_self_rsp(struct wcn36xx *wcn,
 int wcn36xx_smd_add_sta_self(struct wcn36xx *wcn, struct ieee80211_vif *vif)
 {
 	struct wcn36xx_hal_add_sta_self_req msg_body;
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&wcn->hal_mutex);
 	INIT_HAL_MSG(msg_body, WCN36XX_HAL_ADD_STA_SELF_REQ);
@@ -1050,11 +965,7 @@ out:
 int wcn36xx_smd_delete_sta_self(struct wcn36xx *wcn, u8 *addr)
 {
 	struct wcn36xx_hal_del_sta_self_req_msg msg_body;
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&wcn->hal_mutex);
 	INIT_HAL_MSG(msg_body, WCN36XX_HAL_DEL_STA_SELF_REQ);
@@ -1082,11 +993,7 @@ out:
 int wcn36xx_smd_delete_sta(struct wcn36xx *wcn, u8 sta_index)
 {
 	struct wcn36xx_hal_delete_sta_req_msg msg_body;
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&wcn->hal_mutex);
 	INIT_HAL_MSG(msg_body, WCN36XX_HAL_DELETE_STA_REQ);
@@ -1133,11 +1040,7 @@ static int wcn36xx_smd_join_rsp(void *buf, size_t len)
 int wcn36xx_smd_join(struct wcn36xx *wcn, const u8 *bssid, u8 *vif, u8 ch)
 {
 	struct wcn36xx_hal_join_req_msg msg_body;
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&wcn->hal_mutex);
 	INIT_HAL_MSG(msg_body, WCN36XX_HAL_JOIN_REQ);
@@ -1186,11 +1089,7 @@ int wcn36xx_smd_set_link_st(struct wcn36xx *wcn, const u8 *bssid,
 			    enum wcn36xx_hal_link_state state)
 {
 	struct wcn36xx_hal_set_link_state_req_msg msg_body;
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&wcn->hal_mutex);
 	INIT_HAL_MSG(msg_body, WCN36XX_HAL_SET_LINK_ST_REQ);
@@ -1316,11 +1215,7 @@ int wcn36xx_smd_config_sta(struct wcn36xx *wcn, struct ieee80211_vif *vif,
 {
 	struct wcn36xx_hal_config_sta_req_msg msg;
 	struct wcn36xx_hal_config_sta_params *sta_params;
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&wcn->hal_mutex);
 	INIT_HAL_MSG(msg, WCN36XX_HAL_CONFIG_STA_REQ);
@@ -1519,11 +1414,7 @@ int wcn36xx_smd_config_bss(struct wcn36xx *wcn, struct ieee80211_vif *vif,
 	struct wcn36xx_hal_config_bss_params *bss;
 	struct wcn36xx_hal_config_sta_params *sta_params;
 	struct wcn36xx_vif *vif_priv = wcn36xx_vif_to_priv(vif);
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&wcn->hal_mutex);
 	INIT_HAL_MSG(msg, WCN36XX_HAL_CONFIG_BSS_REQ);
@@ -1606,14 +1497,9 @@ int wcn36xx_smd_config_bss(struct wcn36xx *wcn, struct ieee80211_vif *vif,
 	bss->spectrum_mgt_enable = 0;
 	bss->tx_mgmt_power = 0;
 	bss->max_tx_power = WCN36XX_MAX_POWER(wcn);
-<<<<<<< HEAD
 	bss->action = update;
 
 	vif_priv->bss_type = bss->bss_type;
-=======
-
-	bss->action = update;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	wcn36xx_dbg(WCN36XX_DBG_HAL,
 		    "hal config bss bssid %pM self_mac_addr %pM bss_type %d oper_mode %d nw_type %d\n",
@@ -1659,13 +1545,10 @@ int wcn36xx_smd_delete_bss(struct wcn36xx *wcn, struct ieee80211_vif *vif)
 	int ret = 0;
 
 	mutex_lock(&wcn->hal_mutex);
-<<<<<<< HEAD
 
 	if (vif_priv->bss_index == WCN36XX_HAL_BSS_INVALID_IDX)
 		goto out;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INIT_HAL_MSG(msg_body, WCN36XX_HAL_DELETE_BSS_REQ);
 
 	msg_body.bss_index = vif_priv->bss_index;
@@ -1684,11 +1567,8 @@ int wcn36xx_smd_delete_bss(struct wcn36xx *wcn, struct ieee80211_vif *vif)
 		wcn36xx_err("hal_delete_bss response failed err=%d\n", ret);
 		goto out;
 	}
-<<<<<<< HEAD
 
 	vif_priv->bss_index = WCN36XX_HAL_BSS_INVALID_IDX;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	mutex_unlock(&wcn->hal_mutex);
 	return ret;
@@ -1699,11 +1579,7 @@ int wcn36xx_smd_send_beacon(struct wcn36xx *wcn, struct ieee80211_vif *vif,
 			    u16 p2p_off)
 {
 	struct wcn36xx_hal_send_beacon_req_msg msg_body;
-<<<<<<< HEAD
 	int ret, pad, pvm_len;
-=======
-	int ret = 0, pad, pvm_len;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&wcn->hal_mutex);
 	INIT_HAL_MSG(msg_body, WCN36XX_HAL_SEND_BEACON_REQ);
@@ -1777,11 +1653,7 @@ int wcn36xx_smd_update_proberesp_tmpl(struct wcn36xx *wcn,
 				      struct sk_buff *skb)
 {
 	struct wcn36xx_hal_send_probe_resp_req_msg msg;
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&wcn->hal_mutex);
 	INIT_HAL_MSG(msg, WCN36XX_HAL_UPDATE_PROBE_RSP_TEMPLATE_REQ);
@@ -1828,11 +1700,7 @@ int wcn36xx_smd_set_stakey(struct wcn36xx *wcn,
 			   u8 sta_index)
 {
 	struct wcn36xx_hal_set_sta_key_req_msg msg_body;
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&wcn->hal_mutex);
 	INIT_HAL_MSG(msg_body, WCN36XX_HAL_SET_STAKEY_REQ);
@@ -1840,7 +1708,6 @@ int wcn36xx_smd_set_stakey(struct wcn36xx *wcn,
 	msg_body.set_sta_key_params.sta_index = sta_index;
 	msg_body.set_sta_key_params.enc_type = enc_type;
 
-<<<<<<< HEAD
 	if (enc_type == WCN36XX_HAL_ED_WEP104 ||
 	    enc_type == WCN36XX_HAL_ED_WEP40) {
 		/* Use bss key for wep (static) */
@@ -1855,14 +1722,6 @@ int wcn36xx_smd_set_stakey(struct wcn36xx *wcn,
 		memcpy(msg_body.set_sta_key_params.key[0].key, key, keylen);
 	}
 
-=======
-	msg_body.set_sta_key_params.key[0].id = keyidx;
-	msg_body.set_sta_key_params.key[0].unicast = 1;
-	msg_body.set_sta_key_params.key[0].direction = WCN36XX_HAL_TX_RX;
-	msg_body.set_sta_key_params.key[0].pae_role = 0;
-	msg_body.set_sta_key_params.key[0].length = keylen;
-	memcpy(msg_body.set_sta_key_params.key[0].key, key, keylen);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	msg_body.set_sta_key_params.single_tid_rc = 1;
 
 	PREPARE_HAL_BUF(wcn->hal_buf, msg_body);
@@ -1884,28 +1743,17 @@ out:
 
 int wcn36xx_smd_set_bsskey(struct wcn36xx *wcn,
 			   enum ani_ed_type enc_type,
-<<<<<<< HEAD
 			   u8 bssidx,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   u8 keyidx,
 			   u8 keylen,
 			   u8 *key)
 {
 	struct wcn36xx_hal_set_bss_key_req_msg msg_body;
-<<<<<<< HEAD
 	int ret;
 
 	mutex_lock(&wcn->hal_mutex);
 	INIT_HAL_MSG(msg_body, WCN36XX_HAL_SET_BSSKEY_REQ);
 	msg_body.bss_idx = bssidx;
-=======
-	int ret = 0;
-
-	mutex_lock(&wcn->hal_mutex);
-	INIT_HAL_MSG(msg_body, WCN36XX_HAL_SET_BSSKEY_REQ);
-	msg_body.bss_idx = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	msg_body.enc_type = enc_type;
 	msg_body.num_keys = 1;
 	msg_body.keys[0].id = keyidx;
@@ -1938,11 +1786,7 @@ int wcn36xx_smd_remove_stakey(struct wcn36xx *wcn,
 			      u8 sta_index)
 {
 	struct wcn36xx_hal_remove_sta_key_req_msg msg_body;
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&wcn->hal_mutex);
 	INIT_HAL_MSG(msg_body, WCN36XX_HAL_RMV_STAKEY_REQ);
@@ -1970,7 +1814,6 @@ out:
 
 int wcn36xx_smd_remove_bsskey(struct wcn36xx *wcn,
 			      enum ani_ed_type enc_type,
-<<<<<<< HEAD
 			      u8 bssidx,
 			      u8 keyidx)
 {
@@ -1980,16 +1823,6 @@ int wcn36xx_smd_remove_bsskey(struct wcn36xx *wcn,
 	mutex_lock(&wcn->hal_mutex);
 	INIT_HAL_MSG(msg_body, WCN36XX_HAL_RMV_BSSKEY_REQ);
 	msg_body.bss_idx = bssidx;
-=======
-			      u8 keyidx)
-{
-	struct wcn36xx_hal_remove_bss_key_req_msg msg_body;
-	int ret = 0;
-
-	mutex_lock(&wcn->hal_mutex);
-	INIT_HAL_MSG(msg_body, WCN36XX_HAL_RMV_BSSKEY_REQ);
-	msg_body.bss_idx = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	msg_body.enc_type = enc_type;
 	msg_body.key_id = keyidx;
 
@@ -2014,11 +1847,7 @@ int wcn36xx_smd_enter_bmps(struct wcn36xx *wcn, struct ieee80211_vif *vif)
 {
 	struct wcn36xx_hal_enter_bmps_req_msg msg_body;
 	struct wcn36xx_vif *vif_priv = wcn36xx_vif_to_priv(vif);
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&wcn->hal_mutex);
 	INIT_HAL_MSG(msg_body, WCN36XX_HAL_ENTER_BMPS_REQ);
@@ -2048,11 +1877,7 @@ int wcn36xx_smd_exit_bmps(struct wcn36xx *wcn, struct ieee80211_vif *vif)
 {
 	struct wcn36xx_hal_exit_bmps_req_msg msg_body;
 	struct wcn36xx_vif *vif_priv = wcn36xx_vif_to_priv(vif);
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&wcn->hal_mutex);
 	INIT_HAL_MSG(msg_body, WCN36XX_HAL_EXIT_BMPS_REQ);
@@ -2078,11 +1903,7 @@ out:
 int wcn36xx_smd_set_power_params(struct wcn36xx *wcn, bool ignore_dtim)
 {
 	struct wcn36xx_hal_set_power_params_req_msg msg_body;
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&wcn->hal_mutex);
 	INIT_HAL_MSG(msg_body, WCN36XX_HAL_SET_POWER_PARAMS_REQ);
@@ -2117,11 +1938,7 @@ int wcn36xx_smd_keep_alive_req(struct wcn36xx *wcn,
 {
 	struct wcn36xx_hal_keep_alive_req_msg msg_body;
 	struct wcn36xx_vif *vif_priv = wcn36xx_vif_to_priv(vif);
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&wcn->hal_mutex);
 	INIT_HAL_MSG(msg_body, WCN36XX_HAL_KEEP_ALIVE_REQ);
@@ -2159,11 +1976,7 @@ int wcn36xx_smd_dump_cmd_req(struct wcn36xx *wcn, u32 arg1, u32 arg2,
 			     u32 arg3, u32 arg4, u32 arg5)
 {
 	struct wcn36xx_hal_dump_cmd_req_msg msg_body;
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&wcn->hal_mutex);
 	INIT_HAL_MSG(msg_body, WCN36XX_HAL_DUMP_COMMAND_REQ);
@@ -2208,10 +2021,6 @@ void set_feat_caps(u32 *bitmap, enum place_holder_in_cap_bitmap cap)
 int get_feat_caps(u32 *bitmap, enum place_holder_in_cap_bitmap cap)
 {
 	int arr_idx, bit_idx;
-<<<<<<< HEAD
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (cap < 0 || cap > 127) {
 		wcn36xx_warn("error cap idx %d\n", cap);
@@ -2220,13 +2029,8 @@ int get_feat_caps(u32 *bitmap, enum place_holder_in_cap_bitmap cap)
 
 	arr_idx = cap / 32;
 	bit_idx = cap % 32;
-<<<<<<< HEAD
 
 	return (bitmap[arr_idx] & (1 << bit_idx)) ? 1 : 0;
-=======
-	ret = (bitmap[arr_idx] & (1 << bit_idx)) ? 1 : 0;
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void clear_feat_caps(u32 *bitmap, enum place_holder_in_cap_bitmap cap)
@@ -2246,11 +2050,7 @@ void clear_feat_caps(u32 *bitmap, enum place_holder_in_cap_bitmap cap)
 int wcn36xx_smd_feature_caps_exchange(struct wcn36xx *wcn)
 {
 	struct wcn36xx_hal_feat_caps_msg msg_body, *rsp;
-<<<<<<< HEAD
 	int ret, i;
-=======
-	int ret = 0, i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&wcn->hal_mutex);
 	INIT_HAL_MSG(msg_body, WCN36XX_HAL_FEATURE_CAPS_EXCHANGE_REQ);
@@ -2286,11 +2086,7 @@ int wcn36xx_smd_add_ba_session(struct wcn36xx *wcn,
 		u8 sta_index)
 {
 	struct wcn36xx_hal_add_ba_session_req_msg msg_body;
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&wcn->hal_mutex);
 	INIT_HAL_MSG(msg_body, WCN36XX_HAL_ADD_BA_SESSION_REQ);
@@ -2328,11 +2124,7 @@ out:
 int wcn36xx_smd_add_ba(struct wcn36xx *wcn)
 {
 	struct wcn36xx_hal_add_ba_req_msg msg_body;
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&wcn->hal_mutex);
 	INIT_HAL_MSG(msg_body, WCN36XX_HAL_ADD_BA_REQ);
@@ -2360,11 +2152,7 @@ out:
 int wcn36xx_smd_del_ba(struct wcn36xx *wcn, u16 tid, u8 sta_index)
 {
 	struct wcn36xx_hal_del_ba_req_msg msg_body;
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&wcn->hal_mutex);
 	INIT_HAL_MSG(msg_body, WCN36XX_HAL_DEL_BA_REQ);
@@ -2404,11 +2192,7 @@ int wcn36xx_smd_trigger_ba(struct wcn36xx *wcn, u8 sta_index)
 {
 	struct wcn36xx_hal_trigger_ba_req_msg msg_body;
 	struct wcn36xx_hal_trigger_ba_req_candidate *candidate;
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&wcn->hal_mutex);
 	INIT_HAL_MSG(msg_body, WCN36XX_HAL_TRIGGER_BA_REQ);
@@ -2452,7 +2236,6 @@ static int wcn36xx_smd_tx_compl_ind(struct wcn36xx *wcn, void *buf, size_t len)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int wcn36xx_smd_hw_scan_ind(struct wcn36xx *wcn, void *buf, size_t len)
 {
 	struct wcn36xx_hal_scan_offload_ind *rsp = buf;
@@ -2490,8 +2273,6 @@ static int wcn36xx_smd_hw_scan_ind(struct wcn36xx *wcn, void *buf, size_t len)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int wcn36xx_smd_missed_beacon_ind(struct wcn36xx *wcn,
 					 void *buf,
 					 size_t len)
@@ -2590,11 +2371,7 @@ int wcn36xx_smd_update_cfg(struct wcn36xx *wcn, u32 cfg_id, u32 value)
 {
 	struct wcn36xx_hal_update_cfg_req_msg msg_body, *body;
 	size_t len;
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&wcn->hal_mutex);
 	INIT_HAL_MSG(msg_body, WCN36XX_HAL_UPDATE_CFG_REQ);
@@ -2629,11 +2406,7 @@ int wcn36xx_smd_set_mc_list(struct wcn36xx *wcn,
 {
 	struct wcn36xx_vif *vif_priv = wcn36xx_vif_to_priv(vif);
 	struct wcn36xx_hal_rcv_flt_pkt_set_mc_list_req_msg *msg_body = NULL;
-<<<<<<< HEAD
 	int ret;
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&wcn->hal_mutex);
 
@@ -2709,16 +2482,11 @@ int wcn36xx_smd_rsp_process(struct rpmsg_device *rpdev,
 	case WCN36XX_HAL_JOIN_RSP:
 	case WCN36XX_HAL_UPDATE_SCAN_PARAM_RSP:
 	case WCN36XX_HAL_CH_SWITCH_RSP:
-<<<<<<< HEAD
 	case WCN36XX_HAL_PROCESS_PTT_RSP:
 	case WCN36XX_HAL_FEATURE_CAPS_EXCHANGE_RSP:
 	case WCN36XX_HAL_8023_MULTICAST_LIST_RSP:
 	case WCN36XX_HAL_START_SCAN_OFFLOAD_RSP:
 	case WCN36XX_HAL_STOP_SCAN_OFFLOAD_RSP:
-=======
-	case WCN36XX_HAL_FEATURE_CAPS_EXCHANGE_RSP:
-	case WCN36XX_HAL_8023_MULTICAST_LIST_RSP:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		memcpy(wcn->hal_buf, buf, len);
 		wcn->hal_rsp_len = len;
 		complete(&wcn->hal_rsp_compl);
@@ -2731,10 +2499,7 @@ int wcn36xx_smd_rsp_process(struct rpmsg_device *rpdev,
 	case WCN36XX_HAL_MISSED_BEACON_IND:
 	case WCN36XX_HAL_DELETE_STA_CONTEXT_IND:
 	case WCN36XX_HAL_PRINT_REG_INFO_IND:
-<<<<<<< HEAD
 	case WCN36XX_HAL_SCAN_OFFLOAD_IND:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		msg_ind = kmalloc(sizeof(*msg_ind) + len, GFP_ATOMIC);
 		if (!msg_ind) {
 			wcn36xx_err("Run out of memory while handling SMD_EVENT (%d)\n",
@@ -2758,15 +2523,11 @@ int wcn36xx_smd_rsp_process(struct rpmsg_device *rpdev,
 
 	return 0;
 }
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void wcn36xx_ind_smd_work(struct work_struct *work)
 {
 	struct wcn36xx *wcn =
 		container_of(work, struct wcn36xx, hal_ind_work);
-<<<<<<< HEAD
 
 	for (;;) {
 		struct wcn36xx_hal_msg_header *msg_header;
@@ -2831,78 +2592,15 @@ int wcn36xx_smd_open(struct wcn36xx *wcn)
 	if (!wcn->hal_ind_wq)
 		return -ENOMEM;
 
-=======
-	struct wcn36xx_hal_msg_header *msg_header;
-	struct wcn36xx_hal_ind_msg *hal_ind_msg;
-	unsigned long flags;
-
-	spin_lock_irqsave(&wcn->hal_ind_lock, flags);
-
-	hal_ind_msg = list_first_entry(&wcn->hal_ind_queue,
-				       struct wcn36xx_hal_ind_msg,
-				       list);
-
-	msg_header = (struct wcn36xx_hal_msg_header *)hal_ind_msg->msg;
-
-	switch (msg_header->msg_type) {
-	case WCN36XX_HAL_COEX_IND:
-	case WCN36XX_HAL_DEL_BA_IND:
-	case WCN36XX_HAL_AVOID_FREQ_RANGE_IND:
-		break;
-	case WCN36XX_HAL_OTA_TX_COMPL_IND:
-		wcn36xx_smd_tx_compl_ind(wcn,
-					 hal_ind_msg->msg,
-					 hal_ind_msg->msg_len);
-		break;
-	case WCN36XX_HAL_MISSED_BEACON_IND:
-		wcn36xx_smd_missed_beacon_ind(wcn,
-					      hal_ind_msg->msg,
-					      hal_ind_msg->msg_len);
-		break;
-	case WCN36XX_HAL_DELETE_STA_CONTEXT_IND:
-		wcn36xx_smd_delete_sta_context_ind(wcn,
-						   hal_ind_msg->msg,
-						   hal_ind_msg->msg_len);
-		break;
-	case WCN36XX_HAL_PRINT_REG_INFO_IND:
-		wcn36xx_smd_print_reg_info_ind(wcn,
-					       hal_ind_msg->msg,
-					       hal_ind_msg->msg_len);
-		break;
-	default:
-		wcn36xx_err("SMD_EVENT (%d) not supported\n",
-			      msg_header->msg_type);
-	}
-	list_del(wcn->hal_ind_queue.next);
-	spin_unlock_irqrestore(&wcn->hal_ind_lock, flags);
-	kfree(hal_ind_msg);
-}
-int wcn36xx_smd_open(struct wcn36xx *wcn)
-{
-	int ret = 0;
-	wcn->hal_ind_wq = create_freezable_workqueue("wcn36xx_smd_ind");
-	if (!wcn->hal_ind_wq) {
-		wcn36xx_err("failed to allocate wq\n");
-		ret = -ENOMEM;
-		goto out;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INIT_WORK(&wcn->hal_ind_work, wcn36xx_ind_smd_work);
 	INIT_LIST_HEAD(&wcn->hal_ind_queue);
 	spin_lock_init(&wcn->hal_ind_lock);
 
 	return 0;
-<<<<<<< HEAD
-=======
-
-out:
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void wcn36xx_smd_close(struct wcn36xx *wcn)
 {
-<<<<<<< HEAD
 	struct wcn36xx_hal_ind_msg *msg, *tmp;
 
 	cancel_work_sync(&wcn->hal_ind_work);
@@ -2910,7 +2608,4 @@ void wcn36xx_smd_close(struct wcn36xx *wcn)
 
 	list_for_each_entry_safe(msg, tmp, &wcn->hal_ind_queue, list)
 		kfree(msg);
-=======
-	destroy_workqueue(wcn->hal_ind_wq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

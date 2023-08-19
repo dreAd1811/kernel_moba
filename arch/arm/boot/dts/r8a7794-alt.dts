@@ -1,18 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Device Tree Source for the Alt board
  *
  * Copyright (C) 2014 Renesas Electronics Corporation
-<<<<<<< HEAD
-=======
- *
- * This file is licensed under the terms of the GNU General Public License
- * version 2.  This program is licensed "as is" without any warranty of any
- * kind, whether express or implied.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /dts-v1/;
@@ -25,13 +15,9 @@
 
 	aliases {
 		serial0 = &scif2;
-<<<<<<< HEAD
 		i2c9 = &gpioi2c1;
 		i2c10 = &gpioi2c4;
 		i2c11 = &i2chdmi;
-=======
-		i2c10 = &gpioi2c4;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		i2c12 = &i2cexio4;
 	};
 
@@ -151,7 +137,6 @@
 		clock-frequency = <148500000>;
 	};
 
-<<<<<<< HEAD
 	gpioi2c1: i2c-9 {
 		#address-cells = <1>;
 		#size-cells = <0>;
@@ -161,26 +146,17 @@
 		sda-gpios = <&gpio4 1 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gpioi2c4: i2c-10 {
 		#address-cells = <1>;
 		#size-cells = <0>;
 		compatible = "i2c-gpio";
 		status = "disabled";
-<<<<<<< HEAD
 		scl-gpios = <&gpio4 8 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
 		sda-gpios = <&gpio4 9 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-=======
-		gpios = <&gpio4 9 GPIO_ACTIVE_HIGH /* sda */
-			 &gpio4 8 GPIO_ACTIVE_HIGH /* scl */
-			>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		i2c-gpio,delay-us = <5>;
 	};
 
 	/*
-<<<<<<< HEAD
 	 * A fallback to GPIO is provided for I2C1.
 	 */
 	i2chdmi: i2c-11 {
@@ -211,8 +187,6 @@
 	};
 
 	/*
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * I2C4 is routed to EXIO connector B, pins 73 (SCL) + 74 (SDA).
 	 * A fallback to GPIO is provided.
 	 */
@@ -230,12 +204,7 @@
 	pinctrl-names = "default";
 	status = "okay";
 
-<<<<<<< HEAD
 	clocks = <&cpg CPG_MOD 724>, <&cpg CPG_MOD 723>,
-=======
-	clocks = <&mstp7_clks R8A7794_CLK_DU0>,
-		 <&mstp7_clks R8A7794_CLK_DU1>,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 <&x13_clk>, <&x2_clk>;
 	clock-names = "du.0", "du.1", "dclkin.0", "dclkin.1";
 
@@ -364,14 +333,11 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
 &rwdt {
 	timeout-sec = <60>;
 	status = "okay";
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &sdhi0 {
 	pinctrl-0 = <&sdhi0_pins>;
 	pinctrl-1 = <&sdhi0_pins_uhs>;
@@ -380,11 +346,7 @@
 	vmmc-supply = <&vcc_sdhi0>;
 	vqmmc-supply = <&vccq_sdhi0>;
 	cd-gpios = <&gpio6 6 GPIO_ACTIVE_LOW>;
-<<<<<<< HEAD
 	wp-gpios = <&gpio6 7 GPIO_ACTIVE_HIGH>;
-=======
-	wp-gpios = <&gpio6 7 GPIO_ACTIVE_LOW>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sd-uhs-sdr50;
 	sd-uhs-sdr104;
 	status = "okay";
@@ -398,40 +360,16 @@
 	vmmc-supply = <&vcc_sdhi1>;
 	vqmmc-supply = <&vccq_sdhi1>;
 	cd-gpios = <&gpio6 14 GPIO_ACTIVE_LOW>;
-<<<<<<< HEAD
 	wp-gpios = <&gpio6 15 GPIO_ACTIVE_HIGH>;
-=======
-	wp-gpios = <&gpio6 15 GPIO_ACTIVE_LOW>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sd-uhs-sdr50;
 	status = "okay";
 };
 
 &i2c1 {
 	pinctrl-0 = <&i2c1_pins>;
-<<<<<<< HEAD
 	pinctrl-names = "i2c-hdmi";
 
 	clock-frequency = <400000>;
-=======
-	pinctrl-names = "default";
-
-	status = "okay";
-	clock-frequency = <400000>;
-
-	composite-in@20 {
-		compatible = "adi,adv7180";
-		reg = <0x20>;
-		remote = <&vin0>;
-
-		port {
-			adv7180: endpoint {
-				bus-width = <8>;
-				remote-endpoint = <&vin0ep>;
-			};
-		};
-	};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &i2c4 {
@@ -445,12 +383,6 @@
 	pinctrl-names = "default";
 
 	port {
-<<<<<<< HEAD
-=======
-		#address-cells = <1>;
-		#size-cells = <0>;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		vin0ep: endpoint {
 			remote-endpoint = <&adv7180>;
 			bus-width = <8>;

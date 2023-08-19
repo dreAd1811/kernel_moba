@@ -30,19 +30,11 @@
 #include <linux/kernel.h>
 #include <linux/mm.h>
 #include <linux/stddef.h>
-<<<<<<< HEAD
-=======
-#include <linux/sysctl.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/unistd.h>
 #include <linux/user.h>
 #include <linux/delay.h>
 #include <linux/reboot.h>
 #include <linux/interrupt.h>
-<<<<<<< HEAD
-=======
-#include <linux/kallsyms.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/init.h>
 #include <linux/cpu.h>
 #include <linux/elfcore.h>
@@ -56,11 +48,7 @@
 #include <linux/notifier.h>
 #include <trace/events/power.h>
 #include <linux/percpu.h>
-<<<<<<< HEAD
 #include <linux/thread_info.h>
-=======
-#include <linux/prctl.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/alternative.h>
 #include <asm/compat.h>
@@ -69,16 +57,9 @@
 #include <asm/fpsimd.h>
 #include <asm/mmu_context.h>
 #include <asm/processor.h>
-<<<<<<< HEAD
 #include <asm/stacktrace.h>
 
 #ifdef CONFIG_STACKPROTECTOR
-=======
-#include <asm/scs.h>
-#include <asm/stacktrace.h>
-
-#ifdef CONFIG_CC_STACKPROTECTOR
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/stackprotector.h>
 unsigned long __stack_chk_guard __read_mostly;
 EXPORT_SYMBOL(__stack_chk_guard);
@@ -199,7 +180,6 @@ void machine_restart(char *cmd)
 	while (1);
 }
 
-<<<<<<< HEAD
 static void print_pstate(struct pt_regs *regs)
 {
 	u64 pstate = regs->pstate;
@@ -233,8 +213,6 @@ static void print_pstate(struct pt_regs *regs)
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * dump a block of kernel memory from around the given address
  */
@@ -248,17 +226,10 @@ static void show_data(unsigned long addr, int nbytes, const char *name)
 	 * don't attempt to dump non-kernel addresses or
 	 * values that are probably just small negative numbers
 	 */
-<<<<<<< HEAD
 	if (addr < PAGE_OFFSET || addr > -256UL)
 		return;
 
 	printk(KERN_DEBUG "\n%s: %#lx:\n", name, addr);
-=======
-	if (addr < KIMAGE_VADDR || addr > -256UL)
-		return;
-
-	printk("\n%s: %#lx:\n", name, addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * round address down to a 32 bit boundary
@@ -274,7 +245,6 @@ static void show_data(unsigned long addr, int nbytes, const char *name)
 		 * just display low 16 bits of address to keep
 		 * each line of the dump < 80 characters
 		 */
-<<<<<<< HEAD
 		printk(KERN_DEBUG "%04lx ", (unsigned long)p & 0xffff);
 		for (j = 0; j < 8; j++) {
 			u32	data;
@@ -283,16 +253,6 @@ static void show_data(unsigned long addr, int nbytes, const char *name)
 				pr_cont(" ********");
 			else
 				pr_cont(" %08x", data);
-=======
-		printk("%04lx ", (unsigned long)p & 0xffff);
-		for (j = 0; j < 8; j++) {
-			u32	data;
-			if (probe_kernel_address(p, data)) {
-				pr_cont(" ********");
-			} else {
-				pr_cont(" %08x", data);
-			}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			++p;
 		}
 		pr_cont("\n");
@@ -327,7 +287,6 @@ void __show_regs(struct pt_regs *regs)
 	}
 
 	show_regs_print_info(KERN_DEFAULT);
-<<<<<<< HEAD
 	print_pstate(regs);
 
 	if (!user_mode(regs)) {
@@ -339,11 +298,6 @@ void __show_regs(struct pt_regs *regs)
 	}
 
 	printk("sp : %016llx\n", sp);
-=======
-	print_symbol("pc : %s\n", regs->pc);
-	print_symbol("lr : %s\n", lr);
-	printk("sp : %016llx pstate : %08llx\n", sp, regs->pstate);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	i = top_reg;
 
@@ -358,16 +312,10 @@ void __show_regs(struct pt_regs *regs)
 
 		pr_cont("\n");
 	}
-<<<<<<< HEAD
 
 	if (!user_mode(regs))
 		show_extra_register_data(regs, 128);
 
-=======
-	if (!user_mode(regs))
-		show_extra_register_data(regs, 64);
-	printk("\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void show_regs(struct pt_regs * regs)
@@ -381,11 +329,7 @@ static void tls_thread_flush(void)
 	write_sysreg(0, tpidr_el0);
 
 	if (is_compat_task()) {
-<<<<<<< HEAD
 		current->thread.uw.tp_value = 0;
-=======
-		current->thread.tp_value = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/*
 		 * We need to ensure ordering between the shadow state and the
@@ -397,44 +341,27 @@ static void tls_thread_flush(void)
 	}
 }
 
-<<<<<<< HEAD
-=======
-static void flush_tagged_addr_state(void)
-{
-	if (IS_ENABLED(CONFIG_ARM64_TAGGED_ADDR_ABI))
-		clear_thread_flag(TIF_TAGGED_ADDR);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void flush_thread(void)
 {
 	fpsimd_flush_thread();
 	tls_thread_flush();
 	flush_ptrace_hw_breakpoint(current);
-<<<<<<< HEAD
-=======
-	flush_tagged_addr_state();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void release_thread(struct task_struct *dead_task)
 {
 }
 
-<<<<<<< HEAD
 void arch_release_task_struct(struct task_struct *tsk)
 {
 	fpsimd_release_task(tsk);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int arch_dup_task_struct(struct task_struct *dst, struct task_struct *src)
 {
 	if (current->mm)
 		fpsimd_preserve_current_state();
 	*dst = *src;
-<<<<<<< HEAD
 
 	/* We rely on the above assignment to initialize dst's thread_flags: */
 	BUILD_BUG_ON(!IS_ENABLED(CONFIG_THREAD_INFO_IN_TASK));
@@ -451,8 +378,6 @@ int arch_dup_task_struct(struct task_struct *dst, struct task_struct *src)
 	dst->thread.sve_state = NULL;
 	clear_tsk_thread_flag(dst, TIF_SVE);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -496,11 +421,7 @@ int copy_thread(unsigned long clone_flags, unsigned long stack_start,
 		 * for the new thread.
 		 */
 		if (clone_flags & CLONE_SETTLS)
-<<<<<<< HEAD
 			p->thread.uw.tp_value = childregs->regs[3];
-=======
-			p->thread.tp_value = childregs->regs[3];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		memset(childregs, 0, sizeof(struct pt_regs));
 		childregs->pstate = PSR_MODE_EL1h;
@@ -532,11 +453,7 @@ static void tls_thread_switch(struct task_struct *next)
 	tls_preserve_current_state();
 
 	if (is_compat_thread(task_thread_info(next)))
-<<<<<<< HEAD
 		write_sysreg(next->thread.uw.tp_value, tpidrro_el0);
-=======
-		write_sysreg(next->thread.tp_value, tpidrro_el0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else if (!arm64_kernel_unmapped_at_el0())
 		write_sysreg(0, tpidrro_el0);
 
@@ -569,16 +486,6 @@ static void ssbs_thread_switch(struct task_struct *next)
 	if (unlikely(next->flags & PF_KTHREAD))
 		return;
 
-<<<<<<< HEAD
-=======
-	/*
-	 * If all CPUs implement the SSBS extension, then we just need to
-	 * context-switch the PSTATE field.
-	 */
-	if (cpu_have_feature(cpu_feature(SSBS)))
-		return;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* If the mitigation is enabled, then we leave SSBS clear. */
 	if ((arm64_get_ssbd_state() == ARM64_SSBD_FORCE_ENABLE) ||
 	    test_tsk_thread_flag(next, TIF_SSBD))
@@ -619,10 +526,6 @@ __notrace_funcgraph struct task_struct *__switch_to(struct task_struct *prev,
 	entry_task_switch(next);
 	uao_thread_switch(next);
 	ssbs_thread_switch(next);
-<<<<<<< HEAD
-=======
-	scs_overflow_check(next);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Complete any pending TLB or cache maintenance on this CPU in case
@@ -692,7 +595,6 @@ void arch_setup_new_exec(void)
 	current->mm->context.flags = is_compat_task() ? MMCF_AARCH32 : 0;
 }
 
-<<<<<<< HEAD
 #ifdef CONFIG_GCC_PLUGIN_STACKLEAK
 void __used stackleak_check_alloca(unsigned long size)
 {
@@ -714,71 +616,3 @@ void __used stackleak_check_alloca(unsigned long size)
 }
 EXPORT_SYMBOL(stackleak_check_alloca);
 #endif
-=======
-#ifdef CONFIG_ARM64_TAGGED_ADDR_ABI
-/*
- * Control the relaxed ABI allowing tagged user addresses into the kernel.
- */
-static unsigned int tagged_addr_disabled;
-
-long set_tagged_addr_ctrl(unsigned long arg)
-{
-	if (is_compat_task())
-		return -EINVAL;
-	if (arg & ~PR_TAGGED_ADDR_ENABLE)
-		return -EINVAL;
-
-	/*
-	 * Do not allow the enabling of the tagged address ABI if globally
-	 * disabled via sysctl abi.tagged_addr_disabled.
-	 */
-	if (arg & PR_TAGGED_ADDR_ENABLE && tagged_addr_disabled)
-		return -EINVAL;
-
-	update_thread_flag(TIF_TAGGED_ADDR, arg & PR_TAGGED_ADDR_ENABLE);
-
-	return 0;
-}
-
-long get_tagged_addr_ctrl(void)
-{
-	if (is_compat_task())
-		return -EINVAL;
-
-	if (test_thread_flag(TIF_TAGGED_ADDR))
-		return PR_TAGGED_ADDR_ENABLE;
-
-	return 0;
-}
-
-/*
- * Global sysctl to disable the tagged user addresses support. This control
- * only prevents the tagged address ABI enabling via prctl() and does not
- * disable it for tasks that already opted in to the relaxed ABI.
- */
-static int zero;
-static int one = 1;
-
-static struct ctl_table tagged_addr_sysctl_table[] = {
-	{
-		.procname	= "tagged_addr_disabled",
-		.mode		= 0644,
-		.data		= &tagged_addr_disabled,
-		.maxlen		= sizeof(int),
-		.proc_handler	= proc_dointvec_minmax,
-		.extra1		= &zero,
-		.extra2		= &one,
-	},
-	{ }
-};
-
-static int __init tagged_addr_init(void)
-{
-	if (!register_sysctl("abi", tagged_addr_sysctl_table))
-		return -EINVAL;
-	return 0;
-}
-
-core_initcall(tagged_addr_init);
-#endif	/* CONFIG_ARM64_TAGGED_ADDR_ABI */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

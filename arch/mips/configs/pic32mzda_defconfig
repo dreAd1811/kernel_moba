@@ -26,10 +26,6 @@ CONFIG_BINFMT_MISC=m
 # CONFIG_SUSPEND is not set
 CONFIG_DEVTMPFS=y
 CONFIG_DEVTMPFS_MOUNT=y
-<<<<<<< HEAD
-=======
-# CONFIG_FIRMWARE_IN_KERNEL is not set
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 # CONFIG_ALLOW_DEV_COREDUMP is not set
 CONFIG_BLK_DEV_LOOP=m
 CONFIG_SCSI=y

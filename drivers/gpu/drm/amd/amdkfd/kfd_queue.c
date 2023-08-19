@@ -36,13 +36,8 @@ void print_queue_properties(struct queue_properties *q)
 	pr_debug("Queue Address: 0x%llX\n", q->queue_address);
 	pr_debug("Queue Id: %u\n", q->queue_id);
 	pr_debug("Queue Process Vmid: %u\n", q->vmid);
-<<<<<<< HEAD
 	pr_debug("Queue Read Pointer: 0x%px\n", q->read_ptr);
 	pr_debug("Queue Write Pointer: 0x%px\n", q->write_ptr);
-=======
-	pr_debug("Queue Read Pointer: 0x%p\n", q->read_ptr);
-	pr_debug("Queue Write Pointer: 0x%p\n", q->write_ptr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pr_debug("Queue Doorbell Pointer: 0x%p\n", q->doorbell_ptr);
 	pr_debug("Queue Doorbell Offset: %u\n", q->doorbell_off);
 }
@@ -58,13 +53,8 @@ void print_queue(struct queue *q)
 	pr_debug("Queue Address: 0x%llX\n", q->properties.queue_address);
 	pr_debug("Queue Id: %u\n", q->properties.queue_id);
 	pr_debug("Queue Process Vmid: %u\n", q->properties.vmid);
-<<<<<<< HEAD
 	pr_debug("Queue Read Pointer: 0x%px\n", q->properties.read_ptr);
 	pr_debug("Queue Write Pointer: 0x%px\n", q->properties.write_ptr);
-=======
-	pr_debug("Queue Read Pointer: 0x%p\n", q->properties.read_ptr);
-	pr_debug("Queue Write Pointer: 0x%p\n", q->properties.write_ptr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pr_debug("Queue Doorbell Pointer: 0x%p\n", q->properties.doorbell_ptr);
 	pr_debug("Queue Doorbell Offset: %u\n", q->properties.doorbell_off);
 	pr_debug("Queue MQD Address: 0x%p\n", q->mqd);

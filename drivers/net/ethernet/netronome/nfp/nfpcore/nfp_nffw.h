@@ -100,11 +100,8 @@ nfp_rtsym_lookup(struct nfp_rtsym_table *rtbl, const char *name);
 
 u64 nfp_rtsym_read_le(struct nfp_rtsym_table *rtbl, const char *name,
 		      int *error);
-<<<<<<< HEAD
 int nfp_rtsym_write_le(struct nfp_rtsym_table *rtbl, const char *name,
 		       u64 value);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 u8 __iomem *
 nfp_rtsym_map(struct nfp_rtsym_table *rtbl, const char *name, const char *id,
 	      unsigned int min_size, struct nfp_cpp_area **area);

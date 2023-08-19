@@ -27,19 +27,11 @@
 #include <media/rc-core.h>
 #include <media/media-device.h>
 
-<<<<<<< HEAD
 #include <media/dvb_frontend.h>
 #include <media/dvb_demux.h>
 #include <media/dvb_net.h>
 #include <media/dmxdev.h>
 #include <media/dvb-usb-ids.h>
-=======
-#include "dvb_frontend.h"
-#include "dvb_demux.h"
-#include "dvb_net.h"
-#include "dmxdev.h"
-#include "dvb-usb-ids.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * device file: /dev/dvb/adapter[0-1]/frontend[0-2]
@@ -211,11 +203,8 @@ struct dvb_usb_adapter_properties {
  * @generic_bulk_ctrl_endpoint_response: bulk control endpoint number for
  *  receive
  * @generic_bulk_ctrl_delay: delay between bulk control sent and receive message
-<<<<<<< HEAD
  * @probe: like probe on driver model
  * @disconnect: like disconnect on driver model
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @identify_state: called to determine the firmware state (cold or warm) and
  *  return possible firmware file name to be loaded
  * @firmware: name of the firmware file to be loaded
@@ -252,11 +241,8 @@ struct dvb_usb_device_properties {
 	u8 generic_bulk_ctrl_endpoint_response;
 	unsigned int generic_bulk_ctrl_delay;
 
-<<<<<<< HEAD
 	int (*probe)(struct dvb_usb_device *);
 	void (*disconnect)(struct dvb_usb_device *);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define WARM                  0
 #define COLD                  1
 	int (*identify_state) (struct dvb_usb_device *, const char **);

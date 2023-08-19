@@ -387,14 +387,11 @@
 			hpd-gpio = <&tlmm_pinmux 72 GPIO_ACTIVE_HIGH>;
 
 			ports {
-<<<<<<< HEAD
 				port@0 {
 					endpoint {
 						remote-endpoint = <&mdp_dtv_out>;
 					};
 				};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				port@1 {
 					endpoint {
 						remote-endpoint = <&hdmi_con>;

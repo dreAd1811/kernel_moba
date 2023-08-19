@@ -991,11 +991,7 @@ int r600_parse_extended_power_table(struct radeon_device *rdev)
 			ATOM_PPLIB_PhaseSheddingLimits_Record *entry;
 
 			rdev->pm.dpm.dyn_state.phase_shedding_limits_table.entries =
-<<<<<<< HEAD
 				kcalloc(psl->ucNumEntries,
-=======
-				kzalloc(psl->ucNumEntries *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					sizeof(struct radeon_phase_shedding_limits_entry),
 					GFP_KERNEL);
 			if (!rdev->pm.dpm.dyn_state.phase_shedding_limits_table.entries) {
@@ -1331,15 +1327,9 @@ enum radeon_pcie_gen r600_get_pcie_gen_support(struct radeon_device *rdev,
 	case RADEON_PCIE_GEN3:
 		return RADEON_PCIE_GEN3;
 	default:
-<<<<<<< HEAD
 		if ((sys_mask & RADEON_PCIE_SPEED_80) && (default_gen == RADEON_PCIE_GEN3))
 			return RADEON_PCIE_GEN3;
 		else if ((sys_mask & RADEON_PCIE_SPEED_50) && (default_gen == RADEON_PCIE_GEN2))
-=======
-		if ((sys_mask & DRM_PCIE_SPEED_80) && (default_gen == RADEON_PCIE_GEN3))
-			return RADEON_PCIE_GEN3;
-		else if ((sys_mask & DRM_PCIE_SPEED_50) && (default_gen == RADEON_PCIE_GEN2))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return RADEON_PCIE_GEN2;
 		else
 			return RADEON_PCIE_GEN1;

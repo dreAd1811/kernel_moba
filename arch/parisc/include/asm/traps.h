@@ -2,13 +2,9 @@
 #ifndef __ASM_TRAPS_H
 #define __ASM_TRAPS_H
 
-<<<<<<< HEAD
 #define PARISC_ITLB_TRAP	6 /* defined by architecture. Do not change. */
 
 #if !defined(__ASSEMBLY__)
-=======
-#ifdef __KERNEL__
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct pt_regs;
 
 /* traps.c */

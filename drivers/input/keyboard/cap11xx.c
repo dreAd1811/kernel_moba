@@ -344,12 +344,7 @@ static int cap11xx_i2c_probe(struct i2c_client *i2c_client,
 	}
 
 	priv = devm_kzalloc(dev,
-<<<<<<< HEAD
 			    struct_size(priv, keycodes, cap->num_channels),
-=======
-			    sizeof(*priv) +
-				cap->num_channels * sizeof(priv->keycodes[0]),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    GFP_KERNEL);
 	if (!priv)
 		return -ENOMEM;

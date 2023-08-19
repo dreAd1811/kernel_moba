@@ -95,11 +95,7 @@ TRACE_EVENT(iwlwifi_dev_tx,
 	TP_ARGS(dev, skb, tfd, tfdlen, buf0, buf0_len, hdr_len),
 	TP_STRUCT__entry(
 		DEV_ENTRY
-<<<<<<< HEAD
 		__field(void *, skbaddr)
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__field(size_t, framelen)
 		__dynamic_array(u8, tfd, tfdlen)
 
@@ -114,10 +110,7 @@ TRACE_EVENT(iwlwifi_dev_tx,
 	),
 	TP_fast_assign(
 		DEV_ASSIGN;
-<<<<<<< HEAD
 		__entry->skbaddr = skb;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__entry->framelen = buf0_len;
 		if (hdr_len > 0)
 			__entry->framelen += skb->len - hdr_len;
@@ -128,7 +121,6 @@ TRACE_EVENT(iwlwifi_dev_tx,
 				      __get_dynamic_array(buf1),
 				      skb->len - hdr_len);
 	),
-<<<<<<< HEAD
 	TP_printk("[%s] TX %.2x (%zu bytes) skbaddr=%p",
 		  __get_str(dev), ((u8 *)__get_dynamic_array(buf0))[0],
 		  __entry->framelen, __entry->skbaddr)
@@ -139,21 +131,6 @@ TRACE_EVENT(iwlwifi_dev_ucode_error,
 	TP_PROTO(const struct device *dev, const struct iwl_error_event_table *table,
 		 u32 hw_ver, u32 brd_ver),
 	TP_ARGS(dev, table, hw_ver, brd_ver),
-=======
-	TP_printk("[%s] TX %.2x (%zu bytes)",
-		  __get_str(dev), ((u8 *)__get_dynamic_array(buf0))[0],
-		  __entry->framelen)
-);
-
-TRACE_EVENT(iwlwifi_dev_ucode_error,
-	TP_PROTO(const struct device *dev, u32 desc, u32 tsf_low,
-		 u32 data1, u32 data2, u32 line, u32 blink2, u32 ilink1,
-		 u32 ilink2, u32 bcon_time, u32 gp1, u32 gp2, u32 rev_type,
-		 u32 major, u32 minor, u32 hw_ver, u32 brd_ver),
-	TP_ARGS(dev, desc, tsf_low, data1, data2, line,
-		 blink2, ilink1, ilink2, bcon_time, gp1, gp2,
-		 rev_type, major, minor, hw_ver, brd_ver),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	TP_STRUCT__entry(
 		DEV_ENTRY
 		__field(u32, desc)
@@ -175,7 +152,6 @@ TRACE_EVENT(iwlwifi_dev_ucode_error,
 	),
 	TP_fast_assign(
 		DEV_ASSIGN;
-<<<<<<< HEAD
 		__entry->desc = table->error_id;
 		__entry->tsf_low = table->tsf_low;
 		__entry->data1 = table->data1;
@@ -190,22 +166,6 @@ TRACE_EVENT(iwlwifi_dev_ucode_error,
 		__entry->rev_type = table->gp3;
 		__entry->major = table->ucode_ver;
 		__entry->minor = table->hw_ver;
-=======
-		__entry->desc = desc;
-		__entry->tsf_low = tsf_low;
-		__entry->data1 = data1;
-		__entry->data2 = data2;
-		__entry->line = line;
-		__entry->blink2 = blink2;
-		__entry->ilink1 = ilink1;
-		__entry->ilink2 = ilink2;
-		__entry->bcon_time = bcon_time;
-		__entry->gp1 = gp1;
-		__entry->gp2 = gp2;
-		__entry->rev_type = rev_type;
-		__entry->major = major;
-		__entry->minor = minor;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__entry->hw_ver = hw_ver;
 		__entry->brd_ver = brd_ver;
 	),

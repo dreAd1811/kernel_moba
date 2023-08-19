@@ -47,11 +47,7 @@ static int fill_match_fields(struct adapter *adap,
 			     bool next_header)
 {
 	unsigned int i, j;
-<<<<<<< HEAD
 	u32 val, mask;
-=======
-	__be32 val, mask;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int off, err;
 	bool found;
 
@@ -97,22 +93,13 @@ static int fill_action_fields(struct adapter *adap,
 	unsigned int num_actions = 0;
 	const struct tc_action *a;
 	struct tcf_exts *exts;
-<<<<<<< HEAD
 	int i;
-=======
-	LIST_HEAD(actions);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	exts = cls->knode.exts;
 	if (!tcf_exts_has_actions(exts))
 		return -EINVAL;
 
-<<<<<<< HEAD
 	tcf_exts_for_each_action(i, a, exts) {
-=======
-	tcf_exts_to_list(exts, &actions);
-	list_for_each_entry(a, &actions, list) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Don't allow more than one action per rule. */
 		if (num_actions)
 			return -EINVAL;
@@ -126,7 +113,6 @@ static int fill_action_fields(struct adapter *adap,
 
 		/* Re-direct to specified port in hardware. */
 		if (is_tcf_mirred_egress_redirect(a)) {
-<<<<<<< HEAD
 			struct net_device *n_dev, *target_dev;
 			bool found = false;
 			unsigned int i;
@@ -135,16 +121,6 @@ static int fill_action_fields(struct adapter *adap,
 			for_each_port(adap, i) {
 				n_dev = adap->port[i];
 				if (target_dev == n_dev) {
-=======
-			struct net_device *n_dev;
-			unsigned int i, index;
-			bool found = false;
-
-			index = tcf_mirred_ifindex(a);
-			for_each_port(adap, i) {
-				n_dev = adap->port[i];
-				if (index == n_dev->ifindex) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					fs->action = FILTER_SWITCH;
 					fs->eport = i;
 					found = true;
@@ -240,11 +216,7 @@ int cxgb4_config_knode(struct net_device *dev, struct tc_cls_u32_offload *cls)
 		const struct cxgb4_next_header *next;
 		bool found = false;
 		unsigned int i, j;
-<<<<<<< HEAD
 		u32 val, mask;
-=======
-		__be32 val, mask;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		int off;
 
 		if (t->table[link_uhtid - 1].link_handle) {
@@ -258,17 +230,10 @@ int cxgb4_config_knode(struct net_device *dev, struct tc_cls_u32_offload *cls)
 
 		/* Try to find matches that allow jumps to next header. */
 		for (i = 0; next[i].jump; i++) {
-<<<<<<< HEAD
 			if (next[i].offoff != cls->knode.sel->offoff ||
 			    next[i].shift != cls->knode.sel->offshift ||
 			    next[i].mask != cls->knode.sel->offmask ||
 			    next[i].offset != cls->knode.sel->off)
-=======
-			if (next[i].sel.offoff != cls->knode.sel->offoff ||
-			    next[i].sel.offshift != cls->knode.sel->offshift ||
-			    next[i].sel.offmask != cls->knode.sel->offmask ||
-			    next[i].sel.off != cls->knode.sel->off)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				continue;
 
 			/* Found a possible candidate.  Find a key that
@@ -280,15 +245,9 @@ int cxgb4_config_knode(struct net_device *dev, struct tc_cls_u32_offload *cls)
 				val = cls->knode.sel->keys[j].val;
 				mask = cls->knode.sel->keys[j].mask;
 
-<<<<<<< HEAD
 				if (next[i].match_off == off &&
 				    next[i].match_val == val &&
 				    next[i].match_mask == mask) {
-=======
-				if (next[i].key.off == off &&
-				    next[i].key.val == val &&
-				    next[i].key.mask == mask) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					found = true;
 					break;
 				}
@@ -420,11 +379,7 @@ int cxgb4_delete_knode(struct net_device *dev, struct tc_cls_u32_offload *cls)
 			return -EINVAL;
 	}
 
-<<<<<<< HEAD
 	ret = cxgb4_del_filter(dev, filter_id, NULL);
-=======
-	ret = cxgb4_del_filter(dev, filter_id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto out;
 
@@ -443,11 +398,7 @@ int cxgb4_delete_knode(struct net_device *dev, struct tc_cls_u32_offload *cls)
 				if (!test_bit(j, link->tid_map))
 					continue;
 
-<<<<<<< HEAD
 				ret = __cxgb4_del_filter(dev, j, NULL, NULL);
-=======
-				ret = __cxgb4_del_filter(dev, j, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				if (ret)
 					goto out;
 
@@ -505,12 +456,8 @@ struct cxgb4_tc_u32_table *cxgb4_init_tc_u32(struct adapter *adap)
 		unsigned int bmap_size;
 
 		bmap_size = BITS_TO_LONGS(max_tids);
-<<<<<<< HEAD
 		link->tid_map = kvcalloc(bmap_size, sizeof(unsigned long),
 					 GFP_KERNEL);
-=======
-		link->tid_map = kvzalloc(sizeof(unsigned long) * bmap_size, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!link->tid_map)
 			goto out_no_mem;
 		bitmap_zero(link->tid_map, max_tids);

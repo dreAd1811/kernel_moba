@@ -36,7 +36,6 @@
 #include "bif/bif_5_1_d.h"
 #include "gmc/gmc_8_1_d.h"
 #include "vi.h"
-<<<<<<< HEAD
 #include "ivsrcid/ivsrcid_vislands30.h"
 
 /* Polaris10/11/12 firmware version */
@@ -45,10 +44,6 @@
 static void uvd_v6_0_set_ring_funcs(struct amdgpu_device *adev);
 static void uvd_v6_0_set_enc_ring_funcs(struct amdgpu_device *adev);
 
-=======
-
-static void uvd_v6_0_set_ring_funcs(struct amdgpu_device *adev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void uvd_v6_0_set_irq_funcs(struct amdgpu_device *adev);
 static int uvd_v6_0_start(struct amdgpu_device *adev);
 static void uvd_v6_0_stop(struct amdgpu_device *adev);
@@ -59,7 +54,6 @@ static void uvd_v6_0_enable_mgcg(struct amdgpu_device *adev,
 				 bool enable);
 
 /**
-<<<<<<< HEAD
 * uvd_v6_0_enc_support - get encode support status
 *
 * @adev: amdgpu_device pointer
@@ -74,8 +68,6 @@ static inline bool uvd_v6_0_enc_support(struct amdgpu_device *adev)
 }
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * uvd_v6_0_ring_get_rptr - get read pointer
  *
  * @ring: amdgpu_ring pointer
@@ -90,7 +82,6 @@ static uint64_t uvd_v6_0_ring_get_rptr(struct amdgpu_ring *ring)
 }
 
 /**
-<<<<<<< HEAD
  * uvd_v6_0_enc_ring_get_rptr - get enc read pointer
  *
  * @ring: amdgpu_ring pointer
@@ -107,8 +98,6 @@ static uint64_t uvd_v6_0_enc_ring_get_rptr(struct amdgpu_ring *ring)
 		return RREG32(mmUVD_RB_RPTR2);
 }
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * uvd_v6_0_ring_get_wptr - get write pointer
  *
  * @ring: amdgpu_ring pointer
@@ -123,7 +112,6 @@ static uint64_t uvd_v6_0_ring_get_wptr(struct amdgpu_ring *ring)
 }
 
 /**
-<<<<<<< HEAD
  * uvd_v6_0_enc_ring_get_wptr - get enc write pointer
  *
  * @ring: amdgpu_ring pointer
@@ -141,8 +129,6 @@ static uint64_t uvd_v6_0_enc_ring_get_wptr(struct amdgpu_ring *ring)
 }
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * uvd_v6_0_ring_set_wptr - set write pointer
  *
  * @ring: amdgpu_ring pointer
@@ -156,7 +142,6 @@ static void uvd_v6_0_ring_set_wptr(struct amdgpu_ring *ring)
 	WREG32(mmUVD_RBC_RB_WPTR, lower_32_bits(ring->wptr));
 }
 
-<<<<<<< HEAD
 /**
  * uvd_v6_0_enc_ring_set_wptr - set enc write pointer
  *
@@ -387,26 +372,18 @@ static int uvd_v6_0_early_init(void *handle)
 {
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
 	adev->uvd.num_uvd_inst = 1;
-=======
-static int uvd_v6_0_early_init(void *handle)
-{
-	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!(adev->flags & AMD_IS_APU) &&
 	    (RREG32_SMC(ixCC_HARVEST_FUSES) & CC_HARVEST_FUSES__UVD_DISABLE_MASK))
 		return -ENOENT;
 
 	uvd_v6_0_set_ring_funcs(adev);
-<<<<<<< HEAD
 
 	if (uvd_v6_0_enc_support(adev)) {
 		adev->uvd.num_enc_rings = 2;
 		uvd_v6_0_set_enc_ring_funcs(adev);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uvd_v6_0_set_irq_funcs(adev);
 
 	return 0;
@@ -415,7 +392,6 @@ static int uvd_v6_0_early_init(void *handle)
 static int uvd_v6_0_sw_init(void *handle)
 {
 	struct amdgpu_ring *ring;
-<<<<<<< HEAD
 	int i, r;
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
 
@@ -433,21 +409,10 @@ static int uvd_v6_0_sw_init(void *handle)
 		}
 	}
 
-=======
-	int r;
-	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
-
-	/* UVD TRAP */
-	r = amdgpu_irq_add_id(adev, AMDGPU_IH_CLIENTID_LEGACY, 124, &adev->uvd.irq);
-	if (r)
-		return r;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	r = amdgpu_uvd_sw_init(adev);
 	if (r)
 		return r;
 
-<<<<<<< HEAD
 	if (!uvd_v6_0_enc_support(adev)) {
 		for (i = 0; i < adev->uvd.num_enc_rings; ++i)
 			adev->uvd.inst->ring_enc[i].funcs = NULL;
@@ -464,13 +429,10 @@ static int uvd_v6_0_sw_init(void *handle)
 	if (r)
 		return r;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	r = amdgpu_uvd_resume(adev);
 	if (r)
 		return r;
 
-<<<<<<< HEAD
 	if (uvd_v6_0_enc_support(adev)) {
 		for (i = 0; i < adev->uvd.num_enc_rings; ++i) {
 			ring = &adev->uvd.inst->ring_enc[i];
@@ -482,36 +444,24 @@ static int uvd_v6_0_sw_init(void *handle)
 	}
 
 	r = amdgpu_uvd_entity_init(adev);
-=======
-	ring = &adev->uvd.ring;
-	sprintf(ring->name, "uvd");
-	r = amdgpu_ring_init(adev, ring, 512, &adev->uvd.irq, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return r;
 }
 
 static int uvd_v6_0_sw_fini(void *handle)
 {
-<<<<<<< HEAD
 	int i, r;
-=======
-	int r;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
 
 	r = amdgpu_uvd_suspend(adev);
 	if (r)
 		return r;
 
-<<<<<<< HEAD
 	if (uvd_v6_0_enc_support(adev)) {
 		for (i = 0; i < adev->uvd.num_enc_rings; ++i)
 			amdgpu_ring_fini(&adev->uvd.inst->ring_enc[i]);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return amdgpu_uvd_sw_fini(adev);
 }
 
@@ -525,15 +475,9 @@ static int uvd_v6_0_sw_fini(void *handle)
 static int uvd_v6_0_hw_init(void *handle)
 {
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
-<<<<<<< HEAD
 	struct amdgpu_ring *ring = &adev->uvd.inst->ring;
 	uint32_t tmp;
 	int i, r;
-=======
-	struct amdgpu_ring *ring = &adev->uvd.ring;
-	uint32_t tmp;
-	int r;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	amdgpu_asic_set_uvd_clocks(adev, 10000, 10000);
 	uvd_v6_0_set_clockgating_state(adev, AMD_CG_STATE_UNGATE);
@@ -573,7 +517,6 @@ static int uvd_v6_0_hw_init(void *handle)
 
 	amdgpu_ring_commit(ring);
 
-<<<<<<< HEAD
 	if (uvd_v6_0_enc_support(adev)) {
 		for (i = 0; i < adev->uvd.num_enc_rings; ++i) {
 			ring = &adev->uvd.inst->ring_enc[i];
@@ -593,11 +536,6 @@ done:
 		else
 			DRM_INFO("UVD initialized successfully.\n");
 	}
-=======
-done:
-	if (!r)
-		DRM_INFO("UVD initialized successfully.\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return r;
 }
@@ -612,11 +550,7 @@ done:
 static int uvd_v6_0_hw_fini(void *handle)
 {
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
-<<<<<<< HEAD
 	struct amdgpu_ring *ring = &adev->uvd.inst->ring;
-=======
-	struct amdgpu_ring *ring = &adev->uvd.ring;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (RREG32(mmUVD_STATUS) != 0)
 		uvd_v6_0_stop(adev);
@@ -664,21 +598,12 @@ static void uvd_v6_0_mc_resume(struct amdgpu_device *adev)
 
 	/* programm memory controller bits 0-27 */
 	WREG32(mmUVD_LMI_VCPU_CACHE_64BIT_BAR_LOW,
-<<<<<<< HEAD
 			lower_32_bits(adev->uvd.inst->gpu_addr));
 	WREG32(mmUVD_LMI_VCPU_CACHE_64BIT_BAR_HIGH,
 			upper_32_bits(adev->uvd.inst->gpu_addr));
 
 	offset = AMDGPU_UVD_FIRMWARE_OFFSET;
 	size = AMDGPU_UVD_FIRMWARE_SIZE(adev);
-=======
-			lower_32_bits(adev->uvd.gpu_addr));
-	WREG32(mmUVD_LMI_VCPU_CACHE_64BIT_BAR_HIGH,
-			upper_32_bits(adev->uvd.gpu_addr));
-
-	offset = AMDGPU_UVD_FIRMWARE_OFFSET;
-	size = AMDGPU_GPU_PAGE_ALIGN(adev->uvd.fw->size + 4);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	WREG32(mmUVD_VCPU_CACHE_OFFSET0, offset >> 3);
 	WREG32(mmUVD_VCPU_CACHE_SIZE0, size);
 
@@ -788,11 +713,7 @@ static void cz_set_uvd_clock_gating_branches(struct amdgpu_device *adev,
  */
 static int uvd_v6_0_start(struct amdgpu_device *adev)
 {
-<<<<<<< HEAD
 	struct amdgpu_ring *ring = &adev->uvd.inst->ring;
-=======
-	struct amdgpu_ring *ring = &adev->uvd.ring;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t rb_bufsz, tmp;
 	uint32_t lmi_swap_cntl;
 	uint32_t mp_swap_cntl;
@@ -931,7 +852,6 @@ static int uvd_v6_0_start(struct amdgpu_device *adev)
 
 	WREG32_FIELD(UVD_RBC_RB_CNTL, RB_NO_FETCH, 0);
 
-<<<<<<< HEAD
 	if (uvd_v6_0_enc_support(adev)) {
 		ring = &adev->uvd.inst->ring_enc[0];
 		WREG32(mmUVD_RB_RPTR, lower_32_bits(ring->wptr));
@@ -948,8 +868,6 @@ static int uvd_v6_0_start(struct amdgpu_device *adev)
 		WREG32(mmUVD_RB_SIZE2, ring->ring_size / 4);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1013,7 +931,6 @@ static void uvd_v6_0_ring_emit_fence(struct amdgpu_ring *ring, u64 addr, u64 seq
 }
 
 /**
-<<<<<<< HEAD
  * uvd_v6_0_enc_ring_emit_fence - emit an enc fence & trap command
  *
  * @ring: amdgpu_ring pointer
@@ -1041,31 +958,6 @@ static void uvd_v6_0_enc_ring_emit_fence(struct amdgpu_ring *ring, u64 addr,
 static void uvd_v6_0_ring_emit_hdp_flush(struct amdgpu_ring *ring)
 {
 	/* The firmware doesn't seem to like touching registers at this point. */
-=======
- * uvd_v6_0_ring_emit_hdp_flush - emit an hdp flush
- *
- * @ring: amdgpu_ring pointer
- *
- * Emits an hdp flush.
- */
-static void uvd_v6_0_ring_emit_hdp_flush(struct amdgpu_ring *ring)
-{
-	amdgpu_ring_write(ring, PACKET0(mmHDP_MEM_COHERENCY_FLUSH_CNTL, 0));
-	amdgpu_ring_write(ring, 0);
-}
-
-/**
- * uvd_v6_0_ring_hdp_invalidate - emit an hdp invalidate
- *
- * @ring: amdgpu_ring pointer
- *
- * Emits an hdp invalidate.
- */
-static void uvd_v6_0_ring_emit_hdp_invalidate(struct amdgpu_ring *ring)
-{
-	amdgpu_ring_write(ring, PACKET0(mmHDP_DEBUG0, 0));
-	amdgpu_ring_write(ring, 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -1100,11 +992,7 @@ static int uvd_v6_0_ring_test_ring(struct amdgpu_ring *ring)
 	}
 
 	if (i < adev->usec_timeout) {
-<<<<<<< HEAD
 		DRM_DEBUG("ring test on %d succeeded in %d usecs\n",
-=======
-		DRM_INFO("ring test on %d succeeded in %d usecs\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 ring->idx, i);
 	} else {
 		DRM_ERROR("amdgpu: ring %d test failed (0x%08X)\n",
@@ -1124,17 +1012,10 @@ static int uvd_v6_0_ring_test_ring(struct amdgpu_ring *ring)
  */
 static void uvd_v6_0_ring_emit_ib(struct amdgpu_ring *ring,
 				  struct amdgpu_ib *ib,
-<<<<<<< HEAD
 				  unsigned vmid, bool ctx_switch)
 {
 	amdgpu_ring_write(ring, PACKET0(mmUVD_LMI_RBC_IB_VMID, 0));
 	amdgpu_ring_write(ring, vmid);
-=======
-				  unsigned vm_id, bool ctx_switch)
-{
-	amdgpu_ring_write(ring, PACKET0(mmUVD_LMI_RBC_IB_VMID, 0));
-	amdgpu_ring_write(ring, vm_id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	amdgpu_ring_write(ring, PACKET0(mmUVD_LMI_RBC_IB_64BIT_BAR_LOW, 0));
 	amdgpu_ring_write(ring, lower_32_bits(ib->gpu_addr));
@@ -1144,7 +1025,6 @@ static void uvd_v6_0_ring_emit_ib(struct amdgpu_ring *ring,
 	amdgpu_ring_write(ring, ib->length_dw);
 }
 
-<<<<<<< HEAD
 /**
  * uvd_v6_0_enc_ring_emit_ib - enc execute indirect buffer
  *
@@ -1178,42 +1058,13 @@ static void uvd_v6_0_ring_emit_vm_flush(struct amdgpu_ring *ring,
 					unsigned vmid, uint64_t pd_addr)
 {
 	amdgpu_gmc_emit_flush_gpu_tlb(ring, vmid, pd_addr);
-=======
-static void uvd_v6_0_ring_emit_vm_flush(struct amdgpu_ring *ring,
-					 unsigned vm_id, uint64_t pd_addr)
-{
-	uint32_t reg;
-
-	if (vm_id < 8)
-		reg = mmVM_CONTEXT0_PAGE_TABLE_BASE_ADDR + vm_id;
-	else
-		reg = mmVM_CONTEXT8_PAGE_TABLE_BASE_ADDR + vm_id - 8;
-
-	amdgpu_ring_write(ring, PACKET0(mmUVD_GPCOM_VCPU_DATA0, 0));
-	amdgpu_ring_write(ring, reg << 2);
-	amdgpu_ring_write(ring, PACKET0(mmUVD_GPCOM_VCPU_DATA1, 0));
-	amdgpu_ring_write(ring, pd_addr >> 12);
-	amdgpu_ring_write(ring, PACKET0(mmUVD_GPCOM_VCPU_CMD, 0));
-	amdgpu_ring_write(ring, 0x8);
-
-	amdgpu_ring_write(ring, PACKET0(mmUVD_GPCOM_VCPU_DATA0, 0));
-	amdgpu_ring_write(ring, mmVM_INVALIDATE_REQUEST << 2);
-	amdgpu_ring_write(ring, PACKET0(mmUVD_GPCOM_VCPU_DATA1, 0));
-	amdgpu_ring_write(ring, 1 << vm_id);
-	amdgpu_ring_write(ring, PACKET0(mmUVD_GPCOM_VCPU_CMD, 0));
-	amdgpu_ring_write(ring, 0x8);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	amdgpu_ring_write(ring, PACKET0(mmUVD_GPCOM_VCPU_DATA0, 0));
 	amdgpu_ring_write(ring, mmVM_INVALIDATE_REQUEST << 2);
 	amdgpu_ring_write(ring, PACKET0(mmUVD_GPCOM_VCPU_DATA1, 0));
 	amdgpu_ring_write(ring, 0);
 	amdgpu_ring_write(ring, PACKET0(mmUVD_GP_SCRATCH8, 0));
-<<<<<<< HEAD
 	amdgpu_ring_write(ring, 1 << vmid); /* mask */
-=======
-	amdgpu_ring_write(ring, 1 << vm_id); /* mask */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	amdgpu_ring_write(ring, PACKET0(mmUVD_GPCOM_VCPU_CMD, 0));
 	amdgpu_ring_write(ring, 0xC);
 }
@@ -1235,7 +1086,6 @@ static void uvd_v6_0_ring_emit_pipeline_sync(struct amdgpu_ring *ring)
 	amdgpu_ring_write(ring, 0xE);
 }
 
-<<<<<<< HEAD
 static void uvd_v6_0_ring_insert_nop(struct amdgpu_ring *ring, uint32_t count)
 {
 	int i;
@@ -1275,8 +1125,6 @@ static void uvd_v6_0_enc_ring_emit_vm_flush(struct amdgpu_ring *ring,
 	amdgpu_ring_write(ring, vmid);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool uvd_v6_0_is_idle(void *handle)
 {
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
@@ -1309,17 +1157,10 @@ static bool uvd_v6_0_check_soft_reset(void *handle)
 		srbm_soft_reset = REG_SET_FIELD(srbm_soft_reset, SRBM_SOFT_RESET, SOFT_RESET_UVD, 1);
 
 	if (srbm_soft_reset) {
-<<<<<<< HEAD
 		adev->uvd.inst->srbm_soft_reset = srbm_soft_reset;
 		return true;
 	} else {
 		adev->uvd.inst->srbm_soft_reset = 0;
-=======
-		adev->uvd.srbm_soft_reset = srbm_soft_reset;
-		return true;
-	} else {
-		adev->uvd.srbm_soft_reset = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return false;
 	}
 }
@@ -1328,11 +1169,7 @@ static int uvd_v6_0_pre_soft_reset(void *handle)
 {
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
 
-<<<<<<< HEAD
 	if (!adev->uvd.inst->srbm_soft_reset)
-=======
-	if (!adev->uvd.srbm_soft_reset)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	uvd_v6_0_stop(adev);
@@ -1344,15 +1181,9 @@ static int uvd_v6_0_soft_reset(void *handle)
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
 	u32 srbm_soft_reset;
 
-<<<<<<< HEAD
 	if (!adev->uvd.inst->srbm_soft_reset)
 		return 0;
 	srbm_soft_reset = adev->uvd.inst->srbm_soft_reset;
-=======
-	if (!adev->uvd.srbm_soft_reset)
-		return 0;
-	srbm_soft_reset = adev->uvd.srbm_soft_reset;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (srbm_soft_reset) {
 		u32 tmp;
@@ -1380,11 +1211,7 @@ static int uvd_v6_0_post_soft_reset(void *handle)
 {
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
 
-<<<<<<< HEAD
 	if (!adev->uvd.inst->srbm_soft_reset)
-=======
-	if (!adev->uvd.srbm_soft_reset)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	mdelay(5);
@@ -1405,7 +1232,6 @@ static int uvd_v6_0_process_interrupt(struct amdgpu_device *adev,
 				      struct amdgpu_irq_src *source,
 				      struct amdgpu_iv_entry *entry)
 {
-<<<<<<< HEAD
 	bool int_handled = true;
 	DRM_DEBUG("IH: UVD TRAP\n");
 
@@ -1431,10 +1257,6 @@ static int uvd_v6_0_process_interrupt(struct amdgpu_device *adev,
 			DRM_ERROR("Unhandled interrupt: %d %d\n",
 			  entry->src_id, entry->src_data[0]);
 
-=======
-	DRM_DEBUG("IH: UVD TRAP\n");
-	amdgpu_fence_process(&adev->uvd.ring);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1708,29 +1530,19 @@ static const struct amd_ip_funcs uvd_v6_0_ip_funcs = {
 static const struct amdgpu_ring_funcs uvd_v6_0_ring_phys_funcs = {
 	.type = AMDGPU_RING_TYPE_UVD,
 	.align_mask = 0xf,
-<<<<<<< HEAD
-=======
-	.nop = PACKET0(mmUVD_NO_OP, 0),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.support_64bit_ptrs = false,
 	.get_rptr = uvd_v6_0_ring_get_rptr,
 	.get_wptr = uvd_v6_0_ring_get_wptr,
 	.set_wptr = uvd_v6_0_ring_set_wptr,
 	.parse_cs = amdgpu_uvd_ring_parse_cs,
 	.emit_frame_size =
-<<<<<<< HEAD
 		6 + /* hdp invalidate */
-=======
-		2 + /* uvd_v6_0_ring_emit_hdp_flush */
-		2 + /* uvd_v6_0_ring_emit_hdp_invalidate */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		10 + /* uvd_v6_0_ring_emit_pipeline_sync */
 		14, /* uvd_v6_0_ring_emit_fence x1 no user fence */
 	.emit_ib_size = 8, /* uvd_v6_0_ring_emit_ib */
 	.emit_ib = uvd_v6_0_ring_emit_ib,
 	.emit_fence = uvd_v6_0_ring_emit_fence,
 	.emit_hdp_flush = uvd_v6_0_ring_emit_hdp_flush,
-<<<<<<< HEAD
 	.test_ring = uvd_v6_0_ring_test_ring,
 	.test_ib = amdgpu_uvd_ring_test_ib,
 	.insert_nop = uvd_v6_0_ring_insert_nop,
@@ -1738,39 +1550,19 @@ static const struct amdgpu_ring_funcs uvd_v6_0_ring_phys_funcs = {
 	.begin_use = amdgpu_uvd_ring_begin_use,
 	.end_use = amdgpu_uvd_ring_end_use,
 	.emit_wreg = uvd_v6_0_ring_emit_wreg,
-=======
-	.emit_hdp_invalidate = uvd_v6_0_ring_emit_hdp_invalidate,
-	.test_ring = uvd_v6_0_ring_test_ring,
-	.test_ib = amdgpu_uvd_ring_test_ib,
-	.insert_nop = amdgpu_ring_insert_nop,
-	.pad_ib = amdgpu_ring_generic_pad_ib,
-	.begin_use = amdgpu_uvd_ring_begin_use,
-	.end_use = amdgpu_uvd_ring_end_use,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct amdgpu_ring_funcs uvd_v6_0_ring_vm_funcs = {
 	.type = AMDGPU_RING_TYPE_UVD,
 	.align_mask = 0xf,
-<<<<<<< HEAD
-=======
-	.nop = PACKET0(mmUVD_NO_OP, 0),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.support_64bit_ptrs = false,
 	.get_rptr = uvd_v6_0_ring_get_rptr,
 	.get_wptr = uvd_v6_0_ring_get_wptr,
 	.set_wptr = uvd_v6_0_ring_set_wptr,
 	.emit_frame_size =
-<<<<<<< HEAD
 		6 + /* hdp invalidate */
 		10 + /* uvd_v6_0_ring_emit_pipeline_sync */
 		VI_FLUSH_GPU_TLB_NUM_WREG * 6 + 8 + /* uvd_v6_0_ring_emit_vm_flush */
-=======
-		2 + /* uvd_v6_0_ring_emit_hdp_flush */
-		2 + /* uvd_v6_0_ring_emit_hdp_invalidate */
-		10 + /* uvd_v6_0_ring_emit_pipeline_sync */
-		20 + /* uvd_v6_0_ring_emit_vm_flush */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		14 + 14, /* uvd_v6_0_ring_emit_fence x2 vm fence */
 	.emit_ib_size = 8, /* uvd_v6_0_ring_emit_ib */
 	.emit_ib = uvd_v6_0_ring_emit_ib,
@@ -1778,7 +1570,6 @@ static const struct amdgpu_ring_funcs uvd_v6_0_ring_vm_funcs = {
 	.emit_vm_flush = uvd_v6_0_ring_emit_vm_flush,
 	.emit_pipeline_sync = uvd_v6_0_ring_emit_pipeline_sync,
 	.emit_hdp_flush = uvd_v6_0_ring_emit_hdp_flush,
-<<<<<<< HEAD
 	.test_ring = uvd_v6_0_ring_test_ring,
 	.test_ib = amdgpu_uvd_ring_test_ib,
 	.insert_nop = uvd_v6_0_ring_insert_nop,
@@ -1810,12 +1601,6 @@ static const struct amdgpu_ring_funcs uvd_v6_0_enc_ring_vm_funcs = {
 	.test_ib = uvd_v6_0_enc_ring_test_ib,
 	.insert_nop = amdgpu_ring_insert_nop,
 	.insert_end = uvd_v6_0_enc_ring_insert_end,
-=======
-	.emit_hdp_invalidate = uvd_v6_0_ring_emit_hdp_invalidate,
-	.test_ring = uvd_v6_0_ring_test_ring,
-	.test_ib = amdgpu_uvd_ring_test_ib,
-	.insert_nop = amdgpu_ring_insert_nop,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.pad_ib = amdgpu_ring_generic_pad_ib,
 	.begin_use = amdgpu_uvd_ring_begin_use,
 	.end_use = amdgpu_uvd_ring_end_use,
@@ -1824,22 +1609,14 @@ static const struct amdgpu_ring_funcs uvd_v6_0_enc_ring_vm_funcs = {
 static void uvd_v6_0_set_ring_funcs(struct amdgpu_device *adev)
 {
 	if (adev->asic_type >= CHIP_POLARIS10) {
-<<<<<<< HEAD
 		adev->uvd.inst->ring.funcs = &uvd_v6_0_ring_vm_funcs;
 		DRM_INFO("UVD is enabled in VM mode\n");
 	} else {
 		adev->uvd.inst->ring.funcs = &uvd_v6_0_ring_phys_funcs;
-=======
-		adev->uvd.ring.funcs = &uvd_v6_0_ring_vm_funcs;
-		DRM_INFO("UVD is enabled in VM mode\n");
-	} else {
-		adev->uvd.ring.funcs = &uvd_v6_0_ring_phys_funcs;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		DRM_INFO("UVD is enabled in physical mode\n");
 	}
 }
 
-<<<<<<< HEAD
 static void uvd_v6_0_set_enc_ring_funcs(struct amdgpu_device *adev)
 {
 	int i;
@@ -1850,8 +1627,6 @@ static void uvd_v6_0_set_enc_ring_funcs(struct amdgpu_device *adev)
 	DRM_INFO("UVD ENC is enabled in VM mode\n");
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct amdgpu_irq_src_funcs uvd_v6_0_irq_funcs = {
 	.set = uvd_v6_0_set_interrupt_state,
 	.process = uvd_v6_0_process_interrupt,
@@ -1859,17 +1634,12 @@ static const struct amdgpu_irq_src_funcs uvd_v6_0_irq_funcs = {
 
 static void uvd_v6_0_set_irq_funcs(struct amdgpu_device *adev)
 {
-<<<<<<< HEAD
 	if (uvd_v6_0_enc_support(adev))
 		adev->uvd.inst->irq.num_types = adev->uvd.num_enc_rings + 1;
 	else
 		adev->uvd.inst->irq.num_types = 1;
 
 	adev->uvd.inst->irq.funcs = &uvd_v6_0_irq_funcs;
-=======
-	adev->uvd.irq.num_types = 1;
-	adev->uvd.irq.funcs = &uvd_v6_0_irq_funcs;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 const struct amdgpu_ip_block_version uvd_v6_0_ip_block =

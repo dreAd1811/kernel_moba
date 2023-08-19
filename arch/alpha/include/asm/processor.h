@@ -40,22 +40,12 @@ typedef struct {
 struct thread_struct { };
 #define INIT_THREAD  { }
 
-<<<<<<< HEAD
-=======
-/* Return saved PC of a blocked thread.  */
-struct task_struct;
-extern unsigned long thread_saved_pc(struct task_struct *);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Do necessary setup to start up a newly executed thread.  */
 struct pt_regs;
 extern void start_thread(struct pt_regs *, unsigned long, unsigned long);
 
 /* Free all resources held by a thread. */
-<<<<<<< HEAD
 struct task_struct;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern void release_thread(struct task_struct *);
 
 unsigned long get_wchan(struct task_struct *p);

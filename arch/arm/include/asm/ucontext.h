@@ -3,10 +3,7 @@
 #define _ASMARM_UCONTEXT_H
 
 #include <asm/fpstate.h>
-<<<<<<< HEAD
 #include <asm/user.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * struct sigcontext only has room for the basic registers, but struct

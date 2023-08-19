@@ -252,11 +252,7 @@ static inline void dump_rawmsg(enum debuglevel level, const char *tag,
 		return;
 	if (l > 64)
 		l = 64; /* arbitrary limit */
-<<<<<<< HEAD
 	dbgline = kmalloc_array(3, l, GFP_ATOMIC);
-=======
-	dbgline = kmalloc(3 * l, GFP_ATOMIC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!dbgline)
 		return;
 	for (i = 0; i < l; i++) {
@@ -276,11 +272,7 @@ static inline void dump_rawmsg(enum debuglevel level, const char *tag,
 			return;
 		if (l > 64)
 			l = 64; /* arbitrary limit */
-<<<<<<< HEAD
 		dbgline = kmalloc_array(3, l, GFP_ATOMIC);
-=======
-		dbgline = kmalloc(3 * l, GFP_ATOMIC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!dbgline)
 			return;
 		data += CAPIMSG_LEN(data);
@@ -1378,11 +1370,7 @@ static void do_connect_req(struct gigaset_capi_ctr *iif,
 	cmsg->adr.adrPLCI |= (bcs->channel + 1) << 8;
 
 	/* build command table */
-<<<<<<< HEAD
 	commands = kcalloc(AT_NUM, sizeof(*commands), GFP_KERNEL);
-=======
-	commands = kzalloc(AT_NUM * (sizeof *commands), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!commands)
 		goto oom;
 
@@ -2449,22 +2437,6 @@ static int gigaset_proc_show(struct seq_file *m, void *v)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-static int gigaset_proc_open(struct inode *inode, struct file *file)
-{
-	return single_open(file, gigaset_proc_show, PDE_DATA(inode));
-}
-
-static const struct file_operations gigaset_proc_fops = {
-	.owner		= THIS_MODULE,
-	.open		= gigaset_proc_open,
-	.read		= seq_read,
-	.llseek		= seq_lseek,
-	.release	= single_release,
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * gigaset_isdn_regdev() - register device to LL
  * @cs:		device descriptor structure.
@@ -2494,11 +2466,7 @@ int gigaset_isdn_regdev(struct cardstate *cs, const char *isdnid)
 	iif->ctr.release_appl  = gigaset_release_appl;
 	iif->ctr.send_message  = gigaset_send_message;
 	iif->ctr.procinfo      = gigaset_procinfo;
-<<<<<<< HEAD
 	iif->ctr.proc_show     = gigaset_proc_show,
-=======
-	iif->ctr.proc_fops = &gigaset_proc_fops;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INIT_LIST_HEAD(&iif->appls);
 	skb_queue_head_init(&iif->sendqueue);
 	atomic_set(&iif->sendqlen, 0);

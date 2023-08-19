@@ -260,11 +260,7 @@ static struct clk_lookup lookups[] = {
 	CLKDEV_CON_ID("veu1", &mstp_clks[HWBLK_VEU2H1]),
 	CLKDEV_DEV_ID("sh-vou.0", &mstp_clks[HWBLK_VOU]),
 	CLKDEV_CON_ID("beu0", &mstp_clks[HWBLK_BEU]),
-<<<<<<< HEAD
 	CLKDEV_DEV_ID("ceu.0", &mstp_clks[HWBLK_CEU]),
-=======
-	CLKDEV_DEV_ID("sh_mobile_ceu.0", &mstp_clks[HWBLK_CEU]),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	CLKDEV_CON_ID("veu0", &mstp_clks[HWBLK_VEU2H0]),
 	CLKDEV_CON_ID("vpu0", &mstp_clks[HWBLK_VPU]),
 

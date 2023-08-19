@@ -166,19 +166,11 @@ static int vmci_host_close(struct inode *inode, struct file *filp)
  * This is used to wake up the VMX when a VMCI call arrives, or
  * to wake up select() or poll() at the next clock tick.
  */
-<<<<<<< HEAD
 static __poll_t vmci_host_poll(struct file *filp, poll_table *wait)
 {
 	struct vmci_host_dev *vmci_host_dev = filp->private_data;
 	struct vmci_ctx *context = vmci_host_dev->context;
 	__poll_t mask = 0;
-=======
-static unsigned int vmci_host_poll(struct file *filp, poll_table *wait)
-{
-	struct vmci_host_dev *vmci_host_dev = filp->private_data;
-	struct vmci_ctx *context = vmci_host_dev->context;
-	unsigned int mask = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (vmci_host_dev->ct_type == VMCIOBJ_CONTEXT) {
 		/* Check for VMCI calls to this VM context. */
@@ -190,11 +182,7 @@ static unsigned int vmci_host_poll(struct file *filp, poll_table *wait)
 		if (context->pending_datagrams > 0 ||
 		    vmci_handle_arr_get_size(
 				context->pending_doorbell_array) > 0) {
-<<<<<<< HEAD
 			mask = EPOLLIN;
-=======
-			mask = POLLIN;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		spin_unlock(&context->lock);
 	}

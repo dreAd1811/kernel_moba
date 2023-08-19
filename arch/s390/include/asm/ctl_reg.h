@@ -8,7 +8,6 @@
 #ifndef __ASM_CTL_REG_H
 #define __ASM_CTL_REG_H
 
-<<<<<<< HEAD
 #include <linux/const.h>
 
 #define CR0_CLOCK_COMPARATOR_SIGN	_BITUL(63 - 10)
@@ -33,8 +32,6 @@
 
 #ifndef __ASSEMBLY__
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/bug.h>
 
 #define __ctl_load(array, low, high) do {				\
@@ -82,15 +79,11 @@ void smp_ctl_clear_bit(int cr, int bit);
 union ctlreg0 {
 	unsigned long val;
 	struct {
-<<<<<<< HEAD
 		unsigned long	   : 8;
 		unsigned long tcx  : 1;	/* Transactional-Execution control */
 		unsigned long pifo : 1;	/* Transactional-Execution Program-
 					   Interruption-Filtering Override */
 		unsigned long	   : 22;
-=======
-		unsigned long	   : 32;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		unsigned long	   : 3;
 		unsigned long lap  : 1; /* Low-address-protection control */
 		unsigned long	   : 4;
@@ -106,7 +99,6 @@ union ctlreg0 {
 	};
 };
 
-<<<<<<< HEAD
 union ctlreg2 {
 	unsigned long val;
 	struct {
@@ -120,8 +112,6 @@ union ctlreg2 {
 	};
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_SMP
 # define ctl_set_bit(cr, bit) smp_ctl_set_bit(cr, bit)
 # define ctl_clear_bit(cr, bit) smp_ctl_clear_bit(cr, bit)
@@ -130,8 +120,5 @@ union ctlreg2 {
 # define ctl_clear_bit(cr, bit) __ctl_clear_bit(cr, bit)
 #endif
 
-<<<<<<< HEAD
 #endif /* __ASSEMBLY__ */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __ASM_CTL_REG_H */

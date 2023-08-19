@@ -67,12 +67,8 @@ static u8 reg_r(struct gspca_dev *gspca_dev, u16 index)
 			gspca_dev->usb_buf, 1,
 			500);
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_USBI, "reg_r 0x%x=0x%02x\n",
 		  index, gspca_dev->usb_buf[0]);
-=======
-	PDEBUG(D_USBI, "reg_r 0x%x=0x%02x", index, gspca_dev->usb_buf[0]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0) {
 		pr_err("reg_r 0x%x err %d\n", index, ret);
 		gspca_dev->usb_err = ret;
@@ -98,11 +94,7 @@ static void reg_w(struct gspca_dev *gspca_dev, u16 index, u8 val)
 			NULL,
 			0,
 			500);
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_USBO, "reg_w 0x%x:=0x%02x\n", index, val);
-=======
-	PDEBUG(D_USBO, "reg_w 0x%x:=0x%02x", index, val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0) {
 		pr_err("reg_w 0x%x err %d\n", index, ret);
 		gspca_dev->usb_err = ret;
@@ -477,13 +469,8 @@ static int sd_start(struct gspca_dev *gspca_dev)
 	reg_w_mask(gspca_dev, STK1135_REG_SCTRL, 0x80, 0x80);
 
 	if (gspca_dev->usb_err >= 0)
-<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_STREAM, "camera started alt: 0x%02x\n",
 			  gspca_dev->alt);
-=======
-		PDEBUG(D_STREAM, "camera started alt: 0x%02x",
-				gspca_dev->alt);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sd->pkt_seq = 0;
 
@@ -498,11 +485,7 @@ static void sd_stopN(struct gspca_dev *gspca_dev)
 
 	stk1135_camera_disable(gspca_dev);
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_STREAM, "camera stopped\n");
-=======
-	PDEBUG(D_STREAM, "camera stopped");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void sd_pkt_scan(struct gspca_dev *gspca_dev,
@@ -517,11 +500,7 @@ static void sd_pkt_scan(struct gspca_dev *gspca_dev,
 	u8 seq;
 
 	if (len < 4) {
-<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_PACK, "received short packet (less than 4 bytes)\n");
-=======
-		PDEBUG(D_PACK, "received short packet (less than 4 bytes)");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -537,11 +516,7 @@ static void sd_pkt_scan(struct gspca_dev *gspca_dev,
 	if (!(hdr->flags & STK1135_HDR_FRAME_START)) {
 		seq = hdr->seq & STK1135_HDR_SEQ_MASK;
 		if (seq != sd->pkt_seq) {
-<<<<<<< HEAD
 			gspca_dbg(gspca_dev, D_PACK, "received out-of-sequence packet\n");
-=======
-			PDEBUG(D_PACK, "received out-of-sequence packet");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* resync sequence and discard packet */
 			sd->pkt_seq = seq;
 			gspca_dev->last_packet_type = DISCARD_PACKET;

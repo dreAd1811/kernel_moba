@@ -1187,17 +1187,12 @@ static int pt_event_addr_filters_validate(struct list_head *filters)
 	int range = 0;
 
 	list_for_each_entry(filter, filters, entry) {
-<<<<<<< HEAD
 		/*
 		 * PT doesn't support single address triggers and
 		 * 'start' filters.
 		 */
 		if (!filter->size ||
 		    filter->action == PERF_ADDR_FILTER_ACTION_START)
-=======
-		/* PT doesn't support single address triggers */
-		if (!filter->range || !filter->size)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EOPNOTSUPP;
 
 		if (!filter->path.dentry) {
@@ -1218,12 +1213,7 @@ static int pt_event_addr_filters_validate(struct list_head *filters)
 static void pt_event_addr_filters_sync(struct perf_event *event)
 {
 	struct perf_addr_filters_head *head = perf_event_addr_filters(event);
-<<<<<<< HEAD
 	unsigned long msr_a, msr_b, *offs = event->addr_filters_offs;
-=======
-	unsigned long msr_a, msr_b;
-	struct perf_addr_filter_range *fr = event->addr_filter_ranges;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct pt_filters *filters = event->hw.addr_filters;
 	struct perf_addr_filter *filter;
 	int range = 0;
@@ -1232,33 +1222,20 @@ static void pt_event_addr_filters_sync(struct perf_event *event)
 		return;
 
 	list_for_each_entry(filter, &head->list, entry) {
-<<<<<<< HEAD
 		if (filter->path.dentry && !offs[range]) {
 			msr_a = msr_b = 0;
 		} else {
 			/* apply the offset */
 			msr_a = filter->offset + offs[range];
 			msr_b = filter->size + msr_a - 1;
-=======
-		if (filter->path.dentry && !fr[range].start) {
-			msr_a = msr_b = 0;
-		} else {
-			/* apply the offset */
-			msr_a = fr[range].start;
-			msr_b = msr_a + fr[range].size - 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		filters->filter[range].msr_a  = msr_a;
 		filters->filter[range].msr_b  = msr_b;
-<<<<<<< HEAD
 		if (filter->action == PERF_ADDR_FILTER_ACTION_FILTER)
 			filters->filter[range].config = 1;
 		else
 			filters->filter[range].config = 2;
-=======
-		filters->filter[range].config = filter->filter ? 1 : 2;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		range++;
 	}
 

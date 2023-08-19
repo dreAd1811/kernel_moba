@@ -88,7 +88,6 @@ void verify_cpu_asid_bits(void)
 	}
 }
 
-<<<<<<< HEAD
 
 /*
  * When the CnP is active, the caller must have set the ttbr0 to reserved
@@ -158,8 +157,6 @@ void arm64_workaround_1542418_asid_rollover(void)
 	isb();
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void flush_context(unsigned int cpu)
 {
 	int i;
@@ -168,15 +165,6 @@ static void flush_context(unsigned int cpu)
 	/* Update the list of reserved ASIDs and the ASID bitmap. */
 	bitmap_clear(asid_map, 0, NUM_USER_ASIDS);
 
-<<<<<<< HEAD
-=======
-	/*
-	 * Ensure the generation bump is observed before we xchg the
-	 * active_asids.
-	 */
-	smp_wmb();
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for_each_possible_cpu(i) {
 		asid = atomic64_xchg_relaxed(&per_cpu(active_asids, i), 0);
 		/*
@@ -192,14 +180,10 @@ static void flush_context(unsigned int cpu)
 		per_cpu(reserved_asids, i) = asid;
 	}
 
-<<<<<<< HEAD
 	/*
 	 * Queue a TLB invalidation for each CPU to perform on next
 	 * context-switch
 	 */
-=======
-	/* Queue a TLB invalidate and flush the I-cache if necessary. */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cpumask_setall(&tlb_flush_pending);
 }
 
@@ -279,16 +263,11 @@ set_asid:
 void check_and_switch_context(struct mm_struct *mm, unsigned int cpu)
 {
 	unsigned long flags;
-<<<<<<< HEAD
 	u64 asid, old_active_asid;
-=======
-	u64 asid;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	asid = atomic64_read(&mm->context.id);
 
 	/*
-<<<<<<< HEAD
 	 * The memory ordering here is subtle.
 	 * If our active_asids is non-zero and the ASID matches the current
 	 * generation, then we update the active_asids entry with a relaxed
@@ -307,16 +286,6 @@ void check_and_switch_context(struct mm_struct *mm, unsigned int cpu)
 	    !((asid ^ atomic64_read(&asid_generation)) >> asid_bits) &&
 	    atomic64_cmpxchg_relaxed(&per_cpu(active_asids, cpu),
 				     old_active_asid, asid))
-=======
-	 * The memory ordering here is subtle. We rely on the control
-	 * dependency between the generation read and the update of
-	 * active_asids to ensure that we are synchronised with a
-	 * parallel rollover (i.e. this pairs with the smp_wmb() in
-	 * flush_context).
-	 */
-	if (!((asid ^ atomic64_read(&asid_generation)) >> asid_bits)
-	    && atomic64_xchg_relaxed(&per_cpu(active_asids, cpu), asid))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto switch_mm_fastpath;
 
 	raw_spin_lock_irqsave(&cpu_asid_lock, flags);
@@ -327,15 +296,10 @@ void check_and_switch_context(struct mm_struct *mm, unsigned int cpu)
 		atomic64_set(&mm->context.id, asid);
 	}
 
-<<<<<<< HEAD
 	if (cpumask_test_and_clear_cpu(cpu, &tlb_flush_pending)) {
 		__arm64_workaround_1542418_asid_rollover();
 		local_flush_tlb_all();
 	}
-=======
-	if (cpumask_test_and_clear_cpu(cpu, &tlb_flush_pending))
-		local_flush_tlb_all();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	atomic64_set(&per_cpu(active_asids, cpu), asid);
 	raw_spin_unlock_irqrestore(&cpu_asid_lock, flags);
@@ -370,11 +334,7 @@ static int asids_init(void)
 	 */
 	WARN_ON(NUM_USER_ASIDS - 1 <= num_possible_cpus());
 	atomic64_set(&asid_generation, ASID_FIRST_VERSION);
-<<<<<<< HEAD
 	asid_map = kcalloc(BITS_TO_LONGS(NUM_USER_ASIDS), sizeof(*asid_map),
-=======
-	asid_map = kzalloc(BITS_TO_LONGS(NUM_USER_ASIDS) * sizeof(*asid_map),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   GFP_KERNEL);
 	if (!asid_map)
 		panic("Failed to allocate bitmap for %lu ASIDs\n",

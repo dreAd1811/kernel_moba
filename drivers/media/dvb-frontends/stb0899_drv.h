@@ -25,11 +25,7 @@
 #include <linux/kernel.h>
 #include <linux/module.h>
 
-<<<<<<< HEAD
 #include <media/dvb_frontend.h>
-=======
-#include "dvb_frontend.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define STB0899_TSMODE_SERIAL		1
 #define STB0899_CLKPOL_FALLING		2
@@ -86,11 +82,7 @@ enum stb0899_inversion {
  * 1. POWER ON/OFF		(index 0)
  * 2. FE_HAS_LOCK/LOCK_LOSS	(index 1)
  *
-<<<<<<< HEAD
  * @gpio	= one of the above listed GPIO's
-=======
- * @gpio 	= one of the above listed GPIO's
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @level	= output state: pulled up or low
  */
 struct stb0899_postproc {

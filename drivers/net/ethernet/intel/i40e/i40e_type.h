@@ -1,33 +1,5 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
 /* Copyright(c) 2013 - 2018 Intel Corporation. */
-=======
-/*******************************************************************************
- *
- * Intel Ethernet Controller XL710 Family Linux Driver
- * Copyright(c) 2013 - 2015 Intel Corporation.
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms and conditions of the GNU General Public License,
- * version 2, as published by the Free Software Foundation.
- *
- * This program is distributed in the hope it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
- * more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * The full GNU General Public License is included in this distribution in
- * the file called "COPYING".
- *
- * Contact Information:
- * e1000-devel Mailing List <e1000-devel@lists.sourceforge.net>
- * Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497
- *
- ******************************************************************************/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifndef _I40E_TYPE_H_
 #define _I40E_TYPE_H_
@@ -44,23 +16,16 @@
 #define I40E_MASK(mask, shift) ((u32)(mask) << (shift))
 
 #define I40E_MAX_VSI_QP			16
-<<<<<<< HEAD
 #define I40E_MAX_VF_VSI			4
-=======
-#define I40E_MAX_VF_VSI			3
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define I40E_MAX_CHAINED_RX_BUFFERS	5
 #define I40E_MAX_PF_UDP_OFFLOAD_PORTS	16
 
 /* Max default timeout in ms, */
 #define I40E_MAX_NVM_TIMEOUT		18000
 
-<<<<<<< HEAD
 /* Max timeout in ms for the phy to respond */
 #define I40E_MAX_PHY_TIMEOUT		500
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Switch from ms to the 1usec global time (this is the GTIME resolution) */
 #define I40E_MS_TO_GTIME(time)		((time) * 1000)
 
@@ -283,13 +248,10 @@ struct i40e_phy_info {
 					     I40E_PHY_TYPE_OFFSET)
 #define I40E_CAP_PHY_TYPE_25GBASE_LR BIT_ULL(I40E_PHY_TYPE_25GBASE_LR + \
 					     I40E_PHY_TYPE_OFFSET)
-<<<<<<< HEAD
 #define I40E_CAP_PHY_TYPE_25GBASE_AOC BIT_ULL(I40E_PHY_TYPE_25GBASE_AOC + \
 					     I40E_PHY_TYPE_OFFSET)
 #define I40E_CAP_PHY_TYPE_25GBASE_ACC BIT_ULL(I40E_PHY_TYPE_25GBASE_ACC + \
 					     I40E_PHY_TYPE_OFFSET)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define I40E_HW_CAP_MAX_GPIO			30
 /* Capabilities of a PF or a VF or the whole device */
 struct i40e_hw_capabilities {
@@ -298,7 +260,6 @@ struct i40e_hw_capabilities {
 #define I40E_NVM_IMAGE_TYPE_CLOUD	0x2
 #define I40E_NVM_IMAGE_TYPE_UDP_CLOUD	0x3
 
-<<<<<<< HEAD
 	/* Cloud filter modes:
 	 * Mode1: Filter on L4 port only
 	 * Mode2: Filter for non-tunneled traffic
@@ -309,8 +270,6 @@ struct i40e_hw_capabilities {
 #define I40E_CLOUD_FILTER_MODE3	0x8
 #define I40E_SWITCH_MODE_MASK	0xF
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32  management_mode;
 	u32  mng_protocols_over_mctp;
 #define I40E_MNG_PROTOCOL_PLDM		0x2
@@ -420,10 +379,7 @@ enum i40e_nvmupd_cmd {
 	I40E_NVMUPD_STATUS,
 	I40E_NVMUPD_EXEC_AQ,
 	I40E_NVMUPD_GET_AQ_RESULT,
-<<<<<<< HEAD
 	I40E_NVMUPD_GET_AQ_EVENT,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum i40e_nvmupd_state {
@@ -443,7 +399,6 @@ enum i40e_nvmupd_state {
 
 #define I40E_NVM_MOD_PNT_MASK 0xFF
 
-<<<<<<< HEAD
 #define I40E_NVM_TRANS_SHIFT			8
 #define I40E_NVM_TRANS_MASK			(0xf << I40E_NVM_TRANS_SHIFT)
 #define I40E_NVM_PRESERVATION_FLAGS_SHIFT	12
@@ -459,17 +414,6 @@ enum i40e_nvmupd_state {
 #define I40E_NVM_CSUM				0x8
 #define I40E_NVM_AQE				0xe
 #define I40E_NVM_EXEC				0xf
-=======
-#define I40E_NVM_TRANS_SHIFT	8
-#define I40E_NVM_TRANS_MASK	(0xf << I40E_NVM_TRANS_SHIFT)
-#define I40E_NVM_CON		0x0
-#define I40E_NVM_SNT		0x1
-#define I40E_NVM_LCB		0x2
-#define I40E_NVM_SA		(I40E_NVM_SNT | I40E_NVM_LCB)
-#define I40E_NVM_ERA		0x4
-#define I40E_NVM_CSUM		0x8
-#define I40E_NVM_EXEC		0xf
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define I40E_NVM_ADAPT_SHIFT	16
 #define I40E_NVM_ADAPT_MASK	(0xffff << I40E_NVM_ADAPT_SHIFT)
@@ -485,7 +429,6 @@ struct i40e_nvm_access {
 	u8 data[1];
 };
 
-<<<<<<< HEAD
 /* (Q)SFP module access definitions */
 #define I40E_I2C_EEPROM_DEV_ADDR	0xA0
 #define I40E_I2C_EEPROM_DEV_ADDR2	0xA2
@@ -498,8 +441,6 @@ struct i40e_nvm_access {
 #define I40E_MODULE_TYPE_QSFP28		0x11
 #define I40E_MODULE_QSFP_MAX_LEN	640
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* PCI bus types */
 enum i40e_bus_type {
 	i40e_bus_type_unknown = 0,
@@ -654,10 +595,7 @@ struct i40e_hw {
 	/* state of nvm update process */
 	enum i40e_nvmupd_state nvmupd_state;
 	struct i40e_aq_desc nvm_wb_desc;
-<<<<<<< HEAD
 	struct i40e_aq_desc nvm_aq_event_desc;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct i40e_virt_mem nvm_buff;
 	bool nvm_release_on_done;
 	u16 nvm_wait_opcode;
@@ -674,7 +612,6 @@ struct i40e_hw {
 	struct i40e_dcbx_config desired_dcbx_config; /* CEE Desired Cfg */
 
 #define I40E_HW_FLAG_AQ_SRCTL_ACCESS_ENABLE BIT_ULL(0)
-<<<<<<< HEAD
 #define I40E_HW_FLAG_802_1AD_CAPABLE        BIT_ULL(1)
 #define I40E_HW_FLAG_AQ_PHY_ACCESS_CAPABLE  BIT_ULL(2)
 #define I40E_HW_FLAG_NVM_READ_REQUIRES_LOCK BIT_ULL(3)
@@ -685,10 +622,6 @@ struct i40e_hw {
 	u16 first_tag;
 	u16 second_tag;
 
-=======
-	u64 flags;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* debug mask */
 	u32 debug_mask;
 	char err_str[16];
@@ -1361,12 +1294,8 @@ struct i40e_hw_port_stats {
 
 /* Checksum and Shadow RAM pointers */
 #define I40E_SR_NVM_CONTROL_WORD		0x00
-<<<<<<< HEAD
 #define I40E_EMP_MODULE_PTR			0x0F
 #define I40E_SR_EMP_MODULE_PTR			0x48
-=======
-#define I40E_SR_EMP_MODULE_PTR			0x0F
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define I40E_SR_PBA_FLAGS			0x15
 #define I40E_SR_PBA_BLOCK_PTR			0x16
 #define I40E_SR_BOOT_CONFIG_PTR			0x17
@@ -1385,14 +1314,11 @@ struct i40e_hw_port_stats {
 #define I40E_SR_PCIE_ALT_MODULE_MAX_SIZE	1024
 #define I40E_SR_CONTROL_WORD_1_SHIFT		0x06
 #define I40E_SR_CONTROL_WORD_1_MASK	(0x03 << I40E_SR_CONTROL_WORD_1_SHIFT)
-<<<<<<< HEAD
 #define I40E_SR_CONTROL_WORD_1_NVM_BANK_VALID	BIT(5)
 #define I40E_SR_NVM_MAP_STRUCTURE_TYPE		BIT(12)
 #define I40E_PTR_TYPE				BIT(15)
 #define I40E_SR_OCP_CFG_WORD0			0x2B
 #define I40E_SR_OCP_ENABLED			BIT(15)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Shadow RAM related */
 #define I40E_SR_SECTOR_SIZE_IN_WORDS	0x800
@@ -1507,12 +1433,8 @@ enum i40e_reset_type {
 };
 
 /* IEEE 802.1AB LLDP Agent Variables from NVM */
-<<<<<<< HEAD
 #define I40E_NVM_LLDP_CFG_PTR	0x06
 #define I40E_SR_LLDP_CFG_PTR	0x31
-=======
-#define I40E_NVM_LLDP_CFG_PTR		0xD
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct i40e_lldp_variables {
 	u16 length;
 	u16 adminstatus;
@@ -1572,32 +1494,19 @@ struct i40e_lldp_variables {
 #define I40E_FLEX_57_SHIFT		6
 #define I40E_FLEX_57_MASK		(0x1ULL << I40E_FLEX_57_SHIFT)
 
-<<<<<<< HEAD
 /* Version format for Dynamic Device Personalization(DDP) */
 struct i40e_ddp_version {
-=======
-/* Version format for PPP */
-struct i40e_ppp_version {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 major;
 	u8 minor;
 	u8 update;
 	u8 draft;
 };
 
-<<<<<<< HEAD
 #define I40E_DDP_NAME_SIZE	32
 
 /* Package header */
 struct i40e_package_header {
 	struct i40e_ddp_version version;
-=======
-#define I40E_PPP_NAME_SIZE	32
-
-/* Package header */
-struct i40e_package_header {
-	struct i40e_ppp_version version;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 segment_count;
 	u32 segment_offset[1];
 };
@@ -1609,28 +1518,16 @@ struct i40e_generic_seg_header {
 #define SEGMENT_TYPE_I40E	0x00000011
 #define SEGMENT_TYPE_X722	0x00000012
 	u32 type;
-<<<<<<< HEAD
 	struct i40e_ddp_version version;
 	u32 size;
 	char name[I40E_DDP_NAME_SIZE];
-=======
-	struct i40e_ppp_version version;
-	u32 size;
-	char name[I40E_PPP_NAME_SIZE];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct i40e_metadata_segment {
 	struct i40e_generic_seg_header header;
-<<<<<<< HEAD
 	struct i40e_ddp_version version;
 	u32 track_id;
 	char name[I40E_DDP_NAME_SIZE];
-=======
-	struct i40e_ppp_version version;
-	u32 track_id;
-	char name[I40E_PPP_NAME_SIZE];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct i40e_device_id_entry {
@@ -1640,13 +1537,8 @@ struct i40e_device_id_entry {
 
 struct i40e_profile_segment {
 	struct i40e_generic_seg_header header;
-<<<<<<< HEAD
 	struct i40e_ddp_version version;
 	char name[I40E_DDP_NAME_SIZE];
-=======
-	struct i40e_ppp_version version;
-	char name[I40E_PPP_NAME_SIZE];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 device_table_count;
 	struct i40e_device_id_entry device_table[1];
 };
@@ -1673,20 +1565,11 @@ struct i40e_profile_section_header {
 
 struct i40e_profile_info {
 	u32 track_id;
-<<<<<<< HEAD
 	struct i40e_ddp_version version;
 	u8 op;
 #define I40E_DDP_ADD_TRACKID		0x01
 #define I40E_DDP_REMOVE_TRACKID	0x02
 	u8 reserved[7];
 	u8 name[I40E_DDP_NAME_SIZE];
-=======
-	struct i40e_ppp_version version;
-	u8 op;
-#define I40E_PPP_ADD_TRACKID		0x01
-#define I40E_PPP_REMOVE_TRACKID	0x02
-	u8 reserved[7];
-	u8 name[I40E_PPP_NAME_SIZE];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 #endif /* _I40E_TYPE_H_ */

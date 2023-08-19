@@ -5,10 +5,6 @@
  *  VMA_VM_FLAGS
  *  VM_EXEC
  */
-<<<<<<< HEAD
-=======
-#include <linux/const.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/asm-offsets.h>
 #include <asm/thread_info.h>
 
@@ -34,11 +30,7 @@
  * act_mm - get current->active_mm
  */
 	.macro	act_mm, rd
-<<<<<<< HEAD
 	bic	\rd, sp, #8128
-=======
-	bic	\rd, sp, #(THREAD_SIZE - 1) & ~63
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bic	\rd, \rd, #63
 	ldr	\rd, [\rd, #TI_TASK]
 	.if (TSK_ACTIVE_MM > IMM12_MASK)

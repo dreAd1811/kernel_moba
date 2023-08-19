@@ -1,14 +1,10 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * linux/arch/sh/boards/se/7724/setup.c
  *
  * Copyright (C) 2009 Renesas Solutions Corp.
  *
  * Kuninori Morimoto <morimoto.kuninori@renesas.com>
-<<<<<<< HEAD
  */
 #include <asm/clock.h>
 #include <asm/heartbeat.h>
@@ -48,42 +44,6 @@
 #define CEU_BUFFER_MEMORY_SIZE		(4 << 20)
 static phys_addr_t ceu0_dma_membase;
 static phys_addr_t ceu1_dma_membase;
-=======
- *
- * This file is subject to the terms and conditions of the GNU General Public
- * License.  See the file "COPYING" in the main directory of this archive
- * for more details.
- */
-
-#include <linux/init.h>
-#include <linux/device.h>
-#include <linux/interrupt.h>
-#include <linux/platform_device.h>
-#include <linux/mmc/host.h>
-#include <linux/mfd/tmio.h>
-#include <linux/mtd/physmap.h>
-#include <linux/delay.h>
-#include <linux/regulator/fixed.h>
-#include <linux/regulator/machine.h>
-#include <linux/smc91x.h>
-#include <linux/gpio.h>
-#include <linux/input.h>
-#include <linux/input/sh_keysc.h>
-#include <linux/usb/r8a66597.h>
-#include <linux/sh_eth.h>
-#include <linux/sh_intc.h>
-#include <linux/videodev2.h>
-#include <video/sh_mobile_lcdc.h>
-#include <media/drv-intf/sh_mobile_ceu.h>
-#include <sound/sh_fsi.h>
-#include <sound/simple_card.h>
-#include <asm/io.h>
-#include <asm/heartbeat.h>
-#include <asm/clock.h>
-#include <asm/suspend.h>
-#include <cpu/sh7724.h>
-#include <mach-se/mach/se7724.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * SWx    1234 5678
@@ -262,13 +222,8 @@ static struct platform_device lcdc_device = {
 };
 
 /* CEU0 */
-<<<<<<< HEAD
 static struct ceu_platform_data ceu0_pdata = {
 	.num_subdevs = 0,
-=======
-static struct sh_mobile_ceu_info sh_mobile_ceu0_info = {
-	.flags = SH_CEU_FLAG_USE_8BIT_BUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct resource ceu0_resources[] = {
@@ -282,7 +237,6 @@ static struct resource ceu0_resources[] = {
 		.start  = evt2irq(0x880),
 		.flags  = IORESOURCE_IRQ,
 	},
-<<<<<<< HEAD
 };
 
 static struct platform_device ceu0_device = {
@@ -292,31 +246,12 @@ static struct platform_device ceu0_device = {
 	.resource	= ceu0_resources,
 	.dev	= {
 		.platform_data	= &ceu0_pdata,
-=======
-	[2] = {
-		/* place holder for contiguous memory */
-	},
-};
-
-static struct platform_device ceu0_device = {
-	.name		= "sh_mobile_ceu",
-	.id             = 0, /* "ceu0" clock */
-	.num_resources	= ARRAY_SIZE(ceu0_resources),
-	.resource	= ceu0_resources,
-	.dev	= {
-		.platform_data	= &sh_mobile_ceu0_info,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 };
 
 /* CEU1 */
-<<<<<<< HEAD
 static struct ceu_platform_data ceu1_pdata = {
 	.num_subdevs = 0,
-=======
-static struct sh_mobile_ceu_info sh_mobile_ceu1_info = {
-	.flags = SH_CEU_FLAG_USE_8BIT_BUS,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct resource ceu1_resources[] = {
@@ -330,7 +265,6 @@ static struct resource ceu1_resources[] = {
 		.start  = evt2irq(0x9e0),
 		.flags  = IORESOURCE_IRQ,
 	},
-<<<<<<< HEAD
 };
 
 static struct platform_device ceu1_device = {
@@ -340,20 +274,6 @@ static struct platform_device ceu1_device = {
 	.resource	= ceu1_resources,
 	.dev	= {
 		.platform_data	= &ceu1_pdata,
-=======
-	[2] = {
-		/* place holder for contiguous memory */
-	},
-};
-
-static struct platform_device ceu1_device = {
-	.name		= "sh_mobile_ceu",
-	.id             = 1, /* "ceu1" clock */
-	.num_resources	= ARRAY_SIZE(ceu1_resources),
-	.resource	= ceu1_resources,
-	.dev	= {
-		.platform_data	= &sh_mobile_ceu1_info,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 };
 
@@ -454,10 +374,6 @@ static struct resource sh_eth_resources[] = {
 
 static struct sh_eth_plat_data sh_eth_plat = {
 	.phy = 0x1f, /* SMSC LAN8187 */
-<<<<<<< HEAD
-=======
-	.edmac_endian = EDMAC_LITTLE_ENDIAN,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.phy_interface = PHY_INTERFACE_MODE_MII,
 };
 
@@ -658,24 +574,16 @@ static struct platform_device vou_device = {
 	},
 };
 
-<<<<<<< HEAD
 static struct platform_device *ms7724se_ceu_devices[] __initdata = {
 	&ceu0_device,
 	&ceu1_device,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct platform_device *ms7724se_devices[] __initdata = {
 	&heartbeat_device,
 	&smc91x_eth_device,
 	&lcdc_device,
 	&nor_flash_device,
-<<<<<<< HEAD
-=======
-	&ceu0_device,
-	&ceu1_device,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	&keysc_device,
 	&sh_eth_device,
 	&sh7724_usb0_host_device,
@@ -892,10 +800,6 @@ static int __init devices_setup(void)
 	gpio_request(GPIO_FN_VIO0_CLK, NULL);
 	gpio_request(GPIO_FN_VIO0_FLD, NULL);
 	gpio_request(GPIO_FN_VIO0_HD,  NULL);
-<<<<<<< HEAD
-=======
-	platform_resource_setup_memory(&ceu0_device, "ceu0", 4 << 20);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* enable CEU1 */
 	gpio_request(GPIO_FN_VIO1_D7,  NULL);
@@ -910,10 +814,6 @@ static int __init devices_setup(void)
 	gpio_request(GPIO_FN_VIO1_HD,  NULL);
 	gpio_request(GPIO_FN_VIO1_VD,  NULL);
 	gpio_request(GPIO_FN_VIO1_CLK, NULL);
-<<<<<<< HEAD
-=======
-	platform_resource_setup_memory(&ceu1_device, "ceu1", 4 << 20);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* KEYSC */
 	gpio_request(GPIO_FN_KEYOUT5_IN5, NULL);
@@ -1035,7 +935,6 @@ static int __init devices_setup(void)
 	gpio_request(GPIO_FN_DV_VSYNC, NULL);
 	gpio_request(GPIO_FN_DV_HSYNC, NULL);
 
-<<<<<<< HEAD
 	/* Initialize CEU platform devices separately to map memory first */
 	device_initialize(&ms7724se_ceu_devices[0]->dev);
 	arch_setup_pdev_archdata(ms7724se_ceu_devices[0]);
@@ -1055,14 +954,11 @@ static int __init devices_setup(void)
 				    DMA_MEMORY_EXCLUSIVE);
 	platform_device_add(ms7724se_ceu_devices[1]);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return platform_add_devices(ms7724se_devices,
 				    ARRAY_SIZE(ms7724se_devices));
 }
 device_initcall(devices_setup);
 
-<<<<<<< HEAD
 /* Reserve a portion of memory for CEU 0 and CEU 1 buffers */
 static void __init ms7724se_mv_mem_reserve(void)
 {
@@ -1084,9 +980,4 @@ static struct sh_machine_vector mv_ms7724se __initmv = {
 	.mv_name	= "ms7724se",
 	.mv_init_irq	= init_se7724_IRQ,
 	.mv_mem_reserve	= ms7724se_mv_mem_reserve,
-=======
-static struct sh_machine_vector mv_ms7724se __initmv = {
-	.mv_name	= "ms7724se",
-	.mv_init_irq	= init_se7724_IRQ,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

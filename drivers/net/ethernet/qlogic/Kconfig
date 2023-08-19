@@ -85,10 +85,7 @@ config QED
 	tristate "QLogic QED 25/40/100Gb core driver"
 	depends on PCI
 	select ZLIB_INFLATE
-<<<<<<< HEAD
 	select CRC8
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	---help---
 	  This enables the support for ...
 
@@ -121,10 +118,7 @@ config QED_ISCSI
 config QED_FCOE
 	bool
 
-<<<<<<< HEAD
 config QED_OOO
 	bool
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 endif # NET_VENDOR_QLOGIC

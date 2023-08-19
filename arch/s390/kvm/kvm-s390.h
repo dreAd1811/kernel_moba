@@ -1,19 +1,9 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * definition for kvm on s390
  *
  * Copyright IBM Corp. 2008, 2009
  *
-<<<<<<< HEAD
-=======
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (version 2 only)
- * as published by the Free Software Foundation.
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *    Author(s): Carsten Otte <cotte@de.ibm.com>
  *               Christian Borntraeger <borntraeger@de.ibm.com>
  *               Christian Ehrhardt <ehrhardt@de.ibm.com>
@@ -29,11 +19,6 @@
 #include <asm/processor.h>
 #include <asm/sclp.h>
 
-<<<<<<< HEAD
-=======
-typedef int (*intercept_handler_t)(struct kvm_vcpu *vcpu);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Transactional Memory Execution related macros */
 #define IS_TE_ENABLED(vcpu)	((vcpu->arch.sie_block->ecb & ECB_TE))
 #define TDB_FORMAT1		1
@@ -60,7 +45,6 @@ do { \
 	  d_args); \
 } while (0)
 
-<<<<<<< HEAD
 static inline void kvm_s390_set_cpuflags(struct kvm_vcpu *vcpu, u32 flags)
 {
 	atomic_or(flags, &vcpu->arch.sie_block->cpuflags);
@@ -79,20 +63,11 @@ static inline bool kvm_s390_test_cpuflags(struct kvm_vcpu *vcpu, u32 flags)
 static inline int is_vcpu_stopped(struct kvm_vcpu *vcpu)
 {
 	return kvm_s390_test_cpuflags(vcpu, CPUSTAT_STOPPED);
-=======
-static inline int is_vcpu_stopped(struct kvm_vcpu *vcpu)
-{
-	return atomic_read(&vcpu->arch.sie_block->cpuflags) & CPUSTAT_STOPPED;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline int is_vcpu_idle(struct kvm_vcpu *vcpu)
 {
-<<<<<<< HEAD
 	return test_bit(vcpu->vcpu_id, vcpu->kvm->arch.float_int.idle_mask);
-=======
-	return test_bit(vcpu->vcpu_id, vcpu->arch.local_int.float_int->idle_mask);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline int kvm_is_ucontrol(struct kvm *kvm)
@@ -277,11 +252,8 @@ static inline void kvm_s390_retry_instr(struct kvm_vcpu *vcpu)
 	kvm_s390_rewind_psw(vcpu, kvm_s390_get_ilen(vcpu));
 }
 
-<<<<<<< HEAD
 int handle_sthyi(struct kvm_vcpu *vcpu);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* implemented in priv.c */
 int is_valid_psw(psw_t *psw);
 int kvm_s390_handle_aa(struct kvm_vcpu *vcpu);
@@ -308,12 +280,6 @@ void kvm_s390_vsie_destroy(struct kvm *kvm);
 int kvm_s390_handle_sigp(struct kvm_vcpu *vcpu);
 int kvm_s390_handle_sigp_pei(struct kvm_vcpu *vcpu);
 
-<<<<<<< HEAD
-=======
-/* implemented in sthyi.c */
-int handle_sthyi(struct kvm_vcpu *vcpu);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* implemented in kvm-s390.c */
 void kvm_s390_set_tod_clock(struct kvm *kvm,
 			    const struct kvm_s390_vm_tod_clock *gtod);
@@ -328,11 +294,6 @@ void exit_sie(struct kvm_vcpu *vcpu);
 void kvm_s390_sync_request(int req, struct kvm_vcpu *vcpu);
 int kvm_s390_vcpu_setup_cmma(struct kvm_vcpu *vcpu);
 void kvm_s390_vcpu_unsetup_cmma(struct kvm_vcpu *vcpu);
-<<<<<<< HEAD
-=======
-unsigned long kvm_s390_fac_list_mask_size(void);
-extern unsigned long kvm_s390_fac_list_mask[];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void kvm_s390_set_cpu_timer(struct kvm_vcpu *vcpu, __u64 cputm);
 __u64 kvm_s390_get_cpu_timer(struct kvm_vcpu *vcpu);
 
@@ -416,12 +377,9 @@ int kvm_s390_set_irq_state(struct kvm_vcpu *vcpu,
 			   void __user *buf, int len);
 int kvm_s390_get_irq_state(struct kvm_vcpu *vcpu,
 			   __u8 __user *buf, int len);
-<<<<<<< HEAD
 void kvm_s390_gisa_init(struct kvm *kvm);
 void kvm_s390_gisa_clear(struct kvm *kvm);
 void kvm_s390_gisa_destroy(struct kvm *kvm);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* implemented in guestdbg.c */
 void kvm_s390_backup_guest_per_regs(struct kvm_vcpu *vcpu);
@@ -452,7 +410,6 @@ static inline int kvm_s390_use_sca_entries(void)
 }
 void kvm_s390_reinject_machine_check(struct kvm_vcpu *vcpu,
 				     struct mcck_volatile_info *mcck_info);
-<<<<<<< HEAD
 
 /**
  * kvm_s390_vcpu_crypto_reset_all
@@ -466,6 +423,4 @@ void kvm_s390_reinject_machine_check(struct kvm_vcpu *vcpu,
  * @kvm: the KVM guest
  */
 void kvm_s390_vcpu_crypto_reset_all(struct kvm *kvm);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

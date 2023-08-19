@@ -341,13 +341,8 @@ static fw_port_cap32_t fwcaps16_to_caps32(fw_port_cap16_t caps16)
 	CAP16_TO_CAP32(FC_RX);
 	CAP16_TO_CAP32(FC_TX);
 	CAP16_TO_CAP32(ANEG);
-<<<<<<< HEAD
 	CAP16_TO_CAP32(MDIAUTO);
 	CAP16_TO_CAP32(MDISTRAIGHT);
-=======
-	CAP16_TO_CAP32(MDIX);
-	CAP16_TO_CAP32(MDIAUTO);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	CAP16_TO_CAP32(FEC_RS);
 	CAP16_TO_CAP32(FEC_BASER_RS);
 	CAP16_TO_CAP32(802_3_PAUSE);
@@ -410,7 +405,6 @@ static unsigned int fwcap_to_speed(fw_port_cap32_t caps)
 	return 0;
 }
 
-<<<<<<< HEAD
 /**
  *      fwcap_to_fwspeed - return highest speed in Port Capabilities
  *      @acaps: advertised Port Capabilities
@@ -441,8 +435,6 @@ static fw_port_cap32_t fwcap_to_fwspeed(fw_port_cap32_t acaps)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  *	init_link_config - initialize a link's SW state
  *	@lc: structure holding the link state
@@ -469,7 +461,6 @@ static void init_link_config(struct link_config *lc,
 	lc->requested_fec = FEC_AUTO;
 	lc->fec = lc->auto_fec;
 
-<<<<<<< HEAD
 	/* If the Port is capable of Auto-Negtotiation, initialize it as
 	 * "enabled" and copy over all of the Physical Port Capabilities
 	 * to the Advertised Port Capabilities.  Otherwise mark it as
@@ -477,8 +468,6 @@ static void init_link_config(struct link_config *lc,
 	 * for the link.  Note parallel structure in t4_link_l1cfg_core()
 	 * and t4_handle_get_port_info().
 	 */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (lc->pcaps & FW_PORT_CAP32_ANEG) {
 		lc->acaps = acaps & ADVERT_MASK;
 		lc->autoneg = AUTONEG_ENABLE;
@@ -486,10 +475,7 @@ static void init_link_config(struct link_config *lc,
 	} else {
 		lc->acaps = 0;
 		lc->autoneg = AUTONEG_DISABLE;
-<<<<<<< HEAD
 		lc->speed_caps = fwcap_to_fwspeed(acaps);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -1414,7 +1400,6 @@ int t4vf_enable_vi(struct adapter *adapter, unsigned int viid,
 }
 
 /**
-<<<<<<< HEAD
  *	t4vf_enable_pi - enable/disable a Port's virtual interface
  *	@adapter: the adapter
  *	@pi: the Port Information structure
@@ -1439,8 +1424,6 @@ int t4vf_enable_pi(struct adapter *adapter, struct port_info *pi,
 }
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *	t4vf_identify_port - identify a VI's port by blinking its LED
  *	@adapter: the adapter
  *	@viid: the Virtual Interface ID
@@ -1891,11 +1874,7 @@ int t4vf_eth_eq_free(struct adapter *adapter, unsigned int eqid)
  *
  *	Returns a string representation of the Link Down Reason Code.
  */
-<<<<<<< HEAD
 static const char *t4vf_link_down_rc_str(unsigned char link_down_rc)
-=======
-const char *t4vf_link_down_rc_str(unsigned char link_down_rc)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	static const char * const reason[] = {
 		"Link Down",
@@ -1921,13 +1900,8 @@ const char *t4vf_link_down_rc_str(unsigned char link_down_rc)
  *
  *	Processes a GET_PORT_INFO FW reply message.
  */
-<<<<<<< HEAD
 static void t4vf_handle_get_port_info(struct port_info *pi,
 				      const struct fw_port_cmd *cmd)
-=======
-void t4vf_handle_get_port_info(struct port_info *pi,
-			       const struct fw_port_cmd *cmd)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int action = FW_PORT_CMD_ACTION_G(be32_to_cpu(cmd->action_to_len16));
 	struct adapter *adapter = pi->adapter;
@@ -2043,7 +2017,6 @@ void t4vf_handle_get_port_info(struct port_info *pi,
 		lc->lpacaps = lpacaps;
 		lc->acaps = acaps & ADVERT_MASK;
 
-<<<<<<< HEAD
 		/* If we're not physically capable of Auto-Negotiation, note
 		 * this as Auto-Negotiation disabled.  Otherwise, we track
 		 * what Auto-Negotiation settings we have.  Note parallel
@@ -2052,9 +2025,6 @@ void t4vf_handle_get_port_info(struct port_info *pi,
 		if (!(lc->pcaps & FW_PORT_CAP32_ANEG)) {
 			lc->autoneg = AUTONEG_DISABLE;
 		} else if (lc->acaps & FW_PORT_CAP32_ANEG) {
-=======
-		if (lc->acaps & FW_PORT_CAP32_ANEG) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			lc->autoneg = AUTONEG_ENABLE;
 		} else {
 			/* When Autoneg is disabled, user needs to set
@@ -2246,7 +2216,6 @@ int t4vf_get_vf_mac_acl(struct adapter *adapter, unsigned int pf,
 
 	return ret;
 }
-<<<<<<< HEAD
 
 /**
  *	t4vf_get_vf_vlan_acl - Get the VLAN ID to be set to
@@ -2275,5 +2244,3 @@ int t4vf_get_vf_vlan_acl(struct adapter *adapter)
 
 	return vlan;
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

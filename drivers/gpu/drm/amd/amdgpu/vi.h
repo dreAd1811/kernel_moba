@@ -24,11 +24,8 @@
 #ifndef __VI_H__
 #define __VI_H__
 
-<<<<<<< HEAD
 #define VI_FLUSH_GPU_TLB_NUM_WREG	3
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void vi_srbm_select(struct amdgpu_device *adev,
 		    u32 me, u32 pipe, u32 queue, u32 vmid);
 int vi_set_ip_blocks(struct amdgpu_device *adev);

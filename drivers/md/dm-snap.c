@@ -19,10 +19,7 @@
 #include <linux/vmalloc.h>
 #include <linux/log2.h>
 #include <linux/dm-kcopyd.h>
-<<<<<<< HEAD
 #include <linux/semaphore.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "dm.h"
 
@@ -89,15 +86,9 @@ struct dm_snapshot {
 	 * A list of pending exceptions that completed out of order.
 	 * Protected by kcopyd single-threaded callback.
 	 */
-<<<<<<< HEAD
 	struct rb_root out_of_order_tree;
 
 	mempool_t pending_pool;
-=======
-	struct list_head out_of_order_list;
-
-	mempool_t *pending_pool;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct dm_exception_table pending;
 	struct dm_exception_table complete;
@@ -115,13 +106,8 @@ struct dm_snapshot {
 	/* The on disk metadata handler */
 	struct dm_exception_store *store;
 
-<<<<<<< HEAD
 	/* Maximum number of in-flight COW jobs. */
 	struct semaphore cow_count;
-=======
-	unsigned in_progress;
-	struct wait_queue_head in_progress_wait;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct dm_kcopyd_client *kcopyd_client;
 
@@ -172,13 +158,8 @@ struct dm_snapshot {
  */
 #define DEFAULT_COW_THRESHOLD 2048
 
-<<<<<<< HEAD
 static int cow_threshold = DEFAULT_COW_THRESHOLD;
 module_param_named(snapshot_cow_threshold, cow_threshold, int, 0644);
-=======
-static unsigned cow_threshold = DEFAULT_COW_THRESHOLD;
-module_param_named(snapshot_cow_threshold, cow_threshold, uint, 0644);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_PARM_DESC(snapshot_cow_threshold, "Maximum number of chunks being copied on write");
 
 DECLARE_DM_KCOPYD_THROTTLE_WITH_MODULE_PARM(snapshot_copy_throttle,
@@ -236,11 +217,7 @@ struct dm_snap_pending_exception {
 	/* A sequence number, it is used for in-order completion. */
 	sector_t exception_sequence;
 
-<<<<<<< HEAD
 	struct rb_node out_of_order_node;
-=======
-	struct list_head out_of_order_entry;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * For writing a complete chunk, bypassing the copy.
@@ -366,13 +343,8 @@ static int init_origin_hash(void)
 {
 	int i;
 
-<<<<<<< HEAD
 	_origins = kmalloc_array(ORIGIN_HASH_SIZE, sizeof(struct list_head),
 				 GFP_KERNEL);
-=======
-	_origins = kmalloc(ORIGIN_HASH_SIZE * sizeof(struct list_head),
-			   GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!_origins) {
 		DMERR("unable to allocate memory for _origins");
 		return -ENOMEM;
@@ -380,14 +352,9 @@ static int init_origin_hash(void)
 	for (i = 0; i < ORIGIN_HASH_SIZE; i++)
 		INIT_LIST_HEAD(_origins + i);
 
-<<<<<<< HEAD
 	_dm_origins = kmalloc_array(ORIGIN_HASH_SIZE,
 				    sizeof(struct list_head),
 				    GFP_KERNEL);
-=======
-	_dm_origins = kmalloc(ORIGIN_HASH_SIZE * sizeof(struct list_head),
-			      GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!_dm_origins) {
 		DMERR("unable to allocate memory for _dm_origins");
 		kfree(_origins);
@@ -733,11 +700,7 @@ static void free_completed_exception(struct dm_exception *e)
 
 static struct dm_snap_pending_exception *alloc_pending_exception(struct dm_snapshot *s)
 {
-<<<<<<< HEAD
 	struct dm_snap_pending_exception *pe = mempool_alloc(&s->pending_pool,
-=======
-	struct dm_snap_pending_exception *pe = mempool_alloc(s->pending_pool,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							     GFP_NOIO);
 
 	atomic_inc(&s->pending_exceptions_count);
@@ -750,11 +713,7 @@ static void free_pending_exception(struct dm_snap_pending_exception *pe)
 {
 	struct dm_snapshot *s = pe->snap;
 
-<<<<<<< HEAD
 	mempool_free(pe, &s->pending_pool);
-=======
-	mempool_free(pe, s->pending_pool);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	smp_mb__before_atomic();
 	atomic_dec(&s->pending_exceptions_count);
 }
@@ -1231,11 +1190,7 @@ static int snapshot_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	atomic_set(&s->pending_exceptions_count, 0);
 	s->exception_start_sequence = 0;
 	s->exception_complete_sequence = 0;
-<<<<<<< HEAD
 	s->out_of_order_tree = RB_ROOT;
-=======
-	INIT_LIST_HEAD(&s->out_of_order_list);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_init(&s->lock);
 	INIT_LIST_HEAD(&s->list);
 	spin_lock_init(&s->pe_lock);
@@ -1252,11 +1207,7 @@ static int snapshot_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 		goto bad_hash_tables;
 	}
 
-<<<<<<< HEAD
 	sema_init(&s->cow_count, (cow_threshold > 0) ? cow_threshold : INT_MAX);
-=======
-	init_waitqueue_head(&s->in_progress_wait);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	s->kcopyd_client = dm_kcopyd_client_create(&dm_kcopyd_throttle);
 	if (IS_ERR(s->kcopyd_client)) {
@@ -1265,16 +1216,9 @@ static int snapshot_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 		goto bad_kcopyd;
 	}
 
-<<<<<<< HEAD
 	r = mempool_init_slab_pool(&s->pending_pool, MIN_IOS, pending_cache);
 	if (r) {
 		ti->error = "Could not allocate mempool for pending exceptions";
-=======
-	s->pending_pool = mempool_create_slab_pool(MIN_IOS, pending_cache);
-	if (!s->pending_pool) {
-		ti->error = "Could not allocate mempool for pending exceptions";
-		r = -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto bad_pending_pool;
 	}
 
@@ -1334,11 +1278,7 @@ bad_read_metadata:
 	unregister_snapshot(s);
 
 bad_load_and_register:
-<<<<<<< HEAD
 	mempool_exit(&s->pending_pool);
-=======
-	mempool_destroy(s->pending_pool);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 bad_pending_pool:
 	dm_kcopyd_client_destroy(s->kcopyd_client);
@@ -1434,11 +1374,7 @@ static void snapshot_dtr(struct dm_target *ti)
 	while (atomic_read(&s->pending_exceptions_count))
 		msleep(1);
 	/*
-<<<<<<< HEAD
 	 * Ensure instructions in mempool_exit aren't reordered
-=======
-	 * Ensure instructions in mempool_destroy aren't reordered
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * before atomic_read.
 	 */
 	smp_mb();
@@ -1450,11 +1386,7 @@ static void snapshot_dtr(struct dm_target *ti)
 
 	__free_exceptions(s);
 
-<<<<<<< HEAD
 	mempool_exit(&s->pending_pool);
-=======
-	mempool_destroy(s->pending_pool);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dm_exception_store_destroy(s->store);
 
@@ -1464,62 +1396,9 @@ static void snapshot_dtr(struct dm_target *ti)
 
 	dm_put_device(ti, s->origin);
 
-<<<<<<< HEAD
 	kfree(s);
 }
 
-=======
-	WARN_ON(s->in_progress);
-
-	kfree(s);
-}
-
-static void account_start_copy(struct dm_snapshot *s)
-{
-	spin_lock(&s->in_progress_wait.lock);
-	s->in_progress++;
-	spin_unlock(&s->in_progress_wait.lock);
-}
-
-static void account_end_copy(struct dm_snapshot *s)
-{
-	spin_lock(&s->in_progress_wait.lock);
-	BUG_ON(!s->in_progress);
-	s->in_progress--;
-	if (likely(s->in_progress <= cow_threshold) &&
-	    unlikely(waitqueue_active(&s->in_progress_wait)))
-		wake_up_locked(&s->in_progress_wait);
-	spin_unlock(&s->in_progress_wait.lock);
-}
-
-static bool wait_for_in_progress(struct dm_snapshot *s, bool unlock_origins)
-{
-	if (unlikely(s->in_progress > cow_threshold)) {
-		spin_lock(&s->in_progress_wait.lock);
-		if (likely(s->in_progress > cow_threshold)) {
-			/*
-			 * NOTE: this throttle doesn't account for whether
-			 * the caller is servicing an IO that will trigger a COW
-			 * so excess throttling may result for chunks not required
-			 * to be COW'd.  But if cow_threshold was reached, extra
-			 * throttling is unlikely to negatively impact performance.
-			 */
-			DECLARE_WAITQUEUE(wait, current);
-			__add_wait_queue(&s->in_progress_wait, &wait);
-			__set_current_state(TASK_UNINTERRUPTIBLE);
-			spin_unlock(&s->in_progress_wait.lock);
-			if (unlock_origins)
-				up_read(&_origins_lock);
-			io_schedule();
-			remove_wait_queue(&s->in_progress_wait, &wait);
-			return false;
-		}
-		spin_unlock(&s->in_progress_wait.lock);
-	}
-	return true;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Flush a list of buffers.
  */
@@ -1535,11 +1414,7 @@ static void flush_bios(struct bio *bio)
 	}
 }
 
-<<<<<<< HEAD
 static int do_origin(struct dm_dev *origin, struct bio *bio);
-=======
-static int do_origin(struct dm_dev *origin, struct bio *bio, bool limit);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Flush a list of buffers.
@@ -1552,11 +1427,7 @@ static void retry_origin_bios(struct dm_snapshot *s, struct bio *bio)
 	while (bio) {
 		n = bio->bi_next;
 		bio->bi_next = NULL;
-<<<<<<< HEAD
 		r = do_origin(s->origin, bio);
-=======
-		r = do_origin(s->origin, bio, false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (r == DM_MAPIO_REMAPPED)
 			generic_make_request(bio);
 		bio = n;
@@ -1687,7 +1558,6 @@ static void copy_callback(int read_err, unsigned long write_err, void *context)
 	pe->copy_error = read_err || write_err;
 
 	if (pe->exception_sequence == s->exception_complete_sequence) {
-<<<<<<< HEAD
 		struct rb_node *next;
 
 		s->exception_complete_sequence++;
@@ -1725,32 +1595,6 @@ static void copy_callback(int read_err, unsigned long write_err, void *context)
 		rb_insert_color(&pe->out_of_order_node, &s->out_of_order_tree);
 	}
 	up(&s->cow_count);
-=======
-		s->exception_complete_sequence++;
-		complete_exception(pe);
-
-		while (!list_empty(&s->out_of_order_list)) {
-			pe = list_entry(s->out_of_order_list.next,
-					struct dm_snap_pending_exception, out_of_order_entry);
-			if (pe->exception_sequence != s->exception_complete_sequence)
-				break;
-			s->exception_complete_sequence++;
-			list_del(&pe->out_of_order_entry);
-			complete_exception(pe);
-		}
-	} else {
-		struct list_head *lh;
-		struct dm_snap_pending_exception *pe2;
-
-		list_for_each_prev(lh, &s->out_of_order_list) {
-			pe2 = list_entry(lh, struct dm_snap_pending_exception, out_of_order_entry);
-			if (pe2->exception_sequence < pe->exception_sequence)
-				break;
-		}
-		list_add(&pe->out_of_order_entry, lh);
-	}
-	account_end_copy(s);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -1774,11 +1618,7 @@ static void start_copy(struct dm_snap_pending_exception *pe)
 	dest.count = src.count;
 
 	/* Hand over to kcopyd */
-<<<<<<< HEAD
 	down(&s->cow_count);
-=======
-	account_start_copy(s);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dm_kcopyd_copy(s->kcopyd_client, &src, 1, &dest, 0, copy_callback, pe);
 }
 
@@ -1798,11 +1638,7 @@ static void start_full_bio(struct dm_snap_pending_exception *pe,
 	pe->full_bio = bio;
 	pe->full_bio_end_io = bio->bi_end_io;
 
-<<<<<<< HEAD
 	down(&s->cow_count);
-=======
-	account_start_copy(s);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	callback_data = dm_kcopyd_prepare_callback(s->kcopyd_client,
 						   copy_callback, pe);
 
@@ -1893,14 +1729,6 @@ static int snapshot_map(struct dm_target *ti, struct bio *bio)
 	if (!s->valid)
 		return DM_MAPIO_KILL;
 
-<<<<<<< HEAD
-=======
-	if (bio_data_dir(bio) == WRITE) {
-		while (unlikely(!wait_for_in_progress(s, false)))
-			; /* wait_for_in_progress() has slept */
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&s->lock);
 
 	if (!s->valid || (unlikely(s->snapshot_overflowed) &&
@@ -2049,11 +1877,7 @@ redirect_to_origin:
 
 	if (bio_data_dir(bio) == WRITE) {
 		mutex_unlock(&s->lock);
-<<<<<<< HEAD
 		return do_origin(s->origin, bio);
-=======
-		return do_origin(s->origin, bio, false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 out_unlock:
@@ -2390,35 +2214,15 @@ next_snapshot:
 /*
  * Called on a write from the origin driver.
  */
-<<<<<<< HEAD
 static int do_origin(struct dm_dev *origin, struct bio *bio)
-=======
-static int do_origin(struct dm_dev *origin, struct bio *bio, bool limit)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct origin *o;
 	int r = DM_MAPIO_REMAPPED;
 
-<<<<<<< HEAD
 	down_read(&_origins_lock);
 	o = __lookup_origin(origin->bdev);
 	if (o)
 		r = __origin_write(&o->snapshots, bio->bi_iter.bi_sector, bio);
-=======
-again:
-	down_read(&_origins_lock);
-	o = __lookup_origin(origin->bdev);
-	if (o) {
-		if (limit) {
-			struct dm_snapshot *s;
-			list_for_each_entry(s, &o->snapshots, list)
-				if (unlikely(!wait_for_in_progress(s, true)))
-					goto again;
-		}
-
-		r = __origin_write(&o->snapshots, bio->bi_iter.bi_sector, bio);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	up_read(&_origins_lock);
 
 	return r;
@@ -2531,11 +2335,7 @@ static int origin_map(struct dm_target *ti, struct bio *bio)
 		dm_accept_partial_bio(bio, available_sectors);
 
 	/* Only tell snapshots if this is a write */
-<<<<<<< HEAD
 	return do_origin(o->dev, bio);
-=======
-	return do_origin(o->dev, bio, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static long origin_dax_direct_access(struct dm_target *ti, pgoff_t pgoff,

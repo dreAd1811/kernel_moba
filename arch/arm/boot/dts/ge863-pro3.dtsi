@@ -18,7 +18,6 @@
 
 	ahb {
 		apb {
-<<<<<<< HEAD
 			tcb0: timer@fffa0000 {
 				timer@0 {
 					compatible = "atmel,tcb-timer";
@@ -31,8 +30,6 @@
 				};
 			};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dbgu: serial@fffff200 {
 				status = "okay";
 			};
@@ -65,11 +62,7 @@
 							reg = <0x0 0x7c0000>;
 						};
 
-<<<<<<< HEAD
 						root@7c0000 {
-=======
-						root@07c0000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							label = "root";
 							reg = <0x7c0000 0x7840000>;
 						};

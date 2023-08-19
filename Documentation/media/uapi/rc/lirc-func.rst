@@ -18,10 +18,6 @@ LIRC Function Reference
     lirc-set-send-duty-cycle
     lirc-get-timeout
     lirc-set-rec-timeout
-<<<<<<< HEAD
-=======
-    lirc-get-length
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     lirc-set-rec-carrier
     lirc-set-rec-carrier-range
     lirc-set-send-carrier

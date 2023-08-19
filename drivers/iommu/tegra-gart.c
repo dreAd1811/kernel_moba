@@ -72,11 +72,8 @@ struct gart_domain {
 
 static struct gart_device *gart_handle; /* unique for a system */
 
-<<<<<<< HEAD
 static bool gart_debug;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define GART_PTE(_pfn)						\
 	(GART_ENTRY_PHYS_ADDR_VALID | ((_pfn) << PAGE_SHIFT))
 
@@ -276,10 +273,7 @@ static int gart_iommu_map(struct iommu_domain *domain, unsigned long iova,
 	struct gart_device *gart = gart_domain->gart;
 	unsigned long flags;
 	unsigned long pfn;
-<<<<<<< HEAD
 	unsigned long pte;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!gart_iova_range_valid(gart, iova, bytes))
 		return -EINVAL;
@@ -291,7 +285,6 @@ static int gart_iommu_map(struct iommu_domain *domain, unsigned long iova,
 		spin_unlock_irqrestore(&gart->pte_lock, flags);
 		return -EINVAL;
 	}
-<<<<<<< HEAD
 	if (gart_debug) {
 		pte = gart_read_pte(gart, iova);
 		if (pte & GART_ENTRY_PHYS_ADDR_VALID) {
@@ -300,8 +293,6 @@ static int gart_iommu_map(struct iommu_domain *domain, unsigned long iova,
 			return -EBUSY;
 		}
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gart_set_pte(gart, iova, GART_PTE(pfn));
 	FLUSH_GART_REGS(gart);
 	spin_unlock_irqrestore(&gart->pte_lock, flags);
@@ -322,11 +313,7 @@ static size_t gart_iommu_unmap(struct iommu_domain *domain, unsigned long iova,
 	gart_set_pte(gart, iova, 0);
 	FLUSH_GART_REGS(gart);
 	spin_unlock_irqrestore(&gart->pte_lock, flags);
-<<<<<<< HEAD
 	return bytes;
-=======
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static phys_addr_t gart_iommu_iova_to_phys(struct iommu_domain *domain,
@@ -390,10 +377,6 @@ static const struct iommu_ops gart_iommu_ops = {
 	.remove_device	= gart_iommu_remove_device,
 	.device_group	= generic_device_group,
 	.map		= gart_iommu_map,
-<<<<<<< HEAD
-=======
-	.map_sg		= default_iommu_map_sg,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.unmap		= gart_iommu_unmap,
 	.iova_to_phys	= gart_iommu_iova_to_phys,
 	.pgsize_bitmap	= GART_IOMMU_PGSIZES,
@@ -481,11 +464,7 @@ static int tegra_gart_probe(struct platform_device *pdev)
 	gart->iovmm_base = (dma_addr_t)res_remap->start;
 	gart->page_count = (resource_size(res_remap) >> GART_PAGE_SHIFT);
 
-<<<<<<< HEAD
 	gart->savedata = vmalloc(array_size(sizeof(u32), gart->page_count));
-=======
-	gart->savedata = vmalloc(sizeof(u32) * gart->page_count);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!gart->savedata) {
 		dev_err(dev, "failed to allocate context save area\n");
 		return -ENOMEM;
@@ -546,13 +525,9 @@ static void __exit tegra_gart_exit(void)
 
 subsys_initcall(tegra_gart_init);
 module_exit(tegra_gart_exit);
-<<<<<<< HEAD
 module_param(gart_debug, bool, 0644);
 
 MODULE_PARM_DESC(gart_debug, "Enable GART debugging");
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_DESCRIPTION("IOMMU API for GART in Tegra20");
 MODULE_AUTHOR("Hiroshi DOYU <hdoyu@nvidia.com>");
 MODULE_ALIAS("platform:tegra-gart");

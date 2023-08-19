@@ -44,15 +44,10 @@
 #include <linux/slab.h>
 #include <linux/spinlock.h>
 #include <linux/string.h>
-<<<<<<< HEAD
 #include <linux/if_vlan.h>
 #include "qed.h"
 #include "qed_cxt.h"
 #include "qed_dcbx.h"
-=======
-#include "qed.h"
-#include "qed_cxt.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "qed_hsi.h"
 #include "qed_hw.h"
 #include "qed_init_ops.h"
@@ -72,11 +67,8 @@ qed_roce_async_event(struct qed_hwfn *p_hwfn,
 		     u8 fw_event_code,
 		     u16 echo, union event_ring_data *data, u8 fw_return_code)
 {
-<<<<<<< HEAD
 	struct qed_rdma_events events = p_hwfn->p_rdma_info->events;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (fw_event_code == ROCE_ASYNC_EVENT_DESTROY_QP_DONE) {
 		u16 icid =
 		    (u16)le32_to_cpu(data->rdma_data.rdma_destroy_qp_data.cid);
@@ -87,7 +79,6 @@ qed_roce_async_event(struct qed_hwfn *p_hwfn,
 		 */
 		qed_roce_free_real_icid(p_hwfn, icid);
 	} else {
-<<<<<<< HEAD
 		if (fw_event_code == ROCE_ASYNC_EVENT_SRQ_EMPTY ||
 		    fw_event_code == ROCE_ASYNC_EVENT_SRQ_LIMIT) {
 			u16 srq_id = (u16)data->rdma_data.async_handle.lo;
@@ -100,13 +91,6 @@ qed_roce_async_event(struct qed_hwfn *p_hwfn,
 			events.affiliated_event(events.context, fw_event_code,
 						(void *)&rdata.async_handle);
 		}
-=======
-		struct qed_rdma_events *events = &p_hwfn->p_rdma_info->events;
-
-		events->affiliated_event(p_hwfn->p_rdma_info->events.context,
-					 fw_event_code,
-				     (void *)&data->rdma_data.async_handle);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -168,11 +152,7 @@ static enum roce_flavor qed_roce_mode_to_flavor(enum roce_mode roce_mode)
 	}
 }
 
-<<<<<<< HEAD
 static void qed_roce_free_cid_pair(struct qed_hwfn *p_hwfn, u16 cid)
-=======
-void qed_roce_free_cid_pair(struct qed_hwfn *p_hwfn, u16 cid)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	spin_lock_bh(&p_hwfn->p_rdma_info->lock);
 	qed_bmap_release_id(p_hwfn, &p_hwfn->p_rdma_info->cid_map, cid);
@@ -246,7 +226,6 @@ static void qed_roce_set_real_cid(struct qed_hwfn *p_hwfn, u32 cid)
 	spin_unlock_bh(&p_hwfn->p_rdma_info->lock);
 }
 
-<<<<<<< HEAD
 static u8 qed_roce_get_qp_tc(struct qed_hwfn *p_hwfn, struct qed_rdma_qp *qp)
 {
 	u8 pri, tc = 0;
@@ -263,13 +242,10 @@ static u8 qed_roce_get_qp_tc(struct qed_hwfn *p_hwfn, struct qed_rdma_qp *qp)
 	return tc;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int qed_roce_sp_create_responder(struct qed_hwfn *p_hwfn,
 					struct qed_rdma_qp *qp)
 {
 	struct roce_create_qp_resp_ramrod_data *p_ramrod;
-<<<<<<< HEAD
 	u16 regular_latency_queue, low_latency_queue;
 	struct qed_sp_init_data init_data;
 	enum roce_flavor roce_flavor;
@@ -277,14 +253,6 @@ static int qed_roce_sp_create_responder(struct qed_hwfn *p_hwfn,
 	enum protocol_type proto;
 	int rc;
 	u8 tc;
-=======
-	struct qed_sp_init_data init_data;
-	enum roce_flavor roce_flavor;
-	struct qed_spq_entry *p_ent;
-	u16 regular_latency_queue;
-	enum protocol_type proto;
-	int rc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	DP_VERBOSE(p_hwfn, QED_MSG_RDMA, "icid = %08x\n", qp->icid);
 
@@ -368,7 +336,6 @@ static int qed_roce_sp_create_responder(struct qed_hwfn *p_hwfn,
 	p_ramrod->cq_cid = cpu_to_le32((p_hwfn->hw_info.opaque_fid << 16) |
 				       qp->rq_cq_id);
 
-<<<<<<< HEAD
 	tc = qed_roce_get_qp_tc(p_hwfn, qp);
 	regular_latency_queue = qed_get_cm_pq_idx_ofld_mtc(p_hwfn, tc);
 	low_latency_queue = qed_get_cm_pq_idx_llt_mtc(p_hwfn, tc);
@@ -380,14 +347,6 @@ static int qed_roce_sp_create_responder(struct qed_hwfn *p_hwfn,
 	    cpu_to_le16(regular_latency_queue);
 	p_ramrod->low_latency_phy_queue =
 	    cpu_to_le16(low_latency_queue);
-=======
-	regular_latency_queue = qed_get_cm_pq_idx(p_hwfn, PQ_FLAGS_OFLD);
-
-	p_ramrod->regular_latency_phy_queue =
-	    cpu_to_le16(regular_latency_queue);
-	p_ramrod->low_latency_phy_queue =
-	    cpu_to_le16(regular_latency_queue);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	p_ramrod->dpi = cpu_to_le16(qp->dpi);
 
@@ -403,14 +362,6 @@ static int qed_roce_sp_create_responder(struct qed_hwfn *p_hwfn,
 				     qp->stats_queue;
 
 	rc = qed_spq_post(p_hwfn, p_ent, NULL);
-<<<<<<< HEAD
-=======
-
-	DP_VERBOSE(p_hwfn, QED_MSG_RDMA,
-		   "rc = %d regular physical queue = 0x%x\n", rc,
-		   regular_latency_queue);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc)
 		goto err;
 
@@ -436,7 +387,6 @@ static int qed_roce_sp_create_requester(struct qed_hwfn *p_hwfn,
 					struct qed_rdma_qp *qp)
 {
 	struct roce_create_qp_req_ramrod_data *p_ramrod;
-<<<<<<< HEAD
 	u16 regular_latency_queue, low_latency_queue;
 	struct qed_sp_init_data init_data;
 	enum roce_flavor roce_flavor;
@@ -444,14 +394,6 @@ static int qed_roce_sp_create_requester(struct qed_hwfn *p_hwfn,
 	enum protocol_type proto;
 	int rc;
 	u8 tc;
-=======
-	struct qed_sp_init_data init_data;
-	enum roce_flavor roce_flavor;
-	struct qed_spq_entry *p_ent;
-	u16 regular_latency_queue;
-	enum protocol_type proto;
-	int rc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	DP_VERBOSE(p_hwfn, QED_MSG_RDMA, "icid = %08x\n", qp->icid);
 
@@ -524,7 +466,6 @@ static int qed_roce_sp_create_requester(struct qed_hwfn *p_hwfn,
 	p_ramrod->cq_cid =
 	    cpu_to_le32((p_hwfn->hw_info.opaque_fid << 16) | qp->sq_cq_id);
 
-<<<<<<< HEAD
 	tc = qed_roce_get_qp_tc(p_hwfn, qp);
 	regular_latency_queue = qed_get_cm_pq_idx_ofld_mtc(p_hwfn, tc);
 	low_latency_queue = qed_get_cm_pq_idx_llt_mtc(p_hwfn, tc);
@@ -536,14 +477,6 @@ static int qed_roce_sp_create_requester(struct qed_hwfn *p_hwfn,
 	    cpu_to_le16(regular_latency_queue);
 	p_ramrod->low_latency_phy_queue =
 	    cpu_to_le16(low_latency_queue);
-=======
-	regular_latency_queue = qed_get_cm_pq_idx(p_hwfn, PQ_FLAGS_OFLD);
-
-	p_ramrod->regular_latency_phy_queue =
-	    cpu_to_le16(regular_latency_queue);
-	p_ramrod->low_latency_phy_queue =
-	    cpu_to_le16(regular_latency_queue);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	p_ramrod->dpi = cpu_to_le16(qp->dpi);
 
@@ -556,12 +489,6 @@ static int qed_roce_sp_create_requester(struct qed_hwfn *p_hwfn,
 				     qp->stats_queue;
 
 	rc = qed_spq_post(p_hwfn, p_ent, NULL);
-<<<<<<< HEAD
-=======
-
-	DP_VERBOSE(p_hwfn, QED_MSG_RDMA, "rc = %d\n", rc);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc)
 		goto err;
 
@@ -769,10 +696,6 @@ static int qed_roce_sp_modify_requester(struct qed_hwfn *p_hwfn,
 
 static int qed_roce_sp_destroy_qp_responder(struct qed_hwfn *p_hwfn,
 					    struct qed_rdma_qp *qp,
-<<<<<<< HEAD
-=======
-					    u32 *num_invalidated_mw,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    u32 *cq_prod)
 {
 	struct roce_destroy_qp_resp_output_params *p_ramrod_res;
@@ -783,11 +706,6 @@ static int qed_roce_sp_destroy_qp_responder(struct qed_hwfn *p_hwfn,
 	int rc;
 
 	DP_VERBOSE(p_hwfn, QED_MSG_RDMA, "icid = %08x\n", qp->icid);
-<<<<<<< HEAD
-=======
-
-	*num_invalidated_mw = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	*cq_prod = qp->cq_prod;
 
 	if (!qp->resp_offloaded) {
@@ -827,10 +745,7 @@ static int qed_roce_sp_destroy_qp_responder(struct qed_hwfn *p_hwfn,
 		DP_NOTICE(p_hwfn,
 			  "qed destroy responder failed: cannot allocate memory (ramrod). rc = %d\n",
 			  rc);
-<<<<<<< HEAD
 		qed_sp_destroy_request(p_hwfn, p_ent);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return rc;
 	}
 
@@ -840,10 +755,6 @@ static int qed_roce_sp_destroy_qp_responder(struct qed_hwfn *p_hwfn,
 	if (rc)
 		goto err;
 
-<<<<<<< HEAD
-=======
-	*num_invalidated_mw = le32_to_cpu(p_ramrod_res->num_invalidated_mw);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	*cq_prod = le32_to_cpu(p_ramrod_res->cq_prod);
 	qp->cq_prod = *cq_prod;
 
@@ -865,12 +776,7 @@ err:
 }
 
 static int qed_roce_sp_destroy_qp_requester(struct qed_hwfn *p_hwfn,
-<<<<<<< HEAD
 					    struct qed_rdma_qp *qp)
-=======
-					    struct qed_rdma_qp *qp,
-					    u32 *num_bound_mw)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct roce_destroy_qp_req_output_params *p_ramrod_res;
 	struct roce_destroy_qp_req_ramrod_data *p_ramrod;
@@ -912,10 +818,6 @@ static int qed_roce_sp_destroy_qp_requester(struct qed_hwfn *p_hwfn,
 	if (rc)
 		goto err;
 
-<<<<<<< HEAD
-=======
-	*num_bound_mw = le32_to_cpu(p_ramrod_res->num_bound_mw);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Free ORQ - only if ramrod succeeded, in case FW is still using it */
 	dma_free_coherent(&p_hwfn->cdev->pdev->dev,
@@ -965,11 +867,7 @@ int qed_roce_query_qp(struct qed_hwfn *p_hwfn,
 
 	if (!(qp->resp_offloaded)) {
 		DP_NOTICE(p_hwfn,
-<<<<<<< HEAD
 			  "The responder's qp should be offloaded before requester's\n");
-=======
-			  "The responder's qp should be offloded before requester's\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -1080,11 +978,6 @@ err_resp:
 
 int qed_roce_destroy_qp(struct qed_hwfn *p_hwfn, struct qed_rdma_qp *qp)
 {
-<<<<<<< HEAD
-=======
-	u32 num_invalidated_mw = 0;
-	u32 num_bound_mw = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 cq_prod;
 	int rc;
 
@@ -1099,31 +992,14 @@ int qed_roce_destroy_qp(struct qed_hwfn *p_hwfn, struct qed_rdma_qp *qp)
 
 	if (qp->cur_state != QED_ROCE_QP_STATE_RESET) {
 		rc = qed_roce_sp_destroy_qp_responder(p_hwfn, qp,
-<<<<<<< HEAD
-=======
-						      &num_invalidated_mw,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						      &cq_prod);
 		if (rc)
 			return rc;
 
 		/* Send destroy requester ramrod */
-<<<<<<< HEAD
 		rc = qed_roce_sp_destroy_qp_requester(p_hwfn, qp);
 		if (rc)
 			return rc;
-=======
-		rc = qed_roce_sp_destroy_qp_requester(p_hwfn, qp,
-						      &num_bound_mw);
-		if (rc)
-			return rc;
-
-		if (num_invalidated_mw != num_bound_mw) {
-			DP_NOTICE(p_hwfn,
-				  "number of invalidate memory windows is different from bounded ones\n");
-			return -EINVAL;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -1134,10 +1010,6 @@ int qed_roce_modify_qp(struct qed_hwfn *p_hwfn,
 		       enum qed_roce_qp_state prev_state,
 		       struct qed_rdma_modify_qp_in_params *params)
 {
-<<<<<<< HEAD
-=======
-	u32 num_invalidated_mw = 0, num_bound_mw = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc = 0;
 
 	/* Perform additional operations according to the current state and the
@@ -1217,10 +1089,6 @@ int qed_roce_modify_qp(struct qed_hwfn *p_hwfn,
 		/* Send destroy responder ramrod */
 		rc = qed_roce_sp_destroy_qp_responder(p_hwfn,
 						      qp,
-<<<<<<< HEAD
-=======
-						      &num_invalidated_mw,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						      &cq_prod);
 
 		if (rc)
@@ -1228,18 +1096,7 @@ int qed_roce_modify_qp(struct qed_hwfn *p_hwfn,
 
 		qp->cq_prod = cq_prod;
 
-<<<<<<< HEAD
 		rc = qed_roce_sp_destroy_qp_requester(p_hwfn, qp);
-=======
-		rc = qed_roce_sp_destroy_qp_requester(p_hwfn, qp,
-						      &num_bound_mw);
-
-		if (num_invalidated_mw != num_bound_mw) {
-			DP_NOTICE(p_hwfn,
-				  "number of invalidate memory windows is different from bounded ones\n");
-			return -EINVAL;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		DP_VERBOSE(p_hwfn, QED_MSG_RDMA, "0\n");
 	}

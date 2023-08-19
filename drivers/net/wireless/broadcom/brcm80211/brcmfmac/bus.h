@@ -71,10 +71,7 @@ struct brcmf_bus_dcmd {
  * @wowl_config: specify if dongle is configured for wowl when going to suspend
  * @get_ramsize: obtain size of device memory.
  * @get_memdump: obtain device memory dump in provided buffer.
-<<<<<<< HEAD
  * @get_fwname: obtain firmware name.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This structure provides an abstract interface towards the
  * bus specific driver. For control messages to common driver
@@ -91,11 +88,8 @@ struct brcmf_bus_ops {
 	void (*wowl_config)(struct device *dev, bool enabled);
 	size_t (*get_ramsize)(struct device *dev);
 	int (*get_memdump)(struct device *dev, void *data, size_t len);
-<<<<<<< HEAD
 	int (*get_fwname)(struct device *dev, const char *ext,
 			  unsigned char *fw_name);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 
@@ -146,10 +140,7 @@ struct brcmf_bus_stats {
  * @always_use_fws_queue: bus wants use queue also when fwsignal is inactive.
  * @wowl_supported: is wowl supported by bus driver.
  * @chiprev: revision of the dongle chip.
-<<<<<<< HEAD
  * @msgbuf: msgbuf protocol parameters provided by bus layer.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct brcmf_bus {
 	union {
@@ -237,7 +228,6 @@ int brcmf_bus_get_memdump(struct brcmf_bus *bus, void *data, size_t len)
 	return bus->ops->get_memdump(bus->dev, data, len);
 }
 
-<<<<<<< HEAD
 static inline
 int brcmf_bus_get_fwname(struct brcmf_bus *bus, const char *ext,
 			 unsigned char *fw_name)
@@ -245,8 +235,6 @@ int brcmf_bus_get_fwname(struct brcmf_bus *bus, const char *ext,
 	return bus->ops->get_fwname(bus->dev, ext, fw_name);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * interface functions from common layer
  */
@@ -262,19 +250,12 @@ int brcmf_attach(struct device *dev, struct brcmf_mp_device *settings);
 void brcmf_detach(struct device *dev);
 /* Indication from bus module that dongle should be reset */
 void brcmf_dev_reset(struct device *dev);
-<<<<<<< HEAD
 /* Request from bus module to initiate a coredump */
 void brcmf_dev_coredump(struct device *dev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Configure the "global" bus state used by upper layers */
 void brcmf_bus_change_state(struct brcmf_bus *bus, enum brcmf_bus_state state);
 
-<<<<<<< HEAD
-=======
-int brcmf_bus_started(struct device *dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 s32 brcmf_iovar_data_set(struct device *dev, char *name, void *data, u32 len);
 void brcmf_bus_add_txhdrlen(struct device *dev, uint len);
 

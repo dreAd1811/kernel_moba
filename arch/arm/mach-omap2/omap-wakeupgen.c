@@ -50,12 +50,9 @@
 #define OMAP4_NR_BANKS		4
 #define OMAP4_NR_IRQS		128
 
-<<<<<<< HEAD
 #define SYS_NIRQ1_EXT_SYS_IRQ_1	7
 #define SYS_NIRQ2_EXT_SYS_IRQ_2	119
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void __iomem *wakeupgen_base;
 static void __iomem *sar_base;
 static DEFINE_RAW_SPINLOCK(wakeupgen_lock);
@@ -159,7 +156,6 @@ static void wakeupgen_unmask(struct irq_data *d)
 	irq_chip_unmask_parent(d);
 }
 
-<<<<<<< HEAD
 /*
  * The sys_nirq pins bypass peripheral modules and are wired directly
  * to MPUSS wakeupgen. They get automatically inverted for GIC.
@@ -191,8 +187,6 @@ static int wakeupgen_irq_set_type(struct irq_data *d, unsigned int type)
 	return irq_chip_set_type_parent(d, type);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_HOTPLUG_CPU
 static DEFINE_PER_CPU(u32 [MAX_NR_REG_BANKS], irqmasks);
 
@@ -486,11 +480,7 @@ static struct irq_chip wakeupgen_chip = {
 	.irq_mask		= wakeupgen_mask,
 	.irq_unmask		= wakeupgen_unmask,
 	.irq_retrigger		= irq_chip_retrigger_hierarchy,
-<<<<<<< HEAD
 	.irq_set_type		= wakeupgen_irq_set_type,
-=======
-	.irq_set_type		= irq_chip_set_type_parent,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.flags			= IRQCHIP_SKIP_SET_WAKE | IRQCHIP_MASK_ON_SUSPEND,
 #ifdef CONFIG_SMP
 	.irq_set_affinity	= irq_chip_set_affinity_parent,

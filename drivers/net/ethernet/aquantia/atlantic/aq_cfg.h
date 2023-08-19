@@ -36,22 +36,14 @@
 #define AQ_CFG_TX_FRAME_MAX  (16U * 1024U)
 #define AQ_CFG_RX_FRAME_MAX  (4U * 1024U)
 
-<<<<<<< HEAD
 #define AQ_CFG_TX_CLEAN_BUDGET 256U
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* LRO */
 #define AQ_CFG_IS_LRO_DEF           1U
 
 /* RSS */
-<<<<<<< HEAD
 #define AQ_CFG_RSS_INDIRECTION_TABLE_MAX  128U
 #define AQ_CFG_RSS_HASHKEY_SIZE           320U
-=======
-#define AQ_CFG_RSS_INDIRECTION_TABLE_MAX  64U
-#define AQ_CFG_RSS_HASHKEY_SIZE           40U
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define AQ_CFG_IS_RSS_DEF           1U
 #define AQ_CFG_NUM_RSS_QUEUES_DEF   AQ_CFG_VECS_DEF
@@ -60,11 +52,7 @@
 #define AQ_CFG_PCI_FUNC_MSIX_IRQS   9U
 #define AQ_CFG_PCI_FUNC_PORTS       2U
 
-<<<<<<< HEAD
 #define AQ_CFG_SERVICE_TIMER_INTERVAL    (1 * HZ)
-=======
-#define AQ_CFG_SERVICE_TIMER_INTERVAL    (2 * HZ)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define AQ_CFG_POLLING_TIMER_INTERVAL   ((unsigned int)(2 * HZ))
 
 #define AQ_CFG_SKB_FRAGS_MAX   32U
@@ -75,7 +63,6 @@
 
 #define AQ_CFG_NAPI_WEIGHT     64U
 
-<<<<<<< HEAD
 /*#define AQ_CFG_MAC_ADDR_PERMANENT {0x30, 0x0E, 0xE3, 0x12, 0x34, 0x56}*/
 
 #define AQ_NIC_FC_OFF    0U
@@ -85,13 +72,6 @@
 #define AQ_NIC_FC_AUTO   4U
 
 #define AQ_CFG_FC_MODE AQ_NIC_FC_FULL
-=======
-#define AQ_CFG_MULTICAST_ADDRESS_MAX     32U
-
-/*#define AQ_CFG_MAC_ADDR_PERMANENT {0x30, 0x0E, 0xE3, 0x12, 0x34, 0x56}*/
-
-#define AQ_CFG_FC_MODE 3U
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define AQ_CFG_SPEED_MSK  0xFFFFU	/* 0xFFFFU==auto_neg */
 
@@ -106,11 +86,7 @@
 #define AQ_CFG_DRV_VERSION	__stringify(NIC_MAJOR_DRIVER_VERSION)"."\
 				__stringify(NIC_MINOR_DRIVER_VERSION)"."\
 				__stringify(NIC_BUILD_DRIVER_VERSION)"."\
-<<<<<<< HEAD
 				__stringify(NIC_REVISION_DRIVER_VERSION) \
 				AQ_CFG_DRV_VERSION_SUFFIX
-=======
-				__stringify(NIC_REVISION_DRIVER_VERSION)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* AQ_CFG_H */

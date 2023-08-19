@@ -41,10 +41,7 @@ struct cpuinfo_arm64 {
 	u64		reg_id_aa64mmfr2;
 	u64		reg_id_aa64pfr0;
 	u64		reg_id_aa64pfr1;
-<<<<<<< HEAD
 	u64		reg_id_aa64zfr0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	u32		reg_id_dfr0;
 	u32		reg_id_isar0;
@@ -63,12 +60,9 @@ struct cpuinfo_arm64 {
 	u32		reg_mvfr0;
 	u32		reg_mvfr1;
 	u32		reg_mvfr2;
-<<<<<<< HEAD
 
 	/* pseudo-ZCR for recording maximum ZCR_EL1 LEN value: */
 	u64		reg_zcr;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 DECLARE_PER_CPU(struct cpuinfo_arm64, cpu_data);

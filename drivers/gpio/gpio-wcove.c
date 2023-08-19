@@ -350,11 +350,7 @@ static irqreturn_t wcove_gpio_irq_handler(int irq, void *data)
 			offset = (gpio > GROUP0_NR_IRQS) ? 1 : 0;
 			mask = (offset == 1) ? BIT(gpio - GROUP0_NR_IRQS) :
 								BIT(gpio);
-<<<<<<< HEAD
 			virq = irq_find_mapping(wg->chip.irq.domain, gpio);
-=======
-			virq = irq_find_mapping(wg->chip.irqdomain, gpio);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			handle_nested_irq(virq);
 			regmap_update_bits(wg->regmap, IRQ_STATUS_BASE + offset,
 								mask, mask);

@@ -28,7 +28,6 @@ TRACE_EVENT(hyperv_mmu_flush_tlb_others,
 		      __entry->addr, __entry->end)
 	);
 
-<<<<<<< HEAD
 TRACE_EVENT(hyperv_nested_flush_guest_mapping,
 	    TP_PROTO(u64 as, int ret),
 	    TP_ARGS(as, ret),
@@ -58,8 +57,6 @@ TRACE_EVENT(hyperv_send_ipi_mask,
 		      __entry->ncpus, __entry->vector)
 	);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_HYPERV */
 
 #undef TRACE_INCLUDE_PATH

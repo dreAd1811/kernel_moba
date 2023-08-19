@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2008-2019, The Linux Foundation. All rights reserved.
@@ -26,59 +25,6 @@
 #include "kgsl_mmu.h"
 #include "kgsl_sync.h"
 #include "kgsl_trace.h"
-=======
-/* Copyright (c) 2008-2021, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- */
-#include <linux/module.h>
-#include <linux/fb.h>
-#include <linux/file.h>
-#include <linux/fs.h>
-#include <linux/fdtable.h>
-#include <linux/list.h>
-#include <linux/debugfs.h>
-#include <linux/uaccess.h>
-#include <linux/interrupt.h>
-#include <linux/workqueue.h>
-#include <linux/dma-buf.h>
-#include <linux/pm_runtime.h>
-#include <linux/rbtree.h>
-#include <linux/major.h>
-#include <linux/io.h>
-#include <linux/mman.h>
-#include <linux/sort.h>
-#include <linux/security.h>
-#include <linux/compat.h>
-#include <linux/ctype.h>
-#include <linux/mm.h>
-#include <linux/ion.h>
-#include <asm/cacheflush.h>
-#include <uapi/linux/sched/types.h>
-#include <soc/qcom/boot_stats.h>
-
-#include "kgsl.h"
-#include "kgsl_debugfs.h"
-#include "kgsl_log.h"
-#include "kgsl_sharedmem.h"
-#include "kgsl_drawobj.h"
-#include "kgsl_device.h"
-#include "kgsl_trace.h"
-#include "kgsl_sync.h"
-#include "kgsl_compat.h"
-#include "kgsl_pool.h"
-
-#undef MODULE_PARAM_PREFIX
-#define MODULE_PARAM_PREFIX "kgsl."
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifndef arch_mmap_check
 #define arch_mmap_check(addr, len, flags)	(0)
@@ -98,13 +44,6 @@
 #define KGSL_DMA_BIT_MASK	DMA_BIT_MASK(32)
 #endif
 
-<<<<<<< HEAD
-=======
-static char *kgsl_mmu_type;
-module_param_named(mmutype, kgsl_mmu_type, charp, 0000);
-MODULE_PARM_DESC(kgsl_mmu_type, "Type of MMU to be used for graphics");
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Mutex used for the IOMMU sync quirk */
 DEFINE_MUTEX(kgsl_mmu_sync);
 EXPORT_SYMBOL(kgsl_mmu_sync);
@@ -166,23 +105,6 @@ static struct {
 	int tail;
 } memfree;
 
-<<<<<<< HEAD
-=======
-static int kgsl_memfree_init(void)
-{
-	memfree.list = kcalloc(MEMFREE_ENTRIES, sizeof(struct memfree_entry),
-		GFP_KERNEL);
-
-	return (memfree.list) ? 0 : -ENOMEM;
-}
-
-static void kgsl_memfree_exit(void)
-{
-	kfree(memfree.list);
-	memset(&memfree, 0, sizeof(memfree));
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline bool match_memfree_addr(struct memfree_entry *entry,
 		pid_t ptname, uint64_t gpuaddr)
 {
@@ -293,7 +215,6 @@ static void kgsl_memfree_add(pid_t pid, pid_t ptname, uint64_t gpuaddr,
 int kgsl_readtimestamp(struct kgsl_device *device, void *priv,
 		enum kgsl_timestamp_type type, unsigned int *timestamp)
 {
-<<<<<<< HEAD
 	if (device)
 		return device->ftbl->readtimestamp(device, priv, type,
 			timestamp);
@@ -303,23 +224,6 @@ int kgsl_readtimestamp(struct kgsl_device *device, void *priv,
 EXPORT_SYMBOL(kgsl_readtimestamp);
 
 static struct kgsl_mem_entry *kgsl_mem_entry_create(void)
-=======
-	return device->ftbl->readtimestamp(device, priv, type, timestamp);
-}
-EXPORT_SYMBOL(kgsl_readtimestamp);
-
-/* Scheduled by kgsl_mem_entry_put_deferred() */
-static void _deferred_put(struct work_struct *work)
-{
-	struct kgsl_mem_entry *entry =
-		container_of(work, struct kgsl_mem_entry, work);
-
-	kgsl_mem_entry_put(entry);
-}
-
-static inline struct kgsl_mem_entry *
-kgsl_mem_entry_create(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct kgsl_mem_entry *entry = kzalloc(sizeof(*entry), GFP_KERNEL);
 
@@ -327,10 +231,6 @@ kgsl_mem_entry_create(void)
 		kref_init(&entry->refcount);
 		/* put this ref in userspace memory alloc and map ioctls */
 		kref_get(&entry->refcount);
-<<<<<<< HEAD
-=======
-		atomic_set(&entry->map_count, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return entry;
@@ -408,24 +308,10 @@ static void kgsl_destroy_ion(struct kgsl_dma_buf_meta *meta)
 }
 #endif
 
-<<<<<<< HEAD
 static void mem_entry_destroy(struct kgsl_mem_entry *entry)
 {
 	unsigned int memtype;
 
-=======
-void
-kgsl_mem_entry_destroy(struct kref *kref)
-{
-	struct kgsl_mem_entry *entry = container_of(kref,
-						    struct kgsl_mem_entry,
-						    refcount);
-	unsigned int memtype;
-
-	if (entry == NULL)
-		return;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* pull out the memtype before the flags get cleared */
 	memtype = kgsl_memdesc_usermem_type(&entry->memdesc);
 
@@ -477,7 +363,6 @@ kgsl_mem_entry_destroy(struct kref *kref)
 
 	kfree(entry);
 }
-<<<<<<< HEAD
 
 static void _deferred_destroy(struct work_struct *work)
 {
@@ -506,10 +391,6 @@ void kgsl_mem_entry_destroy_deferred(struct kref *kref)
 }
 EXPORT_SYMBOL(kgsl_mem_entry_destroy_deferred);
 
-=======
-EXPORT_SYMBOL(kgsl_mem_entry_destroy);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Allocate a IOVA for memory objects that don't use SVM */
 static int kgsl_mem_entry_track_gpuaddr(struct kgsl_device *device,
 		struct kgsl_process_private *process,
@@ -619,12 +500,9 @@ static void kgsl_mem_entry_detach_process(struct kgsl_mem_entry *entry)
 		idr_remove(&entry->priv->mem_idr, entry->id);
 	entry->id = 0;
 
-<<<<<<< HEAD
 	atomic_long_sub(atomic_long_read(&entry->memdesc.mapsize),
 			&entry->priv->gpumem_mapped);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock(&entry->priv->mem_lock);
 
 	kgsl_mmu_put_gpuaddr(&entry->memdesc);
@@ -694,10 +572,6 @@ int kgsl_context_init(struct kgsl_device_private *dev_priv,
 			struct kgsl_context *context)
 {
 	struct kgsl_device *device = dev_priv->device;
-<<<<<<< HEAD
-=======
-	char name[64];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = 0, id;
 	struct kgsl_process_private  *proc_priv = dev_priv->process_priv;
 
@@ -707,15 +581,9 @@ int kgsl_context_init(struct kgsl_device_private *dev_priv,
 	 */
 	spin_lock(&proc_priv->ctxt_count_lock);
 	if (atomic_read(&proc_priv->ctxt_count) > KGSL_MAX_CONTEXTS_PER_PROC) {
-<<<<<<< HEAD
 		dev_err(device->dev,
 			     "Per process context limit reached for pid %u\n",
 			     dev_priv->process_priv->pid);
-=======
-		KGSL_DRV_ERR_RATELIMIT(device,
-			"Per process context limit reached for pid %u",
-			pid_nr(dev_priv->process_priv->pid));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_unlock(&proc_priv->ctxt_count_lock);
 		return -ENOSPC;
 	}
@@ -737,15 +605,9 @@ int kgsl_context_init(struct kgsl_device_private *dev_priv,
 
 	if (id < 0) {
 		if (id == -ENOSPC)
-<<<<<<< HEAD
 			dev_warn(device->dev,
 				      "cannot have more than %zu contexts due to memstore limitation\n",
 				      KGSL_MEMSTORE_MAX);
-=======
-			KGSL_DRV_INFO(device,
-				"cannot have more than %zu contexts due to memstore limitation\n",
-				KGSL_MEMSTORE_MAX);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		atomic_dec(&proc_priv->ctxt_count);
 		return id;
 	}
@@ -773,14 +635,8 @@ int kgsl_context_init(struct kgsl_device_private *dev_priv,
 		goto out;
 	}
 
-<<<<<<< HEAD
 	kgsl_add_event_group(&context->events, context,
 		kgsl_readtimestamp, context, "context-%d", id);
-=======
-	snprintf(name, sizeof(name), "context-%d", id);
-	kgsl_add_event_group(&context->events, context, name,
-		kgsl_readtimestamp, context);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 out:
 	if (ret) {
@@ -892,11 +748,7 @@ struct kgsl_device *kgsl_get_device(int dev_idx)
 
 	mutex_lock(&kgsl_driver.devlock);
 
-<<<<<<< HEAD
 	for (i = 0; i < ARRAY_SIZE(kgsl_driver.devp); i++) {
-=======
-	for (i = 0; i < KGSL_DEVICE_MAX; i++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (kgsl_driver.devp[i] && kgsl_driver.devp[i]->id == dev_idx) {
 			ret = kgsl_driver.devp[i];
 			break;
@@ -912,11 +764,7 @@ static struct kgsl_device *kgsl_get_minor(int minor)
 {
 	struct kgsl_device *ret = NULL;
 
-<<<<<<< HEAD
 	if (minor < 0 || minor >= ARRAY_SIZE(kgsl_driver.devp))
-=======
-	if (minor < 0 || minor >= KGSL_DEVICE_MAX)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return NULL;
 
 	mutex_lock(&kgsl_driver.devlock);
@@ -951,7 +799,6 @@ static int kgsl_suspend_device(struct kgsl_device *device, pm_message_t state)
 	if (!device)
 		return -EINVAL;
 
-<<<<<<< HEAD
 	mutex_lock(&device->mutex);
 	status = kgsl_pwrctrl_change_state(device, KGSL_STATE_SUSPEND);
 	if (status == 0 && device->state == KGSL_STATE_SUSPEND)
@@ -969,36 +816,6 @@ static int kgsl_resume_device(struct kgsl_device *device)
 	mutex_lock(&device->mutex);
 	if (device->state == KGSL_STATE_SUSPEND) {
 		device->ftbl->dispatcher_unhalt(device);
-=======
-	KGSL_PWR_WARN(device, "suspend start\n");
-
-	mutex_lock(&device->mutex);
-	status = kgsl_pwrctrl_change_state(device, KGSL_STATE_SUSPEND);
-	if (!status)
-		status = device->ftbl->suspend_device(device, state);
-	mutex_unlock(&device->mutex);
-
-	KGSL_PWR_WARN(device, "suspend end\n");
-	return status;
-}
-
-static int kgsl_resume_device(struct kgsl_device *device, pm_message_t state)
-{
-	int ret;
-
-	if (!device)
-		return -EINVAL;
-
-	KGSL_PWR_WARN(device, "resume start\n");
-	mutex_lock(&device->mutex);
-	ret = device->ftbl->resume_device(device, state);
-	if (ret) {
-		mutex_unlock(&device->mutex);
-		return ret;
-	}
-
-	if (device->state == KGSL_STATE_SUSPEND) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kgsl_pwrctrl_change_state(device, KGSL_STATE_SLUMBER);
 	} else if (device->state != KGSL_STATE_INIT) {
 		/*
@@ -1010,75 +827,28 @@ static int kgsl_resume_device(struct kgsl_device *device, pm_message_t state)
 		if (device->state == KGSL_STATE_ACTIVE)
 			device->ftbl->idle(device);
 		kgsl_pwrctrl_change_state(device, KGSL_STATE_SLUMBER);
-<<<<<<< HEAD
 		dev_err(device->dev,
 			     "resume invoked without a suspend\n");
 	}
 
 	mutex_unlock(&device->mutex);
-=======
-		KGSL_PWR_ERR(device,
-			"resume invoked without a suspend\n");
-	}
-
-	mutex_unlock(&device->mutex);
-	KGSL_PWR_WARN(device, "resume end\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 static int kgsl_suspend(struct device *dev)
 {
-<<<<<<< HEAD
 
 	pm_message_t arg = {0};
 	struct kgsl_device *device = dev_get_drvdata(dev);
 
 	return kgsl_suspend_device(device, arg);
-=======
-	struct kgsl_device *device = dev_get_drvdata(dev);
-
-	return kgsl_suspend_device(device, PMSG_SUSPEND);
-}
-
-static int kgsl_freeze(struct device *dev)
-{
-	struct kgsl_device *device = dev_get_drvdata(dev);
-
-	return kgsl_suspend_device(device, PMSG_FREEZE);
-}
-
-static int kgsl_poweroff(struct device *dev)
-{
-	struct kgsl_device *device = dev_get_drvdata(dev);
-
-	return kgsl_suspend_device(device, PMSG_HIBERNATE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int kgsl_resume(struct device *dev)
 {
 	struct kgsl_device *device = dev_get_drvdata(dev);
 
-<<<<<<< HEAD
 	return kgsl_resume_device(device);
-=======
-	return kgsl_resume_device(device, PMSG_RESUME);
-}
-
-static int kgsl_thaw(struct device *dev)
-{
-	struct kgsl_device *device = dev_get_drvdata(dev);
-
-	return kgsl_resume_device(device, PMSG_THAW);
-}
-
-static int kgsl_restore(struct device *dev)
-{
-	struct kgsl_device *device = dev_get_drvdata(dev);
-
-	return kgsl_resume_device(device, PMSG_RESTORE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int kgsl_runtime_suspend(struct device *dev)
@@ -1094,13 +864,6 @@ static int kgsl_runtime_resume(struct device *dev)
 const struct dev_pm_ops kgsl_pm_ops = {
 	.suspend = kgsl_suspend,
 	.resume = kgsl_resume,
-<<<<<<< HEAD
-=======
-	.freeze = kgsl_freeze,
-	.thaw = kgsl_thaw,
-	.poweroff = kgsl_poweroff,
-	.restore = kgsl_restore,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.runtime_suspend = kgsl_runtime_suspend,
 	.runtime_resume = kgsl_runtime_resume,
 };
@@ -1119,11 +882,7 @@ int kgsl_resume_driver(struct platform_device *pdev)
 {
 	struct kgsl_device *device = dev_get_drvdata(&pdev->dev);
 
-<<<<<<< HEAD
 	return kgsl_resume_device(device);
-=======
-	return kgsl_resume_device(device, PMSG_RESUME);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(kgsl_resume_driver);
 
@@ -1141,10 +900,6 @@ static void kgsl_destroy_process_private(struct kref *kref)
 	struct kgsl_process_private *private = container_of(kref,
 			struct kgsl_process_private, refcount);
 
-<<<<<<< HEAD
-=======
-	put_pid(private->pid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	idr_destroy(&private->mem_idr);
 	idr_destroy(&private->syncsource_idr);
 
@@ -1172,26 +927,16 @@ struct kgsl_process_private *kgsl_process_private_find(pid_t pid)
 {
 	struct kgsl_process_private *p, *private = NULL;
 
-<<<<<<< HEAD
 	spin_lock(&kgsl_driver.proclist_lock);
 	list_for_each_entry(p, &kgsl_driver.process_list, list) {
 		if (p->pid == pid) {
-=======
-	mutex_lock(&kgsl_driver.process_mutex);
-	list_for_each_entry(p, &kgsl_driver.process_list, list) {
-		if (pid_nr(p->pid) == pid) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (kgsl_process_private_get(p))
 				private = p;
 			break;
 		}
 	}
-<<<<<<< HEAD
 	spin_unlock(&kgsl_driver.proclist_lock);
 
-=======
-	mutex_unlock(&kgsl_driver.process_mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return private;
 }
 
@@ -1199,7 +944,6 @@ static struct kgsl_process_private *kgsl_process_private_new(
 		struct kgsl_device *device)
 {
 	struct kgsl_process_private *private;
-<<<<<<< HEAD
 	pid_t tgid = task_tgid_nr(current);
 
 	/*
@@ -1214,45 +958,18 @@ static struct kgsl_process_private *kgsl_process_private_new(
 		if (private->pid == tgid) {
 			if (!kgsl_process_private_get(private))
 				private = ERR_PTR(-EINVAL);
-=======
-	struct pid *cur_pid = get_task_pid(current->group_leader, PIDTYPE_PID);
-
-	/* Search in the process list */
-	list_for_each_entry(private, &kgsl_driver.process_list, list) {
-		if (private->pid == cur_pid) {
-			if (!kgsl_process_private_get(private)) {
-				private = ERR_PTR(-EINVAL);
-			}
-			/*
-			 * We need to hold only one reference to the PID for
-			 * each process struct to avoid overflowing the
-			 * reference counter which can lead to use-after-free.
-			 */
-			put_pid(cur_pid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return private;
 		}
 	}
 
 	/* Create a new object */
 	private = kzalloc(sizeof(struct kgsl_process_private), GFP_KERNEL);
-<<<<<<< HEAD
 	if (private == NULL)
 		return ERR_PTR(-ENOMEM);
 
 	kref_init(&private->refcount);
 
 	private->pid = tgid;
-=======
-	if (private == NULL) {
-		put_pid(cur_pid);
-		return ERR_PTR(-ENOMEM);
-	}
-
-	kref_init(&private->refcount);
-
-	private->pid = cur_pid;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	get_task_comm(private->comm, current->group_leader);
 
 	spin_lock_init(&private->mem_lock);
@@ -1263,21 +980,12 @@ static struct kgsl_process_private *kgsl_process_private_new(
 	idr_init(&private->syncsource_idr);
 
 	/* Allocate a pagetable for the new process object */
-<<<<<<< HEAD
 	private->pagetable = kgsl_mmu_getpagetable(&device->mmu, tgid);
-=======
-	private->pagetable = kgsl_mmu_getpagetable(&device->mmu,
-							pid_nr(cur_pid));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(private->pagetable)) {
 		int err = PTR_ERR(private->pagetable);
 
 		idr_destroy(&private->mem_idr);
 		idr_destroy(&private->syncsource_idr);
-<<<<<<< HEAD
-=======
-		put_pid(private->pid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		kfree(private);
 		private = ERR_PTR(err);
@@ -1307,11 +1015,7 @@ static void process_release_memory(struct kgsl_process_private *private)
 		if (!entry->pending_free) {
 			entry->pending_free = 1;
 			spin_unlock(&private->mem_lock);
-<<<<<<< HEAD
 			kgsl_mem_entry_put_deferred(entry);
-=======
-			kgsl_mem_entry_put(entry);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else {
 			spin_unlock(&private->mem_lock);
 		}
@@ -1345,13 +1049,9 @@ static void kgsl_process_private_close(struct kgsl_device_private *dev_priv,
 		kgsl_mmu_detach_pagetable(private->pagetable);
 
 	/* Remove the process struct from the master list */
-<<<<<<< HEAD
 	spin_lock(&kgsl_driver.proclist_lock);
 	list_del(&private->list);
 	spin_unlock(&kgsl_driver.proclist_lock);
-=======
-	list_del(&private->list);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Unlock the mutex before releasing the memory and the debugfs
@@ -1387,13 +1087,9 @@ static struct kgsl_process_private *kgsl_process_private_open(
 		kgsl_process_init_sysfs(device, private);
 		kgsl_process_init_debugfs(private);
 
-<<<<<<< HEAD
 		spin_lock(&kgsl_driver.proclist_lock);
 		list_add(&private->list, &kgsl_driver.process_list);
 		spin_unlock(&kgsl_driver.proclist_lock);
-=======
-		list_add(&private->list, &kgsl_driver.process_list);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 done:
@@ -1409,7 +1105,6 @@ static int kgsl_close_device(struct kgsl_device *device)
 	device->open_count--;
 	if (device->open_count == 0) {
 
-<<<<<<< HEAD
 		/*
 		 * Wait up to 1 second for the active count to go low
 		 * and then start complaining about it
@@ -1422,13 +1117,6 @@ static int kgsl_close_device(struct kgsl_device *device)
 				dev_err(device->dev,
 					"Still waiting for the active count\n");
 		}
-=======
-		/* Wait for the active count to go to 0 */
-		kgsl_active_count_wait(device, 0);
-
-		while (kgsl_active_count_wait(device, 0))
-			WARN(1, "Waiting for active context count to become 0\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		result = kgsl_pwrctrl_change_state(device, KGSL_STATE_INIT);
 	}
@@ -1543,25 +1231,15 @@ static int kgsl_open(struct inode *inodep, struct file *filep)
 
 	device = kgsl_get_minor(minor);
 	if (device == NULL) {
-<<<<<<< HEAD
 		pr_err("kgsl: No device found\n");
-=======
-		pr_err("No device found\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 	}
 
 	result = pm_runtime_get_sync(&device->pdev->dev);
 	if (result < 0) {
-<<<<<<< HEAD
 		dev_err(device->dev,
 			     "Runtime PM: Unable to wake up the device, rc = %d\n",
 			     result);
-=======
-		KGSL_DRV_ERR(device,
-			"Runtime PM: Unable to wake up the device, rc = %d\n",
-			result);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return result;
 	}
 	result = 0;
@@ -1686,7 +1364,6 @@ static inline void kgsl_mem_entry_unset_pend(struct kgsl_mem_entry *entry)
 	spin_unlock(&entry->priv->mem_lock);
 }
 
-<<<<<<< HEAD
 struct msm_bus_scale_pdata *kgsl_get_bus_scale_table(struct kgsl_device *device)
 {
 	struct device_node *child = NULL, *parent;
@@ -1714,8 +1391,6 @@ struct msm_bus_scale_pdata *kgsl_get_bus_scale_table(struct kgsl_device *device)
 	return msm_bus_cl_get_pdata(device->pdev);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * kgsl_mem_entry_set_pend() - Set the pending free flag of a memory entry
  * @entry - The memory entry
@@ -1742,11 +1417,7 @@ static inline bool kgsl_mem_entry_set_pend(struct kgsl_mem_entry *entry)
 	return ret;
 }
 
-<<<<<<< HEAD
 static int kgsl_get_ctxt_fault_stats(struct kgsl_context *context,
-=======
-static inline int kgsl_get_ctxt_fault_stats(struct kgsl_context *context,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct kgsl_context_property *ctxt_property)
 {
 	struct kgsl_context_property_fault fault_stats;
@@ -1776,22 +1447,14 @@ static inline int kgsl_get_ctxt_fault_stats(struct kgsl_context *context,
 	return 0;
 }
 
-<<<<<<< HEAD
 static long kgsl_get_ctxt_properties(struct kgsl_device_private *dev_priv,
-=======
-static inline int kgsl_get_ctxt_properties(struct kgsl_device_private *dev_priv,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct kgsl_device_getproperty *param)
 {
 	/* Return fault stats of given context */
 	struct kgsl_context_property ctxt_property;
 	struct kgsl_context *context;
 	size_t copy;
-<<<<<<< HEAD
 	long ret;
-=======
-	int ret = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * If sizebytes is zero, tell the user how big the
@@ -1829,7 +1492,6 @@ static inline int kgsl_get_ctxt_properties(struct kgsl_device_private *dev_priv,
 	return ret;
 }
 
-<<<<<<< HEAD
 static long kgsl_prop_version(struct kgsl_device_private *dev_priv,
 		struct kgsl_device_getproperty *param)
 {
@@ -2034,13 +1696,10 @@ static const struct {
 	{ KGSL_PROP_CONTEXT_PROPERTY, kgsl_get_ctxt_properties },
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*call all ioctl sub functions with driver locked*/
 long kgsl_ioctl_device_getproperty(struct kgsl_device_private *dev_priv,
 					  unsigned int cmd, void *data)
 {
-<<<<<<< HEAD
 	struct kgsl_device *device = dev_priv->device;
 	struct kgsl_device_getproperty *param = data;
 	int i;
@@ -2078,122 +1737,6 @@ int kgsl_query_property_list(struct kgsl_device *device, u32 *list, u32 count)
 			count - num);
 
 	return num;
-=======
-	int result = 0;
-	struct kgsl_device_getproperty *param = data;
-
-	switch (param->type) {
-	case KGSL_PROP_VERSION:
-	{
-		struct kgsl_version version;
-
-		if (param->sizebytes != sizeof(version)) {
-			result = -EINVAL;
-			break;
-		}
-
-		version.drv_major = KGSL_VERSION_MAJOR;
-		version.drv_minor = KGSL_VERSION_MINOR;
-		version.dev_major = dev_priv->device->ver_major;
-		version.dev_minor = dev_priv->device->ver_minor;
-
-		if (copy_to_user(param->value, &version, sizeof(version)))
-			result = -EFAULT;
-
-		break;
-	}
-	case KGSL_PROP_GPU_RESET_STAT:
-	{
-		/* Return reset status of given context and clear it */
-		uint32_t id;
-		struct kgsl_context *context;
-
-		if (param->sizebytes != sizeof(unsigned int)) {
-			result = -EINVAL;
-			break;
-		}
-		/* We expect the value passed in to contain the context id */
-		if (copy_from_user(&id, param->value,
-			sizeof(unsigned int))) {
-			result = -EFAULT;
-			break;
-		}
-		context = kgsl_context_get_owner(dev_priv, id);
-		if (!context) {
-			result = -EINVAL;
-			break;
-		}
-		/*
-		 * Copy the reset status to value which also serves as
-		 * the out parameter
-		 */
-		if (copy_to_user(param->value, &(context->reset_status),
-			sizeof(unsigned int)))
-			result = -EFAULT;
-		else {
-			/* Clear reset status once its been queried */
-			context->reset_status = KGSL_CTX_STAT_NO_ERROR;
-		}
-
-		kgsl_context_put(context);
-		break;
-	}
-	case KGSL_PROP_SECURE_BUFFER_ALIGNMENT:
-	{
-		unsigned int align;
-
-		if (param->sizebytes != sizeof(unsigned int)) {
-			result = -EINVAL;
-			break;
-		}
-		/*
-		 * XPUv2 impose the constraint of 1MB memory alignment,
-		 * on the other hand Hypervisor does not have such
-		 * constraints. So driver should fulfill such
-		 * requirements when allocating secure memory.
-		 */
-		align = MMU_FEATURE(&dev_priv->device->mmu,
-				KGSL_MMU_HYP_SECURE_ALLOC) ? PAGE_SIZE : SZ_1M;
-
-		if (copy_to_user(param->value, &align, sizeof(align)))
-			result = -EFAULT;
-
-		break;
-	}
-	case KGSL_PROP_SECURE_CTXT_SUPPORT:
-	{
-		unsigned int secure_ctxt;
-
-		if (param->sizebytes != sizeof(unsigned int)) {
-			result = -EINVAL;
-			break;
-		}
-
-		secure_ctxt = dev_priv->device->mmu.secured ? 1 : 0;
-
-		if (copy_to_user(param->value, &secure_ctxt,
-				sizeof(secure_ctxt)))
-			result = -EFAULT;
-
-		break;
-	}
-	case KGSL_PROP_CONTEXT_PROPERTY:
-		result = kgsl_get_ctxt_properties(dev_priv, param);
-		break;
-	default:
-		if (is_compat_task())
-			result = dev_priv->device->ftbl->getproperty_compat(
-					dev_priv->device, param->type,
-					param->value, param->sizebytes);
-		else
-			result = dev_priv->device->ftbl->getproperty(
-					dev_priv->device, param->type,
-					param->value, param->sizebytes);
-	}
-
-
-	return result;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 long kgsl_ioctl_device_setproperty(struct kgsl_device_private *dev_priv,
@@ -2604,11 +2147,7 @@ long gpumem_free_entry(struct kgsl_mem_entry *entry)
 		return -EBUSY;
 
 	trace_kgsl_mem_free(entry);
-<<<<<<< HEAD
 	kgsl_memfree_add(entry->priv->pid,
-=======
-	kgsl_memfree_add(pid_nr(entry->priv->pid),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			entry->memdesc.pagetable ?
 				entry->memdesc.pagetable->name : 0,
 			entry->memdesc.gpuaddr, entry->memdesc.size,
@@ -2631,11 +2170,7 @@ static void gpumem_free_func(struct kgsl_device *device,
 	/* Free the memory for all event types */
 	trace_kgsl_mem_timestamp_free(device, entry, KGSL_CONTEXT_ID(context),
 		timestamp, 0);
-<<<<<<< HEAD
 	kgsl_memfree_add(entry->priv->pid,
-=======
-	kgsl_memfree_add(pid_nr(entry->priv->pid),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			entry->memdesc.pagetable ?
 				entry->memdesc.pagetable->name : 0,
 			entry->memdesc.gpuaddr, entry->memdesc.size,
@@ -2679,11 +2214,7 @@ long kgsl_ioctl_sharedmem_free(struct kgsl_device_private *dev_priv,
 		return -EINVAL;
 
 	ret = gpumem_free_entry(entry);
-<<<<<<< HEAD
 	kgsl_mem_entry_put_deferred(entry);
-=======
-	kgsl_mem_entry_put(entry);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -2701,11 +2232,7 @@ long kgsl_ioctl_gpumem_free_id(struct kgsl_device_private *dev_priv,
 		return -EINVAL;
 
 	ret = gpumem_free_entry(entry);
-<<<<<<< HEAD
 	kgsl_mem_entry_put_deferred(entry);
-=======
-	kgsl_mem_entry_put(entry);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -2743,22 +2270,13 @@ static bool gpuobj_free_fence_func(void *priv)
 	struct kgsl_mem_entry *entry = priv;
 
 	trace_kgsl_mem_free(entry);
-<<<<<<< HEAD
 	kgsl_memfree_add(entry->priv->pid,
-=======
-	kgsl_memfree_add(pid_nr(entry->priv->pid),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			entry->memdesc.pagetable ?
 				entry->memdesc.pagetable->name : 0,
 			entry->memdesc.gpuaddr, entry->memdesc.size,
 			entry->memdesc.flags);
 
-<<<<<<< HEAD
 	kgsl_mem_entry_put_deferred(entry);
-=======
-	INIT_WORK(&entry->work, _deferred_put);
-	queue_work(kgsl_driver.mem_workqueue, &entry->work);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return true;
 }
 
@@ -2823,11 +2341,7 @@ long kgsl_ioctl_gpuobj_free(struct kgsl_device_private *dev_priv,
 	else
 		ret = -EINVAL;
 
-<<<<<<< HEAD
 	kgsl_mem_entry_put_deferred(entry);
-=======
-	kgsl_mem_entry_put(entry);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -2857,17 +2371,12 @@ long kgsl_ioctl_cmdstream_freememontimestamp_ctxtid(
 	ret = gpumem_free_entry_on_timestamp(dev_priv->device, entry,
 		context, param->timestamp);
 
-<<<<<<< HEAD
 	kgsl_mem_entry_put_deferred(entry);
-=======
-	kgsl_mem_entry_put(entry);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kgsl_context_put(context);
 
 	return ret;
 }
 
-<<<<<<< HEAD
 static inline int _check_region(unsigned long start, unsigned long size,
 				uint64_t len)
 {
@@ -2876,8 +2385,6 @@ static inline int _check_region(unsigned long start, unsigned long size,
 	return (end > len);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int check_vma_flags(struct vm_area_struct *vma,
 		unsigned int flags)
 {
@@ -2892,7 +2399,6 @@ static int check_vma_flags(struct vm_area_struct *vma,
 	return -EFAULT;
 }
 
-<<<<<<< HEAD
 static int check_vma(struct vm_area_struct *vma, struct file *vmfile,
 		struct kgsl_memdesc *memdesc)
 {
@@ -2910,29 +2416,6 @@ static int check_vma(struct vm_area_struct *vma, struct file *vmfile,
 }
 
 static int memdesc_sg_virt(struct kgsl_memdesc *memdesc, struct file *vmfile)
-=======
-static int check_vma(unsigned long hostptr, u64 size)
-{
-	struct vm_area_struct *vma;
-	unsigned long cur = hostptr;
-
-	while (cur < (hostptr + size)) {
-		vma = find_vma(current->mm, cur);
-		if (!vma)
-			return false;
-
-		/* Don't remap memory that we already own */
-		if (vma->vm_file && vma->vm_file->f_op == &kgsl_fops)
-			return false;
-
-		cur = vma->vm_end;
-	}
-
-	return true;
-}
-
-static int memdesc_sg_virt(struct kgsl_memdesc *memdesc, unsigned long useraddr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret = 0;
 	long npages = 0, i;
@@ -2944,26 +2427,17 @@ static int memdesc_sg_virt(struct kgsl_memdesc *memdesc, unsigned long useraddr)
 	if (sglen == 0 || sglen >= LONG_MAX)
 		return -EINVAL;
 
-<<<<<<< HEAD
 	pages = kvcalloc(sglen, sizeof(*pages), GFP_KERNEL);
 	if (pages == NULL)
 		return -ENOMEM;
 
 	memdesc->sgt = kmalloc(sizeof(*memdesc->sgt), GFP_KERNEL);
-=======
-	pages = kgsl_malloc(sglen * sizeof(struct page *));
-	if (pages == NULL)
-		return -ENOMEM;
-
-	memdesc->sgt = kmalloc(sizeof(struct sg_table), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (memdesc->sgt == NULL) {
 		ret = -ENOMEM;
 		goto out;
 	}
 
 	down_read(&current->mm->mmap_sem);
-<<<<<<< HEAD
 	/* If we have vmfile, make sure we map the correct vma and map it all */
 	if (vmfile != NULL)
 		ret = check_vma(find_vma(current->mm, memdesc->useraddr),
@@ -2976,18 +2450,6 @@ static int memdesc_sg_virt(struct kgsl_memdesc *memdesc, unsigned long useraddr)
 	}
 	up_read(&current->mm->mmap_sem);
 
-=======
-	if (!check_vma(useraddr, memdesc->size)) {
-		up_read(&current->mm->mmap_sem);
-		ret = -EFAULT;
-		goto out;
-	}
-
-	npages = get_user_pages(useraddr, sglen, write, pages, NULL);
-	up_read(&current->mm->mmap_sem);
-
-	ret = (npages < 0) ? (int)npages : 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto out;
 
@@ -3006,11 +2468,7 @@ out:
 		kfree(memdesc->sgt);
 		memdesc->sgt = NULL;
 	}
-<<<<<<< HEAD
 	kvfree(pages);
-=======
-	kgsl_free(pages);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -3019,10 +2477,6 @@ static int kgsl_setup_anon_useraddr(struct kgsl_pagetable *pagetable,
 	size_t offset, size_t size)
 {
 	/* Map an anonymous memory chunk */
-<<<<<<< HEAD
-=======
-	int ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (size == 0 || offset != 0 ||
 		!IS_ALIGNED(size, PAGE_SIZE))
@@ -3030,7 +2484,6 @@ static int kgsl_setup_anon_useraddr(struct kgsl_pagetable *pagetable,
 
 	entry->memdesc.pagetable = pagetable;
 	entry->memdesc.size = (uint64_t) size;
-<<<<<<< HEAD
 	entry->memdesc.useraddr = hostptr;
 	entry->memdesc.flags |= (uint64_t)KGSL_MEMFLAGS_USERMEM_ADDR;
 
@@ -3040,34 +2493,14 @@ static int kgsl_setup_anon_useraddr(struct kgsl_pagetable *pagetable,
 		/* Register the address in the database */
 		ret = kgsl_mmu_set_svm_region(pagetable,
 			(uint64_t) entry->memdesc.useraddr, (uint64_t) size);
-=======
-	entry->memdesc.flags |= (uint64_t)KGSL_MEMFLAGS_USERMEM_ADDR;
-
-	if (kgsl_memdesc_use_cpu_map(&entry->memdesc)) {
-		/* Register the address in the database */
-		ret = kgsl_mmu_set_svm_region(pagetable,
-			(uint64_t) hostptr, (uint64_t) size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (ret)
 			return ret;
 
-<<<<<<< HEAD
 		entry->memdesc.gpuaddr = (uint64_t)  entry->memdesc.useraddr;
 	}
 
 	return memdesc_sg_virt(&entry->memdesc, NULL);
-=======
-		entry->memdesc.gpuaddr = (uint64_t) hostptr;
-	}
-
-	ret = memdesc_sg_virt(&entry->memdesc, hostptr);
-
-	if (ret && kgsl_memdesc_use_cpu_map(&entry->memdesc))
-		kgsl_mmu_put_gpuaddr(&entry->memdesc);
-
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #ifdef CONFIG_DMA_SHARED_BUFFER
@@ -3152,12 +2585,8 @@ static int kgsl_setup_dmabuf_useraddr(struct kgsl_device *device,
 		return ret;
 	}
 
-<<<<<<< HEAD
 	/* Setup the user addr/cache mode for cache operations */
 	entry->memdesc.useraddr = hostptr;
-=======
-	/* Setup the cache mode for cache operations */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	_setup_cache_mode(entry, vma);
 	up_read(&current->mm->mmap_sem);
 	return 0;
@@ -3353,11 +2782,7 @@ long kgsl_ioctl_gpuobj_import(struct kgsl_device_private *dev_priv,
 	return 0;
 
 unmap:
-<<<<<<< HEAD
 	if (param->type == KGSL_USER_MEM_TYPE_DMABUF) {
-=======
-	if (kgsl_memdesc_usermem_type(&entry->memdesc) == KGSL_MEM_ENTRY_ION) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kgsl_destroy_ion(entry->priv_data);
 		entry->memdesc.sgt = NULL;
 	}
@@ -3671,11 +3096,7 @@ long kgsl_ioctl_map_user_mem(struct kgsl_device_private *dev_priv,
 	return result;
 
 error_attach:
-<<<<<<< HEAD
 	switch (memtype) {
-=======
-	switch (kgsl_memdesc_usermem_type(&entry->memdesc)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case KGSL_MEM_ENTRY_ION:
 		kgsl_destroy_ion(entry->priv_data);
 		entry->memdesc.sgt = NULL;
@@ -3699,12 +3120,9 @@ static int _kgsl_gpumem_sync_cache(struct kgsl_mem_entry *entry,
 	int cacheop;
 	int mode;
 
-<<<<<<< HEAD
 	if (!entry)
 		return 0;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 /* Cache ops are not allowed on secure memory */
 	if (entry->memdesc.flags & KGSL_MEMFLAGS_SECURE)
 		return 0;
@@ -3906,10 +3324,6 @@ long kgsl_ioctl_gpuobj_sync(struct kgsl_device_private *dev_priv,
 	struct kgsl_gpuobj_sync_obj *objs;
 	struct kgsl_mem_entry **entries;
 	long ret = 0;
-<<<<<<< HEAD
-=======
-	bool full_flush = false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint64_t size = 0;
 	int i;
 	void __user *ptr;
@@ -3946,12 +3360,7 @@ long kgsl_ioctl_gpuobj_sync(struct kgsl_device_private *dev_priv,
 		else if (objs[i].offset < entries[i]->memdesc.size)
 			size += (entries[i]->memdesc.size - objs[i].offset);
 
-<<<<<<< HEAD
 		if (check_full_flush(size, objs[i].op)) {
-=======
-		full_flush = check_full_flush(size, objs[i].op);
-		if (full_flush) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			trace_kgsl_mem_sync_full_cache(i, size);
 			goto out;
 		}
@@ -3960,24 +3369,12 @@ long kgsl_ioctl_gpuobj_sync(struct kgsl_device_private *dev_priv,
 	}
 
 	for (i = 0; !ret && i < param->count; i++)
-<<<<<<< HEAD
 		ret = _kgsl_gpumem_sync_cache(entries[i],
 			objs[i].offset, objs[i].length, objs[i].op);
 
 out:
 	for (i = 0; i < param->count; i++)
 		kgsl_mem_entry_put(entries[i]);
-=======
-		if (entries[i])
-			ret = _kgsl_gpumem_sync_cache(entries[i],
-					objs[i].offset, objs[i].length,
-					objs[i].op);
-
-out:
-	for (i = 0; i < param->count; i++)
-		if (entries[i])
-			kgsl_mem_entry_put(entries[i]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kfree(entries);
 	kfree(objs);
@@ -4041,12 +3438,8 @@ struct kgsl_mem_entry *gpumem_alloc_entry(
 	/* Cap the alignment bits to the highest number we can handle */
 	align = MEMFLAGS(flags, KGSL_MEMALIGN_MASK, KGSL_MEMALIGN_SHIFT);
 	if (align >= ilog2(KGSL_MAX_ALIGN)) {
-<<<<<<< HEAD
 		dev_err(dev_priv->device->dev,
 			"Alignment too large; restricting to %dK\n",
-=======
-		KGSL_CORE_ERR("Alignment too large; restricting to %dK\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			KGSL_MAX_ALIGN >> 10);
 
 		flags &= ~((uint64_t) KGSL_MEMALIGN_MASK);
@@ -4218,16 +3611,7 @@ long kgsl_ioctl_gpumem_get_info(struct kgsl_device_private *dev_priv,
 	param->flags = (unsigned int) entry->memdesc.flags;
 	param->size = (size_t) entry->memdesc.size;
 	param->mmapsize = (size_t) kgsl_memdesc_footprint(&entry->memdesc);
-<<<<<<< HEAD
 	param->useraddr = entry->memdesc.useraddr;
-=======
-	/*
-	 * Entries can have multiple user mappings so thre isn't any one address
-	 * we can report. Plus, the user should already know their mappings, so
-	 * there isn't any value in reporting it back to them.
-	 */
-	param->useraddr = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kgsl_mem_entry_put(entry);
 	return result;
@@ -4372,11 +3756,7 @@ long kgsl_ioctl_sparse_phys_free(struct kgsl_device_private *dev_priv,
 
 	/* One put for find_id(), one put for the kgsl_mem_entry_create() */
 	kgsl_mem_entry_put(entry);
-<<<<<<< HEAD
 	kgsl_mem_entry_put_deferred(entry);
-=======
-	kgsl_mem_entry_put(entry);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -4460,11 +3840,7 @@ long kgsl_ioctl_sparse_virt_free(struct kgsl_device_private *dev_priv,
 
 	/* One put for find_id(), one put for the kgsl_mem_entry_create() */
 	kgsl_mem_entry_put(entry);
-<<<<<<< HEAD
 	kgsl_mem_entry_put_deferred(entry);
-=======
-	kgsl_mem_entry_put(entry);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -4708,12 +4084,9 @@ static int _sparse_bind(struct kgsl_process_private *process,
 	if (memdesc->gpuaddr)
 		return -EINVAL;
 
-<<<<<<< HEAD
 	if (memdesc->useraddr != 0)
 		return -EINVAL;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pagetable = memdesc->pagetable;
 
 	/* Clear out any mappings */
@@ -4962,11 +4335,7 @@ void kgsl_sparse_bind(struct kgsl_process_private *private,
 		}
 
 		if (ret)
-<<<<<<< HEAD
 			pr_err("kgsl: unable to '%s' ret %ld virt_id %d,phys_id %d, virt_offset %16.16llX,phys_offset %16.16llX, size %16.16llX,flags %16.16llX\n",
-=======
-			KGSL_CORE_ERR("kgsl: Unable to '%s' ret %ld virt_id %d,phys_id %d, virt_offset %16.16llX,phys_offset %16.16llX, size %16.16llX,flags %16.16llX\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					name, ret, sparse_node->virt_id,
 					sparse_node->obj.id,
 					sparse_node->obj.virtoffset,
@@ -4998,16 +4367,7 @@ long kgsl_ioctl_gpuobj_info(struct kgsl_device_private *dev_priv,
 	param->flags = entry->memdesc.flags;
 	param->size = entry->memdesc.size;
 	param->va_len = kgsl_memdesc_footprint(&entry->memdesc);
-<<<<<<< HEAD
 	param->va_addr = (uint64_t) entry->memdesc.useraddr;
-=======
-	/*
-	 * Entries can have multiple user mappings so thre isn't any one address
-	 * we can report. Plus, the user should already know their mappings, so
-	 * there isn't any value in reporting it back to them.
-	 */
-	param->va_addr = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kgsl_mem_entry_put(entry);
 	return 0;
@@ -5083,16 +4443,9 @@ kgsl_mmap_memstore(struct kgsl_device *device, struct vm_area_struct *vma)
 	if (vma->vm_flags & VM_WRITE)
 		return -EPERM;
 
-<<<<<<< HEAD
 	if (memdesc->size  !=  vma_size) {
 		dev_err(device->dev,
 			     "memstore bad size: %d should be %llu\n",
-=======
-	vma->vm_flags &= ~VM_MAYWRITE;
-
-	if (memdesc->size  !=  vma_size) {
-		KGSL_MEM_ERR(device, "memstore bad size: %d should be %llu\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     vma_size, memdesc->size);
 		return -EINVAL;
 	}
@@ -5103,11 +4456,7 @@ kgsl_mmap_memstore(struct kgsl_device *device, struct vm_area_struct *vma)
 				device->memstore.physaddr >> PAGE_SHIFT,
 				 vma_size, vma->vm_page_prot);
 	if (result != 0)
-<<<<<<< HEAD
 		dev_err(device->dev, "remap_pfn_range failed: %d\n",
-=======
-		KGSL_MEM_ERR(device, "remap_pfn_range failed: %d\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     result);
 
 	return result;
@@ -5124,36 +4473,24 @@ static void kgsl_gpumem_vm_open(struct vm_area_struct *vma)
 
 	if (kgsl_mem_entry_get(entry) == 0)
 		vma->vm_private_data = NULL;
-<<<<<<< HEAD
-=======
-
-	atomic_inc(&entry->map_count);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int
 kgsl_gpumem_vm_fault(struct vm_fault *vmf)
 {
 	struct kgsl_mem_entry *entry = vmf->vma->vm_private_data;
-<<<<<<< HEAD
 	int ret;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!entry)
 		return VM_FAULT_SIGBUS;
 	if (!entry->memdesc.ops || !entry->memdesc.ops->vmfault)
 		return VM_FAULT_SIGBUS;
 
-<<<<<<< HEAD
 	ret = entry->memdesc.ops->vmfault(&entry->memdesc, vmf->vma, vmf);
 	if ((ret == 0) || (ret == VM_FAULT_NOPAGE))
 		atomic_long_add(PAGE_SIZE, &entry->priv->gpumem_mapped);
 
 	return ret;
-=======
-	return entry->memdesc.ops->vmfault(&entry->memdesc, vmf->vma, vmf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void
@@ -5164,19 +4501,8 @@ kgsl_gpumem_vm_close(struct vm_area_struct *vma)
 	if (!entry)
 		return;
 
-<<<<<<< HEAD
 	entry->memdesc.useraddr = 0;
 	kgsl_mem_entry_put_deferred(entry);
-=======
-	/*
-	 * Remove the memdesc from the mapped stat once all the mappings have
-	 * gone away
-	 */
-	if (!atomic_dec_return(&entry->map_count))
-		atomic64_sub(entry->memdesc.size, &entry->priv->gpumem_mapped);
-
-	kgsl_mem_entry_put(entry);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct vm_operations_struct kgsl_gpumem_vm_ops = {
@@ -5214,12 +4540,7 @@ get_mmap_entry(struct kgsl_process_private *private,
 		}
 	}
 
-<<<<<<< HEAD
 	if (entry->memdesc.useraddr != 0) {
-=======
-	/* Don't allow ourselves to remap user memory */
-	if (entry->memdesc.flags & KGSL_MEMFLAGS_USERMEM_ADDR) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -EBUSY;
 		goto err_put;
 	}
@@ -5252,7 +4573,6 @@ static unsigned long _gpu_set_svm_region(struct kgsl_process_private *private,
 {
 	int ret;
 
-<<<<<<< HEAD
 	ret = kgsl_mmu_set_svm_region(private->pagetable, (uint64_t) addr,
 		(uint64_t) size);
 
@@ -5260,40 +4580,12 @@ static unsigned long _gpu_set_svm_region(struct kgsl_process_private *private,
 		return ret;
 
 	entry->memdesc.gpuaddr = (uint64_t) addr;
-=======
-	/*
-	 * Protect access to the gpuaddr here to prevent multiple vmas from
-	 * trying to map a SVM region at the same time
-	 */
-	spin_lock(&entry->memdesc.lock);
-
-	if (entry->memdesc.gpuaddr) {
-		spin_unlock(&entry->memdesc.lock);
-		return (unsigned long) -EBUSY;
-	}
-
-	ret = kgsl_mmu_set_svm_region(private->pagetable, (uint64_t) addr,
-		(uint64_t) size);
-
-	if (ret != 0) {
-		spin_unlock(&entry->memdesc.lock);
-		return (unsigned long) ret;
-	}
-
-	entry->memdesc.gpuaddr = (uint64_t) addr;
-	spin_unlock(&entry->memdesc.lock);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	entry->memdesc.pagetable = private->pagetable;
 
 	ret = kgsl_mmu_map(private->pagetable, &entry->memdesc);
 	if (ret) {
 		kgsl_mmu_put_gpuaddr(&entry->memdesc);
-<<<<<<< HEAD
 		return ret;
-=======
-		return (unsigned long) ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	kgsl_memfree_purge(private->pagetable, entry->memdesc.gpuaddr,
@@ -5309,13 +4601,8 @@ static unsigned long _gpu_find_svm(struct kgsl_process_private *private,
 	uint64_t addr = kgsl_mmu_find_svm_region(private->pagetable,
 		(uint64_t) start, (uint64_t)end, (uint64_t) len, align);
 
-<<<<<<< HEAD
 	WARN(!IS_ERR_VALUE((unsigned long)addr) && (addr > ULONG_MAX),
 		"Couldn't find range\n");
-=======
-	if (!IS_ERR_VALUE((unsigned long)addr) && (addr > ULONG_MAX))
-		WARN(1, "Couldn't find range\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return (unsigned long) addr;
 }
@@ -5362,17 +4649,6 @@ static unsigned long _search_range(struct kgsl_process_private *private,
 		result = _gpu_set_svm_region(private, entry, cpu, len);
 		if (!IS_ERR_VALUE(result))
 			break;
-<<<<<<< HEAD
-=======
-		/*
-		 * _gpu_set_svm_region will return -EBUSY if we tried to set up
-		 * SVM on an object that already has a GPU address. If
-		 * that happens don't bother walking the rest of the
-		 * region
-		 */
-		if ((long) result == -EBUSY)
-			return -EBUSY;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		trace_kgsl_mem_unmapped_area_collision(entry, cpu, len);
 
@@ -5428,11 +4704,7 @@ static unsigned long _get_svm_area(struct kgsl_process_private *private,
 	else
 		align = SZ_4K;
 
-<<<<<<< HEAD
 	align = max_t(uint64_t, align, PAGE_SIZE);
-=======
-	align = max_t(uint64_t, align, entry->memdesc.pad_to);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* get the GPU pagetable's SVM range */
 	if (kgsl_mmu_svm_range(private->pagetable, &start, &end,
@@ -5515,7 +4787,6 @@ kgsl_get_unmapped_area(struct file *file, unsigned long addr,
 	if (!kgsl_memdesc_use_cpu_map(&entry->memdesc)) {
 		val = get_unmapped_area(NULL, addr, len, 0, flags);
 		if (IS_ERR_VALUE(val))
-<<<<<<< HEAD
 			dev_err_ratelimited(device->dev,
 					       "get_unmapped_area: pid %d addr %lx pgoff %lx len %ld failed error %d\n",
 					       private->pid, addr, pgoff, len,
@@ -5528,20 +4799,6 @@ kgsl_get_unmapped_area(struct file *file, unsigned long addr,
 					       private->pid,
 					       current->mm->mmap_base, addr,
 					       pgoff, len, (int) val);
-=======
-			KGSL_DRV_ERR_RATELIMIT(device,
-				"get_unmapped_area: pid %d addr %lx pgoff %lx len %ld failed error %d\n",
-				pid_nr(private->pid), addr,
-				pgoff, len, (int) val);
-	} else {
-		val = _get_svm_area(private, entry, addr, len, flags);
-		if (IS_ERR_VALUE(val))
-			KGSL_DRV_ERR_RATELIMIT(device,
-				"_get_svm_area: pid %d mmap_base %lx addr %lx pgoff %lx len %ld failed error %d\n",
-				pid_nr(private->pid),
-				current->mm->mmap_base, addr,
-				pgoff, len, (int) val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 put:
@@ -5613,26 +4870,15 @@ static int kgsl_mmap(struct file *file, struct vm_area_struct *vma)
 			vm_insert_page(vma, addr, page);
 			addr += PAGE_SIZE;
 		}
-<<<<<<< HEAD
 		atomic_long_add(m->size, &m->mapsize);
 		atomic_long_add(m->size, &entry->priv->gpumem_mapped);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	vma->vm_file = file;
 
-<<<<<<< HEAD
 	entry->memdesc.useraddr = vma->vm_start;
 
 	trace_kgsl_mem_mmap(entry);
-=======
-	if (atomic_inc_return(&entry->map_count) == 1)
-		atomic64_add(entry->memdesc.size,
-				&entry->priv->gpumem_mapped);
-
-	trace_kgsl_mem_mmap(entry, vma->vm_start);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -5666,10 +4912,7 @@ static const struct file_operations kgsl_fops = {
 
 struct kgsl_driver kgsl_driver  = {
 	.process_mutex = __MUTEX_INITIALIZER(kgsl_driver.process_mutex),
-<<<<<<< HEAD
 	.proclist_lock = __SPIN_LOCK_UNLOCKED(kgsl_driver.proclist_lock),
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ptlock = __SPIN_LOCK_UNLOCKED(kgsl_driver.ptlock),
 	.devlock = __MUTEX_INITIALIZER(kgsl_driver.devlock),
 	/*
@@ -5688,11 +4931,6 @@ struct kgsl_driver kgsl_driver  = {
 	.stats.secure_max = ATOMIC_LONG_INIT(0),
 	.stats.mapped = ATOMIC_LONG_INIT(0),
 	.stats.mapped_max = ATOMIC_LONG_INIT(0),
-<<<<<<< HEAD
-=======
-	.stats.page_free_pending = ATOMIC_LONG_INIT(0),
-	.stats.page_alloc_pending = ATOMIC_LONG_INIT(0),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 EXPORT_SYMBOL(kgsl_driver);
 
@@ -5701,7 +4939,6 @@ static void _unregister_device(struct kgsl_device *device)
 	int minor;
 
 	mutex_lock(&kgsl_driver.devlock);
-<<<<<<< HEAD
 	for (minor = 0; minor < ARRAY_SIZE(kgsl_driver.devp); minor++) {
 		if (device == kgsl_driver.devp[minor]) {
 			device_destroy(kgsl_driver.class,
@@ -5709,16 +4946,6 @@ static void _unregister_device(struct kgsl_device *device)
 			kgsl_driver.devp[minor] = NULL;
 			break;
 		}
-=======
-	for (minor = 0; minor < KGSL_DEVICE_MAX; minor++) {
-		if (device == kgsl_driver.devp[minor])
-			break;
-	}
-	if (minor != KGSL_DEVICE_MAX) {
-		device_destroy(kgsl_driver.class,
-				MKDEV(MAJOR(kgsl_driver.major), minor));
-		kgsl_driver.devp[minor] = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	mutex_unlock(&kgsl_driver.devlock);
 }
@@ -5732,11 +4959,7 @@ static int _register_device(struct kgsl_device *device)
 	/* Find a minor for the device */
 
 	mutex_lock(&kgsl_driver.devlock);
-<<<<<<< HEAD
 	for (minor = 0; minor < ARRAY_SIZE(kgsl_driver.devp); minor++) {
-=======
-	for (minor = 0; minor < KGSL_DEVICE_MAX; minor++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (kgsl_driver.devp[minor] == NULL) {
 			kgsl_driver.devp[minor] = device;
 			break;
@@ -5744,13 +4967,8 @@ static int _register_device(struct kgsl_device *device)
 	}
 	mutex_unlock(&kgsl_driver.devlock);
 
-<<<<<<< HEAD
 	if (minor == ARRAY_SIZE(kgsl_driver.devp)) {
 		pr_err("kgsl: minor devices exhausted\n");
-=======
-	if (minor == KGSL_DEVICE_MAX) {
-		KGSL_CORE_ERR("minor devices exhausted\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 	}
 
@@ -5766,11 +4984,7 @@ static int _register_device(struct kgsl_device *device)
 		kgsl_driver.devp[minor] = NULL;
 		mutex_unlock(&kgsl_driver.devlock);
 		ret = PTR_ERR(device->dev);
-<<<<<<< HEAD
 		pr_err("kgsl: device_create(%s): %d\n", device->name, ret);
-=======
-		KGSL_CORE_ERR("device_create(%s): %d\n", device->name, ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
@@ -5781,7 +4995,6 @@ static int _register_device(struct kgsl_device *device)
 	return 0;
 }
 
-<<<<<<< HEAD
 int kgsl_request_irq(struct platform_device *pdev, const  char *name,
 		irq_handler_t handler, void *data)
 {
@@ -5829,72 +5042,24 @@ int kgsl_of_property_read_ddrtype(struct device_node *node, const char *base,
 int kgsl_device_platform_probe(struct kgsl_device *device)
 {
 	int status = -EINVAL;
-=======
-int kgsl_device_platform_probe(struct kgsl_device *device)
-{
-	int status = -EINVAL;
-	struct resource *res;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int cpu;
 
 	status = _register_device(device);
 	if (status)
 		return status;
 
-<<<<<<< HEAD
 	/* Disable the sparse ioctl invocation as they are not used */
 	device->flags &= ~KGSL_FLAG_SPARSE;
 
 	kgsl_device_debugfs_init(device);
 
-=======
-	/* Initialize logging first, so that failures below actually print. */
-	kgsl_device_debugfs_init(device);
-
-	/* Disable the sparse ioctl invocation as they are not used */
-	device->flags &= ~KGSL_FLAG_SPARSE;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = kgsl_pwrctrl_init(device);
 	if (status)
 		goto error;
 
-<<<<<<< HEAD
 	if (!devm_request_mem_region(device->dev, device->reg_phys,
 				device->reg_len, device->name)) {
 		dev_err(device->dev, "request_mem_region failed\n");
-=======
-	/*
-	 * Check if a shadermemname is defined, and then get shader memory
-	 * details including shader memory starting physical address
-	 * and shader memory length
-	 */
-	if (device->shadermemname != NULL) {
-		res = platform_get_resource_byname(device->pdev, IORESOURCE_MEM,
-						device->shadermemname);
-
-		if (res == NULL) {
-			KGSL_DRV_WARN(device,
-			"Shader memory: platform_get_resource_byname failed\n");
-		}
-
-		else {
-			device->shader_mem_phys = res->start;
-			device->shader_mem_len = resource_size(res);
-		}
-
-		if (!devm_request_mem_region(device->dev,
-					device->shader_mem_phys,
-					device->shader_mem_len,
-						device->name)) {
-			KGSL_DRV_WARN(device, "request_mem_region_failed\n");
-		}
-	}
-
-	if (!devm_request_mem_region(device->dev, device->reg_phys,
-				device->reg_len, device->name)) {
-		KGSL_DRV_ERR(device, "request_mem_region failed\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		status = -ENODEV;
 		goto error_pwrctrl_close;
 	}
@@ -5903,7 +5068,6 @@ int kgsl_device_platform_probe(struct kgsl_device *device)
 					device->reg_len);
 
 	if (device->reg_virt == NULL) {
-<<<<<<< HEAD
 		dev_err(device->dev, "ioremap failed\n");
 		status = -ENODEV;
 		goto error_pwrctrl_close;
@@ -5923,43 +5087,6 @@ int kgsl_device_platform_probe(struct kgsl_device *device)
 	timer_setup(&device->idle_timer, kgsl_timer, 0);
 
 	status = kgsl_mmu_probe(device);
-=======
-		KGSL_DRV_ERR(device, "ioremap failed\n");
-		status = -ENODEV;
-		goto error_pwrctrl_close;
-	}
-	/*acquire interrupt */
-	device->pwrctrl.interrupt_num =
-		platform_get_irq_byname(device->pdev, device->pwrctrl.irq_name);
-
-	if (device->pwrctrl.interrupt_num <= 0) {
-		KGSL_DRV_ERR(device, "platform_get_irq_byname failed: %d\n",
-					 device->pwrctrl.interrupt_num);
-		status = -EINVAL;
-		goto error_pwrctrl_close;
-	}
-
-	status = devm_request_irq(device->dev, device->pwrctrl.interrupt_num,
-				  kgsl_irq_handler, IRQF_TRIGGER_HIGH,
-				  device->name, device);
-	if (status) {
-		KGSL_DRV_ERR(device, "request_irq(%d) failed: %d\n",
-			      device->pwrctrl.interrupt_num, status);
-		goto error_pwrctrl_close;
-	}
-	disable_irq(device->pwrctrl.interrupt_num);
-
-	KGSL_DRV_INFO(device,
-		"dev_id %d regs phys 0x%08lx size 0x%08x\n",
-		device->id, device->reg_phys, device->reg_len);
-
-	rwlock_init(&device->context_lock);
-	spin_lock_init(&device->submit_lock);
-
-	setup_timer(&device->idle_timer, kgsl_timer, (unsigned long) device);
-
-	status = kgsl_mmu_probe(device, kgsl_mmu_type);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (status != 0)
 		goto error_pwrctrl_close;
 
@@ -5968,27 +5095,9 @@ int kgsl_device_platform_probe(struct kgsl_device *device)
 	if (status)
 		goto error_close_mmu;
 
-<<<<<<< HEAD
 	/* Initialize the memory pools */
 	kgsl_init_page_pools(device->pdev);
 
-=======
-	/* Allocate memory for dma_parms and set the max_seg_size */
-	device->dev->dma_parms =
-		kzalloc(sizeof(*device->dev->dma_parms), GFP_KERNEL);
-
-	dma_set_max_seg_size(device->dev, KGSL_DMA_BIT_MASK);
-
-	/* Initialize the memory pools */
-	kgsl_init_page_pools(device->pdev);
-
-	status = kgsl_allocate_global(device, &device->memstore,
-		KGSL_MEMSTORE_SIZE, 0, KGSL_MEMDESC_CONTIG, "memstore");
-
-	if (status != 0)
-		goto error_close_mmu;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * The default request type PM_QOS_REQ_ALL_CORES is
 	 * applicable to all CPU cores that are online and
@@ -6049,12 +5158,6 @@ void kgsl_device_platform_remove(struct kgsl_device *device)
 {
 	destroy_workqueue(device->events_wq);
 
-<<<<<<< HEAD
-=======
-	kfree(device->dev->dma_parms);
-	device->dev->dma_parms = NULL;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kgsl_device_snapshot_close(device);
 
 	kgsl_exit_page_pools();
@@ -6067,11 +5170,6 @@ void kgsl_device_platform_remove(struct kgsl_device *device)
 
 	idr_destroy(&device->context_idr);
 
-<<<<<<< HEAD
-=======
-	kgsl_free_global(device, &device->memstore);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kgsl_mmu_close(device);
 
 	kgsl_pwrctrl_close(device);
@@ -6081,15 +5179,12 @@ void kgsl_device_platform_remove(struct kgsl_device *device)
 }
 EXPORT_SYMBOL(kgsl_device_platform_remove);
 
-<<<<<<< HEAD
 static void
 _flush_mem_workqueue(struct work_struct *work)
 {
 	flush_workqueue(kgsl_driver.mem_workqueue);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void kgsl_core_exit(void)
 {
 	kgsl_events_exit();
@@ -6113,16 +5208,11 @@ static void kgsl_core_exit(void)
 
 	kgsl_drawobjs_cache_exit();
 
-<<<<<<< HEAD
 	kfree(memfree.list);
 	memset(&memfree, 0, sizeof(memfree));
 
 	unregister_chrdev_region(kgsl_driver.major,
 		ARRAY_SIZE(kgsl_driver.devp));
-=======
-	kgsl_memfree_exit();
-	unregister_chrdev_region(kgsl_driver.major, KGSL_DEVICE_MAX);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int __init kgsl_core_init(void)
@@ -6130,7 +5220,6 @@ static int __init kgsl_core_init(void)
 	int result = 0;
 	struct sched_param param = { .sched_priority = 2 };
 
-<<<<<<< HEAD
 	/* alloc major and minor device numbers */
 	result = alloc_chrdev_region(&kgsl_driver.major, 0,
 		ARRAY_SIZE(kgsl_driver.devp), "kgsl");
@@ -6138,17 +5227,6 @@ static int __init kgsl_core_init(void)
 	if (result < 0) {
 
 		pr_err("kgsl: alloc_chrdev_region failed err = %d\n", result);
-=======
-	place_marker("M - DRIVER KGSL Init");
-
-	/* alloc major and minor device numbers */
-	result = alloc_chrdev_region(&kgsl_driver.major, 0, KGSL_DEVICE_MAX,
-		"kgsl");
-
-	if (result < 0) {
-
-		KGSL_CORE_ERR("alloc_chrdev_region failed err = %d\n", result);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err;
 	}
 
@@ -6156,17 +5234,10 @@ static int __init kgsl_core_init(void)
 	kgsl_driver.cdev.owner = THIS_MODULE;
 	kgsl_driver.cdev.ops = &kgsl_fops;
 	result = cdev_add(&kgsl_driver.cdev, MKDEV(MAJOR(kgsl_driver.major), 0),
-<<<<<<< HEAD
 		ARRAY_SIZE(kgsl_driver.devp));
 
 	if (result) {
 		pr_err("kgsl: cdev_add() failed, dev_num= %d,result= %d\n",
-=======
-		       KGSL_DEVICE_MAX);
-
-	if (result) {
-		KGSL_CORE_ERR("kgsl: cdev_add() failed, dev_num= %d,result= %d\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				kgsl_driver.major, result);
 		goto err;
 	}
@@ -6175,11 +5246,7 @@ static int __init kgsl_core_init(void)
 
 	if (IS_ERR(kgsl_driver.class)) {
 		result = PTR_ERR(kgsl_driver.class);
-<<<<<<< HEAD
 		pr_err("kgsl: failed to create class for kgsl\n");
-=======
-		KGSL_CORE_ERR("failed to create class for kgsl");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err;
 	}
 
@@ -6191,11 +5258,7 @@ static int __init kgsl_core_init(void)
 	dev_set_name(&kgsl_driver.virtdev, "kgsl");
 	result = device_register(&kgsl_driver.virtdev);
 	if (result) {
-<<<<<<< HEAD
 		pr_err("kgsl: driver_register failed\n");
-=======
-		KGSL_CORE_ERR("driver_register failed\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err;
 	}
 
@@ -6223,22 +5286,15 @@ static int __init kgsl_core_init(void)
 	kgsl_driver.mem_workqueue = alloc_workqueue("kgsl-mementry",
 		WQ_UNBOUND | WQ_MEM_RECLAIM, 0);
 
-<<<<<<< HEAD
 	INIT_WORK(&kgsl_driver.mem_work, _flush_mem_workqueue);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kthread_init_worker(&kgsl_driver.worker);
 
 	kgsl_driver.worker_thread = kthread_run(kthread_worker_fn,
 		&kgsl_driver.worker, "kgsl_worker_thread");
 
 	if (IS_ERR(kgsl_driver.worker_thread)) {
-<<<<<<< HEAD
 		pr_err("kgsl: unable to start kgsl thread\n");
-=======
-		pr_err("unable to start kgsl thread\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err;
 	}
 
@@ -6250,14 +5306,8 @@ static int __init kgsl_core_init(void)
 	if (result)
 		goto err;
 
-<<<<<<< HEAD
 	memfree.list = kcalloc(MEMFREE_ENTRIES, sizeof(struct memfree_entry),
 		GFP_KERNEL);
-=======
-	kgsl_memfree_init();
-
-	place_marker("M - DRIVER KGSL Ready");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 

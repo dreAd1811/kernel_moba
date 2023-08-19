@@ -519,18 +519,7 @@ void synchronize_user_stack(void)
 
 static void stack_unaligned(unsigned long sp)
 {
-<<<<<<< HEAD
 	force_sig_fault(SIGBUS, BUS_ADRALN, (void __user *) sp, 0, current);
-=======
-	siginfo_t info;
-
-	info.si_signo = SIGBUS;
-	info.si_errno = 0;
-	info.si_code = BUS_ADRALN;
-	info.si_addr = (void __user *) sp;
-	info.si_trapno = 0;
-	force_sig_info(SIGBUS, &info, current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const char uwfault32[] = KERN_INFO \
@@ -687,7 +676,6 @@ int copy_thread(unsigned long clone_flags, unsigned long sp,
 	return 0;
 }
 
-<<<<<<< HEAD
 /* TIF_MCDPER in thread info flags for current task is updated lazily upon
  * a context switch. Update this flag in current task's thread flags
  * before dup so the dup'd task will inherit the current TIF_MCDPER flag.
@@ -713,8 +701,6 @@ int arch_dup_task_struct(struct task_struct *dst, struct task_struct *src)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 typedef struct {
 	union {
 		unsigned int	pr_regs[32];

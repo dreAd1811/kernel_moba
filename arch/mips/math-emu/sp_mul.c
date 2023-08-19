@@ -25,26 +25,15 @@ union ieee754sp ieee754sp_mul(union ieee754sp x, union ieee754sp y)
 {
 	int re;
 	int rs;
-<<<<<<< HEAD
 	unsigned int rm;
-=======
-	unsigned rm;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned short lxm;
 	unsigned short hxm;
 	unsigned short lym;
 	unsigned short hym;
-<<<<<<< HEAD
 	unsigned int lrm;
 	unsigned int hrm;
 	unsigned int t;
 	unsigned int at;
-=======
-	unsigned lrm;
-	unsigned hrm;
-	unsigned t;
-	unsigned at;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	COMPXSP;
 	COMPYSP;
@@ -112,10 +101,7 @@ union ieee754sp ieee754sp_mul(union ieee754sp x, union ieee754sp y)
 
 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_DNORM):
 		SPDNORMX;
-<<<<<<< HEAD
 		/* fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_DNORM):
 		SPDNORMY;

@@ -17,12 +17,9 @@
  * Authors: Alexander Graf <agraf@suse.de>
  */
 
-<<<<<<< HEAD
 #include <asm/asm-compat.h>
 #include <asm/feature-fixups.h>
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SHADOW_SLB_ENTRY_LEN	0x10
 #define OFFSET_ESID(x)		(SHADOW_SLB_ENTRY_LEN * x)
 #define OFFSET_VSID(x)		((SHADOW_SLB_ENTRY_LEN * x) + 8)
@@ -119,11 +116,7 @@ slb_do_enter:
 
 	/* Remove all SLB entries that are in use. */
 
-<<<<<<< HEAD
 	li	r0, 0
-=======
-	li	r0, r0
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	slbmte	r0, r0
 	slbia
 

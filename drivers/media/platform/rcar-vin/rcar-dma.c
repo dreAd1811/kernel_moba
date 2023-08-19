@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Driver for Renesas R-Car VIN
  *
@@ -11,22 +8,11 @@
  * Copyright (C) 2008 Magnus Damm
  *
  * Based on the soc-camera rcar_vin driver
-<<<<<<< HEAD
-=======
- *
- * This program is free software; you can redistribute  it and/or modify it
- * under  the terms of  the GNU General  Public License as published by the
- * Free Software Foundation;  either version 2 of the  License, or (at your
- * option) any later version.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/delay.h>
 #include <linux/interrupt.h>
-<<<<<<< HEAD
 #include <linux/pm_runtime.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <media/videobuf2-dma-contig.h>
 
@@ -44,20 +30,12 @@
 #define VNELPRC_REG	0x10	/* Video n End Line Pre-Clip Register */
 #define VNSPPRC_REG	0x14	/* Video n Start Pixel Pre-Clip Register */
 #define VNEPPRC_REG	0x18	/* Video n End Pixel Pre-Clip Register */
-<<<<<<< HEAD
-=======
-#define VNSLPOC_REG	0x1C	/* Video n Start Line Post-Clip Register */
-#define VNELPOC_REG	0x20	/* Video n End Line Post-Clip Register */
-#define VNSPPOC_REG	0x24	/* Video n Start Pixel Post-Clip Register */
-#define VNEPPOC_REG	0x28	/* Video n End Pixel Post-Clip Register */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define VNIS_REG	0x2C	/* Video n Image Stride Register */
 #define VNMB_REG(m)	(0x30 + ((m) << 2)) /* Video n Memory Base m Register */
 #define VNIE_REG	0x40	/* Video n Interrupt Enable Register */
 #define VNINTS_REG	0x44	/* Video n Interrupt Status Register */
 #define VNSI_REG	0x48	/* Video n Scanline Interrupt Register */
 #define VNMTC_REG	0x4C	/* Video n Memory Transfer Control Register */
-<<<<<<< HEAD
 #define VNDMR_REG	0x58	/* Video n Data Mode Register */
 #define VNDMR2_REG	0x5C	/* Video n Data Mode Register 2 */
 #define VNUVAOF_REG	0x60	/* Video n UV Address Offset Register */
@@ -69,13 +47,6 @@
 #define VNEPPOC_REG	0x28	/* Video n End Pixel Post-Clip Register */
 #define VNYS_REG	0x50	/* Video n Y Scale Register */
 #define VNXS_REG	0x54	/* Video n X Scale Register */
-=======
-#define VNYS_REG	0x50	/* Video n Y Scale Register */
-#define VNXS_REG	0x54	/* Video n X Scale Register */
-#define VNDMR_REG	0x58	/* Video n Data Mode Register */
-#define VNDMR2_REG	0x5C	/* Video n Data Mode Register 2 */
-#define VNUVAOF_REG	0x60	/* Video n UV Address Offset Register */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define VNC1A_REG	0x80	/* Video n Coefficient Set C1A Register */
 #define VNC1B_REG	0x84	/* Video n Coefficient Set C1B Register */
 #define VNC1C_REG	0x88	/* Video n Coefficient Set C1C Register */
@@ -101,7 +72,6 @@
 #define VNC8B_REG	0xF4	/* Video n Coefficient Set C8B Register */
 #define VNC8C_REG	0xF8	/* Video n Coefficient Set C8C Register */
 
-<<<<<<< HEAD
 /* Register offsets specific for Gen3 */
 #define VNCSI_IFMD_REG		0x20 /* Video n CSI2 Interface Mode Register */
 
@@ -109,11 +79,6 @@
 /* Video n Main Control Register bits */
 #define VNMC_DPINE		(1 << 27) /* Gen3 specific */
 #define VNMC_SCLE		(1 << 26) /* Gen3 specific */
-=======
-
-/* Register bit fields for R-Car VIN */
-/* Video n Main Control Register bits */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define VNMC_FOC		(1 << 21)
 #define VNMC_YCAL		(1 << 19)
 #define VNMC_INF_YUV8_BT656	(0 << 16)
@@ -154,7 +119,6 @@
 /* Video n Data Mode Register 2 bits */
 #define VNDMR2_VPS		(1 << 30)
 #define VNDMR2_HPS		(1 << 29)
-<<<<<<< HEAD
 #define VNDMR2_CES		(1 << 28)
 #define VNDMR2_FTEV		(1 << 17)
 #define VNDMR2_VLV(n)		((n & 0xf) << 12)
@@ -165,11 +129,6 @@
 #define VNCSI_IFMD_CSI_CHSEL(n) (((n) & 0xf) << 0)
 #define VNCSI_IFMD_CSI_CHSEL_MASK 0xf
 
-=======
-#define VNDMR2_FTEV		(1 << 17)
-#define VNDMR2_VLV(n)		((n & 0xf) << 12)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct rvin_buffer {
 	struct vb2_v4l2_buffer vb;
 	struct list_head list;
@@ -189,308 +148,6 @@ static u32 rvin_read(struct rvin_dev *vin, u32 offset)
 	return ioread32(vin->base + offset);
 }
 
-<<<<<<< HEAD
-=======
-static int rvin_setup(struct rvin_dev *vin)
-{
-	u32 vnmc, dmr, dmr2, interrupts;
-	v4l2_std_id std;
-	bool progressive = false, output_is_yuv = false, input_is_yuv = false;
-
-	switch (vin->format.field) {
-	case V4L2_FIELD_TOP:
-		vnmc = VNMC_IM_ODD;
-		break;
-	case V4L2_FIELD_BOTTOM:
-		vnmc = VNMC_IM_EVEN;
-		break;
-	case V4L2_FIELD_INTERLACED:
-		/* Default to TB */
-		vnmc = VNMC_IM_FULL;
-		/* Use BT if video standard can be read and is 60 Hz format */
-		if (!v4l2_subdev_call(vin_to_source(vin), video, g_std, &std)) {
-			if (std & V4L2_STD_525_60)
-				vnmc = VNMC_IM_FULL | VNMC_FOC;
-		}
-		break;
-	case V4L2_FIELD_INTERLACED_TB:
-		vnmc = VNMC_IM_FULL;
-		break;
-	case V4L2_FIELD_INTERLACED_BT:
-		vnmc = VNMC_IM_FULL | VNMC_FOC;
-		break;
-	case V4L2_FIELD_ALTERNATE:
-	case V4L2_FIELD_NONE:
-		if (vin->continuous) {
-			vnmc = VNMC_IM_ODD_EVEN;
-			progressive = true;
-		} else {
-			vnmc = VNMC_IM_ODD;
-		}
-		break;
-	default:
-		vnmc = VNMC_IM_ODD;
-		break;
-	}
-
-	/*
-	 * Input interface
-	 */
-	switch (vin->digital.code) {
-	case MEDIA_BUS_FMT_YUYV8_1X16:
-		/* BT.601/BT.1358 16bit YCbCr422 */
-		vnmc |= VNMC_INF_YUV16;
-		input_is_yuv = true;
-		break;
-	case MEDIA_BUS_FMT_UYVY8_2X8:
-		/* BT.656 8bit YCbCr422 or BT.601 8bit YCbCr422 */
-		vnmc |= vin->digital.mbus_cfg.type == V4L2_MBUS_BT656 ?
-			VNMC_INF_YUV8_BT656 : VNMC_INF_YUV8_BT601;
-		input_is_yuv = true;
-		break;
-	case MEDIA_BUS_FMT_RGB888_1X24:
-		vnmc |= VNMC_INF_RGB888;
-		break;
-	case MEDIA_BUS_FMT_UYVY10_2X10:
-		/* BT.656 10bit YCbCr422 or BT.601 10bit YCbCr422 */
-		vnmc |= vin->digital.mbus_cfg.type == V4L2_MBUS_BT656 ?
-			VNMC_INF_YUV10_BT656 : VNMC_INF_YUV10_BT601;
-		input_is_yuv = true;
-		break;
-	default:
-		break;
-	}
-
-	/* Enable VSYNC Field Toogle mode after one VSYNC input */
-	dmr2 = VNDMR2_FTEV | VNDMR2_VLV(1);
-
-	/* Hsync Signal Polarity Select */
-	if (!(vin->digital.mbus_cfg.flags & V4L2_MBUS_HSYNC_ACTIVE_LOW))
-		dmr2 |= VNDMR2_HPS;
-
-	/* Vsync Signal Polarity Select */
-	if (!(vin->digital.mbus_cfg.flags & V4L2_MBUS_VSYNC_ACTIVE_LOW))
-		dmr2 |= VNDMR2_VPS;
-
-	/*
-	 * Output format
-	 */
-	switch (vin->format.pixelformat) {
-	case V4L2_PIX_FMT_NV16:
-		rvin_write(vin,
-			   ALIGN(vin->format.width * vin->format.height, 0x80),
-			   VNUVAOF_REG);
-		dmr = VNDMR_DTMD_YCSEP;
-		output_is_yuv = true;
-		break;
-	case V4L2_PIX_FMT_YUYV:
-		dmr = VNDMR_BPSM;
-		output_is_yuv = true;
-		break;
-	case V4L2_PIX_FMT_UYVY:
-		dmr = 0;
-		output_is_yuv = true;
-		break;
-	case V4L2_PIX_FMT_XRGB555:
-		dmr = VNDMR_DTMD_ARGB1555;
-		break;
-	case V4L2_PIX_FMT_RGB565:
-		dmr = 0;
-		break;
-	case V4L2_PIX_FMT_XBGR32:
-		/* Note: not supported on M1 */
-		dmr = VNDMR_EXRGB;
-		break;
-	default:
-		vin_err(vin, "Invalid pixelformat (0x%x)\n",
-			vin->format.pixelformat);
-		return -EINVAL;
-	}
-
-	/* Always update on field change */
-	vnmc |= VNMC_VUP;
-
-	/* If input and output use the same colorspace, use bypass mode */
-	if (input_is_yuv == output_is_yuv)
-		vnmc |= VNMC_BPS;
-
-	/* Progressive or interlaced mode */
-	interrupts = progressive ? VNIE_FIE : VNIE_EFE;
-
-	/* Ack interrupts */
-	rvin_write(vin, interrupts, VNINTS_REG);
-	/* Enable interrupts */
-	rvin_write(vin, interrupts, VNIE_REG);
-	/* Start capturing */
-	rvin_write(vin, dmr, VNDMR_REG);
-	rvin_write(vin, dmr2, VNDMR2_REG);
-
-	/* Enable module */
-	rvin_write(vin, vnmc | VNMC_ME, VNMC_REG);
-
-	return 0;
-}
-
-static void rvin_disable_interrupts(struct rvin_dev *vin)
-{
-	rvin_write(vin, 0, VNIE_REG);
-}
-
-static u32 rvin_get_interrupt_status(struct rvin_dev *vin)
-{
-	return rvin_read(vin, VNINTS_REG);
-}
-
-static void rvin_ack_interrupt(struct rvin_dev *vin)
-{
-	rvin_write(vin, rvin_read(vin, VNINTS_REG), VNINTS_REG);
-}
-
-static bool rvin_capture_active(struct rvin_dev *vin)
-{
-	return rvin_read(vin, VNMS_REG) & VNMS_CA;
-}
-
-static int rvin_get_active_slot(struct rvin_dev *vin, u32 vnms)
-{
-	if (vin->continuous)
-		return (vnms & VNMS_FBS_MASK) >> VNMS_FBS_SHIFT;
-
-	return 0;
-}
-
-static enum v4l2_field rvin_get_active_field(struct rvin_dev *vin, u32 vnms)
-{
-	if (vin->format.field == V4L2_FIELD_ALTERNATE) {
-		/* If FS is set it's a Even field */
-		if (vnms & VNMS_FS)
-			return V4L2_FIELD_BOTTOM;
-		return V4L2_FIELD_TOP;
-	}
-
-	return vin->format.field;
-}
-
-static void rvin_set_slot_addr(struct rvin_dev *vin, int slot, dma_addr_t addr)
-{
-	const struct rvin_video_format *fmt;
-	int offsetx, offsety;
-	dma_addr_t offset;
-
-	fmt = rvin_format_from_pixel(vin->format.pixelformat);
-
-	/*
-	 * There is no HW support for composition do the beast we can
-	 * by modifying the buffer offset
-	 */
-	offsetx = vin->compose.left * fmt->bpp;
-	offsety = vin->compose.top * vin->format.bytesperline;
-	offset = addr + offsetx + offsety;
-
-	/*
-	 * The address needs to be 128 bytes aligned. Driver should never accept
-	 * settings that do not satisfy this in the first place...
-	 */
-	if (WARN_ON((offsetx | offsety | offset) & HW_BUFFER_MASK))
-		return;
-
-	rvin_write(vin, offset, VNMB_REG(slot));
-}
-
-/* Moves a buffer from the queue to the HW slots */
-static bool rvin_fill_hw_slot(struct rvin_dev *vin, int slot)
-{
-	struct rvin_buffer *buf;
-	struct vb2_v4l2_buffer *vbuf;
-	dma_addr_t phys_addr_top;
-
-	if (vin->queue_buf[slot] != NULL)
-		return true;
-
-	if (list_empty(&vin->buf_list))
-		return false;
-
-	vin_dbg(vin, "Filling HW slot: %d\n", slot);
-
-	/* Keep track of buffer we give to HW */
-	buf = list_entry(vin->buf_list.next, struct rvin_buffer, list);
-	vbuf = &buf->vb;
-	list_del_init(to_buf_list(vbuf));
-	vin->queue_buf[slot] = vbuf;
-
-	/* Setup DMA */
-	phys_addr_top = vb2_dma_contig_plane_dma_addr(&vbuf->vb2_buf, 0);
-	rvin_set_slot_addr(vin, slot, phys_addr_top);
-
-	return true;
-}
-
-static bool rvin_fill_hw(struct rvin_dev *vin)
-{
-	int slot, limit;
-
-	limit = vin->continuous ? HW_BUFFER_NUM : 1;
-
-	for (slot = 0; slot < limit; slot++)
-		if (!rvin_fill_hw_slot(vin, slot))
-			return false;
-	return true;
-}
-
-static void rvin_capture_on(struct rvin_dev *vin)
-{
-	vin_dbg(vin, "Capture on in %s mode\n",
-		vin->continuous ? "continuous" : "single");
-
-	if (vin->continuous)
-		/* Continuous Frame Capture Mode */
-		rvin_write(vin, VNFC_C_FRAME, VNFC_REG);
-	else
-		/* Single Frame Capture Mode */
-		rvin_write(vin, VNFC_S_FRAME, VNFC_REG);
-}
-
-static int rvin_capture_start(struct rvin_dev *vin)
-{
-	struct rvin_buffer *buf, *node;
-	int bufs, ret;
-
-	/* Count number of free buffers */
-	bufs = 0;
-	list_for_each_entry_safe(buf, node, &vin->buf_list, list)
-		bufs++;
-
-	/* Continuous capture requires more buffers then there are HW slots */
-	vin->continuous = bufs > HW_BUFFER_NUM;
-
-	if (!rvin_fill_hw(vin)) {
-		vin_err(vin, "HW not ready to start, not enough buffers available\n");
-		return -EINVAL;
-	}
-
-	rvin_crop_scale_comp(vin);
-
-	ret = rvin_setup(vin);
-	if (ret)
-		return ret;
-
-	rvin_capture_on(vin);
-
-	vin->state = RUNNING;
-
-	return 0;
-}
-
-static void rvin_capture_stop(struct rvin_dev *vin)
-{
-	/* Set continuous & single transfer off */
-	rvin_write(vin, 0, VNFC_REG);
-
-	/* Disable module */
-	rvin_write(vin, rvin_read(vin, VNMC_REG) & ~VNMC_ME, VNMC_REG);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* -----------------------------------------------------------------------------
  * Crop and Scaling Gen2
  */
@@ -867,35 +524,10 @@ static void rvin_set_coeff(struct rvin_dev *vin, unsigned short xs)
 	rvin_write(vin, p_set->coeff_set[23], VNC8C_REG);
 }
 
-<<<<<<< HEAD
 static void rvin_crop_scale_comp_gen2(struct rvin_dev *vin)
 {
 	u32 xs, ys;
 
-=======
-void rvin_crop_scale_comp(struct rvin_dev *vin)
-{
-	u32 xs, ys;
-
-	/* Set Start/End Pixel/Line Pre-Clip */
-	rvin_write(vin, vin->crop.left, VNSPPRC_REG);
-	rvin_write(vin, vin->crop.left + vin->crop.width - 1, VNEPPRC_REG);
-	switch (vin->format.field) {
-	case V4L2_FIELD_INTERLACED:
-	case V4L2_FIELD_INTERLACED_TB:
-	case V4L2_FIELD_INTERLACED_BT:
-		rvin_write(vin, vin->crop.top / 2, VNSLPRC_REG);
-		rvin_write(vin, (vin->crop.top + vin->crop.height) / 2 - 1,
-			   VNELPRC_REG);
-		break;
-	default:
-		rvin_write(vin, vin->crop.top, VNSLPRC_REG);
-		rvin_write(vin, vin->crop.top + vin->crop.height - 1,
-			   VNELPRC_REG);
-		break;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Set scaling coefficient */
 	ys = 0;
 	if (vin->crop.height != vin->compose.height)
@@ -933,14 +565,6 @@ void rvin_crop_scale_comp(struct rvin_dev *vin)
 		break;
 	}
 
-<<<<<<< HEAD
-=======
-	if (vin->format.pixelformat == V4L2_PIX_FMT_NV16)
-		rvin_write(vin, ALIGN(vin->format.width, 0x20), VNIS_REG);
-	else
-		rvin_write(vin, ALIGN(vin->format.width, 0x10), VNIS_REG);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vin_dbg(vin,
 		"Pre-Clip: %ux%u@%u:%u YS: %d XS: %d Post-Clip: %ux%u@%u:%u\n",
 		vin->crop.width, vin->crop.height, vin->crop.left,
@@ -948,7 +572,6 @@ void rvin_crop_scale_comp(struct rvin_dev *vin)
 		0, 0);
 }
 
-<<<<<<< HEAD
 void rvin_crop_scale_comp(struct rvin_dev *vin)
 {
 	/* Set Start/End Pixel/Line Pre-Clip */
@@ -1256,14 +879,6 @@ static void rvin_capture_stop(struct rvin_dev *vin)
 
 	/* Disable module */
 	rvin_write(vin, rvin_read(vin, VNMC_REG) & ~VNMC_ME, VNMC_REG);
-=======
-void rvin_scale_try(struct rvin_dev *vin, struct v4l2_pix_format *pix,
-		    u32 width, u32 height)
-{
-	/* All VIN channels on Gen2 have scalers */
-	pix->width = width;
-	pix->height = height;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* -----------------------------------------------------------------------------
@@ -1278,11 +893,7 @@ static irqreturn_t rvin_irq(int irq, void *data)
 	struct rvin_dev *vin = data;
 	u32 int_status, vnms;
 	int slot;
-<<<<<<< HEAD
 	unsigned int handled = 0;
-=======
-	unsigned int i, sequence, handled = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 
 	spin_lock_irqsave(&vin->qlock, flags);
@@ -1308,7 +919,6 @@ static irqreturn_t rvin_irq(int irq, void *data)
 
 	/* Prepare for capture and update state */
 	vnms = rvin_read(vin, VNMS_REG);
-<<<<<<< HEAD
 	slot = (vnms & VNMS_FBS_MASK) >> VNMS_FBS_SHIFT;
 
 	/*
@@ -1342,67 +952,6 @@ static irqreturn_t rvin_irq(int irq, void *data)
 
 	/* Prepare for next frame */
 	rvin_fill_hw_slot(vin, slot);
-=======
-	slot = rvin_get_active_slot(vin, vnms);
-	sequence = vin->sequence++;
-
-	vin_dbg(vin, "IRQ %02d: %d\tbuf0: %c buf1: %c buf2: %c\tmore: %d\n",
-		sequence, slot,
-		slot == 0 ? 'x' : vin->queue_buf[0] != NULL ? '1' : '0',
-		slot == 1 ? 'x' : vin->queue_buf[1] != NULL ? '1' : '0',
-		slot == 2 ? 'x' : vin->queue_buf[2] != NULL ? '1' : '0',
-		!list_empty(&vin->buf_list));
-
-	/* HW have written to a slot that is not prepared we are in trouble */
-	if (WARN_ON((vin->queue_buf[slot] == NULL)))
-		goto done;
-
-	/* Capture frame */
-	vin->queue_buf[slot]->field = rvin_get_active_field(vin, vnms);
-	vin->queue_buf[slot]->sequence = sequence;
-	vin->queue_buf[slot]->vb2_buf.timestamp = ktime_get_ns();
-	vb2_buffer_done(&vin->queue_buf[slot]->vb2_buf, VB2_BUF_STATE_DONE);
-	vin->queue_buf[slot] = NULL;
-
-	/* Prepare for next frame */
-	if (!rvin_fill_hw(vin)) {
-
-		/*
-		 * Can't supply HW with new buffers fast enough. Halt
-		 * capture until more buffers are available.
-		 */
-		vin->state = STALLED;
-
-		/*
-		 * The continuous capturing requires an explicit stop
-		 * operation when there is no buffer to be set into
-		 * the VnMBm registers.
-		 */
-		if (vin->continuous) {
-			rvin_capture_stop(vin);
-			vin_dbg(vin, "IRQ %02d: hw not ready stop\n", sequence);
-
-			/* Maybe we can continue in single capture mode */
-			for (i = 0; i < HW_BUFFER_NUM; i++) {
-				if (vin->queue_buf[i]) {
-					list_add(to_buf_list(vin->queue_buf[i]),
-						 &vin->buf_list);
-					vin->queue_buf[i] = NULL;
-				}
-			}
-
-			if (!list_empty(&vin->buf_list))
-				rvin_capture_start(vin);
-		}
-	} else {
-		/*
-		 * The single capturing requires an explicit capture
-		 * operation to fetch the next frame.
-		 */
-		if (!vin->continuous)
-			rvin_capture_on(vin);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 done:
 	spin_unlock_irqrestore(&vin->qlock, flags);
 
@@ -1473,7 +1022,6 @@ static void rvin_buffer_queue(struct vb2_buffer *vb)
 
 	list_add_tail(to_buf_list(vbuf), &vin->buf_list);
 
-<<<<<<< HEAD
 	spin_unlock_irqrestore(&vin->qlock, flags);
 }
 
@@ -1593,22 +1141,11 @@ static int rvin_set_stream(struct rvin_dev *vin, int on)
 		media_pipeline_stop(&vin->vdev.entity);
 
 	return ret;
-=======
-	/*
-	 * If capture is stalled add buffer to HW and restart
-	 * capturing if HW is ready to continue.
-	 */
-	if (vin->state == STALLED)
-		rvin_capture_start(vin);
-
-	spin_unlock_irqrestore(&vin->qlock, flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int rvin_start_streaming(struct vb2_queue *vq, unsigned int count)
 {
 	struct rvin_dev *vin = vb2_get_drv_priv(vq);
-<<<<<<< HEAD
 	unsigned long flags;
 	int ret;
 
@@ -1630,14 +1167,6 @@ static int rvin_start_streaming(struct vb2_queue *vq, unsigned int count)
 		spin_unlock_irqrestore(&vin->qlock, flags);
 		goto out;
 	}
-=======
-	struct v4l2_subdev *sd;
-	unsigned long flags;
-	int ret;
-
-	sd = vin_to_source(vin);
-	v4l2_subdev_call(sd, video, s_stream, 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irqsave(&vin->qlock, flags);
 
@@ -1646,7 +1175,6 @@ static int rvin_start_streaming(struct vb2_queue *vq, unsigned int count)
 	ret = rvin_capture_start(vin);
 	if (ret) {
 		return_all_buffers(vin, VB2_BUF_STATE_QUEUED);
-<<<<<<< HEAD
 		rvin_set_stream(vin, 0);
 	}
 
@@ -1655,12 +1183,6 @@ out:
 	if (ret)
 		dma_free_coherent(vin->dev, vin->format.sizeimage, vin->scratch,
 				  vin->scratch_phys);
-=======
-		v4l2_subdev_call(sd, video, s_stream, 0);
-	}
-
-	spin_unlock_irqrestore(&vin->qlock, flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -1668,10 +1190,6 @@ out:
 static void rvin_stop_streaming(struct vb2_queue *vq)
 {
 	struct rvin_dev *vin = vb2_get_drv_priv(vq);
-<<<<<<< HEAD
-=======
-	struct v4l2_subdev *sd;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 	int retries = 0;
 
@@ -1710,7 +1228,6 @@ static void rvin_stop_streaming(struct vb2_queue *vq)
 
 	spin_unlock_irqrestore(&vin->qlock, flags);
 
-<<<<<<< HEAD
 	rvin_set_stream(vin, 0);
 
 	/* disable interrupts */
@@ -1719,13 +1236,6 @@ static void rvin_stop_streaming(struct vb2_queue *vq)
 	/* Free scratch buffer. */
 	dma_free_coherent(vin->dev, vin->format.sizeimage, vin->scratch,
 			  vin->scratch_phys);
-=======
-	sd = vin_to_source(vin);
-	v4l2_subdev_call(sd, video, s_stream, 0);
-
-	/* disable interrupts */
-	rvin_disable_interrupts(vin);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct vb2_ops rvin_qops = {
@@ -1738,22 +1248,14 @@ static const struct vb2_ops rvin_qops = {
 	.wait_finish		= vb2_ops_wait_finish,
 };
 
-<<<<<<< HEAD
 void rvin_dma_unregister(struct rvin_dev *vin)
-=======
-void rvin_dma_remove(struct rvin_dev *vin)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	mutex_destroy(&vin->lock);
 
 	v4l2_device_unregister(&vin->v4l2_dev);
 }
 
-<<<<<<< HEAD
 int rvin_dma_register(struct rvin_dev *vin, int irq)
-=======
-int rvin_dma_probe(struct rvin_dev *vin, int irq)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct vb2_queue *q = &vin->queue;
 	int i, ret;
@@ -1782,11 +1284,7 @@ int rvin_dma_probe(struct rvin_dev *vin, int irq)
 	q->ops = &rvin_qops;
 	q->mem_ops = &vb2_dma_contig_memops;
 	q->timestamp_flags = V4L2_BUF_FLAG_TIMESTAMP_MONOTONIC;
-<<<<<<< HEAD
 	q->min_buffers_needed = 4;
-=======
-	q->min_buffers_needed = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	q->dev = vin->dev;
 
 	ret = vb2_queue_init(q);
@@ -1805,7 +1303,6 @@ int rvin_dma_probe(struct rvin_dev *vin, int irq)
 
 	return 0;
 error:
-<<<<<<< HEAD
 	rvin_dma_unregister(vin);
 
 	return ret;
@@ -1843,9 +1340,6 @@ int rvin_set_channel_routing(struct rvin_dev *vin, u8 chsel)
 	rvin_write(vin, vnmc, VNMC_REG);
 
 	pm_runtime_put(vin->dev);
-=======
-	rvin_dma_remove(vin);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }

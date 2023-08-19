@@ -15,10 +15,7 @@
  */
 
 #include <linux/delay.h>
-<<<<<<< HEAD
 #include <linux/dma-mapping.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/genalloc.h>
 #include <linux/interrupt.h>
 #include <linux/io.h>
@@ -38,13 +35,6 @@
 /* Limit of the crypto queue before reaching the backlog */
 #define CESA_CRYPTO_DEFAULT_MAX_QLEN 128
 
-<<<<<<< HEAD
-=======
-static int allhwsupport = !IS_ENABLED(CONFIG_CRYPTO_DEV_MV_CESA);
-module_param_named(allhwsupport, allhwsupport, int, 0444);
-MODULE_PARM_DESC(allhwsupport, "Enable support for all hardware (even it if overlaps with the mv_cesa driver)");
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct mv_cesa_dev *cesa_dev;
 
 struct crypto_async_request *
@@ -83,11 +73,6 @@ static void mv_cesa_rearm_engine(struct mv_cesa_engine *engine)
 
 	ctx = crypto_tfm_ctx(req->tfm);
 	ctx->ops->step(req);
-<<<<<<< HEAD
-=======
-
-	return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int mv_cesa_std_process(struct mv_cesa_engine *engine, u32 status)
@@ -193,12 +178,7 @@ int mv_cesa_queue_req(struct crypto_async_request *req,
 	spin_lock_bh(&engine->lock);
 	ret = crypto_enqueue_request(&engine->queue, req);
 	if ((mv_cesa_req_get_type(creq) == CESA_DMA_REQ) &&
-<<<<<<< HEAD
 	    (ret == -EINPROGRESS || ret == -EBUSY))
-=======
-	    (ret == -EINPROGRESS ||
-	    (ret == -EBUSY && req->flags & CRYPTO_TFM_REQ_MAY_BACKLOG)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mv_cesa_tdma_chain(engine, creq);
 	spin_unlock_bh(&engine->lock);
 
@@ -216,11 +196,7 @@ static int mv_cesa_add_algs(struct mv_cesa_dev *cesa)
 	int i, j;
 
 	for (i = 0; i < cesa->caps->ncipher_algs; i++) {
-<<<<<<< HEAD
 		ret = crypto_register_skcipher(cesa->caps->cipher_algs[i]);
-=======
-		ret = crypto_register_alg(cesa->caps->cipher_algs[i]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			goto err_unregister_crypto;
 	}
@@ -240,11 +216,7 @@ err_unregister_ahash:
 
 err_unregister_crypto:
 	for (j = 0; j < i; j++)
-<<<<<<< HEAD
 		crypto_unregister_skcipher(cesa->caps->cipher_algs[j]);
-=======
-		crypto_unregister_alg(cesa->caps->cipher_algs[j]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -257,17 +229,10 @@ static void mv_cesa_remove_algs(struct mv_cesa_dev *cesa)
 		crypto_unregister_ahash(cesa->caps->ahash_algs[i]);
 
 	for (i = 0; i < cesa->caps->ncipher_algs; i++)
-<<<<<<< HEAD
 		crypto_unregister_skcipher(cesa->caps->cipher_algs[i]);
 }
 
 static struct skcipher_alg *orion_cipher_algs[] = {
-=======
-		crypto_unregister_alg(cesa->caps->cipher_algs[i]);
-}
-
-static struct crypto_alg *orion_cipher_algs[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	&mv_cesa_ecb_des_alg,
 	&mv_cesa_cbc_des_alg,
 	&mv_cesa_ecb_des3_ede_alg,
@@ -283,11 +248,7 @@ static struct ahash_alg *orion_ahash_algs[] = {
 	&mv_ahmac_sha1_alg,
 };
 
-<<<<<<< HEAD
 static struct skcipher_alg *armada_370_cipher_algs[] = {
-=======
-static struct crypto_alg *armada_370_cipher_algs[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	&mv_cesa_ecb_des_alg,
 	&mv_cesa_cbc_des_alg,
 	&mv_cesa_ecb_des3_ede_alg,
@@ -449,16 +410,11 @@ static int mv_cesa_get_sram(struct platform_device *pdev, int idx)
 	if (IS_ERR(engine->sram))
 		return PTR_ERR(engine->sram);
 
-<<<<<<< HEAD
 	engine->sram_dma = dma_map_resource(cesa->dev, res->start,
 					    cesa->sram_size,
 					    DMA_BIDIRECTIONAL, 0);
 	if (dma_mapping_error(cesa->dev, engine->sram_dma))
 		return -ENOMEM;
-=======
-	engine->sram_dma = phys_to_dma(cesa->dev,
-				       (phys_addr_t)res->start);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -468,20 +424,12 @@ static void mv_cesa_put_sram(struct platform_device *pdev, int idx)
 	struct mv_cesa_dev *cesa = platform_get_drvdata(pdev);
 	struct mv_cesa_engine *engine = &cesa->engines[idx];
 
-<<<<<<< HEAD
 	if (engine->pool)
 		gen_pool_free(engine->pool, (unsigned long)engine->sram,
 			      cesa->sram_size);
 	else
 		dma_unmap_resource(cesa->dev, engine->sram_dma,
 				   cesa->sram_size, DMA_BIDIRECTIONAL, 0);
-=======
-	if (!engine->pool)
-		return;
-
-	gen_pool_free(engine->pool, (unsigned long)engine->sram,
-		      cesa->sram_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int mv_cesa_probe(struct platform_device *pdev)
@@ -509,12 +457,6 @@ static int mv_cesa_probe(struct platform_device *pdev)
 		caps = match->data;
 	}
 
-<<<<<<< HEAD
-=======
-	if ((caps == &orion_caps || caps == &kirkwood_caps) && !allhwsupport)
-		return -ENOTSUPP;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cesa = devm_kzalloc(dev, sizeof(*cesa), GFP_KERNEL);
 	if (!cesa)
 		return -ENOMEM;
@@ -529,11 +471,7 @@ static int mv_cesa_probe(struct platform_device *pdev)
 		sram_size = CESA_SA_MIN_SRAM_SIZE;
 
 	cesa->sram_size = sram_size;
-<<<<<<< HEAD
 	cesa->engines = devm_kcalloc(dev, caps->nengines, sizeof(*engines),
-=======
-	cesa->engines = devm_kzalloc(dev, caps->nengines * sizeof(*engines),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     GFP_KERNEL);
 	if (!cesa->engines)
 		return -ENOMEM;
@@ -656,7 +594,6 @@ static int mv_cesa_remove(struct platform_device *pdev)
 	return 0;
 }
 
-<<<<<<< HEAD
 static const struct platform_device_id mv_cesa_plat_id_table[] = {
 	{ .name = "mv_crypto" },
 	{ /* sentinel */ },
@@ -667,11 +604,6 @@ static struct platform_driver marvell_cesa = {
 	.probe		= mv_cesa_probe,
 	.remove		= mv_cesa_remove,
 	.id_table	= mv_cesa_plat_id_table,
-=======
-static struct platform_driver marvell_cesa = {
-	.probe		= mv_cesa_probe,
-	.remove		= mv_cesa_remove,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.driver		= {
 		.name	= "marvell-cesa",
 		.of_match_table = mv_cesa_of_match_table,

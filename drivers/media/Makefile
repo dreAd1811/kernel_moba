@@ -21,10 +21,6 @@ endif
 
 obj-$(CONFIG_VIDEO_DEV) += v4l2-core/
 obj-$(CONFIG_DVB_CORE)  += dvb-core/
-<<<<<<< HEAD
-=======
-obj-$(CONFIG_VIDEO_DEV) += v4l2loopback-master/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 # There are both core and drivers at RC subtree - merge before drivers
 obj-y += rc/

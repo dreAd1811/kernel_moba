@@ -20,15 +20,6 @@ int ia32_setup_frame(int sig, struct ksignal *ksig,
 # define ia32_setup_rt_frame	__setup_rt_frame
 #endif
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_COMPAT
-int __copy_siginfo_to_user32(compat_siginfo_t __user *to,
-		const siginfo_t *from, bool x32_ABI);
-#endif
-
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern void convert_from_fxsr(struct user_i387_ia32_struct *env,
 			      struct task_struct *tsk);
 extern void convert_to_fxsr(struct task_struct *tsk,

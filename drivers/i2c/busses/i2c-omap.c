@@ -36,11 +36,7 @@
 #include <linux/of.h>
 #include <linux/of_device.h>
 #include <linux/slab.h>
-<<<<<<< HEAD
 #include <linux/platform_data/i2c-omap.h>
-=======
-#include <linux/i2c-omap.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/pm_runtime.h>
 #include <linux/pinctrl/consumer.h>
 

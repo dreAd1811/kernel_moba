@@ -23,10 +23,7 @@
 #include <linux/init.h>
 #include <linux/module.h>
 #include <linux/pci.h>
-<<<<<<< HEAD
 #include <asm/amd_nb.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/processor.h>
 
 MODULE_DESCRIPTION("AMD Family 10h+ CPU core temperature monitor");
@@ -40,7 +37,6 @@ MODULE_PARM_DESC(force, "force loading on processors with erratum 319");
 /* Provide lock for writing to NB_SMU_IND_ADDR */
 static DEFINE_MUTEX(nb_smu_ind_mutex);
 
-<<<<<<< HEAD
 #ifndef PCI_DEVICE_ID_AMD_15H_M70H_NB_F3
 #define PCI_DEVICE_ID_AMD_15H_M70H_NB_F3	0x15b3
 #endif
@@ -53,8 +49,6 @@ static DEFINE_MUTEX(nb_smu_ind_mutex);
 #define PCI_DEVICE_ID_AMD_17H_M10H_DF_F3	0x15eb
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* CPUID function 0x80000001, ebx */
 #define CPUID_PKGTYPE_MASK	0xf0000000
 #define CPUID_PKGTYPE_F		0x00000000
@@ -74,7 +68,6 @@ static DEFINE_MUTEX(nb_smu_ind_mutex);
 #define  NB_CAP_HTC			0x00000400
 
 /*
-<<<<<<< HEAD
  * For F15h M60h and M70h, REG_HARDWARE_THERMAL_CONTROL
  * and REG_REPORTED_TEMPERATURE have been moved to
  * D0F0xBC_xD820_0C64 [Hardware Temperature Control]
@@ -190,39 +183,6 @@ static ssize_t temp_label_show(struct device *dev,
 	struct sensor_device_attribute *attr = to_sensor_dev_attr(devattr);
 
 	return sprintf(buf, "%s\n", attr->index ? "Tctl" : "Tdie");
-=======
- * For F15h M60h, functionality of REG_REPORTED_TEMPERATURE
- * has been moved to D0F0xBC_xD820_0CA4 [Reported Temperature
- * Control]
- */
-#define F15H_M60H_REPORTED_TEMP_CTRL_OFFSET	0xd8200ca4
-
-static void amd_nb_smu_index_read(struct pci_dev *pdev, unsigned int devfn,
-				  int offset, u32 *val)
-{
-	mutex_lock(&nb_smu_ind_mutex);
-	pci_bus_write_config_dword(pdev->bus, devfn,
-				   0xb8, offset);
-	pci_bus_read_config_dword(pdev->bus, devfn,
-				  0xbc, val);
-	mutex_unlock(&nb_smu_ind_mutex);
-}
-
-static ssize_t temp1_input_show(struct device *dev,
-				struct device_attribute *attr, char *buf)
-{
-	u32 regval;
-	struct pci_dev *pdev = dev_get_drvdata(dev);
-
-	if (boot_cpu_data.x86 == 0x15 && boot_cpu_data.x86_model == 0x60) {
-		amd_nb_smu_index_read(pdev, PCI_DEVFN(0, 0),
-				      F15H_M60H_REPORTED_TEMP_CTRL_OFFSET,
-				      &regval);
-	} else {
-		pci_read_config_dword(pdev, REG_REPORTED_TEMPERATURE, &regval);
-	}
-	return sprintf(buf, "%u\n", (regval >> 21) * 125);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static ssize_t temp1_max_show(struct device *dev,
@@ -235,20 +195,12 @@ static ssize_t show_temp_crit(struct device *dev,
 			      struct device_attribute *devattr, char *buf)
 {
 	struct sensor_device_attribute *attr = to_sensor_dev_attr(devattr);
-<<<<<<< HEAD
 	struct k10temp_data *data = dev_get_drvdata(dev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int show_hyst = attr->index;
 	u32 regval;
 	int value;
 
-<<<<<<< HEAD
 	data->read_htcreg(data->pdev, &regval);
-=======
-	pci_read_config_dword(dev_get_drvdata(dev),
-			      REG_HARDWARE_THERMAL_CONTROL, &regval);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	value = ((regval >> 16) & 0x7f) * 500 + 52000;
 	if (show_hyst)
 		value -= ((regval >> 24) & 0xf) * 500;
@@ -260,18 +212,14 @@ static DEVICE_ATTR_RO(temp1_max);
 static SENSOR_DEVICE_ATTR(temp1_crit, S_IRUGO, show_temp_crit, NULL, 0);
 static SENSOR_DEVICE_ATTR(temp1_crit_hyst, S_IRUGO, show_temp_crit, NULL, 1);
 
-<<<<<<< HEAD
 static SENSOR_DEVICE_ATTR(temp1_label, 0444, temp_label_show, NULL, 0);
 static DEVICE_ATTR_RO(temp2_input);
 static SENSOR_DEVICE_ATTR(temp2_label, 0444, temp_label_show, NULL, 1);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static umode_t k10temp_is_visible(struct kobject *kobj,
 				  struct attribute *attr, int index)
 {
 	struct device *dev = container_of(kobj, struct device, kobj);
-<<<<<<< HEAD
 	struct k10temp_data *data = dev_get_drvdata(dev);
 	struct pci_dev *pdev = data->pdev;
 	u32 reg;
@@ -297,19 +245,6 @@ static umode_t k10temp_is_visible(struct kobject *kobj,
 		if (!data->show_tdie)
 			return 0;
 		break;
-=======
-	struct pci_dev *pdev = dev_get_drvdata(dev);
-
-	if (index >= 2) {
-		u32 reg_caps, reg_htc;
-
-		pci_read_config_dword(pdev, REG_NORTHBRIDGE_CAPABILITIES,
-				      &reg_caps);
-		pci_read_config_dword(pdev, REG_HARDWARE_THERMAL_CONTROL,
-				      &reg_htc);
-		if (!(reg_caps & NB_CAP_HTC) || !(reg_htc & HTC_ENABLE))
-			return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return attr->mode;
 }
@@ -319,12 +254,9 @@ static struct attribute *k10temp_attrs[] = {
 	&dev_attr_temp1_max.attr,
 	&sensor_dev_attr_temp1_crit.dev_attr.attr,
 	&sensor_dev_attr_temp1_crit_hyst.dev_attr.attr,
-<<<<<<< HEAD
 	&sensor_dev_attr_temp1_label.dev_attr.attr,
 	&dev_attr_temp2_input.attr,
 	&sensor_dev_attr_temp2_label.dev_attr.attr,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	NULL
 };
 
@@ -373,13 +305,9 @@ static int k10temp_probe(struct pci_dev *pdev,
 {
 	int unreliable = has_erratum_319(pdev);
 	struct device *dev = &pdev->dev;
-<<<<<<< HEAD
 	struct k10temp_data *data;
 	struct device *hwmon_dev;
 	int i;
-=======
-	struct device *hwmon_dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (unreliable) {
 		if (!force) {
@@ -391,7 +319,6 @@ static int k10temp_probe(struct pci_dev *pdev,
 			 "unreliable CPU thermal sensor; check erratum 319\n");
 	}
 
-<<<<<<< HEAD
 	data = devm_kzalloc(dev, sizeof(*data), GFP_KERNEL);
 	if (!data)
 		return -ENOMEM;
@@ -422,9 +349,6 @@ static int k10temp_probe(struct pci_dev *pdev,
 	}
 
 	hwmon_dev = devm_hwmon_device_register_with_groups(dev, "k10temp", data,
-=======
-	hwmon_dev = devm_hwmon_device_register_with_groups(dev, "k10temp", pdev,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							   k10temp_groups);
 	return PTR_ERR_OR_ZERO(hwmon_dev);
 }
@@ -437,16 +361,11 @@ static const struct pci_device_id k10temp_id_table[] = {
 	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_15H_M10H_F3) },
 	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_15H_M30H_NB_F3) },
 	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_15H_M60H_NB_F3) },
-<<<<<<< HEAD
 	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_15H_M70H_NB_F3) },
 	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_16H_NB_F3) },
 	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_16H_M30H_NB_F3) },
 	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_17H_DF_F3) },
 	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_17H_M10H_DF_F3) },
-=======
-	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_16H_NB_F3) },
-	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_16H_M30H_NB_F3) },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{}
 };
 MODULE_DEVICE_TABLE(pci, k10temp_id_table);

@@ -1,13 +1,8 @@
 /* SPDX-License-Identifier: GPL-2.0 */
-<<<<<<< HEAD
 /* Copyright(c) 2013 - 2018 Intel Corporation. */
 
 #ifndef _I40EVF_CLIENT_H_
 #define _I40EVF_CLIENT_H_
-=======
-#ifndef _I40E_CLIENT_H_
-#define _I40E_CLIENT_H_
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define I40EVF_CLIENT_STR_LENGTH 10
 
@@ -171,8 +166,4 @@ struct i40e_client {
 /* used by clients */
 int i40evf_register_client(struct i40e_client *client);
 int i40evf_unregister_client(struct i40e_client *client);
-<<<<<<< HEAD
 #endif /* _I40EVF_CLIENT_H_ */
-=======
-#endif /* _I40E_CLIENT_H_ */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

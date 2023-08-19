@@ -12,11 +12,7 @@
 /dts-v1/;
 #include "bcm2835.dtsi"
 #include "bcm2835-rpi.dtsi"
-<<<<<<< HEAD
 #include "bcm283x-rpi-usb-otg.dtsi"
-=======
-#include "bcm283x-rpi-usb-host.dtsi"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 / {
 	compatible = "raspberrypi,model-zero-w", "brcm,bcm2835";
@@ -29,11 +25,7 @@
 
 	leds {
 		act {
-<<<<<<< HEAD
 			gpios = <&gpio 47 GPIO_ACTIVE_HIGH>;
-=======
-			gpios = <&gpio 47 GPIO_ACTIVE_LOW>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 	};
 
@@ -126,10 +118,6 @@
 &sdhci {
 	#address-cells = <1>;
 	#size-cells = <0>;
-<<<<<<< HEAD
-=======
-	pinctrl-names = "default";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pinctrl-0 = <&emmc_gpio34 &gpclk2_gpio43>;
 	mmc-pwrseq = <&wifi_pwrseq>;
 	non-removable;
@@ -143,7 +131,6 @@
 
 &uart0 {
 	pinctrl-names = "default";
-<<<<<<< HEAD
 	pinctrl-0 = <&uart0_gpio32 &uart0_ctsrts_gpio30>;
 	status = "okay";
 
@@ -157,8 +144,5 @@
 &uart1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart1_gpio14>;
-=======
-	pinctrl-0 = <&uart0_gpio14>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };

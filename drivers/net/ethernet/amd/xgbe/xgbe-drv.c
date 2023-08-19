@@ -137,7 +137,6 @@ static unsigned int ecc_ded_period = 600;
 
 #ifdef CONFIG_AMD_XGBE_HAVE_ECC
 /* Only expose the ECC parameters if supported */
-<<<<<<< HEAD
 module_param(ecc_sec_info_threshold, uint, 0644);
 MODULE_PARM_DESC(ecc_sec_info_threshold,
 		 " ECC corrected error informational threshold setting");
@@ -153,23 +152,6 @@ module_param(ecc_ded_threshold, uint, 0644);
 MODULE_PARM_DESC(ecc_ded_threshold, " ECC detected error threshold setting");
 
 module_param(ecc_ded_period, uint, 0644);
-=======
-module_param(ecc_sec_info_threshold, uint, S_IWUSR | S_IRUGO);
-MODULE_PARM_DESC(ecc_sec_info_threshold,
-		 " ECC corrected error informational threshold setting");
-
-module_param(ecc_sec_warn_threshold, uint, S_IWUSR | S_IRUGO);
-MODULE_PARM_DESC(ecc_sec_warn_threshold,
-		 " ECC corrected error warning threshold setting");
-
-module_param(ecc_sec_period, uint, S_IWUSR | S_IRUGO);
-MODULE_PARM_DESC(ecc_sec_period, " ECC corrected error period (in seconds)");
-
-module_param(ecc_ded_threshold, uint, S_IWUSR | S_IRUGO);
-MODULE_PARM_DESC(ecc_ded_threshold, " ECC detected error threshold setting");
-
-module_param(ecc_ded_period, uint, S_IWUSR | S_IRUGO);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_PARM_DESC(ecc_ded_period, " ECC detected error period (in seconds)");
 #endif
 
@@ -533,11 +515,7 @@ static void xgbe_isr_task(unsigned long data)
 				xgbe_disable_rx_tx_ints(pdata);
 
 				/* Turn on polling */
-<<<<<<< HEAD
 				__napi_schedule_irqoff(&pdata->napi);
-=======
-				__napi_schedule(&pdata->napi);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		} else {
 			/* Don't clear Rx/Tx status if doing per channel DMA
@@ -664,15 +642,9 @@ static irqreturn_t xgbe_dma_isr(int irq, void *data)
 	return IRQ_HANDLED;
 }
 
-<<<<<<< HEAD
 static void xgbe_tx_timer(struct timer_list *t)
 {
 	struct xgbe_channel *channel = from_timer(channel, t, tx_timer);
-=======
-static void xgbe_tx_timer(unsigned long data)
-{
-	struct xgbe_channel *channel = (struct xgbe_channel *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct xgbe_prv_data *pdata = channel->pdata;
 	struct napi_struct *napi;
 
@@ -708,15 +680,9 @@ static void xgbe_service(struct work_struct *work)
 	pdata->phy_if.phy_status(pdata);
 }
 
-<<<<<<< HEAD
 static void xgbe_service_timer(struct timer_list *t)
 {
 	struct xgbe_prv_data *pdata = from_timer(pdata, t, service_timer);
-=======
-static void xgbe_service_timer(unsigned long data)
-{
-	struct xgbe_prv_data *pdata = (struct xgbe_prv_data *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	queue_work(pdata->dev_workqueue, &pdata->service_work);
 
@@ -728,24 +694,14 @@ static void xgbe_init_timers(struct xgbe_prv_data *pdata)
 	struct xgbe_channel *channel;
 	unsigned int i;
 
-<<<<<<< HEAD
 	timer_setup(&pdata->service_timer, xgbe_service_timer, 0);
-=======
-	setup_timer(&pdata->service_timer, xgbe_service_timer,
-		    (unsigned long)pdata);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < pdata->channel_count; i++) {
 		channel = pdata->channel[i];
 		if (!channel->tx_ring)
 			break;
 
-<<<<<<< HEAD
 		timer_setup(&channel->tx_timer, xgbe_tx_timer, 0);
-=======
-		setup_timer(&channel->tx_timer, xgbe_tx_timer,
-			    (unsigned long)channel);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -1356,7 +1312,6 @@ int xgbe_powerup(struct net_device *netdev, unsigned int caller)
 	return 0;
 }
 
-<<<<<<< HEAD
 static void xgbe_free_memory(struct xgbe_prv_data *pdata)
 {
 	struct xgbe_desc_if *desc_if = &pdata->desc_if;
@@ -1409,14 +1364,11 @@ err_channels:
 	return ret;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int xgbe_start(struct xgbe_prv_data *pdata)
 {
 	struct xgbe_hw_if *hw_if = &pdata->hw_if;
 	struct xgbe_phy_if *phy_if = &pdata->phy_if;
 	struct net_device *netdev = pdata->netdev;
-<<<<<<< HEAD
 	unsigned int i;
 	int ret;
 
@@ -1437,11 +1389,6 @@ static int xgbe_start(struct xgbe_prv_data *pdata)
 	for (i = 0; i < XGBE_RSS_MAX_TABLE_SIZE; i++)
 		XGMAC_SET_BITS(pdata->rss_table[i], MAC_RSSDR, DMCH,
 			       i % pdata->rx_ring_count);
-=======
-	int ret;
-
-	DBGPR("-->xgbe_start\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = hw_if->init(pdata);
 	if (ret)
@@ -1469,11 +1416,6 @@ static int xgbe_start(struct xgbe_prv_data *pdata)
 
 	clear_bit(XGBE_STOPPED, &pdata->dev_state);
 
-<<<<<<< HEAD
-=======
-	DBGPR("<--xgbe_start\n");
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 err_irqs:
@@ -1551,7 +1493,6 @@ static void xgbe_stopdev(struct work_struct *work)
 	netdev_alert(pdata->netdev, "device stopped\n");
 }
 
-<<<<<<< HEAD
 void xgbe_full_restart_dev(struct xgbe_prv_data *pdata)
 {
 	/* If not running, "restart" will happen on open */
@@ -1568,12 +1509,6 @@ void xgbe_full_restart_dev(struct xgbe_prv_data *pdata)
 
 void xgbe_restart_dev(struct xgbe_prv_data *pdata)
 {
-=======
-static void xgbe_restart_dev(struct xgbe_prv_data *pdata)
-{
-	DBGPR("-->xgbe_restart_dev\n");
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* If not running, "restart" will happen on open */
 	if (!netif_running(pdata->netdev))
 		return;
@@ -1584,11 +1519,6 @@ static void xgbe_restart_dev(struct xgbe_prv_data *pdata)
 	xgbe_free_rx_data(pdata);
 
 	xgbe_start(pdata);
-<<<<<<< HEAD
-=======
-
-	DBGPR("<--xgbe_restart_dev\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void xgbe_restart(struct work_struct *work)
@@ -1974,16 +1904,8 @@ static void xgbe_packet_info(struct xgbe_prv_data *pdata,
 static int xgbe_open(struct net_device *netdev)
 {
 	struct xgbe_prv_data *pdata = netdev_priv(netdev);
-<<<<<<< HEAD
 	int ret;
 
-=======
-	struct xgbe_desc_if *desc_if = &pdata->desc_if;
-	int ret;
-
-	DBGPR("-->xgbe_open\n");
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Create the various names based on netdev name */
 	snprintf(pdata->an_name, sizeof(pdata->an_name) - 1, "%s-pcs",
 		 netdev_name(netdev));
@@ -2028,30 +1950,10 @@ static int xgbe_open(struct net_device *netdev)
 		goto err_sysclk;
 	}
 
-<<<<<<< HEAD
-=======
-	/* Calculate the Rx buffer size before allocating rings */
-	ret = xgbe_calc_rx_buf_size(netdev, netdev->mtu);
-	if (ret < 0)
-		goto err_ptpclk;
-	pdata->rx_buf_size = ret;
-
-	/* Allocate the channel and ring structures */
-	ret = xgbe_alloc_channels(pdata);
-	if (ret)
-		goto err_ptpclk;
-
-	/* Allocate the ring descriptors and buffers */
-	ret = desc_if->alloc_ring_resources(pdata);
-	if (ret)
-		goto err_channels;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INIT_WORK(&pdata->service_work, xgbe_service);
 	INIT_WORK(&pdata->restart_work, xgbe_restart);
 	INIT_WORK(&pdata->stopdev_work, xgbe_stopdev);
 	INIT_WORK(&pdata->tx_tstamp_work, xgbe_tx_tstamp);
-<<<<<<< HEAD
 
 	ret = xgbe_alloc_memory(pdata);
 	if (ret)
@@ -2067,25 +1969,6 @@ static int xgbe_open(struct net_device *netdev)
 
 err_mem:
 	xgbe_free_memory(pdata);
-=======
-	xgbe_init_timers(pdata);
-
-	ret = xgbe_start(pdata);
-	if (ret)
-		goto err_rings;
-
-	clear_bit(XGBE_DOWN, &pdata->dev_state);
-
-	DBGPR("<--xgbe_open\n");
-
-	return 0;
-
-err_rings:
-	desc_if->free_ring_resources(pdata);
-
-err_channels:
-	xgbe_free_channels(pdata);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 err_ptpclk:
 	clk_disable_unprepare(pdata->ptpclk);
@@ -2105,25 +1988,11 @@ err_dev_wq:
 static int xgbe_close(struct net_device *netdev)
 {
 	struct xgbe_prv_data *pdata = netdev_priv(netdev);
-<<<<<<< HEAD
-=======
-	struct xgbe_desc_if *desc_if = &pdata->desc_if;
-
-	DBGPR("-->xgbe_close\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Stop the device */
 	xgbe_stop(pdata);
 
-<<<<<<< HEAD
 	xgbe_free_memory(pdata);
-=======
-	/* Free the ring descriptors and buffers */
-	desc_if->free_ring_resources(pdata);
-
-	/* Free the channel and ring structures */
-	xgbe_free_channels(pdata);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Disable the clocks */
 	clk_disable_unprepare(pdata->ptpclk);
@@ -2137,19 +2006,10 @@ static int xgbe_close(struct net_device *netdev)
 
 	set_bit(XGBE_DOWN, &pdata->dev_state);
 
-<<<<<<< HEAD
 	return 0;
 }
 
 static int xgbe_xmit(struct sk_buff *skb, struct net_device *netdev)
-=======
-	DBGPR("<--xgbe_close\n");
-
-	return 0;
-}
-
-static netdev_tx_t xgbe_xmit(struct sk_buff *skb, struct net_device *netdev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct xgbe_prv_data *pdata = netdev_priv(netdev);
 	struct xgbe_hw_if *hw_if = &pdata->hw_if;
@@ -2158,11 +2018,7 @@ static netdev_tx_t xgbe_xmit(struct sk_buff *skb, struct net_device *netdev)
 	struct xgbe_ring *ring;
 	struct xgbe_packet_data *packet;
 	struct netdev_queue *txq;
-<<<<<<< HEAD
 	int ret;
-=======
-	netdev_tx_t ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	DBGPR("-->xgbe_xmit: skb->len = %d\n", skb->len);
 
@@ -2397,11 +2253,7 @@ static int xgbe_setup_tc(struct net_device *netdev, enum tc_setup_type type,
 	struct tc_mqprio_qopt *mqprio = type_data;
 	u8 tc;
 
-<<<<<<< HEAD
 	if (type != TC_SETUP_QDISC_MQPRIO)
-=======
-	if (type != TC_SETUP_MQPRIO)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EOPNOTSUPP;
 
 	mqprio->hw = TC_MQPRIO_HW_OFFLOAD_TCS;
@@ -3125,14 +2977,8 @@ void xgbe_dump_rx_desc(struct xgbe_prv_data *pdata, struct xgbe_ring *ring,
 void xgbe_print_pkt(struct net_device *netdev, struct sk_buff *skb, bool tx_rx)
 {
 	struct ethhdr *eth = (struct ethhdr *)skb->data;
-<<<<<<< HEAD
 	unsigned char buffer[128];
 	unsigned int i;
-=======
-	unsigned char *buf = skb->data;
-	unsigned char buffer[128];
-	unsigned int i, j;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	netdev_dbg(netdev, "\n************** SKB dump ****************\n");
 
@@ -3143,7 +2989,6 @@ void xgbe_print_pkt(struct net_device *netdev, struct sk_buff *skb, bool tx_rx)
 	netdev_dbg(netdev, "Src MAC addr: %pM\n", eth->h_source);
 	netdev_dbg(netdev, "Protocol: %#06hx\n", ntohs(eth->h_proto));
 
-<<<<<<< HEAD
 	for (i = 0; i < skb->len; i += 32) {
 		unsigned int len = min(skb->len - i, 32U);
 
@@ -3151,24 +2996,6 @@ void xgbe_print_pkt(struct net_device *netdev, struct sk_buff *skb, bool tx_rx)
 				   buffer, sizeof(buffer), false);
 		netdev_dbg(netdev, "  %#06x: %s\n", i, buffer);
 	}
-=======
-	for (i = 0, j = 0; i < skb->len;) {
-		j += snprintf(buffer + j, sizeof(buffer) - j, "%02hhx",
-			      buf[i++]);
-
-		if ((i % 32) == 0) {
-			netdev_dbg(netdev, "  %#06x: %s\n", i - 32, buffer);
-			j = 0;
-		} else if ((i % 16) == 0) {
-			buffer[j++] = ' ';
-			buffer[j++] = ' ';
-		} else if ((i % 4) == 0) {
-			buffer[j++] = ' ';
-		}
-	}
-	if (i % 32)
-		netdev_dbg(netdev, "  %#06x: %s\n", i - (i % 32), buffer);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	netdev_dbg(netdev, "\n************** SKB dump ****************\n");
 }

@@ -57,13 +57,10 @@ MODULE_PARM_DESC(reset_mode, "0: auto, 1: warm only (default: 0)");
  */
 #define ATH10K_DIAG_TRANSFER_LIMIT	0x5000
 
-<<<<<<< HEAD
 #define QCA99X0_PCIE_BAR0_START_REG    0x81030
 #define QCA99X0_CPU_MEM_ADDR_REG       0x4d00c
 #define QCA99X0_CPU_MEM_DATA_REG       0x4d010
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct pci_device_id ath10k_pci_id_table[] = {
 	/* PCI-E QCA988X V2 (Ubiquiti branded) */
 	{ PCI_VDEVICE(UBIQUITI, QCA988X_2_0_DEVICE_ID_UBNT) },
@@ -602,17 +599,10 @@ skip:
 	spin_unlock_irqrestore(&ar_pci->ps_lock, flags);
 }
 
-<<<<<<< HEAD
 static void ath10k_pci_ps_timer(struct timer_list *t)
 {
 	struct ath10k_pci *ar_pci = from_timer(ar_pci, t, ps_timer);
 	struct ath10k *ar = ar_pci->ar;
-=======
-static void ath10k_pci_ps_timer(unsigned long ptr)
-{
-	struct ath10k *ar = (void *)ptr;
-	struct ath10k_pci *ar_pci = ath10k_pci_priv(ar);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 
 	spin_lock_irqsave(&ar_pci->ps_lock, flags);
@@ -862,16 +852,10 @@ void ath10k_pci_rx_post(struct ath10k *ar)
 		ath10k_pci_rx_post_pipe(&ar_pci->pipe_info[i]);
 }
 
-<<<<<<< HEAD
 void ath10k_pci_rx_replenish_retry(struct timer_list *t)
 {
 	struct ath10k_pci *ar_pci = from_timer(ar_pci, t, rx_post_retry);
 	struct ath10k *ar = ar_pci->ar;
-=======
-void ath10k_pci_rx_replenish_retry(unsigned long ptr)
-{
-	struct ath10k *ar = (void *)ptr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ath10k_pci_rx_post(ar);
 }
@@ -1070,16 +1054,10 @@ int ath10k_pci_diag_write_mem(struct ath10k *ar, u32 address,
 	struct ath10k_ce *ce = ath10k_ce_priv(ar);
 	int ret = 0;
 	u32 *buf;
-<<<<<<< HEAD
 	unsigned int completed_nbytes, orig_nbytes, remaining_bytes;
 	struct ath10k_ce_pipe *ce_diag;
 	void *data_buf = NULL;
 	u32 ce_data;	/* Host buffer address in CE space */
-=======
-	unsigned int completed_nbytes, alloc_nbytes, remaining_bytes;
-	struct ath10k_ce_pipe *ce_diag;
-	void *data_buf = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dma_addr_t ce_data_base = 0;
 	int i;
 
@@ -1093,16 +1071,9 @@ int ath10k_pci_diag_write_mem(struct ath10k *ar, u32 address,
 	 *   1) 4-byte alignment
 	 *   2) Buffer in DMA-able space
 	 */
-<<<<<<< HEAD
 	orig_nbytes = nbytes;
 	data_buf = (unsigned char *)dma_alloc_coherent(ar->dev,
 						       orig_nbytes,
-=======
-	alloc_nbytes = min_t(unsigned int, nbytes, DIAG_TRANSFER_LIMIT);
-
-	data_buf = (unsigned char *)dma_alloc_coherent(ar->dev,
-						       alloc_nbytes,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						       &ce_data_base,
 						       GFP_ATOMIC);
 	if (!data_buf) {
@@ -1110,12 +1081,9 @@ int ath10k_pci_diag_write_mem(struct ath10k *ar, u32 address,
 		goto done;
 	}
 
-<<<<<<< HEAD
 	/* Copy caller's data to allocated DMA buf */
 	memcpy(data_buf, data, orig_nbytes);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * The address supplied by the caller is in the
 	 * Target CPU virtual address space.
@@ -1128,22 +1096,12 @@ int ath10k_pci_diag_write_mem(struct ath10k *ar, u32 address,
 	 */
 	address = ath10k_pci_targ_cpu_to_ce_addr(ar, address);
 
-<<<<<<< HEAD
 	remaining_bytes = orig_nbytes;
 	ce_data = ce_data_base;
-=======
-	remaining_bytes = nbytes;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	while (remaining_bytes) {
 		/* FIXME: check cast */
 		nbytes = min_t(int, remaining_bytes, DIAG_TRANSFER_LIMIT);
 
-<<<<<<< HEAD
-=======
-		/* Copy caller's data to allocated DMA buf */
-		memcpy(data_buf, data, nbytes);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Set up to receive directly into Target(!) address */
 		ret = ce_diag->ops->ce_rx_post_buf(ce_diag, &address, address);
 		if (ret != 0)
@@ -1153,11 +1111,7 @@ int ath10k_pci_diag_write_mem(struct ath10k *ar, u32 address,
 		 * Request CE to send caller-supplied data that
 		 * was copied to bounce buffer to Target(!) address.
 		 */
-<<<<<<< HEAD
 		ret = ath10k_ce_send_nolock(ce_diag, NULL, (u32)ce_data,
-=======
-		ret = ath10k_ce_send_nolock(ce_diag, NULL, ce_data_base,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    nbytes, 0, 0);
 		if (ret != 0)
 			goto done;
@@ -1198,20 +1152,12 @@ int ath10k_pci_diag_write_mem(struct ath10k *ar, u32 address,
 
 		remaining_bytes -= nbytes;
 		address += nbytes;
-<<<<<<< HEAD
 		ce_data += nbytes;
-=======
-		data += nbytes;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 done:
 	if (data_buf) {
-<<<<<<< HEAD
 		dma_free_coherent(ar->dev, orig_nbytes, data_buf,
-=======
-		dma_free_coherent(ar->dev, alloc_nbytes, data_buf,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  ce_data_base);
 	}
 
@@ -1540,20 +1486,10 @@ static int ath10k_pci_dump_memory_section(struct ath10k *ar,
 	if (!mem_region || !buf)
 		return 0;
 
-<<<<<<< HEAD
 	cur_section = &mem_region->section_table.sections[0];
 
 	if (mem_region->start > cur_section->start) {
 		ath10k_warn(ar, "incorrect memdump region 0x%x with section start address 0x%x.\n",
-=======
-	if (mem_region->section_table.size < 0)
-		return 0;
-
-	cur_section = &mem_region->section_table.sections[0];
-
-	if (mem_region->start > cur_section->start) {
-		ath10k_warn(ar, "incorrect memdump region 0x%x with section start addrress 0x%x.\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    mem_region->start, cur_section->start);
 		return 0;
 	}
@@ -1652,7 +1588,6 @@ static int ath10k_pci_set_ram_config(struct ath10k *ar, u32 config)
 	return 0;
 }
 
-<<<<<<< HEAD
 /* if an error happened returns < 0, otherwise the length */
 static int ath10k_pci_dump_memory_sram(struct ath10k *ar,
 				       const struct ath10k_mem_region *region,
@@ -1716,8 +1651,6 @@ static int ath10k_pci_dump_memory_generic(struct ath10k *ar,
 	return current_region->len;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void ath10k_pci_dump_memory(struct ath10k *ar,
 				   struct ath10k_fw_crash_data *crash_data)
 {
@@ -1776,7 +1709,6 @@ static void ath10k_pci_dump_memory(struct ath10k *ar,
 		buf += sizeof(*hdr);
 		buf_len -= sizeof(*hdr);
 
-<<<<<<< HEAD
 		switch (current_region->type) {
 		case ATH10K_MEM_REGION_TYPE_IOSRAM:
 			count = ath10k_pci_dump_memory_sram(ar, current_region, buf);
@@ -1791,29 +1723,6 @@ static void ath10k_pci_dump_memory(struct ath10k *ar,
 
 			count = ret;
 			break;
-=======
-		if (current_region->section_table.size > 0) {
-			/* Copy each section individually. */
-			count = ath10k_pci_dump_memory_section(ar,
-							       current_region,
-							       buf,
-							       current_region->len);
-		} else {
-			/* No individiual memory sections defined so we can
-			 * copy the entire memory region.
-			 */
-			ret = ath10k_pci_diag_read_mem(ar,
-						       current_region->start,
-						       buf,
-						       current_region->len);
-			if (ret) {
-				ath10k_warn(ar, "failed to copy ramdump region %s: %d\n",
-					    current_region->name, ret);
-				break;
-			}
-
-			count = current_region->len;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		hdr->region_type = cpu_to_le32(current_region->type);
@@ -2144,14 +2053,6 @@ static void ath10k_pci_hif_stop(struct ath10k *ar)
 
 	ath10k_dbg(ar, ATH10K_DBG_BOOT, "boot hif stop\n");
 
-<<<<<<< HEAD
-=======
-	ath10k_pci_irq_disable(ar);
-	ath10k_pci_irq_sync(ar);
-	napi_synchronize(&ar->napi);
-	napi_disable(&ar->napi);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Most likely the device has HTT Rx ring configured. The only way to
 	 * prevent the device from accessing (and possible corrupting) host
 	 * memory is to reset the chip now.
@@ -2165,15 +2066,11 @@ static void ath10k_pci_hif_stop(struct ath10k *ar)
 	 */
 	ath10k_pci_safe_chip_reset(ar);
 
-<<<<<<< HEAD
 	ath10k_pci_irq_disable(ar);
 	ath10k_pci_irq_sync(ar);
 	ath10k_pci_flush(ar);
 	napi_synchronize(&ar->napi);
 	napi_disable(&ar->napi);
-=======
-	ath10k_pci_flush(ar);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irqsave(&ar_pci->ps_lock, flags);
 	WARN_ON(ar_pci->ps_wake_refcount > 0);
@@ -2384,11 +2281,7 @@ static int ath10k_pci_get_num_banks(struct ath10k *ar)
 		}
 		break;
 	case QCA9377_1_0_DEVICE_ID:
-<<<<<<< HEAD
 		return 9;
-=======
-		return 4;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ath10k_warn(ar, "unknown number of banks, assuming 1\n");
@@ -3553,12 +3446,7 @@ int ath10k_pci_setup_resource(struct ath10k *ar)
 	spin_lock_init(&ce->ce_lock);
 	spin_lock_init(&ar_pci->ps_lock);
 
-<<<<<<< HEAD
 	timer_setup(&ar_pci->rx_post_retry, ath10k_pci_rx_replenish_retry, 0);
-=======
-	setup_timer(&ar_pci->rx_post_retry, ath10k_pci_rx_replenish_retry,
-		    (unsigned long)ar);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (QCA_REV_6174(ar) || QCA_REV_9377(ar))
 		ath10k_pci_override_ce_config(ar);
@@ -3594,11 +3482,7 @@ static int ath10k_pci_probe(struct pci_dev *pdev,
 	struct ath10k *ar;
 	struct ath10k_pci *ar_pci;
 	enum ath10k_hw_rev hw_rev;
-<<<<<<< HEAD
 	u32 chip_id;
-=======
-	struct ath10k_bus_params bus_params;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool pci_ps;
 	int (*pci_soft_reset)(struct ath10k *ar);
 	int (*pci_hard_reset)(struct ath10k *ar);
@@ -3689,12 +3573,7 @@ static int ath10k_pci_probe(struct pci_dev *pdev,
 	ar->id.subsystem_vendor = pdev->subsystem_vendor;
 	ar->id.subsystem_device = pdev->subsystem_device;
 
-<<<<<<< HEAD
 	timer_setup(&ar_pci->ps_timer, ath10k_pci_ps_timer, 0);
-=======
-	setup_timer(&ar_pci->ps_timer, ath10k_pci_ps_timer,
-		    (unsigned long)ar);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = ath10k_pci_setup_resource(ar);
 	if (ret) {
@@ -3739,19 +3618,12 @@ static int ath10k_pci_probe(struct pci_dev *pdev,
 		goto err_free_irq;
 	}
 
-<<<<<<< HEAD
 	chip_id = ath10k_pci_soc_read32(ar, SOC_CHIP_ID_ADDRESS);
 	if (chip_id == 0xffffffff) {
-=======
-	bus_params.dev_type = ATH10K_DEV_TYPE_LL;
-	bus_params.chip_id = ath10k_pci_soc_read32(ar, SOC_CHIP_ID_ADDRESS);
-	if (bus_params.chip_id == 0xffffffff) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ath10k_err(ar, "failed to get chip id\n");
 		goto err_free_irq;
 	}
 
-<<<<<<< HEAD
 	if (!ath10k_pci_chip_is_supported(pdev->device, chip_id)) {
 		ath10k_err(ar, "device %04x with chip_id %08x isn't supported\n",
 			   pdev->device, chip_id);
@@ -3759,15 +3631,6 @@ static int ath10k_pci_probe(struct pci_dev *pdev,
 	}
 
 	ret = ath10k_core_register(ar, chip_id);
-=======
-	if (!ath10k_pci_chip_is_supported(pdev->device, bus_params.chip_id)) {
-		ath10k_err(ar, "device %04x with chip_id %08x isn't supported\n",
-			   pdev->device, bus_params.chip_id);
-		goto err_free_irq;
-	}
-
-	ret = ath10k_core_register(ar, &bus_params);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		ath10k_err(ar, "failed to register driver core: %d\n", ret);
 		goto err_free_irq;
@@ -3915,9 +3778,6 @@ MODULE_FIRMWARE(QCA6174_HW_3_0_FW_DIR "/" QCA6174_HW_3_0_BOARD_DATA_FILE);
 MODULE_FIRMWARE(QCA6174_HW_3_0_FW_DIR "/" ATH10K_BOARD_API2_FILE);
 
 /* QCA9377 1.0 firmware files */
-<<<<<<< HEAD
 MODULE_FIRMWARE(QCA9377_HW_1_0_FW_DIR "/" ATH10K_FW_API6_FILE);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_FIRMWARE(QCA9377_HW_1_0_FW_DIR "/" ATH10K_FW_API5_FILE);
 MODULE_FIRMWARE(QCA9377_HW_1_0_FW_DIR "/" QCA9377_HW_1_0_BOARD_DATA_FILE);

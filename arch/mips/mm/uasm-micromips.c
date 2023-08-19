@@ -19,10 +19,6 @@
 #include <asm/inst.h>
 #include <asm/elf.h>
 #include <asm/bugs.h>
-<<<<<<< HEAD
-=======
-#define UASM_ISA	_UASM_ISA_MICROMIPS
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/uasm.h>
 
 #define RS_MASK		0x1f
@@ -43,11 +39,7 @@
 
 #include "uasm.c"
 
-<<<<<<< HEAD
 static const struct insn insn_table_MM[insn_invalid] = {
-=======
-static const struct insn const insn_table_MM[insn_invalid] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	[insn_addu]	= {M(mm_pool32a_op, 0, 0, 0, 0, mm_addu32_op), RT | RS | RD},
 	[insn_addiu]	= {M(mm_addiu32_op, 0, 0, 0, 0, 0), RT | RS | SIMM},
 	[insn_and]	= {M(mm_pool32a_op, 0, 0, 0, 0, mm_and_op), RT | RS | RD},

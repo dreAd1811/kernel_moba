@@ -174,10 +174,6 @@ struct hip04_priv {
 	dma_addr_t rx_phys[RX_DESC_NUM];
 	unsigned int rx_head;
 	unsigned int rx_buf_size;
-<<<<<<< HEAD
-=======
-	unsigned int rx_cnt_remaining;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct device_node *phy_node;
 	struct phy_device *phy;
@@ -378,11 +374,7 @@ static int hip04_tx_reclaim(struct net_device *ndev, bool force)
 	unsigned int count;
 
 	smp_rmb();
-<<<<<<< HEAD
 	count = tx_count(READ_ONCE(priv->tx_head), tx_tail);
-=======
-	count = tx_count(ACCESS_ONCE(priv->tx_head), tx_tail);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (count == 0)
 		goto out;
 
@@ -431,12 +423,7 @@ static void hip04_start_tx_timer(struct hip04_priv *priv)
 			       ns, HRTIMER_MODE_REL);
 }
 
-<<<<<<< HEAD
 static int hip04_mac_start_xmit(struct sk_buff *skb, struct net_device *ndev)
-=======
-static netdev_tx_t
-hip04_mac_start_xmit(struct sk_buff *skb, struct net_device *ndev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct hip04_priv *priv = netdev_priv(ndev);
 	struct net_device_stats *stats = &ndev->stats;
@@ -445,11 +432,7 @@ hip04_mac_start_xmit(struct sk_buff *skb, struct net_device *ndev)
 	dma_addr_t phys;
 
 	smp_rmb();
-<<<<<<< HEAD
 	count = tx_count(tx_head, READ_ONCE(priv->tx_tail));
-=======
-	count = tx_count(tx_head, ACCESS_ONCE(priv->tx_tail));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (count == (TX_DESC_NUM - 1)) {
 		netif_stop_queue(ndev);
 		return NETDEV_TX_BUSY;
@@ -471,15 +454,9 @@ hip04_mac_start_xmit(struct sk_buff *skb, struct net_device *ndev)
 	skb_tx_timestamp(skb);
 
 	hip04_set_xmit_desc(priv, phys);
-<<<<<<< HEAD
 	priv->tx_head = TX_NEXT(tx_head);
 	count++;
 	netdev_sent_queue(ndev, skb->len);
-=======
-	count++;
-	netdev_sent_queue(ndev, skb->len);
-	priv->tx_head = TX_NEXT(tx_head);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	stats->tx_bytes += skb->len;
 	stats->tx_packets++;
@@ -510,10 +487,7 @@ static int hip04_rx_poll(struct napi_struct *napi, int budget)
 	struct hip04_priv *priv = container_of(napi, struct hip04_priv, napi);
 	struct net_device *ndev = priv->ndev;
 	struct net_device_stats *stats = &ndev->stats;
-<<<<<<< HEAD
 	unsigned int cnt = hip04_recv_cnt(priv);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct rx_desc *desc;
 	struct sk_buff *skb;
 	unsigned char *buf;
@@ -526,13 +500,8 @@ static int hip04_rx_poll(struct napi_struct *napi, int budget)
 
 	/* clean up tx descriptors */
 	tx_remaining = hip04_tx_reclaim(ndev, false);
-<<<<<<< HEAD
 
 	while (cnt && !last) {
-=======
-	priv->rx_cnt_remaining += hip04_recv_cnt(priv);
-	while (priv->rx_cnt_remaining && !last) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		buf = priv->rx_buf[priv->rx_head];
 		skb = build_skb(buf, priv->rx_buf_size);
 		if (unlikely(!skb)) {
@@ -578,21 +547,11 @@ refill:
 		hip04_set_recv_desc(priv, phys);
 
 		priv->rx_head = RX_NEXT(priv->rx_head);
-<<<<<<< HEAD
 		if (rx >= budget)
 			goto done;
 
 		if (--cnt == 0)
 			cnt = hip04_recv_cnt(priv);
-=======
-		if (rx >= budget) {
-			--priv->rx_cnt_remaining;
-			goto done;
-		}
-
-		if (--priv->rx_cnt_remaining == 0)
-			priv->rx_cnt_remaining += hip04_recv_cnt(priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (!(priv->reg_inten & RCV_INT)) {
@@ -677,10 +636,6 @@ static int hip04_mac_open(struct net_device *ndev)
 	int i;
 
 	priv->rx_head = 0;
-<<<<<<< HEAD
-=======
-	priv->rx_cnt_remaining = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	priv->tx_head = 0;
 	priv->tx_tail = 0;
 	hip04_reset_ppe(priv);
@@ -953,11 +908,7 @@ static int hip04_mac_probe(struct platform_device *pdev)
 		hip04_config_port(ndev, SPEED_100, DUPLEX_FULL);
 
 	hip04_config_fifo(priv);
-<<<<<<< HEAD
 	eth_random_addr(ndev->dev_addr);
-=======
-	random_ether_addr(ndev->dev_addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hip04_update_mac_address(ndev);
 
 	ret = hip04_alloc_ring(ndev, d);
@@ -991,10 +942,7 @@ static int hip04_remove(struct platform_device *pdev)
 
 	hip04_free_ring(ndev, d);
 	unregister_netdev(ndev);
-<<<<<<< HEAD
 	free_irq(ndev->irq, ndev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	of_node_put(priv->phy_node);
 	cancel_work_sync(&priv->tx_timeout_task);
 	free_netdev(ndev);

@@ -60,11 +60,7 @@
 #include <i40e_client.h>
 #include "i40iw_type.h"
 #include "i40iw_p.h"
-<<<<<<< HEAD
 #include <rdma/i40iw-abi.h>
-=======
-#include "i40iw_ucontext.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "i40iw_pble.h"
 #include "i40iw_verbs.h"
 #include "i40iw_cm.h"
@@ -123,12 +119,6 @@
 #define I40IW_CQP_COMPL_SQ_WQE_FLUSHED    3
 #define I40IW_CQP_COMPL_RQ_SQ_WQE_FLUSHED 4
 
-<<<<<<< HEAD
-=======
-#define I40IW_MTU_TO_MSS		40
-#define I40IW_DEFAULT_MSS		1460
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct i40iw_cqp_compl_info {
 	u32 op_ret_val;
 	u16 maj_err_code;
@@ -217,10 +207,7 @@ struct i40iw_msix_vector {
 	u32 irq;
 	u32 cpu_affinity;
 	u32 ceq_id;
-<<<<<<< HEAD
 	cpumask_t mask;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct l2params_work {
@@ -573,35 +560,25 @@ void i40iw_next_iw_state(struct i40iw_qp *iwqp,
 			 u8 state, u8 del_hash,
 			 u8 term, u8 term_len);
 int i40iw_send_syn(struct i40iw_cm_node *cm_node, u32 sendack);
-<<<<<<< HEAD
 int i40iw_send_reset(struct i40iw_cm_node *cm_node);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct i40iw_cm_node *i40iw_find_node(struct i40iw_cm_core *cm_core,
 				      u16 rem_port,
 				      u32 *rem_addr,
 				      u16 loc_port,
 				      u32 *loc_addr,
-<<<<<<< HEAD
 				      bool add_refcnt,
 				      bool accelerated_list);
-=======
-				      bool add_refcnt);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum i40iw_status_code i40iw_hw_flush_wqes(struct i40iw_device *iwdev,
 					   struct i40iw_sc_qp *qp,
 					   struct i40iw_qp_flush_info *info,
 					   bool wait);
 
-<<<<<<< HEAD
 void i40iw_gen_ae(struct i40iw_device *iwdev,
 		  struct i40iw_sc_qp *qp,
 		  struct i40iw_gen_ae_info *info,
 		  bool wait);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void i40iw_copy_ip_ntohl(u32 *dst, __be32 *src);
 struct ib_mr *i40iw_reg_phys_mr(struct ib_pd *ib_pd,
 				u64 addr,
@@ -618,11 +595,8 @@ int i40iw_inet6addr_event(struct notifier_block *notifier,
 int i40iw_net_event(struct notifier_block *notifier,
 		    unsigned long event,
 		    void *ptr);
-<<<<<<< HEAD
 int i40iw_netdevice_event(struct notifier_block *notifier,
 			  unsigned long event,
 			  void *ptr);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif

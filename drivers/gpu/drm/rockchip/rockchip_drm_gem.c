@@ -16,11 +16,8 @@
 #include <drm/drmP.h>
 #include <drm/drm_gem.h>
 #include <drm/drm_vma_manager.h>
-<<<<<<< HEAD
 
 #include <linux/dma-buf.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/iommu.h>
 
 #include "rockchip_drm_drv.h"
@@ -225,11 +222,7 @@ static int rockchip_drm_gem_object_mmap_iommu(struct drm_gem_object *obj,
 {
 	struct rockchip_gem_object *rk_obj = to_rockchip_obj(obj);
 	unsigned int i, count = obj->size >> PAGE_SHIFT;
-<<<<<<< HEAD
 	unsigned long user_count = vma_pages(vma);
-=======
-	unsigned long user_count = (vma->vm_end - vma->vm_start) >> PAGE_SHIFT;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long uaddr = vma->vm_start;
 	unsigned long offset = vma->vm_pgoff;
 	unsigned long end = user_count + offset;
@@ -323,19 +316,10 @@ static void rockchip_gem_release_object(struct rockchip_gem_object *rk_obj)
 }
 
 struct rockchip_gem_object *
-<<<<<<< HEAD
 	rockchip_gem_alloc_object(struct drm_device *drm, unsigned int size)
 {
 	struct rockchip_gem_object *rk_obj;
 	struct drm_gem_object *obj;
-=======
-	rockchip_gem_create_object(struct drm_device *drm, unsigned int size,
-				   bool alloc_kmap)
-{
-	struct rockchip_gem_object *rk_obj;
-	struct drm_gem_object *obj;
-	int ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	size = round_up(size, PAGE_SIZE);
 
@@ -347,7 +331,6 @@ struct rockchip_gem_object *
 
 	drm_gem_object_init(drm, obj, size);
 
-<<<<<<< HEAD
 	return rk_obj;
 }
 
@@ -362,8 +345,6 @@ rockchip_gem_create_object(struct drm_device *drm, unsigned int size,
 	if (IS_ERR(rk_obj))
 		return rk_obj;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = rockchip_gem_alloc_buf(rk_obj, alloc_kmap);
 	if (ret)
 		goto err_free_rk_obj;
@@ -376,7 +357,6 @@ err_free_rk_obj:
 }
 
 /*
-<<<<<<< HEAD
  * rockchip_gem_free_object - (struct drm_driver)->gem_free_object_unlocked
  * callback function
  */
@@ -397,18 +377,6 @@ void rockchip_gem_free_object(struct drm_gem_object *obj)
 	} else {
 		rockchip_gem_free_buf(rk_obj);
 	}
-=======
- * rockchip_gem_free_object - (struct drm_driver)->gem_free_object callback
- * function
- */
-void rockchip_gem_free_object(struct drm_gem_object *obj)
-{
-	struct rockchip_gem_object *rk_obj;
-
-	rk_obj = to_rockchip_obj(obj);
-
-	rockchip_gem_free_buf(rk_obj);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rockchip_gem_release_object(rk_obj);
 }
@@ -512,7 +480,6 @@ struct sg_table *rockchip_gem_prime_get_sg_table(struct drm_gem_object *obj)
 	return sgt;
 }
 
-<<<<<<< HEAD
 static unsigned long rockchip_sg_get_contiguous_size(struct sg_table *sgt,
 						     int count)
 {
@@ -593,8 +560,6 @@ err_free_rk_obj:
 	return ERR_PTR(ret);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void *rockchip_gem_prime_vmap(struct drm_gem_object *obj)
 {
 	struct rockchip_gem_object *rk_obj = to_rockchip_obj(obj);

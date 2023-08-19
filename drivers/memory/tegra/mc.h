@@ -21,27 +21,20 @@
 #define MC_INT_INVALID_SMMU_PAGE (1 << 10)
 #define MC_INT_ARBITRATION_EMEM (1 << 9)
 #define MC_INT_SECURITY_VIOLATION (1 << 8)
-<<<<<<< HEAD
 #define MC_INT_INVALID_GART_PAGE (1 << 7)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MC_INT_DECERR_EMEM (1 << 6)
 
 static inline u32 mc_readl(struct tegra_mc *mc, unsigned long offset)
 {
-<<<<<<< HEAD
 	if (mc->regs2 && offset >= 0x24)
 		return readl(mc->regs2 + offset - 0x3c);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return readl(mc->regs + offset);
 }
 
 static inline void mc_writel(struct tegra_mc *mc, u32 value,
 			     unsigned long offset)
 {
-<<<<<<< HEAD
 	if (mc->regs2 && offset >= 0x24)
 		return writel(value, mc->regs2 + offset - 0x3c);
 
@@ -54,11 +47,6 @@ extern const struct tegra_mc_reset_ops terga_mc_reset_ops_common;
 extern const struct tegra_mc_soc tegra20_mc_soc;
 #endif
 
-=======
-	writel(value, mc->regs + offset);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_ARCH_TEGRA_3x_SOC
 extern const struct tegra_mc_soc tegra30_mc_soc;
 #endif

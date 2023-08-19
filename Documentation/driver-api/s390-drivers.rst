@@ -22,7 +22,6 @@ While most I/O devices on a s390 system are typically driven through the
 channel I/O mechanism described here, there are various other methods
 (like the diag interface). These are out of the scope of this document.
 
-<<<<<<< HEAD
 The s390 common I/O layer also provides access to some devices that are
 not strictly considered I/O devices. They are considered here as well,
 although they are not the focus of this document.
@@ -45,11 +44,6 @@ into several categories:
   to send asynchronous chsc commands.
 * eADM subchannels. Used for talking to storage class memory.
 
-=======
-Some additional information can also be found in the kernel source under
-Documentation/s390/driver-model.txt.
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 The ccw bus
 ===========
 
@@ -127,7 +121,6 @@ ccw group devices
 Generic interfaces
 ==================
 
-<<<<<<< HEAD
 The following section contains interfaces in use not only by drivers
 dealing with ccw devices, but drivers for various other s390 hardware
 as well.
@@ -137,12 +130,6 @@ Adapter interrupts
 
 The common I/O layer provides helper functions for dealing with adapter
 interrupts and interrupt vectors.
-=======
-Some interfaces are available to other drivers that do not necessarily
-have anything to do with the busses described above, but still are
-indirectly using basic infrastructure in the common I/O layer. One
-example is the support for adapter interrupts.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 .. kernel-doc:: drivers/s390/cio/airq.c
    :export:

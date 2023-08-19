@@ -1,33 +1,5 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /* Copyright(c) 2013 - 2018 Intel Corporation. */
-=======
-/*******************************************************************************
- *
- * Intel Ethernet Controller XL710 Family Linux Driver
- * Copyright(c) 2013 - 2016 Intel Corporation.
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms and conditions of the GNU General Public License,
- * version 2, as published by the Free Software Foundation.
- *
- * This program is distributed in the hope it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
- * more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * The full GNU General Public License is included in this distribution in
- * the file called "COPYING".
- *
- * Contact Information:
- * e1000-devel Mailing List <e1000-devel@lists.sourceforge.net>
- * Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497
- *
- ******************************************************************************/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* ethtool support for i40e */
 
@@ -35,14 +7,11 @@
 #include "i40e_diag.h"
 
 struct i40e_stats {
-<<<<<<< HEAD
 	/* The stat_string is expected to be a format string formatted using
 	 * vsnprintf by i40e_add_stat_strings. Every member of a stats array
 	 * should use the same format specifiers as they will be formatted
 	 * using the same variadic arguments.
 	 */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	char stat_string[ETH_GSTRING_LEN];
 	int sizeof_stat;
 	int stat_offset;
@@ -55,7 +24,6 @@ struct i40e_stats {
 }
 
 #define I40E_NETDEV_STAT(_net_stat) \
-<<<<<<< HEAD
 	I40E_STAT(struct rtnl_link_stats64, #_net_stat, _net_stat)
 #define I40E_PF_STAT(_name, _stat) \
 	I40E_STAT(struct i40e_pf, _name, _stat)
@@ -65,15 +33,6 @@ struct i40e_stats {
 	I40E_STAT(struct i40e_veb, _name, _stat)
 #define I40E_PFC_STAT(_name, _stat) \
 	I40E_STAT(struct i40e_pfc_stats, _name, _stat)
-=======
-		I40E_STAT(struct rtnl_link_stats64, #_net_stat, _net_stat)
-#define I40E_PF_STAT(_name, _stat) \
-		I40E_STAT(struct i40e_pf, _name, _stat)
-#define I40E_VSI_STAT(_name, _stat) \
-		I40E_STAT(struct i40e_vsi, _name, _stat)
-#define I40E_VEB_STAT(_name, _stat) \
-		I40E_STAT(struct i40e_veb, _name, _stat)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static const struct i40e_stats i40e_gstrings_net_stats[] = {
 	I40E_NETDEV_STAT(rx_packets),
@@ -90,7 +49,6 @@ static const struct i40e_stats i40e_gstrings_net_stats[] = {
 };
 
 static const struct i40e_stats i40e_gstrings_veb_stats[] = {
-<<<<<<< HEAD
 	I40E_VEB_STAT("veb.rx_bytes", stats.rx_bytes),
 	I40E_VEB_STAT("veb.tx_bytes", stats.tx_bytes),
 	I40E_VEB_STAT("veb.rx_unicast", stats.rx_unicast),
@@ -110,20 +68,6 @@ static const struct i40e_stats i40e_gstrings_veb_tc_stats[] = {
 	I40E_VEB_STAT("veb.tc_%u_tx_bytes", tc_stats.tc_tx_bytes),
 	I40E_VEB_STAT("veb.tc_%u_rx_packets", tc_stats.tc_rx_packets),
 	I40E_VEB_STAT("veb.tc_%u_rx_bytes", tc_stats.tc_rx_bytes),
-=======
-	I40E_VEB_STAT("rx_bytes", stats.rx_bytes),
-	I40E_VEB_STAT("tx_bytes", stats.tx_bytes),
-	I40E_VEB_STAT("rx_unicast", stats.rx_unicast),
-	I40E_VEB_STAT("tx_unicast", stats.tx_unicast),
-	I40E_VEB_STAT("rx_multicast", stats.rx_multicast),
-	I40E_VEB_STAT("tx_multicast", stats.tx_multicast),
-	I40E_VEB_STAT("rx_broadcast", stats.rx_broadcast),
-	I40E_VEB_STAT("tx_broadcast", stats.tx_broadcast),
-	I40E_VEB_STAT("rx_discards", stats.rx_discards),
-	I40E_VEB_STAT("tx_discards", stats.tx_discards),
-	I40E_VEB_STAT("tx_errors", stats.tx_errors),
-	I40E_VEB_STAT("rx_unknown_protocol", stats.rx_unknown_protocol),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct i40e_stats i40e_gstrings_misc_stats[] = {
@@ -136,10 +80,7 @@ static const struct i40e_stats i40e_gstrings_misc_stats[] = {
 	I40E_VSI_STAT("rx_unknown_protocol", eth_stats.rx_unknown_protocol),
 	I40E_VSI_STAT("tx_linearize", tx_linearize),
 	I40E_VSI_STAT("tx_force_wb", tx_force_wb),
-<<<<<<< HEAD
 	I40E_VSI_STAT("tx_busy", tx_busy),
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	I40E_VSI_STAT("rx_alloc_fail", rx_buf_failed),
 	I40E_VSI_STAT("rx_pg_alloc_fail", rx_page_failed),
 };
@@ -155,7 +96,6 @@ static const struct i40e_stats i40e_gstrings_misc_stats[] = {
  * is queried on the base PF netdev, not on the VMDq or FCoE netdev.
  */
 static const struct i40e_stats i40e_gstrings_stats[] = {
-<<<<<<< HEAD
 	I40E_PF_STAT("port.rx_bytes", stats.eth.rx_bytes),
 	I40E_PF_STAT("port.tx_bytes", stats.eth.tx_bytes),
 	I40E_PF_STAT("port.rx_unicast", stats.eth.rx_unicast),
@@ -256,93 +196,6 @@ static const struct i40e_stats i40e_gstrings_pfc_stats[] = {
 #define I40E_PF_STATS_LEN(n)	(I40E_GLOBAL_STATS_LEN + \
 				 I40E_PFC_STATS_LEN + \
 				 I40E_VEB_STATS_LEN + \
-=======
-	I40E_PF_STAT("rx_bytes", stats.eth.rx_bytes),
-	I40E_PF_STAT("tx_bytes", stats.eth.tx_bytes),
-	I40E_PF_STAT("rx_unicast", stats.eth.rx_unicast),
-	I40E_PF_STAT("tx_unicast", stats.eth.tx_unicast),
-	I40E_PF_STAT("rx_multicast", stats.eth.rx_multicast),
-	I40E_PF_STAT("tx_multicast", stats.eth.tx_multicast),
-	I40E_PF_STAT("rx_broadcast", stats.eth.rx_broadcast),
-	I40E_PF_STAT("tx_broadcast", stats.eth.tx_broadcast),
-	I40E_PF_STAT("tx_errors", stats.eth.tx_errors),
-	I40E_PF_STAT("rx_dropped", stats.eth.rx_discards),
-	I40E_PF_STAT("tx_dropped_link_down", stats.tx_dropped_link_down),
-	I40E_PF_STAT("rx_crc_errors", stats.crc_errors),
-	I40E_PF_STAT("illegal_bytes", stats.illegal_bytes),
-	I40E_PF_STAT("mac_local_faults", stats.mac_local_faults),
-	I40E_PF_STAT("mac_remote_faults", stats.mac_remote_faults),
-	I40E_PF_STAT("tx_timeout", tx_timeout_count),
-	I40E_PF_STAT("rx_csum_bad", hw_csum_rx_error),
-	I40E_PF_STAT("rx_length_errors", stats.rx_length_errors),
-	I40E_PF_STAT("link_xon_rx", stats.link_xon_rx),
-	I40E_PF_STAT("link_xoff_rx", stats.link_xoff_rx),
-	I40E_PF_STAT("link_xon_tx", stats.link_xon_tx),
-	I40E_PF_STAT("link_xoff_tx", stats.link_xoff_tx),
-	I40E_PF_STAT("rx_size_64", stats.rx_size_64),
-	I40E_PF_STAT("rx_size_127", stats.rx_size_127),
-	I40E_PF_STAT("rx_size_255", stats.rx_size_255),
-	I40E_PF_STAT("rx_size_511", stats.rx_size_511),
-	I40E_PF_STAT("rx_size_1023", stats.rx_size_1023),
-	I40E_PF_STAT("rx_size_1522", stats.rx_size_1522),
-	I40E_PF_STAT("rx_size_big", stats.rx_size_big),
-	I40E_PF_STAT("tx_size_64", stats.tx_size_64),
-	I40E_PF_STAT("tx_size_127", stats.tx_size_127),
-	I40E_PF_STAT("tx_size_255", stats.tx_size_255),
-	I40E_PF_STAT("tx_size_511", stats.tx_size_511),
-	I40E_PF_STAT("tx_size_1023", stats.tx_size_1023),
-	I40E_PF_STAT("tx_size_1522", stats.tx_size_1522),
-	I40E_PF_STAT("tx_size_big", stats.tx_size_big),
-	I40E_PF_STAT("rx_undersize", stats.rx_undersize),
-	I40E_PF_STAT("rx_fragments", stats.rx_fragments),
-	I40E_PF_STAT("rx_oversize", stats.rx_oversize),
-	I40E_PF_STAT("rx_jabber", stats.rx_jabber),
-	I40E_PF_STAT("VF_admin_queue_requests", vf_aq_requests),
-	I40E_PF_STAT("arq_overflows", arq_overflows),
-	I40E_PF_STAT("rx_hwtstamp_cleared", rx_hwtstamp_cleared),
-	I40E_PF_STAT("tx_hwtstamp_skipped", tx_hwtstamp_skipped),
-	I40E_PF_STAT("fdir_flush_cnt", fd_flush_cnt),
-	I40E_PF_STAT("fdir_atr_match", stats.fd_atr_match),
-	I40E_PF_STAT("fdir_atr_tunnel_match", stats.fd_atr_tunnel_match),
-	I40E_PF_STAT("fdir_atr_status", stats.fd_atr_status),
-	I40E_PF_STAT("fdir_sb_match", stats.fd_sb_match),
-	I40E_PF_STAT("fdir_sb_status", stats.fd_sb_status),
-
-	/* LPI stats */
-	I40E_PF_STAT("tx_lpi_status", stats.tx_lpi_status),
-	I40E_PF_STAT("rx_lpi_status", stats.rx_lpi_status),
-	I40E_PF_STAT("tx_lpi_count", stats.tx_lpi_count),
-	I40E_PF_STAT("rx_lpi_count", stats.rx_lpi_count),
-};
-
-#define I40E_QUEUE_STATS_LEN(n) \
-	(((struct i40e_netdev_priv *)netdev_priv((n)))->vsi->num_queue_pairs \
-	    * 2 /* Tx and Rx together */                                     \
-	    * (sizeof(struct i40e_queue_stats) / sizeof(u64)))
-#define I40E_GLOBAL_STATS_LEN	ARRAY_SIZE(i40e_gstrings_stats)
-#define I40E_NETDEV_STATS_LEN   ARRAY_SIZE(i40e_gstrings_net_stats)
-#define I40E_MISC_STATS_LEN	ARRAY_SIZE(i40e_gstrings_misc_stats)
-#define I40E_VSI_STATS_LEN(n)   (I40E_NETDEV_STATS_LEN + \
-				 I40E_MISC_STATS_LEN + \
-				 I40E_QUEUE_STATS_LEN((n)))
-#define I40E_PFC_STATS_LEN ( \
-		(FIELD_SIZEOF(struct i40e_pf, stats.priority_xoff_rx) + \
-		 FIELD_SIZEOF(struct i40e_pf, stats.priority_xon_rx) + \
-		 FIELD_SIZEOF(struct i40e_pf, stats.priority_xoff_tx) + \
-		 FIELD_SIZEOF(struct i40e_pf, stats.priority_xon_tx) + \
-		 FIELD_SIZEOF(struct i40e_pf, stats.priority_xon_2_xoff)) \
-		 / sizeof(u64))
-#define I40E_VEB_TC_STATS_LEN ( \
-		(FIELD_SIZEOF(struct i40e_veb, tc_stats.tc_rx_packets) + \
-		 FIELD_SIZEOF(struct i40e_veb, tc_stats.tc_rx_bytes) + \
-		 FIELD_SIZEOF(struct i40e_veb, tc_stats.tc_tx_packets) + \
-		 FIELD_SIZEOF(struct i40e_veb, tc_stats.tc_tx_bytes)) \
-		 / sizeof(u64))
-#define I40E_VEB_STATS_LEN	ARRAY_SIZE(i40e_gstrings_veb_stats)
-#define I40E_VEB_STATS_TOTAL	(I40E_VEB_STATS_LEN + I40E_VEB_TC_STATS_LEN)
-#define I40E_PF_STATS_LEN(n)	(I40E_GLOBAL_STATS_LEN + \
-				 I40E_PFC_STATS_LEN + \
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 I40E_VSI_STATS_LEN((n)))
 
 enum i40e_ethtool_test_id {
@@ -380,16 +233,12 @@ static const struct i40e_priv_flags i40e_gstrings_priv_flags[] = {
 	I40E_PRIV_FLAG("flow-director-atr", I40E_FLAG_FD_ATR_ENABLED, 0),
 	I40E_PRIV_FLAG("veb-stats", I40E_FLAG_VEB_STATS_ENABLED, 0),
 	I40E_PRIV_FLAG("hw-atr-eviction", I40E_FLAG_HW_ATR_EVICT_ENABLED, 0),
-<<<<<<< HEAD
 	I40E_PRIV_FLAG("link-down-on-close",
 		       I40E_FLAG_LINK_DOWN_ON_CLOSE_ENABLED, 0),
 	I40E_PRIV_FLAG("legacy-rx", I40E_FLAG_LEGACY_RX, 0),
 	I40E_PRIV_FLAG("disable-source-pruning",
 		       I40E_FLAG_SOURCE_PRUNING_DISABLED, 0),
 	I40E_PRIV_FLAG("disable-fw-lldp", I40E_FLAG_DISABLE_FW_LLDP, 0),
-=======
-	I40E_PRIV_FLAG("legacy-rx", I40E_FLAG_LEGACY_RX, 0),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define I40E_PRIV_FLAGS_STR_LEN ARRAY_SIZE(i40e_gstrings_priv_flags)
@@ -414,27 +263,16 @@ static void i40e_partition_setting_complaint(struct i40e_pf *pf)
 
 /**
  * i40e_phy_type_to_ethtool - convert the phy_types to ethtool link modes
-<<<<<<< HEAD
  * @pf: PF struct with phy_types
  * @ks: ethtool link ksettings struct to fill out
  *
  **/
 static void i40e_phy_type_to_ethtool(struct i40e_pf *pf,
 				     struct ethtool_link_ksettings *ks)
-=======
- * @phy_types: PHY types to convert
- * @supported: pointer to the ethtool supported variable to fill in
- * @advertising: pointer to the ethtool advertising variable to fill in
- *
- **/
-static void i40e_phy_type_to_ethtool(struct i40e_pf *pf, u32 *supported,
-				     u32 *advertising)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct i40e_link_status *hw_link_info = &pf->hw.phy.link_info;
 	u64 phy_types = pf->hw.phy.phy_types;
 
-<<<<<<< HEAD
 	ethtool_link_ksettings_zero_link_mode(ks, supported);
 	ethtool_link_ksettings_zero_link_mode(ks, advertising);
 
@@ -449,27 +287,12 @@ static void i40e_phy_type_to_ethtool(struct i40e_pf *pf, u32 *supported,
 							     100baseT_Full);
 			ethtool_link_ksettings_add_link_mode(ks, advertising,
 							     100baseT_Full);
-=======
-	*supported = 0x0;
-	*advertising = 0x0;
-
-	if (phy_types & I40E_CAP_PHY_TYPE_SGMII) {
-		*supported |= SUPPORTED_Autoneg |
-			      SUPPORTED_1000baseT_Full;
-		*advertising |= ADVERTISED_Autoneg;
-		if (hw_link_info->requested_speeds & I40E_LINK_SPEED_1GB)
-			*advertising |= ADVERTISED_1000baseT_Full;
-		if (pf->hw_features & I40E_HW_100M_SGMII_CAPABLE) {
-			*supported |= SUPPORTED_100baseT_Full;
-			*advertising |= ADVERTISED_100baseT_Full;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 	if (phy_types & I40E_CAP_PHY_TYPE_XAUI ||
 	    phy_types & I40E_CAP_PHY_TYPE_XFI ||
 	    phy_types & I40E_CAP_PHY_TYPE_SFI ||
 	    phy_types & I40E_CAP_PHY_TYPE_10GBASE_SFPP_CU ||
-<<<<<<< HEAD
 	    phy_types & I40E_CAP_PHY_TYPE_10GBASE_AOC) {
 		ethtool_link_ksettings_add_link_mode(ks, supported,
 						     10000baseT_Full);
@@ -483,25 +306,10 @@ static void i40e_phy_type_to_ethtool(struct i40e_pf *pf, u32 *supported,
 		if (hw_link_info->requested_speeds & I40E_LINK_SPEED_10GB)
 			ethtool_link_ksettings_add_link_mode(ks, advertising,
 							     10000baseT_Full);
-=======
-	    phy_types & I40E_CAP_PHY_TYPE_10GBASE_AOC)
-		*supported |= SUPPORTED_10000baseT_Full;
-	if (phy_types & I40E_CAP_PHY_TYPE_10GBASE_CR1_CU ||
-	    phy_types & I40E_CAP_PHY_TYPE_10GBASE_CR1 ||
-	    phy_types & I40E_CAP_PHY_TYPE_10GBASE_T ||
-	    phy_types & I40E_CAP_PHY_TYPE_10GBASE_SR ||
-	    phy_types & I40E_CAP_PHY_TYPE_10GBASE_LR) {
-		*supported |= SUPPORTED_Autoneg |
-			      SUPPORTED_10000baseT_Full;
-		*advertising |= ADVERTISED_Autoneg;
-		if (hw_link_info->requested_speeds & I40E_LINK_SPEED_10GB)
-			*advertising |= ADVERTISED_10000baseT_Full;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	if (phy_types & I40E_CAP_PHY_TYPE_XLAUI ||
 	    phy_types & I40E_CAP_PHY_TYPE_XLPPI ||
 	    phy_types & I40E_CAP_PHY_TYPE_40GBASE_AOC)
-<<<<<<< HEAD
 		ethtool_link_ksettings_add_link_mode(ks, supported,
 						     40000baseCR4_Full);
 	if (phy_types & I40E_CAP_PHY_TYPE_40GBASE_CR4_CU ||
@@ -658,144 +466,39 @@ static void i40e_phy_type_to_ethtool(struct i40e_pf *pf, u32 *supported,
 						     Autoneg);
 		ethtool_link_ksettings_add_link_mode(ks, advertising,
 						     Autoneg);
-=======
-		*supported |= SUPPORTED_40000baseCR4_Full;
-	if (phy_types & I40E_CAP_PHY_TYPE_40GBASE_CR4_CU ||
-	    phy_types & I40E_CAP_PHY_TYPE_40GBASE_CR4) {
-		*supported |= SUPPORTED_Autoneg |
-			      SUPPORTED_40000baseCR4_Full;
-		*advertising |= ADVERTISED_Autoneg;
-		if (hw_link_info->requested_speeds & I40E_LINK_SPEED_40GB)
-			*advertising |= ADVERTISED_40000baseCR4_Full;
-	}
-	if (phy_types & I40E_CAP_PHY_TYPE_100BASE_TX) {
-		*supported |= SUPPORTED_Autoneg |
-			      SUPPORTED_100baseT_Full;
-		*advertising |= ADVERTISED_Autoneg;
-		if (hw_link_info->requested_speeds & I40E_LINK_SPEED_100MB)
-			*advertising |= ADVERTISED_100baseT_Full;
-	}
-	if (phy_types & I40E_CAP_PHY_TYPE_1000BASE_T ||
-	    phy_types & I40E_CAP_PHY_TYPE_1000BASE_SX ||
-	    phy_types & I40E_CAP_PHY_TYPE_1000BASE_LX ||
-	    phy_types & I40E_CAP_PHY_TYPE_1000BASE_T_OPTICAL) {
-		*supported |= SUPPORTED_Autoneg |
-			      SUPPORTED_1000baseT_Full;
-		*advertising |= ADVERTISED_Autoneg;
-		if (hw_link_info->requested_speeds & I40E_LINK_SPEED_1GB)
-			*advertising |= ADVERTISED_1000baseT_Full;
-	}
-	if (phy_types & I40E_CAP_PHY_TYPE_40GBASE_SR4)
-		*supported |= SUPPORTED_40000baseSR4_Full;
-	if (phy_types & I40E_CAP_PHY_TYPE_40GBASE_LR4)
-		*supported |= SUPPORTED_40000baseLR4_Full;
-	if (phy_types & I40E_CAP_PHY_TYPE_40GBASE_KR4) {
-		*supported |= SUPPORTED_40000baseKR4_Full |
-			      SUPPORTED_Autoneg;
-		*advertising |= ADVERTISED_40000baseKR4_Full |
-				ADVERTISED_Autoneg;
-	}
-	if (phy_types & I40E_CAP_PHY_TYPE_20GBASE_KR2) {
-		*supported |= SUPPORTED_20000baseKR2_Full |
-			      SUPPORTED_Autoneg;
-		*advertising |= ADVERTISED_Autoneg;
-		if (hw_link_info->requested_speeds & I40E_LINK_SPEED_20GB)
-			*advertising |= ADVERTISED_20000baseKR2_Full;
-	}
-	if (phy_types & I40E_CAP_PHY_TYPE_10GBASE_KR) {
-		if (!(pf->hw_features & I40E_HW_HAVE_CRT_RETIMER))
-			*supported |= SUPPORTED_10000baseKR_Full |
-				      SUPPORTED_Autoneg;
-		*advertising |= ADVERTISED_Autoneg;
-		if (hw_link_info->requested_speeds & I40E_LINK_SPEED_10GB)
-			if (!(pf->hw_features & I40E_HW_HAVE_CRT_RETIMER))
-				*advertising |= ADVERTISED_10000baseKR_Full;
-	}
-	if (phy_types & I40E_CAP_PHY_TYPE_10GBASE_KX4) {
-		*supported |= SUPPORTED_10000baseKX4_Full |
-			      SUPPORTED_Autoneg;
-		*advertising |= ADVERTISED_Autoneg;
-		if (hw_link_info->requested_speeds & I40E_LINK_SPEED_10GB)
-			*advertising |= ADVERTISED_10000baseKX4_Full;
-	}
-	if (phy_types & I40E_CAP_PHY_TYPE_1000BASE_KX) {
-		if (!(pf->hw_features & I40E_HW_HAVE_CRT_RETIMER))
-			*supported |= SUPPORTED_1000baseKX_Full |
-				      SUPPORTED_Autoneg;
-		*advertising |= ADVERTISED_Autoneg;
-		if (hw_link_info->requested_speeds & I40E_LINK_SPEED_1GB)
-			if (!(pf->hw_features & I40E_HW_HAVE_CRT_RETIMER))
-				*advertising |= ADVERTISED_1000baseKX_Full;
-	}
-	if (phy_types & I40E_CAP_PHY_TYPE_25GBASE_KR ||
-	    phy_types & I40E_CAP_PHY_TYPE_25GBASE_CR ||
-	    phy_types & I40E_CAP_PHY_TYPE_25GBASE_SR ||
-	    phy_types & I40E_CAP_PHY_TYPE_25GBASE_LR) {
-		*supported |= SUPPORTED_Autoneg;
-		*advertising |= ADVERTISED_Autoneg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
 /**
  * i40e_get_settings_link_up - Get the Link settings for when link is up
  * @hw: hw structure
-<<<<<<< HEAD
  * @ks: ethtool ksettings to fill in
  * @netdev: network interface device structure
  * @pf: pointer to physical function struct
  **/
 static void i40e_get_settings_link_up(struct i40e_hw *hw,
 				      struct ethtool_link_ksettings *ks,
-=======
- * @ecmd: ethtool command to fill in
- * @netdev: network interface device structure
- *
- **/
-static void i40e_get_settings_link_up(struct i40e_hw *hw,
-				      struct ethtool_link_ksettings *cmd,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      struct net_device *netdev,
 				      struct i40e_pf *pf)
 {
 	struct i40e_link_status *hw_link_info = &hw->phy.link_info;
-<<<<<<< HEAD
 	struct ethtool_link_ksettings cap_ksettings;
 	u32 link_speed = hw_link_info->link_speed;
-=======
-	u32 link_speed = hw_link_info->link_speed;
-	u32 e_advertising = 0x0;
-	u32 e_supported = 0x0;
-	u32 supported, advertising;
-
-	ethtool_convert_link_mode_to_legacy_u32(&supported,
-						cmd->link_modes.supported);
-	ethtool_convert_link_mode_to_legacy_u32(&advertising,
-						cmd->link_modes.advertising);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Initialize supported and advertised settings based on phy settings */
 	switch (hw_link_info->phy_type) {
 	case I40E_PHY_TYPE_40GBASE_CR4:
 	case I40E_PHY_TYPE_40GBASE_CR4_CU:
-<<<<<<< HEAD
 		ethtool_link_ksettings_add_link_mode(ks, supported, Autoneg);
 		ethtool_link_ksettings_add_link_mode(ks, supported,
 						     40000baseCR4_Full);
 		ethtool_link_ksettings_add_link_mode(ks, advertising, Autoneg);
 		ethtool_link_ksettings_add_link_mode(ks, advertising,
 						     40000baseCR4_Full);
-=======
-		supported = SUPPORTED_Autoneg |
-			    SUPPORTED_40000baseCR4_Full;
-		advertising = ADVERTISED_Autoneg |
-			      ADVERTISED_40000baseCR4_Full;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case I40E_PHY_TYPE_XLAUI:
 	case I40E_PHY_TYPE_XLPPI:
 	case I40E_PHY_TYPE_40GBASE_AOC:
-<<<<<<< HEAD
 		ethtool_link_ksettings_add_link_mode(ks, supported,
 						     40000baseCR4_Full);
 		break;
@@ -809,21 +512,10 @@ static void i40e_get_settings_link_up(struct i40e_hw *hw,
 		break;
 	case I40E_PHY_TYPE_25GBASE_SR:
 	case I40E_PHY_TYPE_25GBASE_LR:
-=======
-		supported = SUPPORTED_40000baseCR4_Full;
-		break;
-	case I40E_PHY_TYPE_40GBASE_SR4:
-		supported = SUPPORTED_40000baseSR4_Full;
-		break;
-	case I40E_PHY_TYPE_40GBASE_LR4:
-		supported = SUPPORTED_40000baseLR4_Full;
-		break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case I40E_PHY_TYPE_10GBASE_SR:
 	case I40E_PHY_TYPE_10GBASE_LR:
 	case I40E_PHY_TYPE_1000BASE_SX:
 	case I40E_PHY_TYPE_1000BASE_LX:
-<<<<<<< HEAD
 		ethtool_link_ksettings_add_link_mode(ks, supported, Autoneg);
 		ethtool_link_ksettings_add_link_mode(ks, advertising, Autoneg);
 		ethtool_link_ksettings_add_link_mode(ks, supported,
@@ -844,14 +536,10 @@ static void i40e_get_settings_link_up(struct i40e_hw *hw,
 						     1000baseX_Full);
 		ethtool_link_ksettings_add_link_mode(ks, supported,
 						     10000baseT_Full);
-=======
-		supported = SUPPORTED_10000baseT_Full;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (hw_link_info->module_type[2] &
 		    I40E_MODULE_TYPE_1000BASE_SX ||
 		    hw_link_info->module_type[2] &
 		    I40E_MODULE_TYPE_1000BASE_LX) {
-<<<<<<< HEAD
 			ethtool_link_ksettings_add_link_mode(ks, supported,
 							     1000baseT_Full);
 			if (hw_link_info->requested_speeds &
@@ -862,20 +550,10 @@ static void i40e_get_settings_link_up(struct i40e_hw *hw,
 		if (hw_link_info->requested_speeds & I40E_LINK_SPEED_10GB)
 			ethtool_link_ksettings_add_link_mode(ks, advertising,
 							     10000baseT_Full);
-=======
-			supported |= SUPPORTED_1000baseT_Full;
-			if (hw_link_info->requested_speeds &
-			    I40E_LINK_SPEED_1GB)
-				advertising |= ADVERTISED_1000baseT_Full;
-		}
-		if (hw_link_info->requested_speeds & I40E_LINK_SPEED_10GB)
-			advertising |= ADVERTISED_10000baseT_Full;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case I40E_PHY_TYPE_10GBASE_T:
 	case I40E_PHY_TYPE_1000BASE_T:
 	case I40E_PHY_TYPE_100BASE_TX:
-<<<<<<< HEAD
 		ethtool_link_ksettings_add_link_mode(ks, supported, Autoneg);
 		ethtool_link_ksettings_add_link_mode(ks, supported,
 						     10000baseT_Full);
@@ -910,39 +588,12 @@ static void i40e_get_settings_link_up(struct i40e_hw *hw,
 		ethtool_link_ksettings_add_link_mode(ks, advertising, Autoneg);
 		ethtool_link_ksettings_add_link_mode(ks, advertising,
 						     10000baseT_Full);
-=======
-		supported = SUPPORTED_Autoneg |
-			    SUPPORTED_10000baseT_Full |
-			    SUPPORTED_1000baseT_Full |
-			    SUPPORTED_100baseT_Full;
-		advertising = ADVERTISED_Autoneg;
-		if (hw_link_info->requested_speeds & I40E_LINK_SPEED_10GB)
-			advertising |= ADVERTISED_10000baseT_Full;
-		if (hw_link_info->requested_speeds & I40E_LINK_SPEED_1GB)
-			advertising |= ADVERTISED_1000baseT_Full;
-		if (hw_link_info->requested_speeds & I40E_LINK_SPEED_100MB)
-			advertising |= ADVERTISED_100baseT_Full;
-		break;
-	case I40E_PHY_TYPE_1000BASE_T_OPTICAL:
-		supported = SUPPORTED_Autoneg |
-			    SUPPORTED_1000baseT_Full;
-		advertising = ADVERTISED_Autoneg |
-			      ADVERTISED_1000baseT_Full;
-		break;
-	case I40E_PHY_TYPE_10GBASE_CR1_CU:
-	case I40E_PHY_TYPE_10GBASE_CR1:
-		supported = SUPPORTED_Autoneg |
-			    SUPPORTED_10000baseT_Full;
-		advertising = ADVERTISED_Autoneg |
-			      ADVERTISED_10000baseT_Full;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case I40E_PHY_TYPE_XAUI:
 	case I40E_PHY_TYPE_XFI:
 	case I40E_PHY_TYPE_SFI:
 	case I40E_PHY_TYPE_10GBASE_SFPP_CU:
 	case I40E_PHY_TYPE_10GBASE_AOC:
-<<<<<<< HEAD
 		ethtool_link_ksettings_add_link_mode(ks, supported,
 						     10000baseT_Full);
 		if (hw_link_info->requested_speeds & I40E_LINK_SPEED_10GB)
@@ -967,29 +618,10 @@ static void i40e_get_settings_link_up(struct i40e_hw *hw,
 		break;
 	case I40E_PHY_TYPE_40GBASE_KR4:
 	case I40E_PHY_TYPE_25GBASE_KR:
-=======
-		supported = SUPPORTED_10000baseT_Full;
-		advertising = SUPPORTED_10000baseT_Full;
-		break;
-	case I40E_PHY_TYPE_SGMII:
-		supported = SUPPORTED_Autoneg |
-			    SUPPORTED_1000baseT_Full;
-		if (hw_link_info->requested_speeds & I40E_LINK_SPEED_1GB)
-			advertising |= ADVERTISED_1000baseT_Full;
-		if (pf->hw_features & I40E_HW_100M_SGMII_CAPABLE) {
-			supported |= SUPPORTED_100baseT_Full;
-			if (hw_link_info->requested_speeds &
-			    I40E_LINK_SPEED_100MB)
-				advertising |= ADVERTISED_100baseT_Full;
-		}
-		break;
-	case I40E_PHY_TYPE_40GBASE_KR4:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case I40E_PHY_TYPE_20GBASE_KR2:
 	case I40E_PHY_TYPE_10GBASE_KR:
 	case I40E_PHY_TYPE_10GBASE_KX4:
 	case I40E_PHY_TYPE_1000BASE_KX:
-<<<<<<< HEAD
 		ethtool_link_ksettings_add_link_mode(ks, supported,
 						     40000baseKR4_Full);
 		ethtool_link_ksettings_add_link_mode(ks, supported,
@@ -1043,58 +675,20 @@ static void i40e_get_settings_link_up(struct i40e_hw *hw,
 		/* if we got here and link is up something bad is afoot */
 		netdev_info(netdev,
 			    "WARNING: Link is up but PHY type 0x%x is not recognized.\n",
-=======
-		supported |= SUPPORTED_40000baseKR4_Full |
-			     SUPPORTED_20000baseKR2_Full |
-			     SUPPORTED_10000baseKR_Full |
-			     SUPPORTED_10000baseKX4_Full |
-			     SUPPORTED_1000baseKX_Full |
-			     SUPPORTED_Autoneg;
-		advertising |= ADVERTISED_40000baseKR4_Full |
-			       ADVERTISED_20000baseKR2_Full |
-			       ADVERTISED_10000baseKR_Full |
-			       ADVERTISED_10000baseKX4_Full |
-			       ADVERTISED_1000baseKX_Full |
-			       ADVERTISED_Autoneg;
-		break;
-	case I40E_PHY_TYPE_25GBASE_KR:
-	case I40E_PHY_TYPE_25GBASE_CR:
-	case I40E_PHY_TYPE_25GBASE_SR:
-	case I40E_PHY_TYPE_25GBASE_LR:
-		supported = SUPPORTED_Autoneg;
-		advertising = ADVERTISED_Autoneg;
-		/* TODO: add speeds when ethtool is ready to support*/
-		break;
-	default:
-		/* if we got here and link is up something bad is afoot */
-		netdev_info(netdev, "WARNING: Link is up but PHY type 0x%x is not recognized.\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    hw_link_info->phy_type);
 	}
 
 	/* Now that we've worked out everything that could be supported by the
-<<<<<<< HEAD
 	 * current PHY type, get what is supported by the NVM and intersect
 	 * them to get what is truly supported
 	 */
 	memset(&cap_ksettings, 0, sizeof(struct ethtool_link_ksettings));
 	i40e_phy_type_to_ethtool(pf, &cap_ksettings);
 	ethtool_intersect_link_masks(ks, &cap_ksettings);
-=======
-	 * current PHY type, get what is supported by the NVM and them to
-	 * get what is truly supported
-	 */
-	i40e_phy_type_to_ethtool(pf, &e_supported,
-				 &e_advertising);
-
-	supported = supported & e_supported;
-	advertising = advertising & e_advertising;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Set speed and duplex */
 	switch (link_speed) {
 	case I40E_LINK_SPEED_40GB:
-<<<<<<< HEAD
 		ks->base.speed = SPEED_40000;
 		break;
 	case I40E_LINK_SPEED_25GB:
@@ -1111,59 +705,22 @@ static void i40e_get_settings_link_up(struct i40e_hw *hw,
 		break;
 	case I40E_LINK_SPEED_100MB:
 		ks->base.speed = SPEED_100;
-=======
-		cmd->base.speed = SPEED_40000;
-		break;
-	case I40E_LINK_SPEED_25GB:
-#ifdef SPEED_25000
-		cmd->base.speed = SPEED_25000;
-#else
-		netdev_info(netdev,
-			    "Speed is 25G, display not supported by this version of ethtool.\n");
-#endif
-		break;
-	case I40E_LINK_SPEED_20GB:
-		cmd->base.speed = SPEED_20000;
-		break;
-	case I40E_LINK_SPEED_10GB:
-		cmd->base.speed = SPEED_10000;
-		break;
-	case I40E_LINK_SPEED_1GB:
-		cmd->base.speed = SPEED_1000;
-		break;
-	case I40E_LINK_SPEED_100MB:
-		cmd->base.speed = SPEED_100;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		break;
 	}
-<<<<<<< HEAD
 	ks->base.duplex = DUPLEX_FULL;
-=======
-	cmd->base.duplex = DUPLEX_FULL;
-
-	ethtool_convert_legacy_u32_to_link_mode(cmd->link_modes.supported,
-						supported);
-	ethtool_convert_legacy_u32_to_link_mode(cmd->link_modes.advertising,
-						advertising);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
  * i40e_get_settings_link_down - Get the Link settings for when link is down
  * @hw: hw structure
-<<<<<<< HEAD
  * @ks: ethtool ksettings to fill in
  * @pf: pointer to physical function struct
-=======
- * @ecmd: ethtool command to fill in
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Reports link settings that can be determined when link is down
  **/
 static void i40e_get_settings_link_down(struct i40e_hw *hw,
-<<<<<<< HEAD
 					struct ethtool_link_ksettings *ks,
 					struct i40e_pf *pf)
 {
@@ -1181,48 +738,17 @@ static void i40e_get_settings_link_down(struct i40e_hw *hw,
  * i40e_get_link_ksettings - Get Link Speed and Duplex settings
  * @netdev: network interface device structure
  * @ks: ethtool ksettings
-=======
-					struct ethtool_link_ksettings *cmd,
-					struct i40e_pf *pf)
-{
-	u32 supported, advertising;
-
-	/* link is down and the driver needs to fall back on
-	 * supported phy types to figure out what info to display
-	 */
-	i40e_phy_type_to_ethtool(pf, &supported, &advertising);
-
-	ethtool_convert_legacy_u32_to_link_mode(cmd->link_modes.supported,
-						supported);
-	ethtool_convert_legacy_u32_to_link_mode(cmd->link_modes.advertising,
-						advertising);
-
-	/* With no link speed and duplex are unknown */
-	cmd->base.speed = SPEED_UNKNOWN;
-	cmd->base.duplex = DUPLEX_UNKNOWN;
-}
-
-/**
- * i40e_get_settings - Get Link Speed and Duplex settings
- * @netdev: network interface device structure
- * @ecmd: ethtool command
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Reports speed/duplex settings based on media_type
  **/
 static int i40e_get_link_ksettings(struct net_device *netdev,
-<<<<<<< HEAD
 				   struct ethtool_link_ksettings *ks)
-=======
-				   struct ethtool_link_ksettings *cmd)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct i40e_netdev_priv *np = netdev_priv(netdev);
 	struct i40e_pf *pf = np->vsi->back;
 	struct i40e_hw *hw = &pf->hw;
 	struct i40e_link_status *hw_link_info = &hw->phy.link_info;
 	bool link_up = hw_link_info->link_info & I40E_AQ_LINK_UP;
-<<<<<<< HEAD
 
 	ethtool_link_ksettings_zero_link_mode(ks, supported);
 	ethtool_link_ksettings_zero_link_mode(ks, advertising);
@@ -1265,55 +791,10 @@ static int i40e_get_link_ksettings(struct net_device *netdev,
 	case I40E_MEDIA_TYPE_UNKNOWN:
 	default:
 		ks->base.port = PORT_OTHER;
-=======
-	u32 advertising;
-
-	if (link_up)
-		i40e_get_settings_link_up(hw, cmd, netdev, pf);
-	else
-		i40e_get_settings_link_down(hw, cmd, pf);
-
-	/* Now set the settings that don't rely on link being up/down */
-	/* Set autoneg settings */
-	cmd->base.autoneg = ((hw_link_info->an_info & I40E_AQ_AN_COMPLETED) ?
-			  AUTONEG_ENABLE : AUTONEG_DISABLE);
-
-	switch (hw->phy.media_type) {
-	case I40E_MEDIA_TYPE_BACKPLANE:
-		ethtool_link_ksettings_add_link_mode(cmd, supported,
-						     Autoneg);
-		ethtool_link_ksettings_add_link_mode(cmd, supported,
-						     Backplane);
-		ethtool_link_ksettings_add_link_mode(cmd, advertising,
-						     Autoneg);
-		ethtool_link_ksettings_add_link_mode(cmd, advertising,
-						     Backplane);
-		cmd->base.port = PORT_NONE;
-		break;
-	case I40E_MEDIA_TYPE_BASET:
-		ethtool_link_ksettings_add_link_mode(cmd, supported, TP);
-		ethtool_link_ksettings_add_link_mode(cmd, advertising, TP);
-		cmd->base.port = PORT_TP;
-		break;
-	case I40E_MEDIA_TYPE_DA:
-	case I40E_MEDIA_TYPE_CX4:
-		ethtool_link_ksettings_add_link_mode(cmd, supported, FIBRE);
-		ethtool_link_ksettings_add_link_mode(cmd, advertising, FIBRE);
-		cmd->base.port = PORT_DA;
-		break;
-	case I40E_MEDIA_TYPE_FIBER:
-		ethtool_link_ksettings_add_link_mode(cmd, supported, FIBRE);
-		cmd->base.port = PORT_FIBRE;
-		break;
-	case I40E_MEDIA_TYPE_UNKNOWN:
-	default:
-		cmd->base.port = PORT_OTHER;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 
 	/* Set flow control settings */
-<<<<<<< HEAD
 	ethtool_link_ksettings_add_link_mode(ks, supported, Pause);
 
 	switch (hw->fc.requested_mode) {
@@ -1333,33 +814,6 @@ static int i40e_get_link_ksettings(struct net_device *netdev,
 		ethtool_link_ksettings_del_link_mode(ks, advertising, Pause);
 		ethtool_link_ksettings_del_link_mode(ks, advertising,
 						     Asym_Pause);
-=======
-	ethtool_link_ksettings_add_link_mode(cmd, supported, Pause);
-
-	switch (hw->fc.requested_mode) {
-	case I40E_FC_FULL:
-		ethtool_link_ksettings_add_link_mode(cmd, advertising,
-						     Pause);
-		break;
-	case I40E_FC_TX_PAUSE:
-		ethtool_link_ksettings_add_link_mode(cmd, advertising,
-						     Asym_Pause);
-		break;
-	case I40E_FC_RX_PAUSE:
-		ethtool_link_ksettings_add_link_mode(cmd, advertising,
-						     Pause);
-		ethtool_link_ksettings_add_link_mode(cmd, advertising,
-						     Asym_Pause);
-		break;
-	default:
-		ethtool_convert_link_mode_to_legacy_u32(
-			&advertising, cmd->link_modes.advertising);
-
-		advertising &= ~(ADVERTISED_Pause | ADVERTISED_Asym_Pause);
-
-		ethtool_convert_legacy_u32_to_link_mode(
-			cmd->link_modes.advertising, advertising);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 
@@ -1367,53 +821,28 @@ static int i40e_get_link_ksettings(struct net_device *netdev,
 }
 
 /**
-<<<<<<< HEAD
  * i40e_set_link_ksettings - Set Speed and Duplex
  * @netdev: network interface device structure
  * @ks: ethtool ksettings
-=======
- * i40e_set_settings - Set Speed and Duplex
- * @netdev: network interface device structure
- * @ecmd: ethtool command
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Set speed/duplex per media_types advertised/forced
  **/
 static int i40e_set_link_ksettings(struct net_device *netdev,
-<<<<<<< HEAD
 				   const struct ethtool_link_ksettings *ks)
 {
 	struct i40e_netdev_priv *np = netdev_priv(netdev);
 	struct i40e_aq_get_phy_abilities_resp abilities;
 	struct ethtool_link_ksettings safe_ks;
 	struct ethtool_link_ksettings copy_ks;
-=======
-				   const struct ethtool_link_ksettings *cmd)
-{
-	struct i40e_netdev_priv *np = netdev_priv(netdev);
-	struct i40e_aq_get_phy_abilities_resp abilities;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct i40e_aq_set_phy_config config;
 	struct i40e_pf *pf = np->vsi->back;
 	struct i40e_vsi *vsi = np->vsi;
 	struct i40e_hw *hw = &pf->hw;
-<<<<<<< HEAD
 	bool autoneg_changed = false;
 	i40e_status status = 0;
 	int timeout = 50;
 	int err = 0;
 	u8 autoneg;
-=======
-	struct ethtool_link_ksettings safe_cmd;
-	struct ethtool_link_ksettings copy_cmd;
-	i40e_status status = 0;
-	bool change = false;
-	int timeout = 50;
-	int err = 0;
-	u32 autoneg;
-	u32 advertise;
-	u32 tmp;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Changing port settings is not supported if this isn't the
 	 * port's controlling PF
@@ -1422,40 +851,24 @@ static int i40e_set_link_ksettings(struct net_device *netdev,
 		i40e_partition_setting_complaint(pf);
 		return -EOPNOTSUPP;
 	}
-<<<<<<< HEAD
 	if (vsi != pf->vsi[pf->lan_vsi])
 		return -EOPNOTSUPP;
-=======
-
-	if (vsi != pf->vsi[pf->lan_vsi])
-		return -EOPNOTSUPP;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (hw->phy.media_type != I40E_MEDIA_TYPE_BASET &&
 	    hw->phy.media_type != I40E_MEDIA_TYPE_FIBER &&
 	    hw->phy.media_type != I40E_MEDIA_TYPE_BACKPLANE &&
 	    hw->phy.media_type != I40E_MEDIA_TYPE_DA &&
 	    hw->phy.link_info.link_info & I40E_AQ_LINK_UP)
 		return -EOPNOTSUPP;
-<<<<<<< HEAD
 	if (hw->device_id == I40E_DEV_ID_KX_B ||
 	    hw->device_id == I40E_DEV_ID_KX_C ||
 	    hw->device_id == I40E_DEV_ID_20G_KR2 ||
 	    hw->device_id == I40E_DEV_ID_20G_KR2_A ||
 	    hw->device_id == I40E_DEV_ID_25G_B ||
 	    hw->device_id == I40E_DEV_ID_KX_X722) {
-=======
-
-	if (hw->device_id == I40E_DEV_ID_KX_B ||
-	    hw->device_id == I40E_DEV_ID_KX_C ||
-	    hw->device_id == I40E_DEV_ID_20G_KR2 ||
-	    hw->device_id == I40E_DEV_ID_20G_KR2_A) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		netdev_info(netdev, "Changing settings is not supported on backplane.\n");
 		return -EOPNOTSUPP;
 	}
 
-<<<<<<< HEAD
 	/* copy the ksettings to copy_ks to avoid modifying the origin */
 	memcpy(&copy_ks, ks, sizeof(struct ethtool_link_ksettings));
 
@@ -1485,33 +898,6 @@ static int i40e_set_link_ksettings(struct net_device *netdev,
 	 */
 	if (memcmp(&copy_ks.base, &safe_ks.base,
 		   sizeof(struct ethtool_link_settings)))
-=======
-	/* copy the cmd to copy_cmd to avoid modifying the origin */
-	memcpy(&copy_cmd, cmd, sizeof(struct ethtool_link_ksettings));
-
-	/* get our own copy of the bits to check against */
-	memset(&safe_cmd, 0, sizeof(struct ethtool_link_ksettings));
-	i40e_get_link_ksettings(netdev, &safe_cmd);
-
-	/* save autoneg and speed out of cmd */
-	autoneg = cmd->base.autoneg;
-	ethtool_convert_link_mode_to_legacy_u32(&advertise,
-						cmd->link_modes.advertising);
-
-	/* set autoneg and speed back to what they currently are */
-	copy_cmd.base.autoneg = safe_cmd.base.autoneg;
-	ethtool_convert_link_mode_to_legacy_u32(
-		&tmp, safe_cmd.link_modes.advertising);
-	ethtool_convert_legacy_u32_to_link_mode(
-		copy_cmd.link_modes.advertising, tmp);
-
-	copy_cmd.base.cmd = safe_cmd.base.cmd;
-
-	/* If copy_cmd and safe_cmd are not the same now, then they are
-	 * trying to set something that we do not support
-	 */
-	if (memcmp(&copy_cmd, &safe_cmd, sizeof(struct ethtool_link_ksettings)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EOPNOTSUPP;
 
 	while (test_and_set_bit(__I40E_CONFIG_BUSY, pf->state)) {
@@ -1540,14 +926,9 @@ static int i40e_set_link_ksettings(struct net_device *netdev,
 		/* If autoneg was not already enabled */
 		if (!(hw->phy.link_info.an_info & I40E_AQ_AN_COMPLETED)) {
 			/* If autoneg is not supported, return error */
-<<<<<<< HEAD
 			if (!ethtool_link_ksettings_test_link_mode(&safe_ks,
 								   supported,
 								   Autoneg)) {
-=======
-			if (!ethtool_link_ksettings_test_link_mode(
-				    &safe_cmd, supported, Autoneg)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				netdev_info(netdev, "Autoneg not supported on this phy\n");
 				err = -EINVAL;
 				goto done;
@@ -1555,11 +936,7 @@ static int i40e_set_link_ksettings(struct net_device *netdev,
 			/* Autoneg is allowed to change */
 			config.abilities = abilities.abilities |
 					   I40E_AQ_PHY_ENABLE_AN;
-<<<<<<< HEAD
 			autoneg_changed = true;
-=======
-			change = true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	} else {
 		/* If autoneg is currently enabled */
@@ -1567,14 +944,9 @@ static int i40e_set_link_ksettings(struct net_device *netdev,
 			/* If autoneg is supported 10GBASE_T is the only PHY
 			 * that can disable it, so otherwise return error
 			 */
-<<<<<<< HEAD
 			if (ethtool_link_ksettings_test_link_mode(&safe_ks,
 								  supported,
 								  Autoneg) &&
-=======
-			if (ethtool_link_ksettings_test_link_mode(
-				    &safe_cmd, supported, Autoneg) &&
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    hw->phy.link_info.phy_type !=
 			    I40E_PHY_TYPE_10GBASE_T) {
 				netdev_info(netdev, "Autoneg cannot be disabled on this phy\n");
@@ -1584,7 +956,6 @@ static int i40e_set_link_ksettings(struct net_device *netdev,
 			/* Autoneg is allowed to change */
 			config.abilities = abilities.abilities &
 					   ~I40E_AQ_PHY_ENABLE_AN;
-<<<<<<< HEAD
 			autoneg_changed = true;
 		}
 	}
@@ -1630,34 +1001,6 @@ static int i40e_set_link_ksettings(struct net_device *netdev,
 						  40000baseSR4_Full) ||
 	    ethtool_link_ksettings_test_link_mode(ks, advertising,
 						  40000baseLR4_Full))
-=======
-			change = true;
-		}
-	}
-
-	ethtool_convert_link_mode_to_legacy_u32(&tmp,
-						safe_cmd.link_modes.supported);
-	if (advertise & ~tmp) {
-		err = -EINVAL;
-		goto done;
-	}
-
-	if (advertise & ADVERTISED_100baseT_Full)
-		config.link_speed |= I40E_LINK_SPEED_100MB;
-	if (advertise & ADVERTISED_1000baseT_Full ||
-	    advertise & ADVERTISED_1000baseKX_Full)
-		config.link_speed |= I40E_LINK_SPEED_1GB;
-	if (advertise & ADVERTISED_10000baseT_Full ||
-	    advertise & ADVERTISED_10000baseKX4_Full ||
-	    advertise & ADVERTISED_10000baseKR_Full)
-		config.link_speed |= I40E_LINK_SPEED_10GB;
-	if (advertise & ADVERTISED_20000baseKR2_Full)
-		config.link_speed |= I40E_LINK_SPEED_20GB;
-	if (advertise & ADVERTISED_40000baseKR4_Full ||
-	    advertise & ADVERTISED_40000baseCR4_Full ||
-	    advertise & ADVERTISED_40000baseSR4_Full ||
-	    advertise & ADVERTISED_40000baseLR4_Full)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		config.link_speed |= I40E_LINK_SPEED_40GB;
 
 	/* If speed didn't get set, set it to what it currently is.
@@ -1666,12 +1009,7 @@ static int i40e_set_link_ksettings(struct net_device *netdev,
 	 */
 	if (!config.link_speed)
 		config.link_speed = abilities.link_speed;
-<<<<<<< HEAD
 	if (autoneg_changed || abilities.link_speed != config.link_speed) {
-=======
-
-	if (change || (abilities.link_speed != config.link_speed)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* copy over the rest of the abilities */
 		config.phy_type = abilities.phy_type;
 		config.phy_type_ext = abilities.phy_type_ext;
@@ -1698,12 +1036,8 @@ static int i40e_set_link_ksettings(struct net_device *netdev,
 		/* make the aq call */
 		status = i40e_aq_set_phy_config(hw, &config, NULL);
 		if (status) {
-<<<<<<< HEAD
 			netdev_info(netdev,
 				    "Set phy config failed, err %s aq_err %s\n",
-=======
-			netdev_info(netdev, "Set phy config failed, err %s aq_err %s\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    i40e_stat_str(hw, status),
 				    i40e_aq_str(hw, hw->aq.asq_last_status));
 			err = -EAGAIN;
@@ -1712,12 +1046,8 @@ static int i40e_set_link_ksettings(struct net_device *netdev,
 
 		status = i40e_update_link_info(hw);
 		if (status)
-<<<<<<< HEAD
 			netdev_dbg(netdev,
 				   "Updating link info failed with err %s aq_err %s\n",
-=======
-			netdev_dbg(netdev, "Updating link info failed with err %s aq_err %s\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   i40e_stat_str(hw, status),
 				   i40e_aq_str(hw, hw->aq.asq_last_status));
 
@@ -1753,12 +1083,9 @@ static int i40e_nway_reset(struct net_device *netdev)
 
 /**
  * i40e_get_pauseparam -  Get Flow Control status
-<<<<<<< HEAD
  * @netdev: netdevice structure
  * @pause: buffer to return pause parameters
  *
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Return tx/rx-pause status
  **/
 static void i40e_get_pauseparam(struct net_device *netdev,
@@ -1809,10 +1136,6 @@ static int i40e_set_pauseparam(struct net_device *netdev,
 	i40e_status status;
 	u8 aq_failures;
 	int err = 0;
-<<<<<<< HEAD
-=======
-	u32 is_an;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Changing the port's flow control is not supported if this isn't the
 	 * port's controlling PF
@@ -1825,24 +1148,15 @@ static int i40e_set_pauseparam(struct net_device *netdev,
 	if (vsi != pf->vsi[pf->lan_vsi])
 		return -EOPNOTSUPP;
 
-<<<<<<< HEAD
 	if (pause->autoneg != ((hw_link_info->an_info & I40E_AQ_AN_COMPLETED) ?
 	    AUTONEG_ENABLE : AUTONEG_DISABLE)) {
-=======
-	is_an = hw_link_info->an_info & I40E_AQ_AN_COMPLETED;
-	if (pause->autoneg != is_an) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		netdev_info(netdev, "To change autoneg please use: ethtool -s <dev> autoneg <on|off>\n");
 		return -EOPNOTSUPP;
 	}
 
 	/* If we have link and don't have autoneg */
-<<<<<<< HEAD
 	if (!test_bit(__I40E_DOWN, pf->state) &&
 	    !(hw_link_info->an_info & I40E_AQ_AN_COMPLETED)) {
-=======
-	if (!test_bit(__I40E_DOWN, pf->state) && !is_an) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Send message that it might not necessarily work*/
 		netdev_info(netdev, "Autoneg did not complete so changing settings may not result in an actual change.\n");
 	}
@@ -1893,11 +1207,7 @@ static int i40e_set_pauseparam(struct net_device *netdev,
 		err = -EAGAIN;
 	}
 
-<<<<<<< HEAD
 	if (!test_bit(__I40E_DOWN, pf->state)) {
-=======
-	if (!test_bit(__I40E_DOWN, pf->state) && is_an) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Give it a little more time to try to come back */
 		msleep(75);
 		if (!test_bit(__I40E_DOWN, pf->state))
@@ -2279,10 +1589,6 @@ static int i40e_set_ringparam(struct net_device *netdev,
 		}
 
 		for (i = 0; i < vsi->num_queue_pairs; i++) {
-<<<<<<< HEAD
-=======
-			struct i40e_ring *ring;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			u16 unused;
 
 			/* clone ring and setup updated count */
@@ -2293,11 +1599,8 @@ static int i40e_set_ringparam(struct net_device *netdev,
 			 */
 			rx_rings[i].desc = NULL;
 			rx_rings[i].rx_bi = NULL;
-<<<<<<< HEAD
 			/* Clear cloned XDP RX-queue info before setup call */
 			memset(&rx_rings[i].xdp_rxq, 0, sizeof(rx_rings[i].xdp_rxq));
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* this is to allow wr32 to have something to write to
 			 * during early allocation of Rx buffers
 			 */
@@ -2309,14 +1612,8 @@ static int i40e_set_ringparam(struct net_device *netdev,
 			/* now allocate the Rx buffers to make sure the OS
 			 * has enough memory, any failure here means abort
 			 */
-<<<<<<< HEAD
 			unused = I40E_DESC_UNUSED(&rx_rings[i]);
 			err = i40e_alloc_rx_buffers(&rx_rings[i], unused);
-=======
-			ring = &rx_rings[i];
-			unused = I40E_DESC_UNUSED(ring);
-			err = i40e_alloc_rx_buffers(ring, unused);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 rx_unwind:
 			if (err) {
 				do {
@@ -2385,7 +1682,6 @@ done:
 	return err;
 }
 
-<<<<<<< HEAD
 /**
  * i40e_get_stats_count - return the stats count for a device
  * @netdev: the netdev to return the count for
@@ -2412,8 +1708,6 @@ static int i40e_get_stats_count(struct net_device *netdev)
 		return I40E_VSI_STATS_LEN(netdev);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int i40e_get_sset_count(struct net_device *netdev, int sset)
 {
 	struct i40e_netdev_priv *np = netdev_priv(netdev);
@@ -2424,20 +1718,7 @@ static int i40e_get_sset_count(struct net_device *netdev, int sset)
 	case ETH_SS_TEST:
 		return I40E_TEST_LEN;
 	case ETH_SS_STATS:
-<<<<<<< HEAD
 		return i40e_get_stats_count(netdev);
-=======
-		if (vsi == pf->vsi[pf->lan_vsi] && pf->hw.partition_id == 1) {
-			int len = I40E_PF_STATS_LEN(netdev);
-
-			if ((pf->lan_veb != I40E_NO_VEB) &&
-			    (pf->flags & I40E_FLAG_VEB_STATS_ENABLED))
-				len += I40E_VEB_STATS_TOTAL;
-			return len;
-		} else {
-			return I40E_VSI_STATS_LEN(netdev);
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case ETH_SS_PRIV_FLAGS:
 		return I40E_PRIV_FLAGS_STR_LEN +
 			(pf->hw.pf_id == 0 ? I40E_GL_PRIV_FLAGS_STR_LEN : 0);
@@ -2446,7 +1727,6 @@ static int i40e_get_sset_count(struct net_device *netdev, int sset)
 	}
 }
 
-<<<<<<< HEAD
 /**
  * i40e_add_one_ethtool_stat - copy the stat into the supplied buffer
  * @data: location to store the stat value
@@ -2569,8 +1849,6 @@ i40e_get_pfc_stats(struct i40e_pf *pf, unsigned int i)
  * If a statistic is not currently valid (such as a disabled queue), this
  * function reports its value as zero.
  **/
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void i40e_get_ethtool_stats(struct net_device *netdev,
 				   struct ethtool_stats *stats, u64 *data)
 {
@@ -2578,7 +1856,6 @@ static void i40e_get_ethtool_stats(struct net_device *netdev,
 	struct i40e_ring *tx_ring, *rx_ring;
 	struct i40e_vsi *vsi = np->vsi;
 	struct i40e_pf *pf = vsi->back;
-<<<<<<< HEAD
 	struct i40e_veb *veb = pf->veb[pf->lan_veb];
 	unsigned int i;
 	unsigned int start;
@@ -2606,53 +1883,19 @@ static void i40e_get_ethtool_stats(struct net_device *netdev,
 			*(data++) = 0;
 			continue;
 		}
-=======
-	unsigned int j;
-	int i = 0;
-	char *p;
-	struct rtnl_link_stats64 *net_stats = i40e_get_vsi_stats_struct(vsi);
-	unsigned int start;
-
-	i40e_update_stats(vsi);
-
-	for (j = 0; j < I40E_NETDEV_STATS_LEN; j++) {
-		p = (char *)net_stats + i40e_gstrings_net_stats[j].stat_offset;
-		data[i++] = (i40e_gstrings_net_stats[j].sizeof_stat ==
-			sizeof(u64)) ? *(u64 *)p : *(u32 *)p;
-	}
-	for (j = 0; j < I40E_MISC_STATS_LEN; j++) {
-		p = (char *)vsi + i40e_gstrings_misc_stats[j].stat_offset;
-		data[i++] = (i40e_gstrings_misc_stats[j].sizeof_stat ==
-			    sizeof(u64)) ? *(u64 *)p : *(u32 *)p;
-	}
-	rcu_read_lock();
-	for (j = 0; j < vsi->num_queue_pairs; j++) {
-		tx_ring = ACCESS_ONCE(vsi->tx_rings[j]);
-
-		if (!tx_ring)
-			continue;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* process Tx ring statistics */
 		do {
 			start = u64_stats_fetch_begin_irq(&tx_ring->syncp);
-<<<<<<< HEAD
 			data[0] = tx_ring->stats.packets;
 			data[1] = tx_ring->stats.bytes;
 		} while (u64_stats_fetch_retry_irq(&tx_ring->syncp, start));
 		data += 2;
-=======
-			data[i] = tx_ring->stats.packets;
-			data[i + 1] = tx_ring->stats.bytes;
-		} while (u64_stats_fetch_retry_irq(&tx_ring->syncp, start));
-		i += 2;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Rx ring is the 2nd half of the queue pair */
 		rx_ring = &tx_ring[1];
 		do {
 			start = u64_stats_fetch_begin_irq(&rx_ring->syncp);
-<<<<<<< HEAD
 			data[0] = rx_ring->stats.packets;
 			data[1] = rx_ring->stats.bytes;
 		} while (u64_stats_fetch_retry_irq(&rx_ring->syncp, start));
@@ -2775,53 +2018,6 @@ static void i40e_get_stat_strings(struct net_device *netdev, u8 *data)
 }
 
 static void i40e_get_priv_flag_strings(struct net_device *netdev, u8 *data)
-=======
-			data[i] = rx_ring->stats.packets;
-			data[i + 1] = rx_ring->stats.bytes;
-		} while (u64_stats_fetch_retry_irq(&rx_ring->syncp, start));
-		i += 2;
-	}
-	rcu_read_unlock();
-	if (vsi != pf->vsi[pf->lan_vsi] || pf->hw.partition_id != 1)
-		return;
-
-	if ((pf->lan_veb != I40E_NO_VEB) &&
-	    (pf->flags & I40E_FLAG_VEB_STATS_ENABLED)) {
-		struct i40e_veb *veb = pf->veb[pf->lan_veb];
-
-		for (j = 0; j < I40E_VEB_STATS_LEN; j++) {
-			p = (char *)veb;
-			p += i40e_gstrings_veb_stats[j].stat_offset;
-			data[i++] = (i40e_gstrings_veb_stats[j].sizeof_stat ==
-				     sizeof(u64)) ? *(u64 *)p : *(u32 *)p;
-		}
-		for (j = 0; j < I40E_MAX_TRAFFIC_CLASS; j++) {
-			data[i++] = veb->tc_stats.tc_tx_packets[j];
-			data[i++] = veb->tc_stats.tc_tx_bytes[j];
-			data[i++] = veb->tc_stats.tc_rx_packets[j];
-			data[i++] = veb->tc_stats.tc_rx_bytes[j];
-		}
-	}
-	for (j = 0; j < I40E_GLOBAL_STATS_LEN; j++) {
-		p = (char *)pf + i40e_gstrings_stats[j].stat_offset;
-		data[i++] = (i40e_gstrings_stats[j].sizeof_stat ==
-			     sizeof(u64)) ? *(u64 *)p : *(u32 *)p;
-	}
-	for (j = 0; j < I40E_MAX_USER_PRIORITY; j++) {
-		data[i++] = pf->stats.priority_xon_tx[j];
-		data[i++] = pf->stats.priority_xoff_tx[j];
-	}
-	for (j = 0; j < I40E_MAX_USER_PRIORITY; j++) {
-		data[i++] = pf->stats.priority_xon_rx[j];
-		data[i++] = pf->stats.priority_xoff_rx[j];
-	}
-	for (j = 0; j < I40E_MAX_USER_PRIORITY; j++)
-		data[i++] = pf->stats.priority_xon_2_xoff[j];
-}
-
-static void i40e_get_strings(struct net_device *netdev, u32 stringset,
-			     u8 *data)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct i40e_netdev_priv *np = netdev_priv(netdev);
 	struct i40e_vsi *vsi = np->vsi;
@@ -2829,7 +2025,6 @@ static void i40e_get_strings(struct net_device *netdev, u32 stringset,
 	char *p = (char *)data;
 	unsigned int i;
 
-<<<<<<< HEAD
 	for (i = 0; i < I40E_PRIV_FLAGS_STR_LEN; i++) {
 		snprintf(p, ETH_GSTRING_LEN, "%s",
 			 i40e_gstrings_priv_flags[i].flag_string);
@@ -2847,107 +2042,16 @@ static void i40e_get_strings(struct net_device *netdev, u32 stringset,
 static void i40e_get_strings(struct net_device *netdev, u32 stringset,
 			     u8 *data)
 {
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (stringset) {
 	case ETH_SS_TEST:
 		memcpy(data, i40e_gstrings_test,
 		       I40E_TEST_LEN * ETH_GSTRING_LEN);
 		break;
 	case ETH_SS_STATS:
-<<<<<<< HEAD
 		i40e_get_stat_strings(netdev, data);
 		break;
 	case ETH_SS_PRIV_FLAGS:
 		i40e_get_priv_flag_strings(netdev, data);
-=======
-		for (i = 0; i < I40E_NETDEV_STATS_LEN; i++) {
-			snprintf(p, ETH_GSTRING_LEN, "%s",
-				 i40e_gstrings_net_stats[i].stat_string);
-			p += ETH_GSTRING_LEN;
-		}
-		for (i = 0; i < I40E_MISC_STATS_LEN; i++) {
-			snprintf(p, ETH_GSTRING_LEN, "%s",
-				 i40e_gstrings_misc_stats[i].stat_string);
-			p += ETH_GSTRING_LEN;
-		}
-		for (i = 0; i < vsi->num_queue_pairs; i++) {
-			snprintf(p, ETH_GSTRING_LEN, "tx-%d.tx_packets", i);
-			p += ETH_GSTRING_LEN;
-			snprintf(p, ETH_GSTRING_LEN, "tx-%d.tx_bytes", i);
-			p += ETH_GSTRING_LEN;
-			snprintf(p, ETH_GSTRING_LEN, "rx-%d.rx_packets", i);
-			p += ETH_GSTRING_LEN;
-			snprintf(p, ETH_GSTRING_LEN, "rx-%d.rx_bytes", i);
-			p += ETH_GSTRING_LEN;
-		}
-		if (vsi != pf->vsi[pf->lan_vsi] || pf->hw.partition_id != 1)
-			return;
-
-		if ((pf->lan_veb != I40E_NO_VEB) &&
-		    (pf->flags & I40E_FLAG_VEB_STATS_ENABLED)) {
-			for (i = 0; i < I40E_VEB_STATS_LEN; i++) {
-				snprintf(p, ETH_GSTRING_LEN, "veb.%s",
-					i40e_gstrings_veb_stats[i].stat_string);
-				p += ETH_GSTRING_LEN;
-			}
-			for (i = 0; i < I40E_MAX_TRAFFIC_CLASS; i++) {
-				snprintf(p, ETH_GSTRING_LEN,
-					 "veb.tc_%d_tx_packets", i);
-				p += ETH_GSTRING_LEN;
-				snprintf(p, ETH_GSTRING_LEN,
-					 "veb.tc_%d_tx_bytes", i);
-				p += ETH_GSTRING_LEN;
-				snprintf(p, ETH_GSTRING_LEN,
-					 "veb.tc_%d_rx_packets", i);
-				p += ETH_GSTRING_LEN;
-				snprintf(p, ETH_GSTRING_LEN,
-					 "veb.tc_%d_rx_bytes", i);
-				p += ETH_GSTRING_LEN;
-			}
-		}
-		for (i = 0; i < I40E_GLOBAL_STATS_LEN; i++) {
-			snprintf(p, ETH_GSTRING_LEN, "port.%s",
-				 i40e_gstrings_stats[i].stat_string);
-			p += ETH_GSTRING_LEN;
-		}
-		for (i = 0; i < I40E_MAX_USER_PRIORITY; i++) {
-			snprintf(p, ETH_GSTRING_LEN,
-				 "port.tx_priority_%d_xon", i);
-			p += ETH_GSTRING_LEN;
-			snprintf(p, ETH_GSTRING_LEN,
-				 "port.tx_priority_%d_xoff", i);
-			p += ETH_GSTRING_LEN;
-		}
-		for (i = 0; i < I40E_MAX_USER_PRIORITY; i++) {
-			snprintf(p, ETH_GSTRING_LEN,
-				 "port.rx_priority_%d_xon", i);
-			p += ETH_GSTRING_LEN;
-			snprintf(p, ETH_GSTRING_LEN,
-				 "port.rx_priority_%d_xoff", i);
-			p += ETH_GSTRING_LEN;
-		}
-		for (i = 0; i < I40E_MAX_USER_PRIORITY; i++) {
-			snprintf(p, ETH_GSTRING_LEN,
-				 "port.rx_priority_%d_xon_2_xoff", i);
-			p += ETH_GSTRING_LEN;
-		}
-		/* BUG_ON(p - data != I40E_STATS_LEN * ETH_GSTRING_LEN); */
-		break;
-	case ETH_SS_PRIV_FLAGS:
-		for (i = 0; i < I40E_PRIV_FLAGS_STR_LEN; i++) {
-			snprintf(p, ETH_GSTRING_LEN, "%s",
-				 i40e_gstrings_priv_flags[i].flag_string);
-			p += ETH_GSTRING_LEN;
-		}
-		if (pf->hw.pf_id != 0)
-			break;
-		for (i = 0; i < I40E_GL_PRIV_FLAGS_STR_LEN; i++) {
-			snprintf(p, ETH_GSTRING_LEN, "%s",
-				 i40e_gl_gstrings_priv_flags[i].flag_string);
-			p += ETH_GSTRING_LEN;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		break;
@@ -3225,13 +2329,9 @@ static int i40e_set_phys_id(struct net_device *netdev,
 		if (!(pf->hw_features & I40E_HW_PHY_CONTROLS_LEDS)) {
 			pf->led_status = i40e_led_get(hw);
 		} else {
-<<<<<<< HEAD
 			if (!(hw->flags & I40E_HW_FLAG_AQ_PHY_ACCESS_CAPABLE))
 				i40e_aq_set_phy_debug(hw, I40E_PHY_DEBUG_ALL,
 						      NULL);
-=======
-			i40e_aq_set_phy_debug(hw, I40E_PHY_DEBUG_ALL, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ret = i40e_led_get_phy(hw, &temp_status,
 					       &pf->phy_led_val);
 			pf->led_status = temp_status;
@@ -3256,12 +2356,8 @@ static int i40e_set_phys_id(struct net_device *netdev,
 			ret = i40e_led_set_phy(hw, false, pf->led_status,
 					       (pf->phy_led_val |
 					       I40E_PHY_LED_MODE_ORIG));
-<<<<<<< HEAD
 			if (!(hw->flags & I40E_HW_FLAG_AQ_PHY_ACCESS_CAPABLE))
 				i40e_aq_set_phy_debug(hw, 0, NULL);
-=======
-			i40e_aq_set_phy_debug(hw, 0, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		break;
 	default:
@@ -3299,7 +2395,6 @@ static int __i40e_get_coalesce(struct net_device *netdev,
 	ec->tx_max_coalesced_frames_irq = vsi->work_limit;
 	ec->rx_max_coalesced_frames_irq = vsi->work_limit;
 
-<<<<<<< HEAD
 	/* rx and tx usecs has per queue value. If user doesn't specify the
 	 * queue, return queue 0's value to represent.
 	 */
@@ -3307,21 +2402,10 @@ static int __i40e_get_coalesce(struct net_device *netdev,
 		queue = 0;
 	else if (queue >= vsi->num_queue_pairs)
 		return -EINVAL;
-=======
-	/* rx and tx usecs has per queue value. If user doesn't specify the queue,
-	 * return queue 0's value to represent.
-	 */
-	if (queue < 0) {
-		queue = 0;
-	} else if (queue >= vsi->num_queue_pairs) {
-		return -EINVAL;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rx_ring = vsi->rx_rings[queue];
 	tx_ring = vsi->tx_rings[queue];
 
-<<<<<<< HEAD
 	if (ITR_IS_DYNAMIC(rx_ring->itr_setting))
 		ec->use_adaptive_rx_coalesce = 1;
 
@@ -3330,17 +2414,6 @@ static int __i40e_get_coalesce(struct net_device *netdev,
 
 	ec->rx_coalesce_usecs = rx_ring->itr_setting & ~I40E_ITR_DYNAMIC;
 	ec->tx_coalesce_usecs = tx_ring->itr_setting & ~I40E_ITR_DYNAMIC;
-=======
-	if (ITR_IS_DYNAMIC(rx_ring->rx_itr_setting))
-		ec->use_adaptive_rx_coalesce = 1;
-
-	if (ITR_IS_DYNAMIC(tx_ring->tx_itr_setting))
-		ec->use_adaptive_tx_coalesce = 1;
-
-	ec->rx_coalesce_usecs = rx_ring->rx_itr_setting & ~I40E_ITR_DYNAMIC;
-	ec->tx_coalesce_usecs = tx_ring->tx_itr_setting & ~I40E_ITR_DYNAMIC;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* we use the _usecs_high to store/set the interrupt rate limit
 	 * that the hardware supports, that almost but not quite
@@ -3391,15 +2464,10 @@ static int i40e_get_per_queue_coalesce(struct net_device *netdev, u32 queue,
  *
  * Change the ITR settings for a specific queue.
  **/
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void i40e_set_itr_per_queue(struct i40e_vsi *vsi,
 				   struct ethtool_coalesce *ec,
 				   int queue)
 {
-<<<<<<< HEAD
 	struct i40e_ring *rx_ring = vsi->rx_rings[queue];
 	struct i40e_ring *tx_ring = vsi->tx_rings[queue];
 	struct i40e_pf *pf = vsi->back;
@@ -3434,39 +2502,6 @@ static void i40e_set_itr_per_queue(struct i40e_vsi *vsi,
 	 */
 
 	wr32(hw, I40E_PFINT_RATEN(q_vector->reg_idx), intrl);
-=======
-	struct i40e_pf *pf = vsi->back;
-	struct i40e_hw *hw = &pf->hw;
-	struct i40e_q_vector *q_vector;
-	u16 vector, intrl;
-
-	intrl = i40e_intrl_usec_to_reg(vsi->int_rate_limit);
-
-	vsi->rx_rings[queue]->rx_itr_setting = ec->rx_coalesce_usecs;
-	vsi->tx_rings[queue]->tx_itr_setting = ec->tx_coalesce_usecs;
-
-	if (ec->use_adaptive_rx_coalesce)
-		vsi->rx_rings[queue]->rx_itr_setting |= I40E_ITR_DYNAMIC;
-	else
-		vsi->rx_rings[queue]->rx_itr_setting &= ~I40E_ITR_DYNAMIC;
-
-	if (ec->use_adaptive_tx_coalesce)
-		vsi->tx_rings[queue]->tx_itr_setting |= I40E_ITR_DYNAMIC;
-	else
-		vsi->tx_rings[queue]->tx_itr_setting &= ~I40E_ITR_DYNAMIC;
-
-	q_vector = vsi->rx_rings[queue]->q_vector;
-	q_vector->rx.itr = ITR_TO_REG(vsi->rx_rings[queue]->rx_itr_setting);
-	vector = vsi->base_vector + q_vector->v_idx;
-	wr32(hw, I40E_PFINT_ITRN(I40E_RX_ITR, vector - 1), q_vector->rx.itr);
-
-	q_vector = vsi->tx_rings[queue]->q_vector;
-	q_vector->tx.itr = ITR_TO_REG(vsi->tx_rings[queue]->tx_itr_setting);
-	vector = vsi->base_vector + q_vector->v_idx;
-	wr32(hw, I40E_PFINT_ITRN(I40E_TX_ITR, vector - 1), q_vector->tx.itr);
-
-	wr32(hw, I40E_PFINT_RATEN(vector - 1), intrl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i40e_flush(hw);
 }
 
@@ -3492,19 +2527,11 @@ static int __i40e_set_coalesce(struct net_device *netdev,
 		vsi->work_limit = ec->tx_max_coalesced_frames_irq;
 
 	if (queue < 0) {
-<<<<<<< HEAD
 		cur_rx_itr = vsi->rx_rings[0]->itr_setting;
 		cur_tx_itr = vsi->tx_rings[0]->itr_setting;
 	} else if (queue < vsi->num_queue_pairs) {
 		cur_rx_itr = vsi->rx_rings[queue]->itr_setting;
 		cur_tx_itr = vsi->tx_rings[queue]->itr_setting;
-=======
-		cur_rx_itr = vsi->rx_rings[0]->rx_itr_setting;
-		cur_tx_itr = vsi->tx_rings[0]->tx_itr_setting;
-	} else if (queue < vsi->num_queue_pairs) {
-		cur_rx_itr = vsi->rx_rings[queue]->rx_itr_setting;
-		cur_tx_itr = vsi->tx_rings[queue]->tx_itr_setting;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		netif_info(pf, drv, netdev, "Invalid queue value, queue range is 0 - %d\n",
 			   vsi->num_queue_pairs - 1);
@@ -3532,11 +2559,7 @@ static int __i40e_set_coalesce(struct net_device *netdev,
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 	if (ec->rx_coalesce_usecs > I40E_MAX_ITR) {
-=======
-	if (ec->rx_coalesce_usecs > (I40E_MAX_ITR << 1)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		netif_info(pf, drv, netdev, "Invalid value, rx-usecs range is 0-8160\n");
 		return -EINVAL;
 	}
@@ -3547,27 +2570,16 @@ static int __i40e_set_coalesce(struct net_device *netdev,
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 	if (ec->tx_coalesce_usecs > I40E_MAX_ITR) {
-=======
-	if (ec->tx_coalesce_usecs > (I40E_MAX_ITR << 1)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		netif_info(pf, drv, netdev, "Invalid value, tx-usecs range is 0-8160\n");
 		return -EINVAL;
 	}
 
 	if (ec->use_adaptive_rx_coalesce && !cur_rx_itr)
-<<<<<<< HEAD
 		ec->rx_coalesce_usecs = I40E_MIN_ITR;
 
 	if (ec->use_adaptive_tx_coalesce && !cur_tx_itr)
 		ec->tx_coalesce_usecs = I40E_MIN_ITR;
-=======
-		ec->rx_coalesce_usecs = I40E_MIN_ITR << 1;
-
-	if (ec->use_adaptive_tx_coalesce && !cur_tx_itr)
-		ec->tx_coalesce_usecs = I40E_MIN_ITR << 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	intrl_reg = i40e_intrl_usec_to_reg(ec->rx_coalesce_usecs_high);
 	vsi->int_rate_limit = INTRL_REG_TO_USEC(intrl_reg);
@@ -3576,13 +2588,8 @@ static int __i40e_set_coalesce(struct net_device *netdev,
 			   vsi->int_rate_limit);
 	}
 
-<<<<<<< HEAD
 	/* rx and tx usecs has per queue value. If user doesn't specify the
 	 * queue, apply to all queues.
-=======
-	/* rx and tx usecs has per queue value. If user doesn't specify the queue,
-	 * apply to all queues.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	if (queue < 0) {
 		for (i = 0; i < vsi->num_queue_pairs; i++)
@@ -3702,11 +2709,7 @@ static int i40e_get_rss_hash_opts(struct i40e_pf *pf, struct ethtool_rxnfc *cmd)
 /**
  * i40e_check_mask - Check whether a mask field is set
  * @mask: the full mask value
-<<<<<<< HEAD
  * @field: mask of the field to check
-=======
- * @field; mask of the field to check
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * If the given mask is fully set, return positive value. If the mask for the
  * field is fully unset, return zero. Otherwise return a negative error code.
@@ -3777,10 +2780,7 @@ static int i40e_parse_rx_flow_user_data(struct ethtool_rx_flow_spec *fsp,
 /**
  * i40e_fill_rx_flow_user_data - Fill in user-defined data field
  * @fsp: pointer to rx_flow specification
-<<<<<<< HEAD
  * @data: pointer to return userdef data
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Reads the userdef data structure and properly fills in the user defined
  * fields of the rx_flow_spec.
@@ -3959,10 +2959,7 @@ no_input_set:
  * i40e_get_rxnfc - command to get RX flow classification rules
  * @netdev: network interface device structure
  * @cmd: ethtool rxnfc command
-<<<<<<< HEAD
  * @rule_locs: pointer to store rule data
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Returns Success if the command is supported.
  **/
@@ -3976,11 +2973,7 @@ static int i40e_get_rxnfc(struct net_device *netdev, struct ethtool_rxnfc *cmd,
 
 	switch (cmd->cmd) {
 	case ETHTOOL_GRXRINGS:
-<<<<<<< HEAD
 		cmd->data = vsi->rss_size;
-=======
-		cmd->data = vsi->num_queue_pairs;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = 0;
 		break;
 	case ETHTOOL_GRXFH:
@@ -4008,11 +3001,7 @@ static int i40e_get_rxnfc(struct net_device *netdev, struct ethtool_rxnfc *cmd,
 /**
  * i40e_get_rss_hash_bits - Read RSS Hash bits from register
  * @nfc: pointer to user request
-<<<<<<< HEAD
  * @i_setc: bits currently set
-=======
- * @i_setc bits currently set
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Returns value of bits to be set per user request
  **/
@@ -4057,11 +3046,7 @@ static u64 i40e_get_rss_hash_bits(struct ethtool_rxnfc *nfc, u64 i_setc)
 /**
  * i40e_set_rss_hash_opt - Enable/Disable flow types for RSS hash
  * @pf: pointer to the physical function struct
-<<<<<<< HEAD
  * @nfc: ethtool rxnfc command
-=======
- * @cmd: ethtool rxnfc command
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Returns Success if the flow input set is supported.
  **/
@@ -4460,11 +3445,7 @@ static int i40e_add_flex_offset(struct list_head *flex_pit_list,
  * __i40e_reprogram_flex_pit - Re-program specific FLX_PIT table
  * @pf: Pointer to the PF structure
  * @flex_pit_list: list of flexible src offsets in use
-<<<<<<< HEAD
  * @flex_pit_start: index to first entry for this section of the table
-=======
- * #flex_pit_start: index to first entry for this section of the table
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * In order to handle flexible data, the hardware uses a table of values
  * called the FLX_PIT table. This table is used to indicate which sections of
@@ -4578,11 +3559,7 @@ static void i40e_reprogram_flex_pit(struct i40e_pf *pf)
 
 /**
  * i40e_flow_str - Converts a flow_type into a human readable string
-<<<<<<< HEAD
  * @fsp: the flow specification
-=======
- * @flow_type: the flow type from a flow specification
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Currently only flow types we support are included here, and the string
  * value attempts to match what ethtool would use to configure this flow type.
@@ -5029,7 +4006,6 @@ static int i40e_check_fdir_input_set(struct i40e_vsi *vsi,
 }
 
 /**
-<<<<<<< HEAD
  * i40e_match_fdir_filter - Return true of two filters match
  * @a: pointer to filter struct
  * @b: pointer to filter struct
@@ -5111,8 +4087,6 @@ static int i40e_disallow_matching_filters(struct i40e_vsi *vsi,
 }
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * i40e_add_fdir_ethtool - Add/Remove Flow Director filters
  * @vsi: pointer to the targeted VSI
  * @cmd: command to get or set RX flow classification rules
@@ -5138,11 +4112,7 @@ static int i40e_add_fdir_ethtool(struct i40e_vsi *vsi,
 	if (!(pf->flags & I40E_FLAG_FD_SB_ENABLED))
 		return -EOPNOTSUPP;
 
-<<<<<<< HEAD
 	if (test_bit(__I40E_FD_SB_AUTO_DISABLED, pf->state))
-=======
-	if (pf->flags & I40E_FLAG_FD_SB_AUTO_DISABLED)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOSPC;
 
 	if (test_bit(__I40E_RESET_RECOVERY_PENDING, pf->state) ||
@@ -5228,23 +4198,16 @@ static int i40e_add_fdir_ethtool(struct i40e_vsi *vsi,
 		input->flex_offset = userdef.flex_offset;
 	}
 
-<<<<<<< HEAD
 	/* Avoid programming two filters with identical match criteria. */
 	ret = i40e_disallow_matching_filters(vsi, input);
 	if (ret)
 		goto free_filter_memory;
-=======
-	ret = i40e_add_del_fdir(vsi, input, true);
-	if (ret)
-		goto free_input;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Add the input filter to the fdir_input_list, possibly replacing
 	 * a previous filter. Do not free the input structure after adding it
 	 * to the list as this would cause a use-after-free bug.
 	 */
 	i40e_update_ethtool_fdir_entry(vsi, input, fsp->location, NULL);
-<<<<<<< HEAD
 	ret = i40e_add_del_fdir(vsi, input, true);
 	if (ret)
 		goto remove_sw_rule;
@@ -5254,12 +4217,6 @@ remove_sw_rule:
 	hlist_del(&input->fdir_node);
 	pf->fdir_pf_active_filters--;
 free_filter_memory:
-=======
-
-	return 0;
-
-free_input:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(input);
 	return ret;
 }
@@ -5307,11 +4264,7 @@ static unsigned int i40e_max_channels(struct i40e_vsi *vsi)
 
 /**
  * i40e_get_channels - Get the current channels enabled and max supported etc.
-<<<<<<< HEAD
  * @dev: network interface device structure
-=======
- * @netdev: network interface device structure
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @ch: ethtool channels structure
  *
  * We don't support separate tx and rx queues as channels. The other count
@@ -5320,11 +4273,7 @@ static unsigned int i40e_max_channels(struct i40e_vsi *vsi)
  * q_vectors since we support a lot more queue pairs than q_vectors.
  **/
 static void i40e_get_channels(struct net_device *dev,
-<<<<<<< HEAD
 			      struct ethtool_channels *ch)
-=======
-			       struct ethtool_channels *ch)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct i40e_netdev_priv *np = netdev_priv(dev);
 	struct i40e_vsi *vsi = np->vsi;
@@ -5343,22 +4292,14 @@ static void i40e_get_channels(struct net_device *dev,
 
 /**
  * i40e_set_channels - Set the new channels count.
-<<<<<<< HEAD
  * @dev: network interface device structure
-=======
- * @netdev: network interface device structure
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @ch: ethtool channels structure
  *
  * The new channels count may not be the same as requested by the user
  * since it gets rounded down to a power of 2 value.
  **/
 static int i40e_set_channels(struct net_device *dev,
-<<<<<<< HEAD
 			     struct ethtool_channels *ch)
-=======
-			      struct ethtool_channels *ch)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	const u8 drop = I40E_FILTER_PROGRAM_DESC_DEST_DROP_PACKET;
 	struct i40e_netdev_priv *np = netdev_priv(dev);
@@ -5374,15 +4315,12 @@ static int i40e_set_channels(struct net_device *dev,
 	if (vsi->type != I40E_VSI_MAIN)
 		return -EINVAL;
 
-<<<<<<< HEAD
 	/* We do not support setting channels via ethtool when TCs are
 	 * configured through mqprio
 	 */
 	if (pf->flags & I40E_FLAG_TC_MQPRIO)
 		return -EINVAL;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* verify they are not requesting separate vectors */
 	if (!count || ch->rx_count || ch->tx_count)
 		return -EINVAL;
@@ -5450,7 +4388,6 @@ static u32 i40e_get_rxfh_indir_size(struct net_device *netdev)
 	return I40E_HLUT_ARRAY_SIZE;
 }
 
-<<<<<<< HEAD
 /**
  * i40e_get_rxfh - get the rx flow hash indirection table
  * @netdev: network interface device structure
@@ -5461,8 +4398,6 @@ static u32 i40e_get_rxfh_indir_size(struct net_device *netdev)
  * Reads the indirection table directly from the hardware. Returns 0 on
  * success.
  **/
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int i40e_get_rxfh(struct net_device *netdev, u32 *indir, u8 *key,
 			 u8 *hfunc)
 {
@@ -5499,10 +4434,7 @@ out:
  * @netdev: network interface device structure
  * @indir: indirection table
  * @key: hash key
-<<<<<<< HEAD
  * @hfunc: hash function to use
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Returns -EINVAL if the table specifies an invalid queue id, otherwise
  * returns 0 after programming the table.
@@ -5640,11 +4572,8 @@ static int i40e_set_priv_flags(struct net_device *dev, u32 flags)
 	}
 
 flags_complete:
-<<<<<<< HEAD
 	changed_flags = orig_flags ^ new_flags;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Before we finalize any flag changes, we need to perform some
 	 * checks to ensure that the changes are supported and safe.
 	 */
@@ -5654,7 +4583,6 @@ flags_complete:
 	    !(pf->hw_features & I40E_HW_ATR_EVICT_CAPABLE))
 		return -EOPNOTSUPP;
 
-<<<<<<< HEAD
 	/* If the driver detected FW LLDP was disabled on init, this flag could
 	 * be set, however we do not support _changing_ the flag if NPAR is
 	 * enabled or FW API version < 1.7.  There are situations where older
@@ -5676,21 +4604,6 @@ flags_complete:
 	 * anything fancy here.
 	 */
 	pf->flags = new_flags;
-=======
-	/* Compare and exchange the new flags into place. If we failed, that
-	 * is if cmpxchg64 returns anything but the old value, this means that
-	 * something else has modified the flags variable since we copied it
-	 * originally. We'll just punt with an error and log something in the
-	 * message buffer.
-	 */
-	if (cmpxchg64(&pf->flags, orig_flags, new_flags) != orig_flags) {
-		dev_warn(&pf->pdev->dev,
-			 "Unable to update pf->flags as it was modified by another thread...\n");
-		return -EAGAIN;
-	}
-
-	changed_flags = orig_flags ^ new_flags;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Process any additional changes needed as a result of flag changes.
 	 * The changed_flags value reflects the list of bits that were
@@ -5700,11 +4613,7 @@ flags_complete:
 	/* Flush current ATR settings if ATR was disabled */
 	if ((changed_flags & I40E_FLAG_FD_ATR_ENABLED) &&
 	    !(pf->flags & I40E_FLAG_FD_ATR_ENABLED)) {
-<<<<<<< HEAD
 		set_bit(__I40E_FD_ATR_AUTO_DISABLED, pf->state);
-=======
-		pf->flags |= I40E_FLAG_FD_ATR_AUTO_DISABLED;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		set_bit(__I40E_FD_FLUSH_REQUESTED, pf->state);
 	}
 
@@ -5716,11 +4625,7 @@ flags_complete:
 			sw_flags = I40E_AQ_SET_SWITCH_CFG_PROMISC;
 		valid_flags = I40E_AQ_SET_SWITCH_CFG_PROMISC;
 		ret = i40e_aq_set_switch_config(&pf->hw, sw_flags, valid_flags,
-<<<<<<< HEAD
 						0, NULL);
-=======
-						NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret && pf->hw.aq.asq_last_status != I40E_AQ_RC_ESRCH) {
 			dev_info(&pf->pdev->dev,
 				 "couldn't set switch config bits, err %s aq_err %s\n",
@@ -5731,7 +4636,6 @@ flags_complete:
 		}
 	}
 
-<<<<<<< HEAD
 	if ((changed_flags & pf->flags &
 	     I40E_FLAG_LINK_DOWN_ON_CLOSE_ENABLED) &&
 	    (pf->flags & I40E_FLAG_MFP_ENABLED))
@@ -5768,19 +4672,11 @@ flags_complete:
 			     I40E_FLAG_LEGACY_RX |
 			     I40E_FLAG_SOURCE_PRUNING_DISABLED |
 			     I40E_FLAG_DISABLE_FW_LLDP))
-=======
-	/* Issue reset to cause things to take effect, as additional bits
-	 * are added we will need to create a mask of bits requiring reset
-	 */
-	if ((changed_flags & I40E_FLAG_VEB_STATS_ENABLED) ||
-	    ((changed_flags & I40E_FLAG_LEGACY_RX) && netif_running(dev)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		i40e_do_reset(pf, BIT(__I40E_PF_RESET_REQUESTED), true);
 
 	return 0;
 }
 
-<<<<<<< HEAD
 /**
  * i40e_get_module_info - get (Q)SFP+ module type info
  * @netdev: network interface device structure
@@ -5933,8 +4829,6 @@ static int i40e_get_module_eeprom(struct net_device *netdev,
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct ethtool_ops i40e_ethtool_ops = {
 	.get_drvinfo		= i40e_get_drvinfo,
 	.get_regs_len		= i40e_get_regs_len,
@@ -5967,11 +4861,8 @@ static const struct ethtool_ops i40e_ethtool_ops = {
 	.set_rxfh		= i40e_set_rxfh,
 	.get_channels		= i40e_get_channels,
 	.set_channels		= i40e_set_channels,
-<<<<<<< HEAD
 	.get_module_info	= i40e_get_module_info,
 	.get_module_eeprom	= i40e_get_module_eeprom,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.get_ts_info		= i40e_get_ts_info,
 	.get_priv_flags		= i40e_get_priv_flags,
 	.set_priv_flags		= i40e_set_priv_flags,

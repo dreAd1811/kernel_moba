@@ -37,14 +37,10 @@ Procedure for submitting patches to the -stable tree
 
  - If the patch covers files in net/ or drivers/net please follow netdev stable
    submission guidelines as described in
-<<<<<<< HEAD
    :ref:`Documentation/networking/netdev-FAQ.rst <netdev-FAQ>`
    after first checking the stable networking queue at
    https://patchwork.ozlabs.org/bundle/davem/stable/?series=&submitter=&state=*&q=&archive=
    to ensure the requested patch is not already queued up.
-=======
-   Documentation/networking/netdev-FAQ.txt
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  - Security patches should not be handled (solely) by the -stable review
    process but should follow the procedures in
    :ref:`Documentation/admin-guide/security-bugs.rst <securitybugs>`.

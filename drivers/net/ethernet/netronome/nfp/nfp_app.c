@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
  * Copyright (C) 2017-2018 Netronome Systems, Inc.
-=======
- * Copyright (C) 2017 Netronome Systems, Inc.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This software is dual licensed under the GNU General License Version 2,
  * June 1991 as shown in the file COPYING in the top-level directory of this
@@ -35,12 +31,9 @@
  * SOFTWARE.
  */
 
-<<<<<<< HEAD
 #include <linux/bug.h>
 #include <linux/lockdep.h>
 #include <linux/rcupdate.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/skbuff.h>
 #include <linux/slab.h>
 
@@ -50,7 +43,6 @@
 #include "nfp_main.h"
 #include "nfp_net.h"
 #include "nfp_net_repr.h"
-<<<<<<< HEAD
 #include "nfp_port.h"
 
 static const struct nfp_app_type *apps[] = {
@@ -65,14 +57,6 @@ static const struct nfp_app_type *apps[] = {
 #endif
 #ifdef CONFIG_NFP_APP_ABM_NIC
 	[NFP_APP_ACTIVE_BUFFER_MGMT_NIC] = &app_abm,
-=======
-
-static const struct nfp_app_type *apps[] = {
-	&app_nic,
-	&app_bpf,
-#ifdef CONFIG_NFP_APP_FLOWER
-	&app_flower,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 };
 
@@ -102,7 +86,6 @@ const char *nfp_app_mip_name(struct nfp_app *app)
 	return nfp_mip_name(app->pf->mip);
 }
 
-<<<<<<< HEAD
 int nfp_app_ndo_init(struct net_device *netdev)
 {
 	struct nfp_app *app = nfp_app_from_netdev(netdev);
@@ -141,8 +124,6 @@ u8 *nfp_app_port_get_stats_strings(struct nfp_port *port, u8 *data)
 	return port->app->type->port_get_stats_strings(port->app, port, data);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct sk_buff *
 nfp_app_ctrl_msg_alloc(struct nfp_app *app, unsigned int size, gfp_t priority)
 {
@@ -162,7 +143,6 @@ nfp_app_ctrl_msg_alloc(struct nfp_app *app, unsigned int size, gfp_t priority)
 }
 
 struct nfp_reprs *
-<<<<<<< HEAD
 nfp_reprs_get_locked(struct nfp_app *app, enum nfp_repr_type type)
 {
 	return rcu_dereference_protected(app->reprs[type],
@@ -170,36 +150,20 @@ nfp_reprs_get_locked(struct nfp_app *app, enum nfp_repr_type type)
 }
 
 struct nfp_reprs *
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 nfp_app_reprs_set(struct nfp_app *app, enum nfp_repr_type type,
 		  struct nfp_reprs *reprs)
 {
 	struct nfp_reprs *old;
 
-<<<<<<< HEAD
 	old = nfp_reprs_get_locked(app, type);
 	rcu_assign_pointer(app->reprs[type], reprs);
 
-=======
-	old = rcu_dereference_protected(app->reprs[type],
-					lockdep_is_held(&app->pf->lock));
-	if (reprs && old) {
-		old = ERR_PTR(-EBUSY);
-		goto exit_unlock;
-	}
-
-	rcu_assign_pointer(app->reprs[type], reprs);
-
-exit_unlock:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return old;
 }
 
 struct nfp_app *nfp_app_alloc(struct nfp_pf *pf, enum nfp_app_id id)
 {
 	struct nfp_app *app;
-<<<<<<< HEAD
 
 	if (id >= ARRAY_SIZE(apps) || !apps[id]) {
 		nfp_err(pf->cpp, "unknown FW app ID 0x%02hhx, driver too old or support for FW not built in\n", id);
@@ -209,19 +173,6 @@ struct nfp_app *nfp_app_alloc(struct nfp_pf *pf, enum nfp_app_id id)
 	if (WARN_ON(!apps[id]->name || !apps[id]->vnic_alloc))
 		return ERR_PTR(-EINVAL);
 	if (WARN_ON(!apps[id]->ctrl_msg_rx && apps[id]->ctrl_msg_rx_raw))
-=======
-	unsigned int i;
-
-	for (i = 0; i < ARRAY_SIZE(apps); i++)
-		if (apps[i]->id == id)
-			break;
-	if (i == ARRAY_SIZE(apps)) {
-		nfp_err(pf->cpp, "failed to find app with ID 0x%02hhx\n", id);
-		return ERR_PTR(-EINVAL);
-	}
-
-	if (WARN_ON(!apps[i]->name || !apps[i]->vnic_alloc))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ERR_PTR(-EINVAL);
 
 	app = kzalloc(sizeof(*app), GFP_KERNEL);
@@ -231,11 +182,7 @@ struct nfp_app *nfp_app_alloc(struct nfp_pf *pf, enum nfp_app_id id)
 	app->pf = pf;
 	app->cpp = pf->cpp;
 	app->pdev = pf->pdev;
-<<<<<<< HEAD
 	app->type = apps[id];
-=======
-	app->type = apps[i];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return app;
 }

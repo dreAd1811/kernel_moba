@@ -382,16 +382,10 @@ static void arcdev_setup(struct net_device *dev)
 	dev->flags = IFF_BROADCAST;
 }
 
-<<<<<<< HEAD
 static void arcnet_timer(struct timer_list *t)
 {
 	struct arcnet_local *lp = from_timer(lp, t, timer);
 	struct net_device *dev = lp->dev;
-=======
-static void arcnet_timer(unsigned long data)
-{
-	struct net_device *dev = (struct net_device *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!netif_carrier_ok(dev)) {
 		netif_carrier_on(dev);
@@ -457,13 +451,7 @@ struct net_device *alloc_arcdev(const char *name)
 
 		lp->dev = dev;
 		spin_lock_init(&lp->lock);
-<<<<<<< HEAD
 		timer_setup(&lp->timer, arcnet_timer, 0);
-=======
-		init_timer(&lp->timer);
-		lp->timer.data = (unsigned long) dev;
-		lp->timer.function = arcnet_timer;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return dev;

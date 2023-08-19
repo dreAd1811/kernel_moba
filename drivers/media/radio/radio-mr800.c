@@ -31,7 +31,6 @@
  * http://www.spinics.net/lists/linux-usb-devel/msg10109.html
  *
  * Version 0.01:	First working version.
-<<<<<<< HEAD
  *			It's required to blacklist AverMedia USB Radio
  *			in usbhid/hid-quirks.c
  * Version 0.10:	A lot of cleanups and fixes: unpluging the device,
@@ -48,24 +47,6 @@
  *	- Add code for sensitivity value
  *	- Correct mistakes
  *	- In Japan another FREQ_MIN and FREQ_MAX
-=======
- * 			It's required to blacklist AverMedia USB Radio
- * 			in usbhid/hid-quirks.c
- * Version 0.10:	A lot of cleanups and fixes: unpluging the device,
- * 			few mutex locks were added, codinstyle issues, etc.
- * 			Added stereo support. Thanks to
- * 			Douglas Schilling Landgraf <dougsland@gmail.com> and
- * 			David Ellingsworth <david@identd.dyndns.org>
- * 			for discussion, help and support.
- * Version 0.11:	Converted to v4l2_device.
- *
- * Many things to do:
- * 	- Correct power management of device (suspend & resume)
- * 	- Add code for scanning and smooth tuning
- * 	- Add code for sensitivity value
- * 	- Correct mistakes
- * 	- In Japan another FREQ_MIN and FREQ_MAX
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /* kernel includes */
@@ -530,11 +511,7 @@ static int usb_amradio_probe(struct usb_interface *intf,
 				const struct usb_device_id *id)
 {
 	struct amradio_device *radio;
-<<<<<<< HEAD
 	int retval;
-=======
-	int retval = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	radio = kzalloc(sizeof(struct amradio_device), GFP_KERNEL);
 

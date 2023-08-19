@@ -30,14 +30,10 @@
 
 &dss {
 	port {
-<<<<<<< HEAD
 		#address-cells = <1>;
 		#size-cells = <0>;
 		dpi_lcd_out: endpoint@1 {
 			reg = <1>;
-=======
-		dpi_lcd_out: endpoint {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			remote-endpoint = <&lcd_in>;
 			data-lines = <24>;
 		};

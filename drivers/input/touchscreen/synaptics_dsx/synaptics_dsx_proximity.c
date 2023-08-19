@@ -3,10 +3,6 @@
  *
  * Copyright (C) 2012-2016 Synaptics Incorporated. All rights reserved.
  *
-<<<<<<< HEAD
-=======
- * Copyright (c) 2018 The Linux Foundation. All rights reserved.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Copyright (C) 2012 Alexandra Chin <alexandra.chin@tw.synaptics.com>
  * Copyright (C) 2012 Scott Lin <scott.lin@tw.synaptics.com>
  *
@@ -58,11 +54,7 @@ static ssize_t synaptics_rmi4_hover_finger_en_store(struct device *dev,
 		struct device_attribute *attr, const char *buf, size_t count);
 
 static struct device_attribute attrs[] = {
-<<<<<<< HEAD
 	__ATTR(hover_finger_en, (S_IRUGO | S_IWUGO),
-=======
-	__ATTR(hover_finger_en, 0664,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			synaptics_rmi4_hover_finger_en_show,
 			synaptics_rmi4_hover_finger_en_store),
 };
@@ -429,11 +421,7 @@ static ssize_t synaptics_rmi4_hover_finger_en_store(struct device *dev,
 	if (!prox)
 		return -ENODEV;
 
-<<<<<<< HEAD
 	if (sscanf(buf, "%x", &input) != 1)
-=======
-	if (kstrtouint(buf, 16, &input) != 1)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	if (input == 1)

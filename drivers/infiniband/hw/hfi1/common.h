@@ -328,10 +328,7 @@ struct diag_pkt {
 #define SC15_PACKET 0xF
 #define SIZE_OF_CRC 1
 #define SIZE_OF_LT 1
-<<<<<<< HEAD
 #define MAX_16B_PADDING 12 /* CRC = 4, LT = 1, Pad = 0 to 7 bytes */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define LIM_MGMT_P_KEY       0x7FFF
 #define FULL_MGMT_P_KEY      0xFFFF

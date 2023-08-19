@@ -26,11 +26,7 @@
 #include <linux/module.h>
 #include <linux/slab.h>
 #include <asm/div64.h>
-<<<<<<< HEAD
 #include <drm/amdgpu_drm.h>
-=======
-#include "pp_acpi.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "ppatomctrl.h"
 #include "atombios.h"
 #include "pptable_v1_0.h"
@@ -44,22 +40,15 @@
 
 #include "hwmgr.h"
 #include "smu7_hwmgr.h"
-<<<<<<< HEAD
-=======
-#include "smu7_smumgr.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "smu_ucode_xfer_vi.h"
 #include "smu7_powertune.h"
 #include "smu7_dyn_defaults.h"
 #include "smu7_thermal.h"
 #include "smu7_clockpowergating.h"
 #include "processpptables.h"
-<<<<<<< HEAD
 #include "pp_thermal.h"
 
 #include "ivsrcid/ivsrcid_vislands30.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define MC_CG_ARB_FREQ_F0           0x0a
 #define MC_CG_ARB_FREQ_F1           0x0b
@@ -74,13 +63,6 @@
 #define SMC_CG_IND_START            0xc0030000
 #define SMC_CG_IND_END              0xc0040000
 
-<<<<<<< HEAD
-=======
-#define VOLTAGE_SCALE               4
-#define VOLTAGE_VID_OFFSET_SCALE1   625
-#define VOLTAGE_VID_OFFSET_SCALE2   100
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MEM_FREQ_LOW_LATENCY        25000
 #define MEM_FREQ_HIGH_LATENCY       80000
 
@@ -95,7 +77,6 @@
 #define PCIE_BUS_CLK                10000
 #define TCLK                        (PCIE_BUS_CLK / 10)
 
-<<<<<<< HEAD
 static const struct profile_mode_setting smu7_profiling[6] =
 					{{1, 0, 100, 30, 1, 0, 100, 10},
 					 {1, 10, 0, 30, 0, 0, 0, 0},
@@ -112,8 +93,6 @@ static const struct profile_mode_setting smu7_profiling[6] =
 #define PWR_SVI2_PLANE1_LOAD__PSI0_EN_MASK                 0x00000040L
 #define PWR_SVI2_PLANE1_LOAD__PSI1__SHIFT                  0x00000005
 #define PWR_SVI2_PLANE1_LOAD__PSI0_EN__SHIFT               0x00000006
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /** Values for the CG_THERMAL_CTRL::DPM_EVENT_SRC field. */
 enum DPM_EVENT_SRC {
@@ -124,10 +103,6 @@ enum DPM_EVENT_SRC {
 	DPM_EVENT_SRC_DIGITAL_OR_EXTERNAL = 4
 };
 
-<<<<<<< HEAD
-=======
-static int smu7_avfs_control(struct pp_hwmgr *hwmgr, bool enable);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const unsigned long PhwVIslands_Magic = (unsigned long)(PHM_VIslands_Magic);
 static int smu7_force_clock_level(struct pp_hwmgr *hwmgr,
 		enum pp_clock_type type, uint32_t mask);
@@ -200,7 +175,6 @@ static int smu7_get_current_pcie_lane_number(struct pp_hwmgr *hwmgr)
 */
 static int smu7_enable_smc_voltage_controller(struct pp_hwmgr *hwmgr)
 {
-<<<<<<< HEAD
 	if (hwmgr->chip_id == CHIP_VEGAM) {
 		PHM_WRITE_VFPF_INDIRECT_FIELD(hwmgr->device,
 				CGS_IND_REG__SMC, PWR_SVI2_PLANE1_LOAD, PSI1, 0);
@@ -210,10 +184,6 @@ static int smu7_enable_smc_voltage_controller(struct pp_hwmgr *hwmgr)
 
 	if (hwmgr->feature_mask & PP_SMC_VOLTAGE_CONTROL_MASK)
 		smum_send_msg_to_smc(hwmgr, PPSMC_MSG_Voltage_Cntl_Enable);
-=======
-	if (hwmgr->feature_mask & PP_SMC_VOLTAGE_CONTROL_MASK)
-		smum_send_msg_to_smc(hwmgr->smumgr, PPSMC_MSG_Voltage_Cntl_Enable);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -350,44 +320,28 @@ static int smu7_construct_voltage_tables(struct pp_hwmgr *hwmgr)
 			"Failed to retrieve SVI2 VDDC table from dependancy table.", return result;);
 	}
 
-<<<<<<< HEAD
 	tmp = smum_get_mac_definition(hwmgr, SMU_MAX_LEVELS_VDDC);
-=======
-	tmp = smum_get_mac_definition(hwmgr->smumgr, SMU_MAX_LEVELS_VDDC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	PP_ASSERT_WITH_CODE(
 			(data->vddc_voltage_table.count <= tmp),
 		"Too many voltage values for VDDC. Trimming to fit state table.",
 			phm_trim_voltage_table_to_fit_state_table(tmp,
 						&(data->vddc_voltage_table)));
 
-<<<<<<< HEAD
 	tmp = smum_get_mac_definition(hwmgr, SMU_MAX_LEVELS_VDDGFX);
-=======
-	tmp = smum_get_mac_definition(hwmgr->smumgr, SMU_MAX_LEVELS_VDDGFX);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	PP_ASSERT_WITH_CODE(
 			(data->vddgfx_voltage_table.count <= tmp),
 		"Too many voltage values for VDDC. Trimming to fit state table.",
 			phm_trim_voltage_table_to_fit_state_table(tmp,
 						&(data->vddgfx_voltage_table)));
 
-<<<<<<< HEAD
 	tmp = smum_get_mac_definition(hwmgr, SMU_MAX_LEVELS_VDDCI);
-=======
-	tmp = smum_get_mac_definition(hwmgr->smumgr, SMU_MAX_LEVELS_VDDCI);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	PP_ASSERT_WITH_CODE(
 			(data->vddci_voltage_table.count <= tmp),
 		"Too many voltage values for VDDCI. Trimming to fit state table.",
 			phm_trim_voltage_table_to_fit_state_table(tmp,
 					&(data->vddci_voltage_table)));
 
-<<<<<<< HEAD
 	tmp = smum_get_mac_definition(hwmgr, SMU_MAX_LEVELS_MVDD);
-=======
-	tmp = smum_get_mac_definition(hwmgr->smumgr, SMU_MAX_LEVELS_MVDD);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	PP_ASSERT_WITH_CODE(
 			(data->mvdd_voltage_table.count <= tmp),
 		"Too many voltage values for MVDD. Trimming to fit state table.",
@@ -453,10 +407,7 @@ static int smu7_enable_display_gap(struct pp_hwmgr *hwmgr)
 static int smu7_program_voting_clients(struct pp_hwmgr *hwmgr)
 {
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
-<<<<<<< HEAD
 	int i;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Clear reset for voting clients before enabling DPM */
 	PHM_WRITE_INDIRECT_FIELD(hwmgr->device, CGS_IND_REG__SMC,
@@ -464,68 +415,26 @@ static int smu7_program_voting_clients(struct pp_hwmgr *hwmgr)
 	PHM_WRITE_INDIRECT_FIELD(hwmgr->device, CGS_IND_REG__SMC,
 			SCLK_PWRMGT_CNTL, RESET_BUSY_CNT, 0);
 
-<<<<<<< HEAD
 	for (i = 0; i < 8; i++)
 		cgs_write_ind_register(hwmgr->device, CGS_IND_REG__SMC,
 					ixCG_FREQ_TRAN_VOTING_0 + i * 4,
 					data->voting_rights_clients[i]);
-=======
-	cgs_write_ind_register(hwmgr->device, CGS_IND_REG__SMC,
-			ixCG_FREQ_TRAN_VOTING_0, data->voting_rights_clients0);
-	cgs_write_ind_register(hwmgr->device, CGS_IND_REG__SMC,
-			ixCG_FREQ_TRAN_VOTING_1, data->voting_rights_clients1);
-	cgs_write_ind_register(hwmgr->device, CGS_IND_REG__SMC,
-			ixCG_FREQ_TRAN_VOTING_2, data->voting_rights_clients2);
-	cgs_write_ind_register(hwmgr->device, CGS_IND_REG__SMC,
-			ixCG_FREQ_TRAN_VOTING_3, data->voting_rights_clients3);
-	cgs_write_ind_register(hwmgr->device, CGS_IND_REG__SMC,
-			ixCG_FREQ_TRAN_VOTING_4, data->voting_rights_clients4);
-	cgs_write_ind_register(hwmgr->device, CGS_IND_REG__SMC,
-			ixCG_FREQ_TRAN_VOTING_5, data->voting_rights_clients5);
-	cgs_write_ind_register(hwmgr->device, CGS_IND_REG__SMC,
-			ixCG_FREQ_TRAN_VOTING_6, data->voting_rights_clients6);
-	cgs_write_ind_register(hwmgr->device, CGS_IND_REG__SMC,
-			ixCG_FREQ_TRAN_VOTING_7, data->voting_rights_clients7);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 static int smu7_clear_voting_clients(struct pp_hwmgr *hwmgr)
 {
-<<<<<<< HEAD
 	int i;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Reset voting clients before disabling DPM */
 	PHM_WRITE_INDIRECT_FIELD(hwmgr->device, CGS_IND_REG__SMC,
 			SCLK_PWRMGT_CNTL, RESET_SCLK_CNT, 1);
 	PHM_WRITE_INDIRECT_FIELD(hwmgr->device, CGS_IND_REG__SMC,
 			SCLK_PWRMGT_CNTL, RESET_BUSY_CNT, 1);
 
-<<<<<<< HEAD
 	for (i = 0; i < 8; i++)
 		cgs_write_ind_register(hwmgr->device, CGS_IND_REG__SMC,
 				ixCG_FREQ_TRAN_VOTING_0 + i * 4, 0);
-=======
-	cgs_write_ind_register(hwmgr->device, CGS_IND_REG__SMC,
-			ixCG_FREQ_TRAN_VOTING_0, 0);
-	cgs_write_ind_register(hwmgr->device, CGS_IND_REG__SMC,
-			ixCG_FREQ_TRAN_VOTING_1, 0);
-	cgs_write_ind_register(hwmgr->device, CGS_IND_REG__SMC,
-			ixCG_FREQ_TRAN_VOTING_2, 0);
-	cgs_write_ind_register(hwmgr->device, CGS_IND_REG__SMC,
-			ixCG_FREQ_TRAN_VOTING_3, 0);
-	cgs_write_ind_register(hwmgr->device, CGS_IND_REG__SMC,
-			ixCG_FREQ_TRAN_VOTING_4, 0);
-	cgs_write_ind_register(hwmgr->device, CGS_IND_REG__SMC,
-			ixCG_FREQ_TRAN_VOTING_5, 0);
-	cgs_write_ind_register(hwmgr->device, CGS_IND_REG__SMC,
-			ixCG_FREQ_TRAN_VOTING_6, 0);
-	cgs_write_ind_register(hwmgr->device, CGS_IND_REG__SMC,
-			ixCG_FREQ_TRAN_VOTING_7, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -581,11 +490,7 @@ static int smu7_copy_and_switch_arb_sets(struct pp_hwmgr *hwmgr,
 
 static int smu7_reset_to_default(struct pp_hwmgr *hwmgr)
 {
-<<<<<<< HEAD
 	return smum_send_msg_to_smc(hwmgr, PPSMC_MSG_ResetToDefaults);
-=======
-	return smum_send_msg_to_smc(hwmgr->smumgr, PPSMC_MSG_ResetToDefaults);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -643,11 +548,7 @@ static int smu7_setup_default_pcie_table(struct pp_hwmgr *hwmgr)
 		data->pcie_gen_performance = data->pcie_gen_power_saving;
 		data->pcie_lane_performance = data->pcie_lane_power_saving;
 	}
-<<<<<<< HEAD
 	tmp = smum_get_mac_definition(hwmgr, SMU_MAX_LEVELS_LINK);
-=======
-	tmp = smum_get_mac_definition(hwmgr->smumgr, SMU_MAX_LEVELS_LINK);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	phm_reset_single_dpm_table(&data->dpm_table.pcie_speed_table,
 					tmp,
 					MAX_REGULAR_DPM_NUMBER);
@@ -703,7 +604,6 @@ static int smu7_setup_default_pcie_table(struct pp_hwmgr *hwmgr)
 		data->dpm_table.pcie_speed_table.count = 6;
 	}
 	/* Populate last level for boot PCIE level, but do not increment count. */
-<<<<<<< HEAD
 	if (hwmgr->chip_family == AMDGPU_FAMILY_CI) {
 		for (i = 0; i <= data->dpm_table.pcie_speed_table.count; i++)
 			phm_setup_pcie_table_entry(&data->dpm_table.pcie_speed_table, i,
@@ -712,19 +612,12 @@ static int smu7_setup_default_pcie_table(struct pp_hwmgr *hwmgr)
 				data->vbios_boot_state.pcie_lane_bootup_value);
 	} else {
 		phm_setup_pcie_table_entry(&data->dpm_table.pcie_speed_table,
-=======
-	phm_setup_pcie_table_entry(&data->dpm_table.pcie_speed_table,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			data->dpm_table.pcie_speed_table.count,
 			get_pcie_gen_support(data->pcie_gen_cap,
 					PP_Min_PCIEGen),
 			get_pcie_lane_support(data->pcie_lane_cap,
 					PP_Max_PCIELane));
-<<<<<<< HEAD
 	}
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -736,47 +629,27 @@ static int smu7_reset_dpm_tables(struct pp_hwmgr *hwmgr)
 
 	phm_reset_single_dpm_table(
 			&data->dpm_table.sclk_table,
-<<<<<<< HEAD
 				smum_get_mac_definition(hwmgr,
-=======
-				smum_get_mac_definition(hwmgr->smumgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					SMU_MAX_LEVELS_GRAPHICS),
 					MAX_REGULAR_DPM_NUMBER);
 	phm_reset_single_dpm_table(
 			&data->dpm_table.mclk_table,
-<<<<<<< HEAD
 			smum_get_mac_definition(hwmgr,
-=======
-			smum_get_mac_definition(hwmgr->smumgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				SMU_MAX_LEVELS_MEMORY), MAX_REGULAR_DPM_NUMBER);
 
 	phm_reset_single_dpm_table(
 			&data->dpm_table.vddc_table,
-<<<<<<< HEAD
 				smum_get_mac_definition(hwmgr,
-=======
-				smum_get_mac_definition(hwmgr->smumgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					SMU_MAX_LEVELS_VDDC),
 					MAX_REGULAR_DPM_NUMBER);
 	phm_reset_single_dpm_table(
 			&data->dpm_table.vddci_table,
-<<<<<<< HEAD
 			smum_get_mac_definition(hwmgr,
-=======
-			smum_get_mac_definition(hwmgr->smumgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				SMU_MAX_LEVELS_VDDCI), MAX_REGULAR_DPM_NUMBER);
 
 	phm_reset_single_dpm_table(
 			&data->dpm_table.mvdd_table,
-<<<<<<< HEAD
 				smum_get_mac_definition(hwmgr,
-=======
-				smum_get_mac_definition(hwmgr->smumgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					SMU_MAX_LEVELS_MVDD),
 					MAX_REGULAR_DPM_NUMBER);
 	return 0;
@@ -820,11 +693,7 @@ static int smu7_setup_dpm_tables_v0(struct pp_hwmgr *hwmgr)
 				allowed_vdd_sclk_table->entries[i].clk) {
 			data->dpm_table.sclk_table.dpm_levels[data->dpm_table.sclk_table.count].value =
 				allowed_vdd_sclk_table->entries[i].clk;
-<<<<<<< HEAD
 			data->dpm_table.sclk_table.dpm_levels[data->dpm_table.sclk_table.count].enabled = (i == 0) ? 1 : 0;
-=======
-			data->dpm_table.sclk_table.dpm_levels[data->dpm_table.sclk_table.count].enabled = 1; /*(i==0) ? 1 : 0; to do */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			data->dpm_table.sclk_table.count++;
 		}
 	}
@@ -838,11 +707,7 @@ static int smu7_setup_dpm_tables_v0(struct pp_hwmgr *hwmgr)
 			allowed_vdd_mclk_table->entries[i].clk) {
 			data->dpm_table.mclk_table.dpm_levels[data->dpm_table.mclk_table.count].value =
 				allowed_vdd_mclk_table->entries[i].clk;
-<<<<<<< HEAD
 			data->dpm_table.mclk_table.dpm_levels[data->dpm_table.mclk_table.count].enabled = (i == 0) ? 1 : 0;
-=======
-			data->dpm_table.mclk_table.dpm_levels[data->dpm_table.mclk_table.count].enabled = 1; /*(i==0) ? 1 : 0; */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			data->dpm_table.mclk_table.count++;
 		}
 	}
@@ -928,12 +793,8 @@ static int smu7_setup_dpm_tables_v1(struct pp_hwmgr *hwmgr)
 			data->dpm_table.sclk_table.count++;
 		}
 	}
-<<<<<<< HEAD
 	if (hwmgr->platform_descriptor.overdriveLimit.engineClock == 0)
 		hwmgr->platform_descriptor.overdriveLimit.engineClock = dep_sclk_table->entries[i-1].clk;
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Initialize Mclk DPM table based on allow Mclk values */
 	data->dpm_table.mclk_table.count = 0;
 	for (i = 0; i < dep_mclk_table->count; i++) {
@@ -948,7 +809,6 @@ static int smu7_setup_dpm_tables_v1(struct pp_hwmgr *hwmgr)
 		}
 	}
 
-<<<<<<< HEAD
 	if (hwmgr->platform_descriptor.overdriveLimit.memoryClock == 0)
 		hwmgr->platform_descriptor.overdriveLimit.memoryClock = dep_mclk_table->entries[i-1].clk;
 	return 0;
@@ -1081,11 +941,6 @@ static void smu7_check_dpm_table_updated(struct pp_hwmgr *hwmgr)
 	}
 }
 
-=======
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int smu7_setup_default_dpm_tables(struct pp_hwmgr *hwmgr)
 {
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
@@ -1102,7 +957,6 @@ static int smu7_setup_default_dpm_tables(struct pp_hwmgr *hwmgr)
 	/* save a copy of the default DPM table */
 	memcpy(&(data->golden_dpm_table), &(data->dpm_table),
 			sizeof(struct smu7_dpm_table));
-<<<<<<< HEAD
 
 	/* initialize ODN table */
 	if (hwmgr->od_enabled) {
@@ -1116,45 +970,12 @@ static int smu7_setup_default_dpm_tables(struct pp_hwmgr *hwmgr)
 	return 0;
 }
 
-=======
-	return 0;
-}
-
-uint32_t smu7_get_xclk(struct pp_hwmgr *hwmgr)
-{
-	uint32_t reference_clock, tmp;
-	struct cgs_display_info info = {0};
-	struct cgs_mode_info mode_info = {0};
-
-	info.mode_info = &mode_info;
-
-	tmp = PHM_READ_VFPF_INDIRECT_FIELD(hwmgr->device, CGS_IND_REG__SMC, CG_CLKPIN_CNTL_2, MUX_TCLK_TO_XCLK);
-
-	if (tmp)
-		return TCLK;
-
-	cgs_get_active_displays_info(hwmgr->device, &info);
-	reference_clock = mode_info.ref_clock;
-
-	tmp = PHM_READ_VFPF_INDIRECT_FIELD(hwmgr->device, CGS_IND_REG__SMC, CG_CLKPIN_CNTL, XTALIN_DIVIDE);
-
-	if (0 != tmp)
-		return reference_clock / 4;
-
-	return reference_clock;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int smu7_enable_vrhot_gpio_interrupt(struct pp_hwmgr *hwmgr)
 {
 
 	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
 			PHM_PlatformCaps_RegulatorHot))
-<<<<<<< HEAD
 		return smum_send_msg_to_smc(hwmgr,
-=======
-		return smum_send_msg_to_smc(hwmgr->smumgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				PPSMC_MSG_EnableVRHotGPIOInterrupt);
 
 	return 0;
@@ -1172,11 +993,7 @@ static int smu7_enable_ulv(struct pp_hwmgr *hwmgr)
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
 
 	if (data->ulv_supported)
-<<<<<<< HEAD
 		return smum_send_msg_to_smc(hwmgr, PPSMC_MSG_EnableULV);
-=======
-		return smum_send_msg_to_smc(hwmgr->smumgr, PPSMC_MSG_EnableULV);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -1186,11 +1003,7 @@ static int smu7_disable_ulv(struct pp_hwmgr *hwmgr)
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
 
 	if (data->ulv_supported)
-<<<<<<< HEAD
 		return smum_send_msg_to_smc(hwmgr, PPSMC_MSG_DisableULV);
-=======
-		return smum_send_msg_to_smc(hwmgr->smumgr, PPSMC_MSG_DisableULV);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -1199,20 +1012,12 @@ static int smu7_enable_deep_sleep_master_switch(struct pp_hwmgr *hwmgr)
 {
 	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
 			PHM_PlatformCaps_SclkDeepSleep)) {
-<<<<<<< HEAD
 		if (smum_send_msg_to_smc(hwmgr, PPSMC_MSG_MASTER_DeepSleep_ON))
-=======
-		if (smum_send_msg_to_smc(hwmgr->smumgr, PPSMC_MSG_MASTER_DeepSleep_ON))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			PP_ASSERT_WITH_CODE(false,
 					"Attempt to enable Master Deep Sleep switch failed!",
 					return -EINVAL);
 	} else {
-<<<<<<< HEAD
 		if (smum_send_msg_to_smc(hwmgr,
-=======
-		if (smum_send_msg_to_smc(hwmgr->smumgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				PPSMC_MSG_MASTER_DeepSleep_OFF)) {
 			PP_ASSERT_WITH_CODE(false,
 					"Attempt to disable Master Deep Sleep switch failed!",
@@ -1227,11 +1032,7 @@ static int smu7_disable_deep_sleep_master_switch(struct pp_hwmgr *hwmgr)
 {
 	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
 			PHM_PlatformCaps_SclkDeepSleep)) {
-<<<<<<< HEAD
 		if (smum_send_msg_to_smc(hwmgr,
-=======
-		if (smum_send_msg_to_smc(hwmgr->smumgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				PPSMC_MSG_MASTER_DeepSleep_OFF)) {
 			PP_ASSERT_WITH_CODE(false,
 					"Attempt to disable Master Deep Sleep switch failed!",
@@ -1242,7 +1043,6 @@ static int smu7_disable_deep_sleep_master_switch(struct pp_hwmgr *hwmgr)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int smu7_disable_sclk_vce_handshake(struct pp_hwmgr *hwmgr)
 {
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
@@ -1259,27 +1059,17 @@ static int smu7_disable_sclk_vce_handshake(struct pp_hwmgr *hwmgr)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int smu7_disable_handshake_uvd(struct pp_hwmgr *hwmgr)
 {
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
 	uint32_t soft_register_value = 0;
 	uint32_t handshake_disables_offset = data->soft_regs_start
-<<<<<<< HEAD
 				+ smum_get_offsetof(hwmgr,
-=======
-				+ smum_get_offsetof(hwmgr->smumgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					SMU_SoftRegisters, HandshakeDisables);
 
 	soft_register_value = cgs_read_ind_register(hwmgr->device,
 				CGS_IND_REG__SMC, handshake_disables_offset);
-<<<<<<< HEAD
 	soft_register_value |= smum_get_mac_definition(hwmgr,
-=======
-	soft_register_value |= smum_get_mac_definition(hwmgr->smumgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					SMU_UVD_MCLK_HANDSHAKE_DISABLE);
 	cgs_write_ind_register(hwmgr->device, CGS_IND_REG__SMC,
 			handshake_disables_offset, soft_register_value);
@@ -1291,7 +1081,6 @@ static int smu7_enable_sclk_mclk_dpm(struct pp_hwmgr *hwmgr)
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
 
 	/* enable SCLK dpm */
-<<<<<<< HEAD
 	if (!data->sclk_dpm_key_disabled) {
 		if (hwmgr->chip_id == CHIP_VEGAM)
 			smu7_disable_sclk_vce_handshake(hwmgr);
@@ -1301,31 +1090,18 @@ static int smu7_enable_sclk_mclk_dpm(struct pp_hwmgr *hwmgr)
 		"Failed to enable SCLK DPM during DPM Start Function!",
 		return -EINVAL);
 	}
-=======
-	if (!data->sclk_dpm_key_disabled)
-		PP_ASSERT_WITH_CODE(
-		(0 == smum_send_msg_to_smc(hwmgr->smumgr, PPSMC_MSG_DPM_Enable)),
-		"Failed to enable SCLK DPM during DPM Start Function!",
-		return -EINVAL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* enable MCLK dpm */
 	if (0 == data->mclk_dpm_key_disabled) {
 		if (!(hwmgr->feature_mask & PP_UVD_HANDSHAKE_MASK))
 			smu7_disable_handshake_uvd(hwmgr);
-<<<<<<< HEAD
 
 		PP_ASSERT_WITH_CODE(
 				(0 == smum_send_msg_to_smc(hwmgr,
-=======
-		PP_ASSERT_WITH_CODE(
-				(0 == smum_send_msg_to_smc(hwmgr->smumgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						PPSMC_MSG_MCLKDPM_Enable)),
 				"Failed to enable MCLK DPM during DPM Start Function!",
 				return -EINVAL);
 
-<<<<<<< HEAD
 		if (hwmgr->chip_family != CHIP_VEGAM)
 			PHM_WRITE_FIELD(hwmgr->device, MC_SEQ_CNTL_3, CAC_EN, 0x1);
 
@@ -1352,17 +1128,6 @@ static int smu7_enable_sclk_mclk_dpm(struct pp_hwmgr *hwmgr)
 			}
 			cgs_write_ind_register(hwmgr->device, CGS_IND_REG__SMC, ixLCAC_CPL_CNTL, 0x500005);
 		}
-=======
-		PHM_WRITE_FIELD(hwmgr->device, MC_SEQ_CNTL_3, CAC_EN, 0x1);
-
-		cgs_write_ind_register(hwmgr->device, CGS_IND_REG__SMC, ixLCAC_MC0_CNTL, 0x5);
-		cgs_write_ind_register(hwmgr->device, CGS_IND_REG__SMC, ixLCAC_MC1_CNTL, 0x5);
-		cgs_write_ind_register(hwmgr->device, CGS_IND_REG__SMC, ixLCAC_CPL_CNTL, 0x100005);
-		udelay(10);
-		cgs_write_ind_register(hwmgr->device, CGS_IND_REG__SMC, ixLCAC_MC0_CNTL, 0x400005);
-		cgs_write_ind_register(hwmgr->device, CGS_IND_REG__SMC, ixLCAC_MC1_CNTL, 0x400005);
-		cgs_write_ind_register(hwmgr->device, CGS_IND_REG__SMC, ixLCAC_CPL_CNTL, 0x500005);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -1386,22 +1151,15 @@ static int smu7_start_dpm(struct pp_hwmgr *hwmgr)
 
 	cgs_write_ind_register(hwmgr->device, CGS_IND_REG__SMC,
 			data->soft_regs_start +
-<<<<<<< HEAD
 			smum_get_offsetof(hwmgr, SMU_SoftRegisters,
-=======
-			smum_get_offsetof(hwmgr->smumgr, SMU_SoftRegisters,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						VoltageChangeTimeout), 0x1000);
 	PHM_WRITE_INDIRECT_FIELD(hwmgr->device, CGS_IND_REG__PCIE,
 			SWRST_COMMAND_1, RESETLC, 0x0);
 
-<<<<<<< HEAD
 	if (hwmgr->chip_family == AMDGPU_FAMILY_CI)
 		cgs_write_register(hwmgr->device, 0x1488,
 			(cgs_read_register(hwmgr->device, 0x1488) & ~0x1));
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (smu7_enable_sclk_mclk_dpm(hwmgr)) {
 		pr_err("Failed to enable Sclk DPM and Mclk DPM!");
 		return -EINVAL;
@@ -1410,11 +1168,7 @@ static int smu7_start_dpm(struct pp_hwmgr *hwmgr)
 	/* enable PCIE dpm */
 	if (0 == data->pcie_dpm_key_disabled) {
 		PP_ASSERT_WITH_CODE(
-<<<<<<< HEAD
 				(0 == smum_send_msg_to_smc(hwmgr,
-=======
-				(0 == smum_send_msg_to_smc(hwmgr->smumgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						PPSMC_MSG_PCIeDPM_Enable)),
 				"Failed to enable pcie DPM during DPM Start Function!",
 				return -EINVAL);
@@ -1422,11 +1176,7 @@ static int smu7_start_dpm(struct pp_hwmgr *hwmgr)
 
 	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
 				PHM_PlatformCaps_Falcon_QuickTransition)) {
-<<<<<<< HEAD
 		PP_ASSERT_WITH_CODE((0 == smum_send_msg_to_smc(hwmgr,
-=======
-		PP_ASSERT_WITH_CODE((0 == smum_send_msg_to_smc(hwmgr->smumgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				PPSMC_MSG_EnableACDCGPIOInterrupt)),
 				"Failed to enable AC DC GPIO Interrupt!",
 				);
@@ -1444,11 +1194,7 @@ static int smu7_disable_sclk_mclk_dpm(struct pp_hwmgr *hwmgr)
 		PP_ASSERT_WITH_CODE(true == smum_is_dpm_running(hwmgr),
 				"Trying to disable SCLK DPM when DPM is disabled",
 				return 0);
-<<<<<<< HEAD
 		smum_send_msg_to_smc(hwmgr, PPSMC_MSG_DPM_Disable);
-=======
-		smum_send_msg_to_smc(hwmgr->smumgr, PPSMC_MSG_DPM_Disable);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* disable MCLK dpm */
@@ -1456,11 +1202,7 @@ static int smu7_disable_sclk_mclk_dpm(struct pp_hwmgr *hwmgr)
 		PP_ASSERT_WITH_CODE(true == smum_is_dpm_running(hwmgr),
 				"Trying to disable MCLK DPM when DPM is disabled",
 				return 0);
-<<<<<<< HEAD
 		smum_send_msg_to_smc(hwmgr, PPSMC_MSG_MCLKDPM_Disable);
-=======
-		smum_send_msg_to_smc(hwmgr->smumgr, PPSMC_MSG_MCLKDPM_Disable);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -1480,11 +1222,7 @@ static int smu7_stop_dpm(struct pp_hwmgr *hwmgr)
 	/* disable PCIE dpm */
 	if (!data->pcie_dpm_key_disabled) {
 		PP_ASSERT_WITH_CODE(
-<<<<<<< HEAD
 				(smum_send_msg_to_smc(hwmgr,
-=======
-				(smum_send_msg_to_smc(hwmgr->smumgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						PPSMC_MSG_PCIeDPM_Disable) == 0),
 				"Failed to disable pcie DPM during DPM Stop Function!",
 				return -EINVAL);
@@ -1496,11 +1234,7 @@ static int smu7_stop_dpm(struct pp_hwmgr *hwmgr)
 			"Trying to disable voltage DPM when DPM is disabled",
 			return 0);
 
-<<<<<<< HEAD
 	smum_send_msg_to_smc(hwmgr, PPSMC_MSG_Voltage_Cntl_Disable);
-=======
-	smum_send_msg_to_smc(hwmgr->smumgr, PPSMC_MSG_Voltage_Cntl_Disable);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -1592,14 +1326,6 @@ static int smu7_enable_dpm_tasks(struct pp_hwmgr *hwmgr)
 	int tmp_result = 0;
 	int result = 0;
 
-<<<<<<< HEAD
-=======
-	tmp_result = (!smum_is_dpm_running(hwmgr)) ? 0 : -1;
-	PP_ASSERT_WITH_CODE(tmp_result == 0,
-			"DPM is already running",
-			);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (smu7_voltage_control(hwmgr)) {
 		tmp_result = smu7_enable_voltage_control(hwmgr);
 		PP_ASSERT_WITH_CODE(tmp_result == 0,
@@ -1608,11 +1334,7 @@ static int smu7_enable_dpm_tasks(struct pp_hwmgr *hwmgr)
 
 		tmp_result = smu7_construct_voltage_tables(hwmgr);
 		PP_ASSERT_WITH_CODE((0 == tmp_result),
-<<<<<<< HEAD
 				"Failed to construct voltage tables!",
-=======
-				"Failed to contruct voltage tables!",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				result = tmp_result);
 	}
 	smum_initialize_mc_reg_table(hwmgr);
@@ -1644,19 +1366,12 @@ static int smu7_enable_dpm_tasks(struct pp_hwmgr *hwmgr)
 	PP_ASSERT_WITH_CODE((0 == tmp_result),
 			"Failed to process firmware header!", result = tmp_result);
 
-<<<<<<< HEAD
 	if (hwmgr->chip_id != CHIP_VEGAM) {
 		tmp_result = smu7_initial_switch_from_arbf0_to_f1(hwmgr);
 		PP_ASSERT_WITH_CODE((0 == tmp_result),
 				"Failed to initialize switch from ArbF0 to F1!",
 				result = tmp_result);
 	}
-=======
-	tmp_result = smu7_initial_switch_from_arbf0_to_f1(hwmgr);
-	PP_ASSERT_WITH_CODE((0 == tmp_result),
-			"Failed to initialize switch from ArbF0 to F1!",
-			result = tmp_result);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	result = smu7_setup_default_dpm_tables(hwmgr);
 	PP_ASSERT_WITH_CODE(0 == result,
@@ -1670,11 +1385,7 @@ static int smu7_enable_dpm_tasks(struct pp_hwmgr *hwmgr)
 	PP_ASSERT_WITH_CODE((0 == tmp_result),
 			"Failed to enable VR hot GPIO interrupt!", result = tmp_result);
 
-<<<<<<< HEAD
 	smum_send_msg_to_smc(hwmgr, (PPSMC_Msg)PPSMC_NoDisplay);
-=======
-	smum_send_msg_to_smc(hwmgr->smumgr, (PPSMC_Msg)PPSMC_NoDisplay);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tmp_result = smu7_enable_sclk_control(hwmgr);
 	PP_ASSERT_WITH_CODE((0 == tmp_result),
@@ -1723,7 +1434,6 @@ static int smu7_enable_dpm_tasks(struct pp_hwmgr *hwmgr)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int smu7_avfs_control(struct pp_hwmgr *hwmgr, bool enable)
 {
 	if (!hwmgr->avfs_supported)
@@ -1767,20 +1477,10 @@ static int smu7_update_avfs(struct pp_hwmgr *hwmgr)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int smu7_disable_dpm_tasks(struct pp_hwmgr *hwmgr)
 {
 	int tmp_result, result = 0;
 
-<<<<<<< HEAD
-=======
-	tmp_result = (smum_is_dpm_running(hwmgr)) ? 0 : -1;
-	PP_ASSERT_WITH_CODE(tmp_result == 0,
-			"DPM is not running right now, no need to disable DPM!",
-			return 0);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
 			PHM_PlatformCaps_ThermalController))
 		PHM_WRITE_INDIRECT_FIELD(hwmgr->device, CGS_IND_REG__SMC,
@@ -1849,7 +1549,6 @@ static void smu7_init_dpm_defaults(struct pp_hwmgr *hwmgr)
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
 	struct phm_ppt_v1_information *table_info =
 			(struct phm_ppt_v1_information *)(hwmgr->pptable);
-<<<<<<< HEAD
 	struct amdgpu_device *adev = hwmgr->adev;
 
 	data->dll_default_on = false;
@@ -1865,25 +1564,6 @@ static void smu7_init_dpm_defaults(struct pp_hwmgr *hwmgr)
 	data->voting_rights_clients[5]= SMU7_VOTINGRIGHTSCLIENTS_DFLT5;
 	data->voting_rights_clients[6]= SMU7_VOTINGRIGHTSCLIENTS_DFLT6;
 	data->voting_rights_clients[7]= SMU7_VOTINGRIGHTSCLIENTS_DFLT7;
-=======
-	struct cgs_system_info sys_info = {0};
-	int result;
-
-	data->dll_default_on = false;
-	data->mclk_dpm0_activity_target = 0xa;
-	data->mclk_activity_target = SMU7_MCLK_TARGETACTIVITY_DFLT;
-	data->vddc_vddgfx_delta = 300;
-	data->static_screen_threshold = SMU7_STATICSCREENTHRESHOLD_DFLT;
-	data->static_screen_threshold_unit = SMU7_STATICSCREENTHRESHOLDUNIT_DFLT;
-	data->voting_rights_clients0 = SMU7_VOTINGRIGHTSCLIENTS_DFLT0;
-	data->voting_rights_clients1 = SMU7_VOTINGRIGHTSCLIENTS_DFLT1;
-	data->voting_rights_clients2 = SMU7_VOTINGRIGHTSCLIENTS_DFLT2;
-	data->voting_rights_clients3 = SMU7_VOTINGRIGHTSCLIENTS_DFLT3;
-	data->voting_rights_clients4 = SMU7_VOTINGRIGHTSCLIENTS_DFLT4;
-	data->voting_rights_clients5 = SMU7_VOTINGRIGHTSCLIENTS_DFLT5;
-	data->voting_rights_clients6 = SMU7_VOTINGRIGHTSCLIENTS_DFLT6;
-	data->voting_rights_clients7 = SMU7_VOTINGRIGHTSCLIENTS_DFLT7;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	data->mclk_dpm_key_disabled = hwmgr->feature_mask & PP_MCLK_DPM_MASK ? false : true;
 	data->sclk_dpm_key_disabled = hwmgr->feature_mask & PP_SCLK_DPM_MASK ? false : true;
@@ -1896,7 +1576,6 @@ static void smu7_init_dpm_defaults(struct pp_hwmgr *hwmgr)
 	data->enable_pkg_pwr_tracking_feature = true;
 	data->force_pcie_gen = PP_PCIEGenInvalid;
 	data->ulv_supported = hwmgr->feature_mask & PP_ULV_MASK ? true : false;
-<<<<<<< HEAD
 	data->current_profile_setting.bupdate_sclk = 1;
 	data->current_profile_setting.sclk_up_hyst = 0;
 	data->current_profile_setting.sclk_down_hyst = 100;
@@ -1910,17 +1589,12 @@ static void smu7_init_dpm_defaults(struct pp_hwmgr *hwmgr)
 	hwmgr->default_power_profile_mode = PP_SMC_POWER_PROFILE_FULLSCREEN3D;
 
 	if (hwmgr->chip_id == CHIP_POLARIS12 || hwmgr->is_kicker) {
-=======
-
-	if (hwmgr->chip_id == CHIP_POLARIS12 || hwmgr->smumgr->is_kicker) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		uint8_t tmp1, tmp2;
 		uint16_t tmp3 = 0;
 		atomctrl_get_svi2_info(hwmgr, VOLTAGE_TYPE_VDDC, &tmp1, &tmp2,
 						&tmp3);
 		tmp3 = (tmp3 >> 5) & 0x3;
 		data->vddc_phase_shed_control = ((tmp3 << 1) | (tmp3 >> 1)) & 0x3;
-<<<<<<< HEAD
 	} else if (hwmgr->chip_family == AMDGPU_FAMILY_CI) {
 		data->vddc_phase_shed_control = 1;
 	} else {
@@ -1948,18 +1622,6 @@ static void smu7_init_dpm_defaults(struct pp_hwmgr *hwmgr)
 	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
 			PHM_PlatformCaps_ControlVDDGFX)) {
 		if (atomctrl_is_voltage_controlled_by_gpio_v3(hwmgr,
-=======
-	}
-
-	data->fast_watermark_threshold = 100;
-	if (atomctrl_is_voltage_controled_by_gpio_v3(hwmgr,
-			VOLTAGE_TYPE_VDDC, VOLTAGE_OBJ_SVID2))
-		data->voltage_control = SMU7_VOLTAGE_CONTROL_BY_SVID2;
-
-	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
-			PHM_PlatformCaps_ControlVDDGFX)) {
-		if (atomctrl_is_voltage_controled_by_gpio_v3(hwmgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			VOLTAGE_TYPE_VDDGFX, VOLTAGE_OBJ_SVID2)) {
 			data->vdd_gfx_control = SMU7_VOLTAGE_CONTROL_BY_SVID2;
 		}
@@ -1967,22 +1629,14 @@ static void smu7_init_dpm_defaults(struct pp_hwmgr *hwmgr)
 
 	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
 			PHM_PlatformCaps_EnableMVDDControl)) {
-<<<<<<< HEAD
 		if (atomctrl_is_voltage_controlled_by_gpio_v3(hwmgr,
 				VOLTAGE_TYPE_MVDDC, VOLTAGE_OBJ_GPIO_LUT))
 			data->mvdd_control = SMU7_VOLTAGE_CONTROL_BY_GPIO;
 		else if (atomctrl_is_voltage_controlled_by_gpio_v3(hwmgr,
-=======
-		if (atomctrl_is_voltage_controled_by_gpio_v3(hwmgr,
-				VOLTAGE_TYPE_MVDDC, VOLTAGE_OBJ_GPIO_LUT))
-			data->mvdd_control = SMU7_VOLTAGE_CONTROL_BY_GPIO;
-		else if (atomctrl_is_voltage_controled_by_gpio_v3(hwmgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				VOLTAGE_TYPE_MVDDC, VOLTAGE_OBJ_SVID2))
 			data->mvdd_control = SMU7_VOLTAGE_CONTROL_BY_SVID2;
 	}
 
-<<<<<<< HEAD
 	if (SMU7_VOLTAGE_CONTROL_NONE == data->vdd_gfx_control)
 		phm_cap_unset(hwmgr->platform_descriptor.platformCaps,
 			PHM_PlatformCaps_ControlVDDGFX);
@@ -1993,19 +1647,6 @@ static void smu7_init_dpm_defaults(struct pp_hwmgr *hwmgr)
 				VOLTAGE_TYPE_VDDCI, VOLTAGE_OBJ_GPIO_LUT))
 			data->vddci_control = SMU7_VOLTAGE_CONTROL_BY_GPIO;
 		else if (atomctrl_is_voltage_controlled_by_gpio_v3(hwmgr,
-=======
-	if (SMU7_VOLTAGE_CONTROL_NONE == data->vdd_gfx_control) {
-		phm_cap_unset(hwmgr->platform_descriptor.platformCaps,
-			PHM_PlatformCaps_ControlVDDGFX);
-	}
-
-	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
-			PHM_PlatformCaps_ControlVDDCI)) {
-		if (atomctrl_is_voltage_controled_by_gpio_v3(hwmgr,
-				VOLTAGE_TYPE_VDDCI, VOLTAGE_OBJ_GPIO_LUT))
-			data->vddci_control = SMU7_VOLTAGE_CONTROL_BY_GPIO;
-		else if (atomctrl_is_voltage_controled_by_gpio_v3(hwmgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				VOLTAGE_TYPE_VDDCI, VOLTAGE_OBJ_SVID2))
 			data->vddci_control = SMU7_VOLTAGE_CONTROL_BY_SVID2;
 	}
@@ -2032,7 +1673,6 @@ static void smu7_init_dpm_defaults(struct pp_hwmgr *hwmgr)
 	data->pcie_lane_power_saving.max = 0;
 	data->pcie_lane_power_saving.min = 16;
 
-<<<<<<< HEAD
 
 	if (adev->pg_flags & AMD_PG_SUPPORT_UVD)
 		phm_cap_set(hwmgr->platform_descriptor.platformCaps,
@@ -2040,19 +1680,6 @@ static void smu7_init_dpm_defaults(struct pp_hwmgr *hwmgr)
 	if (adev->pg_flags & AMD_PG_SUPPORT_VCE)
 		phm_cap_set(hwmgr->platform_descriptor.platformCaps,
 			      PHM_PlatformCaps_VCEPowerGating);
-=======
-	sys_info.size = sizeof(struct cgs_system_info);
-	sys_info.info_id = CGS_SYSTEM_INFO_PG_FLAGS;
-	result = cgs_query_system_info(hwmgr->device, &sys_info);
-	if (!result) {
-		if (sys_info.value & AMD_PG_SUPPORT_UVD)
-			phm_cap_set(hwmgr->platform_descriptor.platformCaps,
-				      PHM_PlatformCaps_UVDPowerGating);
-		if (sys_info.value & AMD_PG_SUPPORT_VCE)
-			phm_cap_set(hwmgr->platform_descriptor.platformCaps,
-				      PHM_PlatformCaps_VCEPowerGating);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -2134,11 +1761,7 @@ static int smu7_get_evv_voltages(struct pp_hwmgr *hwmgr)
 					if (vddc >= 2000 || vddc == 0)
 						return -EINVAL;
 				} else {
-<<<<<<< HEAD
 					pr_debug("failed to retrieving EVV voltage!\n");
-=======
-					pr_warn("failed to retrieving EVV voltage!\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					continue;
 				}
 
@@ -2271,11 +1894,7 @@ static int phm_add_voltage(struct pp_hwmgr *hwmgr,
 	PP_ASSERT_WITH_CODE((0 != look_up_table->count),
 		"Lookup Table empty.", return -EINVAL);
 
-<<<<<<< HEAD
 	i = smum_get_mac_definition(hwmgr, SMU_MAX_LEVELS_VDDGFX);
-=======
-	i = smum_get_mac_definition(hwmgr->smumgr, SMU_MAX_LEVELS_VDDGFX);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	PP_ASSERT_WITH_CODE((i >= look_up_table->count),
 		"Lookup Table is full.", return -EINVAL);
 
@@ -2495,11 +2114,7 @@ static int smu7_patch_voltage_workaround(struct pp_hwmgr *hwmgr)
 	struct phm_ppt_v1_voltage_lookup_table *lookup_table;
 	uint32_t i;
 	uint32_t hw_revision, sub_vendor_id, sub_sys_id;
-<<<<<<< HEAD
 	struct amdgpu_device *adev = hwmgr->adev;
-=======
-	struct cgs_system_info sys_info = {0};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (table_info != NULL) {
 		dep_mclk_table = table_info->vdd_dep_on_mclk;
@@ -2507,25 +2122,9 @@ static int smu7_patch_voltage_workaround(struct pp_hwmgr *hwmgr)
 	} else
 		return 0;
 
-<<<<<<< HEAD
 	hw_revision = adev->pdev->revision;
 	sub_sys_id = adev->pdev->subsystem_device;
 	sub_vendor_id = adev->pdev->subsystem_vendor;
-=======
-	sys_info.size = sizeof(struct cgs_system_info);
-
-	sys_info.info_id = CGS_SYSTEM_INFO_PCIE_REV;
-	cgs_query_system_info(hwmgr->device, &sys_info);
-	hw_revision = (uint32_t)sys_info.value;
-
-	sys_info.info_id = CGS_SYSTEM_INFO_PCIE_SUB_SYS_ID;
-	cgs_query_system_info(hwmgr->device, &sys_info);
-	sub_sys_id = (uint32_t)sys_info.value;
-
-	sys_info.info_id = CGS_SYSTEM_INFO_PCIE_SUB_SYS_VENDOR_ID;
-	cgs_query_system_info(hwmgr->device, &sys_info);
-	sub_vendor_id = (uint32_t)sys_info.value;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (hwmgr->chip_id == CHIP_POLARIS10 && hw_revision == 0xC7 &&
 			((sub_sys_id == 0xb37 && sub_vendor_id == 0x1002) ||
@@ -2859,7 +2458,6 @@ static int smu7_set_private_data_based_on_pptable_v0(struct pp_hwmgr *hwmgr)
 	struct phm_clock_voltage_dependency_table *allowed_mclk_vddci_table = hwmgr->dyn_state.vddci_dependency_on_mclk;
 
 	PP_ASSERT_WITH_CODE(allowed_sclk_vddc_table != NULL,
-<<<<<<< HEAD
 		"VDDC dependency on SCLK table is missing. This table is mandatory",
 		return -EINVAL);
 	PP_ASSERT_WITH_CODE(allowed_sclk_vddc_table->count >= 1,
@@ -2872,16 +2470,6 @@ static int smu7_set_private_data_based_on_pptable_v0(struct pp_hwmgr *hwmgr)
 	PP_ASSERT_WITH_CODE(allowed_mclk_vddc_table->count >= 1,
 		"VDD dependency on MCLK table has to have is missing. This table is mandatory",
 		return -EINVAL);
-=======
-		"VDDC dependency on SCLK table is missing. This table is mandatory\n", return -EINVAL);
-	PP_ASSERT_WITH_CODE(allowed_sclk_vddc_table->count >= 1,
-		"VDDC dependency on SCLK table has to have is missing. This table is mandatory\n", return -EINVAL);
-
-	PP_ASSERT_WITH_CODE(allowed_mclk_vddc_table != NULL,
-		"VDDC dependency on MCLK table is missing. This table is mandatory\n", return -EINVAL);
-	PP_ASSERT_WITH_CODE(allowed_mclk_vddc_table->count >= 1,
-		"VDD dependency on MCLK table has to have is missing. This table is mandatory\n", return -EINVAL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	data->min_vddc_in_pptable = (uint16_t)allowed_sclk_vddc_table->entries[0].v;
 	data->max_vddc_in_pptable = (uint16_t)allowed_sclk_vddc_table->entries[allowed_sclk_vddc_table->count - 1].v;
@@ -2898,11 +2486,7 @@ static int smu7_set_private_data_based_on_pptable_v0(struct pp_hwmgr *hwmgr)
 		data->max_vddci_in_pptable = (uint16_t)allowed_mclk_vddci_table->entries[allowed_mclk_vddci_table->count - 1].v;
 	}
 
-<<<<<<< HEAD
 	if (hwmgr->dyn_state.vddci_dependency_on_mclk != NULL && hwmgr->dyn_state.vddci_dependency_on_mclk->count >= 1)
-=======
-	if (hwmgr->dyn_state.vddci_dependency_on_mclk != NULL && hwmgr->dyn_state.vddci_dependency_on_mclk->count > 1)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		hwmgr->dyn_state.max_clock_voltage_on_ac.vddci = hwmgr->dyn_state.vddci_dependency_on_mclk->entries[hwmgr->dyn_state.vddci_dependency_on_mclk->count - 1].v;
 
 	return 0;
@@ -2910,7 +2494,6 @@ static int smu7_set_private_data_based_on_pptable_v0(struct pp_hwmgr *hwmgr)
 
 static int smu7_hwmgr_backend_fini(struct pp_hwmgr *hwmgr)
 {
-<<<<<<< HEAD
 	kfree(hwmgr->dyn_state.vddc_dep_on_dal_pwrl);
 	hwmgr->dyn_state.vddc_dep_on_dal_pwrl = NULL;
 	kfree(hwmgr->backend);
@@ -2944,45 +2527,23 @@ static int smu7_get_elb_voltages(struct pp_hwmgr *hwmgr)
 			}
 		}
 	}
-=======
-	if (NULL != hwmgr->dyn_state.vddc_dep_on_dal_pwrl) {
-		kfree(hwmgr->dyn_state.vddc_dep_on_dal_pwrl);
-		hwmgr->dyn_state.vddc_dep_on_dal_pwrl = NULL;
-	}
-	pp_smu7_thermal_fini(hwmgr);
-	if (NULL != hwmgr->backend) {
-		kfree(hwmgr->backend);
-		hwmgr->backend = NULL;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
 {
 	struct smu7_hwmgr *data;
-<<<<<<< HEAD
 	int result = 0;
-=======
-	int result;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	data = kzalloc(sizeof(struct smu7_hwmgr), GFP_KERNEL);
 	if (data == NULL)
 		return -ENOMEM;
 
 	hwmgr->backend = data;
-<<<<<<< HEAD
-=======
-	pp_smu7_thermal_initialize(hwmgr);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	smu7_patch_voltage_workaround(hwmgr);
 	smu7_init_dpm_defaults(hwmgr);
 
 	/* Get leakage voltage based on leakage ID. */
-<<<<<<< HEAD
 	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
 			PHM_PlatformCaps_EVV)) {
 		result = smu7_get_evv_voltages(hwmgr);
@@ -2992,13 +2553,6 @@ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
 		}
 	} else {
 		smu7_get_elb_voltages(hwmgr);
-=======
-	result = smu7_get_evv_voltages(hwmgr);
-
-	if (result) {
-		pr_info("Get EVV Voltage Failed.  Abort Driver loading!\n");
-		return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (hwmgr->pp_table_version == PP_TABLE_V1) {
@@ -3013,11 +2567,7 @@ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
 	result = phm_initializa_dynamic_state_adjustment_rule_settings(hwmgr);
 
 	if (0 == result) {
-<<<<<<< HEAD
 		struct amdgpu_device *adev = hwmgr->adev;
-=======
-		struct cgs_system_info sys_info = {0};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		data->is_tlu_enabled = false;
 
@@ -3026,29 +2576,10 @@ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
 		hwmgr->platform_descriptor.hardwarePerformanceLevels = 2;
 		hwmgr->platform_descriptor.minimumClocksReductionPercentage = 50;
 
-<<<<<<< HEAD
 		data->pcie_gen_cap = adev->pm.pcie_gen_mask;
 		if (data->pcie_gen_cap & CAIL_PCIE_LINK_SPEED_SUPPORT_GEN3)
 			data->pcie_spc_cap = 20;
 		data->pcie_lane_cap = adev->pm.pcie_mlw_mask;
-=======
-		sys_info.size = sizeof(struct cgs_system_info);
-		sys_info.info_id = CGS_SYSTEM_INFO_PCIE_GEN_INFO;
-		result = cgs_query_system_info(hwmgr->device, &sys_info);
-		if (result)
-			data->pcie_gen_cap = AMDGPU_DEFAULT_PCIE_GEN_MASK;
-		else
-			data->pcie_gen_cap = (uint32_t)sys_info.value;
-		if (data->pcie_gen_cap & CAIL_PCIE_LINK_SPEED_SUPPORT_GEN3)
-			data->pcie_spc_cap = 20;
-		sys_info.size = sizeof(struct cgs_system_info);
-		sys_info.info_id = CGS_SYSTEM_INFO_PCIE_MLW;
-		result = cgs_query_system_info(hwmgr->device, &sys_info);
-		if (result)
-			data->pcie_lane_cap = AMDGPU_DEFAULT_PCIE_MLW_MASK;
-		else
-			data->pcie_lane_cap = (uint32_t)sys_info.value;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		hwmgr->platform_descriptor.vbiosInterruptId = 0x20000400; /* IRQ_SOURCE1_SW_INT */
 /* The true clock step depends on the frequency, typically 4.5 or 9 MHz. Here we use 5. */
@@ -3076,11 +2607,7 @@ static int smu7_force_dpm_highest(struct pp_hwmgr *hwmgr)
 				level++;
 
 			if (level)
-<<<<<<< HEAD
 				smum_send_msg_to_smc_with_parameter(hwmgr,
-=======
-				smum_send_msg_to_smc_with_parameter(hwmgr->smumgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						PPSMC_MSG_PCIeDPM_ForceLevel, level);
 		}
 	}
@@ -3093,11 +2620,7 @@ static int smu7_force_dpm_highest(struct pp_hwmgr *hwmgr)
 				level++;
 
 			if (level)
-<<<<<<< HEAD
 				smum_send_msg_to_smc_with_parameter(hwmgr,
-=======
-				smum_send_msg_to_smc_with_parameter(hwmgr->smumgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						PPSMC_MSG_SCLKDPM_SetEnabledMask,
 						(1 << level));
 		}
@@ -3111,11 +2634,7 @@ static int smu7_force_dpm_highest(struct pp_hwmgr *hwmgr)
 				level++;
 
 			if (level)
-<<<<<<< HEAD
 				smum_send_msg_to_smc_with_parameter(hwmgr,
-=======
-				smum_send_msg_to_smc_with_parameter(hwmgr->smumgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						PPSMC_MSG_MCLKDPM_SetEnabledMask,
 						(1 << level));
 		}
@@ -3134,22 +2653,14 @@ static int smu7_upload_dpm_level_enable_mask(struct pp_hwmgr *hwmgr)
 
 	if (!data->sclk_dpm_key_disabled) {
 		if (data->dpm_level_enable_mask.sclk_dpm_enable_mask)
-<<<<<<< HEAD
 			smum_send_msg_to_smc_with_parameter(hwmgr,
-=======
-			smum_send_msg_to_smc_with_parameter(hwmgr->smumgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					PPSMC_MSG_SCLKDPM_SetEnabledMask,
 					data->dpm_level_enable_mask.sclk_dpm_enable_mask);
 	}
 
 	if (!data->mclk_dpm_key_disabled) {
 		if (data->dpm_level_enable_mask.mclk_dpm_enable_mask)
-<<<<<<< HEAD
 			smum_send_msg_to_smc_with_parameter(hwmgr,
-=======
-			smum_send_msg_to_smc_with_parameter(hwmgr->smumgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					PPSMC_MSG_MCLKDPM_SetEnabledMask,
 					data->dpm_level_enable_mask.mclk_dpm_enable_mask);
 	}
@@ -3165,11 +2676,7 @@ static int smu7_unforce_dpm_levels(struct pp_hwmgr *hwmgr)
 		return -EINVAL;
 
 	if (!data->pcie_dpm_key_disabled) {
-<<<<<<< HEAD
 		smum_send_msg_to_smc(hwmgr,
-=======
-		smum_send_msg_to_smc(hwmgr->smumgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				PPSMC_MSG_PCIeDPM_UnForceLevel);
 	}
 
@@ -3186,11 +2693,7 @@ static int smu7_force_dpm_lowest(struct pp_hwmgr *hwmgr)
 		if (data->dpm_level_enable_mask.sclk_dpm_enable_mask) {
 			level = phm_get_lowest_enabled_level(hwmgr,
 							      data->dpm_level_enable_mask.sclk_dpm_enable_mask);
-<<<<<<< HEAD
 			smum_send_msg_to_smc_with_parameter(hwmgr,
-=======
-			smum_send_msg_to_smc_with_parameter(hwmgr->smumgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							    PPSMC_MSG_SCLKDPM_SetEnabledMask,
 							    (1 << level));
 
@@ -3200,11 +2703,7 @@ static int smu7_force_dpm_lowest(struct pp_hwmgr *hwmgr)
 		if (data->dpm_level_enable_mask.mclk_dpm_enable_mask) {
 			level = phm_get_lowest_enabled_level(hwmgr,
 							      data->dpm_level_enable_mask.mclk_dpm_enable_mask);
-<<<<<<< HEAD
 			smum_send_msg_to_smc_with_parameter(hwmgr,
-=======
-			smum_send_msg_to_smc_with_parameter(hwmgr->smumgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							    PPSMC_MSG_MCLKDPM_SetEnabledMask,
 							    (1 << level));
 		}
@@ -3214,11 +2713,7 @@ static int smu7_force_dpm_lowest(struct pp_hwmgr *hwmgr)
 		if (data->dpm_level_enable_mask.pcie_dpm_enable_mask) {
 			level = phm_get_lowest_enabled_level(hwmgr,
 							      data->dpm_level_enable_mask.pcie_dpm_enable_mask);
-<<<<<<< HEAD
 			smum_send_msg_to_smc_with_parameter(hwmgr,
-=======
-			smum_send_msg_to_smc_with_parameter(hwmgr->smumgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							    PPSMC_MSG_PCIeDPM_ForceLevel,
 							    (level));
 		}
@@ -3263,15 +2758,10 @@ static int smu7_get_profiling_clk(struct pp_hwmgr *hwmgr, enum amd_dpm_forced_le
 				break;
 			}
 		}
-<<<<<<< HEAD
 		if (count < 0 || level == AMD_DPM_FORCED_LEVEL_PROFILE_MIN_SCLK) {
 			*sclk_mask = 0;
 			tmp_sclk = hwmgr->dyn_state.vddc_dependency_on_sclk->entries[0].clk;
 		}
-=======
-		if (count < 0 || level == AMD_DPM_FORCED_LEVEL_PROFILE_MIN_SCLK)
-			*sclk_mask = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (level == AMD_DPM_FORCED_LEVEL_PROFILE_PEAK)
 			*sclk_mask = hwmgr->dyn_state.vddc_dependency_on_sclk->count-1;
@@ -3286,15 +2776,10 @@ static int smu7_get_profiling_clk(struct pp_hwmgr *hwmgr, enum amd_dpm_forced_le
 				break;
 			}
 		}
-<<<<<<< HEAD
 		if (count < 0 || level == AMD_DPM_FORCED_LEVEL_PROFILE_MIN_SCLK) {
 			*sclk_mask = 0;
 			tmp_sclk =  table_info->vdd_dep_on_sclk->entries[0].clk;
 		}
-=======
-		if (count < 0 || level == AMD_DPM_FORCED_LEVEL_PROFILE_MIN_SCLK)
-			*sclk_mask = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (level == AMD_DPM_FORCED_LEVEL_PROFILE_PEAK)
 			*sclk_mask = table_info->vdd_dep_on_sclk->count - 1;
@@ -3306,12 +2791,9 @@ static int smu7_get_profiling_clk(struct pp_hwmgr *hwmgr, enum amd_dpm_forced_le
 		*mclk_mask = golden_dpm_table->mclk_table.count - 1;
 
 	*pcie_mask = data->dpm_table.pcie_speed_table.count - 1;
-<<<<<<< HEAD
 	hwmgr->pstate_sclk = tmp_sclk;
 	hwmgr->pstate_mclk = tmp_mclk;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -3322,66 +2804,19 @@ static int smu7_force_dpm_level(struct pp_hwmgr *hwmgr,
 	uint32_t sclk_mask = 0;
 	uint32_t mclk_mask = 0;
 	uint32_t pcie_mask = 0;
-<<<<<<< HEAD
 
 	if (hwmgr->pstate_sclk == 0)
 		smu7_get_profiling_clk(hwmgr, level, &sclk_mask, &mclk_mask, &pcie_mask);
-=======
-	uint32_t profile_mode_mask = AMD_DPM_FORCED_LEVEL_PROFILE_STANDARD |
-					AMD_DPM_FORCED_LEVEL_PROFILE_MIN_SCLK |
-					AMD_DPM_FORCED_LEVEL_PROFILE_MIN_MCLK |
-					AMD_DPM_FORCED_LEVEL_PROFILE_PEAK;
-
-	if (level == hwmgr->dpm_level)
-		return ret;
-
-	if (!(hwmgr->dpm_level & profile_mode_mask)) {
-		/* enter profile mode, save current level, disable gfx cg*/
-		if (level & profile_mode_mask) {
-			hwmgr->saved_dpm_level = hwmgr->dpm_level;
-			cgs_set_clockgating_state(hwmgr->device,
-						AMD_IP_BLOCK_TYPE_GFX,
-						AMD_CG_STATE_UNGATE);
-		}
-	} else {
-		/* exit profile mode, restore level, enable gfx cg*/
-		if (!(level & profile_mode_mask)) {
-			if (level == AMD_DPM_FORCED_LEVEL_PROFILE_EXIT)
-				level = hwmgr->saved_dpm_level;
-			cgs_set_clockgating_state(hwmgr->device,
-					AMD_IP_BLOCK_TYPE_GFX,
-					AMD_CG_STATE_GATE);
-		}
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (level) {
 	case AMD_DPM_FORCED_LEVEL_HIGH:
 		ret = smu7_force_dpm_highest(hwmgr);
-<<<<<<< HEAD
 		break;
 	case AMD_DPM_FORCED_LEVEL_LOW:
 		ret = smu7_force_dpm_lowest(hwmgr);
 		break;
 	case AMD_DPM_FORCED_LEVEL_AUTO:
 		ret = smu7_unforce_dpm_levels(hwmgr);
-=======
-		if (ret)
-			return ret;
-		hwmgr->dpm_level = level;
-		break;
-	case AMD_DPM_FORCED_LEVEL_LOW:
-		ret = smu7_force_dpm_lowest(hwmgr);
-		if (ret)
-			return ret;
-		hwmgr->dpm_level = level;
-		break;
-	case AMD_DPM_FORCED_LEVEL_AUTO:
-		ret = smu7_unforce_dpm_levels(hwmgr);
-		if (ret)
-			return ret;
-		hwmgr->dpm_level = level;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case AMD_DPM_FORCED_LEVEL_PROFILE_STANDARD:
 	case AMD_DPM_FORCED_LEVEL_PROFILE_MIN_SCLK:
@@ -3390,29 +2825,16 @@ static int smu7_force_dpm_level(struct pp_hwmgr *hwmgr,
 		ret = smu7_get_profiling_clk(hwmgr, level, &sclk_mask, &mclk_mask, &pcie_mask);
 		if (ret)
 			return ret;
-<<<<<<< HEAD
 		smu7_force_clock_level(hwmgr, PP_SCLK, 1<<sclk_mask);
 		smu7_force_clock_level(hwmgr, PP_MCLK, 1<<mclk_mask);
 		smu7_force_clock_level(hwmgr, PP_PCIE, 1<<pcie_mask);
 		break;
 	case AMD_DPM_FORCED_LEVEL_MANUAL:
-=======
-		hwmgr->dpm_level = level;
-		smu7_force_clock_level(hwmgr, PP_SCLK, 1<<sclk_mask);
-		smu7_force_clock_level(hwmgr, PP_MCLK, 1<<mclk_mask);
-		smu7_force_clock_level(hwmgr, PP_PCIE, 1<<pcie_mask);
-
-		break;
-	case AMD_DPM_FORCED_LEVEL_MANUAL:
-		hwmgr->dpm_level = level;
-		break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case AMD_DPM_FORCED_LEVEL_PROFILE_EXIT:
 	default:
 		break;
 	}
 
-<<<<<<< HEAD
 	if (!ret) {
 		if (level == AMD_DPM_FORCED_LEVEL_PROFILE_PEAK && hwmgr->dpm_level != AMD_DPM_FORCED_LEVEL_PROFILE_PEAK)
 			smu7_fan_ctrl_set_fan_speed_percent(hwmgr, 100);
@@ -3420,14 +2842,6 @@ static int smu7_force_dpm_level(struct pp_hwmgr *hwmgr,
 			smu7_fan_ctrl_reset_fan_speed_to_default(hwmgr);
 	}
 	return ret;
-=======
-	if (level == AMD_DPM_FORCED_LEVEL_PROFILE_PEAK && hwmgr->saved_dpm_level != AMD_DPM_FORCED_LEVEL_PROFILE_PEAK)
-		smu7_fan_ctrl_set_fan_speed_percent(hwmgr, 100);
-	else if (level != AMD_DPM_FORCED_LEVEL_PROFILE_PEAK && hwmgr->saved_dpm_level == AMD_DPM_FORCED_LEVEL_PROFILE_PEAK)
-		smu7_fan_ctrl_reset_fan_speed_to_default(hwmgr);
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int smu7_get_power_state_size(struct pp_hwmgr *hwmgr)
@@ -3447,12 +2861,9 @@ static int smu7_vblank_too_short(struct pp_hwmgr *hwmgr,
 	case CHIP_POLARIS12:
 		switch_limit_us = data->is_memory_gddr5 ? 190 : 150;
 		break;
-<<<<<<< HEAD
 	case CHIP_VEGAM:
 		switch_limit_us = 30;
 		break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		switch_limit_us = data->is_memory_gddr5 ? 450 : 150;
 		break;
@@ -3468,11 +2879,7 @@ static int smu7_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
 				struct pp_power_state *request_ps,
 			const struct pp_power_state *current_ps)
 {
-<<<<<<< HEAD
 	struct amdgpu_device *adev = hwmgr->adev;
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct smu7_power_state *smu7_ps =
 				cast_phw_smu7_power_state(&request_ps->hardware);
 	uint32_t sclk;
@@ -3480,11 +2887,6 @@ static int smu7_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
 	struct PP_Clocks minimum_clocks = {0};
 	bool disable_mclk_switching;
 	bool disable_mclk_switching_for_frame_lock;
-<<<<<<< HEAD
-=======
-	struct cgs_display_info info = {0};
-	struct cgs_mode_info mode_info = {0};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const struct phm_clock_and_voltage_limits *max_limits;
 	uint32_t i;
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
@@ -3493,10 +2895,6 @@ static int smu7_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
 	int32_t count;
 	int32_t stable_pstate_sclk = 0, stable_pstate_mclk = 0;
 
-<<<<<<< HEAD
-=======
-	info.mode_info = &mode_info;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	data->battery_state = (PP_StateUILabel_Battery ==
 			request_ps->classification.ui_label);
 
@@ -3504,20 +2902,12 @@ static int smu7_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
 				 "VI should always have 2 performance levels",
 				);
 
-<<<<<<< HEAD
 	max_limits = adev->pm.ac_power ?
-=======
-	max_limits = (PP_PowerSource_AC == hwmgr->power_source) ?
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			&(hwmgr->dyn_state.max_clock_voltage_on_ac) :
 			&(hwmgr->dyn_state.max_clock_voltage_on_dc);
 
 	/* Cap clock DPM tables at DC MAX if it is in DC. */
-<<<<<<< HEAD
 	if (!adev->pm.ac_power) {
-=======
-	if (PP_PowerSource_DC == hwmgr->power_source) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		for (i = 0; i < smu7_ps->performance_level_count; i++) {
 			if (smu7_ps->performance_levels[i].memory_clock > max_limits->mclk)
 				smu7_ps->performance_levels[i].memory_clock = max_limits->mclk;
@@ -3526,18 +2916,8 @@ static int smu7_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
 		}
 	}
 
-<<<<<<< HEAD
 	minimum_clocks.engineClock = hwmgr->display_config->min_core_set_clock;
 	minimum_clocks.memoryClock = hwmgr->display_config->min_mem_set_clock;
-=======
-	smu7_ps->vce_clks.evclk = hwmgr->vce_arbiter.evclk;
-	smu7_ps->vce_clks.ecclk = hwmgr->vce_arbiter.ecclk;
-
-	cgs_get_active_displays_info(hwmgr->device, &info);
-
-	minimum_clocks.engineClock = hwmgr->display_config.min_core_set_clock;
-	minimum_clocks.memoryClock = hwmgr->display_config.min_mem_set_clock;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
 			PHM_PlatformCaps_StablePState)) {
@@ -3563,62 +2943,17 @@ static int smu7_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
 		minimum_clocks.memoryClock = stable_pstate_mclk;
 	}
 
-<<<<<<< HEAD
-=======
-	if (minimum_clocks.engineClock < hwmgr->gfx_arbiter.sclk)
-		minimum_clocks.engineClock = hwmgr->gfx_arbiter.sclk;
-
-	if (minimum_clocks.memoryClock < hwmgr->gfx_arbiter.mclk)
-		minimum_clocks.memoryClock = hwmgr->gfx_arbiter.mclk;
-
-	smu7_ps->sclk_threshold = hwmgr->gfx_arbiter.sclk_threshold;
-
-	if (0 != hwmgr->gfx_arbiter.sclk_over_drive) {
-		PP_ASSERT_WITH_CODE((hwmgr->gfx_arbiter.sclk_over_drive <=
-				hwmgr->platform_descriptor.overdriveLimit.engineClock),
-				"Overdrive sclk exceeds limit",
-				hwmgr->gfx_arbiter.sclk_over_drive =
-						hwmgr->platform_descriptor.overdriveLimit.engineClock);
-
-		if (hwmgr->gfx_arbiter.sclk_over_drive >= hwmgr->gfx_arbiter.sclk)
-			smu7_ps->performance_levels[1].engine_clock =
-					hwmgr->gfx_arbiter.sclk_over_drive;
-	}
-
-	if (0 != hwmgr->gfx_arbiter.mclk_over_drive) {
-		PP_ASSERT_WITH_CODE((hwmgr->gfx_arbiter.mclk_over_drive <=
-				hwmgr->platform_descriptor.overdriveLimit.memoryClock),
-				"Overdrive mclk exceeds limit",
-				hwmgr->gfx_arbiter.mclk_over_drive =
-						hwmgr->platform_descriptor.overdriveLimit.memoryClock);
-
-		if (hwmgr->gfx_arbiter.mclk_over_drive >= hwmgr->gfx_arbiter.mclk)
-			smu7_ps->performance_levels[1].memory_clock =
-					hwmgr->gfx_arbiter.mclk_over_drive;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	disable_mclk_switching_for_frame_lock = phm_cap_enabled(
 				    hwmgr->platform_descriptor.platformCaps,
 				    PHM_PlatformCaps_DisableMclkSwitchingForFrameLock);
 
 
-<<<<<<< HEAD
 	if (hwmgr->display_config->num_display == 0)
 		disable_mclk_switching = false;
 	else
 		disable_mclk_switching = ((1 < hwmgr->display_config->num_display) ||
 					  disable_mclk_switching_for_frame_lock ||
 					  smu7_vblank_too_short(hwmgr, hwmgr->display_config->min_vblank_time));
-=======
-	if (info.display_count == 0)
-		disable_mclk_switching = false;
-	else
-		disable_mclk_switching = ((1 < info.display_count) ||
-					  disable_mclk_switching_for_frame_lock ||
-					  smu7_vblank_too_short(hwmgr, mode_info.vblank_time_us) ||
-					  (mode_info.refresh_rate > 120));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sclk = smu7_ps->performance_levels[0].engine_clock;
 	mclk = smu7_ps->performance_levels[0].memory_clock;
@@ -3670,11 +3005,7 @@ static int smu7_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
 }
 
 
-<<<<<<< HEAD
 static uint32_t smu7_dpm_get_mclk(struct pp_hwmgr *hwmgr, bool low)
-=======
-static int smu7_dpm_get_mclk(struct pp_hwmgr *hwmgr, bool low)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct pp_power_state  *ps;
 	struct smu7_power_state  *smu7_ps;
@@ -3696,11 +3027,7 @@ static int smu7_dpm_get_mclk(struct pp_hwmgr *hwmgr, bool low)
 				[smu7_ps->performance_level_count-1].memory_clock;
 }
 
-<<<<<<< HEAD
 static uint32_t smu7_dpm_get_sclk(struct pp_hwmgr *hwmgr, bool low)
-=======
-static int smu7_dpm_get_sclk(struct pp_hwmgr *hwmgr, bool low)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct pp_power_state  *ps;
 	struct smu7_power_state  *smu7_ps;
@@ -3735,12 +3062,7 @@ static int smu7_dpm_patch_boot_state(struct pp_hwmgr *hwmgr,
 	/* First retrieve the Boot clocks and VDDC from the firmware info table.
 	 * We assume here that fw_info is unchanged if this call fails.
 	 */
-<<<<<<< HEAD
 	fw_info = (ATOM_FIRMWARE_INFO_V2_2 *)smu_atom_get_data_table(hwmgr->adev, index,
-=======
-	fw_info = (ATOM_FIRMWARE_INFO_V2_2 *)cgs_atom_get_data_table(
-			hwmgr->device, index,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			&size, &frev, &crev);
 	if (!fw_info)
 		/* During a test, there is no firmware info table. */
@@ -3841,11 +3163,7 @@ static int smu7_get_pp_table_entry_callback_func_v1(struct pp_hwmgr *hwmgr,
 			[smu7_power_state->performance_level_count++]);
 
 	PP_ASSERT_WITH_CODE(
-<<<<<<< HEAD
 			(smu7_power_state->performance_level_count < smum_get_mac_definition(hwmgr, SMU_MAX_LEVELS_GRAPHICS)),
-=======
-			(smu7_power_state->performance_level_count < smum_get_mac_definition(hwmgr->smumgr, SMU_MAX_LEVELS_GRAPHICS)),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			"Performance levels exceeds SMC limit!",
 			return -EINVAL);
 
@@ -3867,11 +3185,7 @@ static int smu7_get_pp_table_entry_callback_func_v1(struct pp_hwmgr *hwmgr,
 	performance_level->pcie_gen = get_pcie_gen_support(data->pcie_gen_cap,
 			state_entry->ucPCIEGenLow);
 	performance_level->pcie_lane = get_pcie_lane_support(data->pcie_lane_cap,
-<<<<<<< HEAD
 			state_entry->ucPCIELaneLow);
-=======
-			state_entry->ucPCIELaneHigh);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	performance_level = &(smu7_power_state->performance_levels
 			[smu7_power_state->performance_level_count++]);
@@ -3918,19 +3232,11 @@ static int smu7_get_pp_table_entry_v1(struct pp_hwmgr *hwmgr,
 	if (dep_mclk_table != NULL && dep_mclk_table->count == 1) {
 		if (dep_mclk_table->entries[0].clk !=
 				data->vbios_boot_state.mclk_bootup_value)
-<<<<<<< HEAD
 			pr_debug("Single MCLK entry VDDCI/MCLK dependency table "
 					"does not match VBIOS boot MCLK level");
 		if (dep_mclk_table->entries[0].vddci !=
 				data->vbios_boot_state.vddci_bootup_value)
 			pr_debug("Single VDDCI entry VDDCI/MCLK dependency table "
-=======
-			pr_err("Single MCLK entry VDDCI/MCLK dependency table "
-					"does not match VBIOS boot MCLK level");
-		if (dep_mclk_table->entries[0].vddci !=
-				data->vbios_boot_state.vddci_bootup_value)
-			pr_err("Single VDDCI entry VDDCI/MCLK dependency table "
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					"does not match VBIOS boot VDDCI level");
 	}
 
@@ -4021,11 +3327,7 @@ static int smu7_get_pp_table_entry_callback_func_v0(struct pp_hwmgr *hwmgr,
 		data->highest_mclk = memory_clock;
 
 	PP_ASSERT_WITH_CODE(
-<<<<<<< HEAD
 			(ps->performance_level_count < smum_get_mac_definition(hwmgr, SMU_MAX_LEVELS_GRAPHICS)),
-=======
-			(ps->performance_level_count < smum_get_mac_definition(hwmgr->smumgr, SMU_MAX_LEVELS_GRAPHICS)),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			"Performance levels exceeds SMC limit!",
 			return -EINVAL);
 
@@ -4078,19 +3380,11 @@ static int smu7_get_pp_table_entry_v0(struct pp_hwmgr *hwmgr,
 	if (dep_mclk_table != NULL && dep_mclk_table->count == 1) {
 		if (dep_mclk_table->entries[0].clk !=
 				data->vbios_boot_state.mclk_bootup_value)
-<<<<<<< HEAD
 			pr_debug("Single MCLK entry VDDCI/MCLK dependency table "
 					"does not match VBIOS boot MCLK level");
 		if (dep_mclk_table->entries[0].v !=
 				data->vbios_boot_state.vddci_bootup_value)
 			pr_debug("Single VDDCI entry VDDCI/MCLK dependency table "
-=======
-			pr_err("Single MCLK entry VDDCI/MCLK dependency table "
-					"does not match VBIOS boot MCLK level");
-		if (dep_mclk_table->entries[0].v !=
-				data->vbios_boot_state.vddci_bootup_value)
-			pr_err("Single VDDCI entry VDDCI/MCLK dependency table "
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					"does not match VBIOS boot VDDCI level");
 	}
 
@@ -4176,7 +3470,6 @@ static int smu7_get_pp_table_entry(struct pp_hwmgr *hwmgr,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int smu7_get_gpu_power(struct pp_hwmgr *hwmgr, u32 *query)
 {
 	int i;
@@ -4206,35 +3499,6 @@ static int smu7_get_gpu_power(struct pp_hwmgr *hwmgr, u32 *query)
 			break;
 	}
 	*query = tmp;
-=======
-static int smu7_get_gpu_power(struct pp_hwmgr *hwmgr,
-		struct pp_gpu_power *query)
-{
-	PP_ASSERT_WITH_CODE(!smum_send_msg_to_smc(hwmgr->smumgr,
-			PPSMC_MSG_PmStatusLogStart),
-			"Failed to start pm status log!",
-			return -1);
-
-	msleep_interruptible(20);
-
-	PP_ASSERT_WITH_CODE(!smum_send_msg_to_smc(hwmgr->smumgr,
-			PPSMC_MSG_PmStatusLogSample),
-			"Failed to sample pm status log!",
-			return -1);
-
-	query->vddc_power = cgs_read_ind_register(hwmgr->device,
-			CGS_IND_REG__SMC,
-			ixSMU_PM_STATUS_40);
-	query->vddci_power = cgs_read_ind_register(hwmgr->device,
-			CGS_IND_REG__SMC,
-			ixSMU_PM_STATUS_49);
-	query->max_gpu_power = cgs_read_ind_register(hwmgr->device,
-			CGS_IND_REG__SMC,
-			ixSMU_PM_STATUS_94);
-	query->average_gpu_power = cgs_read_ind_register(hwmgr->device,
-			CGS_IND_REG__SMC,
-			ixSMU_PM_STATUS_95);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -4243,11 +3507,7 @@ static int smu7_read_sensor(struct pp_hwmgr *hwmgr, int idx,
 			    void *value, int *size)
 {
 	uint32_t sclk, mclk, activity_percent;
-<<<<<<< HEAD
 	uint32_t offset, val_vid;
-=======
-	uint32_t offset;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
 
 	/* size must be at least 4 bytes for all sensors */
@@ -4256,31 +3516,19 @@ static int smu7_read_sensor(struct pp_hwmgr *hwmgr, int idx,
 
 	switch (idx) {
 	case AMDGPU_PP_SENSOR_GFX_SCLK:
-<<<<<<< HEAD
 		smum_send_msg_to_smc(hwmgr, PPSMC_MSG_API_GetSclkFrequency);
-=======
-		smum_send_msg_to_smc(hwmgr->smumgr, PPSMC_MSG_API_GetSclkFrequency);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sclk = cgs_read_register(hwmgr->device, mmSMC_MSG_ARG_0);
 		*((uint32_t *)value) = sclk;
 		*size = 4;
 		return 0;
 	case AMDGPU_PP_SENSOR_GFX_MCLK:
-<<<<<<< HEAD
 		smum_send_msg_to_smc(hwmgr, PPSMC_MSG_API_GetMclkFrequency);
-=======
-		smum_send_msg_to_smc(hwmgr->smumgr, PPSMC_MSG_API_GetMclkFrequency);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mclk = cgs_read_register(hwmgr->device, mmSMC_MSG_ARG_0);
 		*((uint32_t *)value) = mclk;
 		*size = 4;
 		return 0;
 	case AMDGPU_PP_SENSOR_GPU_LOAD:
-<<<<<<< HEAD
 		offset = data->soft_regs_start + smum_get_offsetof(hwmgr,
-=======
-		offset = data->soft_regs_start + smum_get_offsetof(hwmgr->smumgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 								SMU_SoftRegisters,
 								AverageGraphicsActivity);
 
@@ -4303,7 +3551,6 @@ static int smu7_read_sensor(struct pp_hwmgr *hwmgr, int idx,
 		*size = 4;
 		return 0;
 	case AMDGPU_PP_SENSOR_GPU_POWER:
-<<<<<<< HEAD
 		return smu7_get_gpu_power(hwmgr, (uint32_t *)value);
 	case AMDGPU_PP_SENSOR_VDDGFX:
 		if ((data->vr_config & 0xff) == 0x2)
@@ -4315,12 +3562,6 @@ static int smu7_read_sensor(struct pp_hwmgr *hwmgr, int idx,
 
 		*((uint32_t *)value) = (uint32_t)convert_to_vddc(val_vid);
 		return 0;
-=======
-		if (*size < sizeof(struct pp_gpu_power))
-			return -EINVAL;
-		*size = sizeof(struct pp_gpu_power);
-		return smu7_get_gpu_power(hwmgr, (struct pp_gpu_power *)value);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		return -EINVAL;
 	}
@@ -4341,12 +3582,6 @@ static int smu7_find_dpm_states_clocks_in_dpm_table(struct pp_hwmgr *hwmgr, cons
 			[smu7_ps->performance_level_count - 1].memory_clock;
 	struct PP_Clocks min_clocks = {0};
 	uint32_t i;
-<<<<<<< HEAD
-=======
-	struct cgs_display_info info = {0};
-
-	data->need_update_smu7_dpm_table = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < sclk_table->count; i++) {
 		if (sclk == sclk_table->dpm_levels[i].value)
@@ -4373,14 +3608,8 @@ static int smu7_find_dpm_states_clocks_in_dpm_table(struct pp_hwmgr *hwmgr, cons
 	if (i >= mclk_table->count)
 		data->need_update_smu7_dpm_table |= DPMTABLE_OD_UPDATE_MCLK;
 
-<<<<<<< HEAD
 
 	if (data->display_timing.num_existing_displays != hwmgr->display_config->num_display)
-=======
-	cgs_get_active_displays_info(hwmgr->device, &info);
-
-	if (data->display_timing.num_existing_displays != info.display_count)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		data->need_update_smu7_dpm_table |= DPMTABLE_UPDATE_MCLK;
 
 	return 0;
@@ -4435,27 +3664,17 @@ static int smu7_request_link_speed_change_before_state_change(
 
 	if (target_link_speed > current_link_speed) {
 		switch (target_link_speed) {
-<<<<<<< HEAD
 #ifdef CONFIG_ACPI
 		case PP_PCIEGen3:
 			if (0 == amdgpu_acpi_pcie_performance_request(hwmgr->adev, PCIE_PERF_REQ_GEN3, false))
-=======
-		case PP_PCIEGen3:
-			if (0 == acpi_pcie_perf_request(hwmgr->device, PCIE_PERF_REQ_GEN3, false))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				break;
 			data->force_pcie_gen = PP_PCIEGen2;
 			if (current_link_speed == PP_PCIEGen2)
 				break;
 		case PP_PCIEGen2:
-<<<<<<< HEAD
 			if (0 == amdgpu_acpi_pcie_performance_request(hwmgr->adev, PCIE_PERF_REQ_GEN2, false))
 				break;
 #endif
-=======
-			if (0 == acpi_pcie_perf_request(hwmgr->device, PCIE_PERF_REQ_GEN2, false))
-				break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		default:
 			data->force_pcie_gen = smu7_get_current_pcie_speed(hwmgr);
 			break;
@@ -4481,11 +3700,7 @@ static int smu7_freeze_sclk_mclk_dpm(struct pp_hwmgr *hwmgr)
 		PP_ASSERT_WITH_CODE(true == smum_is_dpm_running(hwmgr),
 				"Trying to freeze SCLK DPM when DPM is disabled",
 				);
-<<<<<<< HEAD
 		PP_ASSERT_WITH_CODE(0 == smum_send_msg_to_smc(hwmgr,
-=======
-		PP_ASSERT_WITH_CODE(0 == smum_send_msg_to_smc(hwmgr->smumgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				PPSMC_MSG_SCLKDPM_FreezeLevel),
 				"Failed to freeze SCLK DPM during FreezeSclkMclkDPM Function!",
 				return -EINVAL);
@@ -4497,11 +3712,7 @@ static int smu7_freeze_sclk_mclk_dpm(struct pp_hwmgr *hwmgr)
 		PP_ASSERT_WITH_CODE(true == smum_is_dpm_running(hwmgr),
 				"Trying to freeze MCLK DPM when DPM is disabled",
 				);
-<<<<<<< HEAD
 		PP_ASSERT_WITH_CODE(0 == smum_send_msg_to_smc(hwmgr,
-=======
-		PP_ASSERT_WITH_CODE(0 == smum_send_msg_to_smc(hwmgr->smumgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				PPSMC_MSG_MCLKDPM_FreezeLevel),
 				"Failed to freeze MCLK DPM during FreezeSclkMclkDPM Function!",
 				return -EINVAL);
@@ -4514,34 +3725,16 @@ static int smu7_populate_and_upload_sclk_mclk_dpm_levels(
 		struct pp_hwmgr *hwmgr, const void *input)
 {
 	int result = 0;
-<<<<<<< HEAD
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
 	struct smu7_dpm_table *dpm_table = &data->dpm_table;
 	uint32_t count;
 	struct smu7_odn_dpm_table *odn_table = &(data->odn_dpm_table);
 	struct phm_odn_clock_levels *odn_sclk_table = &(odn_table->odn_core_clock_dpm_levels);
 	struct phm_odn_clock_levels *odn_mclk_table = &(odn_table->odn_memory_clock_dpm_levels);
-=======
-	const struct phm_set_power_state_input *states =
-			(const struct phm_set_power_state_input *)input;
-	const struct smu7_power_state *smu7_ps =
-			cast_const_phw_smu7_power_state(states->pnew_state);
-	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
-	uint32_t sclk = smu7_ps->performance_levels
-			[smu7_ps->performance_level_count - 1].engine_clock;
-	uint32_t mclk = smu7_ps->performance_levels
-			[smu7_ps->performance_level_count - 1].memory_clock;
-	struct smu7_dpm_table *dpm_table = &data->dpm_table;
-
-	struct smu7_dpm_table *golden_dpm_table = &data->golden_dpm_table;
-	uint32_t dpm_count, clock_percent;
-	uint32_t i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (0 == data->need_update_smu7_dpm_table)
 		return 0;
 
-<<<<<<< HEAD
 	if (hwmgr->od_enabled && data->need_update_smu7_dpm_table & DPMTABLE_OD_UPDATE_SCLK) {
 		for (count = 0; count < dpm_table->sclk_table.count; count++) {
 			dpm_table->sclk_table.dpm_levels[count].enabled = odn_sclk_table->entries[count].enabled;
@@ -4553,92 +3746,6 @@ static int smu7_populate_and_upload_sclk_mclk_dpm_levels(
 		for (count = 0; count < dpm_table->mclk_table.count; count++) {
 			dpm_table->mclk_table.dpm_levels[count].enabled = odn_mclk_table->entries[count].enabled;
 			dpm_table->mclk_table.dpm_levels[count].value = odn_mclk_table->entries[count].clock;
-=======
-	if (data->need_update_smu7_dpm_table & DPMTABLE_OD_UPDATE_SCLK) {
-		dpm_table->sclk_table.dpm_levels
-		[dpm_table->sclk_table.count - 1].value = sclk;
-
-		if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps, PHM_PlatformCaps_OD6PlusinACSupport) ||
-		    phm_cap_enabled(hwmgr->platform_descriptor.platformCaps, PHM_PlatformCaps_OD6PlusinDCSupport)) {
-		/* Need to do calculation based on the golden DPM table
-		 * as the Heatmap GPU Clock axis is also based on the default values
-		 */
-			PP_ASSERT_WITH_CODE(
-				(golden_dpm_table->sclk_table.dpm_levels
-						[golden_dpm_table->sclk_table.count - 1].value != 0),
-				"Divide by 0!",
-				return -EINVAL);
-			dpm_count = dpm_table->sclk_table.count < 2 ? 0 : dpm_table->sclk_table.count - 2;
-
-			for (i = dpm_count; i > 1; i--) {
-				if (sclk > golden_dpm_table->sclk_table.dpm_levels[golden_dpm_table->sclk_table.count-1].value) {
-					clock_percent =
-					      ((sclk
-						- golden_dpm_table->sclk_table.dpm_levels[golden_dpm_table->sclk_table.count-1].value
-						) * 100)
-						/ golden_dpm_table->sclk_table.dpm_levels[golden_dpm_table->sclk_table.count-1].value;
-
-					dpm_table->sclk_table.dpm_levels[i].value =
-							golden_dpm_table->sclk_table.dpm_levels[i].value +
-							(golden_dpm_table->sclk_table.dpm_levels[i].value *
-								clock_percent)/100;
-
-				} else if (golden_dpm_table->sclk_table.dpm_levels[dpm_table->sclk_table.count-1].value > sclk) {
-					clock_percent =
-						((golden_dpm_table->sclk_table.dpm_levels[golden_dpm_table->sclk_table.count - 1].value
-						- sclk) * 100)
-						/ golden_dpm_table->sclk_table.dpm_levels[golden_dpm_table->sclk_table.count-1].value;
-
-					dpm_table->sclk_table.dpm_levels[i].value =
-							golden_dpm_table->sclk_table.dpm_levels[i].value -
-							(golden_dpm_table->sclk_table.dpm_levels[i].value *
-									clock_percent) / 100;
-				} else
-					dpm_table->sclk_table.dpm_levels[i].value =
-							golden_dpm_table->sclk_table.dpm_levels[i].value;
-			}
-		}
-	}
-
-	if (data->need_update_smu7_dpm_table & DPMTABLE_OD_UPDATE_MCLK) {
-		dpm_table->mclk_table.dpm_levels
-			[dpm_table->mclk_table.count - 1].value = mclk;
-
-		if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps, PHM_PlatformCaps_OD6PlusinACSupport) ||
-		    phm_cap_enabled(hwmgr->platform_descriptor.platformCaps, PHM_PlatformCaps_OD6PlusinDCSupport)) {
-
-			PP_ASSERT_WITH_CODE(
-					(golden_dpm_table->mclk_table.dpm_levels
-						[golden_dpm_table->mclk_table.count-1].value != 0),
-					"Divide by 0!",
-					return -EINVAL);
-			dpm_count = dpm_table->mclk_table.count < 2 ? 0 : dpm_table->mclk_table.count - 2;
-			for (i = dpm_count; i > 1; i--) {
-				if (golden_dpm_table->mclk_table.dpm_levels[golden_dpm_table->mclk_table.count-1].value < mclk) {
-					clock_percent = ((mclk -
-					golden_dpm_table->mclk_table.dpm_levels[golden_dpm_table->mclk_table.count-1].value) * 100)
-					/ golden_dpm_table->mclk_table.dpm_levels[golden_dpm_table->mclk_table.count-1].value;
-
-					dpm_table->mclk_table.dpm_levels[i].value =
-							golden_dpm_table->mclk_table.dpm_levels[i].value +
-							(golden_dpm_table->mclk_table.dpm_levels[i].value *
-							clock_percent) / 100;
-
-				} else if (golden_dpm_table->mclk_table.dpm_levels[dpm_table->mclk_table.count-1].value > mclk) {
-					clock_percent = (
-					 (golden_dpm_table->mclk_table.dpm_levels[golden_dpm_table->mclk_table.count-1].value - mclk)
-					* 100)
-					/ golden_dpm_table->mclk_table.dpm_levels[golden_dpm_table->mclk_table.count-1].value;
-
-					dpm_table->mclk_table.dpm_levels[i].value =
-							golden_dpm_table->mclk_table.dpm_levels[i].value -
-							(golden_dpm_table->mclk_table.dpm_levels[i].value *
-									clock_percent) / 100;
-				} else
-					dpm_table->mclk_table.dpm_levels[i].value =
-							golden_dpm_table->mclk_table.dpm_levels[i].value;
-			}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -4669,14 +3776,9 @@ static int smu7_trim_single_dpm_states(struct pp_hwmgr *hwmgr,
 	uint32_t i;
 
 	for (i = 0; i < dpm_table->count; i++) {
-<<<<<<< HEAD
 	/*skip the trim if od is enabled*/
 		if (!hwmgr->od_enabled && (dpm_table->dpm_levels[i].value < low_limit
 			|| dpm_table->dpm_levels[i].value > high_limit))
-=======
-		if ((dpm_table->dpm_levels[i].value < low_limit)
-		|| (dpm_table->dpm_levels[i].value > high_limit))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dpm_table->dpm_levels[i].enabled = false;
 		else
 			dpm_table->dpm_levels[i].enabled = true;
@@ -4713,21 +3815,14 @@ static int smu7_trim_dpm_states(struct pp_hwmgr *hwmgr,
 static int smu7_generate_dpm_level_enable_mask(
 		struct pp_hwmgr *hwmgr, const void *input)
 {
-<<<<<<< HEAD
 	int result = 0;
-=======
-	int result;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const struct phm_set_power_state_input *states =
 			(const struct phm_set_power_state_input *)input;
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
 	const struct smu7_power_state *smu7_ps =
 			cast_const_phw_smu7_power_state(states->pnew_state);
 
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	result = smu7_trim_dpm_states(hwmgr, smu7_ps);
 	if (result)
 		return result;
@@ -4756,11 +3851,7 @@ static int smu7_unfreeze_sclk_mclk_dpm(struct pp_hwmgr *hwmgr)
 		PP_ASSERT_WITH_CODE(true == smum_is_dpm_running(hwmgr),
 				"Trying to Unfreeze SCLK DPM when DPM is disabled",
 				);
-<<<<<<< HEAD
 		PP_ASSERT_WITH_CODE(0 == smum_send_msg_to_smc(hwmgr,
-=======
-		PP_ASSERT_WITH_CODE(0 == smum_send_msg_to_smc(hwmgr->smumgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				PPSMC_MSG_SCLKDPM_UnfreezeLevel),
 			"Failed to unfreeze SCLK DPM during UnFreezeSclkMclkDPM Function!",
 			return -EINVAL);
@@ -4772,22 +3863,13 @@ static int smu7_unfreeze_sclk_mclk_dpm(struct pp_hwmgr *hwmgr)
 		PP_ASSERT_WITH_CODE(true == smum_is_dpm_running(hwmgr),
 				"Trying to Unfreeze MCLK DPM when DPM is disabled",
 				);
-<<<<<<< HEAD
 		PP_ASSERT_WITH_CODE(0 == smum_send_msg_to_smc(hwmgr,
 				PPSMC_MSG_MCLKDPM_UnfreezeLevel),
-=======
-		PP_ASSERT_WITH_CODE(0 == smum_send_msg_to_smc(hwmgr->smumgr,
-				PPSMC_MSG_SCLKDPM_UnfreezeLevel),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    "Failed to unfreeze MCLK DPM during UnFreezeSclkMclkDPM Function!",
 		    return -EINVAL);
 	}
 
-<<<<<<< HEAD
 	data->need_update_smu7_dpm_table &= DPMTABLE_OD_UPDATE_VDDC;
-=======
-	data->need_update_smu7_dpm_table = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -4815,21 +3897,14 @@ static int smu7_notify_link_speed_change_after_state_change(
 				smu7_get_current_pcie_speed(hwmgr) > 0)
 			return 0;
 
-<<<<<<< HEAD
 #ifdef CONFIG_ACPI
 		if (amdgpu_acpi_pcie_performance_request(hwmgr->adev, request, false)) {
-=======
-		if (acpi_pcie_perf_request(hwmgr->device, request, false)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (PP_PCIEGen2 == target_link_speed)
 				pr_info("PSPP request to switch to Gen2 from Gen3 Failed!");
 			else
 				pr_info("PSPP request to switch to Gen1 from Gen2 Failed!");
 		}
-<<<<<<< HEAD
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -4839,7 +3914,6 @@ static int smu7_notify_smc_display(struct pp_hwmgr *hwmgr)
 {
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
 
-<<<<<<< HEAD
 	if (hwmgr->feature_mask & PP_VBI_TIME_SUPPORT_MASK) {
 		if (hwmgr->chip_id == CHIP_VEGAM)
 			smum_send_msg_to_smc_with_parameter(hwmgr,
@@ -4849,12 +3923,6 @@ static int smu7_notify_smc_display(struct pp_hwmgr *hwmgr)
 					(PPSMC_Msg)PPSMC_MSG_SetVBITimeout, data->frame_time_x2);
 	}
 	return (smum_send_msg_to_smc(hwmgr, (PPSMC_Msg)PPSMC_HasDisplay) == 0) ?  0 : -EINVAL;
-=======
-	if (hwmgr->feature_mask & PP_VBI_TIME_SUPPORT_MASK)
-		smum_send_msg_to_smc_with_parameter(hwmgr->smumgr,
-			(PPSMC_Msg)PPSMC_MSG_SetVBITimeout, data->frame_time_x2);
-	return (smum_send_msg_to_smc(hwmgr->smumgr, (PPSMC_Msg)PPSMC_HasDisplay) == 0) ?  0 : -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int smu7_set_power_state_tasks(struct pp_hwmgr *hwmgr, const void *input)
@@ -4885,14 +3953,11 @@ static int smu7_set_power_state_tasks(struct pp_hwmgr *hwmgr, const void *input)
 			"Failed to populate and upload SCLK MCLK DPM levels!",
 			result = tmp_result);
 
-<<<<<<< HEAD
 	tmp_result = smu7_update_avfs(hwmgr);
 	PP_ASSERT_WITH_CODE((0 == tmp_result),
 			"Failed to update avfs voltages!",
 			result = tmp_result);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tmp_result = smu7_generate_dpm_level_enable_mask(hwmgr, input);
 	PP_ASSERT_WITH_CODE((0 == tmp_result),
 			"Failed to generate DPM level enabled mask!",
@@ -4935,14 +4000,7 @@ static int smu7_set_max_fan_pwm_output(struct pp_hwmgr *hwmgr, uint16_t us_max_f
 	hwmgr->thermal_controller.
 	advanceFanControlParameters.usMaxFanPWM = us_max_fan_pwm;
 
-<<<<<<< HEAD
 	return smum_send_msg_to_smc_with_parameter(hwmgr,
-=======
-	if (phm_is_hw_access_blocked(hwmgr))
-		return 0;
-
-	return smum_send_msg_to_smc_with_parameter(hwmgr->smumgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			PPSMC_MSG_SetFanPwmMax, us_max_fan_pwm);
 }
 
@@ -4951,30 +4009,14 @@ smu7_notify_smc_display_change(struct pp_hwmgr *hwmgr, bool has_display)
 {
 	PPSMC_Msg msg = has_display ? (PPSMC_Msg)PPSMC_HasDisplay : (PPSMC_Msg)PPSMC_NoDisplay;
 
-<<<<<<< HEAD
 	return (smum_send_msg_to_smc(hwmgr, msg) == 0) ?  0 : -1;
-=======
-	return (smum_send_msg_to_smc(hwmgr->smumgr, msg) == 0) ?  0 : -1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int
 smu7_notify_smc_display_config_after_ps_adjustment(struct pp_hwmgr *hwmgr)
 {
-<<<<<<< HEAD
 	if (hwmgr->display_config->num_display > 1 &&
 			!hwmgr->display_config->multi_monitor_in_sync)
-=======
-	uint32_t num_active_displays = 0;
-	struct cgs_display_info info = {0};
-
-	info.mode_info = NULL;
-	cgs_get_active_displays_info(hwmgr->device, &info);
-
-	num_active_displays = info.display_count;
-
-	if (num_active_displays > 1 && hwmgr->display_config.multi_monitor_in_sync != true)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		smu7_notify_smc_display_change(hwmgr, false);
 
 	return 0;
@@ -4989,15 +4031,10 @@ smu7_notify_smc_display_config_after_ps_adjustment(struct pp_hwmgr *hwmgr)
 static int smu7_program_display_gap(struct pp_hwmgr *hwmgr)
 {
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
-<<<<<<< HEAD
-=======
-	uint32_t num_active_displays = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t display_gap = cgs_read_ind_register(hwmgr->device, CGS_IND_REG__SMC, ixCG_DISPLAY_GAP_CNTL);
 	uint32_t display_gap2;
 	uint32_t pre_vbi_time_in_us;
 	uint32_t frame_time_in_us;
-<<<<<<< HEAD
 	uint32_t ref_clock, refresh_rate;
 
 	display_gap = PHM_SET_FIELD(display_gap, CG_DISPLAY_GAP_CNTL, DISP_GAP, (hwmgr->display_config->num_display > 0) ? DISPLAY_GAP_VBLANK_OR_WM : DISPLAY_GAP_IGNORE);
@@ -5005,33 +4042,13 @@ static int smu7_program_display_gap(struct pp_hwmgr *hwmgr)
 
 	ref_clock =  amdgpu_asic_get_xclk((struct amdgpu_device *)hwmgr->adev);
 	refresh_rate = hwmgr->display_config->vrefresh;
-=======
-	uint32_t ref_clock;
-	uint32_t refresh_rate = 0;
-	struct cgs_display_info info = {0};
-	struct cgs_mode_info mode_info = {0};
-
-	info.mode_info = &mode_info;
-	cgs_get_active_displays_info(hwmgr->device, &info);
-	num_active_displays = info.display_count;
-
-	display_gap = PHM_SET_FIELD(display_gap, CG_DISPLAY_GAP_CNTL, DISP_GAP, (num_active_displays > 0) ? DISPLAY_GAP_VBLANK_OR_WM : DISPLAY_GAP_IGNORE);
-	cgs_write_ind_register(hwmgr->device, CGS_IND_REG__SMC, ixCG_DISPLAY_GAP_CNTL, display_gap);
-
-	ref_clock = mode_info.ref_clock;
-	refresh_rate = mode_info.refresh_rate;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (0 == refresh_rate)
 		refresh_rate = 60;
 
 	frame_time_in_us = 1000000 / refresh_rate;
 
-<<<<<<< HEAD
 	pre_vbi_time_in_us = frame_time_in_us - 200 - hwmgr->display_config->min_vblank_time;
-=======
-	pre_vbi_time_in_us = frame_time_in_us - 200 - mode_info.vblank_time_us;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	data->frame_time_x2 = frame_time_in_us * 2 / 100;
 
@@ -5045,20 +4062,12 @@ static int smu7_program_display_gap(struct pp_hwmgr *hwmgr)
 	cgs_write_ind_register(hwmgr->device, CGS_IND_REG__SMC, ixCG_DISPLAY_GAP_CNTL2, display_gap2);
 
 	cgs_write_ind_register(hwmgr->device, CGS_IND_REG__SMC,
-<<<<<<< HEAD
 			data->soft_regs_start + smum_get_offsetof(hwmgr,
-=======
-			data->soft_regs_start + smum_get_offsetof(hwmgr->smumgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							SMU_SoftRegisters,
 							PreVBlankGap), 0x64);
 
 	cgs_write_ind_register(hwmgr->device, CGS_IND_REG__SMC,
-<<<<<<< HEAD
 			data->soft_regs_start + smum_get_offsetof(hwmgr,
-=======
-			data->soft_regs_start + smum_get_offsetof(hwmgr->smumgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							SMU_SoftRegisters,
 							VBlankTimeout),
 					(frame_time_in_us - pre_vbi_time_in_us));
@@ -5083,7 +4092,6 @@ static int smu7_set_max_fan_rpm_output(struct pp_hwmgr *hwmgr, uint16_t us_max_f
 	hwmgr->thermal_controller.
 	advanceFanControlParameters.usMaxFanRPM = us_max_fan_rpm;
 
-<<<<<<< HEAD
 	return smum_send_msg_to_smc_with_parameter(hwmgr,
 			PPSMC_MSG_SetFanRpmMax, us_max_fan_rpm);
 }
@@ -5117,18 +4125,6 @@ static int smu7_register_irq_handlers(struct pp_hwmgr *hwmgr)
 			VISLANDS30_IV_SRCID_GPIO_19,
 			source);
 
-=======
-	if (phm_is_hw_access_blocked(hwmgr))
-		return 0;
-
-	return smum_send_msg_to_smc_with_parameter(hwmgr->smumgr,
-			PPSMC_MSG_SetFanRpmMax, us_max_fan_rpm);
-}
-
-static int smu7_register_internal_thermal_interrupt(struct pp_hwmgr *hwmgr,
-					const void *thermal_interrupt_info)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -5137,7 +4133,6 @@ smu7_check_smc_update_required_for_display_configuration(struct pp_hwmgr *hwmgr)
 {
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
 	bool is_update_required = false;
-<<<<<<< HEAD
 
 	if (data->display_timing.num_existing_displays != hwmgr->display_config->num_display)
 		is_update_required = true;
@@ -5146,19 +4141,6 @@ smu7_check_smc_update_required_for_display_configuration(struct pp_hwmgr *hwmgr)
 		if (data->display_timing.min_clock_in_sr != hwmgr->display_config->min_core_set_clock_in_sr &&
 			(data->display_timing.min_clock_in_sr >= SMU7_MINIMUM_ENGINE_CLOCK ||
 			hwmgr->display_config->min_core_set_clock_in_sr >= SMU7_MINIMUM_ENGINE_CLOCK))
-=======
-	struct cgs_display_info info = {0, 0, NULL};
-
-	cgs_get_active_displays_info(hwmgr->device, &info);
-
-	if (data->display_timing.num_existing_displays != info.display_count)
-		is_update_required = true;
-
-	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps, PHM_PlatformCaps_SclkDeepSleep)) {
-		if (data->display_timing.min_clock_in_sr != hwmgr->display_config.min_core_set_clock_in_sr &&
-			(data->display_timing.min_clock_in_sr >= SMU7_MINIMUM_ENGINE_CLOCK ||
-			hwmgr->display_config.min_core_set_clock_in_sr >= SMU7_MINIMUM_ENGINE_CLOCK))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			is_update_required = true;
 	}
 	return is_update_required;
@@ -5180,10 +4162,7 @@ static int smu7_check_states_equal(struct pp_hwmgr *hwmgr,
 	const struct smu7_power_state *psa;
 	const struct smu7_power_state *psb;
 	int i;
-<<<<<<< HEAD
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (pstate1 == NULL || pstate2 == NULL || equal == NULL)
 		return -EINVAL;
@@ -5208,22 +4187,15 @@ static int smu7_check_states_equal(struct pp_hwmgr *hwmgr,
 	*equal = ((psa->uvd_clks.vclk == psb->uvd_clks.vclk) && (psa->uvd_clks.dclk == psb->uvd_clks.dclk));
 	*equal &= ((psa->vce_clks.evclk == psb->vce_clks.evclk) && (psa->vce_clks.ecclk == psb->vce_clks.ecclk));
 	*equal &= (psa->sclk_threshold == psb->sclk_threshold);
-<<<<<<< HEAD
 	/* For OD call, set value based on flag */
 	*equal &= !(data->need_update_smu7_dpm_table & (DPMTABLE_OD_UPDATE_SCLK |
 							DPMTABLE_OD_UPDATE_MCLK |
 							DPMTABLE_OD_UPDATE_VDDC));
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
 static int smu7_check_mc_firmware(struct pp_hwmgr *hwmgr)
-=======
-static int smu7_upload_mc_firmware(struct pp_hwmgr *hwmgr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
 
@@ -5302,19 +4274,9 @@ static int smu7_read_clock_registers(struct pp_hwmgr *hwmgr)
 static int smu7_get_memory_type(struct pp_hwmgr *hwmgr)
 {
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
-<<<<<<< HEAD
 	struct amdgpu_device *adev = hwmgr->adev;
 
 	data->is_memory_gddr5 = (adev->gmc.vram_type == AMDGPU_VRAM_TYPE_GDDR5);
-=======
-	uint32_t temp;
-
-	temp = cgs_read_register(hwmgr->device, mmMC_SEQ_MISC0);
-
-	data->is_memory_gddr5 = (MC_SEQ_MISC0_GDDR5_VALUE ==
-			((temp & MC_SEQ_MISC0_GDDR5_MASK) >>
-			 MC_SEQ_MISC0_GDDR5_SHIFT));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -5345,10 +4307,6 @@ static int smu7_init_power_gate_state(struct pp_hwmgr *hwmgr)
 
 	data->uvd_power_gated = false;
 	data->vce_power_gated = false;
-<<<<<<< HEAD
-=======
-	data->samu_power_gated = false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -5365,11 +4323,7 @@ static int smu7_setup_asic_task(struct pp_hwmgr *hwmgr)
 {
 	int tmp_result, result = 0;
 
-<<<<<<< HEAD
 	smu7_check_mc_firmware(hwmgr);
-=======
-	smu7_upload_mc_firmware(hwmgr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tmp_result = smu7_read_clock_registers(hwmgr);
 	PP_ASSERT_WITH_CODE((0 == tmp_result),
@@ -5403,40 +4357,25 @@ static int smu7_force_clock_level(struct pp_hwmgr *hwmgr,
 {
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
 
-<<<<<<< HEAD
 	if (mask == 0)
-=======
-	if (hwmgr->dpm_level & (AMD_DPM_FORCED_LEVEL_AUTO |
-				AMD_DPM_FORCED_LEVEL_LOW |
-				AMD_DPM_FORCED_LEVEL_HIGH))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	switch (type) {
 	case PP_SCLK:
 		if (!data->sclk_dpm_key_disabled)
-<<<<<<< HEAD
 			smum_send_msg_to_smc_with_parameter(hwmgr,
-=======
-			smum_send_msg_to_smc_with_parameter(hwmgr->smumgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					PPSMC_MSG_SCLKDPM_SetEnabledMask,
 					data->dpm_level_enable_mask.sclk_dpm_enable_mask & mask);
 		break;
 	case PP_MCLK:
 		if (!data->mclk_dpm_key_disabled)
-<<<<<<< HEAD
 			smum_send_msg_to_smc_with_parameter(hwmgr,
-=======
-			smum_send_msg_to_smc_with_parameter(hwmgr->smumgr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					PPSMC_MSG_MCLKDPM_SetEnabledMask,
 					data->dpm_level_enable_mask.mclk_dpm_enable_mask & mask);
 		break;
 	case PP_PCIE:
 	{
 		uint32_t tmp = mask & data->dpm_level_enable_mask.pcie_dpm_enable_mask;
-<<<<<<< HEAD
 
 		if (!data->pcie_dpm_key_disabled) {
 			if (fls(tmp) != ffs(tmp))
@@ -5446,17 +4385,6 @@ static int smu7_force_clock_level(struct pp_hwmgr *hwmgr,
 					PPSMC_MSG_PCIeDPM_ForceLevel,
 					fls(tmp) - 1);
 		}
-=======
-		uint32_t level = 0;
-
-		while (tmp >>= 1)
-			level++;
-
-		if (!data->pcie_dpm_key_disabled)
-			smum_send_msg_to_smc_with_parameter(hwmgr->smumgr,
-					PPSMC_MSG_PCIeDPM_ForceLevel,
-					level);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 	default:
@@ -5473,22 +4401,15 @@ static int smu7_print_clock_levels(struct pp_hwmgr *hwmgr,
 	struct smu7_single_dpm_table *sclk_table = &(data->dpm_table.sclk_table);
 	struct smu7_single_dpm_table *mclk_table = &(data->dpm_table.mclk_table);
 	struct smu7_single_dpm_table *pcie_table = &(data->dpm_table.pcie_speed_table);
-<<<<<<< HEAD
 	struct smu7_odn_dpm_table *odn_table = &(data->odn_dpm_table);
 	struct phm_odn_clock_levels *odn_sclk_table = &(odn_table->odn_core_clock_dpm_levels);
 	struct phm_odn_clock_levels *odn_mclk_table = &(odn_table->odn_memory_clock_dpm_levels);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i, now, size = 0;
 	uint32_t clock, pcie_speed;
 
 	switch (type) {
 	case PP_SCLK:
-<<<<<<< HEAD
 		smum_send_msg_to_smc(hwmgr, PPSMC_MSG_API_GetSclkFrequency);
-=======
-		smum_send_msg_to_smc(hwmgr->smumgr, PPSMC_MSG_API_GetSclkFrequency);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		clock = cgs_read_register(hwmgr->device, mmSMC_MSG_ARG_0);
 
 		for (i = 0; i < sclk_table->count; i++) {
@@ -5504,11 +4425,7 @@ static int smu7_print_clock_levels(struct pp_hwmgr *hwmgr,
 					(i == now) ? "*" : "");
 		break;
 	case PP_MCLK:
-<<<<<<< HEAD
 		smum_send_msg_to_smc(hwmgr, PPSMC_MSG_API_GetMclkFrequency);
-=======
-		smum_send_msg_to_smc(hwmgr->smumgr, PPSMC_MSG_API_GetMclkFrequency);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		clock = cgs_read_register(hwmgr->device, mmSMC_MSG_ARG_0);
 
 		for (i = 0; i < mclk_table->count; i++) {
@@ -5534,7 +4451,6 @@ static int smu7_print_clock_levels(struct pp_hwmgr *hwmgr,
 
 		for (i = 0; i < pcie_table->count; i++)
 			size += sprintf(buf + size, "%d: %s %s\n", i,
-<<<<<<< HEAD
 					(pcie_table->dpm_levels[i].value == 0) ? "2.5GT/s, x8" :
 					(pcie_table->dpm_levels[i].value == 1) ? "5.0GT/s, x16" :
 					(pcie_table->dpm_levels[i].value == 2) ? "8.0GT/s, x16" : "",
@@ -5572,66 +4488,33 @@ static int smu7_print_clock_levels(struct pp_hwmgr *hwmgr,
 				data->odn_dpm_table.max_vddc);
 		}
 		break;
-=======
-					(pcie_table->dpm_levels[i].value == 0) ? "2.5GB, x8" :
-					(pcie_table->dpm_levels[i].value == 1) ? "5.0GB, x16" :
-					(pcie_table->dpm_levels[i].value == 2) ? "8.0GB, x16" : "",
-					(i == now) ? "*" : "");
-		break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		break;
 	}
 	return size;
 }
 
-<<<<<<< HEAD
 static void smu7_set_fan_control_mode(struct pp_hwmgr *hwmgr, uint32_t mode)
 {
 	switch (mode) {
 	case AMD_FAN_CTRL_NONE:
 		smu7_fan_ctrl_set_fan_speed_percent(hwmgr, 100);
-=======
-static int smu7_set_fan_control_mode(struct pp_hwmgr *hwmgr, uint32_t mode)
-{
-	int result = 0;
-
-	switch (mode) {
-	case AMD_FAN_CTRL_NONE:
-		result = smu7_fan_ctrl_set_fan_speed_percent(hwmgr, 100);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case AMD_FAN_CTRL_MANUAL:
 		if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
 			PHM_PlatformCaps_MicrocodeFanControl))
-<<<<<<< HEAD
 			smu7_fan_ctrl_stop_smc_fan_control(hwmgr);
 		break;
 	case AMD_FAN_CTRL_AUTO:
 		if (!smu7_fan_ctrl_set_static_mode(hwmgr, mode))
 			smu7_fan_ctrl_start_smc_fan_control(hwmgr);
-=======
-			result = smu7_fan_ctrl_stop_smc_fan_control(hwmgr);
-		break;
-	case AMD_FAN_CTRL_AUTO:
-		result = smu7_fan_ctrl_set_static_mode(hwmgr, mode);
-		if (!result)
-			result = smu7_fan_ctrl_start_smc_fan_control(hwmgr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		break;
 	}
-<<<<<<< HEAD
 }
 
 static uint32_t smu7_get_fan_control_mode(struct pp_hwmgr *hwmgr)
-=======
-	return result;
-}
-
-static int smu7_get_fan_control_mode(struct pp_hwmgr *hwmgr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return hwmgr->fan_ctrl_enabled ? AMD_FAN_CTRL_AUTO : AMD_FAN_CTRL_MANUAL;
 }
@@ -5734,20 +4617,12 @@ static int smu7_get_sclks(struct pp_hwmgr *hwmgr, struct amd_pp_clocks *clocks)
 			return -EINVAL;
 		dep_sclk_table = table_info->vdd_dep_on_sclk;
 		for (i = 0; i < dep_sclk_table->count; i++)
-<<<<<<< HEAD
 			clocks->clock[i] = dep_sclk_table->entries[i].clk * 10;
-=======
-			clocks->clock[i] = dep_sclk_table->entries[i].clk;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		clocks->count = dep_sclk_table->count;
 	} else if (hwmgr->pp_table_version == PP_TABLE_V0) {
 		sclk_table = hwmgr->dyn_state.vddc_dependency_on_sclk;
 		for (i = 0; i < sclk_table->count; i++)
-<<<<<<< HEAD
 			clocks->clock[i] = sclk_table->entries[i].clk * 10;
-=======
-			clocks->clock[i] = sclk_table->entries[i].clk;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		clocks->count = sclk_table->count;
 	}
 
@@ -5779,11 +4654,7 @@ static int smu7_get_mclks(struct pp_hwmgr *hwmgr, struct amd_pp_clocks *clocks)
 			return -EINVAL;
 		dep_mclk_table = table_info->vdd_dep_on_mclk;
 		for (i = 0; i < dep_mclk_table->count; i++) {
-<<<<<<< HEAD
 			clocks->clock[i] = dep_mclk_table->entries[i].clk * 10;
-=======
-			clocks->clock[i] = dep_mclk_table->entries[i].clk;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clocks->latency[i] = smu7_get_mem_latency(hwmgr,
 						dep_mclk_table->entries[i].clk);
 		}
@@ -5791,11 +4662,7 @@ static int smu7_get_mclks(struct pp_hwmgr *hwmgr, struct amd_pp_clocks *clocks)
 	} else if (hwmgr->pp_table_version == PP_TABLE_V0) {
 		mclk_table = hwmgr->dyn_state.vddc_dependency_on_mclk;
 		for (i = 0; i < mclk_table->count; i++)
-<<<<<<< HEAD
 			clocks->clock[i] = mclk_table->entries[i].clk * 10;
-=======
-			clocks->clock[i] = mclk_table->entries[i].clk;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		clocks->count = mclk_table->count;
 	}
 	return 0;
@@ -5818,7 +4685,6 @@ static int smu7_get_clock_by_type(struct pp_hwmgr *hwmgr, enum amd_pp_clock_type
 	return 0;
 }
 
-<<<<<<< HEAD
 static int smu7_notify_cac_buffer_info(struct pp_hwmgr *hwmgr,
 					uint32_t virtual_addr_low,
 					uint32_t virtual_addr_hi,
@@ -6143,102 +5009,6 @@ static int smu7_set_power_profile_mode(struct pp_hwmgr *hwmgr, long *input, uint
 	default:
 		return -EINVAL;
 	}
-=======
-static void smu7_find_min_clock_masks(struct pp_hwmgr *hwmgr,
-		uint32_t *sclk_mask, uint32_t *mclk_mask,
-		uint32_t min_sclk, uint32_t min_mclk)
-{
-	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
-	struct smu7_dpm_table *dpm_table = &(data->dpm_table);
-	uint32_t i;
-
-	for (i = 0; i < dpm_table->sclk_table.count; i++) {
-		if (dpm_table->sclk_table.dpm_levels[i].enabled &&
-			dpm_table->sclk_table.dpm_levels[i].value >= min_sclk)
-			*sclk_mask |= 1 << i;
-	}
-
-	for (i = 0; i < dpm_table->mclk_table.count; i++) {
-		if (dpm_table->mclk_table.dpm_levels[i].enabled &&
-			dpm_table->mclk_table.dpm_levels[i].value >= min_mclk)
-			*mclk_mask |= 1 << i;
-	}
-}
-
-static int smu7_set_power_profile_state(struct pp_hwmgr *hwmgr,
-		struct amd_pp_profile *request)
-{
-	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
-	int tmp_result, result = 0;
-	uint32_t sclk_mask = 0, mclk_mask = 0;
-
-	if (hwmgr->dpm_level != AMD_DPM_FORCED_LEVEL_AUTO)
-		return -EINVAL;
-
-	tmp_result = smu7_freeze_sclk_mclk_dpm(hwmgr);
-	PP_ASSERT_WITH_CODE(!tmp_result,
-			"Failed to freeze SCLK MCLK DPM!",
-			result = tmp_result);
-
-	tmp_result = smum_populate_requested_graphic_levels(hwmgr, request);
-	PP_ASSERT_WITH_CODE(!tmp_result,
-			"Failed to populate requested graphic levels!",
-			result = tmp_result);
-
-	tmp_result = smu7_unfreeze_sclk_mclk_dpm(hwmgr);
-	PP_ASSERT_WITH_CODE(!tmp_result,
-			"Failed to unfreeze SCLK MCLK DPM!",
-			result = tmp_result);
-
-	smu7_find_min_clock_masks(hwmgr, &sclk_mask, &mclk_mask,
-			request->min_sclk, request->min_mclk);
-
-	if (sclk_mask) {
-		if (!data->sclk_dpm_key_disabled)
-			smum_send_msg_to_smc_with_parameter(hwmgr->smumgr,
-				PPSMC_MSG_SCLKDPM_SetEnabledMask,
-				data->dpm_level_enable_mask.
-				sclk_dpm_enable_mask &
-				sclk_mask);
-	}
-
-	if (mclk_mask) {
-		if (!data->mclk_dpm_key_disabled)
-			smum_send_msg_to_smc_with_parameter(hwmgr->smumgr,
-				PPSMC_MSG_MCLKDPM_SetEnabledMask,
-				data->dpm_level_enable_mask.
-				mclk_dpm_enable_mask &
-				mclk_mask);
-	}
-
-	return result;
-}
-
-static int smu7_avfs_control(struct pp_hwmgr *hwmgr, bool enable)
-{
-	struct pp_smumgr *smumgr = (struct pp_smumgr *)(hwmgr->smumgr);
-	struct smu7_smumgr *smu_data = (struct smu7_smumgr *)(smumgr->backend);
-
-	if (smu_data == NULL)
-		return -EINVAL;
-
-	if (smu_data->avfs.avfs_btc_status == AVFS_BTC_NOTSUPPORTED)
-		return 0;
-
-	if (enable) {
-		if (!PHM_READ_VFPF_INDIRECT_FIELD(hwmgr->device,
-				CGS_IND_REG__SMC, FEATURE_STATUS, AVS_ON))
-			PP_ASSERT_WITH_CODE(!smum_send_msg_to_smc(
-					hwmgr->smumgr, PPSMC_MSG_EnableAvfs),
-					"Failed to enable AVFS!",
-					return -EINVAL);
-	} else if (PHM_READ_VFPF_INDIRECT_FIELD(hwmgr->device,
-			CGS_IND_REG__SMC, FEATURE_STATUS, AVS_ON))
-		PP_ASSERT_WITH_CODE(!smum_send_msg_to_smc(
-				hwmgr->smumgr, PPSMC_MSG_DisableAvfs),
-				"Failed to disable AVFS!",
-				return -EINVAL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -6266,10 +5036,6 @@ static const struct pp_hwmgr_func smu7_hwmgr_funcs = {
 	.display_config_changed = smu7_display_configuration_changed_task,
 	.set_max_fan_pwm_output = smu7_set_max_fan_pwm_output,
 	.set_max_fan_rpm_output = smu7_set_max_fan_rpm_output,
-<<<<<<< HEAD
-=======
-	.get_temperature = smu7_thermal_get_temperature,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.stop_thermal_controller = smu7_thermal_stop_thermal_controller,
 	.get_fan_speed_info = smu7_fan_ctrl_get_fan_speed_info,
 	.get_fan_speed_percent = smu7_fan_ctrl_get_fan_speed_percent,
@@ -6278,22 +5044,14 @@ static const struct pp_hwmgr_func smu7_hwmgr_funcs = {
 	.get_fan_speed_rpm = smu7_fan_ctrl_get_fan_speed_rpm,
 	.set_fan_speed_rpm = smu7_fan_ctrl_set_fan_speed_rpm,
 	.uninitialize_thermal_controller = smu7_thermal_ctrl_uninitialize_thermal_controller,
-<<<<<<< HEAD
 	.register_irq_handlers = smu7_register_irq_handlers,
-=======
-	.register_internal_thermal_interrupt = smu7_register_internal_thermal_interrupt,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.check_smc_update_required_for_display_configuration = smu7_check_smc_update_required_for_display_configuration,
 	.check_states_equal = smu7_check_states_equal,
 	.set_fan_control_mode = smu7_set_fan_control_mode,
 	.get_fan_control_mode = smu7_get_fan_control_mode,
 	.force_clock_level = smu7_force_clock_level,
 	.print_clock_levels = smu7_print_clock_levels,
-<<<<<<< HEAD
 	.powergate_gfx = smu7_powergate_gfx,
-=======
-	.enable_per_cu_power_gating = smu7_enable_per_cu_power_gating,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.get_sclk_od = smu7_get_sclk_od,
 	.set_sclk_od = smu7_set_sclk_od,
 	.get_mclk_od = smu7_get_mclk_od,
@@ -6301,7 +5059,6 @@ static const struct pp_hwmgr_func smu7_hwmgr_funcs = {
 	.get_clock_by_type = smu7_get_clock_by_type,
 	.read_sensor = smu7_read_sensor,
 	.dynamic_state_management_disable = smu7_disable_dpm_tasks,
-<<<<<<< HEAD
 	.avfs_control = smu7_avfs_control,
 	.disable_smc_firmware_ctf = smu7_thermal_disable_alert,
 	.start_thermal_controller = smu7_start_thermal_controller,
@@ -6312,11 +5069,6 @@ static const struct pp_hwmgr_func smu7_hwmgr_funcs = {
 	.set_power_limit = smu7_set_power_limit,
 	.get_power_profile_mode = smu7_get_power_profile_mode,
 	.set_power_profile_mode = smu7_set_power_profile_mode,
-=======
-	.set_power_profile_state = smu7_set_power_profile_state,
-	.avfs_control = smu7_avfs_control,
-	.disable_smc_firmware_ctf = smu7_thermal_disable_alert,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 uint8_t smu7_get_sleep_divider_id_from_clock(uint32_t clock,
@@ -6348,7 +5100,3 @@ int smu7_init_function_pointers(struct pp_hwmgr *hwmgr)
 
 	return ret;
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

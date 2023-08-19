@@ -51,10 +51,6 @@
 
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
-<<<<<<< HEAD
-=======
-#include <asm/cacheflush.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/fdtable.h>
 #include <linux/file.h>
 #include <linux/freezer.h>
@@ -74,7 +70,6 @@
 #include <linux/pid_namespace.h>
 #include <linux/security.h>
 #include <linux/spinlock.h>
-<<<<<<< HEAD
 #include <linux/ratelimit.h>
 
 #include <uapi/linux/android/binder.h>
@@ -83,13 +78,6 @@
 #include <asm/cacheflush.h>
 
 #include "binder_alloc.h"
-=======
-
-#include <uapi/linux/android/binder.h>
-#include <uapi/linux/sched/types.h>
-#include "binder_alloc.h"
-#include "binder_internal.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "binder_trace.h"
 
 static HLIST_HEAD(binder_deferred_list);
@@ -106,7 +94,6 @@ static struct dentry *binder_debugfs_dir_entry_root;
 static struct dentry *binder_debugfs_dir_entry_proc;
 static atomic_t binder_last_id;
 
-<<<<<<< HEAD
 #define BINDER_DEBUG_ENTRY(name) \
 static int binder_##name##_open(struct inode *inode, struct file *file) \
 { \
@@ -123,10 +110,6 @@ static const struct file_operations binder_##name##_fops = { \
 
 static int binder_proc_show(struct seq_file *m, void *unused);
 BINDER_DEBUG_ENTRY(proc);
-=======
-static int proc_show(struct seq_file *m, void *unused);
-DEFINE_SHOW_ATTRIBUTE(proc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* This is only defined in include/asm-arm/sizes.h */
 #ifndef SZ_1K
@@ -160,11 +143,7 @@ static uint32_t binder_debug_mask = BINDER_DEBUG_USER_ERROR |
 	BINDER_DEBUG_FAILED_TRANSACTION | BINDER_DEBUG_DEAD_TRANSACTION;
 module_param_named(debug_mask, binder_debug_mask, uint, 0644);
 
-<<<<<<< HEAD
 static char *binder_devices_param = CONFIG_ANDROID_BINDER_DEVICES;
-=======
-char *binder_devices_param = CONFIG_ANDROID_BINDER_DEVICES;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 module_param_named(devices, binder_devices_param, charp, 0444);
 
 static DECLARE_WAIT_QUEUE_HEAD(binder_user_error_wait);
@@ -186,21 +165,13 @@ module_param_call(stop_on_user_error, binder_set_stop_on_user_error,
 #define binder_debug(mask, x...) \
 	do { \
 		if (binder_debug_mask & mask) \
-<<<<<<< HEAD
 			pr_info_ratelimited(x); \
-=======
-			pr_info(x); \
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} while (0)
 
 #define binder_user_error(x...) \
 	do { \
 		if (binder_debug_mask & BINDER_DEBUG_USER_ERROR) \
-<<<<<<< HEAD
 			pr_info_ratelimited(x); \
-=======
-			pr_info(x); \
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (binder_stop_on_user_error) \
 			binder_stop_on_user_error = 2; \
 	} while (0)
@@ -246,7 +217,6 @@ static inline void binder_stats_created(enum binder_stat_types type)
 	atomic_inc(&binder_stats.obj_created[type]);
 }
 
-<<<<<<< HEAD
 struct binder_transaction_log_entry {
 	int debug_id;
 	int debug_id_done;
@@ -271,10 +241,6 @@ struct binder_transaction_log {
 };
 static struct binder_transaction_log binder_transaction_log;
 static struct binder_transaction_log binder_transaction_log_failed;
-=======
-struct binder_transaction_log binder_transaction_log;
-struct binder_transaction_log binder_transaction_log_failed;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct binder_transaction_log_entry *binder_transaction_log_add(
 	struct binder_transaction_log *log)
@@ -296,7 +262,6 @@ static struct binder_transaction_log_entry *binder_transaction_log_add(
 	return e;
 }
 
-<<<<<<< HEAD
 struct binder_context {
 	struct binder_node *binder_context_mgr_node;
 	struct mutex context_mgr_node_lock;
@@ -311,8 +276,6 @@ struct binder_device {
 	struct binder_context context;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * struct binder_work - work enqueued on a worklist
  * @entry:             node enqueued on list
@@ -567,12 +530,7 @@ struct binder_priority {
  * @requested_threads_started: number binder threads started
  *                        (protected by @inner_lock)
  * @tmp_ref:              temporary reference to indicate proc is in use
-<<<<<<< HEAD
  *                        (protected by @inner_lock)
-=======
- *                        (atomic since @proc->inner_lock cannot
- *                        always be acquired)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @default_priority:     default scheduler priority
  *                        (invariant after initialized)
  * @debugfs_entry:        debugfs node
@@ -582,10 +540,6 @@ struct binder_priority {
  * @inner_lock:           can nest under outer_lock and/or node lock
  * @outer_lock:           no nesting under innor or node lock
  *                        Lock order: 1) outer, 2) node, 3) inner
-<<<<<<< HEAD
-=======
- * @binderfs_entry:       process-specific binderfs log file
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Bookkeeping structure for binder processes
  */
@@ -610,21 +564,13 @@ struct binder_proc {
 	int max_threads;
 	int requested_threads;
 	int requested_threads_started;
-<<<<<<< HEAD
 	int tmp_ref;
-=======
-	atomic_t tmp_ref;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct binder_priority default_priority;
 	struct dentry *debugfs_entry;
 	struct binder_alloc alloc;
 	struct binder_context *context;
 	spinlock_t inner_lock;
 	spinlock_t outer_lock;
-<<<<<<< HEAD
-=======
-	struct dentry *binderfs_entry;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum {
@@ -2128,15 +2074,9 @@ static void binder_thread_dec_tmpref(struct binder_thread *thread)
 static void binder_proc_dec_tmpref(struct binder_proc *proc)
 {
 	binder_inner_proc_lock(proc);
-<<<<<<< HEAD
 	proc->tmp_ref--;
 	if (proc->is_dead && RB_EMPTY_ROOT(&proc->threads) &&
 			!proc->tmp_ref) {
-=======
-	atomic_dec(&proc->tmp_ref);
-	if (proc->is_dead && RB_EMPTY_ROOT(&proc->threads) &&
-			!atomic_read(&proc->tmp_ref)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		binder_inner_proc_unlock(proc);
 		binder_free_proc(proc);
 		return;
@@ -2198,40 +2138,18 @@ static struct binder_thread *binder_get_txn_from_and_acq_inner(
 
 static void binder_free_transaction(struct binder_transaction *t)
 {
-<<<<<<< HEAD
 	struct binder_proc *target_proc = t->to_proc;
 
 	if (target_proc) {
-=======
-	struct binder_proc *target_proc;
-
-	spin_lock(&t->lock);
-	target_proc = t->to_proc;
-	if (target_proc) {
-		atomic_inc(&target_proc->tmp_ref);
-		spin_unlock(&t->lock);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		binder_inner_proc_lock(target_proc);
 		if (t->buffer)
 			t->buffer->transaction = NULL;
 		binder_inner_proc_unlock(target_proc);
-<<<<<<< HEAD
 	}
 	/*
 	 * If the transaction has no target_proc, then
 	 * t->buffer->transaction has already been cleared.
 	 */
-=======
-		binder_proc_dec_tmpref(target_proc);
-	} else {
-		/*
-		 * If the transaction has no target_proc, then
-		 * t->buffer->transaction * has already been cleared.
-		 */
-		spin_unlock(&t->lock);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(t);
 	binder_stats_deleted(BINDER_STAT_TRANSACTION);
 }
@@ -2606,11 +2524,7 @@ static void binder_transaction_buffer_release(struct binder_proc *proc,
 						     NULL,
 						     num_valid);
 			if (!parent) {
-<<<<<<< HEAD
 				pr_err("transaction release %d bad parent offset\n",
-=======
-				pr_err("transaction release %d bad parent offset",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       debug_id);
 				continue;
 			}
@@ -3067,11 +2981,7 @@ static struct binder_node *binder_get_node_refs_for_txn(
 		target_node = node;
 		binder_inc_node_nilocked(node, 1, 0, NULL);
 		binder_inc_node_tmpref_ilocked(node);
-<<<<<<< HEAD
 		node->proc->tmp_ref++;
-=======
-		atomic_inc(&node->proc->tmp_ref);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*procp = node->proc;
 	} else
 		*error = BR_DEAD_REPLY;
@@ -3168,11 +3078,7 @@ static void binder_transaction(struct binder_proc *proc,
 			goto err_dead_binder;
 		}
 		target_proc = target_thread->proc;
-<<<<<<< HEAD
 		target_proc->tmp_ref++;
-=======
-		atomic_inc(&target_proc->tmp_ref);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		binder_inner_proc_unlock(target_thread->proc);
 	} else {
 		if (tr->target.handle) {
@@ -3525,11 +3431,7 @@ static void binder_transaction(struct binder_proc *proc,
 			binder_size_t parent_offset;
 			struct binder_fd_array_object *fda =
 				to_binder_fd_array_object(hdr);
-<<<<<<< HEAD
 			size_t num_valid = (buffer_offset - off_start_offset) *
-=======
-			size_t num_valid = (buffer_offset - off_start_offset) /
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						sizeof(binder_size_t);
 			struct binder_buffer_object *parent =
 				binder_validate_ptr(target_proc, t->buffer,
@@ -3603,11 +3505,7 @@ static void binder_transaction(struct binder_proc *proc,
 				t->buffer->user_data + sg_buf_offset;
 			sg_buf_offset += ALIGN(bp->length, sizeof(u64));
 
-<<<<<<< HEAD
 			num_valid = (buffer_offset - off_start_offset) *
-=======
-			num_valid = (buffer_offset - off_start_offset) /
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					sizeof(binder_size_t);
 			ret = binder_fixup_parent(t, thread, bp,
 						  off_start_offset,
@@ -4411,11 +4309,7 @@ retry:
 			e->cmd = BR_OK;
 			ptr += sizeof(uint32_t);
 
-<<<<<<< HEAD
 			binder_stat_br(proc, thread, cmd);
-=======
-			binder_stat_br(proc, thread, e->cmd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} break;
 		case BINDER_WORK_TRANSACTION_COMPLETE: {
 			binder_inner_proc_unlock(proc);
@@ -4797,20 +4691,8 @@ static struct binder_thread *binder_get_thread(struct binder_proc *proc)
 
 static void binder_free_proc(struct binder_proc *proc)
 {
-<<<<<<< HEAD
 	BUG_ON(!list_empty(&proc->todo));
 	BUG_ON(!list_empty(&proc->delivered_death));
-=======
-	struct binder_device *device;
-
-	BUG_ON(!list_empty(&proc->todo));
-	BUG_ON(!list_empty(&proc->delivered_death));
-	device = container_of(proc->context, struct binder_device, context);
-	if (refcount_dec_and_test(&device->ref)) {
-		kfree(proc->context->name);
-		kfree(device);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	binder_alloc_deferred_release(&proc->alloc);
 	put_task_struct(proc->tsk);
 	binder_stats_deleted(BINDER_STAT_PROC);
@@ -4841,11 +4723,7 @@ static int binder_thread_release(struct binder_proc *proc,
 	 * The corresponding dec is when we actually
 	 * free the thread in binder_free_thread()
 	 */
-<<<<<<< HEAD
 	proc->tmp_ref++;
-=======
-	atomic_inc(&proc->tmp_ref);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * take a ref on this thread to ensure it
 	 * survives while we are releasing it
@@ -4895,11 +4773,7 @@ static int binder_thread_release(struct binder_proc *proc,
 	 */
 	if ((thread->looper & BINDER_LOOPER_STATE_POLL) &&
 	    waitqueue_active(&thread->wait)) {
-<<<<<<< HEAD
 		wake_up_poll(&thread->wait, EPOLLHUP | POLLFREE);
-=======
-		wake_up_poll(&thread->wait, POLLHUP | POLLFREE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	binder_inner_proc_unlock(thread->proc);
@@ -4920,11 +4794,7 @@ static int binder_thread_release(struct binder_proc *proc,
 	return active_transactions;
 }
 
-<<<<<<< HEAD
 static __poll_t binder_poll(struct file *filp,
-=======
-static unsigned int binder_poll(struct file *filp,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				struct poll_table_struct *wait)
 {
 	struct binder_proc *proc = filp->private_data;
@@ -4944,11 +4814,7 @@ static unsigned int binder_poll(struct file *filp,
 	poll_wait(filp, &thread->wait, wait);
 
 	if (binder_has_work(thread, wait_for_proc_work))
-<<<<<<< HEAD
 		return EPOLLIN;
-=======
-		return POLLIN;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -5286,11 +5152,7 @@ static void binder_vma_close(struct vm_area_struct *vma)
 	binder_defer_work(proc, BINDER_DEFERRED_PUT_FILES);
 }
 
-<<<<<<< HEAD
 static vm_fault_t binder_vm_fault(struct vm_fault *vmf)
-=======
-static int binder_vm_fault(struct vm_fault *vmf)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return VM_FAULT_SIGBUS;
 }
@@ -5348,11 +5210,6 @@ static int binder_open(struct inode *nodp, struct file *filp)
 {
 	struct binder_proc *proc;
 	struct binder_device *binder_dev;
-<<<<<<< HEAD
-=======
-	struct binderfs_info *info;
-	struct dentry *binder_binderfs_dir_entry_proc = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	binder_debug(BINDER_DEBUG_OPEN_CLOSE, "%s: %d:%d\n", __func__,
 		     current->group_leader->pid, current->pid);
@@ -5362,10 +5219,6 @@ static int binder_open(struct inode *nodp, struct file *filp)
 		return -ENOMEM;
 	spin_lock_init(&proc->inner_lock);
 	spin_lock_init(&proc->outer_lock);
-<<<<<<< HEAD
-=======
-	atomic_set(&proc->tmp_ref, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	get_task_struct(current->group_leader);
 	proc->tsk = current->group_leader;
 	mutex_init(&proc->files_lock);
@@ -5378,21 +5231,8 @@ static int binder_open(struct inode *nodp, struct file *filp)
 		proc->default_priority.prio = NICE_TO_PRIO(0);
 	}
 
-<<<<<<< HEAD
 	binder_dev = container_of(filp->private_data, struct binder_device,
 				  miscdev);
-=======
-	/* binderfs stashes devices in i_private */
-	if (is_binderfs_device(nodp)) {
-		binder_dev = nodp->i_private;
-		info = nodp->i_sb->s_fs_info;
-		binder_binderfs_dir_entry_proc = info->proc_log_dir;
-	} else {
-		binder_dev = container_of(filp->private_data,
-					  struct binder_device, miscdev);
-	}
-	refcount_inc(&binder_dev->ref);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	proc->context = &binder_dev->context;
 	binder_alloc_init(&proc->alloc);
 
@@ -5420,40 +5260,7 @@ static int binder_open(struct inode *nodp, struct file *filp)
 		proc->debugfs_entry = debugfs_create_file(strbuf, 0444,
 			binder_debugfs_dir_entry_proc,
 			(void *)(unsigned long)proc->pid,
-<<<<<<< HEAD
 			&binder_proc_fops);
-=======
-			&proc_fops);
-	}
-
-	if (binder_binderfs_dir_entry_proc) {
-		char strbuf[11];
-		struct dentry *binderfs_entry;
-
-		snprintf(strbuf, sizeof(strbuf), "%u", proc->pid);
-		/*
-		 * Similar to debugfs, the process specific log file is shared
-		 * between contexts. If the file has already been created for a
-		 * process, the following binderfs_create_file() call will
-		 * fail with error code EEXIST if another context of the same
-		 * process invoked binder_open(). This is ok since same as
-		 * debugfs, the log file will contain information on all
-		 * contexts of a given PID.
-		 */
-		binderfs_entry = binderfs_create_file(binder_binderfs_dir_entry_proc,
-			strbuf, &proc_fops, (void *)(unsigned long)proc->pid);
-		if (!IS_ERR(binderfs_entry)) {
-			proc->binderfs_entry = binderfs_entry;
-		} else {
-			int error;
-
-			error = PTR_ERR(binderfs_entry);
-			if (error != -EEXIST) {
-				pr_warn("Unable to create file %s in binderfs (error %d)\n",
-					strbuf, error);
-			}
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -5495,15 +5302,6 @@ static int binder_release(struct inode *nodp, struct file *filp)
 	struct binder_proc *proc = filp->private_data;
 
 	debugfs_remove(proc->debugfs_entry);
-<<<<<<< HEAD
-=======
-
-	if (proc->binderfs_entry) {
-		binderfs_remove_file(proc->binderfs_entry);
-		proc->binderfs_entry = NULL;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	binder_defer_work(proc, BINDER_DEFERRED_RELEASE);
 
 	return 0;
@@ -5600,11 +5398,7 @@ static void binder_deferred_release(struct binder_proc *proc)
 	 * Make sure proc stays alive after we
 	 * remove all the threads
 	 */
-<<<<<<< HEAD
 	proc->tmp_ref++;
-=======
-	atomic_inc(&proc->tmp_ref);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	proc->is_dead = true;
 	threads = 0;
@@ -6114,11 +5908,7 @@ static void print_binder_proc_stats(struct seq_file *m,
 }
 
 
-<<<<<<< HEAD
 static int binder_state_show(struct seq_file *m, void *unused)
-=======
-int binder_state_show(struct seq_file *m, void *unused)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct binder_proc *proc;
 	struct binder_node *node;
@@ -6157,11 +5947,7 @@ int binder_state_show(struct seq_file *m, void *unused)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int binder_stats_show(struct seq_file *m, void *unused)
-=======
-int binder_stats_show(struct seq_file *m, void *unused)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct binder_proc *proc;
 
@@ -6177,11 +5963,7 @@ int binder_stats_show(struct seq_file *m, void *unused)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int binder_transactions_show(struct seq_file *m, void *unused)
-=======
-int binder_transactions_show(struct seq_file *m, void *unused)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct binder_proc *proc;
 
@@ -6194,11 +5976,7 @@ int binder_transactions_show(struct seq_file *m, void *unused)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int binder_proc_show(struct seq_file *m, void *unused)
-=======
-static int proc_show(struct seq_file *m, void *unused)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct binder_proc *itr;
 	int pid = (unsigned long)m->private;
@@ -6241,11 +6019,7 @@ static void print_binder_transaction_log_entry(struct seq_file *m,
 			"\n" : " (incomplete)\n");
 }
 
-<<<<<<< HEAD
 static int binder_transaction_log_show(struct seq_file *m, void *unused)
-=======
-int binder_transaction_log_show(struct seq_file *m, void *unused)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct binder_transaction_log *log = m->private;
 	unsigned int log_cur = atomic_read(&log->cur);
@@ -6266,11 +6040,7 @@ int binder_transaction_log_show(struct seq_file *m, void *unused)
 	return 0;
 }
 
-<<<<<<< HEAD
 static const struct file_operations binder_fops = {
-=======
-const struct file_operations binder_fops = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.owner = THIS_MODULE,
 	.poll = binder_poll,
 	.unlocked_ioctl = binder_ioctl,
@@ -6281,14 +6051,11 @@ const struct file_operations binder_fops = {
 	.release = binder_release,
 };
 
-<<<<<<< HEAD
 BINDER_DEBUG_ENTRY(state);
 BINDER_DEBUG_ENTRY(stats);
 BINDER_DEBUG_ENTRY(transactions);
 BINDER_DEBUG_ENTRY(transaction_log);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __init init_binder_device(const char *name)
 {
 	int ret;
@@ -6302,10 +6069,6 @@ static int __init init_binder_device(const char *name)
 	binder_device->miscdev.minor = MISC_DYNAMIC_MINOR;
 	binder_device->miscdev.name = name;
 
-<<<<<<< HEAD
-=======
-	refcount_set(&binder_device->ref, 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	binder_device->context.binder_context_mgr_uid = INVALID_UID;
 	binder_device->context.name = name;
 	mutex_init(&binder_device->context.context_mgr_node_lock);
@@ -6324,16 +6087,9 @@ static int __init init_binder_device(const char *name)
 static int __init binder_init(void)
 {
 	int ret;
-<<<<<<< HEAD
 	char *device_name, *device_names, *device_tmp;
 	struct binder_device *device;
 	struct hlist_node *tmp;
-=======
-	char *device_name, *device_tmp;
-	struct binder_device *device;
-	struct hlist_node *tmp;
-	char *device_names = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = binder_alloc_shrinker_init();
 	if (ret)
@@ -6375,7 +6131,6 @@ static int __init binder_init(void)
 				    &binder_transaction_log_fops);
 	}
 
-<<<<<<< HEAD
 	/*
 	 * Copy the module_parameter string, because we don't want to
 	 * tokenize it in-place.
@@ -6394,32 +6149,6 @@ static int __init binder_init(void)
 			goto err_init_binder_device_failed;
 	}
 
-=======
-	if (!IS_ENABLED(CONFIG_ANDROID_BINDERFS) &&
-	    strcmp(binder_devices_param, "") != 0) {
-		/*
-		* Copy the module_parameter string, because we don't want to
-		* tokenize it in-place.
-		 */
-		device_names = kstrdup(binder_devices_param, GFP_KERNEL);
-		if (!device_names) {
-			ret = -ENOMEM;
-			goto err_alloc_device_names_failed;
-		}
-
-		device_tmp = device_names;
-		while ((device_name = strsep(&device_tmp, ","))) {
-			ret = init_binder_device(device_name);
-			if (ret)
-				goto err_init_binder_device_failed;
-		}
-	}
-
-	ret = init_binderfs();
-	if (ret)
-		goto err_init_binder_device_failed;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 
 err_init_binder_device_failed:

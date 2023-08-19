@@ -12,7 +12,6 @@
 
 #define DESC_TYPE_CODE_DATA	(1 << 0)
 
-<<<<<<< HEAD
 typedef struct {
 	u32 get_mode;
 	u32 set_mode;
@@ -30,24 +29,5 @@ typedef struct {
 	void *set_mode;
 	void *blt;
 } efi_uga_draw_protocol_t;
-=======
-struct efi_uga_draw_protocol_32 {
-	u32 get_mode;
-	u32 set_mode;
-	u32 blt;
-};
-
-struct efi_uga_draw_protocol_64 {
-	u64 get_mode;
-	u64 set_mode;
-	u64 blt;
-};
-
-struct efi_uga_draw_protocol {
-	void *get_mode;
-	void *set_mode;
-	void *blt;
-};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* BOOT_COMPRESSED_EBOOT_H */

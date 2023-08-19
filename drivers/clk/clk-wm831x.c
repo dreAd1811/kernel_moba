@@ -52,11 +52,7 @@ static const struct clk_ops wm831x_xtal_ops = {
 	.recalc_rate = wm831x_xtal_recalc_rate,
 };
 
-<<<<<<< HEAD
 static const struct clk_init_data wm831x_xtal_init = {
-=======
-static struct clk_init_data wm831x_xtal_init = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.name = "xtal",
 	.ops = &wm831x_xtal_ops,
 };
@@ -229,11 +225,7 @@ static const struct clk_ops wm831x_fll_ops = {
 	.get_parent = wm831x_fll_get_parent,
 };
 
-<<<<<<< HEAD
 static const struct clk_init_data wm831x_fll_init = {
-=======
-static struct clk_init_data wm831x_fll_init = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.name = "fll",
 	.ops = &wm831x_fll_ops,
 	.parent_names = wm831x_fll_parents,
@@ -346,11 +338,7 @@ static const struct clk_ops wm831x_clkout_ops = {
 	.set_parent = wm831x_clkout_set_parent,
 };
 
-<<<<<<< HEAD
 static const struct clk_init_data wm831x_clkout_init = {
-=======
-static struct clk_init_data wm831x_clkout_init = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.name = "clkout",
 	.ops = &wm831x_clkout_ops,
 	.parent_names = wm831x_clkout_parents,

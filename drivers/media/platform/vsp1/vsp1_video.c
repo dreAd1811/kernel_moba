@@ -1,21 +1,10 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * vsp1_video.c  --  R-Car VSP1 Video Node
  *
  * Copyright (C) 2013-2015 Renesas Electronics Corporation
  *
  * Contact: Laurent Pinchart (laurent.pinchart@ideasonboard.com)
-<<<<<<< HEAD
-=======
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/list.h>
@@ -35,11 +24,7 @@
 #include <media/videobuf2-dma-contig.h>
 
 #include "vsp1.h"
-<<<<<<< HEAD
 #include "vsp1_brx.h"
-=======
-#include "vsp1_bru.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "vsp1_dl.h"
 #include "vsp1_entity.h"
 #include "vsp1_hgo.h"
@@ -335,11 +320,7 @@ static int vsp1_video_pipeline_setup_partitions(struct vsp1_pipeline *pipe)
 static struct vsp1_vb2_buffer *
 vsp1_video_complete_buffer(struct vsp1_video *video)
 {
-<<<<<<< HEAD
 	struct vsp1_pipeline *pipe = video->rwpf->entity.pipe;
-=======
-	struct vsp1_pipeline *pipe = video->rwpf->pipe;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct vsp1_vb2_buffer *next = NULL;
 	struct vsp1_vb2_buffer *done;
 	unsigned long flags;
@@ -397,31 +378,19 @@ static void vsp1_video_pipeline_run_partition(struct vsp1_pipeline *pipe,
 					      struct vsp1_dl_list *dl,
 					      unsigned int partition)
 {
-<<<<<<< HEAD
 	struct vsp1_dl_body *dlb = vsp1_dl_list_get_body0(dl);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct vsp1_entity *entity;
 
 	pipe->partition = &pipe->part_table[partition];
 
-<<<<<<< HEAD
 	list_for_each_entry(entity, &pipe->entities, list_pipe)
 		vsp1_entity_configure_partition(entity, pipe, dl, dlb);
-=======
-	list_for_each_entry(entity, &pipe->entities, list_pipe) {
-		if (entity->ops->configure)
-			entity->ops->configure(entity, pipe, dl,
-					       VSP1_ENTITY_PARAMS_PARTITION);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void vsp1_video_pipeline_run(struct vsp1_pipeline *pipe)
 {
 	struct vsp1_device *vsp1 = pipe->output->entity.vsp1;
 	struct vsp1_entity *entity;
-<<<<<<< HEAD
 	struct vsp1_dl_body *dlb;
 	struct vsp1_dl_list *dl;
 	unsigned int partition;
@@ -450,48 +419,17 @@ static void vsp1_video_pipeline_run(struct vsp1_pipeline *pipe)
 		struct vsp1_dl_list *dl_next;
 
 		dl_next = vsp1_dl_list_get(pipe->output->dlm);
-=======
-	unsigned int partition;
-
-	if (!pipe->dl)
-		pipe->dl = vsp1_dl_list_get(pipe->output->dlm);
-
-	/*
-	 * Start with the runtime parameters as the configure operation can
-	 * compute/cache information needed when configuring partitions. This
-	 * is the case with flipping in the WPF.
-	 */
-	list_for_each_entry(entity, &pipe->entities, list_pipe) {
-		if (entity->ops->configure)
-			entity->ops->configure(entity, pipe, pipe->dl,
-					       VSP1_ENTITY_PARAMS_RUNTIME);
-	}
-
-	/* Run the first partition */
-	vsp1_video_pipeline_run_partition(pipe, pipe->dl, 0);
-
-	/* Process consecutive partitions as necessary */
-	for (partition = 1; partition < pipe->partitions; ++partition) {
-		struct vsp1_dl_list *dl;
-
-		dl = vsp1_dl_list_get(pipe->output->dlm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/*
 		 * An incomplete chain will still function, but output only
 		 * the partitions that had a dl available. The frame end
 		 * interrupt will be marked on the last dl in the chain.
 		 */
-<<<<<<< HEAD
 		if (!dl_next) {
-=======
-		if (!dl) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev_err(vsp1->dev, "Failed to obtain a dl list. Frame will be incomplete\n");
 			break;
 		}
 
-<<<<<<< HEAD
 		vsp1_video_pipeline_run_partition(pipe, dl_next, partition);
 		vsp1_dl_list_add_chain(dl, dl_next);
 	}
@@ -499,25 +437,12 @@ static void vsp1_video_pipeline_run(struct vsp1_pipeline *pipe)
 	/* Complete, and commit the head display list. */
 	vsp1_dl_list_commit(dl, false);
 	pipe->configured = true;
-=======
-		vsp1_video_pipeline_run_partition(pipe, dl, partition);
-		vsp1_dl_list_add_chain(pipe->dl, dl);
-	}
-
-	/* Complete, and commit the head display list. */
-	vsp1_dl_list_commit(pipe->dl);
-	pipe->dl = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vsp1_pipeline_run(pipe);
 }
 
 static void vsp1_video_pipeline_frame_end(struct vsp1_pipeline *pipe,
-<<<<<<< HEAD
 					  unsigned int completion)
-=======
-					  bool completed)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct vsp1_device *vsp1 = pipe->output->entity.vsp1;
 	enum vsp1_pipeline_state state;
@@ -525,11 +450,7 @@ static void vsp1_video_pipeline_frame_end(struct vsp1_pipeline *pipe,
 	unsigned int i;
 
 	/* M2M Pipelines should never call here with an incomplete frame. */
-<<<<<<< HEAD
 	WARN_ON_ONCE(!(completion & VSP1_DL_FRAME_END_COMPLETED));
-=======
-	WARN_ON_ONCE(!completed);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irqsave(&pipe->irqlock, flags);
 
@@ -565,11 +486,7 @@ static int vsp1_video_pipeline_build_branch(struct vsp1_pipeline *pipe,
 	struct media_entity_enum ent_enum;
 	struct vsp1_entity *entity;
 	struct media_pad *pad;
-<<<<<<< HEAD
 	struct vsp1_brx *brx = NULL;
-=======
-	struct vsp1_bru *bru = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	ret = media_entity_enum_init(&ent_enum, &input->entity.vsp1->media_dev);
@@ -605,24 +522,14 @@ static int vsp1_video_pipeline_build_branch(struct vsp1_pipeline *pipe,
 		if (entity->type == VSP1_ENTITY_BRU ||
 		    entity->type == VSP1_ENTITY_BRS) {
 			/* BRU and BRS can't be chained. */
-<<<<<<< HEAD
 			if (brx) {
-=======
-			if (bru) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				ret = -EPIPE;
 				goto out;
 			}
 
-<<<<<<< HEAD
 			brx = to_brx(&entity->subdev);
 			brx->inputs[pad->index].rpf = input;
 			input->brx_input = pad->index;
-=======
-			bru = to_bru(&entity->subdev);
-			bru->inputs[pad->index].rpf = input;
-			input->bru_input = pad->index;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		/* We've reached the WPF, we're done. */
@@ -644,11 +551,7 @@ static int vsp1_video_pipeline_build_branch(struct vsp1_pipeline *pipe,
 			}
 
 			pipe->uds = entity;
-<<<<<<< HEAD
 			pipe->uds_input = brx ? &brx->entity : &input->entity;
-=======
-			pipe->uds_input = bru ? &bru->entity : &input->entity;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		/* Follow the source link, ignoring any HGO or HGT. */
@@ -693,30 +596,19 @@ static int vsp1_video_pipeline_build(struct vsp1_pipeline *pipe,
 		subdev = media_entity_to_v4l2_subdev(entity);
 		e = to_vsp1_entity(subdev);
 		list_add_tail(&e->list_pipe, &pipe->entities);
-<<<<<<< HEAD
 		e->pipe = pipe;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		switch (e->type) {
 		case VSP1_ENTITY_RPF:
 			rwpf = to_rwpf(subdev);
 			pipe->inputs[rwpf->entity.index] = rwpf;
 			rwpf->video->pipe_index = ++pipe->num_inputs;
-<<<<<<< HEAD
-=======
-			rwpf->pipe = pipe;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 
 		case VSP1_ENTITY_WPF:
 			rwpf = to_rwpf(subdev);
 			pipe->output = rwpf;
 			rwpf->video->pipe_index = 0;
-<<<<<<< HEAD
-=======
-			rwpf->pipe = pipe;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 
 		case VSP1_ENTITY_LIF:
@@ -725,27 +617,15 @@ static int vsp1_video_pipeline_build(struct vsp1_pipeline *pipe,
 
 		case VSP1_ENTITY_BRU:
 		case VSP1_ENTITY_BRS:
-<<<<<<< HEAD
 			pipe->brx = e;
-=======
-			pipe->bru = e;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 
 		case VSP1_ENTITY_HGO:
 			pipe->hgo = e;
-<<<<<<< HEAD
-=======
-			to_hgo(subdev)->histo.pipe = pipe;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 
 		case VSP1_ENTITY_HGT:
 			pipe->hgt = e;
-<<<<<<< HEAD
-=======
-			to_hgt(subdev)->histo.pipe = pipe;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 
 		default:
@@ -797,11 +677,7 @@ static struct vsp1_pipeline *vsp1_video_pipeline_get(struct vsp1_video *video)
 	 * Otherwise allocate a new pipeline and initialize it, it will be freed
 	 * when the last reference is released.
 	 */
-<<<<<<< HEAD
 	if (!video->rwpf->entity.pipe) {
-=======
-	if (!video->rwpf->pipe) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pipe = kzalloc(sizeof(*pipe), GFP_KERNEL);
 		if (!pipe)
 			return ERR_PTR(-ENOMEM);
@@ -813,11 +689,7 @@ static struct vsp1_pipeline *vsp1_video_pipeline_get(struct vsp1_video *video)
 			return ERR_PTR(ret);
 		}
 	} else {
-<<<<<<< HEAD
 		pipe = video->rwpf->entity.pipe;
-=======
-		pipe = video->rwpf->pipe;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kref_get(&pipe->kref);
 	}
 
@@ -900,11 +772,7 @@ static void vsp1_video_buffer_queue(struct vb2_buffer *vb)
 {
 	struct vb2_v4l2_buffer *vbuf = to_vb2_v4l2_buffer(vb);
 	struct vsp1_video *video = vb2_get_drv_priv(vb->vb2_queue);
-<<<<<<< HEAD
 	struct vsp1_pipeline *pipe = video->rwpf->entity.pipe;
-=======
-	struct vsp1_pipeline *pipe = video->rwpf->pipe;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct vsp1_vb2_buffer *buf = to_vsp1_vb2_buffer(vbuf);
 	unsigned long flags;
 	bool empty;
@@ -939,14 +807,6 @@ static int vsp1_video_setup_pipeline(struct vsp1_pipeline *pipe)
 	if (ret < 0)
 		return ret;
 
-<<<<<<< HEAD
-=======
-	/* Prepare the display list. */
-	pipe->dl = vsp1_dl_list_get(pipe->output->dlm);
-	if (!pipe->dl)
-		return -ENOMEM;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (pipe->uds) {
 		struct vsp1_uds *uds = to_uds(&pipe->uds->subdev);
 
@@ -968,7 +828,6 @@ static int vsp1_video_setup_pipeline(struct vsp1_pipeline *pipe)
 		}
 	}
 
-<<<<<<< HEAD
 	/*
 	 * Compute and cache the stream configuration into a body. The cached
 	 * body will be added to the display list by vsp1_video_pipeline_run()
@@ -981,14 +840,6 @@ static int vsp1_video_setup_pipeline(struct vsp1_pipeline *pipe)
 	list_for_each_entry(entity, &pipe->entities, list_pipe) {
 		vsp1_entity_route_setup(entity, pipe, pipe->stream_config);
 		vsp1_entity_configure_stream(entity, pipe, pipe->stream_config);
-=======
-	list_for_each_entry(entity, &pipe->entities, list_pipe) {
-		vsp1_entity_route_setup(entity, pipe, pipe->dl);
-
-		if (entity->ops->configure)
-			entity->ops->configure(entity, pipe, pipe->dl,
-					       VSP1_ENTITY_PARAMS_INIT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -1011,7 +862,6 @@ static void vsp1_video_cleanup_pipeline(struct vsp1_pipeline *pipe)
 {
 	lockdep_assert_held(&pipe->lock);
 
-<<<<<<< HEAD
 	/* Release any cached configuration from our output video. */
 	vsp1_dl_body_put(pipe->stream_config);
 	pipe->stream_config = NULL;
@@ -1020,24 +870,12 @@ static void vsp1_video_cleanup_pipeline(struct vsp1_pipeline *pipe)
 	/* Release our partition table allocation */
 	kfree(pipe->part_table);
 	pipe->part_table = NULL;
-=======
-	/* Release our partition table allocation */
-	kfree(pipe->part_table);
-	pipe->part_table = NULL;
-
-	vsp1_dl_list_put(pipe->dl);
-	pipe->dl = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int vsp1_video_start_streaming(struct vb2_queue *vq, unsigned int count)
 {
 	struct vsp1_video *video = vb2_get_drv_priv(vq);
-<<<<<<< HEAD
 	struct vsp1_pipeline *pipe = video->rwpf->entity.pipe;
-=======
-	struct vsp1_pipeline *pipe = video->rwpf->pipe;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool start_pipeline = false;
 	unsigned long flags;
 	int ret;
@@ -1079,11 +917,7 @@ static int vsp1_video_start_streaming(struct vb2_queue *vq, unsigned int count)
 static void vsp1_video_stop_streaming(struct vb2_queue *vq)
 {
 	struct vsp1_video *video = vb2_get_drv_priv(vq);
-<<<<<<< HEAD
 	struct vsp1_pipeline *pipe = video->rwpf->entity.pipe;
-=======
-	struct vsp1_pipeline *pipe = video->rwpf->pipe;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 	int ret;
 
@@ -1342,7 +1176,6 @@ static const struct v4l2_file_operations vsp1_video_fops = {
 };
 
 /* -----------------------------------------------------------------------------
-<<<<<<< HEAD
  * Suspend and Resume
  */
 
@@ -1424,8 +1257,6 @@ void vsp1_video_resume(struct vsp1_device *vsp1)
 }
 
 /* -----------------------------------------------------------------------------
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Initialization and Cleanup
  */
 

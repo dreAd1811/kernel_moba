@@ -1,21 +1,10 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * vsp1_entity.c  --  R-Car VSP1 Base Entity
  *
  * Copyright (C) 2013-2014 Renesas Electronics Corporation
  *
  * Contact: Laurent Pinchart (laurent.pinchart@ideasonboard.com)
-<<<<<<< HEAD
-=======
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/device.h>
@@ -33,11 +22,7 @@
 
 void vsp1_entity_route_setup(struct vsp1_entity *entity,
 			     struct vsp1_pipeline *pipe,
-<<<<<<< HEAD
 			     struct vsp1_dl_body *dlb)
-=======
-			     struct vsp1_dl_list *dl)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct vsp1_entity *source;
 	u32 route;
@@ -53,11 +38,7 @@ void vsp1_entity_route_setup(struct vsp1_entity *entity,
 		smppt = (pipe->output->entity.index << VI6_DPR_SMPPT_TGW_SHIFT)
 		      | (source->route->output << VI6_DPR_SMPPT_PT_SHIFT);
 
-<<<<<<< HEAD
 		vsp1_dl_body_write(dlb, VI6_DPR_HGO_SMPPT, smppt);
-=======
-		vsp1_dl_list_write(dl, VI6_DPR_HGO_SMPPT, smppt);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	} else if (entity->type == VSP1_ENTITY_HGT) {
 		u32 smppt;
@@ -70,11 +51,7 @@ void vsp1_entity_route_setup(struct vsp1_entity *entity,
 		smppt = (pipe->output->entity.index << VI6_DPR_SMPPT_TGW_SHIFT)
 		      | (source->route->output << VI6_DPR_SMPPT_PT_SHIFT);
 
-<<<<<<< HEAD
 		vsp1_dl_body_write(dlb, VI6_DPR_HGT_SMPPT, smppt);
-=======
-		vsp1_dl_list_write(dl, VI6_DPR_HGT_SMPPT, smppt);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -89,7 +66,6 @@ void vsp1_entity_route_setup(struct vsp1_entity *entity,
 	 */
 	if (source->type == VSP1_ENTITY_BRS)
 		route |= VI6_DPR_ROUTE_BRSSEL;
-<<<<<<< HEAD
 	vsp1_dl_body_write(dlb, source->route->reg, route);
 }
 
@@ -117,9 +93,6 @@ void vsp1_entity_configure_partition(struct vsp1_entity *entity,
 {
 	if (entity->ops->configure_partition)
 		entity->ops->configure_partition(entity, pipe, dl, dlb);
-=======
-	vsp1_dl_list_write(dl, source->route->reg, route);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* -----------------------------------------------------------------------------
@@ -360,7 +333,6 @@ done:
 	return ret;
 }
 
-<<<<<<< HEAD
 /*
  * vsp1_subdev_set_pad_format - Subdev pad set_fmt handler
  * @subdev: V4L2 subdevice
@@ -452,8 +424,6 @@ done:
 	return ret;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* -----------------------------------------------------------------------------
  * Media Operations
  */
@@ -595,13 +565,10 @@ struct media_pad *vsp1_entity_remote_pad(struct media_pad *pad)
 	{ VSP1_ENTITY_UDS, idx, VI6_DPR_UDS_ROUTE(idx),			\
 	  { VI6_DPR_NODE_UDS(idx) }, VI6_DPR_NODE_UDS(idx) }
 
-<<<<<<< HEAD
 #define VSP1_ENTITY_ROUTE_UIF(idx)					\
 	{ VSP1_ENTITY_UIF, idx, VI6_DPR_UIF_ROUTE(idx),			\
 	  { VI6_DPR_NODE_UIF(idx) }, VI6_DPR_NODE_UIF(idx) }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define VSP1_ENTITY_ROUTE_WPF(idx)					\
 	{ VSP1_ENTITY_WPF, idx, 0,					\
 	  { VI6_DPR_NODE_WPF(idx) }, VI6_DPR_NODE_WPF(idx) }
@@ -630,11 +597,8 @@ static const struct vsp1_route vsp1_routes[] = {
 	VSP1_ENTITY_ROUTE_UDS(0),
 	VSP1_ENTITY_ROUTE_UDS(1),
 	VSP1_ENTITY_ROUTE_UDS(2),
-<<<<<<< HEAD
 	VSP1_ENTITY_ROUTE_UIF(0),	/* Named UIF4 in the documentation */
 	VSP1_ENTITY_ROUTE_UIF(1),	/* Named UIF5 in the documentation */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	VSP1_ENTITY_ROUTE_WPF(0),
 	VSP1_ENTITY_ROUTE_WPF(1),
 	VSP1_ENTITY_ROUTE_WPF(2),
@@ -666,12 +630,8 @@ int vsp1_entity_init(struct vsp1_device *vsp1, struct vsp1_entity *entity,
 	entity->source_pad = num_pads - 1;
 
 	/* Allocate and initialize pads. */
-<<<<<<< HEAD
 	entity->pads = devm_kcalloc(vsp1->dev,
 				    num_pads, sizeof(*entity->pads),
-=======
-	entity->pads = devm_kzalloc(vsp1->dev, num_pads * sizeof(*entity->pads),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    GFP_KERNEL);
 	if (entity->pads == NULL)
 		return -ENOMEM;

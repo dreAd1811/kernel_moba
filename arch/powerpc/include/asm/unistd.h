@@ -12,21 +12,10 @@
 #include <uapi/asm/unistd.h>
 
 
-<<<<<<< HEAD
 #define NR_syscalls		389
 
 #define __NR__exit __NR_exit
 
-=======
-#define NR_syscalls		384
-
-#define __NR__exit __NR_exit
-
-#define __IGNORE_pkey_mprotect
-#define __IGNORE_pkey_alloc
-#define __IGNORE_pkey_free
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifndef __ASSEMBLY__
 
 #include <linux/types.h>

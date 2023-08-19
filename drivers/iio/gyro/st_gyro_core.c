@@ -111,15 +111,10 @@ static const struct st_sensor_settings st_gyro_sensors_settings[] = {
 			.mask = 0x80,
 		},
 		.drdy_irq = {
-<<<<<<< HEAD
 			.int2 = {
 				.addr = 0x22,
 				.mask = 0x08,
 			},
-=======
-			.addr = 0x22,
-			.mask_int2 = 0x08,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/*
 			 * The sensor has IHL (active low) and open
 			 * drain settings, but only for INT1 and not
@@ -130,13 +125,10 @@ static const struct st_sensor_settings st_gyro_sensors_settings[] = {
 				.mask = 0x07,
 			},
 		},
-<<<<<<< HEAD
 		.sim = {
 			.addr = 0x23,
 			.value = BIT(0),
 		},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.multi_read_bit = true,
 		.bootime = 2,
 	},
@@ -198,15 +190,10 @@ static const struct st_sensor_settings st_gyro_sensors_settings[] = {
 			.mask = 0x80,
 		},
 		.drdy_irq = {
-<<<<<<< HEAD
 			.int2 = {
 				.addr = 0x22,
 				.mask = 0x08,
 			},
-=======
-			.addr = 0x22,
-			.mask_int2 = 0x08,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/*
 			 * The sensor has IHL (active low) and open
 			 * drain settings, but only for INT1 and not
@@ -217,13 +204,10 @@ static const struct st_sensor_settings st_gyro_sensors_settings[] = {
 				.mask = 0x07,
 			},
 		},
-<<<<<<< HEAD
 		.sim = {
 			.addr = 0x23,
 			.value = BIT(0),
 		},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.multi_read_bit = true,
 		.bootime = 2,
 	},
@@ -280,15 +264,10 @@ static const struct st_sensor_settings st_gyro_sensors_settings[] = {
 			.mask = 0x80,
 		},
 		.drdy_irq = {
-<<<<<<< HEAD
 			.int2 = {
 				.addr = 0x22,
 				.mask = 0x08,
 			},
-=======
-			.addr = 0x22,
-			.mask_int2 = 0x08,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/*
 			 * The sensor has IHL (active low) and open
 			 * drain settings, but only for INT1 and not
@@ -299,13 +278,10 @@ static const struct st_sensor_settings st_gyro_sensors_settings[] = {
 				.mask = 0x07,
 			},
 		},
-<<<<<<< HEAD
 		.sim = {
 			.addr = 0x23,
 			.value = BIT(0),
 		},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.multi_read_bit = true,
 		.bootime = 2,
 	},
@@ -377,10 +353,6 @@ static const struct attribute_group st_gyro_attribute_group = {
 };
 
 static const struct iio_info gyro_info = {
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.attrs = &st_gyro_attribute_group,
 	.read_raw = &st_gyro_read_raw,
 	.write_raw = &st_gyro_write_raw,
@@ -389,10 +361,6 @@ static const struct iio_info gyro_info = {
 
 #ifdef CONFIG_IIO_TRIGGER
 static const struct iio_trigger_ops st_gyro_trigger_ops = {
-<<<<<<< HEAD
-=======
-	.owner = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.set_trigger_state = ST_GYRO_TRIGGER_SET_STATE,
 	.validate_device = st_sensors_validate_device,
 };

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
-=======
-// SPDX-License-Identifier: GPL-2.0
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/bug.h>
 #include <linux/kernel.h>
 #include <linux/bitops.h>
@@ -574,7 +570,6 @@ static const struct lut_table lut_table_400[] = {
 	{adcmap_batt_therm_400k_6125, ARRAY_SIZE(adcmap_batt_therm_400k_6125)},
 };
 
-<<<<<<< HEAD
 static const struct vadc_map_pt adcmap7_die_temp[] = {
 	{ 433700, 1967},
 	{ 473100, 1964},
@@ -764,8 +759,6 @@ static const struct vadc_map_pt adcmap7_100k[] = {
 	{ 2420, 130048 }
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int qcom_vadc_map_voltage_temp(const struct vadc_map_pt *pts,
 				      u32 tablesize, s32 input, s64 *output)
 {
@@ -992,7 +985,6 @@ static int qcom_vadc_scale_hw_calib_batt_therm_100(
 	return 0;
 }
 
-<<<<<<< HEAD
 static int qcom_vadc7_scale_hw_calib_therm(
 				const struct vadc_prescale_ratio *prescale,
 				const struct adc_data *data,
@@ -1019,8 +1011,6 @@ static int qcom_vadc7_scale_hw_calib_therm(
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int qcom_vadc_scale_hw_calib_batt_therm_30(
 				const struct vadc_prescale_ratio *prescale,
 				const struct adc_data *data,
@@ -1121,7 +1111,6 @@ static int qcom_vadc_scale_hw_calib_die_temp(
 	return 0;
 }
 
-<<<<<<< HEAD
 static int qcom_vadc7_scale_hw_calib_die_temp(
 				const struct vadc_prescale_ratio *prescale,
 				const struct adc_data *data,
@@ -1161,8 +1150,6 @@ static int qcom_vadc7_scale_hw_calib_die_temp(
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int qcom_vadc_scale_hw_smb_temp(
 				const struct vadc_prescale_ratio *prescale,
 				const struct adc_data *data,
@@ -1342,15 +1329,12 @@ int qcom_vadc_hw_scale(enum vadc_scale_fn_type scaletype,
 	case SCALE_HW_CALIB_PM5_SMB1398_TEMP:
 		return qcom_vadc_scale_hw_smb1398_temp(prescale, data,
 						adc_code, result);
-<<<<<<< HEAD
 	case SCALE_HW_CALIB_THERM_100K_PU_PM7:
 		return qcom_vadc7_scale_hw_calib_therm(prescale, data,
 						adc_code, result);
 	case SCALE_HW_CALIB_PMIC_THERM_PM7:
 		return qcom_vadc7_scale_hw_calib_die_temp(prescale, data,
 						adc_code, result);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		return -EINVAL;
 	}

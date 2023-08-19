@@ -1,11 +1,5 @@
 /*
-<<<<<<< HEAD
  * Copyright (C) 2011 Texas Instruments Incorporated - http://www.ti.com/
-=======
- * drivers/gpu/drm/omapdrm/omap_irq.c
- *
- * Copyright (C) 2012 Texas Instruments
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Author: Rob Clark <rob.clark@linaro.org>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -26,11 +20,7 @@
 struct omap_irq_wait {
 	struct list_head node;
 	wait_queue_head_t wq;
-<<<<<<< HEAD
 	u32 irqmask;
-=======
-	uint32_t irqmask;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int count;
 };
 
@@ -39,11 +29,7 @@ static void omap_irq_update(struct drm_device *dev)
 {
 	struct omap_drm_private *priv = dev->dev_private;
 	struct omap_irq_wait *wait;
-<<<<<<< HEAD
 	u32 irqmask = priv->irq_mask;
-=======
-	uint32_t irqmask = priv->irq_mask;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	assert_spin_locked(&priv->wait_lock);
 
@@ -52,11 +38,7 @@ static void omap_irq_update(struct drm_device *dev)
 
 	DBG("irqmask=%08x", irqmask);
 
-<<<<<<< HEAD
 	priv->dispc_ops->write_irqenable(priv->dispc, irqmask);
-=======
-	priv->dispc_ops->write_irqenable(irqmask);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void omap_irq_wait_handler(struct omap_irq_wait *wait)
@@ -66,11 +48,7 @@ static void omap_irq_wait_handler(struct omap_irq_wait *wait)
 }
 
 struct omap_irq_wait * omap_irq_wait_init(struct drm_device *dev,
-<<<<<<< HEAD
 		u32 irqmask, int count)
-=======
-		uint32_t irqmask, int count)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct omap_drm_private *priv = dev->dev_private;
 	struct omap_irq_wait *wait = kzalloc(sizeof(*wait), GFP_KERNEL);
@@ -130,12 +108,8 @@ int omap_irq_enable_vblank(struct drm_crtc *crtc)
 	DBG("dev=%p, crtc=%u", dev, channel);
 
 	spin_lock_irqsave(&priv->wait_lock, flags);
-<<<<<<< HEAD
 	priv->irq_mask |= priv->dispc_ops->mgr_get_vsync_irq(priv->dispc,
 							     channel);
-=======
-	priv->irq_mask |= priv->dispc_ops->mgr_get_vsync_irq(channel);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	omap_irq_update(dev);
 	spin_unlock_irqrestore(&priv->wait_lock, flags);
 
@@ -161,12 +135,8 @@ void omap_irq_disable_vblank(struct drm_crtc *crtc)
 	DBG("dev=%p, crtc=%u", dev, channel);
 
 	spin_lock_irqsave(&priv->wait_lock, flags);
-<<<<<<< HEAD
 	priv->irq_mask &= ~priv->dispc_ops->mgr_get_vsync_irq(priv->dispc,
 							      channel);
-=======
-	priv->irq_mask &= ~priv->dispc_ops->mgr_get_vsync_irq(channel);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	omap_irq_update(dev);
 	spin_unlock_irqrestore(&priv->wait_lock, flags);
 }
@@ -230,15 +200,9 @@ static irqreturn_t omap_irq_handler(int irq, void *arg)
 	unsigned int id;
 	u32 irqstatus;
 
-<<<<<<< HEAD
 	irqstatus = priv->dispc_ops->read_irqstatus(priv->dispc);
 	priv->dispc_ops->clear_irqstatus(priv->dispc, irqstatus);
 	priv->dispc_ops->read_irqstatus(priv->dispc);	/* flush posted write */
-=======
-	irqstatus = priv->dispc_ops->read_irqstatus();
-	priv->dispc_ops->clear_irqstatus(irqstatus);
-	priv->dispc_ops->read_irqstatus();        /* flush posted write */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	VERB("irqs: %08x", irqstatus);
 
@@ -246,20 +210,12 @@ static irqreturn_t omap_irq_handler(int irq, void *arg)
 		struct drm_crtc *crtc = priv->crtcs[id];
 		enum omap_channel channel = omap_crtc_channel(crtc);
 
-<<<<<<< HEAD
 		if (irqstatus & priv->dispc_ops->mgr_get_vsync_irq(priv->dispc, channel)) {
-=======
-		if (irqstatus & priv->dispc_ops->mgr_get_vsync_irq(channel)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			drm_handle_vblank(dev, id);
 			omap_crtc_vblank_irq(crtc);
 		}
 
-<<<<<<< HEAD
 		if (irqstatus & priv->dispc_ops->mgr_get_sync_lost_irq(priv->dispc, channel))
-=======
-		if (irqstatus & priv->dispc_ops->mgr_get_sync_lost_irq(channel))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			omap_crtc_error_irq(crtc, irqstatus);
 	}
 
@@ -293,11 +249,7 @@ static const u32 omap_underflow_irqs[] = {
 int omap_drm_irq_install(struct drm_device *dev)
 {
 	struct omap_drm_private *priv = dev->dev_private;
-<<<<<<< HEAD
 	unsigned int num_mgrs = priv->dispc_ops->get_num_mgrs(priv->dispc);
-=======
-	unsigned int num_mgrs = priv->dispc_ops->get_num_mgrs();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int max_planes;
 	unsigned int i;
 	int ret;
@@ -315,7 +267,6 @@ int omap_drm_irq_install(struct drm_device *dev)
 	}
 
 	for (i = 0; i < num_mgrs; ++i)
-<<<<<<< HEAD
 		priv->irq_mask |= priv->dispc_ops->mgr_get_sync_lost_irq(priv->dispc, i);
 
 	priv->dispc_ops->runtime_get(priv->dispc);
@@ -323,15 +274,6 @@ int omap_drm_irq_install(struct drm_device *dev)
 	priv->dispc_ops->runtime_put(priv->dispc);
 
 	ret = priv->dispc_ops->request_irq(priv->dispc, omap_irq_handler, dev);
-=======
-		priv->irq_mask |= priv->dispc_ops->mgr_get_sync_lost_irq(i);
-
-	priv->dispc_ops->runtime_get();
-	priv->dispc_ops->clear_irqstatus(0xffffffff);
-	priv->dispc_ops->runtime_put();
-
-	ret = priv->dispc_ops->request_irq(omap_irq_handler, dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		return ret;
 
@@ -349,9 +291,5 @@ void omap_drm_irq_uninstall(struct drm_device *dev)
 
 	dev->irq_enabled = false;
 
-<<<<<<< HEAD
 	priv->dispc_ops->free_irq(priv->dispc, dev);
-=======
-	priv->dispc_ops->free_irq(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

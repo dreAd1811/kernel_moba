@@ -130,10 +130,7 @@ void mconsole_proc(struct mc_request *req)
 	struct file *file;
 	int first_chunk = 1;
 	char *ptr = req->request.data;
-<<<<<<< HEAD
 	loff_t pos = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ptr += strlen("proc");
 	ptr = skip_spaces(ptr);
@@ -152,11 +149,7 @@ void mconsole_proc(struct mc_request *req)
 	}
 
 	do {
-<<<<<<< HEAD
 		len = kernel_read(file, buf, PAGE_SIZE - 1, &pos);
-=======
-		len = kernel_read(file, buf, PAGE_SIZE - 1, &file->f_pos);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (len < 0) {
 			mconsole_reply(req, "Read of file failed", 1, 0);
 			goto out_free;

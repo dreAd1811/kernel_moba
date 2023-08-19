@@ -38,11 +38,7 @@ static u32 get_int_prop(struct device_node *np, const char *name, u32 def)
  * @addr0: value of 1st cell of a device tree PCI address.
  * @bridge: Set this flag if the address is from a bridge 'ranges' property
  */
-<<<<<<< HEAD
 unsigned int pci_parse_of_flags(u32 addr0, int bridge)
-=======
-static unsigned int pci_parse_of_flags(u32 addr0, int bridge)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned int flags = 0;
 
@@ -86,23 +82,10 @@ static void of_pci_parse_addrs(struct device_node *node, struct pci_dev *dev)
 	const __be32 *addrs;
 	u32 i;
 	int proplen;
-<<<<<<< HEAD
 
 	addrs = of_get_property(node, "assigned-addresses", &proplen);
 	if (!addrs)
 		return;
-=======
-	bool mark_unset = false;
-
-	addrs = of_get_property(node, "assigned-addresses", &proplen);
-	if (!addrs || !proplen) {
-		addrs = of_get_property(node, "reg", &proplen);
-		if (!addrs || !proplen)
-			return;
-		mark_unset = true;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pr_debug("    parse addresses (%d bytes) @ %p\n", proplen, addrs);
 	for (; proplen >= 20; proplen -= 20, addrs += 5) {
 		flags = pci_parse_of_flags(of_read_number(addrs, 1), 0);
@@ -127,11 +110,6 @@ static void of_pci_parse_addrs(struct device_node *node, struct pci_dev *dev)
 			continue;
 		}
 		res->flags = flags;
-<<<<<<< HEAD
-=======
-		if (mark_unset)
-			res->flags |= IORESOURCE_UNSET;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		res->name = pci_name(dev);
 		region.start = base;
 		region.end = base + size - 1;
@@ -393,16 +371,8 @@ static void __of_scan_bus(struct device_node *node, struct pci_bus *bus,
 	pcibios_setup_bus_devices(bus);
 
 	/* Now scan child busses */
-<<<<<<< HEAD
 	for_each_pci_bridge(dev, bus)
 		of_scan_pci_bridge(dev);
-=======
-	list_for_each_entry(dev, &bus->devices, bus_list) {
-		if (pci_is_bridge(dev)) {
-			of_scan_pci_bridge(dev);
-		}
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**

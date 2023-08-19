@@ -123,15 +123,11 @@ struct ktermios {
 #define VTDLY	00200000
 #define   VT0	00000000
 #define   VT1	00200000
-<<<<<<< HEAD
 /*
  * Should be equivalent to TAB3, see description of TAB3 in
  * POSIX.1-2008, Ch. 11.2.3 "Output Modes"
  */
 #define XTABS	TAB3
-=======
-#define XTABS	01000000 /* Hmm.. Linux/i386 considers this part of TABDLY.. */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* c_cflag bit meaning */
 #define CBAUD	0000037

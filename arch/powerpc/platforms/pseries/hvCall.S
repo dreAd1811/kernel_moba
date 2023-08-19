@@ -13,20 +13,13 @@
 #include <asm/ppc_asm.h>
 #include <asm/asm-offsets.h>
 #include <asm/ptrace.h>
-<<<<<<< HEAD
 #include <asm/feature-fixups.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	.section	".text"
 	
 #ifdef CONFIG_TRACEPOINTS
 
-<<<<<<< HEAD
 #ifndef CONFIG_JUMP_LABEL
-=======
-#ifndef HAVE_JUMP_LABEL
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.section	".toc","aw"
 
 	.globl hcall_tracepoint_refcount
@@ -86,11 +79,7 @@ hcall_tracepoint_refcount:
 	mr	r5,BUFREG;					\
 	__HCALL_INST_POSTCALL
 
-<<<<<<< HEAD
 #ifdef CONFIG_JUMP_LABEL
-=======
-#ifdef HAVE_JUMP_LABEL
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define HCALL_BRANCH(LABEL)					\
 	ARCH_STATIC_BRANCH(LABEL, hcall_tracepoint_key)
 #else

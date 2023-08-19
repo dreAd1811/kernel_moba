@@ -1651,11 +1651,7 @@ ims_pcu_get_cdc_union_desc(struct usb_interface *intf)
 				return union_desc;
 
 			dev_err(&intf->dev,
-<<<<<<< HEAD
 				"Union descriptor too short (%d vs %zd)\n",
-=======
-				"Union descriptor to short (%d vs %zd\n)",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				union_desc->bLength, sizeof(*union_desc));
 			return NULL;
 		}

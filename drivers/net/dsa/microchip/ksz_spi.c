@@ -195,10 +195,7 @@ static int ksz_spi_remove(struct spi_device *spi)
 
 static const struct of_device_id ksz_dt_ids[] = {
 	{ .compatible = "microchip,ksz9477" },
-<<<<<<< HEAD
 	{ .compatible = "microchip,ksz9897" },
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{},
 };
 MODULE_DEVICE_TABLE(of, ksz_dt_ids);

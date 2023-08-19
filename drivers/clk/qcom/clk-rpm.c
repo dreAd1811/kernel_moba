@@ -29,10 +29,7 @@
 
 #define QCOM_RPM_MISC_CLK_TYPE				0x306b6c63
 #define QCOM_RPM_SCALING_ENABLE_ID			0x2
-<<<<<<< HEAD
 #define QCOM_RPM_XO_MODE_ON				0x2
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DEFINE_CLK_RPM(_platform, _name, _active, r_id)			      \
 	static struct clk_rpm _platform##_##_active;			      \
@@ -60,7 +57,6 @@
 		},							      \
 	}
 
-<<<<<<< HEAD
 #define DEFINE_CLK_RPM_XO_BUFFER(_platform, _name, _active, offset)	      \
 	static struct clk_rpm _platform##_##_name = {			      \
 		.rpm_clk_id = QCOM_RPM_CXO_BUFFERS,			      \
@@ -85,8 +81,6 @@
 		},							      \
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DEFINE_CLK_RPM_PXO_BRANCH(_platform, _name, _active, r_id, r)	      \
 	static struct clk_rpm _platform##_##_active;			      \
 	static struct clk_rpm _platform##_##_name = {			      \
@@ -145,16 +139,11 @@
 
 #define to_clk_rpm(_hw) container_of(_hw, struct clk_rpm, hw)
 
-<<<<<<< HEAD
 struct rpm_cc;
 
 struct clk_rpm {
 	const int rpm_clk_id;
 	const int xo_offset;
-=======
-struct clk_rpm {
-	const int rpm_clk_id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const bool active_only;
 	unsigned long rate;
 	bool enabled;
@@ -162,21 +151,15 @@ struct clk_rpm {
 	struct clk_rpm *peer;
 	struct clk_hw hw;
 	struct qcom_rpm *rpm;
-<<<<<<< HEAD
 	struct rpm_cc *rpm_cc;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct rpm_cc {
 	struct qcom_rpm *rpm;
 	struct clk_rpm **clks;
 	size_t num_clks;
-<<<<<<< HEAD
 	u32 xo_buffer_value;
 	struct mutex xo_lock;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct rpm_clk_desc {
@@ -191,7 +174,6 @@ static int clk_rpm_handoff(struct clk_rpm *r)
 	int ret;
 	u32 value = INT_MAX;
 
-<<<<<<< HEAD
 	/*
 	 * The vendor tree simply reads the status for this
 	 * RPM clock.
@@ -200,8 +182,6 @@ static int clk_rpm_handoff(struct clk_rpm *r)
 		r->rpm_clk_id == QCOM_RPM_CXO_BUFFERS)
 		return 0;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = qcom_rpm_write(r->rpm, QCOM_RPM_ACTIVE_STATE,
 			     r->rpm_clk_id, &value, 1);
 	if (ret)
@@ -328,7 +308,6 @@ out:
 	mutex_unlock(&rpm_clk_lock);
 }
 
-<<<<<<< HEAD
 static int clk_rpm_xo_prepare(struct clk_hw *hw)
 {
 	struct clk_rpm *r = to_clk_rpm(hw);
@@ -395,8 +374,6 @@ static void clk_rpm_fixed_unprepare(struct clk_hw *hw)
 		r->enabled = false;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int clk_rpm_set_rate(struct clk_hw *hw,
 			    unsigned long rate, unsigned long parent_rate)
 {
@@ -461,7 +438,6 @@ static unsigned long clk_rpm_recalc_rate(struct clk_hw *hw,
 	return r->rate;
 }
 
-<<<<<<< HEAD
 static const struct clk_ops clk_rpm_xo_ops = {
 	.prepare	= clk_rpm_xo_prepare,
 	.unprepare	= clk_rpm_xo_unprepare,
@@ -474,8 +450,6 @@ static const struct clk_ops clk_rpm_fixed_ops = {
 	.recalc_rate	= clk_rpm_recalc_rate,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct clk_ops clk_rpm_ops = {
 	.prepare	= clk_rpm_prepare,
 	.unprepare	= clk_rpm_unprepare,
@@ -491,7 +465,6 @@ static const struct clk_ops clk_rpm_branch_ops = {
 	.recalc_rate	= clk_rpm_recalc_rate,
 };
 
-<<<<<<< HEAD
 /* MSM8660/APQ8060 */
 DEFINE_CLK_RPM(msm8660, afab_clk, afab_a_clk, QCOM_RPM_APPS_FABRIC_CLK);
 DEFINE_CLK_RPM(msm8660, sfab_clk, sfab_a_clk, QCOM_RPM_SYS_FABRIC_CLK);
@@ -531,8 +504,6 @@ static const struct rpm_clk_desc rpm_clk_msm8660 = {
 	.num_clks = ARRAY_SIZE(msm8660_clks),
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* apq8064 */
 DEFINE_CLK_RPM(apq8064, afab_clk, afab_a_clk, QCOM_RPM_APPS_FABRIC_CLK);
 DEFINE_CLK_RPM(apq8064, cfpb_clk, cfpb_a_clk, QCOM_RPM_CFPB_CLK);
@@ -543,14 +514,11 @@ DEFINE_CLK_RPM(apq8064, mmfpb_clk, mmfpb_a_clk, QCOM_RPM_MMFPB_CLK);
 DEFINE_CLK_RPM(apq8064, sfab_clk, sfab_a_clk, QCOM_RPM_SYS_FABRIC_CLK);
 DEFINE_CLK_RPM(apq8064, sfpb_clk, sfpb_a_clk, QCOM_RPM_SFPB_CLK);
 DEFINE_CLK_RPM(apq8064, qdss_clk, qdss_a_clk, QCOM_RPM_QDSS_CLK);
-<<<<<<< HEAD
 DEFINE_CLK_RPM_XO_BUFFER(apq8064, xo_d0_clk, xo_d0_a_clk, 0);
 DEFINE_CLK_RPM_XO_BUFFER(apq8064, xo_d1_clk, xo_d1_a_clk, 8);
 DEFINE_CLK_RPM_XO_BUFFER(apq8064, xo_a0_clk, xo_a0_a_clk, 16);
 DEFINE_CLK_RPM_XO_BUFFER(apq8064, xo_a1_clk, xo_a1_a_clk, 24);
 DEFINE_CLK_RPM_XO_BUFFER(apq8064, xo_a2_clk, xo_a2_a_clk, 28);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct clk_rpm *apq8064_clks[] = {
 	[RPM_APPS_FABRIC_CLK] = &apq8064_afab_clk,
@@ -571,14 +539,11 @@ static struct clk_rpm *apq8064_clks[] = {
 	[RPM_SFPB_A_CLK] = &apq8064_sfpb_a_clk,
 	[RPM_QDSS_CLK] = &apq8064_qdss_clk,
 	[RPM_QDSS_A_CLK] = &apq8064_qdss_a_clk,
-<<<<<<< HEAD
 	[RPM_XO_D0] = &apq8064_xo_d0_clk,
 	[RPM_XO_D1] = &apq8064_xo_d1_clk,
 	[RPM_XO_A0] = &apq8064_xo_a0_clk,
 	[RPM_XO_A1] = &apq8064_xo_a1_clk,
 	[RPM_XO_A2] = &apq8064_xo_a2_clk,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct rpm_clk_desc rpm_clk_apq8064 = {
@@ -587,11 +552,8 @@ static const struct rpm_clk_desc rpm_clk_apq8064 = {
 };
 
 static const struct of_device_id rpm_clk_match_table[] = {
-<<<<<<< HEAD
 	{ .compatible = "qcom,rpmcc-msm8660", .data = &rpm_clk_msm8660 },
 	{ .compatible = "qcom,rpmcc-apq8060", .data = &rpm_clk_msm8660 },
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ .compatible = "qcom,rpmcc-apq8064", .data = &rpm_clk_apq8064 },
 	{ }
 };
@@ -639,20 +601,14 @@ static int rpm_clk_probe(struct platform_device *pdev)
 
 	rcc->clks = rpm_clks;
 	rcc->num_clks = num_clks;
-<<<<<<< HEAD
 	mutex_init(&rcc->xo_lock);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < num_clks; i++) {
 		if (!rpm_clks[i])
 			continue;
 
 		rpm_clks[i]->rpm = rpm;
-<<<<<<< HEAD
 		rpm_clks[i]->rpm_cc = rcc;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		ret = clk_rpm_handoff(rpm_clks[i]);
 		if (ret)

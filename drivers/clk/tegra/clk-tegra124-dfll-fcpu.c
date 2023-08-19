@@ -125,17 +125,11 @@ static int tegra124_dfll_fcpu_probe(struct platform_device *pdev)
 		return err;
 	}
 
-<<<<<<< HEAD
-=======
-	platform_set_drvdata(pdev, soc);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 static int tegra124_dfll_fcpu_remove(struct platform_device *pdev)
 {
-<<<<<<< HEAD
 	struct tegra_dfll_soc_data *soc;
 
 	soc = tegra_dfll_unregister(pdev);
@@ -144,14 +138,6 @@ static int tegra124_dfll_fcpu_remove(struct platform_device *pdev)
 			PTR_ERR(soc));
 		return PTR_ERR(soc);
 	}
-=======
-	struct tegra_dfll_soc_data *soc = platform_get_drvdata(pdev);
-	int err;
-
-	err = tegra_dfll_unregister(pdev);
-	if (err < 0)
-		dev_err(&pdev->dev, "failed to unregister DFLL: %d\n", err);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tegra_cvb_remove_opp_table(soc->dev, soc->cvb, soc->max_freq);
 

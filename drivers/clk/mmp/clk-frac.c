@@ -149,11 +149,7 @@ static void clk_factor_init(struct clk_hw *hw)
 		spin_unlock_irqrestore(factor->lock, flags);
 }
 
-<<<<<<< HEAD
 static const struct clk_ops clk_factor_ops = {
-=======
-static struct clk_ops clk_factor_ops = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.recalc_rate = clk_factor_recalc_rate,
 	.round_rate = clk_factor_round_rate,
 	.set_rate = clk_factor_set_rate,
@@ -176,15 +172,8 @@ struct clk *mmp_clk_register_factor(const char *name, const char *parent_name,
 	}
 
 	factor = kzalloc(sizeof(*factor), GFP_KERNEL);
-<<<<<<< HEAD
 	if (!factor)
 		return ERR_PTR(-ENOMEM);
-=======
-	if (!factor) {
-		pr_err("%s: could not allocate factor  clk\n", __func__);
-		return ERR_PTR(-ENOMEM);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* struct clk_aux assignments */
 	factor->base = base;

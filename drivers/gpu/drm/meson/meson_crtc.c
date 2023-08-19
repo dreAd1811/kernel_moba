@@ -101,11 +101,8 @@ static void meson_crtc_atomic_enable(struct drm_crtc *crtc,
 	writel_bits_relaxed(VPP_POSTBLEND_ENABLE, VPP_POSTBLEND_ENABLE,
 			    priv->io_base + _REG(VPP_MISC));
 
-<<<<<<< HEAD
 	drm_crtc_vblank_on(crtc);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	priv->viu.osd1_enabled = true;
 }
 
@@ -115,11 +112,8 @@ static void meson_crtc_atomic_disable(struct drm_crtc *crtc,
 	struct meson_crtc *meson_crtc = to_meson_crtc(crtc);
 	struct meson_drm *priv = meson_crtc->priv;
 
-<<<<<<< HEAD
 	drm_crtc_vblank_off(crtc);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	priv->viu.osd1_enabled = false;
 	priv->viu.osd1_commit = false;
 

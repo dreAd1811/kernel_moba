@@ -20,12 +20,9 @@
  * OF THIS SOFTWARE.
  */
 
-<<<<<<< HEAD
 #include <drm/drm_atomic_helper.h>
 #include <drm/drm_crtc_helper.h>
 #include <drm/drm_fb_helper.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <drm/drm_modeset_helper.h>
 #include <drm/drm_plane_helper.h>
 
@@ -162,7 +159,6 @@ int drm_crtc_init(struct drm_device *dev, struct drm_crtc *crtc,
 					 NULL);
 }
 EXPORT_SYMBOL(drm_crtc_init);
-<<<<<<< HEAD
 
 /**
  * drm_mode_config_helper_suspend - Modeset suspend helper
@@ -236,5 +232,3 @@ int drm_mode_config_helper_resume(struct drm_device *dev)
 	return ret;
 }
 EXPORT_SYMBOL(drm_mode_config_helper_resume);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

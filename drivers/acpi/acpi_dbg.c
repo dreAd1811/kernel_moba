@@ -718,7 +718,6 @@ again:
 	return size > 0 ? size : ret;
 }
 
-<<<<<<< HEAD
 static __poll_t acpi_aml_poll(struct file *file, poll_table *wait)
 {
 	__poll_t masks = 0;
@@ -728,17 +727,6 @@ static __poll_t acpi_aml_poll(struct file *file, poll_table *wait)
 		masks |= EPOLLIN | EPOLLRDNORM;
 	if (acpi_aml_user_writable())
 		masks |= EPOLLOUT | EPOLLWRNORM;
-=======
-static unsigned int acpi_aml_poll(struct file *file, poll_table *wait)
-{
-	int masks = 0;
-
-	poll_wait(file, &acpi_aml_io.wait, wait);
-	if (acpi_aml_user_readable())
-		masks |= POLLIN | POLLRDNORM;
-	if (acpi_aml_user_writable())
-		masks |= POLLOUT | POLLWRNORM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return masks;
 }

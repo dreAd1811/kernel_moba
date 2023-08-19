@@ -192,7 +192,6 @@
 
 #define NR_SG		128
 
-<<<<<<< HEAD
 #define MMCI_PINCTRL_STATE_OPENDRAIN "opendrain"
 
 struct clk;
@@ -276,11 +275,6 @@ struct variant_data {
 struct mmci_host_ops {
 	void (*dma_setup)(struct mmci_host *host);
 };
-=======
-struct clk;
-struct variant_data;
-struct dma_chan;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct mmci_host_next {
 	struct dma_async_tx_descriptor	*dma_desc;
@@ -309,7 +303,6 @@ struct mmci_host {
 	u32			clk_reg;
 	u32			datactrl_reg;
 	u32			busy_status;
-<<<<<<< HEAD
 	u32			mask1_reg;
 	bool			vqmmc_enabled;
 	struct mmci_platform_data *plat;
@@ -318,11 +311,6 @@ struct mmci_host {
 	struct pinctrl		*pinctrl;
 	struct pinctrl_state	*pins_default;
 	struct pinctrl_state	*pins_opendrain;
-=======
-	bool			vqmmc_enabled;
-	struct mmci_platform_data *plat;
-	struct variant_data	*variant;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	u8			hw_designer;
 	u8			hw_revision:4;

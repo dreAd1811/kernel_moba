@@ -37,12 +37,6 @@ extern int __pure novamap(void);
 
 void efi_char16_printk(efi_system_table_t *, efi_char16_t *);
 
-<<<<<<< HEAD
-=======
-efi_status_t efi_open_volume(efi_system_table_t *sys_table_arg, void *__image,
-			     void **__fh);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 unsigned long get_dram_base(efi_system_table_t *sys_table_arg);
 
 efi_status_t allocate_new_fdt_and_exit_boot(efi_system_table_t *sys_table,

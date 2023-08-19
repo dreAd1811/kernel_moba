@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * dts file for Xilinx ZynqMP
  *
@@ -61,11 +58,7 @@
 		};
 
 		idle-states {
-<<<<<<< HEAD
 			entry-method = "psci";
-=======
-			entry-method = "arm,psci";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			CPU_SLEEP_0: cpu-sleep-0 {
 				compatible = "arm,idle-state";
@@ -363,11 +356,7 @@
 		};
 
 		gem0: ethernet@ff0b0000 {
-<<<<<<< HEAD
 			compatible = "cdns,zynqmp-gem", "cdns,gem";
-=======
-			compatible = "cdns,gem";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 			interrupt-parent = <&gic>;
 			interrupts = <0 57 4>, <0 57 4>;
@@ -378,11 +367,7 @@
 		};
 
 		gem1: ethernet@ff0c0000 {
-<<<<<<< HEAD
 			compatible = "cdns,zynqmp-gem", "cdns,gem";
-=======
-			compatible = "cdns,gem";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 			interrupt-parent = <&gic>;
 			interrupts = <0 59 4>, <0 59 4>;
@@ -393,11 +378,7 @@
 		};
 
 		gem2: ethernet@ff0d0000 {
-<<<<<<< HEAD
 			compatible = "cdns,zynqmp-gem", "cdns,gem";
-=======
-			compatible = "cdns,gem";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 			interrupt-parent = <&gic>;
 			interrupts = <0 61 4>, <0 61 4>;
@@ -408,11 +389,7 @@
 		};
 
 		gem3: ethernet@ff0e0000 {
-<<<<<<< HEAD
 			compatible = "cdns,zynqmp-gem", "cdns,gem";
-=======
-			compatible = "cdns,gem";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 			interrupt-parent = <&gic>;
 			interrupts = <0 63 4>, <0 63 4>;
@@ -463,17 +440,10 @@
 			device_type = "pci";
 			interrupt-parent = <&gic>;
 			interrupts = <0 118 4>,
-<<<<<<< HEAD
 				     <0 117 4>,
 				     <0 116 4>,
 				     <0 115 4>,	/* MSI_1 [63...32] */
 				     <0 114 4>;	/* MSI_0 [31...0] */
-=======
-				    <0 117 4>,
-				    <0 116 4>,
-				    <0 115 4>,	/* MSI_1 [63...32] */
-				    <0 114 4>;	/* MSI_0 [31...0] */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			interrupt-names = "misc", "dummy", "intx",
 					  "msi1", "msi0";
 			msi-parent = <&pcie>;

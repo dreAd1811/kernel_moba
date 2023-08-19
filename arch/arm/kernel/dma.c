@@ -276,27 +276,9 @@ static int proc_dma_show(struct seq_file *m, void *v)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int __init proc_dma_init(void)
 {
 	proc_create_single("dma", 0, NULL, proc_dma_show);
-=======
-static int proc_dma_open(struct inode *inode, struct file *file)
-{
-	return single_open(file, proc_dma_show, NULL);
-}
-
-static const struct file_operations proc_dma_operations = {
-	.open		= proc_dma_open,
-	.read		= seq_read,
-	.llseek		= seq_lseek,
-	.release	= single_release,
-};
-
-static int __init proc_dma_init(void)
-{
-	proc_create("dma", 0, NULL, &proc_dma_operations);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

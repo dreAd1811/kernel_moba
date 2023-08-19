@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-=======
-/**
- * \file amdgpu_drv.c
- * AMD Amdgpu driver
- *
- * \author Gareth Hughes <gareth@valinux.com>
- */
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.
  * All Rights Reserved.
@@ -72,7 +62,6 @@
  * - 3.17.0 - Add AMDGPU_NUM_VRAM_CPU_PAGE_FAULTS.
  * - 3.18.0 - Export gpu always on cu bitmap
  * - 3.19.0 - Add support for UVD MJPEG decode
-<<<<<<< HEAD
  * - 3.20.0 - Add support for local BOs
  * - 3.21.0 - Add DRM_AMDGPU_FENCE_TO_HANDLE ioctl
  * - 3.22.0 - Add DRM_AMDGPU_SCHED ioctl
@@ -84,11 +73,6 @@
  */
 #define KMS_DRIVER_MAJOR	3
 #define KMS_DRIVER_MINOR	27
-=======
- */
-#define KMS_DRIVER_MAJOR	3
-#define KMS_DRIVER_MINOR	19
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define KMS_DRIVER_PATCHLEVEL	0
 
 int amdgpu_vram_limit = 0;
@@ -103,20 +87,12 @@ int amdgpu_disp_priority = 0;
 int amdgpu_hw_i2c = 0;
 int amdgpu_pcie_gen2 = -1;
 int amdgpu_msi = -1;
-<<<<<<< HEAD
 int amdgpu_lockup_timeout = 10000;
-=======
-int amdgpu_lockup_timeout = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int amdgpu_dpm = -1;
 int amdgpu_fw_load_type = -1;
 int amdgpu_aspm = -1;
 int amdgpu_runtime_pm = -1;
-<<<<<<< HEAD
 uint amdgpu_ip_block_mask = 0xffffffff;
-=======
-unsigned amdgpu_ip_block_mask = 0xffffffff;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int amdgpu_bapm = -1;
 int amdgpu_deep_color = 0;
 int amdgpu_vm_size = -1;
@@ -127,7 +103,6 @@ int amdgpu_vm_debug = 0;
 int amdgpu_vram_page_split = 512;
 int amdgpu_vm_update_mode = -1;
 int amdgpu_exp_hw_support = 0;
-<<<<<<< HEAD
 int amdgpu_dc = -1;
 int amdgpu_sched_jobs = 32;
 int amdgpu_sched_hw_submission = 2;
@@ -140,20 +115,6 @@ char *amdgpu_disable_cu = NULL;
 char *amdgpu_virtual_display = NULL;
 /* OverDrive(bit 14),gfxoff(bit 15),stutter mode(bit 17) disabled by default*/
 uint amdgpu_pp_feature_mask = 0xfffd3fff;
-=======
-int amdgpu_sched_jobs = 32;
-int amdgpu_sched_hw_submission = 2;
-int amdgpu_no_evict = 0;
-int amdgpu_direct_gma_size = 0;
-unsigned amdgpu_pcie_gen_cap = 0;
-unsigned amdgpu_pcie_lane_cap = 0;
-unsigned amdgpu_cg_mask = 0xffffffff;
-unsigned amdgpu_pg_mask = 0xffffffff;
-unsigned amdgpu_sdma_phase_quantum = 32;
-char *amdgpu_disable_cu = NULL;
-char *amdgpu_virtual_display = NULL;
-unsigned amdgpu_pp_feature_mask = 0xffffffff;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int amdgpu_ngg = 0;
 int amdgpu_prim_buf_per_se = 0;
 int amdgpu_pos_buf_per_se = 0;
@@ -161,7 +122,6 @@ int amdgpu_cntl_sb_buf_per_se = 0;
 int amdgpu_param_buf_per_se = 0;
 int amdgpu_job_hang_limit = 0;
 int amdgpu_lbpw = -1;
-<<<<<<< HEAD
 int amdgpu_compute_multipipe = -1;
 int amdgpu_gpu_recovery = -1; /* auto */
 int amdgpu_emu_mode = 0;
@@ -453,131 +413,10 @@ module_param_named(disable_cu, amdgpu_disable_cu, charp, 0444);
  * the device, plus the number of crtcs to expose. E.g., 0000:26:00.0,4 would enable 4 virtual crtcs on the pci
  * device at 26:00.0. The default is NULL.
  */
-=======
-
-MODULE_PARM_DESC(vramlimit, "Restrict VRAM for testing, in megabytes");
-module_param_named(vramlimit, amdgpu_vram_limit, int, 0600);
-
-MODULE_PARM_DESC(vis_vramlimit, "Restrict visible VRAM for testing, in megabytes");
-module_param_named(vis_vramlimit, amdgpu_vis_vram_limit, int, 0444);
-
-MODULE_PARM_DESC(gartsize, "Size of GART to setup in megabytes (32, 64, etc., -1=auto)");
-module_param_named(gartsize, amdgpu_gart_size, uint, 0600);
-
-MODULE_PARM_DESC(gttsize, "Size of the GTT domain in megabytes (-1 = auto)");
-module_param_named(gttsize, amdgpu_gtt_size, int, 0600);
-
-MODULE_PARM_DESC(moverate, "Maximum buffer migration rate in MB/s. (32, 64, etc., -1=auto, 0=1=disabled)");
-module_param_named(moverate, amdgpu_moverate, int, 0600);
-
-MODULE_PARM_DESC(benchmark, "Run benchmark");
-module_param_named(benchmark, amdgpu_benchmarking, int, 0444);
-
-MODULE_PARM_DESC(test, "Run tests");
-module_param_named(test, amdgpu_testing, int, 0444);
-
-MODULE_PARM_DESC(audio, "Audio enable (-1 = auto, 0 = disable, 1 = enable)");
-module_param_named(audio, amdgpu_audio, int, 0444);
-
-MODULE_PARM_DESC(disp_priority, "Display Priority (0 = auto, 1 = normal, 2 = high)");
-module_param_named(disp_priority, amdgpu_disp_priority, int, 0444);
-
-MODULE_PARM_DESC(hw_i2c, "hw i2c engine enable (0 = disable)");
-module_param_named(hw_i2c, amdgpu_hw_i2c, int, 0444);
-
-MODULE_PARM_DESC(pcie_gen2, "PCIE Gen2 mode (-1 = auto, 0 = disable, 1 = enable)");
-module_param_named(pcie_gen2, amdgpu_pcie_gen2, int, 0444);
-
-MODULE_PARM_DESC(msi, "MSI support (1 = enable, 0 = disable, -1 = auto)");
-module_param_named(msi, amdgpu_msi, int, 0444);
-
-MODULE_PARM_DESC(lockup_timeout, "GPU lockup timeout in ms (default 0 = disable)");
-module_param_named(lockup_timeout, amdgpu_lockup_timeout, int, 0444);
-
-MODULE_PARM_DESC(dpm, "DPM support (1 = enable, 0 = disable, -1 = auto)");
-module_param_named(dpm, amdgpu_dpm, int, 0444);
-
-MODULE_PARM_DESC(fw_load_type, "firmware loading type (0 = direct, 1 = SMU, 2 = PSP, -1 = auto)");
-module_param_named(fw_load_type, amdgpu_fw_load_type, int, 0444);
-
-MODULE_PARM_DESC(aspm, "ASPM support (1 = enable, 0 = disable, -1 = auto)");
-module_param_named(aspm, amdgpu_aspm, int, 0444);
-
-MODULE_PARM_DESC(runpm, "PX runtime pm (1 = force enable, 0 = disable, -1 = PX only default)");
-module_param_named(runpm, amdgpu_runtime_pm, int, 0444);
-
-MODULE_PARM_DESC(ip_block_mask, "IP Block Mask (all blocks enabled (default))");
-module_param_named(ip_block_mask, amdgpu_ip_block_mask, uint, 0444);
-
-MODULE_PARM_DESC(bapm, "BAPM support (1 = enable, 0 = disable, -1 = auto)");
-module_param_named(bapm, amdgpu_bapm, int, 0444);
-
-MODULE_PARM_DESC(deep_color, "Deep Color support (1 = enable, 0 = disable (default))");
-module_param_named(deep_color, amdgpu_deep_color, int, 0444);
-
-MODULE_PARM_DESC(vm_size, "VM address space size in gigabytes (default 64GB)");
-module_param_named(vm_size, amdgpu_vm_size, int, 0444);
-
-MODULE_PARM_DESC(vm_fragment_size, "VM fragment size in bits (4, 5, etc. 4 = 64K (default), Max 9 = 2M)");
-module_param_named(vm_fragment_size, amdgpu_vm_fragment_size, int, 0444);
-
-MODULE_PARM_DESC(vm_block_size, "VM page table size in bits (default depending on vm_size)");
-module_param_named(vm_block_size, amdgpu_vm_block_size, int, 0444);
-
-MODULE_PARM_DESC(vm_fault_stop, "Stop on VM fault (0 = never (default), 1 = print first, 2 = always)");
-module_param_named(vm_fault_stop, amdgpu_vm_fault_stop, int, 0444);
-
-MODULE_PARM_DESC(vm_debug, "Debug VM handling (0 = disabled (default), 1 = enabled)");
-module_param_named(vm_debug, amdgpu_vm_debug, int, 0644);
-
-MODULE_PARM_DESC(vm_update_mode, "VM update using CPU (0 = never (default except for large BAR(LB)), 1 = Graphics only, 2 = Compute only (default for LB), 3 = Both");
-module_param_named(vm_update_mode, amdgpu_vm_update_mode, int, 0444);
-
-MODULE_PARM_DESC(vram_page_split, "Number of pages after we split VRAM allocations (default 512, -1 = disable)");
-module_param_named(vram_page_split, amdgpu_vram_page_split, int, 0444);
-
-MODULE_PARM_DESC(exp_hw_support, "experimental hw support (1 = enable, 0 = disable (default))");
-module_param_named(exp_hw_support, amdgpu_exp_hw_support, int, 0444);
-
-MODULE_PARM_DESC(sched_jobs, "the max number of jobs supported in the sw queue (default 32)");
-module_param_named(sched_jobs, amdgpu_sched_jobs, int, 0444);
-
-MODULE_PARM_DESC(sched_hw_submission, "the max number of HW submissions (default 2)");
-module_param_named(sched_hw_submission, amdgpu_sched_hw_submission, int, 0444);
-
-MODULE_PARM_DESC(ppfeaturemask, "all power features enabled (default))");
-module_param_named(ppfeaturemask, amdgpu_pp_feature_mask, uint, 0444);
-
-MODULE_PARM_DESC(no_evict, "Support pinning request from user space (1 = enable, 0 = disable (default))");
-module_param_named(no_evict, amdgpu_no_evict, int, 0444);
-
-MODULE_PARM_DESC(direct_gma_size, "Direct GMA size in megabytes (max 96MB)");
-module_param_named(direct_gma_size, amdgpu_direct_gma_size, int, 0444);
-
-MODULE_PARM_DESC(pcie_gen_cap, "PCIE Gen Caps (0: autodetect (default))");
-module_param_named(pcie_gen_cap, amdgpu_pcie_gen_cap, uint, 0444);
-
-MODULE_PARM_DESC(pcie_lane_cap, "PCIE Lane Caps (0: autodetect (default))");
-module_param_named(pcie_lane_cap, amdgpu_pcie_lane_cap, uint, 0444);
-
-MODULE_PARM_DESC(cg_mask, "Clockgating flags mask (0 = disable clock gating)");
-module_param_named(cg_mask, amdgpu_cg_mask, uint, 0444);
-
-MODULE_PARM_DESC(pg_mask, "Powergating flags mask (0 = disable power gating)");
-module_param_named(pg_mask, amdgpu_pg_mask, uint, 0444);
-
-MODULE_PARM_DESC(sdma_phase_quantum, "SDMA context switch phase quantum (x 1K GPU clock cycles, 0 = no change (default 32))");
-module_param_named(sdma_phase_quantum, amdgpu_sdma_phase_quantum, uint, 0444);
-
-MODULE_PARM_DESC(disable_cu, "Disable CUs (se.sh.cu,...)");
-module_param_named(disable_cu, amdgpu_disable_cu, charp, 0444);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_PARM_DESC(virtual_display,
 		 "Enable virtual display feature (the virtual_display will be set like xxxx:xx:xx.x,x;xxxx:xx:xx.x,x)");
 module_param_named(virtual_display, amdgpu_virtual_display, charp, 0444);
 
-<<<<<<< HEAD
 /**
  * DOC: ngg (int)
  * Set to enable Next Generation Graphics (1 = enable). The default is 0 (disabled).
@@ -650,29 +489,6 @@ module_param_named(emu_mode, amdgpu_emu_mode, int, 0444);
  * set value 0 to use radeon driver, while set value 1 to use amdgpu driver. The default is using radeon driver when it available,
  * otherwise using amdgpu driver.
  */
-=======
-MODULE_PARM_DESC(ngg, "Next Generation Graphics (1 = enable, 0 = disable(default depending on gfx))");
-module_param_named(ngg, amdgpu_ngg, int, 0444);
-
-MODULE_PARM_DESC(prim_buf_per_se, "the size of Primitive Buffer per Shader Engine (default depending on gfx)");
-module_param_named(prim_buf_per_se, amdgpu_prim_buf_per_se, int, 0444);
-
-MODULE_PARM_DESC(pos_buf_per_se, "the size of Position Buffer per Shader Engine (default depending on gfx)");
-module_param_named(pos_buf_per_se, amdgpu_pos_buf_per_se, int, 0444);
-
-MODULE_PARM_DESC(cntl_sb_buf_per_se, "the size of Control Sideband per Shader Engine (default depending on gfx)");
-module_param_named(cntl_sb_buf_per_se, amdgpu_cntl_sb_buf_per_se, int, 0444);
-
-MODULE_PARM_DESC(param_buf_per_se, "the size of Off-Chip Pramater Cache per Shader Engine (default depending on gfx)");
-module_param_named(param_buf_per_se, amdgpu_param_buf_per_se, int, 0444);
-
-MODULE_PARM_DESC(job_hang_limit, "how much time allow a job hang and not drop it (default 0)");
-module_param_named(job_hang_limit, amdgpu_job_hang_limit, int ,0444);
-
-MODULE_PARM_DESC(lbpw, "Load Balancing Per Watt (LBPW) support (1 = enable, 0 = disable, -1 = auto)");
-module_param_named(lbpw, amdgpu_lbpw, int, 0444);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_DRM_AMDGPU_SI
 
 #if defined(CONFIG_DRM_RADEON) || defined(CONFIG_DRM_RADEON_MODULE)
@@ -686,15 +502,12 @@ MODULE_PARM_DESC(si_support, "SI support (1 = enabled (default), 0 = disabled)")
 module_param_named(si_support, amdgpu_si_support, int, 0444);
 #endif
 
-<<<<<<< HEAD
 /**
  * DOC: cik_support (int)
  * Set CIK support driver. This parameter works after set config CONFIG_DRM_AMDGPU_CIK. For CIK asic, when radeon driver is enabled,
  * set value 0 to use radeon driver, while set value 1 to use amdgpu driver. The default is using radeon driver when it available,
  * otherwise using amdgpu driver.
  */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_DRM_AMDGPU_CIK
 
 #if defined(CONFIG_DRM_RADEON) || defined(CONFIG_DRM_RADEON_MODULE)
@@ -708,7 +521,6 @@ MODULE_PARM_DESC(cik_support, "CIK support (1 = enabled (default), 0 = disabled)
 module_param_named(cik_support, amdgpu_cik_support, int, 0444);
 #endif
 
-<<<<<<< HEAD
 /**
  * DOC: smu_memory_pool_size (uint)
  * It is used to reserve gtt for smu debug usage, setting value 0 to disable it. The actual size is value * 256MiB.
@@ -718,8 +530,6 @@ MODULE_PARM_DESC(smu_memory_pool_size,
 	"reserve gtt for smu debug usage, 0 = disable,"
 		"0x1 = 256Mbyte, 0x2 = 512Mbyte, 0x4 = 1 Gbyte, 0x8 = 2GByte");
 module_param_named(smu_memory_pool_size, amdgpu_smu_memory_pool_size, uint, 0444);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static const struct pci_device_id pciidlist[] = {
 #ifdef  CONFIG_DRM_AMDGPU_SI
@@ -940,7 +750,6 @@ static const struct pci_device_id pciidlist[] = {
 	{0x1002, 0x6995, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_POLARIS12},
 	{0x1002, 0x6997, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_POLARIS12},
 	{0x1002, 0x699F, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_POLARIS12},
-<<<<<<< HEAD
 	/* VEGAM */
 	{0x1002, 0x694C, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_VEGAM},
 	{0x1002, 0x694E, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_VEGAM},
@@ -976,20 +785,6 @@ static const struct pci_device_id pciidlist[] = {
 	{0x1002, 0x66AF, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_VEGA20|AMD_EXP_HW_SUPPORT},
 	/* Raven */
 	{0x1002, 0x15dd, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_RAVEN|AMD_IS_APU},
-=======
-	/* Vega 10 */
-	{0x1002, 0x6860, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_VEGA10|AMD_EXP_HW_SUPPORT},
-	{0x1002, 0x6861, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_VEGA10|AMD_EXP_HW_SUPPORT},
-	{0x1002, 0x6862, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_VEGA10|AMD_EXP_HW_SUPPORT},
-	{0x1002, 0x6863, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_VEGA10|AMD_EXP_HW_SUPPORT},
-	{0x1002, 0x6864, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_VEGA10|AMD_EXP_HW_SUPPORT},
-	{0x1002, 0x6867, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_VEGA10|AMD_EXP_HW_SUPPORT},
-	{0x1002, 0x6868, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_VEGA10|AMD_EXP_HW_SUPPORT},
-	{0x1002, 0x686c, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_VEGA10|AMD_EXP_HW_SUPPORT},
-	{0x1002, 0x687f, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_VEGA10|AMD_EXP_HW_SUPPORT},
-	/* Raven */
-	{0x1002, 0x15dd, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_RAVEN|AMD_IS_APU|AMD_EXP_HW_SUPPORT},
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	{0, 0, 0}
 };
@@ -1019,25 +814,18 @@ static int amdgpu_kick_out_firmware_fb(struct pci_dev *pdev)
 	return 0;
 }
 
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int amdgpu_pci_probe(struct pci_dev *pdev,
 			    const struct pci_device_id *ent)
 {
 	struct drm_device *dev;
 	unsigned long flags = ent->driver_data;
-<<<<<<< HEAD
 	int ret, retry = 0;
 	bool supports_atomic = false;
 
 	if (!amdgpu_virtual_display &&
 	    amdgpu_device_asic_has_dc_support(flags & AMD_ASIC_MASK))
 		supports_atomic = true;
-=======
-	int ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if ((flags & AMD_EXP_HW_SUPPORT) && !amdgpu_exp_hw_support) {
 		DRM_INFO("This hardware requires experimental hardware support.\n"
@@ -1093,7 +881,6 @@ static int amdgpu_pci_probe(struct pci_dev *pdev,
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	/* warn the user if they mix atomic and non-atomic capable GPUs */
 	if ((kms_driver.driver_features & DRIVER_ATOMIC) && !supports_atomic)
 		DRM_ERROR("Mixing atomic and non-atomic capable GPUs!\n");
@@ -1101,8 +888,6 @@ static int amdgpu_pci_probe(struct pci_dev *pdev,
 	if (supports_atomic)
 		kms_driver.driver_features |= DRIVER_ATOMIC;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev = drm_dev_alloc(&kms_driver, &pdev->dev);
 	if (IS_ERR(dev))
 		return PTR_ERR(dev);
@@ -1115,7 +900,6 @@ static int amdgpu_pci_probe(struct pci_dev *pdev,
 
 	pci_set_drvdata(pdev, dev);
 
-<<<<<<< HEAD
 retry_init:
 	ret = drm_dev_register(dev, ent->driver_data);
 	if (ret == -EAGAIN && ++retry <= 3) {
@@ -1124,10 +908,6 @@ retry_init:
 		msleep(5000);
 		goto retry_init;
 	} else if (ret)
-=======
-	ret = drm_dev_register(dev, ent->driver_data);
-	if (ret)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_pci;
 
 	return 0;
@@ -1135,11 +915,7 @@ retry_init:
 err_pci:
 	pci_disable_device(pdev);
 err_free:
-<<<<<<< HEAD
 	drm_dev_put(dev);
-=======
-	drm_dev_unref(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -1149,13 +925,9 @@ amdgpu_pci_remove(struct pci_dev *pdev)
 	struct drm_device *dev = pci_get_drvdata(pdev);
 
 	drm_dev_unregister(dev);
-<<<<<<< HEAD
 	drm_dev_put(dev);
 	pci_disable_device(pdev);
 	pci_set_drvdata(pdev, NULL);
-=======
-	drm_dev_unref(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void
@@ -1169,11 +941,7 @@ amdgpu_pci_shutdown(struct pci_dev *pdev)
 	 * unfortunately we can't detect certain
 	 * hypervisors so just do this all the time.
 	 */
-<<<<<<< HEAD
 	amdgpu_device_ip_suspend(adev);
-=======
-	amdgpu_suspend(adev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int amdgpu_pmops_suspend(struct device *dev)
@@ -1338,7 +1106,6 @@ static const struct dev_pm_ops amdgpu_pm_ops = {
 	.runtime_idle = amdgpu_pmops_runtime_idle,
 };
 
-<<<<<<< HEAD
 static int amdgpu_flush(struct file *f, fl_owner_t id)
 {
 	struct drm_file *file_priv = f->private_data;
@@ -1354,11 +1121,6 @@ static const struct file_operations amdgpu_driver_kms_fops = {
 	.owner = THIS_MODULE,
 	.open = drm_open,
 	.flush = amdgpu_flush,
-=======
-static const struct file_operations amdgpu_driver_kms_fops = {
-	.owner = THIS_MODULE,
-	.open = drm_open,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.release = drm_release,
 	.unlocked_ioctl = amdgpu_drm_ioctl,
 	.mmap = amdgpu_mmap,
@@ -1375,13 +1137,8 @@ amdgpu_get_crtc_scanout_position(struct drm_device *dev, unsigned int pipe,
 				 ktime_t *stime, ktime_t *etime,
 				 const struct drm_display_mode *mode)
 {
-<<<<<<< HEAD
 	return amdgpu_display_get_crtc_scanoutpos(dev, pipe, 0, vpos, hpos,
 						  stime, etime, mode);
-=======
-	return amdgpu_get_crtc_scanoutpos(dev, pipe, 0, vpos, hpos,
-					  stime, etime, mode);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct drm_driver kms_driver = {
@@ -1399,15 +1156,6 @@ static struct drm_driver kms_driver = {
 	.disable_vblank = amdgpu_disable_vblank_kms,
 	.get_vblank_timestamp = drm_calc_vbltimestamp_from_scanoutpos,
 	.get_scanout_position = amdgpu_get_crtc_scanout_position,
-<<<<<<< HEAD
-=======
-#if defined(CONFIG_DEBUG_FS)
-	.debugfs_init = amdgpu_debugfs_init,
-#endif
-	.irq_preinstall = amdgpu_irq_preinstall,
-	.irq_postinstall = amdgpu_irq_postinstall,
-	.irq_uninstall = amdgpu_irq_uninstall,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.irq_handler = amdgpu_irq_handler,
 	.ioctls = amdgpu_ioctls_kms,
 	.gem_free_object_unlocked = amdgpu_gem_object_free,
@@ -1420,22 +1168,13 @@ static struct drm_driver kms_driver = {
 	.prime_handle_to_fd = drm_gem_prime_handle_to_fd,
 	.prime_fd_to_handle = drm_gem_prime_fd_to_handle,
 	.gem_prime_export = amdgpu_gem_prime_export,
-<<<<<<< HEAD
 	.gem_prime_import = amdgpu_gem_prime_import,
-=======
-	.gem_prime_import = drm_gem_prime_import,
-	.gem_prime_pin = amdgpu_gem_prime_pin,
-	.gem_prime_unpin = amdgpu_gem_prime_unpin,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.gem_prime_res_obj = amdgpu_gem_prime_res_obj,
 	.gem_prime_get_sg_table = amdgpu_gem_prime_get_sg_table,
 	.gem_prime_import_sg_table = amdgpu_gem_prime_import_sg_table,
 	.gem_prime_vmap = amdgpu_gem_prime_vmap,
 	.gem_prime_vunmap = amdgpu_gem_prime_vunmap,
-<<<<<<< HEAD
 	.gem_prime_mmap = amdgpu_gem_prime_mmap,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	.name = DRIVER_NAME,
 	.desc = DRIVER_DESC,
@@ -1463,14 +1202,11 @@ static int __init amdgpu_init(void)
 {
 	int r;
 
-<<<<<<< HEAD
 	if (vgacon_text_force()) {
 		DRM_ERROR("VGACON disables amdgpu kernel modesetting.\n");
 		return -EINVAL;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	r = amdgpu_sync_init();
 	if (r)
 		goto error_sync;
@@ -1479,17 +1215,6 @@ static int __init amdgpu_init(void)
 	if (r)
 		goto error_fence;
 
-<<<<<<< HEAD
-=======
-	r = amd_sched_fence_slab_init();
-	if (r)
-		goto error_sched;
-
-	if (vgacon_text_force()) {
-		DRM_ERROR("VGACON disables amdgpu kernel modesetting.\n");
-		return -EINVAL;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DRM_INFO("amdgpu kernel modesetting enabled.\n");
 	driver = &kms_driver;
 	pdriver = &amdgpu_kms_pci_driver;
@@ -1498,12 +1223,6 @@ static int __init amdgpu_init(void)
 	/* let modprobe override vga console setting */
 	return pci_register_driver(pdriver);
 
-<<<<<<< HEAD
-=======
-error_sched:
-	amdgpu_fence_slab_fini();
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 error_fence:
 	amdgpu_sync_fini();
 
@@ -1517,10 +1236,6 @@ static void __exit amdgpu_exit(void)
 	pci_unregister_driver(pdriver);
 	amdgpu_unregister_atpx_handler();
 	amdgpu_sync_fini();
-<<<<<<< HEAD
-=======
-	amd_sched_fence_slab_fini();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	amdgpu_fence_slab_fini();
 }
 

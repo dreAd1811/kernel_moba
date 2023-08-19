@@ -35,10 +35,7 @@
  * implementations as possible.
  */
 #include <asm/head-64.h>
-<<<<<<< HEAD
 #include <asm/feature-fixups.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* PACA save area offsets (exgen, exmc, etc) */
 #define EX_R9		0
@@ -59,14 +56,11 @@
 #endif
 
 /*
-<<<<<<< HEAD
  * maximum recursive depth of MCE exceptions
  */
 #define MAX_MCE_DEPTH	4
 
 /*
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * EX_LR is only used in EXSLB and where it does not overlap with EX_DAR
  * EX_CCR similarly with DSISR, but being 4 byte registers there is a hole
  * in the save area so it's not necessary to overlap them. Could be used
@@ -163,11 +157,7 @@
 	b	hrfi_flush_fallback
 
 #ifdef CONFIG_RELOCATABLE
-<<<<<<< HEAD
 #define __EXCEPTION_PROLOG_2_RELON(label, h)				\
-=======
-#define __EXCEPTION_RELON_PROLOG_PSERIES_1(label, h)			\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mfspr	r11,SPRN_##h##SRR0;	/* save SRR0 */			\
 	LOAD_HANDLER(r12,label);					\
 	mtctr	r12;							\
@@ -177,18 +167,13 @@
 	bctr;
 #else
 /* If not relocatable, we can jump directly -- and save messing with LR */
-<<<<<<< HEAD
 #define __EXCEPTION_PROLOG_2_RELON(label, h)				\
-=======
-#define __EXCEPTION_RELON_PROLOG_PSERIES_1(label, h)			\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mfspr	r11,SPRN_##h##SRR0;	/* save SRR0 */			\
 	mfspr	r12,SPRN_##h##SRR1;	/* and SRR1 */			\
 	li	r10,MSR_RI;						\
 	mtmsrd 	r10,1;			/* Set RI (EE=0) */		\
 	b	label;
 #endif
-<<<<<<< HEAD
 #define EXCEPTION_PROLOG_2_RELON(label, h)				\
 	__EXCEPTION_PROLOG_2_RELON(label, h)
 
@@ -202,20 +187,6 @@
 	EXCEPTION_PROLOG_0(area);					\
 	EXCEPTION_PROLOG_1(area, extra, vec);				\
 	EXCEPTION_PROLOG_2_RELON(label, h)
-=======
-#define EXCEPTION_RELON_PROLOG_PSERIES_1(label, h)			\
-	__EXCEPTION_RELON_PROLOG_PSERIES_1(label, h)			\
-
-/*
- * As EXCEPTION_PROLOG_PSERIES(), except we've already got relocation on
- * so no need to rfid.  Save lr in case we're CONFIG_RELOCATABLE, in which
- * case EXCEPTION_RELON_PROLOG_PSERIES_1 will be using lr.
- */
-#define EXCEPTION_RELON_PROLOG_PSERIES(area, label, h, extra, vec)	\
-	EXCEPTION_PROLOG_0(area);					\
-	EXCEPTION_PROLOG_1(area, extra, vec);				\
-	EXCEPTION_RELON_PROLOG_PSERIES_1(label, h)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * We're short on space and time in the exception prolog, so we can't
@@ -310,28 +281,18 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
 	std	r10,area+EX_R10(r13);	/* save r10 - r12 */		\
 	OPT_GET_SPR(r10, SPRN_CFAR, CPU_FTR_CFAR)
 
-<<<<<<< HEAD
 #define __EXCEPTION_PROLOG_1_PRE(area)					\
-=======
-#define __EXCEPTION_PROLOG_1(area, extra, vec)				\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	OPT_SAVE_REG_TO_PACA(area+EX_PPR, r9, CPU_FTR_HAS_PPR);		\
 	OPT_SAVE_REG_TO_PACA(area+EX_CFAR, r10, CPU_FTR_CFAR);		\
 	INTERRUPT_TO_KERNEL;						\
 	SAVE_CTR(r10, area);						\
-<<<<<<< HEAD
 	mfcr	r9;
 
 #define __EXCEPTION_PROLOG_1_POST(area)					\
-=======
-	mfcr	r9;							\
-	extra(vec);							\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	std	r11,area+EX_R11(r13);					\
 	std	r12,area+EX_R12(r13);					\
 	GET_SCRATCH0(r10);						\
 	std	r10,area+EX_R13(r13)
-<<<<<<< HEAD
 
 /*
  * This version of the EXCEPTION_PROLOG_1 will carry
@@ -357,12 +318,6 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
 	_EXCEPTION_PROLOG_1(area, extra, vec)
 
 #define __EXCEPTION_PROLOG_2(label, h)					\
-=======
-#define EXCEPTION_PROLOG_1(area, extra, vec)				\
-	__EXCEPTION_PROLOG_1(area, extra, vec)
-
-#define __EXCEPTION_PROLOG_PSERIES_1(label, h)				\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ld	r10,PACAKMSR(r13);	/* get MSR value for kernel */	\
 	mfspr	r11,SPRN_##h##SRR0;	/* save SRR0 */			\
 	LOAD_HANDLER(r12,label)						\
@@ -371,19 +326,11 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
 	mtspr	SPRN_##h##SRR1,r10;					\
 	h##RFI_TO_KERNEL;						\
 	b	.	/* prevent speculative execution */
-<<<<<<< HEAD
 #define EXCEPTION_PROLOG_2(label, h)					\
 	__EXCEPTION_PROLOG_2(label, h)
 
 /* _NORI variant keeps MSR_RI clear */
 #define __EXCEPTION_PROLOG_2_NORI(label, h)				\
-=======
-#define EXCEPTION_PROLOG_PSERIES_1(label, h)				\
-	__EXCEPTION_PROLOG_PSERIES_1(label, h)
-
-/* _NORI variant keeps MSR_RI clear */
-#define __EXCEPTION_PROLOG_PSERIES_1_NORI(label, h)			\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ld	r10,PACAKMSR(r13);	/* get MSR value for kernel */	\
 	xori	r10,r10,MSR_RI;		/* Clear MSR_RI */		\
 	mfspr	r11,SPRN_##h##SRR0;	/* save SRR0 */			\
@@ -394,7 +341,6 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
 	h##RFI_TO_KERNEL;						\
 	b	.	/* prevent speculative execution */
 
-<<<<<<< HEAD
 #define EXCEPTION_PROLOG_2_NORI(label, h)				\
 	__EXCEPTION_PROLOG_2_NORI(label, h)
 
@@ -403,15 +349,6 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
 	EXCEPTION_PROLOG_0(area);					\
 	EXCEPTION_PROLOG_1(area, extra, vec);				\
 	EXCEPTION_PROLOG_2(label, h);
-=======
-#define EXCEPTION_PROLOG_PSERIES_1_NORI(label, h)			\
-	__EXCEPTION_PROLOG_PSERIES_1_NORI(label, h)
-
-#define EXCEPTION_PROLOG_PSERIES(area, label, h, extra, vec)		\
-	EXCEPTION_PROLOG_0(area);					\
-	EXCEPTION_PROLOG_1(area, extra, vec);				\
-	EXCEPTION_PROLOG_PSERIES_1(label, h);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define __KVMTEST(h, n)							\
 	lbz	r10,HSTATE_IN_GUEST(r13);				\
@@ -482,17 +419,10 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
 #endif
 
 /* Do not enable RI */
-<<<<<<< HEAD
 #define EXCEPTION_PROLOG_NORI(area, label, h, extra, vec)		\
 	EXCEPTION_PROLOG_0(area);					\
 	EXCEPTION_PROLOG_1(area, extra, vec);				\
 	EXCEPTION_PROLOG_2_NORI(label, h);
-=======
-#define EXCEPTION_PROLOG_PSERIES_NORI(area, label, h, extra, vec)	\
-	EXCEPTION_PROLOG_0(area);					\
-	EXCEPTION_PROLOG_1(area, extra, vec);				\
-	EXCEPTION_PROLOG_PSERIES_1_NORI(label, h);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 #define __KVM_HANDLER(area, h, n)					\
@@ -609,11 +539,7 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
 	mflr	r9;			/* Get LR, later save to stack	*/ \
 	ld	r2,PACATOC(r13);	/* get kernel TOC into r2	*/ \
 	std	r9,_LINK(r1);						   \
-<<<<<<< HEAD
 	lbz	r10,PACAIRQSOFTMASK(r13);				   \
-=======
-	lbz	r10,PACASOFTIRQEN(r13);				   \
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mfspr	r11,SPRN_XER;		/* save XER in stackframe	*/ \
 	std	r10,SOFTE(r1);						   \
 	std	r11,_XER(r1);						   \
@@ -627,15 +553,8 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
 /*
  * Exception vectors.
  */
-<<<<<<< HEAD
 #define STD_EXCEPTION(vec, label)				\
 	EXCEPTION_PROLOG(PACA_EXGEN, label, EXC_STD, KVMTEST_PR, vec);
-=======
-#define STD_EXCEPTION_PSERIES(vec, label)			\
-	SET_SCRATCH0(r13);		/* save r13 */		\
-	EXCEPTION_PROLOG_PSERIES(PACA_EXGEN, label,		\
-				 EXC_STD, KVMTEST_PR, vec);	\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Version of above for when we have to branch out-of-line */
 #define __OOL_EXCEPTION(vec, label, hdlr)			\
@@ -643,7 +562,6 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
 	EXCEPTION_PROLOG_0(PACA_EXGEN)				\
 	b hdlr;
 
-<<<<<<< HEAD
 #define STD_EXCEPTION_OOL(vec, label)				\
 	EXCEPTION_PROLOG_1(PACA_EXGEN, KVMTEST_PR, vec);	\
 	EXCEPTION_PROLOG_2(label, EXC_STD)
@@ -669,38 +587,6 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
 #define STD_RELON_EXCEPTION_HV_OOL(vec, label)			\
 	EXCEPTION_PROLOG_1(PACA_EXGEN, KVMTEST_HV, vec);	\
 	EXCEPTION_PROLOG_2_RELON(label, EXC_HV)
-=======
-#define STD_EXCEPTION_PSERIES_OOL(vec, label)			\
-	EXCEPTION_PROLOG_1(PACA_EXGEN, KVMTEST_PR, vec);	\
-	EXCEPTION_PROLOG_PSERIES_1(label, EXC_STD)
-
-#define STD_EXCEPTION_HV(loc, vec, label)			\
-	SET_SCRATCH0(r13);	/* save r13 */			\
-	EXCEPTION_PROLOG_PSERIES(PACA_EXGEN, label,		\
-				 EXC_HV, KVMTEST_HV, vec);
-
-#define STD_EXCEPTION_HV_OOL(vec, label)			\
-	EXCEPTION_PROLOG_1(PACA_EXGEN, KVMTEST_HV, vec);	\
-	EXCEPTION_PROLOG_PSERIES_1(label, EXC_HV)
-
-#define STD_RELON_EXCEPTION_PSERIES(loc, vec, label)	\
-	/* No guest interrupts come through here */	\
-	SET_SCRATCH0(r13);		/* save r13 */	\
-	EXCEPTION_RELON_PROLOG_PSERIES(PACA_EXGEN, label, EXC_STD, NOTEST, vec);
-
-#define STD_RELON_EXCEPTION_PSERIES_OOL(vec, label)		\
-	EXCEPTION_PROLOG_1(PACA_EXGEN, NOTEST, vec);		\
-	EXCEPTION_RELON_PROLOG_PSERIES_1(label, EXC_STD)
-
-#define STD_RELON_EXCEPTION_HV(loc, vec, label)		\
-	SET_SCRATCH0(r13);	/* save r13 */		\
-	EXCEPTION_RELON_PROLOG_PSERIES(PACA_EXGEN, label,	\
-				       EXC_HV, KVMTEST_HV, vec);
-
-#define STD_RELON_EXCEPTION_HV_OOL(vec, label)			\
-	EXCEPTION_PROLOG_1(PACA_EXGEN, KVMTEST_HV, vec);	\
-	EXCEPTION_RELON_PROLOG_PSERIES_1(label, EXC_HV)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* This associate vector numbers with bits in paca->irq_happened */
 #define SOFTEN_VALUE_0x500	PACA_IRQ_EE
@@ -710,7 +596,6 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
 #define SOFTEN_VALUE_0xe80	PACA_IRQ_DBELL
 #define SOFTEN_VALUE_0xe60	PACA_IRQ_HMI
 #define SOFTEN_VALUE_0xea0	PACA_IRQ_EE
-<<<<<<< HEAD
 #define SOFTEN_VALUE_0xf00	PACA_IRQ_PMI
 
 #define __SOFTEN_TEST(h, vec, bitmask)					\
@@ -728,24 +613,6 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
 #define SOFTEN_TEST_HV(vec, bitmask)					\
 	KVMTEST(EXC_HV, vec);						\
 	_SOFTEN_TEST(EXC_HV, vec, bitmask)
-=======
-
-#define __SOFTEN_TEST(h, vec)						\
-	lbz	r10,PACASOFTIRQEN(r13);					\
-	cmpwi	r10,0;							\
-	li	r10,SOFTEN_VALUE_##vec;					\
-	beq	masked_##h##interrupt
-
-#define _SOFTEN_TEST(h, vec)	__SOFTEN_TEST(h, vec)
-
-#define SOFTEN_TEST_PR(vec)						\
-	KVMTEST(EXC_STD, vec);						\
-	_SOFTEN_TEST(EXC_STD, vec)
-
-#define SOFTEN_TEST_HV(vec)						\
-	KVMTEST(EXC_HV, vec);						\
-	_SOFTEN_TEST(EXC_HV, vec)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define KVMTEST_PR(vec)							\
 	KVMTEST(EXC_STD, vec)
@@ -753,7 +620,6 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
 #define KVMTEST_HV(vec)							\
 	KVMTEST(EXC_HV, vec)
 
-<<<<<<< HEAD
 #define SOFTEN_NOTEST_PR(vec, bitmask)	_SOFTEN_TEST(EXC_STD, vec, bitmask)
 #define SOFTEN_NOTEST_HV(vec, bitmask)	_SOFTEN_TEST(EXC_HV, vec, bitmask)
 
@@ -796,56 +662,6 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
 #define MASKABLE_RELON_EXCEPTION_HV_OOL(vec, label, bitmask)		\
 	MASKABLE_EXCEPTION_PROLOG_1(PACA_EXGEN, SOFTEN_TEST_HV, vec, bitmask);\
 	EXCEPTION_PROLOG_2_RELON(label, EXC_HV)
-=======
-#define SOFTEN_NOTEST_PR(vec)		_SOFTEN_TEST(EXC_STD, vec)
-#define SOFTEN_NOTEST_HV(vec)		_SOFTEN_TEST(EXC_HV, vec)
-
-#define __MASKABLE_EXCEPTION_PSERIES(vec, label, h, extra)		\
-	SET_SCRATCH0(r13);    /* save r13 */				\
-	EXCEPTION_PROLOG_0(PACA_EXGEN);					\
-	__EXCEPTION_PROLOG_1(PACA_EXGEN, extra, vec);			\
-	EXCEPTION_PROLOG_PSERIES_1(label, h);
-
-#define _MASKABLE_EXCEPTION_PSERIES(vec, label, h, extra)		\
-	__MASKABLE_EXCEPTION_PSERIES(vec, label, h, extra)
-
-#define MASKABLE_EXCEPTION_PSERIES(loc, vec, label)			\
-	_MASKABLE_EXCEPTION_PSERIES(vec, label,				\
-				    EXC_STD, SOFTEN_TEST_PR)
-
-#define MASKABLE_EXCEPTION_PSERIES_OOL(vec, label)			\
-	EXCEPTION_PROLOG_1(PACA_EXGEN, SOFTEN_TEST_PR, vec);		\
-	EXCEPTION_PROLOG_PSERIES_1(label, EXC_STD)
-
-#define MASKABLE_EXCEPTION_HV(loc, vec, label)				\
-	_MASKABLE_EXCEPTION_PSERIES(vec, label,				\
-				    EXC_HV, SOFTEN_TEST_HV)
-
-#define MASKABLE_EXCEPTION_HV_OOL(vec, label)				\
-	EXCEPTION_PROLOG_1(PACA_EXGEN, SOFTEN_TEST_HV, vec);		\
-	EXCEPTION_PROLOG_PSERIES_1(label, EXC_HV)
-
-#define __MASKABLE_RELON_EXCEPTION_PSERIES(vec, label, h, extra)	\
-	SET_SCRATCH0(r13);    /* save r13 */				\
-	EXCEPTION_PROLOG_0(PACA_EXGEN);					\
-	__EXCEPTION_PROLOG_1(PACA_EXGEN, extra, vec);			\
-	EXCEPTION_RELON_PROLOG_PSERIES_1(label, h)
-
-#define _MASKABLE_RELON_EXCEPTION_PSERIES(vec, label, h, extra)		\
-	__MASKABLE_RELON_EXCEPTION_PSERIES(vec, label, h, extra)
-
-#define MASKABLE_RELON_EXCEPTION_PSERIES(loc, vec, label)		\
-	_MASKABLE_RELON_EXCEPTION_PSERIES(vec, label,			\
-					  EXC_STD, SOFTEN_NOTEST_PR)
-
-#define MASKABLE_RELON_EXCEPTION_HV(loc, vec, label)			\
-	_MASKABLE_RELON_EXCEPTION_PSERIES(vec, label,			\
-					  EXC_HV, SOFTEN_TEST_HV)
-
-#define MASKABLE_RELON_EXCEPTION_HV_OOL(vec, label)			\
-	EXCEPTION_PROLOG_1(PACA_EXGEN, SOFTEN_TEST_HV, vec);		\
-	EXCEPTION_RELON_PROLOG_PSERIES_1(label, EXC_HV)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Our exception common code can be passed various "additions"

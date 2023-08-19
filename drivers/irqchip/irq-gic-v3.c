@@ -29,10 +29,6 @@
 #include <linux/percpu.h>
 #include <linux/slab.h>
 #include <linux/msm_rtb.h>
-<<<<<<< HEAD
-=======
-#include <linux/wakeup_reason.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/irqchip.h>
 #include <linux/irqchip/arm-gic-common.h>
@@ -45,12 +41,7 @@
 #include <asm/virt.h>
 
 #include <linux/syscore_ops.h>
-<<<<<<< HEAD
 #include <linux/wakeup_reason.h>
-=======
-#include <linux/suspend.h>
-#include <linux/notifier.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "irq-gic-common.h"
 
@@ -68,7 +59,6 @@ struct gic_chip_data {
 	struct irq_domain	*domain;
 	u64			redist_stride;
 	u32			nr_redist_regions;
-<<<<<<< HEAD
 	bool			has_rss;
 	unsigned int		irq_nr;
 	struct partition_desc	*ppi_descs[16];
@@ -81,25 +71,6 @@ static struct gic_kvm_info gic_v3_kvm_info;
 static DEFINE_PER_CPU(bool, has_rss);
 
 #define MPIDR_RS(mpidr)			(((mpidr) & 0xF0UL) >> 4)
-=======
-	unsigned int		irq_nr;
-	struct partition_desc	*ppi_descs[16];
-#ifdef CONFIG_HIBERNATION
-	unsigned int enabled_irqs[32];
-	unsigned int active_irqs[32];
-	unsigned int irq_edg_lvl[64];
-	unsigned int ppi_edg_lvl;
-	unsigned int enabled_sgis;
-	unsigned int pending_sgis;
-#endif
-};
-
-static struct gic_chip_data gic_data __read_mostly;
-static struct static_key supports_deactivate = STATIC_KEY_INIT_TRUE;
-
-static struct gic_kvm_info gic_v3_kvm_info;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define gic_data_rdist()		(this_cpu_ptr(gic_data.rdists.rdist))
 #define gic_data_rdist_rd_base()	(gic_data_rdist()->rd_base)
 #define gic_data_rdist_sgi_base()	(gic_data_rdist_rd_base() + SZ_64K)
@@ -107,12 +78,6 @@ static struct gic_kvm_info gic_v3_kvm_info;
 /* Our default, arbitrary priority value. Linux only uses one anyway. */
 #define DEFAULT_PMR_VALUE	0xf0
 
-<<<<<<< HEAD
-=======
-static void gic_dist_init(void);
-static void gic_cpu_init(void);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline unsigned int gic_irq(struct irq_data *d)
 {
 	return d->hwirq;
@@ -172,46 +137,6 @@ static u64 __maybe_unused gic_read_iar(void)
 }
 #endif
 
-<<<<<<< HEAD
-=======
-/*
- * gic_show_pending_irq - Shows the pending interrupts
- * Note: Interrupts should be disabled on the cpu from which
- * this is called to get accurate list of pending interrupts.
- */
-void gic_show_pending_irqs(void)
-{
-	void __iomem *base;
-	u32 pending, enabled;
-	unsigned int j;
-
-	base = gic_data.dist_base;
-	for (j = 0; j * 32 < gic_data.irq_nr; j++) {
-		enabled = readl_relaxed(base +
-					GICD_ISENABLER + j * 4);
-		pending = readl_relaxed(base +
-					GICD_ISPENDR + j * 4);
-		pr_err("Pending and enabled irqs[%d] %x %x\n", j,
-				pending, enabled);
-	}
-}
-
-/*
- * get_gic_highpri_irq - Returns next high priority interrupt on current CPU
- */
-unsigned int get_gic_highpri_irq(void)
-{
-	unsigned long flags;
-	unsigned int val = 0;
-
-	local_irq_save(flags);
-	val = read_gicreg(ICC_HPPIR1_EL1);
-	local_irq_restore(flags);
-
-	return val;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void gic_enable_redist(bool enable)
 {
 	void __iomem *rbase;
@@ -413,63 +338,9 @@ static int gic_irq_set_vcpu_affinity(struct irq_data *d, void *vcpu)
 }
 
 #ifdef CONFIG_PM
-<<<<<<< HEAD
 
 static int gic_suspend(void)
 {
-=======
-#ifdef CONFIG_HIBERNATION
-extern int in_suspend;
-static bool hibernation;
-
-static int gic_suspend_notifier(struct notifier_block *nb,
-				unsigned long event,
-				void *dummy)
-{
-	if (event == PM_HIBERNATION_PREPARE)
-		hibernation = true;
-	else if (event == PM_POST_HIBERNATION)
-		hibernation = false;
-	return NOTIFY_OK;
-}
-
-static struct notifier_block gic_notif_block = {
-	.notifier_call = gic_suspend_notifier,
-};
-
-static void gic_hibernation_suspend(void)
-{
-	int i;
-	void __iomem *base = gic_data.dist_base;
-	void __iomem *rdist_base = gic_data_rdist_sgi_base();
-
-	if ((base == NULL) || (rdist_base == NULL))
-		return;
-
-	gic_data.enabled_sgis = readl_relaxed(rdist_base + GICD_ISENABLER);
-	gic_data.pending_sgis = readl_relaxed(rdist_base + GICD_ISPENDR);
-	/* Store edge level for PPIs by reading GICR_ICFGR1 */
-	gic_data.ppi_edg_lvl = readl_relaxed(rdist_base + GICR_ICFGR0 + 4);
-
-	for (i = 0; i * 32 < gic_data.irq_nr; i++) {
-		gic_data.enabled_irqs[i] = readl_relaxed(base +
-						GICD_ISENABLER + i * 4);
-		gic_data.active_irqs[i] = readl_relaxed(base +
-						GICD_ISPENDR + i * 4);
-	}
-
-	for (i = 2; i < gic_data.irq_nr / 16; i++)
-		gic_data.irq_edg_lvl[i] = readl_relaxed(base +
-						GICD_ICFGR + i * 4);
-}
-#endif
-static int gic_suspend(void)
-{
-#ifdef CONFIG_HIBERNATION
-	if (unlikely(hibernation))
-		gic_hibernation_suspend();
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -480,12 +351,6 @@ static void gic_show_resume_irq(struct gic_chip_data *gic)
 	u32 pending[32];
 	void __iomem *base = gic_data.dist_base;
 
-<<<<<<< HEAD
-=======
-	if (base == NULL)
-		return;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!msm_show_resume_irq_mask)
 		return;
 
@@ -508,10 +373,7 @@ static void gic_show_resume_irq(struct gic_chip_data *gic)
 			name = desc->action->name;
 
 		pr_warn("%s: %d triggered %s\n", __func__, irq, name);
-<<<<<<< HEAD
 		log_wakeup_reason(irq);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -522,51 +384,6 @@ static void gic_resume_one(struct gic_chip_data *gic)
 
 static void gic_resume(void)
 {
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_HIBERNATION
-	int i;
-	void __iomem *base = gic_data.dist_base;
-	void __iomem *rdist_base = gic_data_rdist_sgi_base();
-
-	/*
-	 * in_suspend is defined in hibernate.c and will be 0 during
-	 * hibernation restore case. Also it willl be 0 for suspend to ram case
-	 * and similar cases. Underlying code will not get executed in regular
-	 * cases and will be executed only for hibernation restore.
-	 */
-	if (unlikely((in_suspend == 0 && hibernation))) {
-		pr_info("Re-initializing gic in hibernation restore\n");
-		gic_dist_init();
-		gic_cpu_init();
-
-		/* Activate and enable SGIs and PPIs */
-		writel_relaxed(gic_data.enabled_sgis,
-			       rdist_base + GICD_ISENABLER);
-		writel_relaxed(gic_data.pending_sgis,
-			       rdist_base + GICD_ISPENDR);
-		/* Restore edge and level triggers for PPIs from GICR_ICFGR1 */
-		writel_relaxed(gic_data.ppi_edg_lvl,
-			       rdist_base + GICR_ICFGR0 + 4);
-
-		/* Restore edge and level triggers */
-		for (i = 2; i < gic_data.irq_nr / 16; i++)
-			writel_relaxed(gic_data.irq_edg_lvl[i],
-					base + GICD_ICFGR + i * 4);
-		gic_dist_wait_for_rwp();
-
-		/* Activate and enable interupts from backup */
-		for (i = 0; i * 32 < gic_data.irq_nr; i++) {
-			writel_relaxed(gic_data.active_irqs[i],
-				       base + GICD_ISPENDR + i * 4);
-
-			writel_relaxed(gic_data.enabled_irqs[i],
-				       base + GICD_ISENABLER + i * 4);
-		}
-		gic_dist_wait_for_rwp();
-	}
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gic_resume_one(&gic_data);
 }
 
@@ -607,11 +424,7 @@ static asmlinkage void __exception_irq_entry gic_handle_irq(struct pt_regs *regs
 			int err;
 
 			uncached_logk(LOGK_IRQ, (void *)(uintptr_t)irqnr);
-<<<<<<< HEAD
 			if (static_branch_likely(&supports_deactivate_key))
-=======
-			if (static_key_true(&supports_deactivate))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				gic_write_eoir(irqnr);
 			else
 				isb();
@@ -619,13 +432,7 @@ static asmlinkage void __exception_irq_entry gic_handle_irq(struct pt_regs *regs
 			err = handle_domain_irq(gic_data.domain, irqnr, regs);
 			if (err) {
 				WARN_ONCE(true, "Unexpected interrupt received!\n");
-<<<<<<< HEAD
 				if (static_branch_likely(&supports_deactivate_key)) {
-=======
-				log_abnormal_wakeup_reason(
-						"unexpected HW IRQ %u", irqnr);
-				if (static_key_true(&supports_deactivate)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					if (irqnr < 8192)
 						gic_write_dir(irqnr);
 				} else {
@@ -637,11 +444,7 @@ static asmlinkage void __exception_irq_entry gic_handle_irq(struct pt_regs *regs
 		if (irqnr < 16) {
 			uncached_logk(LOGK_IRQ, (void *)(uintptr_t)irqnr);
 			gic_write_eoir(irqnr);
-<<<<<<< HEAD
 			if (static_branch_likely(&supports_deactivate_key))
-=======
-			if (static_key_true(&supports_deactivate))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				gic_write_dir(irqnr);
 #ifdef CONFIG_SMP
 			/*
@@ -660,11 +463,7 @@ static asmlinkage void __exception_irq_entry gic_handle_irq(struct pt_regs *regs
 	} while (irqnr != ICC_IAR1_EL1_SPURIOUS);
 }
 
-<<<<<<< HEAD
 static void __init gic_dist_init(void)
-=======
-static void gic_dist_init(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned int i;
 	u64 affinity;
@@ -758,13 +557,6 @@ static int __gic_populate_rdist(struct redist_region *region, void __iomem *ptr)
 		gic_data_rdist_rd_base() = ptr;
 		gic_data_rdist()->phys_base = region->phys_base + offset;
 
-<<<<<<< HEAD
-=======
-		pr_info("CPU%d: found redistributor %lx region %d:%pa\n",
-			smp_processor_id(), mpidr,
-			(int)(region - gic_data.redist_regions),
-			&gic_data_rdist()->phys_base);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 
@@ -804,15 +596,12 @@ static void gic_update_vlpi_properties(void)
 
 static void gic_cpu_sys_reg_init(void)
 {
-<<<<<<< HEAD
 	int i, cpu = smp_processor_id();
 	u64 mpidr = cpu_logical_map(cpu);
 	u64 need_rss = MPIDR_RS(mpidr);
 	bool group0;
 	u32 val, pribits;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Need to check that the SRE bit has actually been set. If
 	 * not, it means that SRE is disabled at EL2. We're going to
@@ -823,7 +612,6 @@ static void gic_cpu_sys_reg_init(void)
 	if (!gic_enable_sre())
 		pr_err("GIC: unable to set SRE (disabled at EL2), panic ahead\n");
 
-<<<<<<< HEAD
 	pribits = gic_read_ctlr();
 	pribits &= ICC_CTLR_EL1_PRI_BITS_MASK;
 	pribits >>= ICC_CTLR_EL1_PRI_BITS_SHIFT;
@@ -846,10 +634,6 @@ static void gic_cpu_sys_reg_init(void)
 
 	/* Set priority mask register */
 	write_gicreg(DEFAULT_PMR_VALUE, ICC_PMR_EL1);
-=======
-	/* Set priority mask register */
-	gic_write_pmr(DEFAULT_PMR_VALUE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Some firmwares hand over to the kernel with the BPR changed from
@@ -859,11 +643,7 @@ static void gic_cpu_sys_reg_init(void)
 	 */
 	gic_write_bpr1(0);
 
-<<<<<<< HEAD
 	if (static_branch_likely(&supports_deactivate_key)) {
-=======
-	if (static_key_true(&supports_deactivate)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* EOI drops priority only (mode 1) */
 		gic_write_ctlr(ICC_CTLR_EL1_EOImode_drop);
 	} else {
@@ -871,7 +651,6 @@ static void gic_cpu_sys_reg_init(void)
 		gic_write_ctlr(ICC_CTLR_EL1_EOImode_drop_dir);
 	}
 
-<<<<<<< HEAD
 	/* Always whack Group0 before Group1 */
 	if (group0) {
 		switch(pribits) {
@@ -942,15 +721,6 @@ early_param("irqchip.gicv3_nolpi", gicv3_nolpi_cfg);
 static int gic_dist_supports_lpis(void)
 {
 	return !!(readl_relaxed(gic_data.dist_base + GICD_TYPER) & GICD_TYPER_LPIS) && !gicv3_nolpi;
-=======
-	/* ... and let's hit the road... */
-	gic_write_grpen1(1);
-}
-
-static int gic_dist_supports_lpis(void)
-{
-	return !!(readl_relaxed(gic_data.dist_base + GICD_TYPER) & GICD_TYPER_LPIS);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void gic_cpu_init(void)
@@ -981,12 +751,9 @@ static void gic_cpu_init(void)
 
 #ifdef CONFIG_SMP
 
-<<<<<<< HEAD
 #define MPIDR_TO_SGI_RS(mpidr)	(MPIDR_RS(mpidr) << ICC_SGI1R_RS_SHIFT)
 #define MPIDR_TO_SGI_CLUSTER_ID(mpidr)	((mpidr) & ~0xFUL)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int gic_starting_cpu(unsigned int cpu)
 {
 	gic_cpu_init();
@@ -1001,16 +768,6 @@ static u16 gic_compute_target_list(int *base_cpu, const struct cpumask *mask,
 	u16 tlist = 0;
 
 	while (cpu < nr_cpu_ids) {
-<<<<<<< HEAD
-=======
-		/*
-		 * If we ever get a cluster of more than 16 CPUs, just
-		 * scream and skip that CPU.
-		 */
-		if (WARN_ON((mpidr & 0xff) >= 16))
-			goto out;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		tlist |= 1 << (mpidr & 0xf);
 
 		next_cpu = cpumask_next(cpu, mask);
@@ -1020,11 +777,7 @@ static u16 gic_compute_target_list(int *base_cpu, const struct cpumask *mask,
 
 		mpidr = cpu_logical_map(cpu);
 
-<<<<<<< HEAD
 		if (cluster_id != MPIDR_TO_SGI_CLUSTER_ID(mpidr)) {
-=======
-		if (cluster_id != (mpidr & ~0xffUL)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			cpu--;
 			goto out;
 		}
@@ -1046,10 +799,7 @@ static void gic_send_sgi(u64 cluster_id, u16 tlist, unsigned int irq)
 	       MPIDR_TO_SGI_AFFINITY(cluster_id, 2)	|
 	       irq << ICC_SGI1R_SGI_ID_SHIFT		|
 	       MPIDR_TO_SGI_AFFINITY(cluster_id, 1)	|
-<<<<<<< HEAD
 	       MPIDR_TO_SGI_RS(cluster_id)		|
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	       tlist << ICC_SGI1R_TARGET_LIST_SHIFT);
 
 	pr_devel("CPU%d: ICC_SGI1R_EL1 %llx\n", smp_processor_id(), val);
@@ -1070,11 +820,7 @@ static void gic_raise_softirq(const struct cpumask *mask, unsigned int irq)
 	wmb();
 
 	for_each_cpu(cpu, mask) {
-<<<<<<< HEAD
 		u64 cluster_id = MPIDR_TO_SGI_CLUSTER_ID(cpu_logical_map(cpu));
-=======
-		unsigned long cluster_id = cpu_logical_map(cpu) & ~0xffUL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u16 tlist;
 
 		tlist = gic_compute_target_list(&cpu, mask, cluster_id);
@@ -1206,22 +952,14 @@ static struct irq_chip gic_eoimode1_chip = {
 				  IRQCHIP_MASK_ON_SUSPEND,
 };
 
-<<<<<<< HEAD
 #define GIC_ID_NR	(1U << GICD_TYPER_ID_BITS(gic_data.rdists.gicd_typer))
-=======
-#define GIC_ID_NR		(1U << gic_data.rdists.id_bits)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int gic_irq_domain_map(struct irq_domain *d, unsigned int irq,
 			      irq_hw_number_t hw)
 {
 	struct irq_chip *chip = &gic_chip;
 
-<<<<<<< HEAD
 	if (static_branch_likely(&supports_deactivate_key))
-=======
-	if (static_key_true(&supports_deactivate))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		chip = &gic_eoimode1_chip;
 
 	/* SGIs are private to the core kernel */
@@ -1259,11 +997,8 @@ static int gic_irq_domain_map(struct irq_domain *d, unsigned int irq,
 	return 0;
 }
 
-<<<<<<< HEAD
 #define GIC_IRQ_TYPE_PARTITION	(GIC_IRQ_TYPE_LPI + 1)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int gic_irq_domain_translate(struct irq_domain *d,
 				    struct irq_fwspec *fwspec,
 				    unsigned long *hwirq,
@@ -1278,10 +1013,7 @@ static int gic_irq_domain_translate(struct irq_domain *d,
 			*hwirq = fwspec->param[1] + 32;
 			break;
 		case 1:			/* PPI */
-<<<<<<< HEAD
 		case GIC_IRQ_TYPE_PARTITION:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			*hwirq = fwspec->param[1] + 16;
 			break;
 		case GIC_IRQ_TYPE_LPI:	/* LPI */
@@ -1292,7 +1024,6 @@ static int gic_irq_domain_translate(struct irq_domain *d,
 		}
 
 		*type = fwspec->param[2] & IRQ_TYPE_SENSE_MASK;
-<<<<<<< HEAD
 
 		/*
 		 * Make it clear that broken DTs are... broken.
@@ -1300,8 +1031,6 @@ static int gic_irq_domain_translate(struct irq_domain *d,
 		 */
 		WARN_ON(*type == IRQ_TYPE_NONE &&
 			fwspec->param[0] != GIC_IRQ_TYPE_PARTITION);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 
@@ -1311,11 +1040,8 @@ static int gic_irq_domain_translate(struct irq_domain *d,
 
 		*hwirq = fwspec->param[0];
 		*type = fwspec->param[1];
-<<<<<<< HEAD
 
 		WARN_ON(*type == IRQ_TYPE_NONE);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 
@@ -1424,15 +1150,9 @@ static int __init gic_init_bases(void __iomem *dist_base,
 	int err;
 
 	if (!is_hyp_mode_available())
-<<<<<<< HEAD
 		static_branch_disable(&supports_deactivate_key);
 
 	if (static_branch_likely(&supports_deactivate_key))
-=======
-		static_key_slow_dec(&supports_deactivate);
-
-	if (static_key_true(&supports_deactivate))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_info("GIC: Using split EOI/Deactivate mode\n");
 
 	gic_data.fwnode = handle;
@@ -1446,11 +1166,7 @@ static int __init gic_init_bases(void __iomem *dist_base,
 	 * The GIC only supports up to 1020 interrupt sources (SGI+PPI+SPI)
 	 */
 	typer = readl_relaxed(gic_data.dist_base + GICD_TYPER);
-<<<<<<< HEAD
 	gic_data.rdists.gicd_typer = typer;
-=======
-	gic_data.rdists.id_bits = GICD_TYPER_ID_BITS(typer);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gic_irqs = GICD_TYPER_IRQS(typer);
 	if (gic_irqs > 1020)
 		gic_irqs = 1020;
@@ -1458,10 +1174,7 @@ static int __init gic_init_bases(void __iomem *dist_base,
 
 	gic_data.domain = irq_domain_create_tree(handle, &gic_irq_domain_ops,
 						 &gic_data);
-<<<<<<< HEAD
 	irq_domain_update_bus_token(gic_data.domain, DOMAIN_BUS_WIRED);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gic_data.rdists.rdist = alloc_percpu(typeof(*gic_data.rdists.rdist));
 	gic_data.rdists.has_vlpis = true;
 	gic_data.rdists.has_direct_lpi = true;
@@ -1471,7 +1184,6 @@ static int __init gic_init_bases(void __iomem *dist_base,
 		goto out_free;
 	}
 
-<<<<<<< HEAD
 	gic_data.has_rss = !!(typer & GICD_TYPER_RSS);
 	pr_info("Distributor has %sRange Selector support\n",
 		gic_data.has_rss ? "" : "no ");
@@ -1482,8 +1194,6 @@ static int __init gic_init_bases(void __iomem *dist_base,
 			pr_err("Failed to initialize MBIs\n");
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	set_handle_irq(gic_handle_irq);
 
 	gic_update_vlpi_properties();
@@ -1533,11 +1243,7 @@ static void __init gic_populate_ppi_partitions(struct device_node *gic_node)
 	if (!nr_parts)
 		goto out_put_node;
 
-<<<<<<< HEAD
 	parts = kcalloc(nr_parts, sizeof(*parts), GFP_KERNEL);
-=======
-	parts = kzalloc(sizeof(*parts) * nr_parts, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (WARN_ON(!parts))
 		goto out_put_node;
 
@@ -1590,11 +1296,7 @@ static void __init gic_populate_ppi_partitions(struct device_node *gic_node)
 			.fwnode		= gic_data.fwnode,
 			.param_count	= 3,
 			.param		= {
-<<<<<<< HEAD
 				[0]	= GIC_IRQ_TYPE_PARTITION,
-=======
-				[0]	= 1,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				[1]	= i,
 				[2]	= IRQ_TYPE_NONE,
 			},
@@ -1640,11 +1342,7 @@ static void __init gic_of_setup_kvm_info(struct device_node *node)
 	gic_set_kvm_info(&gic_v3_kvm_info);
 }
 
-<<<<<<< HEAD
 static int __init gic_of_init(struct device_node *node, struct device_node *parent)
-=======
-static int __init gicv3_of_init(struct device_node *node, struct device_node *parent)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	void __iomem *dist_base;
 	struct redist_region *rdist_regs;
@@ -1667,12 +1365,8 @@ static int __init gicv3_of_init(struct device_node *node, struct device_node *pa
 	if (of_property_read_u32(node, "#redistributor-regions", &nr_redist_regions))
 		nr_redist_regions = 1;
 
-<<<<<<< HEAD
 	rdist_regs = kcalloc(nr_redist_regions, sizeof(*rdist_regs),
 			     GFP_KERNEL);
-=======
-	rdist_regs = kzalloc(sizeof(*rdist_regs) * nr_redist_regions, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!rdist_regs) {
 		err = -ENOMEM;
 		goto out_unmap_dist;
@@ -1699,21 +1393,11 @@ static int __init gicv3_of_init(struct device_node *node, struct device_node *pa
 			     redist_stride, &node->fwnode);
 	if (err)
 		goto out_unmap_rdist;
-<<<<<<< HEAD
 
 	gic_populate_ppi_partitions(node);
 
 	if (static_branch_likely(&supports_deactivate_key))
 		gic_of_setup_kvm_info(node);
-=======
-#ifdef CONFIG_HIBERNATION
-	err = register_pm_notifier(&gic_notif_block);
-	if (err)
-		goto out_unmap_rdist;
-#endif
-	gic_populate_ppi_partitions(node);
-	gic_of_setup_kvm_info(node);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 out_unmap_rdist:
@@ -1726,11 +1410,7 @@ out_unmap_dist:
 	return err;
 }
 
-<<<<<<< HEAD
 IRQCHIP_DECLARE(gic_v3, "arm,gic-v3", gic_of_init);
-=======
-IRQCHIP_DECLARE(gic_v3, "arm,gic-v3", gicv3_of_init);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_ACPI
 static struct
@@ -1739,10 +1419,6 @@ static struct
 	struct redist_region *redist_regs;
 	u32 nr_redist_regions;
 	bool single_redist;
-<<<<<<< HEAD
-=======
-	int enabled_rdists;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 maint_irq;
 	int maint_irq_mode;
 	phys_addr_t vcpu_base;
@@ -1837,15 +1513,8 @@ static int __init gic_acpi_match_gicc(struct acpi_subtable_header *header,
 	 * If GICC is enabled and has valid gicr base address, then it means
 	 * GICR base is presented via GICC
 	 */
-<<<<<<< HEAD
 	if ((gicc->flags & ACPI_MADT_ENABLED) && gicc->gicr_base_address)
 		return 0;
-=======
-	if ((gicc->flags & ACPI_MADT_ENABLED) && gicc->gicr_base_address) {
-		acpi_data.enabled_rdists++;
-		return 0;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * It's perfectly valid firmware can pass disabled GICC entry, driver
@@ -1875,15 +1544,8 @@ static int __init gic_acpi_count_gicr_regions(void)
 
 	count = acpi_table_parse_madt(ACPI_MADT_TYPE_GENERIC_INTERRUPT,
 				      gic_acpi_match_gicc, 0);
-<<<<<<< HEAD
 	if (count > 0)
 		acpi_data.single_redist = true;
-=======
-	if (count > 0) {
-		acpi_data.single_redist = true;
-		count = acpi_data.enabled_rdists;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return count;
 }
@@ -2007,11 +1669,7 @@ gic_acpi_init(struct acpi_subtable_header *header, const unsigned long end)
 
 	err = gic_validate_dist_version(acpi_data.dist_base);
 	if (err) {
-<<<<<<< HEAD
 		pr_err("No distributor detected at @%p, giving up\n",
-=======
-		pr_err("No distributor detected at @%p, giving up",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		       acpi_data.dist_base);
 		goto out_dist_unmap;
 	}
@@ -2039,13 +1697,9 @@ gic_acpi_init(struct acpi_subtable_header *header, const unsigned long end)
 		goto out_fwhandle_free;
 
 	acpi_set_irq_model(ACPI_IRQ_MODEL_GIC, domain_handle);
-<<<<<<< HEAD
 
 	if (static_branch_likely(&supports_deactivate_key))
 		gic_acpi_setup_kvm_info();
-=======
-	gic_acpi_setup_kvm_info();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 

@@ -6,21 +6,15 @@
  * published by the Free Software Foundation.
  */
 
-<<<<<<< HEAD
 #include <linux/mm_types.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/reservation.h>
 #include <drm/drmP.h>
 #include <drm/drm_encoder.h>
 #include <drm/drm_gem_cma_helper.h>
-<<<<<<< HEAD
 #include <drm/drm_atomic.h>
 #include <drm/drm_syncobj.h>
 
 #include "uapi/drm/vc4_drm.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Don't forget to update vc4_bo.c: bo_type_names[] when adding to
  * this.
@@ -40,7 +34,6 @@ enum vc4_kernel_bo_type {
 	VC4_BO_TYPE_COUNT
 };
 
-<<<<<<< HEAD
 /* Performance monitor object. The perform lifetime is controlled by userspace
  * using perfmon related ioctls. A perfmon can be attached to a submit_cl
  * request, and when this is the case, HW perf counters will be activated just
@@ -71,8 +64,6 @@ struct vc4_perfmon {
 	u64 counters[0];
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct vc4_dev {
 	struct drm_device *dev;
 
@@ -82,12 +73,7 @@ struct vc4_dev {
 	struct vc4_dpi *dpi;
 	struct vc4_dsi *dsi1;
 	struct vc4_vec *vec;
-<<<<<<< HEAD
 	struct vc4_txp *txp;
-=======
-
-	struct drm_fbdev_cma *fbdev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct vc4_hang_state *hang_state;
 
@@ -122,7 +108,6 @@ struct vc4_dev {
 	/* Protects bo_cache and bo_labels. */
 	struct mutex bo_lock;
 
-<<<<<<< HEAD
 	/* Purgeable BO pool. All BOs in this pool can have their memory
 	 * reclaimed if the driver is unable to allocate new BOs. We also
 	 * keep stats related to the purge mechanism here.
@@ -136,8 +121,6 @@ struct vc4_dev {
 		struct mutex lock;
 	} purgeable;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint64_t dma_fence_context;
 
 	/* Sequence number for the last job queued in bin_job_list.
@@ -174,14 +157,11 @@ struct vc4_dev {
 	wait_queue_head_t job_wait_queue;
 	struct work_struct job_done_work;
 
-<<<<<<< HEAD
 	/* Used to track the active perfmon if any. Access to this field is
 	 * protected by job_lock.
 	 */
 	struct vc4_perfmon *active_perfmon;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* List of struct vc4_seqno_cb for callbacks to be made from a
 	 * workqueue when the given seqno is passed.
 	 */
@@ -217,12 +197,9 @@ struct vc4_dev {
 	} hangcheck;
 
 	struct semaphore async_modeset;
-<<<<<<< HEAD
 
 	struct drm_modeset_lock ctm_state_lock;
 	struct drm_private_obj ctm_manager;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static inline struct vc4_dev *
@@ -270,7 +247,6 @@ struct vc4_bo {
 	 * for user-allocated labels.
 	 */
 	int label;
-<<<<<<< HEAD
 
 	/* Count the number of active users. This is needed to determine
 	 * whether we can move the BO to the purgeable list or not (when the BO
@@ -281,8 +257,6 @@ struct vc4_bo {
 	/* Store purgeable/purged state here */
 	u32 madv;
 	struct mutex madv_lock;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static inline struct vc4_bo *
@@ -343,7 +317,6 @@ to_vc4_plane(struct drm_plane *plane)
 	return (struct vc4_plane *)plane;
 }
 
-<<<<<<< HEAD
 enum vc4_scaling_mode {
 	VC4_SCALING_NONE,
 	VC4_SCALING_TPZ,
@@ -404,8 +377,6 @@ to_vc4_plane_state(struct drm_plane_state *state)
 	return (struct vc4_plane_state *)state;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum vc4_encoder_type {
 	VC4_ENCODER_TYPE_NONE,
 	VC4_ENCODER_TYPE_HDMI,
@@ -428,7 +399,6 @@ to_vc4_encoder(struct drm_encoder *encoder)
 	return container_of(encoder, struct vc4_encoder, base);
 }
 
-<<<<<<< HEAD
 struct vc4_crtc_data {
 	/* Which channel of the HVS this pixelvalve sources from. */
 	int hvs_channel;
@@ -462,8 +432,6 @@ to_vc4_crtc(struct drm_crtc *crtc)
 	return (struct vc4_crtc *)crtc;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define V3D_READ(offset) readl(vc4->v3d->regs + offset)
 #define V3D_WRITE(offset, val) writel(val, vc4->v3d->regs + offset)
 #define HVS_READ(offset) readl(vc4->hvs->regs + offset)
@@ -575,7 +543,6 @@ struct vc4_exec_info {
 	void *uniforms_v;
 	uint32_t uniforms_p;
 	uint32_t uniforms_size;
-<<<<<<< HEAD
 
 	/* Pointer to a performance monitor object if the user requested it,
 	 * NULL otherwise.
@@ -591,8 +558,6 @@ struct vc4_file {
 		struct idr idr;
 		struct mutex lock;
 	} perfmon;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static inline struct vc4_exec_info *
@@ -711,10 +676,7 @@ int vc4_get_hang_state_ioctl(struct drm_device *dev, void *data,
 			     struct drm_file *file_priv);
 int vc4_label_bo_ioctl(struct drm_device *dev, void *data,
 		       struct drm_file *file_priv);
-<<<<<<< HEAD
 vm_fault_t vc4_fault(struct vm_fault *vmf);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int vc4_mmap(struct file *filp, struct vm_area_struct *vma);
 struct reservation_object *vc4_prime_res_obj(struct drm_gem_object *obj);
 int vc4_prime_mmap(struct drm_gem_object *obj, struct vm_area_struct *vma);
@@ -725,13 +687,10 @@ void *vc4_prime_vmap(struct drm_gem_object *obj);
 int vc4_bo_cache_init(struct drm_device *dev);
 void vc4_bo_cache_destroy(struct drm_device *dev);
 int vc4_bo_stats_debugfs(struct seq_file *m, void *arg);
-<<<<<<< HEAD
 int vc4_bo_inc_usecnt(struct vc4_bo *bo);
 void vc4_bo_dec_usecnt(struct vc4_bo *bo);
 void vc4_bo_add_to_purgeable_pool(struct vc4_bo *bo);
 void vc4_bo_remove_from_purgeable_pool(struct vc4_bo *bo);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* vc4_crtc.c */
 extern struct platform_driver vc4_crtc_driver;
@@ -740,11 +699,8 @@ bool vc4_crtc_get_scanoutpos(struct drm_device *dev, unsigned int crtc_id,
 			     bool in_vblank_irq, int *vpos, int *hpos,
 			     ktime_t *stime, ktime_t *etime,
 			     const struct drm_display_mode *mode);
-<<<<<<< HEAD
 void vc4_crtc_handle_vblank(struct vc4_crtc *crtc);
 void vc4_crtc_txp_armed(struct drm_crtc_state *state);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* vc4_debugfs.c */
 int vc4_debugfs_init(struct drm_minor *minor);
@@ -781,11 +737,8 @@ void vc4_job_handle_completed(struct vc4_dev *vc4);
 int vc4_queue_seqno_cb(struct drm_device *dev,
 		       struct vc4_seqno_cb *cb, uint64_t seqno,
 		       void (*func)(struct vc4_seqno_cb *cb));
-<<<<<<< HEAD
 int vc4_gem_madvise_ioctl(struct drm_device *dev, void *data,
 			  struct drm_file *file_priv);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* vc4_hdmi.c */
 extern struct platform_driver vc4_hdmi_driver;
@@ -795,13 +748,10 @@ int vc4_hdmi_debugfs_regs(struct seq_file *m, void *unused);
 extern struct platform_driver vc4_vec_driver;
 int vc4_vec_debugfs_regs(struct seq_file *m, void *unused);
 
-<<<<<<< HEAD
 /* vc4_txp.c */
 extern struct platform_driver vc4_txp_driver;
 int vc4_txp_debugfs_regs(struct seq_file *m, void *unused);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* vc4_irq.c */
 irqreturn_t vc4_irq(int irq, void *arg);
 void vc4_irq_preinstall(struct drm_device *dev);
@@ -854,7 +804,6 @@ bool vc4_check_tex_size(struct vc4_exec_info *exec,
 /* vc4_validate_shader.c */
 struct vc4_validated_shader_info *
 vc4_validate_shader(struct drm_gem_cma_object *shader_obj);
-<<<<<<< HEAD
 
 /* vc4_perfmon.c */
 void vc4_perfmon_get(struct vc4_perfmon *perfmon);
@@ -871,5 +820,3 @@ int vc4_perfmon_destroy_ioctl(struct drm_device *dev, void *data,
 			      struct drm_file *file_priv);
 int vc4_perfmon_get_values_ioctl(struct drm_device *dev, void *data,
 				 struct drm_file *file_priv);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

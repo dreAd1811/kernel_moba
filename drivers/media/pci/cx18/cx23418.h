@@ -19,17 +19,10 @@
 
 #include <media/drv-intf/cx2341x.h>
 
-<<<<<<< HEAD
 #define MGR_CMD_MASK				0x40000000
 /* The MSB of the command code indicates that this is the completion of a
    command */
 #define MGR_CMD_MASK_ACK			(MGR_CMD_MASK | 0x80000000)
-=======
-#define MGR_CMD_MASK            		0x40000000
-/* The MSB of the command code indicates that this is the completion of a
-   command */
-#define MGR_CMD_MASK_ACK        		(MGR_CMD_MASK | 0x80000000)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Description: This command creates a new instance of a certain task
    IN[0]  - Task ID. This is one of the XPU_CMD_MASK_YYY where XPU is
@@ -37,16 +30,11 @@
    OUT[0] - Task handle. This handle is passed along with commands to
 	    dispatch to the right instance of the task
    ReturnCode - One of the ERR_SYS_... */
-<<<<<<< HEAD
 #define CX18_CREATE_TASK			(MGR_CMD_MASK | 0x0001)
-=======
-#define CX18_CREATE_TASK      			(MGR_CMD_MASK | 0x0001)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Description: This command destroys an instance of a task
    IN[0] - Task handle. Hanlde of the task to destroy
    ReturnCode - One of the ERR_SYS_... */
-<<<<<<< HEAD
 #define CX18_DESTROY_TASK			(MGR_CMD_MASK | 0x0002)
 
 /* All commands for CPU have the following mask set */
@@ -62,23 +50,6 @@
 
 #define APU_CMD_MASK				0x10000000
 #define APU_CMD_MASK_ACK			(APU_CMD_MASK | 0x80000000)
-=======
-#define CX18_DESTROY_TASK     			(MGR_CMD_MASK | 0x0002)
-
-/* All commands for CPU have the following mask set */
-#define CPU_CMD_MASK                        	0x20000000
-#define CPU_CMD_MASK_DEBUG       		(CPU_CMD_MASK | 0x00000000)
-#define CPU_CMD_MASK_ACK                    	(CPU_CMD_MASK | 0x80000000)
-#define CPU_CMD_MASK_CAPTURE                	(CPU_CMD_MASK | 0x00020000)
-#define CPU_CMD_MASK_TS                     	(CPU_CMD_MASK | 0x00040000)
-
-#define EPU_CMD_MASK                        	0x02000000
-#define EPU_CMD_MASK_DEBUG       		(EPU_CMD_MASK | 0x000000)
-#define EPU_CMD_MASK_DE                     	(EPU_CMD_MASK | 0x040000)
-
-#define APU_CMD_MASK 				0x10000000
-#define APU_CMD_MASK_ACK 			(APU_CMD_MASK | 0x80000000)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define CX18_APU_ENCODING_METHOD_MPEG		(0 << 28)
 #define CX18_APU_ENCODING_METHOD_AC3		(1 << 28)
@@ -96,11 +67,7 @@
 
 /* Description: Command APU to reset the AI
    ReturnCode - ??? */
-<<<<<<< HEAD
 #define CX18_APU_RESETAI			(APU_CMD_MASK | 0x05)
-=======
-#define CX18_APU_RESETAI 			(APU_CMD_MASK | 0x05)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Description: This command indicates that a Memory Descriptor List has been
    filled with the requested channel type
@@ -108,21 +75,13 @@
    IN[1] - Offset of the MDL_ACK from the beginning of the local DDR.
    IN[2] - Number of CNXT_MDL_ACK structures in the array pointed to by IN[1]
    ReturnCode - One of the ERR_DE_... */
-<<<<<<< HEAD
 #define CX18_EPU_DMA_DONE			(EPU_CMD_MASK_DE | 0x0001)
-=======
-#define CX18_EPU_DMA_DONE              		(EPU_CMD_MASK_DE | 0x0001)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Something interesting happened
    IN[0] - A value to log
    IN[1] - An offset of a string in the MiniMe memory;
 	   0/zero/NULL means "I have nothing to say" */
-<<<<<<< HEAD
 #define CX18_EPU_DEBUG				(EPU_CMD_MASK_DEBUG | 0x0003)
-=======
-#define CX18_EPU_DEBUG 				(EPU_CMD_MASK_DEBUG | 0x0003)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Reads memory/registers (32-bit)
    IN[0] - Address
@@ -132,35 +91,22 @@
 /* Description: This command starts streaming with the set channel type
    IN[0] - Task handle. Handle of the task to start
    ReturnCode - One of the ERR_CAPTURE_... */
-<<<<<<< HEAD
 #define CX18_CPU_CAPTURE_START			(CPU_CMD_MASK_CAPTURE | 0x0002)
-=======
-#define CX18_CPU_CAPTURE_START               	(CPU_CMD_MASK_CAPTURE | 0x0002)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Description: This command stops streaming with the set channel type
    IN[0] - Task handle. Handle of the task to stop
    IN[1] - 0 = stop at end of GOP, 1 = stop at end of frame (MPEG only)
    ReturnCode - One of the ERR_CAPTURE_... */
-<<<<<<< HEAD
 #define CX18_CPU_CAPTURE_STOP			(CPU_CMD_MASK_CAPTURE | 0x0003)
-=======
-#define CX18_CPU_CAPTURE_STOP                	(CPU_CMD_MASK_CAPTURE | 0x0003)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Description: This command pauses streaming with the set channel type
    IN[0] - Task handle. Handle of the task to pause
    ReturnCode - One of the ERR_CAPTURE_... */
-<<<<<<< HEAD
 #define CX18_CPU_CAPTURE_PAUSE			(CPU_CMD_MASK_CAPTURE | 0x0007)
-=======
-#define CX18_CPU_CAPTURE_PAUSE               	(CPU_CMD_MASK_CAPTURE | 0x0007)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Description: This command resumes streaming with the set channel type
    IN[0] - Task handle. Handle of the task to resume
    ReturnCode - One of the ERR_CAPTURE_... */
-<<<<<<< HEAD
 #define CX18_CPU_CAPTURE_RESUME			(CPU_CMD_MASK_CAPTURE | 0x0008)
 
 #define CAPTURE_CHANNEL_TYPE_NONE		0
@@ -172,30 +118,13 @@
 #define CAPTURE_CHANNEL_TYPE_SLICED_VBI		6
 #define CAPTURE_CHANNEL_TYPE_TS			7
 #define CAPTURE_CHANNEL_TYPE_MAX		15
-=======
-#define CX18_CPU_CAPTURE_RESUME              	(CPU_CMD_MASK_CAPTURE | 0x0008)
-
-#define CAPTURE_CHANNEL_TYPE_NONE  		0
-#define CAPTURE_CHANNEL_TYPE_MPEG  		1
-#define CAPTURE_CHANNEL_TYPE_INDEX 		2
-#define CAPTURE_CHANNEL_TYPE_YUV   		3
-#define CAPTURE_CHANNEL_TYPE_PCM   		4
-#define CAPTURE_CHANNEL_TYPE_VBI   		5
-#define CAPTURE_CHANNEL_TYPE_SLICED_VBI		6
-#define CAPTURE_CHANNEL_TYPE_TS			7
-#define CAPTURE_CHANNEL_TYPE_MAX   		15
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Description: This command sets the channel type. This can only be done
    when stopped.
    IN[0] - Task handle. Handle of the task to start
    IN[1] - Channel Type. See Below.
    ReturnCode - One of the ERR_CAPTURE_... */
-<<<<<<< HEAD
 #define CX18_CPU_SET_CHANNEL_TYPE		(CPU_CMD_MASK_CAPTURE + 1)
-=======
-#define CX18_CPU_SET_CHANNEL_TYPE      		(CPU_CMD_MASK_CAPTURE + 1)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Description: Set stream output type
    IN[0] - task handle. Handle of the task to start
@@ -211,11 +140,7 @@
    IN[4] - reserved
    IN[5] - frame rate, 0 - 29.97f/s, 1 - 25f/s
    ReturnCode - One of the ERR_CAPTURE_... */
-<<<<<<< HEAD
 #define CX18_CPU_SET_VIDEO_IN			(CPU_CMD_MASK_CAPTURE | 0x0004)
-=======
-#define CX18_CPU_SET_VIDEO_IN                	(CPU_CMD_MASK_CAPTURE | 0x0004)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Description: Set video frame rate
    IN[0] - task handle. Handle of the task to start
@@ -224,11 +149,7 @@
    IN[3] - video peak rate
    IN[4] - system mux rate
    ReturnCode - One of the ERR_CAPTURE_... */
-<<<<<<< HEAD
 #define CX18_CPU_SET_VIDEO_RATE			(CPU_CMD_MASK_CAPTURE | 0x0005)
-=======
-#define CX18_CPU_SET_VIDEO_RATE              	(CPU_CMD_MASK_CAPTURE | 0x0005)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Description: Set video output resolution
    IN[0] - task handle
@@ -245,11 +166,7 @@
 				3 = horizontal/vertical, 4 = diagonal
    IN[3] - strength, temporal 0 - 31, spatial 0 - 15
    ReturnCode - One of the ERR_CAPTURE_... */
-<<<<<<< HEAD
 #define CX18_CPU_SET_FILTER_PARAM		(CPU_CMD_MASK_CAPTURE | 0x0009)
-=======
-#define CX18_CPU_SET_FILTER_PARAM            	(CPU_CMD_MASK_CAPTURE | 0x0009)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Description: This command set spatial filter type
    IN[0] - Task handle.
@@ -257,11 +174,7 @@
 		      3 = 2D H/V separable, 4 = 2D symmetric non-separable
    IN[2] - chroma type: 0 - disable, 1 = 1D horizontal
    ReturnCode - One of the ERR_CAPTURE_... */
-<<<<<<< HEAD
 #define CX18_CPU_SET_SPATIAL_FILTER_TYPE	(CPU_CMD_MASK_CAPTURE | 0x000C)
-=======
-#define CX18_CPU_SET_SPATIAL_FILTER_TYPE     	(CPU_CMD_MASK_CAPTURE | 0x000C)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Description: This command set coring levels for median filter
    IN[0] - Task handle.
@@ -270,28 +183,16 @@
    IN[3] - chroma_high
    IN[4] - chroma_low
    ReturnCode - One of the ERR_CAPTURE_... */
-<<<<<<< HEAD
 #define CX18_CPU_SET_MEDIAN_CORING		(CPU_CMD_MASK_CAPTURE | 0x000E)
 
 /* Description: This command set the picture type mask for index file
    IN[0] - Task handle (ignored by firmware)
    IN[1] -	0 = disable index file output
-=======
-#define CX18_CPU_SET_MEDIAN_CORING           	(CPU_CMD_MASK_CAPTURE | 0x000E)
-
-/* Description: This command set the picture type mask for index file
-   IN[0] - Task handle (ignored by firmware)
-   IN[1] - 	0 = disable index file output
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			1 = output I picture
 			2 = P picture
 			4 = B picture
 			other = illegal */
-<<<<<<< HEAD
 #define CX18_CPU_SET_INDEXTABLE			(CPU_CMD_MASK_CAPTURE | 0x0010)
-=======
-#define CX18_CPU_SET_INDEXTABLE         	(CPU_CMD_MASK_CAPTURE | 0x0010)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Description: Set audio parameters
    IN[0] - task handle. Handle of the task to start
@@ -317,11 +218,7 @@
 /* Description: Set stream output type
    IN[0] - task handle. Handle of the task to start
    IN[1] - subType
-<<<<<<< HEAD
 	    SET_INITIAL_SCR			1
-=======
-	    SET_INITIAL_SCR      		1
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    SET_QUALITY_MODE            2
 	    SET_VIM_PROTECT_MODE        3
 	    SET_PTS_CORRECTION          4
@@ -414,11 +311,7 @@
 			bit 0:	output user data, 1 - enable
 			bit 1:	output private stream, 1 - enable
 			bit 2:	mux option, 0 - in GOP, 1 - in picture
-<<<<<<< HEAD
 			bit[7:0]	private stream ID
-=======
-			bit[7:0] 	private stream ID
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    IN[5] - insertion period while mux option is in picture
    ReturnCode - VBI data offset */
 #define CX18_CPU_SET_SLICED_VBI_PARAM		(CPU_CMD_MASK_CAPTURE | 0x0020)
@@ -451,21 +344,13 @@
 #define CX18_CPU_SET_VFC_PARAM                  (CPU_CMD_MASK_CAPTURE | 0x0023)
 
 /* Below is the list of commands related to the data exchange */
-<<<<<<< HEAD
 #define CPU_CMD_MASK_DE				(CPU_CMD_MASK | 0x040000)
-=======
-#define CPU_CMD_MASK_DE 			(CPU_CMD_MASK | 0x040000)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Description: This command provides the physical base address of the local
    DDR as viewed by EPU
    IN[0] - Physical offset where EPU has the local DDR mapped
    ReturnCode - One of the ERR_DE_... */
-<<<<<<< HEAD
 #define CPU_CMD_DE_SetBase			(CPU_CMD_MASK_DE | 0x0001)
-=======
-#define CPU_CMD_DE_SetBase 			(CPU_CMD_MASK_DE | 0x0001)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Description: This command provides the offsets in the device memory where
    the 2 cx18_mdl_ack blocks reside
@@ -475,11 +360,7 @@
    IN[2] - Offset of the second cx18_mdl_ack from the beginning of the
 	   local DDR.
    ReturnCode - One of the ERR_DE_... */
-<<<<<<< HEAD
 #define CX18_CPU_DE_SET_MDL_ACK			(CPU_CMD_MASK_DE | 0x0002)
-=======
-#define CX18_CPU_DE_SET_MDL_ACK                	(CPU_CMD_MASK_DE | 0x0002)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Description: This command provides the offset to a Memory Descriptor List
    IN[0] - Task handle. Handle of the task to start
@@ -488,21 +369,13 @@
    IN[3] - Buffer ID
    IN[4] - Total buffer length
    ReturnCode - One of the ERR_DE_... */
-<<<<<<< HEAD
 #define CX18_CPU_DE_SET_MDL			(CPU_CMD_MASK_DE | 0x0005)
-=======
-#define CX18_CPU_DE_SET_MDL                   	(CPU_CMD_MASK_DE | 0x0005)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Description: This command requests return of all current Memory
    Descriptor Lists to the driver
    IN[0] - Task handle. Handle of the task to start
    ReturnCode - One of the ERR_DE_... */
-<<<<<<< HEAD
 #define CX18_CPU_DE_RELEASE_MDL			(CPU_CMD_MASK_DE | 0x0006)
-=======
-#define CX18_CPU_DE_RELEASE_MDL               	(CPU_CMD_MASK_DE | 0x0006)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Description: This command signals the cpu that the dat buffer has been
    consumed and ready for re-use.

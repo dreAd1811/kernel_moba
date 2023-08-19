@@ -32,13 +32,9 @@
 #include <linux/sched.h>
 #include <linux/slab.h>
 
-<<<<<<< HEAD
 static unsigned int cryptd_max_cpu_qlen = 1000;
 module_param(cryptd_max_cpu_qlen, uint, 0);
 MODULE_PARM_DESC(cryptd_max_cpu_qlen, "Set cryptd Max queue depth");
-=======
-#define CRYPTD_MAX_CPU_QLEN 1000
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct cryptd_cpu_queue {
 	struct crypto_queue queue;
@@ -80,11 +76,7 @@ struct cryptd_blkcipher_request_ctx {
 
 struct cryptd_skcipher_ctx {
 	atomic_t refcnt;
-<<<<<<< HEAD
 	struct crypto_sync_skcipher *child;
-=======
-	struct crypto_skcipher *child;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct cryptd_skcipher_request_ctx {
@@ -126,10 +118,7 @@ static int cryptd_init_queue(struct cryptd_queue *queue,
 		crypto_init_queue(&cpu_queue->queue, max_cpu_qlen);
 		INIT_WORK(&cpu_queue->work, cryptd_queue_worker);
 	}
-<<<<<<< HEAD
 	pr_info("cryptd: max_cpu_qlen set to %d\n", max_cpu_qlen);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -151,24 +140,14 @@ static int cryptd_enqueue_request(struct cryptd_queue *queue,
 	int cpu, err;
 	struct cryptd_cpu_queue *cpu_queue;
 	atomic_t *refcnt;
-<<<<<<< HEAD
-=======
-	bool may_backlog;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cpu = get_cpu();
 	cpu_queue = this_cpu_ptr(queue->cpu_queue);
 	err = crypto_enqueue_request(&cpu_queue->queue, request);
 
 	refcnt = crypto_tfm_ctx(request->tfm);
-<<<<<<< HEAD
 
 	if (err == -ENOSPC)
-=======
-	may_backlog = request->flags & CRYPTO_TFM_REQ_MAY_BACKLOG;
-
-	if (err == -EBUSY && !may_backlog)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out_put_cpu;
 
 	queue_work_on(cpu, kcrypto_wq, &cpu_queue->work);
@@ -470,7 +449,6 @@ static int cryptd_skcipher_setkey(struct crypto_skcipher *parent,
 				  const u8 *key, unsigned int keylen)
 {
 	struct cryptd_skcipher_ctx *ctx = crypto_skcipher_ctx(parent);
-<<<<<<< HEAD
 	struct crypto_sync_skcipher *child = ctx->child;
 	int err;
 
@@ -481,16 +459,6 @@ static int cryptd_skcipher_setkey(struct crypto_skcipher *parent,
 	err = crypto_sync_skcipher_setkey(child, key, keylen);
 	crypto_skcipher_set_flags(parent,
 				  crypto_sync_skcipher_get_flags(child) &
-=======
-	struct crypto_skcipher *child = ctx->child;
-	int err;
-
-	crypto_skcipher_clear_flags(child, CRYPTO_TFM_REQ_MASK);
-	crypto_skcipher_set_flags(child, crypto_skcipher_get_flags(parent) &
-					 CRYPTO_TFM_REQ_MASK);
-	err = crypto_skcipher_setkey(child, key, keylen);
-	crypto_skcipher_set_flags(parent, crypto_skcipher_get_flags(child) &
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  CRYPTO_TFM_RES_MASK);
 	return err;
 }
@@ -517,22 +485,13 @@ static void cryptd_skcipher_encrypt(struct crypto_async_request *base,
 	struct cryptd_skcipher_request_ctx *rctx = skcipher_request_ctx(req);
 	struct crypto_skcipher *tfm = crypto_skcipher_reqtfm(req);
 	struct cryptd_skcipher_ctx *ctx = crypto_skcipher_ctx(tfm);
-<<<<<<< HEAD
 	struct crypto_sync_skcipher *child = ctx->child;
 	SYNC_SKCIPHER_REQUEST_ON_STACK(subreq, child);
-=======
-	struct crypto_skcipher *child = ctx->child;
-	SKCIPHER_REQUEST_ON_STACK(subreq, child);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (unlikely(err == -EINPROGRESS))
 		goto out;
 
-<<<<<<< HEAD
 	skcipher_request_set_sync_tfm(subreq, child);
-=======
-	skcipher_request_set_tfm(subreq, child);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	skcipher_request_set_callback(subreq, CRYPTO_TFM_REQ_MAY_SLEEP,
 				      NULL, NULL);
 	skcipher_request_set_crypt(subreq, req->src, req->dst, req->cryptlen,
@@ -554,22 +513,13 @@ static void cryptd_skcipher_decrypt(struct crypto_async_request *base,
 	struct cryptd_skcipher_request_ctx *rctx = skcipher_request_ctx(req);
 	struct crypto_skcipher *tfm = crypto_skcipher_reqtfm(req);
 	struct cryptd_skcipher_ctx *ctx = crypto_skcipher_ctx(tfm);
-<<<<<<< HEAD
 	struct crypto_sync_skcipher *child = ctx->child;
 	SYNC_SKCIPHER_REQUEST_ON_STACK(subreq, child);
-=======
-	struct crypto_skcipher *child = ctx->child;
-	SKCIPHER_REQUEST_ON_STACK(subreq, child);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (unlikely(err == -EINPROGRESS))
 		goto out;
 
-<<<<<<< HEAD
 	skcipher_request_set_sync_tfm(subreq, child);
-=======
-	skcipher_request_set_tfm(subreq, child);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	skcipher_request_set_callback(subreq, CRYPTO_TFM_REQ_MAY_SLEEP,
 				      NULL, NULL);
 	skcipher_request_set_crypt(subreq, req->src, req->dst, req->cryptlen,
@@ -620,11 +570,7 @@ static int cryptd_skcipher_init_tfm(struct crypto_skcipher *tfm)
 	if (IS_ERR(cipher))
 		return PTR_ERR(cipher);
 
-<<<<<<< HEAD
 	ctx->child = (struct crypto_sync_skcipher *)cipher;
-=======
-	ctx->child = cipher;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	crypto_skcipher_set_reqsize(
 		tfm, sizeof(struct cryptd_skcipher_request_ctx));
 	return 0;
@@ -634,11 +580,7 @@ static void cryptd_skcipher_exit_tfm(struct crypto_skcipher *tfm)
 {
 	struct cryptd_skcipher_ctx *ctx = crypto_skcipher_ctx(tfm);
 
-<<<<<<< HEAD
 	crypto_free_sync_skcipher(ctx->child);
-=======
-	crypto_free_skcipher(ctx->child);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void cryptd_skcipher_free(struct skcipher_instance *inst)
@@ -1304,11 +1246,7 @@ struct crypto_skcipher *cryptd_skcipher_child(struct cryptd_skcipher *tfm)
 {
 	struct cryptd_skcipher_ctx *ctx = crypto_skcipher_ctx(&tfm->base);
 
-<<<<<<< HEAD
 	return &ctx->child->base;
-=======
-	return ctx->child;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(cryptd_skcipher_child);
 
@@ -1440,11 +1378,7 @@ static int __init cryptd_init(void)
 {
 	int err;
 
-<<<<<<< HEAD
 	err = cryptd_init_queue(&queue, cryptd_max_cpu_qlen);
-=======
-	err = cryptd_init_queue(&queue, CRYPTD_MAX_CPU_QLEN);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		return err;
 

@@ -131,11 +131,7 @@ static const struct clk_ops twl6040_pdmclk_ops = {
 	.recalc_rate = twl6040_pdmclk_recalc_rate,
 };
 
-<<<<<<< HEAD
 static const struct clk_init_data twl6040_pdmclk_init = {
-=======
-static struct clk_init_data twl6040_pdmclk_init = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.name = "pdmclk",
 	.ops = &twl6040_pdmclk_ops,
 	.flags = CLK_GET_RATE_NOCACHE,

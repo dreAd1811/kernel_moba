@@ -39,8 +39,5 @@ atlantic-objs := aq_main.o \
 	hw_atl/hw_atl_a0.o \
 	hw_atl/hw_atl_b0.o \
 	hw_atl/hw_atl_utils.o \
-<<<<<<< HEAD
 	hw_atl/hw_atl_utils_fw2x.o \
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hw_atl/hw_atl_llh.o

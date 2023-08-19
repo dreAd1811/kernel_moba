@@ -29,10 +29,7 @@
 #include <linux/io.h>
 #include <linux/mii.h>
 #include <linux/module.h>
-<<<<<<< HEAD
 #include <linux/mod_devicetable.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/netdevice.h>
 #include <linux/platform_device.h>
 
@@ -406,10 +403,7 @@ static bool ftmac100_rx_packet(struct ftmac100 *priv, int *processed)
 	struct page *page;
 	dma_addr_t map;
 	int length;
-<<<<<<< HEAD
 	bool ret;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rxdes = ftmac100_rx_locate_first_segment(priv);
 	if (!rxdes)
@@ -424,13 +418,8 @@ static bool ftmac100_rx_packet(struct ftmac100 *priv, int *processed)
 	 * It is impossible to get multi-segment packets
 	 * because we always provide big enough receive buffers.
 	 */
-<<<<<<< HEAD
 	ret = ftmac100_rxdes_last_segment(rxdes);
 	BUG_ON(!ret);
-=======
-	if (unlikely(!ftmac100_rxdes_last_segment(rxdes)))
-		BUG();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* start processing */
 	skb = netdev_alloc_skb_ip_align(netdev, 128);
@@ -645,13 +634,8 @@ static void ftmac100_tx_complete(struct ftmac100 *priv)
 		;
 }
 
-<<<<<<< HEAD
 static int ftmac100_xmit(struct ftmac100 *priv, struct sk_buff *skb,
 			 dma_addr_t map)
-=======
-static netdev_tx_t ftmac100_xmit(struct ftmac100 *priv, struct sk_buff *skb,
-				 dma_addr_t map)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct net_device *netdev = priv->netdev;
 	struct ftmac100_txdes *txdes;
@@ -1031,12 +1015,7 @@ static int ftmac100_stop(struct net_device *netdev)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int ftmac100_hard_start_xmit(struct sk_buff *skb, struct net_device *netdev)
-=======
-static netdev_tx_t
-ftmac100_hard_start_xmit(struct sk_buff *skb, struct net_device *netdev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ftmac100 *priv = netdev_priv(netdev);
 	dma_addr_t map;

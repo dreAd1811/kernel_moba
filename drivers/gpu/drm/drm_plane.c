@@ -104,11 +104,7 @@ static int create_in_format_blob(struct drm_device *dev, struct drm_plane *plane
 	if (IS_ERR(blob))
 		return -1;
 
-<<<<<<< HEAD
 	blob_data = blob->data;
-=======
-	blob_data = (struct drm_format_modifier_blob *)blob->data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	blob_data->version = FORMAT_BLOB_CURRENT;
 	blob_data->count_formats = plane->format_count;
 	blob_data->formats_offset = sizeof(struct drm_format_modifier_blob);
@@ -177,7 +173,6 @@ int drm_universal_plane_init(struct drm_device *dev, struct drm_plane *plane,
 	unsigned int format_modifier_count = 0;
 	int ret;
 
-<<<<<<< HEAD
 	/* plane index is used with 32bit bitmasks */
 	if (WARN_ON(config->num_total_plane >= 32))
 		return -EINVAL;
@@ -186,8 +181,6 @@ int drm_universal_plane_init(struct drm_device *dev, struct drm_plane *plane,
 		(!funcs->atomic_destroy_state ||
 		 !funcs->atomic_duplicate_state));
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = drm_mode_object_add(dev, &plane->base, DRM_MODE_OBJECT_PLANE);
 	if (ret)
 		return ret;
@@ -259,11 +252,6 @@ int drm_universal_plane_init(struct drm_device *dev, struct drm_plane *plane,
 
 	list_add_tail(&plane->head, &config->plane_list);
 	plane->index = config->num_total_plane++;
-<<<<<<< HEAD
-=======
-	if (plane->type == DRM_PLANE_TYPE_OVERLAY)
-		config->num_overlay_plane++;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	drm_object_attach_property(&plane->base,
 				   config->plane_type_property,
@@ -374,11 +362,6 @@ void drm_plane_cleanup(struct drm_plane *plane)
 
 	list_del(&plane->head);
 	dev->mode_config.num_total_plane--;
-<<<<<<< HEAD
-=======
-	if (plane->type == DRM_PLANE_TYPE_OVERLAY)
-		dev->mode_config.num_overlay_plane--;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	WARN_ON(plane->state && !plane->funcs->atomic_destroy_state);
 	if (plane->state && plane->funcs->atomic_destroy_state)
@@ -486,32 +469,18 @@ int drm_mode_getplane_res(struct drm_device *dev, void *data,
 	struct drm_mode_config *config;
 	struct drm_plane *plane;
 	uint32_t __user *plane_ptr;
-<<<<<<< HEAD
 	int count = 0;
-=======
-	int copied = 0;
-	unsigned num_planes;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!drm_core_check_feature(dev, DRIVER_MODESET))
 		return -EINVAL;
 
 	config = &dev->mode_config;
-<<<<<<< HEAD
 	plane_ptr = u64_to_user_ptr(plane_resp->plane_id_ptr);
-=======
-
-	if (file_priv->universal_planes)
-		num_planes = config->num_total_plane;
-	else
-		num_planes = config->num_overlay_plane;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * This ioctl is called twice, once to determine how much space is
 	 * needed, and the 2nd time to fill it.
 	 */
-<<<<<<< HEAD
 	drm_for_each_plane(plane, dev) {
 		/*
 		 * Unless userspace set the 'universal planes'
@@ -529,31 +498,6 @@ int drm_mode_getplane_res(struct drm_device *dev, void *data,
 		}
 	}
 	plane_resp->count_planes = count;
-=======
-	if (num_planes &&
-	    (plane_resp->count_planes >= num_planes)) {
-		plane_ptr = (uint32_t __user *)(unsigned long)plane_resp->plane_id_ptr;
-
-		/* Plane lists are invariant, no locking needed. */
-		drm_for_each_plane(plane, dev) {
-			/*
-			 * Unless userspace set the 'universal planes'
-			 * capability bit, only advertise overlays.
-			 */
-			if (plane->type != DRM_PLANE_TYPE_OVERLAY &&
-			    !file_priv->universal_planes)
-				continue;
-
-			if (drm_lease_held(file_priv, plane->base.id)) {
-				if (put_user(plane->base.id, plane_ptr + copied))
-					return -EFAULT;
-				copied++;
-			}
-		}
-		num_planes = copied;
-	}
-	plane_resp->count_planes = num_planes;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -612,18 +556,13 @@ int drm_mode_getplane(struct drm_device *dev, void *data,
 	return 0;
 }
 
-<<<<<<< HEAD
 int drm_plane_check_pixel_format(struct drm_plane *plane,
 				 u32 format, u64 modifier)
-=======
-int drm_plane_check_pixel_format(const struct drm_plane *plane, u32 format)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned int i;
 
 	for (i = 0; i < plane->format_count; i++) {
 		if (format == plane->format_types[i])
-<<<<<<< HEAD
 			break;
 	}
 	if (i == plane->format_count)
@@ -698,20 +637,6 @@ static int __setplane_check(struct drm_plane *plane,
  *
  * This function will take a reference on the new fb for the plane
  * on success.
-=======
-			return 0;
-	}
-
-	return -EINVAL;
-}
-
-/*
- * setplane_internal - setplane handler for internal callers
- *
- * Note that we assume an extra reference has already been taken on fb.  If the
- * update fails, this reference will be dropped before return; if it succeeds,
- * the previous framebuffer (if any) will be unreferenced instead.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * src_{x,y,w,h} are provided in 16.16 fixed point format
  */
@@ -727,11 +652,8 @@ static int __setplane_internal(struct drm_plane *plane,
 {
 	int ret = 0;
 
-<<<<<<< HEAD
 	WARN_ON(drm_drv_uses_atomic_modeset(plane->dev));
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* No fb means shut it down */
 	if (!fb) {
 		plane->old_fb = plane->fb;
@@ -745,41 +667,9 @@ static int __setplane_internal(struct drm_plane *plane,
 		goto out;
 	}
 
-<<<<<<< HEAD
 	ret = __setplane_check(plane, crtc, fb,
 			       crtc_x, crtc_y, crtc_w, crtc_h,
 			       src_x, src_y, src_w, src_h);
-=======
-	/* Check whether this plane is usable on this CRTC */
-	if (!(plane->possible_crtcs & drm_crtc_mask(crtc))) {
-		DRM_DEBUG_KMS("Invalid crtc for plane\n");
-		ret = -EINVAL;
-		goto out;
-	}
-
-	/* Check whether this plane supports the fb pixel format. */
-	ret = drm_plane_check_pixel_format(plane, fb->format->format);
-	if (ret) {
-		struct drm_format_name_buf format_name;
-		DRM_DEBUG_KMS("Invalid pixel format %s\n",
-		              drm_get_format_name(fb->format->format,
-		                                  &format_name));
-		goto out;
-	}
-
-	/* Give drivers some help against integer overflows */
-	if (crtc_w > INT_MAX ||
-	    crtc_x > INT_MAX - (int32_t) crtc_w ||
-	    crtc_h > INT_MAX ||
-	    crtc_y > INT_MAX - (int32_t) crtc_h) {
-		DRM_DEBUG_KMS("Invalid CRTC coordinates %ux%u+%d+%d\n",
-			      crtc_w, crtc_h, crtc_x, crtc_y);
-		ret = -ERANGE;
-		goto out;
-	}
-
-	ret = drm_framebuffer_check_src_coords(src_x, src_y, src_w, src_h, fb);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto out;
 
@@ -790,21 +680,12 @@ static int __setplane_internal(struct drm_plane *plane,
 	if (!ret) {
 		plane->crtc = crtc;
 		plane->fb = fb;
-<<<<<<< HEAD
 		drm_framebuffer_get(plane->fb);
-=======
-		fb = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		plane->old_fb = NULL;
 	}
 
 out:
-<<<<<<< HEAD
-=======
-	if (fb)
-		drm_framebuffer_put(fb);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (plane->old_fb)
 		drm_framebuffer_put(plane->old_fb);
 	plane->old_fb = NULL;
@@ -812,7 +693,6 @@ out:
 	return ret;
 }
 
-<<<<<<< HEAD
 static int __setplane_atomic(struct drm_plane *plane,
 			     struct drm_crtc *crtc,
 			     struct drm_framebuffer *fb,
@@ -848,8 +728,6 @@ static int __setplane_atomic(struct drm_plane *plane,
 					  src_x, src_y, src_w, src_h, ctx);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int setplane_internal(struct drm_plane *plane,
 			     struct drm_crtc *crtc,
 			     struct drm_framebuffer *fb,
@@ -862,16 +740,11 @@ static int setplane_internal(struct drm_plane *plane,
 	struct drm_modeset_acquire_ctx ctx;
 	int ret;
 
-<<<<<<< HEAD
 	drm_modeset_acquire_init(&ctx, DRM_MODESET_ACQUIRE_INTERRUPTIBLE);
-=======
-	drm_modeset_acquire_init(&ctx, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 retry:
 	ret = drm_modeset_lock_all_ctx(plane->dev, &ctx);
 	if (ret)
 		goto fail;
-<<<<<<< HEAD
 
 	if (drm_drv_uses_atomic_modeset(plane->dev))
 		ret = __setplane_atomic(plane, crtc, fb,
@@ -887,16 +760,6 @@ fail:
 		ret = drm_modeset_backoff(&ctx);
 		if (!ret)
 			goto retry;
-=======
-	ret = __setplane_internal(plane, crtc, fb,
-				  crtc_x, crtc_y, crtc_w, crtc_h,
-				  src_x, src_y, src_w, src_h, &ctx);
-
-fail:
-	if (ret == -EDEADLK) {
-		drm_modeset_backoff(&ctx);
-		goto retry;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	drm_modeset_drop_locks(&ctx);
 	drm_modeset_acquire_fini(&ctx);
@@ -911,10 +774,7 @@ int drm_mode_setplane(struct drm_device *dev, void *data,
 	struct drm_plane *plane;
 	struct drm_crtc *crtc = NULL;
 	struct drm_framebuffer *fb = NULL;
-<<<<<<< HEAD
 	int ret;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!drm_core_check_feature(dev, DRIVER_MODESET))
 		return -EINVAL;
@@ -947,7 +807,6 @@ int drm_mode_setplane(struct drm_device *dev, void *data,
 		}
 	}
 
-<<<<<<< HEAD
 	ret = setplane_internal(plane, crtc, fb,
 				plane_req->crtc_x, plane_req->crtc_y,
 				plane_req->crtc_w, plane_req->crtc_h,
@@ -958,17 +817,6 @@ int drm_mode_setplane(struct drm_device *dev, void *data,
 		drm_framebuffer_put(fb);
 
 	return ret;
-=======
-	/*
-	 * setplane_internal will take care of deref'ing either the old or new
-	 * framebuffer depending on success.
-	 */
-	return setplane_internal(plane, crtc, fb,
-				 plane_req->crtc_x, plane_req->crtc_y,
-				 plane_req->crtc_w, plane_req->crtc_h,
-				 plane_req->src_x, plane_req->src_y,
-				 plane_req->src_w, plane_req->src_h);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int drm_mode_cursor_universal(struct drm_crtc *crtc,
@@ -977,10 +825,7 @@ static int drm_mode_cursor_universal(struct drm_crtc *crtc,
 				     struct drm_modeset_acquire_ctx *ctx)
 {
 	struct drm_device *dev = crtc->dev;
-<<<<<<< HEAD
 	struct drm_plane *plane = crtc->cursor;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_framebuffer *fb = NULL;
 	struct drm_mode_fb_cmd2 fbreq = {
 		.width = req->width,
@@ -994,13 +839,8 @@ static int drm_mode_cursor_universal(struct drm_crtc *crtc,
 	uint32_t src_w = 0, src_h = 0;
 	int ret = 0;
 
-<<<<<<< HEAD
 	BUG_ON(!plane);
 	WARN_ON(plane->crtc != crtc && plane->crtc != NULL);
-=======
-	BUG_ON(!crtc->cursor);
-	WARN_ON(crtc->cursor->crtc != crtc && crtc->cursor->crtc != NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Obtain fb we'll be using (either new or existing) and take an extra
@@ -1014,25 +854,18 @@ static int drm_mode_cursor_universal(struct drm_crtc *crtc,
 				DRM_DEBUG_KMS("failed to wrap cursor buffer in drm framebuffer\n");
 				return PTR_ERR(fb);
 			}
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			fb->hot_x = req->hot_x;
 			fb->hot_y = req->hot_y;
 		} else {
 			fb = NULL;
 		}
 	} else {
-<<<<<<< HEAD
 		if (plane->state)
 			fb = plane->state->fb;
 		else
 			fb = plane->fb;
 
-=======
-		fb = crtc->cursor->fb;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (fb)
 			drm_framebuffer_get(fb);
 	}
@@ -1052,7 +885,6 @@ static int drm_mode_cursor_universal(struct drm_crtc *crtc,
 		src_h = fb->height << 16;
 	}
 
-<<<<<<< HEAD
 	if (drm_drv_uses_atomic_modeset(dev))
 		ret = __setplane_atomic(plane, crtc, fb,
 					crtc_x, crtc_y, crtc_w, crtc_h,
@@ -1064,15 +896,6 @@ static int drm_mode_cursor_universal(struct drm_crtc *crtc,
 
 	if (fb)
 		drm_framebuffer_put(fb);
-=======
-	/*
-	 * setplane_internal will take care of deref'ing either the old or new
-	 * framebuffer depending on success.
-	 */
-	ret = __setplane_internal(crtc->cursor, crtc, fb,
-				crtc_x, crtc_y, crtc_w, crtc_h,
-				0, 0, src_w, src_h, ctx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Update successful; save new cursor position, if necessary */
 	if (ret == 0 && req->flags & DRM_MODE_CURSOR_MOVE) {
@@ -1103,11 +926,7 @@ static int drm_mode_cursor_common(struct drm_device *dev,
 		return -ENOENT;
 	}
 
-<<<<<<< HEAD
 	drm_modeset_acquire_init(&ctx, DRM_MODESET_ACQUIRE_INTERRUPTIBLE);
-=======
-	drm_modeset_acquire_init(&ctx, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 retry:
 	ret = drm_modeset_lock(&crtc->mutex, &ctx);
 	if (ret)
@@ -1121,14 +940,11 @@ retry:
 		if (ret)
 			goto out;
 
-<<<<<<< HEAD
 		if (!drm_lease_held(file_priv, crtc->cursor->base.id)) {
 			ret = -EACCES;
 			goto out;
 		}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = drm_mode_cursor_universal(crtc, req, file_priv, &ctx);
 		goto out;
 	}
@@ -1157,14 +973,9 @@ retry:
 	}
 out:
 	if (ret == -EDEADLK) {
-<<<<<<< HEAD
 		ret = drm_modeset_backoff(&ctx);
 		if (!ret)
 			goto retry;
-=======
-		drm_modeset_backoff(&ctx);
-		goto retry;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	drm_modeset_drop_locks(&ctx);
@@ -1205,12 +1016,8 @@ int drm_mode_page_flip_ioctl(struct drm_device *dev,
 {
 	struct drm_mode_crtc_page_flip_target *page_flip = data;
 	struct drm_crtc *crtc;
-<<<<<<< HEAD
 	struct drm_plane *plane;
 	struct drm_framebuffer *fb = NULL, *old_fb;
-=======
-	struct drm_framebuffer *fb = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_pending_vblank_event *e = NULL;
 	u32 target_vblank = page_flip->sequence;
 	struct drm_modeset_acquire_ctx ctx;
@@ -1238,14 +1045,11 @@ int drm_mode_page_flip_ioctl(struct drm_device *dev,
 	if (!crtc)
 		return -ENOENT;
 
-<<<<<<< HEAD
 	plane = crtc->primary;
 
 	if (!drm_lease_held(file_priv, plane->base.id))
 		return -EACCES;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (crtc->funcs->page_flip_target) {
 		u32 current_vblank;
 		int r;
@@ -1254,11 +1058,7 @@ int drm_mode_page_flip_ioctl(struct drm_device *dev,
 		if (r)
 			return r;
 
-<<<<<<< HEAD
 		current_vblank = (u32)drm_crtc_vblank_count(crtc);
-=======
-		current_vblank = drm_crtc_vblank_count(crtc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		switch (page_flip->flags & DRM_MODE_PAGE_FLIP_TARGET) {
 		case DRM_MODE_PAGE_FLIP_TARGET_ABSOLUTE:
@@ -1289,16 +1089,11 @@ int drm_mode_page_flip_ioctl(struct drm_device *dev,
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 	drm_modeset_acquire_init(&ctx, DRM_MODESET_ACQUIRE_INTERRUPTIBLE);
-=======
-	drm_modeset_acquire_init(&ctx, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 retry:
 	ret = drm_modeset_lock(&crtc->mutex, &ctx);
 	if (ret)
 		goto out;
-<<<<<<< HEAD
 	ret = drm_modeset_lock(&plane->mutex, &ctx);
 	if (ret)
 		goto out;
@@ -1309,13 +1104,6 @@ retry:
 		old_fb = plane->fb;
 
 	if (old_fb == NULL) {
-=======
-	ret = drm_modeset_lock(&crtc->primary->mutex, &ctx);
-	if (ret)
-		goto out;
-
-	if (crtc->primary->fb == NULL) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* The framebuffer is currently unbound, presumably
 		 * due to a hotplug event, that userspace has not
 		 * yet discovered.
@@ -1330,13 +1118,8 @@ retry:
 		goto out;
 	}
 
-<<<<<<< HEAD
 	if (plane->state) {
 		const struct drm_plane_state *state = plane->state;
-=======
-	if (crtc->state) {
-		const struct drm_plane_state *state = crtc->primary->state;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		ret = drm_framebuffer_check_src_coords(state->src_x,
 						       state->src_y,
@@ -1344,21 +1127,13 @@ retry:
 						       state->src_h,
 						       fb);
 	} else {
-<<<<<<< HEAD
 		ret = drm_crtc_check_viewport(crtc, crtc->x, crtc->y,
 					      &crtc->mode, fb);
-=======
-		ret = drm_crtc_check_viewport(crtc, crtc->x, crtc->y, &crtc->mode, fb);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	if (ret)
 		goto out;
 
-<<<<<<< HEAD
 	if (old_fb->format != fb->format) {
-=======
-	if (crtc->primary->fb->format != fb->format) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		DRM_DEBUG_KMS("Page flip is not allowed to change frame buffer format.\n");
 		ret = -EINVAL;
 		goto out;
@@ -1370,18 +1145,12 @@ retry:
 			ret = -ENOMEM;
 			goto out;
 		}
-<<<<<<< HEAD
 
 		e->event.base.type = DRM_EVENT_FLIP_COMPLETE;
 		e->event.base.length = sizeof(e->event);
 		e->event.vbl.user_data = page_flip->user_data;
 		e->event.vbl.crtc_id = crtc->base.id;
 
-=======
-		e->event.base.type = DRM_EVENT_FLIP_COMPLETE;
-		e->event.base.length = sizeof(e->event);
-		e->event.user_data = page_flip->user_data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = drm_event_reserve_init(dev, file_priv, &e->base, &e->event.base);
 		if (ret) {
 			kfree(e);
@@ -1390,11 +1159,7 @@ retry:
 		}
 	}
 
-<<<<<<< HEAD
 	plane->old_fb = plane->fb;
-=======
-	crtc->primary->old_fb = crtc->primary->fb;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (crtc->funcs->page_flip_target)
 		ret = crtc->funcs->page_flip_target(crtc, fb, e,
 						    page_flip->flags,
@@ -1407,26 +1172,17 @@ retry:
 		if (page_flip->flags & DRM_MODE_PAGE_FLIP_EVENT)
 			drm_event_cancel_free(dev, &e->base);
 		/* Keep the old fb, don't unref it. */
-<<<<<<< HEAD
 		plane->old_fb = NULL;
 	} else {
 		if (!plane->state) {
 			plane->fb = fb;
 			drm_framebuffer_get(fb);
 		}
-=======
-		crtc->primary->old_fb = NULL;
-	} else {
-		crtc->primary->fb = fb;
-		/* Unref only the old framebuffer. */
-		fb = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 out:
 	if (fb)
 		drm_framebuffer_put(fb);
-<<<<<<< HEAD
 	if (plane->old_fb)
 		drm_framebuffer_put(plane->old_fb);
 	plane->old_fb = NULL;
@@ -1435,15 +1191,6 @@ out:
 		ret = drm_modeset_backoff(&ctx);
 		if (!ret)
 			goto retry;
-=======
-	if (crtc->primary->old_fb)
-		drm_framebuffer_put(crtc->primary->old_fb);
-	crtc->primary->old_fb = NULL;
-
-	if (ret == -EDEADLK) {
-		drm_modeset_backoff(&ctx);
-		goto retry;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	drm_modeset_drop_locks(&ctx);

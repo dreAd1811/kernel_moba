@@ -76,13 +76,8 @@ static int __init aspeed_i2c_ic_of_init(struct device_node *node,
 		return -ENOMEM;
 
 	i2c_ic->base = of_iomap(node, 0);
-<<<<<<< HEAD
 	if (!i2c_ic->base) {
 		ret = -ENOMEM;
-=======
-	if (IS_ERR(i2c_ic->base)) {
-		ret = PTR_ERR(i2c_ic->base);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_free_ic;
 	}
 

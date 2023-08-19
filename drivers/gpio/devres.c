@@ -125,7 +125,6 @@ struct gpio_desc *__must_check devm_gpiod_get_index(struct device *dev,
 EXPORT_SYMBOL(devm_gpiod_get_index);
 
 /**
-<<<<<<< HEAD
  * devm_gpiod_get_from_of_node() - obtain a GPIO from an OF node
  * @dev:	device for lifecycle management
  * @node:	handle of the OF node
@@ -168,8 +167,6 @@ struct gpio_desc *devm_gpiod_get_from_of_node(struct device *dev,
 EXPORT_SYMBOL(devm_gpiod_get_from_of_node);
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * devm_fwnode_get_index_gpiod_from_child - get a GPIO descriptor from a
  *					    device's child node
  * @dev:	GPIO consumer

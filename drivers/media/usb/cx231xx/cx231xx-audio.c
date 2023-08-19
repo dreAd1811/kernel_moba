@@ -112,11 +112,7 @@ static void cx231xx_audio_isocirq(struct urb *urb)
 	case -ESHUTDOWN:
 		return;
 	default:		/* error */
-<<<<<<< HEAD
 		dev_dbg(dev->dev, "urb completion error %d.\n",
-=======
-		dev_dbg(dev->dev, "urb completition error %d.\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			urb->status);
 		break;
 	}
@@ -130,10 +126,7 @@ static void cx231xx_audio_isocirq(struct urb *urb)
 		stride = runtime->frame_bits >> 3;
 
 		for (i = 0; i < urb->number_of_packets; i++) {
-<<<<<<< HEAD
 			unsigned long flags;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			int length = urb->iso_frame_desc[i].actual_length /
 				     stride;
 			cp = (unsigned char *)urb->transfer_buffer +
@@ -156,11 +149,7 @@ static void cx231xx_audio_isocirq(struct urb *urb)
 				       length * stride);
 			}
 
-<<<<<<< HEAD
 			snd_pcm_stream_lock_irqsave(substream, flags);
-=======
-			snd_pcm_stream_lock(substream);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			dev->adev.hwptr_done_capture += length;
 			if (dev->adev.hwptr_done_capture >=
@@ -175,11 +164,7 @@ static void cx231xx_audio_isocirq(struct urb *urb)
 						runtime->period_size;
 				period_elapsed = 1;
 			}
-<<<<<<< HEAD
 			snd_pcm_stream_unlock_irqrestore(substream, flags);
-=======
-			snd_pcm_stream_unlock(substream);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		if (period_elapsed)
 			snd_pcm_period_elapsed(substream);
@@ -218,11 +203,7 @@ static void cx231xx_audio_bulkirq(struct urb *urb)
 	case -ESHUTDOWN:
 		return;
 	default:		/* error */
-<<<<<<< HEAD
 		dev_dbg(dev->dev, "urb completion error %d.\n",
-=======
-		dev_dbg(dev->dev, "urb completition error %d.\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			urb->status);
 		break;
 	}
@@ -236,10 +217,7 @@ static void cx231xx_audio_bulkirq(struct urb *urb)
 		stride = runtime->frame_bits >> 3;
 
 		if (1) {
-<<<<<<< HEAD
 			unsigned long flags;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			int length = urb->actual_length /
 				     stride;
 			cp = (unsigned char *)urb->transfer_buffer;
@@ -258,11 +236,7 @@ static void cx231xx_audio_bulkirq(struct urb *urb)
 				       length * stride);
 			}
 
-<<<<<<< HEAD
 			snd_pcm_stream_lock_irqsave(substream, flags);
-=======
-			snd_pcm_stream_lock(substream);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			dev->adev.hwptr_done_capture += length;
 			if (dev->adev.hwptr_done_capture >=
@@ -277,11 +251,7 @@ static void cx231xx_audio_bulkirq(struct urb *urb)
 						runtime->period_size;
 				period_elapsed = 1;
 			}
-<<<<<<< HEAD
 			snd_pcm_stream_unlock_irqrestore(substream, flags);
-=======
-			snd_pcm_stream_unlock(substream);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		if (period_elapsed)
 			snd_pcm_period_elapsed(substream);
@@ -436,15 +406,9 @@ static int snd_pcm_alloc_vmalloc_buffer(struct snd_pcm_substream *subs,
 }
 
 static const struct snd_pcm_hardware snd_cx231xx_hw_capture = {
-<<<<<<< HEAD
 	.info = SNDRV_PCM_INFO_BLOCK_TRANSFER	|
 	    SNDRV_PCM_INFO_MMAP			|
 	    SNDRV_PCM_INFO_INTERLEAVED		|
-=======
-	.info = SNDRV_PCM_INFO_BLOCK_TRANSFER 	|
-	    SNDRV_PCM_INFO_MMAP 		|
-	    SNDRV_PCM_INFO_INTERLEAVED 		|
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    SNDRV_PCM_INFO_MMAP_VALID,
 
 	.formats = SNDRV_PCM_FMTBIT_S16_LE,
@@ -748,11 +712,7 @@ static int cx231xx_audio_init(struct cx231xx *dev)
 	dev_info(dev->dev,
 		"audio EndPoint Addr 0x%x, Alternate settings: %i\n",
 		adev->end_point_addr, adev->num_alt);
-<<<<<<< HEAD
 	adev->alt_max_pkt_size = kmalloc_array(32, adev->num_alt, GFP_KERNEL);
-=======
-	adev->alt_max_pkt_size = kmalloc(32 * adev->num_alt, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!adev->alt_max_pkt_size) {
 		err = -ENOMEM;
 		goto err_free_card;

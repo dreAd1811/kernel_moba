@@ -17,10 +17,7 @@
 #define MT7530_NUM_PORTS		7
 #define MT7530_CPU_PORT			6
 #define MT7530_NUM_FDB_RECORDS		2048
-<<<<<<< HEAD
 #define MT7530_ALL_MEMBERS		0xff
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define	NUM_TRGMII_CTRL			5
 
@@ -92,7 +89,6 @@ enum mt7530_fdb_cmd {
 /* Register for vlan table control */
 #define MT7530_VTCR			0x90
 #define  VTCR_BUSY			BIT(31)
-<<<<<<< HEAD
 #define  VTCR_INVALID			BIT(16)
 #define  VTCR_FUNC(x)			(((x) & 0xf) << 12)
 #define  VTCR_VID			((x) & 0xfff)
@@ -129,23 +125,6 @@ enum mt7530_vlan_egress_attr {
 	MT7530_VLAN_EGRESS_TAG = 2,
 	MT7530_VLAN_EGRESS_STACK = 3,
 };
-=======
-#define  VTCR_FUNC			(((x) & 0xf) << 12)
-#define  VTCR_FUNC_RD_VID		0x1
-#define  VTCR_FUNC_WR_VID		0x2
-#define  VTCR_FUNC_INV_VID		0x3
-#define  VTCR_FUNC_VAL_VID		0x4
-#define  VTCR_VID			((x) & 0xfff)
-
-/* Register for setup vlan and acl write data */
-#define MT7530_VAWD1			0x94
-#define  PORT_STAG			BIT(31)
-#define  IVL_MAC			BIT(30)
-#define  PORT_MEM(x)			(((x) & 0xff) << 16)
-#define  VALID				BIT(1)
-
-#define MT7530_VAWD2			0x98
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Register for port STP state control */
 #define MT7530_SSP_P(x)			(0x2000 + ((x) * 0x100))
@@ -163,7 +142,6 @@ enum mt7530_stp_state {
 /* Register for port control */
 #define MT7530_PCR_P(x)			(0x2004 + ((x) * 0x100))
 #define  PORT_VLAN(x)			((x) & 0x3)
-<<<<<<< HEAD
 
 enum mt7530_port_mode {
 	/* Port Matrix Mode: Frames are forwarded by the PCR_MATRIX members. */
@@ -175,17 +153,12 @@ enum mt7530_port_mode {
 	MT7530_PORT_SECURITY_MODE = PORT_VLAN(3),
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define  PCR_MATRIX(x)			(((x) & 0xff) << 16)
 #define  PORT_PRI(x)			(((x) & 0x7) << 24)
 #define  EG_TAG(x)			(((x) & 0x3) << 28)
 #define  PCR_MATRIX_MASK		PCR_MATRIX(0xff)
 #define  PCR_MATRIX_CLR			PCR_MATRIX(0)
-<<<<<<< HEAD
 #define  PCR_PORT_VLAN_MASK		PORT_VLAN(3)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Register for port security control */
 #define MT7530_PSC_P(x)			(0x200c + ((x) * 0x100))
@@ -195,7 +168,6 @@ enum mt7530_port_mode {
 #define MT7530_PVC_P(x)			(0x2010 + ((x) * 0x100))
 #define  PORT_SPEC_TAG			BIT(5)
 #define  VLAN_ATTR(x)			(((x) & 0x3) << 6)
-<<<<<<< HEAD
 #define  VLAN_ATTR_MASK			VLAN_ATTR(3)
 
 enum mt7530_vlan_port_attr {
@@ -203,18 +175,13 @@ enum mt7530_vlan_port_attr {
 	MT7530_VLAN_TRANSPARENT = 3,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define  STAG_VPID			(((x) & 0xffff) << 16)
 
 /* Register for port port-and-protocol based vlan 1 control */
 #define MT7530_PPBV1_P(x)		(0x2014 + ((x) * 0x100))
-<<<<<<< HEAD
 #define  G0_PORT_VID(x)			(((x) & 0xfff) << 0)
 #define  G0_PORT_VID_MASK		G0_PORT_VID(0xfff)
 #define  G0_PORT_VID_DEF		G0_PORT_VID(1)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Register for port MAC control register */
 #define MT7530_PMCR_P(x)		(0x3000 + ((x) * 0x100))
@@ -422,7 +389,6 @@ struct mt7530_fdb {
 	bool noarp;
 };
 
-<<<<<<< HEAD
 /* struct mt7530_port -	This is the main data structure for holding the state
  *			of the port.
  * @enable:	The status used for show port is enabled or not.
@@ -437,11 +403,6 @@ struct mt7530_port {
 	u32 pm;
 	u16 pvid;
 	bool vlan_filtering;
-=======
-struct mt7530_port {
-	bool enable;
-	u32 pm;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* struct mt7530_priv -	This is the main data structure for holding the state
@@ -476,7 +437,6 @@ struct mt7530_priv {
 	struct mutex reg_mutex;
 };
 
-<<<<<<< HEAD
 struct mt7530_hw_vlan_entry {
 	int port;
 	u8  old_members;
@@ -493,8 +453,6 @@ static inline void mt7530_hw_vlan_entry_init(struct mt7530_hw_vlan_entry *e,
 typedef void (*mt7530_vlan_op)(struct mt7530_priv *,
 			       struct mt7530_hw_vlan_entry *);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct mt7530_hw_stats {
 	const char	*string;
 	u16		reg;

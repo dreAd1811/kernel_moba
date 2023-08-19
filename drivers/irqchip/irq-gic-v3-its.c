@@ -23,11 +23,8 @@
 #include <linux/dma-iommu.h>
 #include <linux/interrupt.h>
 #include <linux/irqdomain.h>
-<<<<<<< HEAD
 #include <linux/list.h>
 #include <linux/list_sort.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/log2.h>
 #include <linux/mm.h>
 #include <linux/msi.h>
@@ -38,10 +35,7 @@
 #include <linux/of_platform.h>
 #include <linux/percpu.h>
 #include <linux/slab.h>
-<<<<<<< HEAD
 #include <linux/syscore_ops.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/irqchip.h>
 #include <linux/irqchip/arm-gic-v3.h>
@@ -55,10 +49,7 @@
 #define ITS_FLAGS_CMDQ_NEEDS_FLUSHING		(1ULL << 0)
 #define ITS_FLAGS_WORKAROUND_CAVIUM_22375	(1ULL << 1)
 #define ITS_FLAGS_WORKAROUND_CAVIUM_23144	(1ULL << 2)
-<<<<<<< HEAD
 #define ITS_FLAGS_SAVE_SUSPEND_STATE		(1ULL << 3)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define RDIST_FLAGS_PROPBASE_NEEDS_FLUSHING	(1 << 0)
 
@@ -96,11 +87,8 @@ struct its_baser {
 	u32		psz;
 };
 
-<<<<<<< HEAD
 struct its_device;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * The ITS structure - contains most of the infrastructure, with the
  * top-level MSI domain, the command queue, the collections, and the
@@ -120,7 +108,6 @@ struct its_node {
 	struct its_cmd_block	*cmd_write;
 	struct its_baser	tables[GITS_BASER_NR_REGS];
 	struct its_collection	*collections;
-<<<<<<< HEAD
 	struct fwnode_handle	*fwnode_handle;
 	u64			(*get_msi_base)(struct its_device *its_dev);
 	u64			cbaser_save;
@@ -135,14 +122,6 @@ struct its_node {
 	u32			pre_its_base; /* for Socionext Synquacer */
 	bool			is_v4;
 	int			vlpi_redist_offset;
-=======
-	struct list_head	its_device_list;
-	u64			flags;
-	u32			ite_size;
-	u32			device_ids;
-	int			numa_node;
-	bool			is_v4;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define ITS_ITT_ALIGN		SZ_256
@@ -189,23 +168,10 @@ static struct {
 } vpe_proxy;
 
 static LIST_HEAD(its_nodes);
-<<<<<<< HEAD
 static DEFINE_RAW_SPINLOCK(its_lock);
 static struct rdists *gic_rdists;
 static struct irq_domain *its_parent;
 
-=======
-static DEFINE_SPINLOCK(its_lock);
-static struct rdists *gic_rdists;
-static struct irq_domain *its_parent;
-
-/*
- * We have a maximum number of 16 ITSs in the whole system if we're
- * using the ITSList mechanism
- */
-#define ITS_LIST_MAX		16
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static unsigned long its_list_map;
 static u16 vmovp_seq_num;
 static DEFINE_RAW_SPINLOCK(vmovp_lock);
@@ -224,7 +190,6 @@ static struct its_collection *dev_event_to_col(struct its_device *its_dev,
 	return its->collections + its_dev->event_map.col_map[event];
 }
 
-<<<<<<< HEAD
 static struct its_collection *valid_col(struct its_collection *col)
 {
 	if (WARN_ON_ONCE(col->target_address & GENMASK_ULL(0, 15)))
@@ -241,8 +206,6 @@ static struct its_vpe *valid_vpe(struct its_node *its, struct its_vpe *vpe)
 	return NULL;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * ITS command descriptors - parameters to be encoded in a command
  * block.
@@ -339,19 +302,12 @@ struct its_cmd_block {
 #define ITS_CMD_QUEUE_SZ		SZ_64K
 #define ITS_CMD_QUEUE_NR_ENTRIES	(ITS_CMD_QUEUE_SZ / sizeof(struct its_cmd_block))
 
-<<<<<<< HEAD
 typedef struct its_collection *(*its_cmd_builder_t)(struct its_node *,
 						    struct its_cmd_block *,
 						    struct its_cmd_desc *);
 
 typedef struct its_vpe *(*its_cmd_vbuilder_t)(struct its_node *,
 					      struct its_cmd_block *,
-=======
-typedef struct its_collection *(*its_cmd_builder_t)(struct its_cmd_block *,
-						    struct its_cmd_desc *);
-
-typedef struct its_vpe *(*its_cmd_vbuilder_t)(struct its_cmd_block *,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					      struct its_cmd_desc *);
 
 static void its_mask_encode(u64 *raw_cmd, u64 val, int h, int l)
@@ -455,12 +411,8 @@ static inline void its_fixup_cmd(struct its_cmd_block *cmd)
 	cmd->raw_cmd[3] = cpu_to_le64(cmd->raw_cmd[3]);
 }
 
-<<<<<<< HEAD
 static struct its_collection *its_build_mapd_cmd(struct its_node *its,
 						 struct its_cmd_block *cmd,
-=======
-static struct its_collection *its_build_mapd_cmd(struct its_cmd_block *cmd,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						 struct its_cmd_desc *desc)
 {
 	unsigned long itt_addr;
@@ -480,12 +432,8 @@ static struct its_collection *its_build_mapd_cmd(struct its_cmd_block *cmd,
 	return NULL;
 }
 
-<<<<<<< HEAD
 static struct its_collection *its_build_mapc_cmd(struct its_node *its,
 						 struct its_cmd_block *cmd,
-=======
-static struct its_collection *its_build_mapc_cmd(struct its_cmd_block *cmd,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						 struct its_cmd_desc *desc)
 {
 	its_encode_cmd(cmd, GITS_CMD_MAPC);
@@ -498,12 +446,8 @@ static struct its_collection *its_build_mapc_cmd(struct its_cmd_block *cmd,
 	return desc->its_mapc_cmd.col;
 }
 
-<<<<<<< HEAD
 static struct its_collection *its_build_mapti_cmd(struct its_node *its,
 						  struct its_cmd_block *cmd,
-=======
-static struct its_collection *its_build_mapti_cmd(struct its_cmd_block *cmd,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						  struct its_cmd_desc *desc)
 {
 	struct its_collection *col;
@@ -519,18 +463,11 @@ static struct its_collection *its_build_mapti_cmd(struct its_cmd_block *cmd,
 
 	its_fixup_cmd(cmd);
 
-<<<<<<< HEAD
 	return valid_col(col);
 }
 
 static struct its_collection *its_build_movi_cmd(struct its_node *its,
 						 struct its_cmd_block *cmd,
-=======
-	return col;
-}
-
-static struct its_collection *its_build_movi_cmd(struct its_cmd_block *cmd,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						 struct its_cmd_desc *desc)
 {
 	struct its_collection *col;
@@ -545,18 +482,11 @@ static struct its_collection *its_build_movi_cmd(struct its_cmd_block *cmd,
 
 	its_fixup_cmd(cmd);
 
-<<<<<<< HEAD
 	return valid_col(col);
 }
 
 static struct its_collection *its_build_discard_cmd(struct its_node *its,
 						    struct its_cmd_block *cmd,
-=======
-	return col;
-}
-
-static struct its_collection *its_build_discard_cmd(struct its_cmd_block *cmd,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						    struct its_cmd_desc *desc)
 {
 	struct its_collection *col;
@@ -570,18 +500,11 @@ static struct its_collection *its_build_discard_cmd(struct its_cmd_block *cmd,
 
 	its_fixup_cmd(cmd);
 
-<<<<<<< HEAD
 	return valid_col(col);
 }
 
 static struct its_collection *its_build_inv_cmd(struct its_node *its,
 						struct its_cmd_block *cmd,
-=======
-	return col;
-}
-
-static struct its_collection *its_build_inv_cmd(struct its_cmd_block *cmd,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						struct its_cmd_desc *desc)
 {
 	struct its_collection *col;
@@ -595,18 +518,11 @@ static struct its_collection *its_build_inv_cmd(struct its_cmd_block *cmd,
 
 	its_fixup_cmd(cmd);
 
-<<<<<<< HEAD
 	return valid_col(col);
 }
 
 static struct its_collection *its_build_int_cmd(struct its_node *its,
 						struct its_cmd_block *cmd,
-=======
-	return col;
-}
-
-static struct its_collection *its_build_int_cmd(struct its_cmd_block *cmd,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						struct its_cmd_desc *desc)
 {
 	struct its_collection *col;
@@ -620,18 +536,11 @@ static struct its_collection *its_build_int_cmd(struct its_cmd_block *cmd,
 
 	its_fixup_cmd(cmd);
 
-<<<<<<< HEAD
 	return valid_col(col);
 }
 
 static struct its_collection *its_build_clear_cmd(struct its_node *its,
 						  struct its_cmd_block *cmd,
-=======
-	return col;
-}
-
-static struct its_collection *its_build_clear_cmd(struct its_cmd_block *cmd,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						  struct its_cmd_desc *desc)
 {
 	struct its_collection *col;
@@ -645,7 +554,6 @@ static struct its_collection *its_build_clear_cmd(struct its_cmd_block *cmd,
 
 	its_fixup_cmd(cmd);
 
-<<<<<<< HEAD
 	return valid_col(col);
 }
 
@@ -655,28 +563,14 @@ static struct its_collection *its_build_invall_cmd(struct its_node *its,
 {
 	its_encode_cmd(cmd, GITS_CMD_INVALL);
 	its_encode_collection(cmd, desc->its_mapc_cmd.col->col_id);
-=======
-	return col;
-}
-
-static struct its_collection *its_build_invall_cmd(struct its_cmd_block *cmd,
-						   struct its_cmd_desc *desc)
-{
-	its_encode_cmd(cmd, GITS_CMD_INVALL);
-	its_encode_collection(cmd, desc->its_invall_cmd.col->col_id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	its_fixup_cmd(cmd);
 
 	return NULL;
 }
 
-<<<<<<< HEAD
 static struct its_vpe *its_build_vinvall_cmd(struct its_node *its,
 					     struct its_cmd_block *cmd,
-=======
-static struct its_vpe *its_build_vinvall_cmd(struct its_cmd_block *cmd,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					     struct its_cmd_desc *desc)
 {
 	its_encode_cmd(cmd, GITS_CMD_VINVALL);
@@ -684,7 +578,6 @@ static struct its_vpe *its_build_vinvall_cmd(struct its_cmd_block *cmd,
 
 	its_fixup_cmd(cmd);
 
-<<<<<<< HEAD
 	return valid_vpe(its, desc->its_vinvall_cmd.vpe);
 }
 
@@ -697,43 +590,21 @@ static struct its_vpe *its_build_vmapp_cmd(struct its_node *its,
 
 	vpt_addr = virt_to_phys(page_address(desc->its_vmapp_cmd.vpe->vpt_page));
 	target = desc->its_vmapp_cmd.col->target_address + its->vlpi_redist_offset;
-=======
-	return desc->its_vinvall_cmd.vpe;
-}
-
-static struct its_vpe *its_build_vmapp_cmd(struct its_cmd_block *cmd,
-					   struct its_cmd_desc *desc)
-{
-	unsigned long vpt_addr;
-
-	vpt_addr = virt_to_phys(page_address(desc->its_vmapp_cmd.vpe->vpt_page));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	its_encode_cmd(cmd, GITS_CMD_VMAPP);
 	its_encode_vpeid(cmd, desc->its_vmapp_cmd.vpe->vpe_id);
 	its_encode_valid(cmd, desc->its_vmapp_cmd.valid);
-<<<<<<< HEAD
 	its_encode_target(cmd, target);
-=======
-	its_encode_target(cmd, desc->its_vmapp_cmd.col->target_address);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	its_encode_vpt_addr(cmd, vpt_addr);
 	its_encode_vpt_size(cmd, LPI_NRBITS - 1);
 
 	its_fixup_cmd(cmd);
 
-<<<<<<< HEAD
 	return valid_vpe(its, desc->its_vmapp_cmd.vpe);
 }
 
 static struct its_vpe *its_build_vmapti_cmd(struct its_node *its,
 					    struct its_cmd_block *cmd,
-=======
-	return desc->its_vmapp_cmd.vpe;
-}
-
-static struct its_vpe *its_build_vmapti_cmd(struct its_cmd_block *cmd,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    struct its_cmd_desc *desc)
 {
 	u32 db;
@@ -752,18 +623,11 @@ static struct its_vpe *its_build_vmapti_cmd(struct its_cmd_block *cmd,
 
 	its_fixup_cmd(cmd);
 
-<<<<<<< HEAD
 	return valid_vpe(its, desc->its_vmapti_cmd.vpe);
 }
 
 static struct its_vpe *its_build_vmovi_cmd(struct its_node *its,
 					   struct its_cmd_block *cmd,
-=======
-	return desc->its_vmapti_cmd.vpe;
-}
-
-static struct its_vpe *its_build_vmovi_cmd(struct its_cmd_block *cmd,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   struct its_cmd_desc *desc)
 {
 	u32 db;
@@ -782,7 +646,6 @@ static struct its_vpe *its_build_vmovi_cmd(struct its_cmd_block *cmd,
 
 	its_fixup_cmd(cmd);
 
-<<<<<<< HEAD
 	return valid_vpe(its, desc->its_vmovi_cmd.vpe);
 }
 
@@ -793,31 +656,15 @@ static struct its_vpe *its_build_vmovp_cmd(struct its_node *its,
 	u64 target;
 
 	target = desc->its_vmovp_cmd.col->target_address + its->vlpi_redist_offset;
-=======
-	return desc->its_vmovi_cmd.vpe;
-}
-
-static struct its_vpe *its_build_vmovp_cmd(struct its_cmd_block *cmd,
-					   struct its_cmd_desc *desc)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	its_encode_cmd(cmd, GITS_CMD_VMOVP);
 	its_encode_seq_num(cmd, desc->its_vmovp_cmd.seq_num);
 	its_encode_its_list(cmd, desc->its_vmovp_cmd.its_list);
 	its_encode_vpeid(cmd, desc->its_vmovp_cmd.vpe->vpe_id);
-<<<<<<< HEAD
 	its_encode_target(cmd, target);
 
 	its_fixup_cmd(cmd);
 
 	return valid_vpe(its, desc->its_vmovp_cmd.vpe);
-=======
-	its_encode_target(cmd, desc->its_vmovp_cmd.col->target_address);
-
-	its_fixup_cmd(cmd);
-
-	return desc->its_vmovp_cmd.vpe;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static u64 its_cmd_ptr_to_offset(struct its_node *its,
@@ -892,7 +739,6 @@ static void its_flush_cmd(struct its_node *its, struct its_cmd_block *cmd)
 		dsb(ishst);
 }
 
-<<<<<<< HEAD
 static int its_wait_for_range_completion(struct its_node *its,
 					 u64	prev_idx,
 					 struct its_cmd_block *to)
@@ -922,32 +768,10 @@ static int its_wait_for_range_completion(struct its_node *its,
 
 		linear_idx += delta;
 		if (linear_idx >= to_idx)
-=======
-static void its_wait_for_range_completion(struct its_node *its,
-					  struct its_cmd_block *from,
-					  struct its_cmd_block *to)
-{
-	u64 rd_idx, from_idx, to_idx;
-	u32 count = 1000000;	/* 1s! */
-
-	from_idx = its_cmd_ptr_to_offset(its, from);
-	to_idx = its_cmd_ptr_to_offset(its, to);
-
-	while (1) {
-		rd_idx = readl_relaxed(its->base + GITS_CREADR);
-
-		/* Direct case */
-		if (from_idx < to_idx && rd_idx >= to_idx)
-			break;
-
-		/* Wrapped case */
-		if (from_idx >= to_idx && rd_idx >= to_idx && rd_idx < from_idx)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 
 		count--;
 		if (!count) {
-<<<<<<< HEAD
 			pr_err_ratelimited("ITS queue timeout (%llu %llu)\n",
 					   to_idx, linear_idx);
 			return -1;
@@ -958,14 +782,6 @@ static void its_wait_for_range_completion(struct its_node *its,
 	}
 
 	return 0;
-=======
-			pr_err_ratelimited("ITS queue timeout\n");
-			return;
-		}
-		cpu_relax();
-		udelay(1);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Warning, macro hell follows */
@@ -977,10 +793,7 @@ void name(struct its_node *its,						\
 	struct its_cmd_block *cmd, *sync_cmd, *next_cmd;		\
 	synctype *sync_obj;						\
 	unsigned long flags;						\
-<<<<<<< HEAD
 	u64 rd_idx;							\
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 									\
 	raw_spin_lock_irqsave(&its->lock, flags);			\
 									\
@@ -989,11 +802,7 @@ void name(struct its_node *its,						\
 		raw_spin_unlock_irqrestore(&its->lock, flags);		\
 		return;							\
 	}								\
-<<<<<<< HEAD
 	sync_obj = builder(its, cmd, desc);				\
-=======
-	sync_obj = builder(cmd, desc);					\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	its_flush_cmd(its, cmd);					\
 									\
 	if (sync_obj) {							\
@@ -1001,16 +810,11 @@ void name(struct its_node *its,						\
 		if (!sync_cmd)						\
 			goto post;					\
 									\
-<<<<<<< HEAD
 		buildfn(its, sync_cmd, sync_obj);			\
-=======
-		buildfn(sync_cmd, sync_obj);				\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		its_flush_cmd(its, sync_cmd);				\
 	}								\
 									\
 post:									\
-<<<<<<< HEAD
 	rd_idx = readl_relaxed(its->base + GITS_CREADR);		\
 	next_cmd = its_post_commands(its);				\
 	raw_spin_unlock_irqrestore(&its->lock, flags);			\
@@ -1021,15 +825,6 @@ post:									\
 
 static void its_build_sync_cmd(struct its_node *its,
 			       struct its_cmd_block *sync_cmd,
-=======
-	next_cmd = its_post_commands(its);				\
-	raw_spin_unlock_irqrestore(&its->lock, flags);			\
-									\
-	its_wait_for_range_completion(its, cmd, next_cmd);		\
-}
-
-static void its_build_sync_cmd(struct its_cmd_block *sync_cmd,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       struct its_collection *sync_col)
 {
 	its_encode_cmd(sync_cmd, GITS_CMD_SYNC);
@@ -1041,12 +836,8 @@ static void its_build_sync_cmd(struct its_cmd_block *sync_cmd,
 static BUILD_SINGLE_CMD_FUNC(its_send_single_command, its_cmd_builder_t,
 			     struct its_collection, its_build_sync_cmd)
 
-<<<<<<< HEAD
 static void its_build_vsync_cmd(struct its_node *its,
 				struct its_cmd_block *sync_cmd,
-=======
-static void its_build_vsync_cmd(struct its_cmd_block *sync_cmd,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				struct its_vpe *sync_vpe)
 {
 	its_encode_cmd(sync_cmd, GITS_CMD_VSYNC);
@@ -1178,7 +969,6 @@ static void its_send_vmovi(struct its_device *dev, u32 id)
 	its_send_single_vcommand(dev->its, its_build_vmovi_cmd, &desc);
 }
 
-<<<<<<< HEAD
 static void its_send_vmapp(struct its_node *its,
 			   struct its_vpe *vpe, bool valid)
 {
@@ -1189,23 +979,6 @@ static void its_send_vmapp(struct its_node *its,
 	desc.its_vmapp_cmd.col = &its->collections[vpe->col_idx];
 
 	its_send_single_vcommand(its, its_build_vmapp_cmd, &desc);
-=======
-static void its_send_vmapp(struct its_vpe *vpe, bool valid)
-{
-	struct its_cmd_desc desc;
-	struct its_node *its;
-
-	desc.its_vmapp_cmd.vpe = vpe;
-	desc.its_vmapp_cmd.valid = valid;
-
-	list_for_each_entry(its, &its_nodes, entry) {
-		if (!its->is_v4)
-			continue;
-
-		desc.its_vmapp_cmd.col = &its->collections[vpe->col_idx];
-		its_send_single_vcommand(its, its_build_vmapp_cmd, &desc);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void its_send_vmovp(struct its_vpe *vpe)
@@ -1243,12 +1016,9 @@ static void its_send_vmovp(struct its_vpe *vpe)
 		if (!its->is_v4)
 			continue;
 
-<<<<<<< HEAD
 		if (!vpe->its_vm->vlpi_count[its->list_nr])
 			continue;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		desc.its_vmovp_cmd.col = &its->collections[col_id];
 		its_send_single_vcommand(its, its_build_vmovp_cmd, &desc);
 	}
@@ -1256,27 +1026,12 @@ static void its_send_vmovp(struct its_vpe *vpe)
 	raw_spin_unlock_irqrestore(&vmovp_lock, flags);
 }
 
-<<<<<<< HEAD
 static void its_send_vinvall(struct its_node *its, struct its_vpe *vpe)
 {
 	struct its_cmd_desc desc;
 
 	desc.its_vinvall_cmd.vpe = vpe;
 	its_send_single_vcommand(its, its_build_vinvall_cmd, &desc);
-=======
-static void its_send_vinvall(struct its_vpe *vpe)
-{
-	struct its_cmd_desc desc;
-	struct its_node *its;
-
-	desc.its_vinvall_cmd.vpe = vpe;
-
-	list_for_each_entry(its, &its_nodes, entry) {
-		if (!its->is_v4)
-			continue;
-		its_send_single_vcommand(its, its_build_vinvall_cmd, &desc);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -1298,7 +1053,6 @@ static void lpi_write_config(struct irq_data *d, u8 clr, u8 set)
 	if (irqd_is_forwarded_to_vcpu(d)) {
 		struct its_device *its_dev = irq_data_get_irq_chip_data(d);
 		u32 event = its_get_event_id(d);
-<<<<<<< HEAD
 		struct its_vlpi_map *map;
 
 		prop_page = its_dev->event_map.vm->vprop_page;
@@ -1308,11 +1062,6 @@ static void lpi_write_config(struct irq_data *d, u8 clr, u8 set)
 		/* Remember the updated property */
 		map->properties &= ~clr;
 		map->properties |= set | LPI_PROP_GROUP1;
-=======
-
-		prop_page = its_dev->event_map.vm->vprop_page;
-		hwirq = its_dev->event_map.vlpi_maps[event].vintid;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		prop_page = gic_rdists->prop_page;
 		hwirq = d->hwirq;
@@ -1418,7 +1167,6 @@ static int its_set_affinity(struct irq_data *d, const struct cpumask *mask_val,
 	return IRQ_SET_MASK_OK_DONE;
 }
 
-<<<<<<< HEAD
 static u64 its_irq_get_msi_base(struct its_device *its_dev)
 {
 	struct its_node *its = its_dev->its;
@@ -1426,8 +1174,6 @@ static u64 its_irq_get_msi_base(struct its_device *its_dev)
 	return its->phys_base + GITS_TRANSLATER;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void its_irq_compose_msi_msg(struct irq_data *d, struct msi_msg *msg)
 {
 	struct its_device *its_dev = irq_data_get_irq_chip_data(d);
@@ -1435,11 +1181,7 @@ static void its_irq_compose_msi_msg(struct irq_data *d, struct msi_msg *msg)
 	u64 addr;
 
 	its = its_dev->its;
-<<<<<<< HEAD
 	addr = its->get_msi_base(its_dev);
-=======
-	addr = its->phys_base + GITS_TRANSLATER;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	msg->address_lo		= lower_32_bits(addr);
 	msg->address_hi		= upper_32_bits(addr);
@@ -1466,7 +1208,6 @@ static int its_irq_set_irqchip_state(struct irq_data *d,
 	return 0;
 }
 
-<<<<<<< HEAD
 static void its_map_vm(struct its_node *its, struct its_vm *vm)
 {
 	unsigned long flags;
@@ -1521,8 +1262,6 @@ static void its_unmap_vm(struct its_node *its, struct its_vm *vm)
 	raw_spin_unlock_irqrestore(&vmovp_lock, flags);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int its_vlpi_map(struct irq_data *d, struct its_cmd_info *info)
 {
 	struct its_device *its_dev = irq_data_get_irq_chip_data(d);
@@ -1537,11 +1276,7 @@ static int its_vlpi_map(struct irq_data *d, struct its_cmd_info *info)
 	if (!its_dev->event_map.vm) {
 		struct its_vlpi_map *maps;
 
-<<<<<<< HEAD
 		maps = kcalloc(its_dev->event_map.nr_lpis, sizeof(*maps),
-=======
-		maps = kzalloc(sizeof(*maps) * its_dev->event_map.nr_lpis,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       GFP_KERNEL);
 		if (!maps) {
 			ret = -ENOMEM;
@@ -1562,7 +1297,6 @@ static int its_vlpi_map(struct irq_data *d, struct its_cmd_info *info)
 		/* Already mapped, move it around */
 		its_send_vmovi(its_dev, event);
 	} else {
-<<<<<<< HEAD
 		/* Ensure all the VPEs are mapped on this ITS */
 		its_map_vm(its_dev->its, info->map->vm);
 
@@ -1575,17 +1309,11 @@ static int its_vlpi_map(struct irq_data *d, struct its_cmd_info *info)
 		/* Write out the property to the prop table */
 		lpi_write_config(d, 0xff, info->map->properties);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Drop the physical mapping */
 		its_send_discard(its_dev, event);
 
 		/* and install the virtual one */
 		its_send_vmapti(its_dev, event);
-<<<<<<< HEAD
-=======
-		irqd_set_forwarded_to_vcpu(d);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Increment the number of VLPIs */
 		its_dev->event_map.nr_vlpis++;
@@ -1641,12 +1369,9 @@ static int its_vlpi_unmap(struct irq_data *d)
 				    LPI_PROP_ENABLED |
 				    LPI_PROP_GROUP1));
 
-<<<<<<< HEAD
 	/* Potentially unmap the VM from this ITS */
 	its_unmap_vm(its_dev->its, its_dev->event_map.vm);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Drop the refcount and make the device available again if
 	 * this was the last VLPI.
@@ -1717,7 +1442,6 @@ static struct irq_chip its_irq_chip = {
 	.irq_set_vcpu_affinity	= its_irq_set_vcpu_affinity,
 };
 
-<<<<<<< HEAD
 
 /*
  * How we allocate LPIs:
@@ -1832,39 +1556,10 @@ static int free_lpi_range(u32 base, u32 nr_lpis)
 out:
 	mutex_unlock(&lpi_range_lock);
 	return err;
-=======
-/*
- * How we allocate LPIs:
- *
- * The GIC has id_bits bits for interrupt identifiers. From there, we
- * must subtract 8192 which are reserved for SGIs/PPIs/SPIs. Then, as
- * we allocate LPIs by chunks of 32, we can shift the whole thing by 5
- * bits to the right.
- *
- * This gives us (((1UL << id_bits) - 8192) >> 5) possible allocations.
- */
-#define IRQS_PER_CHUNK_SHIFT	5
-#define IRQS_PER_CHUNK		(1UL << IRQS_PER_CHUNK_SHIFT)
-#define ITS_MAX_LPI_NRBITS	16 /* 64K LPIs */
-
-static unsigned long *lpi_bitmap;
-static u32 lpi_chunks;
-static DEFINE_SPINLOCK(lpi_lock);
-
-static int its_lpi_to_chunk(int lpi)
-{
-	return (lpi - 8192) >> IRQS_PER_CHUNK_SHIFT;
-}
-
-static int its_chunk_to_lpi(int chunk)
-{
-	return (chunk << IRQS_PER_CHUNK_SHIFT) + 8192;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int __init its_lpi_init(u32 id_bits)
 {
-<<<<<<< HEAD
 	u32 lpis = (1UL << id_bits) - 8192;
 	u32 numlpis;
 	int err;
@@ -1912,89 +1607,15 @@ static unsigned long *its_lpi_alloc(int nr_irqs, u32 *base, int *nr_ids)
 	*nr_ids = nr_irqs;
 
 out:
-=======
-	lpi_chunks = its_lpi_to_chunk(1UL << id_bits);
-
-	lpi_bitmap = kzalloc(BITS_TO_LONGS(lpi_chunks) * sizeof(long),
-			     GFP_KERNEL);
-	if (!lpi_bitmap) {
-		lpi_chunks = 0;
-		return -ENOMEM;
-	}
-
-	pr_info("ITS: Allocated %d chunks for LPIs\n", (int)lpi_chunks);
-	return 0;
-}
-
-static unsigned long *its_lpi_alloc_chunks(int nr_irqs, int *base, int *nr_ids)
-{
-	unsigned long *bitmap = NULL;
-	int chunk_id;
-	int nr_chunks;
-	int i;
-
-	nr_chunks = DIV_ROUND_UP(nr_irqs, IRQS_PER_CHUNK);
-
-	spin_lock(&lpi_lock);
-
-	do {
-		chunk_id = bitmap_find_next_zero_area(lpi_bitmap, lpi_chunks,
-						      0, nr_chunks, 0);
-		if (chunk_id < lpi_chunks)
-			break;
-
-		nr_chunks--;
-	} while (nr_chunks > 0);
-
-	if (!nr_chunks)
-		goto out;
-
-	bitmap = kzalloc(BITS_TO_LONGS(nr_chunks * IRQS_PER_CHUNK) * sizeof (long),
-			 GFP_ATOMIC);
-	if (!bitmap)
-		goto out;
-
-	for (i = 0; i < nr_chunks; i++)
-		set_bit(chunk_id + i, lpi_bitmap);
-
-	*base = its_chunk_to_lpi(chunk_id);
-	*nr_ids = nr_chunks * IRQS_PER_CHUNK;
-
-out:
-	spin_unlock(&lpi_lock);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!bitmap)
 		*base = *nr_ids = 0;
 
 	return bitmap;
 }
 
-<<<<<<< HEAD
 static void its_lpi_free(unsigned long *bitmap, u32 base, u32 nr_ids)
 {
 	WARN_ON(free_lpi_range(base, nr_ids));
-=======
-static void its_lpi_free_chunks(unsigned long *bitmap, int base, int nr_ids)
-{
-	int lpi;
-
-	spin_lock(&lpi_lock);
-
-	for (lpi = base; lpi < (base + nr_ids); lpi += IRQS_PER_CHUNK) {
-		int chunk = its_lpi_to_chunk(lpi);
-
-		BUG_ON(chunk > lpi_chunks);
-		if (test_bit(chunk, lpi_bitmap)) {
-			clear_bit(chunk, lpi_bitmap);
-		} else {
-			pr_err("Bad LPI chunk %d\n", chunk);
-		}
-	}
-
-	spin_unlock(&lpi_lock);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(bitmap);
 }
 
@@ -2027,12 +1648,8 @@ static int __init its_alloc_lpi_tables(void)
 {
 	phys_addr_t paddr;
 
-<<<<<<< HEAD
 	lpi_id_bits = min_t(u32, GICD_TYPER_ID_BITS(gic_rdists->gicd_typer),
 				ITS_MAX_LPI_NRBITS);
-=======
-	lpi_id_bits = min_t(u32, gic_rdists->id_bits, ITS_MAX_LPI_NRBITS);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gic_rdists->prop_page = its_allocate_prop_table(GFP_NOWAIT);
 	if (!gic_rdists->prop_page) {
 		pr_err("Failed to allocate PROPBASE\n");
@@ -2265,32 +1882,14 @@ static void its_free_tables(struct its_node *its)
 
 static int its_alloc_tables(struct its_node *its)
 {
-<<<<<<< HEAD
-=======
-	u64 typer = gic_read_typer(its->base + GITS_TYPER);
-	u32 ids = GITS_TYPER_DEVBITS(typer);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 shr = GITS_BASER_InnerShareable;
 	u64 cache = GITS_BASER_RaWaWb;
 	u32 psz = SZ_64K;
 	int err, i;
 
-<<<<<<< HEAD
 	if (its->flags & ITS_FLAGS_WORKAROUND_CAVIUM_22375)
 		/* erratum 24313: ignore memory access type */
 		cache = GITS_BASER_nCnB;
-=======
-	if (its->flags & ITS_FLAGS_WORKAROUND_CAVIUM_22375) {
-		/*
-		* erratum 22375: only alloc 8MB table size
-		* erratum 24313: ignore memory access type
-		*/
-		cache   = GITS_BASER_nCnB;
-		ids     = 0x14;                 /* 20 bits, 8MB */
-	}
-
-	its->device_ids = ids;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < GITS_BASER_NR_REGS; i++) {
 		struct its_baser *baser = its->tables + i;
@@ -2333,23 +1932,16 @@ static int its_alloc_tables(struct its_node *its)
 
 static int its_alloc_collections(struct its_node *its)
 {
-<<<<<<< HEAD
 	int i;
 
 	its->collections = kcalloc(nr_cpu_ids, sizeof(*its->collections),
-=======
-	its->collections = kzalloc(nr_cpu_ids * sizeof(*its->collections),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   GFP_KERNEL);
 	if (!its->collections)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	for (i = 0; i < nr_cpu_ids; i++)
 		its->collections[i].target_address = ~0ULL;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -2377,7 +1969,6 @@ static void its_free_pending_table(struct page *pt)
 		   get_order(max_t(u32, LPI_PENDBASE_SZ, SZ_64K)));
 }
 
-<<<<<<< HEAD
 static u64 its_clear_vpend_valid(void __iomem *vlpi_base)
 {
 	u32 count = 1000000;	/* 1s! */
@@ -2401,8 +1992,6 @@ static u64 its_clear_vpend_valid(void __iomem *vlpi_base)
 	return val;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void its_cpu_init_lpis(void)
 {
 	void __iomem *rbase = gic_data_rdist_rd_base();
@@ -2427,19 +2016,6 @@ static void its_cpu_init_lpis(void)
 		gic_data_rdist()->pend_page = pend_page;
 	}
 
-<<<<<<< HEAD
-=======
-	/* Disable LPIs */
-	val = readl_relaxed(rbase + GICR_CTLR);
-	val &= ~GICR_CTLR_ENABLE_LPIS;
-	writel_relaxed(val, rbase + GICR_CTLR);
-
-	/*
-	 * Make sure any change to the table is observable by the GIC.
-	 */
-	dsb(sy);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* set PROPBASE */
 	val = (page_to_phys(gic_rdists->prop_page) |
 	       GICR_PROPBASER_InnerShareable |
@@ -2489,7 +2065,6 @@ static void its_cpu_init_lpis(void)
 	val |= GICR_CTLR_ENABLE_LPIS;
 	writel_relaxed(val, rbase + GICR_CTLR);
 
-<<<<<<< HEAD
 	if (gic_rdists->has_vlpis) {
 		void __iomem *vlpi_base = gic_data_rdist_vlpi_base();
 
@@ -2514,13 +2089,10 @@ static void its_cpu_init_lpis(void)
 		WARN_ON(val & GICR_VPENDBASER_Dirty);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Make sure the GIC has seen the above */
 	dsb(sy);
 }
 
-<<<<<<< HEAD
 static void its_cpu_init_collection(struct its_node *its)
 {
 	int cpu = smp_processor_id();
@@ -2570,56 +2142,6 @@ static void its_cpu_init_collections(void)
 		its_cpu_init_collection(its);
 
 	raw_spin_unlock(&its_lock);
-=======
-static void its_cpu_init_collection(void)
-{
-	struct its_node *its;
-	int cpu;
-
-	spin_lock(&its_lock);
-	cpu = smp_processor_id();
-
-	list_for_each_entry(its, &its_nodes, entry) {
-		u64 target;
-
-		/* avoid cross node collections and its mapping */
-		if (its->flags & ITS_FLAGS_WORKAROUND_CAVIUM_23144) {
-			struct device_node *cpu_node;
-
-			cpu_node = of_get_cpu_node(cpu, NULL);
-			if (its->numa_node != NUMA_NO_NODE &&
-				its->numa_node != of_node_to_nid(cpu_node))
-				continue;
-		}
-
-		/*
-		 * We now have to bind each collection to its target
-		 * redistributor.
-		 */
-		if (gic_read_typer(its->base + GITS_TYPER) & GITS_TYPER_PTA) {
-			/*
-			 * This ITS wants the physical address of the
-			 * redistributor.
-			 */
-			target = gic_data_rdist()->phys_base;
-		} else {
-			/*
-			 * This ITS wants a linear CPU number.
-			 */
-			target = gic_read_typer(gic_data_rdist_rd_base() + GICR_TYPER);
-			target = GICR_TYPER_CPU_NUMBER(target) << 16;
-		}
-
-		/* Perform collection mapping */
-		its->collections[cpu].target_address = target;
-		its->collections[cpu].col_id = cpu;
-
-		its_send_mapc(its, &its->collections[cpu], 1);
-		its_send_invall(its, &its->collections[cpu]);
-	}
-
-	spin_unlock(&its_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct its_device *its_find_device(struct its_node *its, u32 dev_id)
@@ -2751,7 +2273,6 @@ static struct its_device *its_create_device(struct its_node *its, u32 dev_id,
 	if (!its_alloc_device_table(its, dev_id))
 		return NULL;
 
-<<<<<<< HEAD
 	if (WARN_ON(!is_power_of_2(nvecs)))
 		nvecs = roundup_pow_of_two(nvecs);
 
@@ -2761,33 +2282,16 @@ static struct its_device *its_create_device(struct its_node *its, u32 dev_id,
 	 * sized as a power of two (and you need at least one bit...).
 	 */
 	nr_ites = max(2, nvecs);
-=======
-	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
-	/*
-	 * We allocate at least one chunk worth of LPIs bet device,
-	 * and thus that many ITEs. The device may require less though.
-	 */
-	nr_ites = max(IRQS_PER_CHUNK, roundup_pow_of_two(nvecs));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sz = nr_ites * its->ite_size;
 	sz = max(sz, ITS_ITT_ALIGN) + ITS_ITT_ALIGN - 1;
 	itt = kzalloc(sz, GFP_KERNEL);
 	if (alloc_lpis) {
-<<<<<<< HEAD
 		lpi_map = its_lpi_alloc(nvecs, &lpi_base, &nr_lpis);
 		if (lpi_map)
 			col_map = kcalloc(nr_lpis, sizeof(*col_map),
 					  GFP_KERNEL);
 	} else {
 		col_map = kcalloc(nr_ites, sizeof(*col_map), GFP_KERNEL);
-=======
-		lpi_map = its_lpi_alloc_chunks(nvecs, &lpi_base, &nr_lpis);
-		if (lpi_map)
-			col_map = kzalloc(sizeof(*col_map) * nr_lpis,
-					  GFP_KERNEL);
-	} else {
-		col_map = kzalloc(sizeof(*col_map) * nr_ites, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		nr_lpis = 0;
 		lpi_base = 0;
 	}
@@ -2963,13 +2467,8 @@ static int its_irq_domain_alloc(struct irq_domain *domain, unsigned int virq,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int its_irq_domain_activate(struct irq_domain *domain,
 				   struct irq_data *d, bool reserve)
-=======
-static void its_irq_domain_activate(struct irq_domain *domain,
-				    struct irq_data *d)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct its_device *its_dev = irq_data_get_irq_chip_data(d);
 	u32 event = its_get_event_id(d);
@@ -2984,11 +2483,7 @@ static void its_irq_domain_activate(struct irq_domain *domain,
 	cpu = cpumask_first_and(cpu_mask, cpu_online_mask);
 	if (cpu >= nr_cpu_ids) {
 		if (its_dev->its->flags & ITS_FLAGS_WORKAROUND_CAVIUM_23144)
-<<<<<<< HEAD
 			return -EINVAL;
-=======
-			return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		cpu = cpumask_first(cpu_online_mask);
 	}
@@ -2998,10 +2493,7 @@ static void its_irq_domain_activate(struct irq_domain *domain,
 
 	/* Map the GIC IRQ and event to the device */
 	its_send_mapti(its_dev, d->hwirq, event);
-<<<<<<< HEAD
 	return 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void its_irq_domain_deactivate(struct irq_domain *domain,
@@ -3042,15 +2534,9 @@ static void its_irq_domain_free(struct irq_domain *domain, unsigned int virq,
 	if (!its_dev->shared &&
 	    bitmap_empty(its_dev->event_map.lpi_map,
 			 its_dev->event_map.nr_lpis)) {
-<<<<<<< HEAD
 		its_lpi_free(its_dev->event_map.lpi_map,
 			     its_dev->event_map.lpi_base,
 			     its_dev->event_map.nr_lpis);
-=======
-		its_lpi_free_chunks(its_dev->event_map.lpi_map,
-				    its_dev->event_map.lpi_base,
-				    its_dev->event_map.nr_lpis);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(its_dev->event_map.col_map);
 
 		/* Unmap device/itt */
@@ -3182,21 +2668,14 @@ static int its_vpe_set_affinity(struct irq_data *d,
 		its_vpe_db_proxy_move(vpe, from, cpu);
 	}
 
-<<<<<<< HEAD
 	irq_data_update_effective_affinity(d, cpumask_of(cpu));
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return IRQ_SET_MASK_OK_DONE;
 }
 
 static void its_vpe_schedule(struct its_vpe *vpe)
 {
-<<<<<<< HEAD
 	void __iomem *vlpi_base = gic_data_rdist_vlpi_base();
-=======
-	void * __iomem vlpi_base = gic_data_rdist_vlpi_base();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 val;
 
 	/* Schedule the VPE */
@@ -3228,36 +2707,12 @@ static void its_vpe_schedule(struct its_vpe *vpe)
 
 static void its_vpe_deschedule(struct its_vpe *vpe)
 {
-<<<<<<< HEAD
 	void __iomem *vlpi_base = gic_data_rdist_vlpi_base();
 	u64 val;
 
 	val = its_clear_vpend_valid(vlpi_base);
 
 	if (unlikely(val & GICR_VPENDBASER_Dirty)) {
-=======
-	void * __iomem vlpi_base = gic_data_rdist_vlpi_base();
-	u32 count = 1000000;	/* 1s! */
-	bool clean;
-	u64 val;
-
-	/* We're being scheduled out */
-	val = gits_read_vpendbaser(vlpi_base + GICR_VPENDBASER);
-	val &= ~GICR_VPENDBASER_Valid;
-	gits_write_vpendbaser(val, vlpi_base + GICR_VPENDBASER);
-
-	do {
-		val = gits_read_vpendbaser(vlpi_base + GICR_VPENDBASER);
-		clean = !(val & GICR_VPENDBASER_Dirty);
-		if (!clean) {
-			count--;
-			cpu_relax();
-			udelay(1);
-		}
-	} while (!clean && count);
-
-	if (unlikely(!clean && !count)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_err_ratelimited("ITS virtual pending table not cleaning\n");
 		vpe->idai = false;
 		vpe->pending_last = true;
@@ -3267,7 +2722,6 @@ static void its_vpe_deschedule(struct its_vpe *vpe)
 	}
 }
 
-<<<<<<< HEAD
 static void its_vpe_invall(struct its_vpe *vpe)
 {
 	struct its_node *its;
@@ -3288,8 +2742,6 @@ static void its_vpe_invall(struct its_vpe *vpe)
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int its_vpe_set_vcpu_affinity(struct irq_data *d, void *vcpu_info)
 {
 	struct its_vpe *vpe = irq_data_get_irq_chip_data(d);
@@ -3305,11 +2757,7 @@ static int its_vpe_set_vcpu_affinity(struct irq_data *d, void *vcpu_info)
 		return 0;
 
 	case INVALL_VPE:
-<<<<<<< HEAD
 		its_vpe_invall(vpe);
-=======
-		its_send_vinvall(vpe);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	default:
@@ -3395,24 +2843,12 @@ static int its_vpe_set_irqchip_state(struct irq_data *d,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-static int its_vpe_retrigger(struct irq_data *d)
-{
-	return !its_vpe_set_irqchip_state(d, IRQCHIP_STATE_PENDING, true);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct irq_chip its_vpe_irq_chip = {
 	.name			= "GICv4-vpe",
 	.irq_mask		= its_vpe_mask_irq,
 	.irq_unmask		= its_vpe_unmask_irq,
 	.irq_eoi		= irq_chip_eoi_parent,
 	.irq_set_affinity	= its_vpe_set_affinity,
-<<<<<<< HEAD
-=======
-	.irq_retrigger		= its_vpe_retrigger,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.irq_set_irqchip_state	= its_vpe_set_irqchip_state,
 	.irq_set_vcpu_affinity	= its_vpe_set_vcpu_affinity,
 };
@@ -3486,11 +2922,7 @@ static void its_vpe_irq_domain_free(struct irq_domain *domain,
 	}
 
 	if (bitmap_empty(vm->db_bitmap, vm->nr_db_lpis)) {
-<<<<<<< HEAD
 		its_lpi_free(vm->db_bitmap, vm->db_lpi_base, vm->nr_db_lpis);
-=======
-		its_lpi_free_chunks(vm->db_bitmap, vm->db_lpi_base, vm->nr_db_lpis);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		its_free_prop_table(vm->vprop_page);
 	}
 }
@@ -3505,30 +2937,18 @@ static int its_vpe_irq_domain_alloc(struct irq_domain *domain, unsigned int virq
 
 	BUG_ON(!vm);
 
-<<<<<<< HEAD
 	bitmap = its_lpi_alloc(roundup_pow_of_two(nr_irqs), &base, &nr_ids);
-=======
-	bitmap = its_lpi_alloc_chunks(nr_irqs, &base, &nr_ids);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!bitmap)
 		return -ENOMEM;
 
 	if (nr_ids < nr_irqs) {
-<<<<<<< HEAD
 		its_lpi_free(bitmap, base, nr_ids);
-=======
-		its_lpi_free_chunks(bitmap, base, nr_ids);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOMEM;
 	}
 
 	vprop_page = its_allocate_prop_table(GFP_KERNEL);
 	if (!vprop_page) {
-<<<<<<< HEAD
 		its_lpi_free(bitmap, base, nr_ids);
-=======
-		its_lpi_free_chunks(bitmap, base, nr_ids);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOMEM;
 	}
 
@@ -3555,18 +2975,13 @@ static int its_vpe_irq_domain_alloc(struct irq_domain *domain, unsigned int virq
 		if (i > 0)
 			its_vpe_irq_domain_free(domain, virq, i - 1);
 
-<<<<<<< HEAD
 		its_lpi_free(bitmap, base, nr_ids);
-=======
-		its_lpi_free_chunks(bitmap, base, nr_ids);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		its_free_prop_table(vprop_page);
 	}
 
 	return err;
 }
 
-<<<<<<< HEAD
 static int its_vpe_irq_domain_activate(struct irq_domain *domain,
 				       struct irq_data *d, bool reserve)
 {
@@ -3591,24 +3006,12 @@ static int its_vpe_irq_domain_activate(struct irq_domain *domain,
 	irq_data_update_effective_affinity(d, cpumask_of(vpe->col_idx));
 
 	return 0;
-=======
-static void its_vpe_irq_domain_activate(struct irq_domain *domain,
-					struct irq_data *d)
-{
-	struct its_vpe *vpe = irq_data_get_irq_chip_data(d);
-
-	/* Map the VPE to the first possible CPU */
-	vpe->col_idx = cpumask_first(cpu_online_mask);
-	its_send_vmapp(vpe, true);
-	its_send_vinvall(vpe);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void its_vpe_irq_domain_deactivate(struct irq_domain *domain,
 					  struct irq_data *d)
 {
 	struct its_vpe *vpe = irq_data_get_irq_chip_data(d);
-<<<<<<< HEAD
 	struct its_node *its;
 
 	/*
@@ -3624,10 +3027,6 @@ static void its_vpe_irq_domain_deactivate(struct irq_domain *domain,
 
 		its_send_vmapp(its, vpe, false);
 	}
-=======
-
-	its_send_vmapp(vpe, false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct irq_domain_ops its_vpe_domain_ops = {
@@ -3670,7 +3069,6 @@ static int its_force_quiescent(void __iomem *base)
 	}
 }
 
-<<<<<<< HEAD
 static bool __maybe_unused its_enable_quirk_cavium_22375(void *data)
 {
 	struct its_node *its = data;
@@ -3683,37 +3081,20 @@ static bool __maybe_unused its_enable_quirk_cavium_22375(void *data)
 }
 
 static bool __maybe_unused its_enable_quirk_cavium_23144(void *data)
-=======
-static void __maybe_unused its_enable_quirk_cavium_22375(void *data)
-{
-	struct its_node *its = data;
-
-	its->flags |= ITS_FLAGS_WORKAROUND_CAVIUM_22375;
-}
-
-static void __maybe_unused its_enable_quirk_cavium_23144(void *data)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct its_node *its = data;
 
 	its->flags |= ITS_FLAGS_WORKAROUND_CAVIUM_23144;
-<<<<<<< HEAD
 
 	return true;
 }
 
 static bool __maybe_unused its_enable_quirk_qdf2400_e0065(void *data)
-=======
-}
-
-static void __maybe_unused its_enable_quirk_qdf2400_e0065(void *data)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct its_node *its = data;
 
 	/* On QDF2400, the size of the ITE is 16Bytes */
 	its->ite_size = 16;
-<<<<<<< HEAD
 
 	return true;
 }
@@ -3767,8 +3148,6 @@ static bool __maybe_unused its_enable_quirk_hip07_161600802(void *data)
 	 */
 	its->vlpi_redist_offset = SZ_128K;
 	return true;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct gic_quirk its_quirks[] = {
@@ -3796,7 +3175,6 @@ static const struct gic_quirk its_quirks[] = {
 		.init	= its_enable_quirk_qdf2400_e0065,
 	},
 #endif
-<<<<<<< HEAD
 #ifdef CONFIG_SOCIONEXT_SYNQUACER_PREITS
 	{
 		/*
@@ -3818,8 +3196,6 @@ static const struct gic_quirk its_quirks[] = {
 		.init	= its_enable_quirk_hip07_161600802,
 	},
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{
 	}
 };
@@ -3831,7 +3207,6 @@ static void its_enable_quirks(struct its_node *its)
 	gic_enable_quirks(iidr, its_quirks, its);
 }
 
-<<<<<<< HEAD
 static int its_save_disable(void)
 {
 	struct its_node *its;
@@ -3939,8 +3314,6 @@ static struct syscore_ops its_syscore_ops = {
 	.resume = its_restore_enable,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int its_init_domain(struct fwnode_handle *handle, struct its_node *its)
 {
 	struct irq_domain *inner_domain;
@@ -3958,11 +3331,7 @@ static int its_init_domain(struct fwnode_handle *handle, struct its_node *its)
 
 	inner_domain->parent = its_parent;
 	irq_domain_update_bus_token(inner_domain, DOMAIN_BUS_NEXUS);
-<<<<<<< HEAD
 	inner_domain->flags |= its->msi_domain_flags;
-=======
-	inner_domain->flags |= IRQ_DOMAIN_FLAG_MSI_REMAP;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	info->ops = &its_msi_domain_ops;
 	info->data = its;
 	inner_domain->host_data = info;
@@ -3985,11 +3354,7 @@ static int its_init_vpe_domain(void)
 	its = list_first_entry(&its_nodes, struct its_node, entry);
 
 	entries = roundup_pow_of_two(nr_cpu_ids);
-<<<<<<< HEAD
 	vpe_proxy.vpes = kcalloc(entries, sizeof(*vpe_proxy.vpes),
-=======
-	vpe_proxy.vpes = kzalloc(sizeof(*vpe_proxy.vpes) * entries,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 GFP_KERNEL);
 	if (!vpe_proxy.vpes) {
 		pr_err("ITS: Can't allocate GICv4 proxy device array\n");
@@ -4027,13 +3392,8 @@ static int __init its_compute_its_list_map(struct resource *res,
 	 * locking. Should this change, we should address
 	 * this.
 	 */
-<<<<<<< HEAD
 	its_number = find_first_zero_bit(&its_list_map, GICv4_ITS_LIST_MAX);
 	if (its_number >= GICv4_ITS_LIST_MAX) {
-=======
-	its_number = find_first_zero_bit(&its_list_map, ITS_LIST_MAX);
-	if (its_number >= ITS_LIST_MAX) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_err("ITS@%pa: No ITSList entry available!\n",
 		       &res->start);
 		return -EINVAL;
@@ -4102,10 +3462,7 @@ static int __init its_probe_one(struct resource *res,
 	its->base = its_base;
 	its->phys_base = res->start;
 	its->ite_size = GITS_TYPER_ITT_ENTRY_SIZE(typer);
-<<<<<<< HEAD
 	its->device_ids = GITS_TYPER_DEVBITS(typer);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	its->is_v4 = !!(typer & GITS_TYPER_VLPIS);
 	if (its->is_v4) {
 		if (!(typer & GITS_TYPER_VMOVP)) {
@@ -4113,11 +3470,8 @@ static int __init its_probe_one(struct resource *res,
 			if (err < 0)
 				goto out_free_its;
 
-<<<<<<< HEAD
 			its->list_nr = err;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pr_info("ITS@%pa: Using ITS number %d\n",
 				&res->start, err);
 		} else {
@@ -4134,12 +3488,9 @@ static int __init its_probe_one(struct resource *res,
 		goto out_free_its;
 	}
 	its->cmd_write = its->cmd_base;
-<<<<<<< HEAD
 	its->fwnode_handle = handle;
 	its->get_msi_base = its_irq_get_msi_base;
 	its->msi_domain_flags = IRQ_DOMAIN_FLAG_MSI_REMAP;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	its_enable_quirks(its);
 
@@ -4183,25 +3534,16 @@ static int __init its_probe_one(struct resource *res,
 		ctlr |= GITS_CTLR_ImDe;
 	writel_relaxed(ctlr, its->base + GITS_CTLR);
 
-<<<<<<< HEAD
 	if (GITS_TYPER_HCC(typer))
 		its->flags |= ITS_FLAGS_SAVE_SUSPEND_STATE;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = its_init_domain(handle, its);
 	if (err)
 		goto out_free_tables;
 
-<<<<<<< HEAD
 	raw_spin_lock(&its_lock);
 	list_add(&its->entry, &its_nodes);
 	raw_spin_unlock(&its_lock);
-=======
-	spin_lock(&its_lock);
-	list_add(&its->entry, &its_nodes);
-	spin_unlock(&its_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 
@@ -4222,7 +3564,6 @@ static bool gic_rdists_supports_plpis(void)
 	return !!(gic_read_typer(gic_data_rdist_rd_base() + GICR_TYPER) & GICR_TYPER_PLPIS);
 }
 
-<<<<<<< HEAD
 static int redist_disable_lpis(void)
 {
 	void __iomem *rbase = gic_data_rdist_rd_base();
@@ -4298,17 +3639,6 @@ int its_cpu_init(void)
 
 		its_cpu_init_lpis();
 		its_cpu_init_collections();
-=======
-int its_cpu_init(void)
-{
-	if (!list_empty(&its_nodes)) {
-		if (!gic_rdists_supports_plpis()) {
-			pr_info("CPU%d: LPIs not supported\n", smp_processor_id());
-			return -ENXIO;
-		}
-		its_cpu_init_lpis();
-		its_cpu_init_collection();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -4419,13 +3749,8 @@ static void __init acpi_table_parse_srat_its(void)
 	if (count <= 0)
 		return;
 
-<<<<<<< HEAD
 	its_srat_maps = kmalloc_array(count, sizeof(struct its_srat_map),
 				      GFP_KERNEL);
-=======
-	its_srat_maps = kmalloc(count * sizeof(struct its_srat_map),
-				GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!its_srat_maps) {
 		pr_warn("SRAT: Failed to allocate memory for its_srat_maps!\n");
 		return;
@@ -4469,12 +3794,8 @@ static int __init gic_acpi_parse_madt_its(struct acpi_subtable_header *header,
 		return -ENOMEM;
 	}
 
-<<<<<<< HEAD
 	err = iort_register_domain_token(its_entry->translation_id, res.start,
 					 dom_handle);
-=======
-	err = iort_register_domain_token(its_entry->translation_id, dom_handle);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err) {
 		pr_err("ITS@%pa: Unable to register GICv3 ITS domain token (ITS ID %d) to IORT\n",
 		       &res.start, its_entry->translation_id);
@@ -4539,10 +3860,7 @@ int __init its_init(struct fwnode_handle *handle, struct rdists *rdists,
 		}
 	}
 
-<<<<<<< HEAD
 	register_syscore_ops(&its_syscore_ops);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }

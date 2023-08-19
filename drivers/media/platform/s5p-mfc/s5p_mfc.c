@@ -145,15 +145,9 @@ void s5p_mfc_cleanup_queue(struct list_head *lh, struct vb2_queue *vq)
 	}
 }
 
-<<<<<<< HEAD
 static void s5p_mfc_watchdog(struct timer_list *t)
 {
 	struct s5p_mfc_dev *dev = from_timer(dev, t, watchdog_timer);
-=======
-static void s5p_mfc_watchdog(unsigned long arg)
-{
-	struct s5p_mfc_dev *dev = (struct s5p_mfc_dev *)arg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (test_bit(0, &dev->hw_lock))
 		atomic_inc(&dev->watchdog_cnt);
@@ -477,11 +471,7 @@ static void s5p_mfc_handle_error(struct s5p_mfc_dev *dev,
 {
 	mfc_err("Interrupt Error: %08x\n", err);
 
-<<<<<<< HEAD
 	if (ctx) {
-=======
-	if (ctx != NULL) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Error recovery is dependent on the state of context */
 		switch (ctx->state) {
 		case MFCINST_RES_CHANGE_INIT:
@@ -519,11 +509,7 @@ static void s5p_mfc_handle_seq_done(struct s5p_mfc_ctx *ctx,
 {
 	struct s5p_mfc_dev *dev;
 
-<<<<<<< HEAD
 	if (!ctx)
-=======
-	if (ctx == NULL)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	dev = ctx->dev;
 	if (ctx->c_ops->post_seq_start) {
@@ -541,12 +527,9 @@ static void s5p_mfc_handle_seq_done(struct s5p_mfc_ctx *ctx,
 				dev);
 		ctx->mv_count = s5p_mfc_hw_call(dev->mfc_ops, get_mv_count,
 				dev);
-<<<<<<< HEAD
 		if (FW_HAS_E_MIN_SCRATCH_BUF(dev))
 			ctx->scratch_buf_size = s5p_mfc_hw_call(dev->mfc_ops,
 						get_min_scratch_buf_size, dev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ctx->img_width == 0 || ctx->img_height == 0)
 			ctx->state = MFCINST_ERROR;
 		else
@@ -583,11 +566,7 @@ static void s5p_mfc_handle_init_buffers(struct s5p_mfc_ctx *ctx,
 	struct s5p_mfc_buf *src_buf;
 	struct s5p_mfc_dev *dev;
 
-<<<<<<< HEAD
 	if (!ctx)
-=======
-	if (ctx == NULL)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	dev = ctx->dev;
 	s5p_mfc_hw_call(dev->mfc_ops, clear_int_flags, dev);
@@ -1013,22 +992,14 @@ static int s5p_mfc_release(struct file *file)
 }
 
 /* Poll */
-<<<<<<< HEAD
 static __poll_t s5p_mfc_poll(struct file *file,
-=======
-static unsigned int s5p_mfc_poll(struct file *file,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 struct poll_table_struct *wait)
 {
 	struct s5p_mfc_ctx *ctx = fh_to_ctx(file->private_data);
 	struct s5p_mfc_dev *dev = ctx->dev;
 	struct vb2_queue *src_q, *dst_q;
 	struct vb2_buffer *src_vb = NULL, *dst_vb = NULL;
-<<<<<<< HEAD
 	__poll_t rc = 0;
-=======
-	unsigned int rc = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 
 	mutex_lock(&dev->mfc_mutex);
@@ -1041,11 +1012,7 @@ static unsigned int s5p_mfc_poll(struct file *file,
 	 */
 	if ((!src_q->streaming || list_empty(&src_q->queued_list))
 		&& (!dst_q->streaming || list_empty(&dst_q->queued_list))) {
-<<<<<<< HEAD
 		rc = EPOLLERR;
-=======
-		rc = POLLERR;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto end;
 	}
 	mutex_unlock(&dev->mfc_mutex);
@@ -1054,22 +1021,14 @@ static unsigned int s5p_mfc_poll(struct file *file,
 	poll_wait(file, &dst_q->done_wq, wait);
 	mutex_lock(&dev->mfc_mutex);
 	if (v4l2_event_pending(&ctx->fh))
-<<<<<<< HEAD
 		rc |= EPOLLPRI;
-=======
-		rc |= POLLPRI;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_irqsave(&src_q->done_lock, flags);
 	if (!list_empty(&src_q->done_list))
 		src_vb = list_first_entry(&src_q->done_list, struct vb2_buffer,
 								done_entry);
 	if (src_vb && (src_vb->state == VB2_BUF_STATE_DONE
 				|| src_vb->state == VB2_BUF_STATE_ERROR))
-<<<<<<< HEAD
 		rc |= EPOLLOUT | EPOLLWRNORM;
-=======
-		rc |= POLLOUT | POLLWRNORM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irqrestore(&src_q->done_lock, flags);
 	spin_lock_irqsave(&dst_q->done_lock, flags);
 	if (!list_empty(&dst_q->done_list))
@@ -1077,11 +1036,7 @@ static unsigned int s5p_mfc_poll(struct file *file,
 								done_entry);
 	if (dst_vb && (dst_vb->state == VB2_BUF_STATE_DONE
 				|| dst_vb->state == VB2_BUF_STATE_ERROR))
-<<<<<<< HEAD
 		rc |= EPOLLIN | EPOLLRDNORM;
-=======
-		rc |= POLLIN | POLLRDNORM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irqrestore(&dst_q->done_lock, flags);
 end:
 	mutex_unlock(&dev->mfc_mutex);
@@ -1092,18 +1047,9 @@ end:
 static int s5p_mfc_mmap(struct file *file, struct vm_area_struct *vma)
 {
 	struct s5p_mfc_ctx *ctx = fh_to_ctx(file->private_data);
-<<<<<<< HEAD
 	unsigned long offset = vma->vm_pgoff << PAGE_SHIFT;
 	int ret;
 
-=======
-	struct s5p_mfc_dev *dev = ctx->dev;
-	unsigned long offset = vma->vm_pgoff << PAGE_SHIFT;
-	int ret;
-
-	if (mutex_lock_interruptible(&dev->mfc_mutex))
-		return -ERESTARTSYS;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (offset < DST_QUEUE_OFF_BASE) {
 		mfc_debug(2, "mmaping source\n");
 		ret = vb2_mmap(&ctx->vq_src, vma);
@@ -1112,10 +1058,6 @@ static int s5p_mfc_mmap(struct file *file, struct vm_area_struct *vma)
 		vma->vm_pgoff -= (DST_QUEUE_OFF_BASE >> PAGE_SHIFT);
 		ret = vb2_mmap(&ctx->vq_dst, vma);
 	}
-<<<<<<< HEAD
-=======
-	mutex_unlock(&dev->mfc_mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -1141,21 +1083,13 @@ static struct device *s5p_mfc_alloc_memdev(struct device *dev,
 	struct device *child;
 	int ret;
 
-<<<<<<< HEAD
 	child = devm_kzalloc(dev, sizeof(*child), GFP_KERNEL);
-=======
-	child = devm_kzalloc(dev, sizeof(struct device), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!child)
 		return NULL;
 
 	device_initialize(child);
 	dev_set_name(child, "%s:%s", dev_name(dev), name);
 	child->parent = dev;
-<<<<<<< HEAD
-=======
-	child->bus = dev->bus;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	child->coherent_dma_mask = dev->coherent_dma_mask;
 	child->dma_mask = dev->dma_mask;
 	child->release = s5p_mfc_memdev_release;
@@ -1335,15 +1269,8 @@ static int s5p_mfc_probe(struct platform_device *pdev)
 
 	pr_debug("%s++\n", __func__);
 	dev = devm_kzalloc(&pdev->dev, sizeof(*dev), GFP_KERNEL);
-<<<<<<< HEAD
 	if (!dev)
 		return -ENOMEM;
-=======
-	if (!dev) {
-		dev_err(&pdev->dev, "Not enough memory for MFC device\n");
-		return -ENOMEM;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_init(&dev->irqlock);
 	spin_lock_init(&dev->condlock);
@@ -1361,11 +1288,7 @@ static int s5p_mfc_probe(struct platform_device *pdev)
 		return PTR_ERR(dev->regs_base);
 
 	res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
-<<<<<<< HEAD
 	if (!res) {
-=======
-	if (res == NULL) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(&pdev->dev, "failed to get irq resource\n");
 		return -ENOENT;
 	}
@@ -1400,13 +1323,7 @@ static int s5p_mfc_probe(struct platform_device *pdev)
 	dev->hw_lock = 0;
 	INIT_WORK(&dev->watchdog_work, s5p_mfc_watchdog_worker);
 	atomic_set(&dev->watchdog_cnt, 0);
-<<<<<<< HEAD
 	timer_setup(&dev->watchdog_timer, s5p_mfc_watchdog, 0);
-=======
-	init_timer(&dev->watchdog_timer);
-	dev->watchdog_timer.data = (unsigned long)dev;
-	dev->watchdog_timer.function = s5p_mfc_watchdog;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = v4l2_device_register(&pdev->dev, &dev->v4l2_dev);
 	if (ret)
@@ -1533,12 +1450,7 @@ static int s5p_mfc_remove(struct platform_device *pdev)
 
 static int s5p_mfc_suspend(struct device *dev)
 {
-<<<<<<< HEAD
 	struct s5p_mfc_dev *m_dev = dev_get_drvdata(dev);
-=======
-	struct platform_device *pdev = to_platform_device(dev);
-	struct s5p_mfc_dev *m_dev = platform_get_drvdata(pdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	if (m_dev->num_inst == 0)
@@ -1572,12 +1484,7 @@ static int s5p_mfc_suspend(struct device *dev)
 
 static int s5p_mfc_resume(struct device *dev)
 {
-<<<<<<< HEAD
 	struct s5p_mfc_dev *m_dev = dev_get_drvdata(dev);
-=======
-	struct platform_device *pdev = to_platform_device(dev);
-	struct s5p_mfc_dev *m_dev = platform_get_drvdata(pdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (m_dev->num_inst == 0)
 		return 0;
@@ -1701,7 +1608,6 @@ static struct s5p_mfc_variant mfc_drvdata_v8_5433 = {
 	.num_clocks	= 3,
 };
 
-<<<<<<< HEAD
 static struct s5p_mfc_buf_size_v6 mfc_buf_size_v10 = {
 	.dev_ctx        = MFC_CTX_BUF_SIZE_V10,
 	.h264_dec_ctx   = MFC_H264_DEC_CTX_BUF_SIZE_V10,
@@ -1725,8 +1631,6 @@ static struct s5p_mfc_variant mfc_drvdata_v10 = {
 	.fw_name[0]     = "s5p-mfc-v10.fw",
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct of_device_id exynos_mfc_match[] = {
 	{
 		.compatible = "samsung,mfc-v5",
@@ -1743,12 +1647,9 @@ static const struct of_device_id exynos_mfc_match[] = {
 	}, {
 		.compatible = "samsung,exynos5433-mfc",
 		.data = &mfc_drvdata_v8_5433,
-<<<<<<< HEAD
 	}, {
 		.compatible = "samsung,mfc-v10",
 		.data = &mfc_drvdata_v10,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{},
 };

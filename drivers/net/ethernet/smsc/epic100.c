@@ -290,11 +290,7 @@ static int read_eeprom(struct epic_private *, int);
 static int mdio_read(struct net_device *dev, int phy_id, int location);
 static void mdio_write(struct net_device *dev, int phy_id, int loc, int val);
 static void epic_restart(struct net_device *dev);
-<<<<<<< HEAD
 static void epic_timer(struct timer_list *t);
-=======
-static void epic_timer(unsigned long data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void epic_tx_timeout(struct net_device *dev);
 static void epic_init_ring(struct net_device *dev);
 static netdev_tx_t epic_start_xmit(struct sk_buff *skb,
@@ -325,10 +321,6 @@ static int epic_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 	static int card_idx = -1;
 	void __iomem *ioaddr;
 	int chip_idx = (int) ent->driver_data;
-<<<<<<< HEAD
-=======
-	int irq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct net_device *dev;
 	struct epic_private *ep;
 	int i, ret, option = 0, duplex = 0;
@@ -345,10 +337,6 @@ static int epic_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 	ret = pci_enable_device(pdev);
 	if (ret)
 		goto out;
-<<<<<<< HEAD
-=======
-	irq = pdev->irq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (pci_resource_len(pdev, 0) < EPIC_TOTAL_SIZE) {
 		dev_err(&pdev->dev, "no PCI region space\n");
@@ -749,15 +737,8 @@ static int epic_open(struct net_device *dev)
 
 	/* Set the timer to switch to check for link beat and perhaps switch
 	   to an alternate media type. */
-<<<<<<< HEAD
 	timer_setup(&ep->timer, epic_timer, 0);
 	ep->timer.expires = jiffies + 3*HZ;
-=======
-	init_timer(&ep->timer);
-	ep->timer.expires = jiffies + 3*HZ;
-	ep->timer.data = (unsigned long)dev;
-	ep->timer.function = epic_timer;				/* timer handler */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	add_timer(&ep->timer);
 
 	return rc;
@@ -860,17 +841,10 @@ static void check_media(struct net_device *dev)
 	}
 }
 
-<<<<<<< HEAD
 static void epic_timer(struct timer_list *t)
 {
 	struct epic_private *ep = from_timer(ep, t, timer);
 	struct net_device *dev = ep->mii.dev;
-=======
-static void epic_timer(unsigned long data)
-{
-	struct net_device *dev = (struct net_device *)data;
-	struct epic_private *ep = netdev_priv(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void __iomem *ioaddr = ep->ioaddr;
 	int next_tick = 5*HZ;
 

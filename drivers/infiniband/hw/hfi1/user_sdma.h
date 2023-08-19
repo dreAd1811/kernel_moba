@@ -1,11 +1,7 @@
 #ifndef _HFI1_USER_SDMA_H
 #define _HFI1_USER_SDMA_H
 /*
-<<<<<<< HEAD
  * Copyright(c) 2015 - 2018 Intel Corporation.
-=======
- * Copyright(c) 2015 - 2017 Intel Corporation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This file is provided under a dual BSD/GPLv2 license.  When using or
  * redistributing this file, you may do so under either license.
@@ -84,7 +80,6 @@
 #define PBC2LRH(x) ((((x) & 0xfff) << 2) - 4)
 #define LRH2PBC(x) ((((x) >> 2) + 1) & 0xfff)
 
-<<<<<<< HEAD
 /**
  * Build an SDMA AHG header update descriptor and save it to an array.
  * @arr        - Array to save the descriptor to.
@@ -105,17 +100,6 @@ static inline int ahg_header_set(u32 *arr, int idx, size_t array_size,
 	arr[idx++] = sdma_build_ahg_descriptor(value, dw, bit, width);
 	return idx;
 }
-=======
-#define AHG_HEADER_SET(arr, idx, dw, bit, width, value)			\
-	do {								\
-		if ((idx) < ARRAY_SIZE((arr)))				\
-			(arr)[(idx++)] = sdma_build_ahg_descriptor(	\
-				(__force u16)(value), (dw), (bit),	\
-							(width));	\
-		else							\
-			return -ERANGE;					\
-	} while (0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Tx request flag bits */
 #define TXREQ_FLAGS_REQ_ACK   BIT(0)      /* Set the ACK bit in the header */
@@ -139,11 +123,6 @@ enum pkt_q_sdma_state {
 		 (req)->pq->ctxt, (req)->pq->subctxt, (req)->info.comp_idx, \
 		 ##__VA_ARGS__)
 
-<<<<<<< HEAD
-=======
-extern uint extended_psn;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct hfi1_user_sdma_pkt_q {
 	u16 ctxt;
 	u16 subctxt;

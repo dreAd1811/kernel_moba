@@ -1,19 +1,9 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Renesas RIIC driver
  *
  * Copyright (C) 2013 Wolfram Sang <wsa@sang-engineering.com>
  * Copyright (C) 2013 Renesas Solutions Corp.
-<<<<<<< HEAD
-=======
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License version 2 as published by
- * the Free Software Foundation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /*
@@ -91,16 +81,7 @@
 
 #define ICSR2_NACKF	0x10
 
-<<<<<<< HEAD
 #define ICBR_RESERVED	0xe0 /* Should be 1 on writes */
-=======
-/* ICBRx (@ PCLK 33MHz) */
-#define ICBR_RESERVED	0xe0 /* Should be 1 on writes */
-#define ICBRL_SP100K	(19 | ICBR_RESERVED)
-#define ICBRH_SP100K	(16 | ICBR_RESERVED)
-#define ICBRL_SP400K	(21 | ICBR_RESERVED)
-#define ICBRH_SP400K	(9 | ICBR_RESERVED)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define RIIC_INIT_MSG	-1
 
@@ -183,23 +164,14 @@ static irqreturn_t riic_tdre_isr(int irq, void *data)
 		return IRQ_NONE;
 
 	if (riic->bytes_left == RIIC_INIT_MSG) {
-<<<<<<< HEAD
 		if (riic->msg->flags & I2C_M_RD)
-=======
-		val = !!(riic->msg->flags & I2C_M_RD);
-		if (val)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* On read, switch over to receive interrupt */
 			riic_clear_set_bit(riic, ICIER_TIE, ICIER_RIE, RIIC_ICIER);
 		else
 			/* On write, initialize length */
 			riic->bytes_left = riic->msg->len;
 
-<<<<<<< HEAD
 		val = i2c_8bit_addr_from_msg(riic->msg);
-=======
-		val |= (riic->msg->addr << 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		val = *riic->buf;
 		riic->buf++;
@@ -308,24 +280,16 @@ static const struct i2c_algorithm riic_algo = {
 	.functionality	= riic_func,
 };
 
-<<<<<<< HEAD
 static int riic_init_hw(struct riic_dev *riic, struct i2c_timings *t)
 {
 	int ret;
 	unsigned long rate;
 	int total_ticks, cks, brl, brh;
-=======
-static int riic_init_hw(struct riic_dev *riic, u32 spd)
-{
-	int ret;
-	unsigned long rate;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = clk_prepare_enable(riic->clk);
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	if (t->bus_freq_hz > 400000) {
 		dev_err(&riic->adapter.dev,
 			"unsupported bus speed (%dHz). 400000 max\n",
@@ -369,21 +333,10 @@ static int riic_init_hw(struct riic_dev *riic, u32 spd)
 	if (brl > (0x1F + 3)) {
 		dev_err(&riic->adapter.dev, "invalid speed (%lu). Too slow.\n",
 			(unsigned long)t->bus_freq_hz);
-=======
-	/*
-	 * TODO: Implement formula to calculate the timing values depending on
-	 * variable parent clock rate and arbitrary bus speed
-	 */
-	rate = clk_get_rate(riic->clk);
-	if (rate != 33325000) {
-		dev_err(&riic->adapter.dev,
-			"invalid parent clk (%lu). Must be 33325000Hz\n", rate);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		clk_disable_unprepare(riic->clk);
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 	brh = total_ticks - brl;
 
 	/* Remove automatic clock ticks for sync circuit and NF */
@@ -413,35 +366,13 @@ static int riic_init_hw(struct riic_dev *riic, u32 spd)
 		 t->scl_fall_ns / (1000000000 / rate),
 		 t->scl_rise_ns / (1000000000 / rate), cks, brl, brh);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Changing the order of accessing IICRST and ICE may break things! */
 	writeb(ICCR1_IICRST | ICCR1_SOWP, riic->base + RIIC_ICCR1);
 	riic_clear_set_bit(riic, 0, ICCR1_ICE, RIIC_ICCR1);
 
-<<<<<<< HEAD
 	writeb(ICMR1_CKS(cks), riic->base + RIIC_ICMR1);
 	writeb(brh | ICBR_RESERVED, riic->base + RIIC_ICBRH);
 	writeb(brl | ICBR_RESERVED, riic->base + RIIC_ICBRL);
-=======
-	switch (spd) {
-	case 100000:
-		writeb(ICMR1_CKS(3), riic->base + RIIC_ICMR1);
-		writeb(ICBRH_SP100K, riic->base + RIIC_ICBRH);
-		writeb(ICBRL_SP100K, riic->base + RIIC_ICBRL);
-		break;
-	case 400000:
-		writeb(ICMR1_CKS(1), riic->base + RIIC_ICMR1);
-		writeb(ICBRH_SP400K, riic->base + RIIC_ICBRH);
-		writeb(ICBRL_SP400K, riic->base + RIIC_ICBRL);
-		break;
-	default:
-		dev_err(&riic->adapter.dev,
-			"unsupported bus speed (%dHz). Use 100000 or 400000\n", spd);
-		clk_disable_unprepare(riic->clk);
-		return -EINVAL;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	writeb(0, riic->base + RIIC_ICSER);
 	writeb(ICMR3_ACKWP | ICMR3_RDRFS, riic->base + RIIC_ICMR3);
@@ -463,18 +394,10 @@ static struct riic_irq_desc riic_irqs[] = {
 
 static int riic_i2c_probe(struct platform_device *pdev)
 {
-<<<<<<< HEAD
 	struct riic_dev *riic;
 	struct i2c_adapter *adap;
 	struct resource *res;
 	struct i2c_timings i2c_t;
-=======
-	struct device_node *np = pdev->dev.of_node;
-	struct riic_dev *riic;
-	struct i2c_adapter *adap;
-	struct resource *res;
-	u32 bus_rate = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i, ret;
 
 	riic = devm_kzalloc(&pdev->dev, sizeof(*riic), GFP_KERNEL);
@@ -515,14 +438,9 @@ static int riic_i2c_probe(struct platform_device *pdev)
 
 	init_completion(&riic->msg_done);
 
-<<<<<<< HEAD
 	i2c_parse_fw_timings(&pdev->dev, &i2c_t, true);
 
 	ret = riic_init_hw(riic, &i2c_t);
-=======
-	of_property_read_u32(np, "clock-frequency", &bus_rate);
-	ret = riic_init_hw(riic, bus_rate);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -533,12 +451,8 @@ static int riic_i2c_probe(struct platform_device *pdev)
 
 	platform_set_drvdata(pdev, riic);
 
-<<<<<<< HEAD
 	dev_info(&pdev->dev, "registered with %dHz bus speed\n",
 		 i2c_t.bus_freq_hz);
-=======
-	dev_info(&pdev->dev, "registered with %dHz bus speed\n", bus_rate);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

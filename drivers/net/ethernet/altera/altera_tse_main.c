@@ -56,11 +56,7 @@
 static atomic_t instance_count = ATOMIC_INIT(~0);
 /* Module parameters */
 static int debug = -1;
-<<<<<<< HEAD
 module_param(debug, int, 0644);
-=======
-module_param(debug, int, S_IRUGO | S_IWUSR);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_PARM_DESC(debug, "Message Level (-1: default, 0: no output, 16: all)");
 
 static const u32 default_msg_level = (NETIF_MSG_DRV | NETIF_MSG_PROBE |
@@ -69,20 +65,12 @@ static const u32 default_msg_level = (NETIF_MSG_DRV | NETIF_MSG_PROBE |
 
 #define RX_DESCRIPTORS 64
 static int dma_rx_num = RX_DESCRIPTORS;
-<<<<<<< HEAD
 module_param(dma_rx_num, int, 0644);
-=======
-module_param(dma_rx_num, int, S_IRUGO | S_IWUSR);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_PARM_DESC(dma_rx_num, "Number of descriptors in the RX list");
 
 #define TX_DESCRIPTORS 64
 static int dma_tx_num = TX_DESCRIPTORS;
-<<<<<<< HEAD
 module_param(dma_tx_num, int, 0644);
-=======
-module_param(dma_tx_num, int, S_IRUGO | S_IWUSR);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_PARM_DESC(dma_tx_num, "Number of descriptors in the TX list");
 
 

@@ -597,10 +597,6 @@ static const struct iio_info hmc5843_info = {
 	.read_raw = &hmc5843_read_raw,
 	.write_raw = &hmc5843_write_raw,
 	.write_raw_get_fmt = &hmc5843_write_raw_get_fmt,
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const unsigned long hmc5843_scan_masks[] = {0x7, 0};

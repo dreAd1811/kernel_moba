@@ -100,13 +100,8 @@ void *
 nv50_fifo_dtor(struct nvkm_fifo *base)
 {
 	struct nv50_fifo *fifo = nv50_fifo(base);
-<<<<<<< HEAD
 	nvkm_memory_unref(&fifo->runlist[1]);
 	nvkm_memory_unref(&fifo->runlist[0]);
-=======
-	nvkm_memory_del(&fifo->runlist[1]);
-	nvkm_memory_del(&fifo->runlist[0]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return fifo;
 }
 

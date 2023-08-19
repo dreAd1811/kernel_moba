@@ -1,18 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Google Peach Pit Rev 6+ board device tree source
  *
  * Copyright (c) 2014 Google, Inc
-<<<<<<< HEAD
-=======
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /dts-v1/;
@@ -21,10 +11,7 @@
 #include <dt-bindings/interrupt-controller/irq.h>
 #include <dt-bindings/clock/maxim,max77802.h>
 #include <dt-bindings/regulator/maxim,max77802.h>
-<<<<<<< HEAD
 #include <dt-bindings/sound/samsung-i2s.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "exynos5420.dtsi"
 #include "exynos5420-cpus.dtsi"
 
@@ -100,7 +87,6 @@
 		samsung,model = "Peach-Pit-I2S-MAX98090";
 		samsung,i2s-controller = <&i2s0>;
 		samsung,audio-codec = <&max98090>;
-<<<<<<< HEAD
 
 		cpu {
 			sound-dai = <&i2s0 0>;
@@ -109,8 +95,6 @@
 		codec {
 			sound-dai = <&max98090>, <&hdmi>;
 		};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	usb300_vbus_reg: regulator-usb300 {
@@ -167,14 +151,11 @@
 	vdd-supply = <&ldo9_reg>;
 };
 
-<<<<<<< HEAD
 &clock_audss {
 	assigned-clocks = <&clock_audss EXYNOS_MOUT_AUDSS>;
 	assigned-clock-parents = <&clock CLK_FOUT_EPLL>;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &cpu0 {
 	cpu-supply = <&buck2_reg>;
 };
@@ -331,10 +312,6 @@
 				regulator-name = "vdd_1v35";
 				regulator-min-microvolt = <1350000>;
 				regulator-max-microvolt = <1350000>;
-<<<<<<< HEAD
-=======
-				regulator-always-on;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				regulator-boot-on;
 				regulator-state-mem {
 					regulator-on-in-suspend;
@@ -356,10 +333,6 @@
 				regulator-name = "vdd_2v";
 				regulator-min-microvolt = <2000000>;
 				regulator-max-microvolt = <2000000>;
-<<<<<<< HEAD
-=======
-				regulator-always-on;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				regulator-boot-on;
 				regulator-state-mem {
 					regulator-on-in-suspend;
@@ -370,10 +343,6 @@
 				regulator-name = "vdd_1v8";
 				regulator-min-microvolt = <1800000>;
 				regulator-max-microvolt = <1800000>;
-<<<<<<< HEAD
-=======
-				regulator-always-on;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				regulator-boot-on;
 				regulator-state-mem {
 					regulator-on-in-suspend;
@@ -652,10 +621,7 @@
 		pinctrl-0 = <&max98090_irq>;
 		clocks = <&pmu_system_controller 0>;
 		clock-names = "mclk";
-<<<<<<< HEAD
 		#sound-dai-cells = <0>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	light-sensor@44 {
@@ -740,15 +706,12 @@
 };
 
 &i2s0 {
-<<<<<<< HEAD
 	assigned-clocks = <&i2s0 CLK_I2S_RCLK_SRC>;
 	assigned-clock-parents = <&clock_audss EXYNOS_I2S_BUS>;
 	status = "okay";
 };
 
 &mixer {
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 

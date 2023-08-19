@@ -84,11 +84,7 @@ int drm_i2c_encoder_init(struct drm_device *dev,
 
 	err = encoder_drv->encoder_init(client, dev, encoder);
 	if (err)
-<<<<<<< HEAD
 		goto fail_unregister;
-=======
-		goto fail_module_put;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (info->platform_data)
 		encoder->slave_funcs->set_config(&encoder->base,
@@ -96,16 +92,9 @@ int drm_i2c_encoder_init(struct drm_device *dev,
 
 	return 0;
 
-<<<<<<< HEAD
 fail_unregister:
 	i2c_unregister_device(client);
 	module_put(module);
-=======
-fail_module_put:
-	module_put(module);
-fail_unregister:
-	i2c_unregister_device(client);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 fail:
 	return err;
 }

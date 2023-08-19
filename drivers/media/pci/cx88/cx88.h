@@ -734,12 +734,7 @@ int cx8802_start_dma(struct cx8802_dev    *dev,
 int cx88_enum_input(struct cx88_core *core, struct v4l2_input *i);
 int cx88_set_freq(struct cx88_core  *core, const struct v4l2_frequency *f);
 int cx88_video_mux(struct cx88_core *core, unsigned int input);
-<<<<<<< HEAD
 int cx88_querycap(struct file *file, struct cx88_core *core,
 		  struct v4l2_capability *cap);
-=======
-void cx88_querycap(struct file *file, struct cx88_core *core,
-		   struct v4l2_capability *cap);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif

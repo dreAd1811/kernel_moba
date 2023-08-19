@@ -591,13 +591,8 @@ static int ntrig_event (struct hid_device *hid, struct hid_field *field,
 	switch (usage->hid) {
 	case 0xff000001:
 		/* Tag indicating the start of a multitouch group */
-<<<<<<< HEAD
 		nd->reading_mt = true;
 		nd->first_contact_touch = false;
-=======
-		nd->reading_mt = 1;
-		nd->first_contact_touch = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case HID_DG_TIPSWITCH:
 		nd->tipswitch = value;
@@ -668,11 +663,7 @@ static int ntrig_event (struct hid_device *hid, struct hid_field *field,
 			 * even if deactivation slack is turned off.
 			 */
 			nd->act_state = deactivate_slack - 1;
-<<<<<<< HEAD
 			nd->confidence = false;
-=======
-			nd->confidence = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 
@@ -688,11 +679,7 @@ static int ntrig_event (struct hid_device *hid, struct hid_field *field,
 			 */
 			if (nd->w < nd->min_width ||
 			    nd->h < nd->min_height)
-<<<<<<< HEAD
 				nd->confidence = false;
-=======
-				nd->confidence = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else
 			break;
 
@@ -771,11 +758,7 @@ static int ntrig_event (struct hid_device *hid, struct hid_field *field,
 		if (!nd->reading_mt) /* Just to be sure */
 			break;
 
-<<<<<<< HEAD
 		nd->reading_mt = false;
-=======
-		nd->reading_mt = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 		/*
@@ -927,11 +910,7 @@ static int ntrig_probe(struct hid_device *hdev, const struct hid_device_id *id)
 		return -ENOMEM;
 	}
 
-<<<<<<< HEAD
 	nd->reading_mt = false;
-=======
-	nd->reading_mt = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	nd->min_width = 0;
 	nd->min_height = 0;
 	nd->activate_slack = activate_slack;

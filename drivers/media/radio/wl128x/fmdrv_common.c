@@ -544,21 +544,13 @@ static inline void fm_irq_common_cmd_resp_helper(struct fmdev *fmdev, u8 stage)
  * interrupt process. Therefore reset stage index to re-enable default
  * interrupts. So that next interrupt will be processed as usual.
  */
-<<<<<<< HEAD
 static void int_timeout_handler(struct timer_list *t)
-=======
-static void int_timeout_handler(unsigned long data)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct fmdev *fmdev;
 	struct fm_irq *fmirq;
 
 	fmdbg("irq: timeout,trying to re-enable fm interrupts\n");
-<<<<<<< HEAD
 	fmdev = from_timer(fmdev, t, irq_info.timer);
-=======
-	fmdev = (struct fmdev *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	fmirq = &fmdev->irq_info;
 	fmirq->retry++;
 
@@ -1279,14 +1271,8 @@ static int fm_download_firmware(struct fmdev *fmdev, const u8 *fw_name)
 
 		switch (action->type) {
 		case ACTION_SEND_COMMAND:	/* Send */
-<<<<<<< HEAD
 			if (fmc_send_cmd(fmdev, 0, 0, action->data,
 						action->size, NULL, NULL))
-=======
-			ret = fmc_send_cmd(fmdev, 0, 0, action->data,
-					   action->size, NULL, NULL);
-			if (ret)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				goto rel_fw;
 
 			cmd_cnt++;
@@ -1567,12 +1553,7 @@ int fmc_prepare(struct fmdev *fmdev)
 	atomic_set(&fmdev->tx_cnt, 1);
 	fmdev->resp_comp = NULL;
 
-<<<<<<< HEAD
 	timer_setup(&fmdev->irq_info.timer, int_timeout_handler, 0);
-=======
-	setup_timer(&fmdev->irq_info.timer, &int_timeout_handler,
-		    (unsigned long)fmdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*TODO: add FM_STIC_EVENT later */
 	fmdev->irq_info.mask = FM_MAL_EVENT;
 

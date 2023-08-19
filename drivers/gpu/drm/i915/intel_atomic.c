@@ -59,12 +59,8 @@ int intel_digital_connector_atomic_get_property(struct drm_connector *connector,
 	else if (property == dev_priv->broadcast_rgb_property)
 		*val = intel_conn_state->broadcast_rgb;
 	else {
-<<<<<<< HEAD
 		DRM_DEBUG_ATOMIC("Unknown property [PROP:%d:%s]\n",
 				 property->base.id, property->name);
-=======
-		DRM_DEBUG_ATOMIC("Unknown property %s\n", property->name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -100,12 +96,8 @@ int intel_digital_connector_atomic_set_property(struct drm_connector *connector,
 		return 0;
 	}
 
-<<<<<<< HEAD
 	DRM_DEBUG_ATOMIC("Unknown property [PROP:%d:%s]\n",
 			 property->base.id, property->name);
-=======
-	DRM_DEBUG_ATOMIC("Unknown property %s\n", property->name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return -EINVAL;
 }
 
@@ -120,11 +112,8 @@ int intel_digital_connector_atomic_check(struct drm_connector *conn,
 		to_intel_digital_connector_state(old_state);
 	struct drm_crtc_state *crtc_state;
 
-<<<<<<< HEAD
 	intel_hdcp_atomic_check(conn, old_state, new_state);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!new_state->crtc)
 		return 0;
 
@@ -137,10 +126,7 @@ int intel_digital_connector_atomic_check(struct drm_connector *conn,
 	if (new_conn_state->force_audio != old_conn_state->force_audio ||
 	    new_conn_state->broadcast_rgb != old_conn_state->broadcast_rgb ||
 	    new_conn_state->base.picture_aspect_ratio != old_conn_state->base.picture_aspect_ratio ||
-<<<<<<< HEAD
 	    new_conn_state->base.content_type != old_conn_state->base.content_type ||
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    new_conn_state->base.scaling_mode != old_conn_state->base.scaling_mode)
 		crtc_state->mode_changed = true;
 
@@ -205,21 +191,14 @@ intel_crtc_duplicate_state(struct drm_crtc *crtc)
 /**
  * intel_crtc_destroy_state - destroy crtc state
  * @crtc: drm crtc
-<<<<<<< HEAD
  * @state: the state to destroy
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Destroys the crtc state (both common and Intel-specific) for the
  * specified crtc.
  */
 void
 intel_crtc_destroy_state(struct drm_crtc *crtc,
-<<<<<<< HEAD
 			 struct drm_crtc_state *state)
-=======
-			  struct drm_crtc_state *state)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	drm_atomic_helper_crtc_destroy_state(crtc, state);
 }
@@ -227,11 +206,7 @@ intel_crtc_destroy_state(struct drm_crtc *crtc,
 /**
  * intel_atomic_setup_scalers() - setup scalers for crtc per staged requests
  * @dev_priv: i915 device
-<<<<<<< HEAD
  * @intel_crtc: intel crtc
-=======
- * @crtc: intel crtc
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @crtc_state: incoming crtc_state to validate and setup scalers
  *
  * This function sets up scalers based on staged scaling requests for
@@ -255,10 +230,7 @@ int intel_atomic_setup_scalers(struct drm_i915_private *dev_priv,
 	struct intel_crtc_scaler_state *scaler_state =
 		&crtc_state->scaler_state;
 	struct drm_atomic_state *drm_state = crtc_state->base.state;
-<<<<<<< HEAD
 	struct intel_atomic_state *intel_state = to_intel_atomic_state(drm_state);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int num_scalers_need;
 	int i, j;
 
@@ -336,13 +308,8 @@ int intel_atomic_setup_scalers(struct drm_i915_private *dev_priv,
 				continue;
 			}
 
-<<<<<<< HEAD
 			plane_state = intel_atomic_get_new_plane_state(intel_state,
 								       intel_plane);
-=======
-			plane_state = intel_atomic_get_existing_plane_state(drm_state,
-									    intel_plane);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			scaler_id = &plane_state->scaler_id;
 		}
 
@@ -365,7 +332,6 @@ int intel_atomic_setup_scalers(struct drm_i915_private *dev_priv,
 		}
 
 		/* set scaler mode */
-<<<<<<< HEAD
 		if ((INTEL_GEN(dev_priv) >= 9) &&
 		    plane_state && plane_state->base.fb &&
 		    plane_state->base.fb->format->format ==
@@ -378,10 +344,6 @@ int intel_atomic_setup_scalers(struct drm_i915_private *dev_priv,
 			else
 				scaler_state->scalers[*scaler_id].mode =
 					PS_SCALER_MODE_PLANAR;
-=======
-		if (IS_GEMINILAKE(dev_priv) || IS_CANNONLAKE(dev_priv)) {
-			scaler_state->scalers[*scaler_id].mode = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else if (num_scalers_need == 1 && intel_crtc->pipe != PIPE_C) {
 			/*
 			 * when only 1 scaler is in use on either pipe A or B,

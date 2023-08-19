@@ -17,10 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-<<<<<<< HEAD
 #include <linux/cache.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/compat.h>
 #include <linux/errno.h>
 #include <linux/kernel.h>
@@ -35,10 +32,7 @@
 #include <linux/ratelimit.h>
 #include <linux/syscalls.h>
 
-<<<<<<< HEAD
 #include <asm/daifflags.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/debug-monitors.h>
 #include <asm/elf.h>
 #include <asm/cacheflush.h>
@@ -47,10 +41,7 @@
 #include <asm/fpsimd.h>
 #include <asm/ptrace.h>
 #include <asm/signal32.h>
-<<<<<<< HEAD
 #include <asm/traps.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/vdso.h>
 
 /*
@@ -75,10 +66,7 @@ struct rt_sigframe_user_layout {
 
 	unsigned long fpsimd_offset;
 	unsigned long esr_offset;
-<<<<<<< HEAD
 	unsigned long sve_offset;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long extra_offset;
 	unsigned long end_offset;
 };
@@ -192,19 +180,10 @@ static void __user *apply_user_offset(
 
 static int preserve_fpsimd_context(struct fpsimd_context __user *ctx)
 {
-<<<<<<< HEAD
 	struct user_fpsimd_state const *fpsimd =
 		&current->thread.uw.fpsimd_state;
 	int err;
 
-=======
-	struct fpsimd_state *fpsimd = &current->thread.fpsimd_state;
-	int err;
-
-	/* dump the hardware registers to the fpsimd_state structure */
-	fpsimd_preserve_current_state();
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* copy the FP and status/control registers */
 	err = __copy_to_user(ctx->vregs, fpsimd->vregs, sizeof(fpsimd->vregs));
 	__put_user_error(fpsimd->fpsr, &ctx->fpsr, err);
@@ -219,11 +198,7 @@ static int preserve_fpsimd_context(struct fpsimd_context __user *ctx)
 
 static int restore_fpsimd_context(struct fpsimd_context __user *ctx)
 {
-<<<<<<< HEAD
 	struct user_fpsimd_state fpsimd;
-=======
-	struct fpsimd_state fpsimd;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__u32 magic, size;
 	int err = 0;
 
@@ -241,11 +216,8 @@ static int restore_fpsimd_context(struct fpsimd_context __user *ctx)
 	__get_user_error(fpsimd.fpsr, &ctx->fpsr, err);
 	__get_user_error(fpsimd.fpcr, &ctx->fpcr, err);
 
-<<<<<<< HEAD
 	clear_thread_flag(TIF_SVE);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* load the hardware registers from the fpsimd_state structure */
 	if (!err)
 		fpsimd_update_current_state(&fpsimd);
@@ -253,7 +225,6 @@ static int restore_fpsimd_context(struct fpsimd_context __user *ctx)
 	return err ? -EFAULT : 0;
 }
 
-<<<<<<< HEAD
 
 struct user_ctxs {
 	struct fpsimd_context __user *fpsimd;
@@ -366,12 +337,6 @@ extern int restore_sve_fpsimd_context(struct user_ctxs *user);
 #endif /* ! CONFIG_ARM64_SVE */
 
 
-=======
-struct user_ctxs {
-	struct fpsimd_context __user *fpsimd;
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int parse_user_sigframe(struct user_ctxs *user,
 			       struct rt_sigframe __user *sf)
 {
@@ -384,10 +349,7 @@ static int parse_user_sigframe(struct user_ctxs *user,
 	char const __user *const sfp = (char const __user *)sf;
 
 	user->fpsimd = NULL;
-<<<<<<< HEAD
 	user->sve = NULL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!IS_ALIGNED((unsigned long)base, 16))
 		goto invalid;
@@ -438,7 +400,6 @@ static int parse_user_sigframe(struct user_ctxs *user,
 			/* ignore */
 			break;
 
-<<<<<<< HEAD
 		case SVE_MAGIC:
 			if (!system_supports_sve())
 				goto invalid;
@@ -452,8 +413,6 @@ static int parse_user_sigframe(struct user_ctxs *user,
 			user->sve = (struct sve_context __user *)head;
 			break;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case EXTRA_MAGIC:
 			if (have_extra_context)
 				goto invalid;
@@ -510,13 +469,10 @@ static int parse_user_sigframe(struct user_ctxs *user,
 			 */
 			offset = 0;
 			limit = extra_size;
-<<<<<<< HEAD
 
 			if (!access_ok(VERIFY_READ, base, limit))
 				goto invalid;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 
 		default:
@@ -533,12 +489,6 @@ static int parse_user_sigframe(struct user_ctxs *user,
 	}
 
 done:
-<<<<<<< HEAD
-=======
-	if (!user->fpsimd)
-		goto invalid;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 invalid:
@@ -572,7 +522,6 @@ static int restore_sigframe(struct pt_regs *regs,
 	if (err == 0)
 		err = parse_user_sigframe(&user, sf);
 
-<<<<<<< HEAD
 	if (err == 0) {
 		if (!user.fpsimd)
 			return -EINVAL;
@@ -586,22 +535,13 @@ static int restore_sigframe(struct pt_regs *regs,
 			err = restore_fpsimd_context(user.fpsimd);
 		}
 	}
-=======
-	if (err == 0)
-		err = restore_fpsimd_context(user.fpsimd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return err;
 }
 
-<<<<<<< HEAD
 SYSCALL_DEFINE0(rt_sigreturn)
 {
 	struct pt_regs *regs = current_pt_regs();
-=======
-asmlinkage long sys_rt_sigreturn(struct pt_regs *regs)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct rt_sigframe __user *frame;
 
 	/* Always make any pending restarted system calls return -EINTR */
@@ -628,7 +568,6 @@ asmlinkage long sys_rt_sigreturn(struct pt_regs *regs)
 	return regs->regs[0];
 
 badframe:
-<<<<<<< HEAD
 	arm64_notify_segfault(regs->sp);
 	return 0;
 }
@@ -642,18 +581,6 @@ badframe:
  */
 static int setup_sigframe_layout(struct rt_sigframe_user_layout *user,
 				 bool add_all)
-=======
-	if (show_unhandled_signals)
-		pr_info_ratelimited("%s[%d]: bad frame in %s: pc=%08llx sp=%08llx\n",
-				    current->comm, task_pid_nr(current), __func__,
-				    regs->pc, regs->sp);
-	force_sig(SIGSEGV, current);
-	return 0;
-}
-
-/* Determine the layout of optional records in the signal frame */
-static int setup_sigframe_layout(struct rt_sigframe_user_layout *user)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int err;
 
@@ -663,18 +590,13 @@ static int setup_sigframe_layout(struct rt_sigframe_user_layout *user)
 		return err;
 
 	/* fault information, if valid */
-<<<<<<< HEAD
 	if (add_all || current->thread.fault_code) {
-=======
-	if (current->thread.fault_code) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = sigframe_alloc(user, &user->esr_offset,
 				     sizeof(struct esr_context));
 		if (err)
 			return err;
 	}
 
-<<<<<<< HEAD
 	if (system_supports_sve()) {
 		unsigned int vq = 0;
 
@@ -696,12 +618,6 @@ static int setup_sigframe_layout(struct rt_sigframe_user_layout *user)
 	return sigframe_alloc_end(user);
 }
 
-=======
-	return sigframe_alloc_end(user);
-}
-
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int setup_sigframe(struct rt_sigframe_user_layout *user,
 			  struct pt_regs *regs, sigset_t *set)
 {
@@ -739,7 +655,6 @@ static int setup_sigframe(struct rt_sigframe_user_layout *user,
 		__put_user_error(current->thread.fault_code, &esr_ctx->esr, err);
 	}
 
-<<<<<<< HEAD
 	/* Scalable Vector Extension state, if present */
 	if (system_supports_sve() && err == 0 && user->sve_offset) {
 		struct sve_context __user *sve_ctx =
@@ -747,8 +662,6 @@ static int setup_sigframe(struct rt_sigframe_user_layout *user,
 		err |= preserve_sve_context(sve_ctx);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err == 0 && user->extra_offset) {
 		char __user *sfp = (char __user *)user->sigframe;
 		char __user *userp =
@@ -802,11 +715,7 @@ static int get_sigframe(struct rt_sigframe_user_layout *user,
 	int err;
 
 	init_user_layout(user);
-<<<<<<< HEAD
 	err = setup_sigframe_layout(user, false);
-=======
-	err = setup_sigframe_layout(user);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		return err;
 
@@ -852,11 +761,8 @@ static int setup_rt_frame(int usig, struct ksignal *ksig, sigset_t *set,
 	struct rt_sigframe __user *frame;
 	int err = 0;
 
-<<<<<<< HEAD
 	fpsimd_signal_preserve_current_state();
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (get_sigframe(&user, ksig, regs))
 		return 1;
 
@@ -897,11 +803,8 @@ static void handle_signal(struct ksignal *ksig, struct pt_regs *regs)
 	int usig = ksig->sig;
 	int ret;
 
-<<<<<<< HEAD
 	rseq_signal_deliver(ksig, regs);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Set up the stack frame
 	 */
@@ -1010,11 +913,7 @@ static void do_signal(struct pt_regs *regs)
 }
 
 asmlinkage void do_notify_resume(struct pt_regs *regs,
-<<<<<<< HEAD
 				 unsigned long thread_flags)
-=======
-				 unsigned int thread_flags)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/*
 	 * The assembly code enters us with IRQs off, but it hasn't
@@ -1028,18 +927,12 @@ asmlinkage void do_notify_resume(struct pt_regs *regs,
 		addr_limit_user_check();
 
 		if (thread_flags & _TIF_NEED_RESCHED) {
-<<<<<<< HEAD
 			/* Unmask Debug and SError for the next task */
 			local_daif_restore(DAIF_PROCCTX_NOIRQ);
 
 			schedule();
 		} else {
 			local_daif_restore(DAIF_PROCCTX);
-=======
-			schedule();
-		} else {
-			local_irq_enable();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			if (thread_flags & _TIF_UPROBE)
 				uprobe_notify_resume(regs);
@@ -1050,17 +943,13 @@ asmlinkage void do_notify_resume(struct pt_regs *regs,
 			if (thread_flags & _TIF_NOTIFY_RESUME) {
 				clear_thread_flag(TIF_NOTIFY_RESUME);
 				tracehook_notify_resume(regs);
-<<<<<<< HEAD
 				rseq_handle_notify_resume(NULL, regs);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 
 			if (thread_flags & _TIF_FOREIGN_FPSTATE)
 				fpsimd_restore_current_state();
 		}
 
-<<<<<<< HEAD
 		local_daif_mask();
 		thread_flags = READ_ONCE(current_thread_info()->flags);
 	} while (thread_flags & _TIF_WORK_MASK);
@@ -1090,9 +979,3 @@ void __init minsigstksz_setup(void)
 		round_up(sizeof(struct frame_record), 16) +
 		16; /* max alignment padding */
 }
-=======
-		local_irq_disable();
-		thread_flags = READ_ONCE(current_thread_info()->flags);
-	} while (thread_flags & _TIF_WORK_MASK);
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

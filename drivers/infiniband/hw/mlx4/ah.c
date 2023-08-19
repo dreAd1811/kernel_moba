@@ -82,24 +82,15 @@ static struct ib_ah *create_iboe_ah(struct ib_pd *pd,
 				    struct mlx4_ib_ah *ah)
 {
 	struct mlx4_ib_dev *ibdev = to_mdev(pd->device);
-<<<<<<< HEAD
 	const struct ib_gid_attr *gid_attr;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mlx4_dev *dev = ibdev->dev;
 	int is_mcast = 0;
 	struct in6_addr in6;
 	u16 vlan_tag = 0xffff;
-<<<<<<< HEAD
-=======
-	union ib_gid sgid;
-	struct ib_gid_attr gid_attr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const struct ib_global_route *grh = rdma_ah_read_grh(ah_attr);
 	int ret;
 
 	memcpy(&in6, grh->dgid.raw, sizeof(in6));
-<<<<<<< HEAD
 	if (rdma_is_multicast_addr(&in6))
 		is_mcast = 1;
 
@@ -124,38 +115,10 @@ static struct ib_ah *create_iboe_ah(struct ib_pd *pd,
 		ah->av.eth.gid_index = ah_attr->grh.sgid_index;
 	}
 
-=======
-	if (rdma_is_multicast_addr(&in6)) {
-		is_mcast = 1;
-		rdma_get_mcast_mac(&in6, ah->av.eth.mac);
-	} else {
-		memcpy(ah->av.eth.mac, ah_attr->roce.dmac, ETH_ALEN);
-	}
-	ret = ib_get_cached_gid(pd->device, rdma_ah_get_port_num(ah_attr),
-				grh->sgid_index, &sgid, &gid_attr);
-	if (ret)
-		return ERR_PTR(ret);
-	eth_zero_addr(ah->av.eth.s_mac);
-	if (gid_attr.ndev) {
-		if (is_vlan_dev(gid_attr.ndev))
-			vlan_tag = vlan_dev_vlan_id(gid_attr.ndev);
-		memcpy(ah->av.eth.s_mac, gid_attr.ndev->dev_addr, ETH_ALEN);
-		dev_put(gid_attr.ndev);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (vlan_tag < 0x1000)
 		vlan_tag |= (rdma_ah_get_sl(ah_attr) & 7) << 13;
 	ah->av.eth.port_pd = cpu_to_be32(to_mpd(pd)->pdn |
 					 (rdma_ah_get_port_num(ah_attr) << 24));
-<<<<<<< HEAD
-=======
-	ret = mlx4_ib_gid_index_to_real_index(ibdev,
-					      rdma_ah_get_port_num(ah_attr),
-					      grh->sgid_index);
-	if (ret < 0)
-		return ERR_PTR(ret);
-	ah->av.eth.gid_index = ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ah->av.eth.vlan = cpu_to_be16(vlan_tag);
 	ah->av.eth.hop_limit = grh->hop_limit;
 	if (rdma_ah_get_static_rate(ah_attr)) {
@@ -214,7 +177,6 @@ struct ib_ah *mlx4_ib_create_ah(struct ib_pd *pd, struct rdma_ah_attr *ah_attr,
 		return create_ib_ah(pd, ah_attr, ah); /* never fails */
 }
 
-<<<<<<< HEAD
 /* AH's created via this call must be free'd by mlx4_ib_destroy_ah. */
 struct ib_ah *mlx4_ib_create_ah_slave(struct ib_pd *pd,
 				      struct rdma_ah_attr *ah_attr,
@@ -249,8 +211,6 @@ struct ib_ah *mlx4_ib_create_ah_slave(struct ib_pd *pd,
 	return ah;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int mlx4_ib_query_ah(struct ib_ah *ibah, struct rdma_ah_attr *ah_attr)
 {
 	struct mlx4_ib_ah *ah = to_mah(ibah);

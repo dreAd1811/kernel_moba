@@ -441,11 +441,7 @@ static int raydium_i2c_write_object(struct i2c_client *client,
 	return 0;
 }
 
-<<<<<<< HEAD
 static bool raydium_i2c_boot_trigger(struct i2c_client *client)
-=======
-static int raydium_i2c_boot_trigger(struct i2c_client *client)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	static const u8 cmd[7][6] = {
 		{ 0x08, 0x0C, 0x09, 0x00, 0x50, 0xD7 },
@@ -470,17 +466,10 @@ static int raydium_i2c_boot_trigger(struct i2c_client *client)
 		}
 	}
 
-<<<<<<< HEAD
 	return false;
 }
 
 static bool raydium_i2c_fw_trigger(struct i2c_client *client)
-=======
-	return 0;
-}
-
-static int raydium_i2c_fw_trigger(struct i2c_client *client)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	static const u8 cmd[5][11] = {
 		{ 0, 0x09, 0x71, 0x0C, 0x09, 0x00, 0x50, 0xD7, 0, 0, 0 },
@@ -503,11 +492,7 @@ static int raydium_i2c_fw_trigger(struct i2c_client *client)
 		}
 	}
 
-<<<<<<< HEAD
 	return false;
-=======
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int raydium_i2c_check_path(struct i2c_client *client)
@@ -767,7 +752,6 @@ static int raydium_i2c_fw_update(struct raydium_data *ts)
 {
 	struct i2c_client *client = ts->client;
 	const struct firmware *fw = NULL;
-<<<<<<< HEAD
 	char *fw_file;
 	int error;
 
@@ -782,15 +766,6 @@ static int raydium_i2c_fw_update(struct raydium_data *ts)
 	if (error) {
 		dev_err(&client->dev, "Unable to open firmware %s\n", fw_file);
 		goto out_free_fw_file;
-=======
-	const char *fw_file = "raydium.fw";
-	int error;
-
-	error = request_firmware(&fw, fw_file, &client->dev);
-	if (error) {
-		dev_err(&client->dev, "Unable to open firmware %s\n", fw_file);
-		return error;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	disable_irq(client->irq);
@@ -819,12 +794,9 @@ out_enable_irq:
 
 	release_firmware(fw);
 
-<<<<<<< HEAD
 out_free_fw_file:
 	kfree(fw_file);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return error;
 }
 
@@ -981,16 +953,6 @@ static const struct attribute_group raydium_i2c_attribute_group = {
 	.attrs = raydium_i2c_attributes,
 };
 
-<<<<<<< HEAD
-=======
-static void raydium_i2c_remove_sysfs_group(void *_data)
-{
-	struct raydium_data *ts = _data;
-
-	sysfs_remove_group(&ts->client->dev.kobj, &raydium_i2c_attribute_group);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int raydium_i2c_power_on(struct raydium_data *ts)
 {
 	int error;
@@ -1161,11 +1123,7 @@ static int raydium_i2c_probe(struct i2c_client *client,
 		return error;
 	}
 
-<<<<<<< HEAD
 	error = devm_device_add_group(&client->dev,
-=======
-	error = sysfs_create_group(&client->dev.kobj,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   &raydium_i2c_attribute_group);
 	if (error) {
 		dev_err(&client->dev, "failed to create sysfs attributes: %d\n",
@@ -1173,18 +1131,6 @@ static int raydium_i2c_probe(struct i2c_client *client,
 		return error;
 	}
 
-<<<<<<< HEAD
-=======
-	error = devm_add_action(&client->dev,
-				raydium_i2c_remove_sysfs_group, ts);
-	if (error) {
-		raydium_i2c_remove_sysfs_group(ts);
-		dev_err(&client->dev,
-			"Failed to add sysfs cleanup action: %d\n", error);
-		return error;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

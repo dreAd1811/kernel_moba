@@ -13,10 +13,7 @@
 #include <asm/errno.h>
 #include <asm/ppc_asm.h>
 #include <asm/export.h>
-<<<<<<< HEAD
 #include <asm/code-patching-asm.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define COPY_16_BYTES		\
 	lwz	r7,4(r4);	\
@@ -111,13 +108,8 @@ _GLOBAL(memset)
 	 * Skip optimised bloc until cache is enabled. Will be replaced
 	 * by 'bne' during boot to use normal procedure if r4 is not zero
 	 */
-<<<<<<< HEAD
 5:	b	2f
 	patch_site	5b, patch__memset_nocache
-=======
-_GLOBAL(memset_nocache_branch)
-	b	2f
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	clrlwi	r7,r6,32-LG_CACHELINE_BYTES
 	add	r8,r7,r5
@@ -177,13 +169,9 @@ _GLOBAL(memmove)
 	/* fall through */
 
 _GLOBAL(memcpy)
-<<<<<<< HEAD
 1:	b	generic_memcpy
 	patch_site	1b, patch__memcpy_nocache
 
-=======
-	b	generic_memcpy
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	add	r7,r3,r5		/* test if the src & dst overlap */
 	add	r8,r4,r5
 	cmplw	0,r4,r7

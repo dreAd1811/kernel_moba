@@ -24,7 +24,6 @@
 #ifndef __AMDGPU_IH_H__
 #define __AMDGPU_IH_H__
 
-<<<<<<< HEAD
 #include <linux/chash.h>
 #include "soc15_ih_clientid.h"
 
@@ -39,52 +38,6 @@ struct amdgpu_retryfault_hashtable {
 	spinlock_t	lock;
 	int		count;
 };
-=======
-struct amdgpu_device;
- /*
-  * vega10+ IH clients
- */
-enum amdgpu_ih_clientid
-{
-    AMDGPU_IH_CLIENTID_IH	    = 0x00,
-    AMDGPU_IH_CLIENTID_ACP	    = 0x01,
-    AMDGPU_IH_CLIENTID_ATHUB	    = 0x02,
-    AMDGPU_IH_CLIENTID_BIF	    = 0x03,
-    AMDGPU_IH_CLIENTID_DCE	    = 0x04,
-    AMDGPU_IH_CLIENTID_ISP	    = 0x05,
-    AMDGPU_IH_CLIENTID_PCIE0	    = 0x06,
-    AMDGPU_IH_CLIENTID_RLC	    = 0x07,
-    AMDGPU_IH_CLIENTID_SDMA0	    = 0x08,
-    AMDGPU_IH_CLIENTID_SDMA1	    = 0x09,
-    AMDGPU_IH_CLIENTID_SE0SH	    = 0x0a,
-    AMDGPU_IH_CLIENTID_SE1SH	    = 0x0b,
-    AMDGPU_IH_CLIENTID_SE2SH	    = 0x0c,
-    AMDGPU_IH_CLIENTID_SE3SH	    = 0x0d,
-    AMDGPU_IH_CLIENTID_SYSHUB	    = 0x0e,
-    AMDGPU_IH_CLIENTID_THM	    = 0x0f,
-    AMDGPU_IH_CLIENTID_UVD	    = 0x10,
-    AMDGPU_IH_CLIENTID_VCE0	    = 0x11,
-    AMDGPU_IH_CLIENTID_VMC	    = 0x12,
-    AMDGPU_IH_CLIENTID_XDMA	    = 0x13,
-    AMDGPU_IH_CLIENTID_GRBM_CP	    = 0x14,
-    AMDGPU_IH_CLIENTID_ATS	    = 0x15,
-    AMDGPU_IH_CLIENTID_ROM_SMUIO    = 0x16,
-    AMDGPU_IH_CLIENTID_DF	    = 0x17,
-    AMDGPU_IH_CLIENTID_VCE1	    = 0x18,
-    AMDGPU_IH_CLIENTID_PWR	    = 0x19,
-    AMDGPU_IH_CLIENTID_UTCL2	    = 0x1b,
-    AMDGPU_IH_CLIENTID_EA	    = 0x1c,
-    AMDGPU_IH_CLIENTID_UTCL2LOG	    = 0x1d,
-    AMDGPU_IH_CLIENTID_MP0	    = 0x1e,
-    AMDGPU_IH_CLIENTID_MP1	    = 0x1f,
-
-    AMDGPU_IH_CLIENTID_MAX,
-
-    AMDGPU_IH_CLIENTID_VCN	    = AMDGPU_IH_CLIENTID_UVD
-};
-
-#define AMDGPU_IH_CLIENTID_LEGACY 0
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * R6xx+ IH ring
@@ -104,10 +57,7 @@ struct amdgpu_ih_ring {
 	bool			use_doorbell;
 	bool			use_bus_addr;
 	dma_addr_t		rb_dma_addr; /* only used when use_bus_addr = true */
-<<<<<<< HEAD
 	struct amdgpu_retryfault_hashtable *faults;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define AMDGPU_IH_SRC_DATA_MAX_SIZE_DW 4
@@ -116,19 +66,11 @@ struct amdgpu_iv_entry {
 	unsigned client_id;
 	unsigned src_id;
 	unsigned ring_id;
-<<<<<<< HEAD
 	unsigned vmid;
 	unsigned vmid_src;
 	uint64_t timestamp;
 	unsigned timestamp_src;
 	unsigned pasid;
-=======
-	unsigned vm_id;
-	unsigned vm_id_src;
-	uint64_t timestamp;
-	unsigned timestamp_src;
-	unsigned pas_id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned pasid_src;
 	unsigned src_data[AMDGPU_IH_SRC_DATA_MAX_SIZE_DW];
 	const uint32_t *iv_entry;
@@ -138,10 +80,7 @@ int amdgpu_ih_ring_init(struct amdgpu_device *adev, unsigned ring_size,
 			bool use_bus_addr);
 void amdgpu_ih_ring_fini(struct amdgpu_device *adev);
 int amdgpu_ih_process(struct amdgpu_device *adev);
-<<<<<<< HEAD
 int amdgpu_ih_add_fault(struct amdgpu_device *adev, u64 key);
 void amdgpu_ih_clear_fault(struct amdgpu_device *adev, u64 key);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif

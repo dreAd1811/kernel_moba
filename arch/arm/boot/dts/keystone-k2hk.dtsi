@@ -1,19 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Keystone 2 Kepler/Hawking soc specific device tree
  *
  * Copyright (C) 2013-2017 Texas Instruments Incorporated - http://www.ti.com/
-=======
-/*
- * Copyright 2013-2014 Texas Instruments, Inc.
- *
- * Keystone 2 Kepler/Hawking soc specific device tree
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <dt-bindings/reset/ti-syscon.h>
@@ -63,20 +52,12 @@
 		rproc6 = &dsp6;
 		rproc7 = &dsp7;
 	};
-<<<<<<< HEAD
 };
 
 &soc0 {
 		/include/ "keystone-k2hk-clocks.dtsi"
 
 		msm_ram: msmram@c000000 {
-=======
-
-	soc {
-		/include/ "keystone-k2hk-clocks.dtsi"
-
-		msm_ram: msmram@0c000000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "mmio-sram";
 			reg = <0x0c000000 0x600000>;
 			ranges = <0x0 0x0c000000 0x600000>;
@@ -88,11 +69,7 @@
 			};
 		};
 
-<<<<<<< HEAD
 		psc: power-sleep-controller@2350000 {
-=======
-		psc: power-sleep-controller@02350000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pscrst: reset-controller {
 				compatible = "ti,k2hk-pscrst", "ti,syscon-reset";
 				#reset-cells = <1>;
@@ -110,7 +87,6 @@
 			};
 		};
 
-<<<<<<< HEAD
 		devctrl: device-state-control@2620000 {
 			dspgpio0: keystone_dsp_gpio@240 {
 				compatible = "ti,keystone-dsp-gpio";
@@ -175,62 +151,6 @@
 				#gpio-cells = <2>;
 				gpio,syscon-dev = <&devctrl 0x25c>;
 			};
-=======
-		dspgpio0: keystone_dsp_gpio@02620240 {
-			compatible = "ti,keystone-dsp-gpio";
-			gpio-controller;
-			#gpio-cells = <2>;
-			gpio,syscon-dev = <&devctrl 0x240>;
-		};
-
-		dspgpio1: keystone_dsp_gpio@2620244 {
-			compatible = "ti,keystone-dsp-gpio";
-			gpio-controller;
-			#gpio-cells = <2>;
-			gpio,syscon-dev = <&devctrl 0x244>;
-		};
-
-		dspgpio2: keystone_dsp_gpio@2620248 {
-			compatible = "ti,keystone-dsp-gpio";
-			gpio-controller;
-			#gpio-cells = <2>;
-			gpio,syscon-dev = <&devctrl 0x248>;
-		};
-
-		dspgpio3: keystone_dsp_gpio@262024c {
-			compatible = "ti,keystone-dsp-gpio";
-			gpio-controller;
-			#gpio-cells = <2>;
-			gpio,syscon-dev = <&devctrl 0x24c>;
-		};
-
-		dspgpio4: keystone_dsp_gpio@2620250 {
-			compatible = "ti,keystone-dsp-gpio";
-			gpio-controller;
-			#gpio-cells = <2>;
-			gpio,syscon-dev = <&devctrl 0x250>;
-		};
-
-		dspgpio5: keystone_dsp_gpio@2620254 {
-			compatible = "ti,keystone-dsp-gpio";
-			gpio-controller;
-			#gpio-cells = <2>;
-			gpio,syscon-dev = <&devctrl 0x254>;
-		};
-
-		dspgpio6: keystone_dsp_gpio@2620258 {
-			compatible = "ti,keystone-dsp-gpio";
-			gpio-controller;
-			#gpio-cells = <2>;
-			gpio,syscon-dev = <&devctrl 0x258>;
-		};
-
-		dspgpio7: keystone_dsp_gpio@262025c {
-			compatible = "ti,keystone-dsp-gpio";
-			gpio-controller;
-			#gpio-cells = <2>;
-			gpio,syscon-dev = <&devctrl 0x25c>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		dsp0: dsp@10800000 {
@@ -361,11 +281,7 @@
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
 		mdio: mdio@2090300 {
-=======
-		mdio: mdio@02090300 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible	= "ti,keystone_mdio", "ti,davinci_mdio";
 			#address-cells = <1>;
 			#size-cells = <0>;
@@ -376,8 +292,4 @@
 			bus_freq	= <2500000>;
 		};
 		/include/ "keystone-k2hk-netcp.dtsi"
-<<<<<<< HEAD
-=======
-	};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

@@ -10,11 +10,7 @@
 
 static void sclp_early_write(struct console *con, const char *s, unsigned int len)
 {
-<<<<<<< HEAD
 	__sclp_early_printk(s, len, 0);
-=======
-	__sclp_early_printk(s, len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct console sclp_early_console = {

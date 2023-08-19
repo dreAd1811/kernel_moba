@@ -989,20 +989,12 @@ static const struct attribute_group si114x_attribute_group = {
 static const struct iio_info si1132_info = {
 	.read_raw = si1145_read_raw,
 	.write_raw = si1145_write_raw,
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.attrs = &si1132_attribute_group,
 };
 
 static const struct iio_info si114x_info = {
 	.read_raw = si1145_read_raw,
 	.write_raw = si1145_write_raw,
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.attrs = &si114x_attribute_group,
 };
 
@@ -1243,10 +1235,6 @@ disable:
 }
 
 static const struct iio_trigger_ops si1145_trigger_ops = {
-<<<<<<< HEAD
-=======
-	.owner = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.set_trigger_state = si1145_trigger_set_state,
 };
 

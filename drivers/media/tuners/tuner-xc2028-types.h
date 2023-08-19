@@ -1,20 +1,11 @@
-<<<<<<< HEAD
 /*
  * SPDX-License-Identifier: GPL-2.0
  * tuner-xc2028_types
-=======
-/* tuner-xc2028_types
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This file includes internal tipes to be used inside tuner-xc2028.
  * Shouldn't be included outside tuner-xc2028
  *
-<<<<<<< HEAD
  * Copyright (c) 2007-2008 Mauro Carvalho Chehab <mchehab@kernel.org>
-=======
- * Copyright (c) 2007-2008 Mauro Carvalho Chehab (mchehab@infradead.org)
- * This code is placed under the terms of the GNU General Public License v2
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /* xc3028 firmware types */

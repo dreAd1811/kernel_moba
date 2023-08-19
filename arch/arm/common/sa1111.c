@@ -108,10 +108,7 @@ struct sa1111 {
 	spinlock_t	lock;
 	void __iomem	*base;
 	struct sa1111_platform_data *pdata;
-<<<<<<< HEAD
 	struct irq_domain *irqdomain;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct gpio_chip gc;
 #ifdef CONFIG_PM
 	void		*saved_state;
@@ -129,11 +126,7 @@ struct sa1111_dev_info {
 	unsigned long	skpcr_mask;
 	bool		dma;
 	unsigned int	devid;
-<<<<<<< HEAD
 	unsigned int	hwirq[6];
-=======
-	unsigned int	irq[6];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct sa1111_dev_info sa1111_devices[] = {
@@ -142,11 +135,7 @@ static struct sa1111_dev_info sa1111_devices[] = {
 		.skpcr_mask	= SKPCR_UCLKEN,
 		.dma		= true,
 		.devid		= SA1111_DEVID_USB,
-<<<<<<< HEAD
 		.hwirq = {
-=======
-		.irq = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			IRQ_USBPWR,
 			IRQ_HCIM,
 			IRQ_HCIBUFFACC,
@@ -160,11 +149,7 @@ static struct sa1111_dev_info sa1111_devices[] = {
 		.skpcr_mask	= SKPCR_I2SCLKEN | SKPCR_L3CLKEN,
 		.dma		= true,
 		.devid		= SA1111_DEVID_SAC,
-<<<<<<< HEAD
 		.hwirq = {
-=======
-		.irq = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			AUDXMTDMADONEA,
 			AUDXMTDMADONEB,
 			AUDRCVDMADONEA,
@@ -180,11 +165,7 @@ static struct sa1111_dev_info sa1111_devices[] = {
 		.offset		= SA1111_KBD,
 		.skpcr_mask	= SKPCR_PTCLKEN,
 		.devid		= SA1111_DEVID_PS2_KBD,
-<<<<<<< HEAD
 		.hwirq = {
-=======
-		.irq = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			IRQ_TPRXINT,
 			IRQ_TPTXINT
 		},
@@ -193,11 +174,7 @@ static struct sa1111_dev_info sa1111_devices[] = {
 		.offset		= SA1111_MSE,
 		.skpcr_mask	= SKPCR_PMCLKEN,
 		.devid		= SA1111_DEVID_PS2_MSE,
-<<<<<<< HEAD
 		.hwirq = {
-=======
-		.irq = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			IRQ_MSRXINT,
 			IRQ_MSTXINT
 		},
@@ -206,11 +183,7 @@ static struct sa1111_dev_info sa1111_devices[] = {
 		.offset		= 0x1800,
 		.skpcr_mask	= 0,
 		.devid		= SA1111_DEVID_PCMCIA,
-<<<<<<< HEAD
 		.hwirq = {
-=======
-		.irq = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			IRQ_S0_READY_NINT,
 			IRQ_S0_CD_VALID,
 			IRQ_S0_BVD1_STSCHG,
@@ -221,7 +194,6 @@ static struct sa1111_dev_info sa1111_devices[] = {
 	},
 };
 
-<<<<<<< HEAD
 static int sa1111_map_irq(struct sa1111 *sachip, irq_hw_number_t hwirq)
 {
 	return irq_create_mapping(sachip->irqdomain, hwirq);
@@ -235,8 +207,6 @@ static void sa1111_handle_irqdomain(struct irq_domain *irqdomain, int irq)
 		generic_handle_irq_desc(d);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * SA1111 interrupt support.  Since clearing an IRQ while there are
  * active IRQs causes the interrupt output to pulse, the upper levels
@@ -246,7 +216,6 @@ static void sa1111_irq_handler(struct irq_desc *desc)
 {
 	unsigned int stat0, stat1, i;
 	struct sa1111 *sachip = irq_desc_get_handler_data(desc);
-<<<<<<< HEAD
 	struct irq_domain *irqdomain;
 	void __iomem *mapbase = sachip->base + SA1111_INTC;
 
@@ -258,25 +227,12 @@ static void sa1111_irq_handler(struct irq_desc *desc)
 	desc->irq_data.chip->irq_ack(&desc->irq_data);
 
 	writel_relaxed(stat1, mapbase + SA1111_INTSTATCLR1);
-=======
-	void __iomem *mapbase = sachip->base + SA1111_INTC;
-
-	stat0 = sa1111_readl(mapbase + SA1111_INTSTATCLR0);
-	stat1 = sa1111_readl(mapbase + SA1111_INTSTATCLR1);
-
-	sa1111_writel(stat0, mapbase + SA1111_INTSTATCLR0);
-
-	desc->irq_data.chip->irq_ack(&desc->irq_data);
-
-	sa1111_writel(stat1, mapbase + SA1111_INTSTATCLR1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (stat0 == 0 && stat1 == 0) {
 		do_bad_IRQ(desc);
 		return;
 	}
 
-<<<<<<< HEAD
 	irqdomain = sachip->irqdomain;
 
 	for (i = 0; stat0; i++, stat0 >>= 1)
@@ -286,45 +242,19 @@ static void sa1111_irq_handler(struct irq_desc *desc)
 	for (i = 32; stat1; i++, stat1 >>= 1)
 		if (stat1 & 1)
 			sa1111_handle_irqdomain(irqdomain, i);
-=======
-	for (i = 0; stat0; i++, stat0 >>= 1)
-		if (stat0 & 1)
-			generic_handle_irq(i + sachip->irq_base);
-
-	for (i = 32; stat1; i++, stat1 >>= 1)
-		if (stat1 & 1)
-			generic_handle_irq(i + sachip->irq_base);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* For level-based interrupts */
 	desc->irq_data.chip->irq_unmask(&desc->irq_data);
 }
 
-<<<<<<< HEAD
 static u32 sa1111_irqmask(struct irq_data *d)
 {
 	return BIT(irqd_to_hwirq(d) & 31);
-=======
-#define SA1111_IRQMASK_LO(x)	(1 << (x - sachip->irq_base))
-#define SA1111_IRQMASK_HI(x)	(1 << (x - sachip->irq_base - 32))
-
-static u32 sa1111_irqmask(struct irq_data *d)
-{
-	struct sa1111 *sachip = irq_data_get_irq_chip_data(d);
-
-	return BIT((d->irq - sachip->irq_base) & 31);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int sa1111_irqbank(struct irq_data *d)
 {
-<<<<<<< HEAD
 	return (irqd_to_hwirq(d) / 32) * 4;
-=======
-	struct sa1111 *sachip = irq_data_get_irq_chip_data(d);
-
-	return ((d->irq - sachip->irq_base) / 32) * 4;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void sa1111_ack_irq(struct irq_data *d)
@@ -337,15 +267,9 @@ static void sa1111_mask_irq(struct irq_data *d)
 	void __iomem *mapbase = sachip->base + SA1111_INTC + sa1111_irqbank(d);
 	u32 ie;
 
-<<<<<<< HEAD
 	ie = readl_relaxed(mapbase + SA1111_INTEN0);
 	ie &= ~sa1111_irqmask(d);
 	writel(ie, mapbase + SA1111_INTEN0);
-=======
-	ie = sa1111_readl(mapbase + SA1111_INTEN0);
-	ie &= ~sa1111_irqmask(d);
-	sa1111_writel(ie, mapbase + SA1111_INTEN0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void sa1111_unmask_irq(struct irq_data *d)
@@ -354,15 +278,9 @@ static void sa1111_unmask_irq(struct irq_data *d)
 	void __iomem *mapbase = sachip->base + SA1111_INTC + sa1111_irqbank(d);
 	u32 ie;
 
-<<<<<<< HEAD
 	ie = readl_relaxed(mapbase + SA1111_INTEN0);
 	ie |= sa1111_irqmask(d);
 	writel_relaxed(ie, mapbase + SA1111_INTEN0);
-=======
-	ie = sa1111_readl(mapbase + SA1111_INTEN0);
-	ie |= sa1111_irqmask(d);
-	sa1111_writel(ie, mapbase + SA1111_INTEN0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -379,19 +297,11 @@ static int sa1111_retrigger_irq(struct irq_data *d)
 	u32 ip, mask = sa1111_irqmask(d);
 	int i;
 
-<<<<<<< HEAD
 	ip = readl_relaxed(mapbase + SA1111_INTPOL0);
 	for (i = 0; i < 8; i++) {
 		writel_relaxed(ip ^ mask, mapbase + SA1111_INTPOL0);
 		writel_relaxed(ip, mapbase + SA1111_INTPOL0);
 		if (readl_relaxed(mapbase + SA1111_INTSTATCLR0) & mask)
-=======
-	ip = sa1111_readl(mapbase + SA1111_INTPOL0);
-	for (i = 0; i < 8; i++) {
-		sa1111_writel(ip ^ mask, mapbase + SA1111_INTPOL0);
-		sa1111_writel(ip, mapbase + SA1111_INTPOL0);
-		if (sa1111_readl(mapbase + SA1111_INTSTATCLR0) & mask)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 	}
 
@@ -413,22 +323,13 @@ static int sa1111_type_irq(struct irq_data *d, unsigned int flags)
 	if ((!(flags & IRQ_TYPE_EDGE_RISING) ^ !(flags & IRQ_TYPE_EDGE_FALLING)) == 0)
 		return -EINVAL;
 
-<<<<<<< HEAD
 	ip = readl_relaxed(mapbase + SA1111_INTPOL0);
-=======
-	ip = sa1111_readl(mapbase + SA1111_INTPOL0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (flags & IRQ_TYPE_EDGE_RISING)
 		ip &= ~mask;
 	else
 		ip |= mask;
-<<<<<<< HEAD
 	writel_relaxed(ip, mapbase + SA1111_INTPOL0);
 	writel_relaxed(ip, mapbase + SA1111_WAKEPOL0);
-=======
-	sa1111_writel(ip, mapbase + SA1111_INTPOL0);
-	sa1111_writel(ip, mapbase + SA1111_WAKEPOL0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -439,20 +340,12 @@ static int sa1111_wake_irq(struct irq_data *d, unsigned int on)
 	void __iomem *mapbase = sachip->base + SA1111_INTC + sa1111_irqbank(d);
 	u32 we, mask = sa1111_irqmask(d);
 
-<<<<<<< HEAD
 	we = readl_relaxed(mapbase + SA1111_WAKEEN0);
-=======
-	we = sa1111_readl(mapbase + SA1111_WAKEEN0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (on)
 		we |= mask;
 	else
 		we &= ~mask;
-<<<<<<< HEAD
 	writel_relaxed(we, mapbase + SA1111_WAKEEN0);
-=======
-	sa1111_writel(we, mapbase + SA1111_WAKEEN0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -467,7 +360,6 @@ static struct irq_chip sa1111_irq_chip = {
 	.irq_set_wake	= sa1111_wake_irq,
 };
 
-<<<<<<< HEAD
 static int sa1111_irqdomain_map(struct irq_domain *d, unsigned int irq,
 	irq_hw_number_t hwirq)
 {
@@ -492,12 +384,6 @@ static const struct irq_domain_ops sa1111_irqdomain_ops = {
 static int sa1111_setup_irq(struct sa1111 *sachip, unsigned irq_base)
 {
 	void __iomem *irqbase = sachip->base + SA1111_INTC;
-=======
-static int sa1111_setup_irq(struct sa1111 *sachip, unsigned irq_base)
-{
-	void __iomem *irqbase = sachip->base + SA1111_INTC;
-	unsigned i, irq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	/*
@@ -517,23 +403,15 @@ static int sa1111_setup_irq(struct sa1111 *sachip, unsigned irq_base)
 	sachip->irq_base = ret;
 
 	/* disable all IRQs */
-<<<<<<< HEAD
 	writel_relaxed(0, irqbase + SA1111_INTEN0);
 	writel_relaxed(0, irqbase + SA1111_INTEN1);
 	writel_relaxed(0, irqbase + SA1111_WAKEEN0);
 	writel_relaxed(0, irqbase + SA1111_WAKEEN1);
-=======
-	sa1111_writel(0, irqbase + SA1111_INTEN0);
-	sa1111_writel(0, irqbase + SA1111_INTEN1);
-	sa1111_writel(0, irqbase + SA1111_WAKEEN0);
-	sa1111_writel(0, irqbase + SA1111_WAKEEN1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * detect on rising edge.  Note: Feb 2001 Errata for SA1111
 	 * specifies that S0ReadyInt and S1ReadyInt should be '1'.
 	 */
-<<<<<<< HEAD
 	writel_relaxed(0, irqbase + SA1111_INTPOL0);
 	writel_relaxed(BIT(IRQ_S0_READY_NINT & 31) |
 		       BIT(IRQ_S1_READY_NINT & 31),
@@ -558,30 +436,6 @@ static int sa1111_setup_irq(struct sa1111 *sachip, unsigned irq_base)
 				  sachip->irq_base + AUDXMTDMADONEA,
 				  AUDXMTDMADONEA,
 				  IRQ_S1_BVD1_STSCHG + 1 - AUDXMTDMADONEA);
-=======
-	sa1111_writel(0, irqbase + SA1111_INTPOL0);
-	sa1111_writel(BIT(IRQ_S0_READY_NINT & 31) |
-		      BIT(IRQ_S1_READY_NINT & 31),
-		      irqbase + SA1111_INTPOL1);
-
-	/* clear all IRQs */
-	sa1111_writel(~0, irqbase + SA1111_INTSTATCLR0);
-	sa1111_writel(~0, irqbase + SA1111_INTSTATCLR1);
-
-	for (i = IRQ_GPAIN0; i <= SSPROR; i++) {
-		irq = sachip->irq_base + i;
-		irq_set_chip_and_handler(irq, &sa1111_irq_chip, handle_edge_irq);
-		irq_set_chip_data(irq, sachip);
-		irq_clear_status_flags(irq, IRQ_NOREQUEST | IRQ_NOPROBE);
-	}
-
-	for (i = AUDXMTDMADONEA; i <= IRQ_S1_BVD1_STSCHG; i++) {
-		irq = sachip->irq_base + i;
-		irq_set_chip_and_handler(irq, &sa1111_irq_chip, handle_edge_irq);
-		irq_set_chip_data(irq, sachip);
-		irq_clear_status_flags(irq, IRQ_NOREQUEST | IRQ_NOPROBE);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Register SA1111 interrupt
@@ -598,7 +452,6 @@ static int sa1111_setup_irq(struct sa1111 *sachip, unsigned irq_base)
 
 static void sa1111_remove_irq(struct sa1111 *sachip)
 {
-<<<<<<< HEAD
 	struct irq_domain *domain = sachip->irqdomain;
 	void __iomem *irqbase = sachip->base + SA1111_INTC;
 	int i;
@@ -615,22 +468,6 @@ static void sa1111_remove_irq(struct sa1111 *sachip)
 	irq_domain_remove(domain);
 
 	release_mem_region(sachip->phys + SA1111_INTC, 512);
-=======
-	void __iomem *irqbase = sachip->base + SA1111_INTC;
-
-	/* disable all IRQs */
-	sa1111_writel(0, irqbase + SA1111_INTEN0);
-	sa1111_writel(0, irqbase + SA1111_INTEN1);
-	sa1111_writel(0, irqbase + SA1111_WAKEEN0);
-	sa1111_writel(0, irqbase + SA1111_WAKEEN1);
-
-	if (sachip->irq != NO_IRQ) {
-		irq_set_chained_handler_and_data(sachip->irq, NULL, NULL);
-		irq_free_descs(sachip->irq_base, SA1111_IRQ_NR);
-
-		release_mem_region(sachip->phys + SA1111_INTC, 512);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 enum {
@@ -769,11 +606,7 @@ static int sa1111_gpio_to_irq(struct gpio_chip *gc, unsigned offset)
 {
 	struct sa1111 *sachip = gc_to_sa1111(gc);
 
-<<<<<<< HEAD
 	return sa1111_map_irq(sachip, offset);
-=======
-	return sachip->irq_base + offset;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int sa1111_setup_gpios(struct sa1111 *sachip)
@@ -819,19 +652,11 @@ static void sa1111_wake(struct sa1111 *sachip)
 	/*
 	 * Turn VCO on, and disable PLL Bypass.
 	 */
-<<<<<<< HEAD
 	r = readl_relaxed(sachip->base + SA1111_SKCR);
 	r &= ~SKCR_VCO_OFF;
 	writel_relaxed(r, sachip->base + SA1111_SKCR);
 	r |= SKCR_PLL_BYPASS | SKCR_OE_EN;
 	writel_relaxed(r, sachip->base + SA1111_SKCR);
-=======
-	r = sa1111_readl(sachip->base + SA1111_SKCR);
-	r &= ~SKCR_VCO_OFF;
-	sa1111_writel(r, sachip->base + SA1111_SKCR);
-	r |= SKCR_PLL_BYPASS | SKCR_OE_EN;
-	sa1111_writel(r, sachip->base + SA1111_SKCR);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Wait lock time.  SA1111 manual _doesn't_
@@ -843,11 +668,7 @@ static void sa1111_wake(struct sa1111 *sachip)
 	 * Enable RCLK.  We also ensure that RDYEN is set.
 	 */
 	r |= SKCR_RCLKEN | SKCR_RDYEN;
-<<<<<<< HEAD
 	writel_relaxed(r, sachip->base + SA1111_SKCR);
-=======
-	sa1111_writel(r, sachip->base + SA1111_SKCR);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Wait 14 RCLK cycles for the chip to finish coming out
@@ -858,11 +679,7 @@ static void sa1111_wake(struct sa1111 *sachip)
 	/*
 	 * Ensure all clocks are initially off.
 	 */
-<<<<<<< HEAD
 	writel_relaxed(0, sachip->base + SA1111_SKPCR);
-=======
-	sa1111_writel(0, sachip->base + SA1111_SKPCR);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_unlock_irqrestore(&sachip->lock, flags);
 }
@@ -892,11 +709,7 @@ sa1111_configure_smc(struct sa1111 *sachip, int sdram, unsigned int drac,
 	if (cas_latency == 3)
 		smcr |= SMCR_CLAT;
 
-<<<<<<< HEAD
 	writel_relaxed(smcr, sachip->base + SA1111_SMCR);
-=======
-	sa1111_writel(smcr, sachip->base + SA1111_SMCR);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Now clear the bits in the DMA mask to work around the SA1111
@@ -944,13 +757,8 @@ sa1111_init_one_child(struct sa1111 *sachip, struct resource *parent,
 	dev->mapbase     = sachip->base + info->offset;
 	dev->skpcr_mask  = info->skpcr_mask;
 
-<<<<<<< HEAD
 	for (i = 0; i < ARRAY_SIZE(info->hwirq); i++)
 		dev->hwirq[i] = info->hwirq[i];
-=======
-	for (i = 0; i < ARRAY_SIZE(info->irq); i++)
-		dev->irq[i] = sachip->irq_base + info->irq[i];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * If the parent device has a DMA mask associated with it, and
@@ -1040,11 +848,7 @@ static int __sa1111_probe(struct device *me, struct resource *mem, int irq)
 	/*
 	 * Probe for the chip.  Only touch the SBI registers.
 	 */
-<<<<<<< HEAD
 	id = readl_relaxed(sachip->base + SA1111_SKID);
-=======
-	id = sa1111_readl(sachip->base + SA1111_SKID);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if ((id & SKID_ID_MASK) != SKID_SA1111_ID) {
 		printk(KERN_DEBUG "SA1111 not detected: ID = %08lx\n", id);
 		ret = -ENODEV;
@@ -1063,17 +867,9 @@ static int __sa1111_probe(struct device *me, struct resource *mem, int irq)
 	 * The interrupt controller must be initialised before any
 	 * other device to ensure that the interrupts are available.
 	 */
-<<<<<<< HEAD
 	ret = sa1111_setup_irq(sachip, pd->irq_base);
 	if (ret)
 		goto err_clk;
-=======
-	if (sachip->irq != NO_IRQ) {
-		ret = sa1111_setup_irq(sachip, pd->irq_base);
-		if (ret)
-			goto err_clk;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Setup the GPIOs - should really be done after the IRQ setup */
 	ret = sa1111_setup_gpios(sachip);
@@ -1100,13 +896,8 @@ static int __sa1111_probe(struct device *me, struct resource *mem, int irq)
 	 * DMA.  It can otherwise be held firmly in the off position.
 	 * (currently, we always enable it.)
 	 */
-<<<<<<< HEAD
 	val = readl_relaxed(sachip->base + SA1111_SKPCR);
 	writel_relaxed(val | SKPCR_DCLKEN, sachip->base + SA1111_SKPCR);
-=======
-	val = sa1111_readl(sachip->base + SA1111_SKPCR);
-	sa1111_writel(val | SKPCR_DCLKEN, sachip->base + SA1111_SKPCR);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Enable the SA1110 memory bus request and grant signals.
@@ -1203,7 +994,6 @@ static int sa1111_suspend_noirq(struct device *dev)
 	 * Save state.
 	 */
 	base = sachip->base;
-<<<<<<< HEAD
 	save->skcr     = readl_relaxed(base + SA1111_SKCR);
 	save->skpcr    = readl_relaxed(base + SA1111_SKPCR);
 	save->skcdr    = readl_relaxed(base + SA1111_SKCDR);
@@ -1223,38 +1013,12 @@ static int sa1111_suspend_noirq(struct device *dev)
 	save->wakepol1 = readl_relaxed(base + SA1111_WAKEPOL1);
 	save->wakeen0  = readl_relaxed(base + SA1111_WAKEEN0);
 	save->wakeen1  = readl_relaxed(base + SA1111_WAKEEN1);
-=======
-	save->skcr     = sa1111_readl(base + SA1111_SKCR);
-	save->skpcr    = sa1111_readl(base + SA1111_SKPCR);
-	save->skcdr    = sa1111_readl(base + SA1111_SKCDR);
-	save->skaud    = sa1111_readl(base + SA1111_SKAUD);
-	save->skpwm0   = sa1111_readl(base + SA1111_SKPWM0);
-	save->skpwm1   = sa1111_readl(base + SA1111_SKPWM1);
-
-	sa1111_writel(0, sachip->base + SA1111_SKPWM0);
-	sa1111_writel(0, sachip->base + SA1111_SKPWM1);
-
-	base = sachip->base + SA1111_INTC;
-	save->intpol0  = sa1111_readl(base + SA1111_INTPOL0);
-	save->intpol1  = sa1111_readl(base + SA1111_INTPOL1);
-	save->inten0   = sa1111_readl(base + SA1111_INTEN0);
-	save->inten1   = sa1111_readl(base + SA1111_INTEN1);
-	save->wakepol0 = sa1111_readl(base + SA1111_WAKEPOL0);
-	save->wakepol1 = sa1111_readl(base + SA1111_WAKEPOL1);
-	save->wakeen0  = sa1111_readl(base + SA1111_WAKEEN0);
-	save->wakeen1  = sa1111_readl(base + SA1111_WAKEEN1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Disable.
 	 */
-<<<<<<< HEAD
 	val = readl_relaxed(sachip->base + SA1111_SKCR);
 	writel_relaxed(val | SKCR_SLEEP, sachip->base + SA1111_SKCR);
-=======
-	val = sa1111_readl(sachip->base + SA1111_SKCR);
-	sa1111_writel(val | SKCR_SLEEP, sachip->base + SA1111_SKCR);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	clk_disable(sachip->clk);
 
@@ -1291,11 +1055,7 @@ static int sa1111_resume_noirq(struct device *dev)
 	 * Ensure that the SA1111 is still here.
 	 * FIXME: shouldn't do this here.
 	 */
-<<<<<<< HEAD
 	id = readl_relaxed(sachip->base + SA1111_SKID);
-=======
-	id = sa1111_readl(sachip->base + SA1111_SKID);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if ((id & SKID_ID_MASK) != SKID_SA1111_ID) {
 		__sa1111_remove(sachip);
 		dev_set_drvdata(dev, NULL);
@@ -1319,7 +1079,6 @@ static int sa1111_resume_noirq(struct device *dev)
 	 */
 	spin_lock_irqsave(&sachip->lock, flags);
 
-<<<<<<< HEAD
 	writel_relaxed(0, sachip->base + SA1111_INTC + SA1111_INTEN0);
 	writel_relaxed(0, sachip->base + SA1111_INTC + SA1111_INTEN1);
 
@@ -1340,28 +1099,6 @@ static int sa1111_resume_noirq(struct device *dev)
 	writel_relaxed(save->wakepol1, base + SA1111_WAKEPOL1);
 	writel_relaxed(save->wakeen0,  base + SA1111_WAKEEN0);
 	writel_relaxed(save->wakeen1,  base + SA1111_WAKEEN1);
-=======
-	sa1111_writel(0, sachip->base + SA1111_INTC + SA1111_INTEN0);
-	sa1111_writel(0, sachip->base + SA1111_INTC + SA1111_INTEN1);
-
-	base = sachip->base;
-	sa1111_writel(save->skcr,     base + SA1111_SKCR);
-	sa1111_writel(save->skpcr,    base + SA1111_SKPCR);
-	sa1111_writel(save->skcdr,    base + SA1111_SKCDR);
-	sa1111_writel(save->skaud,    base + SA1111_SKAUD);
-	sa1111_writel(save->skpwm0,   base + SA1111_SKPWM0);
-	sa1111_writel(save->skpwm1,   base + SA1111_SKPWM1);
-
-	base = sachip->base + SA1111_INTC;
-	sa1111_writel(save->intpol0,  base + SA1111_INTPOL0);
-	sa1111_writel(save->intpol1,  base + SA1111_INTPOL1);
-	sa1111_writel(save->inten0,   base + SA1111_INTEN0);
-	sa1111_writel(save->inten1,   base + SA1111_INTEN1);
-	sa1111_writel(save->wakepol0, base + SA1111_WAKEPOL0);
-	sa1111_writel(save->wakepol1, base + SA1111_WAKEPOL1);
-	sa1111_writel(save->wakeen0,  base + SA1111_WAKEEN0);
-	sa1111_writel(save->wakeen1,  base + SA1111_WAKEEN1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_unlock_irqrestore(&sachip->lock, flags);
 
@@ -1448,11 +1185,7 @@ static unsigned int __sa1111_pll_clock(struct sa1111 *sachip)
 {
 	unsigned int skcdr, fbdiv, ipdiv, opdiv;
 
-<<<<<<< HEAD
 	skcdr = readl_relaxed(sachip->base + SA1111_SKCDR);
-=======
-	skcdr = sa1111_readl(sachip->base + SA1111_SKCDR);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	fbdiv = (skcdr & 0x007f) + 2;
 	ipdiv = ((skcdr & 0x0f80) >> 7) + 2;
@@ -1494,21 +1227,13 @@ void sa1111_select_audio_mode(struct sa1111_dev *sadev, int mode)
 
 	spin_lock_irqsave(&sachip->lock, flags);
 
-<<<<<<< HEAD
 	val = readl_relaxed(sachip->base + SA1111_SKCR);
-=======
-	val = sa1111_readl(sachip->base + SA1111_SKCR);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (mode == SA1111_AUDIO_I2S) {
 		val &= ~SKCR_SELAC;
 	} else {
 		val |= SKCR_SELAC;
 	}
-<<<<<<< HEAD
 	writel_relaxed(val, sachip->base + SA1111_SKCR);
-=======
-	sa1111_writel(val, sachip->base + SA1111_SKCR);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_unlock_irqrestore(&sachip->lock, flags);
 }
@@ -1533,11 +1258,7 @@ int sa1111_set_audio_rate(struct sa1111_dev *sadev, int rate)
 	if (div > 128)
 		div = 128;
 
-<<<<<<< HEAD
 	writel_relaxed(div - 1, sachip->base + SA1111_SKAUD);
-=======
-	sa1111_writel(div - 1, sachip->base + SA1111_SKAUD);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -1555,11 +1276,7 @@ int sa1111_get_audio_rate(struct sa1111_dev *sadev)
 	if (sadev->devid != SA1111_DEVID_SAC)
 		return -EINVAL;
 
-<<<<<<< HEAD
 	div = readl_relaxed(sachip->base + SA1111_SKAUD) + 1;
-=======
-	div = sa1111_readl(sachip->base + SA1111_SKAUD) + 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return __sa1111_pll_clock(sachip) / (256 * div);
 }
@@ -1576,17 +1293,10 @@ void sa1111_set_io_dir(struct sa1111_dev *sadev,
 
 #define MODIFY_BITS(port, mask, dir)		\
 	if (mask) {				\
-<<<<<<< HEAD
 		val = readl_relaxed(port);	\
 		val &= ~(mask);			\
 		val |= (dir) & (mask);		\
 		writel_relaxed(val, port);	\
-=======
-		val = sa1111_readl(port);	\
-		val &= ~(mask);			\
-		val |= (dir) & (mask);		\
-		sa1111_writel(val, port);	\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	spin_lock_irqsave(&sachip->lock, flags);
@@ -1651,13 +1361,8 @@ int sa1111_enable_device(struct sa1111_dev *sadev)
 
 	if (ret == 0) {
 		spin_lock_irqsave(&sachip->lock, flags);
-<<<<<<< HEAD
 		val = readl_relaxed(sachip->base + SA1111_SKPCR);
 		writel_relaxed(val | sadev->skpcr_mask, sachip->base + SA1111_SKPCR);
-=======
-		val = sa1111_readl(sachip->base + SA1111_SKPCR);
-		sa1111_writel(val | sadev->skpcr_mask, sachip->base + SA1111_SKPCR);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_unlock_irqrestore(&sachip->lock, flags);
 	}
 	return ret;
@@ -1675,13 +1380,8 @@ void sa1111_disable_device(struct sa1111_dev *sadev)
 	unsigned int val;
 
 	spin_lock_irqsave(&sachip->lock, flags);
-<<<<<<< HEAD
 	val = readl_relaxed(sachip->base + SA1111_SKPCR);
 	writel_relaxed(val & ~sadev->skpcr_mask, sachip->base + SA1111_SKPCR);
-=======
-	val = sa1111_readl(sachip->base + SA1111_SKPCR);
-	sa1111_writel(val & ~sadev->skpcr_mask, sachip->base + SA1111_SKPCR);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irqrestore(&sachip->lock, flags);
 
 	if (sachip->pdata && sachip->pdata->disable)
@@ -1691,16 +1391,10 @@ EXPORT_SYMBOL(sa1111_disable_device);
 
 int sa1111_get_irq(struct sa1111_dev *sadev, unsigned num)
 {
-<<<<<<< HEAD
 	struct sa1111 *sachip = sa1111_chip_driver(sadev);
 	if (num >= ARRAY_SIZE(sadev->hwirq))
 		return -EINVAL;
 	return sa1111_map_irq(sachip, sadev->hwirq[num]);
-=======
-	if (num >= ARRAY_SIZE(sadev->irq))
-		return -EINVAL;
-	return sadev->irq[num];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(sa1111_get_irq);
 
@@ -1718,39 +1412,6 @@ static int sa1111_match(struct device *_dev, struct device_driver *_drv)
 	return !!(dev->devid & drv->devid);
 }
 
-<<<<<<< HEAD
-=======
-static int sa1111_bus_suspend(struct device *dev, pm_message_t state)
-{
-	struct sa1111_dev *sadev = to_sa1111_device(dev);
-	struct sa1111_driver *drv = SA1111_DRV(dev->driver);
-	int ret = 0;
-
-	if (drv && drv->suspend)
-		ret = drv->suspend(sadev, state);
-	return ret;
-}
-
-static int sa1111_bus_resume(struct device *dev)
-{
-	struct sa1111_dev *sadev = to_sa1111_device(dev);
-	struct sa1111_driver *drv = SA1111_DRV(dev->driver);
-	int ret = 0;
-
-	if (drv && drv->resume)
-		ret = drv->resume(sadev);
-	return ret;
-}
-
-static void sa1111_bus_shutdown(struct device *dev)
-{
-	struct sa1111_driver *drv = SA1111_DRV(dev->driver);
-
-	if (drv && drv->shutdown)
-		drv->shutdown(to_sa1111_device(dev));
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int sa1111_bus_probe(struct device *dev)
 {
 	struct sa1111_dev *sadev = to_sa1111_device(dev);
@@ -1778,12 +1439,6 @@ struct bus_type sa1111_bus_type = {
 	.match		= sa1111_match,
 	.probe		= sa1111_bus_probe,
 	.remove		= sa1111_bus_remove,
-<<<<<<< HEAD
-=======
-	.suspend	= sa1111_bus_suspend,
-	.resume		= sa1111_bus_resume,
-	.shutdown	= sa1111_bus_shutdown,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 EXPORT_SYMBOL(sa1111_bus_type);
 

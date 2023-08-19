@@ -15,10 +15,7 @@
  */
 
 #include <linux/firmware.h>
-<<<<<<< HEAD
 #include <net/bluetooth/bluetooth.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "rsi_mgmt.h"
 #include "rsi_hal.h"
 #include "rsi_sdio.h"
@@ -28,13 +25,10 @@
 static struct ta_metadata metadata_flash_content[] = {
 	{"flash_content", 0x00010000},
 	{"rsi/rs9113_wlan_qspi.rps", 0x00010000},
-<<<<<<< HEAD
 	{"rsi/rs9113_wlan_bt_dual_mode.rps", 0x00010000},
 	{"flash_content", 0x00010000},
 	{"rsi/rs9113_ap_bt_dual_mode.rps", 0x00010000},
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int rsi_send_pkt_to_bus(struct rsi_common *common, struct sk_buff *skb)
@@ -42,7 +36,6 @@ int rsi_send_pkt_to_bus(struct rsi_common *common, struct sk_buff *skb)
 	struct rsi_hw *adapter = common->priv;
 	int status;
 
-<<<<<<< HEAD
 	if (common->coex_mode > 1)
 		mutex_lock(&common->tx_bus_mutex);
 
@@ -56,31 +49,15 @@ int rsi_send_pkt_to_bus(struct rsi_common *common, struct sk_buff *skb)
 }
 
 int rsi_prepare_mgmt_desc(struct rsi_common *common, struct sk_buff *skb)
-=======
-	status = adapter->host_intf_ops->write_pkt(common->priv,
-						   skb->data, skb->len);
-	return status;
-}
-
-static int rsi_prepare_mgmt_desc(struct rsi_common *common, struct sk_buff *skb)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rsi_hw *adapter = common->priv;
 	struct ieee80211_hdr *wh = NULL;
 	struct ieee80211_tx_info *info;
 	struct ieee80211_conf *conf = &adapter->hw->conf;
-<<<<<<< HEAD
 	struct ieee80211_vif *vif;
 	struct rsi_mgmt_desc *mgmt_desc;
 	struct skb_info *tx_params;
 	struct rsi_xtended_desc *xtend_desc = NULL;
-=======
-	struct ieee80211_vif *vif = adapter->vifs[0];
-	struct rsi_mgmt_desc *mgmt_desc;
-	struct skb_info *tx_params;
-	struct ieee80211_bss_conf *bss = NULL;
-	struct xtended_desc *xtend_desc = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 header_size;
 	u32 dword_align_bytes = 0;
 
@@ -91,16 +68,10 @@ static int rsi_prepare_mgmt_desc(struct rsi_common *common, struct sk_buff *skb)
 
 	info = IEEE80211_SKB_CB(skb);
 	tx_params = (struct skb_info *)info->driver_data;
-<<<<<<< HEAD
 	vif = tx_params->vif;
 
 	/* Update header size */
 	header_size = FRAME_DESC_SZ + sizeof(struct rsi_xtended_desc);
-=======
-
-	/* Update header size */
-	header_size = FRAME_DESC_SZ + sizeof(struct xtended_desc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (header_size > skb_headroom(skb)) {
 		rsi_dbg(ERR_ZONE,
 			"%s: Failed to add extended descriptor\n",
@@ -119,18 +90,10 @@ static int rsi_prepare_mgmt_desc(struct rsi_common *common, struct sk_buff *skb)
 
 	tx_params->internal_hdr_size = header_size;
 	memset(&skb->data[0], 0, header_size);
-<<<<<<< HEAD
 	wh = (struct ieee80211_hdr *)&skb->data[header_size];
 
 	mgmt_desc = (struct rsi_mgmt_desc *)skb->data;
 	xtend_desc = (struct rsi_xtended_desc *)&skb->data[FRAME_DESC_SZ];
-=======
-	bss = &info->control.vif->bss_conf;
-	wh = (struct ieee80211_hdr *)&skb->data[header_size];
-
-	mgmt_desc = (struct rsi_mgmt_desc *)skb->data;
-	xtend_desc = (struct xtended_desc *)&skb->data[FRAME_DESC_SZ];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rsi_set_len_qno(&mgmt_desc->len_qno, (skb->len - FRAME_DESC_SZ),
 			RSI_WIFI_MGMT_Q);
@@ -143,35 +106,14 @@ static int rsi_prepare_mgmt_desc(struct rsi_common *common, struct sk_buff *skb)
 
 	mgmt_desc->seq_ctrl =
 		cpu_to_le16(IEEE80211_SEQ_TO_SN(le16_to_cpu(wh->seq_ctrl)));
-<<<<<<< HEAD
 	if ((common->band == NL80211_BAND_2GHZ) && !common->p2p_enabled)
 		mgmt_desc->rate_info = cpu_to_le16(RSI_RATE_1);
 	else
 		mgmt_desc->rate_info = cpu_to_le16(RSI_RATE_6);
-=======
-	if (common->band == NL80211_BAND_2GHZ)
-		mgmt_desc->rate_info = RSI_RATE_1;
-	else
-		mgmt_desc->rate_info = RSI_RATE_6;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (conf_is_ht40(conf))
 		mgmt_desc->bbp_info = cpu_to_le16(FULL40M_ENABLE);
 
-<<<<<<< HEAD
-=======
-	if (ieee80211_is_probe_req(wh->frame_control)) {
-		if (!bss->assoc) {
-			rsi_dbg(INFO_ZONE,
-				"%s: blocking mgmt queue\n", __func__);
-			mgmt_desc->misc_flags = RSI_DESC_REQUIRE_CFM_TO_HOST;
-			xtend_desc->confirm_frame_type = PROBEREQ_CONFIRM;
-			common->mgmt_q_block = true;
-			rsi_dbg(INFO_ZONE, "Mgmt queue blocked\n");
-		}
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ieee80211_is_probe_resp(wh->frame_control)) {
 		mgmt_desc->misc_flags |= (RSI_ADD_DELTA_TSF_VAP_ID |
 					  RSI_FETCH_RETRY_CNT_FRM_HST);
@@ -179,12 +121,8 @@ static int rsi_prepare_mgmt_desc(struct rsi_common *common, struct sk_buff *skb)
 		xtend_desc->retry_cnt = PROBE_RESP_RETRY_CNT;
 	}
 
-<<<<<<< HEAD
 	if (((vif->type == NL80211_IFTYPE_AP) ||
 	     (vif->type == NL80211_IFTYPE_P2P_GO)) &&
-=======
-	if ((vif->type == NL80211_IFTYPE_AP) &&
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    (ieee80211_is_action(wh->frame_control))) {
 		struct rsi_sta *rsta = rsi_find_sta(common, wh->addr1);
 
@@ -193,36 +131,23 @@ static int rsi_prepare_mgmt_desc(struct rsi_common *common, struct sk_buff *skb)
 		else
 			return -EINVAL;
 	}
-<<<<<<< HEAD
 	mgmt_desc->rate_info |=
 		cpu_to_le16((tx_params->vap_id << RSI_DESC_VAP_ID_OFST) &
 			    RSI_DESC_VAP_ID_MASK);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 /* This function prepares descriptor for given data packet */
-<<<<<<< HEAD
 int rsi_prepare_data_desc(struct rsi_common *common, struct sk_buff *skb)
-=======
-static int rsi_prepare_data_desc(struct rsi_common *common, struct sk_buff *skb)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rsi_hw *adapter = common->priv;
 	struct ieee80211_vif *vif;
 	struct ieee80211_hdr *wh = NULL;
 	struct ieee80211_tx_info *info;
 	struct skb_info *tx_params;
-<<<<<<< HEAD
 	struct rsi_data_desc *data_desc;
 	struct rsi_xtended_desc *xtend_desc;
-=======
-	struct ieee80211_bss_conf *bss;
-	struct rsi_data_desc *data_desc;
-	struct xtended_desc *xtend_desc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 ieee80211_size = MIN_802_11_HDR_LEN;
 	u8 header_size;
 	u8 vap_id = 0;
@@ -230,17 +155,10 @@ static int rsi_prepare_data_desc(struct rsi_common *common, struct sk_buff *skb)
 	u16 seq_num;
 
 	info = IEEE80211_SKB_CB(skb);
-<<<<<<< HEAD
 	vif = info->control.vif;
 	tx_params = (struct skb_info *)info->driver_data;
 
 	header_size = FRAME_DESC_SZ + sizeof(struct rsi_xtended_desc);
-=======
-	bss = &info->control.vif->bss_conf;
-	tx_params = (struct skb_info *)info->driver_data;
-
-	header_size = FRAME_DESC_SZ + sizeof(struct xtended_desc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (header_size > skb_headroom(skb)) {
 		rsi_dbg(ERR_ZONE, "%s: Unable to send pkt\n", __func__);
 		return -ENOSPC;
@@ -258,16 +176,9 @@ static int rsi_prepare_data_desc(struct rsi_common *common, struct sk_buff *skb)
 	data_desc = (struct rsi_data_desc *)skb->data;
 	memset(data_desc, 0, header_size);
 
-<<<<<<< HEAD
 	xtend_desc = (struct rsi_xtended_desc *)&skb->data[FRAME_DESC_SZ];
 	wh = (struct ieee80211_hdr *)&skb->data[header_size];
 	seq_num = IEEE80211_SEQ_TO_SN(le16_to_cpu(wh->seq_ctrl));
-=======
-	xtend_desc = (struct xtended_desc *)&skb->data[FRAME_DESC_SZ];
-	wh = (struct ieee80211_hdr *)&skb->data[header_size];
-	seq_num = IEEE80211_SEQ_TO_SN(le16_to_cpu(wh->seq_ctrl));
-	vif = adapter->vifs[0];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	data_desc->xtend_desc_size = header_size - FRAME_DESC_SZ;
 
@@ -276,12 +187,8 @@ static int rsi_prepare_data_desc(struct rsi_common *common, struct sk_buff *skb)
 		data_desc->mac_flags |= cpu_to_le16(RSI_QOS_ENABLE);
 	}
 
-<<<<<<< HEAD
 	if (((vif->type == NL80211_IFTYPE_STATION) ||
 	     (vif->type == NL80211_IFTYPE_P2P_CLIENT)) &&
-=======
-	if ((vif->type == NL80211_IFTYPE_STATION) &&
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    (adapter->ps_state == PS_ENABLED))
 		wh->frame_control |= cpu_to_le16(RSI_SET_PS_ENABLE);
 
@@ -324,7 +231,6 @@ static int rsi_prepare_data_desc(struct rsi_common *common, struct sk_buff *skb)
 		data_desc->misc_flags |= RSI_FETCH_RETRY_CNT_FRM_HST;
 #define EAPOL_RETRY_CNT 15
 		xtend_desc->retry_cnt = EAPOL_RETRY_CNT;
-<<<<<<< HEAD
 
 		if (common->eapol4_confirm)
 			skb->priority = VO_Q;
@@ -340,11 +246,6 @@ static int rsi_prepare_data_desc(struct rsi_common *common, struct sk_buff *skb)
 	}
 
 	data_desc->mac_flags |= cpu_to_le16(seq_num & 0xfff);
-=======
-	}
-
-	data_desc->mac_flags = cpu_to_le16(seq_num & 0xfff);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	data_desc->qid_tid = ((skb->priority & 0xf) |
 			      ((tx_params->tid & 0xf) << 4));
 	data_desc->sta_id = tx_params->sta_id;
@@ -355,19 +256,14 @@ static int rsi_prepare_data_desc(struct rsi_common *common, struct sk_buff *skb)
 		data_desc->frame_info |= cpu_to_le16(RSI_BROADCAST_PKT);
 		data_desc->sta_id = vap_id;
 
-<<<<<<< HEAD
 		if ((vif->type == NL80211_IFTYPE_AP) ||
 		    (vif->type == NL80211_IFTYPE_P2P_GO)) {
-=======
-		if (vif->type == NL80211_IFTYPE_AP) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (common->band == NL80211_BAND_5GHZ)
 				data_desc->rate_info = cpu_to_le16(RSI_RATE_6);
 			else
 				data_desc->rate_info = cpu_to_le16(RSI_RATE_1);
 		}
 	}
-<<<<<<< HEAD
 	if (((vif->type == NL80211_IFTYPE_AP) ||
 	     (vif->type == NL80211_IFTYPE_P2P_GO)) &&
 	    (ieee80211_has_moredata(wh->frame_control)))
@@ -377,12 +273,6 @@ static int rsi_prepare_data_desc(struct rsi_common *common, struct sk_buff *skb)
 		cpu_to_le16((tx_params->vap_id << RSI_DESC_VAP_ID_OFST) &
 			    RSI_DESC_VAP_ID_MASK);
 
-=======
-	if ((vif->type == NL80211_IFTYPE_AP) &&
-	    (ieee80211_has_moredata(wh->frame_control)))
-		data_desc->frame_info |= cpu_to_le16(MORE_DATA_PRESENT);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -390,19 +280,12 @@ static int rsi_prepare_data_desc(struct rsi_common *common, struct sk_buff *skb)
 int rsi_send_data_pkt(struct rsi_common *common, struct sk_buff *skb)
 {
 	struct rsi_hw *adapter = common->priv;
-<<<<<<< HEAD
 	struct ieee80211_vif *vif;
 	struct ieee80211_tx_info *info;
 	struct skb_info *tx_params;
 	struct ieee80211_bss_conf *bss;
 	int status = -EINVAL;
 	u8 header_size;
-=======
-	struct ieee80211_vif *vif = adapter->vifs[0];
-	struct ieee80211_tx_info *info;
-	struct ieee80211_bss_conf *bss;
-	int status = -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!skb)
 		return 0;
@@ -412,7 +295,6 @@ int rsi_send_data_pkt(struct rsi_common *common, struct sk_buff *skb)
 	info = IEEE80211_SKB_CB(skb);
 	if (!info->control.vif)
 		goto err;
-<<<<<<< HEAD
 	vif = info->control.vif;
 	bss = &vif->bss_conf;
 	tx_params = (struct skb_info *)info->driver_data;
@@ -424,19 +306,6 @@ int rsi_send_data_pkt(struct rsi_common *common, struct sk_buff *skb)
 		goto err;
 
 	status = rsi_send_pkt_to_bus(common, skb);
-=======
-	bss = &info->control.vif->bss_conf;
-
-	if ((vif->type == NL80211_IFTYPE_STATION) && (!bss->assoc))
-		goto err;
-
-	status = rsi_prepare_data_desc(common, skb);
-	if (status)
-		goto err;
-
-	status = adapter->host_intf_ops->write_pkt(common->priv, skb->data,
-						   skb->len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (status)
 		rsi_dbg(ERR_ZONE, "%s: Failed to write pkt\n", __func__);
 
@@ -458,7 +327,6 @@ int rsi_send_mgmt_pkt(struct rsi_common *common,
 		      struct sk_buff *skb)
 {
 	struct rsi_hw *adapter = common->priv;
-<<<<<<< HEAD
 	struct ieee80211_bss_conf *bss;
 	struct ieee80211_hdr *wh;
 	struct ieee80211_tx_info *info;
@@ -473,26 +341,6 @@ int rsi_send_mgmt_pkt(struct rsi_common *common,
 	header_size = tx_params->internal_hdr_size;
 
 	if (tx_params->flags & INTERNAL_MGMT_PKT) {
-=======
-	struct ieee80211_tx_info *info;
-	struct skb_info *tx_params;
-	int status = -E2BIG;
-	u8 extnd_size;
-
-	info = IEEE80211_SKB_CB(skb);
-	tx_params = (struct skb_info *)info->driver_data;
-	extnd_size = ((uintptr_t)skb->data & 0x3);
-
-	if (tx_params->flags & INTERNAL_MGMT_PKT) {
-		skb->data[1] |= BIT(7); /* Immediate Wakeup bit*/
-		if ((extnd_size) > skb_headroom(skb)) {
-			rsi_dbg(ERR_ZONE, "%s: Unable to send pkt\n", __func__);
-			dev_kfree_skb(skb);
-			return -ENOSPC;
-		}
-		skb_push(skb, extnd_size);
-		skb->data[extnd_size + 4] = extnd_size;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		status = adapter->host_intf_ops->write_pkt(common->priv,
 							   (u8 *)skb->data,
 							   skb->len);
@@ -504,7 +352,6 @@ int rsi_send_mgmt_pkt(struct rsi_common *common,
 		return status;
 	}
 
-<<<<<<< HEAD
 	bss = &info->control.vif->bss_conf;
 	wh = (struct ieee80211_hdr *)&skb->data[header_size];
 	mgmt_desc = (struct rsi_mgmt_desc *)skb->data;
@@ -524,23 +371,10 @@ int rsi_send_mgmt_pkt(struct rsi_common *common,
 	if (status)
 		rsi_dbg(ERR_ZONE, "%s: Failed to write the packet\n", __func__);
 
-=======
-	if (FRAME_DESC_SZ > skb_headroom(skb))
-		goto err;
-
-	rsi_prepare_mgmt_desc(common, skb);
-	status = adapter->host_intf_ops->write_pkt(common->priv,
-						   (u8 *)skb->data, skb->len);
-	if (status)
-		rsi_dbg(ERR_ZONE, "%s: Failed to write the packet\n", __func__);
-
-err:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rsi_indicate_tx_status(common->priv, skb, status);
 	return status;
 }
 
-<<<<<<< HEAD
 int rsi_send_bt_pkt(struct rsi_common *common, struct sk_buff *skb)
 {
 	int status = -EINVAL;
@@ -578,15 +412,12 @@ out:
 	return status;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int rsi_prepare_beacon(struct rsi_common *common, struct sk_buff *skb)
 {
 	struct rsi_hw *adapter = (struct rsi_hw *)common->priv;
 	struct rsi_data_desc *bcn_frm;
 	struct ieee80211_hw *hw = common->priv->hw;
 	struct ieee80211_conf *conf = &hw->conf;
-<<<<<<< HEAD
 	struct ieee80211_vif *vif;
 	struct sk_buff *mac_bcn;
 	u8 vap_id = 0, i;
@@ -604,14 +435,6 @@ int rsi_prepare_beacon(struct rsi_common *common, struct sk_buff *skb)
 		return -EINVAL;
 	mac_bcn = ieee80211_beacon_get_tim(adapter->hw,
 					   vif,
-=======
-	struct sk_buff *mac_bcn;
-	u8 vap_id = 0;
-	u16 tim_offset;
-
-	mac_bcn = ieee80211_beacon_get_tim(adapter->hw,
-					   adapter->vifs[adapter->sc_nvifs - 1],
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   &tim_offset, NULL);
 	if (!mac_bcn) {
 		rsi_dbg(ERR_ZONE, "Failed to get beacon from mac80211\n");
@@ -655,15 +478,9 @@ int rsi_prepare_beacon(struct rsi_common *common, struct sk_buff *skb)
 	return 0;
 }
 
-<<<<<<< HEAD
 static void bl_cmd_timeout(struct timer_list *t)
 {
 	struct rsi_hw *adapter = from_timer(adapter, t, bl_cmd_timer);
-=======
-static void bl_cmd_timeout(unsigned long priv)
-{
-	struct rsi_hw *adapter = (struct rsi_hw *)priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	adapter->blcmd_timer_expired = true;
 	del_timer(&adapter->bl_cmd_timer);
@@ -671,13 +488,7 @@ static void bl_cmd_timeout(unsigned long priv)
 
 static int bl_start_cmd_timer(struct rsi_hw *adapter, u32 timeout)
 {
-<<<<<<< HEAD
 	timer_setup(&adapter->bl_cmd_timer, bl_cmd_timeout, 0);
-=======
-	init_timer(&adapter->bl_cmd_timer);
-	adapter->bl_cmd_timer.data = (unsigned long)adapter;
-	adapter->bl_cmd_timer.function = (void *)&bl_cmd_timeout;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adapter->bl_cmd_timer.expires = (msecs_to_jiffies(timeout) + jiffies);
 
 	adapter->blcmd_timer_expired = false;
@@ -805,10 +616,6 @@ static int bl_cmd(struct rsi_hw *adapter, u8 cmd, u8 exp_resp, char *str)
 	bl_start_cmd_timer(adapter, timeout);
 	status = bl_write_cmd(adapter, cmd, exp_resp, &regout_val);
 	if (status < 0) {
-<<<<<<< HEAD
-=======
-		bl_stop_cmd_timer(adapter);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rsi_dbg(ERR_ZONE,
 			"%s: Command %s (%0x) writing failed..\n",
 			__func__, str, cmd);
@@ -924,36 +731,21 @@ static int ping_pong_write(struct rsi_hw *adapter, u8 cmd, u8 *addr, u32 size)
 	}
 
 	status = bl_cmd(adapter, cmd_req, cmd_resp, str);
-<<<<<<< HEAD
 	if (status) {
 		bl_stop_cmd_timer(adapter);
 		return status;
 	}
-=======
-	if (status)
-		return status;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 static int auto_fw_upgrade(struct rsi_hw *adapter, u8 *flash_content,
 			   u32 content_size)
 {
-<<<<<<< HEAD
 	u8 cmd;
-=======
-	u8 cmd, *temp_flash_content;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 temp_content_size, num_flash, index;
 	u32 flash_start_address;
 	int status;
 
-<<<<<<< HEAD
-=======
-	temp_flash_content = flash_content;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (content_size > MAX_FLASH_FILE_SIZE) {
 		rsi_dbg(ERR_ZONE,
 			"%s: Flash Content size is more than 400K %u\n",
@@ -1030,34 +822,21 @@ static int auto_fw_upgrade(struct rsi_hw *adapter, u8 *flash_content,
 
 	status = bl_cmd(adapter, EOF_REACHED, FW_LOADING_SUCCESSFUL,
 			"EOF_REACHED");
-<<<<<<< HEAD
 	if (status) {
 		bl_stop_cmd_timer(adapter);
 		return status;
 	}
-=======
-	if (status)
-		return status;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rsi_dbg(INFO_ZONE, "FW loading is done and FW is running..\n");
 	return 0;
 }
 
 static int rsi_load_firmware(struct rsi_hw *adapter)
 {
-<<<<<<< HEAD
 	struct rsi_common *common = adapter->priv;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct rsi_host_intf_ops *hif_ops = adapter->host_intf_ops;
 	const struct firmware *fw_entry = NULL;
 	u32 regout_val = 0, content_size;
 	u16 tmp_regout_val = 0;
-<<<<<<< HEAD
-=======
-	u8 *flash_content = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ta_metadata *metadata_p;
 	int status;
 
@@ -1067,10 +846,6 @@ static int rsi_load_firmware(struct rsi_hw *adapter)
 		status = hif_ops->master_reg_read(adapter, SWBL_REGOUT,
 					      &regout_val, 2);
 		if (status < 0) {
-<<<<<<< HEAD
-=======
-			bl_stop_cmd_timer(adapter);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rsi_dbg(ERR_ZONE,
 				"%s: REGOUT read failed\n", __func__);
 			return status;
@@ -1123,7 +898,6 @@ static int rsi_load_firmware(struct rsi_hw *adapter)
 			__func__, metadata_p->name);
 		return status;
 	}
-<<<<<<< HEAD
 	content_size = fw_entry->size;
 	rsi_dbg(INFO_ZONE, "FW Length = %d bytes\n", content_size);
 
@@ -1140,18 +914,6 @@ static int rsi_load_firmware(struct rsi_hw *adapter)
 	rsi_print_version(common);
 
 	status = bl_write_header(adapter, (u8 *)fw_entry->data, content_size);
-=======
-	flash_content = kmemdup(fw_entry->data, fw_entry->size, GFP_KERNEL);
-	if (!flash_content) {
-		rsi_dbg(ERR_ZONE, "%s: Failed to copy firmware\n", __func__);
-		status = -EIO;
-		goto fail;
-	}
-	content_size = fw_entry->size;
-	rsi_dbg(INFO_ZONE, "FW Length = %d bytes\n", content_size);
-
-	status = bl_write_header(adapter, flash_content, content_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (status) {
 		rsi_dbg(ERR_ZONE,
 			"%s: RPS Image header loading failed\n",
@@ -1193,11 +955,7 @@ fw_upgrade:
 
 	rsi_dbg(INFO_ZONE, "Burn Command Pass.. Upgrading the firmware\n");
 
-<<<<<<< HEAD
 	status = auto_fw_upgrade(adapter, (u8 *)fw_entry->data, content_size);
-=======
-	status = auto_fw_upgrade(adapter, flash_content, content_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (status == 0) {
 		rsi_dbg(ERR_ZONE, "Firmware upgradation Done\n");
 		goto load_image_cmd;
@@ -1211,19 +969,11 @@ fw_upgrade:
 
 success:
 	rsi_dbg(ERR_ZONE, "***** Firmware Loading successful *****\n");
-<<<<<<< HEAD
-=======
-	kfree(flash_content);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	release_firmware(fw_entry);
 	return 0;
 
 fail:
 	rsi_dbg(ERR_ZONE, "##### Firmware loading failed #####\n");
-<<<<<<< HEAD
-=======
-	kfree(flash_content);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	release_firmware(fw_entry);
 	return status;
 }
@@ -1232,13 +982,6 @@ int rsi_hal_device_init(struct rsi_hw *adapter)
 {
 	struct rsi_common *common = adapter->priv;
 
-<<<<<<< HEAD
-=======
-	common->coex_mode = RSI_DEV_COEX_MODE_WIFI_ALONE;
-	common->oper_mode = RSI_DEV_OPMODE_WIFI_ALONE;
-	adapter->device_model = RSI_DEV_9113;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (adapter->device_model) {
 	case RSI_DEV_9113:
 		if (rsi_load_firmware(adapter)) {

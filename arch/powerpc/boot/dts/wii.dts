@@ -13,10 +13,7 @@
  */
 
 /dts-v1/;
-<<<<<<< HEAD
 #include <dt-bindings/gpio/gpio.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * This is commented-out for now.
@@ -69,22 +66,14 @@
 			  0x0d800000 0x0d800000 0x00800000>;
 		interrupt-parent = <&PIC0>;
 
-<<<<<<< HEAD
 		video@c002000 {
-=======
-		video@0c002000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "nintendo,hollywood-vi",
 					"nintendo,flipper-vi";
 			reg = <0x0c002000 0x100>;
 			interrupts = <8>;
 		};
 
-<<<<<<< HEAD
 		processor-interface@c003000 {
-=======
-		processor-interface@0c003000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "nintendo,hollywood-pi",
 					"nintendo,flipper-pi";
 			reg = <0x0c003000 0x100>;
@@ -96,11 +85,7 @@
 			};
 		};
 
-<<<<<<< HEAD
 		dsp@c005000 {
-=======
-		dsp@0c005000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			#address-cells = <1>;
 			#size-cells = <1>;
 			compatible = "nintendo,hollywood-dsp",
@@ -109,22 +94,14 @@
 			interrupts = <6>;
 		};
 
-<<<<<<< HEAD
 		gamepad-controller@d006400 {
-=======
-		gamepad-controller@0d006400 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "nintendo,hollywood-si",
 					"nintendo,flipper-si";
 			reg = <0x0d006400 0x100>;
 			interrupts = <3>;
 		};
 
-<<<<<<< HEAD
 		audio@c006c00 {
-=======
-		audio@0c006c00 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "nintendo,hollywood-ai",
 					"nintendo,flipper-ai";
 			reg = <0x0d006c00 0x20>;
@@ -132,11 +109,7 @@
 		};
 
 		/* External Interface bus */
-<<<<<<< HEAD
 		exi@d006800 {
-=======
-		exi@0d006800 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "nintendo,hollywood-exi",
 					"nintendo,flipper-exi";
 			reg = <0x0d006800 0x40>;
@@ -144,11 +117,7 @@
 			interrupts = <4>;
 		};
 
-<<<<<<< HEAD
 		usb@d040000 {
-=======
-		usb@0d040000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "nintendo,hollywood-usb-ehci",
 					"usb-ehci";
 			reg = <0x0d040000 0x100>;
@@ -156,11 +125,7 @@
 			interrupt-parent = <&PIC1>;
 		};
 
-<<<<<<< HEAD
 		usb@d050000 {
-=======
-		usb@0d050000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "nintendo,hollywood-usb-ohci",
 					"usb-ohci";
 			reg = <0x0d050000 0x100>;
@@ -168,11 +133,7 @@
 			interrupt-parent = <&PIC1>;
 		};
 
-<<<<<<< HEAD
 		usb@d060000 {
-=======
-		usb@0d060000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "nintendo,hollywood-usb-ohci",
 					"usb-ohci";
 			reg = <0x0d060000 0x100>;
@@ -180,11 +141,7 @@
 			interrupt-parent = <&PIC1>;
 		};
 
-<<<<<<< HEAD
 		sd@d070000 {
-=======
-		sd@0d070000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "nintendo,hollywood-sdhci",
 					"sdhci";
 			reg = <0x0d070000 0x200>;
@@ -192,11 +149,7 @@
 			interrupt-parent = <&PIC1>;
 		};
 
-<<<<<<< HEAD
 		sdio@d080000 {
-=======
-		sdio@0d080000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "nintendo,hollywood-sdhci",
 					"sdhci";
 			reg = <0x0d080000 0x200>;
@@ -204,22 +157,14 @@
 			interrupt-parent = <&PIC1>;
 		};
 
-<<<<<<< HEAD
 		ipc@d000000 {
-=======
-		ipc@0d000000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "nintendo,hollywood-ipc";
 			reg = <0x0d000000 0x10>;
 			interrupts = <30>;
 			interrupt-parent = <&PIC1>;
 		};
 
-<<<<<<< HEAD
 		PIC1: pic1@d800030 {
-=======
-		PIC1: pic1@0d800030 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			#interrupt-cells = <1>;
 			compatible = "nintendo,hollywood-pic";
 			reg = <0x0d800030 0x10>;
@@ -227,16 +172,11 @@
 			interrupts = <14>;
 		};
 
-<<<<<<< HEAD
 		GPIO: gpio@d8000c0 {
-=======
-		GPIO: gpio@0d8000c0 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			#gpio-cells = <2>;
 			compatible = "nintendo,hollywood-gpio";
 			reg = <0x0d8000c0 0x40>;
 			gpio-controller;
-<<<<<<< HEAD
 			ngpios = <24>;
 
 			gpio-line-names =
@@ -246,8 +186,6 @@
 				"EEP_MOSI", "EEP_MISO", "AVE_SCL", "AVE_SDA",
 				"DEBUG0", "DEBUG1", "DEBUG2", "DEBUG3",
 				"DEBUG4", "DEBUG5", "DEBUG6", "DEBUG7";
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			/*
 			 * This is commented out while a standard binding
@@ -275,26 +213,17 @@
 			*/
 		};
 
-<<<<<<< HEAD
 		control@d800100 {
-=======
-		control@0d800100 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "nintendo,hollywood-control";
 			reg = <0x0d800100 0x300>;
 		};
 
-<<<<<<< HEAD
 		disk@d806000 {
-=======
-		disk@0d806000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "nintendo,hollywood-di";
 			reg = <0x0d806000 0x40>;
 			interrupts = <2>;
 		};
 	};
-<<<<<<< HEAD
 
 	gpio-leds {
 		compatible = "gpio-leds";
@@ -306,7 +235,5 @@
 			panic-indicator;
 		};
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 

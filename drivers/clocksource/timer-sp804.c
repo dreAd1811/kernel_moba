@@ -27,10 +27,7 @@
 #include <linux/io.h>
 #include <linux/of.h>
 #include <linux/of_address.h>
-<<<<<<< HEAD
 #include <linux/of_clk.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/of_irq.h>
 #include <linux/sched_clock.h>
 
@@ -249,11 +246,7 @@ static int __init sp804_of_init(struct device_node *np)
 		clk1 = NULL;
 
 	/* Get the 2nd clock if the timer has 3 timer clocks */
-<<<<<<< HEAD
 	if (of_clk_get_parent_count(np) == 3) {
-=======
-	if (of_count_phandle_with_args(np, "clocks", "#clock-cells") == 3) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		clk2 = of_clk_get(np, 1);
 		if (IS_ERR(clk2)) {
 			pr_err("sp804: %s clock not found: %d\n", np->name,

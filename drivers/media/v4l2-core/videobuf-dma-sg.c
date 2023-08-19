@@ -6,19 +6,11 @@
  * into PAGE_SIZE chunks).  They also assume the driver does not need
  * to touch the video data.
  *
-<<<<<<< HEAD
  * (c) 2007 Mauro Carvalho Chehab, <mchehab@kernel.org>
  *
  * Highly based on video-buf written originally by:
  * (c) 2001,02 Gerd Knorr <kraxel@bytesex.org>
  * (c) 2006 Mauro Carvalho Chehab, <mchehab@kernel.org>
-=======
- * (c) 2007 Mauro Carvalho Chehab, <mchehab@infradead.org>
- *
- * Highly based on video-buf written originally by:
- * (c) 2001,02 Gerd Knorr <kraxel@bytesex.org>
- * (c) 2006 Mauro Carvalho Chehab, <mchehab@infradead.org>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * (c) 2006 Ted Walther and John Sokol
  *
  * This program is free software; you can redistribute it and/or modify
@@ -56,11 +48,7 @@ static int debug;
 module_param(debug, int, 0644);
 
 MODULE_DESCRIPTION("helper module to manage video4linux dma sg buffers");
-<<<<<<< HEAD
 MODULE_AUTHOR("Mauro Carvalho Chehab <mchehab@kernel.org>");
-=======
-MODULE_AUTHOR("Mauro Carvalho Chehab <mchehab@infradead.org>");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_LICENSE("GPL");
 
 #define dprintk(level, fmt, arg...)					\
@@ -81,11 +69,7 @@ static struct scatterlist *videobuf_vmalloc_to_sg(unsigned char *virt,
 	struct page *pg;
 	int i;
 
-<<<<<<< HEAD
 	sglist = vzalloc(array_size(nr_pages, sizeof(*sglist)));
-=======
-	sglist = vzalloc(nr_pages * sizeof(*sglist));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (NULL == sglist)
 		return NULL;
 	sg_init_table(sglist, nr_pages);
@@ -116,11 +100,7 @@ static struct scatterlist *videobuf_pages_to_sg(struct page **pages,
 
 	if (NULL == pages[0])
 		return NULL;
-<<<<<<< HEAD
 	sglist = vmalloc(array_size(nr_pages, sizeof(*sglist)));
-=======
-	sglist = vmalloc(nr_pages * sizeof(*sglist));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (NULL == sglist)
 		return NULL;
 	sg_init_table(sglist, nr_pages);
@@ -195,12 +175,8 @@ static int videobuf_dma_init_user_locked(struct videobuf_dmabuf *dma,
 	dma->offset = data & ~PAGE_MASK;
 	dma->size = size;
 	dma->nr_pages = last-first+1;
-<<<<<<< HEAD
 	dma->pages = kmalloc_array(dma->nr_pages, sizeof(struct page *),
 				   GFP_KERNEL);
-=======
-	dma->pages = kmalloc(dma->nr_pages * sizeof(struct page *), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (NULL == dma->pages)
 		return -ENOMEM;
 
@@ -269,14 +245,8 @@ static int videobuf_dma_init_kernel(struct videobuf_dmabuf *dma, int direction,
 		goto out_free_pages;
 	}
 
-<<<<<<< HEAD
 	dprintk(1, "vmalloc is at addr %p, size=%d\n",
 		dma->vaddr, nr_pages << PAGE_SHIFT);
-=======
-	dprintk(1, "vmalloc is at addr 0x%08lx, size=%d\n",
-				(unsigned long)dma->vaddr,
-				nr_pages << PAGE_SHIFT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memset(dma->vaddr, 0, nr_pages << PAGE_SHIFT);
 	dma->nr_pages = nr_pages;
@@ -365,11 +335,7 @@ int videobuf_dma_unmap(struct device *dev, struct videobuf_dmabuf *dma)
 	if (!dma->sglen)
 		return 0;
 
-<<<<<<< HEAD
 	dma_unmap_sg(dev, dma->sglist, dma->nr_pages, dma->direction);
-=======
-	dma_unmap_sg(dev, dma->sglist, dma->sglen, dma->direction);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vfree(dma->sglist);
 	dma->sglist = NULL;
@@ -386,16 +352,8 @@ int videobuf_dma_free(struct videobuf_dmabuf *dma)
 	BUG_ON(dma->sglen);
 
 	if (dma->pages) {
-<<<<<<< HEAD
 		for (i = 0; i < dma->nr_pages; i++)
 			put_page(dma->pages[i]);
-=======
-		for (i = 0; i < dma->nr_pages; i++) {
-			if (dma->direction == DMA_FROM_DEVICE)
-				set_page_dirty_lock(dma->pages[i]);
-			put_page(dma->pages[i]);
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(dma->pages);
 		dma->pages = NULL;
 	}
@@ -477,11 +435,7 @@ static void videobuf_vm_close(struct vm_area_struct *vma)
  * now ...).  Bounce buffers don't work very well for the data rates
  * video capture has.
  */
-<<<<<<< HEAD
 static vm_fault_t videobuf_vm_fault(struct vm_fault *vmf)
-=======
-static int videobuf_vm_fault(struct vm_fault *vmf)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct vm_area_struct *vma = vmf->vma;
 	struct page *page;
@@ -628,11 +582,7 @@ static int __videobuf_sync(struct videobuf_queue *q,
 	MAGIC_CHECK(mem->dma.magic, MAGIC_DMABUF);
 
 	dma_sync_sg_for_cpu(q->dev, mem->dma.sglist,
-<<<<<<< HEAD
 			    mem->dma.nr_pages, mem->dma.direction);
-=======
-			    mem->dma.sglen, mem->dma.direction);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

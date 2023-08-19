@@ -46,12 +46,8 @@ union ieee754sp ieee754sp_fdp(union ieee754dp x)
 	case IEEE754_CLASS_SNAN:
 		x = ieee754dp_nanxcpt(x);
 		EXPLODEXDP;
-<<<<<<< HEAD
 		/* fall through */
 
-=======
-		/* Fall through.  */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case IEEE754_CLASS_QNAN:
 		y = ieee754sp_nan_fdp(xs, xm);
 		if (!ieee754_csr.nan2008) {

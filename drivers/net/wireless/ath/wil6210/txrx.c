@@ -1,25 +1,7 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: ISC
 /*
  * Copyright (c) 2012-2017 Qualcomm Atheros, Inc.
  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
-=======
-/*
- * Copyright (c) 2012-2017 Qualcomm Atheros, Inc.
- * Copyright (c) 2018-2021, The Linux Foundation. All rights reserved.
- *
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- *
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/etherdevice.h>
@@ -36,15 +18,7 @@
 #include "txrx.h"
 #include "trace.h"
 #include "txrx_edma.h"
-<<<<<<< HEAD
 #include "ipa.h"
-=======
-
-static bool rtap_include_phy_info;
-module_param(rtap_include_phy_info, bool, 0444);
-MODULE_PARM_DESC(rtap_include_phy_info,
-		 " Include PHY info in the radiotap header, default - no");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 bool rx_align_2;
 module_param(rx_align_2, bool, 0444);
@@ -54,11 +28,6 @@ bool rx_large_buf;
 module_param(rx_large_buf, bool, 0444);
 MODULE_PARM_DESC(rx_large_buf, " allocate 8KB RX buffers, default - no");
 
-<<<<<<< HEAD
-=======
-#define WIL6210_MAX_HEADROOM_SIZE	(256)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 ushort headroom_size; /* = 0; */
 static int headroom_size_set(const char *val, const struct kernel_param *kp)
 {
@@ -83,12 +52,9 @@ module_param_cb(headroom_size, &headroom_ops, &headroom_size, 0644);
 MODULE_PARM_DESC(headroom_size,
 		 " headroom size for rx skb allocation, default - 0");
 
-<<<<<<< HEAD
 /* Drop Tx packets in case Tx ring is full */
 bool drop_if_ring_full;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline uint wil_rx_snaplen(void)
 {
 	return rx_align_2 ? 6 : 0;
@@ -378,62 +344,17 @@ static void wil_rx_add_radiotap_header(struct wil6210_priv *wil,
 		u8 mcs_flags;
 		u8 mcs_index;
 	} __packed;
-<<<<<<< HEAD
 	struct vring_rx_desc *d = wil_skb_rxdesc(skb);
 	struct wil6210_rtap *rtap;
 	int rtap_len = sizeof(struct wil6210_rtap);
 	struct ieee80211_channel *ch = wil->monitor_chandef.chan;
 
-=======
-	struct wil6210_rtap_vendor {
-		struct wil6210_rtap rtap;
-		/* vendor */
-		u8 vendor_oui[3] __aligned(2);
-		u8 vendor_ns;
-		__le16 vendor_skip;
-		u8 vendor_data[0];
-	} __packed;
-	struct vring_rx_desc *d = wil_skb_rxdesc(skb);
-	struct wil6210_rtap_vendor *rtap_vendor;
-	int rtap_len = sizeof(struct wil6210_rtap);
-	int phy_length = 0; /* phy info header size, bytes */
-	static char phy_data[128];
-	struct ieee80211_channel *ch = wil->monitor_chandef.chan;
-
-	if (rtap_include_phy_info) {
-		rtap_len = sizeof(*rtap_vendor) + sizeof(*d);
-		/* calculate additional length */
-		if (d->dma.status & RX_DMA_STATUS_PHY_INFO) {
-			/**
-			 * PHY info starts from 8-byte boundary
-			 * there are 8-byte lines, last line may be partially
-			 * written (HW bug), thus FW configures for last line
-			 * to be excessive. Driver skips this last line.
-			 */
-			int len = min_t(int, 8 + sizeof(phy_data),
-					wil_rxdesc_phy_length(d));
-
-			if (len > 8) {
-				void *p = skb_tail_pointer(skb);
-				void *pa = PTR_ALIGN(p, 8);
-
-				if (skb_tailroom(skb) >= len + (pa - p)) {
-					phy_length = len - 8;
-					memcpy(phy_data, pa, phy_length);
-				}
-			}
-		}
-		rtap_len += phy_length;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (skb_headroom(skb) < rtap_len &&
 	    pskb_expand_head(skb, rtap_len, 0, GFP_ATOMIC)) {
 		wil_err(wil, "Unable to expand headroom to %d\n", rtap_len);
 		return;
 	}
 
-<<<<<<< HEAD
 	rtap = skb_push(skb, rtap_len);
 	memset(rtap, 0, rtap_len);
 
@@ -451,42 +372,6 @@ static void wil_rx_add_radiotap_header(struct wil6210_priv *wil,
 	rtap->mcs_present = IEEE80211_RADIOTAP_MCS_HAVE_MCS;
 	rtap->mcs_flags = 0;
 	rtap->mcs_index = wil_rxdesc_mcs(d);
-=======
-	rtap_vendor = skb_push(skb, rtap_len);
-	memset(rtap_vendor, 0, rtap_len);
-
-	rtap_vendor->rtap.rthdr.it_version = PKTHDR_RADIOTAP_VERSION;
-	rtap_vendor->rtap.rthdr.it_len = cpu_to_le16(rtap_len);
-	rtap_vendor->rtap.rthdr.it_present = cpu_to_le32(
-			(1 << IEEE80211_RADIOTAP_FLAGS) |
-			(1 << IEEE80211_RADIOTAP_CHANNEL) |
-			(1 << IEEE80211_RADIOTAP_MCS));
-	if (d->dma.status & RX_DMA_STATUS_ERROR)
-		rtap_vendor->rtap.flags |= IEEE80211_RADIOTAP_F_BADFCS;
-
-	rtap_vendor->rtap.chnl_freq = cpu_to_le16(ch ? ch->center_freq : 58320);
-	rtap_vendor->rtap.chnl_flags = cpu_to_le16(0);
-
-	rtap_vendor->rtap.mcs_present = IEEE80211_RADIOTAP_MCS_HAVE_MCS;
-	rtap_vendor->rtap.mcs_flags = 0;
-	rtap_vendor->rtap.mcs_index = wil_rxdesc_mcs(d);
-
-	if (rtap_include_phy_info) {
-		rtap_vendor->rtap.rthdr.it_present |= cpu_to_le32(1 <<
-				IEEE80211_RADIOTAP_VENDOR_NAMESPACE);
-		/* OUI for Wilocity 04:ce:14 */
-		rtap_vendor->vendor_oui[0] = 0x04;
-		rtap_vendor->vendor_oui[1] = 0xce;
-		rtap_vendor->vendor_oui[2] = 0x14;
-		rtap_vendor->vendor_ns = 1;
-		/* Rx descriptor + PHY data  */
-		rtap_vendor->vendor_skip = cpu_to_le16(sizeof(*d) +
-						       phy_length);
-		memcpy(rtap_vendor->vendor_data, (void *)d, sizeof(*d));
-		memcpy(rtap_vendor->vendor_data + sizeof(*d), phy_data,
-		       phy_length);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool wil_is_rx_idle(struct wil6210_priv *wil)
@@ -501,7 +386,6 @@ static bool wil_is_rx_idle(struct wil6210_priv *wil)
 	return true;
 }
 
-<<<<<<< HEAD
 static int wil_rx_get_cid_by_skb(struct wil6210_priv *wil, struct sk_buff *skb)
 {
 	struct vring_rx_desc *d = wil_skb_rxdesc(skb);
@@ -572,8 +456,6 @@ static int wil_rx_get_cid_by_skb(struct wil6210_priv *wil, struct sk_buff *skb)
 	return cid;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * reap 1 frame from @swhead
  *
@@ -599,11 +481,7 @@ static struct sk_buff *wil_vring_reap_rx(struct wil6210_priv *wil,
 	int i;
 	struct wil_net_stats *stats;
 
-<<<<<<< HEAD
 	BUILD_BUG_ON(sizeof(struct skb_rx_info) > sizeof(skb->cb));
-=======
-	BUILD_BUG_ON(sizeof(struct vring_rx_desc) > sizeof(skb->cb));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 again:
 	if (unlikely(wil_ring_is_empty(vring)))
@@ -635,10 +513,6 @@ again:
 	wil_hex_dump_txrx("RxD ", DUMP_PREFIX_NONE, 32, 4,
 			  (const void *)d, sizeof(*d), false);
 
-<<<<<<< HEAD
-=======
-	cid = wil_rxdesc_cid(d);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mid = wil_rxdesc_mid(d);
 	vif = wil->vifs[mid];
 
@@ -649,17 +523,9 @@ again:
 		goto again;
 	}
 	ndev = vif_to_ndev(vif);
-<<<<<<< HEAD
 	if (unlikely(dmalen > sz)) {
 		wil_err_ratelimited(wil, "Rx size too large: %d bytes!\n",
 				    dmalen);
-=======
-	stats = &wil->sta[cid].stats;
-
-	if (unlikely(dmalen > sz)) {
-		wil_err(wil, "Rx size too large: %d bytes!\n", dmalen);
-		stats->rx_large_frame++;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree_skb(skb);
 		goto again;
 	}
@@ -670,7 +536,6 @@ again:
 	wil_hex_dump_txrx("Rx ", DUMP_PREFIX_OFFSET, 16, 1,
 			  skb->data, skb_headlen(skb), false);
 
-<<<<<<< HEAD
 	cid = wil_rx_get_cid_by_skb(wil, skb);
 	if (cid == -ENOENT) {
 		kfree_skb(skb);
@@ -679,8 +544,6 @@ again:
 	wil_skb_set_cid(skb, (u8)cid);
 	stats = &wil->sta[cid].stats;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	stats->last_mcs_rx = wil_rxdesc_mcs(d);
 	if (stats->last_mcs_rx < ARRAY_SIZE(stats->rx_per_mcs))
 		stats->rx_per_mcs[stats->last_mcs_rx]++;
@@ -727,16 +590,6 @@ again:
 		goto again;
 	}
 
-<<<<<<< HEAD
-=======
-	if (unlikely(skb->len < ETH_HLEN + snaplen)) {
-		wil_err(wil, "Short frame, len = %d\n", skb->len);
-		stats->rx_short_frame++;
-		kfree_skb(skb);
-		goto again;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* L4 IDENT is on when HW calculated checksum, check status
 	 * and in case of error drop the packet
 	 * higher stack layers will handle retransmission (if required)
@@ -833,11 +686,7 @@ int reverse_memcmp(const void *cs, const void *ct, size_t count)
 static int wil_rx_crypto_check(struct wil6210_priv *wil, struct sk_buff *skb)
 {
 	struct vring_rx_desc *d = wil_skb_rxdesc(skb);
-<<<<<<< HEAD
 	int cid = wil_skb_get_cid(skb);
-=======
-	int cid = wil_rxdesc_cid(d);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int tid = wil_rxdesc_tid(d);
 	int key_id = wil_rxdesc_key_id(d);
 	int mc = wil_rxdesc_mcast(d);
@@ -885,16 +734,11 @@ static void wil_get_netif_rx_params(struct sk_buff *skb, int *cid,
 {
 	struct vring_rx_desc *d = wil_skb_rxdesc(skb);
 
-<<<<<<< HEAD
 	*cid = wil_skb_get_cid(skb);
-=======
-	*cid = wil_rxdesc_cid(d); /* always 0..7, no need to check */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	*security = wil_rxdesc_security(d);
 }
 
 /*
-<<<<<<< HEAD
  * Check if skb is ptk eapol key message
  *
  * returns a pointer to the start of the eapol key structure, NULL
@@ -1076,32 +920,17 @@ static void wil_rx_handle_eapol(struct wil6210_vif *vif, struct sk_buff *skb)
  */
 void wil_netif_rx(struct sk_buff *skb, struct net_device *ndev, int cid,
 		  struct wil_net_stats *stats, bool gro)
-=======
- * Pass Rx packet to the netif. Update statistics.
- * Called in softirq context (NAPI poll).
- */
-void wil_netif_rx_any(struct sk_buff *skb, struct net_device *ndev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	gro_result_t rc = GRO_NORMAL;
 	struct wil6210_vif *vif = ndev_to_vif(ndev);
 	struct wil6210_priv *wil = ndev_to_wil(ndev);
 	struct wireless_dev *wdev = vif_to_wdev(vif);
 	unsigned int len = skb->len;
-<<<<<<< HEAD
-=======
-	int cid;
-	int security;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 *sa, *da = wil_skb_get_da(skb);
 	/* here looking for DA, not A1, thus Rxdesc's 'mcast' indication
 	 * is not suitable, need to look at data
 	 */
 	int mcast = is_multicast_ether_addr(da);
-<<<<<<< HEAD
-=======
-	struct wil_net_stats *stats;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct sk_buff *xmit_skb = NULL;
 	static const char * const gro_res_str[] = {
 		[GRO_MERGED]		= "GRO_MERGED",
@@ -1112,40 +941,6 @@ void wil_netif_rx_any(struct sk_buff *skb, struct net_device *ndev)
 		[GRO_CONSUMED]		= "GRO_CONSUMED",
 	};
 
-<<<<<<< HEAD
-=======
-	wil->txrx_ops.get_netif_rx_params(skb, &cid, &security);
-
-	stats = &wil->sta[cid].stats;
-
-	skb_orphan(skb);
-
-	/* pass only EAPOL packets as plaintext */
-	if (vif->privacy && !security &&
-	    wil_skb_get_protocol(skb) != htons(ETH_P_PAE)) {
-		wil_dbg_txrx(wil,
-			     "Rx drop plaintext frame with %d bytes in secure network\n",
-			     skb->len);
-		dev_kfree_skb(skb);
-		ndev->stats.rx_dropped++;
-		stats->rx_dropped++;
-		return;
-	}
-
-	if (security && (wil->txrx_ops.rx_crypto_check(wil, skb) != 0)) {
-		rc = GRO_DROP;
-		dev_kfree_skb(skb);
-		stats->rx_replay++;
-		goto stats;
-	}
-
-	/* check errors reported by HW and update statistics */
-	if (unlikely(wil->txrx_ops.rx_error_check(wil, skb, stats))) {
-		dev_kfree_skb(skb);
-		return;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (wdev->iftype == NL80211_IFTYPE_STATION) {
 		sa = wil_skb_get_sa(skb);
 		if (mcast && ether_addr_equal(sa, ndev->dev_addr)) {
@@ -1154,13 +949,7 @@ void wil_netif_rx_any(struct sk_buff *skb, struct net_device *ndev)
 			dev_kfree_skb(skb);
 			goto stats;
 		}
-<<<<<<< HEAD
 	} else if (wdev->iftype == NL80211_IFTYPE_AP && !vif->ap_isolate) {
-=======
-	} else if (wdev->iftype == NL80211_IFTYPE_AP && !vif->ap_isolate &&
-		   /* pass EAPOL packets to local net stack only */
-		   (wil_skb_get_protocol(skb) != htons(ETH_P_PAE))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (mcast) {
 			/* send multicast frames both to higher layers in
 			 * local net stack and back to the wireless medium
@@ -1197,7 +986,6 @@ void wil_netif_rx_any(struct sk_buff *skb, struct net_device *ndev)
 	if (skb) { /* deliver to local stack */
 		skb->protocol = eth_type_trans(skb, ndev);
 		skb->dev = ndev;
-<<<<<<< HEAD
 
 		if (skb->protocol == cpu_to_be16(ETH_P_PAE))
 			wil_rx_handle_eapol(vif, skb);
@@ -1206,9 +994,6 @@ void wil_netif_rx_any(struct sk_buff *skb, struct net_device *ndev)
 			rc = napi_gro_receive(&wil->napi_rx, skb);
 		else
 			netif_rx_ni(skb);
-=======
-		rc = napi_gro_receive(&wil->napi_rx, skb);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		wil_dbg_txrx(wil, "Rx complete %d bytes => %s\n",
 			     len, gro_res_str[rc]);
 	}
@@ -1228,7 +1013,6 @@ stats:
 	}
 }
 
-<<<<<<< HEAD
 void wil_netif_rx_any(struct sk_buff *skb, struct net_device *ndev)
 {
 	int cid, security;
@@ -1259,8 +1043,6 @@ void wil_netif_rx_any(struct sk_buff *skb, struct net_device *ndev)
 	wil_netif_rx(skb, ndev, cid, stats, true);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * Proceed all completed skb's from Rx VRING
  *
@@ -1379,12 +1161,8 @@ static int wil_tx_desc_map(union wil_tx_desc *desc, dma_addr_t pa,
 	return 0;
 }
 
-<<<<<<< HEAD
 void wil_tx_data_init(const struct wil6210_priv *wil,
 		      struct wil_ring_tx_data *txdata)
-=======
-void wil_tx_data_init(struct wil_ring_tx_data *txdata)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	spin_lock_bh(&txdata->lock);
 	txdata->dot1x_open = 0;
@@ -1397,12 +1175,9 @@ void wil_tx_data_init(struct wil_ring_tx_data *txdata)
 	txdata->agg_amsdu = 0;
 	txdata->addba_in_progress = false;
 	txdata->mid = U8_MAX;
-<<<<<<< HEAD
 	txdata->tx_reserved_count = wil->tx_reserved_entries;
 	txdata->tx_reserved_count_used = 0;
 	txdata->tx_reserved_count_not_avail = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_bh(&txdata->lock);
 }
 
@@ -1420,10 +1195,6 @@ static int wil_vring_init_tx(struct wil6210_vif *vif, int id, int size,
 				.ring_size = cpu_to_le16(size),
 			},
 			.ringid = id,
-<<<<<<< HEAD
-=======
-			.cidxtid = mk_cidxtid(cid, tid),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.encap_trans_type = WMI_VRING_ENC_TYPE_802_3,
 			.mac_ctrl = 0,
 			.to_resolution = 0,
@@ -1443,7 +1214,6 @@ static int wil_vring_init_tx(struct wil6210_vif *vif, int id, int size,
 	struct wil_ring *vring = &wil->ring_tx[id];
 	struct wil_ring_tx_data *txdata = &wil->ring_tx_data[id];
 
-<<<<<<< HEAD
 	if (cid >= WIL6210_RX_DESC_MAX_CID) {
 		cmd.vring_cfg.cidxtid = CIDXTID_EXTENDED_CID_TID;
 		cmd.vring_cfg.cid = cid;
@@ -1452,8 +1222,6 @@ static int wil_vring_init_tx(struct wil6210_vif *vif, int id, int size,
 		cmd.vring_cfg.cidxtid = mk_cidxtid(cid, tid);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wil_dbg_misc(wil, "vring_init_tx: max_mpdu_size %d\n",
 		     cmd.vring_cfg.tx_sw_ring.max_mpdu_size);
 	lockdep_assert_held(&wil->mutex);
@@ -1464,11 +1232,7 @@ static int wil_vring_init_tx(struct wil6210_vif *vif, int id, int size,
 		goto out;
 	}
 
-<<<<<<< HEAD
 	wil_tx_data_init(wil, txdata);
-=======
-	wil_tx_data_init(txdata);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vring->is_rx = false;
 	vring->size = size;
 	rc = wil_vring_alloc(wil, vring);
@@ -1483,12 +1247,8 @@ static int wil_vring_init_tx(struct wil6210_vif *vif, int id, int size,
 	if (!vif->privacy)
 		txdata->dot1x_open = true;
 	rc = wmi_call(wil, WMI_VRING_CFG_CMDID, vif->mid, &cmd, sizeof(cmd),
-<<<<<<< HEAD
 		      WMI_VRING_CFG_DONE_EVENTID, &reply, sizeof(reply),
 		      WIL_WMI_CALL_GENERAL_TO_MS);
-=======
-		      WMI_VRING_CFG_DONE_EVENTID, &reply, sizeof(reply), 100);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc)
 		goto out_free;
 
@@ -1515,11 +1275,7 @@ static int wil_vring_init_tx(struct wil6210_vif *vif, int id, int size,
 	txdata->enabled = 0;
 	spin_unlock_bh(&txdata->lock);
 	wil_vring_free(wil, vring);
-<<<<<<< HEAD
 	wil->ring2cid_tid[id][0] = max_assoc_sta;
-=======
-	wil->ring2cid_tid[id][0] = WIL6210_MAX_CID;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wil->ring2cid_tid[id][1] = 0;
 
  out:
@@ -1580,12 +1336,8 @@ static int wil_tx_vring_modify(struct wil6210_vif *vif, int ring_id, int cid,
 	cmd.vring_cfg.tx_sw_ring.ring_mem_base = cpu_to_le64(vring->pa);
 
 	rc = wmi_call(wil, WMI_VRING_CFG_CMDID, vif->mid, &cmd, sizeof(cmd),
-<<<<<<< HEAD
 		      WMI_VRING_CFG_DONE_EVENTID, &reply, sizeof(reply),
 		      WIL_WMI_CALL_GENERAL_TO_MS);
-=======
-		      WMI_VRING_CFG_DONE_EVENTID, &reply, sizeof(reply), 100);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc)
 		goto fail;
 
@@ -1609,11 +1361,7 @@ fail:
 	txdata->dot1x_open = false;
 	txdata->enabled = 0;
 	spin_unlock_bh(&txdata->lock);
-<<<<<<< HEAD
 	wil->ring2cid_tid[ring_id][0] = max_assoc_sta;
-=======
-	wil->ring2cid_tid[ring_id][0] = WIL6210_MAX_CID;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wil->ring2cid_tid[ring_id][1] = 0;
 	return rc;
 }
@@ -1653,22 +1401,14 @@ int wil_vring_init_bcast(struct wil6210_vif *vif, int id, int size)
 		goto out;
 	}
 
-<<<<<<< HEAD
 	wil_tx_data_init(wil, txdata);
-=======
-	wil_tx_data_init(txdata);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vring->is_rx = false;
 	vring->size = size;
 	rc = wil_vring_alloc(wil, vring);
 	if (rc)
 		goto out;
 
-<<<<<<< HEAD
 	wil->ring2cid_tid[id][0] = max_assoc_sta; /* CID */
-=======
-	wil->ring2cid_tid[id][0] = WIL6210_MAX_CID; /* CID */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wil->ring2cid_tid[id][1] = 0; /* TID */
 
 	cmd.vring_cfg.tx_sw_ring.ring_mem_base = cpu_to_le64(vring->pa);
@@ -1677,12 +1417,8 @@ int wil_vring_init_bcast(struct wil6210_vif *vif, int id, int size)
 		txdata->dot1x_open = true;
 	rc = wmi_call(wil, WMI_BCAST_VRING_CFG_CMDID, vif->mid,
 		      &cmd, sizeof(cmd),
-<<<<<<< HEAD
 		      WMI_VRING_CFG_DONE_EVENTID, &reply, sizeof(reply),
 		      WIL_WMI_CALL_GENERAL_TO_MS);
-=======
-		      WMI_VRING_CFG_DONE_EVENTID, &reply, sizeof(reply), 100);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc)
 		goto out_free;
 
@@ -1721,11 +1457,7 @@ static struct wil_ring *wil_find_tx_ucast(struct wil6210_priv *wil,
 
 	cid = wil_find_cid(wil, vif->mid, da);
 
-<<<<<<< HEAD
 	if (cid < 0 || cid >= max_assoc_sta)
-=======
-	if (cid < 0 || cid >= WIL6210_MAX_CID)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return NULL;
 
 	/* TODO: fix for multiple TID */
@@ -1777,11 +1509,7 @@ static struct wil_ring *wil_find_tx_ring_sta(struct wil6210_priv *wil,
 			continue;
 
 		cid = wil->ring2cid_tid[i][0];
-<<<<<<< HEAD
 		if (cid >= max_assoc_sta) /* skip BCAST */
-=======
-		if (cid >= WIL6210_MAX_CID) /* skip BCAST */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 
 		if (!wil->ring_tx_data[i].dot1x_open &&
@@ -1859,11 +1587,7 @@ static struct wil_ring *wil_find_tx_bcast_2(struct wil6210_priv *wil,
 			continue;
 
 		cid = wil->ring2cid_tid[i][0];
-<<<<<<< HEAD
 		if (cid >= max_assoc_sta) /* skip BCAST */
-=======
-		if (cid >= WIL6210_MAX_CID) /* skip BCAST */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 		if (!wil->ring_tx_data[i].dot1x_open &&
 		    skb->protocol != cpu_to_be16(ETH_P_PAE))
@@ -1891,11 +1615,7 @@ found:
 		if (!v2->va || txdata2->mid != vif->mid)
 			continue;
 		cid = wil->ring2cid_tid[i][0];
-<<<<<<< HEAD
 		if (cid >= max_assoc_sta) /* skip BCAST */
-=======
-		if (cid >= WIL6210_MAX_CID) /* skip BCAST */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 		if (!wil->ring_tx_data[i].dot1x_open &&
 		    skb->protocol != cpu_to_be16(ETH_P_PAE))
@@ -1919,15 +1639,6 @@ found:
 	return v;
 }
 
-<<<<<<< HEAD
-=======
-static inline
-void wil_tx_desc_set_nr_frags(struct vring_tx_desc *d, int nr_frags)
-{
-	d->mac.d[2] |= (nr_frags << MAC_CFG_DESC_TX_2_NUM_OF_DESCRIPTORS_POS);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * Sets the descriptor @d up for csum and/or TSO offloading. The corresponding
  * @skb is used to obtain the protocol and headers length.
@@ -2257,12 +1968,9 @@ static int __wil_tx_vring_tso(struct wil6210_priv *wil, struct wil6210_vif *vif,
 		}
 	}
 
-<<<<<<< HEAD
 	if (!_desc)
 		goto mem_error;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* first descriptor may also be the last.
 	 * in this case d pointer is invalid
 	 */
@@ -2334,7 +2042,6 @@ err_exit:
 	return rc;
 }
 
-<<<<<<< HEAD
 bool wil_is_special_packet(const struct sk_buff *skb)
 {
 	if (skb->protocol == cpu_to_be16(ETH_P_ARP) ||
@@ -2349,8 +2056,6 @@ bool wil_is_special_packet(const struct sk_buff *skb)
 	return false;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __wil_tx_ring(struct wil6210_priv *wil, struct wil6210_vif *vif,
 			 struct wil_ring *ring, struct sk_buff *skb)
 {
@@ -2358,10 +2063,6 @@ static int __wil_tx_ring(struct wil6210_priv *wil, struct wil6210_vif *vif,
 	struct vring_tx_desc dd, *d = &dd;
 	volatile struct vring_tx_desc *_d;
 	u32 swhead = ring->swhead;
-<<<<<<< HEAD
-=======
-	int avail = wil_ring_avail_tx(ring);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int nr_frags = skb_shinfo(skb)->nr_frags;
 	uint f = 0;
 	int ring_index = ring - wil->ring_tx;
@@ -2371,14 +2072,11 @@ static int __wil_tx_ring(struct wil6210_priv *wil, struct wil6210_vif *vif,
 	int used;
 	bool mcast = (ring_index == vif->bcast_ring);
 	uint len = skb_headlen(skb);
-<<<<<<< HEAD
 	bool special_packet = (wil->tx_reserved_entries != 0 &&
 			       wil_is_special_packet(skb));
 	int avail = wil_ring_avail_tx(ring) -
 		(special_packet ? 0 : txdata->tx_reserved_count);
 	u8 ctx_flags = special_packet ? WIL_CTX_FLAG_RESERVED_USED : 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	wil_dbg_txrx(wil, "tx_ring: %d bytes to ring %d, nr_frags %d\n",
 		     skb->len, ring_index, nr_frags);
@@ -2387,7 +2085,6 @@ static int __wil_tx_ring(struct wil6210_priv *wil, struct wil6210_vif *vif,
 		return -EINVAL;
 
 	if (unlikely(avail < 1 + nr_frags)) {
-<<<<<<< HEAD
 		if (special_packet) {
 			txdata->tx_reserved_count_not_avail++;
 			wil_err_ratelimited(wil,
@@ -2399,11 +2096,6 @@ static int __wil_tx_ring(struct wil6210_priv *wil, struct wil6210_vif *vif,
 					    "Tx ring[%2d] full. No space for %d fragments\n",
 					    ring_index, 1 + nr_frags);
 		}
-=======
-		wil_err_ratelimited(wil,
-				    "Tx ring[%2d] full. No space for %d fragments\n",
-				    ring_index, 1 + nr_frags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOMEM;
 	}
 	_d = &ring->va[i].tx.legacy;
@@ -2418,10 +2110,7 @@ static int __wil_tx_ring(struct wil6210_priv *wil, struct wil6210_vif *vif,
 	if (unlikely(dma_mapping_error(dev, pa)))
 		return -EINVAL;
 	ring->ctx[i].mapped_as = wil_mapped_as_single;
-<<<<<<< HEAD
 	ring->ctx[i].flags = ctx_flags;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* 1-st segment */
 	wil->txrx_ops.tx_desc_map((union wil_tx_desc *)d, pa, len,
 				   ring_index);
@@ -2460,11 +2149,8 @@ static int __wil_tx_ring(struct wil6210_priv *wil, struct wil6210_vif *vif,
 			goto dma_error;
 		}
 		ring->ctx[i].mapped_as = wil_mapped_as_page;
-<<<<<<< HEAD
 		ring->ctx[i].flags = ctx_flags;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		wil->txrx_ops.tx_desc_map((union wil_tx_desc *)d,
 					   pa, len, ring_index);
 		/* no need to check return code -
@@ -2497,7 +2183,6 @@ static int __wil_tx_ring(struct wil6210_priv *wil, struct wil6210_vif *vif,
 			     ring_index, used, used + nr_frags + 1);
 	}
 
-<<<<<<< HEAD
 	if (special_packet) {
 		txdata->tx_reserved_count -= (f + 1);
 		txdata->tx_reserved_count_used += (f + 1);
@@ -2506,8 +2191,6 @@ static int __wil_tx_ring(struct wil6210_priv *wil, struct wil6210_vif *vif,
 			     ring_index, txdata->tx_reserved_count, f + 1);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Make sure to advance the head only after descriptor update is done.
 	 * This will prevent a race condition where the completion thread
 	 * will see the DU bit set from previous run and will handle the
@@ -2581,7 +2264,6 @@ static int wil_tx_ring(struct wil6210_priv *wil, struct wil6210_vif *vif,
 	return rc;
 }
 
-<<<<<<< HEAD
 int wil_get_cid_by_ring(struct wil6210_priv *wil, struct wil_ring *ring)
 {
 	int ring_index = ring - wil->ring_tx;
@@ -2595,8 +2277,6 @@ int wil_get_cid_by_ring(struct wil6210_priv *wil, struct wil_ring *ring)
 	return wil->ring2cid_tid[ring_index][0];
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * Check status of tx vrings and stop/wake net queues if needed
  * It will start/stop net queues of a specific VIF net_device.
@@ -2633,13 +2313,10 @@ static inline void __wil_update_net_queues(struct wil6210_priv *wil,
 		wil_dbg_txrx(wil, "check_stop=%d, mid=%d, stopped=%d",
 			     check_stop, vif->mid, vif->net_queue_stopped);
 
-<<<<<<< HEAD
 	if (ring && drop_if_ring_full)
 		/* no need to stop/wake net queues */
 		return;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (check_stop == vif->net_queue_stopped)
 		/* net queues already in desired state */
 		return;
@@ -2754,7 +2431,6 @@ netdev_tx_t wil_start_xmit(struct sk_buff *skb, struct net_device *ndev)
 		wil_dbg_txrx(wil, "No Tx RING found for %pM\n", da);
 		goto drop;
 	}
-<<<<<<< HEAD
 
 	if (wil->ipa_handle) {
 		rc = wil_ipa_tx(wil->ipa_handle, ring, skb);
@@ -2768,8 +2444,6 @@ netdev_tx_t wil_start_xmit(struct sk_buff *skb, struct net_device *ndev)
 		}
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* set up vring entry */
 	rc = wil_tx_ring(wil, vif, ring, skb);
 
@@ -2781,11 +2455,8 @@ netdev_tx_t wil_start_xmit(struct sk_buff *skb, struct net_device *ndev)
 		dev_kfree_skb_any(skb);
 		return NETDEV_TX_OK;
 	case -ENOMEM:
-<<<<<<< HEAD
 		if (drop_if_ring_full)
 			goto drop;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return NETDEV_TX_BUSY;
 	default:
 		break; /* goto drop; */
@@ -2857,11 +2528,7 @@ int wil_tx_complete(struct wil6210_vif *vif, int ringid)
 
 	used_before_complete = wil_ring_used_tx(vring);
 
-<<<<<<< HEAD
 	if (cid < max_assoc_sta)
-=======
-	if (cid < WIL6210_MAX_CID)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		stats = &wil->sta[cid].stats;
 
 	while (!wil_ring_is_empty(vring)) {
@@ -2921,13 +2588,10 @@ int wil_tx_complete(struct wil6210_vif *vif, int ringid)
 					if (stats)
 						stats->tx_errors++;
 				}
-<<<<<<< HEAD
 
 				if (skb->protocol == cpu_to_be16(ETH_P_PAE))
 					wil_tx_complete_handle_eapol(vif, skb);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				wil_consume_skb(skb, d->dma.error == 0);
 			}
 			memset(ctx, 0, sizeof(*ctx));
@@ -2977,11 +2641,7 @@ static void wil_get_reorder_params(struct wil6210_priv *wil,
 	struct vring_rx_desc *d = wil_skb_rxdesc(skb);
 
 	*tid = wil_rxdesc_tid(d);
-<<<<<<< HEAD
 	*cid = wil_skb_get_cid(skb);
-=======
-	*cid = wil_rxdesc_cid(d);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	*mid = wil_rxdesc_mid(d);
 	*seq = wil_rxdesc_seq(d);
 	*mcast = wil_rxdesc_mcast(d);

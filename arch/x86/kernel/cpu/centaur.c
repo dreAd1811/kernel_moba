@@ -18,7 +18,6 @@
 #define RNG_ENABLED	(1 << 3)
 #define RNG_ENABLE	(1 << 6)	/* MSR_VIA_RNG */
 
-<<<<<<< HEAD
 #define X86_VMX_FEATURE_PROC_CTLS_TPR_SHADOW	0x00200000
 #define X86_VMX_FEATURE_PROC_CTLS_VNMI		0x00400000
 #define X86_VMX_FEATURE_PROC_CTLS_2ND_CTLS	0x80000000
@@ -26,8 +25,6 @@
 #define X86_VMX_FEATURE_PROC_CTLS2_EPT		0x00000002
 #define X86_VMX_FEATURE_PROC_CTLS2_VPID		0x00000020
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void init_c3(struct cpuinfo_x86 *c)
 {
 	u32  lo, hi;
@@ -116,7 +113,6 @@ static void early_init_centaur(struct cpuinfo_x86 *c)
 #ifdef CONFIG_X86_64
 	set_cpu_cap(c, X86_FEATURE_SYSENTER32);
 #endif
-<<<<<<< HEAD
 	if (c->x86_power & (1 << 8)) {
 		set_cpu_cap(c, X86_FEATURE_CONSTANT_TSC);
 		set_cpu_cap(c, X86_FEATURE_NONSTOP_TSC);
@@ -146,8 +142,6 @@ static void centaur_detect_vmx_virtcap(struct cpuinfo_x86 *c)
 		if (msr_ctl2 & X86_VMX_FEATURE_PROC_CTLS2_VPID)
 			set_cpu_cap(c, X86_FEATURE_VPID);
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void init_centaur(struct cpuinfo_x86 *c)
@@ -166,7 +160,6 @@ static void init_centaur(struct cpuinfo_x86 *c)
 	clear_cpu_cap(c, 0*32+31);
 #endif
 	early_init_centaur(c);
-<<<<<<< HEAD
 	init_intel_cacheinfo(c);
 	detect_num_cpu_cores(c);
 #ifdef CONFIG_X86_32
@@ -185,8 +178,6 @@ static void init_centaur(struct cpuinfo_x86 *c)
 			set_cpu_cap(c, X86_FEATURE_ARCH_PERFMON);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (c->x86) {
 #ifdef CONFIG_X86_32
 	case 5:
@@ -258,12 +249,9 @@ static void init_centaur(struct cpuinfo_x86 *c)
 #ifdef CONFIG_X86_64
 	set_cpu_cap(c, X86_FEATURE_LFENCE_RDTSC);
 #endif
-<<<<<<< HEAD
 
 	if (cpu_has(c, X86_FEATURE_VMX))
 		centaur_detect_vmx_virtcap(c);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #ifdef CONFIG_X86_32

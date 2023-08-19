@@ -33,7 +33,6 @@
 
 static void tpm_tis_clkrun_enable(struct tpm_chip *chip, bool value);
 
-<<<<<<< HEAD
 static bool wait_for_tpm_stat_cond(struct tpm_chip *chip, u8 mask,
 					bool check_cancel, bool *canceled)
 {
@@ -95,8 +94,6 @@ again:
 	return -ETIME;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Before we attempt to access the TPM we must see that the valid bit is set.
  * The specification says that this bit is 0 at reset and remains 0 until the
  * 'TPM has gone through its self test and initialization and has established
@@ -141,7 +138,6 @@ static bool check_locality(struct tpm_chip *chip, int l)
 	return false;
 }
 
-<<<<<<< HEAD
 static bool locality_inactive(struct tpm_chip *chip, int l)
 {
 	struct tpm_tis_data *priv = dev_get_drvdata(&chip->dev);
@@ -194,15 +190,6 @@ again:
 		} while (time_before(jiffies, stop));
 	}
 	return -1;
-=======
-static int release_locality(struct tpm_chip *chip, int l)
-{
-	struct tpm_tis_data *priv = dev_get_drvdata(&chip->dev);
-
-	tpm_tis_write8(priv, TPM_ACCESS(l), TPM_ACCESS_ACTIVE_LOCALITY);
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int request_locality(struct tpm_chip *chip, int l)
@@ -287,11 +274,7 @@ static int get_burstcount(struct tpm_chip *chip)
 		burstcnt = (value >> 8) & 0xFFFF;
 		if (burstcnt)
 			return burstcnt;
-<<<<<<< HEAD
 		usleep_range(TPM_TIMEOUT_USECS_MIN, TPM_TIMEOUT_USECS_MAX);
-=======
-		tpm_msleep(TPM_TIMEOUT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} while (time_before(jiffies, stop));
 	return -EBUSY;
 }
@@ -454,12 +437,6 @@ static void disable_interrupts(struct tpm_chip *chip)
 	u32 intmask;
 	int rc;
 
-<<<<<<< HEAD
-=======
-	if (priv->irq == 0)
-		return;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rc = tpm_tis_read32(priv, TPM_INT_ENABLE(priv->locality), &intmask);
 	if (rc < 0)
 		intmask = 0;
@@ -588,11 +565,7 @@ static int probe_itpm(struct tpm_chip *chip)
 {
 	struct tpm_tis_data *priv = dev_get_drvdata(&chip->dev);
 	int rc = 0;
-<<<<<<< HEAD
 	static const u8 cmd_getticks[] = {
-=======
-	u8 cmd_getticks[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		0x00, 0xc1, 0x00, 0x00, 0x00, 0x0a,
 		0x00, 0x00, 0x00, 0xf1
 	};
@@ -886,13 +859,9 @@ int tpm_tis_core_init(struct device *dev, struct tpm_tis_data *priv, int irq,
 		      const struct tpm_tis_phy_ops *phy_ops,
 		      acpi_handle acpi_dev_handle)
 {
-<<<<<<< HEAD
 	u32 vendor;
 	u32 intfcaps;
 	u32 intmask;
-=======
-	u32 vendor, intfcaps, intmask;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 clkrun_val;
 	u8 rid;
 	int rc, probe;
@@ -906,11 +875,8 @@ int tpm_tis_core_init(struct device *dev, struct tpm_tis_data *priv, int irq,
 	chip->acpi_dev_handle = acpi_dev_handle;
 #endif
 
-<<<<<<< HEAD
 	chip->hwrng.quality = priv->rng_quality;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Maximum timeouts */
 	chip->timeout_a = msecs_to_jiffies(TIS_TIMEOUT_A_MAX);
 	chip->timeout_b = msecs_to_jiffies(TIS_TIMEOUT_B_MAX);
@@ -1018,18 +984,9 @@ int tpm_tis_core_init(struct device *dev, struct tpm_tis_data *priv, int irq,
 		if (irq) {
 			tpm_tis_probe_irq_single(chip, intmask, IRQF_SHARED,
 						 irq);
-<<<<<<< HEAD
 			if (!(chip->flags & TPM_CHIP_FLAG_IRQ))
 				dev_err(&chip->dev, FW_BUG
 					"TPM interrupt not working, polling instead\n");
-=======
-			if (!(chip->flags & TPM_CHIP_FLAG_IRQ)) {
-				dev_err(&chip->dev, FW_BUG
-					"TPM interrupt not working, polling instead\n");
-
-				disable_interrupts(chip);
-			}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else {
 			tpm_tis_probe_irq(chip, intmask);
 		}
@@ -1044,11 +1001,7 @@ int tpm_tis_core_init(struct device *dev, struct tpm_tis_data *priv, int irq,
 
 	return 0;
 out_err:
-<<<<<<< HEAD
 	if ((chip->ops != NULL) && (chip->ops->clk_enable != NULL))
-=======
-	if (chip->ops->clk_enable != NULL)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		chip->ops->clk_enable(chip, false);
 
 	tpm_tis_remove(chip);

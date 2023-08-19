@@ -116,13 +116,9 @@ static int ts73xx_fpga_probe(struct platform_device *pdev)
 {
 	struct device *kdev = &pdev->dev;
 	struct ts73xx_fpga_priv *priv;
-<<<<<<< HEAD
 	struct fpga_manager *mgr;
 	struct resource *res;
 	int ret;
-=======
-	struct resource *res;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	priv = devm_kzalloc(kdev, sizeof(*priv), GFP_KERNEL);
 	if (!priv)
@@ -137,7 +133,6 @@ static int ts73xx_fpga_probe(struct platform_device *pdev)
 		return PTR_ERR(priv->io_base);
 	}
 
-<<<<<<< HEAD
 	mgr = fpga_mgr_create(kdev, "TS-73xx FPGA Manager",
 			      &ts73xx_fpga_ops, priv);
 	if (!mgr)
@@ -150,21 +145,13 @@ static int ts73xx_fpga_probe(struct platform_device *pdev)
 		fpga_mgr_free(mgr);
 
 	return ret;
-=======
-	return fpga_mgr_register(kdev, "TS-73xx FPGA Manager",
-				 &ts73xx_fpga_ops, priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int ts73xx_fpga_remove(struct platform_device *pdev)
 {
-<<<<<<< HEAD
 	struct fpga_manager *mgr = platform_get_drvdata(pdev);
 
 	fpga_mgr_unregister(mgr);
-=======
-	fpga_mgr_unregister(&pdev->dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

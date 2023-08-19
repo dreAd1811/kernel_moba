@@ -113,7 +113,6 @@ struct flag_info {
 
 static const struct flag_info flag_array[] = {
 	{
-<<<<<<< HEAD
 		.mask	= _PAGE_USER | _PAGE_PRIVILEGED,
 		.val	= _PAGE_USER,
 		.set	= "user",
@@ -133,28 +132,6 @@ static const struct flag_info flag_array[] = {
 		.set	= "na",
 	}, {
 #endif
-=======
-#ifdef CONFIG_PPC_STD_MMU_64
-		.mask	= _PAGE_PRIVILEGED,
-		.val	= 0,
-#else
-		.mask	= _PAGE_USER,
-		.val	= _PAGE_USER,
-#endif
-		.set	= "user",
-		.clear	= "    ",
-	}, {
-#if _PAGE_RO == 0
-		.mask	= _PAGE_RW,
-		.val	= _PAGE_RW,
-#else
-		.mask	= _PAGE_RO,
-		.val	= 0,
-#endif
-		.set	= "rw",
-		.clear	= "ro",
-	}, {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.mask	= _PAGE_EXEC,
 		.val	= _PAGE_EXEC,
 		.set	= " X ",
@@ -170,11 +147,7 @@ static const struct flag_info flag_array[] = {
 		.set	= "present",
 		.clear	= "       ",
 	}, {
-<<<<<<< HEAD
 #ifdef CONFIG_PPC_BOOK3S_64
-=======
-#ifdef CONFIG_PPC_STD_MMU_64
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.mask	= H_PAGE_HASHPTE,
 		.val	= H_PAGE_HASHPTE,
 #else
@@ -184,11 +157,7 @@ static const struct flag_info flag_array[] = {
 		.set	= "hpte",
 		.clear	= "    ",
 	}, {
-<<<<<<< HEAD
 #ifndef CONFIG_PPC_BOOK3S_64
-=======
-#ifndef CONFIG_PPC_STD_MMU_64
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.mask	= _PAGE_GUARDED,
 		.val	= _PAGE_GUARDED,
 		.set	= "guarded",
@@ -205,11 +174,7 @@ static const struct flag_info flag_array[] = {
 		.set	= "accessed",
 		.clear	= "        ",
 	}, {
-<<<<<<< HEAD
 #ifndef CONFIG_PPC_BOOK3S_64
-=======
-#ifndef CONFIG_PPC_STD_MMU_64
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.mask	= _PAGE_WRITETHRU,
 		.val	= _PAGE_WRITETHRU,
 		.set	= "write through",
@@ -248,11 +213,7 @@ static const struct flag_info flag_array[] = {
 		.val	= H_PAGE_4K_PFN,
 		.set	= "4K_pfn",
 	}, {
-<<<<<<< HEAD
 #else /* CONFIG_PPC_64K_PAGES */
-=======
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.mask	= H_PAGE_F_GIX,
 		.val	= H_PAGE_F_GIX,
 		.set	= "f_gix",
@@ -263,21 +224,11 @@ static const struct flag_info flag_array[] = {
 		.val	= H_PAGE_F_SECOND,
 		.set	= "f_second",
 	}, {
-<<<<<<< HEAD
 #endif /* CONFIG_PPC_64K_PAGES */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 		.mask	= _PAGE_SPECIAL,
 		.val	= _PAGE_SPECIAL,
 		.set	= "special",
-<<<<<<< HEAD
-=======
-	}, {
-		.mask	= _PAGE_SHARED,
-		.val	= _PAGE_SHARED,
-		.set	= "shared",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 };
 
@@ -497,11 +448,7 @@ static void populate_markers(void)
 	address_markers[i++].start_address = PHB_IO_END;
 	address_markers[i++].start_address = IOREMAP_BASE;
 	address_markers[i++].start_address = IOREMAP_END;
-<<<<<<< HEAD
 #ifdef CONFIG_PPC_BOOK3S_64
-=======
-#ifdef CONFIG_PPC_STD_MMU_64
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	address_markers[i++].start_address =  H_VMEMMAP_BASE;
 #else
 	address_markers[i++].start_address =  VMEMMAP_BASE;

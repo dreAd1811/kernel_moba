@@ -19,10 +19,7 @@
 #include <asm/mipsprom.h>
 #include <asm/mipsregs.h>
 #include <asm/bootinfo.h>
-<<<<<<< HEAD
 #include <asm/setup.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* special SNI prom calls */
 /*
@@ -46,11 +43,7 @@
 
 /* O32 stack has to be 8-byte aligned. */
 static u64 o32_stk[4096];
-<<<<<<< HEAD
 #define O32_STK	  &o32_stk[sizeof(o32_stk)]
-=======
-#define O32_STK	  (&o32_stk[ARRAY_SIZE(o32_stk)])
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define __PROM_O32(fun, arg) fun arg __asm__(#fun); \
 				     __asm__(#fun " = call_o32")

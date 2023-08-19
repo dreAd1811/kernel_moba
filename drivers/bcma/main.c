@@ -207,11 +207,7 @@ static void bcma_of_fill_device(struct device *parent,
 
 	core->irq = bcma_of_get_irq(parent, core, 0);
 
-<<<<<<< HEAD
 	of_dma_configure(&core->dev, node, false);
-=======
-	of_dma_configure(&core->dev, node);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 unsigned int bcma_core_irq(struct bcma_device *core, int num)

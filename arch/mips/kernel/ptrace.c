@@ -41,10 +41,7 @@
 #include <asm/mipsmtregs.h>
 #include <asm/pgtable.h>
 #include <asm/page.h>
-<<<<<<< HEAD
 #include <asm/processor.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/syscall.h>
 #include <linux/uaccess.h>
 #include <asm/bootinfo.h>
@@ -148,12 +145,9 @@ int ptrace_setregs(struct task_struct *child, struct user_pt_regs __user *data)
 
 	/* badvaddr, status, and cause may not be written.  */
 
-<<<<<<< HEAD
 	/* System call number may have been changed */
 	mips_syscall_update_nr(child, regs);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -355,12 +349,9 @@ static int gpr32_set(struct task_struct *target,
 		}
 	}
 
-<<<<<<< HEAD
 	/* System call number may have been changed */
 	mips_syscall_update_nr(target, regs);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -421,12 +412,9 @@ static int gpr64_set(struct task_struct *target,
 		}
 	}
 
-<<<<<<< HEAD
 	/* System call number may have been changed */
 	mips_syscall_update_nr(target, regs);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -602,7 +590,6 @@ static int fpr_set(struct task_struct *target,
 	return err;
 }
 
-<<<<<<< HEAD
 #if defined(CONFIG_32BIT) || defined(CONFIG_MIPS32_O32)
 
 /*
@@ -823,11 +810,6 @@ enum mips_regset {
 	REGSET_FPR,
 	REGSET_DSP,
 	REGSET_FP_MODE,
-=======
-enum mips_regset {
-	REGSET_GPR,
-	REGSET_FPR,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct pt_regs_offset {
@@ -933,7 +915,6 @@ static const struct user_regset mips_regsets[] = {
 		.get		= fpr_get,
 		.set		= fpr_set,
 	},
-<<<<<<< HEAD
 	[REGSET_DSP] = {
 		.core_note_type	= NT_MIPS_DSP,
 		.n		= NUM_DSP_REGS + 1,
@@ -951,8 +932,6 @@ static const struct user_regset mips_regsets[] = {
 		.get		= fp_mode_get,
 		.set		= fp_mode_set,
 	},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct user_regset_view user_mips_view = {
@@ -984,7 +963,6 @@ static const struct user_regset mips64_regsets[] = {
 		.get		= fpr_get,
 		.set		= fpr_set,
 	},
-<<<<<<< HEAD
 	[REGSET_DSP] = {
 		.core_note_type	= NT_MIPS_DSP,
 		.n		= NUM_DSP_REGS + 1,
@@ -1002,8 +980,6 @@ static const struct user_regset mips64_regsets[] = {
 		.get		= fp_mode_get,
 		.set		= fp_mode_set,
 	},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct user_regset_view user_mips64_view = {
@@ -1087,11 +1063,7 @@ long arch_ptrace(struct task_struct *child, long request,
 				/*
 				 * The odd registers are actually the high
 				 * order bits of the values stored in the even
-<<<<<<< HEAD
 				 * registers.
-=======
-				 * registers - unless we're using r2k_switch.S.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 */
 				tmp = get_fpr32(&fregs[(addr & ~1) - FPR_BASE],
 						addr & 1);
@@ -1170,15 +1142,12 @@ long arch_ptrace(struct task_struct *child, long request,
 		switch (addr) {
 		case 0 ... 31:
 			regs->regs[addr] = data;
-<<<<<<< HEAD
 			/* System call number may have been changed */
 			if (addr == 2)
 				mips_syscall_update_nr(child, regs);
 			else if (addr == 4 &&
 				 mips_syscall_is_indirect(child, regs))
 				mips_syscall_update_nr(child, regs);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		case FPR_BASE ... FPR_BASE + 31: {
 			union fpureg *fregs = get_fpu_regs(child);
@@ -1189,11 +1158,7 @@ long arch_ptrace(struct task_struct *child, long request,
 				/*
 				 * The odd registers are actually the high
 				 * order bits of the values stored in the even
-<<<<<<< HEAD
 				 * registers.
-=======
-				 * registers - unless we're using r2k_switch.S.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 */
 				set_fpr32(&fregs[(addr & ~1) - FPR_BASE],
 					  addr & 1, data);
@@ -1294,17 +1259,11 @@ asmlinkage long syscall_trace_enter(struct pt_regs *regs, long syscall)
 
 	current_thread_info()->syscall = syscall;
 
-<<<<<<< HEAD
 	if (test_thread_flag(TIF_SYSCALL_TRACE)) {
 		if (tracehook_report_syscall_entry(regs))
 			return -1;
 		syscall = current_thread_info()->syscall;
 	}
-=======
-	if (test_thread_flag(TIF_SYSCALL_TRACE) &&
-	    tracehook_report_syscall_entry(regs))
-		return -1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_SECCOMP
 	if (unlikely(test_thread_flag(TIF_SECCOMP))) {
@@ -1322,10 +1281,7 @@ asmlinkage long syscall_trace_enter(struct pt_regs *regs, long syscall)
 		ret = __secure_computing(&sd);
 		if (ret == -1)
 			return ret;
-<<<<<<< HEAD
 		syscall = current_thread_info()->syscall;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 #endif
 

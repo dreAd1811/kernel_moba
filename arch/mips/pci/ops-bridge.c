@@ -167,11 +167,7 @@ oh_my_gawd:
 static int pci_read_config(struct pci_bus *bus, unsigned int devfn,
 			   int where, int size, u32 * value)
 {
-<<<<<<< HEAD
 	if (!pci_is_root_bus(bus))
-=======
-	if (bus->number > 0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return pci_conf1_read_config(bus, devfn, where, size, value);
 
 	return pci_conf0_read_config(bus, devfn, where, size, value);
@@ -314,11 +310,7 @@ oh_my_gawd:
 static int pci_write_config(struct pci_bus *bus, unsigned int devfn,
 	int where, int size, u32 value)
 {
-<<<<<<< HEAD
 	if (!pci_is_root_bus(bus))
-=======
-	if (bus->number > 0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return pci_conf1_write_config(bus, devfn, where, size, value);
 
 	return pci_conf0_write_config(bus, devfn, where, size, value);

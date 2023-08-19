@@ -125,11 +125,7 @@ static int ide_cmd_ioctl(ide_drive_t *drive, unsigned long arg)
 	if (NULL == (void *) arg) {
 		struct request *rq;
 
-<<<<<<< HEAD
 		rq = blk_get_request(drive->queue, REQ_OP_DRV_IN, 0);
-=======
-		rq = blk_get_request(drive->queue, REQ_OP_DRV_IN, __GFP_RECLAIM);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ide_req(rq)->type = ATA_PRIV_TASKFILE;
 		blk_execute_rq(drive->queue, NULL, rq, 0);
 		err = scsi_req(rq)->result ? -EIO : 0;
@@ -226,11 +222,7 @@ static int generic_drive_reset(ide_drive_t *drive)
 	struct request *rq;
 	int ret = 0;
 
-<<<<<<< HEAD
 	rq = blk_get_request(drive->queue, REQ_OP_DRV_IN, 0);
-=======
-	rq = blk_get_request(drive->queue, REQ_OP_DRV_IN, __GFP_RECLAIM);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ide_req(rq)->type = ATA_PRIV_MISC;
 	scsi_req(rq)->cmd_len = 1;
 	scsi_req(rq)->cmd[0] = REQ_DRIVE_RESET;

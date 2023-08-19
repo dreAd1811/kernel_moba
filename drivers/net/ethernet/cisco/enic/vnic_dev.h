@@ -183,11 +183,7 @@ int vnic_dev_overlay_offload_ctrl(struct vnic_dev *vdev, u8 overlay, u8 config);
 int vnic_dev_overlay_offload_cfg(struct vnic_dev *vdev, u8 overlay,
 				 u16 vxlan_udp_port_number);
 int vnic_dev_get_supported_feature_ver(struct vnic_dev *vdev, u8 feature,
-<<<<<<< HEAD
 				       u64 *supported_versions, u64 *a1);
 int vnic_dev_capable_rss_hash_type(struct vnic_dev *vdev, u8 *rss_hash_type);
-=======
-				       u64 *supported_versions);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* _VNIC_DEV_H_ */

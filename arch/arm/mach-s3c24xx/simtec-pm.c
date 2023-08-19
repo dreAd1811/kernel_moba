@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 //
 // Copyright 2004 Simtec Electronics
@@ -7,21 +6,6 @@
 // http://armlinux.simtec.co.uk/
 //
 // Power Management helpers for Simtec S3C24XX implementations
-=======
-/* linux/arch/arm/plat-s3c24xx/pm-simtec.c
- *
- * Copyright 2004 Simtec Electronics
- *	Ben Dooks <ben@simtec.co.uk>
- *
- * http://armlinux.simtec.co.uk/
- *
- * Power Management helpers for Simtec S3C24XX implementations
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
-*/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/kernel.h>
 #include <linux/types.h>

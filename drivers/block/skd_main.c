@@ -32,10 +32,6 @@
 #include <linux/aer.h>
 #include <linux/wait.h>
 #include <linux/stringify.h>
-<<<<<<< HEAD
-=======
-#include <linux/slab_def.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <scsi/scsi.h>
 #include <scsi/sg.h>
 #include <linux/io.h>
@@ -661,13 +657,8 @@ static bool skd_preop_sg_list(struct skd_device *skdev,
 
 	if (unlikely(skdev->dbg_level > 1)) {
 		dev_dbg(&skdev->pdev->dev,
-<<<<<<< HEAD
 			"skreq=%x sksg_list=%p sksg_dma=%pad\n",
 			skreq->id, skreq->sksg_list, &skreq->sksg_dma_address);
-=======
-			"skreq=%x sksg_list=%p sksg_dma=%llx\n",
-			skreq->id, skreq->sksg_list, skreq->sksg_dma_address);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		for (i = 0; i < n_sg; i++) {
 			struct fit_sg_descriptor *sgd = &skreq->sksg_list[i];
 
@@ -715,15 +706,9 @@ static void skd_start_queue(struct work_struct *work)
 	blk_mq_start_hw_queues(skdev->queue);
 }
 
-<<<<<<< HEAD
 static void skd_timer_tick(struct timer_list *t)
 {
 	struct skd_device *skdev = from_timer(skdev, t, timer);
-=======
-static void skd_timer_tick(ulong arg)
-{
-	struct skd_device *skdev = (struct skd_device *)arg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long reqflags;
 	u32 state;
 
@@ -871,11 +856,7 @@ static int skd_start_timer(struct skd_device *skdev)
 {
 	int rc;
 
-<<<<<<< HEAD
 	timer_setup(&skdev->timer, skd_timer_tick, 0);
-=======
-	setup_timer(&skdev->timer, skd_timer_tick, (ulong)skdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rc = mod_timer(&skdev->timer, (jiffies + HZ));
 	if (rc)
@@ -1209,13 +1190,8 @@ static void skd_send_fitmsg(struct skd_device *skdev,
 {
 	u64 qcmd;
 
-<<<<<<< HEAD
 	dev_dbg(&skdev->pdev->dev, "dma address %pad, busy=%d\n",
 		&skmsg->mb_dma_address, skd_in_flight(skdev));
-=======
-	dev_dbg(&skdev->pdev->dev, "dma address 0x%llx, busy=%d\n",
-		skmsg->mb_dma_address, skd_in_flight(skdev));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_dbg(&skdev->pdev->dev, "msg_buf %p\n", skmsg->msg_buf);
 
 	qcmd = skmsg->mb_dma_address;
@@ -1274,15 +1250,9 @@ static void skd_send_special_fitmsg(struct skd_device *skdev,
 		}
 
 		dev_dbg(&skdev->pdev->dev,
-<<<<<<< HEAD
 			"skspcl=%p id=%04x sksg_list=%p sksg_dma=%pad\n",
 			skspcl, skspcl->req.id, skspcl->req.sksg_list,
 			&skspcl->req.sksg_dma_address);
-=======
-			"skspcl=%p id=%04x sksg_list=%p sksg_dma=%llx\n",
-			skspcl, skspcl->req.id, skspcl->req.sksg_list,
-			skspcl->req.sksg_dma_address);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		for (i = 0; i < skspcl->req.n_sg; i++) {
 			struct fit_sg_descriptor *sgd =
 				&skspcl->req.sksg_list[i];
@@ -1446,11 +1416,7 @@ static void skd_resolve_req_exception(struct skd_device *skdev,
 
 	case SKD_CHECK_STATUS_BUSY_IMMINENT:
 		skd_log_skreq(skdev, skreq, "retry(busy)");
-<<<<<<< HEAD
 		blk_requeue_request(skdev->queue, req);
-=======
-		blk_mq_requeue_request(req, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_info(&skdev->pdev->dev, "drive BUSY imminent\n");
 		skdev->state = SKD_DRVR_STATE_BUSY_IMMINENT;
 		skdev->timer_countdown = SKD_TIMER_MINUTES(20);
@@ -1460,11 +1426,7 @@ static void skd_resolve_req_exception(struct skd_device *skdev,
 	case SKD_CHECK_STATUS_REQUEUE_REQUEST:
 		if ((unsigned long) ++req->special < SKD_MAX_RETRIES) {
 			skd_log_skreq(skdev, skreq, "retry");
-<<<<<<< HEAD
 			blk_requeue_request(skdev->queue, req);
-=======
-			blk_mq_requeue_request(req, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 		/* fall through */
@@ -2004,12 +1966,8 @@ static void skd_isr_msg_from_dev(struct skd_device *skdev)
 		break;
 
 	case FIT_MTD_CMD_LOG_HOST_ID:
-<<<<<<< HEAD
 		/* hardware interface overflows in y2106 */
 		skdev->connect_time_stamp = (u32)ktime_get_real_seconds();
-=======
-		skdev->connect_time_stamp = get_seconds();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		data = skdev->connect_time_stamp & 0xFFFF;
 		mtd = FIT_MXD_CONS(FIT_MTD_CMD_LOG_TIME_STAMP_LO, 0, data);
 		SKD_WRITEL(skdev, mtd, FIT_MSG_TO_DEVICE);
@@ -2644,12 +2602,8 @@ static void *skd_alloc_dma(struct skd_device *skdev, struct kmem_cache *s,
 	buf = kmem_cache_alloc(s, gfp);
 	if (!buf)
 		return NULL;
-<<<<<<< HEAD
 	*dma_handle = dma_map_single(dev, buf,
 				     kmem_cache_size(s), dir);
-=======
-	*dma_handle = dma_map_single(dev, buf, s->size, dir);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dma_mapping_error(dev, *dma_handle)) {
 		kmem_cache_free(s, buf);
 		buf = NULL;
@@ -2664,12 +2618,8 @@ static void skd_free_dma(struct skd_device *skdev, struct kmem_cache *s,
 	if (!vaddr)
 		return;
 
-<<<<<<< HEAD
 	dma_unmap_single(&skdev->pdev->dev, dma_handle,
 			 kmem_cache_size(s), dir);
-=======
-	dma_unmap_single(&skdev->pdev->dev, dma_handle, s->size, dir);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kmem_cache_free(s, vaddr);
 }
 
@@ -2735,13 +2685,8 @@ static int skd_cons_skmsg(struct skd_device *skdev)
 
 		WARN(((uintptr_t)skmsg->msg_buf | skmsg->mb_dma_address) &
 		     (FIT_QCMD_ALIGN - 1),
-<<<<<<< HEAD
 		     "not aligned: msg_buf %p mb_dma_address %pad\n",
 		     skmsg->msg_buf, &skmsg->mb_dma_address);
-=======
-		     "not aligned: msg_buf %p mb_dma_address %#llx\n",
-		     skmsg->msg_buf, skmsg->mb_dma_address);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		memset(skmsg->msg_buf, 0, SKD_N_FITMSG_BYTES);
 	}
 
@@ -2913,13 +2858,8 @@ static int skd_cons_disk(struct skd_device *skdev)
 	/* set optimal I/O size to 8KB */
 	blk_queue_io_opt(q, 8192);
 
-<<<<<<< HEAD
 	blk_queue_flag_set(QUEUE_FLAG_NONROT, q);
 	blk_queue_flag_clear(QUEUE_FLAG_ADD_RANDOM, q);
-=======
-	queue_flag_set_unlocked(QUEUE_FLAG_NONROT, q);
-	queue_flag_clear_unlocked(QUEUE_FLAG_ADD_RANDOM, q);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	blk_queue_rq_timeout(q, 8 * HZ);
 

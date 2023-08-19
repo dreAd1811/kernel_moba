@@ -210,12 +210,7 @@ qxl_image_init_helper(struct qxl_device *qdev,
 		break;
 	default:
 		DRM_ERROR("unsupported image bit depth\n");
-<<<<<<< HEAD
 		return -EINVAL; /* TODO: cleanup */
-=======
-		qxl_bo_kunmap_atomic_page(qdev, image_bo, ptr);
-		return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	image->u.bitmap.flags = QXL_BITMAP_TOP_DOWN;
 	image->u.bitmap.x = width;

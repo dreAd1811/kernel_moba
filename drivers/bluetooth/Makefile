@@ -11,10 +11,6 @@ obj-$(CONFIG_BT_HCIBFUSB)	+= bfusb.o
 obj-$(CONFIG_BT_HCIDTL1)	+= dtl1_cs.o
 obj-$(CONFIG_BT_HCIBT3C)	+= bt3c_cs.o
 obj-$(CONFIG_BT_HCIBLUECARD)	+= bluecard_cs.o
-<<<<<<< HEAD
-=======
-obj-$(CONFIG_BT_HCIBTUART)	+= btuart_cs.o
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 obj-$(CONFIG_BT_HCIBTUSB)	+= btusb.o
 obj-$(CONFIG_BT_HCIBTSDIO)	+= btsdio.o
@@ -24,10 +20,7 @@ obj-$(CONFIG_BT_ATH3K)		+= ath3k.o
 obj-$(CONFIG_BT_MRVL)		+= btmrvl.o
 obj-$(CONFIG_BT_MRVL_SDIO)	+= btmrvl_sdio.o
 obj-$(CONFIG_BT_WILINK)		+= btwilink.o
-<<<<<<< HEAD
 obj-$(CONFIG_BT_MTKUART)	+= btmtkuart.o
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 obj-$(CONFIG_BT_QCOMSMD)	+= btqcomsmd.o
 obj-$(CONFIG_BT_BCM)		+= btbcm.o
 obj-$(CONFIG_BT_RTL)		+= btrtl.o
@@ -35,20 +28,12 @@ obj-$(CONFIG_BT_QCA)		+= btqca.o
 
 obj-$(CONFIG_BT_HCIUART_NOKIA)	+= hci_nokia.o
 
-<<<<<<< HEAD
 obj-$(CONFIG_BT_HCIRSI)		+= btrsi.o
 obj-$(CONFIG_MSM_BT_POWER)	+= bluetooth-power.o
 obj-$(CONFIG_BTFM_SLIM)		+= btfm_slim.o
 obj-$(CONFIG_BTFM_SLIM)		+= btfm_slim_codec.o
 obj-$(CONFIG_BTFM_SLIM_WCN3990)	+= btfm_slim_slave.o
 obj-$(CONFIG_BT_SLIM_QCA6390)	+= btfm_slim_slave.o
-=======
-obj-$(CONFIG_MSM_BT_POWER)	+= bluetooth-power.o
-
-obj-$(CONFIG_BTFM_SLIM)		+= btfm_slim.o
-obj-$(CONFIG_BTFM_SLIM)		+= btfm_slim_codec.o
-obj-$(CONFIG_BTFM_SLIM_WCN3990)	+= btfm_slim_wcn3990.o
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 btmrvl-y			:= btmrvl_main.o
 btmrvl-$(CONFIG_DEBUG_FS)	+= btmrvl_debugfs.o

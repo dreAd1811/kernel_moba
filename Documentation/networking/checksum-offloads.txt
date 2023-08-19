@@ -47,11 +47,7 @@ The requirements for GSO are more complicated, because when segmenting an
  (section 'E') for more details.
 
 A driver declares its offload capabilities in netdev->hw_features; see
-<<<<<<< HEAD
  Documentation/networking/netdev-features.txt for more.  Note that a device
-=======
- Documentation/networking/netdev-features for more.  Note that a device
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  which only advertises NETIF_F_IP[V6]_CSUM must still obey the csum_start
  and csum_offset given in the SKB; if it tries to deduce these itself in
  hardware (as some NICs do) the driver should check that the values in the

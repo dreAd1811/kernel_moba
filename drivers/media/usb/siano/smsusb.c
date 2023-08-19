@@ -61,11 +61,7 @@ struct smsusb_device_t {
 	struct usb_device *udev;
 	struct smscore_device_t *coredev;
 
-<<<<<<< HEAD
 	struct smsusb_urb_t	surbs[MAX_URBS];
-=======
-	struct smsusb_urb_t 	surbs[MAX_URBS];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	int		response_alignment;
 	int		buffer_size;
@@ -78,11 +74,7 @@ struct smsusb_device_t {
 static int smsusb_submit_urb(struct smsusb_device_t *dev,
 			     struct smsusb_urb_t *surb);
 
-<<<<<<< HEAD
 /*
-=======
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Completing URB's callback handler - bottom half (proccess context)
  * submits the URB prepared on smsusb_onresponse()
  */
@@ -94,11 +86,7 @@ static void do_submit_urb(struct work_struct *work)
 	smsusb_submit_urb(dev, surb);
 }
 
-<<<<<<< HEAD
 /*
-=======
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Completing URB's callback handler - top half (interrupt context)
  * adds completing sms urb to the global surbs list and activtes the worker
  * thread the surb
@@ -191,12 +179,7 @@ static int smsusb_submit_urb(struct smsusb_device_t *dev,
 		smsusb_onresponse,
 		surb
 	);
-<<<<<<< HEAD
 	surb->urb.transfer_flags |= URB_FREE_BUFFER;
-=======
-	surb->urb.transfer_dma = surb->cb->phys;
-	surb->urb.transfer_flags |= URB_NO_TRANSFER_DMA_MAP;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return usb_submit_urb(&surb->urb, GFP_ATOMIC);
 }
@@ -469,10 +452,7 @@ static int smsusb_init_device(struct usb_interface *intf, int board_id)
 	}
 
 	params.device = &dev->udev->dev;
-<<<<<<< HEAD
 	params.usb_device = dev->udev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	params.buffer_size = dev->buffer_size;
 	params.num_buffers = MAX_BUFFERS;
 	params.sendrequest_handler = smsusb_sendrequest;
@@ -482,11 +462,7 @@ static int smsusb_init_device(struct usb_interface *intf, int board_id)
 	mdev = siano_media_device_register(dev, board_id);
 
 	/* register in smscore */
-<<<<<<< HEAD
 	rc = smscore_register_device(&params, &dev->coredev, 0, mdev);
-=======
-	rc = smscore_register_device(&params, &dev->coredev, mdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc < 0) {
 		pr_err("smscore_register_device(...) failed, rc %d\n", rc);
 		smsusb_term_device(intf);

@@ -35,11 +35,7 @@
 		pinctrl-names = "default";
 
 		eject {
-<<<<<<< HEAD
 			debounce-interval = <50>;
-=======
-			debounce_interval = <50>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			wakeup-source;
 			linux,code = <KEY_EJECTCD>;
 			label = "Eject Button";

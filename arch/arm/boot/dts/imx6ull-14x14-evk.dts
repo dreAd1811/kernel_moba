@@ -39,14 +39,10 @@
  *     OTHER DEALINGS IN THE SOFTWARE.
  */
 
-<<<<<<< HEAD
 /dts-v1/;
 
 #include "imx6ull.dtsi"
 #include "imx6ul-14x14-evk.dtsi"
-=======
-#include "imx6ul-14x14-evk.dts"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 / {
 	model = "Freescale i.MX6 UlltraLite 14x14 EVK Board";

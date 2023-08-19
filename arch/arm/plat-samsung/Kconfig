@@ -1,14 +1,6 @@
-<<<<<<< HEAD
 # SPDX-License-Identifier: GPL-2.0
 #
 # Copyright 2009 Simtec Electronics
-=======
-# arch/arm/plat-samsung/Kconfig
-#
-# Copyright 2009 Simtec Electronics
-#
-# Licensed under GPLv2
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config PLAT_SAMSUNG
 	bool
@@ -284,11 +276,7 @@ config SAMSUNG_PM_CHECK_CHUNKSIZE
 	help
 	  Set the chunksize in Kilobytes of the CRC for checking memory
 	  corruption over suspend and resume. A smaller value will mean that
-<<<<<<< HEAD
 	  the CRC data block will take more memory, but will identify any
-=======
-	  the CRC data block will take more memory, but wil identify any
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	  faults with better precision.
 
 	  See <file:Documentation/arm/Samsung-S3C24XX/Suspend.txt>

@@ -1,23 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Intel(R) Trace Hub driver core
  *
  * Copyright (C) 2014-2015 Intel Corporation.
-<<<<<<< HEAD
-=======
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms and conditions of the GNU General Public License,
- * version 2, as published by the Free Software Foundation.
- *
- * This program is distributed in the hope it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
- * more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #define pr_fmt(fmt)	KBUILD_MODNAME ": " fmt
@@ -503,11 +488,7 @@ static const struct intel_th_subdevice {
 				.flags	= IORESOURCE_MEM,
 			},
 			{
-<<<<<<< HEAD
 				.start	= 1, /* use resource[1] */
-=======
-				.start	= TH_MMIO_SW,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				.end	= 0,
 				.flags	= IORESOURCE_MEM,
 			},
@@ -600,10 +581,7 @@ intel_th_subdevice_alloc(struct intel_th *th,
 	struct intel_th_device *thdev;
 	struct resource res[3];
 	unsigned int req = 0;
-<<<<<<< HEAD
 	bool is64bit = false;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int r, err;
 
 	thdev = intel_th_device_alloc(th, subdev->type, subdev->name,
@@ -613,25 +591,18 @@ intel_th_subdevice_alloc(struct intel_th *th,
 
 	thdev->drvdata = th->drvdata;
 
-<<<<<<< HEAD
 	for (r = 0; r < th->num_resources; r++)
 		if (th->resource[r].flags & IORESOURCE_MEM_64) {
 			is64bit = true;
 			break;
 		}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memcpy(res, subdev->res,
 	       sizeof(struct resource) * subdev->nres);
 
 	for (r = 0; r < subdev->nres; r++) {
 		struct resource *devres = th->resource;
-<<<<<<< HEAD
 		int bar = 0; /* cut subdevices' MMIO from resource[0] */
-=======
-		int bar = TH_MMIO_CONFIG;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/*
 		 * Take .end == 0 to mean 'take the whole bar',
@@ -640,11 +611,8 @@ intel_th_subdevice_alloc(struct intel_th *th,
 		 */
 		if (!res[r].end && res[r].flags == IORESOURCE_MEM) {
 			bar = res[r].start;
-<<<<<<< HEAD
 			if (is64bit)
 				bar *= 2;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			res[r].start = 0;
 			res[r].end = resource_size(&devres[bar]) - 1;
 		}
@@ -661,15 +629,10 @@ intel_th_subdevice_alloc(struct intel_th *th,
 	}
 
 	err = intel_th_device_add_resources(thdev, res, subdev->nres);
-<<<<<<< HEAD
 	if (err) {
 		put_device(&thdev->dev);
 		goto fail_put_device;
 	}
-=======
-	if (err)
-		goto fail_put_device;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (subdev->type == INTEL_TH_OUTPUT) {
 		thdev->dev.devt = MKDEV(th->major, th->num_thdevs);
@@ -677,25 +640,16 @@ intel_th_subdevice_alloc(struct intel_th *th,
 		thdev->output.port = -1;
 		thdev->output.scratchpad = subdev->scrpd;
 	} else if (subdev->type == INTEL_TH_SWITCH) {
-<<<<<<< HEAD
 		thdev->host_mode =
 			INTEL_TH_CAP(th, host_mode_only) ? true : host_mode;
-=======
-		thdev->host_mode = host_mode;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		th->hub = thdev;
 	}
 
 	err = device_add(&thdev->dev);
-<<<<<<< HEAD
 	if (err) {
 		put_device(&thdev->dev);
 		goto fail_free_res;
 	}
-=======
-	if (err)
-		goto fail_free_res;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* need switch driver to be loaded to enumerate the rest */
 	if (subdev->type == INTEL_TH_SWITCH && !req) {
@@ -786,12 +740,8 @@ static int intel_th_populate(struct intel_th *th)
 		struct intel_th_device *thdev;
 
 		/* only allow SOURCE and SWITCH devices in host mode */
-<<<<<<< HEAD
 		if ((INTEL_TH_CAP(th, host_mode_only) || host_mode) &&
 		    subdev->type == INTEL_TH_OUTPUT)
-=======
-		if (host_mode && subdev->type == INTEL_TH_OUTPUT)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 
 		/*
@@ -867,7 +817,6 @@ intel_th_alloc(struct device *dev, struct intel_th_drvdata *drvdata,
 	       struct resource *devres, unsigned int ndevres, int irq)
 {
 	struct intel_th *th;
-<<<<<<< HEAD
 	int err, r;
 
 	if (irq == -1)
@@ -876,9 +825,6 @@ intel_th_alloc(struct device *dev, struct intel_th_drvdata *drvdata,
 				irq = devres[r].start;
 				break;
 			}
-=======
-	int err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	th = kzalloc(sizeof(*th), GFP_KERNEL);
 	if (!th)
@@ -1003,13 +949,10 @@ int intel_th_set_output(struct intel_th_device *thdev,
 	struct intel_th_device *hub = to_intel_th_hub(thdev);
 	struct intel_th_driver *hubdrv = to_intel_th_driver(hub->dev.driver);
 
-<<<<<<< HEAD
 	/* In host mode, this is up to the external debugger, do nothing. */
 	if (hub->host_mode)
 		return 0;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!hubdrv->set_output)
 		return -ENOTSUPP;
 

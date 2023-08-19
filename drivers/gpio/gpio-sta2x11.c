@@ -23,12 +23,8 @@
 #include <linux/init.h>
 #include <linux/kernel.h>
 #include <linux/slab.h>
-<<<<<<< HEAD
 #include <linux/gpio/driver.h>
 #include <linux/bitops.h>
-=======
-#include <linux/gpio.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/interrupt.h>
 #include <linux/irq.h>
 #include <linux/pci.h>
@@ -63,19 +59,6 @@ struct gsta_gpio {
 	unsigned			irq_type[GSTA_NR_GPIO];
 };
 
-<<<<<<< HEAD
-=======
-static inline struct gsta_regs __iomem *__regs(struct gsta_gpio *chip, int nr)
-{
-	return chip->regs[nr / GSTA_GPIO_PER_BLOCK];
-}
-
-static inline u32 __bit(int nr)
-{
-	return 1U << (nr % GSTA_GPIO_PER_BLOCK);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * gpio methods
  */
@@ -83,13 +66,8 @@ static inline u32 __bit(int nr)
 static void gsta_gpio_set(struct gpio_chip *gpio, unsigned nr, int val)
 {
 	struct gsta_gpio *chip = gpiochip_get_data(gpio);
-<<<<<<< HEAD
 	struct gsta_regs __iomem *regs = chip->regs[nr / GSTA_GPIO_PER_BLOCK];
 	u32 bit = BIT(nr % GSTA_GPIO_PER_BLOCK);
-=======
-	struct gsta_regs __iomem *regs = __regs(chip, nr);
-	u32 bit = __bit(nr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (val)
 		writel(bit, &regs->dats);
@@ -100,13 +78,8 @@ static void gsta_gpio_set(struct gpio_chip *gpio, unsigned nr, int val)
 static int gsta_gpio_get(struct gpio_chip *gpio, unsigned nr)
 {
 	struct gsta_gpio *chip = gpiochip_get_data(gpio);
-<<<<<<< HEAD
 	struct gsta_regs __iomem *regs = chip->regs[nr / GSTA_GPIO_PER_BLOCK];
 	u32 bit = BIT(nr % GSTA_GPIO_PER_BLOCK);
-=======
-	struct gsta_regs __iomem *regs = __regs(chip, nr);
-	u32 bit = __bit(nr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return !!(readl(&regs->dat) & bit);
 }
@@ -115,13 +88,8 @@ static int gsta_gpio_direction_output(struct gpio_chip *gpio, unsigned nr,
 				      int val)
 {
 	struct gsta_gpio *chip = gpiochip_get_data(gpio);
-<<<<<<< HEAD
 	struct gsta_regs __iomem *regs = chip->regs[nr / GSTA_GPIO_PER_BLOCK];
 	u32 bit = BIT(nr % GSTA_GPIO_PER_BLOCK);
-=======
-	struct gsta_regs __iomem *regs = __regs(chip, nr);
-	u32 bit = __bit(nr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	writel(bit, &regs->dirs);
 	/* Data register after direction, otherwise pullup/down is selected */
@@ -135,13 +103,8 @@ static int gsta_gpio_direction_output(struct gpio_chip *gpio, unsigned nr,
 static int gsta_gpio_direction_input(struct gpio_chip *gpio, unsigned nr)
 {
 	struct gsta_gpio *chip = gpiochip_get_data(gpio);
-<<<<<<< HEAD
 	struct gsta_regs __iomem *regs = chip->regs[nr / GSTA_GPIO_PER_BLOCK];
 	u32 bit = BIT(nr % GSTA_GPIO_PER_BLOCK);
-=======
-	struct gsta_regs __iomem *regs = __regs(chip, nr);
-	u32 bit = __bit(nr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	writel(bit, &regs->dirc);
 	return 0;
@@ -193,15 +156,9 @@ static void gsta_gpio_setup(struct gsta_gpio *chip) /* called from probe */
  */
 static void gsta_set_config(struct gsta_gpio *chip, int nr, unsigned cfg)
 {
-<<<<<<< HEAD
 	struct gsta_regs __iomem *regs = chip->regs[nr / GSTA_GPIO_PER_BLOCK];
 	unsigned long flags;
 	u32 bit = BIT(nr % GSTA_GPIO_PER_BLOCK);
-=======
-	struct gsta_regs __iomem *regs = __regs(chip, nr);
-	unsigned long flags;
-	u32 bit = __bit(nr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 val;
 	int err = 0;
 
@@ -268,13 +225,8 @@ static void gsta_irq_disable(struct irq_data *data)
 	struct irq_chip_generic *gc = irq_data_get_irq_chip_data(data);
 	struct gsta_gpio *chip = gc->private;
 	int nr = data->irq - chip->irq_base;
-<<<<<<< HEAD
 	struct gsta_regs __iomem *regs = chip->regs[nr / GSTA_GPIO_PER_BLOCK];
 	u32 bit = BIT(nr % GSTA_GPIO_PER_BLOCK);
-=======
-	struct gsta_regs __iomem *regs = __regs(chip, nr);
-	u32 bit = __bit(nr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 val;
 	unsigned long flags;
 
@@ -296,13 +248,8 @@ static void gsta_irq_enable(struct irq_data *data)
 	struct irq_chip_generic *gc = irq_data_get_irq_chip_data(data);
 	struct gsta_gpio *chip = gc->private;
 	int nr = data->irq - chip->irq_base;
-<<<<<<< HEAD
 	struct gsta_regs __iomem *regs = chip->regs[nr / GSTA_GPIO_PER_BLOCK];
 	u32 bit = BIT(nr % GSTA_GPIO_PER_BLOCK);
-=======
-	struct gsta_regs __iomem *regs = __regs(chip, nr);
-	u32 bit = __bit(nr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 val;
 	int type;
 	unsigned long flags;

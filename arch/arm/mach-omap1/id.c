@@ -200,17 +200,10 @@ void __init omap_check_revision(void)
 		printk(KERN_INFO "Unknown OMAP cpu type: 0x%02x\n", cpu_type);
 	}
 
-<<<<<<< HEAD
 	printk(KERN_INFO "OMAP%04x", omap_revision >> 16);
 	if ((omap_revision >> 8) & 0xff)
 		printk(KERN_INFO "%x", (omap_revision >> 8) & 0xff);
 	printk(KERN_INFO " revision %i handled as %02xxx id: %08x%08x\n",
-=======
-	pr_info("OMAP%04x", omap_revision >> 16);
-	if ((omap_revision >> 8) & 0xff)
-		pr_cont("%x", (omap_revision >> 8) & 0xff);
-	pr_cont(" revision %i handled as %02xxx id: %08x%08x\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	       die_rev, omap_revision & 0xff, system_serial_low,
 	       system_serial_high);
 }

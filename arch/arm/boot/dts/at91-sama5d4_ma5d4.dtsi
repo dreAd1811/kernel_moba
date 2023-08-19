@@ -89,7 +89,6 @@
 				};
 			};
 
-<<<<<<< HEAD
 			tcb2: timer@fc024000 {
 				timer@0 {
 					compatible = "atmel,tcb-timer";
@@ -102,8 +101,6 @@
 				};
 			};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			adc0: adc@fc034000 {
 				pinctrl-names = "default";
 				pinctrl-0 = <

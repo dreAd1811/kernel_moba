@@ -272,11 +272,7 @@ bail:
 /**
  * rvt_attach_mcast - attach a qp to a multicast group
  * @ibqp: Infiniband qp
-<<<<<<< HEAD
  * @gid: multicast guid
-=======
- * @igd: multicast guid
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @lid: multicast lid
  *
  * Return: 0 on success
@@ -339,11 +335,7 @@ bail_mcast:
 /**
  * rvt_detach_mcast - remove a qp from a multicast group
  * @ibqp: Infiniband qp
-<<<<<<< HEAD
  * @gid: multicast guid
-=======
- * @igd: multicast guid
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @lid: multicast lid
  *
  * Return: 0 on success
@@ -359,11 +351,7 @@ int rvt_detach_mcast(struct ib_qp *ibqp, union ib_gid *gid, u16 lid)
 	int last = 0;
 	int ret = 0;
 
-<<<<<<< HEAD
 	if (ibqp->qp_num <= 1)
-=======
-	if (ibqp->qp_num <= 1 || qp->state == IB_QPS_RESET)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	spin_lock_irq(&ibp->lock);

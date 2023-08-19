@@ -448,11 +448,7 @@ static void reg_w(struct gspca_dev *gspca_dev, u16 value, u16 index)
 
 	if (gspca_dev->usb_err < 0)
 		return;
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_USBO, "reg_w v: %04x i: %04x\n", value, index);
-=======
-	PDEBUG(D_USBO, "reg_w v: %04x i: %04x", value, index);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = usb_control_msg(gspca_dev->dev,
 			usb_sndctrlpipe(gspca_dev->dev, 0),
 			0x0c,			/* request */
@@ -473,13 +469,8 @@ static void reg_wb(struct gspca_dev *gspca_dev, u16 value, u16 index,
 
 	if (gspca_dev->usb_err < 0)
 		return;
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_USBO, "reg_wb v: %04x i: %04x %02x...%02x\n",
 		  value, index, *data, data[len - 1]);
-=======
-	PDEBUG(D_USBO, "reg_wb v: %04x i: %04x %02x...%02x",
-			value, index, *data, data[len - 1]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memcpy(gspca_dev->usb_buf, data, len);
 	ret = usb_control_msg(gspca_dev->dev,
 			usb_sndctrlpipe(gspca_dev->dev, 0),
@@ -524,13 +515,8 @@ static void i2c_write(struct sd *sd,
 		*buf++ = cmd->val;
 	}
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_USBO, "i2c_w v: %04x i: %04x %02x...%02x\n",
 		  val, idx, gspca_dev->usb_buf[0], buf[-1]);
-=======
-	PDEBUG(D_USBO, "i2c_w v: %04x i: %04x %02x...%02x",
-			val, idx, gspca_dev->usb_buf[0], buf[-1]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = usb_control_msg(gspca_dev->dev,
 			usb_sndctrlpipe(gspca_dev->dev, 0),
 			0x0c,			/* request */
@@ -557,11 +543,7 @@ static void ucbus_write(struct gspca_dev *gspca_dev,
 		return;
 
 	if ((batchsize - 1) * 3 > USB_BUF_SZ) {
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "Bug: usb_buf overflow\n");
-=======
-		PERR("Bug: usb_buf overflow\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		gspca_dev->usb_err = -ENOMEM;
 		return;
 	}
@@ -583,21 +565,12 @@ static void ucbus_write(struct gspca_dev *gspca_dev,
 			*buf++ = cmd->bw_data;
 		}
 		if (buf != gspca_dev->usb_buf)
-<<<<<<< HEAD
 			gspca_dbg(gspca_dev, D_USBO, "ucbus v: %04x i: %04x %02x...%02x\n",
 				  val, idx,
 				  gspca_dev->usb_buf[0], buf[-1]);
 		else
 			gspca_dbg(gspca_dev, D_USBO, "ucbus v: %04x i: %04x\n",
 				  val, idx);
-=======
-			PDEBUG(D_USBO, "ucbus v: %04x i: %04x %02x...%02x",
-					val, idx,
-					gspca_dev->usb_buf[0], buf[-1]);
-		else
-			PDEBUG(D_USBO, "ucbus v: %04x i: %04x",
-					val, idx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = usb_control_msg(gspca_dev->dev,
 				usb_sndctrlpipe(gspca_dev->dev, 0),
 				0x0c,			/* request */
@@ -723,11 +696,7 @@ static void mt9v111_init(struct gspca_dev *gspca_dev)
 			 || gspca_dev->usb_err != 0)
 				break;
 			if (--nwait < 0) {
-<<<<<<< HEAD
 				gspca_dbg(gspca_dev, D_PROBE, "mt9v111_init timeout\n");
-=======
-				PDEBUG(D_PROBE, "mt9v111_init timeout");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				gspca_dev->usb_err = -ETIME;
 				return;
 			}
@@ -893,11 +862,7 @@ static int sd_init(struct gspca_dev *gspca_dev)
  * 6: c8 / c9 / ca / cf = mode webcam?, sensor? webcam?
  * 7: 00
  */
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_PROBE, "info: %*ph\n", 8, gspca_dev->usb_buf);
-=======
-	PDEBUG(D_PROBE, "info: %*ph", 8, gspca_dev->usb_buf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	bridge_init(sd);
 
@@ -910,12 +875,8 @@ static int sd_init(struct gspca_dev *gspca_dev)
 			cmos_probe(gspca_dev);
 	}
 	if (gspca_dev->usb_err >= 0) {
-<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_PROBE, "Sensor %s\n",
 			  sensor_tb[sd->sensor].name);
-=======
-		PDEBUG(D_PROBE, "Sensor %s", sensor_tb[sd->sensor].name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		global_init(sd, 1);
 	}
 	return gspca_dev->usb_err;

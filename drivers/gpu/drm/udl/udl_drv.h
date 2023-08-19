@@ -16,10 +16,7 @@
 
 #include <linux/usb.h>
 #include <drm/drm_gem.h>
-<<<<<<< HEAD
 #include <linux/mm_types.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DRIVER_NAME		"udl"
 #define DRIVER_DESC		"DisplayLink"
@@ -58,11 +55,8 @@ struct udl_device {
 	struct usb_device *udev;
 	struct drm_crtc *crtc;
 
-<<<<<<< HEAD
 	struct mutex gem_lock;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int sku_pixel_limit;
 
 	struct urb_list urbs;
@@ -145,11 +139,7 @@ void udl_gem_put_pages(struct udl_gem_object *obj);
 int udl_gem_vmap(struct udl_gem_object *obj);
 void udl_gem_vunmap(struct udl_gem_object *obj);
 int udl_drm_gem_mmap(struct file *filp, struct vm_area_struct *vma);
-<<<<<<< HEAD
 vm_fault_t udl_gem_fault(struct vm_fault *vmf);
-=======
-int udl_gem_fault(struct vm_fault *vmf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int udl_handle_damage(struct udl_framebuffer *fb, int x, int y,
 		      int width, int height);

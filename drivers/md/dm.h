@@ -19,10 +19,7 @@
 #include <linux/hdreg.h>
 #include <linux/completion.h>
 #include <linux/kobject.h>
-<<<<<<< HEAD
 #include <linux/refcount.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "dm-stats.h"
 
@@ -42,11 +39,7 @@
  */
 struct dm_dev_internal {
 	struct list_head list;
-<<<<<<< HEAD
 	refcount_t count;
-=======
-	atomic_t count;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct dm_dev *dm_dev;
 };
 
@@ -56,10 +49,6 @@ struct dm_md_mempools;
 /*-----------------------------------------------------------------
  * Internal table functions.
  *---------------------------------------------------------------*/
-<<<<<<< HEAD
-=======
-void dm_table_destroy(struct dm_table *t);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void dm_table_event_callback(struct dm_table *t,
 			     void (*fn)(void *), void *context);
 struct dm_target *dm_table_get_target(struct dm_table *t, unsigned int index);
@@ -214,12 +203,8 @@ void dm_kcopyd_exit(void);
  * Mempool operations
  */
 struct dm_md_mempools *dm_alloc_md_mempools(struct mapped_device *md, enum dm_queue_mode type,
-<<<<<<< HEAD
 					    unsigned integrity, unsigned per_bio_data_size,
 					    unsigned min_pool_size);
-=======
-					    unsigned integrity, unsigned per_bio_data_size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void dm_free_md_mempools(struct dm_md_mempools *pools);
 
 /*

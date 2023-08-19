@@ -224,7 +224,6 @@ static int hpt_dma_blacklisted(const struct ata_device *dev, char *modestr,
 			       const char * const list[])
 {
 	unsigned char model_num[ATA_ID_PROD_LEN + 1];
-<<<<<<< HEAD
 	int i;
 
 	ata_id_c_string(dev->id, model_num, ATA_ID_PROD, sizeof(model_num));
@@ -233,19 +232,6 @@ static int hpt_dma_blacklisted(const struct ata_device *dev, char *modestr,
 	if (i >= 0) {
 		pr_warn("%s is not supported for %s\n", modestr, list[i]);
 		return 1;
-=======
-	int i = 0;
-
-	ata_id_c_string(dev->id, model_num, ATA_ID_PROD, sizeof(model_num));
-
-	while (list[i] != NULL) {
-		if (!strcmp(list[i], model_num)) {
-			pr_warn("%s is not supported for %s\n",
-				modestr, list[i]);
-			return 1;
-		}
-		i++;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return 0;
 }

@@ -46,11 +46,7 @@
 #include <dt-bindings/gpio/gpio.h>
 
 / {
-<<<<<<< HEAD
 	memory@10000000 {
-=======
-	memory {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x10000000 0x40000000>;
 	};
 
@@ -161,16 +157,12 @@
 
 		partition@d0000 {
 			label = "spare";
-<<<<<<< HEAD
 			reg = <0xd0000 0x320000>;
 		};
 
 		partition@3f0000 {
 			label = "mfg";
 			reg = <0x3f0000 0x10000>;
-=======
-			reg = <0xd0000 0x130000>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 	};
 };

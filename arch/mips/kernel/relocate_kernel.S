@@ -85,11 +85,7 @@ done:
 
 #ifdef CONFIG_CPU_CAVIUM_OCTEON
 	/* We need to flush I-cache before jumping to new kernel.
-<<<<<<< HEAD
 	 * Unfortunately, this code is cpu-specific.
-=======
-	 * Unfortunatelly, this code is cpu-specific.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	.set push
 	.set noreorder
@@ -149,11 +145,7 @@ LEAF(kexec_smp_wait)
 #endif
 
 /* All parameters to new kernel are passed in registers a0-a3.
-<<<<<<< HEAD
  * kexec_args[0..3] are used to prepare register values.
-=======
- * kexec_args[0..3] are uses to prepare register values.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 kexec_args:

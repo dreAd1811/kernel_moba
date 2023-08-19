@@ -398,7 +398,6 @@ int cw1200_debug_init(struct cw1200_common *priv)
 	if (!d->debugfs_phy)
 		goto err;
 
-<<<<<<< HEAD
 	if (!debugfs_create_file("status", 0400, d->debugfs_phy,
 				 priv, &fops_status))
 		goto err;
@@ -408,17 +407,6 @@ int cw1200_debug_init(struct cw1200_common *priv)
 		goto err;
 
 	if (!debugfs_create_file("wsm_dumps", 0200, d->debugfs_phy,
-=======
-	if (!debugfs_create_file("status", S_IRUSR, d->debugfs_phy,
-				 priv, &fops_status))
-		goto err;
-
-	if (!debugfs_create_file("counters", S_IRUSR, d->debugfs_phy,
-				 priv, &fops_counters))
-		goto err;
-
-	if (!debugfs_create_file("wsm_dumps", S_IWUSR, d->debugfs_phy,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 priv, &fops_wsm_dumps))
 		goto err;
 

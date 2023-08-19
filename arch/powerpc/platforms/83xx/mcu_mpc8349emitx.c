@@ -84,11 +84,7 @@ static ssize_t show_status(struct device *d,
 
 	return sprintf(buf, "%02x\n", ret);
 }
-<<<<<<< HEAD
 static DEVICE_ATTR(status, 0444, show_status, NULL);
-=======
-static DEVICE_ATTR(status, S_IRUGO, show_status, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void mcu_power_off(void)
 {

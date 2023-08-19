@@ -1,50 +1,16 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0-only */
 /*
  * Copyright (c) 2002,2007-2019, The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2002,2007-2020, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #ifndef __KGSL_DEVICE_H
 #define __KGSL_DEVICE_H
 
-<<<<<<< HEAD
 #include <linux/sched/mm.h>
 #include <linux/sched/task.h>
 
 #include "kgsl.h"
 #include "kgsl_drawobj.h"
 #include "kgsl_mmu.h"
-=======
-#include <linux/slab.h>
-#include <linux/idr.h>
-#include <linux/pm.h>
-#include <linux/pm_qos.h>
-#include <linux/sched.h>
-#include <linux/sched/task.h>
-#include <linux/sched/mm.h>
-
-#include "kgsl.h"
-#include "kgsl_mmu.h"
-#include "kgsl_pwrctrl.h"
-#include "kgsl_log.h"
-#include "kgsl_pwrscale.h"
-#include "kgsl_snapshot.h"
-#include "kgsl_sharedmem.h"
-#include "kgsl_drawobj.h"
-#include "kgsl_gmu_core.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define KGSL_IOCTL_FUNC(_cmd, _func) \
 	[_IOC_NR((_cmd))] = \
@@ -150,17 +116,9 @@ struct kgsl_functable {
 	int (*start)(struct kgsl_device *device, int priority);
 	int (*stop)(struct kgsl_device *device);
 	int (*getproperty)(struct kgsl_device *device,
-<<<<<<< HEAD
 		struct kgsl_device_getproperty *param);
 	int (*getproperty_compat)(struct kgsl_device *device,
 		struct kgsl_device_getproperty *param);
-=======
-		unsigned int type, void __user *value,
-		size_t sizebytes);
-	int (*getproperty_compat)(struct kgsl_device *device,
-		unsigned int type, void __user *value,
-		size_t sizebytes);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int (*waittimestamp)(struct kgsl_device *device,
 		struct kgsl_context *context, unsigned int timestamp,
 		unsigned int msecs);
@@ -183,12 +141,8 @@ struct kgsl_functable {
 	 * driver will check that the function pointer is not NULL before
 	 * calling the hook
 	 */
-<<<<<<< HEAD
 	struct kgsl_context *(*drawctxt_create)
 				(struct kgsl_device_private *dev_priv,
-=======
-	struct kgsl_context *(*drawctxt_create)(struct kgsl_device_private *,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						uint32_t *flags);
 	void (*drawctxt_detach)(struct kgsl_context *context);
 	void (*drawctxt_destroy)(struct kgsl_context *context);
@@ -207,15 +161,9 @@ struct kgsl_functable {
 	void (*drawctxt_sched)(struct kgsl_device *device,
 		struct kgsl_context *context);
 	void (*resume)(struct kgsl_device *device);
-<<<<<<< HEAD
 	int (*regulator_enable)(struct kgsl_device *device);
 	bool (*is_hw_collapsible)(struct kgsl_device *device);
 	void (*regulator_disable)(struct kgsl_device *device);
-=======
-	int (*regulator_enable)(struct kgsl_device *);
-	bool (*is_hw_collapsible)(struct kgsl_device *);
-	void (*regulator_disable)(struct kgsl_device *);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void (*pwrlevel_change_settings)(struct kgsl_device *device,
 		unsigned int prelevel, unsigned int postlevel, bool post);
 	void (*regulator_disable_poll)(struct kgsl_device *device);
@@ -224,7 +172,6 @@ struct kgsl_functable {
 	void (*gpu_model)(struct kgsl_device *device, char *str,
 		size_t bufsz);
 	void (*stop_fault_timer)(struct kgsl_device *device);
-<<<<<<< HEAD
 	void (*dispatcher_halt)(struct kgsl_device *device);
 	void (*dispatcher_unhalt)(struct kgsl_device *device);
 	/**
@@ -236,22 +183,12 @@ struct kgsl_functable {
 	int (*query_property_list)(struct kgsl_device *device, u32 *list,
 		u32 count);
 	bool (*is_hwcg_on)(struct kgsl_device *device);
-=======
-	int (*suspend_device)(struct kgsl_device *device,
-		pm_message_t pm_state);
-	int (*resume_device)(struct kgsl_device *device,
-		pm_message_t pm_state);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct kgsl_ioctl {
 	unsigned int cmd;
-<<<<<<< HEAD
 	long (*func)(struct kgsl_device_private *dev_priv,
 				unsigned int cmd, void *data);
-=======
-	long (*func)(struct kgsl_device_private *, unsigned int, void *);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 long kgsl_ioctl_helper(struct file *filep, unsigned int cmd, unsigned long arg,
@@ -296,15 +233,8 @@ struct kgsl_sparseobj_node {
 struct kgsl_device {
 	struct device *dev;
 	const char *name;
-<<<<<<< HEAD
 	uint32_t flags;
 	u32 id;
-=======
-	unsigned int ver_major;
-	unsigned int ver_minor;
-	uint32_t flags;
-	enum kgsl_deviceid id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Starting physical address for GPU registers */
 	unsigned long reg_phys;
@@ -318,24 +248,12 @@ struct kgsl_device {
 	/* Kernel virtual address for GPU shader memory */
 	void __iomem *shader_mem_virt;
 
-<<<<<<< HEAD
 	/* Starting kernel virtual address for QDSS GFX DBG register block */
 	void __iomem *qdss_gfx_virt;
 
 	struct kgsl_memdesc memstore;
 	struct kgsl_memdesc scratch;
 	const char *iomemname;
-=======
-	/* Starting physical address for GPU shader memory */
-	unsigned long shader_mem_phys;
-
-	/* GPU shader memory size */
-	unsigned int shader_mem_len;
-	struct kgsl_memdesc memstore;
-	struct kgsl_memdesc scratch;
-	const char *iomemname;
-	const char *shadermemname;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct kgsl_mmu mmu;
 	struct gmu_core_device gmu_core;
@@ -367,24 +285,16 @@ struct kgsl_device {
 
 	struct {
 		void *ptr;
-<<<<<<< HEAD
 		u32 size;
-=======
-		size_t size;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} snapshot_memory;
 
 	struct kgsl_snapshot *snapshot;
 
 	u32 snapshot_faultcount;	/* Total number of faults since boot */
 	bool force_panic;		/* Force panic after snapshot dump */
-<<<<<<< HEAD
 	bool skip_ib_capture;		/* Skip IB capture after snapshot */
 	bool prioritize_unrecoverable;	/* Overwrite with new GMU snapshots */
 	bool set_isdb_breakpoint;	/* Set isdb registers before snapshot */
-=======
-	bool prioritize_unrecoverable;	/* Overwrite with new GMU snapshots */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Use CP Crash dumper to get GPU snapshot*/
 	bool snapshot_crashdumper;
@@ -395,15 +305,6 @@ struct kgsl_device {
 
 	struct kobject ppd_kobj;
 
-<<<<<<< HEAD
-=======
-	/* Logging levels */
-	int cmd_log;
-	int ctxt_log;
-	int drv_log;
-	int mem_log;
-	int pwr_log;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct kgsl_pwrscale pwrscale;
 
 	int reset_counter; /* Track how many GPU core resets have occurred */
@@ -429,21 +330,11 @@ struct kgsl_device {
 	.halt_gate = COMPLETION_INITIALIZER((_dev).halt_gate),\
 	.idle_check_ws = __WORK_INITIALIZER((_dev).idle_check_ws,\
 			kgsl_idle_check),\
-<<<<<<< HEAD
 	.context_idr = IDR_INIT((_dev).context_idr),\
 	.wait_queue = __WAIT_QUEUE_HEAD_INITIALIZER((_dev).wait_queue),\
 	.active_cnt_wq = __WAIT_QUEUE_HEAD_INITIALIZER((_dev).active_cnt_wq),\
 	.mutex = __MUTEX_INITIALIZER((_dev).mutex),\
 	.state = KGSL_STATE_NONE
-=======
-	.context_idr = IDR_INIT,\
-	.wait_queue = __WAIT_QUEUE_HEAD_INITIALIZER((_dev).wait_queue),\
-	.active_cnt_wq = __WAIT_QUEUE_HEAD_INITIALIZER((_dev).active_cnt_wq),\
-	.mutex = __MUTEX_INITIALIZER((_dev).mutex),\
-	.state = KGSL_STATE_NONE,\
-	.ver_major = DRIVER_VERSION_MAJOR,\
-	.ver_minor = DRIVER_VERSION_MINOR
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 /**
@@ -526,21 +417,13 @@ struct kgsl_context {
 #define pr_context(_d, _c, fmt, args...) \
 		dev_err((_d)->dev, "%s[%d]: " fmt, \
 		_context_comm((_c)), \
-<<<<<<< HEAD
 		(_c)->proc_priv->pid, ##args)
-=======
-		pid_nr((_c)->proc_priv->pid), ##args)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * struct kgsl_process_private -  Private structure for a KGSL process (across
  * all devices)
  * @priv: Internal flags, use KGSL_PROCESS_* values
-<<<<<<< HEAD
  * @pid: ID for the task owner of the process
-=======
- * @pid: Identification structure for the task owner of the process
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @comm: task name of the process
  * @mem_lock: Spinlock to protect the process memory lists
  * @refcount: kref object for reference counting the process
@@ -558,11 +441,7 @@ struct kgsl_context {
  */
 struct kgsl_process_private {
 	unsigned long priv;
-<<<<<<< HEAD
 	pid_t pid;
-=======
-	struct pid *pid;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	char comm[TASK_COMM_LEN];
 	spinlock_t mem_lock;
 	struct kref refcount;
@@ -572,17 +451,10 @@ struct kgsl_process_private {
 	struct kobject kobj;
 	struct dentry *debug_root;
 	struct {
-<<<<<<< HEAD
 		atomic_long_t cur;
 		uint64_t max;
 	} stats[KGSL_MEM_ENTRY_MAX];
 	atomic_long_t gpumem_mapped;
-=======
-		atomic64_t cur;
-		atomic64_t max;
-	} stats[KGSL_MEM_ENTRY_MAX];
-	atomic64_t gpumem_mapped;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct idr syncsource_idr;
 	spinlock_t syncsource_lock;
 	int fd_count;
@@ -651,10 +523,7 @@ struct kgsl_snapshot {
 	bool first_read;
 	bool gmu_fault;
 	bool recovered;
-<<<<<<< HEAD
 	struct kgsl_device *device;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -680,17 +549,10 @@ struct kgsl_device *kgsl_get_device(int dev_idx);
 static inline void kgsl_process_add_stats(struct kgsl_process_private *priv,
 	unsigned int type, uint64_t size)
 {
-<<<<<<< HEAD
 	u64 ret = atomic_long_add_return(size, &priv->stats[type].cur);
 
 	if (ret > priv->stats[type].max)
 		priv->stats[type].max = ret;
-=======
-	u64 ret = atomic64_add_return(size, &priv->stats[type].cur);
-
-	if (ret > atomic64_read(&priv->stats[type].max))
-		atomic64_set(&priv->stats[type].max, ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	add_mm_counter(current->mm, MM_UNRECLAIMABLE, (size >> PAGE_SHIFT));
 }
 
@@ -701,13 +563,8 @@ static inline void kgsl_process_sub_stats(struct kgsl_process_private *priv,
 	struct task_struct *task;
 	struct mm_struct *mm;
 
-<<<<<<< HEAD
 	atomic_long_sub(size, &priv->stats[type].cur);
 	pid_struct = find_get_pid(priv->pid);
-=======
-	atomic64_sub(size, &priv->stats[type].cur);
-	pid_struct = find_get_pid(pid_nr(priv->pid));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (pid_struct) {
 		task = get_pid_task(pid_struct, PIDTYPE_PID);
 		if (task) {
@@ -777,79 +634,18 @@ static inline unsigned int kgsl_gpuid(struct kgsl_device *device,
 	return device->ftbl->gpuid(device, chipid);
 }
 
-<<<<<<< HEAD
-=======
-static inline int kgsl_create_device_sysfs_files(struct device *root,
-	const struct device_attribute **list)
-{
-	int ret = 0, i;
-
-	for (i = 0; list[i] != NULL; i++)
-		ret |= device_create_file(root, list[i]);
-	return ret;
-}
-
-static inline void kgsl_remove_device_sysfs_files(struct device *root,
-	const struct device_attribute **list)
-{
-	int i;
-
-	for (i = 0; list[i] != NULL; i++)
-		device_remove_file(root, list[i]);
-}
-
-static inline struct kgsl_device *kgsl_device_from_dev(struct device *dev)
-{
-	int i;
-
-	for (i = 0; i < KGSL_DEVICE_MAX; i++) {
-		if (kgsl_driver.devp[i] && kgsl_driver.devp[i]->dev == dev)
-			return kgsl_driver.devp[i];
-	}
-
-	return NULL;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int kgsl_state_is_awake(struct kgsl_device *device)
 {
 	if (device->state == KGSL_STATE_ACTIVE ||
 		device->state == KGSL_STATE_AWARE)
 		return true;
-<<<<<<< HEAD
 	else if (gmu_core_isenabled(device) &&
-=======
-	else if (gmu_core_gpmu_isenabled(device) &&
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			test_bit(GMU_CLK_ON, &device->gmu_core.flags))
 		return true;
 	else
 		return false;
 }
 
-<<<<<<< HEAD
-=======
-static inline int kgsl_change_flag(struct kgsl_device *device,
-		unsigned long flag, unsigned long *val)
-{
-	int ret;
-
-	mutex_lock(&device->mutex);
-	/*
-	 * Bring down the GPU, so that we can bring it back up with the correct
-	 * power and clock settings
-	 */
-	ret = kgsl_pwrctrl_change_state(device, KGSL_STATE_SUSPEND);
-	if (!ret) {
-		change_bit(flag, val);
-		kgsl_pwrctrl_change_state(device, KGSL_STATE_SLUMBER);
-	}
-
-	mutex_unlock(&device->mutex);
-	return ret;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int kgsl_readtimestamp(struct kgsl_device *device, void *priv,
 		enum kgsl_timestamp_type type, unsigned int *timestamp);
 
@@ -875,13 +671,8 @@ void kgsl_context_detach(struct kgsl_context *context);
 void kgsl_del_event_group(struct kgsl_event_group *group);
 
 void kgsl_add_event_group(struct kgsl_event_group *group,
-<<<<<<< HEAD
 		struct kgsl_context *context, readtimestamp_func readtimestamp,
 		void *priv, const char *fmt, ...);
-=======
-		struct kgsl_context *context, const char *name,
-		readtimestamp_func readtimestamp, void *priv);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void kgsl_cancel_events_timestamp(struct kgsl_device *device,
 		struct kgsl_event_group *group, unsigned int timestamp);
@@ -1067,21 +858,6 @@ void kgsl_process_private_put(struct kgsl_process_private *private);
 struct kgsl_process_private *kgsl_process_private_find(pid_t pid);
 
 /**
-<<<<<<< HEAD
-=======
- * kgsl_property_read_u32() - Read a u32 property from the device tree
- * @device: Pointer to the KGSL device
- * @prop: String name of the property to query
- * @ptr: Pointer to the variable to store the property
- */
-static inline int kgsl_property_read_u32(struct kgsl_device *device,
-	const char *prop, unsigned int *ptr)
-{
-	return of_property_read_u32(device->pdev->dev.of_node, prop, ptr);
-}
-
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * kgsl_sysfs_store() - parse a string from a sysfs store function
  * @buf: Incoming string to parse
  * @ptr: Pointer to an unsigned int to store the value
@@ -1107,11 +883,7 @@ static inline int kgsl_sysfs_store(const char *buf, unsigned int *ptr)
  * the number of strings in the binary
  */
 #define SNAPSHOT_ERR_NOMEM(_d, _s) \
-<<<<<<< HEAD
 	dev_err((_d)->dev, \
-=======
-	KGSL_DRV_ERR((_d), \
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	"snapshot: not enough snapshot memory for section %s\n", (_s))
 
 /**
@@ -1150,7 +922,6 @@ void kgsl_snapshot_add_section(struct kgsl_device *device, u16 id,
 	void *priv);
 
 /**
-<<<<<<< HEAD
  * kgsl_of_property_read_ddrtype - Get property from devicetree based on
  * the type of DDR.
  * @node: Devicetree node
@@ -1197,8 +968,6 @@ struct msm_bus_scale_pdata *kgsl_get_bus_scale_table(
 	struct kgsl_device *device);
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * struct kgsl_pwr_limit - limit structure for each client
  * @node: Local list node for the limits list
  * @level: requested power level

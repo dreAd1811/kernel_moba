@@ -248,22 +248,14 @@ out:
 	return error ?: count;
 }
 
-<<<<<<< HEAD
 static __poll_t userio_char_poll(struct file *file, poll_table *wait)
-=======
-static unsigned int userio_char_poll(struct file *file, poll_table *wait)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct userio_device *userio = file->private_data;
 
 	poll_wait(file, &userio->waitq, wait);
 
 	if (userio->head != userio->tail)
-<<<<<<< HEAD
 		return EPOLLIN | EPOLLRDNORM;
-=======
-		return POLLIN | POLLRDNORM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

@@ -614,15 +614,9 @@ int __mlx4_register_vlan(struct mlx4_dev *dev, u8 port, u16 vlan,
 		int index_at_dup_port = -1;
 
 		for (i = MLX4_VLAN_REGULAR; i < MLX4_MAX_VLAN_NUM; i++) {
-<<<<<<< HEAD
 			if (vlan == (MLX4_VLAN_MASK & be32_to_cpu(table->entries[i])))
 				index_at_port = i;
 			if (vlan == (MLX4_VLAN_MASK & be32_to_cpu(dup_table->entries[i])))
-=======
-			if ((vlan == (MLX4_VLAN_MASK & be32_to_cpu(table->entries[i]))))
-				index_at_port = i;
-			if ((vlan == (MLX4_VLAN_MASK & be32_to_cpu(dup_table->entries[i]))))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				index_at_dup_port = i;
 		}
 		/* check that same vlan is not in the tables at different indices */

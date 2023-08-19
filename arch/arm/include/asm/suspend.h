@@ -10,10 +10,6 @@ struct sleep_save_sp {
 };
 
 extern void cpu_resume(void);
-<<<<<<< HEAD
-=======
-extern void cpu_resume_no_hyp(void);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern void cpu_resume_arm(void);
 extern int cpu_suspend(unsigned long, int (*)(unsigned long));
 

@@ -13,10 +13,7 @@
 #include "persistent-data/dm-transaction-manager.h"
 
 #include <linux/device-mapper.h>
-<<<<<<< HEAD
 #include <linux/refcount.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*----------------------------------------------------------------*/
 
@@ -104,11 +101,7 @@ struct cache_disk_superblock {
 } __packed;
 
 struct dm_cache_metadata {
-<<<<<<< HEAD
 	refcount_t ref_count;
-=======
-	atomic_t ref_count;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct list_head list;
 
 	unsigned version;
@@ -762,11 +755,7 @@ static struct dm_cache_metadata *metadata_open(struct block_device *bdev,
 	}
 
 	cmd->version = metadata_version;
-<<<<<<< HEAD
 	refcount_set(&cmd->ref_count, 1);
-=======
-	atomic_set(&cmd->ref_count, 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	init_rwsem(&cmd->root_lock);
 	cmd->bdev = bdev;
 	cmd->data_block_size = data_block_size;
@@ -804,11 +793,7 @@ static struct dm_cache_metadata *lookup(struct block_device *bdev)
 
 	list_for_each_entry(cmd, &table, list)
 		if (cmd->bdev == bdev) {
-<<<<<<< HEAD
 			refcount_inc(&cmd->ref_count);
-=======
-			atomic_inc(&cmd->ref_count);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return cmd;
 		}
 
@@ -879,11 +864,7 @@ struct dm_cache_metadata *dm_cache_metadata_open(struct block_device *bdev,
 
 void dm_cache_metadata_close(struct dm_cache_metadata *cmd)
 {
-<<<<<<< HEAD
 	if (refcount_dec_and_test(&cmd->ref_count)) {
-=======
-	if (atomic_dec_and_test(&cmd->ref_count)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_lock(&table_lock);
 		list_del(&cmd->list);
 		mutex_unlock(&table_lock);

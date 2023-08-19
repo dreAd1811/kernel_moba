@@ -49,12 +49,7 @@
 #include "omap_hwmod.h"
 #include "omap_device.h"
 #include <plat/counter-32k.h>
-<<<<<<< HEAD
 #include <clocksource/timer-ti-dm.h>
-=======
-#include <plat/dmtimer.h>
-#include "omap-pm.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "soc.h"
 #include "common.h"
@@ -75,12 +70,9 @@ static struct clock_event_device clockevent_gpt;
 /* Clockevent hwmod for am335x and am437x suspend */
 static struct omap_hwmod *clockevent_gpt_hwmod;
 
-<<<<<<< HEAD
 /* Clockesource hwmod for am437x suspend */
 static struct omap_hwmod *clocksource_gpt_hwmod;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_SOC_HAS_REALTIME_COUNTER
 static unsigned long arch_timer_freq;
 
@@ -178,7 +170,6 @@ static const struct of_device_id omap_timer_match[] __initconst = {
 	{ }
 };
 
-<<<<<<< HEAD
 static int omap_timer_add_disabled_property(struct device_node *np)
 {
 	struct property *prop;
@@ -216,8 +207,6 @@ static int omap_timer_update_dt(struct device_node *np)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * omap_get_timer_dt - get a timer using device-tree
  * @match	- device-tree match structure for matching a device type
@@ -233,10 +222,7 @@ static struct device_node * __init omap_get_timer_dt(const struct of_device_id *
 						     const char *property)
 {
 	struct device_node *np;
-<<<<<<< HEAD
 	int error;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for_each_matching_node(np, match) {
 		if (!of_device_is_available(np))
@@ -251,23 +237,9 @@ static struct device_node * __init omap_get_timer_dt(const struct of_device_id *
 				  of_get_property(np, "ti,timer-secure", NULL)))
 			continue;
 
-<<<<<<< HEAD
 		error = omap_timer_update_dt(np);
 		WARN(error, "%s: Could not update dt: %i\n", __func__, error);
 
-=======
-		if (!of_device_is_compatible(np, "ti,omap-counter32k")) {
-			struct property *prop;
-
-			prop = kzalloc(sizeof(*prop), GFP_KERNEL);
-			if (!prop)
-				return NULL;
-			prop->name = "status";
-			prop->value = "disabled";
-			prop->length = strlen(prop->value);
-			of_add_property(np, prop);
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return np;
 	}
 
@@ -326,17 +298,12 @@ static int __init omap_dm_timer_init_one(struct omap_dm_timer *timer,
 		return -ENODEV;
 
 	of_property_read_string_index(np, "ti,hwmods", 0, &oh_name);
-<<<<<<< HEAD
 	if (!oh_name) {
 		of_property_read_string_index(np->parent, "ti,hwmods", 0,
 					      &oh_name);
 		if (!oh_name)
 			return -ENODEV;
 	}
-=======
-	if (!oh_name)
-		return -ENODEV;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	timer->irq = irq_of_parse_and_map(np, 0);
 	if (!timer->irq)
@@ -488,18 +455,12 @@ static int __init __maybe_unused omap2_sync32k_clocksource_init(void)
 	if (!np)
 		return -ENODEV;
 
-<<<<<<< HEAD
 	of_property_read_string_index(np->parent, "ti,hwmods", 0, &oh_name);
 	if (!oh_name) {
 		of_property_read_string_index(np, "ti,hwmods", 0, &oh_name);
 		if (!oh_name)
 			return -ENODEV;
 	}
-=======
-	of_property_read_string_index(np, "ti,hwmods", 0, &oh_name);
-	if (!oh_name)
-		return -ENODEV;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * First check hwmod data is available for sync32k counter
@@ -520,7 +481,6 @@ static int __init __maybe_unused omap2_sync32k_clocksource_init(void)
 	return ret;
 }
 
-<<<<<<< HEAD
 static unsigned int omap2_gptimer_clksrc_load;
 
 static void omap2_gptimer_clksrc_suspend(struct clocksource *unused)
@@ -541,8 +501,6 @@ static void omap2_gptimer_clksrc_resume(struct clocksource *unused)
 				   OMAP_TIMER_NONPOSTED);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void __init omap2_gptimer_clocksource_init(int gptimer_id,
 						  const char *fck_source,
 						  const char *property)
@@ -555,7 +513,6 @@ static void __init omap2_gptimer_clocksource_init(int gptimer_id,
 	res = omap_dm_timer_init_one(&clksrc, fck_source, property,
 				     &clocksource_gpt.name,
 				     OMAP_TIMER_NONPOSTED);
-<<<<<<< HEAD
 
 	if (soc_is_am43xx()) {
 		clocksource_gpt.suspend = omap2_gptimer_clksrc_suspend;
@@ -565,8 +522,6 @@ static void __init omap2_gptimer_clocksource_init(int gptimer_id,
 			omap_hwmod_lookup(clocksource_gpt.name);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	BUG_ON(res);
 
 	__omap_dm_timer_load_start(&clksrc,

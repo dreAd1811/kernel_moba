@@ -7,10 +7,6 @@
  *
  * Copyright(c) 2008 - 2014 Intel Corporation. All rights reserved.
  * Copyright(c) 2015 Intel Mobile Communications GmbH
-<<<<<<< HEAD
-=======
- * Copyright (C) 2018 Intel Corporation
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of version 2 of the GNU General Public License as
@@ -37,10 +33,6 @@
  *
  * Copyright(c) 2005 - 2014 Intel Corporation. All rights reserved.
  * Copyright(c) 2015 Intel Mobile Communications GmbH
-<<<<<<< HEAD
-=======
- * Copyright (C) 2018 Intel Corporation
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -89,18 +81,11 @@ struct iwl_nvm_data {
 	__le16 kelvin_voltage;
 	__le16 xtal_calib[2];
 
-<<<<<<< HEAD
 	bool sku_cap_band_24ghz_enable;
 	bool sku_cap_band_52ghz_enable;
 	bool sku_cap_11n_enable;
 	bool sku_cap_11ac_enable;
 	bool sku_cap_11ax_enable;
-=======
-	bool sku_cap_band_24GHz_enable;
-	bool sku_cap_band_52GHz_enable;
-	bool sku_cap_11n_enable;
-	bool sku_cap_11ac_enable;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool sku_cap_amt_enable;
 	bool sku_cap_ipan_enable;
 	bool sku_cap_mimo_disabled;
@@ -137,12 +122,9 @@ struct iwl_nvm_data *
 iwl_parse_eeprom_data(struct device *dev, const struct iwl_cfg *cfg,
 		      const u8 *eeprom, size_t eeprom_size);
 
-<<<<<<< HEAD
 int iwl_nvm_check_version(struct iwl_nvm_data *data,
 			  struct iwl_trans *trans);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int iwl_init_sband_channels(struct iwl_nvm_data *data,
 			    struct ieee80211_supported_band *sband,
 			    int n_channels, enum nl80211_band band);

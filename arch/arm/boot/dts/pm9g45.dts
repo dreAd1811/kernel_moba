@@ -52,7 +52,6 @@
 				};
 			};
 
-<<<<<<< HEAD
 			tcb0: timer@fff7c000 {
 				timer@0 {
 					compatible = "atmel,tcb-timer";
@@ -65,8 +64,6 @@
 				};
 			};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			mmc0: mmc@fff80000 {
 				pinctrl-0 = <
 					&pinctrl_board_mmc
@@ -142,20 +139,12 @@
 			};
 		};
 
-<<<<<<< HEAD
 		usb0: ohci@700000 {
-=======
-		usb0: ohci@00700000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "okay";
 			num-ports = <2>;
 		};
 
-<<<<<<< HEAD
 		usb1: ehci@800000 {
-=======
-		usb1: ehci@00800000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "okay";
 		};
 	};

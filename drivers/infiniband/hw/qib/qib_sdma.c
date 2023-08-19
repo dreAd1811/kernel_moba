@@ -54,33 +54,6 @@ MODULE_PARM_DESC(sdma_descq_cnt, "Number of SDMA descq entries");
 #define SDMA_DESC_COUNT_LSB     16
 #define SDMA_DESC_GEN_LSB       30
 
-<<<<<<< HEAD
-=======
-char *qib_sdma_state_names[] = {
-	[qib_sdma_state_s00_hw_down]          = "s00_HwDown",
-	[qib_sdma_state_s10_hw_start_up_wait] = "s10_HwStartUpWait",
-	[qib_sdma_state_s20_idle]             = "s20_Idle",
-	[qib_sdma_state_s30_sw_clean_up_wait] = "s30_SwCleanUpWait",
-	[qib_sdma_state_s40_hw_clean_up_wait] = "s40_HwCleanUpWait",
-	[qib_sdma_state_s50_hw_halt_wait]     = "s50_HwHaltWait",
-	[qib_sdma_state_s99_running]          = "s99_Running",
-};
-
-char *qib_sdma_event_names[] = {
-	[qib_sdma_event_e00_go_hw_down]   = "e00_GoHwDown",
-	[qib_sdma_event_e10_go_hw_start]  = "e10_GoHwStart",
-	[qib_sdma_event_e20_hw_started]   = "e20_HwStarted",
-	[qib_sdma_event_e30_go_running]   = "e30_GoRunning",
-	[qib_sdma_event_e40_sw_cleaned]   = "e40_SwCleaned",
-	[qib_sdma_event_e50_hw_cleaned]   = "e50_HwCleaned",
-	[qib_sdma_event_e60_hw_halted]    = "e60_HwHalted",
-	[qib_sdma_event_e70_go_idle]      = "e70_GoIdle",
-	[qib_sdma_event_e7220_err_halted] = "e7220_ErrHalted",
-	[qib_sdma_event_e7322_err_halted] = "e7322_ErrHalted",
-	[qib_sdma_event_e90_timer_tick]   = "e90_TimerTick",
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* declare all statics here rather than keep sorting */
 static int alloc_sdma(struct qib_pportdata *);
 static void sdma_complete(struct kref *);
@@ -603,15 +576,8 @@ retry:
 		dw = (len + 3) >> 2;
 		addr = dma_map_single(&ppd->dd->pcidev->dev, sge->vaddr,
 				      dw << 2, DMA_TO_DEVICE);
-<<<<<<< HEAD
 		if (dma_mapping_error(&ppd->dd->pcidev->dev, addr))
 			goto unmap;
-=======
-		if (dma_mapping_error(&ppd->dd->pcidev->dev, addr)) {
-			ret = -ENOMEM;
-			goto unmap;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sdmadesc[0] = 0;
 		make_sdma_desc(ppd, sdmadesc, (u64) addr, dw, dwoffset);
 		/* SDmaUseLargeBuf has to be set in every descriptor */
@@ -818,11 +784,7 @@ void __qib_sdma_process_event(struct qib_pportdata *ppd,
 			 * bringing the link up with traffic active on
 			 * 7220, e.g. */
 			ss->go_s99_running = 1;
-<<<<<<< HEAD
 			/* fall through -- and start dma engine */
-=======
-			/* fall through and start dma engine */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case qib_sdma_event_e10_go_hw_start:
 			/* This reference means the state machine is started */
 			sdma_get(&ppd->sdma_state);

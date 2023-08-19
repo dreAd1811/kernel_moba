@@ -361,11 +361,7 @@ static void init_unwind_hdr(struct unwind_table *table,
 	return;
 
 ret_err:
-<<<<<<< HEAD
 	panic("Attention !!! Dwarf FDE parsing errors\n");
-=======
-	panic("Attention !!! Dwarf FDE parsing errors\n");;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #ifdef CONFIG_MODULES

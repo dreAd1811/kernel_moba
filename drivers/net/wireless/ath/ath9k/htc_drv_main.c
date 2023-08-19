@@ -1483,11 +1483,7 @@ static void ath9k_htc_set_bssid(struct ath9k_htc_priv *priv)
 
 static void ath9k_htc_bss_iter(void *data, u8 *mac, struct ieee80211_vif *vif)
 {
-<<<<<<< HEAD
 	struct ath9k_htc_priv *priv = data;
-=======
-	struct ath9k_htc_priv *priv = (struct ath9k_htc_priv *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ath_common *common = ath9k_hw_common(priv->ah);
 	struct ieee80211_bss_conf *bss_conf = &vif->bss_conf;
 
@@ -1687,13 +1683,10 @@ static int ath9k_htc_ampdu_action(struct ieee80211_hw *hw,
 		ieee80211_stop_tx_ba_cb_irqsafe(vif, sta->addr, tid);
 		break;
 	case IEEE80211_AMPDU_TX_OPERATIONAL:
-<<<<<<< HEAD
 		if (tid >= ATH9K_HTC_MAX_TID) {
 			ret = -EINVAL;
 			break;
 		}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ista = (struct ath9k_htc_sta *) sta->drv_priv;
 		spin_lock_bh(&priv->tx.tx_lock);
 		ista->tid_state[tid] = AGGR_OPERATIONAL;

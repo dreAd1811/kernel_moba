@@ -12,11 +12,7 @@ CFLAGS_REMOVE_feature-fixups.o = $(CC_FLAGS_FTRACE)
 
 obj-y += string.o alloc.o code-patching.o feature-fixups.o
 
-<<<<<<< HEAD
 obj-$(CONFIG_PPC32)	+= div64.o copy_32.o crtsavres.o strlen_32.o
-=======
-obj-$(CONFIG_PPC32)	+= div64.o copy_32.o crtsavres.o
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 # See corresponding test in arch/powerpc/Makefile
 # 64-bit linker creates .sfpr on demand for final link (vmlinux),
@@ -26,28 +22,18 @@ ifeq ($(call ld-ifversion, -lt, 225000000, y),y)
 extra-$(CONFIG_PPC64)	+= crtsavres.o
 endif
 
-<<<<<<< HEAD
 obj-$(CONFIG_PPC_BOOK3S_64) += copyuser_power7.o copypage_power7.o \
 			       memcpy_power7.o
 
 obj64-y	+= copypage_64.o copyuser_64.o mem_64.o hweight_64.o \
 	   memcpy_64.o pmem.o
-=======
-obj64-y	+= copypage_64.o copyuser_64.o mem_64.o hweight_64.o \
-	   copyuser_power7.o string_64.o copypage_power7.o memcpy_power7.o \
-	   memcpy_64.o memcmp_64.o
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 obj64-$(CONFIG_SMP)	+= locks.o
 obj64-$(CONFIG_ALTIVEC)	+= vmx-helper.o
 obj64-$(CONFIG_KPROBES_SANITY_TEST) += test_emulate_step.o
 
-<<<<<<< HEAD
 obj-y			+= checksum_$(BITS).o checksum_wrappers.o \
 			   string_$(BITS).o memcmp_$(BITS).o
-=======
-obj-y			+= checksum_$(BITS).o checksum_wrappers.o
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 obj-y			+= sstep.o ldstfp.o quad.o
 obj64-y			+= quad.o

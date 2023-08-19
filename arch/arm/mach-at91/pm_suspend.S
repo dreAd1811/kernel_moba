@@ -42,7 +42,6 @@ tmp2	.req	r5
 	.endm
 
 /*
-<<<<<<< HEAD
  * Wait for main oscillator selection is done
  */
 	.macro wait_moscsels
@@ -52,8 +51,6 @@ tmp2	.req	r5
 	.endm
 
 /*
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Wait until PLLA has locked.
  */
 	.macro wait_pllalock
@@ -124,7 +121,6 @@ ENTRY(at91_pm_suspend_in_sram)
 	bl	at91_sramc_self_refresh
 
 	ldr	r0, .pm_mode
-<<<<<<< HEAD
 	cmp	r0, #AT91_PM_STANDBY
 	beq	standby
 	cmp	r0, #AT91_PM_BACKUP
@@ -134,24 +130,11 @@ ENTRY(at91_pm_suspend_in_sram)
 	b	exit_suspend
 
 standby:
-=======
-	cmp	r0, #AT91_PM_SLOW_CLOCK
-	beq	slow_clock
-	cmp	r0, #AT91_PM_BACKUP
-	beq	backup_mode
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Wait for interrupt */
 	ldr	pmc, .pmc_base
 	at91_cpu_idle
 	b	exit_suspend
 
-<<<<<<< HEAD
-=======
-slow_clock:
-	bl	at91_slowck_mode
-	b	exit_suspend
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 backup_mode:
 	bl	at91_backup_mode
 	b	exit_suspend
@@ -178,7 +161,6 @@ ENTRY(at91_backup_mode)
 	str	tmp1, [r0, #0]
 ENDPROC(at91_backup_mode)
 
-<<<<<<< HEAD
 .macro at91_pm_ulp0_mode
 	ldr	pmc, .pmc_base
 
@@ -275,9 +257,6 @@ ENDPROC(at91_backup_mode)
 .endm
 
 ENTRY(at91_ulp_mode)
-=======
-ENTRY(at91_slowck_mode)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ldr	pmc, .pmc_base
 
 	/* Save Master clock setting */
@@ -300,7 +279,6 @@ ENTRY(at91_slowck_mode)
 	orr	tmp1, tmp1, #(1 << 29)		/* bit 29 always set */
 	str	tmp1, [pmc, #AT91_CKGR_PLLAR]
 
-<<<<<<< HEAD
 	ldr	r0, .pm_mode
 	cmp	r0, #AT91_PM_ULP1
 	beq	ulp1_mode
@@ -314,24 +292,6 @@ ulp1_mode:
 
 ulp_exit:
 	ldr	pmc, .pmc_base
-=======
-	/* Turn off the main oscillator */
-	ldr	tmp1, [pmc, #AT91_CKGR_MOR]
-	bic	tmp1, tmp1, #AT91_PMC_MOSCEN
-	orr	tmp1, tmp1, #AT91_PMC_KEY
-	str	tmp1, [pmc, #AT91_CKGR_MOR]
-
-	/* Wait for interrupt */
-	at91_cpu_idle
-
-	/* Turn on the main oscillator */
-	ldr	tmp1, [pmc, #AT91_CKGR_MOR]
-	orr	tmp1, tmp1, #AT91_PMC_MOSCEN
-	orr	tmp1, tmp1, #AT91_PMC_KEY
-	str	tmp1, [pmc, #AT91_CKGR_MOR]
-
-	wait_moscrdy
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Restore PLLA setting */
 	ldr	tmp1, .saved_pllar
@@ -354,11 +314,7 @@ ulp_exit:
 	wait_mckrdy
 
 	mov	pc, lr
-<<<<<<< HEAD
 ENDPROC(at91_ulp_mode)
-=======
-ENDPROC(at91_slowck_mode)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * void at91_sramc_self_refresh(unsigned int is_active)

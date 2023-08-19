@@ -67,14 +67,3 @@ config NFC_NQ
           This enables the NFC driver for NQx based devices.
           This is for i2c connected version. NCI protocol logic
           resides in the usermode and it has no other NFC dependencies.
-<<<<<<< HEAD
-=======
-
-config NTAG_NQ
-	tristate "QTI NTAG Driver for NTAG communication"
-	depends on I2C
-	help
-          This enables NTAG driver for NTx based devices.
-          NTAG is NFC tags that combine passive NFC interface with contact i2c interface.
-          This is for i2c connected version.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

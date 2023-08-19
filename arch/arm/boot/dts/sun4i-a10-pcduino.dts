@@ -62,11 +62,6 @@
 
 	leds {
 		compatible = "gpio-leds";
-<<<<<<< HEAD
-=======
-		pinctrl-names = "default";
-		pinctrl-0 = <&led_pins_pcduino>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		tx {
 			label = "pcduino:green:tx";
@@ -79,43 +74,24 @@
 		};
 	};
 
-<<<<<<< HEAD
 	gpio-keys {
 		compatible = "gpio-keys";
 		#address-cells = <1>;
 		#size-cells = <0>;
 
 		back {
-=======
-	gpio_keys {
-		compatible = "gpio-keys";
-		pinctrl-names = "default";
-		pinctrl-0 = <&key_pins_pcduino>;
-		#address-cells = <1>;
-		#size-cells = <0>;
-
-		button@0 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "Key Back";
 			linux,code = <KEY_BACK>;
 			gpios = <&pio 7 17 GPIO_ACTIVE_LOW>;
 		};
 
-<<<<<<< HEAD
 		home {
-=======
-		button@1 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "Key Home";
 			linux,code = <KEY_HOME>;
 			gpios = <&pio 7 18 GPIO_ACTIVE_LOW>;
 		};
 
-<<<<<<< HEAD
 		menu {
-=======
-		button@2 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "Key Menu";
 			linux,code = <KEY_MENU>;
 			gpios = <&pio 7 19 GPIO_ACTIVE_LOW>;
@@ -136,11 +112,6 @@
 };
 
 &emac {
-<<<<<<< HEAD
-=======
-	pinctrl-names = "default";
-	pinctrl-0 = <&emac_pins_a>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	phy = <&phy1>;
 	status = "okay";
 };
@@ -150,11 +121,6 @@
 };
 
 &i2c0 {
-<<<<<<< HEAD
-=======
-	pinctrl-names = "default";
-	pinctrl-0 = <&i2c0_pins_a>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 
 	axp209: pmic@34 {
@@ -172,18 +138,9 @@
 };
 
 &mmc0 {
-<<<<<<< HEAD
 	vmmc-supply = <&reg_vcc3v3>;
 	bus-width = <4>;
 	cd-gpios = <&pio 7 1 GPIO_ACTIVE_LOW>; /* PH1 */
-=======
-	pinctrl-names = "default";
-	pinctrl-0 = <&mmc0_pins_a>;
-	vmmc-supply = <&reg_vcc3v3>;
-	bus-width = <4>;
-	cd-gpios = <&pio 7 1 GPIO_ACTIVE_HIGH>; /* PH1 */
-	cd-inverted;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
@@ -200,21 +157,7 @@
 };
 
 &pio {
-<<<<<<< HEAD
 	usb0_id_detect_pin: usb0-id-detect-pin {
-=======
-	led_pins_pcduino: led_pins@0 {
-		pins = "PH15", "PH16";
-		function = "gpio_out";
-	};
-
-	key_pins_pcduino: key_pins@0 {
-		pins = "PH17", "PH18", "PH19";
-		function = "gpio_in";
-	};
-
-	usb0_id_detect_pin: usb0_id_detect_pin@0 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pins = "PH4";
 		function = "gpio_in";
 		bias-pull-up;
@@ -250,11 +193,7 @@
 
 &uart0 {
 	pinctrl-names = "default";
-<<<<<<< HEAD
 	pinctrl-0 = <&uart0_pb_pins>;
-=======
-	pinctrl-0 = <&uart0_pins_a>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 

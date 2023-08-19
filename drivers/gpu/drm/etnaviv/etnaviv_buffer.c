@@ -1,24 +1,6 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Copyright (C) 2014-2018 Etnaviv Project
-=======
-/*
- * Copyright (C) 2014 Etnaviv Project
- * Author: Christian Gmeiner <christian.gmeiner@gmail.com>
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License version 2 as published by
- * the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
- * more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program.  If not, see <http://www.gnu.org/licenses/>.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include "etnaviv_cmdbuf.h"
@@ -106,11 +88,8 @@ static void etnaviv_cmd_select_pipe(struct etnaviv_gpu *gpu,
 {
 	u32 flush = 0;
 
-<<<<<<< HEAD
 	lockdep_assert_held(&gpu->lock);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * This assumes that if we're switching to 2D, we're switching
 	 * away from 3D, and vice versa.  Hence, if we're switching to
@@ -175,13 +154,9 @@ static u32 etnaviv_buffer_reserve(struct etnaviv_gpu *gpu,
 
 u16 etnaviv_buffer_init(struct etnaviv_gpu *gpu)
 {
-<<<<<<< HEAD
 	struct etnaviv_cmdbuf *buffer = &gpu->buffer;
 
 	lockdep_assert_held(&gpu->lock);
-=======
-	struct etnaviv_cmdbuf *buffer = gpu->buffer;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* initialize buffer */
 	buffer->user_size = 0;
@@ -195,13 +170,9 @@ u16 etnaviv_buffer_init(struct etnaviv_gpu *gpu)
 
 u16 etnaviv_buffer_config_mmuv2(struct etnaviv_gpu *gpu, u32 mtlb_addr, u32 safe_addr)
 {
-<<<<<<< HEAD
 	struct etnaviv_cmdbuf *buffer = &gpu->buffer;
 
 	lockdep_assert_held(&gpu->lock);
-=======
-	struct etnaviv_cmdbuf *buffer = gpu->buffer;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	buffer->user_size = 0;
 
@@ -232,7 +203,6 @@ u16 etnaviv_buffer_config_mmuv2(struct etnaviv_gpu *gpu, u32 mtlb_addr, u32 safe
 	return buffer->user_size / 8;
 }
 
-<<<<<<< HEAD
 u16 etnaviv_buffer_config_pta(struct etnaviv_gpu *gpu)
 {
 	struct etnaviv_cmdbuf *buffer = &gpu->buffer;
@@ -259,14 +229,6 @@ void etnaviv_buffer_end(struct etnaviv_gpu *gpu)
 
 	lockdep_assert_held(&gpu->lock);
 
-=======
-void etnaviv_buffer_end(struct etnaviv_gpu *gpu)
-{
-	struct etnaviv_cmdbuf *buffer = gpu->buffer;
-	unsigned int waitlink_offset = buffer->user_size - 16;
-	u32 link_target, flush = 0;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (gpu->exec_state == ETNA_PIPE_2D)
 		flush = VIVS_GL_FLUSH_CACHE_PE2D;
 	else if (gpu->exec_state == ETNA_PIPE_3D)
@@ -302,7 +264,6 @@ void etnaviv_buffer_end(struct etnaviv_gpu *gpu)
 	}
 }
 
-<<<<<<< HEAD
 /* Append a 'sync point' to the ring buffer. */
 void etnaviv_sync_point_queue(struct etnaviv_gpu *gpu, unsigned int event)
 {
@@ -352,18 +313,6 @@ void etnaviv_buffer_queue(struct etnaviv_gpu *gpu, u32 exec_state,
 	bool switch_context = gpu->exec_state != exec_state;
 
 	lockdep_assert_held(&gpu->lock);
-=======
-/* Append a command buffer to the ring buffer. */
-void etnaviv_buffer_queue(struct etnaviv_gpu *gpu, unsigned int event,
-	struct etnaviv_cmdbuf *cmdbuf)
-{
-	struct etnaviv_cmdbuf *buffer = gpu->buffer;
-	unsigned int waitlink_offset = buffer->user_size - 16;
-	u32 return_target, return_dwords;
-	u32 link_target, link_dwords;
-	unsigned int new_flush_seq = READ_ONCE(gpu->mmu->flush_seq);
-	bool need_flush = gpu->flush_seq != new_flush_seq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (drm_debug & DRM_UT_DRIVER)
 		etnaviv_buffer_dump(gpu, buffer, 0, 0x50);
@@ -376,22 +325,14 @@ void etnaviv_buffer_queue(struct etnaviv_gpu *gpu, unsigned int event,
 	 * need to append a mmu flush load state, followed by a new
 	 * link to this buffer - a total of four additional words.
 	 */
-<<<<<<< HEAD
 	if (gpu->mmu->need_flush || switch_context) {
-=======
-	if (need_flush || gpu->switch_context) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u32 target, extra_dwords;
 
 		/* link command */
 		extra_dwords = 1;
 
 		/* flush command */
-<<<<<<< HEAD
 		if (gpu->mmu->need_flush) {
-=======
-		if (need_flush) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (gpu->mmu->version == ETNAVIV_IOMMU_V1)
 				extra_dwords += 1;
 			else
@@ -399,20 +340,12 @@ void etnaviv_buffer_queue(struct etnaviv_gpu *gpu, unsigned int event,
 		}
 
 		/* pipe switch commands */
-<<<<<<< HEAD
 		if (switch_context)
-=======
-		if (gpu->switch_context)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			extra_dwords += 4;
 
 		target = etnaviv_buffer_reserve(gpu, buffer, extra_dwords);
 
-<<<<<<< HEAD
 		if (gpu->mmu->need_flush) {
-=======
-		if (need_flush) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* Add the MMU flush */
 			if (gpu->mmu->version == ETNAVIV_IOMMU_V1) {
 				CMD_LOAD_STATE(buffer, VIVS_GL_FLUSH_MMU,
@@ -432,22 +365,12 @@ void etnaviv_buffer_queue(struct etnaviv_gpu *gpu, unsigned int event,
 					SYNC_RECIPIENT_PE);
 			}
 
-<<<<<<< HEAD
 			gpu->mmu->need_flush = false;
 		}
 
 		if (switch_context) {
 			etnaviv_cmd_select_pipe(gpu, buffer, exec_state);
 			gpu->exec_state = exec_state;
-=======
-			gpu->flush_seq = new_flush_seq;
-		}
-
-		if (gpu->switch_context) {
-			etnaviv_cmd_select_pipe(gpu, buffer, cmdbuf->exec_state);
-			gpu->exec_state = cmdbuf->exec_state;
-			gpu->switch_context = false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		/* And the link to the submitted buffer */
@@ -516,9 +439,6 @@ void etnaviv_buffer_queue(struct etnaviv_gpu *gpu, unsigned int event,
 
 	if (drm_debug & DRM_UT_DRIVER)
 		etnaviv_buffer_dump(gpu, buffer, 0, 0x50);
-<<<<<<< HEAD
 
 	gpu->lastctx = cmdbuf->ctx;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

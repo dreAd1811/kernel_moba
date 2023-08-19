@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 menu "Intel MIC & related support"
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 comment "Intel MIC Bus Driver"
 
 config INTEL_MIC_BUS
@@ -155,8 +152,5 @@ config VOP
 if VOP
 source "drivers/vhost/Kconfig.vringh"
 endif
-<<<<<<< HEAD
 
 endmenu
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

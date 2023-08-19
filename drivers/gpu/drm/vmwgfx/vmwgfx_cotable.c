@@ -1,14 +1,7 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0 OR MIT
 /**************************************************************************
  *
  * Copyright 2014-2015 VMware, Inc., Palo Alto, CA., USA
-=======
-/**************************************************************************
- *
- * Copyright © 2014-2015 VMware, Inc., Palo Alto, CA., USA
- * All Rights Reserved.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
@@ -331,11 +324,7 @@ static int vmw_cotable_unbind(struct vmw_resource *res,
 		vmw_dx_context_scrub_cotables(vcotbl->ctx, readback);
 	mutex_unlock(&dev_priv->binding_mutex);
 	(void) vmw_execbuf_fence_commands(NULL, dev_priv, &fence, NULL);
-<<<<<<< HEAD
 	vmw_bo_fence_single(bo, fence);
-=======
-	vmw_fence_single_bo(bo, fence);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (likely(fence != NULL))
 		vmw_fence_obj_unreference(&fence);
 
@@ -378,11 +367,7 @@ static int vmw_cotable_readback(struct vmw_resource *res)
 	}
 
 	(void) vmw_execbuf_fence_commands(NULL, dev_priv, &fence, NULL);
-<<<<<<< HEAD
 	vmw_bo_fence_single(&res->backup->base, fence);
-=======
-	vmw_fence_single_bo(&res->backup->base, fence);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vmw_fence_obj_unreference(&fence);
 
 	return 0;
@@ -402,16 +387,10 @@ static int vmw_cotable_readback(struct vmw_resource *res)
  */
 static int vmw_cotable_resize(struct vmw_resource *res, size_t new_size)
 {
-<<<<<<< HEAD
 	struct ttm_operation_ctx ctx = { false, false };
 	struct vmw_private *dev_priv = res->dev_priv;
 	struct vmw_cotable *vcotbl = vmw_cotable(res);
 	struct vmw_buffer_object *buf, *old_buf = res->backup;
-=======
-	struct vmw_private *dev_priv = res->dev_priv;
-	struct vmw_cotable *vcotbl = vmw_cotable(res);
-	struct vmw_dma_buffer *buf, *old_buf = res->backup;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ttm_buffer_object *bo, *old_bo = &res->backup->base;
 	size_t old_size = res->backup_size;
 	size_t old_size_read_back = vcotbl->size_read_back;
@@ -436,13 +415,8 @@ static int vmw_cotable_resize(struct vmw_resource *res, size_t new_size)
 	if (!buf)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	ret = vmw_bo_init(dev_priv, buf, new_size, &vmw_mob_ne_placement,
 			  true, vmw_bo_bo_free);
-=======
-	ret = vmw_dmabuf_init(dev_priv, buf, new_size, &vmw_mob_ne_placement,
-			      true, vmw_dmabuf_bo_free);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		DRM_ERROR("Failed initializing new cotable MOB.\n");
 		return ret;
@@ -482,11 +456,7 @@ static int vmw_cotable_resize(struct vmw_resource *res, size_t new_size)
 	}
 
 	/* Unpin new buffer, and switch backup buffers. */
-<<<<<<< HEAD
 	ret = ttm_bo_validate(bo, &vmw_mob_placement, &ctx);
-=======
-	ret = ttm_bo_validate(bo, &vmw_mob_placement, false, false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(ret != 0)) {
 		DRM_ERROR("Failed validating new COTable backup buffer.\n");
 		goto out_wait;
@@ -512,11 +482,7 @@ static int vmw_cotable_resize(struct vmw_resource *res, size_t new_size)
 	/* Let go of the old mob. */
 	list_del(&res->mob_head);
 	list_add_tail(&res->mob_head, &buf->res_list);
-<<<<<<< HEAD
 	vmw_bo_unreference(&old_buf);
-=======
-	vmw_dmabuf_unreference(&old_buf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	res->id = vcotbl->type;
 
 	return 0;
@@ -525,11 +491,7 @@ out_map_new:
 	ttm_bo_kunmap(&old_map);
 out_wait:
 	ttm_bo_unreserve(bo);
-<<<<<<< HEAD
 	vmw_bo_unreference(&buf);
-=======
-	vmw_dmabuf_unreference(&buf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -611,13 +573,10 @@ struct vmw_resource *vmw_cotable_alloc(struct vmw_private *dev_priv,
 				       u32 type)
 {
 	struct vmw_cotable *vcotbl;
-<<<<<<< HEAD
 	struct ttm_operation_ctx ttm_opt_ctx = {
 		.interruptible = true,
 		.no_wait_gpu = false
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 	u32 num_entries;
 
@@ -625,11 +584,7 @@ struct vmw_resource *vmw_cotable_alloc(struct vmw_private *dev_priv,
 		cotable_acc_size = ttm_round_pot(sizeof(struct vmw_cotable));
 
 	ret = ttm_mem_global_alloc(vmw_mem_glob(dev_priv),
-<<<<<<< HEAD
 				   cotable_acc_size, &ttm_opt_ctx);
-=======
-				   cotable_acc_size, false, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(ret))
 		return ERR_PTR(ret);
 

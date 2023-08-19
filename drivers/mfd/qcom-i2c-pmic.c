@@ -1,19 +1,6 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2016-2017, 2020, The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2016-2017 The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #define pr_fmt(fmt) "I2C PMIC: %s: " fmt, __func__
@@ -74,10 +61,7 @@ struct i2c_pmic {
 	int			summary_irq;
 	bool			resume_completed;
 	bool			irq_waiting;
-<<<<<<< HEAD
 	bool			toggle_stat;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void i2c_pmic_irq_bus_lock(struct irq_data *d)
@@ -490,12 +474,9 @@ static int i2c_pmic_parse_dt(struct i2c_pmic *chip)
 
 	of_property_read_string(node, "pinctrl-names", &chip->pinctrl_name);
 
-<<<<<<< HEAD
 	chip->toggle_stat = of_property_read_bool(node,
 				"qcom,enable-toggle-stat");
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 
@@ -536,7 +517,6 @@ static int i2c_pmic_determine_initial_status(struct i2c_pmic *chip)
 	return 0;
 }
 
-<<<<<<< HEAD
 #define INT_TEST_OFFSET			0xE0
 #define INT_TEST_MODE_EN_BIT		BIT(7)
 #define INT_TEST_VAL_OFFSET		0xE1
@@ -600,8 +580,6 @@ exit:
 	return rc;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct regmap_config i2c_pmic_regmap_config = {
 	.reg_bits	= 16,
 	.val_bits	= 8,
@@ -660,15 +638,12 @@ static int i2c_pmic_probe(struct i2c_client *client,
 	chip->resume_completed = true;
 	mutex_init(&chip->irq_complete);
 
-<<<<<<< HEAD
 	rc = i2c_pmic_toggle_stat(chip);
 	if (rc < 0) {
 		pr_err("Couldn't toggle stat rc=%d\n", rc);
 		goto cleanup;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rc = devm_request_threaded_irq(&client->dev, client->irq, NULL,
 				       i2c_pmic_irq_handler,
 				       IRQF_ONESHOT | IRQF_SHARED,
@@ -821,10 +796,6 @@ MODULE_DEVICE_TABLE(i2c, i2c_pmic_id);
 static struct i2c_driver i2c_pmic_driver = {
 	.driver		= {
 		.name		= "i2c_pmic",
-<<<<<<< HEAD
-=======
-		.owner		= THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.pm		= &i2c_pmic_pm_ops,
 		.of_match_table	= i2c_pmic_match_table,
 	},

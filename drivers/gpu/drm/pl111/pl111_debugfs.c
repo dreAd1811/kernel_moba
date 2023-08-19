@@ -22,7 +22,6 @@ static const struct {
 	REGDEF(CLCD_TIM2),
 	REGDEF(CLCD_TIM3),
 	REGDEF(CLCD_UBAS),
-<<<<<<< HEAD
 	REGDEF(CLCD_LBAS),
 	REGDEF(CLCD_PL111_CNTL),
 	REGDEF(CLCD_PL111_IENB),
@@ -31,10 +30,6 @@ static const struct {
 	REGDEF(CLCD_PL111_ICR),
 	REGDEF(CLCD_PL111_UCUR),
 	REGDEF(CLCD_PL111_LCUR),
-=======
-	REGDEF(CLCD_PL111_CNTL),
-	REGDEF(CLCD_PL111_IENB),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int pl111_debugfs_regs(struct seq_file *m, void *unused)

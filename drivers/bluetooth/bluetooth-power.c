@@ -1,22 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2016-2020, The Linux Foundation. All rights reserved.
  */
 
-=======
-/* Copyright (c) 2009-2010, 2013-2018 The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Bluetooth Power Switch Module
  * controls power to external Bluetooth device
@@ -36,7 +22,6 @@
 #include <linux/regulator/consumer.h>
 #include <linux/clk.h>
 
-<<<<<<< HEAD
 #if defined(CONFIG_CNSS)
 #include <net/cnss.h>
 #endif
@@ -45,23 +30,12 @@
 #include "btfm_slim.h"
 #include "btfm_slim_slave.h"
 #endif
-=======
-#if defined(CONFIG_CNSS_PCI)
-#include <net/cnss.h>
-#endif
-
-#ifdef CONFIG_BTFM_SLIM
-#include "btfm_slim.h"
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/fs.h>
 
 #define BT_PWR_DBG(fmt, arg...)  pr_debug("%s: " fmt "\n", __func__, ## arg)
 #define BT_PWR_INFO(fmt, arg...) pr_info("%s: " fmt "\n", __func__, ## arg)
 #define BT_PWR_ERR(fmt, arg...)  pr_err("%s: " fmt "\n", __func__, ## arg)
 
-<<<<<<< HEAD
 static const struct of_device_id bt_power_match_table[] = {
 	{	.compatible = "qca,ar3002" },
 	{	.compatible = "qca,qca6174" },
@@ -71,37 +45,6 @@ static const struct of_device_id bt_power_match_table[] = {
 	{}
 };
 
-=======
-
-static const struct of_device_id bt_power_match_table[] = {
-	{	.compatible = "qca,ar3002" },
-	{	.compatible = "qca,qca6174" },
-	{	.compatible = "qca,qca6390" },
-	{	.compatible = "qca,wcn3990" },
-	{}
-};
-
-static struct bt_power_vreg_data bt_power_vreg_info[] = {
-	{NULL, "qca,bt-vdd-vl", 1055000, 1055000, 0, false, false},
-	{NULL, "qca,bt-vdd-vm", 1350000, 1350000, 0, false, false},
-	{NULL, "qca,bt-vdd-5c", 2040000, 2040000, 0, false, false},
-	{NULL, "qca,bt-vdd-5a", 2040000, 2040000, 0, false, false},
-	{NULL, "qca,bt-vdd-vh", 1900000, 1900000, 0, false, false},
-	{NULL, "qca,bt-vdd-io", 1700000, 1900000, 0, false, false},
-	{NULL, "qca,bt-vdd-xtal", 1700000, 1900000, 0, false, false},
-	{NULL, "qca,bt-vdd-core", 1245000, 1350000, 0, false, false},
-	{NULL, "qca,bt-vdd-pa", 0, 0, 0, false, false},
-	{NULL, "qca,bt-vdd-ldo", 3312000, 3312000, 0, false, false},
-	{NULL, "qca,bt-chip-pwd", 0, 0, 0, false, false},
-};
-
-#define BT_VREG_INFO_SIZE ARRAY_SIZE(bt_power_vreg_info)
-
-static int bt_power_vreg_get(struct platform_device *pdev);
-static int bt_power_vreg_set(bool on);
-static void bt_power_vreg_put(void);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct bluetooth_power_platform_data *bt_power_pdata;
 static struct platform_device *btpdev;
 static bool previous;
@@ -121,15 +64,9 @@ static int bt_vreg_init(struct bt_power_vreg_data *vreg)
 	vreg->reg = regulator_get(dev, vreg->name);
 	if (IS_ERR(vreg->reg)) {
 		rc = PTR_ERR(vreg->reg);
-<<<<<<< HEAD
 		vreg->reg = NULL;
 		pr_err("%s: regulator_get(%s) failed. rc=%d\n",
 			__func__, vreg->name, rc);
-=======
-		pr_err("%s: regulator_get(%s) failed. rc=%d\n",
-			__func__, vreg->name, rc);
-		vreg->reg = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out;
 	}
 
@@ -145,11 +82,6 @@ static int bt_vreg_enable(struct bt_power_vreg_data *vreg)
 {
 	int rc = 0;
 
-<<<<<<< HEAD
-=======
-	BT_PWR_DBG("vreg_en for : %s", vreg->name);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!vreg->is_enabled) {
 		if (vreg->set_voltage_sup) {
 			rc = regulator_set_voltage(vreg->reg,
@@ -180,7 +112,6 @@ static int bt_vreg_enable(struct bt_power_vreg_data *vreg)
 		}
 		vreg->is_enabled = true;
 	}
-<<<<<<< HEAD
 
 	BT_PWR_ERR("vreg_en successful for : %s", vreg->name);
 out:
@@ -216,8 +147,6 @@ static int bt_vreg_unvote(struct bt_power_vreg_data *vreg)
 	}
 
 	BT_PWR_ERR("vreg_unvote successful for : %s", vreg->name);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	return rc;
 }
@@ -229,11 +158,6 @@ static int bt_vreg_disable(struct bt_power_vreg_data *vreg)
 	if (!vreg)
 		return rc;
 
-<<<<<<< HEAD
-=======
-	BT_PWR_DBG("vreg_disable for : %s", vreg->name);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (vreg->is_enabled) {
 		rc = regulator_disable(vreg->reg);
 		if (rc < 0) {
@@ -258,18 +182,12 @@ static int bt_vreg_disable(struct bt_power_vreg_data *vreg)
 			if (rc < 0) {
 				BT_PWR_ERR("vreg_set_mode(%s) failed rc=%d\n",
 						vreg->name, rc);
-<<<<<<< HEAD
 				goto out;
 			}
 		}
 	}
 
 	BT_PWR_ERR("vreg_disable successful for : %s", vreg->name);
-=======
-			}
-		}
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	return rc;
 }
@@ -332,79 +250,13 @@ static int bt_clk_disable(struct bt_power_clk_data *clk)
 	return rc;
 }
 
-<<<<<<< HEAD
-=======
-static int bt_configure_gpios_2wcn(int on)
-{
-	int rc = 0;
-	int bt_3p3_en_gpio = bt_power_pdata->bt_gpio_3p3_en;
-	int bt_1p3_en_gpio = bt_power_pdata->bt_gpio_1p3_en;
-
-	BT_PWR_DBG("2wcn - bt_gpio= %d on: %d", bt_3p3_en_gpio, on);
-
-	if (on) {
-		rc = gpio_request(bt_3p3_en_gpio, "bt_3p3_en_n");
-		if (rc) {
-			BT_PWR_ERR("unable to request gpio %d (%d)\n",
-					bt_3p3_en_gpio, rc);
-			return rc;
-		}
-
-		rc = gpio_direction_output(bt_3p3_en_gpio, 0);
-		if (rc) {
-			BT_PWR_ERR("Unable to set direction\n");
-			return rc;
-		}
-		msleep(50);
-		rc = gpio_direction_output(bt_3p3_en_gpio, 1);
-		if (rc) {
-			BT_PWR_ERR("Unable to set direction\n");
-			return rc;
-		}
-		msleep(50);
-
-		rc = gpio_request(bt_1p3_en_gpio, "bt_1p3_en_n");
-		if (rc) {
-			BT_PWR_ERR("unable to request gpio %d (%d)\n",
-					bt_1p3_en_gpio, rc);
-			return rc;
-		}
-
-		rc = gpio_direction_output(bt_1p3_en_gpio, 0);
-		if (rc) {
-			BT_PWR_ERR("Unable to set direction\n");
-			return rc;
-		}
-		msleep(50);
-		rc = gpio_direction_output(bt_1p3_en_gpio, 1);
-		if (rc) {
-			BT_PWR_ERR("Unable to set direction\n");
-			return rc;
-		}
-		msleep(50);
-	} else {
-		gpio_set_value(bt_3p3_en_gpio, 0);
-		msleep(100);
-		gpio_set_value(bt_1p3_en_gpio, 0);
-		msleep(100);
-	}
-	return rc;
-}
-
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int bt_configure_gpios(int on)
 {
 	int rc = 0;
 	int bt_reset_gpio = bt_power_pdata->bt_gpio_sys_rst;
-<<<<<<< HEAD
 	int bt_sw_ctrl_gpio  =  bt_power_pdata->bt_gpio_sw_ctrl;
 	int bt_debug_gpio  =  bt_power_pdata->bt_gpio_debug;
 	int assertDebugGpio = 0;
-=======
-
-	BT_PWR_DBG("bt_gpio= %d on: %d", bt_reset_gpio, on);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (on) {
 		rc = gpio_request(bt_reset_gpio, "bt_sys_rst_n");
@@ -420,7 +272,6 @@ static int bt_configure_gpios(int on)
 			return rc;
 		}
 		msleep(50);
-<<<<<<< HEAD
 		BT_PWR_INFO("BTON:Turn Bt Off bt-reset-gpio(%d) value(%d)\n",
 				bt_reset_gpio, gpio_get_value(bt_reset_gpio));
 		if (bt_sw_ctrl_gpio >= 0) {
@@ -430,15 +281,12 @@ static int bt_configure_gpios(int on)
 					gpio_get_value(bt_sw_ctrl_gpio));
 		}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rc = gpio_direction_output(bt_reset_gpio, 1);
 		if (rc) {
 			BT_PWR_ERR("Unable to set direction\n");
 			return rc;
 		}
 		msleep(50);
-<<<<<<< HEAD
 		/*  Check  if  SW_CTRL  is  asserted  */
 		if  (bt_sw_ctrl_gpio  >=  0)  {
 			rc  =  gpio_direction_input(bt_sw_ctrl_gpio);
@@ -486,12 +334,6 @@ static int bt_configure_gpios(int on)
 	}
 
 	BT_PWR_INFO("bt_gpio= %d on: %d is successful", bt_reset_gpio, on);
-=======
-	} else {
-		gpio_set_value(bt_reset_gpio, 0);
-		msleep(100);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 
@@ -501,7 +343,6 @@ static int bluetooth_power(int on)
 
 	BT_PWR_DBG("on: %d", on);
 
-<<<<<<< HEAD
 	if (on == 1) {
 		// Power On
 		if (bt_power_pdata->bt_vdd_io) {
@@ -580,13 +421,6 @@ static int bluetooth_power(int on)
 				BT_PWR_ERR("bt_power chippwd config failed");
 				goto chip_pwd_fail;
 			}
-=======
-	if (on) {
-		rc = bt_power_vreg_set(true);
-		if (rc < 0) {
-			BT_PWR_ERR("bt_power regulators config failed");
-			goto regulator_fail;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		/* Parse dt_info and check if a target requires clock voting.
 		 * Enable BT clock when BT is on and disable it when BT is off
@@ -605,7 +439,6 @@ static int bluetooth_power(int on)
 				goto gpio_fail;
 			}
 		}
-<<<<<<< HEAD
 	} else if (on == 0) {
 		// Power Off
 		if (bt_power_pdata->bt_gpio_sys_rst > 0)
@@ -667,35 +500,6 @@ vdd_xtal_fail:
 		rc = -1;
 	}
 out:
-=======
-		if (bt_power_pdata->bt_gpio_3p3_en > 0) {
-			BT_PWR_ERR(
-			"bt_power gpio config start for  2wcn gpios");
-			rc = bt_configure_gpios_2wcn(on);
-			if (rc < 0) {
-				BT_PWR_ERR("bt_power gpio config failed");
-				goto gpio_fail;
-			}
-		}
-	} else {
-		if (bt_power_pdata->bt_gpio_sys_rst > 0)
-			bt_configure_gpios(on);
-		if (bt_power_pdata->bt_gpio_3p3_en > 0)
-			bt_configure_gpios_2wcn(on);
-gpio_fail:
-		if (bt_power_pdata->bt_gpio_sys_rst > 0)
-			gpio_free(bt_power_pdata->bt_gpio_sys_rst);
-		if (bt_power_pdata->bt_gpio_3p3_en > 0)
-			gpio_free(bt_power_pdata->bt_gpio_3p3_en);
-		if (bt_power_pdata->bt_gpio_1p3_en > 0)
-			gpio_free(bt_power_pdata->bt_gpio_1p3_en);
-		if (bt_power_pdata->bt_chip_clk)
-			bt_clk_disable(bt_power_pdata->bt_chip_clk);
-clk_fail:
-regulator_fail:
-		bt_power_vreg_set(false);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 
@@ -718,13 +522,8 @@ static const struct rfkill_ops bluetooth_power_rfkill_ops = {
 	.set_block = bluetooth_toggle_radio,
 };
 
-<<<<<<< HEAD
 #if defined(CONFIG_CNSS) && defined(CONFIG_CLD_LL_CORE)
 static ssize_t extldo_show(struct device *dev, struct device_attribute *attr,
-=======
-#if defined(CONFIG_CNSS_PCI)
-static ssize_t enable_extldo(struct device *dev, struct device_attribute *attr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			char *buf)
 {
 	int ret;
@@ -741,22 +540,14 @@ static ssize_t enable_extldo(struct device *dev, struct device_attribute *attr,
 	return snprintf(buf, 6, "%s", (enable ? "true" : "false"));
 }
 #else
-<<<<<<< HEAD
 static ssize_t extldo_show(struct device *dev, struct device_attribute *attr,
-=======
-static ssize_t enable_extldo(struct device *dev, struct device_attribute *attr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			char *buf)
 {
 	return snprintf(buf, 6, "%s", "false");
 }
 #endif
 
-<<<<<<< HEAD
 static DEVICE_ATTR_RO(extldo);
-=======
-static DEVICE_ATTR(extldo, 0444, enable_extldo, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int bluetooth_power_rfkill_probe(struct platform_device *pdev)
 {
@@ -779,11 +570,7 @@ static int bluetooth_power_rfkill_probe(struct platform_device *pdev)
 
 	/* force Bluetooth off during init to allow for user control */
 	rfkill_init_sw_state(rfkill, 1);
-<<<<<<< HEAD
 	previous = true;
-=======
-	previous = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = rfkill_register(rfkill);
 	if (ret) {
@@ -817,16 +604,11 @@ static int bt_dt_parse_vreg_info(struct device *dev,
 	int len, ret = 0;
 	const __be32 *prop;
 	char prop_name[MAX_PROP_SIZE];
-<<<<<<< HEAD
 	struct bt_power_vreg_data *vreg;
-=======
-	struct bt_power_vreg_data *vreg = *vreg_data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct device_node *np = dev->of_node;
 
 	BT_PWR_DBG("vreg dev tree parse for %s", vreg_name);
 
-<<<<<<< HEAD
 	*vreg_data = NULL;
 	snprintf(prop_name, MAX_PROP_SIZE, "%s-supply", vreg_name);
 	if (of_parse_phandle(np, prop_name, 0)) {
@@ -839,10 +621,6 @@ static int bt_dt_parse_vreg_info(struct device *dev,
 
 		vreg->name = vreg_name;
 
-=======
-	snprintf(prop_name, MAX_PROP_SIZE, "%s-supply", vreg_name);
-	if (of_parse_phandle(np, prop_name, 0)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Parse voltage-level from each node */
 		snprintf(prop_name, MAX_PROP_SIZE,
 				"%s-voltage-level", vreg_name);
@@ -861,17 +639,11 @@ static int bt_dt_parse_vreg_info(struct device *dev,
 		ret = of_property_read_u32(np, prop_name, &vreg->load_uA);
 		if (ret < 0) {
 			BT_PWR_DBG("%s property is not valid\n", prop_name);
-<<<<<<< HEAD
 			vreg->load_uA = -1;
 			ret = 0;
 		}
 
 		*vreg_data = vreg;
-=======
-			ret = 0;
-		}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		BT_PWR_DBG("%s: vol=[%d %d]uV, current=[%d]uA\n",
 			vreg->name, vreg->low_vol_level,
 			vreg->high_vol_level,
@@ -879,21 +651,14 @@ static int bt_dt_parse_vreg_info(struct device *dev,
 	} else
 		BT_PWR_INFO("%s: is not provided in device tree", vreg_name);
 
-<<<<<<< HEAD
 err:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
 static int bt_dt_parse_clk_info(struct device *dev,
 		struct bt_power_clk_data **clk_data)
 {
-<<<<<<< HEAD
 	int ret = 0;
-=======
-	int ret = -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct bt_power_clk_data *clk = NULL;
 	struct device_node *np = dev->of_node;
 
@@ -930,80 +695,13 @@ static int bt_dt_parse_clk_info(struct device *dev,
 
 		*clk_data = clk;
 	} else {
-<<<<<<< HEAD
 		BT_PWR_INFO("clocks is not provided in device tree");
-=======
-		BT_PWR_ERR("clocks is not provided in device tree");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 err:
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
-static int bt_power_vreg_get(struct platform_device *pdev)
-{
-	struct bt_power_vreg_data *vreg_info;
-	int i = 0, ret = 0;
-
-	bt_power_pdata->vreg_info =
-		devm_kzalloc(&(pdev->dev), sizeof(bt_power_vreg_info),
-							GFP_KERNEL);
-	if (!bt_power_pdata->vreg_info) {
-		ret = -ENOMEM;
-		goto out;
-	}
-	memcpy(bt_power_pdata->vreg_info, bt_power_vreg_info,
-				sizeof(bt_power_vreg_info));
-
-	for (; i < BT_VREG_INFO_SIZE; i++) {
-		vreg_info = &bt_power_pdata->vreg_info[i];
-		ret = bt_dt_parse_vreg_info(&(pdev->dev), &vreg_info,
-							vreg_info->name);
-	}
-
-out:
-	return ret;
-}
-
-static int bt_power_vreg_set(bool on)
-{
-	int i = 0, ret = 0;
-	struct bt_power_vreg_data *vreg_info = NULL;
-
-	if (on) {
-		for (; i < BT_VREG_INFO_SIZE; i++) {
-			vreg_info = &bt_power_pdata->vreg_info[i];
-			ret = bt_configure_vreg(vreg_info);
-			if (ret < 0)
-				return ret;
-		}
-	} else {
-		for (; i < BT_VREG_INFO_SIZE; i++) {
-			vreg_info = &bt_power_pdata->vreg_info[i];
-			ret = bt_vreg_disable(vreg_info);
-		}
-	}
-
-	return ret;
-}
-
-static void bt_power_vreg_put(void)
-{
-	int i = 0;
-	struct bt_power_vreg_data *vreg_info = NULL;
-
-	for (; i < BT_VREG_INFO_SIZE; i++) {
-		vreg_info = &bt_power_pdata->vreg_info[i];
-		if (vreg_info->reg)
-			regulator_put(vreg_info->reg);
-	}
-}
-
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int bt_power_populate_dt_pinfo(struct platform_device *pdev)
 {
 	int rc;
@@ -1014,16 +712,10 @@ static int bt_power_populate_dt_pinfo(struct platform_device *pdev)
 		return -ENOMEM;
 
 	if (pdev->dev.of_node) {
-<<<<<<< HEAD
-=======
-		bt_power_vreg_get(pdev);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bt_power_pdata->bt_gpio_sys_rst =
 			of_get_named_gpio(pdev->dev.of_node,
 						"qca,bt-reset-gpio", 0);
 		if (bt_power_pdata->bt_gpio_sys_rst < 0)
-<<<<<<< HEAD
 			BT_PWR_INFO("bt-reset-gpio not provided in devicetree");
 
 		bt_power_pdata->bt_gpio_sw_ctrl  =
@@ -1080,26 +772,6 @@ static int bt_power_populate_dt_pinfo(struct platform_device *pdev)
 
 		rc = bt_dt_parse_clk_info(&pdev->dev,
 					&bt_power_pdata->bt_chip_clk);
-=======
-			BT_PWR_ERR("bt-reset-gpio not provided in device tree");
-
-		bt_power_pdata->bt_gpio_3p3_en =
-			of_get_named_gpio(pdev->dev.of_node,
-						"qca,bt-3P3-en-gpio", 0);
-		if (bt_power_pdata->bt_gpio_3p3_en < 0)
-			BT_PWR_INFO("bt-3P3-gpio not provided in devicetree");
-
-		bt_power_pdata->bt_gpio_1p3_en =
-			of_get_named_gpio(pdev->dev.of_node,
-						"qca,bt-1P3-en-gpio", 0);
-		if (bt_power_pdata->bt_gpio_1p3_en < 0)
-			BT_PWR_INFO("bt-1P3-gpio not provided in devicetree");
-
-		rc = bt_dt_parse_clk_info(&pdev->dev,
-					&bt_power_pdata->bt_chip_clk);
-		if (rc < 0)
-			BT_PWR_ERR("clock not provided in device tree");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	bt_power_pdata->bt_power_setup = bluetooth_power;
@@ -1162,13 +834,9 @@ static int bt_power_remove(struct platform_device *pdev)
 	dev_dbg(&pdev->dev, "%s\n", __func__);
 
 	bluetooth_power_rfkill_remove(pdev);
-<<<<<<< HEAD
 
 	if (bt_power_pdata->bt_chip_pwd->reg)
 		regulator_put(bt_power_pdata->bt_chip_pwd->reg);
-=======
-	bt_power_vreg_put();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kfree(bt_power_pdata);
 
@@ -1192,7 +860,6 @@ int get_chipset_version(void)
 	return soc_id;
 }
 
-<<<<<<< HEAD
 int bt_disable_asd(void)
 {
 	int rc = 0;
@@ -1205,24 +872,15 @@ int bt_disable_asd(void)
 	return rc;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static long bt_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 {
 	int ret = 0, pwr_cntrl = 0;
 	int chipset_version = 0;
-<<<<<<< HEAD
 	long  value  =  -1;
 
 	switch (cmd) {
 	case BT_CMD_SLIM_TEST:
 #if defined CONFIG_BT_SLIM_QCA6390 || defined CONFIG_BTFM_SLIM_WCN3990
-=======
-
-	switch (cmd) {
-#ifdef CONFIG_BTFM_SLIM
-	case BT_CMD_SLIM_TEST:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!bt_power_pdata->slim_dev) {
 			BT_PWR_ERR("slim_dev is null\n");
 			return -EINVAL;
@@ -1230,13 +888,8 @@ static long bt_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 		ret = btfm_slim_hw_init(
 			bt_power_pdata->slim_dev->platform_data
 		);
-<<<<<<< HEAD
 #endif
 		break;
-=======
-		break;
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case BT_CMD_PWR_CTRL:
 		pwr_cntrl = (int)arg;
 		BT_PWR_ERR("BT_CMD_PWR_CTRL pwr_cntrl:%d", pwr_cntrl);
@@ -1245,11 +898,7 @@ static long bt_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 			if (!ret)
 				pwr_state = pwr_cntrl;
 		} else {
-<<<<<<< HEAD
 			BT_PWR_ERR("BT state already:%d no change done\n"
-=======
-			BT_PWR_ERR("BT chip state is already :%d no change d\n"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				, pwr_state);
 			ret = 0;
 		}
@@ -1258,22 +907,17 @@ static long bt_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 		chipset_version = (int)arg;
 		BT_PWR_ERR("BT_CMD_CHIP_VERS soc_version:%x", chipset_version);
 		if (chipset_version) {
-<<<<<<< HEAD
 			soc_id = chipset_version;
 			if (soc_id == QCA_HSP_SOC_ID_0100 ||
 				soc_id == QCA_HSP_SOC_ID_0110 ||
 				soc_id == QCA_HSP_SOC_ID_0200) {
 				ret = bt_disable_asd();
 			}
-=======
-		soc_id = chipset_version;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else {
 			BT_PWR_ERR("got invalid soc version");
 			soc_id = 0;
 		}
 		break;
-<<<<<<< HEAD
 	case BT_CMD_GETVAL_RESET_GPIO:
 		if (bt_power_pdata->bt_gpio_sys_rst > 0) {
 			value = (long)gpio_get_value(
@@ -1358,8 +1002,6 @@ static long bt_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 			ret = -EINVAL;
 		}
 		break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		return -EINVAL;
 	}
@@ -1371,19 +1013,11 @@ static struct platform_driver bt_power_driver = {
 	.remove = bt_power_remove,
 	.driver = {
 		.name = "bt_power",
-<<<<<<< HEAD
-=======
-		.owner = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.of_match_table = bt_power_match_table,
 	},
 };
 
 static const struct file_operations bt_dev_fops = {
-<<<<<<< HEAD
-=======
-	.owner		= THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.unlocked_ioctl = bt_ioctl,
 	.compat_ioctl = bt_ioctl,
 };

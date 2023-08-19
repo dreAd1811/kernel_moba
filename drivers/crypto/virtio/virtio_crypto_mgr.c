@@ -181,7 +181,6 @@ int virtcrypto_dev_started(struct virtio_crypto *vcrypto_dev)
 /*
  * virtcrypto_get_dev_node() - Get vcrypto_dev on the node.
  * @node:  Node id the driver works.
-<<<<<<< HEAD
  * @service: Crypto service that needs to be supported by the
  *	      dev
  * @algo: The algorithm number that needs to be supported by the
@@ -189,21 +188,13 @@ int virtcrypto_dev_started(struct virtio_crypto *vcrypto_dev)
  *
  * Function returns the virtio crypto device used fewest on the node,
  * and supports the given crypto service and algorithm.
-=======
- *
- * Function returns the virtio crypto device used fewest on the node.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * To be used by virtio crypto device specific drivers.
  *
  * Return: pointer to vcrypto_dev or NULL if not found.
  */
-<<<<<<< HEAD
 struct virtio_crypto *virtcrypto_get_dev_node(int node, uint32_t service,
 					      uint32_t algo)
-=======
-struct virtio_crypto *virtcrypto_get_dev_node(int node)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct virtio_crypto *vcrypto_dev = NULL, *tmp_dev;
 	unsigned long best = ~0;
@@ -214,12 +205,8 @@ struct virtio_crypto *virtcrypto_get_dev_node(int node)
 
 		if ((node == dev_to_node(&tmp_dev->vdev->dev) ||
 		     dev_to_node(&tmp_dev->vdev->dev) < 0) &&
-<<<<<<< HEAD
 		    virtcrypto_dev_started(tmp_dev) &&
 		    virtcrypto_algo_is_supported(tmp_dev, service, algo)) {
-=======
-		    virtcrypto_dev_started(tmp_dev)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ctr = atomic_read(&tmp_dev->ref_count);
 			if (best > ctr) {
 				vcrypto_dev = tmp_dev;
@@ -234,13 +221,9 @@ struct virtio_crypto *virtcrypto_get_dev_node(int node)
 		/* Get any started device */
 		list_for_each_entry(tmp_dev,
 				virtcrypto_devmgr_get_head(), list) {
-<<<<<<< HEAD
 			if (virtcrypto_dev_started(tmp_dev) &&
 			    virtcrypto_algo_is_supported(tmp_dev,
 			    service, algo)) {
-=======
-			if (virtcrypto_dev_started(tmp_dev)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				vcrypto_dev = tmp_dev;
 				break;
 			}
@@ -266,11 +249,7 @@ struct virtio_crypto *virtcrypto_get_dev_node(int node)
  */
 int virtcrypto_dev_start(struct virtio_crypto *vcrypto)
 {
-<<<<<<< HEAD
 	if (virtio_crypto_algs_register(vcrypto)) {
-=======
-	if (virtio_crypto_algs_register()) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_err("virtio_crypto: Failed to register crypto algs\n");
 		return -EFAULT;
 	}
@@ -290,7 +269,6 @@ int virtcrypto_dev_start(struct virtio_crypto *vcrypto)
  */
 void virtcrypto_dev_stop(struct virtio_crypto *vcrypto)
 {
-<<<<<<< HEAD
 	virtio_crypto_algs_unregister(vcrypto);
 }
 
@@ -352,7 +330,4 @@ bool virtcrypto_algo_is_supported(struct virtio_crypto *vcrypto,
 		return false;
 
 	return true;
-=======
-	virtio_crypto_algs_unregister();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

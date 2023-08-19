@@ -1,5 +1,4 @@
 /*
-<<<<<<< HEAD
  * Driver for Silicon Labs SI2165 DVB-C/-T Demodulator
  *
  * Copyright (C) 2013-2017 Matthias Schwarzott <zzam@gentoo.org>
@@ -15,23 +14,6 @@
  *   GNU General Public License for more details.
  *
  */
-=======
-    Driver for Silicon Labs SI2165 DVB-C/-T Demodulator
-
-    Copyright (C) 2013-2014 Matthias Schwarzott <zzam@gentoo.org>
-
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-*/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifndef _DVB_SI2165_PRIV
 #define _DVB_SI2165_PRIV
@@ -40,12 +22,8 @@
 
 struct si2165_config {
 	/* i2c addr
-<<<<<<< HEAD
 	 * possible values: 0x64,0x65,0x66,0x67
 	 */
-=======
-	 * possible values: 0x64,0x65,0x66,0x67 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 i2c_addr;
 
 	/* external clock or XTAL */
@@ -54,17 +32,12 @@ struct si2165_config {
 	/* frequency of external clock or xtal in Hz
 	 * possible values: 4000000, 16000000, 20000000, 240000000, 27000000
 	 */
-<<<<<<< HEAD
 	u32 ref_freq_hz;
-=======
-	u32 ref_freq_Hz;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* invert the spectrum */
 	bool inversion;
 };
 
-<<<<<<< HEAD
 #define STATISTICS_PERIOD_PKT_COUNT	30000u
 #define STATISTICS_PERIOD_BIT_COUNT	(STATISTICS_PERIOD_PKT_COUNT * 204 * 8)
 
@@ -144,6 +117,4 @@ struct si2165_config {
 #define REG_RSSI_PAD_CTRL		0x0646
 #define REG_TS_PARALLEL_MODE		0x08f8
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* _DVB_SI2165_PRIV */

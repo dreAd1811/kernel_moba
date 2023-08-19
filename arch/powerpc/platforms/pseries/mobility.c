@@ -19,18 +19,11 @@
 #include <linux/device.h>
 #include <linux/delay.h>
 #include <linux/slab.h>
-<<<<<<< HEAD
 #include <linux/stringify.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/machdep.h>
 #include <asm/rtas.h>
 #include "pseries.h"
-<<<<<<< HEAD
-=======
-#include "../../kernel/cacheinfo.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct kobject *mobility_kobj;
 
@@ -367,26 +360,11 @@ void post_mobility_fixup(void)
 	 */
 	cpus_read_lock();
 
-<<<<<<< HEAD
-=======
-	/*
-	 * It's common for the destination firmware to replace cache
-	 * nodes.  Release all of the cacheinfo hierarchy's references
-	 * before updating the device tree.
-	 */
-	cacheinfo_teardown();
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rc = pseries_devicetree_update(MIGRATION_SCOPE);
 	if (rc)
 		printk(KERN_ERR "Post-mobility device tree update "
 			"failed: %d\n", rc);
 
-<<<<<<< HEAD
-=======
-	cacheinfo_rebuild();
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cpus_read_unlock();
 
 	/* Possibly switch to a new RFI flush type */
@@ -428,11 +406,7 @@ static ssize_t migration_store(struct class *class,
 #define MIGRATION_API_VERSION	1
 
 static CLASS_ATTR_WO(migration);
-<<<<<<< HEAD
 static CLASS_ATTR_STRING(api_version, 0444, __stringify(MIGRATION_API_VERSION));
-=======
-static CLASS_ATTR_STRING(api_version, S_IRUGO, __stringify(MIGRATION_API_VERSION));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int __init mobility_sysfs_init(void)
 {

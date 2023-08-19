@@ -21,10 +21,6 @@
 #include <linux/unistd.h>
 #include <linux/user.h>
 #include <linux/interrupt.h>
-<<<<<<< HEAD
-=======
-#include <linux/kallsyms.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/init.h>
 #include <linux/elfcore.h>
 #include <linux/pm.h>
@@ -43,11 +39,7 @@
 #include <asm/tls.h>
 #include <asm/vdso.h>
 
-<<<<<<< HEAD
 #ifdef CONFIG_STACKPROTECTOR
-=======
-#ifdef CONFIG_CC_STACKPROTECTOR
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/stackprotector.h>
 unsigned long __stack_chk_guard __read_mostly;
 EXPORT_SYMBOL(__stack_chk_guard);
@@ -90,10 +82,6 @@ void arch_cpu_idle_prepare(void)
 
 void arch_cpu_idle_enter(void)
 {
-<<<<<<< HEAD
-=======
-	idle_notifier_call_chain(IDLE_START);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ledtrig_cpu(CPU_LED_IDLE_START);
 #ifdef CONFIG_PL310_ERRATA_769419
 	wmb();
@@ -103,10 +91,6 @@ void arch_cpu_idle_enter(void)
 void arch_cpu_idle_exit(void)
 {
 	ledtrig_cpu(CPU_LED_IDLE_END);
-<<<<<<< HEAD
-=======
-	idle_notifier_call_chain(IDLE_END);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void __show_regs(struct pt_regs *regs)
@@ -136,13 +120,8 @@ void __show_regs(struct pt_regs *regs)
 
 	show_regs_print_info(KERN_DEFAULT);
 
-<<<<<<< HEAD
 	printk("PC is at %pS\n", (void *)instruction_pointer(regs));
 	printk("LR is at %pS\n", (void *)regs->ARM_lr);
-=======
-	print_symbol("PC is at %s\n", instruction_pointer(regs));
-	print_symbol("LR is at %s\n", regs->ARM_lr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	printk("pc : [<%08lx>]    lr : [<%08lx>]    psr: %08lx\n",
 	       regs->ARM_pc, regs->ARM_lr, regs->ARM_cpsr);
 	printk("sp : %08lx  ip : %08lx  fp : %08lx\n",
@@ -351,7 +330,6 @@ unsigned long arch_randomize_brk(struct mm_struct *mm)
  * atomic helpers. Insert it into the gate_vma so that it is visible
  * through ptrace and /proc/<pid>/mem.
  */
-<<<<<<< HEAD
 static struct vm_area_struct gate_vma;
 
 static int __init gate_vma_init(void)
@@ -361,17 +339,6 @@ static int __init gate_vma_init(void)
 	gate_vma.vm_start = 0xffff0000;
 	gate_vma.vm_end	= 0xffff0000 + PAGE_SIZE;
 	gate_vma.vm_flags = VM_READ | VM_EXEC | VM_MAYREAD | VM_MAYEXEC;
-=======
-static struct vm_area_struct gate_vma = {
-	.vm_start	= 0xffff0000,
-	.vm_end		= 0xffff0000 + PAGE_SIZE,
-	.vm_flags	= VM_READ | VM_EXEC | VM_MAYREAD | VM_MAYEXEC,
-};
-
-static int __init gate_vma_init(void)
-{
-	gate_vma.vm_page_prot = PAGE_READONLY_EXEC;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 arch_initcall(gate_vma_init);

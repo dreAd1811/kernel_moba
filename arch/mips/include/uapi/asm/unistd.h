@@ -388,30 +388,19 @@
 #define __NR_pkey_alloc			(__NR_Linux + 364)
 #define __NR_pkey_free			(__NR_Linux + 365)
 #define __NR_statx			(__NR_Linux + 366)
-<<<<<<< HEAD
 #define __NR_rseq			(__NR_Linux + 367)
 #define __NR_io_pgetevents		(__NR_Linux + 368)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 /*
  * Offset of the last Linux o32 flavoured syscall
  */
-<<<<<<< HEAD
 #define __NR_Linux_syscalls		368
-=======
-#define __NR_Linux_syscalls		366
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* _MIPS_SIM == _MIPS_SIM_ABI32 */
 
 #define __NR_O32_Linux			4000
-<<<<<<< HEAD
 #define __NR_O32_Linux_syscalls		368
-=======
-#define __NR_O32_Linux_syscalls		366
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #if _MIPS_SIM == _MIPS_SIM_ABI64
 
@@ -746,29 +735,18 @@
 #define __NR_pkey_alloc			(__NR_Linux + 324)
 #define __NR_pkey_free			(__NR_Linux + 325)
 #define __NR_statx			(__NR_Linux + 326)
-<<<<<<< HEAD
 #define __NR_rseq			(__NR_Linux + 327)
 #define __NR_io_pgetevents		(__NR_Linux + 328)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Offset of the last Linux 64-bit flavoured syscall
  */
-<<<<<<< HEAD
 #define __NR_Linux_syscalls		328
-=======
-#define __NR_Linux_syscalls		326
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* _MIPS_SIM == _MIPS_SIM_ABI64 */
 
 #define __NR_64_Linux			5000
-<<<<<<< HEAD
 #define __NR_64_Linux_syscalls		328
-=======
-#define __NR_64_Linux_syscalls		326
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #if _MIPS_SIM == _MIPS_SIM_NABI32
 
@@ -1107,28 +1085,17 @@
 #define __NR_pkey_alloc			(__NR_Linux + 328)
 #define __NR_pkey_free			(__NR_Linux + 329)
 #define __NR_statx			(__NR_Linux + 330)
-<<<<<<< HEAD
 #define __NR_rseq			(__NR_Linux + 331)
 #define __NR_io_pgetevents		(__NR_Linux + 332)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Offset of the last N32 flavoured syscall
  */
-<<<<<<< HEAD
 #define __NR_Linux_syscalls		332
-=======
-#define __NR_Linux_syscalls		330
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* _MIPS_SIM == _MIPS_SIM_NABI32 */
 
 #define __NR_N32_Linux			6000
-<<<<<<< HEAD
 #define __NR_N32_Linux_syscalls		332
-=======
-#define __NR_N32_Linux_syscalls		330
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* _UAPI_ASM_UNISTD_H */

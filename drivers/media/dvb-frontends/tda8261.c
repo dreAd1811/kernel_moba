@@ -23,11 +23,7 @@
 #include <linux/module.h>
 #include <linux/slab.h>
 
-<<<<<<< HEAD
 #include <media/dvb_frontend.h>
-=======
-#include "dvb_frontend.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "tda8261.h"
 
 struct tda8261_state {
@@ -167,16 +163,9 @@ static void tda8261_release(struct dvb_frontend *fe)
 static const struct dvb_tuner_ops tda8261_ops = {
 
 	.info = {
-<<<<<<< HEAD
 		.name		   = "TDA8261",
 		.frequency_min_hz  =  950 * MHz,
 		.frequency_max_hz  = 2150 * MHz,
-=======
-		.name		= "TDA8261",
-		.frequency_min	=  950000,
-		.frequency_max	= 2150000,
-		.frequency_step = 0
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 
 	.set_params	= tda8261_set_params,
@@ -200,11 +189,7 @@ struct dvb_frontend *tda8261_attach(struct dvb_frontend *fe,
 	fe->tuner_priv		= state;
 	fe->ops.tuner_ops	= tda8261_ops;
 
-<<<<<<< HEAD
 	fe->ops.tuner_ops.info.frequency_step_hz = div_tab[config->step_size] * kHz;
-=======
-	fe->ops.tuner_ops.info.frequency_step = div_tab[config->step_size];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pr_info("%s: Attaching TDA8261 8PSK/QPSK tuner\n", __func__);
 

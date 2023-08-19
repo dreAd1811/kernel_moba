@@ -22,11 +22,7 @@
 #ifndef __STV090x_PRIV_H
 #define __STV090x_PRIV_H
 
-<<<<<<< HEAD
 #include <media/dvb_frontend.h>
-=======
-#include "dvb_frontend.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define FE_ERROR				0
 #define FE_NOTICE				1
@@ -235,11 +231,7 @@ struct stv090x_tab {
 };
 
 struct stv090x_internal {
-<<<<<<< HEAD
 	struct i2c_adapter	*i2c_adap;
-=======
-	struct i2c_adapter 	*i2c_adap;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8			i2c_addr;
 
 	struct mutex		demod_lock; /* Lock access to shared register */

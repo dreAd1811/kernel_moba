@@ -213,7 +213,6 @@ enum qed_ov_wol {
 	QED_OV_WOL_ENABLED
 };
 
-<<<<<<< HEAD
 enum qed_mfw_tlv_type {
 	QED_MFW_TLV_GENERIC = 0x1,	/* Core driver TLVs */
 	QED_MFW_TLV_ETH = 0x2,		/* L2 driver TLVs */
@@ -252,8 +251,6 @@ union qed_mfw_tlv_data {
 	struct qed_mfw_tlv_iscsi iscsi;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * @brief - returns the link params of the hw function
  *
@@ -325,23 +322,14 @@ int qed_mcp_get_mbi_ver(struct qed_hwfn *p_hwfn,
  * @brief Get media type value of the port.
  *
  * @param cdev      - qed dev pointer
-<<<<<<< HEAD
-=======
- * @param p_ptt
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @param mfw_ver    - media type value
  *
  * @return int -
  *      0 - Operation was successul.
  *      -EBUSY - Operation failed
  */
-<<<<<<< HEAD
 int qed_mcp_get_media_type(struct qed_dev      *cdev,
 			   u32                  *media_type);
-=======
-int qed_mcp_get_media_type(struct qed_hwfn *p_hwfn,
-			   struct qed_ptt *p_ptt, u32 *media_type);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * @brief General function for sending commands to the MCP
@@ -493,7 +481,6 @@ int qed_mcp_set_led(struct qed_hwfn *p_hwfn,
  */
 int qed_mcp_nvm_read(struct qed_dev *cdev, u32 addr, u8 *p_buf, u32 len);
 
-<<<<<<< HEAD
 /**
  * @brief Write to nvm
  *
@@ -528,8 +515,6 @@ int qed_mcp_nvm_put_file_begin(struct qed_dev *cdev, u32 addr);
  */
 int qed_mcp_nvm_resp(struct qed_dev *cdev, u8 *p_buf);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct qed_nvm_image_att {
 	u32 start_addr;
 	u32 length;
@@ -539,7 +524,6 @@ struct qed_nvm_image_att {
  * @brief Allows reading a whole nvram image
  *
  * @param p_hwfn
-<<<<<<< HEAD
  * @param image_id - image to get attributes for
  * @param p_image_att - image attributes structure into which to fill data
  *
@@ -554,9 +538,6 @@ qed_mcp_get_nvm_image_att(struct qed_hwfn *p_hwfn,
  * @brief Allows reading a whole nvram image
  *
  * @param p_hwfn
-=======
- * @param p_ptt
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @param image_id - image requested for reading
  * @param p_buffer - allocated buffer into which to fill data
  * @param buffer_len - length of the allocated buffer.
@@ -564,10 +545,6 @@ qed_mcp_get_nvm_image_att(struct qed_hwfn *p_hwfn,
  * @return 0 iff p_buffer now contains the nvram image.
  */
 int qed_mcp_get_nvm_image(struct qed_hwfn *p_hwfn,
-<<<<<<< HEAD
-=======
-			  struct qed_ptt *p_ptt,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  enum qed_nvm_images image_id,
 			  u8 *p_buffer, u32 buffer_len);
 
@@ -603,15 +580,9 @@ int qed_mcp_bist_clock_test(struct qed_hwfn *p_hwfn,
  *
  * @return int - 0 - operation was successful.
  */
-<<<<<<< HEAD
 int qed_mcp_bist_nvm_get_num_images(struct qed_hwfn *p_hwfn,
 				    struct qed_ptt *p_ptt,
 				    u32 *num_images);
-=======
-int qed_mcp_bist_nvm_test_get_num_images(struct qed_hwfn *p_hwfn,
-					 struct qed_ptt *p_ptt,
-					 u32 *num_images);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * @brief Bist nvm test - get image attributes by index
@@ -623,7 +594,6 @@ int qed_mcp_bist_nvm_test_get_num_images(struct qed_hwfn *p_hwfn,
  *
  * @return int - 0 - operation was successful.
  */
-<<<<<<< HEAD
 int qed_mcp_bist_nvm_get_image_att(struct qed_hwfn *p_hwfn,
 				   struct qed_ptt *p_ptt,
 				   struct bist_nvm_image_att *p_image_att,
@@ -639,12 +609,6 @@ int qed_mcp_bist_nvm_get_image_att(struct qed_hwfn *p_hwfn,
  * @param return 0 upon success.
  */
 int qed_mfw_process_tlv_req(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt);
-=======
-int qed_mcp_bist_nvm_test_get_image_att(struct qed_hwfn *p_hwfn,
-					struct qed_ptt *p_ptt,
-					struct bist_nvm_image_att *p_image_att,
-					u32 image_index);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Using hwfn number (and not pf_num) is required since in CMT mode,
  * same pf_num may be used by two different hwfn
@@ -715,7 +679,6 @@ struct qed_mcp_mb_params {
 	   (__params && (__params->flags & QED_MB_FLAG_ ## flag)); })
 };
 
-<<<<<<< HEAD
 struct qed_drv_tlv_hdr {
 	u8 tlv_type;
 	u8 tlv_length;	/* In dwords - not including this header */
@@ -724,8 +687,6 @@ struct qed_drv_tlv_hdr {
 	u8 tlv_flags;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * @brief Initialize the interface with the MCP
  *
@@ -888,7 +849,6 @@ int qed_mcp_nvm_rd_cmd(struct qed_hwfn *p_hwfn,
 		       u32 *o_mcp_param, u32 *o_txn_size, u32 *o_buf);
 
 /**
-<<<<<<< HEAD
  * @brief Read from sfp
  *
  *  @param p_hwfn - hw function
@@ -905,8 +865,6 @@ int qed_mcp_phy_sfp_read(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt,
 			 u32 port, u32 addr, u32 offset, u32 len, u8 *p_buf);
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @brief indicates whether the MFW objects [under mcp_info] are accessible
  *
  * @param p_hwfn
@@ -1127,7 +1085,6 @@ int qed_mcp_get_capabilities(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt);
  * @param p_ptt
  */
 int qed_mcp_set_capabilities(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt);
-<<<<<<< HEAD
 
 /**
  * @brief Read ufp config from the shared memory.
@@ -1144,6 +1101,4 @@ void qed_mcp_read_ufp_config(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt);
  */
 int qed_mcp_nvm_info_populate(struct qed_hwfn *p_hwfn);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

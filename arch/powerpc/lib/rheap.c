@@ -54,11 +54,7 @@ static int grow(rh_info_t * info, int max_blocks)
 
 	new_blocks = max_blocks - info->max_blocks;
 
-<<<<<<< HEAD
 	block = kmalloc_array(max_blocks, sizeof(rh_block_t), GFP_ATOMIC);
-=======
-	block = kmalloc(sizeof(rh_block_t) * max_blocks, GFP_ATOMIC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (block == NULL)
 		return -ENOMEM;
 

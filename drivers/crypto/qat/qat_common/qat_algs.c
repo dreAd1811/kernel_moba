@@ -546,7 +546,6 @@ static int qat_alg_aead_init_sessions(struct crypto_aead *tfm, const u8 *key,
 	if (qat_alg_aead_init_dec_session(tfm, alg, &keys, mode))
 		goto error;
 
-<<<<<<< HEAD
 	memzero_explicit(&keys, sizeof(keys));
 	return 0;
 bad_key:
@@ -555,13 +554,6 @@ bad_key:
 	return -EINVAL;
 error:
 	memzero_explicit(&keys, sizeof(keys));
-=======
-	return 0;
-bad_key:
-	crypto_aead_set_flags(tfm, CRYPTO_TFM_RES_BAD_KEY_LEN);
-	return -EINVAL;
-error:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return -EFAULT;
 }
 

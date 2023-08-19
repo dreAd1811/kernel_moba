@@ -168,11 +168,7 @@ static int xen_setup_msi_irqs(struct pci_dev *dev, int nvec, int type)
 	if (type == PCI_CAP_ID_MSI && nvec > 1)
 		return 1;
 
-<<<<<<< HEAD
 	v = kcalloc(max(1, nvec), sizeof(int), GFP_KERNEL);
-=======
-	v = kzalloc(sizeof(int) * max(1, nvec), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!v)
 		return -ENOMEM;
 
@@ -413,15 +409,8 @@ int __init pci_xen_init(void)
 	pcibios_enable_irq = xen_pcifront_enable_irq;
 	pcibios_disable_irq = NULL;
 
-<<<<<<< HEAD
 	/* Keep ACPI out of the picture */
 	acpi_noirq_set();
-=======
-#ifdef CONFIG_ACPI
-	/* Keep ACPI out of the picture */
-	acpi_noirq = 1;
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_PCI_MSI
 	x86_msi.setup_msi_irqs = xen_setup_msi_irqs;

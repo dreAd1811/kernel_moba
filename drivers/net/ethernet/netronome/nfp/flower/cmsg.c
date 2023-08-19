@@ -38,23 +38,10 @@
 #include <net/dst_metadata.h>
 
 #include "main.h"
-<<<<<<< HEAD
-=======
-#include "../nfpcore/nfp_cpp.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "../nfp_net.h"
 #include "../nfp_net_repr.h"
 #include "./cmsg.h"
 
-<<<<<<< HEAD
-=======
-#define nfp_flower_cmsg_warn(app, fmt, args...)				\
-	do {								\
-		if (net_ratelimit())					\
-			nfp_warn((app)->cpp, fmt, ## args);		\
-	} while (0)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct nfp_flower_cmsg_hdr *
 nfp_flower_cmsg_get_hdr(struct sk_buff *skb)
 {
@@ -63,22 +50,14 @@ nfp_flower_cmsg_get_hdr(struct sk_buff *skb)
 
 struct sk_buff *
 nfp_flower_cmsg_alloc(struct nfp_app *app, unsigned int size,
-<<<<<<< HEAD
 		      enum nfp_flower_cmsg_type_port type, gfp_t flag)
-=======
-		      enum nfp_flower_cmsg_type_port type)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct nfp_flower_cmsg_hdr *ch;
 	struct sk_buff *skb;
 
 	size += NFP_FLOWER_CMSG_HLEN;
 
-<<<<<<< HEAD
 	skb = nfp_app_ctrl_msg_alloc(app, size, flag);
-=======
-	skb = nfp_app_ctrl_msg_alloc(app, size, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!skb)
 		return NULL;
 
@@ -99,12 +78,8 @@ nfp_flower_cmsg_mac_repr_start(struct nfp_app *app, unsigned int num_ports)
 	unsigned int size;
 
 	size = sizeof(*msg) + num_ports * sizeof(msg->ports[0]);
-<<<<<<< HEAD
 	skb = nfp_flower_cmsg_alloc(app, size, NFP_FLOWER_CMSG_TYPE_MAC_REPR,
 				    GFP_KERNEL);
-=======
-	skb = nfp_flower_cmsg_alloc(app, size, NFP_FLOWER_CMSG_TYPE_MAC_REPR);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!skb)
 		return NULL;
 
@@ -129,22 +104,14 @@ nfp_flower_cmsg_mac_repr_add(struct sk_buff *skb, unsigned int idx,
 	msg->ports[idx].phys_port = phys_port;
 }
 
-<<<<<<< HEAD
 int nfp_flower_cmsg_portmod(struct nfp_repr *repr, bool carrier_ok,
 			    unsigned int mtu, bool mtu_only)
-=======
-int nfp_flower_cmsg_portmod(struct nfp_repr *repr, bool carrier_ok)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct nfp_flower_cmsg_portmod *msg;
 	struct sk_buff *skb;
 
 	skb = nfp_flower_cmsg_alloc(repr->app, sizeof(*msg),
-<<<<<<< HEAD
 				    NFP_FLOWER_CMSG_TYPE_PORT_MOD, GFP_KERNEL);
-=======
-				    NFP_FLOWER_CMSG_TYPE_PORT_MOD);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!skb)
 		return -ENOMEM;
 
@@ -152,22 +119,17 @@ int nfp_flower_cmsg_portmod(struct nfp_repr *repr, bool carrier_ok)
 	msg->portnum = cpu_to_be32(repr->dst->u.port_info.port_id);
 	msg->reserved = 0;
 	msg->info = carrier_ok;
-<<<<<<< HEAD
 
 	if (mtu_only)
 		msg->info |= NFP_FLOWER_CMSG_PORTMOD_MTU_CHANGE_ONLY;
 
 	msg->mtu = cpu_to_be16(mtu);
-=======
-	msg->mtu = cpu_to_be16(repr->netdev->mtu);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	nfp_ctrl_tx(repr->app->ctrl, skb);
 
 	return 0;
 }
 
-<<<<<<< HEAD
 int nfp_flower_cmsg_portreify(struct nfp_repr *repr, bool exists)
 {
 	struct nfp_flower_cmsg_portreify *msg;
@@ -217,8 +179,6 @@ nfp_flower_process_mtu_ack(struct nfp_app *app, struct sk_buff *skb)
 	return true;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void
 nfp_flower_cmsg_portmod_rx(struct nfp_app *app, struct sk_buff *skb)
 {
@@ -255,7 +215,6 @@ nfp_flower_cmsg_portmod_rx(struct nfp_app *app, struct sk_buff *skb)
 }
 
 static void
-<<<<<<< HEAD
 nfp_flower_cmsg_portreify_rx(struct nfp_app *app, struct sk_buff *skb)
 {
 	struct nfp_flower_priv *priv = app->priv;
@@ -307,41 +266,14 @@ nfp_flower_cmsg_process_one_rx(struct nfp_app *app, struct sk_buff *skb)
 			break;
 		}
 		/* fall through */
-=======
-nfp_flower_cmsg_process_one_rx(struct nfp_app *app, struct sk_buff *skb)
-{
-	struct nfp_flower_cmsg_hdr *cmsg_hdr;
-	enum nfp_flower_cmsg_type_port type;
-
-	cmsg_hdr = nfp_flower_cmsg_get_hdr(skb);
-
-	if (unlikely(cmsg_hdr->version != NFP_FLOWER_CMSG_VER1)) {
-		nfp_flower_cmsg_warn(app, "Cannot handle repr control version %u\n",
-				     cmsg_hdr->version);
-		goto out;
-	}
-
-	type = cmsg_hdr->type;
-	switch (type) {
-	case NFP_FLOWER_CMSG_TYPE_PORT_MOD:
-		nfp_flower_cmsg_portmod_rx(app, skb);
-		break;
-	case NFP_FLOWER_CMSG_TYPE_FLOW_STATS:
-		nfp_flower_rx_flow_stats(app, skb);
-		break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		nfp_flower_cmsg_warn(app, "Cannot handle invalid repr control type %u\n",
 				     type);
 		goto out;
 	}
 
-<<<<<<< HEAD
 	if (!skb_stored)
 		dev_consume_skb_any(skb);
-=======
-	dev_consume_skb_any(skb);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return;
 out:
 	dev_kfree_skb_any(skb);
@@ -349,15 +281,11 @@ out:
 
 void nfp_flower_cmsg_process_rx(struct work_struct *work)
 {
-<<<<<<< HEAD
 	struct sk_buff_head cmsg_joined;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct nfp_flower_priv *priv;
 	struct sk_buff *skb;
 
 	priv = container_of(work, struct nfp_flower_priv, cmsg_work);
-<<<<<<< HEAD
 	skb_queue_head_init(&cmsg_joined);
 
 	spin_lock_bh(&priv->cmsg_skbs_high.lock);
@@ -421,17 +349,4 @@ void nfp_flower_cmsg_rx(struct nfp_app *app, struct sk_buff *skb)
 	} else {
 		nfp_flower_queue_ctl_msg(app, skb, cmsg_hdr->type);
 	}
-=======
-
-	while ((skb = skb_dequeue(&priv->cmsg_skbs)))
-		nfp_flower_cmsg_process_one_rx(priv->app, skb);
-}
-
-void nfp_flower_cmsg_rx(struct nfp_app *app, struct sk_buff *skb)
-{
-	struct nfp_flower_priv *priv = app->priv;
-
-	skb_queue_tail(&priv->cmsg_skbs, skb);
-	schedule_work(&priv->cmsg_work);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

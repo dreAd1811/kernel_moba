@@ -1180,12 +1180,8 @@ static int
 ctrl_teimanager(struct manager *mgr, void *arg)
 {
 	/* currently we only have one option */
-<<<<<<< HEAD
 	int	*val = (int *)arg;
 	int	ret = 0;
-=======
-	unsigned int *val = (unsigned int *)arg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (val[0]) {
 	case IMCLEAR_L2:
@@ -1201,15 +1197,9 @@ ctrl_teimanager(struct manager *mgr, void *arg)
 			test_and_clear_bit(OPTION_L1_HOLD, &mgr->options);
 		break;
 	default:
-<<<<<<< HEAD
 		ret = -EINVAL;
 	}
 	return ret;
-=======
-		return -EINVAL;
-	}
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* This function does create a L2 for fixed TEI in NT Mode */

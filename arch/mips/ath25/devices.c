@@ -73,10 +73,7 @@ const char *get_system_type(void)
 
 void __init ath25_serial_setup(u32 mapbase, int irq, unsigned int uartclk)
 {
-<<<<<<< HEAD
 #ifdef CONFIG_SERIAL_8250_CONSOLE
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct uart_port s;
 
 	memset(&s, 0, sizeof(s));
@@ -89,10 +86,7 @@ void __init ath25_serial_setup(u32 mapbase, int irq, unsigned int uartclk)
 	s.uartclk = uartclk;
 
 	early_serial_setup(&s);
-<<<<<<< HEAD
 #endif /* CONFIG_SERIAL_8250_CONSOLE */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int __init ath25_add_wmac(int nr, u32 base, int irq)

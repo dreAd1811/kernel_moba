@@ -120,11 +120,7 @@ static void add_read_queue(int flag, unsigned long val)
 }
 
 /* SECTION: Hardware */
-<<<<<<< HEAD
 static void sir_timeout(struct timer_list *unused)
-=======
-static void sir_timeout(unsigned long data)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/*
 	 * if last received signal was a pulse, but receiving stopped
@@ -352,11 +348,7 @@ static int sir_ir_probe(struct platform_device *dev)
 	rcdev->timeout = IR_DEFAULT_TIMEOUT;
 	rcdev->dev.parent = &sir_ir_dev->dev;
 
-<<<<<<< HEAD
 	timer_setup(&timerlist, sir_timeout, 0);
-=======
-	setup_timer(&timerlist, sir_timeout, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* get I/O port access and IRQ line */
 	if (!devm_request_region(&sir_ir_dev->dev, io, 8, KBUILD_MODNAME)) {

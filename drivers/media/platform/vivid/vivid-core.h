@@ -1,27 +1,8 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0-only */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * vivid-core.h - core datastructures
  *
  * Copyright 2014 Cisco Systems, Inc. and/or its affiliates. All rights reserved.
-<<<<<<< HEAD
-=======
- *
- * This program is free software; you may redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 2 of the License.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
- * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
- * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #ifndef _VIVID_CORE_H_
@@ -34,11 +15,7 @@
 #include <media/v4l2-device.h>
 #include <media/v4l2-dev.h>
 #include <media/v4l2-ctrls.h>
-<<<<<<< HEAD
 #include <media/tpg/v4l2-tpg.h>
-=======
-#include <media/v4l2-tpg.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "vivid-rds-gen.h"
 #include "vivid-vbi-gen.h"
 
@@ -134,11 +111,7 @@ enum vivid_colorspace {
 	VIVID_CS_170M,
 	VIVID_CS_709,
 	VIVID_CS_SRGB,
-<<<<<<< HEAD
 	VIVID_CS_OPRGB,
-=======
-	VIVID_CS_ADOBERGB,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	VIVID_CS_2020,
 	VIVID_CS_DCI_P3,
 	VIVID_CS_240M,
@@ -169,10 +142,7 @@ struct vivid_dev {
 	struct v4l2_ctrl_handler	ctrl_hdl_streaming;
 	struct v4l2_ctrl_handler	ctrl_hdl_sdtv_cap;
 	struct v4l2_ctrl_handler	ctrl_hdl_loop_cap;
-<<<<<<< HEAD
 	struct v4l2_ctrl_handler	ctrl_hdl_fb;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct video_device		vid_cap_dev;
 	struct v4l2_ctrl_handler	ctrl_hdl_vid_cap;
 	struct video_device		vid_out_dev;
@@ -529,11 +499,7 @@ struct vivid_dev {
 
 	/* Shared between radio receiver and transmitter */
 	bool				radio_rds_loop;
-<<<<<<< HEAD
 	ktime_t				radio_rds_init_time;
-=======
-	struct timespec			radio_rds_init_ts;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* CEC */
 	struct cec_adapter		*cec_rx_adap;

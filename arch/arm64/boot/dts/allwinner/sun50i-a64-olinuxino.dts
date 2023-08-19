@@ -57,32 +57,23 @@
 	chosen {
 		stdout-path = "serial0:115200n8";
 	};
-<<<<<<< HEAD
 
 	wifi_pwrseq: wifi_pwrseq {
 		compatible = "mmc-pwrseq-simple";
 		reset-gpios = <&r_pio 0 2 GPIO_ACTIVE_LOW>; /* PL2 */
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &mmc0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&mmc0_pins>;
 	vmmc-supply = <&reg_dcdc1>;
-<<<<<<< HEAD
 	cd-gpios = <&pio 5 6 GPIO_ACTIVE_LOW>;
-=======
-	cd-gpios = <&pio 5 6 GPIO_ACTIVE_HIGH>;
-	cd-inverted;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	disable-wp;
 	bus-width = <4>;
 	status = "okay";
 };
 
-<<<<<<< HEAD
 &mmc1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&mmc1_pins>;
@@ -101,8 +92,6 @@
 	};
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &r_rsb {
 	status = "okay";
 
@@ -153,21 +142,10 @@
 
 /* DCDC3 is polyphased with DCDC2 */
 
-<<<<<<< HEAD
 &reg_dcdc5 {
 	regulator-always-on;
 	regulator-min-microvolt = <1500000>;
 	regulator-max-microvolt = <1500000>;
-=======
-/*
- * The board uses DDR3L DRAM chips. 1.36V is the closest to the nominal
- * 1.35V that the PMIC can drive.
- */
-&reg_dcdc5 {
-	regulator-always-on;
-	regulator-min-microvolt = <1360000>;
-	regulator-max-microvolt = <1360000>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	regulator-name = "vcc-ddr3";
 };
 
@@ -236,13 +214,10 @@
 	regulator-name = "vcc-rtc";
 };
 
-<<<<<<< HEAD
 &simplefb_hdmi {
 	vcc-hdmi-supply = <&reg_dldo1>;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &uart0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart0_pins_a>;

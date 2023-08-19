@@ -50,19 +50,11 @@ static int __init pci_eisa_init(struct pci_dev *pdev)
 		return -1;
 	}
 
-<<<<<<< HEAD
 	pci_eisa_root.dev		= &pdev->dev;
 	pci_eisa_root.res		= bus_res;
 	pci_eisa_root.bus_base_addr	= bus_res->start;
 	pci_eisa_root.slots		= EISA_MAX_SLOTS;
 	pci_eisa_root.dma_mask		= pdev->dma_mask;
-=======
-	pci_eisa_root.dev              = &pdev->dev;
-	pci_eisa_root.res	       = bus_res;
-	pci_eisa_root.bus_base_addr    = bus_res->start;
-	pci_eisa_root.slots	       = EISA_MAX_SLOTS;
-	pci_eisa_root.dma_mask         = pdev->dma_mask;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_set_drvdata(pci_eisa_root.dev, &pci_eisa_root);
 
 	if (eisa_root_register (&pci_eisa_root)) {

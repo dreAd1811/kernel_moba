@@ -1,10 +1,7 @@
 /*
  * Copyright (c) 2005-2011 Atheros Communications Inc.
  * Copyright (c) 2011-2016 Qualcomm Atheros, Inc.
-<<<<<<< HEAD
  * Copyright (c) 2018, The Linux Foundation. All rights reserved.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -104,20 +101,8 @@ int ath10k_txrx_tx_unref(struct ath10k_htt *htt,
 
 	info = IEEE80211_SKB_CB(msdu);
 	memset(&info->status, 0, sizeof(info->status));
-<<<<<<< HEAD
 	trace_ath10k_txrx_tx_unref(ar, tx_done->msdu_id);
 
-=======
-	info->status.rates[0].idx = -1;
-
-	trace_ath10k_txrx_tx_unref(ar, tx_done->msdu_id);
-
-	if (tx_done->status == HTT_TX_COMPL_STATE_DISCARD) {
-		ieee80211_free_txskb(htt->ar->hw, msdu);
-		return 0;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!(info->flags & IEEE80211_TX_CTL_NO_ACK))
 		info->flags |= IEEE80211_TX_STAT_ACK;
 
@@ -128,7 +113,6 @@ int ath10k_txrx_tx_unref(struct ath10k_htt *htt,
 	    (info->flags & IEEE80211_TX_CTL_NO_ACK))
 		info->flags |= IEEE80211_TX_STAT_NOACK_TRANSMITTED;
 
-<<<<<<< HEAD
 	if (tx_done->status == HTT_TX_COMPL_STATE_DISCARD) {
 		if (info->flags & IEEE80211_TX_CTL_NO_ACK)
 			info->flags &= ~IEEE80211_TX_STAT_NOACK_TRANSMITTED;
@@ -143,8 +127,6 @@ int ath10k_txrx_tx_unref(struct ath10k_htt *htt,
 		info->status.is_valid_ack_signal = true;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ieee80211_tx_status(htt->ar->hw, msdu);
 	/* we do not own the msdu anymore */
 
@@ -174,12 +156,9 @@ struct ath10k_peer *ath10k_peer_find_by_id(struct ath10k *ar, int peer_id)
 {
 	struct ath10k_peer *peer;
 
-<<<<<<< HEAD
 	if (peer_id >= BITS_PER_TYPE(peer->peer_ids))
 		return NULL;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	lockdep_assert_held(&ar->data_lock);
 
 	list_for_each_entry(peer, &ar->peers, list)

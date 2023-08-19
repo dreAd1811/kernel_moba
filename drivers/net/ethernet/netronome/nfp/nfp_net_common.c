@@ -53,11 +53,8 @@
 #include <linux/interrupt.h>
 #include <linux/ip.h>
 #include <linux/ipv6.h>
-<<<<<<< HEAD
 #include <linux/mm.h>
 #include <linux/overflow.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/page_ref.h>
 #include <linux/pci.h>
 #include <linux/pci_regs.h>
@@ -182,15 +179,9 @@ static int nfp_net_reconfig_wait(struct nfp_net *nn, unsigned long deadline)
 	return timed_out ? -EIO : 0;
 }
 
-<<<<<<< HEAD
 static void nfp_net_reconfig_timer(struct timer_list *t)
 {
 	struct nfp_net *nn = from_timer(nn, t, reconfig_timer);
-=======
-static void nfp_net_reconfig_timer(unsigned long data)
-{
-	struct nfp_net *nn = (void *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_bh(&nn->reconfig_lock);
 
@@ -320,7 +311,6 @@ int nfp_net_reconfig(struct nfp_net *nn, u32 update)
  */
 static int nfp_net_reconfig_mbox(struct nfp_net *nn, u32 mbox_cmd)
 {
-<<<<<<< HEAD
 	u32 mbox = nn->tlv_caps.mbox_off;
 	int ret;
 
@@ -330,11 +320,6 @@ static int nfp_net_reconfig_mbox(struct nfp_net *nn, u32 mbox_cmd)
 	}
 
 	nn_writeq(nn, mbox + NFP_NET_CFG_MBOX_SIMPLE_CMD, mbox_cmd);
-=======
-	int ret;
-
-	nn_writeq(nn, NFP_NET_CFG_MBOX_CMD, mbox_cmd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = nfp_net_reconfig(nn, NFP_NET_CFG_UPDATE_MBOX);
 	if (ret) {
@@ -342,11 +327,7 @@ static int nfp_net_reconfig_mbox(struct nfp_net *nn, u32 mbox_cmd)
 		return ret;
 	}
 
-<<<<<<< HEAD
 	return -nn_readl(nn, mbox + NFP_NET_CFG_MBOX_SIMPLE_RET);
-=======
-	return -nn_readl(nn, NFP_NET_CFG_MBOX_RET);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Interrupt configuration and handling
@@ -982,18 +963,10 @@ err_free:
 
 /**
  * nfp_net_tx_complete() - Handled completed TX packets
-<<<<<<< HEAD
  * @tx_ring:	TX ring structure
  * @budget:	NAPI budget (only used as bool to determine if in NAPI context)
  */
 static void nfp_net_tx_complete(struct nfp_net_tx_ring *tx_ring, int budget)
-=======
- * @tx_ring:   TX ring structure
- *
- * Return: Number of completed TX descriptors
- */
-static void nfp_net_tx_complete(struct nfp_net_tx_ring *tx_ring)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct nfp_net_r_vector *r_vec = tx_ring->r_vec;
 	struct nfp_net_dp *dp = &r_vec->nfp_net->dp;
@@ -1043,11 +1016,7 @@ static void nfp_net_tx_complete(struct nfp_net_tx_ring *tx_ring)
 
 		/* check for last gather fragment */
 		if (fidx == nr_frags - 1)
-<<<<<<< HEAD
 			napi_consume_skb(skb, budget);
-=======
-			dev_consume_skb_any(skb);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		tx_ring->txbufs[idx].dma_addr = 0;
 		tx_ring->txbufs[idx].skb = NULL;
@@ -1167,11 +1136,7 @@ nfp_net_tx_ring_reset(struct nfp_net_dp *dp, struct nfp_net_tx_ring *tx_ring)
 		tx_ring->rd_p++;
 	}
 
-<<<<<<< HEAD
 	memset(tx_ring->txds, 0, tx_ring->size);
-=======
-	memset(tx_ring->txds, 0, sizeof(*tx_ring->txds) * tx_ring->cnt);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tx_ring->wr_p = 0;
 	tx_ring->rd_p = 0;
 	tx_ring->qcp_rd_p = 0;
@@ -1245,11 +1210,7 @@ static void *nfp_net_rx_alloc_one(struct nfp_net_dp *dp, dma_addr_t *dma_addr)
 	} else {
 		struct page *page;
 
-<<<<<<< HEAD
 		page = alloc_page(GFP_KERNEL);
-=======
-		page = alloc_page(GFP_KERNEL | __GFP_COLD);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		frag = page ? page_address(page) : NULL;
 	}
 	if (!frag) {
@@ -1273,7 +1234,6 @@ static void *nfp_net_napi_alloc_one(struct nfp_net_dp *dp, dma_addr_t *dma_addr)
 
 	if (!dp->xdp_prog) {
 		frag = napi_alloc_frag(dp->fl_bufsz);
-<<<<<<< HEAD
 		if (unlikely(!frag))
 			return NULL;
 	} else {
@@ -1283,17 +1243,6 @@ static void *nfp_net_napi_alloc_one(struct nfp_net_dp *dp, dma_addr_t *dma_addr)
 		if (unlikely(!page))
 			return NULL;
 		frag = page_address(page);
-=======
-	} else {
-		struct page *page;
-
-		page = alloc_page(GFP_ATOMIC | __GFP_COLD);
-		frag = page ? page_address(page) : NULL;
-	}
-	if (!frag) {
-		nn_dp_warn(dp, "Failed to alloc receive page frag\n");
-		return NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	*dma_addr = nfp_net_dma_map_rx(dp, frag);
@@ -1367,11 +1316,7 @@ static void nfp_net_rx_ring_reset(struct nfp_net_rx_ring *rx_ring)
 	rx_ring->rxbufs[last_idx].dma_addr = 0;
 	rx_ring->rxbufs[last_idx].frag = NULL;
 
-<<<<<<< HEAD
 	memset(rx_ring->rxds, 0, rx_ring->size);
-=======
-	memset(rx_ring->rxds, 0, sizeof(*rx_ring->rxds) * rx_ring->cnt);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rx_ring->wr_p = 0;
 	rx_ring->rd_p = 0;
 }
@@ -1483,11 +1428,7 @@ static void nfp_net_rx_csum(struct nfp_net_dp *dp,
 		skb->ip_summed = meta->csum_type;
 		skb->csum = meta->csum;
 		u64_stats_update_begin(&r_vec->rx_sync);
-<<<<<<< HEAD
 		r_vec->hw_csum_rx_complete++;
-=======
-		r_vec->hw_csum_rx_ok++;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u64_stats_update_end(&r_vec->rx_sync);
 		return;
 	}
@@ -1603,14 +1544,11 @@ nfp_net_rx_drop(const struct nfp_net_dp *dp, struct nfp_net_r_vector *r_vec,
 {
 	u64_stats_update_begin(&r_vec->rx_sync);
 	r_vec->rx_drops++;
-<<<<<<< HEAD
 	/* If we have both skb and rxbuf the replacement buffer allocation
 	 * must have failed, count this as an alloc failure.
 	 */
 	if (skb && rxbuf)
 		r_vec->rx_replace_buf_alloc_fail++;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64_stats_update_end(&r_vec->rx_sync);
 
 	/* skb is build based on the frag, free_skb() would free the frag
@@ -1679,29 +1617,6 @@ nfp_net_tx_xdp_buf(struct nfp_net_dp *dp, struct nfp_net_rx_ring *rx_ring,
 	return true;
 }
 
-<<<<<<< HEAD
-=======
-static int nfp_net_run_xdp(struct bpf_prog *prog, void *data, void *hard_start,
-			   unsigned int *off, unsigned int *len)
-{
-	struct xdp_buff xdp;
-	void *orig_data;
-	int ret;
-
-	xdp.data_hard_start = hard_start;
-	xdp.data = data + *off;
-	xdp.data_end = data + *off + *len;
-
-	orig_data = xdp.data;
-	ret = bpf_prog_run_xdp(prog, &xdp);
-
-	*len -= xdp.data - orig_data;
-	*off += xdp.data - orig_data;
-
-	return ret;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * nfp_net_rx() - receive up to @budget packets on @rx_ring
  * @rx_ring:   RX ring to receive from
@@ -1723,19 +1638,13 @@ static int nfp_net_rx(struct nfp_net_rx_ring *rx_ring, int budget)
 	unsigned int true_bufsz;
 	struct sk_buff *skb;
 	int pkts_polled = 0;
-<<<<<<< HEAD
 	struct xdp_buff xdp;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int idx;
 
 	rcu_read_lock();
 	xdp_prog = READ_ONCE(dp->xdp_prog);
 	true_bufsz = xdp_prog ? PAGE_SIZE : dp->fl_bufsz;
-<<<<<<< HEAD
 	xdp.rxq = &rx_ring->xdp_rxq;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tx_ring = r_vec->xdp_ring;
 
 	while (pkts_polled < budget) {
@@ -1745,10 +1654,7 @@ static int nfp_net_rx(struct nfp_net_rx_ring *rx_ring, int budget)
 		struct nfp_meta_parsed meta;
 		struct net_device *netdev;
 		dma_addr_t new_dma_addr;
-<<<<<<< HEAD
 		u32 meta_len_xdp = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		void *new_frag;
 
 		idx = D_IDX(rx_ring, rx_ring->rd_p);
@@ -1825,7 +1731,6 @@ static int nfp_net_rx(struct nfp_net_rx_ring *rx_ring, int budget)
 			}
 		}
 
-<<<<<<< HEAD
 		if (xdp_prog && !meta.portid) {
 			void *orig_data = rxbuf->frag + pkt_off;
 			unsigned int dma_off;
@@ -1844,20 +1749,6 @@ static int nfp_net_rx(struct nfp_net_rx_ring *rx_ring, int budget)
 			switch (act) {
 			case XDP_PASS:
 				meta_len_xdp = xdp.data - xdp.data_meta;
-=======
-		if (xdp_prog && !(rxd->rxd.flags & PCIE_DESC_RX_BPF &&
-				  dp->bpf_offload_xdp) && !meta.portid) {
-			unsigned int dma_off;
-			void *hard_start;
-			int act;
-
-			hard_start = rxbuf->frag + NFP_NET_RX_BUF_HEADROOM;
-
-			act = nfp_net_run_xdp(xdp_prog, rxbuf->frag, hard_start,
-					      &pkt_off, &pkt_len);
-			switch (act) {
-			case XDP_PASS:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				break;
 			case XDP_TX:
 				dma_off = pkt_off - NFP_NET_RX_BUF_HEADROOM;
@@ -1882,7 +1773,6 @@ static int nfp_net_rx(struct nfp_net_rx_ring *rx_ring, int budget)
 			}
 		}
 
-<<<<<<< HEAD
 		if (likely(!meta.portid)) {
 			netdev = dp->netdev;
 		} else if (meta.portid == NFP_META_PORT_ID_CTRL) {
@@ -1906,8 +1796,6 @@ static int nfp_net_rx(struct nfp_net_rx_ring *rx_ring, int budget)
 			nfp_repr_inc_rx_stats(netdev, pkt_len);
 		}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		skb = build_skb(rxbuf->frag, true_bufsz);
 		if (unlikely(!skb)) {
 			nfp_net_rx_drop(dp, r_vec, rx_ring, rxbuf, NULL);
@@ -1923,23 +1811,6 @@ static int nfp_net_rx(struct nfp_net_rx_ring *rx_ring, int budget)
 
 		nfp_net_rx_give_one(dp, rx_ring, new_frag, new_dma_addr);
 
-<<<<<<< HEAD
-=======
-		if (likely(!meta.portid)) {
-			netdev = dp->netdev;
-		} else {
-			struct nfp_net *nn;
-
-			nn = netdev_priv(dp->netdev);
-			netdev = nfp_app_repr_get(nn->app, meta.portid);
-			if (unlikely(!netdev)) {
-				nfp_net_rx_drop(dp, r_vec, rx_ring, NULL, skb);
-				continue;
-			}
-			nfp_repr_inc_rx_stats(netdev, pkt_len);
-		}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		skb_reserve(skb, pkt_off);
 		skb_put(skb, pkt_len);
 
@@ -1954,11 +1825,8 @@ static int nfp_net_rx(struct nfp_net_rx_ring *rx_ring, int budget)
 		if (rxd->rxd.flags & PCIE_DESC_RX_VLAN)
 			__vlan_hwaccel_put_tag(skb, htons(ETH_P_8021Q),
 					       le16_to_cpu(rxd->rxd.vlan));
-<<<<<<< HEAD
 		if (meta_len_xdp)
 			skb_metadata_set(skb, meta_len_xdp);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		napi_gro_receive(&rx_ring->r_vec->napi, skb);
 	}
@@ -1990,11 +1858,7 @@ static int nfp_net_poll(struct napi_struct *napi, int budget)
 	unsigned int pkts_polled = 0;
 
 	if (r_vec->tx_ring)
-<<<<<<< HEAD
 		nfp_net_tx_complete(r_vec->tx_ring, budget);
-=======
-		nfp_net_tx_complete(r_vec->tx_ring);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r_vec->rx_ring)
 		pkts_polled = nfp_net_rx(r_vec->rx_ring, budget);
 
@@ -2092,7 +1956,6 @@ err_free:
 	return false;
 }
 
-<<<<<<< HEAD
 bool __nfp_ctrl_tx(struct nfp_net *nn, struct sk_buff *skb)
 {
 	struct nfp_net_r_vector *r_vec = &nn->r_vecs[0];
@@ -2100,8 +1963,6 @@ bool __nfp_ctrl_tx(struct nfp_net *nn, struct sk_buff *skb)
 	return nfp_ctrl_tx_one(nn, r_vec, skb, false);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 bool nfp_ctrl_tx(struct nfp_net *nn, struct sk_buff *skb)
 {
 	struct nfp_net_r_vector *r_vec = &nn->r_vecs[0];
@@ -2234,11 +2095,7 @@ static void nfp_ctrl_poll(unsigned long arg)
 	struct nfp_net_r_vector *r_vec = (void *)arg;
 
 	spin_lock_bh(&r_vec->lock);
-<<<<<<< HEAD
 	nfp_net_tx_complete(r_vec->tx_ring, 0);
-=======
-	nfp_net_tx_complete(r_vec->tx_ring);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__nfp_ctrl_tx_queued(r_vec);
 	spin_unlock_bh(&r_vec->lock);
 
@@ -2301,11 +2158,7 @@ static void nfp_net_tx_ring_free(struct nfp_net_tx_ring *tx_ring)
 	struct nfp_net_r_vector *r_vec = tx_ring->r_vec;
 	struct nfp_net_dp *dp = &r_vec->nfp_net->dp;
 
-<<<<<<< HEAD
 	kvfree(tx_ring->txbufs);
-=======
-	kfree(tx_ring->txbufs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (tx_ring->txds)
 		dma_free_coherent(dp->dev, tx_ring->size,
@@ -2329,7 +2182,6 @@ static int
 nfp_net_tx_ring_alloc(struct nfp_net_dp *dp, struct nfp_net_tx_ring *tx_ring)
 {
 	struct nfp_net_r_vector *r_vec = tx_ring->r_vec;
-<<<<<<< HEAD
 
 	tx_ring->cnt = dp->txd_cnt;
 
@@ -2341,24 +2193,6 @@ nfp_net_tx_ring_alloc(struct nfp_net_dp *dp, struct nfp_net_tx_ring *tx_ring)
 
 	tx_ring->txbufs = kvcalloc(tx_ring->cnt, sizeof(*tx_ring->txbufs),
 				   GFP_KERNEL);
-=======
-	int sz;
-
-	tx_ring->cnt = dp->txd_cnt;
-
-	tx_ring->size = sizeof(*tx_ring->txds) * tx_ring->cnt;
-	tx_ring->txds = dma_zalloc_coherent(dp->dev, tx_ring->size,
-					    &tx_ring->dma,
-					    GFP_KERNEL | __GFP_NOWARN);
-	if (!tx_ring->txds) {
-		netdev_warn(dp->netdev, "failed to allocate TX descriptor ring memory, requested descriptor count: %d, consider lowering descriptor count\n",
-			    tx_ring->cnt);
-		goto err_alloc;
-	}
-
-	sz = sizeof(*tx_ring->txbufs) * tx_ring->cnt;
-	tx_ring->txbufs = kzalloc(sz, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!tx_ring->txbufs)
 		goto err_alloc;
 
@@ -2470,13 +2304,9 @@ static void nfp_net_rx_ring_free(struct nfp_net_rx_ring *rx_ring)
 	struct nfp_net_r_vector *r_vec = rx_ring->r_vec;
 	struct nfp_net_dp *dp = &r_vec->nfp_net->dp;
 
-<<<<<<< HEAD
 	if (dp->netdev)
 		xdp_rxq_info_unreg(&rx_ring->xdp_rxq);
 	kvfree(rx_ring->rxbufs);
-=======
-	kfree(rx_ring->rxbufs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (rx_ring->rxds)
 		dma_free_coherent(dp->dev, rx_ring->size,
@@ -2499,7 +2329,6 @@ static void nfp_net_rx_ring_free(struct nfp_net_rx_ring *rx_ring)
 static int
 nfp_net_rx_ring_alloc(struct nfp_net_dp *dp, struct nfp_net_rx_ring *rx_ring)
 {
-<<<<<<< HEAD
 	int err;
 
 	if (dp->netdev) {
@@ -2518,23 +2347,6 @@ nfp_net_rx_ring_alloc(struct nfp_net_dp *dp, struct nfp_net_rx_ring *rx_ring)
 
 	rx_ring->rxbufs = kvcalloc(rx_ring->cnt, sizeof(*rx_ring->rxbufs),
 				   GFP_KERNEL);
-=======
-	int sz;
-
-	rx_ring->cnt = dp->rxd_cnt;
-	rx_ring->size = sizeof(*rx_ring->rxds) * rx_ring->cnt;
-	rx_ring->rxds = dma_zalloc_coherent(dp->dev, rx_ring->size,
-					    &rx_ring->dma,
-					    GFP_KERNEL | __GFP_NOWARN);
-	if (!rx_ring->rxds) {
-		netdev_warn(dp->netdev, "failed to allocate RX descriptor ring memory, requested descriptor count: %d, consider lowering descriptor count\n",
-			    rx_ring->cnt);
-		goto err_alloc;
-	}
-
-	sz = sizeof(*rx_ring->rxbufs) * rx_ring->cnt;
-	rx_ring->rxbufs = kzalloc(sz, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!rx_ring->rxbufs)
 		goto err_alloc;
 
@@ -2688,11 +2500,7 @@ void nfp_net_coalesce_write_cfg(struct nfp_net *nn)
 	 * ME timestamp ticks.  There are 16 ME clock cycles for each timestamp
 	 * count.
 	 */
-<<<<<<< HEAD
 	factor = nn->tlv_caps.me_freq_mhz / 16;
-=======
-	factor = nn->me_freq_mhz / 16;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* copy RX interrupt coalesce parameters */
 	value = (nn->rx_coalesce_max_frames << 16) |
@@ -3105,14 +2913,11 @@ static void nfp_net_set_rx_mode(struct net_device *netdev)
 
 	new_ctrl = nn->dp.ctrl;
 
-<<<<<<< HEAD
 	if (!netdev_mc_empty(netdev) || netdev->flags & IFF_ALLMULTI)
 		new_ctrl |= nn->cap & NFP_NET_CFG_CTRL_L2MC;
 	else
 		new_ctrl &= ~NFP_NET_CFG_CTRL_L2MC;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (netdev->flags & IFF_PROMISC) {
 		if (nn->cap & NFP_NET_CFG_CTRL_PROMISC)
 			new_ctrl |= NFP_NET_CFG_CTRL_PROMISC;
@@ -3297,14 +3102,11 @@ static int nfp_net_change_mtu(struct net_device *netdev, int new_mtu)
 {
 	struct nfp_net *nn = netdev_priv(netdev);
 	struct nfp_net_dp *dp;
-<<<<<<< HEAD
 	int err;
 
 	err = nfp_app_check_mtu(nn->app, netdev, new_mtu);
 	if (err)
 		return err;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dp = nfp_net_clone_dp(nn);
 	if (!dp)
@@ -3326,14 +3128,9 @@ nfp_net_vlan_rx_add_vid(struct net_device *netdev, __be16 proto, u16 vid)
 	if (!vid)
 		return 0;
 
-<<<<<<< HEAD
 	nn_writew(nn, nn->tlv_caps.mbox_off + NFP_NET_CFG_VLAN_FILTER_VID, vid);
 	nn_writew(nn, nn->tlv_caps.mbox_off + NFP_NET_CFG_VLAN_FILTER_PROTO,
 		  ETH_P_8021Q);
-=======
-	nn_writew(nn, NFP_NET_CFG_VLAN_FILTER_VID, vid);
-	nn_writew(nn, NFP_NET_CFG_VLAN_FILTER_PROTO, ETH_P_8021Q);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return nfp_net_reconfig_mbox(nn, NFP_NET_CFG_MBOX_CMD_CTAG_FILTER_ADD);
 }
@@ -3349,14 +3146,9 @@ nfp_net_vlan_rx_kill_vid(struct net_device *netdev, __be16 proto, u16 vid)
 	if (!vid)
 		return 0;
 
-<<<<<<< HEAD
 	nn_writew(nn, nn->tlv_caps.mbox_off + NFP_NET_CFG_VLAN_FILTER_VID, vid);
 	nn_writew(nn, nn->tlv_caps.mbox_off + NFP_NET_CFG_VLAN_FILTER_PROTO,
 		  ETH_P_8021Q);
-=======
-	nn_writew(nn, NFP_NET_CFG_VLAN_FILTER_VID, vid);
-	nn_writew(nn, NFP_NET_CFG_VLAN_FILTER_PROTO, ETH_P_8021Q);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return nfp_net_reconfig_mbox(nn, NFP_NET_CFG_MBOX_CMD_CTAG_FILTER_KILL);
 }
@@ -3367,11 +3159,7 @@ static void nfp_net_stat64(struct net_device *netdev,
 	struct nfp_net *nn = netdev_priv(netdev);
 	int r;
 
-<<<<<<< HEAD
 	for (r = 0; r < nn->max_r_vecs; r++) {
-=======
-	for (r = 0; r < nn->dp.num_r_vecs; r++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct nfp_net_r_vector *r_vec = &nn->r_vecs[r];
 		u64 data[3];
 		unsigned int start;
@@ -3460,16 +3248,9 @@ static int nfp_net_set_features(struct net_device *netdev,
 			new_ctrl &= ~NFP_NET_CFG_CTRL_GATHER;
 	}
 
-<<<<<<< HEAD
 	err = nfp_port_set_features(netdev, features);
 	if (err)
 		return err;
-=======
-	if (changed & NETIF_F_HW_TC && nfp_app_tc_busy(nn->app, nn)) {
-		nn_err(nn, "Cannot disable HW TC offload while in use\n");
-		return -EBUSY;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	nn_dbg(nn, "Feature change 0x%llx -> 0x%llx (changed=0x%llx)\n",
 	       netdev->features, features, changed);
@@ -3534,7 +3315,6 @@ nfp_net_features_check(struct sk_buff *skb, struct net_device *dev,
 	return features;
 }
 
-<<<<<<< HEAD
 static int
 nfp_net_get_phys_port_name(struct net_device *netdev, char *name, size_t len)
 {
@@ -3554,8 +3334,6 @@ nfp_net_get_phys_port_name(struct net_device *netdev, char *name, size_t len)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * nfp_net_set_vxlan_port() - set vxlan port in SW and reconfigure HW
  * @nn:   NFP Net device to reconfigure
@@ -3637,7 +3415,6 @@ static void nfp_net_del_vxlan_port(struct net_device *netdev,
 		nfp_net_set_vxlan_port(nn, idx, 0);
 }
 
-<<<<<<< HEAD
 static int nfp_net_xdp_setup_drv(struct nfp_net *nn, struct netdev_bpf *bpf)
 {
 	struct bpf_prog *prog = bpf->prog;
@@ -3650,16 +3427,6 @@ static int nfp_net_xdp_setup_drv(struct nfp_net *nn, struct netdev_bpf *bpf)
 	if (!prog == !nn->dp.xdp_prog) {
 		WRITE_ONCE(nn->dp.xdp_prog, prog);
 		xdp_attachment_setup(&nn->xdp, bpf);
-=======
-static int
-nfp_net_xdp_setup_drv(struct nfp_net *nn, struct bpf_prog *prog,
-		      struct netlink_ext_ack *extack)
-{
-	struct nfp_net_dp *dp;
-
-	if (!prog == !nn->dp.xdp_prog) {
-		WRITE_ONCE(nn->dp.xdp_prog, prog);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 
@@ -3673,7 +3440,6 @@ nfp_net_xdp_setup_drv(struct nfp_net *nn, struct bpf_prog *prog,
 	dp->rx_dma_off = prog ? XDP_PACKET_HEADROOM - nn->dp.rx_offset : 0;
 
 	/* We need RX reconfig to remap the buffers (BIDIR vs FROM_DEV) */
-<<<<<<< HEAD
 	err = nfp_net_ring_reconfig(nn, dp, bpf->extack);
 	if (err)
 		return err;
@@ -3698,50 +3464,11 @@ static int nfp_net_xdp_setup_hw(struct nfp_net *nn, struct netdev_bpf *bpf)
 }
 
 static int nfp_net_xdp(struct net_device *netdev, struct netdev_bpf *xdp)
-=======
-	return nfp_net_ring_reconfig(nn, dp, extack);
-}
-
-static int
-nfp_net_xdp_setup(struct nfp_net *nn, struct bpf_prog *prog, u32 flags,
-		  struct netlink_ext_ack *extack)
-{
-	struct bpf_prog *drv_prog, *offload_prog;
-	int err;
-
-	if (nn->xdp_prog && (flags ^ nn->xdp_flags) & XDP_FLAGS_MODES)
-		return -EBUSY;
-
-	/* Load both when no flags set to allow easy activation of driver path
-	 * when program is replaced by one which can't be offloaded.
-	 */
-	drv_prog     = flags & XDP_FLAGS_HW_MODE  ? NULL : prog;
-	offload_prog = flags & XDP_FLAGS_DRV_MODE ? NULL : prog;
-
-	err = nfp_net_xdp_setup_drv(nn, drv_prog, extack);
-	if (err)
-		return err;
-
-	err = nfp_app_xdp_offload(nn->app, nn, offload_prog);
-	if (err && flags & XDP_FLAGS_HW_MODE)
-		return err;
-
-	if (nn->xdp_prog)
-		bpf_prog_put(nn->xdp_prog);
-	nn->xdp_prog = prog;
-	nn->xdp_flags = flags;
-
-	return 0;
-}
-
-static int nfp_net_xdp(struct net_device *netdev, struct netdev_xdp *xdp)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct nfp_net *nn = netdev_priv(netdev);
 
 	switch (xdp->command) {
 	case XDP_SETUP_PROG:
-<<<<<<< HEAD
 		return nfp_net_xdp_setup_drv(nn, xdp);
 	case XDP_SETUP_PROG_HW:
 		return nfp_net_xdp_setup_hw(nn, xdp);
@@ -3751,19 +3478,6 @@ static int nfp_net_xdp(struct net_device *netdev, struct netdev_xdp *xdp)
 		return xdp_attachment_query(&nn->xdp_hw, xdp);
 	default:
 		return nfp_app_bpf(nn->app, nn, xdp);
-=======
-	case XDP_SETUP_PROG_HW:
-		return nfp_net_xdp_setup(nn, xdp->prog, xdp->flags,
-					 xdp->extack);
-	case XDP_QUERY_PROG:
-		xdp->prog_attached = !!nn->xdp_prog;
-		if (nn->dp.bpf_offload_xdp)
-			xdp->prog_attached = XDP_ATTACHED_HW;
-		xdp->prog_id = nn->xdp_prog ? nn->xdp_prog->aux->id : 0;
-		return 0;
-	default:
-		return -EINVAL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -3789,11 +3503,8 @@ static int nfp_net_set_mac_address(struct net_device *netdev, void *addr)
 }
 
 const struct net_device_ops nfp_net_netdev_ops = {
-<<<<<<< HEAD
 	.ndo_init		= nfp_app_ndo_init,
 	.ndo_uninit		= nfp_app_ndo_uninit,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ndo_open		= nfp_net_netdev_open,
 	.ndo_stop		= nfp_net_netdev_close,
 	.ndo_start_xmit		= nfp_net_tx,
@@ -3812,17 +3523,10 @@ const struct net_device_ops nfp_net_netdev_ops = {
 	.ndo_set_mac_address	= nfp_net_set_mac_address,
 	.ndo_set_features	= nfp_net_set_features,
 	.ndo_features_check	= nfp_net_features_check,
-<<<<<<< HEAD
 	.ndo_get_phys_port_name	= nfp_net_get_phys_port_name,
 	.ndo_udp_tunnel_add	= nfp_net_add_vxlan_port,
 	.ndo_udp_tunnel_del	= nfp_net_del_vxlan_port,
 	.ndo_bpf		= nfp_net_xdp,
-=======
-	.ndo_get_phys_port_name	= nfp_port_get_phys_port_name,
-	.ndo_udp_tunnel_add	= nfp_net_add_vxlan_port,
-	.ndo_udp_tunnel_del	= nfp_net_del_vxlan_port,
-	.ndo_xdp		= nfp_net_xdp,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -3923,12 +3627,7 @@ struct nfp_net *nfp_net_alloc(struct pci_dev *pdev, bool needs_netdev,
 	spin_lock_init(&nn->reconfig_lock);
 	spin_lock_init(&nn->link_status_lock);
 
-<<<<<<< HEAD
 	timer_setup(&nn->reconfig_timer, nfp_net_reconfig_timer, 0);
-=======
-	setup_timer(&nn->reconfig_timer,
-		    nfp_net_reconfig_timer, (unsigned long)nn);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return nn;
 }
@@ -3940,12 +3639,6 @@ struct nfp_net *nfp_net_alloc(struct pci_dev *pdev, bool needs_netdev,
 void nfp_net_free(struct nfp_net *nn)
 {
 	WARN_ON(timer_pending(&nn->reconfig_timer) || nn->reconfig_posted);
-<<<<<<< HEAD
-=======
-	if (nn->xdp_prog)
-		bpf_prog_put(nn->xdp_prog);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (nn->dp.netdev)
 		free_netdev(nn->dp.netdev);
 	else
@@ -4089,11 +3782,7 @@ static void nfp_net_netdev_init(struct nfp_net *nn)
 
 	netdev->features = netdev->hw_features;
 
-<<<<<<< HEAD
 	if (nfp_app_has_tc(nn->app) && nn->port)
-=======
-	if (nfp_app_has_tc(nn->app))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		netdev->hw_features |= NETIF_F_HW_TC;
 
 	/* Advertise but disable TSO by default. */
@@ -4110,33 +3799,15 @@ static void nfp_net_netdev_init(struct nfp_net *nn)
 	netdev->min_mtu = ETH_MIN_MTU;
 	netdev->max_mtu = nn->max_mtu;
 
-<<<<<<< HEAD
 	netdev->gso_max_segs = NFP_NET_LSO_MAX_SEGS;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	netif_carrier_off(netdev);
 
 	nfp_net_set_ethtool_ops(netdev);
 }
 
-<<<<<<< HEAD
 static int nfp_net_read_caps(struct nfp_net *nn)
 {
-=======
-/**
- * nfp_net_init() - Initialise/finalise the nfp_net structure
- * @nn:		NFP Net device structure
- *
- * Return: 0 on success or negative errno on error.
- */
-int nfp_net_init(struct nfp_net *nn)
-{
-	int err;
-
-	nn->dp.rx_dma_dir = DMA_FROM_DEVICE;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Get some of the read-only fields from the BAR */
 	nn->cap = nn_readl(nn, NFP_NET_CFG_CAP);
 	nn->max_mtu = nn_readl(nn, NFP_NET_CFG_MAX_MTU);
@@ -4169,7 +3840,6 @@ int nfp_net_init(struct nfp_net *nn)
 		nn->dp.rx_offset = NFP_NET_RX_OFFSET;
 	}
 
-<<<<<<< HEAD
 	/* For control vNICs mask out the capabilities app doesn't want. */
 	if (!nn->dp.netdev)
 		nn->cap &= nn->app->type->ctrl_cap_mask;
@@ -4193,8 +3863,6 @@ int nfp_net_init(struct nfp_net *nn)
 	if (err)
 		return err;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Set default MTU and Freelist buffer size */
 	if (nn->max_mtu < NFP_NET_DEFAULT_MTU)
 		nn->dp.mtu = nn->max_mtu;
@@ -4202,12 +3870,9 @@ int nfp_net_init(struct nfp_net *nn)
 		nn->dp.mtu = NFP_NET_DEFAULT_MTU;
 	nn->dp.fl_bufsz = nfp_net_calc_fl_bufsz(&nn->dp);
 
-<<<<<<< HEAD
 	if (nfp_app_ctrl_uses_data_vnics(nn->app))
 		nn->dp.ctrl |= nn->cap & NFP_NET_CFG_CTRL_CMSG_DATA;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (nn->cap & NFP_NET_CFG_CTRL_RSS_ANY) {
 		nfp_net_rss_init(nn);
 		nn->dp.ctrl |= nn->cap & NFP_NET_CFG_CTRL_RSS2 ?:
@@ -4217,11 +3882,6 @@ int nfp_net_init(struct nfp_net *nn)
 	/* Allow L2 Broadcast and Multicast through by default, if supported */
 	if (nn->cap & NFP_NET_CFG_CTRL_L2BC)
 		nn->dp.ctrl |= NFP_NET_CFG_CTRL_L2BC;
-<<<<<<< HEAD
-=======
-	if (nn->cap & NFP_NET_CFG_CTRL_L2MC)
-		nn->dp.ctrl |= NFP_NET_CFG_CTRL_L2MC;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Allow IRQ moderation, if supported */
 	if (nn->cap & NFP_NET_CFG_CTRL_IRQMOD) {
@@ -4229,14 +3889,11 @@ int nfp_net_init(struct nfp_net *nn)
 		nn->dp.ctrl |= NFP_NET_CFG_CTRL_IRQMOD;
 	}
 
-<<<<<<< HEAD
 	err = nfp_net_tlv_caps_parse(&nn->pdev->dev, nn->dp.ctrl_bar,
 				     &nn->tlv_caps);
 	if (err)
 		return err;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (nn->dp.netdev)
 		nfp_net_netdev_init(nn);
 

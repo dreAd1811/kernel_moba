@@ -32,12 +32,9 @@
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
 #include <linux/string.h>
-<<<<<<< HEAD
 #include <linux/of_platform.h>
 #include <linux/net_tstamp.h>
 #include <linux/fsl/ptp_qoriq.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "dpaa_eth.h"
 #include "mac.h"
@@ -350,11 +347,7 @@ static void dpaa_get_ethtool_stats(struct net_device *net_dev,
 
 	/* gather congestion related counters */
 	cg_num    = 0;
-<<<<<<< HEAD
 	cg_status = false;
-=======
-	cg_status = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cg_time   = jiffies_to_msecs(priv->cgr_data.congested_jiffies);
 	if (qman_query_cgr_congested(&priv->cgr_data.cgr, &cg_status) == 0) {
 		cg_num    = priv->cgr_data.cgr_congested_count;
@@ -525,7 +518,6 @@ static int dpaa_set_rxnfc(struct net_device *dev, struct ethtool_rxnfc *cmd)
 	return ret;
 }
 
-<<<<<<< HEAD
 static int dpaa_get_ts_info(struct net_device *net_dev,
 			    struct ethtool_ts_info *info)
 {
@@ -561,8 +553,6 @@ static int dpaa_get_ts_info(struct net_device *net_dev,
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 const struct ethtool_ops dpaa_ethtool_ops = {
 	.get_drvinfo = dpaa_get_drvinfo,
 	.get_msglevel = dpaa_get_msglevel,
@@ -578,8 +568,5 @@ const struct ethtool_ops dpaa_ethtool_ops = {
 	.set_link_ksettings = dpaa_set_link_ksettings,
 	.get_rxnfc = dpaa_get_rxnfc,
 	.set_rxnfc = dpaa_set_rxnfc,
-<<<<<<< HEAD
 	.get_ts_info = dpaa_get_ts_info,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

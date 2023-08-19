@@ -19,11 +19,7 @@ int generic_ide_suspend(struct device *dev, pm_message_t mesg)
 	}
 
 	memset(&rqpm, 0, sizeof(rqpm));
-<<<<<<< HEAD
 	rq = blk_get_request(drive->queue, REQ_OP_DRV_IN, 0);
-=======
-	rq = blk_get_request(drive->queue, REQ_OP_DRV_IN, __GFP_RECLAIM);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ide_req(rq)->type = ATA_PRIV_PM_SUSPEND;
 	rq->special = &rqpm;
 	rqpm.pm_step = IDE_PM_START_SUSPEND;
@@ -94,12 +90,7 @@ int generic_ide_resume(struct device *dev)
 	}
 
 	memset(&rqpm, 0, sizeof(rqpm));
-<<<<<<< HEAD
 	rq = blk_get_request(drive->queue, REQ_OP_DRV_IN, BLK_MQ_REQ_PREEMPT);
-=======
-	rq = blk_get_request(drive->queue, REQ_OP_DRV_IN | REQ_PREEMPT,
-			     __GFP_RECLAIM);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ide_req(rq)->type = ATA_PRIV_PM_RESUME;
 	rq->special = &rqpm;
 	rqpm.pm_step = IDE_PM_START_RESUME;

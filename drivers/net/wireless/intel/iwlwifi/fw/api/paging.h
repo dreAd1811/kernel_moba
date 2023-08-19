@@ -81,31 +81,4 @@ struct iwl_fw_paging_cmd {
 	__le32 device_phy_addr[NUM_OF_FW_PAGING_BLOCKS];
 } __packed; /* FW_PAGING_BLOCK_CMD_API_S_VER_1 */
 
-<<<<<<< HEAD
-=======
-/**
- * enum iwl_fw_item_id - FW item IDs
- *
- * @IWL_FW_ITEM_ID_PAGING: Address of the pages that the FW will upload
- *	download
- */
-enum iwl_fw_item_id {
-	IWL_FW_ITEM_ID_PAGING = 3,
-};
-
-/**
- * struct iwl_fw_get_item_cmd - get an item from the fw
- * @item_id: ID of item to obtain, see &enum iwl_fw_item_id
- */
-struct iwl_fw_get_item_cmd {
-	__le32 item_id;
-} __packed; /* FW_GET_ITEM_CMD_API_S_VER_1 */
-
-struct iwl_fw_get_item_resp {
-	__le32 item_id;
-	__le32 item_byte_cnt;
-	__le32 item_val;
-} __packed; /* FW_GET_ITEM_RSP_S_VER_1 */
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __iwl_fw_api_paging_h__ */

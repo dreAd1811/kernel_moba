@@ -18,11 +18,8 @@
 #ifndef __ASM_EXCEPTION_H
 #define __ASM_EXCEPTION_H
 
-<<<<<<< HEAD
 #include <asm/esr.h>
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/interrupt.h>
 
 #define __exception	__attribute__((section(".exception.text")))
@@ -32,7 +29,6 @@
 #define __exception_irq_entry	__exception
 #endif
 
-<<<<<<< HEAD
 static inline u32 disr_to_esr(u64 disr)
 {
 	unsigned int esr = ESR_ELx_EC_SERROR << ESR_ELx_EC_SHIFT;
@@ -45,6 +41,4 @@ static inline u32 disr_to_esr(u64 disr)
 	return esr;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif	/* __ASM_EXCEPTION_H */

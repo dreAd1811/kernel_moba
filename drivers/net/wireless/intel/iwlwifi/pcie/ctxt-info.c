@@ -6,10 +6,7 @@
  * GPL LICENSE SUMMARY
  *
  * Copyright(c) 2017 Intel Deutschland GmbH
-<<<<<<< HEAD
  * Copyright(c) 2018 Intel Corporation
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of version 2 of the GNU General Public License as
@@ -23,10 +20,7 @@
  * BSD LICENSE
  *
  * Copyright(c) 2017 Intel Deutschland GmbH
-<<<<<<< HEAD
  * Copyright(c) 2018 Intel Corporation
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -63,60 +57,6 @@
 #include "internal.h"
 #include "iwl-prph.h"
 
-<<<<<<< HEAD
-=======
-static int iwl_pcie_get_num_sections(const struct fw_img *fw,
-				     int start)
-{
-	int i = 0;
-
-	while (start < fw->num_sec &&
-	       fw->sec[start].offset != CPU1_CPU2_SEPARATOR_SECTION &&
-	       fw->sec[start].offset != PAGING_SEPARATOR_SECTION) {
-		start++;
-		i++;
-	}
-
-	return i;
-}
-
-static int iwl_pcie_ctxt_info_alloc_dma(struct iwl_trans *trans,
-					const struct fw_desc *sec,
-					struct iwl_dram_data *dram)
-{
-	dram->block = dma_alloc_coherent(trans->dev, sec->len,
-					 &dram->physical,
-					 GFP_KERNEL);
-	if (!dram->block)
-		return -ENOMEM;
-
-	dram->size = sec->len;
-	memcpy(dram->block, sec->data, sec->len);
-
-	return 0;
-}
-
-static void iwl_pcie_ctxt_info_free_fw_img(struct iwl_trans *trans)
-{
-	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
-	struct iwl_self_init_dram *dram = &trans_pcie->init_dram;
-	int i;
-
-	if (!dram->fw) {
-		WARN_ON(dram->fw_cnt);
-		return;
-	}
-
-	for (i = 0; i < dram->fw_cnt; i++)
-		dma_free_coherent(trans->dev, dram->fw[i].size,
-				  dram->fw[i].block, dram->fw[i].physical);
-
-	kfree(dram->fw);
-	dram->fw_cnt = 0;
-	dram->fw = NULL;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void iwl_pcie_ctxt_info_free_paging(struct iwl_trans *trans)
 {
 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
@@ -139,22 +79,12 @@ void iwl_pcie_ctxt_info_free_paging(struct iwl_trans *trans)
 	dram->paging = NULL;
 }
 
-<<<<<<< HEAD
 int iwl_pcie_init_fw_sec(struct iwl_trans *trans,
 			 const struct fw_img *fw,
 			 struct iwl_context_info_dram *ctxt_dram)
 {
 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
 	struct iwl_self_init_dram *dram = &trans_pcie->init_dram;
-=======
-static int iwl_pcie_ctxt_info_init_fw_sec(struct iwl_trans *trans,
-					  const struct fw_img *fw,
-					  struct iwl_context_info *ctxt_info)
-{
-	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
-	struct iwl_self_init_dram *dram = &trans_pcie->init_dram;
-	struct iwl_context_info_dram *ctxt_dram = &ctxt_info->dram;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i, ret, lmac_cnt, umac_cnt, paging_cnt;
 
 	if (WARN(dram->paging,
@@ -267,11 +197,7 @@ int iwl_pcie_ctxt_info_init(struct iwl_trans *trans,
 		TFD_QUEUE_CB_SIZE(TFD_CMD_SLOTS);
 
 	/* allocate ucode sections in dram and set addresses */
-<<<<<<< HEAD
 	ret = iwl_pcie_init_fw_sec(trans, fw, &ctxt_info->dram);
-=======
-	ret = iwl_pcie_ctxt_info_init_fw_sec(trans, fw, ctxt_info);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		dma_free_coherent(trans->dev, sizeof(*trans_pcie->ctxt_info),
 				  ctxt_info, trans_pcie->ctxt_info_dma_addr);
@@ -280,11 +206,7 @@ int iwl_pcie_ctxt_info_init(struct iwl_trans *trans,
 
 	trans_pcie->ctxt_info = ctxt_info;
 
-<<<<<<< HEAD
 	iwl_enable_fw_load_int_ctx_info(trans);
-=======
-	iwl_enable_interrupts(trans);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Configure debug, if exists */
 	if (trans->dbg_dest_tlv)

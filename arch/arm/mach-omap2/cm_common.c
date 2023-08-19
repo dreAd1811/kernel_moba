@@ -29,11 +29,7 @@
  * common CM functions
  */
 static struct cm_ll_data null_cm_ll_data;
-<<<<<<< HEAD
 static const struct cm_ll_data *cm_ll_data = &null_cm_ll_data;
-=======
-static struct cm_ll_data *cm_ll_data = &null_cm_ll_data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* cm_base: base virtual address of the CM IP block */
 struct omap_domain_base cm_base;
@@ -72,25 +68,17 @@ void __init omap2_set_globals_cm(void __iomem *cm, void __iomem *cm2)
 int cm_split_idlest_reg(struct clk_omap_reg *idlest_reg, s16 *prcm_inst,
 			u8 *idlest_reg_id)
 {
-<<<<<<< HEAD
 	int ret;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!cm_ll_data->split_idlest_reg) {
 		WARN_ONCE(1, "cm: %s: no low-level function defined\n",
 			  __func__);
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 	ret = cm_ll_data->split_idlest_reg(idlest_reg, prcm_inst,
 					   idlest_reg_id);
 	*prcm_inst -= cm_base.offset;
 	return ret;
-=======
-	return cm_ll_data->split_idlest_reg(idlest_reg, prcm_inst,
-					   idlest_reg_id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -190,7 +178,6 @@ int omap_cm_module_disable(u8 part, u16 inst, u16 clkctrl_offs)
 	return 0;
 }
 
-<<<<<<< HEAD
 u32 omap_cm_xlate_clkctrl(u8 part, u16 inst, u16 clkctrl_offs)
 {
 	if (!cm_ll_data->xlate_clkctrl) {
@@ -201,8 +188,6 @@ u32 omap_cm_xlate_clkctrl(u8 part, u16 inst, u16 clkctrl_offs)
 	return cm_ll_data->xlate_clkctrl(part, inst, clkctrl_offs);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * cm_register - register per-SoC low-level data with the CM
  * @cld: low-level per-SoC OMAP CM data & function pointers to register
@@ -214,11 +199,7 @@ u32 omap_cm_xlate_clkctrl(u8 part, u16 inst, u16 clkctrl_offs)
  * is NULL, or -EEXIST if cm_register() has already been called
  * without an intervening cm_unregister().
  */
-<<<<<<< HEAD
 int cm_register(const struct cm_ll_data *cld)
-=======
-int cm_register(struct cm_ll_data *cld)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (!cld)
 		return -EINVAL;
@@ -242,11 +223,7 @@ int cm_register(struct cm_ll_data *cld)
  * -EINVAL if @cld is NULL or if @cld does not match the struct
  * cm_ll_data * previously registered by cm_register().
  */
-<<<<<<< HEAD
 int cm_unregister(const struct cm_ll_data *cld)
-=======
-int cm_unregister(struct cm_ll_data *cld)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (!cld || cm_ll_data != cld)
 		return -EINVAL;
@@ -373,10 +350,7 @@ int __init omap2_cm_base_init(void)
 		if (mem) {
 			mem->pa = res.start + data->offset;
 			mem->va = data->mem + data->offset;
-<<<<<<< HEAD
 			mem->offset = data->offset;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		data->np = np;

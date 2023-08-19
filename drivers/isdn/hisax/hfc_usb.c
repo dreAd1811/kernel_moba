@@ -343,14 +343,9 @@ handle_led(hfcusb_data *hfc, int event)
 
 /* ISDN l1 timer T3 expires */
 static void
-<<<<<<< HEAD
 l1_timer_expire_t3(struct timer_list *t)
 {
 	hfcusb_data *hfc = from_timer(hfc, t, t3_timer);
-=======
-l1_timer_expire_t3(hfcusb_data *hfc)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hfc->d_if.ifc.l1l2(&hfc->d_if.ifc, PH_DEACTIVATE | INDICATION,
 			   NULL);
 
@@ -366,14 +361,9 @@ l1_timer_expire_t3(hfcusb_data *hfc)
 
 /* ISDN l1 timer T4 expires */
 static void
-<<<<<<< HEAD
 l1_timer_expire_t4(struct timer_list *t)
 {
 	hfcusb_data *hfc = from_timer(hfc, t, t4_timer);
-=======
-l1_timer_expire_t4(hfcusb_data *hfc)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hfc->d_if.ifc.l1l2(&hfc->d_if.ifc, PH_DEACTIVATE | INDICATION,
 			   NULL);
 
@@ -442,25 +432,12 @@ fill_isoc_urb(struct urb *urb, struct usb_device *dev, unsigned int pipe,
 {
 	int k;
 
-<<<<<<< HEAD
 	usb_fill_int_urb(urb, dev, pipe, buf, packet_size * num_packets,
 			 complete, context, interval);
 
 	urb->number_of_packets = num_packets;
 	urb->transfer_flags = URB_ISO_ASAP;
 	urb->actual_length = 0;
-=======
-	urb->dev = dev;
-	urb->pipe = pipe;
-	urb->complete = complete;
-	urb->number_of_packets = num_packets;
-	urb->transfer_buffer_length = packet_size * num_packets;
-	urb->context = context;
-	urb->transfer_buffer = buf;
-	urb->transfer_flags = URB_ISO_ASAP;
-	urb->actual_length = 0;
-	urb->interval = interval;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (k = 0; k < num_packets; k++) {
 		urb->iso_frame_desc[k].offset = packet_size * k;
 		urb->iso_frame_desc[k].length = packet_size;
@@ -1186,17 +1163,10 @@ hfc_usb_init(hfcusb_data *hfc)
 	hfc->old_led_state = 0;
 
 	/* init the t3 timer */
-<<<<<<< HEAD
 	timer_setup(&hfc->t3_timer, l1_timer_expire_t3, 0);
 
 	/* init the t4 timer */
 	timer_setup(&hfc->t4_timer, l1_timer_expire_t4, 0);
-=======
-	setup_timer(&hfc->t3_timer, (void *)l1_timer_expire_t3, (long)hfc);
-
-	/* init the t4 timer */
-	setup_timer(&hfc->t4_timer, (void *)l1_timer_expire_t4, (long)hfc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* init the background machinery for control requests */
 	hfc->ctrl_read.bRequestType = 0xc0;

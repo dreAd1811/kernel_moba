@@ -64,11 +64,7 @@
 __visible DEFINE_PER_CPU(unsigned long, rsp_scratch);
 
 /* Prints also some state that isn't saved in the pt_regs */
-<<<<<<< HEAD
 void __show_regs(struct pt_regs *regs, enum show_regs_mode mode)
-=======
-void __show_regs(struct pt_regs *regs, int all)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long cr0 = 0L, cr2 = 0L, cr3 = 0L, cr4 = 0L, fs, gs, shadowgs;
 	unsigned long d0, d1, d2, d3, d6, d7;
@@ -93,7 +89,6 @@ void __show_regs(struct pt_regs *regs, int all)
 	printk(KERN_DEFAULT "R13: %016lx R14: %016lx R15: %016lx\n",
 	       regs->r13, regs->r14, regs->r15);
 
-<<<<<<< HEAD
 	if (mode == SHOW_REGS_SHORT)
 		return;
 
@@ -105,11 +100,6 @@ void __show_regs(struct pt_regs *regs, int all)
 		return;
 	}
 
-=======
-	if (!all)
-		return;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	asm("movl %%ds,%0" : "=r" (ds));
 	asm("movl %%cs,%0" : "=r" (cs));
 	asm("movl %%es,%0" : "=r" (es));
@@ -225,7 +215,6 @@ static __always_inline void save_fsgs(struct task_struct *task)
 	save_base_legacy(task, task->thread.gsindex, GS);
 }
 
-<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_KVM)
 /*
  * While a process is running,current->thread.fsbase and current->thread.gsbase
@@ -240,8 +229,6 @@ void save_fsgs_for_kvm(void)
 EXPORT_SYMBOL_GPL(save_fsgs_for_kvm);
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static __always_inline void loadseg(enum which_selector which,
 				    unsigned short sel)
 {
@@ -509,15 +496,9 @@ __switch_to(struct task_struct *prev_p, struct task_struct *next_p)
 	this_cpu_write(cpu_current_top_of_stack, task_top_of_stack(next_p));
 
 	/* Reload sp0. */
-<<<<<<< HEAD
 	update_task_stack(next_p);
 
 	switch_to_extra(prev_p, next_p);
-=======
-	update_sp0(next_p);
-
-	__switch_to_xtra(prev_p, next_p);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_XEN_PV
 	/*

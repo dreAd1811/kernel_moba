@@ -42,10 +42,7 @@ struct pdp_ctx {
 	struct hlist_node	hlist_addr;
 
 	union {
-<<<<<<< HEAD
 		u64		tid;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct {
 			u64	tid;
 			u16	flow;
@@ -548,11 +545,7 @@ static int gtp_build_skb_ip4(struct sk_buff *skb, struct net_device *dev,
 		mtu = dst_mtu(&rt->dst);
 	}
 
-<<<<<<< HEAD
 	rt->dst.ops->update_pmtu(&rt->dst, NULL, skb, mtu);
-=======
-	rt->dst.ops->update_pmtu(&rt->dst, NULL, skb, mtu, false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!skb_is_gso(skb) && (iph->frag_off & htons(IP_DF)) &&
 	    mtu < ntohs(iph->tot_len)) {
@@ -652,22 +645,9 @@ static void gtp_link_setup(struct net_device *dev)
 }
 
 static int gtp_hashtable_new(struct gtp_dev *gtp, int hsize);
-<<<<<<< HEAD
 static void gtp_hashtable_free(struct gtp_dev *gtp);
 static int gtp_encap_enable(struct gtp_dev *gtp, struct nlattr *data[]);
 
-=======
-static int gtp_encap_enable(struct gtp_dev *gtp, struct nlattr *data[]);
-
-static void gtp_destructor(struct net_device *dev)
-{
-	struct gtp_dev *gtp = netdev_priv(dev);
-
-	kfree(gtp->addr_hash);
-	kfree(gtp->tid_hash);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int gtp_newlink(struct net *src_net, struct net_device *dev,
 		       struct nlattr *tb[], struct nlattr *data[],
 		       struct netlink_ext_ack *extack)
@@ -685,20 +665,10 @@ static int gtp_newlink(struct net *src_net, struct net_device *dev,
 	if (err < 0)
 		return err;
 
-<<<<<<< HEAD
 	if (!data[IFLA_GTP_PDP_HASHSIZE])
 		hashsize = 1024;
 	else
 		hashsize = nla_get_u32(data[IFLA_GTP_PDP_HASHSIZE]);
-=======
-	if (!data[IFLA_GTP_PDP_HASHSIZE]) {
-		hashsize = 1024;
-	} else {
-		hashsize = nla_get_u32(data[IFLA_GTP_PDP_HASHSIZE]);
-		if (!hashsize)
-			hashsize = 1024;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = gtp_hashtable_new(gtp, hashsize);
 	if (err < 0)
@@ -712,22 +682,13 @@ static int gtp_newlink(struct net *src_net, struct net_device *dev,
 
 	gn = net_generic(dev_net(dev), gtp_net_id);
 	list_add_rcu(&gtp->list, &gn->gtp_dev_list);
-<<<<<<< HEAD
-=======
-	dev->priv_destructor = gtp_destructor;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	netdev_dbg(dev, "registered new GTP interface\n");
 
 	return 0;
 
 out_hashtable:
-<<<<<<< HEAD
 	gtp_hashtable_free(gtp);
-=======
-	kfree(gtp->addr_hash);
-	kfree(gtp->tid_hash);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out_encap:
 	gtp_encap_disable(gtp);
 	return err;
@@ -736,20 +697,9 @@ out_encap:
 static void gtp_dellink(struct net_device *dev, struct list_head *head)
 {
 	struct gtp_dev *gtp = netdev_priv(dev);
-<<<<<<< HEAD
 
 	gtp_encap_disable(gtp);
 	gtp_hashtable_free(gtp);
-=======
-	struct pdp_ctx *pctx;
-	int i;
-
-	for (i = 0; i < gtp->hash_size; i++)
-		hlist_for_each_entry_rcu(pctx, &gtp->tid_hash[i], hlist_tid)
-			pdp_context_delete(pctx);
-
-	gtp_encap_disable(gtp);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_del_rcu(&gtp->list);
 	unregister_netdevice_queue(dev, head);
 }
@@ -805,7 +755,6 @@ static int gtp_hashtable_new(struct gtp_dev *gtp, int hsize)
 {
 	int i;
 
-<<<<<<< HEAD
 	gtp->addr_hash = kmalloc_array(hsize, sizeof(struct hlist_head),
 				       GFP_KERNEL);
 	if (gtp->addr_hash == NULL)
@@ -813,15 +762,6 @@ static int gtp_hashtable_new(struct gtp_dev *gtp, int hsize)
 
 	gtp->tid_hash = kmalloc_array(hsize, sizeof(struct hlist_head),
 				      GFP_KERNEL);
-=======
-	gtp->addr_hash = kmalloc(sizeof(struct hlist_head) * hsize,
-				 GFP_KERNEL | __GFP_NOWARN);
-	if (gtp->addr_hash == NULL)
-		return -ENOMEM;
-
-	gtp->tid_hash = kmalloc(sizeof(struct hlist_head) * hsize,
-				GFP_KERNEL | __GFP_NOWARN);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (gtp->tid_hash == NULL)
 		goto err1;
 
@@ -837,7 +777,6 @@ err1:
 	return -ENOMEM;
 }
 
-<<<<<<< HEAD
 static void gtp_hashtable_free(struct gtp_dev *gtp)
 {
 	struct pdp_ctx *pctx;
@@ -852,8 +791,6 @@ static void gtp_hashtable_free(struct gtp_dev *gtp)
 	kfree(gtp->tid_hash);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct sock *gtp_encap_enable_socket(int fd, int type,
 					    struct gtp_dev *gtp)
 {
@@ -870,20 +807,12 @@ static struct sock *gtp_encap_enable_socket(int fd, int type,
 		return NULL;
 	}
 
-<<<<<<< HEAD
 	if (sock->sk->sk_protocol != IPPROTO_UDP) {
-=======
-	sk = sock->sk;
-	if (sk->sk_protocol != IPPROTO_UDP ||
-	    sk->sk_type != SOCK_DGRAM ||
-	    (sk->sk_family != AF_INET && sk->sk_family != AF_INET6)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_debug("socket fd=%d not UDP\n", fd);
 		sk = ERR_PTR(-EINVAL);
 		goto out_sock;
 	}
 
-<<<<<<< HEAD
 	lock_sock(sock->sk);
 	if (sock->sk->sk_user_data) {
 		sk = ERR_PTR(-EBUSY);
@@ -891,14 +820,6 @@ static struct sock *gtp_encap_enable_socket(int fd, int type,
 	}
 
 	sk = sock->sk;
-=======
-	lock_sock(sk);
-	if (sk->sk_user_data) {
-		sk = ERR_PTR(-EBUSY);
-		goto out_rel_sock;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sock_hold(sk);
 
 	tuncfg.sk_user_data = gtp;
@@ -908,14 +829,8 @@ static struct sock *gtp_encap_enable_socket(int fd, int type,
 
 	setup_udp_tunnel_sock(sock_net(sock->sk), sock, &tuncfg);
 
-<<<<<<< HEAD
 out_sock:
 	release_sock(sock->sk);
-=======
-out_rel_sock:
-	release_sock(sock->sk);
-out_sock:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sockfd_put(sock);
 	return sk;
 }
@@ -1016,28 +931,17 @@ static void ipv4_pdp_fill(struct pdp_ctx *pctx, struct genl_info *info)
 	}
 }
 
-<<<<<<< HEAD
 static int ipv4_pdp_add(struct gtp_dev *gtp, struct sock *sk,
 			struct genl_info *info)
 {
 	struct net_device *dev = gtp->dev;
 	u32 hash_ms, hash_tid = 0;
 	struct pdp_ctx *pctx;
-=======
-static int gtp_pdp_add(struct gtp_dev *gtp, struct sock *sk,
-		       struct genl_info *info)
-{
-	struct pdp_ctx *pctx, *pctx_tid = NULL;
-	struct net_device *dev = gtp->dev;
-	u32 hash_ms, hash_tid = 0;
-	unsigned int version;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool found = false;
 	__be32 ms_addr;
 
 	ms_addr = nla_get_be32(info->attrs[GTPA_MS_ADDRESS]);
 	hash_ms = ipv4_hashfn(ms_addr) % gtp->hash_size;
-<<<<<<< HEAD
 
 	hlist_for_each_entry_rcu(pctx, &gtp->addr_hash[hash_ms], hlist_addr) {
 		if (pctx->ms_addr_ip4.s_addr == ms_addr) {
@@ -1045,21 +949,6 @@ static int gtp_pdp_add(struct gtp_dev *gtp, struct sock *sk,
 			break;
 		}
 	}
-=======
-	version = nla_get_u32(info->attrs[GTPA_VERSION]);
-
-	pctx = ipv4_pdp_find(gtp, ms_addr);
-	if (pctx)
-		found = true;
-	if (version == GTP_V0)
-		pctx_tid = gtp0_pdp_find(gtp,
-					 nla_get_u64(info->attrs[GTPA_TID]));
-	else if (version == GTP_V1)
-		pctx_tid = gtp1_pdp_find(gtp,
-					 nla_get_u32(info->attrs[GTPA_I_TEI]));
-	if (pctx_tid)
-		found = true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (found) {
 		if (info->nlhdr->nlmsg_flags & NLM_F_EXCL)
@@ -1067,14 +956,6 @@ static int gtp_pdp_add(struct gtp_dev *gtp, struct sock *sk,
 		if (info->nlhdr->nlmsg_flags & NLM_F_REPLACE)
 			return -EOPNOTSUPP;
 
-<<<<<<< HEAD
-=======
-		if (pctx && pctx_tid)
-			return -EEXIST;
-		if (!pctx)
-			pctx = pctx_tid;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ipv4_pdp_fill(pctx, info);
 
 		if (pctx->gtp_version == GTP_V0)
@@ -1198,11 +1079,7 @@ static int gtp_genl_new_pdp(struct sk_buff *skb, struct genl_info *info)
 		goto out_unlock;
 	}
 
-<<<<<<< HEAD
 	err = ipv4_pdp_add(gtp, sk, info);
-=======
-	err = gtp_pdp_add(gtp, sk, info);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 out_unlock:
 	rcu_read_unlock();
@@ -1283,19 +1160,11 @@ out_unlock:
 static struct genl_family gtp_genl_family;
 
 static int gtp_genl_fill_info(struct sk_buff *skb, u32 snd_portid, u32 snd_seq,
-<<<<<<< HEAD
 			      u32 type, struct pdp_ctx *pctx)
 {
 	void *genlh;
 
 	genlh = genlmsg_put(skb, snd_portid, snd_seq, &gtp_genl_family, 0,
-=======
-			      int flags, u32 type, struct pdp_ctx *pctx)
-{
-	void *genlh;
-
-	genlh = genlmsg_put(skb, snd_portid, snd_seq, &gtp_genl_family, flags,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    type);
 	if (genlh == NULL)
 		goto nlmsg_failure;
@@ -1349,13 +1218,8 @@ static int gtp_genl_get_pdp(struct sk_buff *skb, struct genl_info *info)
 		goto err_unlock;
 	}
 
-<<<<<<< HEAD
 	err = gtp_genl_fill_info(skb2, NETLINK_CB(skb).portid,
 				 info->snd_seq, info->nlhdr->nlmsg_type, pctx);
-=======
-	err = gtp_genl_fill_info(skb2, NETLINK_CB(skb).portid, info->snd_seq,
-				 0, info->nlhdr->nlmsg_type, pctx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err < 0)
 		goto err_unlock_free;
 
@@ -1373,35 +1237,21 @@ static int gtp_genl_dump_pdp(struct sk_buff *skb,
 				struct netlink_callback *cb)
 {
 	struct gtp_dev *last_gtp = (struct gtp_dev *)cb->args[2], *gtp;
-<<<<<<< HEAD
 	struct net *net = sock_net(skb->sk);
 	struct gtp_net *gn = net_generic(net, gtp_net_id);
 	unsigned long tid = cb->args[1];
 	int i, k = cb->args[0], ret;
 	struct pdp_ctx *pctx;
-=======
-	int i, j, bucket = cb->args[0], skip = cb->args[1];
-	struct net *net = sock_net(skb->sk);
-	struct pdp_ctx *pctx;
-	struct gtp_net *gn;
-
-	gn = net_generic(net, gtp_net_id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (cb->args[4])
 		return 0;
 
-<<<<<<< HEAD
-=======
-	rcu_read_lock();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_for_each_entry_rcu(gtp, &gn->gtp_dev_list, list) {
 		if (last_gtp && last_gtp != gtp)
 			continue;
 		else
 			last_gtp = NULL;
 
-<<<<<<< HEAD
 		for (i = k; i < gtp->hash_size; i++) {
 			hlist_for_each_entry_rcu(pctx, &gtp->tid_hash[i], hlist_tid) {
 				if (tid && tid != pctx->u.tid)
@@ -1428,36 +1278,6 @@ out:
 }
 
 static const struct nla_policy gtp_genl_policy[GTPA_MAX + 1] = {
-=======
-		for (i = bucket; i < gtp->hash_size; i++) {
-			j = 0;
-			hlist_for_each_entry_rcu(pctx, &gtp->tid_hash[i],
-						 hlist_tid) {
-				if (j >= skip &&
-				    gtp_genl_fill_info(skb,
-					    NETLINK_CB(cb->skb).portid,
-					    cb->nlh->nlmsg_seq,
-					    NLM_F_MULTI,
-					    cb->nlh->nlmsg_type, pctx)) {
-					cb->args[0] = i;
-					cb->args[1] = j;
-					cb->args[2] = (unsigned long)gtp;
-					goto out;
-				}
-				j++;
-			}
-			skip = 0;
-		}
-		bucket = 0;
-	}
-	cb->args[4] = 1;
-out:
-	rcu_read_unlock();
-	return skb->len;
-}
-
-static struct nla_policy gtp_genl_policy[GTPA_MAX + 1] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	[GTPA_LINK]		= { .type = NLA_U32, },
 	[GTPA_VERSION]		= { .type = NLA_U32, },
 	[GTPA_TID]		= { .type = NLA_U64, },

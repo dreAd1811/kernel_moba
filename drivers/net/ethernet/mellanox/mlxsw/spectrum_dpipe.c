@@ -1,41 +1,5 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: BSD-3-Clause OR GPL-2.0
 /* Copyright (c) 2017-2018 Mellanox Technologies. All rights reserved */
-=======
-/*
- * drivers/net/ethernet/mellanox/mlxsw/spectrum_dpipe.c
- * Copyright (c) 2017 Mellanox Technologies. All rights reserved.
- * Copyright (c) 2017 Arkadi Sharshevsky <arakdis@mellanox.com>
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- * 3. Neither the names of the copyright holders nor the names of its
- *    contributors may be used to endorse or promote products derived from
- *    this software without specific prior written permission.
- *
- * Alternatively, this software may be distributed under the terms of the
- * GNU General Public License ("GPL") version 2 as published by the Free
- * Software Foundation.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/kernel.h>
 #include <net/devlink.h>
@@ -48,7 +12,6 @@ enum mlxsw_sp_field_metadata_id {
 	MLXSW_SP_DPIPE_FIELD_METADATA_ERIF_PORT,
 	MLXSW_SP_DPIPE_FIELD_METADATA_L3_FORWARD,
 	MLXSW_SP_DPIPE_FIELD_METADATA_L3_DROP,
-<<<<<<< HEAD
 	MLXSW_SP_DPIPE_FIELD_METADATA_ADJ_INDEX,
 	MLXSW_SP_DPIPE_FIELD_METADATA_ADJ_SIZE,
 	MLXSW_SP_DPIPE_FIELD_METADATA_ADJ_HASH_INDEX,
@@ -85,23 +48,6 @@ static struct devlink_dpipe_field mlxsw_sp_dpipe_fields_metadata[] = {
 		.name = "adj_hash_index",
 		.id = MLXSW_SP_DPIPE_FIELD_METADATA_ADJ_HASH_INDEX,
 		.bitwidth = 32,
-=======
-};
-
-static struct devlink_dpipe_field mlxsw_sp_dpipe_fields_metadata[] = {
-	{ .name = "erif_port",
-	  .id = MLXSW_SP_DPIPE_FIELD_METADATA_ERIF_PORT,
-	  .bitwidth = 32,
-	  .mapping_type = DEVLINK_DPIPE_FIELD_MAPPING_TYPE_IFINDEX,
-	},
-	{ .name = "l3_forward",
-	  .id = MLXSW_SP_DPIPE_FIELD_METADATA_L3_FORWARD,
-	  .bitwidth = 1,
-	},
-	{ .name = "l3_drop",
-	  .id = MLXSW_SP_DPIPE_FIELD_METADATA_L3_DROP,
-	  .bitwidth = 1,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 };
 
@@ -269,11 +215,7 @@ mlxsw_sp_dpipe_table_erif_entries_dump(void *priv, bool counters_enabled,
 start_again:
 	err = devlink_dpipe_entry_ctx_prepare(dump_ctx);
 	if (err)
-<<<<<<< HEAD
 		return err;
-=======
-		goto err_ctx_prepare;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	j = 0;
 	for (; i < rif_count; i++) {
 		struct mlxsw_sp_rif *rif = mlxsw_sp_rif_by_index(mlxsw_sp, i);
@@ -305,10 +247,6 @@ start_again:
 	return 0;
 err_entry_append:
 err_entry_get:
-<<<<<<< HEAD
-=======
-err_ctx_prepare:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rtnl_unlock();
 	devlink_dpipe_entry_clear(&entry);
 	return err;
@@ -802,7 +740,6 @@ static struct devlink_dpipe_table_ops mlxsw_sp_host4_ops = {
 	.size_get = mlxsw_sp_dpipe_table_host4_size_get,
 };
 
-<<<<<<< HEAD
 #define MLXSW_SP_DPIPE_TABLE_RESOURCE_UNIT_HOST4 1
 
 static int mlxsw_sp_dpipe_host4_table_init(struct mlxsw_sp *mlxsw_sp)
@@ -830,16 +767,6 @@ err_resource_set:
 	devlink_dpipe_table_unregister(devlink,
 				       MLXSW_SP_DPIPE_TABLE_NAME_HOST4);
 	return err;
-=======
-static int mlxsw_sp_dpipe_host4_table_init(struct mlxsw_sp *mlxsw_sp)
-{
-	struct devlink *devlink = priv_to_devlink(mlxsw_sp->core);
-
-	return devlink_dpipe_table_register(devlink,
-					    MLXSW_SP_DPIPE_TABLE_NAME_HOST4,
-					    &mlxsw_sp_host4_ops,
-					    mlxsw_sp, false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void mlxsw_sp_dpipe_host4_table_fini(struct mlxsw_sp *mlxsw_sp)
@@ -890,7 +817,6 @@ static struct devlink_dpipe_table_ops mlxsw_sp_host6_ops = {
 	.size_get = mlxsw_sp_dpipe_table_host6_size_get,
 };
 
-<<<<<<< HEAD
 #define MLXSW_SP_DPIPE_TABLE_RESOURCE_UNIT_HOST6 2
 
 static int mlxsw_sp_dpipe_host6_table_init(struct mlxsw_sp *mlxsw_sp)
@@ -918,16 +844,6 @@ err_resource_set:
 	devlink_dpipe_table_unregister(devlink,
 				       MLXSW_SP_DPIPE_TABLE_NAME_HOST6);
 	return err;
-=======
-static int mlxsw_sp_dpipe_host6_table_init(struct mlxsw_sp *mlxsw_sp)
-{
-	struct devlink *devlink = priv_to_devlink(mlxsw_sp->core);
-
-	return devlink_dpipe_table_register(devlink,
-					    MLXSW_SP_DPIPE_TABLE_NAME_HOST6,
-					    &mlxsw_sp_host6_ops,
-					    mlxsw_sp, false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void mlxsw_sp_dpipe_host6_table_fini(struct mlxsw_sp *mlxsw_sp)
@@ -938,7 +854,6 @@ static void mlxsw_sp_dpipe_host6_table_fini(struct mlxsw_sp *mlxsw_sp)
 				       MLXSW_SP_DPIPE_TABLE_NAME_HOST6);
 }
 
-<<<<<<< HEAD
 static int mlxsw_sp_dpipe_table_adj_matches_dump(void *priv,
 						 struct sk_buff *skb)
 {
@@ -1342,8 +1257,6 @@ static void mlxsw_sp_dpipe_adj_table_fini(struct mlxsw_sp *mlxsw_sp)
 				       MLXSW_SP_DPIPE_TABLE_NAME_ADJ);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int mlxsw_sp_dpipe_init(struct mlxsw_sp *mlxsw_sp)
 {
 	struct devlink *devlink = priv_to_devlink(mlxsw_sp->core);
@@ -1364,7 +1277,6 @@ int mlxsw_sp_dpipe_init(struct mlxsw_sp *mlxsw_sp)
 	err = mlxsw_sp_dpipe_host6_table_init(mlxsw_sp);
 	if (err)
 		goto err_host6_table_init;
-<<<<<<< HEAD
 
 	err = mlxsw_sp_dpipe_adj_table_init(mlxsw_sp);
 	if (err)
@@ -1373,10 +1285,6 @@ int mlxsw_sp_dpipe_init(struct mlxsw_sp *mlxsw_sp)
 	return 0;
 err_adj_table_init:
 	mlxsw_sp_dpipe_host6_table_fini(mlxsw_sp);
-=======
-	return 0;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_host6_table_init:
 	mlxsw_sp_dpipe_host4_table_fini(mlxsw_sp);
 err_host4_table_init:
@@ -1390,10 +1298,7 @@ void mlxsw_sp_dpipe_fini(struct mlxsw_sp *mlxsw_sp)
 {
 	struct devlink *devlink = priv_to_devlink(mlxsw_sp->core);
 
-<<<<<<< HEAD
 	mlxsw_sp_dpipe_adj_table_fini(mlxsw_sp);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlxsw_sp_dpipe_host6_table_fini(mlxsw_sp);
 	mlxsw_sp_dpipe_host4_table_fini(mlxsw_sp);
 	mlxsw_sp_dpipe_erif_table_fini(mlxsw_sp);

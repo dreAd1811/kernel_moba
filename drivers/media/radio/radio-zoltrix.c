@@ -27,11 +27,7 @@
  * 2002-07-15 - Fix Stereo typo
  *
  * 2006-07-24 - Converted to V4L2 API
-<<<<<<< HEAD
  *		by Mauro Carvalho Chehab <mchehab@kernel.org>
-=======
- *		by Mauro Carvalho Chehab <mchehab@infradead.org>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Converted to the radio-isa framework by Hans Verkuil <hans.verkuil@cisco.com>
  *

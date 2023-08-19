@@ -7,7 +7,6 @@ Types and flags used to represent the media graph elements
 
 ..  tabularcolumns:: |p{8.2cm}|p{10.3cm}|
 
-<<<<<<< HEAD
 .. _media-entity-functions:
 .. _MEDIA-ENT-F-UNKNOWN:
 .. _MEDIA-ENT-F-V4L2-SUBDEV-UNKNOWN:
@@ -101,149 +100,6 @@ Types and flags used to represent the media graph elements
        -  Lens controller entity.
 
     *  -  ``MEDIA_ENT_F_ATV_DECODER``
-=======
-.. _media-entity-type:
-
-.. cssclass:: longtable
-
-.. flat-table:: Media entity types
-    :header-rows:  0
-    :stub-columns: 0
-
-
-    -  .. row 1
-
-       .. _MEDIA-ENT-F-UNKNOWN:
-       .. _MEDIA-ENT-F-V4L2-SUBDEV-UNKNOWN:
-
-       -  ``MEDIA_ENT_F_UNKNOWN`` and
-
-	  ``MEDIA_ENT_F_V4L2_SUBDEV_UNKNOWN``
-
-       -  Unknown entity. That generally indicates that a driver didn't
-	  initialize properly the entity, with is a Kernel bug
-
-    -  .. row 2
-
-       ..  _MEDIA-ENT-F-IO-V4L:
-
-       -  ``MEDIA_ENT_F_IO_V4L``
-
-       -  Data streaming input and/or output entity.
-
-    -  .. row 3
-
-       ..  _MEDIA-ENT-F-IO-VBI:
-
-       -  ``MEDIA_ENT_F_IO_VBI``
-
-       -  V4L VBI streaming input or output entity
-
-    -  .. row 4
-
-       ..  _MEDIA-ENT-F-IO-SWRADIO:
-
-       -  ``MEDIA_ENT_F_IO_SWRADIO``
-
-       -  V4L Software Digital Radio (SDR) streaming input or output entity
-
-    -  .. row 5
-
-       ..  _MEDIA-ENT-F-IO-DTV:
-
-       -  ``MEDIA_ENT_F_IO_DTV``
-
-       -  DVB Digital TV streaming input or output entity
-
-    -  .. row 6
-
-       ..  _MEDIA-ENT-F-DTV-DEMOD:
-
-       -  ``MEDIA_ENT_F_DTV_DEMOD``
-
-       -  Digital TV demodulator entity.
-
-    -  .. row 7
-
-       ..  _MEDIA-ENT-F-TS-DEMUX:
-
-       -  ``MEDIA_ENT_F_TS_DEMUX``
-
-       -  MPEG Transport stream demux entity. Could be implemented on
-	  hardware or in Kernelspace by the Linux DVB subsystem.
-
-    -  .. row 8
-
-       ..  _MEDIA-ENT-F-DTV-CA:
-
-       -  ``MEDIA_ENT_F_DTV_CA``
-
-       -  Digital TV Conditional Access module (CAM) entity
-
-    -  .. row 9
-
-       ..  _MEDIA-ENT-F-DTV-NET-DECAP:
-
-       -  ``MEDIA_ENT_F_DTV_NET_DECAP``
-
-       -  Digital TV network ULE/MLE desencapsulation entity. Could be
-	  implemented on hardware or in Kernelspace
-
-    -  .. row 10
-
-       ..  _MEDIA-ENT-F-CONN-RF:
-
-       -  ``MEDIA_ENT_F_CONN_RF``
-
-       -  Connector for a Radio Frequency (RF) signal.
-
-    -  .. row 11
-
-       ..  _MEDIA-ENT-F-CONN-SVIDEO:
-
-       -  ``MEDIA_ENT_F_CONN_SVIDEO``
-
-       -  Connector for a S-Video signal.
-
-    -  .. row 12
-
-       ..  _MEDIA-ENT-F-CONN-COMPOSITE:
-
-       -  ``MEDIA_ENT_F_CONN_COMPOSITE``
-
-       -  Connector for a RGB composite signal.
-
-    -  .. row 13
-
-       ..  _MEDIA-ENT-F-CAM-SENSOR:
-
-       -  ``MEDIA_ENT_F_CAM_SENSOR``
-
-       -  Camera video sensor entity.
-
-    -  .. row 14
-
-       ..  _MEDIA-ENT-F-FLASH:
-
-       -  ``MEDIA_ENT_F_FLASH``
-
-       -  Flash controller entity.
-
-    -  .. row 15
-
-       ..  _MEDIA-ENT-F-LENS:
-
-       -  ``MEDIA_ENT_F_LENS``
-
-       -  Lens controller entity.
-
-    -  .. row 16
-
-       ..  _MEDIA-ENT-F-ATV-DECODER:
-
-       -  ``MEDIA_ENT_F_ATV_DECODER``
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
        -  Analog video decoder, the basic function of the video decoder is
 	  to accept analogue video from a wide variety of sources such as
 	  broadcast, DVD players, cameras and video cassette recorders, in
@@ -251,48 +107,21 @@ Types and flags used to represent the media graph elements
 	  its component parts, luminance and chrominance, and output it in
 	  some digital video standard, with appropriate timing signals.
 
-<<<<<<< HEAD
     *  -  ``MEDIA_ENT_F_TUNER``
-=======
-    -  .. row 17
-
-       ..  _MEDIA-ENT-F-TUNER:
-
-       -  ``MEDIA_ENT_F_TUNER``
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
        -  Digital TV, analog TV, radio and/or software radio tuner, with
 	  consists on a PLL tuning stage that converts radio frequency (RF)
 	  signal into an Intermediate Frequency (IF). Modern tuners have
 	  internally IF-PLL decoders for audio and video, but older models
 	  have those stages implemented on separate entities.
 
-<<<<<<< HEAD
     *  -  ``MEDIA_ENT_F_IF_VID_DECODER``
-=======
-    -  .. row 18
-
-       ..  _MEDIA-ENT-F-IF-VID-DECODER:
-
-       -  ``MEDIA_ENT_F_IF_VID_DECODER``
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
        -  IF-PLL video decoder. It receives the IF from a PLL and decodes
 	  the analog TV video signal. This is commonly found on some very
 	  old analog tuners, like Philips MK3 designs. They all contain a
 	  tda9887 (or some software compatible similar chip, like tda9885).
 	  Those devices use a different I2C address than the tuner PLL.
 
-<<<<<<< HEAD
     *  -  ``MEDIA_ENT_F_IF_AUD_DECODER``
-=======
-    -  .. row 19
-
-       ..  _MEDIA-ENT-F-IF-AUD-DECODER:
-
-       -  ``MEDIA_ENT_F_IF_AUD_DECODER``
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
        -  IF-PLL sound decoder. It receives the IF from a PLL and decodes
 	  the analog TV audio signal. This is commonly found on some very
 	  old analog hardware, like Micronas msp3400, Philips tda9840,
@@ -300,7 +129,6 @@ Types and flags used to represent the media graph elements
 	  tuner PLL and should be controlled together with the IF-PLL video
 	  decoder.
 
-<<<<<<< HEAD
     *  -  ``MEDIA_ENT_F_AUDIO_CAPTURE``
        -  Audio Capture Function Entity.
 
@@ -311,38 +139,6 @@ Types and flags used to represent the media graph elements
        -  Audio Mixer Function Entity.
 
     *  -  ``MEDIA_ENT_F_PROC_VIDEO_COMPOSER``
-=======
-    -  .. row 20
-
-       ..  _MEDIA-ENT-F-AUDIO-CAPTURE:
-
-       -  ``MEDIA_ENT_F_AUDIO_CAPTURE``
-
-       -  Audio Capture Function Entity.
-
-    -  .. row 21
-
-       ..  _MEDIA-ENT-F-AUDIO-PLAYBACK:
-
-       -  ``MEDIA_ENT_F_AUDIO_PLAYBACK``
-
-       -  Audio Playback Function Entity.
-
-    -  .. row 22
-
-       ..  _MEDIA-ENT-F-AUDIO-MIXER:
-
-       -  ``MEDIA_ENT_F_AUDIO_MIXER``
-
-       -  Audio Mixer Function Entity.
-
-    -  .. row 23
-
-       ..  _MEDIA-ENT-F-PROC-VIDEO-COMPOSER:
-
-       -  ``MEDIA_ENT_F_PROC_VIDEO_COMPOSER``
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
        -  Video composer (blender). An entity capable of video
 	  composing must have at least two sink pads and one source
 	  pad, and composes input video frames onto output video
@@ -350,16 +146,7 @@ Types and flags used to represent the media graph elements
 	  color keying, raster operations (ROP), stitching or any other
 	  means.
 
-<<<<<<< HEAD
     *  -  ``MEDIA_ENT_F_PROC_VIDEO_PIXEL_FORMATTER``
-=======
-    -  ..  row 24
-
-       ..  _MEDIA-ENT-F-PROC-VIDEO-PIXEL-FORMATTER:
-
-       -  ``MEDIA_ENT_F_PROC_VIDEO_PIXEL_FORMATTER``
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
        -  Video pixel formatter. An entity capable of pixel formatting
 	  must have at least one sink pad and one source pad. Read
 	  pixel formatters read pixels from memory and perform a subset
@@ -368,16 +155,7 @@ Types and flags used to represent the media graph elements
 	  a subset of dithering, pixel encoding conversion and packing
 	  and write pixels to memory.
 
-<<<<<<< HEAD
     *  -  ``MEDIA_ENT_F_PROC_VIDEO_PIXEL_ENC_CONV``
-=======
-    -  ..  row 25
-
-       ..  _MEDIA-ENT-F-PROC-VIDEO-PIXEL-ENC-CONV:
-
-       -  ``MEDIA_ENT_F_PROC_VIDEO_PIXEL_ENC_CONV``
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
        -  Video pixel encoding converter. An entity capable of pixel
 	  enconding conversion must have at least one sink pad and one
 	  source pad, and convert the encoding of pixels received on
@@ -386,16 +164,7 @@ Types and flags used to represent the media graph elements
 	  to RGB to/from HSV, RGB to/from YUV and CFA (Bayer) to RGB
 	  conversions.
 
-<<<<<<< HEAD
     *  -  ``MEDIA_ENT_F_PROC_VIDEO_LUT``
-=======
-    -  ..  row 26
-
-       ..  _MEDIA-ENT-F-PROC-VIDEO-LUT:
-
-       -  ``MEDIA_ENT_F_PROC_VIDEO_LUT``
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
        -  Video look-up table. An entity capable of video lookup table
 	  processing must have one sink pad and one source pad. It uses
 	  the values of the pixels received on its sink pad to look up
@@ -404,16 +173,7 @@ Types and flags used to represent the media graph elements
 	  separately or combine them for multi-dimensional table
 	  lookups.
 
-<<<<<<< HEAD
     *  -  ``MEDIA_ENT_F_PROC_VIDEO_SCALER``
-=======
-    -  ..  row 27
-
-       ..  _MEDIA-ENT-F-PROC-VIDEO-SCALER:
-
-       -  ``MEDIA_ENT_F_PROC_VIDEO_SCALER``
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
        -  Video scaler. An entity capable of video scaling must have
 	  at least one sink pad and one source pad, and scale the
 	  video frame(s) received on its sink pad(s) to a different
@@ -424,24 +184,13 @@ Types and flags used to represent the media graph elements
 	  sub-sampling (occasionally also referred to as skipping) are
 	  considered as scaling.
 
-<<<<<<< HEAD
     *  -  ``MEDIA_ENT_F_PROC_VIDEO_STATISTICS``
        -  Video statistics computation (histogram, 3A, etc.). An entity
-=======
-    -  ..  row 28
-
-       ..  _MEDIA-ENT-F-PROC-VIDEO-STATISTICS:
-
-       -  ``MEDIA_ENT_F_PROC_VIDEO_STATISTICS``
-
-       -  Video statistics computation (histogram, 3A, ...). An entity
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	  capable of statistics computation must have one sink pad and
 	  one source pad. It computes statistics over the frames
 	  received on its sink pad and outputs the statistics data on
 	  its source pad.
 
-<<<<<<< HEAD
     *  -  ``MEDIA_ENT_F_PROC_VIDEO_ENCODER``
        -  Video (MPEG, HEVC, VPx, etc.) encoder. An entity capable of
           compressing video frames. Must have one sink pad and at least
@@ -453,19 +202,10 @@ Types and flags used to represent the media graph elements
 	  frames. Must have one sink pad and at least one source pad.
 
     *  -  ``MEDIA_ENT_F_VID_MUX``
-=======
-    -  ..  row 29
-
-       ..  _MEDIA-ENT-F-VID-MUX:
-
-       -  ``MEDIA_ENT_F_VID_MUX``
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
        - Video multiplexer. An entity capable of multiplexing must have at
          least two sink pads and one source pad, and must pass the video
          frame(s) received from the active sink pad to the source pad.
 
-<<<<<<< HEAD
     *  -  ``MEDIA_ENT_F_VID_IF_BRIDGE``
        - Video interface bridge. A video interface bridge entity must have at
          least one sink pad and at least one source pad. It receives video
@@ -485,65 +225,28 @@ Types and flags used to represent the media graph elements
 	  appropriate timing signals (usually a parallel video bus with sync
 	  signals) and output this to a digital video output connector such
 	  as HDMI or DisplayPort.
-=======
-    -  ..  row 30
-
-       ..  _MEDIA-ENT-F-VID-IF-BRIDGE:
-
-       -  ``MEDIA_ENT_F_VID_IF_BRIDGE``
-
-       - Video interface bridge. A video interface bridge entity must have at
-         least one sink pad and at least one source pad. It receives video
-         frames on its sink pad from an input video bus of one type (HDMI, eDP,
-         MIPI CSI-2, ...), and outputs them on its source pad to an output
-         video bus of another type (eDP, MIPI CSI-2, parallel, ...).
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 ..  tabularcolumns:: |p{5.5cm}|p{12.0cm}|
 
 .. _media-entity-flag:
-<<<<<<< HEAD
 .. _MEDIA-ENT-FL-DEFAULT:
 .. _MEDIA-ENT-FL-CONNECTOR:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 .. flat-table:: Media entity flags
     :header-rows:  0
     :stub-columns: 0
 
-<<<<<<< HEAD
     *  -  ``MEDIA_ENT_FL_DEFAULT``
        -  Default entity for its type. Used to discover the default audio,
 	  VBI and video devices, the default camera sensor, etc.
 
     *  -  ``MEDIA_ENT_FL_CONNECTOR``
        -  The entity represents a connector.
-=======
-
-    -  .. row 1
-
-       ..  _MEDIA-ENT-FL-DEFAULT:
-
-       -  ``MEDIA_ENT_FL_DEFAULT``
-
-       -  Default entity for its type. Used to discover the default audio,
-	  VBI and video devices, the default camera sensor, ...
-
-    -  .. row 2
-
-       ..  _MEDIA-ENT-FL-CONNECTOR:
-
-       -  ``MEDIA_ENT_FL_CONNECTOR``
-
-       -  The entity represents a data conector
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 ..  tabularcolumns:: |p{6.5cm}|p{6.0cm}|p{5.0cm}|
 
 .. _media-intf-type:
-<<<<<<< HEAD
 .. _MEDIA-INTF-T-DVB-FE:
 .. _MEDIA-INTF-T-DVB-DEMUX:
 .. _MEDIA-INTF-T-DVB-DVR:
@@ -563,14 +266,11 @@ Types and flags used to represent the media graph elements
 .. _MEDIA-INTF-T-ALSA-HWDEP:
 .. _MEDIA-INTF-T-ALSA-SEQUENCER:
 .. _MEDIA-INTF-T-ALSA-TIMER:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 .. flat-table:: Media interface types
     :header-rows:  0
     :stub-columns: 0
 
-<<<<<<< HEAD
     *  -  ``MEDIA_INTF_T_DVB_FE``
        -  Device node interface for the Digital TV frontend
        -  typically, /dev/dvb/adapter?/frontend?
@@ -645,215 +345,20 @@ Types and flags used to represent the media graph elements
 
     *  -  ``MEDIA_INTF_T_ALSA_TIMER``
        -  Device node interface for ALSA Timer
-=======
-
-    -  .. row 1
-
-       ..  _MEDIA-INTF-T-DVB-FE:
-
-       -  ``MEDIA_INTF_T_DVB_FE``
-
-       -  Device node interface for the Digital TV frontend
-
-       -  typically, /dev/dvb/adapter?/frontend?
-
-    -  .. row 2
-
-       ..  _MEDIA-INTF-T-DVB-DEMUX:
-
-       -  ``MEDIA_INTF_T_DVB_DEMUX``
-
-       -  Device node interface for the Digital TV demux
-
-       -  typically, /dev/dvb/adapter?/demux?
-
-    -  .. row 3
-
-       ..  _MEDIA-INTF-T-DVB-DVR:
-
-       -  ``MEDIA_INTF_T_DVB_DVR``
-
-       -  Device node interface for the Digital TV DVR
-
-       -  typically, /dev/dvb/adapter?/dvr?
-
-    -  .. row 4
-
-       ..  _MEDIA-INTF-T-DVB-CA:
-
-       -  ``MEDIA_INTF_T_DVB_CA``
-
-       -  Device node interface for the Digital TV Conditional Access
-
-       -  typically, /dev/dvb/adapter?/ca?
-
-    -  .. row 5
-
-       ..  _MEDIA-INTF-T-DVB-NET:
-
-       -  ``MEDIA_INTF_T_DVB_NET``
-
-       -  Device node interface for the Digital TV network control
-
-       -  typically, /dev/dvb/adapter?/net?
-
-    -  .. row 6
-
-       ..  _MEDIA-INTF-T-V4L-VIDEO:
-
-       -  ``MEDIA_INTF_T_V4L_VIDEO``
-
-       -  Device node interface for video (V4L)
-
-       -  typically, /dev/video?
-
-    -  .. row 7
-
-       ..  _MEDIA-INTF-T-V4L-VBI:
-
-       -  ``MEDIA_INTF_T_V4L_VBI``
-
-       -  Device node interface for VBI (V4L)
-
-       -  typically, /dev/vbi?
-
-    -  .. row 8
-
-       ..  _MEDIA-INTF-T-V4L-RADIO:
-
-       -  ``MEDIA_INTF_T_V4L_RADIO``
-
-       -  Device node interface for radio (V4L)
-
-       -  typically, /dev/radio?
-
-    -  .. row 9
-
-       ..  _MEDIA-INTF-T-V4L-SUBDEV:
-
-       -  ``MEDIA_INTF_T_V4L_SUBDEV``
-
-       -  Device node interface for a V4L subdevice
-
-       -  typically, /dev/v4l-subdev?
-
-    -  .. row 10
-
-       ..  _MEDIA-INTF-T-V4L-SWRADIO:
-
-       -  ``MEDIA_INTF_T_V4L_SWRADIO``
-
-       -  Device node interface for Software Defined Radio (V4L)
-
-       -  typically, /dev/swradio?
-
-    -  .. row 11
-
-       ..  _MEDIA-INTF-T-V4L-TOUCH:
-
-       -  ``MEDIA_INTF_T_V4L_TOUCH``
-
-       -  Device node interface for Touch device (V4L)
-
-       -  typically, /dev/v4l-touch?
-
-    -  .. row 12
-
-       ..  _MEDIA-INTF-T-ALSA-PCM-CAPTURE:
-
-       -  ``MEDIA_INTF_T_ALSA_PCM_CAPTURE``
-
-       -  Device node interface for ALSA PCM Capture
-
-       -  typically, /dev/snd/pcmC?D?c
-
-    -  .. row 13
-
-       ..  _MEDIA-INTF-T-ALSA-PCM-PLAYBACK:
-
-       -  ``MEDIA_INTF_T_ALSA_PCM_PLAYBACK``
-
-       -  Device node interface for ALSA PCM Playback
-
-       -  typically, /dev/snd/pcmC?D?p
-
-    -  .. row 14
-
-       ..  _MEDIA-INTF-T-ALSA-CONTROL:
-
-       -  ``MEDIA_INTF_T_ALSA_CONTROL``
-
-       -  Device node interface for ALSA Control
-
-       -  typically, /dev/snd/controlC?
-
-    -  .. row 15
-
-       ..  _MEDIA-INTF-T-ALSA-COMPRESS:
-
-       -  ``MEDIA_INTF_T_ALSA_COMPRESS``
-
-       -  Device node interface for ALSA Compress
-
-       -  typically, /dev/snd/compr?
-
-    -  .. row 16
-
-       ..  _MEDIA-INTF-T-ALSA-RAWMIDI:
-
-       -  ``MEDIA_INTF_T_ALSA_RAWMIDI``
-
-       -  Device node interface for ALSA Raw MIDI
-
-       -  typically, /dev/snd/midi?
-
-    -  .. row 17
-
-       ..  _MEDIA-INTF-T-ALSA-HWDEP:
-
-       -  ``MEDIA_INTF_T_ALSA_HWDEP``
-
-       -  Device node interface for ALSA Hardware Dependent
-
-       -  typically, /dev/snd/hwC?D?
-
-    -  .. row 18
-
-       ..  _MEDIA-INTF-T-ALSA-SEQUENCER:
-
-       -  ``MEDIA_INTF_T_ALSA_SEQUENCER``
-
-       -  Device node interface for ALSA Sequencer
-
-       -  typically, /dev/snd/seq
-
-    -  .. row 19
-
-       ..  _MEDIA-INTF-T-ALSA-TIMER:
-
-       -  ``MEDIA_INTF_T_ALSA_TIMER``
-
-       -  Device node interface for ALSA Timer
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
        -  typically, /dev/snd/timer
 
 
 .. tabularcolumns:: |p{5.5cm}|p{12.0cm}|
 
 .. _media-pad-flag:
-<<<<<<< HEAD
 .. _MEDIA-PAD-FL-SINK:
 .. _MEDIA-PAD-FL-SOURCE:
 .. _MEDIA-PAD-FL-MUST-CONNECT:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 .. flat-table:: Media pad flags
     :header-rows:  0
     :stub-columns: 0
 
-<<<<<<< HEAD
     *  -  ``MEDIA_PAD_FL_SINK``
        -  Input pad, relative to the entity. Input pads sink data and are
 	  targets of links.
@@ -863,33 +368,6 @@ Types and flags used to represent the media graph elements
 	  are origins of links.
 
     *  -  ``MEDIA_PAD_FL_MUST_CONNECT``
-=======
-
-    -  .. row 1
-
-       ..  _MEDIA-PAD-FL-SINK:
-
-       -  ``MEDIA_PAD_FL_SINK``
-
-       -  Input pad, relative to the entity. Input pads sink data and are
-	  targets of links.
-
-    -  .. row 2
-
-       ..  _MEDIA-PAD-FL-SOURCE:
-
-       -  ``MEDIA_PAD_FL_SOURCE``
-
-       -  Output pad, relative to the entity. Output pads source data and
-	  are origins of links.
-
-    -  .. row 3
-
-       ..  _MEDIA-PAD-FL-MUST-CONNECT:
-
-       -  ``MEDIA_PAD_FL_MUST_CONNECT``
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
        -  If this flag is set and the pad is linked to any other pad, then
 	  at least one of those links must be enabled for the entity to be
 	  able to stream. There could be temporary reasons (e.g. device
@@ -904,34 +382,20 @@ must be set for every pad.
 .. tabularcolumns:: |p{5.5cm}|p{12.0cm}|
 
 .. _media-link-flag:
-<<<<<<< HEAD
 .. _MEDIA-LNK-FL-ENABLED:
 .. _MEDIA-LNK-FL-IMMUTABLE:
 .. _MEDIA-LNK-FL-DYNAMIC:
 .. _MEDIA-LNK-FL-LINK-TYPE:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 .. flat-table:: Media link flags
     :header-rows:  0
     :stub-columns: 0
 
-<<<<<<< HEAD
     *  -  ``MEDIA_LNK_FL_ENABLED``
-=======
-
-    -  .. row 1
-
-       ..  _MEDIA-LNK-FL-ENABLED:
-
-       -  ``MEDIA_LNK_FL_ENABLED``
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
        -  The link is enabled and can be used to transfer media data. When
 	  two or more links target a sink pad, only one of them can be
 	  enabled at a time.
 
-<<<<<<< HEAD
     *  -  ``MEDIA_LNK_FL_IMMUTABLE``
        -  The link enabled state can't be modified at runtime. An immutable
 	  link is always enabled.
@@ -941,32 +405,6 @@ must be set for every pad.
 	  is set by drivers and is read-only for applications.
 
     *  -  ``MEDIA_LNK_FL_LINK_TYPE``
-=======
-    -  .. row 2
-
-       ..  _MEDIA-LNK-FL-IMMUTABLE:
-
-       -  ``MEDIA_LNK_FL_IMMUTABLE``
-
-       -  The link enabled state can't be modified at runtime. An immutable
-	  link is always enabled.
-
-    -  .. row 3
-
-       ..  _MEDIA-LNK-FL-DYNAMIC:
-
-       -  ``MEDIA_LNK_FL_DYNAMIC``
-
-       -  The link enabled state can be modified during streaming. This flag
-	  is set by drivers and is read-only for applications.
-
-    -  .. row 4
-
-       ..  _MEDIA-LNK-FL-LINK-TYPE:
-
-       -  ``MEDIA_LNK_FL_LINK_TYPE``
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
        -  This is a bitmask that defines the type of the link. Currently,
 	  two types of links are supported:
 

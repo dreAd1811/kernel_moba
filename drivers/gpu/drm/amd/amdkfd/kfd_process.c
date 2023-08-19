@@ -24,43 +24,25 @@
 #include <linux/log2.h>
 #include <linux/sched.h>
 #include <linux/sched/mm.h>
-<<<<<<< HEAD
 #include <linux/sched/task.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/slab.h>
 #include <linux/amd-iommu.h>
 #include <linux/notifier.h>
 #include <linux/compat.h>
-<<<<<<< HEAD
 #include <linux/mman.h>
 #include <linux/file.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct mm_struct;
 
 #include "kfd_priv.h"
-<<<<<<< HEAD
 #include "kfd_device_queue_manager.h"
 #include "kfd_dbgmgr.h"
 #include "kfd_iommu.h"
-=======
-#include "kfd_dbgmgr.h"
-
-/*
- * Initial size for the array of queues.
- * The allocated size is doubled each time
- * it is exceeded up to MAX_PROCESS_QUEUES.
- */
-#define INITIAL_QUEUE_ARRAY_SIZE 16
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * List of struct kfd_process (field kfd_process).
  * Unique/indexed by mm_struct*
  */
-<<<<<<< HEAD
 DEFINE_HASHTABLE(kfd_processes_table, KFD_PROCESS_TABLE_SIZE);
 static DEFINE_MUTEX(kfd_processes_mutex);
 
@@ -99,28 +81,6 @@ int kfd_process_create_wq(void)
 	}
 
 	return 0;
-=======
-#define KFD_PROCESS_TABLE_SIZE 5 /* bits: 32 entries */
-static DEFINE_HASHTABLE(kfd_processes_table, KFD_PROCESS_TABLE_SIZE);
-static DEFINE_MUTEX(kfd_processes_mutex);
-
-DEFINE_STATIC_SRCU(kfd_processes_srcu);
-
-static struct workqueue_struct *kfd_process_wq;
-
-struct kfd_process_release_work {
-	struct work_struct kfd_work;
-	struct kfd_process *p;
-};
-
-static struct kfd_process *find_process(const struct task_struct *thread);
-static struct kfd_process *create_process(const struct task_struct *thread);
-
-void kfd_process_create_wq(void)
-{
-	if (!kfd_process_wq)
-		kfd_process_wq = alloc_workqueue("kfd_process_wq", 0, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void kfd_process_destroy_wq(void)
@@ -129,7 +89,6 @@ void kfd_process_destroy_wq(void)
 		destroy_workqueue(kfd_process_wq);
 		kfd_process_wq = NULL;
 	}
-<<<<<<< HEAD
 	if (kfd_restore_wq) {
 		destroy_workqueue(kfd_restore_wq);
 		kfd_restore_wq = NULL;
@@ -246,13 +205,6 @@ struct kfd_process *kfd_create_process(struct file *filep)
 {
 	struct kfd_process *process;
 	struct task_struct *thread = current;
-=======
-}
-
-struct kfd_process *kfd_create_process(const struct task_struct *thread)
-{
-	struct kfd_process *process;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!thread->mm)
 		return ERR_PTR(-EINVAL);
@@ -261,12 +213,6 @@ struct kfd_process *kfd_create_process(const struct task_struct *thread)
 	if (thread->group_leader->mm != thread->mm)
 		return ERR_PTR(-EINVAL);
 
-<<<<<<< HEAD
-=======
-	/* Take mmap_sem because we call __mmu_notifier_register inside */
-	down_write(&thread->mm->mmap_sem);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * take kfd processes mutex before starting of process creation
 	 * so there won't be a case where two threads of the same process
@@ -278,22 +224,11 @@ struct kfd_process *kfd_create_process(const struct task_struct *thread)
 	process = find_process(thread);
 	if (process)
 		pr_debug("Process already found\n");
-<<<<<<< HEAD
 	else
 		process = create_process(thread, filep);
 
 	mutex_unlock(&kfd_processes_mutex);
 
-=======
-
-	if (!process)
-		process = create_process(thread);
-
-	mutex_unlock(&kfd_processes_mutex);
-
-	up_write(&thread->mm->mmap_sem);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return process;
 }
 
@@ -339,7 +274,6 @@ static struct kfd_process *find_process(const struct task_struct *thread)
 	return p;
 }
 
-<<<<<<< HEAD
 void kfd_unref_process(struct kfd_process *p)
 {
 	kref_put(&p->ref, kfd_process_ref_release);
@@ -423,41 +357,10 @@ static void kfd_process_wq_release(struct work_struct *work)
 
 	kfd_process_destroy_pdds(p);
 	dma_fence_put(p->ef);
-=======
-static void kfd_process_wq_release(struct work_struct *work)
-{
-	struct kfd_process_release_work *my_work;
-	struct kfd_process_device *pdd, *temp;
-	struct kfd_process *p;
-
-	my_work = (struct kfd_process_release_work *) work;
-
-	p = my_work->p;
-
-	pr_debug("Releasing process (pasid %d) in workqueue\n",
-			p->pasid);
-
-	mutex_lock(&p->mutex);
-
-	list_for_each_entry_safe(pdd, temp, &p->per_device_data,
-							per_device_list) {
-		pr_debug("Releasing pdd (topology id %d) for process (pasid %d) in workqueue\n",
-				pdd->dev->id, p->pasid);
-
-		if (pdd->reset_wavefronts)
-			dbgdev_wave_reset_wavefronts(pdd->dev, p);
-
-		amd_iommu_unbind_pasid(pdd->dev->pdev, p->pasid);
-		list_del(&pdd->per_device_list);
-
-		kfree(pdd);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kfd_event_free_process(p);
 
 	kfd_pasid_free(p->pasid);
-<<<<<<< HEAD
 	kfd_free_process_doorbells(p);
 
 	mutex_destroy(&p->mutex);
@@ -473,43 +376,13 @@ static void kfd_process_ref_release(struct kref *ref)
 
 	INIT_WORK(&p->release_work, kfd_process_wq_release);
 	queue_work(kfd_process_wq, &p->release_work);
-=======
-
-	mutex_unlock(&p->mutex);
-
-	mutex_destroy(&p->mutex);
-
-	kfree(p->queues);
-
-	kfree(p);
-
-	kfree(work);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void kfd_process_destroy_delayed(struct rcu_head *rcu)
 {
-<<<<<<< HEAD
 	struct kfd_process *p = container_of(rcu, struct kfd_process, rcu);
 
 	kfd_unref_process(p);
-=======
-	struct kfd_process_release_work *work;
-	struct kfd_process *p;
-
-	p = container_of(rcu, struct kfd_process, rcu);
-	WARN_ON(atomic_read(&p->mm->mm_count) <= 0);
-
-	mmdrop(p->mm);
-
-	work = kmalloc(sizeof(struct kfd_process_release_work), GFP_ATOMIC);
-
-	if (work) {
-		INIT_WORK((struct work_struct *) work, kfd_process_wq_release);
-		work->p = p;
-		queue_work(kfd_process_wq, (struct work_struct *) work);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void kfd_process_notifier_release(struct mmu_notifier *mn,
@@ -531,7 +404,6 @@ static void kfd_process_notifier_release(struct mmu_notifier *mn,
 	mutex_unlock(&kfd_processes_mutex);
 	synchronize_srcu(&kfd_processes_srcu);
 
-<<<<<<< HEAD
 	cancel_delayed_work_sync(&p->eviction_work);
 	cancel_delayed_work_sync(&p->restore_work);
 
@@ -563,37 +435,6 @@ static void kfd_process_notifier_release(struct mmu_notifier *mn,
 	mutex_unlock(&p->mutex);
 
 	mmu_notifier_unregister_no_release(&p->mmu_notifier, mm);
-=======
-	mutex_lock(&p->mutex);
-
-	/* In case our notifier is called before IOMMU notifier */
-	pqm_uninit(&p->pqm);
-
-	/* Iterate over all process device data structure and check
-	 * if we should delete debug managers and reset all wavefronts
-	 */
-	list_for_each_entry(pdd, &p->per_device_data, per_device_list) {
-		if ((pdd->dev->dbgmgr) &&
-				(pdd->dev->dbgmgr->pasid == p->pasid))
-			kfd_dbgmgr_destroy(pdd->dev->dbgmgr);
-
-		if (pdd->reset_wavefronts) {
-			pr_warn("Resetting all wave fronts\n");
-			dbgdev_wave_reset_wavefronts(pdd->dev, p);
-			pdd->reset_wavefronts = false;
-		}
-	}
-
-	mutex_unlock(&p->mutex);
-
-	/*
-	 * Because we drop mm_count inside kfd_process_destroy_delayed
-	 * and because the mmu_notifier_unregister function also drop
-	 * mm_count we need to take an extra count here.
-	 */
-	mmgrab(p->mm);
-	mmu_notifier_unregister_no_release(&p->mmu_notifier, p->mm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mmu_notifier_call_srcu(&p->rcu, &kfd_process_destroy_delayed);
 }
 
@@ -601,7 +442,6 @@ static const struct mmu_notifier_ops kfd_process_mmu_notifier_ops = {
 	.release = kfd_process_notifier_release,
 };
 
-<<<<<<< HEAD
 static int kfd_process_init_cwsr_apu(struct kfd_process *p, struct file *filep)
 {
 	unsigned long  offset;
@@ -671,9 +511,6 @@ static int kfd_process_device_init_cwsr_dgpu(struct kfd_process_device *pdd)
 
 static struct kfd_process *create_process(const struct task_struct *thread,
 					struct file *filep)
-=======
-static struct kfd_process *create_process(const struct task_struct *thread)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct kfd_process *process;
 	int err = -ENOMEM;
@@ -683,37 +520,22 @@ static struct kfd_process *create_process(const struct task_struct *thread)
 	if (!process)
 		goto err_alloc_process;
 
-<<<<<<< HEAD
-=======
-	process->queues = kmalloc_array(INITIAL_QUEUE_ARRAY_SIZE,
-					sizeof(process->queues[0]), GFP_KERNEL);
-	if (!process->queues)
-		goto err_alloc_queues;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	process->pasid = kfd_pasid_alloc();
 	if (process->pasid == 0)
 		goto err_alloc_pasid;
 
-<<<<<<< HEAD
 	if (kfd_alloc_process_doorbells(process) < 0)
 		goto err_alloc_doorbells;
 
 	kref_init(&process->ref);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_init(&process->mutex);
 
 	process->mm = thread->mm;
 
 	/* register notifier */
 	process->mmu_notifier.ops = &kfd_process_mmu_notifier_ops;
-<<<<<<< HEAD
 	err = mmu_notifier_register(&process->mmu_notifier, process->mm);
-=======
-	err = __mmu_notifier_register(&process->mmu_notifier, process->mm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		goto err_mmu_notifier;
 
@@ -721,12 +543,7 @@ static struct kfd_process *create_process(const struct task_struct *thread)
 			(uintptr_t)process->mm);
 
 	process->lead_thread = thread->group_leader;
-<<<<<<< HEAD
 	get_task_struct(process->lead_thread);
-=======
-
-	process->queue_array_size = INITIAL_QUEUE_ARRAY_SIZE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	INIT_LIST_HEAD(&process->per_device_data);
 
@@ -742,7 +559,6 @@ static struct kfd_process *create_process(const struct task_struct *thread)
 	if (err != 0)
 		goto err_init_apertures;
 
-<<<<<<< HEAD
 	INIT_DELAYED_WORK(&process->eviction_work, evict_process_worker);
 	INIT_DELAYED_WORK(&process->restore_work, restore_process_worker);
 	process->last_restore_timestamp = get_jiffies_64();
@@ -756,10 +572,6 @@ static struct kfd_process *create_process(const struct task_struct *thread)
 err_init_cwsr:
 	kfd_process_free_outstanding_kfd_bos(process);
 	kfd_process_destroy_pdds(process);
-=======
-	return process;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_init_apertures:
 	pqm_uninit(&process->pqm);
 err_process_pqm_init:
@@ -768,23 +580,15 @@ err_process_pqm_init:
 	mmu_notifier_unregister_no_release(&process->mmu_notifier, process->mm);
 err_mmu_notifier:
 	mutex_destroy(&process->mutex);
-<<<<<<< HEAD
 	kfd_free_process_doorbells(process);
 err_alloc_doorbells:
 	kfd_pasid_free(process->pasid);
 err_alloc_pasid:
-=======
-	kfd_pasid_free(process->pasid);
-err_alloc_pasid:
-	kfree(process->queues);
-err_alloc_queues:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(process);
 err_alloc_process:
 	return ERR_PTR(err);
 }
 
-<<<<<<< HEAD
 static int init_doorbell_bitmap(struct qcm_process_device *qpd,
 			struct kfd_dev *dev)
 {
@@ -810,8 +614,6 @@ static int init_doorbell_bitmap(struct qcm_process_device *qpd,
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct kfd_process_device *kfd_get_process_device_data(struct kfd_dev *dev,
 							struct kfd_process *p)
 {
@@ -819,15 +621,9 @@ struct kfd_process_device *kfd_get_process_device_data(struct kfd_dev *dev,
 
 	list_for_each_entry(pdd, &p->per_device_data, per_device_list)
 		if (pdd->dev == dev)
-<<<<<<< HEAD
 			return pdd;
 
 	return NULL;
-=======
-			break;
-
-	return pdd;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 struct kfd_process_device *kfd_create_process_device_data(struct kfd_dev *dev,
@@ -836,7 +632,6 @@ struct kfd_process_device *kfd_create_process_device_data(struct kfd_dev *dev,
 	struct kfd_process_device *pdd = NULL;
 
 	pdd = kzalloc(sizeof(*pdd), GFP_KERNEL);
-<<<<<<< HEAD
 	if (!pdd)
 		return NULL;
 
@@ -923,20 +718,6 @@ err_reserve_ib_mem:
 	return ret;
 }
 
-=======
-	if (pdd != NULL) {
-		pdd->dev = dev;
-		INIT_LIST_HEAD(&pdd->qpd.queues_list);
-		INIT_LIST_HEAD(&pdd->qpd.priv_queue_list);
-		pdd->qpd.dqm = dev->dqm;
-		pdd->reset_wavefronts = false;
-		list_add(&pdd->per_device_list, &p->per_device_data);
-	}
-
-	return pdd;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Direct the IOMMU to bind the process (specifically the pasid->mm)
  * to the device.
@@ -956,7 +737,6 @@ struct kfd_process_device *kfd_bind_process_to_device(struct kfd_dev *dev,
 		return ERR_PTR(-ENOMEM);
 	}
 
-<<<<<<< HEAD
 	err = kfd_iommu_bind_process_to_device(pdd);
 	if (err)
 		return ERR_PTR(err);
@@ -964,68 +744,10 @@ struct kfd_process_device *kfd_bind_process_to_device(struct kfd_dev *dev,
 	err = kfd_process_device_init_vm(pdd, NULL);
 	if (err)
 		return ERR_PTR(err);
-=======
-	if (pdd->bound)
-		return pdd;
-
-	err = amd_iommu_bind_pasid(dev->pdev, p->pasid, p->lead_thread);
-	if (err < 0)
-		return ERR_PTR(err);
-
-	pdd->bound = true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return pdd;
 }
 
-<<<<<<< HEAD
-=======
-void kfd_unbind_process_from_device(struct kfd_dev *dev, unsigned int pasid)
-{
-	struct kfd_process *p;
-	struct kfd_process_device *pdd;
-
-	/*
-	 * Look for the process that matches the pasid. If there is no such
-	 * process, we either released it in amdkfd's own notifier, or there
-	 * is a bug. Unfortunately, there is no way to tell...
-	 */
-	p = kfd_lookup_process_by_pasid(pasid);
-	if (!p)
-		return;
-
-	pr_debug("Unbinding process %d from IOMMU\n", pasid);
-
-	if ((dev->dbgmgr) && (dev->dbgmgr->pasid == p->pasid))
-		kfd_dbgmgr_destroy(dev->dbgmgr);
-
-	pqm_uninit(&p->pqm);
-
-	pdd = kfd_get_process_device_data(dev, p);
-
-	if (!pdd) {
-		mutex_unlock(&p->mutex);
-		return;
-	}
-
-	if (pdd->reset_wavefronts) {
-		dbgdev_wave_reset_wavefronts(pdd->dev, p);
-		pdd->reset_wavefronts = false;
-	}
-
-	/*
-	 * Just mark pdd as unbound, because we still need it
-	 * to call amd_iommu_unbind_pasid() in when the
-	 * process exits.
-	 * We don't call amd_iommu_unbind_pasid() here
-	 * because the IOMMU called us.
-	 */
-	pdd->bound = false;
-
-	mutex_unlock(&p->mutex);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct kfd_process_device *kfd_get_first_process_device_data(
 						struct kfd_process *p)
 {
@@ -1048,7 +770,6 @@ bool kfd_has_process_device_data(struct kfd_process *p)
 	return !(list_empty(&p->per_device_data));
 }
 
-<<<<<<< HEAD
 /* Create specific handle mapped to mem from process local memory idr
  * Assumes that the process lock is held.
  */
@@ -1084,31 +805,20 @@ void kfd_process_device_remove_obj_handle(struct kfd_process_device *pdd,
 struct kfd_process *kfd_lookup_process_by_pasid(unsigned int pasid)
 {
 	struct kfd_process *p, *ret_p = NULL;
-=======
-/* This returns with process->mutex locked. */
-struct kfd_process *kfd_lookup_process_by_pasid(unsigned int pasid)
-{
-	struct kfd_process *p;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int temp;
 
 	int idx = srcu_read_lock(&kfd_processes_srcu);
 
 	hash_for_each_rcu(kfd_processes_table, temp, p, kfd_processes) {
 		if (p->pasid == pasid) {
-<<<<<<< HEAD
 			kref_get(&p->ref);
 			ret_p = p;
-=======
-			mutex_lock(&p->mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 	}
 
 	srcu_read_unlock(&kfd_processes_srcu, idx);
 
-<<<<<<< HEAD
 	return ret_p;
 }
 
@@ -1389,7 +1099,3 @@ int kfd_debugfs_mqds_by_process(struct seq_file *m, void *data)
 }
 
 #endif
-=======
-	return p;
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

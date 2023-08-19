@@ -1,19 +1,6 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0-only */
 /*
  * Copyright (c) 2012-2017, The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2012-2017, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #ifndef _CORESIGHT_CORESIGHT_OST_H
@@ -23,11 +10,7 @@
 #include <linux/coresight-stm.h>
 
 #if CONFIG_CORESIGHT_OST
-<<<<<<< HEAD
 static inline bool stm_ost_configured(void) { return true; }
-=======
-static inline bool stm_ost_configured(void) { return 1; }
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 extern ssize_t stm_ost_packet(struct stm_data *stm_data,
 			      unsigned int size,
@@ -36,11 +19,7 @@ extern ssize_t stm_ost_packet(struct stm_data *stm_data,
 extern int stm_set_ost_params(struct stm_drvdata *drvdata,
 			      size_t bitmap_size);
 #else
-<<<<<<< HEAD
 static inline bool stm_ost_configured(void) { return false; }
-=======
-static inline bool stm_ost_configured(void) { return 0; }
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline ssize_t stm_ost_packet(struct stm_data *stm_data,
 				     unsigned int size,

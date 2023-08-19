@@ -97,29 +97,6 @@ config DWMAC_OXNAS
 	  This selects the Oxford Semiconductor OXNASSoC glue layer support for
 	  the stmmac device driver. This driver is used for OX820.
 
-<<<<<<< HEAD
-=======
-config DWMAC_QCOM_ETHQOS
-	tristate "Qualcomm Technologies, Inc. ETHQOS support"
-	default ARCH_QCOM
-	depends on OF && (ARCH_QCOM || COMPILE_TEST)
-	help
-	  Support for the Qualcomm Technologies, Inc. ETHQOS core.
-
-	  This selects the Qualcomm Technologies, Inc. ETHQOS glue layer support for the
-	  stmmac device driver.
-
-config ETHQOS_IPA_OFFLOAD
-	bool "IPA ETHQOS offload support"
-	depends on DWMAC_QCOM_ETHQOS && IPA3
-	default n
-	help
-	  Support for the Qualcomm Technologies, Inc. ETH IPA offload support.
-	  This enables ethernet ipa offload for IP traffic to reduce
-	  the cpu load during E2E IP traffic. This is done by using HW accelaration
-	  path.
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config DWMAC_ROCKCHIP
 	tristate "Rockchip dwmac support"
 	default ARCH_ROCKCHIP
@@ -133,11 +110,7 @@ config DWMAC_ROCKCHIP
 
 config DWMAC_SOCFPGA
 	tristate "SOCFPGA dwmac support"
-<<<<<<< HEAD
 	default (ARCH_SOCFPGA || ARCH_STRATIX10)
-=======
-	default ARCH_SOCFPGA
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on OF && (ARCH_SOCFPGA || ARCH_STRATIX10 || COMPILE_TEST)
 	select MFD_SYSCON
 	help
@@ -186,10 +159,7 @@ config DWMAC_SUN8I
 	tristate "Allwinner sun8i GMAC support"
 	default ARCH_SUNXI
 	depends on OF && (ARCH_SUNXI || COMPILE_TEST)
-<<<<<<< HEAD
 	select MDIO_BUS_MUX
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	---help---
 	  Support for Allwinner H3 A83T A64 EMAC ethernet controllers.
 

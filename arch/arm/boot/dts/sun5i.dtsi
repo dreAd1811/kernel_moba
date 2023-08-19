@@ -93,11 +93,7 @@
 		#size-cells = <1>;
 		ranges;
 
-<<<<<<< HEAD
 		osc24M: clk@1c20050 {
-=======
-		osc24M: clk@01c20050 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			#clock-cells = <0>;
 			compatible = "fixed-clock";
 			clock-frequency = <24000000>;
@@ -112,39 +108,25 @@
 		};
 	};
 
-<<<<<<< HEAD
 	soc@1c00000 {
-=======
-	soc@01c00000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "simple-bus";
 		#address-cells = <1>;
 		#size-cells = <1>;
 		ranges;
 
-<<<<<<< HEAD
 		system-control@1c00000 {
 			compatible = "allwinner,sun5i-a13-system-control";
-=======
-		sram-controller@01c00000 {
-			compatible = "allwinner,sun4i-a10-sram-controller";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			reg = <0x01c00000 0x30>;
 			#address-cells = <1>;
 			#size-cells = <1>;
 			ranges;
 
-<<<<<<< HEAD
 			sram_a: sram@0 {
-=======
-			sram_a: sram@00000000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				compatible = "mmio-sram";
 				reg = <0x00000000 0xc000>;
 				#address-cells = <1>;
 				#size-cells = <1>;
 				ranges = <0 0x00000000 0xc000>;
-<<<<<<< HEAD
 
 				emac_sram: sram-section@8000 {
 					compatible = "allwinner,sun5i-a13-sram-a3-a4",
@@ -155,36 +137,19 @@
 			};
 
 			sram_d: sram@10000 {
-=======
-			};
-
-			emac_sram: sram-section@8000 {
-				compatible = "allwinner,sun4i-a10-sram-a3-a4";
-				reg = <0x8000 0x4000>;
-				status = "disabled";
-			};
-
-			sram_d: sram@00010000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				compatible = "mmio-sram";
 				reg = <0x00010000 0x1000>;
 				#address-cells = <1>;
 				#size-cells = <1>;
 				ranges = <0 0x00010000 0x1000>;
 
-<<<<<<< HEAD
 				otg_sram: sram-section@0 {
 					compatible = "allwinner,sun5i-a13-sram-d",
 						     "allwinner,sun4i-a10-sram-d";
-=======
-				otg_sram: sram-section@0000 {
-					compatible = "allwinner,sun4i-a10-sram-d";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					reg = <0x0000 0x1000>;
 					status = "disabled";
 				};
 			};
-<<<<<<< HEAD
 
 			sram_c: sram@1d00000 {
 				compatible = "mmio-sram";
@@ -202,11 +167,6 @@
 		};
 
 		dma: dma-controller@1c02000 {
-=======
-		};
-
-		dma: dma-controller@01c02000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun4i-a10-dma";
 			reg = <0x01c02000 0x1000>;
 			interrupts = <27>;
@@ -214,11 +174,7 @@
 			#dma-cells = <2>;
 		};
 
-<<<<<<< HEAD
 		nfc: nand@1c03000 {
-=======
-		nfc: nand@01c03000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun4i-a10-nand";
 			reg = <0x01c03000 0x1000>;
 			interrupts = <37>;
@@ -231,11 +187,7 @@
 			#size-cells = <0>;
 		};
 
-<<<<<<< HEAD
 		spi0: spi@1c05000 {
-=======
-		spi0: spi@01c05000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun4i-a10-spi";
 			reg = <0x01c05000 0x1000>;
 			interrupts = <10>;
@@ -249,11 +201,7 @@
 			#size-cells = <0>;
 		};
 
-<<<<<<< HEAD
 		spi1: spi@1c06000 {
-=======
-		spi1: spi@01c06000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun4i-a10-spi";
 			reg = <0x01c06000 0x1000>;
 			interrupts = <11>;
@@ -267,11 +215,7 @@
 			#size-cells = <0>;
 		};
 
-<<<<<<< HEAD
 		tve0: tv-encoder@1c0a000 {
-=======
-		tve0: tv-encoder@01c0a000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun4i-a10-tv-encoder";
 			reg = <0x01c0a000 0x1000>;
 			clocks = <&ccu CLK_AHB_TVE>;
@@ -289,11 +233,7 @@
 			};
 		};
 
-<<<<<<< HEAD
 		emac: ethernet@1c0b000 {
-=======
-		emac: ethernet@01c0b000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun4i-a10-emac";
 			reg = <0x01c0b000 0x1000>;
 			interrupts = <55>;
@@ -302,11 +242,7 @@
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
 		mdio: mdio@1c0b080 {
-=======
-		mdio: mdio@01c0b080 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun4i-a10-mdio";
 			reg = <0x01c0b080 0x14>;
 			status = "disabled";
@@ -314,11 +250,7 @@
 			#size-cells = <0>;
 		};
 
-<<<<<<< HEAD
 		tcon0: lcd-controller@1c0c000 {
-=======
-		tcon0: lcd-controller@01c0c000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun5i-a13-tcon";
 			reg = <0x01c0c000 0x1000>;
 			interrupts = <44>;
@@ -362,11 +294,7 @@
 			};
 		};
 
-<<<<<<< HEAD
 		mmc0: mmc@1c0f000 {
-=======
-		mmc0: mmc@01c0f000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun5i-a13-mmc";
 			reg = <0x01c0f000 0x1000>;
 			clocks = <&ccu CLK_AHB_MMC0>, <&ccu CLK_MMC0>;
@@ -377,11 +305,7 @@
 			#size-cells = <0>;
 		};
 
-<<<<<<< HEAD
 		mmc1: mmc@1c10000 {
-=======
-		mmc1: mmc@01c10000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun5i-a13-mmc";
 			reg = <0x01c10000 0x1000>;
 			clocks = <&ccu CLK_AHB_MMC1>, <&ccu CLK_MMC1>;
@@ -392,11 +316,7 @@
 			#size-cells = <0>;
 		};
 
-<<<<<<< HEAD
 		mmc2: mmc@1c11000 {
-=======
-		mmc2: mmc@01c11000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun5i-a13-mmc";
 			reg = <0x01c11000 0x1000>;
 			clocks = <&ccu CLK_AHB_MMC2>, <&ccu CLK_MMC2>;
@@ -407,11 +327,7 @@
 			#size-cells = <0>;
 		};
 
-<<<<<<< HEAD
 		usb_otg: usb@1c13000 {
-=======
-		usb_otg: usb@01c13000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun4i-a10-musb";
 			reg = <0x01c13000 0x0400>;
 			clocks = <&ccu CLK_AHB_OTG>;
@@ -424,11 +340,7 @@
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
 		usbphy: phy@1c13400 {
-=======
-		usbphy: phy@01c13400 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			#phy-cells = <1>;
 			compatible = "allwinner,sun5i-a13-usb-phy";
 			reg = <0x01c13400 0x10 0x01c14800 0x4>;
@@ -440,11 +352,7 @@
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
 		ehci0: usb@1c14000 {
-=======
-		ehci0: usb@01c14000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun5i-a13-ehci", "generic-ehci";
 			reg = <0x01c14000 0x100>;
 			interrupts = <39>;
@@ -454,11 +362,7 @@
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
 		ohci0: usb@1c14400 {
-=======
-		ohci0: usb@01c14400 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun5i-a13-ohci", "generic-ohci";
 			reg = <0x01c14400 0x100>;
 			interrupts = <40>;
@@ -468,11 +372,7 @@
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
 		crypto: crypto-engine@1c15000 {
-=======
-		crypto: crypto-engine@01c15000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun5i-a13-crypto",
 				     "allwinner,sun4i-a10-crypto";
 			reg = <0x01c15000 0x1000>;
@@ -481,11 +381,7 @@
 			clock-names = "ahb", "mod";
 		};
 
-<<<<<<< HEAD
 		spi2: spi@1c17000 {
-=======
-		spi2: spi@01c17000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun4i-a10-spi";
 			reg = <0x01c17000 0x1000>;
 			interrupts = <12>;
@@ -499,11 +395,7 @@
 			#size-cells = <0>;
 		};
 
-<<<<<<< HEAD
 		ccu: clock@1c20000 {
-=======
-		ccu: clock@01c20000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			reg = <0x01c20000 0x400>;
 			clocks = <&osc24M>, <&osc32k>;
 			clock-names = "hosc", "losc";
@@ -511,22 +403,14 @@
 			#reset-cells = <1>;
 		};
 
-<<<<<<< HEAD
 		intc: interrupt-controller@1c20400 {
-=======
-		intc: interrupt-controller@01c20400 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun4i-a10-ic";
 			reg = <0x01c20400 0x400>;
 			interrupt-controller;
 			#interrupt-cells = <1>;
 		};
 
-<<<<<<< HEAD
 		pio: pinctrl@1c20800 {
-=======
-		pio: pinctrl@01c20800 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			reg = <0x01c20800 0x400>;
 			interrupts = <28>;
 			clocks = <&ccu CLK_APB0_PIO>, <&osc24M>, <&osc32k>;
@@ -670,31 +554,19 @@
 			};
 		};
 
-<<<<<<< HEAD
 		timer@1c20c00 {
-=======
-		timer@01c20c00 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun4i-a10-timer";
 			reg = <0x01c20c00 0x90>;
 			interrupts = <22>;
 			clocks = <&ccu CLK_HOSC>;
 		};
 
-<<<<<<< HEAD
 		wdt: watchdog@1c20c90 {
-=======
-		wdt: watchdog@01c20c90 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun4i-a10-wdt";
 			reg = <0x01c20c90 0x10>;
 		};
 
-<<<<<<< HEAD
 		ir0: ir@1c21800 {
-=======
-		ir0: ir@01c21800 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun4i-a10-ir";
 			clocks = <&ccu CLK_APB0_IR>, <&ccu CLK_IR>;
 			clock-names = "apb", "ir";
@@ -703,22 +575,14 @@
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
 		lradc: lradc@1c22800 {
-=======
-		lradc: lradc@01c22800 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun4i-a10-lradc-keys";
 			reg = <0x01c22800 0x100>;
 			interrupts = <31>;
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
 		codec: codec@1c22c00 {
-=======
-		codec: codec@01c22c00 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			#sound-dai-cells = <0>;
 			compatible = "allwinner,sun4i-a10-codec";
 			reg = <0x01c22c00 0x40>;
@@ -731,31 +595,19 @@
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
 		sid: eeprom@1c23800 {
-=======
-		sid: eeprom@01c23800 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun4i-a10-sid";
 			reg = <0x01c23800 0x10>;
 		};
 
-<<<<<<< HEAD
 		rtp: rtp@1c25000 {
-=======
-		rtp: rtp@01c25000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun5i-a13-ts";
 			reg = <0x01c25000 0x100>;
 			interrupts = <29>;
 			#thermal-sensor-cells = <0>;
 		};
 
-<<<<<<< HEAD
 		uart0: serial@1c28000 {
-=======
-		uart0: serial@01c28000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "snps,dw-apb-uart";
 			reg = <0x01c28000 0x400>;
 			interrupts = <1>;
@@ -765,11 +617,7 @@
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
 		uart1: serial@1c28400 {
-=======
-		uart1: serial@01c28400 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "snps,dw-apb-uart";
 			reg = <0x01c28400 0x400>;
 			interrupts = <2>;
@@ -779,11 +627,7 @@
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
 		uart2: serial@1c28800 {
-=======
-		uart2: serial@01c28800 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "snps,dw-apb-uart";
 			reg = <0x01c28800 0x400>;
 			interrupts = <3>;
@@ -793,11 +637,7 @@
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
 		uart3: serial@1c28c00 {
-=======
-		uart3: serial@01c28c00 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "snps,dw-apb-uart";
 			reg = <0x01c28c00 0x400>;
 			interrupts = <4>;
@@ -807,11 +647,7 @@
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
 		i2c0: i2c@1c2ac00 {
-=======
-		i2c0: i2c@01c2ac00 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun4i-a10-i2c";
 			reg = <0x01c2ac00 0x400>;
 			interrupts = <7>;
@@ -821,11 +657,7 @@
 			#size-cells = <0>;
 		};
 
-<<<<<<< HEAD
 		i2c1: i2c@1c2b000 {
-=======
-		i2c1: i2c@01c2b000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun4i-a10-i2c";
 			reg = <0x01c2b000 0x400>;
 			interrupts = <8>;
@@ -835,11 +667,7 @@
 			#size-cells = <0>;
 		};
 
-<<<<<<< HEAD
 		i2c2: i2c@1c2b400 {
-=======
-		i2c2: i2c@01c2b400 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun4i-a10-i2c";
 			reg = <0x01c2b400 0x400>;
 			interrupts = <9>;
@@ -849,22 +677,14 @@
 			#size-cells = <0>;
 		};
 
-<<<<<<< HEAD
 		timer@1c60000 {
-=======
-		timer@01c60000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun5i-a13-hstimer";
 			reg = <0x01c60000 0x1000>;
 			interrupts = <82>, <83>;
 			clocks = <&ccu CLK_AHB_HSTIMER>;
 		};
 
-<<<<<<< HEAD
 		fe0: display-frontend@1e00000 {
-=======
-		fe0: display-frontend@01e00000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun5i-a13-display-frontend";
 			reg = <0x01e00000 0x20000>;
 			interrupts = <47>;
@@ -892,11 +712,7 @@
 			};
 		};
 
-<<<<<<< HEAD
 		be0: display-backend@1e60000 {
-=======
-		be0: display-backend@01e60000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun5i-a13-display-backend";
 			reg = <0x01e60000 0x10000>;
 			interrupts = <47>;

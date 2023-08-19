@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
  * Copyright(c) 2015 - 2018 Intel Corporation.
-=======
- * Copyright(c) 2015, 2016 Intel Corporation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This file is provided under a dual BSD/GPLv2 license.  When using or
  * redistributing this file, you may do so under either license.
@@ -414,14 +410,7 @@ static void sdma_flush(struct sdma_engine *sde)
 	sdma_flush_descq(sde);
 	spin_lock_irqsave(&sde->flushlist_lock, flags);
 	/* copy flush list */
-<<<<<<< HEAD
 	list_splice_init(&sde->flushlist, &flushlist);
-=======
-	list_for_each_entry_safe(txp, txp_next, &sde->flushlist, list) {
-		list_del_init(&txp->list);
-		list_add_tail(&txp->list, &flushlist);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irqrestore(&sde->flushlist_lock, flags);
 	/* flush from flush list */
 	list_for_each_entry_safe(txp, txp_next, &flushlist, list)
@@ -499,17 +488,10 @@ static void sdma_err_progress_check_schedule(struct sdma_engine *sde)
 	}
 }
 
-<<<<<<< HEAD
 static void sdma_err_progress_check(struct timer_list *t)
 {
 	unsigned index;
 	struct sdma_engine *sde = from_timer(sde, t, err_progress_check_timer);
-=======
-static void sdma_err_progress_check(unsigned long data)
-{
-	unsigned index;
-	struct sdma_engine *sde = (struct sdma_engine *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dd_dev_err(sde->dd, "SDE progress check event\n");
 	for (index = 0; index < sde->dd->num_sdma; index++) {
@@ -568,10 +550,6 @@ static void sdma_hw_clean_up_task(unsigned long opaque)
 
 static inline struct sdma_txreq *get_txhead(struct sdma_engine *sde)
 {
-<<<<<<< HEAD
-=======
-	smp_read_barrier_depends(); /* see sdma_update_tail() */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return sde->tx_ring[sde->tx_head & sde->sdma_mask];
 }
 
@@ -942,16 +920,10 @@ ssize_t sdma_set_cpu_to_sde_map(struct sdma_engine *sde, const char *buf,
 	cpumask_var_t mask, new_mask;
 	unsigned long cpu;
 	int ret, vl, sz;
-<<<<<<< HEAD
 	struct sdma_rht_node *rht_node;
 
 	vl = sdma_engine_get_vl(sde);
 	if (unlikely(vl < 0 || vl >= ARRAY_SIZE(rht_node->map)))
-=======
-
-	vl = sdma_engine_get_vl(sde);
-	if (unlikely(vl < 0))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	ret = zalloc_cpumask_var(&mask, GFP_KERNEL);
@@ -979,25 +951,12 @@ ssize_t sdma_set_cpu_to_sde_map(struct sdma_engine *sde, const char *buf,
 	mutex_lock(&process_to_sde_mutex);
 
 	for_each_cpu(cpu, mask) {
-<<<<<<< HEAD
-=======
-		struct sdma_rht_node *rht_node;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Check if we have this already mapped */
 		if (cpumask_test_cpu(cpu, &sde->cpu_mask)) {
 			cpumask_set_cpu(cpu, new_mask);
 			continue;
 		}
 
-<<<<<<< HEAD
-=======
-		if (vl >= ARRAY_SIZE(rht_node->map)) {
-			ret = -EINVAL;
-			goto out;
-		}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rht_node = rhashtable_lookup_fast(dd->sdma_rht, &cpu,
 						  sdma_rht_params);
 		if (!rht_node) {
@@ -1307,7 +1266,6 @@ bail:
 	return -ENOMEM;
 }
 
-<<<<<<< HEAD
 /**
  * sdma_clean()  Clean up allocated memory
  * @dd:          struct hfi1_devdata
@@ -1317,15 +1275,6 @@ bail:
  * sdma_init()
  */
 void sdma_clean(struct hfi1_devdata *dd, size_t num_engines)
-=======
-/*
- * Clean up allocated memory.
- *
- * This routine is can be called regardless of the success of sdma_init()
- *
- */
-static void sdma_clean(struct hfi1_devdata *dd, size_t num_engines)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	size_t i;
 	struct sdma_engine *sde;
@@ -1399,11 +1348,7 @@ int sdma_init(struct hfi1_devdata *dd, u8 port)
 	struct hfi1_pportdata *ppd = dd->pport + port;
 	u32 per_sdma_credits;
 	uint idle_cnt = sdma_idle_cnt;
-<<<<<<< HEAD
 	size_t num_engines = chip_sdma_engines(dd);
-=======
-	size_t num_engines = dd->chip_sdma_engines;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = -ENOMEM;
 
 	if (!HFI1_CAP_IS_KSET(SDMA)) {
@@ -1412,31 +1357,18 @@ int sdma_init(struct hfi1_devdata *dd, u8 port)
 	}
 	if (mod_num_sdma &&
 	    /* can't exceed chip support */
-<<<<<<< HEAD
 	    mod_num_sdma <= chip_sdma_engines(dd) &&
-=======
-	    mod_num_sdma <= dd->chip_sdma_engines &&
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    /* count must be >= vls */
 	    mod_num_sdma >= num_vls)
 		num_engines = mod_num_sdma;
 
 	dd_dev_info(dd, "SDMA mod_num_sdma: %u\n", mod_num_sdma);
-<<<<<<< HEAD
 	dd_dev_info(dd, "SDMA chip_sdma_engines: %u\n", chip_sdma_engines(dd));
 	dd_dev_info(dd, "SDMA chip_sdma_mem_size: %u\n",
 		    chip_sdma_mem_size(dd));
 
 	per_sdma_credits =
 		chip_sdma_mem_size(dd) / (num_engines * SDMA_BLOCK_SIZE);
-=======
-	dd_dev_info(dd, "SDMA chip_sdma_engines: %u\n", dd->chip_sdma_engines);
-	dd_dev_info(dd, "SDMA chip_sdma_mem_size: %u\n",
-		    dd->chip_sdma_mem_size);
-
-	per_sdma_credits =
-		dd->chip_sdma_mem_size / (num_engines * SDMA_BLOCK_SIZE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* set up freeze waitqueue */
 	init_waitqueue_head(&dd->sdma_unfreeze_wq);
@@ -1447,17 +1379,12 @@ int sdma_init(struct hfi1_devdata *dd, u8 port)
 		    num_engines, descq_cnt);
 
 	/* alloc memory for array of send engines */
-<<<<<<< HEAD
 	dd->per_sdma = kcalloc_node(num_engines, sizeof(*dd->per_sdma),
 				    GFP_KERNEL, dd->node);
-=======
-	dd->per_sdma = kcalloc(num_engines, sizeof(*dd->per_sdma), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!dd->per_sdma)
 		return ret;
 
 	idle_cnt = ns_to_cclock(dd, idle_cnt);
-<<<<<<< HEAD
 	if (idle_cnt)
 		dd->default_desc1 =
 			SDMA_DESC1_HEAD_TO_HOST_FLAG;
@@ -1465,8 +1392,6 @@ int sdma_init(struct hfi1_devdata *dd, u8 port)
 		dd->default_desc1 =
 			SDMA_DESC1_INT_REQ_FLAG;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!sdma_desct_intr)
 		sdma_desct_intr = SDMA_DESC_INTR;
 
@@ -1511,16 +1436,6 @@ int sdma_init(struct hfi1_devdata *dd, u8 port)
 		sde->tail_csr =
 			get_kctxt_csr_addr(dd, this_idx, SD(TAIL));
 
-<<<<<<< HEAD
-=======
-		if (idle_cnt)
-			dd->default_desc1 =
-				SDMA_DESC1_HEAD_TO_HOST_FLAG;
-		else
-			dd->default_desc1 =
-				SDMA_DESC1_INT_REQ_FLAG;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		tasklet_init(&sde->sdma_hw_clean_up_task, sdma_hw_clean_up_task,
 			     (unsigned long)sde);
 
@@ -1531,13 +1446,8 @@ int sdma_init(struct hfi1_devdata *dd, u8 port)
 
 		sde->progress_check_head = 0;
 
-<<<<<<< HEAD
 		timer_setup(&sde->err_progress_check_timer,
 			    sdma_err_progress_check, 0);
-=======
-		setup_timer(&sde->err_progress_check_timer,
-			    sdma_err_progress_check, (unsigned long)sde);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		sde->descq = dma_zalloc_coherent(
 			&dd->pcidev->dev,
@@ -1548,19 +1458,9 @@ int sdma_init(struct hfi1_devdata *dd, u8 port)
 		if (!sde->descq)
 			goto bail;
 		sde->tx_ring =
-<<<<<<< HEAD
 			kvzalloc_node(array_size(descq_cnt,
 						 sizeof(struct sdma_txreq *)),
 				      GFP_KERNEL, dd->node);
-=======
-			kcalloc(descq_cnt, sizeof(struct sdma_txreq *),
-				GFP_KERNEL);
-		if (!sde->tx_ring)
-			sde->tx_ring =
-				vzalloc(
-					sizeof(struct sdma_txreq *) *
-					descq_cnt);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!sde->tx_ring)
 			goto bail;
 	}
@@ -1618,16 +1518,8 @@ int sdma_init(struct hfi1_devdata *dd, u8 port)
 	}
 
 	ret = rhashtable_init(tmp_sdma_rht, &sdma_rht_params);
-<<<<<<< HEAD
 	if (ret < 0)
 		goto bail;
-=======
-	if (ret < 0) {
-		kfree(tmp_sdma_rht);
-		goto bail;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dd->sdma_rht = tmp_sdma_rht;
 
 	dd_dev_info(dd, "SDMA num_sdma: %u\n", dd->num_sdma);
@@ -1720,10 +1612,6 @@ void sdma_exit(struct hfi1_devdata *dd)
 		 */
 		sdma_finalput(&sde->state);
 	}
-<<<<<<< HEAD
-=======
-	sdma_clean(dd, dd->num_sdma);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -1825,11 +1713,7 @@ retry:
 
 		swhead = sde->descq_head & sde->sdma_mask;
 		/* this code is really bad for cache line trading */
-<<<<<<< HEAD
 		swtail = READ_ONCE(sde->descq_tail) & sde->sdma_mask;
-=======
-		swtail = ACCESS_ONCE(sde->descq_tail) & sde->sdma_mask;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cnt = sde->descq_cnt;
 
 		if (swhead < swtail)
@@ -1976,11 +1860,7 @@ retry:
 	if ((status & sde->idle_mask) && !idle_check_done) {
 		u16 swtail;
 
-<<<<<<< HEAD
 		swtail = READ_ONCE(sde->descq_tail) & sde->sdma_mask;
-=======
-		swtail = ACCESS_ONCE(sde->descq_tail) & sde->sdma_mask;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (swtail != hwhead) {
 			hwhead = (u16)read_sde_csr(sde, SD(HEAD));
 			idle_check_done = 1;
@@ -2252,10 +2132,6 @@ void sdma_dumpstate(struct sdma_engine *sde)
 
 static void dump_sdma_state(struct sdma_engine *sde)
 {
-<<<<<<< HEAD
-=======
-	struct hw_sdma_desc *descq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct hw_sdma_desc *descqp;
 	u64 desc[2];
 	u64 addr;
@@ -2266,10 +2142,6 @@ static void dump_sdma_state(struct sdma_engine *sde)
 	head = sde->descq_head & sde->sdma_mask;
 	tail = sde->descq_tail & sde->sdma_mask;
 	cnt = sdma_descq_freecnt(sde);
-<<<<<<< HEAD
-=======
-	descq = sde->descq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dd_dev_err(sde->dd,
 		   "SDMA (%u) descq_head: %u descq_tail: %u freecnt: %u FLE %d\n",
@@ -2336,11 +2208,7 @@ void sdma_seqfile_dump_sde(struct seq_file *s, struct sdma_engine *sde)
 	u16 len;
 
 	head = sde->descq_head & sde->sdma_mask;
-<<<<<<< HEAD
 	tail = READ_ONCE(sde->descq_tail) & sde->sdma_mask;
-=======
-	tail = ACCESS_ONCE(sde->descq_tail) & sde->sdma_mask;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	seq_printf(s, SDE_FMT, sde->this_idx,
 		   sde->cpu,
 		   sdma_state_name(sde->state.current_state),
@@ -2555,11 +2423,7 @@ unlock_noconn:
 		wait->tx_count++;
 		wait->count += tx->num_desc;
 	}
-<<<<<<< HEAD
 	queue_work_on(sde->cpu, system_highpri_wq, &sde->flush_worker);
-=======
-	schedule_work(&sde->flush_worker);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = -ECOMM;
 	goto unlock;
 nodesc:
@@ -2659,11 +2523,7 @@ unlock_noconn:
 		}
 	}
 	spin_unlock(&sde->flushlist_lock);
-<<<<<<< HEAD
 	queue_work_on(sde->cpu, system_highpri_wq, &sde->flush_worker);
-=======
-	schedule_work(&sde->flush_worker);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = -ECOMM;
 	goto update_tail;
 nodesc:
@@ -2719,11 +2579,7 @@ static void __sdma_process_event(struct sdma_engine *sde,
 			 * 7220, e.g.
 			 */
 			ss->go_s99_running = 1;
-<<<<<<< HEAD
 			/* fall through -- and start dma engine */
-=======
-			/* fall through and start dma engine */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case sdma_event_e10_go_hw_start:
 			/* This reference means the state machine is started */
 			sdma_get(&sde->state);
@@ -3146,10 +3002,7 @@ static void __sdma_process_event(struct sdma_engine *sde,
 		case sdma_event_e60_hw_halted:
 			need_progress = 1;
 			sdma_err_progress_check_schedule(sde);
-<<<<<<< HEAD
 			/* fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case sdma_event_e90_sw_halted:
 			/*
 			* SW initiated halt does not perform engines
@@ -3439,11 +3292,7 @@ int sdma_ahg_alloc(struct sdma_engine *sde)
 		return -EINVAL;
 	}
 	while (1) {
-<<<<<<< HEAD
 		nr = ffz(READ_ONCE(sde->ahg_bits));
-=======
-		nr = ffz(ACCESS_ONCE(sde->ahg_bits));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (nr > 31) {
 			trace_hfi1_ahg_allocate(sde, -ENOSPC);
 			return -ENOSPC;

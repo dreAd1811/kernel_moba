@@ -30,31 +30,20 @@ void mdiobus_setup_mdiodev_from_board_info(struct mii_bus *bus,
 					    struct mdio_board_info *bi))
 {
 	struct mdio_board_entry *be;
-<<<<<<< HEAD
 	struct mdio_board_entry *tmp;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mdio_board_info *bi;
 	int ret;
 
 	mutex_lock(&mdio_board_lock);
-<<<<<<< HEAD
 	list_for_each_entry_safe(be, tmp, &mdio_board_list, list) {
-=======
-	list_for_each_entry(be, &mdio_board_list, list) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bi = &be->board_info;
 
 		if (strcmp(bus->id, bi->bus_id))
 			continue;
 
-<<<<<<< HEAD
 		mutex_unlock(&mdio_board_lock);
 		ret = cb(bus, bi);
 		mutex_lock(&mdio_board_lock);
-=======
-		ret = cb(bus, bi);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			continue;
 

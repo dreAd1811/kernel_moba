@@ -1089,10 +1089,7 @@ isar_pump_statev_fax(struct BCState *bcs, u_char devt) {
 				break;
 			case PCTRL_CMD_FTM:
 				p1 = 2;
-<<<<<<< HEAD
 				/* fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			case PCTRL_CMD_FTH:
 				sendmsg(cs, dps | ISAR_HIS_PUMPCTRL,
 					PCTRL_CMD_SILON, 1, &p1);
@@ -1101,10 +1098,7 @@ isar_pump_statev_fax(struct BCState *bcs, u_char devt) {
 			case PCTRL_CMD_FRM:
 				if (frm_extra_delay)
 					mdelay(frm_extra_delay);
-<<<<<<< HEAD
 				/* fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			case PCTRL_CMD_FRH:
 				p1 = bcs->hw.isar.mod = bcs->hw.isar.newmod;
 				bcs->hw.isar.newmod = 0;
@@ -1275,12 +1269,8 @@ isar_int_main(struct IsdnCardState *cs)
 }
 
 static void
-<<<<<<< HEAD
 ftimer_handler(struct timer_list *t) {
 	struct BCState *bcs = from_timer(bcs, t, hw.isar.ftimer);
-=======
-ftimer_handler(struct BCState *bcs) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (bcs->cs->debug)
 		debugl1(bcs->cs, "ftimer flags %04lx",
 			bcs->Flag);
@@ -1915,13 +1905,6 @@ void initisar(struct IsdnCardState *cs)
 	cs->bcs[1].BC_SetStack = setstack_isar;
 	cs->bcs[0].BC_Close = close_isarstate;
 	cs->bcs[1].BC_Close = close_isarstate;
-<<<<<<< HEAD
 	timer_setup(&cs->bcs[0].hw.isar.ftimer, ftimer_handler, 0);
 	timer_setup(&cs->bcs[1].hw.isar.ftimer, ftimer_handler, 0);
-=======
-	setup_timer(&cs->bcs[0].hw.isar.ftimer, (void *)ftimer_handler,
-		    (long)&cs->bcs[0]);
-	setup_timer(&cs->bcs[1].hw.isar.ftimer, (void *)ftimer_handler,
-		    (long)&cs->bcs[1]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

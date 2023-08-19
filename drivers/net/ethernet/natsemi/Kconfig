@@ -1,28 +1,16 @@
 #
-<<<<<<< HEAD
 # National Semiconductor device configuration
 #
 
 config NET_VENDOR_NATSEMI
 	bool "National Semiconductor devices"
-=======
-# National Semi-conductor device configuration
-#
-
-config NET_VENDOR_NATSEMI
-	bool "National Semi-conductor devices"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default y
 	---help---
 	  If you have a network (Ethernet) card belonging to this class, say Y.
 
 	  Note that the answer to this question doesn't directly affect the
 	  kernel: saying N will just cause the configurator to skip all
-<<<<<<< HEAD
 	  the questions about National Semiconductor devices. If you say Y,
-=======
-	  the questions about National Semi-conductor devices. If you say Y,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	  you will be asked for your specific card in the following questions.
 
 if NET_VENDOR_NATSEMI

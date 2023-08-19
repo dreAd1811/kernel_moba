@@ -179,11 +179,6 @@ static const char * const gcc_xo_ddr_500_200[] = {
 	"ddrpllapss",
 };
 
-<<<<<<< HEAD
-=======
-#define F(f, s, h, m, n) { (f), (s), (2 * (h) - 1), (m), (n) }
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct freq_tbl ftbl_gcc_audio_pwm_clk[] = {
 	F(48000000, P_XO, 1, 0, 0),
 	F(200000000, P_FEPLL200, 1, 0, 0),

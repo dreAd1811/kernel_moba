@@ -42,15 +42,11 @@
 #include "usnic_ib.h"
 #include "usnic_common_util.h"
 #include "usnic_ib_qp_grp.h"
-<<<<<<< HEAD
 #include "usnic_ib_verbs.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "usnic_fwd.h"
 #include "usnic_log.h"
 #include "usnic_uiom.h"
 #include "usnic_transport.h"
-<<<<<<< HEAD
 
 #define USNIC_DEFAULT_TRANSPORT USNIC_TRANSPORT_ROCE_CUSTOM
 
@@ -78,12 +74,6 @@ const struct usnic_vnic_res_spec min_transport_spec[USNIC_TRANSPORT_MAX] = {
 	},
 };
 
-=======
-#include "usnic_ib_verbs.h"
-
-#define USNIC_DEFAULT_TRANSPORT USNIC_TRANSPORT_ROCE_CUSTOM
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void usnic_ib_fw_string_to_u64(char *fw_ver_str, u64 *fw_ver)
 {
 	*fw_ver = *((u64 *)fw_ver_str);
@@ -457,11 +447,7 @@ struct net_device *usnic_get_netdev(struct ib_device *device, u8 port_num)
 int usnic_ib_query_pkey(struct ib_device *ibdev, u8 port, u16 index,
 				u16 *pkey)
 {
-<<<<<<< HEAD
 	if (index > 1)
-=======
-	if (index > 0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	*pkey = 0xffff;
@@ -788,25 +774,15 @@ int usnic_ib_destroy_ah(struct ib_ah *ah)
 	return -EINVAL;
 }
 
-<<<<<<< HEAD
 int usnic_ib_post_send(struct ib_qp *ibqp, const struct ib_send_wr *wr,
 		       const struct ib_send_wr **bad_wr)
-=======
-int usnic_ib_post_send(struct ib_qp *ibqp, struct ib_send_wr *wr,
-				struct ib_send_wr **bad_wr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	usnic_dbg("\n");
 	return -EINVAL;
 }
 
-<<<<<<< HEAD
 int usnic_ib_post_recv(struct ib_qp *ibqp, const struct ib_recv_wr *wr,
 		       const struct ib_recv_wr **bad_wr)
-=======
-int usnic_ib_post_recv(struct ib_qp *ibqp, struct ib_recv_wr *wr,
-				struct ib_recv_wr **bad_wr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	usnic_dbg("\n");
 	return -EINVAL;

@@ -103,7 +103,6 @@ enum intel_dpll_id {
 	 * @DPLL_ID_SKL_DPLL3: SKL and later DPLL3
 	 */
 	DPLL_ID_SKL_DPLL3 = 3,
-<<<<<<< HEAD
 
 
 	/**
@@ -136,10 +135,6 @@ enum intel_dpll_id {
 	DPLL_ID_ICL_MGPLL4 = 6,
 };
 #define I915_NUM_PLLS 7
-=======
-};
-#define I915_NUM_PLLS 6
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct intel_dpll_hw_state {
 	/* i9xx, pch plls */
@@ -170,7 +165,6 @@ struct intel_dpll_hw_state {
 	/* bxt */
 	uint32_t ebb0, ebb4, pll0, pll1, pll2, pll3, pll6, pll8, pll9, pll10,
 		 pcsdw12;
-<<<<<<< HEAD
 
 	/*
 	 * ICL uses the following, already defined:
@@ -188,8 +182,6 @@ struct intel_dpll_hw_state {
 	uint32_t mg_pll_tdc_coldst_bias;
 	uint32_t mg_pll_bias_mask;
 	uint32_t mg_pll_tdc_coldst_bias_mask;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -261,7 +253,6 @@ struct intel_shared_dpll_funcs {
 };
 
 /**
-<<<<<<< HEAD
  * struct dpll_info - display PLL platform specific info
  */
 struct dpll_info {
@@ -293,8 +284,6 @@ struct dpll_info {
 };
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * struct intel_shared_dpll - display PLL with tracked state and users
  */
 struct intel_shared_dpll {
@@ -317,36 +306,9 @@ struct intel_shared_dpll {
 	bool on;
 
 	/**
-<<<<<<< HEAD
 	 * @info: platform specific info
 	 */
 	const struct dpll_info *info;
-=======
-	 * @name: DPLL name; used for logging
-	 */
-	const char *name;
-
-	/**
-	 * @id: unique indentifier for this DPLL; should match the index in the
-	 * dev_priv->shared_dplls array
-	 */
-	enum intel_dpll_id id;
-
-	/**
-	 * @funcs: platform specific hooks
-	 */
-	struct intel_shared_dpll_funcs funcs;
-
-#define INTEL_DPLL_ALWAYS_ON	(1 << 0)
-	/**
-	 * @flags:
-	 *
-	 * INTEL_DPLL_ALWAYS_ON
-	 *     Inform the state checker that the DPLL is kept enabled even if
-	 *     not in use by any CRTC.
-	 */
-	uint32_t flags;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define SKL_DPLL0 0
@@ -380,10 +342,7 @@ void intel_shared_dpll_init(struct drm_device *dev);
 
 void intel_dpll_dump_hw_state(struct drm_i915_private *dev_priv,
 			      struct intel_dpll_hw_state *hw_state);
-<<<<<<< HEAD
 int icl_calc_dp_combo_pll_link(struct drm_i915_private *dev_priv,
 			       uint32_t pll_id);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* _INTEL_DPLL_MGR_H_ */

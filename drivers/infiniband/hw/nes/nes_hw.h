@@ -1164,10 +1164,7 @@ struct nes_adapter {
 	u8  log_port;
 
 	/* PCI information */
-<<<<<<< HEAD
 	struct nes_device *nesdev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int  devfn;
 	unsigned char bus_number;
 	unsigned char OneG_Mode;

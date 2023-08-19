@@ -151,11 +151,7 @@ static inline u8 spectral_bitmap_weight(u8 *bins)
 	return bins[0] & 0x3f;
 }
 
-<<<<<<< HEAD
 #ifdef CONFIG_ATH9K_COMMON_SPECTRAL
-=======
-#ifdef CONFIG_ATH9K_COMMON_DEBUG
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void ath9k_cmn_spectral_init_debug(struct ath_spec_scan_priv *spec_priv, struct dentry *debugfs_phy);
 void ath9k_cmn_spectral_deinit_debug(struct ath_spec_scan_priv *spec_priv);
 
@@ -187,10 +183,6 @@ static inline int ath_cmn_process_fft(struct ath_spec_scan_priv *spec_priv,
 {
 	return 0;
 }
-<<<<<<< HEAD
 #endif /* CONFIG_ATH9K_COMMON_SPECTRAL */
-=======
-#endif /* CONFIG_ATH9K_COMMON_DEBUG */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* SPECTRAL_H */

@@ -43,11 +43,8 @@
 #include <limits.h>
 #include <netinet/in.h>
 #include <stdlib.h>
-<<<<<<< HEAD
 #include <stdint.h>
 #include <inttypes.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "ecoff.h"
 
@@ -60,13 +57,8 @@
 /* -------------------------------------------------------------------- */
 
 struct sect {
-<<<<<<< HEAD
 	uint32_t vaddr;
 	uint32_t len;
-=======
-	unsigned long vaddr;
-	unsigned long len;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int *symTypeTable;
@@ -163,7 +155,6 @@ static char *saveRead(int file, off_t offset, off_t len, char *name)
 }
 
 #define swab16(x) \
-<<<<<<< HEAD
 	((uint16_t)( \
 		(((uint16_t)(x) & (uint16_t)0x00ffU) << 8) | \
 		(((uint16_t)(x) & (uint16_t)0xff00U) >> 8) ))
@@ -174,18 +165,6 @@ static char *saveRead(int file, off_t offset, off_t len, char *name)
 		(((uint32_t)(x) & (uint32_t)0x0000ff00UL) <<  8) | \
 		(((uint32_t)(x) & (uint32_t)0x00ff0000UL) >>  8) | \
 		(((uint32_t)(x) & (uint32_t)0xff000000UL) >> 24) ))
-=======
-	((unsigned short)( \
-		(((unsigned short)(x) & (unsigned short)0x00ffU) << 8) | \
-		(((unsigned short)(x) & (unsigned short)0xff00U) >> 8) ))
-
-#define swab32(x) \
-	((unsigned int)( \
-		(((unsigned int)(x) & (unsigned int)0x000000ffUL) << 24) | \
-		(((unsigned int)(x) & (unsigned int)0x0000ff00UL) <<  8) | \
-		(((unsigned int)(x) & (unsigned int)0x00ff0000UL) >>  8) | \
-		(((unsigned int)(x) & (unsigned int)0xff000000UL) >> 24) ))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void convert_elf_hdr(Elf32_Ehdr * e)
 {
@@ -297,11 +276,7 @@ int main(int argc, char *argv[])
 	struct aouthdr eah;
 	struct scnhdr esecs[6];
 	int infile, outfile;
-<<<<<<< HEAD
 	uint32_t cur_vma = UINT32_MAX;
-=======
-	unsigned long cur_vma = ULONG_MAX;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int addflag = 0;
 	int nosecs;
 
@@ -545,11 +520,7 @@ int main(int argc, char *argv[])
 
 		for (i = 0; i < nosecs; i++) {
 			printf
-<<<<<<< HEAD
 			    ("Section %d: %s phys %"PRIx32"  size %"PRIx32"\t file offset %"PRIx32"\n",
-=======
-			    ("Section %d: %s phys %lx  size %lx	 file offset %lx\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     i, esecs[i].s_name, esecs[i].s_paddr,
 			     esecs[i].s_size, esecs[i].s_scnptr);
 		}
@@ -595,29 +566,16 @@ int main(int argc, char *argv[])
 		   the section can be loaded before copying. */
 		if (ph[i].p_type == PT_LOAD && ph[i].p_filesz) {
 			if (cur_vma != ph[i].p_vaddr) {
-<<<<<<< HEAD
 				uint32_t gap = ph[i].p_vaddr - cur_vma;
 				char obuf[1024];
 				if (gap > 65536) {
 					fprintf(stderr,
 						"Intersegment gap (%"PRId32" bytes) too large.\n",
-=======
-				unsigned long gap =
-				    ph[i].p_vaddr - cur_vma;
-				char obuf[1024];
-				if (gap > 65536) {
-					fprintf(stderr,
-						"Intersegment gap (%ld bytes) too large.\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						gap);
 					exit(1);
 				}
 				fprintf(stderr,
-<<<<<<< HEAD
 					"Warning: %d byte intersegment gap.\n",
-=======
-					"Warning: %ld byte intersegment gap.\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					gap);
 				memset(obuf, 0, sizeof obuf);
 				while (gap) {

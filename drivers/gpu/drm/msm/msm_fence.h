@@ -22,11 +22,7 @@
 
 struct msm_fence_context {
 	struct drm_device *dev;
-<<<<<<< HEAD
 	char name[32];
-=======
-	const char *name;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned context;
 	/* last_fence == completed_fence --> no pending work */
 	uint32_t last_fence;          /* last assigned fence */
@@ -41,11 +37,6 @@ void msm_fence_context_free(struct msm_fence_context *fctx);
 
 int msm_wait_fence(struct msm_fence_context *fctx, uint32_t fence,
 		ktime_t *timeout, bool interruptible);
-<<<<<<< HEAD
-=======
-int msm_queue_fence_cb(struct msm_fence_context *fctx,
-		struct msm_fence_cb *cb, uint32_t fence);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void msm_update_fence(struct msm_fence_context *fctx, uint32_t fence);
 
 struct dma_fence * msm_fence_alloc(struct msm_fence_context *fctx);

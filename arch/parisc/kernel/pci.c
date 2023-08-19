@@ -174,11 +174,7 @@ void pcibios_set_master(struct pci_dev *dev)
  * pcibios_init_bridge() initializes cache line and default latency
  * for pci controllers and pci-pci bridges
  */
-<<<<<<< HEAD
 void __ref pcibios_init_bridge(struct pci_dev *dev)
-=======
-void __init pcibios_init_bridge(struct pci_dev *dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned short bridge_ctl, bridge_ctl_new;
 

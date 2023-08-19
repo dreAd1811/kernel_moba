@@ -1,25 +1,10 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0-only */
 /*
  * Copyright (c) 2008-2019, The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2008-2021, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #ifndef __KGSL_H
 #define __KGSL_H
 
-<<<<<<< HEAD
 #include <linux/cdev.h>
 #include <linux/kthread.h>
 #include <linux/mm.h>
@@ -29,23 +14,6 @@
 
 #include "kgsl_gmu_core.h"
 #include "kgsl_pwrscale.h"
-=======
-#include <linux/types.h>
-#include <linux/slab.h>
-#include <linux/vmalloc.h>
-#include <linux/msm_kgsl.h>
-#include <linux/platform_device.h>
-#include <linux/clk.h>
-#include <linux/interrupt.h>
-#include <linux/mutex.h>
-#include <linux/cdev.h>
-#include <linux/regulator/consumer.h>
-#include <linux/mm.h>
-#include <linux/uaccess.h>
-#include <linux/kthread.h>
-#include <asm/cacheflush.h>
-#include <linux/compat.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * --- kgsl drawobj flags ---
@@ -89,20 +57,13 @@
 /*
  * SCRATCH MEMORY: The scratch memory is one page worth of data that
  * is mapped into the GPU. This allows for some 'shared' data between
-<<<<<<< HEAD
  * the GPU and CPU. For example, it will be used by the GPU to write
  * each updated RPTR for each RB.
-=======
- * the GPU and CPU.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Used Data:
  * Offset: Length(bytes): What
  * 0x0: 4 * KGSL_PRIORITY_MAX_RB_LEVELS: RB0 RPTR
-<<<<<<< HEAD
  * 0x10: 8 * KGSL_PRIORITY_MAX_RB_LEVELS: RB0 CTXT RESTORE ADDR
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /* Shadow global helpers */
@@ -110,7 +71,6 @@
 #define SCRATCH_RPTR_GPU_ADDR(dev, id) \
 	((dev)->scratch.gpuaddr + SCRATCH_RPTR_OFFSET(id))
 
-<<<<<<< HEAD
 #define SCRATCH_PREEMPTION_CTXT_RESTORE_ADDR_OFFSET(id) \
 	(SCRATCH_RPTR_OFFSET(KGSL_PRIORITY_MAX_RB_LEVELS) + \
 	((id) * sizeof(uint64_t)))
@@ -118,8 +78,6 @@
 	((dev)->scratch.gpuaddr + \
 	SCRATCH_PREEMPTION_CTXT_RESTORE_ADDR_OFFSET(id))
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Timestamp window used to detect rollovers (half of integer range) */
 #define KGSL_TIMESTAMP_WINDOW 0x80000000
 
@@ -156,19 +114,13 @@ struct kgsl_context;
  * @pagetable_list: LIst of open pagetables
  * @ptlock: Lock for accessing the pagetable list
  * @process_mutex: Mutex for accessing the process list
-<<<<<<< HEAD
  * @proclist_lock: Lock for accessing the process list
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @devlock: Mutex protecting the device list
  * @stats: Struct containing atomic memory statistics
  * @full_cache_threshold: the threshold that triggers a full cache flush
  * @workqueue: Pointer to a single threaded workqueue
  * @mem_workqueue: Pointer to a workqueue for deferring memory entries
-<<<<<<< HEAD
  * @mem_work: Work struct to schedule mem_workqueue flush
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct kgsl_driver {
 	struct cdev cdev;
@@ -177,19 +129,12 @@ struct kgsl_driver {
 	struct device virtdev;
 	struct kobject *ptkobj;
 	struct kobject *prockobj;
-<<<<<<< HEAD
 	struct kgsl_device *devp[1];
-=======
-	struct kgsl_device *devp[KGSL_DEVICE_MAX];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct list_head process_list;
 	struct list_head pagetable_list;
 	spinlock_t ptlock;
 	struct mutex process_mutex;
-<<<<<<< HEAD
 	spinlock_t proclist_lock;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mutex devlock;
 	struct {
 		atomic_long_t vmalloc;
@@ -202,19 +147,11 @@ struct kgsl_driver {
 		atomic_long_t secure_max;
 		atomic_long_t mapped;
 		atomic_long_t mapped_max;
-<<<<<<< HEAD
-=======
-		atomic_long_t page_free_pending;
-		atomic_long_t page_alloc_pending;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} stats;
 	unsigned int full_cache_threshold;
 	struct workqueue_struct *workqueue;
 	struct workqueue_struct *mem_workqueue;
-<<<<<<< HEAD
 	struct work_struct mem_work;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct kthread_worker worker;
 	struct task_struct *worker_thread;
 };
@@ -227,19 +164,11 @@ struct kgsl_memdesc;
 
 struct kgsl_memdesc_ops {
 	unsigned int vmflags;
-<<<<<<< HEAD
 	int (*vmfault)(struct kgsl_memdesc *memdesc, struct vm_area_struct *vma,
 		       struct vm_fault *vmf);
 	void (*free)(struct kgsl_memdesc *memdesc);
 	int (*map_kernel)(struct kgsl_memdesc *memdesc);
 	void (*unmap_kernel)(struct kgsl_memdesc *memdesc);
-=======
-	int (*vmfault)(struct kgsl_memdesc *, struct vm_area_struct *,
-		       struct vm_fault *);
-	void (*free)(struct kgsl_memdesc *memdesc);
-	int (*map_kernel)(struct kgsl_memdesc *);
-	void (*unmap_kernel)(struct kgsl_memdesc *);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Internal definitions for memdesc->priv */
@@ -268,18 +197,11 @@ struct kgsl_memdesc_ops {
  * @pagetable: Pointer to the pagetable that the object is mapped in
  * @hostptr: Kernel virtual address
  * @hostptr_count: Number of threads using hostptr
-<<<<<<< HEAD
  * @useraddr: User virtual address (if applicable)
  * @gpuaddr: GPU virtual address
  * @physaddr: Physical address of the memory object
  * @size: Size of the memory object
  * @mapsize: Size of memory mapped in userspace
-=======
- * @gpuaddr: GPU virtual address
- * @physaddr: Physical address of the memory object
- * @size: Size of the memory object
- * @pad_to: Size that we pad the memdesc to
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @priv: Internal flags and settings
  * @sgt: Scatter gather table for allocated pages
  * @ops: Function hooks for the memdesc memory type
@@ -294,18 +216,11 @@ struct kgsl_memdesc {
 	struct kgsl_pagetable *pagetable;
 	void *hostptr;
 	unsigned int hostptr_count;
-<<<<<<< HEAD
 	unsigned long useraddr;
 	uint64_t gpuaddr;
 	phys_addr_t physaddr;
 	uint64_t size;
 	atomic_long_t mapsize;
-=======
-	uint64_t gpuaddr;
-	phys_addr_t physaddr;
-	uint64_t size;
-	uint64_t pad_to;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int priv;
 	struct sg_table *sgt;
 	struct kgsl_memdesc_ops *ops;
@@ -315,14 +230,6 @@ struct kgsl_memdesc {
 	struct page **pages;
 	unsigned int page_count;
 	unsigned int cur_bindings;
-<<<<<<< HEAD
-=======
-	/*
-	 * @lock: Spinlock to protect the gpuaddr from being accessed by
-	 * multiple entities trying to map the same SVM region at once
-	 */
-	spinlock_t lock;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /*
@@ -371,14 +278,6 @@ struct kgsl_mem_entry {
 	struct work_struct work;
 	spinlock_t bind_lock;
 	struct rb_root bind_tree;
-<<<<<<< HEAD
-=======
-	/**
-	 * @map_count: Count how many vmas this object is mapped in - used for
-	 * debugfs accounting
-	 */
-	atomic_t map_count;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct kgsl_device_private;
@@ -439,19 +338,6 @@ struct kgsl_event_group {
 };
 
 /**
-<<<<<<< HEAD
-=======
- * struct kgsl_protected_registers - Protected register range
- * @base: Offset of the range to be protected
- * @range: Range (# of registers = 2 ** range)
- */
-struct kgsl_protected_registers {
-	unsigned int base;
-	int range;
-};
-
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * struct sparse_bind_object - Bind metadata
  * @node: Node for the rb tree
  * @p_memdesc: Physical memdesc bound to
@@ -541,10 +427,7 @@ long kgsl_ioctl_gpu_sparse_command(struct kgsl_device_private *dev_priv,
 					unsigned int cmd, void *data);
 
 void kgsl_mem_entry_destroy(struct kref *kref);
-<<<<<<< HEAD
 void kgsl_mem_entry_destroy_deferred(struct kref *kref);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void kgsl_get_egl_counts(struct kgsl_mem_entry *entry,
 			int *egl_surface_count, int *egl_image_count);
@@ -564,7 +447,6 @@ struct kgsl_mem_entry *gpumem_alloc_entry(struct kgsl_device_private *dev_priv,
 				uint64_t size, uint64_t flags);
 long gpumem_free_entry(struct kgsl_mem_entry *entry);
 
-<<<<<<< HEAD
 enum kgsl_mmutype kgsl_mmu_get_mmutype(struct kgsl_device *device);
 void kgsl_mmu_add_global(struct kgsl_device *device,
 	struct kgsl_memdesc *memdesc, const char *name);
@@ -575,8 +457,6 @@ void kgsl_mmu_remove_global(struct kgsl_device *device,
 int kgsl_request_irq(struct platform_device *pdev, const  char *name,
 		irq_handler_t handler, void *data);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int kgsl_gpuaddr_in_memdesc(const struct kgsl_memdesc *memdesc,
 				uint64_t gpuaddr, uint64_t size)
 {
@@ -665,7 +545,6 @@ kgsl_mem_entry_put(struct kgsl_mem_entry *entry)
 		kref_put(&entry->refcount, kgsl_mem_entry_destroy);
 }
 
-<<<<<<< HEAD
 /**
  * kgsl_mem_entry_put_deferred - Puts refcount and triggers deferred
  *  mem_entry destroy when refcount goes to zero.
@@ -681,8 +560,6 @@ kgsl_mem_entry_put_deferred(struct kgsl_mem_entry *entry)
 		kref_put(&entry->refcount, kgsl_mem_entry_destroy_deferred);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * kgsl_addr_range_overlap() - Checks if 2 ranges overlap
  * @gpuaddr1: Start of first address range
@@ -702,38 +579,6 @@ static inline bool kgsl_addr_range_overlap(uint64_t gpuaddr1,
 		(gpuaddr1 >= (gpuaddr2 + size2)));
 }
 
-<<<<<<< HEAD
-=======
-/**
- * kgsl_malloc() - Use either kzalloc or vmalloc to allocate memory
- * @size: Size of the desired allocation
- *
- * Allocate a block of memory for the driver - if it is small try to allocate it
- * from kmalloc (fast!) otherwise we need to go with vmalloc (safe!)
- */
-static inline void *kgsl_malloc(size_t size)
-{
-	if (size <= PAGE_SIZE)
-		return kzalloc(size, GFP_KERNEL);
-
-	return vmalloc(size);
-}
-
-/**
- * kgsl_free() - Free memory allocated by kgsl_malloc()
- * @ptr: Pointer to the memory to free
- *
- * Free the memory be it in vmalloc or kmalloc space
- */
-static inline void kgsl_free(void *ptr)
-{
-	if (ptr != NULL && is_vmalloc_addr(ptr))
-		return vfree(ptr);
-
-	kfree(ptr);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int kgsl_copy_from_user(void *dest, void __user *src,
 		unsigned int ksize, unsigned int usize)
 {

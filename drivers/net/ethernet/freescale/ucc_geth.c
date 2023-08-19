@@ -45,10 +45,6 @@
 #include <soc/fsl/qe/ucc.h>
 #include <soc/fsl/qe/ucc_fast.h>
 #include <asm/machdep.h>
-<<<<<<< HEAD
-=======
-#include <net/sch_generic.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "ucc_geth.h"
 
@@ -1555,16 +1551,11 @@ static int ugeth_disable(struct ucc_geth_private *ugeth, enum comm_dir mode)
 
 static void ugeth_quiesce(struct ucc_geth_private *ugeth)
 {
-<<<<<<< HEAD
 	/* Prevent any further xmits, plus detach the device. */
 	netif_device_detach(ugeth->ndev);
 
 	/* Wait for any current xmits to finish. */
 	netif_tx_disable(ugeth->ndev);
-=======
-	/* Prevent any further xmits */
-	netif_tx_stop_all_queues(ugeth->ndev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Disable the interrupt to avoid NAPI rescheduling. */
 	disable_irq(ugeth->ug_info->uf_info.irq);
@@ -1577,14 +1568,7 @@ static void ugeth_activate(struct ucc_geth_private *ugeth)
 {
 	napi_enable(&ugeth->napi);
 	enable_irq(ugeth->ug_info->uf_info.irq);
-<<<<<<< HEAD
 	netif_device_attach(ugeth->ndev);
-=======
-
-	/* allow to xmit again  */
-	netif_tx_wake_all_queues(ugeth->ndev);
-	__netdev_watchdog_up(ugeth->ndev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Called every time the controller might need to be made
@@ -2271,15 +2255,9 @@ static int ucc_geth_alloc_tx(struct ucc_geth_private *ugeth)
 	/* Init Tx bds */
 	for (j = 0; j < ug_info->numQueuesTx; j++) {
 		/* Setup the skbuff rings */
-<<<<<<< HEAD
 		ugeth->tx_skbuff[j] =
 			kmalloc_array(ugeth->ug_info->bdRingLenTx[j],
 				      sizeof(struct sk_buff *), GFP_KERNEL);
-=======
-		ugeth->tx_skbuff[j] = kmalloc(sizeof(struct sk_buff *) *
-					      ugeth->ug_info->bdRingLenTx[j],
-					      GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (ugeth->tx_skbuff[j] == NULL) {
 			if (netif_msg_ifup(ugeth))
@@ -2350,15 +2328,9 @@ static int ucc_geth_alloc_rx(struct ucc_geth_private *ugeth)
 	/* Init Rx bds */
 	for (j = 0; j < ug_info->numQueuesRx; j++) {
 		/* Setup the skbuff rings */
-<<<<<<< HEAD
 		ugeth->rx_skbuff[j] =
 			kmalloc_array(ugeth->ug_info->bdRingLenRx[j],
 				      sizeof(struct sk_buff *), GFP_KERNEL);
-=======
-		ugeth->rx_skbuff[j] = kmalloc(sizeof(struct sk_buff *) *
-					      ugeth->ug_info->bdRingLenRx[j],
-					      GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (ugeth->rx_skbuff[j] == NULL) {
 			if (netif_msg_ifup(ugeth))
@@ -3113,12 +3085,7 @@ static int ucc_geth_startup(struct ucc_geth_private *ugeth)
 
 /* This is called by the kernel when a frame is ready for transmission. */
 /* It is pointed to by the dev->hard_start_xmit function pointer */
-<<<<<<< HEAD
 static int ucc_geth_start_xmit(struct sk_buff *skb, struct net_device *dev)
-=======
-static netdev_tx_t
-ucc_geth_start_xmit(struct sk_buff *skb, struct net_device *dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ucc_geth_private *ugeth = netdev_priv(dev);
 #ifdef CONFIG_UGETH_TX_ON_DEMAND
@@ -3131,10 +3098,7 @@ ucc_geth_start_xmit(struct sk_buff *skb, struct net_device *dev)
 
 	ugeth_vdbg("%s: IN", __func__);
 
-<<<<<<< HEAD
 	netdev_sent_queue(dev, skb->len);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_irqsave(&ugeth->lock, flags);
 
 	dev->stats.tx_bytes += skb->len;
@@ -3279,11 +3243,8 @@ static int ucc_geth_tx(struct net_device *dev, u8 txQ)
 {
 	/* Start from the next BD that should be filled */
 	struct ucc_geth_private *ugeth = netdev_priv(dev);
-<<<<<<< HEAD
 	unsigned int bytes_sent = 0;
 	int howmany = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 __iomem *bd;		/* BD pointer */
 	u32 bd_status;
 
@@ -3301,12 +3262,8 @@ static int ucc_geth_tx(struct net_device *dev, u8 txQ)
 		skb = ugeth->tx_skbuff[txQ][ugeth->skb_dirtytx[txQ]];
 		if (!skb)
 			break;
-<<<<<<< HEAD
 		howmany++;
 		bytes_sent += skb->len;
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev->stats.tx_packets++;
 
 		dev_consume_skb_any(skb);
@@ -3328,10 +3285,7 @@ static int ucc_geth_tx(struct net_device *dev, u8 txQ)
 		bd_status = in_be32((u32 __iomem *)bd);
 	}
 	ugeth->confBd[txQ] = bd;
-<<<<<<< HEAD
 	netdev_completed_queue(dev, howmany, bytes_sent);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -3532,10 +3486,7 @@ static int ucc_geth_open(struct net_device *dev)
 
 	phy_start(ugeth->phydev);
 	napi_enable(&ugeth->napi);
-<<<<<<< HEAD
 	netdev_reset_queue(dev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	netif_start_queue(dev);
 
 	device_set_wakeup_capable(&dev->dev,
@@ -3566,10 +3517,7 @@ static int ucc_geth_close(struct net_device *dev)
 	free_irq(ugeth->ug_info->uf_info.irq, ugeth->ndev);
 
 	netif_stop_queue(dev);
-<<<<<<< HEAD
 	netdev_reset_queue(dev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -3918,14 +3866,9 @@ static int ucc_geth_probe(struct platform_device* ofdev)
 	}
 
 	if (netif_msg_probe(&debug))
-<<<<<<< HEAD
 		pr_info("UCC%1d at 0x%8llx (irq = %d)\n",
 			ug_info->uf_info.ucc_num + 1,
 			(u64)ug_info->uf_info.regs,
-=======
-		pr_info("UCC%1d at 0x%8x (irq = %d)\n",
-			ug_info->uf_info.ucc_num + 1, ug_info->uf_info.regs,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ug_info->uf_info.irq);
 
 	/* Create an ethernet device instance */

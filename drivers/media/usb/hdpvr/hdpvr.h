@@ -232,7 +232,6 @@ enum {
 
 
 /* :0 s 38 d3 0000 0000 0001 1 = 00 */
-<<<<<<< HEAD
 /*		ret = usb_control_msg(dev->udev, */
 /*				      usb_sndctrlpipe(dev->udev, 0), */
 /*				      0xd3, 0x38, */
@@ -242,17 +241,6 @@ enum {
 
 /*		info("control request returned %d", ret); */
 /*		msleep(5000); */
-=======
-/* 		ret = usb_control_msg(dev->udev, */
-/* 				      usb_sndctrlpipe(dev->udev, 0), */
-/* 				      0xd3, 0x38, */
-/* 				      0, 0, */
-/* 				      "\0", 1, */
-/* 				      1000); */
-
-/* 		info("control request returned %d", ret); */
-/* 		msleep(5000); */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 	/* :0 s b8 81 1400 0003 0005 5 <
@@ -332,12 +320,7 @@ int hdpvr_cancel_queue(struct hdpvr_device *dev);
 /* i2c adapter registration */
 int hdpvr_register_i2c_adapter(struct hdpvr_device *dev);
 
-<<<<<<< HEAD
 struct i2c_client *hdpvr_register_ir_i2c(struct hdpvr_device *dev);
-=======
-struct i2c_client *hdpvr_register_ir_rx_i2c(struct hdpvr_device *dev);
-struct i2c_client *hdpvr_register_ir_tx_i2c(struct hdpvr_device *dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*========================================================================*/
 /* buffer management */

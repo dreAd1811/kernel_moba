@@ -74,10 +74,6 @@ static const char version[] =
 #include <linux/skbuff.h>
 
 #include <linux/dmaengine.h>
-<<<<<<< HEAD
-=======
-#include <linux/dma/pxa-dma.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/io.h>
 
@@ -517,12 +513,7 @@ static void smc911x_hardware_send_pkt(struct net_device *dev)
  * now, or set the card to generates an interrupt when ready
  * for the packet.
  */
-<<<<<<< HEAD
 static int smc911x_hard_start_xmit(struct sk_buff *skb, struct net_device *dev)
-=======
-static netdev_tx_t
-smc911x_hard_start_xmit(struct sk_buff *skb, struct net_device *dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct smc911x_local *lp = netdev_priv(dev);
 	unsigned int free;
@@ -955,11 +946,7 @@ static void smc911x_phy_configure(struct work_struct *work)
 	if (lp->ctl_rspeed != 100)
 		my_ad_caps &= ~(ADVERTISE_100BASE4|ADVERTISE_100FULL|ADVERTISE_100HALF);
 
-<<<<<<< HEAD
 	 if (!lp->ctl_rfduplx)
-=======
-	if (!lp->ctl_rfduplx)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		my_ad_caps &= ~(ADVERTISE_100FULL|ADVERTISE_10FULL);
 
 	/* Update our Auto-Neg Advertisement Register */
@@ -1807,10 +1794,6 @@ static int smc911x_probe(struct net_device *dev)
 #ifdef SMC_USE_DMA
 	struct dma_slave_config	config;
 	dma_cap_mask_t mask;
-<<<<<<< HEAD
-=======
-	struct pxad_param param;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 	DBG(SMC_DEBUG_FUNC, dev, "--> %s\n", __func__);
@@ -1986,20 +1969,8 @@ static int smc911x_probe(struct net_device *dev)
 
 	dma_cap_zero(mask);
 	dma_cap_set(DMA_SLAVE, mask);
-<<<<<<< HEAD
 	lp->rxdma = dma_request_channel(mask, NULL, NULL);
 	lp->txdma = dma_request_channel(mask, NULL, NULL);
-=======
-	param.prio = PXAD_PRIO_LOWEST;
-	param.drcmr = -1UL;
-
-	lp->rxdma =
-		dma_request_slave_channel_compat(mask, pxad_filter_fn,
-						 &param, &dev->dev, "rx");
-	lp->txdma =
-		dma_request_slave_channel_compat(mask, pxad_filter_fn,
-						 &param, &dev->dev, "tx");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	lp->rxdma_active = 0;
 	lp->txdma_active = 0;
 

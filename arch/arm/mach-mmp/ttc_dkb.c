@@ -178,16 +178,8 @@ static struct mv_usb_platform_data ttc_usb_pdata = {
 #endif
 #endif
 
-<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_MTD_NAND_MARVELL)
 static struct pxa3xx_nand_platform_data dkb_nand_info = {};
-=======
-#if IS_ENABLED(CONFIG_MTD_NAND_PXA3xx)
-static struct pxa3xx_nand_platform_data dkb_nand_info = {
-	.enable_arbiter = 1,
-	.num_cs = 1,
-};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 #if IS_ENABLED(CONFIG_MMP_DISP)
@@ -280,11 +272,7 @@ static void __init ttc_dkb_init(void)
 
 	/* on-chip devices */
 	pxa910_add_uart(1);
-<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_MTD_NAND_MARVELL)
-=======
-#if IS_ENABLED(CONFIG_MTD_NAND_PXA3xx)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pxa910_add_nand(&dkb_nand_info);
 #endif
 

@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Samsung's S3C64xx SoC series common device tree source
  *
@@ -14,7 +11,6 @@
  * Note: This file does not include device nodes for all the controllers in
  * S3C64xx SoCs. As device tree coverage for S3C64xx increases, additional
  * nodes can be added to this file.
-<<<<<<< HEAD
  */
 
 #include <dt-bindings/clock/samsung,s3c64xx-clock.h>
@@ -23,18 +19,6 @@
 	#address-cells = <1>;
 	#size-cells = <1>;
 
-=======
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
- */
-
-#include "skeleton.dtsi"
-#include <dt-bindings/clock/samsung,s3c64xx-clock.h>
-
-/ {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	aliases {
 		i2c0 = &i2c0;
 		pinctrl0 = &pinctrl0;

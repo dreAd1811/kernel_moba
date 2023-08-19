@@ -220,22 +220,11 @@ struct isp_device {
 
 	unsigned int sbl_resources;
 	unsigned int subclk_resources;
-<<<<<<< HEAD
 };
 
 struct isp_async_subdev {
 	struct v4l2_async_subdev asd;
 	struct isp_bus_cfg bus;
-=======
-
-#define ISP_MAX_SUBDEVS		8
-	struct v4l2_subdev *subdevs[ISP_MAX_SUBDEVS];
-};
-
-struct isp_async_subdev {
-	struct isp_bus_cfg bus;
-	struct v4l2_async_subdev asd;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define v4l2_subdev_to_bus_cfg(sd) \

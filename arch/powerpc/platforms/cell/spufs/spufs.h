@@ -69,11 +69,7 @@ struct switch_log {
 	unsigned long		head;
 	unsigned long		tail;
 	struct switch_log_entry {
-<<<<<<< HEAD
 		struct timespec64 tstamp;
-=======
-		struct timespec	tstamp;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		s32		spu_id;
 		u32		type;
 		u32		val;
@@ -189,12 +185,7 @@ struct mfc_dma_command {
 struct spu_context_ops {
 	int (*mbox_read) (struct spu_context * ctx, u32 * data);
 	 u32(*mbox_stat_read) (struct spu_context * ctx);
-<<<<<<< HEAD
 	__poll_t (*mbox_stat_poll)(struct spu_context *ctx, __poll_t events);
-=======
-	unsigned int (*mbox_stat_poll)(struct spu_context *ctx,
-					unsigned int events);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int (*ibox_read) (struct spu_context * ctx, u32 * data);
 	int (*wbox_write) (struct spu_context * ctx, u32 data);
 	 u32(*signal1_read) (struct spu_context * ctx);

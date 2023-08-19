@@ -21,10 +21,7 @@
 #include <net/cfg80211.h>
 #include <net/rtnetlink.h>
 #include <net/addrconf.h>
-<<<<<<< HEAD
 #include <net/ieee80211_radiotap.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <net/ipv6.h>
 #include <brcmu_utils.h>
 #include <brcmu_wifi.h>
@@ -75,7 +72,6 @@ struct brcmf_if *brcmf_get_ifp(struct brcmf_pub *drvr, int ifidx)
 	return ifp;
 }
 
-<<<<<<< HEAD
 void brcmf_configure_arp_nd_offload(struct brcmf_if *ifp, bool enable)
 {
 	s32 err;
@@ -113,8 +109,6 @@ void brcmf_configure_arp_nd_offload(struct brcmf_if *ifp, bool enable)
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void _brcmf_set_multicast_list(struct work_struct *work)
 {
 	struct brcmf_if *ifp;
@@ -178,10 +172,7 @@ static void _brcmf_set_multicast_list(struct work_struct *work)
 	if (err < 0)
 		brcmf_err("Setting BRCMF_C_SET_PROMISC failed, %d\n",
 			  err);
-<<<<<<< HEAD
 	brcmf_configure_arp_nd_offload(ifp, !cmd_value);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #if IS_ENABLED(CONFIG_IPV6)
@@ -240,7 +231,6 @@ static void brcmf_netdev_set_multicast_list(struct net_device *ndev)
 	schedule_work(&ifp->multicast_work);
 }
 
-<<<<<<< HEAD
 /**
  * brcmf_skb_is_iapp - checks if skb is an IAPP packet
  *
@@ -272,8 +262,6 @@ static bool brcmf_skb_is_iapp(struct sk_buff *skb)
 #endif
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static netdev_tx_t brcmf_netdev_start_xmit(struct sk_buff *skb,
 					   struct net_device *ndev)
 {
@@ -294,7 +282,6 @@ static netdev_tx_t brcmf_netdev_start_xmit(struct sk_buff *skb,
 		goto done;
 	}
 
-<<<<<<< HEAD
 	/* Some recent Broadcom's firmwares disassociate STA when they receive
 	 * an 802.11f ADD frame. This behavior can lead to a local DoS security
 	 * issue. Attacker may trigger disassociation of any STA by sending a
@@ -312,8 +299,6 @@ static netdev_tx_t brcmf_netdev_start_xmit(struct sk_buff *skb,
 		goto done;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Make sure there's enough writeable headroom */
 	if (skb_headroom(skb) < drvr->hdrlen || skb_header_cloned(skb)) {
 		head_delta = max_t(int, drvr->hdrlen - skb_headroom(skb), 0);
@@ -389,7 +374,6 @@ void brcmf_txflowblock_if(struct brcmf_if *ifp,
 
 void brcmf_netif_rx(struct brcmf_if *ifp, struct sk_buff *skb)
 {
-<<<<<<< HEAD
 	/* Most of Broadcom's firmwares send 802.11f ADD frame every time a new
 	 * STA connects to the AP interface. This is an obsoleted standard most
 	 * users don't use, so don't pass these frames up unless requested.
@@ -399,8 +383,6 @@ void brcmf_netif_rx(struct brcmf_if *ifp, struct sk_buff *skb)
 		return;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (skb->pkt_type == PACKET_MULTICAST)
 		ifp->ndev->stats.multicast++;
 
@@ -423,7 +405,6 @@ void brcmf_netif_rx(struct brcmf_if *ifp, struct sk_buff *skb)
 		netif_rx_ni(skb);
 }
 
-<<<<<<< HEAD
 void brcmf_netif_mon_rx(struct brcmf_if *ifp, struct sk_buff *skb)
 {
 	if (brcmf_feat_is_enabled(ifp, BRCMF_FEAT_MONITOR_FMT_RADIOTAP)) {
@@ -448,8 +429,6 @@ void brcmf_netif_mon_rx(struct brcmf_if *ifp, struct sk_buff *skb)
 	brcmf_netif_rx(ifp, skb);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int brcmf_rx_hdrpull(struct brcmf_pub *drvr, struct sk_buff *skb,
 			    struct brcmf_if **ifp)
 {
@@ -1022,58 +1001,6 @@ static int brcmf_inet6addr_changed(struct notifier_block *nb,
 }
 #endif
 
-<<<<<<< HEAD
-=======
-int brcmf_attach(struct device *dev, struct brcmf_mp_device *settings)
-{
-	struct brcmf_pub *drvr = NULL;
-	int ret = 0;
-	int i;
-
-	brcmf_dbg(TRACE, "Enter\n");
-
-	/* Allocate primary brcmf_info */
-	drvr = kzalloc(sizeof(struct brcmf_pub), GFP_ATOMIC);
-	if (!drvr)
-		return -ENOMEM;
-
-	for (i = 0; i < ARRAY_SIZE(drvr->if2bss); i++)
-		drvr->if2bss[i] = BRCMF_BSSIDX_INVALID;
-
-	mutex_init(&drvr->proto_block);
-
-	/* Link to bus module */
-	drvr->hdrlen = 0;
-	drvr->bus_if = dev_get_drvdata(dev);
-	drvr->bus_if->drvr = drvr;
-	drvr->settings = settings;
-
-	/* attach debug facilities */
-	brcmf_debug_attach(drvr);
-
-	/* Attach and link in the protocol */
-	ret = brcmf_proto_attach(drvr);
-	if (ret != 0) {
-		brcmf_err("brcmf_prot_attach failed\n");
-		goto fail;
-	}
-
-	/* Attach to events important for core code */
-	brcmf_fweh_register(drvr, BRCMF_E_PSM_WATCHDOG,
-			    brcmf_psm_watchdog_notify);
-
-	/* attach firmware event handler */
-	brcmf_fweh_attach(drvr);
-
-	return ret;
-
-fail:
-	brcmf_detach(dev);
-
-	return ret;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int brcmf_revinfo_read(struct seq_file *s, void *data)
 {
 	struct brcmf_bus *bus_if = dev_get_drvdata(s->private);
@@ -1084,12 +1011,7 @@ static int brcmf_revinfo_read(struct seq_file *s, void *data)
 	seq_printf(s, "vendorid: 0x%04x\n", ri->vendorid);
 	seq_printf(s, "deviceid: 0x%04x\n", ri->deviceid);
 	seq_printf(s, "radiorev: %s\n", brcmu_dotrev_str(ri->radiorev, drev));
-<<<<<<< HEAD
 	seq_printf(s, "chip: %s\n", ri->chipname);
-=======
-	seq_printf(s, "chipnum: %u (%x)\n", ri->chipnum, ri->chipnum);
-	seq_printf(s, "chiprev: %u\n", ri->chiprev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	seq_printf(s, "chippkg: %u\n", ri->chippkg);
 	seq_printf(s, "corerev: %u\n", ri->corerev);
 	seq_printf(s, "boardid: 0x%04x\n", ri->boardid);
@@ -1103,7 +1025,6 @@ static int brcmf_revinfo_read(struct seq_file *s, void *data)
 	seq_printf(s, "anarev: %u\n", ri->anarev);
 	seq_printf(s, "nvramrev: %08x\n", ri->nvramrev);
 
-<<<<<<< HEAD
 	seq_printf(s, "clmver: %s\n", bus_if->drvr->clmver);
 
 	return 0;
@@ -1113,16 +1034,6 @@ static int brcmf_bus_started(struct brcmf_pub *drvr, struct cfg80211_ops *ops)
 {
 	int ret = -1;
 	struct brcmf_bus *bus_if = drvr->bus_if;
-=======
-	return 0;
-}
-
-int brcmf_bus_started(struct device *dev)
-{
-	int ret = -1;
-	struct brcmf_bus *bus_if = dev_get_drvdata(dev);
-	struct brcmf_pub *drvr = bus_if->drvr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct brcmf_if *ifp;
 	struct brcmf_if *p2p_ifp;
 
@@ -1138,31 +1049,16 @@ int brcmf_bus_started(struct device *dev)
 	/* signal bus ready */
 	brcmf_bus_change_state(bus_if, BRCMF_BUS_UP);
 
-<<<<<<< HEAD
 	/* do bus specific preinit here */
 	ret = brcmf_bus_preinit(bus_if);
 	if (ret < 0)
 		goto fail;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Bus is ready, do any initialization */
 	ret = brcmf_c_preinit_dcmds(ifp);
 	if (ret < 0)
 		goto fail;
 
-<<<<<<< HEAD
-=======
-	brcmf_debugfs_add_entry(drvr, "revinfo", brcmf_revinfo_read);
-
-	/* assure we have chipid before feature attach */
-	if (!bus_if->chip) {
-		bus_if->chip = drvr->revinfo.chipnum;
-		bus_if->chiprev = drvr->revinfo.chiprev;
-		brcmf_dbg(INFO, "firmware revinfo: chip %x (%d) rev %d\n",
-			  bus_if->chip, bus_if->chip, bus_if->chiprev);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	brcmf_feat_attach(drvr);
 
 	ret = brcmf_proto_init_done(drvr);
@@ -1171,11 +1067,7 @@ int brcmf_bus_started(struct device *dev)
 
 	brcmf_proto_add_if(drvr, ifp);
 
-<<<<<<< HEAD
 	drvr->config = brcmf_cfg80211_attach(drvr, ops,
-=======
-	drvr->config = brcmf_cfg80211_attach(drvr, bus_if->dev,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					     drvr->settings->p2p_enable);
 	if (drvr->config == NULL) {
 		ret = -ENOMEM;
@@ -1209,14 +1101,11 @@ int brcmf_bus_started(struct device *dev)
 #endif
 #endif /* CONFIG_INET */
 
-<<<<<<< HEAD
 	/* populate debugfs */
 	brcmf_debugfs_add_entry(drvr, "revinfo", brcmf_revinfo_read);
 	brcmf_feat_debugfs_create(drvr);
 	brcmf_proto_debugfs_create(drvr);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 fail:
@@ -1236,7 +1125,6 @@ fail:
 	return ret;
 }
 
-<<<<<<< HEAD
 int brcmf_attach(struct device *dev, struct brcmf_mp_device *settings)
 {
 	struct wiphy *wiphy;
@@ -1300,8 +1188,6 @@ fail:
 	return ret;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void brcmf_bus_add_txhdrlen(struct device *dev, uint len)
 {
 	struct brcmf_bus *bus_if = dev_get_drvdata(dev);
@@ -1324,7 +1210,6 @@ void brcmf_dev_reset(struct device *dev)
 		brcmf_fil_cmd_int_set(drvr->iflist[0], BRCMF_C_TERMINATED, 1);
 }
 
-<<<<<<< HEAD
 void brcmf_dev_coredump(struct device *dev)
 {
 	struct brcmf_bus *bus_if = dev_get_drvdata(dev);
@@ -1333,8 +1218,6 @@ void brcmf_dev_coredump(struct device *dev)
 		brcmf_dbg(TRACE, "failed to create coredump\n");
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void brcmf_detach(struct device *dev)
 {
 	s32 i;
@@ -1361,17 +1244,13 @@ void brcmf_detach(struct device *dev)
 
 	brcmf_bus_change_state(bus_if, BRCMF_BUS_DOWN);
 
-<<<<<<< HEAD
 	brcmf_proto_detach_pre_delif(drvr);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* make sure primary interface removed last */
 	for (i = BRCMF_MAX_IFS-1; i > -1; i--)
 		brcmf_remove_interface(drvr->iflist[i], false);
 
 	brcmf_cfg80211_detach(drvr->config);
-<<<<<<< HEAD
 	drvr->config = NULL;
 
 	brcmf_bus_stop(drvr->bus_if);
@@ -1380,16 +1259,6 @@ void brcmf_detach(struct device *dev)
 
 	bus_if->drvr = NULL;
 	wiphy_free(drvr->wiphy);
-=======
-
-	brcmf_bus_stop(drvr->bus_if);
-
-	brcmf_proto_detach(drvr);
-
-	brcmf_debug_detach(drvr);
-	bus_if->drvr = NULL;
-	kfree(drvr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 s32 brcmf_iovar_data_set(struct device *dev, char *name, void *data, u32 len)
@@ -1426,15 +1295,12 @@ void brcmf_bus_change_state(struct brcmf_bus *bus, enum brcmf_bus_state state)
 	int ifidx;
 
 	brcmf_dbg(TRACE, "%d -> %d\n", bus->state, state);
-<<<<<<< HEAD
 
 	if (!drvr) {
 		brcmf_dbg(INFO, "ignoring transition, bus not attached yet\n");
 		return;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bus->state = state;
 
 	if (state == BRCMF_BUS_UP) {

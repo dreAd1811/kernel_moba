@@ -199,10 +199,7 @@ void free_platform_config(struct hfi1_devdata *dd)
 {
 	/* Release memory allocated for eprom or fallback file read. */
 	kfree(dd->platform_config.data);
-<<<<<<< HEAD
 	dd->platform_config.data = NULL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void get_port_type(struct hfi1_pportdata *ppd)

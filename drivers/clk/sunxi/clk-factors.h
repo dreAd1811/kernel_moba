@@ -55,13 +55,10 @@ struct clk *sunxi_factors_register(struct device_node *node,
 				   const struct factors_data *data,
 				   spinlock_t *lock,
 				   void __iomem *reg);
-<<<<<<< HEAD
 struct clk *sunxi_factors_register_critical(struct device_node *node,
 					    const struct factors_data *data,
 					    spinlock_t *lock,
 					    void __iomem *reg);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void sunxi_factors_unregister(struct device_node *node, struct clk *clk);
 

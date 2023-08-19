@@ -28,21 +28,6 @@
 #include <core/enum.h>
 #include <engine/fifo.h>
 
-<<<<<<< HEAD
-=======
-int
-nv50_fb_memtype[0x80] = {
-	1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0, 0, 0,
-	1, 1, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, 2, 2, 2, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 0, 0,
-	0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 2, 2, 2, 2,
-	1, 0, 2, 0, 1, 0, 2, 0, 1, 1, 2, 2, 1, 1, 0, 0
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int
 nv50_fb_ram_new(struct nvkm_fb *base, struct nvkm_ram **pram)
 {
@@ -50,15 +35,6 @@ nv50_fb_ram_new(struct nvkm_fb *base, struct nvkm_ram **pram)
 	return fb->func->ram_new(&fb->base, pram);
 }
 
-<<<<<<< HEAD
-=======
-static bool
-nv50_fb_memtype_valid(struct nvkm_fb *fb, u32 memtype)
-{
-	return nv50_fb_memtype[(memtype & 0xff00) >> 8] != 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct nvkm_enum vm_dispatch_subclients[] = {
 	{ 0x00000000, "GRCTX" },
 	{ 0x00000001, "NOTIFY" },
@@ -250,7 +226,6 @@ nv50_fb_init(struct nvkm_fb *base)
 	nvkm_wr32(device, 0x100c90, fb->func->trap);
 }
 
-<<<<<<< HEAD
 static u32
 nv50_fb_tags(struct nvkm_fb *base)
 {
@@ -260,8 +235,6 @@ nv50_fb_tags(struct nvkm_fb *base)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void *
 nv50_fb_dtor(struct nvkm_fb *base)
 {
@@ -280,18 +253,11 @@ nv50_fb_dtor(struct nvkm_fb *base)
 static const struct nvkm_fb_func
 nv50_fb_ = {
 	.dtor = nv50_fb_dtor,
-<<<<<<< HEAD
 	.tags = nv50_fb_tags,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.oneinit = nv50_fb_oneinit,
 	.init = nv50_fb_init,
 	.intr = nv50_fb_intr,
 	.ram_new = nv50_fb_ram_new,
-<<<<<<< HEAD
-=======
-	.memtype_valid = nv50_fb_memtype_valid,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int
@@ -312,10 +278,7 @@ nv50_fb_new_(const struct nv50_fb_func *func, struct nvkm_device *device,
 static const struct nv50_fb_func
 nv50_fb = {
 	.ram_new = nv50_ram_new,
-<<<<<<< HEAD
 	.tags = nv20_fb_tags,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.trap = 0x000707ff,
 };
 

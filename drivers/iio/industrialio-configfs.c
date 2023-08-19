@@ -17,11 +17,7 @@
 #include <linux/iio/iio.h>
 #include <linux/iio/configfs.h>
 
-<<<<<<< HEAD
 static const struct config_item_type iio_root_group_type = {
-=======
-static struct config_item_type iio_root_group_type = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ct_owner       = THIS_MODULE,
 };
 

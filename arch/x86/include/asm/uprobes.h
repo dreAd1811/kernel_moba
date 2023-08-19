@@ -53,13 +53,10 @@ struct arch_uprobe {
 			u8	fixups;
 			u8	ilen;
 		} 			defparam;
-<<<<<<< HEAD
 		struct {
 			u8	reg_offset;	/* to the start of pt_regs */
 			u8	ilen;
 		}			push;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };
 

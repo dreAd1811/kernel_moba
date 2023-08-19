@@ -24,11 +24,8 @@
 #include <linux/thread_info.h>
 #include <linux/module.h>
 
-<<<<<<< HEAD
 register unsigned long current_frame_pointer asm("r30");
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct stackframe {
 	unsigned long fp;
 	unsigned long rets;
@@ -46,11 +43,7 @@ void save_stack_trace(struct stack_trace *trace)
 
 	low = (unsigned long)task_stack_page(current);
 	high = low + THREAD_SIZE;
-<<<<<<< HEAD
 	fp = current_frame_pointer;
-=======
-	fp = (unsigned long)__builtin_frame_address(0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	while (fp >= low && fp <= (high - sizeof(*frame))) {
 		frame = (struct stackframe *)fp;

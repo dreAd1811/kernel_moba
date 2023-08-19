@@ -436,10 +436,7 @@ static int nxp_spifi_probe(struct platform_device *pdev)
 	}
 
 	ret = nxp_spifi_setup_flash(spifi, flash_np);
-<<<<<<< HEAD
 	of_node_put(flash_np);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		dev_err(&pdev->dev, "unable to setup flash chip\n");
 		goto dis_clks;

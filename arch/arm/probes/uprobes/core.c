@@ -32,11 +32,7 @@ bool is_swbp_insn(uprobe_opcode_t *insn)
 int set_swbp(struct arch_uprobe *auprobe, struct mm_struct *mm,
 	     unsigned long vaddr)
 {
-<<<<<<< HEAD
 	return uprobe_write_opcode(auprobe, mm, vaddr,
-=======
-	return uprobe_write_opcode(mm, vaddr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		   __opcode_to_mem_arm(auprobe->bpinsn));
 }
 

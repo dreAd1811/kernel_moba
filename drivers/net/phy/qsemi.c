@@ -118,11 +118,6 @@ static struct phy_driver qs6612_driver[] = { {
 	.features	= PHY_BASIC_FEATURES,
 	.flags		= PHY_HAS_INTERRUPT,
 	.config_init	= qs6612_config_init,
-<<<<<<< HEAD
-=======
-	.config_aneg	= genphy_config_aneg,
-	.read_status	= genphy_read_status,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ack_interrupt	= qs6612_ack_interrupt,
 	.config_intr	= qs6612_config_intr,
 } };

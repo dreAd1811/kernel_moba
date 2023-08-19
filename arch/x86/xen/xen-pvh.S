@@ -54,15 +54,11 @@
  * charge of setting up it's own stack, GDT and IDT.
  */
 
-<<<<<<< HEAD
 #define PVH_GDT_ENTRY_CS	1
 #define PVH_GDT_ENTRY_DS	2
 #define PVH_GDT_ENTRY_CANARY	3
 #define PVH_CS_SEL		(PVH_GDT_ENTRY_CS * 8)
 #define PVH_DS_SEL		(PVH_GDT_ENTRY_DS * 8)
-=======
-#define PVH_GDT_ENTRY_CANARY	4
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define PVH_CANARY_SEL		(PVH_GDT_ENTRY_CANARY * 8)
 
 ENTRY(pvh_start_xen)
@@ -70,11 +66,7 @@ ENTRY(pvh_start_xen)
 
 	lgdt (_pa(gdt))
 
-<<<<<<< HEAD
 	mov $PVH_DS_SEL,%eax
-=======
-	mov $(__BOOT_DS),%eax
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mov %eax,%ds
 	mov %eax,%es
 	mov %eax,%ss
@@ -108,11 +100,7 @@ ENTRY(pvh_start_xen)
 	mov %eax, %cr0
 
 	/* Jump to 64-bit mode. */
-<<<<<<< HEAD
 	ljmp $PVH_CS_SEL, $_pa(1f)
-=======
-	ljmp $__KERNEL_CS, $_pa(1f)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* 64-bit entry point. */
 	.code64
@@ -152,21 +140,13 @@ ENTRY(pvh_start_xen)
 	or $(X86_CR0_PG | X86_CR0_PE), %eax
 	mov %eax, %cr0
 
-<<<<<<< HEAD
 	ljmp $PVH_CS_SEL, $1f
-=======
-	ljmp $__BOOT_CS, $1f
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 1:
 	call xen_prepare_pvh
 	mov $_pa(pvh_bootparams), %esi
 
 	/* startup_32 doesn't expect paging and PAE to be on. */
-<<<<<<< HEAD
 	ljmp $PVH_CS_SEL, $_pa(2f)
-=======
-	ljmp $__BOOT_CS, $_pa(2f)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 2:
 	mov %cr0, %eax
 	and $~X86_CR0_PG, %eax
@@ -175,11 +155,7 @@ ENTRY(pvh_start_xen)
 	and $~X86_CR4_PAE, %eax
 	mov %eax, %cr4
 
-<<<<<<< HEAD
 	ljmp $PVH_CS_SEL, $_pa(startup_32)
-=======
-	ljmp $__BOOT_CS, $_pa(startup_32)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 END(pvh_start_xen)
 
@@ -191,22 +167,12 @@ gdt:
 	.word 0
 gdt_start:
 	.quad 0x0000000000000000            /* NULL descriptor */
-<<<<<<< HEAD
 #ifdef CONFIG_X86_64
 	.quad GDT_ENTRY(0xa09a, 0, 0xfffff) /* PVH_CS_SEL */
 #else
 	.quad GDT_ENTRY(0xc09a, 0, 0xfffff) /* PVH_CS_SEL */
 #endif
 	.quad GDT_ENTRY(0xc092, 0, 0xfffff) /* PVH_DS_SEL */
-=======
-	.quad 0x0000000000000000            /* reserved */
-#ifdef CONFIG_X86_64
-	.quad GDT_ENTRY(0xa09a, 0, 0xfffff) /* __KERNEL_CS */
-#else
-	.quad GDT_ENTRY(0xc09a, 0, 0xfffff) /* __KERNEL_CS */
-#endif
-	.quad GDT_ENTRY(0xc092, 0, 0xfffff) /* __KERNEL_DS */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.quad GDT_ENTRY(0x4090, 0, 0x18)    /* PVH_CANARY_SEL */
 gdt_end:
 

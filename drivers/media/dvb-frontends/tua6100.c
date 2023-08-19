@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 /*
-=======
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Driver for Infineon tua6100 pll.
  *
  * (c) 2006 Andrew de Quincey
@@ -159,15 +155,9 @@ static int tua6100_get_frequency(struct dvb_frontend *fe, u32 *frequency)
 static const struct dvb_tuner_ops tua6100_tuner_ops = {
 	.info = {
 		.name = "Infineon TUA6100",
-<<<<<<< HEAD
 		.frequency_min_hz  =  950 * MHz,
 		.frequency_max_hz  = 2150 * MHz,
 		.frequency_step_hz =    1 * MHz,
-=======
-		.frequency_min = 950000,
-		.frequency_max = 2150000,
-		.frequency_step = 1000,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.release = tua6100_release,
 	.sleep = tua6100_sleep,

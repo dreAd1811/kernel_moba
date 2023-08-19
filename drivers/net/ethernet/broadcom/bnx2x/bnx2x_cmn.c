@@ -741,14 +741,9 @@ static void bnx2x_gro_receive(struct bnx2x *bp, struct bnx2x_fastpath *fp,
 			bnx2x_gro_csum(bp, skb, bnx2x_gro_ipv6_csum);
 			break;
 		default:
-<<<<<<< HEAD
 			netdev_WARN_ONCE(bp->dev,
 					 "Error: FW GRO supports only IPv4/IPv6, not 0x%04x\n",
 					 be16_to_cpu(skb->protocol));
-=======
-			WARN_ONCE(1, "Error: FW GRO supports only IPv4/IPv6, not 0x%04x\n",
-				  be16_to_cpu(skb->protocol));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 #endif
@@ -1918,12 +1913,8 @@ void bnx2x_netif_stop(struct bnx2x *bp, int disable_hw)
 }
 
 u16 bnx2x_select_queue(struct net_device *dev, struct sk_buff *skb,
-<<<<<<< HEAD
 		       struct net_device *sb_dev,
 		       select_queue_fallback_t fallback)
-=======
-		       void *accel_priv, select_queue_fallback_t fallback)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct bnx2x *bp = netdev_priv(dev);
 
@@ -1945,11 +1936,7 @@ u16 bnx2x_select_queue(struct net_device *dev, struct sk_buff *skb,
 	}
 
 	/* select a non-FCoE queue */
-<<<<<<< HEAD
 	return fallback(dev, skb, NULL) % (BNX2X_NUM_ETH_QUEUES(bp));
-=======
-	return fallback(dev, skb) % (BNX2X_NUM_ETH_QUEUES(bp));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void bnx2x_set_num_queues(struct bnx2x *bp)
@@ -2505,12 +2492,7 @@ static void bnx2x_bz_fp(struct bnx2x *bp, int index)
 	 */
 	if (bp->dev->features & NETIF_F_LRO)
 		fp->mode = TPA_MODE_LRO;
-<<<<<<< HEAD
 	else if (bp->dev->features & NETIF_F_GRO_HW)
-=======
-	else if (bp->dev->features & NETIF_F_GRO &&
-		 bnx2x_mtu_allows_gro(bp->dev->mtu))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		fp->mode = TPA_MODE_GRO;
 	else
 		fp->mode = TPA_MODE_DISABLED;
@@ -3883,11 +3865,7 @@ netdev_tx_t bnx2x_start_xmit(struct sk_buff *skb, struct net_device *dev)
 			BNX2X_ERR("Tx timestamping was not enabled, this packet will not be timestamped\n");
 		} else if (bp->ptp_tx_skb) {
 			bp->eth_stats.ptp_skip_tx_ts++;
-<<<<<<< HEAD
 			netdev_err_once(bp->dev,
-=======
-			dev_err_once(&bp->dev->dev,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					"Device supports only a single outstanding packet to timestamp, this packet won't be timestamped\n");
 		} else {
 			skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
@@ -4189,16 +4167,10 @@ netdev_tx_t bnx2x_start_xmit(struct sk_buff *skb, struct net_device *dev)
 	wmb();
 
 	txdata->tx_db.data.prod += nbd;
-<<<<<<< HEAD
 	/* make sure descriptor update is observed by HW */
 	wmb();
 
 	DOORBELL_RELAXED(bp, txdata->cid, txdata->tx_db.raw);
-=======
-	barrier();
-
-	DOORBELL(bp, txdata->cid, txdata->tx_db.raw);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mmiowb();
 
@@ -4332,11 +4304,7 @@ int __bnx2x_setup_tc(struct net_device *dev, enum tc_setup_type type,
 {
 	struct tc_mqprio_qopt *mqprio = type_data;
 
-<<<<<<< HEAD
 	if (type != TC_SETUP_QDISC_MQPRIO)
-=======
-	if (type != TC_SETUP_MQPRIO)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EOPNOTSUPP;
 
 	mqprio->hw = TC_MQPRIO_HW_OFFLOAD_TCS;
@@ -4921,12 +4889,9 @@ int bnx2x_change_mtu(struct net_device *dev, int new_mtu)
 	 */
 	dev->mtu = new_mtu;
 
-<<<<<<< HEAD
 	if (!bnx2x_mtu_allows_gro(new_mtu))
 		dev->features &= ~NETIF_F_GRO_HW;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_PF(bp) && SHMEM2_HAS(bp, curr_cfg))
 		SHMEM2_WR(bp, curr_cfg, CURR_CFG_MET_OS);
 
@@ -4956,7 +4921,6 @@ netdev_features_t bnx2x_fix_features(struct net_device *dev,
 	}
 
 	/* TPA requires Rx CSUM offloading */
-<<<<<<< HEAD
 	if (!(features & NETIF_F_RXCSUM))
 		features &= ~NETIF_F_LRO;
 
@@ -4964,12 +4928,6 @@ netdev_features_t bnx2x_fix_features(struct net_device *dev,
 		features &= ~NETIF_F_GRO_HW;
 	if (features & NETIF_F_GRO_HW)
 		features &= ~NETIF_F_LRO;
-=======
-	if (!(features & NETIF_F_RXCSUM)) {
-		features &= ~NETIF_F_LRO;
-		features &= ~NETIF_F_GRO;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return features;
 }
@@ -4996,18 +4954,8 @@ int bnx2x_set_features(struct net_device *dev, netdev_features_t features)
 		}
 	}
 
-<<<<<<< HEAD
 	/* Don't care about GRO changes */
 	changes &= ~NETIF_F_GRO;
-=======
-	/* if GRO is changed while LRO is enabled, don't force a reload */
-	if ((changes & NETIF_F_GRO) && (features & NETIF_F_LRO))
-		changes &= ~NETIF_F_GRO;
-
-	/* if GRO is changed while HW TPA is off, don't force a reload */
-	if ((changes & NETIF_F_GRO) && bp->disable_tpa)
-		changes &= ~NETIF_F_GRO;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (changes)
 		bnx2x_reload = true;
@@ -5028,7 +4976,6 @@ void bnx2x_tx_timeout(struct net_device *dev)
 {
 	struct bnx2x *bp = netdev_priv(dev);
 
-<<<<<<< HEAD
 	/* We want the information of the dump logged,
 	 * but calling bnx2x_panic() would kill all chances of recovery.
 	 */
@@ -5036,10 +4983,6 @@ void bnx2x_tx_timeout(struct net_device *dev)
 #ifndef BNX2X_STOP_ON_ERROR
 		bnx2x_panic_dump(bp, false);
 #else
-=======
-#ifdef BNX2X_STOP_ON_ERROR
-	if (!bp->panic)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bnx2x_panic();
 #endif
 

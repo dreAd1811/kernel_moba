@@ -10,11 +10,7 @@ obj-$(CONFIG_CBE_CPUFREQ_SPU_GOVERNOR)	+= cpufreq_spudemand.o
 
 obj-$(CONFIG_PPC_IBM_CELL_POWERBUTTON)	+= cbe_powerbutton.o
 
-<<<<<<< HEAD
 ifdef CONFIG_SMP
-=======
-ifeq ($(CONFIG_SMP),y)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 obj-$(CONFIG_PPC_CELL_NATIVE)		+= smp.o
 endif
 

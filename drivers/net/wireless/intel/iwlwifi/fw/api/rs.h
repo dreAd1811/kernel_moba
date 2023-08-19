@@ -7,10 +7,7 @@
  *
  * Copyright(c) 2012 - 2014 Intel Corporation. All rights reserved.
  * Copyright(c) 2017 Intel Deutschland GmbH
-<<<<<<< HEAD
  * Copyright(c) 2018 Intel Corporation
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of version 2 of the GNU General Public License as
@@ -32,10 +29,7 @@
  *
  * Copyright(c) 2012 - 2014 Intel Corporation. All rights reserved.
  * Copyright(c) 2017 Intel Deutschland GmbH
-<<<<<<< HEAD
  * Copyright(c) 2018 Intel Corporation
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -70,7 +64,6 @@
 
 #include "mac.h"
 
-<<<<<<< HEAD
 /**
  * enum iwl_tlc_mng_cfg_flags_enum - options for TLC config flags
  * @IWL_TLC_MNG_CFG_FLAGS_STBC_MSK: enable STBC
@@ -284,8 +277,6 @@ struct iwl_dhc_tlc_cmd {
 	u8 reserved2[3];
 } __packed;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * These serve as indexes into
  * struct iwl_rate_info fw_rate_idx_to_plcp[IWL_RATE_COUNT];
@@ -323,16 +314,11 @@ enum {
 	IWL_RATE_MCS_8_INDEX,
 	IWL_RATE_MCS_9_INDEX,
 	IWL_LAST_VHT_RATE = IWL_RATE_MCS_9_INDEX,
-<<<<<<< HEAD
 	IWL_RATE_MCS_10_INDEX,
 	IWL_RATE_MCS_11_INDEX,
 	IWL_LAST_HE_RATE = IWL_RATE_MCS_11_INDEX,
 	IWL_RATE_COUNT_LEGACY = IWL_LAST_NON_HT_RATE + 1,
 	IWL_RATE_COUNT = IWL_LAST_HE_RATE + 1,
-=======
-	IWL_RATE_COUNT_LEGACY = IWL_LAST_NON_HT_RATE + 1,
-	IWL_RATE_COUNT = IWL_LAST_VHT_RATE + 1,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define IWL_RATE_BIT_MSK(r) BIT(IWL_RATE_##r##M_INDEX)
@@ -457,13 +443,8 @@ enum {
 #define RATE_LEGACY_RATE_MSK 0xff
 
 /* Bit 10 - OFDM HE */
-<<<<<<< HEAD
 #define RATE_MCS_HE_POS		10
 #define RATE_MCS_HE_MSK		BIT(RATE_MCS_HE_POS)
-=======
-#define RATE_MCS_OFDM_HE_POS		10
-#define RATE_MCS_OFDM_HE_MSK		BIT(RATE_MCS_OFDM_HE_POS)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Bit 11-12: (0) 20MHz, (1) 40MHz, (2) 80MHz, (3) 160MHz
@@ -490,10 +471,6 @@ enum {
 #define RATE_MCS_ANT_ABC_MSK		(RATE_MCS_ANT_AB_MSK | \
 					 RATE_MCS_ANT_C_MSK)
 #define RATE_MCS_ANT_MSK		RATE_MCS_ANT_ABC_MSK
-<<<<<<< HEAD
-=======
-#define RATE_MCS_ANT_NUM 3
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Bit 17: (0) SS, (1) SS*2 */
 #define RATE_MCS_STBC_POS		17
@@ -508,7 +485,6 @@ enum {
 #define RATE_MCS_BF_MSK			(1 << RATE_MCS_BF_POS)
 
 /*
-<<<<<<< HEAD
  * Bit 20-21: HE LTF type and guard interval
  * HE (ext) SU:
  *	0			1xLTF+0.8us
@@ -526,24 +502,16 @@ enum {
  *	1			2xLTF+1.6us
  *	2			4xLTF+3.2us
  *	3			(does not occur)
-=======
- * Bit 20-21: HE guard interval and LTF type.
- * (0) 1xLTF+1.6us, (1) 2xLTF+0.8us,
- * (2) 2xLTF+1.6us, (3) 4xLTF+3.2us
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #define RATE_MCS_HE_GI_LTF_POS		20
 #define RATE_MCS_HE_GI_LTF_MSK		(3 << RATE_MCS_HE_GI_LTF_POS)
 
 /* Bit 22-23: HE type. (0) SU, (1) SU_EXT, (2) MU, (3) trigger based */
 #define RATE_MCS_HE_TYPE_POS		22
-<<<<<<< HEAD
 #define RATE_MCS_HE_TYPE_SU		(0 << RATE_MCS_HE_TYPE_POS)
 #define RATE_MCS_HE_TYPE_EXT_SU		(1 << RATE_MCS_HE_TYPE_POS)
 #define RATE_MCS_HE_TYPE_MU		(2 << RATE_MCS_HE_TYPE_POS)
 #define RATE_MCS_HE_TYPE_TRIG		(3 << RATE_MCS_HE_TYPE_POS)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define RATE_MCS_HE_TYPE_MSK		(3 << RATE_MCS_HE_TYPE_POS)
 
 /* Bit 24-25: (0) 20MHz (no dup), (1) 2x20MHz, (2) 4x20MHz, 3 8x20MHz */
@@ -554,12 +522,9 @@ enum {
 #define RATE_MCS_LDPC_POS		27
 #define RATE_MCS_LDPC_MSK		(1 << RATE_MCS_LDPC_POS)
 
-<<<<<<< HEAD
 /* Bit 28: (1) 106-tone RX (8 MHz RU), (0) normal bandwidth */
 #define RATE_MCS_HE_106T_POS		28
 #define RATE_MCS_HE_106T_MSK		(1 << RATE_MCS_HE_106T_POS)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Link Quality definitions */
 

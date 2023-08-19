@@ -63,11 +63,7 @@ static int imx_pd_connector_get_modes(struct drm_connector *connector)
 	}
 
 	if (imxpd->edid) {
-<<<<<<< HEAD
 		drm_connector_update_edid_property(connector, imxpd->edid);
-=======
-		drm_mode_connector_update_edid_property(connector, imxpd->edid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		num_modes = drm_add_edid_modes(connector, imxpd->edid);
 	}
 
@@ -187,11 +183,7 @@ static int imx_pd_register(struct drm_device *drm,
 				&imx_pd_connector_helper_funcs);
 		drm_connector_init(drm, &imxpd->connector,
 				   &imx_pd_connector_funcs,
-<<<<<<< HEAD
 				   DRM_MODE_CONNECTOR_DPI);
-=======
-				   DRM_MODE_CONNECTOR_VGA);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (imxpd->panel)
@@ -205,11 +197,7 @@ static int imx_pd_register(struct drm_device *drm,
 			return ret;
 		}
 	} else {
-<<<<<<< HEAD
 		drm_connector_attach_encoder(&imxpd->connector, encoder);
-=======
-		drm_mode_connector_attach_encoder(&imxpd->connector, encoder);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;

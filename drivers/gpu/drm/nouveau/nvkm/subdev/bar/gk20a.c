@@ -25,14 +25,9 @@ static const struct nvkm_bar_func
 gk20a_bar_func = {
 	.dtor = gf100_bar_dtor,
 	.oneinit = gf100_bar_oneinit,
-<<<<<<< HEAD
 	.bar1.init = gf100_bar_bar1_init,
 	.bar1.wait = gf100_bar_bar1_wait,
 	.bar1.vmm = gf100_bar_bar1_vmm,
-=======
-	.init = gf100_bar_init,
-	.umap = gf100_bar_umap,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.flush = g84_bar_flush,
 };
 

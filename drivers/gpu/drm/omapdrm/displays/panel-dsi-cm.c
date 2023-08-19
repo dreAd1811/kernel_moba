@@ -1,11 +1,7 @@
 /*
  * Generic DSI Command Mode panel driver
  *
-<<<<<<< HEAD
  * Copyright (C) 2013 Texas Instruments Incorporated - http://www.ti.com/
-=======
- * Copyright (C) 2013 Texas Instruments
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Author: Tomi Valkeinen <tomi.valkeinen@ti.com>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -26,16 +22,10 @@
 #include <linux/slab.h>
 #include <linux/workqueue.h>
 #include <linux/of_device.h>
-<<<<<<< HEAD
 #include <linux/regulator/consumer.h>
 
 #include <video/mipi_display.h>
 #include <video/of_display_timing.h>
-=======
-#include <linux/of_gpio.h>
-
-#include <video/mipi_display.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "../dss/omapdss.h"
 
@@ -60,10 +50,7 @@ struct panel_drv_data {
 	struct mutex lock;
 
 	struct backlight_device *bldev;
-<<<<<<< HEAD
 	struct backlight_device *extbldev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	unsigned long	hw_guard_end;	/* next value of jiffies when we can
 					 * issue the next sleep in/out command
@@ -71,7 +58,6 @@ struct panel_drv_data {
 	unsigned long	hw_guard_wait;	/* max guard time in jiffies */
 
 	/* panel HW configuration from DT or platform data */
-<<<<<<< HEAD
 	struct gpio_desc *reset_gpio;
 	struct gpio_desc *ext_te_gpio;
 
@@ -83,13 +69,6 @@ struct panel_drv_data {
 	int width_mm;
 	int height_mm;
 
-=======
-	int reset_gpio;
-	int ext_te_gpio;
-
-	bool use_dsi_backlight;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct omap_dsi_pin_config pin_config;
 
 	/* runtime variables */
@@ -107,11 +86,7 @@ struct panel_drv_data {
 	struct workqueue_struct *workqueue;
 
 	bool ulps_enabled;
-<<<<<<< HEAD
 	unsigned int ulps_timeout;
-=======
-	unsigned ulps_timeout;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct delayed_work ulps_work;
 };
 
@@ -125,7 +100,6 @@ static int dsicm_panel_reset(struct panel_drv_data *ddata);
 
 static void dsicm_ulps_work(struct work_struct *work);
 
-<<<<<<< HEAD
 static void dsicm_bl_power(struct panel_drv_data *ddata, bool enable)
 {
 	struct backlight_device *backlight;
@@ -150,8 +124,6 @@ static void dsicm_bl_power(struct panel_drv_data *ddata, bool enable)
 	backlight_update_status(backlight);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void hw_guard_start(struct panel_drv_data *ddata, int guard_msec)
 {
 	ddata->hw_guard_wait = msecs_to_jiffies(guard_msec);
@@ -315,13 +287,8 @@ static int dsicm_enter_ulps(struct panel_drv_data *ddata)
 	if (r)
 		goto err;
 
-<<<<<<< HEAD
 	if (ddata->ext_te_gpio)
 		disable_irq(gpiod_to_irq(ddata->ext_te_gpio));
-=======
-	if (gpio_is_valid(ddata->ext_te_gpio))
-		disable_irq(gpio_to_irq(ddata->ext_te_gpio));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	in->ops.dsi->disable(in, false, true);
 
@@ -362,13 +329,8 @@ static int dsicm_exit_ulps(struct panel_drv_data *ddata)
 		goto err2;
 	}
 
-<<<<<<< HEAD
 	if (ddata->ext_te_gpio)
 		enable_irq(gpiod_to_irq(ddata->ext_te_gpio));
-=======
-	if (gpio_is_valid(ddata->ext_te_gpio))
-		enable_irq(gpio_to_irq(ddata->ext_te_gpio));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dsicm_queue_ulps_work(ddata);
 
@@ -381,13 +343,8 @@ err2:
 
 	r = dsicm_panel_reset(ddata);
 	if (!r) {
-<<<<<<< HEAD
 		if (ddata->ext_te_gpio)
 			enable_irq(gpiod_to_irq(ddata->ext_te_gpio));
-=======
-		if (gpio_is_valid(ddata->ext_te_gpio))
-			enable_irq(gpio_to_irq(ddata->ext_te_gpio));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ddata->ulps_enabled = false;
 	}
 err1:
@@ -410,11 +367,7 @@ static int dsicm_bl_update_status(struct backlight_device *dev)
 {
 	struct panel_drv_data *ddata = dev_get_drvdata(&dev->dev);
 	struct omap_dss_device *in = ddata->in;
-<<<<<<< HEAD
 	int r = 0;
-=======
-	int r;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int level;
 
 	if (dev->props.fb_blank == FB_BLANK_UNBLANK &&
@@ -435,11 +388,6 @@ static int dsicm_bl_update_status(struct backlight_device *dev)
 			r = dsicm_dcs_write_1(ddata, DCS_BRIGHTNESS, level);
 
 		in->ops.dsi->bus_unlock(in);
-<<<<<<< HEAD
-=======
-	} else {
-		r = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	mutex_unlock(&ddata->lock);
@@ -565,11 +513,7 @@ static ssize_t dsicm_show_ulps(struct device *dev,
 {
 	struct platform_device *pdev = to_platform_device(dev);
 	struct panel_drv_data *ddata = platform_get_drvdata(pdev);
-<<<<<<< HEAD
 	unsigned int t;
-=======
-	unsigned t;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&ddata->lock);
 	t = ddata->ulps_enabled;
@@ -616,11 +560,7 @@ static ssize_t dsicm_show_ulps_timeout(struct device *dev,
 {
 	struct platform_device *pdev = to_platform_device(dev);
 	struct panel_drv_data *ddata = platform_get_drvdata(pdev);
-<<<<<<< HEAD
 	unsigned int t;
-=======
-	unsigned t;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&ddata->lock);
 	t = ddata->ulps_timeout;
@@ -650,7 +590,6 @@ static const struct attribute_group dsicm_attr_group = {
 
 static void dsicm_hw_reset(struct panel_drv_data *ddata)
 {
-<<<<<<< HEAD
 	gpiod_set_value(ddata->reset_gpio, 1);
 	udelay(10);
 	/* reset the panel */
@@ -658,18 +597,6 @@ static void dsicm_hw_reset(struct panel_drv_data *ddata)
 	/* assert reset */
 	udelay(10);
 	gpiod_set_value(ddata->reset_gpio, 1);
-=======
-	if (!gpio_is_valid(ddata->reset_gpio))
-		return;
-
-	gpio_set_value(ddata->reset_gpio, 1);
-	udelay(10);
-	/* reset the panel */
-	gpio_set_value(ddata->reset_gpio, 0);
-	/* assert reset */
-	udelay(10);
-	gpio_set_value(ddata->reset_gpio, 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* wait after releasing reset */
 	usleep_range(5000, 10000);
 }
@@ -689,7 +616,6 @@ static int dsicm_power_on(struct panel_drv_data *ddata)
 		.lp_clk_max = 10000000,
 	};
 
-<<<<<<< HEAD
 	if (ddata->vpnl) {
 		r = regulator_enable(ddata->vpnl);
 		if (r) {
@@ -708,39 +634,25 @@ static int dsicm_power_on(struct panel_drv_data *ddata)
 		}
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ddata->pin_config.num_pins > 0) {
 		r = in->ops.dsi->configure_pins(in, &ddata->pin_config);
 		if (r) {
 			dev_err(&ddata->pdev->dev,
 				"failed to configure DSI pins\n");
-<<<<<<< HEAD
 			goto err_vddi;
-=======
-			goto err0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
 	r = in->ops.dsi->set_config(in, &dsi_config);
 	if (r) {
 		dev_err(&ddata->pdev->dev, "failed to configure DSI\n");
-<<<<<<< HEAD
 		goto err_vddi;
-=======
-		goto err0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	r = in->ops.dsi->enable(in);
 	if (r) {
 		dev_err(&ddata->pdev->dev, "failed to enable DSI\n");
-<<<<<<< HEAD
 		goto err_vddi;
-=======
-		goto err0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	dsicm_hw_reset(ddata);
@@ -798,7 +710,6 @@ err:
 	dsicm_hw_reset(ddata);
 
 	in->ops.dsi->disable(in, true, false);
-<<<<<<< HEAD
 err_vddi:
 	if (ddata->vddi)
 		regulator_disable(ddata->vddi);
@@ -806,9 +717,6 @@ err_vpnl:
 	if (ddata->vpnl)
 		regulator_disable(ddata->vpnl);
 
-=======
-err0:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return r;
 }
 
@@ -831,14 +739,11 @@ static void dsicm_power_off(struct panel_drv_data *ddata)
 
 	in->ops.dsi->disable(in, true, false);
 
-<<<<<<< HEAD
 	if (ddata->vddi)
 		regulator_disable(ddata->vddi);
 	if (ddata->vpnl)
 		regulator_disable(ddata->vpnl);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ddata->enabled = 0;
 }
 
@@ -854,19 +759,13 @@ static int dsicm_panel_reset(struct panel_drv_data *ddata)
 static int dsicm_connect(struct omap_dss_device *dssdev)
 {
 	struct panel_drv_data *ddata = to_panel_data(dssdev);
-<<<<<<< HEAD
 	struct device *dev = &ddata->pdev->dev;
 	struct omap_dss_device *in;
-=======
-	struct omap_dss_device *in = ddata->in;
-	struct device *dev = &ddata->pdev->dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int r;
 
 	if (omapdss_device_is_connected(dssdev))
 		return 0;
 
-<<<<<<< HEAD
 	in = omapdss_of_find_source_for_first_ep(dssdev->dev->of_node);
 	if (IS_ERR(in)) {
 		dev_err(dssdev->dev, "failed to find video source\n");
@@ -880,31 +779,17 @@ static int dsicm_connect(struct omap_dss_device *dssdev)
 	}
 
 	r = in->ops.dsi->request_vc(in, &ddata->channel);
-=======
-	r = in->ops.dsi->connect(in, dssdev);
-	if (r) {
-		dev_err(dev, "Failed to connect to video source\n");
-		return r;
-	}
-
-	r = in->ops.dsi->request_vc(ddata->in, &ddata->channel);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r) {
 		dev_err(dev, "failed to get virtual channel\n");
 		goto err_req_vc;
 	}
 
-<<<<<<< HEAD
 	r = in->ops.dsi->set_vc_id(in, ddata->channel, TCH);
-=======
-	r = in->ops.dsi->set_vc_id(ddata->in, ddata->channel, TCH);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r) {
 		dev_err(dev, "failed to set VC_ID\n");
 		goto err_vc_id;
 	}
 
-<<<<<<< HEAD
 	ddata->in = in;
 	return 0;
 
@@ -914,14 +799,6 @@ err_req_vc:
 	in->ops.dsi->disconnect(in, dssdev);
 err_connect:
 	omap_dss_put_device(in);
-=======
-	return 0;
-
-err_vc_id:
-	in->ops.dsi->release_vc(ddata->in, ddata->channel);
-err_req_vc:
-	in->ops.dsi->disconnect(in, dssdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return r;
 }
 
@@ -935,12 +812,9 @@ static void dsicm_disconnect(struct omap_dss_device *dssdev)
 
 	in->ops.dsi->release_vc(in, ddata->channel);
 	in->ops.dsi->disconnect(in, dssdev);
-<<<<<<< HEAD
 
 	omap_dss_put_device(in);
 	ddata->in = NULL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int dsicm_enable(struct omap_dss_device *dssdev)
@@ -976,11 +850,8 @@ static int dsicm_enable(struct omap_dss_device *dssdev)
 
 	mutex_unlock(&ddata->lock);
 
-<<<<<<< HEAD
 	dsicm_bl_power(ddata, true);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 err:
 	dev_dbg(&ddata->pdev->dev, "enable failed\n");
@@ -996,11 +867,8 @@ static void dsicm_disable(struct omap_dss_device *dssdev)
 
 	dev_dbg(&ddata->pdev->dev, "disable\n");
 
-<<<<<<< HEAD
 	dsicm_bl_power(ddata, false);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&ddata->lock);
 
 	dsicm_cancel_ulps_work(ddata);
@@ -1094,11 +962,7 @@ static int dsicm_update(struct omap_dss_device *dssdev,
 	if (r)
 		goto err;
 
-<<<<<<< HEAD
 	if (ddata->te_enabled && ddata->ext_te_gpio) {
-=======
-	if (ddata->te_enabled && gpio_is_valid(ddata->ext_te_gpio)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		schedule_delayed_work(&ddata->te_timeout_work,
 				msecs_to_jiffies(250));
 		atomic_set(&ddata->do_update, 1);
@@ -1145,11 +1009,7 @@ static int _dsicm_enable_te(struct panel_drv_data *ddata, bool enable)
 	else
 		r = dsicm_dcs_write_0(ddata, MIPI_DCS_SET_TEAR_OFF);
 
-<<<<<<< HEAD
 	if (!ddata->ext_te_gpio)
-=======
-	if (!gpio_is_valid(ddata->ext_te_gpio))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		in->ops.dsi->enable_te(in, enable);
 
 	/* possible panel bug */
@@ -1216,11 +1076,7 @@ static int dsicm_memory_read(struct omap_dss_device *dssdev,
 	int r;
 	int first = 1;
 	int plen;
-<<<<<<< HEAD
 	unsigned int buf_used = 0;
-=======
-	unsigned buf_used = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (size < w * h * 3)
 		return -ENOMEM;
@@ -1315,7 +1171,6 @@ static void dsicm_ulps_work(struct work_struct *work)
 	mutex_unlock(&ddata->lock);
 }
 
-<<<<<<< HEAD
 static void dsicm_get_timings(struct omap_dss_device *dssdev,
 			      struct videomode *vm)
 {
@@ -1355,8 +1210,6 @@ static void dsicm_get_size(struct omap_dss_device *dssdev,
 	*height = ddata->height_mm;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct omap_dss_driver dsicm_ops = {
 	.connect	= dsicm_connect,
 	.disconnect	= dsicm_disconnect,
@@ -1367,13 +1220,10 @@ static struct omap_dss_driver dsicm_ops = {
 	.update		= dsicm_update,
 	.sync		= dsicm_sync,
 
-<<<<<<< HEAD
 	.get_timings	= dsicm_get_timings,
 	.check_timings	= dsicm_check_timings,
 	.get_size	= dsicm_get_size,
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.enable_te	= dsicm_enable_te,
 	.get_te		= dsicm_get_te,
 
@@ -1383,7 +1233,6 @@ static struct omap_dss_driver dsicm_ops = {
 static int dsicm_probe_of(struct platform_device *pdev)
 {
 	struct device_node *node = pdev->dev.of_node;
-<<<<<<< HEAD
 	struct device_node *backlight;
 	struct panel_drv_data *ddata = platform_get_drvdata(pdev);
 	struct display_timing timing;
@@ -1450,46 +1299,12 @@ static int dsicm_probe_of(struct platform_device *pdev)
 	}
 
 	/* TODO: ulps */
-=======
-	struct panel_drv_data *ddata = platform_get_drvdata(pdev);
-	struct omap_dss_device *in;
-	int gpio;
-
-	gpio = of_get_named_gpio(node, "reset-gpios", 0);
-	if (!gpio_is_valid(gpio)) {
-		dev_err(&pdev->dev, "failed to parse reset gpio\n");
-		return gpio;
-	}
-	ddata->reset_gpio = gpio;
-
-	gpio = of_get_named_gpio(node, "te-gpios", 0);
-	if (gpio_is_valid(gpio) || gpio == -ENOENT) {
-		ddata->ext_te_gpio = gpio;
-	} else {
-		dev_err(&pdev->dev, "failed to parse TE gpio\n");
-		return gpio;
-	}
-
-	in = omapdss_of_find_source_for_first_ep(node);
-	if (IS_ERR(in)) {
-		dev_err(&pdev->dev, "failed to find video source\n");
-		return PTR_ERR(in);
-	}
-
-	ddata->in = in;
-
-	/* TODO: ulps, backlight */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
 static int dsicm_probe(struct platform_device *pdev)
 {
-<<<<<<< HEAD
-=======
-	struct backlight_properties props;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct panel_drv_data *ddata;
 	struct backlight_device *bldev = NULL;
 	struct device *dev = &pdev->dev;
@@ -1505,26 +1320,14 @@ static int dsicm_probe(struct platform_device *pdev)
 	platform_set_drvdata(pdev, ddata);
 	ddata->pdev = pdev;
 
-<<<<<<< HEAD
 	ddata->vm.hactive = 864;
 	ddata->vm.vactive = 480;
 	ddata->vm.pixelclock = 864 * 480 * 60;
-=======
-	if (!pdev->dev.of_node)
-		return -ENODEV;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	r = dsicm_probe_of(pdev);
 	if (r)
 		return r;
 
-<<<<<<< HEAD
-=======
-	ddata->vm.hactive = 864;
-	ddata->vm.vactive = 480;
-	ddata->vm.pixelclock = 864 * 480 * 60;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dssdev = &ddata->dssdev;
 	dssdev->dev = dev;
 	dssdev->driver = &dsicm_ops;
@@ -1546,40 +1349,15 @@ static int dsicm_probe(struct platform_device *pdev)
 
 	atomic_set(&ddata->do_update, 0);
 
-<<<<<<< HEAD
 	if (ddata->ext_te_gpio) {
 		r = devm_request_irq(dev, gpiod_to_irq(ddata->ext_te_gpio),
-=======
-	if (gpio_is_valid(ddata->reset_gpio)) {
-		r = devm_gpio_request_one(dev, ddata->reset_gpio,
-				GPIOF_OUT_INIT_LOW, "taal rst");
-		if (r) {
-			dev_err(dev, "failed to request reset gpio\n");
-			return r;
-		}
-	}
-
-	if (gpio_is_valid(ddata->ext_te_gpio)) {
-		r = devm_gpio_request_one(dev, ddata->ext_te_gpio,
-				GPIOF_IN, "taal irq");
-		if (r) {
-			dev_err(dev, "GPIO request failed\n");
-			return r;
-		}
-
-		r = devm_request_irq(dev, gpio_to_irq(ddata->ext_te_gpio),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				dsicm_te_isr,
 				IRQF_TRIGGER_RISING,
 				"taal vsync", ddata);
 
 		if (r) {
 			dev_err(dev, "IRQ request failed\n");
-<<<<<<< HEAD
 			goto err_reg;
-=======
-			return r;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		INIT_DEFERRABLE_WORK(&ddata->te_timeout_work,
@@ -1589,79 +1367,43 @@ static int dsicm_probe(struct platform_device *pdev)
 	}
 
 	ddata->workqueue = create_singlethread_workqueue("dsicm_wq");
-<<<<<<< HEAD
 	if (!ddata->workqueue) {
 		r = -ENOMEM;
 		goto err_reg;
-=======
-	if (ddata->workqueue == NULL) {
-		dev_err(dev, "can't create workqueue\n");
-		return -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	INIT_DELAYED_WORK(&ddata->ulps_work, dsicm_ulps_work);
 
 	dsicm_hw_reset(ddata);
 
 	if (ddata->use_dsi_backlight) {
-<<<<<<< HEAD
 		struct backlight_properties props = { 0 };
 		props.max_brightness = 255;
 		props.type = BACKLIGHT_RAW;
 
 		bldev = devm_backlight_device_register(dev, dev_name(dev),
 			dev, ddata, &dsicm_bl_ops, &props);
-=======
-		memset(&props, 0, sizeof(props));
-		props.max_brightness = 255;
-
-		props.type = BACKLIGHT_RAW;
-		bldev = backlight_device_register(dev_name(dev),
-				dev, ddata, &dsicm_bl_ops, &props);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (IS_ERR(bldev)) {
 			r = PTR_ERR(bldev);
 			goto err_bl;
 		}
 
 		ddata->bldev = bldev;
-<<<<<<< HEAD
-=======
-
-		bldev->props.fb_blank = FB_BLANK_UNBLANK;
-		bldev->props.power = FB_BLANK_UNBLANK;
-		bldev->props.brightness = 255;
-
-		dsicm_bl_update_status(bldev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	r = sysfs_create_group(&dev->kobj, &dsicm_attr_group);
 	if (r) {
 		dev_err(dev, "failed to create sysfs files\n");
-<<<<<<< HEAD
 		goto err_bl;
-=======
-		goto err_sysfs_create;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
 
-<<<<<<< HEAD
 err_bl:
 	destroy_workqueue(ddata->workqueue);
 err_reg:
 	if (ddata->extbldev)
 		put_device(&ddata->extbldev->dev);
 
-=======
-err_sysfs_create:
-	backlight_device_unregister(bldev);
-err_bl:
-	destroy_workqueue(ddata->workqueue);
-err_reg:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return r;
 }
 
@@ -1669,10 +1411,6 @@ static int __exit dsicm_remove(struct platform_device *pdev)
 {
 	struct panel_drv_data *ddata = platform_get_drvdata(pdev);
 	struct omap_dss_device *dssdev = &ddata->dssdev;
-<<<<<<< HEAD
-=======
-	struct backlight_device *bldev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_dbg(&pdev->dev, "remove\n");
 
@@ -1683,19 +1421,8 @@ static int __exit dsicm_remove(struct platform_device *pdev)
 
 	sysfs_remove_group(&pdev->dev.kobj, &dsicm_attr_group);
 
-<<<<<<< HEAD
 	if (ddata->extbldev)
 		put_device(&ddata->extbldev->dev);
-=======
-	bldev = ddata->bldev;
-	if (bldev != NULL) {
-		bldev->props.power = FB_BLANK_POWERDOWN;
-		dsicm_bl_update_status(bldev);
-		backlight_device_unregister(bldev);
-	}
-
-	omap_dss_put_device(ddata->in);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dsicm_cancel_ulps_work(ddata);
 	destroy_workqueue(ddata->workqueue);

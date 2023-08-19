@@ -25,11 +25,7 @@ struct button_callback {
 
 /* Function prototypes: */
 
-<<<<<<< HEAD
 static void button_sequence_finished(struct timer_list *unused);
-=======
-static void button_sequence_finished (unsigned long parameters);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static irqreturn_t button_handler (int irq, void *dev_id);
 int button_init (void);
 int button_add_callback (void (*callback) (void), int count);

@@ -137,23 +137,6 @@ static void nvram_read_leddc(const char *prefix, const char *name,
 	*leddc_off_time = (val >> 16) & 0xff;
 }
 
-<<<<<<< HEAD
-=======
-static void bcm47xx_nvram_parse_macaddr(char *buf, u8 macaddr[6])
-{
-	if (strchr(buf, ':'))
-		sscanf(buf, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx", &macaddr[0],
-			&macaddr[1], &macaddr[2], &macaddr[3], &macaddr[4],
-			&macaddr[5]);
-	else if (strchr(buf, '-'))
-		sscanf(buf, "%hhx-%hhx-%hhx-%hhx-%hhx-%hhx", &macaddr[0],
-			&macaddr[1], &macaddr[2], &macaddr[3], &macaddr[4],
-			&macaddr[5]);
-	else
-		pr_warn("Can not parse mac address: %s\n", buf);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void nvram_read_macaddr(const char *prefix, const char *name,
 			       u8 val[6], bool fallback)
 {
@@ -164,13 +147,9 @@ static void nvram_read_macaddr(const char *prefix, const char *name,
 	if (err < 0)
 		return;
 
-<<<<<<< HEAD
 	strreplace(buf, '-', ':');
 	if (!mac_pton(buf, val))
 		pr_warn("Can not parse mac address: %s\n", buf);
-=======
-	bcm47xx_nvram_parse_macaddr(buf, val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void nvram_read_alpha2(const char *prefix, const char *name,

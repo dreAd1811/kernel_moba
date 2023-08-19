@@ -77,21 +77,13 @@ static int amdgpu_identity_map(struct amdgpu_device *adev,
 		*out_ring = &adev->sdma.instance[ring].ring;
 		break;
 	case AMDGPU_HW_IP_UVD:
-<<<<<<< HEAD
 		*out_ring = &adev->uvd.inst[0].ring;
-=======
-		*out_ring = &adev->uvd.ring;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case AMDGPU_HW_IP_VCE:
 		*out_ring = &adev->vce.ring[ring];
 		break;
 	case AMDGPU_HW_IP_UVD_ENC:
-<<<<<<< HEAD
 		*out_ring = &adev->uvd.inst[0].ring_enc[ring];
-=======
-		*out_ring = &adev->uvd.ring_enc[ring];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case AMDGPU_HW_IP_VCN_DEC:
 		*out_ring = &adev->vcn.ring_dec;
@@ -99,12 +91,9 @@ static int amdgpu_identity_map(struct amdgpu_device *adev,
 	case AMDGPU_HW_IP_VCN_ENC:
 		*out_ring = &adev->vcn.ring_enc[ring];
 		break;
-<<<<<<< HEAD
 	case AMDGPU_HW_IP_VCN_JPEG:
 		*out_ring = &adev->vcn.ring_jpeg;
 		break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		*out_ring = NULL;
 		DRM_ERROR("unknown HW IP type: %d\n", mapper->hw_ip);
@@ -135,11 +124,7 @@ static enum amdgpu_ring_type amdgpu_hw_ip_to_ring_type(int hw_ip)
 
 static int amdgpu_lru_map(struct amdgpu_device *adev,
 			  struct amdgpu_queue_mapper *mapper,
-<<<<<<< HEAD
 			  u32 user_ring, bool lru_pipe_order,
-=======
-			  u32 user_ring,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  struct amdgpu_ring **out_ring)
 {
 	int r, i, j;
@@ -157,11 +142,7 @@ static int amdgpu_lru_map(struct amdgpu_device *adev,
 	}
 
 	r = amdgpu_ring_lru_get(adev, ring_type, ring_blacklist,
-<<<<<<< HEAD
 				j, lru_pipe_order, out_ring);
-=======
-				j, out_ring);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r)
 		return r;
 
@@ -233,11 +214,7 @@ int amdgpu_queue_mgr_map(struct amdgpu_device *adev,
 			 u32 hw_ip, u32 instance, u32 ring,
 			 struct amdgpu_ring **out_ring)
 {
-<<<<<<< HEAD
 	int i, r, ip_num_rings = 0;
-=======
-	int r, ip_num_rings;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct amdgpu_queue_mapper *mapper = &mgr->mapper[hw_ip];
 
 	if (!adev || !mgr || !out_ring)
@@ -251,11 +228,7 @@ int amdgpu_queue_mgr_map(struct amdgpu_device *adev,
 
 	/* Right now all IPs have only one instance - multiple rings. */
 	if (instance != 0) {
-<<<<<<< HEAD
 		DRM_DEBUG("invalid ip instance: %d\n", instance);
-=======
-		DRM_ERROR("invalid ip instance: %d\n", instance);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -270,29 +243,21 @@ int amdgpu_queue_mgr_map(struct amdgpu_device *adev,
 		ip_num_rings = adev->sdma.num_instances;
 		break;
 	case AMDGPU_HW_IP_UVD:
-<<<<<<< HEAD
 		for (i = 0; i < adev->uvd.num_uvd_inst; i++) {
 			if (!(adev->uvd.harvest_config & (1 << i)))
 				ip_num_rings++;
 		}
-=======
-		ip_num_rings = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case AMDGPU_HW_IP_VCE:
 		ip_num_rings = adev->vce.num_rings;
 		break;
 	case AMDGPU_HW_IP_UVD_ENC:
-<<<<<<< HEAD
 		for (i = 0; i < adev->uvd.num_uvd_inst; i++) {
 			if (!(adev->uvd.harvest_config & (1 << i)))
 				ip_num_rings++;
 		}
 		ip_num_rings =
 			adev->uvd.num_enc_rings * ip_num_rings;
-=======
-		ip_num_rings = adev->uvd.num_enc_rings;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case AMDGPU_HW_IP_VCN_DEC:
 		ip_num_rings = 1;
@@ -300,27 +265,17 @@ int amdgpu_queue_mgr_map(struct amdgpu_device *adev,
 	case AMDGPU_HW_IP_VCN_ENC:
 		ip_num_rings = adev->vcn.num_enc_rings;
 		break;
-<<<<<<< HEAD
 	case AMDGPU_HW_IP_VCN_JPEG:
 		ip_num_rings = 1;
 		break;
 	default:
 		DRM_DEBUG("unknown ip type: %d\n", hw_ip);
-=======
-	default:
-		DRM_ERROR("unknown ip type: %d\n", hw_ip);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
 	if (ring >= ip_num_rings) {
-<<<<<<< HEAD
 		DRM_DEBUG("Ring index:%d exceeds maximum:%d for ip:%d\n",
 			  ring, ip_num_rings, hw_ip);
-=======
-		DRM_ERROR("Ring index:%d exceeds maximum:%d for ip:%d\n",
-				ring, ip_num_rings, hw_ip);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -340,7 +295,6 @@ int amdgpu_queue_mgr_map(struct amdgpu_device *adev,
 	case AMDGPU_HW_IP_UVD_ENC:
 	case AMDGPU_HW_IP_VCN_DEC:
 	case AMDGPU_HW_IP_VCN_ENC:
-<<<<<<< HEAD
 	case AMDGPU_HW_IP_VCN_JPEG:
 		r = amdgpu_identity_map(adev, mapper, ring, out_ring);
 		break;
@@ -349,22 +303,11 @@ int amdgpu_queue_mgr_map(struct amdgpu_device *adev,
 		break;
 	case AMDGPU_HW_IP_COMPUTE:
 		r = amdgpu_lru_map(adev, mapper, ring, true, out_ring);
-=======
-		r = amdgpu_identity_map(adev, mapper, ring, out_ring);
-		break;
-	case AMDGPU_HW_IP_DMA:
-	case AMDGPU_HW_IP_COMPUTE:
-		r = amdgpu_lru_map(adev, mapper, ring, out_ring);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		*out_ring = NULL;
 		r = -EINVAL;
-<<<<<<< HEAD
 		DRM_DEBUG("unknown HW IP type: %d\n", mapper->hw_ip);
-=======
-		DRM_ERROR("unknown HW IP type: %d\n", mapper->hw_ip);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 out_unlock:

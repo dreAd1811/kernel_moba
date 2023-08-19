@@ -38,7 +38,6 @@
 /*
  * lock for reading
  */
-<<<<<<< HEAD
 static inline int
 ___down_read (struct rw_semaphore *sem)
 {
@@ -64,17 +63,6 @@ __down_read_killable (struct rw_semaphore *sem)
 	return 0;
 }
 
-=======
-static inline void
-__down_read (struct rw_semaphore *sem)
-{
-	long result = ia64_fetchadd8_acq((unsigned long *)&sem->count.counter, 1);
-
-	if (result < 0)
-		rwsem_down_read_failed(sem);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * lock for writing
  */
@@ -101,16 +89,10 @@ __down_write (struct rw_semaphore *sem)
 static inline int
 __down_write_killable (struct rw_semaphore *sem)
 {
-<<<<<<< HEAD
 	if (___down_write(sem)) {
 		if (IS_ERR(rwsem_down_write_failed_killable(sem)))
 			return -EINTR;
 	}
-=======
-	if (___down_write(sem))
-		if (IS_ERR(rwsem_down_write_failed_killable(sem)))
-			return -EINTR;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

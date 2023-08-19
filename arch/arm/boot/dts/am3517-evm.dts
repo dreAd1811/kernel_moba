@@ -8,23 +8,17 @@
 /dts-v1/;
 
 #include "am3517.dtsi"
-<<<<<<< HEAD
 #include "am3517-som.dtsi"
 #include <dt-bindings/input/input.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 / {
 	model = "TI AM3517 EVM (AM3517/05 TMDSEVM3517)";
 	compatible = "ti,am3517-evm", "ti,am3517", "ti,omap3";
 
-<<<<<<< HEAD
 	aliases {
 		display0 = &lcd0;
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memory@80000000 {
 		device_type = "memory";
 		reg = <0x80000000 0x10000000>; /* 256 MB */
@@ -36,7 +30,6 @@
                 regulator-min-microvolt = <3300000>;
                 regulator-max-microvolt = <3300000>;
         };
-<<<<<<< HEAD
 
 	gpio-keys {
 		compatible = "gpio-keys-polled";
@@ -184,8 +177,6 @@
 		reset-gpios = <&gpio2 25 GPIO_ACTIVE_LOW>; /* gpio_57 */
 		#phy-cells = <0>;
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &davinci_emac {
@@ -196,7 +187,6 @@
 	     status = "okay";
 };
 
-<<<<<<< HEAD
 &dss {
 	status = "ok";
 
@@ -212,15 +202,10 @@
 			data-lines = <16>;
 		};
 	};
-=======
-&i2c1 {
-	clock-frequency = <400000>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &i2c2 {
 	clock-frequency = <400000>;
-<<<<<<< HEAD
 	/* User DIP swithes [1:8] / User LEDS [1:2] */
 	tca6416: gpio@21 {
 		compatible = "ti,tca6416";
@@ -229,8 +214,6 @@
 		#gpio-cells = <2>;
 		vcc-supply = <&vdd_io_reg>;
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &i2c3 {
@@ -238,7 +221,6 @@
 };
 
 &mmc1 {
-<<<<<<< HEAD
 	status = "okay";
 	pinctrl-names = "default";
 	pinctrl-0 = <&mmc1_pins>;
@@ -246,21 +228,12 @@
 	bus-width = <4>;
 	wp-gpios = <&gpio4 30 GPIO_ACTIVE_HIGH>; /* gpio_126 */
 	cd-gpios = <&gpio4 31 GPIO_ACTIVE_LOW>; /* gpio_127 */
-=======
-	vmmc-supply = <&vmmc_fixed>;
-	bus-width = <4>;
-};
-
-&mmc2 {
-      status = "disabled";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &mmc3 {
       status = "disabled";
 };
 
-<<<<<<< HEAD
 &usbhshost {
 	port1-mode = "ehci-phy";
 };
@@ -359,5 +332,3 @@
 		>;
 	};
 };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

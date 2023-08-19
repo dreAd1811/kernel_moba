@@ -79,11 +79,7 @@ vbi_buffer_queue(struct vb2_buffer *vb)
 	spin_unlock_irqrestore(&dev->slock, flags);
 }
 
-<<<<<<< HEAD
 const struct vb2_ops au0828_vbi_qops = {
-=======
-struct vb2_ops au0828_vbi_qops = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.queue_setup     = vbi_queue_setup,
 	.buf_prepare     = vbi_buffer_prepare,
 	.buf_queue       = vbi_buffer_queue,

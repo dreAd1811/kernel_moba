@@ -15,11 +15,7 @@
 #include <linux/fs.h>
 #include <linux/module.h>
 
-<<<<<<< HEAD
 #include <media/dvbdev.h>
-=======
-#include <dvbdev.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "firedtv.h"
 
@@ -211,15 +207,9 @@ static int fdtv_ca_ioctl(struct file *file, unsigned int cmd, void *arg)
 	return err;
 }
 
-<<<<<<< HEAD
 static __poll_t fdtv_ca_io_poll(struct file *file, poll_table *wait)
 {
 	return EPOLLIN;
-=======
-static unsigned int fdtv_ca_io_poll(struct file *file, poll_table *wait)
-{
-	return POLLIN;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct file_operations fdtv_ca_fops = {

@@ -354,7 +354,6 @@ struct kvm_xcrs {
 	__u64 padding[16];
 };
 
-<<<<<<< HEAD
 #define KVM_SYNC_X86_REGS      (1UL << 0)
 #define KVM_SYNC_X86_SREGS     (1UL << 1)
 #define KVM_SYNC_X86_EVENTS    (1UL << 2)
@@ -374,16 +373,11 @@ struct kvm_sync_regs {
 	struct kvm_regs regs;
 	struct kvm_sregs sregs;
 	struct kvm_vcpu_events events;
-=======
-/* definition of registers in kvm_run */
-struct kvm_sync_regs {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define KVM_X86_QUIRK_LINT0_REENABLED	(1 << 0)
 #define KVM_X86_QUIRK_CD_NW_CLEARED	(1 << 1)
 #define KVM_X86_QUIRK_LAPIC_MMIO_HOLE	(1 << 2)
-<<<<<<< HEAD
 #define KVM_X86_QUIRK_OUT_7E_INC_RIP	(1 << 3)
 
 #define KVM_STATE_NESTED_GUEST_MODE	0x00000001
@@ -422,7 +416,5 @@ struct kvm_nested_state {
 
 	__u8 data[0];
 };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* _ASM_X86_KVM_H */

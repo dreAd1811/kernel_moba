@@ -50,27 +50,19 @@ static unsigned long ccu_mp_round_rate(struct ccu_mux_internal *mux,
 	unsigned int max_m, max_p;
 	unsigned int m, p;
 
-<<<<<<< HEAD
 	if (cmp->common.features & CCU_FEATURE_FIXED_POSTDIV)
 		rate *= cmp->fixed_post_div;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	max_m = cmp->m.max ?: 1 << cmp->m.width;
 	max_p = cmp->p.max ?: 1 << ((1 << cmp->p.width) - 1);
 
 	ccu_mp_find_best(*parent_rate, rate, max_m, max_p, &m, &p);
-<<<<<<< HEAD
 	rate = *parent_rate / p / m;
 
 	if (cmp->common.features & CCU_FEATURE_FIXED_POSTDIV)
 		rate /= cmp->fixed_post_div;
 
 	return rate;
-=======
-
-	return *parent_rate / p / m;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void ccu_mp_disable(struct clk_hw *hw)
@@ -98,10 +90,7 @@ static unsigned long ccu_mp_recalc_rate(struct clk_hw *hw,
 					unsigned long parent_rate)
 {
 	struct ccu_mp *cmp = hw_to_ccu_mp(hw);
-<<<<<<< HEAD
 	unsigned long rate;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int m, p;
 	u32 reg;
 
@@ -120,15 +109,11 @@ static unsigned long ccu_mp_recalc_rate(struct clk_hw *hw,
 	p = reg >> cmp->p.shift;
 	p &= (1 << cmp->p.width) - 1;
 
-<<<<<<< HEAD
 	rate = (parent_rate >> p) / m;
 	if (cmp->common.features & CCU_FEATURE_FIXED_POSTDIV)
 		rate /= cmp->fixed_post_div;
 
 	return rate;
-=======
-	return (parent_rate >> p) / m;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int ccu_mp_determine_rate(struct clk_hw *hw,
@@ -156,13 +141,10 @@ static int ccu_mp_set_rate(struct clk_hw *hw, unsigned long rate,
 	max_m = cmp->m.max ?: 1 << cmp->m.width;
 	max_p = cmp->p.max ?: 1 << ((1 << cmp->p.width) - 1);
 
-<<<<<<< HEAD
 	/* Adjust target rate according to post-dividers */
 	if (cmp->common.features & CCU_FEATURE_FIXED_POSTDIV)
 		rate = rate * cmp->fixed_post_div;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ccu_mp_find_best(parent_rate, rate, max_m, max_p, &m, &p);
 
 	spin_lock_irqsave(cmp->common.lock, flags);

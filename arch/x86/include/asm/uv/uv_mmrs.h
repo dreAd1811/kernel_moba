@@ -39,17 +39,11 @@
  *	#define UV2Hxxx	b
  *	#define UV3Hxxx	c
  *	#define UV4Hxxx	d
-<<<<<<< HEAD
  *	#define UV4AHxxx e
  *	#define UVHxxx	(is_uv1_hub() ? UV1Hxxx :
  *			(is_uv2_hub() ? UV2Hxxx :
  *			(is_uv3_hub() ? UV3Hxxx :
  *			(is_uv4a_hub() ? UV4AHxxx :
-=======
- *	#define UVHxxx	(is_uv1_hub() ? UV1Hxxx :
- *			(is_uv2_hub() ? UV2Hxxx :
- *			(is_uv3_hub() ? UV3Hxxx :
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *					UV4Hxxx))
  *
  * If the MMR exists on all hub types > 1 but have different addresses, the
@@ -57,15 +51,10 @@
  *	#define UV2Hxxx	b
  *	#define UV3Hxxx	c
  *	#define UV4Hxxx	d
-<<<<<<< HEAD
  *	#define UV4AHxxx e
  *	#define UVHxxx	(is_uv2_hub() ? UV2Hxxx :
  *			(is_uv3_hub() ? UV3Hxxx :
  *			(is_uv4a_hub() ? UV4AHxxx :
-=======
- *	#define UVHxxx	(is_uv2_hub() ? UV2Hxxx :
- *			(is_uv3_hub() ? UV3Hxxx :
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *					UV4Hxxx))
  *
  *	union uvh_xxx {
@@ -78,10 +67,7 @@
  *		} s2;
  *		struct uv3h_xxx_s {	 # Full UV3 definition (*)
  *		} s3;
-<<<<<<< HEAD
  *		(NOTE: No struct uv4ah_xxx_s members exist)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *		struct uv4h_xxx_s {	 # Full UV4 definition (*)
  *		} s4;
  *	};
@@ -118,10 +104,7 @@
 #define UV2_HUB_IS_SUPPORTED	1
 #define UV3_HUB_IS_SUPPORTED	1
 #define UV4_HUB_IS_SUPPORTED	1
-<<<<<<< HEAD
 #define UV4A_HUB_IS_SUPPORTED	1
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Error function to catch undefined references */
 extern unsigned long uv_undefined(char *str);
@@ -2802,7 +2785,6 @@ union uvh_lb_bau_sb_activation_status_1_u {
 	/*is_uv4_hub*/ UV4H_LB_BAU_SB_DESCRIPTOR_BASE_32)
 
 #define UVH_LB_BAU_SB_DESCRIPTOR_BASE_PAGE_ADDRESS_SHFT	12
-<<<<<<< HEAD
 
 #define UV1H_LB_BAU_SB_DESCRIPTOR_BASE_NODE_ID_SHFT	49
 #define UV1H_LB_BAU_SB_DESCRIPTOR_BASE_PAGE_ADDRESS_MASK 0x000007fffffff000UL
@@ -2844,37 +2826,6 @@ union uvh_lb_bau_sb_activation_status_1_u {
 	is_uv3_hub() ? UV3H_LB_BAU_SB_DESCRIPTOR_BASE_NODE_ID_MASK :	\
 	is_uv4a_hub() ? UV4AH_LB_BAU_SB_DESCRIPTOR_BASE_NODE_ID_MASK :	\
 	/*is_uv4_hub*/ UV4H_LB_BAU_SB_DESCRIPTOR_BASE_NODE_ID_MASK)
-=======
-#define UVH_LB_BAU_SB_DESCRIPTOR_BASE_NODE_ID_SHFT	49
-#define UVH_LB_BAU_SB_DESCRIPTOR_BASE_NODE_ID_MASK	0x7ffe000000000000UL
-
-#define UV1H_LB_BAU_SB_DESCRIPTOR_BASE_PAGE_ADDRESS_MASK 0x000007fffffff000UL
-
-
-#define UV2H_LB_BAU_SB_DESCRIPTOR_BASE_PAGE_ADDRESS_MASK 0x000007fffffff000UL
-
-#define UV3H_LB_BAU_SB_DESCRIPTOR_BASE_PAGE_ADDRESS_MASK 0x000007fffffff000UL
-
-#define UV4H_LB_BAU_SB_DESCRIPTOR_BASE_PAGE_ADDRESS_MASK 0x00003ffffffff000UL
-
-
-union uvh_lb_bau_sb_descriptor_base_u {
-	unsigned long	v;
-	struct uvh_lb_bau_sb_descriptor_base_s {
-		unsigned long	rsvd_0_11:12;
-		unsigned long	rsvd_12_48:37;
-		unsigned long	node_id:14;			/* RW */
-		unsigned long	rsvd_63:1;
-	} s;
-	struct uv4h_lb_bau_sb_descriptor_base_s {
-		unsigned long	rsvd_0_11:12;
-		unsigned long	page_address:34;		/* RW */
-		unsigned long	rsvd_46_48:3;
-		unsigned long	node_id:14;			/* RW */
-		unsigned long	rsvd_63:1;
-	} s4;
-};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* ========================================================================= */
 /*                               UVH_NODE_ID                                 */
@@ -3098,7 +3049,6 @@ union uvh_node_present_table_u {
 #define UVH_RH_GAM_ALIAS210_OVERLAY_CONFIG_0_MMR_M_ALIAS_MASK 0x001f000000000000UL
 #define UVH_RH_GAM_ALIAS210_OVERLAY_CONFIG_0_MMR_ENABLE_MASK 0x8000000000000000UL
 
-<<<<<<< HEAD
 #define UV1H_RH_GAM_ALIAS210_OVERLAY_CONFIG_0_MMR_BASE_SHFT 24
 #define UV1H_RH_GAM_ALIAS210_OVERLAY_CONFIG_0_MMR_M_ALIAS_SHFT 48
 #define UV1H_RH_GAM_ALIAS210_OVERLAY_CONFIG_0_MMR_ENABLE_SHFT 63
@@ -3134,8 +3084,6 @@ union uvh_node_present_table_u {
 #define UV4H_RH_GAM_ALIAS210_OVERLAY_CONFIG_0_MMR_M_ALIAS_MASK 0x001f000000000000UL
 #define UV4H_RH_GAM_ALIAS210_OVERLAY_CONFIG_0_MMR_ENABLE_MASK 0x8000000000000000UL
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 union uvh_rh_gam_alias210_overlay_config_0_mmr_u {
 	unsigned long	v;
@@ -3147,7 +3095,6 @@ union uvh_rh_gam_alias210_overlay_config_0_mmr_u {
 		unsigned long	rsvd_53_62:10;
 		unsigned long	enable:1;			/* RW */
 	} s;
-<<<<<<< HEAD
 	struct uv1h_rh_gam_alias210_overlay_config_0_mmr_s {
 		unsigned long	rsvd_0_23:24;
 		unsigned long	base:8;				/* RW */
@@ -3188,8 +3135,6 @@ union uvh_rh_gam_alias210_overlay_config_0_mmr_u {
 		unsigned long	rsvd_53_62:10;
 		unsigned long	enable:1;			/* RW */
 	} s4;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* ========================================================================= */
@@ -3212,7 +3157,6 @@ union uvh_rh_gam_alias210_overlay_config_0_mmr_u {
 #define UVH_RH_GAM_ALIAS210_OVERLAY_CONFIG_1_MMR_M_ALIAS_MASK 0x001f000000000000UL
 #define UVH_RH_GAM_ALIAS210_OVERLAY_CONFIG_1_MMR_ENABLE_MASK 0x8000000000000000UL
 
-<<<<<<< HEAD
 #define UV1H_RH_GAM_ALIAS210_OVERLAY_CONFIG_1_MMR_BASE_SHFT 24
 #define UV1H_RH_GAM_ALIAS210_OVERLAY_CONFIG_1_MMR_M_ALIAS_SHFT 48
 #define UV1H_RH_GAM_ALIAS210_OVERLAY_CONFIG_1_MMR_ENABLE_SHFT 63
@@ -3248,8 +3192,6 @@ union uvh_rh_gam_alias210_overlay_config_0_mmr_u {
 #define UV4H_RH_GAM_ALIAS210_OVERLAY_CONFIG_1_MMR_M_ALIAS_MASK 0x001f000000000000UL
 #define UV4H_RH_GAM_ALIAS210_OVERLAY_CONFIG_1_MMR_ENABLE_MASK 0x8000000000000000UL
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 union uvh_rh_gam_alias210_overlay_config_1_mmr_u {
 	unsigned long	v;
@@ -3261,7 +3203,6 @@ union uvh_rh_gam_alias210_overlay_config_1_mmr_u {
 		unsigned long	rsvd_53_62:10;
 		unsigned long	enable:1;			/* RW */
 	} s;
-<<<<<<< HEAD
 	struct uv1h_rh_gam_alias210_overlay_config_1_mmr_s {
 		unsigned long	rsvd_0_23:24;
 		unsigned long	base:8;				/* RW */
@@ -3302,8 +3243,6 @@ union uvh_rh_gam_alias210_overlay_config_1_mmr_u {
 		unsigned long	rsvd_53_62:10;
 		unsigned long	enable:1;			/* RW */
 	} s4;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* ========================================================================= */
@@ -3326,7 +3265,6 @@ union uvh_rh_gam_alias210_overlay_config_1_mmr_u {
 #define UVH_RH_GAM_ALIAS210_OVERLAY_CONFIG_2_MMR_M_ALIAS_MASK 0x001f000000000000UL
 #define UVH_RH_GAM_ALIAS210_OVERLAY_CONFIG_2_MMR_ENABLE_MASK 0x8000000000000000UL
 
-<<<<<<< HEAD
 #define UV1H_RH_GAM_ALIAS210_OVERLAY_CONFIG_2_MMR_BASE_SHFT 24
 #define UV1H_RH_GAM_ALIAS210_OVERLAY_CONFIG_2_MMR_M_ALIAS_SHFT 48
 #define UV1H_RH_GAM_ALIAS210_OVERLAY_CONFIG_2_MMR_ENABLE_SHFT 63
@@ -3362,8 +3300,6 @@ union uvh_rh_gam_alias210_overlay_config_1_mmr_u {
 #define UV4H_RH_GAM_ALIAS210_OVERLAY_CONFIG_2_MMR_M_ALIAS_MASK 0x001f000000000000UL
 #define UV4H_RH_GAM_ALIAS210_OVERLAY_CONFIG_2_MMR_ENABLE_MASK 0x8000000000000000UL
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 union uvh_rh_gam_alias210_overlay_config_2_mmr_u {
 	unsigned long	v;
@@ -3375,7 +3311,6 @@ union uvh_rh_gam_alias210_overlay_config_2_mmr_u {
 		unsigned long	rsvd_53_62:10;
 		unsigned long	enable:1;			/* RW */
 	} s;
-<<<<<<< HEAD
 	struct uv1h_rh_gam_alias210_overlay_config_2_mmr_s {
 		unsigned long	rsvd_0_23:24;
 		unsigned long	base:8;				/* RW */
@@ -3416,8 +3351,6 @@ union uvh_rh_gam_alias210_overlay_config_2_mmr_u {
 		unsigned long	rsvd_53_62:10;
 		unsigned long	enable:1;			/* RW */
 	} s4;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* ========================================================================= */
@@ -3436,7 +3369,6 @@ union uvh_rh_gam_alias210_overlay_config_2_mmr_u {
 #define UVH_RH_GAM_ALIAS210_REDIRECT_CONFIG_0_MMR_DEST_BASE_SHFT 24
 #define UVH_RH_GAM_ALIAS210_REDIRECT_CONFIG_0_MMR_DEST_BASE_MASK 0x00003fffff000000UL
 
-<<<<<<< HEAD
 #define UV1H_RH_GAM_ALIAS210_REDIRECT_CONFIG_0_MMR_DEST_BASE_SHFT 24
 #define UV1H_RH_GAM_ALIAS210_REDIRECT_CONFIG_0_MMR_DEST_BASE_MASK 0x00003fffff000000UL
 
@@ -3452,8 +3384,6 @@ union uvh_rh_gam_alias210_overlay_config_2_mmr_u {
 #define UV4H_RH_GAM_ALIAS210_REDIRECT_CONFIG_0_MMR_DEST_BASE_SHFT 24
 #define UV4H_RH_GAM_ALIAS210_REDIRECT_CONFIG_0_MMR_DEST_BASE_MASK 0x00003fffff000000UL
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 union uvh_rh_gam_alias210_redirect_config_0_mmr_u {
 	unsigned long	v;
@@ -3462,7 +3392,6 @@ union uvh_rh_gam_alias210_redirect_config_0_mmr_u {
 		unsigned long	dest_base:22;			/* RW */
 		unsigned long	rsvd_46_63:18;
 	} s;
-<<<<<<< HEAD
 	struct uv1h_rh_gam_alias210_redirect_config_0_mmr_s {
 		unsigned long	rsvd_0_23:24;
 		unsigned long	dest_base:22;			/* RW */
@@ -3488,8 +3417,6 @@ union uvh_rh_gam_alias210_redirect_config_0_mmr_u {
 		unsigned long	dest_base:22;			/* RW */
 		unsigned long	rsvd_46_63:18;
 	} s4;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* ========================================================================= */
@@ -3508,7 +3435,6 @@ union uvh_rh_gam_alias210_redirect_config_0_mmr_u {
 #define UVH_RH_GAM_ALIAS210_REDIRECT_CONFIG_1_MMR_DEST_BASE_SHFT 24
 #define UVH_RH_GAM_ALIAS210_REDIRECT_CONFIG_1_MMR_DEST_BASE_MASK 0x00003fffff000000UL
 
-<<<<<<< HEAD
 #define UV1H_RH_GAM_ALIAS210_REDIRECT_CONFIG_1_MMR_DEST_BASE_SHFT 24
 #define UV1H_RH_GAM_ALIAS210_REDIRECT_CONFIG_1_MMR_DEST_BASE_MASK 0x00003fffff000000UL
 
@@ -3524,8 +3450,6 @@ union uvh_rh_gam_alias210_redirect_config_0_mmr_u {
 #define UV4H_RH_GAM_ALIAS210_REDIRECT_CONFIG_1_MMR_DEST_BASE_SHFT 24
 #define UV4H_RH_GAM_ALIAS210_REDIRECT_CONFIG_1_MMR_DEST_BASE_MASK 0x00003fffff000000UL
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 union uvh_rh_gam_alias210_redirect_config_1_mmr_u {
 	unsigned long	v;
@@ -3534,7 +3458,6 @@ union uvh_rh_gam_alias210_redirect_config_1_mmr_u {
 		unsigned long	dest_base:22;			/* RW */
 		unsigned long	rsvd_46_63:18;
 	} s;
-<<<<<<< HEAD
 	struct uv1h_rh_gam_alias210_redirect_config_1_mmr_s {
 		unsigned long	rsvd_0_23:24;
 		unsigned long	dest_base:22;			/* RW */
@@ -3560,8 +3483,6 @@ union uvh_rh_gam_alias210_redirect_config_1_mmr_u {
 		unsigned long	dest_base:22;			/* RW */
 		unsigned long	rsvd_46_63:18;
 	} s4;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* ========================================================================= */
@@ -3580,7 +3501,6 @@ union uvh_rh_gam_alias210_redirect_config_1_mmr_u {
 #define UVH_RH_GAM_ALIAS210_REDIRECT_CONFIG_2_MMR_DEST_BASE_SHFT 24
 #define UVH_RH_GAM_ALIAS210_REDIRECT_CONFIG_2_MMR_DEST_BASE_MASK 0x00003fffff000000UL
 
-<<<<<<< HEAD
 #define UV1H_RH_GAM_ALIAS210_REDIRECT_CONFIG_2_MMR_DEST_BASE_SHFT 24
 #define UV1H_RH_GAM_ALIAS210_REDIRECT_CONFIG_2_MMR_DEST_BASE_MASK 0x00003fffff000000UL
 
@@ -3596,8 +3516,6 @@ union uvh_rh_gam_alias210_redirect_config_1_mmr_u {
 #define UV4H_RH_GAM_ALIAS210_REDIRECT_CONFIG_2_MMR_DEST_BASE_SHFT 24
 #define UV4H_RH_GAM_ALIAS210_REDIRECT_CONFIG_2_MMR_DEST_BASE_MASK 0x00003fffff000000UL
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 union uvh_rh_gam_alias210_redirect_config_2_mmr_u {
 	unsigned long	v;
@@ -3606,7 +3524,6 @@ union uvh_rh_gam_alias210_redirect_config_2_mmr_u {
 		unsigned long	dest_base:22;			/* RW */
 		unsigned long	rsvd_46_63:18;
 	} s;
-<<<<<<< HEAD
 	struct uv1h_rh_gam_alias210_redirect_config_2_mmr_s {
 		unsigned long	rsvd_0_23:24;
 		unsigned long	dest_base:22;			/* RW */
@@ -3632,8 +3549,6 @@ union uvh_rh_gam_alias210_redirect_config_2_mmr_u {
 		unsigned long	dest_base:22;			/* RW */
 		unsigned long	rsvd_46_63:18;
 	} s4;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* ========================================================================= */
@@ -3832,7 +3747,6 @@ union uvh_rh_gam_gru_overlay_config_mmr_u {
 };
 
 /* ========================================================================= */
-<<<<<<< HEAD
 /*                   UVH_RH_GAM_MMIOH_OVERLAY_CONFIG0_MMR                    */
 /* ========================================================================= */
 #define UV1H_RH_GAM_MMIOH_OVERLAY_CONFIG0_MMR uv_undefined("UV1H_RH_GAM_MMIOH_OVERLAY_CONFIG0_MMR")
@@ -3989,8 +3903,6 @@ union uvh_rh_gam_mmioh_overlay_config1_mmr_u {
 };
 
 /* ========================================================================= */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*                   UVH_RH_GAM_MMIOH_OVERLAY_CONFIG_MMR                     */
 /* ========================================================================= */
 #define UV1H_RH_GAM_MMIOH_OVERLAY_CONFIG_MMR 0x1600030UL
@@ -4045,7 +3957,6 @@ union uvh_rh_gam_mmioh_overlay_config_mmr_u {
 };
 
 /* ========================================================================= */
-<<<<<<< HEAD
 /*                  UVH_RH_GAM_MMIOH_REDIRECT_CONFIG0_MMR                    */
 /* ========================================================================= */
 #define UV1H_RH_GAM_MMIOH_REDIRECT_CONFIG0_MMR uv_undefined("UV1H_RH_GAM_MMIOH_REDIRECT_CONFIG0_MMR")
@@ -4152,8 +4063,6 @@ union uvh_rh_gam_mmioh_redirect_config1_mmr_u {
 };
 
 /* ========================================================================= */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*                    UVH_RH_GAM_MMR_OVERLAY_CONFIG_MMR                      */
 /* ========================================================================= */
 #define UV1H_RH_GAM_MMR_OVERLAY_CONFIG_MMR 0x1600028UL
@@ -4854,91 +4763,6 @@ union uv3h_gr0_gam_gr_config_u {
 };
 
 /* ========================================================================= */
-<<<<<<< HEAD
-=======
-/*                   UV3H_RH_GAM_MMIOH_OVERLAY_CONFIG0_MMR                   */
-/* ========================================================================= */
-#define UV3H_RH_GAM_MMIOH_OVERLAY_CONFIG0_MMR		0x1603000UL
-
-#define UV3H_RH_GAM_MMIOH_OVERLAY_CONFIG0_MMR_BASE_SHFT	26
-#define UV3H_RH_GAM_MMIOH_OVERLAY_CONFIG0_MMR_M_IO_SHFT	46
-#define UV3H_RH_GAM_MMIOH_OVERLAY_CONFIG0_MMR_ENABLE_SHFT 63
-#define UV3H_RH_GAM_MMIOH_OVERLAY_CONFIG0_MMR_BASE_MASK	0x00003ffffc000000UL
-#define UV3H_RH_GAM_MMIOH_OVERLAY_CONFIG0_MMR_M_IO_MASK	0x000fc00000000000UL
-#define UV3H_RH_GAM_MMIOH_OVERLAY_CONFIG0_MMR_ENABLE_MASK 0x8000000000000000UL
-
-union uv3h_rh_gam_mmioh_overlay_config0_mmr_u {
-	unsigned long	v;
-	struct uv3h_rh_gam_mmioh_overlay_config0_mmr_s {
-		unsigned long	rsvd_0_25:26;
-		unsigned long	base:20;			/* RW */
-		unsigned long	m_io:6;				/* RW */
-		unsigned long	n_io:4;
-		unsigned long	rsvd_56_62:7;
-		unsigned long	enable:1;			/* RW */
-	} s3;
-};
-
-/* ========================================================================= */
-/*                   UV3H_RH_GAM_MMIOH_OVERLAY_CONFIG1_MMR                   */
-/* ========================================================================= */
-#define UV3H_RH_GAM_MMIOH_OVERLAY_CONFIG1_MMR		0x1604000UL
-
-#define UV3H_RH_GAM_MMIOH_OVERLAY_CONFIG1_MMR_BASE_SHFT	26
-#define UV3H_RH_GAM_MMIOH_OVERLAY_CONFIG1_MMR_M_IO_SHFT	46
-#define UV3H_RH_GAM_MMIOH_OVERLAY_CONFIG1_MMR_ENABLE_SHFT 63
-#define UV3H_RH_GAM_MMIOH_OVERLAY_CONFIG1_MMR_BASE_MASK	0x00003ffffc000000UL
-#define UV3H_RH_GAM_MMIOH_OVERLAY_CONFIG1_MMR_M_IO_MASK	0x000fc00000000000UL
-#define UV3H_RH_GAM_MMIOH_OVERLAY_CONFIG1_MMR_ENABLE_MASK 0x8000000000000000UL
-
-union uv3h_rh_gam_mmioh_overlay_config1_mmr_u {
-	unsigned long	v;
-	struct uv3h_rh_gam_mmioh_overlay_config1_mmr_s {
-		unsigned long	rsvd_0_25:26;
-		unsigned long	base:20;			/* RW */
-		unsigned long	m_io:6;				/* RW */
-		unsigned long	n_io:4;
-		unsigned long	rsvd_56_62:7;
-		unsigned long	enable:1;			/* RW */
-	} s3;
-};
-
-/* ========================================================================= */
-/*                  UV3H_RH_GAM_MMIOH_REDIRECT_CONFIG0_MMR                   */
-/* ========================================================================= */
-#define UV3H_RH_GAM_MMIOH_REDIRECT_CONFIG0_MMR		0x1603800UL
-#define UV3H_RH_GAM_MMIOH_REDIRECT_CONFIG0_MMR_DEPTH	128
-
-#define UV3H_RH_GAM_MMIOH_REDIRECT_CONFIG0_MMR_NASID_SHFT 0
-#define UV3H_RH_GAM_MMIOH_REDIRECT_CONFIG0_MMR_NASID_MASK 0x0000000000007fffUL
-
-union uv3h_rh_gam_mmioh_redirect_config0_mmr_u {
-	unsigned long	v;
-	struct uv3h_rh_gam_mmioh_redirect_config0_mmr_s {
-		unsigned long	nasid:15;			/* RW */
-		unsigned long	rsvd_15_63:49;
-	} s3;
-};
-
-/* ========================================================================= */
-/*                  UV3H_RH_GAM_MMIOH_REDIRECT_CONFIG1_MMR                   */
-/* ========================================================================= */
-#define UV3H_RH_GAM_MMIOH_REDIRECT_CONFIG1_MMR		0x1604800UL
-#define UV3H_RH_GAM_MMIOH_REDIRECT_CONFIG1_MMR_DEPTH	128
-
-#define UV3H_RH_GAM_MMIOH_REDIRECT_CONFIG1_MMR_NASID_SHFT 0
-#define UV3H_RH_GAM_MMIOH_REDIRECT_CONFIG1_MMR_NASID_MASK 0x0000000000007fffUL
-
-union uv3h_rh_gam_mmioh_redirect_config1_mmr_u {
-	unsigned long	v;
-	struct uv3h_rh_gam_mmioh_redirect_config1_mmr_s {
-		unsigned long	nasid:15;			/* RW */
-		unsigned long	rsvd_15_63:49;
-	} s3;
-};
-
-/* ========================================================================= */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*                       UV4H_LB_PROC_INTD_QUEUE_FIRST                       */
 /* ========================================================================= */
 #define UV4H_LB_PROC_INTD_QUEUE_FIRST			0xa4100UL

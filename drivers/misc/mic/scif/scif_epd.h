@@ -203,11 +203,7 @@ void scif_clientrcvd(struct scif_dev *scifdev, struct scifmsg *msg);
 int __scif_connect(scif_epd_t epd, struct scif_port_id *dst, bool non_block);
 int __scif_flush(scif_epd_t epd);
 int scif_mmap(struct vm_area_struct *vma, scif_epd_t epd);
-<<<<<<< HEAD
 __poll_t __scif_pollfd(struct file *f, poll_table *wait,
-=======
-unsigned int __scif_pollfd(struct file *f, poll_table *wait,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   struct scif_endpt *ep);
 int __scif_pin_pages(void *addr, size_t len, int *out_prot,
 		     int map_flags, scif_pinned_pages_t *pages);

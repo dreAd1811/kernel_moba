@@ -1145,10 +1145,6 @@ static int dce4_crtc_do_set_base(struct drm_crtc *crtc,
 	struct radeon_crtc *radeon_crtc = to_radeon_crtc(crtc);
 	struct drm_device *dev = crtc->dev;
 	struct radeon_device *rdev = dev->dev_private;
-<<<<<<< HEAD
-=======
-	struct radeon_framebuffer *radeon_fb;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_framebuffer *target_fb;
 	struct drm_gem_object *obj;
 	struct radeon_bo *rbo;
@@ -1167,30 +1163,15 @@ static int dce4_crtc_do_set_base(struct drm_crtc *crtc,
 		return 0;
 	}
 
-<<<<<<< HEAD
 	if (atomic)
 		target_fb = fb;
 	else
 		target_fb = crtc->primary->fb;
-=======
-	if (atomic) {
-		radeon_fb = to_radeon_framebuffer(fb);
-		target_fb = fb;
-	}
-	else {
-		radeon_fb = to_radeon_framebuffer(crtc->primary->fb);
-		target_fb = crtc->primary->fb;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* If atomic, assume fb object is pinned & idle & fenced and
 	 * just update base pointers
 	 */
-<<<<<<< HEAD
 	obj = target_fb->obj[0];
-=======
-	obj = radeon_fb->obj;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rbo = gem_to_radeon_bo(obj);
 	r = radeon_bo_reserve(rbo, false);
 	if (unlikely(r != 0))
@@ -1455,12 +1436,7 @@ static int dce4_crtc_do_set_base(struct drm_crtc *crtc,
 	WREG32(EVERGREEN_MASTER_UPDATE_MODE + radeon_crtc->crtc_offset, 0);
 
 	if (!atomic && fb && fb != crtc->primary->fb) {
-<<<<<<< HEAD
 		rbo = gem_to_radeon_bo(fb->obj[0]);
-=======
-		radeon_fb = to_radeon_framebuffer(fb);
-		rbo = gem_to_radeon_bo(radeon_fb->obj);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		r = radeon_bo_reserve(rbo, false);
 		if (unlikely(r != 0))
 			return r;
@@ -1481,10 +1457,6 @@ static int avivo_crtc_do_set_base(struct drm_crtc *crtc,
 	struct radeon_crtc *radeon_crtc = to_radeon_crtc(crtc);
 	struct drm_device *dev = crtc->dev;
 	struct radeon_device *rdev = dev->dev_private;
-<<<<<<< HEAD
-=======
-	struct radeon_framebuffer *radeon_fb;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_gem_object *obj;
 	struct radeon_bo *rbo;
 	struct drm_framebuffer *target_fb;
@@ -1502,25 +1474,12 @@ static int avivo_crtc_do_set_base(struct drm_crtc *crtc,
 		return 0;
 	}
 
-<<<<<<< HEAD
 	if (atomic)
 		target_fb = fb;
 	else
 		target_fb = crtc->primary->fb;
 
 	obj = target_fb->obj[0];
-=======
-	if (atomic) {
-		radeon_fb = to_radeon_framebuffer(fb);
-		target_fb = fb;
-	}
-	else {
-		radeon_fb = to_radeon_framebuffer(crtc->primary->fb);
-		target_fb = crtc->primary->fb;
-	}
-
-	obj = radeon_fb->obj;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rbo = gem_to_radeon_bo(obj);
 	r = radeon_bo_reserve(rbo, false);
 	if (unlikely(r != 0))
@@ -1671,12 +1630,7 @@ static int avivo_crtc_do_set_base(struct drm_crtc *crtc,
 	WREG32(AVIVO_D1MODE_MASTER_UPDATE_MODE + radeon_crtc->crtc_offset, 3);
 
 	if (!atomic && fb && fb != crtc->primary->fb) {
-<<<<<<< HEAD
 		rbo = gem_to_radeon_bo(fb->obj[0]);
-=======
-		radeon_fb = to_radeon_framebuffer(fb);
-		rbo = gem_to_radeon_bo(radeon_fb->obj);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		r = radeon_bo_reserve(rbo, false);
 		if (unlikely(r != 0))
 			return r;
@@ -2183,17 +2137,9 @@ static void atombios_crtc_disable(struct drm_crtc *crtc)
 	atombios_crtc_dpms(crtc, DRM_MODE_DPMS_OFF);
 	if (crtc->primary->fb) {
 		int r;
-<<<<<<< HEAD
 		struct radeon_bo *rbo;
 
 		rbo = gem_to_radeon_bo(crtc->primary->fb->obj[0]);
-=======
-		struct radeon_framebuffer *radeon_fb;
-		struct radeon_bo *rbo;
-
-		radeon_fb = to_radeon_framebuffer(crtc->primary->fb);
-		rbo = gem_to_radeon_bo(radeon_fb->obj);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		r = radeon_bo_reserve(rbo, false);
 		if (unlikely(r))
 			DRM_ERROR("failed to reserve rbo before unpin\n");

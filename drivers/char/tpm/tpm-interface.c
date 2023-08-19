@@ -29,16 +29,9 @@
 #include <linux/mutex.h>
 #include <linux/spinlock.h>
 #include <linux/freezer.h>
-<<<<<<< HEAD
 #include <linux/tpm_eventlog.h>
 
 #include "tpm.h"
-=======
-#include <linux/pm_runtime.h>
-
-#include "tpm.h"
-#include "tpm_eventlog.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define TPM_MAX_ORDINAL 243
 #define TSC_MAX_ORDINAL 12
@@ -379,11 +372,7 @@ static int tpm_request_locality(struct tpm_chip *chip, unsigned int flags)
 {
 	int rc;
 
-<<<<<<< HEAD
 	if (flags & TPM_TRANSMIT_NESTED)
-=======
-	if (flags & TPM_TRANSMIT_RAW)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	if (!chip->ops->request_locality)
@@ -402,11 +391,7 @@ static void tpm_relinquish_locality(struct tpm_chip *chip, unsigned int flags)
 {
 	int rc;
 
-<<<<<<< HEAD
 	if (flags & TPM_TRANSMIT_NESTED)
-=======
-	if (flags & TPM_TRANSMIT_RAW)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	if (!chip->ops->relinquish_locality)
@@ -421,11 +406,7 @@ static void tpm_relinquish_locality(struct tpm_chip *chip, unsigned int flags)
 
 static int tpm_cmd_ready(struct tpm_chip *chip, unsigned int flags)
 {
-<<<<<<< HEAD
 	if (flags & TPM_TRANSMIT_NESTED)
-=======
-	if (flags & TPM_TRANSMIT_RAW)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	if (!chip->ops->cmd_ready)
@@ -436,11 +417,7 @@ static int tpm_cmd_ready(struct tpm_chip *chip, unsigned int flags)
 
 static int tpm_go_idle(struct tpm_chip *chip, unsigned int flags)
 {
-<<<<<<< HEAD
 	if (flags & TPM_TRANSMIT_NESTED)
-=======
-	if (flags & TPM_TRANSMIT_RAW)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	if (!chip->ops->go_idle)
@@ -489,16 +466,9 @@ static ssize_t tpm_try_transmit(struct tpm_chip *chip,
 		return -E2BIG;
 	}
 
-<<<<<<< HEAD
 	if (!(flags & TPM_TRANSMIT_UNLOCKED) && !(flags & TPM_TRANSMIT_NESTED))
 		mutex_lock(&chip->tpm_mutex);
 
-=======
-	if (!(flags & TPM_TRANSMIT_UNLOCKED))
-		mutex_lock(&chip->tpm_mutex);
-
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (chip->ops->clk_enable != NULL)
 		chip->ops->clk_enable(chip, true);
 
@@ -521,11 +491,7 @@ static ssize_t tpm_try_transmit(struct tpm_chip *chip,
 	if (rc)
 		goto out;
 
-<<<<<<< HEAD
 	rc = chip->ops->send(chip, buf, count);
-=======
-	rc = chip->ops->send(chip, (u8 *) buf, count);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc < 0) {
 		if (rc != -EPIPE)
 			dev_err(&chip->dev,
@@ -561,11 +527,7 @@ static ssize_t tpm_try_transmit(struct tpm_chip *chip,
 			goto out;
 		}
 
-<<<<<<< HEAD
 		tpm_msleep(TPM_TIMEOUT_POLL);
-=======
-		tpm_msleep(TPM_TIMEOUT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rmb();
 	} while (time_before(jiffies, stop));
 
@@ -575,11 +537,7 @@ static ssize_t tpm_try_transmit(struct tpm_chip *chip,
 	goto out;
 
 out_recv:
-<<<<<<< HEAD
 	len = chip->ops->recv(chip, buf, bufsiz);
-=======
-	len = chip->ops->recv(chip, (u8 *) buf, bufsiz);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (len < 0) {
 		rc = len;
 		dev_err(&chip->dev,
@@ -610,11 +568,7 @@ out_locality:
 	if (chip->ops->clk_enable != NULL)
 		chip->ops->clk_enable(chip, false);
 
-<<<<<<< HEAD
 	if (!(flags & TPM_TRANSMIT_UNLOCKED) && !(flags & TPM_TRANSMIT_NESTED))
-=======
-	if (!(flags & TPM_TRANSMIT_UNLOCKED))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_unlock(&chip->tpm_mutex);
 	return rc ? rc : len;
 }
@@ -650,11 +604,8 @@ ssize_t tpm_transmit(struct tpm_chip *chip, struct tpm_space *space,
 	ssize_t ret;
 	const size_t save_size = min(space ? sizeof(save) : TPM_HEADER_SIZE,
 				     bufsiz);
-<<<<<<< HEAD
 	/* the command code is where the return code will be */
 	u32 cc = be32_to_cpu(header->return_code);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Subtlety here: if we have a space, the handles will be
@@ -668,7 +619,6 @@ ssize_t tpm_transmit(struct tpm_chip *chip, struct tpm_space *space,
 		if (ret < 0)
 			break;
 		rc = be32_to_cpu(header->return_code);
-<<<<<<< HEAD
 		if (rc != TPM2_RC_RETRY && rc != TPM2_RC_TESTING)
 			break;
 		/*
@@ -684,13 +634,6 @@ ssize_t tpm_transmit(struct tpm_chip *chip, struct tpm_space *space,
 			else
 				dev_err(&chip->dev,
 					"self test is still running\n");
-=======
-		if (rc != TPM2_RC_RETRY)
-			break;
-
-		if (delay_msec > TPM2_DURATION_LONG) {
-			dev_err(&chip->dev, "TPM is in retry loop\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 		tpm_msleep(delay_msec);
@@ -717,11 +660,7 @@ ssize_t tpm_transmit(struct tpm_chip *chip, struct tpm_space *space,
  *     A positive number for a TPM error.
  */
 ssize_t tpm_transmit_cmd(struct tpm_chip *chip, struct tpm_space *space,
-<<<<<<< HEAD
 			 void *buf, size_t bufsiz,
-=======
-			 const void *buf, size_t bufsiz,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 size_t min_rsp_body_length, unsigned int flags,
 			 const char *desc)
 {
@@ -729,11 +668,7 @@ ssize_t tpm_transmit_cmd(struct tpm_chip *chip, struct tpm_space *space,
 	int err;
 	ssize_t len;
 
-<<<<<<< HEAD
 	len = tpm_transmit(chip, space, buf, bufsiz, flags);
-=======
-	len = tpm_transmit(chip, space, (u8 *)buf, bufsiz, flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (len <  0)
 		return len;
 
@@ -860,11 +795,8 @@ int tpm_get_timeouts(struct tpm_chip *chip)
 		    msecs_to_jiffies(TPM2_DURATION_MEDIUM);
 		chip->duration[TPM_LONG] =
 		    msecs_to_jiffies(TPM2_DURATION_LONG);
-<<<<<<< HEAD
 		chip->duration[TPM_LONG_LONG] =
 		    msecs_to_jiffies(TPM2_DURATION_LONG_LONG);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		chip->flags |= TPM_CHIP_FLAG_HAVE_TIMEOUTS;
 		return 0;
@@ -953,10 +885,7 @@ int tpm_get_timeouts(struct tpm_chip *chip)
 		usecs_to_jiffies(be32_to_cpu(cap.duration.tpm_medium));
 	chip->duration[TPM_LONG] =
 		usecs_to_jiffies(be32_to_cpu(cap.duration.tpm_long));
-<<<<<<< HEAD
 	chip->duration[TPM_LONG_LONG] = 0; /* not used under 1.2 */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* The Broadcom BCM0102 chipset in a Dell Latitude D820 gets the above
 	 * value wrong and apparently reports msecs rather than usecs. So we
@@ -1030,7 +959,6 @@ int tpm_pcr_read_dev(struct tpm_chip *chip, int pcr_idx, u8 *res_buf)
 }
 
 /**
-<<<<<<< HEAD
  * tpm_is_tpm2 - do we a have a TPM2 chip?
  * @chip:	a &struct tpm_chip instance, %NULL for the default chip
  *
@@ -1045,21 +973,6 @@ int tpm_is_tpm2(struct tpm_chip *chip)
 
 	chip = tpm_find_get_ops(chip);
 	if (!chip)
-=======
- * tpm_is_tpm2 - is the chip a TPM2 chip?
- * @chip_num:	tpm idx # or ANY
- *
- * Returns < 0 on error, and 1 or 0 on success depending whether the chip
- * is a TPM2 chip.
- */
-int tpm_is_tpm2(u32 chip_num)
-{
-	struct tpm_chip *chip;
-	int rc;
-
-	chip = tpm_chip_find_get(chip_num);
-	if (chip == NULL)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 
 	rc = (chip->flags & TPM_CHIP_FLAG_TPM2) != 0;
@@ -1071,7 +984,6 @@ int tpm_is_tpm2(u32 chip_num)
 EXPORT_SYMBOL_GPL(tpm_is_tpm2);
 
 /**
-<<<<<<< HEAD
  * tpm_pcr_read - read a PCR value from SHA1 bank
  * @chip:	a &struct tpm_chip instance, %NULL for the default chip
  * @pcr_idx:	the PCR to be retrieved
@@ -1085,25 +997,6 @@ int tpm_pcr_read(struct tpm_chip *chip, int pcr_idx, u8 *res_buf)
 
 	chip = tpm_find_get_ops(chip);
 	if (!chip)
-=======
- * tpm_pcr_read - read a pcr value
- * @chip_num:	tpm idx # or ANY
- * @pcr_idx:	pcr idx to retrieve
- * @res_buf:	TPM_PCR value
- *		size of res_buf is 20 bytes (or NULL if you don't care)
- *
- * The TPM driver should be built-in, but for whatever reason it
- * isn't, protect against the chip disappearing, by incrementing
- * the module usage count.
- */
-int tpm_pcr_read(u32 chip_num, int pcr_idx, u8 *res_buf)
-{
-	struct tpm_chip *chip;
-	int rc;
-
-	chip = tpm_chip_find_get(chip_num);
-	if (chip == NULL)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 	if (chip->flags & TPM_CHIP_FLAG_TPM2)
 		rc = tpm2_pcr_read(chip, pcr_idx, res_buf);
@@ -1143,7 +1036,6 @@ static int tpm1_pcr_extend(struct tpm_chip *chip, int pcr_idx, const u8 *hash,
 }
 
 /**
-<<<<<<< HEAD
  * tpm_pcr_extend - extend a PCR value in SHA1 bank.
  * @chip:	a &struct tpm_chip instance, %NULL for the default chip
  * @pcr_idx:	the PCR to be retrieved
@@ -1158,32 +1050,12 @@ static int tpm1_pcr_extend(struct tpm_chip *chip, int pcr_idx, const u8 *hash,
 int tpm_pcr_extend(struct tpm_chip *chip, int pcr_idx, const u8 *hash)
 {
 	int rc;
-=======
- * tpm_pcr_extend - extend pcr value with hash
- * @chip_num:	tpm idx # or AN&
- * @pcr_idx:	pcr idx to extend
- * @hash:	hash value used to extend pcr value
- *
- * The TPM driver should be built-in, but for whatever reason it
- * isn't, protect against the chip disappearing, by incrementing
- * the module usage count.
- */
-int tpm_pcr_extend(u32 chip_num, int pcr_idx, const u8 *hash)
-{
-	int rc;
-	struct tpm_chip *chip;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct tpm2_digest digest_list[ARRAY_SIZE(chip->active_banks)];
 	u32 count = 0;
 	int i;
 
-<<<<<<< HEAD
 	chip = tpm_find_get_ops(chip);
 	if (!chip)
-=======
-	chip = tpm_chip_find_get(chip_num);
-	if (chip == NULL)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 
 	if (chip->flags & TPM_CHIP_FLAG_TPM2) {
@@ -1299,7 +1171,6 @@ out:
 	return rc;
 }
 
-<<<<<<< HEAD
 /**
  * tpm_send - send a TPM command
  * @chip:	a &struct tpm_chip instance, %NULL for the default chip
@@ -1318,87 +1189,11 @@ int tpm_send(struct tpm_chip *chip, void *cmd, size_t buflen)
 
 	rc = tpm_transmit_cmd(chip, NULL, cmd, buflen, 0, 0,
 			      "attempting to a send a command");
-=======
-int tpm_send(u32 chip_num, void *cmd, size_t buflen)
-{
-	struct tpm_chip *chip;
-	int rc;
-
-	chip = tpm_chip_find_get(chip_num);
-	if (chip == NULL)
-		return -ENODEV;
-
-	rc = tpm_transmit_cmd(chip, NULL, cmd, buflen, 0, 0,
-			      "attempting tpm_cmd");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tpm_put_ops(chip);
 	return rc;
 }
 EXPORT_SYMBOL_GPL(tpm_send);
 
-<<<<<<< HEAD
-=======
-static bool wait_for_tpm_stat_cond(struct tpm_chip *chip, u8 mask,
-					bool check_cancel, bool *canceled)
-{
-	u8 status = chip->ops->status(chip);
-
-	*canceled = false;
-	if ((status & mask) == mask)
-		return true;
-	if (check_cancel && chip->ops->req_canceled(chip, status)) {
-		*canceled = true;
-		return true;
-	}
-	return false;
-}
-
-int wait_for_tpm_stat(struct tpm_chip *chip, u8 mask, unsigned long timeout,
-		      wait_queue_head_t *queue, bool check_cancel)
-{
-	unsigned long stop;
-	long rc;
-	u8 status;
-	bool canceled = false;
-
-	/* check current status */
-	status = chip->ops->status(chip);
-	if ((status & mask) == mask)
-		return 0;
-
-	stop = jiffies + timeout;
-
-	if (chip->flags & TPM_CHIP_FLAG_IRQ) {
-again:
-		timeout = stop - jiffies;
-		if ((long)timeout <= 0)
-			return -ETIME;
-		rc = wait_event_interruptible_timeout(*queue,
-			wait_for_tpm_stat_cond(chip, mask, check_cancel,
-					       &canceled),
-			timeout);
-		if (rc > 0) {
-			if (canceled)
-				return -ECANCELED;
-			return 0;
-		}
-		if (rc == -ERESTARTSYS && freezing(current)) {
-			clear_thread_flag(TIF_SIGPENDING);
-			goto again;
-		}
-	} else {
-		do {
-			tpm_msleep(TPM_TIMEOUT);
-			status = chip->ops->status(chip);
-			if ((status & mask) == mask)
-				return 0;
-		} while (time_before(jiffies, stop));
-	}
-	return -ETIME;
-}
-EXPORT_SYMBOL_GPL(wait_for_tpm_stat);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define TPM_ORD_SAVESTATE 152
 #define SAVESTATE_RESULT_SIZE 10
 
@@ -1491,7 +1286,6 @@ static const struct tpm_input_header tpm_getrandom_header = {
 };
 
 /**
-<<<<<<< HEAD
  * tpm_get_random() - get random bytes from the TPM's RNG
  * @chip:	a &struct tpm_chip instance, %NULL for the default chip
  * @out:	destination buffer for the random bytes
@@ -1501,18 +1295,6 @@ static const struct tpm_input_header tpm_getrandom_header = {
  */
 int tpm_get_random(struct tpm_chip *chip, u8 *out, size_t max)
 {
-=======
- * tpm_get_random() - Get random bytes from the tpm's RNG
- * @chip_num: A specific chip number for the request or TPM_ANY_NUM
- * @out: destination buffer for the random bytes
- * @max: the max number of bytes to write to @out
- *
- * Returns < 0 on error and the number of bytes read on success
- */
-int tpm_get_random(u32 chip_num, u8 *out, size_t max)
-{
-	struct tpm_chip *chip;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct tpm_cmd_t tpm_cmd;
 	u32 recd, num_bytes = min_t(u32, max, TPM_MAX_RNG_DATA), rlength;
 	int err, total = 0, retries = 5;
@@ -1521,13 +1303,8 @@ int tpm_get_random(u32 chip_num, u8 *out, size_t max)
 	if (!out || !num_bytes || max > TPM_MAX_RNG_DATA)
 		return -EINVAL;
 
-<<<<<<< HEAD
 	chip = tpm_find_get_ops(chip);
 	if (!chip)
-=======
-	chip = tpm_chip_find_get(chip_num);
-	if (chip == NULL)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 
 	if (chip->flags & TPM_CHIP_FLAG_TPM2) {
@@ -1555,12 +1332,8 @@ int tpm_get_random(u32 chip_num, u8 *out, size_t max)
 		}
 
 		rlength = be32_to_cpu(tpm_cmd.header.out.length);
-<<<<<<< HEAD
 		if (rlength < TPM_HEADER_SIZE +
 			      offsetof(struct tpm_getrandom_out, rng_data) +
-=======
-		if (rlength < offsetof(struct tpm_getrandom_out, rng_data) +
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      recd) {
 			total = -EFAULT;
 			break;
@@ -1578,7 +1351,6 @@ int tpm_get_random(u32 chip_num, u8 *out, size_t max)
 EXPORT_SYMBOL_GPL(tpm_get_random);
 
 /**
-<<<<<<< HEAD
  * tpm_seal_trusted() - seal a trusted key payload
  * @chip:	a &struct tpm_chip instance, %NULL for the default chip
  * @options:	authentication values and other options
@@ -1596,24 +1368,6 @@ int tpm_seal_trusted(struct tpm_chip *chip, struct trusted_key_payload *payload,
 
 	chip = tpm_find_get_ops(chip);
 	if (!chip || !(chip->flags & TPM_CHIP_FLAG_TPM2))
-=======
- * tpm_seal_trusted() - seal a trusted key
- * @chip_num: A specific chip number for the request or TPM_ANY_NUM
- * @options: authentication values and other options
- * @payload: the key data in clear and encrypted form
- *
- * Returns < 0 on error and 0 on success. At the moment, only TPM 2.0 chips
- * are supported.
- */
-int tpm_seal_trusted(u32 chip_num, struct trusted_key_payload *payload,
-		     struct trusted_key_options *options)
-{
-	struct tpm_chip *chip;
-	int rc;
-
-	chip = tpm_chip_find_get(chip_num);
-	if (chip == NULL || !(chip->flags & TPM_CHIP_FLAG_TPM2))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 
 	rc = tpm2_seal_trusted(chip, payload, options);
@@ -1625,7 +1379,6 @@ EXPORT_SYMBOL_GPL(tpm_seal_trusted);
 
 /**
  * tpm_unseal_trusted() - unseal a trusted key
-<<<<<<< HEAD
  * @chip:	a &struct tpm_chip instance, %NULL for the default chip
  * @options:	authentication values and other options
  * @payload:	the key data in clear and encrypted form
@@ -1643,23 +1396,6 @@ int tpm_unseal_trusted(struct tpm_chip *chip,
 
 	chip = tpm_find_get_ops(chip);
 	if (!chip || !(chip->flags & TPM_CHIP_FLAG_TPM2))
-=======
- * @chip_num: A specific chip number for the request or TPM_ANY_NUM
- * @options: authentication values and other options
- * @payload: the key data in clear and encrypted form
- *
- * Returns < 0 on error and 0 on success. At the moment, only TPM 2.0 chips
- * are supported.
- */
-int tpm_unseal_trusted(u32 chip_num, struct trusted_key_payload *payload,
-		       struct trusted_key_options *options)
-{
-	struct tpm_chip *chip;
-	int rc;
-
-	chip = tpm_chip_find_get(chip_num);
-	if (chip == NULL || !(chip->flags & TPM_CHIP_FLAG_TPM2))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 
 	rc = tpm2_unseal_trusted(chip, payload, options);

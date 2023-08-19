@@ -1,8 +1,4 @@
 /*
-<<<<<<< HEAD
-=======
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Copyright (C) 2011 Texas Instruments Incorporated - http://www.ti.com/
  * Author: Rob Clark <rob@ti.com>
  *         Andy Gross <andy.gross@ti.com>
@@ -92,27 +88,17 @@ int tiler_map_show(struct seq_file *s, void *arg);
 
 /* pin/unpin */
 int tiler_pin(struct tiler_block *block, struct page **pages,
-<<<<<<< HEAD
 		u32 npages, u32 roll, bool wait);
 int tiler_unpin(struct tiler_block *block);
 
 /* reserve/release */
 struct tiler_block *tiler_reserve_2d(enum tiler_fmt fmt, u16 w, u16 h,
 				u16 align);
-=======
-		uint32_t npages, uint32_t roll, bool wait);
-int tiler_unpin(struct tiler_block *block);
-
-/* reserve/release */
-struct tiler_block *tiler_reserve_2d(enum tiler_fmt fmt, uint16_t w, uint16_t h,
-				uint16_t align);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct tiler_block *tiler_reserve_1d(size_t size);
 int tiler_release(struct tiler_block *block);
 
 /* utilities */
 dma_addr_t tiler_ssptr(struct tiler_block *block);
-<<<<<<< HEAD
 dma_addr_t tiler_tsptr(struct tiler_block *block, u32 orient,
 		u32 x, u32 y);
 u32 tiler_stride(enum tiler_fmt fmt, u32 orient);
@@ -120,25 +106,12 @@ size_t tiler_size(enum tiler_fmt fmt, u16 w, u16 h);
 size_t tiler_vsize(enum tiler_fmt fmt, u16 w, u16 h);
 void tiler_align(enum tiler_fmt fmt, u16 *w, u16 *h);
 u32 tiler_get_cpu_cache_flags(void);
-=======
-dma_addr_t tiler_tsptr(struct tiler_block *block, uint32_t orient,
-		uint32_t x, uint32_t y);
-uint32_t tiler_stride(enum tiler_fmt fmt, uint32_t orient);
-size_t tiler_size(enum tiler_fmt fmt, uint16_t w, uint16_t h);
-size_t tiler_vsize(enum tiler_fmt fmt, uint16_t w, uint16_t h);
-void tiler_align(enum tiler_fmt fmt, uint16_t *w, uint16_t *h);
-uint32_t tiler_get_cpu_cache_flags(void);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 bool dmm_is_available(void);
 
 extern struct platform_driver omap_dmm_driver;
 
 /* GEM bo flags -> tiler fmt */
-<<<<<<< HEAD
 static inline enum tiler_fmt gem2fmt(u32 flags)
-=======
-static inline enum tiler_fmt gem2fmt(uint32_t flags)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	switch (flags & OMAP_BO_TILED) {
 	case OMAP_BO_TILED_8:

@@ -48,11 +48,7 @@ static int qed_sriov_eqe_event(struct qed_hwfn *p_hwfn,
 			       u8 opcode,
 			       __le16 echo,
 			       union event_ring_data *data, u8 fw_return_code);
-<<<<<<< HEAD
 static int qed_iov_bulletin_set_mac(struct qed_hwfn *p_hwfn, u8 *mac, int vfid);
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static u8 qed_vf_calculate_legacy(struct qed_vf_info *p_vf)
 {
@@ -105,10 +101,7 @@ static int qed_sp_vf_start(struct qed_hwfn *p_hwfn, struct qed_vf_info *p_vf)
 	default:
 		DP_NOTICE(p_hwfn, "Unknown VF personality %d\n",
 			  p_hwfn->hw_info.personality);
-<<<<<<< HEAD
 		qed_sp_destroy_request(p_hwfn, p_ent);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -161,15 +154,9 @@ static int qed_sp_vf_stop(struct qed_hwfn *p_hwfn,
 	return qed_spq_post(p_hwfn, p_ent, NULL);
 }
 
-<<<<<<< HEAD
 bool qed_iov_is_valid_vfid(struct qed_hwfn *p_hwfn,
 			   int rel_vf_id,
 			   bool b_enabled_only, bool b_non_malicious)
-=======
-static bool qed_iov_is_valid_vfid(struct qed_hwfn *p_hwfn,
-				  int rel_vf_id,
-				  bool b_enabled_only, bool b_non_malicious)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (!p_hwfn->pf_iov_info) {
 		DP_NOTICE(p_hwfn->cdev, "No iov info\n");
@@ -686,13 +673,8 @@ int qed_iov_hw_info(struct qed_hwfn *p_hwfn)
 	return 0;
 }
 
-<<<<<<< HEAD
 static bool _qed_iov_pf_sanity_check(struct qed_hwfn *p_hwfn,
 				     int vfid, bool b_fail_malicious)
-=======
-bool _qed_iov_pf_sanity_check(struct qed_hwfn *p_hwfn,
-			      int vfid, bool b_fail_malicious)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* Check PF supports sriov */
 	if (IS_VF(p_hwfn->cdev) || !IS_QED_SRIOV(p_hwfn->cdev) ||
@@ -706,11 +688,7 @@ bool _qed_iov_pf_sanity_check(struct qed_hwfn *p_hwfn,
 	return true;
 }
 
-<<<<<<< HEAD
 static bool qed_iov_pf_sanity_check(struct qed_hwfn *p_hwfn, int vfid)
-=======
-bool qed_iov_pf_sanity_check(struct qed_hwfn *p_hwfn, int vfid)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return _qed_iov_pf_sanity_check(p_hwfn, vfid, true);
 }
@@ -1644,11 +1622,7 @@ static void qed_iov_vf_mbx_acquire(struct qed_hwfn *p_hwfn,
 	/* fill in pfdev info */
 	pfdev_info->chip_num = p_hwfn->cdev->chip_num;
 	pfdev_info->db_size = 0;
-<<<<<<< HEAD
 	pfdev_info->indices_per_sb = PIS_PER_SB_E4;
-=======
-	pfdev_info->indices_per_sb = PIS_PER_SB;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pfdev_info->capabilities = PFVF_ACQUIRE_CAP_DEFAULT_UNTAGGED |
 				   PFVF_ACQUIRE_CAP_POST_FW_OVERRIDE;
@@ -1817,12 +1791,8 @@ static int qed_iov_configure_vport_forced(struct qed_hwfn *p_hwfn,
 	if (!p_vf->vport_instance)
 		return -EINVAL;
 
-<<<<<<< HEAD
 	if ((events & BIT(MAC_ADDR_FORCED)) ||
 	    p_vf->p_vf_info.is_trusted_configured) {
-=======
-	if (events & BIT(MAC_ADDR_FORCED)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Since there's no way [currently] of removing the MAC,
 		 * we can always assume this means we need to force it.
 		 */
@@ -1841,17 +1811,12 @@ static int qed_iov_configure_vport_forced(struct qed_hwfn *p_hwfn,
 				  "PF failed to configure MAC for VF\n");
 			return rc;
 		}
-<<<<<<< HEAD
 		if (p_vf->p_vf_info.is_trusted_configured)
 			p_vf->configured_features |=
 				BIT(VFPF_BULLETIN_MAC_ADDR);
 		else
 			p_vf->configured_features |=
 				BIT(MAC_ADDR_FORCED);
-=======
-
-		p_vf->configured_features |= 1 << MAC_ADDR_FORCED;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (events & BIT(VLAN_ADDR_FORCED)) {
@@ -3213,13 +3178,10 @@ static int qed_iov_vf_update_mac_shadow(struct qed_hwfn *p_hwfn,
 	if (p_vf->bulletin.p_virt->valid_bitmap & BIT(MAC_ADDR_FORCED))
 		return 0;
 
-<<<<<<< HEAD
 	/* Don't keep track of shadow copy since we don't intend to restore. */
 	if (p_vf->p_vf_info.is_trusted_configured)
 		return 0;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* First remove entries and then add new ones */
 	if (p_params->opcode == QED_FILTER_REMOVE) {
 		for (i = 0; i < QED_ETH_VF_NUM_MAC_FILTERS; i++) {
@@ -3294,7 +3256,6 @@ static int qed_iov_chk_ucast(struct qed_hwfn *hwfn,
 
 	/* No real decision to make; Store the configured MAC */
 	if (params->type == QED_FILTER_MAC ||
-<<<<<<< HEAD
 	    params->type == QED_FILTER_MAC_VLAN) {
 		ether_addr_copy(vf->mac, params->mac);
 
@@ -3306,11 +3267,6 @@ static int qed_iov_chk_ucast(struct qed_hwfn *hwfn,
 		}
 	}
 
-=======
-	    params->type == QED_FILTER_MAC_VLAN)
-		ether_addr_copy(vf->mac, params->mac);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -3646,19 +3602,11 @@ static int
 qed_iov_vf_flr_poll_pbf(struct qed_hwfn *p_hwfn,
 			struct qed_vf_info *p_vf, struct qed_ptt *p_ptt)
 {
-<<<<<<< HEAD
 	u32 cons[MAX_NUM_VOQS_E4], distance[MAX_NUM_VOQS_E4];
 	int i, cnt;
 
 	/* Read initial consumers & producers */
 	for (i = 0; i < MAX_NUM_VOQS_E4; i++) {
-=======
-	u32 cons[MAX_NUM_VOQS], distance[MAX_NUM_VOQS];
-	int i, cnt;
-
-	/* Read initial consumers & producers */
-	for (i = 0; i < MAX_NUM_VOQS; i++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u32 prod;
 
 		cons[i] = qed_rd(p_hwfn, p_ptt,
@@ -3673,11 +3621,7 @@ qed_iov_vf_flr_poll_pbf(struct qed_hwfn *p_hwfn,
 	/* Wait for consumers to pass the producers */
 	i = 0;
 	for (cnt = 0; cnt < 50; cnt++) {
-<<<<<<< HEAD
 		for (; i < MAX_NUM_VOQS_E4; i++) {
-=======
-		for (; i < MAX_NUM_VOQS; i++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			u32 tmp;
 
 			tmp = qed_rd(p_hwfn, p_ptt,
@@ -3687,11 +3631,7 @@ qed_iov_vf_flr_poll_pbf(struct qed_hwfn *p_hwfn,
 				break;
 		}
 
-<<<<<<< HEAD
 		if (i == MAX_NUM_VOQS_E4)
-=======
-		if (i == MAX_NUM_VOQS)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 
 		msleep(20);
@@ -3883,7 +3823,6 @@ static void qed_iov_get_link(struct qed_hwfn *p_hwfn,
 		__qed_vf_get_link_caps(p_hwfn, p_caps, p_bulletin);
 }
 
-<<<<<<< HEAD
 static int
 qed_iov_vf_pf_bulletin_update_mac(struct qed_hwfn *p_hwfn,
 				  struct qed_ptt *p_ptt,
@@ -3918,8 +3857,6 @@ send_status:
 	return rc;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void qed_iov_process_mbx_req(struct qed_hwfn *p_hwfn,
 				    struct qed_ptt *p_ptt, int vfid)
 {
@@ -3999,12 +3936,9 @@ static void qed_iov_process_mbx_req(struct qed_hwfn *p_hwfn,
 		case CHANNEL_TLV_COALESCE_READ:
 			qed_iov_vf_pf_get_coalesce(p_hwfn, p_ptt, p_vf);
 			break;
-<<<<<<< HEAD
 		case CHANNEL_TLV_BULLETIN_UPDATE_MAC:
 			qed_iov_vf_pf_bulletin_update_mac(p_hwfn, p_ptt, p_vf);
 			break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	} else if (qed_iov_tlv_supported(mbx->first_tlv.tl.type)) {
 		DP_VERBOSE(p_hwfn, QED_MSG_IOV,
@@ -4048,11 +3982,7 @@ static void qed_iov_process_mbx_req(struct qed_hwfn *p_hwfn,
 	}
 }
 
-<<<<<<< HEAD
 static void qed_iov_pf_get_pending_events(struct qed_hwfn *p_hwfn, u64 *events)
-=======
-void qed_iov_pf_get_pending_events(struct qed_hwfn *p_hwfn, u64 *events)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i;
 
@@ -4208,7 +4138,6 @@ static void qed_iov_bulletin_set_forced_mac(struct qed_hwfn *p_hwfn,
 		return;
 	}
 
-<<<<<<< HEAD
 	if (vf_info->p_vf_info.is_trusted_configured) {
 		feature = BIT(VFPF_BULLETIN_MAC_ADDR);
 		/* Trust mode will disable Forced MAC */
@@ -4224,19 +4153,10 @@ static void qed_iov_bulletin_set_forced_mac(struct qed_hwfn *p_hwfn,
 	memcpy(vf_info->bulletin.p_virt->mac, mac, ETH_ALEN);
 
 	vf_info->bulletin.p_virt->valid_bitmap |= feature;
-=======
-	feature = 1 << MAC_ADDR_FORCED;
-	memcpy(vf_info->bulletin.p_virt->mac, mac, ETH_ALEN);
-
-	vf_info->bulletin.p_virt->valid_bitmap |= feature;
-	/* Forced MAC will disable MAC_ADDR */
-	vf_info->bulletin.p_virt->valid_bitmap &= ~BIT(VFPF_BULLETIN_MAC_ADDR);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	qed_iov_configure_vport_forced(p_hwfn, vf_info, feature);
 }
 
-<<<<<<< HEAD
 static int qed_iov_bulletin_set_mac(struct qed_hwfn *p_hwfn, u8 *mac, int vfid)
 {
 	struct qed_vf_info *vf_info;
@@ -4272,8 +4192,6 @@ static int qed_iov_bulletin_set_mac(struct qed_hwfn *p_hwfn, u8 *mac, int vfid)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void qed_iov_bulletin_set_forced_vlan(struct qed_hwfn *p_hwfn,
 					     u16 pvid, int vfid)
 {
@@ -4387,7 +4305,6 @@ out:
 	return rc;
 }
 
-<<<<<<< HEAD
 static u8 *qed_iov_bulletin_get_mac(struct qed_hwfn *p_hwfn, u16 rel_vf_id)
 {
 	struct qed_vf_info *p_vf;
@@ -4403,8 +4320,6 @@ static u8 *qed_iov_bulletin_get_mac(struct qed_hwfn *p_hwfn, u16 rel_vf_id)
 	return p_vf->bulletin.p_virt->mac;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static u8 *qed_iov_bulletin_get_forced_mac(struct qed_hwfn *p_hwfn,
 					   u16 rel_vf_id)
 {
@@ -4438,10 +4353,7 @@ qed_iov_bulletin_get_forced_vlan(struct qed_hwfn *p_hwfn, u16 rel_vf_id)
 static int qed_iov_configure_tx_rate(struct qed_hwfn *p_hwfn,
 				     struct qed_ptt *p_ptt, int vfid, int val)
 {
-<<<<<<< HEAD
 	struct qed_mcp_link_state *p_link;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct qed_vf_info *vf;
 	u8 abs_vp_id = 0;
 	int rc;
@@ -4454,14 +4366,10 @@ static int qed_iov_configure_tx_rate(struct qed_hwfn *p_hwfn,
 	if (rc)
 		return rc;
 
-<<<<<<< HEAD
 	p_link = &QED_LEADING_HWFN(p_hwfn->cdev)->mcp_info->link_output;
 
 	return qed_init_vport_rl(p_hwfn, p_ptt, abs_vp_id, (u32)val,
 				 p_link->speed);
-=======
-	return qed_init_vport_rl(p_hwfn, p_ptt, abs_vp_id, (u32)val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int
@@ -4716,17 +4624,12 @@ static int qed_sriov_pf_set_mac(struct qed_dev *cdev, u8 *mac, int vfid)
 		if (!vf_info)
 			continue;
 
-<<<<<<< HEAD
 		/* Set the MAC, and schedule the IOV task */
 		if (vf_info->is_trusted_configured)
 			ether_addr_copy(vf_info->mac, mac);
 		else
 			ether_addr_copy(vf_info->forced_mac, mac);
 
-=======
-		/* Set the forced MAC, and schedule the IOV task */
-		ether_addr_copy(vf_info->forced_mac, mac);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		qed_schedule_iov(hwfn, QED_IOV_WQ_SET_UNICAST_FILTER_FLAG);
 	}
 
@@ -5034,7 +4937,6 @@ static void qed_handle_vf_msg(struct qed_hwfn *hwfn)
 	qed_ptt_release(hwfn, ptt);
 }
 
-<<<<<<< HEAD
 static bool qed_pf_validate_req_vf_mac(struct qed_hwfn *hwfn,
 				       u8 *mac,
 				       struct qed_public_vf_info *info)
@@ -5062,8 +4964,6 @@ static void qed_set_bulletin_mac(struct qed_hwfn *hwfn,
 		qed_iov_bulletin_set_forced_mac(hwfn, info->forced_mac, vfid);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void qed_handle_pf_set_vf_unicast(struct qed_hwfn *hwfn)
 {
 	int i;
@@ -5078,32 +4978,20 @@ static void qed_handle_pf_set_vf_unicast(struct qed_hwfn *hwfn)
 			continue;
 
 		/* Update data on bulletin board */
-<<<<<<< HEAD
 		if (info->is_trusted_configured)
 			mac = qed_iov_bulletin_get_mac(hwfn, i);
 		else
 			mac = qed_iov_bulletin_get_forced_mac(hwfn, i);
 
 		if (qed_pf_validate_req_vf_mac(hwfn, mac, info)) {
-=======
-		mac = qed_iov_bulletin_get_forced_mac(hwfn, i);
-		if (is_valid_ether_addr(info->forced_mac) &&
-		    (!mac || !ether_addr_equal(mac, info->forced_mac))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			DP_VERBOSE(hwfn,
 				   QED_MSG_IOV,
 				   "Handling PF setting of VF MAC to VF 0x%02x [Abs 0x%02x]\n",
 				   i,
 				   hwfn->cdev->p_iov_info->first_vf_in_pf + i);
 
-<<<<<<< HEAD
 			/* Update bulletin board with MAC */
 			qed_set_bulletin_mac(hwfn, info, i);
-=======
-			/* Update bulletin board with forced MAC */
-			qed_iov_bulletin_set_forced_mac(hwfn,
-							info->forced_mac, i);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			update = true;
 		}
 
@@ -5143,7 +5031,6 @@ static void qed_handle_bulletin_post(struct qed_hwfn *hwfn)
 	qed_ptt_release(hwfn, ptt);
 }
 
-<<<<<<< HEAD
 static void qed_update_mac_for_vf_trust_change(struct qed_hwfn *hwfn, int vf_id)
 {
 	struct qed_public_vf_info *vf_info;
@@ -5210,8 +5097,6 @@ static void qed_update_mac_for_vf_trust_change(struct qed_hwfn *hwfn, int vf_id)
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void qed_iov_handle_trust_change(struct qed_hwfn *hwfn)
 {
 	struct qed_sp_vport_update_params params;
@@ -5235,12 +5120,9 @@ static void qed_iov_handle_trust_change(struct qed_hwfn *hwfn)
 			continue;
 		vf_info->is_trusted_configured = vf_info->is_trusted_request;
 
-<<<<<<< HEAD
 		/* Handle forced MAC mode */
 		qed_update_mac_for_vf_trust_change(hwfn, i);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Validate that the VF has a configured vport */
 		vf = qed_iov_get_vf_info(hwfn, i, true);
 		if (!vf->vport_instance)

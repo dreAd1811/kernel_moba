@@ -103,17 +103,11 @@
  *	runtime pm. If true, writing ON and OFF to the vga_switcheroo debugfs
  *	interface is a no-op so as not to interfere with runtime pm
  * @list: client list
-<<<<<<< HEAD
  * @vga_dev: pci device, indicate which GPU is bound to current audio client
  *
  * Registered client. A client can be either a GPU or an audio device on a GPU.
  * For audio clients, the @fb_info and @active members are bogus. For GPU
  * clients, the @vga_dev is bogus.
-=======
- *
- * Registered client. A client can be either a GPU or an audio device on a GPU.
- * For audio clients, the @fb_info and @active members are bogus.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct vga_switcheroo_client {
 	struct pci_dev *pdev;
@@ -124,10 +118,7 @@ struct vga_switcheroo_client {
 	bool active;
 	bool driver_power_control;
 	struct list_head list;
-<<<<<<< HEAD
 	struct pci_dev *vga_dev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /*
@@ -173,14 +164,8 @@ struct vgasr_priv {
 };
 
 #define ID_BIT_AUDIO		0x100
-<<<<<<< HEAD
 #define client_is_audio(c)		((c)->id & ID_BIT_AUDIO)
 #define client_is_vga(c)		(!client_is_audio(c))
-=======
-#define client_is_audio(c)	((c)->id & ID_BIT_AUDIO)
-#define client_is_vga(c)	((c)->id == VGA_SWITCHEROO_UNKNOWN_ID || \
-				 !client_is_audio(c))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define client_id(c)		((c)->id & ~ID_BIT_AUDIO)
 
 static int vga_switcheroo_debugfs_init(struct vgasr_priv *priv);
@@ -209,22 +194,16 @@ static void vga_switcheroo_enable(void)
 		vgasr_priv.handler->init();
 
 	list_for_each_entry(client, &vgasr_priv.clients, list) {
-<<<<<<< HEAD
 		if (!client_is_vga(client) ||
 		     client_id(client) != VGA_SWITCHEROO_UNKNOWN_ID)
 			continue;
 
-=======
-		if (client->id != VGA_SWITCHEROO_UNKNOWN_ID)
-			continue;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = vgasr_priv.handler->get_client_id(client->pdev);
 		if (ret < 0)
 			return;
 
 		client->id = ret;
 	}
-<<<<<<< HEAD
 
 	list_for_each_entry(client, &vgasr_priv.clients, list) {
 		if (!client_is_audio(client) ||
@@ -240,8 +219,6 @@ static void vga_switcheroo_enable(void)
 			client->ops->gpu_bound(client->pdev, ret);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vga_switcheroo_debugfs_init(&vgasr_priv);
 	vgasr_priv.active = true;
 }
@@ -314,13 +291,9 @@ EXPORT_SYMBOL(vga_switcheroo_handler_flags);
 
 static int register_client(struct pci_dev *pdev,
 			   const struct vga_switcheroo_client_ops *ops,
-<<<<<<< HEAD
 			   enum vga_switcheroo_client_id id,
 			   struct pci_dev *vga_dev,
 			   bool active,
-=======
-			   enum vga_switcheroo_client_id id, bool active,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   bool driver_power_control)
 {
 	struct vga_switcheroo_client *client;
@@ -335,10 +308,7 @@ static int register_client(struct pci_dev *pdev,
 	client->id = id;
 	client->active = active;
 	client->driver_power_control = driver_power_control;
-<<<<<<< HEAD
 	client->vga_dev = vga_dev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&vgasr_mutex);
 	list_add_tail(&client->list, &vgasr_priv.clients);
@@ -371,11 +341,7 @@ int vga_switcheroo_register_client(struct pci_dev *pdev,
 				   const struct vga_switcheroo_client_ops *ops,
 				   bool driver_power_control)
 {
-<<<<<<< HEAD
 	return register_client(pdev, ops, VGA_SWITCHEROO_UNKNOWN_ID, NULL,
-=======
-	return register_client(pdev, ops, VGA_SWITCHEROO_UNKNOWN_ID,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       pdev == vga_default_device(),
 			       driver_power_control);
 }
@@ -385,17 +351,12 @@ EXPORT_SYMBOL(vga_switcheroo_register_client);
  * vga_switcheroo_register_audio_client - register audio client
  * @pdev: client pci device
  * @ops: client callbacks
-<<<<<<< HEAD
  * @vga_dev:  pci device which is bound to current audio client
-=======
- * @id: client identifier
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Register audio client (audio device on a GPU). The client is assumed
  * to use runtime PM. Beforehand, vga_switcheroo_client_probe_defer()
  * shall be called to ensure that all prerequisites are met.
  *
-<<<<<<< HEAD
  * Return: 0 on success, -ENOMEM on memory allocation error, -EINVAL on getting
  * client id error.
  */
@@ -427,15 +388,6 @@ int vga_switcheroo_register_audio_client(struct pci_dev *pdev,
 
 	return register_client(pdev, ops, id | ID_BIT_AUDIO, vga_dev,
 			       false, true);
-=======
- * Return: 0 on success, -ENOMEM on memory allocation error.
- */
-int vga_switcheroo_register_audio_client(struct pci_dev *pdev,
-			const struct vga_switcheroo_client_ops *ops,
-			enum vga_switcheroo_client_id id)
-{
-	return register_client(pdev, ops, id | ID_BIT_AUDIO, false, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(vga_switcheroo_register_audio_client);
 
@@ -780,13 +732,9 @@ static int vga_switchto_stage2(struct vga_switcheroo_client *new_client)
 
 	active->active = false;
 
-<<<<<<< HEAD
 	/* let HDA controller autosuspend if GPU uses driver power control */
 	if (!active->driver_power_control)
 		set_audio_state(active->id, VGA_SWITCHEROO_OFF);
-=======
-	set_audio_state(active->id, VGA_SWITCHEROO_OFF);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (new_client->fb_info) {
 		struct fb_event event;
@@ -809,13 +757,9 @@ static int vga_switchto_stage2(struct vga_switcheroo_client *new_client)
 	if (vga_switcheroo_pwr_state(active) == VGA_SWITCHEROO_ON)
 		vga_switchoff(active);
 
-<<<<<<< HEAD
 	/* let HDA controller autoresume if GPU uses driver power control */
 	if (!new_client->driver_power_control)
 		set_audio_state(new_client->id, VGA_SWITCHEROO_ON);
-=======
-	set_audio_state(new_client->id, VGA_SWITCHEROO_ON);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	new_client->active = true;
 	return 0;
@@ -1106,10 +1050,7 @@ static int vga_switcheroo_runtime_suspend(struct device *dev)
 		vgasr_priv.handler->switchto(VGA_SWITCHEROO_IGD);
 		mutex_unlock(&vgasr_priv.mux_hw_lock);
 	}
-<<<<<<< HEAD
 	pci_bus_set_current_state(pdev->bus, PCI_D3cold);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vga_switcheroo_power_switch(pdev, VGA_SWITCHEROO_OFF);
 	mutex_unlock(&vgasr_mutex);
 	return 0;
@@ -1123,10 +1064,7 @@ static int vga_switcheroo_runtime_resume(struct device *dev)
 	mutex_lock(&vgasr_mutex);
 	vga_switcheroo_power_switch(pdev, VGA_SWITCHEROO_ON);
 	mutex_unlock(&vgasr_mutex);
-<<<<<<< HEAD
 	pci_wakeup_bus(pdev->bus);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = dev->bus->pm->runtime_resume(dev);
 	if (ret)
 		return ret;

@@ -1,18 +1,5 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /* Copyright (c) 2012-2014, 2016-2018 The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2012-2014, 2016-2020, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/slab.h>
@@ -55,72 +42,10 @@ struct diag_hsic_info diag_hsic[NUM_HSIC_DEV] = {
 	}
 };
 
-<<<<<<< HEAD
 static void diag_hsic_read_complete(void *ctxt, char *buf, int len,
 				    int actual_size)
 {
 	int err = 0;
-=======
-static int hsic_buf_tbl_push(struct diag_hsic_info *ch, void *buf, int len)
-{
-	unsigned long flags;
-	struct diag_hsic_buf_tbl_t *item;
-
-	item = kzalloc(sizeof(struct diag_hsic_buf_tbl_t), GFP_ATOMIC);
-	if (!item)
-		return -ENOMEM;
-	kmemleak_not_leak(item);
-
-	spin_lock_irqsave(&ch->lock, flags);
-	item->buf = buf;
-	item->len = len;
-	list_add_tail(&item->link, &ch->buf_tbl);
-	spin_unlock_irqrestore(&ch->lock, flags);
-
-	return 0;
-}
-
-static struct diag_hsic_buf_tbl_t *hsic_buf_tbl_pop(struct diag_hsic_info *ch)
-{
-	unsigned long flags;
-	struct diag_hsic_buf_tbl_t *item = NULL;
-
-	if (!ch || list_empty(&ch->buf_tbl))
-		return NULL;
-
-	spin_lock_irqsave(&ch->lock, flags);
-	item = list_first_entry(&ch->buf_tbl, struct diag_hsic_buf_tbl_t, link);
-	list_del(&item->link);
-	spin_unlock_irqrestore(&ch->lock, flags);
-
-	return item;
-}
-
-static void hsic_buf_tbl_clear(struct diag_hsic_info *ch)
-{
-	unsigned long flags;
-	struct list_head *start, *temp;
-	struct diag_hsic_buf_tbl_t *item = NULL;
-
-	if (!ch)
-		return;
-
-	/* At this point, the channel should already by closed */
-	spin_lock_irqsave(&ch->lock, flags);
-	list_for_each_safe(start, temp, &ch->buf_tbl) {
-		item = list_entry(start, struct diag_hsic_buf_tbl_t,
-				  link);
-		list_del(&item->link);
-		kfree(item);
-
-	}
-	spin_unlock_irqrestore(&ch->lock, flags);
-}
-
-static void diag_hsic_read_complete(void *ctxt, char *buf, int len,
-				    int actual_size)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int index = (int)(uintptr_t)ctxt;
 	struct diag_hsic_info *ch = NULL;
 
@@ -136,22 +61,11 @@ static void diag_hsic_read_complete(void *ctxt, char *buf, int len,
 	 * completes. Also, actual size can be negative error codes - do not
 	 * pass on the buffer.
 	 */
-<<<<<<< HEAD
 	if (!ch->opened || actual_size <= 0)
 		goto fail;
 	err = diag_remote_dev_read_done(ch->dev_id, buf, actual_size);
 	if (err)
 		goto fail;
-=======
-	if (!ch->opened || !buf || actual_size <= 0)
-		goto fail;
-	if (hsic_buf_tbl_push(ch, buf, actual_size)) {
-		pr_err_ratelimited("diag: In %s, OOM! Drop incoming packet\n",
-				   __func__);
-		goto fail;
-	}
-	queue_work(ch->hsic_wq, &ch->read_complete_work);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return;
 
 fail:
@@ -251,11 +165,7 @@ static int hsic_open(int id)
 
 	err = diag_bridge_open(ch->id, &diag_hsic_ops[ch->id]);
 	if (err) {
-<<<<<<< HEAD
 		pr_err("diag: Unable to open HSIC channel %d, err: %d\n",
-=======
-		pr_err("diag: Unable to open HSIC channel %d, err: %d",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		       ch->id, err);
 		return err;
 	}
@@ -265,10 +175,6 @@ static int hsic_open(int id)
 	diagmem_init(driver, ch->mempool);
 	/* Notify the bridge that the channel is open */
 	diag_remote_dev_open(ch->dev_id);
-<<<<<<< HEAD
-=======
-	INIT_LIST_HEAD(&ch->buf_tbl);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	queue_work(ch->hsic_wq, &(ch->read_work));
 	return 0;
 }
@@ -306,10 +212,6 @@ static int hsic_close(int id)
 	diag_bridge_close(ch->id);
 	diagmem_exit(driver, ch->mempool);
 	diag_remote_dev_close(ch->dev_id);
-<<<<<<< HEAD
-=======
-	hsic_buf_tbl_clear(ch);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -327,11 +229,7 @@ static void hsic_read_work_fn(struct work_struct *work)
 	unsigned char *buf = NULL;
 	struct diag_hsic_info *ch = container_of(work, struct diag_hsic_info,
 						 read_work);
-<<<<<<< HEAD
 	if (!ch || !ch->enabled || !ch->opened)
-=======
-	if (!ch || !ch->enabled || !ch->opened || ch->suspended)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	do {
@@ -355,33 +253,6 @@ static void hsic_read_work_fn(struct work_struct *work)
 		queue_work(ch->hsic_wq, &ch->read_work);
 }
 
-<<<<<<< HEAD
-=======
-static void hsic_read_complete_work_fn(struct work_struct *work)
-{
-	struct diag_hsic_info *ch = container_of(work, struct diag_hsic_info,
-						 read_complete_work);
-	struct diag_hsic_buf_tbl_t *item;
-
-	do {
-		item = hsic_buf_tbl_pop(ch);
-		if (item) {
-			if (diag_remote_dev_read_done(ch->dev_id,
-						      item->buf, item->len))
-				goto fail;
-			kfree(item);
-		}
-	} while (item);
-
-	return;
-
-fail:
-	diagmem_free(driver, item->buf, ch->mempool);
-	queue_work(ch->hsic_wq, &ch->read_work);
-	kfree(item);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int diag_hsic_probe(struct platform_device *pdev)
 {
 	unsigned long flags;
@@ -446,10 +317,6 @@ static struct platform_driver msm_hsic_ch_driver = {
 	.remove = diag_hsic_remove,
 	.driver = {
 		   .name = "diag_bridge",
-<<<<<<< HEAD
-=======
-		   .owner = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		   .pm   = &diagfwd_hsic_dev_pm_ops,
 		   },
 };
@@ -510,25 +377,13 @@ static int hsic_fwd_complete(int id, unsigned char *buf, int len, int ctxt)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-static int hsic_remote_proc_check(void)
-{
-	return diag_hsic[HSIC_1].enabled;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct diag_remote_dev_ops diag_hsic_fwd_ops = {
 	.open = hsic_open,
 	.close = hsic_close,
 	.queue_read = hsic_queue_read,
 	.write = hsic_write,
 	.fwd_complete = hsic_fwd_complete,
-<<<<<<< HEAD
 	.remote_proc_check = NULL,
-=======
-	.remote_proc_check = hsic_remote_proc_check,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int diag_hsic_init(void)
@@ -542,11 +397,6 @@ int diag_hsic_init(void)
 		ch = &diag_hsic[i];
 		spin_lock_init(&ch->lock);
 		INIT_WORK(&(ch->read_work), hsic_read_work_fn);
-<<<<<<< HEAD
-=======
-		INIT_WORK(&(ch->read_complete_work),
-			  hsic_read_complete_work_fn);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		INIT_WORK(&(ch->open_work), hsic_open_work_fn);
 		INIT_WORK(&(ch->close_work), hsic_close_work_fn);
 		strlcpy(wq_name, "DIAG_HSIC_", sizeof(wq_name));
@@ -588,30 +438,6 @@ void diag_hsic_exit(void)
 		if (ch->hsic_wq)
 			destroy_workqueue(ch->hsic_wq);
 	}
-<<<<<<< HEAD
 	platform_driver_unregister(&msm_hsic_ch_driver);
 }
 
-=======
-}
-
-void diag_register_with_hsic(void)
-{
-	int ret = 0;
-
-	ret = diag_remote_init();
-	if (ret)
-		return;
-
-	ret = diag_hsic_init();
-	if (ret)
-		diag_remote_exit();
-}
-
-void diag_unregister_hsic(void)
-{
-	platform_driver_unregister(&msm_hsic_ch_driver);
-	diag_hsic_exit();
-	diag_remote_exit();
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

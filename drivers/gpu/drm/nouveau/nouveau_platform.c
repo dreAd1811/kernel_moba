@@ -36,11 +36,7 @@ static int nouveau_platform_probe(struct platform_device *pdev)
 
 	ret = drm_dev_register(drm, 0);
 	if (ret < 0) {
-<<<<<<< HEAD
 		drm_dev_put(drm);
-=======
-		drm_dev_unref(drm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 

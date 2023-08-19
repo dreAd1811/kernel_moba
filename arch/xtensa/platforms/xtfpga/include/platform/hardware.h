@@ -17,18 +17,6 @@
 #ifndef __XTENSA_XTAVNET_HARDWARE_H
 #define __XTENSA_XTAVNET_HARDWARE_H
 
-<<<<<<< HEAD
-=======
-/* Memory configuration. */
-
-#define PLATFORM_DEFAULT_MEM_START __XTENSA_UL(CONFIG_DEFAULT_MEM_START)
-#define PLATFORM_DEFAULT_MEM_SIZE  __XTENSA_UL(CONFIG_DEFAULT_MEM_SIZE)
-
-/* Interrupt configuration. */
-
-#define PLATFORM_NR_IRQS	0
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Default assignment of LX60 devices to external interrupts. */
 
 #ifdef CONFIG_XTENSA_MX

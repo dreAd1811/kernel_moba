@@ -34,11 +34,7 @@
  * to handle fortunately.
  */
 int copro_handle_mm_fault(struct mm_struct *mm, unsigned long ea,
-<<<<<<< HEAD
 		unsigned long dsisr, vm_fault_t *flt)
-=======
-		unsigned long dsisr, unsigned *flt)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct vm_area_struct *vma;
 	unsigned long is_write;
@@ -116,11 +112,7 @@ int copro_calculate_slb(struct mm_struct *mm, u64 ea, struct copro_slb *slb)
 			return 1;
 		psize = get_slice_psize(mm, ea);
 		ssize = user_segment_size(ea);
-<<<<<<< HEAD
 		vsid = get_user_vsid(&mm->context, ea, ssize);
-=======
-		vsid = get_vsid(mm->context.id, ea, ssize);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		vsidkey = SLB_VSID_USER;
 		break;
 	case VMALLOC_REGION_ID:

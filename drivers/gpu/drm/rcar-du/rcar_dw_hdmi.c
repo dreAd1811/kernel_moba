@@ -68,7 +68,6 @@ static const struct dw_hdmi_plat_data rcar_dw_hdmi_plat_data = {
 
 static int rcar_dw_hdmi_probe(struct platform_device *pdev)
 {
-<<<<<<< HEAD
 	struct dw_hdmi *hdmi;
 
 	hdmi = dw_hdmi_probe(pdev, &rcar_dw_hdmi_plat_data);
@@ -78,20 +77,13 @@ static int rcar_dw_hdmi_probe(struct platform_device *pdev)
 	platform_set_drvdata(pdev, hdmi);
 
 	return 0;
-=======
-	return dw_hdmi_probe(pdev, &rcar_dw_hdmi_plat_data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int rcar_dw_hdmi_remove(struct platform_device *pdev)
 {
-<<<<<<< HEAD
 	struct dw_hdmi *hdmi = platform_get_drvdata(pdev);
 
 	dw_hdmi_remove(hdmi);
-=======
-	dw_hdmi_remove(pdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

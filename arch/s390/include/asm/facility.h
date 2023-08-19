@@ -8,11 +8,7 @@
 #ifndef __ASM_FACILITY_H
 #define __ASM_FACILITY_H
 
-<<<<<<< HEAD
 #include <asm/facility-defs.h>
-=======
-#include <generated/facilities.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/string.h>
 #include <linux/preempt.h>
 #include <asm/lowcore.h>

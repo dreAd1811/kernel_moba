@@ -29,11 +29,7 @@
 #define   VCR_CI_BSS	  0x00000002  /* WTF "bit stream selection" */
 #define   VCR_CI_3BUFS	  0x00000004  /* 1 = 3 buffers, 0 = 2 buffers */
 #define   VCR_CI_VIPEN	  0x00000008  /* VIP enable */
-<<<<<<< HEAD
 #define   VCR_CI_CCIR601_8  0		/* CCIR601 input stream, 8 bit */
-=======
-#define   VCR_CI_CCIR601_8  0	        /* CCIR601 input stream, 8 bit */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define   VCR_CI_CCIR656_8  0x00000010  /* ... CCIR656, 8 bit */
 #define   VCR_CI_CCIR601_16 0x00000020  /* ... CCIR601, 16 bit */
 #define   VCR_CI_CCIR656_16 0x00000030  /* ... CCIR656, 16 bit */

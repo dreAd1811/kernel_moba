@@ -107,16 +107,9 @@ static unsigned char *pac_find_sof(struct gspca_dev *gspca_dev, u8 *sof_read,
 			switch (m[i]) {
 			case 0x96:
 				/* Pattern found */
-<<<<<<< HEAD
 				gspca_dbg(gspca_dev, D_FRAM,
 					  "SOF found, bytes to analyze: %u - Frame starts at byte #%u\n",
 					  len, i + 1);
-=======
-				PDEBUG(D_FRAM,
-					"SOF found, bytes to analyze: %u."
-					" Frame starts at byte #%u",
-					len, i + 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				*sof_read = 0;
 				return m + i + 1;
 				break;

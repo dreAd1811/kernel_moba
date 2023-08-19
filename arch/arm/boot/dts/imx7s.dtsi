@@ -1,52 +1,7 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+ OR MIT
 //
 // Copyright 2015 Freescale Semiconductor, Inc.
 // Copyright 2016 Toradex AG
-=======
-/*
- * Copyright 2015 Freescale Semiconductor, Inc.
- * Copyright 2016 Toradex AG
- *
- * This file is dual-licensed: you can use it either under the terms
- * of the GPL or the X11 license, at your option. Note that this dual
- * licensing only applies to this file, and not this project as a
- * whole.
- *
- *  a) This file is free software; you can redistribute it and/or
- *     modify it under the terms of the GNU General Public License as
- *     published by the Free Software Foundation; either version 2 of the
- *     License, or (at your option) any later version.
- *
- *     This file is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
- *
- * Or, alternatively,
- *
- *  b) Permission is hereby granted, free of charge, to any person
- *     obtaining a copy of this software and associated documentation
- *     files (the "Software"), to deal in the Software without
- *     restriction, including without limitation the rights to use,
- *     copy, modify, merge, publish, distribute, sublicense, and/or
- *     sell copies of the Software, and to permit persons to whom the
- *     Software is furnished to do so, subject to the following
- *     conditions:
- *
- *     The above copyright notice and this permission notice shall be
- *     included in all copies or substantial portions of the Software.
- *
- *     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- *     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
- *     OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
- *     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- *     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- *     OTHER DEALINGS IN THE SOFTWARE.
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <dt-bindings/clock/imx7d-clock.h>
 #include <dt-bindings/power/imx7-power.h>
@@ -65,11 +20,7 @@
 	 * Also for U-Boot there must be a pre-existing /memory node.
 	 */
 	chosen {};
-<<<<<<< HEAD
 	memory { device_type = "memory"; };
-=======
-	memory { device_type = "memory"; reg = <0 0>; };
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	aliases {
 		gpio0 = &gpio1;
@@ -127,7 +78,6 @@
 		clock-output-names = "osc";
 	};
 
-<<<<<<< HEAD
 	usbphynop1: usbphynop1 {
 		compatible = "usb-nop-xceiv";
 		clocks = <&clks IMX7D_USB_PHY1_CLK>;
@@ -205,8 +155,6 @@
 			     <GIC_PPI 10 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>;
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	soc {
 		#address-cells = <1>;
 		#size-cells = <1>;
@@ -346,48 +294,7 @@
 			port {
 				tpiu_in_port: endpoint {
 					slave-mode;
-<<<<<<< HEAD
 					remote-endpoint = <&replicator_out_port0>;
-=======
-					remote-endpoint = <&replicator_out_port1>;
-				};
-			};
-		};
-
-		replicator {
-			/*
-			 * non-configurable replicators don't show up on the
-			 * AMBA bus.  As such no need to add "arm,primecell"
-			 */
-			compatible = "arm,coresight-replicator";
-
-			ports {
-				#address-cells = <1>;
-				#size-cells = <0>;
-
-				/* replicator output ports */
-				port@0 {
-					reg = <0>;
-					replicator_out_port0: endpoint {
-						remote-endpoint = <&tpiu_in_port>;
-					};
-				};
-
-				port@1 {
-					reg = <1>;
-					replicator_out_port1: endpoint {
-						remote-endpoint = <&etr_in_port>;
-					};
-				};
-
-				/* replicator input port */
-				port@2 {
-					reg = <0>;
-					replicator_in_port0: endpoint {
-						slave-mode;
-						remote-endpoint = <&etf_out_port>;
-					};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				};
 			};
 		};
@@ -404,18 +311,6 @@
 			      <0x31006000 0x2000>;
 		};
 
-<<<<<<< HEAD
-=======
-		timer {
-			compatible = "arm,armv7-timer";
-			interrupt-parent = <&intc>;
-			interrupts = <GIC_PPI 13 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>,
-				     <GIC_PPI 14 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>,
-				     <GIC_PPI 11 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>,
-				     <GIC_PPI 10 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>;
-		};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		aips1: aips-bus@30000000 {
 			compatible = "fsl,aips-bus", "simple-bus";
 			#address-cells = <1>;
@@ -548,11 +443,7 @@
 				compatible = "fsl,imx7d-gpt", "fsl,imx6sx-gpt";
 				reg = <0x302d0000 0x10000>;
 				interrupts = <GIC_SPI 55 IRQ_TYPE_LEVEL_HIGH>;
-<<<<<<< HEAD
 				clocks = <&clks IMX7D_CLK_DUMMY>,
-=======
-				clocks = <&clks IMX7D_GPT1_ROOT_CLK>,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 <&clks IMX7D_GPT1_ROOT_CLK>;
 				clock-names = "ipg", "per";
 			};
@@ -561,11 +452,7 @@
 				compatible = "fsl,imx7d-gpt", "fsl,imx6sx-gpt";
 				reg = <0x302e0000 0x10000>;
 				interrupts = <GIC_SPI 54 IRQ_TYPE_LEVEL_HIGH>;
-<<<<<<< HEAD
 				clocks = <&clks IMX7D_CLK_DUMMY>,
-=======
-				clocks = <&clks IMX7D_GPT2_ROOT_CLK>,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 <&clks IMX7D_GPT2_ROOT_CLK>;
 				clock-names = "ipg", "per";
 				status = "disabled";
@@ -575,11 +462,7 @@
 				compatible = "fsl,imx7d-gpt", "fsl,imx6sx-gpt";
 				reg = <0x302f0000 0x10000>;
 				interrupts = <GIC_SPI 53 IRQ_TYPE_LEVEL_HIGH>;
-<<<<<<< HEAD
 				clocks = <&clks IMX7D_CLK_DUMMY>,
-=======
-				clocks = <&clks IMX7D_GPT3_ROOT_CLK>,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 <&clks IMX7D_GPT3_ROOT_CLK>;
 				clock-names = "ipg", "per";
 				status = "disabled";
@@ -589,17 +472,12 @@
 				compatible = "fsl,imx7d-gpt", "fsl,imx6sx-gpt";
 				reg = <0x30300000 0x10000>;
 				interrupts = <GIC_SPI 52 IRQ_TYPE_LEVEL_HIGH>;
-<<<<<<< HEAD
 				clocks = <&clks IMX7D_CLK_DUMMY>,
-=======
-				clocks = <&clks IMX7D_GPT4_ROOT_CLK>,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 <&clks IMX7D_GPT4_ROOT_CLK>;
 				clock-names = "ipg", "per";
 				status = "disabled";
 			};
 
-<<<<<<< HEAD
 			kpp: kpp@30320000 {
 				compatible = "fsl,imx7d-kpp", "fsl,imx21-kpp";
 				reg = <0x30320000 0x10000>;
@@ -608,8 +486,6 @@
 				status = "disabled";
 			};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			iomuxc: iomuxc@30330000 {
 				compatible = "fsl,imx7d-iomuxc";
 				reg = <0x30330000 0x10000>;
@@ -622,7 +498,6 @@
 			};
 
 			ocotp: ocotp-ctrl@30350000 {
-<<<<<<< HEAD
 				#address-cells = <1>;
 				#size-cells = <1>;
 				compatible = "fsl,imx7d-ocotp", "syscon";
@@ -636,11 +511,6 @@
 				tempmon_temp_grade: temp-grade@10 {
 					reg = <0x10 0x4>;
 				};
-=======
-				compatible = "fsl,imx7d-ocotp", "syscon";
-				reg = <0x30350000 0x10000>;
-				clocks = <&clks IMX7D_OCOTP_CLK>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 
 			anatop: anatop@30360000 {
@@ -663,7 +533,6 @@
 					anatop-max-voltage = <1200000>;
 					anatop-enable-bit = <0>;
 				};
-<<<<<<< HEAD
 
 				reg_1p2: regulator-vdd1p2 {
 					compatible = "fsl,anatop-regulator";
@@ -678,8 +547,6 @@
 					anatop-max-voltage = <1300000>;
 					anatop-enable-bit = <0>;
 				};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 
 			snvs: snvs@30370000 {
@@ -692,11 +559,8 @@
 					offset = <0x34>;
 					interrupts = <GIC_SPI 19 IRQ_TYPE_LEVEL_HIGH>,
 						     <GIC_SPI 20 IRQ_TYPE_LEVEL_HIGH>;
-<<<<<<< HEAD
 					clocks = <&clks IMX7D_SNVS_CLK>;
 					clock-names = "snvs-rtc";
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				};
 
 				snvs_poweroff: snvs-poweroff {
@@ -746,15 +610,9 @@
 					#address-cells = <1>;
 					#size-cells = <0>;
 
-<<<<<<< HEAD
 					pgc_pcie_phy: pgc-power-domain@1 {
 						#power-domain-cells = <0>;
 						reg = <1>;
-=======
-					pgc_pcie_phy: pgc-power-domain@IMX7_POWER_DOMAIN_PCIE_PHY {
-						#power-domain-cells = <0>;
-						reg = <IMX7_POWER_DOMAIN_PCIE_PHY>;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						power-supply = <&reg_1p0d>;
 					};
 				};
@@ -860,7 +718,6 @@
 			reg = <0x30800000 0x400000>;
 			ranges;
 
-<<<<<<< HEAD
 			spba-bus@30800000 {
 				compatible = "fsl,spba-bus", "simple-bus";
 				#address-cells = <1>;
@@ -1011,120 +868,6 @@
 					reg = <0x3000 0x1000>;
 					interrupts = <GIC_SPI 114 IRQ_TYPE_LEVEL_HIGH>;
 				};
-=======
-			ecspi1: ecspi@30820000 {
-				#address-cells = <1>;
-				#size-cells = <0>;
-				compatible = "fsl,imx7d-ecspi", "fsl,imx51-ecspi";
-				reg = <0x30820000 0x10000>;
-				interrupts = <GIC_SPI 31 IRQ_TYPE_LEVEL_HIGH>;
-				clocks = <&clks IMX7D_ECSPI1_ROOT_CLK>,
-					<&clks IMX7D_ECSPI1_ROOT_CLK>;
-				clock-names = "ipg", "per";
-				status = "disabled";
-			};
-
-			ecspi2: ecspi@30830000 {
-				#address-cells = <1>;
-				#size-cells = <0>;
-				compatible = "fsl,imx7d-ecspi", "fsl,imx51-ecspi";
-				reg = <0x30830000 0x10000>;
-				interrupts = <GIC_SPI 32 IRQ_TYPE_LEVEL_HIGH>;
-				clocks = <&clks IMX7D_ECSPI2_ROOT_CLK>,
-					<&clks IMX7D_ECSPI2_ROOT_CLK>;
-				clock-names = "ipg", "per";
-				status = "disabled";
-			};
-
-			ecspi3: ecspi@30840000 {
-				#address-cells = <1>;
-				#size-cells = <0>;
-				compatible = "fsl,imx7d-ecspi", "fsl,imx51-ecspi";
-				reg = <0x30840000 0x10000>;
-				interrupts = <GIC_SPI 33 IRQ_TYPE_LEVEL_HIGH>;
-				clocks = <&clks IMX7D_ECSPI3_ROOT_CLK>,
-					<&clks IMX7D_ECSPI3_ROOT_CLK>;
-				clock-names = "ipg", "per";
-				status = "disabled";
-			};
-
-			uart1: serial@30860000 {
-				compatible = "fsl,imx7d-uart",
-					     "fsl,imx6q-uart";
-				reg = <0x30860000 0x10000>;
-				interrupts = <GIC_SPI 26 IRQ_TYPE_LEVEL_HIGH>;
-				clocks = <&clks IMX7D_UART1_ROOT_CLK>,
-					<&clks IMX7D_UART1_ROOT_CLK>;
-				clock-names = "ipg", "per";
-				status = "disabled";
-			};
-
-			uart2: serial@30890000 {
-				compatible = "fsl,imx7d-uart",
-					     "fsl,imx6q-uart";
-				reg = <0x30890000 0x10000>;
-				interrupts = <GIC_SPI 27 IRQ_TYPE_LEVEL_HIGH>;
-				clocks = <&clks IMX7D_UART2_ROOT_CLK>,
-					<&clks IMX7D_UART2_ROOT_CLK>;
-				clock-names = "ipg", "per";
-				status = "disabled";
-			};
-
-			uart3: serial@30880000 {
-				compatible = "fsl,imx7d-uart",
-					     "fsl,imx6q-uart";
-				reg = <0x30880000 0x10000>;
-				interrupts = <GIC_SPI 28 IRQ_TYPE_LEVEL_HIGH>;
-				clocks = <&clks IMX7D_UART3_ROOT_CLK>,
-					<&clks IMX7D_UART3_ROOT_CLK>;
-				clock-names = "ipg", "per";
-				status = "disabled";
-			};
-
-			sai1: sai@308a0000 {
-				#sound-dai-cells = <0>;
-				compatible = "fsl,imx7d-sai", "fsl,imx6sx-sai";
-				reg = <0x308a0000 0x10000>;
-				interrupts = <GIC_SPI 95 IRQ_TYPE_LEVEL_HIGH>;
-				clocks = <&clks IMX7D_SAI1_IPG_CLK>,
-					 <&clks IMX7D_SAI1_ROOT_CLK>,
-					 <&clks IMX7D_CLK_DUMMY>,
-					 <&clks IMX7D_CLK_DUMMY>;
-				clock-names = "bus", "mclk1", "mclk2", "mclk3";
-				dma-names = "rx", "tx";
-				dmas = <&sdma 8 24 0>, <&sdma 9 24 0>;
-				status = "disabled";
-			};
-
-			sai2: sai@308b0000 {
-				#sound-dai-cells = <0>;
-				compatible = "fsl,imx7d-sai", "fsl,imx6sx-sai";
-				reg = <0x308b0000 0x10000>;
-				interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_HIGH>;
-				clocks = <&clks IMX7D_SAI2_IPG_CLK>,
-					 <&clks IMX7D_SAI2_ROOT_CLK>,
-					 <&clks IMX7D_CLK_DUMMY>,
-					 <&clks IMX7D_CLK_DUMMY>;
-				clock-names = "bus", "mclk1", "mclk2", "mclk3";
-				dma-names = "rx", "tx";
-				dmas = <&sdma 10 24 0>, <&sdma 11 24 0>;
-				status = "disabled";
-			};
-
-			sai3: sai@308c0000 {
-				#sound-dai-cells = <0>;
-				compatible = "fsl,imx7d-sai", "fsl,imx6sx-sai";
-				reg = <0x308c0000 0x10000>;
-				interrupts = <GIC_SPI 50 IRQ_TYPE_LEVEL_HIGH>;
-				clocks = <&clks IMX7D_SAI3_IPG_CLK>,
-					 <&clks IMX7D_SAI3_ROOT_CLK>,
-					 <&clks IMX7D_CLK_DUMMY>,
-					 <&clks IMX7D_CLK_DUMMY>;
-				clock-names = "bus", "mclk1", "mclk2", "mclk3";
-				dma-names = "rx", "tx";
-				dmas = <&sdma 12 24 0>, <&sdma 13 24 0>;
-				status = "disabled";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 
 			flexcan1: can@30a00000 {
@@ -1267,21 +1010,6 @@
 				reg = <0x30b30200 0x200>;
 			};
 
-<<<<<<< HEAD
-=======
-			usbphynop1: usbphynop1 {
-				compatible = "usb-nop-xceiv";
-				clocks = <&clks IMX7D_USB_PHY1_CLK>;
-				clock-names = "main_clk";
-			};
-
-			usbphynop3: usbphynop3 {
-				compatible = "usb-nop-xceiv";
-				clocks = <&clks IMX7D_USB_HSIC_ROOT_CLK>;
-				clock-names = "main_clk";
-			};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			usdhc1: usdhc@30b40000 {
 				compatible = "fsl,imx7d-usdhc", "fsl,imx6sl-usdhc";
 				reg = <0x30b40000 0x10000>;
@@ -1332,19 +1060,12 @@
 			fec1: ethernet@30be0000 {
 				compatible = "fsl,imx7d-fec", "fsl,imx6sx-fec";
 				reg = <0x30be0000 0x10000>;
-<<<<<<< HEAD
 				interrupt-names = "int0", "int1", "int2", "pps";
 				interrupts = <GIC_SPI 120 IRQ_TYPE_LEVEL_HIGH>,
 					<GIC_SPI 118 IRQ_TYPE_LEVEL_HIGH>,
 					<GIC_SPI 119 IRQ_TYPE_LEVEL_HIGH>,
 					<GIC_SPI 121 IRQ_TYPE_LEVEL_HIGH>;
 				clocks = <&clks IMX7D_ENET1_IPG_ROOT_CLK>,
-=======
-				interrupts = <GIC_SPI 118 IRQ_TYPE_LEVEL_HIGH>,
-					<GIC_SPI 119 IRQ_TYPE_LEVEL_HIGH>,
-					<GIC_SPI 120 IRQ_TYPE_LEVEL_HIGH>;
-				clocks = <&clks IMX7D_ENET_AXI_ROOT_CLK>,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					<&clks IMX7D_ENET_AXI_ROOT_CLK>,
 					<&clks IMX7D_ENET1_TIME_ROOT_CLK>,
 					<&clks IMX7D_PLL_ENET_MAIN_125M_CLK>,

@@ -214,10 +214,7 @@ enum fsl_qspi_devtype {
 	FSL_QUADSPI_IMX7D,
 	FSL_QUADSPI_IMX6UL,
 	FSL_QUADSPI_LS1021A,
-<<<<<<< HEAD
 	FSL_QUADSPI_LS2080A,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct fsl_qspi_devtype_data {
@@ -271,7 +268,6 @@ static struct fsl_qspi_devtype_data ls1021a_data = {
 	.driver_data = 0,
 };
 
-<<<<<<< HEAD
 static const struct fsl_qspi_devtype_data ls2080a_data = {
 	.devtype = FSL_QUADSPI_LS2080A,
 	.rxfifo = 128,
@@ -281,8 +277,6 @@ static const struct fsl_qspi_devtype_data ls2080a_data = {
 };
 
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define FSL_QSPI_MAX_CHIP	4
 struct fsl_qspi {
 	struct spi_nor nor[FSL_QSPI_MAX_CHIP];
@@ -550,12 +544,9 @@ fsl_qspi_runcmd(struct fsl_qspi *q, u8 cmd, unsigned int addr, int len)
 
 	/* trigger the LUT now */
 	seqid = fsl_qspi_get_seqid(q, cmd);
-<<<<<<< HEAD
 	if (seqid < 0)
 		return seqid;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	qspi_writel(q, (seqid << QUADSPI_IPCR_SEQID_SHIFT) | len,
 			base + QUADSPI_IPCR);
 
@@ -684,11 +675,7 @@ static void fsl_qspi_set_map_addr(struct fsl_qspi *q)
  * causes the controller to clear the buffer, and use the sequence pointed
  * by the QUADSPI_BFGENCR[SEQID] to initiate a read from the flash.
  */
-<<<<<<< HEAD
 static int fsl_qspi_init_ahb_read(struct fsl_qspi *q)
-=======
-static void fsl_qspi_init_abh_read(struct fsl_qspi *q)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	void __iomem *base = q->iobase;
 	int seqid;
@@ -713,7 +700,6 @@ static void fsl_qspi_init_abh_read(struct fsl_qspi *q)
 
 	/* Set the default lut sequence for AHB Read. */
 	seqid = fsl_qspi_get_seqid(q, q->nor[0].read_opcode);
-<<<<<<< HEAD
 	if (seqid < 0)
 		return seqid;
 
@@ -721,10 +707,6 @@ static void fsl_qspi_init_abh_read(struct fsl_qspi *q)
 		q->iobase + QUADSPI_BFGENCR);
 
 	return 0;
-=======
-	qspi_writel(q, seqid << QUADSPI_BFGENCR_SEQID_SHIFT,
-		q->iobase + QUADSPI_BFGENCR);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* This function was used to prepare and enable QSPI clock */
@@ -832,7 +814,6 @@ static int fsl_qspi_nor_setup_last(struct fsl_qspi *q)
 	fsl_qspi_init_lut(q);
 
 	/* Init for AHB read */
-<<<<<<< HEAD
 	return fsl_qspi_init_ahb_read(q);
 }
 
@@ -843,19 +824,6 @@ static const struct of_device_id fsl_qspi_dt_ids[] = {
 	{ .compatible = "fsl,imx6ul-qspi", .data = &imx6ul_data, },
 	{ .compatible = "fsl,ls1021a-qspi", .data = (void *)&ls1021a_data, },
 	{ .compatible = "fsl,ls2080a-qspi", .data = &ls2080a_data, },
-=======
-	fsl_qspi_init_abh_read(q);
-
-	return 0;
-}
-
-static const struct of_device_id fsl_qspi_dt_ids[] = {
-	{ .compatible = "fsl,vf610-qspi", .data = (void *)&vybrid_data, },
-	{ .compatible = "fsl,imx6sx-qspi", .data = (void *)&imx6sx_data, },
-	{ .compatible = "fsl,imx7d-qspi", .data = (void *)&imx7d_data, },
-	{ .compatible = "fsl,imx6ul-qspi", .data = (void *)&imx6ul_data, },
-	{ .compatible = "fsl,ls1021a-qspi", .data = (void *)&ls1021a_data, },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ /* sentinel */ }
 };
 MODULE_DEVICE_TABLE(of, fsl_qspi_dt_ids);
@@ -1101,7 +1069,6 @@ static int fsl_qspi_probe(struct platform_device *pdev)
 		spi_nor_set_flash_node(nor, np);
 		nor->priv = q;
 
-<<<<<<< HEAD
 		if (q->nor_num > 1 && !mtd->name) {
 			int spiflash_idx;
 
@@ -1120,8 +1087,6 @@ static int fsl_qspi_probe(struct platform_device *pdev)
 			}
 		}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* fill the hooks */
 		nor->read_reg = fsl_qspi_read_reg;
 		nor->write_reg = fsl_qspi_write_reg;
@@ -1245,10 +1210,6 @@ static int fsl_qspi_resume(struct platform_device *pdev)
 static struct platform_driver fsl_qspi_driver = {
 	.driver = {
 		.name	= "fsl-quadspi",
-<<<<<<< HEAD
-=======
-		.bus	= &platform_bus_type,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.of_match_table = fsl_qspi_dt_ids,
 	},
 	.probe          = fsl_qspi_probe,

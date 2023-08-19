@@ -663,13 +663,8 @@ static void ps3_find_and_add_device(u64 bus_id, u64 dev_id)
 		if (rem)
 			break;
 	}
-<<<<<<< HEAD
 	pr_warn("%s:%u: device %llu:%llu not found\n",
 		__func__, __LINE__, bus_id, dev_id);
-=======
-	pr_warning("%s:%u: device %llu:%llu not found\n", __func__, __LINE__,
-		   bus_id, dev_id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return;
 
 found:
@@ -864,17 +859,9 @@ static int ps3_probe_thread(void *data)
 
 		if (notify_event->event_type != notify_region_probe ||
 		    notify_event->bus_id != dev.sbd.bus_id) {
-<<<<<<< HEAD
 			pr_warn("%s:%u: bad notify_event: event %llu, dev_id %llu, dev_type %llu\n",
 				__func__, __LINE__, notify_event->event_type,
 				notify_event->dev_id, notify_event->dev_type);
-=======
-			pr_warning("%s:%u: bad notify_event: event %llu, "
-				   "dev_id %llu, dev_type %llu\n",
-				   __func__, __LINE__, notify_event->event_type,
-				   notify_event->dev_id,
-				   notify_event->dev_type);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 		}
 

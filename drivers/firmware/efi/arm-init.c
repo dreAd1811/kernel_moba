@@ -193,11 +193,7 @@ static __init void reserve_regions(void)
 	 * uses its own memory map instead.
 	 */
 	memblock_dump_all();
-<<<<<<< HEAD
 	memblock_remove(0, PHYS_ADDR_MAX);
-=======
-	memblock_remove(0, (phys_addr_t)ULLONG_MAX);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for_each_efi_memory_desc(md) {
 		paddr = md->phys_addr;

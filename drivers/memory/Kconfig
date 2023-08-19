@@ -84,7 +84,6 @@ config OMAP_GPMC_DEBUG
 	  bootloader or else the GPMC timings won't be identical with the
 	  bootloader timings.
 
-<<<<<<< HEAD
 config TI_EMIF_SRAM
 	tristate "Texas Instruments EMIF SRAM driver"
 	depends on (SOC_AM33XX || SOC_AM43XX) && SRAM
@@ -95,8 +94,6 @@ config TI_EMIF_SRAM
 	  sequence so this driver provides several relocatable PM functions
 	  for the SoC PM code to use.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config MVEBU_DEVBUS
 	bool "Marvell EBU Device Bus Controller"
 	default y
@@ -107,19 +104,6 @@ config MVEBU_DEVBUS
 	  Armada 370 and Armada XP. This controller allows to handle flash
 	  devices such as NOR, NAND, SRAM, and FPGA.
 
-<<<<<<< HEAD
-=======
-config TEGRA20_MC
-	bool "Tegra20 Memory Controller(MC) driver"
-	default y
-	depends on ARCH_TEGRA_2x_SOC
-	help
-	  This driver is for the Memory Controller(MC) module available
-	  in Tegra20 SoCs, mainly for a address translation fault
-	  analysis, especially for IOMMU/GART(Graphics Address
-	  Relocation Table) module.
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config FSL_CORENET_CF
 	tristate "Freescale CoreNet Error Reporting"
 	depends on FSL_SOC_BOOKE
@@ -132,22 +116,14 @@ config FSL_CORENET_CF
 
 config FSL_IFC
 	bool
-<<<<<<< HEAD
 	depends on FSL_SOC || ARCH_LAYERSCAPE || SOC_LS1021A || COMPILE_TEST
 	depends on HAS_IOMEM
-=======
-	depends on FSL_SOC || ARCH_LAYERSCAPE || SOC_LS1021A
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config JZ4780_NEMC
 	bool "Ingenic JZ4780 SoC NEMC driver"
 	default y
-<<<<<<< HEAD
 	depends on MACH_JZ4780 || COMPILE_TEST
 	depends on HAS_IOMEM && OF
-=======
-	depends on MACH_JZ4780
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  This driver is for the NAND/External Memory Controller (NEMC) in
 	  the Ingenic JZ4780. This controller is used to handle external

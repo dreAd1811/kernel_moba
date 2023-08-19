@@ -11,10 +11,6 @@
 #include <linux/rmi.h>
 #include <linux/firmware.h>
 #include <asm/unaligned.h>
-<<<<<<< HEAD
-=======
-#include <asm/unaligned.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/bitops.h>
 
 #include "rmi_driver.h"
@@ -104,14 +100,9 @@ static int rmi_f34_command(struct f34_data *f34, u8 command,
 	return 0;
 }
 
-<<<<<<< HEAD
 static irqreturn_t rmi_f34_attention(int irq, void *ctx)
 {
 	struct rmi_function *fn = ctx;
-=======
-static int rmi_f34_attention(struct rmi_function *fn, unsigned long *irq_bits)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct f34_data *f34 = dev_get_drvdata(&fn->dev);
 	int ret;
 	u8 status;
@@ -136,11 +127,7 @@ static int rmi_f34_attention(struct rmi_function *fn, unsigned long *irq_bits)
 			complete(&f34->v7.cmd_done);
 	}
 
-<<<<<<< HEAD
 	return IRQ_HANDLED;
-=======
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int rmi_f34_write_blocks(struct f34_data *f34, const void *data,

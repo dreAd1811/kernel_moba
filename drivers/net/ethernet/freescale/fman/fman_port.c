@@ -1347,15 +1347,10 @@ int fman_port_config(struct fman_port *port, struct fman_port_params *params)
 	switch (port->port_type) {
 	case FMAN_PORT_TYPE_RX:
 		set_rx_dflt_cfg(port, params);
-<<<<<<< HEAD
 		/* fall through */
 	case FMAN_PORT_TYPE_TX:
 		set_tx_dflt_cfg(port, params, &port->dts_params);
 		/* fall through */
-=======
-	case FMAN_PORT_TYPE_TX:
-		set_tx_dflt_cfg(port, params, &port->dts_params);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		set_dflt_cfg(port, params);
 	}
@@ -1404,19 +1399,10 @@ int fman_port_config(struct fman_port *port, struct fman_port_params *params)
 		/* FM_WRONG_RESET_VALUES_ERRATA_FMAN_A005127 Errata
 		 * workaround
 		 */
-<<<<<<< HEAD
 		u32 reg;
 
 		reg = 0x00001013;
 		iowrite32be(reg, &port->bmi_regs->tx.fmbm_tfp);
-=======
-		if (port->rev_info.major >= 6) {
-			u32 reg;
-
-			reg = 0x00001013;
-			iowrite32be(reg, &port->bmi_regs->tx.fmbm_tfp);
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -1753,7 +1739,6 @@ int fman_port_get_hash_result_offset(struct fman_port *port, u32 *offset)
 }
 EXPORT_SYMBOL(fman_port_get_hash_result_offset);
 
-<<<<<<< HEAD
 int fman_port_get_tstamp(struct fman_port *port, const void *data, u64 *tstamp)
 {
 	if (port->buffer_offsets.time_stamp_offset == ILLEGAL_BASE)
@@ -1766,8 +1751,6 @@ int fman_port_get_tstamp(struct fman_port *port, const void *data, u64 *tstamp)
 }
 EXPORT_SYMBOL(fman_port_get_tstamp);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int fman_port_probe(struct platform_device *of_dev)
 {
 	struct fman_port *port;

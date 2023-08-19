@@ -21,10 +21,7 @@
 
 #define pr_fmt(fmt)	KBUILD_MODNAME ": " fmt
 
-<<<<<<< HEAD
 #include <linux/clk.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/dma-mapping.h>
 #include <linux/etherdevice.h>
 #include <linux/ethtool.h>
@@ -63,12 +60,9 @@
 /* Min number of tx ring entries before stopping queue */
 #define TX_THRESHOLD		(MAX_SKB_FRAGS + 1)
 
-<<<<<<< HEAD
 #define FTGMAC_100MHZ		100000000
 #define FTGMAC_25MHZ		25000000
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct ftgmac100 {
 	/* Registers */
 	struct resource *res;
@@ -106,10 +100,7 @@ struct ftgmac100 {
 	struct napi_struct napi;
 	struct work_struct reset_task;
 	struct mii_bus *mii_bus;
-<<<<<<< HEAD
 	struct clk *clk;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Link management */
 	int cur_speed;
@@ -721,13 +712,8 @@ static bool ftgmac100_prep_tx_csum(struct sk_buff *skb, u32 *csum_vlan)
 	return skb_checksum_help(skb) == 0;
 }
 
-<<<<<<< HEAD
 static int ftgmac100_hard_start_xmit(struct sk_buff *skb,
 				     struct net_device *netdev)
-=======
-static netdev_tx_t ftgmac100_hard_start_xmit(struct sk_buff *skb,
-					     struct net_device *netdev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ftgmac100 *priv = netdev_priv(netdev);
 	struct ftgmac100_txdes *txdes, *first;
@@ -753,21 +739,6 @@ static netdev_tx_t ftgmac100_hard_start_xmit(struct sk_buff *skb,
 	 */
 	nfrags = skb_shinfo(skb)->nr_frags;
 
-<<<<<<< HEAD
-=======
-	/* Setup HW checksumming */
-	csum_vlan = 0;
-	if (skb->ip_summed == CHECKSUM_PARTIAL &&
-	    !ftgmac100_prep_tx_csum(skb, &csum_vlan))
-		goto drop;
-
-	/* Add VLAN tag */
-	if (skb_vlan_tag_present(skb)) {
-		csum_vlan |= FTGMAC100_TXDES1_INS_VLANTAG;
-		csum_vlan |= skb_vlan_tag_get(skb) & 0xffff;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Get header len */
 	len = skb_headlen(skb);
 
@@ -794,7 +765,6 @@ static netdev_tx_t ftgmac100_hard_start_xmit(struct sk_buff *skb,
 	if (nfrags == 0)
 		f_ctl_stat |= FTGMAC100_TXDES0_LTS;
 	txdes->txdes3 = cpu_to_le32(map);
-<<<<<<< HEAD
 
 	/* Setup HW checksumming */
 	csum_vlan = 0;
@@ -808,8 +778,6 @@ static netdev_tx_t ftgmac100_hard_start_xmit(struct sk_buff *skb,
 		csum_vlan |= skb_vlan_tag_get(skb) & 0xffff;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	txdes->txdes1 = cpu_to_le32(csum_vlan);
 
 	/* Next descriptor */
@@ -1767,7 +1735,6 @@ static void ftgmac100_ncsi_handler(struct ncsi_dev *nd)
 	if (unlikely(nd->state != ncsi_dev_state_functional))
 		return;
 
-<<<<<<< HEAD
 	netdev_dbg(nd->dev, "NCSI interface %s\n",
 		   nd->link_up ? "up" : "down");
 }
@@ -1786,10 +1753,6 @@ static void ftgmac100_setup_clk(struct ftgmac100 *priv)
 	 */
 	clk_set_rate(priv->clk, priv->use_ncsi ? FTGMAC_25MHZ :
 			FTGMAC_100MHZ);
-=======
-	netdev_info(nd->dev, "NCSI interface %s\n",
-		    nd->link_up ? "up" : "down");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int ftgmac100_probe(struct platform_device *pdev)
@@ -1888,12 +1851,9 @@ static int ftgmac100_probe(struct platform_device *pdev)
 			goto err_setup_mdio;
 	}
 
-<<<<<<< HEAD
 	if (priv->is_aspeed)
 		ftgmac100_setup_clk(priv);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Default ring sizes */
 	priv->rx_q_entries = priv->new_rx_q_entries = DEF_RX_QUEUE_ENTRIES;
 	priv->tx_q_entries = priv->new_tx_q_entries = DEF_TX_QUEUE_ENTRIES;
@@ -1947,11 +1907,8 @@ static int ftgmac100_remove(struct platform_device *pdev)
 
 	unregister_netdev(netdev);
 
-<<<<<<< HEAD
 	clk_disable_unprepare(priv->clk);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* There's a small chance the reset task will have been re-queued,
 	 * during stop, make sure it's gone before we free the structure.
 	 */

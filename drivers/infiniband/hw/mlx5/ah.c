@@ -36,11 +36,8 @@ static struct ib_ah *create_ib_ah(struct mlx5_ib_dev *dev,
 				  struct mlx5_ib_ah *ah,
 				  struct rdma_ah_attr *ah_attr)
 {
-<<<<<<< HEAD
 	enum ib_gid_type gid_type;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rdma_ah_get_ah_flags(ah_attr) & IB_AH_GRH) {
 		const struct ib_global_route *grh = rdma_ah_read_grh(ah_attr);
 
@@ -55,7 +52,6 @@ static struct ib_ah *create_ib_ah(struct mlx5_ib_dev *dev,
 	ah->av.stat_rate_sl = (rdma_ah_get_static_rate(ah_attr) << 4);
 
 	if (ah_attr->type == RDMA_AH_ATTR_TYPE_ROCE) {
-<<<<<<< HEAD
 		gid_type = ah_attr->grh.sgid_attr->gid_type;
 
 		memcpy(ah->av.rmac, ah_attr->roce.dmac,
@@ -66,15 +62,6 @@ static struct ib_ah *create_ib_ah(struct mlx5_ib_dev *dev,
 		if (gid_type == IB_GID_TYPE_ROCE_UDP_ENCAP)
 #define MLX5_ECN_ENABLED BIT(1)
 			ah->av.tclass |= MLX5_ECN_ENABLED;
-=======
-		memcpy(ah->av.rmac, ah_attr->roce.dmac,
-		       sizeof(ah_attr->roce.dmac));
-		ah->av.udp_sport =
-		mlx5_get_roce_udp_sport(dev,
-					rdma_ah_get_port_num(ah_attr),
-					rdma_ah_read_grh(ah_attr)->sgid_index);
-		ah->av.stat_rate_sl |= (rdma_ah_get_sl(ah_attr) & 0x7) << 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		ah->av.rlid = cpu_to_be16(rdma_ah_get_dlid(ah_attr));
 		ah->av.fl_mlid = rdma_ah_get_path_bits(ah_attr) & 0x7f;
@@ -107,13 +94,6 @@ struct ib_ah *mlx5_ib_create_ah(struct ib_pd *pd, struct rdma_ah_attr *ah_attr,
 
 		resp.response_length = min_resp_len;
 
-<<<<<<< HEAD
-=======
-		err = ib_resolve_eth_dmac(pd->device, ah_attr);
-		if (err)
-			return ERR_PTR(err);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		memcpy(resp.dmac, ah_attr->roce.dmac, ETH_ALEN);
 		err = ib_copy_to_udata(udata, &resp, resp.response_length);
 		if (err)

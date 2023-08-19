@@ -227,11 +227,6 @@ static struct phy_driver icplus_driver[] = {
 	.phy_id_mask	= 0x0ffffff0,
 	.features	= PHY_GBIT_FEATURES,
 	.config_init	= &ip1001_config_init,
-<<<<<<< HEAD
-=======
-	.config_aneg	= &genphy_config_aneg,
-	.read_status	= &genphy_read_status,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.suspend	= genphy_suspend,
 	.resume		= genphy_resume,
 }, {
@@ -242,11 +237,6 @@ static struct phy_driver icplus_driver[] = {
 	.flags		= PHY_HAS_INTERRUPT,
 	.ack_interrupt	= ip101a_g_ack_interrupt,
 	.config_init	= &ip101a_g_config_init,
-<<<<<<< HEAD
-=======
-	.config_aneg	= &genphy_config_aneg,
-	.read_status	= &genphy_read_status,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.suspend	= genphy_suspend,
 	.resume		= genphy_resume,
 } };

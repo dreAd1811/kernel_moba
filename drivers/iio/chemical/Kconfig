@@ -21,7 +21,6 @@ config ATLAS_PH_SENSOR
 	 To compile this driver as module, choose M here: the
 	 module will be called atlas-ph-sensor.
 
-<<<<<<< HEAD
 config BME680
 	tristate "Bosch Sensortec BME680 sensor driver"
 	depends on (I2C || SPI)
@@ -45,8 +44,6 @@ config BME680_SPI
 	depends on SPI && BME680
 	select REGMAP_SPI
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config CCS811
 	tristate "AMS CCS811 VOC sensor"
 	depends on I2C

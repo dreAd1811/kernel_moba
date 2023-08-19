@@ -610,12 +610,8 @@ void rtl92se_set_desc(struct ieee80211_hw *hw, u8 *pdesc, bool istx,
 	}
 }
 
-<<<<<<< HEAD
 u64 rtl92se_get_desc(struct ieee80211_hw *hw,
 		     u8 *desc, bool istx, u8 desc_name)
-=======
-u32 rtl92se_get_desc(u8 *desc, bool istx, u8 desc_name)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 ret = 0;
 

@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Samsung's Exynos3250 based ARTIK5 module device tree source
  *
@@ -10,13 +7,6 @@
  *
  * Device tree source file for Samsung's ARTIK5 module which is based on
  * Samsung Exynos3250 SoC.
-<<<<<<< HEAD
-=======
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include "exynos3250.dtsi"
@@ -36,11 +26,7 @@
 		reg = <0x40000000 0x1ff00000>;
 	};
 
-<<<<<<< HEAD
 	firmware@205f000 {
-=======
-	firmware@0205f000 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "samsung,secure-firmware";
 		reg = <0x0205f000 0x1000>;
 	};
@@ -259,10 +245,7 @@
 				regulator-name = "VLDO23_1.8V";
 				regulator-min-microvolt = <1800000>;
 				regulator-max-microvolt = <1800000>;
-<<<<<<< HEAD
 				regulator-always-on;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 
 			ldo24_reg: LDO24 {
@@ -334,7 +317,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
 &mshc_1 {
 	cap-sd-highspeed;
 	cap-sdio-irq;
@@ -370,8 +352,6 @@
 	};
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &rtc {
 	clocks = <&cmu CLK_RTC>, <&s2mps14_osc S2MPS11_CLK_AP>;
 	clock-names = "rtc", "rtc_src";

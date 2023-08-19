@@ -163,14 +163,9 @@ static int mdio_mux_mmioreg_probe(struct platform_device *pdev)
 			    mdio_mux_mmioreg_switch_fn,
 			    &s->mux_handle, s, NULL);
 	if (ret) {
-<<<<<<< HEAD
 		if (ret != -EPROBE_DEFER)
 			dev_err(&pdev->dev,
 				"failed to register mdio-mux bus %pOF\n", np);
-=======
-		dev_err(&pdev->dev, "failed to register mdio-mux bus %pOF\n",
-			np);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 

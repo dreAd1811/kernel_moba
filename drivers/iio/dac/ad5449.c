@@ -193,10 +193,6 @@ static int ad5449_write_raw(struct iio_dev *indio_dev,
 static const struct iio_info ad5449_info = {
 	.read_raw = ad5449_read_raw,
 	.write_raw = ad5449_write_raw,
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define AD5449_CHANNEL(chan, bits) {				\

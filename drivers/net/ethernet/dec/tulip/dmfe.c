@@ -331,11 +331,7 @@ static void dmfe_phy_write_1bit(void __iomem *, u32);
 static u16 dmfe_phy_read_1bit(void __iomem *);
 static u8 dmfe_sense_speed(struct dmfe_board_info *);
 static void dmfe_process_mode(struct dmfe_board_info *);
-<<<<<<< HEAD
 static void dmfe_timer(struct timer_list *);
-=======
-static void dmfe_timer(unsigned long);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline u32 cal_CRC(unsigned char *, unsigned int, u8);
 static void dmfe_rx_packet(struct net_device *, struct dmfe_board_info *);
 static void dmfe_free_tx_pkt(struct net_device *, struct dmfe_board_info *);
@@ -600,15 +596,8 @@ static int dmfe_open(struct net_device *dev)
 	netif_wake_queue(dev);
 
 	/* set and active a timer process */
-<<<<<<< HEAD
 	timer_setup(&db->timer, dmfe_timer, 0);
 	db->timer.expires = DMFE_TIMER_WUT + HZ * 2;
-=======
-	init_timer(&db->timer);
-	db->timer.expires = DMFE_TIMER_WUT + HZ * 2;
-	db->timer.data = (unsigned long)dev;
-	db->timer.function = dmfe_timer;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	add_timer(&db->timer);
 
 	return 0;
@@ -1139,17 +1128,10 @@ static const struct ethtool_ops netdev_ethtool_ops = {
  *	Dynamic media sense, allocate Rx buffer...
  */
 
-<<<<<<< HEAD
 static void dmfe_timer(struct timer_list *t)
 {
 	struct dmfe_board_info *db = from_timer(db, t, timer);
 	struct net_device *dev = pci_get_drvdata(db->pdev);
-=======
-static void dmfe_timer(unsigned long data)
-{
-	struct net_device *dev = (struct net_device *)data;
-	struct dmfe_board_info *db = netdev_priv(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void __iomem *ioaddr = db->ioaddr;
 	u32 tmp_cr8;
 	unsigned char tmp_cr12;
@@ -2240,25 +2222,15 @@ static int __init dmfe_init_module(void)
 	if (cr6set)
 		dmfe_cr6_user_set = cr6set;
 
-<<<<<<< HEAD
  	switch(mode) {
    	case DMFE_10MHF:
-=======
-	switch (mode) {
-	case DMFE_10MHF:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case DMFE_100MHF:
 	case DMFE_10MFD:
 	case DMFE_100MFD:
 	case DMFE_1M_HPNA:
 		dmfe_media_mode = mode;
 		break;
-<<<<<<< HEAD
 	default:dmfe_media_mode = DMFE_AUTO;
-=======
-	default:
-		dmfe_media_mode = DMFE_AUTO;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 

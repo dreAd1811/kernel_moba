@@ -375,15 +375,9 @@ err:
 
 static const struct dvb_tuner_ops it913x_tuner_ops = {
 	.info = {
-<<<<<<< HEAD
 		.name             = "ITE IT913X",
 		.frequency_min_hz = 174 * MHz,
 		.frequency_max_hz = 862 * MHz,
-=======
-		.name           = "ITE IT913X",
-		.frequency_min  = 174000000,
-		.frequency_max  = 862000000,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 
 	.init = it913x_init,

@@ -49,11 +49,6 @@ extern void __bad_udelay(void);
  * The simpler m68k and ColdFire processors do not have a 32*32->64
  * multiply instruction. So we need to handle them a little differently.
  * We use a bit of shifting and a single 32*32->32 multiply to get close.
-<<<<<<< HEAD
-=======
- * This is a macro so that the const version can factor out the first
- * multiply and shift.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #define	HZSCALE		(268435456 / (1000000 / HZ))
 
@@ -118,7 +113,6 @@ static inline void __udelay(unsigned long usecs)
  */
 #define	HZSCALE		(268435456 / (1000000 / HZ))
 
-<<<<<<< HEAD
 static inline void ndelay(unsigned long nsec)
 {
 	__delay(DIV_ROUND_UP(nsec *
@@ -127,8 +121,5 @@ static inline void ndelay(unsigned long nsec)
 			     1000));
 }
 #define ndelay(n) ndelay(n)
-=======
-#define ndelay(n) __delay(DIV_ROUND_UP((n) * ((((HZSCALE) >> 11) * (loops_per_jiffy >> 11)) >> 6), 1000))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* defined(_M68K_DELAY_H) */

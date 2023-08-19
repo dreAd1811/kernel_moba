@@ -57,7 +57,6 @@ osi_setup_entries[OSI_STRING_ENTRIES_MAX] __initdata = {
 	{"Processor Device", true},
 	{"3.0 _SCP Extensions", true},
 	{"Processor Aggregator Device", true},
-<<<<<<< HEAD
 	/*
 	 * Linux-Dell-Video is used by BIOS to disable RTD3 for NVidia graphics
 	 * cards as RTD3 is not supported by drivers now.  Systems with NVidia
@@ -75,8 +74,6 @@ osi_setup_entries[OSI_STRING_ENTRIES_MAX] __initdata = {
 	 * a BIOS workaround.
 	 */
 	{"Linux-Lenovo-NV-HDMI-Audio", true},
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static u32 acpi_osi_handler(acpi_string interface, u32 supported)

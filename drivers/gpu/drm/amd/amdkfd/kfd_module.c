@@ -24,10 +24,7 @@
 #include <linux/sched.h>
 #include <linux/moduleparam.h>
 #include <linux/device.h>
-<<<<<<< HEAD
 #include <linux/printk.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "kfd_priv.h"
 
 #define KFD_DRIVER_AUTHOR	"AMD Inc. and others"
@@ -46,15 +43,12 @@ static const struct kgd2kfd_calls kgd2kfd = {
 	.interrupt	= kgd2kfd_interrupt,
 	.suspend	= kgd2kfd_suspend,
 	.resume		= kgd2kfd_resume,
-<<<<<<< HEAD
 	.quiesce_mm	= kgd2kfd_quiesce_mm,
 	.resume_mm	= kgd2kfd_resume_mm,
 	.schedule_evict_and_restore_process =
 			  kgd2kfd_schedule_evict_and_restore_process,
 	.pre_reset	= kgd2kfd_pre_reset,
 	.post_reset	= kgd2kfd_post_reset,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int sched_policy = KFD_SCHED_POLICY_HWS;
@@ -62,7 +56,6 @@ module_param(sched_policy, int, 0444);
 MODULE_PARM_DESC(sched_policy,
 	"Scheduling policy (0 = HWS (Default), 1 = HWS without over-subscription, 2 = Non-HWS (Used for debugging only)");
 
-<<<<<<< HEAD
 int hws_max_conc_proc = 8;
 module_param(hws_max_conc_proc, int, 0444);
 MODULE_PARM_DESC(hws_max_conc_proc,
@@ -72,8 +65,6 @@ int cwsr_enable = 1;
 module_param(cwsr_enable, int, 0444);
 MODULE_PARM_DESC(cwsr_enable, "CWSR enable (0 = off, 1 = on (default))");
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int max_num_of_queues_per_device = KFD_MAX_NUM_OF_QUEUES_PER_DEVICE_DEFAULT;
 module_param(max_num_of_queues_per_device, int, 0444);
 MODULE_PARM_DESC(max_num_of_queues_per_device,
@@ -84,7 +75,6 @@ module_param(send_sigterm, int, 0444);
 MODULE_PARM_DESC(send_sigterm,
 	"Send sigterm to HSA process on unhandled exception (0 = disable, 1 = enable)");
 
-<<<<<<< HEAD
 int debug_largebar;
 module_param(debug_largebar, int, 0444);
 MODULE_PARM_DESC(debug_largebar,
@@ -108,10 +98,6 @@ MODULE_PARM_DESC(halt_if_hws_hang, "Halt if HWS hang is detected (0 = off (defau
 static int amdkfd_init_completed;
 
 
-=======
-static int amdkfd_init_completed;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int kgd2kfd_init(unsigned int interface_version,
 		const struct kgd2kfd_calls **g2f)
 {
@@ -154,13 +140,6 @@ static int __init kfd_module_init(void)
 		return -1;
 	}
 
-<<<<<<< HEAD
-=======
-	err = kfd_pasid_init();
-	if (err < 0)
-		return err;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = kfd_chardev_init();
 	if (err < 0)
 		goto err_ioctl;
@@ -169,15 +148,11 @@ static int __init kfd_module_init(void)
 	if (err < 0)
 		goto err_topology;
 
-<<<<<<< HEAD
 	err = kfd_process_create_wq();
 	if (err < 0)
 		goto err_create_wq;
 
 	kfd_debugfs_init();
-=======
-	kfd_process_create_wq();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	amdkfd_init_completed = 1;
 
@@ -185,18 +160,11 @@ static int __init kfd_module_init(void)
 
 	return 0;
 
-<<<<<<< HEAD
 err_create_wq:
 	kfd_topology_shutdown();
 err_topology:
 	kfd_chardev_exit();
 err_ioctl:
-=======
-err_topology:
-	kfd_chardev_exit();
-err_ioctl:
-	kfd_pasid_exit();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -204,19 +172,11 @@ static void __exit kfd_module_exit(void)
 {
 	amdkfd_init_completed = 0;
 
-<<<<<<< HEAD
 	kfd_debugfs_fini();
 	kfd_process_destroy_wq();
 	kfd_topology_shutdown();
 	kfd_chardev_exit();
 	pr_info("amdkfd: Removed module\n");
-=======
-	kfd_process_destroy_wq();
-	kfd_topology_shutdown();
-	kfd_chardev_exit();
-	kfd_pasid_exit();
-	dev_info(kfd_device, "Removed module\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 module_init(kfd_module_init);

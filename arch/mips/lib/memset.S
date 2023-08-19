@@ -95,11 +95,7 @@
 
 	sltiu		t0, a2, STORSIZE	/* very small region? */
 	bnez		t0, .Lsmall_memset\@
-<<<<<<< HEAD
 	 andi		t0, a0, STORMASK	/* aligned? */
-=======
-	andi		t0, a0, STORMASK	/* aligned? */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_CPU_MICROMIPS
 	move		t8, a1			/* used by 'swp' instruction */
@@ -107,20 +103,12 @@
 #endif
 #ifndef CONFIG_CPU_DADDI_WORKAROUNDS
 	beqz		t0, 1f
-<<<<<<< HEAD
 	 PTR_SUBU	t0, STORSIZE		/* alignment in bytes */
-=======
-	PTR_SUBU	t0, STORSIZE		/* alignment in bytes */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 	.set		noat
 	li		AT, STORSIZE
 	beqz		t0, 1f
-<<<<<<< HEAD
 	 PTR_SUBU	t0, AT			/* alignment in bytes */
-=======
-	PTR_SUBU	t0, AT			/* alignment in bytes */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.set		at
 #endif
 
@@ -161,11 +149,7 @@
 1:	ori		t1, a2, 0x3f		/* # of full blocks */
 	xori		t1, 0x3f
 	beqz		t1, .Lmemset_partial\@	/* no block to fill */
-<<<<<<< HEAD
 	 andi		t0, a2, 0x40-STORSIZE
-=======
-	andi		t0, a2, 0x40-STORSIZE
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	PTR_ADDU	t1, a0			/* end address */
 	.set		reorder
@@ -190,11 +174,7 @@
 	.set		at
 #endif
 	jr		t1
-<<<<<<< HEAD
 	 PTR_ADDU	a0, t0			/* dest ptr */
-=======
-	PTR_ADDU	a0, t0			/* dest ptr */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	.set		push
 	.set		noreorder
@@ -206,11 +186,7 @@
 
 	beqz		a2, 1f
 #ifndef CONFIG_CPU_MIPSR6
-<<<<<<< HEAD
 	 PTR_ADDU	a0, a2			/* What's left */
-=======
-	PTR_ADDU	a0, a2			/* What's left */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	R10KCBARRIER(0(ra))
 #ifdef __MIPSEB__
 	EX(LONG_S_R, a1, -1(a0), .Llast_fixup\@)
@@ -218,12 +194,8 @@
 	EX(LONG_S_L, a1, -1(a0), .Llast_fixup\@)
 #endif
 #else
-<<<<<<< HEAD
 	 PTR_SUBU	t0, $0, a2
 	move		a2, zero		/* No remaining longs */
-=======
-	PTR_SUBU	t0, $0, a2
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	PTR_ADDIU	t0, 1
 	STORE_BYTE(0)
 	STORE_BYTE(1)
@@ -239,19 +211,11 @@
 0:
 #endif
 1:	jr		ra
-<<<<<<< HEAD
 	 move		a2, zero
 
 .Lsmall_memset\@:
 	beqz		a2, 2f
 	 PTR_ADDU	t1, a0, a2
-=======
-	move		a2, zero
-
-.Lsmall_memset\@:
-	beqz		a2, 2f
-	PTR_ADDU	t1, a0, a2
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 1:	PTR_ADDIU	a0, 1			/* fill bytewise */
 	R10KCBARRIER(0(ra))
@@ -259,11 +223,7 @@
 	 EX(sb, a1, -1(a0), .Lsmall_fixup\@)
 
 2:	jr		ra			/* done */
-<<<<<<< HEAD
 	 move		a2, zero
-=======
-	move		a2, zero
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.if __memset == 1
 	END(memset)
 	.set __memset, 0
@@ -272,21 +232,16 @@
 
 #ifdef CONFIG_CPU_MIPSR6
 .Lbyte_fixup\@:
-<<<<<<< HEAD
 	/*
 	 * unset_bytes = (#bytes - (#unaligned bytes)) - (-#unaligned bytes remaining + 1) + 1
 	 *      a2     =             a2                -              t0                   + 1
 	 */
 	PTR_SUBU	a2, t0
-=======
-	PTR_SUBU	a2, $0, t0
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	jr		ra
 	 PTR_ADDIU	a2, 1
 #endif /* CONFIG_CPU_MIPSR6 */
 
 .Lfirst_fixup\@:
-<<<<<<< HEAD
 	/* unset_bytes already in a2 */
 	jr	ra
 	 nop
@@ -296,18 +251,11 @@
 	 * unset_bytes = partial_start_addr +  #bytes   -     fault_addr
 	 *      a2     =         t1         + (a2 & 3f) - $28->task->BUADDR
 	 */
-=======
-	jr	ra
-	nop
-
-.Lfwd_fixup\@:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	PTR_L		t0, TI_TASK($28)
 	andi		a2, 0x3f
 	LONG_L		t0, THREAD_BUADDR(t0)
 	LONG_ADDU	a2, t1
 	jr		ra
-<<<<<<< HEAD
 	 LONG_SUBU	a2, t0
 
 .Lpartial_fixup\@:
@@ -315,31 +263,19 @@
 	 * unset_bytes = partial_end_addr +      #bytes     -     fault_addr
 	 *      a2     =       a0         + (a2 & STORMASK) - $28->task->BUADDR
 	 */
-=======
-	LONG_SUBU	a2, t0
-
-.Lpartial_fixup\@:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	PTR_L		t0, TI_TASK($28)
 	andi		a2, STORMASK
 	LONG_L		t0, THREAD_BUADDR(t0)
 	LONG_ADDU	a2, a0
 	jr		ra
-<<<<<<< HEAD
 	 LONG_SUBU	a2, t0
 
 .Llast_fixup\@:
 	/* unset_bytes already in a2 */
-=======
-	LONG_SUBU	a2, t0
-
-.Llast_fixup\@:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	jr		ra
 	 nop
 
 .Lsmall_fixup\@:
-<<<<<<< HEAD
 	/*
 	 * unset_bytes = end_addr - current_addr + 1
 	 *      a2     =    t1    -      a0      + 1
@@ -349,11 +285,6 @@
 	PTR_ADDIU	a2, 1
 	jr		ra
 	.set		noreorder
-=======
-	PTR_SUBU	a2, t1, a0
-	jr		ra
-	 PTR_ADDIU	a2, 1
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	.endm
 
@@ -368,11 +299,7 @@
 LEAF(memset)
 EXPORT_SYMBOL(memset)
 	beqz		a1, 1f
-<<<<<<< HEAD
 	 move		v0, a0			/* result */
-=======
-	move		v0, a0			/* result */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	andi		a1, 0xff		/* spread fillword */
 	LONG_SLL		t1, a1, 8

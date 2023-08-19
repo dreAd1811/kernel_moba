@@ -16,10 +16,7 @@
 #include <linux/clk.h>
 #include <linux/of_graph.h>
 #include <linux/component.h>
-<<<<<<< HEAD
 #include <linux/pm_runtime.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <video/of_display_timing.h>
 #include <video/of_videomode.h>
 #include <video/videomode.h>
@@ -45,10 +42,7 @@ struct exynos_dp_device {
 	struct device              *dev;
 
 	struct videomode           vm;
-<<<<<<< HEAD
 	struct analogix_dp_device *adp;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct analogix_dp_plat_data plat_data;
 };
 
@@ -165,25 +159,11 @@ static int exynos_dp_bind(struct device *dev, struct device *master, void *data)
 	struct drm_device *drm_dev = data;
 	int ret;
 
-<<<<<<< HEAD
-=======
-	/*
-	 * Just like the probe function said, we don't need the
-	 * device drvrate anymore, we should leave the charge to
-	 * analogix dp driver, set the device drvdata to NULL.
-	 */
-	dev_set_drvdata(dev, NULL);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dp->dev = dev;
 	dp->drm_dev = drm_dev;
 
 	dp->plat_data.dev_type = EXYNOS_DP;
-<<<<<<< HEAD
 	dp->plat_data.power_on_start = exynos_dp_poweron;
-=======
-	dp->plat_data.power_on = exynos_dp_poweron;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dp->plat_data.power_off = exynos_dp_poweroff;
 	dp->plat_data.attach = exynos_dp_bridge_attach;
 	dp->plat_data.get_modes = exynos_dp_get_modes;
@@ -205,7 +185,6 @@ static int exynos_dp_bind(struct device *dev, struct device *master, void *data)
 
 	dp->plat_data.encoder = encoder;
 
-<<<<<<< HEAD
 	dp->adp = analogix_dp_bind(dev, dp->drm_dev, &dp->plat_data);
 	if (IS_ERR(dp->adp)) {
 		dp->encoder.funcs->destroy(&dp->encoder);
@@ -213,22 +192,15 @@ static int exynos_dp_bind(struct device *dev, struct device *master, void *data)
 	}
 
 	return 0;
-=======
-	return analogix_dp_bind(dev, dp->drm_dev, &dp->plat_data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void exynos_dp_unbind(struct device *dev, struct device *master,
 			     void *data)
 {
-<<<<<<< HEAD
 	struct exynos_dp_device *dp = dev_get_drvdata(dev);
 
 	analogix_dp_unbind(dp->adp);
 	dp->encoder.funcs->destroy(&dp->encoder);
-=======
-	return analogix_dp_unbind(dev, master, data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct component_ops exynos_dp_ops = {
@@ -261,17 +233,11 @@ static int exynos_dp_probe(struct platform_device *pdev)
 	np = of_parse_phandle(dev->of_node, "panel", 0);
 	if (np) {
 		dp->plat_data.panel = of_drm_find_panel(np);
-<<<<<<< HEAD
 
 		of_node_put(np);
 		if (IS_ERR(dp->plat_data.panel))
 			return PTR_ERR(dp->plat_data.panel);
 
-=======
-		of_node_put(np);
-		if (!dp->plat_data.panel)
-			return -EPROBE_DEFER;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out;
 	}
 
@@ -281,10 +247,7 @@ static int exynos_dp_probe(struct platform_device *pdev)
 
 	/* The remote port can be either a panel or a bridge */
 	dp->plat_data.panel = panel;
-<<<<<<< HEAD
 	dp->plat_data.skip_connector = !!bridge;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dp->ptn_bridge = bridge;
 
 out:
@@ -301,34 +264,23 @@ static int exynos_dp_remove(struct platform_device *pdev)
 #ifdef CONFIG_PM
 static int exynos_dp_suspend(struct device *dev)
 {
-<<<<<<< HEAD
 	struct exynos_dp_device *dp = dev_get_drvdata(dev);
 
 	return analogix_dp_suspend(dp->adp);
-=======
-	return analogix_dp_suspend(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int exynos_dp_resume(struct device *dev)
 {
-<<<<<<< HEAD
 	struct exynos_dp_device *dp = dev_get_drvdata(dev);
 
 	return analogix_dp_resume(dp->adp);
-=======
-	return analogix_dp_resume(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #endif
 
 static const struct dev_pm_ops exynos_dp_pm_ops = {
 	SET_RUNTIME_PM_OPS(exynos_dp_suspend, exynos_dp_resume, NULL)
-<<<<<<< HEAD
 	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
 				pm_runtime_force_resume)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct of_device_id exynos_dp_match[] = {

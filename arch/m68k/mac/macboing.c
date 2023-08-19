@@ -48,26 +48,16 @@ static unsigned long mac_bell_phasepersample;
  * some function protos
  */
 static void mac_init_asc( void );
-<<<<<<< HEAD
 static void mac_nosound(struct timer_list *);
 static void mac_quadra_start_bell( unsigned int, unsigned int, unsigned int );
 static void mac_quadra_ring_bell(struct timer_list *);
-=======
-static void mac_nosound( unsigned long );
-static void mac_quadra_start_bell( unsigned int, unsigned int, unsigned int );
-static void mac_quadra_ring_bell( unsigned long );
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void mac_av_start_bell( unsigned int, unsigned int, unsigned int );
 static void ( *mac_special_bell )( unsigned int, unsigned int, unsigned int );
 
 /*
  * our timer to start/continue/stop the bell
  */
-<<<<<<< HEAD
 static DEFINE_TIMER(mac_sound_timer, mac_nosound);
-=======
-static DEFINE_TIMER(mac_sound_timer, mac_nosound, 0, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Sort of initialize the sound chip (called from mac_mksound on the first
@@ -226,11 +216,7 @@ void mac_mksound( unsigned int freq, unsigned int length )
 /*
  * regular ASC: stop whining ..
  */
-<<<<<<< HEAD
 static void mac_nosound(struct timer_list *unused)
-=======
-static void mac_nosound( unsigned long ignored )
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	mac_asc_regs[ ASC_ENABLE ] = 0;
 }
@@ -284,11 +270,7 @@ static void mac_quadra_start_bell( unsigned int freq, unsigned int length, unsig
  * already load the wave table, or at least call this one...
  * This piece keeps reloading the wave table until done.
  */
-<<<<<<< HEAD
 static void mac_quadra_ring_bell(struct timer_list *unused)
-=======
-static void mac_quadra_ring_bell( unsigned long ignored )
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int	i, count = mac_asc_samplespersec / HZ;
 	unsigned long flags;

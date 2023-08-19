@@ -460,21 +460,10 @@ static int picdev_write(struct kvm_pic *s,
 	switch (addr) {
 	case 0x20:
 	case 0x21:
-<<<<<<< HEAD
 	case 0xa0:
 	case 0xa1:
 		pic_lock(s);
 		pic_ioport_write(&s->pics[addr >> 7], addr, data);
-=======
-		pic_lock(s);
-		pic_ioport_write(&s->pics[0], addr, data);
-		pic_unlock(s);
-		break;
-	case 0xa0:
-	case 0xa1:
-		pic_lock(s);
-		pic_ioport_write(&s->pics[1], addr, data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pic_unlock(s);
 		break;
 	case 0x4d0:

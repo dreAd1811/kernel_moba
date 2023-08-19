@@ -11,10 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  */
-<<<<<<< HEAD
 #include <linux/bitmap.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/bitops.h>
 #include <linux/device.h>
 #include <linux/errno.h>
@@ -133,7 +130,6 @@ static int ws16c48_gpio_get(struct gpio_chip *chip, unsigned offset)
 	return !!(port_state & mask);
 }
 
-<<<<<<< HEAD
 static int ws16c48_gpio_get_multiple(struct gpio_chip *chip,
 	unsigned long *mask, unsigned long *bits)
 {
@@ -179,8 +175,6 @@ static int ws16c48_gpio_get_multiple(struct gpio_chip *chip,
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void ws16c48_gpio_set(struct gpio_chip *chip, unsigned offset, int value)
 {
 	struct ws16c48_gpio *const ws16c48gpio = gpiochip_get_data(chip);
@@ -384,11 +378,7 @@ static irqreturn_t ws16c48_irq_handler(int irq, void *dev_id)
 			int_id = inb(ws16c48gpio->base + 8 + port);
 			for_each_set_bit(gpio, &int_id, 8)
 				generic_handle_irq(irq_find_mapping(
-<<<<<<< HEAD
 					chip->irq.domain, gpio + 8*port));
-=======
-					chip->irqdomain, gpio + 8*port));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		int_pending = inb(ws16c48gpio->base + 6) & 0x7;
@@ -439,10 +429,7 @@ static int ws16c48_probe(struct device *dev, unsigned int id)
 	ws16c48gpio->chip.direction_input = ws16c48_gpio_direction_input;
 	ws16c48gpio->chip.direction_output = ws16c48_gpio_direction_output;
 	ws16c48gpio->chip.get = ws16c48_gpio_get;
-<<<<<<< HEAD
 	ws16c48gpio->chip.get_multiple = ws16c48_gpio_get_multiple;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ws16c48gpio->chip.set = ws16c48_gpio_set;
 	ws16c48gpio->chip.set_multiple = ws16c48_gpio_set_multiple;
 	ws16c48gpio->base = base[id];

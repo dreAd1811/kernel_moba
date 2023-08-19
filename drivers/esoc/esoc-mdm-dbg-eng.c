@@ -1,19 +1,6 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2015, 2017-2019, The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2015, 2017-2018, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #include <linux/atomic.h>
 #include <linux/device.h>
@@ -275,11 +262,7 @@ static ssize_t last_esoc_req_show(struct device_driver *drv, char *buf)
 {
 	unsigned int i;
 	unsigned long flags;
-<<<<<<< HEAD
 	size_t count = 0;
-=======
-	size_t count;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irqsave(&req_lock, flags);
 	for (i = 0; i < ARRAY_SIZE(req_to_str); i++) {

@@ -76,10 +76,7 @@ static uint i8k_fan_mult = I8K_FAN_MULT;
 static uint i8k_pwm_mult;
 static uint i8k_fan_max = I8K_FAN_HIGH;
 static bool disallow_fan_type_call;
-<<<<<<< HEAD
 static bool disallow_fan_support;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define I8K_HWMON_HAVE_TEMP1	(1 << 0)
 #define I8K_HWMON_HAVE_TEMP2	(1 << 1)
@@ -246,12 +243,9 @@ static int i8k_get_fan_status(int fan)
 {
 	struct smm_regs regs = { .eax = I8K_SMM_GET_FAN, };
 
-<<<<<<< HEAD
 	if (disallow_fan_support)
 		return -EINVAL;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	regs.ebx = fan & 0xff;
 	return i8k_smm(&regs) ? : regs.eax & 0xff;
 }
@@ -263,12 +257,9 @@ static int i8k_get_fan_speed(int fan)
 {
 	struct smm_regs regs = { .eax = I8K_SMM_GET_SPEED, };
 
-<<<<<<< HEAD
 	if (disallow_fan_support)
 		return -EINVAL;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	regs.ebx = fan & 0xff;
 	return i8k_smm(&regs) ? : (regs.eax & 0xffff) * i8k_fan_mult;
 }
@@ -280,11 +271,7 @@ static int _i8k_get_fan_type(int fan)
 {
 	struct smm_regs regs = { .eax = I8K_SMM_GET_FAN_TYPE, };
 
-<<<<<<< HEAD
 	if (disallow_fan_support || disallow_fan_type_call)
-=======
-	if (disallow_fan_type_call)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	regs.ebx = fan & 0xff;
@@ -309,12 +296,9 @@ static int i8k_get_fan_nominal_speed(int fan, int speed)
 {
 	struct smm_regs regs = { .eax = I8K_SMM_GET_NOM_SPEED, };
 
-<<<<<<< HEAD
 	if (disallow_fan_support)
 		return -EINVAL;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	regs.ebx = (fan & 0xff) | (speed << 8);
 	return i8k_smm(&regs) ? : (regs.eax & 0xffff) * i8k_fan_mult;
 }
@@ -326,12 +310,9 @@ static int i8k_set_fan(int fan, int speed)
 {
 	struct smm_regs regs = { .eax = I8K_SMM_SET_FAN, };
 
-<<<<<<< HEAD
 	if (disallow_fan_support)
 		return -EINVAL;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	speed = (speed < 0) ? 0 : ((speed > i8k_fan_max) ? i8k_fan_max : speed);
 	regs.ebx = (fan & 0xff) | (speed << 8);
 
@@ -804,11 +785,8 @@ static struct attribute *i8k_attrs[] = {
 static umode_t i8k_is_visible(struct kobject *kobj, struct attribute *attr,
 			      int index)
 {
-<<<<<<< HEAD
 	if (disallow_fan_support && index >= 8)
 		return 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (disallow_fan_type_call &&
 	    (index == 9 || index == 12 || index == 15))
 		return 0;
@@ -1076,7 +1054,6 @@ static const struct dmi_system_id i8k_blacklist_fan_type_dmi_table[] __initconst
 };
 
 /*
-<<<<<<< HEAD
  * On some machines all fan related SMM functions implemented by Dell BIOS
  * firmware freeze kernel for about 500ms. Until Dell fixes these problems fan
  * support for affected blacklisted Dell machines stay disabled.
@@ -1108,8 +1085,6 @@ static struct dmi_system_id i8k_blacklist_fan_support_dmi_table[] __initdata = {
 };
 
 /*
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Probe for the presence of a supported laptop.
  */
 static int __init i8k_probe(void)
@@ -1131,7 +1106,6 @@ static int __init i8k_probe(void)
 			i8k_get_dmi_data(DMI_BIOS_VERSION));
 	}
 
-<<<<<<< HEAD
 	if (dmi_check_system(i8k_blacklist_fan_support_dmi_table)) {
 		pr_warn("broken Dell BIOS detected, disallow fan support\n");
 		if (!force)
@@ -1143,10 +1117,6 @@ static int __init i8k_probe(void)
 		if (!force)
 			disallow_fan_type_call = true;
 	}
-=======
-	if (dmi_check_system(i8k_blacklist_fan_type_dmi_table))
-		disallow_fan_type_call = true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	strlcpy(bios_version, i8k_get_dmi_data(DMI_BIOS_VERSION),
 		sizeof(bios_version));

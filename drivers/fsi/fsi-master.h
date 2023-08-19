@@ -18,7 +18,6 @@
 #define DRIVERS_FSI_MASTER_H
 
 #include <linux/device.h>
-<<<<<<< HEAD
 #include <linux/mutex.h>
 
 /* Various protocol delays */
@@ -54,9 +53,6 @@
 #define	FSI_CRC_SIZE		4
 
 /* fsi-master definition and flags */
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define FSI_MASTER_FLAG_SWCLOCK		0x1
 
 struct fsi_master {
@@ -64,10 +60,7 @@ struct fsi_master {
 	int		idx;
 	int		n_links;
 	int		flags;
-<<<<<<< HEAD
 	struct mutex	scan_lock;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int		(*read)(struct fsi_master *, int link, uint8_t id,
 				uint32_t addr, void *val, size_t size);
 	int		(*write)(struct fsi_master *, int link, uint8_t id,
@@ -75,16 +68,12 @@ struct fsi_master {
 	int		(*term)(struct fsi_master *, int link, uint8_t id);
 	int		(*send_break)(struct fsi_master *, int link);
 	int		(*link_enable)(struct fsi_master *, int link);
-<<<<<<< HEAD
 	int		(*link_config)(struct fsi_master *, int link,
 				       u8 t_send_delay, u8 t_echo_delay);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define dev_to_fsi_master(d) container_of(d, struct fsi_master, dev)
 
-<<<<<<< HEAD
 /**
  * fsi_master registration & lifetime: the fsi_master_register() and
  * fsi_master_unregister() functions will take ownership of the master, and
@@ -105,9 +94,4 @@ extern void fsi_master_unregister(struct fsi_master *master);
 
 extern int fsi_master_rescan(struct fsi_master *master);
 
-=======
-extern int fsi_master_register(struct fsi_master *master);
-extern void fsi_master_unregister(struct fsi_master *master);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* DRIVERS_FSI_MASTER_H */

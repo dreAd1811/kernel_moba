@@ -15,11 +15,7 @@ Sleep States That Can Be Supported
 ==================================
 
 Depending on its configuration and the capabilities of the platform it runs on,
-<<<<<<< HEAD
 the Linux kernel can support up to four system sleep states, including
-=======
-the Linux kernel can support up to four system sleep states, includig
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 hibernation and up to three variants of system suspend.  The sleep states that
 can be supported by the kernel are listed below.
 

@@ -64,10 +64,7 @@ struct nvkm_acr *acr_r352_new(unsigned long);
 struct nvkm_acr *acr_r361_new(unsigned long);
 struct nvkm_acr *acr_r364_new(unsigned long);
 struct nvkm_acr *acr_r367_new(enum nvkm_secboot_falcon, unsigned long);
-<<<<<<< HEAD
 struct nvkm_acr *acr_r370_new(enum nvkm_secboot_falcon, unsigned long);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct nvkm_acr *acr_r375_new(enum nvkm_secboot_falcon, unsigned long);
 
 #endif

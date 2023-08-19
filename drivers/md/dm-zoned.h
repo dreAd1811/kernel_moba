@@ -71,10 +71,6 @@ struct dmz_dev {
 
 /* Device flags. */
 #define DMZ_BDEV_DYING		(1 << 0)
-<<<<<<< HEAD
-=======
-#define DMZ_CHECK_BDEV		(2 << 0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Zone descriptor.
@@ -258,9 +254,5 @@ void dmz_schedule_reclaim(struct dmz_reclaim *zrc);
  * Functions defined in dm-zoned-target.c
  */
 bool dmz_bdev_is_dying(struct dmz_dev *dmz_dev);
-<<<<<<< HEAD
-=======
-bool dmz_check_bdev(struct dmz_dev *dmz_dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* DM_ZONED_H */

@@ -38,10 +38,7 @@ int intel_pmc_ipc_command(u32 cmd, u32 sub, u8 *in, u32 inlen,
 		u32 *out, u32 outlen);
 int intel_pmc_s0ix_counter_read(u64 *data);
 int intel_pmc_gcr_read(u32 offset, u32 *data);
-<<<<<<< HEAD
 int intel_pmc_gcr_read64(u32 offset, u64 *data);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int intel_pmc_gcr_write(u32 offset, u32 data);
 int intel_pmc_gcr_update(u32 offset, u32 mask, u32 val);
 
@@ -74,14 +71,11 @@ static inline int intel_pmc_gcr_read(u32 offset, u32 *data)
 	return -EINVAL;
 }
 
-<<<<<<< HEAD
 static inline int intel_pmc_gcr_read64(u32 offset, u64 *data)
 {
 	return -EINVAL;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int intel_pmc_gcr_write(u32 offset, u32 data)
 {
 	return -EINVAL;

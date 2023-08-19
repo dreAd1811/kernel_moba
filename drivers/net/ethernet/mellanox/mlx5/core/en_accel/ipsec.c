@@ -38,7 +38,6 @@
 #include <linux/module.h>
 
 #include "en.h"
-<<<<<<< HEAD
 #include "en_accel/ipsec.h"
 #include "en_accel/ipsec_rxtx.h"
 
@@ -57,19 +56,6 @@ static struct mlx5e_ipsec_sa_entry *to_ipsec_sa_entry(struct xfrm_state *x)
 	WARN_ON(sa->x != x);
 	return sa;
 }
-=======
-#include "accel/ipsec.h"
-#include "en_accel/ipsec.h"
-#include "en_accel/ipsec_rxtx.h"
-
-struct mlx5e_ipsec_sa_entry {
-	struct hlist_node hlist; /* Item in SADB_RX hashtable */
-	unsigned int handle; /* Handle in SADB_RX */
-	struct xfrm_state *x;
-	struct mlx5e_ipsec *ipsec;
-	void *context;
-};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct xfrm_state *mlx5e_ipsec_sadb_rx_lookup(struct mlx5e_ipsec *ipsec,
 					      unsigned int handle)
@@ -95,7 +81,6 @@ static int mlx5e_ipsec_sadb_rx_add(struct mlx5e_ipsec_sa_entry *sa_entry)
 	unsigned long flags;
 	int ret;
 
-<<<<<<< HEAD
 	ret = ida_simple_get(&ipsec->halloc, 1, 0, GFP_KERNEL);
 	if (ret < 0)
 		return ret;
@@ -106,20 +91,6 @@ static int mlx5e_ipsec_sadb_rx_add(struct mlx5e_ipsec_sa_entry *sa_entry)
 	spin_unlock_irqrestore(&ipsec->sadb_rx_lock, flags);
 
 	return 0;
-=======
-	spin_lock_irqsave(&ipsec->sadb_rx_lock, flags);
-	ret = ida_simple_get(&ipsec->halloc, 1, 0, GFP_KERNEL);
-	if (ret < 0)
-		goto out;
-
-	sa_entry->handle = ret;
-	hash_add_rcu(ipsec->sadb_rx, &sa_entry->hlist, sa_entry->handle);
-	ret = 0;
-
-out:
-	spin_unlock_irqrestore(&ipsec->sadb_rx_lock, flags);
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void mlx5e_ipsec_sadb_rx_del(struct mlx5e_ipsec_sa_entry *sa_entry)
@@ -135,7 +106,6 @@ static void mlx5e_ipsec_sadb_rx_del(struct mlx5e_ipsec_sa_entry *sa_entry)
 static void mlx5e_ipsec_sadb_rx_free(struct mlx5e_ipsec_sa_entry *sa_entry)
 {
 	struct mlx5e_ipsec *ipsec = sa_entry->ipsec;
-<<<<<<< HEAD
 
 	/* xfrm already doing sync rcu between del and free callbacks */
 
@@ -229,89 +199,6 @@ mlx5e_ipsec_build_accel_xfrm_attrs(struct mlx5e_ipsec_sa_entry *sa_entry,
 	attrs->flags |= (x->props.mode == XFRM_MODE_TRANSPORT) ?
 			MLX5_ACCEL_ESP_FLAGS_TRANSPORT :
 			MLX5_ACCEL_ESP_FLAGS_TUNNEL;
-=======
-	unsigned long flags;
-
-	/* Wait for the hash_del_rcu call in sadb_rx_del to affect data path */
-	synchronize_rcu();
-	spin_lock_irqsave(&ipsec->sadb_rx_lock, flags);
-	ida_simple_remove(&ipsec->halloc, sa_entry->handle);
-	spin_unlock_irqrestore(&ipsec->sadb_rx_lock, flags);
-}
-
-static enum mlx5_accel_ipsec_enc_mode mlx5e_ipsec_enc_mode(struct xfrm_state *x)
-{
-	unsigned int key_len = (x->aead->alg_key_len + 7) / 8 - 4;
-
-	switch (key_len) {
-	case 16:
-		return MLX5_IPSEC_SADB_MODE_AES_GCM_128_AUTH_128;
-	case 32:
-		return MLX5_IPSEC_SADB_MODE_AES_GCM_256_AUTH_128;
-	default:
-		netdev_warn(x->xso.dev, "Bad key len: %d for alg %s\n",
-			    key_len, x->aead->alg_name);
-		return -1;
-	}
-}
-
-static void mlx5e_ipsec_build_hw_sa(u32 op, struct mlx5e_ipsec_sa_entry *sa_entry,
-				    struct mlx5_accel_ipsec_sa *hw_sa)
-{
-	struct xfrm_state *x = sa_entry->x;
-	struct aead_geniv_ctx *geniv_ctx;
-	unsigned int crypto_data_len;
-	struct crypto_aead *aead;
-	unsigned int key_len;
-	int ivsize;
-
-	memset(hw_sa, 0, sizeof(*hw_sa));
-
-	if (op == MLX5_IPSEC_CMD_ADD_SA) {
-		crypto_data_len = (x->aead->alg_key_len + 7) / 8;
-		key_len = crypto_data_len - 4; /* 4 bytes salt at end */
-		aead = x->data;
-		geniv_ctx = crypto_aead_ctx(aead);
-		ivsize = crypto_aead_ivsize(aead);
-
-		memcpy(&hw_sa->key_enc, x->aead->alg_key, key_len);
-		/* Duplicate 128 bit key twice according to HW layout */
-		if (key_len == 16)
-			memcpy(&hw_sa->key_enc[16], x->aead->alg_key, key_len);
-		memcpy(&hw_sa->gcm.salt_iv, geniv_ctx->salt, ivsize);
-		hw_sa->gcm.salt = *((__be32 *)(x->aead->alg_key + key_len));
-	}
-
-	hw_sa->cmd = htonl(op);
-	hw_sa->flags |= MLX5_IPSEC_SADB_SA_VALID | MLX5_IPSEC_SADB_SPI_EN;
-	if (x->props.family == AF_INET) {
-		hw_sa->sip[3] = x->props.saddr.a4;
-		hw_sa->dip[3] = x->id.daddr.a4;
-		hw_sa->sip_masklen = 32;
-		hw_sa->dip_masklen = 32;
-	} else {
-		memcpy(hw_sa->sip, x->props.saddr.a6, sizeof(hw_sa->sip));
-		memcpy(hw_sa->dip, x->id.daddr.a6, sizeof(hw_sa->dip));
-		hw_sa->sip_masklen = 128;
-		hw_sa->dip_masklen = 128;
-		hw_sa->flags |= MLX5_IPSEC_SADB_IPV6;
-	}
-	hw_sa->spi = x->id.spi;
-	hw_sa->sw_sa_handle = htonl(sa_entry->handle);
-	switch (x->id.proto) {
-	case IPPROTO_ESP:
-		hw_sa->flags |= MLX5_IPSEC_SADB_IP_ESP;
-		break;
-	case IPPROTO_AH:
-		hw_sa->flags |= MLX5_IPSEC_SADB_IP_AH;
-		break;
-	default:
-		break;
-	}
-	hw_sa->enc_mode = mlx5e_ipsec_enc_mode(x);
-	if (!(x->xso.flags & XFRM_OFFLOAD_INBOUND))
-		hw_sa->flags |= MLX5_IPSEC_SADB_DIR_SX;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline int mlx5e_xfrm_validate_state(struct xfrm_state *x)
@@ -333,13 +220,9 @@ static inline int mlx5e_xfrm_validate_state(struct xfrm_state *x)
 		netdev_info(netdev, "Cannot offload compressed xfrm states\n");
 		return -EINVAL;
 	}
-<<<<<<< HEAD
 	if (x->props.flags & XFRM_STATE_ESN &&
 	    !(mlx5_accel_ipsec_device_caps(priv->mdev) &
 	    MLX5_ACCEL_IPSEC_CAP_ESN)) {
-=======
-	if (x->props.flags & XFRM_STATE_ESN) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		netdev_info(netdev, "Cannot offload ESN xfrm states\n");
 		return -EINVAL;
 	}
@@ -387,12 +270,8 @@ static inline int mlx5e_xfrm_validate_state(struct xfrm_state *x)
 		return -EINVAL;
 	}
 	if (x->props.family == AF_INET6 &&
-<<<<<<< HEAD
 	    !(mlx5_accel_ipsec_device_caps(priv->mdev) &
 	     MLX5_ACCEL_IPSEC_CAP_IPV6)) {
-=======
-	    !(mlx5_accel_ipsec_device_caps(priv->mdev) & MLX5_ACCEL_IPSEC_IPV6)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		netdev_info(netdev, "IPv6 xfrm state offload is not supported by this device\n");
 		return -EINVAL;
 	}
@@ -403,16 +282,10 @@ static int mlx5e_xfrm_add_state(struct xfrm_state *x)
 {
 	struct mlx5e_ipsec_sa_entry *sa_entry = NULL;
 	struct net_device *netdev = x->xso.dev;
-<<<<<<< HEAD
 	struct mlx5_accel_esp_xfrm_attrs attrs;
 	struct mlx5e_priv *priv;
 	__be32 saddr[4] = {0}, daddr[4] = {0}, spi;
 	bool is_ipv6 = false;
-=======
-	struct mlx5_accel_ipsec_sa hw_sa;
-	struct mlx5e_priv *priv;
-	void *context;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	priv = netdev_priv(netdev);
@@ -439,7 +312,6 @@ static int mlx5e_xfrm_add_state(struct xfrm_state *x)
 			netdev_info(netdev, "Failed adding to SADB_RX: %d\n", err);
 			goto err_entry;
 		}
-<<<<<<< HEAD
 	} else {
 		sa_entry->set_iv_op = (x->props.flags & XFRM_STATE_ESN) ?
 				mlx5e_ipsec_set_iv_esn : mlx5e_ipsec_set_iv;
@@ -477,29 +349,12 @@ static int mlx5e_xfrm_add_state(struct xfrm_state *x)
 		err = PTR_ERR(sa_entry->hw_context);
 		goto err_xfrm;
 	}
-=======
-	}
-
-	mlx5e_ipsec_build_hw_sa(MLX5_IPSEC_CMD_ADD_SA, sa_entry, &hw_sa);
-	context = mlx5_accel_ipsec_sa_cmd_exec(sa_entry->ipsec->en_priv->mdev, &hw_sa);
-	if (IS_ERR(context)) {
-		err = PTR_ERR(context);
-		goto err_sadb_rx;
-	}
-
-	err = mlx5_accel_ipsec_sa_cmd_wait(context);
-	if (err)
-		goto err_sadb_rx;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	x->xso.offload_handle = (unsigned long)sa_entry;
 	goto out;
 
-<<<<<<< HEAD
 err_xfrm:
 	mlx5_accel_esp_destroy_xfrm(sa_entry->xfrm);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_sadb_rx:
 	if (x->xso.flags & XFRM_OFFLOAD_INBOUND) {
 		mlx5e_ipsec_sadb_rx_del(sa_entry);
@@ -513,7 +368,6 @@ out:
 
 static void mlx5e_xfrm_del_state(struct xfrm_state *x)
 {
-<<<<<<< HEAD
 	struct mlx5e_ipsec_sa_entry *sa_entry = to_ipsec_sa_entry(x);
 
 	if (!sa_entry)
@@ -521,32 +375,10 @@ static void mlx5e_xfrm_del_state(struct xfrm_state *x)
 
 	if (x->xso.flags & XFRM_OFFLOAD_INBOUND)
 		mlx5e_ipsec_sadb_rx_del(sa_entry);
-=======
-	struct mlx5e_ipsec_sa_entry *sa_entry;
-	struct mlx5_accel_ipsec_sa hw_sa;
-	void *context;
-
-	if (!x->xso.offload_handle)
-		return;
-
-	sa_entry = (struct mlx5e_ipsec_sa_entry *)x->xso.offload_handle;
-	WARN_ON(sa_entry->x != x);
-
-	if (x->xso.flags & XFRM_OFFLOAD_INBOUND)
-		mlx5e_ipsec_sadb_rx_del(sa_entry);
-
-	mlx5e_ipsec_build_hw_sa(MLX5_IPSEC_CMD_DEL_SA, sa_entry, &hw_sa);
-	context = mlx5_accel_ipsec_sa_cmd_exec(sa_entry->ipsec->en_priv->mdev, &hw_sa);
-	if (IS_ERR(context))
-		return;
-
-	sa_entry->context = context;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void mlx5e_xfrm_free_state(struct xfrm_state *x)
 {
-<<<<<<< HEAD
 	struct mlx5e_ipsec_sa_entry *sa_entry = to_ipsec_sa_entry(x);
 
 	if (!sa_entry)
@@ -556,22 +388,6 @@ static void mlx5e_xfrm_free_state(struct xfrm_state *x)
 		flush_workqueue(sa_entry->ipsec->wq);
 		mlx5_accel_esp_free_hw_context(sa_entry->hw_context);
 		mlx5_accel_esp_destroy_xfrm(sa_entry->xfrm);
-=======
-	struct mlx5e_ipsec_sa_entry *sa_entry;
-	int res;
-
-	if (!x->xso.offload_handle)
-		return;
-
-	sa_entry = (struct mlx5e_ipsec_sa_entry *)x->xso.offload_handle;
-	WARN_ON(sa_entry->x != x);
-
-	res = mlx5_accel_ipsec_sa_cmd_wait(sa_entry->context);
-	sa_entry->context = NULL;
-	if (res) {
-		/* Leftover object will leak */
-		return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (x->xso.flags & XFRM_OFFLOAD_INBOUND)
@@ -598,7 +414,6 @@ int mlx5e_ipsec_init(struct mlx5e_priv *priv)
 	ida_init(&ipsec->halloc);
 	ipsec->en_priv = priv;
 	ipsec->en_priv->ipsec = ipsec;
-<<<<<<< HEAD
 	ipsec->no_trailer = !!(mlx5_accel_ipsec_device_caps(priv->mdev) &
 			       MLX5_ACCEL_IPSEC_CAP_RX_NO_TRAILER);
 	ipsec->wq = alloc_ordered_workqueue("mlx5e_ipsec: %s", 0,
@@ -607,8 +422,6 @@ int mlx5e_ipsec_init(struct mlx5e_priv *priv)
 		kfree(ipsec);
 		return -ENOMEM;
 	}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	netdev_dbg(priv->netdev, "IPSec attached to netdevice\n");
 	return 0;
 }
@@ -620,12 +433,9 @@ void mlx5e_ipsec_cleanup(struct mlx5e_priv *priv)
 	if (!ipsec)
 		return;
 
-<<<<<<< HEAD
 	drain_workqueue(ipsec->wq);
 	destroy_workqueue(ipsec->wq);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ida_destroy(&ipsec->halloc);
 	kfree(ipsec);
 	priv->ipsec = NULL;
@@ -646,7 +456,6 @@ static bool mlx5e_ipsec_offload_ok(struct sk_buff *skb, struct xfrm_state *x)
 	return true;
 }
 
-<<<<<<< HEAD
 struct mlx5e_ipsec_modify_state_work {
 	struct work_struct		work;
 	struct mlx5_accel_esp_xfrm_attrs attrs;
@@ -693,17 +502,12 @@ static void mlx5e_xfrm_advance_esn_state(struct xfrm_state *x)
 	WARN_ON(!queue_work(sa_entry->ipsec->wq, &modify_work->work));
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct xfrmdev_ops mlx5e_ipsec_xfrmdev_ops = {
 	.xdo_dev_state_add	= mlx5e_xfrm_add_state,
 	.xdo_dev_state_delete	= mlx5e_xfrm_del_state,
 	.xdo_dev_state_free	= mlx5e_xfrm_free_state,
 	.xdo_dev_offload_ok	= mlx5e_ipsec_offload_ok,
-<<<<<<< HEAD
 	.xdo_dev_state_advance_esn = mlx5e_xfrm_advance_esn_state,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 void mlx5e_ipsec_build_netdev(struct mlx5e_priv *priv)
@@ -714,11 +518,7 @@ void mlx5e_ipsec_build_netdev(struct mlx5e_priv *priv)
 	if (!priv->ipsec)
 		return;
 
-<<<<<<< HEAD
 	if (!(mlx5_accel_ipsec_device_caps(mdev) & MLX5_ACCEL_IPSEC_CAP_ESP) ||
-=======
-	if (!(mlx5_accel_ipsec_device_caps(mdev) & MLX5_ACCEL_IPSEC_ESP) ||
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    !MLX5_CAP_ETH(mdev, swp)) {
 		mlx5_core_dbg(mdev, "mlx5e: ESP and SWP offload not supported\n");
 		return;
@@ -737,11 +537,7 @@ void mlx5e_ipsec_build_netdev(struct mlx5e_priv *priv)
 	netdev->features |= NETIF_F_HW_ESP_TX_CSUM;
 	netdev->hw_enc_features |= NETIF_F_HW_ESP_TX_CSUM;
 
-<<<<<<< HEAD
 	if (!(mlx5_accel_ipsec_device_caps(mdev) & MLX5_ACCEL_IPSEC_CAP_LSO) ||
-=======
-	if (!(mlx5_accel_ipsec_device_caps(mdev) & MLX5_ACCEL_IPSEC_LSO) ||
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    !MLX5_CAP_ETH(mdev, swp_lso)) {
 		mlx5_core_dbg(mdev, "mlx5e: ESP LSO not supported\n");
 		return;

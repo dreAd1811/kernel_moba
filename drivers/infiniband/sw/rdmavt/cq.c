@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
  * Copyright(c) 2016 - 2018 Intel Corporation.
-=======
- * Copyright(c) 2016 Intel Corporation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This file is provided under a dual BSD/GPLv2 license.  When using or
  * redistributing this file, you may do so under either license.
@@ -51,28 +47,17 @@
 
 #include <linux/slab.h>
 #include <linux/vmalloc.h>
-<<<<<<< HEAD
-=======
-#include <linux/kthread.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "cq.h"
 #include "vt.h"
 #include "trace.h"
 
-<<<<<<< HEAD
 static struct workqueue_struct *comp_vector_wq;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * rvt_cq_enter - add a new entry to the completion queue
  * @cq: completion queue
  * @entry: work completion entry to add
-<<<<<<< HEAD
  * @solicited: true if @entry is solicited
-=======
- * @sig: true if @entry is solicited
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This may be called with qp->s_lock held.
  */
@@ -117,12 +102,7 @@ void rvt_cq_enter(struct rvt_cq *cq, struct ib_wc *entry, bool solicited)
 		wc->uqueue[head].opcode = entry->opcode;
 		wc->uqueue[head].vendor_err = entry->vendor_err;
 		wc->uqueue[head].byte_len = entry->byte_len;
-<<<<<<< HEAD
 		wc->uqueue[head].ex.imm_data = entry->ex.imm_data;
-=======
-		wc->uqueue[head].ex.imm_data =
-			(__u32 __force)entry->ex.imm_data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		wc->uqueue[head].qp_num = entry->qp->qp_num;
 		wc->uqueue[head].src_qp = entry->src_qp;
 		wc->uqueue[head].wc_flags = entry->wc_flags;
@@ -141,41 +121,21 @@ void rvt_cq_enter(struct rvt_cq *cq, struct ib_wc *entry, bool solicited)
 	if (cq->notify == IB_CQ_NEXT_COMP ||
 	    (cq->notify == IB_CQ_SOLICITED &&
 	     (solicited || entry->status != IB_WC_SUCCESS))) {
-<<<<<<< HEAD
-=======
-		struct kthread_worker *worker;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * This will cause send_complete() to be called in
 		 * another thread.
 		 */
-<<<<<<< HEAD
 		cq->notify = RVT_CQ_NONE;
 		cq->triggered++;
 		queue_work_on(cq->comp_vector_cpu, comp_vector_wq,
 			      &cq->comptask);
-=======
-		rcu_read_lock();
-		worker = rcu_dereference(cq->rdi->worker);
-		if (likely(worker)) {
-			cq->notify = RVT_CQ_NONE;
-			cq->triggered++;
-			kthread_queue_work(worker, &cq->comptask);
-		}
-		rcu_read_unlock();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	spin_unlock_irqrestore(&cq->lock, flags);
 }
 EXPORT_SYMBOL(rvt_cq_enter);
 
-<<<<<<< HEAD
 static void send_complete(struct work_struct *work)
-=======
-static void send_complete(struct kthread_work *work)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rvt_cq *cq = container_of(work, struct rvt_cq, comptask);
 
@@ -227,10 +187,7 @@ struct ib_cq *rvt_create_cq(struct ib_device *ibdev,
 	struct ib_cq *ret;
 	u32 sz;
 	unsigned int entries = attr->cqe;
-<<<<<<< HEAD
 	int comp_vector = attr->comp_vector;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (attr->flags)
 		return ERR_PTR(-EINVAL);
@@ -238,14 +195,11 @@ struct ib_cq *rvt_create_cq(struct ib_device *ibdev,
 	if (entries < 1 || entries > rdi->dparms.props.max_cqe)
 		return ERR_PTR(-EINVAL);
 
-<<<<<<< HEAD
 	if (comp_vector < 0)
 		comp_vector = 0;
 
 	comp_vector = comp_vector % rdi->ibdev.num_comp_vectors;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Allocate the completion queue structure. */
 	cq = kzalloc_node(sizeof(*cq), GFP_KERNEL, rdi->dparms.node);
 	if (!cq)
@@ -314,7 +268,6 @@ struct ib_cq *rvt_create_cq(struct ib_device *ibdev,
 	 * an error.
 	 */
 	cq->rdi = rdi;
-<<<<<<< HEAD
 	if (rdi->driver_f.comp_vect_cpu_lookup)
 		cq->comp_vector_cpu =
 			rdi->driver_f.comp_vect_cpu_lookup(rdi, comp_vector);
@@ -326,20 +279,11 @@ struct ib_cq *rvt_create_cq(struct ib_device *ibdev,
 	cq->notify = RVT_CQ_NONE;
 	spin_lock_init(&cq->lock);
 	INIT_WORK(&cq->comptask, send_complete);
-=======
-	cq->ibcq.cqe = entries;
-	cq->notify = RVT_CQ_NONE;
-	spin_lock_init(&cq->lock);
-	kthread_init_work(&cq->comptask, send_complete);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cq->queue = wc;
 
 	ret = &cq->ibcq;
 
-<<<<<<< HEAD
 	trace_rvt_create_cq(cq, attr);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	goto done;
 
 bail_ip:
@@ -365,11 +309,7 @@ int rvt_destroy_cq(struct ib_cq *ibcq)
 	struct rvt_cq *cq = ibcq_to_rvtcq(ibcq);
 	struct rvt_dev_info *rdi = cq->rdi;
 
-<<<<<<< HEAD
 	flush_work(&cq->comptask);
-=======
-	kthread_flush_work(&cq->comptask);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_irq(&rdi->n_cqs_lock);
 	rdi->n_cqs_allocated--;
 	spin_unlock_irq(&rdi->n_cqs_lock);
@@ -579,7 +519,6 @@ int rvt_poll_cq(struct ib_cq *ibcq, int num_entries, struct ib_wc *entry)
  *
  * Return: 0 on success
  */
-<<<<<<< HEAD
 int rvt_driver_cq_init(void)
 {
 	comp_vector_wq = alloc_workqueue("%s", WQ_HIGHPRI | WQ_CPU_INTENSIVE,
@@ -587,26 +526,6 @@ int rvt_driver_cq_init(void)
 	if (!comp_vector_wq)
 		return -ENOMEM;
 
-=======
-int rvt_driver_cq_init(struct rvt_dev_info *rdi)
-{
-	int cpu;
-	struct kthread_worker *worker;
-
-	if (rcu_access_pointer(rdi->worker))
-		return 0;
-
-	spin_lock_init(&rdi->n_cqs_lock);
-
-	cpu = cpumask_first(cpumask_of_node(rdi->dparms.node));
-	worker = kthread_create_worker_on_cpu(cpu, 0,
-					      "%s", rdi->dparms.cq_name);
-	if (IS_ERR(worker))
-		return PTR_ERR(worker);
-
-	set_user_nice(worker->task, MIN_NICE);
-	RCU_INIT_POINTER(rdi->worker, worker);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -614,30 +533,8 @@ int rvt_driver_cq_init(struct rvt_dev_info *rdi)
  * rvt_cq_exit - tear down cq reources
  * @rdi: rvt dev structure
  */
-<<<<<<< HEAD
 void rvt_cq_exit(void)
 {
 	destroy_workqueue(comp_vector_wq);
 	comp_vector_wq = NULL;
-=======
-void rvt_cq_exit(struct rvt_dev_info *rdi)
-{
-	struct kthread_worker *worker;
-
-	if (!rcu_access_pointer(rdi->worker))
-		return;
-
-	spin_lock(&rdi->n_cqs_lock);
-	worker = rcu_dereference_protected(rdi->worker,
-					   lockdep_is_held(&rdi->n_cqs_lock));
-	if (!worker) {
-		spin_unlock(&rdi->n_cqs_lock);
-		return;
-	}
-	RCU_INIT_POINTER(rdi->worker, NULL);
-	spin_unlock(&rdi->n_cqs_lock);
-	synchronize_rcu();
-
-	kthread_destroy_worker(worker);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

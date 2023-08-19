@@ -61,15 +61,8 @@ static irqreturn_t sun3_int7(int irq, void *dev_id)
 
 static irqreturn_t sun3_int5(int irq, void *dev_id)
 {
-<<<<<<< HEAD
 	unsigned int cnt;
 
-=======
-	unsigned long flags;
-	unsigned int cnt;
-
-	local_irq_save(flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_SUN3
 	intersil_clear();
 #endif
@@ -83,10 +76,6 @@ static irqreturn_t sun3_int5(int irq, void *dev_id)
 	cnt = kstat_irqs_cpu(irq, 0);
 	if (!(cnt % 20))
 		sun3_leds(led_pattern[cnt % 160 / 20]);
-<<<<<<< HEAD
-=======
-	local_irq_restore(flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return IRQ_HANDLED;
 }
 

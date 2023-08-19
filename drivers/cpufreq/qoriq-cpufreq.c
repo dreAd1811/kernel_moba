@@ -165,11 +165,7 @@ static void freq_table_sort(struct cpufreq_frequency_table *freq_table,
 static int qoriq_cpufreq_cpu_init(struct cpufreq_policy *policy)
 {
 	struct device_node *np;
-<<<<<<< HEAD
 	int i, count;
-=======
-	int i, count, ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 freq;
 	struct clk *clk;
 	const struct clk_hw *hwclk;
@@ -196,25 +192,12 @@ static int qoriq_cpufreq_cpu_init(struct cpufreq_policy *policy)
 	count = clk_hw_get_num_parents(hwclk);
 
 	data->pclk = kcalloc(count, sizeof(struct clk *), GFP_KERNEL);
-<<<<<<< HEAD
 	if (!data->pclk)
 		goto err_nomem2;
 
 	table = kcalloc(count + 1, sizeof(*table), GFP_KERNEL);
 	if (!table)
 		goto err_pclk;
-=======
-	if (!data->pclk) {
-		pr_err("%s: no memory\n", __func__);
-		goto err_nomem2;
-	}
-
-	table = kcalloc(count + 1, sizeof(*table), GFP_KERNEL);
-	if (!table) {
-		pr_err("%s: no memory\n", __func__);
-		goto err_pclk;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < count; i++) {
 		clk = clk_hw_get_parent_by_index(hwclk, i)->clk;
@@ -226,18 +209,7 @@ static int qoriq_cpufreq_cpu_init(struct cpufreq_policy *policy)
 	freq_table_redup(table, count);
 	freq_table_sort(table, count);
 	table[i].frequency = CPUFREQ_TABLE_END;
-<<<<<<< HEAD
 	policy->freq_table = table;
-=======
-
-	/* set the min and max frequency properly */
-	ret = cpufreq_table_validate_and_show(policy, table);
-	if (ret) {
-		pr_err("invalid frequency table: %d\n", ret);
-		goto err_nomem1;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	data->table = table;
 
 	/* update ->cpus if we have cluster, no harm if not */
@@ -253,11 +225,6 @@ static int qoriq_cpufreq_cpu_init(struct cpufreq_policy *policy)
 
 	return 0;
 
-<<<<<<< HEAD
-=======
-err_nomem1:
-	kfree(table);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_pclk:
 	kfree(data->pclk);
 err_nomem2:
@@ -295,25 +262,8 @@ static int qoriq_cpufreq_target(struct cpufreq_policy *policy,
 static void qoriq_cpufreq_ready(struct cpufreq_policy *policy)
 {
 	struct cpu_data *cpud = policy->driver_data;
-<<<<<<< HEAD
 
 	cpud->cdev = of_cpufreq_cooling_register(policy);
-=======
-	struct device_node *np = of_get_cpu_node(policy->cpu, NULL);
-
-	if (of_find_property(np, "#cooling-cells", NULL)) {
-		cpud->cdev = of_cpufreq_cooling_register(np, policy);
-
-		if (IS_ERR(cpud->cdev) && PTR_ERR(cpud->cdev) != -ENOSYS) {
-			pr_err("cpu%d is not running as cooling device: %ld\n",
-					policy->cpu, PTR_ERR(cpud->cdev));
-
-			cpud->cdev = NULL;
-		}
-	}
-
-	of_node_put(np);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct cpufreq_driver qoriq_cpufreq_driver = {

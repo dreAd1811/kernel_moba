@@ -270,10 +270,6 @@ struct exynos_dsi {
 	u32 lanes;
 	u32 mode_flags;
 	u32 format;
-<<<<<<< HEAD
-=======
-	struct videomode vm;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	int state;
 	struct drm_property *brightness;
@@ -884,17 +880,12 @@ static int exynos_dsi_init_link(struct exynos_dsi *dsi)
 
 static void exynos_dsi_set_display_mode(struct exynos_dsi *dsi)
 {
-<<<<<<< HEAD
 	struct drm_display_mode *m = &dsi->encoder.crtc->state->adjusted_mode;
-=======
-	struct videomode *vm = &dsi->vm;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int num_bits_resol = dsi->driver_data->num_bits_resol;
 	u32 reg;
 
 	if (dsi->mode_flags & MIPI_DSI_MODE_VIDEO) {
 		reg = DSIM_CMD_ALLOW(0xf)
-<<<<<<< HEAD
 			| DSIM_STABLE_VFP(m->vsync_start - m->vdisplay)
 			| DSIM_MAIN_VBP(m->vtotal - m->vsync_end);
 		exynos_dsi_write(dsi, DSIM_MVPORCH_REG, reg);
@@ -913,26 +904,6 @@ static void exynos_dsi_set_display_mode(struct exynos_dsi *dsi)
 	exynos_dsi_write(dsi, DSIM_MDRESOL_REG, reg);
 
 	dev_dbg(dsi->dev, "LCD size = %dx%d\n", m->hdisplay, m->vdisplay);
-=======
-			| DSIM_STABLE_VFP(vm->vfront_porch)
-			| DSIM_MAIN_VBP(vm->vback_porch);
-		exynos_dsi_write(dsi, DSIM_MVPORCH_REG, reg);
-
-		reg = DSIM_MAIN_HFP(vm->hfront_porch)
-			| DSIM_MAIN_HBP(vm->hback_porch);
-		exynos_dsi_write(dsi, DSIM_MHPORCH_REG, reg);
-
-		reg = DSIM_MAIN_VSA(vm->vsync_len)
-			| DSIM_MAIN_HSA(vm->hsync_len);
-		exynos_dsi_write(dsi, DSIM_MSYNC_REG, reg);
-	}
-	reg =  DSIM_MAIN_HRESOL(vm->hactive, num_bits_resol) |
-		DSIM_MAIN_VRESOL(vm->vactive, num_bits_resol);
-
-	exynos_dsi_write(dsi, DSIM_MDRESOL_REG, reg);
-
-	dev_dbg(dsi->dev, "LCD size = %dx%d\n", vm->hactive, vm->vactive);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void exynos_dsi_set_display_enable(struct exynos_dsi *dsi, bool enable)
@@ -1293,24 +1264,15 @@ static irqreturn_t exynos_dsi_irq(int irq, void *dev_id)
 
 	if (status & DSIM_INT_SW_RST_RELEASE) {
 		u32 mask = ~(DSIM_INT_RX_DONE | DSIM_INT_SFR_FIFO_EMPTY |
-<<<<<<< HEAD
 			DSIM_INT_SFR_HDR_FIFO_EMPTY | DSIM_INT_RX_ECC_ERR |
 			DSIM_INT_SW_RST_RELEASE);
-=======
-			DSIM_INT_SFR_HDR_FIFO_EMPTY | DSIM_INT_FRAME_DONE |
-			DSIM_INT_RX_ECC_ERR | DSIM_INT_SW_RST_RELEASE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		exynos_dsi_write(dsi, DSIM_INTMSK_REG, mask);
 		complete(&dsi->completed);
 		return IRQ_HANDLED;
 	}
 
 	if (!(status & (DSIM_INT_RX_DONE | DSIM_INT_SFR_FIFO_EMPTY |
-<<<<<<< HEAD
 			DSIM_INT_PLL_STABLE)))
-=======
-			DSIM_INT_FRAME_DONE | DSIM_INT_PLL_STABLE)))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return IRQ_HANDLED;
 
 	if (exynos_dsi_transfer_finish(dsi))
@@ -1517,39 +1479,12 @@ static int exynos_dsi_create_connector(struct drm_encoder *encoder)
 
 	connector->status = connector_status_disconnected;
 	drm_connector_helper_add(connector, &exynos_dsi_connector_helper_funcs);
-<<<<<<< HEAD
 	drm_connector_attach_encoder(connector, encoder);
-=======
-	drm_mode_connector_attach_encoder(connector, encoder);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
 static const struct drm_encoder_helper_funcs exynos_dsi_encoder_helper_funcs = {
-=======
-static void exynos_dsi_mode_set(struct drm_encoder *encoder,
-				struct drm_display_mode *mode,
-				struct drm_display_mode *adjusted_mode)
-{
-	struct exynos_dsi *dsi = encoder_to_dsi(encoder);
-	struct videomode *vm = &dsi->vm;
-	struct drm_display_mode *m = adjusted_mode;
-
-	vm->hactive = m->hdisplay;
-	vm->vactive = m->vdisplay;
-	vm->vfront_porch = m->vsync_start - m->vdisplay;
-	vm->vback_porch = m->vtotal - m->vsync_end;
-	vm->vsync_len = m->vsync_end - m->vsync_start;
-	vm->hfront_porch = m->hsync_start - m->hdisplay;
-	vm->hback_porch = m->htotal - m->hsync_end;
-	vm->hsync_len = m->hsync_end - m->hsync_start;
-}
-
-static const struct drm_encoder_helper_funcs exynos_dsi_encoder_helper_funcs = {
-	.mode_set = exynos_dsi_mode_set,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.enable = exynos_dsi_enable,
 	.disable = exynos_dsi_disable,
 };
@@ -1584,12 +1519,9 @@ static int exynos_dsi_host_attach(struct mipi_dsi_host *host,
 	dsi->format = device->format;
 	dsi->mode_flags = device->mode_flags;
 	dsi->panel = of_drm_find_panel(device->dev.of_node);
-<<<<<<< HEAD
 	if (IS_ERR(dsi->panel))
 		dsi->panel = NULL;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dsi->panel) {
 		drm_panel_attach(dsi->panel, &dsi->connector);
 		dsi->connector.status = connector_status_connected;
@@ -1790,22 +1722,12 @@ static int exynos_dsi_probe(struct platform_device *pdev)
 	ret = devm_regulator_bulk_get(dev, ARRAY_SIZE(dsi->supplies),
 				      dsi->supplies);
 	if (ret) {
-<<<<<<< HEAD
 		dev_info(dev, "failed to get regulators: %d\n", ret);
 		return -EPROBE_DEFER;
 	}
 
 	dsi->clks = devm_kcalloc(dev,
 			dsi->driver_data->num_clks, sizeof(*dsi->clks),
-=======
-		if (ret != -EPROBE_DEFER)
-			dev_info(dev, "failed to get regulators: %d\n", ret);
-		return ret;
-	}
-
-	dsi->clks = devm_kzalloc(dev,
-			sizeof(*dsi->clks) * dsi->driver_data->num_clks,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			GFP_KERNEL);
 	if (!dsi->clks)
 		return -ENOMEM;
@@ -1814,16 +1736,9 @@ static int exynos_dsi_probe(struct platform_device *pdev)
 		dsi->clks[i] = devm_clk_get(dev, clk_names[i]);
 		if (IS_ERR(dsi->clks[i])) {
 			if (strcmp(clk_names[i], "sclk_mipi") == 0) {
-<<<<<<< HEAD
 				strcpy(clk_names[i], OLD_SCLK_MIPI_CLK_NAME);
 				i--;
 				continue;
-=======
-				dsi->clks[i] = devm_clk_get(dev,
-							OLD_SCLK_MIPI_CLK_NAME);
-				if (!IS_ERR(dsi->clks[i]))
-					continue;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 
 			dev_info(dev, "failed to get the clock: %s\n",
@@ -1948,11 +1863,8 @@ err_clk:
 
 static const struct dev_pm_ops exynos_dsi_pm_ops = {
 	SET_RUNTIME_PM_OPS(exynos_dsi_suspend, exynos_dsi_resume, NULL)
-<<<<<<< HEAD
 	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
 				pm_runtime_force_resume)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct platform_driver dsi_driver = {

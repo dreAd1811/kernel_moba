@@ -1,19 +1,8 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * PowerNV OPAL IPMI driver
  *
  * Copyright 2014 IBM Corp.
-<<<<<<< HEAD
-=======
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation; either version 2 of the License, or (at your option)
- * any later version.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #define pr_fmt(fmt)        "ipmi-powernv: " fmt
@@ -30,10 +19,6 @@
 
 struct ipmi_smi_powernv {
 	u64			interface_id;
-<<<<<<< HEAD
-=======
-	struct ipmi_device_id	ipmi_id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ipmi_smi_t		intf;
 	unsigned int		irq;
 
@@ -276,13 +261,7 @@ static int ipmi_powernv_probe(struct platform_device *pdev)
 		goto err_unregister;
 	}
 
-<<<<<<< HEAD
 	rc = ipmi_register_smi(&ipmi_powernv_smi_handlers, ipmi, dev, 0);
-=======
-	/* todo: query actual ipmi_device_id */
-	rc = ipmi_register_smi(&ipmi_powernv_smi_handlers, ipmi,
-			&ipmi->ipmi_id, dev, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc) {
 		dev_warn(dev, "IPMI SMI registration failed (%d)\n", rc);
 		goto err_free_msg;

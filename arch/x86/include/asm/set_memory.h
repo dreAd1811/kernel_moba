@@ -46,10 +46,7 @@ int set_memory_np(unsigned long addr, int numpages);
 int set_memory_4k(unsigned long addr, int numpages);
 int set_memory_encrypted(unsigned long addr, int numpages);
 int set_memory_decrypted(unsigned long addr, int numpages);
-<<<<<<< HEAD
 int set_memory_np_noalias(unsigned long addr, int numpages);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int set_memory_array_uc(unsigned long *addr, int addrinarray);
 int set_memory_array_wc(unsigned long *addr, int addrinarray);
@@ -92,7 +89,6 @@ extern int kernel_set_to_readonly;
 void set_kernel_text_rw(void);
 void set_kernel_text_ro(void);
 
-<<<<<<< HEAD
 #ifdef CONFIG_X86_64
 static inline int set_mce_nospec(unsigned long pfn)
 {
@@ -135,6 +131,4 @@ static inline int clear_mce_nospec(unsigned long pfn)
  */
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* _ASM_X86_SET_MEMORY_H */

@@ -35,19 +35,13 @@
 #include <linux/context_tracking.h>
 
 #include <linux/uaccess.h>
-<<<<<<< HEAD
 #include <linux/pkeys.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/page.h>
 #include <asm/pgtable.h>
 #include <asm/switch_to.h>
 #include <asm/tm.h>
 #include <asm/asm-prototypes.h>
-<<<<<<< HEAD
 #include <asm/debug.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define CREATE_TRACE_POINTS
 #include <trace/events/syscalls.h>
@@ -291,7 +285,6 @@ int ptrace_get_reg(struct task_struct *task, int regno, unsigned long *data)
 	if (regno == PT_DSCR)
 		return get_user_dscr(task, data);
 
-<<<<<<< HEAD
 #ifdef CONFIG_PPC64
 	/*
 	 * softe copies paca->irq_soft_mask variable state. Since irq_soft_mask is
@@ -304,8 +297,6 @@ int ptrace_get_reg(struct task_struct *task, int regno, unsigned long *data)
 	}
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (regno < (sizeof(struct pt_regs) / sizeof(unsigned long))) {
 		*data = ((unsigned long *)task->thread.regs)[regno];
 		return 0;
@@ -1804,7 +1795,6 @@ static int pmu_set(struct task_struct *target,
 	return ret;
 }
 #endif
-<<<<<<< HEAD
 
 #ifdef CONFIG_PPC_MEM_KEYS
 static int pkey_active(struct task_struct *target,
@@ -1860,8 +1850,6 @@ static int pkey_set(struct task_struct *target,
 }
 #endif /* CONFIG_PPC_MEM_KEYS */
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * These are our native regset flavors.
  */
@@ -1896,12 +1884,9 @@ enum powerpc_regset {
 	REGSET_EBB,		/* EBB registers */
 	REGSET_PMR,		/* Performance Monitor Registers */
 #endif
-<<<<<<< HEAD
 #ifdef CONFIG_PPC_MEM_KEYS
 	REGSET_PKEY,		/* AMR register */
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct user_regset native_regsets[] = {
@@ -2007,7 +1992,6 @@ static const struct user_regset native_regsets[] = {
 		.active = pmu_active, .get = pmu_get, .set = pmu_set
 	},
 #endif
-<<<<<<< HEAD
 #ifdef CONFIG_PPC_MEM_KEYS
 	[REGSET_PKEY] = {
 		.core_note_type = NT_PPC_PKEY, .n = ELF_NPKEY,
@@ -2015,8 +1999,6 @@ static const struct user_regset native_regsets[] = {
 		.active = pkey_active, .get = pkey_get, .set = pkey_set
 	},
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct user_regset_view user_ppc_native_view = {
@@ -2403,10 +2385,7 @@ static int ptrace_set_debugreg(struct task_struct *task, unsigned long addr,
 	struct perf_event_attr attr;
 #endif /* CONFIG_HAVE_HW_BREAKPOINT */
 #ifndef CONFIG_PPC_ADV_DEBUG_REGS
-<<<<<<< HEAD
 	bool set_bp = true;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct arch_hw_breakpoint hw_brk;
 #endif
 
@@ -2440,16 +2419,10 @@ static int ptrace_set_debugreg(struct task_struct *task, unsigned long addr,
 	hw_brk.address = data & (~HW_BRK_TYPE_DABR);
 	hw_brk.type = (data & HW_BRK_TYPE_DABR) | HW_BRK_TYPE_PRIV_ALL;
 	hw_brk.len = 8;
-<<<<<<< HEAD
 	set_bp = (data) && (hw_brk.type & HW_BRK_TYPE_RDWR);
 #ifdef CONFIG_HAVE_HW_BREAKPOINT
 	bp = thread->ptrace_bps[0];
 	if (!set_bp) {
-=======
-#ifdef CONFIG_HAVE_HW_BREAKPOINT
-	bp = thread->ptrace_bps[0];
-	if ((!data) || !(hw_brk.type & HW_BRK_TYPE_RDWR)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (bp) {
 			unregister_hw_breakpoint(bp);
 			thread->ptrace_bps[0] = NULL;
@@ -2487,12 +2460,9 @@ static int ptrace_set_debugreg(struct task_struct *task, unsigned long addr,
 		return PTR_ERR(bp);
 	}
 
-<<<<<<< HEAD
 #else /* !CONFIG_HAVE_HW_BREAKPOINT */
 	if (set_bp && (!ppc_breakpoint_available()))
 		return -ENODEV;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_HAVE_HW_BREAKPOINT */
 	task->thread.hw_brk = hw_brk;
 #else /* CONFIG_PPC_ADV_DEBUG_REGS */
@@ -2947,12 +2917,9 @@ static long ppc_set_hwdebug(struct task_struct *child,
 	if (child->thread.hw_brk.address)
 		return -ENOSPC;
 
-<<<<<<< HEAD
 	if (!ppc_breakpoint_available())
 		return -ENODEV;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	child->thread.hw_brk = brk;
 
 	return 1;
@@ -3101,14 +3068,10 @@ long arch_ptrace(struct task_struct *child, long request,
 #endif
 #else /* !CONFIG_PPC_ADV_DEBUG_REGS */
 		dbginfo.num_instruction_bps = 0;
-<<<<<<< HEAD
 		if (ppc_breakpoint_available())
 			dbginfo.num_data_bps = 1;
 		else
 			dbginfo.num_data_bps = 0;
-=======
-		dbginfo.num_data_bps = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dbginfo.num_condition_regs = 0;
 #ifdef CONFIG_PPC64
 		dbginfo.data_bp_alignment = 8;
@@ -3125,41 +3088,19 @@ long arch_ptrace(struct task_struct *child, long request,
 #endif /* CONFIG_HAVE_HW_BREAKPOINT */
 #endif /* CONFIG_PPC_ADV_DEBUG_REGS */
 
-<<<<<<< HEAD
 		if (copy_to_user(datavp, &dbginfo,
 				 sizeof(struct ppc_debug_info)))
 			return -EFAULT;
 		return 0;
-=======
-		if (!access_ok(VERIFY_WRITE, datavp,
-			       sizeof(struct ppc_debug_info)))
-			return -EFAULT;
-		ret = __copy_to_user(datavp, &dbginfo,
-				     sizeof(struct ppc_debug_info)) ?
-		      -EFAULT : 0;
-		break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	case PPC_PTRACE_SETHWDEBUG: {
 		struct ppc_hw_breakpoint bp_info;
 
-<<<<<<< HEAD
 		if (copy_from_user(&bp_info, datavp,
 				   sizeof(struct ppc_hw_breakpoint)))
 			return -EFAULT;
 		return ppc_set_hwdebug(child, &bp_info);
-=======
-		if (!access_ok(VERIFY_READ, datavp,
-			       sizeof(struct ppc_hw_breakpoint)))
-			return -EFAULT;
-		ret = __copy_from_user(&bp_info, datavp,
-				       sizeof(struct ppc_hw_breakpoint)) ?
-		      -EFAULT : 0;
-		if (!ret)
-			ret = ppc_set_hwdebug(child, &bp_info);
-		break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	case PPC_PTRACE_DELHWDEBUG: {

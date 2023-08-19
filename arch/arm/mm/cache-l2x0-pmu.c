@@ -293,11 +293,7 @@ static bool l2x0_pmu_group_is_valid(struct perf_event *event)
 	else if (!is_software_event(leader))
 		return false;
 
-<<<<<<< HEAD
 	for_each_sibling_event(sibling, leader) {
-=======
-	list_for_each_entry(sibling, &leader->sibling_list, group_entry) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (sibling->pmu == pmu)
 			num_hw++;
 		else if (!is_software_event(sibling))

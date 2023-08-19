@@ -148,13 +148,8 @@ struct stv0900_short_frames_car_loop_optim_vs_mod {
 
 /* Cut 1.x Tracking carrier loop carrier QPSK 1/2 to 8PSK 9/10 long Frame */
 static const struct stv0900_car_loop_optim FE_STV0900_S2CarLoop[14] = {
-<<<<<<< HEAD
 	/*Modcod		2MPon	2MPoff	5MPon	5MPoff	10MPon
 				10MPoff	20MPon	20MPoff	30MPon	30MPoff */
-=======
-	/*Modcod		2MPon 	2MPoff	5MPon 	5MPoff	10MPon
-				10MPoff	20MPon 	20MPoff	30MPon 	30MPoff */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ STV0900_QPSK_12,	0x1C,	0x0D,	0x1B,	0x2C,	0x3A,
 				0x1C,	0x2A,	0x3B,	0x2A,	0x1B },
 	{ STV0900_QPSK_35,	0x2C,	0x0D,	0x2B,	0x2C,	0x3A,
@@ -181,24 +176,15 @@ static const struct stv0900_car_loop_optim FE_STV0900_S2CarLoop[14] = {
 				0x0B,	0x39,	0x1A,	0x19,	0x0A },
 	{ STV0900_8PSK_89,	0x3B,	0x3B,	0x0B,	0x2B,	0x2A,
 				0x0B,	0x39,	0x1A,	0x29,	0x39 },
-<<<<<<< HEAD
 	{ STV0900_8PSK_910,	0x3B,	0x3B,	0x0B,	0x2B,	0x2A,
-=======
-	{ STV0900_8PSK_910,	0x3B,	0x3B, 	0x0B,	0x2B, 	0x2A,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				0x0B,	0x39,	0x1A,	0x29,	0x39 }
 };
 
 
 /* Cut 2.0 Tracking carrier loop carrier QPSK 1/2 to 8PSK 9/10 long Frame */
 static const struct stv0900_car_loop_optim FE_STV0900_S2CarLoopCut20[14] = {
-<<<<<<< HEAD
 	/* Modcod		2MPon	2MPoff	5MPon	5MPoff	10MPon
 				10MPoff	20MPon	20MPoff	30MPon	30MPoff */
-=======
-	/* Modcod		2MPon 	2MPoff	5MPon 	5MPoff	10MPon
-				10MPoff	20MPon 	20MPoff	30MPon 	30MPoff */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ STV0900_QPSK_12,	0x1F,	0x3F,	0x1E,	0x3F,	0x3D,
 				0x1F,	0x3D,	0x3E,	0x3D,	0x1E },
 	{ STV0900_QPSK_35,	0x2F,	0x3F,	0x2E,	0x2F,	0x3D,
@@ -225,11 +211,7 @@ static const struct stv0900_car_loop_optim FE_STV0900_S2CarLoopCut20[14] = {
 				0x1e,	0x3c,	0x2d,	0x2c,	0x1d },
 	{ STV0900_8PSK_89,	0x3e,	0x3e,	0x1e,	0x2e,	0x3d,
 				0x1e,	0x0d,	0x2d,	0x3c,	0x1d },
-<<<<<<< HEAD
 	{ STV0900_8PSK_910,	0x3e,	0x3e,	0x1e,	0x2e,	0x3d,
-=======
-	{ STV0900_8PSK_910,	0x3e,	0x3e, 	0x1e,	0x2e, 	0x3d,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				0x1e,	0x1d,	0x2d,	0x0d,	0x1d },
 };
 
@@ -237,13 +219,8 @@ static const struct stv0900_car_loop_optim FE_STV0900_S2CarLoopCut20[14] = {
 
 /* Cut 2.0 Tracking carrier loop carrier 16APSK 2/3 to 32APSK 9/10 long Frame */
 static const struct stv0900_car_loop_optim FE_STV0900_S2APSKCarLoopCut20[11] = {
-<<<<<<< HEAD
 	/* Modcod		2MPon	2MPoff	5MPon	5MPoff	10MPon
 				10MPoff	20MPon	20MPoff	30MPon	30MPoff */
-=======
-	/* Modcod		2MPon 	2MPoff	5MPon 	5MPoff	10MPon
-				10MPoff	20MPon 	20MPoff	30MPon 	30MPoff */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ STV0900_16APSK_23,	0x0C,	0x0C,	0x0C,	0x0C,	0x1D,
 				0x0C,	0x3C,	0x0C,	0x2C,	0x0C },
 	{ STV0900_16APSK_34,	0x0C,	0x0C,	0x0C,	0x0C,	0x0E,
@@ -271,13 +248,8 @@ static const struct stv0900_car_loop_optim FE_STV0900_S2APSKCarLoopCut20[11] = {
 
 /* Cut 2.0 Tracking carrier loop carrier QPSK 1/4 to QPSK 2/5 long Frame */
 static const struct stv0900_car_loop_optim FE_STV0900_S2LowQPCarLoopCut20[3] = {
-<<<<<<< HEAD
 	/* Modcod		2MPon	2MPoff	5MPon	5MPoff	10MPon
 				10MPoff	20MPon	20MPoff	30MPon	30MPoff */
-=======
-	/* Modcod		2MPon 	2MPoff	5MPon 	5MPoff	10MPon
-				10MPoff	20MPon 	20MPoff	30MPon 	30MPoff */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ STV0900_QPSK_14,	0x0F,	0x3F,	0x0E,	0x3F,	0x2D,
 				0x2F,	0x2D,	0x1F,	0x3D,	0x3E },
 	{ STV0900_QPSK_13,	0x0F,	0x3F,	0x0E,	0x3F,	0x2D,
@@ -303,17 +275,10 @@ struct stv0900_short_frames_car_loop_optim FE_STV0900_S2ShortCarLoop[4] = {
 };
 
 static	const struct stv0900_car_loop_optim FE_STV0900_S2CarLoopCut30[14] = {
-<<<<<<< HEAD
 	/*Modcod		2MPon	2MPoff	5MPon	5MPoff	10MPon
 				10MPoff	20MPon	20MPoff	30MPon	30MPoff	*/
 	{ STV0900_QPSK_12,	0x3C,	0x2C,	0x0C,	0x2C,	0x1B,
 				0x2C,	0x1B,	0x1C,	0x0B,	0x3B },
-=======
-	/*Modcod		2MPon 	2MPoff	5MPon 	5MPoff	10MPon
-				10MPoff	20MPon 	20MPoff	30MPon 	30MPoff	*/
-	{ STV0900_QPSK_12,	0x3C,	0x2C,	0x0C,	0x2C,	0x1B,
-				0x2C,	0x1B,	0x1C,	0x0B, 	0x3B },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ STV0900_QPSK_35,	0x0D,	0x0D,	0x0C,	0x0D,	0x1B,
 				0x3C,	0x1B,	0x1C,	0x0B,	0x3B },
 	{ STV0900_QPSK_23,	0x1D,	0x0D,	0x0C,	0x1D,	0x2B,
@@ -344,13 +309,8 @@ static	const struct stv0900_car_loop_optim FE_STV0900_S2CarLoopCut30[14] = {
 
 static	const
 struct stv0900_car_loop_optim FE_STV0900_S2APSKCarLoopCut30[11] = {
-<<<<<<< HEAD
 	/*Modcod		2MPon	2MPoff	5MPon	5MPoff	10MPon
 				10MPoff	20MPon	20MPoff	30MPon	30MPoff	*/
-=======
-	/*Modcod		2MPon 	2MPoff	5MPon 	5MPoff	10MPon
-				10MPoff	20MPon 	20MPoff	30MPon 	30MPoff	*/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ STV0900_16APSK_23,	0x0A,	0x0A,	0x0A,	0x0A,	0x1A,
 				0x0A,	0x3A,	0x0A,	0x2A,	0x0A },
 	{ STV0900_16APSK_34,	0x0A,	0x0A,	0x0A,	0x0A,	0x0B,
@@ -377,13 +337,8 @@ struct stv0900_car_loop_optim FE_STV0900_S2APSKCarLoopCut30[11] = {
 
 static	const
 struct stv0900_car_loop_optim FE_STV0900_S2LowQPCarLoopCut30[3] = {
-<<<<<<< HEAD
 	/*Modcod		2MPon	2MPoff	5MPon	5MPoff	10MPon
 				10MPoff	20MPon	20MPoff	30MPon	30MPoff*/
-=======
-	/*Modcod		2MPon 	2MPoff	5MPon 	5MPoff	10MPon
-				10MPoff	20MPon 	20MPoff	30MPon 	30MPoff*/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ STV0900_QPSK_14,	0x0C,	0x3C,	0x0B,	0x3C,	0x2A,
 				0x2C,	0x2A,	0x1C,	0x3A,	0x3B },
 	{ STV0900_QPSK_13,	0x0C,	0x3C,	0x0B,	0x3C,	0x2A,

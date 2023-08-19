@@ -100,11 +100,7 @@ nvkm_falcon_fini(struct nvkm_engine *engine, bool suspend)
 	const u32 base = falcon->addr;
 
 	if (!suspend) {
-<<<<<<< HEAD
 		nvkm_memory_unref(&falcon->core);
-=======
-		nvkm_memory_del(&falcon->core);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (falcon->external) {
 			vfree(falcon->data.data);
 			vfree(falcon->code.data);

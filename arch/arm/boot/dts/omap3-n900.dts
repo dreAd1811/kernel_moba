@@ -35,11 +35,8 @@
 		i2c1 = &i2c1;
 		i2c2 = &i2c2;
 		i2c3 = &i2c3;
-<<<<<<< HEAD
 		display0 = &lcd;
 		display1 = &tv;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	cpus {
@@ -563,11 +560,7 @@
 	tlv320aic3x: tlv320aic3x@18 {
 		compatible = "ti,tlv320aic3x";
 		reg = <0x18>;
-<<<<<<< HEAD
 		reset-gpios = <&gpio2 28 GPIO_ACTIVE_LOW>; /* 60 */
-=======
-		gpio-reset = <&gpio2 28 GPIO_ACTIVE_HIGH>; /* 60 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ai3x-gpio-func = <
 			0 /* AIC3X_GPIO1_FUNC_DISABLED */
 			5 /* AIC3X_GPIO2_FUNC_DIGITAL_MIC_INPUT */
@@ -584,11 +577,7 @@
 	tlv320aic3x_aux: tlv320aic3x@19 {
 		compatible = "ti,tlv320aic3x";
 		reg = <0x19>;
-<<<<<<< HEAD
 		reset-gpios = <&gpio2 28 GPIO_ACTIVE_LOW>; /* 60 */
-=======
-		gpio-reset = <&gpio2 28 GPIO_ACTIVE_HIGH>; /* 60 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		AVDD-supply = <&vmmc2>;
 		DRVDD-supply = <&vmmc2>;
@@ -684,10 +673,7 @@
 	bq27200: bq27200@55 {
 		compatible = "ti,bq27200";
 		reg = <0x55>;
-<<<<<<< HEAD
 		power-supplies = <&bq24150a>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	/* Stereo headphone amplifier */
@@ -795,11 +781,8 @@
 
 		reset-gpio = <&gpio4 6 GPIO_ACTIVE_HIGH>; /* 102 */
 
-<<<<<<< HEAD
 		lens-focus = <&ad5820>;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		port {
 			csi_cam1: endpoint {
 				bus-type = <3>; /* CCP2 */
@@ -813,11 +796,7 @@
 	};
 
 	/* D/A converter for auto-focus */
-<<<<<<< HEAD
 	ad5820: dac@c {
-=======
-	ad5820: dac@0c {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "adi,ad5820";
 		reg = <0x0c>;
 
@@ -864,10 +843,7 @@
 	onenand@0,0 {
 		#address-cells = <1>;
 		#size-cells = <1>;
-<<<<<<< HEAD
 		compatible = "ti,omap2-onenand";
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0 0 0x20000>;	/* CS0, offset 0, IO size 128K */
 
 		gpmc,sync-read;
@@ -995,11 +971,7 @@
 		ti,esd-recovery-timeout-ms = <8000>;
 	};
 
-<<<<<<< HEAD
 	lcd: acx565akm@2 {
-=======
-	acx565akm@2 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "sony,acx565akm";
 		spi-max-frequency = <6000000>;
 		reg = <2>;

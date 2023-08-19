@@ -52,11 +52,7 @@ static inline int test_and_clear_bit(int nr, volatile void *addr)
 	"1:	R12 = memw_locked(R10);\n"
 	"	{ P0 = tstbit(R12,R11); R12 = clrbit(R12,R11); }\n"
 	"	memw_locked(R10,P1) = R12;\n"
-<<<<<<< HEAD
 	"	{if !P1 jump 1b; %0 = mux(P0,#1,#0);}\n"
-=======
-	"	{if (!P1) jump 1b; %0 = mux(P0,#1,#0);}\n"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	: "=&r" (oldval)
 	: "r" (addr), "r" (nr)
 	: "r10", "r11", "r12", "p0", "p1", "memory"
@@ -80,11 +76,7 @@ static inline int test_and_set_bit(int nr, volatile void *addr)
 	"1:	R12 = memw_locked(R10);\n"
 	"	{ P0 = tstbit(R12,R11); R12 = setbit(R12,R11); }\n"
 	"	memw_locked(R10,P1) = R12;\n"
-<<<<<<< HEAD
 	"	{if !P1 jump 1b; %0 = mux(P0,#1,#0);}\n"
-=======
-	"	{if (!P1) jump 1b; %0 = mux(P0,#1,#0);}\n"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	: "=&r" (oldval)
 	: "r" (addr), "r" (nr)
 	: "r10", "r11", "r12", "p0", "p1", "memory"
@@ -110,11 +102,7 @@ static inline int test_and_change_bit(int nr, volatile void *addr)
 	"1:	R12 = memw_locked(R10);\n"
 	"	{ P0 = tstbit(R12,R11); R12 = togglebit(R12,R11); }\n"
 	"	memw_locked(R10,P1) = R12;\n"
-<<<<<<< HEAD
 	"	{if !P1 jump 1b; %0 = mux(P0,#1,#0);}\n"
-=======
-	"	{if (!P1) jump 1b; %0 = mux(P0,#1,#0);}\n"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	: "=&r" (oldval)
 	: "r" (addr), "r" (nr)
 	: "r10", "r11", "r12", "p0", "p1", "memory"
@@ -249,11 +237,7 @@ static inline int ffs(int x)
 	int r;
 
 	asm("{ P0 = cmp.eq(%1,#0); %0 = ct0(%1);}\n"
-<<<<<<< HEAD
 		"{ if P0 %0 = #0; if !P0 %0 = add(%0,#1);}\n"
-=======
-		"{ if (P0) %0 = #0; if (!P0) %0 = add(%0,#1);}\n"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		: "=&r" (r)
 		: "r" (x)
 		: "p0");

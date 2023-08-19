@@ -359,12 +359,8 @@ static enum mwifiex_wmm_ac_e
 mwifiex_wmm_convert_tos_to_ac(struct mwifiex_adapter *adapter, u32 tos)
 {
 	/* Map of TOS UP values to WMM AC */
-<<<<<<< HEAD
 	static const enum mwifiex_wmm_ac_e tos_to_ac[] = {
 		WMM_AC_BE,
-=======
-	const enum mwifiex_wmm_ac_e tos_to_ac[] = { WMM_AC_BE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		WMM_AC_BK,
 		WMM_AC_BK,
 		WMM_AC_BE,
@@ -603,11 +599,7 @@ mwifiex_clean_txrx(struct mwifiex_private *priv)
 	memcpy(tos_to_tid, ac_to_tid, sizeof(tos_to_tid));
 
 	if (priv->adapter->if_ops.clean_pcie_ring &&
-<<<<<<< HEAD
 	    !test_bit(MWIFIEX_SURPRISE_REMOVED, &priv->adapter->work_flags))
-=======
-	    !priv->adapter->surprise_removed)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		priv->adapter->if_ops.clean_pcie_ring(priv->adapter);
 	spin_unlock_irqrestore(&priv->wmm.ra_list_spinlock, flags);
 
@@ -985,13 +977,6 @@ int mwifiex_ret_wmm_get_status(struct mwifiex_private *priv,
 				    "WMM Parameter Set Count: %d\n",
 				    wmm_param_ie->qos_info_bitmap & mask);
 
-<<<<<<< HEAD
-=======
-			if (wmm_param_ie->vend_hdr.len + 2 >
-				sizeof(struct ieee_types_wmm_parameter))
-				break;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			memcpy((u8 *) &priv->curr_bss_params.bss_descriptor.
 			       wmm_ie, wmm_param_ie,
 			       wmm_param_ie->vend_hdr.len + 2);

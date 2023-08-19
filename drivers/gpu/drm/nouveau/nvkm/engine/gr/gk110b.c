@@ -82,10 +82,7 @@ gk110b_gr_pack_mmio[] = {
 	{ gf119_gr_init_gpm_0 },
 	{ gk110_gr_init_gpc_unk_1 },
 	{ gf100_gr_init_gcc_0 },
-<<<<<<< HEAD
 	{ gk104_gr_init_gpc_unk_2 },
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ gk104_gr_init_tpccs_0 },
 	{ gk110_gr_init_tex_0 },
 	{ gk104_gr_init_pe_0 },
@@ -106,7 +103,6 @@ gk110b_gr_pack_mmio[] = {
 
 static const struct gf100_gr_func
 gk110b_gr = {
-<<<<<<< HEAD
 	.oneinit_tiles = gf100_gr_oneinit_tiles,
 	.oneinit_sm_id = gf100_gr_oneinit_sm_id,
 	.init = gf100_gr_init,
@@ -124,21 +120,13 @@ gk110b_gr = {
 	.init_shader_exceptions = gf100_gr_init_shader_exceptions,
 	.init_400054 = gf100_gr_init_400054,
 	.trap_mp = gf100_gr_trap_mp,
-=======
-	.init = gk104_gr_init,
-	.init_rop_active_fbps = gk104_gr_init_rop_active_fbps,
-	.init_ppc_exceptions = gk104_gr_init_ppc_exceptions,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.mmio = gk110b_gr_pack_mmio,
 	.fecs.ucode = &gk110_gr_fecs_ucode,
 	.gpccs.ucode = &gk110_gr_gpccs_ucode,
 	.rops = gf100_gr_rops,
 	.ppc_nr = 2,
 	.grctx = &gk110b_grctx,
-<<<<<<< HEAD
 	.zbc = &gf100_gr_zbc,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.sclass = {
 		{ -1, -1, FERMI_TWOD_A },
 		{ -1, -1, KEPLER_INLINE_TO_MEMORY_B },

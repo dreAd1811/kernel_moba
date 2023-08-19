@@ -40,10 +40,7 @@
 #include <linux/string.h>
 #include <linux/etherdevice.h>
 #include "qed.h"
-<<<<<<< HEAD
 #include "qed_cxt.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "qed_dcbx.h"
 #include "qed_hsi.h"
 #include "qed_hw.h"
@@ -662,7 +659,6 @@ int qed_mcp_cmd(struct qed_hwfn *p_hwfn,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int
 qed_mcp_nvm_wr_cmd(struct qed_hwfn *p_hwfn,
 		   struct qed_ptt *p_ptt,
@@ -692,8 +688,6 @@ qed_mcp_nvm_wr_cmd(struct qed_hwfn *p_hwfn,
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int qed_mcp_nvm_rd_cmd(struct qed_hwfn *p_hwfn,
 		       struct qed_ptt *p_ptt,
 		       u32 cmd,
@@ -1388,11 +1382,7 @@ static void qed_mcp_handle_link_change(struct qed_hwfn *p_hwfn,
 	if (p_hwfn->mcp_info->capabilities & FW_MB_PARAM_FEATURE_SUPPORT_EEE)
 		qed_mcp_read_eee_config(p_hwfn, p_ptt, p_link);
 
-<<<<<<< HEAD
 	qed_link_update(p_hwfn);
-=======
-	qed_link_update(p_hwfn, p_ptt);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	spin_unlock_bh(&p_hwfn->mcp_info->link_lock);
 }
@@ -1591,7 +1581,6 @@ static void qed_mcp_update_stag(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt)
 	p_hwfn->mcp_info->func_info.ovlan = (u16)shmem_info.ovlan_stag &
 						 FUNC_MF_CFG_OV_STAG_MASK;
 	p_hwfn->hw_info.ovlan = p_hwfn->mcp_info->func_info.ovlan;
-<<<<<<< HEAD
 	if (test_bit(QED_MF_OVLAN_CLSS, &p_hwfn->cdev->mf_bits)) {
 		if (p_hwfn->hw_info.ovlan != QED_MCP_VLAN_UNSET) {
 			qed_wr(p_hwfn, p_ptt, NIG_REG_LLH_FUNC_TAG_VALUE,
@@ -1615,21 +1604,11 @@ static void qed_mcp_update_stag(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt)
 	DP_VERBOSE(p_hwfn, QED_MSG_SP, "ovlan  = %d hw_mode = 0x%x\n",
 		   p_hwfn->mcp_info->func_info.ovlan, p_hwfn->hw_info.hw_mode);
 
-=======
-	if ((p_hwfn->hw_info.hw_mode & BIT(MODE_MF_SD)) &&
-	    (p_hwfn->hw_info.ovlan != QED_MCP_VLAN_UNSET)) {
-		qed_wr(p_hwfn, p_ptt,
-		       NIG_REG_LLH_FUNC_TAG_VALUE, p_hwfn->hw_info.ovlan);
-		qed_sp_pf_update_stag(p_hwfn);
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Acknowledge the MFW */
 	qed_mcp_cmd(p_hwfn, p_ptt, DRV_MSG_CODE_S_TAG_UPDATE_ACK, 0,
 		    &resp, &param);
 }
 
-<<<<<<< HEAD
 void qed_mcp_read_ufp_config(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt)
 {
 	struct public_func shmem_info;
@@ -1706,8 +1685,6 @@ qed_mcp_handle_ufp_event(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int qed_mcp_handle_events(struct qed_hwfn *p_hwfn,
 			  struct qed_ptt *p_ptt)
 {
@@ -1751,12 +1728,9 @@ int qed_mcp_handle_events(struct qed_hwfn *p_hwfn,
 			qed_dcbx_mib_update_event(p_hwfn, p_ptt,
 						  QED_DCBX_OPERATIONAL_MIB);
 			break;
-<<<<<<< HEAD
 		case MFW_DRV_MSG_OEM_CFG_UPDATE:
 			qed_mcp_handle_ufp_event(p_hwfn, p_ptt);
 			break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case MFW_DRV_MSG_TRANSCEIVER_STATE_CHANGE:
 			qed_mcp_handle_transceiver_change(p_hwfn, p_ptt);
 			break;
@@ -1772,11 +1746,8 @@ int qed_mcp_handle_events(struct qed_hwfn *p_hwfn,
 		case MFW_DRV_MSG_S_TAG_UPDATE:
 			qed_mcp_update_stag(p_hwfn, p_ptt);
 			break;
-<<<<<<< HEAD
 		case MFW_DRV_MSG_GET_TLV_REQ:
 			qed_mfw_tlv_req(p_hwfn);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		default:
 			DP_INFO(p_hwfn, "Unimplemented MFW message %d\n", i);
@@ -1878,19 +1849,12 @@ int qed_mcp_get_mbi_ver(struct qed_hwfn *p_hwfn,
 	return 0;
 }
 
-<<<<<<< HEAD
 int qed_mcp_get_media_type(struct qed_dev *cdev, u32 *p_media_type)
 {
 	struct qed_hwfn *p_hwfn = &cdev->hwfns[0];
 	struct qed_ptt  *p_ptt;
 
 	if (IS_VF(cdev))
-=======
-int qed_mcp_get_media_type(struct qed_hwfn *p_hwfn,
-			   struct qed_ptt *p_ptt, u32 *p_media_type)
-{
-	if (IS_VF(p_hwfn->cdev))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	if (!qed_mcp_is_init(p_hwfn)) {
@@ -1898,7 +1862,6 @@ int qed_mcp_get_media_type(struct qed_hwfn *p_hwfn,
 		return -EBUSY;
 	}
 
-<<<<<<< HEAD
 	*p_media_type = MEDIA_UNSPECIFIED;
 
 	p_ptt = qed_ptt_acquire(p_hwfn);
@@ -1909,17 +1872,6 @@ int qed_mcp_get_media_type(struct qed_hwfn *p_hwfn,
 			       offsetof(struct public_port, media_type));
 
 	qed_ptt_release(p_hwfn, p_ptt);
-=======
-	if (!p_ptt) {
-		*p_media_type = MEDIA_UNSPECIFIED;
-		return -EINVAL;
-	}
-
-	*p_media_type = qed_rd(p_hwfn, p_ptt,
-			       p_hwfn->mcp_info->port_addr +
-			       offsetof(struct public_port,
-					media_type));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -1968,21 +1920,12 @@ qed_mcp_get_shmem_proto_mfw(struct qed_hwfn *p_hwfn,
 	case FW_MB_PARAM_GET_PF_RDMA_ROCE:
 		*p_proto = QED_PCI_ETH_ROCE;
 		break;
-<<<<<<< HEAD
 	case FW_MB_PARAM_GET_PF_RDMA_IWARP:
 		*p_proto = QED_PCI_ETH_IWARP;
 		break;
 	case FW_MB_PARAM_GET_PF_RDMA_BOTH:
 		*p_proto = QED_PCI_ETH_RDMA;
 		break;
-=======
-	case FW_MB_PARAM_GET_PF_RDMA_BOTH:
-		DP_NOTICE(p_hwfn,
-			  "Current day drivers don't support RoCE & iWARP. Default to RoCE-only\n");
-		*p_proto = QED_PCI_ETH_ROCE;
-		break;
-	case FW_MB_PARAM_GET_PF_RDMA_IWARP:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		DP_NOTICE(p_hwfn,
 			  "MFW answers GET_PF_RDMA_PROTOCOL but param is %08x\n",
@@ -2554,11 +2497,7 @@ int qed_mcp_nvm_read(struct qed_dev *cdev, u32 addr, u8 *p_buf, u32 len)
 					DRV_MSG_CODE_NVM_READ_NVRAM,
 					addr + offset +
 					(bytes_to_copy <<
-<<<<<<< HEAD
 					 DRV_MB_PARAM_NVM_LEN_OFFSET),
-=======
-					 DRV_MB_PARAM_NVM_LEN_SHIFT),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					&resp, &resp_param,
 					&read_len,
 					(u32 *)(p_buf + offset));
@@ -2585,7 +2524,6 @@ int qed_mcp_nvm_read(struct qed_dev *cdev, u32 addr, u8 *p_buf, u32 len)
 	return rc;
 }
 
-<<<<<<< HEAD
 int qed_mcp_nvm_resp(struct qed_dev *cdev, u8 *p_buf)
 {
 	struct qed_hwfn *p_hwfn = QED_LEADING_HWFN(cdev);
@@ -2731,8 +2669,6 @@ int qed_mcp_phy_sfp_read(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt,
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int qed_mcp_bist_register_test(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt)
 {
 	u32 drv_mb_param = 0, rsp, param;
@@ -2775,15 +2711,9 @@ int qed_mcp_bist_clock_test(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt)
 	return rc;
 }
 
-<<<<<<< HEAD
 int qed_mcp_bist_nvm_get_num_images(struct qed_hwfn *p_hwfn,
 				    struct qed_ptt *p_ptt,
 				    u32 *num_images)
-=======
-int qed_mcp_bist_nvm_test_get_num_images(struct qed_hwfn *p_hwfn,
-					 struct qed_ptt *p_ptt,
-					 u32 *num_images)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 drv_mb_param = 0, rsp;
 	int rc = 0;
@@ -2802,17 +2732,10 @@ int qed_mcp_bist_nvm_test_get_num_images(struct qed_hwfn *p_hwfn,
 	return rc;
 }
 
-<<<<<<< HEAD
 int qed_mcp_bist_nvm_get_image_att(struct qed_hwfn *p_hwfn,
 				   struct qed_ptt *p_ptt,
 				   struct bist_nvm_image_att *p_image_att,
 				   u32 image_index)
-=======
-int qed_mcp_bist_nvm_test_get_image_att(struct qed_hwfn *p_hwfn,
-					struct qed_ptt *p_ptt,
-					struct bist_nvm_image_att *p_image_att,
-					u32 image_index)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 buf_size = 0, param, resp = 0, resp_param = 0;
 	int rc;
@@ -2836,7 +2759,6 @@ int qed_mcp_bist_nvm_test_get_image_att(struct qed_hwfn *p_hwfn,
 	return rc;
 }
 
-<<<<<<< HEAD
 int qed_mcp_nvm_info_populate(struct qed_hwfn *p_hwfn)
 {
 	struct qed_nvm_image_info nvm_info;
@@ -2912,18 +2834,6 @@ qed_mcp_get_nvm_image_att(struct qed_hwfn *p_hwfn,
 {
 	enum nvm_image_type type;
 	u32 i;
-=======
-static int
-qed_mcp_get_nvm_image_att(struct qed_hwfn *p_hwfn,
-			  struct qed_ptt *p_ptt,
-			  enum qed_nvm_images image_id,
-			  struct qed_nvm_image_att *p_image_att)
-{
-	struct bist_nvm_image_att mfw_image_att;
-	enum nvm_image_type type;
-	u32 num_images, i;
-	int rc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Translate image_id into MFW definitions */
 	switch (image_id) {
@@ -2933,7 +2843,6 @@ qed_mcp_get_nvm_image_att(struct qed_hwfn *p_hwfn,
 	case QED_NVM_IMAGE_FCOE_CFG:
 		type = NVM_TYPE_FCOE_CFG;
 		break;
-<<<<<<< HEAD
 	case QED_NVM_IMAGE_NVM_CFG1:
 		type = NVM_TYPE_NVM_CFG1;
 		break;
@@ -2943,15 +2852,12 @@ qed_mcp_get_nvm_image_att(struct qed_hwfn *p_hwfn,
 	case QED_NVM_IMAGE_NVM_META:
 		type = NVM_TYPE_META;
 		break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		DP_NOTICE(p_hwfn, "Unknown request of image_id %08x\n",
 			  image_id);
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 	qed_mcp_nvm_info_populate(p_hwfn);
 	for (i = 0; i < p_hwfn->nvm_info.num_images; i++)
 		if (type == p_hwfn->nvm_info.image_att[i].image_type)
@@ -2965,40 +2871,11 @@ qed_mcp_get_nvm_image_att(struct qed_hwfn *p_hwfn,
 
 	p_image_att->start_addr = p_hwfn->nvm_info.image_att[i].nvm_start_addr;
 	p_image_att->length = p_hwfn->nvm_info.image_att[i].len;
-=======
-	/* Learn number of images, then traverse and see if one fits */
-	rc = qed_mcp_bist_nvm_test_get_num_images(p_hwfn, p_ptt, &num_images);
-	if (rc || !num_images)
-		return -EINVAL;
-
-	for (i = 0; i < num_images; i++) {
-		rc = qed_mcp_bist_nvm_test_get_image_att(p_hwfn, p_ptt,
-							 &mfw_image_att, i);
-		if (rc)
-			return rc;
-
-		if (type == mfw_image_att.image_type)
-			break;
-	}
-	if (i == num_images) {
-		DP_VERBOSE(p_hwfn, QED_MSG_STORAGE,
-			   "Failed to find nvram image of type %08x\n",
-			   image_id);
-		return -EINVAL;
-	}
-
-	p_image_att->start_addr = mfw_image_att.nvm_start_addr;
-	p_image_att->length = mfw_image_att.len;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
 int qed_mcp_get_nvm_image(struct qed_hwfn *p_hwfn,
-<<<<<<< HEAD
-=======
-			  struct qed_ptt *p_ptt,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  enum qed_nvm_images image_id,
 			  u8 *p_buffer, u32 buffer_len)
 {
@@ -3007,11 +2884,7 @@ int qed_mcp_get_nvm_image(struct qed_hwfn *p_hwfn,
 
 	memset(p_buffer, 0, buffer_len);
 
-<<<<<<< HEAD
 	rc = qed_mcp_get_nvm_image_att(p_hwfn, image_id, &image_att);
-=======
-	rc = qed_mcp_get_nvm_image_att(p_hwfn, p_ptt, image_id, &image_att);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc)
 		return rc;
 
@@ -3023,12 +2896,6 @@ int qed_mcp_get_nvm_image(struct qed_hwfn *p_hwfn,
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
-=======
-	/* Each NVM image is suffixed by CRC; Upper-layer has no need for it */
-	image_att.length -= 4;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (image_att.length > buffer_len) {
 		DP_VERBOSE(p_hwfn,
 			   QED_MSG_STORAGE,
@@ -3288,11 +3155,7 @@ static int qed_mcp_resource_cmd(struct qed_hwfn *p_hwfn,
 	return rc;
 }
 
-<<<<<<< HEAD
 static int
-=======
-int
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 __qed_mcp_resc_lock(struct qed_hwfn *p_hwfn,
 		    struct qed_ptt *p_ptt,
 		    struct qed_resc_lock_params *p_params)

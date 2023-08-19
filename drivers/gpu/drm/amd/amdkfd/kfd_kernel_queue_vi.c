@@ -22,29 +22,20 @@
  */
 
 #include "kfd_kernel_queue.h"
-<<<<<<< HEAD
 #include "kfd_device_queue_manager.h"
 #include "kfd_pm4_headers_vi.h"
 #include "kfd_pm4_opcodes.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static bool initialize_vi(struct kernel_queue *kq, struct kfd_dev *dev,
 			enum kfd_queue_type type, unsigned int queue_size);
 static void uninitialize_vi(struct kernel_queue *kq);
-<<<<<<< HEAD
 static void submit_packet_vi(struct kernel_queue *kq);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void kernel_queue_init_vi(struct kernel_queue_ops *ops)
 {
 	ops->initialize = initialize_vi;
 	ops->uninitialize = uninitialize_vi;
-<<<<<<< HEAD
 	ops->submit_packet = submit_packet_vi;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool initialize_vi(struct kernel_queue *kq, struct kfd_dev *dev,
@@ -68,7 +59,6 @@ static void uninitialize_vi(struct kernel_queue *kq)
 {
 	kfd_gtt_sa_free(kq->dev, kq->eop_mem);
 }
-<<<<<<< HEAD
 
 static void submit_packet_vi(struct kernel_queue *kq)
 {
@@ -383,5 +373,3 @@ const struct packet_manager_funcs kfd_vi_pm_funcs = {
 	.query_status_size	= sizeof(struct pm4_mes_query_status),
 	.release_mem_size	= sizeof(struct pm4_mec_release_mem)
 };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

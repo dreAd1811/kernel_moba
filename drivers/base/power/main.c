@@ -18,10 +18,6 @@
  */
 
 #include <linux/device.h>
-<<<<<<< HEAD
-=======
-#include <linux/kallsyms.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/export.h>
 #include <linux/mutex.h>
 #include <linux/pm.h>
@@ -128,13 +124,6 @@ void device_pm_unlock(void)
  */
 void device_pm_add(struct device *dev)
 {
-<<<<<<< HEAD
-=======
-	/* Skip PM setup/initialization. */
-	if (device_pm_not_required(dev))
-		return;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pr_debug("PM: Adding info for %s:%s\n",
 		 dev->bus ? dev->bus->name : "No Bus", dev_name(dev));
 	device_pm_check_callbacks(dev);
@@ -153,12 +142,6 @@ void device_pm_add(struct device *dev)
  */
 void device_pm_remove(struct device *dev)
 {
-<<<<<<< HEAD
-=======
-	if (device_pm_not_required(dev))
-		return;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pr_debug("PM: Removing info for %s:%s\n",
 		 dev->bus ? dev->bus->name : "No Bus", dev_name(dev));
 	complete_all(&dev->power.completion);
@@ -210,7 +193,6 @@ void device_pm_move_last(struct device *dev)
 	list_move_tail(&dev->power.entry, &dpm_list);
 }
 
-<<<<<<< HEAD
 static ktime_t initcall_debug_start(struct device *dev, void *cb)
 {
 	if (!pm_print_times_enabled)
@@ -224,30 +206,10 @@ static ktime_t initcall_debug_start(struct device *dev, void *cb)
 
 static void initcall_debug_report(struct device *dev, ktime_t calltime,
 				  void *cb, int error)
-=======
-static ktime_t initcall_debug_start(struct device *dev)
-{
-	ktime_t calltime = 0;
-
-	if (pm_print_times_enabled) {
-		pr_info("calling  %s+ @ %i, parent: %s\n",
-			dev_name(dev), task_pid_nr(current),
-			dev->parent ? dev_name(dev->parent) : "none");
-		calltime = ktime_get();
-	}
-
-	return calltime;
-}
-
-static void initcall_debug_report(struct device *dev, ktime_t calltime,
-				  int error, pm_message_t state,
-				  const char *info)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	ktime_t rettime;
 	s64 nsecs;
 
-<<<<<<< HEAD
 	if (!pm_print_times_enabled)
 		return;
 
@@ -256,15 +218,6 @@ static void initcall_debug_report(struct device *dev, ktime_t calltime,
 
 	dev_info(dev, "%pF returned %d after %Ld usecs\n", cb, error,
 		 (unsigned long long)nsecs >> 10);
-=======
-	rettime = ktime_get();
-	nsecs = (s64) ktime_to_ns(ktime_sub(rettime, calltime));
-
-	if (pm_print_times_enabled) {
-		pr_info("call %s+ returned %d after %Ld usecs\n", dev_name(dev),
-			error, (unsigned long long)nsecs >> 10);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -313,45 +266,10 @@ static void dpm_wait_for_suppliers(struct device *dev, bool async)
 	device_links_read_unlock(idx);
 }
 
-<<<<<<< HEAD
 static void dpm_wait_for_superior(struct device *dev, bool async)
 {
 	dpm_wait(dev->parent, async);
 	dpm_wait_for_suppliers(dev, async);
-=======
-static bool dpm_wait_for_superior(struct device *dev, bool async)
-{
-	struct device *parent;
-
-	/*
-	 * If the device is resumed asynchronously and the parent's callback
-	 * deletes both the device and the parent itself, the parent object may
-	 * be freed while this function is running, so avoid that by reference
-	 * counting the parent once more unless the device has been deleted
-	 * already (in which case return right away).
-	 */
-	mutex_lock(&dpm_list_mtx);
-
-	if (!device_pm_initialized(dev)) {
-		mutex_unlock(&dpm_list_mtx);
-		return false;
-	}
-
-	parent = get_device(dev->parent);
-
-	mutex_unlock(&dpm_list_mtx);
-
-	dpm_wait(parent, async);
-	put_device(parent);
-
-	dpm_wait_for_suppliers(dev, async);
-
-	/*
-	 * If the parent's callback has deleted the device, attempting to resume
-	 * it would be invalid, so avoid doing that then.
-	 */
-	return device_pm_initialized(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void dpm_wait_for_consumers(struct device *dev, bool async)
@@ -526,11 +444,7 @@ static int dpm_run_callback(pm_callback_t cb, struct device *dev,
 	if (!cb)
 		return 0;
 
-<<<<<<< HEAD
 	calltime = initcall_debug_start(dev, cb);
-=======
-	calltime = initcall_debug_start(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pm_dev_dbg(dev, state, info);
 	trace_device_pm_callback_start(dev, info, state.event);
@@ -538,11 +452,7 @@ static int dpm_run_callback(pm_callback_t cb, struct device *dev,
 	trace_device_pm_callback_end(dev, error);
 	suspend_report_result(cb, error);
 
-<<<<<<< HEAD
 	initcall_debug_report(dev, calltime, cb, error);
-=======
-	initcall_debug_report(dev, calltime, error, state, info);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return error;
 }
@@ -565,15 +475,9 @@ struct dpm_watchdog {
  * There's not much we can do here to recover so panic() to
  * capture a crash-dump in pstore.
  */
-<<<<<<< HEAD
 static void dpm_watchdog_handler(struct timer_list *t)
 {
 	struct dpm_watchdog *wd = from_timer(wd, t, timer);
-=======
-static void dpm_watchdog_handler(unsigned long data)
-{
-	struct dpm_watchdog *wd = (void *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_emerg(wd->dev, "**** DPM device timeout ****\n");
 	show_stack(wd->tsk, NULL);
@@ -593,17 +497,9 @@ static void dpm_watchdog_set(struct dpm_watchdog *wd, struct device *dev)
 	wd->dev = dev;
 	wd->tsk = current;
 
-<<<<<<< HEAD
 	timer_setup_on_stack(timer, dpm_watchdog_handler, 0);
 	/* use same timeout value for both suspend and resume */
 	timer->expires = jiffies + HZ * CONFIG_DPM_WATCHDOG_TIMEOUT;
-=======
-	init_timer_on_stack(timer);
-	/* use same timeout value for both suspend and resume */
-	timer->expires = jiffies + HZ * CONFIG_DPM_WATCHDOG_TIMEOUT;
-	timer->function = dpm_watchdog_handler;
-	timer->data = (unsigned long)wd;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	add_timer(timer);
 }
 
@@ -627,7 +523,6 @@ static void dpm_watchdog_clear(struct dpm_watchdog *wd)
 /*------------------------- Resume routines -------------------------*/
 
 /**
-<<<<<<< HEAD
  * dev_pm_skip_next_resume_phases - Skip next system resume phases for device.
  * @dev: Target device.
  *
@@ -678,33 +573,6 @@ static pm_callback_t dpm_subsys_resume_noirq_cb(struct device *dev,
 {
 	pm_callback_t callback;
 	const char *info;
-=======
- * device_resume_noirq - Execute an "early resume" callback for given device.
- * @dev: Device to handle.
- * @state: PM transition of the system being carried out.
- * @async: If true, the device is being resumed asynchronously.
- *
- * The driver of @dev will not receive interrupts while this function is being
- * executed.
- */
-static int device_resume_noirq(struct device *dev, pm_message_t state, bool async)
-{
-	pm_callback_t callback = NULL;
-	const char *info = NULL;
-	int error = 0;
-
-	TRACE_DEVICE(dev);
-	TRACE_RESUME(0);
-
-	if (dev->power.syscore || dev->power.direct_complete)
-		goto Out;
-
-	if (!dev->power.is_noirq_suspended)
-		goto Out;
-
-	if (!dpm_wait_for_superior(dev, async))
-		goto Out;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (dev->pm_domain) {
 		info = "noirq power domain ";
@@ -718,7 +586,6 @@ static int device_resume_noirq(struct device *dev, pm_message_t state, bool asyn
 	} else if (dev->bus && dev->bus->pm) {
 		info = "noirq bus ";
 		callback = pm_noirq_op(dev->bus->pm, state);
-<<<<<<< HEAD
 	} else {
 		return NULL;
 	}
@@ -796,16 +663,10 @@ static int device_resume_noirq(struct device *dev, pm_message_t state, bool asyn
 	}
 
 	if (dev->driver && dev->driver->pm) {
-=======
-	}
-
-	if (!callback && dev->driver && dev->driver->pm) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		info = "noirq driver ";
 		callback = pm_noirq_op(dev->driver->pm, state);
 	}
 
-<<<<<<< HEAD
 Run:
 	error = dpm_run_callback(callback, dev, state, info);
 
@@ -825,12 +686,6 @@ Skip:
 	}
 
 Out:
-=======
-	error = dpm_run_callback(callback, dev, state, info);
-	dev->power.is_noirq_suspended = false;
-
- Out:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	complete_all(&dev->power.completion);
 	TRACE_RESUME(error);
 	return error;
@@ -923,40 +778,12 @@ void dpm_resume_noirq(pm_message_t state)
 	dpm_noirq_end();
 }
 
-<<<<<<< HEAD
 static pm_callback_t dpm_subsys_resume_early_cb(struct device *dev,
 						pm_message_t state,
 						const char **info_p)
 {
 	pm_callback_t callback;
 	const char *info;
-=======
-/**
- * device_resume_early - Execute an "early resume" callback for given device.
- * @dev: Device to handle.
- * @state: PM transition of the system being carried out.
- * @async: If true, the device is being resumed asynchronously.
- *
- * Runtime PM is disabled for @dev while this function is being executed.
- */
-static int device_resume_early(struct device *dev, pm_message_t state, bool async)
-{
-	pm_callback_t callback = NULL;
-	const char *info = NULL;
-	int error = 0;
-
-	TRACE_DEVICE(dev);
-	TRACE_RESUME(0);
-
-	if (dev->power.syscore || dev->power.direct_complete)
-		goto Out;
-
-	if (!dev->power.is_late_suspended)
-		goto Out;
-
-	if (!dpm_wait_for_superior(dev, async))
-		goto Out;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (dev->pm_domain) {
 		info = "early power domain ";
@@ -970,7 +797,6 @@ static int device_resume_early(struct device *dev, pm_message_t state, bool asyn
 	} else if (dev->bus && dev->bus->pm) {
 		info = "early bus ";
 		callback = pm_late_early_op(dev->bus->pm, state);
-<<<<<<< HEAD
 	} else {
 		return NULL;
 	}
@@ -1008,10 +834,6 @@ static int device_resume_early(struct device *dev, pm_message_t state, bool asyn
 
 	callback = dpm_subsys_resume_early_cb(dev, state, &info);
 
-=======
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!callback && dev->driver && dev->driver->pm) {
 		info = "early driver ";
 		callback = pm_late_early_op(dev->driver->pm, state);
@@ -1128,13 +950,7 @@ static int device_resume(struct device *dev, pm_message_t state, bool async)
 		goto Complete;
 	}
 
-<<<<<<< HEAD
 	dpm_wait_for_superior(dev, async);
-=======
-	if (!dpm_wait_for_superior(dev, async))
-		goto Complete;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dpm_watchdog_set(&wd, dev);
 	device_lock(dev);
 
@@ -1159,23 +975,10 @@ static int device_resume(struct device *dev, pm_message_t state, bool async)
 		goto Driver;
 	}
 
-<<<<<<< HEAD
 	if (dev->class && dev->class->pm) {
 		info = "class ";
 		callback = pm_op(dev->class->pm, state);
 		goto Driver;
-=======
-	if (dev->class) {
-		if (dev->class->pm) {
-			info = "class ";
-			callback = pm_op(dev->class->pm, state);
-			goto Driver;
-		} else if (dev->class->resume) {
-			info = "legacy class ";
-			callback = dev->class->resume;
-			goto End;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (dev->bus) {
@@ -1400,7 +1203,6 @@ static pm_message_t resume_event(pm_message_t sleep_state)
 	return PMSG_ON;
 }
 
-<<<<<<< HEAD
 static void dpm_superior_set_must_resume(struct device *dev)
 {
 	struct device_link *link;
@@ -1474,10 +1276,6 @@ static bool device_must_resume(struct device *dev, pm_message_t state,
 
 /**
  * __device_suspend_noirq - Execute a "noirq suspend" callback for given device.
-=======
-/**
- * device_suspend_noirq - Execute a "late suspend" callback for given device.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @dev: Device to handle.
  * @state: PM transition of the system being carried out.
  * @async: If true, the device is being suspended asynchronously.
@@ -1487,14 +1285,9 @@ static bool device_must_resume(struct device *dev, pm_message_t state,
  */
 static int __device_suspend_noirq(struct device *dev, pm_message_t state, bool async)
 {
-<<<<<<< HEAD
 	pm_callback_t callback;
 	const char *info;
 	bool no_subsys_cb = false;
-=======
-	pm_callback_t callback = NULL;
-	const char *info = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int error = 0;
 
 	TRACE_DEVICE(dev);
@@ -1513,7 +1306,6 @@ static int __device_suspend_noirq(struct device *dev, pm_message_t state, bool a
 	if (dev->power.syscore || dev->power.direct_complete)
 		goto Complete;
 
-<<<<<<< HEAD
 	callback = dpm_subsys_suspend_noirq_cb(dev, state, &info);
 	if (callback)
 		goto Run;
@@ -1524,28 +1316,10 @@ static int __device_suspend_noirq(struct device *dev, pm_message_t state, bool a
 		goto Skip;
 
 	if (dev->driver && dev->driver->pm) {
-=======
-	if (dev->pm_domain) {
-		info = "noirq power domain ";
-		callback = pm_noirq_op(&dev->pm_domain->ops, state);
-	} else if (dev->type && dev->type->pm) {
-		info = "noirq type ";
-		callback = pm_noirq_op(dev->type->pm, state);
-	} else if (dev->class && dev->class->pm) {
-		info = "noirq class ";
-		callback = pm_noirq_op(dev->class->pm, state);
-	} else if (dev->bus && dev->bus->pm) {
-		info = "noirq bus ";
-		callback = pm_noirq_op(dev->bus->pm, state);
-	}
-
-	if (!callback && dev->driver && dev->driver->pm) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		info = "noirq driver ";
 		callback = pm_noirq_op(dev->driver->pm, state);
 	}
 
-<<<<<<< HEAD
 Run:
 	error = dpm_run_callback(callback, dev, state, info);
 	if (error) {
@@ -1567,17 +1341,6 @@ Skip:
 	if (dev->power.must_resume)
 		dpm_superior_set_must_resume(dev);
 
-=======
-	error = dpm_run_callback(callback, dev, state, info);
-	if (!error) {
-		dev->power.is_noirq_suspended = true;
-	} else {
-		async_error = error;
-		log_suspend_abort_reason("Callback failed on %s in %pS returned %d",
-					 dev_name(dev), callback, error);
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Complete:
 	complete_all(&dev->power.completion);
 	TRACE_SUSPEND(error);
@@ -1682,7 +1445,6 @@ int dpm_suspend_noirq(pm_message_t state)
 	return ret;
 }
 
-<<<<<<< HEAD
 static void dpm_propagate_wakeup_to_parent(struct device *dev)
 {
 	struct device *parent = dev->parent;
@@ -1729,10 +1491,6 @@ static pm_callback_t dpm_subsys_suspend_late_cb(struct device *dev,
 
 /**
  * __device_suspend_late - Execute a "late suspend" callback for given device.
-=======
-/**
- * device_suspend_late - Execute a "late suspend" callback for given device.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @dev: Device to handle.
  * @state: PM transition of the system being carried out.
  * @async: If true, the device is being suspended asynchronously.
@@ -1741,13 +1499,8 @@ static pm_callback_t dpm_subsys_suspend_late_cb(struct device *dev,
  */
 static int __device_suspend_late(struct device *dev, pm_message_t state, bool async)
 {
-<<<<<<< HEAD
 	pm_callback_t callback;
 	const char *info;
-=======
-	pm_callback_t callback = NULL;
-	const char *info = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int error = 0;
 
 	TRACE_DEVICE(dev);
@@ -1768,7 +1521,6 @@ static int __device_suspend_late(struct device *dev, pm_message_t state, bool as
 	if (dev->power.syscore || dev->power.direct_complete)
 		goto Complete;
 
-<<<<<<< HEAD
 	callback = dpm_subsys_suspend_late_cb(dev, state, &info);
 	if (callback)
 		goto Run;
@@ -1778,28 +1530,10 @@ static int __device_suspend_late(struct device *dev, pm_message_t state, bool as
 		goto Skip;
 
 	if (dev->driver && dev->driver->pm) {
-=======
-	if (dev->pm_domain) {
-		info = "late power domain ";
-		callback = pm_late_early_op(&dev->pm_domain->ops, state);
-	} else if (dev->type && dev->type->pm) {
-		info = "late type ";
-		callback = pm_late_early_op(dev->type->pm, state);
-	} else if (dev->class && dev->class->pm) {
-		info = "late class ";
-		callback = pm_late_early_op(dev->class->pm, state);
-	} else if (dev->bus && dev->bus->pm) {
-		info = "late bus ";
-		callback = pm_late_early_op(dev->bus->pm, state);
-	}
-
-	if (!callback && dev->driver && dev->driver->pm) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		info = "late driver ";
 		callback = pm_late_early_op(dev->driver->pm, state);
 	}
 
-<<<<<<< HEAD
 Run:
 	error = dpm_run_callback(callback, dev, state, info);
 	if (error) {
@@ -1810,16 +1544,6 @@ Run:
 
 Skip:
 	dev->power.is_late_suspended = true;
-=======
-	error = dpm_run_callback(callback, dev, state, info);
-	if (!error) {
-		dev->power.is_late_suspended = true;
-	} else {
-		async_error = error;
-		log_suspend_abort_reason("Callback failed on %s in %pS returned %d",
-					 dev_name(dev), callback, error);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Complete:
 	TRACE_SUSPEND(error);
@@ -1938,44 +1662,29 @@ static int legacy_suspend(struct device *dev, pm_message_t state,
 	int error;
 	ktime_t calltime;
 
-<<<<<<< HEAD
 	calltime = initcall_debug_start(dev, cb);
-=======
-	calltime = initcall_debug_start(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	trace_device_pm_callback_start(dev, info, state.event);
 	error = cb(dev, state);
 	trace_device_pm_callback_end(dev, error);
 	suspend_report_result(cb, error);
 
-<<<<<<< HEAD
 	initcall_debug_report(dev, calltime, cb, error);
-=======
-	initcall_debug_report(dev, calltime, error, state, info);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return error;
 }
 
-<<<<<<< HEAD
 static void dpm_clear_superiors_direct_complete(struct device *dev)
-=======
-static void dpm_clear_suppliers_direct_complete(struct device *dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct device_link *link;
 	int idx;
 
-<<<<<<< HEAD
 	if (dev->parent) {
 		spin_lock_irq(&dev->parent->power.lock);
 		dev->parent->power.direct_complete = false;
 		spin_unlock_irq(&dev->parent->power.lock);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	idx = device_links_read_lock();
 
 	list_for_each_entry_rcu(link, &dev->links.suppliers, c_node) {
@@ -1988,11 +1697,7 @@ static void dpm_clear_suppliers_direct_complete(struct device *dev)
 }
 
 /**
-<<<<<<< HEAD
  * __device_suspend - Execute "suspend" callbacks for given device.
-=======
- * device_suspend - Execute "suspend" callbacks for given device.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @dev: Device to handle.
  * @state: PM transition of the system being carried out.
  * @async: If true, the device is being suspended asynchronously.
@@ -2002,10 +1707,7 @@ static int __device_suspend(struct device *dev, pm_message_t state, bool async)
 	pm_callback_t callback = NULL;
 	const char *info = NULL;
 	int error = 0;
-<<<<<<< HEAD
 	char suspend_abort[MAX_SUSPEND_ABORT_LEN];
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DECLARE_DPM_WATCHDOG_ON_STACK(wd);
 
 	TRACE_DEVICE(dev);
@@ -2028,7 +1730,6 @@ static int __device_suspend(struct device *dev, pm_message_t state, bool async)
 		pm_wakeup_event(dev, 0);
 
 	if (pm_wakeup_pending()) {
-<<<<<<< HEAD
 		pm_get_active_wakeup_sources(suspend_abort,
 			MAX_SUSPEND_ABORT_LEN);
 		log_suspend_abort_reason(suspend_abort);
@@ -2036,9 +1737,6 @@ static int __device_suspend(struct device *dev, pm_message_t state, bool async)
 		pm_get_active_wakeup_sources(suspend_abort,
 			MAX_SUSPEND_ABORT_LEN);
 		log_suspend_abort_reason(suspend_abort);
-=======
-		dev->power.direct_complete = false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		async_error = -EBUSY;
 		goto Complete;
 	}
@@ -2061,12 +1759,9 @@ static int __device_suspend(struct device *dev, pm_message_t state, bool async)
 		dev->power.direct_complete = false;
 	}
 
-<<<<<<< HEAD
 	dev->power.may_skip_resume = false;
 	dev->power.must_resume = false;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dpm_watchdog_set(&wd, dev);
 	device_lock(dev);
 
@@ -2082,24 +1777,10 @@ static int __device_suspend(struct device *dev, pm_message_t state, bool async)
 		goto Run;
 	}
 
-<<<<<<< HEAD
 	if (dev->class && dev->class->pm) {
 		info = "class ";
 		callback = pm_op(dev->class->pm, state);
 		goto Run;
-=======
-	if (dev->class) {
-		if (dev->class->pm) {
-			info = "class ";
-			callback = pm_op(dev->class->pm, state);
-			goto Run;
-		} else if (dev->class->suspend) {
-			pm_dev_dbg(dev, state, "legacy class ");
-			error = legacy_suspend(dev, state, dev->class->suspend,
-						"legacy class ");
-			goto End;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (dev->bus) {
@@ -2124,31 +1805,12 @@ static int __device_suspend(struct device *dev, pm_message_t state, bool async)
 
  End:
 	if (!error) {
-<<<<<<< HEAD
 		dev->power.is_suspended = true;
 		if (device_may_wakeup(dev))
 			dev->power.wakeup_path = true;
 
 		dpm_propagate_wakeup_to_parent(dev);
 		dpm_clear_superiors_direct_complete(dev);
-=======
-		struct device *parent = dev->parent;
-
-		dev->power.is_suspended = true;
-		if (parent) {
-			spin_lock_irq(&parent->power.lock);
-			dev->parent->power.direct_complete = false;
-			if (dev->power.wakeup_path
-			    && !dev->parent->power.ignore_children)
-				dev->parent->power.wakeup_path = true;
-
-			spin_unlock_irq(&parent->power.lock);
-		}
-		dpm_clear_suppliers_direct_complete(dev);
-	} else {
-		log_suspend_abort_reason("Callback failed on %s in %pS returned %d",
-					 dev_name(dev), callback, error);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	device_unlock(dev);
@@ -2257,13 +1919,10 @@ static int device_prepare(struct device *dev, pm_message_t state)
 	if (dev->power.syscore)
 		return 0;
 
-<<<<<<< HEAD
 	WARN_ON(!pm_runtime_enabled(dev) &&
 		dev_pm_test_driver_flags(dev, DPM_FLAG_SMART_SUSPEND |
 					      DPM_FLAG_LEAVE_SUSPENDED));
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * If a device's parent goes into runtime suspend at the wrong time,
 	 * it won't be possible to resume the device.  To prevent this we
@@ -2274,19 +1933,10 @@ static int device_prepare(struct device *dev, pm_message_t state)
 
 	device_lock(dev);
 
-<<<<<<< HEAD
 	dev->power.wakeup_path = false;
 
 	if (dev->power.no_pm_callbacks)
 		goto unlock;
-=======
-	dev->power.wakeup_path = device_may_wakeup(dev);
-
-	if (dev->power.no_pm_callbacks) {
-		ret = 1;	/* Let device go direct_complete */
-		goto unlock;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (dev->pm_domain)
 		callback = dev->pm_domain->ops.prepare;
@@ -2319,14 +1969,10 @@ unlock:
 	 * applies to suspend transitions, however.
 	 */
 	spin_lock_irq(&dev->power.lock);
-<<<<<<< HEAD
 	dev->power.direct_complete = state.event == PM_EVENT_SUSPEND &&
 		((pm_runtime_suspended(dev) && ret > 0) ||
 		 dev->power.no_pm_callbacks) &&
 		!dev_pm_test_driver_flags(dev, DPM_FLAG_NEVER_SKIP);
-=======
-	dev->power.direct_complete = ret > 0 && state.event == PM_EVENT_SUSPEND;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irq(&dev->power.lock);
 	return 0;
 }
@@ -2379,12 +2025,6 @@ int dpm_prepare(pm_message_t state)
 			printk(KERN_INFO "PM: Device %s not prepared "
 				"for power transition: code %d\n",
 				dev_name(dev), error);
-<<<<<<< HEAD
-=======
-			log_suspend_abort_reason("Device %s not prepared for power transition: code %d",
-						 dev_name(dev), error);
-			dpm_save_failed_dev(dev_name(dev));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			put_device(dev);
 			break;
 		}
@@ -2481,24 +2121,16 @@ void device_pm_check_callbacks(struct device *dev)
 	dev->power.no_pm_callbacks =
 		(!dev->bus || (pm_ops_is_empty(dev->bus->pm) &&
 		 !dev->bus->suspend && !dev->bus->resume)) &&
-<<<<<<< HEAD
 		(!dev->class || pm_ops_is_empty(dev->class->pm)) &&
-=======
-		(!dev->class || (pm_ops_is_empty(dev->class->pm) &&
-		 !dev->class->suspend && !dev->class->resume)) &&
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		(!dev->type || pm_ops_is_empty(dev->type->pm)) &&
 		(!dev->pm_domain || pm_ops_is_empty(&dev->pm_domain->ops)) &&
 		(!dev->driver || (pm_ops_is_empty(dev->driver->pm) &&
 		 !dev->driver->suspend && !dev->driver->resume));
 	spin_unlock_irq(&dev->power.lock);
 }
-<<<<<<< HEAD
 
 bool dev_pm_smart_suspend_and_suspended(struct device *dev)
 {
 	return dev_pm_test_driver_flags(dev, DPM_FLAG_SMART_SUSPEND) &&
 		pm_runtime_status_suspended(dev);
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

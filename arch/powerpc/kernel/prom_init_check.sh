@@ -19,11 +19,7 @@
 WHITELIST="add_reloc_offset __bss_start __bss_stop copy_and_flush
 _end enter_prom memcpy memset reloc_offset __secondary_hold
 __secondary_hold_acknowledge __secondary_hold_spinloop __start
-<<<<<<< HEAD
 strcmp strcpy strlcpy strlen strncmp strstr kstrtobool logo_linux_clut224
-=======
-strcmp strcpy strlcpy strlen strncmp strstr logo_linux_clut224
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 reloc_got2 kernstart_addr memstart_addr linux_banner _stext
 __prom_init_toc_start __prom_init_toc_end btext_setup_display TOC."
 

@@ -163,12 +163,7 @@ void qib_get_eeprom_info(struct qib_devdata *dd)
 			if (bguid[6] == 0xff) {
 				if (bguid[5] == 0xff) {
 					qib_dev_err(dd,
-<<<<<<< HEAD
 						    "Can't set GUID from base, wraps to OUI!\n");
-=======
-						"Can't set %s GUID from base, wraps to OUI!\n",
-						qib_get_unit_name(t));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					dd->base_guid = 0;
 					goto bail;
 				}

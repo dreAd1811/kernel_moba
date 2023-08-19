@@ -64,13 +64,6 @@ auxdisplay/
 	- misc. LCD driver documentation (cfag12864b, ks0108).
 backlight/
 	- directory with info on controlling backlights in flat panel displays
-<<<<<<< HEAD
-=======
-bcache.txt
-	- Block-layer cache on fast SSDs to improve slow (raid) I/O performance.
-blackfin/
-	- directory with documentation for the Blackfin arch.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 block/
 	- info on the Block I/O (BIO) layer.
 blockdev/
@@ -83,24 +76,10 @@ bus-devices/
 	- directory with info on TI GPMC (General Purpose Memory Controller)
 bus-virt-phys-mapping.txt
 	- how to access I/O mapped memory from within device drivers.
-<<<<<<< HEAD
-=======
-cachetlb.txt
-	- describes the cache/TLB flushing interfaces Linux uses.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 cdrom/
 	- directory with information on the CD-ROM drivers that Linux has.
 cgroup-v1/
 	- cgroups v1 features, including cpusets and memory controller.
-<<<<<<< HEAD
-=======
-cgroup-v2.txt
-	- cgroups v2 features, including cpusets and memory controller.
-circular-buffers.txt
-	- how to make use of the existing circular buffer infrastructure
-clk.txt
-	- info on the common clock framework
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 cma/
 	- Continuous Memory Area (CMA) debugfs interface.
 conf.py
@@ -123,11 +102,6 @@ cputopology.txt
 	- documentation on how CPU topology info is exported via sysfs.
 crc32.txt
 	- brief tutorial on CRC computation
-<<<<<<< HEAD
-=======
-cris/
-	- directory with info about Linux on CRIS architecture.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 crypto/
 	- directory with info on the Crypto API.
 dcdbas.txt
@@ -184,11 +158,6 @@ fmc/
 	- information about the FMC bus abstraction
 fpga/
 	- FPGA Manager Core.
-<<<<<<< HEAD
-=======
-frv/
-	- Fujitsu FR-V Linux documentation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 futex-requeue-pi.txt
 	- info on requeueing of tasks from a non-PI futex to a PI futex
 gcc-plugins.txt
@@ -243,11 +212,6 @@ isdn/
 	- directory with info on the Linux ISDN support, and supported cards.
 kbuild/
 	- directory with info about the kernel build process.
-<<<<<<< HEAD
-=======
-kernel-doc-nano-HOWTO.txt
-	- outdated info about kernel-doc documentation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 kdump/
 	- directory with mini HowTo on getting the crash dump code to work.
 doc-guide/
@@ -296,13 +260,6 @@ memory-hotplug.txt
 	- Hotpluggable memory support, how to use and current status.
 men-chameleon-bus.txt
 	- info on MEN chameleon bus.
-<<<<<<< HEAD
-=======
-metag/
-	- directory with info about Linux on Meta architecture.
-mhi.txt
-	- Modem Host Interface
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 mic/
 	- Intel Many Integrated Core (MIC) architecture device driver.
 mips/
@@ -311,11 +268,6 @@ misc-devices/
 	- directory with info about devices using the misc dev subsystem
 mmc/
 	- directory with info about the MMC subsystem
-<<<<<<< HEAD
-=======
-mn10300/
-	- directory with info about the mn10300 architecture port
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 mtd/
 	- directory with info about memory technology devices (flash)
 namespaces/
@@ -372,11 +324,6 @@ prctl/
 	- directory with info on the priveledge control subsystem
 preempt-locking.txt
 	- info on locking under a preemptive kernel.
-<<<<<<< HEAD
-=======
-printk-formats.txt
-	- how to get printk format specifiers right
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 process/
 	- how to work with the mainline kernel development process.
 pps/

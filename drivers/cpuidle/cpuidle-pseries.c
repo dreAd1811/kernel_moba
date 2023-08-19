@@ -51,11 +51,6 @@ static inline void idle_loop_epilog(unsigned long in_purr)
 	get_lppaca()->wait_state_cycles = cpu_to_be64(wait_cycles);
 	get_lppaca()->idle = 0;
 
-<<<<<<< HEAD
-=======
-	if (irqs_disabled())
-		local_irq_enable();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ppc64_runlatch_on();
 }
 
@@ -90,11 +85,8 @@ static int snooze_loop(struct cpuidle_device *dev,
 	HMT_medium();
 	clear_thread_flag(TIF_POLLING_NRFLAG);
 
-<<<<<<< HEAD
 	local_irq_disable();
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	idle_loop_epilog(in_purr);
 
 	return index;
@@ -129,10 +121,7 @@ static int dedicated_cede_loop(struct cpuidle_device *dev,
 	HMT_medium();
 	check_and_cede_processor();
 
-<<<<<<< HEAD
 	local_irq_disable();
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	get_lppaca()->donate_dedicated_cpu = 0;
 
 	idle_loop_epilog(in_purr);
@@ -157,10 +146,7 @@ static int shared_cede_loop(struct cpuidle_device *dev,
 	 */
 	check_and_cede_processor();
 
-<<<<<<< HEAD
 	local_irq_disable();
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	idle_loop_epilog(in_purr);
 
 	return index;
@@ -188,7 +174,6 @@ static struct cpuidle_state dedicated_states[] = {
  * States for shared partition case.
  */
 static struct cpuidle_state shared_states[] = {
-<<<<<<< HEAD
 	{ /* Snooze */
 		.name = "snooze",
 		.desc = "snooze",
@@ -200,13 +185,6 @@ static struct cpuidle_state shared_states[] = {
 		.desc = "Shared Cede",
 		.exit_latency = 10,
 		.target_residency = 100,
-=======
-	{ /* Shared Cede */
-		.name = "Shared Cede",
-		.desc = "Shared Cede",
-		.exit_latency = 0,
-		.target_residency = 0,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.enter = &shared_cede_loop },
 };
 

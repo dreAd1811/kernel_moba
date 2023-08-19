@@ -1346,15 +1346,9 @@ static void mib_counters_update(struct mv643xx_eth_private *mp)
 	spin_unlock_bh(&mp->mib_counters_lock);
 }
 
-<<<<<<< HEAD
 static void mib_counters_timer_wrapper(struct timer_list *t)
 {
 	struct mv643xx_eth_private *mp = from_timer(mp, t, mib_counters_timer);
-=======
-static void mib_counters_timer_wrapper(unsigned long _mp)
-{
-	struct mv643xx_eth_private *mp = (void *)_mp;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mib_counters_update(mp);
 	mod_timer(&mp->mib_counters_timer, jiffies + 30 * HZ);
 }
@@ -2327,15 +2321,9 @@ static int mv643xx_eth_poll(struct napi_struct *napi, int budget)
 	return work_done;
 }
 
-<<<<<<< HEAD
 static inline void oom_timer_wrapper(struct timer_list *t)
 {
 	struct mv643xx_eth_private *mp = from_timer(mp, t, rx_oom);
-=======
-static inline void oom_timer_wrapper(unsigned long data)
-{
-	struct mv643xx_eth_private *mp = (void *)data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	napi_schedule(&mp->napi);
 }
@@ -3195,12 +3183,7 @@ static int mv643xx_eth_probe(struct platform_device *pdev)
 
 	mib_counters_clear(mp);
 
-<<<<<<< HEAD
 	timer_setup(&mp->mib_counters_timer, mib_counters_timer_wrapper, 0);
-=======
-	setup_timer(&mp->mib_counters_timer, mib_counters_timer_wrapper,
-		    (unsigned long)mp);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mp->mib_counters_timer.expires = jiffies + 30 * HZ;
 
 	spin_lock_init(&mp->mib_counters_lock);
@@ -3209,11 +3192,7 @@ static int mv643xx_eth_probe(struct platform_device *pdev)
 
 	netif_napi_add(dev, &mp->napi, mv643xx_eth_poll, NAPI_POLL_WEIGHT);
 
-<<<<<<< HEAD
 	timer_setup(&mp->rx_oom, oom_timer_wrapper, 0);
-=======
-	setup_timer(&mp->rx_oom, oom_timer_wrapper, (unsigned long)mp);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 	res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);

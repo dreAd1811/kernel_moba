@@ -33,7 +33,6 @@
 #ifndef _MLX5_FS_CMD_
 #define _MLX5_FS_CMD_
 
-<<<<<<< HEAD
 #include "fs_core.h"
 
 struct mlx5_flow_cmds {
@@ -80,48 +79,6 @@ struct mlx5_flow_cmds {
 			      u32 underlay_qpn,
 			      bool disconnect);
 };
-=======
-int mlx5_cmd_create_flow_table(struct mlx5_core_dev *dev,
-			       u16 vport,
-			       enum fs_flow_table_op_mod op_mod,
-			       enum fs_flow_table_type type, unsigned int level,
-			       unsigned int log_size, struct mlx5_flow_table
-			       *next_ft, unsigned int *table_id, u32 flags);
-
-int mlx5_cmd_destroy_flow_table(struct mlx5_core_dev *dev,
-				struct mlx5_flow_table *ft);
-
-int mlx5_cmd_modify_flow_table(struct mlx5_core_dev *dev,
-			       struct mlx5_flow_table *ft,
-			       struct mlx5_flow_table *next_ft);
-
-int mlx5_cmd_create_flow_group(struct mlx5_core_dev *dev,
-			       struct mlx5_flow_table *ft,
-			       u32 *in, unsigned int *group_id);
-
-int mlx5_cmd_destroy_flow_group(struct mlx5_core_dev *dev,
-				struct mlx5_flow_table *ft,
-				unsigned int group_id);
-
-int mlx5_cmd_create_fte(struct mlx5_core_dev *dev,
-			struct mlx5_flow_table *ft,
-			unsigned group_id,
-			struct fs_fte *fte);
-
-int mlx5_cmd_update_fte(struct mlx5_core_dev *dev,
-			struct mlx5_flow_table *ft,
-			unsigned group_id,
-			int modify_mask,
-			struct fs_fte *fte);
-
-int mlx5_cmd_delete_fte(struct mlx5_core_dev *dev,
-			struct mlx5_flow_table *ft,
-			unsigned int index);
-
-int mlx5_cmd_update_root_ft(struct mlx5_core_dev *dev,
-			    struct mlx5_flow_table *ft,
-			    u32 underlay_qpn);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int mlx5_cmd_fc_alloc(struct mlx5_core_dev *dev, u32 *id);
 int mlx5_cmd_fc_free(struct mlx5_core_dev *dev, u32 id);
@@ -139,9 +96,6 @@ void mlx5_cmd_fc_bulk_get(struct mlx5_core_dev *dev,
 			  struct mlx5_cmd_fc_bulk *b, u32 id,
 			  u64 *packets, u64 *bytes);
 
-<<<<<<< HEAD
 const struct mlx5_flow_cmds *mlx5_fs_cmd_get_default(enum fs_flow_table_type type);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

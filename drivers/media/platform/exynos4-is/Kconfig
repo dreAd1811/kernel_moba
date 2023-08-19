@@ -41,18 +41,10 @@ config VIDEO_S5P_MIPI_CSIS
 	  To compile this driver as a module, choose M here: the
 	  module will be called s5p-csis.
 
-<<<<<<< HEAD
 config VIDEO_EXYNOS_FIMC_LITE
 	tristate "EXYNOS FIMC-LITE camera interface driver"
 	depends on I2C
 	depends on SOC_EXYNOS4412 || SOC_EXYNOS5250 || COMPILE_TEST
-=======
-if SOC_EXYNOS4212 || SOC_EXYNOS4412 || SOC_EXYNOS5250
-
-config VIDEO_EXYNOS_FIMC_LITE
-	tristate "EXYNOS FIMC-LITE camera interface driver"
-	depends on I2C
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on HAS_DMA
 	select VIDEOBUF2_DMA_CONTIG
 	select VIDEO_EXYNOS4_IS_COMMON
@@ -62,10 +54,6 @@ config VIDEO_EXYNOS_FIMC_LITE
 
 	  To compile this driver as a module, choose M here: the
 	  module will be called exynos-fimc-lite.
-<<<<<<< HEAD
-=======
-endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config VIDEO_EXYNOS4_FIMC_IS
 	tristate "EXYNOS4x12 FIMC-IS (Imaging Subsystem) driver"
@@ -86,11 +74,7 @@ config VIDEO_EXYNOS4_ISP_DMA_CAPTURE
 	depends on VIDEO_EXYNOS4_FIMC_IS
 	select VIDEO_EXYNOS4_IS_COMMON
 	default y
-<<<<<<< HEAD
 	help
-=======
-	  help
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	  This option enables an additional video device node exposing a V4L2
 	  video capture interface for the FIMC-IS ISP raw (Bayer) capture DMA.
 

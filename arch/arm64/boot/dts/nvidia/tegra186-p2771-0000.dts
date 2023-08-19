@@ -50,7 +50,6 @@
 		vmmc-supply = <&vdd_sd>;
 	};
 
-<<<<<<< HEAD
 	pcie@10003000 {
 		status = "okay";
 
@@ -112,8 +111,6 @@
 		};
 	};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gpio-keys {
 		compatible = "gpio-keys";
 
@@ -160,7 +157,6 @@
 
 			vin-supply = <&vdd_3v3_sys>;
 		};
-<<<<<<< HEAD
 
 		vdd_hdmi: regulator@101 {
 			compatible = "regulator-fixed";
@@ -175,7 +171,5 @@
 
 			vin-supply = <&vdd_5v0_sys>;
 		};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };

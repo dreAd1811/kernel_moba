@@ -50,19 +50,11 @@
 
 #include <media/tuner.h>
 #include <media/tveeprom.h>
-<<<<<<< HEAD
 #include <media/dvb_demux.h>
 #include <media/dvb_frontend.h>
 #include <media/dvb_net.h>
 #include <media/dvbdev.h>
 #include <media/dmxdev.h>
-=======
-#include <dvb_demux.h>
-#include <dvb_frontend.h>
-#include <dvb_net.h>
-#include <dvbdev.h>
-#include <dmxdev.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <media/v4l2-common.h>
 #include <media/v4l2-ioctl.h>
 #include <media/v4l2-device.h>

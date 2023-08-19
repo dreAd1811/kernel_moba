@@ -463,7 +463,6 @@ static u8 ib_rate_to_delay[IB_RATE_120_GBPS + 1] = {
 	[IB_RATE_40_GBPS] = 1
 };
 
-<<<<<<< HEAD
 static const char * const qib_sdma_state_names[] = {
 	[qib_sdma_state_s00_hw_down]          = "s00_HwDown",
 	[qib_sdma_state_s10_hw_start_up_wait] = "s10_HwStartUpWait",
@@ -474,8 +473,6 @@ static const char * const qib_sdma_state_names[] = {
 	[qib_sdma_state_s99_running]          = "s99_Running",
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define IBA7322_LINKSPEED_SHIFT SYM_LSB(IBCStatusA_0, LinkSpeedActive)
 #define IBA7322_LINKWIDTH_SHIFT SYM_LSB(IBCStatusA_0, LinkWidthActive)
 
@@ -566,10 +563,6 @@ struct qib_chip_specific {
 	u32 updthresh; /* current AvailUpdThld */
 	u32 updthresh_dflt; /* default AvailUpdThld */
 	u32 r1;
-<<<<<<< HEAD
-=======
-	int irq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 num_msix_entries;
 	u32 sdmabufcnt;
 	u32 lastbuf_for_pio;
@@ -772,15 +765,8 @@ static void check_7322_rxe_status(struct qib_pportdata *);
 static u32 __iomem *qib_7322_getsendbuf(struct qib_pportdata *, u64, u32 *);
 #ifdef CONFIG_INFINIBAND_QIB_DCA
 static void qib_setup_dca(struct qib_devdata *dd);
-<<<<<<< HEAD
 static void setup_dca_notifier(struct qib_devdata *dd, int msixnum);
 static void reset_dca_notifier(struct qib_devdata *dd, int msixnum);
-=======
-static void setup_dca_notifier(struct qib_devdata *dd,
-			       struct qib_msix_entry *m);
-static void reset_dca_notifier(struct qib_devdata *dd,
-			       struct qib_msix_entry *m);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 /**
@@ -1668,10 +1654,6 @@ static noinline void handle_7322_errors(struct qib_devdata *dd)
 	u64 iserr = 0;
 	u64 errs;
 	u64 mask;
-<<<<<<< HEAD
-=======
-	int log_idx;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	qib_stats.sps_errints++;
 	errs = qib_read_kreg64(dd, kr_errstatus);
@@ -1689,14 +1671,7 @@ static noinline void handle_7322_errors(struct qib_devdata *dd)
 	if (errs & QIB_E_HARDWARE) {
 		*msg = '\0';
 		qib_7322_handle_hwerrors(dd, msg, sizeof(dd->cspec->emsgbuf));
-<<<<<<< HEAD
 	}
-=======
-	} else
-		for (log_idx = 0; log_idx < QIB_EEP_LOG_CNT; ++log_idx)
-			if (errs & dd->eep_st_masks[log_idx].errs_to_log)
-				qib_inc_eeprom_err(dd, log_idx, 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (errs & QIB_E_SPKTERRS) {
 		qib_disarm_7322_senderrbufs(dd->pport);
@@ -1767,16 +1742,10 @@ static void qib_error_tasklet(unsigned long data)
 	qib_write_kreg(dd, kr_errmask, dd->cspec->errormask);
 }
 
-<<<<<<< HEAD
 static void reenable_chase(struct timer_list *t)
 {
 	struct qib_chippport_specific *cp = from_timer(cp, t, chase_timer);
 	struct qib_pportdata *ppd = cp->ppd;
-=======
-static void reenable_chase(unsigned long opaque)
-{
-	struct qib_pportdata *ppd = (struct qib_pportdata *)opaque;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ppd->cpspec->chase_timer.expires = 0;
 	qib_set_ib_7322_lstate(ppd, QLOGIC_IB_IBCC_LINKCMD_DOWN,
@@ -2566,11 +2535,7 @@ static void qib_7322_mini_quiet_serdes(struct qib_pportdata *ppd)
 		cancel_delayed_work_sync(&ppd->cpspec->ipg_work);
 
 	ppd->cpspec->chase_end = 0;
-<<<<<<< HEAD
 	if (ppd->cpspec->chase_timer.function) /* if initted */
-=======
-	if (ppd->cpspec->chase_timer.data) /* if initted */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		del_timer_sync(&ppd->cpspec->chase_timer);
 
 	/*
@@ -2817,11 +2782,7 @@ static void qib_setup_dca(struct qib_devdata *dd)
 		qib_write_kreg(dd, KREG_IDX(DCACtrlB) + i,
 			       cspec->dca_rcvhdr_ctrl[i]);
 	for (i = 0; i < cspec->num_msix_entries; i++)
-<<<<<<< HEAD
 		setup_dca_notifier(dd, i);
-=======
-		setup_dca_notifier(dd, &cspec->msix_entries[i]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void qib_irq_notifier_notify(struct irq_affinity_notify *notify,
@@ -2863,7 +2824,6 @@ static void qib_irq_notifier_release(struct kref *ref)
 }
 #endif
 
-<<<<<<< HEAD
 static void qib_7322_free_irq(struct qib_devdata *dd)
 {
 	u64 intgranted;
@@ -2893,54 +2853,12 @@ static void qib_7322_free_irq(struct qib_devdata *dd)
 
 	pci_free_irq_vectors(dd->pcidev);
 
-=======
-/*
- * Disable MSIx interrupt if enabled, call generic MSIx code
- * to cleanup, and clear pending MSIx interrupts.
- * Used for fallback to INTx, after reset, and when MSIx setup fails.
- */
-static void qib_7322_nomsix(struct qib_devdata *dd)
-{
-	u64 intgranted;
-	int n;
-
-	dd->cspec->main_int_mask = ~0ULL;
-	n = dd->cspec->num_msix_entries;
-	if (n) {
-		int i;
-
-		dd->cspec->num_msix_entries = 0;
-		for (i = 0; i < n; i++) {
-#ifdef CONFIG_INFINIBAND_QIB_DCA
-			reset_dca_notifier(dd, &dd->cspec->msix_entries[i]);
-#endif
-			irq_set_affinity_hint(
-				dd->cspec->msix_entries[i].irq, NULL);
-			free_cpumask_var(dd->cspec->msix_entries[i].mask);
-			free_irq(dd->cspec->msix_entries[i].irq,
-				 dd->cspec->msix_entries[i].arg);
-		}
-		qib_nomsix(dd);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* make sure no MSIx interrupts are left pending */
 	intgranted = qib_read_kreg64(dd, kr_intgranted);
 	if (intgranted)
 		qib_write_kreg(dd, kr_intgranted, intgranted);
 }
 
-<<<<<<< HEAD
-=======
-static void qib_7322_free_irq(struct qib_devdata *dd)
-{
-	if (dd->cspec->irq) {
-		free_irq(dd->cspec->irq, dd);
-		dd->cspec->irq = 0;
-	}
-	qib_7322_nomsix(dd);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void qib_setup_7322_cleanup(struct qib_devdata *dd)
 {
 	int i;
@@ -3407,7 +3325,6 @@ static irqreturn_t sdma_cleanup_intr(int irq, void *data)
 
 #ifdef CONFIG_INFINIBAND_QIB_DCA
 
-<<<<<<< HEAD
 static void reset_dca_notifier(struct qib_devdata *dd, int msixnum)
 {
 	if (!dd->cspec->msix_entries[msixnum].dca)
@@ -3422,24 +3339,6 @@ static void reset_dca_notifier(struct qib_devdata *dd, int msixnum)
 static void setup_dca_notifier(struct qib_devdata *dd, int msixnum)
 {
 	struct qib_msix_entry *m = &dd->cspec->msix_entries[msixnum];
-=======
-static void reset_dca_notifier(struct qib_devdata *dd, struct qib_msix_entry *m)
-{
-	if (!m->dca)
-		return;
-	qib_devinfo(dd->pcidev,
-		"Disabling notifier on HCA %d irq %d\n",
-		dd->unit,
-		m->irq);
-	irq_set_affinity_notifier(
-		m->irq,
-		NULL);
-	m->notifier = NULL;
-}
-
-static void setup_dca_notifier(struct qib_devdata *dd, struct qib_msix_entry *m)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct qib_irq_notify *n;
 
 	if (!m->dca)
@@ -3449,11 +3348,7 @@ static void setup_dca_notifier(struct qib_devdata *dd, struct qib_msix_entry *m)
 		int ret;
 
 		m->notifier = n;
-<<<<<<< HEAD
 		n->notify.irq = pci_irq_vector(dd->pcidev, msixnum);
-=======
-		n->notify.irq = m->irq;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		n->notify.notify = qib_irq_notifier_notify;
 		n->notify.release = qib_irq_notifier_release;
 		n->arg = m->arg;
@@ -3514,7 +3409,6 @@ static void qib_setup_7322_interrupt(struct qib_devdata *dd, int clearpend)
 	if (!dd->cspec->num_msix_entries) {
 		/* Try to get INTx interrupt */
 try_intx:
-<<<<<<< HEAD
 		ret = pci_request_irq(dd->pcidev, 0, qib_7322intr, NULL, dd,
 				      QIB_DRV_NAME);
 		if (ret) {
@@ -3526,24 +3420,6 @@ try_intx:
 		}
 		dd->cspec->main_int_mask = ~0ULL;
 		return;
-=======
-		if (!dd->pcidev->irq) {
-			qib_dev_err(dd,
-				"irq is 0, BIOS error?  Interrupts won't work\n");
-			goto bail;
-		}
-		ret = request_irq(dd->pcidev->irq, qib_7322intr,
-				  IRQF_SHARED, QIB_DRV_NAME, dd);
-		if (ret) {
-			qib_dev_err(dd,
-				"Couldn't setup INTx interrupt (irq=%d): %d\n",
-				dd->pcidev->irq, ret);
-			goto bail;
-		}
-		dd->cspec->irq = dd->pcidev->irq;
-		dd->cspec->main_int_mask = ~0ULL;
-		goto bail;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Try to get MSIx interrupts */
@@ -3566,21 +3442,10 @@ try_intx:
 	for (i = 0; msixnum < dd->cspec->num_msix_entries; i++) {
 		irq_handler_t handler;
 		void *arg;
-<<<<<<< HEAD
-=======
-		u64 val;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		int lsb, reg, sh;
 #ifdef CONFIG_INFINIBAND_QIB_DCA
 		int dca = 0;
 #endif
-<<<<<<< HEAD
-=======
-
-		dd->cspec->msix_entries[msixnum].
-			name[sizeof(dd->cspec->msix_entries[msixnum].name) - 1]
-			= '\0';
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (i < ARRAY_SIZE(irq_table)) {
 			if (irq_table[i].port) {
 				/* skip if for a non-configured port */
@@ -3594,18 +3459,10 @@ try_intx:
 #endif
 			lsb = irq_table[i].lsb;
 			handler = irq_table[i].handler;
-<<<<<<< HEAD
 			ret = pci_request_irq(dd->pcidev, msixnum, handler,
 					      NULL, arg, QIB_DRV_NAME "%d%s",
 					      dd->unit,
 					      irq_table[i].name);
-=======
-			snprintf(dd->cspec->msix_entries[msixnum].name,
-				sizeof(dd->cspec->msix_entries[msixnum].name)
-				 - 1,
-				QIB_DRV_NAME "%d%s", dd->unit,
-				irq_table[i].name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else {
 			unsigned ctxt;
 
@@ -3621,42 +3478,18 @@ try_intx:
 #endif
 			lsb = QIB_I_RCVAVAIL_LSB + ctxt;
 			handler = qib_7322pintr;
-<<<<<<< HEAD
 			ret = pci_request_irq(dd->pcidev, msixnum, handler,
 					      NULL, arg,
 					      QIB_DRV_NAME "%d (kctx)",
 					      dd->unit);
 		}
 
-=======
-			snprintf(dd->cspec->msix_entries[msixnum].name,
-				sizeof(dd->cspec->msix_entries[msixnum].name)
-				 - 1,
-				QIB_DRV_NAME "%d (kctx)", dd->unit);
-		}
-
-		dd->cspec->msix_entries[msixnum].irq = pci_irq_vector(
-			dd->pcidev, msixnum);
-		if (dd->cspec->msix_entries[msixnum].irq < 0) {
-			qib_dev_err(dd,
-				    "Couldn't get MSIx irq (vec=%d): %d\n",
-				    msixnum,
-				    dd->cspec->msix_entries[msixnum].irq);
-			qib_7322_nomsix(dd);
-			goto try_intx;
-		}
-		ret = request_irq(dd->cspec->msix_entries[msixnum].irq,
-				  handler, 0,
-				  dd->cspec->msix_entries[msixnum].name,
-				  arg);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret) {
 			/*
 			 * Shouldn't happen since the enable said we could
 			 * have as many as we are trying to setup here.
 			 */
 			qib_dev_err(dd,
-<<<<<<< HEAD
 				    "Couldn't setup MSIx interrupt (vec=%d, irq=%d): %d\n",
 				    msixnum,
 				    pci_irq_vector(dd->pcidev, msixnum),
@@ -3664,13 +3497,6 @@ try_intx:
 			qib_7322_free_irq(dd);
 			pci_alloc_irq_vectors(dd->pcidev, 1, 1,
 					      PCI_IRQ_LEGACY);
-=======
-				"Couldn't setup MSIx interrupt (vec=%d, irq=%d): %d\n",
-				msixnum,
-				dd->cspec->msix_entries[msixnum].irq,
-				ret);
-			qib_7322_nomsix(dd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto try_intx;
 		}
 		dd->cspec->msix_entries[msixnum].arg = arg;
@@ -3686,13 +3512,8 @@ try_intx:
 			mask &= ~(1ULL << lsb);
 			redirect[reg] |= ((u64) msixnum) << sh;
 		}
-<<<<<<< HEAD
 		qib_read_kreg64(dd, 2 * msixnum + 1 +
 				(QIB_7322_MsixTable_OFFS / sizeof(u64)));
-=======
-		val = qib_read_kreg64(dd, 2 * msixnum + 1 +
-			(QIB_7322_MsixTable_OFFS / sizeof(u64)));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (firstcpu < nr_cpu_ids &&
 			zalloc_cpumask_var(
 				&dd->cspec->msix_entries[msixnum].mask,
@@ -3709,11 +3530,7 @@ try_intx:
 					dd->cspec->msix_entries[msixnum].mask);
 			}
 			irq_set_affinity_hint(
-<<<<<<< HEAD
 				pci_irq_vector(dd->pcidev, msixnum),
-=======
-				dd->cspec->msix_entries[msixnum].irq,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				dd->cspec->msix_entries[msixnum].mask);
 		}
 		msixnum++;
@@ -3724,10 +3541,6 @@ try_intx:
 	dd->cspec->main_int_mask = mask;
 	tasklet_init(&dd->error_tasklet, qib_error_tasklet,
 		(unsigned long)dd);
-<<<<<<< HEAD
-=======
-bail:;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -3831,7 +3644,6 @@ static int qib_do_7322_reset(struct qib_devdata *dd)
 	/* no interrupts till re-initted */
 	qib_7322_set_intr_state(dd, 0);
 
-<<<<<<< HEAD
 	qib_7322_free_irq(dd);
 
 	if (msix_entries) {
@@ -3839,13 +3651,6 @@ static int qib_do_7322_reset(struct qib_devdata *dd)
 		msix_vecsave = kmalloc_array(2 * dd->cspec->num_msix_entries,
 					     sizeof(u64),
 					     GFP_KERNEL);
-=======
-	if (msix_entries) {
-		qib_7322_nomsix(dd);
-		/* can be up to 512 bytes, too big for stack */
-		msix_vecsave = kmalloc(2 * dd->cspec->num_msix_entries *
-			sizeof(u64), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/*
@@ -3932,19 +3737,11 @@ static int qib_do_7322_reset(struct qib_devdata *dd)
 		write_7322_init_portregs(&dd->pport[i]);
 	write_7322_initregs(dd);
 
-<<<<<<< HEAD
 	if (qib_pcie_params(dd, dd->lbus_width, &msix_entries))
 		qib_dev_err(dd,
 			"Reset failed to setup PCIe or interrupts; continuing anyway\n");
 
 	dd->cspec->num_msix_entries = msix_entries;
-=======
-	if (qib_pcie_params(dd, dd->lbus_width,
-			    &dd->cspec->num_msix_entries))
-		qib_dev_err(dd,
-			"Reset failed to setup PCIe or interrupts; continuing anyway\n");
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	qib_setup_7322_interrupt(dd, 1);
 
 	for (i = 0; i < dd->num_pports; ++i) {
@@ -5213,27 +5010,17 @@ static void init_7322_cntrnames(struct qib_devdata *dd)
 		dd->cspec->cntrnamelen = sizeof(cntr7322names) - 1;
 	else
 		dd->cspec->cntrnamelen = 1 + s - cntr7322names;
-<<<<<<< HEAD
 	dd->cspec->cntrs = kmalloc_array(dd->cspec->ncntrs, sizeof(u64),
 					 GFP_KERNEL);
-=======
-	dd->cspec->cntrs = kmalloc(dd->cspec->ncntrs
-		* sizeof(u64), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0, s = (char *)portcntr7322names; s; i++)
 		s = strchr(s + 1, '\n');
 	dd->cspec->nportcntrs = i - 1;
 	dd->cspec->portcntrnamelen = sizeof(portcntr7322names) - 1;
 	for (i = 0; i < dd->num_pports; ++i) {
-<<<<<<< HEAD
 		dd->pport[i].cpspec->portcntrs =
 			kmalloc_array(dd->cspec->nportcntrs, sizeof(u64),
 				      GFP_KERNEL);
-=======
-		dd->pport[i].cpspec->portcntrs = kmalloc(dd->cspec->nportcntrs
-			* sizeof(u64), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -5324,15 +5111,9 @@ done:
  *
  * called from add_timer
  */
-<<<<<<< HEAD
 static void qib_get_7322_faststats(struct timer_list *t)
 {
 	struct qib_devdata *dd = from_timer(dd, t, stats_timer);
-=======
-static void qib_get_7322_faststats(unsigned long opaque)
-{
-	struct qib_devdata *dd = (struct qib_devdata *) opaque;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct qib_pportdata *ppd;
 	unsigned long flags;
 	u64 traffic_wds;
@@ -5389,14 +5170,9 @@ static int qib_7322_intr_fallback(struct qib_devdata *dd)
 
 	qib_devinfo(dd->pcidev,
 		"MSIx interrupt not detected, trying INTx interrupts\n");
-<<<<<<< HEAD
 	qib_7322_free_irq(dd);
 	if (pci_alloc_irq_vectors(dd->pcidev, 1, 1, PCI_IRQ_LEGACY) < 0)
 		qib_dev_err(dd, "Failed to enable INTx\n");
-=======
-	qib_7322_nomsix(dd);
-	qib_enable_intx(dd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	qib_setup_7322_interrupt(dd, 0);
 	return 1;
 }
@@ -5594,22 +5370,11 @@ static void try_7322_autoneg(struct qib_pportdata *ppd)
 static void autoneg_7322_work(struct work_struct *work)
 {
 	struct qib_pportdata *ppd;
-<<<<<<< HEAD
-=======
-	struct qib_devdata *dd;
-	u64 startms;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 i;
 	unsigned long flags;
 
 	ppd = container_of(work, struct qib_chippport_specific,
 			    autoneg_work.work)->ppd;
-<<<<<<< HEAD
-=======
-	dd = ppd->dd;
-
-	startms = jiffies_to_msecs(jiffies);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Busy wait for this first part, it should be at most a
@@ -6649,7 +6414,6 @@ static int qib_init_7322_variables(struct qib_devdata *dd)
 	sbufcnt = dd->piobcnt2k + dd->piobcnt4k +
 		NUM_VL15_BUFS + BITS_PER_LONG - 1;
 	sbufcnt /= BITS_PER_LONG;
-<<<<<<< HEAD
 	dd->cspec->sendchkenable =
 		kmalloc_array(sbufcnt, sizeof(*dd->cspec->sendchkenable),
 			      GFP_KERNEL);
@@ -6659,14 +6423,6 @@ static int qib_init_7322_variables(struct qib_devdata *dd)
 	dd->cspec->sendibchk =
 		kmalloc_array(sbufcnt, sizeof(*dd->cspec->sendibchk),
 			      GFP_KERNEL);
-=======
-	dd->cspec->sendchkenable = kmalloc(sbufcnt *
-		sizeof(*dd->cspec->sendchkenable), GFP_KERNEL);
-	dd->cspec->sendgrhchk = kmalloc(sbufcnt *
-		sizeof(*dd->cspec->sendgrhchk), GFP_KERNEL);
-	dd->cspec->sendibchk = kmalloc(sbufcnt *
-		sizeof(*dd->cspec->sendibchk), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!dd->cspec->sendchkenable || !dd->cspec->sendgrhchk ||
 		!dd->cspec->sendibchk) {
 		ret = -ENOMEM;
@@ -6830,12 +6586,7 @@ static int qib_init_7322_variables(struct qib_devdata *dd)
 		if (!qib_mini_init)
 			write_7322_init_portregs(ppd);
 
-<<<<<<< HEAD
 		timer_setup(&cp->chase_timer, reenable_chase, 0);
-=======
-		setup_timer(&cp->chase_timer, reenable_chase,
-			    (unsigned long)ppd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		ppd++;
 	}
@@ -6861,12 +6612,7 @@ static int qib_init_7322_variables(struct qib_devdata *dd)
 		(u64) rcv_int_count << IBA7322_HDRHEAD_PKTINT_SHIFT;
 
 	/* setup the stats timer; the add_timer is done at end of init */
-<<<<<<< HEAD
 	timer_setup(&dd->stats_timer, qib_get_7322_faststats, 0);
-=======
-	setup_timer(&dd->stats_timer, qib_get_7322_faststats,
-		    (unsigned long)dd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dd->ureg_align = 0x10000;  /* 64KB alignment */
 
@@ -7549,14 +7295,9 @@ struct qib_devdata *qib_init_iba7322_funcs(struct pci_dev *pdev,
 		actual_cnt -= dd->num_pports;
 
 	tabsize = actual_cnt;
-<<<<<<< HEAD
 	dd->cspec->msix_entries = kcalloc(tabsize,
 					  sizeof(struct qib_msix_entry),
 					  GFP_KERNEL);
-=======
-	dd->cspec->msix_entries = kzalloc(tabsize *
-			sizeof(struct qib_msix_entry), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!dd->cspec->msix_entries)
 		tabsize = 0;
 
@@ -8075,21 +7816,12 @@ static void ibsd_wr_allchans(struct qib_pportdata *ppd, int addr, unsigned data,
 {
 	struct qib_devdata *dd = ppd->dd;
 	int chan;
-<<<<<<< HEAD
-=======
-	u32 rbc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (chan = 0; chan < SERDES_CHANS; ++chan) {
 		ahb_mod(dd, IBSD(ppd->hw_pidx), (chan + (chan >> 1)), addr,
 			data, mask);
-<<<<<<< HEAD
 		ahb_mod(dd, IBSD(ppd->hw_pidx), (chan + (chan >> 1)), addr,
 			0, 0);
-=======
-		rbc = ahb_mod(dd, IBSD(ppd->hw_pidx), (chan + (chan >> 1)),
-			      addr, 0, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 

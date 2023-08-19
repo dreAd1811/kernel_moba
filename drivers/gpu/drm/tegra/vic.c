@@ -25,10 +25,7 @@
 
 struct vic_config {
 	const char *firmware;
-<<<<<<< HEAD
 	unsigned int version;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct vic {
@@ -119,11 +116,7 @@ static int vic_boot(struct vic *vic)
 }
 
 static void *vic_falcon_alloc(struct falcon *falcon, size_t size,
-<<<<<<< HEAD
 			      dma_addr_t *iova)
-=======
-			       dma_addr_t *iova)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct tegra_drm *tegra = falcon->data;
 
@@ -146,22 +139,14 @@ static const struct falcon_ops vic_falcon_ops = {
 static int vic_init(struct host1x_client *client)
 {
 	struct tegra_drm_client *drm = host1x_to_drm_client(client);
-<<<<<<< HEAD
 	struct iommu_group *group = iommu_group_get(client->dev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_device *dev = dev_get_drvdata(client->parent);
 	struct tegra_drm *tegra = dev->dev_private;
 	struct vic *vic = to_vic(drm);
 	int err;
 
-<<<<<<< HEAD
 	if (group && tegra->domain) {
 		err = iommu_attach_group(tegra->domain, group);
-=======
-	if (tegra->domain) {
-		err = iommu_attach_device(tegra->domain, vic->dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (err < 0) {
 			dev_err(vic->dev, "failed to attach to domain: %d\n",
 				err);
@@ -175,27 +160,16 @@ static int vic_init(struct host1x_client *client)
 		vic->falcon.data = tegra;
 		err = falcon_load_firmware(&vic->falcon);
 		if (err < 0)
-<<<<<<< HEAD
 			goto detach;
-=======
-			goto detach_device;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	vic->channel = host1x_channel_request(client->dev);
 	if (!vic->channel) {
 		err = -ENOMEM;
-<<<<<<< HEAD
 		goto detach;
 	}
 
 	client->syncpts[0] = host1x_syncpt_request(client, 0);
-=======
-		goto detach_device;
-	}
-
-	client->syncpts[0] = host1x_syncpt_request(client->dev, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!client->syncpts[0]) {
 		err = -ENOMEM;
 		goto free_channel;
@@ -211,15 +185,9 @@ free_syncpt:
 	host1x_syncpt_free(client->syncpts[0]);
 free_channel:
 	host1x_channel_put(vic->channel);
-<<<<<<< HEAD
 detach:
 	if (group && tegra->domain)
 		iommu_detach_group(tegra->domain, group);
-=======
-detach_device:
-	if (tegra->domain)
-		iommu_detach_device(tegra->domain, vic->dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return err;
 }
@@ -227,10 +195,7 @@ detach_device:
 static int vic_exit(struct host1x_client *client)
 {
 	struct tegra_drm_client *drm = host1x_to_drm_client(client);
-<<<<<<< HEAD
 	struct iommu_group *group = iommu_group_get(client->dev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_device *dev = dev_get_drvdata(client->parent);
 	struct tegra_drm *tegra = dev->dev_private;
 	struct vic *vic = to_vic(drm);
@@ -244,11 +209,7 @@ static int vic_exit(struct host1x_client *client)
 	host1x_channel_put(vic->channel);
 
 	if (vic->domain) {
-<<<<<<< HEAD
 		iommu_detach_group(vic->domain, group);
-=======
-		iommu_detach_device(vic->domain, vic->dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		vic->domain = NULL;
 	}
 
@@ -304,17 +265,13 @@ static const struct tegra_drm_client_ops vic_ops = {
 
 static const struct vic_config vic_t124_config = {
 	.firmware = NVIDIA_TEGRA_124_VIC_FIRMWARE,
-<<<<<<< HEAD
 	.version = 0x40,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define NVIDIA_TEGRA_210_VIC_FIRMWARE "nvidia/tegra210/vic04_ucode.bin"
 
 static const struct vic_config vic_t210_config = {
 	.firmware = NVIDIA_TEGRA_210_VIC_FIRMWARE,
-<<<<<<< HEAD
 	.version = 0x21,
 };
 
@@ -323,51 +280,29 @@ static const struct vic_config vic_t210_config = {
 static const struct vic_config vic_t186_config = {
 	.firmware = NVIDIA_TEGRA_186_VIC_FIRMWARE,
 	.version = 0x18,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct of_device_id vic_match[] = {
 	{ .compatible = "nvidia,tegra124-vic", .data = &vic_t124_config },
 	{ .compatible = "nvidia,tegra210-vic", .data = &vic_t210_config },
-<<<<<<< HEAD
 	{ .compatible = "nvidia,tegra186-vic", .data = &vic_t186_config },
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ },
 };
 
 static int vic_probe(struct platform_device *pdev)
 {
-<<<<<<< HEAD
 	struct device *dev = &pdev->dev;
 	struct host1x_syncpt **syncpts;
 	struct resource *regs;
 	struct vic *vic;
 	int err;
 
-=======
-	struct vic_config *vic_config = NULL;
-	struct device *dev = &pdev->dev;
-	struct host1x_syncpt **syncpts;
-	struct resource *regs;
-	const struct of_device_id *match;
-	struct vic *vic;
-	int err;
-
-	match = of_match_device(vic_match, dev);
-	vic_config = (struct vic_config *)match->data;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vic = devm_kzalloc(dev, sizeof(*vic), GFP_KERNEL);
 	if (!vic)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	vic->config = of_device_get_match_data(dev);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	syncpts = devm_kzalloc(dev, sizeof(*syncpts), GFP_KERNEL);
 	if (!syncpts)
 		return -ENOMEM;
@@ -396,11 +331,7 @@ static int vic_probe(struct platform_device *pdev)
 	if (err < 0)
 		return err;
 
-<<<<<<< HEAD
 	err = falcon_read_firmware(&vic->falcon, vic->config->firmware);
-=======
-	err = falcon_read_firmware(&vic->falcon, vic_config->firmware);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err < 0)
 		goto exit_falcon;
 
@@ -413,15 +344,9 @@ static int vic_probe(struct platform_device *pdev)
 	vic->client.base.syncpts = syncpts;
 	vic->client.base.num_syncpts = 1;
 	vic->dev = dev;
-<<<<<<< HEAD
 
 	INIT_LIST_HEAD(&vic->client.list);
 	vic->client.version = vic->config->version;
-=======
-	vic->config = vic_config;
-
-	INIT_LIST_HEAD(&vic->client.list);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vic->client.ops = &vic_ops;
 
 	err = host1x_client_register(&vic->client.base);
@@ -490,9 +415,6 @@ MODULE_FIRMWARE(NVIDIA_TEGRA_124_VIC_FIRMWARE);
 #if IS_ENABLED(CONFIG_ARCH_TEGRA_210_SOC)
 MODULE_FIRMWARE(NVIDIA_TEGRA_210_VIC_FIRMWARE);
 #endif
-<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_ARCH_TEGRA_186_SOC)
 MODULE_FIRMWARE(NVIDIA_TEGRA_186_VIC_FIRMWARE);
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

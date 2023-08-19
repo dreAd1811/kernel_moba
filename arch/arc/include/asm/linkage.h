@@ -14,11 +14,6 @@
 #ifdef __ASSEMBLY__
 
 #define ASM_NL		 `	/* use '`' to mark new line in macro */
-<<<<<<< HEAD
-=======
-#define __ALIGN		.align 4
-#define __ALIGN_STR	__stringify(__ALIGN)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* annotation for data we want in DCCM - if enabled in .config */
 .macro ARCFP_DATA nm

@@ -45,7 +45,6 @@ enum cx25840_media_pads {
 	CX25840_NUM_PADS
 };
 
-<<<<<<< HEAD
 /**
  * struct cx25840_state - a device instance private data
  * @c:			i2c_client struct representing this device
@@ -75,8 +74,6 @@ enum cx25840_media_pads {
  * @ir_state:		a pointer to chip IR controller private data
  * @pads:		array of supported chip pads (currently only a stub)
  */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct cx25840_state {
 	struct i2c_client *c;
 	struct v4l2_subdev sd;
@@ -98,13 +95,8 @@ struct cx25840_state {
 	u32 rev;
 	int is_initialized;
 	unsigned vbi_regs_offset;
-<<<<<<< HEAD
 	wait_queue_head_t fw_wait;
 	struct work_struct fw_work;
-=======
-	wait_queue_head_t fw_wait;    /* wake up when the fw load is finished */
-	struct work_struct fw_work;   /* work entry for fw load */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct cx25840_ir_state *ir_state;
 #if defined(CONFIG_MEDIA_CONTROLLER)
 	struct media_pad	pads[CX25840_NUM_PADS];
@@ -155,11 +147,7 @@ static inline bool is_cx23888(struct cx25840_state *state)
 }
 
 /* ----------------------------------------------------------------------- */
-<<<<<<< HEAD
 /* cx25850-core.c							   */
-=======
-/* cx25850-core.c 							   */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int cx25840_write(struct i2c_client *client, u16 addr, u8 value);
 int cx25840_write4(struct i2c_client *client, u16 addr, u32 value);
 u8 cx25840_read(struct i2c_client *client, u16 addr);

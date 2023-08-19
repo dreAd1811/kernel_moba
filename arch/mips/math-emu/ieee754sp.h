@@ -69,11 +69,7 @@ static inline int ieee754sp_finite(union ieee754sp x)
 #define SPDNORMY	SPDNORMx(ym, ye)
 #define SPDNORMZ	SPDNORMx(zm, ze)
 
-<<<<<<< HEAD
 static inline union ieee754sp buildsp(int s, int bx, unsigned int m)
-=======
-static inline union ieee754sp buildsp(int s, int bx, unsigned m)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	union ieee754sp r;
 

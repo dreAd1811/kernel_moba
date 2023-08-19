@@ -86,14 +86,6 @@ struct tx_buf {
 	struct list_head list;
 };
 
-<<<<<<< HEAD
-=======
-struct rx_buf {
-	struct sk_buff *skb;
-	struct hif_device_usb *hif_dev;
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define HIF_USB_TX_STOP  BIT(0)
 #define HIF_USB_TX_FLUSH BIT(1)
 
@@ -141,9 +133,5 @@ struct hif_device_usb {
 
 int ath9k_hif_usb_init(void);
 void ath9k_hif_usb_exit(void);
-<<<<<<< HEAD
-=======
-void ath9k_hif_usb_dealloc_urbs(struct hif_device_usb *hif_dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* HTC_USB_H */

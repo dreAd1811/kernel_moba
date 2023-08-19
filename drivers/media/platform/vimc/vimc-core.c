@@ -243,14 +243,10 @@ static void vimc_comp_unbind(struct device *master)
 
 static int vimc_comp_compare(struct device *comp, void *data)
 {
-<<<<<<< HEAD
 	const struct platform_device *pdev = to_platform_device(comp);
 	const char *name = data;
 
 	return !strcmp(pdev->dev.platform_data, name);
-=======
-	return comp == data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct component_match *vimc_add_subdevs(struct vimc_device *vimc)
@@ -271,7 +267,6 @@ static struct component_match *vimc_add_subdevs(struct vimc_device *vimc)
 						PLATFORM_DEVID_AUTO,
 						&pdata,
 						sizeof(pdata));
-<<<<<<< HEAD
 		if (IS_ERR(vimc->subdevs[i])) {
 			match = ERR_CAST(vimc->subdevs[i]);
 			while (--i >= 0)
@@ -282,17 +277,6 @@ static struct component_match *vimc_add_subdevs(struct vimc_device *vimc)
 
 		component_match_add(&vimc->pdev.dev, &match, vimc_comp_compare,
 				    (void *)vimc->pipe_cfg->ents[i].name);
-=======
-		if (!vimc->subdevs[i]) {
-			while (--i >= 0)
-				platform_device_unregister(vimc->subdevs[i]);
-
-			return ERR_PTR(-ENOMEM);
-		}
-
-		component_match_add(&vimc->pdev.dev, &match, vimc_comp_compare,
-				    &vimc->subdevs[i]->dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return match;
@@ -346,10 +330,6 @@ static int vimc_probe(struct platform_device *pdev)
 	if (ret) {
 		media_device_cleanup(&vimc->mdev);
 		vimc_rm_subdevs(vimc);
-<<<<<<< HEAD
-=======
-		kfree(vimc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 

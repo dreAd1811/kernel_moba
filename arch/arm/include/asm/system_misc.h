@@ -38,10 +38,6 @@ static inline void harden_branch_predictor(void)
 
 extern unsigned int user_debug;
 extern char* (*arch_read_hardware_id)(void);
-<<<<<<< HEAD
-=======
-const char * __init arch_read_machine_name(void);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline int handle_guest_sea(phys_addr_t addr, unsigned int esr)
 {

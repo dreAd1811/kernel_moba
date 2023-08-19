@@ -48,11 +48,7 @@ struct efx_mcdi_async_param {
 	/* followed by request/response buffer */
 };
 
-<<<<<<< HEAD
 static void efx_mcdi_timeout_async(struct timer_list *t);
-=======
-static void efx_mcdi_timeout_async(unsigned long context);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int efx_mcdi_drv_attach(struct efx_nic *efx, bool driver_operating,
 			       bool *was_attached_out);
 static bool efx_mcdi_poll_once(struct efx_nic *efx);
@@ -91,12 +87,7 @@ int efx_mcdi_init(struct efx_nic *efx)
 	mcdi->mode = MCDI_MODE_POLL;
 	spin_lock_init(&mcdi->async_lock);
 	INIT_LIST_HEAD(&mcdi->async_list);
-<<<<<<< HEAD
 	timer_setup(&mcdi->async_timer, efx_mcdi_timeout_async, 0);
-=======
-	setup_timer(&mcdi->async_timer, efx_mcdi_timeout_async,
-		    (unsigned long)mcdi);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	(void) efx_mcdi_poll_reboot(efx);
 	mcdi->new_epoch = true;
@@ -616,15 +607,9 @@ static void efx_mcdi_ev_cpl(struct efx_nic *efx, unsigned int seqno,
 	}
 }
 
-<<<<<<< HEAD
 static void efx_mcdi_timeout_async(struct timer_list *t)
 {
 	struct efx_mcdi_iface *mcdi = from_timer(mcdi, t, async_timer);
-=======
-static void efx_mcdi_timeout_async(unsigned long context)
-{
-	struct efx_mcdi_iface *mcdi = (struct efx_mcdi_iface *)context;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	efx_mcdi_complete_async(mcdi, true);
 }

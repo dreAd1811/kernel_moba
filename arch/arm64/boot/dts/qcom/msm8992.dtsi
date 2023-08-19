@@ -202,7 +202,6 @@
 			reg = <0xfc400000 0x2000>;
 		};
 
-<<<<<<< HEAD
 		sdhci1: mmc@f9824900 {
 			compatible = "qcom,sdhci-msm-v4";
 			reg = <0xf9824900 0x1a0>, <0xf9824000 0x800>;
@@ -228,8 +227,6 @@
 			status = "okay";
 		};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rpm_msg_ram: memory@fc428000 {
 			compatible = "qcom,rpm-msg-ram";
 			reg = <0xfc428000 0x4000>;
@@ -259,7 +256,6 @@
 		};
 	};
 
-<<<<<<< HEAD
 	smd_rpm: smd {
 		compatible = "qcom,smd";
 		rpm {
@@ -323,9 +319,4 @@
 	};
 };
 
-=======
-};
-
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "msm8992-pins.dtsi"

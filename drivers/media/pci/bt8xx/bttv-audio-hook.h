@@ -1,11 +1,7 @@
 /*
  * Handlers for board audio hooks, splitted from bttv-cards
  *
-<<<<<<< HEAD
  * Copyright (c) 2006 Mauro Carvalho Chehab <mchehab@kernel.org>
-=======
- * Copyright (c) 2006 Mauro Carvalho Chehab (mchehab@infradead.org)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * This code is placed under the terms of the GNU General Public License
  */
 

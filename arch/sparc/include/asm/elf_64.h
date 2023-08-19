@@ -10,10 +10,7 @@
 #include <asm/processor.h>
 #include <asm/extable_64.h>
 #include <asm/spitfire.h>
-<<<<<<< HEAD
 #include <asm/adi.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Sparc section types
@@ -215,7 +212,6 @@ do {	if ((ex).e_ident[EI_CLASS] == ELFCLASS32)	\
 			(current->personality & (~PER_MASK)));	\
 } while (0)
 
-<<<<<<< HEAD
 extern unsigned int vdso_enabled;
 
 #define	ARCH_DLINFO							\
@@ -234,6 +230,4 @@ struct linux_binprm;
 #define ARCH_HAS_SETUP_ADDITIONAL_PAGES	1
 extern int arch_setup_additional_pages(struct linux_binprm *bprm,
 					int uses_interp);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* !(__ASM_SPARC64_ELF_H) */

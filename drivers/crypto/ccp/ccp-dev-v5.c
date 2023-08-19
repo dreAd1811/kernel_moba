@@ -788,20 +788,12 @@ static int ccp5_init(struct ccp_device *ccp)
 	struct ccp_cmd_queue *cmd_q;
 	struct dma_pool *dma_pool;
 	char dma_pool_name[MAX_DMAPOOL_NAME_LEN];
-<<<<<<< HEAD
 	unsigned int qmr, i;
-=======
-	unsigned int qmr, qim, i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 status;
 	u32 status_lo, status_hi;
 	int ret;
 
 	/* Find available queues */
-<<<<<<< HEAD
-=======
-	qim = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	qmr = ioread32(ccp->io_regs + Q_MASK_REG);
 	for (i = 0; i < MAX_HW_QUEUES; i++) {
 

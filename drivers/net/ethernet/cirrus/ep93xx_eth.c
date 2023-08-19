@@ -332,11 +332,7 @@ static int ep93xx_poll(struct napi_struct *napi, int budget)
 	return rx;
 }
 
-<<<<<<< HEAD
 static netdev_tx_t ep93xx_xmit(struct sk_buff *skb, struct net_device *dev)
-=======
-static int ep93xx_xmit(struct sk_buff *skb, struct net_device *dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ep93xx_priv *ep = netdev_priv(dev);
 	struct ep93xx_tdesc *txd;
@@ -771,10 +767,6 @@ static int ep93xx_eth_remove(struct platform_device *pdev)
 {
 	struct net_device *dev;
 	struct ep93xx_priv *ep;
-<<<<<<< HEAD
-=======
-	struct resource *mem;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev = platform_get_drvdata(pdev);
 	if (dev == NULL)
@@ -790,13 +782,8 @@ static int ep93xx_eth_remove(struct platform_device *pdev)
 		iounmap(ep->base_addr);
 
 	if (ep->res != NULL) {
-<<<<<<< HEAD
 		release_resource(ep->res);
 		kfree(ep->res);
-=======
-		mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-		release_mem_region(mem->start, resource_size(mem));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	free_netdev(dev);

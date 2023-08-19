@@ -321,12 +321,8 @@ static int __init raw_init(void)
 		max_raw_minors = MAX_RAW_MINORS;
 	}
 
-<<<<<<< HEAD
 	raw_devices = vzalloc(array_size(max_raw_minors,
 					 sizeof(struct raw_device_data)));
-=======
-	raw_devices = vzalloc(sizeof(struct raw_device_data) * max_raw_minors);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!raw_devices) {
 		printk(KERN_ERR "Not enough memory for raw device structures\n");
 		ret = -ENOMEM;

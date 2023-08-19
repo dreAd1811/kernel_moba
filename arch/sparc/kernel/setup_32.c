@@ -86,11 +86,7 @@ static void prom_sync_me(void)
 	show_free_areas(0, NULL);
 	if (!is_idle_task(current)) {
 		local_irq_enable();
-<<<<<<< HEAD
 		ksys_sync();
-=======
-		sys_sync();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		local_irq_disable();
 	}
 	prom_printf("Returning to prom\n");

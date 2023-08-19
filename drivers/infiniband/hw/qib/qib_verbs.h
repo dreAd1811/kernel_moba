@@ -78,12 +78,6 @@ struct qib_verbs_txreq;
 
 #define QIB_VENDOR_IPG		cpu_to_be16(0xFFA0)
 
-<<<<<<< HEAD
-=======
-/* XXX Should be defined in ib_verbs.h enum ib_port_cap_flags */
-#define IB_PORT_OTHER_LOCAL_CHANGES_SUP (1 << 26)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define IB_DEFAULT_GID_PREFIX	cpu_to_be64(0xfe80000000000000ULL)
 
 /* Values for set/get portinfo VLCap OperationalVLs */
@@ -317,22 +311,13 @@ void qib_rc_rnr_retry(unsigned long arg);
 
 void qib_rc_send_complete(struct rvt_qp *qp, struct ib_header *hdr);
 
-<<<<<<< HEAD
 int qib_post_ud_send(struct rvt_qp *qp, const struct ib_send_wr *wr);
-=======
-int qib_post_ud_send(struct rvt_qp *qp, struct ib_send_wr *wr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void qib_ud_rcv(struct qib_ibport *ibp, struct ib_header *hdr,
 		int has_grh, void *data, u32 tlen, struct rvt_qp *qp);
 
 void mr_rcu_callback(struct rcu_head *list);
 
-<<<<<<< HEAD
-=======
-int qib_get_rwqe(struct rvt_qp *qp, int wr_id_only);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void qib_migrate_qp(struct rvt_qp *qp);
 
 int qib_ruc_check_hdr(struct qib_ibport *ibp, struct ib_header *hdr,

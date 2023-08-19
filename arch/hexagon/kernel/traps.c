@@ -412,13 +412,6 @@ void do_trap0(struct pt_regs *regs)
 	case TRAP_DEBUG:
 		/* Trap0 0xdb is debug breakpoint */
 		if (user_mode(regs)) {
-<<<<<<< HEAD
-=======
-			struct siginfo info;
-
-			info.si_signo = SIGTRAP;
-			info.si_errno = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/*
 			 * Some architecures add some per-thread state
 			 * to distinguish between breakpoint traps and
@@ -426,14 +419,8 @@ void do_trap0(struct pt_regs *regs)
 			 * set the si_code value appropriately, or we
 			 * may want to use a different trap0 flavor.
 			 */
-<<<<<<< HEAD
 			force_sig_fault(SIGTRAP, TRAP_BRKPT,
 					(void __user *) pt_elr(regs), current);
-=======
-			info.si_code = TRAP_BRKPT;
-			info.si_addr = (void __user *) pt_elr(regs);
-			force_sig_info(SIGTRAP, &info, current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else {
 #ifdef CONFIG_KGDB
 			kgdb_handle_exception(pt_cause(regs), SIGTRAP,

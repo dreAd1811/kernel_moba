@@ -16,20 +16,11 @@
 #define __MMC_QCOM_DML_H__
 
 #ifdef CONFIG_MMC_QCOM_DML
-<<<<<<< HEAD
 void qcom_variant_init(struct mmci_host *host);
 void dml_start_xfer(struct mmci_host *host, struct mmc_data *data);
 #else
 static inline void qcom_variant_init(struct mmci_host *host)
 {
-=======
-int dml_hw_init(struct mmci_host *host, struct device_node *np);
-void dml_start_xfer(struct mmci_host *host, struct mmc_data *data);
-#else
-static inline int dml_hw_init(struct mmci_host *host, struct device_node *np)
-{
-	return -ENOSYS;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 static inline void dml_start_xfer(struct mmci_host *host, struct mmc_data *data)
 {

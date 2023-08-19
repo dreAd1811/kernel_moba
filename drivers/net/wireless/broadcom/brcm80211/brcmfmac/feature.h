@@ -33,11 +33,8 @@
  * MFP: 802.11w Management Frame Protection.
  * GSCAN: enhanced scan offload feature.
  * FWSUP: Firmware supplicant.
-<<<<<<< HEAD
  * MONITOR: firmware can pass monitor packets to host.
  * MONITOR_FMT_RADIOTAP: firmware provides monitor packets with radiotap header
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #define BRCMF_FEAT_LIST \
 	BRCMF_FEAT_DEF(MBSS) \
@@ -53,13 +50,9 @@
 	BRCMF_FEAT_DEF(WOWL_ARP_ND) \
 	BRCMF_FEAT_DEF(MFP) \
 	BRCMF_FEAT_DEF(GSCAN) \
-<<<<<<< HEAD
 	BRCMF_FEAT_DEF(FWSUP) \
 	BRCMF_FEAT_DEF(MONITOR) \
 	BRCMF_FEAT_DEF(MONITOR_FMT_RADIOTAP)
-=======
-	BRCMF_FEAT_DEF(FWSUP)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Quirks:
@@ -101,7 +94,6 @@ enum brcmf_feat_quirk {
 void brcmf_feat_attach(struct brcmf_pub *drvr);
 
 /**
-<<<<<<< HEAD
  * brcmf_feat_debugfs_create() - create debugfs entries.
  *
  * @drvr: driver instance.
@@ -109,8 +101,6 @@ void brcmf_feat_attach(struct brcmf_pub *drvr);
 void brcmf_feat_debugfs_create(struct brcmf_pub *drvr);
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * brcmf_feat_is_enabled() - query feature.
  *
  * @ifp: interface instance.

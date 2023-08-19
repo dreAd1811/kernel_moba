@@ -16,10 +16,7 @@
 #include <drm/drm_atomic.h>
 #include <drm/drm_atomic_helper.h>
 #include <drm/drm_crtc_helper.h>
-<<<<<<< HEAD
 #include <drm/drm_fb_helper.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/component.h>
 
@@ -30,20 +27,13 @@
 #include "exynos_drm_fb.h"
 #include "exynos_drm_gem.h"
 #include "exynos_drm_plane.h"
-<<<<<<< HEAD
 #include "exynos_drm_ipp.h"
 #include "exynos_drm_vidi.h"
 #include "exynos_drm_g2d.h"
-=======
-#include "exynos_drm_vidi.h"
-#include "exynos_drm_g2d.h"
-#include "exynos_drm_ipp.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "exynos_drm_iommu.h"
 
 #define DRIVER_NAME	"exynos"
 #define DRIVER_DESC	"Samsung SoC DRM"
-<<<<<<< HEAD
 #define DRIVER_DATE	"20180330"
 
 /*
@@ -54,33 +44,6 @@
  */
 #define DRIVER_MAJOR	1
 #define DRIVER_MINOR	1
-=======
-#define DRIVER_DATE	"20110530"
-#define DRIVER_MAJOR	1
-#define DRIVER_MINOR	0
-
-static struct device *exynos_drm_get_dma_device(void);
-
-int exynos_atomic_check(struct drm_device *dev,
-			struct drm_atomic_state *state)
-{
-	int ret;
-
-	ret = drm_atomic_helper_check_modeset(dev, state);
-	if (ret)
-		return ret;
-
-	ret = drm_atomic_normalize_zpos(dev, state);
-	if (ret)
-		return ret;
-
-	ret = drm_atomic_helper_check_planes(dev, state);
-	if (ret)
-		return ret;
-
-	return ret;
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int exynos_drm_open(struct drm_device *dev, struct drm_file *file)
 {
@@ -92,12 +55,7 @@ static int exynos_drm_open(struct drm_device *dev, struct drm_file *file)
 		return -ENOMEM;
 
 	file->driver_priv = file_priv;
-<<<<<<< HEAD
 	ret = g2d_open(dev, file);
-=======
-
-	ret = exynos_drm_subdrv_open(dev, file);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto err_file_priv_free;
 
@@ -111,23 +69,11 @@ err_file_priv_free:
 
 static void exynos_drm_postclose(struct drm_device *dev, struct drm_file *file)
 {
-<<<<<<< HEAD
 	g2d_close(dev, file);
-=======
-	exynos_drm_subdrv_close(dev, file);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(file->driver_priv);
 	file->driver_priv = NULL;
 }
 
-<<<<<<< HEAD
-=======
-static void exynos_drm_lastclose(struct drm_device *dev)
-{
-	exynos_drm_fbdev_restore_mode(dev);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct vm_operations_struct exynos_drm_gem_vm_ops = {
 	.fault = exynos_drm_gem_fault,
 	.open = drm_gem_vm_open,
@@ -149,7 +95,6 @@ static const struct drm_ioctl_desc exynos_ioctls[] = {
 			DRM_AUTH | DRM_RENDER_ALLOW),
 	DRM_IOCTL_DEF_DRV(EXYNOS_G2D_EXEC, exynos_g2d_exec_ioctl,
 			DRM_AUTH | DRM_RENDER_ALLOW),
-<<<<<<< HEAD
 	DRM_IOCTL_DEF_DRV(EXYNOS_IPP_GET_RESOURCES,
 			exynos_drm_ipp_get_res_ioctl,
 			DRM_AUTH | DRM_RENDER_ALLOW),
@@ -159,15 +104,6 @@ static const struct drm_ioctl_desc exynos_ioctls[] = {
 			exynos_drm_ipp_get_limits_ioctl,
 			DRM_AUTH | DRM_RENDER_ALLOW),
 	DRM_IOCTL_DEF_DRV(EXYNOS_IPP_COMMIT, exynos_drm_ipp_commit_ioctl,
-=======
-	DRM_IOCTL_DEF_DRV(EXYNOS_IPP_GET_PROPERTY, exynos_drm_ipp_get_property,
-			DRM_AUTH | DRM_RENDER_ALLOW),
-	DRM_IOCTL_DEF_DRV(EXYNOS_IPP_SET_PROPERTY, exynos_drm_ipp_set_property,
-			DRM_AUTH | DRM_RENDER_ALLOW),
-	DRM_IOCTL_DEF_DRV(EXYNOS_IPP_QUEUE_BUF, exynos_drm_ipp_queue_buf,
-			DRM_AUTH | DRM_RENDER_ALLOW),
-	DRM_IOCTL_DEF_DRV(EXYNOS_IPP_CMD_CTRL, exynos_drm_ipp_cmd_ctrl,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			DRM_AUTH | DRM_RENDER_ALLOW),
 };
 
@@ -186,11 +122,7 @@ static struct drm_driver exynos_drm_driver = {
 	.driver_features	= DRIVER_MODESET | DRIVER_GEM | DRIVER_PRIME
 				  | DRIVER_ATOMIC | DRIVER_RENDER,
 	.open			= exynos_drm_open,
-<<<<<<< HEAD
 	.lastclose		= drm_fb_helper_lastclose,
-=======
-	.lastclose		= exynos_drm_lastclose,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.postclose		= exynos_drm_postclose,
 	.gem_free_object_unlocked = exynos_drm_gem_free_object,
 	.gem_vm_ops		= &exynos_drm_gem_vm_ops,
@@ -198,11 +130,7 @@ static struct drm_driver exynos_drm_driver = {
 	.prime_handle_to_fd	= drm_gem_prime_handle_to_fd,
 	.prime_fd_to_handle	= drm_gem_prime_fd_to_handle,
 	.gem_prime_export	= drm_gem_prime_export,
-<<<<<<< HEAD
 	.gem_prime_import	= exynos_drm_gem_prime_import,
-=======
-	.gem_prime_import	= drm_gem_prime_import,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.gem_prime_get_sg_table	= exynos_drm_gem_prime_get_sg_table,
 	.gem_prime_import_sg_table	= exynos_drm_gem_prime_import_sg_table,
 	.gem_prime_vmap		= exynos_drm_gem_prime_vmap,
@@ -218,20 +146,12 @@ static struct drm_driver exynos_drm_driver = {
 	.minor	= DRIVER_MINOR,
 };
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_PM_SLEEP
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int exynos_drm_suspend(struct device *dev)
 {
 	struct drm_device *drm_dev = dev_get_drvdata(dev);
 	struct exynos_drm_private *private;
 
-<<<<<<< HEAD
 	if (!drm_dev)
-=======
-	if (pm_runtime_suspended(dev) || !drm_dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	private = drm_dev->dev_private;
@@ -248,42 +168,23 @@ static int exynos_drm_suspend(struct device *dev)
 	return 0;
 }
 
-<<<<<<< HEAD
 static void exynos_drm_resume(struct device *dev)
-=======
-static int exynos_drm_resume(struct device *dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_device *drm_dev = dev_get_drvdata(dev);
 	struct exynos_drm_private *private;
 
-<<<<<<< HEAD
 	if (!drm_dev)
 		return;
-=======
-	if (pm_runtime_suspended(dev) || !drm_dev)
-		return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	private = drm_dev->dev_private;
 	drm_atomic_helper_resume(drm_dev, private->suspend_state);
 	exynos_drm_fbdev_resume(drm_dev);
 	drm_kms_helper_poll_enable(drm_dev);
-<<<<<<< HEAD
 }
 
 static const struct dev_pm_ops exynos_drm_pm_ops = {
 	.prepare = exynos_drm_suspend,
 	.complete = exynos_drm_resume,
-=======
-
-	return 0;
-}
-#endif
-
-static const struct dev_pm_ops exynos_drm_pm_ops = {
-	SET_SYSTEM_SLEEP_PM_OPS(exynos_drm_suspend, exynos_drm_resume)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* forward declaration */
@@ -297,10 +198,7 @@ struct exynos_drm_driver_info {
 #define DRM_COMPONENT_DRIVER	BIT(0)	/* supports component framework */
 #define DRM_VIRTUAL_DEVICE	BIT(1)	/* create virtual platform device */
 #define DRM_DMA_DEVICE		BIT(2)	/* can be used for dma allocations */
-<<<<<<< HEAD
 #define DRM_FIMC_DEVICE		BIT(3)	/* devices shared with V4L2 subsystem */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DRV_PTR(drv, cond) (IS_ENABLED(cond) ? &drv : NULL)
 
@@ -338,7 +236,6 @@ static struct exynos_drm_driver_info exynos_drm_drivers[] = {
 		DRM_COMPONENT_DRIVER | DRM_VIRTUAL_DEVICE
 	}, {
 		DRV_PTR(g2d_driver, CONFIG_DRM_EXYNOS_G2D),
-<<<<<<< HEAD
 		DRM_COMPONENT_DRIVER
 	}, {
 		DRV_PTR(fimc_driver, CONFIG_DRM_EXYNOS_FIMC),
@@ -352,17 +249,6 @@ static struct exynos_drm_driver_info exynos_drm_drivers[] = {
 	}, {
 		DRV_PTR(gsc_driver, CONFIG_DRM_EXYNOS_GSC),
 		DRM_COMPONENT_DRIVER
-=======
-	}, {
-		DRV_PTR(fimc_driver, CONFIG_DRM_EXYNOS_FIMC),
-	}, {
-		DRV_PTR(rotator_driver, CONFIG_DRM_EXYNOS_ROTATOR),
-	}, {
-		DRV_PTR(gsc_driver, CONFIG_DRM_EXYNOS_GSC),
-	}, {
-		DRV_PTR(ipp_driver, CONFIG_DRM_EXYNOS_IPP),
-		DRM_VIRTUAL_DEVICE
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}, {
 		&exynos_drm_platform_driver,
 		DRM_VIRTUAL_DEVICE
@@ -390,15 +276,11 @@ static struct component_match *exynos_drm_match_add(struct device *dev)
 					    &info->driver->driver,
 					    (void *)platform_bus_type.match))) {
 			put_device(p);
-<<<<<<< HEAD
 
 			if (!(info->flags & DRM_FIMC_DEVICE) ||
 			    exynos_drm_check_fimc_device(d) == 0)
 				component_match_add(dev, &match,
 						    compare_dev, d);
-=======
-			component_match_add(dev, &match, compare_dev, d);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			p = d;
 		}
 		put_device(p);
@@ -407,7 +289,6 @@ static struct component_match *exynos_drm_match_add(struct device *dev)
 	return match ?: ERR_PTR(-ENODEV);
 }
 
-<<<<<<< HEAD
 static struct device *exynos_drm_get_dma_device(void)
 {
 	int i;
@@ -429,8 +310,6 @@ static struct device *exynos_drm_get_dma_device(void)
 	return NULL;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int exynos_drm_bind(struct device *dev)
 {
 	struct exynos_drm_private *private;
@@ -494,14 +373,6 @@ static int exynos_drm_bind(struct device *dev)
 	if (ret)
 		goto err_unbind_all;
 
-<<<<<<< HEAD
-=======
-	/* Probe non kms sub drivers and virtual display driver. */
-	ret = exynos_drm_device_subdrv_probe(drm);
-	if (ret)
-		goto err_unbind_all;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drm_mode_config_reset(drm);
 
 	/*
@@ -532,10 +403,6 @@ err_cleanup_fbdev:
 	exynos_drm_fbdev_fini(drm);
 err_cleanup_poll:
 	drm_kms_helper_poll_fini(drm);
-<<<<<<< HEAD
-=======
-	exynos_drm_device_subdrv_remove(drm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_unbind_all:
 	component_unbind_all(drm->dev, drm);
 err_mode_config_cleanup:
@@ -544,11 +411,7 @@ err_mode_config_cleanup:
 err_free_private:
 	kfree(private);
 err_free_drm:
-<<<<<<< HEAD
 	drm_dev_put(drm);
-=======
-	drm_dev_unref(drm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -559,11 +422,6 @@ static void exynos_drm_unbind(struct device *dev)
 
 	drm_dev_unregister(drm);
 
-<<<<<<< HEAD
-=======
-	exynos_drm_device_subdrv_remove(drm);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	exynos_drm_fbdev_fini(drm);
 	drm_kms_helper_poll_fini(drm);
 
@@ -575,11 +433,7 @@ static void exynos_drm_unbind(struct device *dev)
 	drm->dev_private = NULL;
 	dev_set_drvdata(dev, NULL);
 
-<<<<<<< HEAD
 	drm_dev_put(drm);
-=======
-	drm_dev_unref(drm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct component_master_ops exynos_drm_ops = {
@@ -616,30 +470,6 @@ static struct platform_driver exynos_drm_platform_driver = {
 	},
 };
 
-<<<<<<< HEAD
-=======
-static struct device *exynos_drm_get_dma_device(void)
-{
-	int i;
-
-	for (i = 0; i < ARRAY_SIZE(exynos_drm_drivers); ++i) {
-		struct exynos_drm_driver_info *info = &exynos_drm_drivers[i];
-		struct device *dev;
-
-		if (!info->driver || !(info->flags & DRM_DMA_DEVICE))
-			continue;
-
-		while ((dev = bus_find_device(&platform_bus_type, NULL,
-					    &info->driver->driver,
-					    (void *)platform_bus_type.match))) {
-			put_device(dev);
-			return dev;
-		}
-	}
-	return NULL;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void exynos_drm_unregister_devices(void)
 {
 	int i;

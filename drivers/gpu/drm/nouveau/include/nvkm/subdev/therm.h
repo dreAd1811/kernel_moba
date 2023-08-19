@@ -46,7 +46,6 @@ enum nvkm_therm_attr_type {
 	NVKM_THERM_ATTR_THRS_SHUTDOWN_HYST = 17,
 };
 
-<<<<<<< HEAD
 struct nvkm_therm_clkgate_init {
 	u32 addr;
 	u8  count;
@@ -57,8 +56,6 @@ struct nvkm_therm_clkgate_pack {
 	const struct nvkm_therm_clkgate_init *init;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct nvkm_therm {
 	const struct nvkm_therm_func *func;
 	struct nvkm_subdev subdev;
@@ -98,36 +95,25 @@ struct nvkm_therm {
 
 	int (*attr_get)(struct nvkm_therm *, enum nvkm_therm_attr_type);
 	int (*attr_set)(struct nvkm_therm *, enum nvkm_therm_attr_type, int);
-<<<<<<< HEAD
 
 	bool clkgating_enabled;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int nvkm_therm_temp_get(struct nvkm_therm *);
 int nvkm_therm_fan_sense(struct nvkm_therm *);
 int nvkm_therm_cstate(struct nvkm_therm *, int, int);
-<<<<<<< HEAD
 void nvkm_therm_clkgate_init(struct nvkm_therm *,
 			     const struct nvkm_therm_clkgate_pack *);
 void nvkm_therm_clkgate_enable(struct nvkm_therm *);
 void nvkm_therm_clkgate_fini(struct nvkm_therm *, bool);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int nv40_therm_new(struct nvkm_device *, int, struct nvkm_therm **);
 int nv50_therm_new(struct nvkm_device *, int, struct nvkm_therm **);
 int g84_therm_new(struct nvkm_device *, int, struct nvkm_therm **);
 int gt215_therm_new(struct nvkm_device *, int, struct nvkm_therm **);
 int gf119_therm_new(struct nvkm_device *, int, struct nvkm_therm **);
-<<<<<<< HEAD
 int gk104_therm_new(struct nvkm_device *, int, struct nvkm_therm **);
 int gm107_therm_new(struct nvkm_device *, int, struct nvkm_therm **);
 int gm200_therm_new(struct nvkm_device *, int, struct nvkm_therm **);
 int gp100_therm_new(struct nvkm_device *, int, struct nvkm_therm **);
-=======
-int gm107_therm_new(struct nvkm_device *, int, struct nvkm_therm **);
-int gm200_therm_new(struct nvkm_device *, int, struct nvkm_therm **);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

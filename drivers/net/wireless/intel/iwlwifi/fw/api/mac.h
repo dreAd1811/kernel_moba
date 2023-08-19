@@ -7,10 +7,7 @@
  *
  * Copyright(c) 2012 - 2014 Intel Corporation. All rights reserved.
  * Copyright(c) 2017        Intel Deutschland GmbH
-<<<<<<< HEAD
  * Copyright(c) 2018 Intel Corporation
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of version 2 of the GNU General Public License as
@@ -32,10 +29,7 @@
  *
  * Copyright(c) 2012 - 2014 Intel Corporation. All rights reserved.
  * Copyright(c) 2017        Intel Deutschland GmbH
-<<<<<<< HEAD
  * Copyright(c) 2018 Intel Corporation
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -287,13 +281,10 @@ enum iwl_mac_filter_flags {
 	MAC_FILTER_OUT_BCAST		= BIT(8),
 	MAC_FILTER_IN_CRC32		= BIT(11),
 	MAC_FILTER_IN_PROBE_REQUEST	= BIT(12),
-<<<<<<< HEAD
 	/**
 	 * @MAC_FILTER_IN_11AX: mark BSS as supporting 802.11ax
 	 */
 	MAC_FILTER_IN_11AX		= BIT(14),
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -421,7 +412,6 @@ struct iwl_missed_beacons_notif {
 	__le32 num_recvd_beacons;
 } __packed; /* MISSED_BEACON_NTFY_API_S_VER_3 */
 
-<<<<<<< HEAD
 /**
  * struct iwl_he_backoff_conf - used for backoff configuration
  * Per each trigger-based AC, (set by MU EDCA Parameter set info-element)
@@ -588,6 +578,4 @@ struct iwl_he_sta_context_cmd {
 	struct iwl_he_backoff_conf trig_based_txf[AC_NUM];
 } __packed; /* STA_CONTEXT_DOT11AX_API_S */
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __iwl_fw_api_mac_h__ */

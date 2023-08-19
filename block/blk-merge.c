@@ -9,11 +9,7 @@
 #include <linux/scatterlist.h>
 
 #include <trace/events/block.h>
-<<<<<<< HEAD
 #include <linux/pfk.h>
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "blk.h"
 
 static struct bio *blk_bio_discard_split(struct request_queue *q,
@@ -31,12 +27,8 @@ static struct bio *blk_bio_discard_split(struct request_queue *q,
 	/* Zero-sector (unknown) and one-sector granularities are the same.  */
 	granularity = max(q->limits.discard_granularity >> 9, 1U);
 
-<<<<<<< HEAD
 	max_discard_sectors = min(q->limits.max_discard_sectors,
 			bio_allowed_max_sectors(q));
-=======
-	max_discard_sectors = min(q->limits.max_discard_sectors, UINT_MAX >> 9);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	max_discard_sectors -= max_discard_sectors % granularity;
 
 	if (unlikely(!max_discard_sectors)) {
@@ -137,13 +129,7 @@ static struct bio *blk_bio_segment_split(struct request_queue *q,
 				nsegs++;
 				sectors = max_sectors;
 			}
-<<<<<<< HEAD
 			goto split;
-=======
-			if (sectors)
-				goto split;
-			/* Make this single bvec as the 1st segment */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		if (bvprvp && blk_queue_cluster(q)) {
@@ -159,34 +145,21 @@ static struct bio *blk_bio_segment_split(struct request_queue *q,
 			bvprvp = &bvprv;
 			sectors += bv.bv_len >> 9;
 
-<<<<<<< HEAD
-=======
-			if (nsegs == 1 && seg_size > front_seg_size)
-				front_seg_size = seg_size;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 		}
 new_segment:
 		if (nsegs == queue_max_segments(q))
 			goto split;
 
-<<<<<<< HEAD
 		if (nsegs == 1 && seg_size > front_seg_size)
 			front_seg_size = seg_size;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		nsegs++;
 		bvprv = bv;
 		bvprvp = &bvprv;
 		seg_size = bv.bv_len;
 		sectors += bv.bv_len >> 9;
 
-<<<<<<< HEAD
-=======
-		if (nsegs == 1 && seg_size > front_seg_size)
-			front_seg_size = seg_size;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	do_split = false;
@@ -199,11 +172,8 @@ split:
 			bio = new;
 	}
 
-<<<<<<< HEAD
 	if (nsegs == 1 && seg_size > front_seg_size)
 		front_seg_size = seg_size;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bio->bi_seg_front_size = front_seg_size;
 	if (seg_size > bio->bi_seg_back_size)
 		bio->bi_seg_back_size = seg_size;
@@ -219,7 +189,6 @@ void blk_queue_split(struct request_queue *q, struct bio **bio)
 	switch (bio_op(*bio)) {
 	case REQ_OP_DISCARD:
 	case REQ_OP_SECURE_ERASE:
-<<<<<<< HEAD
 		split = blk_bio_discard_split(q, *bio, &q->bio_split, &nsegs);
 		break;
 	case REQ_OP_WRITE_ZEROES:
@@ -230,18 +199,6 @@ void blk_queue_split(struct request_queue *q, struct bio **bio)
 		break;
 	default:
 		split = blk_bio_segment_split(q, *bio, &q->bio_split, &nsegs);
-=======
-		split = blk_bio_discard_split(q, *bio, q->bio_split, &nsegs);
-		break;
-	case REQ_OP_WRITE_ZEROES:
-		split = blk_bio_write_zeroes_split(q, *bio, q->bio_split, &nsegs);
-		break;
-	case REQ_OP_WRITE_SAME:
-		split = blk_bio_write_same_split(q, *bio, q->bio_split, &nsegs);
-		break;
-	default:
-		split = blk_bio_segment_split(q, *bio, q->bio_split, &nsegs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 
@@ -352,7 +309,6 @@ void blk_recalc_rq_segments(struct request *rq)
 
 void blk_recount_segments(struct request_queue *q, struct bio *bio)
 {
-<<<<<<< HEAD
 	unsigned short seg_cnt;
 
 	/* estimate segment number by bi_vcnt for non-cloned bio */
@@ -360,9 +316,6 @@ void blk_recount_segments(struct request_queue *q, struct bio *bio)
 		seg_cnt = bio_segments(bio);
 	else
 		seg_cnt = bio->bi_vcnt;
-=======
-	unsigned short seg_cnt = bio_segments(bio);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (test_bit(QUEUE_FLAG_NO_SG_MERGE, &q->queue_flags) &&
 			(seg_cnt < queue_max_segments(q)))
@@ -562,21 +515,13 @@ int ll_back_merge_fn(struct request_queue *q, struct request *req,
 	if (blk_integrity_rq(req) &&
 	    integrity_req_gap_back_merge(req, bio))
 		return 0;
-<<<<<<< HEAD
 	if (blk_try_merge(req, bio) != ELEVATOR_BACK_MERGE)
 		return 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (blk_rq_sectors(req) + bio_sectors(bio) >
 	    blk_rq_get_max_sectors(req, blk_rq_pos(req))) {
 		req_set_nomerge(q, req);
 		return 0;
 	}
-<<<<<<< HEAD
-=======
-	if (!bio_crypt_ctx_mergeable(req->bio, blk_rq_bytes(req), bio))
-		return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!bio_flagged(req->biotail, BIO_SEG_VALID))
 		blk_recount_segments(q, req->biotail);
 	if (!bio_flagged(bio, BIO_SEG_VALID))
@@ -594,21 +539,13 @@ int ll_front_merge_fn(struct request_queue *q, struct request *req,
 	if (blk_integrity_rq(req) &&
 	    integrity_req_gap_front_merge(req, bio))
 		return 0;
-<<<<<<< HEAD
 	if (blk_try_merge(req, bio) != ELEVATOR_FRONT_MERGE)
 		return 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (blk_rq_sectors(req) + bio_sectors(bio) >
 	    blk_rq_get_max_sectors(req, bio->bi_iter.bi_sector)) {
 		req_set_nomerge(q, req);
 		return 0;
 	}
-<<<<<<< HEAD
-=======
-	if (!bio_crypt_ctx_mergeable(bio, bio->bi_iter.bi_size, req->bio))
-		return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!bio_flagged(bio, BIO_SEG_VALID))
 		blk_recount_segments(q, bio);
 	if (!bio_flagged(req->bio, BIO_SEG_VALID))
@@ -685,12 +622,6 @@ static int ll_merge_requests_fn(struct request_queue *q, struct request *req,
 	if (blk_integrity_merge_rq(q, req, next) == false)
 		return 0;
 
-<<<<<<< HEAD
-=======
-	if (!bio_crypt_ctx_mergeable(req->bio, blk_rq_bytes(req), next->bio))
-		return 0;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Merge is OK... */
 	req->nr_phys_segments = total_phys_segments;
 	return 1;
@@ -743,14 +674,11 @@ static void blk_account_io_merge(struct request *req)
 	}
 }
 
-<<<<<<< HEAD
 static bool crypto_not_mergeable(const struct bio *bio, const struct bio *nxt)
 {
 	return (!pfk_allow_merge_bio(bio, nxt));
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * For non-mq, this has to be called with the request spinlock acquired.
  * For mq with scheduling, the appropriate queue wide lock should be held.
@@ -789,12 +717,9 @@ static struct request *attempt_merge(struct request_queue *q,
 	if (req->write_hint != next->write_hint)
 		return NULL;
 
-<<<<<<< HEAD
 	if (crypto_not_mergeable(req->bio, next->bio))
 		return 0;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * If we are allowed to merge, then append bio list
 	 * from next to rq and release next. merge_requests_fn
@@ -822,22 +747,12 @@ static struct request *attempt_merge(struct request_queue *q,
 	}
 
 	/*
-<<<<<<< HEAD
 	 * At this point we have either done a back merge or front merge. We
 	 * need the smaller start_time_ns of the merged requests to be the
 	 * current request for accounting purposes.
 	 */
 	if (next->start_time_ns < req->start_time_ns)
 		req->start_time_ns = next->start_time_ns;
-=======
-	 * At this point we have either done a back merge
-	 * or front merge. We need the smaller start_time of
-	 * the merged requests to be the current request
-	 * for accounting purposes.
-	 */
-	if (time_after(req->start_time, next->start_time))
-		req->start_time = next->start_time;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	req->biotail->bi_next = next->bio;
 	req->biotail = next->biotail;
@@ -935,20 +850,12 @@ bool blk_rq_merge_ok(struct request *rq, struct bio *bio)
 	if (rq->write_hint != bio->bi_write_hint)
 		return false;
 
-<<<<<<< HEAD
-=======
-	/* Only merge if the crypt contexts are compatible */
-	if (!bio_crypt_ctx_compatible(bio, rq->bio))
-		return false;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return true;
 }
 
 enum elv_merge blk_try_merge(struct request *rq, struct bio *bio)
 {
 	if (req_op(rq) == REQ_OP_DISCARD &&
-<<<<<<< HEAD
 	    queue_max_discard_segments(rq->q) > 1) {
 		return ELEVATOR_DISCARD_MERGE;
 	} else if (blk_rq_pos(rq) + blk_rq_sectors(rq) ==
@@ -962,13 +869,5 @@ enum elv_merge blk_try_merge(struct request *rq, struct bio *bio)
 			return ELEVATOR_NO_MERGE;
 		return ELEVATOR_FRONT_MERGE;
 	}
-=======
-	    queue_max_discard_segments(rq->q) > 1)
-		return ELEVATOR_DISCARD_MERGE;
-	else if (blk_rq_pos(rq) + blk_rq_sectors(rq) == bio->bi_iter.bi_sector)
-		return ELEVATOR_BACK_MERGE;
-	else if (blk_rq_pos(rq) - bio_sectors(bio) == bio->bi_iter.bi_sector)
-		return ELEVATOR_FRONT_MERGE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ELEVATOR_NO_MERGE;
 }

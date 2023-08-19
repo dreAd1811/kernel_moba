@@ -1,21 +1,7 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 
 /*
  * Copyright (c) 2014-2019, The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2014-2020, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #define pr_fmt(fmt) "%s: " fmt, KBUILD_MODNAME
@@ -35,11 +21,7 @@ enum lpm_type {
 	IDLE = 0,
 	SUSPEND,
 	LATENCY,
-<<<<<<< HEAD
 	LPM_TYPE_NR,
-=======
-	LPM_TYPE_NR
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct lpm_type_str {
@@ -56,7 +38,6 @@ static const struct lpm_type_str lpm_types[] = {
 static struct lpm_level_avail *cpu_level_available[NR_CPUS];
 static struct platform_device *lpm_pdev;
 
-<<<<<<< HEAD
 static int lpm_of_read_u32(struct device_node *dn, const char *key,
 					u32 *val, bool is_err)
 {
@@ -69,8 +50,6 @@ static int lpm_of_read_u32(struct device_node *dn, const char *key,
 	return ret;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void *get_enabled_ptr(struct kobj_attribute *attr,
 					struct lpm_level_avail *avail)
 {
@@ -176,25 +155,15 @@ static int create_lvl_avail_nodes(const char *name,
 	if (!kobj)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	attr_group = devm_kcalloc(&lpm_pdev->dev, 1, sizeof(*attr_group),
 				  GFP_KERNEL);
-=======
-	attr_group = devm_kzalloc(&lpm_pdev->dev, sizeof(*attr_group),
-					GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!attr_group) {
 		ret = -ENOMEM;
 		goto failed;
 	}
 
-<<<<<<< HEAD
 	attr = devm_kcalloc(&lpm_pdev->dev, LPM_TYPE_NR + 1, sizeof(*attr),
 			    GFP_KERNEL);
-=======
-	attr = devm_kzalloc(&lpm_pdev->dev,
-		sizeof(*attr) * (LPM_TYPE_NR + 1), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!attr) {
 		ret = -ENOMEM;
 		goto failed;
@@ -225,15 +194,8 @@ static int create_lvl_avail_nodes(const char *name,
 	attr_group->attrs = attr;
 
 	ret = sysfs_create_group(kobj, attr_group);
-<<<<<<< HEAD
 	if (ret)
 		goto failed;
-=======
-	if (ret) {
-		ret = -ENOMEM;
-		goto failed;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	avail->idle_enabled = true;
 	avail->suspend_enabled = true;
@@ -242,11 +204,7 @@ static int create_lvl_avail_nodes(const char *name,
 	avail->idx = index;
 	avail->cpu_node = cpu_node;
 
-<<<<<<< HEAD
 	return 0;
-=======
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 failed:
 	kobject_put(kobj);
@@ -263,13 +221,8 @@ static int create_cpu_lvl_nodes(struct lpm_cluster *p, struct kobject *parent)
 	int ret = 0;
 	struct list_head *pos;
 
-<<<<<<< HEAD
 	cpu_kobj = devm_kcalloc(&lpm_pdev->dev, cpumask_weight(&p->child_cpus),
 				sizeof(*cpu_kobj), GFP_KERNEL);
-=======
-	cpu_kobj = devm_kzalloc(&lpm_pdev->dev, sizeof(*cpu_kobj) *
-			cpumask_weight(&p->child_cpus), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!cpu_kobj)
 		return -ENOMEM;
 
@@ -286,16 +239,10 @@ static int create_cpu_lvl_nodes(struct lpm_cluster *p, struct kobject *parent)
 				goto release_kobj;
 			}
 
-<<<<<<< HEAD
 			level_list = devm_kcalloc(&lpm_pdev->dev,
 						  lpm_cpu->nlevels,
 						  sizeof(*level_list),
 						  GFP_KERNEL);
-=======
-			level_list = devm_kzalloc(&lpm_pdev->dev,
-					lpm_cpu->nlevels * sizeof(*level_list),
-					GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (!level_list) {
 				ret = -ENOMEM;
 				goto release_kobj;
@@ -361,25 +308,13 @@ int create_cluster_lvl_nodes(struct lpm_cluster *p, struct kobject *kobj)
 			return ret;
 	}
 
-<<<<<<< HEAD
 	if (!list_empty(&p->cpu))
 		ret = create_cpu_lvl_nodes(p, cluster_kobj);
-=======
-	if (!list_empty(&p->cpu)) {
-		ret = create_cpu_lvl_nodes(p, cluster_kobj);
-		if (ret)
-			return ret;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
 
-<<<<<<< HEAD
 int lpm_cpu_mode_allow(unsigned int cpu,
-=======
-bool lpm_cpu_mode_allow(unsigned int cpu,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		unsigned int index, bool from_idle)
 {
 	struct lpm_level_avail *avail = cpu_level_available[cpu];
@@ -406,7 +341,6 @@ bool lpm_cluster_mode_allow(struct lpm_cluster *cluster,
 				avail->suspend_enabled);
 }
 
-<<<<<<< HEAD
 static int parse_cluster_params(struct device_node *dn, struct lpm_cluster *c)
 {
 	int ret;
@@ -438,44 +372,11 @@ static int parse_cluster_params(struct device_node *dn, struct lpm_cluster *c)
 			c->tmr_add = DEFAULT_TIMER_ADD;
 			ret = 0;
 		}
-=======
-static int parse_cluster_params(struct device_node *node,
-		struct lpm_cluster *c)
-{
-	char *key;
-	int ret;
-
-	key = "label";
-	ret = of_property_read_string(node, key, &c->cluster_name);
-	if (ret)
-		goto fail;
-
-	key = "qcom,psci-mode-shift";
-	ret = of_property_read_u32(node, key, &c->psci_mode_shift);
-	if (ret)
-		goto fail;
-
-	key = "qcom,psci-mode-mask";
-	ret = of_property_read_u32(node, key, &c->psci_mode_mask);
-	if (ret)
-		goto fail;
-
-	key = "qcom,disable-prediction";
-	c->lpm_prediction = !(of_property_read_bool(node, key));
-
-	if (c->lpm_prediction) {
-		key = "qcom,clstr-tmr-add";
-		ret = of_property_read_u32(node, key, &c->tmr_add);
-		if (ret || c->tmr_add < TIMER_ADD_LOW ||
-					c->tmr_add > TIMER_ADD_HIGH)
-			c->tmr_add = DEFAULT_TIMER_ADD;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Set default_level to 0 as default */
 	c->default_level = 0;
 
-<<<<<<< HEAD
 	return ret;
 }
 
@@ -495,44 +396,10 @@ static int parse_power_params(struct device_node *dn, struct power_params *pwr)
 
 	ret = lpm_of_read_u32(dn, "qcom,min-residency-us",
 			      &pwr->min_residency, true);
-=======
-	return 0;
-fail:
-	pr_err("Failed to read key: %s ret: %d\n", key, ret);
 
 	return ret;
 }
 
-static int parse_power_params(struct device_node *node,
-		struct power_params *pwr)
-{
-	char *key;
-	int ret;
-
-	key = "qcom,entry-latency-us";
-	ret  = of_property_read_u32(node, key, &pwr->entry_latency);
-	if (ret)
-		goto fail;
-
-	key = "qcom,exit-latency-us";
-	ret  = of_property_read_u32(node, key, &pwr->exit_latency);
-	if (ret)
-		goto fail;
-
-	key = "qcom,min-residency-us";
-	ret = of_property_read_u32(node, key, &pwr->min_residency);
-	if (ret)
-		goto fail;
-
-	return ret;
-fail:
-	pr_err("Failed to read key: %s node: %s\n", key, node->name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
-
-	return ret;
-}
-
-<<<<<<< HEAD
 static int parse_cluster_level(struct device_node *dn,
 			       struct lpm_cluster *cluster)
 {
@@ -556,38 +423,11 @@ static int parse_cluster_level(struct device_node *dn,
 				      &level->min_child_level, true);
 		if (ret)
 			return ret;
-=======
-static int parse_cluster_level(struct device_node *node,
-		struct lpm_cluster *cluster)
-{
-	struct lpm_cluster_level *level = &cluster->levels[cluster->nlevels];
-	int ret = -ENOMEM;
-	char *key;
-
-	key = "label";
-	ret = of_property_read_string(node, key, &level->level_name);
-	if (ret)
-		goto failed;
-
-	key = "qcom,psci-mode";
-	ret = of_property_read_u32(node, key, &level->psci_id);
-	if (ret)
-		goto failed;
-
-	level->is_reset = of_property_read_bool(node, "qcom,is-reset");
-
-	if (cluster->nlevels != cluster->default_level) {
-		key = "qcom,min-child-idx";
-		ret = of_property_read_u32(node, key, &level->min_child_level);
-		if (ret)
-			goto failed;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (cluster->min_child_level > level->min_child_level)
 			cluster->min_child_level = level->min_child_level;
 	}
 
-<<<<<<< HEAD
 	level->notify_rpm = of_property_read_bool(dn, "qcom,notify-rpm");
 
 	ret = parse_power_params(dn, &level->pwr);
@@ -602,37 +442,14 @@ static int parse_cluster_level(struct device_node *node,
 		level->reset_level = LPM_RESET_LVL_NONE;
 	else if (ret)
 		return ret;
-=======
-	level->notify_rpm = of_property_read_bool(node, "qcom,notify-rpm");
-
-	key = "parse_power_params";
-	ret = parse_power_params(node, &level->pwr);
-	if (ret)
-		goto failed;
-
-	key = "qcom,reset-level";
-	ret = of_property_read_u32(node, key, &level->reset_level);
-	if (ret == -EINVAL)
-		level->reset_level = LPM_RESET_LVL_NONE;
-	else if (ret)
-		goto failed;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cluster->nlevels++;
 
 	return 0;
-<<<<<<< HEAD
-=======
-failed:
-	pr_err("Failed to read key: %s ret: %d\n", key, ret);
-
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int parse_cpu_mode(struct device_node *n, struct lpm_cpu_level *l)
 {
-<<<<<<< HEAD
 	int ret;
 
 	ret = of_property_read_string(n, "label", &l->name);
@@ -642,26 +459,6 @@ static int parse_cpu_mode(struct device_node *n, struct lpm_cpu_level *l)
 	}
 
 	return lpm_of_read_u32(n, "qcom,psci-cpu-mode", &l->psci_id, true);
-=======
-	char *key;
-	int ret;
-
-	key = "label";
-	ret = of_property_read_string(n, key, &l->name);
-	if (ret)
-		goto fail;
-
-	key = "qcom,psci-cpu-mode";
-	ret = of_property_read_u32(n, key, &l->psci_id);
-	if (ret)
-		goto fail;
-
-	return ret;
-fail:
-	pr_err("Failed to read key: %s level: %s\n", key, l->name);
-
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int get_cpumask_for_node(struct device_node *node, struct cpumask *mask)
@@ -702,10 +499,6 @@ static int parse_cpu(struct device_node *node, struct lpm_cpu *cpu)
 
 	struct device_node *n;
 	int ret, i;
-<<<<<<< HEAD
-=======
-	const char *key;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for_each_child_of_node(node, n) {
 		struct lpm_cpu_level *l = &cpu->levels[cpu->nlevels];
@@ -723,7 +516,6 @@ static int parse_cpu(struct device_node *node, struct lpm_cpu *cpu)
 			of_node_put(n);
 			return ret;
 		}
-<<<<<<< HEAD
 
 		l->use_bc_timer = of_property_read_bool(n,
 					"qcom,use-broadcast-timer");
@@ -734,17 +526,6 @@ static int parse_cpu(struct device_node *node, struct lpm_cpu *cpu)
 								false);
 		of_node_put(n);
 
-=======
-		key = "qcom,use-broadcast-timer";
-		l->use_bc_timer = of_property_read_bool(n, key);
-
-		key = "qcom,is-reset";
-		l->is_reset = of_property_read_bool(n, key);
-
-		key = "qcom,reset-level";
-		ret = of_property_read_u32(n, key, &l->reset_level);
-		of_node_put(n);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret == -EINVAL)
 			l->reset_level = LPM_RESET_LVL_NONE;
 		else if (ret)
@@ -760,7 +541,6 @@ static int parse_cpu(struct device_node *node, struct lpm_cpu *cpu)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int parse_cpu_levels(struct device_node *dn, struct lpm_cluster *c)
 {
 	int ret;
@@ -771,24 +551,10 @@ static int parse_cpu_levels(struct device_node *dn, struct lpm_cluster *c)
 		return -ENOMEM;
 
 	if (get_cpumask_for_node(dn, &cpu->related_cpus))
-=======
-static int parse_cpu_levels(struct device_node *node, struct lpm_cluster *c)
-{
-	int ret;
-	char *key;
-	struct lpm_cpu *cpu;
-
-	cpu = devm_kzalloc(&lpm_pdev->dev, sizeof(*cpu), GFP_KERNEL);
-	if (!cpu)
-		return -ENOMEM;
-
-	if (get_cpumask_for_node(node, &cpu->related_cpus))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	cpu->parent = c;
 
-<<<<<<< HEAD
 	ret = lpm_of_read_u32(dn, "qcom,psci-mode-shift",
 			      &cpu->psci_mode_shift, true);
 	if (ret)
@@ -808,78 +574,33 @@ static int parse_cpu_levels(struct device_node *node, struct lpm_cluster *c)
 	if (cpu->lpm_prediction) {
 		ret = lpm_of_read_u32(dn, "qcom,ref-stddev",
 				      &cpu->ref_stddev, false);
-=======
-	key = "qcom,psci-mode-shift";
-	ret = of_property_read_u32(node, key, &cpu->psci_mode_shift);
-	if (ret)
-		goto failed;
-
-	key = "qcom,psci-mode-mask";
-	ret = of_property_read_u32(node, key, &cpu->psci_mode_mask);
-	if (ret)
-		goto failed;
-
-	cpu->ipi_prediction = !(of_property_read_bool(node,
-					"qcom,disable-ipi-prediction"));
-
-	cpu->lpm_prediction = !(of_property_read_bool(node,
-					"qcom,disable-prediction"));
-
-	if (cpu->lpm_prediction) {
-		key = "qcom,ref-stddev";
-		ret = of_property_read_u32(node, key, &cpu->ref_stddev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret || cpu->ref_stddev < STDDEV_LOW ||
 					cpu->ref_stddev > STDDEV_HIGH)
 			cpu->ref_stddev = DEFAULT_STDDEV;
 
-<<<<<<< HEAD
 		ret = lpm_of_read_u32(dn, "qcom,tmr-add",
 				      &cpu->tmr_add, false);
-=======
-		key = "qcom,tmr-add";
-		ret = of_property_read_u32(node, key, &cpu->tmr_add);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret || cpu->tmr_add < TIMER_ADD_LOW ||
 					cpu->tmr_add > TIMER_ADD_HIGH)
 			cpu->tmr_add = DEFAULT_TIMER_ADD;
 
-<<<<<<< HEAD
 		ret = lpm_of_read_u32(dn, "qcom,ref-premature-cnt",
 				      &cpu->ref_premature_cnt, false);
-=======
-		key = "qcom,ref-premature-cnt";
-		ret = of_property_read_u32(node, key, &cpu->ref_premature_cnt);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret || cpu->ref_premature_cnt < PREMATURE_CNT_LOW ||
 				cpu->ref_premature_cnt > PREMATURE_CNT_HIGH)
 			cpu->ref_premature_cnt = DEFAULT_PREMATURE_CNT;
 	}
 
-<<<<<<< HEAD
 	ret = parse_cpu(dn, cpu);
 	if (ret) {
 		pr_err("Failed to parse cpu %s\n", dn->name);
 		return ret;
 	}
-=======
-	key = "parse_cpu";
-	ret = parse_cpu(node, cpu);
-	if (ret)
-		goto failed;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cpumask_or(&c->child_cpus, &c->child_cpus, &cpu->related_cpus);
 	list_add(&cpu->list, &c->cpu);
 
 	return ret;
-<<<<<<< HEAD
-=======
-
-failed:
-	pr_err("Failed to read key: %s node: %s\n", key, node->name);
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void free_cluster_node(struct lpm_cluster *cluster)
@@ -890,11 +611,7 @@ void free_cluster_node(struct lpm_cluster *cluster)
 	list_for_each_entry_safe(cl, m, &cluster->child, list) {
 		list_del(&cl->list);
 		free_cluster_node(cl);
-<<<<<<< HEAD
 	}
-=======
-	};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	list_for_each_entry_safe(cpu, n, &cluster->cpu, list)
 		list_del(&cpu->list);
@@ -907,7 +624,6 @@ void free_cluster_node(struct lpm_cluster *cluster)
  * child nodes.
  */
 struct lpm_cluster *parse_cluster(struct device_node *node,
-<<<<<<< HEAD
 				  struct lpm_cluster *parent)
 {
 	struct lpm_cluster *c;
@@ -915,16 +631,6 @@ struct lpm_cluster *parse_cluster(struct device_node *node,
 	int ret = 0, i;
 
 	c = devm_kcalloc(&lpm_pdev->dev, 1, sizeof(*c), GFP_KERNEL);
-=======
-		struct lpm_cluster *parent)
-{
-	struct lpm_cluster *c;
-	struct device_node *n;
-	char *key;
-	int ret = 0, i;
-
-	c = devm_kzalloc(&lpm_pdev->dev, sizeof(*c), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!c)
 		return ERR_PTR(-ENOMEM);
 
@@ -939,17 +645,12 @@ struct lpm_cluster *parse_cluster(struct device_node *node,
 	c->min_child_level = NR_LPM_LEVELS;
 
 	for_each_child_of_node(node, n) {
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!n->name) {
 			of_node_put(n);
 			continue;
 		}
 
 		if (!of_node_cmp(n->name, "qcom,pm-cluster-level")) {
-<<<<<<< HEAD
 			if (parse_cluster_level(n, c)) {
 				pr_err("Failed parse pm-cluster-level\n");
 				goto failed_parse_cluster;
@@ -962,34 +663,16 @@ struct lpm_cluster *parse_cluster(struct device_node *node,
 				pr_err("Failed parse pm-cluster\n");
 				goto failed_parse_cluster;
 			}
-=======
-			key = "qcom,pm-cluster-level";
-			if (parse_cluster_level(n, c))
-				goto failed_parse_cluster;
-		} else if (!of_node_cmp(n->name, "qcom,pm-cluster")) {
-			struct lpm_cluster *child;
-
-			key = "qcom,pm-cluster";
-			child = parse_cluster(n, c);
-			if (!child)
-				goto failed_parse_cluster;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			list_add(&child->list, &c->child);
 			cpumask_or(&c->child_cpus, &c->child_cpus,
 					&child->child_cpus);
 			c->aff_level = child->aff_level + 1;
 		} else if (!of_node_cmp(n->name, "qcom,pm-cpu")) {
-<<<<<<< HEAD
 			if (parse_cpu_levels(n, c)) {
 				pr_err("Failed parse pm-cpu\n");
 				goto failed_parse_cluster;
 			}
-=======
-			key = "qcom,pm-cpu";
-			if (parse_cpu_levels(n, c))
-				goto failed_parse_cluster;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			c->aff_level = 1;
 		}
@@ -1011,10 +694,6 @@ struct lpm_cluster *parse_cluster(struct device_node *node,
 	return c;
 
 failed_parse_cluster:
-<<<<<<< HEAD
-=======
-	pr_err("Failed parse cluster:%s\n", key);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	of_node_put(n);
 	if (parent)
 		list_del(&c->list);
@@ -1052,26 +731,15 @@ void cluster_dt_walkthrough(struct lpm_cluster *cluster)
 
 	for (i = 0; i < id; i++)
 		snprintf(str+i, 10 - i, "\t");
-<<<<<<< HEAD
 
 	for (i = 0; i < cluster->nlevels; i++) {
 		struct lpm_cluster_level *l = &cluster->levels[i];
 
-=======
-	pr_info("%d\n", __LINE__);
-
-	for (i = 0; i < cluster->nlevels; i++) {
-		struct lpm_cluster_level *l = &cluster->levels[i];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_info("cluster: %s \t level: %s\n", cluster->cluster_name,
 							l->level_name);
 	}
 
 	list_for_each_entry(cpu, &cluster->cpu, list) {
-<<<<<<< HEAD
-=======
-		pr_info("%d\n", __LINE__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		for (j = 0; j < cpu->nlevels; j++)
 			pr_info("%s\tCPU level name: %s\n", str,
 						cpu->levels[j].name);
@@ -1082,10 +750,6 @@ void cluster_dt_walkthrough(struct lpm_cluster *cluster)
 	list_for_each(list, &cluster->child) {
 		struct lpm_cluster *n;
 
-<<<<<<< HEAD
-=======
-		pr_info("%d\n", __LINE__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		n = list_entry(list, typeof(*n), list);
 		cluster_dt_walkthrough(n);
 	}

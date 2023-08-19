@@ -144,10 +144,6 @@ static const struct iio_chan_spec mpl115_channels[] = {
 
 static const struct iio_info mpl115_info = {
 	.read_raw = &mpl115_read_raw,
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int mpl115_probe(struct device *dev, const char *name,

@@ -22,11 +22,7 @@
 #include <linux/module.h>
 #include <linux/slab.h>
 
-<<<<<<< HEAD
 #include <media/dvb_frontend.h>
-=======
-#include "dvb_frontend.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "tda665x.h"
 
 struct tda665x_state {
@@ -235,15 +231,9 @@ struct dvb_frontend *tda665x_attach(struct dvb_frontend *fe,
 	info			 = &fe->ops.tuner_ops.info;
 
 	memcpy(info->name, config->name, sizeof(config->name));
-<<<<<<< HEAD
 	info->frequency_min_hz	= config->frequency_min;
 	info->frequency_max_hz	= config->frequency_max;
 	info->frequency_step_hz	= config->frequency_offst;
-=======
-	info->frequency_min	= config->frequency_min;
-	info->frequency_max	= config->frequency_max;
-	info->frequency_step	= config->frequency_offst;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	printk(KERN_DEBUG "%s: Attaching TDA665x (%s) tuner\n", __func__, info->name);
 

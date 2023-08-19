@@ -16,12 +16,9 @@
  * data and their integration with other OMAP modules and Linux.
  */
 
-<<<<<<< HEAD
 #include <linux/types.h>
 #include <linux/platform_data/ti-sysc.h>
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "omap_hwmod.h"
 
 #include "omap_hwmod_common_data.h"
@@ -33,11 +30,7 @@
  * if the device ip is compliant with the original PRCM protocol
  * defined for OMAP2420.
  */
-<<<<<<< HEAD
 struct sysc_regbits omap_hwmod_sysc_type1 = {
-=======
-struct omap_hwmod_sysc_fields omap_hwmod_sysc_type1 = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.midle_shift	= SYSC_TYPE1_MIDLEMODE_SHIFT,
 	.clkact_shift	= SYSC_TYPE1_CLOCKACTIVITY_SHIFT,
 	.sidle_shift	= SYSC_TYPE1_SIDLEMODE_SHIFT,
@@ -53,11 +46,7 @@ struct omap_hwmod_sysc_fields omap_hwmod_sysc_type1 = {
  * device ip is compliant with the new PRCM protocol defined for new
  * OMAP4 IPs.
  */
-<<<<<<< HEAD
 struct sysc_regbits omap_hwmod_sysc_type2 = {
-=======
-struct omap_hwmod_sysc_fields omap_hwmod_sysc_type2 = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.midle_shift	= SYSC_TYPE2_MIDLEMODE_SHIFT,
 	.sidle_shift	= SYSC_TYPE2_SIDLEMODE_SHIFT,
 	.srst_shift	= SYSC_TYPE2_SOFTRESET_SHIFT,
@@ -68,11 +57,7 @@ struct omap_hwmod_sysc_fields omap_hwmod_sysc_type2 = {
  * struct omap_hwmod_sysc_type3 - TYPE3 sysconfig scheme.
  * Used by some IPs on AM33xx
  */
-<<<<<<< HEAD
 struct sysc_regbits omap_hwmod_sysc_type3 = {
-=======
-struct omap_hwmod_sysc_fields omap_hwmod_sysc_type3 = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.midle_shift	= SYSC_TYPE3_MIDLEMODE_SHIFT,
 	.sidle_shift	= SYSC_TYPE3_SIDLEMODE_SHIFT,
 };
@@ -81,7 +66,6 @@ struct omap_dss_dispc_dev_attr omap2_3_dss_dispc_dev_attr = {
 	.manager_count		= 2,
 	.has_framedonetv_irq	= 0
 };
-<<<<<<< HEAD
 
 struct sysc_regbits omap34xx_sr_sysc_fields = {
 	.clkact_shift	= 20,
@@ -113,5 +97,3 @@ struct sysc_regbits omap_hwmod_sysc_type_usb_host_fs = {
 	.sidle_shift	= 2,
 	.srst_shift	= 1,
 };
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

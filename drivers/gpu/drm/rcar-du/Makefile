@@ -4,7 +4,6 @@ rcar-du-drm-y := rcar_du_crtc.o \
 		 rcar_du_encoder.o \
 		 rcar_du_group.o \
 		 rcar_du_kms.o \
-<<<<<<< HEAD
 		 rcar_du_plane.o
 
 rcar-du-drm-$(CONFIG_DRM_RCAR_LVDS)	+= rcar_du_of.o \
@@ -13,18 +12,10 @@ rcar-du-drm-$(CONFIG_DRM_RCAR_LVDS)	+= rcar_du_of.o \
 					   rcar_du_of_lvds_r8a7793.dtb.o \
 					   rcar_du_of_lvds_r8a7795.dtb.o \
 					   rcar_du_of_lvds_r8a7796.dtb.o
-=======
-		 rcar_du_lvdscon.o \
-		 rcar_du_plane.o
-
-rcar-du-drm-$(CONFIG_DRM_RCAR_LVDS)	+= rcar_du_lvdsenc.o
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 rcar-du-drm-$(CONFIG_DRM_RCAR_VSP)	+= rcar_du_vsp.o
 
 obj-$(CONFIG_DRM_RCAR_DU)		+= rcar-du-drm.o
 obj-$(CONFIG_DRM_RCAR_DW_HDMI)		+= rcar_dw_hdmi.o
-<<<<<<< HEAD
 obj-$(CONFIG_DRM_RCAR_LVDS)		+= rcar_lvds.o
 
 # 'remote-endpoint' is fixed up at run-time
@@ -33,5 +24,3 @@ DTC_FLAGS_rcar_du_of_lvds_r8a7791 += -Wno-graph_endpoint
 DTC_FLAGS_rcar_du_of_lvds_r8a7793 += -Wno-graph_endpoint
 DTC_FLAGS_rcar_du_of_lvds_r8a7795 += -Wno-graph_endpoint
 DTC_FLAGS_rcar_du_of_lvds_r8a7796 += -Wno-graph_endpoint
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

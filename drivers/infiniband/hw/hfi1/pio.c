@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
  * Copyright(c) 2015-2018 Intel Corporation.
-=======
- * Copyright(c) 2015-2017 Intel Corporation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This file is provided under a dual BSD/GPLv2 license.  When using or
  * redistributing this file, you may do so under either license.
@@ -235,11 +231,7 @@ static const char *sc_type_name(int index)
 int init_sc_pools_and_sizes(struct hfi1_devdata *dd)
 {
 	struct mem_pool_info mem_pool_info[NUM_SC_POOLS] = { { 0 } };
-<<<<<<< HEAD
 	int total_blocks = (chip_pio_mem_size(dd) / PIO_BLOCK_SIZE) - 1;
-=======
-	int total_blocks = (dd->chip_pio_mem_size / PIO_BLOCK_SIZE) - 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int total_contexts = 0;
 	int fixed_blocks;
 	int pool_blocks;
@@ -356,13 +348,8 @@ int init_sc_pools_and_sizes(struct hfi1_devdata *dd)
 				sc_type_name(i), count);
 			return -EINVAL;
 		}
-<<<<<<< HEAD
 		if (total_contexts + count > chip_send_contexts(dd))
 			count = chip_send_contexts(dd) - total_contexts;
-=======
-		if (total_contexts + count > dd->chip_send_contexts)
-			count = dd->chip_send_contexts - total_contexts;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		total_contexts += count;
 
@@ -471,13 +458,8 @@ int init_send_contexts(struct hfi1_devdata *dd)
 	dd->hw_to_sw = kmalloc_array(TXE_NUM_CONTEXTS, sizeof(u8),
 					GFP_KERNEL);
 	dd->send_contexts = kcalloc(dd->num_send_contexts,
-<<<<<<< HEAD
 				    sizeof(struct send_context_info),
 				    GFP_KERNEL);
-=======
-					sizeof(struct send_context_info),
-					GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!dd->send_contexts || !dd->hw_to_sw) {
 		kfree(dd->hw_to_sw);
 		kfree(dd->send_contexts);
@@ -530,11 +512,7 @@ static int sc_hw_alloc(struct hfi1_devdata *dd, int type, u32 *sw_index,
 		if (sci->type == type && sci->allocated == 0) {
 			sci->allocated = 1;
 			/* use a 1:1 mapping, but make them non-equal */
-<<<<<<< HEAD
 			context = chip_send_contexts(dd) - index - 1;
-=======
-			context = dd->chip_send_contexts - index - 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dd->hw_to_sw[context] = index;
 			*sw_index = index;
 			*hw_context = context;
@@ -728,10 +706,6 @@ struct send_context *sc_alloc(struct hfi1_devdata *dd, int type,
 {
 	struct send_context_info *sci;
 	struct send_context *sc = NULL;
-<<<<<<< HEAD
-=======
-	int req_type = type;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dma_addr_t dma;
 	unsigned long flags;
 	u64 reg;
@@ -758,16 +732,6 @@ struct send_context *sc_alloc(struct hfi1_devdata *dd, int type,
 		return NULL;
 	}
 
-<<<<<<< HEAD
-=======
-	/*
-	 * VNIC contexts are dynamically allocated.
-	 * Hence, pick a user context for VNIC.
-	 */
-	if (type == SC_VNIC)
-		type = SC_USER;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_irqsave(&dd->sc_lock, flags);
 	ret = sc_hw_alloc(dd, type, &sw_index, &hw_context);
 	if (ret) {
@@ -777,18 +741,6 @@ struct send_context *sc_alloc(struct hfi1_devdata *dd, int type,
 		return NULL;
 	}
 
-<<<<<<< HEAD
-=======
-	/*
-	 * VNIC contexts are used by kernel driver.
-	 * Hence, mark them as kernel contexts.
-	 */
-	if (req_type == SC_VNIC) {
-		dd->send_contexts[sw_index].type = SC_KERNEL;
-		type = SC_KERNEL;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sci = &dd->send_contexts[sw_index];
 	sci->sc = sc;
 
@@ -907,14 +859,9 @@ struct send_context *sc_alloc(struct hfi1_devdata *dd, int type,
 		 * so head == tail can mean empty.
 		 */
 		sc->sr_size = sci->credits + 1;
-<<<<<<< HEAD
 		sc->sr = kcalloc_node(sc->sr_size,
 				      sizeof(union pio_shadow_ring),
 				      GFP_KERNEL, numa);
-=======
-		sc->sr = kzalloc_node(sizeof(union pio_shadow_ring) *
-				sc->sr_size, GFP_KERNEL, numa);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!sc->sr) {
 			sc_free(sc);
 			return NULL;
@@ -1515,22 +1462,14 @@ retry:
 			goto done;
 		}
 		/* copy from receiver cache line and recalculate */
-<<<<<<< HEAD
 		sc->alloc_free = READ_ONCE(sc->free);
-=======
-		sc->alloc_free = ACCESS_ONCE(sc->free);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		avail =
 			(unsigned long)sc->credits -
 			(sc->fill - sc->alloc_free);
 		if (blocks > avail) {
 			/* still no room, actively update */
 			sc_release_update(sc);
-<<<<<<< HEAD
 			sc->alloc_free = READ_ONCE(sc->free);
-=======
-			sc->alloc_free = ACCESS_ONCE(sc->free);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			trycount++;
 			goto retry;
 		}
@@ -1710,19 +1649,11 @@ static void sc_piobufavail(struct send_context *sc)
 	/* Wake up the most starved one first */
 	if (n)
 		hfi1_qp_wakeup(qps[max_idx],
-<<<<<<< HEAD
 			       RVT_S_WAIT_PIO | HFI1_S_WAIT_PIO_DRAIN);
 	for (i = 0; i < n; i++)
 		if (i != max_idx)
 			hfi1_qp_wakeup(qps[i],
 				       RVT_S_WAIT_PIO | HFI1_S_WAIT_PIO_DRAIN);
-=======
-			       RVT_S_WAIT_PIO | RVT_S_WAIT_PIO_DRAIN);
-	for (i = 0; i < n; i++)
-		if (i != max_idx)
-			hfi1_qp_wakeup(qps[i],
-				       RVT_S_WAIT_PIO | RVT_S_WAIT_PIO_DRAIN);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* translate a send credit update to a bit code of reasons */
@@ -1775,11 +1706,7 @@ void sc_release_update(struct send_context *sc)
 
 	/* call sent buffer callbacks */
 	code = -1;				/* code not yet set */
-<<<<<<< HEAD
 	head = READ_ONCE(sc->sr_head);	/* snapshot the head */
-=======
-	head = ACCESS_ONCE(sc->sr_head);	/* snapshot the head */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tail = sc->sr_tail;
 	while (head != tail) {
 		pbuf = &sc->sr[tail].pbuf;
@@ -2087,15 +2014,9 @@ int init_pervl_scs(struct hfi1_devdata *dd)
 	hfi1_init_ctxt(dd->vld[15].sc);
 	dd->vld[15].mtu = enum_to_mtu(OPA_MTU_2048);
 
-<<<<<<< HEAD
 	dd->kernel_send_context = kcalloc_node(dd->num_send_contexts,
 					       sizeof(struct send_context *),
 					       GFP_KERNEL, dd->node);
-=======
-	dd->kernel_send_context = kzalloc_node(dd->num_send_contexts *
-					sizeof(struct send_context *),
-					GFP_KERNEL, dd->node);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!dd->kernel_send_context)
 		goto freesc15;
 

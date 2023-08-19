@@ -35,26 +35,15 @@
 #define __MLX5_FPGA_IPSEC_H__
 
 #include "accel/ipsec.h"
-<<<<<<< HEAD
 #include "fs_cmd.h"
 
 #ifdef CONFIG_MLX5_FPGA
 
-=======
-
-#ifdef CONFIG_MLX5_FPGA
-
-void *mlx5_fpga_ipsec_sa_cmd_exec(struct mlx5_core_dev *mdev,
-				  struct mlx5_accel_ipsec_sa *cmd);
-int mlx5_fpga_ipsec_sa_cmd_wait(void *context);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 u32 mlx5_fpga_ipsec_device_caps(struct mlx5_core_dev *mdev);
 unsigned int mlx5_fpga_ipsec_counters_count(struct mlx5_core_dev *mdev);
 int mlx5_fpga_ipsec_counters_read(struct mlx5_core_dev *mdev, u64 *counters,
 				  unsigned int counters_count);
 
-<<<<<<< HEAD
 void *mlx5_fpga_ipsec_create_sa_ctx(struct mlx5_core_dev *mdev,
 				    struct mlx5_accel_esp_xfrm *accel_xfrm,
 				    const __be32 saddr[4],
@@ -79,24 +68,6 @@ mlx5_fs_cmd_get_default_ipsec_fpga_cmds(enum fs_flow_table_type type);
 
 #else
 
-=======
-int mlx5_fpga_ipsec_init(struct mlx5_core_dev *mdev);
-void mlx5_fpga_ipsec_cleanup(struct mlx5_core_dev *mdev);
-
-#else
-
-static inline void *mlx5_fpga_ipsec_sa_cmd_exec(struct mlx5_core_dev *mdev,
-						struct mlx5_accel_ipsec_sa *cmd)
-{
-	return ERR_PTR(-EOPNOTSUPP);
-}
-
-static inline int mlx5_fpga_ipsec_sa_cmd_wait(void *context)
-{
-	return -EOPNOTSUPP;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline u32 mlx5_fpga_ipsec_device_caps(struct mlx5_core_dev *mdev)
 {
 	return 0;
@@ -114,7 +85,6 @@ static inline int mlx5_fpga_ipsec_counters_read(struct mlx5_core_dev *mdev,
 	return 0;
 }
 
-<<<<<<< HEAD
 static inline void *
 mlx5_fpga_ipsec_create_sa_ctx(struct mlx5_core_dev *mdev,
 			      struct mlx5_accel_esp_xfrm *accel_xfrm,
@@ -129,8 +99,6 @@ static inline void mlx5_fpga_ipsec_delete_sa_ctx(void *context)
 {
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int mlx5_fpga_ipsec_init(struct mlx5_core_dev *mdev)
 {
 	return 0;
@@ -140,7 +108,6 @@ static inline void mlx5_fpga_ipsec_cleanup(struct mlx5_core_dev *mdev)
 {
 }
 
-<<<<<<< HEAD
 static inline void mlx5_fpga_ipsec_build_fs_cmds(void)
 {
 }
@@ -170,8 +137,6 @@ mlx5_fs_cmd_get_default_ipsec_fpga_cmds(enum fs_flow_table_type type)
 	return mlx5_fs_cmd_get_default(type);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_MLX5_FPGA */
 
 #endif	/* __MLX5_FPGA_SADB_H__ */

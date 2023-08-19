@@ -32,15 +32,9 @@
 #include <linux/delay.h>
 #include <linux/power_supply.h>
 #include <linux/platform_data/x86/apple.h>
-<<<<<<< HEAD
 #include <acpi/battery.h>
 
 #include "sbshc.h"
-=======
-
-#include "sbshc.h"
-#include "battery.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define PREFIX "ACPI: "
 

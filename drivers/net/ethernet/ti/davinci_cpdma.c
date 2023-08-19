@@ -191,11 +191,7 @@ static void cpdma_desc_pool_destroy(struct cpdma_ctlr *ctlr)
 		return;
 
 	WARN(gen_pool_size(pool->gen_pool) != gen_pool_avail(pool->gen_pool),
-<<<<<<< HEAD
 	     "cpdma_desc_pool size %zd != avail %zd",
-=======
-	     "cpdma_desc_pool size %d != avail %d",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	     gen_pool_size(pool->gen_pool),
 	     gen_pool_avail(pool->gen_pool));
 	if (pool->cpumap)
@@ -209,11 +205,7 @@ static void cpdma_desc_pool_destroy(struct cpdma_ctlr *ctlr)
  * devices (e.g. cpsw switches) use plain old memory.  Descriptor pools
  * abstract out these details
  */
-<<<<<<< HEAD
 static int cpdma_desc_pool_create(struct cpdma_ctlr *ctlr)
-=======
-int cpdma_desc_pool_create(struct cpdma_ctlr *ctlr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct cpdma_params *cpdma_params = &ctlr->params;
 	struct cpdma_desc_pool *pool;
@@ -414,7 +406,6 @@ static int cpdma_chan_fit_rate(struct cpdma_chan *ch, u32 rate,
 	struct cpdma_chan *chan;
 	u32 old_rate = ch->rate;
 	u32 new_rmask = 0;
-<<<<<<< HEAD
 	int rlim = 0;
 	int i;
 
@@ -422,24 +413,11 @@ static int cpdma_chan_fit_rate(struct cpdma_chan *ch, u32 rate,
 		chan = ctlr->channels[i];
 		if (!chan)
 			continue;
-=======
-	int rlim = 1;
-	int i;
-
-	*prio_mode = 0;
-	for (i = tx_chan_num(0); i < tx_chan_num(CPDMA_MAX_CHANNELS); i++) {
-		chan = ctlr->channels[i];
-		if (!chan) {
-			rlim = 0;
-			continue;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (chan == ch)
 			chan->rate = rate;
 
 		if (chan->rate) {
-<<<<<<< HEAD
 			rlim = 1;
 			new_rmask |= chan->mask;
 			continue;
@@ -458,24 +436,6 @@ err:
 	dev_err(ctlr->dev, "Upper cpdma ch%d is not rate limited\n",
 		chan->chan_num);
 	return -EINVAL;
-=======
-			if (rlim) {
-				new_rmask |= chan->mask;
-			} else {
-				ch->rate = old_rate;
-				dev_err(ctlr->dev, "Prev channel of %dch is not rate limited\n",
-					chan->chan_num);
-				return -EINVAL;
-			}
-		} else {
-			*prio_mode = 1;
-			rlim = 0;
-		}
-	}
-
-	*rmask = new_rmask;
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static u32 cpdma_chan_set_factors(struct cpdma_ctlr *ctlr,
@@ -932,11 +892,7 @@ struct cpdma_chan *cpdma_chan_create(struct cpdma_ctlr *ctlr, int chan_num,
 	chan_num = rx_type ? rx_chan_num(chan_num) : tx_chan_num(chan_num);
 
 	if (__chan_linear(chan_num) >= ctlr->num_chan)
-<<<<<<< HEAD
 		return ERR_PTR(-EINVAL);
-=======
-		return NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	chan = devm_kzalloc(ctlr->dev, sizeof(*chan), GFP_KERNEL);
 	if (!chan)
@@ -1123,11 +1079,7 @@ int cpdma_chan_submit(struct cpdma_chan *chan, void *token, void *data,
 	writel_relaxed(buffer, &desc->hw_buffer);
 	writel_relaxed(len, &desc->hw_len);
 	writel_relaxed(mode | len, &desc->hw_mode);
-<<<<<<< HEAD
 	writel_relaxed((uintptr_t)token, &desc->sw_token);
-=======
-	writel_relaxed(token, &desc->sw_token);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	writel_relaxed(buffer, &desc->sw_buffer);
 	writel_relaxed(len, &desc->sw_len);
 	desc_read(desc, sw_len);
@@ -1168,25 +1120,15 @@ static void __cpdma_chan_free(struct cpdma_chan *chan,
 	struct cpdma_desc_pool		*pool = ctlr->pool;
 	dma_addr_t			buff_dma;
 	int				origlen;
-<<<<<<< HEAD
 	uintptr_t			token;
 
 	token      = desc_read(desc, sw_token);
-=======
-	void				*token;
-
-	token      = (void *)desc_read(desc, sw_token);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	buff_dma   = desc_read(desc, sw_buffer);
 	origlen    = desc_read(desc, sw_len);
 
 	dma_unmap_single(ctlr->dev, buff_dma, origlen, chan->dir);
 	cpdma_desc_free(pool, desc, 1);
-<<<<<<< HEAD
 	(*chan->handler)((void *)token, outlen, status);
-=======
-	(*chan->handler)(token, outlen, status);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int __cpdma_chan_process(struct cpdma_chan *chan)
@@ -1221,11 +1163,7 @@ static int __cpdma_chan_process(struct cpdma_chan *chan)
 		outlen -= CPDMA_DESC_CRC_LEN;
 
 	status	= status & (CPDMA_DESC_EOQ | CPDMA_DESC_TD_COMPLETE |
-<<<<<<< HEAD
 			    CPDMA_DESC_PORT_MASK | CPDMA_RX_VLAN_ENCAP);
-=======
-			    CPDMA_DESC_PORT_MASK);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	chan->head = desc_from_phys(pool, desc_read(desc, hw_next));
 	chan_write(chan, cp, desc_dma);

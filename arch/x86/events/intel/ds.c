@@ -372,16 +372,9 @@ static int alloc_pebs_buffer(int cpu)
 static void release_pebs_buffer(int cpu)
 {
 	struct cpu_hw_events *hwev = per_cpu_ptr(&cpu_hw_events, cpu);
-<<<<<<< HEAD
 	void *cea;
 
 	if (!x86_pmu.pebs)
-=======
-	struct debug_store *ds = hwev->ds;
-	void *cea;
-
-	if (!ds || !x86_pmu.pebs)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	kfree(per_cpu(insn_buffer, cpu));
@@ -390,10 +383,6 @@ static void release_pebs_buffer(int cpu)
 	/* Clear the fixmap */
 	cea = &get_cpu_entry_area(cpu)->cpu_debug_buffers.pebs_buffer;
 	ds_clear_cea(cea, x86_pmu.pebs_buffer_size);
-<<<<<<< HEAD
-=======
-	ds->pebs_buffer_base = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dsfree_pages(hwev->ds_pebs_vaddr, x86_pmu.pebs_buffer_size);
 	hwev->ds_pebs_vaddr = NULL;
 }
@@ -430,25 +419,14 @@ static int alloc_bts_buffer(int cpu)
 static void release_bts_buffer(int cpu)
 {
 	struct cpu_hw_events *hwev = per_cpu_ptr(&cpu_hw_events, cpu);
-<<<<<<< HEAD
 	void *cea;
 
 	if (!x86_pmu.bts)
-=======
-	struct debug_store *ds = hwev->ds;
-	void *cea;
-
-	if (!ds || !x86_pmu.bts)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	/* Clear the fixmap */
 	cea = &get_cpu_entry_area(cpu)->cpu_debug_buffers.bts_buffer;
 	ds_clear_cea(cea, BTS_BUFFER_SIZE);
-<<<<<<< HEAD
-=======
-	ds->bts_buffer_base = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dsfree_pages(hwev->ds_bts_vaddr, BTS_BUFFER_SIZE);
 	hwev->ds_bts_vaddr = NULL;
 }
@@ -474,7 +452,6 @@ void release_ds_buffers(void)
 	if (!x86_pmu.bts && !x86_pmu.pebs)
 		return;
 
-<<<<<<< HEAD
 	for_each_possible_cpu(cpu)
 		release_ds_buffer(cpu);
 
@@ -486,22 +463,11 @@ void release_ds_buffers(void)
 		 */
 		fini_debug_store_on_cpu(cpu);
 	}
-=======
-	get_online_cpus();
-	for_each_online_cpu(cpu)
-		fini_debug_store_on_cpu(cpu);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for_each_possible_cpu(cpu) {
 		release_pebs_buffer(cpu);
 		release_bts_buffer(cpu);
-<<<<<<< HEAD
 	}
-=======
-		release_ds_buffer(cpu);
-	}
-	put_online_cpus();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void reserve_ds_buffers(void)
@@ -521,11 +487,6 @@ void reserve_ds_buffers(void)
 	if (!x86_pmu.pebs)
 		pebs_err = 1;
 
-<<<<<<< HEAD
-=======
-	get_online_cpus();
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for_each_possible_cpu(cpu) {
 		if (alloc_ds_buffer(cpu)) {
 			bts_err = 1;
@@ -562,7 +523,6 @@ void reserve_ds_buffers(void)
 		if (x86_pmu.pebs && !pebs_err)
 			x86_pmu.pebs_active = 1;
 
-<<<<<<< HEAD
 		for_each_possible_cpu(cpu) {
 			/*
 			 * Ignores wrmsr_on_cpu() errors for offline CPUs they
@@ -571,13 +531,6 @@ void reserve_ds_buffers(void)
 			init_debug_store_on_cpu(cpu);
 		}
 	}
-=======
-		for_each_online_cpu(cpu)
-			init_debug_store_on_cpu(cpu);
-	}
-
-	put_online_cpus();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -760,15 +713,6 @@ struct event_constraint intel_glm_pebs_event_constraints[] = {
 	EVENT_CONSTRAINT_END
 };
 
-<<<<<<< HEAD
-=======
-struct event_constraint intel_glp_pebs_event_constraints[] = {
-	/* Allow all events as PEBS with no flags */
-	INTEL_ALL_EVENT_CONSTRAINT(0, 0xf),
-	EVENT_CONSTRAINT_END
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct event_constraint intel_nehalem_pebs_event_constraints[] = {
 	INTEL_PLD_CONSTRAINT(0x100b, 0xf),      /* MEM_INST_RETIRED.* */
 	INTEL_FLAGS_EVENT_CONSTRAINT(0x0f, 0xf),    /* MEM_UNCORE_RETIRED.* */
@@ -921,7 +865,6 @@ struct event_constraint *intel_pebs_constraints(struct perf_event *event)
 		}
 	}
 
-<<<<<<< HEAD
 	/*
 	 * Extended PEBS support
 	 * Makes the PEBS code search the normal constraints.
@@ -929,8 +872,6 @@ struct event_constraint *intel_pebs_constraints(struct perf_event *event)
 	if (x86_pmu.flags & PMU_FL_PEBS_ALL)
 		return NULL;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return &emptyconstraint;
 }
 
@@ -956,7 +897,6 @@ static inline void pebs_update_threshold(struct cpu_hw_events *cpuc)
 {
 	struct debug_store *ds = cpuc->ds;
 	u64 threshold;
-<<<<<<< HEAD
 	int reserved;
 
 	if (x86_pmu.flags & PMU_FL_PEBS_ALL)
@@ -967,12 +907,6 @@ static inline void pebs_update_threshold(struct cpu_hw_events *cpuc)
 	if (cpuc->n_pebs == cpuc->n_large_pebs) {
 		threshold = ds->pebs_absolute_maximum -
 			reserved * x86_pmu.pebs_record_size;
-=======
-
-	if (cpuc->n_pebs == cpuc->n_large_pebs) {
-		threshold = ds->pebs_absolute_maximum -
-			x86_pmu.max_pebs_events * x86_pmu.pebs_record_size;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		threshold = ds->pebs_buffer_base + x86_pmu.pebs_record_size;
 	}
@@ -1010,11 +944,7 @@ void intel_pmu_pebs_add(struct perf_event *event)
 	bool needed_cb = pebs_needs_sched_cb(cpuc);
 
 	cpuc->n_pebs++;
-<<<<<<< HEAD
 	if (hwc->flags & PERF_X86_EVENT_LARGE_PEBS)
-=======
-	if (hwc->flags & PERF_X86_EVENT_FREERUNNING)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cpuc->n_large_pebs++;
 
 	pebs_update_state(needed_cb, cpuc, event->ctx->pmu);
@@ -1040,15 +970,11 @@ void intel_pmu_pebs_enable(struct perf_event *event)
 	 * This must be done in pmu::start(), because PERF_EVENT_IOC_PERIOD.
 	 */
 	if (hwc->flags & PERF_X86_EVENT_AUTO_RELOAD) {
-<<<<<<< HEAD
 		unsigned int idx = hwc->idx;
 
 		if (idx >= INTEL_PMC_IDX_FIXED)
 			idx = MAX_PEBS_EVENTS + (idx - INTEL_PMC_IDX_FIXED);
 		ds->pebs_event_reset[idx] =
-=======
-		ds->pebs_event_reset[hwc->idx] =
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			(u64)(-hwc->sample_period) & x86_pmu.cntval_mask;
 	} else {
 		ds->pebs_event_reset[hwc->idx] = 0;
@@ -1062,11 +988,7 @@ void intel_pmu_pebs_del(struct perf_event *event)
 	bool needed_cb = pebs_needs_sched_cb(cpuc);
 
 	cpuc->n_pebs--;
-<<<<<<< HEAD
 	if (hwc->flags & PERF_X86_EVENT_LARGE_PEBS)
-=======
-	if (hwc->flags & PERF_X86_EVENT_FREERUNNING)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cpuc->n_large_pebs--;
 
 	pebs_update_state(needed_cb, cpuc, event->ctx->pmu);
@@ -1244,10 +1166,6 @@ static void setup_pebs_sample_data(struct perf_event *event,
 	if (pebs == NULL)
 		return;
 
-<<<<<<< HEAD
-=======
-	regs->flags &= ~PERF_EFLAGS_EXACT;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sample_type = event->attr.sample_type;
 	dsrc = sample_type & PERF_SAMPLE_DATA_SRC;
 
@@ -1279,7 +1197,6 @@ static void setup_pebs_sample_data(struct perf_event *event,
 	}
 
 	/*
-<<<<<<< HEAD
 	 * We must however always use iregs for the unwinder to stay sane; the
 	 * record BP,SP,IP can point into thin air when the record is from a
 	 * previous PMI context or an (I)RET happend between the record and
@@ -1289,14 +1206,11 @@ static void setup_pebs_sample_data(struct perf_event *event,
 		data->callchain = perf_callchain(event, iregs);
 
 	/*
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * We use the interrupt regs as a base because the PEBS record does not
 	 * contain a full regs set, specifically it seems to lack segment
 	 * descriptors, which get used by things like user_mode().
 	 *
 	 * In the simple case fix up only the IP for PERF_SAMPLE_IP.
-<<<<<<< HEAD
 	 */
 	*regs = *iregs;
 
@@ -1306,16 +1220,6 @@ static void setup_pebs_sample_data(struct perf_event *event,
 	 * i.e., do not rely on it being zero:
 	 */
 	regs->flags = pebs->flags & ~PERF_EFLAGS_EXACT;
-=======
-	 *
-	 * We must however always use BP,SP from iregs for the unwinder to stay
-	 * sane; the record BP,SP can point into thin air when the record is
-	 * from a previous PMI context or an (I)RET happend between the record
-	 * and PMI.
-	 */
-	*regs = *iregs;
-	regs->flags = pebs->flags;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (sample_type & PERF_SAMPLE_REGS_INTR) {
 		regs->ax = pebs->ax;
@@ -1325,26 +1229,9 @@ static void setup_pebs_sample_data(struct perf_event *event,
 		regs->si = pebs->si;
 		regs->di = pebs->di;
 
-<<<<<<< HEAD
 		regs->bp = pebs->bp;
 		regs->sp = pebs->sp;
 
-=======
-		/*
-		 * Per the above; only set BP,SP if we don't need callchains.
-		 *
-		 * XXX: does this make sense?
-		 */
-		if (!(sample_type & PERF_SAMPLE_CALLCHAIN)) {
-			regs->bp = pebs->bp;
-			regs->sp = pebs->sp;
-		}
-
-		/*
-		 * Preserve PERF_EFLAGS_VM from set_linear_ip().
-		 */
-		regs->flags = pebs->flags | (regs->flags & PERF_EFLAGS_VM);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifndef CONFIG_X86_32
 		regs->r8 = pebs->r8;
 		regs->r9 = pebs->r9;
@@ -1358,20 +1245,15 @@ static void setup_pebs_sample_data(struct perf_event *event,
 	}
 
 	if (event->attr.precise_ip > 1) {
-<<<<<<< HEAD
 		/*
 		 * Haswell and later processors have an 'eventing IP'
 		 * (real IP) which fixes the off-by-1 skid in hardware.
 		 * Use it when precise_ip >= 2 :
 		 */
-=======
-		/* Haswell and later have the eventing IP, so use it: */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (x86_pmu.intel_cap.pebs_format >= 2) {
 			set_linear_ip(regs, pebs->real_ip);
 			regs->flags |= PERF_EFLAGS_EXACT;
 		} else {
-<<<<<<< HEAD
 			/* Otherwise, use PEBS off-by-1 IP: */
 			set_linear_ip(regs, pebs->ip);
 
@@ -1390,17 +1272,6 @@ static void setup_pebs_sample_data(struct perf_event *event,
 		 */
 		set_linear_ip(regs, pebs->ip);
 	}
-=======
-			/* Otherwise use PEBS off-by-1 IP: */
-			set_linear_ip(regs, pebs->ip);
-
-			/* ... and try to fix it up using the LBR entries: */
-			if (intel_pmu_pebs_fixup_ip(regs))
-				regs->flags |= PERF_EFLAGS_EXACT;
-		}
-	} else
-		set_linear_ip(regs, pebs->ip);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 	if ((sample_type & (PERF_SAMPLE_ADDR | PERF_SAMPLE_PHYS_ADDR)) &&
@@ -1468,7 +1339,6 @@ get_next_pebs_record_by_bit(void *base, void *top, int bit)
 	return NULL;
 }
 
-<<<<<<< HEAD
 void intel_pmu_auto_reload_read(struct perf_event *event)
 {
 	WARN_ON(!(event->hw.flags & PERF_X86_EVENT_AUTO_RELOAD));
@@ -1478,8 +1348,6 @@ void intel_pmu_auto_reload_read(struct perf_event *event)
 	perf_pmu_enable(event->pmu);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Special variant of intel_pmu_save_and_restart() for auto-reload.
  */
@@ -1534,11 +1402,6 @@ intel_pmu_save_and_restart_reload(struct perf_event *event, int count)
 	old = ((s64)(prev_raw_count << shift) >> shift);
 	local64_add(new - old + count * period, &event->count);
 
-<<<<<<< HEAD
-=======
-	local64_set(&hwc->period_left, -new);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	perf_event_update_userpage(event);
 
 	return 0;
@@ -1629,16 +1492,10 @@ static void intel_pmu_drain_pebs_nhm(struct pt_regs *iregs)
 	struct debug_store *ds = cpuc->ds;
 	struct perf_event *event;
 	void *base, *at, *top;
-<<<<<<< HEAD
 	short counts[INTEL_PMC_IDX_FIXED + MAX_FIXED_PEBS_EVENTS] = {};
 	short error[INTEL_PMC_IDX_FIXED + MAX_FIXED_PEBS_EVENTS] = {};
 	int bit, i, size;
 	u64 mask;
-=======
-	short counts[MAX_PEBS_EVENTS] = {};
-	short error[MAX_PEBS_EVENTS] = {};
-	int bit, i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!x86_pmu.pebs_active)
 		return;
@@ -1648,7 +1505,6 @@ static void intel_pmu_drain_pebs_nhm(struct pt_regs *iregs)
 
 	ds->pebs_index = ds->pebs_buffer_base;
 
-<<<<<<< HEAD
 	mask = (1ULL << x86_pmu.max_pebs_events) - 1;
 	size = x86_pmu.max_pebs_events;
 	if (x86_pmu.flags & PMU_FL_PEBS_ALL) {
@@ -1656,8 +1512,6 @@ static void intel_pmu_drain_pebs_nhm(struct pt_regs *iregs)
 		size = INTEL_PMC_IDX_FIXED + x86_pmu.num_counters_fixed;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(base >= top)) {
 		/*
 		 * The drain_pebs() could be called twice in a short period
@@ -1667,11 +1521,7 @@ static void intel_pmu_drain_pebs_nhm(struct pt_regs *iregs)
 		 * update the event->count for this case.
 		 */
 		for_each_set_bit(bit, (unsigned long *)&cpuc->pebs_enabled,
-<<<<<<< HEAD
 				 size) {
-=======
-				 x86_pmu.max_pebs_events) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			event = cpuc->events[bit];
 			if (event->hw.flags & PERF_X86_EVENT_AUTO_RELOAD)
 				intel_pmu_save_and_restart_reload(event, 0);
@@ -1684,20 +1534,12 @@ static void intel_pmu_drain_pebs_nhm(struct pt_regs *iregs)
 		u64 pebs_status;
 
 		pebs_status = p->status & cpuc->pebs_enabled;
-<<<<<<< HEAD
 		pebs_status &= mask;
-=======
-		pebs_status &= (1ULL << x86_pmu.max_pebs_events) - 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* PEBS v3 has more accurate status bits */
 		if (x86_pmu.intel_cap.pebs_format >= 3) {
 			for_each_set_bit(bit, (unsigned long *)&pebs_status,
-<<<<<<< HEAD
 					 size)
-=======
-					 x86_pmu.max_pebs_events)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				counts[bit]++;
 
 			continue;
@@ -1745,11 +1587,7 @@ static void intel_pmu_drain_pebs_nhm(struct pt_regs *iregs)
 		counts[bit]++;
 	}
 
-<<<<<<< HEAD
 	for (bit = 0; bit < size; bit++) {
-=======
-	for (bit = 0; bit < x86_pmu.max_pebs_events; bit++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if ((counts[bit] == 0) && (error[bit] == 0))
 			continue;
 
@@ -1826,11 +1664,7 @@ void __init intel_ds_init(void)
 			x86_pmu.pebs_record_size =
 						sizeof(struct pebs_record_skl);
 			x86_pmu.drain_pebs = intel_pmu_drain_pebs_nhm;
-<<<<<<< HEAD
 			x86_pmu.large_pebs_flags |= PERF_SAMPLE_TIME;
-=======
-			x86_pmu.free_running_flags |= PERF_SAMPLE_TIME;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 
 		default:

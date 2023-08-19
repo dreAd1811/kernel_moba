@@ -198,11 +198,7 @@ static const struct ati_receiver_type type_firefly	= {
 	.default_keymap = RC_MAP_SNAPSTREAM_FIREFLY
 };
 
-<<<<<<< HEAD
 static const struct usb_device_id ati_remote_table[] = {
-=======
-static struct usb_device_id ati_remote_table[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{
 		USB_DEVICE(ATI_REMOTE_VENDOR_ID, LOLA_REMOTE_PRODUCT_ID),
 		.driver_info = (unsigned long)&type_ati

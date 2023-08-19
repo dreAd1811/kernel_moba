@@ -6,23 +6,6 @@
 #include <linux/earlycpio.h>
 #include <linux/initrd.h>
 
-<<<<<<< HEAD
-=======
-#define native_rdmsr(msr, val1, val2)			\
-do {							\
-	u64 __val = __rdmsr((msr));			\
-	(void)((val1) = (u32)__val);			\
-	(void)((val2) = (u32)(__val >> 32));		\
-} while (0)
-
-#define native_wrmsr(msr, low, high)			\
-	__wrmsr(msr, low, high)
-
-#define native_wrmsrl(msr, val)				\
-	__wrmsr((msr), (u32)((u64)(val)),		\
-		       (u32)((u64)(val) >> 32))
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct ucode_patch {
 	struct list_head plist;
 	void *data;		/* Intel uses only this one */

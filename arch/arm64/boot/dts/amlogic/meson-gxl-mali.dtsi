@@ -1,15 +1,7 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 /*
  * Copyright (c) 2017 BayLibre SAS
  * Author: Neil Armstrong <narmstrong@baylibre.com>
-=======
-/*
- * Copyright (c) 2017 BayLibre SAS
- * Author: Neil Armstrong <narmstrong@baylibre.com>
- *
- * SPDX-License-Identifier: (GPL-2.0+ OR MIT)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 &apb {
@@ -37,7 +29,6 @@
 		 * MALI_0 and MALI_1 muxed to a single clock by a glitch
 		 * free mux to safely change frequency while running.
 		 */
-<<<<<<< HEAD
 		assigned-clocks = <&clkc CLKID_GP0_PLL>,
 				  <&clkc CLKID_MALI_0_SEL>,
 				  <&clkc CLKID_MALI_0>,
@@ -49,16 +40,6 @@
 		assigned-clock-rates = <744000000>,
 				       <0>, /* Do Nothing */
 				       <744000000>,
-=======
-		assigned-clocks = <&clkc CLKID_MALI_0_SEL>,
-				  <&clkc CLKID_MALI_0>,
-				  <&clkc CLKID_MALI>; /* Glitch free mux */
-		assigned-clock-parents = <&clkc CLKID_FCLK_DIV3>,
-					 <0>, /* Do Nothing */
-					 <&clkc CLKID_MALI_0>;
-		assigned-clock-rates = <0>, /* Do Nothing */
-				       <666666666>,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       <0>; /* Do Nothing */
 	};
 };

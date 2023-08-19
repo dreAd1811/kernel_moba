@@ -298,14 +298,9 @@ static int savage_dma_init(drm_savage_private_t * dev_priv)
 
 	dev_priv->nr_dma_pages = dev_priv->cmd_dma->size /
 	    (SAVAGE_DMA_PAGE_SIZE * 4);
-<<<<<<< HEAD
 	dev_priv->dma_pages = kmalloc_array(dev_priv->nr_dma_pages,
 					    sizeof(drm_savage_dma_page_t),
 					    GFP_KERNEL);
-=======
-	dev_priv->dma_pages = kmalloc(sizeof(drm_savage_dma_page_t) *
-				      dev_priv->nr_dma_pages, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dev_priv->dma_pages == NULL)
 		return -ENOMEM;
 

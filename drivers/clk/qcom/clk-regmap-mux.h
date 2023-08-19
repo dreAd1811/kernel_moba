@@ -16,19 +16,13 @@
 
 #include <linux/clk-provider.h>
 #include "clk-regmap.h"
-<<<<<<< HEAD
 #include "common.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct clk_regmap_mux {
 	u32			reg;
 	u32			shift;
 	u32			width;
-<<<<<<< HEAD
 	const struct parent_map	*parent_map;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct clk_regmap	clkr;
 };
 

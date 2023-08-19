@@ -8,10 +8,7 @@
  * Copyright(c) 2007 - 2015 Intel Corporation. All rights reserved.
  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
-<<<<<<< HEAD
  * Copyright(c) 2018 Intel Corporation
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of version 2 of the GNU General Public License as
@@ -39,10 +36,7 @@
  * Copyright(c) 2005 - 2015 Intel Corporation. All rights reserved.
  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
-<<<<<<< HEAD
  * Copyright(c) 2018 Intel Corporation
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -81,10 +75,7 @@
 #include <linux/gfp.h>
 #include <linux/vmalloc.h>
 #include <linux/pm_runtime.h>
-<<<<<<< HEAD
 #include <linux/module.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "iwl-drv.h"
 #include "iwl-trans.h"
@@ -93,10 +84,7 @@
 #include "iwl-scd.h"
 #include "iwl-agn-hw.h"
 #include "fw/error-dump.h"
-<<<<<<< HEAD
 #include "fw/dbg.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "internal.h"
 #include "iwl-fh.h"
 
@@ -104,7 +92,6 @@
 #define IWL_FW_MEM_EXTENDED_START	0x40000
 #define IWL_FW_MEM_EXTENDED_END		0x57FFF
 
-<<<<<<< HEAD
 static void iwl_trans_pcie_dump_regs(struct iwl_trans *trans)
 {
 #define PCI_DUMP_SIZE	64
@@ -201,8 +188,6 @@ static void iwl_trans_pcie_sw_reset(struct iwl_trans *trans)
 	usleep_range(5000, 6000);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void iwl_pcie_free_fw_monitor(struct iwl_trans *trans)
 {
 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
@@ -219,11 +204,7 @@ static void iwl_pcie_free_fw_monitor(struct iwl_trans *trans)
 	trans_pcie->fw_mon_size = 0;
 }
 
-<<<<<<< HEAD
 void iwl_pcie_alloc_fw_monitor(struct iwl_trans *trans, u8 max_power)
-=======
-static void iwl_pcie_alloc_fw_monitor(struct iwl_trans *trans, u8 max_power)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
 	struct page *page = NULL;
@@ -396,12 +377,8 @@ static int iwl_pcie_apm_init(struct iwl_trans *trans)
 	 * Set "initialization complete" bit to move adapter from
 	 * D0U* --> D0A* (powered-up active) state.
 	 */
-<<<<<<< HEAD
 	iwl_set_bit(trans, CSR_GP_CNTRL,
 		    BIT(trans->cfg->csr->flag_init_done));
-=======
-	iwl_set_bit(trans, CSR_GP_CNTRL, CSR_GP_CNTRL_REG_FLAG_INIT_DONE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Wait for clock stabilization; once stabilized, access to
@@ -409,14 +386,9 @@ static int iwl_pcie_apm_init(struct iwl_trans *trans)
 	 * and accesses to uCode SRAM.
 	 */
 	ret = iwl_poll_bit(trans, CSR_GP_CNTRL,
-<<<<<<< HEAD
 			   BIT(trans->cfg->csr->flag_mac_clock_ready),
 			   BIT(trans->cfg->csr->flag_mac_clock_ready),
 			   25000);
-=======
-			   CSR_GP_CNTRL_REG_FLAG_MAC_CLOCK_READY,
-			   CSR_GP_CNTRL_REG_FLAG_MAC_CLOCK_READY, 25000);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0) {
 		IWL_ERR(trans, "Failed to init the card\n");
 		return ret;
@@ -488,35 +460,22 @@ static void iwl_pcie_apm_lp_xtal_enable(struct iwl_trans *trans)
 	__iwl_trans_pcie_set_bit(trans, CSR_GP_CNTRL,
 				 CSR_GP_CNTRL_REG_FLAG_XTAL_ON);
 
-<<<<<<< HEAD
 	iwl_trans_pcie_sw_reset(trans);
-=======
-	iwl_pcie_sw_reset(trans);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Set "initialization complete" bit to move adapter from
 	 * D0U* --> D0A* (powered-up active) state.
 	 */
-<<<<<<< HEAD
 	iwl_set_bit(trans, CSR_GP_CNTRL,
 		    BIT(trans->cfg->csr->flag_init_done));
-=======
-	iwl_set_bit(trans, CSR_GP_CNTRL, CSR_GP_CNTRL_REG_FLAG_INIT_DONE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Wait for clock stabilization; once stabilized, access to
 	 * device-internal resources is possible.
 	 */
 	ret = iwl_poll_bit(trans, CSR_GP_CNTRL,
-<<<<<<< HEAD
 			   BIT(trans->cfg->csr->flag_mac_clock_ready),
 			   BIT(trans->cfg->csr->flag_mac_clock_ready),
-=======
-			   CSR_GP_CNTRL_REG_FLAG_MAC_CLOCK_READY,
-			   CSR_GP_CNTRL_REG_FLAG_MAC_CLOCK_READY,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   25000);
 	if (WARN_ON(ret < 0)) {
 		IWL_ERR(trans, "Access time out - failed to enable LP XTAL\n");
@@ -543,11 +502,7 @@ static void iwl_pcie_apm_lp_xtal_enable(struct iwl_trans *trans)
 				 apmg_xtal_cfg_reg |
 				 SHR_APMG_XTAL_CFG_XTAL_ON_REQ);
 
-<<<<<<< HEAD
 	iwl_trans_pcie_sw_reset(trans);
-=======
-	iwl_pcie_sw_reset(trans);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Enable LP XTAL by indirect access through CSR */
 	apmg_gp1_reg = iwl_trans_pcie_read_shr(trans, SHR_APMG_GP1_REG);
@@ -572,11 +527,7 @@ static void iwl_pcie_apm_lp_xtal_enable(struct iwl_trans *trans)
 	 * D0A* (powered-up Active) --> D0U* (Uninitialized) state.
 	 */
 	iwl_clear_bit(trans, CSR_GP_CNTRL,
-<<<<<<< HEAD
 		      BIT(trans->cfg->csr->flag_init_done));
-=======
-		      CSR_GP_CNTRL_REG_FLAG_INIT_DONE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Activates XTAL resources monitor */
 	__iwl_trans_pcie_set_bit(trans, CSR_MONITOR_CFG_REG,
@@ -598,20 +549,12 @@ void iwl_pcie_apm_stop_master(struct iwl_trans *trans)
 	int ret;
 
 	/* stop device's busmaster DMA activity */
-<<<<<<< HEAD
 	iwl_set_bit(trans, trans->cfg->csr->addr_sw_reset,
 		    BIT(trans->cfg->csr->flag_stop_master));
 
 	ret = iwl_poll_bit(trans, trans->cfg->csr->addr_sw_reset,
 			   BIT(trans->cfg->csr->flag_master_dis),
 			   BIT(trans->cfg->csr->flag_master_dis), 100);
-=======
-	iwl_set_bit(trans, CSR_RESET, CSR_RESET_REG_FLAG_STOP_MASTER);
-
-	ret = iwl_poll_bit(trans, CSR_RESET,
-			   CSR_RESET_REG_FLAG_MASTER_DISABLED,
-			   CSR_RESET_REG_FLAG_MASTER_DISABLED, 100);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		IWL_WARN(trans, "Master Disable Timed Out, 100 usec\n");
 
@@ -653,22 +596,14 @@ static void iwl_pcie_apm_stop(struct iwl_trans *trans, bool op_mode_leave)
 		return;
 	}
 
-<<<<<<< HEAD
 	iwl_trans_pcie_sw_reset(trans);
-=======
-	iwl_pcie_sw_reset(trans);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Clear "initialization complete" bit to move adapter from
 	 * D0A* (powered-up Active) --> D0U* (Uninitialized) state.
 	 */
 	iwl_clear_bit(trans, CSR_GP_CNTRL,
-<<<<<<< HEAD
 		      BIT(trans->cfg->csr->flag_init_done));
-=======
-		      CSR_GP_CNTRL_REG_FLAG_INIT_DONE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int iwl_pcie_nic_init(struct iwl_trans *trans)
@@ -818,10 +753,7 @@ static int iwl_pcie_load_firmware_chunk(struct iwl_trans *trans,
 				 trans_pcie->ucode_write_complete, 5 * HZ);
 	if (!ret) {
 		IWL_ERR(trans, "Failed to load firmware chunk!\n");
-<<<<<<< HEAD
 		iwl_trans_pcie_dump_regs(trans);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ETIMEDOUT;
 	}
 
@@ -999,20 +931,9 @@ static int iwl_pcie_load_cpu_sections(struct iwl_trans *trans,
 void iwl_pcie_apply_destination(struct iwl_trans *trans)
 {
 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
-<<<<<<< HEAD
 	const struct iwl_fw_dbg_dest_tlv_v1 *dest = trans->dbg_dest_tlv;
 	int i;
 
-=======
-	const struct iwl_fw_dbg_dest_tlv *dest = trans->dbg_dest_tlv;
-	int i;
-
-	if (dest->version)
-		IWL_ERR(trans,
-			"DBG DEST version is %d - expect issues\n",
-			dest->version);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	IWL_INFO(trans, "Applying debug destination %s\n",
 		 get_fw_dbg_mode_string(dest->monitor_mode));
 
@@ -1212,7 +1133,6 @@ static struct iwl_causes_list causes_list[] = {
 	{MSIX_HW_INT_CAUSES_REG_HAP,		CSR_MSIX_HW_INT_MASK_AD, 0x2E},
 };
 
-<<<<<<< HEAD
 static struct iwl_causes_list causes_list_v2[] = {
 	{MSIX_FH_INT_CAUSES_D2S_CH0_NUM,	CSR_MSIX_FH_INT_MASK_AD, 0},
 	{MSIX_FH_INT_CAUSES_D2S_CH1_NUM,	CSR_MSIX_FH_INT_MASK_AD, 0x1},
@@ -1230,26 +1150,19 @@ static struct iwl_causes_list causes_list_v2[] = {
 	{MSIX_HW_INT_CAUSES_REG_HAP,		CSR_MSIX_HW_INT_MASK_AD, 0x2E},
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void iwl_pcie_map_non_rx_causes(struct iwl_trans *trans)
 {
 	struct iwl_trans_pcie *trans_pcie =  IWL_TRANS_GET_PCIE_TRANS(trans);
 	int val = trans_pcie->def_irq | MSIX_NON_AUTO_CLEAR_CAUSE;
-<<<<<<< HEAD
 	int i, arr_size =
 		(trans->cfg->device_family < IWL_DEVICE_FAMILY_22560) ?
 		ARRAY_SIZE(causes_list) : ARRAY_SIZE(causes_list_v2);
-=======
-	int i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Access all non RX causes and map them to the default irq.
 	 * In case we are missing at least one interrupt vector,
 	 * the first interrupt vector will serve non-RX and FBQ causes.
 	 */
-<<<<<<< HEAD
 	for (i = 0; i < arr_size; i++) {
 		struct iwl_causes_list *causes =
 			(trans->cfg->device_family < IWL_DEVICE_FAMILY_22560) ?
@@ -1258,12 +1171,6 @@ static void iwl_pcie_map_non_rx_causes(struct iwl_trans *trans)
 		iwl_write8(trans, CSR_MSIX_IVAR(causes[i].addr), val);
 		iwl_clear_bit(trans, causes[i].mask_reg,
 			      causes[i].cause_num);
-=======
-	for (i = 0; i < ARRAY_SIZE(causes_list); i++) {
-		iwl_write8(trans, CSR_MSIX_IVAR(causes_list[i].addr), val);
-		iwl_clear_bit(trans, causes_list[i].mask_reg,
-			      causes_list[i].cause_num);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -1392,20 +1299,12 @@ static void _iwl_trans_pcie_stop_device(struct iwl_trans *trans, bool low_power)
 
 	/* Make sure (redundant) we've released our request to stay awake */
 	iwl_clear_bit(trans, CSR_GP_CNTRL,
-<<<<<<< HEAD
 		      BIT(trans->cfg->csr->flag_mac_access_req));
-=======
-		      CSR_GP_CNTRL_REG_FLAG_MAC_ACCESS_REQ);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Stop the device, and put it in low power state */
 	iwl_pcie_apm_stop(trans, false);
 
-<<<<<<< HEAD
 	iwl_trans_pcie_sw_reset(trans);
-=======
-	iwl_pcie_sw_reset(trans);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Upon stop, the IVAR table gets erased, so msi-x won't
@@ -1630,15 +1529,9 @@ static void iwl_trans_pcie_d3_suspend(struct iwl_trans *trans, bool test,
 	iwl_pcie_synchronize_irqs(trans);
 
 	iwl_clear_bit(trans, CSR_GP_CNTRL,
-<<<<<<< HEAD
 		      BIT(trans->cfg->csr->flag_mac_access_req));
 	iwl_clear_bit(trans, CSR_GP_CNTRL,
 		      BIT(trans->cfg->csr->flag_init_done));
-=======
-		      CSR_GP_CNTRL_REG_FLAG_MAC_ACCESS_REQ);
-	iwl_clear_bit(trans, CSR_GP_CNTRL,
-		      CSR_GP_CNTRL_REG_FLAG_INIT_DONE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	iwl_pcie_enable_rx_wake(trans, false);
 
@@ -1670,7 +1563,6 @@ static int iwl_trans_pcie_d3_resume(struct iwl_trans *trans,
 
 	iwl_pcie_enable_rx_wake(trans, true);
 
-<<<<<<< HEAD
 	iwl_set_bit(trans, CSR_GP_CNTRL,
 		    BIT(trans->cfg->csr->flag_mac_access_req));
 	iwl_set_bit(trans, CSR_GP_CNTRL,
@@ -1688,8 +1580,6 @@ static int iwl_trans_pcie_d3_resume(struct iwl_trans *trans,
 		return ret;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Reconfigure IVAR table in case of MSIX or reset ict table in
 	 * MSI mode since HW reset erased it.
@@ -1702,33 +1592,11 @@ static int iwl_trans_pcie_d3_resume(struct iwl_trans *trans,
 		iwl_pcie_reset_ict(trans);
 	iwl_enable_interrupts(trans);
 
-<<<<<<< HEAD
-=======
-	iwl_set_bit(trans, CSR_GP_CNTRL, CSR_GP_CNTRL_REG_FLAG_MAC_ACCESS_REQ);
-	iwl_set_bit(trans, CSR_GP_CNTRL, CSR_GP_CNTRL_REG_FLAG_INIT_DONE);
-
-	if (trans->cfg->device_family >= IWL_DEVICE_FAMILY_8000)
-		udelay(2);
-
-	ret = iwl_poll_bit(trans, CSR_GP_CNTRL,
-			   CSR_GP_CNTRL_REG_FLAG_MAC_CLOCK_READY,
-			   CSR_GP_CNTRL_REG_FLAG_MAC_CLOCK_READY,
-			   25000);
-	if (ret < 0) {
-		IWL_ERR(trans, "Failed to resume the device (mac ready)\n");
-		return ret;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	iwl_pcie_set_pwr(trans, false);
 
 	if (!reset) {
 		iwl_clear_bit(trans, CSR_GP_CNTRL,
-<<<<<<< HEAD
 			      BIT(trans->cfg->csr->flag_mac_access_req));
-=======
-			      CSR_GP_CNTRL_REG_FLAG_MAC_ACCESS_REQ);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		iwl_trans_pcie_tx_reset(trans);
 
@@ -1841,32 +1709,6 @@ static void iwl_pcie_irq_set_affinity(struct iwl_trans *trans)
 	}
 }
 
-<<<<<<< HEAD
-=======
-static const char *queue_name(struct device *dev,
-			      struct iwl_trans_pcie *trans_p, int i)
-{
-	if (trans_p->shared_vec_mask) {
-		int vec = trans_p->shared_vec_mask &
-			  IWL_SHARED_IRQ_FIRST_RSS ? 1 : 0;
-
-		if (i == 0)
-			return DRV_NAME ": shared IRQ";
-
-		return devm_kasprintf(dev, GFP_KERNEL,
-				      DRV_NAME ": queue %d", i + vec);
-	}
-	if (i == 0)
-		return DRV_NAME ": default queue";
-
-	if (i == trans_p->alloc_vecs - 1)
-		return DRV_NAME ": exception";
-
-	return devm_kasprintf(dev, GFP_KERNEL,
-			      DRV_NAME  ": queue %d", i);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int iwl_pcie_init_msix_handler(struct pci_dev *pdev,
 				      struct iwl_trans_pcie *trans_pcie)
 {
@@ -1915,11 +1757,7 @@ static int _iwl_trans_pcie_start_hw(struct iwl_trans *trans, bool low_power)
 		return err;
 	}
 
-<<<<<<< HEAD
 	iwl_trans_pcie_sw_reset(trans);
-=======
-	iwl_pcie_sw_reset(trans);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = iwl_pcie_apm_init(trans);
 	if (err)
@@ -2099,7 +1937,6 @@ static void iwl_trans_pcie_set_pmi(struct iwl_trans *trans, bool state)
 		clear_bit(STATUS_TPOWER_PMI, &trans->status);
 }
 
-<<<<<<< HEAD
 struct iwl_trans_pcie_removal {
 	struct pci_dev *pdev;
 	struct work_struct work;
@@ -2123,8 +1960,6 @@ static void iwl_trans_pcie_removal_wk(struct work_struct *wk)
 	module_put(THIS_MODULE);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool iwl_trans_pcie_grab_nic_access(struct iwl_trans *trans,
 					   unsigned long *flags)
 {
@@ -2138,11 +1973,7 @@ static bool iwl_trans_pcie_grab_nic_access(struct iwl_trans *trans,
 
 	/* this bit wakes up the NIC */
 	__iwl_trans_pcie_set_bit(trans, CSR_GP_CNTRL,
-<<<<<<< HEAD
 				 BIT(trans->cfg->csr->flag_mac_access_req));
-=======
-				 CSR_GP_CNTRL_REG_FLAG_MAC_ACCESS_REQ);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (trans->cfg->device_family >= IWL_DEVICE_FAMILY_8000)
 		udelay(2);
 
@@ -2167,7 +1998,6 @@ static bool iwl_trans_pcie_grab_nic_access(struct iwl_trans *trans,
 	 * and do not save/restore SRAM when power cycling.
 	 */
 	ret = iwl_poll_bit(trans, CSR_GP_CNTRL,
-<<<<<<< HEAD
 			   BIT(trans->cfg->csr->flag_val_mac_access_en),
 			   (BIT(trans->cfg->csr->flag_mac_clock_ready) |
 			    CSR_GP_CNTRL_REG_FLAG_GOING_TO_SLEEP), 15000);
@@ -2221,16 +2051,6 @@ static bool iwl_trans_pcie_grab_nic_access(struct iwl_trans *trans,
 		}
 
 err:
-=======
-			   CSR_GP_CNTRL_REG_VAL_MAC_ACCESS_EN,
-			   (CSR_GP_CNTRL_REG_FLAG_MAC_CLOCK_READY |
-			    CSR_GP_CNTRL_REG_FLAG_GOING_TO_SLEEP), 15000);
-	if (unlikely(ret < 0)) {
-		iwl_write32(trans, CSR_RESET, CSR_RESET_REG_FLAG_FORCE_NMI);
-		WARN_ONCE(1,
-			  "Timeout waiting for hardware access (CSR_GP_CNTRL 0x%08x)\n",
-			  iwl_read32(trans, CSR_GP_CNTRL));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_unlock_irqrestore(&trans_pcie->reg_lock, *flags);
 		return false;
 	}
@@ -2261,11 +2081,7 @@ static void iwl_trans_pcie_release_nic_access(struct iwl_trans *trans,
 		goto out;
 
 	__iwl_trans_pcie_clear_bit(trans, CSR_GP_CNTRL,
-<<<<<<< HEAD
 				   BIT(trans->cfg->csr->flag_mac_access_req));
-=======
-				   CSR_GP_CNTRL_REG_FLAG_MAC_ACCESS_REQ);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Above we read the CSR_GP_CNTRL register, which will flush
 	 * any previous writes, but we need the write that clears the
@@ -2421,7 +2237,6 @@ void iwl_trans_pcie_log_scd_error(struct iwl_trans *trans, struct iwl_txq *txq)
 		jiffies_to_msecs(txq->wd_timeout),
 		txq->read_ptr, txq->write_ptr,
 		iwl_read_prph(trans, SCD_QUEUE_RDPTR(txq_id)) &
-<<<<<<< HEAD
 			(trans->cfg->base_params->max_tfd_queue_size - 1),
 		iwl_read_prph(trans, SCD_QUEUE_WRPTR(txq_id)) &
 			(trans->cfg->base_params->max_tfd_queue_size - 1),
@@ -2444,14 +2259,6 @@ static int iwl_trans_pcie_rxq_dma_data(struct iwl_trans *trans, int queue,
 	return 0;
 }
 
-=======
-			(TFD_QUEUE_SIZE_MAX - 1),
-		iwl_read_prph(trans, SCD_QUEUE_WRPTR(txq_id)) &
-			(TFD_QUEUE_SIZE_MAX - 1),
-		iwl_read_direct32(trans, FH_TX_TRB_REG(fifo)));
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int iwl_trans_pcie_wait_txq_empty(struct iwl_trans *trans, int txq_idx)
 {
 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
@@ -2464,21 +2271,12 @@ static int iwl_trans_pcie_wait_txq_empty(struct iwl_trans *trans, int txq_idx)
 
 	IWL_DEBUG_TX_QUEUES(trans, "Emptying queue %d...\n", txq_idx);
 	txq = trans_pcie->txq[txq_idx];
-<<<<<<< HEAD
 	wr_ptr = READ_ONCE(txq->write_ptr);
 
 	while (txq->read_ptr != READ_ONCE(txq->write_ptr) &&
 	       !time_after(jiffies,
 			   now + msecs_to_jiffies(IWL_FLUSH_WAIT_MS))) {
 		u8 write_ptr = READ_ONCE(txq->write_ptr);
-=======
-	wr_ptr = ACCESS_ONCE(txq->write_ptr);
-
-	while (txq->read_ptr != ACCESS_ONCE(txq->write_ptr) &&
-	       !time_after(jiffies,
-			   now + msecs_to_jiffies(IWL_FLUSH_WAIT_MS))) {
-		u8 write_ptr = ACCESS_ONCE(txq->write_ptr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (WARN_ONCE(wr_ptr != write_ptr,
 			      "WR pointer moved while flushing %d -> %d\n",
@@ -2741,18 +2539,11 @@ static ssize_t iwl_dbgfs_rx_queue_read(struct file *file,
 		pos += scnprintf(buf + pos, bufsz - pos, "\tfree_count: %u\n",
 				 rxq->free_count);
 		if (rxq->rb_stts) {
-<<<<<<< HEAD
 			u32 r =	__le16_to_cpu(iwl_get_closed_rb_stts(trans,
 								     rxq));
 			pos += scnprintf(buf + pos, bufsz - pos,
 					 "\tclosed_rb_num: %u\n",
 					 r & 0x0FFF);
-=======
-			pos += scnprintf(buf + pos, bufsz - pos,
-					 "\tclosed_rb_num: %u\n",
-					 le16_to_cpu(rxq->rb_stts->closed_rb_num) &
-					 0x0FFF);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else {
 			pos += scnprintf(buf + pos, bufsz - pos,
 					 "\tclosed_rb_num: Not Allocated\n");
@@ -2920,21 +2711,12 @@ int iwl_trans_pcie_dbgfs_register(struct iwl_trans *trans)
 {
 	struct dentry *dir = trans->dbgfs_dir;
 
-<<<<<<< HEAD
 	DEBUGFS_ADD_FILE(rx_queue, dir, 0400);
 	DEBUGFS_ADD_FILE(tx_queue, dir, 0400);
 	DEBUGFS_ADD_FILE(interrupt, dir, 0600);
 	DEBUGFS_ADD_FILE(csr, dir, 0200);
 	DEBUGFS_ADD_FILE(fh_reg, dir, 0400);
 	DEBUGFS_ADD_FILE(rfkill, dir, 0600);
-=======
-	DEBUGFS_ADD_FILE(rx_queue, dir, S_IRUSR);
-	DEBUGFS_ADD_FILE(tx_queue, dir, S_IRUSR);
-	DEBUGFS_ADD_FILE(interrupt, dir, S_IWUSR | S_IRUSR);
-	DEBUGFS_ADD_FILE(csr, dir, S_IWUSR);
-	DEBUGFS_ADD_FILE(fh_reg, dir, S_IRUSR);
-	DEBUGFS_ADD_FILE(rfkill, dir, S_IWUSR | S_IRUSR);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 err:
@@ -2967,11 +2749,7 @@ static u32 iwl_trans_pcie_dump_rbs(struct iwl_trans *trans,
 
 	spin_lock(&rxq->lock);
 
-<<<<<<< HEAD
 	r = le16_to_cpu(iwl_get_closed_rb_stts(trans, rxq)) & 0x0FFF;
-=======
-	r = le16_to_cpu(ACCESS_ONCE(rxq->rb_stts->closed_rb_num)) & 0x0FFF;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = rxq->read, j = 0;
 	     i != r && j < allocated_rb_nums;
@@ -3135,7 +2913,6 @@ iwl_trans_pcie_dump_monitor(struct iwl_trans *trans,
 			 * Update pointers to reflect actual values after
 			 * shifting
 			 */
-<<<<<<< HEAD
 			if (trans->dbg_dest_tlv->version) {
 				base = (iwl_read_prph(trans, base) &
 					IWL_LDBG_M2S_BUF_BA_MSK) <<
@@ -3147,10 +2924,6 @@ iwl_trans_pcie_dump_monitor(struct iwl_trans *trans,
 				       trans->dbg_dest_tlv->base_shift;
 			}
 
-=======
-			base = iwl_read_prph(trans, base) <<
-			       trans->dbg_dest_tlv->base_shift;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			iwl_trans_read_mem(trans, base, fw_mon_data->data,
 					   monitor_len / sizeof(u32));
 		} else if (trans->dbg_dest_tlv->monitor_mode == MARBH_MODE) {
@@ -3179,20 +2952,12 @@ static struct iwl_trans_dump_data
 	struct iwl_txq *cmdq = trans_pcie->txq[trans_pcie->cmd_queue];
 	struct iwl_fw_error_dump_txcmd *txcmd;
 	struct iwl_trans_dump_data *dump_data;
-<<<<<<< HEAD
 	u32 len, num_rbs = 0;
 	u32 monitor_len;
 	int i, ptr;
 	bool dump_rbs = test_bit(STATUS_FW_ERROR, &trans->status) &&
 			!trans->cfg->mq_rx_supported &&
 			trans->dbg_dump_mask & BIT(IWL_FW_ERROR_DUMP_RB);
-=======
-	u32 len, num_rbs;
-	u32 monitor_len;
-	int i, ptr;
-	bool dump_rbs = test_bit(STATUS_FW_ERROR, &trans->status) &&
-			!trans->cfg->mq_rx_supported;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* transport dump header */
 	len = sizeof(*dump_data);
@@ -3207,7 +2972,6 @@ static struct iwl_trans_dump_data
 		       trans_pcie->fw_mon_size;
 		monitor_len = trans_pcie->fw_mon_size;
 	} else if (trans->dbg_dest_tlv) {
-<<<<<<< HEAD
 		u32 base, end, cfg_reg;
 
 		if (trans->dbg_dest_tlv->version == 1) {
@@ -3238,23 +3002,6 @@ static struct iwl_trans_dump_data
 				end += (1 << trans->dbg_dest_tlv->end_shift);
 			monitor_len = end - base;
 		}
-=======
-		u32 base, end;
-
-		base = le32_to_cpu(trans->dbg_dest_tlv->base_reg);
-		end = le32_to_cpu(trans->dbg_dest_tlv->end_reg);
-
-		base = iwl_read_prph(trans, base) <<
-		       trans->dbg_dest_tlv->base_shift;
-		end = iwl_read_prph(trans, end) <<
-		      trans->dbg_dest_tlv->end_shift;
-
-		/* Make "end" point to the actual end */
-		if (trans->cfg->device_family >= IWL_DEVICE_FAMILY_8000 ||
-		    trans->dbg_dest_tlv->monitor_mode == MARBH_MODE)
-			end += (1 << trans->dbg_dest_tlv->end_shift);
-		monitor_len = end - base;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		len += sizeof(*data) + sizeof(struct iwl_fw_error_dump_fw_mon) +
 		       monitor_len;
 	} else {
@@ -3262,13 +3009,10 @@ static struct iwl_trans_dump_data
 	}
 
 	if (trigger && (trigger->mode & IWL_FW_DBG_TRIGGER_MONITOR_ONLY)) {
-<<<<<<< HEAD
 		if (!(trans->dbg_dump_mask &
 		      BIT(IWL_FW_ERROR_DUMP_FW_MONITOR)))
 			return NULL;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dump_data = vzalloc(len);
 		if (!dump_data)
 			return NULL;
@@ -3281,7 +3025,6 @@ static struct iwl_trans_dump_data
 	}
 
 	/* CSR registers */
-<<<<<<< HEAD
 	if (trans->dbg_dump_mask & BIT(IWL_FW_ERROR_DUMP_CSR))
 		len += sizeof(*data) + IWL_CSR_TO_DUMP;
 
@@ -3296,30 +3039,14 @@ static struct iwl_trans_dump_data
 			       (FH_MEM_UPPER_BOUND -
 				FH_MEM_LOWER_BOUND);
 	}
-=======
-	len += sizeof(*data) + IWL_CSR_TO_DUMP;
-
-	/* FH registers */
-	if (trans->cfg->gen2)
-		len += sizeof(*data) +
-		       (FH_MEM_UPPER_BOUND_GEN2 - FH_MEM_LOWER_BOUND_GEN2);
-	else
-		len += sizeof(*data) +
-		       (FH_MEM_UPPER_BOUND - FH_MEM_LOWER_BOUND);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (dump_rbs) {
 		/* Dump RBs is supported only for pre-9000 devices (1 queue) */
 		struct iwl_rxq *rxq = &trans_pcie->rxq[0];
 		/* RBs */
-<<<<<<< HEAD
 		num_rbs =
 			le16_to_cpu(iwl_get_closed_rb_stts(trans, rxq))
 			& 0x0FFF;
-=======
-		num_rbs = le16_to_cpu(ACCESS_ONCE(rxq->rb_stts->closed_rb_num))
-				      & 0x0FFF;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		num_rbs = (num_rbs - rxq->read) & RX_QUEUE_MASK;
 		len += num_rbs * (sizeof(*data) +
 				  sizeof(struct iwl_fw_error_dump_rb) +
@@ -3327,12 +3054,8 @@ static struct iwl_trans_dump_data
 	}
 
 	/* Paged memory for gen2 HW */
-<<<<<<< HEAD
 	if (trans->cfg->gen2 &&
 	    trans->dbg_dump_mask & BIT(IWL_FW_ERROR_DUMP_PAGING))
-=======
-	if (trans->cfg->gen2)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		for (i = 0; i < trans_pcie->init_dram.paging_cnt; i++)
 			len += sizeof(*data) +
 			       sizeof(struct iwl_fw_error_dump_paging) +
@@ -3344,7 +3067,6 @@ static struct iwl_trans_dump_data
 
 	len = 0;
 	data = (void *)dump_data->data;
-<<<<<<< HEAD
 
 	if (trans->dbg_dump_mask & BIT(IWL_FW_ERROR_DUMP_TXCMD)) {
 		u16 tfd_size = trans_pcie->tfd_size;
@@ -3384,48 +3106,12 @@ static struct iwl_trans_dump_data
 		len += iwl_trans_pcie_dump_csr(trans, &data);
 	if (trans->dbg_dump_mask & BIT(IWL_FW_ERROR_DUMP_FH_REGS))
 		len += iwl_trans_pcie_fh_regs_dump(trans, &data);
-=======
-	data->type = cpu_to_le32(IWL_FW_ERROR_DUMP_TXCMD);
-	txcmd = (void *)data->data;
-	spin_lock_bh(&cmdq->lock);
-	ptr = cmdq->write_ptr;
-	for (i = 0; i < cmdq->n_window; i++) {
-		u8 idx = iwl_pcie_get_cmd_index(cmdq, ptr);
-		u32 caplen, cmdlen;
-
-		cmdlen = iwl_trans_pcie_get_cmdlen(trans, cmdq->tfds +
-						   trans_pcie->tfd_size * ptr);
-		caplen = min_t(u32, TFD_MAX_PAYLOAD_SIZE, cmdlen);
-
-		if (cmdlen) {
-			len += sizeof(*txcmd) + caplen;
-			txcmd->cmdlen = cpu_to_le32(cmdlen);
-			txcmd->caplen = cpu_to_le32(caplen);
-			memcpy(txcmd->data, cmdq->entries[idx].cmd, caplen);
-			txcmd = (void *)((u8 *)txcmd->data + caplen);
-		}
-
-		ptr = iwl_queue_dec_wrap(ptr);
-	}
-	spin_unlock_bh(&cmdq->lock);
-
-	data->len = cpu_to_le32(len);
-	len += sizeof(*data);
-	data = iwl_fw_error_next_data(data);
-
-	len += iwl_trans_pcie_dump_csr(trans, &data);
-	len += iwl_trans_pcie_fh_regs_dump(trans, &data);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dump_rbs)
 		len += iwl_trans_pcie_dump_rbs(trans, &data, num_rbs);
 
 	/* Paged memory for gen2 HW */
-<<<<<<< HEAD
 	if (trans->cfg->gen2 &&
 	    trans->dbg_dump_mask & BIT(IWL_FW_ERROR_DUMP_PAGING)) {
-=======
-	if (trans->cfg->gen2) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		for (i = 0; i < trans_pcie->init_dram.paging_cnt; i++) {
 			struct iwl_fw_error_dump_paging *paging;
 			dma_addr_t addr =
@@ -3445,13 +3131,8 @@ static struct iwl_trans_dump_data
 			len += sizeof(*data) + sizeof(*paging) + page_len;
 		}
 	}
-<<<<<<< HEAD
 	if (trans->dbg_dump_mask & BIT(IWL_FW_ERROR_DUMP_FW_MONITOR))
 		len += iwl_trans_pcie_dump_monitor(trans, &data, monitor_len);
-=======
-
-	len += iwl_trans_pcie_dump_monitor(trans, &data, monitor_len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dump_data->len = len;
 
@@ -3487,20 +3168,14 @@ static void iwl_trans_pcie_resume(struct iwl_trans *trans)
 	.write_mem = iwl_trans_pcie_write_mem,				\
 	.configure = iwl_trans_pcie_configure,				\
 	.set_pmi = iwl_trans_pcie_set_pmi,				\
-<<<<<<< HEAD
 	.sw_reset = iwl_trans_pcie_sw_reset,				\
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.grab_nic_access = iwl_trans_pcie_grab_nic_access,		\
 	.release_nic_access = iwl_trans_pcie_release_nic_access,	\
 	.set_bits_mask = iwl_trans_pcie_set_bits_mask,			\
 	.ref = iwl_trans_pcie_ref,					\
 	.unref = iwl_trans_pcie_unref,					\
 	.dump_data = iwl_trans_pcie_dump_data,				\
-<<<<<<< HEAD
 	.dump_regs = iwl_trans_pcie_dump_regs,				\
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.d3_suspend = iwl_trans_pcie_d3_suspend,			\
 	.d3_resume = iwl_trans_pcie_d3_resume
 
@@ -3552,10 +3227,7 @@ static const struct iwl_trans_ops trans_ops_pcie_gen2 = {
 	.txq_alloc = iwl_trans_pcie_dyn_txq_alloc,
 	.txq_free = iwl_trans_pcie_dyn_txq_free,
 	.wait_txq_empty = iwl_trans_pcie_wait_txq_empty,
-<<<<<<< HEAD
 	.rxq_dma_data = iwl_trans_pcie_rxq_dma_data,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct iwl_trans *iwl_trans_pcie_alloc(struct pci_dev *pdev,
@@ -3587,18 +3259,6 @@ struct iwl_trans *iwl_trans_pcie_alloc(struct pci_dev *pdev,
 	spin_lock_init(&trans_pcie->reg_lock);
 	mutex_init(&trans_pcie->mutex);
 	init_waitqueue_head(&trans_pcie->ucode_write_waitq);
-<<<<<<< HEAD
-=======
-
-	trans_pcie->rba.alloc_wq = alloc_workqueue("rb_allocator",
-						   WQ_HIGHPRI | WQ_UNBOUND, 1);
-	if (!trans_pcie->rba.alloc_wq) {
-		ret = -ENOMEM;
-		goto out_free_trans;
-	}
-	INIT_WORK(&trans_pcie->rba.rx_alloc, iwl_pcie_rx_allocator_work);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	trans_pcie->tso_hdr_page = alloc_percpu(struct iwl_tso_hdr_page);
 	if (!trans_pcie->tso_hdr_page) {
 		ret = -ENOMEM;
@@ -3690,21 +3350,12 @@ struct iwl_trans *iwl_trans_pcie_alloc(struct pci_dev *pdev,
 		 * id located at the AUX bus MISC address space.
 		 */
 		iwl_set_bit(trans, CSR_GP_CNTRL,
-<<<<<<< HEAD
 			    BIT(trans->cfg->csr->flag_init_done));
 		udelay(2);
 
 		ret = iwl_poll_bit(trans, CSR_GP_CNTRL,
 				   BIT(trans->cfg->csr->flag_mac_clock_ready),
 				   BIT(trans->cfg->csr->flag_mac_clock_ready),
-=======
-			    CSR_GP_CNTRL_REG_FLAG_INIT_DONE);
-		udelay(2);
-
-		ret = iwl_poll_bit(trans, CSR_GP_CNTRL,
-				   CSR_GP_CNTRL_REG_FLAG_MAC_CLOCK_READY,
-				   CSR_GP_CNTRL_REG_FLAG_MAC_CLOCK_READY,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   25000);
 		if (ret < 0) {
 			IWL_DEBUG_INFO(trans, "Failed to wake up the nic\n");
@@ -3739,7 +3390,6 @@ struct iwl_trans *iwl_trans_pcie_alloc(struct pci_dev *pdev,
 
 #if IS_ENABLED(CONFIG_IWLMVM)
 	trans->hw_rf_id = iwl_read32(trans, CSR_HW_RF_ID);
-<<<<<<< HEAD
 
 	if (CSR_HW_RF_ID_TYPE_CHIP_ID(trans->hw_rf_id) ==
 	    CSR_HW_RF_ID_TYPE_CHIP_ID(CSR_HW_RF_ID_TYPE_HR)) {
@@ -3760,16 +3410,6 @@ struct iwl_trans *iwl_trans_pcie_alloc(struct pci_dev *pdev,
 			*/
 			trans->cfg = &iwl22000_2ac_cfg_hr;
 		}
-=======
-	if (trans->hw_rf_id == CSR_HW_RF_ID_TYPE_HR) {
-		u32 hw_status;
-
-		hw_status = iwl_read_prph(trans, UMAG_GEN_HW_STATUS);
-		if (hw_status & UMAG_GEN_HW_IS_FPGA)
-			trans->cfg = &iwla000_2ax_cfg_qnj_hr_f0;
-		else
-			trans->cfg = &iwla000_2ac_cfg_hr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 #endif
 
@@ -3803,13 +3443,10 @@ struct iwl_trans *iwl_trans_pcie_alloc(struct pci_dev *pdev,
 		trans_pcie->inta_mask = CSR_INI_SET_MASK;
 	 }
 
-<<<<<<< HEAD
 	trans_pcie->rba.alloc_wq = alloc_workqueue("rb_allocator",
 						   WQ_HIGHPRI | WQ_UNBOUND, 1);
 	INIT_WORK(&trans_pcie->rba.rx_alloc, iwl_pcie_rx_allocator_work);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_IWLWIFI_PCIE_RTPM
 	trans->runtime_pm_mode = IWL_PLAT_PM_MODE_D0I3;
 #else
@@ -3822,11 +3459,6 @@ out_free_ict:
 	iwl_pcie_free_ict(trans);
 out_no_pci:
 	free_percpu(trans_pcie->tso_hdr_page);
-<<<<<<< HEAD
-=======
-	destroy_workqueue(trans_pcie->rba.alloc_wq);
-out_free_trans:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	iwl_trans_free(trans);
 	return ERR_PTR(ret);
 }

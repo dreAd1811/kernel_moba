@@ -65,12 +65,6 @@ static void cmd64x_program_timings(ide_drive_t *drive, u8 mode)
 	struct ide_timing t;
 	u8 arttim = 0;
 
-<<<<<<< HEAD
-=======
-	if (drive->dn >= ARRAY_SIZE(drwtim_regs))
-		return;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ide_timing_compute(drive, mode, &t, T, 0);
 
 	/*

@@ -1,18 +1,5 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /* Copyright (c) 2017-2019, The Linux Foundation. All rights reserved.
-=======
-/* Copyright (c) 2017-2020, The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/slab.h>
@@ -37,30 +24,11 @@
 #define PERI_RPMSG rpmsg_info->peripheral
 
 struct diag_rpmsg_read_work {
-<<<<<<< HEAD
 	struct diag_rpmsg_info *rpmsg_info;
 	const void *ptr_read_done;
 	const void *ptr_rx_done;
 	size_t ptr_read_size;
 	struct work_struct work;
-=======
-	struct work_struct work;
-	struct list_head    rx_list_head;
-	spinlock_t          rx_lock;
-};
-
-static struct diag_rpmsg_read_work *read_work_struct;
-
-/**
- ** struct rx_buff_list - holds rx rpmsg data, before it will be consumed
- ** by diagfwd_channel_read_done worker, item per rx packet
- **/
-struct rx_buff_list {
-	struct list_head list;
-	void *rpmsg_rx_buf;
-	int   rx_buf_size;
-	struct diag_rpmsg_info *rpmsg_info;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct diag_rpmsg_info rpmsg_data[NUM_PERIPHERALS] = {
@@ -86,11 +54,7 @@ struct diag_rpmsg_info rpmsg_data[NUM_PERIPHERALS] = {
 		.peripheral = PERIPHERAL_WCNSS,
 		.type = TYPE_DATA,
 		.edge = "wcnss",
-<<<<<<< HEAD
 		.name = "DIAG_DATA",
-=======
-		.name = "APPS_RIVA_DATA",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.buf1 = NULL,
 		.buf2 = NULL,
 		.hdl = NULL
@@ -156,11 +120,7 @@ struct diag_rpmsg_info rpmsg_cntl[NUM_PERIPHERALS] = {
 		.peripheral = PERIPHERAL_WCNSS,
 		.type = TYPE_CNTL,
 		.edge = "wcnss",
-<<<<<<< HEAD
 		.name = "DIAG_CTRL",
-=======
-		.name = "APPS_RIVA_CTRL",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.buf1 = NULL,
 		.buf2 = NULL,
 		.hdl = NULL
@@ -503,11 +463,7 @@ static int diag_rpmsg_read(void *ctxt, unsigned char *buf, int buf_len)
 		rpmsg_info->buf2 = buf;
 	}
 	mutex_unlock(&driver->diagfwd_channel_mutex[rpmsg_info->peripheral]);
-<<<<<<< HEAD
 
-=======
-	queue_work(rpmsg_info->wq, &read_work_struct->work);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret_val;
 }
 
@@ -532,22 +488,14 @@ static void diag_rpmsg_read_work_fn(struct work_struct *work)
 		return;
 	}
 	mutex_unlock(&driver->rpmsginfo_mutex[PERI_RPMSG]);
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	diagfwd_channel_read(rpmsg_info->fwd_ctxt);
 }
 
 static int  diag_rpmsg_write(void *ctxt, unsigned char *buf, int len)
 {
-<<<<<<< HEAD
 	struct diag_rpmsg_info *rpmsg_info = NULL;
 	int err = 0;
-=======
-	int err = 0;
-	struct diag_rpmsg_info *rpmsg_info = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct rpmsg_device *rpdev = NULL;
 
 	if (!ctxt || !buf)
@@ -570,10 +518,6 @@ static int  diag_rpmsg_write(void *ctxt, unsigned char *buf, int len)
 	}
 
 	rpdev = (struct rpmsg_device *)rpmsg_info->hdl;
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = rpmsg_send(rpdev->ept, buf, len);
 	if (!err) {
 		DIAG_LOG(DIAG_DEBUG_PERIPHERALS, "%s wrote to rpmsg, len: %d\n",
@@ -655,7 +599,6 @@ static int diag_rpmsg_notify_cb(struct rpmsg_device *rpdev, void *data, int len,
 						void *priv, u32 src)
 {
 	struct diag_rpmsg_info *rpmsg_info = NULL;
-<<<<<<< HEAD
 	struct diagfwd_info *fwd_info = NULL;
 	struct diag_rpmsg_read_work *read_work = NULL;
 	void *buf = NULL;
@@ -708,45 +651,11 @@ static int diag_rpmsg_notify_cb(struct rpmsg_device *rpdev, void *data, int len,
 	read_work->ptr_read_size = len;
 	INIT_WORK(&read_work->work, diag_rpmsg_notify_rx_work_fn);
 	queue_work(rpmsg_info->wq, &read_work->work);
-=======
-	struct rx_buff_list *rx_item;
-	unsigned long flags;
-
-	if (!rpdev || !data)
-		return -EINVAL;
-
-	rpmsg_info = dev_get_drvdata(&rpdev->dev);
-
-	if (!rpmsg_info || !rpmsg_info->fwd_ctxt) {
-		DIAG_LOG(DIAG_DEBUG_PERIPHERALS, "diag: Invalid rpmsg info\n");
-		return -EINVAL;
-	}
-
-	rx_item = kzalloc(sizeof(*rx_item), GFP_ATOMIC);
-	if (!rx_item)
-		return -ENOMEM;
-
-	rx_item->rpmsg_rx_buf = kmemdup(data, len, GFP_ATOMIC);
-	if (!rx_item->rpmsg_rx_buf) {
-		kfree(rx_item);
-		return -ENOMEM;
-	}
-
-	rx_item->rx_buf_size = len;
-	rx_item->rpmsg_info = rpmsg_info;
-
-	spin_lock_irqsave(&read_work_struct->rx_lock, flags);
-	list_add(&rx_item->list, &read_work_struct->rx_list_head);
-	spin_unlock_irqrestore(&read_work_struct->rx_lock, flags);
-
-	queue_work(rpmsg_info->wq, &read_work_struct->work);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 static void diag_rpmsg_notify_rx_work_fn(struct work_struct *work)
 {
-<<<<<<< HEAD
 	struct diag_rpmsg_read_work *read_work = container_of(work,
 				struct diag_rpmsg_read_work, work);
 	struct diag_rpmsg_info *rpmsg_info = read_work->rpmsg_info;
@@ -769,83 +678,6 @@ static void diag_rpmsg_notify_rx_work_fn(struct work_struct *work)
 	kfree(read_work);
 	read_work = NULL;
 	mutex_unlock(&driver->diagfwd_channel_mutex[rpmsg_info->peripheral]);
-=======
-	struct diag_rpmsg_info *rpmsg_info;
-	struct rx_buff_list *rx_item;
-	struct diagfwd_info *fwd_info;
-	void *buf = NULL;
-	unsigned long flags;
-
-	spin_lock_irqsave(&read_work_struct->rx_lock, flags);
-	if (!list_empty(&read_work_struct->rx_list_head)) {
-		/* detach last entry */
-		rx_item = list_last_entry(&read_work_struct->rx_list_head,
-						struct rx_buff_list, list);
-		list_del(&rx_item->list);
-		spin_unlock_irqrestore(&read_work_struct->rx_lock, flags);
-
-		if (!rx_item)
-			return;
-
-		rpmsg_info = rx_item->rpmsg_info;
-		if (!rpmsg_info)
-			return;
-
-		fwd_info = rpmsg_info->fwd_ctxt;
-		if (!fwd_info)
-			return;
-
-		if (!rpmsg_info->buf1 && !rpmsg_info->buf2) {
-			DIAG_LOG(DIAG_DEBUG_PERIPHERALS,
-					"dropping data for %s len %d\n",
-					rpmsg_info->name, rx_item->rx_buf_size);
-			return;
-		}
-
-		DIAG_LOG(DIAG_DEBUG_PERIPHERALS,
-			"diag: received data of length: %d, p: %d, t: %d\n",
-			rx_item->rx_buf_size, rpmsg_info->peripheral,
-				rpmsg_info->type);
-
-		if (rpmsg_info->buf1 && !fwd_info->buffer_status[BUF_1_INDEX] &&
-			atomic_read(&(fwd_info->buf_1->in_busy))) {
-			buf = rpmsg_info->buf1;
-			fwd_info->buffer_status[BUF_1_INDEX] = 1;
-		} else if (rpmsg_info->buf2 &&
-			!fwd_info->buffer_status[BUF_2_INDEX] &&
-			atomic_read(&fwd_info->buf_2->in_busy) &&
-			(fwd_info->type == TYPE_DATA)) {
-			buf = rpmsg_info->buf2;
-			fwd_info->buffer_status[BUF_2_INDEX] = 1;
-		} else {
-			DIAG_LOG(DIAG_DEBUG_PERIPHERALS,
-				"Both the rpmsg buffers are busy\n");
-			buf = NULL;
-		}
-		if (!buf)
-			return;
-
-		memcpy(buf, rx_item->rpmsg_rx_buf, rx_item->rx_buf_size);
-		mutex_lock(&driver->diagfwd_channel_mutex[PERI_RPMSG]);
-
-		diagfwd_channel_read_done(rpmsg_info->fwd_ctxt,
-				(unsigned char *)(buf), rx_item->rx_buf_size);
-
-		if (buf == rpmsg_info->buf1)
-			rpmsg_info->buf1 = NULL;
-		else if (buf == rpmsg_info->buf2)
-			rpmsg_info->buf2 = NULL;
-
-		mutex_unlock(&driver->diagfwd_channel_mutex[PERI_RPMSG]);
-
-		kfree(rx_item->rpmsg_rx_buf);
-		kfree(rx_item);
-	} else {
-		spin_unlock_irqrestore(&read_work_struct->rx_lock, flags);
-	}
-
-	return;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rpmsg_late_init(struct diag_rpmsg_info *rpmsg_info)
@@ -939,12 +771,7 @@ int diag_rpmsg_init(void)
 	struct diag_rpmsg_info *rpmsg_info = NULL;
 
 	for (peripheral = 0; peripheral < NUM_PERIPHERALS; peripheral++) {
-<<<<<<< HEAD
 		if (peripheral != PERIPHERAL_WDSP)
-=======
-		if ((peripheral != PERIPHERAL_WDSP) &&
-				(peripheral != PERIPHERAL_WCNSS))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 		rpmsg_info = &rpmsg_cntl[peripheral];
 		__diag_rpmsg_init(rpmsg_info);
@@ -961,21 +788,6 @@ int diag_rpmsg_init(void)
 		__diag_rpmsg_init(&rpmsg_dci[peripheral]);
 		__diag_rpmsg_init(&rpmsg_dci_cmd[peripheral]);
 	}
-<<<<<<< HEAD
-=======
-	read_work_struct = kmalloc(sizeof(*read_work_struct), GFP_ATOMIC);
-	if (!read_work_struct) {
-		DIAG_LOG(DIAG_DEBUG_PERIPHERALS,
-			"diag: Could not allocate read_work\n");
-		return 0;
-	}
-	kmemleak_not_leak(read_work_struct);
-
-	INIT_WORK(&read_work_struct->work, diag_rpmsg_notify_rx_work_fn);
-	INIT_LIST_HEAD(&read_work_struct->rx_list_head);
-	spin_lock_init(&read_work_struct->rx_lock);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1003,12 +815,7 @@ void diag_rpmsg_early_exit(void)
 	int peripheral = 0;
 
 	for (peripheral = 0; peripheral < NUM_PERIPHERALS; peripheral++) {
-<<<<<<< HEAD
 		if (peripheral != PERIPHERAL_WDSP)
-=======
-		if ((peripheral != PERIPHERAL_WDSP) &&
-				(peripheral != PERIPHERAL_WCNSS))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 		mutex_lock(&driver->rpmsginfo_mutex[peripheral]);
 		__diag_rpmsg_exit(&rpmsg_cntl[peripheral]);
@@ -1030,7 +837,6 @@ void diag_rpmsg_exit(void)
 	}
 }
 
-<<<<<<< HEAD
 static struct diag_rpmsg_info *diag_get_rpmsg_ptr(char *name)
 {
 
@@ -1048,40 +854,11 @@ static struct diag_rpmsg_info *diag_get_rpmsg_ptr(char *name)
 		return &rpmsg_dci[PERIPHERAL_WDSP];
 	else
 		return NULL;
-=======
-static struct diag_rpmsg_info *diag_get_rpmsg_ptr(char *name, int pid)
-{
-	if (!name)
-		return NULL;
-	if (pid == PERIPHERAL_WDSP) {
-		if (!strcmp(name, "DIAG_CMD"))
-			return &rpmsg_cmd[PERIPHERAL_WDSP];
-		else if (!strcmp(name, "DIAG_CTRL"))
-			return &rpmsg_cntl[PERIPHERAL_WDSP];
-		else if (!strcmp(name, "DIAG_DATA"))
-			return &rpmsg_data[PERIPHERAL_WDSP];
-		else if (!strcmp(name, "DIAG_DCI_CMD"))
-			return &rpmsg_dci_cmd[PERIPHERAL_WDSP];
-		else if (!strcmp(name, "DIAG_DCI_DATA"))
-			return &rpmsg_dci[PERIPHERAL_WDSP];
-		else
-			return NULL;
-	} else if (pid == PERIPHERAL_WCNSS) {
-		if (!strcmp(name, "APPS_RIVA_DATA"))
-			return &rpmsg_data[PERIPHERAL_WCNSS];
-		else if (!strcmp(name, "APPS_RIVA_CTRL"))
-			return &rpmsg_cntl[PERIPHERAL_WCNSS];
-		else
-			return NULL;
-	}
-	return NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int diag_rpmsg_probe(struct rpmsg_device *rpdev)
 {
 	struct diag_rpmsg_info *rpmsg_info = NULL;
-<<<<<<< HEAD
 
 	if (!rpdev)
 		return 0;
@@ -1091,60 +868,27 @@ static int diag_rpmsg_probe(struct rpmsg_device *rpdev)
 	rpmsg_info = diag_get_rpmsg_ptr(rpdev->id.name);
 	if (rpmsg_info) {
 
-=======
-	int peripheral = -1;
-
-	if (!rpdev)
-		return 0;
-
-	if (!strcmp(rpdev->dev.parent->of_node->name, "wdsp"))
-		peripheral = PERIPHERAL_WDSP;
-	else if (!strcmp(rpdev->dev.parent->of_node->name, "wcnss"))
-		peripheral = PERIPHERAL_WCNSS;
-
-	rpmsg_info = diag_get_rpmsg_ptr(rpdev->id.name, peripheral);
-	if (rpmsg_info) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_lock(&driver->rpmsginfo_mutex[PERI_RPMSG]);
 		rpmsg_info->hdl = rpdev;
 		atomic_set(&rpmsg_info->opened, 1);
 		mutex_unlock(&driver->rpmsginfo_mutex[PERI_RPMSG]);
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_set_drvdata(&rpdev->dev, rpmsg_info);
 		diagfwd_channel_read(rpmsg_info->fwd_ctxt);
 		queue_work(rpmsg_info->wq, &rpmsg_info->open_work);
 	}
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 static void diag_rpmsg_remove(struct rpmsg_device *rpdev)
 {
 	struct diag_rpmsg_info *rpmsg_info = NULL;
-<<<<<<< HEAD
-=======
-	int peripheral = -1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!rpdev)
 		return;
 
-<<<<<<< HEAD
 	rpmsg_info = diag_get_rpmsg_ptr(rpdev->id.name);
-=======
-	if (!strcmp(rpdev->dev.parent->of_node->name, "wdsp"))
-		peripheral = PERIPHERAL_WDSP;
-	else if (!strcmp(rpdev->dev.parent->of_node->name, "wcnss"))
-		peripheral = PERIPHERAL_WCNSS;
-
-	rpmsg_info = diag_get_rpmsg_ptr(rpdev->id.name, peripheral);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rpmsg_info) {
 		mutex_lock(&driver->rpmsginfo_mutex[PERI_RPMSG]);
 		atomic_set(&rpmsg_info->opened, 0);
@@ -1154,21 +898,11 @@ static void diag_rpmsg_remove(struct rpmsg_device *rpdev)
 }
 
 static struct rpmsg_device_id rpmsg_diag_table[] = {
-<<<<<<< HEAD
 	{ .name	= "DIAG_CMD" },
 	{ .name	= "DIAG_CTRL" },
 	{ .name	= "DIAG_DATA" },
 	{ .name	= "DIAG_DCI_CMD" },
 	{ .name	= "DIAG_DCI_DATA" },
-=======
-	{ .name = "APPS_RIVA_DATA" },
-	{ .name = "APPS_RIVA_CTRL" },
-	{ .name = "DIAG_CMD" },
-	{ .name = "DIAG_CTRL" },
-	{ .name = "DIAG_DATA" },
-	{ .name = "DIAG_DCI_CMD" },
-	{ .name = "DIAG_DCI_DATA" },
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ },
 };
 MODULE_DEVICE_TABLE(rpmsg, rpmsg_diag_table);

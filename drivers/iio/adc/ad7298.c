@@ -280,10 +280,6 @@ static int ad7298_read_raw(struct iio_dev *indio_dev,
 static const struct iio_info ad7298_info = {
 	.read_raw = &ad7298_read_raw,
 	.update_scan_mode = ad7298_update_scan_mode,
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int ad7298_probe(struct spi_device *spi)

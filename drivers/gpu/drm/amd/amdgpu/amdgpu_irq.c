@@ -25,7 +25,6 @@
  *          Alex Deucher
  *          Jerome Glisse
  */
-<<<<<<< HEAD
 
 /**
  * DOC: Interrupt Handling
@@ -43,8 +42,6 @@
  * support is used (with mapping between virtual and hardware IRQs).
  */
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/irq.h>
 #include <drm/drmP.h>
 #include <drm/drm_crtc_helper.h>
@@ -57,7 +54,6 @@
 
 #include <linux/pm_runtime.h>
 
-<<<<<<< HEAD
 #ifdef CONFIG_DRM_AMD_DC
 #include "amdgpu_dm_irq.h"
 #endif
@@ -79,23 +75,6 @@
  * from the IRQ handler to a work handler because hotplug handler has to use
  * mutexes which cannot be locked in an IRQ handler (since &mutex_lock may
  * sleep).
-=======
-#define AMDGPU_WAIT_IDLE_TIMEOUT 200
-
-/*
- * Handle hotplug events outside the interrupt handler proper.
- */
-/**
- * amdgpu_hotplug_work_func - display hotplug work handler
- *
- * @work: work struct
- *
- * This is the hot plug event work handler (all asics).
- * The work gets scheduled from the irq handler if there
- * was a hot plug interrupt.  It walks the connector table
- * and calls the hotplug handler for each one, then sends
- * a drm hotplug event to alert userspace.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static void amdgpu_hotplug_work_func(struct work_struct *work)
 {
@@ -114,22 +93,12 @@ static void amdgpu_hotplug_work_func(struct work_struct *work)
 }
 
 /**
-<<<<<<< HEAD
  * amdgpu_irq_reset_work_func - execute GPU reset
  *
  * @work: work struct pointer
  *
  * Execute scheduled GPU reset (Cayman+).
  * This function is called when the IRQ handler thinks we need a GPU reset.
-=======
- * amdgpu_irq_reset_work_func - execute gpu reset
- *
- * @work: work struct
- *
- * Execute scheduled gpu reset (cayman+).
- * This function is called when the irq handler
- * thinks we need a gpu reset.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static void amdgpu_irq_reset_work_func(struct work_struct *work)
 {
@@ -137,7 +106,6 @@ static void amdgpu_irq_reset_work_func(struct work_struct *work)
 						  reset_work);
 
 	if (!amdgpu_sriov_vf(adev))
-<<<<<<< HEAD
 		amdgpu_device_gpu_recover(adev, NULL, false);
 }
 
@@ -149,13 +117,6 @@ static void amdgpu_irq_reset_work_func(struct work_struct *work)
  * Disable all types of interrupts from all sources.
  */
 void amdgpu_irq_disable_all(struct amdgpu_device *adev)
-=======
-		amdgpu_gpu_reset(adev);
-}
-
-/* Disable *all* interrupts */
-static void amdgpu_irq_disable_all(struct amdgpu_device *adev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long irqflags;
 	unsigned i, j, k;
@@ -186,7 +147,6 @@ static void amdgpu_irq_disable_all(struct amdgpu_device *adev)
 }
 
 /**
-<<<<<<< HEAD
  * amdgpu_irq_handler - IRQ handler
  *
  * @irq: IRQ number (unused)
@@ -196,62 +156,6 @@ static void amdgpu_irq_disable_all(struct amdgpu_device *adev)
  *
  * Returns:
  * result of handling the IRQ, as defined by &irqreturn_t
-=======
- * amdgpu_irq_preinstall - drm irq preinstall callback
- *
- * @dev: drm dev pointer
- *
- * Gets the hw ready to enable irqs (all asics).
- * This function disables all interrupt sources on the GPU.
- */
-void amdgpu_irq_preinstall(struct drm_device *dev)
-{
-	struct amdgpu_device *adev = dev->dev_private;
-
-	/* Disable *all* interrupts */
-	amdgpu_irq_disable_all(adev);
-	/* Clear bits */
-	amdgpu_ih_process(adev);
-}
-
-/**
- * amdgpu_irq_postinstall - drm irq preinstall callback
- *
- * @dev: drm dev pointer
- *
- * Handles stuff to be done after enabling irqs (all asics).
- * Returns 0 on success.
- */
-int amdgpu_irq_postinstall(struct drm_device *dev)
-{
-	dev->max_vblank_count = 0x00ffffff;
-	return 0;
-}
-
-/**
- * amdgpu_irq_uninstall - drm irq uninstall callback
- *
- * @dev: drm dev pointer
- *
- * This function disables all interrupt sources on the GPU (all asics).
- */
-void amdgpu_irq_uninstall(struct drm_device *dev)
-{
-	struct amdgpu_device *adev = dev->dev_private;
-
-	if (adev == NULL) {
-		return;
-	}
-	amdgpu_irq_disable_all(adev);
-}
-
-/**
- * amdgpu_irq_handler - irq handler
- *
- * @int irq, void *arg: args
- *
- * This is the irq handler for the amdgpu driver (all asics).
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 irqreturn_t amdgpu_irq_handler(int irq, void *arg)
 {
@@ -266,7 +170,6 @@ irqreturn_t amdgpu_irq_handler(int irq, void *arg)
 }
 
 /**
-<<<<<<< HEAD
  * amdgpu_msi_ok - check whether MSI functionality is enabled
  *
  * @adev: amdgpu device pointer (unused)
@@ -279,20 +182,6 @@ irqreturn_t amdgpu_irq_handler(int irq, void *arg)
  */
 static bool amdgpu_msi_ok(struct amdgpu_device *adev)
 {
-=======
- * amdgpu_msi_ok - asic specific msi checks
- *
- * @adev: amdgpu device pointer
- *
- * Handles asic specific MSI checks to determine if
- * MSIs should be enabled on a particular chip (all asics).
- * Returns true if MSIs should be enabled, false if MSIs
- * should not be enabled.
- */
-static bool amdgpu_msi_ok(struct amdgpu_device *adev)
-{
-	/* force MSI on */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (amdgpu_msi == 1)
 		return true;
 	else if (amdgpu_msi == 0)
@@ -302,7 +191,6 @@ static bool amdgpu_msi_ok(struct amdgpu_device *adev)
 }
 
 /**
-<<<<<<< HEAD
  * amdgpu_irq_init - initialize interrupt handling
  *
  * @adev: amdgpu device pointer
@@ -312,14 +200,6 @@ static bool amdgpu_msi_ok(struct amdgpu_device *adev)
  *
  * Returns:
  * 0 on success or error code on failure
-=======
- * amdgpu_irq_init - init driver interrupt info
- *
- * @adev: amdgpu device pointer
- *
- * Sets up the work irq handlers, vblank init, MSIs, etc. (all asics).
- * Returns 0 for success, error for failure.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 int amdgpu_irq_init(struct amdgpu_device *adev)
 {
@@ -327,27 +207,13 @@ int amdgpu_irq_init(struct amdgpu_device *adev)
 
 	spin_lock_init(&adev->irq.lock);
 
-<<<<<<< HEAD
 	/* Enable MSI if not disabled by module parameter */
-=======
-	if (!adev->enable_virtual_display)
-		/* Disable vblank irqs aggressively for power-saving */
-		adev->ddev->vblank_disable_immediate = true;
-
-	r = drm_vblank_init(adev->ddev, adev->mode_info.num_crtc);
-	if (r) {
-		return r;
-	}
-
-	/* enable msi */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adev->irq.msi_enabled = false;
 
 	if (amdgpu_msi_ok(adev)) {
 		int ret = pci_enable_msi(adev->pdev);
 		if (!ret) {
 			adev->irq.msi_enabled = true;
-<<<<<<< HEAD
 			dev_dbg(adev->dev, "amdgpu: using MSI.\n");
 		}
 	}
@@ -367,20 +233,12 @@ int amdgpu_irq_init(struct amdgpu_device *adev)
 				amdgpu_hotplug_work_func);
 	}
 
-=======
-			dev_info(adev->dev, "amdgpu: using MSI.\n");
-		}
-	}
-
-	INIT_WORK(&adev->hotplug_work, amdgpu_hotplug_work_func);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INIT_WORK(&adev->reset_work, amdgpu_irq_reset_work_func);
 
 	adev->irq.installed = true;
 	r = drm_irq_install(adev->ddev, adev->ddev->pdev->irq);
 	if (r) {
 		adev->irq.installed = false;
-<<<<<<< HEAD
 		if (!amdgpu_device_has_dc_support(adev))
 			flush_work(&adev->hotplug_work);
 		cancel_work_sync(&adev->reset_work);
@@ -389,19 +247,10 @@ int amdgpu_irq_init(struct amdgpu_device *adev)
 	adev->ddev->max_vblank_count = 0x00ffffff;
 
 	DRM_DEBUG("amdgpu: irq initialized.\n");
-=======
-		flush_work(&adev->hotplug_work);
-		cancel_work_sync(&adev->reset_work);
-		return r;
-	}
-
-	DRM_INFO("amdgpu: irq initialized.\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 /**
-<<<<<<< HEAD
  * amdgpu_irq_fini - shut down interrupt handling
  *
  * @adev: amdgpu device pointer
@@ -409,13 +258,6 @@ int amdgpu_irq_init(struct amdgpu_device *adev)
  * Tears down work functions for hotplug and reset interrupts, disables MSI
  * functionality, shuts down vblank, hotplug and reset interrupt handling,
  * turns off interrupts from all sources (all ASICs).
-=======
- * amdgpu_irq_fini - tear down driver interrupt info
- *
- * @adev: amdgpu device pointer
- *
- * Tears down the work irq handlers, vblank handlers, MSIs, etc. (all asics).
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 void amdgpu_irq_fini(struct amdgpu_device *adev)
 {
@@ -426,12 +268,8 @@ void amdgpu_irq_fini(struct amdgpu_device *adev)
 		adev->irq.installed = false;
 		if (adev->irq.msi_enabled)
 			pci_disable_msi(adev->pdev);
-<<<<<<< HEAD
 		if (!amdgpu_device_has_dc_support(adev))
 			flush_work(&adev->hotplug_work);
-=======
-		flush_work(&adev->hotplug_work);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cancel_work_sync(&adev->reset_work);
 	}
 
@@ -454,15 +292,11 @@ void amdgpu_irq_fini(struct amdgpu_device *adev)
 			}
 		}
 		kfree(adev->irq.client[i].sources);
-<<<<<<< HEAD
 		adev->irq.client[i].sources = NULL;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
 /**
-<<<<<<< HEAD
  * amdgpu_irq_add_id - register IRQ source
  *
  * @adev: amdgpu device pointer
@@ -474,14 +308,6 @@ void amdgpu_irq_fini(struct amdgpu_device *adev)
  *
  * Returns:
  * 0 on success or error code otherwise
-=======
- * amdgpu_irq_add_id - register irq source
- *
- * @adev: amdgpu device pointer
- * @src_id: source id for this source
- * @source: irq source
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 int amdgpu_irq_add_id(struct amdgpu_device *adev,
 		      unsigned client_id, unsigned src_id,
@@ -524,21 +350,12 @@ int amdgpu_irq_add_id(struct amdgpu_device *adev,
 }
 
 /**
-<<<<<<< HEAD
  * amdgpu_irq_dispatch - dispatch IRQ to IP blocks
  *
  * @adev: amdgpu device pointer
  * @entry: interrupt vector pointer
  *
  * Dispatches IRQ to IP blocks.
-=======
- * amdgpu_irq_dispatch - dispatch irq to IP blocks
- *
- * @adev: amdgpu device pointer
- * @entry: interrupt vector
- *
- * Dispatches the irq to the different IP blocks
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 void amdgpu_irq_dispatch(struct amdgpu_device *adev,
 			 struct amdgpu_iv_entry *entry)
@@ -582,7 +399,6 @@ void amdgpu_irq_dispatch(struct amdgpu_device *adev,
 }
 
 /**
-<<<<<<< HEAD
  * amdgpu_irq_update - update hardware interrupt state
  *
  * @adev: amdgpu device pointer
@@ -590,15 +406,6 @@ void amdgpu_irq_dispatch(struct amdgpu_device *adev,
  * @type: type of interrupt
  *
  * Updates interrupt state for the specific source (all ASICs).
-=======
- * amdgpu_irq_update - update hw interrupt state
- *
- * @adev: amdgpu device pointer
- * @src: interrupt src you want to enable
- * @type: type of interrupt you want to update
- *
- * Updates the interrupt state for a specific src (all asics).
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 int amdgpu_irq_update(struct amdgpu_device *adev,
 			     struct amdgpu_irq_src *src, unsigned type)
@@ -609,11 +416,7 @@ int amdgpu_irq_update(struct amdgpu_device *adev,
 
 	spin_lock_irqsave(&adev->irq.lock, irqflags);
 
-<<<<<<< HEAD
 	/* We need to determine after taking the lock, otherwise
-=======
-	/* we need to determine after taking the lock, otherwise
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	   we might disable just enabled interrupts again */
 	if (amdgpu_irq_enabled(adev, src, type))
 		state = AMDGPU_IRQ_STATE_ENABLE;
@@ -625,7 +428,6 @@ int amdgpu_irq_update(struct amdgpu_device *adev,
 	return r;
 }
 
-<<<<<<< HEAD
 /**
  * amdgpu_irq_gpu_reset_resume_helper - update interrupt states on all sources
  *
@@ -634,8 +436,6 @@ int amdgpu_irq_update(struct amdgpu_device *adev,
  * Updates state of all types of interrupts on all sources on resume after
  * reset.
  */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void amdgpu_irq_gpu_reset_resume_helper(struct amdgpu_device *adev)
 {
 	int i, j, k;
@@ -659,7 +459,6 @@ void amdgpu_irq_gpu_reset_resume_helper(struct amdgpu_device *adev)
  * amdgpu_irq_get - enable interrupt
  *
  * @adev: amdgpu device pointer
-<<<<<<< HEAD
  * @src: interrupt source pointer
  * @type: type of interrupt
  *
@@ -667,12 +466,6 @@ void amdgpu_irq_gpu_reset_resume_helper(struct amdgpu_device *adev)
  *
  * Returns:
  * 0 on success or error code otherwise
-=======
- * @src: interrupt src you want to enable
- * @type: type of interrupt you want to enable
- *
- * Enables the interrupt type for a specific src (all asics).
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 int amdgpu_irq_get(struct amdgpu_device *adev, struct amdgpu_irq_src *src,
 		   unsigned type)
@@ -696,7 +489,6 @@ int amdgpu_irq_get(struct amdgpu_device *adev, struct amdgpu_irq_src *src,
  * amdgpu_irq_put - disable interrupt
  *
  * @adev: amdgpu device pointer
-<<<<<<< HEAD
  * @src: interrupt source pointer
  * @type: type of interrupt
  *
@@ -704,12 +496,6 @@ int amdgpu_irq_get(struct amdgpu_device *adev, struct amdgpu_irq_src *src,
  *
  * Returns:
  * 0 on success or error code otherwise
-=======
- * @src: interrupt src you want to disable
- * @type: type of interrupt you want to disable
- *
- * Disables the interrupt type for a specific src (all asics).
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 int amdgpu_irq_put(struct amdgpu_device *adev, struct amdgpu_irq_src *src,
 		   unsigned type)
@@ -730,7 +516,6 @@ int amdgpu_irq_put(struct amdgpu_device *adev, struct amdgpu_irq_src *src,
 }
 
 /**
-<<<<<<< HEAD
  * amdgpu_irq_enabled - check whether interrupt is enabled or not
  *
  * @adev: amdgpu device pointer
@@ -742,14 +527,6 @@ int amdgpu_irq_put(struct amdgpu_device *adev, struct amdgpu_irq_src *src,
  * Returns:
  * *true* if interrupt is enabled, *false* if interrupt is disabled or on
  * invalid parameters
-=======
- * amdgpu_irq_enabled - test if irq is enabled or not
- *
- * @adev: amdgpu device pointer
- * @idx: interrupt src you want to test
- *
- * Tests if the given interrupt source is enabled or not
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 bool amdgpu_irq_enabled(struct amdgpu_device *adev, struct amdgpu_irq_src *src,
 			unsigned type)
@@ -766,11 +543,7 @@ bool amdgpu_irq_enabled(struct amdgpu_device *adev, struct amdgpu_irq_src *src,
 	return !!atomic_read(&src->enabled_types[type]);
 }
 
-<<<<<<< HEAD
 /* XXX: Generic IRQ handling */
-=======
-/* gen irq */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void amdgpu_irq_mask(struct irq_data *irqd)
 {
 	/* XXX */
@@ -781,17 +554,13 @@ static void amdgpu_irq_unmask(struct irq_data *irqd)
 	/* XXX */
 }
 
-<<<<<<< HEAD
 /* amdgpu hardware interrupt chip descriptor */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct irq_chip amdgpu_irq_chip = {
 	.name = "amdgpu-ih",
 	.irq_mask = amdgpu_irq_mask,
 	.irq_unmask = amdgpu_irq_unmask,
 };
 
-<<<<<<< HEAD
 /**
  * amdgpu_irqdomain_map - create mapping between virtual and hardware IRQ numbers
  *
@@ -805,8 +574,6 @@ static struct irq_chip amdgpu_irq_chip = {
  * Returns:
  * 0 on success or error code otherwise
  */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int amdgpu_irqdomain_map(struct irq_domain *d,
 				unsigned int irq, irq_hw_number_t hwirq)
 {
@@ -818,16 +585,12 @@ static int amdgpu_irqdomain_map(struct irq_domain *d,
 	return 0;
 }
 
-<<<<<<< HEAD
 /* Implementation of methods for amdgpu IRQ domain */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct irq_domain_ops amdgpu_hw_irqdomain_ops = {
 	.map = amdgpu_irqdomain_map,
 };
 
 /**
-<<<<<<< HEAD
  * amdgpu_irq_add_domain - create a linear IRQ domain
  *
  * @adev: amdgpu device pointer
@@ -837,14 +600,6 @@ static const struct irq_domain_ops amdgpu_hw_irqdomain_ops = {
  *
  * Returns:
  * 0 on success or error code otherwise
-=======
- * amdgpu_irq_add_domain - create a linear irq domain
- *
- * @adev: amdgpu device pointer
- *
- * Create an irq domain for GPU interrupt sources
- * that may be driven by another driver (e.g., ACP).
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 int amdgpu_irq_add_domain(struct amdgpu_device *adev)
 {
@@ -859,19 +614,11 @@ int amdgpu_irq_add_domain(struct amdgpu_device *adev)
 }
 
 /**
-<<<<<<< HEAD
  * amdgpu_irq_remove_domain - remove the IRQ domain
  *
  * @adev: amdgpu device pointer
  *
  * Removes the IRQ domain for GPU interrupt sources
-=======
- * amdgpu_irq_remove_domain - remove the irq domain
- *
- * @adev: amdgpu device pointer
- *
- * Remove the irq domain for GPU interrupt sources
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * that may be driven by another driver (e.g., ACP).
  */
 void amdgpu_irq_remove_domain(struct amdgpu_device *adev)
@@ -883,29 +630,17 @@ void amdgpu_irq_remove_domain(struct amdgpu_device *adev)
 }
 
 /**
-<<<<<<< HEAD
  * amdgpu_irq_create_mapping - create mapping between domain Linux IRQs
-=======
- * amdgpu_irq_create_mapping - create a mapping between a domain irq and a
- *                             Linux irq
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * @adev: amdgpu device pointer
  * @src_id: IH source id
  *
-<<<<<<< HEAD
  * Creates mapping between a domain IRQ (GPU IH src id) and a Linux IRQ
  * Use this for components that generate a GPU interrupt, but are driven
  * by a different driver (e.g., ACP).
  *
  * Returns:
  * Linux IRQ
-=======
- * Create a mapping between a domain irq (GPU IH src id) and a Linux irq
- * Use this for components that generate a GPU interrupt, but are driven
- * by a different driver (e.g., ACP).
- * Returns the Linux irq.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 unsigned amdgpu_irq_create_mapping(struct amdgpu_device *adev, unsigned src_id)
 {

@@ -117,10 +117,6 @@ static int ad8366_write_raw(struct iio_dev *indio_dev,
 static const struct iio_info ad8366_info = {
 	.read_raw = &ad8366_read_raw,
 	.write_raw = &ad8366_write_raw,
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define AD8366_CHAN(_channel) {				\
@@ -165,22 +161,14 @@ static int ad8366_probe(struct spi_device *spi)
 	indio_dev->channels = ad8366_channels;
 	indio_dev->num_channels = ARRAY_SIZE(ad8366_channels);
 
-<<<<<<< HEAD
 	ret = ad8366_write(indio_dev, 0 , 0);
 	if (ret < 0)
 		goto error_disable_reg;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = iio_device_register(indio_dev);
 	if (ret)
 		goto error_disable_reg;
 
-<<<<<<< HEAD
-=======
-	ad8366_write(indio_dev, 0, 0);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 error_disable_reg:

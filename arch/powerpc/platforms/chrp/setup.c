@@ -94,11 +94,7 @@ static const char *chrp_names[] = {
 	"Total Impact Briq"
 };
 
-<<<<<<< HEAD
 static void chrp_show_cpuinfo(struct seq_file *m)
-=======
-void chrp_show_cpuinfo(struct seq_file *m)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i, sdramen;
 	unsigned int t;
@@ -303,11 +299,7 @@ out_put:
 	of_node_put(node);
 }
 
-<<<<<<< HEAD
 static void __init chrp_setup_arch(void)
-=======
-void __init chrp_setup_arch(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct device_node *root = of_find_node_by_path("/");
 	const char *machine = NULL;
@@ -390,11 +382,7 @@ static void __init chrp_find_openpic(void)
 {
 	struct device_node *np, *root;
 	int len, i, j;
-<<<<<<< HEAD
 	int isu_size;
-=======
-	int isu_size, idu_size;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const unsigned int *iranges, *opprop = NULL;
 	int oplen = 0;
 	unsigned long opaddr;
@@ -439,17 +427,9 @@ static void __init chrp_find_openpic(void)
 	}
 
 	isu_size = 0;
-<<<<<<< HEAD
 	if (len > 0 && iranges[1] != 0) {
 		printk(KERN_INFO "OpenPIC irqs %d..%d in IDU\n",
 		       iranges[0], iranges[0] + iranges[1] - 1);
-=======
-	idu_size = 0;
-	if (len > 0 && iranges[1] != 0) {
-		printk(KERN_INFO "OpenPIC irqs %d..%d in IDU\n",
-		       iranges[0], iranges[0] + iranges[1] - 1);
-		idu_size = iranges[1];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	if (len > 1)
 		isu_size = iranges[3];
@@ -541,11 +521,7 @@ static void __init chrp_find_8259(void)
 	}
 }
 
-<<<<<<< HEAD
 static void __init chrp_init_IRQ(void)
-=======
-void __init chrp_init_IRQ(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 #if defined(CONFIG_VT) && defined(CONFIG_INPUT_ADBHID) && defined(CONFIG_XMON)
 	struct device_node *kbd;
@@ -577,11 +553,7 @@ void __init chrp_init_IRQ(void)
 #endif
 }
 
-<<<<<<< HEAD
 static void __init
-=======
-void __init
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 chrp_init2(void)
 {
 #ifdef CONFIG_NVRAM

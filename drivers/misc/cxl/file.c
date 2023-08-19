@@ -19,10 +19,7 @@
 #include <linux/mm.h>
 #include <linux/slab.h>
 #include <linux/sched/mm.h>
-<<<<<<< HEAD
 #include <linux/mmu_context.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/cputable.h>
 #include <asm/current.h>
 #include <asm/copro.h>
@@ -176,11 +173,7 @@ static long afu_ioctl_start_work(struct cxl_context *ctx,
 	 * flags are set it's invalid
 	 */
 	if (work.reserved1 || work.reserved2 || work.reserved3 ||
-<<<<<<< HEAD
 	    work.reserved4 || work.reserved5 ||
-=======
-	    work.reserved4 || work.reserved5 || work.reserved6 ||
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    (work.flags & ~CXL_START_WORK_ALL)) {
 		rc = -EINVAL;
 		goto out;
@@ -193,22 +186,16 @@ static long afu_ioctl_start_work(struct cxl_context *ctx,
 		rc =  -EINVAL;
 		goto out;
 	}
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if ((rc = afu_register_irqs(ctx, work.num_interrupts)))
 		goto out;
 
 	if (work.flags & CXL_START_WORK_AMR)
 		amr = work.amr & mfspr(SPRN_UAMOR);
 
-<<<<<<< HEAD
 	if (work.flags & CXL_START_WORK_TID)
 		ctx->assign_tidr = true;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ctx->mmio_err_ff = !!(work.flags & CXL_START_WORK_ERR_FF);
 
 	/*
@@ -238,18 +225,12 @@ static long afu_ioctl_start_work(struct cxl_context *ctx,
 	/* ensure this mm_struct can't be freed */
 	cxl_context_mm_count_get(ctx);
 
-<<<<<<< HEAD
 	if (ctx->mm) {
 		/* decrement the use count from above */
 		mmput(ctx->mm);
 		/* make TLBIs for this context global */
 		mm_context_add_copro(ctx->mm);
 	}
-=======
-	/* decrement the use count */
-	if (ctx->mm)
-		mmput(ctx->mm);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Increment driver use count. Enables global TLBIs for hash
@@ -257,7 +238,6 @@ static long afu_ioctl_start_work(struct cxl_context *ctx,
 	 */
 	cxl_ctx_get();
 
-<<<<<<< HEAD
 	/*
 	 * A barrier is needed to make sure all TLBIs are global
 	 * before we attach and the context starts being used by the
@@ -272,8 +252,6 @@ static long afu_ioctl_start_work(struct cxl_context *ctx,
 	 */
 	smp_mb();
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	trace_cxl_attach(ctx, work.work_element_descriptor, work.num_interrupts, amr);
 
 	if ((rc = cxl_ops->attach_process(ctx, false, work.work_element_descriptor,
@@ -284,7 +262,6 @@ static long afu_ioctl_start_work(struct cxl_context *ctx,
 		ctx->pid = NULL;
 		cxl_ctx_put();
 		cxl_context_mm_count_put(ctx);
-<<<<<<< HEAD
 		if (ctx->mm)
 			mm_context_remove_copro(ctx->mm);
 		goto out;
@@ -299,13 +276,6 @@ static long afu_ioctl_start_work(struct cxl_context *ctx,
 
 	ctx->status = STARTED;
 
-=======
-		goto out;
-	}
-
-	ctx->status = STARTED;
-	rc = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	mutex_unlock(&ctx->status_mutex);
 	return rc;
@@ -395,17 +365,10 @@ static inline bool ctx_event_pending(struct cxl_context *ctx)
 	return false;
 }
 
-<<<<<<< HEAD
 __poll_t afu_poll(struct file *file, struct poll_table_struct *poll)
 {
 	struct cxl_context *ctx = file->private_data;
 	__poll_t mask = 0;
-=======
-unsigned int afu_poll(struct file *file, struct poll_table_struct *poll)
-{
-	struct cxl_context *ctx = file->private_data;
-	int mask = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 
 
@@ -415,19 +378,11 @@ unsigned int afu_poll(struct file *file, struct poll_table_struct *poll)
 
 	spin_lock_irqsave(&ctx->lock, flags);
 	if (ctx_event_pending(ctx))
-<<<<<<< HEAD
 		mask |= EPOLLIN | EPOLLRDNORM;
 	else if (ctx->status == CLOSED)
 		/* Only error on closed when there are no futher events pending
 		 */
 		mask |= EPOLLERR;
-=======
-		mask |= POLLIN | POLLRDNORM;
-	else if (ctx->status == CLOSED)
-		/* Only error on closed when there are no futher events pending
-		 */
-		mask |= POLLERR;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irqrestore(&ctx->lock, flags);
 
 	pr_devel("afu_poll pe: %i returning %#x\n", ctx->pe, mask);

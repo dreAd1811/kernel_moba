@@ -147,13 +147,8 @@ static int s2mps11_clk_probe(struct platform_device *pdev)
 	if (!s2mps11_clks)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	clk_data = devm_kzalloc(&pdev->dev,
 				struct_size(clk_data, hws, S2MPS11_CLKS_NUM),
-=======
-	clk_data = devm_kzalloc(&pdev->dev, sizeof(*clk_data) +
-				sizeof(*clk_data->hws) * S2MPS11_CLKS_NUM,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				GFP_KERNEL);
 	if (!clk_data)
 		return -ENOMEM;

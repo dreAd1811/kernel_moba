@@ -355,11 +355,7 @@ bcm47xx_buttons_luxul_xwr_600_v1[] = {
 
 static const struct gpio_keys_button
 bcm47xx_buttons_luxul_xwr_1750_v1[] = {
-<<<<<<< HEAD
 	BCM47XX_GPIO_KEY(14, KEY_RESTART),
-=======
-	BCM47XX_GPIO_KEY(14, BTN_TASK),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Microsoft */
@@ -416,15 +412,12 @@ bcm47xx_buttons_netgear_wndr4500v1[] __initconst = {
 };
 
 static const struct gpio_keys_button
-<<<<<<< HEAD
 bcm47xx_buttons_netgear_wnr1000_v3[] __initconst = {
 	BCM47XX_GPIO_KEY(2, KEY_WPS_BUTTON),
 	BCM47XX_GPIO_KEY(3, KEY_RESTART),
 };
 
 static const struct gpio_keys_button
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 bcm47xx_buttons_netgear_wnr3500lv1[] __initconst = {
 	BCM47XX_GPIO_KEY(4, KEY_RESTART),
 	BCM47XX_GPIO_KEY(6, KEY_WPS_BUTTON),
@@ -683,12 +676,9 @@ int __init bcm47xx_buttons_register(void)
 	case BCM47XX_BOARD_NETGEAR_WNDR4500V1:
 		err = bcm47xx_copy_bdata(bcm47xx_buttons_netgear_wndr4500v1);
 		break;
-<<<<<<< HEAD
 	case BCM47XX_BOARD_NETGEAR_WNR1000_V3:
 		err = bcm47xx_copy_bdata(bcm47xx_buttons_netgear_wnr1000_v3);
 		break;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case BCM47XX_BOARD_NETGEAR_WNR3500L:
 		err = bcm47xx_copy_bdata(bcm47xx_buttons_netgear_wnr3500lv1);
 		break;

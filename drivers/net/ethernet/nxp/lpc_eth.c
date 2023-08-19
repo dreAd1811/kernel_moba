@@ -845,12 +845,7 @@ static int lpc_mii_init(struct netdata_local *pldat)
 	if (mdiobus_register(pldat->mii_bus))
 		goto err_out_unregister_bus;
 
-<<<<<<< HEAD
 	if (lpc_mii_probe(pldat->ndev) != 0)
-=======
-	err = lpc_mii_probe(pldat->ndev);
-	if (err)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_out_unregister_bus;
 
 	return 0;

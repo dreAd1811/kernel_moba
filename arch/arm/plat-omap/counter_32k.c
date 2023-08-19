@@ -110,11 +110,7 @@ int __init omap_init_clocksource_32k(void __iomem *vbase)
 	}
 
 	sched_clock_register(omap_32k_read_sched_clock, 32, 32768);
-<<<<<<< HEAD
 	register_persistent_clock(omap_read_persistent_clock64);
-=======
-	register_persistent_clock(NULL, omap_read_persistent_clock64);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pr_info("OMAP clocksource: 32k_counter at 32768 Hz\n");
 
 	return 0;

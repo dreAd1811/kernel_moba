@@ -10,10 +10,7 @@
  * published by the Free Software Foundation.
  */
 #include <linux/gpio.h>
-<<<<<<< HEAD
 #include <linux/gpio/machine.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/module.h>
 #include <linux/kernel.h>
 #include <linux/init.h>
@@ -24,11 +21,8 @@
 #include <linux/ioport.h>
 #include <linux/platform_device.h>
 #include <linux/reboot.h>
-<<<<<<< HEAD
 #include <linux/regulator/fixed.h>
 #include <linux/regulator/machine.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/irqchip/irq-sa11x0.h>
 
 #include <video/sa1100fb.h>
@@ -241,16 +235,12 @@ void sa11x0_register_lcd(struct sa1100fb_mach_info *inf)
 	sa11x0_register_device(&sa11x0fb_device, inf);
 }
 
-<<<<<<< HEAD
 static bool sa11x0pcmcia_legacy = true;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct platform_device sa11x0pcmcia_device = {
 	.name		= "sa11x0-pcmcia",
 	.id		= -1,
 };
 
-<<<<<<< HEAD
 void sa11x0_register_pcmcia(int socket, struct gpiod_lookup_table *table)
 {
 	if (table)
@@ -259,8 +249,6 @@ void sa11x0_register_pcmcia(int socket, struct gpiod_lookup_table *table)
 	sa11x0pcmcia_legacy = false;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct platform_device sa11x0mtd_device = {
 	.name		= "sa1100-mtd",
 	.id		= -1,
@@ -335,10 +323,6 @@ static struct platform_device *sa11x0_devices[] __initdata = {
 	&sa11x0uart1_device,
 	&sa11x0uart3_device,
 	&sa11x0ssp_device,
-<<<<<<< HEAD
-=======
-	&sa11x0pcmcia_device,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	&sa11x0rtc_device,
 	&sa11x0dma_device,
 };
@@ -346,15 +330,12 @@ static struct platform_device *sa11x0_devices[] __initdata = {
 static int __init sa1100_init(void)
 {
 	pm_power_off = sa1100_power_off;
-<<<<<<< HEAD
 
 	if (sa11x0pcmcia_legacy)
 		platform_device_register(&sa11x0pcmcia_device);
 
 	regulator_has_full_constraints();
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return platform_add_devices(sa11x0_devices, ARRAY_SIZE(sa11x0_devices));
 }
 
@@ -365,7 +346,6 @@ void __init sa11x0_init_late(void)
 	sa11x0_pm_init();
 }
 
-<<<<<<< HEAD
 int __init sa11x0_register_fixed_regulator(int n,
 	struct fixed_voltage_config *cfg,
 	struct regulator_consumer_supply *supplies, unsigned num_supplies)
@@ -391,8 +371,6 @@ int __init sa11x0_register_fixed_regulator(int n,
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Common I/O mapping:
  *

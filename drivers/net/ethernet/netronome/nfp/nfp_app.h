@@ -36,20 +36,14 @@
 
 #include <net/devlink.h>
 
-<<<<<<< HEAD
 #include <trace/events/devlink.h>
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "nfp_net_repr.h"
 
 struct bpf_prog;
 struct net_device;
-<<<<<<< HEAD
 struct netdev_bpf;
 struct netlink_ext_ack;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct pci_dev;
 struct sk_buff;
 struct sk_buff;
@@ -63,46 +57,33 @@ enum nfp_app_id {
 	NFP_APP_CORE_NIC	= 0x1,
 	NFP_APP_BPF_NIC		= 0x2,
 	NFP_APP_FLOWER_NIC	= 0x3,
-<<<<<<< HEAD
 	NFP_APP_ACTIVE_BUFFER_MGMT_NIC = 0x4,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 extern const struct nfp_app_type app_nic;
 extern const struct nfp_app_type app_bpf;
 extern const struct nfp_app_type app_flower;
-<<<<<<< HEAD
 extern const struct nfp_app_type app_abm;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * struct nfp_app_type - application definition
  * @id:		application ID
  * @name:	application name
-<<<<<<< HEAD
  * @ctrl_cap_mask:  ctrl vNIC capability mask, allows disabling features like
  *		    IRQMOD which are on by default but counter-productive for
  *		    control messages which are often latency-sensitive
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @ctrl_has_meta:  control messages have prepend of type:5/port:CTRL
  *
  * Callbacks
  * @init:	perform basic app checks and init
  * @clean:	clean app state
  * @extra_cap:	extra capabilities string
-<<<<<<< HEAD
  * @ndo_init:	vNIC and repr netdev .ndo_init
  * @ndo_uninit:	vNIC and repr netdev .ndo_unint
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @vnic_alloc:	allocate vNICs (assign port types, etc.)
  * @vnic_free:	free up app's vNIC state
  * @vnic_init:	vNIC netdev was registered
  * @vnic_clean:	vNIC netdev about to be unregistered
-<<<<<<< HEAD
  * @repr_init:	representor about to be registered
  * @repr_preclean:	representor about to unregistered, executed before app
  *			reference to the it is removed
@@ -123,17 +104,6 @@ extern const struct nfp_app_type app_abm;
  * @xdp_offload:    offload an XDP program
  * @eswitch_mode_get:    get SR-IOV eswitch mode
  * @eswitch_mode_set:    set SR-IOV eswitch mode (under pf->lock)
-=======
- * @repr_open:	representor netdev open callback
- * @repr_stop:	representor netdev stop callback
- * @start:	start application logic
- * @stop:	stop application logic
- * @ctrl_msg_rx:    control message handler
- * @setup_tc:	setup TC ndo
- * @tc_busy:	TC HW offload busy (rules loaded)
- * @xdp_offload:    offload an XDP program
- * @eswitch_mode_get:    get SR-IOV eswitch mode
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @sriov_enable: app-specific sriov initialisation
  * @sriov_disable: app-specific sriov clean-up
  * @repr_get:	get representor netdev
@@ -142,10 +112,7 @@ struct nfp_app_type {
 	enum nfp_app_id id;
 	const char *name;
 
-<<<<<<< HEAD
 	u32 ctrl_cap_mask;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool ctrl_has_meta;
 
 	int (*init)(struct nfp_app *app);
@@ -153,19 +120,15 @@ struct nfp_app_type {
 
 	const char *(*extra_cap)(struct nfp_app *app, struct nfp_net *nn);
 
-<<<<<<< HEAD
 	int (*ndo_init)(struct nfp_app *app, struct net_device *netdev);
 	void (*ndo_uninit)(struct nfp_app *app, struct net_device *netdev);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int (*vnic_alloc)(struct nfp_app *app, struct nfp_net *nn,
 			  unsigned int id);
 	void (*vnic_free)(struct nfp_app *app, struct nfp_net *nn);
 	int (*vnic_init)(struct nfp_app *app, struct nfp_net *nn);
 	void (*vnic_clean)(struct nfp_app *app, struct nfp_net *nn);
 
-<<<<<<< HEAD
 	int (*repr_init)(struct nfp_app *app, struct net_device *netdev);
 	void (*repr_preclean)(struct nfp_app *app, struct net_device *netdev);
 	void (*repr_clean)(struct nfp_app *app, struct net_device *netdev);
@@ -184,16 +147,10 @@ struct nfp_app_type {
 	u8 *(*port_get_stats_strings)(struct nfp_app *app,
 				      struct nfp_port *port, u8 *data);
 
-=======
-	int (*repr_open)(struct nfp_app *app, struct nfp_repr *repr);
-	int (*repr_stop)(struct nfp_app *app, struct nfp_repr *repr);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int (*start)(struct nfp_app *app);
 	void (*stop)(struct nfp_app *app);
 
 	void (*ctrl_msg_rx)(struct nfp_app *app, struct sk_buff *skb);
-<<<<<<< HEAD
 	void (*ctrl_msg_rx_raw)(struct nfp_app *app, const void *data,
 				unsigned int len);
 
@@ -204,23 +161,12 @@ struct nfp_app_type {
 	int (*xdp_offload)(struct nfp_app *app, struct nfp_net *nn,
 			   struct bpf_prog *prog,
 			   struct netlink_ext_ack *extack);
-=======
-
-	int (*setup_tc)(struct nfp_app *app, struct net_device *netdev,
-			enum tc_setup_type type, void *type_data);
-	bool (*tc_busy)(struct nfp_app *app, struct nfp_net *nn);
-	int (*xdp_offload)(struct nfp_app *app, struct nfp_net *nn,
-			   struct bpf_prog *prog);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	int (*sriov_enable)(struct nfp_app *app, int num_vfs);
 	void (*sriov_disable)(struct nfp_app *app);
 
 	enum devlink_eswitch_mode (*eswitch_mode_get)(struct nfp_app *app);
-<<<<<<< HEAD
 	int (*eswitch_mode_set)(struct nfp_app *app, u16 mode);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct net_device *(*repr_get)(struct nfp_app *app, u32 id);
 };
 
@@ -246,10 +192,7 @@ struct nfp_app {
 	void *priv;
 };
 
-<<<<<<< HEAD
 bool __nfp_ctrl_tx(struct nfp_net *nn, struct sk_buff *skb);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 bool nfp_ctrl_tx(struct nfp_net *nn, struct sk_buff *skb);
 
 static inline int nfp_app_init(struct nfp_app *app)
@@ -265,12 +208,9 @@ static inline void nfp_app_clean(struct nfp_app *app)
 		app->type->clean(app);
 }
 
-<<<<<<< HEAD
 int nfp_app_ndo_init(struct net_device *netdev);
 void nfp_app_ndo_uninit(struct net_device *netdev);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int nfp_app_vnic_alloc(struct nfp_app *app, struct nfp_net *nn,
 				     unsigned int id)
 {
@@ -310,7 +250,6 @@ static inline int nfp_app_repr_stop(struct nfp_app *app, struct nfp_repr *repr)
 	return app->type->repr_stop(app, repr);
 }
 
-<<<<<<< HEAD
 static inline int
 nfp_app_repr_init(struct nfp_app *app, struct net_device *netdev)
 {
@@ -350,8 +289,6 @@ nfp_app_repr_change_mtu(struct nfp_app *app, struct net_device *netdev,
 	return app->type->repr_change_mtu(app, netdev, new_mtu);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int nfp_app_start(struct nfp_app *app, struct nfp_net *ctrl)
 {
 	app->ctrl = ctrl;
@@ -384,14 +321,11 @@ static inline bool nfp_app_ctrl_has_meta(struct nfp_app *app)
 	return app->type->ctrl_has_meta;
 }
 
-<<<<<<< HEAD
 static inline bool nfp_app_ctrl_uses_data_vnics(struct nfp_app *app)
 {
 	return app && app->type->ctrl_msg_rx_raw;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline const char *nfp_app_extra_cap(struct nfp_app *app,
 					    struct nfp_net *nn)
 {
@@ -405,16 +339,6 @@ static inline bool nfp_app_has_tc(struct nfp_app *app)
 	return app && app->type->setup_tc;
 }
 
-<<<<<<< HEAD
-=======
-static inline bool nfp_app_tc_busy(struct nfp_app *app, struct nfp_net *nn)
-{
-	if (!app || !app->type->tc_busy)
-		return false;
-	return app->type->tc_busy(app, nn);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int nfp_app_setup_tc(struct nfp_app *app,
 				   struct net_device *netdev,
 				   enum tc_setup_type type, void *type_data)
@@ -424,7 +348,6 @@ static inline int nfp_app_setup_tc(struct nfp_app *app,
 	return app->type->setup_tc(app, netdev, type, type_data);
 }
 
-<<<<<<< HEAD
 static inline int nfp_app_bpf(struct nfp_app *app, struct nfp_net *nn,
 			      struct netdev_bpf *bpf)
 {
@@ -448,30 +371,18 @@ static inline bool __nfp_app_ctrl_tx(struct nfp_app *app, struct sk_buff *skb)
 			    skb->data, skb->len);
 
 	return __nfp_ctrl_tx(app->ctrl, skb);
-=======
-static inline int nfp_app_xdp_offload(struct nfp_app *app, struct nfp_net *nn,
-				      struct bpf_prog *prog)
-{
-	if (!app || !app->type->xdp_offload)
-		return -EOPNOTSUPP;
-	return app->type->xdp_offload(app, nn, prog);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline bool nfp_app_ctrl_tx(struct nfp_app *app, struct sk_buff *skb)
 {
-<<<<<<< HEAD
 	trace_devlink_hwmsg(priv_to_devlink(app->pf), false, 0,
 			    skb->data, skb->len);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return nfp_ctrl_tx(app->ctrl, skb);
 }
 
 static inline void nfp_app_ctrl_rx(struct nfp_app *app, struct sk_buff *skb)
 {
-<<<<<<< HEAD
 	trace_devlink_hwmsg(priv_to_devlink(app->pf), true, 0,
 			    skb->data, skb->len);
 
@@ -488,11 +399,6 @@ nfp_app_ctrl_rx_raw(struct nfp_app *app, const void *data, unsigned int len)
 	app->type->ctrl_msg_rx_raw(app, data, len);
 }
 
-=======
-	app->type->ctrl_msg_rx(app, skb);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int nfp_app_eswitch_mode_get(struct nfp_app *app, u16 *mode)
 {
 	if (!app->type->eswitch_mode_get)
@@ -503,7 +409,6 @@ static inline int nfp_app_eswitch_mode_get(struct nfp_app *app, u16 *mode)
 	return 0;
 }
 
-<<<<<<< HEAD
 static inline int nfp_app_eswitch_mode_set(struct nfp_app *app, u16 mode)
 {
 	if (!app->type->eswitch_mode_set)
@@ -511,8 +416,6 @@ static inline int nfp_app_eswitch_mode_set(struct nfp_app *app, u16 mode)
 	return app->type->eswitch_mode_set(app, mode);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int nfp_app_sriov_enable(struct nfp_app *app, int num_vfs)
 {
 	if (!app || !app->type->sriov_enable)
@@ -536,15 +439,12 @@ static inline struct net_device *nfp_app_repr_get(struct nfp_app *app, u32 id)
 
 struct nfp_app *nfp_app_from_netdev(struct net_device *netdev);
 
-<<<<<<< HEAD
 u64 *nfp_app_port_get_stats(struct nfp_port *port, u64 *data);
 int nfp_app_port_get_stats_count(struct nfp_port *port);
 u8 *nfp_app_port_get_stats_strings(struct nfp_port *port, u8 *data);
 
 struct nfp_reprs *
 nfp_reprs_get_locked(struct nfp_app *app, enum nfp_repr_type type);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct nfp_reprs *
 nfp_app_reprs_set(struct nfp_app *app, enum nfp_repr_type type,
 		  struct nfp_reprs *reprs);
@@ -560,10 +460,7 @@ void nfp_app_free(struct nfp_app *app);
 
 int nfp_app_nic_vnic_alloc(struct nfp_app *app, struct nfp_net *nn,
 			   unsigned int id);
-<<<<<<< HEAD
 int nfp_app_nic_vnic_init_phy_port(struct nfp_pf *pf, struct nfp_app *app,
 				   struct nfp_net *nn, unsigned int id);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif

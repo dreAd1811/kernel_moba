@@ -10,12 +10,6 @@ config DVB_B2C2_FLEXCOP_USB_DEBUG
 	bool "Enable debug for the B2C2 FlexCop drivers"
 	depends on DVB_B2C2_FLEXCOP_USB
 	select DVB_B2C2_FLEXCOP_DEBUG
-<<<<<<< HEAD
 	help
 	  Say Y if you want to enable the module option to control debug messages
 	  of all B2C2 FlexCop drivers.
-=======
-	   help
-	Say Y if you want to enable the module option to control debug messages
-	of all B2C2 FlexCop drivers.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

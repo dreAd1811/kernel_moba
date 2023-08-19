@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /*
  * aQuantia Corporation Network Driver
  * Copyright (C) 2017 aQuantia Corporation. All rights reserved
@@ -35,27 +34,6 @@ static struct atl_board_info atl_boards[] = {
 		.link_mask = 0x1f,
 	},
 };
-=======
-// SPDX-License-Identifier: GPL-2.0-only
-/* Atlantic Network Driver
- *
- * Copyright (C) 2017 aQuantia Corporation
- * Copyright (C) 2019-2020 Marvell International Ltd.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
- */
-
-#include <linux/interrupt.h>
-#include <linux/pm_runtime.h>
-
-#include "atl_common.h"
-#include "atl_hw.h"
-#include "atl_ptp.h"
-#include "atl_ring.h"
-#include "atl2_fw.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void atl_unplugged(struct atl_hw *hw)
 {
@@ -122,51 +100,10 @@ static inline void atl_glb_soft_reset_full(struct atl_hw *hw)
 	atl_glb_soft_reset(hw);
 }
 
-<<<<<<< HEAD
-=======
-static void atl2_hw_new_rx_filter_vlan_promisc(struct atl_hw *hw, bool promisc);
-static void atl2_hw_new_rx_filter_promisc(struct atl_hw *hw, bool promisc,
-					  bool allmulti);
-static void atl2_hw_init_new_rx_filters(struct atl_hw *hw);
-
-static void atl_set_promisc(struct atl_hw *hw, bool enabled, bool allmulti)
-{
-	atl_write_bit(hw, ATL_RX_FLT_CTRL1, 3, enabled);
-	if (hw->new_rpf)
-		atl2_hw_new_rx_filter_promisc(hw, enabled, allmulti);
-	else {
-		atl_write_bit(hw, ATL_RX_MC_FLT_MSK, 14, allmulti);
-		atl_write(hw, ATL_RX_MC_FLT(0), allmulti ? 0x80010FFF : 0x00010FFF);
-	}
-}
-
-void atl_set_vlan_promisc(struct atl_hw *hw, int promisc)
-{
-	atl_write_bit(hw, ATL_RX_VLAN_FLT_CTRL1, 1, !!promisc);
-	if (hw->new_rpf)
-		atl2_hw_new_rx_filter_vlan_promisc(hw, !!promisc);
-}
-
-static inline void atl_enable_dma_net_lpb_mode(struct atl_nic *nic)
-{
-	struct atl_hw *hw = &nic->hw;
-
-	atl_set_vlan_promisc(hw, 1);
-	atl_set_promisc(hw, 1, 0);
-	atl_write_bit(hw, ATL_TX_PBUF_CTRL1, 4, 0);
-	atl_write_bit(hw, ATL_TX_CTRL1, 4, 1);
-	atl_write_bit(hw, ATL_RX_CTRL1, 4, 1);
-}
-/* entered with fw lock held */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int atl_hw_reset_nonrbl(struct atl_hw *hw)
 {
 	uint32_t tries;
 	uint32_t reg = atl_read(hw, ATL_GLOBAL_DAISY_CHAIN_STS1);
-<<<<<<< HEAD
-=======
-	int ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	bool daisychain_running = (reg & 0x30) != 0x30;
 
@@ -194,26 +131,16 @@ static int atl_hw_reset_nonrbl(struct atl_hw *hw)
 		!(reg & 0x10));
 	if (!(reg & 0x10)) {
 		atl_dev_err("FLB kickstart timed out: %#x\n", reg);
-<<<<<<< HEAD
 		return -EIO;
 	}
 	atl_dev_dbg("FLB kickstart took %d ms\n", tries);
 
 	atl_write(hw, 0x404, 0x80e0);
-=======
-		ret = -EIO;
-		goto unlock;
-	}
-	atl_dev_dbg("FLB kickstart took %d ms\n", tries);
-
-	atl_write(hw, 0x404, 0x40e1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mdelay(50);
 	atl_write(hw, 0x3a0, 1);
 
 	atl_glb_soft_reset_full(hw);
 
-<<<<<<< HEAD
 	return atl_fw_init(hw);
 }
 
@@ -223,169 +150,6 @@ int atl_hw_reset(struct atl_hw *hw)
 	uint32_t flb_stat = atl_read(hw, ATL_GLOBAL_DAISY_CHAIN_STS1);
 	int tries = 0;
 	/* bool host_load_done = false; */
-=======
-	if (hw->mcp.ops)
-		hw->mcp.ops->restore_cfg(hw);
-
-	/* unstall FW*/
-	atl_write(hw, 0x404, 0x40e0);
-
-	ret = atl_fw_init(hw);
-
-unlock:
-	atl_unlock_fw(hw);
-
-	if (ret)
-		set_bit(ATL_ST_RESET_NEEDED, &hw->state);
-	else
-		set_bit(ATL_ST_GLOBAL_CONF_NEEDED, &hw->state);
-
-	return ret;
-}
-
-
-#define ATL2_FW_READ_DONE         BIT(0x10)
-#define ATL2_FW_READ_REQ          BIT(0x11)
-#define ATL2_BOOT_STARTED         BIT(0x18)
-#define ATL2_CRASH_INIT           BIT(0x1B)
-#define ATL2_BOOT_CODE_FAILED     BIT(0x1C)
-#define ATL2_FW_INIT_FAILED       BIT(0x1D)
-#define ATL2_FW_INIT_COMP_SUCCESS BIT(0x1F)
-#define ATL2_FW_BOOT_FAILED_MASK (ATL2_CRASH_INIT | \
-				  ATL2_BOOT_CODE_FAILED | \
-				  ATL2_FW_INIT_FAILED)
-#define ATL2_FW_BOOT_COMPLETE_MASK (ATL2_FW_BOOT_FAILED_MASK | \
-				    ATL2_FW_READ_REQ | \
-				    ATL2_FW_INIT_COMP_SUCCESS)
-
-#define ATL2_FW_BOOT_REQ_REBOOT        BIT(0x0)
-#define ATL2_FW_BOOT_REQ_HOST_BOOT     BIT(0x8)
-#define ATL2_FW_BOOT_REQ_MAC_FAST_BOOT BIT(0xA)
-#define ATL2_FW_BOOT_REQ_PHY_FAST_BOOT BIT(0xB)
-#define ATL2_FW_BOOT_REQ_HOST_ITI      BIT(0xC)
-
-static bool atl2_mcp_boot_complete(struct atl_hw *hw)
-{
-	u32 rbl_status;
-
-	rbl_status = atl_read(hw, ATL2_MIF_BOOT_REG_ADR);
-	if (rbl_status & ATL2_FW_BOOT_COMPLETE_MASK)
-		return true;
-
-	/* Host boot requested */
-	if (atl_read(hw, ATL2_MCP_HOST_REQ_INT) & 0x1)
-		return true;
-
-	return false;
-}
-
-static int atl2_hw_reset(struct atl_hw *hw)
-{
-	bool rbl_complete = false;
-	u32 rbl_status = 0;
-	u32 rbl_request;
-	int err = 0;
-
-	atl_lock_fw(hw);
-
-	busy_wait(50, mdelay(1), rbl_status,
-		  atl_read(hw, ATL2_MIF_BOOT_REG_ADR),
-		  ((rbl_status & ATL2_BOOT_STARTED) == 0) ||
-		  (rbl_status == 0xffffffff));
-	if (!(rbl_status & ATL2_BOOT_STARTED))
-		atl_dev_dbg("Boot code probably hung, reboot anyway");
-
-
-	atl_write(hw, ATL2_MCP_HOST_REQ_INT_CLR, 0x01);
-	rbl_request = ATL2_FW_BOOT_REQ_REBOOT;
-	if (hw->mcp.ops) {
-		rbl_request |= ATL2_FW_BOOT_REQ_MAC_FAST_BOOT;
-		rbl_request |= ATL2_FW_BOOT_REQ_HOST_ITI;
-	}
-#ifdef AQ_CFG_FAST_START
-	rbl_request |= ATL2_FW_BOOT_REQ_MAC_FAST_BOOT;
-#endif
-
-	atl_write(hw, ATL2_MIF_BOOT_REG_ADR, rbl_request);
-
-	/* Wait for RBL boot */
-	busy_wait(200, mdelay(1), rbl_status,
-		  atl_read(hw, ATL2_MIF_BOOT_REG_ADR),
-		  ((rbl_status & ATL2_BOOT_STARTED) == 0) ||
-		  (rbl_status == 0xffffffff));
-	if (!(rbl_status & ATL2_BOOT_STARTED)) {
-		err = -ETIME;
-		atl_dev_err("Boot code hung, rbl_status %#x", rbl_status);
-		goto unlock;
-	}
-
-next_turn:
-	busy_wait(1000, mdelay(1), rbl_complete, atl2_mcp_boot_complete(hw),
-		  !rbl_complete);
-	if (!rbl_complete) {
-		err = -ETIME;
-		atl_dev_err("FW Restart timed out, status %#x",
-			    atl_read(hw, ATL2_MIF_BOOT_REG_ADR));
-		goto unlock;
-	}
-
-	rbl_status = atl_read(hw, ATL2_MIF_BOOT_REG_ADR);
-
-	if (rbl_status & ATL2_FW_BOOT_FAILED_MASK) {
-		err = -EIO;
-		atl_dev_err("FW Restart failed, status  = %#x", rbl_status);
-		goto unlock;
-	}
-
-	if (atl_read(hw, ATL2_MCP_HOST_REQ_INT) & 0x1) {
-		uint32_t req_adr = atl_read(hw, ATL2_MIF_BOOT_READ_REQ_ADR);
-		uint32_t req_len = atl_read(hw, ATL2_MIF_BOOT_READ_REQ_LEN);
-
-		atl_write(hw, ATL2_MCP_HOST_REQ_INT_CLR, 0x01);
-
-		if (((req_adr & BIT(31)) != 0) ||
-		    (req_len >= ATL2_FW_HOSTLOAD_REQ_LEN_MAX)) {
-			err = -EIO;
-			atl_dev_err("FW read request invalid");
-			goto unlock;
-		}
-		if (req_adr >= ATL2_ITI_ADDRESS_START)
-			if (hw->mcp.ops) {
-				err = hw->mcp.ops->restore_cfg(hw);
-				if (!err)
-					goto next_turn;
-			}
-
-		err = -EIO;
-		atl_dev_err("No FW detected. Dynamic FW load not implemented");
-		goto unlock;
-	}
-
-	err = atl2_fw_init(hw);
-
-unlock:
-	atl_unlock_fw(hw);
-
-	if (err)
-		set_bit(ATL_ST_RESET_NEEDED, &hw->state);
-	else
-		set_bit(ATL_ST_GLOBAL_CONF_NEEDED, &hw->state);
-	return err;
-}
-
-static int atl1_hw_reset(struct atl_hw *hw)
-{
-	uint32_t reg;
-	uint32_t flb_stat;
-	int tries = 0;
-	/* bool host_load_done = false; */
-	int ret;
-
-	atl_lock_fw(hw);
-
-	reg = atl_read(hw, ATL_MCP_SCRATCH(RBL_STS));
-	flb_stat = atl_read(hw, ATL_GLOBAL_DAISY_CHAIN_STS1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	while (!reg && flb_stat == 0x6000000 && tries++ < 1000) {
 		mdelay(1);
@@ -396,19 +160,10 @@ static int atl1_hw_reset(struct atl_hw *hw)
 	atl_dev_dbg("0x388: %#x 0x704: %#x\n", reg, flb_stat);
 	if (tries >= 1000) {
 		atl_dev_err("Timeout waiting to choose RBL or FLB path\n");
-<<<<<<< HEAD
 		return -EIO;
 	}
 
 	if (!reg)
-=======
-		ret = -EIO;
-		goto unlock;
-	}
-
-	if (!reg)
-		/* atl_hw_reset_nonrbl() releases the fw lock */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return atl_hw_reset_nonrbl(hw);
 
 	atl_write(hw, 0x404, 0x40e1);
@@ -419,19 +174,12 @@ static int atl1_hw_reset(struct atl_hw *hw)
 
 	atl_glb_soft_reset_full(hw);
 
-<<<<<<< HEAD
-=======
-	if (hw->mcp.ops)
-		hw->mcp.ops->restore_cfg(hw);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	atl_write(hw, ATL_GLOBAL_CTRL2, 0x40e0);
 
 	for (tries = 0; tries < 10000; mdelay(1)) {
 		tries++;
 		reg = atl_read(hw, ATL_MCP_SCRATCH(RBL_STS)) & 0xffff;
 
-<<<<<<< HEAD
 		if (!reg || reg == 0xdead)
 			continue;
 
@@ -447,29 +195,15 @@ static int atl1_hw_reset(struct atl_hw *hw)
 		/* 	return ret; */
 		/* } */
 		/* host_load_done = true; */
-=======
-		if (reg && reg != 0xdead)
-			break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (reg == 0xf1a7) {
 		atl_dev_err("MAC FW Host load not supported yet\n");
-<<<<<<< HEAD
 		return -EIO;
 	}
 	if (!reg || reg == 0xdead) {
 		atl_dev_err("RBL restart timeout: %#x\n", reg);
 		return -EIO;
-=======
-		ret = -EIO;
-		goto unlock;
-	}
-	if (!reg || reg == 0xdead) {
-		atl_dev_err("RBL restart timeout: %#x\n", reg);
-		ret = -EIO;
-		goto unlock;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	atl_dev_dbg("RBL restart took %d ms result %#x\n", tries, reg);
 
@@ -486,7 +220,6 @@ static int atl1_hw_reset(struct atl_hw *hw)
 	/* 	} */
 	/* } */
 
-<<<<<<< HEAD
 	return atl_fw_init(hw);
 }
 
@@ -503,22 +236,10 @@ static int atl_get_mac_addr(struct atl_hw *hw, uint8_t *buf)
 	ret = atl_read_mcp_mem(hw, efuse_shadow_addr + 40 * 4, tmp, 8);
 	*(uint32_t *)buf = htonl(*(uint32_t *)tmp);
 	*(uint16_t *)&buf[4] = (uint16_t)htonl(*(uint32_t *)&tmp[4]);
-=======
-	ret = atl_fw_init(hw);
-
-unlock:
-	atl_unlock_fw(hw);
-
-	if (ret)
-		set_bit(ATL_ST_RESET_NEEDED, &hw->state);
-	else
-		set_bit(ATL_ST_GLOBAL_CONF_NEEDED, &hw->state);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
 
-<<<<<<< HEAD
 int atl_hwinit(struct atl_nic *nic, enum atl_board brd_id)
 {
 	struct atl_hw *hw = &nic->hw;
@@ -527,65 +248,18 @@ int atl_hwinit(struct atl_nic *nic, enum atl_board brd_id)
 
 	/* Default supported speed set based on device id. */
 	hw->link_state.supported = brd->link_mask;
-=======
-/* Must be called either during early init when netdev isn't yet
- * registered, or with RTNL lock held
- */
-int atl_hw_reset(struct atl_hw *hw)
-{
-	int ret;
-
-	if (hw->chip_id == ATL_ANTIGUA)
-		ret = atl2_hw_reset(hw);
-	else
-		ret = atl1_hw_reset(hw);
-	if (ret)
-		return ret;
-
-	ret = atl_fw_configure(hw);
-
-	return ret;
-}
-
-static int atl_get_mac_addr(struct atl_hw *hw, uint8_t *buf)
-{
-	int ret;
-
-	ret = hw->mcp.ops->get_mac_addr(hw, buf);
-
-	return ret;
-}
-
-static unsigned int atl_newrpf = 1;
-atl_module_param(newrpf, uint, 0644);
-
-int atl_hwinit(struct atl_hw *hw, enum atl_chip chip_id)
-{
-	int ret;
-
-	hw->chip_id = chip_id;
-	if (chip_id == ATL_ANTIGUA && atl_newrpf)
-		hw->new_rpf = 1;
-
-	hw->thermal = atl_def_thermal;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = atl_hw_reset(hw);
 
 	atl_dev_info("rev 0x%x chip 0x%x FW img 0x%x\n",
 		 atl_read(hw, ATL_GLOBAL_CHIP_REV) & 0xffff,
 		 atl_read(hw, ATL_GLOBAL_CHIP_ID) & 0xffff,
-<<<<<<< HEAD
 		 atl_read(hw, ATL_GLOBAL_FW_IMAGE_ID));
-=======
-		 hw->mcp.fw_rev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ret)
 		return ret;
 
 	ret = atl_get_mac_addr(hw, hw->mac_addr);
-<<<<<<< HEAD
 	if (ret) {
 		atl_dev_err("couldn't read MAC address\n");
 		return ret;
@@ -598,16 +272,6 @@ static void atl_rx_xoff_set(struct atl_nic *nic, bool fc)
 {
 	struct atl_hw *hw = &nic->hw;
 
-=======
-	if (ret)
-		atl_dev_err("couldn't read MAC address\n");
-
-	return ret;
-}
-
-static void atl_rx_xoff_set(struct atl_hw *hw, bool fc)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	atl_write_bit(hw, ATL_RX_PBUF_REG2(0), 31, fc);
 }
 
@@ -616,7 +280,6 @@ void atl_refresh_link(struct atl_nic *nic)
 	struct atl_hw *hw = &nic->hw;
 	struct atl_link_type *link, *prev_link = hw->link_state.link;
 
-<<<<<<< HEAD
 	link = hw->mcp.ops->check_link(hw);
 
 	if (link) {
@@ -629,63 +292,14 @@ void atl_refresh_link(struct atl_nic *nic)
 		netif_carrier_off(nic->ndev);
 	}
 	atl_rx_xoff_set(nic, !!(hw->link_state.fc.cur & atl_fc_rx));
-=======
-	if (test_bit(ATL_ST_RESETTING, &hw->state) ||
-	    !test_bit(ATL_ST_ENABLED, &hw->state) ||
-	    !test_and_clear_bit(ATL_ST_UPDATE_LINK, &hw->state))
-		return;
-
-	link = hw->mcp.ops->check_link(hw);
-
-	if (link) {
-		if (link != prev_link) {
-			atl_nic_info("Link up: %s\n", link->name);
-			netif_carrier_on(nic->ndev);
-			pm_runtime_get_sync(&nic->hw.pdev->dev);
-#if IS_ENABLED(CONFIG_MACSEC) && defined(NETIF_F_HW_MACSEC)
-			{
-				int ret;
-
-				ret = atl_init_macsec(hw);
-
-				if (ret)
-					atl_dev_err("atl_init_macsec failed with %d", ret);
-			}
-#endif
-		}
-	} else {
-		if (link != prev_link) {
-			atl_nic_info("Link down\n");
-			netif_carrier_off(nic->ndev);
-			pm_runtime_put_sync(&nic->hw.pdev->dev);
-		}
-	}
-	if (nic->ptp) {
-		atl_ptp_clock_init(nic);
-		atl_ptp_tm_offset_set(nic, link ? link->speed : 0);
-		atl_ptp_link_change(nic);
-	}
-
-	atl_rx_xoff_set(hw, !!(hw->link_state.fc.cur & atl_fc_rx));
-
-	atl_intr_enable_non_ring(nic);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static irqreturn_t atl_link_irq(int irq, void *priv)
 {
 	struct atl_nic *nic = (struct atl_nic *)priv;
 
-<<<<<<< HEAD
 	atl_schedule_work(nic);
 	atl_intr_enable(&nic->hw, BIT(0));
-=======
-	set_bit(ATL_ST_UPDATE_LINK, &nic->hw.state);
-	atl_schedule_work(nic);
-	if (nic->hw.chip_id == ATL_ANTIGUA)
-		atl_write(&nic->hw, ATL2_MCP_HOST_REQ_INT_CLR, 0xffff);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return IRQ_HANDLED;
 }
 
@@ -693,19 +307,9 @@ static irqreturn_t atl_legacy_irq(int irq, void *priv)
 {
 	struct atl_nic *nic = priv;
 	struct atl_hw *hw = &nic->hw;
-<<<<<<< HEAD
 	uint32_t mask = hw->intr_mask | atl_qvec_intr(nic->qvecs);
 	uint32_t stat;
 
-=======
-	uint32_t mask = hw->non_ring_intr_mask;
-	uint32_t stat;
-	int cpu;
-	int i;
-
-	for (i = 0; i != nic->nvecs; i++)
-		mask |= BIT(atl_qvec_intr(&nic->qvecs[i]));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	stat = atl_read(hw, ATL_INTR_STS);
 
@@ -718,30 +322,11 @@ static irqreturn_t atl_legacy_irq(int irq, void *priv)
 		 * masked above, so no need to unmask anything. */
 		return IRQ_NONE;
 
-<<<<<<< HEAD
 	if (likely(stat & BIT(ATL_NUM_NON_RING_IRQS)))
 		/* Only one qvec when using legacy interrupts */
 		atl_ring_irq(irq, &nic->qvecs[0].napi);
 
 	if (unlikely(stat & BIT(0)))
-=======
-	for (i = 0; i != nic->nvecs; i++) {
-		if (likely(stat & BIT(atl_qvec_intr(&nic->qvecs[i])))) {
-			if (nic->nvecs == 1 || !atl_wq_non_msi) {
-				atl_ring_irq(irq, &nic->qvecs[i].napi);
-				continue;
-			}
-
-			cpu = cpumask_any(&nic->qvecs[i].affinity_hint);
-			WARN_ON_ONCE(cpu >= nr_cpu_ids);
-			if (cpu >= nr_cpu_ids)
-				cpu = 0;
-			schedule_work_on(cpu, nic->qvecs[i].work);
-		}
-	}
-
-	if (unlikely(stat & hw->non_ring_intr_mask))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		atl_link_irq(irq, nic);
 	return IRQ_HANDLED;
 }
@@ -752,13 +337,8 @@ int atl_alloc_link_intr(struct atl_nic *nic)
 	int ret;
 
 	if (nic->flags & ATL_FL_MULTIPLE_VECTORS) {
-<<<<<<< HEAD
 		ret = request_irq(pci_irq_vector(pdev, 0), atl_link_irq, 0,
 		nic->ndev->name, nic);
-=======
-		ret = request_irq(pci_irq_vector(pdev, 0), atl_link_irq,
-				  IRQF_NO_SUSPEND, nic->ndev->name, nic);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			atl_nic_err("request MSI link vector failed: %d\n",
 				-ret);
@@ -775,14 +355,7 @@ int atl_alloc_link_intr(struct atl_nic *nic)
 
 void atl_free_link_intr(struct atl_nic *nic)
 {
-<<<<<<< HEAD
 	free_irq(pci_irq_vector(nic->hw.pdev, 0), nic);
-=======
-	struct atl_hw *hw = &nic->hw;
-
-	atl_intr_disable(hw, BIT(0));
-	free_irq(pci_irq_vector(hw->pdev, 0), nic);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void atl_set_uc_flt(struct atl_hw *hw, int idx, uint8_t mac_addr[ETH_ALEN])
@@ -792,10 +365,6 @@ void atl_set_uc_flt(struct atl_hw *hw, int idx, uint8_t mac_addr[ETH_ALEN])
 	atl_write(hw, ATL_RX_UC_FLT_REG2(idx),
 		(uint32_t)be16_to_cpu(*(uint16_t *)mac_addr) |
 		1 << 16 | 1 << 31);
-<<<<<<< HEAD
-=======
-	atl_write_bits(hw, ATL_RX_UC_FLT_REG2(idx), 22, 6, ATL2_RPF_TAG_BASE_UC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void atl_disable_uc_flt(struct atl_hw *hw, int idx)
@@ -823,24 +392,10 @@ void atl_set_rss_key(struct atl_hw *hw)
 	}
 }
 
-<<<<<<< HEAD
 void atl_set_rss_tbl(struct atl_hw *hw)
 {
 	int i, shift = 0, addr = 0;
 	uint32_t val = 0, stat;
-=======
-int atl_set_rss_tbl(struct atl_hw *hw)
-{
-	int i, shift = 0, addr = 0;
-	uint32_t val = 0, stat;
-	uint32_t tc = 0;
-
-	if (hw->new_rpf)
-		for (i = ATL_RSS_TBL_SIZE; i--;) {
-			atl_write_bits(hw, ATL2_RPF_RSS_REDIR(tc, i),
-				       5 * ((tc) % 4), 5, hw->rss_tbl[i]);
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < ATL_RSS_TBL_SIZE; i++) {
 		val |= (uint32_t)(hw->rss_tbl[i]) << shift;
@@ -857,18 +412,13 @@ int atl_set_rss_tbl(struct atl_hw *hw)
 		if (stat & BIT(4)) {
 			atl_dev_err("Timeout writing RSS redir table[%d] (addr %d): %#x\n",
 				    i, addr, stat);
-<<<<<<< HEAD
 			return;
-=======
-			return -ETIME;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		shift -= 16;
 		val >>= 16;
 		addr++;
 	}
-<<<<<<< HEAD
 }
 
 unsigned int atl_fwd_rx_buf_reserve = 0, atl_fwd_tx_buf_reserve = 0;
@@ -878,50 +428,12 @@ module_param_named(fwd_rx_buf_reserve, atl_fwd_rx_buf_reserve, uint, 0444);
 void atl_start_hw_global(struct atl_nic *nic)
 {
 	struct atl_hw *hw = &nic->hw;
-=======
-	return 0;
-}
-
-static unsigned int atl_ptp_rx_buf_reserve = 16;
-static unsigned int atl_ptp_tx_buf_reserve = 8;
-
-unsigned int atl_fwd_rx_buf_reserve =
-#ifdef CONFIG_ATLFWD_FWD_RXBUF
-	CONFIG_ATLFWD_FWD_RXBUF;
-#else
-	0;
-#endif
-
-unsigned int atl_fwd_tx_buf_reserve =
-#ifdef CONFIG_ATLFWD_FWD_TXBUF
-	CONFIG_ATLFWD_FWD_TXBUF;
-#else
-	0;
-#endif
-
-module_param_named(fwd_tx_buf_reserve, atl_fwd_tx_buf_reserve, uint, 0444);
-module_param_named(fwd_rx_buf_reserve, atl_fwd_rx_buf_reserve, uint, 0444);
-
-/* Must be called either during early init when netdev isn't yet
- * registered, or with RTNL lock held */
-void atl_start_hw_global(struct atl_nic *nic)
-{
-	struct atl_hw *hw = &nic->hw;
-	int rpb_size = 320, tpb_size = 160;
-
-	if (!test_and_clear_bit(ATL_ST_GLOBAL_CONF_NEEDED, &hw->state))
-		return;
-
-	if (nic->priv_flags & ATL_PF_BIT(LPB_NET_DMA))
-		atl_enable_dma_net_lpb_mode(nic);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Enable TPO2 */
 	atl_write(hw, 0x7040, 0x10000);
 	/* Enable RPF2, filter logic 3 */
 	atl_write(hw, 0x5040, BIT(16) | (3 << 17));
 
-<<<<<<< HEAD
 	/* Alloc TPB */
 	/* TC1: space for offload engine iface */
 	atl_write(hw, ATL_TX_PBUF_REG1(1), atl_fwd_tx_buf_reserve);
@@ -932,57 +444,15 @@ void atl_start_hw_global(struct atl_nic *nic)
 
 	/* Alloc RPB */
 	/* TC1: space for offload engine iface */
-=======
-	if (hw->chip_id == ATL_ANTIGUA) {
-		rpb_size = 192;
-		tpb_size = 128;
-	}
-	/* Alloc TPB */
-	/* TC2: space for PTP */
-	tpb_size -= atl_ptp_tx_buf_reserve;
-	atl_write(hw, ATL_TX_PBUF_REG1(2), atl_ptp_tx_buf_reserve);
-	/* TC1: space for offload engine iface */
-	tpb_size -= atl_fwd_tx_buf_reserve;
-	atl_write(hw, ATL_TX_PBUF_REG1(1), atl_fwd_tx_buf_reserve);
-	atl_write(hw, ATL_TX_PBUF_REG2(1),
-		(atl_fwd_tx_buf_reserve * 32 * 66 / 100) << 16 |
-		(atl_fwd_tx_buf_reserve * 32 * 50 / 100));
-	/* TC0: 160k minus TC1 size */
-	atl_write(hw, ATL_TX_PBUF_REG1(0), tpb_size);
-	atl_write(hw, ATL_TX_PBUF_REG2(0),
-		(tpb_size * 32 * 66 / 100) << 16 |
-		(tpb_size * 32 * 50 / 100));
-	/* 4-TC | Enable TPB */
-	atl_set_bits(hw, ATL_TX_PBUF_CTRL1, BIT(8) | BIT(0));
-	/* TX Buffer clk gate  off */
-	if (hw->chip_id == ATL_ANTIGUA)
-		atl_clear_bits(hw, ATL_TX_PBUF_CTRL1, BIT(5));
-
-	/* Alloc RPB */
-	/* TC2: space for PTP */
-	rpb_size -= atl_ptp_rx_buf_reserve;
-	atl_write(hw, ATL_RX_PBUF_REG1(2), atl_ptp_rx_buf_reserve);
-	/* No flow control for PTP */
-	atl_write_bit(hw, ATL_RX_PBUF_REG2(2), 31, 0);
-	/* TC1: space for offload engine iface */
-	rpb_size -= atl_fwd_rx_buf_reserve;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	atl_write(hw, ATL_RX_PBUF_REG1(1), atl_fwd_rx_buf_reserve);
 	atl_write(hw, ATL_RX_PBUF_REG2(1), BIT(31) |
 		(atl_fwd_rx_buf_reserve * 32 * 66 / 100) << 16 |
 		(atl_fwd_rx_buf_reserve * 32 * 50 / 100));
 	/* TC1: 320k minus TC1 size */
-<<<<<<< HEAD
 	atl_write(hw, ATL_RX_PBUF_REG1(0), 320 - atl_fwd_rx_buf_reserve);
 	atl_write(hw, ATL_RX_PBUF_REG2(0), BIT(31) |
 		((320 - atl_fwd_rx_buf_reserve) * 32 * 66 / 100) << 16 |
 		((320 - atl_fwd_rx_buf_reserve) * 32 * 50 / 100));
-=======
-	atl_write(hw, ATL_RX_PBUF_REG1(0), rpb_size);
-	atl_write(hw, ATL_RX_PBUF_REG2(0), BIT(31) |
-		(rpb_size * 32 * 66 / 100) << 16 |
-		(rpb_size * 32 * 50 / 100));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* 4-TC | Enable RPB */
 	atl_set_bits(hw, ATL_RX_PBUF_CTRL1, BIT(8) | BIT(4) | BIT(0));
 
@@ -1008,15 +478,9 @@ void atl_start_hw_global(struct atl_nic *nic)
 	/* RPF */
 	/* Default RPF2 parser options */
 	atl_write(hw, ATL_RX_FLT_CTRL2, 0x0);
-<<<<<<< HEAD
 	atl_set_uc_flt(hw, 0, hw->mac_addr);
 	/* BC action host */
 	atl_write_bits(hw, ATL_RX_FLT_CTRL1, 12, 3, 1);
-=======
-	atl_set_uc_flt(hw, nic->rxf_mac.base_index, hw->mac_addr);
-	/* BC action host */
-	atl_write_bits(hw, ATL_RX_FLT_CTRL1, 12, 1, 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Enable BC */
 	atl_write_bit(hw, ATL_RX_FLT_CTRL1, 0, 1);
 	/* BC thresh */
@@ -1025,34 +489,6 @@ void atl_start_hw_global(struct atl_nic *nic)
 	/* Enable untagged packets */
 	atl_write(hw, ATL_RX_VLAN_FLT_CTRL1, 1 << 2 | 1 << 3);
 
-<<<<<<< HEAD
-=======
-	if (hw->chip_id == ATL_ANTIGUA) {
-		/* RSS hash type */
-		atl_set_bits(hw, ATL2_RX_RSS_HASH_TYPE_ADR, BIT(9) - 1);
-
-		/* ATL2 Apply legacy ring to TC mapping */
-		atl_write(hw, ATL2_RX_Q_TO_TC_MAP(0), 0x00000000);
-		atl_write(hw, ATL2_RX_Q_TO_TC_MAP(1), 0x11111111);
-		atl_write(hw, ATL2_RX_Q_TO_TC_MAP(2), 0x22222222);
-		atl_write(hw, ATL2_RX_Q_TO_TC_MAP(3), 0x33333333);
-		atl_write(hw, ATL2_TX_Q_TO_TC_MAP(0), 0x00000000);
-		atl_write(hw, ATL2_TX_Q_TO_TC_MAP(1), 0x00000000);
-		atl_write(hw, ATL2_TX_Q_TO_TC_MAP(2), 0x01010101);
-		atl_write(hw, ATL2_TX_Q_TO_TC_MAP(3), 0x01010101);
-		atl_write(hw, ATL2_TX_Q_TO_TC_MAP(4), 0x02020202);
-		atl_write(hw, ATL2_TX_Q_TO_TC_MAP(5), 0x02020202);
-		atl_write(hw, ATL2_TX_Q_TO_TC_MAP(6), 0x03030303);
-		atl_write(hw, ATL2_TX_Q_TO_TC_MAP(7), 0x03030303);
-
-	}
-	/* Turn new filters on*/
-	if (hw->new_rpf) {
-		atl_set_bits(hw, ATL_RX_FLT_CTRL2, BIT(0xB));
-		atl2_hw_init_new_rx_filters(hw);
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Reprogram ethtool Rx filters */
 	atl_refresh_rxfs(nic);
 
@@ -1075,7 +511,6 @@ void atl_start_hw_global(struct atl_nic *nic)
 		atl_set_bits(hw, ATL_INTR_AUTO_MASK, BIT(0));
 		/* Enable status auto-clear on link intr generation */
 		atl_set_bits(hw, ATL_INTR_AUTO_CLEAR, BIT(0));
-<<<<<<< HEAD
 	} else
 		/* Enable legacy INTx mode and status clear-on-read */
 		atl_write(hw, ATL_INTR_CTRL, BIT(7));
@@ -1085,58 +520,27 @@ void atl_start_hw_global(struct atl_nic *nic)
 
 	atl_write(hw, ATL_TX_INTR_CTRL, BIT(4));
 	atl_write(hw, ATL_RX_INTR_CTRL, 2 << 4 | BIT(3));
-=======
-	} else {
-		/* Enable legacy INTx mode and status clear-on-read */
-		atl_write(hw, ATL_INTR_CTRL, BIT(7));
-		/* Clear the registers, which might have been set on previous
-		 * driver load and might interfere with legacy IRQ handling
-		 */
-		atl_write(hw, ATL_INTR_AUTO_MASK, 0);
-		atl_write(hw, ATL_INTR_AUTO_CLEAR, 0);
-	}
-
-	/* Map MCP 4 interrupt to cause 0 */
-	atl_write(hw, ATL_INTR_GEN_INTR_MAP4, BIT(7) | (0 << 0));
-
-	if (hw->chip_id == ATL_ANTIGUA) {
-		atl_set_bits(hw, ATL_GLOBAL_CTRL2, BIT(3) << 0xA);
-		atl_write(hw, ATL2_MCP_HOST_REQ_INT_MASK(3),
-			  ATL2_FW_HOST_INTERRUPT_LINK_UP |
-			  ATL2_FW_HOST_INTERRUPT_LINK_DOWN);
-	}
-
-	atl_write(hw, ATL_TX_INTR_CTRL, BIT(4));
-	atl_write(hw, ATL_RX_INTR_CTRL, BIT(3));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Reset Rx/Tx on unexpected PERST# */
 	atl_write_bit(hw, 0x1000, 29, 0);
 	atl_write(hw, 0x448, 3);
-<<<<<<< HEAD
 
 	/* Enable non-ring interrupts */
 	atl_intr_enable(hw, hw->intr_mask | (uint32_t)(nic->fwd.msi_map));
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #define atl_vlan_flt_val(vid) ((uint32_t)(vid) | 1 << 16 | 1 << 31)
 
-<<<<<<< HEAD
 static void atl_set_all_multi(struct atl_hw *hw, bool all_multi)
 {
 	atl_write_bit(hw, ATL_RX_MC_FLT_MSK, 14, all_multi);
 	atl_write(hw, ATL_RX_MC_FLT(0), all_multi ? 0x80010000 : 0);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void atl_set_rx_mode(struct net_device *ndev)
 {
 	struct atl_nic *nic = netdev_priv(ndev);
 	struct atl_hw *hw = &nic->hw;
-<<<<<<< HEAD
 	int uc_count = netdev_uc_count(ndev), mc_count = netdev_mc_count(ndev);
 	int promisc_needed = !!(ndev->flags & IFF_PROMISC);
 	int all_multi_needed = !!(ndev->flags & IFF_ALLMULTI);
@@ -1156,53 +560,15 @@ void atl_set_rx_mode(struct net_device *ndev)
 		ndev->flags & IFF_PROMISC || nic->rxf_vlan.promisc_count);
 
 	atl_write_bit(hw, ATL_RX_FLT_CTRL1, 3, promisc_needed);
-=======
-	bool is_multicast_enabled = !!(ndev->flags & IFF_MULTICAST);
-	bool all_multi_needed = !!(ndev->flags & IFF_ALLMULTI);
-	bool promisc_needed = !!(ndev->flags & IFF_PROMISC);
-	int i = nic->rxf_mac.base_index + 1; /* 1 reserved for MAC address */
-	int uc_count = netdev_uc_count(ndev);
-	int mc_count = 0;
-	struct netdev_hw_addr *hwaddr;
-
-	if (!pm_runtime_active(&nic->hw.pdev->dev))
-		return;
-
-	if (is_multicast_enabled)
-		mc_count = netdev_mc_count(ndev);
-
-	if (uc_count > nic->rxf_mac.available - 1)
-		promisc_needed = true;
-	else if (uc_count + mc_count > nic->rxf_mac.available - 1)
-		all_multi_needed = true;
-
-	/* Enable promisc VLAN mode if IFF_PROMISC explicitly
-	 * requested or too many VIDs registered
-	 */
-	atl_set_vlan_promisc(hw,
-		ndev->flags & IFF_PROMISC || nic->rxf_vlan.promisc_count ||
-		!nic->rxf_vlan.vlans_active);
-
-	atl_set_promisc(hw, promisc_needed,
-			is_multicast_enabled && all_multi_needed);
-	if (hw->new_rpf)
-		atl2_fw_set_filter_policy(hw, promisc_needed,
-				  is_multicast_enabled && all_multi_needed);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (promisc_needed)
 		return;
 
 	netdev_for_each_uc_addr(hwaddr, ndev)
 		atl_set_uc_flt(hw, i++, hwaddr->addr);
 
-<<<<<<< HEAD
 	atl_set_all_multi(hw, all_multi_needed);
 
 	if (!all_multi_needed)
-=======
-	if (is_multicast_enabled && !all_multi_needed)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		netdev_for_each_mc_addr(hwaddr, ndev)
 			atl_set_uc_flt(hw, i++, hwaddr->addr);
 
@@ -1210,20 +576,11 @@ void atl_set_rx_mode(struct net_device *ndev)
 		atl_disable_uc_flt(hw, i++);
 }
 
-<<<<<<< HEAD
 int atl_alloc_descs(struct atl_nic *nic, struct atl_hw_ring *ring)
 {
 	struct device *dev = &nic->hw.pdev->dev;
 
 	ring->descs = dma_alloc_coherent(dev, ring->size * sizeof(*ring->descs),
-=======
-int atl_alloc_descs(struct atl_nic *nic, struct atl_hw_ring *ring, size_t extra)
-{
-	struct device *dev = &nic->hw.pdev->dev;
-
-	ring->descs = dma_alloc_coherent(dev,
-					 ring->size * sizeof(*ring->descs) + extra,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 &ring->daddr, GFP_KERNEL);
 
 	if (!ring->descs)
@@ -1232,22 +589,14 @@ int atl_alloc_descs(struct atl_nic *nic, struct atl_hw_ring *ring, size_t extra)
 	return 0;
 }
 
-<<<<<<< HEAD
 void atl_free_descs(struct atl_nic *nic, struct atl_hw_ring *ring)
-=======
-void atl_free_descs(struct atl_nic *nic, struct atl_hw_ring *ring, size_t extra)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct device *dev = &nic->hw.pdev->dev;
 
 	if (!ring->descs)
 		return;
 
-<<<<<<< HEAD
 	dma_free_coherent(dev, ring->size * sizeof(*ring->descs),
-=======
-	dma_free_coherent(dev, ring->size * sizeof(*ring->descs) + extra,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ring->descs, ring->daddr);
 	ring->descs = 0;
 }
@@ -1289,7 +638,6 @@ void atl_set_loopback(struct atl_nic *nic, int idx, bool on)
 		atl_write_bit(hw, ATL_TX_CTRL1, 7, on);
 		atl_write_bit(hw, ATL_RX_CTRL1, 8, on);
 		break;
-<<<<<<< HEAD
 	/* case ATL_PF_LPB_NET_DMA: */
 	/* 	atl_write_bit(hw, ATL_TX_CTRL1, 4, on); */
 	/* 	atl_write_bit(hw, ATL_RX_CTRL1, 4, on); */
@@ -1336,22 +684,6 @@ void atl_update_ntuple_flt(struct atl_nic *nic, int idx)
 	atl_write(hw, ATL_NTUPLE_CTRL(idx), cmd);
 }
 
-=======
-	case ATL_PF_LPB_INT_PHY:
-	case ATL_PF_LPB_EXT_PHY:
-		hw->mcp.ops->set_phy_loopback(nic, idx);
-		break;
-	case ATL_PF_LPB_NET_DMA:
-		/* To switch DMANetworkLoopback mode
-		 * you need a reset datapath
-		 */
-		set_bit(ATL_ST_GLOBAL_CONF_NEEDED, &hw->state);
-		atl_reconfigure(nic);
-		break;
-	}
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int atl_hwsem_get(struct atl_hw *hw, int idx)
 {
 	uint32_t val;
@@ -1373,22 +705,10 @@ static int atl_msm_wait(struct atl_hw *hw)
 {
 	uint32_t val;
 
-<<<<<<< HEAD
 	busy_wait(10, udelay(1), val, atl_read(hw, ATL_MPI_MSM_ADDR),
 		val & BIT(12));
 	if (val & BIT(12))
 		return -ETIME;
-=======
-	busy_wait(10, udelay(10), val, atl_read(hw, ATL_MPI_MSM_ADDR),
-		val & BIT(12));
-	if (val & BIT(12)) {
-		/* If MSM CLKL off, return ENODATA */
-		if ((atl_read(hw, ATL_MPI_MSM_CTRL) & BIT(0xB)) == 0)
-			return -ENODATA;
-
-		return -ETIME;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -1414,19 +734,9 @@ int atl_msm_read(struct atl_hw *hw, uint32_t addr, uint32_t *val)
 {
 	int ret;
 
-<<<<<<< HEAD
 	ret = atl_hwsem_get(hw, ATL_MCP_SEM_MSM);
 	if (ret)
 		return ret;
-=======
-	/* If MSM CLKL off, fail here */
-	if ((atl_read(hw, ATL_MPI_MSM_CTRL) & BIT(0xB)) == 0)
-		return -ENODATA;
-
-	ret = atl_hwsem_get(hw, ATL_MCP_SEM_MSM);
-	if (ret)
-		return -ENODATA;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = __atl_msm_read(hw, addr, val);
 	atl_hwsem_put(hw, ATL_MCP_SEM_MSM);
@@ -1443,11 +753,7 @@ int __atl_msm_write(struct atl_hw *hw, uint32_t addr, uint32_t val)
 		return ret;
 
 	atl_write(hw, ATL_MPI_MSM_WR, val);
-<<<<<<< HEAD
 	atl_write(hw, ATL_MPI_MSM_ADDR, addr | BIT(8));
-=======
-	atl_write(hw, ATL_MPI_MSM_ADDR, (addr >> 2) | BIT(8));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = atl_msm_wait(hw);
 	if (ret)
 		return ret;
@@ -1612,7 +918,6 @@ void atl_adjust_eth_stats(struct atl_ether_stats *stats,
 int atl_update_eth_stats(struct atl_nic *nic)
 {
 	struct atl_hw *hw = &nic->hw;
-<<<<<<< HEAD
 	struct atl_ether_stats stats = {0};
 	uint32_t reg = 0, reg2 = 0;
 	int ret;
@@ -1620,23 +925,6 @@ int atl_update_eth_stats(struct atl_nic *nic)
 	ret = atl_hwsem_get(hw, ATL_MCP_SEM_MSM);
 	if (ret)
 		return ret;
-=======
-	struct atl_ether_stats stats;
-	uint32_t reg = 0, reg2 = 0;
-	int ret;
-
-	if (!test_bit(ATL_ST_ENABLED, &nic->hw.state) ||
-	    test_bit(ATL_ST_RESETTING, &nic->hw.state))
-		return 0;
-
-	memset(&stats, 0, sizeof(stats));
-
-	atl_lock_fw(hw);
-
-	ret = atl_hwsem_get(hw, ATL_MCP_SEM_MSM);
-	if (ret)
-		goto unlock_fw;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	__READ_MSM_OR_GOTO(ret, hw, ATL_MSM_CTR_TX_PAUSE, &reg, hwsem_put);
 	stats.tx_pause = reg;
@@ -1686,11 +974,6 @@ int atl_update_eth_stats(struct atl_nic *nic)
 
 hwsem_put:
 	atl_hwsem_put(hw, ATL_MCP_SEM_MSM);
-<<<<<<< HEAD
-=======
-unlock_fw:
-	atl_unlock_fw(hw);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 #undef __READ_MSM_OR_GOTO
@@ -1710,46 +993,26 @@ int atl_get_lpi_timer(struct atl_nic *nic, uint32_t *lpi_delay)
 	return ret;
 }
 
-<<<<<<< HEAD
 static uint32_t atl_mcp_mbox_wait(struct atl_hw *hw, int loops)
-=======
-static uint32_t atl_mcp_mbox_wait(struct atl_hw *hw, enum mcp_area area, int loops)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	uint32_t stat;
 
 	busy_wait(loops, cpu_relax(), stat,
-<<<<<<< HEAD
 		(atl_read(hw, ATL_MCP_SCRATCH(FW2_MBOX_CMD)) >> 28) & 0xf,
 		stat == 8);
-=======
-		(atl_read(hw, ATL_MCP_SCRATCH(FW2_MBOX_CMD)) & (0xf << 28)),
-		stat == area);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return stat;
 }
 
 int atl_write_mcp_mem(struct atl_hw *hw, uint32_t offt, void *host_addr,
-<<<<<<< HEAD
 	size_t size)
 {
 	uint32_t *addr = (uint32_t *)host_addr;
 
-=======
-	size_t size, enum mcp_area area)
-{
-	uint32_t *addr = (uint32_t *)host_addr;
-
-	if (offt > 0xffff)
-		return -EINVAL;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	while (size) {
 		uint32_t stat;
 
 		atl_write(hw, ATL_MCP_SCRATCH(FW2_MBOX_DATA), *addr++);
-<<<<<<< HEAD
 		atl_write(hw, ATL_MCP_SCRATCH(FW2_MBOX_CMD), BIT(31) | offt);
 		ndelay(750);
 		stat = atl_mcp_mbox_wait(hw, 5);
@@ -1767,25 +1030,6 @@ int atl_write_mcp_mem(struct atl_hw *hw, uint32_t offt, void *host_addr,
 			return -ETIME;
 		} else if (stat != 4) {
 			atl_dev_err("FW mbox error status %x, offt %x, remaining %lx\n",
-=======
-		atl_write(hw, ATL_MCP_SCRATCH(FW2_MBOX_CMD), area | offt);
-		ndelay(750);
-		stat = atl_mcp_mbox_wait(hw, area, 5);
-
-		if (stat == area) {
-			/* Send MCP mbox interrupt */
-			atl_set_bits(hw, ATL_GLOBAL_CTRL2, BIT(1));
-			ndelay(1200);
-			stat = atl_mcp_mbox_wait(hw, area, 10000);
-		}
-
-		if (stat == area) {
-			atl_dev_err("FW mbox timeout offt %x, remaining %zx\n",
-				offt, size);
-			return -ETIME;
-		} else if (stat != BIT(0x1E)) {
-			atl_dev_err("FW mbox error status 0x%x, offt 0x%x, remaining %zx\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				stat, offt, size);
 			return -EIO;
 		}
@@ -1796,175 +1040,3 @@ int atl_write_mcp_mem(struct atl_hw *hw, uint32_t offt, void *host_addr,
 
 	return 0;
 }
-<<<<<<< HEAD
-=======
-
-void atl_thermal_check(struct atl_hw *hw, bool alarm)
-{
-	int temp, ret;
-	struct atl_link_state *lstate = &hw->link_state;
-	struct atl_link_type *link = lstate->link;
-	int lowest;
-
-	if (link) {
-		/* ffs() / fls() number bits starting at 1 */
-		lowest = ffs(lstate->lp_advertized) - 1;
-		if (lowest < lstate->lp_lowest) {
-			lstate->lp_lowest = lowest;
-			if (lowest < lstate->throttled_to &&
-				lstate->thermal_throttled && alarm)
-				/* We're still thermal-throttled, and
-				 * just found out we can lower the
-				 * speed even more, so renegotiate.
-				 */
-				goto relink;
-		}
-	} else
-		lstate->lp_lowest = fls(lstate->supported) - 1;
-
-	if (alarm == lstate->thermal_throttled)
-		return;
-
-	lstate->thermal_throttled = alarm;
-
-	ret = hw->mcp.ops->get_phy_temperature(hw, &temp);
-	if (ret)
-		temp = 0;
-	else
-		/* Temperature is in millidegrees C */
-		temp = (temp + 50) / 100;
-
-	if (alarm) {
-		if (temp)
-			atl_dev_warn("PHY temperature above threshold: %d.%d\n",
-				temp / 10, temp % 10);
-		else
-			atl_dev_warn("PHY temperature above threshold\n");
-	} else {
-		if (temp)
-			atl_dev_warn("PHY temperature back in range: %d.%d\n",
-				temp / 10, temp % 10);
-		else
-			atl_dev_warn("PHY temperature back in range\n");
-	}
-
-relink:
-	if (hw->thermal.flags & atl_thermal_throttle) {
-		/* If throttling is enabled, renegotiate link */
-		lstate->link = 0;
-		lstate->throttled_to = lstate->lp_lowest;
-		hw->mcp.ops->set_link(hw, true);
-	}
-}
-
-/* Atlanic2 new filters implementation */
-
-/* set action resolver record */
-static void atl2_rpf_act_rslvr_record_set(struct atl_hw *hw, u8 location,
-				   u32 tag, u32 mask, u32 action)
-{
-	atl_write(hw, ATL2_RPF_ACT_RSLVR_REQ_TAG(location), tag);
-	atl_write(hw, ATL2_RPF_ACT_RSLVR_TAG_MASK(location), mask);
-	atl_write(hw, ATL2_RPF_ACT_RSLVR_ACTN(location), action);
-}
-
-int atl2_act_rslvr_table_set(struct atl_hw *hw, u8 location,
-			     u32 tag, u32 mask, u32 action)
-{
-	static char action_str[][32] = {"Drop", "Host", "Management",
-					"Host & Management"};
-	static char valid_str[][32] = {"Not Valid", "Valid"};
-	static char rss_str[][32] = {"Queue", "TC"};
-	int err = 0;
-
-	dev_dbg(&hw->pdev->dev, "ACTRSLVR[%d] TAG %#x MASK %#x ACTION %#x (%s, %s %d, %s)",
-		location, tag, mask, action,
-		action_str[(action >> 8) & 3], rss_str[!!(action & BIT(7))],
-		(action >> 2) & 0x1f,
-		valid_str[action & 1]);
-
-	err = atl_hwsem_get(hw, ATL2_MCP_SEM_ACT_RSLVR);
-	if (err)
-		return err;
-
-	atl2_rpf_act_rslvr_record_set(hw, location, tag, mask, action);
-
-	atl_hwsem_put(hw, ATL2_MCP_SEM_ACT_RSLVR);
-
-	return err;
-}
-
-/** Initialise new rx filters
- * L2 promisc OFF
- * VLAN promisc OFF
- * user custom filtlers
- * RSS TC0
- */
-static void atl2_hw_init_new_rx_filters(struct atl_hw *hw)
-{
-	struct atl_nic *nic = container_of(hw, struct atl_nic, hw);
-	uint32_t art_last_sec, art_first_sec, art_mask;
-	int index;
-
-	atl_write_bits(hw, ATL_RX_UC_FLT_REG2(nic->rxf_mac.base_index),
-		       22, 6, ATL2_RPF_TAG_BASE_UC);
-	atl_write_bits(hw, ATL2_RX_FLT_L2_BC_TAG, 0, 6, ATL2_RPF_TAG_BASE_BC);
-	atl_set_bits(hw, ATL2_RPF_L3_FLT(0), BIT(0x17));
-	atl_write_bit(hw, ATL_RX_MC_FLT_MSK, 14, 1);
-
-	art_last_sec = hw->art_base_index / 8 + hw->art_available / 8;
-	art_first_sec = hw->art_base_index / 8;
-	art_mask = (BIT(art_last_sec) - 1) - (BIT(art_first_sec) - 1);
-	atl_set_bits(hw, ATL2_RPF_REC_TAB_EN, art_mask);
-
-	index = hw->art_base_index + ATL2_RPF_L2_PROMISC_OFF_INDEX;
-	atl2_act_rslvr_table_set(hw,
-				 index,
-				 0,
-				 ATL2_RPF_TAG_UC_MASK | ATL2_RPF_TAG_ALLMC_MASK,
-				 ATL2_ACTION_DROP);
-
-	index = hw->art_base_index + ATL2_RPF_VLAN_PROMISC_OFF_INDEX;
-	atl2_act_rslvr_table_set(hw,
-				 index,
-				 0,
-				 ATL2_RPF_TAG_VLAN_MASK | ATL2_RPF_TAG_UNTAG_MASK,
-				 ATL2_ACTION_DROP);
-
-	index = hw->art_base_index + ATL2_RPF_DEFAULT_RULE_INDEX;
-	atl2_act_rslvr_table_set(hw,
-				 index,
-				 0,
-				 0,
-				 ATL2_ACTION_ASSIGN_TC(0));
-}
-
-static void atl2_hw_new_rx_filter_vlan_promisc(struct atl_hw *hw, bool promisc)
-{
-	u16 off_action = !promisc ? ATL2_ACTION_DROP : ATL2_ACTION_DISABLE;
-	int index = hw->art_base_index + ATL2_RPF_VLAN_PROMISC_OFF_INDEX;
-
-	atl2_act_rslvr_table_set(hw,
-				 index,
-				 0,
-				 ATL2_RPF_TAG_VLAN_MASK | ATL2_RPF_TAG_UNTAG_MASK,
-				 off_action);
-}
-
-static void atl2_hw_new_rx_filter_promisc(struct atl_hw *hw, bool promisc,
-					  bool allmulti)
-{
-	u16 off_action = promisc ? ATL2_ACTION_DISABLE : ATL2_ACTION_DROP;
-	u32 mask = allmulti ? (ATL2_RPF_TAG_UC_MASK | ATL2_RPF_TAG_ALLMC_MASK) :
-			      ATL2_RPF_TAG_UC_MASK;
-	int index = hw->art_base_index + ATL2_RPF_L2_PROMISC_OFF_INDEX;
-
-	atl2_act_rslvr_table_set(hw,
-				 index,
-				 0,
-				 mask,
-				 off_action);
-
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -29,11 +29,7 @@
 
 #define to_clk_aux(_hw) container_of(_hw, struct clk_aux, hw)
 
-<<<<<<< HEAD
 static const  struct aux_clk_masks default_aux_masks = {
-=======
-static struct aux_clk_masks default_aux_masks = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.eq_sel_mask = AUX_EQ_SEL_MASK,
 	.eq_sel_shift = AUX_EQ_SEL_SHIFT,
 	.eq1_mask = AUX_EQ1_SEL,
@@ -132,11 +128,7 @@ static int clk_aux_set_rate(struct clk_hw *hw, unsigned long drate,
 	return 0;
 }
 
-<<<<<<< HEAD
 static const struct clk_ops clk_aux_ops = {
-=======
-static struct clk_ops clk_aux_ops = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.recalc_rate = clk_aux_recalc_rate,
 	.round_rate = clk_aux_round_rate,
 	.set_rate = clk_aux_set_rate,
@@ -144,11 +136,7 @@ static struct clk_ops clk_aux_ops = {
 
 struct clk *clk_register_aux(const char *aux_name, const char *gate_name,
 		const char *parent_name, unsigned long flags, void __iomem *reg,
-<<<<<<< HEAD
 	        const struct aux_clk_masks *masks, struct aux_rate_tbl *rtbl,
-=======
-		struct aux_clk_masks *masks, struct aux_rate_tbl *rtbl,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u8 rtbl_cnt, spinlock_t *lock, struct clk **gate_clk)
 {
 	struct clk_aux *aux;
@@ -161,15 +149,8 @@ struct clk *clk_register_aux(const char *aux_name, const char *gate_name,
 	}
 
 	aux = kzalloc(sizeof(*aux), GFP_KERNEL);
-<<<<<<< HEAD
 	if (!aux)
 		return ERR_PTR(-ENOMEM);
-=======
-	if (!aux) {
-		pr_err("could not allocate aux clk\n");
-		return ERR_PTR(-ENOMEM);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* struct clk_aux assignments */
 	if (!masks)

@@ -15,15 +15,9 @@
  * GNU General Public License for more details.
  */
 
-<<<<<<< HEAD
 #include <linux/device.h>
 #include <linux/kernel.h>
 #include <linux/module.h>
-=======
-#include <linux/kernel.h>
-#include <linux/module.h>
-#include <linux/platform_device.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "memconsole.h"
 #include "coreboot_table.h"
@@ -79,31 +73,19 @@ static ssize_t memconsole_coreboot_read(char *buf, loff_t pos, size_t count)
 	return done;
 }
 
-<<<<<<< HEAD
 static int memconsole_probe(struct coreboot_device *dev)
 {
 	struct cbmem_cons __iomem *tmp_cbmc;
 
 	tmp_cbmc = memremap(dev->cbmem_ref.cbmem_addr,
 			    sizeof(*tmp_cbmc), MEMREMAP_WB);
-=======
-static int memconsole_coreboot_init(phys_addr_t physaddr)
-{
-	struct cbmem_cons __iomem *tmp_cbmc;
-
-	tmp_cbmc = memremap(physaddr, sizeof(*tmp_cbmc), MEMREMAP_WB);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!tmp_cbmc)
 		return -ENOMEM;
 
 	/* Read size only once to prevent overrun attack through /dev/mem. */
 	cbmem_console_size = tmp_cbmc->size_dont_access_after_boot;
-<<<<<<< HEAD
 	cbmem_console = memremap(dev->cbmem_ref.cbmem_addr,
-=======
-	cbmem_console = memremap(physaddr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 cbmem_console_size + sizeof(*cbmem_console),
 				 MEMREMAP_WB);
 	memunmap(tmp_cbmc);
@@ -112,33 +94,11 @@ static int memconsole_coreboot_init(phys_addr_t physaddr)
 		return -ENOMEM;
 
 	memconsole_setup(memconsole_coreboot_read);
-<<<<<<< HEAD
-=======
-	return 0;
-}
-
-static int memconsole_probe(struct platform_device *pdev)
-{
-	int ret;
-	struct lb_cbmem_ref entry;
-
-	ret = coreboot_table_find(CB_TAG_CBMEM_CONSOLE, &entry, sizeof(entry));
-	if (ret)
-		return ret;
-
-	ret = memconsole_coreboot_init(entry.cbmem_addr);
-	if (ret)
-		return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return memconsole_sysfs_init();
 }
 
-<<<<<<< HEAD
 static int memconsole_remove(struct coreboot_device *dev)
-=======
-static int memconsole_remove(struct platform_device *pdev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	memconsole_exit();
 
@@ -148,7 +108,6 @@ static int memconsole_remove(struct platform_device *pdev)
 	return 0;
 }
 
-<<<<<<< HEAD
 static struct coreboot_driver memconsole_driver = {
 	.probe = memconsole_probe,
 	.remove = memconsole_remove,
@@ -170,30 +129,6 @@ static int __init coreboot_memconsole_init(void)
 
 module_exit(coreboot_memconsole_exit);
 module_init(coreboot_memconsole_init);
-=======
-static struct platform_driver memconsole_driver = {
-	.probe = memconsole_probe,
-	.remove = memconsole_remove,
-	.driver = {
-		.name = "memconsole",
-	},
-};
-
-static int __init platform_memconsole_init(void)
-{
-	struct platform_device *pdev;
-
-	pdev = platform_device_register_simple("memconsole", -1, NULL, 0);
-	if (IS_ERR(pdev))
-		return PTR_ERR(pdev);
-
-	platform_driver_register(&memconsole_driver);
-
-	return 0;
-}
-
-module_init(platform_memconsole_init);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 MODULE_AUTHOR("Google, Inc.");
 MODULE_LICENSE("GPL");

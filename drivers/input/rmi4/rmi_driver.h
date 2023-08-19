@@ -16,11 +16,6 @@
 #include <linux/input.h>
 #include "rmi_bus.h"
 
-<<<<<<< HEAD
-=======
-#define RMI_DRIVER_VERSION "2.0"
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SYNAPTICS_INPUT_DEVICE_NAME "Synaptics RMI4 Touch Sensor"
 #define SYNAPTICS_VENDOR_ID 0x06cb
 

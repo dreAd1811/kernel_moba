@@ -19,7 +19,6 @@ config CRYPTO_DEV_CHELSIO
 
 	  To compile this driver as a module, choose M here: the module
 	  will be called chcr.
-<<<<<<< HEAD
 
 config CHELSIO_IPSEC_INLINE
         bool "Chelsio IPSec XFRM Tx crypto offload"
@@ -41,5 +40,3 @@ config CRYPTO_DEV_CHELSIO_TLS
 
           To compile this driver as a module, choose M here: the module
           will be called chtls.
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

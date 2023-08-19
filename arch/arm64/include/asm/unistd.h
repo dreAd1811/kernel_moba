@@ -40,18 +40,11 @@
  * The following SVCs are ARM private.
  */
 #define __ARM_NR_COMPAT_BASE		0x0f0000
-<<<<<<< HEAD
 #define __ARM_NR_compat_cacheflush	(__ARM_NR_COMPAT_BASE + 2)
 #define __ARM_NR_compat_set_tls		(__ARM_NR_COMPAT_BASE + 5)
 #define __ARM_NR_COMPAT_END		(__ARM_NR_COMPAT_BASE + 0x800)
 
 #define __NR_compat_syscalls		399
-=======
-#define __ARM_NR_compat_cacheflush	(__ARM_NR_COMPAT_BASE+2)
-#define __ARM_NR_compat_set_tls		(__ARM_NR_COMPAT_BASE+5)
-
-#define __NR_compat_syscalls		435
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 #define __ARCH_WANT_SYS_CLONE

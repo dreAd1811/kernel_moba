@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 # SPDX-License-Identifier: GPL-2.0-only
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #
 # Multifunction miscellaneous devices
 #
@@ -206,7 +203,6 @@ config MFD_CROS_EC
 	  You also need to enable the driver for the bus you are using. The
 	  protocol for talking to the EC is defined by the bus driver.
 
-<<<<<<< HEAD
 config MFD_CROS_EC_CHARDEV
         tristate "Chrome OS Embedded Controller userspace device interface"
         depends on MFD_CROS_EC
@@ -266,27 +262,6 @@ config MFD_CS47L90
 	depends on MFD_MADERA
 	help
 	  Support for Cirrus Logic CS47L90 and CS47L91 Smart Codecs
-=======
-config MFD_CROS_EC_I2C
-	tristate "ChromeOS Embedded Controller (I2C)"
-	depends on MFD_CROS_EC && I2C
-
-	help
-	  If you say Y here, you get support for talking to the ChromeOS
-	  EC through an I2C bus. This uses a simple byte-level protocol with
-	  a checksum. Failing accesses will be retried three times to
-	  improve reliability.
-
-config MFD_CROS_EC_SPI
-	tristate "ChromeOS Embedded Controller (SPI)"
-	depends on MFD_CROS_EC && SPI
-
-	---help---
-	  If you say Y here, you get support for talking to the ChromeOS EC
-	  through a SPI bus, using a byte-level protocol. Since the EC's
-	  response time cannot be guaranteed, we support ignoring
-	  'pre-amble' bytes before the response actually starts.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config MFD_ASIC3
 	bool "Compaq ASIC3"
@@ -535,17 +510,10 @@ config INTEL_SOC_PMIC
 	bool "Support for Crystal Cove PMIC"
 	depends on ACPI && HAS_IOMEM && I2C=y && GPIOLIB && COMMON_CLK
 	depends on X86 || COMPILE_TEST
-<<<<<<< HEAD
 	depends on I2C_DESIGNWARE_PLATFORM=y
 	select MFD_CORE
 	select REGMAP_I2C
 	select REGMAP_IRQ
-=======
-	select MFD_CORE
-	select REGMAP_I2C
-	select REGMAP_IRQ
-	select I2C_DESIGNWARE_PLATFORM
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Select this option to enable support for Crystal Cove PMIC
 	  on some Intel SoC systems. The PMIC provides ADC, GPIO,
@@ -571,17 +539,10 @@ config INTEL_SOC_PMIC_CHTWC
 	bool "Support for Intel Cherry Trail Whiskey Cove PMIC"
 	depends on ACPI && HAS_IOMEM && I2C=y && COMMON_CLK
 	depends on X86 || COMPILE_TEST
-<<<<<<< HEAD
 	depends on I2C_DESIGNWARE_PLATFORM=y
 	select MFD_CORE
 	select REGMAP_I2C
 	select REGMAP_IRQ
-=======
-	select MFD_CORE
-	select REGMAP_I2C
-	select REGMAP_IRQ
-	select I2C_DESIGNWARE_PLATFORM
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Select this option to enable support for the Intel Cherry Trail
 	  Whiskey Cove PMIC found on some Intel Cherry Trail systems.
@@ -590,7 +551,6 @@ config INTEL_SOC_PMIC_CHTWC
 	  available before any devices using it are probed. This option also
 	  causes the designware-i2c driver to be builtin for the same reason.
 
-<<<<<<< HEAD
 config INTEL_SOC_PMIC_CHTDC_TI
 	tristate "Support for Intel Cherry Trail Dollar Cove TI PMIC"
 	depends on GPIOLIB
@@ -604,8 +564,6 @@ config INTEL_SOC_PMIC_CHTDC_TI
 	  Select this option for supporting Dollar Cove (TI version) PMIC
 	  device that is found on some Intel Cherry Trail systems.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config MFD_INTEL_LPSS
 	tristate
 	select COMMON_CLK
@@ -960,11 +918,7 @@ config UCB1400_CORE
 
 config MFD_PM8XXX
 	tristate "Qualcomm PM8xxx PMIC chips driver"
-<<<<<<< HEAD
 	depends on (ARM || HEXAGON || COMPILE_TEST)
-=======
-	depends on (ARM || HEXAGON)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select IRQ_DOMAIN
 	select MFD_CORE
 	select REGMAP
@@ -1027,20 +981,6 @@ config MFD_RDC321X
 	  southbridge which provides access to GPIOs and Watchdog using the
 	  southbridge PCI device configuration space.
 
-<<<<<<< HEAD
-=======
-config MFD_RTSX_PCI
-	tristate "Realtek PCI-E card reader"
-	depends on PCI
-	select MFD_CORE
-	help
-	  This supports for Realtek PCI-Express card reader including rts5209,
-	  rts5227, rts522A, rts5229, rts5249, rts524A, rts525A, rtl8411, etc.
-	  Realtek card reader supports access to many types of memory cards,
-	  such as Memory Stick, Memory Stick Pro, Secure Digital and
-	  MultiMediaCard.
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config MFD_RT5033
 	tristate "Richtek RT5033 Power Management IC"
 	depends on I2C
@@ -1054,19 +994,6 @@ config MFD_RT5033
 	  sub-devices like charger, fuel gauge, flash LED, current source,
 	  LDO and Buck.
 
-<<<<<<< HEAD
-=======
-config MFD_RTSX_USB
-	tristate "Realtek USB card reader"
-	depends on USB
-	select MFD_CORE
-	help
-	  Select this option to get support for Realtek USB 2.0 card readers
-	  including RTS5129, RTS5139, RTS5179 and RTS5170.
-	  Realtek card reader supports access to many types of memory cards,
-	  such as Memory Stick Pro, Secure Digital and MultiMediaCard.
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config MFD_RC5T583
 	bool "Ricoh RC5T583 Power Management system device"
 	depends on I2C=y
@@ -1174,7 +1101,6 @@ config MFD_SMSC
         To compile this driver as a module, choose M here: the
         module will be called smsc.
 
-<<<<<<< HEAD
 config MFD_SC27XX_PMIC
 	tristate "Spreadtrum SC27xx PMICs"
 	depends on ARCH_SPRD || COMPILE_TEST
@@ -1191,8 +1117,6 @@ config MFD_SC27XX_PMIC
 	  This driver provides common support for accessing the SC27xx PMICs,
 	  and it also adds the irq_chip parts for handling the PMIC chip events.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config ABX500_CORE
 	bool "ST-Ericsson ABX500 Mixed Signal Circuit register functions"
 	default y if ARCH_U300 || ARCH_U8500 || COMPILE_TEST
@@ -1474,11 +1398,7 @@ config MFD_TPS65090
 
 config MFD_TPS65217
 	tristate "TI TPS65217 Power Management / White LED chips"
-<<<<<<< HEAD
 	depends on I2C && OF
-=======
-	depends on I2C
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select MFD_CORE
 	select REGMAP_I2C
 	select IRQ_DOMAIN
@@ -1495,15 +1415,9 @@ config MFD_TPS65217
 config MFD_TPS68470
 	bool "TI TPS68470 Power Management / LED chips"
 	depends on ACPI && I2C=y
-<<<<<<< HEAD
 	depends on I2C_DESIGNWARE_PLATFORM=y
 	select MFD_CORE
 	select REGMAP_I2C
-=======
-	select MFD_CORE
-	select REGMAP_I2C
-	select I2C_DESIGNWARE_PLATFORM
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  If you say yes here you get support for the TPS68470 series of
 	  Power Management / LED chips.
@@ -1546,11 +1460,7 @@ config MFD_TI_LP87565
 
 config MFD_TPS65218
 	tristate "TI TPS65218 Power Management chips"
-<<<<<<< HEAD
 	depends on I2C && OF
-=======
-	depends on I2C
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select MFD_CORE
 	select REGMAP_I2C
 	select REGMAP_IRQ
@@ -1558,12 +1468,7 @@ config MFD_TPS65218
 	  If you say yes here you get support for the TPS65218 series of
 	  Power Management chips.
 	  These include voltage regulators, gpio and other features
-<<<<<<< HEAD
 	  that are often used in portable devices.
-=======
-	  that are often used in portable devices. Only regulator
-	  component is currently supported.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	  This driver can also be built as a module.  If so, the module
 	  will be called tps65218.
@@ -1900,7 +1805,6 @@ config MFD_WM8994
 	  core support for the WM8994, in order to use the actual
 	  functionaltiy of the device other drivers must be enabled.
 
-<<<<<<< HEAD
 config MFD_WM97xx
 	tristate "Wolfson Microelectronics WM97xx"
 	select MFD_CORE
@@ -1915,8 +1819,6 @@ config MFD_WM97xx
 	  support for the WM97xx, in order to use the actual functionaltiy of
 	  the device other drivers must be enabled.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config MFD_STW481X
 	tristate "Support for ST Microelectronics STw481x"
 	depends on I2C && (ARCH_NOMADIK || COMPILE_TEST)
@@ -1927,7 +1829,6 @@ config MFD_STW481X
 	  in various ST Microelectronics and ST-Ericsson embedded
 	  Nomadik series.
 
-<<<<<<< HEAD
 config MFD_ROHM_BD718XX
 	tristate "ROHM BD71837 Power Management IC"
 	depends on I2C=y
@@ -1941,8 +1842,6 @@ config MFD_ROHM_BD718XX
 	  NXP i.MX8. It contains 8 BUCK outputs and 7 LDOs, voltage monitoring
 	  and emergency shut down as well as 32,768KHz clock output.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config MFD_STM32_LPTIMER
 	tristate "Support for STM32 Low-Power Timer"
 	depends on (ARCH_STM32 && OF) || COMPILE_TEST
@@ -2004,7 +1903,6 @@ config MFD_VEXPRESS_SYSREG
 	  System Registers are the platform configuration block
 	  on the ARM Ltd. Versatile Express board.
 
-<<<<<<< HEAD
 config RAVE_SP_CORE
 	tristate "RAVE SP MCU core driver"
 	depends on SERIAL_DEV_BUS
@@ -2013,7 +1911,5 @@ config RAVE_SP_CORE
 	  Select this to get support for the Supervisory Processor
 	  device found on several devices in RAVE line of hardware.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 endmenu
 endif

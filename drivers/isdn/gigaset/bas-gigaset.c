@@ -89,10 +89,7 @@ static int start_cbsend(struct cardstate *);
 
 struct bas_cardstate {
 	struct usb_device	*udev;		/* USB device pointer */
-<<<<<<< HEAD
 	struct cardstate	*cs;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct usb_interface	*interface;	/* interface for this device */
 	unsigned char		minor;		/* starting minor number */
 
@@ -437,17 +434,10 @@ static void check_pending(struct bas_cardstate *ucs)
  * argument:
  *	controller state structure
  */
-<<<<<<< HEAD
 static void cmd_in_timeout(struct timer_list *t)
 {
 	struct bas_cardstate *ucs = from_timer(ucs, t, timer_cmd_in);
 	struct cardstate *cs = ucs->cs;
-=======
-static void cmd_in_timeout(unsigned long data)
-{
-	struct cardstate *cs = (struct cardstate *) data;
-	struct bas_cardstate *ucs = cs->hw.bas;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc;
 
 	if (!ucs->rcvbuf_size) {
@@ -650,17 +640,10 @@ static void int_in_work(struct work_struct *work)
  * argument:
  *	controller state structure
  */
-<<<<<<< HEAD
 static void int_in_resubmit(struct timer_list *t)
 {
 	struct bas_cardstate *ucs = from_timer(ucs, t, timer_int_in);
 	struct cardstate *cs = ucs->cs;
-=======
-static void int_in_resubmit(unsigned long data)
-{
-	struct cardstate *cs = (struct cardstate *) data;
-	struct bas_cardstate *ucs = cs->hw.bas;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc;
 
 	if (ucs->retry_int_in++ >= BAS_RETRY) {
@@ -756,10 +739,7 @@ static void read_int_callback(struct urb *urb)
 
 	case HD_OPEN_B2CHANNEL_ACK:
 		++channel;
-<<<<<<< HEAD
 		/* fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case HD_OPEN_B1CHANNEL_ACK:
 		bcs = cs->bcs + channel;
 		update_basstate(ucs, BS_B1OPEN << channel, 0);
@@ -773,10 +753,7 @@ static void read_int_callback(struct urb *urb)
 
 	case HD_CLOSE_B2CHANNEL_ACK:
 		++channel;
-<<<<<<< HEAD
 		/* fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case HD_CLOSE_B1CHANNEL_ACK:
 		bcs = cs->bcs + channel;
 		update_basstate(ucs, 0, BS_B1OPEN << channel);
@@ -790,10 +767,7 @@ static void read_int_callback(struct urb *urb)
 
 	case HD_B2_FLOW_CONTROL:
 		++channel;
-<<<<<<< HEAD
 		/* fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case HD_B1_FLOW_CONTROL:
 		bcs = cs->bcs + channel;
 		atomic_add((l - BAS_NORMFRAME) * BAS_CORRFRAMES,
@@ -984,10 +958,7 @@ static void write_iso_callback(struct urb *urb)
  */
 static int starturbs(struct bc_state *bcs)
 {
-<<<<<<< HEAD
 	struct usb_device *udev = bcs->cs->hw.bas->udev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct bas_bc_state *ubc = bcs->hw.bas;
 	struct urb *urb;
 	int j, k;
@@ -1005,7 +976,6 @@ static int starturbs(struct bc_state *bcs)
 			rc = -EFAULT;
 			goto error;
 		}
-<<<<<<< HEAD
 		usb_fill_int_urb(urb, udev,
 				 usb_rcvisocpipe(udev, 3 + 2 * bcs->channel),
 				 ubc->isoinbuf + k * BAS_INBUFSIZE,
@@ -1014,18 +984,6 @@ static int starturbs(struct bc_state *bcs)
 
 		urb->transfer_flags = URB_ISO_ASAP;
 		urb->number_of_packets = BAS_NUMFRAMES;
-=======
-
-		urb->dev = bcs->cs->hw.bas->udev;
-		urb->pipe = usb_rcvisocpipe(urb->dev, 3 + 2 * bcs->channel);
-		urb->transfer_flags = URB_ISO_ASAP;
-		urb->transfer_buffer = ubc->isoinbuf + k * BAS_INBUFSIZE;
-		urb->transfer_buffer_length = BAS_INBUFSIZE;
-		urb->number_of_packets = BAS_NUMFRAMES;
-		urb->interval = BAS_FRAMETIME;
-		urb->complete = read_iso_callback;
-		urb->context = bcs;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		for (j = 0; j < BAS_NUMFRAMES; j++) {
 			urb->iso_frame_desc[j].offset = j * BAS_MAXFRAME;
 			urb->iso_frame_desc[j].length = BAS_MAXFRAME;
@@ -1049,7 +1007,6 @@ static int starturbs(struct bc_state *bcs)
 			rc = -EFAULT;
 			goto error;
 		}
-<<<<<<< HEAD
 		usb_fill_int_urb(urb, udev,
 				 usb_sndisocpipe(udev, 4 + 2 * bcs->channel),
 				 ubc->isooutbuf->data,
@@ -1059,17 +1016,6 @@ static int starturbs(struct bc_state *bcs)
 
 		urb->transfer_flags = URB_ISO_ASAP;
 		urb->number_of_packets = BAS_NUMFRAMES;
-=======
-		urb->dev = bcs->cs->hw.bas->udev;
-		urb->pipe = usb_sndisocpipe(urb->dev, 4 + 2 * bcs->channel);
-		urb->transfer_flags = URB_ISO_ASAP;
-		urb->transfer_buffer = ubc->isooutbuf->data;
-		urb->transfer_buffer_length = sizeof(ubc->isooutbuf->data);
-		urb->number_of_packets = BAS_NUMFRAMES;
-		urb->interval = BAS_FRAMETIME;
-		urb->complete = write_iso_callback;
-		urb->context = &ubc->isoouturbs[k];
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		for (j = 0; j < BAS_NUMFRAMES; ++j) {
 			urb->iso_frame_desc[j].offset = BAS_OUTBUFSIZE;
 			urb->iso_frame_desc[j].length = BAS_NORMFRAME;
@@ -1498,17 +1444,10 @@ error:
  * argument:
  *	controller state structure
  */
-<<<<<<< HEAD
 static void req_timeout(struct timer_list *t)
 {
 	struct bas_cardstate *ucs = from_timer(ucs, t, timer_ctrl);
 	struct cardstate *cs = ucs->cs;
-=======
-static void req_timeout(unsigned long data)
-{
-	struct cardstate *cs = (struct cardstate *) data;
-	struct bas_cardstate *ucs = cs->hw.bas;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int pending;
 	unsigned long flags;
 
@@ -1901,17 +1840,10 @@ static void write_command_callback(struct urb *urb)
  * argument:
  *	controller state structure
  */
-<<<<<<< HEAD
 static void atrdy_timeout(struct timer_list *t)
 {
 	struct bas_cardstate *ucs = from_timer(ucs, t, timer_atrdy);
 	struct cardstate *cs = ucs->cs;
-=======
-static void atrdy_timeout(unsigned long data)
-{
-	struct cardstate *cs = (struct cardstate *) data;
-	struct bas_cardstate *ucs = cs->hw.bas;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_warn(cs->dev, "timeout waiting for HD_READY_SEND_ATDATA\n");
 
@@ -2271,11 +2203,7 @@ static int gigaset_initcshw(struct cardstate *cs)
 {
 	struct bas_cardstate *ucs;
 
-<<<<<<< HEAD
 	cs->hw.bas = ucs = kzalloc(sizeof(*ucs), GFP_KERNEL);
-=======
-	cs->hw.bas = ucs = kmalloc(sizeof *ucs, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ucs) {
 		pr_err("out of memory\n");
 		return -ENOMEM;
@@ -2287,28 +2215,12 @@ static int gigaset_initcshw(struct cardstate *cs)
 		return -ENOMEM;
 	}
 
-<<<<<<< HEAD
 	spin_lock_init(&ucs->lock);
 	ucs->cs = cs;
 	timer_setup(&ucs->timer_ctrl, req_timeout, 0);
 	timer_setup(&ucs->timer_atrdy, atrdy_timeout, 0);
 	timer_setup(&ucs->timer_cmd_in, cmd_in_timeout, 0);
 	timer_setup(&ucs->timer_int_in, int_in_resubmit, 0);
-=======
-	ucs->urb_cmd_in = NULL;
-	ucs->urb_cmd_out = NULL;
-	ucs->rcvbuf = NULL;
-	ucs->rcvbuf_size = 0;
-
-	spin_lock_init(&ucs->lock);
-	ucs->pending = 0;
-
-	ucs->basstate = 0;
-	setup_timer(&ucs->timer_ctrl, req_timeout, (unsigned long) cs);
-	setup_timer(&ucs->timer_atrdy, atrdy_timeout, (unsigned long) cs);
-	setup_timer(&ucs->timer_cmd_in, cmd_in_timeout, (unsigned long) cs);
-	setup_timer(&ucs->timer_int_in, int_in_resubmit, (unsigned long) cs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	init_waitqueue_head(&ucs->waitqueue);
 	INIT_WORK(&ucs->int_in_wq, int_in_work);
 

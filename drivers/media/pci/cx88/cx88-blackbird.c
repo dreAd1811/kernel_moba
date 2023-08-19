@@ -5,11 +5,7 @@
  *    (c) 2004 Jelle Foks <jelle@foks.us>
  *    (c) 2004 Gerd Knorr <kraxel@bytesex.org>
  *
-<<<<<<< HEAD
  *    (c) 2005-2006 Mauro Carvalho Chehab <mchehab@kernel.org>
-=======
- *    (c) 2005-2006 Mauro Carvalho Chehab <mchehab@infradead.org>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *        - video_ioctl2 conversion
  *
  *  Includes parts from the ivtv driver <http://sourceforge.net/projects/ivtv/>
@@ -809,12 +805,7 @@ static int vidioc_querycap(struct file *file, void  *priv,
 
 	strcpy(cap->driver, "cx88_blackbird");
 	sprintf(cap->bus_info, "PCI:%s", pci_name(dev->pci));
-<<<<<<< HEAD
 	return cx88_querycap(file, core, cap);
-=======
-	cx88_querycap(file, core, cap);
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int vidioc_enum_fmt_vid_cap(struct file *file, void  *priv,

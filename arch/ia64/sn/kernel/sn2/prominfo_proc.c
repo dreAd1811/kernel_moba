@@ -140,21 +140,6 @@ static int proc_fit_show(struct seq_file *m, void *v)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-static int proc_fit_open(struct inode *inode, struct file *file)
-{
-	return single_open(file, proc_fit_show, PDE_DATA(inode));
-}
-
-static const struct file_operations proc_fit_fops = {
-	.open		= proc_fit_open,
-	.read		= seq_read,
-	.llseek		= seq_lseek,
-	.release	= single_release,
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int proc_version_show(struct seq_file *m, void *v)
 {
 	unsigned long nasid = (unsigned long)m->private;
@@ -177,21 +162,6 @@ static int proc_version_show(struct seq_file *m, void *v)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-static int proc_version_open(struct inode *inode, struct file *file)
-{
-	return single_open(file, proc_version_show, PDE_DATA(inode));
-}
-
-static const struct file_operations proc_version_fops = {
-	.open		= proc_version_open,
-	.read		= seq_read,
-	.llseek		= seq_lseek,
-	.release	= single_release,
-};
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* module entry points */
 int __init prominfo_init(void);
 void __exit prominfo_exit(void);
@@ -223,17 +193,10 @@ int __init prominfo_init(void)
 		if (!dir)
 			continue;
 		nasid = cnodeid_to_nasid(cnodeid);
-<<<<<<< HEAD
 		proc_create_single_data("fit", 0, dir, proc_fit_show, 
 				(void *)nasid);
 		proc_create_single_data("version", 0, dir, proc_version_show,
 				(void *)nasid);
-=======
-		proc_create_data("fit", 0, dir,
-				 &proc_fit_fops, (void *)nasid);
-		proc_create_data("version", 0, dir,
-				 &proc_version_fops, (void *)nasid);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return 0;
 }

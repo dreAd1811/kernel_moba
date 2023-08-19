@@ -49,11 +49,7 @@
 		stdout-path = &uart2;
 	};
 
-<<<<<<< HEAD
 	memory@10000000 {
-=======
-	memory {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x10000000 0x40000000>;
 	};
 
@@ -225,11 +221,7 @@
 		status = "okay";
 	};
 
-<<<<<<< HEAD
 	lcd_display: disp0 {
-=======
-	lcd_display: display@di0 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "fsl,imx-parallel-display";
 		#address-cells = <1>;
 		#size-cells = <0>;
@@ -358,11 +350,7 @@
 	pinctrl-0 = <&pinctrl_i2c1>;
 	status = "okay";
 
-<<<<<<< HEAD
 	codec: sgtl5000@a {
-=======
-	codec: sgtl5000@0a {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "fsl,sgtl5000";
 		reg = <0x0a>;
 		clocks = <&clks IMX6QDL_CLK_CKO>;
@@ -391,12 +379,6 @@
 		powerdown-gpios = <&gpio6 9 GPIO_ACTIVE_HIGH>; /* NANDF_WP_B */
 
 		port {
-<<<<<<< HEAD
-=======
-			#address-cells = <1>;
-			#size-cells = <0>;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ov5640_to_mipi_csi2: endpoint {
 				remote-endpoint = <&mipi_csi2_in>;
 				clock-lanes = <0>;

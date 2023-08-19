@@ -1,25 +1,15 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Copyright (C) STMicroelectronics SA 2014
  * Authors: Benjamin Gaignard <benjamin.gaignard@st.com>
  *          Fabien Dessenne <fabien.dessenne@st.com>
  *          Vincent Abriou <vincent.abriou@st.com>
  *          for STMicroelectronics.
-<<<<<<< HEAD
-=======
- * License terms:  GNU General Public License (GPL), version 2
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/module.h>
 #include <linux/notifier.h>
-<<<<<<< HEAD
 #include <linux/of_platform.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/platform_device.h>
 
 #include <drm/drmP.h>
@@ -83,11 +73,6 @@
 #define AWG_DELAY_ED        (-8)
 #define AWG_DELAY_SD        (-7)
 
-<<<<<<< HEAD
-=======
-static LIST_HEAD(vtg_lookup);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * STI VTG register offset structure
  *
@@ -137,34 +122,20 @@ struct sti_vtg_sync_params {
 /**
  * STI VTG structure
  *
-<<<<<<< HEAD
-=======
- * @dev: pointer to device driver
- * @np: device node
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @regs: register mapping
  * @sync_params: synchronisation parameters used to generate timings
  * @irq: VTG irq
  * @irq_status: store the IRQ status value
  * @notifier_list: notifier callback
  * @crtc: the CRTC for vblank event
-<<<<<<< HEAD
  */
 struct sti_vtg {
-=======
- * @link: List node to link the structure in lookup list
- */
-struct sti_vtg {
-	struct device *dev;
-	struct device_node *np;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void __iomem *regs;
 	struct sti_vtg_sync_params sync_params[VTG_MAX_SYNC_OUTPUT];
 	int irq;
 	u32 irq_status;
 	struct raw_notifier_head notifier_list;
 	struct drm_crtc *crtc;
-<<<<<<< HEAD
 };
 
 struct sti_vtg *of_vtg_find(struct device_node *np)
@@ -176,25 +147,6 @@ struct sti_vtg *of_vtg_find(struct device_node *np)
 		return NULL;
 
 	return (struct sti_vtg *)platform_get_drvdata(pdev);
-=======
-	struct list_head link;
-};
-
-static void vtg_register(struct sti_vtg *vtg)
-{
-	list_add_tail(&vtg->link, &vtg_lookup);
-}
-
-struct sti_vtg *of_vtg_find(struct device_node *np)
-{
-	struct sti_vtg *vtg;
-
-	list_for_each_entry(vtg, &vtg_lookup, link) {
-		if (vtg->np == np)
-			return vtg;
-	}
-	return NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void vtg_reset(struct sti_vtg *vtg)
@@ -433,12 +385,6 @@ static int vtg_probe(struct platform_device *pdev)
 	if (!vtg)
 		return -ENOMEM;
 
-<<<<<<< HEAD
-=======
-	vtg->dev = dev;
-	vtg->np = pdev->dev.of_node;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Get Memory ressources */
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 	if (!res) {
@@ -467,28 +413,13 @@ static int vtg_probe(struct platform_device *pdev)
 		return ret;
 	}
 
-<<<<<<< HEAD
 	platform_set_drvdata(pdev, vtg);
 
 	DRM_INFO("%s %s\n", __func__, dev_name(dev));
-=======
-	vtg_register(vtg);
-	platform_set_drvdata(pdev, vtg);
-
-	DRM_INFO("%s %s\n", __func__, dev_name(vtg->dev));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-static int vtg_remove(struct platform_device *pdev)
-{
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct of_device_id vtg_of_match[] = {
 	{ .compatible = "st,vtg", },
 	{ /* sentinel */ }
@@ -502,10 +433,6 @@ struct platform_driver sti_vtg_driver = {
 		.of_match_table = vtg_of_match,
 	},
 	.probe	= vtg_probe,
-<<<<<<< HEAD
-=======
-	.remove = vtg_remove,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 MODULE_AUTHOR("Benjamin Gaignard <benjamin.gaignard@st.com>");

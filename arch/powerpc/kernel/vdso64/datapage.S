@@ -37,10 +37,6 @@ data_page_branch:
 	mtlr	r0
 	addi	r3, r3, __kernel_datapage_offset-data_page_branch
 	lwz	r0,0(r3)
-<<<<<<< HEAD
-=======
-  .cfi_restore lr
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	add	r3,r0,r3
 	blr
   .cfi_endproc

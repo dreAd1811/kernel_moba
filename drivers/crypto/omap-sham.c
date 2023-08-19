@@ -168,11 +168,8 @@ struct omap_sham_hmac_ctx {
 };
 
 struct omap_sham_ctx {
-<<<<<<< HEAD
 	struct omap_sham_dev	*dd;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long		flags;
 
 	/* fallback stuff */
@@ -232,10 +229,7 @@ struct omap_sham_dev {
 	u8			xmit_buf[BUFLEN] OMAP_ALIGNED;
 
 	unsigned long		flags;
-<<<<<<< HEAD
 	int			fallback_sz;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct crypto_queue	queue;
 	struct ahash_request	*req;
 
@@ -766,7 +760,6 @@ static int omap_sham_align_sgs(struct scatterlist *sg,
 	while (nbytes > 0 && sg_tmp) {
 		n++;
 
-<<<<<<< HEAD
 #ifdef CONFIG_ZONE_DMA
 		if (page_zonenum(sg_page(sg_tmp)) != ZONE_DMA) {
 			aligned = false;
@@ -774,8 +767,6 @@ static int omap_sham_align_sgs(struct scatterlist *sg,
 		}
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (offset < sg_tmp->length) {
 			if (!IS_ALIGNED(offset + sg_tmp->offset, 4)) {
 				aligned = false;
@@ -826,12 +817,6 @@ static int omap_sham_prepare_request(struct ahash_request *req, bool update)
 	bool final = rctx->flags & BIT(FLAGS_FINUP);
 	int xmit_len, hash_later;
 
-<<<<<<< HEAD
-=======
-	if (!req)
-		return 0;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bs = get_block_size(rctx);
 
 	if (update)
@@ -936,31 +921,11 @@ static int omap_sham_update_dma_stop(struct omap_sham_dev *dd)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
-struct omap_sham_dev *omap_sham_find_dev(struct omap_sham_reqctx *ctx)
-{
-	struct omap_sham_dev *dd;
-
-	if (ctx->dd)
-		return ctx->dd;
-
-	spin_lock_bh(&sham.lock);
-	dd = list_first_entry(&sham.dev_list, struct omap_sham_dev, list);
-	list_move_tail(&dd->list, &sham.dev_list);
-	ctx->dd = dd;
-	spin_unlock_bh(&sham.lock);
-
-	return dd;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int omap_sham_init(struct ahash_request *req)
 {
 	struct crypto_ahash *tfm = crypto_ahash_reqtfm(req);
 	struct omap_sham_ctx *tctx = crypto_ahash_ctx(tfm);
 	struct omap_sham_reqctx *ctx = ahash_request_ctx(req);
-<<<<<<< HEAD
 	struct omap_sham_dev *dd = NULL, *tmp;
 	int bs = 0;
 
@@ -977,16 +942,6 @@ static int omap_sham_init(struct ahash_request *req)
 	spin_unlock_bh(&sham.lock);
 
 	ctx->dd = dd;
-=======
-	struct omap_sham_dev *dd;
-	int bs = 0;
-
-	ctx->dd = NULL;
-
-	dd = omap_sham_find_dev(ctx);
-	if (!dd)
-		return -ENODEV;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ctx->flags = 0;
 
@@ -1052,11 +1007,7 @@ static int omap_sham_update_req(struct omap_sham_dev *dd)
 		 ctx->total, ctx->digcnt, (ctx->flags & BIT(FLAGS_FINUP)) != 0);
 
 	if (ctx->total < get_block_size(ctx) ||
-<<<<<<< HEAD
 	    ctx->total < dd->fallback_sz)
-=======
-	    ctx->total < OMAP_SHA_DMA_THRESHOLD)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ctx->flags |= BIT(FLAGS_CPU);
 
 	if (ctx->flags & BIT(FLAGS_CPU))
@@ -1240,12 +1191,8 @@ err1:
 static int omap_sham_enqueue(struct ahash_request *req, unsigned int op)
 {
 	struct omap_sham_reqctx *ctx = ahash_request_ctx(req);
-<<<<<<< HEAD
 	struct omap_sham_ctx *tctx = crypto_tfm_ctx(req->base.tfm);
 	struct omap_sham_dev *dd = tctx->dd;
-=======
-	struct omap_sham_dev *dd = ctx->dd;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ctx->op = op;
 
@@ -1255,11 +1202,7 @@ static int omap_sham_enqueue(struct ahash_request *req, unsigned int op)
 static int omap_sham_update(struct ahash_request *req)
 {
 	struct omap_sham_reqctx *ctx = ahash_request_ctx(req);
-<<<<<<< HEAD
 	struct omap_sham_dev *dd = ctx->dd;
-=======
-	struct omap_sham_dev *dd = omap_sham_find_dev(ctx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!req->nbytes)
 		return 0;
@@ -1320,19 +1263,11 @@ static int omap_sham_final(struct ahash_request *req)
 	/*
 	 * OMAP HW accel works only with buffers >= 9.
 	 * HMAC is always >= 9 because ipad == block size.
-<<<<<<< HEAD
 	 * If buffersize is less than fallback_sz, we use fallback
 	 * SW encoding, as using DMA + HW in this case doesn't provide
 	 * any benefit.
 	 */
 	if (!ctx->digcnt && ctx->bufcnt < ctx->dd->fallback_sz)
-=======
-	 * If buffersize is less than DMA_THRESHOLD, we use fallback
-	 * SW encoding, as using DMA + HW in this case doesn't provide
-	 * any benefit.
-	 */
-	if (!ctx->digcnt && ctx->bufcnt < OMAP_SHA_DMA_THRESHOLD)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return omap_sham_final_shash(req);
 	else if (ctx->bufcnt)
 		return omap_sham_enqueue(req, OP_FINAL);
@@ -1372,7 +1307,6 @@ static int omap_sham_setkey(struct crypto_ahash *tfm, const u8 *key,
 	struct omap_sham_hmac_ctx *bctx = tctx->base;
 	int bs = crypto_shash_blocksize(bctx->shash);
 	int ds = crypto_shash_digestsize(bctx->shash);
-<<<<<<< HEAD
 	struct omap_sham_dev *dd = NULL, *tmp;
 	int err, i;
 
@@ -1388,10 +1322,6 @@ static int omap_sham_setkey(struct crypto_ahash *tfm, const u8 *key,
 	}
 	spin_unlock_bh(&sham.lock);
 
-=======
-	int err, i;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = crypto_shash_setkey(tctx->fallback, key, keylen);
 	if (err)
 		return err;
@@ -1409,11 +1339,7 @@ static int omap_sham_setkey(struct crypto_ahash *tfm, const u8 *key,
 
 	memset(bctx->ipad + keylen, 0, bs - keylen);
 
-<<<<<<< HEAD
 	if (!test_bit(FLAGS_AUTO_XOR, &dd->flags)) {
-=======
-	if (!test_bit(FLAGS_AUTO_XOR, &sham.flags)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		memcpy(bctx->opad, bctx->ipad, bs);
 
 		for (i = 0; i < bs; i++) {
@@ -1538,12 +1464,7 @@ static struct ahash_alg algs_sha1_md5[] = {
 		.cra_name		= "sha1",
 		.cra_driver_name	= "omap-sha1",
 		.cra_priority		= 400,
-<<<<<<< HEAD
 		.cra_flags		= CRYPTO_ALG_KERN_DRIVER_ONLY |
-=======
-		.cra_flags		= CRYPTO_ALG_TYPE_AHASH |
-						CRYPTO_ALG_KERN_DRIVER_ONLY |
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						CRYPTO_ALG_ASYNC |
 						CRYPTO_ALG_NEED_FALLBACK,
 		.cra_blocksize		= SHA1_BLOCK_SIZE,
@@ -1565,12 +1486,7 @@ static struct ahash_alg algs_sha1_md5[] = {
 		.cra_name		= "md5",
 		.cra_driver_name	= "omap-md5",
 		.cra_priority		= 400,
-<<<<<<< HEAD
 		.cra_flags		= CRYPTO_ALG_KERN_DRIVER_ONLY |
-=======
-		.cra_flags		= CRYPTO_ALG_TYPE_AHASH |
-						CRYPTO_ALG_KERN_DRIVER_ONLY |
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						CRYPTO_ALG_ASYNC |
 						CRYPTO_ALG_NEED_FALLBACK,
 		.cra_blocksize		= SHA1_BLOCK_SIZE,
@@ -1593,12 +1509,7 @@ static struct ahash_alg algs_sha1_md5[] = {
 		.cra_name		= "hmac(sha1)",
 		.cra_driver_name	= "omap-hmac-sha1",
 		.cra_priority		= 400,
-<<<<<<< HEAD
 		.cra_flags		= CRYPTO_ALG_KERN_DRIVER_ONLY |
-=======
-		.cra_flags		= CRYPTO_ALG_TYPE_AHASH |
-						CRYPTO_ALG_KERN_DRIVER_ONLY |
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						CRYPTO_ALG_ASYNC |
 						CRYPTO_ALG_NEED_FALLBACK,
 		.cra_blocksize		= SHA1_BLOCK_SIZE,
@@ -1622,12 +1533,7 @@ static struct ahash_alg algs_sha1_md5[] = {
 		.cra_name		= "hmac(md5)",
 		.cra_driver_name	= "omap-hmac-md5",
 		.cra_priority		= 400,
-<<<<<<< HEAD
 		.cra_flags		= CRYPTO_ALG_KERN_DRIVER_ONLY |
-=======
-		.cra_flags		= CRYPTO_ALG_TYPE_AHASH |
-						CRYPTO_ALG_KERN_DRIVER_ONLY |
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						CRYPTO_ALG_ASYNC |
 						CRYPTO_ALG_NEED_FALLBACK,
 		.cra_blocksize		= SHA1_BLOCK_SIZE,
@@ -1654,12 +1560,7 @@ static struct ahash_alg algs_sha224_sha256[] = {
 		.cra_name		= "sha224",
 		.cra_driver_name	= "omap-sha224",
 		.cra_priority		= 400,
-<<<<<<< HEAD
 		.cra_flags		= CRYPTO_ALG_ASYNC |
-=======
-		.cra_flags		= CRYPTO_ALG_TYPE_AHASH |
-						CRYPTO_ALG_ASYNC |
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						CRYPTO_ALG_NEED_FALLBACK,
 		.cra_blocksize		= SHA224_BLOCK_SIZE,
 		.cra_ctxsize		= sizeof(struct omap_sham_ctx),
@@ -1680,12 +1581,7 @@ static struct ahash_alg algs_sha224_sha256[] = {
 		.cra_name		= "sha256",
 		.cra_driver_name	= "omap-sha256",
 		.cra_priority		= 400,
-<<<<<<< HEAD
 		.cra_flags		= CRYPTO_ALG_ASYNC |
-=======
-		.cra_flags		= CRYPTO_ALG_TYPE_AHASH |
-						CRYPTO_ALG_ASYNC |
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						CRYPTO_ALG_NEED_FALLBACK,
 		.cra_blocksize		= SHA256_BLOCK_SIZE,
 		.cra_ctxsize		= sizeof(struct omap_sham_ctx),
@@ -1707,12 +1603,7 @@ static struct ahash_alg algs_sha224_sha256[] = {
 		.cra_name		= "hmac(sha224)",
 		.cra_driver_name	= "omap-hmac-sha224",
 		.cra_priority		= 400,
-<<<<<<< HEAD
 		.cra_flags		= CRYPTO_ALG_ASYNC |
-=======
-		.cra_flags		= CRYPTO_ALG_TYPE_AHASH |
-						CRYPTO_ALG_ASYNC |
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						CRYPTO_ALG_NEED_FALLBACK,
 		.cra_blocksize		= SHA224_BLOCK_SIZE,
 		.cra_ctxsize		= sizeof(struct omap_sham_ctx) +
@@ -1735,12 +1626,7 @@ static struct ahash_alg algs_sha224_sha256[] = {
 		.cra_name		= "hmac(sha256)",
 		.cra_driver_name	= "omap-hmac-sha256",
 		.cra_priority		= 400,
-<<<<<<< HEAD
 		.cra_flags		= CRYPTO_ALG_ASYNC |
-=======
-		.cra_flags		= CRYPTO_ALG_TYPE_AHASH |
-						CRYPTO_ALG_ASYNC |
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						CRYPTO_ALG_NEED_FALLBACK,
 		.cra_blocksize		= SHA256_BLOCK_SIZE,
 		.cra_ctxsize		= sizeof(struct omap_sham_ctx) +
@@ -1765,12 +1651,7 @@ static struct ahash_alg algs_sha384_sha512[] = {
 		.cra_name		= "sha384",
 		.cra_driver_name	= "omap-sha384",
 		.cra_priority		= 400,
-<<<<<<< HEAD
 		.cra_flags		= CRYPTO_ALG_ASYNC |
-=======
-		.cra_flags		= CRYPTO_ALG_TYPE_AHASH |
-						CRYPTO_ALG_ASYNC |
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						CRYPTO_ALG_NEED_FALLBACK,
 		.cra_blocksize		= SHA384_BLOCK_SIZE,
 		.cra_ctxsize		= sizeof(struct omap_sham_ctx),
@@ -1791,12 +1672,7 @@ static struct ahash_alg algs_sha384_sha512[] = {
 		.cra_name		= "sha512",
 		.cra_driver_name	= "omap-sha512",
 		.cra_priority		= 400,
-<<<<<<< HEAD
 		.cra_flags		= CRYPTO_ALG_ASYNC |
-=======
-		.cra_flags		= CRYPTO_ALG_TYPE_AHASH |
-						CRYPTO_ALG_ASYNC |
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						CRYPTO_ALG_NEED_FALLBACK,
 		.cra_blocksize		= SHA512_BLOCK_SIZE,
 		.cra_ctxsize		= sizeof(struct omap_sham_ctx),
@@ -1818,12 +1694,7 @@ static struct ahash_alg algs_sha384_sha512[] = {
 		.cra_name		= "hmac(sha384)",
 		.cra_driver_name	= "omap-hmac-sha384",
 		.cra_priority		= 400,
-<<<<<<< HEAD
 		.cra_flags		= CRYPTO_ALG_ASYNC |
-=======
-		.cra_flags		= CRYPTO_ALG_TYPE_AHASH |
-						CRYPTO_ALG_ASYNC |
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						CRYPTO_ALG_NEED_FALLBACK,
 		.cra_blocksize		= SHA384_BLOCK_SIZE,
 		.cra_ctxsize		= sizeof(struct omap_sham_ctx) +
@@ -1846,12 +1717,7 @@ static struct ahash_alg algs_sha384_sha512[] = {
 		.cra_name		= "hmac(sha512)",
 		.cra_driver_name	= "omap-hmac-sha512",
 		.cra_priority		= 400,
-<<<<<<< HEAD
 		.cra_flags		= CRYPTO_ALG_ASYNC |
-=======
-		.cra_flags		= CRYPTO_ALG_TYPE_AHASH |
-						CRYPTO_ALG_ASYNC |
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						CRYPTO_ALG_NEED_FALLBACK,
 		.cra_blocksize		= SHA512_BLOCK_SIZE,
 		.cra_ctxsize		= sizeof(struct omap_sham_ctx) +
@@ -1888,11 +1754,7 @@ static void omap_sham_done_task(unsigned long data)
 		if (test_and_clear_bit(FLAGS_OUTPUT_READY, &dd->flags)) {
 			/* hash or semi-hash ready */
 			clear_bit(FLAGS_DMA_READY, &dd->flags);
-<<<<<<< HEAD
 			goto finish;
-=======
-				goto finish;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -2075,18 +1937,10 @@ static int omap_sham_get_res_of(struct omap_sham_dev *dd,
 		struct device *dev, struct resource *res)
 {
 	struct device_node *node = dev->of_node;
-<<<<<<< HEAD
 	int err = 0;
 
 	dd->pdata = of_device_get_match_data(dev);
 	if (!dd->pdata) {
-=======
-	const struct of_device_id *match;
-	int err = 0;
-
-	match = of_match_device(of_match_ptr(omap_sham_of_match), dev);
-	if (!match) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(dev, "no compatible OF match\n");
 		err = -EINVAL;
 		goto err;
@@ -2106,11 +1960,6 @@ static int omap_sham_get_res_of(struct omap_sham_dev *dd,
 		goto err;
 	}
 
-<<<<<<< HEAD
-=======
-	dd->pdata = match->data;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err:
 	return err;
 }
@@ -2157,7 +2006,6 @@ err:
 	return err;
 }
 
-<<<<<<< HEAD
 static ssize_t fallback_show(struct device *dev, struct device_attribute *attr,
 			     char *buf)
 {
@@ -2237,8 +2085,6 @@ static struct attribute_group omap_sham_attr_group = {
 	.attrs = omap_sham_attrs,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int omap_sham_probe(struct platform_device *pdev)
 {
 	struct omap_sham_dev *dd;
@@ -2296,19 +2142,12 @@ static int omap_sham_probe(struct platform_device *pdev)
 	}
 
 	dd->flags |= dd->pdata->flags;
-<<<<<<< HEAD
-=======
-	sham.flags |= dd->pdata->flags;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pm_runtime_use_autosuspend(dev);
 	pm_runtime_set_autosuspend_delay(dev, DEFAULT_AUTOSUSPEND_DELAY);
 
-<<<<<<< HEAD
 	dd->fallback_sz = OMAP_SHA_DMA_THRESHOLD;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pm_runtime_enable(dev);
 	pm_runtime_irq_safe(dev);
 
@@ -2330,12 +2169,6 @@ static int omap_sham_probe(struct platform_device *pdev)
 	spin_unlock(&sham.lock);
 
 	for (i = 0; i < dd->pdata->algs_info_size; i++) {
-<<<<<<< HEAD
-=======
-		if (dd->pdata->algs_info[i].registered)
-			break;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		for (j = 0; j < dd->pdata->algs_info[i].size; j++) {
 			struct ahash_alg *alg;
 
@@ -2352,15 +2185,12 @@ static int omap_sham_probe(struct platform_device *pdev)
 		}
 	}
 
-<<<<<<< HEAD
 	err = sysfs_create_group(&dev->kobj, &omap_sham_attr_group);
 	if (err) {
 		dev_err(dev, "could not create sysfs device attrs\n");
 		goto err_algs;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 err_algs:
@@ -2390,17 +2220,9 @@ static int omap_sham_remove(struct platform_device *pdev)
 	list_del(&dd->list);
 	spin_unlock(&sham.lock);
 	for (i = dd->pdata->algs_info_size - 1; i >= 0; i--)
-<<<<<<< HEAD
 		for (j = dd->pdata->algs_info[i].registered - 1; j >= 0; j--)
 			crypto_unregister_ahash(
 					&dd->pdata->algs_info[i].algs_list[j]);
-=======
-		for (j = dd->pdata->algs_info[i].registered - 1; j >= 0; j--) {
-			crypto_unregister_ahash(
-					&dd->pdata->algs_info[i].algs_list[j]);
-			dd->pdata->algs_info[i].registered--;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tasklet_kill(&dd->done_task);
 	pm_runtime_disable(&pdev->dev);
 

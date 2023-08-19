@@ -225,11 +225,7 @@ static struct platform_device *devices[] __initdata = {
 	&kp_device,
 };
 
-<<<<<<< HEAD
 static const struct omap_lcd_config perseus2_lcd_config __initconst = {
-=======
-static struct omap_lcd_config perseus2_lcd_config __initdata = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ctrl_name	= "internal",
 };
 

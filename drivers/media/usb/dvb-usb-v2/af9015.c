@@ -29,10 +29,7 @@ static int af9015_ctrl_msg(struct dvb_usb_device *d, struct req_t *req)
 #define REQ_HDR_LEN 8 /* send header size */
 #define ACK_HDR_LEN 2 /* rece header size */
 	struct af9015_state *state = d_to_priv(d);
-<<<<<<< HEAD
 	struct usb_interface *intf = d->intf;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret, wlen, rlen;
 	u8 write = 1;
 
@@ -70,42 +67,24 @@ static int af9015_ctrl_msg(struct dvb_usb_device *d, struct req_t *req)
 	case BOOT:
 		break;
 	default:
-<<<<<<< HEAD
 		dev_err(&intf->dev, "unknown cmd %d\n", req->cmd);
-=======
-		dev_err(&d->udev->dev, "%s: unknown command=%d\n",
-				KBUILD_MODNAME, req->cmd);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -EIO;
 		goto error;
 	}
 
-<<<<<<< HEAD
 	/* Buffer overflow check */
 	if ((write && (req->data_len > BUF_LEN - REQ_HDR_LEN)) ||
 	    (!write && (req->data_len > BUF_LEN - ACK_HDR_LEN))) {
 		dev_err(&intf->dev, "too much data, cmd %u, len %u\n",
 			req->cmd, req->data_len);
-=======
-	/* buffer overflow check */
-	if ((write && (req->data_len > BUF_LEN - REQ_HDR_LEN)) ||
-			(!write && (req->data_len > BUF_LEN - ACK_HDR_LEN))) {
-		dev_err(&d->udev->dev, "%s: too much data; cmd=%d len=%d\n",
-				KBUILD_MODNAME, req->cmd, req->data_len);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -EINVAL;
 		goto error;
 	}
 
-<<<<<<< HEAD
 	/*
 	 * Write receives seq + status = 2 bytes
 	 * Read receives seq + status + data = 2 + N bytes
 	 */
-=======
-	/* write receives seq + status = 2 bytes
-	   read receives seq + status + data = 2 + N bytes */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wlen = REQ_HDR_LEN;
 	rlen = ACK_HDR_LEN;
 	if (write) {
@@ -119,24 +98,14 @@ static int af9015_ctrl_msg(struct dvb_usb_device *d, struct req_t *req)
 	if (req->cmd == DOWNLOAD_FIRMWARE || req->cmd == RECONNECT_USB)
 		rlen = 0;
 
-<<<<<<< HEAD
 	ret = dvb_usbv2_generic_rw_locked(d, state->buf, wlen,
 					  state->buf, rlen);
-=======
-	ret = dvb_usbv2_generic_rw_locked(d,
-			state->buf, wlen, state->buf, rlen);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto error;
 
 	/* check status */
 	if (rlen && state->buf[1]) {
-<<<<<<< HEAD
 		dev_err(&intf->dev, "cmd failed %u\n", state->buf[1]);
-=======
-		dev_err(&d->udev->dev, "%s: command failed=%d\n",
-				KBUILD_MODNAME, state->buf[1]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -EIO;
 		goto error;
 	}
@@ -150,128 +119,43 @@ error:
 	return ret;
 }
 
-<<<<<<< HEAD
 static int af9015_write_reg_i2c(struct dvb_usb_device *d, u8 addr, u16 reg,
 				u8 val)
-=======
-static int af9015_write_regs(struct dvb_usb_device *d, u16 addr, u8 *val,
-	u8 len)
-{
-	struct req_t req = {WRITE_MEMORY, AF9015_I2C_DEMOD, addr, 0, 0, len,
-		val};
-	return af9015_ctrl_msg(d, &req);
-}
-
-static int af9015_read_regs(struct dvb_usb_device *d, u16 addr, u8 *val, u8 len)
-{
-	struct req_t req = {READ_MEMORY, AF9015_I2C_DEMOD, addr, 0, 0, len,
-		val};
-	return af9015_ctrl_msg(d, &req);
-}
-
-static int af9015_write_reg(struct dvb_usb_device *d, u16 addr, u8 val)
-{
-	return af9015_write_regs(d, addr, &val, 1);
-}
-
-static int af9015_read_reg(struct dvb_usb_device *d, u16 addr, u8 *val)
-{
-	return af9015_read_regs(d, addr, val, 1);
-}
-
-static int af9015_write_reg_i2c(struct dvb_usb_device *d, u8 addr, u16 reg,
-	u8 val)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct af9015_state *state = d_to_priv(d);
 	struct req_t req = {WRITE_I2C, addr, reg, 1, 1, 1, &val};
 
-<<<<<<< HEAD
 	if (addr == state->af9013_i2c_addr[0] ||
 	    addr == state->af9013_i2c_addr[1])
-=======
-	if (addr == state->af9013_config[0].i2c_addr ||
-	    addr == state->af9013_config[1].i2c_addr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		req.addr_len = 3;
 
 	return af9015_ctrl_msg(d, &req);
 }
 
 static int af9015_read_reg_i2c(struct dvb_usb_device *d, u8 addr, u16 reg,
-<<<<<<< HEAD
 			       u8 *val)
-=======
-	u8 *val)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct af9015_state *state = d_to_priv(d);
 	struct req_t req = {READ_I2C, addr, reg, 0, 1, 1, val};
 
-<<<<<<< HEAD
 	if (addr == state->af9013_i2c_addr[0] ||
 	    addr == state->af9013_i2c_addr[1])
-=======
-	if (addr == state->af9013_config[0].i2c_addr ||
-	    addr == state->af9013_config[1].i2c_addr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		req.addr_len = 3;
 
 	return af9015_ctrl_msg(d, &req);
 }
 
-<<<<<<< HEAD
 static int af9015_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
 			   int num)
 {
 	struct dvb_usb_device *d = i2c_get_adapdata(adap);
 	struct af9015_state *state = d_to_priv(d);
 	struct usb_interface *intf = d->intf;
-=======
-static int af9015_do_reg_bit(struct dvb_usb_device *d, u16 addr, u8 bit, u8 op)
-{
-	int ret;
-	u8 val, mask = 0x01;
-
-	ret = af9015_read_reg(d, addr, &val);
-	if (ret)
-		return ret;
-
-	mask <<= bit;
-	if (op) {
-		/* set bit */
-		val |= mask;
-	} else {
-		/* clear bit */
-		mask ^= 0xff;
-		val &= mask;
-	}
-
-	return af9015_write_reg(d, addr, val);
-}
-
-static int af9015_set_reg_bit(struct dvb_usb_device *d, u16 addr, u8 bit)
-{
-	return af9015_do_reg_bit(d, addr, bit, 1);
-}
-
-static int af9015_clear_reg_bit(struct dvb_usb_device *d, u16 addr, u8 bit)
-{
-	return af9015_do_reg_bit(d, addr, bit, 0);
-}
-
-static int af9015_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
-	int num)
-{
-	struct dvb_usb_device *d = i2c_get_adapdata(adap);
-	struct af9015_state *state = d_to_priv(d);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 	u16 addr;
 	u8 mbox, addr_len;
 	struct req_t req;
 
-<<<<<<< HEAD
 	/*
 	 * I2C multiplexing:
 	 * There could be two tuners, both using same I2C address. Demodulator
@@ -295,30 +179,6 @@ static int af9015_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
 	 *                             | addr 0x1d  |             |  addr 0x63 |
 	 *                             |____________|             |____________|
 	 */
-=======
-/*
-The bus lock is needed because there is two tuners both using same I2C-address.
-Due to that the only way to select correct tuner is use demodulator I2C-gate.
-
-................................................
-. AF9015 includes integrated AF9013 demodulator.
-. ____________                   ____________  .                ____________
-.|     uC     |                 |   demod    | .               |    tuner   |
-.|------------|                 |------------| .               |------------|
-.|   AF9015   |                 |  AF9013/5  | .               |   MXL5003  |
-.|            |--+----I2C-------|-----/ -----|-.-----I2C-------|            |
-.|            |  |              | addr 0x38  | .               |  addr 0xc6 |
-.|____________|  |              |____________| .               |____________|
-.................|..............................
-		 |               ____________                   ____________
-		 |              |   demod    |                 |    tuner   |
-		 |              |------------|                 |------------|
-		 |              |   AF9013   |                 |   MXL5003  |
-		 +----I2C-------|-----/ -----|-------I2C-------|            |
-				| addr 0x3a  |                 |  addr 0xc6 |
-				|____________|                 |____________|
-*/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (msg[0].len == 0 || msg[0].flags & I2C_M_RD) {
 		addr = 0x0000;
@@ -329,19 +189,11 @@ Due to that the only way to select correct tuner is use demodulator I2C-gate.
 		mbox = 0;
 		addr_len = 1;
 	} else if (msg[0].len == 2) {
-<<<<<<< HEAD
 		addr = msg[0].buf[0] << 8 | msg[0].buf[1] << 0;
 		mbox = 0;
 		addr_len = 2;
 	} else {
 		addr = msg[0].buf[0] << 8 | msg[0].buf[1] << 0;
-=======
-		addr = msg[0].buf[0] << 8|msg[0].buf[1] << 0;
-		mbox = 0;
-		addr_len = 2;
-	} else {
-		addr = msg[0].buf[0] << 8|msg[0].buf[1] << 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mbox = msg[0].buf[2];
 		addr_len = 3;
 	}
@@ -352,11 +204,7 @@ Due to that the only way to select correct tuner is use demodulator I2C-gate.
 			ret = -EOPNOTSUPP;
 			goto err;
 		}
-<<<<<<< HEAD
 		if (msg[0].addr == state->af9013_i2c_addr[0])
-=======
-		if (msg[0].addr == state->af9013_config[0].i2c_addr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			req.cmd = WRITE_MEMORY;
 		else
 			req.cmd = WRITE_I2C;
@@ -364,11 +212,7 @@ Due to that the only way to select correct tuner is use demodulator I2C-gate.
 		req.addr = addr;
 		req.mbox = mbox;
 		req.addr_len = addr_len;
-<<<<<<< HEAD
 		req.data_len = msg[0].len - addr_len;
-=======
-		req.data_len = msg[0].len-addr_len;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		req.data = &msg[0].buf[addr_len];
 		ret = af9015_ctrl_msg(d, &req);
 	} else if (num == 2 && !(msg[0].flags & I2C_M_RD) &&
@@ -378,11 +222,7 @@ Due to that the only way to select correct tuner is use demodulator I2C-gate.
 			ret = -EOPNOTSUPP;
 			goto err;
 		}
-<<<<<<< HEAD
 		if (msg[0].addr == state->af9013_i2c_addr[0])
-=======
-		if (msg[0].addr == state->af9013_config[0].i2c_addr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			req.cmd = READ_MEMORY;
 		else
 			req.cmd = READ_I2C;
@@ -399,11 +239,7 @@ Due to that the only way to select correct tuner is use demodulator I2C-gate.
 			ret = -EOPNOTSUPP;
 			goto err;
 		}
-<<<<<<< HEAD
 		if (msg[0].addr == state->af9013_i2c_addr[0]) {
-=======
-		if (msg[0].addr == state->af9013_config[0].i2c_addr) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ret = -EINVAL;
 			goto err;
 		}
@@ -417,23 +253,14 @@ Due to that the only way to select correct tuner is use demodulator I2C-gate.
 		ret = af9015_ctrl_msg(d, &req);
 	} else {
 		ret = -EOPNOTSUPP;
-<<<<<<< HEAD
 		dev_dbg(&intf->dev, "unknown msg, num %u\n", num);
-=======
-		dev_dbg(&d->udev->dev, "%s: unknown msg, num %u\n",
-			__func__, num);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	if (ret)
 		goto err;
 
 	return num;
 err:
-<<<<<<< HEAD
 	dev_dbg(&intf->dev, "failed %d\n", ret);
-=======
-	dev_dbg(&d->udev->dev, "%s: failed %d\n", __func__, ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -449,10 +276,7 @@ static struct i2c_algorithm af9015_i2c_algo = {
 
 static int af9015_identify_state(struct dvb_usb_device *d, const char **name)
 {
-<<<<<<< HEAD
 	struct usb_interface *intf = d->intf;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 	u8 reply;
 	struct req_t req = {GET_CONFIG, 0, 0, 0, 0, 1, &reply};
@@ -461,11 +285,7 @@ static int af9015_identify_state(struct dvb_usb_device *d, const char **name)
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	dev_dbg(&intf->dev, "reply %02x\n", reply);
-=======
-	dev_dbg(&d->udev->dev, "%s: reply=%02x\n", __func__, reply);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (reply == 0x02)
 		ret = WARM;
@@ -476,7 +296,6 @@ static int af9015_identify_state(struct dvb_usb_device *d, const char **name)
 }
 
 static int af9015_download_firmware(struct dvb_usb_device *d,
-<<<<<<< HEAD
 				    const struct firmware *firmware)
 {
 	struct af9015_state *state = d_to_priv(d);
@@ -507,49 +326,10 @@ static int af9015_download_firmware(struct dvb_usb_device *d,
 		}
 	}
 
-=======
-	const struct firmware *fw)
-{
-	struct af9015_state *state = d_to_priv(d);
-	int i, len, remaining, ret;
-	struct req_t req = {DOWNLOAD_FIRMWARE, 0, 0, 0, 0, 0, NULL};
-	u16 checksum = 0;
-	dev_dbg(&d->udev->dev, "%s:\n", __func__);
-
-	/* calc checksum */
-	for (i = 0; i < fw->size; i++)
-		checksum += fw->data[i];
-
-	state->firmware_size = fw->size;
-	state->firmware_checksum = checksum;
-
-	#define FW_ADDR 0x5100 /* firmware start address */
-	#define LEN_MAX 55 /* max packet size */
-	for (remaining = fw->size; remaining > 0; remaining -= LEN_MAX) {
-		len = remaining;
-		if (len > LEN_MAX)
-			len = LEN_MAX;
-
-		req.data_len = len;
-		req.data = (u8 *) &fw->data[fw->size - remaining];
-		req.addr = FW_ADDR + fw->size - remaining;
-
-		ret = af9015_ctrl_msg(d, &req);
-		if (ret) {
-			dev_err(&d->udev->dev,
-					"%s: firmware download failed=%d\n",
-					KBUILD_MODNAME, ret);
-			goto error;
-		}
-	}
-
-	/* firmware loaded, request boot */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	req.cmd = BOOT;
 	req.data_len = 0;
 	ret = af9015_ctrl_msg(d, &req);
 	if (ret) {
-<<<<<<< HEAD
 		dev_err(&intf->dev, "firmware boot failed %d\n", ret);
 		goto err;
 	}
@@ -557,14 +337,6 @@ static int af9015_download_firmware(struct dvb_usb_device *d,
 	return 0;
 err:
 	dev_dbg(&intf->dev, "failed %d\n", ret);
-=======
-		dev_err(&d->udev->dev, "%s: firmware boot failed=%d\n",
-				KBUILD_MODNAME, ret);
-		goto error;
-	}
-
-error:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -576,10 +348,7 @@ error:
 static int af9015_eeprom_hash(struct dvb_usb_device *d)
 {
 	struct af9015_state *state = d_to_priv(d);
-<<<<<<< HEAD
 	struct usb_interface *intf = d->intf;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret, i;
 	u8 buf[AF9015_EEPROM_SIZE];
 	struct req_t req = {READ_I2C, AF9015_I2C_EEPROM, 0, 0, 1, 1, NULL};
@@ -600,41 +369,24 @@ static int af9015_eeprom_hash(struct dvb_usb_device *d)
 	}
 
 	for (i = 0; i < AF9015_EEPROM_SIZE; i += 16)
-<<<<<<< HEAD
 		dev_dbg(&intf->dev, "%*ph\n", 16, buf + i);
 
 	dev_dbg(&intf->dev, "eeprom sum %.8x\n", state->eeprom_sum);
 	return 0;
 err:
 	dev_dbg(&intf->dev, "failed %d\n", ret);
-=======
-		dev_dbg(&d->udev->dev, "%s: %*ph\n", __func__, 16, buf + i);
-
-	dev_dbg(&d->udev->dev, "%s: eeprom sum=%.8x\n",
-			__func__, state->eeprom_sum);
-	return 0;
-err:
-	dev_err(&d->udev->dev, "%s: eeprom failed=%d\n", KBUILD_MODNAME, ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
 static int af9015_read_config(struct dvb_usb_device *d)
 {
 	struct af9015_state *state = d_to_priv(d);
-<<<<<<< HEAD
 	struct usb_interface *intf = d->intf;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 	u8 val, i, offset = 0;
 	struct req_t req = {READ_I2C, AF9015_I2C_EEPROM, 0, 0, 1, 1, &val};
 
-<<<<<<< HEAD
 	dev_dbg(&intf->dev, "\n");
-=======
-	dev_dbg(&d->udev->dev, "%s:\n", __func__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* IR remote controller */
 	req.addr = AF9015_EEPROM_IR_MODE;
@@ -652,11 +404,7 @@ static int af9015_read_config(struct dvb_usb_device *d)
 		goto error;
 
 	state->ir_mode = val;
-<<<<<<< HEAD
 	dev_dbg(&intf->dev, "ir mode %02x\n", val);
-=======
-	dev_dbg(&d->udev->dev, "%s: IR mode=%d\n", __func__, val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* TS mode - one or two receivers */
 	req.addr = AF9015_EEPROM_TS_MODE;
@@ -665,19 +413,9 @@ static int af9015_read_config(struct dvb_usb_device *d)
 		goto error;
 
 	state->dual_mode = val;
-<<<<<<< HEAD
 	dev_dbg(&intf->dev, "ts mode %02x\n", state->dual_mode);
 
 	state->af9013_i2c_addr[0] = AF9015_I2C_DEMOD;
-=======
-	dev_dbg(&d->udev->dev, "%s: TS mode=%d\n", __func__, state->dual_mode);
-
-	/* disable 2nd adapter because we don't have PID-filters */
-	if (d->udev->speed == USB_SPEED_FULL)
-		state->dual_mode = 0;
-
-	state->af9013_config[0].i2c_addr = AF9015_I2C_DEMOD;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (state->dual_mode) {
 		/* read 2nd demodulator I2C address */
@@ -686,11 +424,7 @@ static int af9015_read_config(struct dvb_usb_device *d)
 		if (ret)
 			goto error;
 
-<<<<<<< HEAD
 		state->af9013_i2c_addr[1] = val >> 1;
-=======
-		state->af9013_config[1].i2c_addr = val >> 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	for (i = 0; i < state->dual_mode + 1; i++) {
@@ -703,7 +437,6 @@ static int af9015_read_config(struct dvb_usb_device *d)
 			goto error;
 		switch (val) {
 		case 0:
-<<<<<<< HEAD
 			state->af9013_pdata[i].clk = 28800000;
 			break;
 		case 1:
@@ -718,23 +451,6 @@ static int af9015_read_config(struct dvb_usb_device *d)
 		}
 		dev_dbg(&intf->dev, "[%d] xtal %02x, clk %u\n",
 			i, val, state->af9013_pdata[i].clk);
-=======
-			state->af9013_config[i].clock = 28800000;
-			break;
-		case 1:
-			state->af9013_config[i].clock = 20480000;
-			break;
-		case 2:
-			state->af9013_config[i].clock = 28000000;
-			break;
-		case 3:
-			state->af9013_config[i].clock = 25000000;
-			break;
-		}
-		dev_dbg(&d->udev->dev, "%s: [%d] xtal=%d set clock=%d\n",
-				__func__, i, val,
-				state->af9013_config[i].clock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* IF frequency */
 		req.addr = AF9015_EEPROM_IF1H + offset;
@@ -742,28 +458,17 @@ static int af9015_read_config(struct dvb_usb_device *d)
 		if (ret)
 			goto error;
 
-<<<<<<< HEAD
 		state->af9013_pdata[i].if_frequency = val << 8;
-=======
-		state->af9013_config[i].if_frequency = val << 8;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		req.addr = AF9015_EEPROM_IF1L + offset;
 		ret = af9015_ctrl_msg(d, &req);
 		if (ret)
 			goto error;
 
-<<<<<<< HEAD
 		state->af9013_pdata[i].if_frequency += val;
 		state->af9013_pdata[i].if_frequency *= 1000;
 		dev_dbg(&intf->dev, "[%d] if frequency %u\n",
 			i, state->af9013_pdata[i].if_frequency);
-=======
-		state->af9013_config[i].if_frequency += val;
-		state->af9013_config[i].if_frequency *= 1000;
-		dev_dbg(&d->udev->dev, "%s: [%d] IF frequency=%d\n", __func__,
-				i, state->af9013_config[i].if_frequency);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* MT2060 IF1 */
 		req.addr = AF9015_EEPROM_MT2060_IF1H  + offset;
@@ -776,13 +481,8 @@ static int af9015_read_config(struct dvb_usb_device *d)
 		if (ret)
 			goto error;
 		state->mt2060_if1[i] += val;
-<<<<<<< HEAD
 		dev_dbg(&intf->dev, "[%d] MT2060 IF1 %u\n",
 			i, state->mt2060_if1[i]);
-=======
-		dev_dbg(&d->udev->dev, "%s: [%d] MT2060 IF1=%d\n", __func__, i,
-				state->mt2060_if1[i]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* tuner */
 		req.addr =  AF9015_EEPROM_TUNER_ID1 + offset;
@@ -798,17 +498,12 @@ static int af9015_read_config(struct dvb_usb_device *d)
 		case AF9013_TUNER_TDA18271:
 		case AF9013_TUNER_QT1010A:
 		case AF9013_TUNER_TDA18218:
-<<<<<<< HEAD
 			state->af9013_pdata[i].spec_inv = 1;
-=======
-			state->af9013_config[i].spec_inv = 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		case AF9013_TUNER_MXL5003D:
 		case AF9013_TUNER_MXL5005D:
 		case AF9013_TUNER_MXL5005R:
 		case AF9013_TUNER_MXL5007T:
-<<<<<<< HEAD
 			state->af9013_pdata[i].spec_inv = 0;
 			break;
 		case AF9013_TUNER_MC44S803:
@@ -824,29 +519,10 @@ static int af9015_read_config(struct dvb_usb_device *d)
 
 		state->af9013_pdata[i].tuner = val;
 		dev_dbg(&intf->dev, "[%d] tuner id %02x\n", i, val);
-=======
-			state->af9013_config[i].spec_inv = 0;
-			break;
-		case AF9013_TUNER_MC44S803:
-			state->af9013_config[i].gpio[1] = AF9013_GPIO_LO;
-			state->af9013_config[i].spec_inv = 1;
-			break;
-		default:
-			dev_err(&d->udev->dev, "%s: tuner id=%d not " \
-					"supported, please report!\n",
-					KBUILD_MODNAME, val);
-			return -ENODEV;
-		}
-
-		state->af9013_config[i].tuner = val;
-		dev_dbg(&d->udev->dev, "%s: [%d] tuner id=%d\n",
-				__func__, i, val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 error:
 	if (ret)
-<<<<<<< HEAD
 		dev_err(&intf->dev, "eeprom read failed %d\n", ret);
 
 	/*
@@ -858,38 +534,17 @@ error:
 	    ((le16_to_cpu(d->udev->descriptor.idProduct) == USB_PID_AVERMEDIA_A850) ||
 	    (le16_to_cpu(d->udev->descriptor.idProduct) == USB_PID_AVERMEDIA_A850T))) {
 		dev_dbg(&intf->dev, "AverMedia A850: overriding config\n");
-=======
-		dev_err(&d->udev->dev, "%s: eeprom read failed=%d\n",
-				KBUILD_MODNAME, ret);
-
-	/* AverMedia AVerTV Volar Black HD (A850) device have bad EEPROM
-	   content :-( Override some wrong values here. Ditto for the
-	   AVerTV Red HD+ (A850T) device. */
-	if (le16_to_cpu(d->udev->descriptor.idVendor) == USB_VID_AVERMEDIA &&
-		((le16_to_cpu(d->udev->descriptor.idProduct) ==
-			USB_PID_AVERMEDIA_A850) ||
-		(le16_to_cpu(d->udev->descriptor.idProduct) ==
-			USB_PID_AVERMEDIA_A850T))) {
-		dev_dbg(&d->udev->dev,
-				"%s: AverMedia A850: overriding config\n",
-				__func__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* disable dual mode */
 		state->dual_mode = 0;
 
 		/* set correct IF */
-<<<<<<< HEAD
 		state->af9013_pdata[0].if_frequency = 4570000;
-=======
-		state->af9013_config[0].if_frequency = 4570000;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return ret;
 }
 
 static int af9015_get_stream_config(struct dvb_frontend *fe, u8 *ts_type,
-<<<<<<< HEAD
 				    struct usb_data_stream_properties *stream)
 {
 	struct dvb_usb_device *d = fe_to_d(fe);
@@ -899,20 +554,10 @@ static int af9015_get_stream_config(struct dvb_frontend *fe, u8 *ts_type,
 
 	if (d->udev->speed == USB_SPEED_FULL)
 		stream->u.bulk.buffersize = 5 * 188;
-=======
-		struct usb_data_stream_properties *stream)
-{
-	struct dvb_usb_device *d = fe_to_d(fe);
-	dev_dbg(&d->udev->dev, "%s: adap=%d\n", __func__, fe_to_adap(fe)->id);
-
-	if (d->udev->speed == USB_SPEED_FULL)
-		stream->u.bulk.buffersize = TS_USB11_FRAME_SIZE;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
 static int af9015_streaming_ctrl(struct dvb_frontend *fe, int onoff)
 {
 	struct dvb_usb_device *d = fe_to_d(fe);
@@ -1024,11 +669,6 @@ static int af9015_get_adapter_count(struct dvb_usb_device *d)
 {
 	struct af9015_state *state = d_to_priv(d);
 
-=======
-static int af9015_get_adapter_count(struct dvb_usb_device *d)
-{
-	struct af9015_state *state = d_to_priv(d);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return state->dual_mode + 1;
 }
 
@@ -1050,11 +690,7 @@ static int af9015_af9013_set_frontend(struct dvb_frontend *fe)
 
 /* override demod callbacks for resource locking */
 static int af9015_af9013_read_status(struct dvb_frontend *fe,
-<<<<<<< HEAD
 				     enum fe_status *status)
-=======
-	enum fe_status *status)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret;
 	struct af9015_state *state = fe_to_priv(fe);
@@ -1136,7 +772,6 @@ static int af9015_tuner_sleep(struct dvb_frontend *fe)
 static int af9015_copy_firmware(struct dvb_usb_device *d)
 {
 	struct af9015_state *state = d_to_priv(d);
-<<<<<<< HEAD
 	struct usb_interface *intf = d->intf;
 	int ret;
 	unsigned long timeout;
@@ -1212,92 +847,11 @@ static int af9015_copy_firmware(struct dvb_usb_device *d)
 	return 0;
 err:
 	dev_dbg(&intf->dev, "failed %d\n", ret);
-=======
-	int ret;
-	u8 fw_params[4];
-	u8 val, i;
-	struct req_t req = {COPY_FIRMWARE, 0, 0x5100, 0, 0, sizeof(fw_params),
-		fw_params };
-	dev_dbg(&d->udev->dev, "%s:\n", __func__);
-
-	fw_params[0] = state->firmware_size >> 8;
-	fw_params[1] = state->firmware_size & 0xff;
-	fw_params[2] = state->firmware_checksum >> 8;
-	fw_params[3] = state->firmware_checksum & 0xff;
-
-	ret = af9015_read_reg_i2c(d, state->af9013_config[1].i2c_addr,
-			0x98be, &val);
-	if (ret)
-		goto error;
-	else
-		dev_dbg(&d->udev->dev, "%s: firmware status=%02x\n",
-				__func__, val);
-
-	if (val == 0x0c) /* fw is running, no need for download */
-		goto exit;
-
-	/* set I2C master clock to fast (to speed up firmware copy) */
-	ret = af9015_write_reg(d, 0xd416, 0x04); /* 0x04 * 400ns */
-	if (ret)
-		goto error;
-
-	msleep(50);
-
-	/* copy firmware */
-	ret = af9015_ctrl_msg(d, &req);
-	if (ret)
-		dev_err(&d->udev->dev, "%s: firmware copy cmd failed=%d\n",
-				KBUILD_MODNAME, ret);
-
-	dev_dbg(&d->udev->dev, "%s: firmware copy done\n", __func__);
-
-	/* set I2C master clock back to normal */
-	ret = af9015_write_reg(d, 0xd416, 0x14); /* 0x14 * 400ns */
-	if (ret)
-		goto error;
-
-	/* request boot firmware */
-	ret = af9015_write_reg_i2c(d, state->af9013_config[1].i2c_addr,
-			0xe205, 1);
-	dev_dbg(&d->udev->dev, "%s: firmware boot cmd status=%d\n",
-			__func__, ret);
-	if (ret)
-		goto error;
-
-	for (i = 0; i < 15; i++) {
-		msleep(100);
-
-		/* check firmware status */
-		ret = af9015_read_reg_i2c(d, state->af9013_config[1].i2c_addr,
-				0x98be, &val);
-		dev_dbg(&d->udev->dev, "%s: firmware status cmd status=%d " \
-				"firmware status=%02x\n", __func__, ret, val);
-		if (ret)
-			goto error;
-
-		if (val == 0x0c || val == 0x04) /* success or fail */
-			break;
-	}
-
-	if (val == 0x04) {
-		dev_err(&d->udev->dev, "%s: firmware did not run\n",
-				KBUILD_MODNAME);
-		ret = -ETIMEDOUT;
-	} else if (val != 0x0c) {
-		dev_err(&d->udev->dev, "%s: firmware boot timeout\n",
-				KBUILD_MODNAME);
-		ret = -ETIMEDOUT;
-	}
-
-error:
-exit:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
 static int af9015_af9013_frontend_attach(struct dvb_usb_adapter *adap)
 {
-<<<<<<< HEAD
 	struct af9015_state *state = adap_to_priv(adap);
 	struct dvb_usb_device *d = adap_to_d(adap);
 	struct usb_interface *intf = d->intf;
@@ -1317,21 +871,6 @@ static int af9015_af9013_frontend_attach(struct dvb_usb_adapter *adap)
 		memcpy(state->af9013_pdata[1].api_version, "\x0\x1\x9\x0", 4);
 		state->af9013_pdata[1].gpio[0] = AF9013_GPIO_TUNER_ON;
 		state->af9013_pdata[1].gpio[1] = AF9013_GPIO_LO;
-=======
-	int ret;
-	struct af9015_state *state = adap_to_priv(adap);
-
-	if (adap->id == 0) {
-		state->af9013_config[0].ts_mode = AF9013_TS_USB;
-		memcpy(state->af9013_config[0].api_version, "\x0\x1\x9\x0", 4);
-		state->af9013_config[0].gpio[0] = AF9013_GPIO_HI;
-		state->af9013_config[0].gpio[3] = AF9013_GPIO_TUNER_ON;
-	} else if (adap->id == 1) {
-		state->af9013_config[1].ts_mode = AF9013_TS_SERIAL;
-		memcpy(state->af9013_config[1].api_version, "\x0\x1\x9\x0", 4);
-		state->af9013_config[1].gpio[0] = AF9013_GPIO_TUNER_ON;
-		state->af9013_config[1].gpio[1] = AF9013_GPIO_LO;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* copy firmware to 2nd demodulator */
 		if (state->dual_mode) {
@@ -1340,7 +879,6 @@ static int af9015_af9013_frontend_attach(struct dvb_usb_adapter *adap)
 
 			ret = af9015_copy_firmware(adap_to_d(adap));
 			if (ret) {
-<<<<<<< HEAD
 				dev_err(&intf->dev,
 					"firmware copy to 2nd frontend failed, will disable it\n");
 				state->dual_mode = 0;
@@ -1362,23 +900,6 @@ static int af9015_af9013_frontend_attach(struct dvb_usb_adapter *adap)
 	}
 	adap->fe[0] = state->af9013_pdata[adap->id].get_dvb_frontend(client);
 	state->demod_i2c_client[adap->id] = client;
-=======
-				dev_err(&adap_to_d(adap)->udev->dev,
-						"%s: firmware copy to 2nd " \
-						"frontend failed, will " \
-						"disable it\n", KBUILD_MODNAME);
-				state->dual_mode = 0;
-				return -ENODEV;
-			}
-		} else {
-			return -ENODEV;
-		}
-	}
-
-	/* attach demodulator */
-	adap->fe[0] = dvb_attach(af9013_attach,
-		&state->af9013_config[adap->id], &adap_to_d(adap)->i2c_adap);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * AF9015 firmware does not like if it gets interrupted by I2C adapter
@@ -1388,33 +909,16 @@ static int af9015_af9013_frontend_attach(struct dvb_usb_adapter *adap)
 	 * those "critical" paths to keep AF9015 happy.
 	 */
 	if (adap->fe[0]) {
-<<<<<<< HEAD
 		state->set_frontend[adap->id] = adap->fe[0]->ops.set_frontend;
 		adap->fe[0]->ops.set_frontend = af9015_af9013_set_frontend;
 		state->read_status[adap->id] = adap->fe[0]->ops.read_status;
 		adap->fe[0]->ops.read_status = af9015_af9013_read_status;
 		state->init[adap->id] = adap->fe[0]->ops.init;
 		adap->fe[0]->ops.init = af9015_af9013_init;
-=======
-		state->set_frontend[adap->id] =
-			adap->fe[0]->ops.set_frontend;
-		adap->fe[0]->ops.set_frontend =
-			af9015_af9013_set_frontend;
-
-		state->read_status[adap->id] =
-			adap->fe[0]->ops.read_status;
-		adap->fe[0]->ops.read_status =
-			af9015_af9013_read_status;
-
-		state->init[adap->id] = adap->fe[0]->ops.init;
-		adap->fe[0]->ops.init = af9015_af9013_init;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		state->sleep[adap->id] = adap->fe[0]->ops.sleep;
 		adap->fe[0]->ops.sleep = af9015_af9013_sleep;
 	}
 
-<<<<<<< HEAD
 	return 0;
 err:
 	dev_dbg(&intf->dev, "failed %d\n", ret);
@@ -1435,9 +939,6 @@ static int af9015_frontend_detach(struct dvb_usb_adapter *adap)
 	dvb_module_release(client);
 
 	return 0;
-=======
-	return adap->fe[0] == NULL ? -ENODEV : 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct mt2060_config af9015_mt2060_config = {
@@ -1507,7 +1008,6 @@ static int af9015_tuner_attach(struct dvb_usb_adapter *adap)
 {
 	struct dvb_usb_device *d = adap_to_d(adap);
 	struct af9015_state *state = d_to_priv(d);
-<<<<<<< HEAD
 	struct usb_interface *intf = d->intf;
 	struct i2c_client *client;
 	struct i2c_adapter *adapter;
@@ -1563,66 +1063,6 @@ static int af9015_tuner_attach(struct dvb_usb_adapter *adap)
 	default:
 		dev_err(&intf->dev, "unknown tuner, tuner id %02x\n",
 			state->af9013_pdata[adap->id].tuner);
-=======
-	int ret;
-	dev_dbg(&d->udev->dev, "%s:\n", __func__);
-
-	switch (state->af9013_config[adap->id].tuner) {
-	case AF9013_TUNER_MT2060:
-	case AF9013_TUNER_MT2060_2:
-		ret = dvb_attach(mt2060_attach, adap->fe[0],
-			&adap_to_d(adap)->i2c_adap, &af9015_mt2060_config,
-			state->mt2060_if1[adap->id])
-			== NULL ? -ENODEV : 0;
-		break;
-	case AF9013_TUNER_QT1010:
-	case AF9013_TUNER_QT1010A:
-		ret = dvb_attach(qt1010_attach, adap->fe[0],
-			&adap_to_d(adap)->i2c_adap,
-			&af9015_qt1010_config) == NULL ? -ENODEV : 0;
-		break;
-	case AF9013_TUNER_TDA18271:
-		ret = dvb_attach(tda18271_attach, adap->fe[0], 0x60,
-			&adap_to_d(adap)->i2c_adap,
-			&af9015_tda18271_config) == NULL ? -ENODEV : 0;
-		break;
-	case AF9013_TUNER_TDA18218:
-		ret = dvb_attach(tda18218_attach, adap->fe[0],
-			&adap_to_d(adap)->i2c_adap,
-			&af9015_tda18218_config) == NULL ? -ENODEV : 0;
-		break;
-	case AF9013_TUNER_MXL5003D:
-		ret = dvb_attach(mxl5005s_attach, adap->fe[0],
-			&adap_to_d(adap)->i2c_adap,
-			&af9015_mxl5003_config) == NULL ? -ENODEV : 0;
-		break;
-	case AF9013_TUNER_MXL5005D:
-	case AF9013_TUNER_MXL5005R:
-		ret = dvb_attach(mxl5005s_attach, adap->fe[0],
-			&adap_to_d(adap)->i2c_adap,
-			&af9015_mxl5005_config) == NULL ? -ENODEV : 0;
-		break;
-	case AF9013_TUNER_ENV77H11D5:
-		ret = dvb_attach(dvb_pll_attach, adap->fe[0], 0x60,
-			&adap_to_d(adap)->i2c_adap,
-			DVB_PLL_TDA665X) == NULL ? -ENODEV : 0;
-		break;
-	case AF9013_TUNER_MC44S803:
-		ret = dvb_attach(mc44s803_attach, adap->fe[0],
-			&adap_to_d(adap)->i2c_adap,
-			&af9015_mc44s803_config) == NULL ? -ENODEV : 0;
-		break;
-	case AF9013_TUNER_MXL5007T:
-		ret = dvb_attach(mxl5007t_attach, adap->fe[0],
-			&adap_to_d(adap)->i2c_adap,
-			0x60, &af9015_mxl5007t_config) == NULL ? -ENODEV : 0;
-		break;
-	case AF9013_TUNER_UNKNOWN:
-	default:
-		dev_err(&d->udev->dev, "%s: unknown tuner id=%d\n",
-				KBUILD_MODNAME,
-				state->af9013_config[adap->id].tuner);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -ENODEV;
 	}
 
@@ -1643,7 +1083,6 @@ static int af9015_tuner_attach(struct dvb_usb_adapter *adap)
 
 static int af9015_pid_filter_ctrl(struct dvb_usb_adapter *adap, int onoff)
 {
-<<<<<<< HEAD
 	struct af9015_state *state = adap_to_priv(adap);
 	struct af9013_platform_data *pdata = &state->af9013_pdata[adap->id];
 	int ret;
@@ -1651,21 +1090,10 @@ static int af9015_pid_filter_ctrl(struct dvb_usb_adapter *adap, int onoff)
 	mutex_lock(&state->fe_mutex);
 	ret = pdata->pid_filter_ctrl(adap->fe[0], onoff);
 	mutex_unlock(&state->fe_mutex);
-=======
-	struct dvb_usb_device *d = adap_to_d(adap);
-	int ret;
-	dev_dbg(&d->udev->dev, "%s: onoff=%d\n", __func__, onoff);
-
-	if (onoff)
-		ret = af9015_set_reg_bit(d, 0xd503, 0);
-	else
-		ret = af9015_clear_reg_bit(d, 0xd503, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
 
-<<<<<<< HEAD
 static int af9015_pid_filter(struct dvb_usb_adapter *adap, int index,
 			     u16 pid, int onoff)
 {
@@ -1676,126 +1104,6 @@ static int af9015_pid_filter(struct dvb_usb_adapter *adap, int index,
 	mutex_lock(&state->fe_mutex);
 	ret = pdata->pid_filter(adap->fe[0], index, pid, onoff);
 	mutex_unlock(&state->fe_mutex);
-=======
-static int af9015_pid_filter(struct dvb_usb_adapter *adap, int index, u16 pid,
-	int onoff)
-{
-	struct dvb_usb_device *d = adap_to_d(adap);
-	int ret;
-	u8 idx;
-	dev_dbg(&d->udev->dev, "%s: index=%d pid=%04x onoff=%d\n",
-			__func__, index, pid, onoff);
-
-	ret = af9015_write_reg(d, 0xd505, (pid & 0xff));
-	if (ret)
-		goto error;
-
-	ret = af9015_write_reg(d, 0xd506, (pid >> 8));
-	if (ret)
-		goto error;
-
-	idx = ((index & 0x1f) | (1 << 5));
-	ret = af9015_write_reg(d, 0xd504, idx);
-
-error:
-	return ret;
-}
-
-static int af9015_init_endpoint(struct dvb_usb_device *d)
-{
-	struct af9015_state *state = d_to_priv(d);
-	int ret;
-	u16 frame_size;
-	u8  packet_size;
-	dev_dbg(&d->udev->dev, "%s: USB speed=%d\n", __func__, d->udev->speed);
-
-	if (d->udev->speed == USB_SPEED_FULL) {
-		frame_size = TS_USB11_FRAME_SIZE/4;
-		packet_size = TS_USB11_MAX_PACKET_SIZE/4;
-	} else {
-		frame_size = TS_USB20_FRAME_SIZE/4;
-		packet_size = TS_USB20_MAX_PACKET_SIZE/4;
-	}
-
-	ret = af9015_set_reg_bit(d, 0xd507, 2); /* assert EP4 reset */
-	if (ret)
-		goto error;
-	ret = af9015_set_reg_bit(d, 0xd50b, 1); /* assert EP5 reset */
-	if (ret)
-		goto error;
-	ret = af9015_clear_reg_bit(d, 0xdd11, 5); /* disable EP4 */
-	if (ret)
-		goto error;
-	ret = af9015_clear_reg_bit(d, 0xdd11, 6); /* disable EP5 */
-	if (ret)
-		goto error;
-	ret = af9015_set_reg_bit(d, 0xdd11, 5); /* enable EP4 */
-	if (ret)
-		goto error;
-	if (state->dual_mode) {
-		ret = af9015_set_reg_bit(d, 0xdd11, 6); /* enable EP5 */
-		if (ret)
-			goto error;
-	}
-	ret = af9015_clear_reg_bit(d, 0xdd13, 5); /* disable EP4 NAK */
-	if (ret)
-		goto error;
-	if (state->dual_mode) {
-		ret = af9015_clear_reg_bit(d, 0xdd13, 6); /* disable EP5 NAK */
-		if (ret)
-			goto error;
-	}
-	/* EP4 xfer length */
-	ret = af9015_write_reg(d, 0xdd88, frame_size & 0xff);
-	if (ret)
-		goto error;
-	ret = af9015_write_reg(d, 0xdd89, frame_size >> 8);
-	if (ret)
-		goto error;
-	/* EP5 xfer length */
-	ret = af9015_write_reg(d, 0xdd8a, frame_size & 0xff);
-	if (ret)
-		goto error;
-	ret = af9015_write_reg(d, 0xdd8b, frame_size >> 8);
-	if (ret)
-		goto error;
-	ret = af9015_write_reg(d, 0xdd0c, packet_size); /* EP4 packet size */
-	if (ret)
-		goto error;
-	ret = af9015_write_reg(d, 0xdd0d, packet_size); /* EP5 packet size */
-	if (ret)
-		goto error;
-	ret = af9015_clear_reg_bit(d, 0xd507, 2); /* negate EP4 reset */
-	if (ret)
-		goto error;
-	if (state->dual_mode) {
-		ret = af9015_clear_reg_bit(d, 0xd50b, 1); /* negate EP5 reset */
-		if (ret)
-			goto error;
-	}
-
-	/* enable / disable mp2if2 */
-	if (state->dual_mode) {
-		ret = af9015_set_reg_bit(d, 0xd50b, 0);
-		if (ret)
-			goto error;
-		ret = af9015_set_reg_bit(d, 0xd520, 4);
-		if (ret)
-			goto error;
-	} else {
-		ret = af9015_clear_reg_bit(d, 0xd50b, 0);
-		if (ret)
-			goto error;
-		ret = af9015_clear_reg_bit(d, 0xd520, 4);
-		if (ret)
-			goto error;
-	}
-
-error:
-	if (ret)
-		dev_err(&d->udev->dev, "%s: endpoint init failed=%d\n",
-				KBUILD_MODNAME, ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -1803,28 +1111,15 @@ error:
 static int af9015_init(struct dvb_usb_device *d)
 {
 	struct af9015_state *state = d_to_priv(d);
-<<<<<<< HEAD
 	struct usb_interface *intf = d->intf;
 	int ret;
 
 	dev_dbg(&intf->dev, "\n");
-=======
-	int ret;
-	dev_dbg(&d->udev->dev, "%s:\n", __func__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_init(&state->fe_mutex);
 
 	/* init RC canary */
-<<<<<<< HEAD
 	ret = regmap_write(state->regmap, 0x98e9, 0xff);
-=======
-	ret = af9015_write_reg(d, 0x98e9, 0xff);
-	if (ret)
-		goto error;
-
-	ret = af9015_init_endpoint(d);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto error;
 
@@ -1839,11 +1134,7 @@ struct af9015_rc_setup {
 };
 
 static char *af9015_rc_setup_match(unsigned int id,
-<<<<<<< HEAD
 				   const struct af9015_rc_setup *table)
-=======
-	const struct af9015_rc_setup *table)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	for (; table->rc_codes; table++)
 		if (table->id == id)
@@ -1871,41 +1162,25 @@ static const struct af9015_rc_setup af9015_rc_setup_hashes[] = {
 static int af9015_rc_query(struct dvb_usb_device *d)
 {
 	struct af9015_state *state = d_to_priv(d);
-<<<<<<< HEAD
 	struct usb_interface *intf = d->intf;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 	u8 buf[17];
 
 	/* read registers needed to detect remote controller code */
-<<<<<<< HEAD
 	ret = regmap_bulk_read(state->regmap, 0x98d9, buf, sizeof(buf));
-=======
-	ret = af9015_read_regs(d, 0x98d9, buf, sizeof(buf));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto error;
 
 	/* If any of these are non-zero, assume invalid data */
 	if (buf[1] || buf[2] || buf[3]) {
-<<<<<<< HEAD
 		dev_dbg(&intf->dev, "invalid data\n");
-=======
-		dev_dbg(&d->udev->dev, "%s: invalid data\n", __func__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
 	/* Check for repeat of previous code */
 	if ((state->rc_repeat != buf[6] || buf[0]) &&
-<<<<<<< HEAD
 	    !memcmp(&buf[12], state->rc_last, 4)) {
 		dev_dbg(&intf->dev, "key repeated\n");
-=======
-			!memcmp(&buf[12], state->rc_last, 4)) {
-		dev_dbg(&d->udev->dev, "%s: key repeated\n", __func__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rc_repeat(d->rc_dev);
 		state->rc_repeat = buf[6];
 		return ret;
@@ -1914,31 +1189,18 @@ static int af9015_rc_query(struct dvb_usb_device *d)
 	/* Only process key if canary killed */
 	if (buf[16] != 0xff && buf[0] != 0x01) {
 		enum rc_proto proto;
-<<<<<<< HEAD
 
 		dev_dbg(&intf->dev, "key pressed %*ph\n", 4, buf + 12);
 
 		/* Reset the canary */
 		ret = regmap_write(state->regmap, 0x98e9, 0xff);
-=======
-		dev_dbg(&d->udev->dev, "%s: key pressed %*ph\n",
-				__func__, 4, buf + 12);
-
-		/* Reset the canary */
-		ret = af9015_write_reg(d, 0x98e9, 0xff);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			goto error;
 
 		/* Remember this key */
 		memcpy(state->rc_last, &buf[12], 4);
-<<<<<<< HEAD
 		if (buf[14] == (u8)~buf[15]) {
 			if (buf[12] == (u8)~buf[13]) {
-=======
-		if (buf[14] == (u8) ~buf[15]) {
-			if (buf[12] == (u8) ~buf[13]) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				/* NEC */
 				state->rc_keycode = RC_SCANCODE_NEC(buf[12],
 								    buf[14]);
@@ -1960,11 +1222,7 @@ static int af9015_rc_query(struct dvb_usb_device *d)
 		}
 		rc_keydown(d->rc_dev, proto, state->rc_keycode, 0);
 	} else {
-<<<<<<< HEAD
 		dev_dbg(&intf->dev, "no key press\n");
-=======
-		dev_dbg(&d->udev->dev, "%s: no key press\n", __func__);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Invalidate last keypress */
 		/* Not really needed, but helps with debug */
 		state->rc_last[2] = state->rc_last[3];
@@ -1975,12 +1233,7 @@ static int af9015_rc_query(struct dvb_usb_device *d)
 
 error:
 	if (ret) {
-<<<<<<< HEAD
 		dev_warn(&intf->dev, "rc query failed %d\n", ret);
-=======
-		dev_warn(&d->udev->dev, "%s: rc query failed=%d\n",
-				KBUILD_MODNAME, ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* allow random errors as dvb-usb will stop polling on error */
 		if (!state->rc_failed)
@@ -2003,16 +1256,11 @@ static int af9015_get_rc_config(struct dvb_usb_device *d, struct dvb_usb_rc *rc)
 	/* try to load remote based module param */
 	if (!rc->map_name)
 		rc->map_name = af9015_rc_setup_match(dvb_usb_af9015_remote,
-<<<<<<< HEAD
 						     af9015_rc_setup_modparam);
-=======
-				af9015_rc_setup_modparam);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* try to load remote based eeprom hash */
 	if (!rc->map_name)
 		rc->map_name = af9015_rc_setup_match(state->eeprom_sum,
-<<<<<<< HEAD
 						     af9015_rc_setup_hashes);
 
 	/* try to load remote based USB iManufacturer string */
@@ -2035,26 +1283,6 @@ static int af9015_get_rc_config(struct dvb_usb_device *d, struct dvb_usb_rc *rc)
 			 */
 			rc->map_name = af9015_rc_setup_match(AF9015_REMOTE_MSI_DIGIVOX_MINI_II_V3,
 							     af9015_rc_setup_modparam);
-=======
-				af9015_rc_setup_hashes);
-
-	/* try to load remote based USB iManufacturer string */
-	if (!rc->map_name && vid == USB_VID_AFATECH) {
-		/* Check USB manufacturer and product strings and try
-		   to determine correct remote in case of chip vendor
-		   reference IDs are used.
-		   DO NOT ADD ANYTHING NEW HERE. Use hashes instead. */
-		char manufacturer[10];
-		memset(manufacturer, 0, sizeof(manufacturer));
-		usb_string(d->udev, d->udev->descriptor.iManufacturer,
-			manufacturer, sizeof(manufacturer));
-		if (!strcmp("MSI", manufacturer)) {
-			/* iManufacturer 1 MSI
-			   iProduct      2 MSI K-VOX */
-			rc->map_name = af9015_rc_setup_match(
-					AF9015_REMOTE_MSI_DIGIVOX_MINI_II_V3,
-					af9015_rc_setup_modparam);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -2073,7 +1301,6 @@ static int af9015_get_rc_config(struct dvb_usb_device *d, struct dvb_usb_rc *rc)
 	#define af9015_get_rc_config NULL
 #endif
 
-<<<<<<< HEAD
 static int af9015_regmap_write(void *context, const void *data, size_t count)
 {
 	struct dvb_usb_device *d = context;
@@ -2136,17 +1363,6 @@ static int af9015_probe(struct dvb_usb_device *d)
 	memset(manufacturer, 0, sizeof(manufacturer));
 	usb_string(udev, udev->descriptor.iManufacturer,
 		   manufacturer, sizeof(manufacturer));
-=======
-static int af9015_probe(struct usb_interface *intf,
-		const struct usb_device_id *id)
-{
-	struct usb_device *udev = interface_to_usbdev(intf);
-	char manufacturer[sizeof("ITE Technologies, Inc.")];
-
-	memset(manufacturer, 0, sizeof(manufacturer));
-	usb_string(udev, udev->descriptor.iManufacturer,
-			manufacturer, sizeof(manufacturer));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * There is two devices having same ID but different chipset. One uses
 	 * AF9015 and the other IT9135 chipset. Only difference seen on lsusb
@@ -2165,7 +1381,6 @@ static int af9015_probe(struct usb_interface *intf,
 	 * iProduct                2 DVB-T TV Stick
 	 */
 	if ((le16_to_cpu(udev->descriptor.idVendor) == USB_VID_TERRATEC) &&
-<<<<<<< HEAD
 	    (le16_to_cpu(udev->descriptor.idProduct) == 0x0099)) {
 		if (!strcmp("ITE Technologies, Inc.", manufacturer)) {
 			ret = -ENODEV;
@@ -2201,21 +1416,6 @@ static void af9015_disconnect(struct dvb_usb_device *d)
  * interface 1 is for remote controller (HID)
  */
 static const struct dvb_usb_device_properties af9015_props = {
-=======
-			(le16_to_cpu(udev->descriptor.idProduct) == 0x0099)) {
-		if (!strcmp("ITE Technologies, Inc.", manufacturer)) {
-			dev_dbg(&udev->dev, "%s: rejecting device\n", __func__);
-			return -ENODEV;
-		}
-	}
-
-	return dvb_usbv2_probe(intf, id);
-}
-
-/* interface 0 is used by DVB-T receiver and
-   interface 1 is for remote controller (HID) */
-static struct dvb_usb_device_properties af9015_props = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.driver_name = KBUILD_MODNAME,
 	.owner = THIS_MODULE,
 	.adapter_nr = adapter_nr,
@@ -2224,11 +1424,8 @@ static struct dvb_usb_device_properties af9015_props = {
 	.generic_bulk_ctrl_endpoint = 0x02,
 	.generic_bulk_ctrl_endpoint_response = 0x81,
 
-<<<<<<< HEAD
 	.probe = af9015_probe,
 	.disconnect = af9015_disconnect,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.identify_state = af9015_identify_state,
 	.firmware = AF9015_FIRMWARE,
 	.download_firmware = af9015_download_firmware,
@@ -2236,18 +1433,12 @@ static struct dvb_usb_device_properties af9015_props = {
 	.i2c_algo = &af9015_i2c_algo,
 	.read_config = af9015_read_config,
 	.frontend_attach = af9015_af9013_frontend_attach,
-<<<<<<< HEAD
 	.frontend_detach = af9015_frontend_detach,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.tuner_attach = af9015_tuner_attach,
 	.init = af9015_init,
 	.get_rc_config = af9015_get_rc_config,
 	.get_stream_config = af9015_get_stream_config,
-<<<<<<< HEAD
 	.streaming_ctrl = af9015_streaming_ctrl,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	.get_adapter_count = af9015_get_adapter_count,
 	.adapter = {
@@ -2258,7 +1449,6 @@ static struct dvb_usb_device_properties af9015_props = {
 			.pid_filter = af9015_pid_filter,
 			.pid_filter_ctrl = af9015_pid_filter_ctrl,
 
-<<<<<<< HEAD
 			.stream = DVB_USB_STREAM_BULK(0x84, 6, 87 * 188),
 		}, {
 			.caps = DVB_USB_ADAP_HAS_PID_FILTER |
@@ -2268,11 +1458,6 @@ static struct dvb_usb_device_properties af9015_props = {
 			.pid_filter_ctrl = af9015_pid_filter_ctrl,
 
 			.stream = DVB_USB_STREAM_BULK(0x85, 6, 87 * 188),
-=======
-			.stream = DVB_USB_STREAM_BULK(0x84, 8, TS_USB20_FRAME_SIZE),
-		}, {
-			.stream = DVB_USB_STREAM_BULK(0x85, 8, TS_USB20_FRAME_SIZE),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		},
 	},
 };
@@ -2363,11 +1548,7 @@ MODULE_DEVICE_TABLE(usb, af9015_id_table);
 static struct usb_driver af9015_usb_driver = {
 	.name = KBUILD_MODNAME,
 	.id_table = af9015_id_table,
-<<<<<<< HEAD
 	.probe = dvb_usbv2_probe,
-=======
-	.probe = af9015_probe,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.disconnect = dvb_usbv2_disconnect,
 	.suspend = dvb_usbv2_suspend,
 	.resume = dvb_usbv2_resume,

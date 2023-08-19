@@ -12,11 +12,7 @@
 #include <asm/io.h>
 
 static void *intc_baseaddr;
-<<<<<<< HEAD
 #define IPRA (intc_baseaddr)
-=======
-#define IPRA ((unsigned long)intc_baseaddr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static const unsigned char ipr_table[] = {
 	0x03, 0x02, 0x01, 0x00, 0x13, 0x12, 0x11, 0x10, /* 16 - 23 */
@@ -38,11 +34,7 @@ static const unsigned char ipr_table[] = {
 static void h8s_disable_irq(struct irq_data *data)
 {
 	int pos;
-<<<<<<< HEAD
 	void __iomem *addr;
-=======
-	unsigned int addr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned short pri;
 	int irq = data->irq;
 
@@ -56,11 +48,7 @@ static void h8s_disable_irq(struct irq_data *data)
 static void h8s_enable_irq(struct irq_data *data)
 {
 	int pos;
-<<<<<<< HEAD
 	void __iomem *addr;
-=======
-	unsigned int addr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned short pri;
 	int irq = data->irq;
 

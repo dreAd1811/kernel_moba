@@ -172,11 +172,7 @@ static void caam_jr_dequeue(unsigned long devarg)
 
 	while (rd_reg32(&jrp->rregs->outring_used)) {
 
-<<<<<<< HEAD
 		head = READ_ONCE(jrp->head);
-=======
-		head = ACCESS_ONCE(jrp->head);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		spin_lock(&jrp->outlock);
 
@@ -346,11 +342,7 @@ int caam_jr_enqueue(struct device *dev, u32 *desc,
 	spin_lock_bh(&jrp->inplock);
 
 	head = jrp->head;
-<<<<<<< HEAD
 	tail = READ_ONCE(jrp->tail);
-=======
-	tail = ACCESS_ONCE(jrp->tail);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!rd_reg32(&jrp->rregs->inpring_avail) ||
 	    CIRC_SPACE(head, tail, JOBR_DEPTH) <= 0) {

@@ -34,11 +34,7 @@
 #include <linux/of.h>
 
 #include <linux/io.h>
-<<<<<<< HEAD
 #include <linux/gpio/consumer.h>
-=======
-#include <linux/gpio.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* QSPI register offsets */
 #define QSPI_CR      0x0000  /* Control Register */
@@ -741,7 +737,6 @@ static int atmel_qspi_remove(struct platform_device *pdev)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int __maybe_unused atmel_qspi_suspend(struct device *dev)
 {
 	struct atmel_qspi *aq = dev_get_drvdata(dev);
@@ -762,8 +757,6 @@ static int __maybe_unused atmel_qspi_resume(struct device *dev)
 
 static SIMPLE_DEV_PM_OPS(atmel_qspi_pm_ops, atmel_qspi_suspend,
 			 atmel_qspi_resume);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static const struct of_device_id atmel_qspi_dt_ids[] = {
 	{ .compatible = "atmel,sama5d2-qspi" },
@@ -776,10 +769,7 @@ static struct platform_driver atmel_qspi_driver = {
 	.driver = {
 		.name	= "atmel_qspi",
 		.of_match_table	= atmel_qspi_dt_ids,
-<<<<<<< HEAD
 		.pm	= &atmel_qspi_pm_ops,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.probe		= atmel_qspi_probe,
 	.remove		= atmel_qspi_remove,

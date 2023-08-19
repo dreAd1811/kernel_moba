@@ -64,11 +64,7 @@ static void i965_write_fence_reg(struct drm_i915_fence_reg *fence,
 	int fence_pitch_shift;
 	u64 val;
 
-<<<<<<< HEAD
 	if (INTEL_GEN(fence->i915) >= 6) {
-=======
-	if (INTEL_INFO(fence->i915)->gen >= 6) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		fence_reg_lo = FENCE_REG_GEN6_LO(fence->id);
 		fence_reg_hi = FENCE_REG_GEN6_HI(fence->id);
 		fence_pitch_shift = GEN6_FENCE_PITCH_SHIFT;
@@ -234,7 +230,6 @@ static int fence_update(struct drm_i915_fence_reg *fence,
 	}
 
 	if (fence->vma) {
-<<<<<<< HEAD
 		struct i915_vma *old = fence->vma;
 
 		ret = i915_gem_active_retire(&old->last_fence,
@@ -243,24 +238,14 @@ static int fence_update(struct drm_i915_fence_reg *fence,
 			return ret;
 
 		i915_vma_flush_writes(old);
-=======
-		ret = i915_gem_active_retire(&fence->vma->last_fence,
-				      &fence->vma->obj->base.dev->struct_mutex);
-		if (ret)
-			return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (fence->vma && fence->vma != vma) {
 		/* Ensure that all userspace CPU access is completed before
 		 * stealing the fence.
 		 */
-<<<<<<< HEAD
 		GEM_BUG_ON(fence->vma->fence != fence);
 		i915_vma_revoke_mmap(fence->vma);
-=======
-		i915_gem_release_mmap(fence->vma->obj);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		fence->vma->fence = NULL;
 		fence->vma = NULL;
@@ -300,12 +285,7 @@ static int fence_update(struct drm_i915_fence_reg *fence,
  *
  * 0 on success, negative error code on failure.
  */
-<<<<<<< HEAD
 int i915_vma_put_fence(struct i915_vma *vma)
-=======
-int
-i915_vma_put_fence(struct i915_vma *vma)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_i915_fence_reg *fence = vma->fence;
 
@@ -323,11 +303,8 @@ static struct drm_i915_fence_reg *fence_find(struct drm_i915_private *dev_priv)
 	struct drm_i915_fence_reg *fence;
 
 	list_for_each_entry(fence, &dev_priv->mm.fence_list, link) {
-<<<<<<< HEAD
 		GEM_BUG_ON(fence->vma && fence->vma->fence != fence);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (fence->pin_count)
 			continue;
 
@@ -342,11 +319,7 @@ static struct drm_i915_fence_reg *fence_find(struct drm_i915_private *dev_priv)
 }
 
 /**
-<<<<<<< HEAD
  * i915_vma_pin_fence - set up fencing for a vma
-=======
- * i915_vma_get_fence - set up fencing for a vma
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @vma: vma to map through a fence reg
  *
  * When mapping objects through the GTT, userspace wants to be able to write
@@ -364,18 +337,11 @@ static struct drm_i915_fence_reg *fence_find(struct drm_i915_private *dev_priv)
  * 0 on success, negative error code on failure.
  */
 int
-<<<<<<< HEAD
 i915_vma_pin_fence(struct i915_vma *vma)
 {
 	struct drm_i915_fence_reg *fence;
 	struct i915_vma *set = i915_gem_object_is_tiled(vma->obj) ? vma : NULL;
 	int err;
-=======
-i915_vma_get_fence(struct i915_vma *vma)
-{
-	struct drm_i915_fence_reg *fence;
-	struct i915_vma *set = i915_gem_object_is_tiled(vma->obj) ? vma : NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Note that we revoke fences on runtime suspend. Therefore the user
 	 * must keep the device awake whilst using the fence.
@@ -385,11 +351,8 @@ i915_vma_get_fence(struct i915_vma *vma)
 	/* Just update our place in the LRU if our fence is getting reused. */
 	if (vma->fence) {
 		fence = vma->fence;
-<<<<<<< HEAD
 		GEM_BUG_ON(fence->vma != vma);
 		fence->pin_count++;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!fence->dirty) {
 			list_move_tail(&fence->link,
 				       &fence->i915->mm.fence_list);
@@ -399,7 +362,6 @@ i915_vma_get_fence(struct i915_vma *vma)
 		fence = fence_find(vma->vm->i915);
 		if (IS_ERR(fence))
 			return PTR_ERR(fence);
-<<<<<<< HEAD
 
 		GEM_BUG_ON(fence->pin_count);
 		fence->pin_count++;
@@ -470,12 +432,6 @@ void i915_unreserve_fence(struct drm_i915_fence_reg *fence)
 	lockdep_assert_held(&fence->i915->drm.struct_mutex);
 
 	list_add(&fence->link, &fence->i915->mm.fence_list);
-=======
-	} else
-		return 0;
-
-	return fence_update(fence, set);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -497,15 +453,10 @@ void i915_gem_revoke_fences(struct drm_i915_private *dev_priv)
 	for (i = 0; i < dev_priv->num_fence_regs; i++) {
 		struct drm_i915_fence_reg *fence = &dev_priv->fence_regs[i];
 
-<<<<<<< HEAD
 		GEM_BUG_ON(fence->vma && fence->vma->fence != fence);
 
 		if (fence->vma)
 			i915_vma_revoke_mmap(fence->vma);
-=======
-		if (fence->vma)
-			i915_gem_release_mmap(fence->vma->obj);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -525,22 +476,15 @@ void i915_gem_restore_fences(struct drm_i915_private *dev_priv)
 		struct drm_i915_fence_reg *reg = &dev_priv->fence_regs[i];
 		struct i915_vma *vma = reg->vma;
 
-<<<<<<< HEAD
 		GEM_BUG_ON(vma && vma->fence != reg);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * Commit delayed tiling changes if we have an object still
 		 * attached to the fence, otherwise just clear the fence.
 		 */
 		if (vma && !i915_gem_object_is_tiled(vma->obj)) {
 			GEM_BUG_ON(!reg->dirty);
-<<<<<<< HEAD
 			GEM_BUG_ON(i915_vma_has_userfault(vma));
-=======
-			GEM_BUG_ON(!list_empty(&vma->obj->userfault_link));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			list_move(&reg->link, &dev_priv->mm.fence_list);
 			vma->fence = NULL;

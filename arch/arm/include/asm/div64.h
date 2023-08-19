@@ -40,11 +40,7 @@ static inline uint32_t __div64_32(uint64_t *n, uint32_t base)
 		__asmeq("%1", "r2")
 		__asmeq("%2", "r0")
 		__asmeq("%3", "r4")
-<<<<<<< HEAD
 		"bl	__do_div64"
-=======
-		__asmbl("", "ip",  "__do_div64")
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		: "=r" (__rem), "=r" (__res)
 		: "r" (__n), "r" (__base)
 		: "ip", "lr", "cc");

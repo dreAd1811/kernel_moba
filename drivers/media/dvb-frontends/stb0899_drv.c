@@ -27,11 +27,7 @@
 #include <linux/string.h>
 
 #include <linux/dvb/frontend.h>
-<<<<<<< HEAD
 #include <media/dvb_frontend.h>
-=======
-#include "dvb_frontend.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "stb0899_drv.h"
 #include "stb0899_priv.h"
@@ -1587,7 +1583,6 @@ static enum dvbfe_algo stb0899_frontend_algo(struct dvb_frontend *fe)
 static const struct dvb_frontend_ops stb0899_ops = {
 	.delsys = { SYS_DVBS, SYS_DVBS2, SYS_DSS },
 	.info = {
-<<<<<<< HEAD
 		.name			= "STB0899 Multistandard",
 		.frequency_min_hz	=  950 * MHz,
 		.frequency_max_hz	= 2150 * MHz,
@@ -1595,17 +1590,6 @@ static const struct dvb_frontend_ops stb0899_ops = {
 		.symbol_rate_max	= 45000000,
 
 		.caps			= FE_CAN_INVERSION_AUTO	|
-=======
-		.name 			= "STB0899 Multistandard",
-		.frequency_min		= 950000,
-		.frequency_max 		= 2150000,
-		.frequency_stepsize	= 0,
-		.frequency_tolerance	= 0,
-		.symbol_rate_min 	=  5000000,
-		.symbol_rate_max 	= 45000000,
-
-		.caps 			= FE_CAN_INVERSION_AUTO	|
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  FE_CAN_FEC_AUTO	|
 					  FE_CAN_2G_MODULATION	|
 					  FE_CAN_QPSK

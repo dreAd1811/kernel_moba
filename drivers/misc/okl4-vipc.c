@@ -592,10 +592,6 @@ static const struct of_device_id of_plat_okl4_vipc_table[] = {
 static struct platform_driver of_plat_okl4_vipc_driver = {
 	.driver = {
 		.name = "okl4_vipc",
-<<<<<<< HEAD
-=======
-		.owner = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.of_match_table = of_plat_okl4_vipc_table,
 	},
 	.probe = okl4_vipc_probe,

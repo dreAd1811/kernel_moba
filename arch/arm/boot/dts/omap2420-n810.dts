@@ -6,7 +6,6 @@
 / {
 	model = "Nokia N810";
 	compatible = "nokia,n810", "nokia,n8x0", "ti,omap2420", "ti,omap2";
-<<<<<<< HEAD
 
 	vio_ape: vio_ape {
 		compatible = "regulator-fixed";
@@ -74,13 +73,3 @@
 
 	status = "okay";
 };
-=======
-};
-
-&i2c2 {
-	aic3x@18 {
-		compatible = "tlv320aic3x";
-		reg = <0x18>;
-	};
-};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

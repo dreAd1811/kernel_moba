@@ -31,10 +31,7 @@
 #include "ccu_nkmp.h"
 #include "ccu_nm.h"
 #include "ccu_phase.h"
-<<<<<<< HEAD
 #include "ccu_sdm.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "ccu-sun6i-a31.h"
 
@@ -52,7 +49,6 @@ static SUNXI_CCU_NKM_WITH_GATE_LOCK(pll_cpu_clk, "pll-cpu",
  * the base (2x, 4x and 8x), and one variable divider (the one true
  * pll audio).
  *
-<<<<<<< HEAD
  * With sigma-delta modulation for fractional-N on the audio PLL,
  * we have to use specific dividers. This means the variable divider
  * can no longer be used, as the audio codec requests the exact clock
@@ -76,20 +72,6 @@ static SUNXI_CCU_NM_WITH_SDM_GATE_LOCK(pll_audio_base_clk, "pll-audio-base",
 				       BIT(31),	/* gate */
 				       BIT(28),	/* lock */
 				       CLK_SET_RATE_UNGATE);
-=======
- * We don't have any need for the variable divider for now, so we just
- * hardcode it to match with the clock names
- */
-#define SUN6I_A31_PLL_AUDIO_REG	0x008
-
-static SUNXI_CCU_NM_WITH_GATE_LOCK(pll_audio_base_clk, "pll-audio-base",
-				   "osc24M", 0x008,
-				   8, 7,	/* N */
-				   0, 5,	/* M */
-				   BIT(31),	/* gate */
-				   BIT(28),	/* lock */
-				   CLK_SET_RATE_UNGATE);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static SUNXI_CCU_NM_WITH_FRAC_GATE_LOCK(pll_video0_clk, "pll-video0",
 					"osc24M", 0x010,
@@ -980,15 +962,9 @@ static struct ccu_common *sun6i_a31_ccu_clks[] = {
 	&out_c_clk.common,
 };
 
-<<<<<<< HEAD
 /* We hardcode the divider to 1 for now */
 static CLK_FIXED_FACTOR(pll_audio_clk, "pll-audio",
 			"pll-audio-base", 1, 1, CLK_SET_RATE_PARENT);
-=======
-/* We hardcode the divider to 4 for now */
-static CLK_FIXED_FACTOR(pll_audio_clk, "pll-audio",
-			"pll-audio-base", 4, 1, CLK_SET_RATE_PARENT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static CLK_FIXED_FACTOR(pll_audio_2x_clk, "pll-audio-2x",
 			"pll-audio-base", 2, 1, CLK_SET_RATE_PARENT);
 static CLK_FIXED_FACTOR(pll_audio_4x_clk, "pll-audio-4x",
@@ -1257,17 +1233,10 @@ static void __init sun6i_a31_ccu_setup(struct device_node *node)
 		return;
 	}
 
-<<<<<<< HEAD
 	/* Force the PLL-Audio-1x divider to 1 */
 	val = readl(reg + SUN6I_A31_PLL_AUDIO_REG);
 	val &= ~GENMASK(19, 16);
 	writel(val | (0 << 16), reg + SUN6I_A31_PLL_AUDIO_REG);
-=======
-	/* Force the PLL-Audio-1x divider to 4 */
-	val = readl(reg + SUN6I_A31_PLL_AUDIO_REG);
-	val &= ~GENMASK(19, 16);
-	writel(val | (3 << 16), reg + SUN6I_A31_PLL_AUDIO_REG);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Force PLL-MIPI to MIPI mode */
 	val = readl(reg + SUN6I_A31_PLL_MIPI_REG);

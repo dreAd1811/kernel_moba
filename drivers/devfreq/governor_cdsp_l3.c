@@ -1,21 +1,6 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-=======
-/*
- * Copyright (c) 2018 The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
- * GNU General Public License for more details.
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #define pr_fmt(fmt) "governor_cdspl3: " fmt
@@ -49,11 +34,7 @@ static int cdsp_l3_request_callback(unsigned int freq_khz)
 		update_devfreq(p_me.df);
 		mutex_unlock(&p_me.df->lock);
 	} else {
-<<<<<<< HEAD
 		pr_err("CDSP L3 request for %dKHz not served\n", freq_khz);
-=======
-		pr_err("CDSP L3 request for %dKHz not served", freq_khz);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 	}
 	return 0;
@@ -73,17 +54,13 @@ static int devfreq_get_target_freq(struct devfreq *df,
 
 static int gov_start(struct devfreq *df)
 {
-<<<<<<< HEAD
 	int ret = 0;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (p_me.of_node != df->dev.parent->of_node) {
 		dev_err(df->dev.parent,
 		"Device match error in CDSP L3 frequency governor\n");
 		return -ENODEV;
 	}
-<<<<<<< HEAD
 
 	p_me.df = df;
 	p_me.l3_freq_hz = 0;
@@ -99,15 +76,6 @@ static int gov_start(struct devfreq *df)
 	cdsprm_register_cdspl3gov(&cdsprm);
 
 	return ret;
-=======
-	p_me.df = df;
-	p_me.l3_freq_hz = 0;
-	/*
-	 * Send governor start message to CDSP RM driver
-	 */
-	cdsprm_register_cdspl3gov(&cdsprm);
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int gov_stop(struct devfreq *df)

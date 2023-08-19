@@ -21,11 +21,7 @@
 #ifndef TDA18212_H
 #define TDA18212_H
 
-<<<<<<< HEAD
 #include <media/dvb_frontend.h>
-=======
-#include "dvb_frontend.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct tda18212_config {
 	u16 if_dvbt_6;

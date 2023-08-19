@@ -10,12 +10,9 @@ obj-vdso32 = gettimeofday.o clock_getres.o clock_gettime.o note.o getcpu.o
 targets := $(obj-vdso32) vdso32.so vdso32.so.dbg
 obj-vdso32 := $(addprefix $(obj)/, $(obj-vdso32))
 
-<<<<<<< HEAD
 KBUILD_AFLAGS += -DBUILD_VDSO
 KBUILD_CFLAGS += -DBUILD_VDSO
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 KBUILD_AFLAGS_31 := $(filter-out -m64,$(KBUILD_AFLAGS))
 KBUILD_AFLAGS_31 += -m31 -s
 
@@ -31,16 +28,9 @@ obj-y += vdso32_wrapper.o
 extra-y += vdso32.lds
 CPPFLAGS_vdso32.lds += -P -C -U$(ARCH)
 
-<<<<<<< HEAD
 # Disable gcov profiling and ubsan for VDSO code
 GCOV_PROFILE := n
 UBSAN_SANITIZE := n
-=======
-# Disable gcov profiling, ubsan and kasan for VDSO code
-GCOV_PROFILE := n
-UBSAN_SANITIZE := n
-KASAN_SANITIZE := n
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 # Force dependency (incbin is bad)
 $(obj)/vdso32_wrapper.o : $(obj)/vdso32.so

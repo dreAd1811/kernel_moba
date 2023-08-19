@@ -160,11 +160,7 @@ static void __hlwd_quiesce(void __iomem *io_base)
 	out_be32(io_base + HW_BROADWAY_ICR, 0xffffffff);
 }
 
-<<<<<<< HEAD
 static struct irq_domain *hlwd_pic_init(struct device_node *np)
-=======
-struct irq_domain *hlwd_pic_init(struct device_node *np)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct irq_domain *irq_domain;
 	struct resource res;

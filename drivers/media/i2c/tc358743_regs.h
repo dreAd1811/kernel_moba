@@ -1,29 +1,9 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0-only */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * tc358743 - Toshiba HDMI to CSI-2 bridge - register names and bit masks
  *
  * Copyright 2015 Cisco Systems, Inc. and/or its affiliates. All rights
  * reserved.
-<<<<<<< HEAD
-=======
- *
- * This program is free software; you may redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 2 of the License.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
- * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
- * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /*
@@ -200,7 +180,6 @@
 #define CSI_START                             0x0518
 #define MASK_STRT                             0x00000001
 
-<<<<<<< HEAD
 /* *** CEC (32 bit) *** */
 #define CECHCLK				      0x0028	/* 16 bits */
 #define MASK_CECHCLK			      (0x7ff << 0)
@@ -293,10 +272,6 @@
 #define MASK_CECTICLR			      (1 << 1)
 #define MASK_CECRICLR			      (1 << 0)
 
-=======
-#define CECEN                                 0x0600
-#define MASK_CECEN                            0x0001
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define HDMI_INT0                             0x8500
 #define MASK_I_KEY                            0x80

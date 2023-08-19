@@ -7,40 +7,26 @@ config ARM64
 	select ACPI_REDUCED_HARDWARE_ONLY if ACPI
 	select ACPI_MCFG if ACPI
 	select ACPI_SPCR_TABLE if ACPI
-<<<<<<< HEAD
 	select ACPI_PPTT if ACPI
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select ARCH_CLOCKSOURCE_DATA
 	select ARCH_HAS_DEBUG_VIRTUAL
 	select ARCH_HAS_DEVMEM_IS_ALLOWED
 	select ARCH_HAS_ACPI_TABLE_UPGRADE if ACPI
 	select ARCH_HAS_ELF_RANDOMIZE
-<<<<<<< HEAD
 	select ARCH_HAS_FAST_MULTIPLIER
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select ARCH_HAS_FORTIFY_SOURCE
 	select ARCH_HAS_GCOV_PROFILE_ALL
 	select ARCH_HAS_GIGANTIC_PAGE if (MEMORY_ISOLATION && COMPACTION) || CMA
 	select ARCH_HAS_KCOV
-<<<<<<< HEAD
 	select ARCH_HAS_MEMBARRIER_SYNC_CORE
 	select ARCH_HAS_PTE_SPECIAL
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select ARCH_HAS_SET_MEMORY
 	select ARCH_HAS_SG_CHAIN
 	select ARCH_HAS_STRICT_KERNEL_RWX
 	select ARCH_HAS_STRICT_MODULE_RWX
-<<<<<<< HEAD
 	select ARCH_HAS_SYSCALL_WRAPPER
 	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
-=======
-	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
-	select ARCH_HAVE_NMI_SAFE_CMPXCHG if ACPI_APEI_SEA
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select ARCH_INLINE_READ_LOCK if !PREEMPT
 	select ARCH_INLINE_READ_LOCK_BH if !PREEMPT
 	select ARCH_INLINE_READ_LOCK_IRQ if !PREEMPT
@@ -57,7 +43,6 @@ config ARM64
 	select ARCH_INLINE_WRITE_UNLOCK_BH if !PREEMPT
 	select ARCH_INLINE_WRITE_UNLOCK_IRQ if !PREEMPT
 	select ARCH_INLINE_WRITE_UNLOCK_IRQRESTORE if !PREEMPT
-<<<<<<< HEAD
 	select ARCH_INLINE_SPIN_TRYLOCK if !PREEMPT
 	select ARCH_INLINE_SPIN_TRYLOCK_BH if !PREEMPT
 	select ARCH_INLINE_SPIN_LOCK if !PREEMPT
@@ -75,15 +60,6 @@ config ARM64
 	select ARCH_SUPPORTS_LTO_CLANG
 	select ARCH_SUPPORTS_ATOMIC_RMW
 	select ARCH_SUPPORTS_INT128 if GCC_VERSION >= 50000 || CC_IS_CLANG
-=======
-	select ARCH_USE_CMPXCHG_LOCKREF
-	select ARCH_USE_QUEUED_RWLOCKS
-	select ARCH_SUPPORTS_MEMORY_FAILURE
-	select ARCH_SUPPORTS_LTO_CLANG
-	select ARCH_SUPPORTS_THINLTO
-	select ARCH_SUPPORTS_SHADOW_CALL_STACK
-	select ARCH_SUPPORTS_ATOMIC_RMW
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select ARCH_SUPPORTS_NUMA_BALANCING
 	select ARCH_WANT_COMPAT_IPC_PARSE_VERSION
 	select ARCH_WANT_FRAME_POINTERS
@@ -98,16 +74,10 @@ config ARM64
 	select ARM_PSCI_FW
 	select BUILDTIME_EXTABLE_SORT
 	select CLONE_BACKWARDS
-<<<<<<< HEAD
 	select COMMON_CLK
 	select CPU_PM if (SUSPEND || CPU_IDLE)
 	select DCACHE_WORD_ACCESS
 	select DMA_DIRECT_OPS
-=======
-	select COMMON_CLK if !ARCH_QCOM
-	select CPU_PM if (SUSPEND || CPU_IDLE)
-	select DCACHE_WORD_ACCESS
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select EDAC_SUPPORT
 	select FRAME_POINTER
 	select GENERIC_ALLOCATOR
@@ -118,10 +88,7 @@ config ARM64
 	select GENERIC_CPU_VULNERABILITIES
 	select GENERIC_EARLY_IOREMAP
 	select GENERIC_IDLE_POLL_SETUP
-<<<<<<< HEAD
 	select GENERIC_IRQ_MULTI_HANDLER
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select GENERIC_IRQ_PROBE
 	select GENERIC_IRQ_SHOW
 	select GENERIC_IRQ_SHOW_LEVEL
@@ -140,7 +107,6 @@ config ARM64
 	select HAVE_ARCH_HUGE_VMAP
 	select HAVE_ARCH_JUMP_LABEL
 	select HAVE_ARCH_KASAN if !(ARM64_16K_PAGES && ARM64_VA_BITS_48)
-<<<<<<< HEAD
 	select HAVE_ARCH_KGDB
 	select HAVE_ARCH_MMAP_RND_BITS
 	select HAVE_ARCH_MMAP_RND_COMPAT_BITS if COMPAT
@@ -148,64 +114,38 @@ config ARM64
 	select HAVE_ARCH_SECCOMP_FILTER
 	select HAVE_ARCH_STACKLEAK
 	select HAVE_ARCH_THREAD_STRUCT_WHITELIST
-=======
-	select HAVE_ARCH_KASAN_SW_TAGS if HAVE_ARCH_KASAN
-	select HAVE_ARCH_KGDB
-	select HAVE_ARCH_MMAP_RND_BITS
-	select HAVE_ARCH_MMAP_RND_COMPAT_BITS if COMPAT
-	select HAVE_ARCH_SECCOMP_FILTER
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select HAVE_ARCH_TRACEHOOK
 	select HAVE_ARCH_TRANSPARENT_HUGEPAGE
 	select HAVE_ARCH_VMAP_STACK
 	select HAVE_ARM_SMCCC
 	select HAVE_EBPF_JIT
 	select HAVE_C_RECORDMCOUNT
-<<<<<<< HEAD
-=======
-	select HAVE_CC_STACKPROTECTOR
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select HAVE_CMPXCHG_DOUBLE
 	select HAVE_CMPXCHG_LOCAL
 	select HAVE_CONTEXT_TRACKING
 	select HAVE_DEBUG_BUGVERBOSE
 	select HAVE_DEBUG_KMEMLEAK
-<<<<<<< HEAD
-=======
-	select HAVE_DMA_API_DEBUG
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select HAVE_DMA_CONTIGUOUS
 	select HAVE_DYNAMIC_FTRACE
 	select HAVE_EFFICIENT_UNALIGNED_ACCESS
 	select HAVE_FTRACE_MCOUNT_RECORD
 	select HAVE_FUNCTION_TRACER
-<<<<<<< HEAD
 	select HAVE_FUNCTION_GRAPH_TRACER
-=======
-	select HAVE_FUNCTION_GRAPH_TRACER if !SHADOW_CALL_STACK
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select HAVE_GCC_PLUGINS
 	select HAVE_GENERIC_DMA_COHERENT
 	select HAVE_HW_BREAKPOINT if PERF_EVENTS
 	select HAVE_IRQ_TIME_ACCOUNTING
 	select HAVE_MEMBLOCK
 	select HAVE_MEMBLOCK_NODE_MAP if NUMA
-<<<<<<< HEAD
 	select HAVE_NMI
-=======
-	select HAVE_NMI if ACPI_APEI_SEA
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select HAVE_PATA_PLATFORM
 	select HAVE_PERF_EVENTS
 	select HAVE_PERF_REGS
 	select HAVE_PERF_USER_STACK_DUMP
 	select HAVE_REGS_AND_STACK_ACCESS_API
 	select HAVE_RCU_TABLE_FREE
-<<<<<<< HEAD
 	select HAVE_RSEQ
 	select HAVE_STACKPROTECTOR
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select HAVE_SYSCALL_TRACEPOINTS
 	select HAVE_KPROBES
 	select HAVE_KRETPROBES
@@ -213,12 +153,9 @@ config ARM64
 	select IRQ_DOMAIN
 	select IRQ_FORCED_THREADING
 	select MODULES_USE_ELF_RELA
-<<<<<<< HEAD
 	select MULTI_IRQ_HANDLER
 	select NEED_DMA_MAP_STATE
 	select NEED_SG_DMA_LENGTH
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select NO_BOOTMEM
 	select OF
 	select OF_EARLY_FLATTREE
@@ -226,13 +163,9 @@ config ARM64
 	select PCI_ECAM if ACPI
 	select POWER_RESET
 	select POWER_SUPPLY
-<<<<<<< HEAD
 	select REFCOUNT_FULL
 	select SPARSE_IRQ
 	select SWIOTLB
-=======
-	select SPARSE_IRQ
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select SYSCTL_EXCEPTION_TRACE
 	select THREAD_INFO_IN_TASK
 	select ARCH_SUPPORTS_SPECULATIVE_PAGE_FAULT
@@ -242,12 +175,6 @@ config ARM64
 config 64BIT
 	def_bool y
 
-<<<<<<< HEAD
-=======
-config ARCH_PHYS_ADDR_T_64BIT
-	def_bool y
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config MMU
 	def_bool y
 
@@ -326,30 +253,13 @@ config GENERIC_CSUM
 config GENERIC_CALIBRATE_DELAY
 	def_bool y
 
-<<<<<<< HEAD
 config ZONE_DMA32
 	bool "Support DMA32 zone" if EXPERT
 	default y
-=======
-config ZONE_DMA
-	def_bool y
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config HAVE_GENERIC_GUP
 	def_bool y
 
-<<<<<<< HEAD
-=======
-config ARCH_DMA_ADDR_T_64BIT
-	def_bool y
-
-config NEED_DMA_MAP_STATE
-	def_bool y
-
-config NEED_SG_DMA_LENGTH
-	def_bool y
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config SMP
 	def_bool y
 
@@ -364,15 +274,6 @@ config HOTPLUG_SIZE_BITS
 	 of 2.
 	 If unsure, stick with default value.
 
-<<<<<<< HEAD
-=======
-config SWIOTLB
-	def_bool y
-
-config IOMMU_HELPER
-	def_bool SWIOTLB
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config KERNEL_MODE_NEON
 	def_bool y
 
@@ -394,7 +295,6 @@ config ARCH_SUPPORTS_UPROBES
 config ARCH_PROC_KCORE_TEXT
 	def_bool y
 
-<<<<<<< HEAD
 source "arch/arm64/Kconfig.platforms"
 
 choice
@@ -411,35 +311,6 @@ config PRODUCT_MOBA
 
 endchoice
 
-=======
-config QTI_GVM
-	bool "Enable virtualization Support for MSM kernel"
-	help
-		This enables support for MSM Kernel based virtual
-		machine for any platform.
-		This helps to enable virtual driver support.
-		This should work on 64bit machines.
-		If you don't know what to do here, say N.
-
-config QTI_GVM_QUIN
-	bool "Enable virtualization Support for MSM kernel required for Quin platform"
-	depends on QTI_GVM
-	select COMMON_CLK
-	select COMMON_CLK_QCOM
-	help
-		This enables support for MSM Kernel based virtual
-		machine for Quin platform.
-		This helps to enable virtual driver support.
-		This should work on 64bit machines.
-		If you don't know what to do here, say N.
-
-source "init/Kconfig"
-
-source "kernel/Kconfig.freezer"
-
-source "arch/arm64/Kconfig.platforms"
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 menu "Bus support"
 
 config PCI
@@ -613,7 +484,6 @@ config ARM64_ERRATUM_845719
 
 config ARM64_ERRATUM_843419
 	bool "Cortex-A53: 843419: A load or store might access an incorrect address"
-<<<<<<< HEAD
 	default y
 	select ARM64_MODULE_PLTS if MODULES
 	help
@@ -621,14 +491,6 @@ config ARM64_ERRATUM_843419
 	  enables PLT support to replace certain ADRP instructions, which can
 	  cause subsequent memory accesses to use an incorrect address on
 	  Cortex-A53 parts up to r0p4.
-=======
-	select ARM64_MODULE_CMODEL_LARGE if MODULES
-	help
-	  This option links the kernel with '--fix-cortex-a53-843419' and
-	  builds modules using the large memory model in order to avoid the use
-	  of the ADRP instruction, which can cause a subsequent memory access
-	  to use an incorrect address on Cortex-A53 parts up to r0p4.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	  If unsure, say Y.
 
@@ -646,25 +508,6 @@ config ARM64_ERRATUM_1024718
 
 	  If unsure, say Y.
 
-<<<<<<< HEAD
-=======
-config ARM64_ERRATUM_1286807
-	bool "Cortex-A76: Modification of the translation table for a virtual address might lead to read-after-read ordering violation"
-	default n
-	select ARM64_WORKAROUND_REPEAT_TLBI
-	help
-	  This option adds workaround for ARM Cortex-A76 erratum 1286807
-
-	  On the affected Cortex-A76 cores (r0p0 to r3p0), if a virtual
-	  address for a cacheable mapping of a location is being
-	  accessed by a core while another core is remapping the virtual
-	  address to a new physical page using the recommended
-	  break-before-make sequence, then under very rare circumstances
-	  TLBI+DSB completes before a read using the translation being
-	  invalidated has been observed by other observers. The
-	  workaround repeats the TLBI+DSB operation.
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config ARM64_ERRATUM_1188873
 	bool "Cortex-A76: MRC read following MRRC read of specific Generic Timer in AArch32 might give incorrect result"
 	default y
@@ -677,7 +520,6 @@ config ARM64_ERRATUM_1188873
 
 	  If unsure, say Y.
 
-<<<<<<< HEAD
 config ARM64_ERRATUM_1463225
 	bool "Cortex-A76: Software Step might prevent interrupt recognition"
 	default y
@@ -712,8 +554,6 @@ config ARM64_ERRATUM_1542418
 
 	  If unsure, say Y.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config CAVIUM_ERRATUM_22375
 	bool "Cavium erratum 22375, 24313"
 	default y
@@ -783,22 +623,9 @@ config QCOM_FALKOR_ERRATUM_1003
 	  is unchanged. Work around the erratum by invalidating the walk cache
 	  entries for the trampoline before entering the kernel proper.
 
-<<<<<<< HEAD
 config QCOM_FALKOR_ERRATUM_1009
 	bool "Falkor E1009: Prematurely complete a DSB after a TLBI"
 	default y
-=======
-config ARM64_WORKAROUND_REPEAT_TLBI
-	bool
-	help
-	  Enable the repeat TLBI workaround for Falkor erratum 1009 and
-	  Cortex-A76 erratum 1286807.
-
-config QCOM_FALKOR_ERRATUM_1009
-	bool "Falkor E1009: Prematurely complete a DSB after a TLBI"
-	default y
-	select ARM64_WORKAROUND_REPEAT_TLBI
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  On Falkor v1, the CPU may prematurely complete a DSB following a
 	  TLBI xxIS invalidate maintenance operation. Repeat the TLBI operation
@@ -816,7 +643,6 @@ config QCOM_QDF2400_ERRATUM_0065
 
 	  If unsure, say Y.
 
-<<<<<<< HEAD
 config SOCIONEXT_SYNQUACER_PREITS
 	bool "Socionext Synquacer: Workaround for GICv3 pre-ITS"
 	default y
@@ -836,8 +662,6 @@ config HISILICON_ERRATUM_161600802
 
 	  If unsure, say Y.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config QCOM_FALKOR_ERRATUM_E1041
 	bool "Falkor E1041: Speculative instruction fetches might cause errant memory access"
 	default y
@@ -918,7 +742,6 @@ config ARM64_VA_BITS
 	default 47 if ARM64_VA_BITS_47
 	default 48 if ARM64_VA_BITS_48
 
-<<<<<<< HEAD
 choice
 	prompt "Physical address space size"
 	default ARM64_PA_BITS_48
@@ -948,8 +771,6 @@ config ARM64_PA_BITS
 	default 48 if ARM64_PA_BITS_48
 	default 52 if ARM64_PA_BITS_52
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config CPU_BIG_ENDIAN
        bool "Build big-endian kernel"
        help
@@ -1037,10 +858,6 @@ config NEED_PER_CPU_EMBED_FIRST_CHUNK
 config HOLES_IN_ZONE
 	def_bool y
 
-<<<<<<< HEAD
-=======
-source kernel/Kconfig.preempt
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 source kernel/Kconfig.hz
 
 config ARCH_SUPPORTS_DEBUG_PAGEALLOC
@@ -1059,12 +876,9 @@ config ARCH_SPARSEMEM_DEFAULT
 config ARCH_SELECT_MEMORY_MODEL
 	def_bool ARCH_SPARSEMEM_ENABLE
 
-<<<<<<< HEAD
 config ARCH_FLATMEM_ENABLE
 	def_bool !NUMA
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config HAVE_ARCH_PFN_VALID
 	def_bool ARCH_HAS_HOLES_MEMORYMODEL || !SPARSEMEM
 
@@ -1081,11 +895,6 @@ config ARCH_WANT_HUGE_PMD_SHARE
 config ARCH_HAS_CACHE_LINE_SIZE
 	def_bool y
 
-<<<<<<< HEAD
-=======
-source "mm/Kconfig"
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config ARM64_DMA_USE_IOMMU
 	bool "ARM64 DMA iommu integration"
 	select ARM_HAS_SG_CHAIN
@@ -1230,10 +1039,6 @@ config UNMAP_KERNEL_AT_EL0
 
 config HARDEN_BRANCH_PREDICTOR
 	bool "Harden the branch predictor against aliasing attacks" if EXPERT
-<<<<<<< HEAD
-=======
-	default y
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Speculation attacks against some high-performance processors rely on
 	  being able to manipulate the branch predictor for a victim context by
@@ -1248,7 +1053,6 @@ config HARDEN_BRANCH_PREDICTOR
 
 	  If unsure, say Y.
 
-<<<<<<< HEAD
 config HARDEN_EL2_VECTORS
 	bool "Harden EL2 vector mapping against system register leak" if EXPERT
 	default y
@@ -1273,8 +1077,6 @@ config ARM64_SSBD
 
 	  If unsure, say Y.
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config PRINT_VMEMLAYOUT
 	bool "Enable debug option to print kernel virtual memory layout"
 	help
@@ -1284,33 +1086,10 @@ config PRINT_VMEMLAYOUT
 
 	  If unsure, say N.
 
-<<<<<<< HEAD
 menuconfig ARMV8_DEPRECATED
 	bool "Emulate deprecated/obsolete ARMv8 instructions"
 	depends on COMPAT
 	depends on SYSCTL
-=======
-config ARM64_SSBD
-	bool "Speculative Store Bypass Disable" if EXPERT
-	help
-	  This enables mitigation of the bypassing of previous stores
-	  by speculative loads.
-
-	  If unsure, say Y.
-
-config ARM64_TAGGED_ADDR_ABI
-	bool "Enable the tagged user addresses syscall ABI"
-	default y
-	help
-	  When this option is enabled, user applications can opt in to a
-	  relaxed ABI via prctl() allowing tagged addresses to be passed
-	  to system calls as pointer arguments. For details, see
-	  Documentation/arm64/tagged-address-abi.rst.
-
-menuconfig ARMV8_DEPRECATED
-	bool "Emulate deprecated/obsolete ARMv8 instructions"
-	depends on COMPAT
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Legacy software support may require certain instructions
 	  that have been deprecated or obsoleted in the architecture.
@@ -1426,12 +1205,8 @@ config ARM64_LSE_ATOMICS
 	  Say Y here to make use of these instructions for the in-kernel
 	  atomic routines. This incurs a small overhead on CPUs that do
 	  not support these instructions and requires the kernel to be
-<<<<<<< HEAD
 	  built with binutils >= 2.25 in order for the new instructions
 	  to be used.
-=======
-	  built with binutils >= 2.25.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config ARM64_VHE
 	bool "Enable support for Virtualization Host Extensions (VHE)"
@@ -1456,11 +1231,7 @@ config ARM64_UAO
 	help
 	  User Access Override (UAO; part of the ARMv8.2 Extensions)
 	  causes the 'unprivileged' variant of the load/store instructions to
-<<<<<<< HEAD
 	  be overridden to be privileged.
-=======
-	  be overriden to be privileged.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	  This option changes get_user() and friends to use the 'unprivileged'
 	  variant of the load/store instructions. This ensures that user-space
@@ -1487,7 +1258,6 @@ config ARM64_PMEM
 	  operations if DC CVAP is not supported (following the behaviour of
 	  DC CVAP itself if the system does not define a point of persistence).
 
-<<<<<<< HEAD
 config ARM64_RAS_EXTN
 	bool "Enable support for RAS CPU Extensions"
 	default y
@@ -1543,24 +1313,10 @@ config ARM64_SVE
 
 config ARM64_MODULE_PLTS
 	bool
-=======
-endmenu
-
-config ARM64_MODULE_CMODEL_LARGE
-	bool
-
-config ARM64_MODULE_PLTS
-	bool
-	select ARM64_MODULE_CMODEL_LARGE
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select HAVE_MOD_ARCH_SPECIFIC
 
 config RELOCATABLE
 	bool
-<<<<<<< HEAD
-=======
-	select ARCH_HAS_RELR
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  This builds the kernel as a Position Independent Executable (PIE),
 	  which retains all relocation metadata required to relocate the
@@ -1590,21 +1346,12 @@ config RANDOMIZE_BASE
 	  If unsure, say N.
 
 config RANDOMIZE_MODULE_REGION_FULL
-<<<<<<< HEAD
 	bool "Randomize the module region over a 4 GB range"
 	depends on RANDOMIZE_BASE
 	default y
 	help
 	  Randomizes the location of the module region inside a 4 GB window
 	  covering the core kernel. This way, it is less likely for modules
-=======
-	bool "Randomize the module region independently from the core kernel"
-	depends on RANDOMIZE_BASE && !LTO_CLANG
-	default y
-	help
-	  Randomizes the location of the module region without considering the
-	  location of the core kernel. This way, it is impossible for modules
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	  to leak information about the location of core kernel data structures
 	  but it does imply that function calls between modules and the core
 	  kernel will need to be resolved via veneers in the module PLT.
@@ -1666,11 +1413,8 @@ config EFI_STUB
 config EFI
 	bool "UEFI runtime support"
 	depends on OF && !CPU_BIG_ENDIAN
-<<<<<<< HEAD
 	depends on KERNEL_MODE_NEON
 	select ARCH_SUPPORTS_ACPI
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select LIBFDT
 	select UCS2_STRING
 	select EFI_PARAMS_FROM_FDT
@@ -1770,19 +1514,10 @@ config BUILD_ARM64_DT_OVERLAY
 	depends on OF
 	help
 	  This option enables support for DT overlay compilation.
-<<<<<<< HEAD
 	  Enabling this option sets required flags to add DT
 	  overlay in the compilation.
 endmenu
 
-=======
-endmenu
-
-menu "Userspace binary formats"
-
-source "fs/Kconfig.binfmt"
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config COMPAT
 	bool "Kernel support for 32-bit EL0"
 	depends on ARM64_4K_PAGES || EXPERT
@@ -1806,11 +1541,6 @@ config SYSVIPC_COMPAT
 	def_bool y
 	depends on COMPAT && SYSVIPC
 
-<<<<<<< HEAD
-=======
-endmenu
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 menu "Power management options"
 
 source "kernel/power/Kconfig"
@@ -1836,36 +1566,12 @@ source "drivers/cpufreq/Kconfig"
 
 endmenu
 
-<<<<<<< HEAD
-=======
-source "net/Kconfig"
-
-source "drivers/Kconfig"
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 source "drivers/firmware/Kconfig"
 
 source "drivers/acpi/Kconfig"
 
-<<<<<<< HEAD
 source "arch/arm64/kvm/Kconfig"
 
 if CRYPTO
 source "arch/arm64/crypto/Kconfig"
 endif
-=======
-source "fs/Kconfig"
-
-source "arch/arm64/kvm/Kconfig"
-
-source "arch/arm64/Kconfig.debug"
-
-source "security/Kconfig"
-
-source "crypto/Kconfig"
-if CRYPTO
-source "arch/arm64/crypto/Kconfig"
-endif
-
-source "lib/Kconfig"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

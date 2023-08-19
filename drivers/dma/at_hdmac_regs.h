@@ -385,11 +385,7 @@ static void vdbg_dump_regs(struct at_dma_chan *atchan) {}
 static void atc_dump_lli(struct at_dma_chan *atchan, struct at_lli *lli)
 {
 	dev_crit(chan2dev(&atchan->chan_common),
-<<<<<<< HEAD
 		 "desc: s%pad d%pad ctrl0x%x:0x%x l%pad\n",
-=======
-		 "  desc: s%pad d%pad ctrl0x%x:0x%x l0x%pad\n",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 &lli->saddr, &lli->daddr,
 		 lli->ctrla, lli->ctrlb, &lli->dscr);
 }

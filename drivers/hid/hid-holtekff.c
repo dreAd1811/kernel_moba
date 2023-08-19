@@ -32,13 +32,6 @@
 
 #ifdef CONFIG_HOLTEK_FF
 
-<<<<<<< HEAD
-=======
-MODULE_LICENSE("GPL");
-MODULE_AUTHOR("Anssi Hannula <anssi.hannula@iki.fi>");
-MODULE_DESCRIPTION("Force feedback support for Holtek On Line Grip based devices");
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * These commands and parameters are currently known:
  *
@@ -143,7 +136,6 @@ static int holtekff_init(struct hid_device *hid)
 {
 	struct holtekff_device *holtekff;
 	struct hid_report *report;
-<<<<<<< HEAD
 	struct hid_input *hidinput = list_entry(hid->inputs.next,
 						struct hid_input, list);
 	struct list_head *report_list =
@@ -151,21 +143,6 @@ static int holtekff_init(struct hid_device *hid)
 	struct input_dev *dev = hidinput->input;
 	int error;
 
-=======
-	struct hid_input *hidinput;
-	struct list_head *report_list =
-			&hid->report_enum[HID_OUTPUT_REPORT].report_list;
-	struct input_dev *dev;
-	int error;
-
-	if (list_empty(&hid->inputs)) {
-		hid_err(hid, "no inputs found\n");
-		return -ENODEV;
-	}
-	hidinput = list_entry(hid->inputs.next, struct hid_input, list);
-	dev = hidinput->input;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (list_empty(report_list)) {
 		hid_err(hid, "no output report found\n");
 		return -ENODEV;
@@ -242,10 +219,7 @@ static struct hid_driver holtek_driver = {
 	.probe = holtek_probe,
 };
 module_hid_driver(holtek_driver);
-<<<<<<< HEAD
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Anssi Hannula <anssi.hannula@iki.fi>");
 MODULE_DESCRIPTION("Force feedback support for Holtek On Line Grip based devices");
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

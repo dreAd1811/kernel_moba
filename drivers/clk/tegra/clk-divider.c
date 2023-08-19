@@ -32,7 +32,6 @@
 static int get_div(struct tegra_clk_frac_div *divider, unsigned long rate,
 		   unsigned long parent_rate)
 {
-<<<<<<< HEAD
 	int div;
 
 	div = div_frac_get(rate, parent_rate, divider->width,
@@ -42,37 +41,6 @@ static int get_div(struct tegra_clk_frac_div *divider, unsigned long rate,
 		return 0;
 
 	return div;
-=======
-	u64 divider_ux1 = parent_rate;
-	u8 flags = divider->flags;
-	int mul;
-
-	if (!rate)
-		return 0;
-
-	mul = get_mul(divider);
-
-	if (!(flags & TEGRA_DIVIDER_INT))
-		divider_ux1 *= mul;
-
-	if (flags & TEGRA_DIVIDER_ROUND_UP)
-		divider_ux1 += rate - 1;
-
-	do_div(divider_ux1, rate);
-
-	if (flags & TEGRA_DIVIDER_INT)
-		divider_ux1 *= mul;
-
-	divider_ux1 -= mul;
-
-	if ((s64)divider_ux1 < 0)
-		return 0;
-
-	if (divider_ux1 > get_max_div(divider))
-		return get_max_div(divider);
-
-	return divider_ux1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static unsigned long clk_frac_div_recalc_rate(struct clk_hw *hw,
@@ -206,12 +174,7 @@ static const struct clk_div_table mc_div_table[] = {
 struct clk *tegra_clk_register_mc(const char *name, const char *parent_name,
 				  void __iomem *reg, spinlock_t *lock)
 {
-<<<<<<< HEAD
 	return clk_register_divider_table(NULL, name, parent_name,
 					  CLK_IS_CRITICAL, reg, 16, 1, 0,
 					  mc_div_table, lock);
-=======
-	return clk_register_divider_table(NULL, name, parent_name, 0, reg,
-					  16, 1, 0, mc_div_table, lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

@@ -168,19 +168,11 @@ static void tmio_mmc_clk_start(struct tmio_mmc_host *host)
 
 	/* HW engineers overrode docs: no sleep needed on R-Car2+ */
 	if (!(host->pdata->flags & TMIO_MMC_MIN_RCAR2))
-<<<<<<< HEAD
 		usleep_range(10000, 11000);
 
 	if (host->pdata->flags & TMIO_MMC_HAVE_HIGH_REG) {
 		sd_ctrl_write16(host, CTL_CLK_AND_WAIT_CTL, 0x0100);
 		usleep_range(10000, 11000);
-=======
-		msleep(10);
-
-	if (host->pdata->flags & TMIO_MMC_HAVE_HIGH_REG) {
-		sd_ctrl_write16(host, CTL_CLK_AND_WAIT_CTL, 0x0100);
-		msleep(10);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -188,11 +180,7 @@ static void tmio_mmc_clk_stop(struct tmio_mmc_host *host)
 {
 	if (host->pdata->flags & TMIO_MMC_HAVE_HIGH_REG) {
 		sd_ctrl_write16(host, CTL_CLK_AND_WAIT_CTL, 0x0000);
-<<<<<<< HEAD
 		usleep_range(10000, 11000);
-=======
-		msleep(10);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	sd_ctrl_write16(host, CTL_SD_CARD_CLK_CTL, ~CLK_CTL_SCLKEN &
@@ -200,11 +188,7 @@ static void tmio_mmc_clk_stop(struct tmio_mmc_host *host)
 
 	/* HW engineers overrode docs: no sleep needed on R-Car2+ */
 	if (!(host->pdata->flags & TMIO_MMC_MIN_RCAR2))
-<<<<<<< HEAD
 		usleep_range(10000, 11000);
-=======
-		msleep(10);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void tmio_mmc_set_clock(struct tmio_mmc_host *host,
@@ -216,7 +200,6 @@ static void tmio_mmc_set_clock(struct tmio_mmc_host *host,
 		tmio_mmc_clk_stop(host);
 		return;
 	}
-<<<<<<< HEAD
 	/*
 	 * Both HS400 and HS200/SD104 set 200MHz, but some devices need to
 	 * set 400MHz to distinguish the CPG settings in HS400.
@@ -225,8 +208,6 @@ static void tmio_mmc_set_clock(struct tmio_mmc_host *host,
 	    host->pdata->flags & TMIO_MMC_HAVE_4TAP_HS400 &&
 	    new_clock == 200000000)
 		new_clock = 400000000;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (host->clk_update)
 		clock = host->clk_update(host, new_clock) / 512;
@@ -237,7 +218,6 @@ static void tmio_mmc_set_clock(struct tmio_mmc_host *host,
 		clock <<= 1;
 
 	/* 1/1 clock is option */
-<<<<<<< HEAD
 	if ((host->pdata->flags & TMIO_MMC_CLK_ACTUAL) &&
 	    ((clk >> 22) & 0x1)) {
 		if (!(host->mmc->ios.timing == MMC_TIMING_MMC_HS400))
@@ -245,10 +225,6 @@ static void tmio_mmc_set_clock(struct tmio_mmc_host *host,
 		else
 			clk &= ~0xff;
 	}
-=======
-	if ((host->pdata->flags & TMIO_MMC_CLK_ACTUAL) && ((clk >> 22) & 0x1))
-		clk |= 0xff;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (host->set_clk_div)
 		host->set_clk_div(host->pdev, (clk >> 22) & 1);
@@ -257,11 +233,7 @@ static void tmio_mmc_set_clock(struct tmio_mmc_host *host,
 			sd_ctrl_read16(host, CTL_SD_CARD_CLK_CTL));
 	sd_ctrl_write16(host, CTL_SD_CARD_CLK_CTL, clk & CLK_CTL_DIV_MASK);
 	if (!(host->pdata->flags & TMIO_MMC_MIN_RCAR2))
-<<<<<<< HEAD
 		usleep_range(10000, 11000);
-=======
-		msleep(10);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tmio_mmc_clk_start(host);
 }
@@ -272,19 +244,11 @@ static void tmio_mmc_reset(struct tmio_mmc_host *host)
 	sd_ctrl_write16(host, CTL_RESET_SD, 0x0000);
 	if (host->pdata->flags & TMIO_MMC_HAVE_HIGH_REG)
 		sd_ctrl_write16(host, CTL_RESET_SDIO, 0x0000);
-<<<<<<< HEAD
 	usleep_range(10000, 11000);
 	sd_ctrl_write16(host, CTL_RESET_SD, 0x0001);
 	if (host->pdata->flags & TMIO_MMC_HAVE_HIGH_REG)
 		sd_ctrl_write16(host, CTL_RESET_SDIO, 0x0001);
 	usleep_range(10000, 11000);
-=======
-	msleep(10);
-	sd_ctrl_write16(host, CTL_RESET_SD, 0x0001);
-	if (host->pdata->flags & TMIO_MMC_HAVE_HIGH_REG)
-		sd_ctrl_write16(host, CTL_RESET_SDIO, 0x0001);
-	msleep(10);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (host->pdata->flags & TMIO_MMC_SDIO_IRQ) {
 		sd_ctrl_write16(host, CTL_SDIO_IRQ_MASK, host->sdio_irq_mask);
@@ -328,10 +292,6 @@ static void tmio_mmc_reset_work(struct work_struct *work)
 
 	host->cmd = NULL;
 	host->data = NULL;
-<<<<<<< HEAD
-=======
-	host->force_pio = false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_unlock_irqrestore(&host->lock, flags);
 
@@ -363,10 +323,6 @@ static int tmio_mmc_start_command(struct tmio_mmc_host *host,
 {
 	struct mmc_data *data = host->data;
 	int c = cmd->opcode;
-<<<<<<< HEAD
-=======
-	u32 irq_mask = TMIO_MASK_CMD;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (mmc_resp_type(cmd)) {
 	case MMC_RSP_NONE: c |= RESP_NONE; break;
@@ -406,13 +362,7 @@ static int tmio_mmc_start_command(struct tmio_mmc_host *host,
 			c |= TRANSFER_READ;
 	}
 
-<<<<<<< HEAD
 	tmio_mmc_enable_mmc_irqs(host, TMIO_MASK_CMD);
-=======
-	if (!host->native_hotplug)
-		irq_mask &= ~(TMIO_STAT_CARD_REMOVE | TMIO_STAT_CARD_INSERT);
-	tmio_mmc_enable_mmc_irqs(host, irq_mask);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Fire off the command */
 	sd_ctrl_write32_as_16_and_16(host, CTL_ARG_REG, cmd->arg);
@@ -683,7 +633,6 @@ static void tmio_mmc_cmd_irq(struct tmio_mmc_host *host, unsigned int stat)
 	 */
 	if (host->data && (!cmd->error || cmd->error == -EILSEQ)) {
 		if (host->data->flags & MMC_DATA_READ) {
-<<<<<<< HEAD
 			if (host->force_pio || !host->chan_rx) {
 				tmio_mmc_enable_mmc_irqs(host, TMIO_MASK_READOP);
 			} else {
@@ -699,17 +648,6 @@ static void tmio_mmc_cmd_irq(struct tmio_mmc_host *host, unsigned int stat)
 							  TMIO_MASK_WRITEOP);
 				tasklet_schedule(&host->dma_issue);
 			}
-=======
-			if (host->force_pio || !host->chan_rx)
-				tmio_mmc_enable_mmc_irqs(host, TMIO_MASK_READOP);
-			else
-				tasklet_schedule(&host->dma_issue);
-		} else {
-			if (host->force_pio || !host->chan_tx)
-				tmio_mmc_enable_mmc_irqs(host, TMIO_MASK_WRITEOP);
-			else
-				tasklet_schedule(&host->dma_issue);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	} else {
 		schedule_work(&host->done);
@@ -836,10 +774,7 @@ static int tmio_mmc_start_data(struct tmio_mmc_host *host,
 
 	tmio_mmc_init_sg(host, data);
 	host->data = data;
-<<<<<<< HEAD
 	host->force_pio = false;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Set transfer length / blocksize */
 	sd_ctrl_write16(host, CTL_SD_XFER_LEN, data->blksz);
@@ -889,19 +824,10 @@ static int tmio_mmc_execute_tuning(struct mmc_host *mmc, u32 opcode)
 			host->prepare_tuning(host, i % host->tap_num);
 
 		ret = mmc_send_tuning(mmc, opcode, NULL);
-<<<<<<< HEAD
 		if (ret == 0)
 			set_bit(i, host->taps);
 
 		usleep_range(1000, 1200);
-=======
-		if (ret && ret != -EILSEQ)
-			goto out;
-		if (ret == 0)
-			set_bit(i, host->taps);
-
-		mdelay(1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ret = host->select_tuning(host);
@@ -941,10 +867,6 @@ static void tmio_process_mrq(struct tmio_mmc_host *host,
 	return;
 
 fail:
-<<<<<<< HEAD
-=======
-	host->force_pio = false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	host->mrq = NULL;
 	mrq->cmd->error = ret;
 	mmc_request_done(host->mmc, mrq);
@@ -994,10 +916,6 @@ static void tmio_mmc_finish_request(struct tmio_mmc_host *host)
 	if (host->cmd != mrq->sbc) {
 		host->cmd = NULL;
 		host->data = NULL;
-<<<<<<< HEAD
-=======
-		host->force_pio = false;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		host->mrq = NULL;
 	}
 
@@ -1008,14 +926,8 @@ static void tmio_mmc_finish_request(struct tmio_mmc_host *host)
 	if (mrq->cmd->error || (mrq->data && mrq->data->error))
 		tmio_mmc_abort_dma(host);
 
-<<<<<<< HEAD
 	if (host->check_scc_error)
 		host->check_scc_error(host);
-=======
-	/* SCC error means retune, but executed command was still successful */
-	if (host->check_scc_error && host->check_scc_error(host))
-		mmc_retune_needed(host->mmc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* If SET_BLOCK_COUNT, continue with main command */
 	if (host->mrq && !mrq->cmd->error) {
@@ -1033,23 +945,6 @@ static void tmio_mmc_done_work(struct work_struct *work)
 	tmio_mmc_finish_request(host);
 }
 
-<<<<<<< HEAD
-=======
-static int tmio_mmc_clk_enable(struct tmio_mmc_host *host)
-{
-	if (!host->clk_enable)
-		return -ENOTSUPP;
-
-	return host->clk_enable(host);
-}
-
-static void tmio_mmc_clk_disable(struct tmio_mmc_host *host)
-{
-	if (host->clk_disable)
-		host->clk_disable(host);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void tmio_mmc_power_on(struct tmio_mmc_host *host, unsigned short vdd)
 {
 	struct mmc_host *mmc = host->mmc;
@@ -1068,11 +963,7 @@ static void tmio_mmc_power_on(struct tmio_mmc_host *host, unsigned short vdd)
 		 * 100us were not enough. Is this the same 140us delay, as in
 		 * tmio_mmc_set_ios()?
 		 */
-<<<<<<< HEAD
 		usleep_range(200, 300);
-=======
-		udelay(200);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	/*
 	 * It seems, VccQ should be switched on after Vcc, this is also what the
@@ -1080,11 +971,7 @@ static void tmio_mmc_power_on(struct tmio_mmc_host *host, unsigned short vdd)
 	 */
 	if (!IS_ERR(mmc->supply.vqmmc) && !ret) {
 		ret = regulator_enable(mmc->supply.vqmmc);
-<<<<<<< HEAD
 		usleep_range(200, 300);
-=======
-		udelay(200);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (ret < 0)
@@ -1177,11 +1064,7 @@ static void tmio_mmc_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
 	}
 
 	/* Let things settle. delay taken from winCE driver */
-<<<<<<< HEAD
 	usleep_range(140, 200);
-=======
-	udelay(140);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (PTR_ERR(host->mrq) == -EINTR)
 		dev_dbg(&host->pdev->dev,
 			"%s.%d: IOS interrupted: clk %u, mode %u",
@@ -1197,7 +1080,6 @@ static void tmio_mmc_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
 static int tmio_mmc_get_ro(struct mmc_host *mmc)
 {
 	struct tmio_mmc_host *host = mmc_priv(mmc);
-<<<<<<< HEAD
 
 	return !(sd_ctrl_read16_and_16_as_32(host, CTL_STATUS) &
 		 TMIO_STAT_WRPROTECT);
@@ -1209,18 +1091,6 @@ static int tmio_mmc_get_cd(struct mmc_host *mmc)
 
 	return !!(sd_ctrl_read16_and_16_as_32(host, CTL_STATUS) &
 		  TMIO_STAT_SIGSTATE);
-=======
-	struct tmio_mmc_data *pdata = host->pdata;
-	int ret = mmc_gpio_get_ro(mmc);
-
-	if (ret >= 0)
-		return ret;
-
-	ret = !((pdata->flags & TMIO_MMC_WRPROTECT_DISABLE) ||
-		(sd_ctrl_read16_and_16_as_32(host, CTL_STATUS) & TMIO_STAT_WRPROTECT));
-
-	return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int tmio_multi_io_quirk(struct mmc_card *card,
@@ -1234,7 +1104,6 @@ static int tmio_multi_io_quirk(struct mmc_card *card,
 	return blk_size;
 }
 
-<<<<<<< HEAD
 static int tmio_mmc_prepare_hs400_tuning(struct mmc_host *mmc,
 					 struct mmc_ios *ios)
 {
@@ -1267,23 +1136,13 @@ static const struct mmc_host_ops tmio_mmc_ops = {
 	.set_ios	= tmio_mmc_set_ios,
 	.get_ro         = tmio_mmc_get_ro,
 	.get_cd		= tmio_mmc_get_cd,
-=======
-static struct mmc_host_ops tmio_mmc_ops = {
-	.request	= tmio_mmc_request,
-	.set_ios	= tmio_mmc_set_ios,
-	.get_ro         = tmio_mmc_get_ro,
-	.get_cd		= mmc_gpio_get_cd,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.enable_sdio_irq = tmio_mmc_enable_sdio_irq,
 	.multi_io_quirk	= tmio_multi_io_quirk,
 	.hw_reset	= tmio_mmc_hw_reset,
 	.execute_tuning = tmio_mmc_execute_tuning,
-<<<<<<< HEAD
 	.prepare_hs400_tuning = tmio_mmc_prepare_hs400_tuning,
 	.hs400_downgrade = tmio_mmc_hs400_downgrade,
 	.hs400_complete	= tmio_mmc_hs400_complete,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int tmio_mmc_init_ocr(struct tmio_mmc_host *host)
@@ -1311,18 +1170,13 @@ static int tmio_mmc_init_ocr(struct tmio_mmc_host *host)
 }
 
 static void tmio_mmc_of_parse(struct platform_device *pdev,
-<<<<<<< HEAD
 			      struct mmc_host *mmc)
-=======
-			      struct tmio_mmc_data *pdata)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	const struct device_node *np = pdev->dev.of_node;
 
 	if (!np)
 		return;
 
-<<<<<<< HEAD
 	/*
 	 * DEPRECATED:
 	 * For new platforms, please use "disable-wp" instead of
@@ -1371,25 +1225,6 @@ struct tmio_mmc_host *tmio_mmc_host_alloc(struct platform_device *pdev,
 	return host;
 free:
 	mmc_free_host(mmc);
-=======
-	if (of_get_property(np, "toshiba,mmc-wrprotect-disable", NULL))
-		pdata->flags |= TMIO_MMC_WRPROTECT_DISABLE;
-}
-
-struct tmio_mmc_host*
-tmio_mmc_host_alloc(struct platform_device *pdev)
-{
-	struct tmio_mmc_host *host;
-	struct mmc_host *mmc;
-
-	mmc = mmc_alloc_host(sizeof(struct tmio_mmc_host), &pdev->dev);
-	if (!mmc)
-		return NULL;
-
-	host = mmc_priv(mmc);
-	host->mmc = mmc;
-	host->pdev = pdev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return host;
 }
@@ -1401,7 +1236,6 @@ void tmio_mmc_host_free(struct tmio_mmc_host *host)
 }
 EXPORT_SYMBOL_GPL(tmio_mmc_host_free);
 
-<<<<<<< HEAD
 int tmio_mmc_host_probe(struct tmio_mmc_host *_host)
 {
 	struct platform_device *pdev = _host->pdev;
@@ -1415,37 +1249,10 @@ int tmio_mmc_host_probe(struct tmio_mmc_host *_host)
 	 */
 	if (mmc->f_min == 0)
 		return -EINVAL;
-=======
-int tmio_mmc_host_probe(struct tmio_mmc_host *_host,
-			struct tmio_mmc_data *pdata,
-			const struct tmio_mmc_dma_ops *dma_ops)
-{
-	struct platform_device *pdev = _host->pdev;
-	struct mmc_host *mmc = _host->mmc;
-	struct resource *res_ctl;
-	int ret;
-	u32 irq_mask = TMIO_MASK_CMD;
-
-	tmio_mmc_of_parse(pdev, pdata);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!(pdata->flags & TMIO_MMC_HAS_IDLE_WAIT))
 		_host->write16_hook = NULL;
 
-<<<<<<< HEAD
-=======
-	res_ctl = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-	if (!res_ctl)
-		return -EINVAL;
-
-	ret = mmc_of_parse(mmc);
-	if (ret < 0)
-		return ret;
-
-	_host->pdata = pdata;
-	platform_set_drvdata(pdev, mmc);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	_host->set_pwr = pdata->set_pwr;
 	_host->set_clk_div = pdata->set_clk_div;
 
@@ -1453,7 +1260,6 @@ int tmio_mmc_host_probe(struct tmio_mmc_host *_host,
 	if (ret < 0)
 		return ret;
 
-<<<<<<< HEAD
 	if (pdata->flags & TMIO_MMC_USE_GPIO_CD) {
 		ret = mmc_gpio_request_cd(mmc, pdata->cd_gpio, 0);
 		if (ret)
@@ -1461,19 +1267,6 @@ int tmio_mmc_host_probe(struct tmio_mmc_host *_host,
 	}
 
 	mmc->caps |= MMC_CAP_4_BIT_DATA | pdata->capabilities;
-=======
-	_host->ctl = devm_ioremap(&pdev->dev,
-				  res_ctl->start, resource_size(res_ctl));
-	if (!_host->ctl)
-		return -ENOMEM;
-
-	tmio_mmc_ops.card_busy = _host->card_busy;
-	tmio_mmc_ops.start_signal_voltage_switch =
-		_host->start_signal_voltage_switch;
-	mmc->ops = &tmio_mmc_ops;
-
-	mmc->caps |= MMC_CAP_ERASE | MMC_CAP_4_BIT_DATA | pdata->capabilities;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mmc->caps2 |= pdata->capabilities2;
 	mmc->max_segs = pdata->max_segs ? : 32;
 	mmc->max_blk_size = 512;
@@ -1494,7 +1287,6 @@ int tmio_mmc_host_probe(struct tmio_mmc_host *_host,
 	}
 	mmc->max_seg_size = mmc->max_req_size;
 
-<<<<<<< HEAD
 	if (mmc_can_gpio_ro(mmc))
 		_host->ops.get_ro = mmc_gpio_get_ro;
 
@@ -1502,9 +1294,6 @@ int tmio_mmc_host_probe(struct tmio_mmc_host *_host,
 		_host->ops.get_cd = mmc_gpio_get_cd;
 
 	_host->native_hotplug = !(mmc_can_gpio_cd(mmc) ||
-=======
-	_host->native_hotplug = !(pdata->flags & TMIO_MMC_USE_GPIO_CD ||
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  mmc->caps & MMC_CAP_NEEDS_POLL ||
 				  !mmc_card_is_removable(mmc));
 
@@ -1517,21 +1306,6 @@ int tmio_mmc_host_probe(struct tmio_mmc_host *_host,
 	if (pdata->flags & TMIO_MMC_MIN_RCAR2)
 		_host->native_hotplug = true;
 
-<<<<<<< HEAD
-=======
-	if (tmio_mmc_clk_enable(_host) < 0) {
-		mmc->f_max = pdata->hclk;
-		mmc->f_min = mmc->f_max / 512;
-	}
-
-	/*
-	 * Check the sanity of mmc->f_min to prevent tmio_mmc_set_clock() from
-	 * looping forever...
-	 */
-	if (mmc->f_min == 0)
-		return -EINVAL;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * While using internal tmio hardware logic for card detection, we need
 	 * to ensure it stays powered for it to work.
@@ -1549,21 +1323,9 @@ int tmio_mmc_host_probe(struct tmio_mmc_host *_host,
 	_host->sdcard_irq_mask = sd_ctrl_read16_and_16_as_32(_host, CTL_IRQ_MASK);
 	tmio_mmc_disable_mmc_irqs(_host, TMIO_MASK_ALL);
 
-<<<<<<< HEAD
 	if (_host->native_hotplug)
 		tmio_mmc_enable_mmc_irqs(_host,
 				TMIO_STAT_CARD_REMOVE | TMIO_STAT_CARD_INSERT);
-=======
-	/* Unmask the IRQs we want to know about */
-	if (!_host->chan_rx)
-		irq_mask |= TMIO_MASK_READOP;
-	if (!_host->chan_tx)
-		irq_mask |= TMIO_MASK_WRITEOP;
-	if (!_host->native_hotplug)
-		irq_mask &= ~(TMIO_STAT_CARD_REMOVE | TMIO_STAT_CARD_INSERT);
-
-	_host->sdcard_irq_mask &= ~irq_mask;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_init(&_host->lock);
 	mutex_init(&_host->ios_lock);
@@ -1573,10 +1335,6 @@ int tmio_mmc_host_probe(struct tmio_mmc_host *_host,
 	INIT_WORK(&_host->done, tmio_mmc_done_work);
 
 	/* See if we also get DMA */
-<<<<<<< HEAD
-=======
-	_host->dma_ops = dma_ops;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tmio_mmc_request_dma(_host, pdata);
 
 	pm_runtime_set_active(&pdev->dev);
@@ -1585,7 +1343,6 @@ int tmio_mmc_host_probe(struct tmio_mmc_host *_host,
 	pm_runtime_enable(&pdev->dev);
 
 	ret = mmc_add_host(mmc);
-<<<<<<< HEAD
 	if (ret)
 		goto remove_host;
 
@@ -1596,25 +1353,6 @@ int tmio_mmc_host_probe(struct tmio_mmc_host *_host,
 remove_host:
 	tmio_mmc_host_remove(_host);
 	return ret;
-=======
-	if (ret < 0) {
-		tmio_mmc_host_remove(_host);
-		return ret;
-	}
-
-	dev_pm_qos_expose_latency_limit(&pdev->dev, 100);
-
-	if (pdata->flags & TMIO_MMC_USE_GPIO_CD) {
-		ret = mmc_gpio_request_cd(mmc, pdata->cd_gpio, 0);
-		if (ret < 0) {
-			tmio_mmc_host_remove(_host);
-			return ret;
-		}
-		mmc_gpiod_request_cd_irq(mmc);
-	}
-
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(tmio_mmc_host_probe);
 
@@ -1638,16 +1376,10 @@ void tmio_mmc_host_remove(struct tmio_mmc_host *host)
 
 	pm_runtime_put_sync(&pdev->dev);
 	pm_runtime_disable(&pdev->dev);
-<<<<<<< HEAD
-=======
-
-	tmio_mmc_clk_disable(host);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(tmio_mmc_host_remove);
 
 #ifdef CONFIG_PM
-<<<<<<< HEAD
 static int tmio_mmc_clk_enable(struct tmio_mmc_host *host)
 {
 	if (!host->clk_enable)
@@ -1665,12 +1397,6 @@ static void tmio_mmc_clk_disable(struct tmio_mmc_host *host)
 int tmio_mmc_host_runtime_suspend(struct device *dev)
 {
 	struct tmio_mmc_host *host = dev_get_drvdata(dev);
-=======
-int tmio_mmc_host_runtime_suspend(struct device *dev)
-{
-	struct mmc_host *mmc = dev_get_drvdata(dev);
-	struct tmio_mmc_host *host = mmc_priv(mmc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tmio_mmc_disable_mmc_irqs(host, TMIO_MASK_ALL);
 
@@ -1690,12 +1416,7 @@ static bool tmio_mmc_can_retune(struct tmio_mmc_host *host)
 
 int tmio_mmc_host_runtime_resume(struct device *dev)
 {
-<<<<<<< HEAD
 	struct tmio_mmc_host *host = dev_get_drvdata(dev);
-=======
-	struct mmc_host *mmc = dev_get_drvdata(dev);
-	struct tmio_mmc_host *host = mmc_priv(mmc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tmio_mmc_reset(host);
 	tmio_mmc_clk_enable(host);
@@ -1703,13 +1424,10 @@ int tmio_mmc_host_runtime_resume(struct device *dev)
 	if (host->clk_cache)
 		tmio_mmc_set_clock(host, host->clk_cache);
 
-<<<<<<< HEAD
 	if (host->native_hotplug)
 		tmio_mmc_enable_mmc_irqs(host,
 				TMIO_STAT_CARD_REMOVE | TMIO_STAT_CARD_INSERT);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tmio_mmc_enable_dma(host, true);
 
 	if (tmio_mmc_can_retune(host) && host->select_tuning(host))

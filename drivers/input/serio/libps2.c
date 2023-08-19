@@ -26,7 +26,6 @@ MODULE_AUTHOR("Dmitry Torokhov <dtor@mail.ru>");
 MODULE_DESCRIPTION("PS/2 driver library");
 MODULE_LICENSE("GPL");
 
-<<<<<<< HEAD
 static int ps2_do_sendbyte(struct ps2dev *ps2dev, u8 byte,
 			   unsigned int timeout, unsigned int max_attempts)
 	__releases(&ps2dev->serio->lock) __acquires(&ps2dev->serio->lock)
@@ -84,17 +83,10 @@ static int ps2_do_sendbyte(struct ps2dev *ps2dev, u8 byte,
  * ps2_sendbyte() sends a byte to the device and waits for acknowledge.
  * It doesn't handle retransmission, the caller is expected to handle
  * it when needed.
-=======
-/*
- * ps2_sendbyte() sends a byte to the device and waits for acknowledge.
- * It doesn't handle retransmission, though it could - because if there
- * is a need for retransmissions device has to be replaced anyway.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * ps2_sendbyte() can only be called from a process context.
  */
 
-<<<<<<< HEAD
 int ps2_sendbyte(struct ps2dev *ps2dev, u8 byte, unsigned int timeout)
 {
 	int retval;
@@ -107,25 +99,6 @@ int ps2_sendbyte(struct ps2dev *ps2dev, u8 byte, unsigned int timeout)
 	serio_continue_rx(ps2dev->serio);
 
 	return retval;
-=======
-int ps2_sendbyte(struct ps2dev *ps2dev, unsigned char byte, int timeout)
-{
-	serio_pause_rx(ps2dev->serio);
-	ps2dev->nak = 1;
-	ps2dev->flags |= PS2_FLAG_ACK;
-	serio_continue_rx(ps2dev->serio);
-
-	if (serio_write(ps2dev->serio, byte) == 0)
-		wait_event_timeout(ps2dev->wait,
-				   !(ps2dev->flags & PS2_FLAG_ACK),
-				   msecs_to_jiffies(timeout));
-
-	serio_pause_rx(ps2dev->serio);
-	ps2dev->flags &= ~PS2_FLAG_ACK;
-	serio_continue_rx(ps2dev->serio);
-
-	return -ps2dev->nak;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(ps2_sendbyte);
 
@@ -150,11 +123,7 @@ EXPORT_SYMBOL(ps2_end_command);
  * and discards them.
  */
 
-<<<<<<< HEAD
 void ps2_drain(struct ps2dev *ps2dev, size_t maxbytes, unsigned int timeout)
-=======
-void ps2_drain(struct ps2dev *ps2dev, int maxbytes, int timeout)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (maxbytes > sizeof(ps2dev->cmdbuf)) {
 		WARN_ON(1);
@@ -181,15 +150,9 @@ EXPORT_SYMBOL(ps2_drain);
  * known keyboard IDs.
  */
 
-<<<<<<< HEAD
 bool ps2_is_keyboard_id(u8 id_byte)
 {
 	static const u8 keyboard_ids[] = {
-=======
-int ps2_is_keyboard_id(char id_byte)
-{
-	static const char keyboard_ids[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		0xab,	/* Regular keyboards		*/
 		0xac,	/* NCD Sun keyboard		*/
 		0x2b,	/* Trust keyboard, translated	*/
@@ -208,7 +171,6 @@ EXPORT_SYMBOL(ps2_is_keyboard_id);
  * completion.
  */
 
-<<<<<<< HEAD
 static int ps2_adjust_timeout(struct ps2dev *ps2dev,
 			      unsigned int command, unsigned int timeout)
 {
@@ -253,51 +215,6 @@ static int ps2_adjust_timeout(struct ps2dev *ps2dev,
 
 	default:
 		break;
-=======
-static int ps2_adjust_timeout(struct ps2dev *ps2dev, int command, int timeout)
-{
-	switch (command) {
-		case PS2_CMD_RESET_BAT:
-			/*
-			 * Device has sent the first response byte after
-			 * reset command, reset is thus done, so we can
-			 * shorten the timeout.
-			 * The next byte will come soon (keyboard) or not
-			 * at all (mouse).
-			 */
-			if (timeout > msecs_to_jiffies(100))
-				timeout = msecs_to_jiffies(100);
-			break;
-
-		case PS2_CMD_GETID:
-			/*
-			 * Microsoft Natural Elite keyboard responds to
-			 * the GET ID command as it were a mouse, with
-			 * a single byte. Fail the command so atkbd will
-			 * use alternative probe to detect it.
-			 */
-			if (ps2dev->cmdbuf[1] == 0xaa) {
-				serio_pause_rx(ps2dev->serio);
-				ps2dev->flags = 0;
-				serio_continue_rx(ps2dev->serio);
-				timeout = 0;
-			}
-
-			/*
-			 * If device behind the port is not a keyboard there
-			 * won't be 2nd byte of ID response.
-			 */
-			if (!ps2_is_keyboard_id(ps2dev->cmdbuf[1])) {
-				serio_pause_rx(ps2dev->serio);
-				ps2dev->flags = ps2dev->cmdcnt = 0;
-				serio_continue_rx(ps2dev->serio);
-				timeout = 0;
-			}
-			break;
-
-		default:
-			break;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return timeout;
@@ -310,7 +227,6 @@ static int ps2_adjust_timeout(struct ps2dev *ps2dev, int command, int timeout)
  * ps2_command() can only be called from a process context
  */
 
-<<<<<<< HEAD
 int __ps2_command(struct ps2dev *ps2dev, u8 *param, unsigned int command)
 {
 	unsigned int timeout;
@@ -323,24 +239,10 @@ int __ps2_command(struct ps2dev *ps2dev, u8 *param, unsigned int command)
 	if (receive > sizeof(ps2dev->cmdbuf)) {
 		WARN_ON(1);
 		return -EINVAL;
-=======
-int __ps2_command(struct ps2dev *ps2dev, unsigned char *param, int command)
-{
-	int timeout;
-	int send = (command >> 12) & 0xf;
-	int receive = (command >> 8) & 0xf;
-	int rc = -1;
-	int i;
-
-	if (receive > sizeof(ps2dev->cmdbuf)) {
-		WARN_ON(1);
-		return -1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (send && !param) {
 		WARN_ON(1);
-<<<<<<< HEAD
 		return -EINVAL;
 	}
 
@@ -348,31 +250,20 @@ int __ps2_command(struct ps2dev *ps2dev, unsigned char *param, int command)
 
 	serio_pause_rx(ps2dev->serio);
 
-=======
-		return -1;
-	}
-
-	serio_pause_rx(ps2dev->serio);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ps2dev->flags = command == PS2_CMD_GETID ? PS2_FLAG_WAITID : 0;
 	ps2dev->cmdcnt = receive;
 	if (receive && param)
 		for (i = 0; i < receive; i++)
 			ps2dev->cmdbuf[(receive - 1) - i] = param[i];
-<<<<<<< HEAD
 
 	/* Signal that we are sending the command byte */
 	ps2dev->flags |= PS2_FLAG_ACK_CMD;
-=======
-	serio_continue_rx(ps2dev->serio);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Some devices (Synaptics) peform the reset before
 	 * ACKing the reset command, and so it can take a long
 	 * time before the ACK arrives.
 	 */
-<<<<<<< HEAD
 	timeout = command == PS2_CMD_RESET_BAT ? 1000 : 200;
 
 	rc = ps2_do_sendbyte(ps2dev, command & 0xff, timeout, 2);
@@ -389,20 +280,6 @@ int __ps2_command(struct ps2dev *ps2dev, unsigned char *param, int command)
 	}
 
 	serio_continue_rx(ps2dev->serio);
-=======
-	if (ps2_sendbyte(ps2dev, command & 0xff,
-			 command == PS2_CMD_RESET_BAT ? 1000 : 200)) {
-		serio_pause_rx(ps2dev->serio);
-		goto out_reset_flags;
-	}
-
-	for (i = 0; i < send; i++) {
-		if (ps2_sendbyte(ps2dev, param[i], 200)) {
-			serio_pause_rx(ps2dev->serio);
-			goto out_reset_flags;
-		}
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * The reset command takes a long time to execute.
@@ -425,16 +302,11 @@ int __ps2_command(struct ps2dev *ps2dev, unsigned char *param, int command)
 		for (i = 0; i < receive; i++)
 			param[i] = ps2dev->cmdbuf[(receive - 1) - i];
 
-<<<<<<< HEAD
 	if (ps2dev->cmdcnt &&
 	    (command != PS2_CMD_RESET_BAT || ps2dev->cmdcnt != 1)) {
 		rc = -EPROTO;
 		goto out_reset_flags;
 	}
-=======
-	if (ps2dev->cmdcnt && (command != PS2_CMD_RESET_BAT || ps2dev->cmdcnt != 1))
-		goto out_reset_flags;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rc = 0;
 
@@ -442,7 +314,6 @@ int __ps2_command(struct ps2dev *ps2dev, unsigned char *param, int command)
 	ps2dev->flags = 0;
 	serio_continue_rx(ps2dev->serio);
 
-<<<<<<< HEAD
 	dev_dbg(&ps2dev->serio->dev,
 		"%02x [%*ph] - %x/%08lx [%*ph]\n",
 		command & 0xff, send, send_param,
@@ -458,13 +329,6 @@ int __ps2_command(struct ps2dev *ps2dev, unsigned char *param, int command)
 EXPORT_SYMBOL(__ps2_command);
 
 int ps2_command(struct ps2dev *ps2dev, u8 *param, unsigned int command)
-=======
-	return rc;
-}
-EXPORT_SYMBOL(__ps2_command);
-
-int ps2_command(struct ps2dev *ps2dev, unsigned char *param, int command)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int rc;
 
@@ -477,7 +341,6 @@ int ps2_command(struct ps2dev *ps2dev, unsigned char *param, int command)
 EXPORT_SYMBOL(ps2_command);
 
 /*
-<<<<<<< HEAD
  * ps2_sliced_command() sends an extended PS/2 command to the mouse
  * using sliced syntax, understood by advanced devices, such as Logitech
  * or Synaptics touchpads. The command is encoded as:
@@ -511,8 +374,6 @@ out:
 EXPORT_SYMBOL(ps2_sliced_command);
 
 /*
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * ps2_init() initializes ps2dev structure
  */
 
@@ -530,7 +391,6 @@ EXPORT_SYMBOL(ps2_init);
  * to properly process ACK/NAK of a command from a PS/2 device.
  */
 
-<<<<<<< HEAD
 bool ps2_handle_ack(struct ps2dev *ps2dev, u8 data)
 {
 	switch (data) {
@@ -578,44 +438,6 @@ bool ps2_handle_ack(struct ps2dev *ps2dev, u8 data)
 		return ps2dev->flags & PS2_FLAG_ACK_CMD;
 	}
 
-=======
-int ps2_handle_ack(struct ps2dev *ps2dev, unsigned char data)
-{
-	switch (data) {
-		case PS2_RET_ACK:
-			ps2dev->nak = 0;
-			break;
-
-		case PS2_RET_NAK:
-			ps2dev->flags |= PS2_FLAG_NAK;
-			ps2dev->nak = PS2_RET_NAK;
-			break;
-
-		case PS2_RET_ERR:
-			if (ps2dev->flags & PS2_FLAG_NAK) {
-				ps2dev->flags &= ~PS2_FLAG_NAK;
-				ps2dev->nak = PS2_RET_ERR;
-				break;
-			}
-
-		/*
-		 * Workaround for mice which don't ACK the Get ID command.
-		 * These are valid mouse IDs that we recognize.
-		 */
-		case 0x00:
-		case 0x03:
-		case 0x04:
-			if (ps2dev->flags & PS2_FLAG_WAITID) {
-				ps2dev->nak = 0;
-				break;
-			}
-			/* Fall through */
-		default:
-			return 0;
-	}
-
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ps2dev->nak) {
 		ps2dev->flags &= ~PS2_FLAG_NAK;
 		if (ps2dev->cmdcnt)
@@ -628,11 +450,7 @@ int ps2_handle_ack(struct ps2dev *ps2dev, unsigned char data)
 	if (data != PS2_RET_ACK)
 		ps2_handle_response(ps2dev, data);
 
-<<<<<<< HEAD
 	return true;
-=======
-	return 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(ps2_handle_ack);
 
@@ -642,11 +460,7 @@ EXPORT_SYMBOL(ps2_handle_ack);
  * waiting for completion of the command.
  */
 
-<<<<<<< HEAD
 bool ps2_handle_response(struct ps2dev *ps2dev, u8 data)
-=======
-int ps2_handle_response(struct ps2dev *ps2dev, unsigned char data)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (ps2dev->cmdcnt)
 		ps2dev->cmdbuf[--ps2dev->cmdcnt] = data;
@@ -662,11 +476,7 @@ int ps2_handle_response(struct ps2dev *ps2dev, unsigned char data)
 		wake_up(&ps2dev->wait);
 	}
 
-<<<<<<< HEAD
 	return true;
-=======
-	return 1;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(ps2_handle_response);
 

@@ -18,24 +18,16 @@
 
 #ifdef CONFIG_BRCMFMAC_PROTO_BCDC
 int brcmf_proto_bcdc_attach(struct brcmf_pub *drvr);
-<<<<<<< HEAD
 void brcmf_proto_bcdc_detach_pre_delif(struct brcmf_pub *drvr);
 void brcmf_proto_bcdc_detach_post_delif(struct brcmf_pub *drvr);
-=======
-void brcmf_proto_bcdc_detach(struct brcmf_pub *drvr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void brcmf_proto_bcdc_txflowblock(struct device *dev, bool state);
 void brcmf_proto_bcdc_txcomplete(struct device *dev, struct sk_buff *txp,
 				 bool success);
 struct brcmf_fws_info *drvr_to_fws(struct brcmf_pub *drvr);
 #else
 static inline int brcmf_proto_bcdc_attach(struct brcmf_pub *drvr) { return 0; }
-<<<<<<< HEAD
 static void brcmf_proto_bcdc_detach_pre_delif(struct brcmf_pub *drvr) {};
 static inline void brcmf_proto_bcdc_detach_post_delif(struct brcmf_pub *drvr) {}
-=======
-static inline void brcmf_proto_bcdc_detach(struct brcmf_pub *drvr) {}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 #endif /* BRCMFMAC_BCDC_H */

@@ -31,11 +31,7 @@ To enable force feedback, you have to:
 
 Before you start, let me WARN you that some devices shake violently during the
 initialisation phase. This happens for example with my "AVB Top Shot Pegasus".
-<<<<<<< HEAD
 To stop this annoying behaviour, move your joystick to its limits. Anyway, you
-=======
-To stop this annoying behaviour, move you joystick to its limits. Anyway, you
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 should keep a hand on your device, in order to avoid it to break down if
 something goes wrong.
 
@@ -125,11 +121,7 @@ uploaded, but not played.
 The content of effect may be modified. In particular, its field "id" is set
 to the unique id assigned by the driver. This data is required for performing
 some operations (removing an effect, controlling the playback).
-<<<<<<< HEAD
 The "id" field must be set to -1 by the user in order to tell the driver to
-=======
-This if field must be set to -1 by the user in order to tell the driver to
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 allocate a new effect.
 
 Effects are file descriptor specific.
@@ -186,11 +178,7 @@ Control of playing is done with write(). Below is an example:
 	stop.code = effect.id;
 	stop.value = 0;
 
-<<<<<<< HEAD
 	write(fd, (const void*) &stop, sizeof(stop));
-=======
-	write(fd, (const void*) &play, sizeof(stop));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Setting the gain
 ----------------

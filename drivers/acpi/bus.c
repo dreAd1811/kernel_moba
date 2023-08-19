@@ -35,18 +35,11 @@
 #include <linux/delay.h>
 #ifdef CONFIG_X86
 #include <asm/mpspec.h>
-<<<<<<< HEAD
 #include <linux/dmi.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 #include <linux/acpi_iort.h>
 #include <linux/pci.h>
 #include <acpi/apei.h>
-<<<<<<< HEAD
-=======
-#include <linux/dmi.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/suspend.h>
 
 #include "internal.h"
@@ -73,44 +66,10 @@ static int set_copy_dsdt(const struct dmi_system_id *id)
 	return 0;
 }
 #endif
-<<<<<<< HEAD
 
 static const struct dmi_system_id dsdt_dmi_table[] __initconst = {
 	/*
 	 * Invoke DSDT corruption work-around on all Toshiba Satellite.
-=======
-static int set_gbl_term_list(const struct dmi_system_id *id)
-{
-	acpi_gbl_parse_table_as_term_list = 1;
-	return 0;
-}
-
-static const struct dmi_system_id acpi_quirks_dmi_table[] __initconst = {
-	/*
-	 * Touchpad on Dell XPS 9570/Precision M5530 doesn't work under I2C
-	 * mode.
-	 * https://bugzilla.kernel.org/show_bug.cgi?id=198515
-	 */
-	{
-		.callback = set_gbl_term_list,
-		.ident = "Dell Precision M5530",
-		.matches = {
-			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-			DMI_MATCH(DMI_PRODUCT_NAME, "Precision M5530"),
-		},
-	},
-	{
-		.callback = set_gbl_term_list,
-		.ident = "Dell XPS 15 9570",
-		.matches = {
-			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-			DMI_MATCH(DMI_PRODUCT_NAME, "XPS 15 9570"),
-		},
-	},
-	/*
-	 * Invoke DSDT corruption work-around on all Toshiba Satellite.
-	 * DSDT will be copied to memory.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * https://bugzilla.kernel.org/show_bug.cgi?id=14679
 	 */
 	{
@@ -123,13 +82,6 @@ static const struct dmi_system_id acpi_quirks_dmi_table[] __initconst = {
 	},
 	{}
 };
-<<<<<<< HEAD
-=======
-#else
-static const struct dmi_system_id acpi_quirks_dmi_table[] __initconst = {
-	{}
-};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 /* --------------------------------------------------------------------------
@@ -152,10 +104,7 @@ acpi_status acpi_bus_get_status_handle(acpi_handle handle,
 	}
 	return status;
 }
-<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(acpi_bus_get_status_handle);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int acpi_bus_get_status(struct acpi_device *device)
 {
@@ -217,11 +166,7 @@ int acpi_bus_get_private_data(acpi_handle handle, void **data)
 {
 	acpi_status status;
 
-<<<<<<< HEAD
 	if (!*data)
-=======
-	if (!data)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	status = acpi_get_data(handle, acpi_bus_private_data_handler, data);
@@ -684,22 +629,15 @@ struct acpi_device *acpi_companion_match(const struct device *dev)
  * acpi_of_match_device - Match device object using the "compatible" property.
  * @adev: ACPI device object to match.
  * @of_match_table: List of device IDs to match against.
-<<<<<<< HEAD
  * @of_id: OF ID if matched
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * If @dev has an ACPI companion which has ACPI_DT_NAMESPACE_HID in its list of
  * identifiers and a _DSD object with the "compatible" property, use that
  * property to match against the given list of identifiers.
  */
 static bool acpi_of_match_device(struct acpi_device *adev,
-<<<<<<< HEAD
 				 const struct of_device_id *of_match_table,
 				 const struct of_device_id **of_id)
-=======
-				 const struct of_device_id *of_match_table)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	const union acpi_object *of_compatible, *obj;
 	int i, nval;
@@ -723,16 +661,11 @@ static bool acpi_of_match_device(struct acpi_device *adev,
 		const struct of_device_id *id;
 
 		for (id = of_match_table; id->compatible[0]; id++)
-<<<<<<< HEAD
 			if (!strcasecmp(obj->string.pointer, id->compatible)) {
 				if (of_id)
 					*of_id = id;
 				return true;
 			}
-=======
-			if (!strcasecmp(obj->string.pointer, id->compatible))
-				return true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return false;
@@ -803,18 +736,11 @@ static bool __acpi_match_device_cls(const struct acpi_device_id *id,
 	return true;
 }
 
-<<<<<<< HEAD
 static bool __acpi_match_device(struct acpi_device *device,
 				const struct acpi_device_id *acpi_ids,
 				const struct of_device_id *of_ids,
 				const struct acpi_device_id **acpi_id,
 				const struct of_device_id **of_id)
-=======
-static const struct acpi_device_id *__acpi_match_device(
-	struct acpi_device *device,
-	const struct acpi_device_id *ids,
-	const struct of_device_id *of_ids)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	const struct acpi_device_id *id;
 	struct acpi_hardware_id *hwid;
@@ -824,7 +750,6 @@ static const struct acpi_device_id *__acpi_match_device(
 	 * driver for it.
 	 */
 	if (!device || !device->status.present)
-<<<<<<< HEAD
 		return false;
 
 	list_for_each_entry(hwid, &device->pnp.ids, list) {
@@ -836,23 +761,11 @@ static const struct acpi_device_id *__acpi_match_device(
 				if (id->cls && __acpi_match_device_cls(id, hwid))
 					goto out_acpi_match;
 			}
-=======
-		return NULL;
-
-	list_for_each_entry(hwid, &device->pnp.ids, list) {
-		/* First, check the ACPI/PNP IDs provided by the caller. */
-		for (id = ids; id->id[0] || id->cls; id++) {
-			if (id->id[0] && !strcmp((char *) id->id, hwid->id))
-				return id;
-			else if (id->cls && __acpi_match_device_cls(id, hwid))
-				return id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		/*
 		 * Next, check ACPI_DT_NAMESPACE_HID and try to match the
 		 * "compatible" property if found.
-<<<<<<< HEAD
 		 */
 		if (!strcmp(ACPI_DT_NAMESPACE_HID, hwid->id))
 			return acpi_of_match_device(device, of_ids, of_id);
@@ -863,18 +776,6 @@ out_acpi_match:
 	if (acpi_id)
 		*acpi_id = id;
 	return true;
-=======
-		 *
-		 * The id returned by the below is not valid, but the only
-		 * caller passing non-NULL of_ids here is only interested in
-		 * whether or not the return value is NULL.
-		 */
-		if (!strcmp(ACPI_DT_NAMESPACE_HID, hwid->id)
-		    && acpi_of_match_device(device, of_ids))
-			return id;
-	}
-	return NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -891,7 +792,6 @@ out_acpi_match:
 const struct acpi_device_id *acpi_match_device(const struct acpi_device_id *ids,
 					       const struct device *dev)
 {
-<<<<<<< HEAD
 	const struct acpi_device_id *id = NULL;
 
 	__acpi_match_device(acpi_companion_match(dev), ids, NULL, &id, NULL);
@@ -915,16 +815,6 @@ int acpi_match_device_ids(struct acpi_device *device,
 			  const struct acpi_device_id *ids)
 {
 	return __acpi_match_device(device, ids, NULL, NULL, NULL) ? 0 : -ENOENT;
-=======
-	return __acpi_match_device(acpi_companion_match(dev), ids, NULL);
-}
-EXPORT_SYMBOL_GPL(acpi_match_device);
-
-int acpi_match_device_ids(struct acpi_device *device,
-			  const struct acpi_device_id *ids)
-{
-	return __acpi_match_device(device, ids, NULL) ? 0 : -ENOENT;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(acpi_match_device_ids);
 
@@ -933,19 +823,12 @@ bool acpi_driver_match_device(struct device *dev,
 {
 	if (!drv->acpi_match_table)
 		return acpi_of_match_device(ACPI_COMPANION(dev),
-<<<<<<< HEAD
 					    drv->of_match_table,
 					    NULL);
 
 	return __acpi_match_device(acpi_companion_match(dev),
 				   drv->acpi_match_table, drv->of_match_table,
 				   NULL, NULL);
-=======
-					    drv->of_match_table);
-
-	return !!__acpi_match_device(acpi_companion_match(dev),
-				     drv->acpi_match_table, drv->of_match_table);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(acpi_driver_match_device);
 
@@ -1048,11 +931,7 @@ static int acpi_device_probe(struct device *dev)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int acpi_device_remove(struct device *dev)
-=======
-static int acpi_device_remove(struct device * dev)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct acpi_device *acpi_dev = to_acpi_device(dev);
 	struct acpi_driver *acpi_drv = acpi_dev->driver;
@@ -1150,7 +1029,6 @@ void __init acpi_early_init(void)
 
 	acpi_permanent_mmap = true;
 
-<<<<<<< HEAD
 #ifdef CONFIG_X86
 	/*
 	 * If the machine falls into the DMI check table,
@@ -1161,10 +1039,6 @@ void __init acpi_early_init(void)
 	 */
 	dmi_check_system(dsdt_dmi_table);
 #endif
-=======
-	/* Check machine-specific quirks */
-	dmi_check_system(acpi_quirks_dmi_table);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	status = acpi_reallocate_root_table();
 	if (ACPI_FAILURE(status)) {
@@ -1180,11 +1054,7 @@ void __init acpi_early_init(void)
 		goto error0;
 	}
 
-<<<<<<< HEAD
 	if (!acpi_gbl_execute_tables_as_methods &&
-=======
-	if (!acpi_gbl_parse_table_as_term_list &&
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    acpi_gbl_group_module_level_code) {
 		status = acpi_load_tables();
 		if (ACPI_FAILURE(status)) {
@@ -1274,11 +1144,7 @@ static int __init acpi_bus_init(void)
 	status = acpi_ec_ecdt_probe();
 	/* Ignore result. Not having an ECDT is not fatal. */
 
-<<<<<<< HEAD
 	if (acpi_gbl_execute_tables_as_methods ||
-=======
-	if (acpi_gbl_parse_table_as_term_list ||
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    !acpi_gbl_group_module_level_code) {
 		status = acpi_load_tables();
 		if (ACPI_FAILURE(status)) {

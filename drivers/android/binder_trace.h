@@ -272,26 +272,17 @@ DECLARE_EVENT_CLASS(binder_buffer_class,
 		__field(int, debug_id)
 		__field(size_t, data_size)
 		__field(size_t, offsets_size)
-<<<<<<< HEAD
 		__field(size_t, extra_buffers_size)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	),
 	TP_fast_assign(
 		__entry->debug_id = buf->debug_id;
 		__entry->data_size = buf->data_size;
 		__entry->offsets_size = buf->offsets_size;
-<<<<<<< HEAD
 		__entry->extra_buffers_size = buf->extra_buffers_size;
 	),
 	TP_printk("transaction=%d data_size=%zd offsets_size=%zd extra_buffers_size=%zd",
 		  __entry->debug_id, __entry->data_size, __entry->offsets_size,
 		  __entry->extra_buffers_size)
-=======
-	),
-	TP_printk("transaction=%d data_size=%zd offsets_size=%zd",
-		  __entry->debug_id, __entry->data_size, __entry->offsets_size)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 );
 
 DEFINE_EVENT(binder_buffer_class, binder_transaction_alloc_buf,

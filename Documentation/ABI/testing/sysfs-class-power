@@ -144,12 +144,7 @@ Description:
 		Access: Read
 		Valid values: "Unknown", "Good", "Overheat", "Dead",
 			      "Over voltage", "Unspecified failure", "Cold",
-<<<<<<< HEAD
 			      "Watchdog timer expire", "Safety timer expire"
-=======
-			      "Watchdog timer expire", "Safety timer expire",
-			      "Over current", "Warm", "Cool", "Hot"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 What:		/sys/class/power_supply/<supply_name>/precharge_current
 Date:		June 2017

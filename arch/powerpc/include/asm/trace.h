@@ -81,12 +81,7 @@ TRACE_EVENT_FN_COND(hcall_entry,
 
 TRACE_EVENT_FN_COND(hcall_exit,
 
-<<<<<<< HEAD
 	TP_PROTO(unsigned long opcode, long retval, unsigned long *retbuf),
-=======
-	TP_PROTO(unsigned long opcode, unsigned long retval,
-		unsigned long *retbuf),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	TP_ARGS(opcode, retval, retbuf),
 
@@ -94,11 +89,7 @@ TRACE_EVENT_FN_COND(hcall_exit,
 
 	TP_STRUCT__entry(
 		__field(unsigned long, opcode)
-<<<<<<< HEAD
 		__field(long, retval)
-=======
-		__field(unsigned long, retval)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	),
 
 	TP_fast_assign(
@@ -106,11 +97,7 @@ TRACE_EVENT_FN_COND(hcall_exit,
 		__entry->retval = retval;
 	),
 
-<<<<<<< HEAD
 	TP_printk("opcode=%lu retval=%ld", __entry->opcode, __entry->retval),
-=======
-	TP_printk("opcode=%lu retval=%lu", __entry->opcode, __entry->retval),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	hcall_tracepoint_regfunc, hcall_tracepoint_unregfunc
 );

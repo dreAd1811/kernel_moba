@@ -544,11 +544,7 @@ static int virt_wifi_newlink(struct net *src_net, struct net_device *dev,
 		goto free_wireless_dev;
 	}
 
-<<<<<<< HEAD
 	err = netdev_upper_dev_link(priv->lowerdev, dev, extack);
-=======
-	err = netdev_upper_dev_link(priv->lowerdev, dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err) {
 		dev_err(&priv->lowerdev->dev, "can't netdev_upper_dev_link: %d\n",
 			err);

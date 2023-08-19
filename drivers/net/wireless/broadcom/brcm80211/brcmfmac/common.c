@@ -18,10 +18,7 @@
 #include <linux/string.h>
 #include <linux/netdevice.h>
 #include <linux/module.h>
-<<<<<<< HEAD
 #include <linux/firmware.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <brcmu_wifi.h>
 #include <brcmu_utils.h>
 #include "core.h"
@@ -32,21 +29,13 @@
 #include "tracepoint.h"
 #include "common.h"
 #include "of.h"
-<<<<<<< HEAD
 #include "firmware.h"
 #include "chip.h"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 MODULE_AUTHOR("Broadcom Corporation");
 MODULE_DESCRIPTION("Broadcom 802.11 wireless LAN fullmac driver.");
 MODULE_LICENSE("Dual BSD/GPL");
 
-<<<<<<< HEAD
-=======
-const u8 ALLFFMAC[ETH_ALEN] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define BRCMF_DEFAULT_SCAN_CHANNEL_TIME	40
 #define BRCMF_DEFAULT_SCAN_UNASSOC_TIME	40
 
@@ -61,11 +50,7 @@ MODULE_PARM_DESC(txglomsz, "Maximum tx packet chain size [SDIO]");
 
 /* Debug level configuration. See debug.h for bits, sysfs modifiable */
 int brcmf_msg_level;
-<<<<<<< HEAD
 module_param_named(debug, brcmf_msg_level, int, 0600);
-=======
-module_param_named(debug, brcmf_msg_level, int, S_IRUSR | S_IWUSR);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_PARM_DESC(debug, "Level of debug output");
 
 static int brcmf_p2p_enable;
@@ -78,11 +63,7 @@ MODULE_PARM_DESC(feature_disable, "Disable features");
 
 static char brcmf_firmware_path[BRCMF_FW_ALTPATH_LEN];
 module_param_string(alternative_fw_path, brcmf_firmware_path,
-<<<<<<< HEAD
 		    BRCMF_FW_ALTPATH_LEN, 0400);
-=======
-		    BRCMF_FW_ALTPATH_LEN, S_IRUSR);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_PARM_DESC(alternative_fw_path, "Alternative firmware path");
 
 static int brcmf_fcmode;
@@ -90,7 +71,6 @@ module_param_named(fcmode, brcmf_fcmode, int, 0);
 MODULE_PARM_DESC(fcmode, "Mode of firmware signalled flow control");
 
 static int brcmf_roamoff;
-<<<<<<< HEAD
 module_param_named(roamoff, brcmf_roamoff, int, 0400);
 MODULE_PARM_DESC(roamoff, "Do not use internal roaming engine");
 
@@ -98,11 +78,6 @@ static int brcmf_iapp_enable;
 module_param_named(iapp, brcmf_iapp_enable, int, 0);
 MODULE_PARM_DESC(iapp, "Enable partial support for the obsoleted Inter-Access Point Protocol");
 
-=======
-module_param_named(roamoff, brcmf_roamoff, int, S_IRUSR);
-MODULE_PARM_DESC(roamoff, "Do not use internal roaming engine");
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef DEBUG
 /* always succeed brcmf_bus_started() */
 static int brcmf_ignore_probe_fail;
@@ -134,7 +109,6 @@ void brcmf_c_set_joinpref_default(struct brcmf_if *ifp)
 		brcmf_err("Set join_pref error (%d)\n", err);
 }
 
-<<<<<<< HEAD
 static int brcmf_c_download(struct brcmf_if *ifp, u16 flag,
 			    struct brcmf_dload_data_le *dload_buf,
 			    u32 len)
@@ -225,21 +199,14 @@ done:
 	return err;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int brcmf_c_preinit_dcmds(struct brcmf_if *ifp)
 {
 	s8 eventmask[BRCMF_EVENTING_MASK_LEN];
 	u8 buf[BRCMF_DCMD_SMLEN];
-<<<<<<< HEAD
 	struct brcmf_bus *bus;
 	struct brcmf_rev_info_le revinfo;
 	struct brcmf_rev_info *ri;
 	char *clmver;
-=======
-	struct brcmf_rev_info_le revinfo;
-	struct brcmf_rev_info *ri;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	char *ptr;
 	s32 err;
 
@@ -250,7 +217,6 @@ int brcmf_c_preinit_dcmds(struct brcmf_if *ifp)
 		brcmf_err("Retreiving cur_etheraddr failed, %d\n", err);
 		goto done;
 	}
-<<<<<<< HEAD
 	memcpy(ifp->drvr->wiphy->perm_addr, ifp->drvr->mac, ETH_ALEN);
 	memcpy(ifp->drvr->mac, ifp->mac_addr, sizeof(ifp->drvr->mac));
 
@@ -262,23 +228,10 @@ int brcmf_c_preinit_dcmds(struct brcmf_if *ifp)
 	if (err < 0) {
 		brcmf_err("retrieving revision info failed, %d\n", err);
 		strlcpy(ri->chipname, "UNKNOWN", sizeof(ri->chipname));
-=======
-	memcpy(ifp->drvr->mac, ifp->mac_addr, sizeof(ifp->drvr->mac));
-
-	err = brcmf_fil_cmd_data_get(ifp, BRCMF_C_GET_REVINFO,
-				     &revinfo, sizeof(revinfo));
-	ri = &ifp->drvr->revinfo;
-	if (err < 0) {
-		brcmf_err("retrieving revision info failed, %d\n", err);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		ri->vendorid = le32_to_cpu(revinfo.vendorid);
 		ri->deviceid = le32_to_cpu(revinfo.deviceid);
 		ri->radiorev = le32_to_cpu(revinfo.radiorev);
-<<<<<<< HEAD
-=======
-		ri->chiprev = le32_to_cpu(revinfo.chiprev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ri->corerev = le32_to_cpu(revinfo.corerev);
 		ri->boardid = le32_to_cpu(revinfo.boardid);
 		ri->boardvendor = le32_to_cpu(revinfo.boardvendor);
@@ -286,16 +239,11 @@ int brcmf_c_preinit_dcmds(struct brcmf_if *ifp)
 		ri->driverrev = le32_to_cpu(revinfo.driverrev);
 		ri->ucoderev = le32_to_cpu(revinfo.ucoderev);
 		ri->bus = le32_to_cpu(revinfo.bus);
-<<<<<<< HEAD
-=======
-		ri->chipnum = le32_to_cpu(revinfo.chipnum);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ri->phytype = le32_to_cpu(revinfo.phytype);
 		ri->phyrev = le32_to_cpu(revinfo.phyrev);
 		ri->anarev = le32_to_cpu(revinfo.anarev);
 		ri->chippkg = le32_to_cpu(revinfo.chippkg);
 		ri->nvramrev = le32_to_cpu(revinfo.nvramrev);
-<<<<<<< HEAD
 
 		/* use revinfo if not known yet */
 		if (!bus->chip) {
@@ -316,11 +264,6 @@ int brcmf_c_preinit_dcmds(struct brcmf_if *ifp)
 		goto done;
 	}
 
-=======
-	}
-	ri->result = err;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* query for 'ver' to get version info from firmware */
 	memset(buf, 0, sizeof(buf));
 	strcpy(buf, "ver");
@@ -334,17 +277,12 @@ int brcmf_c_preinit_dcmds(struct brcmf_if *ifp)
 	strsep(&ptr, "\n");
 
 	/* Print fw version info */
-<<<<<<< HEAD
 	brcmf_info("Firmware: %s %s\n", ri->chipname, buf);
-=======
-	brcmf_info("Firmware version = %s\n", buf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* locate firmware version number for ethtool */
 	ptr = strrchr(buf, ' ') + 1;
 	strlcpy(ifp->drvr->fwver, ptr, sizeof(ifp->drvr->fwver));
 
-<<<<<<< HEAD
 	/* Query for 'clmver' to get CLM version info from firmware */
 	memset(buf, 0, sizeof(buf));
 	err = brcmf_fil_iovar_data_get(ifp, "clmver", buf, sizeof(buf));
@@ -365,8 +303,6 @@ int brcmf_c_preinit_dcmds(struct brcmf_if *ifp)
 		brcmf_dbg(INFO, "CLM version = %s\n", clmver);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* set mpc */
 	err = brcmf_fil_iovar_int_set(ifp, "mpc", 1);
 	if (err) {
@@ -411,12 +347,6 @@ int brcmf_c_preinit_dcmds(struct brcmf_if *ifp)
 
 	/* Enable tx beamforming, errors can be ignored (not supported) */
 	(void)brcmf_fil_iovar_int_set(ifp, "txbf", 1);
-<<<<<<< HEAD
-=======
-
-	/* do bus specific preinit here */
-	err = brcmf_bus_preinit(ifp->drvr->bus_if);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 done:
 	return err;
 }
@@ -490,10 +420,7 @@ struct brcmf_mp_device *brcmf_get_module_param(struct device *dev,
 	settings->feature_disable = brcmf_feature_disable;
 	settings->fcmode = brcmf_fcmode;
 	settings->roamoff = !!brcmf_roamoff;
-<<<<<<< HEAD
 	settings->iapp = !!brcmf_iapp_enable;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef DEBUG
 	settings->ignore_probe_fail = !!brcmf_ignore_probe_fail;
 #endif
@@ -567,12 +494,6 @@ static int __init brcmfmac_module_init(void)
 {
 	int err;
 
-<<<<<<< HEAD
-=======
-	/* Initialize debug system first */
-	brcmf_debugfs_init();
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Get the platform data (if available) for our devices */
 	err = platform_driver_probe(&brcmf_pd, brcmf_common_pd_probe);
 	if (err == -ENODEV)
@@ -584,10 +505,6 @@ static int __init brcmfmac_module_init(void)
 	/* Continue the initialization by registering the different busses */
 	err = brcmf_core_init();
 	if (err) {
-<<<<<<< HEAD
-=======
-		brcmf_debugfs_exit();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (brcmfmac_pdata)
 			platform_driver_unregister(&brcmf_pd);
 	}
@@ -600,10 +517,6 @@ static void __exit brcmfmac_module_exit(void)
 	brcmf_core_exit();
 	if (brcmfmac_pdata)
 		platform_driver_unregister(&brcmf_pd);
-<<<<<<< HEAD
-=======
-	brcmf_debugfs_exit();
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 module_init(brcmfmac_module_init);

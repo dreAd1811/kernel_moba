@@ -4,10 +4,7 @@
  *  Copyright 2004 IDT Inc. (rischelp@idt.com)
  *  Copyright 2006 Felix Fietkau <nbd@openwrt.org>
  *  Copyright 2008 Florian Fainelli <florian@openwrt.org>
-<<<<<<< HEAD
  *  Copyright 2017 Roman Yeryomin <roman@advem.lv>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  *  This program is free software; you can redistribute  it and/or modify it
  *  under  the terms of  the GNU General  Public License as published by the
@@ -68,15 +65,9 @@
 #include <asm/mach-rc32434/eth.h>
 #include <asm/mach-rc32434/dma_v.h>
 
-<<<<<<< HEAD
 #define DRV_NAME	"korina"
 #define DRV_VERSION	"0.20"
 #define DRV_RELDATE	"15Sep2017"
-=======
-#define DRV_NAME        "korina"
-#define DRV_VERSION     "0.10"
-#define DRV_RELDATE     "04Mar2008"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define STATION_ADDRESS_HIGH(dev) (((dev)->dev_addr[0] << 8) | \
 				   ((dev)->dev_addr[1]))
@@ -85,11 +76,7 @@
 				   ((dev)->dev_addr[4] << 8)  | \
 				   ((dev)->dev_addr[5]))
 
-<<<<<<< HEAD
 #define MII_CLOCK	1250000 /* no more than 2.5MHz */
-=======
-#define MII_CLOCK 1250000 	/* no more than 2.5MHz */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* the following must be powers of two */
 #define KORINA_NUM_RDS	64  /* number of receive descriptors */
@@ -101,7 +88,6 @@
 #define KORINA_RBSIZE	1536 /* size of one resource buffer = Ether MTU */
 #define KORINA_RDS_MASK	(KORINA_NUM_RDS - 1)
 #define KORINA_TDS_MASK	(KORINA_NUM_TDS - 1)
-<<<<<<< HEAD
 #define RD_RING_SIZE	(KORINA_NUM_RDS * sizeof(struct dma_desc))
 #define TD_RING_SIZE	(KORINA_NUM_TDS * sizeof(struct dma_desc))
 
@@ -115,17 +101,6 @@ enum chain_status {
 #define IS_DMA_FINISHED(X)	(((X) & (DMA_DESC_FINI)) != 0)
 #define IS_DMA_DONE(X)		(((X) & (DMA_DESC_DONE)) != 0)
 #define RCVPKT_LENGTH(X)	(((X) & ETH_RX_LEN) >> ETH_RX_LEN_BIT)
-=======
-#define RD_RING_SIZE 	(KORINA_NUM_RDS * sizeof(struct dma_desc))
-#define TD_RING_SIZE	(KORINA_NUM_TDS * sizeof(struct dma_desc))
-
-#define TX_TIMEOUT 	(6000 * HZ / 1000)
-
-enum chain_status { desc_filled, desc_empty };
-#define IS_DMA_FINISHED(X)   (((X) & (DMA_DESC_FINI)) != 0)
-#define IS_DMA_DONE(X)   (((X) & (DMA_DESC_DONE)) != 0)
-#define RCVPKT_LENGTH(X)     (((X) & ETH_RX_LEN) >> ETH_RX_LEN_BIT)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Information that need to be kept for each board. */
 struct korina_private {
@@ -152,15 +127,8 @@ struct korina_private {
 
 	int rx_irq;
 	int tx_irq;
-<<<<<<< HEAD
 
 	spinlock_t lock;	/* NIC xmit lock */
-=======
-	int ovr_irq;
-	int und_irq;
-
-	spinlock_t lock;        /* NIC xmit lock */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	int dma_halt_cnt;
 	int dma_run_cnt;
@@ -183,7 +151,6 @@ static inline void korina_start_dma(struct dma_reg *ch, u32 dma_addr)
 static inline void korina_abort_dma(struct net_device *dev,
 					struct dma_reg *ch)
 {
-<<<<<<< HEAD
 	if (readl(&ch->dmac) & DMA_CHAN_RUN_BIT) {
 		writel(0x10, &ch->dmac);
 
@@ -195,19 +162,6 @@ static inline void korina_abort_dma(struct net_device *dev,
 
 	writel(0, &ch->dmadptr);
 	writel(0, &ch->dmandptr);
-=======
-       if (readl(&ch->dmac) & DMA_CHAN_RUN_BIT) {
-	       writel(0x10, &ch->dmac);
-
-	       while (!(readl(&ch->dmas) & DMA_STAT_HALT))
-		       netif_trans_update(dev);
-
-	       writel(0, &ch->dmas);
-       }
-
-       writel(0, &ch->dmadptr);
-       writel(0, &ch->dmandptr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void korina_chain_dma(struct dma_reg *ch, u32 dma_addr)
@@ -414,7 +368,6 @@ static int korina_rx(struct net_device *dev, int limit)
 		if ((KORINA_RBSIZE - (u32)DMA_COUNT(rd->control)) == 0)
 			break;
 
-<<<<<<< HEAD
 		/* check that this is a whole packet
 		 * WARNING: DMA_FD bit incorrectly set
 		 * in Rc32434 (errata ref #077) */
@@ -469,61 +422,6 @@ static int korina_rx(struct net_device *dev, int limit)
 		lp->rx_skb[lp->rx_next_done] = skb_new;
 
 next:
-=======
-		/* Update statistics counters */
-		if (devcs & ETH_RX_CRC)
-			dev->stats.rx_crc_errors++;
-		if (devcs & ETH_RX_LOR)
-			dev->stats.rx_length_errors++;
-		if (devcs & ETH_RX_LE)
-			dev->stats.rx_length_errors++;
-		if (devcs & ETH_RX_OVR)
-			dev->stats.rx_fifo_errors++;
-		if (devcs & ETH_RX_CV)
-			dev->stats.rx_frame_errors++;
-		if (devcs & ETH_RX_CES)
-			dev->stats.rx_length_errors++;
-		if (devcs & ETH_RX_MP)
-			dev->stats.multicast++;
-
-		if ((devcs & ETH_RX_LD) != ETH_RX_LD) {
-			/* check that this is a whole packet
-			 * WARNING: DMA_FD bit incorrectly set
-			 * in Rc32434 (errata ref #077) */
-			dev->stats.rx_errors++;
-			dev->stats.rx_dropped++;
-		} else if ((devcs & ETH_RX_ROK)) {
-			pkt_len = RCVPKT_LENGTH(devcs);
-
-			/* must be the (first and) last
-			 * descriptor then */
-			pkt_buf = (u8 *)lp->rx_skb[lp->rx_next_done]->data;
-
-			/* invalidate the cache */
-			dma_cache_inv((unsigned long)pkt_buf, pkt_len - 4);
-
-			/* Malloc up new buffer. */
-			skb_new = netdev_alloc_skb_ip_align(dev, KORINA_RBSIZE);
-
-			if (!skb_new)
-				break;
-			/* Do not count the CRC */
-			skb_put(skb, pkt_len - 4);
-			skb->protocol = eth_type_trans(skb, dev);
-
-			/* Pass the packet to upper layers */
-			netif_receive_skb(skb);
-			dev->stats.rx_packets++;
-			dev->stats.rx_bytes += pkt_len;
-
-			/* Update the mcast stats */
-			if (devcs & ETH_RX_MP)
-				dev->stats.multicast++;
-
-			lp->rx_skb[lp->rx_next_done] = skb_new;
-		}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rd->devcs = 0;
 
 		/* Restore descriptor's curr_addr */
@@ -755,17 +653,10 @@ static void korina_check_media(struct net_device *dev, unsigned int init_media)
 						&lp->eth_regs->ethmac2);
 }
 
-<<<<<<< HEAD
 static void korina_poll_media(struct timer_list *t)
 {
 	struct korina_private *lp = from_timer(lp, t, media_check_timer);
 	struct net_device *dev = lp->dev;
-=======
-static void korina_poll_media(unsigned long data)
-{
-	struct net_device *dev = (struct net_device *) data;
-	struct korina_private *lp = netdev_priv(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	korina_check_media(dev, 0);
 	mod_timer(&lp->media_check_timer, jiffies + HZ);
@@ -799,11 +690,7 @@ static int korina_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
 
 /* ethtool helpers */
 static void netdev_get_drvinfo(struct net_device *dev,
-<<<<<<< HEAD
 				struct ethtool_drvinfo *info)
-=======
-			struct ethtool_drvinfo *info)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct korina_private *lp = netdev_priv(dev);
 
@@ -846,17 +733,10 @@ static u32 netdev_get_link(struct net_device *dev)
 }
 
 static const struct ethtool_ops netdev_ethtool_ops = {
-<<<<<<< HEAD
 	.get_drvinfo		= netdev_get_drvinfo,
 	.get_link		= netdev_get_link,
 	.get_link_ksettings	= netdev_get_link_ksettings,
 	.set_link_ksettings	= netdev_set_link_ksettings,
-=======
-	.get_drvinfo            = netdev_get_drvinfo,
-	.get_link               = netdev_get_link,
-	.get_link_ksettings     = netdev_get_link_ksettings,
-	.set_link_ksettings     = netdev_set_link_ksettings,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int korina_alloc_ring(struct net_device *dev)
@@ -988,11 +868,7 @@ static int korina_init(struct net_device *dev)
 	/* Management Clock Prescaler Divisor
 	 * Clock independent setting */
 	writel(((idt_cpu_freq) / MII_CLOCK + 1) & ~1,
-<<<<<<< HEAD
 			&lp->eth_regs->ethmcp);
-=======
-		       &lp->eth_regs->ethmcp);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* don't transmit until fifo contains 48b */
 	writel(48, &lp->eth_regs->ethfifott);
@@ -1019,11 +895,6 @@ static void korina_restart_task(struct work_struct *work)
 	 */
 	disable_irq(lp->rx_irq);
 	disable_irq(lp->tx_irq);
-<<<<<<< HEAD
-=======
-	disable_irq(lp->ovr_irq);
-	disable_irq(lp->und_irq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	writel(readl(&lp->tx_dma_regs->dmasm) |
 				DMA_STAT_FINI | DMA_STAT_ERR,
@@ -1042,46 +913,10 @@ static void korina_restart_task(struct work_struct *work)
 	}
 	korina_multicast_list(dev);
 
-<<<<<<< HEAD
-=======
-	enable_irq(lp->und_irq);
-	enable_irq(lp->ovr_irq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	enable_irq(lp->tx_irq);
 	enable_irq(lp->rx_irq);
 }
 
-<<<<<<< HEAD
-=======
-static void korina_clear_and_restart(struct net_device *dev, u32 value)
-{
-	struct korina_private *lp = netdev_priv(dev);
-
-	netif_stop_queue(dev);
-	writel(value, &lp->eth_regs->ethintfc);
-	schedule_work(&lp->restart_task);
-}
-
-/* Ethernet Tx Underflow interrupt */
-static irqreturn_t korina_und_interrupt(int irq, void *dev_id)
-{
-	struct net_device *dev = dev_id;
-	struct korina_private *lp = netdev_priv(dev);
-	unsigned int und;
-
-	spin_lock(&lp->lock);
-
-	und = readl(&lp->eth_regs->ethintfc);
-
-	if (und & ETH_INT_FC_UND)
-		korina_clear_and_restart(dev, und & ~ETH_INT_FC_UND);
-
-	spin_unlock(&lp->lock);
-
-	return IRQ_HANDLED;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void korina_tx_timeout(struct net_device *dev)
 {
 	struct korina_private *lp = netdev_priv(dev);
@@ -1089,28 +924,6 @@ static void korina_tx_timeout(struct net_device *dev)
 	schedule_work(&lp->restart_task);
 }
 
-<<<<<<< HEAD
-=======
-/* Ethernet Rx Overflow interrupt */
-static irqreturn_t
-korina_ovr_interrupt(int irq, void *dev_id)
-{
-	struct net_device *dev = dev_id;
-	struct korina_private *lp = netdev_priv(dev);
-	unsigned int ovr;
-
-	spin_lock(&lp->lock);
-	ovr = readl(&lp->eth_regs->ethintfc);
-
-	if (ovr & ETH_INT_FC_OVR)
-		korina_clear_and_restart(dev, ovr & ~ETH_INT_FC_OVR);
-
-	spin_unlock(&lp->lock);
-
-	return IRQ_HANDLED;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_NET_POLL_CONTROLLER
 static void korina_poll_controller(struct net_device *dev)
 {
@@ -1133,66 +946,26 @@ static int korina_open(struct net_device *dev)
 	}
 
 	/* Install the interrupt handler
-<<<<<<< HEAD
 	 * that handles the Done Finished */
-=======
-	 * that handles the Done Finished
-	 * Ovr and Und Events */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = request_irq(lp->rx_irq, korina_rx_dma_interrupt,
 			0, "Korina ethernet Rx", dev);
 	if (ret < 0) {
 		printk(KERN_ERR "%s: unable to get Rx DMA IRQ %d\n",
-<<<<<<< HEAD
 			dev->name, lp->rx_irq);
-=======
-		    dev->name, lp->rx_irq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_release;
 	}
 	ret = request_irq(lp->tx_irq, korina_tx_dma_interrupt,
 			0, "Korina ethernet Tx", dev);
 	if (ret < 0) {
 		printk(KERN_ERR "%s: unable to get Tx DMA IRQ %d\n",
-<<<<<<< HEAD
 			dev->name, lp->tx_irq);
 		goto err_free_rx_irq;
 	}
 
-=======
-		    dev->name, lp->tx_irq);
-		goto err_free_rx_irq;
-	}
-
-	/* Install handler for overrun error. */
-	ret = request_irq(lp->ovr_irq, korina_ovr_interrupt,
-			0, "Ethernet Overflow", dev);
-	if (ret < 0) {
-		printk(KERN_ERR "%s: unable to get OVR IRQ %d\n",
-		    dev->name, lp->ovr_irq);
-		goto err_free_tx_irq;
-	}
-
-	/* Install handler for underflow error. */
-	ret = request_irq(lp->und_irq, korina_und_interrupt,
-			0, "Ethernet Underflow", dev);
-	if (ret < 0) {
-		printk(KERN_ERR "%s: unable to get UND IRQ %d\n",
-		    dev->name, lp->und_irq);
-		goto err_free_ovr_irq;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mod_timer(&lp->media_check_timer, jiffies + 1);
 out:
 	return ret;
 
-<<<<<<< HEAD
-=======
-err_free_ovr_irq:
-	free_irq(lp->ovr_irq, dev);
-err_free_tx_irq:
-	free_irq(lp->tx_irq, dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_free_rx_irq:
 	free_irq(lp->rx_irq, dev);
 err_release:
@@ -1210,11 +983,6 @@ static int korina_close(struct net_device *dev)
 	/* Disable interrupts */
 	disable_irq(lp->rx_irq);
 	disable_irq(lp->tx_irq);
-<<<<<<< HEAD
-=======
-	disable_irq(lp->ovr_irq);
-	disable_irq(lp->und_irq);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	korina_abort_tx(dev);
 	tmp = readl(&lp->tx_dma_regs->dmasm);
@@ -1234,11 +1002,6 @@ static int korina_close(struct net_device *dev)
 
 	free_irq(lp->rx_irq, dev);
 	free_irq(lp->tx_irq, dev);
-<<<<<<< HEAD
-=======
-	free_irq(lp->ovr_irq, dev);
-	free_irq(lp->und_irq, dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -1277,11 +1040,6 @@ static int korina_probe(struct platform_device *pdev)
 
 	lp->rx_irq = platform_get_irq_byname(pdev, "korina_rx");
 	lp->tx_irq = platform_get_irq_byname(pdev, "korina_tx");
-<<<<<<< HEAD
-=======
-	lp->ovr_irq = platform_get_irq_byname(pdev, "korina_ovr");
-	lp->und_irq = platform_get_irq_byname(pdev, "korina_und");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	r = platform_get_resource_byname(pdev, IORESOURCE_MEM, "korina_regs");
 	dev->base_addr = r->start;
@@ -1329,11 +1087,7 @@ static int korina_probe(struct platform_device *pdev)
 	dev->netdev_ops = &korina_netdev_ops;
 	dev->ethtool_ops = &netdev_ethtool_ops;
 	dev->watchdog_timeo = TX_TIMEOUT;
-<<<<<<< HEAD
 	netif_napi_add(dev, &lp->napi, korina_poll, NAPI_POLL_WEIGHT);
-=======
-	netif_napi_add(dev, &lp->napi, korina_poll, 64);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	lp->phy_addr = (((lp->rx_irq == 0x2c? 1:0) << 8) | 0x05);
 	lp->mii_if.dev = dev;
@@ -1349,11 +1103,7 @@ static int korina_probe(struct platform_device *pdev)
 			": cannot register net device: %d\n", rc);
 		goto probe_err_register;
 	}
-<<<<<<< HEAD
 	timer_setup(&lp->media_check_timer, korina_poll_media, 0);
-=======
-	setup_timer(&lp->media_check_timer, korina_poll_media, (unsigned long) dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	INIT_WORK(&lp->restart_task, korina_restart_task);
 
@@ -1401,9 +1151,6 @@ module_platform_driver(korina_driver);
 MODULE_AUTHOR("Philip Rischel <rischelp@idt.com>");
 MODULE_AUTHOR("Felix Fietkau <nbd@openwrt.org>");
 MODULE_AUTHOR("Florian Fainelli <florian@openwrt.org>");
-<<<<<<< HEAD
 MODULE_AUTHOR("Roman Yeryomin <roman@advem.lv>");
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_DESCRIPTION("IDT RC32434 (Korina) Ethernet driver");
 MODULE_LICENSE("GPL");

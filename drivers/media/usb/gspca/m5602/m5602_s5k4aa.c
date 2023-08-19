@@ -357,11 +357,7 @@ int s5k4aa_probe(struct sd *sd)
 		return -ENODEV;
 	}
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_PROBE, "Probing for a s5k4aa sensor\n");
-=======
-	PDEBUG(D_PROBE, "Probing for a s5k4aa sensor");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Preinit the sensor */
 	for (i = 0; i < ARRAY_SIZE(preinit_s5k4aa) && !err; i++) {
@@ -423,11 +419,7 @@ int s5k4aa_start(struct sd *sd)
 
 	switch (cam->cam_mode[sd->gspca_dev.curr_mode].width) {
 	case 1280:
-<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_CONF, "Configuring camera for SXGA mode\n");
-=======
-		PDEBUG(D_CONF, "Configuring camera for SXGA mode");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		for (i = 0; i < ARRAY_SIZE(SXGA_s5k4aa); i++) {
 			switch (SXGA_s5k4aa[i][0]) {
@@ -460,11 +452,7 @@ int s5k4aa_start(struct sd *sd)
 		break;
 
 	case 640:
-<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_CONF, "Configuring camera for VGA mode\n");
-=======
-		PDEBUG(D_CONF, "Configuring camera for VGA mode");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		for (i = 0; i < ARRAY_SIZE(VGA_s5k4aa); i++) {
 			switch (VGA_s5k4aa[i][0]) {
@@ -580,11 +568,7 @@ static int s5k4aa_set_exposure(struct gspca_dev *gspca_dev, __s32 val)
 	u8 data = S5K4AA_PAGE_MAP_2;
 	int err;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Set exposure to %d\n", val);
-=======
-	PDEBUG(D_CONF, "Set exposure to %d", val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = m5602_write_sensor(sd, S5K4AA_PAGE_MAP, &data, 1);
 	if (err < 0)
 		return err;
@@ -606,11 +590,7 @@ static int s5k4aa_set_hvflip(struct gspca_dev *gspca_dev)
 	int hflip = sd->hflip->val;
 	int vflip = sd->vflip->val;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Set hvflip %d %d\n", hflip, vflip);
-=======
-	PDEBUG(D_CONF, "Set hvflip %d %d", hflip, vflip);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = m5602_write_sensor(sd, S5K4AA_PAGE_MAP, &data, 1);
 	if (err < 0)
 		return err;
@@ -660,11 +640,7 @@ static int s5k4aa_set_gain(struct gspca_dev *gspca_dev, __s32 val)
 	u8 data = S5K4AA_PAGE_MAP_2;
 	int err;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Set gain to %d\n", val);
-=======
-	PDEBUG(D_CONF, "Set gain to %d", val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = m5602_write_sensor(sd, S5K4AA_PAGE_MAP, &data, 1);
 	if (err < 0)
 		return err;
@@ -681,11 +657,7 @@ static int s5k4aa_set_brightness(struct gspca_dev *gspca_dev, __s32 val)
 	u8 data = S5K4AA_PAGE_MAP_2;
 	int err;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Set brightness to %d\n", val);
-=======
-	PDEBUG(D_CONF, "Set brightness to %d", val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = m5602_write_sensor(sd, S5K4AA_PAGE_MAP, &data, 1);
 	if (err < 0)
 		return err;
@@ -700,11 +672,7 @@ static int s5k4aa_set_noise(struct gspca_dev *gspca_dev, __s32 val)
 	u8 data = S5K4AA_PAGE_MAP_2;
 	int err;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Set noise to %d\n", val);
-=======
-	PDEBUG(D_CONF, "Set noise to %d", val);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = m5602_write_sensor(sd, S5K4AA_PAGE_MAP, &data, 1);
 	if (err < 0)
 		return err;

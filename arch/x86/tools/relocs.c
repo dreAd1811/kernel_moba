@@ -46,10 +46,6 @@ static const char * const sym_regex_kernel[S_NSYMTYPES] = {
 	"^(xen_irq_disable_direct_reloc$|"
 	"xen_save_fl_direct_reloc$|"
 	"VDSO|"
-<<<<<<< HEAD
-=======
-	"__typeid__|"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	"__crc_)",
 
 /*
@@ -71,10 +67,7 @@ static const char * const sym_regex_kernel[S_NSYMTYPES] = {
 	"__tracedata_(start|end)|"
 	"__(start|stop)_notes|"
 	"__end_rodata|"
-<<<<<<< HEAD
 	"__end_rodata_aligned|"
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	"__initramfs_start|"
 	"(jiffies|jiffies_64)|"
 #if ELF_BITS == 64
@@ -789,15 +782,6 @@ static int do_reloc64(struct section *sec, Elf_Rel *rel, ElfW(Sym) *sym,
 			add_reloc(&relocs32neg, offset);
 		break;
 
-<<<<<<< HEAD
-=======
-	case R_X86_64_8:
-		if (!shn_abs || !is_reloc(S_ABS, symname))
-			die("Non-whitelisted %s relocation: %s\n",
-				rel_type(r_type), symname);
-		break;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case R_X86_64_32:
 	case R_X86_64_32S:
 	case R_X86_64_64:

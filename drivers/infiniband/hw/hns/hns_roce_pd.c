@@ -31,11 +31,8 @@
  */
 
 #include <linux/platform_device.h>
-<<<<<<< HEAD
 #include <linux/pci.h>
 #include <uapi/rdma/hns-abi.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "hns_roce_device.h"
 
 static int hns_roce_pd_alloc(struct hns_roce_dev *hr_dev, unsigned long *pdn)
@@ -65,11 +62,7 @@ struct ib_pd *hns_roce_alloc_pd(struct ib_device *ib_dev,
 				struct ib_udata *udata)
 {
 	struct hns_roce_dev *hr_dev = to_hr_dev(ib_dev);
-<<<<<<< HEAD
 	struct device *dev = hr_dev->dev;
-=======
-	struct device *dev = &hr_dev->pdev->dev;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct hns_roce_pd *pd;
 	int ret;
 
@@ -85,13 +78,9 @@ struct ib_pd *hns_roce_alloc_pd(struct ib_device *ib_dev,
 	}
 
 	if (context) {
-<<<<<<< HEAD
 		struct hns_roce_ib_alloc_pd_resp uresp = {.pdn = pd->pdn};
 
 		if (ib_copy_to_udata(udata, &uresp, sizeof(uresp))) {
-=======
-		if (ib_copy_to_udata(udata, &pd->pdn, sizeof(u64))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			hns_roce_pd_free(to_hr_dev(ib_dev), pd->pdn);
 			dev_err(dev, "[alloc_pd]ib_copy_to_udata failed!\n");
 			kfree(pd);
@@ -101,10 +90,7 @@ struct ib_pd *hns_roce_alloc_pd(struct ib_device *ib_dev,
 
 	return &pd->ibpd;
 }
-<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(hns_roce_alloc_pd);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int hns_roce_dealloc_pd(struct ib_pd *pd)
 {
@@ -113,10 +99,7 @@ int hns_roce_dealloc_pd(struct ib_pd *pd)
 
 	return 0;
 }
-<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(hns_roce_dealloc_pd);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int hns_roce_uar_alloc(struct hns_roce_dev *hr_dev, struct hns_roce_uar *uar)
 {
@@ -124,7 +107,6 @@ int hns_roce_uar_alloc(struct hns_roce_dev *hr_dev, struct hns_roce_uar *uar)
 	int ret = 0;
 
 	/* Using bitmap to manager UAR index */
-<<<<<<< HEAD
 	ret = hns_roce_bitmap_alloc(&hr_dev->uar_table.bitmap, &uar->logic_idx);
 	if (ret == -1)
 		return -ENOMEM;
@@ -146,33 +128,13 @@ int hns_roce_uar_alloc(struct hns_roce_dev *hr_dev, struct hns_roce_uar *uar)
 		uar->pfn = ((pci_resource_start(hr_dev->pci_dev, 2))
 			   >> PAGE_SHIFT);
 	}
-=======
-	ret = hns_roce_bitmap_alloc(&hr_dev->uar_table.bitmap, &uar->index);
-	if (ret == -1)
-		return -ENOMEM;
-
-	if (uar->index > 0)
-		uar->index = (uar->index - 1) %
-			     (hr_dev->caps.phy_num_uars - 1) + 1;
-
-	res = platform_get_resource(hr_dev->pdev, IORESOURCE_MEM, 0);
-	if (!res) {
-		dev_err(&hr_dev->pdev->dev, "memory resource not found!\n");
-		return -EINVAL;
-	}
-	uar->pfn = ((res->start) >> PAGE_SHIFT) + uar->index;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
 void hns_roce_uar_free(struct hns_roce_dev *hr_dev, struct hns_roce_uar *uar)
 {
-<<<<<<< HEAD
 	hns_roce_bitmap_free(&hr_dev->uar_table.bitmap, uar->logic_idx,
-=======
-	hns_roce_bitmap_free(&hr_dev->uar_table.bitmap, uar->index,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     BITMAP_NO_RR);
 }
 

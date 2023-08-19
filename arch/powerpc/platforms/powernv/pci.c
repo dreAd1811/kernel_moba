@@ -18,10 +18,7 @@
 #include <linux/io.h>
 #include <linux/msi.h>
 #include <linux/iommu.h>
-<<<<<<< HEAD
 #include <linux/sched/mm.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/sections.h>
 #include <asm/io.h>
@@ -42,10 +39,7 @@
 #include "pci.h"
 
 static DEFINE_MUTEX(p2p_mutex);
-<<<<<<< HEAD
 static DEFINE_MUTEX(tunnel_mutex);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int pnv_pci_get_slot_id(struct device_node *np, uint64_t *id)
 {
@@ -608,13 +602,8 @@ static void pnv_pci_handle_eeh_config(struct pnv_phb *phb, u32 pe_no)
 static void pnv_pci_config_check_eeh(struct pci_dn *pdn)
 {
 	struct pnv_phb *phb = pdn->phb->private_data;
-<<<<<<< HEAD
 	u8	fstate;
 	__be16	pcierr;
-=======
-	u8	fstate = 0;
-	__be16	pcierr = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int pe_no;
 	s64	rc;
 
@@ -813,88 +802,6 @@ struct pci_ops pnv_pci_ops = {
 	.write = pnv_pci_write_config,
 };
 
-<<<<<<< HEAD
-=======
-static __be64 *pnv_tce(struct iommu_table *tbl, long idx)
-{
-	__be64 *tmp = ((__be64 *)tbl->it_base);
-	int  level = tbl->it_indirect_levels;
-	const long shift = ilog2(tbl->it_level_size);
-	unsigned long mask = (tbl->it_level_size - 1) << (level * shift);
-
-	while (level) {
-		int n = (idx & mask) >> (level * shift);
-		unsigned long tce = be64_to_cpu(tmp[n]);
-
-		tmp = __va(tce & ~(TCE_PCI_READ | TCE_PCI_WRITE));
-		idx &= ~mask;
-		mask >>= shift;
-		--level;
-	}
-
-	return tmp + idx;
-}
-
-int pnv_tce_build(struct iommu_table *tbl, long index, long npages,
-		unsigned long uaddr, enum dma_data_direction direction,
-		unsigned long attrs)
-{
-	u64 proto_tce = iommu_direction_to_tce_perm(direction);
-	u64 rpn = __pa(uaddr) >> tbl->it_page_shift;
-	long i;
-
-	if (proto_tce & TCE_PCI_WRITE)
-		proto_tce |= TCE_PCI_READ;
-
-	for (i = 0; i < npages; i++) {
-		unsigned long newtce = proto_tce |
-			((rpn + i) << tbl->it_page_shift);
-		unsigned long idx = index - tbl->it_offset + i;
-
-		*(pnv_tce(tbl, idx)) = cpu_to_be64(newtce);
-	}
-
-	return 0;
-}
-
-#ifdef CONFIG_IOMMU_API
-int pnv_tce_xchg(struct iommu_table *tbl, long index,
-		unsigned long *hpa, enum dma_data_direction *direction)
-{
-	u64 proto_tce = iommu_direction_to_tce_perm(*direction);
-	unsigned long newtce = *hpa | proto_tce, oldtce;
-	unsigned long idx = index - tbl->it_offset;
-
-	BUG_ON(*hpa & ~IOMMU_PAGE_MASK(tbl));
-
-	if (newtce & TCE_PCI_WRITE)
-		newtce |= TCE_PCI_READ;
-
-	oldtce = be64_to_cpu(xchg(pnv_tce(tbl, idx), cpu_to_be64(newtce)));
-	*hpa = oldtce & ~(TCE_PCI_READ | TCE_PCI_WRITE);
-	*direction = iommu_tce_direction(oldtce);
-
-	return 0;
-}
-#endif
-
-void pnv_tce_free(struct iommu_table *tbl, long index, long npages)
-{
-	long i;
-
-	for (i = 0; i < npages; i++) {
-		unsigned long idx = index - tbl->it_offset + i;
-
-		*(pnv_tce(tbl, idx)) = cpu_to_be64(0);
-	}
-}
-
-unsigned long pnv_tce_get(struct iommu_table *tbl, long index)
-{
-	return be64_to_cpu(*(pnv_tce(tbl, index - tbl->it_offset)));
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct iommu_table *pnv_pci_table_alloc(int nid)
 {
 	struct iommu_table *tbl;
@@ -909,95 +816,12 @@ struct iommu_table *pnv_pci_table_alloc(int nid)
 	return tbl;
 }
 
-<<<<<<< HEAD
-=======
-long pnv_pci_link_table_and_group(int node, int num,
-		struct iommu_table *tbl,
-		struct iommu_table_group *table_group)
-{
-	struct iommu_table_group_link *tgl = NULL;
-
-	if (WARN_ON(!tbl || !table_group))
-		return -EINVAL;
-
-	tgl = kzalloc_node(sizeof(struct iommu_table_group_link), GFP_KERNEL,
-			node);
-	if (!tgl)
-		return -ENOMEM;
-
-	tgl->table_group = table_group;
-	list_add_rcu(&tgl->next, &tbl->it_group_list);
-
-	table_group->tables[num] = tbl;
-
-	return 0;
-}
-
-static void pnv_iommu_table_group_link_free(struct rcu_head *head)
-{
-	struct iommu_table_group_link *tgl = container_of(head,
-			struct iommu_table_group_link, rcu);
-
-	kfree(tgl);
-}
-
-void pnv_pci_unlink_table_and_group(struct iommu_table *tbl,
-		struct iommu_table_group *table_group)
-{
-	long i;
-	bool found;
-	struct iommu_table_group_link *tgl;
-
-	if (!tbl || !table_group)
-		return;
-
-	/* Remove link to a group from table's list of attached groups */
-	found = false;
-	list_for_each_entry_rcu(tgl, &tbl->it_group_list, next) {
-		if (tgl->table_group == table_group) {
-			list_del_rcu(&tgl->next);
-			call_rcu(&tgl->rcu, pnv_iommu_table_group_link_free);
-			found = true;
-			break;
-		}
-	}
-	if (WARN_ON(!found))
-		return;
-
-	/* Clean a pointer to iommu_table in iommu_table_group::tables[] */
-	found = false;
-	for (i = 0; i < IOMMU_TABLE_GROUP_MAX_TABLES; ++i) {
-		if (table_group->tables[i] == tbl) {
-			table_group->tables[i] = NULL;
-			found = true;
-			break;
-		}
-	}
-	WARN_ON(!found);
-}
-
-void pnv_pci_setup_iommu_table(struct iommu_table *tbl,
-			       void *tce_mem, u64 tce_size,
-			       u64 dma_offset, unsigned page_shift)
-{
-	tbl->it_blocksize = 16;
-	tbl->it_base = (unsigned long)tce_mem;
-	tbl->it_page_shift = page_shift;
-	tbl->it_offset = dma_offset >> tbl->it_page_shift;
-	tbl->it_index = 0;
-	tbl->it_size = tce_size >> 3;
-	tbl->it_busno = 0;
-	tbl->it_type = TCE_PCI;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void pnv_pci_dma_dev_setup(struct pci_dev *pdev)
 {
 	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
 	struct pnv_phb *phb = hose->private_data;
 #ifdef CONFIG_PCI_IOV
 	struct pnv_ioda_pe *pe;
-<<<<<<< HEAD
 	struct pci_dn *pdn;
 
 	/* Fix the VF pdn PE number */
@@ -1008,14 +832,6 @@ void pnv_pci_dma_dev_setup(struct pci_dev *pdev)
 			if (pe->rid == ((pdev->bus->number << 8) |
 			    (pdev->devfn & 0xff))) {
 				pdn->pe_number = pe->pe_number;
-=======
-
-	/* Fix the VF pdn PE number */
-	if (pdev->is_virtfn) {
-		list_for_each_entry(pe, &phb->ioda.pe_list, list) {
-			if (pe->rid == ((pdev->bus->number << 8) |
-			    (pdev->devfn & 0xff))) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				pe->pdev = pdev;
 				break;
 			}
@@ -1120,7 +936,6 @@ out:
 }
 EXPORT_SYMBOL_GPL(pnv_pci_set_p2p);
 
-<<<<<<< HEAD
 struct device_node *pnv_pci_get_phb_node(struct pci_dev *dev)
 {
 	struct pci_controller *hose = pci_bus_to_host(dev->bus);
@@ -1254,8 +1069,6 @@ int pnv_pci_get_as_notify_info(struct task_struct *task, u32 *lpid, u32 *pid,
 EXPORT_SYMBOL_GPL(pnv_pci_get_as_notify_info);
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void pnv_pci_shutdown(void)
 {
 	struct pci_controller *hose;
@@ -1282,26 +1095,6 @@ void __init pnv_pci_init(void)
 	if (!firmware_has_feature(FW_FEATURE_OPAL))
 		return;
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_PCIEPORTBUS
-	/*
-	 * On PowerNV PCIe devices are (currently) managed in cooperation
-	 * with firmware. This isn't *strictly* required, but there's enough
-	 * assumptions baked into both firmware and the platform code that
-	 * it's unwise to allow the portbus services to be used.
-	 *
-	 * We need to fix this eventually, but for now set this flag to disable
-	 * the portbus driver. The AER service isn't required since that AER
-	 * events are handled via EEH. The pciehp hotplug driver can't work
-	 * without kernel changes (and portbus binding breaks pnv_php). The
-	 * other services also require some thinking about how we're going
-	 * to integrate them.
-	 */
-	pcie_ports_disabled = true;
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Look for IODA IO-Hubs. */
 	for_each_compatible_node(np, NULL, "ibm,ioda-hub") {
 		pnv_pci_init_ioda_hub(np);
@@ -1326,13 +1119,10 @@ void __init pnv_pci_init(void)
 	for_each_compatible_node(np, NULL, "ibm,ioda2-npu2-phb")
 		pnv_pci_init_npu_phb(np);
 
-<<<<<<< HEAD
 	/* Look for NPU2 OpenCAPI PHBs */
 	for_each_compatible_node(np, NULL, "ibm,ioda2-npu2-opencapi-phb")
 		pnv_pci_init_npu2_opencapi_phb(np);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Configure IOMMU DMA hooks */
 	set_pci_dma_ops(&dma_iommu_ops);
 }

@@ -13,11 +13,7 @@
  *  Copyright (C) 2008 <srinivasa.deevi at conexant dot com>
  *  Copyright (C) 2005 Ludovico Cavedon <cavedon@sssup.it>
  *		       Markus Rechberger <mrechberger@gmail.com>
-<<<<<<< HEAD
  *		       Mauro Carvalho Chehab <mchehab@kernel.org>
-=======
- *		       Mauro Carvalho Chehab <mchehab@infradead.org>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *		       Sascha Sommer <saschasommer@freenet.de>
  *  Copyright (C) 2004, 2005 Chris Pascoe
  *  Copyright (C) 2003, 2004 Gerd Knorr
@@ -98,10 +94,7 @@ void cx23885_input_rx_work_handler(struct cx23885_dev *dev, u32 events)
 	case CX23885_BOARD_DVBSKY_S950:
 	case CX23885_BOARD_DVBSKY_S952:
 	case CX23885_BOARD_DVBSKY_T982:
-<<<<<<< HEAD
 	case CX23885_BOARD_HAUPPAUGE_HVR1265_K4:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * The only boards we handle right now.  However other boards
 		 * using the CX2388x integrated IR controller should be similar
@@ -161,10 +154,7 @@ static int cx23885_input_ir_start(struct cx23885_dev *dev)
 	case CX23885_BOARD_DVBSKY_S950:
 	case CX23885_BOARD_DVBSKY_S952:
 	case CX23885_BOARD_DVBSKY_T982:
-<<<<<<< HEAD
 	case CX23885_BOARD_HAUPPAUGE_HVR1265_K4:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * The IR controller on this board only returns pulse widths.
 		 * Any other mode setting will fail to set up the device.
@@ -295,10 +285,7 @@ int cx23885_input_init(struct cx23885_dev *dev)
 	case CX23885_BOARD_HAUPPAUGE_HVR1850:
 	case CX23885_BOARD_HAUPPAUGE_HVR1290:
 	case CX23885_BOARD_HAUPPAUGE_HVR1250:
-<<<<<<< HEAD
 	case CX23885_BOARD_HAUPPAUGE_HVR1265_K4:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Integrated CX2388[58] IR controller */
 		allowed_protos = RC_PROTO_BIT_ALL_IR_DECODER;
 		/* The grey Hauppauge RC-5 remote */
@@ -356,7 +343,6 @@ int cx23885_input_init(struct cx23885_dev *dev)
 	kernel_ir->cx = dev;
 	kernel_ir->name = kasprintf(GFP_KERNEL, "cx23885 IR (%s)",
 				    cx23885_boards[dev->board].name);
-<<<<<<< HEAD
 	if (!kernel_ir->name) {
 		ret = -ENOMEM;
 		goto err_out_free;
@@ -368,20 +354,12 @@ int cx23885_input_init(struct cx23885_dev *dev)
 		ret = -ENOMEM;
 		goto err_out_free_name;
 	}
-=======
-	kernel_ir->phys = kasprintf(GFP_KERNEL, "pci-%s/ir0",
-				    pci_name(dev->pci));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* input device */
 	rc = rc_allocate_device(RC_DRIVER_IR_RAW);
 	if (!rc) {
 		ret = -ENOMEM;
-<<<<<<< HEAD
 		goto err_out_free_phys;
-=======
-		goto err_out_free;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	kernel_ir->rc = rc;
@@ -416,17 +394,11 @@ err_out_stop:
 	cx23885_input_ir_stop(dev);
 	dev->kernel_ir = NULL;
 	rc_free_device(rc);
-<<<<<<< HEAD
 err_out_free_phys:
 	kfree(kernel_ir->phys);
 err_out_free_name:
 	kfree(kernel_ir->name);
 err_out_free:
-=======
-err_out_free:
-	kfree(kernel_ir->phys);
-	kfree(kernel_ir->name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(kernel_ir);
 	return ret;
 }

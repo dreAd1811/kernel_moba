@@ -83,11 +83,7 @@ nvif_object_sclass_get(struct nvif_object *object, struct nvif_sclass **psclass)
 			return ret;
 	}
 
-<<<<<<< HEAD
 	*psclass = kcalloc(args->sclass.count, sizeof(**psclass), GFP_KERNEL);
-=======
-	*psclass = kzalloc(sizeof(**psclass) * args->sclass.count, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (*psclass) {
 		for (i = 0; i < args->sclass.count; i++) {
 			(*psclass)[i].oclass = args->sclass.oclass[i].oclass;
@@ -170,7 +166,6 @@ nvif_object_mthd(struct nvif_object *object, u32 mthd, void *data, u32 size)
 }
 
 void
-<<<<<<< HEAD
 nvif_object_unmap_handle(struct nvif_object *object)
 {
 	struct {
@@ -219,32 +214,10 @@ nvif_object_unmap(struct nvif_object *object)
 		}
 		object->map.ptr = NULL;
 		nvif_object_unmap_handle(object);
-=======
-nvif_object_unmap(struct nvif_object *object)
-{
-	if (object->map.size) {
-		struct nvif_client *client = object->client;
-		struct {
-			struct nvif_ioctl_v0 ioctl;
-			struct nvif_ioctl_unmap unmap;
-		} args = {
-			.ioctl.type = NVIF_IOCTL_V0_UNMAP,
-		};
-
-		if (object->map.ptr) {
-			client->driver->unmap(client, object->map.ptr,
-						      object->map.size);
-			object->map.ptr = NULL;
-		}
-
-		nvif_object_ioctl(object, &args, sizeof(args), NULL);
-		object->map.size = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
 int
-<<<<<<< HEAD
 nvif_object_map(struct nvif_object *object, void *argv, u32 argc)
 {
 	struct nvif_client *client = object->client;
@@ -264,25 +237,6 @@ nvif_object_map(struct nvif_object *object, void *argv, u32 argc)
 			return 0;
 		}
 		nvif_object_unmap_handle(object);
-=======
-nvif_object_map(struct nvif_object *object)
-{
-	struct nvif_client *client = object->client;
-	struct {
-		struct nvif_ioctl_v0 ioctl;
-		struct nvif_ioctl_map_v0 map;
-	} args = {
-		.ioctl.type = NVIF_IOCTL_V0_MAP,
-	};
-	int ret = nvif_object_ioctl(object, &args, sizeof(args), NULL);
-	if (ret == 0) {
-		object->map.size = args.map.length;
-		object->map.ptr = client->driver->map(client, args.map.handle,
-						      object->map.size);
-		if (ret = -ENOMEM, object->map.ptr)
-			return 0;
-		nvif_object_unmap(object);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return ret;
 }

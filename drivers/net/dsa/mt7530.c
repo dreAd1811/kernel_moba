@@ -549,11 +549,7 @@ mt7530_mib_reset(struct dsa_switch *ds)
 static void
 mt7530_port_set_status(struct mt7530_priv *priv, int port, int enable)
 {
-<<<<<<< HEAD
 	u32 mask = PMCR_TX_EN | PMCR_RX_EN;
-=======
-	u32 mask = PMCR_TX_EN | PMCR_RX_EN | PMCR_FORCE_LNK;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (enable)
 		mt7530_set(priv, MT7530_PMCR_P(port), mask);
@@ -568,12 +564,8 @@ static int mt7530_phy_read(struct dsa_switch *ds, int port, int regnum)
 	return mdiobus_read_nested(priv->bus, port, regnum);
 }
 
-<<<<<<< HEAD
 static int mt7530_phy_write(struct dsa_switch *ds, int port, int regnum,
 			    u16 val)
-=======
-int mt7530_phy_write(struct dsa_switch *ds, int port, int regnum, u16 val)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mt7530_priv *priv = ds->priv;
 
@@ -581,7 +573,6 @@ int mt7530_phy_write(struct dsa_switch *ds, int port, int regnum, u16 val)
 }
 
 static void
-<<<<<<< HEAD
 mt7530_get_strings(struct dsa_switch *ds, int port, u32 stringset,
 		   uint8_t *data)
 {
@@ -590,12 +581,6 @@ mt7530_get_strings(struct dsa_switch *ds, int port, u32 stringset,
 	if (stringset != ETH_SS_STATS)
 		return;
 
-=======
-mt7530_get_strings(struct dsa_switch *ds, int port, uint8_t *data)
-{
-	int i;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < ARRAY_SIZE(mt7530_mib); i++)
 		strncpy(data + i * ETH_GSTRING_LEN, mt7530_mib[i].name,
 			ETH_GSTRING_LEN);
@@ -623,16 +608,11 @@ mt7530_get_ethtool_stats(struct dsa_switch *ds, int port,
 }
 
 static int
-<<<<<<< HEAD
 mt7530_get_sset_count(struct dsa_switch *ds, int port, int sset)
 {
 	if (sset != ETH_SS_STATS)
 		return 0;
 
-=======
-mt7530_get_sset_count(struct dsa_switch *ds)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ARRAY_SIZE(mt7530_mib);
 }
 
@@ -715,11 +695,7 @@ mt7530_cpu_port_enable(struct mt7530_priv *priv,
 	 * the switch
 	 */
 	mt7530_write(priv, MT7530_PCR_P(port),
-<<<<<<< HEAD
 		     PCR_MATRIX(dsa_user_ports(priv->ds)));
-=======
-		     PCR_MATRIX(priv->ds->enabled_port_mask));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -812,13 +788,8 @@ mt7530_port_bridge_join(struct dsa_switch *ds, int port,
 		 * same bridge. If the port is disabled, port matrix is kept
 		 * and not being setup until the port becomes enabled.
 		 */
-<<<<<<< HEAD
 		if (dsa_is_user_port(ds, i) && i != port) {
 			if (dsa_to_port(ds, i)->bridge_dev != bridge)
-=======
-		if (ds->enabled_port_mask & BIT(i) && i != port) {
-			if (ds->ports[i].bridge_dev != bridge)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				continue;
 			if (priv->ports[i].enable)
 				mt7530_set(priv, MT7530_PCR_P(i),
@@ -841,7 +812,6 @@ mt7530_port_bridge_join(struct dsa_switch *ds, int port,
 }
 
 static void
-<<<<<<< HEAD
 mt7530_port_set_vlan_unaware(struct dsa_switch *ds, int port)
 {
 	struct mt7530_priv *priv = ds->priv;
@@ -905,8 +875,6 @@ mt7530_port_set_vlan_aware(struct dsa_switch *ds, int port)
 }
 
 static void
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 mt7530_port_bridge_leave(struct dsa_switch *ds, int port,
 			 struct net_device *bridge)
 {
@@ -919,18 +887,12 @@ mt7530_port_bridge_leave(struct dsa_switch *ds, int port,
 		/* Remove this port from the port matrix of the other ports
 		 * in the same bridge. If the port is disabled, port matrix
 		 * is kept and not being setup until the port becomes enabled.
-<<<<<<< HEAD
 		 * And the other port's port matrix cannot be broken when the
 		 * other port is still a VLAN-aware port.
 		 */
 		if (!priv->ports[i].vlan_filtering &&
 		    dsa_is_user_port(ds, i) && i != port) {
 			if (dsa_to_port(ds, i)->bridge_dev != bridge)
-=======
-		 */
-		if (ds->enabled_port_mask & BIT(i) && i != port) {
-			if (ds->ports[i].bridge_dev != bridge)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				continue;
 			if (priv->ports[i].enable)
 				mt7530_clear(priv, MT7530_PCR_P(i),
@@ -947,11 +909,8 @@ mt7530_port_bridge_leave(struct dsa_switch *ds, int port,
 			   PCR_MATRIX(BIT(MT7530_CPU_PORT)));
 	priv->ports[port].pm = PCR_MATRIX(BIT(MT7530_CPU_PORT));
 
-<<<<<<< HEAD
 	mt7530_port_set_vlan_unaware(ds, port);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&priv->reg_mutex);
 }
 
@@ -965,11 +924,7 @@ mt7530_port_fdb_add(struct dsa_switch *ds, int port,
 
 	mutex_lock(&priv->reg_mutex);
 	mt7530_fdb_write(priv, vid, port_mask, addr, -1, STATIC_ENT);
-<<<<<<< HEAD
 	ret = mt7530_fdb_cmd(priv, MT7530_FDB_WRITE, NULL);
-=======
-	ret = mt7530_fdb_cmd(priv, MT7530_FDB_WRITE, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&priv->reg_mutex);
 
 	return ret;
@@ -985,11 +940,7 @@ mt7530_port_fdb_del(struct dsa_switch *ds, int port,
 
 	mutex_lock(&priv->reg_mutex);
 	mt7530_fdb_write(priv, vid, port_mask, addr, -1, STATIC_EMP);
-<<<<<<< HEAD
 	ret = mt7530_fdb_cmd(priv, MT7530_FDB_WRITE, NULL);
-=======
-	ret = mt7530_fdb_cmd(priv, MT7530_FDB_WRITE, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&priv->reg_mutex);
 
 	return ret;
@@ -1030,7 +981,6 @@ err:
 	return 0;
 }
 
-<<<<<<< HEAD
 static int
 mt7530_vlan_cmd(struct mt7530_priv *priv, enum mt7530_vlan_cmd cmd, u16 vid)
 {
@@ -1251,14 +1201,6 @@ mtk_get_tag_protocol(struct dsa_switch *ds, int port)
 	struct mt7530_priv *priv = ds->priv;
 
 	if (port != MT7530_CPU_PORT) {
-=======
-static enum dsa_tag_protocol
-mtk_get_tag_protocol(struct dsa_switch *ds)
-{
-	struct mt7530_priv *priv = ds->priv;
-
-	if (!dsa_is_cpu_port(ds, MT7530_CPU_PORT)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_warn(priv->dev,
 			 "port not matched with tagging CPU port\n");
 		return DSA_TAG_PROTO_NONE;
@@ -1276,19 +1218,11 @@ mt7530_setup(struct dsa_switch *ds)
 	struct device_node *dn;
 	struct mt7530_dummy_poll p;
 
-<<<<<<< HEAD
 	/* The parent node of master netdev which holds the common system
 	 * controller also is the container for two GMACs nodes representing
 	 * as two netdev instances.
 	 */
 	dn = ds->ports[MT7530_CPU_PORT].master->dev.of_node->parent;
-=======
-	/* The parent node of cpu_dp->netdev which holds the common system
-	 * controller also is the container for two GMACs nodes representing
-	 * as two netdev instances.
-	 */
-	dn = ds->dst->cpu_dp->netdev->dev.of_node->parent;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	priv->ethernet = syscon_node_to_regmap(dn);
 	if (IS_ERR(priv->ethernet))
 		return PTR_ERR(priv->ethernet);
@@ -1366,11 +1300,7 @@ mt7530_setup(struct dsa_switch *ds)
 	}
 
 	/* Flush the FDB table */
-<<<<<<< HEAD
 	ret = mt7530_fdb_cmd(priv, MT7530_FDB_FLUSH, NULL);
-=======
-	ret = mt7530_fdb_cmd(priv, MT7530_FDB_FLUSH, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		return ret;
 
@@ -1394,13 +1324,10 @@ static const struct dsa_switch_ops mt7530_switch_ops = {
 	.port_fdb_add		= mt7530_port_fdb_add,
 	.port_fdb_del		= mt7530_port_fdb_del,
 	.port_fdb_dump		= mt7530_port_fdb_dump,
-<<<<<<< HEAD
 	.port_vlan_filtering	= mt7530_port_vlan_filtering,
 	.port_vlan_prepare	= mt7530_port_vlan_prepare,
 	.port_vlan_add		= mt7530_port_vlan_add,
 	.port_vlan_del		= mt7530_port_vlan_del,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int
@@ -1505,7 +1432,3 @@ mdio_module_driver(mt7530_mdio_driver);
 MODULE_AUTHOR("Sean Wang <sean.wang@mediatek.com>");
 MODULE_DESCRIPTION("Driver for Mediatek MT7530 Switch");
 MODULE_LICENSE("GPL");
-<<<<<<< HEAD
-=======
-MODULE_ALIAS("platform:mediatek-mt7530");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

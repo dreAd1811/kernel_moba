@@ -1,16 +1,9 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * QorIQ BMan Portals device tree
  *
  * Copyright 2011-2016 Freescale Semiconductor Inc.
  *
-<<<<<<< HEAD
-=======
- * SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 &bportals {
@@ -75,13 +68,10 @@
 		reg = <0x80000 0x4000>, <0x4080000 0x4000>;
 		interrupts = <GIC_SPI 189 IRQ_TYPE_LEVEL_HIGH>;
 	};
-<<<<<<< HEAD
 
 	bman-portal@90000 {
 		compatible = "fsl,bman-portal";
 		reg = <0x90000 0x4000>, <0x4090000 0x4000>;
 		interrupts = <GIC_SPI 191 IRQ_TYPE_LEVEL_HIGH>;
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

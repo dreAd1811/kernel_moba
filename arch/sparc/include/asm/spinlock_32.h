@@ -183,20 +183,6 @@ static inline int __arch_read_trylock(arch_rwlock_t *rw)
 	res; \
 })
 
-<<<<<<< HEAD
-=======
-#define arch_spin_lock_flags(lock, flags) arch_spin_lock(lock)
-#define arch_read_lock_flags(rw, flags)   arch_read_lock(rw)
-#define arch_write_lock_flags(rw, flags)  arch_write_lock(rw)
-
-#define arch_spin_relax(lock)	cpu_relax()
-#define arch_read_relax(lock)	cpu_relax()
-#define arch_write_relax(lock)	cpu_relax()
-
-#define arch_read_can_lock(rw) (!((rw)->lock & 0xff))
-#define arch_write_can_lock(rw) (!(rw)->lock)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* !(__ASSEMBLY__) */
 
 #endif /* __SPARC_SPINLOCK_H */

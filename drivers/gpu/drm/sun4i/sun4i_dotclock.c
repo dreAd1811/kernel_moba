@@ -17,14 +17,9 @@
 #include "sun4i_dotclock.h"
 
 struct sun4i_dclk {
-<<<<<<< HEAD
 	struct clk_hw		hw;
 	struct regmap		*regmap;
 	struct sun4i_tcon	*tcon;
-=======
-	struct clk_hw	hw;
-	struct regmap	*regmap;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static inline struct sun4i_dclk *hw_to_dclk(struct clk_hw *hw)
@@ -79,16 +74,12 @@ static unsigned long sun4i_dclk_recalc_rate(struct clk_hw *hw,
 static long sun4i_dclk_round_rate(struct clk_hw *hw, unsigned long rate,
 				  unsigned long *parent_rate)
 {
-<<<<<<< HEAD
 	struct sun4i_dclk *dclk = hw_to_dclk(hw);
 	struct sun4i_tcon *tcon = dclk->tcon;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long best_parent = 0;
 	u8 best_div = 1;
 	int i;
 
-<<<<<<< HEAD
 	for (i = tcon->dclk_min_div; i <= tcon->dclk_max_div; i++) {
 		u64 ideal = (u64)rate * i;
 		unsigned long rounded;
@@ -103,12 +94,6 @@ static long sun4i_dclk_round_rate(struct clk_hw *hw, unsigned long rate,
 		if (ideal > ULONG_MAX)
 			goto out;
 
-=======
-	for (i = 6; i <= 127; i++) {
-		unsigned long ideal = rate * i;
-		unsigned long rounded;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rounded = clk_hw_round_rate(clk_hw_get_parent(hw),
 					    ideal);
 
@@ -198,10 +183,7 @@ int sun4i_dclk_create(struct device *dev, struct sun4i_tcon *tcon)
 	dclk = devm_kzalloc(dev, sizeof(*dclk), GFP_KERNEL);
 	if (!dclk)
 		return -ENOMEM;
-<<<<<<< HEAD
 	dclk->tcon = tcon;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	init.name = clk_name;
 	init.ops = &sun4i_dclk_ops;

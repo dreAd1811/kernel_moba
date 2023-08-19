@@ -21,10 +21,6 @@
 #include <linux/of_graph.h>
 
 #include <drm/drmP.h>
-<<<<<<< HEAD
-=======
-#include <drm/drm_panel.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <drm/drm_gem_cma_helper.h>
 #include <drm/drm_gem_framebuffer_helper.h>
 #include <drm/drm_fb_cma_helper.h>
@@ -54,7 +50,6 @@ irqreturn_t pl111_irq(int irq, void *data)
 	return status;
 }
 
-<<<<<<< HEAD
 static enum drm_mode_status
 pl111_mode_valid(struct drm_crtc *crtc,
 		 const struct drm_display_mode *mode)
@@ -90,8 +85,6 @@ pl111_mode_valid(struct drm_crtc *crtc,
 	return MODE_OK;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int pl111_display_check(struct drm_simple_display_pipe *pipe,
 			       struct drm_plane_state *pstate,
 			       struct drm_crtc_state *cstate)
@@ -127,12 +120,8 @@ static int pl111_display_check(struct drm_simple_display_pipe *pipe,
 }
 
 static void pl111_display_enable(struct drm_simple_display_pipe *pipe,
-<<<<<<< HEAD
 				 struct drm_crtc_state *cstate,
 				 struct drm_plane_state *plane_state)
-=======
-				 struct drm_crtc_state *cstate)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_crtc *crtc = &pipe->crtc;
 	struct drm_plane *plane = &pipe->plane;
@@ -140,12 +129,8 @@ static void pl111_display_enable(struct drm_simple_display_pipe *pipe,
 	struct pl111_drm_dev_private *priv = drm->dev_private;
 	const struct drm_display_mode *mode = &cstate->mode;
 	struct drm_framebuffer *fb = plane->state->fb;
-<<<<<<< HEAD
 	struct drm_connector *connector = priv->connector;
 	struct drm_bridge *bridge = priv->bridge;
-=======
-	struct drm_connector *connector = &priv->connector.connector;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 cntl;
 	u32 ppl, hsw, hfp, hbp;
 	u32 lpp, vsw, vfp, vbp;
@@ -189,19 +174,15 @@ static void pl111_display_enable(struct drm_simple_display_pipe *pipe,
 	tim2 = readl(priv->regs + CLCD_TIM2);
 	tim2 &= (TIM2_BCD | TIM2_PCD_LO_MASK | TIM2_PCD_HI_MASK);
 
-<<<<<<< HEAD
 	if (priv->variant->broken_clockdivider)
 		tim2 |= TIM2_BCD;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (mode->flags & DRM_MODE_FLAG_NHSYNC)
 		tim2 |= TIM2_IHS;
 
 	if (mode->flags & DRM_MODE_FLAG_NVSYNC)
 		tim2 |= TIM2_IVS;
 
-<<<<<<< HEAD
 	if (connector) {
 		if (connector->display_info.bus_flags & DRM_BUS_FLAG_DE_LOW)
 			tim2 |= TIM2_IOE;
@@ -233,13 +214,6 @@ static void pl111_display_enable(struct drm_simple_display_pipe *pipe,
 		if (btimings && btimings->setup_time_ps >= 3000)
 			tim2 ^= TIM2_IPC;
 	}
-=======
-	if (connector->display_info.bus_flags & DRM_BUS_FLAG_DE_LOW)
-		tim2 |= TIM2_IOE;
-
-	if (connector->display_info.bus_flags & DRM_BUS_FLAG_PIXDATA_NEGEDGE)
-		tim2 |= TIM2_IPC;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tim2 |= cpl << 16;
 	writel(tim2, priv->regs + CLCD_TIM2);
@@ -247,7 +221,6 @@ static void pl111_display_enable(struct drm_simple_display_pipe *pipe,
 
 	writel(0, priv->regs + CLCD_TIM3);
 
-<<<<<<< HEAD
 	/* Hard-code TFT panel */
 	cntl = CNTL_LCDEN | CNTL_LCDTFT | CNTL_LCDVCOMP(1);
 	/* On the ST Micro variant, assume all 24 bits are connected */
@@ -300,36 +273,10 @@ static void pl111_display_enable(struct drm_simple_display_pipe *pipe,
 			cntl |= CNTL_LCDBPP16 | CNTL_ST_1XBPP_565;
 		else
 			cntl |= CNTL_LCDBPP16_565 | CNTL_BGR;
-=======
-	drm_panel_prepare(priv->connector.panel);
-
-	/* Enable and Power Up */
-	cntl = CNTL_LCDEN | CNTL_LCDTFT | CNTL_LCDPWR | CNTL_LCDVCOMP(1);
-
-	/* Note that the the hardware's format reader takes 'r' from
-	 * the low bit, while DRM formats list channels from high bit
-	 * to low bit as you read left to right.
-	 */
-	switch (fb->format->format) {
-	case DRM_FORMAT_ABGR8888:
-	case DRM_FORMAT_XBGR8888:
-		cntl |= CNTL_LCDBPP24;
-		break;
-	case DRM_FORMAT_ARGB8888:
-	case DRM_FORMAT_XRGB8888:
-		cntl |= CNTL_LCDBPP24 | CNTL_BGR;
-		break;
-	case DRM_FORMAT_BGR565:
-		cntl |= CNTL_LCDBPP16_565;
-		break;
-	case DRM_FORMAT_RGB565:
-		cntl |= CNTL_LCDBPP16_565 | CNTL_BGR;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case DRM_FORMAT_ABGR1555:
 	case DRM_FORMAT_XBGR1555:
 		cntl |= CNTL_LCDBPP16;
-<<<<<<< HEAD
 		if (priv->variant->st_bitmux_control)
 			cntl |= CNTL_ST_1XBPP_5551 | CNTL_BGR;
 		break;
@@ -340,17 +287,10 @@ static void pl111_display_enable(struct drm_simple_display_pipe *pipe,
 			cntl |= CNTL_ST_1XBPP_5551;
 		else
 			cntl |= CNTL_BGR;
-=======
-		break;
-	case DRM_FORMAT_ARGB1555:
-	case DRM_FORMAT_XRGB1555:
-		cntl |= CNTL_LCDBPP16 | CNTL_BGR;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case DRM_FORMAT_ABGR4444:
 	case DRM_FORMAT_XBGR4444:
 		cntl |= CNTL_LCDBPP16_444;
-<<<<<<< HEAD
 		if (priv->variant->st_bitmux_control)
 			cntl |= CNTL_ST_1XBPP_444 | CNTL_BGR;
 		break;
@@ -361,12 +301,6 @@ static void pl111_display_enable(struct drm_simple_display_pipe *pipe,
 			cntl |= CNTL_ST_1XBPP_444;
 		else
 			cntl |= CNTL_BGR;
-=======
-		break;
-	case DRM_FORMAT_ARGB4444:
-	case DRM_FORMAT_XRGB4444:
-		cntl |= CNTL_LCDBPP16_444 | CNTL_BGR;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		WARN_ONCE(true, "Unknown FB format 0x%08x\n",
@@ -374,7 +308,6 @@ static void pl111_display_enable(struct drm_simple_display_pipe *pipe,
 		break;
 	}
 
-<<<<<<< HEAD
 	/* The PL110 in Integrator/Versatile does the BGR routing externally */
 	if (priv->variant->external_bgr)
 		cntl &= ~CNTL_BGR;
@@ -397,13 +330,6 @@ static void pl111_display_enable(struct drm_simple_display_pipe *pipe,
 
 	if (!priv->variant->broken_vblank)
 		drm_crtc_vblank_on(crtc);
-=======
-	writel(cntl, priv->regs + CLCD_PL111_CNTL);
-
-	drm_panel_enable(priv->connector.panel);
-
-	drm_crtc_vblank_on(crtc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void pl111_display_disable(struct drm_simple_display_pipe *pipe)
@@ -411,7 +337,6 @@ void pl111_display_disable(struct drm_simple_display_pipe *pipe)
 	struct drm_crtc *crtc = &pipe->crtc;
 	struct drm_device *drm = crtc->dev;
 	struct pl111_drm_dev_private *priv = drm->dev_private;
-<<<<<<< HEAD
 	u32 cntl;
 
 	if (!priv->variant->broken_vblank)
@@ -435,17 +360,6 @@ void pl111_display_disable(struct drm_simple_display_pipe *pipe)
 
 	/* Disable */
 	writel(0, priv->regs + priv->ctrl);
-=======
-
-	drm_crtc_vblank_off(crtc);
-
-	drm_panel_disable(priv->connector.panel);
-
-	/* Disable and Power Down */
-	writel(0, priv->regs + CLCD_PL111_CNTL);
-
-	drm_panel_unprepare(priv->connector.panel);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	clk_disable_unprepare(priv->clk);
 }
@@ -479,7 +393,6 @@ static void pl111_display_update(struct drm_simple_display_pipe *pipe,
 	}
 }
 
-<<<<<<< HEAD
 static int pl111_display_enable_vblank(struct drm_simple_display_pipe *pipe)
 {
 	struct drm_crtc *crtc = &pipe->crtc;
@@ -487,18 +400,10 @@ static int pl111_display_enable_vblank(struct drm_simple_display_pipe *pipe)
 	struct pl111_drm_dev_private *priv = drm->dev_private;
 
 	writel(CLCD_IRQ_NEXTBASE_UPDATE, priv->regs + priv->ienb);
-=======
-int pl111_enable_vblank(struct drm_device *drm, unsigned int crtc)
-{
-	struct pl111_drm_dev_private *priv = drm->dev_private;
-
-	writel(CLCD_IRQ_NEXTBASE_UPDATE, priv->regs + CLCD_PL111_IENB);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
 static void pl111_display_disable_vblank(struct drm_simple_display_pipe *pipe)
 {
 	struct drm_crtc *crtc = &pipe->crtc;
@@ -510,31 +415,11 @@ static void pl111_display_disable_vblank(struct drm_simple_display_pipe *pipe)
 
 static struct drm_simple_display_pipe_funcs pl111_display_funcs = {
 	.mode_valid = pl111_mode_valid,
-=======
-void pl111_disable_vblank(struct drm_device *drm, unsigned int crtc)
-{
-	struct pl111_drm_dev_private *priv = drm->dev_private;
-
-	writel(0, priv->regs + CLCD_PL111_IENB);
-}
-
-static int pl111_display_prepare_fb(struct drm_simple_display_pipe *pipe,
-				    struct drm_plane_state *plane_state)
-{
-	return drm_gem_fb_prepare_fb(&pipe->plane, plane_state);
-}
-
-static const struct drm_simple_display_pipe_funcs pl111_display_funcs = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.check = pl111_display_check,
 	.enable = pl111_display_enable,
 	.disable = pl111_display_disable,
 	.update = pl111_display_update,
-<<<<<<< HEAD
 	.prepare_fb = drm_gem_fb_simple_display_pipe_prepare_fb,
-=======
-	.prepare_fb = pl111_display_prepare_fb,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int pl111_clk_div_choose_div(struct clk_hw *hw, unsigned long rate,
@@ -646,7 +531,6 @@ pl111_init_clock_divider(struct drm_device *drm)
 		dev_err(drm->dev, "CLCD: unable to get clcdclk.\n");
 		return PTR_ERR(parent);
 	}
-<<<<<<< HEAD
 
 	spin_lock_init(&priv->tim2_lock);
 
@@ -656,11 +540,6 @@ pl111_init_clock_divider(struct drm_device *drm)
 		return 0;
 	}
 	parent_name = __clk_get_name(parent);
-=======
-	parent_name = __clk_get_name(parent);
-
-	spin_lock_init(&priv->tim2_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	div->init = &init;
 
 	ret = devm_clk_hw_register(drm->dev, div);
@@ -676,25 +555,6 @@ int pl111_display_init(struct drm_device *drm)
 	struct device_node *endpoint;
 	u32 tft_r0b0g0[3];
 	int ret;
-<<<<<<< HEAD
-=======
-	static const u32 formats[] = {
-		DRM_FORMAT_ABGR8888,
-		DRM_FORMAT_XBGR8888,
-		DRM_FORMAT_ARGB8888,
-		DRM_FORMAT_XRGB8888,
-		DRM_FORMAT_BGR565,
-		DRM_FORMAT_RGB565,
-		DRM_FORMAT_ABGR1555,
-		DRM_FORMAT_XBGR1555,
-		DRM_FORMAT_ARGB1555,
-		DRM_FORMAT_XRGB1555,
-		DRM_FORMAT_ABGR4444,
-		DRM_FORMAT_XBGR4444,
-		DRM_FORMAT_ARGB4444,
-		DRM_FORMAT_XRGB4444,
-	};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	endpoint = of_graph_get_next_endpoint(dev->of_node, NULL);
 	if (!endpoint)
@@ -710,21 +570,10 @@ int pl111_display_init(struct drm_device *drm)
 	}
 	of_node_put(endpoint);
 
-<<<<<<< HEAD
-=======
-	if (tft_r0b0g0[0] != 0 ||
-	    tft_r0b0g0[1] != 8 ||
-	    tft_r0b0g0[2] != 16) {
-		dev_err(dev, "arm,pl11x,tft-r0g0b0-pads != [0,8,16] not yet supported\n");
-		return -EINVAL;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = pl111_init_clock_divider(drm);
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
 	if (!priv->variant->broken_vblank) {
 		pl111_display_funcs.enable_vblank = pl111_display_enable_vblank;
 		pl111_display_funcs.disable_vblank = pl111_display_disable_vblank;
@@ -736,12 +585,6 @@ int pl111_display_init(struct drm_device *drm)
 					   priv->variant->nformats,
 					   NULL,
 					   priv->connector);
-=======
-	ret = drm_simple_display_pipe_init(drm, &priv->pipe,
-					   &pl111_display_funcs,
-					   formats, ARRAY_SIZE(formats),
-					   NULL, &priv->connector.connector);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 

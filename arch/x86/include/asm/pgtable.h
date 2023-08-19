@@ -30,7 +30,6 @@ int __init __early_make_pgtable(unsigned long address, pmdval_t pmd);
 void ptdump_walk_pgd_level(struct seq_file *m, pgd_t *pgd);
 void ptdump_walk_pgd_level_debugfs(struct seq_file *m, pgd_t *pgd, bool user);
 void ptdump_walk_pgd_level_checkwx(void);
-<<<<<<< HEAD
 void ptdump_walk_user_pgd_level_checkwx(void);
 
 #ifdef CONFIG_DEBUG_WX
@@ -39,13 +38,6 @@ void ptdump_walk_user_pgd_level_checkwx(void);
 #else
 #define debug_checkwx()		do { } while (0)
 #define debug_checkwx_user()	do { } while (0)
-=======
-
-#ifdef CONFIG_DEBUG_WX
-#define debug_checkwx() ptdump_walk_pgd_level_checkwx()
-#else
-#define debug_checkwx() do { } while (0)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 /*
@@ -76,11 +68,7 @@ extern pmdval_t early_pmd_flags;
 
 #ifndef __PAGETABLE_P4D_FOLDED
 #define set_pgd(pgdp, pgd)		native_set_pgd(pgdp, pgd)
-<<<<<<< HEAD
 #define pgd_clear(pgd)			(pgtable_l5_enabled() ? native_pgd_clear(pgd) : 0)
-=======
-#define pgd_clear(pgd)			native_pgd_clear(pgd)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 #ifndef set_p4d
@@ -249,10 +237,6 @@ static inline int pmd_large(pmd_t pte)
 }
 
 #ifdef CONFIG_TRANSPARENT_HUGEPAGE
-<<<<<<< HEAD
-=======
-/* NOTE: when predicate huge page, consider also pmd_devmap, or use pmd_large */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int pmd_trans_huge(pmd_t pmd)
 {
 	return (pmd_val(pmd) & (_PAGE_PSE|_PAGE_DEVMAP)) == _PAGE_PSE;
@@ -545,7 +529,6 @@ static inline pgprotval_t massage_pgprot(pgprot_t pgprot)
 	return protval;
 }
 
-<<<<<<< HEAD
 static inline pgprotval_t check_pgprot(pgprot_t pgprot)
 {
 	pgprotval_t massaged_val = massage_pgprot(pgprot);
@@ -563,18 +546,12 @@ static inline pgprotval_t check_pgprot(pgprot_t pgprot)
 	return massaged_val;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline pte_t pfn_pte(unsigned long page_nr, pgprot_t pgprot)
 {
 	phys_addr_t pfn = (phys_addr_t)page_nr << PAGE_SHIFT;
 	pfn ^= protnone_mask(pgprot_val(pgprot));
 	pfn &= PTE_PFN_MASK;
-<<<<<<< HEAD
 	return __pte(pfn | check_pgprot(pgprot));
-=======
-	return __pte(pfn | massage_pgprot(pgprot));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline pmd_t pfn_pmd(unsigned long page_nr, pgprot_t pgprot)
@@ -582,11 +559,7 @@ static inline pmd_t pfn_pmd(unsigned long page_nr, pgprot_t pgprot)
 	phys_addr_t pfn = (phys_addr_t)page_nr << PAGE_SHIFT;
 	pfn ^= protnone_mask(pgprot_val(pgprot));
 	pfn &= PHYSICAL_PMD_PAGE_MASK;
-<<<<<<< HEAD
 	return __pmd(pfn | check_pgprot(pgprot));
-=======
-	return __pmd(pfn | massage_pgprot(pgprot));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline pud_t pfn_pud(unsigned long page_nr, pgprot_t pgprot)
@@ -594,11 +567,7 @@ static inline pud_t pfn_pud(unsigned long page_nr, pgprot_t pgprot)
 	phys_addr_t pfn = (phys_addr_t)page_nr << PAGE_SHIFT;
 	pfn ^= protnone_mask(pgprot_val(pgprot));
 	pfn &= PHYSICAL_PUD_PAGE_MASK;
-<<<<<<< HEAD
 	return __pud(pfn | check_pgprot(pgprot));
-=======
-	return __pud(pfn | massage_pgprot(pgprot));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline pmd_t pmd_mknotpresent(pmd_t pmd)
@@ -624,11 +593,7 @@ static inline pte_t pte_modify(pte_t pte, pgprot_t newprot)
 	 * the newprot (if present):
 	 */
 	val &= _PAGE_CHG_MASK;
-<<<<<<< HEAD
 	val |= check_pgprot(newprot) & ~_PAGE_CHG_MASK;
-=======
-	val |= massage_pgprot(newprot) & ~_PAGE_CHG_MASK;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	val = flip_protnone_guard(oldval, val, PTE_PFN_MASK);
 	return __pte(val);
 }
@@ -638,32 +603,17 @@ static inline pmd_t pmd_modify(pmd_t pmd, pgprot_t newprot)
 	pmdval_t val = pmd_val(pmd), oldval = val;
 
 	val &= _HPAGE_CHG_MASK;
-<<<<<<< HEAD
 	val |= check_pgprot(newprot) & ~_HPAGE_CHG_MASK;
-=======
-	val |= massage_pgprot(newprot) & ~_HPAGE_CHG_MASK;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	val = flip_protnone_guard(oldval, val, PHYSICAL_PMD_PAGE_MASK);
 	return __pmd(val);
 }
 
-<<<<<<< HEAD
 /* mprotect needs to preserve PAT bits when updating vm_page_prot */
-=======
-/*
- * mprotect needs to preserve PAT and encryption bits when updating
- * vm_page_prot
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define pgprot_modify pgprot_modify
 static inline pgprot_t pgprot_modify(pgprot_t oldprot, pgprot_t newprot)
 {
 	pgprotval_t preservebits = pgprot_val(oldprot) & _PAGE_CHG_MASK;
-<<<<<<< HEAD
 	pgprotval_t addbits = pgprot_val(newprot);
-=======
-	pgprotval_t addbits = pgprot_val(newprot) & ~_PAGE_CHG_MASK;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return __pgprot(preservebits | addbits);
 }
 
@@ -674,14 +624,11 @@ static inline pgprot_t pgprot_modify(pgprot_t oldprot, pgprot_t newprot)
 
 #define canon_pgprot(p) __pgprot(massage_pgprot(p))
 
-<<<<<<< HEAD
 static inline pgprot_t arch_filter_pgprot(pgprot_t prot)
 {
 	return canon_pgprot(prot);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int is_new_memtype_allowed(u64 paddr, unsigned long size,
 					 enum page_cache_mode pcm,
 					 enum page_cache_mode new_pcm)
@@ -716,7 +663,6 @@ static inline int is_new_memtype_allowed(u64 paddr, unsigned long size,
 
 pmd_t *populate_extra_pmd(unsigned long vaddr);
 pte_t *populate_extra_pte(unsigned long vaddr);
-<<<<<<< HEAD
 
 #ifdef CONFIG_PAGE_TABLE_ISOLATION
 pgd_t __pti_set_user_pgtbl(pgd_t *pgdp, pgd_t pgd);
@@ -742,10 +688,6 @@ static inline pgd_t pti_set_user_pgtbl(pgd_t *pgdp, pgd_t pgd)
 #endif	/* __ASSEMBLY__ */
 
 
-=======
-#endif	/* __ASSEMBLY__ */
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_X86_32
 # include <asm/pgtable_32.h>
 #else
@@ -985,11 +927,8 @@ static inline unsigned long p4d_index(unsigned long address)
 #if CONFIG_PGTABLE_LEVELS > 4
 static inline int pgd_present(pgd_t pgd)
 {
-<<<<<<< HEAD
 	if (!pgtable_l5_enabled())
 		return 1;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return pgd_flags(pgd) & _PAGE_PRESENT;
 }
 
@@ -1007,11 +946,8 @@ static inline unsigned long pgd_page_vaddr(pgd_t pgd)
 /* to find an entry in a page-table-directory. */
 static inline p4d_t *p4d_offset(pgd_t *pgd, unsigned long address)
 {
-<<<<<<< HEAD
 	if (!pgtable_l5_enabled())
 		return (p4d_t *)pgd;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return (p4d_t *)pgd_page_vaddr(*pgd) + p4d_index(address);
 }
 
@@ -1019,12 +955,9 @@ static inline int pgd_bad(pgd_t pgd)
 {
 	unsigned long ignore_flags = _PAGE_USER;
 
-<<<<<<< HEAD
 	if (!pgtable_l5_enabled())
 		return 0;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ENABLED(CONFIG_PAGE_TABLE_ISOLATION))
 		ignore_flags |= _PAGE_NX;
 
@@ -1033,11 +966,8 @@ static inline int pgd_bad(pgd_t pgd)
 
 static inline int pgd_none(pgd_t pgd)
 {
-<<<<<<< HEAD
 	if (!pgtable_l5_enabled())
 		return 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * There is no need to do a workaround for the KNL stray
 	 * A/D bit erratum here.  PGDs only point to page tables
@@ -1223,11 +1153,7 @@ extern int pmdp_clear_flush_young(struct vm_area_struct *vma,
 				  unsigned long address, pmd_t *pmdp);
 
 
-<<<<<<< HEAD
 #define pmd_write pmd_write
-=======
-#define __HAVE_ARCH_PMD_WRITE
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int pmd_write(pmd_t pmd)
 {
 	return pmd_flags(pmd) & _PAGE_RW;
@@ -1260,7 +1186,6 @@ static inline int pud_write(pud_t pud)
 	return pud_flags(pud) & _PAGE_RW;
 }
 
-<<<<<<< HEAD
 #ifndef pmdp_establish
 #define pmdp_establish pmdp_establish
 static inline pmd_t pmdp_establish(struct vm_area_struct *vma,
@@ -1340,8 +1265,6 @@ static inline p4d_t *user_to_kernel_p4dp(p4d_t *p4dp)
 }
 #endif /* CONFIG_PAGE_TABLE_ISOLATION */
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * clone_pgd_range(pgd_t *dst, pgd_t *src, int count);
  *

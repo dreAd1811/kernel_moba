@@ -12,10 +12,7 @@
 #include <asm/div64.h>
 #include <linux/clk.h>
 #include <linux/gpio/driver.h>
-<<<<<<< HEAD
 #include <linux/gpio/aspeed.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/hashtable.h>
 #include <linux/init.h>
 #include <linux/io.h>
@@ -26,7 +23,6 @@
 #include <linux/spinlock.h>
 #include <linux/string.h>
 
-<<<<<<< HEAD
 /*
  * These two headers aren't meant to be used by GPIO drivers. We need
  * them in order to access gpio_chip_hwgpio() which we need to implement
@@ -36,8 +32,6 @@
 #include <linux/gpio/consumer.h>
 #include "gpiolib.h"
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct aspeed_bank_props {
 	unsigned int bank;
 	u32 input;
@@ -70,7 +64,6 @@ struct aspeed_gpio {
 	u8 *offset_timer;
 	unsigned int timer_users[4];
 	struct clk *clk;
-<<<<<<< HEAD
 
 	u32 *dcache;
 	u8 *cf_copro_bankmap;
@@ -112,99 +105,55 @@ static const struct aspeed_gpio_bank aspeed_gpio_banks[] = {
 		.debounce_regs = 0x0040,
 		.tolerance_regs = 0x001c,
 		.cmdsrc_regs = 0x0060,
-=======
-};
-
-struct aspeed_gpio_bank {
-	uint16_t	val_regs;
-	uint16_t	irq_regs;
-	uint16_t	debounce_regs;
-	const char	names[4][3];
-};
-
-static const int debounce_timers[4] = { 0x00, 0x50, 0x54, 0x58 };
-
-static const struct aspeed_gpio_bank aspeed_gpio_banks[] = {
-	{
-		.val_regs = 0x0000,
-		.irq_regs = 0x0008,
-		.debounce_regs = 0x0040,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.names = { "A", "B", "C", "D" },
 	},
 	{
 		.val_regs = 0x0020,
-<<<<<<< HEAD
 		.rdata_reg = 0x00c4,
 		.irq_regs = 0x0028,
 		.debounce_regs = 0x0048,
 		.tolerance_regs = 0x003c,
 		.cmdsrc_regs = 0x0068,
-=======
-		.irq_regs = 0x0028,
-		.debounce_regs = 0x0048,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.names = { "E", "F", "G", "H" },
 	},
 	{
 		.val_regs = 0x0070,
-<<<<<<< HEAD
 		.rdata_reg = 0x00c8,
 		.irq_regs = 0x0098,
 		.debounce_regs = 0x00b0,
 		.tolerance_regs = 0x00ac,
 		.cmdsrc_regs = 0x0090,
-=======
-		.irq_regs = 0x0098,
-		.debounce_regs = 0x00b0,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.names = { "I", "J", "K", "L" },
 	},
 	{
 		.val_regs = 0x0078,
-<<<<<<< HEAD
 		.rdata_reg = 0x00cc,
 		.irq_regs = 0x00e8,
 		.debounce_regs = 0x0100,
 		.tolerance_regs = 0x00fc,
 		.cmdsrc_regs = 0x00e0,
-=======
-		.irq_regs = 0x00e8,
-		.debounce_regs = 0x0100,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.names = { "M", "N", "O", "P" },
 	},
 	{
 		.val_regs = 0x0080,
-<<<<<<< HEAD
 		.rdata_reg = 0x00d0,
 		.irq_regs = 0x0118,
 		.debounce_regs = 0x0130,
 		.tolerance_regs = 0x012c,
 		.cmdsrc_regs = 0x0110,
-=======
-		.irq_regs = 0x0118,
-		.debounce_regs = 0x0130,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.names = { "Q", "R", "S", "T" },
 	},
 	{
 		.val_regs = 0x0088,
-<<<<<<< HEAD
 		.rdata_reg = 0x00d4,
 		.irq_regs = 0x0148,
 		.debounce_regs = 0x0160,
 		.tolerance_regs = 0x015c,
 		.cmdsrc_regs = 0x0140,
-=======
-		.irq_regs = 0x0148,
-		.debounce_regs = 0x0160,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.names = { "U", "V", "W", "X" },
 	},
 	{
 		.val_regs = 0x01E0,
-<<<<<<< HEAD
 		.rdata_reg = 0x00d8,
 		.irq_regs = 0x0178,
 		.debounce_regs = 0x0190,
@@ -219,21 +168,10 @@ static const struct aspeed_gpio_bank aspeed_gpio_banks[] = {
 		.debounce_regs = 0x01c0,
 		.tolerance_regs = 0x01bc,
 		.cmdsrc_regs = 0x01a0,
-=======
-		.irq_regs = 0x0178,
-		.debounce_regs = 0x0190,
-		.names = { "Y", "Z", "AA", "AB" },
-	},
-	{
-		.val_regs = 0x01E8,
-		.irq_regs = 0x01A8,
-		.debounce_regs = 0x01c0,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.names = { "AC", "", "", "" },
 	},
 };
 
-<<<<<<< HEAD
 enum aspeed_gpio_reg {
 	reg_val,
 	reg_rdata,
@@ -252,14 +190,6 @@ enum aspeed_gpio_reg {
 
 #define GPIO_VAL_VALUE	0x00
 #define GPIO_VAL_DIR	0x04
-=======
-#define GPIO_BANK(x)	((x) >> 5)
-#define GPIO_OFFSET(x)	((x) & 0x1f)
-#define GPIO_BIT(x)	BIT(GPIO_OFFSET(x))
-
-#define GPIO_DATA	0x00
-#define GPIO_DIR	0x04
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define GPIO_IRQ_ENABLE	0x00
 #define GPIO_IRQ_TYPE0	0x04
@@ -270,7 +200,6 @@ enum aspeed_gpio_reg {
 #define GPIO_DEBOUNCE_SEL1 0x00
 #define GPIO_DEBOUNCE_SEL2 0x04
 
-<<<<<<< HEAD
 #define GPIO_CMDSRC_0	0x00
 #define GPIO_CMDSRC_1	0x04
 #define  GPIO_CMDSRC_ARM		0
@@ -318,8 +247,6 @@ static inline void __iomem *bank_reg(struct aspeed_gpio *gpio,
 #define GPIO_OFFSET(x)	((x) & 0x1f)
 #define GPIO_BIT(x)	BIT(GPIO_OFFSET(x))
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define _GPIO_SET_DEBOUNCE(t, o, i) ((!!((t) & BIT(i))) << GPIO_OFFSET(o))
 #define GPIO_SET_DEBOUNCE1(t, o) _GPIO_SET_DEBOUNCE(t, o, 1)
 #define GPIO_SET_DEBOUNCE2(t, o) _GPIO_SET_DEBOUNCE(t, o, 0)
@@ -328,11 +255,7 @@ static const struct aspeed_gpio_bank *to_bank(unsigned int offset)
 {
 	unsigned int bank = GPIO_BANK(offset);
 
-<<<<<<< HEAD
 	WARN_ON(bank >= ARRAY_SIZE(aspeed_gpio_banks));
-=======
-	WARN_ON(bank > ARRAY_SIZE(aspeed_gpio_banks));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return &aspeed_gpio_banks[bank];
 }
 
@@ -382,7 +305,6 @@ static inline bool have_output(struct aspeed_gpio *gpio, unsigned int offset)
 	return !props || (props->output & GPIO_BIT(offset));
 }
 
-<<<<<<< HEAD
 static void aspeed_gpio_change_cmd_source(struct aspeed_gpio *gpio,
 					  const struct aspeed_gpio_bank *bank,
 					  int bindex, int cmdsrc)
@@ -457,20 +379,6 @@ static void aspeed_gpio_copro_release(struct aspeed_gpio *gpio,
 
 	/* Restart the coprocessor */
 	copro_ops->release_access(copro_data);
-=======
-static void __iomem *bank_val_reg(struct aspeed_gpio *gpio,
-		const struct aspeed_gpio_bank *bank,
-		unsigned int reg)
-{
-	return gpio->base + bank->val_regs + reg;
-}
-
-static void __iomem *bank_irq_reg(struct aspeed_gpio *gpio,
-		const struct aspeed_gpio_bank *bank,
-		unsigned int reg)
-{
-	return gpio->base + bank->irq_regs + reg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int aspeed_gpio_get(struct gpio_chip *gc, unsigned int offset)
@@ -478,12 +386,7 @@ static int aspeed_gpio_get(struct gpio_chip *gc, unsigned int offset)
 	struct aspeed_gpio *gpio = gpiochip_get_data(gc);
 	const struct aspeed_gpio_bank *bank = to_bank(offset);
 
-<<<<<<< HEAD
 	return !!(ioread32(bank_reg(gpio, bank, reg_val)) & GPIO_BIT(offset));
-=======
-	return !!(ioread32(bank_val_reg(gpio, bank, GPIO_DATA))
-			& GPIO_BIT(offset));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __aspeed_gpio_set(struct gpio_chip *gc, unsigned int offset,
@@ -494,22 +397,14 @@ static void __aspeed_gpio_set(struct gpio_chip *gc, unsigned int offset,
 	void __iomem *addr;
 	u32 reg;
 
-<<<<<<< HEAD
 	addr = bank_reg(gpio, bank, reg_val);
 	reg = gpio->dcache[GPIO_BANK(offset)];
-=======
-	addr = bank_val_reg(gpio, bank, GPIO_DATA);
-	reg = ioread32(addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (val)
 		reg |= GPIO_BIT(offset);
 	else
 		reg &= ~GPIO_BIT(offset);
-<<<<<<< HEAD
 	gpio->dcache[GPIO_BANK(offset)] = reg;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	iowrite32(reg, addr);
 }
@@ -519,7 +414,6 @@ static void aspeed_gpio_set(struct gpio_chip *gc, unsigned int offset,
 {
 	struct aspeed_gpio *gpio = gpiochip_get_data(gc);
 	unsigned long flags;
-<<<<<<< HEAD
 	bool copro;
 
 	spin_lock_irqsave(&gpio->lock, flags);
@@ -529,13 +423,6 @@ static void aspeed_gpio_set(struct gpio_chip *gc, unsigned int offset,
 
 	if (copro)
 		aspeed_gpio_copro_release(gpio, offset);
-=======
-
-	spin_lock_irqsave(&gpio->lock, flags);
-
-	__aspeed_gpio_set(gc, offset, val);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irqrestore(&gpio->lock, flags);
 }
 
@@ -543,13 +430,9 @@ static int aspeed_gpio_dir_in(struct gpio_chip *gc, unsigned int offset)
 {
 	struct aspeed_gpio *gpio = gpiochip_get_data(gc);
 	const struct aspeed_gpio_bank *bank = to_bank(offset);
-<<<<<<< HEAD
 	void __iomem *addr = bank_reg(gpio, bank, reg_dir);
 	unsigned long flags;
 	bool copro;
-=======
-	unsigned long flags;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 reg;
 
 	if (!have_input(gpio, offset))
@@ -557,7 +440,6 @@ static int aspeed_gpio_dir_in(struct gpio_chip *gc, unsigned int offset)
 
 	spin_lock_irqsave(&gpio->lock, flags);
 
-<<<<<<< HEAD
 	reg = ioread32(addr);
 	reg &= ~GPIO_BIT(offset);
 
@@ -565,10 +447,6 @@ static int aspeed_gpio_dir_in(struct gpio_chip *gc, unsigned int offset)
 	iowrite32(reg, addr);
 	if (copro)
 		aspeed_gpio_copro_release(gpio, offset);
-=======
-	reg = ioread32(bank_val_reg(gpio, bank, GPIO_DIR));
-	iowrite32(reg & ~GPIO_BIT(offset), bank_val_reg(gpio, bank, GPIO_DIR));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_unlock_irqrestore(&gpio->lock, flags);
 
@@ -580,13 +458,9 @@ static int aspeed_gpio_dir_out(struct gpio_chip *gc,
 {
 	struct aspeed_gpio *gpio = gpiochip_get_data(gc);
 	const struct aspeed_gpio_bank *bank = to_bank(offset);
-<<<<<<< HEAD
 	void __iomem *addr = bank_reg(gpio, bank, reg_dir);
 	unsigned long flags;
 	bool copro;
-=======
-	unsigned long flags;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 reg;
 
 	if (!have_output(gpio, offset))
@@ -594,7 +468,6 @@ static int aspeed_gpio_dir_out(struct gpio_chip *gc,
 
 	spin_lock_irqsave(&gpio->lock, flags);
 
-<<<<<<< HEAD
 	reg = ioread32(addr);
 	reg |= GPIO_BIT(offset);
 
@@ -604,13 +477,6 @@ static int aspeed_gpio_dir_out(struct gpio_chip *gc,
 
 	if (copro)
 		aspeed_gpio_copro_release(gpio, offset);
-=======
-	reg = ioread32(bank_val_reg(gpio, bank, GPIO_DIR));
-	iowrite32(reg | GPIO_BIT(offset), bank_val_reg(gpio, bank, GPIO_DIR));
-
-	__aspeed_gpio_set(gc, offset, val);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irqrestore(&gpio->lock, flags);
 
 	return 0;
@@ -631,11 +497,7 @@ static int aspeed_gpio_get_direction(struct gpio_chip *gc, unsigned int offset)
 
 	spin_lock_irqsave(&gpio->lock, flags);
 
-<<<<<<< HEAD
 	val = ioread32(bank_reg(gpio, bank, reg_dir)) & GPIO_BIT(offset);
-=======
-	val = ioread32(bank_val_reg(gpio, bank, GPIO_DIR)) & GPIO_BIT(offset);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_unlock_irqrestore(&gpio->lock, flags);
 
@@ -644,7 +506,6 @@ static int aspeed_gpio_get_direction(struct gpio_chip *gc, unsigned int offset)
 }
 
 static inline int irqd_to_aspeed_gpio_data(struct irq_data *d,
-<<<<<<< HEAD
 					   struct aspeed_gpio **gpio,
 					   const struct aspeed_gpio_bank **bank,
 					   u32 *bit, int *offset)
@@ -652,35 +513,16 @@ static inline int irqd_to_aspeed_gpio_data(struct irq_data *d,
 	struct aspeed_gpio *internal;
 
 	*offset = irqd_to_hwirq(d);
-=======
-		struct aspeed_gpio **gpio,
-		const struct aspeed_gpio_bank **bank,
-		u32 *bit)
-{
-	int offset;
-	struct aspeed_gpio *internal;
-
-	offset = irqd_to_hwirq(d);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	internal = irq_data_get_irq_chip_data(d);
 
 	/* This might be a bit of a questionable place to check */
-<<<<<<< HEAD
 	if (!have_irq(internal, *offset))
 		return -ENOTSUPP;
 
 	*gpio = internal;
 	*bank = to_bank(*offset);
 	*bit = GPIO_BIT(*offset);
-=======
-	if (!have_irq(internal, offset))
-		return -ENOTSUPP;
-
-	*gpio = internal;
-	*bank = to_bank(offset);
-	*bit = GPIO_BIT(offset);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -691,7 +533,6 @@ static void aspeed_gpio_irq_ack(struct irq_data *d)
 	struct aspeed_gpio *gpio;
 	unsigned long flags;
 	void __iomem *status_addr;
-<<<<<<< HEAD
 	int rc, offset;
 	bool copro;
 	u32 bit;
@@ -709,19 +550,6 @@ static void aspeed_gpio_irq_ack(struct irq_data *d)
 
 	if (copro)
 		aspeed_gpio_copro_release(gpio, offset);
-=======
-	u32 bit;
-	int rc;
-
-	rc = irqd_to_aspeed_gpio_data(d, &gpio, &bank, &bit);
-	if (rc)
-		return;
-
-	status_addr = bank_irq_reg(gpio, bank, GPIO_IRQ_STATUS);
-
-	spin_lock_irqsave(&gpio->lock, flags);
-	iowrite32(bit, status_addr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irqrestore(&gpio->lock, flags);
 }
 
@@ -732,7 +560,6 @@ static void aspeed_gpio_irq_set_mask(struct irq_data *d, bool set)
 	unsigned long flags;
 	u32 reg, bit;
 	void __iomem *addr;
-<<<<<<< HEAD
 	int rc, offset;
 	bool copro;
 
@@ -744,17 +571,6 @@ static void aspeed_gpio_irq_set_mask(struct irq_data *d, bool set)
 
 	spin_lock_irqsave(&gpio->lock, flags);
 	copro = aspeed_gpio_copro_request(gpio, offset);
-=======
-	int rc;
-
-	rc = irqd_to_aspeed_gpio_data(d, &gpio, &bank, &bit);
-	if (rc)
-		return;
-
-	addr = bank_irq_reg(gpio, bank, GPIO_IRQ_ENABLE);
-
-	spin_lock_irqsave(&gpio->lock, flags);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	reg = ioread32(addr);
 	if (set)
@@ -763,11 +579,8 @@ static void aspeed_gpio_irq_set_mask(struct irq_data *d, bool set)
 		reg &= ~bit;
 	iowrite32(reg, addr);
 
-<<<<<<< HEAD
 	if (copro)
 		aspeed_gpio_copro_release(gpio, offset);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irqrestore(&gpio->lock, flags);
 }
 
@@ -792,40 +605,26 @@ static int aspeed_gpio_set_type(struct irq_data *d, unsigned int type)
 	struct aspeed_gpio *gpio;
 	unsigned long flags;
 	void __iomem *addr;
-<<<<<<< HEAD
 	int rc, offset;
 	bool copro;
 
 	rc = irqd_to_aspeed_gpio_data(d, &gpio, &bank, &bit, &offset);
-=======
-	int rc;
-
-	rc = irqd_to_aspeed_gpio_data(d, &gpio, &bank, &bit);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc)
 		return -EINVAL;
 
 	switch (type & IRQ_TYPE_SENSE_MASK) {
 	case IRQ_TYPE_EDGE_BOTH:
 		type2 |= bit;
-<<<<<<< HEAD
 		/* fall through */
 	case IRQ_TYPE_EDGE_RISING:
 		type0 |= bit;
 		/* fall through */
-=======
-	case IRQ_TYPE_EDGE_RISING:
-		type0 |= bit;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case IRQ_TYPE_EDGE_FALLING:
 		handler = handle_edge_irq;
 		break;
 	case IRQ_TYPE_LEVEL_HIGH:
 		type0 |= bit;
-<<<<<<< HEAD
 		/* fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case IRQ_TYPE_LEVEL_LOW:
 		type1 |= bit;
 		handler = handle_level_irq;
@@ -835,41 +634,25 @@ static int aspeed_gpio_set_type(struct irq_data *d, unsigned int type)
 	}
 
 	spin_lock_irqsave(&gpio->lock, flags);
-<<<<<<< HEAD
 	copro = aspeed_gpio_copro_request(gpio, offset);
 
 	addr = bank_reg(gpio, bank, reg_irq_type0);
-=======
-
-	addr = bank_irq_reg(gpio, bank, GPIO_IRQ_TYPE0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	reg = ioread32(addr);
 	reg = (reg & ~bit) | type0;
 	iowrite32(reg, addr);
 
-<<<<<<< HEAD
 	addr = bank_reg(gpio, bank, reg_irq_type1);
-=======
-	addr = bank_irq_reg(gpio, bank, GPIO_IRQ_TYPE1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	reg = ioread32(addr);
 	reg = (reg & ~bit) | type1;
 	iowrite32(reg, addr);
 
-<<<<<<< HEAD
 	addr = bank_reg(gpio, bank, reg_irq_type2);
-=======
-	addr = bank_irq_reg(gpio, bank, GPIO_IRQ_TYPE2);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	reg = ioread32(addr);
 	reg = (reg & ~bit) | type2;
 	iowrite32(reg, addr);
 
-<<<<<<< HEAD
 	if (copro)
 		aspeed_gpio_copro_release(gpio, offset);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irqrestore(&gpio->lock, flags);
 
 	irq_set_handler_locked(d, handler);
@@ -890,17 +673,10 @@ static void aspeed_gpio_irq_handler(struct irq_desc *desc)
 	for (i = 0; i < ARRAY_SIZE(aspeed_gpio_banks); i++) {
 		const struct aspeed_gpio_bank *bank = &aspeed_gpio_banks[i];
 
-<<<<<<< HEAD
 		reg = ioread32(bank_reg(data, bank, reg_irq_status));
 
 		for_each_set_bit(p, &reg, 32) {
 			girq = irq_find_mapping(gc->irq.domain, i * 32 + p);
-=======
-		reg = ioread32(bank_irq_reg(data, bank, GPIO_IRQ_STATUS));
-
-		for_each_set_bit(p, &reg, 32) {
-			girq = irq_find_mapping(gc->irqdomain, i * 32 + p);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			generic_handle_irq(girq);
 		}
 
@@ -932,11 +708,7 @@ static void set_irq_valid_mask(struct aspeed_gpio *gpio)
 			if (i >= gpio->config->nr_gpios)
 				break;
 
-<<<<<<< HEAD
 			clear_bit(i, gpio->chip.irq.valid_mask);
-=======
-			clear_bit(i, gpio->chip.irq_valid_mask);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		props++;
@@ -969,7 +741,6 @@ static int aspeed_gpio_setup_irqs(struct aspeed_gpio *gpio,
 	return 0;
 }
 
-<<<<<<< HEAD
 static int aspeed_gpio_reset_tolerance(struct gpio_chip *chip,
 					unsigned int offset, bool enable)
 {
@@ -1000,34 +771,17 @@ static int aspeed_gpio_reset_tolerance(struct gpio_chip *chip,
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int aspeed_gpio_request(struct gpio_chip *chip, unsigned int offset)
 {
 	if (!have_gpio(gpiochip_get_data(chip), offset))
 		return -ENODEV;
 
-<<<<<<< HEAD
 	return pinctrl_gpio_request(chip->base + offset);
-=======
-	return pinctrl_request_gpio(chip->base + offset);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void aspeed_gpio_free(struct gpio_chip *chip, unsigned int offset)
 {
-<<<<<<< HEAD
 	pinctrl_gpio_free(chip->base + offset);
-=======
-	pinctrl_free_gpio(chip->base + offset);
-}
-
-static inline void __iomem *bank_debounce_reg(struct aspeed_gpio *gpio,
-		const struct aspeed_gpio_bank *bank,
-		unsigned int reg)
-{
-	return gpio->base + bank->debounce_regs + reg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int usecs_to_cycles(struct aspeed_gpio *gpio, unsigned long usecs,
@@ -1107,7 +861,6 @@ static void configure_timer(struct aspeed_gpio *gpio, unsigned int offset,
 	void __iomem *addr;
 	u32 val;
 
-<<<<<<< HEAD
 	/* Note: Debounce timer isn't under control of the command
 	 * source registers, so no need to sync with the coprocessor
 	 */
@@ -1116,13 +869,6 @@ static void configure_timer(struct aspeed_gpio *gpio, unsigned int offset,
 	iowrite32((val & ~mask) | GPIO_SET_DEBOUNCE1(timer, offset), addr);
 
 	addr = bank_reg(gpio, bank, reg_debounce_sel2);
-=======
-	addr = bank_debounce_reg(gpio, bank, GPIO_DEBOUNCE_SEL1);
-	val = ioread32(addr);
-	iowrite32((val & ~mask) | GPIO_SET_DEBOUNCE1(timer, offset), addr);
-
-	addr = bank_debounce_reg(gpio, bank, GPIO_DEBOUNCE_SEL2);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	val = ioread32(addr);
 	iowrite32((val & ~mask) | GPIO_SET_DEBOUNCE2(timer, offset), addr);
 }
@@ -1258,16 +1004,12 @@ static int aspeed_gpio_set_config(struct gpio_chip *chip, unsigned int offset,
 			param == PIN_CONFIG_DRIVE_OPEN_SOURCE)
 		/* Return -ENOTSUPP to trigger emulation, as per datasheet */
 		return -ENOTSUPP;
-<<<<<<< HEAD
 	else if (param == PIN_CONFIG_PERSIST_STATE)
 		return aspeed_gpio_reset_tolerance(chip, offset, arg);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return -ENOTSUPP;
 }
 
-<<<<<<< HEAD
 /**
  * aspeed_gpio_copro_set_ops - Sets the callbacks used for handhsaking with
  *                             the coprocessor for shared GPIO banks
@@ -1373,8 +1115,6 @@ int aspeed_gpio_copro_release_gpio(struct gpio_desc *desc)
 }
 EXPORT_SYMBOL_GPL(aspeed_gpio_copro_release_gpio);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Any banks not specified in a struct aspeed_bank_props array are assumed to
  * have the properties:
@@ -1417,11 +1157,7 @@ static int __init aspeed_gpio_probe(struct platform_device *pdev)
 	const struct of_device_id *gpio_id;
 	struct aspeed_gpio *gpio;
 	struct resource *res;
-<<<<<<< HEAD
 	int rc, i, banks;
-=======
-	int rc;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	gpio = devm_kzalloc(&pdev->dev, sizeof(*gpio), GFP_KERNEL);
 	if (!gpio)
@@ -1460,7 +1196,6 @@ static int __init aspeed_gpio_probe(struct platform_device *pdev)
 	gpio->chip.set_config = aspeed_gpio_set_config;
 	gpio->chip.label = dev_name(&pdev->dev);
 	gpio->chip.base = -1;
-<<<<<<< HEAD
 	gpio->chip.irq.need_valid_mask = true;
 
 	/* Allocate a cache of the output registers */
@@ -1483,9 +1218,6 @@ static int __init aspeed_gpio_probe(struct platform_device *pdev)
 		aspeed_gpio_change_cmd_source(gpio, bank, 2, GPIO_CMDSRC_ARM);
 		aspeed_gpio_change_cmd_source(gpio, bank, 3, GPIO_CMDSRC_ARM);
 	}
-=======
-	gpio->chip.irq_need_valid_mask = true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rc = devm_gpiochip_add_data(&pdev->dev, &gpio->chip, gpio);
 	if (rc < 0)

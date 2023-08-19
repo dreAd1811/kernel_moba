@@ -7,7 +7,6 @@
  * Note extra padding because this structure is passed back and forth
  * between kernel and user space.
  *
-<<<<<<< HEAD
  * As MIPS was lacking proper padding after shm_?time, we use 48 bits
  * of the padding at the end to store a few additional bits of the time.
  * libc implementations need to take care to convert this into a proper
@@ -15,12 +14,6 @@
  */
 
 #ifdef __mips64
-=======
- * Pad space is left for:
- * - 2 miscellaneous 32-bit rsp. 64-bit values
- */
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct shmid64_ds {
 	struct ipc64_perm	shm_perm;	/* operation perms */
 	size_t			shm_segsz;	/* size of segment (bytes) */
@@ -33,7 +26,6 @@ struct shmid64_ds {
 	unsigned long		__unused1;
 	unsigned long		__unused2;
 };
-<<<<<<< HEAD
 #else
 struct shmid64_ds {
 	struct ipc64_perm	shm_perm;	/* operation perms */
@@ -50,8 +42,6 @@ struct shmid64_ds {
 	unsigned short		__unused1;
 };
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct shminfo64 {
 	unsigned long	shmmax;

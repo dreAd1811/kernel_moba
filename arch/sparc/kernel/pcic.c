@@ -518,17 +518,10 @@ static void pcic_map_pci_device(struct linux_pcic *pcic,
 				 * board in a PCI slot. We must remap it
 				 * under 64K but it is not done yet. XXX
 				 */
-<<<<<<< HEAD
 				pci_info(dev, "PCIC: Skipping I/O space at "
 					 "0x%lx, this will Oops if a driver "
 					 "attaches device '%s'\n", address,
 					 namebuf);
-=======
-				printk("PCIC: Skipping I/O space at 0x%lx, "
-				    "this will Oops if a driver attaches "
-				    "device '%s' at %02x:%02x)\n", address,
-				    namebuf, dev->bus->number, dev->devfn);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		}
 	}
@@ -558,13 +551,8 @@ pcic_fill_irq(struct linux_pcic *pcic, struct pci_dev *dev, int node)
 		p++;
 	}
 	if (i >= pcic->pcic_imdim) {
-<<<<<<< HEAD
 		pci_info(dev, "PCIC: device %s not found in %d\n", namebuf,
 			 pcic->pcic_imdim);
-=======
-		printk("PCIC: device %s devfn %02x:%02x not found in %d\n",
-		    namebuf, dev->bus->number, dev->devfn, pcic->pcic_imdim);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev->irq = 0;
 		return;
 	}
@@ -577,11 +565,7 @@ pcic_fill_irq(struct linux_pcic *pcic, struct pci_dev *dev, int node)
 		ivec = readw(pcic->pcic_regs+PCI_INT_SELECT_HI);
 		real_irq = ivec >> ((i-4) << 2) & 0xF;
 	} else {					/* Corrupted map */
-<<<<<<< HEAD
 		pci_info(dev, "PCIC: BAD PIN %d\n", i); for (;;) {}
-=======
-		printk("PCIC: BAD PIN %d\n", i); for (;;) {}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 /* P3 */ /* printk("PCIC: device %s pin %d ivec 0x%x irq %x\n", namebuf, i, ivec, dev->irq); */
 
@@ -590,17 +574,10 @@ pcic_fill_irq(struct linux_pcic *pcic, struct pci_dev *dev, int node)
 	 */
 	if (real_irq == 0 || p->force) {
 		if (p->irq == 0 || p->irq >= 15) {	/* Corrupted map */
-<<<<<<< HEAD
 			pci_info(dev, "PCIC: BAD IRQ %d\n", p->irq); for (;;) {}
 		}
 		pci_info(dev, "PCIC: setting irq %d at pin %d\n", p->irq,
 			 p->pin);
-=======
-			printk("PCIC: BAD IRQ %d\n", p->irq); for (;;) {}
-		}
-		printk("PCIC: setting irq %d at pin %d for device %02x:%02x\n",
-		    p->irq, p->pin, dev->bus->number, dev->devfn);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		real_irq = p->irq;
 
 		i = p->pin;
@@ -625,22 +602,13 @@ pcic_fill_irq(struct linux_pcic *pcic, struct pci_dev *dev, int node)
 void pcibios_fixup_bus(struct pci_bus *bus)
 {
 	struct pci_dev *dev;
-<<<<<<< HEAD
-=======
-	int i, has_io, has_mem;
-	unsigned int cmd = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct linux_pcic *pcic;
 	/* struct linux_pbm_info* pbm = &pcic->pbm; */
 	int node;
 	struct pcidev_cookie *pcp;
 
 	if (!pcic0_up) {
-<<<<<<< HEAD
 		pci_info(bus, "pcibios_fixup_bus: no PCIC\n");
-=======
-		printk("pcibios_fixup_bus: no PCIC\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 	pcic = &pcic0;
@@ -649,52 +617,12 @@ void pcibios_fixup_bus(struct pci_bus *bus)
 	 * Next crud is an equivalent of pbm = pcic_bus_to_pbm(bus);
 	 */
 	if (bus->number != 0) {
-<<<<<<< HEAD
 		pci_info(bus, "pcibios_fixup_bus: nonzero bus 0x%x\n",
 			 bus->number);
-=======
-		printk("pcibios_fixup_bus: nonzero bus 0x%x\n", bus->number);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
 	list_for_each_entry(dev, &bus->devices, bus_list) {
-<<<<<<< HEAD
-=======
-
-		/*
-		 * Comment from i386 branch:
-		 *     There are buggy BIOSes that forget to enable I/O and memory
-		 *     access to PCI devices. We try to fix this, but we need to
-		 *     be sure that the BIOS didn't forget to assign an address
-		 *     to the device. [mj]
-		 * OBP is a case of such BIOS :-)
-		 */
-		has_io = has_mem = 0;
-		for(i=0; i<6; i++) {
-			unsigned long f = dev->resource[i].flags;
-			if (f & IORESOURCE_IO) {
-				has_io = 1;
-			} else if (f & IORESOURCE_MEM)
-				has_mem = 1;
-		}
-		pcic_read_config(dev->bus, dev->devfn, PCI_COMMAND, 2, &cmd);
-		if (has_io && !(cmd & PCI_COMMAND_IO)) {
-			printk("PCIC: Enabling I/O for device %02x:%02x\n",
-				dev->bus->number, dev->devfn);
-			cmd |= PCI_COMMAND_IO;
-			pcic_write_config(dev->bus, dev->devfn,
-			    PCI_COMMAND, 2, cmd);
-		}
-		if (has_mem && !(cmd & PCI_COMMAND_MEMORY)) {
-			printk("PCIC: Enabling memory for device %02x:%02x\n",
-				dev->bus->number, dev->devfn);
-			cmd |= PCI_COMMAND_MEMORY;
-			pcic_write_config(dev->bus, dev->devfn,
-			    PCI_COMMAND, 2, cmd);
-		}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		node = pdev_to_pnode(&pcic->pbm, dev);
 		if(node == 0)
 			node = -1;
@@ -713,7 +641,6 @@ void pcibios_fixup_bus(struct pci_bus *bus)
 	}
 }
 
-<<<<<<< HEAD
 int pcibios_enable_device(struct pci_dev *dev, int mask)
 {
 	u16 cmd, oldcmd;
@@ -742,8 +669,6 @@ int pcibios_enable_device(struct pci_dev *dev, int mask)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Makes compiler happy */
 static volatile int pcic_timer_dummy;
 
@@ -816,23 +741,11 @@ static void watchdog_reset() {
 }
 #endif
 
-<<<<<<< HEAD
-=======
-int pcibios_enable_device(struct pci_dev *pdev, int mask)
-{
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * NMI
  */
 void pcic_nmi(unsigned int pend, struct pt_regs *regs)
 {
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pend = swab32(pend);
 
 	if (!pcic_speculative || (pend & PCI_SYS_INT_PENDING_PIO) == 0) {

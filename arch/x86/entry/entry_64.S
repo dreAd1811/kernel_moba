@@ -53,28 +53,19 @@ ENTRY(native_usergs_sysret64)
 END(native_usergs_sysret64)
 #endif /* CONFIG_PARAVIRT */
 
-<<<<<<< HEAD
 .macro TRACE_IRQS_FLAGS flags:req
 #ifdef CONFIG_TRACE_IRQFLAGS
 	btl	$9, \flags		/* interrupts off? */
-=======
-.macro TRACE_IRQS_IRETQ
-#ifdef CONFIG_TRACE_IRQFLAGS
-	bt	$9, EFLAGS(%rsp)		/* interrupts off? */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	jnc	1f
 	TRACE_IRQS_ON
 1:
 #endif
 .endm
 
-<<<<<<< HEAD
 .macro TRACE_IRQS_IRETQ
 	TRACE_IRQS_FLAGS EFLAGS(%rsp)
 .endm
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * When dynamic function tracer is enabled it will add a breakpoint
  * to all locations that it is about to modify, sync CPUs, update
@@ -242,12 +233,8 @@ GLOBAL(entry_SYSCALL_64_after_hwframe)
 	TRACE_IRQS_OFF
 
 	/* IRQs are off. */
-<<<<<<< HEAD
 	movq	%rax, %rdi
 	movq	%rsp, %rsi
-=======
-	movq	%rsp, %rdi
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	call	do_syscall_64		/* returns with IRQs disabled */
 
 	TRACE_IRQS_IRETQ		/* we're about to change IF */
@@ -274,7 +261,6 @@ GLOBAL(entry_SYSCALL_64_after_hwframe)
 	 * Change top bits to match most significant bit (47th or 56th bit
 	 * depending on paging mode) in the address.
 	 */
-<<<<<<< HEAD
 #ifdef CONFIG_X86_5LEVEL
 	ALTERNATIVE "shl $(64 - 48), %rcx; sar $(64 - 48), %rcx", \
 		"shl $(64 - 57), %rcx; sar $(64 - 57), %rcx", X86_FEATURE_LA57
@@ -282,10 +268,6 @@ GLOBAL(entry_SYSCALL_64_after_hwframe)
 	shl	$(64 - (__VIRTUAL_MASK_SHIFT+1)), %rcx
 	sar	$(64 - (__VIRTUAL_MASK_SHIFT+1)), %rcx
 #endif
-=======
-	shl	$(64 - (__VIRTUAL_MASK_SHIFT+1)), %rcx
-	sar	$(64 - (__VIRTUAL_MASK_SHIFT+1)), %rcx
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* If this changed %rcx, it was not canonical */
 	cmpq	%rcx, %r11
@@ -330,10 +312,7 @@ GLOBAL(entry_SYSCALL_64_after_hwframe)
 	 */
 syscall_return_via_sysret:
 	/* rcx and r11 are already restored (see code above) */
-<<<<<<< HEAD
 	UNWIND_HINT_EMPTY
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	POP_REGS pop_rdi=0 skip_r11rcx=1
 
 	/*
@@ -342,10 +321,6 @@ syscall_return_via_sysret:
 	 */
 	movq	%rsp, %rdi
 	movq	PER_CPU_VAR(cpu_tss_rw + TSS_sp0), %rsp
-<<<<<<< HEAD
-=======
-	UNWIND_HINT_EMPTY
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pushq	RSP-RDI(%rdi)	/* RSP */
 	pushq	(%rdi)		/* RDI */
@@ -383,11 +358,7 @@ ENTRY(__switch_to_asm)
 	movq	%rsp, TASK_threadsp(%rdi)
 	movq	TASK_threadsp(%rsi), %rsp
 
-<<<<<<< HEAD
 #ifdef CONFIG_STACKPROTECTOR
-=======
-#ifdef CONFIG_CC_STACKPROTECTOR
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	movq	TASK_stack_canary(%rsi), %rbx
 	movq	%rbx, PER_CPU_VAR(irq_stack_union)+stack_canary_offset
 #endif
@@ -439,10 +410,7 @@ ENTRY(ret_from_fork)
 
 1:
 	/* kernel thread */
-<<<<<<< HEAD
 	UNWIND_HINT_EMPTY
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	movq	%r12, %rdi
 	CALL_NOSPEC %rbx
 	/*
@@ -470,7 +438,6 @@ ENTRY(irq_entries_start)
     .endr
 END(irq_entries_start)
 
-<<<<<<< HEAD
 	.align 8
 ENTRY(spurious_entries_start)
     vector=FIRST_SYSTEM_VECTOR
@@ -483,8 +450,6 @@ ENTRY(spurious_entries_start)
     .endr
 END(spurious_entries_start)
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 .macro DEBUG_ENTRY_ASSERT_IRQS_OFF
 #ifdef CONFIG_DEBUG_ENTRY
 	pushq %rax
@@ -504,7 +469,6 @@ END(spurious_entries_start)
  *
  * The invariant is that, if irq_count != -1, then the IRQ stack is in use.
  */
-<<<<<<< HEAD
 .macro ENTER_IRQ_STACK regs=1 old_rsp save_ret=0
 	DEBUG_ENTRY_ASSERT_IRQS_OFF
 
@@ -518,11 +482,6 @@ END(spurious_entries_start)
 	.else
 	movq	%rsp, \old_rsp
 	.endif
-=======
-.macro ENTER_IRQ_STACK regs=1 old_rsp
-	DEBUG_ENTRY_ASSERT_IRQS_OFF
-	movq	%rsp, \old_rsp
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	.if \regs
 	UNWIND_HINT_REGS base=\old_rsp
@@ -568,7 +527,6 @@ END(spurious_entries_start)
 	.if \regs
 	UNWIND_HINT_REGS indirect=1
 	.endif
-<<<<<<< HEAD
 
 	.if \save_ret
 	/*
@@ -578,8 +536,6 @@ END(spurious_entries_start)
 	 */
 	pushq	-8(\old_rsp)
 	.endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 .endm
 
 /*
@@ -603,7 +559,6 @@ END(spurious_entries_start)
 .endm
 
 /*
-<<<<<<< HEAD
  * Interrupt entry helper function.
  *
  * Entry runs with interrupts off. Stack layout at entry:
@@ -657,39 +612,14 @@ ENTRY(interrupt_entry)
 	UNWIND_HINT_FUNC
 
 	movq	(%rdi), %rdi
-=======
- * Interrupt entry/exit.
- *
- * Interrupt entry points save only callee clobbered registers in fast path.
- *
- * Entry runs with interrupts off.
- */
-
-/* 0(%rsp): ~(interrupt number) */
-	.macro interrupt func
-	cld
-
-	testb	$3, CS-ORIG_RAX(%rsp)
-	jz	1f
-	SWAPGS
-	FENCE_SWAPGS_USER_ENTRY
-	call	switch_to_thread_stack
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	jmp	2f
 1:
 	FENCE_SWAPGS_KERNEL_ENTRY
 2:
-<<<<<<< HEAD
 	PUSH_AND_CLEAR_REGS save_ret=1
 	ENCODE_FRAME_POINTER 8
 
 	testb	$3, CS+8(%rsp)
-=======
-	PUSH_AND_CLEAR_REGS
-	ENCODE_FRAME_POINTER
-
-	testb	$3, CS(%rsp)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	jz	1f
 
 	/*
@@ -697,11 +627,7 @@ ENTRY(interrupt_entry)
 	 *
 	 * We need to tell lockdep that IRQs are off.  We can't do this until
 	 * we fix gsbase, and we should do it before enter_from_user_mode
-<<<<<<< HEAD
 	 * (which can take locks).  Since TRACE_IRQS_OFF is idempotent,
-=======
-	 * (which can take locks).  Since TRACE_IRQS_OFF idempotent,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * the simplest way to handle it is to just call it twice if
 	 * we enter from user mode.  There's no reason to optimize this since
 	 * TRACE_IRQS_OFF is a no-op if lockdep is off.
@@ -711,7 +637,6 @@ ENTRY(interrupt_entry)
 	CALL_enter_from_user_mode
 
 1:
-<<<<<<< HEAD
 	ENTER_IRQ_STACK old_rsp=%rdi save_ret=1
 	/* We entered an interrupt context - irqs are off: */
 	TRACE_IRQS_OFF
@@ -743,24 +668,6 @@ common_interrupt:
 	call	interrupt_entry
 	UNWIND_HINT_REGS indirect=1
 	call	do_IRQ	/* rdi points to pt_regs */
-=======
-	ENTER_IRQ_STACK old_rsp=%rdi
-	/* We entered an interrupt context - irqs are off: */
-	TRACE_IRQS_OFF
-
-	call	\func	/* rdi points to pt_regs */
-	.endm
-
-	/*
-	 * The interrupt stubs push (~vector+0x80) onto the stack and
-	 * then jump to common_interrupt.
-	 */
-	.p2align CONFIG_X86_L1_CACHE_SHIFT
-common_interrupt:
-	ASM_CLAC
-	addq	$-0x80, (%rsp)			/* Adjust vector to [-256, -1] range */
-	interrupt do_IRQ
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* 0(%rsp): old RSP */
 ret_from_intr:
 	DISABLE_INTERRUPTS(CLBR_ANY)
@@ -793,10 +700,6 @@ GLOBAL(swapgs_restore_regs_and_return_to_usermode)
 	 */
 	movq	%rsp, %rdi
 	movq	PER_CPU_VAR(cpu_tss_rw + TSS_sp0), %rsp
-<<<<<<< HEAD
-=======
-	UNWIND_HINT_EMPTY
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Copy the IRET frame to the trampoline stack. */
 	pushq	6*8(%rdi)	/* SS */
@@ -849,13 +752,10 @@ GLOBAL(restore_regs_and_return_to_kernel)
 #endif
 	POP_REGS
 	addq	$8, %rsp	/* skip regs->orig_ax */
-<<<<<<< HEAD
 	/*
 	 * ARCH_HAS_MEMBARRIER_SYNC_CORE rely on IRET core serialization
 	 * when returning from IPI handler.
 	 */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INTERRUPT_RETURN
 
 ENTRY(native_iret)
@@ -953,10 +853,7 @@ native_irq_return_ldt:
 	jmp	native_irq_return_iret
 #endif
 END(common_interrupt)
-<<<<<<< HEAD
 _ASM_NOKPROBE(common_interrupt)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * APIC interrupts.
@@ -964,7 +861,6 @@ _ASM_NOKPROBE(common_interrupt)
 .macro apicinterrupt3 num sym do_sym
 ENTRY(\sym)
 	UNWIND_HINT_IRET_REGS
-<<<<<<< HEAD
 	pushq	$~(\num)
 .Lcommon_\sym:
 	call	interrupt_entry
@@ -973,14 +869,6 @@ ENTRY(\sym)
 	jmp	ret_from_intr
 END(\sym)
 _ASM_NOKPROBE(\sym)
-=======
-	ASM_CLAC
-	pushq	$~(\num)
-.Lcommon_\sym:
-	interrupt \do_sym
-	jmp	ret_from_intr
-END(\sym)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 .endm
 
 /* Make sure APIC interrupt handlers end up in the irqentry section: */
@@ -1041,37 +929,6 @@ apicinterrupt IRQ_WORK_VECTOR			irq_work_interrupt		smp_irq_work_interrupt
  */
 #define CPU_TSS_IST(x) PER_CPU_VAR(cpu_tss_rw) + (TSS_ist + ((x) - 1) * 8)
 
-<<<<<<< HEAD
-=======
-/*
- * Switch to the thread stack.  This is called with the IRET frame and
- * orig_ax on the stack.  (That is, RDI..R12 are not on the stack and
- * space has not been allocated for them.)
- */
-ENTRY(switch_to_thread_stack)
-	UNWIND_HINT_FUNC
-
-	pushq	%rdi
-	/* Need to switch before accessing the thread stack. */
-	SWITCH_TO_KERNEL_CR3 scratch_reg=%rdi
-	movq	%rsp, %rdi
-	movq	PER_CPU_VAR(cpu_current_top_of_stack), %rsp
-	UNWIND_HINT sp_offset=16 sp_reg=ORC_REG_DI
-
-	pushq	7*8(%rdi)		/* regs->ss */
-	pushq	6*8(%rdi)		/* regs->rsp */
-	pushq	5*8(%rdi)		/* regs->eflags */
-	pushq	4*8(%rdi)		/* regs->cs */
-	pushq	3*8(%rdi)		/* regs->ip */
-	pushq	2*8(%rdi)		/* regs->orig_ax */
-	pushq	8(%rdi)			/* return address */
-	UNWIND_HINT_FUNC
-
-	movq	(%rdi), %rdi
-	ret
-END(switch_to_thread_stack)
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 .macro idtentry sym do_sym has_error_code:req paranoid=0 shift_ist=-1 create_gap=0
 ENTRY(\sym)
 	UNWIND_HINT_IRET_REGS offset=\has_error_code*8
@@ -1087,11 +944,7 @@ ENTRY(\sym)
 	pushq	$-1				/* ORIG_RAX: no syscall to restart */
 	.endif
 
-<<<<<<< HEAD
 	.if \paranoid == 1
-=======
-	.if \paranoid < 2
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	testb	$3, CS-ORIG_RAX(%rsp)		/* If coming from userspace, switch stacks */
 	jnz	.Lfrom_usermode_switch_stack_\@
 	.endif
@@ -1152,11 +1005,7 @@ ENTRY(\sym)
 	jmp	error_exit
 	.endif
 
-<<<<<<< HEAD
 	.if \paranoid == 1
-=======
-	.if \paranoid < 2
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Entry from userspace.  Switch stacks and treat it
 	 * as a normal entry.  This means that paranoid handlers
@@ -1178,10 +1027,7 @@ ENTRY(\sym)
 
 	jmp	error_exit
 	.endif
-<<<<<<< HEAD
 _ASM_NOKPROBE(\sym)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 END(\sym)
 .endm
 
@@ -1208,19 +1054,13 @@ ENTRY(native_load_gs_index)
 	FRAME_BEGIN
 	pushfq
 	DISABLE_INTERRUPTS(CLBR_ANY & ~CLBR_RDI)
-<<<<<<< HEAD
 	TRACE_IRQS_OFF
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	SWAPGS
 .Lgs_change:
 	movl	%edi, %gs
 2:	ALTERNATIVE "", "mfence", X86_BUG_SWAPGS_FENCE
 	SWAPGS
-<<<<<<< HEAD
 	TRACE_IRQS_FLAGS (%rsp)
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	popfq
 	FRAME_END
 	ret
@@ -1343,15 +1183,12 @@ apicinterrupt3 HYPERVISOR_CALLBACK_VECTOR \
 #if IS_ENABLED(CONFIG_HYPERV)
 apicinterrupt3 HYPERVISOR_CALLBACK_VECTOR \
 	hyperv_callback_vector hyperv_vector_handler
-<<<<<<< HEAD
 
 apicinterrupt3 HYPERV_REENLIGHTENMENT_VECTOR \
 	hyperv_reenlightenment_vector hyperv_reenlightenment_intr
 
 apicinterrupt3 HYPERV_STIMER0_VECTOR \
 	hv_stimer0_callback_vector hv_stimer0_vector_handler
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_HYPERV */
 
 idtentry debug			do_debug		has_error_code=0	paranoid=1 shift_ist=DEBUG_STACK
@@ -1393,7 +1230,6 @@ ENTRY(paranoid_entry)
 	xorl	%ebx, %ebx
 
 1:
-<<<<<<< HEAD
 	/*
 	 * Always stash CR3 in %r14.  This value will be restored,
 	 * verbatim, at exit.  Needed if paranoid_entry interrupted
@@ -1406,9 +1242,6 @@ ENTRY(paranoid_entry)
 	 */
 	SAVE_AND_SWITCH_TO_KERNEL_CR3 scratch_reg=%rax save_reg=%r14
 
-=======
-	SAVE_AND_SWITCH_TO_KERNEL_CR3 scratch_reg=%rax save_reg=%r14
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * The above SAVE_AND_SWITCH_TO_KERNEL_CR3 macro doesn't do an
 	 * unconditional CR3 write, even in the PTI case.  So do an lfence
@@ -1438,19 +1271,13 @@ ENTRY(paranoid_exit)
 	testl	%ebx, %ebx			/* swapgs needed? */
 	jnz	.Lparanoid_exit_no_swapgs
 	TRACE_IRQS_IRETQ
-<<<<<<< HEAD
 	/* Always restore stashed CR3 value (see paranoid_entry) */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	RESTORE_CR3	scratch_reg=%rbx save_reg=%r14
 	SWAPGS_UNSAFE_STACK
 	jmp	.Lparanoid_exit_restore
 .Lparanoid_exit_no_swapgs:
 	TRACE_IRQS_IRETQ_DEBUG
-<<<<<<< HEAD
 	/* Always restore stashed CR3 value (see paranoid_entry) */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	RESTORE_CR3	scratch_reg=%rbx save_reg=%r14
 .Lparanoid_exit_restore:
 	jmp restore_regs_and_return_to_kernel
@@ -1867,10 +1694,7 @@ end_repeat_nmi:
 	movq	$-1, %rsi
 	call	do_nmi
 
-<<<<<<< HEAD
 	/* Always restore stashed CR3 value (see paranoid_entry) */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	RESTORE_CR3 scratch_reg=%r15 save_reg=%r14
 
 	testl	%ebx, %ebx			/* swapgs needed? */
@@ -1920,11 +1744,7 @@ ENTRY(rewind_stack_do_exit)
 
 	movq	PER_CPU_VAR(cpu_current_top_of_stack), %rax
 	leaq	-PTREGS_SIZE(%rax), %rsp
-<<<<<<< HEAD
 	UNWIND_HINT_FUNC sp_offset=PTREGS_SIZE
-=======
-	UNWIND_HINT_REGS
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	call	do_exit
 END(rewind_stack_do_exit)

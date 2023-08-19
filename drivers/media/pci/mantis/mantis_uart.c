@@ -27,19 +27,11 @@
 #include <linux/interrupt.h>
 #include <linux/pci.h>
 
-<<<<<<< HEAD
 #include <media/dmxdev.h>
 #include <media/dvbdev.h>
 #include <media/dvb_demux.h>
 #include <media/dvb_frontend.h>
 #include <media/dvb_net.h>
-=======
-#include "dmxdev.h"
-#include "dvbdev.h"
-#include "dvb_demux.h"
-#include "dvb_frontend.h"
-#include "dvb_net.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "mantis_common.h"
 #include "mantis_reg.h"
@@ -100,10 +92,7 @@ static void mantis_uart_work(struct work_struct *work)
 {
 	struct mantis_pci *mantis = container_of(work, struct mantis_pci, uart_work);
 	u32 stat;
-<<<<<<< HEAD
 	unsigned long timeout;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	stat = mmread(MANTIS_UART_STAT);
 
@@ -114,7 +103,6 @@ static void mantis_uart_work(struct work_struct *work)
 	 * MANTIS_UART_RXFIFO_DATA is only set if at least
 	 * config->bytes + 1 bytes are in the FIFO.
 	 */
-<<<<<<< HEAD
 
 	/* FIXME: is 10ms good enough ? */
 	timeout = jiffies +  msecs_to_jiffies(10);
@@ -124,11 +112,6 @@ static void mantis_uart_work(struct work_struct *work)
 
 		if (!time_is_after_jiffies(timeout))
 			break;
-=======
-	while (stat & MANTIS_UART_RXFIFO_DATA) {
-		mantis_uart_read(mantis);
-		stat = mmread(MANTIS_UART_STAT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* re-enable UART (RX) interrupt */

@@ -74,7 +74,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
 &cpu0 {
 	proc-supply = <&mt6397_vpca15_reg>;
 };
@@ -93,8 +92,6 @@
 	sram-supply = <&mt6397_vsramca7_reg>;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &dpi0 {
 	status = "okay";
 };
@@ -526,11 +523,7 @@
 	vbus-supply = <&usb_p0_vbus>;
 	extcon = <&extcon_usb>;
 	dr_mode = "otg";
-<<<<<<< HEAD
 	wakeup-source;
-=======
-	mediatek,enable-wakeup;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pinctrl-names = "default", "id_float", "id_ground";
 	pinctrl-0 = <&usb_id_pins_float>;
 	pinctrl-1 = <&usb_id_pins_float>;

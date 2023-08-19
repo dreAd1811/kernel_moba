@@ -106,10 +106,7 @@ static inline void mmu_write(u32 a, u32 v)
 }
 
 void cf_bootmem_alloc(void);
-<<<<<<< HEAD
 void cf_mmu_context_init(void);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int cf_tlb_miss(struct pt_regs *regs, int write, int dtlb, int extension_word);
 
 #endif

@@ -36,10 +36,7 @@
  * Copyright(c) 2012 - 2014 Intel Corporation. All rights reserved.
  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
-<<<<<<< HEAD
  * Copyright(c) 2018        Intel Corporation
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -119,32 +116,6 @@ static const struct ieee80211_iface_combination iwl_mvm_iface_combinations[] = {
 	},
 };
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_PM_SLEEP
-static const struct nl80211_wowlan_tcp_data_token_feature
-iwl_mvm_wowlan_tcp_token_feature = {
-	.min_len = 0,
-	.max_len = 255,
-	.bufsize = IWL_WOWLAN_REMOTE_WAKE_MAX_TOKENS,
-};
-
-static const struct wiphy_wowlan_tcp_support iwl_mvm_wowlan_tcp_support = {
-	.tok = &iwl_mvm_wowlan_tcp_token_feature,
-	.data_payload_max = IWL_WOWLAN_TCP_MAX_PACKET_LEN -
-			    sizeof(struct ethhdr) -
-			    sizeof(struct iphdr) -
-			    sizeof(struct tcphdr),
-	.data_interval_max = 65535, /* __le16 in API */
-	.wake_payload_max = IWL_WOWLAN_REMOTE_WAKE_MAX_PACKET_LEN -
-			    sizeof(struct ethhdr) -
-			    sizeof(struct iphdr) -
-			    sizeof(struct tcphdr),
-	.seq = true,
-};
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_IWLWIFI_BCAST_FILTERING
 /*
  * Use the reserved field to indicate magic values.
@@ -345,12 +316,8 @@ struct ieee80211_regdomain *iwl_mvm_get_regdomain(struct wiphy *wiphy,
 	regd = iwl_parse_nvm_mcc_info(mvm->trans->dev, mvm->cfg,
 				      __le32_to_cpu(resp->n_channels),
 				      resp->channels,
-<<<<<<< HEAD
 				      __le16_to_cpu(resp->mcc),
 				      __le16_to_cpu(resp->geo_info));
-=======
-				      __le16_to_cpu(resp->mcc));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Store the return source id */
 	src_id = resp->source_id;
 	kfree(resp);
@@ -460,7 +427,6 @@ int iwl_mvm_mac_setup_register(struct iwl_mvm *mvm)
 	ieee80211_hw_set(hw, SUPPORTS_CLONED_SKBS);
 	ieee80211_hw_set(hw, SUPPORTS_AMSDU_IN_AMPDU);
 	ieee80211_hw_set(hw, NEEDS_UNIQUE_STA_ADDR);
-<<<<<<< HEAD
 	ieee80211_hw_set(hw, DEAUTH_NEED_MGD_TX_PREP);
 
 	if (iwl_mvm_has_tlc_offload(mvm)) {
@@ -468,8 +434,6 @@ int iwl_mvm_mac_setup_register(struct iwl_mvm *mvm)
 		ieee80211_hw_set(hw, HAS_RATE_CONTROL);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (iwl_mvm_has_new_rx_api(mvm))
 		ieee80211_hw_set(hw, SUPPORTS_REORDERING_BUFFER);
 
@@ -504,13 +468,9 @@ int iwl_mvm_mac_setup_register(struct iwl_mvm *mvm)
 	/* this is the case for CCK frames, it's better (only 8) for OFDM */
 	hw->radiotap_timestamp.accuracy = 22;
 
-<<<<<<< HEAD
 	if (!iwl_mvm_has_tlc_offload(mvm))
 		hw->rate_control_algorithm = RS_NAME;
 
-=======
-	hw->rate_control_algorithm = "iwl-mvm-rs";
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hw->uapsd_queues = IWL_MVM_UAPSD_QUEUES;
 	hw->uapsd_max_sp_len = IWL_UAPSD_MAX_SP;
 
@@ -708,7 +668,6 @@ int iwl_mvm_mac_setup_register(struct iwl_mvm *mvm)
 				      NL80211_EXT_FEATURE_SET_SCAN_DWELL);
 	}
 
-<<<<<<< HEAD
 	if (iwl_mvm_is_oce_supported(mvm)) {
 		wiphy_ext_feature_set(hw->wiphy,
 			NL80211_EXT_FEATURE_ACCEPT_BCAST_PROBE_RESP);
@@ -720,8 +679,6 @@ int iwl_mvm_mac_setup_register(struct iwl_mvm *mvm)
 			NL80211_EXT_FEATURE_OCE_PROBE_REQ_HIGH_TX_RATE);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mvm->rts_threshold = IEEE80211_MAX_RTS_THRESHOLD;
 
 #ifdef CONFIG_PM_SLEEP
@@ -749,10 +706,6 @@ int iwl_mvm_mac_setup_register(struct iwl_mvm *mvm)
 		mvm->wowlan.pattern_min_len = IWL_WOWLAN_MIN_PATTERN_LEN;
 		mvm->wowlan.pattern_max_len = IWL_WOWLAN_MAX_PATTERN_LEN;
 		mvm->wowlan.max_nd_match_sets = IWL_SCAN_MAX_PROFILES;
-<<<<<<< HEAD
-=======
-		mvm->wowlan.tcp = &iwl_mvm_wowlan_tcp_support;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		hw->wiphy->wowlan = &mvm->wowlan;
 	}
 #endif
@@ -867,24 +820,6 @@ static void iwl_mvm_mac_tx(struct ieee80211_hw *hw,
 	    !ieee80211_is_bufferable_mmpdu(hdr->frame_control))
 		sta = NULL;
 
-<<<<<<< HEAD
-=======
-	/* If there is no sta, and it's not offchannel - send through AP */
-	if (info->control.vif->type == NL80211_IFTYPE_STATION &&
-	    info->hw_queue != IWL_MVM_OFFCHANNEL_QUEUE && !sta) {
-		struct iwl_mvm_vif *mvmvif =
-			iwl_mvm_vif_from_mac80211(info->control.vif);
-		u8 ap_sta_id = READ_ONCE(mvmvif->ap_sta_id);
-
-		if (ap_sta_id < IWL_MVM_STATION_COUNT) {
-			/* mac80211 holds rcu read lock */
-			sta = rcu_dereference(mvm->fw_id_to_mac_id[ap_sta_id]);
-			if (IS_ERR_OR_NULL(sta))
-				goto drop;
-		}
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (sta) {
 		if (iwl_mvm_defer_tx(mvm, sta, skb))
 			return;
@@ -984,11 +919,7 @@ static int iwl_mvm_mac_ampdu_action(struct ieee80211_hw *hw,
 	enum ieee80211_ampdu_mlme_action action = params->action;
 	u16 tid = params->tid;
 	u16 *ssn = &params->ssn;
-<<<<<<< HEAD
 	u16 buf_size = params->buf_size;
-=======
-	u8 buf_size = params->buf_size;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool amsdu = params->amsdu;
 	u16 timeout = params->timeout;
 
@@ -1027,7 +958,6 @@ static int iwl_mvm_mac_ampdu_action(struct ieee80211_hw *hw,
 
 	switch (action) {
 	case IEEE80211_AMPDU_RX_START:
-<<<<<<< HEAD
 		if (iwl_mvm_vif_from_mac80211(vif)->ap_sta_id ==
 				iwl_mvm_sta_from_mac80211(sta)->sta_id) {
 			struct iwl_mvm_vif *mvmvif;
@@ -1038,8 +968,6 @@ static int iwl_mvm_mac_ampdu_action(struct ieee80211_hw *hw,
 			mvmvif = iwl_mvm_vif_from_mac80211(vif);
 			cancel_delayed_work(&mvmvif->uapsd_nonagg_detected_wk);
 		}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!iwl_enable_rx_ampdu(mvm->cfg)) {
 			ret = -EINVAL;
 			break;
@@ -1526,11 +1454,8 @@ static int iwl_mvm_mac_add_interface(struct ieee80211_hw *hw,
 		mvm->p2p_device_vif = vif;
 	}
 
-<<<<<<< HEAD
 	iwl_mvm_tcm_add_vif(mvm, vif);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (vif->type == NL80211_IFTYPE_MONITOR)
 		mvm->monitor_on = true;
 
@@ -1582,13 +1507,10 @@ static void iwl_mvm_mac_remove_interface(struct ieee80211_hw *hw,
 
 	iwl_mvm_prepare_mac_removal(mvm, vif);
 
-<<<<<<< HEAD
 	if (!(vif->type == NL80211_IFTYPE_AP ||
 	      vif->type == NL80211_IFTYPE_ADHOC))
 		iwl_mvm_tcm_rm_vif(mvm, vif);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&mvm->mutex);
 
 	if (mvm->bf_allowed_vif == mvmvif) {
@@ -1983,7 +1905,6 @@ void iwl_mvm_mu_mimo_grp_notif(struct iwl_mvm *mvm,
 			iwl_mvm_mu_mimo_iface_iterator, notif);
 }
 
-<<<<<<< HEAD
 static u8 iwl_mvm_he_get_ppe_val(u8 *ppe, u8 ppe_pos_bit)
 {
 	u8 byte_num = ppe_pos_bit / 8;
@@ -2178,8 +2099,6 @@ static void iwl_mvm_cfg_he_sta(struct iwl_mvm *mvm,
 		IWL_ERR(mvm, "Failed to config FW to work HE!\n");
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void iwl_mvm_bss_info_changed_station(struct iwl_mvm *mvm,
 					     struct ieee80211_vif *vif,
 					     struct ieee80211_bss_conf *bss_conf,
@@ -2193,7 +2112,6 @@ static void iwl_mvm_bss_info_changed_station(struct iwl_mvm *mvm,
 	 * beacon interval, which was not known when the station interface was
 	 * added.
 	 */
-<<<<<<< HEAD
 	if (changes & BSS_CHANGED_ASSOC && bss_conf->assoc) {
 		if (vif->bss_conf.he_support &&
 		    !iwlwifi_mod_params.disable_11ax)
@@ -2201,15 +2119,6 @@ static void iwl_mvm_bss_info_changed_station(struct iwl_mvm *mvm,
 
 		iwl_mvm_mac_ctxt_recalc_tsf_id(mvm, vif);
 	}
-=======
-	if (changes & BSS_CHANGED_ASSOC && bss_conf->assoc)
-		iwl_mvm_mac_ctxt_recalc_tsf_id(mvm, vif);
-
-	if (changes & BSS_CHANGED_ASSOC && !bss_conf->assoc &&
-	    mvmvif->lqm_active)
-		iwl_mvm_send_lqm_cmd(vif, LQM_CMD_OPERATION_STOP_MEASUREMENT,
-				     0, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * If we're not associated yet, take the (new) BSSID before associating
@@ -2850,7 +2759,6 @@ static void iwl_mvm_sta_pre_rcu_remove(struct ieee80211_hw *hw,
 static void iwl_mvm_check_uapsd(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
 				const u8 *bssid)
 {
-<<<<<<< HEAD
 	int i;
 
 	if (!test_bit(IWL_MVM_STATUS_IN_HW_RESTART, &mvm->status)) {
@@ -2861,8 +2769,6 @@ static void iwl_mvm_check_uapsd(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
 		mdata->opened_rx_ba_sessions = false;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!(mvm->fw->ucode_capa.flags & IWL_UCODE_TLV_FLAGS_UAPSD_SUPPORT))
 		return;
 
@@ -2877,7 +2783,6 @@ static void iwl_mvm_check_uapsd(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
 		return;
 	}
 
-<<<<<<< HEAD
 	for (i = 0; i < IWL_MVM_UAPSD_NOAGG_LIST_LEN; i++) {
 		if (ether_addr_equal(mvm->uapsd_noagg_bssids[i].addr, bssid)) {
 			vif->driver_flags &= ~IEEE80211_VIF_SUPPORTS_UAPSD;
@@ -2885,8 +2790,6 @@ static void iwl_mvm_check_uapsd(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
 		}
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vif->driver_flags |= IEEE80211_VIF_SUPPORTS_UAPSD;
 }
 
@@ -2989,11 +2892,7 @@ static int iwl_mvm_mac_sta_state(struct ieee80211_hw *hw,
 
 	mutex_lock(&mvm->mutex);
 	/* track whether or not the station is associated */
-<<<<<<< HEAD
 	mvm_sta->sta_state = new_state;
-=======
-	mvm_sta->associated = new_state >= IEEE80211_STA_ASSOC;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (old_state == IEEE80211_STA_NOTEXIST &&
 	    new_state == IEEE80211_STA_NONE) {
@@ -3046,11 +2945,7 @@ static int iwl_mvm_mac_sta_state(struct ieee80211_hw *hw,
 		}
 
 		iwl_mvm_rs_rate_init(mvm, sta, mvmvif->phy_ctxt->channel->band,
-<<<<<<< HEAD
 				     false);
-=======
-				     true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = iwl_mvm_update_sta(mvm, vif, sta);
 	} else if (old_state == IEEE80211_STA_ASSOC &&
 		   new_state == IEEE80211_STA_AUTHORIZED) {
@@ -3067,11 +2962,7 @@ static int iwl_mvm_mac_sta_state(struct ieee80211_hw *hw,
 		WARN_ON(iwl_mvm_enable_beacon_filter(mvm, vif, 0));
 
 		iwl_mvm_rs_rate_init(mvm, sta, mvmvif->phy_ctxt->channel->band,
-<<<<<<< HEAD
 				     true);
-=======
-				     false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		ret = 0;
 	} else if (old_state == IEEE80211_STA_AUTHORIZED &&
@@ -3160,23 +3051,13 @@ static int iwl_mvm_mac_conf_tx(struct ieee80211_hw *hw,
 }
 
 static void iwl_mvm_mac_mgd_prepare_tx(struct ieee80211_hw *hw,
-<<<<<<< HEAD
 				       struct ieee80211_vif *vif,
 				       u16 req_duration)
-=======
-				      struct ieee80211_vif *vif)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
 	u32 duration = IWL_MVM_TE_SESSION_PROTECTION_MAX_TIME_MS;
 	u32 min_duration = IWL_MVM_TE_SESSION_PROTECTION_MIN_TIME_MS;
 
-<<<<<<< HEAD
-=======
-	if (WARN_ON_ONCE(vif->bss_conf.assoc))
-		return;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * iwl_mvm_protect_session() reads directly from the device
 	 * (the system time), so make sure it is available.
@@ -3184,12 +3065,9 @@ static void iwl_mvm_mac_mgd_prepare_tx(struct ieee80211_hw *hw,
 	if (iwl_mvm_ref_sync(mvm, IWL_MVM_REF_PREPARE_TX))
 		return;
 
-<<<<<<< HEAD
 	if (req_duration > duration)
 		duration = req_duration;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&mvm->mutex);
 	/* Try really hard to protect the session and hear a beacon */
 	iwl_mvm_protect_session(mvm, vif, duration, min_duration, 500, false);
@@ -3353,14 +3231,8 @@ static int iwl_mvm_mac_set_key(struct ieee80211_hw *hw,
 
 			mvmsta = iwl_mvm_sta_from_mac80211(sta);
 			WARN_ON(rcu_access_pointer(mvmsta->ptk_pn[keyidx]));
-<<<<<<< HEAD
 			ptk_pn = kzalloc(struct_size(ptk_pn, q,
 						     mvm->trans->num_rx_queues),
-=======
-			ptk_pn = kzalloc(sizeof(*ptk_pn) +
-					 mvm->trans->num_rx_queues *
-						sizeof(ptk_pn->q[0]),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 GFP_KERNEL);
 			if (!ptk_pn) {
 				ret = -ENOMEM;
@@ -3610,13 +3482,10 @@ static int iwl_mvm_roc(struct ieee80211_hw *hw,
 	IWL_DEBUG_MAC80211(mvm, "enter (%d, %d, %d)\n", channel->hw_value,
 			   duration, type);
 
-<<<<<<< HEAD
 	/*
 	 * Flush the done work, just in case it's still pending, so that
 	 * the work it does can complete and we can accept new frames.
 	 */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	flush_work(&mvm->roc_done_wk);
 
 	mutex_lock(&mvm->mutex);
@@ -3828,7 +3697,6 @@ static void iwl_mvm_change_chanctx(struct ieee80211_hw *hw,
 		return;
 
 	mutex_lock(&mvm->mutex);
-<<<<<<< HEAD
 
 	/* we are only changing the min_width, may be a noop */
 	if (changed == IEEE80211_CHANCTX_CHANGE_MIN_WIDTH) {
@@ -3841,17 +3709,12 @@ static void iwl_mvm_change_chanctx(struct ieee80211_hw *hw,
 			goto out_unlock;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	iwl_mvm_bt_coex_vif_change(mvm);
 	iwl_mvm_phy_ctxt_changed(mvm, phy_ctxt, &ctx->min_def,
 				 ctx->rx_chains_static,
 				 ctx->rx_chains_dynamic);
-<<<<<<< HEAD
 
 out_unlock:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&mvm->mutex);
 }
 
@@ -4222,11 +4085,7 @@ static int __iwl_mvm_mac_testmode_cmd(struct iwl_mvm *mvm,
 		mvm->noa_duration = noa_duration;
 		mvm->noa_vif = vif;
 
-<<<<<<< HEAD
 		return iwl_mvm_update_quotas(mvm, true, NULL);
-=======
-		return iwl_mvm_update_quotas(mvm, false, NULL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case IWL_MVM_TM_CMD_SET_BEACON_FILTER:
 		/* must be associated client vif - ignore authorized */
 		if (!vif || vif->type != NL80211_IFTYPE_STATION ||
@@ -4322,14 +4181,6 @@ static int iwl_mvm_pre_channel_switch(struct ieee80211_hw *hw,
 
 		break;
 	case NL80211_IFTYPE_STATION:
-<<<<<<< HEAD
-=======
-		if (mvmvif->lqm_active)
-			iwl_mvm_send_lqm_cmd(vif,
-					     LQM_CMD_OPERATION_STOP_MEASUREMENT,
-					     0, 0);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Schedule the time event to a bit before beacon 1,
 		 * to make sure we're in the new channel when the
 		 * GO/AP arrives. In case count <= 1 immediately schedule the
@@ -4424,7 +4275,6 @@ out_unlock:
 
 static void iwl_mvm_flush_no_vif(struct iwl_mvm *mvm, u32 queues, bool drop)
 {
-<<<<<<< HEAD
 	int i;
 
 	if (!iwl_mvm_has_new_tx_api(mvm)) {
@@ -4455,41 +4305,6 @@ static void iwl_mvm_flush_no_vif(struct iwl_mvm *mvm, u32 queues, bool drop)
 					iwl_mvm_sta_from_mac80211(sta));
 	}
 	mutex_unlock(&mvm->mutex);
-=======
-	if (drop) {
-		if (iwl_mvm_has_new_tx_api(mvm))
-			/* TODO new tx api */
-			WARN_ONCE(1,
-				  "Need to implement flush TX queue\n");
-		else
-			iwl_mvm_flush_tx_path(mvm,
-				iwl_mvm_flushable_queues(mvm) & queues,
-				0);
-	} else {
-		if (iwl_mvm_has_new_tx_api(mvm)) {
-			struct ieee80211_sta *sta;
-			int i;
-
-			mutex_lock(&mvm->mutex);
-
-			for (i = 0; i < ARRAY_SIZE(mvm->fw_id_to_mac_id); i++) {
-				sta = rcu_dereference_protected(
-						mvm->fw_id_to_mac_id[i],
-						lockdep_is_held(&mvm->mutex));
-				if (IS_ERR_OR_NULL(sta))
-					continue;
-
-				iwl_mvm_wait_sta_queues_empty(mvm,
-						iwl_mvm_sta_from_mac80211(sta));
-			}
-
-			mutex_unlock(&mvm->mutex);
-		} else {
-			iwl_trans_wait_tx_queues_empty(mvm->trans,
-						       queues);
-		}
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void iwl_mvm_mac_flush(struct ieee80211_hw *hw,
@@ -4610,11 +4425,7 @@ static void iwl_mvm_mac_sta_statistics(struct ieee80211_hw *hw,
 
 	if (mvmsta->avg_energy) {
 		sinfo->signal_avg = mvmsta->avg_energy;
-<<<<<<< HEAD
 		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_SIGNAL_AVG);
-=======
-		sinfo->filled |= BIT(NL80211_STA_INFO_SIGNAL_AVG);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* if beacon filtering isn't on mac80211 does it anyway */
@@ -4634,19 +4445,11 @@ static void iwl_mvm_mac_sta_statistics(struct ieee80211_hw *hw,
 
 	sinfo->rx_beacon = mvmvif->beacon_stats.num_beacons +
 			   mvmvif->beacon_stats.accu_num_beacons;
-<<<<<<< HEAD
 	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_BEACON_RX);
 	if (mvmvif->beacon_stats.avg_signal) {
 		/* firmware only reports a value after RXing a few beacons */
 		sinfo->rx_beacon_signal_avg = mvmvif->beacon_stats.avg_signal;
 		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_BEACON_SIGNAL_AVG);
-=======
-	sinfo->filled |= BIT(NL80211_STA_INFO_BEACON_RX);
-	if (mvmvif->beacon_stats.avg_signal) {
-		/* firmware only reports a value after RXing a few beacons */
-		sinfo->rx_beacon_signal_avg = mvmvif->beacon_stats.avg_signal;
-		sinfo->filled |= BIT(NL80211_STA_INFO_BEACON_SIGNAL_AVG);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
  unlock:
 	mutex_unlock(&mvm->mutex);
@@ -4726,34 +4529,6 @@ static void iwl_mvm_event_bar_rx_callback(struct iwl_mvm *mvm,
 				event->u.ba.ssn);
 }
 
-<<<<<<< HEAD
-=======
-static void
-iwl_mvm_event_frame_timeout_callback(struct iwl_mvm *mvm,
-				     struct ieee80211_vif *vif,
-				     const struct ieee80211_event *event)
-{
-	struct iwl_fw_dbg_trigger_tlv *trig;
-	struct iwl_fw_dbg_trigger_ba *ba_trig;
-
-	if (!iwl_fw_dbg_trigger_enabled(mvm->fw, FW_DBG_TRIGGER_BA))
-		return;
-
-	trig = iwl_fw_dbg_get_trigger(mvm->fw, FW_DBG_TRIGGER_BA);
-	ba_trig = (void *)trig->data;
-	if (!iwl_fw_dbg_trigger_check_stop(&mvm->fwrt,
-					   ieee80211_vif_to_wdev(vif), trig))
-		return;
-
-	if (!(le16_to_cpu(ba_trig->frame_timeout) & BIT(event->u.ba.tid)))
-		return;
-
-	iwl_fw_dbg_collect_trig(&mvm->fwrt, trig,
-				"Frame from %pM timed out, tid %d",
-				event->u.ba.sta->addr, event->u.ba.tid);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void iwl_mvm_mac_event_callback(struct ieee80211_hw *hw,
 				       struct ieee80211_vif *vif,
 				       const struct ieee80211_event *event)
@@ -4768,12 +4543,8 @@ static void iwl_mvm_mac_event_callback(struct ieee80211_hw *hw,
 		iwl_mvm_event_bar_rx_callback(mvm, vif, event);
 		break;
 	case BA_FRAME_TIMEOUT:
-<<<<<<< HEAD
 		iwl_mvm_event_frame_timeout_callback(mvm, vif, event->u.ba.sta,
 						     event->u.ba.tid);
-=======
-		iwl_mvm_event_frame_timeout_callback(mvm, vif, event);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		break;
@@ -4789,13 +4560,7 @@ void iwl_mvm_sync_rx_queues_internal(struct iwl_mvm *mvm,
 
 	lockdep_assert_held(&mvm->mutex);
 
-<<<<<<< HEAD
 	if (!iwl_mvm_has_new_rx_api(mvm))
-=======
-	/* TODO - remove a000 disablement when we have RXQ config API */
-	if (!iwl_mvm_has_new_rx_api(mvm) ||
-	    mvm->trans->cfg->device_family == IWL_DEVICE_FAMILY_A000)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	notif->cookie = mvm->queue_sync_cookie;
@@ -4911,10 +4676,7 @@ const struct ieee80211_ops iwl_mvm_hw_ops = {
 #endif
 	.get_survey = iwl_mvm_mac_get_survey,
 	.sta_statistics = iwl_mvm_mac_sta_statistics,
-<<<<<<< HEAD
 #ifdef CONFIG_IWLWIFI_DEBUGFS
 	.sta_add_debugfs = iwl_mvm_sta_add_debugfs,
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

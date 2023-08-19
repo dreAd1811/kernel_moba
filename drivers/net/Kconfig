@@ -149,15 +149,9 @@ config MACVTAP
 config IPVLAN
     tristate "IP-VLAN support"
     depends on INET
-<<<<<<< HEAD
     depends on IPV6 || !IPV6
     depends on NETFILTER
     select NET_L3_MASTER_DEV
-=======
-    depends on IPV6
-    depends on NETFILTER
-    depends on NET_L3_MASTER_DEV
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     ---help---
       This allows one to create virtual devices off of a main interface
       and packets will be delivered based on the dest L3 (IPv6/IPv4 addr)
@@ -204,10 +198,7 @@ config VXLAN
 config GENEVE
        tristate "Generic Network Virtualization Encapsulation"
        depends on INET && NET_UDP_TUNNEL
-<<<<<<< HEAD
        depends on IPV6 || !IPV6
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
        select NET_IP_TUNNEL
        select GRO_CELLS
        ---help---
@@ -273,19 +264,6 @@ config NTB_NETDEV
 	tristate "Virtual Ethernet over NTB Transport"
 	depends on NTB_TRANSPORT
 
-<<<<<<< HEAD
-=======
-config RMNET_IPLO
-	tristate "RMNET IPLO driver"
-	---help---
-	   This allows the creation of the rmnet ip loopback driver which is
-	   used for testing rmnet_data control and data path.
-
-	   rmnet_iplo supports most of the IOCTL's which will be defined by
-	   a physical device which uses rmnet_data. rmnet_iplo will
-	   loopback any data which is sent to it.
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config RIONET
 	tristate "RapidIO Ethernet over messaging driver support"
 	depends on RAPIDIO
@@ -354,10 +332,7 @@ config VETH
 config VIRTIO_NET
 	tristate "Virtio network driver"
 	depends on VIRTIO
-<<<<<<< HEAD
 	select NET_FAILOVER
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	---help---
 	  This is the virtual network driver for virtio.  It can be used with
 	  QEMU based VMMs (like KVM or Xen).  Say Y or M.
@@ -510,7 +485,6 @@ config FUJITSU_ES
 	  This driver provides support for Extended Socket network device
           on Extended Partitioning of FUJITSU PRIMEQUEST 2000 E2 series.
 
-<<<<<<< HEAD
 config THUNDERBOLT_NET
 	tristate "Networking over Thunderbolt cable"
 	depends on THUNDERBOLT && INET
@@ -549,8 +523,4 @@ config NET_FAILOVER
 	  a VM with direct attached VF by failing over to the paravirtual
 	  datapath when the VF is unplugged.
 
-=======
-source "drivers/net/hyperv/Kconfig"
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 endif # NETDEVICES

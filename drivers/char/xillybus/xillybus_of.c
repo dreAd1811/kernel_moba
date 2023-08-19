@@ -15,13 +15,6 @@
 #include <linux/slab.h>
 #include <linux/platform_device.h>
 #include <linux/of.h>
-<<<<<<< HEAD
-=======
-#include <linux/of_irq.h>
-#include <linux/of_address.h>
-#include <linux/of_device.h>
-#include <linux/of_platform.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/err.h>
 #include "xillybus.h"
 
@@ -126,11 +119,7 @@ static int xilly_drv_probe(struct platform_device *op)
 	struct xilly_endpoint *endpoint;
 	int rc;
 	int irq;
-<<<<<<< HEAD
 	struct resource *res;
-=======
-	struct resource res;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct xilly_endpoint_hardware *ephw = &of_hw;
 
 	if (of_property_read_bool(dev->of_node, "dma-coherent"))
@@ -143,22 +132,13 @@ static int xilly_drv_probe(struct platform_device *op)
 
 	dev_set_drvdata(dev, endpoint);
 
-<<<<<<< HEAD
 	res = platform_get_resource(op, IORESOURCE_MEM, 0);
 	endpoint->registers = devm_ioremap_resource(dev, res);
-=======
-	rc = of_address_to_resource(dev->of_node, 0, &res);
-	endpoint->registers = devm_ioremap_resource(dev, &res);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (IS_ERR(endpoint->registers))
 		return PTR_ERR(endpoint->registers);
 
-<<<<<<< HEAD
 	irq = platform_get_irq(op, 0);
-=======
-	irq = irq_of_parse_and_map(dev->of_node, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rc = devm_request_irq(dev, irq, xillybus_isr, 0, xillyname, endpoint);
 

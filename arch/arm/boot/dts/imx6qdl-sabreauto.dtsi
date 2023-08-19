@@ -1,34 +1,16 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
 //
 // Copyright 2012 Freescale Semiconductor, Inc.
 // Copyright 2011 Linaro Ltd.
-=======
-/*
- * Copyright 2012 Freescale Semiconductor, Inc.
- * Copyright 2011 Linaro Ltd.
- *
- * The code contained herein is licensed under the GNU General Public
- * License. You may obtain a copy of the GNU General Public License
- * Version 2 or later at the following locations:
- *
- * http://www.opensource.org/licenses/gpl-license.html
- * http://www.gnu.org/copyleft/gpl.html
- */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <dt-bindings/gpio/gpio.h>
 
 / {
-<<<<<<< HEAD
 	chosen {
 		stdout-path = &uart4;
 	};
 
 	memory@10000000 {
-=======
-	memory {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x10000000 0x80000000>;
 	};
 
@@ -177,7 +159,6 @@
 				gpio-controller;
 				#gpio-cells = <2>;
 			};
-<<<<<<< HEAD
 
 			light-sensor@44 {
 				compatible = "isil,isl29023";
@@ -199,8 +180,6 @@
 				interrupt-parent = <&gpio6>;
 				interrupts = <31 IRQ_TYPE_LEVEL_LOW>;
 			};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 	};
 };
@@ -274,12 +253,9 @@
 };
 
 &hdmi {
-<<<<<<< HEAD
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_hdmi_cec>;
 	ddc-i2c-bus = <&i2c2>;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
@@ -289,11 +265,7 @@
 	pinctrl-0 = <&pinctrl_i2c2>;
 	status = "okay";
 
-<<<<<<< HEAD
 	pmic: pfuze100@8 {
-=======
-	pmic: pfuze100@08 {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "fsl,pfuze100";
 		reg = <0x08>;
 
@@ -502,15 +474,12 @@
 			>;
 		};
 
-<<<<<<< HEAD
 		pinctrl_hdmi_cec: hdmicecgrp {
 			fsl,pins = <
 				MX6QDL_PAD_EIM_A25__HDMI_TX_CEC_LINE	0x1f8b0
 			>;
 		};
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pinctrl_i2c2: i2c2grp {
 			fsl,pins = <
 				MX6QDL_PAD_EIM_EB2__I2C2_SCL	0x4001b8b1

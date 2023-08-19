@@ -149,11 +149,7 @@ pcf50633_client_dev_register(struct pcf50633 *pcf, const char *name,
 
 	*pdev = platform_device_alloc(name, -1);
 	if (!*pdev) {
-<<<<<<< HEAD
 		dev_err(pcf->dev, "Failed to allocate %s\n", name);
-=======
-		dev_err(pcf->dev, "Falied to allocate %s\n", name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -246,15 +242,10 @@ static int pcf50633_probe(struct i2c_client *client,
 
 	for (i = 0; i < PCF50633_NUM_REGULATORS; i++) {
 		pdev = platform_device_alloc("pcf50633-regulator", i);
-<<<<<<< HEAD
 		if (!pdev) {
 			ret = -ENOMEM;
 			goto err2;
 		}
-=======
-		if (!pdev)
-			return -ENOMEM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		pdev->dev.parent = pcf->dev;
 		ret = platform_device_add_data(pdev, &pdata->reg_init_data[i],
@@ -280,10 +271,7 @@ static int pcf50633_probe(struct i2c_client *client,
 
 err:
 	platform_device_put(pdev);
-<<<<<<< HEAD
 err2:
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (j = 0; j < i; j++)
 		platform_device_put(pcf->regulator_pdev[j]);
 

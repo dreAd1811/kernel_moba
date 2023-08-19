@@ -1497,15 +1497,9 @@ static int xm_check_link(struct net_device *dev)
  * get an interrupt when carrier is detected, need to poll for
  * link coming up.
  */
-<<<<<<< HEAD
 static void xm_link_timer(struct timer_list *t)
 {
 	struct skge_port *skge = from_timer(skge, t, link_timer);
-=======
-static void xm_link_timer(unsigned long arg)
-{
-	struct skge_port *skge = (struct skge_port *) arg;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct net_device *dev = skge->netdev;
 	struct skge_hw *hw = skge->hw;
 	int port = skge->port;
@@ -3791,11 +3785,7 @@ static int skge_device_event(struct notifier_block *unused,
 		break;
 
 	case NETDEV_UP:
-<<<<<<< HEAD
 		d = debugfs_create_file(dev->name, 0444,
-=======
-		d = debugfs_create_file(dev->name, S_IRUGO,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					skge_debug, dev,
 					&skge_debug_fops);
 		if (!d || IS_ERR(d))
@@ -3909,11 +3899,7 @@ static struct net_device *skge_devinit(struct skge_hw *hw, int port,
 
 	/* Only used for Genesis XMAC */
 	if (is_genesis(hw))
-<<<<<<< HEAD
 	    timer_setup(&skge->link_timer, xm_link_timer, 0);
-=======
-	    setup_timer(&skge->link_timer, xm_link_timer, (unsigned long) skge);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else {
 		dev->hw_features = NETIF_F_IP_CSUM | NETIF_F_SG |
 		                   NETIF_F_RXCSUM;
@@ -4097,10 +4083,6 @@ static void skge_remove(struct pci_dev *pdev)
 	if (hw->ports > 1) {
 		skge_write32(hw, B0_IMSK, 0);
 		skge_read32(hw, B0_IMSK);
-<<<<<<< HEAD
-=======
-		free_irq(pdev->irq, hw);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	spin_unlock_irq(&hw->hw_lock);
 

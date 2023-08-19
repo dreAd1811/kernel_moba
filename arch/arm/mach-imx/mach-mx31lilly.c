@@ -226,29 +226,12 @@ static void __init lilly1131_usb_init(void)
 
 /* SPI */
 
-<<<<<<< HEAD
 static const struct spi_imx_master spi0_pdata __initconst = {
 	.num_chipselect = 3,
 };
 
 static const struct spi_imx_master spi1_pdata __initconst = {
 	.num_chipselect = 3,
-=======
-static int spi_internal_chipselect[] = {
-	MXC_SPI_CS(0),
-	MXC_SPI_CS(1),
-	MXC_SPI_CS(2),
-};
-
-static const struct spi_imx_master spi0_pdata __initconst = {
-	.chipselect = spi_internal_chipselect,
-	.num_chipselect = ARRAY_SIZE(spi_internal_chipselect),
-};
-
-static const struct spi_imx_master spi1_pdata __initconst = {
-	.chipselect = spi_internal_chipselect,
-	.num_chipselect = ARRAY_SIZE(spi_internal_chipselect),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct mc13xxx_platform_data mc13783_pdata __initdata = {

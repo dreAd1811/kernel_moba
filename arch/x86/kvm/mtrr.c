@@ -48,14 +48,6 @@ static bool msr_mtrr_valid(unsigned msr)
 	return false;
 }
 
-<<<<<<< HEAD
-=======
-static bool valid_pat_type(unsigned t)
-{
-	return t < 8 && (1 << t) & 0xf3; /* 0, 1, 4, 5, 6, 7 */
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool valid_mtrr_type(unsigned t)
 {
 	return t < 8 && (1 << t) & 0x73; /* 0, 1, 4, 5, 6 */
@@ -70,14 +62,7 @@ bool kvm_mtrr_valid(struct kvm_vcpu *vcpu, u32 msr, u64 data)
 		return false;
 
 	if (msr == MSR_IA32_CR_PAT) {
-<<<<<<< HEAD
 		return kvm_pat_valid(data);
-=======
-		for (i = 0; i < 8; i++)
-			if (!valid_pat_type((data >> (i * 8)) & 0xff))
-				return false;
-		return true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (msr == MSR_MTRRdefType) {
 		if (data & ~0xcff)
 			return false;
@@ -209,23 +194,11 @@ static bool fixed_msr_to_seg_unit(u32 msr, int *seg, int *unit)
 		break;
 	case MSR_MTRRfix16K_80000 ... MSR_MTRRfix16K_A0000:
 		*seg = 1;
-<<<<<<< HEAD
 		*unit = msr - MSR_MTRRfix16K_80000;
 		break;
 	case MSR_MTRRfix4K_C0000 ... MSR_MTRRfix4K_F8000:
 		*seg = 2;
 		*unit = msr - MSR_MTRRfix4K_C0000;
-=======
-		*unit = array_index_nospec(
-			msr - MSR_MTRRfix16K_80000,
-			MSR_MTRRfix16K_A0000 - MSR_MTRRfix16K_80000 + 1);
-		break;
-	case MSR_MTRRfix4K_C0000 ... MSR_MTRRfix4K_F8000:
-		*seg = 2;
-		*unit = array_index_nospec(
-			msr - MSR_MTRRfix4K_C0000,
-			MSR_MTRRfix4K_F8000 - MSR_MTRRfix4K_C0000 + 1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		return false;

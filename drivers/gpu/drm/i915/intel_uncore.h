@@ -25,36 +25,29 @@
 #ifndef __INTEL_UNCORE_H__
 #define __INTEL_UNCORE_H__
 
-<<<<<<< HEAD
 #include <linux/spinlock.h>
 #include <linux/notifier.h>
 #include <linux/hrtimer.h>
 
 #include "i915_reg.h"
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct drm_i915_private;
 
 enum forcewake_domain_id {
 	FW_DOMAIN_ID_RENDER = 0,
 	FW_DOMAIN_ID_BLITTER,
 	FW_DOMAIN_ID_MEDIA,
-<<<<<<< HEAD
 	FW_DOMAIN_ID_MEDIA_VDBOX0,
 	FW_DOMAIN_ID_MEDIA_VDBOX1,
 	FW_DOMAIN_ID_MEDIA_VDBOX2,
 	FW_DOMAIN_ID_MEDIA_VDBOX3,
 	FW_DOMAIN_ID_MEDIA_VEBOX0,
 	FW_DOMAIN_ID_MEDIA_VEBOX1,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	FW_DOMAIN_ID_COUNT
 };
 
 enum forcewake_domains {
-<<<<<<< HEAD
 	FORCEWAKE_RENDER	= BIT(FW_DOMAIN_ID_RENDER),
 	FORCEWAKE_BLITTER	= BIT(FW_DOMAIN_ID_BLITTER),
 	FORCEWAKE_MEDIA		= BIT(FW_DOMAIN_ID_MEDIA),
@@ -66,14 +59,6 @@ enum forcewake_domains {
 	FORCEWAKE_MEDIA_VEBOX1	= BIT(FW_DOMAIN_ID_MEDIA_VEBOX1),
 
 	FORCEWAKE_ALL = BIT(FW_DOMAIN_ID_COUNT) - 1
-=======
-	FORCEWAKE_RENDER = BIT(FW_DOMAIN_ID_RENDER),
-	FORCEWAKE_BLITTER = BIT(FW_DOMAIN_ID_BLITTER),
-	FORCEWAKE_MEDIA	= BIT(FW_DOMAIN_ID_MEDIA),
-	FORCEWAKE_ALL = (FORCEWAKE_RENDER |
-			 FORCEWAKE_BLITTER |
-			 FORCEWAKE_MEDIA)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct intel_uncore_funcs {
@@ -82,7 +67,6 @@ struct intel_uncore_funcs {
 	void (*force_wake_put)(struct drm_i915_private *dev_priv,
 			       enum forcewake_domains domains);
 
-<<<<<<< HEAD
 	u8 (*mmio_readb)(struct drm_i915_private *dev_priv,
 			 i915_reg_t r, bool trace);
 	u16 (*mmio_readw)(struct drm_i915_private *dev_priv,
@@ -98,23 +82,6 @@ struct intel_uncore_funcs {
 			    i915_reg_t r, u16 val, bool trace);
 	void (*mmio_writel)(struct drm_i915_private *dev_priv,
 			    i915_reg_t r, u32 val, bool trace);
-=======
-	uint8_t  (*mmio_readb)(struct drm_i915_private *dev_priv,
-			       i915_reg_t r, bool trace);
-	uint16_t (*mmio_readw)(struct drm_i915_private *dev_priv,
-			       i915_reg_t r, bool trace);
-	uint32_t (*mmio_readl)(struct drm_i915_private *dev_priv,
-			       i915_reg_t r, bool trace);
-	uint64_t (*mmio_readq)(struct drm_i915_private *dev_priv,
-			       i915_reg_t r, bool trace);
-
-	void (*mmio_writeb)(struct drm_i915_private *dev_priv,
-			    i915_reg_t r, uint8_t val, bool trace);
-	void (*mmio_writew)(struct drm_i915_private *dev_priv,
-			    i915_reg_t r, uint16_t val, bool trace);
-	void (*mmio_writel)(struct drm_i915_private *dev_priv,
-			    i915_reg_t r, uint32_t val, bool trace);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct intel_forcewake_range {
@@ -137,10 +104,7 @@ struct intel_uncore {
 
 	enum forcewake_domains fw_domains;
 	enum forcewake_domains fw_domains_active;
-<<<<<<< HEAD
 	enum forcewake_domains fw_domains_saved; /* user domains saved for S3 */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	u32 fw_set;
 	u32 fw_clear;
@@ -156,7 +120,6 @@ struct intel_uncore {
 		i915_reg_t reg_ack;
 	} fw_domain[FW_DOMAIN_ID_COUNT];
 
-<<<<<<< HEAD
 	struct {
 		unsigned int count;
 
@@ -164,8 +127,6 @@ struct intel_uncore {
 		int saved_mmio_debug;
 	} user_forcewake;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int unclaimed_mmio_check;
 };
 
@@ -180,10 +141,7 @@ struct intel_uncore {
 
 void intel_uncore_sanitize(struct drm_i915_private *dev_priv);
 void intel_uncore_init(struct drm_i915_private *dev_priv);
-<<<<<<< HEAD
 void intel_uncore_prune(struct drm_i915_private *dev_priv);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 bool intel_uncore_unclaimed_mmio(struct drm_i915_private *dev_priv);
 bool intel_uncore_arm_unclaimed_mmio_detection(struct drm_i915_private *dev_priv);
 void intel_uncore_fini(struct drm_i915_private *dev_priv);
@@ -193,11 +151,8 @@ void intel_uncore_runtime_resume(struct drm_i915_private *dev_priv);
 
 u64 intel_uncore_edram_size(struct drm_i915_private *dev_priv);
 void assert_forcewakes_inactive(struct drm_i915_private *dev_priv);
-<<<<<<< HEAD
 void assert_forcewakes_active(struct drm_i915_private *dev_priv,
 			      enum forcewake_domains fw_domains);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 const char *intel_uncore_forcewake_domain_to_str(const enum forcewake_domain_id id);
 
 enum forcewake_domains
@@ -218,7 +173,6 @@ void intel_uncore_forcewake_get__locked(struct drm_i915_private *dev_priv,
 void intel_uncore_forcewake_put__locked(struct drm_i915_private *dev_priv,
 					enum forcewake_domains domains);
 
-<<<<<<< HEAD
 void intel_uncore_forcewake_user_get(struct drm_i915_private *dev_priv);
 void intel_uncore_forcewake_user_put(struct drm_i915_private *dev_priv);
 
@@ -230,21 +184,15 @@ int __intel_wait_for_register(struct drm_i915_private *dev_priv,
 			      unsigned int slow_timeout_ms,
 			      u32 *out_value);
 static inline
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int intel_wait_for_register(struct drm_i915_private *dev_priv,
 			    i915_reg_t reg,
 			    u32 mask,
 			    u32 value,
-<<<<<<< HEAD
 			    unsigned int timeout_ms)
 {
 	return __intel_wait_for_register(dev_priv, reg, mask, value, 2,
 					 timeout_ms, NULL);
 }
-=======
-			    unsigned int timeout_ms);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int __intel_wait_for_register_fw(struct drm_i915_private *dev_priv,
 				 i915_reg_t reg,
 				 u32 mask,
@@ -263,12 +211,9 @@ int intel_wait_for_register_fw(struct drm_i915_private *dev_priv,
 					    2, timeout_ms, NULL);
 }
 
-<<<<<<< HEAD
 #define raw_reg_read(base, reg) \
 	readl(base + i915_mmio_reg_offset(reg))
 #define raw_reg_write(base, reg, value) \
 	writel(value, base + i915_mmio_reg_offset(reg))
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* !__INTEL_UNCORE_H__ */

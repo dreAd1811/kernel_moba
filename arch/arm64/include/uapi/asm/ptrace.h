@@ -23,10 +23,7 @@
 #include <linux/types.h>
 
 #include <asm/hwcap.h>
-<<<<<<< HEAD
 #include <asm/sigcontext.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 /*
@@ -52,10 +49,6 @@
 #define PSR_SSBS_BIT	0x00001000
 #define PSR_PAN_BIT	0x00400000
 #define PSR_UAO_BIT	0x00800000
-<<<<<<< HEAD
-=======
-#define PSR_Q_BIT	0x08000000
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define PSR_V_BIT	0x10000000
 #define PSR_C_BIT	0x20000000
 #define PSR_Z_BIT	0x40000000
@@ -99,7 +92,6 @@ struct user_hwdebug_state {
 	}		dbg_regs[16];
 };
 
-<<<<<<< HEAD
 /* SVE/FP/SIMD state (NT_ARM_SVE) */
 
 struct user_sve_header {
@@ -235,8 +227,6 @@ struct user_sve_header {
 		  SVE_PT_SVE_OFFSET + SVE_PT_SVE_SIZE(vq, flags)	\
 		: SVE_PT_FPSIMD_OFFSET + SVE_PT_FPSIMD_SIZE(vq, flags))
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __ASSEMBLY__ */
 
 #endif /* _UAPI__ASM_PTRACE_H */

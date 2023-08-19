@@ -26,13 +26,9 @@
 #ifndef _CRYPTO_ECC_H
 #define _CRYPTO_ECC_H
 
-<<<<<<< HEAD
 #define ECC_CURVE_NIST_P192_DIGITS  3
 #define ECC_CURVE_NIST_P256_DIGITS  4
 #define ECC_MAX_DIGITS              ECC_CURVE_NIST_P256_DIGITS
-=======
-#define ECC_MAX_DIGITS	4 /* 256 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define ECC_DIGITS_TO_BYTES_SHIFT 3
 

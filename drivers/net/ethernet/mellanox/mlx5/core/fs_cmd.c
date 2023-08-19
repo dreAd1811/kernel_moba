@@ -39,7 +39,6 @@
 #include "mlx5_core.h"
 #include "eswitch.h"
 
-<<<<<<< HEAD
 static int mlx5_cmd_stub_update_root_ft(struct mlx5_core_dev *dev,
 					struct mlx5_flow_table *ft,
 					u32 underlay_qpn,
@@ -115,10 +114,6 @@ static int mlx5_cmd_stub_delete_fte(struct mlx5_core_dev *dev,
 static int mlx5_cmd_update_root_ft(struct mlx5_core_dev *dev,
 				   struct mlx5_flow_table *ft, u32 underlay_qpn,
 				   bool disconnect)
-=======
-int mlx5_cmd_update_root_ft(struct mlx5_core_dev *dev,
-			    struct mlx5_flow_table *ft, u32 underlay_qpn)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 in[MLX5_ST_SZ_DW(set_flow_table_root_in)]   = {0};
 	u32 out[MLX5_ST_SZ_DW(set_flow_table_root_out)] = {0};
@@ -130,7 +125,6 @@ int mlx5_cmd_update_root_ft(struct mlx5_core_dev *dev,
 	MLX5_SET(set_flow_table_root_in, in, opcode,
 		 MLX5_CMD_OP_SET_FLOW_TABLE_ROOT);
 	MLX5_SET(set_flow_table_root_in, in, table_type, ft->type);
-<<<<<<< HEAD
 
 	if (disconnect) {
 		MLX5_SET(set_flow_table_root_in, in, op_mod, 1);
@@ -140,9 +134,6 @@ int mlx5_cmd_update_root_ft(struct mlx5_core_dev *dev,
 		MLX5_SET(set_flow_table_root_in, in, table_id, ft->id);
 	}
 
-=======
-	MLX5_SET(set_flow_table_root_in, in, table_id, ft->id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MLX5_SET(set_flow_table_root_in, in, underlay_qpn, underlay_qpn);
 	if (ft->vport) {
 		MLX5_SET(set_flow_table_root_in, in, vport_number, ft->vport);
@@ -152,7 +143,6 @@ int mlx5_cmd_update_root_ft(struct mlx5_core_dev *dev,
 	return mlx5_cmd_exec(dev, in, sizeof(in), out, sizeof(out));
 }
 
-<<<<<<< HEAD
 static int mlx5_cmd_create_flow_table(struct mlx5_core_dev *dev,
 				      u16 vport,
 				      enum fs_flow_table_op_mod op_mod,
@@ -161,14 +151,6 @@ static int mlx5_cmd_create_flow_table(struct mlx5_core_dev *dev,
 				      unsigned int log_size,
 				      struct mlx5_flow_table *next_ft,
 				      unsigned int *table_id, u32 flags)
-=======
-int mlx5_cmd_create_flow_table(struct mlx5_core_dev *dev,
-			       u16 vport,
-			       enum fs_flow_table_op_mod op_mod,
-			       enum fs_flow_table_type type, unsigned int level,
-			       unsigned int log_size, struct mlx5_flow_table
-			       *next_ft, unsigned int *table_id, u32 flags)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int en_encap_decap = !!(flags & MLX5_FLOW_TABLE_TUNNEL_EN);
 	u32 out[MLX5_ST_SZ_DW(create_flow_table_out)] = {0};
@@ -217,13 +199,8 @@ int mlx5_cmd_create_flow_table(struct mlx5_core_dev *dev,
 	return err;
 }
 
-<<<<<<< HEAD
 static int mlx5_cmd_destroy_flow_table(struct mlx5_core_dev *dev,
 				       struct mlx5_flow_table *ft)
-=======
-int mlx5_cmd_destroy_flow_table(struct mlx5_core_dev *dev,
-				struct mlx5_flow_table *ft)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 in[MLX5_ST_SZ_DW(destroy_flow_table_in)]   = {0};
 	u32 out[MLX5_ST_SZ_DW(destroy_flow_table_out)] = {0};
@@ -240,15 +217,9 @@ int mlx5_cmd_destroy_flow_table(struct mlx5_core_dev *dev,
 	return mlx5_cmd_exec(dev, in, sizeof(in), out, sizeof(out));
 }
 
-<<<<<<< HEAD
 static int mlx5_cmd_modify_flow_table(struct mlx5_core_dev *dev,
 				      struct mlx5_flow_table *ft,
 				      struct mlx5_flow_table *next_ft)
-=======
-int mlx5_cmd_modify_flow_table(struct mlx5_core_dev *dev,
-			       struct mlx5_flow_table *ft,
-			       struct mlx5_flow_table *next_ft)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 in[MLX5_ST_SZ_DW(modify_flow_table_in)]   = {0};
 	u32 out[MLX5_ST_SZ_DW(modify_flow_table_out)] = {0};
@@ -291,17 +262,10 @@ int mlx5_cmd_modify_flow_table(struct mlx5_core_dev *dev,
 	return mlx5_cmd_exec(dev, in, sizeof(in), out, sizeof(out));
 }
 
-<<<<<<< HEAD
 static int mlx5_cmd_create_flow_group(struct mlx5_core_dev *dev,
 				      struct mlx5_flow_table *ft,
 				      u32 *in,
 				      unsigned int *group_id)
-=======
-int mlx5_cmd_create_flow_group(struct mlx5_core_dev *dev,
-			       struct mlx5_flow_table *ft,
-			       u32 *in,
-			       unsigned int *group_id)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 out[MLX5_ST_SZ_DW(create_flow_group_out)] = {0};
 	int inlen = MLX5_ST_SZ_BYTES(create_flow_group_in);
@@ -323,15 +287,9 @@ int mlx5_cmd_create_flow_group(struct mlx5_core_dev *dev,
 	return err;
 }
 
-<<<<<<< HEAD
 static int mlx5_cmd_destroy_flow_group(struct mlx5_core_dev *dev,
 				       struct mlx5_flow_table *ft,
 				       unsigned int group_id)
-=======
-int mlx5_cmd_destroy_flow_group(struct mlx5_core_dev *dev,
-				struct mlx5_flow_table *ft,
-				unsigned int group_id)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 out[MLX5_ST_SZ_DW(destroy_flow_group_out)] = {0};
 	u32 in[MLX5_ST_SZ_DW(destroy_flow_group_in)]   = {0};
@@ -359,11 +317,7 @@ static int mlx5_cmd_set_fte(struct mlx5_core_dev *dev,
 		fte->dests_size * MLX5_ST_SZ_BYTES(dest_format_struct);
 	u32 out[MLX5_ST_SZ_DW(set_fte_out)] = {0};
 	struct mlx5_flow_rule *dst;
-<<<<<<< HEAD
 	void *in_flow_context, *vlan;
-=======
-	void *in_flow_context;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void *in_match_value;
 	void *in_dests;
 	u32 *in;
@@ -386,7 +340,6 @@ static int mlx5_cmd_set_fte(struct mlx5_core_dev *dev,
 
 	in_flow_context = MLX5_ADDR_OF(set_fte_in, in, flow_context);
 	MLX5_SET(flow_context, in_flow_context, group_id, group_id);
-<<<<<<< HEAD
 
 	MLX5_SET(flow_context, in_flow_context, flow_tag, fte->action.flow_tag);
 	MLX5_SET(flow_context, in_flow_context, action, fte->action.action);
@@ -406,18 +359,11 @@ static int mlx5_cmd_set_fte(struct mlx5_core_dev *dev,
 	MLX5_SET(vlan, vlan, vid, fte->action.vlan[1].vid);
 	MLX5_SET(vlan, vlan, prio, fte->action.vlan[1].prio);
 
-=======
-	MLX5_SET(flow_context, in_flow_context, flow_tag, fte->flow_tag);
-	MLX5_SET(flow_context, in_flow_context, action, fte->action);
-	MLX5_SET(flow_context, in_flow_context, encap_id, fte->encap_id);
-	MLX5_SET(flow_context, in_flow_context, modify_header_id, fte->modify_id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	in_match_value = MLX5_ADDR_OF(flow_context, in_flow_context,
 				      match_value);
 	memcpy(in_match_value, &fte->val, sizeof(fte->val));
 
 	in_dests = MLX5_ADDR_OF(flow_context, in_flow_context, destination);
-<<<<<<< HEAD
 	if (fte->action.action & MLX5_FLOW_CONTEXT_ACTION_FWD_DEST) {
 		int list_size = 0;
 
@@ -450,25 +396,6 @@ static int mlx5_cmd_set_fte(struct mlx5_core_dev *dev,
 
 			MLX5_SET(dest_format_struct, in_dests, destination_type,
 				 type);
-=======
-	if (fte->action & MLX5_FLOW_CONTEXT_ACTION_FWD_DEST) {
-		int list_size = 0;
-
-		list_for_each_entry(dst, &fte->node.children, node.list) {
-			unsigned int id;
-
-			if (dst->dest_attr.type == MLX5_FLOW_DESTINATION_TYPE_COUNTER)
-				continue;
-
-			MLX5_SET(dest_format_struct, in_dests, destination_type,
-				 dst->dest_attr.type);
-			if (dst->dest_attr.type ==
-			    MLX5_FLOW_DESTINATION_TYPE_FLOW_TABLE) {
-				id = dst->dest_attr.ft->id;
-			} else {
-				id = dst->dest_attr.tir_num;
-			}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			MLX5_SET(dest_format_struct, in_dests, destination_id, id);
 			in_dests += MLX5_ST_SZ_BYTES(dest_format_struct);
 			list_size++;
@@ -478,11 +405,7 @@ static int mlx5_cmd_set_fte(struct mlx5_core_dev *dev,
 			 list_size);
 	}
 
-<<<<<<< HEAD
 	if (fte->action.action & MLX5_FLOW_CONTEXT_ACTION_COUNT) {
-=======
-	if (fte->action & MLX5_FLOW_CONTEXT_ACTION_COUNT) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		int max_list_size = BIT(MLX5_CAP_FLOWTABLE_TYPE(dev,
 					log_max_flow_counter,
 					ft->type));
@@ -513,7 +436,6 @@ err_out:
 	return err;
 }
 
-<<<<<<< HEAD
 static int mlx5_cmd_create_fte(struct mlx5_core_dev *dev,
 			       struct mlx5_flow_table *ft,
 			       struct mlx5_flow_group *group,
@@ -529,21 +451,6 @@ static int mlx5_cmd_update_fte(struct mlx5_core_dev *dev,
 			       unsigned int group_id,
 			       int modify_mask,
 			       struct fs_fte *fte)
-=======
-int mlx5_cmd_create_fte(struct mlx5_core_dev *dev,
-			struct mlx5_flow_table *ft,
-			unsigned group_id,
-			struct fs_fte *fte)
-{
-	return mlx5_cmd_set_fte(dev, 0, 0, ft, group_id, fte);
-}
-
-int mlx5_cmd_update_fte(struct mlx5_core_dev *dev,
-			struct mlx5_flow_table *ft,
-			unsigned group_id,
-			int modify_mask,
-			struct fs_fte *fte)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int opmod;
 	int atomic_mod_cap = MLX5_CAP_FLOWTABLE(dev,
@@ -556,15 +463,9 @@ int mlx5_cmd_update_fte(struct mlx5_core_dev *dev,
 	return	mlx5_cmd_set_fte(dev, opmod, modify_mask, ft, group_id, fte);
 }
 
-<<<<<<< HEAD
 static int mlx5_cmd_delete_fte(struct mlx5_core_dev *dev,
 			       struct mlx5_flow_table *ft,
 			       struct fs_fte *fte)
-=======
-int mlx5_cmd_delete_fte(struct mlx5_core_dev *dev,
-			struct mlx5_flow_table *ft,
-			unsigned int index)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 out[MLX5_ST_SZ_DW(delete_fte_out)] = {0};
 	u32 in[MLX5_ST_SZ_DW(delete_fte_in)]   = {0};
@@ -572,11 +473,7 @@ int mlx5_cmd_delete_fte(struct mlx5_core_dev *dev,
 	MLX5_SET(delete_fte_in, in, opcode, MLX5_CMD_OP_DELETE_FLOW_TABLE_ENTRY);
 	MLX5_SET(delete_fte_in, in, table_type, ft->type);
 	MLX5_SET(delete_fte_in, in, table_id, ft->id);
-<<<<<<< HEAD
 	MLX5_SET(delete_fte_in, in, flow_index, fte->index);
-=======
-	MLX5_SET(delete_fte_in, in, flow_index, index);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ft->vport) {
 		MLX5_SET(delete_fte_in, in, vport_number, ft->vport);
 		MLX5_SET(delete_fte_in, in, other_vport, 1);
@@ -819,7 +716,6 @@ void mlx5_modify_header_dealloc(struct mlx5_core_dev *dev, u32 modify_header_id)
 
 	mlx5_cmd_exec(dev, in, sizeof(in), out, sizeof(out));
 }
-<<<<<<< HEAD
 
 static const struct mlx5_flow_cmds mlx5_flow_cmds = {
 	.create_flow_table = mlx5_cmd_create_flow_table,
@@ -870,5 +766,3 @@ const struct mlx5_flow_cmds *mlx5_fs_cmd_get_default(enum fs_flow_table_type typ
 		return mlx5_fs_cmd_get_stub_cmds();
 	}
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

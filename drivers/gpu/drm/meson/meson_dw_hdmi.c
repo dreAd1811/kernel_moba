@@ -23,10 +23,7 @@
 #include <linux/of_graph.h>
 #include <linux/reset.h>
 #include <linux/clk.h>
-<<<<<<< HEAD
 #include <linux/regulator/consumer.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <drm/drmP.h>
 #include <drm/drm_edid.h>
@@ -141,13 +138,9 @@ struct meson_dw_hdmi {
 	struct reset_control *hdmitx_phy;
 	struct clk *hdmi_pclk;
 	struct clk *venci_clk;
-<<<<<<< HEAD
 	struct regulator *hdmi_supply;
 	u32 irq_stat;
 	struct dw_hdmi *hdmi;
-=======
-	u32 irq_stat;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 #define encoder_to_meson_dw_hdmi(x) \
 	container_of(x, struct meson_dw_hdmi, encoder)
@@ -310,11 +303,7 @@ static void meson_hdmi_phy_setup_mode(struct meson_dw_hdmi *dw_hdmi,
 	}
 }
 
-<<<<<<< HEAD
 static inline void meson_dw_hdmi_phy_reset(struct meson_dw_hdmi *dw_hdmi)
-=======
-static inline void dw_hdmi_phy_reset(struct meson_dw_hdmi *dw_hdmi)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct meson_drm *priv = dw_hdmi->priv;
 
@@ -340,15 +329,12 @@ static void dw_hdmi_set_vclk(struct meson_dw_hdmi *dw_hdmi,
 
 	vclk_freq = mode->clock;
 
-<<<<<<< HEAD
 	if (!vic) {
 		meson_vclk_setup(priv, MESON_VCLK_TARGET_DMT, vclk_freq,
 				 vclk_freq, vclk_freq, false);
 		return;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (mode->flags & DRM_MODE_FLAG_DBLCLK)
 		vclk_freq *= 2;
 
@@ -430,15 +416,9 @@ static int dw_hdmi_phy_init(struct dw_hdmi *hdmi, void *data,
 	msleep(100);
 
 	/* Reset PHY 3 times in a row */
-<<<<<<< HEAD
 	meson_dw_hdmi_phy_reset(dw_hdmi);
 	meson_dw_hdmi_phy_reset(dw_hdmi);
 	meson_dw_hdmi_phy_reset(dw_hdmi);
-=======
-	dw_hdmi_phy_reset(dw_hdmi);
-	dw_hdmi_phy_reset(dw_hdmi);
-	dw_hdmi_phy_reset(dw_hdmi);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Temporary Disable VENC video stream */
 	if (priv->venc.hdmi_use_enci)
@@ -555,11 +535,7 @@ static irqreturn_t dw_hdmi_top_thread_irq(int irq, void *dev_id)
 		if (stat & HDMITX_TOP_INTR_HPD_RISE)
 			hpd_connected = true;
 
-<<<<<<< HEAD
 		dw_hdmi_setup_rx_sense(dw_hdmi->hdmi, hpd_connected,
-=======
-		dw_hdmi_setup_rx_sense(dw_hdmi->dev, hpd_connected,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       hpd_connected);
 
 		drm_helper_hpd_irq_event(dw_hdmi->encoder.dev);
@@ -568,26 +544,16 @@ static irqreturn_t dw_hdmi_top_thread_irq(int irq, void *dev_id)
 	return IRQ_HANDLED;
 }
 
-<<<<<<< HEAD
-=======
-/* TOFIX Enable support for non-vic modes */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static enum drm_mode_status
 dw_hdmi_mode_valid(struct drm_connector *connector,
 		   const struct drm_display_mode *mode)
 {
-<<<<<<< HEAD
 	struct meson_drm *priv = connector->dev->dev_private;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int vclk_freq;
 	unsigned int venc_freq;
 	unsigned int hdmi_freq;
 	int vic = drm_match_cea_mode(mode);
-<<<<<<< HEAD
 	enum drm_mode_status status;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	DRM_DEBUG_DRIVER("Modeline %d:\"%s\" %d %d %d %d %d %d %d %d %d %d 0x%x 0x%x\n",
 		mode->base.id, mode->name, mode->vrefresh, mode->clock,
@@ -596,7 +562,6 @@ dw_hdmi_mode_valid(struct drm_connector *connector,
 		mode->vdisplay, mode->vsync_start,
 		mode->vsync_end, mode->vtotal, mode->type, mode->flags);
 
-<<<<<<< HEAD
 	/* Check against non-VIC supported modes */
 	if (!vic) {
 		status = meson_venc_hdmi_supported_mode(mode);
@@ -606,14 +571,6 @@ dw_hdmi_mode_valid(struct drm_connector *connector,
 		return meson_vclk_dmt_supported_freq(priv, mode->clock);
 	/* Check against supported VIC modes */
 	} else if (!meson_venc_hdmi_supported_vic(vic))
-=======
-	/* For now, only accept VIC modes */
-	if (!vic)
-		return MODE_BAD;
-
-	/* For now, filter by supported VIC modes */
-	if (!meson_venc_hdmi_supported_vic(vic))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return MODE_BAD;
 
 	vclk_freq = mode->clock;
@@ -637,11 +594,7 @@ dw_hdmi_mode_valid(struct drm_connector *connector,
 	dev_dbg(connector->dev->dev, "%s: vclk:%d venc=%d hdmi=%d\n", __func__,
 		vclk_freq, venc_freq, hdmi_freq);
 
-<<<<<<< HEAD
 	/* Finally filter by configurable vclk frequencies for VIC modes */
-=======
-	/* Finally filter by configurable vclk frequencies */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (vclk_freq) {
 	case 54000:
 	case 74250:
@@ -710,13 +663,6 @@ static void meson_venc_hdmi_encoder_mode_set(struct drm_encoder *encoder,
 	DRM_DEBUG_DRIVER("%d:\"%s\" vic %d\n",
 			 mode->base.id, mode->name, vic);
 
-<<<<<<< HEAD
-=======
-	/* Should have been filtered */
-	if (!vic)
-		return;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* VENC + VENC-DVI Mode setup */
 	meson_venc_hdmi_mode_set(priv, vic, mode);
 
@@ -815,7 +761,6 @@ static int meson_dw_hdmi_bind(struct device *dev, struct device *master,
 	dw_plat_data = &meson_dw_hdmi->dw_plat_data;
 	encoder = &meson_dw_hdmi->encoder;
 
-<<<<<<< HEAD
 	meson_dw_hdmi->hdmi_supply = devm_regulator_get_optional(dev, "hdmi");
 	if (IS_ERR(meson_dw_hdmi->hdmi_supply)) {
 		if (PTR_ERR(meson_dw_hdmi->hdmi_supply) == -EPROBE_DEFER)
@@ -827,8 +772,6 @@ static int meson_dw_hdmi_bind(struct device *dev, struct device *master,
 			return ret;
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	meson_dw_hdmi->hdmitx_apb = devm_reset_control_get_exclusive(dev,
 						"hdmitx_apb");
 	if (IS_ERR(meson_dw_hdmi->hdmitx_apb)) {
@@ -943,18 +886,12 @@ static int meson_dw_hdmi_bind(struct device *dev, struct device *master,
 	dw_plat_data->input_bus_format = MEDIA_BUS_FMT_YUV8_1X24;
 	dw_plat_data->input_bus_encoding = V4L2_YCBCR_ENC_709;
 
-<<<<<<< HEAD
 	platform_set_drvdata(pdev, meson_dw_hdmi);
 
 	meson_dw_hdmi->hdmi = dw_hdmi_bind(pdev, encoder,
 					   &meson_dw_hdmi->dw_plat_data);
 	if (IS_ERR(meson_dw_hdmi->hdmi))
 		return PTR_ERR(meson_dw_hdmi->hdmi);
-=======
-	ret = dw_hdmi_bind(pdev, encoder, &meson_dw_hdmi->dw_plat_data);
-	if (ret)
-		return ret;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	DRM_DEBUG_DRIVER("HDMI controller initialized\n");
 
@@ -964,13 +901,9 @@ static int meson_dw_hdmi_bind(struct device *dev, struct device *master,
 static void meson_dw_hdmi_unbind(struct device *dev, struct device *master,
 				   void *data)
 {
-<<<<<<< HEAD
 	struct meson_dw_hdmi *meson_dw_hdmi = dev_get_drvdata(dev);
 
 	dw_hdmi_unbind(meson_dw_hdmi->hdmi);
-=======
-	dw_hdmi_unbind(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct component_ops meson_dw_hdmi_ops = {

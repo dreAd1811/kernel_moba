@@ -16,10 +16,6 @@ source "drivers/media/pci/sta2x11/Kconfig"
 source "drivers/media/pci/tw5864/Kconfig"
 source "drivers/media/pci/tw68/Kconfig"
 source "drivers/media/pci/tw686x/Kconfig"
-<<<<<<< HEAD
-=======
-source "drivers/media/pci/zoran/Kconfig"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 endif
 
 if MEDIA_ANALOG_TV_SUPPORT
@@ -57,10 +53,7 @@ source "drivers/media/pci/smipcie/Kconfig"
 source "drivers/media/pci/netup_unidvb/Kconfig"
 endif
 
-<<<<<<< HEAD
 source "drivers/media/pci/intel/ipu3/Kconfig"
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 endif #MEDIA_PCI_SUPPORT
 endif #PCI

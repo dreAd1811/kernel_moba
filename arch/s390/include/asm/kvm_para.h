@@ -1,19 +1,9 @@
-<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * definition for paravirtual devices on s390
  *
  * Copyright IBM Corp. 2008
  *
-<<<<<<< HEAD
-=======
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (version 2 only)
- * as published by the Free Software Foundation.
- *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *    Author(s): Christian Borntraeger <borntraeger@de.ibm.com>
  */
 /*
@@ -27,11 +17,6 @@
  *
  * Copyright IBM Corp. 2007,2008
  * Author(s): Christian Borntraeger <borntraeger@de.ibm.com>
-<<<<<<< HEAD
-=======
- *
- * This work is licensed under the terms of the GNU GPL, version 2.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #ifndef __S390_KVM_PARA_H
 #define __S390_KVM_PARA_H
@@ -208,14 +193,11 @@ static inline unsigned int kvm_arch_para_features(void)
 	return 0;
 }
 
-<<<<<<< HEAD
 static inline unsigned int kvm_arch_para_hints(void)
 {
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline bool kvm_check_and_clear_guest_paused(void)
 {
 	return false;

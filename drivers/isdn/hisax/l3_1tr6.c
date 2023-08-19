@@ -88,10 +88,7 @@ l3_1tr6_setup_req(struct l3_process *pc, u_char pr, void *arg)
 			break;
 		case 'C':
 			channel = 0x08;
-<<<<<<< HEAD
 			/* fall through */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case 'P':
 			channel |= 0x80;
 			teln++;

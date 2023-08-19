@@ -168,10 +168,6 @@ static int uml_net_open(struct net_device *dev)
 		goto out_close;
 	}
 
-<<<<<<< HEAD
-=======
-	lp->tl.data = (unsigned long) &lp->user;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	netif_start_queue(dev);
 
 	/* clear buffer - it can happen that the host side of the interface
@@ -281,29 +277,18 @@ static const struct ethtool_ops uml_net_ethtool_ops = {
 	.get_ts_info	= ethtool_op_get_ts_info,
 };
 
-<<<<<<< HEAD
 static void uml_net_user_timer_expire(struct timer_list *t)
 {
 #ifdef undef
 	struct uml_net_private *lp = from_timer(lp, t, tl);
 	struct connection *conn = &lp->user;
-=======
-static void uml_net_user_timer_expire(unsigned long _conn)
-{
-#ifdef undef
-	struct connection *conn = (struct connection *)_conn;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dprintk(KERN_INFO "uml_net_user_timer_expire [%p]\n", conn);
 	do_connect(conn);
 #endif
 }
 
-<<<<<<< HEAD
 void uml_net_setup_etheraddr(struct net_device *dev, char *str)
-=======
-static void setup_etheraddr(struct net_device *dev, char *str)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned char *addr = dev->dev_addr;
 	char *end;
@@ -427,11 +412,7 @@ static void eth_configure(int n, void *init, char *mac,
 	 */
 	snprintf(dev->name, sizeof(dev->name), "eth%d", n);
 
-<<<<<<< HEAD
 	uml_net_setup_etheraddr(dev, mac);
-=======
-	setup_etheraddr(dev, mac);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	printk(KERN_INFO "Netdevice %d (%pM) : ", n, dev->dev_addr);
 
@@ -477,14 +458,8 @@ static void eth_configure(int n, void *init, char *mac,
 		  .add_address 		= transport->user->add_address,
 		  .delete_address  	= transport->user->delete_address });
 
-<<<<<<< HEAD
 	timer_setup(&lp->tl, uml_net_user_timer_expire, 0);
 	spin_lock_init(&lp->lock);
-=======
-	init_timer(&lp->tl);
-	spin_lock_init(&lp->lock);
-	lp->tl.function = uml_net_user_timer_expire;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memcpy(lp->mac, dev->dev_addr, sizeof(lp->mac));
 
 	if ((transport->user->init != NULL) &&

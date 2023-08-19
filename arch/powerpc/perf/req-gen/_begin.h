@@ -3,11 +3,8 @@
 #ifndef POWERPC_PERF_REQ_GEN_H_
 #define POWERPC_PERF_REQ_GEN_H_
 
-<<<<<<< HEAD
 #include <linux/stringify.h>
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CAT2_STR_(t, s) __stringify(t/s)
 #define CAT2_STR(t, s) CAT2_STR_(t, s)
 #define I(...) __VA_ARGS__

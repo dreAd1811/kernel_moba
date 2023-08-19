@@ -9,11 +9,7 @@ also be requested by userspace.
 IN-KERNEL AUTOMOUNTING
 ======================
 
-<<<<<<< HEAD
 See section "Mount Traps" of  Documentation/filesystems/autofs.txt
-=======
-See section "Mount Traps" of  Documentation/filesystems/autofs4.txt
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Then from userspace, you can just do something like:
 

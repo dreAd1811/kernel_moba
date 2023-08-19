@@ -99,16 +99,10 @@ static int ipoib_set_coalesce(struct net_device *dev,
 	    coal->rx_max_coalesced_frames > 0xffff)
 		return -EINVAL;
 
-<<<<<<< HEAD
 	ret = rdma_set_cq_moderation(priv->recv_cq,
 				     coal->rx_max_coalesced_frames,
 				     coal->rx_coalesce_usecs);
 	if (ret && ret != -EOPNOTSUPP) {
-=======
-	ret = ib_modify_cq(priv->recv_cq, coal->rx_max_coalesced_frames,
-			   coal->rx_coalesce_usecs);
-	if (ret && ret != -ENOSYS) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ipoib_warn(priv, "failed modifying CQ (%d)\n", ret);
 		return ret;
 	}

@@ -31,11 +31,7 @@
 
 const struct gf100_grctx_func
 gp107_grctx = {
-<<<<<<< HEAD
 	.main = gf100_grctx_generate_main,
-=======
-	.main = gp100_grctx_generate_main,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.unkn = gk104_grctx_generate_unkn,
 	.bundle = gm107_grctx_generate_bundle,
 	.bundle_size = 0x3000,
@@ -48,7 +44,6 @@ gp107_grctx = {
 	.attrib_nr = 0x540,
 	.alpha_nr_max = 0xc00,
 	.alpha_nr = 0x800,
-<<<<<<< HEAD
 	.gfxp_nr = 0xe94,
 	.sm_id = gm107_grctx_generate_sm_id,
 	.rop_mapping = gf117_grctx_generate_rop_mapping,
@@ -58,6 +53,4 @@ gp107_grctx = {
 	.tpc_mask = gm200_grctx_generate_tpc_mask,
 	.smid_config = gp100_grctx_generate_smid_config,
 	.r419a3c = gm200_grctx_generate_r419a3c,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

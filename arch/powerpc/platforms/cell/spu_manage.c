@@ -292,20 +292,12 @@ static int __init of_enumerate_spus(int (*fn)(void *data))
 	unsigned int n = 0;
 
 	ret = -ENODEV;
-<<<<<<< HEAD
 	for_each_node_by_type(node, "spe") {
-=======
-	for (node = of_find_node_by_type(NULL, "spe");
-			node; node = of_find_node_by_type(node, "spe")) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = fn(node);
 		if (ret) {
 			printk(KERN_WARNING "%s: Error initializing %s\n",
 				__func__, node->name);
-<<<<<<< HEAD
 			of_node_put(node);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 		n++;

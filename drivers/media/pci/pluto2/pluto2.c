@@ -4,11 +4,7 @@
  * Copyright (C) 2005 Andreas Oberritter <obi@linuxtv.org>
  *
  * based on pluto2.c 1.10 - http://instinct-wp8.no-ip.org/pluto/
-<<<<<<< HEAD
  *	by Dany Salman <salmandany@yahoo.fr>
-=======
- * 	by Dany Salman <salmandany@yahoo.fr>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *	Copyright (c) 2004 TDF
  *
  * This program is free software; you can redistribute it and/or modify
@@ -33,21 +29,12 @@
 #include <linux/dma-mapping.h>
 #include <linux/slab.h>
 
-<<<<<<< HEAD
 #include <media/demux.h>
 #include <media/dmxdev.h>
 #include <media/dvb_demux.h>
 #include <media/dvb_frontend.h>
 #include <media/dvb_net.h>
 #include <media/dvbdev.h>
-=======
-#include "demux.h"
-#include "dmxdev.h"
-#include "dvb_demux.h"
-#include "dvb_frontend.h"
-#include "dvb_net.h"
-#include "dvbdev.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "tda1004x.h"
 
 DVB_DEFINE_MOD_OPT_ADAPTER_NR(adapter_nr);

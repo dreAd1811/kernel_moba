@@ -55,13 +55,7 @@ static int sdhci_brcmstb_probe(struct platform_device *pdev)
 	}
 
 	sdhci_get_of_property(pdev);
-<<<<<<< HEAD
 	mmc_of_parse(host->mmc);
-=======
-	res = mmc_of_parse(host->mmc);
-	if (res)
-		goto err;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Supply the existing CAPS, but clear the UHS modes. This

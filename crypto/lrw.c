@@ -28,7 +28,6 @@
 
 #include <crypto/b128ops.h>
 #include <crypto/gf128mul.h>
-<<<<<<< HEAD
 
 #define LRW_BUFFER_SIZE 128u
 
@@ -54,15 +53,6 @@ struct priv {
 	 * with key2
 	 */
 	be128 mulinc[128];
-=======
-#include <crypto/lrw.h>
-
-#define LRW_BUFFER_SIZE 128u
-
-struct priv {
-	struct crypto_skcipher *child;
-	struct lrw_table_ctx table;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct rctx {
@@ -93,7 +83,6 @@ static inline void setbit128_bbe(void *b, int bit)
 			), b);
 }
 
-<<<<<<< HEAD
 static int setkey(struct crypto_skcipher *parent, const u8 *key,
 		  unsigned int keylen)
 {
@@ -113,13 +102,6 @@ static int setkey(struct crypto_skcipher *parent, const u8 *key,
 	if (err)
 		return err;
 
-=======
-int lrw_init_table(struct lrw_table_ctx *ctx, const u8 *tweak)
-{
-	be128 tmp = { 0 };
-	int i;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ctx->table)
 		gf128mul_free_64k(ctx->table);
 
@@ -137,37 +119,6 @@ int lrw_init_table(struct lrw_table_ctx *ctx, const u8 *tweak)
 
 	return 0;
 }
-<<<<<<< HEAD
-=======
-EXPORT_SYMBOL_GPL(lrw_init_table);
-
-void lrw_free_table(struct lrw_table_ctx *ctx)
-{
-	if (ctx->table)
-		gf128mul_free_64k(ctx->table);
-}
-EXPORT_SYMBOL_GPL(lrw_free_table);
-
-static int setkey(struct crypto_skcipher *parent, const u8 *key,
-		  unsigned int keylen)
-{
-	struct priv *ctx = crypto_skcipher_ctx(parent);
-	struct crypto_skcipher *child = ctx->child;
-	int err, bsize = LRW_BLOCK_SIZE;
-	const u8 *tweak = key + keylen - bsize;
-
-	crypto_skcipher_clear_flags(child, CRYPTO_TFM_REQ_MASK);
-	crypto_skcipher_set_flags(child, crypto_skcipher_get_flags(parent) &
-					 CRYPTO_TFM_REQ_MASK);
-	err = crypto_skcipher_setkey(child, key, keylen - bsize);
-	crypto_skcipher_set_flags(parent, crypto_skcipher_get_flags(child) &
-					  CRYPTO_TFM_RES_MASK);
-	if (err)
-		return err;
-
-	return lrw_init_table(&ctx->table, tweak);
-}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline void inc(be128 *iv)
 {
@@ -242,11 +193,7 @@ static int post_crypt(struct skcipher_request *req)
 	if (rctx->dst != sg) {
 		rctx->dst[0] = *sg;
 		sg_unmark_end(rctx->dst);
-<<<<<<< HEAD
 		scatterwalk_crypto_chain(rctx->dst, sg_next(sg), 2);
-=======
-		scatterwalk_crypto_chain(rctx->dst, sg_next(sg), 0, 2);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	rctx->dst[0].length -= offset - sg->offset;
 	rctx->dst[0].offset = offset;
@@ -300,11 +247,7 @@ static int pre_crypt(struct skcipher_request *req)
 			/* T <- I*Key2, using the optimization
 			 * discussed in the specification */
 			be128_xor(&rctx->t, &rctx->t,
-<<<<<<< HEAD
 				  &ctx->mulinc[get_index128(iv)]);
-=======
-				  &ctx->table.mulinc[get_index128(iv)]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			inc(iv);
 		} while ((avail -= bs) >= bs);
 
@@ -327,11 +270,7 @@ static int pre_crypt(struct skcipher_request *req)
 	if (rctx->src != sg) {
 		rctx->src[0] = *sg;
 		sg_unmark_end(rctx->src);
-<<<<<<< HEAD
 		scatterwalk_crypto_chain(rctx->src, sg_next(sg), 2);
-=======
-		scatterwalk_crypto_chain(rctx->src, sg_next(sg), 0, 2);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	rctx->src[0].length -= offset - sg->offset;
 	rctx->src[0].offset = offset;
@@ -371,11 +310,7 @@ static int init_crypt(struct skcipher_request *req, crypto_completion_t done)
 	memcpy(&rctx->t, req->iv, sizeof(rctx->t));
 
 	/* T <- I*Key2 */
-<<<<<<< HEAD
 	gf128mul_64k_bbe(&rctx->t, ctx->table);
-=======
-	gf128mul_64k_bbe(&rctx->t, ctx->table.table);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -402,13 +337,7 @@ static int do_encrypt(struct skcipher_request *req, int err)
 		      crypto_skcipher_encrypt(subreq) ?:
 		      post_crypt(req);
 
-<<<<<<< HEAD
 		if (err == -EINPROGRESS || err == -EBUSY)
-=======
-		if (err == -EINPROGRESS ||
-		    (err == -EBUSY &&
-		     req->base.flags & CRYPTO_TFM_REQ_MAY_BACKLOG))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return err;
 	}
 
@@ -458,13 +387,7 @@ static int do_decrypt(struct skcipher_request *req, int err)
 		      crypto_skcipher_decrypt(subreq) ?:
 		      post_crypt(req);
 
-<<<<<<< HEAD
 		if (err == -EINPROGRESS || err == -EBUSY)
-=======
-		if (err == -EINPROGRESS ||
-		    (err == -EBUSY &&
-		     req->base.flags & CRYPTO_TFM_REQ_MAY_BACKLOG))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return err;
 	}
 
@@ -502,88 +425,6 @@ static int decrypt(struct skcipher_request *req)
 	return do_decrypt(req, init_crypt(req, decrypt_done));
 }
 
-<<<<<<< HEAD
-=======
-int lrw_crypt(struct blkcipher_desc *desc, struct scatterlist *sdst,
-	      struct scatterlist *ssrc, unsigned int nbytes,
-	      struct lrw_crypt_req *req)
-{
-	const unsigned int bsize = LRW_BLOCK_SIZE;
-	const unsigned int max_blks = req->tbuflen / bsize;
-	struct lrw_table_ctx *ctx = req->table_ctx;
-	struct blkcipher_walk walk;
-	unsigned int nblocks;
-	be128 *iv, *src, *dst, *t;
-	be128 *t_buf = req->tbuf;
-	int err, i;
-
-	BUG_ON(max_blks < 1);
-
-	blkcipher_walk_init(&walk, sdst, ssrc, nbytes);
-
-	err = blkcipher_walk_virt(desc, &walk);
-	nbytes = walk.nbytes;
-	if (!nbytes)
-		return err;
-
-	nblocks = min(walk.nbytes / bsize, max_blks);
-	src = (be128 *)walk.src.virt.addr;
-	dst = (be128 *)walk.dst.virt.addr;
-
-	/* calculate first value of T */
-	iv = (be128 *)walk.iv;
-	t_buf[0] = *iv;
-
-	/* T <- I*Key2 */
-	gf128mul_64k_bbe(&t_buf[0], ctx->table);
-
-	i = 0;
-	goto first;
-
-	for (;;) {
-		do {
-			for (i = 0; i < nblocks; i++) {
-				/* T <- I*Key2, using the optimization
-				 * discussed in the specification */
-				be128_xor(&t_buf[i], t,
-						&ctx->mulinc[get_index128(iv)]);
-				inc(iv);
-first:
-				t = &t_buf[i];
-
-				/* PP <- T xor P */
-				be128_xor(dst + i, t, src + i);
-			}
-
-			/* CC <- E(Key2,PP) */
-			req->crypt_fn(req->crypt_ctx, (u8 *)dst,
-				      nblocks * bsize);
-
-			/* C <- T xor CC */
-			for (i = 0; i < nblocks; i++)
-				be128_xor(dst + i, dst + i, &t_buf[i]);
-
-			src += nblocks;
-			dst += nblocks;
-			nbytes -= nblocks * bsize;
-			nblocks = min(nbytes / bsize, max_blks);
-		} while (nblocks > 0);
-
-		err = blkcipher_walk_done(desc, &walk, nbytes);
-		nbytes = walk.nbytes;
-		if (!nbytes)
-			break;
-
-		nblocks = min(nbytes / bsize, max_blks);
-		src = (be128 *)walk.src.virt.addr;
-		dst = (be128 *)walk.dst.virt.addr;
-	}
-
-	return err;
-}
-EXPORT_SYMBOL_GPL(lrw_crypt);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int init_tfm(struct crypto_skcipher *tfm)
 {
 	struct skcipher_instance *inst = skcipher_alg_instance(tfm);
@@ -607,20 +448,12 @@ static void exit_tfm(struct crypto_skcipher *tfm)
 {
 	struct priv *ctx = crypto_skcipher_ctx(tfm);
 
-<<<<<<< HEAD
 	if (ctx->table)
 		gf128mul_free_64k(ctx->table);
 	crypto_free_skcipher(ctx->child);
 }
 
 static void free(struct skcipher_instance *inst)
-=======
-	lrw_free_table(&ctx->table);
-	crypto_free_skcipher(ctx->child);
-}
-
-static void free_inst(struct skcipher_instance *inst)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	crypto_drop_skcipher(skcipher_instance_ctx(inst));
 	kfree(inst);
@@ -708,12 +541,8 @@ static int create(struct crypto_template *tmpl, struct rtattr **tb)
 			err = -ENAMETOOLONG;
 			goto err_drop_spawn;
 		}
-<<<<<<< HEAD
 	} else
 		goto err_drop_spawn;
-=======
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	inst->alg.base.cra_flags = alg->base.cra_flags & CRYPTO_ALG_ASYNC;
 	inst->alg.base.cra_priority = alg->base.cra_priority;
@@ -736,11 +565,7 @@ static int create(struct crypto_template *tmpl, struct rtattr **tb)
 	inst->alg.encrypt = encrypt;
 	inst->alg.decrypt = decrypt;
 
-<<<<<<< HEAD
 	inst->free = free;
-=======
-	inst->free = free_inst;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = skcipher_register_instance(tmpl, inst);
 	if (err)

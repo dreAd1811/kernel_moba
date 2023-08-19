@@ -49,14 +49,11 @@
 
 #define MODULE_NAME	"acpi-ged"
 
-<<<<<<< HEAD
 struct acpi_ged_device {
 	struct device *dev;
 	struct list_head event_list;
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct acpi_ged_event {
 	struct list_head node;
 	struct device *dev;
@@ -84,22 +81,13 @@ static acpi_status acpi_ged_request_interrupt(struct acpi_resource *ares,
 	unsigned int irq;
 	unsigned int gsi;
 	unsigned int irqflags = IRQF_ONESHOT;
-<<<<<<< HEAD
 	struct acpi_ged_device *geddev = context;
 	struct device *dev = geddev->dev;
-=======
-	struct device *dev = context;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	acpi_handle handle = ACPI_HANDLE(dev);
 	acpi_handle evt_handle;
 	struct resource r;
 	struct acpi_resource_irq *p = &ares->data.irq;
 	struct acpi_resource_extended_irq *pext = &ares->data.extended_irq;
-<<<<<<< HEAD
-=======
-	char ev_name[5];
-	u8 trigger;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ares->type == ACPI_RESOURCE_TYPE_END_TAG)
 		return AE_OK;
@@ -108,7 +96,6 @@ static acpi_status acpi_ged_request_interrupt(struct acpi_resource *ares,
 		dev_err(dev, "unable to parse IRQ resource\n");
 		return AE_ERROR;
 	}
-<<<<<<< HEAD
 	if (ares->type == ACPI_RESOURCE_TYPE_IRQ)
 		gsi = p->interrupts[0];
 	else
@@ -117,39 +104,10 @@ static acpi_status acpi_ged_request_interrupt(struct acpi_resource *ares,
 	irq = r.start;
 
 	if (ACPI_FAILURE(acpi_get_handle(handle, "_EVT", &evt_handle))) {
-=======
-	if (ares->type == ACPI_RESOURCE_TYPE_IRQ) {
-		gsi = p->interrupts[0];
-		trigger = p->triggering;
-	} else {
-		gsi = pext->interrupts[0];
-		trigger = pext->triggering;
-	}
-
-	irq = r.start;
-
-	switch (gsi) {
-	case 0 ... 255:
-		sprintf(ev_name, "_%c%02hhX",
-			trigger == ACPI_EDGE_SENSITIVE ? 'E' : 'L', gsi);
-
-		if (ACPI_SUCCESS(acpi_get_handle(handle, ev_name, &evt_handle)))
-			break;
-		/* fall through */
-	default:
-		if (ACPI_SUCCESS(acpi_get_handle(handle, "_EVT", &evt_handle)))
-			break;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(dev, "cannot locate _EVT method\n");
 		return AE_ERROR;
 	}
 
-<<<<<<< HEAD
-=======
-	dev_info(dev, "GED listening GSI %u @ IRQ %u\n", gsi, irq);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	event = devm_kzalloc(dev, sizeof(*event), GFP_KERNEL);
 	if (!event)
 		return AE_ERROR;
@@ -162,28 +120,19 @@ static acpi_status acpi_ged_request_interrupt(struct acpi_resource *ares,
 	if (r.flags & IORESOURCE_IRQ_SHAREABLE)
 		irqflags |= IRQF_SHARED;
 
-<<<<<<< HEAD
 	if (request_threaded_irq(irq, NULL, acpi_ged_irq_handler,
 				 irqflags, "ACPI:Ged", event)) {
-=======
-	if (devm_request_threaded_irq(dev, irq, NULL, acpi_ged_irq_handler,
-				      irqflags, "ACPI:Ged", event)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(dev, "failed to setup event handler for irq %u\n", irq);
 		return AE_ERROR;
 	}
 
-<<<<<<< HEAD
 	dev_dbg(dev, "GED listening GSI %u @ IRQ %u\n", gsi, irq);
 	list_add_tail(&event->node, &geddev->event_list);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return AE_OK;
 }
 
 static int ged_probe(struct platform_device *pdev)
 {
-<<<<<<< HEAD
 	struct acpi_ged_device *geddev;
 	acpi_status acpi_ret;
 
@@ -195,25 +144,15 @@ static int ged_probe(struct platform_device *pdev)
 	INIT_LIST_HEAD(&geddev->event_list);
 	acpi_ret = acpi_walk_resources(ACPI_HANDLE(&pdev->dev), "_CRS",
 				       acpi_ged_request_interrupt, geddev);
-=======
-	acpi_status acpi_ret;
-
-	acpi_ret = acpi_walk_resources(ACPI_HANDLE(&pdev->dev), "_CRS",
-				       acpi_ged_request_interrupt, &pdev->dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ACPI_FAILURE(acpi_ret)) {
 		dev_err(&pdev->dev, "unable to parse the _CRS record\n");
 		return -EINVAL;
 	}
-<<<<<<< HEAD
 	platform_set_drvdata(pdev, geddev);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
-<<<<<<< HEAD
 static void ged_shutdown(struct platform_device *pdev)
 {
 	struct acpi_ged_device *geddev = platform_get_drvdata(pdev);
@@ -233,8 +172,6 @@ static int ged_remove(struct platform_device *pdev)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct acpi_device_id ged_acpi_ids[] = {
 	{"ACPI0013"},
 	{},
@@ -242,11 +179,8 @@ static const struct acpi_device_id ged_acpi_ids[] = {
 
 static struct platform_driver ged_driver = {
 	.probe = ged_probe,
-<<<<<<< HEAD
 	.remove = ged_remove,
 	.shutdown = ged_shutdown,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.driver = {
 		.name = MODULE_NAME,
 		.acpi_match_table = ACPI_PTR(ged_acpi_ids),

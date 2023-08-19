@@ -137,11 +137,7 @@ inline u32 i40iw_rd32(struct i40iw_hw *hw, u32 reg)
 }
 
 /**
-<<<<<<< HEAD
  * i40iw_inetaddr_event - system notifier for ipv4 addr events
-=======
- * i40iw_inetaddr_event - system notifier for netdev events
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @notfier: not used
  * @event: event for notifier
  * @ptr: if address
@@ -172,7 +168,6 @@ int i40iw_inetaddr_event(struct notifier_block *notifier,
 	if (netdev != event_netdev)
 		return NOTIFY_DONE;
 
-<<<<<<< HEAD
 	if (upper_dev) {
 		struct in_device *in;
 
@@ -188,13 +183,6 @@ int i40iw_inetaddr_event(struct notifier_block *notifier,
 	} else {
 		local_ipaddr = ntohl(ifa->ifa_address);
 	}
-=======
-	if (upper_dev)
-		local_ipaddr = ntohl(
-			((struct in_device *)upper_dev->ip_ptr)->ifa_list->ifa_address);
-	else
-		local_ipaddr = ntohl(ifa->ifa_address);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (event) {
 	case NETDEV_DOWN:
 		action = I40IW_ARP_DELETE;
@@ -202,14 +190,11 @@ int i40iw_inetaddr_event(struct notifier_block *notifier,
 	case NETDEV_UP:
 		/* Fall through */
 	case NETDEV_CHANGEADDR:
-<<<<<<< HEAD
 
 		/* Just skip if no need to handle ARP cache */
 		if (!local_ipaddr)
 			break;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		i40iw_manage_arp_cache(iwdev,
 				       netdev->dev_addr,
 				       &local_ipaddr,
@@ -225,11 +210,7 @@ int i40iw_inetaddr_event(struct notifier_block *notifier,
 }
 
 /**
-<<<<<<< HEAD
  * i40iw_inet6addr_event - system notifier for ipv6 addr events
-=======
- * i40iw_inet6addr_event - system notifier for ipv6 netdev events
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @notfier: not used
  * @event: event for notifier
  * @ptr: if address
@@ -281,11 +262,7 @@ int i40iw_inet6addr_event(struct notifier_block *notifier,
 }
 
 /**
-<<<<<<< HEAD
  * i40iw_net_event - system notifier for netevents
-=======
- * i40iw_net_event - system notifier for net events
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @notfier: not used
  * @event: event for notifier
  * @ptr: neighbor
@@ -330,7 +307,6 @@ int i40iw_net_event(struct notifier_block *notifier, unsigned long event, void *
 }
 
 /**
-<<<<<<< HEAD
  * i40iw_netdevice_event - system notifier for netdev events
  * @notfier: not used
  * @event: event for notifier
@@ -375,8 +351,6 @@ int i40iw_netdevice_event(struct notifier_block *notifier,
 }
 
 /**
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * i40iw_get_cqp_request - get cqp struct
  * @cqp: device cqp ptr
  * @wait: cqp to be used in wait mode
@@ -955,15 +929,9 @@ void i40iw_terminate_done(struct i40iw_sc_qp *qp, int timeout_occurred)
  * i40iw_terminate_imeout - timeout happened
  * @context: points to iwarp qp
  */
-<<<<<<< HEAD
 static void i40iw_terminate_timeout(struct timer_list *t)
 {
 	struct i40iw_qp *iwqp = from_timer(iwqp, t, terminate_timer);
-=======
-static void i40iw_terminate_timeout(unsigned long context)
-{
-	struct i40iw_qp *iwqp = (struct i40iw_qp *)context;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct i40iw_sc_qp *qp = (struct i40iw_sc_qp *)&iwqp->sc_qp;
 
 	i40iw_terminate_done(qp, 1);
@@ -980,12 +948,7 @@ void i40iw_terminate_start_timer(struct i40iw_sc_qp *qp)
 
 	iwqp = (struct i40iw_qp *)qp->back_qp;
 	i40iw_add_ref(&iwqp->ibqp);
-<<<<<<< HEAD
 	timer_setup(&iwqp->terminate_timer, i40iw_terminate_timeout, 0);
-=======
-	setup_timer(&iwqp->terminate_timer, i40iw_terminate_timeout,
-		    (unsigned long)iwqp);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	iwqp->terminate_timer.expires = jiffies + HZ;
 	add_timer(&iwqp->terminate_timer);
 }
@@ -1331,7 +1294,6 @@ void i40iw_cqp_qp_destroy_cmd(struct i40iw_sc_dev *dev, struct i40iw_sc_qp *qp)
  */
 void i40iw_ieq_mpa_crc_ae(struct i40iw_sc_dev *dev, struct i40iw_sc_qp *qp)
 {
-<<<<<<< HEAD
 	struct i40iw_gen_ae_info info;
 	struct i40iw_device *iwdev = (struct i40iw_device *)dev->back_dev;
 
@@ -1339,17 +1301,6 @@ void i40iw_ieq_mpa_crc_ae(struct i40iw_sc_dev *dev, struct i40iw_sc_qp *qp)
 	info.ae_code = I40IW_AE_LLP_RECEIVED_MPA_CRC_ERROR;
 	info.ae_source = I40IW_AE_SOURCE_RQ;
 	i40iw_gen_ae(iwdev, qp, &info, false);
-=======
-	struct i40iw_qp_flush_info info;
-	struct i40iw_device *iwdev = (struct i40iw_device *)dev->back_dev;
-
-	i40iw_debug(dev, I40IW_DEBUG_AEQ, "%s entered\n", __func__);
-	memset(&info, 0, sizeof(info));
-	info.ae_code = I40IW_AE_LLP_RECEIVED_MPA_CRC_ERROR;
-	info.generate_ae = true;
-	info.ae_source = 0x3;
-	(void)i40iw_hw_flush_wqes(iwdev, qp, &info, false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -1464,11 +1415,7 @@ struct i40iw_sc_qp *i40iw_ieq_get_qp(struct i40iw_sc_dev *dev,
 	rem_port = ntohs(tcph->source);
 
 	cm_node = i40iw_find_node(&iwdev->cm_core, rem_port, rem_addr, loc_port,
-<<<<<<< HEAD
 				  loc_addr, false, true);
-=======
-				  loc_addr, false);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!cm_node)
 		return NULL;
 	iwqp = cm_node->iwqp;
@@ -1554,20 +1501,12 @@ enum i40iw_status_code i40iw_puda_get_tcpip_info(struct i40iw_puda_completion_in
  * i40iw_hw_stats_timeout - Stats timer-handler which updates all HW stats
  * @vsi: pointer to the vsi structure
  */
-<<<<<<< HEAD
 static void i40iw_hw_stats_timeout(struct timer_list *t)
 {
 	struct i40iw_vsi_pestat *pf_devstat = from_timer(pf_devstat, t,
 						       stats_timer);
 	struct i40iw_sc_vsi *sc_vsi = pf_devstat->vsi;
 	struct i40iw_sc_dev *pf_dev = sc_vsi->dev;
-=======
-static void i40iw_hw_stats_timeout(unsigned long vsi)
-{
-	struct i40iw_sc_vsi *sc_vsi =  (struct i40iw_sc_vsi *)vsi;
-	struct i40iw_sc_dev *pf_dev = sc_vsi->dev;
-	struct i40iw_vsi_pestat *pf_devstat = sc_vsi->pestat;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct i40iw_vsi_pestat *vf_devstat = NULL;
 	u16 iw_vf_idx;
 	unsigned long flags;
@@ -1598,12 +1537,7 @@ void i40iw_hw_stats_start_timer(struct i40iw_sc_vsi *vsi)
 {
 	struct i40iw_vsi_pestat *devstat = vsi->pestat;
 
-<<<<<<< HEAD
 	timer_setup(&devstat->stats_timer, i40iw_hw_stats_timeout, 0);
-=======
-	setup_timer(&devstat->stats_timer, i40iw_hw_stats_timeout,
-		    (unsigned long)vsi);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mod_timer(&devstat->stats_timer,
 		  jiffies + msecs_to_jiffies(STATS_TIMER_DELAY));
 }

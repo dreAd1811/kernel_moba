@@ -91,10 +91,6 @@ static const struct reg_field afe4404_reg_fields[] = {
  * @regulator: Pointer to the regulator for the IC
  * @trig: IIO trigger for this device
  * @irq: ADC_RDY line interrupt number
-<<<<<<< HEAD
-=======
- * @buffer: Used to construct a scan to push to the iio buffer.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct afe4404_data {
 	struct device *dev;
@@ -103,10 +99,6 @@ struct afe4404_data {
 	struct regulator *regulator;
 	struct iio_trigger *trig;
 	int irq;
-<<<<<<< HEAD
-=======
-	s32 buffer[10] __aligned(8);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum afe4404_chan_id {
@@ -336,10 +328,6 @@ static const struct iio_info afe4404_iio_info = {
 	.attrs = &afe440x_attribute_group,
 	.read_raw = afe4404_read_raw,
 	.write_raw = afe4404_write_raw,
-<<<<<<< HEAD
-=======
-	.driver_module = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static irqreturn_t afe4404_trigger_handler(int irq, void *private)
@@ -348,29 +336,17 @@ static irqreturn_t afe4404_trigger_handler(int irq, void *private)
 	struct iio_dev *indio_dev = pf->indio_dev;
 	struct afe4404_data *afe = iio_priv(indio_dev);
 	int ret, bit, i = 0;
-<<<<<<< HEAD
 	s32 buffer[10];
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for_each_set_bit(bit, indio_dev->active_scan_mask,
 			 indio_dev->masklength) {
 		ret = regmap_read(afe->regmap, afe4404_channel_values[bit],
-<<<<<<< HEAD
 				  &buffer[i++]);
-=======
-				  &afe->buffer[i++]);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			goto err;
 	}
 
-<<<<<<< HEAD
 	iio_push_to_buffers_with_timestamp(indio_dev, buffer, pf->timestamp);
-=======
-	iio_push_to_buffers_with_timestamp(indio_dev, afe->buffer,
-					   pf->timestamp);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err:
 	iio_trigger_notify_done(indio_dev->trig);
 
@@ -378,10 +354,6 @@ err:
 }
 
 static const struct iio_trigger_ops afe4404_trigger_ops = {
-<<<<<<< HEAD
-=======
-	.owner = THIS_MODULE,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Default timings from data-sheet */

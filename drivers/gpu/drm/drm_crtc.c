@@ -225,22 +225,9 @@ static const char *drm_crtc_fence_get_timeline_name(struct dma_fence *fence)
 	return crtc->timeline_name;
 }
 
-<<<<<<< HEAD
 static const struct dma_fence_ops drm_crtc_fence_ops = {
 	.get_driver_name = drm_crtc_fence_get_driver_name,
 	.get_timeline_name = drm_crtc_fence_get_timeline_name,
-=======
-static bool drm_crtc_fence_enable_signaling(struct dma_fence *fence)
-{
-	return true;
-}
-
-static const struct dma_fence_ops drm_crtc_fence_ops = {
-	.get_driver_name = drm_crtc_fence_get_driver_name,
-	.get_timeline_name = drm_crtc_fence_get_timeline_name,
-	.enable_signaling = drm_crtc_fence_enable_signaling,
-	.wait = dma_fence_default_wait,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct dma_fence *drm_crtc_create_fence(struct drm_crtc *crtc)
@@ -288,7 +275,6 @@ int drm_crtc_init_with_planes(struct drm_device *dev, struct drm_crtc *crtc,
 	WARN_ON(primary && primary->type != DRM_PLANE_TYPE_PRIMARY);
 	WARN_ON(cursor && cursor->type != DRM_PLANE_TYPE_CURSOR);
 
-<<<<<<< HEAD
 	/* crtc index is used with 32bit bitmasks */
 	if (WARN_ON(config->num_crtc >= 32))
 		return -EINVAL;
@@ -297,8 +283,6 @@ int drm_crtc_init_with_planes(struct drm_device *dev, struct drm_crtc *crtc,
 		(!funcs->atomic_destroy_state ||
 		 !funcs->atomic_duplicate_state));
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	crtc->dev = dev;
 	crtc->funcs = funcs;
 
@@ -338,15 +322,9 @@ int drm_crtc_init_with_planes(struct drm_device *dev, struct drm_crtc *crtc,
 	crtc->primary = primary;
 	crtc->cursor = cursor;
 	if (primary && !primary->possible_crtcs)
-<<<<<<< HEAD
 		primary->possible_crtcs = drm_crtc_mask(crtc);
 	if (cursor && !cursor->possible_crtcs)
 		cursor->possible_crtcs = drm_crtc_mask(crtc);
-=======
-		primary->possible_crtcs = 1 << drm_crtc_index(crtc);
-	if (cursor && !cursor->possible_crtcs)
-		cursor->possible_crtcs = 1 << drm_crtc_index(crtc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = drm_crtc_crc_init(crtc);
 	if (ret) {
@@ -421,10 +399,7 @@ int drm_mode_getcrtc(struct drm_device *dev,
 {
 	struct drm_mode_crtc *crtc_resp = data;
 	struct drm_crtc *crtc;
-<<<<<<< HEAD
 	struct drm_plane *plane;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!drm_core_check_feature(dev, DRIVER_MODESET))
 		return -EINVAL;
@@ -433,7 +408,6 @@ int drm_mode_getcrtc(struct drm_device *dev,
 	if (!crtc)
 		return -ENOENT;
 
-<<<<<<< HEAD
 	plane = crtc->primary;
 
 	crtc_resp->gamma_size = crtc->gamma_size;
@@ -451,43 +425,19 @@ int drm_mode_getcrtc(struct drm_device *dev,
 		crtc_resp->y = plane->state->src_y >> 16;
 	}
 	drm_modeset_unlock(&plane->mutex);
-=======
-	crtc_resp->gamma_size = crtc->gamma_size;
-
-	drm_modeset_lock(&crtc->primary->mutex, NULL);
-	if (crtc->primary->state && crtc->primary->state->fb)
-		crtc_resp->fb_id = crtc->primary->state->fb->base.id;
-	else if (!crtc->primary->state && crtc->primary->fb)
-		crtc_resp->fb_id = crtc->primary->fb->base.id;
-	else
-		crtc_resp->fb_id = 0;
-
-	if (crtc->primary->state) {
-		crtc_resp->x = crtc->primary->state->src_x >> 16;
-		crtc_resp->y = crtc->primary->state->src_y >> 16;
-	}
-	drm_modeset_unlock(&crtc->primary->mutex);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	drm_modeset_lock(&crtc->mutex, NULL);
 	if (crtc->state) {
 		if (crtc->state->enable) {
 			drm_mode_convert_to_umode(&crtc_resp->mode, &crtc->state->mode);
 			crtc_resp->mode_valid = 1;
-<<<<<<< HEAD
-=======
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else {
 			crtc_resp->mode_valid = 0;
 		}
 	} else {
 		crtc_resp->x = crtc->x;
 		crtc_resp->y = crtc->y;
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (crtc->enabled) {
 			drm_mode_convert_to_umode(&crtc_resp->mode, &crtc->mode);
 			crtc_resp->mode_valid = 1;
@@ -496,11 +446,8 @@ int drm_mode_getcrtc(struct drm_device *dev,
 			crtc_resp->mode_valid = 0;
 		}
 	}
-<<<<<<< HEAD
 	if (!file_priv->aspect_ratio_allowed)
 		crtc_resp->mode.flags &= ~DRM_MODE_FLAG_PIC_AR_MASK;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drm_modeset_unlock(&crtc->mutex);
 
 	return 0;
@@ -514,32 +461,23 @@ static int __drm_mode_set_config_internal(struct drm_mode_set *set,
 	struct drm_crtc *tmp;
 	int ret;
 
-<<<<<<< HEAD
 	WARN_ON(drm_drv_uses_atomic_modeset(crtc->dev));
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * NOTE: ->set_config can also disable other crtcs (if we steal all
 	 * connectors from it), hence we need to refcount the fbs across all
 	 * crtcs. Atomic modeset will have saner semantics ...
 	 */
-<<<<<<< HEAD
 	drm_for_each_crtc(tmp, crtc->dev) {
 		struct drm_plane *plane = tmp->primary;
 
 		plane->old_fb = plane->fb;
 	}
-=======
-	drm_for_each_crtc(tmp, crtc->dev)
-		tmp->primary->old_fb = tmp->primary->fb;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	fb = set->fb;
 
 	ret = crtc->funcs->set_config(set, ctx);
 	if (ret == 0) {
-<<<<<<< HEAD
 		struct drm_plane *plane = crtc->primary;
 
 		plane->crtc = fb ? crtc : NULL;
@@ -554,26 +492,11 @@ static int __drm_mode_set_config_internal(struct drm_mode_set *set,
 		if (plane->old_fb)
 			drm_framebuffer_put(plane->old_fb);
 		plane->old_fb = NULL;
-=======
-		crtc->primary->crtc = crtc;
-		crtc->primary->fb = fb;
-	}
-
-	drm_for_each_crtc(tmp, crtc->dev) {
-		if (tmp->primary->fb)
-			drm_framebuffer_get(tmp->primary->fb);
-		if (tmp->primary->old_fb)
-			drm_framebuffer_put(tmp->primary->old_fb);
-		tmp->primary->old_fb = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return ret;
 }
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * drm_mode_set_config_internal - helper to call &drm_mode_config_funcs.set_config
  * @set: modeset config to set
@@ -643,16 +566,10 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
 	struct drm_mode_config *config = &dev->mode_config;
 	struct drm_mode_crtc *crtc_req = data;
 	struct drm_crtc *crtc;
-<<<<<<< HEAD
 	struct drm_plane *plane;
 	struct drm_connector **connector_set, *connector;
 	struct drm_framebuffer *fb;
 	struct drm_display_mode *mode;
-=======
-	struct drm_connector **connector_set = NULL, *connector;
-	struct drm_framebuffer *fb = NULL;
-	struct drm_display_mode *mode = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_mode_set set;
 	uint32_t __user *set_connectors_ptr;
 	struct drm_modeset_acquire_ctx ctx;
@@ -676,7 +593,6 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
 	}
 	DRM_DEBUG_KMS("[CRTC:%d:%s]\n", crtc->base.id, crtc->name);
 
-<<<<<<< HEAD
 	plane = crtc->primary;
 
 	/* allow disabling with the primary plane leased */
@@ -694,19 +610,10 @@ retry:
 	if (ret)
 		goto out;
 
-=======
-	mutex_lock(&crtc->dev->mode_config.mutex);
-	drm_modeset_acquire_init(&ctx, 0);
-retry:
-	ret = drm_modeset_lock_all_ctx(crtc->dev, &ctx);
-	if (ret)
-		goto out;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (crtc_req->mode_valid) {
 		/* If we have a mode we need a framebuffer. */
 		/* If we pass -1, set the mode with the currently bound fb */
 		if (crtc_req->fb_id == -1) {
-<<<<<<< HEAD
 			struct drm_framebuffer *old_fb;
 
 			if (plane->state)
@@ -715,19 +622,12 @@ retry:
 				old_fb = plane->fb;
 
 			if (!old_fb) {
-=======
-			if (!crtc->primary->fb) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				DRM_DEBUG_KMS("CRTC doesn't have current FB\n");
 				ret = -EINVAL;
 				goto out;
 			}
-<<<<<<< HEAD
 
 			fb = old_fb;
-=======
-			fb = crtc->primary->fb;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* Make refcounting symmetric with the lookup path. */
 			drm_framebuffer_get(fb);
 		} else {
@@ -745,7 +645,6 @@ retry:
 			ret = -ENOMEM;
 			goto out;
 		}
-<<<<<<< HEAD
 		if (!file_priv->aspect_ratio_allowed &&
 		    (crtc_req->mode.flags & DRM_MODE_FLAG_PIC_AR_MASK) != DRM_MODE_FLAG_PIC_AR_NONE) {
 			DRM_DEBUG_KMS("Unexpected aspect-ratio flag bits\n");
@@ -759,12 +658,6 @@ retry:
 			DRM_DEBUG_KMS("Invalid mode (ret=%d, status=%s)\n",
 				      ret, drm_get_mode_status_name(mode->status));
 			drm_mode_debug_printmodeline(mode);
-=======
-
-		ret = drm_mode_convert_umode(mode, &crtc_req->mode);
-		if (ret) {
-			DRM_DEBUG_KMS("Invalid mode\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto out;
 		}
 
@@ -775,7 +668,6 @@ retry:
 		 * match real hardware capabilities. Skip the check in that
 		 * case.
 		 */
-<<<<<<< HEAD
 		if (!plane->format_default) {
 			ret = drm_plane_check_pixel_format(plane,
 							   fb->format->format,
@@ -786,16 +678,6 @@ retry:
 					      drm_get_format_name(fb->format->format,
 								  &format_name),
 					      fb->modifier);
-=======
-		if (!crtc->primary->format_default) {
-			ret = drm_plane_check_pixel_format(crtc->primary,
-							   fb->format->format);
-			if (ret) {
-				struct drm_format_name_buf format_name;
-				DRM_DEBUG_KMS("Invalid pixel format %s\n",
-				              drm_get_format_name(fb->format->format,
-				                                  &format_name));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				goto out;
 			}
 		}
@@ -867,15 +749,11 @@ retry:
 	set.connectors = connector_set;
 	set.num_connectors = crtc_req->count_connectors;
 	set.fb = fb;
-<<<<<<< HEAD
 
 	if (drm_drv_uses_atomic_modeset(dev))
 		ret = crtc->funcs->set_config(&set, &ctx);
 	else
 		ret = __drm_mode_set_config_internal(&set, &ctx);
-=======
-	ret = __drm_mode_set_config_internal(&set, &ctx);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 out:
 	if (fb)
@@ -890,14 +768,9 @@ out:
 	kfree(connector_set);
 	drm_mode_destroy(dev, mode);
 	if (ret == -EDEADLK) {
-<<<<<<< HEAD
 		ret = drm_modeset_backoff(&ctx);
 		if (!ret)
 			goto retry;
-=======
-		drm_modeset_backoff(&ctx);
-		goto retry;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	drm_modeset_drop_locks(&ctx);
 	drm_modeset_acquire_fini(&ctx);

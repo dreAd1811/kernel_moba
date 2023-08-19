@@ -5,11 +5,7 @@
  *  protocol extension to H4.
  *
  *  Copyright (C) 2007 Texas Instruments, Inc.
-<<<<<<< HEAD
  *  Copyright (c) 2010, 2012, 2018 The Linux Foundation. All rights reserved.
-=======
- *  Copyright (c) 2010, 2012 The Linux Foundation. All rights reserved.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  *  Acknowledgements:
  *  This file is based on hci_ll.c, which was...
@@ -33,7 +29,6 @@
  */
 
 #include <linux/kernel.h>
-<<<<<<< HEAD
 #include <linux/clk.h>
 #include <linux/debugfs.h>
 #include <linux/delay.h>
@@ -45,9 +40,6 @@
 #include <linux/platform_device.h>
 #include <linux/regulator/consumer.h>
 #include <linux/serdev.h>
-=======
-#include <linux/debugfs.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <net/bluetooth/bluetooth.h>
 #include <net/bluetooth/hci_core.h>
@@ -55,10 +47,6 @@
 #include "hci_uart.h"
 #include "btqca.h"
 
-<<<<<<< HEAD
-=======
-#include <linux/tty.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* HCI_IBS protocol messages */
 #define HCI_IBS_SLEEP_IND	0xFE
 #define HCI_IBS_WAKE_IND	0xFD
@@ -70,14 +58,10 @@
 
 #define IBS_WAKE_RETRANS_TIMEOUT_MS	100
 #define IBS_TX_IDLE_TIMEOUT_MS		2000
-<<<<<<< HEAD
 #define BAUDRATE_SETTLE_TIMEOUT_MS	300
 
 /* susclk rate */
 #define SUSCLK_RATE_32KHZ	32768
-=======
-#define BAUDRATE_SETTLE_TIMEOUT_MS	100
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* HCI_IBS transmit side sleep protocol states */
 enum tx_ibs_states {
@@ -140,7 +124,6 @@ struct qca_data {
 	u64 votes_off;
 };
 
-<<<<<<< HEAD
 enum qca_speed_type {
 	QCA_INIT_SPEED = 1,
 	QCA_OPER_SPEED
@@ -186,8 +169,6 @@ struct qca_serdev {
 static int qca_power_setup(struct hci_uart *hu, bool on);
 static void qca_power_shutdown(struct hci_uart *hu);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void __serial_clock_on(struct tty_struct *tty)
 {
 	/* TODO: Some chipset requires to enable UART clock on client
@@ -308,19 +289,11 @@ static void qca_wq_awake_device(struct work_struct *work)
 
 	BT_DBG("hu %p wq awake device", hu);
 
-<<<<<<< HEAD
 	/* Vote for serial clock */
 	serial_clock_vote(HCI_IBS_TX_VOTE_CLOCK_ON, hu);
 
 	spin_lock(&qca->hci_ibs_lock);
 
-=======
-	spin_lock(&qca->hci_ibs_lock);
-
-	/* Vote for serial clock */
-	serial_clock_vote(HCI_IBS_TX_VOTE_CLOCK_ON, hu);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Send wake indication to device */
 	if (send_hci_ibs_cmd(HCI_IBS_WAKE_IND, hu) < 0)
 		BT_ERR("Failed to send WAKE to device");
@@ -345,16 +318,9 @@ static void qca_wq_awake_rx(struct work_struct *work)
 
 	BT_DBG("hu %p wq awake rx", hu);
 
-<<<<<<< HEAD
 	serial_clock_vote(HCI_IBS_RX_VOTE_CLOCK_ON, hu);
 
 	spin_lock(&qca->hci_ibs_lock);
-=======
-	spin_lock(&qca->hci_ibs_lock);
-
-	serial_clock_vote(HCI_IBS_RX_VOTE_CLOCK_ON, hu);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	qca->rx_ibs_state = HCI_IBS_RX_AWAKE;
 
 	/* Always acknowledge device wake up,
@@ -379,15 +345,7 @@ static void qca_wq_serial_rx_clock_vote_off(struct work_struct *work)
 
 	BT_DBG("hu %p rx clock vote off", hu);
 
-<<<<<<< HEAD
 	serial_clock_vote(HCI_IBS_RX_VOTE_CLOCK_OFF, hu);
-=======
-	spin_lock(&qca->hci_ibs_lock);
-
-	serial_clock_vote(HCI_IBS_RX_VOTE_CLOCK_OFF, hu);
-
-	spin_unlock(&qca->hci_ibs_lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void qca_wq_serial_tx_clock_vote_off(struct work_struct *work)
@@ -398,11 +356,6 @@ static void qca_wq_serial_tx_clock_vote_off(struct work_struct *work)
 
 	BT_DBG("hu %p tx clock vote off", hu);
 
-<<<<<<< HEAD
-=======
-	spin_lock(&qca->hci_ibs_lock);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Run HCI tx handling unlocked */
 	hci_uart_tx_wakeup(hu);
 
@@ -410,23 +363,12 @@ static void qca_wq_serial_tx_clock_vote_off(struct work_struct *work)
 	 * It is up to the tty driver to pend the clocks off until tx done.
 	 */
 	serial_clock_vote(HCI_IBS_TX_VOTE_CLOCK_OFF, hu);
-<<<<<<< HEAD
 }
 
 static void hci_ibs_tx_idle_timeout(struct timer_list *t)
 {
 	struct qca_data *qca = from_timer(qca, t, tx_idle_timer);
 	struct hci_uart *hu = qca->hu;
-=======
-
-	spin_unlock(&qca->hci_ibs_lock);
-}
-
-static void hci_ibs_tx_idle_timeout(unsigned long arg)
-{
-	struct hci_uart *hu = (struct hci_uart *)arg;
-	struct qca_data *qca = hu->priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 
 	BT_DBG("hu %p idle timeout in %d state", hu, qca->tx_ibs_state);
@@ -458,17 +400,10 @@ static void hci_ibs_tx_idle_timeout(unsigned long arg)
 	spin_unlock_irqrestore(&qca->hci_ibs_lock, flags);
 }
 
-<<<<<<< HEAD
 static void hci_ibs_wake_retrans_timeout(struct timer_list *t)
 {
 	struct qca_data *qca = from_timer(qca, t, wake_retrans_timer);
 	struct hci_uart *hu = qca->hu;
-=======
-static void hci_ibs_wake_retrans_timeout(unsigned long arg)
-{
-	struct hci_uart *hu = (struct hci_uart *)arg;
-	struct qca_data *qca = hu->priv;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags, retrans_delay;
 	bool retransmit = false;
 
@@ -509,7 +444,6 @@ static void hci_ibs_wake_retrans_timeout(unsigned long arg)
 /* Initialize protocol */
 static int qca_open(struct hci_uart *hu)
 {
-<<<<<<< HEAD
 	struct qca_serdev *qcadev;
 	struct qca_data *qca;
 	int ret;
@@ -520,13 +454,6 @@ static int qca_open(struct hci_uart *hu)
 		return -EOPNOTSUPP;
 
 	qca = kzalloc(sizeof(struct qca_data), GFP_KERNEL);
-=======
-	struct qca_data *qca;
-
-	BT_DBG("hu %p qca_open", hu);
-
-	qca = kzalloc(sizeof(struct qca_data), GFP_ATOMIC);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!qca)
 		return -ENOMEM;
 
@@ -574,7 +501,6 @@ static int qca_open(struct hci_uart *hu)
 
 	hu->priv = qca;
 
-<<<<<<< HEAD
 	if (hu->serdev) {
 		serdev_device_open(hu->serdev);
 
@@ -601,25 +527,11 @@ static int qca_open(struct hci_uart *hu)
 	qca->wake_retrans = IBS_WAKE_RETRANS_TIMEOUT_MS;
 
 	timer_setup(&qca->tx_idle_timer, hci_ibs_tx_idle_timeout, 0);
-=======
-	setup_timer(&qca->wake_retrans_timer, hci_ibs_wake_retrans_timeout,
-		    (u_long)hu);
-	qca->wake_retrans = IBS_WAKE_RETRANS_TIMEOUT_MS;
-
-	setup_timer(&qca->tx_idle_timer, hci_ibs_tx_idle_timeout, (u_long)hu);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	qca->tx_idle_delay = IBS_TX_IDLE_TIMEOUT_MS;
 
 	BT_DBG("HCI_UART_QCA open, tx_idle_delay=%u, wake_retrans=%u",
 	       qca->tx_idle_delay, qca->wake_retrans);
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_SERIAL_MSM_GENI
-	hu->tty->ops->ioctl(hu->tty, TIOCPMGET, 0);
-#endif
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -685,25 +597,13 @@ static int qca_flush(struct hci_uart *hu)
 /* Close protocol */
 static int qca_close(struct hci_uart *hu)
 {
-<<<<<<< HEAD
 	struct qca_serdev *qcadev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct qca_data *qca = hu->priv;
 
 	BT_DBG("hu %p qca close", hu);
 
-<<<<<<< HEAD
 	serial_clock_vote(HCI_IBS_VOTE_STATS_UPDATE, hu);
 
-=======
-	spin_lock(&qca->hci_ibs_lock);
-
-	serial_clock_vote(HCI_IBS_VOTE_STATS_UPDATE, hu);
-
-	spin_unlock(&qca->hci_ibs_lock);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	skb_queue_purge(&qca->tx_wait_q);
 	skb_queue_purge(&qca->txq);
 	del_timer(&qca->tx_idle_timer);
@@ -711,7 +611,6 @@ static int qca_close(struct hci_uart *hu)
 	destroy_workqueue(qca->workqueue);
 	qca->hu = NULL;
 
-<<<<<<< HEAD
 	if (hu->serdev) {
 		qcadev = serdev_device_get_drvdata(hu->serdev);
 		if (qcadev->btsoc_type == QCA_WCN3990)
@@ -722,8 +621,6 @@ static int qca_close(struct hci_uart *hu)
 		serdev_device_close(hu->serdev);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree_skb(qca->rx_skb);
 
 	hu->priv = NULL;
@@ -925,13 +822,6 @@ static int qca_enqueue(struct hci_uart *hu, struct sk_buff *skb)
 static int qca_ibs_sleep_ind(struct hci_dev *hdev, struct sk_buff *skb)
 {
 	struct hci_uart *hu = hci_get_drvdata(hdev);
-<<<<<<< HEAD
-=======
-	struct qca_data *qca = hu->priv;
-
-	if (!test_bit(STATE_IN_BAND_SLEEP_ENABLED, &qca->flags))
-		return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	BT_DBG("hu %p recv hci ibs cmd 0x%x", hu, HCI_IBS_SLEEP_IND);
 
@@ -945,14 +835,6 @@ static int qca_ibs_wake_ind(struct hci_dev *hdev, struct sk_buff *skb)
 {
 	struct hci_uart *hu = hci_get_drvdata(hdev);
 
-<<<<<<< HEAD
-=======
-	struct qca_data *qca = hu->priv;
-
-	if (!test_bit(STATE_IN_BAND_SLEEP_ENABLED, &qca->flags))
-		return 0;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	BT_DBG("hu %p recv hci ibs cmd 0x%x", hu, HCI_IBS_WAKE_IND);
 
 	device_want_to_wakeup(hu);
@@ -964,13 +846,6 @@ static int qca_ibs_wake_ind(struct hci_dev *hdev, struct sk_buff *skb)
 static int qca_ibs_wake_ack(struct hci_dev *hdev, struct sk_buff *skb)
 {
 	struct hci_uart *hu = hci_get_drvdata(hdev);
-<<<<<<< HEAD
-=======
-	struct qca_data *qca = hu->priv;
-
-	if (!test_bit(STATE_IN_BAND_SLEEP_ENABLED, &qca->flags))
-		return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	BT_DBG("hu %p recv hci ibs cmd 0x%x", hu, HCI_IBS_WAKE_ACK);
 
@@ -1021,11 +896,7 @@ static int qca_recv(struct hci_uart *hu, const void *data, int count)
 				  qca_recv_pkts, ARRAY_SIZE(qca_recv_pkts));
 	if (IS_ERR(qca->rx_skb)) {
 		int err = PTR_ERR(qca->rx_skb);
-<<<<<<< HEAD
 		bt_dev_err(hu->hdev, "Frame reassembly failed (%d)", err);
-=======
-		BT_ERR("%s: Frame reassembly failed (%d)", hu->hdev->name, err);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		qca->rx_skb = NULL;
 		return err;
 	}
@@ -1081,10 +952,7 @@ static int qca_set_baudrate(struct hci_dev *hdev, uint8_t baudrate)
 	struct hci_uart *hu = hci_get_drvdata(hdev);
 	struct qca_data *qca = hu->priv;
 	struct sk_buff *skb;
-<<<<<<< HEAD
 	struct qca_serdev *qcadev;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 cmd[] = { 0x01, 0x48, 0xFC, 0x01, 0x00 };
 
 	if (baudrate > QCA_BAUDRATE_3200000)
@@ -1092,7 +960,6 @@ static int qca_set_baudrate(struct hci_dev *hdev, uint8_t baudrate)
 
 	cmd[4] = baudrate;
 
-<<<<<<< HEAD
 	skb = bt_skb_alloc(sizeof(cmd), GFP_KERNEL);
 	if (!skb) {
 		bt_dev_err(hdev, "Failed to allocate baudrate packet");
@@ -1106,14 +973,6 @@ static int qca_set_baudrate(struct hci_dev *hdev, uint8_t baudrate)
 	if (qcadev->btsoc_type == QCA_WCN3990)
 		hci_uart_set_flow_control(hu, true);
 
-=======
-	skb = bt_skb_alloc(sizeof(cmd), GFP_ATOMIC);
-	if (!skb) {
-		BT_ERR("Failed to allocate memory for baudrate packet");
-		return -ENOMEM;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Assign commands to change baudrate and packet type. */
 	skb_put_data(skb, cmd, sizeof(cmd));
 	hci_skb_pkt_type(skb) = HCI_COMMAND_PKT;
@@ -1121,11 +980,7 @@ static int qca_set_baudrate(struct hci_dev *hdev, uint8_t baudrate)
 	skb_queue_tail(&qca->txq, skb);
 	hci_uart_tx_wakeup(hu);
 
-<<<<<<< HEAD
 	/* wait 300ms to change new baudrate on controller side
-=======
-	/* wait 100ms to change new baudrate on controller side
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * controller will come back after they receive this HCI command
 	 * then host can communicate with new baudrate to controller
 	 */
@@ -1133,7 +988,6 @@ static int qca_set_baudrate(struct hci_dev *hdev, uint8_t baudrate)
 	schedule_timeout(msecs_to_jiffies(BAUDRATE_SETTLE_TIMEOUT_MS));
 	set_current_state(TASK_RUNNING);
 
-<<<<<<< HEAD
 	if (qcadev->btsoc_type == QCA_WCN3990)
 		hci_uart_set_flow_control(hu, false);
 
@@ -1282,28 +1136,6 @@ static int qca_wcn3990_init(struct hci_uart *hu)
 
 	hci_uart_set_flow_control(hu, false);
 
-=======
-	return 0;
-}
-
-int qca_enqueue_and_send(struct hci_dev *hdev, struct sk_buff *skb)
-{
-	struct hci_uart *hu = hci_get_drvdata(hdev);
-
-	percpu_down_read(&hu->proto_lock);
-
-	if (!test_bit(HCI_UART_PROTO_READY, &hu->flags)) {
-		percpu_up_read(&hu->proto_lock);
-		return -EUNATCH;
-	}
-
-	qca_enqueue(hu, skb);
-
-	percpu_up_read(&hu->proto_lock);
-
-	hci_uart_tx_wakeup(hu);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1312,7 +1144,6 @@ static int qca_setup(struct hci_uart *hu)
 	struct hci_dev *hdev = hu->hdev;
 	struct qca_data *qca = hu->priv;
 	unsigned int speed, qca_baudrate = QCA_BAUDRATE_115200;
-<<<<<<< HEAD
 	struct qca_serdev *qcadev;
 	int ret;
 	int soc_ver = 0;
@@ -1322,16 +1153,10 @@ static int qca_setup(struct hci_uart *hu)
 	ret = qca_check_speeds(hu);
 	if (ret)
 		return ret;
-=======
-	int ret;
-
-	BT_INFO("%s: QCA setup", hdev->name);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Patch downloading has to be done without IBS mode */
 	clear_bit(STATE_IN_BAND_SLEEP_ENABLED, &qca->flags);
 
-<<<<<<< HEAD
 	if (qcadev->btsoc_type == QCA_WCN3990) {
 		bt_dev_info(hdev, "setting up wcn3990");
 		ret = qca_wcn3990_init(hu);
@@ -1368,44 +1193,6 @@ static int qca_setup(struct hci_uart *hu)
 	ret = qca_uart_setup(hdev, qca_baudrate, qcadev->btsoc_type, soc_ver);
 	if (!ret) {
 		set_bit(STATE_IN_BAND_SLEEP_ENABLED, &qca->flags);
-=======
-	/* Setup initial baudrate */
-	speed = 0;
-	if (hu->init_speed)
-		speed = hu->init_speed;
-	else if (hu->proto->init_speed)
-		speed = hu->proto->init_speed;
-
-	if (speed)
-		hci_uart_set_baudrate(hu, speed);
-
-	/* Setup user speed if needed */
-	speed = 0;
-	if (hu->oper_speed)
-		speed = hu->oper_speed;
-	else if (hu->proto->oper_speed)
-		speed = hu->proto->oper_speed;
-
-	if (speed) {
-		qca_baudrate = qca_get_baudrate_value(speed);
-
-		BT_INFO("%s: Set UART speed to %d", hdev->name, speed);
-		ret = qca_set_baudrate(hdev, qca_baudrate);
-		if (ret) {
-			BT_ERR("%s: Failed to change the baud rate (%d)",
-			       hdev->name, ret);
-			return ret;
-		}
-		hci_uart_set_baudrate(hu, speed);
-	}
-
-	/* Setup patch / NVM configurations */
-	ret = qca_uart_setup_rome(hdev, qca_baudrate, qca_enqueue_and_send);
-	if (!ret) {
-#ifdef SUPPORT_BT_QCA_SIBS
-		set_bit(STATE_IN_BAND_SLEEP_ENABLED, &qca->flags);
-#endif
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		qca_debugfs_init(hdev);
 	} else if (ret == -ENOENT) {
 		/* No patch/nvm-config found, run with original fw/config */
@@ -1439,7 +1226,6 @@ static struct hci_uart_proto qca_proto = {
 	.dequeue	= qca_dequeue,
 };
 
-<<<<<<< HEAD
 static const struct qca_vreg_data qca_soc_data = {
 	.soc_type = QCA_WCN3990,
 	.vregs = (struct qca_vreg []) {
@@ -1662,19 +1448,12 @@ int __init qca_init(void)
 {
 	serdev_device_driver_register(&qca_serdev_driver);
 
-=======
-int __init qca_init(void)
-{
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return hci_uart_register_proto(&qca_proto);
 }
 
 int __exit qca_deinit(void)
 {
-<<<<<<< HEAD
 	serdev_device_driver_unregister(&qca_serdev_driver);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return hci_uart_unregister_proto(&qca_proto);
 }

@@ -191,22 +191,15 @@ early_param("acpi_rsdp", setup_acpi_rsdp);
 
 acpi_physical_address __init acpi_os_get_root_pointer(void)
 {
-<<<<<<< HEAD
 	acpi_physical_address pa;
-=======
-	acpi_physical_address pa = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_KEXEC
 	if (acpi_rsdp)
 		return acpi_rsdp;
 #endif
-<<<<<<< HEAD
 	pa = acpi_arch_get_root_pointer();
 	if (pa)
 		return pa;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (efi_enabled(EFI_CONFIG_TABLES)) {
 		if (efi.acpi20 != EFI_INVALID_TABLE_ADDR)
@@ -381,36 +374,19 @@ void *__ref acpi_os_map_memory(acpi_physical_address phys, acpi_size size)
 }
 EXPORT_SYMBOL_GPL(acpi_os_map_memory);
 
-<<<<<<< HEAD
 static void acpi_os_drop_map_ref(struct acpi_ioremap *map)
 {
 	if (!--map->refcount)
 		list_del_rcu(&map->list);
-=======
-/* Must be called with mutex_lock(&acpi_ioremap_lock) */
-static unsigned long acpi_os_drop_map_ref(struct acpi_ioremap *map)
-{
-	unsigned long refcount = --map->refcount;
-
-	if (!refcount)
-		list_del_rcu(&map->list);
-	return refcount;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void acpi_os_map_cleanup(struct acpi_ioremap *map)
 {
-<<<<<<< HEAD
 	if (!map->refcount) {
 		synchronize_rcu_expedited();
 		acpi_unmap(map->phys, map->virt);
 		kfree(map);
 	}
-=======
-	synchronize_rcu_expedited();
-	acpi_unmap(map->phys, map->virt);
-	kfree(map);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -430,10 +406,6 @@ static void acpi_os_map_cleanup(struct acpi_ioremap *map)
 void __ref acpi_os_unmap_iomem(void __iomem *virt, acpi_size size)
 {
 	struct acpi_ioremap *map;
-<<<<<<< HEAD
-=======
-	unsigned long refcount;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!acpi_permanent_mmap) {
 		__acpi_unmap_table(virt, size);
@@ -447,18 +419,10 @@ void __ref acpi_os_unmap_iomem(void __iomem *virt, acpi_size size)
 		WARN(true, PREFIX "%s: bad address %p\n", __func__, virt);
 		return;
 	}
-<<<<<<< HEAD
 	acpi_os_drop_map_ref(map);
 	mutex_unlock(&acpi_ioremap_lock);
 
 	acpi_os_map_cleanup(map);
-=======
-	refcount = acpi_os_drop_map_ref(map);
-	mutex_unlock(&acpi_ioremap_lock);
-
-	if (!refcount)
-		acpi_os_map_cleanup(map);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(acpi_os_unmap_iomem);
 
@@ -493,10 +457,6 @@ void acpi_os_unmap_generic_address(struct acpi_generic_address *gas)
 {
 	u64 addr;
 	struct acpi_ioremap *map;
-<<<<<<< HEAD
-=======
-	unsigned long refcount;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (gas->space_id != ACPI_ADR_SPACE_SYSTEM_MEMORY)
 		return;
@@ -512,18 +472,10 @@ void acpi_os_unmap_generic_address(struct acpi_generic_address *gas)
 		mutex_unlock(&acpi_ioremap_lock);
 		return;
 	}
-<<<<<<< HEAD
 	acpi_os_drop_map_ref(map);
 	mutex_unlock(&acpi_ioremap_lock);
 
 	acpi_os_map_cleanup(map);
-=======
-	refcount = acpi_os_drop_map_ref(map);
-	mutex_unlock(&acpi_ioremap_lock);
-
-	if (!refcount)
-		acpi_os_map_cleanup(map);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(acpi_os_unmap_generic_address);
 
@@ -665,7 +617,6 @@ void acpi_os_stall(u32 us)
 }
 
 /*
-<<<<<<< HEAD
  * Support ACPI 3.0 AML Timer operand. Returns a 64-bit free-running,
  * monotonically increasing timer with 100ns granularity. Do not use
  * ktime_get() to implement this function because this function may get
@@ -678,17 +629,6 @@ u64 acpi_os_get_timer(void)
 {
 	return (get_jiffies_64() - INITIAL_JIFFIES) *
 		(ACPI_100NSEC_PER_SEC / HZ);
-=======
- * Support ACPI 3.0 AML Timer operand
- * Returns 64-bit free-running, monotonically increasing timer
- * with 100ns granularity
- */
-u64 acpi_os_get_timer(void)
-{
-	u64 time_ns = ktime_to_ns(ktime_get());
-	do_div(time_ns, 100);
-	return time_ns;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 acpi_status acpi_os_read_port(acpi_io_address port, u32 * value, u32 width)
@@ -731,31 +671,8 @@ acpi_status acpi_os_write_port(acpi_io_address port, u32 value, u32 width)
 
 EXPORT_SYMBOL(acpi_os_write_port);
 
-<<<<<<< HEAD
 int acpi_os_read_iomem(void __iomem *virt_addr, u64 *value, u32 width)
 {
-=======
-acpi_status
-acpi_os_read_memory(acpi_physical_address phys_addr, u64 *value, u32 width)
-{
-	void __iomem *virt_addr;
-	unsigned int size = width / 8;
-	bool unmap = false;
-	u64 dummy;
-
-	rcu_read_lock();
-	virt_addr = acpi_map_vaddr_lookup(phys_addr, size);
-	if (!virt_addr) {
-		rcu_read_unlock();
-		virt_addr = acpi_os_ioremap(phys_addr, size);
-		if (!virt_addr)
-			return AE_BAD_ADDRESS;
-		unmap = true;
-	}
-
-	if (!value)
-		value = &dummy;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (width) {
 	case 8:
@@ -771,7 +688,6 @@ acpi_os_read_memory(acpi_physical_address phys_addr, u64 *value, u32 width)
 		*(u64 *) value = readq(virt_addr);
 		break;
 	default:
-<<<<<<< HEAD
 		return -EINVAL;
 	}
 
@@ -803,11 +719,6 @@ acpi_os_read_memory(acpi_physical_address phys_addr, u64 *value, u32 width)
 	error = acpi_os_read_iomem(virt_addr, value, width);
 	BUG_ON(error);
 
-=======
-		BUG();
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unmap)
 		iounmap(virt_addr);
 	else
@@ -1221,10 +1132,6 @@ void acpi_os_wait_events_complete(void)
 	flush_workqueue(kacpid_wq);
 	flush_workqueue(kacpi_notify_wq);
 }
-<<<<<<< HEAD
-=======
-EXPORT_SYMBOL(acpi_os_wait_events_complete);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct acpi_hp_work {
 	struct work_struct work;

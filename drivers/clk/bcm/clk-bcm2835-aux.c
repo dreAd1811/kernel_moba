@@ -14,10 +14,6 @@
 
 #include <linux/clk.h>
 #include <linux/clk-provider.h>
-<<<<<<< HEAD
-=======
-#include <linux/clk/bcm2835.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/module.h>
 #include <linux/platform_device.h>
 #include <dt-bindings/clock/bcm2835-aux.h>
@@ -44,15 +40,10 @@ static int bcm2835_aux_clk_probe(struct platform_device *pdev)
 	if (IS_ERR(reg))
 		return PTR_ERR(reg);
 
-<<<<<<< HEAD
 	onecell = devm_kmalloc(dev,
 			       struct_size(onecell, hws,
 					   BCM2835_AUX_CLOCK_COUNT),
 			       GFP_KERNEL);
-=======
-	onecell = devm_kmalloc(dev, sizeof(*onecell) + sizeof(*onecell->hws) *
-			       BCM2835_AUX_CLOCK_COUNT, GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!onecell)
 		return -ENOMEM;
 	onecell->num = BCM2835_AUX_CLOCK_COUNT;

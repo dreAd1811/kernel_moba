@@ -1,22 +1,4 @@
 00-INDEX
 	- This file
-<<<<<<< HEAD
 sysfs.txt
 	- Information about the GPIO sysfs interface
-=======
-gpio.txt
-	- Introduction to GPIOs and their kernel interfaces
-consumer.txt
-	- How to obtain and use GPIOs in a driver
-driver.txt
-	- How to write a GPIO driver
-drivers-on-gpio.txt:
-	- Drivers in other subsystems that can use GPIO to provide more
-	  complex functionality.
-board.txt
-	- How to assign GPIOs to a consumer device and a function
-sysfs.txt
-	- Information about the GPIO sysfs interface
-gpio-legacy.txt
-	- Historical documentation of the deprecated GPIO integer interface
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

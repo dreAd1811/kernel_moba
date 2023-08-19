@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
 //
 // em28xx-camera.c - driver for Empia EM25xx/27xx/28xx USB video capture devices
@@ -15,28 +14,6 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-=======
-/*
-   em28xx-camera.c - driver for Empia EM25xx/27xx/28xx USB video capture devices
-
-   Copyright (C) 2009 Mauro Carvalho Chehab <mchehab@infradead.org>
-   Copyright (C) 2013 Frank Schäfer <fschaefer.oss@googlemail.com>
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-*/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "em28xx.h"
 
@@ -68,11 +45,7 @@ static int em28xx_initialize_mt9m111(struct em28xx *dev)
 		{ 0x0d, 0x00, 0x01, },  /* reset and use defaults */
 		{ 0x0d, 0x00, 0x00, },
 		{ 0x0a, 0x00, 0x21, },
-<<<<<<< HEAD
 		{ 0x21, 0x04, 0x00, },  /* full readout spd, no row/col skip */
-=======
-		{ 0x21, 0x04, 0x00, },  /* full readout speed, no row/col skipping */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	for (i = 0; i < ARRAY_SIZE(regs); i++)
@@ -180,12 +153,8 @@ static int em28xx_probe_sensor_micron(struct em28xx *dev)
 			break;
 		default:
 			dev_info(&dev->intf->dev,
-<<<<<<< HEAD
 				 "unknown Micron sensor detected: 0x%04x\n",
 				 id);
-=======
-				 "unknown Micron sensor detected: 0x%04x\n", id);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return 0;
 		}
 
@@ -214,15 +183,10 @@ static int em28xx_probe_sensor_omnivision(struct em28xx *dev)
 	struct i2c_client *client = &dev->i2c_client[dev->def_i2c_bus];
 
 	dev->em28xx_sensor = EM28XX_NOSENSOR;
-<<<<<<< HEAD
 	/*
 	 * NOTE: these devices have the register auto incrementation disabled
 	 * by default, so we have to use single byte reads !
 	 */
-=======
-	/* NOTE: these devices have the register auto incrementation disabled
-	 * by default, so we have to use single byte reads !              */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; omnivision_sensor_addrs[i] != I2C_CLIENT_END; i++) {
 		client->addr = omnivision_sensor_addrs[i];
 		/* Read manufacturer ID from registers 0x1c-0x1d (BE) */
@@ -432,11 +396,7 @@ int em28xx_init_camera(struct em28xx *dev)
 		subdev =
 		     v4l2_i2c_new_subdev_board(&v4l2->v4l2_dev, adap,
 					       &ov2640_info, NULL);
-<<<<<<< HEAD
 		if (!subdev)
-=======
-		if (subdev == NULL)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -ENODEV;
 
 		format.format.code = MEDIA_BUS_FMT_YUYV8_2X8;

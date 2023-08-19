@@ -326,12 +326,7 @@ sil164_encoder_destroy(struct drm_encoder *encoder)
 {
 	struct sil164_priv *priv = to_sil164_priv(encoder);
 
-<<<<<<< HEAD
 	i2c_unregister_device(priv->duallink_slave);
-=======
-	if (priv->duallink_slave)
-		i2c_unregister_device(priv->duallink_slave);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kfree(priv);
 	drm_i2c_encoder_destroy(encoder);
@@ -419,11 +414,7 @@ sil164_encoder_init(struct i2c_client *client,
 	return 0;
 }
 
-<<<<<<< HEAD
 static const struct i2c_device_id sil164_ids[] = {
-=======
-static struct i2c_device_id sil164_ids[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ "sil164", 0 },
 	{ }
 };

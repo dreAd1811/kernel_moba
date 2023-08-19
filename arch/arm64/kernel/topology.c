@@ -11,13 +11,9 @@
  * for more details.
  */
 
-<<<<<<< HEAD
 #include <linux/acpi.h>
 #include <linux/arch_topology.h>
 #include <linux/cacheinfo.h>
-=======
-#include <linux/arch_topology.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/cpu.h>
 #include <linux/cpumask.h>
 #include <linux/init.h>
@@ -27,13 +23,8 @@
 #include <linux/of.h>
 #include <linux/sched.h>
 #include <linux/sched/topology.h>
-<<<<<<< HEAD
 #include <linux/slab.h>
 #include <linux/smp.h>
-=======
-#include <linux/sched/energy.h>
-#include <linux/slab.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/string.h>
 
 #include <asm/cpu.h>
@@ -53,21 +44,13 @@ static int __init get_cpu_for_node(struct device_node *node)
 	if (cpu >= 0)
 		topology_parse_cpu_capacity(cpu_node, cpu);
 	else
-<<<<<<< HEAD
 		pr_crit("Unable to find CPU node for %pOF\n", cpu_node);
-=======
-		pr_crit("Unable to find CPU node for %pKOF\n", cpu_node);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	of_node_put(cpu_node);
 	return cpu;
 }
 
-<<<<<<< HEAD
 static int __init parse_core(struct device_node *core, int package_id,
-=======
-static int __init parse_core(struct device_node *core, int cluster_id,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     int core_id)
 {
 	char name[10];
@@ -83,11 +66,7 @@ static int __init parse_core(struct device_node *core, int cluster_id,
 			leaf = false;
 			cpu = get_cpu_for_node(t);
 			if (cpu >= 0) {
-<<<<<<< HEAD
 				cpu_topology[cpu].package_id = package_id;
-=======
-				cpu_topology[cpu].cluster_id = cluster_id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				cpu_topology[cpu].core_id = core_id;
 				cpu_topology[cpu].thread_id = i;
 			} else {
@@ -109,11 +88,7 @@ static int __init parse_core(struct device_node *core, int cluster_id,
 			return -EINVAL;
 		}
 
-<<<<<<< HEAD
 		cpu_topology[cpu].package_id = package_id;
-=======
-		cpu_topology[cpu].cluster_id = cluster_id;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cpu_topology[cpu].core_id = core_id;
 	} else if (leaf) {
 		pr_err("%pOF: Can't get CPU for leaf core\n", core);
@@ -129,11 +104,7 @@ static int __init parse_cluster(struct device_node *cluster, int depth)
 	bool leaf = true;
 	bool has_cores = false;
 	struct device_node *c;
-<<<<<<< HEAD
 	static int package_id __initdata;
-=======
-	static int cluster_id __initdata;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int core_id = 0;
 	int i, ret;
 
@@ -172,11 +143,7 @@ static int __init parse_cluster(struct device_node *cluster, int depth)
 			}
 
 			if (leaf) {
-<<<<<<< HEAD
 				ret = parse_core(c, package_id, core_id++);
-=======
-				ret = parse_core(c, cluster_id, core_id++);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			} else {
 				pr_err("%pOF: Non-leaf cluster with core %s\n",
 				       cluster, name);
@@ -194,11 +161,7 @@ static int __init parse_cluster(struct device_node *cluster, int depth)
 		pr_warn("%pOF: empty cluster\n", cluster);
 
 	if (leaf)
-<<<<<<< HEAD
 		package_id++;
-=======
-		cluster_id++;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -234,11 +197,7 @@ static int __init parse_dt_topology(void)
 	 * only mark cores described in the DT as possible.
 	 */
 	for_each_possible_cpu(cpu)
-<<<<<<< HEAD
 		if (cpu_topology[cpu].package_id == -1)
-=======
-		if (cpu_topology[cpu].cluster_id == -1)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ret = -EINVAL;
 
 out_map:
@@ -256,7 +215,6 @@ EXPORT_SYMBOL_GPL(cpu_topology);
 
 const struct cpumask *cpu_coregroup_mask(int cpu)
 {
-<<<<<<< HEAD
 	const cpumask_t *core_mask = cpumask_of_node(cpu_to_node(cpu));
 
 	/* Find the smaller of NUMA, core or LLC siblings */
@@ -288,9 +246,6 @@ static void update_possible_siblings_masks(unsigned int cpuid)
 		cpumask_set_cpu(cpuid, &cpu_topo->core_possible_sibling);
 		cpumask_set_cpu(cpu, &cpuid_topo->core_possible_sibling);
 	}
-=======
-	return &cpu_topology[cpu].core_sibling;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void update_siblings_masks(unsigned int cpuid)
@@ -299,7 +254,6 @@ static void update_siblings_masks(unsigned int cpuid)
 	int cpu;
 
 	/* update core and thread sibling masks */
-<<<<<<< HEAD
 	for_each_online_cpu(cpu) {
 		cpu_topo = &cpu_topology[cpu];
 
@@ -313,28 +267,12 @@ static void update_siblings_masks(unsigned int cpuid)
 
 		cpumask_set_cpu(cpuid, &cpu_topo->core_sibling);
 		cpumask_set_cpu(cpu, &cpuid_topo->core_sibling);
-=======
-	for_each_possible_cpu(cpu) {
-		cpu_topo = &cpu_topology[cpu];
-
-		if (cpuid_topo->cluster_id != cpu_topo->cluster_id)
-			continue;
-
-		cpumask_set_cpu(cpuid, &cpu_topo->core_sibling);
-		if (cpu != cpuid)
-			cpumask_set_cpu(cpu, &cpuid_topo->core_sibling);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (cpuid_topo->core_id != cpu_topo->core_id)
 			continue;
 
 		cpumask_set_cpu(cpuid, &cpu_topo->thread_sibling);
-<<<<<<< HEAD
 		cpumask_set_cpu(cpu, &cpuid_topo->thread_sibling);
-=======
-		if (cpu != cpuid)
-			cpumask_set_cpu(cpu, &cpuid_topo->thread_sibling);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -343,11 +281,7 @@ void store_cpu_topology(unsigned int cpuid)
 	struct cpu_topology *cpuid_topo = &cpu_topology[cpuid];
 	u64 mpidr;
 
-<<<<<<< HEAD
 	if (cpuid_topo->package_id != -1)
-=======
-	if (cpuid_topo->cluster_id != -1)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto topology_populated;
 
 	mpidr = read_cpuid_mpidr();
@@ -361,36 +295,23 @@ void store_cpu_topology(unsigned int cpuid)
 		/* Multiprocessor system : Multi-threads per core */
 		cpuid_topo->thread_id  = MPIDR_AFFINITY_LEVEL(mpidr, 0);
 		cpuid_topo->core_id    = MPIDR_AFFINITY_LEVEL(mpidr, 1);
-<<<<<<< HEAD
 		cpuid_topo->package_id = MPIDR_AFFINITY_LEVEL(mpidr, 2) |
-=======
-		cpuid_topo->cluster_id = MPIDR_AFFINITY_LEVEL(mpidr, 2) |
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 MPIDR_AFFINITY_LEVEL(mpidr, 3) << 8;
 	} else {
 		/* Multiprocessor system : Single-thread per core */
 		cpuid_topo->thread_id  = -1;
 		cpuid_topo->core_id    = MPIDR_AFFINITY_LEVEL(mpidr, 0);
-<<<<<<< HEAD
 		cpuid_topo->package_id = MPIDR_AFFINITY_LEVEL(mpidr, 1) |
-=======
-		cpuid_topo->cluster_id = MPIDR_AFFINITY_LEVEL(mpidr, 1) |
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 MPIDR_AFFINITY_LEVEL(mpidr, 2) << 8 |
 					 MPIDR_AFFINITY_LEVEL(mpidr, 3) << 16;
 	}
 
 	pr_debug("CPU%u: cluster %d core %d thread %d mpidr %#016llx\n",
-<<<<<<< HEAD
 		 cpuid, cpuid_topo->package_id, cpuid_topo->core_id,
-=======
-		 cpuid, cpuid_topo->cluster_id, cpuid_topo->core_id,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 cpuid_topo->thread_id, mpidr);
 
 topology_populated:
 	update_siblings_masks(cpuid);
-<<<<<<< HEAD
 }
 
 static void clear_cpu_topology(int cpu)
@@ -405,59 +326,6 @@ static void clear_cpu_topology(int cpu)
 	cpumask_clear(&cpu_topo->thread_sibling);
 	cpumask_set_cpu(cpu, &cpu_topo->thread_sibling);
 }
-=======
-	topology_detect_flags();
-}
-
-#ifdef CONFIG_SCHED_SMT
-static int smt_flags(void)
-{
-	return cpu_smt_flags() | topology_smt_flags();
-}
-#endif
-
-#ifdef CONFIG_SCHED_MC
-static int core_flags(void)
-{
-	return cpu_core_flags() | topology_core_flags();
-}
-#endif
-
-static int cpu_flags(void)
-{
-	return topology_cpu_flags();
-}
-
-static inline
-const struct sched_group_energy * const cpu_core_energy(int cpu)
-{
-	return sge_array[cpu][SD_LEVEL0];
-}
-
-static inline
-const struct sched_group_energy * const cpu_cluster_energy(int cpu)
-{
-	return sge_array[cpu][SD_LEVEL1];
-}
-
-static inline
-const struct sched_group_energy * const cpu_system_energy(int cpu)
-{
-	return sge_array[cpu][SD_LEVEL2];
-}
-
-static struct sched_domain_topology_level arm64_topology[] = {
-#ifdef CONFIG_SCHED_SMT
-	{ cpu_smt_mask, smt_flags, SD_INIT_NAME(SMT) },
-#endif
-#ifdef CONFIG_SCHED_MC
-	{ cpu_coregroup_mask, core_flags, cpu_core_energy, SD_INIT_NAME(MC) },
-#endif
-	{ cpu_cpu_mask, cpu_flags, cpu_cluster_energy, SD_INIT_NAME(DIE) },
-	{ cpu_cpu_mask, NULL, cpu_system_energy, SD_INIT_NAME(SYS) },
-	{ NULL, }
-};
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void __init reset_cpu_topology(void)
 {
@@ -468,7 +336,6 @@ static void __init reset_cpu_topology(void)
 
 		cpu_topo->thread_id = -1;
 		cpu_topo->core_id = 0;
-<<<<<<< HEAD
 		cpu_topo->package_id = -1;
 		cpu_topo->llc_id = -1;
 
@@ -554,17 +421,6 @@ static inline int __init parse_acpi_topology(void)
 }
 #endif
 
-=======
-		cpu_topo->cluster_id = -1;
-
-		cpumask_clear(&cpu_topo->core_sibling);
-		cpumask_set_cpu(cpu, &cpu_topo->core_sibling);
-		cpumask_clear(&cpu_topo->thread_sibling);
-		cpumask_set_cpu(cpu, &cpu_topo->thread_sibling);
-	}
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void __init init_cpu_topology(void)
 {
 	int cpu;
@@ -575,7 +431,6 @@ void __init init_cpu_topology(void)
 	 * Discard anything that was parsed if we hit an error so we
 	 * don't use partial information.
 	 */
-<<<<<<< HEAD
 	if (!acpi_disabled && parse_acpi_topology())
 		reset_cpu_topology();
 	else if (of_have_populated_dt() && parse_dt_topology())
@@ -583,13 +438,5 @@ void __init init_cpu_topology(void)
 	else {
 		for_each_possible_cpu(cpu)
 			update_possible_siblings_masks(cpu);
-=======
-	if (of_have_populated_dt() && parse_dt_topology()) {
-		reset_cpu_topology();
-	} else {
-		set_sched_topology(arm64_topology);
-		for_each_possible_cpu(cpu)
-			update_siblings_masks(cpu);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }

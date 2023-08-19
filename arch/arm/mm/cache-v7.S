@@ -15,10 +15,7 @@
 #include <asm/assembler.h>
 #include <asm/errno.h>
 #include <asm/unwind.h>
-<<<<<<< HEAD
 #include <asm/hardware/cache-b15-rac.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "proc-macros.S"
 
@@ -452,7 +449,6 @@ ENDPROC(v7_dma_unmap_area)
 
 	@ define struct cpu_cache_fns (see <asm/cacheflush.h> and proc-macros.S)
 	define_cache_functions v7
-<<<<<<< HEAD
 
 	/* The Broadcom Brahma-B15 read-ahead cache requires some modifications
 	 * to the v7_cache_fns, we only override the ones we need
@@ -475,5 +471,3 @@ ENDPROC(v7_dma_unmap_area)
 	globl_equ	b15_dma_flush_range,		v7_dma_flush_range
 
 	define_cache_functions b15
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

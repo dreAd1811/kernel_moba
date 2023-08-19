@@ -19,10 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-<<<<<<< HEAD
 #include <linux/acpi_iort.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/device.h>
 #include <linux/dma-iommu.h>
 #include <linux/gfp.h>
@@ -34,11 +31,6 @@
 #include <linux/pci.h>
 #include <linux/scatterlist.h>
 #include <linux/vmalloc.h>
-<<<<<<< HEAD
-=======
-#include <linux/arm-smmu-errata.h>
-#include <soc/qcom/secure_buffer.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define IOMMU_MAPPING_ERROR	0
 
@@ -63,11 +55,6 @@ struct iommu_dma_cookie {
 	};
 	struct list_head		msi_page_list;
 	spinlock_t			msi_lock;
-<<<<<<< HEAD
-=======
-	u32			min_iova_align;
-	struct page		*guard_page;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static inline size_t cookie_msi_granule(struct iommu_dma_cookie *cookie)
@@ -180,7 +167,6 @@ EXPORT_SYMBOL(iommu_put_dma_cookie);
  * @list: Reserved region list from iommu_get_resv_regions()
  *
  * IOMMU drivers can use this to implement their .get_resv_regions callback
-<<<<<<< HEAD
  * for general non-IOMMU-specific reservations. Currently, this covers GICv3
  * ITS region reservation on ACPI based ARM platforms that may require HW MSI
  * reservation.
@@ -191,37 +177,6 @@ void iommu_dma_get_resv_regions(struct device *dev, struct list_head *list)
 	if (!is_of_node(dev->iommu_fwspec->iommu_fwnode))
 		iort_iommu_msi_get_resv_regions(dev, list);
 
-=======
- * for general non-IOMMU-specific reservations. Currently, this covers host
- * bridge windows for PCI devices.
- */
-void iommu_dma_get_resv_regions(struct device *dev, struct list_head *list)
-{
-	struct pci_host_bridge *bridge;
-	struct resource_entry *window;
-
-	if (!dev_is_pci(dev))
-		return;
-
-	bridge = pci_find_host_bridge(to_pci_dev(dev)->bus);
-	resource_list_for_each_entry(window, &bridge->windows) {
-		struct iommu_resv_region *region;
-		phys_addr_t start;
-		size_t length;
-
-		if (resource_type(window->res) != IORESOURCE_MEM)
-			continue;
-
-		start = window->res->start - window->offset;
-		length = window->res->end - window->res->start + 1;
-		region = iommu_alloc_resv_region(start, length, 0,
-				IOMMU_RESV_RESERVED);
-		if (!region)
-			return;
-
-		list_add_tail(&region->list, list);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(iommu_dma_get_resv_regions);
 
@@ -235,7 +190,6 @@ static int cookie_init_hw_msi_region(struct iommu_dma_cookie *cookie,
 	start -= iova_offset(iovad, start);
 	num_pages = iova_align(iovad, end - start) >> iova_shift(iovad);
 
-<<<<<<< HEAD
 	msi_page = kcalloc(num_pages, sizeof(*msi_page), GFP_KERNEL);
 	if (!msi_page)
 		return -ENOMEM;
@@ -245,24 +199,12 @@ static int cookie_init_hw_msi_region(struct iommu_dma_cookie *cookie,
 		msi_page[i].iova = start;
 		INIT_LIST_HEAD(&msi_page[i].list);
 		list_add(&msi_page[i].list, &cookie->msi_page_list);
-=======
-	for (i = 0; i < num_pages; i++) {
-		msi_page = kmalloc(sizeof(*msi_page), GFP_KERNEL);
-		if (!msi_page)
-			return -ENOMEM;
-
-		msi_page->phys = start;
-		msi_page->iova = start;
-		INIT_LIST_HEAD(&msi_page->list);
-		list_add(&msi_page->list, &cookie->msi_page_list);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		start += iovad->granule;
 	}
 
 	return 0;
 }
 
-<<<<<<< HEAD
 static void iova_reserve_pci_windows(struct pci_dev *dev,
 		struct iova_domain *iovad)
 {
@@ -280,8 +222,6 @@ static void iova_reserve_pci_windows(struct pci_dev *dev,
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int iova_reserve_iommu_regions(struct device *dev,
 		struct iommu_domain *domain)
 {
@@ -291,12 +231,9 @@ static int iova_reserve_iommu_regions(struct device *dev,
 	LIST_HEAD(resv_regions);
 	int ret = 0;
 
-<<<<<<< HEAD
 	if (dev_is_pci(dev))
 		iova_reserve_pci_windows(to_pci_dev(dev), iovad);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	iommu_get_resv_regions(dev, &resv_regions);
 	list_for_each_entry(region, &resv_regions, list) {
 		unsigned long lo, hi;
@@ -320,31 +257,6 @@ static int iova_reserve_iommu_regions(struct device *dev,
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
-static int iommu_dma_arm_smmu_errata_init(struct iommu_domain *domain)
-{
-	struct iommu_dma_cookie *cookie = domain->iova_cookie;
-	int vmid = VMID_HLOS;
-	int min_iova_align = 0;
-
-	iommu_domain_get_attr(domain,
-			DOMAIN_ATTR_QCOM_MMU500_ERRATA_MIN_IOVA_ALIGN,
-			&min_iova_align);
-	iommu_domain_get_attr(domain, DOMAIN_ATTR_SECURE_VMID, &vmid);
-	if (vmid >= VMID_LAST || vmid < 0)
-		vmid = VMID_HLOS;
-
-	if (min_iova_align) {
-		cookie->min_iova_align = ARM_SMMU_MIN_IOVA_ALIGN;
-		cookie->guard_page = arm_smmu_errata_get_guard_page(vmid);
-		if (!cookie->guard_page)
-			return -ENOMEM;
-	}
-	return 0;
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * iommu_dma_init_domain - Initialise a DMA mapping domain
  * @domain: IOMMU domain previously prepared by iommu_get_dma_cookie()
@@ -367,12 +279,6 @@ int iommu_dma_init_domain(struct iommu_domain *domain, dma_addr_t base,
 	if (!cookie || cookie->type != IOMMU_DMA_IOVA_COOKIE)
 		return -EINVAL;
 
-<<<<<<< HEAD
-=======
-	if (iommu_dma_arm_smmu_errata_init(domain))
-		return -ENODEV;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Use the smallest supported page size for IOVA granularity */
 	order = __ffs(domain->pgsize_bitmap);
 	base_pfn = max_t(unsigned long, 1, base >> order);
@@ -388,22 +294,7 @@ int iommu_dma_init_domain(struct iommu_domain *domain, dma_addr_t base,
 		/* ...then finally give it a kicking to make sure it fits */
 		base_pfn = max_t(unsigned long, base_pfn,
 				domain->geometry.aperture_start >> order);
-<<<<<<< HEAD
 	}
-=======
-		end_pfn = min_t(unsigned long, end_pfn,
-				domain->geometry.aperture_end >> order);
-	}
-	/*
-	 * PCI devices may have larger DMA masks, but still prefer allocating
-	 * within a 32-bit mask to avoid DAC addressing. Such limitations don't
-	 * apply to the typical platform device, so for those we may as well
-	 * leave the cache limit at the top of their range to save an rb_last()
-	 * traversal on every allocation.
-	 */
-	if (dev && dev_is_pci(dev))
-		end_pfn &= DMA_BIT_MASK(32) >> order;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* start_pfn is always nonzero for an already-initialised domain */
 	if (iovad->start_pfn) {
@@ -412,24 +303,12 @@ int iommu_dma_init_domain(struct iommu_domain *domain, dma_addr_t base,
 			pr_warn("Incompatible range for DMA domain\n");
 			return -EFAULT;
 		}
-<<<<<<< HEAD
-=======
-		/*
-		 * If we have devices with different DMA masks, move the free
-		 * area cache limit down for the benefit of the smaller one.
-		 */
-		iovad->dma_32bit_pfn = min(end_pfn + 1, iovad->dma_32bit_pfn);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		return 0;
 	}
 
-<<<<<<< HEAD
 	iovad->end_pfn = end_pfn;
 	init_iova_domain(iovad, 1UL << order, base_pfn);
-=======
-	init_iova_domain(iovad, 1UL << order, base_pfn, end_pfn);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!dev)
 		return 0;
 
@@ -437,7 +316,6 @@ int iommu_dma_init_domain(struct iommu_domain *domain, dma_addr_t base,
 }
 EXPORT_SYMBOL(iommu_dma_init_domain);
 
-<<<<<<< HEAD
 /*
  * Should be called prior to using dma-apis
  */
@@ -480,8 +358,6 @@ int iommu_dma_enable_best_fit_algo(struct device *dev)
 	return 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * dma_info_to_prot - Translate DMA API directions and attributes to IOMMU API
  *                    page flags.
@@ -527,29 +403,14 @@ static dma_addr_t iommu_dma_alloc_iova(struct iommu_domain *domain,
 	struct iova_domain *iovad = &cookie->iovad;
 	unsigned long shift, iova_len, iova = 0;
 	dma_addr_t limit;
-<<<<<<< HEAD
-=======
-	unsigned long guard_len;
-	dma_addr_t ret_iova;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (cookie->type == IOMMU_DMA_MSI_COOKIE) {
 		cookie->msi_iova += size;
 		return cookie->msi_iova - size;
 	}
 
-<<<<<<< HEAD
 	shift = iova_shift(iovad);
 	iova_len = size >> shift;
-=======
-	if (cookie->min_iova_align)
-		guard_len = ALIGN(size, cookie->min_iova_align) - size;
-	else
-		guard_len = 0;
-
-	shift = iova_shift(iovad);
-	iova_len = (size + guard_len) >> shift;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Freeing non-power-of-two-sized allocations back into the IOVA caches
 	 * will come back to bite us badly, so we have to waste a bit of space
@@ -559,12 +420,9 @@ static dma_addr_t iommu_dma_alloc_iova(struct iommu_domain *domain,
 	if (iova_len < (1 << (IOVA_RANGE_CACHE_MAX_SIZE - 1)))
 		iova_len = roundup_pow_of_two(iova_len);
 
-<<<<<<< HEAD
 	if (dev->bus_dma_mask)
 		dma_limit &= dev->bus_dma_mask;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (domain->geometry.force_aperture)
 		dma_limit = min(dma_limit, domain->geometry.aperture_end);
 
@@ -574,7 +432,6 @@ static dma_addr_t iommu_dma_alloc_iova(struct iommu_domain *domain,
 	 * rb_tree.
 	 */
 	limit = min_t(dma_addr_t, DMA_BIT_MASK(32) >> shift,
-<<<<<<< HEAD
 						iovad->end_pfn);
 
 	/* Try to get PCI devices a SAC address */
@@ -596,48 +453,6 @@ static void iommu_dma_free_iova(struct iommu_dma_cookie *cookie,
 		dma_addr_t iova, size_t size)
 {
 	struct iova_domain *iovad = &cookie->iovad;
-=======
-						iovad->dma_32bit_pfn - 1);
-
-	/* Try to get PCI devices a SAC address */
-	if (dma_limit > DMA_BIT_MASK(32) && dev_is_pci(dev))
-		iova = alloc_iova_fast(iovad, iova_len, limit);
-
-	if (!iova) {
-		limit = min_t(dma_addr_t, dma_limit >> shift,
-						iovad->dma_32bit_pfn - 1);
-
-		iova = alloc_iova_fast(iovad, iova_len, limit);
-	}
-
-	ret_iova = (dma_addr_t)iova << shift;
-
-	if (ret_iova && guard_len &&
-		iommu_map(domain, ret_iova + size,
-			page_to_phys(cookie->guard_page),
-			guard_len, ARM_SMMU_GUARD_PROT)) {
-
-		free_iova_fast(iovad, iova, iova_len);
-		return 0;
-	}
-
-	return ret_iova;
-}
-
-static void iommu_dma_free_iova(struct iommu_domain *domain,
-		struct iommu_dma_cookie *cookie,
-		dma_addr_t iova, size_t size)
-{
-	struct iova_domain *iovad = &cookie->iovad;
-	unsigned long guard_len;
-
-	if (cookie->min_iova_align) {
-		guard_len = ALIGN(size, cookie->min_iova_align) - size;
-		iommu_unmap(domain, iova + size, guard_len);
-	} else {
-		guard_len = 0;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* The MSI case is only ever cleaning up its most recent allocation */
 	if (cookie->type == IOMMU_DMA_MSI_COOKIE)
@@ -658,11 +473,7 @@ static void __iommu_dma_unmap(struct iommu_domain *domain, dma_addr_t dma_addr,
 	size = iova_align(iovad, size + iova_off);
 
 	WARN_ON(iommu_unmap(domain, dma_addr, size) != size);
-<<<<<<< HEAD
 	iommu_dma_free_iova(cookie, dma_addr, size);
-=======
-	iommu_dma_free_iova(domain, cookie, dma_addr, size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __iommu_dma_free_pages(struct page **pages, int count)
@@ -828,11 +639,7 @@ struct page **iommu_dma_alloc(struct device *dev, size_t size, gfp_t gfp,
 out_free_sg:
 	sg_free_table(&sgt);
 out_free_iova:
-<<<<<<< HEAD
 	iommu_dma_free_iova(cookie, iova, size);
-=======
-	iommu_dma_free_iova(domain, cookie, iova, size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out_free_pages:
 	__iommu_dma_free_pages(pages, count);
 	return NULL;
@@ -881,11 +688,7 @@ static dma_addr_t __iommu_dma_map(struct device *dev, phys_addr_t phys,
 		return IOMMU_MAPPING_ERROR;
 
 	if (iommu_map(domain, iova, phys - iova_off, size, prot)) {
-<<<<<<< HEAD
 		iommu_dma_free_iova(cookie, iova, size);
-=======
-		iommu_dma_free_iova(domain, cookie, iova, size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return IOMMU_MAPPING_ERROR;
 	}
 	return iova + iova_off;
@@ -910,11 +713,7 @@ void iommu_dma_unmap_page(struct device *dev, dma_addr_t handle, size_t size,
  * avoid individually crossing any boundaries, so we merely need to check a
  * segment's start address to avoid concatenating across one.
  */
-<<<<<<< HEAD
 int iommu_dma_finalise_sg(struct device *dev, struct scatterlist *sg, int nents,
-=======
-static int __finalise_sg(struct device *dev, struct scatterlist *sg, int nents,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dma_addr_t dma_addr)
 {
 	struct scatterlist *s, *cur = sg;
@@ -967,11 +766,7 @@ static int __finalise_sg(struct device *dev, struct scatterlist *sg, int nents,
  * If mapping failed, then just restore the original list,
  * but making sure the DMA fields are invalidated.
  */
-<<<<<<< HEAD
 void iommu_dma_invalidate_sg(struct scatterlist *sg, int nents)
-=======
-static void __invalidate_sg(struct scatterlist *sg, int nents)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct scatterlist *s;
 	int i;
@@ -993,21 +788,10 @@ static void __invalidate_sg(struct scatterlist *sg, int nents)
  * impedance-matching, to be able to hand off a suitably-aligned list,
  * but still preserve the original offsets and sizes for the caller.
  */
-<<<<<<< HEAD
 size_t iommu_dma_prepare_map_sg(struct device *dev, struct iova_domain *iovad,
 				struct scatterlist *sg, int nents)
 {
 	struct scatterlist *s, *prev = NULL;
-=======
-int iommu_dma_map_sg(struct device *dev, struct scatterlist *sg,
-		int nents, int prot)
-{
-	struct iommu_domain *domain = iommu_get_domain_for_dev(dev);
-	struct iommu_dma_cookie *cookie = domain->iova_cookie;
-	struct iova_domain *iovad = &cookie->iovad;
-	struct scatterlist *s, *prev = NULL;
-	dma_addr_t iova;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	size_t iova_len = 0;
 	unsigned long mask = dma_get_seg_boundary(dev);
 	int i;
@@ -1051,7 +835,6 @@ int iommu_dma_map_sg(struct device *dev, struct scatterlist *sg,
 		prev = s;
 	}
 
-<<<<<<< HEAD
 	return iova_len;
 }
 
@@ -1072,8 +855,6 @@ int iommu_dma_map_sg(struct device *dev, struct scatterlist *sg,
 
 	iova_len = iommu_dma_prepare_map_sg(dev, iovad, sg, nents);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	iova = iommu_dma_alloc_iova(domain, iova_len, dma_get_mask(dev), dev);
 	if (!iova)
 		goto out_restore_sg;
@@ -1085,21 +866,12 @@ int iommu_dma_map_sg(struct device *dev, struct scatterlist *sg,
 	if (iommu_map_sg(domain, iova, sg, nents, prot) < iova_len)
 		goto out_free_iova;
 
-<<<<<<< HEAD
 	return iommu_dma_finalise_sg(dev, sg, nents, iova);
 
 out_free_iova:
 	iommu_dma_free_iova(cookie, iova, iova_len);
 out_restore_sg:
 	iommu_dma_invalidate_sg(sg, nents);
-=======
-	return __finalise_sg(dev, sg, nents, iova);
-
-out_free_iova:
-	iommu_dma_free_iova(domain, cookie, iova, iova_len);
-out_restore_sg:
-	__invalidate_sg(sg, nents);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

@@ -659,15 +659,9 @@ static void terminate_monitor(struct cm4000_dev *dev)
  * is already doing that for you.
  */
 
-<<<<<<< HEAD
 static void monitor_card(struct timer_list *t)
 {
 	struct cm4000_dev *dev = from_timer(dev, t, timer);
-=======
-static void monitor_card(unsigned long p)
-{
-	struct cm4000_dev *dev = (struct cm4000_dev *) p;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int iobase = dev->p_dev->resource[0]->start;
 	unsigned short s;
 	struct ptsreq ptsreq;
@@ -1380,11 +1374,7 @@ static void start_monitor(struct cm4000_dev *dev)
 	DEBUGP(3, dev, "-> start_monitor\n");
 	if (!dev->monitor_running) {
 		DEBUGP(5, dev, "create, init and add timer\n");
-<<<<<<< HEAD
 		timer_setup(&dev->timer, monitor_card, 0);
-=======
-		setup_timer(&dev->timer, monitor_card, (unsigned long)dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev->monitor_running = 1;
 		mod_timer(&dev->timer, jiffies);
 	} else
@@ -1758,11 +1748,6 @@ static int cm4000_config_check(struct pcmcia_device *p_dev, void *priv_data)
 
 static int cm4000_config(struct pcmcia_device * link, int devno)
 {
-<<<<<<< HEAD
-=======
-	struct cm4000_dev *dev;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	link->config_flags |= CONF_AUTO_SET_IO;
 
 	/* read the config-tuples */
@@ -1772,11 +1757,6 @@ static int cm4000_config(struct pcmcia_device * link, int devno)
 	if (pcmcia_enable_device(link))
 		goto cs_release;
 
-<<<<<<< HEAD
-=======
-	dev = link->priv;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 cs_release:

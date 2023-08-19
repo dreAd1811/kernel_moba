@@ -48,10 +48,7 @@
  * @bypass_bit: the index of the bypass bit in the PLL control register
  * @enable_bit: the index of the enable bit in the PLL control register
  * @stable_bit: the index of the stable bit in the PLL control register
-<<<<<<< HEAD
  * @no_bypass_bit: if set, the PLL has no bypass functionality
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct ingenic_cgu_pll_info {
 	unsigned reg;
@@ -62,10 +59,7 @@ struct ingenic_cgu_pll_info {
 	u8 bypass_bit;
 	u8 enable_bit;
 	u8 stable_bit;
-<<<<<<< HEAD
 	bool no_bypass_bit;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -117,20 +111,14 @@ struct ingenic_cgu_fixdiv_info {
  * struct ingenic_cgu_gate_info - information about a clock gate
  * @reg: offset of the gate control register within the CGU
  * @bit: offset of the bit in the register that controls the gate
-<<<<<<< HEAD
  * @clear_to_gate: if set, the clock is gated when the bit is cleared
  * @delay_us: delay in microseconds after which the clock is considered stable
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct ingenic_cgu_gate_info {
 	unsigned reg;
 	u8 bit;
-<<<<<<< HEAD
 	bool clear_to_gate;
 	u16 delay_us;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -138,11 +126,7 @@ struct ingenic_cgu_gate_info {
  * @clk_ops: custom clock operation callbacks
  */
 struct ingenic_cgu_custom_info {
-<<<<<<< HEAD
 	const struct clk_ops *clk_ops;
-=======
-	struct clk_ops *clk_ops;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -210,11 +194,7 @@ struct ingenic_cgu {
 
 /**
  * struct ingenic_clk - private data for a clock
-<<<<<<< HEAD
  * @hw: see Documentation/driver-api/clk.rst
-=======
- * @hw: see Documentation/clk.txt
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @cgu: a pointer to the CGU data
  * @idx: the index of this clock in cgu->clock_info
  */

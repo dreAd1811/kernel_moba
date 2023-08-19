@@ -22,10 +22,7 @@
 #include <linux/of.h>
 #include <linux/fs.h>
 #include <linux/reboot.h>
-<<<<<<< HEAD
 #include <linux/irq_work.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/machdep.h>
 #include <asm/rtas.h>
@@ -36,19 +33,12 @@
 static unsigned char ras_log_buf[RTAS_ERROR_LOG_MAX];
 static DEFINE_SPINLOCK(ras_log_buf_lock);
 
-<<<<<<< HEAD
 static int ras_check_exception_token;
 
 static void mce_process_errlog_event(struct irq_work *work);
 static struct irq_work mce_errlog_process_work = {
 	.func = mce_process_errlog_event,
 };
-=======
-static char global_mce_data_buf[RTAS_ERROR_LOG_MAX];
-static DEFINE_PER_CPU(__u64, mce_data_buf);
-
-static int ras_check_exception_token;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define EPOW_SENSOR_TOKEN	9
 #define EPOW_SENSOR_INDEX	0
@@ -338,7 +328,6 @@ static irqreturn_t ras_error_interrupt(int irq, void *dev_id)
 /*
  * Some versions of FWNMI place the buffer inside the 4kB page starting at
  * 0x7000. Other versions place it inside the rtas buffer. We check both.
-<<<<<<< HEAD
  */
 #define VALID_FWNMI_BUFFER(A) \
 	((((A) >= 0x7000) && ((A) < 0x7ff0)) || \
@@ -348,13 +337,6 @@ static inline struct rtas_error_log *fwnmi_get_errlog(void)
 {
 	return (struct rtas_error_log *)local_paca->mce_data_buf;
 }
-=======
- * Minimum size of the buffer is 16 bytes.
- */
-#define VALID_FWNMI_BUFFER(A) \
-	((((A) >= 0x7000) && ((A) <= 0x8000 - 16)) || \
-	(((A) >= rtas.base) && ((A) <= (rtas.base + rtas.size - 16))))
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Get the error information for errors coming through the
@@ -362,16 +344,9 @@ static inline struct rtas_error_log *fwnmi_get_errlog(void)
  * the actual r3 if possible, and a ptr to the error log entry
  * will be returned if found.
  *
-<<<<<<< HEAD
  * Use one buffer mce_data_buf per cpu to store RTAS error.
  *
  * The mce_data_buf does not have any locks or protection around it,
-=======
- * If the RTAS error is not of the extended type, then we put it in a per
- * cpu 64bit buffer. If it is the extended type we use global_mce_data_buf.
- *
- * The global_mce_data_buf does not have any locks or protection around it,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * if a second machine check comes in, or a system reset is done
  * before we have logged the error, then we will get corruption in the
  * error log.  This is preferable over holding off on calling
@@ -381,11 +356,7 @@ static inline struct rtas_error_log *fwnmi_get_errlog(void)
 static struct rtas_error_log *fwnmi_get_errinfo(struct pt_regs *regs)
 {
 	unsigned long *savep;
-<<<<<<< HEAD
 	struct rtas_error_log *h;
-=======
-	struct rtas_error_log *h, *errhdr = NULL;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Mask top two bits */
 	regs->gpr[3] &= ~(0x3UL << 62);
@@ -398,37 +369,20 @@ static struct rtas_error_log *fwnmi_get_errinfo(struct pt_regs *regs)
 	savep = __va(regs->gpr[3]);
 	regs->gpr[3] = be64_to_cpu(savep[0]);	/* restore original r3 */
 
-<<<<<<< HEAD
 	h = (struct rtas_error_log *)&savep[1];
 	/* Use the per cpu buffer from paca to store rtas error log */
 	memset(local_paca->mce_data_buf, 0, RTAS_ERROR_LOG_MAX);
 	if (!rtas_error_extended(h)) {
 		memcpy(local_paca->mce_data_buf, h, sizeof(__u64));
-=======
-	/* If it isn't an extended log we can use the per cpu 64bit buffer */
-	h = (struct rtas_error_log *)&savep[1];
-	if (!rtas_error_extended(h)) {
-		memcpy(this_cpu_ptr(&mce_data_buf), h, sizeof(__u64));
-		errhdr = (struct rtas_error_log *)this_cpu_ptr(&mce_data_buf);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		int len, error_log_length;
 
 		error_log_length = 8 + rtas_error_extended_log_length(h);
 		len = min_t(int, error_log_length, RTAS_ERROR_LOG_MAX);
-<<<<<<< HEAD
 		memcpy(local_paca->mce_data_buf, h, len);
 	}
 
 	return (struct rtas_error_log *)local_paca->mce_data_buf;
-=======
-		memset(global_mce_data_buf, 0, RTAS_ERROR_LOG_MAX);
-		memcpy(global_mce_data_buf, h, len);
-		errhdr = (struct rtas_error_log *)global_mce_data_buf;
-	}
-
-	return errhdr;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Call this when done with the data returned by FWNMI_get_errinfo.
@@ -474,7 +428,6 @@ int pSeries_system_reset_exception(struct pt_regs *regs)
 }
 
 /*
-<<<<<<< HEAD
  * Process MCE rtas errlog event.
  */
 static void mce_process_errlog_event(struct irq_work *work)
@@ -486,8 +439,6 @@ static void mce_process_errlog_event(struct irq_work *work)
 }
 
 /*
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * See if we can recover from a machine check exception.
  * This is only called on power4 (or above) and only via
  * the Firmware Non-Maskable Interrupts (fwnmi) handler
@@ -531,12 +482,8 @@ static int recover_mce(struct pt_regs *regs, struct rtas_error_log *err)
 		recovered = 1;
 	}
 
-<<<<<<< HEAD
 	/* Queue irq work to log this rtas event later. */
 	irq_work_queue(&mce_errlog_process_work);
-=======
-	log_error((char *)err, ERR_TYPE_RTAS_LOG, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return recovered;
 }

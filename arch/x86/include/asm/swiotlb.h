@@ -27,17 +27,4 @@ static inline void pci_swiotlb_late_init(void)
 {
 }
 #endif
-<<<<<<< HEAD
-=======
-
-static inline void dma_mark_clean(void *addr, size_t size) {}
-
-extern void *x86_swiotlb_alloc_coherent(struct device *hwdev, size_t size,
-					dma_addr_t *dma_handle, gfp_t flags,
-					unsigned long attrs);
-extern void x86_swiotlb_free_coherent(struct device *dev, size_t size,
-					void *vaddr, dma_addr_t dma_addr,
-					unsigned long attrs);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* _ASM_X86_SWIOTLB_H */

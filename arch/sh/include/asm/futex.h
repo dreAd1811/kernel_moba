@@ -37,14 +37,7 @@ static inline int arch_futex_atomic_op_inuser(int op, u32 oparg, int *oval,
 	pagefault_disable();
 
 	do {
-<<<<<<< HEAD
 		ret = get_user(oldval, uaddr);
-=======
-		if (op == FUTEX_OP_SET)
-			ret = oldval = 0;
-		else
-			ret = get_user(oldval, uaddr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (ret) break;
 

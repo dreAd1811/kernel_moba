@@ -39,7 +39,6 @@
 #include "hw/host1x02.h"
 #include "hw/host1x04.h"
 #include "hw/host1x05.h"
-<<<<<<< HEAD
 #include "hw/host1x06.h"
 
 void host1x_hypervisor_writel(struct host1x *host1x, u32 v, u32 r)
@@ -51,8 +50,6 @@ u32 host1x_hypervisor_readl(struct host1x *host1x, u32 r)
 {
 	return readl(host1x->hv_regs + r);
 }
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void host1x_sync_writel(struct host1x *host1x, u32 v, u32 r)
 {
@@ -118,7 +115,6 @@ static const struct host1x_info host1x05_info = {
 	.dma_mask = DMA_BIT_MASK(34),
 };
 
-<<<<<<< HEAD
 static const struct host1x_info host1x06_info = {
 	.nb_channels = 63,
 	.nb_pts = 576,
@@ -132,9 +128,6 @@ static const struct host1x_info host1x06_info = {
 
 static const struct of_device_id host1x_of_match[] = {
 	{ .compatible = "nvidia,tegra186-host1x", .data = &host1x06_info, },
-=======
-static const struct of_device_id host1x_of_match[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ .compatible = "nvidia,tegra210-host1x", .data = &host1x05_info, },
 	{ .compatible = "nvidia,tegra124-host1x", .data = &host1x04_info, },
 	{ .compatible = "nvidia,tegra114-host1x", .data = &host1x02_info, },
@@ -146,7 +139,6 @@ MODULE_DEVICE_TABLE(of, host1x_of_match);
 
 static int host1x_probe(struct platform_device *pdev)
 {
-<<<<<<< HEAD
 	struct host1x *host;
 	struct resource *regs, *hv_regs = NULL;
 	int syncpt_irq;
@@ -178,22 +170,6 @@ static int host1x_probe(struct platform_device *pdev)
 			dev_err(&pdev->dev, "failed to get registers\n");
 			return -ENXIO;
 		}
-=======
-	const struct of_device_id *id;
-	struct host1x *host;
-	struct resource *regs;
-	int syncpt_irq;
-	int err;
-
-	id = of_match_device(host1x_of_match, &pdev->dev);
-	if (!id)
-		return -EINVAL;
-
-	regs = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-	if (!regs) {
-		dev_err(&pdev->dev, "failed to get registers\n");
-		return -ENXIO;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	syncpt_irq = platform_get_irq(pdev, 0);
@@ -202,21 +178,10 @@ static int host1x_probe(struct platform_device *pdev)
 		return syncpt_irq;
 	}
 
-<<<<<<< HEAD
-=======
-	host = devm_kzalloc(&pdev->dev, sizeof(*host), GFP_KERNEL);
-	if (!host)
-		return -ENOMEM;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_init(&host->devices_lock);
 	INIT_LIST_HEAD(&host->devices);
 	INIT_LIST_HEAD(&host->list);
 	host->dev = &pdev->dev;
-<<<<<<< HEAD
-=======
-	host->info = id->data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* set common host1x device data */
 	platform_set_drvdata(pdev, host);
@@ -225,15 +190,12 @@ static int host1x_probe(struct platform_device *pdev)
 	if (IS_ERR(host->regs))
 		return PTR_ERR(host->regs);
 
-<<<<<<< HEAD
 	if (host->info->has_hypervisor) {
 		host->hv_regs = devm_ioremap_resource(&pdev->dev, hv_regs);
 		if (IS_ERR(host->hv_regs))
 			return PTR_ERR(host->hv_regs);
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dma_set_mask_and_coherent(host->dev, host->info->dma_mask);
 
 	if (host->info->init) {
@@ -256,7 +218,6 @@ static int host1x_probe(struct platform_device *pdev)
 		return err;
 	}
 
-<<<<<<< HEAD
 	if (IS_ENABLED(CONFIG_TEGRA_HOST1X_FIREWALL))
 		goto skip_iommu;
 
@@ -286,22 +247,6 @@ static int host1x_probe(struct platform_device *pdev)
 				goto skip_iommu;
 			}
 
-=======
-	if (iommu_present(&platform_bus_type)) {
-		struct iommu_domain_geometry *geometry;
-		unsigned long order;
-
-		host->domain = iommu_domain_alloc(&platform_bus_type);
-		if (!host->domain)
-			return -ENOMEM;
-
-		err = iommu_attach_device(host->domain, &pdev->dev);
-		if (err == -ENODEV) {
-			iommu_domain_free(host->domain);
-			host->domain = NULL;
-			goto skip_iommu;
-		} else if (err) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto fail_free_domain;
 		}
 
@@ -309,12 +254,7 @@ static int host1x_probe(struct platform_device *pdev)
 
 		order = __ffs(host->domain->pgsize_bitmap);
 		init_iova_domain(&host->iova, 1UL << order,
-<<<<<<< HEAD
 				 geometry->aperture_start >> order);
-=======
-				 geometry->aperture_start >> order,
-				 geometry->aperture_end >> order);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		host->iova_end = geometry->aperture_end;
 	}
 
@@ -369,27 +309,18 @@ fail_unprepare_disable:
 fail_free_channels:
 	host1x_channel_list_free(&host->channel_list);
 fail_detach_device:
-<<<<<<< HEAD
 	if (host->group && host->domain) {
 		put_iova_domain(&host->iova);
 		iommu_detach_group(host->domain, host->group);
-=======
-	if (host->domain) {
-		put_iova_domain(&host->iova);
-		iommu_detach_device(host->domain, &pdev->dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 fail_free_domain:
 	if (host->domain)
 		iommu_domain_free(host->domain);
-<<<<<<< HEAD
 put_cache:
 	if (host->group)
 		iova_cache_put();
 put_group:
 	iommu_group_put(host->group);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return err;
 }
@@ -406,15 +337,10 @@ static int host1x_remove(struct platform_device *pdev)
 
 	if (host->domain) {
 		put_iova_domain(&host->iova);
-<<<<<<< HEAD
 		iommu_detach_group(host->domain, host->group);
 		iommu_domain_free(host->domain);
 		iova_cache_put();
 		iommu_group_put(host->group);
-=======
-		iommu_detach_device(host->domain, &pdev->dev);
-		iommu_domain_free(host->domain);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;

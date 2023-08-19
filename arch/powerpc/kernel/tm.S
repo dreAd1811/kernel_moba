@@ -12,11 +12,8 @@
 #include <asm/ptrace.h>
 #include <asm/reg.h>
 #include <asm/bug.h>
-<<<<<<< HEAD
 #include <asm/export.h>
 #include <asm/feature-fixups.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_VSX
 /* See fpu.S, this is borrowed from there */
@@ -60,7 +57,6 @@ _GLOBAL(tm_enable)
 	or	r4, r4, r3
 	mtmsrd	r4
 1:	blr
-<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(tm_enable);
 
 _GLOBAL(tm_disable)
@@ -71,8 +67,6 @@ _GLOBAL(tm_disable)
 	mtmsrd	r4
 	blr
 EXPORT_SYMBOL_GPL(tm_disable);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 _GLOBAL(tm_save_sprs)
 	mfspr	r0, SPRN_TFHAR
@@ -96,26 +90,15 @@ _GLOBAL(tm_restore_sprs)
 _GLOBAL(tm_abort)
 	TABORT(R3)
 	blr
-<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(tm_abort);
 
 /* void tm_reclaim(struct thread_struct *thread,
-=======
-
-/* void tm_reclaim(struct thread_struct *thread,
- *                 unsigned long orig_msr,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *		   uint8_t cause)
  *
  *	- Performs a full reclaim.  This destroys outstanding
  *	  transactions and updates thread->regs.tm_ckpt_* with the
  *	  original checkpointed state.  Note that thread->regs is
  *	  unchanged.
-<<<<<<< HEAD
-=======
- *	- FP regs are written back to thread->transact_fpr before
- *	  reclaiming.  These are the transactional (current) versions.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Purpose is to both abort transactions of, and preserve the state of,
  * a transactions at a context switch. We preserve/restore both sets of process
@@ -126,15 +109,9 @@ EXPORT_SYMBOL_GPL(tm_abort);
  * Call with IRQs off, stacks get all out of sync for some periods in here!
  */
 _GLOBAL(tm_reclaim)
-<<<<<<< HEAD
 	mfcr	r5
 	mflr	r0
 	stw	r5, 8(r1)
-=======
-	mfcr	r6
-	mflr	r0
-	stw	r6, 8(r1)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	std	r0, 16(r1)
 	std	r2, STK_GOT(r1)
 	stdu	r1, -TM_FRAME_SIZE(r1)
@@ -142,10 +119,6 @@ _GLOBAL(tm_reclaim)
 	/* We've a struct pt_regs at [r1+STACK_FRAME_OVERHEAD]. */
 
 	std	r3, STK_PARAM(R3)(r1)
-<<<<<<< HEAD
-=======
-	std	r4, STK_PARAM(R4)(r1)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	SAVE_NVGPRS(r1)
 
 	/* We need to setup MSR for VSX register save instructions. */
@@ -175,13 +148,8 @@ _GLOBAL(tm_reclaim)
 	std	r1, PACAR1(r13)
 
 	/* Clear MSR RI since we are about to change r1, EE is already off. */
-<<<<<<< HEAD
 	li	r5, 0
 	mtmsrd	r5, 1
-=======
-	li	r4, 0
-	mtmsrd	r4, 1
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * BE CAREFUL HERE:
@@ -193,11 +161,7 @@ _GLOBAL(tm_reclaim)
 	 * to user register state.  (FPRs, CCR etc. also!)
 	 * Use an sprg and a tm_scratch in the PACA to shuffle.
 	 */
-<<<<<<< HEAD
 	TRECLAIM(R4)				/* Cause in r4 */
-=======
-	TRECLAIM(R5)				/* Cause in r5 */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* ******************** GPRs ******************** */
 	/* Stash the checkpointed r13 away in the scratch SPR and get the real
@@ -302,37 +266,19 @@ _GLOBAL(tm_reclaim)
 
 
 	/* ******************** FPR/VR/VSRs ************
-<<<<<<< HEAD
 	 * After reclaiming, capture the checkpointed FPRs/VRs.
-=======
-	 * After reclaiming, capture the checkpointed FPRs/VRs /if used/.
-	 *
-	 * (If VSX used, FP and VMX are implied.  Or, we don't need to look
-	 * at MSR.VSX as copying FP regs if .FP, vector regs if .VMX covers it.)
-	 *
-	 * We're passed the thread's MSR as the second parameter
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 *
 	 * We enabled VEC/FP/VSX in the msr above, so we can execute these
 	 * instructions!
 	 */
-<<<<<<< HEAD
 	mr	r3, r12
 
 	/* Altivec (VEC/VMX/VR)*/
-=======
-	ld	r4, STK_PARAM(R4)(r1)		/* Second parameter, MSR * */
-	mr	r3, r12
-	andis.		r0, r4, MSR_VEC@h
-	beq	dont_backup_vec
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	addi	r7, r3, THREAD_CKVRSTATE
 	SAVE_32VRS(0, r6, r7)	/* r6 scratch, r7 transact vr state */
 	mfvscr	v0
 	li	r6, VRSTATE_VSCR
 	stvx	v0, r7, r6
-<<<<<<< HEAD
 
 	/* VRSAVE */
 	mfspr	r0, SPRN_VRSAVE
@@ -344,22 +290,6 @@ _GLOBAL(tm_reclaim)
 	mffs    fr0
 	stfd    fr0,FPSTATE_FPSCR(r7)
 
-=======
-dont_backup_vec:
-	mfspr	r0, SPRN_VRSAVE
-	std	r0, THREAD_CKVRSAVE(r3)
-
-	andi.	r0, r4, MSR_FP
-	beq	dont_backup_fp
-
-	addi	r7, r3, THREAD_CKFPSTATE
-	SAVE_32FPRS_VSRS(0, R6, R7)	/* r6 scratch, r7 transact fp state */
-
-	mffs    fr0
-	stfd    fr0,FPSTATE_FPSCR(r7)
-
-dont_backup_fp:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* TM regs, incl TEXASR -- these live in thread_struct.  Note they've
 	 * been updated by the treclaim, to explain to userland the failure
@@ -397,13 +327,8 @@ dont_backup_fp:
 	blr
 
 
-<<<<<<< HEAD
        /*
 	 * void __tm_recheckpoint(struct thread_struct *thread)
-=======
-	/* void __tm_recheckpoint(struct thread_struct *thread,
-	 *			  unsigned long orig_msr)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 *	- Restore the checkpointed register state saved by tm_reclaim
 	 *	  when we switch_to a process.
 	 *
@@ -432,7 +357,6 @@ _GLOBAL(__tm_recheckpoint)
 	 */
 	subi	r7, r7, STACK_FRAME_OVERHEAD
 
-<<<<<<< HEAD
 	/* We need to setup MSR for FP/VMX/VSX register save instructions. */
 	mfmsr	r6
 	mr	r5, r6
@@ -446,24 +370,6 @@ _GLOBAL(__tm_recheckpoint)
 	END_FTR_SECTION_IFSET(CPU_FTR_VSX)
 #endif
 	mtmsrd	r5
-=======
-	mfmsr	r6
-	/* R4 = original MSR to indicate whether thread used FP/Vector etc. */
-
-	/* Enable FP/vec in MSR if necessary! */
-	lis	r5, MSR_VEC@h
-	ori	r5, r5, MSR_FP
-	and.	r5, r4, r5
-	beq	restore_gprs			/* if neither, skip both */
-
-#ifdef CONFIG_VSX
-	BEGIN_FTR_SECTION
-	oris	r5, r5, MSR_VSX@h
-	END_FTR_SECTION_IFSET(CPU_FTR_VSX)
-#endif
-	or	r5, r6, r5			/* Set MSR.FP+.VSX/.VEC */
-	mtmsr	r5
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_ALTIVEC
 	/*
@@ -472,40 +378,20 @@ _GLOBAL(__tm_recheckpoint)
 	 * thread.fp_state[] version holds the 'live' (transactional)
 	 * and will be loaded subsequently by any FPUnavailable trap.
 	 */
-<<<<<<< HEAD
-=======
-	andis.	r0, r4, MSR_VEC@h
-	beq	dont_restore_vec
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	addi	r8, r3, THREAD_CKVRSTATE
 	li	r5, VRSTATE_VSCR
 	lvx	v0, r8, r5
 	mtvscr	v0
 	REST_32VRS(0, r5, r8)			/* r5 scratch, r8 ptr */
-<<<<<<< HEAD
-=======
-dont_restore_vec:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ld	r5, THREAD_CKVRSAVE(r3)
 	mtspr	SPRN_VRSAVE, r5
 #endif
 
-<<<<<<< HEAD
-=======
-	andi.	r0, r4, MSR_FP
-	beq	dont_restore_fp
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	addi	r8, r3, THREAD_CKFPSTATE
 	lfd	fr0, FPSTATE_FPSCR(r8)
 	MTFSF_L(fr0)
 	REST_32FPRS_VSRS(0, R4, R8)
 
-<<<<<<< HEAD
-=======
-dont_restore_fp:
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mtmsr	r6				/* FP/Vec off again! */
 
 restore_gprs:

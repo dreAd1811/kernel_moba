@@ -62,10 +62,7 @@ ia64_emulate_brl (struct pt_regs *regs, unsigned long ar_ec)
 	struct illegal_op_return rv;
 	long tmp_taken, unimplemented_address;
 
-<<<<<<< HEAD
 	clear_siginfo(&siginfo);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rv.fkt = (unsigned long) -1;
 
 	/*

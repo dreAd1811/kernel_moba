@@ -55,13 +55,8 @@ static int ir_sony_decode(struct rc_dev *dev, struct ir_raw_event ev)
 	if (!geq_margin(ev.duration, SONY_UNIT, SONY_UNIT / 2))
 		goto out;
 
-<<<<<<< HEAD
 	dev_dbg(&dev->dev, "Sony decode started at state %d (%uus %s)\n",
 		data->state, TO_US(ev.duration), TO_STR(ev.pulse));
-=======
-	IR_dprintk(2, "Sony decode started at state %d (%uus %s)\n",
-		   data->state, TO_US(ev.duration), TO_STR(ev.pulse));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (data->state) {
 
@@ -153,34 +148,21 @@ static int ir_sony_decode(struct rc_dev *dev, struct ir_raw_event ev)
 			protocol = RC_PROTO_SONY20;
 			break;
 		default:
-<<<<<<< HEAD
 			dev_dbg(&dev->dev, "Sony invalid bitcount %u\n",
 				data->count);
-=======
-			IR_dprintk(1, "Sony invalid bitcount %u\n", data->count);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto out;
 		}
 
 		scancode = device << 16 | subdevice << 8 | function;
-<<<<<<< HEAD
 		dev_dbg(&dev->dev, "Sony(%u) scancode 0x%05x\n", data->count,
 			scancode);
-=======
-		IR_dprintk(1, "Sony(%u) scancode 0x%05x\n", data->count, scancode);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rc_keydown(dev, protocol, scancode, 0);
 		goto finish_state_machine;
 	}
 
 out:
-<<<<<<< HEAD
 	dev_dbg(&dev->dev, "Sony decode failed at state %d (%uus %s)\n",
 		data->state, TO_US(ev.duration), TO_STR(ev.pulse));
-=======
-	IR_dprintk(1, "Sony decode failed at state %d (%uus %s)\n",
-		   data->state, TO_US(ev.duration), TO_STR(ev.pulse));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	data->state = STATE_INACTIVE;
 	return -EINVAL;
 
@@ -241,11 +223,8 @@ static struct ir_raw_handler sony_handler = {
 							RC_PROTO_BIT_SONY20,
 	.decode		= ir_sony_decode,
 	.encode		= ir_sony_encode,
-<<<<<<< HEAD
 	.carrier	= 40000,
 	.min_timeout	= SONY_TRAILER_SPACE,
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int __init ir_sony_decode_init(void)

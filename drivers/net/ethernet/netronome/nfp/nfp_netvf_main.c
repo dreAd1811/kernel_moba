@@ -277,26 +277,13 @@ static int nfp_netvf_pci_probe(struct pci_dev *pdev,
 	}
 	nfp_net_irqs_assign(nn, vf->irq_entries, num_irqs);
 
-<<<<<<< HEAD
-=======
-	/* Get ME clock frequency from ctrl BAR
-	 * XXX for now frequency is hardcoded until we figure out how
-	 * to get the value from nfp-hwinfo into ctrl bar
-	 */
-	nn->me_freq_mhz = 1200;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = nfp_net_init(nn);
 	if (err)
 		goto err_irqs_disable;
 
 	nfp_net_info(nn);
 	vf->ddir = nfp_net_debugfs_device_add(pdev);
-<<<<<<< HEAD
 	nfp_net_debugfs_vnic_add(nn, vf->ddir);
-=======
-	nfp_net_debugfs_vnic_add(nn, vf->ddir, 0);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 

@@ -22,11 +22,7 @@
 #include <linux/i2c.h>
 #include <linux/slab.h>
 
-<<<<<<< HEAD
 #include <media/dvb_frontend.h>
-=======
-#include "dvb_frontend.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "itd1000.h"
 #include "itd1000_priv.h"
@@ -357,17 +353,10 @@ static void itd1000_release(struct dvb_frontend *fe)
 
 static const struct dvb_tuner_ops itd1000_tuner_ops = {
 	.info = {
-<<<<<<< HEAD
 		.name              = "Integrant ITD1000",
 		.frequency_min_hz  =  950 * MHz,
 		.frequency_max_hz  = 2150 * MHz,
 		.frequency_step_hz =  125 * kHz,
-=======
-		.name           = "Integrant ITD1000",
-		.frequency_min  = 950000,
-		.frequency_max  = 2150000,
-		.frequency_step = 125,     /* kHz for QPSK frontends */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 
 	.release       = itd1000_release,

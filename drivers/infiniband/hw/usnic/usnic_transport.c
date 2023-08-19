@@ -174,22 +174,13 @@ void usnic_transport_put_socket(struct socket *sock)
 int usnic_transport_sock_get_addr(struct socket *sock, int *proto,
 					uint32_t *addr, uint16_t *port)
 {
-<<<<<<< HEAD
-=======
-	int len;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 	struct sockaddr_in sock_addr;
 
 	err = sock->ops->getname(sock,
 				(struct sockaddr *)&sock_addr,
-<<<<<<< HEAD
 				0);
 	if (err < 0)
-=======
-				&len, 0);
-	if (err)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return err;
 
 	if (sock_addr.sin_family != AF_INET)
@@ -209,15 +200,8 @@ int usnic_transport_sock_get_addr(struct socket *sock, int *proto,
 int usnic_transport_init(void)
 {
 	roce_bitmap = kzalloc(ROCE_BITMAP_SZ, GFP_KERNEL);
-<<<<<<< HEAD
 	if (!roce_bitmap)
 		return -ENOMEM;
-=======
-	if (!roce_bitmap) {
-		usnic_err("Failed to allocate bit map");
-		return -ENOMEM;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Do not ever allocate bit 0, hence set it here */
 	bitmap_set(roce_bitmap, 0, 1);

@@ -30,10 +30,7 @@
 #include <linux/of.h>
 #include <linux/of_irq.h>
 #include <linux/spinlock.h>
-<<<<<<< HEAD
 #include <dt-bindings/input/gpio-keys.h>
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct gpio_button_data {
 	const struct gpio_keys_button *button;
@@ -49,10 +46,7 @@ struct gpio_button_data {
 	unsigned int software_debounce;	/* in msecs, for GPIO-driven buttons */
 
 	unsigned int irq;
-<<<<<<< HEAD
 	unsigned int wakeup_trigger_type;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spinlock_t lock;
 	bool disabled;
 	bool key_pressed;
@@ -202,11 +196,7 @@ static ssize_t gpio_keys_attr_show_helper(struct gpio_keys_drvdata *ddata,
 	ssize_t ret;
 	int i;
 
-<<<<<<< HEAD
 	bits = bitmap_zalloc(n_events, GFP_KERNEL);
-=======
-	bits = kcalloc(BITS_TO_LONGS(n_events), sizeof(*bits), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!bits)
 		return -ENOMEM;
 
@@ -226,11 +216,7 @@ static ssize_t gpio_keys_attr_show_helper(struct gpio_keys_drvdata *ddata,
 	buf[ret++] = '\n';
 	buf[ret] = '\0';
 
-<<<<<<< HEAD
 	bitmap_free(bits);
-=======
-	kfree(bits);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -254,11 +240,7 @@ static ssize_t gpio_keys_attr_store_helper(struct gpio_keys_drvdata *ddata,
 	ssize_t error;
 	int i;
 
-<<<<<<< HEAD
 	bits = bitmap_zalloc(n_events, GFP_KERNEL);
-=======
-	bits = kcalloc(BITS_TO_LONGS(n_events), sizeof(*bits), GFP_KERNEL);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!bits)
 		return -ENOMEM;
 
@@ -302,11 +284,7 @@ static ssize_t gpio_keys_attr_store_helper(struct gpio_keys_drvdata *ddata,
 	mutex_unlock(&ddata->disable_lock);
 
 out:
-<<<<<<< HEAD
 	bitmap_free(bits);
-=======
-	kfree(bits);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return error;
 }
 
@@ -443,15 +421,9 @@ static irqreturn_t gpio_keys_gpio_isr(int irq, void *dev_id)
 	return IRQ_HANDLED;
 }
 
-<<<<<<< HEAD
 static void gpio_keys_irq_timer(struct timer_list *t)
 {
 	struct gpio_button_data *bdata = from_timer(bdata, t, release_timer);
-=======
-static void gpio_keys_irq_timer(unsigned long _data)
-{
-	struct gpio_button_data *bdata = (struct gpio_button_data *)_data;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct input_dev *input = bdata->input;
 	unsigned long flags;
 
@@ -570,11 +542,8 @@ static int gpio_keys_setup_key(struct platform_device *pdev,
 	}
 
 	if (bdata->gpiod) {
-<<<<<<< HEAD
 		bool active_low = gpiod_is_active_low(bdata->gpiod);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (button->debounce_interval) {
 			error = gpiod_set_debounce(bdata->gpiod,
 					button->debounce_interval * 1000);
@@ -603,7 +572,6 @@ static int gpio_keys_setup_key(struct platform_device *pdev,
 		isr = gpio_keys_gpio_isr;
 		irqflags = IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING;
 
-<<<<<<< HEAD
 		switch (button->wakeup_event_action) {
 		case EV_ACT_ASSERTED:
 			bdata->wakeup_trigger_type = active_low ?
@@ -622,8 +590,6 @@ static int gpio_keys_setup_key(struct platform_device *pdev,
 			 */
 			break;
 		}
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		if (!button->irq) {
 			dev_err(dev, "Found button without gpio or irq\n");
@@ -638,7 +604,6 @@ static int gpio_keys_setup_key(struct platform_device *pdev,
 		}
 
 		bdata->release_delay = button->debounce_interval;
-<<<<<<< HEAD
 		timer_setup(&bdata->release_timer, gpio_keys_irq_timer, 0);
 
 		isr = gpio_keys_irq_isr;
@@ -648,13 +613,6 @@ static int gpio_keys_setup_key(struct platform_device *pdev,
 		 * For IRQ buttons, there is no interrupt for release.
 		 * So we don't need to reconfigure the trigger type for wakeup.
 		 */
-=======
-		setup_timer(&bdata->release_timer,
-			    gpio_keys_irq_timer, (unsigned long)bdata);
-
-		isr = gpio_keys_irq_isr;
-		irqflags = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	bdata->code = &ddata->keymap[idx];
@@ -787,12 +745,9 @@ gpio_keys_get_devtree_pdata(struct device *dev)
 			/* legacy name */
 			fwnode_property_read_bool(child, "gpio-key,wakeup");
 
-<<<<<<< HEAD
 		fwnode_property_read_u32(child, "wakeup-event-action",
 					 &button->wakeup_event_action);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		button->can_disable =
 			fwnode_property_read_bool(child, "linux,can-disable");
 
@@ -920,7 +875,6 @@ static int gpio_keys_probe(struct platform_device *pdev)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int __maybe_unused
 gpio_keys_button_enable_wakeup(struct gpio_button_data *bdata)
 {
@@ -1017,30 +971,16 @@ gpio_keys_disable_wakeup(struct gpio_keys_drvdata *ddata)
 	}
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __maybe_unused gpio_keys_suspend(struct device *dev)
 {
 	struct gpio_keys_drvdata *ddata = dev_get_drvdata(dev);
 	struct input_dev *input = ddata->input;
-<<<<<<< HEAD
 	int error;
 
 	if (device_may_wakeup(dev)) {
 		error = gpio_keys_enable_wakeup(ddata);
 		if (error)
 			return error;
-=======
-	int i;
-
-	if (device_may_wakeup(dev)) {
-		for (i = 0; i < ddata->pdata->nbuttons; i++) {
-			struct gpio_button_data *bdata = &ddata->data[i];
-			if (bdata->button->wakeup)
-				enable_irq_wake(bdata->irq);
-			bdata->suspended = true;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		mutex_lock(&input->mutex);
 		if (input->users)
@@ -1056,21 +996,9 @@ static int __maybe_unused gpio_keys_resume(struct device *dev)
 	struct gpio_keys_drvdata *ddata = dev_get_drvdata(dev);
 	struct input_dev *input = ddata->input;
 	int error = 0;
-<<<<<<< HEAD
 
 	if (device_may_wakeup(dev)) {
 		gpio_keys_disable_wakeup(ddata);
-=======
-	int i;
-
-	if (device_may_wakeup(dev)) {
-		for (i = 0; i < ddata->pdata->nbuttons; i++) {
-			struct gpio_button_data *bdata = &ddata->data[i];
-			if (bdata->button->wakeup)
-				disable_irq_wake(bdata->irq);
-			bdata->suspended = false;
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		mutex_lock(&input->mutex);
 		if (input->users)

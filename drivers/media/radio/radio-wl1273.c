@@ -671,11 +671,7 @@ fail:
 static int wl1273_fm_suspend(struct wl1273_device *radio)
 {
 	struct wl1273_core *core = radio->core;
-<<<<<<< HEAD
 	int r;
-=======
-	int r = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Cannot go from OFF to SUSPENDED */
 	if (core->mode == WL1273_MODE_RX)
@@ -1093,22 +1089,14 @@ out:
 	return r;
 }
 
-<<<<<<< HEAD
 static __poll_t wl1273_fm_fops_poll(struct file *file,
-=======
-static unsigned int wl1273_fm_fops_poll(struct file *file,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					struct poll_table_struct *pts)
 {
 	struct wl1273_device *radio = video_get_drvdata(video_devdata(file));
 	struct wl1273_core *core = radio->core;
 
 	if (radio->owner && radio->owner != file)
-<<<<<<< HEAD
 		return EPOLLERR;
-=======
-		return -EBUSY;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	radio->owner = file;
 
@@ -1116,17 +1104,10 @@ static unsigned int wl1273_fm_fops_poll(struct file *file,
 		poll_wait(file, &radio->read_queue, pts);
 
 		if (radio->rd_index != radio->wr_index)
-<<<<<<< HEAD
 			return EPOLLIN | EPOLLRDNORM;
 
 	} else if (core->mode == WL1273_MODE_TX) {
 		return EPOLLOUT | EPOLLWRNORM;
-=======
-			return POLLIN | POLLRDNORM;
-
-	} else if (core->mode == WL1273_MODE_TX) {
-		return POLLOUT | POLLWRNORM;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -1175,12 +1156,8 @@ static int wl1273_fm_fops_release(struct file *file)
 	if (radio->rds_users > 0) {
 		radio->rds_users--;
 		if (radio->rds_users == 0) {
-<<<<<<< HEAD
 			if (mutex_lock_interruptible(&core->lock))
 				return -EINTR;
-=======
-			mutex_lock(&core->lock);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			radio->irq_flags &= ~WL1273_RDS_EVENT;
 
@@ -1353,11 +1330,7 @@ static int wl1273_fm_vidioc_s_input(struct file *file, void *priv,
 
 /**
  * wl1273_fm_set_tx_power() -	Set the transmission power value.
-<<<<<<< HEAD
  * @radio:			A pointer to the device struct.
-=======
- * @core:			A pointer to the device struct.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @power:			The new power value.
  */
 static int wl1273_fm_set_tx_power(struct wl1273_device *radio, u16 power)

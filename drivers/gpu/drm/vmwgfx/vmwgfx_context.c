@@ -1,14 +1,7 @@
-<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0 OR MIT
 /**************************************************************************
  *
  * Copyright 2009-2015 VMware, Inc., Palo Alto, CA., USA
-=======
-/**************************************************************************
- *
- * Copyright © 2009-2015 VMware, Inc., Palo Alto, CA., USA
- * All Rights Reserved.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
@@ -45,11 +38,7 @@ struct vmw_user_context {
 	struct vmw_cmdbuf_res_manager *man;
 	struct vmw_resource *cotables[SVGA_COTABLE_DX10_MAX];
 	spinlock_t cotable_lock;
-<<<<<<< HEAD
 	struct vmw_buffer_object *dx_query_mob;
-=======
-	struct vmw_dma_buffer *dx_query_mob;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void vmw_user_context_free(struct vmw_resource *res);
@@ -435,11 +424,7 @@ static int vmw_gb_context_unbind(struct vmw_resource *res,
 	(void) vmw_execbuf_fence_commands(NULL, dev_priv,
 					  &fence, NULL);
 
-<<<<<<< HEAD
 	vmw_bo_fence_single(bo, fence);
-=======
-	vmw_fence_single_bo(bo, fence);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (likely(fence != NULL))
 		vmw_fence_obj_unreference(&fence);
@@ -663,11 +648,7 @@ static int vmw_dx_context_unbind(struct vmw_resource *res,
 	(void) vmw_execbuf_fence_commands(NULL, dev_priv,
 					  &fence, NULL);
 
-<<<<<<< HEAD
 	vmw_bo_fence_single(bo, fence);
-=======
-	vmw_fence_single_bo(bo, fence);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (likely(fence != NULL))
 		vmw_fence_obj_unreference(&fence);
@@ -765,13 +746,10 @@ static int vmw_context_define(struct drm_device *dev, void *data,
 	struct vmw_resource *tmp;
 	struct drm_vmw_context_arg *arg = (struct drm_vmw_context_arg *)data;
 	struct ttm_object_file *tfile = vmw_fpriv(file_priv)->tfile;
-<<<<<<< HEAD
 	struct ttm_operation_ctx ttm_opt_ctx = {
 		.interruptible = true,
 		.no_wait_gpu = false
 	};
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	if (!dev_priv->has_dx && dx) {
@@ -794,11 +772,7 @@ static int vmw_context_define(struct drm_device *dev, void *data,
 
 	ret = ttm_mem_global_alloc(vmw_mem_glob(dev_priv),
 				   vmw_user_context_size,
-<<<<<<< HEAD
 				   &ttm_opt_ctx);
-=======
-				   false, true);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(ret != 0)) {
 		if (ret != -ERESTARTSYS)
 			DRM_ERROR("Out of graphics memory for context"
@@ -926,11 +900,7 @@ vmw_context_binding_state(struct vmw_resource *ctx)
  * specified in the parameter.  0 otherwise.
  */
 int vmw_context_bind_dx_query(struct vmw_resource *ctx_res,
-<<<<<<< HEAD
 			      struct vmw_buffer_object *mob)
-=======
-			      struct vmw_dma_buffer *mob)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct vmw_user_context *uctx =
 		container_of(ctx_res, struct vmw_user_context, res);
@@ -938,11 +908,7 @@ int vmw_context_bind_dx_query(struct vmw_resource *ctx_res,
 	if (mob == NULL) {
 		if (uctx->dx_query_mob) {
 			uctx->dx_query_mob->dx_query_ctx = NULL;
-<<<<<<< HEAD
 			vmw_bo_unreference(&uctx->dx_query_mob);
-=======
-			vmw_dmabuf_unreference(&uctx->dx_query_mob);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			uctx->dx_query_mob = NULL;
 		}
 
@@ -956,11 +922,7 @@ int vmw_context_bind_dx_query(struct vmw_resource *ctx_res,
 	mob->dx_query_ctx  = ctx_res;
 
 	if (!uctx->dx_query_mob)
-<<<<<<< HEAD
 		uctx->dx_query_mob = vmw_bo_reference(mob);
-=======
-		uctx->dx_query_mob = vmw_dmabuf_reference(mob);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -970,11 +932,7 @@ int vmw_context_bind_dx_query(struct vmw_resource *ctx_res,
  *
  * @ctx_res: The context resource
  */
-<<<<<<< HEAD
 struct vmw_buffer_object *
-=======
-struct vmw_dma_buffer *
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 vmw_context_get_dx_query_mob(struct vmw_resource *ctx_res)
 {
 	struct vmw_user_context *uctx =

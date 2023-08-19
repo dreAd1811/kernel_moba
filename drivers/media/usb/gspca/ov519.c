@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 /*
-=======
-/**
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * OV519 driver
  *
  * Copyright (C) 2008-2011 Jean-François Moine <moinejf@free.fr>
@@ -2020,13 +2016,8 @@ static void reg_w(struct sd *sd, u16 index, u16 value)
 		req = 0x0a;
 		/* fall through */
 	case BRIDGE_W9968CF:
-<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_USBO, "SET %02x %04x %04x\n",
 			  req, value, index);
-=======
-		PDEBUG(D_USBO, "SET %02x %04x %04x",
-				req, value, index);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = usb_control_msg(sd->gspca_dev.dev,
 			usb_sndctrlpipe(sd->gspca_dev.dev, 0),
 			req,
@@ -2037,13 +2028,8 @@ static void reg_w(struct sd *sd, u16 index, u16 value)
 		req = 1;
 	}
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_USBO, "SET %02x 0000 %04x %02x\n",
 		  req, index, value);
-=======
-	PDEBUG(D_USBO, "SET %02x 0000 %04x %02x",
-			req, index, value);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sd->gspca_dev.usb_buf[0] = value;
 	ret = usb_control_msg(sd->gspca_dev.dev,
 			usb_sndctrlpipe(sd->gspca_dev.dev, 0),
@@ -2053,11 +2039,7 @@ static void reg_w(struct sd *sd, u16 index, u16 value)
 			sd->gspca_dev.usb_buf, 1, 500);
 leave:
 	if (ret < 0) {
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "reg_w %02x failed %d\n", index, ret);
-=======
-		PERR("reg_w %02x failed %d\n", index, ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sd->gspca_dev.usb_err = ret;
 		return;
 	}
@@ -2096,17 +2078,10 @@ static int reg_r(struct sd *sd, u16 index)
 
 	if (ret >= 0) {
 		ret = sd->gspca_dev.usb_buf[0];
-<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_USBI, "GET %02x 0000 %04x %02x\n",
 			  req, index, ret);
 	} else {
 		gspca_err(gspca_dev, "reg_r %02x failed %d\n", index, ret);
-=======
-		PDEBUG(D_USBI, "GET %02x 0000 %04x %02x",
-			req, index, ret);
-	} else {
-		PERR("reg_r %02x failed %d\n", index, ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sd->gspca_dev.usb_err = ret;
 		/*
 		 * Make sure the result is zeroed to avoid uninitialized
@@ -2139,11 +2114,7 @@ static int reg_r8(struct sd *sd,
 	if (ret >= 0) {
 		ret = sd->gspca_dev.usb_buf[0];
 	} else {
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "reg_r8 %02x failed %d\n", index, ret);
-=======
-		PERR("reg_r8 %02x failed %d\n", index, ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sd->gspca_dev.usb_err = ret;
 		/*
 		 * Make sure the buffer is zeroed to avoid uninitialized
@@ -2204,11 +2175,7 @@ static void ov518_reg_w32(struct sd *sd, u16 index, u32 value, int n)
 			0, index,
 			sd->gspca_dev.usb_buf, n, 500);
 	if (ret < 0) {
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "reg_w32 %02x failed %d\n", index, ret);
-=======
-		PERR("reg_w32 %02x failed %d\n", index, ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sd->gspca_dev.usb_err = ret;
 	}
 }
@@ -2218,11 +2185,7 @@ static void ov511_i2c_w(struct sd *sd, u8 reg, u8 value)
 	struct gspca_dev *gspca_dev = (struct gspca_dev *)sd;
 	int rc, retries;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_USBO, "ov511_i2c_w %02x %02x\n", reg, value);
-=======
-	PDEBUG(D_USBO, "ov511_i2c_w %02x %02x", reg, value);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Three byte write cycle */
 	for (retries = 6; ; ) {
@@ -2245,11 +2208,7 @@ static void ov511_i2c_w(struct sd *sd, u8 reg, u8 value)
 		if ((rc & 2) == 0) /* Ack? */
 			break;
 		if (--retries < 0) {
-<<<<<<< HEAD
 			gspca_dbg(gspca_dev, D_USBO, "i2c write retries exhausted\n");
-=======
-			PDEBUG(D_USBO, "i2c write retries exhausted");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return;
 		}
 	}
@@ -2282,11 +2241,7 @@ static int ov511_i2c_r(struct sd *sd, u8 reg)
 		reg_w(sd, R511_I2C_CTL, 0x10);
 
 		if (--retries < 0) {
-<<<<<<< HEAD
 			gspca_dbg(gspca_dev, D_USBI, "i2c write retries exhausted\n");
-=======
-			PDEBUG(D_USBI, "i2c write retries exhausted");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -1;
 		}
 	}
@@ -2310,22 +2265,14 @@ static int ov511_i2c_r(struct sd *sd, u8 reg)
 		reg_w(sd, R511_I2C_CTL, 0x10);
 
 		if (--retries < 0) {
-<<<<<<< HEAD
 			gspca_dbg(gspca_dev, D_USBI, "i2c read retries exhausted\n");
-=======
-			PDEBUG(D_USBI, "i2c read retries exhausted");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -1;
 		}
 	}
 
 	value = reg_r(sd, R51x_I2C_DATA);
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_USBI, "ov511_i2c_r %02x %02x\n", reg, value);
-=======
-	PDEBUG(D_USBI, "ov511_i2c_r %02x %02x", reg, value);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* This is needed to make i2c_w() work */
 	reg_w(sd, R511_I2C_CTL, 0x05);
@@ -2344,11 +2291,7 @@ static void ov518_i2c_w(struct sd *sd,
 {
 	struct gspca_dev *gspca_dev = (struct gspca_dev *)sd;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_USBO, "ov518_i2c_w %02x %02x\n", reg, value);
-=======
-	PDEBUG(D_USBO, "ov518_i2c_w %02x %02x", reg, value);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Select camera register */
 	reg_w(sd, R51x_I2C_SADDR_3, reg);
@@ -2388,11 +2331,7 @@ static int ov518_i2c_r(struct sd *sd, u8 reg)
 	reg_r8(sd, R518_I2C_CTL);
 
 	value = reg_r(sd, R51x_I2C_DATA);
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_USBI, "ov518_i2c_r %02x %02x\n", reg, value);
-=======
-	PDEBUG(D_USBI, "ov518_i2c_r %02x %02x", reg, value);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return value;
 }
 
@@ -2411,19 +2350,11 @@ static void ovfx2_i2c_w(struct sd *sd, u8 reg, u8 value)
 			(u16) value, (u16) reg, NULL, 0, 500);
 
 	if (ret < 0) {
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "ovfx2_i2c_w %02x failed %d\n", reg, ret);
 		sd->gspca_dev.usb_err = ret;
 	}
 
 	gspca_dbg(gspca_dev, D_USBO, "ovfx2_i2c_w %02x %02x\n", reg, value);
-=======
-		PERR("ovfx2_i2c_w %02x failed %d\n", reg, ret);
-		sd->gspca_dev.usb_err = ret;
-	}
-
-	PDEBUG(D_USBO, "ovfx2_i2c_w %02x %02x", reg, value);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int ovfx2_i2c_r(struct sd *sd, u8 reg)
@@ -2442,16 +2373,10 @@ static int ovfx2_i2c_r(struct sd *sd, u8 reg)
 
 	if (ret >= 0) {
 		ret = sd->gspca_dev.usb_buf[0];
-<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_USBI, "ovfx2_i2c_r %02x %02x\n",
 			  reg, ret);
 	} else {
 		gspca_err(gspca_dev, "ovfx2_i2c_r %02x failed %d\n", reg, ret);
-=======
-		PDEBUG(D_USBI, "ovfx2_i2c_r %02x %02x", reg, ret);
-	} else {
-		PERR("ovfx2_i2c_r %02x failed %d\n", reg, ret);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sd->gspca_dev.usb_err = ret;
 	}
 
@@ -2550,11 +2475,7 @@ static inline void ov51x_stop(struct sd *sd)
 {
 	struct gspca_dev *gspca_dev = (struct gspca_dev *)sd;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_STREAM, "stopping\n");
-=======
-	PDEBUG(D_STREAM, "stopping");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sd->stopped = 1;
 	switch (sd->bridge) {
 	case BRIDGE_OV511:
@@ -2585,11 +2506,7 @@ static inline void ov51x_restart(struct sd *sd)
 {
 	struct gspca_dev *gspca_dev = (struct gspca_dev *)sd;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_STREAM, "restarting\n");
-=======
-	PDEBUG(D_STREAM, "restarting");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!sd->stopped)
 		return;
 	sd->stopped = 0;
@@ -2640,12 +2557,8 @@ static int init_ov_sensor(struct sd *sd, u8 slave)
 	for (i = 0; i < i2c_detect_tries; i++) {
 		if (i2c_r(sd, OV7610_REG_ID_HIGH) == 0x7f &&
 		    i2c_r(sd, OV7610_REG_ID_LOW) == 0xa2) {
-<<<<<<< HEAD
 			gspca_dbg(gspca_dev, D_PROBE, "I2C synced in %d attempt(s)\n",
 				  i);
-=======
-			PDEBUG(D_PROBE, "I2C synced in %d attempt(s)", i);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return 0;
 		}
 
@@ -2716,19 +2629,11 @@ static void ov_hires_configure(struct sd *sd)
 	int high, low;
 
 	if (sd->bridge != BRIDGE_OVFX2) {
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "error hires sensors only supported with ovfx2\n");
 		return;
 	}
 
 	gspca_dbg(gspca_dev, D_PROBE, "starting ov hires configuration\n");
-=======
-		PERR("error hires sensors only supported with ovfx2\n");
-		return;
-	}
-
-	PDEBUG(D_PROBE, "starting ov hires configuration");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Detect sensor (sub)type */
 	high = i2c_r(sd, 0x0a);
@@ -2738,7 +2643,6 @@ static void ov_hires_configure(struct sd *sd)
 	case 0x96:
 		switch (low) {
 		case 0x40:
-<<<<<<< HEAD
 			gspca_dbg(gspca_dev, D_PROBE, "Sensor is a OV2610\n");
 			sd->sensor = SEN_OV2610;
 			return;
@@ -2748,39 +2652,20 @@ static void ov_hires_configure(struct sd *sd)
 			return;
 		case 0xb1:
 			gspca_dbg(gspca_dev, D_PROBE, "Sensor is a OV9600\n");
-=======
-			PDEBUG(D_PROBE, "Sensor is a OV2610");
-			sd->sensor = SEN_OV2610;
-			return;
-		case 0x41:
-			PDEBUG(D_PROBE, "Sensor is a OV2610AE");
-			sd->sensor = SEN_OV2610AE;
-			return;
-		case 0xb1:
-			PDEBUG(D_PROBE, "Sensor is a OV9600");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			sd->sensor = SEN_OV9600;
 			return;
 		}
 		break;
 	case 0x36:
 		if ((low & 0x0f) == 0x00) {
-<<<<<<< HEAD
 			gspca_dbg(gspca_dev, D_PROBE, "Sensor is a OV3610\n");
-=======
-			PDEBUG(D_PROBE, "Sensor is a OV3610");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			sd->sensor = SEN_OV3610;
 			return;
 		}
 		break;
 	}
-<<<<<<< HEAD
 	gspca_err(gspca_dev, "Error unknown sensor type: %02x%02x\n",
 		  high, low);
-=======
-	PERR("Error unknown sensor type: %02x%02x\n", high, low);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* This initializes the OV8110, OV8610 sensor. The OV8110 uses
@@ -2791,31 +2676,19 @@ static void ov8xx0_configure(struct sd *sd)
 	struct gspca_dev *gspca_dev = (struct gspca_dev *)sd;
 	int rc;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_PROBE, "starting ov8xx0 configuration\n");
-=======
-	PDEBUG(D_PROBE, "starting ov8xx0 configuration");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Detect sensor (sub)type */
 	rc = i2c_r(sd, OV7610_REG_COM_I);
 	if (rc < 0) {
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "Error detecting sensor type\n");
-=======
-		PERR("Error detecting sensor type");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 	if ((rc & 3) == 1)
 		sd->sensor = SEN_OV8610;
 	else
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "Unknown image sensor version: %d\n",
 			  rc & 3);
-=======
-		PERR("Unknown image sensor version: %d\n", rc & 3);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* This initializes the OV7610, OV7620, or OV76BE sensor. The OV76BE uses
@@ -2826,11 +2699,7 @@ static void ov7xx0_configure(struct sd *sd)
 	struct gspca_dev *gspca_dev = (struct gspca_dev *)sd;
 	int rc, high, low;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_PROBE, "starting OV7xx0 configuration\n");
-=======
-	PDEBUG(D_PROBE, "starting OV7xx0 configuration");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Detect sensor (sub)type */
 	rc = i2c_r(sd, OV7610_REG_COM_I);
@@ -2838,11 +2707,7 @@ static void ov7xx0_configure(struct sd *sd)
 	/* add OV7670 here
 	 * it appears to be wrongly detected as a 7610 by default */
 	if (rc < 0) {
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "Error detecting sensor type\n");
-=======
-		PERR("Error detecting sensor type\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 	if ((rc & 3) == 3) {
@@ -2851,60 +2716,37 @@ static void ov7xx0_configure(struct sd *sd)
 		low = i2c_r(sd, 0x0b);
 		/* info("%x, %x", high, low); */
 		if (high == 0x76 && (low & 0xf0) == 0x70) {
-<<<<<<< HEAD
 			gspca_dbg(gspca_dev, D_PROBE, "Sensor is an OV76%02x\n",
 				  low);
 			sd->sensor = SEN_OV7670;
 		} else {
 			gspca_dbg(gspca_dev, D_PROBE, "Sensor is an OV7610\n");
-=======
-			PDEBUG(D_PROBE, "Sensor is an OV76%02x", low);
-			sd->sensor = SEN_OV7670;
-		} else {
-			PDEBUG(D_PROBE, "Sensor is an OV7610");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			sd->sensor = SEN_OV7610;
 		}
 	} else if ((rc & 3) == 1) {
 		/* I don't know what's different about the 76BE yet. */
 		if (i2c_r(sd, 0x15) & 1) {
-<<<<<<< HEAD
 			gspca_dbg(gspca_dev, D_PROBE, "Sensor is an OV7620AE\n");
 			sd->sensor = SEN_OV7620AE;
 		} else {
 			gspca_dbg(gspca_dev, D_PROBE, "Sensor is an OV76BE\n");
-=======
-			PDEBUG(D_PROBE, "Sensor is an OV7620AE");
-			sd->sensor = SEN_OV7620AE;
-		} else {
-			PDEBUG(D_PROBE, "Sensor is an OV76BE");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			sd->sensor = SEN_OV76BE;
 		}
 	} else if ((rc & 3) == 0) {
 		/* try to read product id registers */
 		high = i2c_r(sd, 0x0a);
 		if (high < 0) {
-<<<<<<< HEAD
 			gspca_err(gspca_dev, "Error detecting camera chip PID\n");
-=======
-			PERR("Error detecting camera chip PID\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return;
 		}
 		low = i2c_r(sd, 0x0b);
 		if (low < 0) {
-<<<<<<< HEAD
 			gspca_err(gspca_dev, "Error detecting camera chip VER\n");
-=======
-			PERR("Error detecting camera chip VER\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return;
 		}
 		if (high == 0x76) {
 			switch (low) {
 			case 0x30:
-<<<<<<< HEAD
 				gspca_err(gspca_dev, "Sensor is an OV7630/OV7635\n");
 				gspca_err(gspca_dev, "7630 is not supported by this driver\n");
 				return;
@@ -2936,37 +2778,6 @@ static void ov7xx0_configure(struct sd *sd)
 	} else {
 		gspca_err(gspca_dev, "Unknown image sensor version: %d\n",
 			  rc & 3);
-=======
-				PERR("Sensor is an OV7630/OV7635\n");
-				PERR("7630 is not supported by this driver\n");
-				return;
-			case 0x40:
-				PDEBUG(D_PROBE, "Sensor is an OV7645");
-				sd->sensor = SEN_OV7640; /* FIXME */
-				break;
-			case 0x45:
-				PDEBUG(D_PROBE, "Sensor is an OV7645B");
-				sd->sensor = SEN_OV7640; /* FIXME */
-				break;
-			case 0x48:
-				PDEBUG(D_PROBE, "Sensor is an OV7648");
-				sd->sensor = SEN_OV7648;
-				break;
-			case 0x60:
-				PDEBUG(D_PROBE, "Sensor is a OV7660");
-				sd->sensor = SEN_OV7660;
-				break;
-			default:
-				PERR("Unknown sensor: 0x76%02x\n", low);
-				return;
-			}
-		} else {
-			PDEBUG(D_PROBE, "Sensor is an OV7620");
-			sd->sensor = SEN_OV7620;
-		}
-	} else {
-		PERR("Unknown image sensor version: %d\n", rc & 3);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -2976,20 +2787,12 @@ static void ov6xx0_configure(struct sd *sd)
 	struct gspca_dev *gspca_dev = (struct gspca_dev *)sd;
 	int rc;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_PROBE, "starting OV6xx0 configuration\n");
-=======
-	PDEBUG(D_PROBE, "starting OV6xx0 configuration");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Detect sensor (sub)type */
 	rc = i2c_r(sd, OV7610_REG_COM_I);
 	if (rc < 0) {
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "Error detecting sensor type\n");
-=======
-		PERR("Error detecting sensor type\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -3003,7 +2806,6 @@ static void ov6xx0_configure(struct sd *sd)
 		break;
 	case 0x01:
 		sd->sensor = SEN_OV6620;
-<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_PROBE, "Sensor is an OV6620\n");
 		break;
 	case 0x02:
@@ -3013,29 +2815,14 @@ static void ov6xx0_configure(struct sd *sd)
 	case 0x03:
 		sd->sensor = SEN_OV66308AF;
 		gspca_dbg(gspca_dev, D_PROBE, "Sensor is an OV66308AF\n");
-=======
-		PDEBUG(D_PROBE, "Sensor is an OV6620");
-		break;
-	case 0x02:
-		sd->sensor = SEN_OV6630;
-		PDEBUG(D_PROBE, "Sensor is an OV66308AE");
-		break;
-	case 0x03:
-		sd->sensor = SEN_OV66308AF;
-		PDEBUG(D_PROBE, "Sensor is an OV66308AF");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case 0x90:
 		sd->sensor = SEN_OV6630;
 		pr_warn("WARNING: Sensor is an OV66307. Your camera may have been misdetected in previous driver versions.\n");
 		break;
 	default:
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "FATAL: Unknown sensor version: 0x%02x\n",
 			  rc);
-=======
-		PERR("FATAL: Unknown sensor version: 0x%02x\n", rc);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -3096,11 +2883,7 @@ static void sd_reset_snapshot(struct gspca_dev *gspca_dev)
 
 static void ov51x_upload_quan_tables(struct sd *sd)
 {
-<<<<<<< HEAD
 	static const unsigned char yQuanTable511[] = {
-=======
-	const unsigned char yQuanTable511[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		0, 1, 1, 2, 2, 3, 3, 4,
 		1, 1, 1, 2, 2, 3, 4, 4,
 		1, 1, 2, 2, 3, 4, 4, 4,
@@ -3111,11 +2894,7 @@ static void ov51x_upload_quan_tables(struct sd *sd)
 		4, 4, 4, 4, 5, 5, 5, 5
 	};
 
-<<<<<<< HEAD
 	static const unsigned char uvQuanTable511[] = {
-=======
-	const unsigned char uvQuanTable511[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		0, 2, 2, 3, 4, 4, 4, 4,
 		2, 2, 2, 4, 4, 4, 4, 4,
 		2, 2, 3, 4, 4, 4, 4, 4,
@@ -3127,21 +2906,13 @@ static void ov51x_upload_quan_tables(struct sd *sd)
 	};
 
 	/* OV518 quantization tables are 8x4 (instead of 8x8) */
-<<<<<<< HEAD
 	static const unsigned char yQuanTable518[] = {
-=======
-	const unsigned char yQuanTable518[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		5, 4, 5, 6, 6, 7, 7, 7,
 		5, 5, 5, 5, 6, 7, 7, 7,
 		6, 6, 6, 6, 7, 7, 7, 8,
 		7, 7, 6, 7, 7, 7, 8, 8
 	};
-<<<<<<< HEAD
 	static const unsigned char uvQuanTable518[] = {
-=======
-	const unsigned char uvQuanTable518[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		6, 6, 6, 7, 7, 7, 7, 7,
 		6, 6, 6, 7, 7, 7, 7, 7,
 		6, 6, 6, 7, 7, 7, 7, 8,
@@ -3153,11 +2924,7 @@ static void ov51x_upload_quan_tables(struct sd *sd)
 	unsigned char val0, val1;
 	int i, size, reg = R51x_COMP_LUT_BEGIN;
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_PROBE, "Uploading quantization tables\n");
-=======
-	PDEBUG(D_PROBE, "Uploading quantization tables");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (sd->bridge == BRIDGE_OV511 || sd->bridge == BRIDGE_OV511PLUS) {
 		pYTable = yQuanTable511;
@@ -3194,11 +2961,7 @@ static void ov511_configure(struct gspca_dev *gspca_dev)
 	struct sd *sd = (struct sd *) gspca_dev;
 
 	/* For 511 and 511+ */
-<<<<<<< HEAD
 	static const struct ov_regvals init_511[] = {
-=======
-	const struct ov_regvals init_511[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		{ R51x_SYS_RESET,	0x7f },
 		{ R51x_SYS_INIT,	0x01 },
 		{ R51x_SYS_RESET,	0x7f },
@@ -3208,11 +2971,7 @@ static void ov511_configure(struct gspca_dev *gspca_dev)
 		{ R51x_SYS_RESET,	0x3d },
 	};
 
-<<<<<<< HEAD
 	static const struct ov_regvals norm_511[] = {
-=======
-	const struct ov_regvals norm_511[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		{ R511_DRAM_FLOW_CTL,	0x01 },
 		{ R51x_SYS_SNAP,	0x00 },
 		{ R51x_SYS_SNAP,	0x02 },
@@ -3222,11 +2981,7 @@ static void ov511_configure(struct gspca_dev *gspca_dev)
 		{ R511_COMP_LUT_EN,	0x03 },
 	};
 
-<<<<<<< HEAD
 	static const struct ov_regvals norm_511_p[] = {
-=======
-	const struct ov_regvals norm_511_p[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		{ R511_DRAM_FLOW_CTL,	0xff },
 		{ R51x_SYS_SNAP,	0x00 },
 		{ R51x_SYS_SNAP,	0x02 },
@@ -3236,11 +2991,7 @@ static void ov511_configure(struct gspca_dev *gspca_dev)
 		{ R511_COMP_LUT_EN,	0x03 },
 	};
 
-<<<<<<< HEAD
 	static const struct ov_regvals compress_511[] = {
-=======
-	const struct ov_regvals compress_511[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		{ 0x70, 0x1f },
 		{ 0x71, 0x05 },
 		{ 0x72, 0x06 },
@@ -3251,12 +3002,8 @@ static void ov511_configure(struct gspca_dev *gspca_dev)
 		{ 0x77, 0x04 },
 	};
 
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_PROBE, "Device custom id %x\n",
 		  reg_r(sd, R51x_SYS_CUST_ID));
-=======
-	PDEBUG(D_PROBE, "Device custom id %x", reg_r(sd, R51x_SYS_CUST_ID));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	write_regvals(sd, init_511, ARRAY_SIZE(init_511));
 
@@ -3281,11 +3028,7 @@ static void ov518_configure(struct gspca_dev *gspca_dev)
 	struct sd *sd = (struct sd *) gspca_dev;
 
 	/* For 518 and 518+ */
-<<<<<<< HEAD
 	static const struct ov_regvals init_518[] = {
-=======
-	const struct ov_regvals init_518[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		{ R51x_SYS_RESET,	0x40 },
 		{ R51x_SYS_INIT,	0xe1 },
 		{ R51x_SYS_RESET,	0x3e },
@@ -3296,11 +3039,7 @@ static void ov518_configure(struct gspca_dev *gspca_dev)
 		{ 0x5d,			0x03 },
 	};
 
-<<<<<<< HEAD
 	static const struct ov_regvals norm_518[] = {
-=======
-	const struct ov_regvals norm_518[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		{ R51x_SYS_SNAP,	0x02 }, /* Reset */
 		{ R51x_SYS_SNAP,	0x01 }, /* Enable */
 		{ 0x31,			0x0f },
@@ -3313,11 +3052,7 @@ static void ov518_configure(struct gspca_dev *gspca_dev)
 		{ 0x2f,			0x80 },
 	};
 
-<<<<<<< HEAD
 	static const struct ov_regvals norm_518_p[] = {
-=======
-	const struct ov_regvals norm_518_p[] = {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		{ R51x_SYS_SNAP,	0x02 }, /* Reset */
 		{ R51x_SYS_SNAP,	0x01 }, /* Enable */
 		{ 0x31,			0x0f },
@@ -3338,11 +3073,7 @@ static void ov518_configure(struct gspca_dev *gspca_dev)
 
 	/* First 5 bits of custom ID reg are a revision ID on OV518 */
 	sd->revision = reg_r(sd, R51x_SYS_CUST_ID) & 0x1f;
-<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_PROBE, "Device revision %d\n", sd->revision);
-=======
-	PDEBUG(D_PROBE, "Device revision %d", sd->revision);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	write_regvals(sd, init_518, ARRAY_SIZE(init_518));
 
@@ -3583,11 +3314,7 @@ static int sd_init(struct gspca_dev *gspca_dev)
 	} else if (init_ov_sensor(sd, OV_HIRES_SID) >= 0) {
 		ov_hires_configure(sd);
 	} else {
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "Can't determine sensor slave IDs\n");
-=======
-		PERR("Can't determine sensor slave IDs\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto error;
 	}
 
@@ -3720,11 +3447,7 @@ static int sd_init(struct gspca_dev *gspca_dev)
 	}
 	return gspca_dev->usb_err;
 error:
-<<<<<<< HEAD
 	gspca_err(gspca_dev, "OV519 Config failed\n");
-=======
-	PERR("OV519 Config failed");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return -EINVAL;
 }
 
@@ -3759,23 +3482,11 @@ static void ov511_mode_init_regs(struct sd *sd)
 	intf = usb_ifnum_to_if(sd->gspca_dev.dev, sd->gspca_dev.iface);
 	alt = usb_altnum_to_altsetting(intf, sd->gspca_dev.alt);
 	if (!alt) {
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "Couldn't get altsetting\n");
-=======
-		PERR("Couldn't get altsetting\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sd->gspca_dev.usb_err = -EIO;
 		return;
 	}
 
-<<<<<<< HEAD
-=======
-	if (alt->desc.bNumEndpoints < 1) {
-		sd->gspca_dev.usb_err = -ENODEV;
-		return;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	packet_size = le16_to_cpu(alt->endpoint[0].desc.wMaxPacketSize);
 	reg_w(sd, R51x_FIFO_PSIZE, packet_size >> 5);
 
@@ -3897,23 +3608,11 @@ static void ov518_mode_init_regs(struct sd *sd)
 	intf = usb_ifnum_to_if(sd->gspca_dev.dev, sd->gspca_dev.iface);
 	alt = usb_altnum_to_altsetting(intf, sd->gspca_dev.alt);
 	if (!alt) {
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "Couldn't get altsetting\n");
-=======
-		PERR("Couldn't get altsetting\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sd->gspca_dev.usb_err = -EIO;
 		return;
 	}
 
-<<<<<<< HEAD
-=======
-	if (alt->desc.bNumEndpoints < 1) {
-		sd->gspca_dev.usb_err = -ENODEV;
-		return;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	packet_size = le16_to_cpu(alt->endpoint[0].desc.wMaxPacketSize);
 	ov518_reg_w32(sd, R51x_FIFO_PSIZE, packet_size & ~7, 2);
 
@@ -4181,13 +3880,8 @@ static void ov519_mode_init_regs(struct sd *sd)
 		}
 		break;
 	case SEN_OV7670:		/* guesses, based on 7640 */
-<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_STREAM, "Setting framerate to %d fps\n",
 			  (sd->frame_rate == 0) ? 15 : sd->frame_rate);
-=======
-		PDEBUG(D_STREAM, "Setting framerate to %d fps",
-				 (sd->frame_rate == 0) ? 15 : sd->frame_rate);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg_w(sd, 0xa4, 0x10);
 		switch (sd->frame_rate) {
 		case 30:
@@ -4648,17 +4342,10 @@ static void ov511_pkt_scan(struct gspca_dev *gspca_dev,
 			/* Frame end */
 			if ((in[9] + 1) * 8 != gspca_dev->pixfmt.width ||
 			    (in[10] + 1) * 8 != gspca_dev->pixfmt.height) {
-<<<<<<< HEAD
 				gspca_err(gspca_dev, "Invalid frame size, got: %dx%d, requested: %dx%d\n",
 					  (in[9] + 1) * 8, (in[10] + 1) * 8,
 					  gspca_dev->pixfmt.width,
 					  gspca_dev->pixfmt.height);
-=======
-				PERR("Invalid frame size, got: %dx%d, requested: %dx%d\n",
-					(in[9] + 1) * 8, (in[10] + 1) * 8,
-					gspca_dev->pixfmt.width,
-					gspca_dev->pixfmt.height);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				gspca_dev->last_packet_type = DISCARD_PACKET;
 				return;
 			}
@@ -4706,13 +4393,8 @@ static void ov518_pkt_scan(struct gspca_dev *gspca_dev,
 		   except that they may contain part of the footer), are
 		   numbered 0 */
 		else if (sd->packet_nr == 0 || data[len]) {
-<<<<<<< HEAD
 			gspca_err(gspca_dev, "Invalid packet nr: %d (expect: %d)\n",
 				  (int)data[len], (int)sd->packet_nr);
-=======
-			PERR("Invalid packet nr: %d (expect: %d)",
-				(int)data[len], (int)sd->packet_nr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			gspca_dev->last_packet_type = DISCARD_PACKET;
 			return;
 		}
@@ -5255,11 +4937,7 @@ static int sd_init_controls(struct gspca_dev *gspca_dev)
 			QUALITY_MIN, QUALITY_MAX, 1, QUALITY_DEF);
 
 	if (hdl->error) {
-<<<<<<< HEAD
 		gspca_err(gspca_dev, "Could not initialize controls\n");
-=======
-		PERR("Could not initialize controls\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return hdl->error;
 	}
 	if (gspca_dev->autogain)

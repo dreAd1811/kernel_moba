@@ -102,17 +102,10 @@ int tulip_refill_rx(struct net_device *dev)
 
 #ifdef CONFIG_TULIP_NAPI
 
-<<<<<<< HEAD
 void oom_timer(struct timer_list *t)
 {
 	struct tulip_private *tp = from_timer(tp, t, oom_timer);
 
-=======
-void oom_timer(unsigned long data)
-{
-        struct net_device *dev = (struct net_device *)data;
-	struct tulip_private *tp = netdev_priv(dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	napi_schedule(&tp->napi);
 }
 

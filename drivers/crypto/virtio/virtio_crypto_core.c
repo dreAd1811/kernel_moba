@@ -111,12 +111,6 @@ static int virtcrypto_find_vqs(struct virtio_crypto *vi)
 			ret = -ENOMEM;
 			goto err_engine;
 		}
-<<<<<<< HEAD
-=======
-
-		vi->data_vq[i].engine->cipher_one_request =
-			virtio_crypto_ablkcipher_crypt_req;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	kfree(names);
@@ -152,11 +146,7 @@ static void virtcrypto_clean_affinity(struct virtio_crypto *vi, long hcpu)
 
 	if (vi->affinity_hint_set) {
 		for (i = 0; i < vi->max_data_queues; i++)
-<<<<<<< HEAD
 			virtqueue_set_affinity(vi->data_vq[i].vq, NULL);
-=======
-			virtqueue_set_affinity(vi->data_vq[i].vq, -1);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		vi->affinity_hint_set = false;
 	}
@@ -183,11 +173,7 @@ static void virtcrypto_set_affinity(struct virtio_crypto *vcrypto)
 	 *
 	 */
 	for_each_online_cpu(cpu) {
-<<<<<<< HEAD
 		virtqueue_set_affinity(vcrypto->data_vq[i].vq, cpumask_of(cpu));
-=======
-		virtqueue_set_affinity(vcrypto->data_vq[i].vq, cpu);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (++i >= vcrypto->max_data_queues)
 			break;
 	}
@@ -317,7 +303,6 @@ static int virtcrypto_probe(struct virtio_device *vdev)
 	u32 max_data_queues = 0, max_cipher_key_len = 0;
 	u32 max_auth_key_len = 0;
 	u64 max_size = 0;
-<<<<<<< HEAD
 	u32 cipher_algo_l = 0;
 	u32 cipher_algo_h = 0;
 	u32 hash_algo = 0;
@@ -325,8 +310,6 @@ static int virtcrypto_probe(struct virtio_device *vdev)
 	u32 mac_algo_h = 0;
 	u32 aead_algo = 0;
 	u32 crypto_services = 0;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!virtio_has_feature(vdev, VIRTIO_F_VERSION_1))
 		return -ENODEV;
@@ -363,7 +346,6 @@ static int virtcrypto_probe(struct virtio_device *vdev)
 		max_auth_key_len, &max_auth_key_len);
 	virtio_cread(vdev, struct virtio_crypto_config,
 		max_size, &max_size);
-<<<<<<< HEAD
 	virtio_cread(vdev, struct virtio_crypto_config,
 		crypto_services, &crypto_services);
 	virtio_cread(vdev, struct virtio_crypto_config,
@@ -378,8 +360,6 @@ static int virtcrypto_probe(struct virtio_device *vdev)
 		mac_algo_h, &mac_algo_h);
 	virtio_cread(vdev, struct virtio_crypto_config,
 		aead_algo, &aead_algo);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Add virtio crypto device to global table */
 	err = virtcrypto_devmgr_add_dev(vcrypto);
@@ -399,7 +379,6 @@ static int virtcrypto_probe(struct virtio_device *vdev)
 	vcrypto->max_cipher_key_len = max_cipher_key_len;
 	vcrypto->max_auth_key_len = max_auth_key_len;
 	vcrypto->max_size = max_size;
-<<<<<<< HEAD
 	vcrypto->crypto_services = crypto_services;
 	vcrypto->cipher_algo_l = cipher_algo_l;
 	vcrypto->cipher_algo_h = cipher_algo_h;
@@ -408,8 +387,6 @@ static int virtcrypto_probe(struct virtio_device *vdev)
 	vcrypto->hash_algo = hash_algo;
 	vcrypto->aead_algo = aead_algo;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_info(&vdev->dev,
 		"max_queues: %u, max_cipher_key_len: %u, max_auth_key_len: %u, max_size 0x%llx\n",

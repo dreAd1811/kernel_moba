@@ -17,7 +17,6 @@
 #define DVB_IX2505V_H
 
 #include <linux/i2c.h>
-<<<<<<< HEAD
 #include <media/dvb_frontend.h>
 
 /**
@@ -34,37 +33,11 @@ struct ix2505v_config {
 	u8 tuner_gain;
 	u8 tuner_chargepump;
 	int min_delay_ms;
-=======
-#include "dvb_frontend.h"
-
-/**
- * Attach a ix2505v tuner to the supplied frontend structure.
- *
- * @param fe Frontend to attach to.
- * @param config ix2505v_config structure
- * @return FE pointer on success, NULL on failure.
- */
-
-struct ix2505v_config {
-	u8 tuner_address;
-
-	/*Baseband AMP gain control 0/1=0dB(default) 2=-2bB 3=-4dB */
-	u8 tuner_gain;
-
-	/*Charge pump output +/- 0=120 1=260 2=555 3=1200(default) */
-	u8 tuner_chargepump;
-
-	/* delay after tune */
-	int min_delay_ms;
-
-	/* disables reads*/
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 tuner_write_only;
 
 };
 
 #if IS_REACHABLE(CONFIG_DVB_IX2505V)
-<<<<<<< HEAD
 /**
  * Attach a ix2505v tuner to the supplied frontend structure.
  *
@@ -74,8 +47,6 @@ struct ix2505v_config {
  *
  * return: FE pointer on success, NULL on failure.
  */
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern struct dvb_frontend *ix2505v_attach(struct dvb_frontend *fe,
 	const struct ix2505v_config *config, struct i2c_adapter *i2c);
 #else

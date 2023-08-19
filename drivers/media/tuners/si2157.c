@@ -84,7 +84,6 @@ static int si2157_init(struct dvb_frontend *fe)
 	struct si2157_cmd cmd;
 	const struct firmware *fw;
 	const char *fw_name;
-<<<<<<< HEAD
 	unsigned int uitmp, chip_id;
 
 	dev_dbg(&client->dev, "\n");
@@ -103,25 +102,6 @@ static int si2157_init(struct dvb_frontend *fe)
 	if (uitmp == dev->if_frequency / 1000)
 		goto warm;
 
-=======
-	unsigned int chip_id, xtal_trim;
-
-	dev_dbg(&client->dev, "\n");
-
-	/* Try to get Xtal trim property, to verify tuner still running */
-	memcpy(cmd.args, "\x15\x00\x04\x02", 4);
-	cmd.wlen = 4;
-	cmd.rlen = 4;
-	ret = si2157_cmd_execute(client, &cmd);
-
-	xtal_trim = cmd.args[2] | (cmd.args[3] << 8);
-
-	if (ret == 0 && xtal_trim < 16)
-		goto warm;
-
-	dev->if_frequency = 0; /* we no longer know current tuner state */
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* power up */
 	if (dev->chiptype == SI2157_CHIPTYPE_SI2146) {
 		memcpy(cmd.args, "\xc0\x05\x01\x00\x00\x0b\x00\x00\x01", 9);
@@ -407,15 +387,9 @@ static int si2157_get_if_frequency(struct dvb_frontend *fe, u32 *frequency)
 
 static const struct dvb_tuner_ops si2157_ops = {
 	.info = {
-<<<<<<< HEAD
 		.name             = "Silicon Labs Si2141/Si2146/2147/2148/2157/2158",
 		.frequency_min_hz =  42 * MHz,
 		.frequency_max_hz = 870 * MHz,
-=======
-		.name           = "Silicon Labs Si2141/Si2146/2147/2148/2157/2158",
-		.frequency_min  = 42000000,
-		.frequency_max  = 870000000,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 
 	.init = si2157_init,
@@ -558,11 +532,7 @@ MODULE_DEVICE_TABLE(i2c, si2157_id_table);
 
 static struct i2c_driver si2157_driver = {
 	.driver = {
-<<<<<<< HEAD
 		.name		     = "si2157",
-=======
-		.name	             = "si2157",
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.suppress_bind_attrs = true,
 	},
 	.probe		= si2157_probe,

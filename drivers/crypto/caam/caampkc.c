@@ -783,26 +783,12 @@ static u8 *caam_read_rsa_crt(const u8 *ptr, size_t nbytes, size_t dstlen)
  */
 static inline u8 *caam_read_raw_data(const u8 *buf, size_t *nbytes)
 {
-<<<<<<< HEAD
-=======
-	u8 *val;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	caam_rsa_drop_leading_zeros(&buf, nbytes);
 	if (!*nbytes)
 		return NULL;
 
-<<<<<<< HEAD
 	return kmemdup(buf, *nbytes, GFP_DMA | GFP_KERNEL);
-=======
-	val = kzalloc(*nbytes, GFP_DMA | GFP_KERNEL);
-	if (!val)
-		return NULL;
-
-	memcpy(val, buf, *nbytes);
-
-	return val;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int caam_rsa_check_key_length(unsigned int len)

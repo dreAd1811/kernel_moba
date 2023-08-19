@@ -133,11 +133,7 @@ gp102_secboot_run_blob(struct nvkm_secboot *sb, struct nvkm_gpuobj *blob,
 	return gm200_secboot_run_blob(sb, blob, falcon);
 }
 
-<<<<<<< HEAD
 const struct nvkm_secboot_func
-=======
-static const struct nvkm_secboot_func
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 gp102_secboot = {
 	.dtor = gm200_secboot_dtor,
 	.oneinit = gm200_secboot_oneinit,

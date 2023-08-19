@@ -219,7 +219,6 @@
 	nop;						\
 	nop;
 
-<<<<<<< HEAD
 #define SUN4V_MCD_PRECISE				\
 	ldxa	[%g0] ASI_SCRATCHPAD, %g2;		\
 	ldx	[%g2 + HV_FAULT_D_ADDR_OFFSET], %g4;	\
@@ -230,8 +229,6 @@
 	 nop;						\
 	nop;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Before touching these macros, you owe it to yourself to go and
  * see how arch/sparc64/kernel/winfixup.S works... -DaveM
  *

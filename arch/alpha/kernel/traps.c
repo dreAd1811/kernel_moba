@@ -213,10 +213,6 @@ do_entArith(unsigned long summary, unsigned long write_mask,
 	    struct pt_regs *regs)
 {
 	long si_code = FPE_FLTINV;
-<<<<<<< HEAD
-=======
-	siginfo_t info;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (summary & 1) {
 		/* Software-completion summary bit is set, so try to
@@ -231,24 +227,12 @@ do_entArith(unsigned long summary, unsigned long write_mask,
 	}
 	die_if_kernel("Arithmetic fault", regs, 0, NULL);
 
-<<<<<<< HEAD
 	send_sig_fault(SIGFPE, si_code, (void __user *) regs->pc, 0, current);
-=======
-	info.si_signo = SIGFPE;
-	info.si_errno = 0;
-	info.si_code = si_code;
-	info.si_addr = (void __user *) regs->pc;
-	send_sig_info(SIGFPE, &info, current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 asmlinkage void
 do_entIF(unsigned long type, struct pt_regs *regs)
 {
-<<<<<<< HEAD
-=======
-	siginfo_t info;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int signo, code;
 
 	if ((regs->ps & ~IPL_MAX) == 0) {
@@ -280,20 +264,10 @@ do_entIF(unsigned long type, struct pt_regs *regs)
 
 	switch (type) {
 	      case 0: /* breakpoint */
-<<<<<<< HEAD
-=======
-		info.si_signo = SIGTRAP;
-		info.si_errno = 0;
-		info.si_code = TRAP_BRKPT;
-		info.si_trapno = 0;
-		info.si_addr = (void __user *) regs->pc;
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ptrace_cancel_bpt(current)) {
 			regs->pc -= 4;	/* make pc point to former bpt */
 		}
 
-<<<<<<< HEAD
 		send_sig_fault(SIGTRAP, TRAP_BRKPT, (void __user *)regs->pc, 0,
 			       current);
 		return;
@@ -304,23 +278,6 @@ do_entIF(unsigned long type, struct pt_regs *regs)
 		return;
 		
 	      case 2: /* gentrap */
-=======
-		send_sig_info(SIGTRAP, &info, current);
-		return;
-
-	      case 1: /* bugcheck */
-		info.si_signo = SIGTRAP;
-		info.si_errno = 0;
-		info.si_code = TRAP_FIXME;
-		info.si_addr = (void __user *) regs->pc;
-		info.si_trapno = 0;
-		send_sig_info(SIGTRAP, &info, current);
-		return;
-		
-	      case 2: /* gentrap */
-		info.si_addr = (void __user *) regs->pc;
-		info.si_trapno = regs->r16;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		switch ((long) regs->r16) {
 		case GEN_INTOVF:
 			signo = SIGFPE;
@@ -352,11 +309,7 @@ do_entIF(unsigned long type, struct pt_regs *regs)
 			break;
 		case GEN_ROPRAND:
 			signo = SIGFPE;
-<<<<<<< HEAD
 			code = FPE_FLTUNK;
-=======
-			code = FPE_FIXME;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 
 		case GEN_DECOVF:
@@ -378,24 +331,12 @@ do_entIF(unsigned long type, struct pt_regs *regs)
 		case GEN_SUBRNG7:
 		default:
 			signo = SIGTRAP;
-<<<<<<< HEAD
 			code = TRAP_UNK;
 			break;
 		}
 
 		send_sig_fault(signo, code, (void __user *) regs->pc, regs->r16,
 			       current);
-=======
-			code = TRAP_FIXME;
-			break;
-		}
-
-		info.si_signo = signo;
-		info.si_errno = 0;
-		info.si_code = code;
-		info.si_addr = (void __user *) regs->pc;
-		send_sig_info(signo, &info, current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	      case 4: /* opDEC */
@@ -419,17 +360,9 @@ do_entIF(unsigned long type, struct pt_regs *regs)
 			if (si_code == 0)
 				return;
 			if (si_code > 0) {
-<<<<<<< HEAD
 				send_sig_fault(SIGFPE, si_code,
 					       (void __user *) regs->pc, 0,
 					       current);
-=======
-				info.si_signo = SIGFPE;
-				info.si_errno = 0;
-				info.si_code = si_code;
-				info.si_addr = (void __user *) regs->pc;
-				send_sig_info(SIGFPE, &info, current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				return;
 			}
 		}
@@ -454,15 +387,7 @@ do_entIF(unsigned long type, struct pt_regs *regs)
 		      ;
 	}
 
-<<<<<<< HEAD
 	send_sig_fault(SIGILL, ILL_ILLOPC, (void __user *)regs->pc, 0, current);
-=======
-	info.si_signo = SIGILL;
-	info.si_errno = 0;
-	info.si_code = ILL_ILLOPC;
-	info.si_addr = (void __user *) regs->pc;
-	send_sig_info(SIGILL, &info, current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* There is an ifdef in the PALcode in MILO that enables a 
@@ -475,21 +400,9 @@ do_entIF(unsigned long type, struct pt_regs *regs)
 asmlinkage void
 do_entDbg(struct pt_regs *regs)
 {
-<<<<<<< HEAD
 	die_if_kernel("Instruction fault", regs, 0, NULL);
 
 	force_sig_fault(SIGILL, ILL_ILLOPC, (void __user *)regs->pc, 0, current);
-=======
-	siginfo_t info;
-
-	die_if_kernel("Instruction fault", regs, 0, NULL);
-
-	info.si_signo = SIGILL;
-	info.si_errno = 0;
-	info.si_code = ILL_ILLOPC;
-	info.si_addr = (void __user *) regs->pc;
-	force_sig_info(SIGILL, &info, current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 
@@ -813,11 +726,7 @@ do_entUnaUser(void __user * va, unsigned long opcode,
 
 	unsigned long tmp1, tmp2, tmp3, tmp4;
 	unsigned long fake_reg, *reg_addr = &fake_reg;
-<<<<<<< HEAD
 	int si_code;
-=======
-	siginfo_t info;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	long error;
 
 	/* Check the UAC bits to decide what the user wants us to do
@@ -1040,54 +949,27 @@ do_entUnaUser(void __user * va, unsigned long opcode,
 
 give_sigsegv:
 	regs->pc -= 4;  /* make pc point to faulting insn */
-<<<<<<< HEAD
-=======
-	info.si_signo = SIGSEGV;
-	info.si_errno = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* We need to replicate some of the logic in mm/fault.c,
 	   since we don't have access to the fault code in the
 	   exception handling return path.  */
 	if ((unsigned long)va >= TASK_SIZE)
-<<<<<<< HEAD
 		si_code = SEGV_ACCERR;
-=======
-		info.si_code = SEGV_ACCERR;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else {
 		struct mm_struct *mm = current->mm;
 		down_read(&mm->mmap_sem);
 		if (find_vma(mm, (unsigned long)va))
-<<<<<<< HEAD
 			si_code = SEGV_ACCERR;
 		else
 			si_code = SEGV_MAPERR;
 		up_read(&mm->mmap_sem);
 	}
 	send_sig_fault(SIGSEGV, si_code, va, 0, current);
-=======
-			info.si_code = SEGV_ACCERR;
-		else
-			info.si_code = SEGV_MAPERR;
-		up_read(&mm->mmap_sem);
-	}
-	info.si_addr = va;
-	send_sig_info(SIGSEGV, &info, current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return;
 
 give_sigbus:
 	regs->pc -= 4;
-<<<<<<< HEAD
 	send_sig_fault(SIGBUS, BUS_ADRALN, va, 0, current);
-=======
-	info.si_signo = SIGBUS;
-	info.si_errno = 0;
-	info.si_code = BUS_ADRALN;
-	info.si_addr = va;
-	send_sig_info(SIGBUS, &info, current);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return;
 }
 

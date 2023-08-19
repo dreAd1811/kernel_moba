@@ -67,20 +67,6 @@ config CAVIUM_OCTEON_LOCK_L2_MEMCPY
 	help
 	  Lock the kernel's implementation of memcpy() into L2.
 
-<<<<<<< HEAD
-=======
-config IOMMU_HELPER
-	bool
-
-config NEED_SG_DMA_LENGTH
-	bool
-
-config SWIOTLB
-	def_bool y
-	select IOMMU_HELPER
-	select NEED_SG_DMA_LENGTH
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config OCTEON_ILM
 	tristate "Module to measure interrupt latency using Octeon CIU Timer"
 	help

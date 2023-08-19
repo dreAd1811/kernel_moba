@@ -42,7 +42,6 @@
 
 /* =========================================================[ macros ]=== */
 
-<<<<<<< HEAD
 #ifdef CONFIG_TRACE_IRQFLAGS
 /*
  * Trace irq on/off creating a stack frame.
@@ -98,8 +97,6 @@
 #define TRACE_IRQS_ON_SYSCALL
 #endif
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * We need to disable interrupts at beginning of RESTORE_ALL
  * since interrupt might come in after we've loaded EPC return address
@@ -182,10 +179,7 @@ handler:							;\
 	/* r30 already save */					;\
 /*        l.sw    PT_GPR30(r1),r30*/					;\
 	l.sw    PT_GPR31(r1),r31					;\
-<<<<<<< HEAD
 	TRACE_IRQS_OFF_ENTRY						;\
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Store -1 in orig_gpr11 for non-syscall exceptions */	;\
 	l.addi	r30,r0,-1					;\
 	l.sw	PT_ORIG_GPR11(r1),r30
@@ -246,11 +240,7 @@ handler:							;\
  *	 occured. in fact they never do. if you need them use
  *	 values saved on stack (for SPR_EPC, SPR_ESR) or content
  *       of r4 (for SPR_EEAR). for details look at EXCEPTION_HANDLE()
-<<<<<<< HEAD
  *       in 'arch/or32/kernel/head.S'
-=======
- *       in 'arch/openrisc/kernel/head.S'
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /* =====================================================[ exceptions] === */
@@ -617,12 +607,6 @@ _string_syscall_return:
 	.align 4
 
 ENTRY(_sys_call_handler)
-<<<<<<< HEAD
-=======
-	/* syscalls run with interrupts enabled */
-	ENABLE_INTERRUPTS(r29)		// enable interrupts, r29 is temp
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* r1, EPCR, ESR a already saved */
 	l.sw	PT_GPR2(r1),r2
 	/* r3-r8 must be saved because syscall restart relies
@@ -660,13 +644,10 @@ ENTRY(_sys_call_handler)
 /*	l.sw    PT_GPR30(r1),r30 */
 
 _syscall_check_trace_enter:
-<<<<<<< HEAD
 	/* syscalls run with interrupts enabled */
 	TRACE_IRQS_ON_SYSCALL
 	ENABLE_INTERRUPTS(r29)		// enable interrupts, r29 is temp
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* If TIF_SYSCALL_TRACE is set, then we want to do syscall tracing */
 	l.lwz	r30,TI_FLAGS(r10)
 	l.andi	r30,r30,_TIF_SYSCALL_TRACE
@@ -727,10 +708,7 @@ _syscall_check_trace_leave:
 _syscall_check_work:
 	/* Here we need to disable interrupts */
 	DISABLE_INTERRUPTS(r27,r29)
-<<<<<<< HEAD
 	TRACE_IRQS_OFF
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	l.lwz	r30,TI_FLAGS(r10)
 	l.andi	r30,r30,_TIF_WORK_MASK
 	l.sfne	r30,r0
@@ -945,10 +923,7 @@ UNHANDLED_EXCEPTION(_vector_0x1f00,0x1f00)
 
 _resume_userspace:
 	DISABLE_INTERRUPTS(r3,r4)
-<<<<<<< HEAD
 	TRACE_IRQS_OFF
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	l.lwz	r4,TI_FLAGS(r10)
 	l.andi	r13,r4,_TIF_WORK_MASK
 	l.sfeqi	r13,0
@@ -987,7 +962,6 @@ _work_pending:
 	 l.lwz	r8,PT_GPR8(r1)
 
 _restore_all:
-<<<<<<< HEAD
 #ifdef CONFIG_TRACE_IRQFLAGS
 	l.lwz	r4,PT_SR(r1)
 	l.andi	r3,r4,(SPR_SR_IEE|SPR_SR_TEE)
@@ -997,8 +971,6 @@ _restore_all:
 	TRACE_IRQS_ON
 skip_hardirqs_on:
 #endif
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	RESTORE_ALL
 	/* This returns to userspace code */
 
@@ -1198,21 +1170,13 @@ ENTRY(__sys_clone)
 	l.movhi	r29,hi(sys_clone)
 	l.ori	r29,r29,lo(sys_clone)
 	l.j	_fork_save_extra_regs_and_call
-<<<<<<< HEAD
 	 l.addi	r7,r1,0
-=======
-	 l.nop
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 ENTRY(__sys_fork)
 	l.movhi	r29,hi(sys_fork)
 	l.ori	r29,r29,lo(sys_fork)
 	l.j	_fork_save_extra_regs_and_call
-<<<<<<< HEAD
 	 l.addi	r3,r1,0
-=======
-	 l.nop
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 ENTRY(sys_rt_sigreturn)
 	l.jal	_sys_rt_sigreturn

@@ -105,28 +105,16 @@ static void qxl_ttm_global_fini(struct qxl_device *qdev)
 static struct vm_operations_struct qxl_ttm_vm_ops;
 static const struct vm_operations_struct *ttm_vm_ops;
 
-<<<<<<< HEAD
 static vm_fault_t qxl_ttm_fault(struct vm_fault *vmf)
 {
 	struct ttm_buffer_object *bo;
 	vm_fault_t ret;
-=======
-static int qxl_ttm_fault(struct vm_fault *vmf)
-{
-	struct ttm_buffer_object *bo;
-	int r;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	bo = (struct ttm_buffer_object *)vmf->vma->vm_private_data;
 	if (bo == NULL)
 		return VM_FAULT_NOPAGE;
-<<<<<<< HEAD
 	ret = ttm_vm_ops->fault(vmf);
 	return ret;
-=======
-	r = ttm_vm_ops->fault(vmf);
-	return r;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int qxl_mmap(struct file *filp, struct vm_area_struct *vma)
@@ -135,16 +123,8 @@ int qxl_mmap(struct file *filp, struct vm_area_struct *vma)
 	struct qxl_device *qdev;
 	int r;
 
-<<<<<<< HEAD
 	if (unlikely(vma->vm_pgoff < DRM_FILE_PAGE_OFFSET))
 		return -EINVAL;
-=======
-	if (unlikely(vma->vm_pgoff < DRM_FILE_PAGE_OFFSET)) {
-		pr_info("%s: vma->vm_pgoff (%ld) < DRM_FILE_PAGE_OFFSET\n",
-			__func__, vma->vm_pgoff);
-		return -EINVAL;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	file_priv = filp->private_data;
 	qdev = file_priv->minor->dev->dev_private;
@@ -153,13 +133,8 @@ int qxl_mmap(struct file *filp, struct vm_area_struct *vma)
 		 "filp->private_data->minor->dev->dev_private == NULL\n");
 		return -EINVAL;
 	}
-<<<<<<< HEAD
 	DRM_DEBUG_DRIVER("filp->private_data = 0x%p, vma->vm_pgoff = %lx\n",
 		  filp->private_data, vma->vm_pgoff);
-=======
-	QXL_INFO(qdev, "%s: filp->private_data = 0x%p, vma->vm_pgoff = %lx\n",
-		 __func__, filp->private_data, vma->vm_pgoff);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	r = ttm_bo_mmap(filp, vma, &qdev->mman.bdev);
 	if (unlikely(r != 0))
@@ -316,53 +291,19 @@ static struct ttm_backend_func qxl_backend_func = {
 	.destroy = &qxl_ttm_backend_destroy,
 };
 
-<<<<<<< HEAD
 static struct ttm_tt *qxl_ttm_tt_create(struct ttm_buffer_object *bo,
 					uint32_t page_flags)
-=======
-static int qxl_ttm_tt_populate(struct ttm_tt *ttm)
-{
-	int r;
-
-	if (ttm->state != tt_unpopulated)
-		return 0;
-
-	r = ttm_pool_populate(ttm);
-	if (r)
-		return r;
-
-	return 0;
-}
-
-static void qxl_ttm_tt_unpopulate(struct ttm_tt *ttm)
-{
-	ttm_pool_unpopulate(ttm);
-}
-
-static struct ttm_tt *qxl_ttm_tt_create(struct ttm_bo_device *bdev,
-					unsigned long size, uint32_t page_flags,
-					struct page *dummy_read_page)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct qxl_device *qdev;
 	struct qxl_ttm_tt *gtt;
 
-<<<<<<< HEAD
 	qdev = qxl_get_qdev(bo->bdev);
-=======
-	qdev = qxl_get_qdev(bdev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gtt = kzalloc(sizeof(struct qxl_ttm_tt), GFP_KERNEL);
 	if (gtt == NULL)
 		return NULL;
 	gtt->ttm.ttm.func = &qxl_backend_func;
 	gtt->qdev = qdev;
-<<<<<<< HEAD
 	if (ttm_dma_tt_init(&gtt->ttm, bo, page_flags)) {
-=======
-	if (ttm_dma_tt_init(&gtt->ttm, bdev, size, page_flags,
-			    dummy_read_page)) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(gtt);
 		return NULL;
 	}
@@ -379,24 +320,14 @@ static void qxl_move_null(struct ttm_buffer_object *bo,
 	new_mem->mm_node = NULL;
 }
 
-<<<<<<< HEAD
 static int qxl_bo_move(struct ttm_buffer_object *bo, bool evict,
 		       struct ttm_operation_ctx *ctx,
-=======
-static int qxl_bo_move(struct ttm_buffer_object *bo,
-		       bool evict, bool interruptible,
-		       bool no_wait_gpu,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		       struct ttm_mem_reg *new_mem)
 {
 	struct ttm_mem_reg *old_mem = &bo->mem;
 	int ret;
 
-<<<<<<< HEAD
 	ret = ttm_bo_wait(bo, ctx->interruptible, ctx->no_wait_gpu);
-=======
-	ret = ttm_bo_wait(bo, interruptible, no_wait_gpu);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -405,12 +336,7 @@ static int qxl_bo_move(struct ttm_buffer_object *bo,
 		qxl_move_null(bo, new_mem);
 		return 0;
 	}
-<<<<<<< HEAD
 	return ttm_bo_move_memcpy(bo, ctx, new_mem);
-=======
-	return ttm_bo_move_memcpy(bo, interruptible, no_wait_gpu,
-				  new_mem);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void qxl_bo_move_notify(struct ttm_buffer_object *bo,
@@ -431,11 +357,6 @@ static void qxl_bo_move_notify(struct ttm_buffer_object *bo,
 
 static struct ttm_bo_driver qxl_bo_driver = {
 	.ttm_tt_create = &qxl_ttm_tt_create,
-<<<<<<< HEAD
-=======
-	.ttm_tt_populate = &qxl_ttm_tt_populate,
-	.ttm_tt_unpopulate = &qxl_ttm_tt_unpopulate,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.invalidate_caches = &qxl_invalidate_caches,
 	.init_mem_type = &qxl_init_mem_type,
 	.eviction_valuable = ttm_bo_eviction_valuable,
@@ -444,10 +365,6 @@ static struct ttm_bo_driver qxl_bo_driver = {
 	.verify_access = &qxl_verify_access,
 	.io_mem_reserve = &qxl_ttm_io_mem_reserve,
 	.io_mem_free = &qxl_ttm_io_mem_free,
-<<<<<<< HEAD
-=======
-	.io_mem_pfn = ttm_bo_default_io_mem_pfn,
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.move_notify = &qxl_bo_move_notify,
 };
 

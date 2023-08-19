@@ -189,11 +189,6 @@ struct locomo_driver {
 	unsigned int		devid;
 	int (*probe)(struct locomo_dev *);
 	int (*remove)(struct locomo_dev *);
-<<<<<<< HEAD
-=======
-	int (*suspend)(struct locomo_dev *, pm_message_t);
-	int (*resume)(struct locomo_dev *);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define LOCOMO_DRV(_d)	container_of((_d), struct locomo_driver, drv)

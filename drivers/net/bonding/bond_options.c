@@ -395,11 +395,7 @@ static const struct bond_option bond_opts[BOND_OPT_LAST] = {
 		.id = BOND_OPT_TLB_DYNAMIC_LB,
 		.name = "tlb_dynamic_lb",
 		.desc = "Enable dynamic flow shuffling",
-<<<<<<< HEAD
 		.unsuppmodes = BOND_MODE_ALL_EX(BIT(BOND_MODE_TLB) | BIT(BOND_MODE_ALB)),
-=======
-		.unsuppmodes = BOND_MODE_ALL_EX(BIT(BOND_MODE_TLB)),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.values = bond_tlb_dynamic_lb_tbl,
 		.flags = BOND_OPTFLAG_IFDOWN,
 		.set = bond_option_tlb_dynamic_lb_set,
@@ -1386,11 +1382,7 @@ static int bond_option_slaves_set(struct bonding *bond,
 	switch (command[0]) {
 	case '+':
 		netdev_dbg(bond->dev, "Adding slave %s\n", dev->name);
-<<<<<<< HEAD
 		ret = bond_enslave(bond->dev, dev, NULL);
-=======
-		ret = bond_enslave(bond->dev, dev);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case '-':
@@ -1438,19 +1430,9 @@ static int bond_option_ad_actor_system_set(struct bonding *bond,
 {
 	u8 macaddr[ETH_ALEN];
 	u8 *mac;
-<<<<<<< HEAD
 
 	if (newval->string) {
 		if (!mac_pton(newval->string, macaddr))
-=======
-	int i;
-
-	if (newval->string) {
-		i = sscanf(newval->string, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx",
-			   &macaddr[0], &macaddr[1], &macaddr[2],
-			   &macaddr[3], &macaddr[4], &macaddr[5]);
-		if (i != ETH_ALEN)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto err;
 		mac = macaddr;
 	} else {

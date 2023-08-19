@@ -16,15 +16,9 @@
 #ifndef _AS102_DRV_H
 #define _AS102_DRV_H
 #include <linux/usb.h>
-<<<<<<< HEAD
 #include <media/dvb_demux.h>
 #include <media/dvb_frontend.h>
 #include <media/dmxdev.h>
-=======
-#include <dvb_demux.h>
-#include <dvb_frontend.h>
-#include <dmxdev.h>
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "as10x_handle.h"
 #include "as10x_cmd.h"
 #include "as102_usb_drv.h"

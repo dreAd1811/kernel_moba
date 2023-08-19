@@ -33,14 +33,11 @@ SunXi family
 
       - Next Thing Co GR8 (sun5i)
 
-<<<<<<< HEAD
     * Single ARM Cortex-A7 based SoCs
       - Allwinner V3s (sun8i)
         + Datasheet
           http://linux-sunxi.org/File:Allwinner_V3s_Datasheet_V1.0.pdf
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     * Dual ARM Cortex-A7 based SoCs
       - Allwinner A20 (sun7i)
         + User Manual
@@ -79,17 +76,11 @@ SunXi family
         + Datasheet
           http://dl.linux-sunxi.org/H3/Allwinner_H3_Datasheet_V1.0.pdf
 
-<<<<<<< HEAD
       - Allwinner R40 (sun8i)
         + Datasheet
           https://github.com/tinalinux/docs/raw/r40-v1.y/R40_Datasheet_V1.0.pdf
         + User Manual
           https://github.com/tinalinux/docs/raw/r40-v1.y/Allwinner_R40_User_Manual_V1.0.pdf
-=======
-      - Allwinner V3s (sun8i)
-        + Datasheet
-          http://linux-sunxi.org/File:Allwinner_V3s_Datasheet_V1.0.pdf
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
     * Quad ARM Cortex-A15, Quad ARM Cortex-A7 based SoCs
       - Allwinner A80

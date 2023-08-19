@@ -27,11 +27,7 @@
 static LIST_HEAD(clocks);
 static DEFINE_MUTEX(clocks_mutex);
 
-<<<<<<< HEAD
 #if defined(CONFIG_OF) && defined(CONFIG_COMMON_CLK)
-=======
-#if defined(CONFIG_OF)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct clk *__of_clk_get(struct device_node *np, int index,
 			       const char *dev_id, const char *con_id)
 {
@@ -39,12 +35,6 @@ static struct clk *__of_clk_get(struct device_node *np, int index,
 	struct clk *clk;
 	int rc;
 
-<<<<<<< HEAD
-=======
-	if (index < 0)
-		return ERR_PTR(-EINVAL);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rc = of_parse_phandle_with_args(np, "clocks", "#clock-cells", index,
 					&clkspec);
 	if (rc)
@@ -80,7 +70,6 @@ static struct clk *__of_clk_get_by_name(struct device_node *np,
 		if (name)
 			index = of_property_match_string(np, "clock-names", name);
 		clk = __of_clk_get(np, index, dev_id, name);
-<<<<<<< HEAD
 		if (!IS_ERR(clk)) {
 			break;
 		} else if (name && index >= 0) {
@@ -89,12 +78,6 @@ static struct clk *__of_clk_get_by_name(struct device_node *np,
 					np, name ? name : "", index);
 			return clk;
 		}
-=======
-		if (!IS_ERR(clk))
-			break;
-		else if (name && index >= 0)
-			return clk;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/*
 		 * No matching clock found on this node.  If the parent node
@@ -204,11 +187,7 @@ struct clk *clk_get_sys(const char *dev_id, const char *con_id)
 out:
 	mutex_unlock(&clocks_mutex);
 
-<<<<<<< HEAD
 	return cl ? clk : ERR_PTR(-ENOENT);
-=======
-	return cl ? cl->clk : ERR_PTR(-ENOENT);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(clk_get_sys);
 
@@ -217,11 +196,7 @@ struct clk *clk_get(struct device *dev, const char *con_id)
 	const char *dev_id = dev ? dev_name(dev) : NULL;
 	struct clk *clk;
 
-<<<<<<< HEAD
 	if (dev && dev->of_node) {
-=======
-	if (dev) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		clk = __of_clk_get_by_name(dev->of_node, dev_id, con_id);
 		if (!IS_ERR(clk) || PTR_ERR(clk) == -EPROBE_DEFER)
 			return clk;
@@ -278,11 +253,7 @@ vclkdev_alloc(struct clk_hw *hw, const char *con_id, const char *dev_fmt,
 {
 	struct clk_lookup_alloc *cla;
 
-<<<<<<< HEAD
 	cla = kzalloc(sizeof(*cla), GFP_KERNEL);
-=======
-	cla = __clkdev_alloc(sizeof(*cla));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!cla)
 		return NULL;
 

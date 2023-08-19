@@ -541,10 +541,7 @@ static char oct_dev_app_str[CVM_DRV_APP_COUNT + 1][32] = {
 
 static struct octeon_device *octeon_device[MAX_OCTEON_DEVICES];
 static atomic_t adapter_refcounts[MAX_OCTEON_DEVICES];
-<<<<<<< HEAD
 static atomic_t adapter_fw_states[MAX_OCTEON_DEVICES];
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static u32 octeon_device_count;
 /* locks device array (i.e. octeon_device[]) */
@@ -705,19 +702,10 @@ static struct octeon_device *octeon_allocate_device_mem(u32 pci_id,
 	size = octdevsize + priv_size + configsize +
 		(sizeof(struct octeon_dispatch) * DISPATCH_LIST_SIZE);
 
-<<<<<<< HEAD
 	buf = vzalloc(size);
 	if (!buf)
 		return NULL;
 
-=======
-	buf = vmalloc(size);
-	if (!buf)
-		return NULL;
-
-	memset(buf, 0, size);
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	oct = (struct octeon_device *)buf;
 	oct->priv = (void *)(buf + octdevsize);
 	oct->chip = (void *)(buf + octdevsize + priv_size);
@@ -781,13 +769,10 @@ int octeon_register_device(struct octeon_device *oct,
 	oct->adapter_refcount = &adapter_refcounts[oct->octeon_id];
 	atomic_set(oct->adapter_refcount, 0);
 
-<<<<<<< HEAD
 	/* Like the reference count, the f/w state is shared 'per-adapter' */
 	oct->adapter_fw_state = &adapter_fw_states[oct->octeon_id];
 	atomic_set(oct->adapter_fw_state, FW_NEEDS_TO_BE_LOADED);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock(&octeon_devices_lock);
 	for (idx = (int)oct->octeon_id - 1; idx >= 0; idx--) {
 		if (!octeon_device[idx]) {
@@ -798,22 +783,15 @@ int octeon_register_device(struct octeon_device *oct,
 			atomic_inc(oct->adapter_refcount);
 			return 1; /* here, refcount is guaranteed to be 1 */
 		}
-<<<<<<< HEAD
 		/* If another device is at same bus/dev, use its refcounter
 		 * (and f/w state variable).
 		 */
-=======
-		/* if another device is at same bus/dev, use its refcounter */
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if ((octeon_device[idx]->loc.bus == bus) &&
 		    (octeon_device[idx]->loc.dev == dev)) {
 			oct->adapter_refcount =
 				octeon_device[idx]->adapter_refcount;
-<<<<<<< HEAD
 			oct->adapter_fw_state =
 				octeon_device[idx]->adapter_fw_state;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 	}
@@ -846,7 +824,6 @@ int octeon_deregister_device(struct octeon_device *oct)
 }
 
 int
-<<<<<<< HEAD
 octeon_allocate_ioq_vector(struct octeon_device *oct, u32 num_ioqs)
 {
 	struct octeon_ioq_vector *ioq_vector;
@@ -859,26 +836,6 @@ octeon_allocate_ioq_vector(struct octeon_device *oct, u32 num_ioqs)
 	oct->ioq_vector = vzalloc(size);
 	if (!oct->ioq_vector)
 		return -1;
-=======
-octeon_allocate_ioq_vector(struct octeon_device  *oct)
-{
-	int i, num_ioqs = 0;
-	struct octeon_ioq_vector *ioq_vector;
-	int cpu_num;
-	int size;
-
-	if (OCTEON_CN23XX_PF(oct))
-		num_ioqs = oct->sriov_info.num_pf_rings;
-	else if (OCTEON_CN23XX_VF(oct))
-		num_ioqs = oct->sriov_info.rings_per_vf;
-
-	size = sizeof(struct octeon_ioq_vector) * num_ioqs;
-
-	oct->ioq_vector = vmalloc(size);
-	if (!oct->ioq_vector)
-		return 1;
-	memset(oct->ioq_vector, 0, size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < num_ioqs; i++) {
 		ioq_vector		= &oct->ioq_vector[i];
 		ioq_vector->oct_dev	= oct;
@@ -894,10 +851,7 @@ octeon_allocate_ioq_vector(struct octeon_device  *oct)
 		else
 			ioq_vector->ioq_num	= i;
 	}
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1219,13 +1173,10 @@ octeon_register_dispatch_fn(struct octeon_device *oct,
 		spin_unlock_bh(&oct->dispatch.lock);
 
 	} else {
-<<<<<<< HEAD
 		if (pfn == fn &&
 		    octeon_get_dispatch_arg(oct, opcode, subcode) == fn_arg)
 			return 0;
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(&oct->pci_dev->dev,
 			"Found previously registered dispatch fn for opcode/subcode: %x/%x\n",
 			opcode, subcode);
@@ -1499,14 +1450,8 @@ void lio_enable_irq(struct octeon_droq *droq, struct octeon_instr_queue *iq)
 	}
 	if (iq) {
 		spin_lock_bh(&iq->lock);
-<<<<<<< HEAD
 		writel(iq->pkt_in_done, iq->inst_cnt_reg);
 		iq->pkt_in_done = 0;
-=======
-		writel(iq->pkts_processed, iq->inst_cnt_reg);
-		iq->pkt_in_done -= iq->pkts_processed;
-		iq->pkts_processed = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* this write needs to be flushed before we release the lock */
 		mmiowb();
 		spin_unlock_bh(&iq->lock);

@@ -717,7 +717,6 @@ int rt2x00queue_write_tx_frame(struct data_queue *queue, struct sk_buff *skb,
 	rt2x00queue_kick_tx_queue(queue, &txdesc);
 
 out:
-<<<<<<< HEAD
 	/*
 	 * Pausing queue has to be serialized with rt2x00lib_txdone(), so we
 	 * do this under queue->tx_lock. Bottom halve was already disabled
@@ -726,8 +725,6 @@ out:
 	if (rt2x00queue_threshold(queue))
 		rt2x00queue_pause_queue(queue);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock(&queue->tx_lock);
 	return ret;
 }
@@ -1005,11 +1002,8 @@ void rt2x00queue_flush_queue(struct data_queue *queue, bool drop)
 		(queue->qid == QID_AC_BE) ||
 		(queue->qid == QID_AC_BK);
 
-<<<<<<< HEAD
 	if (rt2x00queue_empty(queue))
 		return;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * If we are not supposed to drop any pending
@@ -1262,15 +1256,8 @@ int rt2x00queue_allocate(struct rt2x00_dev *rt2x00dev)
 	rt2x00dev->data_queues = 2 + rt2x00dev->ops->tx_queues + req_atim;
 
 	queue = kcalloc(rt2x00dev->data_queues, sizeof(*queue), GFP_KERNEL);
-<<<<<<< HEAD
 	if (!queue)
 		return -ENOMEM;
-=======
-	if (!queue) {
-		rt2x00_err(rt2x00dev, "Queue allocation failed\n");
-		return -ENOMEM;
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Initialize pointers

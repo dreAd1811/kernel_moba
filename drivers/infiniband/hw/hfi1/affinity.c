@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
  * Copyright(c) 2015 - 2018 Intel Corporation.
-=======
- * Copyright(c) 2015 - 2017 Intel Corporation.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This file is provided under a dual BSD/GPLv2 license.  When using or
  * redistributing this file, you may do so under either license.
@@ -81,7 +77,6 @@ static inline void init_cpu_mask_set(struct cpu_mask_set *set)
 	set->gen = 0;
 }
 
-<<<<<<< HEAD
 /* Increment generation of CPU set if needed */
 static void _cpu_mask_set_gen_inc(struct cpu_mask_set *set)
 {
@@ -134,8 +129,6 @@ static void cpu_mask_set_put(struct cpu_mask_set *set, int cpu)
 	_cpu_mask_set_gen_dec(set);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Initialize non-HT cpu cores mask */
 void init_real_cpu_mask(void)
 {
@@ -227,7 +220,6 @@ out:
 	return 0;
 }
 
-<<<<<<< HEAD
 static void node_affinity_destroy(struct hfi1_affinity_node *entry)
 {
 	free_percpu(entry->comp_vect_affinity);
@@ -235,9 +227,6 @@ static void node_affinity_destroy(struct hfi1_affinity_node *entry)
 }
 
 void node_affinity_destroy_all(void)
-=======
-void node_affinity_destroy(void)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct list_head *pos, *q;
 	struct hfi1_affinity_node *entry;
@@ -247,11 +236,7 @@ void node_affinity_destroy(void)
 		entry = list_entry(pos, struct hfi1_affinity_node,
 				   list);
 		list_del(pos);
-<<<<<<< HEAD
 		node_affinity_destroy(entry);
-=======
-		kfree(entry);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	mutex_unlock(&node_affinity.lock);
 	kfree(hfi1_per_node_cntr);
@@ -265,10 +250,7 @@ static struct hfi1_affinity_node *node_affinity_allocate(int node)
 	if (!entry)
 		return NULL;
 	entry->node = node;
-<<<<<<< HEAD
 	entry->comp_vect_affinity = alloc_percpu(u16);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INIT_LIST_HEAD(&entry->list);
 
 	return entry;
@@ -298,7 +280,6 @@ static struct hfi1_affinity_node *node_affinity_lookup(int node)
 	return NULL;
 }
 
-<<<<<<< HEAD
 static int per_cpu_affinity_get(cpumask_var_t possible_cpumask,
 				u16 __percpu *comp_vect_affinity)
 {
@@ -634,8 +615,6 @@ static void _dev_comp_vect_cpu_mask_clean_up(struct hfi1_devdata *dd,
 	dd->comp_vect_possible_cpus = 0;
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Interrupt affinity.
  *
@@ -652,12 +631,8 @@ int hfi1_dev_affinity_init(struct hfi1_devdata *dd)
 	int node = pcibus_to_node(dd->pcidev->bus);
 	struct hfi1_affinity_node *entry;
 	const struct cpumask *local_mask;
-<<<<<<< HEAD
 	int curr_cpu, possible, i, ret;
 	bool new_entry = false;
-=======
-	int curr_cpu, possible, i;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * If the BIOS does not have the NUMA node information set, select
@@ -685,7 +660,6 @@ int hfi1_dev_affinity_init(struct hfi1_devdata *dd)
 		if (!entry) {
 			dd_dev_err(dd,
 				   "Unable to allocate global affinity node\n");
-<<<<<<< HEAD
 			ret = -ENOMEM;
 			goto fail;
 		}
@@ -694,13 +668,6 @@ int hfi1_dev_affinity_init(struct hfi1_devdata *dd)
 		init_cpu_mask_set(&entry->def_intr);
 		init_cpu_mask_set(&entry->rcv_intr);
 		cpumask_clear(&entry->comp_vect_mask);
-=======
-			mutex_unlock(&node_affinity.lock);
-			return -ENOMEM;
-		}
-		init_cpu_mask_set(&entry->def_intr);
-		init_cpu_mask_set(&entry->rcv_intr);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cpumask_clear(&entry->general_intr_mask);
 		/* Use the "real" cpu mask of this node as the default */
 		cpumask_and(&entry->def_intr.mask, &node_affinity.real_cpu_mask,
@@ -753,7 +720,6 @@ int hfi1_dev_affinity_init(struct hfi1_devdata *dd)
 					     &entry->general_intr_mask);
 		}
 
-<<<<<<< HEAD
 		/* Determine completion vector CPUs for the entire node */
 		cpumask_and(&entry->comp_vect_mask,
 			    &node_affinity.real_cpu_mask, local_mask);
@@ -812,12 +778,6 @@ void hfi1_dev_affinity_clean_up(struct hfi1_devdata *dd)
 unlock:
 	mutex_unlock(&node_affinity.lock);
 	dd->node = -1;
-=======
-		node_affinity_add_tail(entry);
-	}
-	mutex_unlock(&node_affinity.lock);
-	return 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -966,26 +926,12 @@ static int get_irq_affinity(struct hfi1_devdata *dd,
 		if (!zalloc_cpumask_var(&diff, GFP_KERNEL))
 			return -ENOMEM;
 
-<<<<<<< HEAD
 		cpu = cpu_mask_set_get_first(set, diff);
 		if (cpu < 0) {
 			free_cpumask_var(diff);
 			dd_dev_err(dd, "Failure to obtain CPU for IRQ\n");
 			return cpu;
 		}
-=======
-		if (cpumask_equal(&set->mask, &set->used)) {
-			/*
-			 * We've used up all the CPUs, bump up the generation
-			 * and reset the 'used' map
-			 */
-			set->gen++;
-			cpumask_clear(&set->used);
-		}
-		cpumask_andnot(diff, &set->mask, &set->used);
-		cpu = cpumask_first(diff);
-		cpumask_set_cpu(cpu, &set->used);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		free_cpumask_var(diff);
 	}
@@ -1045,14 +991,7 @@ void hfi1_put_irq_affinity(struct hfi1_devdata *dd,
 
 	if (set) {
 		cpumask_andnot(&set->used, &set->used, &msix->mask);
-<<<<<<< HEAD
 		_cpu_mask_set_gen_dec(set);
-=======
-		if (cpumask_empty(&set->used) && set->gen) {
-			set->gen--;
-			cpumask_copy(&set->used, &set->mask);
-		}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	irq_set_affinity_hint(msix->irq, NULL);
@@ -1163,14 +1102,7 @@ int hfi1_get_proc_affinity(int node)
 	 * If we've used all available HW threads, clear the mask and start
 	 * overloading.
 	 */
-<<<<<<< HEAD
 	_cpu_mask_set_gen_inc(set);
-=======
-	if (cpumask_equal(&set->mask, &set->used)) {
-		set->gen++;
-		cpumask_clear(&set->used);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * If NUMA node has CPUs used by interrupt handlers, include them in the
@@ -1294,16 +1226,7 @@ void hfi1_put_proc_affinity(int cpu)
 		return;
 
 	mutex_lock(&affinity->lock);
-<<<<<<< HEAD
 	cpu_mask_set_put(set, cpu);
 	hfi1_cdbg(PROC, "Returning CPU %d for future process assignment", cpu);
-=======
-	cpumask_clear_cpu(cpu, &set->used);
-	hfi1_cdbg(PROC, "Returning CPU %d for future process assignment", cpu);
-	if (cpumask_empty(&set->used) && set->gen) {
-		set->gen--;
-		cpumask_copy(&set->used, &set->mask);
-	}
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&affinity->lock);
 }

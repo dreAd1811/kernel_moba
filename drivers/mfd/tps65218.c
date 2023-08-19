@@ -215,23 +215,9 @@ static int tps65218_probe(struct i2c_client *client,
 				const struct i2c_device_id *ids)
 {
 	struct tps65218 *tps;
-<<<<<<< HEAD
 	int ret;
 	unsigned int chipid;
 
-=======
-	const struct of_device_id *match;
-	int ret;
-	unsigned int chipid;
-
-	match = of_match_device(of_tps65218_match_table, &client->dev);
-	if (!match) {
-		dev_err(&client->dev,
-			"Failed to find matching dt id\n");
-		return -EINVAL;
-	}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tps = devm_kzalloc(&client->dev, sizeof(*tps), GFP_KERNEL);
 	if (!tps)
 		return -ENOMEM;

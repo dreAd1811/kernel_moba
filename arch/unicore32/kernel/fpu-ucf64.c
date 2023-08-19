@@ -52,7 +52,6 @@
  * Raise a SIGFPE for the current process.
  * sicode describes the signal being raised.
  */
-<<<<<<< HEAD
 void ucf64_raise_sigfpe(struct pt_regs *regs)
 {
 	siginfo_t info;
@@ -61,16 +60,6 @@ void ucf64_raise_sigfpe(struct pt_regs *regs)
 
 	info.si_signo = SIGFPE;
 	info.si_code = FPE_FLTUNK;
-=======
-void ucf64_raise_sigfpe(unsigned int sicode, struct pt_regs *regs)
-{
-	siginfo_t info;
-
-	memset(&info, 0, sizeof(info));
-
-	info.si_signo = SIGFPE;
-	info.si_code = sicode;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	info.si_addr = (void __user *)(instruction_pointer(regs) - 4);
 
 	/*
@@ -105,11 +94,7 @@ void ucf64_exchandler(u32 inst, u32 fpexc, struct pt_regs *regs)
 		pr_debug("UniCore-F64 FPSCR 0x%08x INST 0x%08x\n",
 				cff(FPSCR), inst);
 
-<<<<<<< HEAD
 		ucf64_raise_sigfpe(regs);
-=======
-		ucf64_raise_sigfpe(0, regs);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 

@@ -106,11 +106,7 @@ TRACE_EVENT(hfi1_uctxtdata,
 TRACE_EVENT(hfi1_ctxt_info,
 	    TP_PROTO(struct hfi1_devdata *dd, unsigned int ctxt,
 		     unsigned int subctxt,
-<<<<<<< HEAD
 		     struct hfi1_ctxt_info *cinfo),
-=======
-		     struct hfi1_ctxt_info cinfo),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    TP_ARGS(dd, ctxt, subctxt, cinfo),
 	    TP_STRUCT__entry(DD_DEV_ENTRY(dd)
 			     __field(unsigned int, ctxt)
@@ -124,19 +120,11 @@ TRACE_EVENT(hfi1_ctxt_info,
 	    TP_fast_assign(DD_DEV_ASSIGN(dd);
 			    __entry->ctxt = ctxt;
 			    __entry->subctxt = subctxt;
-<<<<<<< HEAD
 			    __entry->egrtids = cinfo->egrtids;
 			    __entry->rcvhdrq_cnt = cinfo->rcvhdrq_cnt;
 			    __entry->rcvhdrq_size = cinfo->rcvhdrq_entsize;
 			    __entry->sdma_ring_size = cinfo->sdma_ring_size;
 			    __entry->rcvegr_size = cinfo->rcvegr_size;
-=======
-			    __entry->egrtids = cinfo.egrtids;
-			    __entry->rcvhdrq_cnt = cinfo.rcvhdrq_cnt;
-			    __entry->rcvhdrq_size = cinfo.rcvhdrq_entsize;
-			    __entry->sdma_ring_size = cinfo.sdma_ring_size;
-			    __entry->rcvegr_size = cinfo.rcvegr_size;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    ),
 	    TP_printk("[%s] ctxt %u:%u " CINFO_FMT,
 		      __get_str(dev),

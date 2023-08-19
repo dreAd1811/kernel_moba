@@ -66,16 +66,6 @@
 #define OMAP4_RNG_OUTPUT_SIZE			0x8
 #define EIP76_RNG_OUTPUT_SIZE			0x10
 
-<<<<<<< HEAD
-=======
-/*
- * EIP76 RNG takes approx. 700us to produce 16 bytes of output data
- * as per testing results. And to account for the lack of udelay()'s
- * reliability, we keep the timeout as 1000us.
- */
-#define RNG_DATA_FILL_TIMEOUT			100
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum {
 	RNG_OUTPUT_0_REG = 0,
 	RNG_OUTPUT_1_REG,
@@ -160,10 +150,7 @@ struct omap_rng_dev {
 	const struct omap_rng_pdata	*pdata;
 	struct hwrng rng;
 	struct clk 			*clk;
-<<<<<<< HEAD
 	struct clk			*clk_reg;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static inline u32 omap_rng_read(struct omap_rng_dev *priv, u16 reg)
@@ -189,11 +176,7 @@ static int omap_rng_do_read(struct hwrng *rng, void *data, size_t max,
 	if (max < priv->pdata->data_size)
 		return 0;
 
-<<<<<<< HEAD
 	for (i = 0; i < 20; i++) {
-=======
-	for (i = 0; i < RNG_DATA_FILL_TIMEOUT; i++) {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		present = priv->pdata->data_present(priv);
 		if (present || !wait)
 			break;
@@ -499,7 +482,6 @@ static int omap_rng_probe(struct platform_device *pdev)
 		}
 	}
 
-<<<<<<< HEAD
 	priv->clk_reg = devm_clk_get(&pdev->dev, "reg");
 	if (IS_ERR(priv->clk_reg) && PTR_ERR(priv->clk_reg) == -EPROBE_DEFER)
 		return -EPROBE_DEFER;
@@ -513,8 +495,6 @@ static int omap_rng_probe(struct platform_device *pdev)
 		}
 	}
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = (dev->of_node) ? of_get_omap_rng_device_details(priv, pdev) :
 				get_omap_rng_device_details(priv);
 	if (ret)
@@ -534,13 +514,8 @@ err_register:
 	pm_runtime_put_sync(&pdev->dev);
 	pm_runtime_disable(&pdev->dev);
 
-<<<<<<< HEAD
 	clk_disable_unprepare(priv->clk_reg);
 	clk_disable_unprepare(priv->clk);
-=======
-	if (!IS_ERR(priv->clk))
-		clk_disable_unprepare(priv->clk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_ioremap:
 	dev_err(dev, "initialization failed.\n");
 	return ret;
@@ -557,13 +532,8 @@ static int omap_rng_remove(struct platform_device *pdev)
 	pm_runtime_put_sync(&pdev->dev);
 	pm_runtime_disable(&pdev->dev);
 
-<<<<<<< HEAD
 	clk_disable_unprepare(priv->clk);
 	clk_disable_unprepare(priv->clk_reg);
-=======
-	if (!IS_ERR(priv->clk))
-		clk_disable_unprepare(priv->clk);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

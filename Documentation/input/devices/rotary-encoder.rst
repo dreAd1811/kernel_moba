@@ -108,15 +108,9 @@ example below:
 	};
 
 	static const struct property_entry rotary_encoder_properties[] __initconst = {
-<<<<<<< HEAD
 		PROPERTY_ENTRY_U32("rotary-encoder,steps-per-period", 24),
 		PROPERTY_ENTRY_U32("linux,axis",		      ABS_X),
 		PROPERTY_ENTRY_U32("rotary-encoder,relative_axis",    0),
-=======
-		PROPERTY_ENTRY_INTEGER("rotary-encoder,steps-per-period", u32, 24),
-		PROPERTY_ENTRY_INTEGER("linux,axis",			  u32, ABS_X),
-		PROPERTY_ENTRY_INTEGER("rotary-encoder,relative_axis",	  u32, 0),
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		{ },
 	};
 

@@ -19,11 +19,7 @@
 
 #include <linux/slab.h>
 
-<<<<<<< HEAD
 #include <media/demux.h>
-=======
-#include "demux.h"
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 typedef int (dvb_filter_pes2ts_cb_t) (void *, unsigned char *);
 

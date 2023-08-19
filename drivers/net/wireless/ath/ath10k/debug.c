@@ -1,10 +1,6 @@
 /*
  * Copyright (c) 2005-2011 Atheros Communications Inc.
-<<<<<<< HEAD
  * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
-=======
- * Copyright (c) 2011-2013 Qualcomm Atheros, Inc.
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Copyright (c) 2018, The Linux Foundation. All rights reserved.
  *
  * Permission to use, copy, modify, and/or distribute this software for any
@@ -991,7 +987,6 @@ static ssize_t ath10k_write_htt_max_amsdu_ampdu(struct file *file,
 {
 	struct ath10k *ar = file->private_data;
 	int res;
-<<<<<<< HEAD
 	char buf[64] = {0};
 	unsigned int amsdu, ampdu;
 
@@ -999,15 +994,6 @@ static ssize_t ath10k_write_htt_max_amsdu_ampdu(struct file *file,
 				     user_buf, count);
 	if (res <= 0)
 		return res;
-=======
-	char buf[64];
-	unsigned int amsdu, ampdu;
-
-	simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, user_buf, count);
-
-	/* make sure that buf is null terminated */
-	buf[sizeof(buf) - 1] = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	res = sscanf(buf, "%u %u", &amsdu, &ampdu);
 
@@ -1057,7 +1043,6 @@ static ssize_t ath10k_write_fw_dbglog(struct file *file,
 {
 	struct ath10k *ar = file->private_data;
 	int ret;
-<<<<<<< HEAD
 	char buf[96] = {0};
 	unsigned int log_level;
 	u64 mask;
@@ -1066,16 +1051,6 @@ static ssize_t ath10k_write_fw_dbglog(struct file *file,
 				     user_buf, count);
 	if (ret <= 0)
 		return ret;
-=======
-	char buf[96];
-	unsigned int log_level;
-	u64 mask;
-
-	simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, user_buf, count);
-
-	/* make sure that buf is null terminated */
-	buf[sizeof(buf) - 1] = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = sscanf(buf, "%llx %u", &mask, &log_level);
 
@@ -1505,7 +1480,6 @@ void ath10k_debug_tpc_stats_process(struct ath10k *ar,
 	spin_unlock_bh(&ar->data_lock);
 }
 
-<<<<<<< HEAD
 void
 ath10k_debug_tpc_stats_final_process(struct ath10k *ar,
 				     struct ath10k_tpc_stats_final *tpc_stats)
@@ -1519,8 +1493,6 @@ ath10k_debug_tpc_stats_final_process(struct ath10k *ar,
 	spin_unlock_bh(&ar->data_lock);
 }
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void ath10k_tpc_stats_print(struct ath10k_tpc_stats *tpc_stats,
 				   unsigned int j, char *buf, size_t *len)
 {
@@ -1547,7 +1519,6 @@ static void ath10k_tpc_stats_print(struct ath10k_tpc_stats *tpc_stats,
 	*len += scnprintf(buf + *len, buf_len - *len,
 			  "********************************\n");
 	*len += scnprintf(buf + *len, buf_len - *len,
-<<<<<<< HEAD
 			  "No.  Preamble Rate_code ");
 
 	for (i = 0; i < WMI_TPC_TX_N_CHAIN; i++)
@@ -1555,9 +1526,6 @@ static void ath10k_tpc_stats_print(struct ath10k_tpc_stats *tpc_stats,
 				  "tpc_value%d ", i);
 
 	*len += scnprintf(buf + *len, buf_len - *len, "\n");
-=======
-			  "No.  Preamble Rate_code tpc_value1 tpc_value2 tpc_value3\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < tpc_stats->rate_max; i++) {
 		*len += scnprintf(buf + *len, buf_len - *len,
@@ -2198,7 +2166,6 @@ static const struct file_operations fops_fw_checksums = {
 	.llseek = default_llseek,
 };
 
-<<<<<<< HEAD
 static ssize_t ath10k_sta_tid_stats_mask_read(struct file *file,
 					      char __user *user_buf,
 					      size_t count, loff_t *ppos)
@@ -2376,8 +2343,6 @@ static const struct file_operations fops_warm_hw_reset = {
 	.llseek = default_llseek,
 };
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int ath10k_debug_create(struct ath10k *ar)
 {
 	ar->debug.cal_data = vzalloc(ATH10K_DEBUG_CAL_DATA_LEN);
@@ -2496,7 +2461,6 @@ int ath10k_debug_register(struct ath10k *ar)
 	debugfs_create_file("fw_checksums", 0400, ar->debug.debugfs_phy, ar,
 			    &fops_fw_checksums);
 
-<<<<<<< HEAD
 	if (IS_ENABLED(CONFIG_MAC80211_DEBUGFS))
 		debugfs_create_file("sta_tid_stats_mask", 0600,
 				    ar->debug.debugfs_phy,
@@ -2510,8 +2474,6 @@ int ath10k_debug_register(struct ath10k *ar)
 	debugfs_create_file("warm_hw_reset", 0600, ar->debug.debugfs_phy, ar,
 			    &fops_warm_hw_reset);
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

@@ -214,14 +214,9 @@ have_busfreq:
 
 	/* cpuinfo and default policy values */
 	policy->cpuinfo.transition_latency = 500000;
-<<<<<<< HEAD
 	policy->freq_table = clock_ratio;
 
 	return 0;
-=======
-
-	return cpufreq_table_validate_and_show(policy, clock_ratio);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 

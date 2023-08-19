@@ -15,10 +15,7 @@
 #include "aq_common.h"
 
 struct page;
-<<<<<<< HEAD
 struct aq_nic_cfg_s;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*           TxC       SOP        DX         EOP
  *         +----------+----------+----------+-----------
@@ -109,10 +106,6 @@ union aq_ring_stats_s {
 };
 
 struct aq_ring_s {
-<<<<<<< HEAD
-=======
-	struct aq_obj_s header;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct aq_ring_buff_s *buff_ring;
 	u8 *dx_ring;		/* descriptors ring, dma shared mem */
 	struct aq_nic_s *aq_nic;
@@ -160,11 +153,7 @@ void aq_ring_free(struct aq_ring_s *self);
 void aq_ring_update_queue_state(struct aq_ring_s *ring);
 void aq_ring_queue_wake(struct aq_ring_s *ring);
 void aq_ring_queue_stop(struct aq_ring_s *ring);
-<<<<<<< HEAD
 bool aq_ring_tx_clean(struct aq_ring_s *self);
-=======
-void aq_ring_tx_clean(struct aq_ring_s *self);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int aq_ring_rx_clean(struct aq_ring_s *self,
 		     struct napi_struct *napi,
 		     int *work_done,

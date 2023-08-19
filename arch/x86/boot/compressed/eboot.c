@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* -----------------------------------------------------------------------
  *
  *   Copyright 2011 Intel Corporation; author Matt Fleming
@@ -38,83 +35,13 @@ static void setup_boot_services##bits(struct efi_config *c)		\
 									\
 	table = (typeof(table))sys_table;				\
 									\
-<<<<<<< HEAD
 	c->runtime_services	= table->runtime;			\
 	c->boot_services	= table->boottime;			\
 	c->text_output		= table->con_out;			\
-=======
-	c->runtime_services = table->runtime;				\
-	c->boot_services = table->boottime;				\
-	c->text_output = table->con_out;				\
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 BOOT_SERVICES(32);
 BOOT_SERVICES(64);
 
-<<<<<<< HEAD
-=======
-static inline efi_status_t __open_volume32(void *__image, void **__fh)
-{
-	efi_file_io_interface_t *io;
-	efi_loaded_image_32_t *image = __image;
-	efi_file_handle_32_t *fh;
-	efi_guid_t fs_proto = EFI_FILE_SYSTEM_GUID;
-	efi_status_t status;
-	void *handle = (void *)(unsigned long)image->device_handle;
-	unsigned long func;
-
-	status = efi_call_early(handle_protocol, handle,
-				&fs_proto, (void **)&io);
-	if (status != EFI_SUCCESS) {
-		efi_printk(sys_table, "Failed to handle fs_proto\n");
-		return status;
-	}
-
-	func = (unsigned long)io->open_volume;
-	status = efi_early->call(func, io, &fh);
-	if (status != EFI_SUCCESS)
-		efi_printk(sys_table, "Failed to open volume\n");
-
-	*__fh = fh;
-	return status;
-}
-
-static inline efi_status_t __open_volume64(void *__image, void **__fh)
-{
-	efi_file_io_interface_t *io;
-	efi_loaded_image_64_t *image = __image;
-	efi_file_handle_64_t *fh;
-	efi_guid_t fs_proto = EFI_FILE_SYSTEM_GUID;
-	efi_status_t status;
-	void *handle = (void *)(unsigned long)image->device_handle;
-	unsigned long func;
-
-	status = efi_call_early(handle_protocol, handle,
-				&fs_proto, (void **)&io);
-	if (status != EFI_SUCCESS) {
-		efi_printk(sys_table, "Failed to handle fs_proto\n");
-		return status;
-	}
-
-	func = (unsigned long)io->open_volume;
-	status = efi_early->call(func, io, &fh);
-	if (status != EFI_SUCCESS)
-		efi_printk(sys_table, "Failed to open volume\n");
-
-	*__fh = fh;
-	return status;
-}
-
-efi_status_t
-efi_open_volume(efi_system_table_t *sys_table, void *__image, void **__fh)
-{
-	if (efi_early->is64)
-		return __open_volume64(__image, __fh);
-
-	return __open_volume32(__image, __fh);
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void efi_char16_printk(efi_system_table_t *table, efi_char16_t *str)
 {
 	efi_call_proto(efi_simple_text_output_protocol, output_string,
@@ -122,16 +49,11 @@ void efi_char16_printk(efi_system_table_t *table, efi_char16_t *str)
 }
 
 static efi_status_t
-<<<<<<< HEAD
 preserve_pci_rom_image(efi_pci_io_protocol_t *pci, struct pci_setup_rom **__rom)
-=======
-__setup_efi_pci32(efi_pci_io_protocol_32 *pci, struct pci_setup_rom **__rom)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct pci_setup_rom *rom = NULL;
 	efi_status_t status;
 	unsigned long size;
-<<<<<<< HEAD
 	uint64_t romsize;
 	void *romimage;
 
@@ -153,30 +75,11 @@ __setup_efi_pci32(efi_pci_io_protocol_32 *pci, struct pci_setup_rom **__rom)
 	status = efi_call_early(allocate_pool, EFI_LOADER_DATA, size, &rom);
 	if (status != EFI_SUCCESS) {
 		efi_printk(sys_table, "Failed to allocate memory for 'rom'\n");
-=======
-	uint64_t attributes;
-
-	status = efi_early->call(pci->attributes, pci,
-				 EfiPciIoAttributeOperationGet, 0, 0,
-				 &attributes);
-	if (status != EFI_SUCCESS)
-		return status;
-
-	if (!pci->romimage || !pci->romsize)
-		return EFI_INVALID_PARAMETER;
-
-	size = pci->romsize + sizeof(*rom);
-
-	status = efi_call_early(allocate_pool, EFI_LOADER_DATA, size, &rom);
-	if (status != EFI_SUCCESS) {
-		efi_printk(sys_table, "Failed to alloc mem for rom\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return status;
 	}
 
 	memset(rom, 0, sizeof(*rom));
 
-<<<<<<< HEAD
 	rom->data.type	= SETUP_PCI;
 	rom->data.len	= size - sizeof(struct setup_data);
 	rom->data.next	= 0;
@@ -186,54 +89,29 @@ __setup_efi_pci32(efi_pci_io_protocol_32 *pci, struct pci_setup_rom **__rom)
 	status = efi_call_proto(efi_pci_io_protocol, pci.read, pci,
 				EfiPciIoWidthUint16, PCI_VENDOR_ID, 1,
 				&rom->vendor);
-=======
-	rom->data.type = SETUP_PCI;
-	rom->data.len = size - sizeof(struct setup_data);
-	rom->data.next = 0;
-	rom->pcilen = pci->romsize;
-	*__rom = rom;
-
-	status = efi_early->call(pci->pci.read, pci, EfiPciIoWidthUint16,
-				 PCI_VENDOR_ID, 1, &(rom->vendor));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (status != EFI_SUCCESS) {
 		efi_printk(sys_table, "Failed to read rom->vendor\n");
 		goto free_struct;
 	}
 
-<<<<<<< HEAD
 	status = efi_call_proto(efi_pci_io_protocol, pci.read, pci,
 				EfiPciIoWidthUint16, PCI_DEVICE_ID, 1,
 				&rom->devid);
-=======
-	status = efi_early->call(pci->pci.read, pci, EfiPciIoWidthUint16,
-				 PCI_DEVICE_ID, 1, &(rom->devid));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (status != EFI_SUCCESS) {
 		efi_printk(sys_table, "Failed to read rom->devid\n");
 		goto free_struct;
 	}
 
-<<<<<<< HEAD
 	status = efi_call_proto(efi_pci_io_protocol, get_location, pci,
 				&rom->segment, &rom->bus, &rom->device,
 				&rom->function);
-=======
-	status = efi_early->call(pci->get_location, pci, &(rom->segment),
-				 &(rom->bus), &(rom->device), &(rom->function));
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (status != EFI_SUCCESS)
 		goto free_struct;
 
-<<<<<<< HEAD
 	memcpy(rom->romdata, romimage, romsize);
-=======
-	memcpy(rom->romdata, (void *)(unsigned long)pci->romimage,
-	       pci->romsize);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return status;
 
 free_struct:
@@ -241,162 +119,6 @@ free_struct:
 	return status;
 }
 
-<<<<<<< HEAD
-=======
-static void
-setup_efi_pci32(struct boot_params *params, void **pci_handle,
-		unsigned long size)
-{
-	efi_pci_io_protocol_32 *pci = NULL;
-	efi_guid_t pci_proto = EFI_PCI_IO_PROTOCOL_GUID;
-	u32 *handles = (u32 *)(unsigned long)pci_handle;
-	efi_status_t status;
-	unsigned long nr_pci;
-	struct setup_data *data;
-	int i;
-
-	data = (struct setup_data *)(unsigned long)params->hdr.setup_data;
-
-	while (data && data->next)
-		data = (struct setup_data *)(unsigned long)data->next;
-
-	nr_pci = size / sizeof(u32);
-	for (i = 0; i < nr_pci; i++) {
-		struct pci_setup_rom *rom = NULL;
-		u32 h = handles[i];
-
-		status = efi_call_early(handle_protocol, h,
-					&pci_proto, (void **)&pci);
-
-		if (status != EFI_SUCCESS)
-			continue;
-
-		if (!pci)
-			continue;
-
-		status = __setup_efi_pci32(pci, &rom);
-		if (status != EFI_SUCCESS)
-			continue;
-
-		if (data)
-			data->next = (unsigned long)rom;
-		else
-			params->hdr.setup_data = (unsigned long)rom;
-
-		data = (struct setup_data *)rom;
-
-	}
-}
-
-static efi_status_t
-__setup_efi_pci64(efi_pci_io_protocol_64 *pci, struct pci_setup_rom **__rom)
-{
-	struct pci_setup_rom *rom;
-	efi_status_t status;
-	unsigned long size;
-	uint64_t attributes;
-
-	status = efi_early->call(pci->attributes, pci,
-				 EfiPciIoAttributeOperationGet, 0,
-				 &attributes);
-	if (status != EFI_SUCCESS)
-		return status;
-
-	if (!pci->romimage || !pci->romsize)
-		return EFI_INVALID_PARAMETER;
-
-	size = pci->romsize + sizeof(*rom);
-
-	status = efi_call_early(allocate_pool, EFI_LOADER_DATA, size, &rom);
-	if (status != EFI_SUCCESS) {
-		efi_printk(sys_table, "Failed to alloc mem for rom\n");
-		return status;
-	}
-
-	rom->data.type = SETUP_PCI;
-	rom->data.len = size - sizeof(struct setup_data);
-	rom->data.next = 0;
-	rom->pcilen = pci->romsize;
-	*__rom = rom;
-
-	status = efi_early->call(pci->pci.read, pci, EfiPciIoWidthUint16,
-				 PCI_VENDOR_ID, 1, &(rom->vendor));
-
-	if (status != EFI_SUCCESS) {
-		efi_printk(sys_table, "Failed to read rom->vendor\n");
-		goto free_struct;
-	}
-
-	status = efi_early->call(pci->pci.read, pci, EfiPciIoWidthUint16,
-				 PCI_DEVICE_ID, 1, &(rom->devid));
-
-	if (status != EFI_SUCCESS) {
-		efi_printk(sys_table, "Failed to read rom->devid\n");
-		goto free_struct;
-	}
-
-	status = efi_early->call(pci->get_location, pci, &(rom->segment),
-				 &(rom->bus), &(rom->device), &(rom->function));
-
-	if (status != EFI_SUCCESS)
-		goto free_struct;
-
-	memcpy(rom->romdata, (void *)(unsigned long)pci->romimage,
-	       pci->romsize);
-	return status;
-
-free_struct:
-	efi_call_early(free_pool, rom);
-	return status;
-
-}
-
-static void
-setup_efi_pci64(struct boot_params *params, void **pci_handle,
-		unsigned long size)
-{
-	efi_pci_io_protocol_64 *pci = NULL;
-	efi_guid_t pci_proto = EFI_PCI_IO_PROTOCOL_GUID;
-	u64 *handles = (u64 *)(unsigned long)pci_handle;
-	efi_status_t status;
-	unsigned long nr_pci;
-	struct setup_data *data;
-	int i;
-
-	data = (struct setup_data *)(unsigned long)params->hdr.setup_data;
-
-	while (data && data->next)
-		data = (struct setup_data *)(unsigned long)data->next;
-
-	nr_pci = size / sizeof(u64);
-	for (i = 0; i < nr_pci; i++) {
-		struct pci_setup_rom *rom = NULL;
-		u64 h = handles[i];
-
-		status = efi_call_early(handle_protocol, h,
-					&pci_proto, (void **)&pci);
-
-		if (status != EFI_SUCCESS)
-			continue;
-
-		if (!pci)
-			continue;
-
-		status = __setup_efi_pci64(pci, &rom);
-		if (status != EFI_SUCCESS)
-			continue;
-
-		if (data)
-			data->next = (unsigned long)rom;
-		else
-			params->hdr.setup_data = (unsigned long)rom;
-
-		data = (struct setup_data *)rom;
-
-	}
-}
-
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * There's no way to return an informative status from this function,
  * because any analysis (and printing of error messages) needs to be
@@ -412,12 +134,9 @@ static void setup_efi_pci(struct boot_params *params)
 	void **pci_handle = NULL;
 	efi_guid_t pci_proto = EFI_PCI_IO_PROTOCOL_GUID;
 	unsigned long size = 0;
-<<<<<<< HEAD
 	unsigned long nr_pci;
 	struct setup_data *data;
 	int i;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	status = efi_call_early(locate_handle,
 				EFI_LOCATE_BY_PROTOCOL,
@@ -429,11 +148,7 @@ static void setup_efi_pci(struct boot_params *params)
 					size, (void **)&pci_handle);
 
 		if (status != EFI_SUCCESS) {
-<<<<<<< HEAD
 			efi_printk(sys_table, "Failed to allocate memory for 'pci_handle'\n");
-=======
-			efi_printk(sys_table, "Failed to alloc mem for pci_handle\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return;
 		}
 
@@ -445,7 +160,6 @@ static void setup_efi_pci(struct boot_params *params)
 	if (status != EFI_SUCCESS)
 		goto free_handle;
 
-<<<<<<< HEAD
 	data = (struct setup_data *)(unsigned long)params->hdr.setup_data;
 
 	while (data && data->next)
@@ -474,12 +188,6 @@ static void setup_efi_pci(struct boot_params *params)
 
 		data = (struct setup_data *)rom;
 	}
-=======
-	if (efi_early->is64)
-		setup_efi_pci64(params, pci_handle, size);
-	else
-		setup_efi_pci32(params, pci_handle, size);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 free_handle:
 	efi_call_early(free_pool, pci_handle);
@@ -510,12 +218,7 @@ static void retrieve_apple_device_properties(struct boot_params *boot_params)
 		status = efi_call_early(allocate_pool, EFI_LOADER_DATA,
 					size + sizeof(struct setup_data), &new);
 		if (status != EFI_SUCCESS) {
-<<<<<<< HEAD
 			efi_printk(sys_table, "Failed to allocate memory for 'properties'\n");
-=======
-			efi_printk(sys_table,
-					"Failed to alloc mem for properties\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return;
 		}
 
@@ -531,31 +234,19 @@ static void retrieve_apple_device_properties(struct boot_params *boot_params)
 	new->next = 0;
 
 	data = (struct setup_data *)(unsigned long)boot_params->hdr.setup_data;
-<<<<<<< HEAD
 	if (!data) {
 		boot_params->hdr.setup_data = (unsigned long)new;
 	} else {
-=======
-	if (!data)
-		boot_params->hdr.setup_data = (unsigned long)new;
-	else {
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		while (data->next)
 			data = (struct setup_data *)(unsigned long)data->next;
 		data->next = (unsigned long)new;
 	}
 }
 
-<<<<<<< HEAD
 static const efi_char16_t apple[] = L"Apple";
 
 static void setup_quirks(struct boot_params *boot_params)
 {
-=======
-static void setup_quirks(struct boot_params *boot_params)
-{
-	efi_char16_t const apple[] = { 'A', 'p', 'p', 'l', 'e', 0 };
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	efi_char16_t *fw_vendor = (efi_char16_t *)(unsigned long)
 		efi_table_attr(efi_system_table, fw_vendor, sys_table);
 
@@ -565,119 +256,18 @@ static void setup_quirks(struct boot_params *boot_params)
 	}
 }
 
-<<<<<<< HEAD
 /*
  * See if we have Universal Graphics Adapter (UGA) protocol
  */
 static efi_status_t
 setup_uga(struct screen_info *si, efi_guid_t *uga_proto, unsigned long size)
-=======
-static efi_status_t
-setup_uga32(void **uga_handle, unsigned long size, u32 *width, u32 *height)
-{
-	struct efi_uga_draw_protocol *uga = NULL, *first_uga;
-	efi_guid_t uga_proto = EFI_UGA_PROTOCOL_GUID;
-	unsigned long nr_ugas;
-	u32 *handles = (u32 *)uga_handle;;
-	efi_status_t status = EFI_INVALID_PARAMETER;
-	int i;
-
-	first_uga = NULL;
-	nr_ugas = size / sizeof(u32);
-	for (i = 0; i < nr_ugas; i++) {
-		efi_guid_t pciio_proto = EFI_PCI_IO_PROTOCOL_GUID;
-		u32 w, h, depth, refresh;
-		void *pciio;
-		u32 handle = handles[i];
-
-		status = efi_call_early(handle_protocol, handle,
-					&uga_proto, (void **)&uga);
-		if (status != EFI_SUCCESS)
-			continue;
-
-		efi_call_early(handle_protocol, handle, &pciio_proto, &pciio);
-
-		status = efi_early->call((unsigned long)uga->get_mode, uga,
-					 &w, &h, &depth, &refresh);
-		if (status == EFI_SUCCESS && (!first_uga || pciio)) {
-			*width = w;
-			*height = h;
-
-			/*
-			 * Once we've found a UGA supporting PCIIO,
-			 * don't bother looking any further.
-			 */
-			if (pciio)
-				break;
-
-			first_uga = uga;
-		}
-	}
-
-	return status;
-}
-
-static efi_status_t
-setup_uga64(void **uga_handle, unsigned long size, u32 *width, u32 *height)
-{
-	struct efi_uga_draw_protocol *uga = NULL, *first_uga;
-	efi_guid_t uga_proto = EFI_UGA_PROTOCOL_GUID;
-	unsigned long nr_ugas;
-	u64 *handles = (u64 *)uga_handle;;
-	efi_status_t status = EFI_INVALID_PARAMETER;
-	int i;
-
-	first_uga = NULL;
-	nr_ugas = size / sizeof(u64);
-	for (i = 0; i < nr_ugas; i++) {
-		efi_guid_t pciio_proto = EFI_PCI_IO_PROTOCOL_GUID;
-		u32 w, h, depth, refresh;
-		void *pciio;
-		u64 handle = handles[i];
-
-		status = efi_call_early(handle_protocol, handle,
-					&uga_proto, (void **)&uga);
-		if (status != EFI_SUCCESS)
-			continue;
-
-		efi_call_early(handle_protocol, handle, &pciio_proto, &pciio);
-
-		status = efi_early->call((unsigned long)uga->get_mode, uga,
-					 &w, &h, &depth, &refresh);
-		if (status == EFI_SUCCESS && (!first_uga || pciio)) {
-			*width = w;
-			*height = h;
-
-			/*
-			 * Once we've found a UGA supporting PCIIO,
-			 * don't bother looking any further.
-			 */
-			if (pciio)
-				break;
-
-			first_uga = uga;
-		}
-	}
-
-	return status;
-}
-
-/*
- * See if we have Universal Graphics Adapter (UGA) protocol
- */
-static efi_status_t setup_uga(struct screen_info *si, efi_guid_t *uga_proto,
-			      unsigned long size)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	efi_status_t status;
 	u32 width, height;
 	void **uga_handle = NULL;
-<<<<<<< HEAD
 	efi_uga_draw_protocol_t *uga = NULL, *first_uga;
 	unsigned long nr_ugas;
 	int i;
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	status = efi_call_early(allocate_pool, EFI_LOADER_DATA,
 				size, (void **)&uga_handle);
@@ -693,7 +283,6 @@ static efi_status_t setup_uga(struct screen_info *si, efi_guid_t *uga_proto,
 	height = 0;
 	width = 0;
 
-<<<<<<< HEAD
 	first_uga = NULL;
 	nr_ugas = size / (efi_is_64bit() ? sizeof(u64) : sizeof(u32));
 	for (i = 0; i < nr_ugas; i++) {
@@ -727,18 +316,11 @@ static efi_status_t setup_uga(struct screen_info *si, efi_guid_t *uga_proto,
 			first_uga = uga;
 		}
 	}
-=======
-	if (efi_early->is64)
-		status = setup_uga64(uga_handle, size, &width, &height);
-	else
-		status = setup_uga32(uga_handle, size, &width, &height);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!width && !height)
 		goto free_handle;
 
 	/* EFI framebuffer */
-<<<<<<< HEAD
 	si->orig_video_isVGA	= VIDEO_TYPE_EFI;
 
 	si->lfb_depth		= 32;
@@ -757,25 +339,6 @@ static efi_status_t setup_uga(struct screen_info *si, efi_guid_t *uga_proto,
 free_handle:
 	efi_call_early(free_pool, uga_handle);
 
-=======
-	si->orig_video_isVGA = VIDEO_TYPE_EFI;
-
-	si->lfb_depth = 32;
-	si->lfb_width = width;
-	si->lfb_height = height;
-
-	si->red_size = 8;
-	si->red_pos = 16;
-	si->green_size = 8;
-	si->green_pos = 8;
-	si->blue_size = 8;
-	si->blue_pos = 0;
-	si->rsvd_size = 8;
-	si->rsvd_pos = 24;
-
-free_handle:
-	efi_call_early(free_pool, uga_handle);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return status;
 }
 
@@ -842,11 +405,7 @@ struct boot_params *make_boot_params(struct efi_config *c)
 	if (sys_table->hdr.signature != EFI_SYSTEM_TABLE_SIGNATURE)
 		return NULL;
 
-<<<<<<< HEAD
 	if (efi_is_64bit())
-=======
-	if (efi_early->is64)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		setup_boot_services64(efi_early);
 	else
 		setup_boot_services32(efi_early);
@@ -861,11 +420,7 @@ struct boot_params *make_boot_params(struct efi_config *c)
 	status = efi_low_alloc(sys_table, 0x4000, 1,
 			       (unsigned long *)&boot_params);
 	if (status != EFI_SUCCESS) {
-<<<<<<< HEAD
 		efi_printk(sys_table, "Failed to allocate lowmem for boot params\n");
-=======
-		efi_printk(sys_table, "Failed to alloc lowmem for boot params\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return NULL;
 	}
 
@@ -881,15 +436,9 @@ struct boot_params *make_boot_params(struct efi_config *c)
 	 * Fill out some of the header fields ourselves because the
 	 * EFI firmware loader doesn't load the first sector.
 	 */
-<<<<<<< HEAD
 	hdr->root_flags	= 1;
 	hdr->vid_mode	= 0xffff;
 	hdr->boot_flag	= 0xAA55;
-=======
-	hdr->root_flags = 1;
-	hdr->vid_mode = 0xffff;
-	hdr->boot_flag = 0xAA55;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	hdr->type_of_loader = 0x21;
 
@@ -897,10 +446,7 @@ struct boot_params *make_boot_params(struct efi_config *c)
 	cmdline_ptr = efi_convert_cmdline(sys_table, image, &options_size);
 	if (!cmdline_ptr)
 		goto fail;
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hdr->cmd_line_ptr = (unsigned long)cmdline_ptr;
 	/* Fill in upper bits of command line address, NOP on 32 bit  */
 	boot_params->ext_cmd_line_ptr = (u64)(unsigned long)cmdline_ptr >> 32;
@@ -937,18 +483,12 @@ struct boot_params *make_boot_params(struct efi_config *c)
 	boot_params->ext_ramdisk_size  = (u64)ramdisk_size >> 32;
 
 	return boot_params;
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 fail2:
 	efi_free(sys_table, options_size, hdr->cmd_line_ptr);
 fail:
 	efi_free(sys_table, 0x4000, (unsigned long)boot_params);
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return NULL;
 }
 
@@ -960,11 +500,7 @@ static void add_e820ext(struct boot_params *params,
 	unsigned long size;
 
 	e820ext->type = SETUP_E820_EXT;
-<<<<<<< HEAD
 	e820ext->len  = nr_entries * sizeof(struct boot_e820_entry);
-=======
-	e820ext->len = nr_entries * sizeof(struct boot_e820_entry);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	e820ext->next = 0;
 
 	data = (struct setup_data *)(unsigned long)params->hdr.setup_data;
@@ -978,13 +514,8 @@ static void add_e820ext(struct boot_params *params,
 		params->hdr.setup_data = (unsigned long)e820ext;
 }
 
-<<<<<<< HEAD
 static efi_status_t
 setup_e820(struct boot_params *params, struct setup_data *e820ext, u32 e820ext_size)
-=======
-static efi_status_t setup_e820(struct boot_params *params,
-			       struct setup_data *e820ext, u32 e820ext_size)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct boot_e820_entry *entry = params->e820_table;
 	struct efi_info *efi = &params->efi_info;
@@ -1104,7 +635,6 @@ static efi_status_t alloc_e820ext(u32 nr_desc, struct setup_data **e820ext,
 	return status;
 }
 
-<<<<<<< HEAD
 static efi_status_t allocate_e820(struct boot_params *params,
 				  struct setup_data **e820ext,
 				  u32 *e820ext_size)
@@ -1142,30 +672,17 @@ static efi_status_t allocate_e820(struct boot_params *params,
 struct exit_boot_struct {
 	struct boot_params	*boot_params;
 	struct efi_info		*efi;
-=======
-struct exit_boot_struct {
-	struct boot_params *boot_params;
-	struct efi_info *efi;
-	struct setup_data *e820ext;
-	__u32 e820ext_size;
-	bool is64;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static efi_status_t exit_boot_func(efi_system_table_t *sys_table_arg,
 				   struct efi_boot_memmap *map,
 				   void *priv)
 {
-<<<<<<< HEAD
-=======
-	static bool first = true;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const char *signature;
 	__u32 nr_desc;
 	efi_status_t status;
 	struct exit_boot_struct *p = priv;
 
-<<<<<<< HEAD
 	signature = efi_is_64bit() ? EFI64_LOADER_SIGNATURE
 				   : EFI32_LOADER_SIGNATURE;
 	memcpy(&p->efi->efi_loader_signature, signature, sizeof(__u32));
@@ -1179,61 +696,22 @@ static efi_status_t exit_boot_func(efi_system_table_t *sys_table_arg,
 #ifdef CONFIG_X86_64
 	p->efi->efi_systab_hi		= (unsigned long)sys_table_arg >> 32;
 	p->efi->efi_memmap_hi		= (unsigned long)*map->map >> 32;
-=======
-	if (first) {
-		nr_desc = *map->buff_size / *map->desc_size;
-		if (nr_desc > ARRAY_SIZE(p->boot_params->e820_table)) {
-			u32 nr_e820ext = nr_desc -
-					ARRAY_SIZE(p->boot_params->e820_table);
-
-			status = alloc_e820ext(nr_e820ext, &p->e820ext,
-					       &p->e820ext_size);
-			if (status != EFI_SUCCESS)
-				return status;
-		}
-		first = false;
-	}
-
-	signature = p->is64 ? EFI64_LOADER_SIGNATURE : EFI32_LOADER_SIGNATURE;
-	memcpy(&p->efi->efi_loader_signature, signature, sizeof(__u32));
-
-	p->efi->efi_systab = (unsigned long)sys_table_arg;
-	p->efi->efi_memdesc_size = *map->desc_size;
-	p->efi->efi_memdesc_version = *map->desc_ver;
-	p->efi->efi_memmap = (unsigned long)*map->map;
-	p->efi->efi_memmap_size = *map->map_size;
-
-#ifdef CONFIG_X86_64
-	p->efi->efi_systab_hi = (unsigned long)sys_table_arg >> 32;
-	p->efi->efi_memmap_hi = (unsigned long)*map->map >> 32;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 	return EFI_SUCCESS;
 }
 
-<<<<<<< HEAD
 static efi_status_t exit_boot(struct boot_params *boot_params, void *handle)
 {
 	unsigned long map_sz, key, desc_size, buff_size;
 	efi_memory_desc_t *mem_map;
 	struct setup_data *e820ext = NULL;
 	__u32 e820ext_size = 0;
-=======
-static efi_status_t exit_boot(struct boot_params *boot_params,
-			      void *handle, bool is64)
-{
-	unsigned long map_sz, key, desc_size, buff_size;
-	efi_memory_desc_t *mem_map;
-	struct setup_data *e820ext;
-	__u32 e820ext_size;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	efi_status_t status;
 	__u32 desc_version;
 	struct efi_boot_memmap map;
 	struct exit_boot_struct priv;
 
-<<<<<<< HEAD
 	map.map			= &mem_map;
 	map.map_size		= &map_sz;
 	map.desc_size		= &desc_size;
@@ -1246,19 +724,6 @@ static efi_status_t exit_boot(struct boot_params *boot_params,
 	status = allocate_e820(boot_params, &e820ext, &e820ext_size);
 	if (status != EFI_SUCCESS)
 		return status;
-=======
-	map.map =		&mem_map;
-	map.map_size =		&map_sz;
-	map.desc_size =		&desc_size;
-	map.desc_ver =		&desc_version;
-	map.key_ptr =		&key;
-	map.buff_size =		&buff_size;
-	priv.boot_params =	boot_params;
-	priv.efi =		&boot_params->efi_info;
-	priv.e820ext =		NULL;
-	priv.e820ext_size =	0;
-	priv.is64 =		is64;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Might as well exit boot services now */
 	status = efi_exit_boot_services(sys_table, handle, &map, &priv,
@@ -1266,15 +731,8 @@ static efi_status_t exit_boot(struct boot_params *boot_params,
 	if (status != EFI_SUCCESS)
 		return status;
 
-<<<<<<< HEAD
 	/* Historic? */
 	boot_params->alt_mem_k	= 32 * 1024;
-=======
-	e820ext = priv.e820ext;
-	e820ext_size = priv.e820ext_size;
-	/* Historic? */
-	boot_params->alt_mem_k = 32 * 1024;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	status = setup_e820(boot_params, e820ext, e820ext_size);
 	if (status != EFI_SUCCESS)
@@ -1287,13 +745,8 @@ static efi_status_t exit_boot(struct boot_params *boot_params,
  * On success we return a pointer to a boot_params structure, and NULL
  * on failure.
  */
-<<<<<<< HEAD
 struct boot_params *
 efi_main(struct efi_config *c, struct boot_params *boot_params)
-=======
-struct boot_params *efi_main(struct efi_config *c,
-			     struct boot_params *boot_params)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct desc_ptr *gdt = NULL;
 	efi_loaded_image_t *image;
@@ -1302,20 +755,12 @@ struct boot_params *efi_main(struct efi_config *c,
 	struct desc_struct *desc;
 	void *handle;
 	efi_system_table_t *_table;
-<<<<<<< HEAD
 	unsigned long cmdline_paddr;
-=======
-	bool is64;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	efi_early = c;
 
 	_table = (efi_system_table_t *)(unsigned long)efi_early->table;
 	handle = (void *)(unsigned long)efi_early->image_handle;
-<<<<<<< HEAD
-=======
-	is64 = efi_early->is64;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sys_table = _table;
 
@@ -1323,17 +768,12 @@ struct boot_params *efi_main(struct efi_config *c,
 	if (sys_table->hdr.signature != EFI_SYSTEM_TABLE_SIGNATURE)
 		goto fail;
 
-<<<<<<< HEAD
 	if (efi_is_64bit())
-=======
-	if (is64)
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		setup_boot_services64(efi_early);
 	else
 		setup_boot_services32(efi_early);
 
 	/*
-<<<<<<< HEAD
 	 * make_boot_params() may have been called before efi_main(), in which
 	 * case this is the second time we parse the cmdline. This is ok,
 	 * parsing the cmdline multiple times does not have side-effects.
@@ -1343,8 +783,6 @@ struct boot_params *efi_main(struct efi_config *c,
 	efi_parse_options((char *)cmdline_paddr);
 
 	/*
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * If the boot loader gave us a value for secure_boot then we use that,
 	 * otherwise we ask the BIOS.
 	 */
@@ -1353,10 +791,7 @@ struct boot_params *efi_main(struct efi_config *c,
 
 	/* Ask the firmware to clear memory on unclean shutdown */
 	efi_enable_reset_attack_mitigation(sys_table);
-<<<<<<< HEAD
 	efi_retrieve_tpm2_eventlog(sys_table);
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	setup_graphics(boot_params);
 
@@ -1367,11 +802,7 @@ struct boot_params *efi_main(struct efi_config *c,
 	status = efi_call_early(allocate_pool, EFI_LOADER_DATA,
 				sizeof(*gdt), (void **)&gdt);
 	if (status != EFI_SUCCESS) {
-<<<<<<< HEAD
 		efi_printk(sys_table, "Failed to allocate memory for 'gdt' structure\n");
-=======
-		efi_printk(sys_table, "Failed to alloc mem for gdt structure\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto fail;
 	}
 
@@ -1379,11 +810,7 @@ struct boot_params *efi_main(struct efi_config *c,
 	status = efi_low_alloc(sys_table, gdt->size, 8,
 			   (unsigned long *)&gdt->address);
 	if (status != EFI_SUCCESS) {
-<<<<<<< HEAD
 		efi_printk(sys_table, "Failed to allocate memory for 'gdt'\n");
-=======
-		efi_printk(sys_table, "Failed to alloc mem for gdt\n");
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto fail;
 	}
 
@@ -1406,11 +833,7 @@ struct boot_params *efi_main(struct efi_config *c,
 		hdr->code32_start = bzimage_addr;
 	}
 
-<<<<<<< HEAD
 	status = exit_boot(boot_params, handle);
-=======
-	status = exit_boot(boot_params, handle, is64);
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (status != EFI_SUCCESS) {
 		efi_printk(sys_table, "exit_boot() failed!\n");
 		goto fail;
@@ -1424,7 +847,6 @@ struct boot_params *efi_main(struct efi_config *c,
 
 	if (IS_ENABLED(CONFIG_X86_64)) {
 		/* __KERNEL32_CS */
-<<<<<<< HEAD
 		desc->limit0	= 0xffff;
 		desc->base0	= 0x0000;
 		desc->base1	= 0x0000;
@@ -1439,21 +861,6 @@ struct boot_params *efi_main(struct efi_config *c,
 		desc->g		= SEG_GRANULARITY_4KB;
 		desc->base2	= 0x00;
 
-=======
-		desc->limit0 = 0xffff;
-		desc->base0 = 0x0000;
-		desc->base1 = 0x0000;
-		desc->type = SEG_TYPE_CODE | SEG_TYPE_EXEC_READ;
-		desc->s = DESC_TYPE_CODE_DATA;
-		desc->dpl = 0;
-		desc->p = 1;
-		desc->limit1 = 0xf;
-		desc->avl = 0;
-		desc->l = 0;
-		desc->d = SEG_OP_SIZE_32BIT;
-		desc->g = SEG_GRANULARITY_4KB;
-		desc->base2 = 0x00;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		desc++;
 	} else {
 		/* Second entry is unused on 32-bit */
@@ -1461,7 +868,6 @@ struct boot_params *efi_main(struct efi_config *c,
 	}
 
 	/* __KERNEL_CS */
-<<<<<<< HEAD
 	desc->limit0	= 0xffff;
 	desc->base0	= 0x0000;
 	desc->base1	= 0x0000;
@@ -1472,17 +878,6 @@ struct boot_params *efi_main(struct efi_config *c,
 	desc->limit1	= 0xf;
 	desc->avl	= 0;
 
-=======
-	desc->limit0 = 0xffff;
-	desc->base0 = 0x0000;
-	desc->base1 = 0x0000;
-	desc->type = SEG_TYPE_CODE | SEG_TYPE_EXEC_READ;
-	desc->s = DESC_TYPE_CODE_DATA;
-	desc->dpl = 0;
-	desc->p = 1;
-	desc->limit1 = 0xf;
-	desc->avl = 0;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ENABLED(CONFIG_X86_64)) {
 		desc->l = 1;
 		desc->d = 0;
@@ -1490,7 +885,6 @@ struct boot_params *efi_main(struct efi_config *c,
 		desc->l = 0;
 		desc->d = SEG_OP_SIZE_32BIT;
 	}
-<<<<<<< HEAD
 	desc->g		= SEG_GRANULARITY_4KB;
 	desc->base2	= 0x00;
 	desc++;
@@ -1509,31 +903,10 @@ struct boot_params *efi_main(struct efi_config *c,
 	desc->d		= SEG_OP_SIZE_32BIT;
 	desc->g		= SEG_GRANULARITY_4KB;
 	desc->base2	= 0x00;
-=======
-	desc->g = SEG_GRANULARITY_4KB;
-	desc->base2 = 0x00;
-	desc++;
-
-	/* __KERNEL_DS */
-	desc->limit0 = 0xffff;
-	desc->base0 = 0x0000;
-	desc->base1 = 0x0000;
-	desc->type = SEG_TYPE_DATA | SEG_TYPE_READ_WRITE;
-	desc->s = DESC_TYPE_CODE_DATA;
-	desc->dpl = 0;
-	desc->p = 1;
-	desc->limit1 = 0xf;
-	desc->avl = 0;
-	desc->l = 0;
-	desc->d = SEG_OP_SIZE_32BIT;
-	desc->g = SEG_GRANULARITY_4KB;
-	desc->base2 = 0x00;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	desc++;
 
 	if (IS_ENABLED(CONFIG_X86_64)) {
 		/* Task segment value */
-<<<<<<< HEAD
 		desc->limit0	= 0x0000;
 		desc->base0	= 0x0000;
 		desc->base1	= 0x0000;
@@ -1547,21 +920,6 @@ struct boot_params *efi_main(struct efi_config *c,
 		desc->d		= 0;
 		desc->g		= SEG_GRANULARITY_4KB;
 		desc->base2	= 0x00;
-=======
-		desc->limit0 = 0x0000;
-		desc->base0 = 0x0000;
-		desc->base1 = 0x0000;
-		desc->type = SEG_TYPE_TSS;
-		desc->s = 0;
-		desc->dpl = 0;
-		desc->p = 1;
-		desc->limit1 = 0x0;
-		desc->avl = 0;
-		desc->l = 0;
-		desc->d = 0;
-		desc->g = SEG_GRANULARITY_4KB;
-		desc->base2 = 0x00;
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		desc++;
 	}
 
@@ -1571,9 +929,6 @@ struct boot_params *efi_main(struct efi_config *c,
 	return boot_params;
 fail:
 	efi_printk(sys_table, "efi_main() failed!\n");
-<<<<<<< HEAD
 
-=======
->>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return NULL;
 }
